@@ -90,7 +90,7 @@ private theorem heisenberg_dual_det_eq_one [NeZero d]
     simpa only [stdBasis, Module.Basis.map_repr, Module.Basis.map_apply,
       Module.Basis.coe_reindex, Function.comp_apply, Equiv.sigmaEquivProd_symm_apply,
       Pi.basis_apply, Pi.basisFun_apply, coe_ofLinearEquiv, LinearEquiv.trans_apply,
-      coe_ofLinearEquiv_symm, Module.Basis.repr_reindex, Finsupp.mapDomain_equiv_apply,
+      coe_ofLinearEquiv_symm, Module.Basis.repr_reindex, Finsupp.equivMapDomain_apply,
       Pi.basis_repr, Pi.basisFun_repr, of_symm_apply, RCLike.star_def] using hcoef
   calc
     ‖channelDet Td‖ = ‖LinearMap.det Td‖ := by rw [channelDet_eq_linearMap_det]

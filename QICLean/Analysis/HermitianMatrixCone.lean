@@ -7,13 +7,6 @@ import QICLean.Algebra.FrobeniusHilbert
 import Mathlib.Analysis.Convex.Cone.InnerDual
 import Mathlib.Analysis.InnerProductSpace.Subspace
 
-noncomputable section
-
-open scoped BigOperators ComplexConjugate ComplexOrder InnerProductSpace RealInnerProductSpace
-  Matrix.Norms.Frobenius
-
-namespace SemidefiniteProgram
-
 /-!
 # The positive-semidefinite cone of Hermitian matrices
 
@@ -21,6 +14,13 @@ This file equips Hermitian matrices with Wolf's real trace pairing and realizes 
 positive-semidefinite matrices as a self-dual proper cone.  Its interior is the
 positive-definite locus, including when the index type is empty.
 -/
+
+noncomputable section
+
+open scoped BigOperators ComplexConjugate ComplexOrder InnerProductSpace RealInnerProductSpace
+  Matrix.Norms.Frobenius
+
+namespace SemidefiniteProgram
 
 variable (n : Type*) [Fintype n]
 

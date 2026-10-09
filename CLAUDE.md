@@ -8,7 +8,7 @@ QICLean is a Lean 4 formalization of finite-dimensional **quantum-channel
 theory** (following Wolf's *Quantum Channels & Operations*), **quantum
 Wielandt theory**, and the **spectral / quantum Perron-Frobenius (QPF)
 theory** that channel irreducibility and primitivity rest on. Built on
-Mathlib v4.34.0-rc1.
+Mathlib v4.35.0-rc3.
 
 QICLean was extracted from TNLean (the tensor-network / matrix-product-state
 library), which formalizes the fundamental theorem of matrix product states
@@ -62,8 +62,8 @@ and the invariants a CI guard checks on both sides.
 
 ## Lean Toolchain & Dependencies
 
-- **Lean**: v4.34.0-rc1 (pinned in `lean-toolchain`, identical to TNLean's)
-- **Mathlib**: v4.34.0-rc1
+- **Lean**: v4.35.0-rc3 (pinned in `lean-toolchain`, identical to TNLean's)
+- **Mathlib**: v4.35.0-rc3
 - **checkdecls**: Blueprint declaration checker (PatrickMassot/checkdecls)
 - **Gametheory**: Custom Brouwer fixed-point theorem library (LionSR/Brouwer) — moved here from
   TNLean, since the quantum Perron-Frobenius existence argument is the only consumer
@@ -148,6 +148,7 @@ process they describe.
 - **Proof integrity blockers**: `sorry`, `admit`, `native_decide`, `unsafeCast`, `axiom`, circular reasoning
 - **Blueprint prose**: Pure mathematics only — no Lean identifiers in text, no software jargon (see banned terms list in blueprint style guide)
 - **Paper references**: Cite theorem numbers in docstrings (e.g., "Wolf Thm 6.3", "arXiv:1606.00608 Appendix A")
+- **Adapted code**: Apache-2.0 code adapted from another repository carries a source notice in its module docstring or header naming the upstream file, the commit, and the changes; no separate attribution files are kept
 - **Mathematical renames**: When renaming a declaration whose old name encodes misleading terminology (banned vocabulary in the lean-conventions prose_style reference, §2), skip the `@[deprecated] alias` and state the reason in the PR body (see `docs/CONTRIBUTING.md` §Mathematical-language renames).
 
 ## Workflow
@@ -360,3 +361,5 @@ for consumers.
 | Name | Kind | Use when | Defined in |
 |---|---|---|---|
 | `Kraus.map_compressed_fixedPoint` | helper theorem | Preserving a supported fixed point under finite-Kraus compression along an isometry | `QICLean/Channel/KrausCornerCompression.lean` |
+| `Matrix.isSimpleModule_pi` | helper theorem | Using simplicity of the defining module of a full matrix algebra over a field | `QICLean/Algebra/MatrixAlgHomCentralizer.lean` |
+| `IsSimpleRing.nonempty_linearEquiv_of_isSimpleModule` | helper theorem | Identifying two simple modules over a simple Artinian ring, instead of rebuilding the ideal/isotypic comparison | `QICLean/Algebra/MatrixAlgHomCentralizer.lean` |

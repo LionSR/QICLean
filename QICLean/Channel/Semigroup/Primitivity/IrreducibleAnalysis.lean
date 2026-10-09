@@ -10,6 +10,14 @@ import QICLean.Channel.Irreducible.FromSpectral
 import QICLean.Channel.Peripheral.IrreducibleChannel
 import QICLean.Channel.Semigroup.Primitivity.Basic
 
+/-!
+# Irreducibility and primitivity of quantum dynamical semigroups
+
+This file proves the analytic step of Wolf Proposition 7.5: an irreducible time slice
+of a quantum dynamical semigroup is primitive, and the semigroup then contracts the
+traceless subspace.
+-/
+
 open scoped Matrix ComplexOrder MatrixOrder BigOperators NNReal TNOperatorSpace
 open Matrix Finset NormedSpace
 

@@ -1,0 +1,87 @@
+\section{Occupation of retained prefixes}
+\label{sec:poisson_word_occupation}
+
+Let $I$ be a finite alphabet, let $S=\{i\in I:p(i)\}$, and let
+$R_p(w)$ denote the retained coordinate of $P_p(w)$ from
+Definition~\ref{def:poisson_word_partition}.  Write $\mathcal W_S$
+for the words over $S$ and $\mu_{S,s}$ for their Poissonized law.
+At a marked position $j$ of a full word $w$, the observable below uses
+$R_p(w_{<j})$: the retained letters strictly before that position.
+Thus each contribution uses its own retained prefix.
+
+\begin{theorem}[Retained-prefix occupation identity]
+\label{thm:poisson_word_partition_prefix}
+\lean{PoissonWord.lintegral_sum_partition_prefix}
+\leanok
+\uses{def:poisson_word_partition, def:poisson_word_split}
+For $T\geq0$ and any $F:\mathcal W_S\times I\to[0,\infty]$,
+\begin{equation}
+\label{eq:poisson_word_partition_prefix}
+\begin{aligned}
+ &\int_{\mathcal W}\sum_{j=0}^{|w|-1}
+ F(R_p(w_{<j}),w_j)\,d\mu_{I,T}(w)\\
+ &\qquad=\int_0^T\sum_{i\in I}\int_{\mathcal W_S}
+ F(u,i)\,d\mu_{S,s}(u)\,ds.
+\end{aligned}
+\end{equation}
+These are nonnegative integrals; both sides may be infinite.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{cor:poisson_word_insertion_prefix, thm:poisson_word_partition}
+Apply the prefix insertion identity to $G(u,i)=F(R_p(u),i)$.
+For each insertion time $s$, the retained marginal of a word with law
+$\mu_{I,s}$ is $\mu_{S,s}$ by subset thinning.  Transporting the inner
+integral along $R_p$ gives the asserted formula.  No independence
+assumption about the different random prefixes is needed.
+\end{proof}
+
+\begin{corollary}[Occupation at omitted letters]
+\label{cor:poisson_word_omitted_prefix}
+\lean{PoissonWord.lintegral_sum_omitted_partition_prefix}
+\leanok
+\uses{thm:poisson_word_partition_prefix}
+With the same assumptions,
+\begin{equation}
+\label{eq:poisson_word_omitted_prefix}
+\begin{aligned}
+ &\int_{\mathcal W}
+ \sum_{\substack{0\leq j<|w|\\w_j\notin S}}
+ F(R_p(w_{<j}),w_j)\,d\mu_{I,T}(w)\\
+ &\qquad=\int_0^T\sum_{i\in I\setminus S}
+ \int_{\mathcal W_S}F(u,i)\,d\mu_{S,s}(u)\,ds.
+\end{aligned}
+\end{equation}
+\end{corollary}
+\begin{proof}
+\leanok
+Replace $F(u,i)$ by zero for $i\in S$ and leave it unchanged otherwise
+in~(\ref{eq:poisson_word_partition_prefix}).
+\end{proof}
+
+\begin{corollary}[Expected omitted count]
+\label{cor:poisson_word_omitted_count}
+\lean{PoissonWord.lintegral_omitted_count}
+\leanok
+\uses{cor:poisson_word_omitted_prefix}
+The expected number of omitted letters is
+\begin{align}
+ \int_{\mathcal W}\#\{j<|w|:w_j\notin S\}\,d\mu_{I,T}(w)
+ &=|I\setminus S|\,T.
+ \label{eq:poisson_word_omitted_count}
+\end{align}
+\end{corollary}
+\begin{proof}
+\leanok
+\uses{lem:poisson_word_normalization}
+Set $F=1$ in~(\ref{eq:poisson_word_omitted_prefix}).
+Each retained-word measure has mass one, leaving $|I\setminus S|$
+integrated over the time interval.
+\end{proof}
+
+All three identities include $T=0$, $S=\varnothing$, and $S=I$.
+They supply the probability integration for the earlier retained factors
+in \cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex}, lines 203--209.
+The operator telescope, clock paths, propagation estimates, and final
+spatial-omission estimate remain separate inputs.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.

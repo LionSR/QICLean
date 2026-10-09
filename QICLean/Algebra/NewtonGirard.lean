@@ -213,7 +213,6 @@ private lemma T_trace_coeff (M : Matrix n n R) (l m : ℕ) :
     simp only [coeff_sub, coeff_X_mul_zero, sub_zero, coeff_mul_C] at h0
     rw [Finset.sum_range_one]
     convert h0 using 2
-    simp
   | succ m ih =>
     have hrec := T_trace_recursion M (l + 1)
     have hcoeff_eq : (T_trace M (l + 1)).coeff (m + 1) - (T_trace M (l + 2)).coeff m =

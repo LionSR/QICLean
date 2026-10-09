@@ -1,0 +1,60 @@
+\subsection{Typical states from a spectral tail}
+
+\begin{theorem}[Typical density from a spectral tail]
+\label{thm:entropy_typical_density_from_tail}
+\lean{Matrix.PosSemidef.typicalSet_normalizedSpectralRestriction_bounds}
+\leanok
+\uses{lem:typical_set,thm:entropy_typical_density,thm:entropy_typical_density_spectrum,thm:entropy_typical_density_bounds}
+Let $\rho\ge0$ have trace one, with eigenvalues $p_i$, and put $S=S(\rho)$.
+For $w\in\mathbb R$, take its canonical typical set
+\begin{align}
+ E=\{i:p_i>0,\ |-\log p_i-S|\le w\},\qquad z=\sum_{i\in E}p_i.
+\end{align}
+Suppose that
+\begin{align}
+ \sum_{|-\log p_i-S|>w}p_i\le\delta<1.
+\end{align}
+Then $1-\delta\le z\le1$ and $z>0$. The actual spectral restriction
+$\sigma=z^{-1}P_E\rho P_E$ is positive semidefinite with trace one and
+\begin{align}
+ \operatorname{rank}\sigma&=|E|,\\
+ |\log\operatorname{rank}\sigma-S|&\le w-\log(1-\delta),\\
+ |S(\sigma)-S|&\le w-\log(1-\delta).
+\end{align}
+This is a finite-dimensional consequence of the typical-set estimates in
+\cite[Section~8]{OpenAI2026AreaLaw}, conditional on a spectral tail bound.
+\end{theorem}
+\begin{proof}
+\leanok
+The typical mass is at least one minus the tail. Every selected weight lies
+between $e^{-S-w}$ and $e^{-S+w}$ and is positive. Apply the normalized spectral
+restriction estimates. Since $1-\delta\le z\le1$, one has
+$|\log z|\le-\log(1-\delta)$.
+\end{proof}
+
+\begin{theorem}[Actual typical pure state from a spectral tail]
+\label{thm:entropy_typical_pure_state_from_tail}
+\lean{Matrix.typicalPureState_typicalSet_bounds}
+\leanok
+\uses{thm:entropy_typical_density_from_tail,thm:entropy_typical_pure_state}
+Let $\psi\in\mathcal H_A\otimes\mathcal H_B$ be a unit vector. Form the preceding
+canonical set $E$ from its actual marginal $\rho_A$, with center $S=S(\rho_A)$,
+and assume the same tail bound $\delta<1$. Let
+$\psi_E=z^{-1/2}(P_E\otimes I_B)\psi$ be the selected vector. Then
+\begin{align}
+ \|\psi_E\|&=1,\qquad \|\psi-\psi_E\|\le\sqrt{2\delta},\\
+ \operatorname{rank}\rho_{\psi_E,A}&=|E|,\\
+ |\log\operatorname{rank}\rho_{\psi_E,A}-S|&\le w-\log(1-\delta),\\
+ |S(\rho_{\psi_E,A})-S|&\le w-\log(1-\delta).
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+The preceding theorem gives positive selected mass. The selected vector is
+unit, and its actual first marginal is $z^{-1}P_E\rho_AP_E$. This identifies its
+rank and entropy. The squared distance is at most $2(1-z)\le2\delta$.
+\end{proof}
+
+The later physical choice $w=n^{3/5}$ and the asymptotic estimate
+$\delta=n^{-100}$ are separate applications of the marginal concentration
+theorem; they are not asserted here.

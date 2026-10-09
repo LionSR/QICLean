@@ -1,0 +1,73 @@
+\section{Tagged interleavings}
+\label{sec:tagged_interleavings}
+
+Let $A$ and $B$ be arbitrary alphabets, and distinguish them by the two
+inclusions into $A\sqcup B$.  For a word $w$ over $A\sqcup B$, let
+$\pi_A(w)$ and $\pi_B(w)$ be the words obtained by retaining, in their
+original order, the letters carrying the respective tag and then removing
+that tag.  Write $|w|$ for the length of a word.
+
+\begin{definition}[Enumeration of tagged interleavings]
+\label{def:tagged_interleavings}
+\lean{TaggedInterleavings.taggedInterleavings}
+\leanok
+For words $u$ over $A$ and $v$ over $B$, define the list $I(u,v)$ recursively.
+If either word is empty, the list contains just the other word with its tag
+attached.  If $u=au'$ and $v=bv'$ are nonempty, first list the words obtained
+by prepending the left-tagged $a$ to each member of $I(u',v)$, then list the
+words obtained by prepending the right-tagged $b$ to each member of $I(u,v')$.
+\end{definition}
+
+\begin{lemma}[Characterization by filtered words]
+\label{lem:tagged_interleavings_filter}
+\lean{TaggedInterleavings.mem_taggedInterleavings_iff}
+\leanok
+\uses{def:tagged_interleavings}
+A word $w$ occurs in $I(u,v)$ if and only if
+$\pi_A(w)=u$ and $\pi_B(w)=v$.
+\end{lemma}
+\begin{proof}
+\leanok
+Induct on the two prescribed words.  When one is empty, every letter must
+carry the other tag, so the remaining filtered word uniquely determines
+$w$.  When both are nonempty, the first tag of $w$ determines which recursive
+case applies.  Removing that first letter reduces the assertion to the
+corresponding shorter pair of words.
+\end{proof}
+
+\begin{lemma}[Number of tagged interleavings]
+\label{lem:tagged_interleavings_count}
+\lean{TaggedInterleavings.nodup_taggedInterleavings,
+TaggedInterleavings.length_taggedInterleavings}
+\leanok
+\uses{def:tagged_interleavings}
+The list $I(u,v)$ has no repeated words and has
+$\binom{|u|+|v|}{|u|}$ members, even if $u$ or $v$ repeats letters.
+\end{lemma}
+\begin{proof}
+\leanok
+Induct on the two prescribed words.  Prepending a fixed letter preserves
+distinctness, and the two nonempty recursive cases have different first
+tags.  Thus each recursive step preserves the absence of repeated words.
+If either word is empty, there is one interleaving.  Otherwise the number
+of interleavings is the sum of the two shorter counts, which equals
+$\binom{|u|+|v|}{|u|}$ by Pascal's identity.
+\end{proof}
+
+\begin{lemma}[Lengths of the filtered words]
+\label{lem:tagged_interleavings_length}
+\lean{TaggedInterleavings.length_filterMap_add,
+TaggedInterleavings.length_of_mem_taggedInterleavings}
+\leanok
+\uses{def:tagged_interleavings}
+Every word over $A\sqcup B$ satisfies
+$|\pi_A(w)|+|\pi_B(w)|=|w|$.
+Consequently, every member of $I(u,v)$ has length $|u|+|v|$.
+\end{lemma}
+\begin{proof}
+\leanok
+\uses{lem:tagged_interleavings_filter}
+Each letter contributes one to exactly one of the two filtered lengths.
+Induction on $w$ gives the first identity.  Substitute the two prescribed
+filtered words to obtain the consequence.
+\end{proof}

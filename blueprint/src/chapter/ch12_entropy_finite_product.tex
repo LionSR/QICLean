@@ -1,0 +1,165 @@
+\section{Regional entropy and two ordered families}
+
+Let $\Lambda$ be a finite set of sites, with a finite local basis $E_v$ at
+site $v$. For $R\subseteq\Lambda$, write $E_R=\prod_{v\in R}E_v$.
+The empty product has one element.
+
+\begin{definition}[Regional pure-state density and entropy]
+    \label{def:finite_product_regional_entropy}
+    \lean{FiniteProduct.reducedPure, FiniteProduct.entropy, FiniteProduct.mutualInformation}
+    \leanok
+    \uses{def:von_neumann_entropy}
+    For a vector $\psi\in\mathbb C^{E_\Lambda}$, identify its coordinates with
+    a coefficient matrix $M_R$ indexed by $E_R\times E_{R^c}$. Define
+    $\rho_R=M_RM_R^\dagger$ and $S_\psi(R)=S(\rho_R)$.
+    For arbitrary $R,T$, define the entropy combination
+    $I_\psi(R:T)=S_\psi(R)+S_\psi(T)-S_\psi(R\cup T)$.
+    If $\|\psi\|=1$, each $\rho_R$ has trace one. For disjoint $R,T$,
+    the entropy combination is the quantum mutual information of the reduced
+    state on $R\cup T$.
+\end{definition}
+
+\begin{theorem}[Complementary regional entropies]
+    \label{thm:finite_product_entropy_complement}
+    \lean{FiniteProduct.entropy_compl}
+    \leanok
+    \uses{def:finite_product_regional_entropy, thm:entropy_mul_comm}
+    For every vector $\psi$ and every region $R$,
+    $S_\psi(R^c)=S_\psi(R)$.
+\end{theorem}
+\begin{proof}\leanok
+    The two marginal matrices are $M_RM_R^\dagger$ and
+    $\overline{M_R^\dagger M_R}$, after identifying the double complement
+    with $R$. Cyclic invariance gives the same nonzero eigenvalues for the
+    two Gram matrices, and complex conjugation preserves Hermitian entropy.
+\end{proof}
+
+\begin{theorem}[Regional subadditivity]
+    \label{thm:finite_product_entropy_subadditivity}
+    \lean{FiniteProduct.entropy_union_le}
+    \leanok
+    \uses{def:finite_product_regional_entropy, thm:entropy_subadditivity_trivial_B}
+    If $\|\psi\|=1$ and $R\cap T=\varnothing$, then
+    $S_\psi(R\cup T)\le S_\psi(R)+S_\psi(T)$.
+\end{theorem}
+\begin{proof}\leanok
+    Split the reduced state on $R\cup T$ into the two product bases and
+    insert a one-dimensional middle factor. Its two nontrivial marginals
+    are exactly $\rho_R$ and $\rho_T$, by composition of partial traces.
+    Subadditivity with that middle factor proves the inequality.
+\end{proof}
+
+\begin{theorem}[Entropy chain along a finite total order]
+    \label{thm:finite_product_ordered_chain}
+    \lean{FiniteProduct.orderedFamily_entropy_chain_lower}
+    \leanok
+    \uses{def:finite_product_regional_entropy}
+    Let $\mathcal I$ be a finite totally ordered index set, and set
+    $P_i=\bigcup_{j<i}X_j$. If
+    $I_\psi(X_i:B\cup P_i)\le\varepsilon_i$ for each $i$, then
+    \begin{align}
+        S_\psi\left(B\cup\bigcup_{i\in\mathcal I}X_i\right)
+        \ge S_\psi(B)+\sum_{i\in\mathcal I}S_\psi(X_i)
+          -\sum_{i\in\mathcal I}\varepsilon_i.
+        \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Insert the indices in increasing order. The definition of mutual
+    information expresses each entropy increment as
+    $S_\psi(X_i)-I_\psi(X_i:B\cup P_i)$. Summing telescopes, also when
+    the index set is empty.
+\end{proof}
+
+\begin{theorem}[Two-family entropy cancellation]
+    \label{thm:finite_product_two_family_cancellation}
+    \lean{FiniteProduct.entropy_le_remainder_add_half_sum}
+    \leanok
+    \uses{thm:finite_product_ordered_chain,
+        thm:finite_product_entropy_complement,
+        thm:finite_product_entropy_subadditivity}
+    Let $\psi$ be a normalized pure state on the finite tensor product.
+    Suppose
+    $A=D\mathbin{\dot\cup}\bigcup_{i\in\mathcal I_0}X_i
+       \mathbin{\dot\cup}\bigcup_{i\in\mathcal I_1}X_i$
+    is a disjoint partition, with a total order on each finite family.
+    Put $B=\Lambda\setminus A$ and
+    $P_i=\bigcup_{j\in\mathcal I_f,\,j<i}X_j$ for $i\in\mathcal I_f$.
+    If $I_\psi(X_i:B\cup P_i)\le\varepsilon_i$ for all indices, then
+    \begin{align}
+        S_\psi(A)\le S_\psi(D)+\frac12\sum_i\varepsilon_i.
+        \notag
+    \end{align}
+    This is \cite[Lemma~11.1]{OpenAI2026AreaLaw}. Empty families,
+    empty regions, and varying local dimensions are permitted.
+\end{theorem}
+\begin{proof}\leanok
+    Set $A_f=\bigcup_{i\in\mathcal I_f}X_i$,
+    $T_f=\sum_{i\in\mathcal I_f}S_\psi(X_i)$, and
+    $E_f=\sum_{i\in\mathcal I_f}\varepsilon_i$.
+    The ordered chain, purity, and finite subadditivity give
+    \begin{align}
+        S_\psi(A)+T_f-E_f
+        &\le S_\psi(B\cup A_f)
+         =S_\psi(D\cup A_{1-f})
+         \le S_\psi(D)+T_{1-f}.
+        \notag
+    \end{align}
+    Adding the two inequalities cancels $T_0$ and $T_1$.
+    Dividing by two gives the asserted constant.
+\end{proof}
+
+\begin{definition}[Regional conditional information]
+    \label{def:finite_product_conditional_information}
+    \lean{FiniteProduct.conditionalMutualInformation}
+    \leanok
+    \uses{def:finite_product_regional_entropy}
+    For regional subsystems define the entropy expression
+    \begin{align}
+        I_\psi(X:C\mid Z)
+        &=S_\psi(X\cup Z)+S_\psi(C\cup Z)-S_\psi(Z)-S_\psi(X\cup C\cup Z).
+        \notag
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Conditional information as a difference]
+    \label{thm:finite_product_conditional_difference}
+    \lean{FiniteProduct.conditionalMutualInformation_eq_sub,
+        FiniteProduct.conditionalMutualInformation_le_mutualInformation_union}
+    \leanok
+    \uses{def:finite_product_conditional_information,
+        thm:finite_product_entropy_subadditivity}
+    The entropy expressions satisfy
+    $I_\psi(X:C\mid Z)=I_\psi(X:C\cup Z)-I_\psi(X:Z)$.
+    For a normalized state and disjoint $X,Z$, this implies
+    $I_\psi(X:C\mid Z)\le I_\psi(X:C\cup Z)$.
+\end{theorem}
+\begin{proof}\leanok
+    Expand both mutual informations. Subadditivity gives
+    $I_\psi(X:Z)\ge0$ under the stated assumptions.
+\end{proof}
+
+\begin{theorem}[Conditional chain and complementary conditioning]
+    \label{thm:finite_product_conditional_chain_duality}
+    \lean{FiniteProduct.sum_conditionalMutualInformation_past,
+        FiniteProduct.conditionalMutualInformation_pure_duality}
+    \leanok
+    \uses{def:finite_product_conditional_information,
+        thm:finite_product_entropy_complement}
+    For a finite totally ordered family and $P_i=\bigcup_{j<i}X_j$,
+    \begin{align}
+        \sum_i I_\psi(X_i:C\mid Z\cup P_i)
+        &=I_\psi\left(\bigcup_i X_i:C\mid Z\right).
+        \notag
+    \end{align}
+    For pairwise-disjoint $X,C,Z$, purity also gives
+    $I_\psi(X:C\mid Z)=I_\psi(X:C\mid (X\cup C\cup Z)^c)$.
+\end{theorem}
+\begin{proof}\leanok
+    Subtract the two telescoping entropy-defect sums with initial regions
+    $C\cup Z$ and $Z$ to obtain the chain identity. For the second identity,
+    replace each of its four entropy terms by the entropy of the complementary
+    region and use disjointness.
+\end{proof}
+
+\input{chapter/ch12_entropy_finite_product_splitting}

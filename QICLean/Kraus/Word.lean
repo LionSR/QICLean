@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.Data.List.FinRange
 import Mathlib.Data.List.OfFn
 import Mathlib.Data.Matrix.Mul
@@ -25,6 +25,7 @@ intertwining, reindexing, and transpose properties.
 * `Kraus.evalWord` — the matrix product associated with a word of physical indices
 * `Kraus.evalWord_append` — evaluation sends concatenation to multiplication
 * `Kraus.evalWord_intertwine` — a letter intertwiner also intertwines every word
+* `Kraus.evalWord_conjTranspose` — conjugate transposition reverses a matrix word
 -/
 
 open scoped Matrix
@@ -158,5 +159,18 @@ theorem evalWord_transpose (K : Fin d → Matrix (Fin D) (Fin D) ℂ) :
   | nil => simp [evalWord]
   | cons i w ih =>
       simp [evalWord, Matrix.transpose_mul, ih, evalWord_append]
+
+/-- Conjugate transposition reverses an evaluated matrix word and conjugate-transposes
+each letter. -/
+theorem evalWord_conjTranspose (A : Fin d → Matrix (Fin D) (Fin D) ℂ) :
+    ∀ w : List (Fin d),
+      (evalWord A w)ᴴ = evalWord (fun i => (A i)ᴴ) w.reverse := by
+  intro w
+  induction w with
+  | nil =>
+      simp [evalWord]
+  | cons i w ih =>
+      simp [evalWord, Matrix.conjTranspose_mul, ih, evalWord_append,
+        List.reverse_cons]
 
 end Kraus

@@ -75,6 +75,64 @@ private theorem starProjection_mem_orthogonal_of_le
     _ = ⟪v, z⟫_ℂ := by rw [U.starProjection_eq_self_iff.mpr (hWU hz)]
     _ = 0 := hvW z hz
 
+/-- A relative overlap bound above a common subspace controls the defect of the
+corresponding orthogonal projections.
+
+If `W ≤ U` and `W ≤ V`, only the parts of `U` and `V` orthogonal to `W`
+contribute to the difference `P_U P_V - P_W`. Thus a uniform overlap bound on
+these reduced parts gives the same operator-norm bound on the projection
+defect. -/
+theorem norm_starProjection_comp_sub_starProjection_le_of_relative_overlap
+    (U V W : Submodule ℂ E) {η : ℝ} (hWU : W ≤ U) (hWV : W ≤ V)
+    (hη : 0 ≤ η)
+    (hOverlap : ∀ x : E, x ∈ U → x ∈ Wᗮ →
+      ∀ y : E, y ∈ V → y ∈ Wᗮ →
+        ‖⟪x, y⟫_ℂ‖ ≤ η * ‖x‖ * ‖y‖) :
+    ‖U.starProjection ∘L V.starProjection - W.starProjection‖ ≤ η := by
+  apply ContinuousLinearMap.opNorm_le_bound _ hη
+  intro v
+  let z := v - W.starProjection v
+  let y := V.starProjection z
+  let x := U.starProjection y
+  have hzW : z ∈ Wᗮ := W.sub_starProjection_mem_orthogonal v
+  have hyV : y ∈ V := V.starProjection_apply_mem z
+  have hyW : y ∈ Wᗮ :=
+    starProjection_mem_orthogonal_of_le V W hWV hzW
+  have hxU : x ∈ U := U.starProjection_apply_mem y
+  have hxW : x ∈ Wᗮ :=
+    starProjection_mem_orthogonal_of_le U W hWU hyW
+  have hInner := hOverlap x hxU hxW y hyV hyW
+  have hInnerEq : ⟪x, y⟫_ℂ = ⟪x, x⟫_ℂ := by
+    calc
+      ⟪x, y⟫_ℂ = ⟪U.starProjection x, y⟫_ℂ := by
+        rw [U.starProjection_eq_self_iff.mpr hxU]
+      _ = ⟪x, U.starProjection y⟫_ℂ :=
+        U.inner_starProjection_left_eq_right x y
+      _ = ⟪x, x⟫_ℂ := rfl
+  have hxy : ‖x‖ ≤ η * ‖y‖ := by
+    rw [hInnerEq, inner_self_eq_norm_sq_to_K, norm_pow, RCLike.norm_ofReal,
+      abs_of_nonneg (norm_nonneg x)] at hInner
+    by_cases hx : x = 0
+    · rw [hx, norm_zero]
+      exact mul_nonneg hη (norm_nonneg y)
+    · have hxpos : 0 < ‖x‖ := norm_pos_iff.mpr hx
+      nlinarith [hInner]
+  have hyz : ‖y‖ ≤ ‖z‖ := V.norm_starProjection_apply_le z
+  have hzv : ‖z‖ ≤ ‖v‖ := by
+    rw [show z = Wᗮ.starProjection v from (W.starProjection_orthogonal_val v).symm]
+    exact Wᗮ.norm_starProjection_apply_le v
+  have hApply :
+      (U.starProjection ∘L V.starProjection - W.starProjection) v = x := by
+    dsimp [x, y, z]
+    simp only [sub_apply, ContinuousLinearMap.comp_apply, map_sub]
+    rw [V.starProjection_eq_self_iff.mpr (hWV (W.starProjection_apply_mem v)),
+      U.starProjection_eq_self_iff.mpr (hWU (W.starProjection_apply_mem v))]
+  rw [hApply]
+  calc
+    ‖x‖ ≤ η * ‖y‖ := hxy
+    _ ≤ η * ‖z‖ := mul_le_mul_of_nonneg_left hyz hη
+    _ ≤ η * ‖v‖ := mul_le_mul_of_nonneg_left hzv hη
+
 /-- A Friedrichs overlap bound controls the orthogonal projection of a vector
 in one reduced subspace onto the other reduced subspace.
 

@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 import Mathlib.LinearAlgebra.Matrix.Permutation
 import QICLean.Algebra.HermitianHelpers
 import QICLean.Algebra.MatrixSpectralDecomp
@@ -341,8 +341,6 @@ theorem isPositiveMap_of_forall_vecMulVec_posSemidef
       ((Real.sqrt (hX.1.eigenvalues i.1) : ℂ)) *
         hX.1.eigenvectorUnitary p i.1
     convert h w using 2
-    ext p q
-    simp [w, Matrix.vecMulVec_apply]
 
 /-- Positivity of the first Choi map.
 

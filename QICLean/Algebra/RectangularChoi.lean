@@ -74,6 +74,14 @@ theorem linearMapMatrix_apply
   rw [linearMapMatrix, LinearMap.toMatrix_apply, stdBasis_eq_single]
   simp [stdBasis, Module.Basis.map_repr, Pi.basis_repr, Pi.basisFun_repr]
 
+/-- Taking the coefficient matrix commutes with subtraction of rectangular maps. -/
+@[simp]
+theorem linearMapMatrix_sub
+    (T S : Matrix α α ℂ →ₗ[ℂ] Matrix β β ℂ) :
+    linearMapMatrix (T - S) = linearMapMatrix T - linearMapMatrix S := by
+  ext ⟨a, b⟩ ⟨i, j⟩
+  simp only [linearMapMatrix_apply, LinearMap.sub_apply, Matrix.sub_apply]
+
 /-- Entrywise formula for the rectangular Choi matrix. -/
 @[simp]
 theorem rectangularChoi_apply

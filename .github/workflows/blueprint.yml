@@ -1,8 +1,7 @@
 name: Blueprint
 
-# Adapted from TNLean's blueprint.yml: drops the native-tenkz lint/pipeline
-# step (no tenkz diagrams in QICLean's blueprint; see ci/README.md) and the
-# FT-MPS-volume packaging step (that split PDF is TNLean-specific). Otherwise
+# Adapted from TNLean's blueprint.yml: omits the TNLean-specific split PDF.
+# Pinned tenkz rendering and event audits run within the existing job. Otherwise
 # unchanged: same leanblueprint build, same error/warning gating, same
 # paper-gap reference check, same generated-page reader-facing check, same
 # Pages deploy handoff. Beyond TNLean's version, this push path also builds
@@ -20,6 +19,12 @@ on:
       - 'lean-toolchain'
       - 'lake-manifest.json'
       - 'blueprint/src/**'
+      - 'tenkz.toml'
+      - 'scripts/fetch_tenkz.py'
+      - 'scripts/tenkz_paths.py'
+      - 'scripts/tenkz_blueprint_sweep.py'
+      - 'scripts/test_tenkz_blueprint_sweep.py'
+      - 'scripts/test_tenkz_pic.py'
       - 'docs/paper-gaps/**'
       - 'texra-blueprint.toml'
       # Trees the paper-gap reference check scans (texra-blueprint
@@ -63,6 +68,14 @@ jobs:
         with:
           extra-pip-packages: 'git+https://github.com/LionSR/texra-blueprint@v0.3.8'
 
+      - name: Fetch pinned tenkz package
+        run: python3 scripts/fetch_tenkz.py
+
+      - name: Check tenkz picture pipeline
+        run: |
+          python3 scripts/test_tenkz_pic.py
+          python3 scripts/test_tenkz_blueprint_sweep.py
+
       - name: Check paper-gap references resolve
         run: texra-blueprint paper-gaps check
 
@@ -95,6 +108,13 @@ jobs:
             echo "::error::Blueprint has missing files (see WARNING lines above)"
             exit 1
           fi
+          if grep -R "tenkz SVG unavailable" blueprint/web --include='*.html'; then
+            echo "::error::Blueprint contains unrendered tenkz SVG placeholders"
+            exit 1
+          fi
+
+      - name: Sweep tenkz blueprint event streams
+        run: python3 scripts/tenkz_blueprint_sweep.py --allow-empty
 
       # A zero exit status says the build ran, not that the pages read. The
       # site is published from here, so the reader-facing check runs here too

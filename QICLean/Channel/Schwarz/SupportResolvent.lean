@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Algebra.MatrixAux
 import QICLean.Analysis.MatrixSqrt
-import Mathlib.Data.Complex.BigOperators
+import Mathlib.Basic.Complex.BigOperators
 import Mathlib.LinearAlgebra.Matrix.Vec
 
 /-!
@@ -301,7 +301,7 @@ theorem support_resolvent_eq_of_defect_eq_zero
       (G i *ᵥ (b i - S i *ᵥ x)) = 0 := by
     exact congrFun (Fintype.sum_eq_zero_iff_of_nonneg hnonneg |>.mp hreszero) i
   have hGr : G i *ᵥ (b i - S i *ᵥ x) = 0 :=
-    (hG.dotProduct_mulVec_zero_iff (b i - S i *ᵥ x)).mp hterm
+    (hG.dotProduct_mulVec_zero_iff (x := b i - S i *ᵥ x)).mp hterm
   have hSG : S i * G i = P := by
     simpa only [G, P] using (hS i).self_mul_supportInvSqrt_sq
   have hPr : P *ᵥ (b i - S i *ᵥ x) = 0 := by

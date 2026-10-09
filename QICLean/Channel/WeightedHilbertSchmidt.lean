@@ -264,7 +264,7 @@ theorem weightedHilbertSchmidtMap_norm_le
   have hRadConj :
       spectralRadius ℂ (Ψ (T.conj (frobeniusEuclideanMap E))) =
         spectralRadius ℂ (Ψ (frobeniusEuclideanMap E)) := by
-    rw [spectralRadius, spectralRadius, hSpecLeft, hSpecConj, hSpecRight]
+    rw [spectralRadius_eq_of_unital, spectralRadius_eq_of_unital, hSpecLeft, hSpecConj, hSpecRight]
   have hRadE : spectralRadius ℂ (Ψ (frobeniusEuclideanMap E)) ≤ 1 :=
     hEcp.spectralRadius_frobeniusEuclideanMap_le_one_of_map_one_eq_one hEone
   have hRadGram : spectralRadius ℂ (Acl.adjoint.comp Acl) ≤ 1 := by

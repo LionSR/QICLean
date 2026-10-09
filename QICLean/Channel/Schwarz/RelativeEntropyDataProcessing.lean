@@ -246,7 +246,7 @@ theorem partialTraceRight_support
     have hnn : ∀ c : β, (0 : ℂ) ≤ star (liftVec w c) ⬝ᵥ σ.mulVec (liftVec w c) :=
       fun c => hσ.dotProduct_mulVec_nonneg _
     intro c
-    refine (hσ.dotProduct_mulVec_zero_iff (liftVec w c)).mp ?_
+    refine (hσ.dotProduct_mulVec_zero_iff (x := liftVec w c)).mp ?_
     exact (Finset.sum_eq_zero_iff_of_nonneg fun c _ => hnn c).mp hqsum c (Finset.mem_univ c)
   have hρlift : ∀ c : β, ρ.mulVec (liftVec w c) = 0 := fun c => hsupp _ (hσlift c)
   funext s₁

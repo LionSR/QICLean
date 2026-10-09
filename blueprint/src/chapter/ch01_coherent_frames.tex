@@ -1,0 +1,85 @@
+\section{Coherent frames and external references}
+\label{sec:coherent_frames}
+
+All spaces in this section are finite-dimensional complex Euclidean spaces.
+The norm on matrices is the induced operator norm. The cross matrix of two
+column matrices retains their relative phases; its entries are not replaced
+by absolute overlaps.
+
+\begin{theorem}[Norm of an isometric frame]
+    \label{thm:frame_isometry_norm}
+    \lean{Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one}
+    \leanok
+    If $W:\C^n\to\C^m$ satisfies $W^\dagger W=I_n$, then $\|W\|\le1$.
+\end{theorem}
+\begin{proof}\leanok
+    The identity $\|W\|^2=\|W^\dagger W\|=\|I_n\|\le1$ gives the conclusion,
+    including a zero-dimensional domain.
+\end{proof}
+
+\begin{theorem}[Phase-sensitive frame perturbation]
+    \label{thm:frame_gram_cross_bound}
+    \lean{Matrix.norm_sub_isometry_sq_le}
+    \leanok
+    Let $V,W:\C^n\to\C^m$ and suppose $W^\dagger W=I_n$. Set
+    $G=V^\dagger V$ and $Z=W^\dagger V$. Then
+    \begin{align}
+        \|V-W\|^2\le\|G-I_n\|+2\|Z-I_n\|.
+        \label{eq:frame_gram_cross_bound}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Expanding the Gram matrix of the difference gives
+    \begin{align}
+        (V-W)^\dagger(V-W)
+         & =(G-I_n)-(Z-I_n)-(Z-I_n)^\dagger.
+        \label{eq:frame_difference_gram}
+    \end{align}
+    Apply the triangle inequality to (\ref{eq:frame_difference_gram}) and use
+    $\|X^\dagger X\|=\|X\|^2$ and $\|X^\dagger\|=\|X\|$.
+\end{proof}
+
+\begin{theorem}[Dimension-free amplification by an identity]
+    \label{thm:frame_reference_amplification}
+    \lean{Matrix.l2_opNorm_kronecker_one_mulVec_le}
+    \leanok
+    For every $A:\C^n\to\C^m$, every finite-dimensional reference space
+    $\C^k$, and every $\xi\in\C^n\otimes\C^k$,
+    \begin{align}
+        \|(A\otimes I_k)\xi\|\le\|A\|\,\|\xi\|.
+        \label{eq:frame_reference_bound}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    In an orthonormal reference basis, write
+    $\xi=\sum_{r=1}^k\xi_r\otimes e_r$. The coordinate formula for the
+    Kronecker product and orthogonality give
+    \begin{align}
+        \|(A\otimes I_k)\xi\|^2
+         & =\sum_r\|A\xi_r\|^2
+        \le\|A\|^2\sum_r\|\xi_r\|^2
+        =\|A\|^2\|\xi\|^2.
+        \label{eq:frame_reference_slices}
+    \end{align}
+    Taking nonnegative square roots proves (\ref{eq:frame_reference_bound}).
+\end{proof}
+
+\begin{theorem}[Coherent encoder errors retain a reference]
+    \label{thm:frame_encoder_reference}
+    \lean{Matrix.norm_encoder_conversion_reference_le}
+    \leanok
+    Let $F,G:\C^n\to\C^m$ and $U:\C^m\to\C^m$ satisfy
+    $\|UF-G\|\le\varepsilon$. For every finite-dimensional reference
+    $\C^k$ and every $\xi\in\C^n\otimes\C^k$,
+    \begin{align}
+        \|(U\otimes I_k)(F\otimes I_k)\xi-(G\otimes I_k)\xi\|
+        \le\varepsilon\|\xi\|.
+        \label{eq:frame_encoder_reference}
+    \end{align}
+    Neither normalization of $\xi$ nor isometricity of $F$ and $G$ is required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:frame_reference_amplification}
+    The difference is $((UF-G)\otimes I_k)\xi$. Apply
+    Theorem~\ref{thm:frame_reference_amplification} and the assumed bound.
+\end{proof}

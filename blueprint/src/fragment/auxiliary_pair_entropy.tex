@@ -1,0 +1,44 @@
+\section{The entropy cancellation in the auxiliary-pair comparison}
+\label{sec:auxiliary_pair_entropy}
+
+Let $X,U,Y,V$ be a partition of a finite physical system, and let $\Omega$
+be a pure vector on that system. Write $S(R)$ for the von Neumann entropy
+of its actual reduced matrix on a region $R$, and set
+\begin{align}
+ g^{\mathrm{pre}}&=S(XU)+S(V)-S(Y),\\
+ g^{\mathrm{post}}&=S(U)+S(UY)-S(Y).
+ \label{eq:auxiliary_pair_entropy_expressions}
+\end{align}
+These are the entropy expressions in the sharp comparison statements of
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[The exact entropy cancellation]
+\label{thm:auxiliary_pair_entropy_identity}
+\lean{FiniteProduct.auxiliaryPair_entropyIdentity}
+\leanok
+The original pure vector satisfies
+\begin{align}
+ 2S(X)+g^{\mathrm{pre}}-g^{\mathrm{post}}
+ &=I(X:V)+I(X:YV).
+ \label{eq:auxiliary_pair_entropy_identity}
+\end{align}
+No normalization of $\Omega$ is needed for this identity.
+\end{theorem}
+\begin{proof}
+\leanok
+Purity gives $S(XU)=S(YV)$, $S(UY)=S(XV)$ and $S(U)=S(XYV)$.
+Substituting these three equalities and expanding the two mutual
+informations proves the identity.
+\end{proof}
+
+\begin{theorem}[Nonnegativity before the comparison]
+\label{thm:auxiliary_pair_pre_nonneg}
+\lean{FiniteProduct.auxiliaryPair_pre_nonneg}
+\leanok
+If $\|\Omega\|=1$, then $g^{\mathrm{pre}}\ge0$.
+\end{theorem}
+\begin{proof}
+\leanok
+The regions $XU$ and $V$ are disjoint. Subadditivity gives
+$S(XU)+S(V)\ge S(XUV)$, and purity gives $S(XUV)=S(Y)$.
+\end{proof}

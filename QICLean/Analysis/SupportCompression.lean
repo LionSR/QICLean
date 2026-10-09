@@ -52,7 +52,7 @@ theorem dotProduct_mulVec_pos_of_supportProj_fixed
   refine lt_of_le_of_ne h_nonneg ?_
   intro habs
   -- If the quadratic form vanishes, then `ρ *ᵥ v = 0`.
-  have hρv : ρ *ᵥ v = 0 := (hρ.dotProduct_mulVec_zero_iff v).mp habs.symm
+  have hρv : ρ *ᵥ v = 0 := (hρ.dotProduct_mulVec_zero_iff (x := v)).mp habs.symm
   -- Then the support projection also annihilates `v`.
   have hPv : hρ.supportProj *ᵥ v = 0 :=
     hρ.supportProj_mulVec_eq_zero_of_mulVec_eq_zero v hρv
@@ -79,7 +79,7 @@ theorem compression_posDef_of_support_action_ne_zero
   have hnonneg := hρ.dotProduct_mulVec_nonneg (V *ᵥ x)
   have hne : star (V *ᵥ x) ⬝ᵥ (ρ *ᵥ (V *ᵥ x)) ≠ 0 := by
     intro hzero
-    have hρv := (hρ.dotProduct_mulVec_zero_iff (V *ᵥ x)).mp hzero
+    have hρv := (hρ.dotProduct_mulVec_zero_iff (x := V *ᵥ x)).mp hzero
     exact hSupport x hx (hρ.supportProj_mulVec_eq_zero_of_mulVec_eq_zero _ hρv)
   have hpos : 0 < star (V *ᵥ x) ⬝ᵥ (ρ *ᵥ (V *ᵥ x)) :=
     lt_of_le_of_ne hnonneg hne.symm

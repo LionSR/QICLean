@@ -1,0 +1,86 @@
+\subsection{A uniform localization radius}
+\label{sec:localization_parameters}
+
+% Source: polynomial-PEPS manuscript (September 24, 2026), lem:reset,
+% pinned peps-02-information-adc7f124.tex, lines 546--554, at
+% openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% Scalar absorption only; no operator-support or physical-reset claim.
+% The argument is scalar; no tensor-network diagram is needed.
+
+The scalar choice of localization radius
+in~\cite{OpenAI2026PolynomialPEPS} follows from an explicit coefficient
+bound and an exponential estimate.
+
+\begin{theorem}[Localization coefficient]
+    \label{thm:localization_parameter_constant}
+    \lean{GaussianFilter.exists_localization_parameter_constant}
+    \leanok
+    Let $T_0\ge0$, $v\ge0$, $\mu>0$, and $r\ge0$ be real. There is a
+    constant $K>0$, depending only on these four parameters, such that
+    \begin{align}
+        \mu K&\ge vT_0+15+r.
+        \label{eq:localization_parameter_coefficient}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    Choose $K=(vT_0+15+r)/\mu$. Its numerator is at least $15$, so
+    $K>0$, and (\ref{eq:localization_parameter_coefficient}) holds
+    with equality.
+\end{proof}
+
+\begin{theorem}[Scalar localization error]
+    \label{thm:localization_error_bound}
+    \lean{GaussianFilter.localization_error_bound_of_parameter_constant}
+    \leanok
+    Let $T_0,\mu,r\ge0$ and $v,K\in\R$ satisfy
+    (\ref{eq:localization_parameter_coefficient}). For every
+    $b\ge0$, $L\ge1$, and $C\ge0$, put $B_*=1+b+\log L$ and
+    $\ell=\max\{0,\lceil KB_*\rceil\}$, the least nonnegative integer
+    at least $KB_*$. Then
+    \begin{align}
+        CL^4(1+T_0B_*)e^{vT_0B_*-\mu\ell}
+        &\le C(1+T_0)e^{-10b}L^{-r}.
+        \label{eq:localization_parameter_error}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    Since $B_*\ge1$, the inequalities $B_*\le e^{B_*}$ and
+    $1\le e^{B_*}$ imply $1+T_0B_*\le(1+T_0)e^{B_*}$.
+    The definition of $\ell$ gives $\ell\ge KB_*$. Thus
+    (\ref{eq:localization_parameter_coefficient}) and $\mu\ge0$ give
+    \begin{align}
+        4\log L+B_*+vT_0B_*-\mu\ell
+        &\le4\log L-(14+r)B_*
+        \label{eq:localization_parameter_exponent}\\
+        &=-10b-r\log L-(14+r)-(4+r)b-10\log L \notag\\
+        &\le-10b-r\log L. \notag
+    \end{align}
+    Monotonicity of the exponential and
+    $e^{-10b-r\log L}=e^{-10b}L^{-r}$ now give
+    (\ref{eq:localization_parameter_error}).
+\end{proof}
+
+\begin{theorem}[Uniform localization parameters]
+    \label{thm:localization_parameters}
+    \lean{GaussianFilter.exists_localization_parameters}
+    \leanok
+    Let $T_0>0$, $v\ge0$, $\mu>0$, and $r\ge0$ be real. There is
+    one $K>0$ satisfying (\ref{eq:localization_parameter_coefficient})
+    such that, for every $b\ge0$, $L\ge1$, and $C\ge0$, the choices
+    $B_*=1+b+\log L$ and $\ell=\lceil KB_*\rceil$ satisfy
+    $\ell\ge1$, $KB_*\le\ell<KB_*+1$, and
+    (\ref{eq:localization_parameter_error}).
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:localization_parameter_constant, thm:localization_error_bound}
+    Choose $K$ by Theorem~\ref{thm:localization_parameter_constant}
+    before $b,L,C$. Since $KB_*>0$, its ceiling is positive and equals
+    its natural ceiling. The ceiling bounds give
+    $KB_*\le\ell<KB_*+1$, and
+    Theorem~\ref{thm:localization_error_bound} gives
+    (\ref{eq:localization_parameter_error}). The factor $1+T_0$ is
+    fixed before $b,L,C$ are chosen.
+\end{proof}

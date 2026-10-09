@@ -1,0 +1,299 @@
+\section{A controlled overlap on the physical buffer}
+\label{sec:physical_buffer_overlap}
+
+All registers in this section have arbitrary finite bases. Their dimensions
+may differ, and the algebraic identities also allow empty bases. A normalized
+vector can exist only when its ambient space is nonzero.
+
+\begin{definition}[Partial swap and its compression]
+    \label{def:physical_buffer_compression}
+    \lean{Equiv.partialSwap, Equiv.partialSwap_apply,
+        Matrix.partialSwap, Matrix.partialSwap_apply,
+        Matrix.partialSwap_mulVec, Matrix.compressedPartialSwap}
+    \leanok
+    For two registers $A,B$, the partial swap $F_A$ exchanges the $A$
+    factors of two replicas:
+    \begin{align}
+        F_A\bigl((a_1,b_1),(a_2,b_2)\bigr)
+        &=\bigl((a_2,b_1),(a_1,b_2)\bigr).
+        \label{eq:buffer_partial_swap}
+    \end{align}
+    For a linear map $V:\mathcal H_Q\to\mathcal H_A\otimes\mathcal H_B$,
+    put $K=V\otimes V$ and define the compression
+    \begin{align}
+        W=K^\dagger F_AK
+        &=(V^\dagger\otimes V^\dagger)F_A(V\otimes V)
+        \in\mathcal L(\mathcal H_Q^{\otimes2}).
+        \label{eq:buffer_compression}
+    \end{align}
+    The contraction below is read from left to right: first $K$, then
+    $F_A$, then $K^\dagger$. Each external leg is an original copy of $Q$;
+    each internal leg bundles one copy of $A\otimes B$.
+    % Exact tensor contraction: W_{q'_1 q'_2,q_1 q_2} =
+    % sum_{u,v} conjugate(K_{u,q'_1 q'_2}) (F_A)_{u,v} K_{v,q_1 q_2}.
+    % Every port is a Hilbert-space index, explicitly typed physical.
+    % Source: pinned 02-information.tex:400--404. No literal pipe in labels.
+    % The complete-book preamble must load the pinned Tenkz pipeline.
+    \begin{tenkzequation}
+        \tenkzkernel
+        \begin{tenkz}[rows={wire,wire}, cols=5, bonds=none]
+            \tn[at=(1,1), name=bufferK, skin=box, wires=2,
+                ports={180@1:physical,180@2:physical,
+                    0@1:physical,0@2:physical}]{K}
+            \tn[at=(1,3), name=bufferF, skin=box, wires=2,
+                ports={180@1:physical,180@2:physical,
+                    0@1:physical,0@2:physical}]{F_A}
+            \tn[at=(1,5), name=bufferKd, skin=box, wires=2,
+                ports={180@1:physical,180@2:physical,
+                    0@1:physical,0@2:physical}]{K^\dagger}
+            \tnwire[dir=to, name=bufferInOne]{open w}{bufferK.180@1}
+            \tnwire[dir=to, name=bufferInTwo]{open w}{bufferK.180@2}
+            \tnwire[dir=to, name=bufferInnerOne]{bufferK.0@1}{bufferF.180@1}
+            \tnwire[dir=to, name=bufferInnerTwo]{bufferK.0@2}{bufferF.180@2}
+            \tnwire[dir=to, name=bufferInnerThree]{bufferF.0@1}{bufferKd.180@1}
+            \tnwire[dir=to, name=bufferInnerFour]{bufferF.0@2}{bufferKd.180@2}
+            \tnwire[dir=to, name=bufferOutOne]{bufferKd.0@1}{open e}
+            \tnwire[dir=to, name=bufferOutTwo]{bufferKd.0@2}{open e}
+            \tnmark[form=label, label pos=n]{on bufferInOne 0.5}{$Q$}
+            \tnmark[form=label, label pos=s]{on bufferInTwo 0.5}{$Q$}
+            \tnmark[form=label, label pos=n]{on bufferOutOne 0.5}{$Q$}
+            \tnmark[form=label, label pos=s]{on bufferOutTwo 0.5}{$Q$}
+            \tnmark[form=label, label pos=n]{on bufferInnerOne 0.5}{$A\otimes B$}
+            \tnmark[form=label, label pos=s]{on bufferInnerTwo 0.5}{$A\otimes B$}
+            \tnmark[form=label, label pos=n]{on bufferInnerThree 0.5}{$A\otimes B$}
+            \tnmark[form=label, label pos=s]{on bufferInnerFour 0.5}{$A\otimes B$}
+        \end{tenkz}
+    \end{tenkzequation}
+\end{definition}
+
+\begin{theorem}[Hermitian contraction on the original register]
+    \label{thm:physical_buffer_contraction}
+    \lean{Matrix.partialSwap_isHermitian, Equiv.partialSwap_symm,
+        Equiv.partialSwap_mul_self, Matrix.partialSwap_mul_self,
+        Matrix.partialSwap_mem_unitaryGroup, Matrix.norm_partialSwap_le_one,
+        Matrix.kronecker_self_conjTranspose_mul_self,
+        Matrix.compressedPartialSwap_isHermitian,
+        Matrix.norm_conjTranspose_mul_mul_le_of_isometry,
+        Matrix.norm_compressedPartialSwap_le_one}
+    \leanok
+    \uses{def:physical_buffer_compression}
+    The partial swap is a Hermitian unitary and has operator norm at most
+    one. Its compression $W$ is Hermitian for every $V$. If $V^\dagger V=I$,
+    then $\|W\|\le1$.
+\end{theorem}
+\begin{proof}\leanok
+    The permutation in~(\ref{eq:buffer_partial_swap}) is an involution,
+    so $F_A^\dagger=F_A$ and $F_A^2=I$.
+    Conjugate transposition of~(\ref{eq:buffer_compression}) gives
+    $W^\dagger=W$. For an isometry $V$, also $K^\dagger K=I$ and
+    $\|K\|\le1$; hence
+    $\|K^\dagger F_AK\|\le\|K\|^2\|F_A\|\le1$.
+    The norm inequalities, rather than norm equalities for unitaries,
+    cover zero-dimensional spaces as well.
+\end{proof}
+
+\begin{theorem}[Exact overlap under compression]
+    \label{thm:physical_buffer_overlap_transport}
+    \lean{Matrix.compressedPartialSwap_overlap, Matrix.star_dotProduct_compression,
+        Matrix.star_dotProduct_kronecker_compression,
+        Matrix.compressedPartialSwap_left_overlap}
+    \leanok
+    \uses{def:physical_buffer_compression}
+    Let $T$ be a reference register, $F$ a Hermitian operator on
+    $\mathcal H_T$, and $x,y\in\mathcal H_T\otimes\mathcal H_Q^{\otimes2}$.
+    Write $\widetilde x=(I_T\otimes K)x$ and
+    $\widetilde y=(I_T\otimes K)y$. Then
+    \begin{align}
+        \langle(F\otimes I)x,(I_T\otimes W)y\rangle
+        &=\langle\widetilde x,(F\otimes F_A)\widetilde y\rangle.
+        \label{eq:buffer_overlap_transport}
+    \end{align}
+    This is an equality of complex numbers. Neither normalization nor
+    an isometry hypothesis is needed.
+\end{theorem}
+\begin{proof}\leanok
+    Move the adjoint of $I_T\otimes K$ across the inner product and use
+    $F^\dagger=F$. The operators on $T$ commute with the buffer maps.
+\end{proof}
+
+\begin{theorem}[Product overlap bounds reduced purity]
+    \label{thm:physical_buffer_product_purity}
+    \lean{Matrix.norm_product_overlap_pow_four_le_purity,
+        Matrix.star_product_dotProduct_eq,
+        Matrix.norm_product_overlap_le_schmidtCoeffMatrix,
+        Matrix.norm_product_overlap_pow_four_le_purity_of_star_dotProduct_eq_one,
+        Matrix.star_doubled_dotProduct_partialSwap_eq_purity}
+    \leanok
+    For any $\chi\in\mathcal H_L\otimes\mathcal H_M$ and unit vectors
+    $a\in\mathcal H_L$, $a^{\prime}\in\mathcal H_M$, put
+    $\sigma_L=\operatorname{Tr}_M\vert\chi\rangle\langle\chi\vert$.
+    Then
+    \begin{align}
+        |\langle a\otimes a^{\prime},\chi\rangle|^4
+        &\le\operatorname{Tr}(\sigma_L^2),
+        \label{eq:buffer_fourth_power}
+    \end{align}
+    and the exact complex swap identity is
+    \begin{align}
+        \langle\chi^{\otimes2},F_L\chi^{\otimes2}\rangle
+        &=\operatorname{Tr}(\sigma_L^2).
+        \label{eq:buffer_swap_purity}
+    \end{align}
+    No normalization of $\chi$ is required.
+\end{theorem}
+\begin{proof}\leanok
+    Let $C$ be the coefficient matrix of $\chi$, so that
+    $\sigma_L=CC^\dagger$. The product overlap is
+    $\langle a,C\overline{a^{\prime}}\rangle$. Cauchy--Schwarz and the
+    operator-norm bound by the Hilbert--Schmidt norm give
+    \begin{align}
+        |\langle a,C\overline{a^{\prime}}\rangle|^4
+        &\le\|C\|^4=\|CC^\dagger\|^2
+          \le\operatorname{Tr}((CC^\dagger)^2).
+        \notag
+    \end{align}
+    Expanding both sides of~(\ref{eq:buffer_swap_purity}) in coordinates
+    yields the same four finite sums. In particular, the swap identity
+    also holds when either basis is empty. The product estimate then
+    has no unit-vector inputs; singleton factors require no separate case.
+\end{proof}
+
+\begin{definition}[Replica and purification coordinates]
+    \label{def:physical_buffer_regrouping}
+    \lean{Equiv.bipartiteRegroup, Equiv.doubledRegroup, Matrix.doubledRegroup,
+        Matrix.physicalLeftSwap, Matrix.regroupPurification}
+    \leanok
+    The regrouping $(r,c,x,y)\mapsto(r,x,c,y)$ identifies
+    $(\mathcal H_R\otimes\mathcal H_C)\otimes
+    (\mathcal H_X\otimes\mathcal H_Y)$ with
+    $(\mathcal H_R\otimes\mathcal H_X)\otimes
+    (\mathcal H_C\otimes\mathcal H_Y)$.
+    For a vector $\Omega$ on $RCQ$, write its two replicas with both
+    reference registers before both buffer registers:
+    \begin{align}
+        \Psi((r_1,c_1),(r_2,c_2);q_1,q_2)
+        &=\Omega(r_1,c_1,q_1)\Omega(r_2,c_2,q_2),\notag\\
+        \Phi((r_1,c_1),(r_2,c_2);q_1,q_2)
+        &=\Psi((r_2,c_1),(r_1,c_2);q_1,q_2).
+        \notag
+    \end{align}
+    Thus $\Psi$ is the regrouped $\Omega^{\otimes2}$ and $\Phi=F_R\Psi$;
+    both copies of $C$ and $Q$ retain their coordinates.
+\end{definition}
+
+\begin{theorem}[Regrouped compression equals purity]
+    \label{thm:physical_buffer_regrouped_purity}
+    \lean{Matrix.physicalLeftSwap_compressedPartialSwap_overlap_eq_purity,
+        Matrix.one_kronecker_mulVec_apply,
+        Matrix.doubledRegroup_one_kronecker_mulVec,
+        Matrix.star_doubledRegroup_dotProduct,
+        Matrix.star_regroupPurification_dotProduct,
+        Matrix.star_tensorPurification_dotProduct_eq_one,
+        Matrix.physicalLeftSwap_eq_mulVec,
+        Matrix.star_doubledRegroup_dotProduct_partialSwaps_eq_purity,
+        Matrix.partialSwap_kronecker_mulVec, Matrix.partialSwap_one_mulVec}
+    \leanok
+    \uses{def:physical_buffer_regrouping,thm:physical_buffer_overlap_transport,
+        thm:physical_buffer_product_purity}
+    Let $V:\mathcal H_Q\to\mathcal H_X\otimes\mathcal H_Y$ be any linear
+    map, let $\chi=(I_{RC}\otimes V)\Omega$, and view $\chi$ across
+    $RX\mid CY$. Put $\sigma=\operatorname{Tr}_{CY}
+    \vert\chi\rangle\langle\chi\vert$ and use
+    $W=(V\otimes V)^\dagger F_X(V\otimes V)$. Then
+    \begin{align}
+        \langle\Phi,(I\otimes W)\Psi\rangle
+        &=\langle\chi^{\otimes2},F_RF_X\chi^{\otimes2}\rangle
+         =\operatorname{Tr}(\sigma^2).
+        \label{eq:buffer_regrouped_purity}
+    \end{align}
+    Regrouping preserves inner products, $\|\Psi\|^2=\|\Omega\|^4$, and
+    a tensor product of two unit purifications is again a unit vector.
+\end{theorem}
+\begin{proof}\leanok
+    The buffer action has coordinates
+    $\chi(r,c,x,y)=\sum_q V(x,y;q)\Omega(r,c,q)$.
+    Expanding the two independent sums shows that applying $V$ in each
+    replica commutes with duplication and regrouping. The two swaps act
+    independently on $R$ and $X$, while the identity fixes $C$ and $Y$;
+    together they are the swap of the $RX$ factors.
+    Apply~(\ref{eq:buffer_overlap_transport}) and
+    (\ref{eq:buffer_swap_purity}). Reindexing finite sums proves inner-product
+    invariance; factoring the two norm sums proves both normalization identities.
+\end{proof}
+
+\begin{theorem}[Controlled physical-buffer overlap]
+    \label{thm:physical_buffer_controlled_overlap}
+    \lean{Matrix.exists_hermitian_contraction_physicalBuffer_overlap,
+        Matrix.exp_neg_half_le_re_overlap_of_norm_sub_le,
+        Matrix.exists_isIsometry_norm_sub_tensorPurification_le}
+    \leanok
+    \uses{thm:physical_buffer_contraction,
+        thm:physical_buffer_overlap_transport,thm:physical_buffer_product_purity,
+        thm:physical_buffer_regrouped_purity}
+    Let $\Omega\in\mathcal H_R\otimes\mathcal H_C\otimes\mathcal H_Q$
+    be normalized, and let $\rho_{RC}$ be its reduced state, with marginals
+    $\rho_R,\rho_C$.
+    Suppose $b\ge0$ and
+    $D(\rho_{RC}\Vert\rho_R\otimes\rho_C)\le b$.
+    Set $\Psi=\Omega^{\otimes2}$ and $\Phi=F_R\Psi$, grouping the two
+    $RC$ registers before the two $Q$ registers.
+    There exist a Hermitian operator $W$ on the original doubled buffer
+    $\mathcal H_Q^{\otimes2}$ with $\|W\|\le1$ and a real number $z$ such that
+    \begin{align}
+        \langle\Phi,(I_{(RC)^{\otimes2}}\otimes W)\Psi\rangle
+        &=z\ge e^{-2b}.
+        \label{eq:buffer_controlled_overlap}
+    \end{align}
+    This is the physical-buffer overlap construction in
+    \cite{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    The purification-splitting estimate gives an isometry
+    $V:\mathcal H_Q\to\mathcal H_{b_R}\otimes\mathcal H_{b_C}$ and
+    normalized purifications $a_{Rb_R}$, $a^{\prime}_{Cb_C}$ such that, for
+    $\widetilde\Omega=(I_{RC}\otimes V)\Omega$,
+    \begin{align}
+        \|\widetilde\Omega-a\otimes a^{\prime}\|
+        &\le\sqrt{2(1-e^{-b/2})}.
+        \label{eq:buffer_split_distance}
+    \end{align}
+    Both vectors in~(\ref{eq:buffer_split_distance}) have norm one.
+    Expanding their squared distance therefore gives
+    $\operatorname{Re}\langle a\otimes a^{\prime},\widetilde\Omega\rangle
+    \ge e^{-b/2}$, and hence the same lower bound for its modulus.
+    Regroup across $Rb_R\mid Cb_C$ and put
+    $\sigma=\operatorname{Tr}_{Cb_C}
+        \vert\widetilde\Omega\rangle\langle\widetilde\Omega\vert$.
+    By~(\ref{eq:buffer_fourth_power}),
+    \begin{align}
+        \operatorname{Tr}(\sigma^2)
+        &\ge|\langle a\otimes a^{\prime},\widetilde\Omega\rangle|^4
+         \ge(e^{-b/2})^4=e^{-2b}.
+        \notag
+    \end{align}
+    Use~(\ref{eq:buffer_compression}) with $A=b_R$, $B=b_C$.
+    Theorem~\ref{thm:physical_buffer_contraction} makes $W$ a Hermitian
+    contraction. Combining~(\ref{eq:buffer_overlap_transport}) with
+    (\ref{eq:buffer_swap_purity}) gives
+    \begin{align}
+        \langle\Phi,(I\otimes W)\Psi\rangle
+        &=\langle\widetilde\Omega^{\otimes2},
+             F_RF_{b_R}\widetilde\Omega^{\otimes2}\rangle
+         =\operatorname{Tr}(\sigma^2).
+        \notag
+    \end{align}
+    The trace is real because $\sigma$ is Hermitian. Taking
+    $z=\operatorname{Tr}(\sigma^2)$ proves
+    (\ref{eq:buffer_controlled_overlap}). The auxiliary factors occur
+    only inside the construction of $W$.
+\end{proof}
+
+% Formalization status: all three production modules pass native builds and
+% strict warning-as-error checks; all 42 public declarations pass the axiom audit.
+% Checked status was confirmed by the parent at source checkpoint e903153.
+% Source: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
+% build/sections/02-information.tex, lines 355--424.
+% Uhlmann/purification splitting are reused from QICLean #558.
+% Scope stops before spectral filtering, spatial localization, polar reset,
+% or a regional entropy bound. No source-independent physical-locality claim.

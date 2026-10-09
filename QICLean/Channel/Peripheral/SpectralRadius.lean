@@ -244,7 +244,7 @@ theorem spectralRadius_le_of_forall_eigenvalue_nnnorm_le
     spectralRadius ℂ (Module.End.toContinuousLinearMap V E) ≤ c := by
   have hSpec : spectrum ℂ (Module.End.toContinuousLinearMap V E) = spectrum ℂ E :=
     AlgEquiv.spectrum_eq (Module.End.toContinuousLinearMap V) E
-  rw [spectralRadius]
+  rw [spectralRadius_eq_of_unital]
   refine iSup₂_le fun μ hμ ↦ ?_
   have hμE : μ ∈ spectrum ℂ E := hSpec ▸ hμ
   have hEig : Module.End.HasEigenvalue E μ := Module.End.hasEigenvalue_iff_mem_spectrum.mpr hμE
@@ -291,7 +291,7 @@ private theorem spectralRadius_eq_one_of_eigenvalue_bounds
     have hOneSpec : (1 : ℂ) ∈ spectrum ℂ (Module.End.toContinuousLinearMap V E) := by
       rw [hSpec]
       exact Module.End.hasEigenvalue_iff_mem_spectrum.mp hOne
-    rw [spectralRadius]
+    rw [spectralRadius_eq_of_unital]
     simpa using (@le_iSup₂ ENNReal ℂ
       (· ∈ spectrum ℂ (Module.End.toContinuousLinearMap V E)) _
       (fun μ _ ↦ (‖μ‖₊ : ENNReal)) 1 hOneSpec)
