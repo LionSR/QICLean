@@ -33,7 +33,9 @@ theorem surprisalMoment_pi {n : Type*} [Fintype n]
       surprisalMoment p u ^ k := by
   unfold surprisalMoment
   trans ∑ x : Fin k → n, ∏ j, p (x j) * Real.exp (u * -Real.log (p (x j)))
-  · done
-  done
+  · refine Finset.sum_congr rfl fun x _ ↦ ?_
+    done
+  · simpa only [Finset.prod_const, Finset.card_univ, Fintype.card_fin] using
+      (Fintype.prod_sum (fun (_ : Fin k) i ↦ p i * Real.exp (u * -Real.log (p i)))).symm
 
 end Entropy
