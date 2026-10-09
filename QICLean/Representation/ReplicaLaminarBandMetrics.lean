@@ -276,7 +276,7 @@ theorem replicaMetric_factors_symProj {t : ℝ} (ht : 0 ≤ t) (k : ℕ)
       labelObservable (subsystemPerm k ι Z) (fun l ↦ (w l)⁻¹) :=
     labelObservable_inv _ (fun l ↦ (replicaLabelWeight_pos ι ht l).ne')
   have hc (Z : Finset F) : Commute (W Z) Pe := by
-    simpa only [MonoidHom.comp_id, subsystemPerm_univ] using
+    simpa only [MonoidHom.comp_id, subsystemPerm_univ, W, Pe, w, replicaMetric] using
       commute_subgroup_labelObservable_symProj_of_subset ι
         (MonoidHom.id (Equiv.Perm (Fin k))) Z Finset.univ (Finset.subset_univ Z) w
   have hci (Z : Finset F) : Commute (W Z)⁻¹ Pe := by
