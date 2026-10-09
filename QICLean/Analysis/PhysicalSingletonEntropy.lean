@@ -22,7 +22,7 @@ September 24, 2026, `07-comparators.tex`, lines 550--590, revision
 
 noncomputable section
 open TensorPower
-open scoped BigOperators Matrix
+open scoped BigOperators Matrix ComplexOrder
 
 namespace Matrix
 
