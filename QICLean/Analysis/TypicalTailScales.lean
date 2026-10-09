@@ -156,7 +156,7 @@ private theorem eventually_log_pow_six_le_rpow :
     (by norm_num : 0 < (1 : ℝ) / 20)).bound zero_lt_one
   filter_upwards [h, eventually_ge_atTop (0 : ℝ)] with n hn hn0
   exact (le_abs_self _).trans (by
-    simpa only [Real.rpow_natCast, Real.norm_eq_abs,
+    simpa only [Real.rpow_ofNat, Real.norm_eq_abs,
       abs_of_nonneg (Real.rpow_nonneg hn0 _), one_mul] using hn)
 
 /-- At width `n^(3/5)`, the marginal-tail expression is eventually at most
