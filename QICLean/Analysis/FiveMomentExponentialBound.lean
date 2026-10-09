@@ -34,7 +34,7 @@ theorem prod_five_rpow_le_common_exp
   calc
     (∏ i, M i ^ (1 / 5 : ℝ)) ≤
         ∏ i, c ^ (1 / 5 : ℝ) * exp (A i * (1 / 5 : ℝ)) := by
-      apply Finset.prod_le_prod
+      apply Finset.prod_le_prod₀
       · intro i _
         exact rpow_nonneg (hM i) _
       · intro i _

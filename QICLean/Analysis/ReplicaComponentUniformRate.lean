@@ -77,7 +77,7 @@ theorem replica_component_prefactor_le_uniform
     rpow_def_of_pos (by positivity : 0 < (k : ℝ) + 2) Λ]
   simp only [mul_assoc, ← exp_add]
   exact mul_le_mul_of_nonneg_left (exp_le_exp.mpr (by
-    simpa only [sub_eq_add_neg, neg_mul, add_assoc] using hexponent))
+    simpa only [sub_eq_add_neg, neg_mul, add_assoc, mul_assoc] using hexponent))
     (rpow_nonneg (by positivity : 0 ≤ (k : ℝ) + 2) C)
 
 end Real
