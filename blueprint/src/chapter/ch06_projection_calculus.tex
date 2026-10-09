@@ -4,6 +4,7 @@
 \begin{theorem}[Functional calculus of an affine projection]
     \label{thm:area_law_affine_projection_calculus}
     \lean{Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem}
+    \leanok
     Let $P$ be an orthogonal projection on a finite-dimensional complex
     Hilbert space. For arbitrary $b,d\in\mathbb R$ and an arbitrary
     function $f:\mathbb R\to\mathbb R$,
@@ -18,7 +19,7 @@
     \cite[Section~7, lines~603--640]{OpenAI2026AreaLaw}.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{lem:orthogonal_resolution_cfc}
     The projections $I-P,P$ are orthogonal and sum to $I$. Apply
     Lemma~\ref{lem:orthogonal_resolution_cfc} to this resolution with scalar
