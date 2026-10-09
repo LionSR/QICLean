@@ -65,9 +65,8 @@ private theorem singletonDensity_eq_reducedPure_of_coordinates
     physicalSingletonDensity ι (Ω ∘ e.symm) j =
       (FiniteProduct.reducedPure β (WithLp.toLp 2 Ω) T).submatrix a.symm a.symm := by
   have he : e.trans (physicalSingletonEquiv ι j) =
-      (FiniteProduct.splitEquiv β T).trans (a.prodCongr b) := by
-    ext x
-    exact hcoords x
+      (FiniteProduct.splitEquiv β T).trans (a.prodCongr b) :=
+    Equiv.ext hcoords
   let M := (vecMulVec Ω (star Ω)).submatrix
     (FiniteProduct.splitEquiv β T).symm (FiniteProduct.splitEquiv β T).symm
   calc
