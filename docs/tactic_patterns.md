@@ -604,3 +604,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the actual scalar goal without a new theorem, tactic, or larger limit.
 - **Caveat:** First prove the actual coordinate equivalence and reduce the
   entries. The scalar identity supplies no permutation covariance itself.
+### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
+
+- **Pattern:** Transport an eventual Schur projection-mass bound through the
+  actual exterior coordinate isometry, retaining the same label sequence.
+- **Seen:** `Representation/CompressedTypicalLabelSequence.lean` and
+  `Representation/SchmidtBellCommonCutoffs.lean`; two occurrences in two files.
+- **Abstraction:** Both use
+  `TensorPower.norm_sq_labelProj_compressedTypicalSite_prod`, followed by
+  reciprocal and natural-power coercion identities. A third independent use
+  should supply a helper for the eventual inequality.
+- **Caveats:** The mass belongs to the normalized selected state before any
+  common regional cutoff. It is not a conditional mass after projecting,
+  and no second label selection is made.

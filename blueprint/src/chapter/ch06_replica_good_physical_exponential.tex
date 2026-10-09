@@ -1,0 +1,58 @@
+\section{The physical deficit in the actual good-copy density}
+\label{sec:replica_good_physical_exponential}
+
+\begin{theorem}[Removing the physical deficit]
+\label{thm:replica_good_physical_exponential_removal}
+\lean{Matrix.trace_replicaGoodConfigurationMarginal_exp_merge_sub_physical_le}
+Let $Q,Y,V,C,R$ be finite coordinate sets, let $\Omega$ be a unit vector
+on $QYV$, and let $u$ be a vector on $k$ physical copies and $k$ copies
+of each auxiliary space. For $B\subseteq\{0,\ldots,k-1\}$, write
+$m=|B^c|$ and let $\rho_G$ be the actual five-factor good-copy density
+of $(R_B\otimes I)u$. On the $m$ good copies, put
+\begin{align*}
+ D_C&=F_Q+F_C-F_{QC}, &
+ D_R&=F_V+F_R-F_{VR}, &
+ G&=F_Q+F_V-F_Y.
+\end{align*}
+For every $a\geq0$,
+\begin{align*}
+ \operatorname{Re}\operatorname{Tr}\bigl(\rho_G e^{a(D_C+D_R-G)}\bigr)
+ \leq\operatorname{Re}\operatorname{Tr}\bigl(\rho_G e^{a(D_C+D_R)}\bigr).
+\end{align*}
+The vector $u$ need not be symmetric or normalized. This is the
+physical spectral restriction used in
+\cite[Section~8, lines~501--555]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{thm:supported_trace_exponential_drop,thm:replica_good_configuration_pair_marginal,thm:replica_good_configuration_support,thm:physical-label-projection,thm:physical-label-merge-commutation}
+The physical symmetrizer fixes $\rho_G$, and its range is contained
+in the nonnegative spectral subspace of $G$. Thus, for
+$P=\mathbf1_{[0,\infty)}(G)$, one has $P\rho_G=\rho_G$.
+The nested and disjoint permutation actions imply that $G$ commutes
+with $D_C+D_R$. Apply the exponential comparison for a supported
+positive trace weight to these two Hermitian matrices.
+\end{proof}
+
+\begin{theorem}[The rough good-copy estimate]
+\label{thm:replica_good_physical_exponential_bound}
+\lean{Matrix.replicaGoodConfigurationMarginal_exp_merge_sub_physical_le}
+Under the preceding hypotheses, suppose that $u$ is fixed by simultaneous
+permutations of the physical and both auxiliary copies. Let
+$w=(R_B\otimes I)u$, and write $d_X=|X|$ for each coordinate set.
+If $a\geq0$ and $2a\leq1$, then
+\begin{align*}
+ \operatorname{Re}\operatorname{Tr}\bigl(\rho_G e^{a(D_C+D_R-G)}\bigr)
+ \leq
+ \frac{(m+1)^{(d_Qd_C)^2}+(m+1)^{(d_Vd_R)^2}}{2}\,\|w\|^2.
+\end{align*}
+The component $w$ may vanish. No normalization of $u$ or $w$ is
+required, and the conclusion includes $m=0$. This is the rough
+good-copy moment estimate in
+\cite[Section~8, lines~520--555]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{thm:replica_good_physical_exponential_removal,thm:replica_good_configuration_merge_moment_bound}
+Remove the physical deficit by the preceding theorem, and apply the
+two-merge moment estimate to the same actual good-copy density.
+Its mass is the squared norm of the same component $w$.
+\end{proof}

@@ -1,0 +1,70 @@
+\section{The paired merge operators in the good-copy density}
+\label{sec:replica_good_configuration_merge_transport}
+
+Retain the order $Q,Y,V,C,R$ of the five factors, and let $m$ be the
+number of good copies. For a set $S$ of factors, write $L_S(f)$ for
+the central label observable with real coefficients $f(\lambda)$,
+and put $F_S=L_S(\lambda\mapsto\log d_\lambda)$. Let $e$ be the
+regrouping of Definition~\ref{def:five_factor_pair_middle_equiv}.
+For each pair, denote its separate and simultaneous copy actions by
+$\phi_L,\phi_R,\phi_B$. These are the actual actions in
+\cite[Section~8, lines~501--549]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Transport of the six label observables]
+\label{thm:five_factor_pair_middle_label_observable}
+\lean{TensorPower.fiveFactorPairMiddle_labelObservable}
+For every real function $f$ on the irreducible labels, the observables
+of $\{Q\},\{C\},\{Q,C\}$, expressed in the coordinates $e$, are
+respectively
+\begin{align*}
+ L_{\phi_L^{QC}}(f)\otimes I_{VR}\otimes I_Y,\quad
+ L_{\phi_R^{QC}}(f)\otimes I_{VR}\otimes I_Y,\quad
+ L_{\phi_B^{QC}}(f)\otimes I_{VR}\otimes I_Y.
+\end{align*}
+Those of $\{V\},\{R\},\{V,R\}$ are respectively
+\begin{align*}
+ I_{QC}\otimes L_{\phi_L^{VR}}(f)\otimes I_Y,\quad
+ I_{QC}\otimes L_{\phi_R^{VR}}(f)\otimes I_Y,\quad
+ I_{QC}\otimes L_{\phi_B^{VR}}(f)\otimes I_Y.
+\end{align*}
+All spaces in these formulas comprise the same $m$ good copies.
+\end{theorem}
+\begin{proof}
+\uses{def:five_factor_pair_middle_equiv,thm:group_algebra_product_coordinates}
+The coordinate map intertwines each subsystem permutation with the
+specified action on its pair. Extend these identities linearly to the
+group algebra and apply them to the central label observables.
+\end{proof}
+
+\begin{theorem}[The two merge deficits]
+\label{thm:five_factor_pair_middle_merge_deficits}
+\lean{TensorPower.fiveFactorPairMiddle_mergeDeficits}
+Set $\Delta_{QC}=F_Q+F_C-F_{QC}$ and
+$\Delta_{VR}=F_V+F_R-F_{VR}$. Let $D_{QC}$ and $D_{VR}$ be the
+corresponding paired-copy deficits, each extended by the identity on
+the other pair. In the coordinates $e$,
+\begin{align*}
+ (\Delta_{QC})_e=D_{QC}\otimes I_Y,
+ \qquad (\Delta_{VR})_e=D_{VR}\otimes I_Y.
+\end{align*}
+\end{theorem}
+\begin{proof}
+\uses{thm:five_factor_pair_middle_label_observable,def:pair_merge_deficit}
+Take $f(\lambda)=\log d_\lambda$ and subtract the simultaneous-action
+observable from the sum of the two separate-action observables.
+\end{proof}
+
+\begin{theorem}[The merge exponential in paired coordinates]
+\label{thm:five_factor_pair_middle_merge_exponential}
+\lean{TensorPower.fiveFactorPairMiddle_exp_sum_mergeDeficit}
+For every real $a$,
+\begin{align*}
+ \bigl(e^{a(\Delta_{QC}+\Delta_{VR})}\bigr)_e
+ =e^{a(D_{QC}+D_{VR})}\otimes I_Y.
+\end{align*}
+\end{theorem}
+\begin{proof}
+\uses{thm:five_factor_pair_middle_merge_deficits}
+The matrix exponential respects a coordinate permutation and adjoining
+an identity factor.
+\end{proof}

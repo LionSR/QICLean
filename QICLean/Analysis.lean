@@ -45,10 +45,12 @@ import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
+import QICLean.Analysis.ExponentialPolynomialAbsorption
 import QICLean.Analysis.FiniteCoordinateNowosad
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
+import QICLean.Analysis.FiniteExponentialRetainedMass
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.FiveFactorAuxiliaryCoordinates
@@ -132,9 +134,13 @@ import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
 import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
 import QICLean.Analysis.ReplicaGoodConfigurationDensity
 import QICLean.Analysis.ReplicaGoodConfigurationExpectation
+import QICLean.Analysis.ReplicaGoodConfigurationMergeMoment
+import QICLean.Analysis.ReplicaGoodConfigurationMergeTransport
+import QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
 import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
+import QICLean.Analysis.ReplicaGoodPhysicalExponential
 import QICLean.Analysis.ReplicaGoodPhysicalSupport
 import QICLean.Analysis.ReplicaJointAuxiliaryExponential
 import QICLean.Analysis.ReplicaJointDensity
@@ -171,6 +177,7 @@ import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
+import QICLean.Analysis.SpectralExponentialDrop
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
@@ -190,6 +197,7 @@ import QICLean.Analysis.SupportCompression
 import QICLean.Analysis.SupportInverseSandwich
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
+import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
