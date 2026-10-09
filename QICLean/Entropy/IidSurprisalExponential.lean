@@ -35,6 +35,7 @@ theorem IsHermitian.exp_smul_sub_smul_one_eq_cfc
     NormedSpace.exp ((u : ℂ) • (A - (s : ℂ) • 1)) =
       cfc (fun x : ℝ ↦ Real.exp (u * (x - s))) A := by
   simp only [Complex.coe_smul]
+  rw [cfc_comp' Real.exp (fun x : ℝ ↦ u * (x - s)) A (ha := hA.isSelfAdjoint)]
   done
 
 /-- The actual centered tensor-power surprisal moment is the power of
@@ -47,6 +48,8 @@ theorem PosSemidef.re_trace_finKronecker_exp_centered_surprisal
     (ρk * NormedSpace.exp ((u : ℂ) • (-CFC.log ρk - (s : ℂ) • 1))).trace.re =
       Real.exp (-u * s) * Entropy.surprisalMoment hρ.isHermitian.eigenvalues u ^ k := by
   intro ρk
+  rw [(show (-CFC.log ρk).IsHermitian from IsSelfAdjoint.log.neg).exp_smul_sub_smul_one_eq_cfc,
+    hρ.re_trace_finKronecker_mul_cfc_surprisal k (fun x ↦ Real.exp (u * (x - s)))]
   done
 
 end Matrix
