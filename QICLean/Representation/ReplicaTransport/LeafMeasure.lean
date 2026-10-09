@@ -74,6 +74,7 @@ private def leafUnitaryState
   traceAdjointMap ((D.tree (projIcc (0 : ℝ) 1 zero_le_one p)).leafMap
     (D.input n t k) j).toLinearMap (vecMulVec (W *ᵥ v) (star (W *ᵥ v)))
 
+omit [∀ v, NeZero (n v)] in
 private theorem continuous_leafUnitaryState :
     Continuous (D.leafUnitaryState n t k pre p j) := by
   let Φ := traceAdjointMap ((D.tree (projIcc (0 : ℝ) 1 zero_le_one p)).leafMap
@@ -95,6 +96,7 @@ private def leafUnitaryPath (u : ℝ) : unitaryGroup (Config k fun v => Fin (n v
     Matrix.mem_unitaryGroup_iff'.mpr
       (Matrix.Transport.conjTranspose_imagPow_mul_imagPow _ _)⟩
 
+omit [DecidableEq H] [∀ h, DecidableEq (C h)] [∀ v, NeZero (n v)] in
 private theorem continuous_leafUnitaryPath : Continuous (D.leafUnitaryPath n t k p) :=
   ((continuous_hermitianUnitaryPath (CFC.log (D.rootPath n t k p))).comp
     continuous_neg).subtype_mk _
@@ -181,9 +183,13 @@ theorem integral_transportLeafMeasure (hD : D.IsAdmissible) (ht : 0 ≤ t)
         realCoherentIntegral k (base n) (D.state n t k pre p j u) f := by
   have hs : Continuous fun θ : CoherentSphere (SiteConfig n) => f (fun x => θ.1 x) :=
     hf.comp continuous_coherentSphere_coe
-  rw [transportLeafMeasure, integral_map_of_stronglyMeasurable
-    ((continuous_coherentSphereMap (base n)).comp continuous_snd).measurable
-    hs.stronglyMeasurable]
+  have hmap : Measurable (fun z : ℝ × unitaryGroup (SiteConfig n) ℂ =>
+      coherentSphereMap (base n) z.2) := by
+    simpa only [Function.comp_def] using
+      (continuous_coherentSphereMap (base n)).measurable.comp
+        (measurable_snd : Measurable
+          (Prod.snd : ℝ × unitaryGroup (SiteConfig n) ℂ → unitaryGroup (SiteConfig n) ℂ))
+  rw [transportLeafMeasure, integral_map_of_stronglyMeasurable hmap hs.stronglyMeasurable]
   rw [integral_withDensity_eq_integral_toReal_smul
     (D.measurable_transportLeafDensity n t k pre p j).ennreal_ofReal
     (Filter.Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]
@@ -199,6 +205,7 @@ theorem integral_transportLeafMeasure (hD : D.IsAdmissible) (ht : 0 ≤ t)
 theorem state_eq_zero_of_weight_eq_zero
     (hw : (D.tree (projIcc (0 : ℝ) 1 zero_le_one p)).weight j = 0) (u : ℝ) :
     D.state n t k pre p j u = 0 := by
+  ext a b
   simp [state, Matrix.Transport.transportState, MeanTree.leafMap, normalizedDerivMap,
     hw, traceAdjointMap]
 
