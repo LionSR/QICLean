@@ -85,7 +85,7 @@ example : ∃ c₀ : ℝ, 0 < c₀ ∧
   intro a ℓ ha hℓ haℓ
   let n : Unit → ℕ := fun _ => 1
   let E : EnergyTerms Unit n Empty :=
-    { term := fun i => nomatch i, support := fun i => nomatch i }
+    { term := Empty.elim, support := Empty.elim }
   let D : (j : Empty) → TransportData Unit 0 Empty (fun _ => Empty) := fun j => nomatch j
   obtain ⟨β, r, Cβ, hCβ, hβ0, hr0, hβ, hr, _⟩ := h n D E
     (fun j => nomatch j) (fun i => nomatch i) (fun i => nomatch i)
