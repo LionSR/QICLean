@@ -50,7 +50,8 @@ private theorem trace_pairMiddle_exp_of_reindex
       (fiveFactorPairMiddleEquiv ι Bᶜ.card).symm =
         NormedSpace.exp ((a : ℂ) • H) ⊗ₖ
           (1 : Matrix (Fin Bᶜ.card → ι 1) (Fin Bᶜ.card → ι 1) ℂ) := by
-    rw [← reindex_apply, reindex_exp, reindex_apply, submatrix_smul, hA,
+    rw [← reindex_apply, reindex_exp, reindex_apply, submatrix_smul,
+      Pi.smul_apply, Pi.smul_apply, hA,
       ← smul_kronecker, exp_kronecker_one]
   have h := trace_replicaGoodConfigurationMarginal_pairMiddle_mul ι Ω k B u
     (NormedSpace.exp ((a : ℂ) • H))

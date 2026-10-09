@@ -74,6 +74,11 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   theorem transports each bound by the existing paired-coordinate equivalence.
 - **Caveat:** The same actual excitation component occurs throughout, including
   zero mass. No normalized auxiliary marginal or nonvanishing assumption is added.
+- **Coordinate simplification:** As in the existing paired exponential transport,
+  use `Matrix.submatrix_smul` followed by `Pi.smul_apply` at both coordinate
+  arguments. The first equality concerns a function of the two coordinate maps;
+  reducing its applications exposes the actual transported matrix. This reuses
+  the existing Mathlib statements and needs no new tactic.
 
 
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
