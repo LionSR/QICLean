@@ -88,7 +88,7 @@ private theorem physicalSingletonCopies_intertwine (ι : Fin 5 → Type*)
     · funext r l
       have hne : l.1.castAdd 2 ≠ j.castAdd 2 := by
         intro h
-        exact l.2 (Fin.ext (congrArg Fin.val h))
+        exact l.2 (Fin.castAdd_inj.mp h)
       simp only [subsystemPerm_apply, Finset.mem_singleton, hne, ite_false]
   · have h3 : (3 : Fin 5) ≠ j.castAdd 2 := by
       intro h
