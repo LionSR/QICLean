@@ -72,6 +72,9 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
   have hPZ : Pe * Z = Z := by
     dsimp only [Pe]
     rw [← hZZ, Matrix.mul_assoc, hZ, Matrix.mul_one]
+  have hrecover : Z *ᵥ (Zᴴ *ᵥ ξ) = ξ :=
+    (Matrix.mulVec_mulVec ξ.ofLp Z Zᴴ).trans
+      ((congrArg (fun H ↦ H *ᵥ ξ.ofLp) hZZ).trans hPξ)
   done
 
 end TensorPower
