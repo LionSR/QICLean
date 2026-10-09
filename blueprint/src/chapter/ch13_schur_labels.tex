@@ -174,6 +174,7 @@ lemma~\cite[Lemma 6.1]{OpenAI2026AreaLaw}.
 \begin{theorem}[Commutation after restricting the copy permutations]
     \label{thm:subgroup_subsystem_label_commutation}
     \lean{TensorPower.commute_subgroup_labelObservables_of_subset_or_disjoint}
+    \leanok
     \uses{thm:schur_label_commutation, lem:label_projectors}
     Let $\theta:S_m\to S_k$ be a group homomorphism, and restrict every
     subsystem copy action along $\theta$. For a real function $f$ on the
@@ -190,6 +191,7 @@ lemma~\cite[Lemma 6.1]{OpenAI2026AreaLaw}.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{thm:schur_label_commutation}
     For $Q\subseteq Q'$, factor the restricted action on $Q'$ into its
     actions on $Q$ and $Q'\setminus Q$. A central function of the first
