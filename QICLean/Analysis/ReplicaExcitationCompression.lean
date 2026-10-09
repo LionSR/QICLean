@@ -58,7 +58,7 @@ theorem PosSemidef.re_dotProduct_sum_mulVec_le_card_sum
     rw [hHGram, ← mulVec_mulVec, dotProduct_mulVec, ← star_mulVec]
     simpa only [PiLp.coe_symm_continuousLinearEquiv, RCLike.re_to_complex] using
       re_star_dotProduct_self_eq_norm_sq (R *ᵥ x)
-  simp only [hnorm, mulVec_sum, WithLp.toLp_sum]
+  simp_rw [hnorm, mulVec_sum, WithLp.toLp_sum]
   exact (pow_le_pow_left₀ (norm_nonneg _)
     (norm_sum_le (E := EuclideanSpace ℂ n) s fun i => WithLp.toLp 2 (R *ᵥ v i)) 2).trans
     (sq_sum_le_card_mul_sum_sq (s := s)
@@ -158,8 +158,8 @@ theorem compression_le_of_replicaExcitationComponent_bounds
   apply Matrix.le_iff.mpr
   apply Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hdiff
   intro x
-  apply RCLike.nonneg_iff.mpr
-  refine ⟨?_, hdiff.im_star_dotProduct_mulVec_self x⟩
+  apply Complex.nonneg_iff.mpr
+  refine ⟨?_, (hdiff.im_star_dotProduct_mulVec_self x).symm⟩
   have hPx : P *ᵥ (P *ᵥ x) = P *ᵥ x := by
     rw [mulVec_mulVec, hP.isIdempotentElem.eq]
   have hcutx : (cfc (fun r : ℝ => if r ≤ τ * k then 1 else 0)
