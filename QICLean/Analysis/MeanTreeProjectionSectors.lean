@@ -41,6 +41,7 @@ private theorem projection_sectors_mul {P : Matrix n n ℂ}
   simp only [Matrix.add_mul, Matrix.mul_add, Matrix.smul_mul, Matrix.mul_smul,
     smul_smul, hP.one_sub.isIdempotentElem.eq, hP.isIdempotentElem.eq,
     hP.mul_one_sub_self, hP.one_sub_mul_self, smul_zero, add_zero, zero_add]
+  rw [mul_comm c a, mul_comm d b]
 
 /-- Positive scalar values on two complementary orthogonal ranges define a
 positive definite operator. Used for the two-sector comparison in
