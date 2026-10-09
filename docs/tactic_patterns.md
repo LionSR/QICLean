@@ -559,3 +559,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Derive every commutation from the actual subsystem actions.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
+
+### Symmetry of an excitation component under a copy subgroup — candidate (2026-10-09)
+
+- **Pattern:** Prove that the subgroup preserves the actual excited subset,
+  apply the existing covariance of the physical excitation operator, and
+  transport the fixed-vector equation through the specified coordinate equivalence.
+- **Seen:** `Analysis/ReplicaBadCopyExponential.lean`; the covariance is already
+  provided by `Analysis/ReplicaExcitationSymmetry.lean`.
+- **Abstraction:** Reuse `replicaExcitationProjection_kronecker_mulVec_preserves_fixed`
+  and `Matrix.submatrix_mulVec_equiv`. The subset calculation is specific to
+  the good/bad enumeration. No new tactic or general covariance result is needed.
+- **Caveats:** The actual component may be zero. No component normalization,
+  ambient positivity of a signed label entropy, or commutation of the excitation
+  operator with a replica metric is introduced.
