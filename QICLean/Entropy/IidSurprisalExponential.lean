@@ -41,7 +41,8 @@ theorem IsHermitian.exp_smul_sub_smul_one_eq_cfc
     cfc_id' ℝ A hA.isSelfAdjoint,
     cfc_const s A hA.isSelfAdjoint, Algebra.algebraMap_eq_smul_one]
   exact (CFC.real_exp_eq_normedSpace_exp ((IsSelfAdjoint.all u).smul
-    (hA.isSelfAdjoint.sub ((IsSelfAdjoint.all s).smul IsSelfAdjoint.one)))).symm
+    (hA.isSelfAdjoint.sub ((IsSelfAdjoint.all s).smul
+      (IsSelfAdjoint.one (Matrix n n ℂ)))))).symm
 
 /-- The actual centered tensor-power surprisal moment is the power of
 the one-copy moment times its scalar centering factor. Singular and zero
@@ -57,6 +58,6 @@ theorem PosSemidef.re_trace_finKronecker_exp_centered_surprisal
     hρ.re_trace_finKronecker_mul_cfc_surprisal k (fun x ↦ Real.exp (u * (x - s)))]
   rw [← Entropy.surprisalMoment_pi hρ.isHermitian.eigenvalues k u]
   simp_rw [Entropy.surprisalMoment, Finset.mul_sum, mul_sub, sub_eq_add_neg, Real.exp_add]
-  done
+  simp only [neg_mul, mul_comm, mul_left_comm, mul_assoc]
 
 end Matrix
