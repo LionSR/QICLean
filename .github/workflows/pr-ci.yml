@@ -458,6 +458,7 @@ jobs:
             lake build QICLean.Analysis.FiveMomentExponentialBound QICLean.Analysis.ReplicaComponentUniformRate
             lake build QICLean.Analysis.ReplicaExcitationCompression
             lake build QICLean.Analysis.ReplicaLowDefectProjection
+            lake build QICLean.Analysis.InverseCompressionLowerPin
             lake build
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
@@ -559,6 +560,20 @@ jobs:
           for file in \
             QICLean/Analysis/ReplicaLowDefectProjection.lean \
             QICLeanTest/ReplicaLowDefectProjectionAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the noncommuting inverse-compression comparison strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/InverseCompressionLowerPin.lean \
+            QICLeanTest/InverseCompressionLowerPinAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \

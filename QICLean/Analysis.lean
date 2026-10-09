@@ -70,6 +70,7 @@ import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.IidTailThreshold
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.InvariantExponentialComparison
+import QICLean.Analysis.InverseCompressionLowerPin
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.JordanBlockAsymptotics
