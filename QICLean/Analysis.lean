@@ -22,6 +22,7 @@ import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingHermitian
+import QICLean.Analysis.CompressedInverseFloor
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ContractionChain
