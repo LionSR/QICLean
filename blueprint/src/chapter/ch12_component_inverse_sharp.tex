@@ -1,0 +1,99 @@
+\section{The sharp inverse estimate for excitation components}
+
+The sharp estimate retains the entropy difference of the original
+three physical marginals. Throughout this section, $Q,Y,V$ denote the
+physical factors and $C,R$ the auxiliary factors, with dimensions
+$d_Q,d_Y,d_V,d_C,d_R$. The bounds below are the component estimates in
+\cite[Section~8]{OpenAI2026AreaLaw}. The one-copy moment hypothesis is
+stated explicitly; its uniform derivation from the Hamiltonian is a
+separate result.
+
+\begin{theorem}[Five moments in the actual good-copy density]
+  \label{thm:actual_good_configuration_sharp_moment}
+  \lean{Matrix.replicaGoodConfigurationMarginal_exp_merge_sub_physical_sharp_le}
+  Let $\Omega$ be a unit physical vector, and let $u$ be fixed by
+  simultaneous permutations of the $k$ copies of the physical and
+  auxiliary factors. For $B\subseteq\{1,\ldots,k\}$, put $m=|B^c|$,
+  $w=(P_B(\Omega)\otimes I)u$, and let $\rho_g$ be the actual density
+  on its good-copy coordinates. Thus $\operatorname{Tr}\rho_g=\|w\|^2$.
+  Write $\rho_Q,\rho_Y,\rho_V$ for the singleton densities of $\Omega$
+  and $S_Q,S_Y,S_V$ for their entropies.
+
+  For $j\in\{Q,Y,V\}$, let $p_{j,\ell}$ be the eigenvalues of $\rho_j$
+  and define
+  \[
+    M_j(v)=\sum_\ell p_{j,\ell}\exp(-v\log p_{j,\ell}),
+  \]
+  where a zero eigenvalue contributes zero.
+  Suppose that $K,r\in\mathbb R$ satisfy
+  $\log M_j(v)\leq vS_j+Kv^2$ for every $j$ and every $|v|\leq r$.
+  Let $a\geq0$ satisfy $10a\leq r$ and $10a\leq1$.
+  Write $F(S)$ for the label entropy of the subsystem $S$ on the good
+  copies, and put
+  \begin{align}
+    D_C&=F(Q)+F(C)-F(QC),&
+    D_R&=F(V)+F(R)-F(VR),\notag\\
+    D_{\mathrm{phys}}&=F(Q)+F(V)-F(Y),&
+    \Lambda&=\frac{(d_Qd_C)^2+(d_Vd_R)^2+d_Q^2/2+d_V^2/2}{5}.
+  \end{align}
+  Then
+  \[
+    \operatorname{Re}\operatorname{Tr}
+      \bigl(\rho_g e^{a(D_C+D_R-D_{\mathrm{phys}})}\bigr)
+    \leq \|w\|^2
+      \exp\!\left[-ma(S_Q+S_V-S_Y)+25mKa^2
+        +\Lambda\log(m+1)\right].
+  \]
+  This includes $w=0$ and $m=0$.
+\end{theorem}
+\begin{proof}
+  \uses{thm:physical_merge_holder,thm:replica_good_configuration_individual_merge_moments,
+    thm:replica_good_configuration_signed_singleton_moments,thm:five_moment_common_mass}
+  Apply the five-factor trace inequality at parameter $a$. Its factors
+  are the two merge moments, the negative physical moments for $Q$ and
+  $V$, and the positive physical moment for $Y$, all at parameter $5a$.
+  Apply the separate merge bounds and the signed singleton bounds.
+  Each factor has the same mass $\|w\|^2$; the product of their fifth
+  roots retains this mass once, including when it vanishes.
+  Summing the five scalar exponents and dividing by five gives the
+  displayed exponent. The two negative moments each contribute
+  $2mK(5a)^2$, and the positive moment contributes $mK(5a)^2$;
+  their sum divided by five is $25mKa^2$.
+\end{proof}
+
+\begin{theorem}[Sharp inverse bound for the original component]
+  \label{thm:actual_component_inverse_sharp}
+  \lean{Matrix.exists_replicaExcitationComponent_inverse_sharp_le}
+  Suppose the five spaces are nonzero, and fix $t>0$.
+  There exists $C_0\geq0$, depending only on $t$ and these spaces,
+  with the following property. Use the data of the preceding theorem,
+  and suppose also that $u$ belongs to the two original whole-copy
+  auxiliary label spaces $\lambda_C,\lambda_R$.
+  Assume $20t\leq r$ and $20t\leq1$.
+  Express $w$ in five-factor coordinates as $f$ and put $q=|B|$.
+  With $W_{t,k}(S)$ denoting the replica metric, set
+  \begin{align}
+    A&=\bigl(W_{t,k}(QC)^{-1}W_{t,k}(VR)^{-1}W_{t,k}(Y)\bigr)^2,\notag\\
+    b&=\log\dim\lambda_C+\log\dim\lambda_R
+       -q(\log d_C+\log d_R)-2\log\binom{k}{q},\notag\\
+    L&=-2tm(S_Q+S_V-S_Y)+25mK(2t)^2+\Lambda\log(m+1).
+  \end{align}
+  Then
+  \[
+    \operatorname{Re}\langle f,A^{-1}f\rangle
+    \leq (k+2)^{C_0}\binom{k}{q}^{2t}e^{-2tb}e^L\|w\|^2.
+  \]
+  The constant is chosen before $k,B,\Omega,\lambda_C,\lambda_R,u,K,r$.
+  The vector $u$ and its component may be unnormalized or zero.
+\end{theorem}
+\begin{proof}
+  \uses{thm:actual_component_inverse_good_expectation,
+    thm:replica_good_configuration_exponential_expectation,
+    thm:actual_good_configuration_sharp_moment}
+  Apply the inverse-to-good-expectation comparison with its constant
+  chosen before the component data. Express the resulting quadratic
+  form as a trace in the actual good-copy density and apply the
+  preceding theorem with $a=2t$. The two restrictions on $20t$ give
+  its parameter range. Multiplication by the nonnegative comparison
+  factor yields the assertion.
+\end{proof}

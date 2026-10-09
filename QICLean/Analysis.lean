@@ -131,6 +131,7 @@ import QICLean.Analysis.ReplicaBadCopyExponential
 import QICLean.Analysis.ReplicaComponentInverseGoodExpectation
 import QICLean.Analysis.ReplicaComponentInverseRough
 import QICLean.Analysis.ReplicaComponentInverseRoughUniform
+import QICLean.Analysis.ReplicaComponentInverseSharp
 import QICLean.Analysis.ReplicaComponentMergeMoment
 import QICLean.Analysis.ReplicaComponentUniformRate
 import QICLean.Analysis.ReplicaDefect
@@ -145,6 +146,7 @@ import QICLean.Analysis.ReplicaGoodConfigurationIndividualMergeMoment
 import QICLean.Analysis.ReplicaGoodConfigurationMergeMoment
 import QICLean.Analysis.ReplicaGoodConfigurationMergeTransport
 import QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
+import QICLean.Analysis.ReplicaGoodConfigurationSharpMoment
 import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
