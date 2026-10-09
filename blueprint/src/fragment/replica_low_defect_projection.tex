@@ -1,0 +1,131 @@
+\section{The low-defect projection in the original auxiliary sectors}
+\label{sec:replica_low_defect_projection}
+
+Let $A,C,R$ be finite coordinate sets, with associated physical and
+auxiliary Hilbert spaces $\mathcal H_A,\mathcal H_C,\mathcal H_R$.
+For $k\ge0$, all operators below act on
+$\mathcal H_A^{\otimes k}\otimes
+(\mathcal H_C^{\otimes k}\otimes\mathcal H_R^{\otimes k})$.
+The coordinate sets may be empty, and a zeroth tensor power is $\mathbb C$.
+
+\begin{definition}[Simultaneous copy action]
+\label{def:replica_joint_copy_action}
+\lean{TensorPower.replicaJointCopyPerm}
+A permutation $\sigma\in S_k$ acts simultaneously on the physical
+copy register and the two auxiliary copy registers.
+\end{definition}
+
+\begin{theorem}[The simultaneous permutation matrix]
+\label{thm:replica_joint_copy_operator}
+\lean{TensorPower.permOp_replicaJointCopyPerm}
+\uses{def:replica_joint_copy_action}
+The matrix of this action is
+$U^A_\sigma\otimes(U^C_\sigma\otimes U^R_\sigma)$.
+\end{theorem}
+\begin{proof}
+Both matrices have entry one precisely when each input copy string is
+sent to its corresponding output string, and entry zero otherwise.
+\end{proof}
+
+\begin{definition}[The low-defect operator]
+\label{def:replica_low_defect_projection}
+\lean{Matrix.replicaLowDefectProjection}
+\uses{def:replica_joint_copy_action}
+For a physical vector $\Omega$, let
+$N_\Omega=\sum_{i=0}^{k-1}(I-|\Omega\rangle\langle\Omega|)_i$.
+Fix the two original auxiliary labels $\ell_C,\ell_R$ and $\tau\in\mathbb R$.
+Write $E_C,E_R$ for their whole-copy label projections, and set
+\begin{align}
+ Q&=\mathbf1_{(-\infty,\tau k]}(N_\Omega)\otimes I_{CR},\\
+ L&=I_A\otimes(E_C\otimes E_R),\\
+ P&=QLS,
+\end{align}
+where $S$ is the average of the simultaneous permutation matrices.
+Here the identity operators act on the corresponding copy registers.
+This is the low-defect construction in
+\cite[Section~8, \textup{(comparator:defect-mass)}]{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{theorem}[Orthogonality and retained conditions]
+\label{thm:replica_low_defect_projection_conditions}
+\lean{Matrix.isStarProjection_replicaLowDefectProjection,Matrix.replicaLowDefectProjection_fixed_conditions}
+\uses{def:replica_low_defect_projection}
+If $\|\Omega\|=1$, then $P$ is an orthogonal projection.
+Every vector $u$ satisfying $Pu=u$ lies in the range of $Q$, has both
+original auxiliary labels, and is fixed by every simultaneous copy
+permutation. No commutation with a replica metric is assumed.
+\end{theorem}
+\begin{proof}
+\uses{thm:replica_cfc_auxiliary_commute,lem:label_projectors,thm:replica_joint_copy_operator}
+The physical cutoff commutes with every physical copy permutation and
+acts trivially on the auxiliary registers. Each auxiliary label
+projection commutes with its copy action. Thus $Q,L,S$ are commuting
+orthogonal projections. Their product is an orthogonal projection
+whose range lies in each of their ranges. The range of $L$ lies in
+each of the two original auxiliary label sectors.
+\end{proof}
+
+\begin{theorem}[Action on the original sectors]
+\label{thm:replica_low_defect_projection_on_sector}
+\lean{Matrix.replicaLowDefectProjection_mulVec_of_sector}
+\uses{def:replica_low_defect_projection}
+For arbitrary $\Omega$, if $u$ has both original auxiliary labels and
+simultaneous copy symmetry, then $Pu=Qu$.
+\end{theorem}
+\begin{proof}
+The symmetry average and each auxiliary label projection fix $u$.
+Apply the factors of $P$ in their defining order.
+\end{proof}
+
+\begin{theorem}[Retained mass from the physical gap]
+\label{thm:replica_low_defect_projection_gap_mass}
+\lean{Matrix.replicaLowDefectProjection_gap_mass_ge}
+Suppose $\|\Omega\|=1$, $g>0$, $k>0$, $\tau>0$, and
+\begin{align}
+ H-E_0I\ge g(I-|\Omega\rangle\langle\Omega|).
+\end{align}
+For every unit vector $v$ with simultaneous copy symmetry and both
+original auxiliary labels,
+\begin{align}
+ \langle v,Pv\rangle\ge
+ 1-\frac{\langle v,(\overline H\otimes I_{CR})v\rangle-E_0}{g\tau},
+ \qquad \overline H=\frac1k\sum_{i=0}^{k-1}H_i.
+\end{align}
+This is the retained-mass estimate in
+\cite[Section~8, \textup{(comparator:defect-mass)}]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{thm:replica_low_defect_projection_on_sector,thm:replica_cutoff_mass}
+On $v$, the projection $P$ acts as the physical cutoff $Q$. The stated
+inequality is therefore the spectral first-moment bound from the
+physical gap.
+\end{proof}
+
+\begin{theorem}[Compression from component bounds]
+\label{thm:replica_low_defect_compression_from_components}
+\lean{Matrix.replicaLowDefectProjection_compression_le_of_component_bounds}
+Let $\|\Omega\|=1$, $0\le\tau\le\tfrac12$, $c\ge0$, and $H\ge0$.
+For $B\subseteq\{0,\ldots,k-1\}$, let $R_B$ be the physical projection
+onto precisely the copies in $B$ being orthogonal to $\Omega$.
+Suppose that, for every vector $u$ with simultaneous copy symmetry
+and both original auxiliary labels and every $B$ with $|B|\le\tau k$,
+the components $w_B=(R_B\otimes I_{CR})u$ satisfy
+\begin{align}
+ \langle w_B,Hw_B\rangle\le c\|w_B\|^2.
+\end{align}
+Then
+\begin{align}
+ PHP\le(k+1)e^{kh(\tau)}cP,
+\end{align}
+where $h(\tau)=-\tau\log\tau-(1-\tau)\log(1-\tau)$, with
+$0\log0=0$. The component estimate remains an explicit hypothesis;
+this is the subsequent implication used in
+\cite[Section~8, \textup{(comparator:inverse-compression)}]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{thm:replica_low_defect_projection_conditions,thm:replica_excitation_compression_bound}
+Every vector in the range of $P$ has the required cutoff, symmetry,
+and label properties. Apply the quadratic-form estimate for its sum
+of excitation components and the bound
+$(k+1)e^{kh(\tau)}$ for the number of retained subsets.
+\end{proof}
