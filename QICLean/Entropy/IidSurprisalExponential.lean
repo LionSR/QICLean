@@ -58,6 +58,6 @@ theorem PosSemidef.re_trace_finKronecker_exp_centered_surprisal
     hρ.re_trace_finKronecker_mul_cfc_surprisal k (fun x ↦ Real.exp (u * (x - s)))]
   rw [← Entropy.surprisalMoment_pi hρ.isHermitian.eigenvalues k u]
   simp_rw [Entropy.surprisalMoment, Finset.mul_sum, mul_sub, sub_eq_add_neg, Real.exp_add]
-  simp only [neg_mul, mul_comm, mul_left_comm, mul_assoc]
+  simp only [mul_neg, neg_mul, mul_comm, mul_left_comm, mul_assoc]
 
 end Matrix
