@@ -121,6 +121,7 @@ theorem exists_replicaMetric_symProj_isometric_floor
       Q * A⁻¹ * Q ≤ ((k : ℝ) + 2) ^ C • Q ∧
         ((k : ℝ) + 2) ^ (-C) • Q ≤ A :=
     hmetric k P Y F hPY hPF hYF hcover
+  change Z * Zᴴ = Q at hZZ
   have hQZ : Q * Z = Z := by
     rw [← hZZ, Matrix.mul_assoc, hZ, Matrix.mul_one]
   have hZQ : Zᴴ * Q = Zᴴ := by
