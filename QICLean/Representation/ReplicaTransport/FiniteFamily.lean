@@ -108,7 +108,7 @@ theorem transport_finite_family :
   refine ⟨fun p hp => ⟨((hpt j k pre hpre hne).1 p hp).1, hent p hp,
     fun E₀ hE₀ => ?_⟩, ?_⟩
   · exact (((hpt j k pre hpre hne).1 p hp).2.2 E₀ hE₀).trans
-      (add_le_add_left (hrR j k) _)
+      (add_le_add le_rfl (hrR j k))
   · intro p₀ p₁ h0 h01 h1
     have ht : (0 : ℝ) ≤ a / 2 := by positivity
     have hL : IntervalIntegrable
