@@ -133,5 +133,6 @@ theorem replicaLowDefectProjection_reindex_physical
       symProj (replicaJointCopyPerm B C R k) = _
   rw [hcut, hlabels, symProj_replicaJointCopyPerm_reindex_physical e k,
     Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]
+  rfl
 
 end Matrix
