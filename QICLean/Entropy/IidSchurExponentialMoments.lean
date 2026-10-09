@@ -66,6 +66,14 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
     rw [hshift a, mul_smul_comm, trace_smul, Complex.smul_re, smul_eq_mul]
     exact (mul_le_mul_of_nonneg_left hcenter (Real.exp_pos _).le).trans_eq
       (Real.exp_add _ _).symm
-  done
+  simpa only [Nat.cast_pow, mul_assoc, mul_comm, mul_left_comm] using
+    (let hm := hρ.log_re_trace_finKronecker_signed_label_moments_le
+        htr hmoment k hu hur hu1
+     And.intro
+       (huncentered u (K * (k : ℝ) * u ^ 2) (Real.le_exp_of_log_le hm.1))
+       (huncentered (-u)
+         (2 * K * (k : ℝ) * u ^ 2 +
+           ((Fintype.card n : ℝ) ^ 2 / 2) * Real.log ((k : ℝ) + 1))
+         (by simpa only [Complex.ofReal_neg] using Real.le_exp_of_log_le hm.2)))
 
 end Matrix
