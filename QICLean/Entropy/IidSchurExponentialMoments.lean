@@ -43,6 +43,13 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
       Real.exp ((-u) * ((k : ℝ) * S) + (2 * (k : ℝ) * K * u ^ 2 +
         ((Fintype.card n ^ 2 : ℕ) : ℝ) / 2 * Real.log ((k : ℝ) + 1))) := by
   intro S ρk
+  have hshift (a : ℝ) :
+      NormedSpace.exp ((a : ℂ) • labelEntropy (copyPerm n k)) =
+        Real.exp (a * ((k : ℝ) * S)) •
+          NormedSpace.exp ((a : ℂ) • (labelEntropy (copyPerm n k) -
+            (((k : ℝ) * S : ℝ) : ℂ) • 1)) := by
+    rw [(posSemidef_labelEntropy (copyPerm n k)).isHermitian.exp_smul_sub_smul_one_eq_cfc]
+    done
   done
 
 end Matrix
