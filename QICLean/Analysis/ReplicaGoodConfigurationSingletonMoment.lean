@@ -192,9 +192,12 @@ theorem fiveFactorCopies_exp_labelEntropy_singleton (a : ℝ) :
     Pi.smul_apply, Pi.smul_apply, hF,
     ← smul_kronecker, exp_kronecker_one]
   congr 1
-  rw [← Pi.smul_apply, ← Pi.smul_apply, ← submatrix_smul,
-    ← reindex_apply c.symm c.symm, ← reindex_exp, reindex_apply,
-    ← smul_kronecker, exp_kronecker_one]
+  simpa only [reindex_apply, Equiv.symm_symm, submatrix_smul, Pi.smul_apply,
+    ← smul_kronecker, exp_kronecker_one] using
+    (reindex_exp c.symm ((a : ℂ) •
+      (labelEntropy (copyPerm (ι (j.castAdd 2)) m) ⊗ₖ
+        (1 : Matrix (Fin m → ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2)))
+          (Fin m → ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2))) ℂ)))).symm
 
 end TensorPower
 
