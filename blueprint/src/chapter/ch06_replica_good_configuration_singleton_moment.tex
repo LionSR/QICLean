@@ -1,0 +1,79 @@
+\section{The three original physical label moments}
+\label{sec:replica_good_configuration_singleton_moment}
+
+\begin{definition}[Separating a physical factor]
+\label{def:physical_singleton_equiv}
+\lean{TensorPower.physicalSingletonEquiv}
+\leanok
+Let the physical and auxiliary coordinate sets be finite, and let $m\geq0$ be the number of good copies.
+Write the original physical factors as $H_0=H_Q$, $H_1=H_Y$ and
+$H_2=H_V$. For $j\in\{0,1,2\}$, let
+\begin{align*}
+ e_j:H_Q\otimes H_Y\otimes H_V
+ \longrightarrow H_j\otimes\bigotimes_{l\ne j}H_l
+\end{align*}
+be the coordinate identification that places the $j$th factor first
+and retains the original labels on its complement. On $m$ copies,
+let $c_j$ apply this identification to every copy and collect the
+copies of the two factors. This is the regional decomposition used in
+\cite[Section~8, lines~550--560]{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{theorem}[The actual singleton observable]
+\label{thm:five_factor_singleton_label_observable}
+\lean{TensorPower.fiveFactorCopies_labelObservable_singleton}
+\leanok
+For every real label function $f$, express the five good factors in
+the physical--auxiliary coordinates
+$(Q_GY_GV_G),(C_GR_G)$. Then the observable $L_{\{j\}}(f)$ is
+\begin{align*}
+ c_j^{-1}\bigl(L_{j,m}(f)\otimes I_{j^c}\bigr)c_j
+ \otimes I_{C_GR_G},
+\end{align*}
+where $L_{j,m}(f)$ belongs to the original copy action on $H_j^{\otimes m}$.
+\end{theorem}
+\begin{proof}\leanok
+\uses{def:physical_singleton_equiv}
+The singleton subsystem action permutes precisely the copies of
+the distinguished coordinate and fixes its complement and both
+auxiliary registers. Extend this identity to the group algebra.
+\end{proof}
+
+\begin{theorem}[The actual singleton exponential]
+\label{thm:five_factor_singleton_label_exponential}
+\lean{TensorPower.fiveFactorCopies_exp_labelEntropy_singleton}
+\leanok
+For every real $a$, the same coordinate identification sends
+$e^{aF_{\{j\}}}$ to
+\begin{align*}
+ c_j^{-1}\bigl(e^{aF_{j,m}}\otimes I_{j^c}\bigr)c_j
+ \otimes I_{C_GR_G}.
+\end{align*}
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:five_factor_singleton_label_observable}
+Set $f(\lambda)=\log d_\lambda$ and use naturality of the matrix
+exponential under coordinate changes and adjoining identities.
+\end{proof}
+
+\begin{theorem}[Signed moments of the original physical singletons]
+\label{thm:replica_good_configuration_singleton_moment}
+\lean{Matrix.trace_replicaGoodConfigurationMarginal_exp_singleton_labelEntropy}
+\leanok
+Let $\Omega$ have norm one, let $w$ be the actual excitation component
+of an arbitrary original vector, and let $\rho_G$ be its five-factor
+good-copy density. Put
+$\rho_j=\operatorname{Tr}_{j^c}|\Omega\rangle\langle\Omega|$,
+with the partial trace taken in $e_j$ coordinates. For all
+$j\in\{0,1,2\}$ and $a\in\mathbb R$,
+\begin{align*}
+ \operatorname{Tr}\bigl(\rho_G e^{aF_{\{j\}}}\bigr)
+ =\|w\|^2\operatorname{Tr}\bigl(\rho_j^{\otimes m}e^{aF_{j,m}}\bigr).
+\end{align*}
+No permutation invariance or nonvanishing of the component is required.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:five_factor_singleton_label_exponential,thm:replica_good_configuration_regional_label_moment}
+Apply the actual singleton coordinate identity, preserve the trace,
+and use the regional moment formula for $e_j$.
+\end{proof}

@@ -127,6 +127,10 @@ import QICLean.Analysis.ReplicaExcitationSymmetry
 import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
 import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
 import QICLean.Analysis.ReplicaGoodConfigurationDensity
+import QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
+import QICLean.Analysis.ReplicaGoodConfigurationProduct
+import QICLean.Analysis.ReplicaGoodConfigurationRegionalMoment
+import QICLean.Analysis.ReplicaGoodConfigurationSingletonMoment
 import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
