@@ -76,11 +76,11 @@ theorem mul_sum_log_lower_le_neg_log_norm_sq_of_projection_lower_bound
       (star v ⬝ᵥ (CFC.log ((T g).eval (A · g)) *ᵥ v)).re := by
     intro g
     apply re_dotProduct_log_eval_ge_of_projection_mass (hP g) (hb g)
-      (fun j ↦ le_add_of_nonneg_right (half_nonneg (hc j g).le))
+      (fun j ↦ le_add_of_nonneg_right (half_pos (hc j g)).le)
       _ (T g) v hv (hmass g)
     intro j
     exact Matrix.floor_pin_le (hfloor j g) (hpin j g)
-  have hsum : (∑ g, ell g - δ g * (ell g - Real.log (b g))) ≤
+  have hsum : (∑ g, (ell g - δ g * (ell g - Real.log (b g)))) ≤
       (star v ⬝ᵥ (CFC.log M *ᵥ v)).re := by
     change _ ≤ (star v ⬝ᵥ
       (CFC.log (List.ofFn fun g ↦ (T g).eval (A · g)).prod *ᵥ v)).re
