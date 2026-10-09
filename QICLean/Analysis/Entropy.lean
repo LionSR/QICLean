@@ -49,7 +49,7 @@ the basic quantum entropy infrastructure needed for MPDO / RFP applications.
 
 All results in this module are fully proved. The externally stated strong
 subadditivity theorem lives in `TNLean.Entropy.SSAEqualityCharacterization`, which is imported from
-`TNLean.lean` for CI validation. See issue #239 for the deferred proof plan.
+`TNLean.lean` for CI validation.
 
 ## Implementation notes
 

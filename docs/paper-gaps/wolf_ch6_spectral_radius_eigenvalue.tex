@@ -13,7 +13,7 @@
 
 \begin{document}
 \maketitle
-\gapnote{open-gap}{open}
+\gapnote{open-gap}{resolved}
 
 \section{Source statement}
 
@@ -123,10 +123,10 @@ The identification theorem
 (\ref{eq:wolf_ch6_spectral_radius_eigenvalue_positive_definite_identification})
 requires a positive definite eigenvector. Wolf's Theorem~6.5
 \cite{Wolf2012Quantum} must also cover reducible maps, for which a
-spectral-radius eigenvector may be singular. The irreducible case is complete;
-the unresolved step is the extension to arbitrary reducible positive maps.
+spectral-radius eigenvector may be singular. The irreducible case was proved
+first; the extension to reducible positive maps is resolved below.
 
-\section{Routes to a complete proof}
+\section{Routes considered before the resolution}
 
 A proof for general positive maps can proceed by either of the following
 routes.
@@ -148,16 +148,44 @@ Wolf's Theorem~6.3 for irreducible positive maps
 \cite{Wolf2012Quantum} is formalized. Its proof follows the lower-maximizer
 argument in Equations~(6.31)--(6.33) of Ref.~\cite{Wolf2012Quantum} and the
 positive-unital similarity argument; it does not require a separate
-pointwise Collatz--Wielandt theorem. The remaining work is exactly the
-reducible-map step described above.
+pointwise Collatz--Wielandt theorem. The reducible-map step was eventually
+handled by the regularization argument below rather than by either route.
+
+\section{Resolution}
+
+The full source statement is now formalized by
+\leanid{exists_density_eigenvector_spectralRadius}.\footnote{Formal module:
+    \doclink{QICLean/Channel/PerronFrobenius/SpectralRadiusEigenvector}.}
+For every positive linear map $T:\MN{D}\to\MN{D}$ with $D>0$ it returns a
+density matrix $X$ and a number $r\geq0$ with
+\begin{align}
+    T(X)
+        &=rX,
+    \qquad
+    \varrho(T)=r.
+    \label{eq:wolf_ch6_spectral_radius_eigenvalue_resolution}
+\end{align}
+Neither of the two routes above is needed. For $\varepsilon>0$, the
+regularized map
+\begin{align}
+    T_\varepsilon(Y)
+        &=T(Y)+\varepsilon\operatorname{tr}(Y)\frac{\one}{D}
+    \label{eq:wolf_ch6_spectral_radius_eigenvalue_regularization}
+\end{align}
+sends every density matrix to a positive definite matrix. The Brouwer theorem
+on density matrices therefore gives a positive definite density eigenvector
+$X_\varepsilon$ with eigenvalue $r_\varepsilon=\operatorname{tr}T(X_\varepsilon)+\varepsilon$.
+Since $T(X_\varepsilon)\preceq r_\varepsilon X_\varepsilon$, the upper
+Collatz--Wielandt bound gives $\varrho(T)\leq r_\varepsilon$. A convergent
+subsequence of $X_\varepsilon$ as $\varepsilon\to0$ has a density-matrix limit
+$X$ with $T(X)=rX$, where $r=\lim r_\varepsilon\geq\varrho(T)$. As $r$ is an
+eigenvalue, $r\leq\varrho(T)$.
 
 \section{Conclusion}
 
-Wolf's Theorem~6.5 \cite{Wolf2012Quantum} remains an open gap. A nonnegative
-eigenvalue with a positive semidefinite eigenvector exists for every positive
-map, and the spectral-radius identification is established for irreducible
-positive maps. The unresolved case is a reducible positive map whose
-spectral-radius eigenvector may be singular.
+Wolf's Theorem~6.5 \cite{Wolf2012Quantum} is formalized with the source's
+hypothesis set. The only convention is $D>0$, without which the matrix
+algebra has no nonzero eigenvector.
 
 \bibliographystyle{alpha}
 \bibliography{references}

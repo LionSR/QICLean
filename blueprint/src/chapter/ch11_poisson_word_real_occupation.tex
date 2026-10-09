@@ -149,9 +149,38 @@ For time integrability use the finite subset $A=I\setminus S$ in
 Lemma~\ref{lem:poisson_word_real_time_integrable}.
 \end{proof}
 
+\begin{theorem}[Expected norm of omitted chronological maps]
+\label{thm:poisson_word_expected_omission_norm}
+\lean{PoissonWord.integral_norm_sub_retained_le}
+\leanok
+\uses{thm:poisson_word_omission_norm}
+Use the notation of Theorem~\ref{thm:poisson_word_omission_norm}, with a
+finite alphabet $I$, retained subset $S$, arbitrary $x\in M$, and $T\geq0$.
+For $u\in\mathcal W_S$, let $R(u)=A(u)x$, regarding its letters as elements
+of $I$. Then
+\begin{align}
+ &\int_{\mathcal W_I}\|A(w)x-R(w_S)\|\,d\mu_{I,T}(w)\notag\\
+ &\qquad\leq\int_0^T\sum_{i\in I\setminus S}\int_{\mathcal W_S}
+ \|E_iR(u)-R(u)\|\,d\mu_{S,s}(u)\,ds.
+ \label{eq:poisson_word_expected_omission_norm}
+\end{align}
+All integrals are finite. The assertion includes an empty alphabet and
+$T=0$.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:poisson_word_omission_norm, cor:poisson_word_real_omitted_prefix,
+lem:poisson_word_bounded_real_kernel}
+Contractivity bounds both the discrepancy and each one-map defect by
+$2\|x\|$. The discrepancy is therefore integrable under the probability
+law. The omitted-position sum is dominated by $2\|x\||w|$, and hence is
+integrable by the finite first moment of word length. Integrate the
+pointwise norm bound and apply the omitted-prefix occupation formula to
+$F(u,i)=\|E_iR(u)-R(u)\|$.
+\end{proof}
+
 The probability step in \cite{OpenAI2026AreaLaw},
 \texttt{09-amplification.tex}, lines 203--209, thus has a real-integral
-form for bounded defect kernels.  The prefix-sensitive operator telescope,
-clock-process construction, propagation, and final spatial-omission
-estimate remain separate inputs.
+form for bounded defect kernels.  The chronological comparison and its expected norm bound are proved above.
+Clock-process construction, propagation, and the final spatial-omission estimate
+are treated separately.
 % Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.

@@ -12,6 +12,15 @@ import QICLean.Entropy.AuxiliaryPairEntropy
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.BufferDiscount
 import QICLean.Entropy.ClassicalMutualInformation
+import QICLean.Entropy.CompressedPhysicalRegions
+import QICLean.Entropy.CompressedSiteCoordinates
+import QICLean.Entropy.CompressedTypicalCommonBellVector
+import QICLean.Entropy.CompressedTypicalCommonRetainedMass
+import QICLean.Entropy.CompressedTypicalRegionalMarginal
+import QICLean.Entropy.CompressedTypicalRegionalTail
+import QICLean.Entropy.CompressedTypicalSiteCoordinates
+import QICLean.Entropy.CompressedTypicalSiteEntropy
+import QICLean.Entropy.CompressedTypicalSiteNorm
 import QICLean.Entropy.ConditionalEntropy
 import QICLean.Entropy.ConditionalMovement
 import QICLean.Entropy.ConditionalMovementEstimate
@@ -39,7 +48,9 @@ import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
 import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
+import QICLean.Entropy.IidSchurLabelExponential
 import QICLean.Entropy.IidSurprisal
+import QICLean.Entropy.IidSurprisalExponential
 import QICLean.Entropy.LocalLift
 import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison
@@ -64,6 +75,7 @@ import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.ProductOverlapPurity
 import QICLean.Entropy.PureTensorPower
 import QICLean.Entropy.PurificationSplitting
+import QICLean.Entropy.RegionCovariance
 import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionSplit
 import QICLean.Entropy.RegionUnion

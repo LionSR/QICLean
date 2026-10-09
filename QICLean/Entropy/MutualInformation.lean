@@ -17,7 +17,8 @@ This module exposes the bipartite mutual information of
 `TNLean.Analysis.Entropy` under the `Entropy` namespace via a
 Mathlib-style `alias` (rather than a restated `noncomputable def`), adds
 the trivial-middle nonnegativity corollary, and provides two downstream
-consequences used by the MPDO / RFP track (issues #236, #239, #785):
+consequences used for matrix product density operators and renormalization
+fixed points:
 
 * a **monotonicity** inequality under enlargement of a subsystem
   (`mutualInformation_monotone_tripartite`), which is the SSA-level
@@ -30,8 +31,8 @@ consequences used by the MPDO / RFP track (issues #236, #239, #785):
   specializes to MPDO bond-dimension hypotheses.
 
 Together with `Entropy.VonNeumann` and `Entropy.StrongSubadditivity`, it
-forms the entropy namespace used by the Simple MPDO RFP track
-(see issue #613, #236, #239, #785).
+forms the entropy namespace used for simple matrix product density operators
+at renormalization fixed points.
 
 ## Main declarations
 
