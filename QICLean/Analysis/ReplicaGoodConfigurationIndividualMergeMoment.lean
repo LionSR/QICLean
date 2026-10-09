@@ -32,6 +32,17 @@ variable (u : (Fin k → ι 0 × (ι 1 × ι 2)) ×
 local instance goodIndividualMerge_decidableEqConfig :
     DecidableEq (Config Bᶜ.card ι) := Fintype.decidablePiFintype
 
+local instance goodIndividualMerge_decidableEqCopies (j : Fin 5) :
+    DecidableEq (Fin Bᶜ.card → ι j) := Fintype.decidablePiFintype
+
+local instance goodIndividualMerge_decidableEqPair (i j : Fin 5) :
+    DecidableEq ((Fin Bᶜ.card → ι i) × (Fin Bᶜ.card → ι j)) := inferInstance
+
+local instance goodIndividualMerge_decidableEqPairMiddle :
+    DecidableEq ((((Fin Bᶜ.card → ι 0) × (Fin Bᶜ.card → ι 3)) ×
+      ((Fin Bᶜ.card → ι 2) × (Fin Bᶜ.card → ι 4))) ×
+        (Fin Bᶜ.card → ι 1)) := inferInstance
+
 private theorem trace_pairMiddle_exp_of_reindex
     (A : Matrix (Config Bᶜ.card ι) (Config Bᶜ.card ι) ℂ)
     (H : Matrix (((Fin Bᶜ.card → ι 0) × (Fin Bᶜ.card → ι 3)) ×
@@ -44,7 +55,6 @@ private theorem trace_pairMiddle_exp_of_reindex
     (replicaGoodConfigurationMarginal ι Ω k B u *
       NormedSpace.exp ((a : ℂ) • A)).trace =
       (replicaGoodPairMarginal Ω k B u * NormedSpace.exp ((a : ℂ) • H)).trace := by
-  classical
   have he : (NormedSpace.exp ((a : ℂ) • A)).submatrix
       (fiveFactorPairMiddleEquiv ι Bᶜ.card).symm
       (fiveFactorPairMiddleEquiv ι Bᶜ.card).symm =
