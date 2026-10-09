@@ -129,7 +129,7 @@ theorem fiveFactor_groupedGood_auxiliaryPair_floor
         (MonoidHom.id (Equiv.Perm (Fin k))) (IrrepLabel.centralIdem ellR)).2
   have hP : P.submatrix η.symm η.symm = Pf := by
     dsimp only [P]
-    rw [← submatrix_mul_equiv, hPC, hPR]
+    rw [← submatrix_mul_equiv _ _ η.symm η.symm η.symm, hPC, hPR]
     simp only [Pf, ← mul_kronecker_mul, one_mul, mul_one]
   have hLC := (fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep ι k (groupHom₁ e)
     (∑ ell, (Real.log ell.dim : ℂ) • IrrepLabel.centralIdem ell)).1
@@ -156,8 +156,8 @@ theorem fiveFactor_groupedGood_auxiliaryPair_floor
     (A := Fin k → ι 0 × (ι 1 × ι 2)) (C := ι 3) (R := ι 4) e ellC ellR).2.2
   have h := (Matrix.le_iff.mp hfloor).submatrix η
   apply Matrix.le_iff.mpr
-  simpa only [submatrix_sub, submatrix_smul, ← submatrix_mul_equiv,
-    hPback, hLback] using h
+  simpa only [submatrix_sub, Pi.sub_apply, submatrix_smul, Pi.smul_apply,
+    ← submatrix_mul_equiv _ _ η η η, hPback, hLback] using h
 
 /-- Both auxiliary exponentials can be removed on the intersection of the
 original whole-label subspaces while retaining the actual remaining good
@@ -303,7 +303,7 @@ theorem replicaExcitationComponent_exp_good_le_without_auxiliary
       labelProj (subsystemPerm k ι {4}) ellR).submatrix η.symm η.symm =
       (1 : Matrix (Fin k → ι 0 × (ι 1 × ι 2))
         (Fin k → ι 0 × (ι 1 × ι 2)) ℂ) ⊗ₖ (PC ⊗ₖ PR) := by
-    rw [← submatrix_mul_equiv, hC, hR]
+    rw [← submatrix_mul_equiv _ _ η.symm η.symm η.symm, hC, hR]
     simp only [PC, PR, ← mul_kronecker_mul, one_mul, mul_one]
   rw [← hP, submatrix_mulVec_equiv] at hw
   have hf : (labelProj (subsystemPerm k ι {3}) ellC *
