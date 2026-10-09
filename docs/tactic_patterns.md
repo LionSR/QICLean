@@ -11,6 +11,23 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
+### Operator norm in orthonormal coordinates — promoted (2026-10-08)
+
+- **Pattern:** Identify the matrix of a continuous linear map in finite
+  orthonormal input and output bases, then transfer its operator-norm bound.
+- **Result:** `ContinuousLinearMap.norm_toMatrix_orthonormal` in
+  `QICLean/Analysis/OrthonormalMatrixNorm.lean` gives equality of norms.
+  It reuses Mathlib's Euclidean matrix norm and invariance under composition
+  with linear isometric equivalences. Rectangular matrices and empty bases
+  require no separate cases.
+- **Consumers:** TNLean's `Word.norm_preparedMatrix_le_one`,
+  `Word.norm_freeSourceMatrix_le_one`, and the new
+  `Word.norm_physicalOutputMatrix_le_one` in `ExteriorSourceContraction`.
+- **Decision:** The third application justifies one general equality. The
+  prepared TNLean refactor removes the two older coordinate-vector proofs;
+  it will be applied together with the dependency update. No custom tactic
+  or duplicate coordinate-norm theorem is introduced.
+
 ### Joint central-label resolution — existing mathematical lemmas (2026-10-07)
 
 - **Pattern:** Form the product of commuting orthogonal resolutions, express
@@ -569,3 +586,15 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Scalar values may coincide, and projection ranges may be zero.
   Positivity needed for later logarithmic comparisons belongs to those
   comparisons, rather than this general calculation.
+
+### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
+
+- **Pattern:** Add and rescale inequalities in the matrix order, then identify
+  the resulting linear combination with the desired expression by `module`.
+- **Seen:** `Analysis/FloorPin.lean`, in `floor_pin_le` and
+  `identity_extension_floor`; two occurrences in one file.
+- **Abstraction:** The standard order lemmas and `module` suffice. A further
+  independent occurrence may justify a helper for the shared scalar identity.
+- **Caveats:** Nonnegative scalar multiplication is established before the
+  algebraic conversion. No projection or commutation assumption is needed
+  for these two additive comparisons.
