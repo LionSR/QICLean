@@ -206,7 +206,21 @@ jobs:
       - uses: leanprover/lean-action@v1
         with:
           build: false
+          use-mathlib-cache: true
           use-github-cache: false
+
+      - name: Require prebuilt Mathlib artifacts
+        run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+
+      - name: Build the sublinear lower remainder target first
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          timeout --signal=INT --kill-after=5s 300s \
+            lake build QICLean.Analysis.MeanTreeSublinearRemainder \
+            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
 
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
@@ -274,7 +288,23 @@ jobs:
           {
             lake build
             lake build lint_style
-          } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+          } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the sublinear lower remainder and its axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeSublinearRemainder.lean \
+            QICLeanTest/MeanTreeSublinearRemainderAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
 
       - name: Check compression-coordinate kernel dependencies strictly
         timeout-minutes: 2
