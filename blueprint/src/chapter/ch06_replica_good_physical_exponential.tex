@@ -4,6 +4,7 @@
 \begin{theorem}[Removing the physical deficit]
 \label{thm:replica_good_physical_exponential_removal}
 \lean{Matrix.trace_replicaGoodConfigurationMarginal_exp_merge_sub_physical_le}
+\leanok
 Let $Q,Y,V,C,R$ be finite coordinate sets, let $\Omega$ be a unit vector
 on $QYV$, and let $u$ be a vector on $k$ physical copies and $k$ copies
 of each auxiliary space. For $B\subseteq\{0,\ldots,k-1\}$, write
@@ -24,6 +25,7 @@ physical spectral restriction used in
 \cite[Section~8, lines~501--555]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:supported_trace_exponential_drop,thm:replica_good_configuration_pair_marginal,thm:replica_good_configuration_support,thm:physical-label-projection,thm:physical-label-merge-commutation}
 The physical symmetrizer fixes $\rho_G$, and its range is contained
 in the nonnegative spectral subspace of $G$. Thus, for
@@ -36,6 +38,7 @@ positive trace weight to these two Hermitian matrices.
 \begin{theorem}[The rough good-copy estimate]
 \label{thm:replica_good_physical_exponential_bound}
 \lean{Matrix.replicaGoodConfigurationMarginal_exp_merge_sub_physical_le}
+\leanok
 Under the preceding hypotheses, suppose that $u$ is fixed by simultaneous
 permutations of the physical and both auxiliary copies. Let
 $w=(R_B\otimes I)u$, and write $d_X=|X|$ for each coordinate set.
@@ -51,6 +54,7 @@ good-copy moment estimate in
 \cite[Section~8, lines~520--555]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:replica_good_physical_exponential_removal,thm:replica_good_configuration_merge_moment_bound}
 Remove the physical deficit by the preceding theorem, and apply the
 two-merge moment estimate to the same actual good-copy density.
