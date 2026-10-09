@@ -81,6 +81,7 @@ import QICLean.Representation.ReplicaSpectralLaw
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.ReplicaWholeInverse
+import QICLean.Representation.SchmidtBellCommonCutoffs
 import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelCutoff
