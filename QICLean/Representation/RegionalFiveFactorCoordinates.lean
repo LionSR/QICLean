@@ -61,7 +61,8 @@ def regionalFiveFactorSpace (Q Y : Finset V) : Fin 5 → Type u :=
 instance regionalFiveFactorSpaceFintype
     [∀ v, Fintype (β v)] [Fintype C] [Fintype R]
     (Q Y : Finset V) (f : Fin 5) : Fintype (regionalFiveFactorSpace β C R Q Y f) := by
-  fin_cases f <;> dsimp only [regionalFiveFactorSpace] <;> infer_instance
+  exact Fin.cases inferInstance (Fin.cases inferInstance (Fin.cases inferInstance
+    (Fin.cases inferInstance (Fin.cases inferInstance Fin.elim0)))) f
 
 instance regionalFiveFactorSpaceDecidableEq
     [∀ v, DecidableEq (β v)]
