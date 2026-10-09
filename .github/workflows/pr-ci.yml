@@ -96,9 +96,18 @@ on:
       - 'scripts/check_reader_facing_prose.py'
       - 'LICENSE'
   workflow_dispatch:
+    inputs:
+      mode:
+        description: 'Full verification or the fixed regional-marginal diagnostic only'
+        type: choice
+        required: false
+        default: full
+        options:
+          - full
+          - owned-proof-diagnostic
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event_name == 'workflow_dispatch' && inputs.mode == 'owned-proof-diagnostic' && 'owned-proof-diagnostic-' || '' }}${{ github.ref }}
   cancel-in-progress: true
 
 # Build-cache policy: the cache is saved only from main and restored
@@ -178,12 +187,79 @@ jobs:
               - 'docs/**/*.md'
               - 'texra-blueprint.toml'
 
+  # This fixed manual diagnostic is not full verification or a merge check.
+  # It cannot cancel a full run, and it never saves a shared build cache.
+  owned-proof-diagnostic:
+    name: 'Diagnostic only: original regional physical marginals'
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'owned-proof-diagnostic'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Restore Lean build cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.BUILD_CACHE_PATHS }}
+          key: qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          restore-keys: |
+            qiclean-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+          use-mathlib-cache: true
+          use-github-cache: false
+
+      - name: Require prebuilt Mathlib artifacts
+        run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+
+      - name: Diagnose the owned regional-marginal target
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          timeout --signal=INT --kill-after=5s 300s \
+            lake build QICLean.Analysis.RegionalPhysicalMarginals \
+            2>&1 | tee "$RUNNER_TEMP/owned-proof-diagnostic.log"
+
+      - name: Check the owned source and exact-name axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/RegionalPhysicalMarginals.lean \
+            QICLeanTest/RegionalPhysicalMarginalsAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/owned-proof-diagnostic.log"
+          done
+
+      - name: State the diagnostic scope
+        if: always()
+        run: |
+          printf '%s\n' \
+            '## Diagnostic only: original regional physical marginals' \
+            'This run checks one fixed target and its strict exact-name axiom audit.' \
+            'It does not establish full-project, inherited-regression, blueprint, import or policy verification.' \
+            'Completion still requires the normal full workflow and all other required checks.' \
+            >> "$GITHUB_STEP_SUMMARY"
+
   build:
     needs: changes
     outputs:
       compilation-time-result: ${{ steps.compilation-time.outputs.result }}
     if: |
-      !cancelled() && (
+      !cancelled() && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'owned-proof-diagnostic') && (
         github.event_name != 'pull_request' ||
         needs.changes.outputs.lean == 'true' ||
         needs.changes.outputs.blueprint == 'true'
@@ -1104,7 +1180,7 @@ jobs:
     name: Check Lean module policies
     needs: changes
     if: |
-      !cancelled() && (
+      !cancelled() && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'owned-proof-diagnostic') && (
         github.event_name != 'pull_request' ||
         needs.changes.outputs.lean == 'true' ||
         needs.changes.outputs.module_policy == 'true'
@@ -1160,7 +1236,7 @@ jobs:
   blueprint:
     name: Check blueprint compiles without errors
     needs: changes
-    if: "!cancelled() && (github.event_name != 'pull_request' || needs.changes.result == 'success')"
+    if: "!cancelled() && !(github.event_name == 'workflow_dispatch' && inputs.mode == 'owned-proof-diagnostic') && (github.event_name != 'pull_request' || needs.changes.result == 'success')"
     runs-on: ubuntu-latest
     env:
       TEX_CHANGED: ${{ github.event_name != 'pull_request' || needs.changes.outputs.blueprint == 'true' }}
