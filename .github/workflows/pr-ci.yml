@@ -432,6 +432,7 @@ jobs:
             lake build QICLean.Analysis.ProjectionQuadraticBound
             lake build QICLean.Analysis.CommutingExponentialOrder QICLean.Analysis.ProjectionCfcUpperBound QICLean.Analysis.InvariantExponentialComparison
             lake build QICLean.Representation.ReplicaGroupedInverse QICLean.Representation.ReplicaDisjointMetricPositivity
+            lake build QICLean.Analysis.FiveMomentExponentialBound QICLean.Analysis.ReplicaComponentUniformRate
             lake build
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
@@ -490,6 +491,21 @@ jobs:
             QICLean/Representation/ReplicaGroupedInverse.lean \
             QICLean/Representation/ReplicaDisjointMetricPositivity.lean \
             QICLeanTest/ReplicaGroupedInverseAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check component scalar estimates strictly
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/FiveMomentExponentialBound.lean \
+            QICLean/Analysis/ReplicaComponentUniformRate.lean \
+            QICLeanTest/ReplicaComponentScalarAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
