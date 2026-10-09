@@ -4,6 +4,7 @@
 \begin{definition}[The two groups of configurations]
 \label{def:grouped_configuration_equiv}
 \lean{TensorPower.groupedConfigurationEquiv}
+\leanok
 A fixed division $[k]\simeq[m]\sqcup[r]$ of the copies induces
 the coordinate decomposition of the full configuration space into
 the configurations on the first and second groups. All physical
@@ -13,12 +14,14 @@ and auxiliary factors use this same division.
 \begin{theorem}[Subgroup actions and label observables]
 \label{thm:grouped_configuration_label_observable}
 \lean{TensorPower.groupedConfigurationEquiv_subsystemPerm,TensorPower.groupedConfigurationEquiv_labelObservable}
+\leanok
 For finite local configuration spaces and every subsystem $S$, the copy action of the first subgroup on $S$
 becomes its usual copy action on the first $m$ copies, tensored with
 the identity on the remaining $r$ copies. The same coordinate identity
 holds for every real label observable.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{def:grouped_configuration_equiv}
 The subgroup permutes precisely its specified copies and fixes every
 other coordinate. Extend the identity from permutations to their
@@ -28,6 +31,7 @@ group algebra, and then to the central label observables.
 \begin{theorem}[Exponential transport]
 \label{thm:grouped_configuration_exponential}
 \lean{TensorPower.groupedConfigurationEquiv_exp_sum_labelEntropy}
+\leanok
 Let $S_j$ be a finite family of subsystems and let $a_j\in\mathbb R$.
 Writing $F_{S_j,G}$ for the first-subgroup label entropy on the full
 space, the same coordinates give
@@ -40,6 +44,7 @@ identity, as used in
 \cite[Section~8, lines~454--560]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:grouped_configuration_label_observable}
 Sum the coordinate identities with their specified coefficients.
 Exponentiation commutes with a change of basis and with adjoining
