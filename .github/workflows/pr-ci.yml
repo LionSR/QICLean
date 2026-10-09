@@ -212,11 +212,32 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      - name: Build the uniform regional rough lower bound
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.RegionalLowDefectLowerPin \
+            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the uniform regional rough lower bound strictly
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/RegionalPhysicalVector.lean \
+            QICLean/Analysis/RegionalLowDefectLowerPin.lean \
+            QICLeanTest/RegionalLowDefectLowerPinAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       - name: Build the original regional replica metric
         run: |
           set -eo pipefail
           lake build QICLean.Representation.RegionalReplicaMetric \
-            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check the original regional replica metric strictly
         timeout-minutes: 4
