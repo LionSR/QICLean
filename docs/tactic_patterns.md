@@ -583,14 +583,22 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   `TensorPower.fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep` in
   `QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean`, and the exponential
   transport in the separate `GroupedConfigurationTransport` contribution.
-- **Abstraction:** Reuse Mathlib's `Matrix.submatrix_add` and
-  `Matrix.submatrix_smul`, followed by `Pi.add_apply` or `Pi.smul_apply`.
+  `Matrix.PosDef.lower_pin_of_reindexed_inverse_compression` in
+  `QICLean/Analysis/IsometricLowerPin.lean` also uses subtraction and scalar
+  reindexing when transporting a positive matrix difference.
+- **Abstraction:** Reuse Mathlib's `Matrix.submatrix_add`,
+  `Matrix.submatrix_sub` and `Matrix.submatrix_smul`, followed by the
+  corresponding `Pi.add_apply`, `Pi.sub_apply` or `Pi.smul_apply`.
   The matrix lemmas are equalities of functions of the two coordinate
   maps. Their applications must reduce before a transported matrix can
   match a previously established identity. No new tactic is needed.
 - **Caveat:** When only an outer sum is to be transported, rewrite it once.
   Recursive simplification can expand the defining sum of a central
-  observable and obscure the existing representation identity.
+  observable and obscure the existing representation identity. For inverse
+  coordinate equivalences, use `Equiv.symm_comp_self` before
+  `Matrix.submatrix_id_id`; expanding composition into a lambda first can
+  leave the identity reindexing unreduced.
+
 ### Symmetry of an excitation component under a copy subgroup — candidate (2026-10-09)
 
 - **Pattern:** Prove that the subgroup preserves the actual excited subset,
