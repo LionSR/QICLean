@@ -66,7 +66,7 @@ theorem replicaMetric_symProj_meanTree_eq_product
         intro g L R hLR
         rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc,
           (hleaf j g).2.1, Matrix.mul_assoc])
-    simpa only [List.map_ofFn, Function.comp_def] using h
+    simpa only [List.map_ofFn, Function.comp_id] using h
   have hcompression (j : J) :
       Zᴴ * (List.ofFn (A j)).prod * Z = (List.ofFn (B j)).prod := by
     rw [Matrix.mul_assoc, hprod, ← Matrix.mul_assoc, hZ, one_mul]
