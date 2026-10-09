@@ -46,10 +46,11 @@ theorem replicaHamiltonian_submatrix_equiv (H : Matrix A A ℂ) (e : A ≃ B) (k
   intro j hj
   by_cases hji : j = i
   · simp only [hji, ite_true, Matrix.submatrix_apply]
+    rfl
   · simp only [hji, ite_false, Matrix.one_apply]
     change (if x j = y j then (1 : ℂ) else 0) =
       if e.symm (x j) = e.symm (y j) then 1 else 0
-    rw [e.symm.injective.eq_iff]
+    simp only [e.symm.injective.eq_iff]
 
 /-- The original rank-one ground projector, and hence the full defect
 count, transforms under a physical coordinate equivalence. The vector
@@ -132,5 +133,6 @@ theorem replicaLowDefectProjection_reindex_physical
       symProj (replicaJointCopyPerm B C R k) = _
   rw [hcut, hlabels, symProj_replicaJointCopyPerm_reindex_physical e k,
     Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv]
+  rfl
 
 end Matrix
