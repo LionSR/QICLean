@@ -7,7 +7,7 @@ import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.FilterMoment
 
 /-!
-# Operators on a region of a finite tensor product
+# Operators and states on a region of a finite tensor product
 
 For a region `D` of `⊗_{v ∈ V} ℂ^{n_v}`, the local lift places a matrix `K` on the
 configurations of `D` as `K ⊗ 1`, read back in the original coordinates. The lift is
@@ -18,6 +18,7 @@ lifted observable without changing its expectation.
 
 ## Main results
 
+* `Entropy.regionState_isHermitian`, `Entropy.regionEntropy`.
 * `Entropy.localLift`, `Entropy.localLift_mul`, `Entropy.localLift_one`,
   `Entropy.localLift_conjTranspose`.
 * `Entropy.isSupportedOn_localLift`, `Entropy.IsSupportedOn.exists_localLift`.
@@ -54,6 +55,15 @@ noncomputable def localLift (D : Finset V) (K : Matrix (RegionConfig n D) (Regio
 noncomputable def regionState (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
     Matrix (RegionConfig n D) (RegionConfig n D) ℂ :=
   partialTraceRight (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ))))
+
+/-- Regional pure-state matrices are Hermitian. -/
+theorem regionState_isHermitian (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
+    (regionState D φ).IsHermitian :=
+  (posSemidef_vecMulVec_self_star _).partialTraceRight.isHermitian
+
+/-- The entropy `S_Ω(D)` of the regional state of `Ω` on `D`. -/
+noncomputable def regionEntropy (D : Finset V) (Ω : EuclideanSpace ℂ (SiteConfig n)) : ℝ :=
+  vonNeumannEntropy (regionState D Ω) (regionState_isHermitian D Ω)
 
 variable {D : Finset V}
 

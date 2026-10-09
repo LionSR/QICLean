@@ -13,6 +13,8 @@ import QICLean.Analysis.Transport.Defs
 import QICLean.Analysis.Transport.Derivative
 import QICLean.Analysis.Transport.EnergyBlock
 import QICLean.Analysis.Transport.ErrorFourier
+import QICLean.Analysis.Transport.FilteringIntertwine
+import QICLean.Analysis.Transport.Intertwine
 import QICLean.Analysis.Transport.LeafDerivative
 import QICLean.Analysis.Transport.NormDerivative
 import QICLean.Analysis.Transport.PathDerivative
