@@ -75,6 +75,7 @@ import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.ProductOverlapPurity
 import QICLean.Entropy.PureTensorPower
 import QICLean.Entropy.PurificationSplitting
+import QICLean.Entropy.RegionCovariance
 import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionSplit
 import QICLean.Entropy.RegionUnion
