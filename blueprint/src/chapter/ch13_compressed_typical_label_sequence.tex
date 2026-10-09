@@ -1,0 +1,143 @@
+% Source: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% 07-comparators.tex, lines 255--298 and 332--354.
+\section{An auxiliary label sequence for the selected state}
+
+\begin{theorem}[Auxiliary mass and entropy along one label sequence]
+    \label{thm:compressed_typical_label_sequence}
+    \lean{FiniteProduct.exists_label_sequence_compressedTypicalSite_mass_entropy_asymptotic}
+    \leanok
+    \uses{thm:compressed_typical_site_norm,thm:high_label_pure_sequence,
+        thm:compressed_site_label_mass_coordinates}
+    Let $V$ be a finite set of sites with finite-dimensional coordinate
+    spaces, let $X\subseteq V$, and let $\Omega\in\mathcal H_X\otimes
+    \mathcal H_{X^c}$. Select eigenvalue indices $E$ of its actual
+    marginal $\rho_X^\Omega$, with
+    \begin{align*}
+        d&=|E|,
+        &z&=\sum_{i\in E}p_i>0.
+    \end{align*}
+    In the fixed enumeration of $E$, let
+    $J_E:\mathbb C^d\to\mathcal H_X$ have the selected orthonormal
+    eigenvectors as columns. Put $\mathcal H_R=\mathbb C^d$ and define
+    \begin{align*}
+        \chi&=z^{-1/2}(J_E^*\otimes I)\Omega,
+        &\psi(b,r)&=\chi(r,b).
+    \end{align*}
+    Thus $\psi\in\mathcal H_{X^c}\otimes\mathcal H_R$ is unit. Its
+    auxiliary density is
+    \begin{align*}
+        \rho_R&=\operatorname{Tr}_{\mathcal H_{X^c}}
+            |\psi\rangle\langle\psi|,
+    \end{align*}
+    where the trace is over the physical first factor.
+    Place the selected coordinate of $\chi$ at the auxiliary site $R$
+    and leave its physical coordinates at their sites in $X^c$; write
+    $\chi_{\mathrm{site}}$ for this vector and
+    $\Psi_k=\chi_{\mathrm{site}}^{\otimes k}$ for its literal tensor power.
+
+    There is one sequence of irreducible labels $\lambda_k$ of
+    $\mathfrak S_k$ such that, with $Q_k$ the auxiliary isotypic
+    projection of label $\lambda_k$,
+    \begin{align*}
+        q_k:=\|Q_k\Psi_k\|^2
+        &\ge\frac{1}{2(k+1)^{d^2}}
+            \quad\text{for all sufficiently large }k,\\
+        \log\dim\lambda_k-kS(\rho_R)&=o(k).
+    \end{align*}
+    No normalization of the original vector $\Omega$ is required.
+    This is the selected-state conclusion of
+    \cite[Section~7, lines~255--281]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:compressed_typical_site_norm,thm:high_label_pure_sequence,
+        thm:compressed_site_label_mass_coordinates}
+    Positive selected mass normalizes the actual compressed vector.
+    Regroup its factors so that the physical complement comes first,
+    and apply the pure-tensor-power label-sequence theorem to $\psi$.
+    The auxiliary projection-mass identity preserves the selected label
+    and its squared mass when returning to the site description.
+    The auxiliary dimension is $d$, giving the displayed polynomial.
+    The same selection supplies the logarithmic-dimension asymptotic
+    for the actual density $\rho_R$.
+\end{proof}
+
+\begin{theorem}[One selected sequence and a common-cutoff Bell vector]
+    \label{thm:compressed_typical_label_sequence_common_bell_vector}
+    \lean{FiniteProduct.exists_label_sequence_commonLabelCutoff_compressedTypical_bell_vector}
+    \leanok
+    \uses{thm:compressed_typical_label_sequence,
+        thm:compressed_typical_common_bell_vector}
+    Use the preceding construction of $\psi$, $\rho_R$ and $\Psi_k$,
+    and assume that the original physical vector $\Omega$ is unit.
+    Fix a finite list
+    $\mathcal B=(B_1,\ldots,B_m)$ of physical regions disjoint from $X$,
+    every two of which are comparable by inclusion. The list may be empty
+    or contain repetitions.
+    Let $\mathcal H_C=\mathbb C^E$, and let the actual selected Bell vector
+    and its projection be
+    \begin{align*}
+        b_E&=\frac{1}{\sqrt d}\sum_{i\in E}u_i\otimes|i\rangle_C,
+        &\Pi_E&=|b_E\rangle\langle b_E|.
+    \end{align*}
+    Here $u_i$ is the selected eigenvector of $\rho_X^\Omega$;
+    the $C$ coordinate is indexed by $E$, whereas the $R$ coordinate
+    uses its fixed enumeration by $\{0,\ldots,d-1\}$.
+    Put
+    $\mathrm{post}_k=b_E^{\otimes k}\otimes\Psi_k$.
+    For each $B_j$, let $\widehat B_j$ be its unchanged physical sites
+    in the augmented family $\{R\}\sqcup X^c$, and define
+    \begin{align*}
+        C_{j,k}&=\mathbf 1_{(-\infty,\,k(S_\Omega(B_j)/z+1)]}
+            (F_{\widehat B_j,k}),
+        &C_k&=\prod_{j=1}^m C_{j,k}.
+    \end{align*}
+    The central label observable $F_{\widehat B_j,k}$ has value
+    $\log\dim\mu$ on the isotypic subspace of label $\mu$.
+    The product follows the prescribed list order; for the empty list
+    it is the identity.
+
+    There is one sequence $\lambda_k$, with its auxiliary projection
+    $Q_k$, such that
+    \begin{align*}
+        \log\dim\lambda_k-kS(\rho_R)&=o(k).
+    \end{align*}
+    Define the masses using this same sequence by
+    \begin{align*}
+        q_k&=\|Q_k\Psi_k\|^2,
+        &r_k&=\|C_kQ_k\Psi_k\|^2.
+    \end{align*}
+    For all sufficiently large $k$, there is a unit vector
+    $\varphi_k\in(\mathcal H_X\otimes\mathcal H_C)^{\otimes k}
+    \otimes\mathcal H_{\{R\}\sqcup X^c}^{\otimes k}$ satisfying
+    \begin{align*}
+        (\Pi_E^{\otimes k}\otimes I)\varphi_k&=\varphi_k,
+        &(I\otimes Q_k)\varphi_k&=\varphi_k,\\
+        (I\otimes C_{j,k})\varphi_k&=\varphi_k
+            &&(1\le j\le m),\\
+        \bigl|\langle\varphi_k,(I\otimes Q_k)
+            \mathrm{post}_k\rangle\bigr|^2&=r_k,\\
+        r_k&\ge q_k/2,
+        &r_k&\ge\frac{1}{4(k+1)^{d^2}}.
+    \end{align*}
+    The vector $\varphi_k$ is invariant under simultaneous permutations
+    of all copies, using the canonical identification between copies of
+    the product space and the product of the copy spaces. The eventual
+    threshold may depend on the fixed state, selection and region list.
+    This is the common-cutoff overlap construction in
+    \cite[Section~7, lines~283--298 and 332--354]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:compressed_typical_label_sequence,
+        thm:compressed_typical_common_bell_vector}
+    Apply the preceding theorem to the actual compressed selected state,
+    obtaining its one label sequence, eventual mass bound and entropy
+    asymptotic. Keep that sequence in the common-cutoff Bell-vector theorem
+    for the prescribed region list. The exponentially small regional losses
+    leave at least half of its auxiliary mass, hence the displayed
+    quarter-polynomial bound. Normalizing the common projection and adjoining
+    the actual selected Bell power gives the four range and invariance
+    properties. Its squared overlap with the unnormalized projected
+    $\mathrm{post}_k$ is exactly the retained mass $r_k$.
+\end{proof}
