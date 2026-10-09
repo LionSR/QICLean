@@ -44,6 +44,7 @@ private theorem trace_pairMiddle_exp_of_reindex
     (replicaGoodConfigurationMarginal ι Ω k B u *
       NormedSpace.exp ((a : ℂ) • A)).trace =
       (replicaGoodPairMarginal Ω k B u * NormedSpace.exp ((a : ℂ) • H)).trace := by
+  classical
   have he : (NormedSpace.exp ((a : ℂ) • A)).submatrix
       (fiveFactorPairMiddleEquiv ι Bᶜ.card).symm
       (fiveFactorPairMiddleEquiv ι Bᶜ.card).symm =
