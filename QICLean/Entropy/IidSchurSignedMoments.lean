@@ -71,8 +71,10 @@ theorem PosSemidef.log_re_trace_finKronecker_signed_label_moments_le
   simpa only [mul_one, Real.sqrt_one, div_one] using
     (TensorPower.log_centered_labelEntropy_moments_le
       (finKronecker_posSemidef (fun _ : Fin k ↦ ρ) (fun _ ↦ hρ))
-      (by simpa only [htr, Finset.prod_const_one] using
-        trace_piProduct (fun _ : Fin k ↦ ρ))
+      (by
+        change Matrix.trace (fun x y : Fin k → n ↦ ∏ j, ρ (x j) (y j)) = 1
+        simpa only [htr, Finset.prod_const_one] using
+          trace_piProduct (fun _ : Fin k ↦ ρ))
       (fun σ ↦ (commute_finKronecker_const_permOp ρ k σ).symm)
       ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian) K r 1 le_rfl
       (by
