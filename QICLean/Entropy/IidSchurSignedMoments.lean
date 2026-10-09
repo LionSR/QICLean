@@ -3,7 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.IidSurprisalExponential
+import QICLean.Entropy.IidSurprisalMomentExponential
+import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Representation.SchurLabelMomentBounds
 import QICLean.Algebra.PiProductTrace
 
@@ -41,6 +42,7 @@ theorem PosSemidef.log_re_trace_finKronecker_exp_centered_surprisal
       (-CFC.log ρk - (s : ℂ) • 1))).trace.re =
         -u * s + (k : ℝ) *
           Real.log (Entropy.surprisalMoment hρ.isHermitian.eigenvalues u) := by
+  dsimp only
   rw [hρ.re_trace_finKronecker_exp_centered_surprisal,
     Real.log_mul (Real.exp_ne_zero _) (pow_ne_zero _
       (Entropy.surprisalMoment_pos hρ.eigenvalues_nonneg
