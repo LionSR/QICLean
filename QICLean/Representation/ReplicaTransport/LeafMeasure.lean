@@ -85,6 +85,7 @@ private theorem continuous_leafUnitaryState :
     continuous_id.matrix_mulVec continuous_const
   exact Φ.continuous_of_finiteDimensional.comp (hv.matrix_vecMulVec hv.star)
 
+omit [∀ v, NeZero (n v)] in
 /-- For fixed interpolation parameter, the literal transport state is continuous in
 the Fourier variable. No positivity or nonzero-vector hypothesis is needed. -/
 theorem continuous_state : Continuous (D.state n t k pre p j) := by
@@ -201,6 +202,7 @@ theorem integral_transportLeafMeasure (hD : D.IsAdmissible) (ht : 0 ≤ t)
   simp only [transportLeafDensity, coherentSphereMap_apply, mul_assoc]
   rw [integral_const_mul, integral_coherentDensity_mul]
 
+omit [∀ v, NeZero (n v)] in
 /-- Zero-weight leaves retain the zero state from the normalized derivative definition. -/
 theorem state_eq_zero_of_weight_eq_zero
     (hw : (D.tree (projIcc (0 : ℝ) 1 zero_le_one p)).weight j = 0) (u : ℝ) :

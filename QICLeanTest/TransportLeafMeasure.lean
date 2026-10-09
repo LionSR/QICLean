@@ -73,8 +73,8 @@ private def datum : TransportData Unit 0 Unit (fun _ => Unit) where
   move := fun _ _ => Fin.elim0
 
 private theorem datum_admissible : datum.IsAdmissible where
-  histWeight_pos := by intro h; cases h; simp [datum, MeanTree.weight]
-  choiceWeight_pos := by intro h c; cases h; cases c; simp [datum, MeanTree.weight]
+  histWeight_pos := by intro h; cases h; simp [datum]
+  choiceWeight_pos := by intro h c; cases h; cases c; simp [datum]
   old_isPartition := by intro h g; exact Fin.elim0 g
   move_isValid := by intro h c g; exact Fin.elim0 g
 
@@ -88,7 +88,7 @@ private def scalarPre : Config 0 (fun _ : Unit => Fin 2) → ℂ :=
 private theorem scalarPre_ne_zero : scalarPre ≠ 0 := by
   intro hz
   have hval := congrFun hz (Fin.elim0 : Config 0 (fun _ : Unit => Fin 2))
-  simpa [scalarPre, tensorVec] using hval
+  simp [scalarPre, tensorVec] at hval
 
 private theorem scalarPre_symmetric :
     scalarPre ∈ symmetricSubspace 0 (fun _ : Unit => Fin 2) :=
@@ -104,14 +104,12 @@ example : (datum.transportLeafMeasure (fun _ => 2) 0 0 scalarPre 0 ⟨(), none�
     1 / 2 := by
   apply datum.transportLeafMeasure_real_univ_of_weight_ne_zero (fun _ => 2) 0 0 scalarPre
     0 ⟨(), none⟩ datum_admissible le_rfl (datum_commute 0) scalarPre_symmetric scalarPre_ne_zero
-  simp [TransportData.tree, MeanTree.weight_interpTree_old, datum,
-    projIcc_of_mem _ (show (0 : ℝ) ∈ Icc 0 1 by simp), MeanTree.weight]
+  simp [TransportData.tree, MeanTree.weight_interpTree_old, datum, MeanTree.weight]
 
 example : (datum.transportLeafMeasure (fun _ => 2) 0 0 scalarPre 1 ⟨(), some ()⟩).real univ =
     1 / 2 := by
   apply datum.transportLeafMeasure_real_univ_of_weight_ne_zero (fun _ => 2) 0 0 scalarPre
     1 ⟨(), some ()⟩ datum_admissible le_rfl (datum_commute 0) scalarPre_symmetric scalarPre_ne_zero
-  simp [TransportData.tree, MeanTree.weight_interpTree_new, datum,
-    projIcc_of_mem _ (show (1 : ℝ) ∈ Icc 0 1 by simp), MeanTree.weight]
+  simp [TransportData.tree, MeanTree.weight_interpTree_new, datum, MeanTree.weight]
 
 end TransportLeafMeasureTest
