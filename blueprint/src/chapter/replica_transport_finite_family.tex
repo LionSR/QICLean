@@ -2,6 +2,7 @@
     \label{thm:replica_transport_finite_family}
     \lean{TensorPower.ReplicaTransport.transport_finite_family,
         Asymptotics.IsBigO.exists_nonneg_abs_le_mul_log_add_two}
+    \leanok
     \uses{thm:replica_transport}
     Choose the universal constants of Theorem~\ref{thm:replica_transport} once.
     Fix a finite family of admissible transports with the same one-copy dimensions,
@@ -20,7 +21,7 @@
     depend on the fixed family; the universal constants are unchanged.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:replica_transport, lem:replica_entropy_gain_integrable,
         cor:replica_transport_integrated}
     For each round $j$, choose the sequences $\beta_{j,k}$ and $r_{j,k}$ from
