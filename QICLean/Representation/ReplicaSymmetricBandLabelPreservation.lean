@@ -80,6 +80,10 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
       (hrecover.symm.trans
         ((congrArg (fun η : Fin n → ℂ ↦ Z *ᵥ η)
           (congrArg WithLp.ofLp h)).trans (Matrix.mulVec_zero Z))))
+  have hw : w ≠ 0 :=
+    fun h ↦ hcoords (WithLp.ofLp_injective 2
+      ((hM.rpow (-s)).mulVec_injective
+        ((congrArg WithLp.ofLp h).trans (Matrix.mulVec_zero (M ^ (-s))).symm)))
   done
 
 end TensorPower
