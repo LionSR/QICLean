@@ -59,7 +59,8 @@ theorem PosSemidef.re_dotProduct_sum_mulVec_le_card_sum
     simpa only [PiLp.coe_symm_continuousLinearEquiv, RCLike.re_to_complex] using
       re_star_dotProduct_self_eq_norm_sq (R *ᵥ x)
   simp only [hnorm, mulVec_sum, WithLp.toLp_sum]
-  exact (pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2).trans
+  exact (pow_le_pow_left₀ (norm_nonneg _)
+    (norm_sum_le (E := EuclideanSpace ℂ n) s fun i => WithLp.toLp 2 (R *ᵥ v i)) 2).trans
     (sq_sum_le_card_mul_sum_sq (s := s)
       (f := fun i => ‖WithLp.toLp 2 (R *ᵥ v i)‖))
 
