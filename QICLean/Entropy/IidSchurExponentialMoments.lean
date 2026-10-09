@@ -66,7 +66,8 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
     rw [hshift a, mul_smul_comm, trace_smul, Complex.smul_re, smul_eq_mul]
     exact (mul_le_mul_of_nonneg_left hcenter (Real.exp_pos _).le).trans_eq
       (Real.exp_add _ _).symm
-  simpa only [Nat.cast_pow, mul_assoc, mul_left_comm K (k : ℝ)] using
+  simpa only [Nat.cast_pow, mul_comm K (k : ℝ),
+    show (2 : ℝ) * K * k = 2 * k * K by ring] using
     (let hm := hρ.log_re_trace_finKronecker_signed_label_moments_le
         htr hmoment k hu hur hu1
      And.intro
