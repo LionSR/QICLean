@@ -105,16 +105,28 @@ which gives the proposition without hypotheses beyond those of the source.
       TensorPower.ReplicaTransport.TransportData.symProj_mul_state,
       TensorPower.ReplicaTransport.TransportData.hasDerivAt_exactDerivative}
     \leanok
-    \uses{lem:transport_exact_derivative, lem:transport_states_commutant}
-    For admissible transport data the transport states are density matrices
-    supported on $\mathcal S_k$, and the exact derivative formula of
-    Lemma~\ref{lem:transport_exact_derivative} holds for the replica inputs.
+    \uses{lem:replica_symmetric_metric, lem:transport_exact_derivative,
+      lem:transport_states_commutant}
+    Fix nonzero local Hilbert spaces, $t\ge0$ and a copy number $k$.
+    Suppose the transport data are admissible and the old and new band metrics
+    from distinct bands commute on $\mathcal S_k$.
+    For a nonzero input vector $x\in\mathcal S_k$ and $0<p<1$, all transport
+    states are density matrices supported on $\mathcal S_k$, and the exact
+    derivative formula of Lemma~\ref{lem:transport_exact_derivative} holds
+    for the replica inputs.
 \end{lemma}
 
 \begin{proof}\leanok
-    All inputs are positive definite and commute with copy permutations, so the
-    symmetrizer fixes the transport states by
+    \uses{lem:replica_symmetric_metric, lem:transport_exact_derivative,
+      lem:transport_states_commutant}
+    Each extended band metric is positive definite, and metrics at distinct
+    bands commute. Their products over bands therefore give positive definite
+    inputs. These inputs commute with copy
+    permutations, and the symmetrizer fixes the transport states by
     Lemma~\ref{lem:transport_states_commutant}.
+    The nonzero input vector and the positive leaf weights for $0<p<1$ give
+    trace one; positivity and the derivative formula follow from
+    Lemma~\ref{lem:transport_exact_derivative}.
 \end{proof}
 
 \begin{theorem}[Entropy and energy transport, assuming Lemmas 6.3 and 6.4]
