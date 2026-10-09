@@ -54,6 +54,9 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
         labelProj (copyPerm R k) ellR)).submatrix e e =
       labelProj (subsystemPerm k ι₀ {none}) ellR) := by
   intro e I
+  let eC := e.trans
+    ((Equiv.prodComm (Fin k → (x : V) → β x) ((Fin k → C) × (Fin k → R))).trans
+      (Equiv.prodAssoc (Fin k → C) (Fin k → R) (Fin k → (x : V) → β x)))
   done
 
 end TensorPower
