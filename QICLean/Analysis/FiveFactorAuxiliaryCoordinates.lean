@@ -62,7 +62,7 @@ theorem fiveFactorCopiesEquiv_auxiliary_permOp (k : ℕ)
         (fiveFactorCopiesEquiv ι k).symm x ↔
         y.1 = x.1 ∧ copyPerm (ι 3) k σ y.2.1 = x.2.1 ∧ y.2.2 = x.2.2 := by
       rw [← (fiveFactorCopiesEquiv ι k).injective.eq_iff, hC]
-      simp only [Equiv.apply_symm_apply, Prod.mk.injEq]
+      simp only [Equiv.apply_symm_apply, Prod.ext_iff]
     simp only [submatrix_apply, permOp_apply_apply, hc, kroneckerMap_apply, one_apply]
     split_ifs <;> simp_all [eq_comm]
   · ext x y
@@ -70,7 +70,7 @@ theorem fiveFactorCopiesEquiv_auxiliary_permOp (k : ℕ)
         (fiveFactorCopiesEquiv ι k).symm x ↔
         y.1 = x.1 ∧ y.2.1 = x.2.1 ∧ copyPerm (ι 4) k σ y.2.2 = x.2.2 := by
       rw [← (fiveFactorCopiesEquiv ι k).injective.eq_iff, hR]
-      simp only [Equiv.apply_symm_apply, Prod.mk.injEq]
+      simp only [Equiv.apply_symm_apply, Prod.ext_iff]
     simp only [submatrix_apply, permOp_apply_apply, hr, kroneckerMap_apply, one_apply]
     split_ifs <;> simp_all [eq_comm]
 
@@ -95,8 +95,10 @@ theorem fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep
   | zero => constructor <;> simp
   | add a b ha hb =>
     constructor
-    · simp only [map_add, submatrix_add, ha.1, hb.1, add_kronecker, kronecker_add]
-    · simp only [map_add, submatrix_add, ha.2, hb.2, add_kronecker, kronecker_add]
+    · simp only [map_add, submatrix_add, Pi.add_apply, ha.1, hb.1,
+        add_kronecker, kronecker_add]
+    · simp only [map_add, submatrix_add, Pi.add_apply, ha.2, hb.2,
+        add_kronecker, kronecker_add]
   | single σ c =>
     have h := fiveFactorCopiesEquiv_auxiliary_permOp ι k (θ σ)
     constructor

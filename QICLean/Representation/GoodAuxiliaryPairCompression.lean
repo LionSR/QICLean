@@ -74,7 +74,8 @@ theorem copyPerm_groupedGood_auxiliaryPair_labelEntropy_compression
   have hLP : Commute L P := by
     change L * P = P * L
     simp only [L, P, ← mul_kronecker_mul, one_mul, mul_add, add_mul,
-      mul_one, hCC.eq, hRR.eq]
+      mul_one, show FC * PC = PC * FC from hCC.eq,
+      show FR * PR = PR * FR from hRR.eq]
   refine ⟨hP, hLP, ?_⟩
   have hC' : (PC * FC * PC - bC • PC).PosSemidef := by
     simpa only [Complex.coe_smul] using Matrix.le_iff.mp hC
@@ -87,7 +88,8 @@ theorem copyPerm_groupedGood_auxiliaryPair_labelEntropy_compression
   simp only [P, L, hb, add_smul, mul_add, add_mul, ← mul_kronecker_mul,
     one_mul, mul_one, hPCP, hPRP, sub_eq_add_neg,
     add_kronecker, kronecker_add, smul_kronecker, kronecker_smul]
-  abel
+  ext x y
+  done
 
 /-- The two good auxiliary exponentials obey one joint compressed bound on
 the intersection of the original label subspaces. This is a single operator
