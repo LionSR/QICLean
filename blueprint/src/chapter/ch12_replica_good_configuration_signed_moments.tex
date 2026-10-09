@@ -3,6 +3,7 @@
 \begin{theorem}[Signed singleton moments with the original component mass]
   \label{thm:replica_good_configuration_signed_singleton_moments}
   \lean{Matrix.replicaGoodConfigurationMarginal_exp_signed_singleton_le}
+  \leanok
   Let $I_0,\ldots,I_4$ be finite coordinate sets, and let
   $\Omega\in\mathbb C^{I_0}\otimes
   (\mathbb C^{I_1}\otimes\mathbb C^{I_2})$ be a unit vector.
@@ -32,7 +33,7 @@
   and $w$ may vanish. These are the signed physical moments used in
   \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:physical_singleton_density_positive,thm:physical_singleton_density_trace,thm:replica_good_configuration_singleton_moment,thm:iid_schur_exponential_moments}
   The original marginal is positive semidefinite and has trace one.
   The singleton trace identity expresses each displayed expectation
