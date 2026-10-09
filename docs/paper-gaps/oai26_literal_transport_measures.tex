@@ -8,9 +8,9 @@
 \date{2026-10-09}
 \begin{document}
 \maketitle
-\gapnote{clarification}{wip}
+\gapnote{clarification}{resolved}
 
-\section{The representation to be constructed}
+\section{The coherent representation}
 
 The coherent measures in the transport estimate of
 Ref.~\cite[Proposition~7.4]{OpenAI2026AreaLaw} are measures on the one-copy unit
@@ -29,7 +29,7 @@ this measure, and its normalized-state mass is $1/2$, not one.
 
 \section{The construction and its hypotheses}
 
-The candidate defines both measures by weighted pushforward. Its real-integral
+Both measures are defined by weighted pushforward. Their real-integral
 identities require positivity of the density; the transported-state identity uses
 only admissibility, a nonnegative regulator parameter, and cross-band commutation
 on the symmetric subspace. Positivity holds at every real clamped interpolation
@@ -46,19 +46,15 @@ bound may depend on the fixed interpolation parameter, replica count, and
 supplied vector. No continuity in the interpolation parameter follows from
 this argument.
 
-\section{Verification and remaining conclusions}
+\section{Scope of the representation}
 
-The measure declarations and proof bodies are a source-only candidate and have
-not been compiled. The new blueprint entries therefore carry no completion
-markers. Strict regression examples and stock-axiom expectations have been
-written, but their outputs have not been established. No dependency revision,
-accepted transport state, or compilation-time policy has been changed.
-\footnote{Candidate modules:
+The weighted pushforwards establish the coherent and Fourier integral
+representations, their finiteness, the normalized mass on active leaves, and
+the zero-state identities under the hypotheses above.\footnote{Formal modules:
 \path{QICLean/Representation/ReplicaTransport/CoherentMeasure.lean} and
 \path{QICLean/Representation/ReplicaTransport/LeafMeasure.lean}.}
-This is a verification boundary, not a missing assumed analytic hypothesis.
 
-Even after compilation, the representation theorem alone does not construct
+The representation theorem alone does not construct
 physical scanner data or a comparator. Specialization to fill and charge data,
 identification of entropy and energy symbols, the physical supplied vectors,
 and the remaining parameter-continuity and endpoint norm estimates are separate

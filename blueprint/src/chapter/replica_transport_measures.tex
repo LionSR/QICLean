@@ -1,13 +1,12 @@
 \section{Coherent measures and Fourier transport}
 
-% Source-only candidate: the following declarations and proofs have not yet been
-% compiled. No leanok markers are attached to these entries.
 \begin{definition}[Coherent measure on the unit sphere]
     \label{def:replica_coherent_sphere_measure}
     \lean{TensorPower.CoherentSphere, TensorPower.coherentSphereMap,
         TensorPower.coherentDensity, TensorPower.coherentMeasure,
         TensorPower.continuous_coherentSphere_coe, TensorPower.coherentSphereMap_apply,
         TensorPower.continuous_coherentSphereMap, TensorPower.coherentMeasure_apply}
+    \leanok
     Let $\Theta$ be the unit sphere of the one-copy space $\mathcal V$, let
     $e_a$ be a coordinate unit vector and let $H$ be Haar probability measure
     on $U(\mathcal V)$. For a matrix $\rho$ on $\mathcal V^{\otimes k}$, set
@@ -29,6 +28,7 @@
         TensorPower.continuous_coherentDensity_joint, TensorPower.continuous_coherentDensity,
         TensorPower.coherentDensity_nonneg, TensorPower.integrable_coherentDensity,
         TensorPower.integral_coherentDensity_mul, TensorPower.integrable_coherentMeasure}
+    \leanok
     \uses{def:replica_coherent_sphere_measure}
     The measure $\mu_\rho$ is finite for every matrix $\rho$. For $\rho\ge0$
     and every continuous real function $f$ on $\mathcal V$,
@@ -41,7 +41,7 @@
     If in addition $\operatorname{Tr}\rho=1$ and $\Pi_k\rho=\rho$, then
     $\mu_\rho(\Theta)=1$. Also $\mu_0=0$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:coherent_resolution}
     Continuity bounds the density on the compact unitary group. For $\rho\ge0$,
     $\operatorname{Tr}(\rho P_{\theta,k})
@@ -55,6 +55,7 @@
     \lean{TensorPower.ReplicaTransport.TransportData.transportLeafDensity,
         TensorPower.ReplicaTransport.TransportData.transportLeafMeasure,
         TensorPower.ReplicaTransport.TransportData.transportLeafDensity_eq}
+    \leanok
     \uses{def:replica_coherent_sphere_measure}
     For the terminal state $\sigma_{j,u}$ of the transport tree, let
     $d_j(u,U)=m_{1/4}(u)q_{\sigma_{j,u}}(U)$ and define
@@ -86,6 +87,7 @@
         TensorPower.ReplicaTransport.TransportData.state_eq_zero_of_weight_eq_zero,
         TensorPower.ReplicaTransport.TransportData.transportLeafMeasure_eq_zero_of_weight_eq_zero,
         TensorPower.ReplicaTransport.TransportData.transportLeafMeasure_real_univ_of_weight_ne_zero}
+    \leanok
     \uses{def:replica_fourier_leaf_measure}
     For fixed real $p$, replica number $k$ and supplied vector, $d_j$ is jointly
     measurable and absolutely integrable, and $\nu_j$ is finite. For admissible
@@ -97,13 +99,14 @@
         \int_\Theta f\,d\mu_{\sigma_{j,u}}\,du.
         \label{eq:replica_fourier_integral}
     \end{align}
-    For a nonzero symmetric supplied vector, $\nu_j(\Theta)=1/2$ if the terminal
-    weight is nonzero, and $\nu_j=0$ if that weight is zero. Thus every interior
+    Under the same structural hypotheses, a nonzero symmetric supplied vector
+    gives $\nu_j(\Theta)=1/2$ if the terminal weight is nonzero, and $\nu_j=0$
+    if that weight is zero. Thus every interior
     leaf has mass $1/2$, the new leaves vanish at $p=0$, and the old leaves vanish
     at $p=1$. A zero supplied vector gives zero measure. These assertions include
     $k=0$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:replica_coherent_measure_integral, lem:replica_transport_states}
     Write $\sigma_{j,u}=\Phi_j^*(|M^{-iu}v\rangle\langle M^{-iu}v|)$. The function
     $(W,U)\mapsto q_{\Phi_j^*(|Wv\rangle\langle Wv|)}(U)$ is continuous on
