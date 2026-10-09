@@ -36,7 +36,9 @@ theorem IsHermitian.exp_smul_sub_smul_one_eq_cfc
       cfc (fun x : ℝ ↦ Real.exp (u * (x - s))) A := by
   simp only [Complex.coe_smul]
   rw [cfc_comp' Real.exp (fun x : ℝ ↦ u * (x - s)) A (ha := hA.isSelfAdjoint)]
-  rw [cfc_const_mul, cfc_sub, cfc_id' ℝ A hA.isSelfAdjoint,
+  rw [cfc_const_mul u (fun x : ℝ ↦ x - s) A (by fun_prop),
+    cfc_sub (fun x : ℝ ↦ x) (fun _ ↦ s) A (by fun_prop) (by fun_prop),
+    cfc_id' ℝ A hA.isSelfAdjoint,
     cfc_const s A hA.isSelfAdjoint, Algebra.algebraMap_eq_smul_one]
   done
 
@@ -52,9 +54,7 @@ theorem PosSemidef.re_trace_finKronecker_exp_centered_surprisal
   intro ρk
   rw [(show (-CFC.log ρk).IsHermitian from IsSelfAdjoint.log.neg).exp_smul_sub_smul_one_eq_cfc,
     hρ.re_trace_finKronecker_mul_cfc_surprisal k (fun x ↦ Real.exp (u * (x - s)))]
-  simp only [← Entropy.surprisalMoment_pi _ k u, Entropy.surprisalMoment,
-    Finset.mul_sum, mul_sub, sub_eq_add_neg, Real.exp_add, ← neg_mul,
-    mul_left_comm, mul_assoc]
+  rw [← Entropy.surprisalMoment_pi hρ.isHermitian.eigenvalues k u]
   done
 
 end Matrix
