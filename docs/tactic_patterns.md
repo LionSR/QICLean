@@ -569,3 +569,15 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Scalar values may coincide, and projection ranges may be zero.
   Positivity needed for later logarithmic comparisons belongs to those
   comparisons, rather than this general calculation.
+
+### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
+
+- **Pattern:** Add and rescale inequalities in the matrix order, then identify
+  the resulting linear combination with the desired expression by `module`.
+- **Seen:** `Analysis/FloorPin.lean`, in `floor_pin_le` and
+  `identity_extension_floor`; two occurrences in one file.
+- **Abstraction:** The standard order lemmas and `module` suffice. A further
+  independent occurrence may justify a helper for the shared scalar identity.
+- **Caveats:** Nonnegative scalar multiplication is established before the
+  algebraic conversion. No projection or commutation assumption is needed
+  for these two additive comparisons.
