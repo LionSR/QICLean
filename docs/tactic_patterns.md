@@ -59,6 +59,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
   over the whole basis, including coordinates with zero assigned probability.
 
+### Hermitian rectangular intertwiners — promoted mathematical lemmas
+
+- **Pattern:** From `A * J = J * B` for Hermitian matrices, move the adjoint
+  intertwiner through the matrices and transport sandwiches `J * H * Jᴴ`.
+- **Consumers:** Power-derivative covariance, geometric-mean derivative
+  covariance, and mean-tree derivative and leaf-map covariance.
+- **Abstraction:** Reuse `Matrix.IsHermitian.conjTranspose_intertwine` and
+  `Matrix.IsHermitian.sandwich_intertwine` from
+  `QICLean/Algebra/MatrixSandwichIntertwine.lean`. Compression identities use
+  the same embedding lemmas with `Jᴴ`.
+- **Caveats:** These are algebraic identities for rectangular intertwiners.
+  Norm preservation requires an isometry; positivity of a compressed operator
+  does not identify its inverse with a compressed inverse.
+
 ## Candidates
 
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
