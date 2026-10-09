@@ -4,6 +4,7 @@
 \begin{theorem}[Individual good-copy merge moments]
 \label{thm:replica_good_configuration_individual_merge_moments}
 \lean{Matrix.replicaGoodConfigurationMarginal_exp_mergeDeficits_le}
+\leanok
 Let the original one-copy physical vector have norm one, and let the
 original vector be fixed by simultaneous permutations of the physical
 and two auxiliary copy registers. Let $w$ be its excitation component,
@@ -20,7 +21,7 @@ Theorem~\ref{thm:five_factor_pair_middle_merge_deficits}. The component
 may vanish and $m$ may be zero. These are the two separate estimates in
 \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 \uses{thm:five_factor_pair_middle_merge_deficits,thm:replica_good_configuration_pair_expectation,thm:replica_individual_pair_merge_moments}
 Transport each deficit to its paired-copy coordinates, exponentiate,
 and trace the good middle region. Apply the corresponding individual
