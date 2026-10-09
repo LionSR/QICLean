@@ -65,6 +65,7 @@ import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.IidTailThreshold
 import QICLean.Analysis.InjectiveRangeProjector
+import QICLean.Analysis.InversePowerLogJensen
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.JordanBlockAsymptotics
@@ -96,11 +97,13 @@ import QICLean.Analysis.MeanTreeProjectionMassBound
 import QICLean.Analysis.MeanTreeProjectionSectors
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
+import QICLean.Analysis.NormalizedInversePowerLogBound
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
+import QICLean.Analysis.OrthonormalMatrixNorm
 import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PoissonContractionDecay
