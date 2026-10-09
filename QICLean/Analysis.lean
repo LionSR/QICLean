@@ -97,6 +97,7 @@ import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
+import QICLean.Analysis.OrthonormalMatrixNorm
 import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
 import QICLean.Analysis.PoissonContractionDecay
