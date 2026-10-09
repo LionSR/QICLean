@@ -4,6 +4,7 @@
 \begin{theorem}[Exact merge expectation]
 \label{thm:replica_good_configuration_merge_expectation}
 \lean{Matrix.trace_replicaGoodConfigurationMarginal_exp_sum_mergeDeficit}
+\leanok
 Let $\rho_G$ be the actual five-factor good-copy density of an
 excitation component $w$, and let $\rho_{\mathrm{pair}}$ be its
 common good-pair marginal. With the deficits of
@@ -16,7 +17,7 @@ real $a$,
 \end{align*}
 No normalization or permutation invariance is needed for this identity.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 \uses{thm:five_factor_pair_middle_merge_exponential,thm:replica_good_configuration_pair_expectation}
 Change coordinates by $e$, preserving the trace, and trace the good
 middle physical coordinates.
@@ -25,6 +26,7 @@ middle physical coordinates.
 \begin{theorem}[Arithmetic-mean bound for the actual merge moments]
 \label{thm:replica_good_configuration_merge_moment_bound}
 \lean{Matrix.replicaGoodConfigurationMarginal_exp_sum_mergeDeficit_le}
+\leanok
 Suppose the one-copy physical vector $\Omega$ has norm one and the
 original vector $u$ is fixed by simultaneous permutations of its
 physical and two auxiliary copy registers. For a subset $B$ of bad
@@ -41,7 +43,7 @@ $a$ and zero good copies are included. This is the arithmetic-mean
 consequence of the paired moments in
 \cite[Section~8, lines~520--555]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 \uses{thm:replica_good_configuration_merge_expectation,thm:replica_two_merge_moment}
 Apply the two-merge moment estimate to the actual common good-pair
 marginal. Its mass is the squared norm of the same component $w$.
