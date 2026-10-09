@@ -62,8 +62,10 @@ import QICLean.Representation.RelativePin
 import QICLean.Representation.RelativePinAlgebra
 import QICLean.Representation.RelativePinCommute
 import QICLean.Representation.RelativePinCompensator
+import QICLean.Representation.ReplicaDisjointMetricPositivity
 import QICLean.Representation.ReplicaEtaForms
 import QICLean.Representation.ReplicaGammaIntegral
+import QICLean.Representation.ReplicaGroupedInverse
 import QICLean.Representation.ReplicaIntegral
 import QICLean.Representation.ReplicaLift
 import QICLean.Representation.ReplicaMarkedRatio
@@ -76,6 +78,7 @@ import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
+import QICLean.Representation.ReplicaWholeInverse
 import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
