@@ -573,3 +573,18 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The actual component may be zero. No component normalization,
   ambient positivity of a signed label entropy, or commutation of the excitation
   operator with a replica metric is introduced.
+
+### Products of permutation indicators — existing Mathlib lemma (2026-10-09)
+
+- **Pattern:** After transporting a permutation entry through a product
+  coordinate equivalence, the entry is the indicator of a conjunction.
+  A Kronecker product gives the product of the individual indicators.
+- **Reuse:** `ite_zero_mul_ite_zero` combines these indicators directly.
+  `Analysis/ReplicaBadCopyExponential.lean` uses
+  `simp only [ite_zero_mul_ite_zero, one_mul]` for three factors.
+- **Reason:** The former case split followed by unrestricted `simp_all`
+  revisited universally quantified coordinate identities and exhausted
+  the default heartbeat limit. The restricted existing identity closes
+  the actual scalar goal without a new theorem, tactic, or larger limit.
+- **Caveat:** First prove the actual coordinate equivalence and reduce the
+  entries. The scalar identity supplies no permutation covariance itself.

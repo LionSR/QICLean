@@ -62,6 +62,7 @@ variable (ι : V → Type*) [∀ v, Fintype (ι v)] [∀ v, DecidableEq (ι v)]
 local instance groupedLabelSymmetricSupport_decidableEqConfig (k : ℕ) :
     DecidableEq (Config k ι) := Fintype.decidablePiFintype
 
+omit [Fintype V] [∀ v, Fintype (ι v)] [∀ v, DecidableEq (ι v)] in
 /-- Commuting permutations of copies induce commuting actions on arbitrary
 subsystems, including overlapping subsystems. Source: `07-comparators.tex`,
 lines 454--480. -/
