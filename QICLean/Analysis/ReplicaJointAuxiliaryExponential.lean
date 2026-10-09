@@ -157,7 +157,9 @@ theorem fiveFactor_groupedGood_auxiliaryPair_floor
   have h := (Matrix.le_iff.mp hfloor).submatrix η
   apply Matrix.le_iff.mpr
   change ((Pf * Lf * Pf - b • Pf).submatrix η η).PosSemidef at h
-  done
+  simpa only [submatrix_sub, Pi.sub_apply, submatrix_smul, Pi.smul_apply,
+    ← submatrix_mul_equiv (Pf * Lf) Pf η η η,
+    ← submatrix_mul_equiv Pf Lf η η η, hPback, hLback] using h
 
 /-- Both auxiliary exponentials can be removed on the intersection of the
 original whole-label subspaces while retaining the actual remaining good
@@ -305,7 +307,7 @@ theorem replicaExcitationComponent_exp_good_le_without_auxiliary
         (Fin k → ι 0 × (ι 1 × ι 2)) ℂ) ⊗ₖ (PC ⊗ₖ PR) := by
     simp only [labelProj, η]
     rw [← submatrix_mul_equiv _ _ η.symm η.symm η.symm, hC, hR]
-    simp only [PC, PR, ← mul_kronecker_mul, one_mul, mul_one]
+    simp only [PC, PR, labelProj, ← mul_kronecker_mul, one_mul, mul_one]
   rw [← hP, submatrix_mulVec_equiv] at hw
   have hf : (labelProj (subsystemPerm k ι {3}) ellC *
       labelProj (subsystemPerm k ι {4}) ellR) *ᵥ f = f := by
