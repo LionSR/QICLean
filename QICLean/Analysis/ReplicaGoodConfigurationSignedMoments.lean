@@ -22,7 +22,7 @@ lines 218–238 and 550–560, revision
 
 noncomputable section
 open TensorPower PermutationRepresentation
-open scoped BigOperators Matrix Kronecker Matrix.Norms.Operator
+open scoped BigOperators Matrix Kronecker ComplexOrder Matrix.Norms.Operator
 
 namespace Matrix
 
