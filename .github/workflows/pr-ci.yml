@@ -212,6 +212,11 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      - name: Build grouped configuration target and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Representation.GroupedConfigurationTransport 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
       # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to
@@ -276,10 +281,9 @@ jobs:
         run: |
           set -eo pipefail
           {
-            lake build QICLean.Representation.GroupedConfigurationTransport
             lake build
             lake build lint_style
-          } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+          } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check grouped configuration observables strictly
         timeout-minutes: 4
