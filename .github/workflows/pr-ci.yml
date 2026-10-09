@@ -522,6 +522,9 @@ jobs:
         timeout-minutes: 5
         run: |
           set -euo pipefail
+          lake build QICLean.Analysis.FiveMomentExponentialBound \
+            QICLean.Analysis.ReplicaComponentUniformRate \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
           for file in \
             QICLean/Analysis/FiveMomentExponentialBound.lean \
             QICLean/Analysis/ReplicaComponentUniformRate.lean \
