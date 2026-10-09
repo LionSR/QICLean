@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation
 
+import QICLean.Representation.AddedSiteSpace
 import QICLean.Representation.Alternant
 import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.BranchProbability
@@ -28,6 +29,7 @@ import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
+import QICLean.Representation.GroupedLabelSymmetricSupport
 import QICLean.Representation.HighLabelWindow
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension
@@ -55,6 +57,8 @@ import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.PhysicalMergeHolder
 import QICLean.Representation.RegionPowerSymbol
+import QICLean.Representation.RegionalFiveFactorCoordinates
+import QICLean.Representation.RegionalReplicaMetric
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.RelativePin
 import QICLean.Representation.RelativePinAlgebra
@@ -63,6 +67,7 @@ import QICLean.Representation.RelativePinCompensator
 import QICLean.Representation.ReplicaEtaForms
 import QICLean.Representation.ReplicaGammaIntegral
 import QICLean.Representation.ReplicaIntegral
+import QICLean.Representation.ReplicaLaminarBandMetrics
 import QICLean.Representation.ReplicaLift
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
@@ -72,6 +77,8 @@ import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
+import QICLean.Representation.ReplicaSymmetricBandCommute
+import QICLean.Representation.ReplicaSymmetricMeanTreeProduct
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchmidtBellPrevector
@@ -88,7 +95,9 @@ import QICLean.Representation.SkewSymbolBound
 import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarFunction
 import QICLean.Representation.StarOperator
+import QICLean.Representation.SubsystemLabelCommutation
 import QICLean.Representation.SubsystemTransport
+import QICLean.Representation.SymmetricProjectionCoordinates
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
 import QICLean.Representation.TrivialLabel

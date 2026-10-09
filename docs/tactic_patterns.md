@@ -61,6 +61,21 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### The range of a product of commuting projections — candidate (2026-10-09)
+
+- **Pattern:** Multiply an actual product projection by each of its factors,
+  then transfer the resulting matrix identities to every fixed vector.
+- **Seen:** `Matrix.replicaLowDefectProjection_fixed_conditions` uses one
+  local matrix-to-vector implication for the physical cutoff, auxiliary
+  label product, and simultaneous symmetry. The individual auxiliary
+  equations then use the same tensor-product multiplication identity.
+- **Abstraction:** Reuse `IsStarProjection.mul`, the existing central-label
+  commutations, and `symProj_mulVec_mem`. The symmetry average's projection
+  properties follow from `exists_labelProj_eq_symProj`; no new averaging
+  theorem or tactic is introduced.
+- **Caveat:** The derived commutations concern the cutoff, auxiliary labels,
+  and symmetry. They do not imply commutation with a replica metric.
+
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
 
 - **Pattern:** Use the partial-trace pairing, cyclicity of trace and the pure
@@ -559,3 +574,60 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Derive every commutation from the actual subsystem actions.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
+
+### Symmetry of an excitation component under a copy subgroup — candidate (2026-10-09)
+
+- **Pattern:** Prove that the subgroup preserves the actual excited subset,
+  apply the existing covariance of the physical excitation operator, and
+  transport the fixed-vector equation through the specified coordinate equivalence.
+- **Seen:** `Analysis/ReplicaBadCopyExponential.lean`; the covariance is already
+  provided by `Analysis/ReplicaExcitationSymmetry.lean`.
+- **Abstraction:** Reuse `replicaExcitationProjection_kronecker_mulVec_preserves_fixed`
+  and `Matrix.submatrix_mulVec_equiv`. The subset calculation is specific to
+  the good/bad enumeration. No new tactic or general covariance result is needed.
+- **Caveats:** The actual component may be zero. No component normalization,
+  ambient positivity of a signed label entropy, or commutation of the excitation
+  operator with a replica metric is introduced.
+
+### Products of permutation indicators — existing Mathlib lemma (2026-10-09)
+
+- **Pattern:** After transporting a permutation entry through a product
+  coordinate equivalence, the entry is the indicator of a conjunction.
+  A Kronecker product gives the product of the individual indicators.
+- **Reuse:** `ite_zero_mul_ite_zero` combines these indicators directly.
+  `Analysis/ReplicaBadCopyExponential.lean` uses
+  `simp only [ite_zero_mul_ite_zero, one_mul]` for three factors.
+- **Reason:** The former case split followed by unrestricted `simp_all`
+  revisited universally quantified coordinate identities and exhausted
+  the default heartbeat limit. The restricted existing identity closes
+  the actual scalar goal without a new theorem, tactic, or larger limit.
+- **Caveat:** First prove the actual coordinate equivalence and reduce the
+  entries. The scalar identity supplies no permutation covariance itself.
+
+### Central observables after restricting the copy action — shared theorem (2026-10-09)
+
+- **Pattern:** Factor a larger subsystem action into a smaller subsystem and
+  its disjoint complement, then pass centrality through the group algebra.
+- **Reuse:** `TensorPower.commute_subgroup_labelObservables_of_subset_or_disjoint`
+  in `Representation/SubsystemLabelCommutation.lean` treats a common arbitrary
+  homomorphism of copy permutation groups. The laminar band argument specializes
+  it to the identity homomorphism and reverses the nested case when required.
+  The joint auxiliary exponential contribution uses the same theorem for the
+  actual good-copy subgroup, replacing its private copy.
+- **Caveats:** Both actions use the same restriction homomorphism. No injectivity,
+  nonempty local-space assumption, or commutation of arbitrary overlapping
+  subsystems is inferred. Symmetric-range commutation separately reuses the
+  existing subgroup projection theorem from `GroupedLabelSymmetricSupport`.
+
+### Projections under equivariant coordinates
+
+The original replica cutoff uses the same two elementary arguments in its
+five-factor and global coordinates. Equivariant permutation matrices transport
+the group average; `PermutationRepresentation.symProj_of_intertwine` records
+this once. A contained projection then remains a projection after compression
+by the same rectangular coordinate map; use
+`Matrix.isStarProjection_conjTranspose_mul_mul_of_mul_range_eq` in
+`Algebra/OrthogonalProjection.lean`. The latter needs only `P * (Z * Zᴴ) = P`,
+not a separate isometry identity or commutation with a metric. The regional
+cutoff covariance applies these arguments to the actual rank-one ground
+projector, the defect cutoff, and the original auxiliary labels.

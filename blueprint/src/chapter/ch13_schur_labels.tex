@@ -171,6 +171,35 @@ lemma~\cite[Lemma 6.1]{OpenAI2026AreaLaw}.
     through $Q$ and through $Q^c$ on $z$.
 \end{proof}
 
+\begin{theorem}[Commutation after restricting the copy permutations]
+    \label{thm:subgroup_subsystem_label_commutation}
+    \lean{TensorPower.commute_subgroup_labelObservables_of_subset_or_disjoint}
+    \leanok
+    \uses{thm:schur_label_commutation, lem:label_projectors}
+    Let $\theta:S_m\to S_k$ be a group homomorphism, and restrict every
+    subsystem copy action along $\theta$. For a real function $f$ on the
+    irreducible labels of $S_m$, write
+    $F_{Q,\theta}(f)=\sum_\lambda f(\lambda)\pi^\lambda_{Q,\theta}$.
+    If $Q\subseteq Q'$ or $Q\cap Q'=\varnothing$, then
+    \[
+       [F_{Q,\theta}(f),F_{Q',\theta}(g)]=0
+    \]
+    for all real label functions $f,g$. The local spaces are arbitrary
+    finite-dimensional spaces, and $\theta$ need not be injective.
+    This is the restricted-copy form of
+    \cite[Lemma 6.1(2), Section 8]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:schur_label_commutation}
+    For $Q\subseteq Q'$, factor the restricted action on $Q'$ into its
+    actions on $Q$ and $Q'\setminus Q$. A central function of the first
+    action commutes with both factors. For disjoint regions, every
+    permutation from one restricted action commutes with every
+    permutation from the other, and hence so do their group-algebra images.
+\end{proof}
+
 \section{Isotypic multiplicities and the surprisal bound}
 
 \begin{lemma}[Orthogonal resolutions]
