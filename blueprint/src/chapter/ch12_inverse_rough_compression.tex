@@ -1,0 +1,77 @@
+\section{The rough inverse bound on the low-defect subspace}
+
+Fix five nonzero finite-dimensional spaces of dimensions $d_0,\ldots,d_4$,
+with physical factors $0,1,2$ and auxiliary factors $3,4$. Put
+$d=\log d_3+\log d_4$ and
+$D=\max\{(d_0d_3)^2,(d_2d_4)^2\}$.
+For $k\geq0$ and $t>0$, write
+\begin{align}
+ A_k=\bigl(W_{t,k}(\{0,3\})^{-1}W_{t,k}(\{2,4\})^{-1}
+   W_{t,k}(\{1\})\bigr)^2.
+\end{align}
+
+\begin{theorem}[One rough rate for all retained components]
+  \label{thm:actual_component_inverse_rough_uniform}
+  \lean{Matrix.exists_replicaExcitationComponent_inverse_rough_uniform_le}
+  \leanok
+  For every $t>0$ with $4t\leq1$, there exists $C\geq0$, depending
+  only on $t$ and the five spaces, with the following property.
+  Let $k\geq0$, let $\Omega$ be a unit physical vector, and let $u$ be
+  invariant under simultaneous copy permutations and fixed by the two
+  original whole-copy auxiliary labels $\lambda_3,\lambda_4$.
+  Suppose $0\leq\tau\leq\tfrac12$ and
+  $2kS-\varepsilon\leq\log\dim\lambda_3+\log\dim\lambda_4$.
+  For any excitation subset $B$ with $|B|\leq\tau k$, let
+  $w=(P_B(\Omega)\otimes I)u$ and write it as $f$ in five-factor coordinates.
+  Define
+  \begin{align}
+    c_k=(k+2)^{C+D}
+      \exp\bigl(-2tk(2S-\tau d-3h(\tau))+2t\varepsilon\bigr),
+    \label{eq:rough_uniform_rate}
+  \end{align}
+  where $h$ is binary entropy. Then
+  $\operatorname{Re}\langle f,A_k^{-1}f\rangle\leq c_k\|w\|^2$.
+  No normalization of $u$ or $w$ is required.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:actual_component_inverse_rough,thm:replica_component_uniform_prefactor}
+  The average of the two merge polynomials is bounded by
+  $(k-|B|+1)^D$. Apply the uniform scalar estimate with zero physical
+  entropy and quadratic moment terms, retaining polynomial degree $D$.
+  The original label lower bound supplies $2kS-\varepsilon$, and
+  $\log\binom{k}{|B|}\leq kh(\tau)$ accounts for all three binomial
+  contributions. Multiply this scalar bound by the actual squared
+  component norm.
+\end{proof}
+
+\begin{theorem}[Actual low-defect inverse compression]
+  \label{thm:actual_low_defect_inverse_rough_compression}
+  \lean{Matrix.exists_replicaLowDefectProjection_inverse_rough_compression_le}
+  \leanok
+  For every $t>0$ with $4t\leq1$, a constant $C\geq0$ depending only
+  on $t$ and the five spaces has the following property.
+  Let $k\geq0$, let $\Omega$ be a unit physical vector, and let
+  $\lambda_3,\lambda_4,\tau,S,\varepsilon$ satisfy the label lower bound
+  and $0\leq\tau\leq\tfrac12$ in Theorem~\ref{thm:actual_component_inverse_rough_uniform}.
+  Let $P$ be the orthogonal projection onto the intersection of
+  simultaneous permutation symmetry, the two original auxiliary
+  label spaces, and defect count at most $\tau k$.
+  Let $U$ be the unitary change from five-factor coordinates to the
+  physical-and-two-auxiliary copy coordinates, and set $H=UA_k^{-1}U^*$. With $c_k$ given by~(\ref{eq:rough_uniform_rate}),
+  \begin{align}
+    PHP\leq (k+1)e^{kh(\tau)}c_kP.
+  \end{align}
+  This is the rough inverse compression estimate in
+  \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:actual_component_inverse_rough_uniform,thm:replica_low_defect_compression_from_components}
+  The inverse squared metric is positive, and this remains true
+  after changing coordinates. Every vector in the range of $P$
+  satisfies the original symmetry and two label equations.
+  Apply the uniform bound to each of its actual excitation components.
+  The excitation compression inequality bounds the sum by the number
+  of retained subsets, at most $(k+1)e^{kh(\tau)}$.
+  No commutation between the metric and the excitation projections
+  is used.
+\end{proof}
