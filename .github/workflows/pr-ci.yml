@@ -277,6 +277,7 @@ jobs:
           set -eo pipefail
           {
             lake build QICLean.Algebra.TensorPowerPartialTrace QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
+            lake build QICLean.Analysis.ReplicaGoodConfigurationProduct
             lake build
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
@@ -289,6 +290,22 @@ jobs:
             QICLean/Algebra/TensorPowerPartialTrace.lean \
             QICLean/Analysis/ReplicaGoodConfigurationPairMarginal.lean \
             QICLeanTest/ReplicaGoodCopyPartialTracesAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the good-copy product and density consequences strictly
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodConfigurationDensity.lean \
+            QICLean/Analysis/ReplicaJointDensity.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationProduct.lean \
+            QICLeanTest/ReplicaGoodConfigurationProductAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \

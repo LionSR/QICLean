@@ -39,7 +39,10 @@ private theorem partialTraceRight_retained_auxiliary
   rw [partialTraceRight_submatrix_left, partialTraceRight_partialTraceRight]
   rfl
 
-private theorem partialTraceRightAlong_kronecker
+/-- A partial trace on the second tensor factor leaves the first factor unchanged.
+This identity is used in the reduced-density product calculation of
+`07-comparators.tex`, lines 520–549. -/
+theorem partialTraceRightAlong_kronecker
     {α K C R : Type*} [Fintype R] (e : K ≃ C × R)
     (A : Matrix α α ℂ) (B : Matrix K K ℂ) :
     partialTraceRightAlong e (A ⊗ₖ B) =
