@@ -1,0 +1,26 @@
+\section{Sublinear remainders in the lower norm comparison}
+
+\begin{theorem}[Vanishing normalized logarithmic remainder]
+  \label{thm:mean_tree_sublinear_remainder}
+  \lean{Matrix.MeanTree.tendsto_rough_lower_remainder_div_nat}
+  Fix real numbers $s,G,t,c,C_f$ and a real sequence $(\varepsilon_k)$
+  such that $\varepsilon_k/k\to0$ as $k\to\infty$. Put
+  \begin{align*}
+    r_k&=\log(k+1)+c\log(k+2)+2t\varepsilon_k,\\
+    E_k&=2sG\bigl(2|r_k|+C_f\log(k+2)+2\log2+\log(3/2)\bigr).
+  \end{align*}
+  Then $E_k/k\to0$. No sign condition on the five fixed coefficients
+  or on $\varepsilon_k$ is required.
+
+  This is the scalar limit for the explicit remainder in the rough
+  lower norm estimate of \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+  For every fixed real $a$, the limit
+  $\log(k+a)/k\to0$ follows by substituting $x=k+a$ in
+  $\log x/(x-a)\to0$. The cases $a=1,2$, together with the assumption
+  on $\varepsilon_k$, give $r_k/k\to0$. Continuity of the absolute value
+  gives $|r_k|/k\to0$. The remaining logarithmic and constant terms
+  also vanish after division by $k$; multiplication by the fixed
+  coefficient $2sG$ preserves the limit.
+\end{proof}
