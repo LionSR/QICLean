@@ -84,6 +84,9 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
     fun h ↦ hcoords (WithLp.ofLp_injective 2
       ((hM.rpow (-s)).mulVec_injective
         ((congrArg WithLp.ofLp h).trans (Matrix.mulVec_zero (M ^ (-s))).symm)))
+  have hv : ‖v‖ = 1 :=
+    (Matrix.norm_toLp_mulVec_of_isometry Z hZ ((‖w‖⁻¹ : ℂ) • w)).trans
+      (norm_smul_inv_norm (𝕜 := ℂ) hw)
   done
 
 end TensorPower
