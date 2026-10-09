@@ -57,7 +57,8 @@ theorem mul_sum_log_lower_le_neg_log_norm_sq_of_projection_lower_bound
     let v := (‖u‖⁻¹ : ℂ) • u
     let ell : Fin G → ℝ := fun g ↦ ∑ j, (T g).weight j * Real.log (b g + c j g / 2)
     (∀ g, 1 - δ g ≤ (star v ⬝ᵥ (P g *ᵥ v)).re) →
-      2 * s * (∑ g : Fin G, ell g - δ g * (ell g - Real.log (b g))) ≤
+      2 * s * Finset.sum Finset.univ
+        (fun g : Fin G ↦ ell g - δ g * (ell g - Real.log (b g))) ≤
         -Real.log (‖u‖ ^ 2) := by
   intro M u v ell hmass
   have hroots : ∀ g, ((T g).eval (A · g)).PosDef := fun g ↦
