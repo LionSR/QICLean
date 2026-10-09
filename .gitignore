@@ -44,3 +44,6 @@ Scratch/
 
 # Python bytecode
 __pycache__/
+
+# Local provenance records
+**/provenance/
