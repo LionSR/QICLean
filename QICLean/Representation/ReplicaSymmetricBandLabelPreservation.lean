@@ -68,6 +68,7 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
         Matrix.MeanTree.posDef_listProd_ofFn (fun g ↦ hroot g T)
           (fun g h hgh ↦ hcomm g h hgh T T))
   refine ⟨hM, fun s ξ hξ hPξ ↦ ?_⟩
+  intro w v
   done
 
 end TensorPower
