@@ -53,6 +53,9 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
         cfc (fun x : ℝ ↦ Real.exp (a * x)) (labelEntropy (copyPerm n k)) := by
       simpa only [Complex.ofReal_zero, zero_smul, sub_zero] using
         (posSemidef_labelEntropy (copyPerm n k)).isHermitian.exp_smul_sub_smul_one_eq_cfc a 0
+    rw [hzero, ← cfc_const_mul (Real.exp (a * ((k : ℝ) * S)))
+      (fun x : ℝ ↦ Real.exp (a * (x - (k : ℝ) * S)))
+      (labelEntropy (copyPerm n k)) (by fun_prop)]
     done
   done
 
