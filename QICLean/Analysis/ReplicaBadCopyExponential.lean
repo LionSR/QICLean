@@ -197,7 +197,7 @@ theorem replicaExcitationComponent_mem_bad_invariantSubspace
   change permOp (copyPerm ((f : Fin 5) → ι f) k) σ *ᵥ
     (w ∘ fiveFactorCopiesEquiv ι k) = w ∘ fiveFactorCopiesEquiv ι k
   funext x
-  simpa only [Function.comp_apply, Equiv.symm_apply_apply] using
+  simpa only [Function.comp_apply, Equiv.symm_apply_apply, Equiv.symm_symm] using
     congrFun hw (fiveFactorCopiesEquiv ι k x)
 
 /-- The bad signed exponential may be removed from the grouped metric
