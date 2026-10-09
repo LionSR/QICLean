@@ -1,0 +1,51 @@
+\section{One low-defect projection for every regional cut}
+\label{sec:regional_low_defect_projection}
+
+\begin{definition}[The common global projection]
+\label{def:global_replica_low_defect_projection}
+\lean{Matrix.globalReplicaLowDefectProjection}
+\leanok
+Fix the original physical vector $\Omega$, the two auxiliary labels,
+the copy number $k$, and the cutoff $\tau k$. Let $P_0$ be the actual
+low-defect projection in the physical-copy and two auxiliary registers.
+Using the fixed regrouping $G_k$ of
+Definition~\ref{def:regional_five_factor_coordinates}, define
+\begin{align}
+ P_{\mathrm{glob}}=G_k^*P_0G_k.
+\end{align}
+This projection is defined without a regional cut, metric, or mean tree.
+\end{definition}
+
+\begin{theorem}[Common symmetry and common projection]
+\label{thm:regional_low_defect_projection_global}
+\lean{TensorPower.symProj_replicaJointCopyPerm_submatrix_globalReplicaCopiesEquiv,Matrix.globalReplicaLowDefectProjection_properties,Matrix.regionalFiveFactor_lowDefectProjection_eq_global}
+\leanok
+Assume $\|\Omega\|=1$, and let $Q_k$ denote simultaneous symmetry on
+the original full configuration space. Then $P_{\mathrm{glob}}$ is an
+orthogonal projection and
+\begin{align}
+ P_{\mathrm{glob}}Q_k=P_{\mathrm{glob}}.
+\end{align}
+For every $Z$ with $ZZ^*=Q_k$, the matrix
+$Z^*P_{\mathrm{glob}}Z$ is an orthogonal projection.
+
+For every disjoint physical cut $Q,Y$, transport the same vector by
+$e_{Q,Y}$ and form its actual five-factor low-defect projection
+$P_{Q,Y}$. Keep both original auxiliary labels. Then
+\begin{align}
+ \Xi_{Q,Y,k}^*P_{Q,Y}\Xi_{Q,Y,k}=P_{\mathrm{glob}}.
+\end{align}
+Thus all cuts have exactly the same projection in the same fixed
+symmetric coordinates. See
+\cite[Section~8, lines~20--37, 421--456 and~603--615]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:regional_five_factor_coordinates,thm:replica_low_defect_coordinate_covariance,thm:symmetric_projection_equivariant_coordinates,thm:contained_projection_compression,thm:replica_low_defect_projection_conditions}
+The fixed regrouping intertwines the actual simultaneous permutations.
+The native cutoff ends with their symmetry projection, giving the
+containment after pullback. Projection compression then gives the
+fixed-coordinate assertion. Finally physical coordinate covariance
+identifies the regional cutoff with the same original cutoff, and the
+three equivalences in $\Xi_{Q,Y,k}$ cancel in their stated order.
+\end{proof}

@@ -1,0 +1,16 @@
+\section{Compression of a contained projection}
+\label{sec:contained_projection_compression}
+
+\begin{theorem}[Compression of a contained projection]
+\label{thm:contained_projection_compression}
+\lean{Matrix.isStarProjection_conjTranspose_mul_mul_of_mul_range_eq}
+\leanok
+Let $P$ be an orthogonal projection and let $Z$ be a rectangular matrix
+such that $PZZ^*=P$. Then $Z^*PZ$ is an orthogonal projection.
+\end{theorem}
+\begin{proof}
+\leanok
+The matrix is Hermitian, and
+$(Z^*PZ)^2=Z^*(PZZ^*)PZ=Z^*P^2Z=Z^*PZ$.
+\end{proof}
+

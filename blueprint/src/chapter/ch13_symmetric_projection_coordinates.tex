@@ -1,0 +1,19 @@
+\section{Symmetry projections under equivariant coordinates}
+\label{sec:symmetric_projection_coordinates}
+
+\begin{theorem}[Equivariant transport of the group average]
+\label{thm:symmetric_projection_equivariant_coordinates}
+\lean{PermutationRepresentation.symProj_of_intertwine}
+\leanok
+Let a finite group act on two finite coordinate sets, and let $U$ be
+the permutation unitary induced by an equivariant equivalence of these
+sets. If $S_1,S_2$ are the respective group-average projections, then
+\begin{align}
+ S_2=US_1U^*.
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+Each permutation matrix transforms by conjugation with $U$.
+Average these identities over the same finite group.
+\end{proof}

@@ -120,12 +120,14 @@ import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
+import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
 import QICLean.Analysis.ReplicaBadCopyExponential
 import QICLean.Analysis.ReplicaComponentMergeMoment
 import QICLean.Analysis.ReplicaDefect
+import QICLean.Analysis.ReplicaExcitationCompression
 import QICLean.Analysis.ReplicaExcitationDecomposition
 import QICLean.Analysis.ReplicaExcitationSymmetry
 import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
@@ -136,6 +138,8 @@ import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
 import QICLean.Analysis.ReplicaGoodPhysicalSupport
 import QICLean.Analysis.ReplicaJointDensity
+import QICLean.Analysis.ReplicaLowDefectCoordinateCovariance
+import QICLean.Analysis.ReplicaLowDefectProjection
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ReplicaPhysicalLabelMoment

@@ -61,6 +61,21 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### The range of a product of commuting projections — candidate (2026-10-09)
+
+- **Pattern:** Multiply an actual product projection by each of its factors,
+  then transfer the resulting matrix identities to every fixed vector.
+- **Seen:** `Matrix.replicaLowDefectProjection_fixed_conditions` uses one
+  local matrix-to-vector implication for the physical cutoff, auxiliary
+  label product, and simultaneous symmetry. The individual auxiliary
+  equations then use the same tensor-product multiplication identity.
+- **Abstraction:** Reuse `IsStarProjection.mul`, the existing central-label
+  commutations, and `symProj_mulVec_mem`. The symmetry average's projection
+  properties follow from `exists_labelProj_eq_symProj`; no new averaging
+  theorem or tactic is introduced.
+- **Caveat:** The derived commutations concern the cutoff, auxiliary labels,
+  and symmetry. They do not imply commutation with a replica metric.
+
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
 
 - **Pattern:** Use the partial-trace pairing, cyclicity of trace and the pure
@@ -603,3 +618,32 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   nonempty local-space assumption, or commutation of arbitrary overlapping
   subsystems is inferred. Symmetric-range commutation separately reuses the
   existing subgroup projection theorem from `GroupedLabelSymmetricSupport`.
+
+### Projections under equivariant coordinates
+
+The original replica cutoff uses the same two elementary arguments in its
+five-factor and global coordinates. Equivariant permutation matrices transport
+the group average; `PermutationRepresentation.symProj_of_intertwine` records
+this once. A contained projection then remains a projection after compression
+by the same rectangular coordinate map; use
+`Matrix.isStarProjection_conjTranspose_mul_mul_of_mul_range_eq` in
+`Algebra/OrthogonalProjection.lean`. The latter needs only `P * (Z * Zᴴ) = P`,
+not a separate isometry identity or commutation with a metric. The regional
+cutoff covariance applies these arguments to the actual rank-one ground
+projector, the defect cutoff, and the original auxiliary labels.
+### Instances for a finite family of coordinate spaces — candidate (2026-10-09)
+
+- **Pattern:** Construct Fintype, DecidableEq and Nonempty instances for a
+  dependent family with five explicitly specified fibers.
+- **Seen:** The three instances in
+  `Representation/RegionalFiveFactorCoordinates.lean`; one file.
+- **Reuse:** Use the existing dependent eliminator `Fin.cases`, with
+  `inferInstanceAs` naming each actual fiber and `fun i => Fin.elim0 i`
+  for the empty final case. This preserves the canonical component
+  instances and handles families valued in Type as well as Prop.
+- **Reason:** A `fin_cases` proof through list membership cannot eliminate
+  that proposition into these Type-valued instances. Merely unfolding the
+  family leaves vector notation at the instance-synthesis boundary.
+- **Decision:** No new tactic or finite-family abstraction is introduced.
+  These three uses are in one structural definition; reconsider only if
+  another family produces independent repetition.
