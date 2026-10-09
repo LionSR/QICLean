@@ -7,7 +7,8 @@ import QICLean.Analysis.RegionalLowDefectProjection
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
-/-! Standard-axiom checks for the common original low-defect projection under regional coordinates. -/
+/-! Standard-axiom checks for the common original low-defect projection
+under regional coordinates. -/
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
