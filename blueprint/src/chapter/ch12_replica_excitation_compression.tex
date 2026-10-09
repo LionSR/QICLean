@@ -1,0 +1,93 @@
+\section{Compression from bounds on excitation components}
+\label{sec:replica_excitation_compression}
+
+The passage from individual excitation components to the full compressed
+operator in \cite[Section~8, lines~577--590]{OpenAI2026AreaLaw} uses
+Cauchy--Schwarz and the number of retained subsets. The following statements
+give this implication with the component estimate as an explicit hypothesis.
+
+\begin{theorem}[Cauchy--Schwarz for a positive quadratic form]
+  \label{thm:positive_form_finite_sum}
+  \lean{Matrix.PosSemidef.re_dotProduct_sum_mulVec_le_card_sum}
+  \leanok
+  Let $H$ be positive semidefinite on a finite-dimensional complex Hilbert
+  space, let $S$ be a finite set, and let $(v_i)_{i\in S}$ be any vectors.
+  Then
+  \begin{align}
+    \operatorname{Re}\left\langle\sum_{i\in S}v_i,
+      H\sum_{i\in S}v_i\right\rangle
+    \le |S|\sum_{i\in S}\operatorname{Re}\langle v_i,Hv_i\rangle.
+  \end{align}
+\end{theorem}
+\begin{proof}
+  \leanok
+  Write $H=R^*R$ with $R=\sqrt H$. The left-hand side is
+  $\|\sum_i Rv_i\|^2$. The triangle inequality, followed by scalar
+  Cauchy--Schwarz, bounds it by $|S|\sum_i\|Rv_i\|^2$.
+\end{proof}
+
+\begin{theorem}[A bound on vectors in the defect cutoff]
+  \label{thm:replica_cutoff_component_bound}
+  \lean{Matrix.re_dotProduct_replicaDefectCutoff_le_of_component_bounds}
+  \leanok
+  \uses{def:replica_excitation_projection,def:replica_operators}
+  Let $\Omega\in\mathcal H$ be a unit vector, let $k\ge0$ be an integer,
+  and let $\mathcal K$ be any finite-dimensional complex Hilbert space.
+  Let $N$ be the replica defect count, and let $R_B$ be the exact
+  excitation projection for $B\subseteq\{0,\ldots,k-1\}$.
+  Fix $0\le\tau\le1/2$, $c\ge0$, and a positive semidefinite operator
+  $H$ on $\mathcal H^{\otimes k}\otimes\mathcal K$. Set
+  \begin{align}
+    Q_\tau&=\mathbf1_{(-\infty,\tau k]}(N)\otimes \Id_{\mathcal K},
+    &u_B&=(R_B\otimes \Id_{\mathcal K})u.
+  \end{align}
+  Suppose $Q_\tau u=u$ and, for every $B$ with $|B|\le\tau k$,
+  \begin{align}
+    \operatorname{Re}\langle u_B,Hu_B\rangle\le c\|u_B\|^2.
+  \end{align}
+  Then, with $h(\tau)=-\tau\log\tau-(1-\tau)\log(1-\tau)$ and
+  $0\log0=0$,
+  \begin{align}
+    \operatorname{Re}\langle u,Hu\rangle
+      \le (k+1)e^{kh(\tau)}c\|u\|^2.
+  \end{align}
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:positive_form_finite_sum,thm:replica_cutoff_decomposition,thm:excitation_subset_entropy}
+  The actual cutoff decomposition gives $u=\sum_{|B|\le\tau k}u_B$
+  and $\sum_B\|u_B\|^2=\|u\|^2$. Apply
+  Theorem~\ref{thm:positive_form_finite_sum}, then the component estimate.
+  The sum of the retained squared norms is at most $\|u\|^2$, and
+  Theorem~\ref{thm:excitation_subset_entropy} bounds the number of retained
+  subsets by $(k+1)e^{kh(\tau)}$.
+\end{proof}
+
+\begin{theorem}[Compression to a subspace of the cutoff]
+  \label{thm:replica_excitation_compression_bound}
+  \lean{Matrix.compression_le_of_replicaExcitationComponent_bounds}
+  \leanok
+  Retain the data $\Omega,k,\mathcal K,\tau,c,H,Q_\tau$ above, and let
+  $P$ be an orthogonal projection satisfying $Q_\tau P=P$. For each
+  vector $u$ with $Pu=u$, set $u_B=(R_B\otimes\Id_{\mathcal K})u$.
+  Suppose that for every such $u$ and every $B$ with $|B|\le\tau k$,
+  \begin{align}
+    \operatorname{Re}\langle u_B,Hu_B\rangle\le c\|u_B\|^2.
+  \end{align}
+  Then
+  \begin{align}
+    PHP\le (k+1)e^{kh(\tau)}cP.
+  \end{align}
+  No commutation of $H$ with $P$, $Q_\tau$, or the individual excitation
+  projections is assumed.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:replica_cutoff_component_bound}
+  For an arbitrary $x$, the vector $u=Px$ lies in the range of $P$ and
+  satisfies $Q_\tau u=u$. Apply
+  Theorem~\ref{thm:replica_cutoff_component_bound} to this vector.
+  Orthogonality of $P$ identifies $\langle x,PHPx\rangle$ with
+  $\langle Px,HPx\rangle$ and $\langle x,Px\rangle$ with $\|Px\|^2$.
+  The resulting quadratic-form inequality proves the operator bound.
+\end{proof}
