@@ -62,9 +62,11 @@ private theorem groupedConfigurationEquiv_reconstruct
   have hg (j : Fin Bᶜ.card) : z (e (Sum.inl j)) = x j := by
     change Sum.elim x y (e.symm (e (Sum.inl j))) = x j
     rw [Equiv.symm_apply_apply]
+    rfl
   have hb (j : Fin B.card) : z (e (Sum.inr j)) = y j := by
     change Sum.elim x y (e.symm (e (Sum.inr j))) = y j
     rw [Equiv.symm_apply_apply]
+    rfl
   have hgi (i : ↥(Bᶜ)) : z i = x (Bᶜ.equivFin i) := by
     have hi : (i : Fin k) = e (Sum.inl (Bᶜ.equivFin i)) := by
       change (i : Fin k) = (Bᶜ.equivFin.symm (Bᶜ.equivFin i)).val
