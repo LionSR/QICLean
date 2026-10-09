@@ -6,18 +6,18 @@ Authors: QICLean contributors
 import QICLean.Probability.ComplexGaussian.ProductSourceTransport
 
 /-!
-# Outer-product expansion of source transport
+# Rank-one expansion of source transport
 
-Transporting an arbitrary rectangular source matrix through four endpoint matrices
-is the sum of its entries times the corresponding ambient outer-product matrices.
-The endpoint column families need not be orthonormal or span their ambient spaces.
+Transporting an arbitrary rectangular source matrix through four endpoint frames
+is the sum of its entries times the corresponding rank-one ambient matrices.
+The endpoint frames need not be orthonormal or span their ambient spaces.
 -/
 
 noncomputable section
 open scoped Matrix ComplexConjugate Kronecker
 namespace QICLean.ComplexGaussian
 
-/-- Expand an ambient source transport in the actual endpoint column vectors.
+/-- Expand an ambient source transport in the actual endpoint frame vectors.
 Source: polynomial-PEPS Theorem 5.2, `04-compression.tex`, lines 294–338. -/
 theorem sourceTransport_eq_sum_rankOne {A C W X Y Z : Type}
     [Fintype A] [Fintype C]

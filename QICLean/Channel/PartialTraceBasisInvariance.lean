@@ -19,7 +19,6 @@ for each corrected source set while estimating the same physical operator.
 Source: polynomial-PEPS Theorem 5.2, `04-compression.tex`, lines 383–549.
 -/
 
-
 noncomputable section
 open scoped TensorProduct Matrix Kronecker ComplexConjugate
 

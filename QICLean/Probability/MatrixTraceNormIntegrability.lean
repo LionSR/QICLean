@@ -17,7 +17,6 @@ values are not required.
 Source: polynomial-PEPS Theorem 5.2, `04-compression.tex`, lines 434–549.
 -/
 
-
 noncomputable section
 open MeasureTheory
 open scoped Matrix ComplexConjugate

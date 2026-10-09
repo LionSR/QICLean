@@ -74,10 +74,10 @@ These calculations give the source and error estimates used in
     % The algebraic transport identities hold for arbitrary endpoint maps.
 \end{definition}
 
-\begin{theorem}[Outer-product expansion of transported sources]
+\begin{theorem}[Rank-one expansion of transported sources]
     \label{thm:reduction_transport_rank_one}
     \lean{QICLean.ComplexGaussian.sourceTransport_eq_sum_rankOne}
-
+    \leanok
     \uses{def:reduction_ambient_transport}
     Let $A,C$ be finite index sets and let $W,X,Y,Z$ be arbitrary index sets.
     For endpoint matrices $E,F,\widetilde E,\widetilde F$ of the indicated
@@ -94,14 +94,14 @@ These calculations give the source and error estimates used in
     No orthonormality or spanning condition on the endpoint matrices is needed.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{def:reduction_ambient_transport}
     Expand both finite matrix products in
     $\mathcal T(M)=(E\otimes F)M(\widetilde E\otimes\widetilde F)^{\dagger}$.
     The term indexed by $(a,b,c,d)$ at row $(w,x)$ and column $(y,z)$ is
     $M_{(a,b),(c,d)}E_{wa}F_{xb}
         \overline{\widetilde E_{yc}\widetilde F_{zd}}$, which is the corresponding
-    entry of the outer-product summand in (\ref{eq:reduction_rank_one_expansion}).
+    entry of the rank-one summand in (\ref{eq:reduction_rank_one_expansion}).
 \end{proof}
 
 \begin{theorem}[Unbiased ambient product sources]

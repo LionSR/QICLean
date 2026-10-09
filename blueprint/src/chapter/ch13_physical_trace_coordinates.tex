@@ -2,14 +2,14 @@
 \label{ch:physical_trace_coordinates}
 
 We record the coordinate and integrability facts used to estimate physical
-output operators in \cite[proof of Theorem~5.2]{OpenAI2026PolynomialPEPS}.
-% Source: 04-compression.tex, lines 383--549.
-The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot\|_1$ are rectangular trace norms.
+output operators in \cite[proof of Theorem~5.2]{OpenAI2026PolynomialPEPS},
+\texttt{04-compression.tex}, lines 383--549. The matrices need not be positive
+or self-adjoint. All norms denoted by $\|\cdot\|_1$ are rectangular trace norms.
 
 \begin{theorem}[Isometric coordinates and the reduced trace norm]
     \label{thm:physical_trace_isometries}
     \lean{Matrix.rectangularTraceNorm_partialTraceRight_isometries}
-
+    \leanok
     Let $X,Y,D,E$ be finite index sets and let
     $U:\C^X\to\C^Y$ and $V:\C^D\to\C^E$ satisfy
     $U^{\dagger}U=I$ and $V^{\dagger}V=I$.
@@ -23,8 +23,7 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     Neither isometry is required to be onto.
 \end{theorem}
 
-\begin{proof}
-    \uses{lem:partial_trace_product_isometry, thm:source_physical_reinsertion}
+\begin{proof}\leanok
     The partial trace on the left equals
     $U(\operatorname{tr}_{D}M)U^{\dagger}$ because
     $V^{\dagger}V=I$. Left and right multiplication by isometries preserve
@@ -36,7 +35,8 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     \lean{OrthonormalBasis.tensorProduct_basisChange}
     \lean{OrthonormalBasis.tensorProduct_rankOne_basisChange}
     \lean{OrthonormalBasis.rectangularTraceNorm_partialTrace_sum_rankOne_basis_eq}
-
+    \leanok
+    \uses{thm:physical_trace_isometries}
     Let $\mathcal H,\mathcal K$ be complex inner-product spaces with finite
     orthonormal bases $b_X,b_Y$ and $b_D,b_E$, respectively.
     Write $C_{YX}$ and $C_{ED}$ for the two changes of coordinates.
@@ -59,8 +59,7 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     \end{align}
 \end{theorem}
 
-\begin{proof}
-    \uses{thm:physical_trace_isometries}
+\begin{proof}\leanok
     A product-basis coordinate is the product of the two endpoint coordinates,
     which gives the Kronecker formula for the change of basis. Multiplication
     by that matrix sends $[z]_{XD}$ to $[z]_{YE}$, proving
@@ -73,7 +72,7 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     \label{thm:physical_trace_block_reconstruction}
     \lean{Matrix.eq_sum_single_kronecker_submatrix}
     \lean{Matrix.rectangularTraceNorm_le_sum_submatrix}
-
+    \leanok
     Let $M$ have rows indexed by $X\times I$ and columns indexed by
     $Y\times J$, where $X,Y$ are finite. Put
     $(M_{xy})_{ij}=M_{(x,i),(y,j)}$. Then
@@ -89,8 +88,7 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     No factor depending on the dimensions of the blocks appears.
 \end{theorem}
 
-\begin{proof}
-    \uses{thm:source_branch_sum, thm:source_physical_reinsertion}
+\begin{proof}\leanok
     At entry $((x,i),(y,j))$, all matrix-unit summands except $(x,y)$ vanish.
     For the inequality, apply the triangle inequality to
     (\ref{eq:physical_trace_block_reconstruction}) and use
@@ -100,7 +98,7 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
 \begin{theorem}[Blocks commute with the discarded partial trace]
     \label{thm:physical_trace_blocks}
     \lean{Matrix.submatrix_partialTraceRight}
-
+    \leanok
     Let $X,Y$ be arbitrary index sets, let $D$ be finite, and let $M$ be
     a matrix with rows and columns indexed by $(X\times Y)\times D$.
     Fix $x,x'\in X$. Taking the $(x,x')$ block after tracing out $D$
@@ -111,7 +109,7 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     \end{align}
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Both sides have entry
     $\sum_{d\in D}M_{((x,y),d),((x',y'),d)}$ at $(y,y')$.
 \end{proof}
@@ -119,7 +117,8 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
 \begin{theorem}[An averaged block bound]
     \label{thm:physical_trace_integral_blocks}
     \lean{Matrix.integral_rectangularTraceNorm_le_sum_submatrix}
-
+    \leanok
+    \uses{thm:physical_trace_block_reconstruction}
     Let $(\Omega,\mu)$ be a measure space and let
     $M(\omega)$ be a finite rectangular block matrix as in
     Theorem~\ref{thm:physical_trace_block_reconstruction}.
@@ -135,8 +134,7 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     of the full trace norm.
 \end{theorem}
 
-\begin{proof}
-    \uses{thm:physical_trace_block_reconstruction}
+\begin{proof}\leanok
     The sum of the block norms is integrable and dominates the nonnegative
     full trace norm by (\ref{eq:physical_trace_block_bound}). If the latter
     is integrable, integrate this inequality and exchange the finite sum
@@ -148,7 +146,7 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     \label{thm:physical_trace_matrix_integrability}
     \lean{ProbabilityTheory.integrable_rectangularTraceNorm_sum}
     \lean{ProbabilityTheory.integrable_rectangularTraceNorm_sum_of_memLp_two}
-
+    \leanok
     Let $\mu$ be a finite measure, let $J$ be finite, and fix finite
     rectangular complex matrices $A_j$. Suppose the scalar functions
     $z_j:\Omega\to\C$ satisfy $z_i\overline{z_j}\in L^1(\mu)$ for all
@@ -158,15 +156,12 @@ The matrices need not be positive or self-adjoint. All norms denoted by $\|\cdot
     No independence or prescribed covariance is assumed.
 \end{theorem}
 
-\begin{proof}
-    \uses{thm:source_branch_sum, thm:source_covariance_error}
+\begin{proof}\leanok
     The diagonal product hypothesis gives $|z_j|^2\in L^1$.
     Taking its square root gives measurability of $|z_j|$, and finiteness
     of the measure then gives $|z_j|\in L^1$.
     The Gram matrix of $\sum_jz_jA_j$ depends only on the measurable pair
-    products. Here we use only the Gram-matrix measurability argument in
-    Theorem~\ref{thm:source_covariance_error}, with no covariance assumption
-    or estimate. Its positive square root therefore shows that the trace norm
+    products. Its positive square root therefore shows that the trace norm
     is measurable. The pointwise bound
     \begin{align}
         \left\|\sum_j z_jA_j\right\|_1\leq\sum_j|z_j|\,\|A_j\|_1

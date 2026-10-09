@@ -10,3 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.Channel.PerronFrobenius.Existence
 import QICLean.Channel.PerronFrobenius.Normalization
+import QICLean.Channel.PerronFrobenius.SpectralRadiusEigenvector

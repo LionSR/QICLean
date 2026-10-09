@@ -12,9 +12,6 @@ Changing the input and output coordinates by orthonormal bases conjugates a
 continuous linear map by linear isometric equivalences. Its matrix therefore
 has exactly the same Euclidean operator norm. No relation between the input and
 output dimensions is required.
-
-This coordinate identity is used in polynomial-PEPS Theorem 5.2,
-`eq:compression-exterior-contraction`.
 -/
 
 noncomputable section
