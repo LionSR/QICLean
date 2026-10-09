@@ -67,7 +67,7 @@ theorem regionalFiveFactorCopyEquiv_subsystemPerm
         x (σ⁻¹ j) (some (some v)) else x j (some (some v)))
     funext v
     by_cases hS : (0 : Fin 5) ∈ S <;>
-      simp [hS, regionalOriginalRegion, regionalFactorIndex, v.property]
+      simp [hS, regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex, v.property]
   · change (if (1 : Fin 5) ∈ S then
         (fun v : Y => x (σ⁻¹ j) (some (some v))) else
         (fun v : Y => x j (some (some v)))) =
@@ -76,7 +76,7 @@ theorem regionalFiveFactorCopyEquiv_subsystemPerm
     funext v
     have hv : v.val ∉ Q := fun h => Finset.disjoint_left.mp hQY h v.property
     by_cases hS : (1 : Fin 5) ∈ S <;>
-      simp [hS, regionalOriginalRegion, regionalFactorIndex, hv, v.property]
+      simp [hS, regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex, hv, v.property]
   · change (if (2 : Fin 5) ∈ S then
         (fun v : ↥((Q ∪ Y)ᶜ) => x (σ⁻¹ j) (some (some v))) else
         (fun v : ↥((Q ∪ Y)ᶜ) => x j (some (some v)))) =
@@ -89,14 +89,14 @@ theorem regionalFiveFactorCopyEquiv_subsystemPerm
     have hvY : v.val ∉ Y := fun h =>
       Finset.mem_compl.mp v.property (Finset.mem_union_right Q h)
     by_cases hS : (2 : Fin 5) ∈ S <;>
-      simp [hS, regionalOriginalRegion, regionalFactorIndex, hvQ, hvY]
+      simp [hS, regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex, hvQ, hvY]
   · change (if (3 : Fin 5) ∈ S then x (σ⁻¹ j) (some none) else x j (some none)) =
       (if some none ∈ regionalOriginalRegion Q Y S then
         x (σ⁻¹ j) (some none) else x j (some none))
-    simp [regionalOriginalRegion, regionalFactorIndex]
+    simp [regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex]
   · change (if (4 : Fin 5) ∈ S then x (σ⁻¹ j) none else x j none) =
       (if none ∈ regionalOriginalRegion Q Y S then x (σ⁻¹ j) none else x j none)
-    simp [regionalOriginalRegion, regionalFactorIndex]
+    simp [regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex]
 
 variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
