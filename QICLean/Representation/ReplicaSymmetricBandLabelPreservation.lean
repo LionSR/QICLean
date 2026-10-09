@@ -119,6 +119,16 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
           ((congrArg (fun H ↦ H * Z) (hsinglePe a ell).eq.symm).trans
             ((Matrix.mul_assoc (labelProj (subsystemPerm k ι {a}) ell) Pe Z).trans
               (congrArg (fun H ↦ labelProj (subsystemPerm k ι {a}) ell * H) hPZ)))))).symm
+  have hsingleA (a : F) (ell : IrrepLabel (Equiv.Perm (Fin k))) (j : J) (g : Fin G) :
+      Commute (labelProj (subsystemPerm k ι {a}) ell) (A j g) := by
+    simpa only [A, replicaMetric,
+      labelObservable_inv (subsystemPerm k ι (Q j g))
+        (fun l ↦ (replicaLabelWeight_pos ι ht l).ne'),
+      labelObservable_inv (subsystemPerm k ι (Q j g ∪ Y j g)ᶜ)
+        (fun l ↦ (replicaLabelWeight_pos ι ht l).ne')] using
+      (((hsingle a ell (Q j g) (fun l ↦ (replicaLabelWeight ι t l)⁻¹)).mul_right
+        (hsingle a ell (Q j g ∪ Y j g)ᶜ (fun l ↦ (replicaLabelWeight ι t l)⁻¹))).mul_right
+          (hsingle a ell (Y j g) (replicaLabelWeight ι t))).pow_right 2
   done
 
 end TensorPower
