@@ -1,0 +1,138 @@
+\section{The joint good auxiliary exponential}
+
+The good auxiliary estimate in \cite[Section~8]{OpenAI2026AreaLaw}
+uses the intersection of the two original whole-copy label subspaces.
+All coordinate sets in this section are finite and may be empty.
+Write the five one-copy factors as $Q,Y,V,C,R$, with $Q,Y,V$ physical
+and $C,R$ auxiliary. The copy number $k$ is a nonnegative integer.
+Let $\eta$ be the coordinate bijection that rearranges their $k$ copies
+as $(Q\times Y\times V)^k\times(C^k\times R^k)$.
+
+\begin{theorem}[Auxiliary permutations in five-factor coordinates]
+  \label{thm:five_factor_auxiliary_permutations}
+  \lean{TensorPower.fiveFactorCopiesEquiv_auxiliary_permOp}
+  Under $\eta$, permuting the copies of $C$ by $\sigma\in S_k$ becomes
+  $I\otimes(U_C(\sigma)\otimes I)$, and permuting those of $R$ becomes
+  $I\otimes(I\otimes U_R(\sigma))$.
+\end{theorem}
+\begin{proof}
+  \uses{def:five_factor_copies_equiv}
+  The coordinate bijection retains the physical configuration and
+  rearranges the auxiliary coordinates. Applying either permutation
+  before or after this rearrangement gives the same coordinate tuple.
+  The corresponding permutation matrix entries therefore agree.
+\end{proof}
+
+\begin{theorem}[Auxiliary group-algebra actions]
+  \label{thm:five_factor_auxiliary_group_algebra}
+  \lean{TensorPower.fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep}
+  Let $\theta\colon H\to S_k$ be a group homomorphism and let
+  $a=\sum_h a_hh\in\mathbb C[H]$. The auxiliary action of $a$ on $C$
+  becomes $I\otimes((\sum_h a_hU_C(\theta(h)))\otimes I)$ under $\eta$.
+  On $R$ it becomes $I\otimes(I\otimes\sum_h a_hU_R(\theta(h)))$.
+  The sums are finite; injectivity of $\theta$ is not required.
+\end{theorem}
+\begin{proof}
+  \uses{thm:five_factor_auxiliary_permutations}
+  The claim holds for a single group element by the permutation
+  identity, and both sides preserve scalar multiplication and addition.
+\end{proof}
+
+Specify good and bad groups of $m,r$ copies, with $m+r=k$.
+Let $P_C,P_R$ be the projections onto original whole-copy labels
+$\lambda_C,\lambda_R$, and let $F_C,F_R$ be their good-copy label
+observables. For an arbitrary finite spectator register $A$, set
+$P=I_A\otimes(P_C\otimes P_R)$ and
+$L=I_A\otimes(F_C\otimes I+I\otimes F_R)$. Put
+\begin{align}
+  b={}&\log\dim\lambda_C+\log\dim\lambda_R
+       -r(\log|C|+\log|R|)-2\log\binom{k}{r}.
+  \label{eq:joint_auxiliary_floor}
+\end{align}
+
+\begin{theorem}[Joint auxiliary entropy bound]
+  \label{thm:joint_auxiliary_entropy_floor}
+  \lean{TensorPower.copyPerm_groupedGood_auxiliaryPair_labelEntropy_compression}
+  The matrix $P$ is an orthogonal projection, $LP=PL$, and $bP\leq PLP$.
+\end{theorem}
+\begin{proof}
+  \uses{thm:good_auxiliary_label_compression}
+  Apply the good auxiliary bound separately to $C$ and $R$.
+  Tensor each positive difference with the other positive label
+  projection and with $I_A$, then add. Their two scalar floors sum
+  to~(\ref{eq:joint_auxiliary_floor}). The label projections are
+  orthogonal and each commutes with its own good-copy observable,
+  which also proves the stated projection and commutation identities.
+\end{proof}
+
+\begin{theorem}[Joint auxiliary exponential bound]
+  \label{thm:joint_auxiliary_exponential_bound}
+  \lean{TensorPower.copyPerm_groupedGood_auxiliaryPair_exp_compression}
+  For every $a\geq0$, $Pe^{-aL}P\leq e^{-ab}P$.
+\end{theorem}
+\begin{proof}
+  \uses{thm:joint_auxiliary_entropy_floor,thm:invariant_range_negative_exp}
+  The matrix $L$ is Hermitian. Apply the negative exponential
+  inequality on the invariant range of $P$ to $bP\leq PLP$.
+\end{proof}
+
+In the original five-factor coordinates, write $L^g_S$ for the
+good-copy label observable of the factors in $S$, and write $P^k_S(\lambda)$
+for a whole-copy label projection. Define
+\begin{align}
+  P_0&=P^k_C(\lambda_C)P^k_R(\lambda_R),\notag\\
+  G&=L^g_{QC}+L^g_{VR}-L^g_Y,\notag\\
+  L_0&=L^g_C+L^g_R.
+  \label{eq:joint_auxiliary_observables}
+\end{align}
+
+\begin{theorem}[The auxiliary floor in the original coordinates]
+  \label{thm:five_factor_joint_auxiliary_floor}
+  \lean{TensorPower.fiveFactor_groupedGood_auxiliaryPair_floor}
+  The matrix $P_0$ is an orthogonal projection and $bP_0\leq P_0L_0P_0$.
+\end{theorem}
+\begin{proof}
+  \uses{thm:five_factor_auxiliary_group_algebra,thm:joint_auxiliary_entropy_floor}
+  The coordinate bijection sends $P_0$ and $L_0$ to $P$ and $L$
+  with spectator register $(Q\times Y\times V)^k$.
+  Transport the joint auxiliary entropy bound through this bijection.
+\end{proof}
+
+\begin{theorem}[Removing the joint auxiliary exponential]
+  \label{thm:five_factor_joint_auxiliary_removal}
+  \lean{TensorPower.fiveFactor_groupedGood_exp_le_without_auxiliary}
+  If $a\geq0$ and $P_0v=v$, then
+  \begin{align}
+    \operatorname{Re}(v^*e^{-aG}v)
+    &\leq e^{-ab}\operatorname{Re}(v^*e^{-a(G-L_0)}v).
+    \label{eq:joint_auxiliary_removal}
+  \end{align}
+\end{theorem}
+\begin{proof}
+  \uses{thm:five_factor_joint_auxiliary_floor,thm:invariant_range_negative_exp,thm:fixed_vector_exp_comparison}
+  Nesting and disjointness of the indicated factors imply that $G-L_0$
+  commutes with both $P_0$ and $L_0$. The auxiliary floor gives
+  $P_0e^{-aL_0}P_0\leq e^{-ab}P_0$. Apply the fixed-vector exponential
+  comparison with generators $-a(G-L_0)$ and $-aL_0$.
+\end{proof}
+
+\begin{theorem}[Joint auxiliary removal for the actual excitation component]
+  \label{thm:excitation_joint_auxiliary_removal}
+  \lean{Matrix.replicaExcitationComponent_exp_good_le_without_auxiliary}
+  Let $\Omega$ be a physical one-copy vector and let $B$ be a subset of
+  the $k$ copies. Suppose a vector $u$ is fixed separately by the two
+  original auxiliary label projections. Form its actual excitation
+  component $w=(E_B(\Omega)\otimes I)u$ and express it as $f=w\circ\eta$
+  in five-factor coordinates. With $r=|B|$ and the good group $B^c$,
+  inequality~(\ref{eq:joint_auxiliary_removal}) holds for $f$.
+  Neither $u$ nor $\Omega$ needs normalization, and no symmetry of $u$
+  is assumed.
+\end{theorem}
+\begin{proof}
+  \uses{thm:replica_excitation_preserves_fixed,thm:five_factor_auxiliary_group_algebra,thm:five_factor_joint_auxiliary_removal}
+  The two original label equations imply the equation for their
+  product. Acting only on the physical factors, $E_B(\Omega)\otimes I$
+  preserves this equation. The coordinate identities then give
+  $P_0f=f$. Apply Theorem~\ref{thm:five_factor_joint_auxiliary_removal}
+  with the specified good/bad split.
+\end{proof}
