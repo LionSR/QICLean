@@ -8,6 +8,7 @@ physical and auxiliary factor.
 \begin{definition}[Separating the auxiliary copies]
 \label{def:good_auxiliary_split}
 \lean{Matrix.goodAuxiliarySplit}
+\leanok
 Separate the two auxiliary registers by the coordinate equivalence
 \begin{align*}
  (C^k\times R^k)\simeq
@@ -19,6 +20,7 @@ Both good registers precede both bad registers. Denote this equivalence by $e$.
 \begin{theorem}[Successive traces of the bad copies]
 \label{thm:replica_good_configuration_successive_traces}
 \lean{Matrix.replicaGoodConfigurationMarginal_eq}
+\leanok
 \uses{def:good_auxiliary_split,def:replica_good_configuration_marginal}
 Let $w$ be an excitation component of an arbitrary vector, and let $D$ be
 its vector density after tracing the bad physical copies, retaining the
@@ -28,6 +30,7 @@ followed by the trace over the bad auxiliary copies. No normalization of
 the one-copy vector or of $w$ is required for this identity.
 \end{theorem}
 \begin{proof}
+\leanok
 Both expressions sum the same matrix entries over the bad physical and
 two bad auxiliary configurations. Interchanging these finite sums gives
 the stated identity.
@@ -36,6 +39,7 @@ the stated identity.
 \begin{theorem}[Partial trace on a tensor factor]
 \label{thm:partial_trace_along_tensor_factor}
 \lean{Matrix.partialTraceRightAlong_kronecker}
+\leanok
 Let $e:K\simeq C\times R$, where $R$ is finite. For arbitrary matrices
 $A$ and $B$ on the first factor and on $K$, respectively, the partial
 trace on the $R$ coordinate satisfies
@@ -46,6 +50,7 @@ trace on the $R$ coordinate satisfies
 where the coordinates of $B$ are changed by $e$ on both sides.
 \end{theorem}
 \begin{proof}
+\leanok
 In each matrix entry, the entry of $A$ is independent of the traced
 coordinate and can be taken outside the finite sum.
 \end{proof}
@@ -54,6 +59,7 @@ coordinate and can be taken outside the finite sum.
 \begin{theorem}[Product structure of the good-copy density]
 \label{thm:replica_good_configuration_product}
 \lean{Matrix.partialTraceRight_replicaExcitationComponent_goodFin_density,Matrix.replicaGoodConfigurationMarginal_product}
+\leanok
 Let $\Omega$ be a unit vector on the three physical factors $Q,Y,V$.
 For an arbitrary original vector, let $w$ be its excitation component
 associated to a set $B$ of bad copies. Write $G=B^c$ and $m=|G|$.
@@ -71,6 +77,7 @@ This is the product decomposition used in
 \cite[Section~8, lines~520--560]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:replica_good_copy_product_density,thm:replica_good_configuration_successive_traces,thm:partial_trace_along_tensor_factor}
 Every good physical copy of the excitation component equals $\Omega$.
 Taking the partial trace of its vector density over the bad physical
@@ -83,6 +90,7 @@ the total trace.
 \begin{theorem}[Physical expectations of a good-copy density]
 \label{thm:replica_good_configuration_physical_expectation}
 \lean{Matrix.partialTraceRight_replicaGoodConfigurationMarginal_physical,Matrix.trace_replicaGoodConfigurationMarginal_physical_mul}
+\leanok
 With the preceding notation,
 \begin{align*}
  \operatorname{Tr}_{C_G R_G}\rho_G
@@ -94,6 +102,7 @@ for every matrix $H$ on the good physical copies. No normalization or
 nonvanishing of $w$, and no positivity of $H$, is required.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:replica_good_configuration_product}
 Take the auxiliary trace of the product identity, then use the defining
 adjoint identity for partial trace.
