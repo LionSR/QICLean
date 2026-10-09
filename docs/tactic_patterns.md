@@ -575,6 +575,30 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
 
+### Reindexing sums and scalar multiples — existing lemmas (2026-10-09)
+
+- **Pattern:** Apply a matrix reindexing identity to fixed row and column
+  maps before simplifying a transported representation.
+- **Seen:** The addition and scalar branches of
+  `TensorPower.fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep` in
+  `QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean`, and the exponential
+  transport in the separate `GroupedConfigurationTransport` contribution.
+  `Matrix.PosDef.lower_pin_of_reindexed_inverse_compression` in
+  `QICLean/Analysis/IsometricLowerPin.lean` also uses subtraction and scalar
+  reindexing when transporting a positive matrix difference.
+- **Abstraction:** Reuse Mathlib's `Matrix.submatrix_add`,
+  `Matrix.submatrix_sub` and `Matrix.submatrix_smul`, followed by the
+  corresponding `Pi.add_apply`, `Pi.sub_apply` or `Pi.smul_apply`.
+  The matrix lemmas are equalities of functions of the two coordinate
+  maps. Their applications must reduce before a transported matrix can
+  match a previously established identity. No new tactic is needed.
+- **Caveat:** When only an outer sum is to be transported, rewrite it once.
+  Recursive simplification can expand the defining sum of a central
+  observable and obscure the existing representation identity. For inverse
+  coordinate equivalences, use `Equiv.symm_comp_self` before
+  `Matrix.submatrix_id_id`; expanding composition into a lambda first can
+  leave the identity reindexing unreduced.
+
 ### Symmetry of an excitation component under a copy subgroup — candidate (2026-10-09)
 
 - **Pattern:** Prove that the subgroup preserves the actual excited subset,
@@ -631,3 +655,16 @@ by the same rectangular coordinate map; use
 not a separate isometry identity or commutation with a metric. The regional
 cutoff covariance applies these arguments to the actual rank-one ground
 projector, the defect cutoff, and the original auxiliary labels.
+### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
+
+- **Pattern:** Transport an eventual Schur projection-mass bound through the
+  actual exterior coordinate isometry, retaining the same label sequence.
+- **Seen:** `Representation/CompressedTypicalLabelSequence.lean` and
+  `Representation/SchmidtBellCommonCutoffs.lean`; two occurrences in two files.
+- **Abstraction:** Both use
+  `TensorPower.norm_sq_labelProj_compressedTypicalSite_prod`, followed by
+  reciprocal and natural-power coercion identities. A third independent use
+  should supply a helper for the eventual inequality.
+- **Caveats:** The mass belongs to the normalized selected state before any
+  common regional cutoff. It is not a conditional mass after projecting,
+  and no second label selection is made.

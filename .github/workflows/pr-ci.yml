@@ -288,6 +288,244 @@ jobs:
               "$file"
           done
 
+      - name: Build the actual rough lower bound and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.ReplicaLowDefectRoughLowerPin \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the actual rough lower bound strictly
+        timeout-minutes: 10
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Algebra/OrthogonalProjection.lean \
+            QICLean/Representation/SymmetricProjectionCoordinates.lean \
+            QICLean/Analysis/IsometricLowerPin.lean \
+            QICLean/Representation/ReplicaLowDefectSymmetricCoordinates.lean \
+            QICLean/Analysis/ReplicaLowDefectRoughLowerPin.lean \
+            QICLeanTest/ReplicaLowDefectRoughLowerPinAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build the actual rough inverse compression and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.ReplicaInverseRoughCompression \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the actual rough inverse compression strictly
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaComponentInverseRoughUniform.lean \
+            QICLean/Analysis/ReplicaInverseRoughCompression.lean \
+            QICLeanTest/ReplicaInverseRoughCompressionAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build the rough excitation-component estimate and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.ReplicaComponentInverseRough \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the rough excitation-component estimate strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaComponentInverseRough.lean \
+            QICLeanTest/ReplicaComponentInverseRoughAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build the actual component inverse comparison and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.ReplicaComponentInverseGoodExpectation \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the actual component inverse comparison strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaComponentInverseGoodExpectation.lean \
+            QICLeanTest/ReplicaComponentInverseGoodAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build the joint auxiliary exponential and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.ReplicaJointAuxiliaryExponential \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the joint auxiliary exponential strictly
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/SubsystemLabelCommutation.lean \
+            QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean \
+            QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean \
+            QICLean/Representation/GoodAuxiliaryPairCompression.lean \
+            QICLean/Analysis/ReplicaJointAuxiliaryExponential.lean \
+            QICLeanTest/ReplicaJointAuxiliaryAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build grouped coordinates and good-copy expectations with timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Representation.GroupedConfigurationTransport QICLean.Analysis.ReplicaGoodConfigurationExpectation 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check grouped configuration observables strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/GroupedConfigurationTransport.lean \
+            QICLeanTest/GroupedConfigurationTransportAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check good-copy expectations strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationExpectation.lean \
+            QICLeanTest/ReplicaGoodCopyExpectationsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build the physical good-copy exponential and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.ReplicaGoodPhysicalExponential \
+            QICLean.Algebra.TensorPowerPartialTrace QICLean.Analysis.ReplicaGoodConfigurationPairMarginal \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check good-copy partial traces strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Algebra/TensorPowerPartialTrace.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationPairMarginal.lean \
+            QICLeanTest/ReplicaGoodCopyPartialTracesAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check good-copy merge moments strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodConfigurationMergeTransport.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationMergeMoment.lean \
+            QICLeanTest/ReplicaGoodCopyMergeMomentsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the physical good-copy exponential strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodPhysicalExponential.lean \
+            QICLeanTest/ReplicaGoodPhysicalExponentialAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check grouped inverse replica metrics strictly
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/ReplicaGroupedInverse.lean \
+            QICLean/Representation/ReplicaDisjointMetricPositivity.lean \
+            QICLeanTest/ReplicaGroupedInverseAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check component scalar estimates strictly
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/FiveMomentExponentialBound.lean \
+            QICLean/Analysis/ReplicaComponentUniformRate.lean \
+            QICLeanTest/ReplicaComponentScalarAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the noncommuting inverse-compression comparison strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/InverseCompressionLowerPin.lean \
+            QICLeanTest/InverseCompressionLowerPinAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
       # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to
@@ -354,8 +592,11 @@ jobs:
           {
             lake build QICLean.Analysis.ProjectionQuadraticBound
             lake build QICLean.Analysis.CommutingExponentialOrder QICLean.Analysis.ProjectionCfcUpperBound QICLean.Analysis.InvariantExponentialComparison
+            lake build QICLean.Representation.ReplicaGroupedInverse QICLean.Representation.ReplicaDisjointMetricPositivity
+            lake build QICLean.Analysis.FiveMomentExponentialBound QICLean.Analysis.ReplicaComponentUniformRate
             lake build QICLean.Analysis.ReplicaExcitationCompression
             lake build QICLean.Analysis.ReplicaLowDefectProjection
+            lake build QICLean.Analysis.InverseCompressionLowerPin
             lake build
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
