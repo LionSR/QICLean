@@ -22,6 +22,7 @@ import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingHermitian
+import QICLean.Analysis.CompressedInverseFloor
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ContractionChain
@@ -51,6 +52,7 @@ import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.FloorKKT
+import QICLean.Analysis.FloorPin
 import QICLean.Analysis.GammaRatio
 import QICLean.Analysis.GapPerturbation
 import QICLean.Analysis.GaussianFilter
@@ -161,6 +163,7 @@ import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
+import QICLean.Analysis.SpectralExponentialDrop
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker

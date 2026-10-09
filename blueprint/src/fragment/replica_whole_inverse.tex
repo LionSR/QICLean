@@ -1,0 +1,51 @@
+\section{Whole-space inverse comparison}
+
+% OpenAI, A two-dimensional area law from a global spectral gap,
+% September 24, 2026, revision adc7f1241b42e322a6451854ab7e4b4c146bf78a:
+% 05-replicas.tex, lines 287--316, replicas:w-definition and replicas:W-comparison;
+% 07-comparators.tex, lines 454--476, preceding comparator:whole-inverse.
+% The statement below is the whole-label auxiliary, before the subgroup
+% decomposition and its binomial factor. Native declaration checking is pending.
+
+\begin{theorem}[Inverse comparison for disjoint replica metrics]
+    \label{thm:replica_whole_inverse}
+    \lean{TensorPower.exists_replicaMetric_inv_square_le_exp}
+    \uses{thm:replica_metric_basic, thm:replica_metric_comparison,
+        thm:schur_label_commutation, lem:orthogonal_resolution_cfc}
+    Let $V$ be finite and let
+    $\mathcal V=\bigotimes_{v\in V}\C^{n_v}$, where $n_v\ge1$ for every $v$.
+    Let $t>0$, and use the common replica weights of
+    Theorem~\ref{thm:replica_metric_basic} with this value of $t$.
+    There exists $C\ge0$, depending only on these dimensions and $t$, such that
+    for every $k\ge0$ and every three pairwise disjoint subsets $P,Y,F$ of $V$,
+    \begin{align}
+        \bigl((W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k})^2\bigr)^{-1}
+         & \le (k+2)^C
+        \exp\bigl(-2t(F_{P,k}+F_{F,k}-F_{Y,k})\bigr).
+    \end{align}
+    The subsets need not cover $V$. The assertion includes empty subsets,
+    $k=0$, and $V=\varnothing$, with the empty tensor product interpreted as $\C$.
+    This is the whole-label comparison preceding the subgroup comparison
+    in the proof of the lower comparator in~\cite[Section~7]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \uses{thm:replica_metric_basic, thm:replica_metric_comparison,
+        thm:schur_label_commutation, lem:orthogonal_resolution_cfc}
+    The label projectors of the three disjoint regions commute. Their products
+    therefore give a common orthogonal resolution. On a nonzero block with
+    labels $\alpha,\beta,\gamma$ for $P,F,Y$, respectively, the inverse metric
+    has eigenvalue $q=(w_k(\alpha)w_k(\beta)/w_k(\gamma))^2$, and the label
+    observable has eigenvalue
+    $g=\log d_\alpha+\log d_\beta-\log d_\gamma$.
+    By Theorem~\ref{thm:replica_metric_comparison}, a constant $C_0\ge0$
+    satisfies $|\log w_k(\lambda)+t\log d_\lambda|\le C_0\log(k+2)$
+    on each occurring label. Hence
+    \begin{align}
+        \log q
+         & =2\bigl(\log w_k(\alpha)+\log w_k(\beta)-\log w_k(\gamma)\bigr)
+        \le 6C_0\log(k+2)-2tg.
+    \end{align}
+    Exponentiating and summing the nonnegative coefficient differences against
+    the common orthogonal projectors gives the assertion with $C=6C_0$.
+\end{proof}
