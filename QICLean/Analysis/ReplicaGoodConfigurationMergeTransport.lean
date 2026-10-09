@@ -73,7 +73,7 @@ private theorem firstPair_intertwine (j : Fin 3)
         (subsystemPerm m ι (firstPairRegion j) σ x) := by
   fin_cases j <;> ext i <;>
     simp [firstPairRegion, pairAction, fiveFactorPairMiddleEquiv,
-      prodLeft, subsystemPerm_apply, pairCopyLeft, pairCopyRight, pairCopyBoth] <;> rfl
+      prodLeft, pairCopyLeft, pairCopyRight, pairCopyBoth] <;> rfl
 
 private theorem secondPair_intertwine (j : Fin 3)
     (σ : Equiv.Perm (Fin m)) (x : Config m ι) :
@@ -84,7 +84,7 @@ private theorem secondPair_intertwine (j : Fin 3)
         (subsystemPerm m ι (secondPairRegion j) σ x) := by
   fin_cases j <;> ext i <;>
     simp [secondPairRegion, pairAction, fiveFactorPairMiddleEquiv,
-      prodLeft, prodRight, subsystemPerm_apply, pairCopyLeft, pairCopyRight,
+      prodLeft, prodRight, pairCopyLeft, pairCopyRight,
       pairCopyBoth] <;> rfl
 
 variable [∀ f, Fintype (ι f)] [∀ f, DecidableEq (ι f)]
