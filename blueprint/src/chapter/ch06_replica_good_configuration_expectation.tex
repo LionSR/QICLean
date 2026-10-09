@@ -4,6 +4,7 @@
 \begin{definition}[Coordinates of the traced copies]
 \label{def:bad_configuration_trace_equiv}
 \lean{TensorPower.badConfigurationTraceEquiv}
+\leanok
 Write $[k]=\{0,\ldots,k-1\}$. Let $B\subseteq[k]$ have cardinality $r$, and fix its standard finite
 enumeration $[r]\simeq B$. A five-factor configuration on $[r]$
 corresponds to a physical $QYV$ configuration indexed by $B$ and
@@ -16,6 +17,7 @@ coordinate sets. This is the change of traced coordinates used in
 \begin{theorem}[The actual density as a partial trace]
 \label{thm:replica_good_configuration_grouped_density}
 \lean{Matrix.replicaGoodConfigurationMarginal_eq_grouped_partialTrace}
+\leanok
 Let $\Omega$ and $u$ be arbitrary physical and full vectors, and put
 $w=(R_B\otimes I)u$. Let $f$ be $w$ in five-factor coordinates,
 and let $\eta$ be the coordinate decomposition into the actual good
@@ -27,7 +29,7 @@ $\rho_G$ satisfies
 \end{align*}
 No normalization or symmetry is assumed.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 \uses{def:bad_configuration_trace_equiv,def:grouped_configuration_equiv}
 The good coordinates in the two descriptions coincide. The bad
 coordinates differ exactly by the equivalence in
@@ -38,6 +40,7 @@ summation variable in the partial trace proves the identity.
 \begin{theorem}[Good-subgroup exponential expectations]
 \label{thm:replica_good_configuration_exponential_expectation}
 \lean{Matrix.replicaExcitationComponent_exp_good_eq_trace_goodConfigurationMarginal,Matrix.replicaExcitationComponent_exp_good_without_auxiliary_eq_trace}
+\leanok
 Retain the same $\Omega,u,B,w,f$ and density $\rho_G$, and let
 $m=|B^c|$. For every finite family of subsystems $S_j$ and real
 coefficients $a_j$,
@@ -61,7 +64,7 @@ normalization, symmetry or commutation assumptions on the region
 family, as used in
 \cite[Section~8, lines~454--560]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 \uses{thm:replica_good_configuration_grouped_density,thm:grouped_configuration_exponential}
 In the grouped coordinates the full exponential equals the good-copy
 exponential tensored with the bad-copy identity. The defining identity
