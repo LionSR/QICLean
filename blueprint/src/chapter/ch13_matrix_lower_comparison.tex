@@ -1,0 +1,105 @@
+\section{Matrix lower comparisons}
+
+All matrices in this section are complex square matrices of the same finite
+size; the size may be zero. The statements are independent of the replica
+parameters.
+
+\begin{theorem}[A metric floor from a compressed inverse bound]
+    \label{thm:area_law_compressed_inverse_floor}
+    \lean{Matrix.compressed_square_floor_of_inv_le}
+    \leanok
+    Let $L$ be an invertible Hermitian matrix and let $S$ be an
+    idempotent matrix commuting with $L$. Let $B>0$. If
+    $S(L^2)^{-1}S\le BS$ in the positive-semidefinite order, then
+    \begin{align}
+        B^{-1}S\le SL^2S.
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    Congruence by $L$ preserves the matrix inequality. Commutation,
+    idempotence, and invertibility give
+    \begin{align}
+        LS(L^2)^{-1}SL
+        &=S\bigl[L(L^2)^{-1}L\bigr]S=S,\\
+        LSL&=SL^2S.
+    \end{align}
+    Thus $S\le BSL^2S$. Multiplication by the positive scalar
+    $B^{-1}$ proves the assertion.
+\end{proof}
+
+This is the matrix congruence step of the lower comparison in
+\cite{OpenAI2026AreaLaw}, \texttt{07-comparators.tex}, lines 454--476
+and 603--621.
+
+\begin{theorem}[Averaging two matrix lower bounds]
+    \label{thm:area_law_floor_pin}
+    \lean{Matrix.floor_pin_le}
+    \leanok
+    Let $A,P$ be complex square matrices and let $b,c\in\R$.
+    If $2bI\le A$ and $cP\le A$ in the positive-semidefinite order, then
+    \begin{align}
+        b(I-P)+(b+c/2)P\le A.
+    \end{align}
+    No projection or commutation hypothesis on $P$ is required.
+\end{theorem}
+
+\begin{proof}\leanok
+    Adding the two inequalities and multiplying by the positive scalar
+    $1/2$ gives $\frac12(2bI+cP)\le A$. Its left side equals
+    $b(I-P)+(b+c/2)P$.
+\end{proof}
+
+This averaging step is used before evaluating the mean tree in
+\cite[proof of the two-sector lower comparison]{OpenAI2026AreaLaw},
+\texttt{07-comparators.tex}, lines 603--615.
+
+
+\begin{theorem}[Preserving a floor under identity extension]
+    \label{thm:area_law_identity_extension_floor}
+    \lean{Matrix.identity_extension_floor}
+    \leanok
+    Let $T,S$ be complex square matrices and let $c\in\R$. If
+    $S\le I$, $c\le1$, and $cS\le T$, then
+    \begin{align}
+        cI\le T+(I-S).
+    \end{align}
+    In particular, if $S$ is an orthogonal projection and $T$ is
+    supported on its range, this preserves the floor when $T$ is
+    extended by the identity on the complementary subspace.
+\end{theorem}
+
+\begin{proof}\leanok
+    Since $I-S\ge0$ and $c\le1$, one has $c(I-S)\le I-S$.
+    Add this inequality to $cS\le T$.
+\end{proof}
+
+\begin{theorem}[Functional calculus of an affine projection]
+    \label{thm:area_law_affine_projection_calculus}
+    \lean{Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem}
+    \leanok
+    Let $Q$ be an orthogonal projection on a finite-dimensional complex
+    Hilbert space. For arbitrary real numbers $b,d$ and an arbitrary
+    function $f:\R\to\R$, one has
+    \begin{align}
+        f\bigl(bI+(d-b)Q\bigr)
+        &=f(b)(I-Q)+f(d)Q.
+    \end{align}
+    Functional calculus uses the restriction of $f$ to the finite
+    spectrum of its argument. In particular, no continuity assumption
+    on $f$ or distinctness assumption on $b,d$ is required.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:orthogonal_resolution_cfc}
+    The projections $I-Q$ and $Q$ are orthogonal and sum to the identity.
+    On their respective ranges, $bI+(d-b)Q$ acts by $b$ and $d$.
+    Lemma~\ref{lem:orthogonal_resolution_cfc} gives the functional
+    calculus on this orthogonal resolution: it acts by $f(b)$
+    and $f(d)$, giving the stated identity. Either range may be zero.
+\end{proof}
+
+This calculation is used in the two-sector lower comparison of the
+area-law paper \cite[proof of the two-sector lower comparison]{OpenAI2026AreaLaw},
+\texttt{07-comparators.tex}, lines 603--640. For positive
+$b,d$, it applies in particular to the logarithm and every real power.
