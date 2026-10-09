@@ -1,0 +1,53 @@
+\section{Original labels of the normalized band-product vector}
+\label{sec:replica_symmetric_band_label_preservation}
+
+\begin{theorem}[Preservation of the original single-site labels]
+\label{thm:replica_symmetric_band_label_preservation}
+\lean{TensorPower.replicaMetric_normalized_symProj_bandProduct_mem_original_labels}
+Let $F$ be a finite set of sites with finite nonempty local configuration
+sets, let $k\ge0$ and $t\ge0$, and let $W(S)$ be the regional replica
+metric with the original full-system weights. Write $\Pi$ for simultaneous
+copy symmetry and fix $Z$ with $Z^*Z=I$ and $ZZ^*=\Pi$.
+For terminal labels $j\in J$ and bands $g\in\{0,\ldots,G-1\}$, assume
+\begin{align*}
+ Q_{jg}\cap Y_{jg}=\varnothing,\qquad
+ Q_{jg}\cup Y_{jg}\subseteq Q_{j'h}\quad(g<h)
+\end{align*}
+for all $j,j'$. For one weighted mean tree $T$, put
+\begin{align*}
+ A_{jg}&=\bigl(W(Q_{jg})^{-1}W((Q_{jg}\cup Y_{jg})^c)^{-1}W(Y_{jg})\bigr)^2,
+ &B_{jg}&=Z^*A_{jg}Z,
+ &M&=\prod_{g=0}^{G-1}T(B_{\cdot g}).
+\end{align*}
+Then $M$ is positive definite. For every real $s$ and every nonzero
+$\xi$ satisfying $\Pi\xi=\xi$, the vectors
+\begin{align*}
+ w=M^{-s}Z^*\xi,\qquad v=Z\frac{w}{\lVert w\rVert}
+\end{align*}
+satisfy $w\ne0$, $\lVert v\rVert=1$ and $\Pi v=v$.
+Moreover, for every site $a$ and representation label $\ell$,
+\begin{align*}
+ \pi_{\{a\},k}^{\ell}\xi=\xi
+ \quad\Longrightarrow\quad
+ \pi_{\{a\},k}^{\ell}v=v.
+\end{align*}
+The same $Z,T,\xi$ and original labels occur throughout. Repeated
+terminal labels, zero tree weights and $G=0$ are allowed.
+This is the label-preservation step used in
+\cite[Section~7, lines~388--401; Section~8, lines~421--443]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{thm:replica_symmetric_band_compressions,thm:replica_symmetric_band_mean_roots,thm:schur_label_commutation,thm:signed_subgroup_label_symmetric_nonnegative,thm:isometric_intertwining_commute,def:construction_domain_extension}
+The compressed leaves are positive definite, and the roots of distinct
+bands commute. Their ordered product is therefore positive definite.
+Since $\xi$ is nonzero and belongs to the range of $Z$, both $Z^*\xi$
+and $M^{-s}Z^*\xi$ are nonzero. The isometry then gives normalization
+and simultaneous symmetry of $v$.
+
+A singleton is contained in or disjoint from every region. Its original
+label projection $P$ consequently commutes with every regional factor
+and with $\Pi$. The relation $PZ=Z(Z^*PZ)$ passes this commutation to
+each compressed leaf, hence to each band root and to $M^{-s}$.
+The equation $P\xi=\xi$ is thus preserved by the inverse power, by
+normalization, and by the lift through $Z$.
+\end{proof}

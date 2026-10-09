@@ -1,0 +1,67 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.IsometricDomainExtension
+import QICLean.Representation.ReplicaSymmetricMeanTreeProduct
+
+/-!
+# Original labels after the common band-product mean
+
+The matrix below is the ordered product of the band roots of one common
+weighted tree. Its leaves are the actual original regional metric factors,
+compressed by a single isometry onto simultaneous copy symmetry. Positivity,
+normalization, symmetry and preservation of the original single-site labels
+are conclusions, rather than additional hypotheses on the final vector.
+
+Source: *A two-dimensional area law from a global spectral gap*, September 24,
+2026, `05-replicas.tex`, lines 101--103; `06-transport.tex`, lines 388--401;
+`07-comparators.tex`, lines 421--443, revision
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+-/
+
+noncomputable section
+open Matrix PermutationRepresentation
+open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
+
+namespace TensorPower
+
+variable {F : Type*} [Fintype F] [DecidableEq F]
+variable (ι : F → Type*) [∀ f, Fintype (ι f)] [∀ f, DecidableEq (ι f)]
+variable [∀ f, Nonempty (ι f)]
+
+local instance replicaBandLabelPreservationConfigDecidableEq (k : ℕ) :
+    DecidableEq (Config k ι) := Fintype.decidablePiFintype
+
+/-- The normalized inverse power of the actual common-tree band product
+retains each original single-site label. The geometric hypotheses are the
+cross-status nesting in `07-comparators.tex`, `comparator:nesting`; label
+preservation is used in `comparator:defect-mass`, lines 421--443. -/
+theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
+    (k n : ℕ) (Z : Matrix (Config k ι) (Fin n) ℂ)
+    (hZ : Zᴴ * Z = 1)
+    (hZZ : Z * Zᴴ = symProj (copyPerm ((f : F) → ι f) k))
+    {t : ℝ} (ht : 0 ≤ t) {J : Type*} (G : ℕ)
+    (Q Y : J → Fin G → Finset F)
+    (hdisj : ∀ j g, Disjoint (Q j g) (Y j g))
+    (hnest : ∀ j j' g h, g < h → Q j g ∪ Y j g ⊆ Q j' h)
+    (T : Matrix.MeanTree J) :
+    let Pe := symProj (copyPerm ((f : F) → ι f) k)
+    let A := fun j g ↦ ((replicaMetric ι t k (Q j g))⁻¹ *
+      (replicaMetric ι t k (Q j g ∪ Y j g)ᶜ)⁻¹ *
+        replicaMetric ι t k (Y j g)) ^ 2
+    let B := fun j g ↦ Zᴴ * A j g * Z
+    let M := (List.ofFn (fun g ↦ T.eval (B · g))).prod
+    M.PosDef ∧ ∀ (s : ℝ) (ξ : EuclideanSpace ℂ (Config k ι)),
+      ξ ≠ 0 → Pe *ᵥ ξ = ξ →
+      let w := Matrix.toEuclideanLin (M ^ (-s)) (Matrix.toEuclideanLin Zᴴ ξ)
+      let v := Matrix.toEuclideanLin Z ((‖w‖⁻¹ : ℂ) • w)
+      w ≠ 0 ∧ ‖v‖ = 1 ∧ Pe *ᵥ v = v ∧
+        ∀ (a : F) (ell : IrrepLabel (Equiv.Perm (Fin k))),
+          labelProj (subsystemPerm k ι {a}) ell *ᵥ ξ = ξ →
+          labelProj (subsystemPerm k ι {a}) ell *ᵥ v = v := by
+  intro Pe A B M
+  done
+
+end TensorPower
