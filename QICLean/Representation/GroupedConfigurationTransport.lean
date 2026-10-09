@@ -96,7 +96,8 @@ theorem groupedConfigurationEquiv_exp_sum_labelEntropy
         NormedSpace.exp (∑ j, (a j : ℂ) • labelEntropy (subsystemPerm m ι (S j))) ⊗ₖ
           (1 : Matrix (Config r ι) (Config r ι) ℂ) := by
   rw [← reindex_apply, reindex_exp, reindex_apply]
-  simp only [submatrix_sum, submatrix_smul]
+  rw [submatrix_sum]
+  simp only [submatrix_smul]
   simp_rw [labelEntropy, groupedConfigurationEquiv_labelObservable]
   simp_rw [← smul_kronecker]
   have hsum : (∑ j, ((a j : ℂ) • labelObservable (subsystemPerm m ι (S j))
