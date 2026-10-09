@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.PartialTrace
-import Mathlib.LinearAlgebra.Matrix.Kronecker
+import QICLean.Algebra.KroneckerFactorPositivity
 
 /-!
 # Partial traces of regrouped tensor powers
