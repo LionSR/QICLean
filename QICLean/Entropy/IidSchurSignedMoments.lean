@@ -70,9 +70,16 @@ theorem PosSemidef.log_re_trace_finKronecker_signed_label_moments_le
         2 * K * k * u ^ 2 + ((Fintype.card n : ℝ) ^ 2 / 2) * Real.log (k + 1) := by
   simpa only [mul_one, Real.sqrt_one, div_one] using
     (TensorPower.log_centered_labelEntropy_moments_le
-      (finKronecker_posSemidef (fun _ : Fin k ↦ ρ) (fun _ ↦ hρ)) ?_
+      (finKronecker_posSemidef (fun _ : Fin k ↦ ρ) (fun _ ↦ hρ))
+      (by simpa only [htr, Finset.prod_const_one] using
+        trace_piProduct (fun _ : Fin k ↦ ρ))
       (fun σ ↦ (commute_finKronecker_const_permOp ρ k σ).symm)
-      ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian) K r 1 le_rfl ?_ u hu ?_)
-  all_goals done
+      ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian) K r 1 le_rfl
+      (by
+        intro v hv
+        done) u hu
+      (by simpa only [Real.sqrt_one, div_one,
+        le_div_iff₀ (by norm_num : (0 : ℝ) < 2), le_min_iff, mul_comm u 2] using
+        And.intro hur hu1))
 
 end Matrix
