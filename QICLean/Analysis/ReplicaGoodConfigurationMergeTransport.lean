@@ -177,9 +177,11 @@ theorem fiveFactorPairMiddle_mergeDeficits :
   · simp only [labelEntropy, submatrix_add, submatrix_sub, Pi.add_apply, Pi.sub_apply,
       h0, h3, h03, pairMergeDeficit, ← Matrix.ext_iff, kroneckerMap_apply,
       Matrix.add_apply, Matrix.sub_apply, add_mul, sub_mul]
+    exact fun _ _ ↦ True.intro
   · simp only [labelEntropy, submatrix_add, submatrix_sub, Pi.add_apply, Pi.sub_apply,
       h2, h4, h24, pairMergeDeficit, ← Matrix.ext_iff, kroneckerMap_apply,
       Matrix.add_apply, Matrix.sub_apply, mul_add, mul_sub, add_mul, sub_mul]
+    exact fun _ _ ↦ True.intro
 
 /-- Exponentiating the sum of the two actual merge deficits retains the
 identity on the good middle physical copies. The parameter is any real
