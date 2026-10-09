@@ -69,6 +69,8 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
           (fun g h hgh ↦ hcomm g h hgh T T))
   refine ⟨hM, fun s ξ hξ hPξ ↦ ?_⟩
   intro w v
+  have hPZ : Pe * Z = Z := by
+    rw [← hZZ, Matrix.mul_assoc, hZ, Matrix.mul_one]
   done
 
 end TensorPower
