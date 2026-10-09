@@ -49,7 +49,7 @@ theorem replicaHamiltonian_submatrix_equiv (H : Matrix A A ℂ) (e : A ≃ B) (k
   · simp only [hji, ite_false, Matrix.one_apply]
     change (if x j = y j then (1 : ℂ) else 0) =
       if e.symm (x j) = e.symm (y j) then 1 else 0
-    rw [e.symm.injective.eq_iff]
+    simp only [e.symm.injective.eq_iff]
 
 /-- The original rank-one ground projector, and hence the full defect
 count, transforms under a physical coordinate equivalence. The vector
