@@ -117,7 +117,10 @@ theorem exists_replicaMetric_symProj_isometric_floor
   refine ⟨C, hC, ?_⟩
   intro k P Y F hPY hPF hYF hcover n Z hZ hZZ W A
   let Q := symProj (copyPerm ((v : V) → ι v) k)
-  obtain ⟨hinv, hfloor⟩ := hmetric k P Y F hPY hPF hYF hcover
+  obtain ⟨hinv, hfloor⟩ :
+      Q * A⁻¹ * Q ≤ ((k : ℝ) + 2) ^ C • Q ∧
+        ((k : ℝ) + 2) ^ (-C) • Q ≤ A :=
+    hmetric k P Y F hPY hPF hYF hcover
   have hQZ : Q * Z = Z := by
     rw [← hZZ, Matrix.mul_assoc, hZ, Matrix.mul_one]
   have hZQ : Zᴴ * Q = Zᴴ := by
