@@ -62,7 +62,7 @@ theorem replicaMetric_symProj_meanTree_eq_product
       (List.ofFn (A j)).prod * Z = Z * (List.ofFn (B j)).prod := by
     have h := List.prod_hom_rel (List.ofFn (id : Fin K → Fin K))
       (r := fun L R => L * Z = Z * R) (f := A j) (g := B j)
-      (by simp only [one_mul, mul_one]) (by
+      (by simp only [Matrix.one_mul, Matrix.mul_one]) (by
         intro g L R hLR
         rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc,
           (hleaf j g).2.1, Matrix.mul_assoc])
