@@ -9,10 +9,13 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation.ReplicaTransport
 
 import QICLean.Representation.ReplicaTransport.CoherentLog
+import QICLean.Representation.ReplicaTransport.CoherentMeasure
 import QICLean.Representation.ReplicaTransport.Energy
 import QICLean.Representation.ReplicaTransport.EntropyGain
+import QICLean.Representation.ReplicaTransport.FiniteFamily
 import QICLean.Representation.ReplicaTransport.Integrated
 import QICLean.Representation.ReplicaTransport.IntegratedEntropy
+import QICLean.Representation.ReplicaTransport.LeafMeasure
 import QICLean.Representation.ReplicaTransport.Prerequisites
 import QICLean.Representation.ReplicaTransport.Proposition
 import QICLean.Representation.ReplicaTransport.RelativePinBound
