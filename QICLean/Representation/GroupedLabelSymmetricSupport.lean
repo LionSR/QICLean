@@ -71,7 +71,7 @@ theorem commute_subsystemPerm_of_commute (k : ℕ) (S T : Finset V)
   ext x j v
   simp only [Equiv.Perm.mul_apply, subsystemPerm_apply]
   by_cases hS : v ∈ S <;> by_cases hT : v ∈ T <;>
-    simp only [hS, hT, if_true, if_false]
+    simp only [hS, hT, ite_true, ite_false]
   exact congrArg (fun i => x i v)
     (congrArg (fun π : Equiv.Perm (Fin k) => π j) hστ.inv_inv.eq).symm
 
