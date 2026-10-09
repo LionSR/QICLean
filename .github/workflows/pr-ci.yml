@@ -269,6 +269,40 @@ jobs:
       # documenting the invariant this repository must keep true for TNLean;
       # TNLean's own pr-ci.yml carries the real comparison step.
 
+      - name: Build grouped coordinates and good-copy expectations with timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Representation.GroupedConfigurationTransport QICLean.Analysis.ReplicaGoodConfigurationExpectation 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check grouped configuration observables strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/GroupedConfigurationTransport.lean \
+            QICLeanTest/GroupedConfigurationTransportAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check good-copy expectations strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationExpectation.lean \
+            QICLeanTest/ReplicaGoodCopyExpectationsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       - name: Build rectangular window API targets early
         run: lake build QICLean.Channel.WindowMinorization QICLean.Kraus.RectangularChain QICLean.Algebra.MatrixDependentEntries QICLean.Analysis.GeometricDecay
 
