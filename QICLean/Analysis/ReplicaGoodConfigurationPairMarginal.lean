@@ -30,7 +30,7 @@ partial trace.
 
 noncomputable section
 
-open scoped BigOperators Matrix Kronecker
+open scoped BigOperators Matrix Kronecker ComplexOrder
 open TensorPower
 
 namespace TensorPower
