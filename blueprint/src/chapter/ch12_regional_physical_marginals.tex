@@ -1,0 +1,70 @@
+\section{Original marginals in regional coordinates}
+
+Let $V$ be a finite set of sites with finite local coordinate sets $\mathcal B_v$.
+For $T\subseteq V$, write $\mathcal B_T=\prod_{v\in T}\mathcal B_v$ and
+$\mathcal H_T=\mathbb C^{\mathcal B_T}$. Let $\Omega$ be an arbitrary vector
+in $\mathcal H_V$, and let
+$\rho_T=\operatorname{Tr}_{T^c}|\Omega\rangle\langle\Omega|$.
+The coordinate sets may be empty, and no normalization is imposed on $\Omega$.
+
+\begin{definition}[The three original physical regions]
+  \label{def:regional_physical_regions}
+  \lean{FiniteProduct.regionalPhysicalRegion}
+  For regions $Q,Y\subseteq V$, define
+  \begin{align*}
+    T_0=Q,\qquad T_1=Y,\qquad T_2=(Q\cup Y)^c.
+  \end{align*}
+\end{definition}
+
+\begin{theorem}[The original reductions after regional grouping]
+  \label{thm:regional_physical_singleton_densities}
+  \lean{Matrix.regional_physicalSingletonDensity_eq_reducedPure}
+  \uses{def:regional_physical_regions,def:regional_five_factor_coordinates,def:physical_singleton_density}
+  Suppose $Q$ and $Y$ are disjoint, and fix any two finite auxiliary
+  coordinate sets $C,R$. Let $e_{Q,Y}$ be restriction of configurations to
+  $Q$, $Y$, and $(Q\cup Y)^c$, in that order, and put
+  $\psi=\Omega\circ e_{Q,Y}^{-1}$. In the five-factor coordinates
+  $(\mathcal B_Q,\mathcal B_Y,\mathcal B_{(Q\cup Y)^c},C,R)$, the three
+  physical singleton reductions of $|\psi\rangle\langle\psi|$ satisfy
+  \begin{align*}
+    \rho^{\psi}_0=\rho_Q,\qquad
+    \rho^{\psi}_1=\rho_Y,\qquad
+    \rho^{\psi}_2=\rho_{(Q\cup Y)^c}.
+  \end{align*}
+  These are the original physical marginals used in the component estimates
+  of \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+  For the first reduction, the discarded coordinates are
+  $\mathcal B_Y\times\mathcal B_{(Q\cup Y)^c}$, which are the original
+  coordinates on $Q^c$. For the second, they are
+  $\mathcal B_Q\times\mathcal B_{(Q\cup Y)^c}$, the coordinates on $Y^c$.
+  For the third, they are $\mathcal B_Q\times\mathcal B_Y$, the coordinates
+  on $Q\cup Y$. In each case the retained coordinate is unchanged.
+  Reindexing the finite sum defining the partial trace proves the equality.
+\end{proof}
+
+\begin{theorem}[Preservation of entropy and surprisal moments]
+  \label{thm:regional_physical_spectral_statistics}
+  \lean{Matrix.regional_physicalSingleton_spectral_statistics}
+  \uses{thm:regional_physical_singleton_densities}
+  Under the hypotheses of Theorem~\ref{thm:regional_physical_singleton_densities},
+  let $j\in\{0,1,2\}$. For a positive semidefinite matrix $\rho$ with
+  eigenvalues $\lambda_a$, define
+  \begin{align*}
+    S(\rho)&=-\sum_a\lambda_a\log\lambda_a,\qquad
+    M_\rho(v)=\sum_a\lambda_a\exp(-v\log\lambda_a).
+  \end{align*}
+  A zero eigenvalue contributes zero to both expressions. For every real $v$,
+  \begin{align*}
+    S(\rho^{\psi}_j)&=S(\rho_{T_j}),\qquad
+    M_{\rho^{\psi}_j}(v)=M_{\rho_{T_j}}(v)
+  \end{align*}
+\end{theorem}
+
+\begin{proof}
+  The two matrices are equal in the same original regional basis by
+  Theorem~\ref{thm:regional_physical_singleton_densities}. Their eigenvalue
+  lists therefore agree, and so do the displayed finite sums.
+\end{proof}

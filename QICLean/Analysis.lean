@@ -130,6 +130,7 @@ import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RegionalLowDefectLowerPin
 import QICLean.Analysis.RegionalLowDefectProjection
+import QICLean.Analysis.RegionalPhysicalMarginals
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
