@@ -64,6 +64,7 @@ theorem fiveFactorCopiesEquiv_auxiliary_permOp (k : ℕ)
       rw [← (fiveFactorCopiesEquiv ι k).injective.eq_iff, hC]
       simp only [Equiv.apply_symm_apply, Prod.ext_iff]
     simp only [submatrix_apply, permOp_apply_apply, hc, kroneckerMap_apply, one_apply]
+    clear hC hR hc
     split_ifs <;> simp_all [eq_comm]
   · ext x y
     have hr : subsystemPerm k ι {4} σ ((fiveFactorCopiesEquiv ι k).symm y) =
@@ -72,6 +73,7 @@ theorem fiveFactorCopiesEquiv_auxiliary_permOp (k : ℕ)
       rw [← (fiveFactorCopiesEquiv ι k).injective.eq_iff, hR]
       simp only [Equiv.apply_symm_apply, Prod.ext_iff]
     simp only [submatrix_apply, permOp_apply_apply, hr, kroneckerMap_apply, one_apply]
+    clear hC hR hr
     split_ifs <;> simp_all [eq_comm]
 
 /-- Every subgroup group-algebra operator on an auxiliary factor is
