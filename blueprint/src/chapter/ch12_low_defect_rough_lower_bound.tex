@@ -3,6 +3,7 @@
 \begin{theorem}[A lower bound in fixed coordinates]
   \label{thm:reindexed_inverse_compression_lower_bound}
   \lean{Matrix.PosDef.lower_pin_of_reindexed_inverse_compression}
+  \leanok
   Let $A$ be positive definite, let $P$ be an orthogonal projection,
   let $U$ be a permutation unitary identifying their coordinate spaces,
   and let $c>0$. If $PUA^{-1}U^*P\leq cP$, then every rectangular
@@ -11,7 +12,7 @@
     c^{-1}Z^*U^*PUZ\leq Z^*AZ.
   \end{align}
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   Apply the compressed-inverse inequality to $UAU^*$ to obtain
   $c^{-1}P\leq UAU^*$. Conjugation first by $U$ and then by $Z$
   gives the conclusion. No commutation of $P$ and $UAU^*$ is required.
@@ -20,13 +21,14 @@
 \begin{theorem}[Five-factor symmetry in grouped coordinates]
   \label{thm:five_factor_joint_symmetry_coordinates}
   \lean{TensorPower.symProj_replicaJointCopyPerm_submatrix_fiveFactorCopiesEquiv}
+  \leanok
   Let $U$ identify the $k$ copies of five finite coordinate sets with
   the grouped physical copies of factors $0,1,2$ and the two auxiliary
   copy spaces of factors $3,4$. Let $S$ be the average of simultaneous
   copy permutations before grouping, and let $S'$ be the corresponding
   average in the three grouped spaces. Then $U^*S'U=S$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:symmetric_projection_equivariant_coordinates}
   The grouping map is equivariant for every copy permutation.
   Apply the identity for the finite-group average.
@@ -35,6 +37,7 @@
 \begin{theorem}[The actual projection in symmetric coordinates]
   \label{thm:compressed_actual_low_defect_projection}
   \lean{TensorPower.isStarProjection_compressed_replicaLowDefectProjection}
+  \leanok
   Let $\Omega$ be a unit physical vector, let $\lambda_3,\lambda_4$
   be the original auxiliary labels, and let $\tau\in\mathbb R$.
   Let $P$ project onto simultaneous symmetry, those two label spaces,
@@ -42,7 +45,7 @@
   With $U,S$ as above, every rectangular matrix $Z$ satisfying
   $ZZ^*=S$ has $Z^*U^*PUZ$ an orthogonal projection.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:contained_projection_compression,thm:five_factor_joint_symmetry_coordinates}
   The literal projection satisfies $PS'=P$. Thus
   $(U^*PU)ZZ^*=U^*PU$. Apply the contained-projection compression identity.
@@ -51,6 +54,7 @@
 \begin{theorem}[The actual rough lower bound]
   \label{thm:actual_low_defect_rough_lower_bound}
   \lean{Matrix.exists_replicaLowDefectProjection_rough_lower_pin}
+  \leanok
   Fix five nonzero finite-dimensional spaces of dimensions $d_0,\ldots,d_4$.
   For every $t>0$ with $4t\leq1$, there is $C\geq0$ depending only on
   $t$ and these spaces with the following property.
@@ -77,7 +81,7 @@
   This is the rough lower bound in \cite[Section~8]{OpenAI2026AreaLaw},
   with the polynomial and subset-counting factors displayed explicitly.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:actual_low_defect_inverse_rough_compression,thm:reindexed_inverse_compression_lower_bound,thm:compressed_actual_low_defect_projection}
   The actual inverse-compression estimate gives
   $PUA_k^{-1}U^*P\leq b_kP$. The squared disjoint-region metric is
