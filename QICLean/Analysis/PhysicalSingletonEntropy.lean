@@ -81,7 +81,7 @@ private theorem entropy_piSplitAt_eq_regional
         change ψ ((Equiv.piSplitAt j β).symm x) *
             star (ψ ((Equiv.piSplitAt j β).symm y)) =
           ψ ((FiniteProduct.splitEquiv β {j}).symm ((a.prodCongr b).symm x)) *
-            star (ψ ((FiniteProduct.splitEquiv β {j}).symm ((a.prodCongr b).symm y))
+            star (ψ ((FiniteProduct.splitEquiv β {j}).symm ((a.prodCongr b).symm y)))
         rw [hcoords, hcoords]
       _ = _ := partialTraceRight_submatrix_prod_equiv a b R
   exact (vonNeumannEntropy_congr hρ _
