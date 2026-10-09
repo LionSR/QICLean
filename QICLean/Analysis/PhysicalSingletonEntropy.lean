@@ -55,7 +55,8 @@ private theorem entropy_piSplitAt_eq_regional
   let b : FiniteProduct.Configuration β ({j} : Finset V)ᶜ ≃
       ((v : {v : V // v ≠ j}) → β v) :=
     { toFun := fun x v => x ⟨v, by simpa using v.property⟩
-      invFun := fun x v => x ⟨v, by simpa using v.property⟩
+      invFun := fun x v => x ⟨v, fun hvj =>
+        (Finset.mem_compl.mp v.property) (Finset.mem_singleton.mpr hvj)⟩
       left_inv := by intro x; rfl
       right_inv := by intro x; rfl }
   have hsplit (x : (v : V) → β v) :
