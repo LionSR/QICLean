@@ -56,8 +56,8 @@ theorem explicit_lower_norm_of_exponential_projection_lower_bound
     let v := (‖u‖⁻¹ : ℂ) • u
     (∀ g, 1 - δ g ≤ (star v ⬝ᵥ (P g *ᵥ v)).re) →
       2 * s * (∑ g,
-        κ g * ((∑ j, (T g).weight j * L j g) - δ g * max 0 (U g)) -
-          (2 * |r g| + |Real.log (b g)| + Real.log 2 + Real.log (3 / 2))) ≤
+        (κ g * ((∑ j, (T g).weight j * L j g) - δ g * max 0 (U g)) -
+          (2 * |r g| + |Real.log (b g)| + Real.log 2 + Real.log (3 / 2)))) ≤
         -Real.log (‖u‖ ^ 2) := by
   intro M u v hmass
   let ε := fun g ↦ min 1 (δ g)
