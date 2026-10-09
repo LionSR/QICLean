@@ -276,6 +276,7 @@ jobs:
         run: |
           set -eo pipefail
           {
+            lake build QICLean.Analysis.MeanTreeProjectionSectors
             lake build
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
