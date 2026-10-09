@@ -39,6 +39,7 @@ variable {Q T : Type*} [Fintype Q] [DecidableEq Q] [Fintype T] [DecidableEq T]
 
 include hΩ
 
+omit [DecidableEq Q] in
 /-- Every actual regional observable is evaluated in the tensor power of
 the original one-copy marginal. The displayed equivalence is the chosen
 bipartite decomposition itself; no transport identity is assumed.
