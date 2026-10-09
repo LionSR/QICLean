@@ -68,6 +68,7 @@ import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.InvariantExponentialComparison
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
+import QICLean.Analysis.IsometricIntertwiningCommute
 import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
@@ -108,6 +109,7 @@ import QICLean.Analysis.PolarUnitaryCorrectionKronecker
 import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
+import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
 import QICLean.Analysis.ProjectionCfcUpperBound

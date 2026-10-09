@@ -218,6 +218,31 @@ jobs:
           lake build QICLean.Representation.GroupedLabelSymmetricSupport QICLean.Analysis.ReplicaBadCopyExponential \
             2>&1 | tee "$RUNNER_TEMP/lake-build.log"
 
+      - name: Build actual symmetric band-product target
+        run: |
+          set -eo pipefail
+          lake build QICLean.Representation.ReplicaSymmetricMeanTreeProduct \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check actual symmetric band products strictly
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/SubsystemLabelCommutation.lean \
+            QICLean/Representation/ReplicaLaminarBandMetrics.lean \
+            QICLean/Analysis/PositiveProjectionCompression.lean \
+            QICLean/Analysis/IsometricIntertwiningCommute.lean \
+            QICLean/Representation/ReplicaSymmetricBandCommute.lean \
+            QICLean/Representation/ReplicaSymmetricMeanTreeProduct.lean \
+            QICLeanTest/ReplicaSymmetricMeanTreeProductAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
       # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to

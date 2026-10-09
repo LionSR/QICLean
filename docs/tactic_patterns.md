@@ -588,3 +588,18 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the actual scalar goal without a new theorem, tactic, or larger limit.
 - **Caveat:** First prove the actual coordinate equivalence and reduce the
   entries. The scalar identity supplies no permutation covariance itself.
+
+### Central observables after restricting the copy action — shared theorem (2026-10-09)
+
+- **Pattern:** Factor a larger subsystem action into a smaller subsystem and
+  its disjoint complement, then pass centrality through the group algebra.
+- **Reuse:** `TensorPower.commute_subgroup_labelObservables_of_subset_or_disjoint`
+  in `Representation/SubsystemLabelCommutation.lean` treats a common arbitrary
+  homomorphism of copy permutation groups. The laminar band argument specializes
+  it to the identity homomorphism and reverses the nested case when required.
+  The joint auxiliary exponential contribution uses the same theorem for the
+  actual good-copy subgroup, replacing its private copy.
+- **Caveats:** Both actions use the same restriction homomorphism. No injectivity,
+  nonempty local-space assumption, or commutation of arbitrary overlapping
+  subsystems is inferred. Symmetric-range commutation separately reuses the
+  existing subgroup projection theorem from `GroupedLabelSymmetricSupport`.
