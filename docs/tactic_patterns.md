@@ -559,3 +559,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Derive every commutation from the actual subsystem actions.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
+
+### Reindexing sums and scalar multiples — existing lemmas (2026-10-09)
+
+- **Pattern:** Apply a matrix reindexing identity to fixed row and column
+  maps before simplifying a transported representation.
+- **Seen:** The addition and scalar branches of
+  `TensorPower.fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep` in
+  `QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean`, and the exponential
+  transport in the separate `GroupedConfigurationTransport` contribution.
+- **Abstraction:** Reuse Mathlib's `Matrix.submatrix_add` and
+  `Matrix.submatrix_smul`, followed by `Pi.add_apply` or `Pi.smul_apply`.
+  The matrix lemmas are equalities of functions of the two coordinate
+  maps. Their applications must reduce before a transported matrix can
+  match a previously established identity. No new tactic is needed.
+- **Caveat:** When only an outer sum is to be transported, rewrite it once.
+  Recursive simplification can expand the defining sum of a central
+  observable and obscure the existing representation identity.

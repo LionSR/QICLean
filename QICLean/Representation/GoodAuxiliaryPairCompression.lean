@@ -89,7 +89,7 @@ theorem copyPerm_groupedGood_auxiliaryPair_labelEntropy_compression
     one_mul, mul_one, hPCP, hPRP, sub_eq_add_neg,
     add_kronecker, kronecker_add, smul_kronecker, kronecker_smul]
   ext x y
-  simp only [kroneckerMap_apply, Pi.add_apply, Pi.neg_apply, Pi.smul_apply]
+  simp only [kroneckerMap_apply, Matrix.add_apply, Matrix.neg_apply, Matrix.smul_apply]
   done
 
 /-- The two good auxiliary exponentials obey one joint compressed bound on

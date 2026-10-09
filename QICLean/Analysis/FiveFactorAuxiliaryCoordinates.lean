@@ -100,7 +100,7 @@ theorem fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep
     · simp only [map_add, submatrix_add, Pi.add_apply, ha.1, hb.1,
         add_kronecker, kronecker_add]
     · simp only [map_add, submatrix_add, Pi.add_apply, ha.2, hb.2,
-        add_kronecker, kronecker_add]
+        kronecker_add]
   | single σ c =>
     have h := fiveFactorCopiesEquiv_auxiliary_permOp ι k (θ σ)
     constructor
