@@ -212,11 +212,36 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      - name: Build common regional low-defect projection
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.RegionalLowDefectProjection \
+            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check common regional low-defect projection strictly
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Algebra/OrthogonalProjection.lean \
+            QICLean/Representation/AddedSiteSpace.lean \
+            QICLean/Representation/SymmetricProjectionCoordinates.lean \
+            QICLean/Representation/RegionalFiveFactorCoordinates.lean \
+            QICLean/Analysis/ReplicaLowDefectCoordinateCovariance.lean \
+            QICLean/Analysis/RegionalLowDefectProjection.lean \
+            QICLeanTest/RegionalLowDefectProjectionAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       - name: Build bad-copy exponential targets
         run: |
           set -eo pipefail
           lake build QICLean.Representation.GroupedLabelSymmetricSupport QICLean.Analysis.ReplicaBadCopyExponential \
-            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Build actual symmetric band-product target
         run: |

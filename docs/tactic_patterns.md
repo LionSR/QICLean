@@ -618,3 +618,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   nonempty local-space assumption, or commutation of arbitrary overlapping
   subsystems is inferred. Symmetric-range commutation separately reuses the
   existing subgroup projection theorem from `GroupedLabelSymmetricSupport`.
+
+### Projections under equivariant coordinates
+
+The original replica cutoff uses the same two elementary arguments in its
+five-factor and global coordinates. Equivariant permutation matrices transport
+the group average; `PermutationRepresentation.symProj_of_intertwine` records
+this once. A contained projection then remains a projection after compression
+by the same rectangular coordinate map; use
+`Matrix.isStarProjection_conjTranspose_mul_mul_of_mul_range_eq` in
+`Algebra/OrthogonalProjection.lean`. The latter needs only `P * (Z * Zᴴ) = P`,
+not a separate isometry identity or commutation with a metric. The regional
+cutoff covariance applies these arguments to the actual rank-one ground
+projector, the defect cutoff, and the original auxiliary labels.
