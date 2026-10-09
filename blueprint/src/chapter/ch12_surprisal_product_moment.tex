@@ -9,11 +9,13 @@ application the weights are nonnegative. A zero weight contributes zero.
 \begin{theorem}[Product surprisal moment]
   \label{thm:surprisal_product_moment}
   \lean{Entropy.surprisalMoment_pi}
+  \leanok
   For every integer $k\geq0$ and every real $u$, define
   $p^{(k)}(x)=\prod_{j=0}^{k-1}p_{x_j}$. Then
   $M_{p^{(k)}}(u)=M_p(u)^k$.
 \end{theorem}
 \begin{proof}
+  \leanok
   A configuration with zero product weight contributes zero on both
   sides. For every remaining configuration, the logarithm of the
   product is the sum of the logarithms, so its exponential factors.
