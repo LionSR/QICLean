@@ -8,6 +8,7 @@ from the other two coordinates.
 \begin{definition}[Original physical singleton density]
   \label{def:physical_singleton_density}
   \lean{Matrix.physicalSingletonDensity}
+  \leanok
   The density on physical factor $j$ is the partial trace of
   $|\Omega\rangle\langle\Omega|$ in the coordinates $e_j$.
   Equivalently, its entries are
@@ -22,10 +23,11 @@ from the other two coordinates.
 \begin{theorem}[Positivity of the original marginals]
   \label{thm:physical_singleton_density_positive}
   \lean{Matrix.posSemidef_physicalSingletonDensity}
+  \leanok
   Each $\rho_j$ is positive semidefinite, for every vector $\Omega$.
   Empty coordinate sets are allowed.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{def:physical_singleton_density}
   The matrix $|\Omega\rangle\langle\Omega|$ is positive semidefinite.
   Reindexing and partial trace preserve positive semidefiniteness.
@@ -34,10 +36,11 @@ from the other two coordinates.
 \begin{theorem}[Trace of the original marginals]
   \label{thm:physical_singleton_density_trace}
   \lean{Matrix.trace_physicalSingletonDensity}
+  \leanok
   If $\|\Omega\|=1$, then $\operatorname{Tr}\rho_j=1$ for each
   $j\in\{0,1,2\}$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{def:physical_singleton_density}
   Reindexing and partial trace preserve the trace, while
   $\operatorname{Tr}|\Omega\rangle\langle\Omega|=\|\Omega\|^2$.
@@ -46,6 +49,7 @@ from the other two coordinates.
 \begin{theorem}[Nonnegative physical entropy difference]
   \label{thm:physical_singleton_entropy_difference}
   \lean{Matrix.physicalSingletonEntropy_outer_sub_middle_nonneg}
+  \leanok
   If $\|\Omega\|=1$, then the three original marginals satisfy
   \begin{align*}
     S(\rho_0)+S(\rho_2)-S(\rho_1)\geq0.
@@ -54,7 +58,7 @@ from the other two coordinates.
   physical entropy difference used in
   \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{def:physical_singleton_density,thm:physical_singleton_density_positive,thm:finite_product_entropy_complement,thm:finite_product_entropy_subadditivity}
   Identify the original three-factor vector with a function on the
   three coordinate sets. For each $j$, the bijection $e_j$ agrees with
