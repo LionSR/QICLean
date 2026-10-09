@@ -54,5 +54,6 @@ theorem star_dotProduct_submatrix_equiv
     star w ⬝ᵥ (H.submatrix e.symm e.symm *ᵥ w) =
       star (w ∘ e) ⬝ᵥ (H *ᵥ (w ∘ e)) := by
   simp only [submatrix_mulVec_equiv, Equiv.symm_symm, dotProduct_comp_equiv_symm]
+  rfl
 
 end Matrix
