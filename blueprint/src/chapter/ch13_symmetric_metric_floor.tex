@@ -1,0 +1,54 @@
+\section{A common floor on the symmetric space}
+
+Fix a finite family of nonzero finite-dimensional spaces $H_v$.
+For a region $E$ write $W_{t,k}(E)$ for its replica metric.
+For a disjoint partition $Y\cup(P\cup F)=V$, set
+\begin{align}
+  A_{t,k}(P,Y,F)
+    =\bigl(W_{t,k}(P)^{-1}W_{t,k}(F)^{-1}W_{t,k}(Y)\bigr)^2.
+\end{align}
+Let $Q_k$ be the orthogonal projection onto simultaneous copy symmetry.
+
+\begin{theorem}[Polynomial floor on simultaneous symmetry]
+  \label{thm:symmetric_replica_inverse_bound_floor}
+  \lean{TensorPower.exists_replicaMetric_symProj_inverse_bound_and_floor}
+  For every $t>0$ there is $C\geq0$, depending only on $t$ and the
+  original local spaces, such that for every $k\geq0$ and every disjoint
+  partition $(P,Y,F)$ of $V$,
+  \begin{align}
+    Q_k A_{t,k}(P,Y,F)^{-1} Q_k&\leq(k+2)^C Q_k,\\
+    (k+2)^{-C}Q_k&\leq A_{t,k}(P,Y,F).
+  \end{align}
+  Empty regions and zero copies are included. This is the common
+  symmetric-space floor used before the tree comparison in
+  \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+  On simultaneous symmetry, the signed label entropy
+  $G=F_P+F_F-F_Y$ is nonnegative and commutes with $Q_k$.
+  Thus $Q_ke^{-2tG}Q_k\leq Q_k$. The whole-space inverse comparison
+  gives $A_{t,k}^{-1}\leq(k+2)^Ce^{-2tG}$, which proves the first
+  inequality after compression. The matrix $A_{t,k}$ is positive
+  definite, so the noncommuting compressed-inverse inequality gives
+  the reciprocal lower bound.
+\end{proof}
+
+\begin{theorem}[The same floor in fixed symmetric coordinates]
+  \label{thm:symmetric_replica_isometric_floor}
+  \lean{TensorPower.exists_replicaMetric_symProj_isometric_floor}
+  For every $t>0$ there is $C\geq0$, depending only on $t$ and the
+  original local spaces, with the following property. For every
+  $k\geq0$, disjoint partition $(P,Y,F)$ of $V$, and rectangular
+  matrix $Z$ satisfying $Z^*Z=I$ and $ZZ^*=Q_k$,
+  \begin{align}
+    Z^*A_{t,k}(P,Y,F)^{-1}Z&\leq(k+2)^C I,\\
+    (k+2)^{-C}I&\leq Z^*A_{t,k}(P,Y,F)Z.
+  \end{align}
+  The constant is independent of the regions and of the fixed
+  coordinates $Z$.
+\end{theorem}
+\begin{proof}
+  \uses{thm:symmetric_replica_inverse_bound_floor}
+  Since $Q_kZ=Z$ and $Z^*Q_kZ=I$, conjugating the two preceding
+  inequalities by $Z$ gives the result.
+\end{proof}
