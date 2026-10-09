@@ -559,3 +559,28 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Derive every commutation from the actual subsystem actions.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
+
+### Chronological prefix and suffix coordinates — candidate (2026-10-09)
+
+- **Pattern:** Express a retained prefix as the predicate filter of the original
+  prefix, and a full suffix as the corresponding list drop.
+- **Seen:** The consecutive-difference calculation and both endpoint
+  calculations in `PoissonWord.foldl_sub_partitionWords_fst_eq_sum`, in
+  `QICLean/Probability/PoissonWordTelescope.lean`; three occurrences in one file.
+- **Abstraction:** Reuse `ofFn_partitionWords_fst`, `ofFn_take`, and `ofFn_drop`
+  with `simp only`. A further lemma or simp set is deferred until the pattern
+  also occurs in a second file.
+- **Caveats:** Normalize the word coordinates before simplifying list maps.
+  Otherwise `List.map_ofFn` can remove the form needed for the filter identity.
+  Full suffixes and retained prefixes refer to the same original word.
+
+### Contractive chronological folds — candidate (2026-10-09)
+
+- **Pattern:** A fold of maps satisfying `‖E i y‖ ≤ ‖y‖` preserves the norm
+  bound of its initial vector.
+- **Seen:** The local `hact` arguments in `PoissonWordOmissionBound.lean` and
+  `PoissonWordExpectedOmission.lean`; two occurrences in two files.
+- **Abstraction:** Reuse `List.foldlRecOn` with the invariant `‖z‖ ≤ ‖y‖`.
+  A general norm inequality for folds should be considered at a third occurrence.
+- **Caveats:** No norm compatibility with the scalar action is needed; the
+  contraction hypothesis concerns the additive seminorm directly.
