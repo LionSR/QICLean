@@ -40,11 +40,11 @@ specialization uses the twelfth logarithmic power.
 % Source: openai/math, adc7f1241b42e322a6451854ab7e4b4c146bf78a,
 % preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
 % build/sections/08-scanner.tex, lines 405--414.
-% Source-only additions: compilation and kernel-axiom checks remain pending.
 
 \begin{theorem}[Exponent bound for a logarithmic cut budget]
 \label{thm:typical_tail_log_budget_exponent}
 \lean{Entropy.typicalWidth_div_sqrt_log_pow_twelve_budget_ge}
+\leanok
 Fix $\theta\ge0$, $C>0$, $n>1$, and
 $0<\mathcal B\le Cn(\log n)^{12}$. With
 $c=(32\sqrt{(1+\theta)C})^{-1}$, one has
@@ -54,6 +54,7 @@ $c=(32\sqrt{(1+\theta)C})^{-1}$, one has
 \end{align}
 \end{theorem}
 \begin{proof}
+\leanok
 Since $n>1$, the logarithm is positive. The budget bound gives
 $32\sqrt{(1+\theta)\mathcal B}
 \le32\sqrt{(1+\theta)C}\sqrt n(\log n)^6$.
@@ -63,6 +64,7 @@ Divide the identity $n^{3/5}=n^{1/10}\sqrt n$ by this positive upper bound.
 \begin{theorem}[Uniform polynomial decay for a logarithmic cut budget]
 \label{thm:typical_tail_log_budget}
 \lean{Entropy.exists_typical_tail_bound_of_log_pow_twelve_budget}
+\leanok
 Fix $\theta\ge0$ and $C>0$. There is an integer $N\ge2$, depending only
 on these two constants, such that for every integer $n\ge N$ and every
 $0<\mathcal B\le Cn(\log n)^{12}$,
@@ -72,6 +74,7 @@ $0<\mathcal B\le Cn(\log n)^{12}$,
 \end{align}
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:typical_tail_log_budget_exponent}
 Let $c=(32\sqrt{(1+\theta)C})^{-1}>0$.
 Theorem~\ref{thm:typical_tail_log_budget_exponent} bounds the tail expression
