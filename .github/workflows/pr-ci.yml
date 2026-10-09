@@ -212,10 +212,10 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
-      - name: Build good-copy regional moment target and capture timings
+      - name: Build good-copy singleton moment target and capture timings
         run: |
           set -eo pipefail
-          lake build QICLean.Analysis.ReplicaGoodConfigurationRegionalMoment 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+          lake build QICLean.Analysis.ReplicaGoodConfigurationSingletonMoment 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
 
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
@@ -325,6 +325,20 @@ jobs:
           for file in \
             QICLean/Analysis/ReplicaGoodConfigurationRegionalMoment.lean \
             QICLeanTest/ReplicaGoodCopyRegionalMomentsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check good-copy singleton moments strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodConfigurationSingletonMoment.lean \
+            QICLeanTest/ReplicaGoodCopySingletonMomentsAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
