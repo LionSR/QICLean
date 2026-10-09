@@ -1,0 +1,47 @@
+\section{Explicit scalar bounds for excitation components}
+
+These estimates combine the scalar factors in the component inverse
+comparison of \cite[Section~8]{OpenAI2026AreaLaw}. They retain the
+common mass of the moments and all polynomial and binomial corrections.
+
+\begin{theorem}[A common mass in five exponential moments]
+  \label{thm:five_moment_common_mass}
+  \lean{Real.prod_five_rpow_le_common_exp}
+  Let $c\geq0$, let $M_i\geq0$ and $A_i\in\mathbb R$ for
+  $0\leq i<5$, and suppose that $M_i\leq c e^{A_i}$. Then
+  $\prod_{i=0}^4M_i^{1/5}\leq c\exp(\frac15\sum_{i=0}^4A_i)$.
+  The common mass $c$ may vanish.
+\end{theorem}
+\begin{proof}
+  Monotonicity of the nonnegative fifth root bounds each factor by
+  $c^{1/5}e^{A_i/5}$. Multiply the five inequalities and use
+  $(c^{1/5})^5=c$ and the addition law for the exponential.
+\end{proof}
+
+\begin{theorem}[A uniform component prefactor]
+  \label{thm:replica_component_uniform_prefactor}
+  \lean{Real.replica_component_prefactor_le_uniform}
+  Let $k,r$ be nonnegative integers with $r\leq k$. Suppose that
+  $0\leq\tau\leq\frac12$, $r\leq\tau k$, and $a,d,g,K,\Lambda\geq0$.
+  Let $C,S,\varepsilon,L\in\mathbb R$ satisfy $2kS-\varepsilon\leq L$.
+  Write $h$ for binary entropy and $m=k-r$. Then
+  \begin{align}
+    &(k+2)^C\binom{k}{r}^{a}
+      \exp\!\left[-a\left(L-rd-2\log\binom{k}{r}\right)\right]
+      \exp\!\left[-mag+25mKa^2+\Lambda\log(m+1)\right]\notag\\
+    &\quad\leq (k+2)^{C+\Lambda}
+      \exp\!\left[-ka\bigl(2S+(1-\tau)g-\tau d-3h(\tau)\bigr)
+        +a\varepsilon+25kKa^2\right].
+  \end{align}
+\end{theorem}
+\begin{proof}
+  \uses{thm:excitation_binomial_entropy}
+  Use $L\geq2kS-\varepsilon$, $r\leq\tau k$,
+  $m\geq(1-\tau)k$, $m\leq k$, and
+  $\log\binom{k}{r}\leq kh(\tau)$ with the respective nonnegative
+  coefficients. The three copies of the binomial logarithm account
+  for $3h(\tau)$. Finally,
+  $\Lambda\log(m+1)\leq\Lambda\log(k+2)$ absorbs the remaining
+  polynomial factor. Adding these inequalities bounds the total
+  exponent; exponentiation preserves its order.
+\end{proof}
