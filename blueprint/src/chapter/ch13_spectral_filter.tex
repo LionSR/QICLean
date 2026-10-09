@@ -374,6 +374,42 @@ $P_\Omega=|\Omega\rangle\langle\Omega|$.
     $G^2+K^2=I$.
 \end{proof}
 
+\begin{theorem}[Channel words on a common annihilated vector]
+    \label{thm:root_channel_word_vector}
+    \lean{Matrix.rootChannel_sqrt_mulVec_eq, Matrix.rootChannel_foldl_mulVec_eq}
+    \leanok
+    \uses{thm:root_channel}
+    Let $(k_i)_{i\in I}$ be positive contractions on a finite-dimensional
+    complex Hilbert space, and suppose that $k_i\Omega=0$ for every $i$.
+    Put $G_i=(I-k_i)^{1/2}$, $K_i=k_i^{1/2}$ and
+    $\mathcal E_i(B)=G_iBG_i+K_iBK_i$. Then, for every matrix $B$,
+    \begin{align}
+        \mathcal E_i(B)\Omega&=G_iB\Omega.
+    \end{align}
+    More generally, for every finite word $w=(i_1,\ldots,i_m)$,
+    \begin{align}
+        (\mathcal E_{i_m}\circ\cdots\circ\mathcal E_{i_1})(B)\Omega
+        &=G_{i_m}\cdots G_{i_1}B\Omega.
+    \end{align}
+    No normalization of $\Omega$ is required. Repeated letters and the empty
+    word are allowed, with both sides equal to $B\Omega$ for the empty word.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:root_channel}
+    The identities $K_i\Omega=0$ and $G_i\Omega=\Omega$ give
+    $G_iBG_i\Omega+K_iBK_i\Omega=G_iB\Omega$.
+    Iterating this equality in the order of the word proves the assertion;
+    each later contraction acts on the left.
+\end{proof}
+
+% Source: OpenAI/math revision adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% 09-amplification.tex, eq:amplification-channel-vector, lines 75--88.
+This is the finite-dimensional channel identity used in the amplification
+argument of \cite{OpenAI2026AreaLaw}.
+For lifted constraints $k_i\otimes I$, take $\Omega\otimes\xi$ with arbitrary
+auxiliary vector $\xi$; the same identity applies on the enlarged Hilbert space.
+The identity supplies no estimate for spatial localization or omitted channels.
+
 \section{Locality of the positive constraints}
 \label{sec:positive_locality}
 
