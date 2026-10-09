@@ -76,15 +76,17 @@ example :
 -- There is no inhabited-round premise. The hypotheses indexed by rounds or
 -- energy terms can all be vacuous while the common sequences are still supplied.
 example : ∃ c₀ : ℝ, 0 < c₀ ∧
-    ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
-      (E : EnergyTerms V n Empty) {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ →
+    ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ →
       ∃ (β r : ℕ → ℝ) (Cβ : ℝ), 0 ≤ Cβ ∧
         (∀ k, 0 ≤ β k) ∧ (∀ k, 0 ≤ r k) ∧
         (∀ k, β k ≤ Cβ * Real.log (k + 2)) ∧ Tendsto r atTop (𝓝 0) := by
   obtain ⟨c₀, Cent, eent, Cen, een, hc₀, h⟩ := transport_finite_family
   refine ⟨c₀, hc₀, ?_⟩
-  intro V _ _ n _ E a ℓ ha hℓ haℓ
-  let D : (j : Empty) → TransportData V 0 Empty (fun _ => Empty) := fun j => nomatch j
+  intro a ℓ ha hℓ haℓ
+  let n : Unit → ℕ := fun _ => 1
+  let E : EnergyTerms Unit n Empty :=
+    { term := fun i => nomatch i, support := fun i => nomatch i }
+  let D : (j : Empty) → TransportData Unit 0 Empty (fun _ => Empty) := fun j => nomatch j
   obtain ⟨β, r, Cβ, hCβ, hβ0, hr0, hβ, hr, _⟩ := h n D E
     (fun j => nomatch j) (fun i => nomatch i) (fun i => nomatch i)
     (fun i => nomatch i) (fun j => nomatch j) ha hℓ haℓ
