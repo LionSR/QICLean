@@ -270,7 +270,8 @@ theorem replicaLowDefectProjection_gap_mass_ge
     (hR : ((1 : Matrix (Fin k → A) (Fin k → A) ℂ) ⊗ₖ
       ((1 : Matrix (Fin k → C) (Fin k → C) ℂ) ⊗ₖ labelProj (copyPerm R k) ellR)) *ᵥ v = v) :
     1 - ((star v ⬝ᵥ (((((k : ℝ)⁻¹) • replicaHamiltonian H k) ⊗ₖ
-      (1 : Matrix ((Fin k → C) × (Fin k → R)) ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ v)).re - E₀) / g / τ ≤
+      (1 : Matrix ((Fin k → C) × (Fin k → R))
+        ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ v)).re - E₀) / g / τ ≤
       (star v ⬝ᵥ (replicaLowDefectProjection Ω k ellC ellR τ *ᵥ v)).re := by
   rw [replicaLowDefectProjection_mulVec_of_sector Ω k ellC ellR τ v hsym hC hR]
   exact spectralCutoff_replica_gap_mass_ge hgap hΩ hg hk hτ v hv
