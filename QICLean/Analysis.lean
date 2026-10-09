@@ -130,6 +130,7 @@ import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
 import QICLean.Analysis.ReplicaGoodPhysicalSupport
 import QICLean.Analysis.ReplicaJointDensity
+import QICLean.Analysis.ReplicaLowDefectProjection
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ReplicaPhysicalLabelMoment

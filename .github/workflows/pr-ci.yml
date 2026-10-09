@@ -277,6 +277,7 @@ jobs:
           set -eo pipefail
           {
             lake build QICLean.Analysis.ReplicaExcitationCompression
+            lake build QICLean.Analysis.ReplicaLowDefectProjection
             lake build
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
@@ -288,6 +289,20 @@ jobs:
           for file in \
             QICLean/Analysis/ReplicaExcitationCompression.lean \
             QICLeanTest/ReplicaExcitationCompressionAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the low-defect projection strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaLowDefectProjection.lean \
+            QICLeanTest/ReplicaLowDefectProjectionAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
