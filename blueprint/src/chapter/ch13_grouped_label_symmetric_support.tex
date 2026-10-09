@@ -1,0 +1,78 @@
+\section{Subgroup labels and simultaneous symmetry}
+\label{sec:grouped_label_symmetric_support}
+
+For a permutation action $\phi$ of $S_r$, write $\Pi_\phi$ for the
+projection onto its fixed subspace and
+$F_\phi=\sum_\lambda\log(\dim\lambda)\pi_\phi^\lambda$.
+
+\begin{theorem}[Complementary subgroup labels]
+\label{thm:complementary_subgroup_label_entropies}
+\lean{PermutationRepresentation.labelEntropy_mul_symProj_of_eq_mul}
+\leanok
+Let $\phi,\chi,\psi$ be actions of $S_r$ on the same finite
+coordinate set. If $\psi(\sigma)=\phi(\sigma)\chi(\sigma)$ for
+every $\sigma$, then $F_\phi\Pi_\psi=F_\chi\Pi_\psi$.
+This is the complementary-label argument of
+\cite[Lemma~6.1(2)]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+On a vector fixed by $\psi$, the action of $\chi(\sigma)$ equals
+that of $\phi(\sigma^{-1})$. The coefficients of every central
+idempotent of $\C[S_r]$ are invariant under inversion. Apply this
+identity to each central idempotent, then sum with coefficients
+$\log\dim\lambda$.
+\end{proof}
+
+Let $\mathcal H=\bigotimes_{v\in V}\C^{I_v}$ with $V$ and all
+$I_v$ finite. For a homomorphism $\theta:S_r\to S_k$, write
+$F_S^\theta$ for the label entropy of the induced copy action on
+$S\subseteq V$, and $\Pi_T^\theta$ for simultaneous symmetry on
+$T$ under that subgroup.
+
+\begin{theorem}[A signed subgroup entropy on its symmetric range]
+\label{thm:signed_subgroup_label_symmetric_nonnegative}
+\lean{TensorPower.commute_subgroup_labelObservable_symProj_of_subset,
+  TensorPower.subgroup_signedLabelEntropy_symProj_nonneg}
+\leanok
+\uses{thm:complementary_subgroup_label_entropies}
+Every real central label observable on $S$ commutes with
+$\Pi_T^\theta$ when $S\subseteq T$. If $P,Y,F$ are pairwise
+disjoint and cover $V$, then, with
+$G=F_P^\theta+F_F^\theta-F_Y^\theta$ and
+$\Pi=\Pi_V^\theta$,
+\begin{align}
+ G\Pi&=\Pi G,&\Pi G\Pi&\ge0.
+\end{align}
+The signed operator need not be nonnegative on the entire space.
+\end{theorem}
+\begin{proof}\leanok
+Centrality on a smaller region and commutation with its disjoint
+complement give the first assertion. Complementary labels replace
+$F_Y^\theta\Pi$ by $F_{P\cup F}^\theta\Pi$. Thus
+$G\Pi=D\Pi$, where
+$D=F_P^\theta+F_F^\theta-F_{P\cup F}^\theta\ge0$ is the actual
+merge deficit. Hence $\Pi G\Pi=\Pi D\Pi\ge0$.
+\end{proof}
+
+\begin{theorem}[Commutation between disjoint groups of copies]
+\label{thm:grouped_copy_label_commutation}
+\lean{TensorPower.commute_subsystemPerm_of_commute,
+  TensorPower.commute_grouped_labelObservables,
+  TensorPower.commute_good_labelObservable_bad_symProj}
+\leanok
+Commuting permutations of the copies induce commuting actions on
+any two physical subsystems, including overlapping subsystems.
+Consequently, after a division of the copies into groups of sizes
+$m$ and $r$, every real label observable of the first group commutes
+with every such observable of the second group. It also commutes
+with the simultaneous symmetric projection of the second group.
+These are the subgroup commutations used in
+\cite[Section~8, lines 454--480]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+On the intersection of the two subsystems, the induced actions
+commute because the underlying copy permutations commute. Outside
+the intersection, at most one of the actions moves a coordinate.
+Pass from these permutation identities to their group-algebra
+images and to the average defining the symmetric projection.
+\end{proof}
