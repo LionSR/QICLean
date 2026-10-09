@@ -174,10 +174,12 @@ theorem fiveFactorPairMiddle_mergeDeficits :
   obtain ⟨h0, h3, h03, h2, h4, h24⟩ :=
     fiveFactorPairMiddle_labelObservable ι m (fun l ↦ Real.log l.dim)
   constructor
-  · simpa only [labelEntropy, submatrix_add, submatrix_sub, pairMergeDeficit,
-      add_kronecker, sub_kronecker, h0, h3, h03]
-  · simpa only [labelEntropy, submatrix_add, submatrix_sub, pairMergeDeficit,
-      kronecker_add, kronecker_sub, add_kronecker, sub_kronecker, h2, h4, h24]
+  · simp only [labelEntropy, submatrix_add, submatrix_sub, Pi.add_apply, Pi.sub_apply,
+      h0, h3, h03, pairMergeDeficit, ← Matrix.ext_iff, kroneckerMap_apply,
+      Matrix.add_apply, Matrix.sub_apply, add_mul, sub_mul]
+  · simp only [labelEntropy, submatrix_add, submatrix_sub, Pi.add_apply, Pi.sub_apply,
+      h2, h4, h24, pairMergeDeficit, ← Matrix.ext_iff, kroneckerMap_apply,
+      Matrix.add_apply, Matrix.sub_apply, mul_add, mul_sub, add_mul, sub_mul]
 
 /-- Exponentiating the sum of the two actual merge deficits retains the
 identity on the good middle physical copies. The parameter is any real
