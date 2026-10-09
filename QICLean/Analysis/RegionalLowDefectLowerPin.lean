@@ -158,7 +158,7 @@ theorem exists_globalReplicaLowDefectProjection_rough_lower_pin
     apply mul_le_mul_of_nonneg_left _ (by positivity)
     exact mul_le_mul_of_nonneg_right
       (Real.rpow_le_rpow_of_exponent_le
-        (by linarith only [Nat.cast_nonneg (R := ℝ) k]) (hfc (Q, Y)))
+        (by linarith only [(Nat.cast_nonneg k : (0 : ℝ) ≤ k)]) (hfc (Q, Y)))
       (Real.exp_pos _).le
   exact regional_lower_pin_pullback β C R Ω hΩ Q Y hQY t k ellC ellR τ
     hb₀ hbb (hlocal (Q, Y) k ψ hψ ellC ellR τ S ε hτ hτhalf hlabel).1 n Z
