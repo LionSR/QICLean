@@ -64,7 +64,8 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
       (ρk * NormedSpace.exp ((a : ℂ) • labelEntropy (copyPerm n k))).trace.re ≤
         Real.exp (a * ((k : ℝ) * S) + E) := by
     rw [hshift a, mul_smul_comm, trace_smul, Complex.smul_re, smul_eq_mul]
-    done
+    exact (mul_le_mul_of_nonneg_left hcenter (Real.exp_pos _).le).trans_eq
+      (Real.exp_add _ _).symm
   done
 
 end Matrix
