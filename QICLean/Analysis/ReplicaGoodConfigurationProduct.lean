@@ -113,7 +113,7 @@ theorem partialTraceRight_replicaGoodConfigurationMarginal_physical :
     trace_partialTraceLeft, trace_vecMulVec,
     ← EuclideanSpace.inner_eq_star_dotProduct (WithLp.toLp 2 w) (WithLp.toLp 2 w),
     inner_self_eq_norm_sq_to_K]
-  simp only [Complex.ofReal_pow]
+  rfl
 
 /-- An arbitrary observable on all good physical copies has its original
 pure tensor-power expectation times the component mass. No sign, symmetry,
