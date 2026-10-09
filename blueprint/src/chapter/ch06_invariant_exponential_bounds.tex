@@ -31,13 +31,13 @@ dimension zero. Matrix order means positive semidefinite order.
   of $P$ agree. Compressing the inequality gives the result.
 \end{proof}
 
-\begin{corollary}[Negative exponential on an invariant range]
-  \label{cor:invariant_range_negative_exp}
+\begin{theorem}[Negative exponential on an invariant range]
+  \label{thm:invariant_range_negative_exp}
   \lean{Matrix.IsHermitian.compression_exp_neg_smul_le_of_lower_bound}
   Under the hypotheses on $A,P,b$ in
   Theorem~\ref{thm:invariant_range_functional_bound}, every $a\geq0$
   satisfies $Pe^{-aA}P\leq e^{-ab}P$.
-\end{corollary}
+\end{theorem}
 \begin{proof}
   \uses{thm:invariant_range_functional_bound}
   Apply the theorem to $f(x)=e^{-ax}$, which is at most $e^{-ab}$
@@ -61,14 +61,14 @@ dimension zero. Matrix order means positive semidefinite order.
   inequality.
 \end{proof}
 
-\begin{corollary}[Removing a compressed exponential contraction]
-  \label{cor:fixed_vector_exp_contraction}
+\begin{theorem}[Removing a compressed exponential contraction]
+  \label{thm:fixed_vector_exp_contraction}
   \lean{Matrix.IsHermitian.re_dotProduct_exp_add_le_of_compressed_exp_le}
   Under the matrix hypotheses of Theorem~\ref{thm:fixed_vector_exp_comparison},
   $Pe^BP\leq P$ implies
   $\operatorname{Re}(v^*e^{A+B}v)\leq\operatorname{Re}(v^*e^Av)$
   for every $Pv=v$.
-\end{corollary}
+\end{theorem}
 \begin{proof}
   \uses{thm:fixed_vector_exp_comparison}
   Take $c=1$.
