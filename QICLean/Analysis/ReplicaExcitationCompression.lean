@@ -39,7 +39,7 @@ namespace Matrix
 
 section FiniteSum
 
-variable {n ι : Type*} [Fintype n] [DecidableEq n]
+variable {n ι : Type*} [Fintype n]
 
 /-- Cauchy--Schwarz for the seminorm defined by a positive semidefinite matrix.
 This is the finite-sum step preceding `comparator:inverse-compression` in
@@ -48,6 +48,7 @@ theorem PosSemidef.re_dotProduct_sum_mulVec_le_card_sum
     {H : Matrix n n ℂ} (hH : H.PosSemidef) (s : Finset ι) (v : ι → n → ℂ) :
     (star (∑ i ∈ s, v i) ⬝ᵥ (H *ᵥ ∑ i ∈ s, v i)).re ≤
       (s.card : ℝ) * ∑ i ∈ s, (star (v i) ⬝ᵥ (H *ᵥ v i)).re := by
+  classical
   let R := CFC.sqrt H
   have hR : Rᴴ = R := (CFC.sqrt_nonneg H).isSelfAdjoint.star_eq
   have hHGram : H = Rᴴ * R := by
