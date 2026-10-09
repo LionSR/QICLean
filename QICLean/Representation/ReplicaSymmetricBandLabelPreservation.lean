@@ -62,6 +62,11 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
           labelProj (subsystemPerm k ι {a}) ell *ᵥ ξ = ξ →
           labelProj (subsystemPerm k ι {a}) ell *ᵥ v = v := by
   intro Pe A B M
+  have hM : M.PosDef :=
+    (replicaMetric_symProj_meanTree_roots_commute ι k n Z hZ hZZ ht G Q Y
+      hdisj hnest).elim (fun hroot hcomm ↦
+        Matrix.MeanTree.posDef_listProd_ofFn (fun g ↦ hroot g T)
+          (fun g h hgh ↦ hcomm g h hgh T T))
   done
 
 end TensorPower
