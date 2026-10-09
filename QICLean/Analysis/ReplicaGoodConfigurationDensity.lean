@@ -149,7 +149,10 @@ noncomputable def replicaGoodConfigurationMarginal (ι : Fin 5 → Type*)
         (goodBadCopiesEquiv (ι 4) B).symm (g.2.2, x.2.2.2)))
   Matrix.partialTraceRight (Matrix.vecMulVec f (star f))
 
-private noncomputable def goodAuxiliarySplit (ι : Fin 5 → Type*) {k : ℕ}
+/-- Separate both auxiliary copy registers into their common good and bad groups.
+This is the coordinate division used in the good-copy density of
+`07-comparators.tex`, lines 520–549. -/
+noncomputable def goodAuxiliarySplit (ι : Fin 5 → Type*) {k : ℕ}
     (B : Finset (Fin k)) :
     ((Fin k → ι 3) × (Fin k → ι 4)) ≃
       ((Fin Bᶜ.card → ι 3) × (Fin Bᶜ.card → ι 4)) ×
@@ -158,7 +161,10 @@ private noncomputable def goodAuxiliarySplit (ι : Fin 5 → Type*) {k : ℕ}
     (Equiv.prodProdProdComm (Fin Bᶜ.card → ι 3) (Fin B.card → ι 3)
       (Fin Bᶜ.card → ι 4) (Fin B.card → ι 4))
 
-private theorem replicaGoodConfigurationMarginal_eq (ι : Fin 5 → Type*)
+/-- The full good-copy density can be obtained by first tracing the bad physical
+copies, then tracing the bad auxiliary copies in their specified coordinates.
+No normalization is required. Source: `07-comparators.tex`, lines 520–549. -/
+theorem replicaGoodConfigurationMarginal_eq (ι : Fin 5 → Type*)
     [∀ f, Fintype (ι f)] [∀ f, DecidableEq (ι f)]
     (Ω : ι 0 × (ι 1 × ι 2) → ℂ) (k : ℕ) (B : Finset (Fin k))
     (u : (Fin k → ι 0 × (ι 1 × ι 2)) × ((Fin k → ι 3) × (Fin k → ι 4)) → ℂ) :

@@ -1,0 +1,100 @@
+\section{The physical product in the actual good-copy density}
+\label{sec:replica_good_configuration_product}
+
+Let $k\ge0$ and $B\subseteq\{0,\ldots,k-1\}$. Write $G=B^c$ for the good
+copies and use the same enumeration in every
+physical and auxiliary factor.
+
+\begin{definition}[Separating the auxiliary copies]
+\label{def:good_auxiliary_split}
+\lean{Matrix.goodAuxiliarySplit}
+Separate the two auxiliary registers by the coordinate equivalence
+\begin{align*}
+ (C^k\times R^k)\simeq
+ (C^{|G|}\times R^{|G|})\times(C^{|B|}\times R^{|B|}).
+\end{align*}
+Both good registers precede both bad registers. Denote this equivalence by $e$.
+\end{definition}
+
+\begin{lemma}[Successive traces of the bad copies]
+\label{lem:replica_good_configuration_successive_traces}
+\lean{Matrix.replicaGoodConfigurationMarginal_eq}
+\uses{def:good_auxiliary_split,def:replica_good_configuration_marginal}
+Let $w$ be an excitation component of an arbitrary vector, and let $D$ be
+its vector density after tracing the bad physical copies, retaining the
+good physical copies and the entire auxiliary register. The full good-copy
+density is obtained from $D$ by the auxiliary coordinate change $e$,
+followed by the trace over the bad auxiliary copies. No normalization of
+the one-copy vector or of $w$ is required for this identity.
+\end{lemma}
+\begin{proof}
+Both expressions sum the same matrix entries over the bad physical and
+two bad auxiliary configurations. Interchanging these finite sums gives
+the stated identity.
+\end{proof}
+
+\begin{lemma}[Partial trace on a tensor factor]
+\label{lem:partial_trace_along_tensor_factor}
+\lean{Matrix.partialTraceRightAlong_kronecker}
+Let $e:K\simeq C\times R$, where $R$ is finite. For arbitrary matrices
+$A$ and $B$ on the first factor and on $K$, respectively, the partial
+trace on the $R$ coordinate satisfies
+\begin{align*}
+ \operatorname{Tr}_{R}(A\otimes B)
+ =A\otimes\operatorname{Tr}_{R}B,
+\end{align*}
+where the coordinates of $B$ are changed by $e$ on both sides.
+\end{lemma}
+\begin{proof}
+In each matrix entry, the entry of $A$ is independent of the traced
+coordinate and can be taken outside the finite sum.
+\end{proof}
+
+
+\begin{theorem}[Product structure of the good-copy density]
+\label{thm:replica_good_configuration_product}
+\lean{Matrix.partialTraceRight_replicaExcitationComponent_goodFin_density,Matrix.replicaGoodConfigurationMarginal_product}
+Let $\Omega$ be a unit vector on the three physical factors $Q,Y,V$.
+For an arbitrary original vector, let $w$ be its excitation component
+associated to a set $B$ of bad copies. Write $G=B^c$ and $m=|G|$.
+Let $\rho_G$ be the actual density retaining the good copies of all five
+factors $Q,Y,V,C,R$. After grouping the physical and auxiliary registers,
+\begin{align*}
+ \rho_G=(|\Omega\rangle\langle\Omega|)^{\otimes m}\otimes\eta_G,
+\end{align*}
+where $\eta_G$ is obtained from $|w\rangle\langle w|$ by tracing all
+physical copies and all bad auxiliary copies. In particular,
+$\operatorname{Tr}\eta_G=\|w\|^2$.
+Before tracing the bad auxiliary copies, the same assertion holds with
+the whole auxiliary marginal in place of $\eta_G$.
+This is the product decomposition used in
+\cite[Section~7, lines~520--560]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{thm:replica_good_copy_product_density,lem:replica_good_configuration_successive_traces,lem:partial_trace_along_tensor_factor}
+Every good physical copy of the excitation component equals $\Omega$.
+Taking the partial trace of its vector density over the bad physical
+copies gives the pure physical tensor power times the actual whole
+auxiliary marginal. The partial trace over the bad auxiliary copies
+preserves this product. Both traces and the coordinate changes preserve
+the total trace.
+\end{proof}
+
+\begin{theorem}[Physical expectations of a good-copy density]
+\label{thm:replica_good_configuration_physical_expectation}
+\lean{Matrix.partialTraceRight_replicaGoodConfigurationMarginal_physical,Matrix.trace_replicaGoodConfigurationMarginal_physical_mul}
+With the preceding notation,
+\begin{align*}
+ \operatorname{Tr}_{C_G R_G}\rho_G
+ &=\|w\|^2(|\Omega\rangle\langle\Omega|)^{\otimes m},\\
+ \operatorname{Tr}\bigl(\rho_G(H\otimes I)\bigr)
+ &=\|w\|^2\operatorname{Tr}\bigl((|\Omega\rangle\langle\Omega|)^{\otimes m}H\bigr)
+\end{align*}
+for every matrix $H$ on the good physical copies. No normalization or
+nonvanishing of $w$, and no positivity of $H$, is required.
+\end{theorem}
+\begin{proof}
+\uses{thm:replica_good_configuration_product}
+Take the auxiliary trace of the product identity, then use the defining
+adjoint identity for partial trace.
+\end{proof}
