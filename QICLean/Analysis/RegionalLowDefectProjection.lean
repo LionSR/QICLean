@@ -118,7 +118,8 @@ theorem globalReplicaLowDefectProjection_properties
           (hl (replicaJointCopyPerm ((v : V) → β v) C R k)))
             (show IsStarProjection
               (labelProj (replicaJointCopyPerm ((v : V) → β v) C R k) l) from
-                ⟨labelProj_mul_self _ l, (isHermitian_labelProj _ l).isSelfAdjoint⟩))).isIdempotentElem.eq]
+        ⟨labelProj_mul_self _ l,
+          (isHermitian_labelProj _ l).isSelfAdjoint⟩))).isIdempotentElem.eq]
   have hPQ : P * Q = P := by
     dsimp only [Q]
     rw [← symProj_replicaJointCopyPerm_submatrix_globalReplicaCopiesEquiv β C R k]
@@ -152,12 +153,9 @@ theorem regionalFiveFactor_lowDefectProjection_eq_global
   rw [h]
   ext x y
   simp only [Matrix.submatrix_apply, globalReplicaLowDefectProjection, e, ι,
-    regionalFiveFactorCopyEquiv, Equiv.trans_apply,
-    Equiv.apply_symm_apply, Equiv.symm_apply_apply]
-  simp only [Matrix.submatrix, Matrix.of_apply, Equiv.coe_trans,
-    Function.comp_apply, Equiv.apply_symm_apply, Equiv.symm_apply_apply]
-  simp only [Matrix.of, Equiv.refl_apply, Equiv.trans_apply,
-    Equiv.apply_symm_apply, Equiv.symm_apply_apply]
+    regionalFiveFactorCopyEquiv, Equiv.trans_apply]
+  simp only [Matrix.submatrix, Matrix.of_apply]
+  simp only [Matrix.of]
   exact congrArg₂ (replicaLowDefectProjection (C := C) (R := R) Ω k ellC ellR τ)
     ((congrArg (replicaPhysicalCoordinateEquiv (C := C) (R := R)
       (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm
