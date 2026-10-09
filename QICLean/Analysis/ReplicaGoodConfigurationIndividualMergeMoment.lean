@@ -52,7 +52,8 @@ private theorem trace_pairMiddle_exp_of_reindex
           (1 : Matrix (Fin Bᶜ.card → ι 1) (Fin Bᶜ.card → ι 1) ℂ) := by
     rw [← reindex_apply, reindex_exp, reindex_apply, submatrix_smul,
       Pi.smul_apply, Pi.smul_apply, hA,
-      ← smul_kronecker, exp_kronecker_one]
+      ← smul_kronecker,
+      exp_kronecker_one (n := Fin Bᶜ.card → ι 1) ((a : ℂ) • H)]
   have h := trace_replicaGoodConfigurationMarginal_pairMiddle_mul ι Ω k B u
     (NormedSpace.exp ((a : ℂ) • H))
   rw [← he, submatrix_mul_equiv, trace_submatrix_equiv] at h
