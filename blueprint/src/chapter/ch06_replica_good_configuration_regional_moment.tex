@@ -4,6 +4,7 @@
 \begin{theorem}[Regional observable identity]
 \label{thm:replica_good_configuration_regional_expectation}
 \lean{Matrix.trace_replicaGoodConfigurationMarginal_regional_mul}
+\leanok
 Let $\Omega$ be a unit one-copy physical vector.
 Choose any bipartite coordinate decomposition of the original physical
 space as $U\otimes T$, and set
@@ -21,6 +22,7 @@ This is the regional reduction in
 \cite[Section~8, lines~550--560]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:replica_good_configuration_physical_expectation,thm:partial_trace_tensor_power_reindex}
 First trace the auxiliary coordinates, then trace the good copies of
 $T$. The tensor-product partial-trace identity gives
@@ -30,6 +32,7 @@ $\sigma_U^{\otimes m}$.
 \begin{theorem}[Signed regional label moments]
 \label{thm:replica_good_configuration_regional_label_moment}
 \lean{Matrix.trace_replicaGoodConfigurationMarginal_regional_exp_labelEntropy}
+\leanok
 Let $F_{U,m}$ be the label entropy observable for the copy permutations
 of $U^{\otimes m}$. For every real $a$,
 \begin{align*}
@@ -39,6 +42,7 @@ of $U^{\otimes m}$. For every real $a$,
 The component may vanish; no division by its mass is involved.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:replica_good_configuration_regional_expectation}
 Apply the regional observable identity to $H=e^{aF_{U,m}}$.
 \end{proof}
