@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.ConjTranspose
-import Mathlib.Data.Complex.Basic
+import Mathlib.Basic.Complex.Basic
 
 /-!
 # Commutation in isometric coordinates
@@ -45,7 +45,7 @@ theorem commute_of_isometric_intertwine
       _ = (N * Z) * B := (Matrix.mul_assoc _ _ _).symm
       _ = (Z * C) * B := by rw [hN]
       _ = Z * (C * B) := Matrix.mul_assoc _ _ _
-  show B * C = C * B
+  change B * C = C * B
   simpa only [← Matrix.mul_assoc, hZ, Matrix.one_mul] using
     congrArg (fun L : Matrix m n ℂ ↦ Zᴴ * L) hprod
 
