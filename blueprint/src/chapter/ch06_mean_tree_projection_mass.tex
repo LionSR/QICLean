@@ -3,6 +3,7 @@
 \begin{theorem}[The logarithmic loss from discarded projection mass]
 \label{thm:mean_tree_projection_mass_log_bound}
 \lean{Matrix.MeanTree.re_dotProduct_log_eval_ge_of_projection_mass}
+\leanok
 \uses{def:mean_tree}
 Let $P$ be an orthogonal projection on a finite-dimensional complex
 Hilbert space, and let $T$ be a weighted binary tree with labels in a
@@ -27,6 +28,7 @@ required. This is the expectation step in the lower comparison of
 \end{theorem}
 
 \begin{proof}
+\leanok
 \uses{thm:mean_tree_projection_log_lower_bound,lem:mean_tree_weights}
 The terminal-weight identities give $\ell\ge\log b$. Set
 $q=\langle v,Pv\rangle$. Taking the expectation in

@@ -11,9 +11,11 @@ taking logarithms in
 \begin{theorem}[Positive scalars on complementary ranges]
 \label{thm:positive_projection_sectors}
 \lean{Matrix.posDef_smul_one_sub_add_smul_projection}
+\leanok
 For $b,d>0$, the matrix $b(\Id-P)+dP$ is positive definite.
 \end{theorem}
 \begin{proof}
+\leanok
 Both summands are positive semidefinite. Since $P$ and $\Id-P$ are
 idempotent and $P(\Id-P)=(\Id-P)P=0$, the matrix has inverse
 $b^{-1}(\Id-P)+d^{-1}P$. A positive semidefinite invertible matrix is
@@ -23,6 +25,7 @@ positive definite.
 \begin{theorem}[A mean tree acts separately on complementary ranges]
 \label{thm:mean_tree_projection_sectors}
 \lean{Matrix.MeanTree.eval_smul_one_sub_add_smul_projection}
+\leanok
 \uses{def:mean_tree}
 Let $T$ be a finite weighted binary tree with labels in a finite set $J$
 and terminal weights $w_j$. For $b>0$ and $d_j>0$ for every $j\in J$,
@@ -34,6 +37,7 @@ and terminal weights $w_j$. For $b>0$ and $d_j>0$ for every $j\in J$,
 Repeated leaf labels and zero terminal weights are permitted.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:positive_projection_sectors,thm:mean_intertwiner_root,thm:mean_tree_properties}
 Put $B_j=b(\Id-P)+d_jP$. By
 Theorem~\ref{thm:positive_projection_sectors}, each $B_j$ is positive
@@ -51,6 +55,7 @@ Adding the two identities proves (\ref{eq:mean_tree_projection_sectors}).
 \begin{theorem}[Lower bounds on complementary ranges pass through a tree]
 \label{thm:mean_tree_projection_sector_lower_bound}
 \lean{Matrix.MeanTree.smul_one_sub_add_smul_projection_le_eval}
+\leanok
 \uses{def:mean_tree}
 With the same $P$, $b>0$, positive family $(d_j)_{j\in J}$, and tree $T$,
 suppose matrices $A_j$ satisfy $b(\Id-P)+d_jP\le A_j$ for every $j\in J$.
@@ -61,6 +66,7 @@ Then
 The hypotheses impose no commutation condition on the matrices $A_j$.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:positive_projection_sectors,thm:mean_tree_projection_sectors,thm:mean_tree_properties}
 The lower matrices are positive definite by
 Theorem~\ref{thm:positive_projection_sectors}. Monotonicity of the mean

@@ -4,6 +4,7 @@
 \begin{theorem}[The logarithm of a projection lower comparison]
 \label{thm:mean_tree_projection_log_lower_bound}
 \lean{Matrix.MeanTree.log_projection_sectors_le_log_eval}
+\leanok
 \uses{def:mean_tree}
 Let $I$ and $J$ be finite sets, let $P$ be an orthogonal projection on
 $\C^I$, and let $T$ be a weighted binary tree with labels in $J$ and
@@ -22,6 +23,7 @@ in \cite[lines~603--640 of the norm-comparison argument]{OpenAI2026AreaLaw}.
 % adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:mean_tree_projection_sector_lower_bound,
   thm:positive_projection_sectors,thm:area_law_affine_projection_calculus}
 Put $r=\prod_{j\in J}d_j^{w_j}>0$.
