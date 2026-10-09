@@ -236,6 +236,7 @@ theorem trace_replicaGoodConfigurationMarginal_exp_singleton_labelEntropy
   intro w e ρ
   have h := trace_replicaGoodConfigurationMarginal_regional_exp_labelEntropy
     ι Ω hΩ k B u e a
+  dsimp only at h
   rw [← fiveFactorCopies_exp_labelEntropy_singleton ι Bᶜ.card j a,
     submatrix_mul_equiv, trace_submatrix_equiv] at h
   exact h
