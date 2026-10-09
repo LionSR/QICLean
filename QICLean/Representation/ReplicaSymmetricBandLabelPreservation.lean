@@ -70,6 +70,7 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
   refine ⟨hM, fun s ξ hξ hPξ ↦ ?_⟩
   intro w v
   have hPZ : Pe * Z = Z := by
+    dsimp only [Pe]
     rw [← hZZ, Matrix.mul_assoc, hZ, Matrix.mul_one]
   done
 
