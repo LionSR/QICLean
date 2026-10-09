@@ -24,6 +24,13 @@ the density-matrix fixed-point theorem.  Compactness gives a limiting density
 eigenvector for the original map.  An upper Collatz--Wielandt bound, obtained
 from positive congruence similarity and the Russo--Dye estimate, identifies
 the limiting eigenvalue with the spectral radius.
+
+## Main results
+
+* `spectralRadius_le_of_upperCollatzWielandtFeasible_of_posDef`: an upper
+  Collatz--Wielandt pair with a positive-definite matrix bounds the spectral
+  radius.
+* `exists_density_eigenvector_spectralRadius`: Wolf Theorem 6.5.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator NNReal ENNReal
@@ -83,7 +90,7 @@ theorem spectralRadius_le_of_upperCollatzWielandtFeasible_of_posDef [NeZero D]
     exact hgap
   have hnorm : ‖U 1‖ ≤ a := by
     have hmono : ‖U 1‖ ≤ ‖(a : ℂ) • (1 : Mat)‖ :=
-      CStarAlgebra.norm_le_norm_of_nonneg_of_le (A := Mat) hUone_nonneg hUone_le
+      CStarAlgebra.norm_le_norm_of_le_of_nonneg (A := Mat) hUone_le hUone_nonneg
     simpa [norm_smul, abs_of_nonneg ha] using hmono
   have hsim_alg :
       U = (Matrix.congruenceLinearEquiv S hS_det).symm.conjAlgEquiv ℂ T := by
@@ -169,4 +176,86 @@ private theorem exists_positiveTraceRegularization_eigenpair [NeZero D]
   · refine ⟨hX, ?_⟩
     rw [← hEig, positiveTraceRegularization_apply_density T ε hX]
     simpa only [add_sub_cancel_left] using hεmixed.posSemidef
-  · sorry
+  · have htrace := congrArg Matrix.trace hEig
+    rw [positiveTraceRegularization_apply_density T ε hX, Matrix.trace_add,
+      Matrix.trace_smul, Matrix.trace_smul, Matrix.maximallyMixedOn_trace, hX.2,
+      smul_eq_mul, smul_eq_mul, mul_one, mul_one] at htrace
+    have hre := congrArg Complex.re htrace
+    simpa using hre.symm
+
+/-! ## Wolf Theorem 6.5 -/
+
+/-- **Wolf Theorem 6.5 (spectral radius and positive eigenvectors).**
+For a positive map `T` on `M_D(ℂ)` with `D > 0`, the spectral radius `ϱ` of
+`T` is an eigenvalue, with a positive-semidefinite eigenvector `X`
+normalized to unit trace: `T X = ϱ X`.
+
+Source: Wolf, *Quantum Channels & Operations*, Theorem 6.5
+(`Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 743--747).
+The source states the theorem without proof.  The proof here passes to the
+limit of the positive-definite eigenvectors of the regularized maps
+`T + ε tr(·) 𝟙/D`, using the upper Collatz--Wielandt bound for the
+spectral-radius comparison. -/
+theorem exists_density_eigenvector_spectralRadius [NeZero D]
+    (T : Mat →ₗ[ℂ] Mat) (hT : IsPositiveMap T) :
+    ∃ X ∈ densityMatrices D, ∃ r : ℝ, 0 ≤ r ∧ T X = (r : ℂ) • X ∧
+      spectralRadius ℂ (Module.End.toContinuousLinearMap Mat T) = ENNReal.ofReal r := by
+  let ε : ℕ → ℝ := fun n ↦ 1 / ((n : ℝ) + 1)
+  have hε : ∀ n, 0 < ε n := fun n ↦ Nat.one_div_pos_of_nat
+  have hε0 : Filter.Tendsto ε Filter.atTop (nhds 0) :=
+    tendsto_one_div_add_atTop_nhds_zero_nat
+  choose Xs hXs rs _ hXpd hEig hUpper hrs using
+    fun n ↦ exists_positiveTraceRegularization_eigenpair T hT (hε n)
+  obtain ⟨X, hX, φ, hφ, hlim⟩ := densityMatrices_isCompact.tendsto_subseq hXs
+  have hTcont : Continuous T := LinearMap.continuous_of_finiteDimensional T
+  let r : ℝ := (Matrix.trace (T X)).re
+  have hεφ : Filter.Tendsto (ε ∘ φ) Filter.atTop (nhds 0) :=
+    hε0.comp hφ.tendsto_atTop
+  have hrlim : Filter.Tendsto (rs ∘ φ) Filter.atTop (nhds r) := by
+    have hcont : Continuous fun Y : Mat ↦ (Matrix.trace (T Y)).re :=
+      Complex.continuous_re.comp (continuous_id.matrix_trace.comp hTcont)
+    have h := ((hcont.tendsto X).comp hlim).add hεφ
+    rw [add_zero] at h
+    refine h.congr fun n ↦ ?_
+    simp [Function.comp, hrs]
+  have hr : 0 ≤ r := ge_of_tendsto' hrlim fun n ↦ by
+    rw [Function.comp_apply, hrs]
+    exact add_nonneg (by simpa using (RCLike.nonneg_iff.mp
+      (hT _ (hXs (φ n)).1).trace_nonneg).1) (hε _).le
+  have hTX : T X = (r : ℂ) • X := by
+    have hleft : Filter.Tendsto
+        (fun n ↦ positiveTraceRegularization T (ε (φ n)) (Xs (φ n)))
+        Filter.atTop (nhds (T X + ((0 : ℝ) : ℂ) • Matrix.maximallyMixedOn)) := by
+      refine (((hTcont.tendsto X).comp hlim).add
+        (((Complex.continuous_ofReal.tendsto 0).comp hεφ).smul_const _)).congr fun n ↦ ?_
+      rw [positiveTraceRegularization_apply_density T _ (hXs (φ n))]
+      rfl
+    have hright : Filter.Tendsto
+        (fun n ↦ positiveTraceRegularization T (ε (φ n)) (Xs (φ n)))
+        Filter.atTop (nhds ((r : ℂ) • X)) := by
+      refine (((Complex.continuous_ofReal.tendsto r).comp hrlim).smul hlim).congr fun n ↦ ?_
+      rw [hEig]
+      rfl
+    simpa using tendsto_nhds_unique hleft hright
+  refine ⟨X, hX, r, hr, hTX, le_antisymm ?_ ?_⟩
+  · refine ge_of_tendsto' ((ENNReal.continuous_ofReal.tendsto r).comp hrlim) fun n ↦ ?_
+    exact spectralRadius_le_of_upperCollatzWielandtFeasible_of_posDef T hT
+      (hXpd (φ n)) (hUpper (φ n))
+  · have hXne : X ≠ 0 := by
+      rintro rfl
+      simpa using hX.2
+    have hEigval : Module.End.HasEigenvalue T (r : ℂ) := by
+      apply Module.End.hasEigenvalue_of_hasEigenvector
+      exact ⟨Module.End.mem_eigenspace_iff.mpr hTX, hXne⟩
+    have hSpec : (r : ℂ) ∈ spectrum ℂ (Module.End.toContinuousLinearMap Mat T) := by
+      rw [AlgEquiv.spectrum_eq (Module.End.toContinuousLinearMap Mat) T]
+      exact Module.End.hasEigenvalue_iff_mem_spectrum.mp hEigval
+    rw [spectralRadius_eq_of_unital]
+    calc
+      ENNReal.ofReal r = (‖(r : ℂ)‖₊ : ℝ≥0∞) := by
+        rw [ENNReal.ofReal, Real.toNNReal_of_nonneg hr]
+        congr 1
+        ext
+        simp [abs_of_nonneg hr]
+      _ ≤ ⨆ μ ∈ spectrum ℂ (Module.End.toContinuousLinearMap Mat T), (‖μ‖₊ : ℝ≥0∞) :=
+        le_iSup₂ (f := fun μ _ ↦ (‖μ‖₊ : ℝ≥0∞)) (r : ℂ) hSpec
