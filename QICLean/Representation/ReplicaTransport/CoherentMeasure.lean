@@ -47,8 +47,15 @@ instance : CompactSpace (CoherentSphere Ω) := by
     with_reducible_and_instances rfl
   have hs := isCompact_sphere (0 : EuclideanSpace ℂ Ω) 1
   rw [htop] at hs
-  set_option pp.all true in
-    simpa only [Metric.sphere, dist_zero_right] using hs
+  have hnorm :
+      (@SeminormedAddCommGroup.toSeminormedAddGroup (EuclideanSpace ℂ Ω)
+        (PiLp.seminormedAddCommGroup (2 : ℝ≥0∞) (fun _ : Ω => ℂ))).toNorm =
+        @PiLp.instNorm (2 : ℝ≥0∞) Ω (fun _ : Ω => ℂ) inferInstance
+          (fun _ => Complex.instNorm) := by
+    with_reducible_and_instances rfl
+  simp only [Metric.sphere, dist_zero_right] at hs
+  rw [hnorm] at hs
+  exact hs
 
 /-- The ambient coordinates of a unit vector depend continuously on that vector. -/
 theorem continuous_coherentSphere_coe :
