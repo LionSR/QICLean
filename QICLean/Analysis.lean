@@ -50,6 +50,7 @@ import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
+import QICLean.Analysis.FiveMomentExponentialBound
 import QICLean.Analysis.FloorKKT
 import QICLean.Analysis.GammaRatio
 import QICLean.Analysis.GapPerturbation
@@ -118,6 +119,7 @@ import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
 import QICLean.Analysis.ReplicaComponentMergeMoment
+import QICLean.Analysis.ReplicaComponentUniformRate
 import QICLean.Analysis.ReplicaDefect
 import QICLean.Analysis.ReplicaExcitationDecomposition
 import QICLean.Analysis.ReplicaExcitationSymmetry
