@@ -277,6 +277,7 @@ jobs:
           set -eo pipefail
           {
             lake build QICLean.Analysis.ProjectionQuadraticBound
+            lake build QICLean.Analysis.CommutingExponentialOrder QICLean.Analysis.ProjectionCfcUpperBound QICLean.Analysis.InvariantExponentialComparison
             lake build
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
@@ -288,6 +289,22 @@ jobs:
           for file in \
             QICLean/Analysis/ProjectionQuadraticBound.lean \
             QICLeanTest/ProjectionQuadraticBoundAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check invariant-range exponential comparisons strictly
+        timeout-minutes: 7
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/CommutingExponentialOrder.lean \
+            QICLean/Analysis/ProjectionCfcUpperBound.lean \
+            QICLean/Analysis/InvariantExponentialComparison.lean \
+            QICLeanTest/InvariantExponentialAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \

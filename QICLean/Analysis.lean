@@ -21,6 +21,7 @@ import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
+import QICLean.Analysis.CommutingExponentialOrder
 import QICLean.Analysis.CommutingHermitian
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
@@ -64,6 +65,7 @@ import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.IidTailThreshold
 import QICLean.Analysis.InjectiveRangeProjector
+import QICLean.Analysis.InvariantExponentialComparison
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.JordanBlockAsymptotics
@@ -108,6 +110,7 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
+import QICLean.Analysis.ProjectionCfcUpperBound
 import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.ProjectionQuadraticBound
