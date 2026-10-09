@@ -4,6 +4,7 @@
 \begin{theorem}[Separate moments on the common pair marginal]
 \label{thm:replica_individual_pair_merge_moments}
 \lean{Matrix.replicaGoodPairMarginal_exp_mergeDeficits_le}
+\leanok
 Let the one-copy physical vector $\Omega$ have norm one, and let $u$
 be fixed by simultaneous permutations of the physical and two auxiliary
 copy registers. For a set $B$ of bad copies, put $m=|B^c|$ and
@@ -20,7 +21,7 @@ for the two lifted merge deficits. For every real $a\leq1$,
 The component may vanish. These are the separate bounds before their
 combination in \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 \uses{thm:replica_component_merge_moment,thm:pair_merge_deficit_traces,thm:replica_good_pair_marginal_right,thm:replica_good_pair_marginal_left}
 Partial trace reduces the first expectation to the actual $QC$
 marginal. For the second, exchange the two exterior physical regions
