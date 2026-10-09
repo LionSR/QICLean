@@ -1,0 +1,75 @@
+\section{The original physical marginals and their entropy difference}
+
+Fix finite coordinate sets $I_0,\ldots,I_4$, and put $H_j=\mathbb C^{I_j}$.
+Let $\Omega\in H_0\otimes(H_1\otimes H_2)$. For $j\in\{0,1,2\}$,
+let $e_j$ be the coordinate bijection that separates coordinate $j$
+from the other two coordinates.
+
+\begin{definition}[Original physical singleton density]
+  \label{def:physical_singleton_density}
+  \lean{Matrix.physicalSingletonDensity}
+  \leanok
+  The density on physical factor $j$ is the partial trace of
+  $|\Omega\rangle\langle\Omega|$ in the coordinates $e_j$.
+  Equivalently, its entries are
+  \begin{align*}
+    \rho_j(a,b)=\sum_y
+      \Omega(e_j^{-1}(a,y))\,
+      \overline{\Omega(e_j^{-1}(b,y))},
+  \end{align*}
+  where $y$ ranges over the configurations of the other two factors.
+\end{definition}
+
+\begin{theorem}[Positivity of the original marginals]
+  \label{thm:physical_singleton_density_positive}
+  \lean{Matrix.posSemidef_physicalSingletonDensity}
+  \leanok
+  Each $\rho_j$ is positive semidefinite, for every vector $\Omega$.
+  Empty coordinate sets are allowed.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{def:physical_singleton_density}
+  The matrix $|\Omega\rangle\langle\Omega|$ is positive semidefinite.
+  Reindexing and partial trace preserve positive semidefiniteness.
+\end{proof}
+
+\begin{theorem}[Trace of the original marginals]
+  \label{thm:physical_singleton_density_trace}
+  \lean{Matrix.trace_physicalSingletonDensity}
+  \leanok
+  If $\|\Omega\|=1$, then $\operatorname{Tr}\rho_j=1$ for each
+  $j\in\{0,1,2\}$.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{def:physical_singleton_density}
+  Reindexing and partial trace preserve the trace, while
+  $\operatorname{Tr}|\Omega\rangle\langle\Omega|=\|\Omega\|^2$.
+\end{proof}
+
+\begin{theorem}[Nonnegative physical entropy difference]
+  \label{thm:physical_singleton_entropy_difference}
+  \lean{Matrix.physicalSingletonEntropy_outer_sub_middle_nonneg}
+  \leanok
+  If $\|\Omega\|=1$, then the three original marginals satisfy
+  \begin{align*}
+    S(\rho_0)+S(\rho_2)-S(\rho_1)\geq0.
+  \end{align*}
+  The marginals may be singular. This is the nonnegativity of the
+  physical entropy difference used in
+  \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{def:physical_singleton_density,thm:physical_singleton_density_positive,thm:finite_product_entropy_complement,thm:finite_product_entropy_subadditivity}
+  Identify the original three-factor vector with a function on the
+  three coordinate sets. For each $j$, the bijection $e_j$ agrees with
+  restriction to the singleton $\{j\}$ and its complement, after the
+  natural identification of their coordinate spaces. Partial trace
+  commutes with these identifications, and entropy is invariant under
+  reindexing. Thus $S(\rho_j)$ is the entropy of the actual singleton
+  region of the same pure state. Complementarity and subadditivity give
+  \begin{align*}
+    S(\rho_1)=S_\Omega(\{0,2\})
+      \leq S_\Omega(\{0\})+S_\Omega(\{2\})
+      =S(\rho_0)+S(\rho_2).
+  \end{align*}
+\end{proof}
