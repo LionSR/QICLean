@@ -1,0 +1,32 @@
+\section{Uncentered signed Schur moments}
+
+\begin{theorem}[Uncentered exponential moments of Schur entropy]
+  \label{thm:iid_schur_exponential_moments}
+  \lean{Matrix.PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le}
+  Let $\rho$ be a positive semidefinite matrix of trace one on a
+  finite-dimensional complex Hilbert space of dimension $d$.
+  Write $p_i$ for its eigenvalues, $S=-\sum_i p_i\log p_i$, and
+  $M_p(v)=\sum_i p_i e^{-v\log p_i}$, with zero spectral weights
+  contributing zero. Let $K,r\in\mathbb R$ satisfy
+  $\log M_p(v)\leq vS+Kv^2$ for every $|v|\leq r$.
+  For a nonnegative integer $k$, let $\rho_k=\rho^{\otimes k}$ and
+  $F_k=\sum_\lambda\log(\dim\lambda)\pi_\lambda$ be the central
+  entropy observable of the copy-permutation action. If $u\geq0$,
+  $2u\leq r$, and $2u\leq1$, then
+  \begin{align}
+    \operatorname{Re}\operatorname{Tr}(\rho_k e^{uF_k})
+      &\leq \exp(ukS+kKu^2),\notag\\
+    \operatorname{Re}\operatorname{Tr}(\rho_k e^{-uF_k})
+      &\leq \exp\!\left(-ukS+2kKu^2+\frac{d^2}{2}\log(k+1)\right).
+  \end{align}
+  These bounds retain the entropy center in the signed moment estimates
+  of \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+  \uses{thm:iid_signed_schur_moments,thm:hermitian_centered_exponential_cfc}
+  For a Hermitian matrix $A$ and real $a,s$, continuous functional calculus
+  gives $e^{aA}=e^{as}e^{a(A-sI)}$ from the corresponding scalar identity.
+  Apply this with $A=F_k$, $s=kS$, and $a=u,-u$.
+  Exponentiate the two centered logarithmic bounds and multiply by
+  $e^{ukS}$ and $e^{-ukS}$, respectively.
+\end{proof}

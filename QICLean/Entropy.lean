@@ -39,6 +39,7 @@ import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
 import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
+import QICLean.Entropy.IidSchurExponentialMoments
 import QICLean.Entropy.IidSchurSignedMoments
 import QICLean.Entropy.IidSurprisal
 import QICLean.Entropy.IidSurprisalMomentExponential
