@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
 import QICLean.Representation.PairMergeDeficit
+import QICLean.Representation.ReplicaMetric
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.GroupAlgebraProductCoordinates
 import QICLean.Analysis.GaussianFilter.Reindex
