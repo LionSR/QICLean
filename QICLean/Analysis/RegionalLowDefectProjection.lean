@@ -158,5 +158,24 @@ theorem regionalFiveFactor_lowDefectProjection_eq_global
     Function.comp_apply, Equiv.apply_symm_apply, Equiv.symm_apply_apply]
   simp only [Matrix.of, Equiv.refl_apply, Equiv.trans_apply,
     Equiv.apply_symm_apply, Equiv.symm_apply_apply]
+  exact congrArg₂ (replicaLowDefectProjection (C := C) (R := R) Ω k ellC ellR τ)
+    ((congrArg (replicaPhysicalCoordinateEquiv (C := C) (R := R)
+      (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm
+      ((fiveFactorCopiesEquiv (regionalFiveFactorSpace β C R Q Y) k).apply_symm_apply
+        ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
+          (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k)
+            ((globalReplicaCopiesEquiv β C R k) x)))).trans
+      ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
+        (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm_apply_apply
+          ((globalReplicaCopiesEquiv β C R k) x)))
+    ((congrArg (replicaPhysicalCoordinateEquiv (C := C) (R := R)
+      (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm
+      ((fiveFactorCopiesEquiv (regionalFiveFactorSpace β C R Q Y) k).apply_symm_apply
+        ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
+          (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k)
+            ((globalReplicaCopiesEquiv β C R k) y)))).trans
+      ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
+        (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm_apply_apply
+          ((globalReplicaCopiesEquiv β C R k) y)))
 
 end Matrix
