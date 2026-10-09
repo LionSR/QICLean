@@ -47,7 +47,8 @@ instance : CompactSpace (CoherentSphere Ω) := by
     with_reducible_and_instances rfl
   have hs := isCompact_sphere (0 : EuclideanSpace ℂ Ω) 1
   rw [htop] at hs
-  simpa only [Metric.sphere, dist_zero_right] using hs
+  set_option pp.all true in
+    simpa only [Metric.sphere, dist_zero_right] using hs
 
 /-- The ambient coordinates of a unit vector depend continuously on that vector. -/
 theorem continuous_coherentSphere_coe :
