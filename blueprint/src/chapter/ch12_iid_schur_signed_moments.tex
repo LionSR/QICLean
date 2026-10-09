@@ -10,6 +10,7 @@ $L_k=-\log\rho_k$, with logarithm zero on the kernel.
 \begin{theorem}[Logarithmic moment of a tensor-power density]
   \label{thm:iid_log_surprisal_moment}
   \lean{Matrix.PosSemidef.log_re_trace_finKronecker_exp_centered_surprisal}
+  \leanok
   For all real $u,s$,
   \begin{align}
     \log\operatorname{Re}\operatorname{Tr}
@@ -17,7 +18,7 @@ $L_k=-\log\rho_k$, with logarithm zero on the kernel.
       &=-us+k\log M_p(u).
   \end{align}
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:iid_centered_surprisal_exponential}
   Since $\sum_i p_i=1$, at least one spectral weight is positive, so
   $M_p(u)>0$. Take the logarithm of the exact product moment
@@ -27,6 +28,7 @@ $L_k=-\log\rho_k$, with logarithm zero on the kernel.
 \begin{theorem}[Both signs of the Schur entropy moment]
   \label{thm:iid_signed_schur_moments}
   \lean{Matrix.PosSemidef.log_re_trace_finKronecker_signed_label_moments_le}
+  \leanok
   Let $K,r$ be real and suppose
   $\log M_p(v)\leq vS+Kv^2$ whenever $|v|\leq r$.
   Let $F_k=\sum_\lambda\log(\dim\lambda)\pi_\lambda$ be the
@@ -41,7 +43,7 @@ $L_k=-\log\rho_k$, with logarithm zero on the kernel.
   These are the explicit independent-copy bounds in
   \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:iid_log_surprisal_moment,thm:schur-label-moment-bounds}
   At center $s=kS$, the logarithmic tensor-power identity and the
   assumed one-copy bound give $kKv^2$. The matrix $\rho_k$ is positive semidefinite,
