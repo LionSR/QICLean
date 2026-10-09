@@ -21,7 +21,7 @@ Source: *A two-dimensional area law from a global spectral gap*, September 24,
 noncomputable section
 
 open TensorPower
-open scoped Matrix
+open scoped Matrix ComplexOrder
 
 namespace Matrix
 
