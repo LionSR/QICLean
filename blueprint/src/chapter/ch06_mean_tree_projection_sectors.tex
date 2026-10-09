@@ -1,0 +1,69 @@
+\section{Weighted means on complementary projection ranges}
+\label{sec:mean_tree_projection_sectors}
+
+Let $I$ be a finite set and let $P$ be an orthogonal projection on $\C^I$.
+The following statements give the two-range comparison used before
+taking logarithms in
+\cite[lines~603--621 of the norm-comparison argument]{OpenAI2026AreaLaw}.
+% Source: 07-comparators.tex, revision
+% adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+
+\begin{theorem}[Positive scalars on complementary ranges]
+\label{thm:positive_projection_sectors}
+\lean{Matrix.posDef_smul_one_sub_add_smul_projection}
+For $b,d>0$, the matrix $b(\Id-P)+dP$ is positive definite.
+\end{theorem}
+\begin{proof}
+Both summands are positive semidefinite. Since $P$ and $\Id-P$ are
+idempotent and $P(\Id-P)=(\Id-P)P=0$, the matrix has inverse
+$b^{-1}(\Id-P)+d^{-1}P$. A positive semidefinite invertible matrix is
+positive definite.
+\end{proof}
+
+\begin{theorem}[A mean tree acts separately on complementary ranges]
+\label{thm:mean_tree_projection_sectors}
+\lean{Matrix.MeanTree.eval_smul_one_sub_add_smul_projection}
+\uses{def:mean_tree}
+Let $T$ be a finite weighted binary tree with labels in a finite set $J$
+and terminal weights $w_j$. For $b>0$ and $d_j>0$ for every $j\in J$,
+\begin{align}
+ T\bigl((b(\Id-P)+d_jP)_{j\in J}\bigr)
+ &=b(\Id-P)+\left(\prod_{j\in J}d_j^{w_j}\right)P.
+ \label{eq:mean_tree_projection_sectors}
+\end{align}
+Repeated leaf labels and zero terminal weights are permitted.
+\end{theorem}
+\begin{proof}
+\uses{thm:positive_projection_sectors,thm:mean_intertwiner_root,thm:mean_tree_properties}
+Put $B_j=b(\Id-P)+d_jP$. By
+Theorem~\ref{thm:positive_projection_sectors}, each $B_j$ is positive
+definite. The relations $B_jP=P(d_j\Id)$ and
+$B_j(\Id-P)=(\Id-P)(b\Id)$ pass through the tree by
+Theorem~\ref{thm:mean_intertwiner_root}. Scalar homogeneity and evaluation
+of a constant family give
+\begin{align}
+ T(B)P&=\left(\prod_{j\in J}d_j^{w_j}\right)P,\notag\\
+ T(B)(\Id-P)&=b(\Id-P).\notag
+\end{align}
+Adding the two identities proves (\ref{eq:mean_tree_projection_sectors}).
+\end{proof}
+
+\begin{theorem}[Lower bounds on complementary ranges pass through a tree]
+\label{thm:mean_tree_projection_sector_lower_bound}
+\lean{Matrix.MeanTree.smul_one_sub_add_smul_projection_le_eval}
+\uses{def:mean_tree}
+With the same $P$, $b>0$, positive family $(d_j)_{j\in J}$, and tree $T$,
+suppose matrices $A_j$ satisfy $b(\Id-P)+d_jP\le A_j$ for every $j\in J$.
+Then
+\begin{align}
+ b(\Id-P)+\left(\prod_{j\in J}d_j^{w_j}\right)P&\le T(A).\notag
+\end{align}
+The hypotheses impose no commutation condition on the matrices $A_j$.
+\end{theorem}
+\begin{proof}
+\uses{thm:positive_projection_sectors,thm:mean_tree_projection_sectors,thm:mean_tree_properties}
+The lower matrices are positive definite by
+Theorem~\ref{thm:positive_projection_sectors}. Monotonicity of the mean
+tree gives $T(B)\le T(A)$. Substitute
+(\ref{eq:mean_tree_projection_sectors}) for $T(B)$.
+\end{proof}
