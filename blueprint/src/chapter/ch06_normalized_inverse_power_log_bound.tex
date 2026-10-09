@@ -1,0 +1,50 @@
+\section{The logarithm in the normalized inverse-power vector}
+\label{sec:normalized_inverse_power_log_bound}
+
+The following inequalities give the final norm-to-logarithm step in the
+lower comparison of
+\cite[lines~642--651 of the norm-comparison argument]{OpenAI2026AreaLaw}.
+% Source: 07-comparators.tex, revision
+% adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+
+\begin{theorem}[A scaled power norm bounds a logarithmic expectation]
+\label{thm:scaled_power_norm_log_bound}
+\lean{Matrix.PosDef.mul_re_inner_cfc_log_le_neg_log_of_scaled_power_norm_le}
+\leanok
+Let $I$ be a finite set, let $M$ be a positive definite matrix on $\C^I$,
+let $s\in\R$, and let $v\in\C^I$ be a unit vector.
+If $N>0$ and $N\|M^s v\|^2\le1$, then
+\begin{align}
+ 2s\,\operatorname{Re}\langle v,(\log M)v\rangle
+ &\le-\log N. \notag
+\end{align}
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:inverse_power_log_jensen}
+Theorem~\ref{thm:inverse_power_log_jensen}, with exponent $-s$, gives
+$\exp(2s\,\operatorname{Re}\langle v,(\log M)v\rangle)\le\|M^s v\|^2$.
+Multiplication by $N$ yields a positive quantity bounded above by one.
+Taking logarithms proves the claim.
+\end{proof}
+
+\begin{theorem}[Logarithmic expectation in the normalized inverse image]
+\label{thm:normalized_inverse_power_log_bound}
+\lean{Matrix.PosDef.mul_re_inner_cfc_log_normalized_inverse_le_neg_log_norm_sq}
+\leanok
+Let $I$ be a finite set, let $M$ be a positive definite matrix on $\C^I$,
+let $s\in\R$, and let $p\in\C^I$ satisfy $p\ne0$ and $\|p\|\le1$.
+Put $u=M^{-s}p$ and $v=u/\|u\|$. Then
+\begin{align}
+ 2s\,\operatorname{Re}\langle v,(\log M)v\rangle
+ &\le-\log\|u\|^2. \notag
+\end{align}
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:scaled_power_norm_log_bound}
+The opposite powers cancel: $M^su=p$. Hence $u\ne0$ and $\|v\|=1$.
+Linearity gives
+\begin{align}
+ \|u\|^2\|M^sv\|^2&=\|p\|^2\le1. \notag
+\end{align}
+Apply Theorem~\ref{thm:scaled_power_norm_log_bound} with $N=\|u\|^2$.
+\end{proof}
