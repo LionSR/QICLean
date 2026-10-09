@@ -87,6 +87,9 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
   have hv : ‖v‖ = 1 :=
     (Matrix.norm_toLp_mulVec_of_isometry Z hZ ((‖w‖⁻¹ : ℂ) • w)).trans
       (norm_smul_inv_norm (𝕜 := ℂ) hw)
+  have hPv : Pe *ᵥ v = v :=
+    (Matrix.mulVec_mulVec (((‖w‖⁻¹ : ℂ) • w).ofLp) Pe Z).trans
+      (congrArg (fun H ↦ H *ᵥ (((‖w‖⁻¹ : ℂ) • w).ofLp)) hPZ)
   done
 
 end TensorPower
