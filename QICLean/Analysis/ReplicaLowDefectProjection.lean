@@ -49,7 +49,7 @@ theorem permOp_replicaJointCopyPerm
   classical
   ext x y
   simp only [permOp_apply_apply, replicaJointCopyPerm, MonoidHom.coe_mk,
-    OneHom.coe_mk, Equiv.prodCongr_apply, Prod.mk.injEq, kroneckerMap_apply]
+    OneHom.coe_mk, Equiv.prodCongr_apply, Prod.mk.injEq, Matrix.kroneckerMap_apply]
   split_ifs <;> simp_all
 
 end TensorPower
