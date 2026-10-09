@@ -248,7 +248,8 @@ theorem replicaLowDefectProjection_fixed_conditions
   · intro σ
     rw [← permOp_replicaJointCopyPerm]
     have hs := symProj_mulVec_mem (replicaJointCopyPerm A C R k) u σ
-    simpa only [hfixed S hSP] using hs
+    simpa only [show symProj (replicaJointCopyPerm A C R k) *ᵥ u = u from
+      hfixed S hSP] using hs
 
 /-- The original physical gap gives the required retained mass for the
 actual symmetric, fixed-label low-defect projection.
