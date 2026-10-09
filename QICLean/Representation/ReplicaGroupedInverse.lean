@@ -95,7 +95,7 @@ theorem exp_neg_whole_labelEntropy_le_exp_grouped
     have hF := (groupedCopies_labelEntropy_bounds e (subsystemPerm k ι F)).1
     have hY := (groupedCopies_labelEntropy_bounds e (subsystemPerm k ι Y)).2
     have h := sub_le_sub (add_le_add hP hF) hY
-    simpa only [Complex.coe_smul, sub_add_eq_sub_sub] using h
+    simpa only [Gs, Gw, D, L, Lg, Lb, q, Complex.coe_smul, sub_add_eq_sub_sub] using h
   have hc (S T : Finset V) (hST : S = T ∨ Disjoint S T) : Commute (L S) (D T) :=
     (commute_whole_subgroup_labelEntropy ι k (groupHom₁ e) S T hST).add_right
       (commute_whole_subgroup_labelEntropy ι k (groupHom₂ e) S T hST)
@@ -115,7 +115,8 @@ theorem exp_neg_whole_labelEntropy_le_exp_grouped
   have hscaled : (-a) • Gw ≤ (a * q) • (1 : Matrix (Config k ι) (Config k ι) ℂ) +
       (-a) • Gs := by
     have h := neg_le_neg (smul_le_smul_of_nonneg_left horder ha)
-    simpa only [smul_sub, smul_smul, neg_sub, neg_smul, sub_eq_add_neg] using h
+    simpa only [sub_eq_add_neg, smul_add, smul_neg, smul_smul,
+      neg_add_rev, neg_neg, neg_smul] using h
   have hleft : ((-a) • Gw).IsHermitian := hGw.smul (by simp [IsSelfAdjoint])
   have hright : ((a * q) • (1 : Matrix (Config k ι) (Config k ι) ℂ) +
       (-a) • Gs).IsHermitian :=
