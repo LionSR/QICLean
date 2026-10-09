@@ -155,9 +155,9 @@ private theorem eventually_log_pow_six_le_rpow :
   have h := (isLittleO_log_rpow_rpow_atTop (6 : ℝ)
     (by norm_num : 0 < (1 : ℝ) / 20)).bound zero_lt_one
   filter_upwards [h, eventually_ge_atTop (0 : ℝ)] with n hn hn0
-  simpa only [Real.rpow_natCast, Real.norm_eq_abs,
-    abs_of_nonneg (show 0 ≤ (Real.log n) ^ 6 by positivity),
-    abs_of_nonneg (Real.rpow_nonneg hn0 _), one_mul] using hn
+  exact (le_abs_self _).trans (by
+    simpa only [Real.rpow_natCast, Real.norm_eq_abs,
+      abs_of_nonneg (Real.rpow_nonneg hn0 _), one_mul] using hn)
 
 /-- At width `n^(3/5)`, the marginal-tail expression is eventually at most
 `n^(-100)`, uniformly over `0 < B ≤ C * n * (log n)^12`. The threshold
