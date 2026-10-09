@@ -319,10 +319,11 @@ jobs:
           done
 
       - name: Check the joint auxiliary exponential strictly
-        timeout-minutes: 7
+        timeout-minutes: 8
         run: |
           set -euo pipefail
           for file in \
+            QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean \
             QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean \
             QICLean/Representation/GoodAuxiliaryPairCompression.lean \
             QICLean/Analysis/ReplicaJointAuxiliaryExponential.lean \

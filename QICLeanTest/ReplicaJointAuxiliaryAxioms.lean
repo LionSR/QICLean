@@ -11,7 +11,8 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  for decl in #[``TensorPower.fiveFactorCopiesEquiv_auxiliary_permOp,
+  for decl in #[``Matrix.replicaGoodBadSplit,
+      ``TensorPower.fiveFactorCopiesEquiv_auxiliary_permOp,
       ``TensorPower.fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep,
       ``TensorPower.copyPerm_groupedGood_auxiliaryPair_labelEntropy_compression,
       ``TensorPower.copyPerm_groupedGood_auxiliaryPair_exp_compression,
