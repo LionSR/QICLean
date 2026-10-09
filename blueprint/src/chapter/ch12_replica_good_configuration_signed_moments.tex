@@ -1,0 +1,42 @@
+\section{Signed singleton moments of the good-copy density}
+
+\begin{theorem}[Signed singleton moments with the original component mass]
+  \label{thm:replica_good_configuration_signed_singleton_moments}
+  \lean{Matrix.replicaGoodConfigurationMarginal_exp_signed_singleton_le}
+  Let $I_0,\ldots,I_4$ be finite coordinate sets, and let
+  $\Omega\in\mathbb C^{I_0}\otimes
+  (\mathbb C^{I_1}\otimes\mathbb C^{I_2})$ be a unit vector.
+  Fix $k\geq0$, a set $B\subseteq\{0,\ldots,k-1\}$, and an
+  arbitrary vector $u$ on the $k$ physical copies and the two
+  auxiliary copy registers. Put $m=|B^c|$, let $w$ be the component
+  obtained by applying the excitation projection for $B$ to the
+  physical copies of $u$, and let $\rho_G$ be its good-copy density.
+  Fix $j\in\{0,1,2\}$. Write $\rho_j$ for the original singleton
+  density, $d_j=|I_j|$, and $S_j=S(\rho_j)$.
+
+  Let $p_i$ be the eigenvalues of $\rho_j$, and define
+  $M_j(v)=\sum_i p_i e^{-v\log p_i}$, with zero weights
+  contributing zero. Suppose $K,r\in\mathbb R$ satisfy
+  $\log M_j(v)\leq vS_j+Kv^2$ whenever $|v|\leq r$.
+  Let $F_j$ be the entropy observable of the permutation action
+  on the $m$ good copies of factor $j$. If $a\geq0$, $2a\leq r$,
+  and $2a\leq1$, then
+  \begin{align*}
+    \operatorname{Re}\operatorname{Tr}(\rho_G e^{aF_j})
+      &\leq \|w\|^2\exp(amS_j+mKa^2),\\
+    \operatorname{Re}\operatorname{Tr}(\rho_G e^{-aF_j})
+      &\leq \|w\|^2
+        \exp\!\left(-amS_j+2mKa^2+\frac{d_j^2}{2}\log(m+1)\right).
+  \end{align*}
+  The vector $u$ need not be a unit vector or permutation invariant,
+  and $w$ may vanish. These are the signed physical moments used in
+  \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+  \uses{thm:physical_singleton_density_positive,thm:physical_singleton_density_trace,thm:replica_good_configuration_singleton_moment,thm:iid_schur_exponential_moments}
+  The original marginal is positive semidefinite and has trace one.
+  The singleton trace identity expresses each displayed expectation
+  as the corresponding expectation in $\rho_j^{\otimes m}$ multiplied
+  by $\|w\|^2$. Apply the two uncentered signed Schur bounds and
+  multiply by this nonnegative factor.
+\end{proof}

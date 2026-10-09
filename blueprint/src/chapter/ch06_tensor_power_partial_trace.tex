@@ -1,0 +1,35 @@
+\section{Partial traces of regrouped tensor products}
+\label{sec:tensor_power_partial_trace}
+
+\begin{definition}[Collecting the factors of each copy]
+\label{def:copies_product_equiv}
+\lean{TensorPower.copiesProductEquiv}
+\leanok
+Given a bipartite coordinate decomposition $A\simeq Q\times T$, apply
+this decomposition in each of $m$ copies and collect the two families:
+\begin{align*}
+ A^m\simeq Q^m\times T^m.
+\end{align*}
+The order of the copies is the same in both families.
+\end{definition}
+
+\begin{theorem}[Partial trace of a tensor product]
+\label{thm:partial_trace_tensor_power_reindex}
+\lean{Matrix.partialTraceRight_finKronecker_reindex}
+\leanok
+For matrices $M_0,\ldots,M_{m-1}$ on $A$, their tensor product in the
+preceding coordinates satisfies
+\begin{align*}
+ \operatorname{Tr}_{T^m}\Bigl(\bigotimes_{j=0}^{m-1} M_j\Bigr)
+ =\bigotimes_{j=0}^{m-1}\operatorname{Tr}_T M_j.
+\end{align*}
+The formula includes $m=0$ and requires no positivity or normalization.
+It is the tensor-product identity used in
+\cite[Section~8, lines~550--560]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:copies_product_equiv}
+Expand one matrix entry of the partial trace. The sum over all
+complementary configurations is the product of the individual sums.
+\end{proof}
