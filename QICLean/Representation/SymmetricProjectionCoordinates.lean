@@ -30,7 +30,7 @@ theorem symProj_of_intertwine
     (h : ∀ g x, ψ g (e x) = e (φ g x)) :
     symProj ψ = reindex e e (symProj φ) := by
   ext x y
-  simp only [symProj, reindex_apply, submatrix_apply, smul_apply, sum_apply]
+  simp only [symProj, reindex_apply, submatrix_apply, Matrix.smul_apply, Matrix.sum_apply]
   congr 1
   apply Finset.sum_congr rfl
   intro g hg
