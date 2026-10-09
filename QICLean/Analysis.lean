@@ -131,6 +131,7 @@ import QICLean.Analysis.ReplicaComponentInverseRough
 import QICLean.Analysis.ReplicaComponentMergeMoment
 import QICLean.Analysis.ReplicaComponentUniformRate
 import QICLean.Analysis.ReplicaDefect
+import QICLean.Analysis.ReplicaExcitationCompression
 import QICLean.Analysis.ReplicaExcitationDecomposition
 import QICLean.Analysis.ReplicaExcitationSymmetry
 import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
@@ -147,6 +148,7 @@ import QICLean.Analysis.ReplicaGoodPhysicalExponential
 import QICLean.Analysis.ReplicaGoodPhysicalSupport
 import QICLean.Analysis.ReplicaJointAuxiliaryExponential
 import QICLean.Analysis.ReplicaJointDensity
+import QICLean.Analysis.ReplicaLowDefectProjection
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ReplicaPhysicalLabelMoment

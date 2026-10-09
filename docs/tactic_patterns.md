@@ -61,6 +61,21 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### The range of a product of commuting projections — candidate (2026-10-09)
+
+- **Pattern:** Multiply an actual product projection by each of its factors,
+  then transfer the resulting matrix identities to every fixed vector.
+- **Seen:** `Matrix.replicaLowDefectProjection_fixed_conditions` uses one
+  local matrix-to-vector implication for the physical cutoff, auxiliary
+  label product, and simultaneous symmetry. The individual auxiliary
+  equations then use the same tensor-product multiplication identity.
+- **Abstraction:** Reuse `IsStarProjection.mul`, the existing central-label
+  commutations, and `symProj_mulVec_mem`. The symmetry average's projection
+  properties follow from `exists_labelProj_eq_symProj`; no new averaging
+  theorem or tactic is introduced.
+- **Caveat:** The derived commutations concern the cutoff, auxiliary labels,
+  and symmetry. They do not imply commutation with a replica metric.
+
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
 
 - **Pattern:** Use the partial-trace pairing, cyclicity of trace and the pure
