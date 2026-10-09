@@ -11,11 +11,13 @@ as $(Q\times Y\times V)^k\times(C^k\times R^k)$.
 \begin{theorem}[Auxiliary permutations in five-factor coordinates]
   \label{thm:five_factor_auxiliary_permutations}
   \lean{TensorPower.fiveFactorCopiesEquiv_auxiliary_permOp}
+  \leanok
   Under $\eta$, permuting the copies of $C$ by $\sigma\in S_k$ becomes
   $I\otimes(U_C(\sigma)\otimes I)$, and permuting those of $R$ becomes
   $I\otimes(I\otimes U_R(\sigma))$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{def:five_factor_copies_equiv}
   The coordinate bijection retains the physical configuration and
   rearranges the auxiliary coordinates. Applying either permutation
@@ -26,6 +28,7 @@ as $(Q\times Y\times V)^k\times(C^k\times R^k)$.
 \begin{theorem}[Auxiliary group-algebra actions]
   \label{thm:five_factor_auxiliary_group_algebra}
   \lean{TensorPower.fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep}
+  \leanok
   Let $\theta\colon H\to S_k$ be a group homomorphism and let
   $a=\sum_h a_hh\in\mathbb C[H]$. The auxiliary action of $a$ on $C$
   becomes $I\otimes((\sum_h a_hU_C(\theta(h)))\otimes I)$ under $\eta$.
@@ -33,6 +36,7 @@ as $(Q\times Y\times V)^k\times(C^k\times R^k)$.
   The sums are finite; injectivity of $\theta$ is not required.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:five_factor_auxiliary_permutations}
   The claim holds for a single group element by the permutation
   identity, and both sides preserve scalar multiplication and addition.
@@ -53,9 +57,11 @@ $L=I_A\otimes(F_C\otimes I+I\otimes F_R)$. Put
 \begin{theorem}[Joint auxiliary entropy bound]
   \label{thm:joint_auxiliary_entropy_floor}
   \lean{TensorPower.copyPerm_groupedGood_auxiliaryPair_labelEntropy_compression}
+  \leanok
   The matrix $P$ is an orthogonal projection, $LP=PL$, and $bP\leq PLP$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:good_auxiliary_label_compression}
   Apply the good auxiliary bound separately to $C$ and $R$.
   Tensor each positive difference with the other positive label
@@ -68,9 +74,11 @@ $L=I_A\otimes(F_C\otimes I+I\otimes F_R)$. Put
 \begin{theorem}[Joint auxiliary exponential bound]
   \label{thm:joint_auxiliary_exponential_bound}
   \lean{TensorPower.copyPerm_groupedGood_auxiliaryPair_exp_compression}
+  \leanok
   For every $a\geq0$, $Pe^{-aL}P\leq e^{-ab}P$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:joint_auxiliary_entropy_floor,thm:invariant_range_negative_exp}
   The matrix $L$ is Hermitian. Apply the negative exponential
   inequality on the invariant range of $P$ to $bP\leq PLP$.
@@ -89,9 +97,11 @@ for a whole-copy label projection. Define
 \begin{theorem}[The auxiliary floor in the original coordinates]
   \label{thm:five_factor_joint_auxiliary_floor}
   \lean{TensorPower.fiveFactor_groupedGood_auxiliaryPair_floor}
+  \leanok
   The matrix $P_0$ is an orthogonal projection and $bP_0\leq P_0L_0P_0$.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:five_factor_auxiliary_group_algebra,thm:joint_auxiliary_entropy_floor}
   The coordinate bijection sends $P_0$ and $L_0$ to $P$ and $L$
   with spectator register $(Q\times Y\times V)^k$.
@@ -101,6 +111,7 @@ for a whole-copy label projection. Define
 \begin{theorem}[Removing the joint auxiliary exponential]
   \label{thm:five_factor_joint_auxiliary_removal}
   \lean{TensorPower.fiveFactor_groupedGood_exp_le_without_auxiliary}
+  \leanok
   If $a\geq0$ and $P_0v=v$, then
   \begin{align}
     \operatorname{Re}(v^*e^{-aG}v)
@@ -109,6 +120,7 @@ for a whole-copy label projection. Define
   \end{align}
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:five_factor_joint_auxiliary_floor,thm:invariant_range_negative_exp,thm:fixed_vector_exp_comparison}
   Nesting and disjointness of the indicated factors imply that $G-L_0$
   commutes with both $P_0$ and $L_0$. The auxiliary floor gives
@@ -119,6 +131,7 @@ for a whole-copy label projection. Define
 \begin{theorem}[Joint auxiliary removal for the actual excitation component]
   \label{thm:excitation_joint_auxiliary_removal}
   \lean{Matrix.replicaExcitationComponent_exp_good_le_without_auxiliary}
+  \leanok
   Let $\Omega$ be a physical one-copy vector and let $B$ be a subset of
   the $k$ copies. Suppose a vector $u$ is fixed separately by the two
   original auxiliary label projections. Form its actual excitation
@@ -129,6 +142,7 @@ for a whole-copy label projection. Define
   is assumed.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:replica_excitation_preserves_fixed,thm:five_factor_auxiliary_group_algebra,thm:five_factor_joint_auxiliary_removal}
   The two original label equations imply the equation for their
   product. Acting only on the physical factors, $E_B(\Omega)\otimes I$
