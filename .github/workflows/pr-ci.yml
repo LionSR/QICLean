@@ -277,6 +277,7 @@ jobs:
           set -eo pipefail
           {
             lake build QICLean.Analysis.MeanTreeProjectionSectors
+            lake build QICLean.Analysis.MeanTreeExponentialLowerNorm
             lake build
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
@@ -373,6 +374,21 @@ jobs:
           for file in \
             QICLean/Analysis/MeanTreeLogFloorDeficit.lean \
             QICLeanTest/MeanTreeLogFloorDeficitAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check projection lower norm comparisons strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeMultibandLowerNorm.lean \
+            QICLean/Analysis/MeanTreeExponentialLowerNorm.lean \
+            QICLeanTest/MeanTreeLowerNormAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \

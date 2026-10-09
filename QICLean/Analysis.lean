@@ -93,8 +93,10 @@ import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
+import QICLean.Analysis.MeanTreeExponentialLowerNorm
 import QICLean.Analysis.MeanTreeLogFloorDeficit
 import QICLean.Analysis.MeanTreeLogFloorExp
+import QICLean.Analysis.MeanTreeMultibandLowerNorm
 import QICLean.Analysis.MeanTreeProjectionLogBound
 import QICLean.Analysis.MeanTreeProjectionMassBound
 import QICLean.Analysis.MeanTreeProjectionSectors

@@ -1,0 +1,93 @@
+\section{Norm bounds from projection comparisons}
+
+\begin{theorem}[Projection bounds for several commuting roots]
+\label{thm:mean_tree_multiband_lower_norm}
+\lean{Matrix.MeanTree.mul_sum_log_lower_le_neg_log_norm_sq_of_projection_lower_bound}
+\uses{def:mean_tree}
+Let $J$ be finite and let $g$ range over $0,\ldots,G-1$. For each $g$,
+let $T_g$ be a weighted binary tree with terminal weights $w_{j,g}$ and
+positive definite inputs $A_{j,g}$ on one finite-dimensional complex
+Hilbert space. Set $M_g=T_g(A_{\cdot,g})$ and $M=M_0\cdots M_{G-1}$,
+and suppose the roots $M_g$ commute pairwise. Let $P_g$ be orthogonal
+projections and let $b_g,c_{j,g}>0$ satisfy
+\begin{align}
+ 2b_g\Id&\le A_{j,g},\notag\\
+ c_{j,g}P_g&\le A_{j,g}.
+ \notag
+\end{align}
+For $s\ge0$ and a vector $p$ with $0<\|p\|\le1$, put
+$u=M^{-s}p$, $v=u/\|u\|$, and
+$\ell_g=\sum_{j\in J}w_{j,g}\log(b_g+c_{j,g}/2)$.
+If real numbers $\delta_g$ satisfy
+$1-\delta_g\le\langle v,P_gv\rangle$, then
+\begin{align}
+ 2s\sum_{g=0}^{G-1}
+   \bigl[\ell_g-\delta_g(\ell_g-\log b_g)\bigr]
+ \le-\log\|M^{-s}p\|^2.
+ \notag
+\end{align}
+The projections need not commute with the inputs, the roots, or one
+another. The empty product and zero terminal weights are included.
+This is an analytic implication of the floor, projection bounds, and
+mass estimates used in \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+\uses{thm:matrix_floor_pin,thm:mean_tree_projection_mass_log_bound,thm:cfc_log_ordered_product,thm:normalized_inverse_power_log_bound,thm:mean_tree_properties}
+Averaging the floor and projection bound gives
+$b_g(\Id-P_g)+(b_g+c_{j,g}/2)P_g\le A_{j,g}$.
+The roots and their commuting product are positive definite;
+$M^sM^{-s}p=p\ne0$ makes the normalization well defined.
+Theorem~\ref{thm:mean_tree_projection_mass_log_bound} bounds each
+$\operatorname{Re}\langle v,(\log M_g)v\rangle$ from below.
+By Theorem~\ref{thm:cfc_log_ordered_product}, their sum is
+$\operatorname{Re}\langle v,(\log M)v\rangle$.
+Multiply by $2s\ge0$ and apply
+Theorem~\ref{thm:normalized_inverse_power_log_bound}.
+\end{proof}
+
+\begin{theorem}[An explicit lower norm bound with uniform remainder]
+\label{thm:mean_tree_exponential_lower_norm}
+\lean{Matrix.MeanTree.explicit_lower_norm_of_exponential_projection_lower_bound}
+\uses{def:mean_tree}
+Let $J$ be finite and let $g$ range over $0,\ldots,G-1$. Let $T_g$ be
+weighted binary trees with terminal weights $w_{j,g}$ and positive
+definite inputs $A_{j,g}$ on one finite-dimensional complex Hilbert
+space. Suppose their roots $M_g=T_g(A_{\cdot,g})$ commute pairwise,
+set $M=M_0\cdots M_{G-1}$, and let $P_g$ be orthogonal projections.
+Let $b_g>0$, $\kappa_g\ge0$, and
+let $L_{j,g},U_g,r_g\in\mathbb R$ satisfy
+\begin{align}
+ L_{j,g}&\le U_g,\notag\\
+ 2b_g\Id&\le A_{j,g},\notag\\
+ e^{\kappa_gL_{j,g}-r_g}P_g&\le A_{j,g}.
+ \notag
+\end{align}
+For $s\ge0$ and $0<\|p\|\le1$, put $u=M^{-s}p$ and $v=u/\|u\|$.
+Suppose $\delta_g\ge0$ and
+$1-\delta_g\le\langle v,P_gv\rangle$. Define
+$R_g=2|r_g|+|\log b_g|+\log2+\log(3/2)$. Then
+\begin{align}
+ 2s\sum_{g=0}^{G-1}\left[
+   \kappa_g\left(\sum_{j\in J}w_{j,g}L_{j,g}
+                  -\delta_g\max\{0,U_g\}\right)-R_g\right]
+ \le-\log\|M^{-s}p\|^2.
+ \notag
+\end{align}
+The remainders are independent of the deficits and terminal weights;
+no upper bound on $\delta_g$ is imposed. This gives explicit errors in
+the analytic lower comparison of \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+\uses{thm:mean_tree_multiband_lower_norm,thm:mean_tree_log_floor_deficit}
+Set $\varepsilon_g=\min\{1,\delta_g\}$. If $\delta_g\le1$, the mass
+bound is unchanged; otherwise positivity of $P_g$ gives
+$1-\varepsilon_g=0\le\langle v,P_gv\rangle$.
+Apply Theorem~\ref{thm:mean_tree_multiband_lower_norm} with
+$c_{j,g}=e^{\kappa_gL_{j,g}-r_g}$ and deficits $\varepsilon_g$.
+Theorem~\ref{thm:mean_tree_log_floor_deficit} bounds each resulting
+summand. Finally, $\varepsilon_g\le\delta_g$ and
+$\kappa_g\max\{0,U_g\}\ge0$ allow replacement of $\varepsilon_g$ by
+$\delta_g$ in the leading term.
+\end{proof}
