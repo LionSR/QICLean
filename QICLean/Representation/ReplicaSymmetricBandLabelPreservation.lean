@@ -90,6 +90,17 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
   have hPv : Pe *ᵥ v = v :=
     (Matrix.mulVec_mulVec (((‖w‖⁻¹ : ℂ) • w).ofLp) Pe Z).trans
       (congrArg (fun H ↦ H *ᵥ (((‖w‖⁻¹ : ℂ) • w).ofLp)) hPZ)
+  have hsingle (a : F) (ell : IrrepLabel (Equiv.Perm (Fin k)))
+      (S : Finset F) (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
+      Commute (labelProj (subsystemPerm k ι {a}) ell)
+        (labelObservable (subsystemPerm k ι S) f) :=
+    Commute.sum_right Finset.univ _ _ fun ell' _ ↦
+      (if ha : a ∈ S then
+        commute_labelProj_subsystemPerm_of_subset ι k
+          (Finset.singleton_subset_iff.mpr ha) ell ell'
+      else
+        commute_labelProj_subsystemPerm_of_disjoint ι k
+          (Finset.disjoint_singleton_left.mpr ha) ell ell').smul_right (f ell' : ℂ)
   done
 
 end TensorPower
