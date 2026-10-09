@@ -1,0 +1,372 @@
+\section{Root fidelity and purification splitting}
+
+For positive semidefinite $\rho,\sigma\in\MN{D}$ we use the unsquared
+fidelity $F(\rho,\sigma)=\lVert\sqrt\rho\sqrt\sigma\rVert_{\tr}$. For pure
+states it is the modulus of the overlap of the state vectors.
+
+\begin{definition}[Root fidelity]
+    \label{def:root_fidelity}
+    \lean{Matrix.rootFidelity, Matrix.rootFidelity_nonneg}
+    \leanok
+    \uses{def:trace_norm}
+    For $\rho,\sigma\succeq0$, the \emph{root fidelity} is
+    \begin{align}
+        F(\rho,\sigma)
+         & =\bigl\lVert\sqrt\rho\sqrt\sigma\bigr\rVert_{\tr},
+        \label{eq:root_fidelity}
+    \end{align}
+    where $\sqrt{\,\cdot\,}$ is the positive square root. It is
+    nonnegative. This is the convention of
+    \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[Unitary pairings and the root fidelity]
+    \label{thm:root_fidelity_variational}
+    \lean{Matrix.norm_trace_conjTranspose_mul_unitary_le_rootFidelity,
+        Matrix.norm_trace_sqrt_mul_sqrt_le_rootFidelity,
+        Matrix.exists_mem_unitaryGroup_trace_eq_rootFidelity}
+    \leanok
+    \uses{def:root_fidelity}
+    Let $\rho,\sigma\succeq0$. For every unitary $U$,
+    \begin{align}
+        \bigl|\tr[(\sqrt\rho\sqrt\sigma)^\dagger U]\bigr|
+         & \le F(\rho,\sigma),
+        \notag
+    \end{align}
+    and some unitary $U$ attains
+    $\tr[(\sqrt\rho\sqrt\sigma)^\dagger U]=F(\rho,\sigma)$. In particular
+    $|\tr\sqrt\rho\sqrt\sigma|\le F(\rho,\sigma)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:trace_norm_variational}
+    Apply Theorem~\ref{thm:trace_norm_variational} to
+    $A=\sqrt\rho\sqrt\sigma$ after enumerating the basis; the trace and
+    unitarity are invariant under this relabelling. Taking $U=\Id$ gives
+    the last bound, since $\tr A^\dagger=\overline{\tr A}$.
+\end{proof}
+
+\begin{theorem}[Trace of two spectral functions]
+    \label{thm:trace_spectral_functions_double_sum}
+    \lean{Matrix.IsHermitian.trace_cfc_mul_cfc_eq_double_sum}
+    \leanok
+    Let $\rho=\sum_ip_i|i\rangle\langle i|$ and
+    $\sigma=\sum_jq_j|j'\rangle\langle j'|$ be spectral decompositions of
+    Hermitian matrices, and let $f,g$ be real functions. Then
+    \begin{align}
+        \tr\bigl(f(\rho)g(\sigma)\bigr)
+         & =\sum_{i,j}f(p_i)g(q_j)\,|\langle i|j'\rangle|^2.
+        \notag
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    Write $f(\rho)=V_\rho\operatorname{diag}(f(p))V_\rho^\dagger$ and
+    $g(\sigma)=V_\sigma\operatorname{diag}(g(q))V_\sigma^\dagger$, and
+    expand the trace in the entries of $W=V_\rho^\dagger V_\sigma$, whose
+    entries are $\langle i|j'\rangle$.
+\end{proof}
+
+\begin{theorem}[Root fidelity bounds relative entropy]
+    \label{thm:root_fidelity_relative_entropy}
+    \lean{Matrix.exp_neg_quantumRelativeEntropy_div_two_le_rootFidelity}
+    \leanok
+    \uses{def:root_fidelity, def:quantum_relative_entropy}
+    Let $\rho$ be a density matrix and $\sigma\succeq0$ with
+    $\ker\sigma\subseteq\ker\rho$. Then
+    \begin{align}
+        e^{-D(\rho\Vert\sigma)/2}
+         & \le F(\rho,\sigma).
+        \label{eq:root_fidelity_relative_entropy}
+    \end{align}
+    The normalization of $\sigma$ is not needed.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:trace_spectral_functions_double_sum,
+        lem:quantum_relative_entropy_trace_split,
+        thm:root_fidelity_variational}
+    Use the spectral decompositions of
+    Theorem~\ref{thm:trace_spectral_functions_double_sum} and put
+    $w_{ij}=p_i|\langle i|j'\rangle|^2$. These weights are nonnegative and
+    sum to one, since the rows of the unitary $V_\rho^\dagger V_\sigma$ have
+    unit norm and $\tr\rho=1$. If $q_j=0$, then $|j'\rangle\in\ker\sigma
+        \subseteq\ker\rho$, so $w_{ij}=0$. Splitting the relative entropy by
+    Lemma~\ref{lem:quantum_relative_entropy_trace_split} and applying
+    Theorem~\ref{thm:trace_spectral_functions_double_sum} twice gives
+    \begin{align}
+        D(\rho\Vert\sigma)
+         & =\sum_{i,j}w_{ij}\bigl(\log p_i-\log q_j\bigr),
+         &
+        \tr\sqrt\rho\sqrt\sigma
+         & =\sum_{i,j}\sqrt{p_iq_j}\,|\langle i|j'\rangle|^2.
+        \notag
+    \end{align}
+    Convexity of the exponential with respect to the weights $w_{ij}$
+    gives
+    \begin{align}
+        e^{-D(\rho\Vert\sigma)/2}
+         & \le\sum_{i,j}w_{ij}
+        \exp\Bigl(\tfrac12\log q_j-\tfrac12\log p_i\Bigr)
+        \le\tr\sqrt\rho\sqrt\sigma,
+        \notag
+    \end{align}
+    where each term with $w_{ij}>0$ equals
+    $\sqrt{p_iq_j}\,|\langle i|j'\rangle|^2$ and the others vanish.
+    Theorem~\ref{thm:root_fidelity_variational} bounds the trace by
+    $F(\rho,\sigma)$.
+\end{proof}
+
+\begin{definition}[Relative entropy with infinite value]
+    \label{def:extended_relative_entropy}
+    \lean{Matrix.extendedRelativeEntropy}
+    \leanok
+    \uses{def:quantum_relative_entropy}
+    For $\rho,\sigma\in\MN{D}$, put $\widehat D(\rho\Vert\sigma)
+        =D(\rho\Vert\sigma)$ when $\ker\sigma\subseteq\ker\rho$, and
+    $\widehat D(\rho\Vert\sigma)=+\infty$ otherwise. This is the usual
+    infinite value when the support condition fails
+    \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{theorem}[Root fidelity bound with infinite value]
+    \label{thm:root_fidelity_extended_relative_entropy}
+    \lean{Matrix.exp_neg_extendedRelativeEntropy_div_two_le_rootFidelity}
+    \leanok
+    \uses{def:root_fidelity, def:extended_relative_entropy}
+    For a density matrix $\rho$ and every $\sigma\succeq0$,
+    $e^{-\widehat D(\rho\Vert\sigma)/2}\le F(\rho,\sigma)$, with
+    $e^{-\infty}=0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:root_fidelity_relative_entropy}
+    Under the support condition this is
+    Theorem~\ref{thm:root_fidelity_relative_entropy}. Otherwise the left
+    side is zero and $F(\rho,\sigma)\ge0$.
+\end{proof}
+
+\begin{theorem}[Equal Gram matrices differ by an isometry]
+    \label{thm:gram_equal_isometry}
+    \lean{Matrix.exists_isIsometry_mul_eq_of_conjTranspose_mul_eq,
+        Matrix.exists_isIsometry_eq_mul_conjTranspose_of_mul_conjTranspose_eq}
+    \leanok
+    Let $B\in\MN{m,k}$ and $A\in\MN{m',k}$ satisfy
+    $B^\dagger B=A^\dagger A$, with $m'\le m$. Then $B=TA$ for some
+    isometry $T\in\MN{m,m'}$. Equivalently, if $X\in\MN{a,m}$ and
+    $Y\in\MN{a,m'}$ satisfy $XX^\dagger=YY^\dagger$ with $m'\le m$, then
+    $X=YT^\dagger$ for some isometry $T\in\MN{m,m'}$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:exists_unitary_mul_eq_of_gram_eq}
+    Since $m'\le m$, a coordinate inclusion $E\in\MN{m,m'}$ satisfies
+    $E^\dagger E=\Id$. Then $B$ and $EA$ have the same Gram matrix, so
+    Lemma~\ref{lem:exists_unitary_mul_eq_of_gram_eq} gives a unitary $U$
+    with $B=UEA$, and $T=UE$ is an isometry. The second form is the first
+    applied to $X^\dagger$ and $Y^\dagger$.
+\end{proof}
+
+\begin{theorem}[Uhlmann's theorem in isometry form]
+    \label{thm:uhlmann_isometry}
+    \lean{Matrix.exists_isIsometry_star_dotProduct_eq_rootFidelity,
+        Matrix.schmidtCoeffMatrix_one_kronecker_mulVec}
+    \leanok
+    \uses{def:root_fidelity, def:purification}
+    Let $\psi\in\C^{A}\otimes\C^{R}$ purify $\rho$ and
+    $\varphi\in\C^{A}\otimes\C^{S}$ purify $\sigma$, with
+    $\dim\C^S\ge\dim\C^A$ and $\dim\C^S\ge\dim\C^R$. Then there is an
+    isometry $V:\C^R\to\C^S$ with
+    \begin{align}
+        \bigl\langle\varphi,(\Id\otimes V)\psi\bigr\rangle
+         & =F(\rho,\sigma).
+        \label{eq:uhlmann_isometry}
+    \end{align}
+    Neither purification need be minimal, and $V$ is defined on all of
+    $\C^R$. This is the purification clause of
+    \cite[Lemma~2.2]{OpenAI2026PolynomialPEPS}; compare
+    \cite[Sections~2 and~5]{Uhlmann1976}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:schmidt_rank, thm:gram_equal_isometry,
+        thm:root_fidelity_variational}
+    Let $C_\psi$ and $C_\varphi$ be the coefficient matrices, so that
+    $C_\psi C_\psi^\dagger=\rho$ and $C_\varphi C_\varphi^\dagger=\sigma$,
+    and the coefficient matrix of $(\Id\otimes V)\psi$ is
+    $C_\psi V^{\mathsf T}$. Since $\dim\C^S\ge\dim\C^A$,
+    Theorem~\ref{thm:gram_equal_isometry} gives
+    $C_\varphi=\sqrt\sigma\,T_1^\dagger$ for an isometry
+    $T_1:\C^A\to\C^S$. Choose a unitary $U$ with
+    $\tr[(\sqrt\rho\sqrt\sigma)^\dagger U]=F(\rho,\sigma)$ by
+    Theorem~\ref{thm:root_fidelity_variational}, and put
+    $X_0=\sqrt\rho\,U\,T_1^\dagger$. Then
+    $X_0X_0^\dagger=\rho=C_\psi C_\psi^\dagger$, so
+    Theorem~\ref{thm:gram_equal_isometry} with $\dim\C^S\ge\dim\C^R$
+    gives $X_0=C_\psi T_2^\dagger$ for an isometry $T_2:\C^R\to\C^S$.
+    The entrywise complex conjugate $V=\overline{T_2}$ is an isometry with
+    $V^{\mathsf T}=T_2^\dagger$. Using $T_1^\dagger T_1=\Id$ and
+    cyclicity of the trace,
+    \begin{align}
+        \bigl\langle\varphi,(\Id\otimes V)\psi\bigr\rangle
+         & =\tr\bigl[C_\varphi^\dagger C_\psi V^{\mathsf T}\bigr]
+        =\tr\bigl[T_1\sqrt\sigma\sqrt\rho\,U\,T_1^\dagger\bigr]
+        =\tr\bigl[\sqrt\sigma\sqrt\rho\,U\bigr]
+        =F(\rho,\sigma).
+        \notag
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Uhlmann's theorem after enlarging the purifying space]
+    \label{thm:uhlmann_isometry_padded}
+    \lean{Matrix.exists_isIsometry_star_dotProduct_padPurification_eq_rootFidelity,
+        Matrix.padPurification,
+        Matrix.partialTraceRight_vecMulVec_padPurification}
+    \leanok
+    \uses{def:root_fidelity, def:purification}
+    Let $\psi\in\C^{A}\otimes\C^{R}$ purify $\rho$ and
+    $\varphi\in\C^{A}\otimes\C^{S}$ purify $\sigma$, with no condition on
+    the dimensions. Regard $\varphi$ as a vector $\widehat\varphi$ in
+    $\C^A\otimes(\C^S\oplus\C^A\oplus\C^R)$ that vanishes on the added
+    summands; it still purifies $\sigma$. There is an isometry
+    $V:\C^R\to\C^S\oplus\C^A\oplus\C^R$ with
+    $\langle\widehat\varphi,(\Id\otimes V)\psi\rangle=F(\rho,\sigma)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:uhlmann_isometry}
+    The added summands contribute nothing to the partial trace. The
+    enlarged purifying space has dimension at least $\dim\C^A$ and at
+    least $\dim\C^R$, so Theorem~\ref{thm:uhlmann_isometry} applies.
+\end{proof}
+
+\begin{theorem}[Purification distance from relative entropy]
+    \label{thm:purification_distance_relative_entropy}
+    \lean{Matrix.exists_isIsometry_norm_sub_le_of_purification,
+        Matrix.exists_isIsometry_norm_sub_padPurification_le}
+    \leanok
+    \uses{def:purification, def:quantum_relative_entropy}
+    Let $\psi\in\C^A\otimes\C^R$ and $\varphi\in\C^A\otimes\C^S$ be unit
+    purifications of $\rho$ and $\sigma$, with
+    $\ker\sigma\subseteq\ker\rho$, and suppose
+    $\dim\C^S\ge\dim\C^A$ and $\dim\C^S\ge\dim\C^R$. There is an isometry
+    $V:\C^R\to\C^S$ with
+    \begin{align}
+        \bigl\lVert(\Id\otimes V)\psi-\varphi\bigr\rVert
+         & \le\sqrt{2\bigl(1-e^{-D(\rho\Vert\sigma)/2}\bigr)}.
+        \label{eq:purification_distance_relative_entropy}
+    \end{align}
+    Without the dimension conditions, the same holds with $\varphi$
+    replaced by its zero extension $\widehat\varphi$ to
+    $\C^A\otimes(\C^S\oplus\C^A\oplus\C^R)$ and $V$ taking values there.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:uhlmann_isometry, thm:root_fidelity_relative_entropy}
+    Take $V$ from Theorem~\ref{thm:uhlmann_isometry}. Since
+    $\Id\otimes V$ is an isometry, $(\Id\otimes V)\psi$ is a unit vector,
+    and its overlap with $\varphi$ is the real number $F=F(\rho,\sigma)$.
+    Hence
+    $\lVert(\Id\otimes V)\psi-\varphi\rVert^2=2(1-F)$, and
+    Theorem~\ref{thm:root_fidelity_relative_entropy} gives
+    $F\ge e^{-D(\rho\Vert\sigma)/2}$. The zero extension is a unit
+    purification of $\sigma$ whose purifying space satisfies both
+    dimension conditions.
+\end{proof}
+
+\begin{definition}[Canonical and product purifications]
+    \label{def:canonical_product_purification}
+    \lean{Matrix.canonicalPurification,
+        Matrix.partialTraceRight_vecMulVec_canonicalPurification,
+        Matrix.tensorPurification,
+        Matrix.partialTraceRight_vecMulVec_tensorPurification}
+    \leanok
+    \uses{def:purification}
+    For $\rho\succeq0$ on $\C^T$, the \emph{canonical purification} is the
+    vector in $\C^T\otimes\C^T$ with coefficient matrix $\sqrt\rho$; it
+    purifies $\rho$. For $s\in\C^T\otimes\C^{B_T}$ and
+    $s'\in\C^E\otimes\C^{B_E}$, write $s\otimes s'$ for their product
+    regrouped in $(\C^T\otimes\C^E)\otimes(\C^{B_T}\otimes\C^{B_E})$. Its
+    reduced state on $\C^T\otimes\C^E$ is the tensor product of the reduced
+    states of $s$ and $s'$.
+\end{definition}
+
+\begin{theorem}[Splitting a pure state by an isometry]
+    \label{thm:purification_splitting_mutual_information}
+    \lean{Matrix.exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation,
+        Matrix.exists_isIsometry_norm_sub_tensorPurification_le_zpow,
+        Real.sqrt_two_mul_one_sub_exp_neg_half_le_sqrt}
+    \leanok
+    \uses{def:mutual_information, def:canonical_product_purification}
+    Let $\Omega\in(\C^T\otimes\C^E)\otimes\C^U$ be a unit vector with
+    reduced state $\rho_{TE}$, and let $b=I(T{:}E)$. There are an
+    isometry $V:\C^U\to\C^T\otimes(\C^E\oplus\C^U)$ and unit vectors
+    $s\in\C^T\otimes\C^T$ and $s'\in\C^E\otimes(\C^E\oplus\C^U)$ with
+    \begin{align}
+        \bigl\lVert(\Id_{TE}\otimes V)\Omega-s\otimes s'\bigr\rVert
+         & \le\sqrt{2\bigl(1-e^{-b/2}\bigr)}\le\sqrt b.
+        \label{eq:purification_splitting_mutual_information}
+    \end{align}
+    If moreover $L>0$ and $b\le L^{-60}$, the error is at most $L^{-30}$.
+    This is \cite[Lemma~6.4]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:relative_entropy_product_marginals,
+        thm:product_marginals_kernel,
+        thm:purification_distance_relative_entropy}
+    Let $s$ be the canonical purification of $\rho_T$ and $s'$ the zero
+    extension of the canonical purification of $\rho_E$; then $s\otimes s'$
+    is a unit purification of $\rho_T\otimes\rho_E$. By
+    Theorem~\ref{thm:product_marginals_kernel} the support condition
+    $\ker(\rho_T\otimes\rho_E)\subseteq\ker\rho_{TE}$ holds, and the
+    purifying space $\C^T\otimes(\C^E\oplus\C^U)$ has room for both
+    $\C^T\otimes\C^E$ and $\C^U$ because $\Omega\ne0$ forces
+    $\dim\C^T\ge1$. Theorem~\ref{thm:purification_distance_relative_entropy}
+    gives the first bound with $b=D(\rho_{TE}\Vert\rho_T\otimes\rho_E)$,
+    and Theorem~\ref{thm:relative_entropy_product_marginals} identifies
+    this relative entropy with $I(T{:}E)$. The second bound is
+    $2(1-e^{-b/2})\le b$, from $e^x\ge1+x$. Finally
+    $\sqrt{L^{-60}}=L^{-30}$.
+\end{proof}
+
+\begin{theorem}[Fidelity, relative entropy, and purifications]
+    \label{thm:fidelity_purification}
+    \lean{Matrix.exists_isIsometry_norm_sub_tensorPurification_le_sqrt}
+    \leanok
+    \uses{def:root_fidelity, def:extended_relative_entropy,
+        def:mutual_information, def:purification}
+    For normalized finite-dimensional states,
+    \begin{align}
+        F(\rho,\sigma)
+         & \ge e^{-\widehat D(\rho\Vert\sigma)/2},
+         &
+        D(\rho_{AC}\Vert\rho_A\otimes\rho_C)
+         & =I(A{:}C).
+        \label{eq:fidelity_information}
+    \end{align}
+    Moreover, after enlarging the purifying space if necessary, an
+    isometry on that space realizes overlap $F(\rho,\sigma)$ between
+    purifications. In particular, if $I(A{:}C)\le\delta$ for a pure state
+    $\Omega$ on $\C^A\otimes\C^C\otimes\C^U$, then there are an isometry
+    $V$ on $\C^U$ and a purification $s\otimes s'$ of
+    $\rho_A\otimes\rho_C$ with
+    $\lVert(\Id_{AC}\otimes V)\Omega-s\otimes s'\rVert\le\sqrt\delta$.
+    This is \cite[Lemma~2.2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:root_fidelity_extended_relative_entropy,
+        thm:relative_entropy_product_marginals,
+        thm:uhlmann_isometry_padded,
+        thm:purification_splitting_mutual_information}
+    The inequality in~(\ref{eq:fidelity_information}) is
+    Theorem~\ref{thm:root_fidelity_extended_relative_entropy}, and the
+    identity is Theorem~\ref{thm:relative_entropy_product_marginals}, which
+    holds for every positive semidefinite $\rho_{AC}$. The purification
+    clause is Theorem~\ref{thm:uhlmann_isometry_padded}. For the final
+    clause, Theorem~\ref{thm:purification_splitting_mutual_information}
+    gives the error bound $\sqrt{I(A{:}C)}\le\sqrt\delta$; the vector
+    $(\Id_{AC}\otimes V)\Omega$ is again a purification of $\rho_{AC}$,
+    and the phase is absorbed into $V$.
+\end{proof}
