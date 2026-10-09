@@ -152,8 +152,10 @@ which gives the proposition without hypotheses beyond those of the source.
 \end{theorem}
 
 \begin{proof}\leanok
+    \uses{thm:cfc_log_ordered_product}
     The extended band metrics of different bands commute, so the relative ratio factors
-    over bands, $\log C_h=\sum_g\log C_{h,g}$. The
+    over bands. Theorem~\ref{thm:cfc_log_ordered_product} gives
+    $\log C_h=\sum_g\log C_{h,g}$. The
     relative pin and projection transfer give the conditional pin of each band
     (\texttt{06-transport.tex} lines 513--531), and the logarithmic passage turns
     it into the entropy lower bound (lines 495--583). For the energy, the

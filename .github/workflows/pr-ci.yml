@@ -621,6 +621,8 @@ jobs:
             lake build QICLean.Analysis.ReplicaExcitationCompression
             lake build QICLean.Analysis.ReplicaLowDefectProjection
             lake build QICLean.Analysis.InverseCompressionLowerPin
+            lake build QICLean.Analysis.MeanTreeProjectionSectors
+            lake build QICLean.Analysis.MeanTreeExponentialLowerNorm
             lake build
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
@@ -692,6 +694,120 @@ jobs:
           for file in \
             QICLean/Analysis/ReplicaLowDefectProjection.lean \
             QICLeanTest/ReplicaLowDefectProjectionAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check mean trees on complementary projection ranges strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeProjectionSectors.lean \
+            QICLeanTest/MeanTreeProjectionSectorsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the logarithmic projection comparison strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeProjectionLogBound.lean \
+            QICLeanTest/MeanTreeProjectionLogBoundAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the logarithmic projection-mass estimate strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeProjectionMassBound.lean \
+            QICLeanTest/MeanTreeProjectionMassBoundAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check inverse-power logarithmic Jensen strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/InversePowerLogJensen.lean \
+            QICLeanTest/InversePowerLogJensenAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check normalized inverse-power logarithmic bounds strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/NormalizedInversePowerLogBound.lean \
+            QICLeanTest/NormalizedInversePowerLogAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check logarithmic product and floor estimates strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/CfcLogListProduct.lean \
+            QICLean/Analysis/MeanTreeLogFloorExp.lean \
+            QICLeanTest/LogarithmicComparisonsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the logarithmic deficit estimate strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeLogFloorDeficit.lean \
+            QICLeanTest/MeanTreeLogFloorDeficitAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check projection lower norm comparisons strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeMultibandLowerNorm.lean \
+            QICLean/Analysis/MeanTreeExponentialLowerNorm.lean \
+            QICLeanTest/MeanTreeLowerNormAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \

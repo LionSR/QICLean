@@ -59,6 +59,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
   over the whole basis, including coordinates with zero assigned probability.
 
+### Hermitian rectangular intertwiners — promoted mathematical lemmas
+
+- **Pattern:** From `A * J = J * B` for Hermitian matrices, move the adjoint
+  intertwiner through the matrices and transport sandwiches `J * H * Jᴴ`.
+- **Consumers:** Power-derivative covariance, geometric-mean derivative
+  covariance, and mean-tree derivative and leaf-map covariance.
+- **Abstraction:** Reuse `Matrix.IsHermitian.conjTranspose_intertwine` and
+  `Matrix.IsHermitian.sandwich_intertwine` from
+  `QICLean/Algebra/MatrixSandwichIntertwine.lean`. Compression identities use
+  the same embedding lemmas with `Jᴴ`.
+- **Caveats:** These are algebraic identities for rectangular intertwiners.
+  Norm preservation requires an isometry; positivity of a compressed operator
+  does not identify its inverse with a compressed inverse.
+
 ## Candidates
 
 ### The range of a product of commuting projections — candidate (2026-10-09)
@@ -685,3 +699,27 @@ projector, the defect cutoff, and the original auxiliary labels.
 - **Decision:** No new tactic or finite-family abstraction is introduced.
   These three uses are in one structural definition; reconsider only if
   another family produces independent repetition.
+### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
+
+- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
+  orthogonal resolution, then apply scalar functional calculus to the two
+  assigned values.
+- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
+  `QICLean/Analysis/ProjectionCalculus.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
+  or separate continuity argument is required.
+- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
+  Positivity needed for later logarithmic comparisons belongs to those
+  comparisons, rather than this general calculation.
+
+### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
+
+- **Pattern:** Add and rescale inequalities in the matrix order, then identify
+  the resulting linear combination with the desired expression by `module`.
+- **Seen:** `Analysis/FloorPin.lean`, in `floor_pin_le` and
+  `identity_extension_floor`; two occurrences in one file.
+- **Abstraction:** The standard order lemmas and `module` suffice. A further
+  independent occurrence may justify a helper for the shared scalar identity.
+- **Caveats:** Nonnegative scalar multiplication is established before the
+  algebraic conversion. No projection or commutation assumption is needed
+  for these two additive comparisons.
