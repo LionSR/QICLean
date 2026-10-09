@@ -1,0 +1,44 @@
+\section{A common positive compression on a fixed subspace}
+\label{sec:positive_projection_compression}
+
+\begin{theorem}[Compression through a positive extension]
+\label{thm:positive_projection_compression}
+\lean{Matrix.PosDef.compression_of_projection_intertwine}
+
+Let $\mathcal H,\mathcal K$ be finite-dimensional complex Hilbert spaces,
+let $Z:\mathcal K\to\mathcal H$, and let $M,N,P$ be operators on
+$\mathcal H$. Suppose that $N$ is positive definite and
+\begin{align}
+ Z^*Z&=I_{\mathcal K},\\
+ ZZ^*&=P,\\
+ MP&=PN,\\
+ NP&=PN.
+ \label{eq:positive_compression_hypotheses}
+\end{align}
+Then the actual compression $B=Z^*MZ$ satisfies
+\begin{align}
+ B&=Z^*NZ>0,\\
+ MZ&=ZB,\\
+ NZ&=ZB.
+ \label{eq:positive_compression_conclusions}
+\end{align}
+No Hermitian assumption on $M$ is required, and the spaces may have
+dimension zero. This is the finite-dimensional compression used for
+the restricted replica metrics in
+\cite[Section~8, lines~80--110, 299--308 and 370--381,
+equation \textup{(comparator:pinned-metric)}]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+
+The isometry equations give $PZ=ZZ^*Z=Z$. Hence
+\begin{align}
+ MZ&=MPZ=PNZ=NPZ=NZ.
+ \label{eq:positive_compression_equal_actions}
+\end{align}
+Multiplication by $Z^*$ gives $B=Z^*NZ$. The map $Z$ is injective,
+so $\langle x,Bx\rangle=\langle Zx,NZx\rangle>0$ for every nonzero
+$x\in\mathcal K$; also $B$ is Hermitian because $N$ is Hermitian.
+Finally, $NZ=PNZ=ZZ^*NZ=ZB$. Combining this with
+(\ref{eq:positive_compression_equal_actions}) proves
+(\ref{eq:positive_compression_conclusions}).
+\end{proof}

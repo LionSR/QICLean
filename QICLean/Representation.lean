@@ -64,6 +64,7 @@ import QICLean.Representation.RelativePinCompensator
 import QICLean.Representation.ReplicaEtaForms
 import QICLean.Representation.ReplicaGammaIntegral
 import QICLean.Representation.ReplicaIntegral
+import QICLean.Representation.ReplicaLaminarBandMetrics
 import QICLean.Representation.ReplicaLift
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
@@ -73,6 +74,8 @@ import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
+import QICLean.Representation.ReplicaSymmetricBandCommute
+import QICLean.Representation.ReplicaSymmetricMeanTreeProduct
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.SchmidtBellPrevector
@@ -89,6 +92,7 @@ import QICLean.Representation.SkewSymbolBound
 import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarFunction
 import QICLean.Representation.StarOperator
+import QICLean.Representation.SubsystemLabelCommutation
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow

@@ -1,0 +1,15 @@
+\section{Commutation in isometric coordinates}
+\label{sec:isometric_intertwining_commute}
+
+\begin{theorem}[Commutation under a common isometric intertwiner]
+\label{thm:isometric_intertwining_commute}
+\lean{Matrix.commute_of_isometric_intertwine}
+Let $Z$ be a rectangular complex matrix with $Z^*Z=I$. Suppose
+$MZ=ZB$, $NZ=ZC$, and $MN=NM$. Then $BC=CB$.
+No Hermitian hypothesis is required. This is the elementary restriction
+argument used in \cite[Section~7, lines~268--276]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+The intertwining identities give $ZBC=MNZ=NMZ=ZCB$.
+Multiplication on the left by $Z^*$ gives the assertion.
+\end{proof}
