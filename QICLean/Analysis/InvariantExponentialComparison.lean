@@ -103,8 +103,7 @@ theorem IsHermitian.compression_exp_add_le_of_compressed_exp_le
   apply Matrix.le_iff.mpr
   apply Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hdiff
   intro v
-  apply RCLike.nonneg_iff.mpr
-  refine ⟨?_, hdiff.im_star_dotProduct_mulVec_self v⟩
+  refine Complex.nonneg_iff.mpr ⟨?_, (hdiff.im_star_dotProduct_mulVec_self v).symm⟩
   have hPv : P *ᵥ (P *ᵥ v) = P *ᵥ v := by
     rw [mulVec_mulVec, hP.isIdempotentElem.eq]
   have h := hA.re_dotProduct_exp_add_le_of_compressed_exp_le_smul
@@ -134,7 +133,7 @@ theorem IsHermitian.re_trace_mul_exp_add_le_of_compressed_exp_le
       (ρ * (P * X * P)).trace = (ρ * X).trace := by
     rw [← mul_assoc, ← mul_assoc, hρP, trace_mul_comm, ← mul_assoc, hPρ]
   have hoperator := hA.compression_exp_add_le_of_compressed_exp_le hB hP hAP hAB hbound
-  have h := (RCLike.nonneg_iff.mp
+  have h := (Complex.nonneg_iff.mp
     (hρ.trace_mul_nonneg (Matrix.le_iff.mp hoperator))).1
   simpa only [mul_sub, mul_smul_comm, trace_sub, trace_smul,
     Complex.sub_re, Complex.smul_re, smul_eq_mul, htrace, sub_nonneg] using h
