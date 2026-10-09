@@ -574,18 +574,19 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
 
-### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
+### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
 
-- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
-  orthogonal resolution, then apply scalar functional calculus to the two
-  assigned values.
-- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
-  `QICLean/Analysis/ProjectionCalculus.lean`.
-- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
-  or separate continuity argument is required.
-- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
-  Positivity needed for later logarithmic comparisons belongs to those
-  comparisons, rather than this general calculation.
+- **Pattern:** Transport an eventual Schur projection-mass bound through the
+  actual exterior coordinate isometry, retaining the same label sequence.
+- **Seen:** `Representation/CompressedTypicalLabelSequence.lean` and
+  `Representation/SchmidtBellCommonCutoffs.lean`; two occurrences in two files.
+- **Abstraction:** Both use
+  `TensorPower.norm_sq_labelProj_compressedTypicalSite_prod`, followed by
+  reciprocal and natural-power coercion identities. A third independent use
+  should supply a helper for the eventual inequality.
+- **Caveats:** The mass belongs to the normalized selected state before any
+  common regional cutoff. It is not a conditional mass after projecting,
+  and no second label selection is made.
 
 ### Chronological prefix and suffix coordinates — candidate (2026-10-09)
 
@@ -611,3 +612,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   A general norm inequality for folds should be considered at a third occurrence.
 - **Caveats:** No norm compatibility with the scalar action is needed; the
   contraction hypothesis concerns the additive seminorm directly.
+
+### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
+
+- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
+  orthogonal resolution, then apply scalar functional calculus to the two
+  assigned values.
+- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
+  `QICLean/Analysis/ProjectionCalculus.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
+  or separate continuity argument is required.
+- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
+  Positivity needed for later logarithmic comparisons belongs to those
+  comparisons, rather than this general calculation.
