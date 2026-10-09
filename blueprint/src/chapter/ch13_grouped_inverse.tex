@@ -8,12 +8,13 @@ step of \cite[Section~8]{OpenAI2026AreaLaw}.
 \begin{theorem}[Positivity for three disjoint regions]
   \label{thm:disjoint_replica_metric_positive}
   \lean{TensorPower.posDef_replicaMetric_disjoint_inv_mul_inv_mul, TensorPower.posDef_replicaMetric_disjoint_inv_mul_inv_mul_sq}
+  \leanok
   Suppose that the local spaces are nonempty. For $t\geq0$, $k\geq0$
   and pairwise disjoint regions $P,F,Y$, the
   matrix $R=W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k}$ and its square $R^2$ are
   positive definite on the full configuration space.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   Each metric is positive definite. Its inverse is a label observable
   with reciprocal positive weights. Disjoint subsystems give commuting
   permutation actions and hence commuting label observables.
@@ -30,12 +31,13 @@ $G'=L^g_P+L^g_F-L^g_Y+L^b_P+L^b_F-L^b_Y$.
 \begin{theorem}[Grouped label exponential]
   \label{thm:grouped_label_exponential}
   \lean{TensorPower.exp_neg_whole_labelEntropy_le_exp_grouped}
+  \leanok
   If $P,F,Y$ are pairwise disjoint and $a\geq0$, then
   $e^{-aG}\leq\binom{k}{r}^{a}e^{-aG'}$.
   This statement permits arbitrary finite local coordinate spaces,
   including empty ones.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:commuting_exponential_order,thm:grouped_label_entropy_bounds}
   The subgroup dimension bounds give
   $L^g_S+L^b_S\leq L_S\leq L^g_S+L^b_S+\log\binom{k}{r}I$.
@@ -50,6 +52,7 @@ $G'=L^g_P+L^g_F-L^g_Y+L^b_P+L^b_F-L^b_Y$.
 \begin{theorem}[Grouped upper bound for the inverse replica metric]
   \label{thm:grouped_replica_inverse}
   \lean{TensorPower.exists_replicaMetric_inv_square_le_grouped_exp}
+  \leanok
   Fix $t>0$ and finite nonempty local spaces. There is $C\geq0$, chosen
   before the copy number, its decomposition and the three regions,
   such that every such decomposition and pairwise disjoint $P,F,Y$
@@ -59,7 +62,7 @@ $G'=L^g_P+L^g_F-L^g_Y+L^b_P+L^b_F-L^b_Y$.
     &\leq (k+2)^C\binom{k}{r}^{2t}e^{-2tG'}.
   \end{align}
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:replica_metric_whole_inverse,thm:grouped_label_exponential}
   The whole-space inverse comparison gives the upper bound
   $(k+2)^Ce^{-2tG}$ with $C$ depending only on $t$ and the fixed local
