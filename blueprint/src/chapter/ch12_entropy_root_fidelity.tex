@@ -283,8 +283,11 @@ states it is the modulus of the overlap of the state vectors.
     \leanok
     \uses{def:purification}
     For $\rho\succeq0$ on $\C^T$, the \emph{canonical purification} is the
-    vector in $\C^T\otimes\C^T$ with coefficient matrix $\sqrt\rho$; it
-    purifies $\rho$. For $s\in\C^T\otimes\C^{B_T}$ and
+    vector in $\C^T\otimes\C^T$ with coefficient matrix $\sqrt\rho$. Its
+    reduced state is $\rho$ and its squared norm is $\tr\rho$, so it is a
+    possibly unnormalized purification of $\rho$, and a purification in the
+    sense of Definition~\ref{def:purification} when $\rho$ is a density
+    operator. For $s\in\C^T\otimes\C^{B_T}$ and
     $s'\in\C^E\otimes\C^{B_E}$, write $s\otimes s'$ for their product
     regrouped in $(\C^T\otimes\C^E)\otimes(\C^{B_T}\otimes\C^{B_E})$. Its
     reduced state on $\C^T\otimes\C^E$ is the tensor product of the reduced
@@ -349,8 +352,10 @@ states it is the modulus of the overlap of the state vectors.
     isometry on that space realizes overlap $F(\rho,\sigma)$ between
     purifications. In particular, if $I(A{:}C)\le\delta$ for a pure state
     $\Omega$ on $\C^A\otimes\C^C\otimes\C^U$, then there are an isometry
-    $V$ on $\C^U$ and a purification $s\otimes s'$ of
-    $\rho_A\otimes\rho_C$ with
+    $V:\C^U\to\C^A\otimes(\C^C\oplus\C^U)$ and unit vectors
+    $s\in\C^A\otimes\C^A$ and $s'\in\C^C\otimes(\C^C\oplus\C^U)$
+    purifying $\rho_A$ and $\rho_C$, so that $s\otimes s'$ purifies
+    $\rho_A\otimes\rho_C$, with
     $\lVert(\Id_{AC}\otimes V)\Omega-s\otimes s'\rVert\le\sqrt\delta$.
     This is \cite[Lemma~2.2]{OpenAI2026PolynomialPEPS}.
 \end{theorem}
@@ -366,7 +371,11 @@ states it is the modulus of the overlap of the state vectors.
     holds for every positive semidefinite $\rho_{AC}$. The purification
     clause is Theorem~\ref{thm:uhlmann_isometry_padded}. For the final
     clause, Theorem~\ref{thm:purification_splitting_mutual_information}
-    gives the error bound $\sqrt{I(A{:}C)}\le\sqrt\delta$; the vector
+    gives the error bound $\sqrt{I(A{:}C)}\le\sqrt\delta$, and its proof
+    takes $s$ to be the canonical purification of $\rho_A$ and $s'$ the
+    zero extension of the canonical purification of $\rho_C$, which purify
+    these marginals by Definition~\ref{def:canonical_product_purification};
+    the vector
     $(\Id_{AC}\otimes V)\Omega$ is again a purification of $\rho_{AC}$,
     and the phase is absorbed into $V$.
 \end{proof}
