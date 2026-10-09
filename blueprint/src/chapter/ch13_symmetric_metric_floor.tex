@@ -12,6 +12,7 @@ Let $Q_k$ be the orthogonal projection onto simultaneous copy symmetry.
 \begin{theorem}[Polynomial floor on simultaneous symmetry]
   \label{thm:symmetric_replica_inverse_bound_floor}
   \lean{TensorPower.exists_replicaMetric_symProj_inverse_bound_and_floor}
+  \leanok
   For every $t>0$ there is $C\geq0$, depending only on $t$ and the
   original local spaces, such that for every $k\geq0$ and every disjoint
   partition $(P,Y,F)$ of $V$,
@@ -23,7 +24,7 @@ Let $Q_k$ be the orthogonal projection onto simultaneous copy symmetry.
   symmetric-space floor used before the tree comparison in
   \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   On simultaneous symmetry, the signed label entropy
   $G=F_P+F_F-F_Y$ is nonnegative and commutes with $Q_k$.
   Thus $Q_ke^{-2tG}Q_k\leq Q_k$. The whole-space inverse comparison
@@ -36,6 +37,7 @@ Let $Q_k$ be the orthogonal projection onto simultaneous copy symmetry.
 \begin{theorem}[The same floor in fixed symmetric coordinates]
   \label{thm:symmetric_replica_isometric_floor}
   \lean{TensorPower.exists_replicaMetric_symProj_isometric_floor}
+  \leanok
   For every $t>0$ there is $C\geq0$, depending only on $t$ and the
   original local spaces, with the following property. For every
   $k\geq0$, disjoint partition $(P,Y,F)$ of $V$, and rectangular
@@ -47,7 +49,7 @@ Let $Q_k$ be the orthogonal projection onto simultaneous copy symmetry.
   The constant is independent of the regions and of the fixed
   coordinates $Z$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:symmetric_replica_inverse_bound_floor}
   Since $Q_kZ=Z$ and $Z^*Q_kZ=I$, conjugating the two preceding
   inequalities by $Z$ gives the result.
