@@ -21,7 +21,7 @@ September 24, 2026, `07-comparators.tex`, lines 218--238,
 -/
 
 noncomputable section
-open scoped BigOperators Matrix.Norms.L2Operator
+open scoped BigOperators ComplexOrder Matrix.Norms.L2Operator
 
 namespace Matrix
 
