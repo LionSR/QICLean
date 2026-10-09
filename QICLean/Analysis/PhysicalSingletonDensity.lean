@@ -35,6 +35,7 @@ def physicalSingletonDensity (j : Fin 3) :
   partialTraceRight ((vecMulVec Ω (star Ω)).submatrix
     (physicalSingletonEquiv ι j).symm (physicalSingletonEquiv ι j).symm)
 
+omit [∀ f, DecidableEq (ι f)] in
 /-- The original singleton marginal is positive semidefinite.
 Source: `07-comparators.tex`, lines 550–560. -/
 theorem posSemidef_physicalSingletonDensity (j : Fin 3) :
@@ -42,6 +43,7 @@ theorem posSemidef_physicalSingletonDensity (j : Fin 3) :
   ((posSemidef_vecMulVec_self_star (R := ℂ) Ω).submatrix
     (physicalSingletonEquiv ι j).symm).partialTraceRight
 
+omit [∀ f, DecidableEq (ι f)] in
 /-- A unit original physical vector has trace-one singleton marginals.
 Source: `07-comparators.tex`, lines 550–560. -/
 theorem trace_physicalSingletonDensity (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) (j : Fin 3) :
