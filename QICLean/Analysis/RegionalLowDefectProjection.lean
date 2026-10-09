@@ -120,6 +120,7 @@ theorem globalReplicaLowDefectProjection_properties
               (labelProj (replicaJointCopyPerm ((v : V) → β v) C R k) l) from
                 ⟨labelProj_mul_self _ l, (isHermitian_labelProj _ l).isSelfAdjoint⟩))).isIdempotentElem.eq]
   have hPQ : P * Q = P := by
+    dsimp only [Q]
     rw [← symProj_replicaJointCopyPerm_submatrix_globalReplicaCopiesEquiv β C R k]
     change P₀.submatrix e e * Q₀.submatrix e e = P₀.submatrix e e
     rw [Matrix.submatrix_mul_equiv, hP₀Q₀]
@@ -150,8 +151,31 @@ theorem regionalFiveFactor_lowDefectProjection_eq_global
       (fiveFactorCopiesEquiv ι k)).submatrix e e = _
   rw [h]
   ext x y
-  simp only [Matrix.submatrix_apply, globalReplicaLowDefectProjection, e,
+  simp only [Matrix.submatrix_apply, globalReplicaLowDefectProjection, e, ι,
     regionalFiveFactorCopyEquiv, Equiv.trans_apply,
     Equiv.apply_symm_apply, Equiv.symm_apply_apply]
+  simp only [Matrix.submatrix, Matrix.of_apply, Equiv.coe_trans,
+    Function.comp_apply, Equiv.apply_symm_apply, Equiv.symm_apply_apply]
+  simp only [Matrix.of, Equiv.refl_apply, Equiv.trans_apply,
+    Equiv.apply_symm_apply, Equiv.symm_apply_apply]
+  exact congrArg₂ (replicaLowDefectProjection (C := C) (R := R) Ω k ellC ellR τ)
+    ((congrArg (replicaPhysicalCoordinateEquiv (C := C) (R := R)
+      (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm
+      ((fiveFactorCopiesEquiv (regionalFiveFactorSpace β C R Q Y) k).apply_symm_apply
+        ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
+          (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k)
+            ((globalReplicaCopiesEquiv β C R k) x)))).trans
+      ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
+        (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm_apply_apply
+          ((globalReplicaCopiesEquiv β C R k) x)))
+    ((congrArg (replicaPhysicalCoordinateEquiv (C := C) (R := R)
+      (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm
+      ((fiveFactorCopiesEquiv (regionalFiveFactorSpace β C R Q Y) k).apply_symm_apply
+        ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
+          (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k)
+            ((globalReplicaCopiesEquiv β C R k) y)))).trans
+      ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
+        (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).symm_apply_apply
+          ((globalReplicaCopiesEquiv β C R k) y)))
 
 end Matrix

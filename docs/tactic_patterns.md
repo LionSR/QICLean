@@ -668,3 +668,20 @@ projector, the defect cutoff, and the original auxiliary labels.
 - **Caveats:** The mass belongs to the normalized selected state before any
   common regional cutoff. It is not a conditional mass after projecting,
   and no second label selection is made.
+
+### Instances for a finite family of coordinate spaces — candidate (2026-10-09)
+
+- **Pattern:** Construct Fintype, DecidableEq and Nonempty instances for a
+  dependent family with five explicitly specified fibers.
+- **Seen:** The three instances in
+  `Representation/RegionalFiveFactorCoordinates.lean`; one file.
+- **Reuse:** Use the existing dependent eliminator `Fin.cases`, with
+  `inferInstanceAs` naming each actual fiber and `fun i => Fin.elim0 i`
+  for the empty final case. This preserves the canonical component
+  instances and handles families valued in Type as well as Prop.
+- **Reason:** A `fin_cases` proof through list membership cannot eliminate
+  that proposition into these Type-valued instances. Merely unfolding the
+  family leaves vector notation at the instance-synthesis boundary.
+- **Decision:** No new tactic or finite-family abstraction is introduced.
+  These three uses are in one structural definition; reconsider only if
+  another family produces independent repetition.

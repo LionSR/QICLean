@@ -58,6 +58,9 @@ theorem regionalFiveFactorCopyEquiv_subsystemPerm
       regionalFiveFactorCopyEquiv β C R Q Y hQY k
         (subsystemPerm k (addedSiteSpace (addedSiteSpace β C) R)
           (regionalOriginalRegion Q Y S) σ x) := by
+  have hregion (v : Option (Option V)) :
+      v ∈ regionalOriginalRegion Q Y S ↔ regionalFactorIndex Q Y v ∈ S :=
+    Finset.mem_filter_univ v
   funext j f
   fin_cases f
   · change (if (0 : Fin 5) ∈ S then
@@ -67,7 +70,7 @@ theorem regionalFiveFactorCopyEquiv_subsystemPerm
         x (σ⁻¹ j) (some (some v)) else x j (some (some v)))
     funext v
     by_cases hS : (0 : Fin 5) ∈ S <;>
-      simp [hS, regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex, v.property]
+      simp [hS, hregion, regionalFactorIndex, v.property]
   · change (if (1 : Fin 5) ∈ S then
         (fun v : Y => x (σ⁻¹ j) (some (some v))) else
         (fun v : Y => x j (some (some v)))) =
@@ -76,7 +79,7 @@ theorem regionalFiveFactorCopyEquiv_subsystemPerm
     funext v
     have hv : v.val ∉ Q := fun h => Finset.disjoint_left.mp hQY h v.property
     by_cases hS : (1 : Fin 5) ∈ S <;>
-      simp [hS, regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex, hv, v.property]
+      simp [hS, hregion, regionalFactorIndex, hv, v.property]
   · change (if (2 : Fin 5) ∈ S then
         (fun v : ↥((Q ∪ Y)ᶜ) => x (σ⁻¹ j) (some (some v))) else
         (fun v : ↥((Q ∪ Y)ᶜ) => x j (some (some v)))) =
@@ -89,14 +92,14 @@ theorem regionalFiveFactorCopyEquiv_subsystemPerm
     have hvY : v.val ∉ Y := fun h =>
       Finset.mem_compl.mp v.property (Finset.mem_union_right Q h)
     by_cases hS : (2 : Fin 5) ∈ S <;>
-      simp [hS, regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex, hvQ, hvY]
+      simp [hS, hregion, regionalFactorIndex, hvQ, hvY]
   · change (if (3 : Fin 5) ∈ S then x (σ⁻¹ j) (some none) else x j (some none)) =
       (if some none ∈ regionalOriginalRegion Q Y S then
         x (σ⁻¹ j) (some none) else x j (some none))
-    simp [regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex]
+    simp [hregion, regionalFactorIndex]
   · change (if (4 : Fin 5) ∈ S then x (σ⁻¹ j) none else x j none) =
       (if none ∈ regionalOriginalRegion Q Y S then x (σ⁻¹ j) none else x j none)
-    simp [regionalOriginalRegion, Finset.mem_filter, regionalFactorIndex]
+    simp [hregion, regionalFactorIndex]
 
 variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
@@ -136,6 +139,7 @@ theorem labelObservable_submatrix_regionalFiveFactorCopyEquiv
   simp only [labelObservable_eq_groupAlgebraRep]
   exact groupAlgebraRep_submatrix_regionalFiveFactorCopyEquiv β C R Q Y hQY k S _
 
+omit [∀ v, DecidableEq (β v)] [DecidableEq C] [DecidableEq R] in
 /-- Grouping physical sites does not change the whole one-copy dimension,
 including the two original auxiliary factors. Source: `05-replicas.tex`,
 `replicas:w-definition`, lines 287--303. -/
@@ -146,6 +150,7 @@ theorem replicaDim_regionalFiveFactorSpace
   have h := Fintype.card_congr (regionalFiveFactorCopyEquiv β C R Q Y hQY 1)
   simpa only [Config, Fintype.card_fun, Fintype.card_fin, pow_one] using h.symm
 
+omit [∀ v, DecidableEq (β v)] [DecidableEq C] [DecidableEq R] in
 /-- The label weights are those of the same original full system, without
 a change of padding dimension. Source: `05-replicas.tex`,
 `replicas:w-definition`, lines 287--303. -/
