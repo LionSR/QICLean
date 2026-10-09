@@ -41,7 +41,13 @@ variable {Ω : Type*} [Fintype Ω]
 
 instance : CompactSpace (CoherentSphere Ω) := by
   apply isCompact_iff_compactSpace.mp
-  simpa [Metric.sphere] using (isCompact_sphere (0 : EuclideanSpace ℂ Ω) 1)
+  have htop :
+      (inferInstanceAs (PseudoMetricSpace (EuclideanSpace ℂ Ω))).toUniformSpace.toTopologicalSpace =
+        PiLp.topologicalSpace 2 (fun _ : Ω => ℂ) := by
+    with_reducible_and_instances rfl
+  have hs := isCompact_sphere (0 : EuclideanSpace ℂ Ω) 1
+  rw [htop] at hs
+  simpa only [Metric.sphere, dist_zero_right] using hs
 
 /-- The ambient coordinates of a unit vector depend continuously on that vector. -/
 theorem continuous_coherentSphere_coe :
@@ -60,8 +66,9 @@ def coherentSphereMap (a : Ω) (U : unitaryGroup Ω ℂ) : CoherentSphere Ω := 
   rw [dotProduct_comm, dotProduct_star_unitary_mulVec_single] at h
   have hn := norm_nonneg ((EuclideanSpace.equiv Ω ℂ).symm
     ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1))
-  norm_num at h
-  nlinarith
+  change (1 : ℝ) = ‖(EuclideanSpace.equiv Ω ℂ).symm
+    ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)‖ ^ 2 at h
+  nlinarith only [h, hn]
 
 @[simp]
 theorem coherentSphereMap_apply (a : Ω) (U : unitaryGroup Ω ℂ) (x : Ω) :
@@ -90,8 +97,16 @@ theorem continuous_coherentDensity_joint :
       ((continuous_coherentVec a).comp continuous_snd))).matrix_trace))
 
 /-- For a fixed matrix the coherent density is continuous on the compact unitary group. -/
-theorem continuous_coherentDensity : Continuous (coherentDensity k a ρ) :=
-  (continuous_coherentDensity_joint k a).comp (continuous_const.prodMk continuous_id)
+theorem continuous_coherentDensity : Continuous (coherentDensity k a ρ) := by
+  change Continuous fun U : unitaryGroup Ω ℂ => (symDim Ω k : ℝ) *
+    (ρ * coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)).trace.re
+  have hP : Continuous fun U : unitaryGroup Ω ℂ =>
+      coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1) :=
+    continuous_coherentProj k (continuous_coherentVec a)
+  have htr : Continuous fun U : unitaryGroup Ω ℂ =>
+      (ρ * coherentProj k ((U : Matrix Ω Ω ℂ) *ᵥ Pi.single a 1)).trace :=
+    ((continuous_const : Continuous fun _ : unitaryGroup Ω ℂ => ρ).matrix_mul hP).matrix_trace
+  exact continuous_const.mul (Complex.continuous_re.comp htr)
 
 /-- Positivity of the density follows from the quadratic-form characterization of
 positive semidefiniteness, without requiring the two matrix factors to commute. -/
@@ -123,7 +138,7 @@ def coherentMeasure : Measure (CoherentSphere Ω) :=
 
 /-- The coherent measure is finite for every matrix. -/
 instance isFiniteMeasure_coherentMeasure : IsFiniteMeasure (coherentMeasure k a ρ) := by
-  letI : IsFiniteMeasure ((unitaryHaar Ω).withDensity
+  let : IsFiniteMeasure ((unitaryHaar Ω).withDensity
       (fun U => ENNReal.ofReal (coherentDensity k a ρ U))) :=
     isFiniteMeasure_withDensity_ofReal (integrable_coherentDensity k a ρ).hasFiniteIntegral
   unfold coherentMeasure

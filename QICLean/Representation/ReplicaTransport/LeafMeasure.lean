@@ -78,9 +78,10 @@ private theorem continuous_leafUnitaryState :
     Continuous (D.leafUnitaryState n t k pre p j) := by
   let Φ := traceAdjointMap ((D.tree (projIcc (0 : ℝ) 1 zero_le_one p)).leafMap
     (D.input n t k) j).toLinearMap
-  have hv := (continuous_id.matrix_mulVec (continuous_const : Continuous fun _ :
-    Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ =>
-      Matrix.Transport.filteredVector (D.rootPath n t k p) pre))
+  have hv : Continuous fun W :
+      Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ =>
+        W *ᵥ Matrix.Transport.filteredVector (D.rootPath n t k p) pre :=
+    continuous_id.matrix_mulVec continuous_const
   exact Φ.continuous_of_finiteDimensional.comp (hv.matrix_vecMulVec hv.star)
 
 /-- For fixed interpolation parameter, the literal transport state is continuous in
@@ -105,11 +106,12 @@ private theorem measurable_fourierWeight : Measurable Matrix.Transport.fourierWe
 
 /-- The density is jointly measurable in the Fourier variable and the Haar unitary. -/
 theorem measurable_transportLeafDensity :
-    Measurable (D.transportLeafDensity n t k pre p j) :=
-  (measurable_fourierWeight.comp measurable_fst).mul
-    ((continuous_coherentDensity_joint k (base n)).comp
-      (((D.continuous_state n t k pre p j).comp continuous_fst).prodMk
-        continuous_snd)).measurable
+    Measurable (D.transportLeafDensity n t k pre p j) := by
+  have hpair : Continuous fun z : ℝ × unitaryGroup (SiteConfig n) ℂ =>
+      (D.state n t k pre p j z.1, z.2) :=
+    ((D.continuous_state n t k pre p j).comp continuous_fst).prodMk continuous_snd
+  exact (measurable_fourierWeight.comp measurable_fst).mul
+    ((continuous_coherentDensity_joint k (base n)).comp hpair).measurable
 
 /-- A continuous spherical symbol times the joint density is absolutely integrable.
 Both unitary coordinates enter the compactness bound. -/
@@ -122,10 +124,12 @@ theorem integrable_transportLeafDensity_mul {f : CoherentSphere (SiteConfig n) �
       unitaryGroup (SiteConfig n) ℂ → ℝ := fun z =>
     coherentDensity k (base n) (D.leafUnitaryState n t k pre p j z.1) z.2 *
       f (coherentSphereMap (base n) z.2)
+  have hpair : Continuous fun z : unitaryGroup (Config k fun v => Fin (n v)) ℂ ×
+      unitaryGroup (SiteConfig n) ℂ => (D.leafUnitaryState n t k pre p j z.1, z.2) :=
+    ((D.continuous_leafUnitaryState n t k pre p j).comp
+      (continuous_subtype_val.comp continuous_fst)).prodMk continuous_snd
   have hF : Continuous F :=
-    ((continuous_coherentDensity_joint k (base n)).comp
-      (((D.continuous_leafUnitaryState n t k pre p j).comp
-        (continuous_subtype_val.comp continuous_fst)).prodMk continuous_snd)).mul
+    ((continuous_coherentDensity_joint k (base n)).comp hpair).mul
       (hf.comp ((continuous_coherentSphereMap (base n)).comp continuous_snd))
   obtain ⟨B, hB⟩ := isCompact_univ.exists_bound_of_continuousOn hF.continuousOn
   have hparam : Continuous fun z : ℝ × unitaryGroup (SiteConfig n) ℂ =>
@@ -148,8 +152,10 @@ theorem integrable_transportLeafDensity :
 /-- The literal Fourier-weighted measure is finite for every real parameter. -/
 instance isFiniteMeasure_transportLeafMeasure :
     IsFiniteMeasure (D.transportLeafMeasure n t k pre p j) := by
-  letI := isFiniteMeasure_withDensity_ofReal
-    (D.integrable_transportLeafDensity n t k pre p j).hasFiniteIntegral
+  let : IsFiniteMeasure ((volume.prod (unitaryHaar (SiteConfig n))).withDensity
+      (fun z => ENNReal.ofReal (D.transportLeafDensity n t k pre p j z))) :=
+    isFiniteMeasure_withDensity_ofReal
+      (D.integrable_transportLeafDensity n t k pre p j).hasFiniteIntegral
   unfold transportLeafMeasure
   infer_instance
 
