@@ -91,6 +91,7 @@ import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
 import QICLean.Representation.ReplicaSymmetricBandCommute
 import QICLean.Representation.ReplicaSymmetricMeanTreeProduct
+import QICLean.Representation.ReplicaSymmetricMetricFloor
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.ReplicaWholeInverse
