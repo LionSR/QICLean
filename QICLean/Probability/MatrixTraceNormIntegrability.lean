@@ -17,13 +17,6 @@ values are not required.
 Source: polynomial-PEPS Theorem 5.2, `04-compression.tex`, lines 434–549.
 -/
 
-/-!
-Source: September 24, 2026, polynomial-PEPS manuscript, 04-compression.tex,
-eq:compression-block-second-moment.
-Manuscript revision: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
-Independently formalized; no upstream Lean proof text reused.
--/
-
 noncomputable section
 open MeasureTheory
 open scoped Matrix ComplexConjugate

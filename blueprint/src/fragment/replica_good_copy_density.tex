@@ -1,0 +1,63 @@
+\section{Product density on the good physical copies}
+\label{sec:replica_good_copy_density}
+
+Let $\Omega\in\mathcal H$ be unit, let $B\subseteq\{1,\ldots,k\}$, and
+let $w=(R_B\otimes I_{\mathcal K})u$ for an arbitrary
+$u\in\mathcal H^{\otimes k}\otimes\mathcal K$.
+Write $G=B^c$ and $\Omega_G=\bigotimes_{i\in G}\Omega$.
+After separating the good physical copies from the bad physical copies and
+the auxiliary register, the excitation factorization gives
+$w=\Omega_G\otimes\chi$, where $\chi$ is the partial contraction against
+$\Omega_G$. These identities give the product-density step in the
+merge-moment argument of \cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Auxiliary marginal after ground-state contraction]
+\label{thm:replica_good_copy_auxiliary_density}
+\lean{Matrix.partialTraceLeft_replicaExcitationComponent_eq_remainder}
+\leanok
+\uses{thm:replica_good_component}
+With the registers separated as above,
+\[
+ \operatorname{Tr}_{\mathcal H^{\otimes k}}|w\rangle\langle w|
+ =\operatorname{Tr}_{\mathcal H^{\otimes B}}|\chi\rangle\langle\chi|.
+\]
+Neither $u$ nor $w$ need be normalized.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_good_component}
+Insert the coordinate factorization $w(g,b,c)=\Omega_G(g)\chi(b,c)$
+into the partial trace. Summing over $g$ contributes
+$\sum_g|\Omega_G(g)|^2=\prod_{i\in G}\|\Omega\|^2=1$.
+The remaining sum is the stated marginal of $\chi$.
+\end{proof}
+
+\begin{theorem}[Product density of good copies and the auxiliary register]
+\label{thm:replica_good_copy_product_density}
+\lean{Matrix.partialTraceRight_replicaExcitationComponent_goodAuxiliary_density}
+\leanok
+\uses{thm:replica_good_component,thm:replica_good_copy_auxiliary_density}
+Retain the good physical copies and the entire auxiliary register, and
+trace the bad physical copies. The resulting density is
+\[
+ \operatorname{Tr}_{\mathcal H^{\otimes B}}|w\rangle\langle w|
+ =|\Omega_G\rangle\langle\Omega_G|\otimes\rho_{\mathcal K},
+ \qquad
+ \rho_{\mathcal K}=\operatorname{Tr}_{\mathcal H^{\otimes k}}
+                  |w\rangle\langle w|,
+\]
+after the indicated reordering of registers.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_good_component,thm:replica_good_copy_auxiliary_density}
+The coordinate factorization gives
+$|\Omega_G\rangle\langle\Omega_G|\otimes
+\operatorname{Tr}_{\mathcal H^{\otimes B}}|\chi\rangle\langle\chi|$.
+Apply the preceding theorem to identify its auxiliary factor.
+\end{proof}
+
+Zero copies and zero components are included. For nonzero $w$, dividing by
+$\|w\|^2$ gives the corresponding normalized product density. Restrictions to
+the physical and auxiliary regions used in the merge estimate, together with
+their permutation symmetries and moment estimates, remain further steps.

@@ -19,13 +19,6 @@ for each corrected source set while estimating the same physical operator.
 Source: polynomial-PEPS Theorem 5.2, `04-compression.tex`, lines 383–549.
 -/
 
-/-!
-Source: September 24, 2026, polynomial-PEPS manuscript, 04-compression.tex,
-eq:compression-exterior-contraction.
-Manuscript revision: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
-Independently formalized; no upstream Lean proof text reused.
--/
-
 noncomputable section
 open scoped TensorProduct Matrix Kronecker ComplexConjugate
 

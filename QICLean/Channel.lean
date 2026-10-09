@@ -16,6 +16,7 @@ import QICLean.Channel.ChoiDoeblin
 import QICLean.Channel.ChoiJamiolkowski
 import QICLean.Channel.ChoiRectangular
 import QICLean.Channel.ChoiResidual
+import QICLean.Channel.ChoiTraceFactorization
 import QICLean.Channel.ChoiTypeMap
 import QICLean.Channel.ChoiTypeMap.HaBlockTranspose
 import QICLean.Channel.ChoiTypeMap.HaNegativePairing
@@ -63,6 +64,7 @@ import QICLean.Channel.KrausMap
 import QICLean.Channel.KrausRank
 import QICLean.Channel.KrausRectangular
 import QICLean.Channel.KrausRepresentation
+import QICLean.Channel.KrausSupportAbsorption
 import QICLean.Channel.KrausUnitaryFreedom
 import QICLean.Channel.LocalizedKrausCPTP
 import QICLean.Channel.LorentzNormalForm
@@ -139,6 +141,7 @@ import QICLean.Channel.StinespringRectangular
 import QICLean.Channel.SupportCompletion
 import QICLean.Channel.SupportedMarginalChannel
 import QICLean.Channel.TensorMap
+import QICLean.Channel.TraceFactorGauge
 import QICLean.Channel.TransferMatrix
 import QICLean.Channel.TripartiteDecorrelation
 import QICLean.Channel.UhlmannIsometry

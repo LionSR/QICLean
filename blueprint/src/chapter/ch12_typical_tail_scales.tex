@@ -1,0 +1,35 @@
+\section{A typical width for a linear cut budget}
+\label{sec:typical_tail_scales}
+
+The polynomial error asserted after the typical-set construction in
+\cite[Section~7]{OpenAI2026AreaLaw} follows from the exponential tail estimate
+of Lemma~3.1 once the cut budget is at most linear in the scale.
+
+\begin{theorem}[Uniform polynomial decay of the tail expression]
+\label{thm:typical_tail_linear_budget}
+\lean{Entropy.exists_typical_tail_bound_of_linear_budget}
+\leanok
+Fix $\theta\ge0$ and $C>0$. There is an integer $N\ge2$, depending only on
+these two constants, such that for every integer $n\ge N$ and every
+$0<\mathcal B\le Cn$,
+\[
+2e^{e/2}\exp\!\left(-\frac{n^{3/5}}
+ {32\sqrt{(1+\theta)\mathcal B}}\right)\le n^{-100}.
+\]
+\end{theorem}
+\begin{proof}
+\leanok
+The denominator is at most
+$32\sqrt{(1+\theta)C}\,n^{1/2}$. Consequently the left-hand side is bounded
+by $2e^{e/2}\exp(-cn^{1/10})$, where
+$c=(32\sqrt{(1+\theta)C})^{-1}>0$.
+Exponential decay dominates every fixed real power; in particular this
+expression is at most $n^{-100}$ for all sufficiently large $n$.
+The threshold does not depend on the choice of $\mathcal B$.
+\end{proof}
+
+This is a numerical implication. Its physical application still requires
+both the geometric bound $\mathcal B\le Cn$ and the marginal tail estimate
+for the actual ground state. Given those estimates, the normalized-state
+results above give positive selected mass at least $1-n^{-100}$ at width
+$n^{3/5}$.

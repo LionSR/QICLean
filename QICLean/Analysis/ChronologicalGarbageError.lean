@@ -135,7 +135,7 @@ theorem rectangularTraceNorm_chronologicalGarbageDensity_marked_sub_le
     dsimp only [ψ']
     rw [norm_euclideanTensorVector, norm_cumulativeGarbageVector γ hγ 0, mul_one]
     exact hψ
-  have hK' : ‖K'‖ ≤ 1 := (norm_kronecker_one_rectangular_le K).trans hK
+  have hK' : ‖K'‖ ≤ 1 := (l2_opNorm_kronecker_one_le K).trans hK
   have herr : ∀ t ∈ S,
       ‖chronologicalReplacementChain A t - chronologicalGarbageChain G γ t‖ ≤ δ :=
     fun t ht ↦ (chronologicalReplacementChain_sub_norm_le A G γ t).trans (herror t ht)

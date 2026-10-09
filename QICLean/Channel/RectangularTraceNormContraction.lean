@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.RectangularTraceNorm
-import QICLean.Analysis.MatrixFramePerturbation
+import QICLean.Analysis.RootChannel
 import QICLean.Channel.PartialTrace
 
 /-!
@@ -29,15 +29,6 @@ namespace Matrix
 
 variable {a b : Type*} [Fintype a] [Fintype b] [DecidableEq a] [DecidableEq b]
 
-/-- Amplification by an identity preserves an operator-norm bound without a
-factor depending on the discarded register. -/
-theorem l2_opNorm_kronecker_one_square_le (M : Matrix a a ℂ) :
-    ‖M ⊗ₖ (1 : Matrix b b ℂ)‖ ≤ ‖M‖ := by
-  rw [l2_opNorm_def]
-  apply ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg M)
-  intro x
-  exact l2_opNorm_kronecker_one_mulVec_le M x
-
 omit [DecidableEq a] in
 /-- The partial trace and identity amplification are adjoint for the
 Hilbert--Schmidt pairing, without Hermiticity assumptions. -/
@@ -59,7 +50,7 @@ theorem rectangularTraceNorm_partialTraceRight_le
   intro M hM
   rw [trace_partialTraceRight_conjTranspose_mul]
   exact norm_trace_conjTranspose_mul_le_rectangularTraceNorm H _
-    ((l2_opNorm_kronecker_one_square_le M).trans hM)
+    ((l2_opNorm_kronecker_one_le M).trans hM)
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 

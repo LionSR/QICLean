@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation
 
 import QICLean.Representation.Alternant
+import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
@@ -21,8 +22,13 @@ import QICLean.Representation.CoherentSymbolFunction
 import QICLean.Representation.CoherentSymbolLimit
 import QICLean.Representation.ColumnAntisymmetrizer
 import QICLean.Representation.CommutantDimension
+import QICLean.Representation.CompatiblePhysicalLabel
 import QICLean.Representation.ExteriorPieri
+import QICLean.Representation.GoodAuxiliaryLabelCompression
+import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GroupedCopies
+import QICLean.Representation.GroupedLabelEntropy
+import QICLean.Representation.HighLabelWindow
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension
 import QICLean.Representation.HookFormula
@@ -41,9 +47,13 @@ import QICLean.Representation.MarkedSimilaritySymbol
 import QICLean.Representation.MarkedStar
 import QICLean.Representation.MarkedSymbol
 import QICLean.Representation.MergeDimensions
+import QICLean.Representation.MergeExponential
 import QICLean.Representation.MergeMoment
+import QICLean.Representation.PairMergeDeficit
+import QICLean.Representation.PairMergeMoment
 import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
+import QICLean.Representation.PhysicalMergeHolder
 import QICLean.Representation.RegionPowerSymbol
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.RelativePin
@@ -57,14 +67,19 @@ import QICLean.Representation.ReplicaLift
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
+import QICLean.Representation.ReplicaPrevector
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
+import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
+import QICLean.Representation.SchurLabelMomentBounds
+import QICLean.Representation.SchurLabelMoments
+import QICLean.Representation.SchurSectorMass
 import QICLean.Representation.SchurSurprisal
 import QICLean.Representation.SchurWeylCommutant
 import QICLean.Representation.SchurWeylLabels
@@ -77,6 +92,7 @@ import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
 import QICLean.Representation.TrivialLabel
+import QICLean.Representation.UniformBellLabel
 import QICLean.Representation.UniformHusimi
 import QICLean.Representation.UnitaryCommutant
 import QICLean.Representation.UnitaryTwirl

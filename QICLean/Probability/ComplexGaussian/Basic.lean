@@ -84,30 +84,18 @@ variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
   [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E]
 
 /-- A real linear coordinate of the standard Gaussian. -/
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 def realField (a : E) (x : E) : ℝ := ⟪a, x⟫
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem memLp_realField (a : E) (p : ℝ≥0∞) (hp : p ≠ ∞) :
     MemLp (realField a) p (stdGaussian E) :=
   (innerSL ℝ a).comp_memLp' (IsGaussian.memLp_id (stdGaussian E) p hp)
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem integrable_realField_pow (a : E) (n : ℕ) :
     Integrable (fun x ↦ realField a x ^ n) (stdGaussian E) := by
   have h := memLp_realField a n (by simp)
   exact h.integrable_norm_pow'.mono' (h.aestronglyMeasurable.pow n)
     (Filter.Eventually.of_forall fun x ↦ le_of_eq (norm_pow _ _))
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem integral_realField_mul (a b : E) :
     (∫ x, realField a x * realField b x ∂stdGaussian E) = ⟪a, b⟫ := by
   have h := covarianceBilin_apply (μ := stdGaussian E) IsGaussian.memLp_two_id a b
@@ -115,9 +103,6 @@ theorem integral_realField_mul (a b : E) :
   simpa only [realField, id_eq, integral_id_stdGaussian, sub_zero,
     innerSL_apply_apply ℝ] using h.symm
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem realField_law (a : E) :
     (stdGaussian E).map (realField a) = gaussianReal 0 (‖a‖₊ ^ 2) := by
   change (stdGaussian E).map (innerSL ℝ a) = _
@@ -129,9 +114,6 @@ theorem realField_law (a : E) :
   simp only [Real.coe_toNNReal', NNReal.coe_pow, coe_nnnorm,
     sup_eq_left.mpr (sq_nonneg ‖a‖)]
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem integral_realField_fourth (a : E) :
     (∫ x, realField a x ^ 4 ∂stdGaussian E) = 3 * ‖a‖ ^ 4 := by
   have hf : HasLaw (realField a) (gaussianReal 0 (‖a‖₊ ^ 2)) (stdGaussian E) :=
@@ -153,9 +135,6 @@ theorem integral_realField_fourth (a : E) :
       simp only [mul_pow, integral_const_mul, integral_standard_real_fourth]
       ring
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem memLp_realField_mul (a b : E) :
     MemLp (fun x ↦ realField a x * realField b x) 2 (stdGaussian E) := by
   let : ENNReal.HolderTriple 4 4 2 := ⟨by
@@ -164,18 +143,12 @@ theorem memLp_realField_mul (a b : E) :
   exact (memLp_realField a 4 (by norm_num)).fun_mul
     (memLp_realField b 4 (by norm_num))
 
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem integrable_realField_four (a b c d : E) :
     Integrable (fun x ↦ realField a x * realField b x *
       (realField c x * realField d x)) (stdGaussian E) :=
   (memLp_realField_mul a b).integrable_mul (memLp_realField_mul c d)
 
 /-- Fourth polarization of a real product, used in Isserlis' formula. -/
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem real_fourth_polarization (a b c d : ℝ) :
     192 * (a * b * (c * d)) =
       (a + b + c + d) ^ 4 - (a + b + c - d) ^ 4 -
@@ -185,17 +158,11 @@ theorem real_fourth_polarization (a b c d : ℝ) :
 
 omit [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] in
 /-- Fourth power of the real Hilbert-space norm in terms of its quadratic form. -/
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem norm_four_eq_inner_self_sq (v : E) : ‖v‖ ^ 4 = ⟪v, v⟫ ^ 2 := by
   rw [show (4 : ℕ) = 2 * 2 from rfl, pow_mul, real_inner_self_eq_norm_sq]
 
 /-- Real Isserlis formula. It applies to coincident coordinates as well as distinct ones.
 Adapted from `OAI.ClassicalGaussian.field_wick_four` at the commit in the file notice. -/
-/-
-Adapted from OpenAI's openai/math repository (Apache-2.0).
--/
 theorem integral_realField_four_eq_pairings (a b c d : E) :
     (∫ x, realField a x * realField b x * (realField c x * realField d x)
       ∂stdGaussian E) =

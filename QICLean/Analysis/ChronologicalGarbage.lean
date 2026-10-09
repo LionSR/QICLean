@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.ContractionChain
 import QICLean.Analysis.SubnormalizedPureStateError
 import QICLean.Analysis.MatrixFramePerturbation
+import QICLean.Analysis.RootChannel
 
 /-!
 # Chronological accumulation of idle garbage registers
@@ -232,15 +233,6 @@ theorem kronecker_one_tensorVector [DecidableEq n] (K : Matrix m n ℂ)
     mul_zero, euclideanTensorVector, ite_mul, zero_mul, Fintype.sum_prod_type,
     Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte, Finset.sum_mul]
   exact Finset.sum_congr rfl fun i _ ↦ by ring
-
-/-- An arbitrary rectangular readout amplified by the garbage identity has
-the same operator bound, including empty spaces. -/
-theorem norm_kronecker_one_rectangular_le [Fintype m] [DecidableEq n]
-    (K : Matrix m n ℂ) : ‖K ⊗ₖ (1 : Matrix c c ℂ)‖ ≤ ‖K‖ := by
-  rw [l2_opNorm_def]
-  apply ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg K)
-  intro ξ
-  exact l2_opNorm_kronecker_one_mulVec_le K ξ
 
 variable {D : ℕ → Type v} {B : ℕ → Type u}
   [∀ t, Fintype (D t)] [∀ t, DecidableEq (D t)]

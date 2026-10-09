@@ -1,0 +1,49 @@
+\section{The good auxiliary label on an excitation component}
+\label{sec:replica_good_auxiliary_label_bound}
+
+A physical excitation measurement acts on a different tensor factor from
+an auxiliary whole-label projection. The selected component consequently
+retains that label, and the compressed good-copy bound applies to it.
+
+\begin{theorem}[Good auxiliary bound on a physical component]
+\label{thm:replica_good_auxiliary_label_bound}
+\lean{Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower}
+\leanok
+Let $A,C,D$ be finite coordinate sets, let $\Omega\in\mathbb C^A$, and
+let $B\subseteq\{1,\ldots,k\}$ have size $r$. Write $R_B$ for the literal
+excitation operator, with factor $I-|\Omega\rangle\langle\Omega|$ on $B$
+and $|\Omega\rangle\langle\Omega|$ on its complement. Enumerate the
+complement first and $B$ second to define the good-copy auxiliary observable
+$F_g$. Let $P_\lambda$ be the actual whole-copy central projection on
+$\mathbb C^{C^k}$, with irreducible dimension $d_\lambda$, and put
+\[
+ \tau=\log d_\lambda-r\log|C|-\log\binom{k}{r}.
+\]
+For $v\in\mathbb C^{A^k}\otimes\mathbb C^{C^k}\otimes\mathbb C^D$
+satisfying $(I\otimes P_\lambda\otimes I_D)v=v$, define
+$w=(R_B\otimes I)v$. Then
+\[
+ \tau\operatorname{Re}\langle w,w\rangle
+ \le\operatorname{Re}\langle w,(I\otimes F_g\otimes I_D)w\rangle.
+\]
+No normalization is required. Empty coordinate sets, zero copies and zero
+components are included, with the total logarithm convention $\log0=0$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:good_auxiliary_label_compression,thm:replica_excitation_preserves_fixed}
+The identity physical permutation and the auxiliary operator
+$P_\lambda\otimes I_D$ give
+$(I\otimes P_\lambda\otimes I_D)w=w$. The coordinate split has exactly
+$k-r$ good and $r$ bad copies. Lift the positive semidefinite difference
+$P_\lambda F_gP_\lambda-\tau P_\lambda$ by the identity on the physical
+and additional auxiliary registers. Its quadratic form on $w$ is
+nonnegative. The Hermitian label projection fixes $w$, and hence cancels
+on both sides of that quadratic form, giving the required inequality.
+\end{proof}
+
+For a unit ground vector, $R_B$ is the actual orthogonal excitation
+projection. This proves the label-support contribution to
+\cite[Section~7, equation \textup{(comparator:good-auxiliary)}]{OpenAI2026AreaLaw}.
+The numerical whole-label threshold and metric comparison are separate
+steps, and no commutation with a band metric is used.

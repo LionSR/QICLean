@@ -1,0 +1,47 @@
+\section{Spectral cutoff mass}
+\label{sec:spectral_cutoff_mass}
+
+Let $D$ be a positive semidefinite operator on a finite-dimensional Hilbert
+space, and let $P_b=\mathbf 1_{(-\infty,b]}(D)$ be its spectral projection
+onto eigenvalues at most $b$. This is the first-moment estimate used in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+The construction of the replicated defect count and its Hamiltonian energy
+bound are separate results.
+
+\begin{theorem}[Operator bound above a spectral threshold]
+\label{thm:spectral_cutoff_order}
+\lean{Matrix.PosSemidef.smul_one_sub_spectralCutoff_le}
+\leanok
+For every real $b$,
+\begin{align}
+ b(I-P_b)&\le D.
+ \label{eq:spectral_cutoff_order}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+For an eigenvalue $t$ of $D$, positivity gives $t\ge0$.
+If $t\le b$, then $b(1-\mathbf1_{t\le b})=0\le t$.
+If $t>b$, then this expression equals $b<t$.
+Applying the spectral theorem gives the operator inequality.
+\end{proof}
+
+\begin{theorem}[Mass below a positive spectral threshold]
+\label{thm:spectral_cutoff_mass}
+\lean{Matrix.PosSemidef.spectralCutoff_mass_ge}
+\leanok
+\uses{thm:spectral_cutoff_order}
+For $b>0$ and a unit vector $v$,
+\begin{align}
+ \langle v,P_bv\rangle
+ &\ge 1-\frac{\langle v,Dv\rangle}{b}.
+ \label{eq:spectral_cutoff_mass}
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:spectral_cutoff_order}
+Taking the quadratic form of~\eqref{eq:spectral_cutoff_order} at $v$ gives
+$b(1-\langle v,P_bv\rangle)\le\langle v,Dv\rangle$.
+Division by $b>0$ proves the claim.
+\end{proof}

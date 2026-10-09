@@ -57,7 +57,7 @@ theorem norm_isometricDomainExtension [Fintype m] [Fintype p] [DecidableEq n] [D
     (B : Matrix m n ℂ) (J : Matrix p n ℂ) (hJ : Jᴴ * J = 1) :
     ‖isometricDomainExtension B J‖ = ‖B‖ := by
   classical
-  have hJn : ‖J‖ ≤ 1 := l2_opNorm_le_one_of_conjTranspose_mul_self J hJ
+  have hJn : ‖J‖ ≤ 1 := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hJ
   have hJhn : ‖Jᴴ‖ ≤ 1 := by simpa only [l2_opNorm_conjTranspose] using hJn
   apply le_antisymm
   · calc
@@ -87,7 +87,7 @@ theorem norm_toLp_mulVec_of_isometry [Fintype p] [DecidableEq n]
     ‖WithLp.toLp 2 (J *ᵥ ψ.ofLp)‖ = ‖ψ‖ := by
   classical
   let v : EuclideanSpace ℂ p := WithLp.toLp 2 (J *ᵥ ψ.ofLp)
-  have hJn : ‖J‖ ≤ 1 := l2_opNorm_le_one_of_conjTranspose_mul_self J hJ
+  have hJn : ‖J‖ ≤ 1 := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hJ
   have hJhn : ‖Jᴴ‖ ≤ 1 := by simpa only [l2_opNorm_conjTranspose] using hJn
   have hrecover : WithLp.toLp 2 (Jᴴ *ᵥ v.ofLp) = ψ := by
     change WithLp.toLp 2 (Jᴴ *ᵥ (J *ᵥ ψ.ofLp)) = ψ

@@ -1,0 +1,244 @@
+\section{Exponential profiles of extended distance}
+\label{sec:exponential_distance_profile}
+
+Let $Y$ be an extended pseudometric space with distance
+$\delta:Y\times Y\to[0,\infty]$.  For an arbitrary set $S\subseteq Y$,
+write
+\begin{align}
+    D_S(y) & =\inf_{s\in S}\delta(y,s),\qquad \inf\varnothing=\infty.
+    \label{eq:exponential_profile_distance}
+\end{align}
+Thus $D_S$ is the actual extended distance to the set, with no
+closedness or nonemptiness assumption on $S$.  For $e\in[0,\infty]$,
+write $e_{\mathbb R}$ for its real value when finite, with the convention
+$\infty_{\mathbb R}=0$.  The profile below treats infinite distance
+separately, before this real-valued convention is used.
+These estimates supply the metric step in \cite{OpenAI2026AreaLaw},
+\texttt{09-amplification.tex}, lines 159--188.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% Checked module: QICLean/Analysis/ExponentialDistanceProfile.lean,
+% revision 284fcf9f.
+
+\begin{lemma}[Scalar exponential comparison]
+    \label{lem:exp_neg_mul_rpow_comparison}
+    \lean{Real.exp_neg_mul_rpow_le_of_le_add}
+    \leanok
+    Let $a,x,d,z\geq0$ and $0\leq\alpha\leq1$.  If $x\leq d+z$, then
+    \begin{align}
+        e^{-az^\alpha} & \leq e^{ad^\alpha}e^{-ax^\alpha}.
+        \label{eq:exp_neg_mul_rpow_comparison}
+    \end{align}
+    The endpoint $\alpha=0$ is included.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Monotonicity and subadditivity of the nonnegative real power give
+    $x^\alpha\leq(d+z)^\alpha\leq d^\alpha+z^\alpha$.
+    Multiplication by $a\geq0$ and rearrangement give
+    $-az^\alpha\leq ad^\alpha-ax^\alpha$.
+    Apply the increasing exponential function and use
+    $e^{p+q}=e^pe^q$.
+\end{proof}
+
+\begin{definition}[Exponential distance profile]
+    \label{def:exponential_distance_profile}
+    \lean{Metric.exponentialDistanceProfile}
+    \leanok
+    For every $S\subseteq Y$ and every pair of real parameters $a,\alpha$,
+    define
+    \begin{align}
+        \label{eq:exponential_distance_profile}
+        r_{S,a,\alpha}(y) & =
+        \left\{\begin{array}{ll}
+                   0,                                 & D_S(y)=\infty,   \\
+                   e^{-a(D_S(y)_{\mathbb R})^\alpha}, & D_S(y)\ne\infty.
+               \end{array}\right.
+    \end{align}
+    There are no sign restrictions on $a$ or $\alpha$ in this definition.
+\end{definition}
+
+\begin{lemma}[Nonnegativity of the profile]
+    \label{lem:exponential_distance_profile_nonneg}
+    \lean{Metric.exponentialDistanceProfile_nonneg}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    For all $S\subseteq Y$, $a,\alpha\in\mathbb R$, and $y\in Y$,
+    $r_{S,a,\alpha}(y)\geq0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    The infinite-distance branch is zero; the other branch is a positive
+    real exponential.
+\end{proof}
+
+\begin{lemma}[Exact zero set of the profile]
+    \label{lem:exponential_distance_profile_zero}
+    \lean{Metric.exponentialDistanceProfile_eq_zero_iff}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    For all $S\subseteq Y$, $a,\alpha\in\mathbb R$, and $y\in Y$,
+    \begin{align}
+        r_{S,a,\alpha}(y)=0 & \quad\Longleftrightarrow\quad D_S(y)=\infty.
+        \label{eq:exponential_distance_profile_zero}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    The infinite-distance branch is zero, and a real exponential never
+    vanishes.
+\end{proof}
+
+\begin{lemma}[Profile at finite distance]
+    \label{lem:exponential_distance_profile_finite}
+    \lean{Metric.exponentialDistanceProfile_of_ne_top}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    For all $S\subseteq Y$ and $a,\alpha\in\mathbb R$, if $D_S(y)\ne\infty$,
+    then
+    \begin{align}
+        r_{S,a,\alpha}(y) & =e^{-a(D_S(y)_{\mathbb R})^\alpha}.
+        \label{eq:exponential_distance_profile_finite}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    Use the finite-distance branch of the definition.
+\end{proof}
+
+\begin{lemma}[Profile on the target set]
+    \label{lem:exponential_distance_profile_mem}
+    \lean{Metric.exponentialDistanceProfile_eq_one_of_mem}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    Let $a\in\mathbb R$ and $\alpha>0$.  If $y\in S$, then
+    $r_{S,a,\alpha}(y)=1$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    Membership gives $D_S(y)=0$.  Since $\alpha>0$, one has
+    $0^\alpha=0$, so the profile is $e^0=1$.
+\end{proof}
+
+\begin{lemma}[Domination of the set indicator]
+    \label{lem:indicator_le_exponential_distance_profile}
+    \lean{Metric.indicator_one_le_exponentialDistanceProfile}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    For every $S\subseteq Y$, $a\in\mathbb R$, $\alpha>0$, and $y\in Y$,
+    \begin{align}
+        \mathbf 1_S(y) & \leq r_{S,a,\alpha}(y).
+        \label{eq:indicator_le_exponential_distance_profile}
+    \end{align}
+    Here $\mathbf 1_S$ is the literal indicator of $S$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:exponential_distance_profile_mem,
+        lem:exponential_distance_profile_nonneg}
+    For $y\in S$, both sides equal one by
+    Lemma~\ref{lem:exponential_distance_profile_mem}.
+    For $y\notin S$, the left side is zero and the right side is
+    nonnegative by Lemma~\ref{lem:exponential_distance_profile_nonneg}.
+\end{proof}
+
+\begin{lemma}[Profile of the empty set]
+    \label{lem:exponential_distance_profile_empty}
+    \lean{Metric.exponentialDistanceProfile_empty}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    For every $a,\alpha\in\mathbb R$ and $y\in Y$,
+    $r_{\varnothing,a,\alpha}(y)=0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    The extended distance to the empty set is infinite, so the
+    infinite-distance branch applies.
+\end{proof}
+
+\begin{lemma}[Transfer along a finite distance]
+    \label{lem:exponential_distance_profile_transfer}
+    \lean{Metric.exponentialDistanceProfile_le_exp_mul}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    Let $S\subseteq Y$, $a\geq0$, and $0<\alpha\leq1$.
+    For $y,z\in Y$ with $\delta(y,z)\ne\infty$,
+    \begin{align}
+        r_{S,a,\alpha}(z) & \leq
+        e^{a(\delta(y,z)_{\mathbb R})^\alpha}r_{S,a,\alpha}(y).
+        \label{eq:exponential_distance_profile_transfer}
+    \end{align}
+    No finiteness assumption is imposed on $D_S(y)$ or $D_S(z)$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:exponential_distance_profile_zero,
+        lem:exponential_distance_profile_nonneg,
+        lem:exponential_distance_profile_finite,
+        lem:exp_neg_mul_rpow_comparison}
+    If $D_S(z)=\infty$, the left side is zero by
+    Lemma~\ref{lem:exponential_distance_profile_zero}, and the right side
+    is nonnegative by Lemma~\ref{lem:exponential_distance_profile_nonneg}.
+    Otherwise the extended triangle inequality gives
+    \begin{align}
+        D_S(y) & \leq\delta(y,z)+D_S(z)<\infty.
+        \label{eq:exponential_distance_profile_triangle}
+    \end{align}
+    All three quantities now have their ordinary finite real values.
+    Apply Lemma~\ref{lem:exp_neg_mul_rpow_comparison} to the three scalar
+    arguments $D_S(y)_{\mathbb R}$, $\delta(y,z)_{\mathbb R}$, and
+    $D_S(z)_{\mathbb R}$, and identify the two profiles using
+    Lemma~\ref{lem:exponential_distance_profile_finite}.
+\end{proof}
+
+\begin{theorem}[Weighted row bound gives a profile supersolution]
+    \label{thm:exponential_distance_profile_row}
+    \lean{Metric.sum_mul_exponentialDistanceProfile_le}
+    \leanok
+    \uses{def:exponential_distance_profile}
+    Suppose $Y$ is finite.  Let $S\subseteq Y$, $a\geq0$,
+    $0<\alpha\leq1$, and $v\in\mathbb R$.
+    Let $A:Y\times Y\to\mathbb R$ be a nonnegative kernel satisfying,
+    for every $y,z\in Y$,
+    \begin{align}
+        \begin{aligned}
+            \delta(y,z)=\infty                                       & \ \Longrightarrow\ A(y,z)=0, \\
+            \sum_{z\in Y}A(y,z)e^{a(\delta(y,z)_{\mathbb R})^\alpha} & \leq v.
+        \end{aligned}
+        \label{eq:exponential_distance_profile_row_hypotheses}
+    \end{align}
+    Then, for every $y\in Y$,
+    \begin{align}
+        \sum_{z\in Y}A(y,z)r_{S,a,\alpha}(z) & \leq
+        v r_{S,a,\alpha}(y).
+        \label{eq:exponential_distance_profile_row}
+    \end{align}
+    There is no separate hypothesis $v\geq0$.  The zero-entry condition
+    at infinite pair distance is part of the hypotheses, even though
+    $\infty_{\mathbb R}=0$ in the displayed row weight.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:exponential_distance_profile_transfer,
+        lem:exponential_distance_profile_nonneg}
+    Write $r=r_{S,a,\alpha}$.  For a pair at infinite distance, the
+    corresponding kernel entry is zero.  At finite pair distance,
+    multiply Lemma~\ref{lem:exponential_distance_profile_transfer}
+    by $A(y,z)\geq0$.
+    Summing both cases and factoring out $r(y)$ gives
+    \begin{align}
+        \begin{aligned}
+            \sum_{z\in Y}A(y,z)r(z)
+             & \leq\left(\sum_{z\in Y}A(y,z)
+            e^{a(\delta(y,z)_{\mathbb R})^\alpha}\right)r(y) \\
+             & \leq v r(y).
+        \end{aligned}
+        \label{eq:exponential_distance_profile_row_proof}
+    \end{align}
+    The final inequality uses the full-row bound and
+    $r(y)\geq0$ from Lemma~\ref{lem:exponential_distance_profile_nonneg}.
+\end{proof}

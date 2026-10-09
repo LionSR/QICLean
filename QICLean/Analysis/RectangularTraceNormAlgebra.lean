@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.RectangularTraceNorm
+import QICLean.Analysis.MatrixFramePerturbation
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 
 /-!
@@ -111,16 +112,6 @@ theorem rectangularTraceNorm_conjTranspose [DecidableEq m] (A : Matrix m n ℂ) 
   exact le_antisymm (rectangularTraceNorm_conjTranspose_le A)
     (by simpa only [conjTranspose_conjTranspose] using rectangularTraceNorm_conjTranspose_le Aᴴ)
 
-/-- An isometry is an operator-norm contraction, even when its domain is
-empty. -/
-theorem l2_opNorm_le_one_of_conjTranspose_mul_self (K : Matrix m n ℂ)
-    (hK : Kᴴ * K = 1) : ‖K‖ ≤ 1 := by
-  have h : ‖Kᴴ * K‖ ≤ 1 := by
-    rw [hK]
-    exact l2_opNorm_unitary_le_one (by simp)
-  rw [l2_opNorm_conjTranspose_mul_self] at h
-  nlinarith [norm_nonneg K]
-
 /-- Independent isometric embeddings of the ket and bra spaces preserve the
 nuclear norm of an arbitrary rectangular matrix. This gives exact physical
 reinsertion without any positivity hypothesis. Source: Theorem 5.2,
@@ -131,8 +122,8 @@ theorem rectangularTraceNorm_isometry_sandwich
     (hK : Kᴴ * K = 1) (hL : Lᴴ * L = 1) :
     rectangularTraceNorm (K * A * Lᴴ) = rectangularTraceNorm A := by
   classical
-  have hKn := l2_opNorm_le_one_of_conjTranspose_mul_self K hK
-  have hLn := l2_opNorm_le_one_of_conjTranspose_mul_self L hL
+  have hKn := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hK
+  have hLn := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hL
   apply le_antisymm
   · exact rectangularTraceNorm_mul_conjTranspose_le A K L hKn hLn
   · have h := rectangularTraceNorm_mul_conjTranspose_le (K * A * Lᴴ) Kᴴ Lᴴ

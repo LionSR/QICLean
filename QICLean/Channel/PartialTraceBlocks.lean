@@ -18,13 +18,6 @@ norms. No discarded or exterior dimension enters this estimate.
 Source: polynomial-PEPS Theorem 5.2, `04-compression.tex`, lines 518–549.
 -/
 
-/-!
-Source: September 24, 2026, polynomial-PEPS manuscript, 04-compression.tex,
-eq:compression-total-error.
-Manuscript revision: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
-Independently formalized; no upstream Lean proof text reused.
--/
-
 noncomputable section
 open scoped Kronecker Matrix
 open MeasureTheory

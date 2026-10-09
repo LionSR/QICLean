@@ -1,0 +1,65 @@
+\section{Reduced densities and masses of repeated pure states}
+\label{sec:pure_tensor_power}
+
+Let $\mathcal H_S=\mathbb C^S$ and $\mathcal H_R=\mathbb C^\Omega$ be
+finite-dimensional, and let $\psi\in\mathcal H_S\otimes\mathcal H_R$.
+Write $\rho=\operatorname{tr}_S|\psi\rangle\langle\psi|$ for its actual
+reduced density, without imposing normalization.
+For $k\ge0$, regroup the repeated vector into the two systems. Its coordinates,
+indexed by $x\in S^k$ and $y\in\Omega^k$, are
+\begin{align}
+ v_k(x,y)=\prod_{i=0}^{k-1}\psi(x_i,y_i).
+\end{align}
+These are the pure-state identities used in the Schur-sector argument of
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Reduced density of a repeated bipartite vector]
+\label{thm:pure_tensor_power_marginal}
+\lean{Matrix.partialTraceLeft_vecMulVec_prod}
+\leanok
+For every $\psi$ and every $k\ge0$,
+\begin{align}
+ \operatorname{tr}_{S^k}|v_k\rangle\langle v_k|=\rho^{\otimes k}.
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+For $y,z\in\Omega^k$, the matrix entry on the left is
+\begin{align}
+ \sum_{x\in S^k}\prod_i\psi(x_i,y_i)\overline{\psi(x_i,z_i)}
+ =\prod_i\sum_{s\in S}\psi(s,y_i)\overline{\psi(s,z_i)}
+ =\prod_i\rho(y_i,z_i).
+\end{align}
+The middle equality is the distributive law for a finite product of sums.
+\end{proof}
+
+\begin{theorem}[Projection mass of a repeated bipartite vector]
+\label{thm:pure_tensor_power_projection_mass}
+\lean{Matrix.norm_sq_one_kronecker_mulVec_prod}
+\leanok
+\uses{thm:pure_tensor_power_marginal}
+For every orthogonal projector $P$ on $\mathcal H_R^{\otimes k}$,
+\begin{align}
+ \|(I_{S^k}\otimes P)v_k\|^2
+ =\operatorname{Re}\operatorname{tr}(\rho^{\otimes k}P).
+\end{align}
+In particular, taking $P$ to be an actual central Schur projector gives
+the squared norm in that sector.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:pure_tensor_power_marginal}
+The trace-pairing property of the partial trace and the preceding identity
+give
+\begin{align}
+ \operatorname{tr}(\rho^{\otimes k}P)
+ =\langle v_k,(I_{S^k}\otimes P)v_k\rangle
+ =\langle (I_{S^k}\otimes P)v_k,(I_{S^k}\otimes P)v_k\rangle.
+\end{align}
+The second equality uses $P=P^\dagger=P^2$. Taking real parts proves the
+formula.
+\end{proof}
+
+Both identities include zero copies and empty one-copy factors; no
+invertibility of $\rho$ is required. Concentration, the entropy window and
+selection of a common sequence of labels are separate assertions.
