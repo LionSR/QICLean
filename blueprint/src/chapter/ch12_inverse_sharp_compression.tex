@@ -1,0 +1,93 @@
+\section{The sharp inverse bound on the low-defect subspace}
+
+Fix five nonzero finite-dimensional spaces $Q,Y,V,C,R$, and let
+$d_Q,d_Y,d_V,d_C,d_R$ denote their dimensions. For a unit physical
+vector $\Omega$, write $\rho_Q,\rho_Y,\rho_V$ for its singleton
+densities and put
+\begin{align}
+ g&=S(\rho_Q)+S(\rho_V)-S(\rho_Y),&
+ d&=\log d_C+\log d_R,\notag\\
+ \Lambda&=\frac{(d_Qd_C)^2+(d_Vd_R)^2+d_Q^2/2+d_V^2/2}{5}.
+\end{align}
+For $j\in\{Q,Y,V\}$, define
+$M_j(v)=\sum_\ell p_{j,\ell}\exp(-v\log p_{j,\ell})$,
+where $p_{j,\ell}$ are the eigenvalues of $\rho_j$ and zero
+eigenvalues contribute zero. The moment assumptions below are explicit;
+their derivation from the Hamiltonian is a separate result.
+
+\begin{theorem}[One sharp rate for all retained components]
+  \label{thm:actual_component_inverse_sharp_uniform}
+  \lean{Matrix.exists_replicaExcitationComponent_inverse_sharp_uniform_le}
+  For every $t>0$, there exists $C_0\geq0$, depending only on $t$
+  and the five spaces, with the following property.
+  Let $k\geq0$, let $\Omega$ be a unit physical vector, and let $u$
+  be invariant under simultaneous permutations of the copies and
+  fixed by the two original auxiliary labels $\lambda_C,\lambda_R$.
+  Suppose $K\geq0$ and $r\in\mathbb R$ satisfy
+  \[
+    \log M_j(v)\leq vS(\rho_j)+Kv^2
+    \quad (j\in\{Q,Y,V\},\ |v|\leq r),
+    \qquad 20t\leq r,\quad 20t\leq1.
+  \]
+  Suppose also that $0\leq\tau\leq\frac12$ and
+  $2kS-\varepsilon\leq\log\dim\lambda_C+\log\dim\lambda_R$.
+  For any $B\subseteq\{1,\ldots,k\}$ with $|B|\leq\tau k$, let
+  $w=(P_B(\Omega)\otimes I)u$, and express $w$ in five-factor
+  coordinates as $f$. Set
+  \begin{align}
+    A_k&=\bigl(W_{t,k}(QC)^{-1}W_{t,k}(VR)^{-1}W_{t,k}(Y)\bigr)^2,\notag\\
+    c_k&=(k+2)^{C_0+\Lambda}
+      \exp\!\left[-2tk\bigl(2S+(1-\tau)g-\tau d-3h(\tau)\bigr)
+        +2t\varepsilon+25kK(2t)^2\right].
+    \label{eq:sharp_uniform_rate}
+  \end{align}
+  Then $\operatorname{Re}\langle f,A_k^{-1}f\rangle\leq c_k\|w\|^2$.
+  The constant is chosen before all state, label, copy, moment and
+  cutoff data. The vector $u$ and its component may be zero.
+\end{theorem}
+\begin{proof}
+  \uses{thm:actual_component_inverse_sharp,
+    thm:physical_singleton_entropy_difference,
+    thm:replica_component_uniform_prefactor}
+  Purity and subadditivity give $g\geq0$. The auxiliary dimensions
+  give $d\geq0$, and $\Lambda\geq0$.
+  Apply the uniform scalar estimate to the sharp component bound.
+  The number of good copies is at least $(1-\tau)k$, while $K\geq0$
+  permits replacing it by $k$ in the quadratic loss.
+  All three binomial factors are bounded using
+  $\log\binom{k}{|B|}\leq kh(\tau)$.
+  Multiplication by the nonnegative squared component norm proves
+  the assertion, including when that norm vanishes.
+\end{proof}
+
+\begin{theorem}[Actual sharp low-defect inverse compression]
+  \label{thm:actual_low_defect_inverse_sharp_compression}
+  \lean{Matrix.exists_replicaLowDefectProjection_inverse_sharp_compression_le}
+  For each $t>0$, a constant $C_0\geq0$ depending only on $t$ and
+  the five spaces has the following property.
+  Use the state, moment, label and cutoff assumptions of
+  Theorem~\ref{thm:actual_component_inverse_sharp_uniform}.
+  Let $P$ be the orthogonal projection onto the intersection of
+  simultaneous copy symmetry, the two original auxiliary label
+  spaces, and defect count at most $\tau k$.
+  Let $U$ be the unitary change from five-factor coordinates to
+  physical-and-two-auxiliary copy coordinates, and set
+  $H=UA_k^{-1}U^*$. With $c_k$ as in~(\ref{eq:sharp_uniform_rate}),
+  \[
+    PHP\leq(k+1)e^{kh(\tau)}c_kP.
+  \]
+  This is the sharp inverse compression estimate in
+  \cite[Section~8]{OpenAI2026AreaLaw}, with the one-copy moment
+  assumptions and the original label lower bound retained explicitly.
+\end{theorem}
+\begin{proof}
+  \uses{thm:actual_component_inverse_sharp_uniform,
+    thm:replica_low_defect_compression_from_components}
+  Positivity of the inverse squared metric follows from the
+  disjointness of its three subsystems.
+  Every vector in the range of $P$ has the required copy symmetry
+  and the two original labels. Apply the uniform bound to all its
+  actual excitation components. The compression inequality then
+  contributes the number of retained subsets, at most
+  $(k+1)e^{kh(\tau)}$.
+\end{proof}
