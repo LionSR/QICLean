@@ -6,6 +6,7 @@
 \begin{theorem}[Uniform floor for symmetric band metrics]
     \label{thm:replica_symmetric_band_floor}
     \lean{TensorPower.ReplicaTransport.exists_symBandMetric_floor}
+    \leanok
     \uses{lem:replica_symmetric_metric}
     Fix a finite tensor product $\mathcal V=\bigotimes_{v\in V}\C^{n_v}$,
     with $n_v>0$, and let $t>0$. The replica metrics use one common label
@@ -21,7 +22,7 @@
     Empty parts, $k=0$, and an empty set of sites are included.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:replica_symmetric_floor, lem:replica_symmetric_metric}
     Choose the exponent from Theorem~\ref{thm:replica_symmetric_floor}
     for the fixed system and $t$. Its identity-extension inequality is
@@ -35,6 +36,7 @@
 \begin{theorem}[Uniform floor for mean trees of symmetric band metrics]
     \label{thm:replica_symmetric_mean_floor}
     \lean{TensorPower.ReplicaTransport.exists_meanTree_symBandMetric_floor}
+    \leanok
     \uses{lem:replica_symmetric_metric, def:mean_tree}
     Fix the same finite tensor product and $t>0$. There exists $C\ge0$
     such that, for every $k\ge0$, every label set $J$, not necessarily finite, every
@@ -51,7 +53,7 @@
     are allowed.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:replica_symmetric_band_floor, thm:mean_tree_properties}
     Choose $C$ from Theorem~\ref{thm:replica_symmetric_band_floor} and put
     $c=(k+2)^{-C}>0$. Every terminal input is bounded below by the
