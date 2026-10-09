@@ -1,0 +1,47 @@
+\section{Inverse metrics on actual excitation components}
+
+Fix five nonzero finite-dimensional spaces with dimensions $d_0,\ldots,d_4$,
+and put $P=\{0,3\}$, $Y=\{1\}$, and $F=\{2,4\}$. Write $W_{t,k}(S)$ for
+the replica metric of the subsystem $S$. The comparison below combines
+the whole-space inverse bound with removal of the bad-copy contribution
+and the two auxiliary entropy terms. It is the intermediate expectation
+estimate in \cite[Section~8]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Inverse comparison for an excitation component]
+  \label{thm:actual_component_inverse_good_expectation}
+  \lean{Matrix.exists_replicaExcitationComponent_inverse_le_good_expectation}
+  For every $t>0$ there is a constant $C\geq0$, depending only on $t$ and
+  the five spaces, with the following property. Let $k\geq0$, let $B$ be
+  a subset of the copies, and put $r=|B|$. Let $u$ be fixed by simultaneous
+  copy permutations and belong to the two whole-copy auxiliary label
+  spaces $\lambda_3,\lambda_4$. For any physical vector $\Omega$, let
+  $w=(P_B(\Omega)\otimes I)u$ be its actual excitation component, and
+  express $w$ in the five-factor coordinates as $f$.
+
+  Let $L_g(S)$ be the label entropy of the subsystem $S$ for permutations
+  of the complementary copies. Set
+  \begin{align}
+    b&=\log\dim\lambda_3+\log\dim\lambda_4
+       -r(\log d_3+\log d_4)-2\log\binom{k}{r},\\
+    G_g&=L_g(P)+L_g(F)-L_g(Y)-L_g(\{3\})-L_g(\{4\}),\\
+    A&=\bigl(W_{t,k}(P)^{-1}W_{t,k}(F)^{-1}W_{t,k}(Y)\bigr)^2.
+  \end{align}
+  Then
+  \begin{align}
+    \operatorname{Re}\langle f,A^{-1}f\rangle
+    &\leq (k+2)^C\binom{k}{r}^{2t}e^{-2tb}
+      \operatorname{Re}\langle f,e^{-2tG_g}f\rangle.
+  \end{align}
+  Neither $\Omega$ nor the excitation component is required to be normalized.
+\end{theorem}
+\begin{proof}
+  \uses{thm:grouped_replica_inverse,thm:actual_component_bad_exponential_removal,
+    thm:excitation_joint_auxiliary_removal}
+  Choose the constant in the whole-space inverse comparison before choosing
+  $k$, $B$, the labels, or $u$. Evaluate that operator inequality on $f$.
+  The symmetry inherited by the excitation component removes the bad-copy
+  contribution. Its two original auxiliary labels allow the joint auxiliary
+  comparison, with the summed entropy floor $b$. Multiply these inequalities
+  by their nonnegative scalar factors. The resulting expression is the
+  stated bound.
+\end{proof}
