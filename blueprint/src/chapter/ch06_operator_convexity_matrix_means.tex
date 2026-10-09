@@ -236,6 +236,7 @@ Finally, $b+e^{L_j}/2\ge b$ gives $\ell\ge\log b$.
 \begin{theorem}[A logarithmic remainder uniform in the discarded mass]
 \label{thm:mean_tree_log_floor_deficit}
 \lean{Matrix.MeanTree.weighted_log_floor_deficit_lower}
+\leanok
 \uses{def:mean_tree}
 Let $T$ be a weighted binary tree with labels in a finite set $J$ and
 terminal weights $w_j$. Let $b>0$, $\kappa\ge0$, and $r,U\in\mathbb R$,
@@ -257,7 +258,7 @@ weights. This makes explicit the scalar error preceding the logarithmic
 lower comparison in \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
 \uses{thm:mean_tree_weighted_log_floor_exp,lem:mean_tree_weights}
 Apply Theorem~\ref{thm:mean_tree_weighted_log_floor_exp} to the exponents
 $\kappa L_j-r$, whose common upper bound is $\kappa U-r$.
