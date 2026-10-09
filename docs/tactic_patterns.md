@@ -75,6 +75,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   theorem or tactic is introduced.
 - **Caveat:** The derived commutations concern the cutoff, auxiliary labels,
   and symmetry. They do not imply commutation with a replica metric.
+
 ### Separate merge moments before Hölder — candidate (2026-10-09)
 
 - **Pattern:** Express an exponential trace on a product space through its
@@ -94,6 +95,24 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   reducing its applications exposes the actual transported matrix. This reuses
   the existing Mathlib statements and needs no new tactic.
 
+
+### Scalar multiplication in partially applied matrix coordinates — candidate (2026-10-09)
+
+- **Pattern:** After rewriting `submatrix_smul`, a coordinate equivalence may
+  still be supplied as a partially applied function. Scalar multiplication
+  then needs evaluation at both matrix indices before an existing coordinate
+  identity matches.
+- **Seen:** The singleton exponential transport in
+  `QICLean/Analysis/ReplicaGoodConfigurationSingletonMoment.lean`, both for the
+  five-factor coordinates and for the physical singleton coordinates.
+- **Abstraction:** Reuse Mathlib's `Pi.smul_apply`, followed by the existing
+  `Matrix.reindex_exp` and `Matrix.exp_kronecker_one` identities. The group
+  algebra comparison uses canonical finite-function and product decidable
+  equality instances, matching the existing product-action theorem.
+  No new tactic, global instance, or mathematical comparison is introduced.
+- **Caveats:** Distinguish a partially applied coordinate function from a
+  matrix entry; entrywise matrix expressions use the existing `Matrix.*_apply`
+  lemmas instead.
 
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
 

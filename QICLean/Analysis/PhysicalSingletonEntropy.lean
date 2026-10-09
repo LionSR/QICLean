@@ -114,8 +114,8 @@ theorem physicalSingletonEntropy_outer_sub_middle_nonneg
       _ = 1 := hΩ
   have he (j : Fin 3) : physicalSingletonEquiv ι j =
       e.trans (Equiv.piSplitAt j β) := by
-    ext x
-    simp [e, β, physicalSingletonEquiv]
+    simp only [e, physicalSingletonEquiv, β, Equiv.trans_assoc,
+      Equiv.self_trans_symm, Equiv.trans_refl]
   have hS (j : Fin 3) :
       vonNeumannEntropy (physicalSingletonDensity ι Ω j)
         (posSemidef_physicalSingletonDensity ι Ω j).isHermitian =
