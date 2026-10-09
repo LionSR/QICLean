@@ -1,0 +1,39 @@
+\section{The original regions of the grouped metric}
+\label{sec:regional_replica_metric_regions}
+
+\begin{theorem}[The left, far and middle regions]
+\label{thm:regional_replica_metric_regions}
+\lean{TensorPower.regionalOriginalRegion_metric_regions}
+Let $V$ be a finite set, let $Q,Y\subseteq V$ be disjoint, and adjoin the original auxiliary
+sites $c,r$. Group the sites into the five factors
+$Q,Y,(Q\cup Y)^c,\{c\},\{r\}$, in that order.
+The inverse images of the grouped regions $\{0,3\}$, $\{2,4\}$,
+and $\{1\}$ are respectively
+\begin{align*}
+ Q\cup\{c\},\qquad (Q\cup Y)^c\cup\{r\},\qquad Y.
+\end{align*}
+These are the original metric regions of
+\cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{def:regional_original_region}
+Evaluate the grouping map at each physical site and at the two
+auxiliary sites. Disjointness identifies the second physical block
+with all of $Y$.
+\end{proof}
+
+\begin{theorem}[The induced partition]
+\label{thm:regional_replica_metric_partition}
+\lean{TensorPower.regionalOriginalRegion_metric_partition}
+For arbitrary subsets $Q,Y\subseteq V$, assign a physical site to
+factor $0$ if it belongs to $Q$, otherwise to factor $1$ if it belongs
+to $Y$, and otherwise to factor $2$. Assign $c$ to factor $3$ and
+$r$ to factor $4$. The inverse images of $\{0,3\}$, $\{1\}$ and
+$\{2,4\}$ are pairwise disjoint and cover every original physical
+and auxiliary site. This assertion includes empty physical factors.
+\end{theorem}
+\begin{proof}
+\uses{def:regional_original_region}
+The three displayed subsets partition the five factor indices.
+Their inverse images therefore form a partition of the original sites.
+\end{proof}
