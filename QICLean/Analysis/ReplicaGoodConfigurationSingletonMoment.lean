@@ -111,6 +111,29 @@ variable (m : ℕ) (j : Fin 3)
 local instance goodSingletonMoment_decidableEqConfig :
     DecidableEq (Config m ι) := Fintype.decidablePiFintype
 
+local instance goodSingletonMoment_decidableEqCopies (f : Fin 5) :
+    DecidableEq (Fin m → ι f) := Fintype.decidablePiFintype
+
+local instance goodSingletonMoment_decidableEqComplement :
+    DecidableEq ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2)) :=
+  Fintype.decidablePiFintype
+
+local instance goodSingletonMoment_decidableEqComplementCopies :
+    DecidableEq (Fin m → ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2))) :=
+  Fintype.decidablePiFintype
+
+local instance goodSingletonMoment_decidableEqPhysicalPair :
+    DecidableEq ((Fin m → ι (j.castAdd 2)) ×
+      (Fin m → ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2)))) := inferInstance
+
+local instance goodSingletonMoment_decidableEqAuxiliaryPair :
+    DecidableEq ((Fin m → ι 3) × (Fin m → ι 4)) := inferInstance
+
+local instance goodSingletonMoment_decidableEqWhole :
+    DecidableEq (((Fin m → ι (j.castAdd 2)) ×
+      (Fin m → ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2)))) ×
+      ((Fin m → ι 3) × (Fin m → ι 4))) := inferInstance
+
 /-- The actual singleton label observable is the original physical-factor
 observable in its literal bipartite coordinates, tensored with the two
 auxiliary identities. Source: `07-comparators.tex`, lines 550–560. -/
