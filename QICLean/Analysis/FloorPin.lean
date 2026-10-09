@@ -44,8 +44,11 @@ theorem floor_pin_le {A P : Matrix n n ℂ} {b c : ℝ}
 
 /-- Adding the complementary term preserves a floor at most one. For a
 projection and a metric supported on its range, this is identity extension.
-This is the complementary-sector step of the area-law lower comparison,
-`07-comparators.tex`, lines 454–476. -/
+
+This auxiliary order inequality extends a lower bound to the whole space.
+Application context: the area-law paper, Section 7, `07-comparators.tex`,
+lines 604–615, where a whole-space floor is used before the mean-tree
+comparison. -/
 theorem identity_extension_floor {T S : Matrix n n ℂ} {c : ℝ}
     (hS : S ≤ (1 : Matrix n n ℂ)) (hc : c ≤ 1) (hfloor : c • S ≤ T) :
     c • (1 : Matrix n n ℂ) ≤ T + (1 - S) := by

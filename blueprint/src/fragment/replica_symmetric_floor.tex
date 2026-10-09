@@ -43,13 +43,13 @@
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{thm:replica_whole_inverse,
+    \uses{thm:replica_metric_whole_inverse,
         thm:replica_partition_nonnegative_support, thm:spectral_exponential_drop,
         lem:trivial_label, thm:replica_metric_basic, thm:schur_label_commutation,
         thm:nested_label_observable_symmetry,
         thm:area_law_compressed_inverse_floor,
-        thm:area_law_identity_extension_floor}
-    Choose $C\ge0$ from Theorem~\ref{thm:replica_whole_inverse} before
+        thm:matrix_identity_extension_floor}
+    Choose $C\ge0$ from Theorem~\ref{thm:replica_metric_whole_inverse} before
     choosing $k$ or the partition. Set
     $H_k=F_{P,k}+F_{F,k}-F_{Y,k}$, where
     $F_{Q,k}=\sum_\lambda(\log d_\lambda)\pi^\lambda_{Q,k}$, and let
@@ -95,7 +95,7 @@
     \end{align}
     Since $(k+2)^C>0$ and $c_k=((k+2)^C)^{-1}$, this proves
     (\ref{eq:replica_floor_symmetric}). Finally, $C\ge0$ and $k+2\ge1$
-    imply $0<c_k\le1$. Theorem~\ref{thm:area_law_identity_extension_floor}
+    imply $0<c_k\le1$. Theorem~\ref{thm:matrix_identity_extension_floor}
     applies; equivalently,
     \begin{align}
         c_kI
