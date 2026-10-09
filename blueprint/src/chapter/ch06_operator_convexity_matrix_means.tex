@@ -147,6 +147,92 @@ tree is part of the data; no associativity of matrix means is used.
     induction on $K$ handles the general case.
 \end{proof}
 
+\subsection{Logarithmic estimates for products and positive floors}
+
+\begin{theorem}[The logarithm of a commuting product]
+\label{thm:cfc_log_ordered_product}
+\lean{Matrix.cfc_log_listProd_ofFn}
+\leanok
+Let $A_0,\ldots,A_{G-1}$ be positive definite operators on a
+finite-dimensional complex Hilbert space. Suppose that $A_gA_h=A_hA_g$
+whenever $g\ne h$. Then
+\begin{align}
+ \log(A_0\cdots A_{G-1})=\sum_{g=0}^{G-1}\log A_g.
+ \notag
+\end{align}
+The empty product is the identity and the empty sum is zero; repeated
+operator values are allowed. This is the logarithmic identity used to
+separate commuting bands in \cite[Sections~7 and~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}\leanok
+Induct on $G$. The empty case is $\log I=0$. For the induction step,
+$B=A_1\cdots A_{G-1}$ is positive definite and commutes with $A_0$.
+The functional-calculus identity $\log(A_0B)=\log A_0+\log B$ and the
+induction hypothesis give the result.
+\end{proof}
+
+\begin{theorem}[Logarithmic bounds after adding a floor]
+\label{thm:log_floor_half_exp}
+\lean{Real.sub_log_two_le_log_add_half_exp,Real.log_add_half_exp_sub_log_le}
+\leanok
+For every $L\in\mathbb R$ and $b\ge0$,
+\begin{align}
+ L-\log2\le\log\left(b+\tfrac12e^L\right).
+ \notag
+\end{align}
+If $b>0$, then also
+\begin{align}
+ \log\left(b+\tfrac12e^L\right)-\log b
+ \le\max\{0,L-\log b\}+\log(3/2).
+ \notag
+\end{align}
+These estimates give explicit constant errors in the logarithmic floor
+comparison of \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}\leanok
+For the first bound, use $b+e^L/2\ge e^L/2$ and take logarithms.
+For the second, both $b$ and $e^L$ are at most
+$e^{\max\{\log b,L\}}$, so
+$b+e^L/2\le(3/2)e^{\max\{\log b,L\}}$.
+Take logarithms, subtract $\log b$, and use
+$\max\{\log b,L\}-\log b=\max\{0,L-\log b\}$.
+\end{proof}
+
+\begin{theorem}[Uniform logarithmic bounds for terminal weights]
+\label{thm:mean_tree_weighted_log_floor_exp}
+\lean{Matrix.MeanTree.weighted_log_add_half_exp_bounds}
+\leanok
+\uses{def:mean_tree}
+Let $T$ be a weighted binary tree with labels in a finite set $J$ and
+terminal weights $w_j$. Let $b>0$, let $U\in\mathbb R$, and suppose
+$L_j\le U$ for every $j\in J$. Set
+\begin{align}
+ \ell=\sum_{j\in J}w_j\log\left(b+\tfrac12e^{L_j}\right).
+ \notag
+\end{align}
+Then
+\begin{align}
+ \sum_{j\in J}w_jL_j-\log2&\le\ell,\notag\\
+ 0\le\ell-\log b&\le\max\{0,U-\log b\}+\log(3/2).
+ \notag
+\end{align}
+The constants are independent of the tree and its terminal probabilities.
+Zero weights and repeated leaf labels are allowed. These are the uniform
+scalar estimates preceding the logarithmic lower comparison in
+\cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}\leanok
+\uses{thm:log_floor_half_exp,lem:mean_tree_weights}
+By Lemma~\ref{lem:mean_tree_weights}, the weights are nonnegative and sum
+to one. Multiply the two inequalities of
+Theorem~\ref{thm:log_floor_half_exp} by $w_j$ and sum over $j\in J$.
+For the upper bound, use $L_j\le U$ and monotonicity of the positive part.
+Finally, $b+e^{L_j}/2\ge b$ gives $\ell\ge\log b$.
+\end{proof}
+
 \subsection{Normalized derivative maps}
 
 For $0<p<1$ and a positive semidefinite matrix $X$ the real power has the
