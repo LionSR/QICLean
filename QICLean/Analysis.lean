@@ -93,6 +93,7 @@ import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
+import QICLean.Analysis.NormalizedInversePowerLogBound
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
