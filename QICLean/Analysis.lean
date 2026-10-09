@@ -163,6 +163,7 @@ import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
+import QICLean.Analysis.SpectralExponentialDrop
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
