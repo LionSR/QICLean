@@ -574,6 +574,18 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
 
+### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
+
+- **Pattern:** Add and rescale inequalities in the matrix order, then identify
+  the resulting linear combination with the desired expression by `module`.
+- **Seen:** `Analysis/FloorPin.lean`, in `floor_pin_le` and
+  `identity_extension_floor`; two occurrences in one file.
+- **Abstraction:** The standard order lemmas and `module` suffice. A further
+  independent occurrence may justify a helper for the shared scalar identity.
+- **Caveats:** Nonnegative scalar multiplication is established before the
+  algebraic conversion. No projection or commutation assumption is needed
+  for these two additive comparisons.
+
 ### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
 
 - **Pattern:** Transport an eventual Schur projection-mass bound through the
