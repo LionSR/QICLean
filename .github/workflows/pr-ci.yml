@@ -221,7 +221,7 @@ jobs:
       - name: Build actual tensor-power exponential moments and capture timings
         run: |
           set -eo pipefail
-          lake build QICLean.Entropy.IidSurprisalExponential \
+          lake build QICLean.Entropy.IidSurprisalMomentExponential \
             2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check tensor-power exponential moments strictly
@@ -229,8 +229,8 @@ jobs:
         run: |
           set -euo pipefail
           for file in \
-            QICLean/Entropy/IidSurprisalExponential.lean \
-            QICLeanTest/IidSurprisalExponentialAxioms.lean; do
+            QICLean/Entropy/IidSurprisalMomentExponential.lean \
+            QICLeanTest/IidSurprisalMomentExponentialAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
