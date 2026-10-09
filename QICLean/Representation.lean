@@ -75,6 +75,7 @@ import QICLean.Representation.ReplicaGammaIntegral
 import QICLean.Representation.ReplicaGroupedInverse
 import QICLean.Representation.ReplicaIntegral
 import QICLean.Representation.ReplicaLift
+import QICLean.Representation.ReplicaLowDefectSymmetricCoordinates
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
@@ -106,6 +107,7 @@ import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemLabelCommutation
 import QICLean.Representation.SubsystemLabelCoordinates
 import QICLean.Representation.SubsystemTransport
+import QICLean.Representation.SymmetricProjectionCoordinates
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
 import QICLean.Representation.TrivialLabel

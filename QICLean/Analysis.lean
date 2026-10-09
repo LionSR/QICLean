@@ -73,6 +73,7 @@ import QICLean.Analysis.InvariantExponentialComparison
 import QICLean.Analysis.InverseCompressionLowerPin
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
+import QICLean.Analysis.IsometricLowerPin
 import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
@@ -152,6 +153,7 @@ import QICLean.Analysis.ReplicaInverseRoughCompression
 import QICLean.Analysis.ReplicaJointAuxiliaryExponential
 import QICLean.Analysis.ReplicaJointDensity
 import QICLean.Analysis.ReplicaLowDefectProjection
+import QICLean.Analysis.ReplicaLowDefectRoughLowerPin
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ReplicaPhysicalLabelMoment

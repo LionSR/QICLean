@@ -1,0 +1,88 @@
+\section{The rough lower bound in symmetric coordinates}
+
+\begin{theorem}[A lower bound in fixed coordinates]
+  \label{thm:reindexed_inverse_compression_lower_bound}
+  \lean{Matrix.PosDef.lower_pin_of_reindexed_inverse_compression}
+  Let $A$ be positive definite, let $P$ be an orthogonal projection,
+  let $U$ be a permutation unitary identifying their coordinate spaces,
+  and let $c>0$. If $PUA^{-1}U^*P\leq cP$, then every rectangular
+  matrix $Z$ with rows indexed by the coordinates of $A$ satisfies
+  \begin{align}
+    c^{-1}Z^*U^*PUZ\leq Z^*AZ.
+  \end{align}
+\end{theorem}
+\begin{proof}
+  Apply the compressed-inverse inequality to $UAU^*$ to obtain
+  $c^{-1}P\leq UAU^*$. Conjugation first by $U$ and then by $Z$
+  gives the conclusion. No commutation of $P$ and $UAU^*$ is required.
+\end{proof}
+
+\begin{theorem}[Five-factor symmetry in grouped coordinates]
+  \label{thm:five_factor_joint_symmetry_coordinates}
+  \lean{TensorPower.symProj_replicaJointCopyPerm_submatrix_fiveFactorCopiesEquiv}
+  Let $U$ identify the $k$ copies of five finite coordinate sets with
+  the grouped physical copies of factors $0,1,2$ and the two auxiliary
+  copy spaces of factors $3,4$. Let $S$ be the average of simultaneous
+  copy permutations before grouping, and let $S'$ be the corresponding
+  average in the three grouped spaces. Then $U^*S'U=S$.
+\end{theorem}
+\begin{proof}
+  \uses{thm:symmetric_projection_equivariant_coordinates}
+  The grouping map is equivariant for every copy permutation.
+  Apply the identity for the finite-group average.
+\end{proof}
+
+\begin{theorem}[The actual projection in symmetric coordinates]
+  \label{thm:compressed_actual_low_defect_projection}
+  \lean{TensorPower.isStarProjection_compressed_replicaLowDefectProjection}
+  Let $\Omega$ be a unit physical vector, let $\lambda_3,\lambda_4$
+  be the original auxiliary labels, and let $\tau\in\mathbb R$.
+  Let $P$ project onto simultaneous symmetry, those two label spaces,
+  and defect count at most $\tau k$ in grouped coordinates.
+  With $U,S$ as above, every rectangular matrix $Z$ satisfying
+  $ZZ^*=S$ has $Z^*U^*PUZ$ an orthogonal projection.
+\end{theorem}
+\begin{proof}
+  \uses{thm:contained_projection_compression,thm:five_factor_joint_symmetry_coordinates}
+  The literal projection satisfies $PS'=P$. Thus
+  $(U^*PU)ZZ^*=U^*PU$. Apply the contained-projection compression identity.
+\end{proof}
+
+\begin{theorem}[The actual rough lower bound]
+  \label{thm:actual_low_defect_rough_lower_bound}
+  \lean{Matrix.exists_replicaLowDefectProjection_rough_lower_pin}
+  Fix five nonzero finite-dimensional spaces of dimensions $d_0,\ldots,d_4$.
+  For every $t>0$ with $4t\leq1$, there is $C\geq0$ depending only on
+  $t$ and these spaces with the following property.
+  Let $k\geq0$, let $\Omega$ be a unit vector on the three physical
+  factors, and suppose that the two original auxiliary labels satisfy
+  \begin{align}
+    2kS_0-\varepsilon\leq\log\dim\lambda_3+\log\dim\lambda_4.
+  \end{align}
+  Suppose $0\leq\tau\leq\tfrac12$. Set
+  \begin{align}
+    A_k&=\bigl(W_{t,k}(\{0,3\})^{-1}W_{t,k}(\{2,4\})^{-1}
+                W_{t,k}(\{1\})\bigr)^2,\\
+    d&=\log d_3+\log d_4,\qquad D=\max\{(d_0d_3)^2,(d_2d_4)^2\},\\
+    b_k&=(k+1)e^{kh(\tau)}(k+2)^{C+D}
+      \exp\bigl(-2tk(2S_0-\tau d-3h(\tau))+2t\varepsilon\bigr).
+  \end{align}
+  Let $P$ be the actual projection from the preceding theorem and
+  let $U$ be the five-factor grouping unitary. Then
+  $b_k^{-1}U^*PU\leq A_k$. For every finite rectangular $Z$ with
+  $ZZ^*=S$, the matrix $P_Z=Z^*U^*PUZ$ is an orthogonal projection and
+  \begin{align}
+    b_k^{-1}P_Z\leq Z^*A_kZ.
+  \end{align}
+  This is the rough lower bound in \cite[Section~8]{OpenAI2026AreaLaw},
+  with the polynomial and subset-counting factors displayed explicitly.
+\end{theorem}
+\begin{proof}
+  \uses{thm:actual_low_defect_inverse_rough_compression,thm:reindexed_inverse_compression_lower_bound,thm:compressed_actual_low_defect_projection}
+  The actual inverse-compression estimate gives
+  $PUA_k^{-1}U^*P\leq b_kP$. The squared disjoint-region metric is
+  positive definite and $b_k>0$. The fixed-coordinate lower bound
+  therefore applies, first with the identity matrix and then with $Z$.
+  The compressed projection property follows from the actual symmetry
+  and label projection identities.
+\end{proof}
