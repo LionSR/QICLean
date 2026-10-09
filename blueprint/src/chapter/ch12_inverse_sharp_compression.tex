@@ -23,12 +23,11 @@ their derivation from the Hamiltonian is a separate result.
   Let $k\geq0$, let $\Omega$ be a unit physical vector, and let $u$
   be invariant under simultaneous permutations of the copies and
   fixed by the two original auxiliary labels $\lambda_C,\lambda_R$.
-  Suppose $K\geq0$ and $r\in\mathbb R$ satisfy
-  \[
-    \log M_j(v)\leq vS(\rho_j)+Kv^2
-    \quad (j\in\{Q,Y,V\},\ |v|\leq r),
-    \qquad 20t\leq r,\quad 20t\leq1.
-  \]
+  Suppose $K\geq0$ and $r\in\mathbb R$ satisfy $20t\leq r$,
+  $20t\leq1$, and, for every $j\in\{Q,Y,V\}$ and $|v|\leq r$,
+  \begin{align*}
+    \log M_j(v)\leq vS(\rho_j)+Kv^2.
+  \end{align*}
   Suppose also that $0\leq\tau\leq\frac12$ and
   $2kS-\varepsilon\leq\log\dim\lambda_C+\log\dim\lambda_R$.
   For any $B\subseteq\{1,\ldots,k\}$ with $|B|\leq\tau k$, let
@@ -73,9 +72,9 @@ their derivation from the Hamiltonian is a separate result.
   Let $U$ be the unitary change from five-factor coordinates to
   physical-and-two-auxiliary copy coordinates, and set
   $H=UA_k^{-1}U^*$. With $c_k$ as in~(\ref{eq:sharp_uniform_rate}),
-  \[
+  \begin{align*}
     PHP\leq(k+1)e^{kh(\tau)}c_kP.
-  \]
+  \end{align*}
   This is the sharp inverse compression estimate in
   \cite[Section~8]{OpenAI2026AreaLaw}, with the one-copy moment
   assumptions and the original label lower bound retained explicitly.
