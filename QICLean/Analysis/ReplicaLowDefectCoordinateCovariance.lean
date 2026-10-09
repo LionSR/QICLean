@@ -46,6 +46,7 @@ theorem replicaHamiltonian_submatrix_equiv (H : Matrix A A ℂ) (e : A ≃ B) (k
   intro j hj
   by_cases hji : j = i
   · simp only [hji, ite_true, Matrix.submatrix_apply]
+    rfl
   · simp only [hji, ite_false, Matrix.one_apply]
     change (if x j = y j then (1 : ℂ) else 0) =
       if e.symm (x j) = e.symm (y j) then 1 else 0
