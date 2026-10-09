@@ -16,8 +16,8 @@ Separate the two auxiliary registers by the coordinate equivalence
 Both good registers precede both bad registers. Denote this equivalence by $e$.
 \end{definition}
 
-\begin{lemma}[Successive traces of the bad copies]
-\label{lem:replica_good_configuration_successive_traces}
+\begin{theorem}[Successive traces of the bad copies]
+\label{thm:replica_good_configuration_successive_traces}
 \lean{Matrix.replicaGoodConfigurationMarginal_eq}
 \uses{def:good_auxiliary_split,def:replica_good_configuration_marginal}
 Let $w$ be an excitation component of an arbitrary vector, and let $D$ be
@@ -26,15 +26,15 @@ good physical copies and the entire auxiliary register. The full good-copy
 density is obtained from $D$ by the auxiliary coordinate change $e$,
 followed by the trace over the bad auxiliary copies. No normalization of
 the one-copy vector or of $w$ is required for this identity.
-\end{lemma}
+\end{theorem}
 \begin{proof}
 Both expressions sum the same matrix entries over the bad physical and
 two bad auxiliary configurations. Interchanging these finite sums gives
 the stated identity.
 \end{proof}
 
-\begin{lemma}[Partial trace on a tensor factor]
-\label{lem:partial_trace_along_tensor_factor}
+\begin{theorem}[Partial trace on a tensor factor]
+\label{thm:partial_trace_along_tensor_factor}
 \lean{Matrix.partialTraceRightAlong_kronecker}
 Let $e:K\simeq C\times R$, where $R$ is finite. For arbitrary matrices
 $A$ and $B$ on the first factor and on $K$, respectively, the partial
@@ -44,7 +44,7 @@ trace on the $R$ coordinate satisfies
  =A\otimes\operatorname{Tr}_{R}B,
 \end{align*}
 where the coordinates of $B$ are changed by $e$ on both sides.
-\end{lemma}
+\end{theorem}
 \begin{proof}
 In each matrix entry, the entry of $A$ is independent of the traced
 coordinate and can be taken outside the finite sum.
@@ -68,10 +68,10 @@ $\operatorname{Tr}\eta_G=\|w\|^2$.
 Before tracing the bad auxiliary copies, the same assertion holds with
 the whole auxiliary marginal in place of $\eta_G$.
 This is the product decomposition used in
-\cite[Section~7, lines~520--560]{OpenAI2026AreaLaw}.
+\cite[Section~8, lines~520--560]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
-\uses{thm:replica_good_copy_product_density,lem:replica_good_configuration_successive_traces,lem:partial_trace_along_tensor_factor}
+\uses{thm:replica_good_copy_product_density,thm:replica_good_configuration_successive_traces,thm:partial_trace_along_tensor_factor}
 Every good physical copy of the excitation component equals $\Omega$.
 Taking the partial trace of its vector density over the bad physical
 copies gives the pure physical tensor power times the actual whole
