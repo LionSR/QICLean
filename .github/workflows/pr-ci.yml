@@ -218,6 +218,24 @@ jobs:
           lake build QICLean.Analysis.ReplicaJointAuxiliaryExponential \
             2>&1 | tee "$RUNNER_TEMP/lake-build.log"
 
+      - name: Check the joint auxiliary exponential strictly
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/SubsystemLabelCommutation.lean \
+            QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean \
+            QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean \
+            QICLean/Representation/GoodAuxiliaryPairCompression.lean \
+            QICLean/Analysis/ReplicaJointAuxiliaryExponential.lean \
+            QICLeanTest/ReplicaJointAuxiliaryAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
       # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to
@@ -311,23 +329,6 @@ jobs:
             QICLean/Analysis/ProjectionCfcUpperBound.lean \
             QICLean/Analysis/InvariantExponentialComparison.lean \
             QICLeanTest/InvariantExponentialAxioms.lean; do
-            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
-              lake env lean -j1 \
-              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
-              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
-              "$file"
-          done
-
-      - name: Check the joint auxiliary exponential strictly
-        timeout-minutes: 8
-        run: |
-          set -euo pipefail
-          for file in \
-            QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean \
-            QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean \
-            QICLean/Representation/GoodAuxiliaryPairCompression.lean \
-            QICLean/Analysis/ReplicaJointAuxiliaryExponential.lean \
-            QICLeanTest/ReplicaJointAuxiliaryAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \

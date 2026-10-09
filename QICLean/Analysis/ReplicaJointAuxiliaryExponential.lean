@@ -7,7 +7,7 @@ import QICLean.Analysis.FiveFactorAuxiliaryCoordinates
 import QICLean.Analysis.InvariantExponentialComparison
 import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
 import QICLean.Representation.GoodAuxiliaryPairCompression
-import QICLean.Representation.ReplicaSimilarity
+import QICLean.Representation.SubsystemLabelCommutation
 
 /-!
 # Joint auxiliary removal for the actual good-copy expectation
@@ -40,28 +40,6 @@ local instance replicaJointAuxiliaryExponential_genericDecidableEqConfig
     {V : Type*} [Fintype V] [DecidableEq V] (ι : V → Type*)
     [∀ v, Fintype (ι v)] [∀ v, DecidableEq (ι v)] (k : ℕ) :
     DecidableEq (Config k ι) := Fintype.decidablePiFintype
-
-private theorem commute_subgroup_labelObservables_of_subset_or_disjoint
-    {V : Type*} [Fintype V] [DecidableEq V]
-    (ι : V → Type*) [∀ v, Fintype (ι v)] [∀ v, DecidableEq (ι v)]
-    {m k : ℕ} (θ : Equiv.Perm (Fin m) →* Equiv.Perm (Fin k))
-    (S T : Finset V) (hST : S ⊆ T ∨ Disjoint S T)
-    (f g : IrrepLabel (Equiv.Perm (Fin m)) → ℝ) :
-    Commute (labelObservable ((subsystemPerm k ι S).comp θ) f)
-      (labelObservable ((subsystemPerm k ι T).comp θ) g) := by
-  rcases hST with hST | hST
-  · rw [labelObservable_eq_groupAlgebraRep, labelObservable_eq_groupAlgebraRep]
-    apply commute_groupAlgebraRep_of_eq_mul
-      ((subsystemPerm k ι S).comp θ) ((subsystemPerm k ι (T \ S)).comp θ)
-      ((subsystemPerm k ι T).comp θ) _ _ (sum_smul_centralIdem_mem_center f)
-    · intro σ
-      change subsystemPerm k ι T (θ σ) = _
-      conv_lhs => rw [← Finset.union_sdiff_of_subset hST]
-      exact subsystemPerm_union k ι Finset.disjoint_sdiff (θ σ)
-    · exact fun σ τ => commute_subsystemPerm_of_disjoint k ι
-        Finset.disjoint_sdiff (θ σ) (θ τ)
-  · exact commute_labelObservable_of_commute _ _
-      (fun σ τ => commute_subsystemPerm_of_disjoint k ι hST (θ σ) (θ τ)) f g
 
 private theorem commute_whole_labelProj_subgroup_labelObservable
     {V : Type*} [Fintype V] [DecidableEq V]
