@@ -1,0 +1,71 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\input{command}
+\title{Literal Coherent Measures and the Remaining Scanner Construction}
+\author{}
+\date{2026-10-09}
+\begin{document}
+\maketitle
+\gapnote{clarification}{wip}
+
+\section{The representation to be constructed}
+
+The coherent measures in the transport estimate of
+Ref.~\cite[Proposition~7.4]{OpenAI2026AreaLaw} are measures on the one-copy unit
+sphere.\footnote{Source: \path{06-transport.tex}, lines 364--401, displays
+\texttt{transport:coherent-measure} and \texttt{transport:states}.}
+For a positive matrix $\rho$, the measure is the image of Haar measure with
+density $D_k\operatorname{Tr}(\rho P_{Ue_a,k})$ under $U\mapsto Ue_a$.
+For a terminal leaf, the Fourier average has density
+\begin{align}
+ d_j(u,U)&=m_{1/4}(u)D_k
+   \operatorname{Re}\operatorname{Tr}(\sigma_{j,u}P_{Ue_a,k}).
+ \label{eq:literal_transport_density}
+\end{align}
+This uses the actual terminal state. History and choice weights remain outside
+this measure, and its normalized-state mass is $1/2$, not one.
+
+\section{The construction and its hypotheses}
+
+The candidate defines both measures by weighted pushforward. Its real-integral
+identities require positivity of the density; the transported-state identity uses
+only admissibility, a nonnegative regulator parameter, and cross-band commutation
+on the symmetric subspace. Positivity holds at every real clamped interpolation
+parameter. Trace one additionally needs a nonzero supplied vector and nonzero
+terminal weight. At zero weight, the accepted normalization of the derivative
+map gives zero state and zero measure. The source itself introduces the terminal
+states on the open interpolation interval; the inactive boundary assertion is
+about this accepted extension, not an extra assertion attributed to the paper.
+
+Absolute integrability of (\ref{eq:literal_transport_density}) is proved by
+bounding a continuous function on the product of the replica-space unitary
+group and the one-copy unitary group. Both groups are needed. The resulting
+bound may depend on the fixed interpolation parameter, replica count, and
+supplied vector. No continuity in the interpolation parameter follows from
+this argument.
+
+\section{Verification and remaining conclusions}
+
+The measure declarations and proof bodies are a source-only candidate and have
+not been compiled. The new blueprint entries therefore carry no completion
+markers. Strict regression examples and stock-axiom expectations have been
+written, but their outputs have not been established. No dependency revision,
+accepted transport state, or compilation-time policy has been changed.
+\footnote{Candidate modules:
+\path{QICLean/Representation/ReplicaTransport/CoherentMeasure.lean} and
+\path{QICLean/Representation/ReplicaTransport/LeafMeasure.lean}.}
+This is a verification boundary, not a missing assumed analytic hypothesis.
+
+Even after compilation, the representation theorem alone does not construct
+physical scanner data or a comparator. Specialization to fill and charge data,
+identification of entropy and energy symbols, the physical supplied vectors,
+and the remaining parameter-continuity and endpoint norm estimates are separate
+steps. In particular, including zero replicas for an explicitly supplied nonzero
+scalar vector says nothing about a physical ground-state energy identity at zero
+replicas. The note records no defect in the source mathematics.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}
