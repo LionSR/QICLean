@@ -56,7 +56,7 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
     rw [hzero, ← cfc_const_mul (Real.exp (a * ((k : ℝ) * S)))
       (fun x : ℝ ↦ Real.exp (a * (x - (k : ℝ) * S)))
       (labelEntropy (copyPerm n k)) (by fun_prop)]
-    done
+    simp_rw [mul_sub, Real.exp_sub, mul_div_cancel₀ _ (Real.exp_ne_zero _)]
   done
 
 end Matrix
