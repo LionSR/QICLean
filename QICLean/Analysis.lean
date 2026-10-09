@@ -90,6 +90,7 @@ import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
+import QICLean.Analysis.MeanTreeProjectionLogBound
 import QICLean.Analysis.MeanTreeProjectionSectors
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
@@ -108,6 +109,7 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
+import QICLean.Analysis.ProjectionCalculus
 import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.PureStateTraceDistance

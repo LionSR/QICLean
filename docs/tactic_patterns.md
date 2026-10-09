@@ -556,3 +556,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Derive every commutation from the actual subsystem actions.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
+
+### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
+
+- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
+  orthogonal resolution, then apply scalar functional calculus to the two
+  assigned values.
+- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
+  `QICLean/Analysis/ProjectionCalculus.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
+  or separate continuity argument is required.
+- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
+  Positivity needed for later logarithmic comparisons belongs to those
+  comparisons, rather than this general calculation.
