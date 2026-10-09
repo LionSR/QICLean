@@ -27,13 +27,13 @@ Kraus-span characterization of primitive channels is formalized here.
 The August 29, 2026 audit covers all 153 literal lemma, proposition, theorem,
 and corollary environments in the transcribed Wolf chapters. Definitions and
 examples are outside this named-result count. After the positive-map
-formalization of Theorem 6.2, the dispositions are: 82 exact, 15 corrected or
-otherwise dispositioned, 4 partial-packaging, 8 partial-scope, 2 obstructed,
-and 42 open. Fourteen of the 15 corrected/dispositioned entries have an
-implemented corrected theorem; the remaining entry is a documented
-disposition rather than a replacement declaration. Thus 56 environments
+formalizations of Theorems 6.2 and 6.5, the dispositions are: 83 exact, 15
+corrected or otherwise dispositioned, 4 partial-packaging, 7 partial-scope, 2
+obstructed, and 42 open. Fourteen of the 15 corrected/dispositioned entries
+have an implemented corrected theorem; the remaining entry is a documented
+disposition rather than a replacement declaration. Thus 55 environments
 remain audit-unresolved
-(4 partial-packaging + 8 partial-scope + 2 obstructed + 42 open), and 57 do
+(4 partial-packaging + 7 partial-scope + 2 obstructed + 42 open), and 56 do
 not have an implemented exact or corrected theorem.
 
 Here "partial-packaging" means that substantial clauses or equation-level
