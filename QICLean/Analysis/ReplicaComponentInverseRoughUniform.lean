@@ -91,10 +91,10 @@ theorem exists_replicaExcitationComponent_inverse_rough_uniform_le
   have hp : 0 ≤ p := by dsimp only [p]; positivity
   have hpoly : q ≤ Real.exp ((D : ℝ) * Real.log ((m : ℝ) + 1)) := by
     have hQ : ((m : ℝ) + 1) ^ nQ ≤ ((m : ℝ) + 1) ^ D :=
-      pow_le_pow_right₀ (by linarith only [Nat.cast_nonneg (R := ℝ) m])
+      pow_le_pow_right₀ (by linarith only [(Nat.cast_nonneg m : (0 : ℝ) ≤ m)])
         (le_max_left nQ nV)
     have hV : ((m : ℝ) + 1) ^ nV ≤ ((m : ℝ) + 1) ^ D :=
-      pow_le_pow_right₀ (by linarith only [Nat.cast_nonneg (R := ℝ) m])
+      pow_le_pow_right₀ (by linarith only [(Nat.cast_nonneg m : (0 : ℝ) ≤ m)])
         (le_max_right nQ nV)
     have hexp : ((m : ℝ) + 1) ^ D =
         Real.exp ((D : ℝ) * Real.log ((m : ℝ) + 1)) := by
