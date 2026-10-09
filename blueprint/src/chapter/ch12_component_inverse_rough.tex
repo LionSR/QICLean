@@ -7,6 +7,7 @@ the auxiliary factors have indices $3,4$.
 \begin{theorem}[Rough inverse bound for the original component]
   \label{thm:actual_component_inverse_rough}
   \lean{Matrix.exists_replicaExcitationComponent_inverse_rough_le}
+  \leanok
   Let $t>0$ satisfy $4t\leq1$. There exists $C\geq0$, depending only
   on $t$ and the five spaces, with the following property.
   Let $k\geq0$ and $B\subseteq\{1,\ldots,k\}$, and put $r=|B|$ and
@@ -34,7 +35,7 @@ the auxiliary factors have indices $3,4$.
   \cite[Section~8]{OpenAI2026AreaLaw}, before combining its scalar
   factors into a common exponential bound.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:actual_component_inverse_good_expectation,thm:replica_good_configuration_exponential_expectation,thm:replica_good_physical_exponential_bound}
   Apply the inverse-to-good-expectation comparison with its constant
   chosen before the copy number and the vector. Express its quadratic
