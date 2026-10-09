@@ -119,6 +119,7 @@ import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
 import QICLean.Analysis.ReplicaComponentMergeMoment
 import QICLean.Analysis.ReplicaDefect
+import QICLean.Analysis.ReplicaExcitationCompression
 import QICLean.Analysis.ReplicaExcitationDecomposition
 import QICLean.Analysis.ReplicaExcitationSymmetry
 import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
