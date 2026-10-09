@@ -131,7 +131,7 @@ theorem fiveFactorCopiesEquiv_simultaneous_permOp (k : ℕ)
           copyPerm (ι 3) k σ y.2.1 = x.2.1 ∧
             copyPerm (ι 4) k σ y.2.2 = x.2.2 := by
     rw [← (fiveFactorCopiesEquiv ι k).injective.eq_iff, he]
-    simp only [Equiv.apply_symm_apply, Prod.mk.injEq]
+    simp only [Equiv.apply_symm_apply, Prod.ext_iff, Prod.fst, Prod.snd]
   ext x y
   simp only [Matrix.submatrix_apply, permOp_apply_apply, hcondition, kroneckerMap_apply]
   split_ifs <;> simp_all
