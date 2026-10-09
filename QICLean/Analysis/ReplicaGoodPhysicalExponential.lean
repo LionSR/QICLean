@@ -76,7 +76,7 @@ theorem trace_replicaGoodConfigurationMarginal_exp_merge_sub_physical_le
     obtain ⟨hC, hR⟩ := commute_cfc_physicalMergeDeficit_mergeDeficits ι Bᶜ.card f
     exact hC.add_right hR
   have hDG : Commute D G := by
-    simpa only [cfc_id' ℝ G hG.isSelfAdjoint] using (hcomm id).symm
+    simpa only [cfc_id ℝ G hG.isSelfAdjoint] using (hcomm id).symm
   exact PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul
     (posSemidef_replicaGoodConfigurationMarginal ι Ω k B u) hG hD hDG.symm ha hPρ
 
