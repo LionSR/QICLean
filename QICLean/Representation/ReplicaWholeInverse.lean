@@ -8,7 +8,8 @@ import QICLean.Representation.ReplicaSimilarity
 /-!
 # Whole-space comparison for the inverse replica metric
 
-For pairwise disjoint subsystems `P`, `Y`, and `F`, the replica metrics have a common
+For a fixed finite family of nonzero local Hilbert spaces and fixed `t > 0`,
+the replica metrics of pairwise disjoint subsystems `P`, `Y`, and `F` have a common
 orthogonal resolution by products of their central label projections. This file bounds
 `((W_P⁻¹ W_F⁻¹ W_Y)²)⁻¹` by a polynomial in the number of copies times
 `exp(-2t(F_P + F_F - F_Y))`. The polynomial constant is uniform over all copy numbers
@@ -21,7 +22,7 @@ The manuscript is dated September 24, 2026; the source passages below refer to r
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 
 * OpenAI, *A two-dimensional area law from a global spectral gap*, `05-replicas.tex`,
-  equation `replicas:w-definition` and Lemma 6.2, equation `replicas:W-comparison`,
+  equation `replicas:w-definition` and Lemma `replicas:metric`, equation `replicas:W-comparison`,
   lines 287–316: the common replica weights and their comparison with label dimensions.
 * The same paper, `07-comparators.tex`, lines 454–476: the inverse-metric comparison used
   before separating the good and bad copies.
@@ -45,9 +46,11 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
   [∀ v, Nonempty (ι v)]
 
 /-- A uniform whole-space upper bound for the inverse of the actual squared replica-metric
-product (`05-replicas.tex`, Lemma 6.2, equation `replicas:W-comparison`, lines 305–316;
+product (`05-replicas.tex`, Lemma `replicas:metric`, equation `replicas:W-comparison`,
+lines 305–316;
 `07-comparators.tex`, lines 454–476). The three subsystems need only be pairwise disjoint.
-The constant is independent of the copy number and the subsystem choices. -/
+For fixed local spaces and `t`, the constant is independent of the copy number
+and the subsystem choices. -/
 theorem exists_replicaMetric_inv_square_le_exp {t : ℝ} (ht : 0 < t) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (k : ℕ) (P Y F : Finset V),
       Disjoint P Y → Disjoint P F → Disjoint Y F →

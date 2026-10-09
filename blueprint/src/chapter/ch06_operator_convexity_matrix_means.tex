@@ -274,6 +274,209 @@ semidefinite matrices.
     by unitality.
 \end{proof}
 
+% Mathematical source: OpenAI, September 24, 2026, revision
+% adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% 06-transport.tex, transport:mean-def, transport:power-derivative,
+% transport:cp, transport:filtered-vector and transport:states.
+% These are auxiliary covariance identities; none is a replacement statement
+% of Proposition 7.4. The manuscript file is unchanged at revision
+% fd4aeeb2ee4fc729c18d98444fed42fd0529eeeb.
+
+\subsection{Rectangular intertwiners of means and derivative maps}
+
+Throughout this subsection, the matrices act on finite-dimensional complex
+Hilbert spaces $\mathcal H_1$ and $\mathcal H_2$, and
+$J:\mathcal H_2\to\mathcal H_1$ is an arbitrary linear map. Its adjoint is
+denoted by $J^*$. No injectivity, surjectivity or isometry assumption is imposed.
+The identities concern the geometric means and derivative maps used in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Adjoints and sandwiches of Hermitian intertwiners]
+\label{thm:mean_intertwiner_sandwich}
+\lean{Matrix.IsHermitian.conjTranspose_intertwine,
+  Matrix.IsHermitian.sandwich_intertwine}
+\leanok
+Let $L_1$ and $L_2$ be Hermitian and satisfy $L_1J=JL_2$.
+Then $L_2J^*=J^*L_1$, and for every matrix $H$ on $\mathcal H_2$,
+\begin{align}
+ L_1(JHJ^*)L_1&=J(L_2HL_2)J^*.
+ \label{eq:mean_intertwiner_sandwich}
+\end{align}
+\end{theorem}
+\begin{proof}\leanok
+Taking adjoints gives the first identity. Substitute $L_1J=JL_2$ and
+$J^*L_1=L_2J^*$ into the left side of
+(\ref{eq:mean_intertwiner_sandwich}).
+\end{proof}
+
+\begin{theorem}[Real powers along an intertwiner]
+\label{thm:mean_intertwiner_power}
+\lean{Matrix.PosSemidef.rpow_intertwine}
+\leanok
+Let $A\ge0$ and $B\ge0$ satisfy $AJ=JB$. For every real exponent $s$,
+$A^sJ=JB^s$. For negative exponents the spectral power is zero on the kernel.
+\end{theorem}
+\begin{proof}\leanok
+The functional calculus of Hermitian matrices preserves rectangular
+intertwining. Apply it to the real spectral function $x\mapsto x^s$.
+\end{proof}
+
+\begin{theorem}[Geometric means and tree roots along an intertwiner]
+\label{thm:mean_intertwiner_root}
+\lean{Matrix.geomMean_intertwine, Matrix.MeanTree.eval_intertwine}
+\leanok
+\uses{def:weighted_geometric_mean,def:mean_tree}
+Let $A_1,B_1>0$ on $\mathcal H_1$ and $A_2,B_2>0$ on $\mathcal H_2$ satisfy
+$A_1J=JA_2$ and $B_1J=JB_2$. For every real $p$,
+\begin{align}
+ (A_1\#_pB_1)J&=J(A_2\#_pB_2).
+ \label{eq:mean_intertwiner_binary}
+\end{align}
+Let $T$ be a fixed weighted binary tree whose vertex weights lie in $[0,1]$.
+If its positive definite inputs $A_j,B_j$ satisfy $A_jJ=JB_j$ for every
+label $j$, and its roots are $M_A=T(A)$ and $M_B=T(B)$, then $M_AJ=JM_B$.
+Repeated labels and zero vertex weights are permitted.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:mean_intertwiner_power,thm:mean_tree_properties}
+Intertwine the factors $A^{1/2}$ and $A^{-1/2}$ in the defining formula for
+the geometric mean, and then the power of $A^{-1/2}BA^{-1/2}$. This proves
+(\ref{eq:mean_intertwiner_binary}); induction over the tree proves the root
+identity.
+\end{proof}
+
+\begin{theorem}[Power-derivative intertwining and compression]
+\label{thm:mean_intertwiner_power_derivative}
+\lean{Matrix.rpowDeriv_intertwine,Matrix.rpowDeriv_compress}
+\leanok
+\uses{lem:rpow_frechet_derivative}
+Let $A>0$ and $B>0$ satisfy $AJ=JB$, and let $0\le p\le1$. Write
+$\mathcal D_p(A)$ for the complex-linear extension of the derivative of
+the real power at $A$. For arbitrary matrices $H$ on $\mathcal H_2$ and
+$X$ on $\mathcal H_1$,
+\begin{align}
+ \mathcal D_p(A)[JHJ^*]&=J\mathcal D_p(B)[H]J^*,
+ \label{eq:mean_power_derivative_embed}\\
+ J^*\mathcal D_p(A)[X]J&=\mathcal D_p(B)[J^*XJ].
+ \label{eq:mean_power_derivative_compress}
+\end{align}
+The directions need not be Hermitian.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:mean_intertwiner_sandwich,lem:rpow_frechet_derivative}
+For $0<p<1$, the shifted resolvents obey
+$(tI+A)^{-1}J=J(tI+B)^{-1}$ for $t>0$. Apply
+Theorem~\ref{thm:mean_intertwiner_sandwich} to their sandwiches and integrate
+the power-derivative formula. The endpoint maps are zero at $p=0$ and the
+identity at $p=1$. For compression, take adjoints of $AJ=JB$ and apply the
+embedding identity to $J^*$.
+\end{proof}
+
+\begin{theorem}[Geometric-mean derivative intertwining and compression]
+\label{thm:mean_intertwiner_vertex_derivative}
+\lean{Matrix.geomMeanDerivRight_intertwine,
+  Matrix.geomMeanDerivLeft_intertwine,
+  Matrix.geomMeanDerivRight_compress,
+  Matrix.geomMeanDerivLeft_compress}
+\leanok
+\uses{lem:mean_vertex_derivative_maps}
+Suppose $A_1,B_1>0$, $A_2,B_2>0$, $A_1J=JA_2$ and $B_1J=JB_2$.
+Let $0\le p\le1$, and let $\mathcal G_{p,L}(A,B)$ and
+$\mathcal G_{p,R}(A,B)$ be the complex-linear extensions of the derivatives
+of $A\#_pB$ in its first and second arguments. For each
+$\nu\in\{L,R\}$ and arbitrary matrices $H$ and $X$ on the respective spaces,
+\begin{align}
+ \mathcal G_{p,\nu}(A_1,B_1)[JHJ^*]
+   &=J\mathcal G_{p,\nu}(A_2,B_2)[H]J^*,
+ \label{eq:mean_vertex_derivative_embed}\\
+ J^*\mathcal G_{p,\nu}(A_1,B_1)[X]J
+   &=\mathcal G_{p,\nu}(A_2,B_2)[J^*XJ].
+ \label{eq:mean_vertex_derivative_compress}
+\end{align}
+The same common intertwiner is used for both positive input pairs.
+The directions in the two arguments may be chosen independently.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:mean_intertwiner_sandwich,thm:mean_intertwiner_power,
+  thm:mean_intertwiner_power_derivative}
+For the second argument, intertwine the sandwiches by $A^{1/2}$ and
+$A^{-1/2}$ and the power derivative at the whitened input. The first-argument
+formula follows by exchanging the inputs and replacing $p$ by $1-p$.
+Apply the corresponding embedding identities to $J^*$ to obtain compression.
+\end{proof}
+
+\begin{theorem}[Recursive derivative and leaf-map covariance]
+\label{thm:mean_intertwiner_leaf_map}
+\lean{Matrix.MeanTree.derivLabel_intertwine,Matrix.MeanTree.leafMap_intertwine,
+  Matrix.MeanTree.derivLabel_compress,Matrix.MeanTree.leafMap_compress}
+\leanok
+\uses{def:mean_tree,thm:mean_tree_leaf_maps}
+Let $T$ be a fixed weighted binary tree, and let $A_i,B_i>0$ satisfy
+$A_iJ=JB_i$ for every label $i$. Denote its roots by $M_A$ and $M_B$,
+its recursive linear maps for a label $j$ by $\mathcal L_j^A$ and
+$\mathcal L_j^B$. For either input family, the map at a leaf $i$ is the identity
+when $i=j$ and zero otherwise. At an internal vertex it is
+\begin{align}
+ \mathcal L_j&=\mathcal G_{p,L}(M_L,M_R)\circ\mathcal L_j^L
+   +\mathcal G_{p,R}(M_L,M_R)\circ\mathcal L_j^R,
+ \label{eq:mean_recursive_label_map}
+\end{align}
+where $M_L,M_R$ are the child roots. If $w_j$ is the total weight of label $j$,
+summing over its occurrences, define
+\begin{align}
+ \Phi_j^A(H)&=w_j^{-1}M_A^{-1/2}
+   \mathcal L_j^A(A_j^{1/2}HA_j^{1/2})M_A^{-1/2},
+ \label{eq:mean_recursive_normalized_map}
+\end{align}
+and define $\Phi_j^B$ analogously. For arbitrary matrices $H$ and $X$ on the
+respective spaces,
+\begin{align}
+ \mathcal L_j^A[JHJ^*]&=J\mathcal L_j^B[H]J^*,
+ \label{eq:mean_tree_derivative_embed}\\
+ J^*\mathcal L_j^A[X]J&=\mathcal L_j^B[J^*XJ],
+ \label{eq:mean_tree_derivative_compress}\\
+ \Phi_j^A(JHJ^*)&=J\Phi_j^B(H)J^*,
+ \label{eq:mean_leaf_map_embed}\\
+ J^*\Phi_j^A(X)J&=\Phi_j^B(J^*XJ).
+ \label{eq:mean_leaf_map_compress}
+\end{align}
+Repeated labels are retained in the recursive sums. Zero total label weights
+are permitted, with reciprocal weight interpreted as zero; the normalized
+map of such a label is zero.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:mean_intertwiner_root,thm:mean_intertwiner_vertex_derivative,
+  thm:mean_intertwiner_sandwich,thm:mean_intertwiner_power}
+Induct over the tree, applying the two vertex derivative identities to the
+contributions of its children. Intertwine the normalizing sandwiches by
+$A_j^{1/2},B_j^{1/2}$ and $M_A^{-1/2},M_B^{-1/2}$ to obtain leaf-map
+covariance. Taking adjoints of each input intertwining equation gives
+the two compression identities.
+\end{proof}
+
+\begin{theorem}[Trace-adjoint leaf-map covariance]
+\label{thm:mean_intertwiner_leaf_adjoint}
+\lean{Matrix.MeanTree.traceAdjoint_leafMap_intertwine}
+\leanok
+\uses{thm:mean_tree_leaf_maps,cor:mean_tree_leaf_states}
+Under the input hypotheses of Theorem~\ref{thm:mean_intertwiner_leaf_map},
+the trace adjoints obey, for every matrix $\rho$ on $\mathcal H_2$,
+\begin{align}
+ (\Phi_j^A)^\dagger(J\rho J^*)
+   &=J(\Phi_j^B)^\dagger(\rho)J^*.
+ \label{eq:mean_leaf_adjoint_embed}
+\end{align}
+Repeated labels and zero total label weights are permitted. This is an
+embedding identity for arbitrary $J$; it does not assert preservation of trace.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:mean_intertwiner_leaf_map,lem:weighted_channel_transport_identities}
+Applying $\Phi_j^A$ and then compressing gives the same result as
+compressing first and applying $\Phi_j^B$. Take trace adjoints, reversing
+the composition order. The trace adjoint of
+$X\mapsto J^*XJ$ is $\rho\mapsto J\rho J^*$.
+\end{proof}
+
 \subsection{The hyperbolic-sine Fourier multipliers}
 
 For $0<s<1/2$ let $g_s(z)=\sinh(sz)/\sinh(z/2)$ with $g_s(0)=2s$, and
@@ -420,6 +623,66 @@ $\Phi_j$ are the normalized derivative maps of the interpolated tree.
     module map over $Z$, so $\Phi_j(XZ)=\Phi_j(X)Z$ and dually
     $\Phi_j^\dagger(ZY)=Z\Phi_j^\dagger(Y)$. The matrix $Z$ commutes with the root
     and hence fixes $M^{-iu}v$.
+\end{proof}
+
+\subsection{Covariance of filtering and transport matrices}
+
+\begin{theorem}[Imaginary powers and transport-matrix covariance]
+\label{thm:transport_intertwiner_state}
+\lean{Matrix.Transport.imagPow_intertwine,
+  Matrix.Transport.transportState_intertwine}
+\leanok
+\uses{thm:mean_tree_leaf_maps,lem:transport_exact_derivative}
+Let $M>0$ and $N>0$ satisfy $MJ=JN$. For every real $u$,
+$M^{-iu}J=JN^{-iu}$. For a fixed weighted tree with positive inputs
+$A_i,B_i$ satisfying $A_iJ=JB_i$, roots $M_A,M_B$, and any vector
+$y$ in the corresponding Hilbert space, define, for $q\in\{A,B\}$,
+\begin{align}
+ \Sigma_{j,u}^q(y)&=(\Phi_j^q)^\dagger
+   (|M_q^{-iu}y\rangle\langle M_q^{-iu}y|).
+ \label{eq:transport_intertwiner_matrix}\\
+ \intertext{For every $v\in\mathcal H_2$,}
+ \Sigma_{j,u}^A(Jv)&=J\Sigma_{j,u}^B(v)J^*.
+ \label{eq:transport_intertwiner_state}
+\end{align}
+The vector need not be normalized; repeated labels and zero total label weights
+are permitted. No isometry condition on $J$ is required.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:mean_intertwiner_root,thm:mean_intertwiner_leaf_adjoint}
+Functional calculus intertwines $\log M$ and $\log N$; the exponential of
+$-iu\log M$ therefore intertwines with that of $-iu\log N$. Apply this to
+the tree roots, then apply trace-adjoint covariance to the rank-one matrix of
+$M_B^{-iu}v$.
+\end{proof}
+
+\begin{theorem}[Filtering along an intertwiner and an isometry]
+\label{thm:transport_intertwiner_filtering}
+\lean{Matrix.Transport.filteredRaw_intertwine,
+  Matrix.Transport.filteredNormSq_intertwine,
+  Matrix.Transport.filteredVector_intertwine}
+\leanok
+\uses{lem:transport_exact_derivative}
+Let $M\ge0$ and $N\ge0$ satisfy $MJ=JN$. For every
+$x\in\mathcal H_2$, the unnormalized filtered vector satisfies
+$M^{-1/4}Jx=JN^{-1/4}x$. If in addition $J^*J=I$, then
+\begin{align}
+ \|M^{-1/4}Jx\|^2&=\|N^{-1/4}x\|^2,
+ \label{eq:transport_intertwiner_norm}\\
+ \frac{M^{-1/4}Jx}{\|M^{-1/4}Jx\|}
+   &=J\frac{N^{-1/4}x}{\|N^{-1/4}x\|}.
+ \label{eq:transport_intertwiner_normalized}
+\end{align}
+Negative powers vanish on the kernels. Each quotient in
+(\ref{eq:transport_intertwiner_normalized}) is defined to be zero when its
+denominator is zero, so the identities include $x=0$.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:mean_intertwiner_power}
+Apply real-power intertwining at exponent $-1/4$. When $J^*J=I$, the norm
+of every image $Jy$ equals the norm of $y$, so both normalization scalars
+coincide. Scalar multiplication commutes with $J$, including the zero-scalar
+case.
 \end{proof}
 
 \begin{lemma}[Energy of the filtered vector for one term]\label{lem:transport_energy_block}

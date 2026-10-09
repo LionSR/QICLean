@@ -11,6 +11,23 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
+### Operator norm in orthonormal coordinates — promoted (2026-10-08)
+
+- **Pattern:** Identify the matrix of a continuous linear map in finite
+  orthonormal input and output bases, then transfer its operator-norm bound.
+- **Result:** `ContinuousLinearMap.norm_toMatrix_orthonormal` in
+  `QICLean/Analysis/OrthonormalMatrixNorm.lean` gives equality of norms.
+  It reuses Mathlib's Euclidean matrix norm and invariance under composition
+  with linear isometric equivalences. Rectangular matrices and empty bases
+  require no separate cases.
+- **Consumers:** TNLean's `Word.norm_preparedMatrix_le_one`,
+  `Word.norm_freeSourceMatrix_le_one`, and the new
+  `Word.norm_physicalOutputMatrix_le_one` in `ExteriorSourceContraction`.
+- **Decision:** The third application justifies one general equality. The
+  prepared TNLean refactor removes the two older coordinate-vector proofs;
+  it will be applied together with the dependency update. No custom tactic
+  or duplicate coordinate-norm theorem is introduced.
+
 ### Joint central-label resolution — existing mathematical lemmas (2026-10-07)
 
 - **Pattern:** Form the product of commuting orthogonal resolutions, express
@@ -41,6 +58,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   The new coefficient proof reuses both instead of duplicating those expansions.
 - **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
   over the whole basis, including coordinates with zero assigned probability.
+
+### Hermitian rectangular intertwiners — promoted mathematical lemmas
+
+- **Pattern:** From `A * J = J * B` for Hermitian matrices, move the adjoint
+  intertwiner through the matrices and transport sandwiches `J * H * Jᴴ`.
+- **Consumers:** Power-derivative covariance, geometric-mean derivative
+  covariance, and mean-tree derivative and leaf-map covariance.
+- **Abstraction:** Reuse `Matrix.IsHermitian.conjTranspose_intertwine` and
+  `Matrix.IsHermitian.sandwich_intertwine` from
+  `QICLean/Algebra/MatrixSandwichIntertwine.lean`. Compression identities use
+  the same embedding lemmas with `Jᴴ`.
+- **Caveats:** These are algebraic identities for rectangular intertwiners.
+  Norm preservation requires an isometry; positivity of a compressed operator
+  does not identify its inverse with a compressed inverse.
 
 ## Candidates
 
@@ -542,3 +573,54 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Derive every commutation from the actual subsystem actions.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
+
+### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
+
+- **Pattern:** Add and rescale inequalities in the matrix order, then identify
+  the resulting linear combination with the desired expression by `module`.
+- **Seen:** `Analysis/FloorPin.lean`, in `floor_pin_le` and
+  `identity_extension_floor`; two occurrences in one file.
+- **Abstraction:** The standard order lemmas and `module` suffice. A further
+  independent occurrence may justify a helper for the shared scalar identity.
+- **Caveats:** Nonnegative scalar multiplication is established before the
+  algebraic conversion. No projection or commutation assumption is needed
+  for these two additive comparisons.
+
+### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
+
+- **Pattern:** Transport an eventual Schur projection-mass bound through the
+  actual exterior coordinate isometry, retaining the same label sequence.
+- **Seen:** `Representation/CompressedTypicalLabelSequence.lean` and
+  `Representation/SchmidtBellCommonCutoffs.lean`; two occurrences in two files.
+- **Abstraction:** Both use
+  `TensorPower.norm_sq_labelProj_compressedTypicalSite_prod`, followed by
+  reciprocal and natural-power coercion identities. A third independent use
+  should supply a helper for the eventual inequality.
+- **Caveats:** The mass belongs to the normalized selected state before any
+  common regional cutoff. It is not a conditional mass after projecting,
+  and no second label selection is made.
+
+### Chronological prefix and suffix coordinates — candidate (2026-10-09)
+
+- **Pattern:** Express a retained prefix as the predicate filter of the original
+  prefix, and a full suffix as the corresponding list drop.
+- **Seen:** The consecutive-difference calculation and both endpoint
+  calculations in `PoissonWord.foldl_sub_partitionWords_fst_eq_sum`, in
+  `QICLean/Probability/PoissonWordTelescope.lean`; three occurrences in one file.
+- **Abstraction:** Reuse `ofFn_partitionWords_fst`, `ofFn_take`, and `ofFn_drop`
+  with `simp only`. A further lemma or simp set is deferred until the pattern
+  also occurs in a second file.
+- **Caveats:** Normalize the word coordinates before simplifying list maps.
+  Otherwise `List.map_ofFn` can remove the form needed for the filter identity.
+  Full suffixes and retained prefixes refer to the same original word.
+
+### Contractive chronological folds — candidate (2026-10-09)
+
+- **Pattern:** A fold of maps satisfying `‖E i y‖ ≤ ‖y‖` preserves the norm
+  bound of its initial vector.
+- **Seen:** The local `hact` arguments in `PoissonWordOmissionBound.lean` and
+  `PoissonWordExpectedOmission.lean`; two occurrences in two files.
+- **Abstraction:** Reuse `List.foldlRecOn` with the invariant `‖z‖ ≤ ‖y‖`.
+  A general norm inequality for folds should be considered at a third occurrence.
+- **Caveats:** No norm compatibility with the scalar action is needed; the
+  contraction hypothesis concerns the additive seminorm directly.

@@ -56,6 +56,7 @@ import QICLean.Algebra.MatrixRankBaseChange
 import QICLean.Algebra.MatrixRankClosed
 import QICLean.Algebra.MatrixRankKronecker
 import QICLean.Algebra.MatrixReindexUnitary
+import QICLean.Algebra.MatrixSandwichIntertwine
 import QICLean.Algebra.MatrixSpectralDecomp
 import QICLean.Algebra.MatrixStabilization
 import QICLean.Algebra.MatrixTracePairing
