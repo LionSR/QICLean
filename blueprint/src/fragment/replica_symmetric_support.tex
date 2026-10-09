@@ -1,0 +1,59 @@
+% Exact-source elaboration and kernel audit passed; native CI remains pending.
+% Source: 05-replicas.tex, Lemma 6.1(2--3), lines 99--115,
+% revision adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\section{Nonnegative label support on symmetric copies}
+\label{sec:replica_partition_nonnegative_support}
+
+Let $V$ be a finite set of factor labels, let $I_v$ be a finite coordinate
+set for each $v\in V$, and let $k\geq0$ be an integer. Put
+$\mathcal V=\bigotimes_{v\in V}\C^{I_v}$ and
+$\mathcal H=\mathcal V^{\otimes k}$. The coordinate sets may be empty;
+the tensor product over an empty family and the zeroth tensor power are
+both $\C$. Let $\Pi_k$ be the orthogonal projection onto
+$\operatorname{Sym}^k\mathcal V$. Thus the symmetry permutes complete
+copies of the tensor product.
+
+For $T\subseteq V$, let $\pi^\lambda_{T,k}$ be the central label projection
+of the copy-permutation action on the factors in $T$, acting on
+$\mathcal H$. As above, write
+$F_{T,k}=\sum_\lambda(\log d_\lambda)\pi^\lambda_{T,k}$, where
+$d_\lambda\geq1$ is the dimension of the irreducible representation
+with label $\lambda$.
+
+\begin{theorem}[Nonnegative label support for a partition]
+    \label{thm:replica_partition_nonnegative_support}
+    \lean{TensorPower.spectralProjectionGE_labelDeficit_mul_symProj_of_partition}
+    \uses{def:copy_permutations,def:label_projectors}
+    Let $P,Y,F$ be pairwise disjoint subsets whose union is $V$, and put
+    $H_k=F_{P,k}+F_{F,k}-F_{Y,k}$. Then
+    \begin{align}
+        \mathbf1_{[0,\infty)}(H_k)\Pi_k & =\Pi_k.
+        \label{eq:replica_partition_support}
+    \end{align}
+    This includes $k=0$, empty regions, and an empty family of factors.
+\end{theorem}
+
+\begin{proof}
+    \uses{thm:symmetric_union_logarithmic_labels,
+        thm:nested_label_observable_symmetry,thm:merge-deficit-positivity,
+        thm:nonnegative-spectral-intertwiner,lem:label_projectors}
+    The partition gives $Y^c=P\cup F$. Complementary logarithmic labels
+    on their symmetric union satisfy
+    $F_{Y,k}\Pi_k=F_{P\cup F,k}\Pi_k$.
+    Define $D_k=F_{P,k}+F_{F,k}-F_{P\cup F,k}$.
+    The actions on $P$ and $F$ commute, and their pointwise product is
+    the action on $P\cup F$, so the merge-deficit inequality gives
+    $D_k\geq0$. Nested label observables commute with $\Pi_k$.
+    Consequently,
+    \begin{align}
+        H_k\Pi_k & =D_k\Pi_k=\Pi_kD_k.
+        \label{eq:replica_partition_intertwining}
+    \end{align}
+    The label observables are self-adjoint. Apply the nonnegative
+    spectral intertwining theorem to~(\ref{eq:replica_partition_intertwining})
+    to obtain~(\ref{eq:replica_partition_support}). The closed interval
+    includes the zero eigenspace.
+\end{proof}
+
+The complementary-label and merge-deficit assertions are
+\cite[Lemma~6.1(2--3)]{OpenAI2026AreaLaw}.
