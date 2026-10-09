@@ -576,3 +576,31 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveat:** When only an outer sum is to be transported, rewrite it once.
   Recursive simplification can expand the defining sum of a central
   observable and obscure the existing representation identity.
+### Symmetry of an excitation component under a copy subgroup — candidate (2026-10-09)
+
+- **Pattern:** Prove that the subgroup preserves the actual excited subset,
+  apply the existing covariance of the physical excitation operator, and
+  transport the fixed-vector equation through the specified coordinate equivalence.
+- **Seen:** `Analysis/ReplicaBadCopyExponential.lean`; the covariance is already
+  provided by `Analysis/ReplicaExcitationSymmetry.lean`.
+- **Abstraction:** Reuse `replicaExcitationProjection_kronecker_mulVec_preserves_fixed`
+  and `Matrix.submatrix_mulVec_equiv`. The subset calculation is specific to
+  the good/bad enumeration. No new tactic or general covariance result is needed.
+- **Caveats:** The actual component may be zero. No component normalization,
+  ambient positivity of a signed label entropy, or commutation of the excitation
+  operator with a replica metric is introduced.
+
+### Products of permutation indicators — existing Mathlib lemma (2026-10-09)
+
+- **Pattern:** After transporting a permutation entry through a product
+  coordinate equivalence, the entry is the indicator of a conjunction.
+  A Kronecker product gives the product of the individual indicators.
+- **Reuse:** `ite_zero_mul_ite_zero` combines these indicators directly.
+  `Analysis/ReplicaBadCopyExponential.lean` uses
+  `simp only [ite_zero_mul_ite_zero, one_mul]` for three factors.
+- **Reason:** The former case split followed by unrestricted `simp_all`
+  revisited universally quantified coordinate identities and exhausted
+  the default heartbeat limit. The restricted existing identity closes
+  the actual scalar goal without a new theorem, tactic, or larger limit.
+- **Caveat:** First prove the actual coordinate equivalence and reduce the
+  entries. The scalar identity supplies no permutation covariance itself.

@@ -29,6 +29,7 @@ import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GoodAuxiliaryPairCompression
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
+import QICLean.Representation.GroupedLabelSymmetricSupport
 import QICLean.Representation.HighLabelWindow
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension

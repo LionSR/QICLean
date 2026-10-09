@@ -122,6 +122,7 @@ import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.ReplicaBadCopyExponential
 import QICLean.Analysis.ReplicaComponentMergeMoment
 import QICLean.Analysis.ReplicaDefect
 import QICLean.Analysis.ReplicaExcitationDecomposition
