@@ -110,6 +110,7 @@ import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
 import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
+import QICLean.Analysis.ProjectionQuadraticBound
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm

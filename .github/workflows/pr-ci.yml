@@ -206,7 +206,11 @@ jobs:
       - uses: leanprover/lean-action@v1
         with:
           build: false
+          use-mathlib-cache: true
           use-github-cache: false
+
+      - name: Require prebuilt Mathlib artifacts
+        run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
@@ -272,9 +276,24 @@ jobs:
         run: |
           set -eo pipefail
           {
+            lake build QICLean.Analysis.ProjectionQuadraticBound
             lake build
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check quadratic-form comparisons strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ProjectionQuadraticBound.lean \
+            QICLeanTest/ProjectionQuadraticBoundAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
 
       - name: Check typical-tail scale regressions strictly
         run: |
