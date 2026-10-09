@@ -193,7 +193,7 @@ theorem fiveFactorCopies_exp_labelEntropy_singleton (a : ℝ) :
     ← smul_kronecker, exp_kronecker_one]
   congr 1
   rw [← Pi.smul_apply, ← Pi.smul_apply, ← submatrix_smul,
-    ← reindex_apply, ← reindex_exp, reindex_apply,
+    ← reindex_apply c.symm c.symm, ← reindex_exp, reindex_apply,
     ← smul_kronecker, exp_kronecker_one]
 
 end TensorPower
