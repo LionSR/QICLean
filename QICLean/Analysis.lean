@@ -112,6 +112,7 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
+import QICLean.Analysis.ProjectionCalculus
 import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.PureStateTraceDistance
