@@ -42,7 +42,7 @@ private theorem groupAlgebraRep_prodRight {G X Z : Type*} [Group G]
     (φ : G →* Equiv.Perm X) (a : MonoidAlgebra ℂ G) :
     groupAlgebraRep (prodRight Z φ) a =
       (1 : Matrix Z Z ℂ) ⊗ₖ groupAlgebraRep φ a := by
-  simpa only [Matrix.submatrix_id_id] using
+  simpa only [Equiv.refl_symm, Equiv.coe_refl, Matrix.submatrix_id_id] using
     groupAlgebraRep_submatrix_of_prod_action (prodRight Z φ) φ
       (Equiv.refl (Z × X)) (fun _ _ ↦ rfl) a
 
