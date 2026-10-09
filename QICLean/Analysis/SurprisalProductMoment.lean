@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.SurprisalMoment
-import Mathlib.Algebra.BigOperators.Pi
+import Mathlib.Algebra.BigOperators.Ring.Finset
 
 /-!
 # Exact surprisal moments of independent copies
@@ -32,6 +32,8 @@ theorem surprisalMoment_pi {n : Type*} [Fintype n]
     surprisalMoment (fun x : Fin k → n ↦ ∏ j, p (x j)) u =
       surprisalMoment p u ^ k := by
   unfold surprisalMoment
+  trans ∑ x : Fin k → n, ∏ j, p (x j) * Real.exp (u * -Real.log (p (x j)))
+  · done
   done
 
 end Entropy
