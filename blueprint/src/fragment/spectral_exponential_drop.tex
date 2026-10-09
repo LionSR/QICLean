@@ -4,11 +4,11 @@
 % September 24, 2026, revision adc7f1241b42e322a6451854ab7e4b4c146bf78a,
 % 07-comparators.tex, lines 553--555: discarding exp(-a G_phys) on J.
 % These entries do not supply the physical support or either merge moment.
-% Native declaration checking is pending.
 
 \begin{theorem}[Dropping a nonnegative spectral term]
     \label{thm:spectral_exponential_drop}
     \lean{Matrix.spectralProjectionGE_exp_smul_sub_le}
+    \leanok
     \uses{def:closed_threshold_projection, thm:closed_threshold_projection,
         lem:orthogonal_resolution, lem:orthogonal_resolution_cfc}
     Let $G,H$ be commuting Hermitian matrices on a finite-dimensional complex
@@ -22,7 +22,7 @@
     used in the rough estimate of~\cite[Section~7]{OpenAI2026AreaLaw}.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{def:closed_threshold_projection, thm:closed_threshold_projection,
         lem:orthogonal_resolution, lem:orthogonal_resolution_cfc}
     The spectral projectors of $G$ and $H$ commute and give a common orthogonal
@@ -37,6 +37,7 @@
 \begin{theorem}[Exponential comparison for a supported positive trace weight]
     \label{thm:supported_trace_exponential_drop}
     \lean{Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul}
+    \leanok
     \uses{thm:spectral_exponential_drop, thm:closed_threshold_projection}
     Under the hypotheses of Theorem~\ref{thm:spectral_exponential_drop}, let
     $\rho\ge0$ satisfy $J\rho=\rho$. Then
@@ -47,7 +48,7 @@
     No normalization of $\rho$ is assumed.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:spectral_exponential_drop, thm:closed_threshold_projection}
     Taking adjoints gives $\rho J=\rho$. For $E=\exp(a(H-G))$, cyclicity of the
     trace gives $\tr(\rho JEJ)=\tr(\rho E)$.
