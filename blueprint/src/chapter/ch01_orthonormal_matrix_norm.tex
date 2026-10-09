@@ -1,0 +1,22 @@
+\section{Operator norms in orthonormal coordinates}
+
+\begin{theorem}[Operator norm in orthonormal coordinates]
+    \label{thm:operator_norm_orthonormal_coordinates}
+    \lean{ContinuousLinearMap.norm_toMatrix_orthonormal}
+
+    Let $E$ and $F$ be inner-product spaces over $\mathbb K=\R$ or $\C$,
+    with finite orthonormal bases $(e_j)_{j\in J}$ and $(f_i)_{i\in I}$.
+    For a continuous linear map $T:E\to F$, let
+    $M_{ij}=\langle f_i,Te_j\rangle$ be its matrix in these bases.
+    The Euclidean operator norm of $M$ equals the operator norm of $T$:
+    $\|M\|_{2\to2}=\|T\|$.
+    The two basis index sets may have different cardinalities, and either
+    may be empty.
+\end{theorem}
+
+\begin{proof}
+    Let $U:E\to\mathbb K^J$ and $V:F\to\mathbb K^I$ be the coordinate
+    isometries. The linear map represented by $M$ is $VTU^{-1}$.
+    Composition on either side with a surjective linear isometry preserves
+    the operator norm, so $\|M\|_{2\to2}=\|VTU^{-1}\|=\|T\|$.
+\end{proof}
