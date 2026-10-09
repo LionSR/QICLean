@@ -1,0 +1,61 @@
+\section{Mass selection among Schur sectors}
+\label{sec:schur_sector_mass}
+
+Let $\Omega$ be a finite orthonormal basis of cardinality $q$, and let
+$\pi^\lambda$ denote the central isotypic projectors for the copy-permutation
+representation on $(\mathbb C^\Omega)^{\otimes k}$, where $k\ge0$.
+Their sum is the identity, and the number of nonzero projectors is at most
+$(k+1)^{q^2}$.
+The following estimates give the generic mass selection step in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+They impose no entropy window on the irreducible dimension $d_\lambda$.
+The asymptotic relation $\log d_{\lambda_k}=kS'+o(k)$ requires concentration
+and a further selection within the corresponding window. Positive occurrence
+on the initial uniform pair, matching of its two labels, and its energy
+condition are separate assertions.
+
+\begin{theorem}[Density mass in a Schur sector]
+\label{thm:schur_sector_trace_mass}
+\lean{TensorPower.exists_labelProj_trace_mass_ge}
+\leanok
+For every positive semidefinite $\rho$ on
+$(\mathbb C^\Omega)^{\otimes k}$ with $\operatorname{tr}\rho=1$, there is an
+irreducible label $\lambda$ such that
+$\operatorname{tr}(\rho\pi^\lambda)\ge(k+1)^{-q^2}$.
+\end{theorem}
+\begin{proof}
+\leanok
+Put $L=\{\lambda:\pi^\lambda\ne0\}$ and
+$m_\lambda=\operatorname{tr}(\rho\pi^\lambda)$. Positivity gives
+$m_\lambda\ge0$, and completeness gives
+$\sum_{\lambda\in L}m_\lambda=1$, so $L$ is nonempty.
+Since $|L|\le(k+1)^{q^2}$, at least one summand is at least
+$(k+1)^{-q^2}$.
+\end{proof}
+
+\begin{theorem}[Projected norm in a Schur sector]
+\label{thm:schur_sector_norm_mass}
+\lean{TensorPower.exists_labelProj_norm_mass_ge}
+\leanok
+\uses{thm:schur_sector_trace_mass}
+Let $S$ be a finite orthonormal basis and let $v$ be a unit vector in
+$\mathbb C^S\otimes(\mathbb C^\Omega)^{\otimes k}$.
+There is an irreducible label $\lambda$ such that
+$\|(I_S\otimes\pi^\lambda)v\|^2\ge(k+1)^{-q^2}$.
+In particular, $(I_S\otimes\pi^\lambda)v\ne0$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:schur_sector_trace_mass}
+The reduced state $\rho=\operatorname{tr}_S|v\rangle\langle v|$ is positive
+semidefinite and has trace one. Apply
+Theorem~\ref{thm:schur_sector_trace_mass} to $\rho$.
+For $Q=I_S\otimes\pi^\lambda$, the trace-pairing identity and the Hermitian
+idempotence $Q^*=Q=Q^2$ give
+\begin{align}
+ \operatorname{tr}(\rho\pi^\lambda)
+ &=\langle v,Qv\rangle=\langle Qv,Qv\rangle=\|Qv\|^2.
+ \label{eq:schur_sector_marginal_norm}
+\end{align}
+The lower bound is strictly positive, so $Qv\ne0$.
+\end{proof}

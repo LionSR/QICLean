@@ -1,0 +1,63 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.ContractionChain
+import QICLean.Analysis.SourceOnlyDensityError
+import QICLean.Analysis.SubnormalizedPureStateError
+import QICLean.Probability.ComplexGaussian.ProductSourceTransport
+
+/-! Kernel reports for all named source-reduction and ambient-transport declarations. -/
+
+#print axioms Matrix.contractionPrefix
+#print axioms Matrix.contractionPrefix_norm_le_one
+#print axioms Matrix.contractionPrefix_sub_norm_le
+#print axioms Matrix.contractionPrefix_sub_norm_le_supported
+#print axioms Matrix.contractionPrefix_sub_norm_le_uniform
+#print axioms Matrix.euclideanOuterProduct
+#print axioms Matrix.euclideanOuterProduct_self_sub
+#print axioms Matrix.l2_opNorm_one_le
+#print axioms Matrix.markedRescaledGateChain
+#print axioms Matrix.rectangularTraceNorm_euclideanOuterProduct_le
+#print axioms Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le
+#print axioms Matrix.rectangularTraceNorm_partialTraceRight_pure_density_sub_le_two
+#print axioms Matrix.rectangularTraceNorm_pure_density_sub_le
+#print axioms Matrix.rectangularTraceNorm_pure_density_sub_le_two
+#print axioms Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_empty
+#print axioms Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le
+#print axioms Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_marked_sub_le_half
+#print axioms Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le
+#print axioms Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_half
+#print axioms Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_prefix
+#print axioms Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_le_sum
+#print axioms Matrix.rectangularTraceNorm_sourceOnlyReadoutDensity_sub_zero
+#print axioms Matrix.rescaledGateChain
+#print axioms Matrix.sourceOnlyReadoutDensity
+#print axioms Matrix.sourceOnlyReadoutDensity_zero
+#print axioms Matrix.sourceOnlyReadoutVector
+#print axioms Matrix.sourceOnlyReadoutVector_norm_le_one
+#print axioms Matrix.sourceOnlyReadoutVector_sub_norm_le
+#print axioms Matrix.trace_euclideanOuterProduct_conjTranspose_mul
+#print axioms NormedSpace.rescale_approximation
+#print axioms QICLean.ComplexGaussian.ambientSampledSource
+#print axioms QICLean.ComplexGaussian.ambientSampledSource_eq_transport
+#print axioms QICLean.ComplexGaussian.ambientSchmidtSource
+#print axioms QICLean.ComplexGaussian.ambientSchmidtVector
+#print axioms QICLean.ComplexGaussian.ambientSchmidtVector_eq_mulVec
+#print axioms QICLean.ComplexGaussian.ambientSourceCorrection
+#print axioms QICLean.ComplexGaussian.ambientSourceCorrection_eq_transport
+#print axioms QICLean.ComplexGaussian.ambientSourceU
+#print axioms QICLean.ComplexGaussian.ambientSourceU_kronecker_ambientSourceV
+#print axioms QICLean.ComplexGaussian.ambientSourceV
+#print axioms QICLean.ComplexGaussian.integrable_ambientSampledSource
+#print axioms QICLean.ComplexGaussian.integrable_ambientSampledSource_entry
+#print axioms QICLean.ComplexGaussian.integrable_ambientSourceCorrection
+#print axioms QICLean.ComplexGaussian.integrable_ambientSourceU
+#print axioms QICLean.ComplexGaussian.integrable_ambientSourceV
+#print axioms QICLean.ComplexGaussian.integral_ambientSampledSource
+#print axioms QICLean.ComplexGaussian.integral_ambientSampledSource_entry
+#print axioms QICLean.ComplexGaussian.integral_ambientSourceCorrection
+#print axioms QICLean.ComplexGaussian.sourceTransport
+#print axioms QICLean.ComplexGaussian.sourceTransport_kronecker
+#print axioms QICLean.ComplexGaussian.sourceTransport_schmidtSource

@@ -1,0 +1,42 @@
+\section{Five-factor H\"older for the actual merge deficits}
+\label{sec:physical_merge_holder}
+
+Let $Q,Y,V,C,R$ be independent finite-dimensional factors and let $m\ge0$.
+For each subsystem $A$, let $F_A$ be the logarithmic dimension observable
+of its actual copy-permutation action. On the common five-factor copy
+space set $D_C=F_Q+F_C-F_{QC}$, $D_R=F_V+F_R-F_{VR}$ and
+$G=F_Q+F_V-F_Y$. The factor $Y$ is independent of $Q$ and $V$.
+For a positive semidefinite matrix $\rho$, write
+$M_\rho(H)=\operatorname{Re}\Tr(\rho e^H)$.
+
+\begin{theorem}[The five actual exponential moments]
+\label{thm:physical_merge_holder}
+\lean{TensorPower.re_trace_mul_exp_mergeDeficits_sub_physicalMergeDeficit_le}
+\uses{def:physical-merge-deficit,thm:schur_label_commutation,thm:weighted-trace-holder-finite}
+\leanok
+For every real $a$,
+\begin{align}
+ M_\rho\bigl(a(D_C+D_R-G)\bigr)
+ &\le M_\rho(5aD_C)^{1/5}M_\rho(5aD_R)^{1/5}\notag\\
+ &\quad\times M_\rho(-5aF_Q)^{1/5}M_\rho(-5aF_V)^{1/5}
+       M_\rho(5aF_Y)^{1/5}.
+ \label{eq:physical_merge_holder}
+\end{align}
+The weight $\rho$ need not be normalized or commute with any of the
+observables. Zero copies, zero weights and zero-dimensional factors are
+included. This is the five-factor H\"older step in
+\cite[Section~7, lines~556--560]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+Each $F_A$ is a real linear combination of orthogonal central
+projections and is therefore Hermitian. The seven subsystems
+$Q,Y,V,C,R,QC,VR$ are pairwise nested or disjoint, so their central
+observables commute. Addition, subtraction and negation give pairwise
+commutation of $D_C,D_R,-F_Q,-F_V,F_Y$. Apply equal-weight trace
+H\"older to these five operators. Their sum is $D_C+D_R-G$, giving
+(\ref{eq:physical_merge_holder}).
+\end{proof}
+
+% Applying this inequality to the actual excitation density and bounding
+% the five moments are separate steps of the component estimate.

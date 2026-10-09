@@ -1,0 +1,65 @@
+\section{Nonnegative merge deficits and spectral projections}
+\label{sec:merge-deficit-positivity}
+
+Let a finite group act by two commuting permutation representations on a
+finite orthonormal basis, and let the combined action be their pointwise
+product. Write $F_Q,F_E,F_{QE}$ for the logarithmic irreducible-dimension
+observables of these actual actions. The dimension inequality in
+\cite[Section~5, Lemma~6.1(3)]{OpenAI2026AreaLaw} gives the following
+nonnegativity statement, used in the merge decomposition of Section~7.
+
+\begin{theorem}[Nonnegative merge deficit]
+\label{thm:merge-deficit-positivity}
+\lean{PermutationRepresentation.posSemidef_mergeDeficit,
+TensorPower.posSemidef_pairMergeDeficit}
+\uses{thm:schur_label_merge_dimensions,def:pair_merge_deficit}
+\leanok
+The actual merge deficit is positive semidefinite:
+\[
+ F_Q+F_E-F_{QE}\ge0.
+\]
+In particular, this holds for the separate and simultaneous actions on the
+literal paired copy space, at every number of copies.
+\end{theorem}
+
+\begin{proof}
+\leanok
+The three commuting families of central projections give a joint orthogonal
+resolution. On the sector with labels $\lambda,\mu,\nu$, the deficit is
+\[
+ \log d_\lambda+\log d_\mu-\log d_\nu.
+\]
+Every nonzero joint sector satisfies $d_\nu\le d_\lambda d_\mu$, so its
+coefficient is nonnegative. Vanishing sectors contribute zero. Positivity
+therefore follows by summing the actual Hermitian projections with these
+coefficients. This also covers a zero-dimensional ambient space.
+\end{proof}
+
+The physical expression $F_Q+F_V-F_Y$ has an independent middle region $Y$.
+Its positivity on the physical symmetric subspace requires the complementary
+label identity there. It is not a full-space instance of the preceding theorem.
+The following elementary spectral fact applies once that identity has been
+derived, as in \cite[Section~7, lines~515--522]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Nonnegative spectral projection on an intertwined range]
+\label{thm:nonnegative-spectral-intertwiner}
+\lean{Matrix.PosSemidef.spectralProjectionGE_zero,
+Matrix.spectralProjectionGE_zero_mul_of_intertwine}
+\leanok
+For a Hermitian matrix $A$, let $J_A=\mathbf1_{[0,\infty)}(A)$.
+If $B\ge0$, then $J_B=I$. If $T$ is any rectangular matrix satisfying
+$AT=TB$, then
+\[
+ J_AT=T.
+\]
+The matrix $T$ may have zero or noninjective range, and the coordinate sets
+may be empty.
+\end{theorem}
+
+\begin{proof}
+\leanok
+All eigenvalues of $B$ are nonnegative, including its zero eigenvalues, so
+the closed nonnegative spectral projection is the identity. Functional
+calculus preserves the Hermitian intertwining relation, giving
+$J_AT=TJ_B=T$.
+\end{proof}

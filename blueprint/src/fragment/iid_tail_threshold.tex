@@ -1,0 +1,36 @@
+\section{A numerical threshold for the two independent-copy tails}
+\label{sec:iid_tail_threshold}
+
+The following arithmetic estimate supplies the eventual threshold used when
+combining the two tail bounds in \cite[Section~7]{OpenAI2026AreaLaw}.
+The coefficient and polynomial degree are fixed as the number of copies
+increases.
+
+\begin{theorem}[An eventual error bound]
+\label{thm:iid_tail_threshold}
+\lean{Real.eventually_iid_tail_error_le_half}
+\leanok
+For every real number $V$ and every integer $m\ge0$, there is an integer
+$K\ge1$ such that, for all integers $k\ge K$,
+\begin{align}
+ \frac{V}{\sqrt{k}}+(k+1)^m\exp\!\left(-\frac{k^{3/4}}{2}\right)
+   &\le \frac12.
+ \label{eq:iid_tail_threshold}
+\end{align}
+In particular, the estimate applies to a nonnegative variance $V$.
+It requires no spectral or representation label assumptions.
+\end{theorem}
+\begin{proof}
+\leanok
+For $k\ge1$, $(k+1)^m\le 2^mk^m$. Put $t=k^{3/4}$, so that
+$k^m=t^{4m/3}$. The standard exponential decay estimate gives
+\begin{align}
+ t^{4m/3}e^{-t/2}&\longrightarrow0
+ \qquad(t\longrightarrow\infty).
+ \label{eq:iid_tail_threshold_decay}
+\end{align}
+Consequently, $2^mk^me^{-k^{3/4}/2}$ tends to zero as $k$ tends to
+infinity. The term $V/\sqrt{k}$ also tends to zero. Their sum is therefore
+eventually less than $1/2$; domination by this sum proves the displayed
+inequality, and increasing $K$ ensures $K\ge1$.
+\end{proof}

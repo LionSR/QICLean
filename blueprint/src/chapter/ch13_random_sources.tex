@@ -1,0 +1,468 @@
+%% =========================================================
+%% Chapter: Random sources and sampling
+%% Source: September 24, 2026 polynomial-PEPS preprint, Theorem 5.2.
+%% These are generic probability results, not the distributed compression theorem.
+%% Gaussian source calculations are documented separately after their integration.
+%% =========================================================
+
+\chapter{Random Sources and Sampling}\label{ch:random_sources}
+
+Finite product measures determine the second moments of independent source
+slots. Diagonal coefficient moments then determine the second moments of
+rectangular matrix sums. Summing estimates over nonempty correction subsets
+gives an explicit sample count and a deterministic realization.
+These calculations occur in the proof of
+\cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
+
+All integrals are Bochner integrals, with value zero when the integrand is not
+integrable. Empty products have value one, and scalar inversion uses
+$0^{-1}=0$. For a complex rectangular matrix
+$A$, write $\lVert A\rVert_2^2=\sum_{r,c}|A_{rc}|^2$ for its
+Hilbert--Schmidt square.
+
+\section{Independent source slots}
+
+\begin{definition}[Products of slot coefficients]\label{def:random_tensor_coefficients}
+    \lean{IndependentCovariance.tensorCoefficient}
+    \leanok
+    Let $S$ be a finite set. For each $s\in S$, let $\Omega_s$ be a measurable
+    space and let $I_s$ and $L_s$ be two index sets. Given complex functions
+    $c_s(a,b;\cdot)$ on $\Omega_s$, define the coefficient associated with
+    multiindices $i\in\prod_s I_s$ and $l\in\prod_s L_s$ by
+    \begin{align}
+        z_{il}(\omega)
+         & =\prod_{s\in S}c_s(i_s,l_s;\omega_s),
+        \label{eq:random_tensor_coefficients}
+    \end{align}
+    where $\omega\in\prod_s\Omega_s$. The ket and bra index sets may have
+    different cardinalities.
+    This is the coefficient product in
+    \cite[Equation~(5.11)]{OpenAI2026PolynomialPEPS}.
+    % Source: 04-compression.tex:394--406, eq:compression-product-covariance.
+\end{definition}
+
+\begin{theorem}[Factorization of product moments]\label{thm:random_product_moments}
+    \lean{IndependentCovariance.integral_product_mul_conj}
+    \lean{IndependentCovariance.integrable_product_mul_conj}
+    \lean{IndependentCovariance.integrable_tensorCoefficient_mul_conj}
+    \leanok
+    \uses{def:random_tensor_coefficients}
+    Let each $\mu_s$ be a $\sigma$-finite measure on $\Omega_s$, and set
+    $\mu=\bigotimes_{s\in S}\mu_s$. For complex functions $f_s,g_s$,
+    \begin{align}
+        \int\!\Bigl(\prod_s f_s(\omega_s)\Bigr)
+        \overline{\Bigl(\prod_s g_s(\omega_s)\Bigr)}\,d\mu(\omega)
+         & =\prod_s\int f_s(x)\overline{g_s(x)}\,d\mu_s(x).
+        \label{eq:random_product_moments}
+    \end{align}
+    If each $f_s\overline{g_s}$ is integrable, the product integrand is
+    integrable. In particular, pair-product integrability of the slot
+    coefficients implies pair-product integrability of $z_{il}$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Conjugation commutes with the finite product, so the integrand is
+    $\prod_s(f_s(\omega_s)\overline{g_s(\omega_s)})$.
+    The finite-product integral formula gives
+    (\ref{eq:random_product_moments}); its integrability statement applies to
+    the same individual factors.
+\end{proof}
+
+\begin{theorem}[Diagonal moments of tensor coefficients]\label{thm:random_tensor_moments}
+    \lean{IndependentCovariance.tensor_covariance_of_diagonal}
+    \lean{IndependentCovariance.product_weighted_sqrt}
+    \lean{IndependentCovariance.tensor_covariance_weighted}
+    \lean{IndependentCovariance.sum_product_weights_eq_one}
+    \leanok
+    \uses{def:random_tensor_coefficients}
+    On the product of $\sigma$-finite measures, suppose the individual slot
+    moments satisfy
+    \begin{align}
+        \int c_s(a,b;x)\overline{c_s(a',b';x)}\,d\mu_s(x)
+         & =\delta_{aa'}\delta_{bb'}\nu_s(a,b).
+        \label{eq:random_slot_moments}
+    \end{align}
+    Then the full multiindices have diagonal moments:
+    \begin{align}
+        \int z_{il}\overline{z_{i'l'}}\,d\mu
+         & =\delta_{ii'}\delta_{ll'}\prod_s\nu_s(i_s,l_s).
+        \label{eq:random_tensor_moments}
+    \end{align}
+    In particular, on probability spaces, let $k$ be a positive integer and
+    let $p_s,q_s$ be nonnegative weights. Put
+    $p_i=\prod_s p_s(i_s)$ and $\widetilde p_l=\prod_s q_s(l_s)$. If
+    $\nu_s(a,b)=k^{-1}\sqrt{p_s(a)q_s(b)}$, then
+    \begin{align}
+        \mathbb E[z_{il}\overline{z_{i'l'}}]
+         & =k^{-|S|}\sqrt{p_i\widetilde p_l}\,
+        \delta_{ii'}\delta_{ll'}.
+        \label{eq:random_weighted_moments}
+    \end{align}
+    For finite $I_s$, the equalities $\sum_a p_s(a)=1$ imply
+    $\sum_i\prod_s p_s(i_s)=1$; this normalization identity requires no sign
+    condition on the individual weights.
+    The weighted moment formula is
+    \cite[Equation~(5.11)]{OpenAI2026PolynomialPEPS}.
+    % Source: 04-compression.tex:394--406, eq:compression-product-covariance.
+    % The general weighted declaration also handles k=0 with total inversion.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_product_moments}
+    Apply (\ref{eq:random_product_moments}) and substitute
+    (\ref{eq:random_slot_moments}). A product of Kronecker deltas is one
+    precisely when both complete multiindices agree, and is zero otherwise.
+    The nonnegative-weight identity
+    $\prod_s\sqrt{p_s(i_s)q_s(l_s)}=\sqrt{p_i\widetilde p_l}$
+    gives (\ref{eq:random_weighted_moments}). Finally, finite distributivity
+    gives $\sum_i\prod_s p_s(i_s)=\prod_s\sum_a p_s(a)=1$.
+\end{proof}
+
+\begin{theorem}[Gaussian coefficients on independent slots]
+    \label{thm:random_gaussian_slots}
+    \lean{QICLean.ComplexGaussian.pairedProductProbability}
+    \lean{QICLean.ComplexGaussian.pairedProductProbability_nonneg}
+    \lean{QICLean.ComplexGaussian.sum_pairedProductProbability_eq_one}
+    \lean{QICLean.ComplexGaussian.independentDensityLaw}
+    \lean{QICLean.ComplexGaussian.independentDensityLawIsProbabilityMeasure}
+    \lean{QICLean.ComplexGaussian.independentDensityCoefficient}
+    \lean{QICLean.ComplexGaussian.integrable_independentDensityCoefficient}
+    \lean{QICLean.ComplexGaussian.integrable_independentDensityCoefficient_mul_conj}
+    \lean{QICLean.ComplexGaussian.integral_independentDensityCoefficient_mul_conj}
+    \lean{QICLean.ComplexGaussian.integral_independentDensityCoefficient_eq_zero}
+    \leanok
+    Let $S$ be finite. At each slot $s$, let $A_s,C_s$ be finite endpoint
+    supports with nonnegative weights $\lambda_s,\mu_s$. Take independent
+    standard circular complex Gaussian coordinates $g^{(j,s)}_{ac}$, with
+    $\mathbb E|g^{(j,s)}_{ac}|^2=1$, and independent Gaussian factors across
+    slots. For $k>0$, define
+    \begin{align}
+        c_s((a,b),(c,d))
+               & =(\lambda_s(a)\lambda_s(b)\mu_s(c)\mu_s(d))^{1/4}
+        \left(\frac1k\sum_{j=0}^{k-1}
+        g^{(j,s)}_{ac}\overline{g^{(j,s)}_{bd}}
+        -\delta_{ab}\delta_{cd}\right),
+        \label{eq:random_gaussian_slot}                            \\
+        z_{il} & =\prod_s c_s(i_s,l_s).
+        \label{eq:random_gaussian_product}
+    \end{align}
+    The product law is a probability measure, and both $z_{il}$ and every
+    conjugate pair product are integrable. Set
+    $p_i=\prod_s\lambda_s(i_s^1)\lambda_s(i_s^2)$ and
+    $\widetilde p_l=\prod_s\mu_s(l_s^1)\mu_s(l_s^2)$.
+    Their covariance is (\ref{eq:random_weighted_moments}). If each endpoint
+    weight list sums to one, both product weight lists also sum to one.
+    For nonempty $S$, $\mathbb E z_{il}=0$.
+    These are the actual independent coefficients in
+    \cite[Equations~(5.7), (5.8), and~(5.11)]{OpenAI2026PolynomialPEPS}.
+    % Source: 04-compression.tex:311--340,390--407, Gaussian covariance,
+    % slot variance, and product covariance. Integrability also holds for k=0.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_product_moments, thm:random_tensor_moments}
+    The centered Gaussian pairing formula gives
+    $\mathbb E[(g_\alpha\overline{g_\beta}-\delta_{\alpha\beta})
+                \overline{(g_\gamma\overline{g_\delta}-\delta_{\gamma\delta})}]
+        =\delta_{\alpha\gamma}\delta_{\beta\delta}$.
+    Distinct sample coordinates remove the off-diagonal sample terms, so
+    the slot covariance is $k^{-1}$ times its quarter-weight square.
+    Theorem~\ref{thm:random_tensor_moments} gives the full covariance.
+    The Gaussian coefficients belong to $L^2$, which gives the required
+    product integrability. Finite-product factorization gives the zero
+    mean for nonempty $S$, and finite distributivity gives normalization.
+\end{proof}
+
+\section{Rectangular trace-norm comparisons}
+
+\begin{theorem}[Attained duality for the rectangular trace norm]
+    \label{thm:random_trace_duality}
+    \lean{Matrix.rectangularTraceNorm}
+    \lean{Matrix.rectangularTraceNorm_square}
+    \lean{Matrix.rectangularTraceNorm_eq_sum_sqrt_eigenvalues}
+    \lean{Matrix.norm_trace_conjTranspose_mul_le_rectangularTraceNorm}
+    \lean{Matrix.exists_contraction_trace_conjTranspose_mul_eq}
+    \leanok
+    For a complex rectangular matrix $A$, let $\lVert A\rVert_1$ be the sum
+    of its singular values. Equivalently,
+    $\lVert A\rVert_1=\sum_j\sqrt{\lambda_j(A^\dagger A)}$; for square
+    matrices this is the trace norm. Every rectangular contraction $U$
+    of the same size satisfies
+    $|\tr(A^\dagger U)|\leq\lVert A\rVert_1$, and some such $U$ satisfies
+    $\tr(A^\dagger U)=\lVert A\rVert_1$.
+    This is the trace-norm duality used in
+    \cite[Equation~(5.13)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-exterior-contraction, 04-compression.tex:454--470.
+\end{theorem}
+
+\begin{proof}\leanok
+    Diagonalize $A^\dagger A$ in an orthonormal basis $v_j$.
+    The trace is a sum of column inner products, each of absolute value at
+    most $\lVert Av_j\rVert\lVert Uv_j\rVert
+        \leq\sqrt{\lambda_j(A^\dagger A)}$.
+    Equality is attained by sending $v_j$ to
+    $Av_j/\sqrt{\lambda_j(A^\dagger A)}$ for positive eigenvalues, and to
+    zero on the kernel. The resulting columns are orthonormal on the
+    positive eigenspaces, so this map is a contraction.
+\end{proof}
+
+\begin{theorem}[Two-weight quarter-power comparisons]
+    \label{thm:random_quarter_weights}
+    \lean{Matrix.rectangularTraceNorm_halfWeighted_le}
+    \lean{Matrix.frobeniusNormSq_rpow_quarter_mul_le_one}
+    \leanok
+    For nonnegative diagonal probability matrices $\tau,\widetilde\tau$
+    and an arbitrary rectangular matrix $W$ of compatible size,
+    \begin{align}
+        \lVert\tau^{1/2}W\widetilde\tau^{1/2}\rVert_1
+         & \leq\lVert\tau^{1/4}W\widetilde\tau^{1/4}\rVert_2.
+        \label{eq:random_quarter_comparison}
+    \end{align}
+    More generally, let $R,\widetilde R$ be arbitrary positive
+    semidefinite trace-one matrices and let $O$ be a rectangular
+    contraction between their spaces. Then
+    \begin{align}
+        \lVert\widetilde R^{1/4}OR^{1/4}\rVert_2^2 & \leq1.
+        \label{eq:random_dimension_free}
+    \end{align}
+    Zero eigenvalues and different input dimensions are allowed. These
+    are the comparisons in
+    \cite[Equations~(5.15) and~(5.17)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-quarter-powers, eq:compression-dimension-free,
+    % 04-compression.tex:484--527. The latter extends the paper's diagonal case.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_trace_duality}
+    A contraction's squared column sums and squared row sums are at most
+    one. Cauchy--Schwarz with the two probability weights therefore gives
+    $\lVert\tau^{1/4}U\widetilde\tau^{1/4}\rVert_2\leq1$.
+    Pull the half-weights into the trace pairing and apply
+    Hilbert--Schmidt Cauchy--Schwarz against $U$; attained duality gives
+    (\ref{eq:random_quarter_comparison}). For general positive matrices,
+    diagonalize each in its own orthonormal basis and conjugate $O$ by
+    the corresponding unitaries. Hilbert--Schmidt norm and the
+    contraction bound are preserved, reducing
+    (\ref{eq:random_dimension_free}) to the diagonal calculation.
+\end{proof}
+
+\begin{theorem}[Exterior contractions and discarded registers]
+    \label{thm:random_exterior_contraction}
+    \lean{Matrix.l2_opNorm_kronecker_one_le}
+    \lean{Matrix.trace_partialTraceRight_conjTranspose_mul}
+    \lean{Matrix.rectangularTraceNorm_mul_conjTranspose_le}
+    \lean{Matrix.rectangularTraceNorm_partialTraceRight_le}
+    \lean{Matrix.rectangularTraceNorm_partialTraceRight_mul_conjTranspose_le}
+    \leanok
+    Let $Z$ be an arbitrary rectangular matrix. Let $K$ and
+    $\widetilde K$ be contractions from its respective output and input
+    spaces into a common physical space tensored with a discard space.
+    Then
+    \begin{align}
+        \lVert\Tr_{\mathrm{discard}}(KZ\widetilde K^\dagger)\rVert_1
+         & \leq\lVert Z\rVert_1.
+        \label{eq:random_exterior_contraction}
+    \end{align}
+    The same norm bound holds for left and right contractions alone,
+    and partial trace alone cannot increase the trace norm.
+    This is \cite[Equation~(5.13)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-exterior-contraction, 04-compression.tex:454--470.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_trace_duality}
+    Pull a physical test contraction $M$ back to
+    $\widetilde K^\dagger(M\otimes\Id)K$. Its operator norm is at most one,
+    since tensoring with the identity preserves that norm bound.
+    Trace-norm duality gives (\ref{eq:random_exterior_contraction}).
+    Taking only the corresponding part of this calculation gives the
+    separate multiplication and partial-trace bounds.
+\end{proof}
+
+\section{Rectangular matrix second moments}
+
+\begin{theorem}[Second moments from diagonal coefficient moments]
+    \label{thm:random_matrix_moments}
+    \lean{ProbabilityTheory.integrable_normSq_sum}
+    \lean{ProbabilityTheory.integral_normSq_sum_eq_sum}
+    \lean{ProbabilityTheory.integrable_frobenius_norm_sq_sum}
+    \lean{ProbabilityTheory.integral_frobenius_norm_sq_sum_eq_sum}
+    \lean{ProbabilityTheory.integral_frobenius_norm_sum_le_sqrt}
+    \leanok
+    Let $J$ be finite, let $\mu$ be a measure, and let $z_j$ be complex
+    functions with every product $z_i\overline{z_j}$ integrable. Suppose
+    $\int z_i\overline{z_j}\,d\mu=\delta_{ij}v_i$, where $v_i\in\R$.
+    For complex numbers $a_j$ and arbitrary rectangular matrices $A_j$,
+    \begin{align}
+        \int\Bigl|\sum_j z_j a_j\Bigr|^2\,d\mu
+         & =\sum_j v_j|a_j|^2,
+        \label{eq:random_scalar_moment}     \\
+        \int\Bigl\lVert\sum_j z_j A_j\Bigr\rVert_2^2\,d\mu
+         & =\sum_j v_j\lVert A_j\rVert_2^2.
+        \label{eq:random_matrix_moment}
+    \end{align}
+    Both squared integrands are integrable. If $\mu$ is a probability
+    measure, then
+    \begin{align}
+        \mathbb E\Bigl\lVert\sum_j z_j A_j\Bigr\rVert_2
+         & \leq\sqrt{\sum_j v_j\lVert A_j\rVert_2^2}.
+        \label{eq:random_mean_norm}
+    \end{align}
+    These are the moment calculation and expectation estimate used in
+    \cite[Equations~(5.16) and~(5.18)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-block-second-moment and eq:compression-one-choice,
+    % 04-compression.tex:502--533. The weighted trace-norm comparison is separate.
+\end{theorem}
+
+\begin{proof}\leanok
+    Expand $|\sum_j z_j a_j|^2$ into the finite sum
+    $\sum_{i,j}z_i\overline{z_j}a_i\overline{a_j}$.
+    Pair-product integrability permits integration term by term, and the
+    diagonal moment identity removes every term with $i\neq j$.
+    Apply (\ref{eq:random_scalar_moment}) to each matrix entry and sum over
+    rows and columns to obtain (\ref{eq:random_matrix_moment}).
+    On a probability space, the nonnegative variance of
+    $f=\lVert\sum_j z_j A_j\rVert_2$ gives
+    $(\mathbb E f)^2\leq\mathbb E(f^2)$, which implies
+    (\ref{eq:random_mean_norm}).
+\end{proof}
+
+\section{Correction sums and deterministic realizations}
+
+\begin{theorem}[Binomial correction cost]\label{thm:random_binomial_cost}
+    \lean{CompressionSampling.sum_nonempty_subsets_pow}
+    \lean{CompressionSampling.sum_nonempty_subsets_weight}
+    \lean{CompressionSampling.inverse_half_power}
+    \lean{CompressionSampling.sum_nonempty_subsets_rpow}
+    \lean{CompressionSampling.zero_slots_error}
+    \lean{CompressionSampling.binomial_error_le_exp}
+    \lean{CompressionSampling.exp_eighth_sub_one_le_quarter}
+    \leanok
+    Let $T$ be a finite set of source positions, with $N=|T|$. For every real
+    $a$,
+    \begin{align}
+        \sum_{\varnothing\neq U\subseteq T}a^{|U|}
+         & =(1+a)^N-1.
+        \label{eq:random_binomial_cost}
+    \end{align}
+    For $k>0$, the summand $Q^{|U|}k^{-|U|/2}$ equals
+    $(Q/\sqrt{k})^{|U|}$, so its sum is
+    $(1+Q/\sqrt{k})^N-1$. The sum is zero when $T$ is empty.
+    If $a\geq0$, then $(1+a)^N-1\leq e^{Na}-1$.
+    For $0\leq\epsilon\leq1$, one also has
+    $e^{\epsilon/8}-1\leq\epsilon/4$.
+    These are the scalar estimates in
+    \cite[Equation~(5.19) and the following paragraph]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-total-error, 04-compression.tex:540--565.
+\end{theorem}
+
+\begin{proof}\leanok
+    Finite distributivity gives
+    $\sum_{U\subseteq T}a^{|U|}=(1+a)^N$; remove the empty subset's contribution
+    one. The square-root identity $k^{-n/2}=(\sqrt{k})^{-n}$ gives the
+    sampling form. The inequality $1+a\leq e^a$ gives the exponential
+    estimate. Finally, $|e^t-1|\leq2|t|$ for $|t|\leq1$, applied to
+    $t=\epsilon/8$, gives the quarter-accuracy estimate.
+\end{proof}
+
+\begin{theorem}[A positive sample count with quarter accuracy]
+    \label{thm:random_sample_count}
+    \lean{CompressionSampling.sampleCount}
+    \lean{CompressionSampling.sampleCount_bounds}
+    \lean{CompressionSampling.ratio_le_of_sample_count}
+    \lean{CompressionSampling.binomial_error_le_quarter}
+    \lean{CompressionSampling.error_le_quarter_of_sample_count}
+    \lean{CompressionSampling.error_le_quarter_sampleCount}
+    \leanok
+    For $N\in\N$ and real $Q,\epsilon$, put
+    \begin{align}
+        k & =\left\lceil(8NQ/\epsilon)^2\right\rceil+1.
+        \label{eq:random_sample_count}
+    \end{align}
+    Then $k>0$ and
+    $(8NQ/\epsilon)^2\leq k\leq(8NQ/\epsilon)^2+2$.
+    If $Q\geq0$ and $0<\epsilon\leq1$, every positive integer $k$ satisfying
+    $(8NQ/\epsilon)^2\leq k$ obeys
+    \begin{align}
+        (1+Q/\sqrt{k})^N-1 & \leq\epsilon/4.
+        \label{eq:random_quarter_accuracy}
+    \end{align}
+    For $N>0$, the sample-count hypothesis gives
+    $Q/\sqrt{k}\leq\epsilon/(8N)$.
+    This is an explicit integer choice for the sample count in
+    \cite[Theorem~5.2, paragraph following Equation~(5.19)]{OpenAI2026PolynomialPEPS}.
+    % Source: 04-compression.tex:552--565. The ceiling-plus-one also covers Q=0.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_binomial_cost}
+    The ceiling inequalities give the three bounds on
+    (\ref{eq:random_sample_count}). If $N=0$, the error is zero.
+    Otherwise, the sample-count hypothesis gives
+    $8NQ/\epsilon\leq\sqrt{k}$, hence $NQ/\sqrt{k}\leq\epsilon/8$.
+    Apply the exponential and quarter-accuracy estimates of
+    Theorem~\ref{thm:random_binomial_cost}.
+\end{proof}
+
+\begin{theorem}[Expected error of correction sums]\label{thm:random_expected_corrections}
+    \lean{CompressionSampling.integral_error_le_binomial}
+    \lean{CompressionSampling.integral_norm_sum_le_binomial}
+    \lean{CompressionSampling.integral_norm_sum_le_sampling_error}
+    \leanok
+    Let $T$ be finite and let $F_U$ be integrable functions with values in a
+    normed additive group, indexed by the nonempty subsets of $T$.
+    If $\int\lVert F_U\rVert\,d\mu\leq a^{|U|}$ for each such $U$, then
+    \begin{align}
+        \int\Bigl\lVert\sum_{\varnothing\neq U\subseteq T}F_U\Bigr\rVert\,d\mu
+         & \leq(1+a)^{|T|}-1.
+        \label{eq:random_expected_corrections}
+    \end{align}
+    More generally, the same bound holds for an integrable real error $e$
+    whenever $e\leq\sum_U e_U$ pointwise and the integrable real correction
+    estimates satisfy $\int e_U\,d\mu\leq a^{|U|}$.
+    In particular, for $k>0$, per-subset bounds
+    $\int\lVert F_U\rVert\,d\mu\leq Q^{|U|}k^{-|U|/2}$ give the right side
+    $(1+Q/\sqrt{k})^{|T|}-1$.
+    This is the summation implication in
+    \cite[Equation~(5.19)]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:compression-total-error, 04-compression.tex:540--551.
+    % The per-subset estimates are explicit hypotheses, not discharged here.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_binomial_cost}
+    Apply the triangle inequality pointwise, integrate the finite sum, and
+    substitute the individual integral bounds. Formula
+    (\ref{eq:random_binomial_cost}) evaluates their sum. For a real error,
+    integral monotonicity replaces the triangle inequality.
+\end{proof}
+
+\begin{theorem}[A deterministic realization with half accuracy]
+    \label{thm:random_realization}
+    \lean{CompressionSampling.exists_error_le_half_sampleCount}
+    \lean{CompressionSampling.exists_valid_error_le_half_sampleCount}
+    \lean{CompressionSampling.exists_valid_norm_sum_le_half_sampleCount}
+    \leanok
+    Let $\mu$ be a probability measure, let $Q\geq0$ and
+    $0<\epsilon\leq1$, and choose $k$ by (\ref{eq:random_sample_count}).
+    Suppose $e$ is integrable and
+    $\mathbb E e\leq(1+Q/\sqrt{k})^N-1$.
+    If a condition $V$ holds almost surely, there exists $\omega$ satisfying
+    $V(\omega)$ and $e(\omega)\leq\epsilon/2$.
+    In particular, this conclusion applies with
+    $e=\lVert\sum_{\varnothing\neq U\subseteq T}F_U\rVert$ and $N=|T|$,
+    provided each $F_U$ is integrable and
+    $\mathbb E\lVert F_U\rVert\leq Q^{|U|}k^{-|U|/2}$.
+    This is the realization step after
+    \cite[Equation~(5.19)]{OpenAI2026PolynomialPEPS}.
+    % Source: 04-compression.tex:558--567. No distributed-network conclusion is tagged.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:random_sample_count, thm:random_expected_corrections}
+    There is a point outside the exceptional null set of $V$ at which
+    $e\leq\mathbb E e$. Theorem~\ref{thm:random_sample_count} bounds this
+    expectation by $\epsilon/4\leq\epsilon/2$.
+    For correction sums, Theorem~\ref{thm:random_expected_corrections}
+    supplies the required expectation bound.
+\end{proof}

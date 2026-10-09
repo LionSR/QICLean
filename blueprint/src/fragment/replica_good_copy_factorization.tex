@@ -1,0 +1,88 @@
+\section{Ground-state factors of excitation components}
+\label{sec:replica_good_copy}
+
+The good physical copies of an excitation component carry the given ground
+state, as in \cite[Section~7]{OpenAI2026AreaLaw}. Let
+$B\subseteq\{0,\ldots,k-1\}$ and $G=B^c$; thus $|G|=k-|B|$.
+Write $b\in A^B$, $g\in A^G$, and let $b\sqcup g\in A^k$ denote their
+unique common extension. Let $\mathcal K=\mathbb C^C$ be any
+finite-dimensional auxiliary space. Every auxiliary coordinate is retained
+under this split.
+
+\begin{definition}[Partial contraction on the good copies]
+\label{def:replica_good_remainder}
+\lean{Matrix.replicaGoodCopyRemainder}
+\leanok
+For any $\Omega\in\mathbb C^A$ and $u\in\mathbb C^{A^k}\otimes\mathcal K$,
+define a vector $w_B\in\mathbb C^{A^B}\otimes\mathcal K$ by
+\begin{align}
+ w_B(u)(b,c)=\sum_{g\in A^G}
+   \left(\prod_{i\in G}\overline{\Omega(g_i)}\right)u(b\sqcup g,c).
+ \label{eq:replica_good_contraction}
+\end{align}
+No normalization of $u$ or $\Omega$ is required for this definition.
+\end{definition}
+
+\begin{theorem}[Ground-state factors of an actual component]
+\label{thm:replica_good_component}
+\lean{Matrix.replicaExcitationProjection_mulVec_factorization}
+\leanok
+\uses{def:replica_good_remainder,def:replica_excitation_projection}
+Suppose $\|\Omega\|=1$. For any $u$, let
+$u_B=(R_B\otimes I_{\mathcal K})u$. For every $b,g,c$,
+\begin{align}
+ u_B(b\sqcup g,c)=\left(\prod_{i\in G}\Omega(g_i)\right)w_B(u_B)(b,c).
+ \label{eq:replica_good_component}
+\end{align}
+This includes $k=0$, $B=\varnothing$, $B=\{0,\ldots,k-1\}$ and $u_B=0$.
+\end{theorem}
+\begin{proof}
+\leanok
+Expanding the ground factors of $R_B$ yields
+$u_B(b\sqcup g,c)=(\prod_{i\in G}\Omega(g_i))v_B(b,c)$ for the explicit vector
+\begin{align}
+ v_B(b,c)=\sum_{y\in A^k}
+ \left(\prod_{i\in B}Q(b_i,y_i)\right)
+ \left(\prod_{i\in G}\overline{\Omega(y_i)}\right)u(y,c),
+ \label{eq:replica_good_residual}
+\end{align}
+where $Q=I-|\Omega\rangle\langle\Omega|$. Since
+$\sum_{g\in A^G}\prod_{i\in G}|\Omega(g_i)|^2
+=(\sum_{a\in A}|\Omega(a)|^2)^{|G|}=1$,
+(\ref{eq:replica_good_contraction}) gives $w_B(u_B)=v_B$.
+Substitution proves (\ref{eq:replica_good_component}).
+\end{proof}
+
+\begin{theorem}[Factorization on the exact sector]
+\label{thm:replica_good_fixed}
+\lean{Matrix.replicaGoodCopy_factorization_of_fixed}
+\leanok
+\uses{def:replica_good_remainder,def:replica_excitation_projection}
+Suppose $\|\Omega\|=1$ and $(R_B\otimes I_{\mathcal K})u=u$.
+Then $u(b\sqcup g,c)=(\prod_{i\in G}\Omega(g_i))w_B(u)(b,c)$ for every $b,g,c$.
+Thus $u$ has the tensor factor $\bigotimes_{i\in G}\Omega$ on its
+$k-|B|$ good physical coordinates, with every other coordinate retained
+in $w_B(u)$.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_good_component}
+Apply (\ref{eq:replica_good_component}) and substitute $u_B=u$.
+\end{proof}
+
+\begin{theorem}[Norm of the remaining vector]
+\label{thm:replica_good_norm}
+\lean{Matrix.norm_replicaGoodCopyRemainder_of_fixed}
+\leanok
+\uses{def:replica_good_remainder,def:replica_excitation_projection}
+Suppose $\|\Omega\|=1$ and $(R_B\otimes I_{\mathcal K})u=u$.
+Then $\|w_B(u)\|=\|u\|$. No nonvanishing hypothesis is required.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_good_fixed}
+Sum the squared absolute values of the factorization over $b,g,c$.
+The sum over $g$ is one by the normalization of $\Omega$, so
+$\|u\|^2=\sum_{b,c}|w_B(u)(b,c)|^2=\|w_B(u)\|^2$.
+Taking nonnegative square roots proves the assertion.
+\end{proof}

@@ -1,0 +1,73 @@
+\subsection{Uniform truncated Gaussian approximation}
+\label{sec:gaussian_uniform_ground}
+
+% Source: polynomial-PEPS manuscript (September 24, 2026), lem:reset,
+% pinned peps-02-information-adc7f124.tex, lines 425--452, at
+% openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% This is the approximation step only, with arbitrary complex overlap.
+% No spatial locality or full reset result is claimed.
+% Production, consumers, and axiom reports checked at 3702df8.
+% This leaf is not added to a shared router in the present change.
+
+\begin{theorem}[Uniform truncated Gaussian approximation]
+    \label{thm:gaussian_uniform_ground}
+    \lean{GaussianFilter.exists_uniform_truncated_ground_estimate}
+    \leanok
+    Let $\Delta>0$ and $r\ge0$ be real. There exist $A>0$ and $T_0>0$,
+    depending only on $\Delta,r$, with the following property. For every
+    real $b\ge0$ and $L\ge1$, put $B_*=1+b+\log L$, $h=AB_*$, and
+    $T=T_0B_*$. Then $h>0$ and $T\ge0$.
+
+    In any finite-dimensional complex Hilbert space, let $H,H'$ be
+    self-adjoint operators and let $W$ be a contraction. Suppose that
+    unit vectors $\Psi,\Phi$ and a real number $E_0$ satisfy
+    \begin{align}
+        H\Psi&=E_0\Psi,& H'\Phi&=E_0\Phi,
+        \label{eq:gaussian_uniform_ground_vectors}
+    \end{align}
+    \begin{align}
+        H-E_0\Id&\ge\Delta(\Id-\ketbra{\Psi}{\Psi}),&
+        H'-E_0\Id&\ge\Delta(\Id-\ketbra{\Phi}{\Phi}).
+        \label{eq:gaussian_uniform_ground_gaps}
+    \end{align}
+    Define $z=\braket{\Phi}{W\Psi}$ and the unrenormalized integral
+    \begin{align}
+        M_T&=\int_{-T}^{T}(2\pi h)^{-1/2}e^{-t^2/(2h)}
+            e^{itH'}W e^{-itH}\,dt.
+        \label{eq:gaussian_uniform_ground_integral}
+    \end{align}
+    Then $\|M_T\|\le1$, and
+    \begin{align}
+        \|M_T\Psi-z\Phi\|&\le3e^{-10b}L^{-r},
+        \label{eq:gaussian_uniform_ground_forward}
+    \end{align}
+    \begin{align}
+        \|M_T^\dagger\Phi-\overline z\Psi\|&\le3e^{-10b}L^{-r}.
+        \label{eq:gaussian_uniform_ground_reverse}
+    \end{align}
+    This is the uniform Gaussian approximation in the reset argument
+    of~\cite{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_parameters, thm:gaussian_filter_contraction,
+        thm:gaussian_truncated_two_sided}
+    Choose $A,T_0$ by Theorem~\ref{thm:gaussian_parameters}, before
+    $b,L$, the Hilbert space, and the operators and vectors. The positive
+    Gaussian density has total mass one, and each operator
+    $e^{itH'}W e^{-itH}$ has norm at most $\|W\|\le1$.
+    Restricting its integral to $[-T,T]$ therefore gives $\|M_T\|\le1$.
+
+    Theorem~\ref{thm:gaussian_truncated_two_sided}
+    bounds each residual in (\ref{eq:gaussian_uniform_ground_forward}) and
+    (\ref{eq:gaussian_uniform_ground_reverse}) by
+    \begin{align}
+        \bigl(e^{-h\Delta^2/2}+2e^{-T^2/(2h)}\bigr)\|W\|
+        &\le \bigl(1+2\bigr)e^{-10b}L^{-r}
+         =3e^{-10b}L^{-r}.
+        \label{eq:gaussian_uniform_ground_error_sum}
+    \end{align}
+    The last inequality uses
+    (\ref{eq:gaussian_parameter_error}) and
+    (\ref{eq:gaussian_parameter_truncation}). Conjugate symmetry gives
+    $\braket{\Psi}{W^\dagger\Phi}=\overline z$ in the adjoint estimate.
+\end{proof}

@@ -1,0 +1,158 @@
+\section{Incidence kernels of metric balls}
+\label{sec:metric_ball_kernel}
+
+Let $I$ be a finite set of labels, let $Y$ be an extended
+pseudometric space with distance $\delta$, and fix anchor positions
+$i\mapsto x_i$ in $Y$.  The map need not be injective: different
+labels at the same position are counted separately.
+For a finite nonnegative radius $r\in\mathbb R_{\geq0}$, write
+$N_r(x)=\{z\in Y:\delta(z,x)\leq r\}$.
+For an extended nonnegative real number $e$, write $e_{\mathbb R}$
+for its real value when finite, with $\infty_{\mathbb R}=0$.
+The estimates below isolate the ball-counting argument in
+\cite{OpenAI2026AreaLaw}, \texttt{09-amplification.tex},
+lines 141--159.
+% Source revision: adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% Checked module: QICLean/Analysis/MetricBallKernel.lean.
+
+\begin{definition}[Ball incidence kernel]
+    \label{def:ball_incidence_kernel}
+    \lean{Metric.ballIncidenceKernel}
+    \leanok
+    For $r\in\mathbb R_{\geq0}$ and $y,z\in Y$, define the real kernel
+    \begin{align}
+        K_r(y,z) & =\sum_{i\in I}\mathbf 1_{\{y,z\in N_r(x_i)\}}.
+        \label{eq:ball_incidence_kernel}
+    \end{align}
+    Thus $K_r(y,z)$ is the number of anchor labels whose radius-$r$
+    balls contain both sites.
+\end{definition}
+
+\begin{lemma}[Nonnegativity of ball incidence]
+    \label{lem:ball_incidence_nonneg}
+    \lean{Metric.ballIncidenceKernel_nonneg}
+    \leanok
+    \uses{def:ball_incidence_kernel}
+    For every $r\in\mathbb R_{\geq0}$ and $y,z\in Y$, one has
+    $K_r(y,z)\geq0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:ball_incidence_kernel}
+    Every summand in~(\ref{eq:ball_incidence_kernel}) is zero or one.
+\end{proof}
+
+\begin{lemma}[Finite distance inside a common ball]
+    \label{lem:ball_pair_distance}
+    \lean{Metric.edist_ne_top_and_toReal_le_two_mul_of_ball_bounds}
+    \leanok
+    Let $x,y,z\in Y$ and $r\in\mathbb R_{\geq0}$.
+    If $\delta(y,x)\leq r$ and $\delta(z,x)\leq r$, then
+    \begin{align}
+        \begin{aligned}
+            \delta(y,z)             & \ne\infty, \\
+            \delta(y,z)_{\mathbb R} & \leq2r.
+        \end{aligned}
+        \label{eq:ball_pair_distance}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    The extended triangle inequality gives
+    $\delta(y,z)\leq\delta(y,x)+\delta(z,x)\leq r+r<\infty$.
+    This establishes finite distance before passing to real values.
+    The resulting real inequality is $\delta(y,z)_{\mathbb R}\leq2r$.
+\end{proof}
+
+\begin{lemma}[Vanishing at infinite pair distance]
+    \label{lem:ball_incidence_zero}
+    \lean{Metric.ballIncidenceKernel_eq_zero_of_edist_eq_top}
+    \leanok
+    \uses{def:ball_incidence_kernel}
+    For $r\in\mathbb R_{\geq0}$ and $y,z\in Y$, if
+    $\delta(y,z)=\infty$, then $K_r(y,z)=0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:ball_incidence_kernel, lem:ball_pair_distance}
+    By Lemma~\ref{lem:ball_pair_distance}, no finite-radius anchor
+    ball can contain both $y$ and $z$.  Every indicator
+    in~(\ref{eq:ball_incidence_kernel}) is therefore zero.
+\end{proof}
+
+\begin{lemma}[Entry bound by the actual label count]
+    \label{lem:ball_incidence_label_bound}
+    \lean{Metric.ballIncidenceKernel_le_card_labels}
+    \leanok
+    \uses{def:ball_incidence_kernel}
+    For every $r\in\mathbb R_{\geq0}$ and $y,z\in Y$,
+    \begin{align}
+        K_r(y,z) & \leq\bigl|\{i\in I:\delta(y,x_i)\leq r\}\bigr|.
+        \label{eq:ball_incidence_label_bound}
+    \end{align}
+    The set on the right is a set of labels, including all multiplicities
+    of the anchor positions.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:ball_incidence_kernel}
+    For each $i$, the indicator that both sites belong to $N_r(x_i)$
+    is at most the indicator that $y$ belongs to $N_r(x_i)$.
+    Sum over $I$; the latter sum is the displayed cardinality.
+\end{proof}
+
+\begin{theorem}[Single-radius weighted row estimate]
+    \label{thm:ball_incidence_weighted_row}
+    \lean{Metric.sum_ballIncidenceKernel_mul_exp_le}
+    \leanok
+    \uses{def:ball_incidence_kernel}
+    Suppose also that $Y$ is finite.  Let $r\in\mathbb R_{\geq0}$,
+    $a,\alpha,B,V\geq0$, and fix $y\in Y$.
+    Assume the following bounds on the actual finite sets, with the
+    second bound holding for every $i\in I$:
+    \begin{align}
+        \begin{aligned}
+            \bigl|\{i\in I:\delta(y,x_i)\leq r\}\bigr| & \leq B, \\
+            \bigl|\{z\in Y:\delta(z,x_i)\leq r\}\bigr| & \leq V.
+        \end{aligned}
+        \label{eq:ball_row_counts}
+    \end{align}
+    Then
+    \begin{align}
+        \sum_{z\in Y}K_r(y,z)e^{a(\delta(y,z)_{\mathbb R})^\alpha}
+         & \leq BV e^{a(2r)^\alpha}.
+        \label{eq:ball_incidence_weighted_row}
+    \end{align}
+    The radius factor in the exponent is exactly $2r$.
+    Both $a=0$ and $\alpha=0$ are allowed, with the nonnegative
+    real-power convention $s^0=1$, including $s=0$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:ball_incidence_kernel, lem:ball_pair_distance}
+    Put $E=e^{a(2r)^\alpha}>0$.
+    For $y,z\in N_r(x_i)$, Lemma~\ref{lem:ball_pair_distance}
+    first gives finite pair distance and then
+    $\delta(y,z)_{\mathbb R}\leq2r$.
+    Since $a,\alpha\geq0$, it follows that
+    $e^{a(\delta(y,z)_{\mathbb R})^\alpha}\leq E$.
+    Exchange the two finite sums and count sites inside each ball:
+    \begin{align}
+        \begin{aligned}
+            \sum_{z\in Y}K_r(y,z)e^{a(\delta(y,z)_{\mathbb R})^\alpha}
+             & =\sum_{\substack{i\in I                                \\y\in N_r(x_i)}}
+            \sum_{z\in N_r(x_i)}e^{a(\delta(y,z)_{\mathbb R})^\alpha} \\
+             & \leq\sum_{\substack{i\in I                             \\y\in N_r(x_i)}}|N_r(x_i)|E\\
+             & \leq\bigl|\{i\in I:y\in N_r(x_i)\}\bigr|VE
+            \leq BVE.
+        \end{aligned}
+        \label{eq:ball_row_counting}
+    \end{align}
+    The last two inequalities use~(\ref{eq:ball_row_counts}) and
+    $V,E\geq0$.
+\end{proof}
+
+These bounds allow zero radius, repeated anchor positions, and an
+empty label set.  When the site set is empty, the row statement has
+no site at which it must be checked.  The estimate involves the
+local label and site counts $B,V$, without a factor of $|I|$ or $|Y|$.

@@ -1,0 +1,55 @@
+\subsection{Physical label moments of an excitation component}
+\label{sec:replica_physical_label_moment}
+
+Let $Q,T,K$ be finite coordinate sets, let $\Omega\in\mathbb C^Q\otimes\mathbb C^T$
+be unit, and let $u\in(\mathbb C^Q\otimes\mathbb C^T)^{\otimes k}\otimes\mathbb C^K$.
+For $B\subseteq\{0,\ldots,k-1\}$ put $G=B^c$, $m=|G|$, and
+$w=(R_B\otimes I_K)u$. Choose a finite-set enumeration of $G$. Regroup $w$ as
+$\widetilde w$ on
+\[
+ (Q^m\times K)\times(T^m\times(Q\times T)^B),
+\]
+using that same enumeration in both good-copy registers and retaining the
+original bad-copy coordinates. Write
+$\rho_Q=\operatorname{Tr}_T|\Omega\rangle\langle\Omega|$ and let $F_Q^{(m)}$
+be the logarithmic label-dimension observable for the actual permutations of
+the $m$ good $Q$ copies. Its action on the whole regrouped space is
+\[
+ \widehat F_Q=(F_Q^{(m)}\otimes I_K)\otimes I_{T^m\times(Q\times T)^B}.
+\]
+
+\begin{theorem}[Exact physical exponential moment]
+\label{thm:replica_physical_label_moment}
+\lean{Matrix.trace_exp_labelEntropy_replicaExcitationComponent_eq}
+\leanok
+For every $a\in\mathbb R$,
+\begin{equation}
+ \operatorname{Tr}\bigl(|\widetilde w\rangle\langle\widetilde w|
+                       e^{a\widehat F_Q}\bigr)
+ =\|w\|^2\operatorname{Tr}\bigl(\rho_Q^{\otimes m}e^{aF_Q^{(m)}}\bigr).
+ \label{eq:replica_physical_label_moment}
+\end{equation}
+No normalization or nonvanishing of $u$ or $w$ is required; zero copies are included.
+\end{theorem}
+
+\begin{proof}
+\leanok
+\uses{thm:replica_regional_product_density}
+Tracing the complementary physical coordinates gives exactly
+$\rho_Q^{\otimes m}\otimes\rho_K(w)$, where
+$\rho_K(w)=\operatorname{Tr}_{(Q\times T)^k}|w\rangle\langle w|$ is the
+literal exterior marginal of the same component. The exponential of the
+retained-factor action is the exponential on $Q^m$ tensored with the identities
+on every other factor. The partial-trace pairing and the trace of a tensor
+product thus factor the left side into the iid regional moment and
+$\operatorname{Tr}\rho_K(w)=\|w\|^2$. This proves the identity without division
+by the component mass.
+\end{proof}
+
+This is the exact physical iid evaluation used in
+\cite[Section~7, lines 556--560]{OpenAI2026AreaLaw}, following the regional
+product argument at lines 520--549. Taking either sign of $a$ handles either
+physical exponential factor. For the three-region partition $Q\otimes Y\otimes V$,
+one uses the complements $Y\otimes V$, $Y\otimes Q$ and $Q\otimes V$ for the
+respective retained regions $Q,V,Y$. The signed centred label-moment rate at
+lines 227--237 and the five-factor comparison remain subsequent estimates.

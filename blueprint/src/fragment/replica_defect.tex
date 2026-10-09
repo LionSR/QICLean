@@ -1,0 +1,119 @@
+\section{Physical excitation counts and replica energy}
+\label{sec:replica_defect}
+
+The physical gap and defect-mass calculation in
+\cite[Section~7]{OpenAI2026AreaLaw} take place on the physical replicas,
+with identity operators on the auxiliary factors.
+
+\begin{definition}[Physical replica operators]
+\label{def:replica_operators}
+\lean{Matrix.replicaHamiltonian,Matrix.replicaDefectCount}
+\leanok
+Let $\mathcal H=\mathbb C^A$, let $H$ be an operator on $\mathcal H$,
+and let $\Omega\in\mathcal H$. For $k\ge0$, define
+\begin{align}
+ H_\Sigma&=\sum_{i=0}^{k-1} I^{\otimes i}\otimes H\otimes I^{\otimes(k-1-i)},
+ \label{eq:replica_hamiltonian}
+\end{align}
+\begin{align}
+ N&=\sum_{i=0}^{k-1} I^{\otimes i}\otimes
+       (I-|\Omega\rangle\langle\Omega|)\otimes I^{\otimes(k-1-i)}.
+ \label{eq:replica_defect}
+\end{align}
+For $k>0$, write $\overline H=k^{-1}H_\Sigma$.
+\end{definition}
+
+\begin{theorem}[Product eigenvectors of the replica sum]
+\label{thm:replica_product_eigenvector}
+\lean{Matrix.replicaHamiltonian_mulVec_prod}
+\leanok
+\uses{def:replica_operators}
+If $H\Omega=E_0\Omega$ with $E_0\in\mathbb C$, then
+$H_\Sigma\Omega^{\otimes k}=kE_0\Omega^{\otimes k}$ for every $k\ge0$.
+No normalization of $\Omega$ is required.
+\end{theorem}
+\begin{proof}
+\leanok
+Each summand in (\ref{eq:replica_hamiltonian}) sends the product vector to
+$E_0\Omega^{\otimes k}$. Summing the $k$ summands proves the identity.
+\end{proof}
+
+\begin{theorem}[Physical mean energy with auxiliary factors]
+\label{thm:replica_auxiliary_eigenvector}
+\lean{Matrix.replicaMeanHamiltonian_kronecker_mulVec_prod}
+\leanok
+\uses{def:replica_operators}
+Suppose $H\Omega=E_0\Omega$, where $E_0\in\mathbb R$, and $k>0$.
+For every finite-dimensional auxiliary space $\mathcal K$ and every
+$w\in\mathcal K$,
+$(\overline H\otimes I_{\mathcal K})(\Omega^{\otimes k}\otimes w)
+=E_0\Omega^{\otimes k}\otimes w$.
+Neither vector is required to be normalized.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_product_eigenvector}
+The identity on $\mathcal K$ fixes $w$; divide the product eigenvalue by $k$.
+\end{proof}
+
+\begin{theorem}[The one-copy gap on physical replicas]
+\label{thm:replica_gap}
+\lean{Matrix.PosSemidef.replica_gap}
+\leanok
+\uses{def:replica_operators}
+Let $E_0,g\in\mathbb R$. If
+$H-E_0I-g(I-|\Omega\rangle\langle\Omega|)$ is positive semidefinite, then
+$H_\Sigma-kE_0I-gN$ is positive semidefinite for every $k\ge0$.
+This assertion requires neither normalization nor an eigenvector equation.
+\end{theorem}
+\begin{proof}
+\leanok
+Tensor the one-copy positive semidefinite operator with identities on all
+other copies and sum over its location. Linearity gives
+$H_\Sigma-kE_0I-gN$.
+\end{proof}
+
+\begin{theorem}[Positivity of the physical defect count]
+\label{thm:replica_defect_positive}
+\lean{Matrix.posSemidef_replicaDefectCount}
+\leanok
+\uses{def:replica_operators}
+If $\|\Omega\|=1$, then $N\ge0$ for every $k\ge0$.
+\end{theorem}
+\begin{proof}
+\leanok
+The Cauchy--Schwarz inequality gives
+$|\Omega\rangle\langle\Omega|\le I$. Tensoring each complement with
+identities and summing preserves positivity.
+\end{proof}
+
+\begin{theorem}[Actual cutoff mass from the physical mean energy]
+\label{thm:replica_cutoff_mass}
+\lean{Matrix.spectralCutoff_replica_gap_mass_ge}
+\leanok
+\uses{def:replica_operators}
+Assume $\|\Omega\|=1$, $g>0$, $k>0$, $\tau>0$, and
+$H-E_0I-g(I-|\Omega\rangle\langle\Omega|)\ge0$, with $E_0\in\mathbb R$.
+Let $v\in\mathcal H^{\otimes k}\otimes\mathcal K$ be a unit vector, and
+let $\Pi=\mathbf1_{(-\infty,\tau k]}(N)$ be the actual spectral projection.
+Then
+\begin{align}
+ \langle v,(\Pi\otimes I_{\mathcal K})v\rangle
+ &\ge 1-\frac{\langle v,(\overline H\otimes I_{\mathcal K})v\rangle-E_0}
+                  {g\tau}.
+ \label{eq:replica_cutoff_mass}
+\end{align}
+The inner products in (\ref{eq:replica_cutoff_mass}) are real because the
+operators are self-adjoint.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_gap,thm:replica_defect_positive,thm:spectral_cutoff_mass}
+The spectral first-moment inequality gives
+$\langle v,(\Pi\otimes I)v\rangle\ge
+1-\langle v,(N\otimes I)v\rangle/(\tau k)$.
+The replica gap gives
+$g\langle v,(N\otimes I)v\rangle
+\le\langle v,(H_\Sigma\otimes I)v\rangle-kE_0$.
+Substitution proves (\ref{eq:replica_cutoff_mass}).
+\end{proof}
