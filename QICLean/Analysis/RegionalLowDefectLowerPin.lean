@@ -92,6 +92,9 @@ private theorem regional_lower_pin_pullback
     regionalFiveFactor_lowDefectProjection_eq_global β C R Ω hΩ Q Y hQY k ellC ellR τ
   have hA := replicaMetric_inv_mul_inv_mul_sq_submatrix_regionalFiveFactorCopyEquiv
     β C R Q Y hQY t k {0, 3} {2, 4} {1}
+  change ((replicaMetric ι t k {0, 3})⁻¹ *
+    (replicaMetric ι t k {2, 4})⁻¹ * replicaMetric ι t k {1}) ^ 2 =
+      A.submatrix e.symm e.symm at hA
   have hpull : b⁻¹ • P ≤ A := by
     apply Matrix.le_iff.mpr
     simpa only [hA, Matrix.submatrix_sub, Matrix.submatrix_smul,
