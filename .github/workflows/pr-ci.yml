@@ -295,6 +295,20 @@ jobs:
               "$file"
           done
 
+      - name: Check the logarithmic deficit estimate strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeLogFloorDeficit.lean \
+            QICLeanTest/MeanTreeLogFloorDeficitAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       - name: Check typical-tail scale regressions strictly
         run: |
           set -euo pipefail
