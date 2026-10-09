@@ -22,7 +22,7 @@ lines 218–238 and 550–560, revision
 
 noncomputable section
 open TensorPower PermutationRepresentation
-open scoped BigOperators Matrix Kronecker Matrix.Norms.Operator
+open scoped BigOperators Matrix Kronecker ComplexOrder Matrix.Norms.Operator
 
 namespace Matrix
 
@@ -70,12 +70,14 @@ theorem replicaGoodConfigurationMarginal_exp_signed_singleton_le
   constructor
   · rw [trace_replicaGoodConfigurationMarginal_exp_singleton_labelEntropy
       ι Ω hΩ k B u j a]
-    simpa only [← Complex.ofReal_pow, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+    simpa only [m, S, w, physicalSingletonDensity, ← Complex.ofReal_pow, Complex.mul_re,
+      Complex.ofReal_re, Complex.ofReal_im,
       zero_mul, sub_zero] using
       mul_le_mul_of_nonneg_left hm.1 (sq_nonneg ‖WithLp.toLp 2 w‖)
   · rw [trace_replicaGoodConfigurationMarginal_exp_singleton_labelEntropy
       ι Ω hΩ k B u j (-a)]
-    simpa only [← Complex.ofReal_pow, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im,
+    simpa only [m, S, w, physicalSingletonDensity, ← Complex.ofReal_pow, Complex.mul_re,
+      Complex.ofReal_re, Complex.ofReal_im,
       zero_mul, sub_zero] using
       mul_le_mul_of_nonneg_left hm.2 (sq_nonneg ‖WithLp.toLp 2 w‖)
 
