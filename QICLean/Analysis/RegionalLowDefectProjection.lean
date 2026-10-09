@@ -151,7 +151,7 @@ theorem regionalFiveFactor_lowDefectProjection_eq_global
       (fiveFactorCopiesEquiv ι k)).submatrix e e = _
   rw [h]
   ext x y
-  simp only [Matrix.submatrix_apply, globalReplicaLowDefectProjection, e,
+  simp only [Matrix.submatrix_apply, globalReplicaLowDefectProjection, e, ι,
     regionalFiveFactorCopyEquiv, Equiv.trans_apply,
     Equiv.apply_symm_apply, Equiv.symm_apply_apply]
 
