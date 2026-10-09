@@ -53,7 +53,6 @@ theorem star_dotProduct_submatrix_equiv
     (H : Matrix n n ℂ) (e : n ≃ m) (w : m → ℂ) :
     star w ⬝ᵥ (H.submatrix e.symm e.symm *ᵥ w) =
       star (w ∘ e) ⬝ᵥ (H *ᵥ (w ∘ e)) := by
-  simp only [submatrix_mulVec_equiv, dotProduct_comp_equiv_symm,
-    Equiv.symm_symm, Function.comp_def, Pi.star_apply]
+  simp only [submatrix_mulVec_equiv, Equiv.symm_symm, dotProduct_comp_equiv_symm]
 
 end Matrix
