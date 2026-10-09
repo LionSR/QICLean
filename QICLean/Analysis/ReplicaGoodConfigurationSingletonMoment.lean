@@ -61,7 +61,8 @@ private theorem physicalTripleEquiv_fiveFactorCopies (ι : Fin 5 → Type*)
 private theorem physicalSingletonCopiesEquiv_apply (ι : Fin 5 → Type*)
     (m : ℕ) (j : Fin 3) (x : Config m ι) :
     physicalSingletonCopiesEquiv ι m j x =
-      (((fun r ↦ x r (j.castAdd 2)), fun r l ↦ x r (l.1.castAdd 2)),
+      (((fun r ↦ x r (j.castAdd 2)), fun r (l : {l : Fin 3 // l ≠ j}) ↦
+        x r (l.1.castAdd 2)),
         ((fun r ↦ x r 3), fun r ↦ x r 4)) := by
   apply Prod.ext
   · apply Prod.ext
