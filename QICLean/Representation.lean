@@ -58,6 +58,7 @@ import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.PhysicalMergeHolder
 import QICLean.Representation.RegionPowerSymbol
 import QICLean.Representation.RegionalFiveFactorCoordinates
+import QICLean.Representation.RegionalReplicaMetric
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.RelativePin
 import QICLean.Representation.RelativePinAlgebra
