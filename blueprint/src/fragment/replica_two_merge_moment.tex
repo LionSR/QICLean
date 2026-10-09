@@ -37,11 +37,11 @@ For every real $a$ with $2a\leq1$,
 No normalization or nonvanishing of $w$ is required. Zero copies and an
 empty good set are included.
 This is an auxiliary polynomial bound for the rough estimate in
-\cite[Section~7, lines 524--555]{OpenAI2026AreaLaw}.
+\cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
 
 \begin{proof}\leanok
-\uses{thm:weighted_trace_exponential,thm:replica_component_merge_moment,thm:pair_merge_deficit_traces,thm:replica_good_pair_marginal_right,thm:replica_good_pair_marginal_left}
+\uses{thm:weighted_trace_exponential,thm:replica_individual_pair_merge_moments}
 The literal partial trace gives $\rho\geq0$, while $D_C,D_R$ are commuting
 Hermitian matrices acting on separate tensor factors. The arithmetic-mean
 trace estimate bounds the left side by
@@ -49,16 +49,9 @@ trace estimate bounds the left side by
  \frac{\operatorname{Re}\tr(\rho e^{2aD_C})
        +\operatorname{Re}\tr(\rho e^{2aD_R})}{2}.
 \]
-The two trace identities reduce these terms to the actual $QC$ and $VR$
-marginals of $w$. Apply the component merge-moment bound to the first
-marginal, with physical complement $Y\otimes V$.
-For the second marginal exchange $Q$ with $V$ and $C$ with $R$, preserving
-$Y$. This coordinate permutation preserves the ground-vector norm,
-simultaneous copy fixedness and the norm of the actual excitation component.
-The second application therefore has physical complement $Y\otimes Q$
-and the same component mass. Since $2a\leq1$, the two bounds are respectively
-$p_{QC}\|w\|^2$ and $p_{VR}\|w\|^2$, proving
-(\ref{eq:replica_two_merge_moment}).
+Since $2a\leq1$, Theorem~\ref{thm:replica_individual_pair_merge_moments}
+bounds the two terms by $p_{QC}\|w\|^2$ and $p_{VR}\|w\|^2$,
+respectively. Their arithmetic mean gives~(\ref{eq:replica_two_merge_moment}).
 \end{proof}
 
 The paper combines these moments by Cauchy--Schwarz. The arithmetic-mean

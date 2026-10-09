@@ -141,6 +141,7 @@ import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
 import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
 import QICLean.Analysis.ReplicaGoodConfigurationDensity
 import QICLean.Analysis.ReplicaGoodConfigurationExpectation
+import QICLean.Analysis.ReplicaGoodConfigurationIndividualMergeMoment
 import QICLean.Analysis.ReplicaGoodConfigurationMergeMoment
 import QICLean.Analysis.ReplicaGoodConfigurationMergeTransport
 import QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
