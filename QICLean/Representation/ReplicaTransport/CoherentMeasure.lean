@@ -42,7 +42,7 @@ variable {Ω : Type*} [Fintype Ω]
 instance : CompactSpace (CoherentSphere Ω) := by
   apply isCompact_iff_compactSpace.mp
   have htop :
-      (inferInstanceAs (PseudoMetricSpace (EuclideanSpace ℂ Ω))).toUniformSpace.toTopologicalSpace =
+      (inferInstance : PseudoMetricSpace (EuclideanSpace ℂ Ω)).toUniformSpace.toTopologicalSpace =
         PiLp.topologicalSpace 2 (fun _ : Ω => ℂ) := by
     with_reducible_and_instances rfl
   have hs := isCompact_sphere (0 : EuclideanSpace ℂ Ω) 1
