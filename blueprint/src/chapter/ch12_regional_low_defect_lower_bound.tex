@@ -3,6 +3,7 @@
 \begin{theorem}[Norm preservation under regional grouping]
   \label{thm:regional_physical_vector_norm}
   \lean{FiniteProduct.norm_regionalPhysicalVector}
+  \leanok
   Let $V$ be finite, let each $\beta_v$ be a finite coordinate set,
   and let $Q,Y\subseteq V$ be disjoint. Put $F=(Q\cup Y)^c$.
   The restriction map
@@ -21,7 +22,7 @@
   \end{align*}
   Empty regions and empty coordinate sets are included.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{def:regional_five_factor_coordinates}
   Reindex the finite sum of squared absolute values along the bijection
   $e_{Q,Y}$. Taking square roots gives the identity.
@@ -30,6 +31,7 @@
 \begin{theorem}[A common rough lower bound for all physical cuts]
   \label{thm:global_regional_low_defect_rough_lower_bound}
   \lean{Matrix.exists_globalReplicaLowDefectProjection_rough_lower_pin}
+  \leanok
   Fix a finite physical site set $V$, nonzero finite-dimensional spaces
   $H_v$, and two nonzero finite-dimensional auxiliary spaces $H_c,H_r$.
   For every $t>0$ with $4t\leq1$, there is $c\geq0$, depending only on
@@ -70,7 +72,7 @@
   cut. This is the uniform regional form of the rough lower bound in
   \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:regional_physical_vector_norm,thm:actual_low_defect_rough_lower_bound,thm:regional_low_defect_projection_global,thm:regional_squared_inverse_metric_coordinates}
   Apply the five-factor rough lower bound to each physical cut pair.
   Its polynomial exponent has the form $c_{Q,Y}+D_{Q,Y}$, where
