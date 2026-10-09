@@ -13,6 +13,7 @@ For $k\geq0$ and $t>0$, write
 \begin{theorem}[One rough rate for all retained components]
   \label{thm:actual_component_inverse_rough_uniform}
   \lean{Matrix.exists_replicaExcitationComponent_inverse_rough_uniform_le}
+  \leanok
   For every $t>0$ with $4t\leq1$, there exists $C\geq0$, depending
   only on $t$ and the five spaces, with the following property.
   Let $k\geq0$, let $\Omega$ be a unit physical vector, and let $u$ be
@@ -32,7 +33,7 @@ For $k\geq0$ and $t>0$, write
   $\operatorname{Re}\langle f,A_k^{-1}f\rangle\leq c_k\|w\|^2$.
   No normalization of $u$ or $w$ is required.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:actual_component_inverse_rough,thm:replica_component_uniform_prefactor}
   The average of the two merge polynomials is bounded by
   $(k-|B|+1)^D$. Apply the uniform scalar estimate with zero physical
@@ -46,6 +47,7 @@ For $k\geq0$ and $t>0$, write
 \begin{theorem}[Actual low-defect inverse compression]
   \label{thm:actual_low_defect_inverse_rough_compression}
   \lean{Matrix.exists_replicaLowDefectProjection_inverse_rough_compression_le}
+  \leanok
   For every $t>0$ with $4t\leq1$, a constant $C\geq0$ depending only
   on $t$ and the five spaces has the following property.
   Let $k\geq0$, let $\Omega$ be a unit physical vector, and let
@@ -62,7 +64,7 @@ For $k\geq0$ and $t>0$, write
   This is the rough inverse compression estimate in
   \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:actual_component_inverse_rough_uniform,thm:replica_low_defect_compression_from_components}
   The inverse squared metric is positive, and this remains true
   after changing coordinates. Every vector in the range of $P$
