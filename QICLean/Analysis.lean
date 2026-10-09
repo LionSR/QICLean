@@ -51,6 +51,7 @@ import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
+import QICLean.Analysis.FiveFactorAuxiliaryCoordinates
 import QICLean.Analysis.FloorKKT
 import QICLean.Analysis.GammaRatio
 import QICLean.Analysis.GapPerturbation
@@ -132,6 +133,7 @@ import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
 import QICLean.Analysis.ReplicaGoodPhysicalSupport
+import QICLean.Analysis.ReplicaJointAuxiliaryExponential
 import QICLean.Analysis.ReplicaJointDensity
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance

@@ -26,6 +26,7 @@ import QICLean.Representation.CompatiblePhysicalLabel
 import QICLean.Representation.ExteriorPieri
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
+import QICLean.Representation.GoodAuxiliaryPairCompression
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
 import QICLean.Representation.HighLabelWindow
@@ -88,6 +89,7 @@ import QICLean.Representation.SkewSymbolBound
 import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarFunction
 import QICLean.Representation.StarOperator
+import QICLean.Representation.SubsystemLabelCommutation
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
