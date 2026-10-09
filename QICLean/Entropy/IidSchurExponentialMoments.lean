@@ -57,6 +57,14 @@ theorem PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
       (fun x : ℝ ↦ Real.exp (a * (x - (k : ℝ) * S)))
       (labelEntropy (copyPerm n k)) (by fun_prop)]
     simp_rw [mul_sub, Real.exp_sub, mul_div_cancel₀ _ (Real.exp_ne_zero _)]
+  have huncentered (a E : ℝ)
+      (hcenter : (ρk * NormedSpace.exp ((a : ℂ) •
+        (labelEntropy (copyPerm n k) - (((k : ℝ) * S : ℝ) : ℂ) • 1))).trace.re ≤
+          Real.exp E) :
+      (ρk * NormedSpace.exp ((a : ℂ) • labelEntropy (copyPerm n k))).trace.re ≤
+        Real.exp (a * ((k : ℝ) * S) + E) := by
+    rw [hshift a, mul_smul_comm, trace_smul, Complex.smul_re, smul_eq_mul]
+    done
   done
 
 end Matrix
