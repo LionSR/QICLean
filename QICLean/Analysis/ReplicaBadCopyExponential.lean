@@ -134,8 +134,7 @@ theorem fiveFactorCopiesEquiv_simultaneous_permOp (k : ℕ)
     simp only [Equiv.apply_symm_apply, Prod.ext_iff, Prod.fst, Prod.snd]
   ext x y
   simp only [Matrix.submatrix_apply, permOp_apply_apply, hcondition, kroneckerMap_apply]
-  trace_state
-  split_ifs <;> simp_all
+  simp only [ite_zero_mul_ite_zero, one_mul]
 
 end FiveFactors
 
