@@ -1,0 +1,29 @@
+\section{The separate merge moments in the actual good density}
+\label{sec:replica_good_configuration_individual_merge_moment}
+
+\begin{theorem}[Individual good-copy merge moments]
+\label{thm:replica_good_configuration_individual_merge_moments}
+\lean{Matrix.replicaGoodConfigurationMarginal_exp_mergeDeficits_le}
+Let the original one-copy physical vector have norm one, and let the
+original vector be fixed by simultaneous permutations of the physical
+and two auxiliary copy registers. Let $w$ be its excitation component,
+let $m$ be the number of good copies, and let $\rho_G$ be its actual
+five-factor good density. For every real $a\leq1$,
+\begin{align}
+ \operatorname{Re}\operatorname{Tr}(\rho_Ge^{a\Delta_{QC}})
+ &\leq (m+1)^{(d_Qd_C)^2}\|w\|^2,\\
+ \operatorname{Re}\operatorname{Tr}(\rho_Ge^{a\Delta_{VR}})
+ &\leq (m+1)^{(d_Vd_R)^2}\|w\|^2.
+\end{align}
+Each deficit is defined from the actual subsystem copy actions, as in
+Theorem~\ref{thm:five_factor_pair_middle_merge_deficits}. The component
+may vanish and $m$ may be zero. These are the two separate estimates in
+\cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{thm:five_factor_pair_middle_merge_deficits,thm:replica_good_configuration_pair_expectation,thm:replica_individual_pair_merge_moments}
+Transport each deficit to its paired-copy coordinates, exponentiate,
+and trace the good middle region. Apply the corresponding individual
+merge estimate to the actual paired marginal. The exterior-coordinate
+exchange used for the second pair preserves the original component mass.
+\end{proof}

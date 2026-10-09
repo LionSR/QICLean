@@ -61,6 +61,21 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Separate merge moments before Hölder — candidate (2026-10-09)
+
+- **Pattern:** Express an exponential trace on a product space through its
+  actual marginal, then preserve the component mass under a coordinate exchange.
+- **Seen:** The two estimates formerly local to
+  `replicaGoodPairMarginal_exp_sum_mergeDeficit_le` are reused by the separate
+  full-density estimate in `ReplicaGoodConfigurationIndividualMergeMoment`.
+- **Abstraction:** The public
+  `replicaGoodPairMarginal_exp_mergeDeficits_le` contains both separate bounds.
+  The arithmetic-mean theorem uses it at twice the parameter; the full-density
+  theorem transports each bound by the existing paired-coordinate equivalence.
+- **Caveat:** The same actual excitation component occurs throughout, including
+  zero mass. No normalized auxiliary marginal or nonvanishing assumption is added.
+
+
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
 
 - **Pattern:** Use the partial-trace pairing, cyclicity of trace and the pure

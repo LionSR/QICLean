@@ -212,10 +212,31 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      - name: Build the individual component merge moments and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.ReplicaGoodConfigurationIndividualMergeMoment \
+            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the individual component merge moments strictly
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaTwoMergeMoment.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationIndividualMergeMoment.lean \
+            QICLeanTest/ReplicaIndividualMergeMomentsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       - name: Build good-copy merge targets and capture timings
         run: |
           set -eo pipefail
-          lake build QICLean.Analysis.ReplicaGoodConfigurationMergeTransport QICLean.Analysis.ReplicaGoodConfigurationMergeMoment 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+          lake build QICLean.Analysis.ReplicaGoodConfigurationMergeTransport QICLean.Analysis.ReplicaGoodConfigurationMergeMoment 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
