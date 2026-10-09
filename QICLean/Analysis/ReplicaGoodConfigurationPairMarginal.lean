@@ -82,7 +82,8 @@ theorem partialTraceRight_replicaGoodConfigurationMarginal_pairMiddle :
   simp only [partialTraceRight_apply, submatrix_apply,
     replicaGoodConfigurationMarginal, replicaGoodPairMarginal,
     partialTraceRight_apply, vecMulVec_apply, Pi.star_apply,
-    Fintype.sum_prod_type] <;> rfl
+    Fintype.sum_prod_type]
+  rfl
 
 /-- The total mass of the five-factor density is the squared norm of the
 same actual excitation component. Zero components and zero copies are
