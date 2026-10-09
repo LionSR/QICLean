@@ -91,7 +91,7 @@ theorem mul_sum_log_lower_le_neg_log_norm_sq_of_projection_lower_bound
     s p hp hnorm
   have hJ' : 2 * s * (star v ⬝ᵥ (CFC.log M *ᵥ v)).re ≤
       -Real.log (‖u‖ ^ 2) := by
-    simpa only [EuclideanSpace.inner_eq_star_dotProduct, Matrix.toLpLin_apply,
+    simpa only [u, v, EuclideanSpace.inner_eq_star_dotProduct, Matrix.toLpLin_apply,
       WithLp.ofLp_toLp, dotProduct_comm] using hJ
   exact (mul_le_mul_of_nonneg_left hsum (mul_nonneg (by norm_num) hs)).trans hJ'
 
