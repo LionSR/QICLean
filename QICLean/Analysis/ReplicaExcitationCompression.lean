@@ -158,7 +158,7 @@ theorem compression_le_of_replicaExcitationComponent_bounds
   apply Matrix.le_iff.mpr
   apply Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hdiff
   intro x
-  apply RCLike.nonneg_iff.mpr
+  apply Complex.nonneg_iff.mpr
   refine ⟨?_, hdiff.im_star_dotProduct_mulVec_self x⟩
   have hPx : P *ᵥ (P *ᵥ x) = P *ᵥ x := by
     rw [mulVec_mulVec, hP.isIdempotentElem.eq]
