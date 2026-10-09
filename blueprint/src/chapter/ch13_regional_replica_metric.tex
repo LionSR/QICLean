@@ -10,6 +10,7 @@ original copy coordinates to these five-factor coordinates.
 \begin{definition}[Original sites of a grouped region]
   \label{def:regional_original_region}
   \lean{TensorPower.regionalFactorIndex,TensorPower.regionalOriginalRegion}
+  \leanok
   Assign an original site to factor $0,1,2,3,4$ according as it belongs
   to $Q,Y,F,\{c\},\{r\}$. For a set $S\subseteq\{0,1,2,3,4\}$,
   let $\widetilde S$ consist of all original sites assigned to $S$.
@@ -18,11 +19,12 @@ original copy coordinates to these five-factor coordinates.
 \begin{theorem}[The actual subsystem permutation under grouping]
   \label{thm:regional_subsystem_permutation}
   \lean{TensorPower.regionalFiveFactorCopyEquiv_subsystemPerm}
+  \leanok
   For every copy number $k\geq0$, copy permutation $\sigma$ and set
   $S$ of grouped factors, the coordinate actions satisfy
   $\phi_S(\sigma)U=U\phi_{\widetilde S}(\sigma)$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   Each coordinate lies in exactly one of $Q,Y,F,\{c\},\{r\}$.
   The two actions permute its copy index precisely when its factor
   belongs to $S$.
@@ -31,6 +33,7 @@ original copy coordinates to these five-factor coordinates.
 \begin{theorem}[Group-algebra elements and central observables]
   \label{thm:regional_label_observable_coordinates}
   \lean{TensorPower.groupAlgebraRep_submatrix_regionalFiveFactorCopyEquiv,TensorPower.labelObservable_submatrix_regionalFiveFactorCopyEquiv}
+  \leanok
   Every element of the permutation group algebra has grouped matrix
   $UXU^*$, where $X$ is its matrix for the corresponding original
   subsystem. In particular, for any real function $f$ of the same
@@ -40,7 +43,7 @@ original copy coordinates to these five-factor coordinates.
       =U\left(\sum_\lambda f(\lambda)\pi_{\widetilde S,\lambda}\right)U^*.
   \end{align}
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:regional_subsystem_permutation}
   Extend the intertwining identity linearly to the group algebra,
   then apply it to the linear combination of central idempotents
@@ -50,12 +53,13 @@ original copy coordinates to these five-factor coordinates.
 \begin{theorem}[The full dimension and replica weights are unchanged]
   \label{thm:regional_replica_dimension_weights}
   \lean{TensorPower.replicaDim_regionalFiveFactorSpace,TensorPower.replicaLabelWeight_regionalFiveFactorSpace}
+  \leanok
   The whole one-copy dimension agrees before and after grouping.
   Consequently, for every real $t$, copy number $k$ and irreducible
   label $\lambda$, the replica label weight $w_{t,k}(\lambda)$ is
   the same for the original and grouped site families.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   The one-copy grouping equivalence gives equality of cardinalities.
   The weight formula depends on the site family only through that
   full dimension.
@@ -64,6 +68,7 @@ original copy coordinates to these five-factor coordinates.
 \begin{theorem}[The actual replica metric in regional coordinates]
   \label{thm:regional_replica_metric_coordinates}
   \lean{TensorPower.replicaMetric_submatrix_regionalFiveFactorCopyEquiv}
+  \leanok
   For every real $t$, every $k\geq0$ and every set $S$ of grouped
   factors,
   \begin{align}
@@ -73,7 +78,7 @@ original copy coordinates to these five-factor coordinates.
   Empty coordinate sets are included, and no positivity condition on
   $t$ is required.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:regional_label_observable_coordinates,thm:regional_replica_dimension_weights}
   The central projections transform by $U$ and their original replica
   weights are unchanged. Apply the central-observable identity.
@@ -82,6 +87,7 @@ original copy coordinates to these five-factor coordinates.
 \begin{theorem}[The squared inverse-metric product in regional coordinates]
   \label{thm:regional_squared_inverse_metric_coordinates}
   \lean{TensorPower.replicaMetric_inv_mul_inv_mul_sq_submatrix_regionalFiveFactorCopyEquiv}
+  \leanok
   For any three sets $S_1,S_2,S_3$ of grouped factors, the actual product
   satisfies
   \begin{align}
@@ -96,7 +102,7 @@ original copy coordinates to these five-factor coordinates.
   arbitrary real $t$ and empty coordinate spaces, with inversion extended
   by zero on singular matrices.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:regional_replica_metric_coordinates}
   Conjugation by the coordinate permutation preserves inversion,
   multiplication and squaring.
