@@ -182,6 +182,7 @@ import QICLean.Analysis.SupportInverseSandwich
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SurprisalMoment
+import QICLean.Analysis.SurprisalProductMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
