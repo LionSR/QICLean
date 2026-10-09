@@ -71,12 +71,20 @@ instance regionalFiveFactorSpaceDecidableEq
     [∀ v, DecidableEq (β v)]
     [DecidableEq C] [DecidableEq R]
     (Q Y : Finset V) (f : Fin 5) : DecidableEq (regionalFiveFactorSpace β C R Q Y f) := by
-  fin_cases f <;> dsimp only [regionalFiveFactorSpace] <;> infer_instance
+  exact Fin.cases (inferInstanceAs (DecidableEq (FiniteProduct.Configuration β Q)))
+    (Fin.cases (inferInstanceAs (DecidableEq (FiniteProduct.Configuration β Y)))
+      (Fin.cases (inferInstanceAs (DecidableEq (FiniteProduct.Configuration β (Q ∪ Y)ᶜ)))
+        (Fin.cases (inferInstanceAs (DecidableEq C))
+          (Fin.cases (inferInstanceAs (DecidableEq R)) (fun i => Fin.elim0 i))))) f
 
 instance regionalFiveFactorSpaceNonempty
     [∀ v, Nonempty (β v)] [Nonempty C] [Nonempty R]
     (Q Y : Finset V) (f : Fin 5) : Nonempty (regionalFiveFactorSpace β C R Q Y f) := by
-  fin_cases f <;> dsimp only [regionalFiveFactorSpace] <;> infer_instance
+  exact Fin.cases (inferInstanceAs (Nonempty (FiniteProduct.Configuration β Q)))
+    (Fin.cases (inferInstanceAs (Nonempty (FiniteProduct.Configuration β Y)))
+      (Fin.cases (inferInstanceAs (Nonempty (FiniteProduct.Configuration β (Q ∪ Y)ᶜ)))
+        (Fin.cases (inferInstanceAs (Nonempty C))
+          (Fin.cases (inferInstanceAs (Nonempty R)) (fun i => Fin.elim0 i))))) f
 
 /-- The same original physical-copy and auxiliary registers for every
 regional cut. Source: `07-comparators.tex`, lines 80--110 and 421--456. -/
