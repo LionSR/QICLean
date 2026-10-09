@@ -1,0 +1,50 @@
+\section{The two merge moments in the full good-copy density}
+\label{sec:replica_good_configuration_merge_moment}
+
+\begin{theorem}[Exact merge expectation]
+\label{thm:replica_good_configuration_merge_expectation}
+\lean{Matrix.trace_replicaGoodConfigurationMarginal_exp_sum_mergeDeficit}
+\leanok
+Let $\rho_G$ be the actual five-factor good-copy density of an
+excitation component $w$, and let $\rho_{\mathrm{pair}}$ be its
+common good-pair marginal. With the deficits of
+Theorem~\ref{thm:five_factor_pair_middle_merge_deficits}, for every
+real $a$,
+\begin{align*}
+ \operatorname{Tr}\bigl(\rho_G e^{a(\Delta_{QC}+\Delta_{VR})}\bigr)
+ =\operatorname{Tr}\bigl(\rho_{\mathrm{pair}}
+   e^{a(D_{QC}+D_{VR})}\bigr).
+\end{align*}
+No normalization or permutation invariance is needed for this identity.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:five_factor_pair_middle_merge_exponential,thm:replica_good_configuration_pair_expectation}
+Change coordinates by $e$, preserving the trace, and trace the good
+middle physical coordinates.
+\end{proof}
+
+\begin{theorem}[Arithmetic-mean bound for the actual merge moments]
+\label{thm:replica_good_configuration_merge_moment_bound}
+\lean{Matrix.replicaGoodConfigurationMarginal_exp_sum_mergeDeficit_le}
+\leanok
+Suppose the one-copy physical vector $\Omega$ has norm one and the
+original vector $u$ is fixed by simultaneous permutations of its
+physical and two auxiliary copy registers. For a subset $B$ of bad
+copies, let $w$ be the corresponding excitation component and
+$m=|B^c|$. If $a\in\mathbb R$ and $2a\leq1$, then
+\begin{align*}
+ \operatorname{Re}\operatorname{Tr}
+   \bigl(\rho_G e^{a(\Delta_{QC}+\Delta_{VR})}\bigr)
+ \leq \frac{(m+1)^{(d_Qd_C)^2}+(m+1)^{(d_Vd_R)^2}}{2}\,
+   \|w\|^2.
+\end{align*}
+The vector $u$ need not be normalized, and $w$ may vanish. Negative
+$a$ and zero good copies are included. This is the arithmetic-mean
+consequence of the paired moments in
+\cite[Section~8, lines~520--555]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:replica_good_configuration_merge_expectation,thm:replica_two_merge_moment}
+Apply the two-merge moment estimate to the actual common good-pair
+marginal. Its mass is the squared norm of the same component $w$.
+\end{proof}
