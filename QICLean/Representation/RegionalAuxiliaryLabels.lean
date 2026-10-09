@@ -61,6 +61,7 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
       prodLeft ((Fin k → R) × (Fin k → (v : V) → β v)) (copyPerm C k) σ (eC x) =
         eC (subsystemPerm k ι₀ {some none} σ x) := by
     simp [eC, e, globalReplicaCopiesEquiv, prodLeft_apply, copyPerm_apply, subsystemPerm_apply]
+    rfl
   done
 
 end TensorPower
