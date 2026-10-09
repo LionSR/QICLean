@@ -1,2 +1,0 @@
-# Preserve raw TeX transcripts, including tool-generated trailing whitespace.
-docs/provenance/evidence/8769-source-bridges/*.log -whitespace
