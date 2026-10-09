@@ -40,7 +40,7 @@ theorem PosDef.lower_pin_of_reindexed_inverse_compression
       hP hc (by simpa only [Matrix.inv_submatrix_equiv] using hinv)
   have hpull : c⁻¹ • P.submatrix e e ≤ A := by
     apply Matrix.le_iff.mpr
-    simpa only [Matrix.submatrix_sub, Matrix.submatrix_smul,
+    simpa only [Matrix.submatrix_sub, Matrix.submatrix_smul, Pi.sub_apply, Pi.smul_apply,
       Matrix.submatrix_submatrix, Function.comp_def, Equiv.symm_apply_apply,
       Matrix.submatrix_id_id] using
       (Matrix.le_iff.mp hnative).submatrix e
