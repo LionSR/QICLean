@@ -3,6 +3,7 @@
 \begin{theorem}[Projection bounds for several commuting roots]
 \label{thm:mean_tree_multiband_lower_norm}
 \lean{Matrix.MeanTree.mul_sum_log_lower_le_neg_log_norm_sq_of_projection_lower_bound}
+\leanok
 \uses{def:mean_tree}
 Let $J$ be finite and let $g$ range over $0,\ldots,G-1$. For each $g$,
 let $T_g$ be a weighted binary tree with terminal weights $w_{j,g}$ and
@@ -33,6 +34,7 @@ mass estimates used in \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
 
 \begin{proof}
+\leanok
 \uses{thm:matrix_floor_pin,thm:mean_tree_projection_mass_log_bound,thm:cfc_log_ordered_product,thm:normalized_inverse_power_log_bound,thm:mean_tree_properties}
 Averaging the floor and projection bound gives
 $b_g(\Id-P_g)+(b_g+c_{j,g}/2)P_g\le A_{j,g}$.
@@ -49,6 +51,7 @@ Theorem~\ref{thm:normalized_inverse_power_log_bound}.
 \begin{theorem}[An explicit lower norm bound with uniform remainder]
 \label{thm:mean_tree_exponential_lower_norm}
 \lean{Matrix.MeanTree.explicit_lower_norm_of_exponential_projection_lower_bound}
+\leanok
 \uses{def:mean_tree}
 Let $J$ be finite and let $g$ range over $0,\ldots,G-1$. Let $T_g$ be
 weighted binary trees with terminal weights $w_{j,g}$ and positive
@@ -80,6 +83,7 @@ the analytic lower comparison of \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
 
 \begin{proof}
+\leanok
 \uses{thm:mean_tree_multiband_lower_norm,thm:mean_tree_log_floor_deficit}
 Set $\varepsilon_g=\min\{1,\delta_g\}$. If $\delta_g\le1$, the mass
 bound is unchanged; otherwise positivity of $P_g$ gives
