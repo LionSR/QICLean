@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.ProjectionQuadraticBound
 import Mathlib.Algebra.Star.StarProjection
+import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic
 
 /-!
@@ -49,7 +50,7 @@ theorem IsHermitian.re_dotProduct_exp_add_le_of_compressed_exp_le_smul
     rw [mulVec_mulVec, ← hCP.eq, ← mulVec_mulVec, hv]
   have h := hP.re_dotProduct_mulVec_le_of_compression_le hbound hw
   have hCC : C * C = NormedSpace.exp A := by
-    rw [← NormedSpace.exp_add_of_commute (Commute.refl ((1 / 2 : ℝ) • A))]
+    rw [← Matrix.exp_add_of_commute _ _ (Commute.refl ((1 / 2 : ℝ) • A))]
     congr 1
     rw [← add_smul]
     norm_num
@@ -57,7 +58,7 @@ theorem IsHermitian.re_dotProduct_exp_add_le_of_compressed_exp_le_smul
     (hAB.smul_left (1 / 2 : ℝ)).exp
   have hCBC : C * NormedSpace.exp B * C = NormedSpace.exp (A + B) := by
     rw [mul_assoc, ← hCB.eq, ← mul_assoc, hCC,
-      ← NormedSpace.exp_add_of_commute hAB]
+      ← Matrix.exp_add_of_commute _ _ hAB]
   have hleft : star (C *ᵥ v) ⬝ᵥ (NormedSpace.exp B *ᵥ (C *ᵥ v)) =
       star v ⬝ᵥ (NormedSpace.exp (A + B) *ᵥ v) := by
     rw [hC.star_mulVec_dotProduct, mulVec_mulVec, mulVec_mulVec, hCBC]

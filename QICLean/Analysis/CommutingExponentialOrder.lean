@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Matrix.Order
+import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic
 
 /-!
@@ -43,7 +44,7 @@ theorem IsHermitian.exp_le_exp_of_commute {A B : Matrix n n ℂ}
   have hprod : 0 ≤ NormedSpace.exp A * (NormedSpace.exp (B - A) - 1) :=
     Commute.mul_nonneg hA.isSelfAdjoint.exp_nonneg (sub_nonneg.mpr hOne)
       (hAD.exp.sub_right (Commute.one_right _))
-  rw [mul_sub, mul_one, ← NormedSpace.exp_add_of_commute hAD,
+  rw [mul_sub, mul_one, ← Matrix.exp_add_of_commute _ _ hAD,
     show A + (B - A) = B by abel] at hprod
   exact sub_nonneg.mp hprod
 

@@ -65,7 +65,7 @@ theorem IsHermitian.compression_cfc_le_of_lower_bound
       (by simpa only [Algebra.algebraMap_eq_smul_one] using hfloor)
   have hcfc : cfc f B ≤ c • (1 : Matrix n n ℂ) := by
     have h := (cfc_le_algebraMap_iff f c B
-      (hf := Matrix.finite_real_spectrum.continuousOn) (ha := hB.isSelfAdjoint)).mpr
+      (hf := Matrix.finite_real_spectrum.continuousOn f) (ha := hB.isSelfAdjoint)).mpr
         (fun x hx ↦ hf x (hspectrum x hx))
     simpa only [Algebra.algebraMap_eq_smul_one] using h
   have hPB : P * B = P * A := by
