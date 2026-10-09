@@ -48,36 +48,6 @@ section ComplementaryLabels
 variable {F : Type*} [Fintype F] [DecidableEq F]
   (ι : F → Type*) [∀ f, Fintype (ι f)] [∀ f, DecidableEq (ι f)] (k : ℕ)
 
-private theorem labelProj_mul_symProj_union (A B : Finset F) (hAB : Disjoint A B)
-    (l : IrrepLabel (Equiv.Perm (Fin k))) :
-    labelProj (subsystemPerm k ι A) l * symProj (subsystemPerm k ι (A ∪ B)) =
-      labelProj (subsystemPerm k ι B) l * symProj (subsystemPerm k ι (A ∪ B)) := by
-  ext x y
-  have h := groupAlgebraRep_mulVec_eq_of_eq_mul
-    (subsystemPerm k ι A) (subsystemPerm k ι B) (subsystemPerm k ι (A ∪ B))
-    (fun σ => subsystemPerm_union k ι hAB σ) (a := IrrepLabel.centralIdem l)
-    (IrrepLabel.coeff_inv_of_mem_center (IrrepLabel.centralIdem_mem_center l))
-    (symProj_mulVec_mem (subsystemPerm k ι (A ∪ B)) (Pi.single y 1))
-  simp only [mulVec_single_one] at h
-  exact congrFun h x
-
-private theorem labelEntropy_mul_symProj_union (A B : Finset F) (hAB : Disjoint A B) :
-    labelEntropy (subsystemPerm k ι A) * symProj (subsystemPerm k ι (A ∪ B)) =
-      labelEntropy (subsystemPerm k ι B) * symProj (subsystemPerm k ι (A ∪ B)) := by
-  simp_rw [labelEntropy, labelObservable, Finset.sum_mul, smul_mul_assoc]
-  simp_rw [labelProj_mul_symProj_union ι k A B hAB]
-
-private theorem commute_labelObservable_symProj_of_subset
-    (A B : Finset F) (hAB : A ⊆ B) (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
-    Commute (labelObservable (subsystemPerm k ι A) f) (symProj (subsystemPerm k ι B)) := by
-  unfold labelObservable symProj
-  refine Commute.sum_left (R := Matrix (Config k ι) (Config k ι) ℂ) _ _ _ fun l _ => ?_
-  refine ((Commute.sum_right (R := Matrix (Config k ι) (Config k ι) ℂ)
-    _ _ _ (fun σ _ => ?_)).smul_left _).smul_right _
-  simpa only [labelProj, groupAlgebraRep_single, one_smul] using
-    commute_groupAlgebraRep_subsystemPerm_of_subset ι k hAB
-      (IrrepLabel.centralIdem_mem_center l) (MonoidAlgebra.single σ (1 : ℂ))
-
 private theorem commute_labelObservables_of_subset_or_disjoint (A B : Finset F)
     (hAB : A ⊆ B ∨ Disjoint A B)
     (f g : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
