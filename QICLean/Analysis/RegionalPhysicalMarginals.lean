@@ -28,7 +28,7 @@ universe u
 
 noncomputable section
 open TensorPower
-open scoped Matrix
+open scoped Matrix ComplexOrder
 
 namespace FiniteProduct
 
