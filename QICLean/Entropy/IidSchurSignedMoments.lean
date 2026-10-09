@@ -79,6 +79,8 @@ theorem PosSemidef.log_re_trace_finKronecker_signed_label_moments_le
       ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian) K r 1 le_rfl
       (by
         intro v hv
+        rw [hρ.log_re_trace_finKronecker_exp_centered_surprisal htr k v
+          ((k : ℝ) * vonNeumannEntropy ρ hρ.isHermitian), mul_one]
         done) u hu
       (by simpa only [Real.sqrt_one, div_one,
         le_div_iff₀ (by norm_num : (0 : ℝ) < 2), le_min_iff, mul_comm u 2] using
