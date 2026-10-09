@@ -139,6 +139,7 @@ theorem labelObservable_submatrix_regionalFiveFactorCopyEquiv
   simp only [labelObservable_eq_groupAlgebraRep]
   exact groupAlgebraRep_submatrix_regionalFiveFactorCopyEquiv β C R Q Y hQY k S _
 
+omit [∀ v, DecidableEq (β v)] [DecidableEq C] [DecidableEq R] in
 /-- Grouping physical sites does not change the whole one-copy dimension,
 including the two original auxiliary factors. Source: `05-replicas.tex`,
 `replicas:w-definition`, lines 287--303. -/
@@ -149,6 +150,7 @@ theorem replicaDim_regionalFiveFactorSpace
   have h := Fintype.card_congr (regionalFiveFactorCopyEquiv β C R Q Y hQY 1)
   simpa only [Config, Fintype.card_fun, Fintype.card_fin, pow_one] using h.symm
 
+omit [∀ v, DecidableEq (β v)] [DecidableEq C] [DecidableEq R] in
 /-- The label weights are those of the same original full system, without
 a change of padding dimension. Source: `05-replicas.tex`,
 `replicas:w-definition`, lines 287--303. -/
