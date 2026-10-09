@@ -98,6 +98,7 @@ theorem groupedConfigurationEquiv_exp_sum_labelEntropy
   rw [← reindex_apply, reindex_exp, reindex_apply]
   rw [submatrix_sum]
   simp only [submatrix_smul]
+  trace_state
   simp_rw [labelEntropy, groupedConfigurationEquiv_labelObservable]
   simp_rw [← smul_kronecker]
   have hsum : (∑ j, ((a j : ℂ) • labelObservable (subsystemPerm m ι (S j))
