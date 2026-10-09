@@ -101,6 +101,14 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
       else
         commute_labelProj_subsystemPerm_of_disjoint ι k
           (Finset.disjoint_singleton_left.mpr ha) ell ell').smul_right (f ell' : ℂ)
+  have hsinglePe (a : F) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
+      Commute (labelProj (subsystemPerm k ι {a}) ell) Pe :=
+    (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k)) (X := Config k ι)).elim
+      (fun ell₀ hell₀ ↦ Eq.mp
+        (congrArg (fun H ↦ Commute (labelProj (subsystemPerm k ι {a}) ell) H)
+          ((congrArg (fun ψ ↦ labelProj ψ ell₀) (subsystemPerm_univ k ι)).trans
+            (hell₀ (copyPerm ((f : F) → ι f) k))))
+        (commute_labelProj_subsystemPerm_of_subset ι k (Finset.subset_univ _) ell ell₀))
   done
 
 end TensorPower
