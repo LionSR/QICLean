@@ -206,7 +206,16 @@ jobs:
       - uses: leanprover/lean-action@v1
         with:
           build: false
+          use-mathlib-cache: true
           use-github-cache: false
+
+      - name: Require prebuilt Mathlib artifacts
+        run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+
+      - name: Build good-copy merge targets and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.ReplicaGoodConfigurationMergeTransport QICLean.Analysis.ReplicaGoodConfigurationMergeMoment 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
 
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
@@ -272,9 +281,40 @@ jobs:
         run: |
           set -eo pipefail
           {
+            lake build QICLean.Algebra.TensorPowerPartialTrace QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
             lake build
             lake build lint_style
-          } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+          } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check good-copy partial traces strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Algebra/TensorPowerPartialTrace.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationPairMarginal.lean \
+            QICLeanTest/ReplicaGoodCopyPartialTracesAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check good-copy merge moments strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodConfigurationMergeTransport.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationMergeMoment.lean \
+            QICLeanTest/ReplicaGoodCopyMergeMomentsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
 
       - name: Check finite-family transport sources and regressions strictly
         run: |
