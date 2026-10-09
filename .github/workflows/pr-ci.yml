@@ -347,7 +347,9 @@ jobs:
       - name: Build the physical good-copy exponential and capture timings
         run: |
           set -eo pipefail
-          lake build QICLean.Analysis.ReplicaGoodPhysicalExponential 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          lake build QICLean.Analysis.ReplicaGoodPhysicalExponential \
+            QICLean.Algebra.TensorPowerPartialTrace QICLean.Analysis.ReplicaGoodConfigurationPairMarginal \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check good-copy partial traces strictly
         timeout-minutes: 6
