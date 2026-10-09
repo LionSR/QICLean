@@ -75,6 +75,11 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
   have hrecover : Z *ᵥ (Zᴴ *ᵥ ξ) = ξ :=
     (Matrix.mulVec_mulVec ξ.ofLp Z Zᴴ).trans
       ((congrArg (fun H ↦ H *ᵥ ξ.ofLp) hZZ).trans hPξ)
+  have hcoords : Matrix.toEuclideanLin Zᴴ ξ ≠ 0 :=
+    fun h ↦ hξ (WithLp.ofLp_injective 2
+      (hrecover.symm.trans
+        ((congrArg (fun η : Fin n → ℂ ↦ Z *ᵥ η)
+          (congrArg WithLp.ofLp h)).trans (Matrix.mulVec_zero Z))))
   done
 
 end TensorPower
