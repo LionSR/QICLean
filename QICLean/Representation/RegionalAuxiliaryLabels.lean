@@ -62,6 +62,12 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
         eC (subsystemPerm k ι₀ {some none} σ x) := by
     simp [eC, e, globalReplicaCopiesEquiv, prodLeft_apply, copyPerm_apply, subsystemPerm_apply]
     rfl
+  have hLC : labelProj (copyPerm C k) ellC ⊗ₖ
+      (1 : Matrix ((Fin k → R) × (Fin k → (x : V) → β x))
+        ((Fin k → R) × (Fin k → (x : V) → β x)) ℂ) =
+      Matrix.reindex eC eC (labelProj (subsystemPerm k ι₀ {some none}) ellC) :=
+    (labelProj_prodLeft (Z := (Fin k → R) × (Fin k → (x : V) → β x))
+      (copyPerm C k) ellC).symm.trans (labelProj_of_intertwine eC heC ellC)
   done
 
 end TensorPower
