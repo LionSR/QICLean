@@ -94,9 +94,10 @@ private theorem regional_lower_pin_pullback
     β C R Q Y hQY t k {0, 3} {2, 4} {1}
   have hpull : b⁻¹ • P ≤ A := by
     apply Matrix.le_iff.mpr
-    simpa only [hA, Matrix.submatrix_sub, Matrix.submatrix_smul, hP,
-      Matrix.submatrix_submatrix, Function.comp_def, Equiv.symm_apply_apply,
-      Matrix.submatrix_id_id] using (Matrix.le_iff.mp hweak).submatrix e
+    simpa only [hA, Matrix.submatrix_sub, Matrix.submatrix_smul,
+      Pi.sub_apply, Pi.smul_apply, hP, Matrix.submatrix_submatrix,
+      Equiv.symm_comp_self, Matrix.submatrix_id_id] using
+        (Matrix.le_iff.mp hweak).submatrix e
   apply Matrix.le_iff.mpr
   simpa only [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_smul, Matrix.smul_mul] using
     (Matrix.le_iff.mp hpull).conjTranspose_mul_mul_same Z
