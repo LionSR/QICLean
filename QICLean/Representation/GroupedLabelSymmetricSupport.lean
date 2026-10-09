@@ -147,7 +147,9 @@ theorem commute_grouped_labelObservables
     (g : IrrepLabel (Equiv.Perm (Fin r)) → ℝ) :
     Commute (labelObservable ((subsystemPerm k ι S).comp (groupHom₁ e)) f)
       (labelObservable ((subsystemPerm k ι T).comp (groupHom₂ e)) g) :=
-  commute_labelObservable_of_commute _ _
+  commute_labelObservable_of_commute
+    ((subsystemPerm k ι S).comp (groupHom₁ e))
+    ((subsystemPerm k ι T).comp (groupHom₂ e))
     (fun σ τ => commute_subsystemPerm_of_commute ι k S T (groupHom_commute e σ τ)) f g
 
 /-- Every good-copy label observable preserves the simultaneous symmetric
