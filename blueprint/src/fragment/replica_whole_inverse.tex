@@ -5,11 +5,12 @@
 % 05-replicas.tex, lines 287--316, replicas:w-definition and replicas:W-comparison;
 % 07-comparators.tex, lines 454--476, preceding comparator:whole-inverse.
 % The statement below is the whole-label auxiliary, before the subgroup
-% decomposition and its binomial factor. Native declaration checking is pending.
+% decomposition and its binomial factor.
 
 \begin{theorem}[Inverse comparison for disjoint replica metrics]
     \label{thm:replica_whole_inverse}
     \lean{TensorPower.exists_replicaMetric_inv_square_le_exp}
+    \leanok
     \uses{thm:replica_metric_basic, thm:replica_metric_comparison,
         thm:schur_label_commutation, lem:orthogonal_resolution_cfc}
     Let $V$ be finite and let
@@ -29,7 +30,7 @@
     in the proof of the lower comparator in~\cite[Section~7]{OpenAI2026AreaLaw}.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:replica_metric_basic, thm:replica_metric_comparison,
         thm:schur_label_commutation, lem:orthogonal_resolution_cfc}
     The label projectors of the three disjoint regions commute. Their products

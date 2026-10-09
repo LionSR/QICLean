@@ -6,6 +6,7 @@
 \begin{theorem}[Symmetric-sector replica metric floor]
     \label{thm:replica_symmetric_floor}
     \lean{TensorPower.exists_replicaMetric_symmetric_floor}
+    \leanok
     \uses{def:copy_permutations, thm:replica_metric_basic}
     Let $V$ be a finite set of sites, and let $\iota_v$ be a finite nonempty
     coordinate set for every $v\in V$. Put
@@ -41,7 +42,7 @@
     product equal to $\C$.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:replica_whole_inverse,
         thm:replica_partition_nonnegative_support, thm:spectral_exponential_drop,
         lem:trivial_label, thm:replica_metric_basic, thm:schur_label_commutation,

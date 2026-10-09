@@ -7,7 +7,7 @@ parameters.
 \begin{theorem}[A metric floor from a compressed inverse bound]
     \label{thm:area_law_compressed_inverse_floor}
     \lean{Matrix.compressed_square_floor_of_inv_le}
-
+    \leanok
     Let $L$ be an invertible Hermitian matrix and let $S$ be an
     idempotent matrix commuting with $L$. Let $B>0$. If
     $S(L^2)^{-1}S\le BS$ in the positive-semidefinite order, then
@@ -16,7 +16,7 @@ parameters.
     \end{align}
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Congruence by $L$ preserves the matrix inequality. Commutation,
     idempotence, and invertibility give
     \begin{align}
@@ -35,7 +35,7 @@ This is the matrix congruence step in the lower comparison of
 \begin{theorem}[Averaging two matrix lower bounds]
     \label{thm:area_law_floor_pin}
     \lean{Matrix.floor_pin_le}
-
+    \leanok
     Let $A,P$ be complex square matrices and let $b,c\in\R$.
     If $2bI\le A$ and $cP\le A$ in the positive-semidefinite order, then
     \begin{align}
@@ -44,7 +44,7 @@ This is the matrix congruence step in the lower comparison of
     No projection or commutation hypothesis on $P$ is required.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Adding the two inequalities and multiplying by the positive scalar
     $1/2$ gives $\frac12(2bI+cP)\le A$. Its left side equals
     $b(I-P)+(b+c/2)P$.
@@ -58,7 +58,7 @@ This averaging step is used before evaluating the mean tree in
 \begin{theorem}[Preserving a floor under identity extension]
     \label{thm:area_law_identity_extension_floor}
     \lean{Matrix.identity_extension_floor}
-
+    \leanok
     Let $T,S$ be complex square matrices and let $c\in\R$. If
     $S\le I$, $c\le1$, and $cS\le T$, then
     \begin{align}
@@ -69,7 +69,7 @@ This averaging step is used before evaluating the mean tree in
     extended by the identity on the complementary subspace.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Since $I-S\ge0$ and $c\le1$, one has $c(I-S)\le I-S$.
     Add this inequality to $cS\le T$.
 \end{proof}
