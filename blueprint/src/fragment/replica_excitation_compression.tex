@@ -9,6 +9,7 @@ give this implication with the component estimate as an explicit hypothesis.
 \begin{theorem}[Cauchy--Schwarz for a positive quadratic form]
   \label{thm:positive_form_finite_sum}
   \lean{Matrix.PosSemidef.re_dotProduct_sum_mulVec_le_card_sum}
+  \leanok
   Let $H$ be positive semidefinite on a finite-dimensional complex Hilbert
   space, let $S$ be a finite set, and let $(v_i)_{i\in S}$ be any vectors.
   Then
@@ -19,6 +20,7 @@ give this implication with the component estimate as an explicit hypothesis.
   \end{align}
 \end{theorem}
 \begin{proof}
+  \leanok
   Write $H=R^*R$ with $R=\sqrt H$. The left-hand side is
   $\|\sum_i Rv_i\|^2$. The triangle inequality, followed by scalar
   Cauchy--Schwarz, bounds it by $|S|\sum_i\|Rv_i\|^2$.
@@ -27,6 +29,7 @@ give this implication with the component estimate as an explicit hypothesis.
 \begin{theorem}[A bound on vectors in the defect cutoff]
   \label{thm:replica_cutoff_component_bound}
   \lean{Matrix.re_dotProduct_replicaDefectCutoff_le_of_component_bounds}
+  \leanok
   \uses{def:replica_excitation_projection,def:replica_operators}
   Let $\Omega\in\mathcal H$ be a unit vector, let $k\ge0$ be an integer,
   and let $\mathcal K$ be any finite-dimensional complex Hilbert space.
@@ -50,6 +53,7 @@ give this implication with the component estimate as an explicit hypothesis.
   \end{align}
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:positive_form_finite_sum,thm:replica_cutoff_decomposition,thm:excitation_subset_entropy}
   The actual cutoff decomposition gives $u=\sum_{|B|\le\tau k}u_B$
   and $\sum_B\|u_B\|^2=\|u\|^2$. Apply
@@ -62,6 +66,7 @@ give this implication with the component estimate as an explicit hypothesis.
 \begin{theorem}[Compression to a subspace of the cutoff]
   \label{thm:replica_excitation_compression_bound}
   \lean{Matrix.compression_le_of_replicaExcitationComponent_bounds}
+  \leanok
   Retain the data $\Omega,k,\mathcal K,\tau,c,H,Q_\tau$ above, and let
   $P$ be an orthogonal projection satisfying $Q_\tau P=P$. For each
   vector $u$ with $Pu=u$, set $u_B=(R_B\otimes\Id_{\mathcal K})u$.
@@ -77,6 +82,7 @@ give this implication with the component estimate as an explicit hypothesis.
   projections is assumed.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:replica_cutoff_component_bound}
   For an arbitrary $x$, the vector $u=Px$ lies in the range of $P$ and
   satisfies $Q_\tau u=u$. Apply
