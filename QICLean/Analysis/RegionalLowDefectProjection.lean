@@ -120,6 +120,7 @@ theorem globalReplicaLowDefectProjection_properties
               (labelProj (replicaJointCopyPerm ((v : V) → β v) C R k) l) from
                 ⟨labelProj_mul_self _ l, (isHermitian_labelProj _ l).isSelfAdjoint⟩))).isIdempotentElem.eq]
   have hPQ : P * Q = P := by
+    dsimp only [Q]
     rw [← symProj_replicaJointCopyPerm_submatrix_globalReplicaCopiesEquiv β C R k]
     change P₀.submatrix e e * Q₀.submatrix e e = P₀.submatrix e e
     rw [Matrix.submatrix_mul_equiv, hP₀Q₀]
