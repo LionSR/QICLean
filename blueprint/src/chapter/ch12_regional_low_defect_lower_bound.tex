@@ -1,0 +1,92 @@
+\section{A uniform regional lower bound}
+
+\begin{theorem}[Norm preservation under regional grouping]
+  \label{thm:regional_physical_vector_norm}
+  \lean{FiniteProduct.norm_regionalPhysicalVector}
+  Let $V$ be finite, let each $\beta_v$ be a finite coordinate set,
+  and let $Q,Y\subseteq V$ be disjoint. Put $F=(Q\cup Y)^c$.
+  The restriction map
+  \begin{align*}
+    e_{Q,Y}:\prod_{v\in V}\beta_v
+      &\longrightarrow
+        \left(\prod_{v\in Q}\beta_v\right)\times
+        \left(\prod_{v\in Y}\beta_v\right)\times
+        \left(\prod_{v\in F}\beta_v\right),\\
+    x&\longmapsto(x|_Q,x|_Y,x|_F)
+  \end{align*}
+  is the actual regional coordinate bijection. Every complex-valued
+  function $\Omega$ on the original configurations satisfies
+  \begin{align*}
+    \|\Omega\circ e_{Q,Y}^{-1}\|_2=\|\Omega\|_2.
+  \end{align*}
+  Empty regions and empty coordinate sets are included.
+\end{theorem}
+\begin{proof}
+  \uses{def:regional_five_factor_coordinates}
+  Reindex the finite sum of squared absolute values along the bijection
+  $e_{Q,Y}$. Taking square roots gives the identity.
+\end{proof}
+
+\begin{theorem}[A common rough lower bound for all physical cuts]
+  \label{thm:global_regional_low_defect_rough_lower_bound}
+  \lean{Matrix.exists_globalReplicaLowDefectProjection_rough_lower_pin}
+  Fix a finite physical site set $V$, nonzero finite-dimensional spaces
+  $H_v$, and two nonzero finite-dimensional auxiliary spaces $H_c,H_r$.
+  For every $t>0$ with $4t\leq1$, there is $c\geq0$, depending only on
+  these spaces and $t$, with the following property.
+
+  Let $k\geq0$, let $\Omega\in\bigotimes_{v\in V}H_v$ be a unit vector,
+  and let $\lambda_c,\lambda_r$ be the two auxiliary labels. Suppose
+  $0\leq\tau\leq\tfrac12$, and let $S_0,\varepsilon\in\mathbb R$ satisfy
+  \begin{align*}
+    2kS_0-\varepsilon
+      \leq\log\dim\lambda_c+\log\dim\lambda_r.
+  \end{align*}
+  Let $P_{\mathrm{glob}}$ be the common projection of
+  Definition~\ref{def:global_replica_low_defect_projection}, formed from
+  this same vector, these labels, and the defect cutoff $\tau k$.
+  Set
+  \begin{align*}
+    d&=\log\dim H_c+\log\dim H_r,\\
+    b_k&=(k+1)e^{kh(\tau)}(k+2)^c
+      \exp\bigl(-2tk(2S_0-\tau d-3h(\tau))+2t\varepsilon\bigr),
+  \end{align*}
+  where $h$ is binary entropy. Let $Q_k$ denote the projection onto
+  simultaneous copy symmetry of the full physical and auxiliary space.
+  For every finite rectangular matrix $Z$ with $ZZ^*=Q_k$, the matrix
+  $P_Z=Z^*P_{\mathrm{glob}}Z$ is an orthogonal projection. For every pair
+  of disjoint physical regions $Q,Y\subseteq V$, put $F=(Q\cup Y)^c$ and
+  \begin{align*}
+    A_{Q,Y}
+      =\bigl(W_{t,k}(Q\cup\{c\})^{-1}
+             W_{t,k}(F\cup\{r\})^{-1}W_{t,k}(Y)\bigr)^2.
+  \end{align*}
+  Here every metric retains the weights of the original full site family.
+  Then
+  \begin{align*}
+    b_k^{-1}P_Z\leq Z^*A_{Q,Y}Z.
+  \end{align*}
+  Thus the same constant, projection, and matrix $Z$ serve every physical
+  cut. This is the uniform regional form of the rough lower bound in
+  \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+  \uses{thm:regional_physical_vector_norm,thm:actual_low_defect_rough_lower_bound,thm:regional_low_defect_projection_global,thm:regional_squared_inverse_metric_coordinates}
+  Apply the five-factor rough lower bound to each physical cut pair.
+  Its polynomial exponent has the form $c_{Q,Y}+D_{Q,Y}$, where
+  \begin{align*}
+    D_{Q,Y}=\max\bigl\{
+      (\dim H_Q\dim H_c)^2,(\dim H_F\dim H_r)^2\bigr\}.
+  \end{align*}
+  The finite maximum of these exponents and zero gives $c$ before the
+  copy number, vector, labels, cutoffs, and matrix $Z$ are chosen.
+  Since $k+2\geq1$, replacing a cut-dependent exponent by $c$ increases
+  $b_k$ and weakens the lower bound.
+
+  The actual regional equivalence pulls the regional projection back
+  to $P_{\mathrm{glob}}$ and the regional metric product back to
+  $A_{Q,Y}$. Pull back the five-factor inequality and conjugate by $Z$.
+  The common projection theorem supplies that $P_Z$ is an orthogonal
+  projection. The estimate retains the three binary-entropy losses and
+  the subset-counting factor $(k+1)e^{kh(\tau)}$.
+\end{proof}

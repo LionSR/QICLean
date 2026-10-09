@@ -1,0 +1,51 @@
+\section{Physical coordinate covariance of the low-defect projection}
+\label{sec:replica_low_defect_coordinate_covariance}
+
+\begin{theorem}[Transport of the physical replica operators]
+\label{thm:replica_physical_operator_coordinate_covariance}
+\lean{Matrix.replicaHamiltonian_submatrix_equiv,Matrix.replicaDefectCount_submatrix_equiv}
+Let $U$ be the coordinate unitary of an equivalence of finite physical
+coordinate sets. For any physical matrix $H$ and vector $\Omega$, put
+$H'=UHU^*$ and $\Omega'=U\Omega$. Then
+\begin{align}
+ \sum_{i=1}^k(H')^{(i)}
+   &=U^{\otimes k}\Bigl(\sum_{i=1}^kH^{(i)}\Bigr)(U^{\otimes k})^*,\\
+ D_{\Omega',k}
+   &=U^{\otimes k}D_{\Omega,k}(U^{\otimes k})^*,
+ \qquad
+ D_{\Omega,k}=\sum_{i=1}^k(I-|\Omega\rangle\langle\Omega|)^{(i)}.
+\end{align}
+Normalization is unnecessary for these identities.
+\end{theorem}
+\begin{proof}
+The one-copy rank-one matrix transforms as
+$|\Omega'\rangle\langle\Omega'|=U|\Omega\rangle\langle\Omega|U^*$.
+Each tensor summand transforms by the same coordinate equivalence;
+sum over the copy index.
+\end{proof}
+
+\begin{theorem}[Transport of the actual cutoff and labels]
+\label{thm:replica_low_defect_coordinate_covariance}
+\lean{TensorPower.symProj_replicaJointCopyPerm_reindex_physical,Matrix.replicaLowDefectProjection_reindex_physical}
+Retain the same auxiliary spaces $C,R$ and labels $\ell_C,\ell_R$,
+and write $\widehat U=U^{\otimes k}\otimes I_{C^{\otimes k}}\otimes I_{R^{\otimes k}}$.
+The simultaneous symmetry projections satisfy
+$S'_k=\widehat U S_k\widehat U^*$.
+If $\|\Omega\|=1$, the actual low-defect projections, at any real
+cutoff $\tau k$, satisfy
+\begin{align}
+ P_{\Omega',k,\ell_C,\ell_R,\tau}
+   =\widehat U P_{\Omega,k,\ell_C,\ell_R,\tau}\widehat U^*.
+\end{align}
+The same original vector and labels are used on both sides.
+This is the coordinate invariance required by
+\cite[Section~8, lines~421--456 and~603--615]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{thm:replica_physical_operator_coordinate_covariance,thm:symmetric_projection_equivariant_coordinates}
+Functional calculus transports the spectral cutoff of the Hermitian
+defect count. The two auxiliary-label projectors remain unchanged.
+The physical coordinate equivalence intertwines simultaneous copy
+permutations, so their average transports as well. Multiply these three
+factor identities.
+\end{proof}
