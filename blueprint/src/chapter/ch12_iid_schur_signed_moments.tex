@@ -1,0 +1,53 @@
+\section{Signed moments of independent-copy Schur labels}
+
+Let $\rho$ be a positive semidefinite matrix of trace one on a complex
+Hilbert space of finite dimension $d$. Write $p_i$ for its eigenvalues,
+$S=-\sum_i p_i\log p_i$ for its entropy, and
+$M_p(v)=\sum_i p_i e^{-v\log p_i}$. Terms with $p_i=0$ contribute zero.
+For a nonnegative integer $k$, put $\rho_k=\rho^{\otimes k}$ and
+$L_k=-\log\rho_k$, with logarithm zero on the kernel.
+
+\begin{theorem}[Logarithmic moment of a tensor-power density]
+  \label{thm:iid_log_surprisal_moment}
+  \lean{Matrix.PosSemidef.log_re_trace_finKronecker_exp_centered_surprisal}
+  \leanok
+  For all real $u,s$,
+  \begin{align}
+    \log\operatorname{Re}\operatorname{Tr}
+      [\rho_k e^{u(L_k-sI)}]
+      &=-us+k\log M_p(u).
+  \end{align}
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:iid_centered_surprisal_exponential}
+  Since $\sum_i p_i=1$, at least one spectral weight is positive, so
+  $M_p(u)>0$. Take the logarithm of the exact product moment
+  $e^{-us}M_p(u)^k$.
+\end{proof}
+
+\begin{theorem}[Both signs of the Schur entropy moment]
+  \label{thm:iid_signed_schur_moments}
+  \lean{Matrix.PosSemidef.log_re_trace_finKronecker_signed_label_moments_le}
+  \leanok
+  Let $K,r$ be real and suppose
+  $\log M_p(v)\leq vS+Kv^2$ whenever $|v|\leq r$.
+  Let $F_k=\sum_\lambda\log(\dim\lambda)\pi_\lambda$ be the
+  central entropy observable for the permutation action on the $k$ copies.
+  If $u\geq0$, $2u\leq r$, and $2u\leq1$, then
+  \begin{align}
+    \log\operatorname{Re}\operatorname{Tr}
+      [\rho_k e^{u(F_k-kSI)}]&\leq kKu^2,\notag\\
+    \log\operatorname{Re}\operatorname{Tr}
+      [\rho_k e^{-u(F_k-kSI)}]&\leq 2kKu^2+\tfrac{d^2}{2}\log(k+1).
+  \end{align}
+  These are the explicit independent-copy bounds in
+  \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:iid_log_surprisal_moment,thm:schur-label-moment-bounds}
+  At center $s=kS$, the logarithmic tensor-power identity and the
+  assumed one-copy bound give $kKv^2$. The matrix $\rho_k$ is positive semidefinite,
+  has trace one, and commutes with every copy permutation. Apply the
+  centered Schur comparison with interval parameter $r$ and scale one.
+  The conditions on $2u$ give the required common interval.
+\end{proof}
