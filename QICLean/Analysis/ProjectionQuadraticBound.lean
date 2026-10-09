@@ -28,7 +28,7 @@ Source: `07-comparators.tex`, lines 454–493. -/
 theorem re_dotProduct_mulVec_le_of_le
     {n : Type*} [Fintype n] {A B : Matrix n n ℂ} (hAB : A ≤ B) (v : n → ℂ) :
     (star v ⬝ᵥ (A *ᵥ v)).re ≤ (star v ⬝ᵥ (B *ᵥ v)).re := by
-  have h := (RCLike.nonneg_iff.mp
+  have h := (Complex.nonneg_iff.mp
     ((Matrix.le_iff.mp hAB).dotProduct_mulVec_nonneg v)).1
   simpa only [sub_mulVec, dotProduct_sub, Complex.sub_re, sub_nonneg] using h
 
