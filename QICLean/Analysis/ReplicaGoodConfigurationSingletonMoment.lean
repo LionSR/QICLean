@@ -188,7 +188,8 @@ theorem fiveFactorCopies_exp_labelEntropy_singleton (a : ℝ) :
     (fun l ↦ Real.log l.dim)
   change (labelEntropy (subsystemPerm m ι {j.castAdd 2})).submatrix
       (fiveFactorCopiesEquiv ι m).symm (fiveFactorCopiesEquiv ι m).symm = _ at hF
-  rw [← reindex_apply, reindex_exp, reindex_apply, submatrix_smul, hF,
+  rw [← reindex_apply, reindex_exp, reindex_apply, submatrix_smul,
+    Pi.smul_apply, Pi.smul_apply, hF,
     ← smul_kronecker, exp_kronecker_one]
   congr 1
   rw [← submatrix_smul, ← reindex_apply, ← reindex_exp, reindex_apply,
