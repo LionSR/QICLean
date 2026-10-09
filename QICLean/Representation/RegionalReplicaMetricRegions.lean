@@ -34,7 +34,8 @@ theorem regionalOriginalRegion_metric_regions (Q Y : Finset V) (hQY : Disjoint Q
       insert none ((Q ∪ Y)ᶜ.image fun v => some (some v)) ∧
     regionalOriginalRegion Q Y {1} = Y.image (fun v => some (some v)) := by
   classical
-  have hd (v : V) : v ∈ Q → v ∈ Y → False := Finset.disjoint_left.mp hQY
+  have hd (v : V) : v ∈ Q → v ∈ Y → False :=
+    fun hvQ hvY ↦ Finset.disjoint_left.mp hQY hvQ hvY
   constructor
   · ext v
     rcases v with _ | (_ | v)
