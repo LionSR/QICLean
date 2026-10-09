@@ -199,7 +199,8 @@ theorem fiveFactorPairMiddle_exp_sum_mergeDeficit (a : ℝ) :
   intro E F DC DR
   obtain ⟨hQC, hVR⟩ := fiveFactorPairMiddle_mergeDeficits ι m
   rw [← Matrix.reindex_apply, Matrix.reindex_exp, Matrix.reindex_apply,
-    submatrix_smul, submatrix_add, hQC, hVR, ← add_kronecker,
+    submatrix_smul, submatrix_add, Pi.smul_apply, Pi.smul_apply,
+    Pi.add_apply, Pi.add_apply, hQC, hVR, ← add_kronecker,
     ← smul_kronecker, Matrix.exp_kronecker_one]
 
 end TensorPower
