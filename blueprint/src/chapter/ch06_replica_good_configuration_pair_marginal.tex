@@ -4,6 +4,7 @@
 \begin{definition}[The five-factor regrouping]
 \label{def:five_factor_pair_middle_equiv}
 \lean{TensorPower.fiveFactorPairMiddleEquiv}
+\leanok
 Regroup the good-copy factors, with their fixed common enumeration, by
 \begin{align*}
  (Q_G,Y_G,V_G,C_G,R_G)
@@ -11,12 +12,13 @@ Regroup the good-copy factors, with their fixed common enumeration, by
 \end{align*}
 Write $e$ for this coordinate equivalence. The ordering is the one used
 for the paired merge estimate in
-\cite[Section~7, lines~513--549]{OpenAI2026AreaLaw}.
+\cite[Section~8, lines~513--549]{OpenAI2026AreaLaw}.
 \end{definition}
 
 \begin{theorem}[The actual density and its common marginal]
 \label{thm:replica_good_configuration_pair_marginal}
 \lean{Matrix.posSemidef_replicaGoodConfigurationMarginal,Matrix.partialTraceRight_replicaGoodConfigurationMarginal_pairMiddle,Matrix.trace_replicaGoodConfigurationMarginal}
+\leanok
 \uses{def:replica_good_configuration_marginal,def:replica_good_pair_marginal}
 Let $w$ be the actual excitation component for a subset $B$ of the
 copies. Let $\rho$ be its reduced density retaining all five good
@@ -24,15 +26,16 @@ factors $Q_G,Y_G,V_G,C_G,R_G$, and tracing only the bad physical and
 auxiliary coordinates. In the coordinates of $e$, denote this matrix
 by $\rho_e$. Then $\rho$ is positive semidefinite,
 \begin{align*}
- \operatorname{Tr}_{Y_G}\rho_e=\rho_{\mathrm{pair}},\qquad
- \operatorname{Tr}\rho=\|w\|^2,
+ \operatorname{Tr}_{Y_G}\rho_e&=\rho_{\mathrm{pair}},\\
+ \operatorname{Tr}\rho&=\|w\|^2,
 \end{align*}
 where $\rho_{\mathrm{pair}}$ is the actual common good-pair marginal.
 Neither the original vector nor its component is required to be
 normalized or permutation invariant. This is the common density used
-in \cite[Section~7, lines~513--549]{OpenAI2026AreaLaw}.
+in \cite[Section~8, lines~513--549]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{def:five_factor_pair_middle_equiv,thm:replica_good_pair_marginal_trace}
 Positivity follows from positivity of the vector density and partial
 trace. Both formulas for the common marginal sum the same matrix
@@ -45,6 +48,7 @@ of the original component.
 \begin{theorem}[Expectations of paired observables]
 \label{thm:replica_good_configuration_pair_expectation}
 \lean{Matrix.trace_replicaGoodConfigurationMarginal_pairMiddle_mul}
+\leanok
 For every matrix $H$ on the two good pairs,
 \begin{align*}
  \operatorname{Tr}\bigl(\rho_e(H\otimes I_{Y_G})\bigr)
@@ -53,6 +57,7 @@ For every matrix $H$ on the two good pairs,
 No positivity or Hermiticity of $H$ is required.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{thm:replica_good_configuration_pair_marginal}
 Use the adjoint identity for partial trace and the preceding theorem.
 \end{proof}
