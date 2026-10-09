@@ -1,0 +1,30 @@
+\section{Original auxiliary labels in physical-copy coordinates}
+\label{sec:regional_auxiliary_labels}
+
+\begin{theorem}[The two original auxiliary projections]
+\label{thm:global_replica_auxiliary_labels}
+\lean{TensorPower.labelProj_globalReplicaCopiesEquiv_auxiliary}
+Let $\mathcal H$ be the original finite physical tensor product, and let
+$C,R$ be finite auxiliary coordinate spaces. For a copy number $k$, let
+$G_k$ be the fixed regrouping of
+Definition~\ref{def:regional_five_factor_coordinates}, with codomain
+$\mathcal H^{\otimes k}\otimes C^{\otimes k}\otimes R^{\otimes k}$.
+For any original labels $\ell_C,\ell_R$, let $P_C,P_R$ denote their
+whole-copy auxiliary projections. Then
+\begin{align}
+ G_k^*(I\otimes P_C\otimes I)G_k&=P_{\{C\},\ell_C},\\
+ G_k^*(I\otimes I\otimes P_R)G_k&=P_{\{R\},\ell_R}.
+\end{align}
+On the right, $C$ and $R$ denote the two distinguished original auxiliary
+sites. The identities hold for zero copies and empty coordinate spaces;
+no state or regional cut is needed. They give the auxiliary-coordinate
+identification used in
+\cite[Section~8, lines~421--443]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\uses{def:regional_five_factor_coordinates}
+The regrouping intertwines the permutation of the $C$ copies with the
+same permutation of the original $C$ site, and similarly for $R$.
+Taking the central idempotent of each label gives the two identities.
+The other coordinate factors carry the identity.
+\end{proof}

@@ -57,6 +57,7 @@ import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.PhysicalMergeHolder
 import QICLean.Representation.RegionPowerSymbol
+import QICLean.Representation.RegionalAuxiliaryLabels
 import QICLean.Representation.RegionalFiveFactorCoordinates
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.RelativePin
