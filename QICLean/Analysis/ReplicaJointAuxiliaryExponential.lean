@@ -77,10 +77,10 @@ private theorem commute_whole_labelProj_subgroup_labelObservable
   intro σ
   apply Commute.symm
   rcases hST with hST | hST
-  · simpa only [labelProj, groupAlgebraRep_single, one_smul] using
+  · simpa only [labelProj, groupAlgebraRep_single, permOp_comp, one_smul] using
       commute_groupAlgebraRep_subsystemPerm_of_subset ι k hST
         (IrrepLabel.centralIdem_mem_center ell) (MonoidAlgebra.single (θ σ) (1 : ℂ))
-  · simpa only [labelProj, groupAlgebraRep_single, one_smul] using
+  · simpa only [labelProj, groupAlgebraRep_single, permOp_comp, one_smul] using
       commute_groupAlgebraRep_subsystemPerm_of_disjoint ι k hST
         (IrrepLabel.centralIdem ell) (MonoidAlgebra.single (θ σ) (1 : ℂ))
 
@@ -117,26 +117,27 @@ theorem fiveFactor_groupedGood_auxiliaryPair_floor
       (1 : Matrix (Fin k → ι 0 × (ι 1 × ι 2))
         (Fin k → ι 0 × (ι 1 × ι 2)) ℂ) ⊗ₖ
         (PC ⊗ₖ (1 : Matrix (Fin k → ι 4) (Fin k → ι 4) ℂ)) := by
-    simpa only [MonoidHom.comp_id, labelProj] using
+    simpa only [MonoidHom.comp_id, PC, η, labelProj] using
       (fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep ι k
         (MonoidHom.id (Equiv.Perm (Fin k))) (IrrepLabel.centralIdem ellC)).1
   have hPR : (labelProj (subsystemPerm k ι {4}) ellR).submatrix η.symm η.symm =
       (1 : Matrix (Fin k → ι 0 × (ι 1 × ι 2))
         (Fin k → ι 0 × (ι 1 × ι 2)) ℂ) ⊗ₖ
         ((1 : Matrix (Fin k → ι 3) (Fin k → ι 3) ℂ) ⊗ₖ PR) := by
-    simpa only [MonoidHom.comp_id, labelProj] using
+    simpa only [MonoidHom.comp_id, PR, η, labelProj] using
       (fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep ι k
         (MonoidHom.id (Equiv.Perm (Fin k))) (IrrepLabel.centralIdem ellR)).2
   have hP : P.submatrix η.symm η.symm = Pf := by
-    rw [P, ← submatrix_mul_equiv, hPC, hPR]
+    dsimp only [P]
+    rw [← submatrix_mul_equiv, hPC, hPR]
     simp only [Pf, ← mul_kronecker_mul, one_mul, mul_one]
   have hLC := (fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep ι k (groupHom₁ e)
     (∑ ell, (Real.log ell.dim : ℂ) • IrrepLabel.centralIdem ell)).1
   have hLR := (fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep ι k (groupHom₁ e)
     (∑ ell, (Real.log ell.dim : ℂ) • IrrepLabel.centralIdem ell)).2
   have hL : L.submatrix η.symm η.symm = Lf := by
-    simpa only [L, Lf, FC, FR, labelEntropy, labelObservable_eq_groupAlgebraRep,
-      submatrix_add, kronecker_add] using congrArg₂ (fun A B => A + B) hLC hLR
+    simpa only [L, Lf, FC, FR, η, labelEntropy, labelObservable_eq_groupAlgebraRep,
+      submatrix_add, Pi.add_apply, kronecker_add] using congrArg₂ (fun A B => A + B) hLC hLR
   have hPback : Pf.submatrix η η = P := by
     ext x y
     simpa only [submatrix_apply, Equiv.symm_apply_apply] using
@@ -297,7 +298,7 @@ theorem replicaExcitationComponent_exp_good_le_without_auxiliary
     (MonoidHom.id (Equiv.Perm (Fin k))) (IrrepLabel.centralIdem ellC)).1
   have hR := (fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep ι k
     (MonoidHom.id (Equiv.Perm (Fin k))) (IrrepLabel.centralIdem ellR)).2
-  simp only [MonoidHom.comp_id, ← labelProj] at hC hR
+  simp only [MonoidHom.comp_id] at hC hR
   have hP : (labelProj (subsystemPerm k ι {3}) ellC *
       labelProj (subsystemPerm k ι {4}) ellR).submatrix η.symm η.symm =
       (1 : Matrix (Fin k → ι 0 × (ι 1 × ι 2))
@@ -308,7 +309,8 @@ theorem replicaExcitationComponent_exp_good_le_without_auxiliary
   have hf : (labelProj (subsystemPerm k ι {3}) ellC *
       labelProj (subsystemPerm k ι {4}) ellR) *ᵥ f = f := by
     funext x
-    simpa only [f, Function.comp_apply, Equiv.symm_apply_apply] using congrFun hw (η x)
+    simpa only [f, η, Equiv.symm_symm, Function.comp_apply, Equiv.symm_apply_apply] using
+      congrFun hw (η x)
   exact fiveFactor_groupedGood_exp_le_without_auxiliary ι e ellC ellR ha hf
 
 end Matrix
