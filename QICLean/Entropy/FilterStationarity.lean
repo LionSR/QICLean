@@ -320,10 +320,6 @@ noncomputable def localLiftₗ (D : Finset V) :
   map_add' := localLift_add
   map_smul' := localLift_smul
 
-theorem regionState_isHermitian (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
-    (regionState D φ).IsHermitian :=
-  (posSemidef_vecMulVec_self_star _).partialTraceRight.isHermitian
-
 theorem toEuclideanLin_mul_apply' {m : Type*} [Fintype m] [DecidableEq m] (X Y : Matrix m m ℂ)
     (v : EuclideanSpace ℂ m) :
     toEuclideanLin (X * Y) v = toEuclideanLin X (toEuclideanLin Y v) := by
