@@ -75,6 +75,8 @@ variable (k : ℕ) (B : Finset (Fin k))
 variable (u : (Fin k → ι 0 × (ι 1 × ι 2)) ×
   ((Fin k → ι 3) × (Fin k → ι 4)) → ℂ)
 
+include hΩ
+
 /-- Regrouping the actual good density into its physical and auxiliary
 registers gives an exact product. The auxiliary factor is the literal
 reduced density of the same component. Source: `07-comparators.tex`,
