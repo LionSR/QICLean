@@ -1,4 +1,4 @@
-\section{A typical width for a linear cut budget}
+\section{Typical widths for linear and logarithmic cut budgets}
 \label{sec:typical_tail_scales}
 
 The polynomial error asserted after the typical-set construction in
@@ -33,3 +33,57 @@ both the geometric bound $\mathcal B\le Cn$ and the marginal tail estimate
 for the actual ground state. Given those estimates, the normalized-state
 results above give positive selected mass at least $1-n^{-100}$ at width
 $n^{3/5}$.
+
+The target-region argument in \cite[Section~8]{OpenAI2026AreaLaw}
+also allows a fixed logarithmic factor in the cut budget. The following
+specialization uses the twelfth logarithmic power.
+% Source: openai/math, adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% preprints/A-two-dimensional-area-law-from-a-global-spectral-gap-September-24-2026/
+% build/sections/08-scanner.tex, lines 405--414.
+% Source-only additions: compilation and kernel-axiom checks remain pending.
+
+\begin{theorem}[Exponent bound for a logarithmic cut budget]
+\label{thm:typical_tail_log_budget_exponent}
+\lean{Entropy.typicalWidth_div_sqrt_log_pow_twelve_budget_ge}
+Fix $\theta\ge0$, $C>0$, $n>1$, and
+$0<\mathcal B\le Cn(\log n)^{12}$. With
+$c=(32\sqrt{(1+\theta)C})^{-1}$, one has
+\begin{align}
+\frac{c n^{1/10}}{(\log n)^6}
+&\le \frac{n^{3/5}}{32\sqrt{(1+\theta)\mathcal B}}.
+\end{align}
+\end{theorem}
+\begin{proof}
+Since $n>1$, the logarithm is positive. The budget bound gives
+$32\sqrt{(1+\theta)\mathcal B}
+\le32\sqrt{(1+\theta)C}\sqrt n(\log n)^6$.
+Divide the identity $n^{3/5}=n^{1/10}\sqrt n$ by this positive upper bound.
+\end{proof}
+
+\begin{theorem}[Uniform polynomial decay for a logarithmic cut budget]
+\label{thm:typical_tail_log_budget}
+\lean{Entropy.exists_typical_tail_bound_of_log_pow_twelve_budget}
+Fix $\theta\ge0$ and $C>0$. There is an integer $N\ge2$, depending only
+on these two constants, such that for every integer $n\ge N$ and every
+$0<\mathcal B\le Cn(\log n)^{12}$,
+\begin{align}
+2e^{e/2}\exp\!\left(-\frac{n^{3/5}}
+ {32\sqrt{(1+\theta)\mathcal B}}\right)&\le n^{-100}.
+\end{align}
+\end{theorem}
+\begin{proof}
+\uses{thm:typical_tail_log_budget_exponent}
+Let $c=(32\sqrt{(1+\theta)C})^{-1}>0$.
+Theorem~\ref{thm:typical_tail_log_budget_exponent} bounds the tail expression
+by $2e^{e/2}\exp(-cn^{1/10}/(\log n)^6)$.
+The logarithmic asymptotic $(\log n)^6=o(n^{1/20})$ gives
+$(\log n)^6\le n^{1/20}$ for all sufficiently large $n$.
+Consequently the tail expression is at most
+$2e^{e/2}\exp(-cn^{1/20})$, which is eventually at most $n^{-100}$.
+Choose $N\ge2$ large enough for both comparisons. Neither comparison
+depends on $\mathcal B$.
+\end{proof}
+
+This numerical statement does not supply a physical cut budget or a
+marginal-tail estimate for a Hamiltonian; those estimates are separate
+inputs to its application.
