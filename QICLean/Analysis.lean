@@ -141,6 +141,7 @@ import QICLean.Analysis.ResolventPhaseBound
 import QICLean.Analysis.ResolventPhaseGap
 import QICLean.Analysis.RestoringCoefficientBound
 import QICLean.Analysis.RootChannel
+import QICLean.Analysis.RootChannelWord
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RpowConvexity
