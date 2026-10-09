@@ -18,6 +18,7 @@ import QICLean.Analysis.CfcComplex
 import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
+import QICLean.Analysis.CfcLogListProduct
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
@@ -92,6 +93,8 @@ import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
+import QICLean.Analysis.MeanTreeLogFloorDeficit
+import QICLean.Analysis.MeanTreeLogFloorExp
 import QICLean.Analysis.MeanTreeProjectionLogBound
 import QICLean.Analysis.MeanTreeProjectionMassBound
 import QICLean.Analysis.MeanTreeProjectionSectors

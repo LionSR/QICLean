@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.CfcLogListProduct
 import QICLean.Representation.ReplicaTransport.CoherentLog
 import QICLean.Representation.ReplicaTransport.Prerequisites
 import QICLean.Representation.ReplicaTransport.States
@@ -101,22 +102,6 @@ private theorem listProd_whiten {K : ℕ} {A B : Fin K → Matrix m m ℂ} (hA :
     have c3 : Commute (PA ^ r) (A 0 ^ r) := (hPA.commute_rpow (hA 0) hA0PA.symm r r)
     simp only [Matrix.mul_assoc]
     rw [c1.left_comm, c2.left_comm, c3.left_comm]
-
-/-- The logarithm of an ordered product of pairwise commuting positive definite matrices is
-the sum of the logarithms. -/
-private theorem cfc_log_listProd {K : ℕ} {X : Fin K → Matrix m m ℂ} (hX : ∀ g, (X g).PosDef)
-    (hXX : ∀ g g', g ≠ g' → Commute (X g) (X g')) :
-    CFC.log (List.ofFn X).prod = ∑ g, CFC.log (X g) := by
-  induction K with
-  | zero => simp
-  | succ K ih =>
-    rw [List.ofFn_succ, List.prod_cons, Fin.sum_univ_succ,
-      (hX 0).cfc_log_mul (Matrix.MeanTree.posDef_listProd_ofFn (fun g => hX _)
-        (fun g g' h => hXX _ _ (fun h' => h (Fin.succ_injective _ h'))))
-        (Commute.list_prod_right _ _ fun y hy => by
-          obtain ⟨g, rfl⟩ := List.mem_ofFn.mp hy
-          exact hXX _ _ (Fin.succ_ne_zero g).symm),
-      ih (fun g => hX _) (fun g g' h => hXX _ _ (fun h' => h (Fin.succ_injective _ h')))]
 
 end Helpers
 
@@ -331,7 +316,8 @@ theorem cfc_log_relRatio_eq_sum (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {
       Matrix.MeanTree.eval_listProd_ofFn (fun c g => hN c g) hNN]
     exact listProd_whiten hA hB hAA hAB
   rw [hrel]
-  refine cfc_log_listProd (fun g => D.posDef_bandRelRatio hD ht k h g) fun g g' hg => ?_
+  refine Matrix.cfc_log_listProd_ofFn
+    (fun g => D.posDef_bandRelRatio hD ht k h g) fun g g' hg => ?_
   have hBB := Matrix.MeanTree.commute_eval_band (fun c g => hN c g) hNN (D.choiceTree h) hg
   have r1 : ∀ r : ℝ, Commute (symBandMetric n t k (D.old h g) ^ r)
       (symBandMetric n t k (D.old h g') ^ (-(1 / 2) : ℝ)) := fun r =>
