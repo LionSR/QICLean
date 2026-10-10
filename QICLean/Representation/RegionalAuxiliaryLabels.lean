@@ -77,7 +77,11 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
         Equiv.prodAssoc_apply,
         ← Matrix.one_kronecker_one (α := ℂ) (m := Fin k → R)
           (n := Fin k → (v : V) → β v), Matrix.kroneckerMap_apply,
-        eC, I] using
+        eC, I, mul_rotate'
+          ((1 : Matrix (Fin k → (v : V) → β v) (Fin k → (v : V) → β v) ℂ)
+            (e x).1 (e y).1)
+          (labelProj (copyPerm C k) ellC (e x).2.1 (e y).2.1)
+          ((1 : Matrix (Fin k → R) (Fin k → R) ℂ) (e x).2.2 (e y).2.2)] using
         (congrArg (fun H ↦ H (eC x) (eC y)) hLC).trans
           (congrArg₂ (labelProj (subsystemPerm k ι₀ {some none}) ellC)
             (eC.symm_apply_apply x) (eC.symm_apply_apply y))
