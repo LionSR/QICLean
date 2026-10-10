@@ -11,6 +11,7 @@ separate result.
 \begin{theorem}[Five moments in the actual good-copy density]
   \label{thm:actual_good_configuration_sharp_moment}
   \lean{Matrix.replicaGoodConfigurationMarginal_exp_merge_sub_physical_sharp_le}
+  \leanok
   Let $\Omega$ be a unit physical vector, and let $u$ be fixed by
   simultaneous permutations of the $k$ copies of the physical and
   auxiliary factors. For $B\subseteq\{1,\ldots,k\}$, put $m=|B^c|$,
@@ -46,7 +47,7 @@ separate result.
   \]
   This includes $w=0$ and $m=0$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:physical_merge_holder,thm:replica_good_configuration_individual_merge_moments,
     thm:replica_good_configuration_signed_singleton_moments,thm:five_moment_common_mass}
   Apply the five-factor trace inequality at parameter $a$. Its factors
@@ -64,6 +65,7 @@ separate result.
 \begin{theorem}[Sharp inverse bound for the original component]
   \label{thm:actual_component_inverse_sharp}
   \lean{Matrix.exists_replicaExcitationComponent_inverse_sharp_le}
+  \leanok
   Suppose the five spaces are nonzero, and fix $t>0$.
   There exists $C_0\geq0$, depending only on $t$ and these spaces,
   with the following property. Use the data of the preceding theorem,
@@ -86,7 +88,7 @@ separate result.
   The constant is chosen before $k,B,\Omega,\lambda_C,\lambda_R,u,K,r$.
   The vector $u$ and its component may be unnormalized or zero.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:actual_component_inverse_good_expectation,
     thm:replica_good_configuration_exponential_expectation,
     thm:actual_good_configuration_sharp_moment}
