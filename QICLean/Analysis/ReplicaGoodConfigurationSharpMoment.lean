@@ -111,7 +111,8 @@ theorem replicaGoodConfigurationMarginal_exp_merge_sub_physical_sharp_le
     ring
   have hbound (i : Fin 5) : M i ≤ mass * Real.exp (A i) := by
     fin_cases i
-    · simpa only [M, A, Matrix.cons_val_zero, hpoly, mul_comm] using hm.1
+    · simpa only [M, A, Matrix.cons_val_zero, hpoly] using
+        hm.1.trans_eq (mul_comm _ mass)
     · simpa only [M, A, Matrix.cons_val_succ, Matrix.cons_val_zero,
         hpoly, mul_comm] using hm.2
     · exact hQ.2
