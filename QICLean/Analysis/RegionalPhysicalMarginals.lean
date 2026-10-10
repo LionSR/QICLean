@@ -135,7 +135,8 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
     apply Prod.ext
     · rfl
     · apply (physicalRemainingPairEquiv ι 2).symm.injective
-      simp only [b₂, Equiv.prodCongr_apply, Equiv.trans_apply, Equiv.symm_apply_apply]
+      simp only [b₂, Equiv.prodCongr_apply, Prod.map_snd,
+        Equiv.trans_apply, Equiv.symm_apply_apply]
       apply Prod.ext <;> funext v <;>
         simp only [FiniteProduct.configurationCongr_apply]
   exact ⟨singletonDensity_eq_reducedPure_of_coordinates β ι Ω Q 0 e
