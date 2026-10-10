@@ -123,7 +123,13 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
     · apply (physicalRemainingPairEquiv ι 1).symm.injective
       simp only [b₁, Equiv.prodCongr_apply, Prod.map_snd,
         Equiv.trans_apply, Equiv.symm_apply_apply]
-      apply Prod.ext <;> funext v <;> rfl
+      apply Prod.ext
+      · rfl
+      · funext v
+        change x v = FiniteProduct.configurationCongr β
+          (congrArg (fun T : Finset V => Tᶜ) (Finset.union_comm Y Q))
+          (fun w => x w) v
+        rw [FiniteProduct.configurationCongr_apply]
   have h₂ (x : (v : V) → β v) : physicalSingletonEquiv ι 2 (e x) =
       ((Equiv.refl _).prodCongr b₂) (FiniteProduct.splitEquiv β (Q ∪ Y)ᶜ x) := by
     apply Prod.ext
