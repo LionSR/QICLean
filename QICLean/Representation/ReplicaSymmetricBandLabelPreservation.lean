@@ -146,6 +146,16 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
       (hlabel : labelProj (subsystemPerm k ι {a}) ell *ᵥ ξ = ξ) :
       (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z) *ᵥ (Zᴴ *ᵥ ξ) = Zᴴ *ᵥ ξ := by
     simp only [← Matrix.mulVec_mulVec, hrecover, hlabel]
+  have hsingleW (a : F) (ell : IrrepLabel (Equiv.Perm (Fin k)))
+      (hlabel : labelProj (subsystemPerm k ι {a}) ell *ᵥ ξ = ξ) :
+      (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z) *ᵥ w = w :=
+    (Matrix.mulVec_mulVec (Zᴴ *ᵥ ξ.ofLp)
+      (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z) (M ^ (-s))).trans
+      ((congrArg (fun H ↦ H *ᵥ (Zᴴ *ᵥ ξ.ofLp))
+        (hM.commute_rpow_left (hsingleM a ell).symm (-s)).symm.eq).trans
+        ((Matrix.mulVec_mulVec (Zᴴ *ᵥ ξ.ofLp) (M ^ (-s))
+          (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z)).symm.trans
+          (congrArg (fun η ↦ (M ^ (-s)) *ᵥ η) (hsingleCoords a ell hlabel))))
   done
 
 end TensorPower
