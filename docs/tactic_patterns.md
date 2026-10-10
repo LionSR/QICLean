@@ -61,6 +61,41 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### The range of a product of commuting projections — candidate (2026-10-09)
+
+- **Pattern:** Multiply an actual product projection by each of its factors,
+  then transfer the resulting matrix identities to every fixed vector.
+- **Seen:** `Matrix.replicaLowDefectProjection_fixed_conditions` uses one
+  local matrix-to-vector implication for the physical cutoff, auxiliary
+  label product, and simultaneous symmetry. The individual auxiliary
+  equations then use the same tensor-product multiplication identity.
+- **Abstraction:** Reuse `IsStarProjection.mul`, the existing central-label
+  commutations, and `symProj_mulVec_mem`. The symmetry average's projection
+  properties follow from `exists_labelProj_eq_symProj`; no new averaging
+  theorem or tactic is introduced.
+- **Caveat:** The derived commutations concern the cutoff, auxiliary labels,
+  and symmetry. They do not imply commutation with a replica metric.
+
+### Separate merge moments before Hölder — candidate (2026-10-09)
+
+- **Pattern:** Express an exponential trace on a product space through its
+  actual marginal, then preserve the component mass under a coordinate exchange.
+- **Seen:** The two estimates formerly local to
+  `replicaGoodPairMarginal_exp_sum_mergeDeficit_le` are reused by the separate
+  full-density estimate in `ReplicaGoodConfigurationIndividualMergeMoment`.
+- **Abstraction:** The public
+  `replicaGoodPairMarginal_exp_mergeDeficits_le` contains both separate bounds.
+  The arithmetic-mean theorem uses it at twice the parameter; the full-density
+  theorem transports each bound by the existing paired-coordinate equivalence.
+- **Caveat:** The same actual excitation component occurs throughout, including
+  zero mass. No normalized auxiliary marginal or nonvanishing assumption is added.
+- **Coordinate simplification:** As in the existing paired exponential transport,
+  use `Matrix.submatrix_smul` followed by `Pi.smul_apply` at both coordinate
+  arguments. The first equality concerns a function of the two coordinate maps;
+  reducing its applications exposes the actual transported matrix. This reuses
+  the existing Mathlib statements and needs no new tactic.
+
+
 ### Scalar multiplication in partially applied matrix coordinates — candidate (2026-10-09)
 
 - **Pattern:** After rewriting `submatrix_smul`, a coordinate equivalence may
