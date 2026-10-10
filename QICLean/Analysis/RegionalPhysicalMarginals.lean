@@ -53,8 +53,8 @@ private def physicalRemainingPairEquiv (ι : Fin 5 → Type*) (j : Fin 3) :
 
 private theorem singletonDensity_eq_reducedPure_of_coordinates
     {V : Type*} [Fintype V] [DecidableEq V]
-    (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (ι : Fin 5 → Type*) [∀ f, Fintype (ι f)] [∀ f, DecidableEq (ι f)]
+    (β : V → Type*) [∀ v, Fintype (β v)]
+    (ι : Fin 5 → Type*) [∀ f, Fintype (ι f)]
     (Ω : ((v : V) → β v) → ℂ) (T : Finset V) (j : Fin 3)
     (e : ((v : V) → β v) ≃ ι 0 × (ι 1 × ι 2))
     (a : FiniteProduct.Configuration β T ≃ ι (j.castAdd 2))
@@ -64,6 +64,7 @@ private theorem singletonDensity_eq_reducedPure_of_coordinates
       (a.prodCongr b) (FiniteProduct.splitEquiv β T x)) :
     physicalSingletonDensity ι (Ω ∘ e.symm) j =
       (FiniteProduct.reducedPure β (WithLp.toLp 2 Ω) T).submatrix a.symm a.symm := by
+  classical
   have he : e.trans (physicalSingletonEquiv ι j) =
       (FiniteProduct.splitEquiv β T).trans (a.prodCongr b) :=
     Equiv.ext hcoords
@@ -86,6 +87,7 @@ variable {V : Type u} [Fintype V] [DecidableEq V]
 variable (β : V → Type u) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (C R : Type u) [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
+omit [∀ v, DecidableEq (β v)] [DecidableEq C] [DecidableEq R] in
 /-- The three actual five-factor singleton densities are the original
 regional reductions, with no normalization or nonsingularity assumption.
 Source: `07-comparators.tex`, lines 421--456 and 550--590. -/
@@ -97,6 +99,7 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
       physicalSingletonDensity ι ψ 1 = FiniteProduct.reducedPure β (WithLp.toLp 2 Ω) Y ∧
       physicalSingletonDensity ι ψ 2 =
         FiniteProduct.reducedPure β (WithLp.toLp 2 Ω) (Q ∪ Y)ᶜ := by
+  classical
   intro ι ψ
   let e := FiniteProduct.regionalPhysicalEquiv β Q Y hQY
   let b₀ := (FiniteProduct.complementUnionEquiv β Q Y hQY).trans
@@ -113,8 +116,7 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
     apply Prod.ext
     · rfl
     · apply (physicalRemainingPairEquiv ι 0).symm.injective
-      simp only [b₀, Equiv.prodCongr_apply, Prod.map_snd,
-        Equiv.trans_apply, Equiv.symm_apply_apply]
+      simp only [b₀, Equiv.prodCongr_apply, Prod.map_snd]
       rfl
   have h₁ (x : (v : V) → β v) : physicalSingletonEquiv ι 1 (e x) =
       ((Equiv.refl _).prodCongr b₁) (FiniteProduct.splitEquiv β Y x) := by
@@ -122,7 +124,7 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
     · rfl
     · apply (physicalRemainingPairEquiv ι 1).symm.injective
       simp only [b₁, Equiv.prodCongr_apply, Prod.map_snd,
-        Equiv.trans_apply, Equiv.symm_apply_apply]
+        Equiv.trans_apply]
       apply Prod.ext
       · rfl
       · funext v
@@ -136,7 +138,7 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
     · rfl
     · apply (physicalRemainingPairEquiv ι 2).symm.injective
       simp only [b₂, Equiv.prodCongr_apply, Prod.map_snd,
-        Equiv.trans_apply, Equiv.symm_apply_apply]
+        Equiv.trans_apply]
       apply Prod.ext
       · funext v
         change x v = FiniteProduct.configurationCongr β (compl_compl (Q ∪ Y))
@@ -177,7 +179,8 @@ theorem regional_physicalSingleton_spectral_statistics
       ∀ v : ℝ, Entropy.surprisalMoment
           (posSemidef_physicalSingletonDensity ι ψ j).isHermitian.eigenvalues v =
         Entropy.surprisalMoment
-          (FiniteProduct.reducedPure_posSemidef β (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues v := by
+          (FiniteProduct.reducedPure_posSemidef β
+            (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues v := by
   intro ι ψ T
   obtain ⟨h₀, h₁, h₂⟩ := regional_physicalSingletonDensity_eq_reducedPure β C R Ω Q Y hQY
   fin_cases j
