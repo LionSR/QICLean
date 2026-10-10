@@ -142,6 +142,10 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
           (fun j ↦ ((replicaMetric_symProj_compressions_posDef_commute ι k n Z hZ hZZ
             ht G Q Y hdisj hnest).1 j g).1)
           (fun j ↦ hsingleB a ell j g) T
+  have hsingleCoords (a : F) (ell : IrrepLabel (Equiv.Perm (Fin k)))
+      (hlabel : labelProj (subsystemPerm k ι {a}) ell *ᵥ ξ = ξ) :
+      (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z) *ᵥ (Zᴴ *ᵥ ξ) = Zᴴ *ᵥ ξ := by
+    simp only [← Matrix.mulVec_mulVec, hrecover, hlabel]
   done
 
 end TensorPower
