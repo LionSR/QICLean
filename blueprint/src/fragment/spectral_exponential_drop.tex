@@ -1,0 +1,58 @@
+\section{Spectral compression of a commuting exponential}
+
+% Auxiliary to OpenAI, A two-dimensional area law from a global spectral gap,
+% September 24, 2026, revision adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% 07-comparators.tex, lines 553--555: discarding exp(-a G_phys) on J.
+% These entries do not supply the physical support or either merge moment.
+
+\begin{theorem}[Dropping a nonnegative spectral term]
+    \label{thm:spectral_exponential_drop}
+    \lean{Matrix.spectralProjectionGE_exp_smul_sub_le}
+    \leanok
+    \uses{def:closed_threshold_projection, thm:closed_threshold_projection,
+        lem:orthogonal_resolution, lem:orthogonal_resolution_cfc}
+    Let $G,H$ be commuting Hermitian matrices on a finite-dimensional complex
+    coordinate space, let $a\ge0$, and put $J=\mathbf1_{[0,\infty)}(G)$.
+    Then
+    \begin{align}
+        J\exp\bigl(a(H-G)\bigr)J & \le \exp(aH).
+    \end{align}
+    The coordinate space may have dimension zero. Positivity of $G$ on the
+    whole space is not required. This gives the spectral-compression step
+    used in the rough estimate of~\cite[Section~7]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:closed_threshold_projection, thm:closed_threshold_projection,
+        lem:orthogonal_resolution, lem:orthogonal_resolution_cfc}
+    The spectral projectors of $G$ and $H$ commute and give a common orthogonal
+    resolution. On a joint block with eigenvalues $g,h$, the compressed
+    exponential is $e^{a(h-g)}$ if $g\ge0$ and zero otherwise.
+    When $g\ge0$, the inequalities $a\ge0$ and $g\ge0$ imply
+    $e^{a(h-g)}\le e^{ah}$. On every other block the difference is $e^{ah}>0$.
+    Summing these nonnegative differences against the joint projectors proves
+    the matrix inequality.
+\end{proof}
+
+\begin{theorem}[Exponential comparison for a supported positive trace weight]
+    \label{thm:supported_trace_exponential_drop}
+    \lean{Matrix.PosSemidef.re_trace_mul_exp_smul_sub_le_of_spectralProjectionGE_mul}
+    \leanok
+    \uses{thm:spectral_exponential_drop, thm:closed_threshold_projection}
+    Under the hypotheses of Theorem~\ref{thm:spectral_exponential_drop}, let
+    $\rho\ge0$ satisfy $J\rho=\rho$. Then
+    \begin{align}
+        \operatorname{Re}\tr\bigl(\rho\exp(a(H-G))\bigr)
+         & \le \operatorname{Re}\tr\bigl(\rho\exp(aH)\bigr).
+    \end{align}
+    No normalization of $\rho$ is assumed.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:spectral_exponential_drop, thm:closed_threshold_projection}
+    Taking adjoints gives $\rho J=\rho$. For $E=\exp(a(H-G))$, cyclicity of the
+    trace gives $\tr(\rho JEJ)=\tr(\rho E)$.
+    Theorem~\ref{thm:spectral_exponential_drop} says that
+    $\exp(aH)-JEJ\ge0$. Its trace pairing with the positive matrix $\rho$ is
+    nonnegative; substituting the trace identity gives the claimed inequality.
+\end{proof}
