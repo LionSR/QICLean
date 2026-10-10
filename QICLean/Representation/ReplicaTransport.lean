@@ -12,6 +12,7 @@ import QICLean.Representation.ReplicaTransport.CoherentLog
 import QICLean.Representation.ReplicaTransport.CoherentMeasure
 import QICLean.Representation.ReplicaTransport.Energy
 import QICLean.Representation.ReplicaTransport.EntropyGain
+import QICLean.Representation.ReplicaTransport.FiniteFamily
 import QICLean.Representation.ReplicaTransport.Integrated
 import QICLean.Representation.ReplicaTransport.IntegratedEntropy
 import QICLean.Representation.ReplicaTransport.LeafMeasure
@@ -22,4 +23,5 @@ import QICLean.Representation.ReplicaTransport.Setup
 import QICLean.Representation.ReplicaTransport.SplitSkewBound
 import QICLean.Representation.ReplicaTransport.States
 import QICLean.Representation.ReplicaTransport.SymmetricMetric
+import QICLean.Representation.ReplicaTransport.SymmetricMetricFloor
 import QICLean.Representation.ReplicaTransport.Transport
