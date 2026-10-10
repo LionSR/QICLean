@@ -156,6 +156,17 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
         ((Matrix.mulVec_mulVec (Zᴴ *ᵥ ξ.ofLp) (M ^ (-s))
           (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z)).symm.trans
           (congrArg (fun η ↦ (M ^ (-s)) *ᵥ η) (hsingleCoords a ell hlabel))))
-  done
+  exact ⟨hw, hv, hPv, fun a ell hlabel ↦
+    (Matrix.mulVec_mulVec (((‖w‖⁻¹ : ℂ) • w).ofLp)
+      (labelProj (subsystemPerm k ι {a}) ell) Z).trans
+      ((congrArg (fun H ↦ H *ᵥ (((‖w‖⁻¹ : ℂ) • w).ofLp))
+        (hsingleZ a ell)).trans
+        ((Matrix.mulVec_mulVec (((‖w‖⁻¹ : ℂ) • w).ofLp) Z
+          (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z)).symm.trans
+          (congrArg (fun η : Fin n → ℂ ↦ Z *ᵥ η)
+            ((Matrix.mulVec_smul (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z)
+              (‖w‖⁻¹ : ℂ) w.ofLp).trans
+              (congrArg (fun η : Fin n → ℂ ↦ (‖w‖⁻¹ : ℂ) • η)
+                (hsingleW a ell hlabel))))))⟩
 
 end TensorPower
