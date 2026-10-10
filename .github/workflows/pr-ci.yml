@@ -215,6 +215,35 @@ jobs:
       # documenting the invariant this repository must keep true for TNLean;
       # TNLean's own pr-ci.yml carries the real comparison step.
 
+      - name: Require prebuilt Mathlib artifacts
+        run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+
+      - name: Build the selected Schmidt entropy identity
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          timeout --signal=INT --kill-after=5s 300s \
+            lake build QICLean.Entropy.SelectedSchmidtEntropy \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check selected Schmidt entropy strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Entropy/SelectedSchmidtEntropy.lean \
+            QICLeanTest/SelectedSchmidtEntropyAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
       - name: Build rectangular window API targets early
         run: lake build QICLean.Channel.WindowMinorization QICLean.Kraus.RectangularChain QICLean.Algebra.MatrixDependentEntries QICLean.Analysis.GeometricDecay
 

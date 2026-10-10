@@ -87,6 +87,7 @@ import QICLean.Entropy.RestoringVectors
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.SchmidtPinning
 import QICLean.Entropy.SchmidtTilt
+import QICLean.Entropy.SelectedSchmidtEntropy
 import QICLean.Entropy.SpectralTail
 import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.SupportedMarginalTails
