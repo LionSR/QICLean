@@ -134,6 +134,14 @@ theorem replicaMetric_normalized_symProj_bandProduct_mem_original_labels
     Matrix.commute_of_isometric_intertwine hZ (hsingleZ a ell)
       ((replicaMetric_symProj_compressions_posDef_commute ι k n Z hZ hZZ ht G Q Y
         hdisj hnest).1 j g).2.1 (hsingleA a ell j g)
+  have hsingleM (a : F) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
+      Commute (Zᴴ * labelProj (subsystemPerm k ι {a}) ell * Z) M :=
+    Commute.list_prod_right _ _ fun H hH ↦
+      (List.mem_ofFn.mp hH).elim fun g hg ↦ hg ▸
+        Matrix.MeanTree.commute_eval_right
+          (fun j ↦ ((replicaMetric_symProj_compressions_posDef_commute ι k n Z hZ hZZ
+            ht G Q Y hdisj hnest).1 j g).1)
+          (fun j ↦ hsingleB a ell j g) T
   done
 
 end TensorPower
