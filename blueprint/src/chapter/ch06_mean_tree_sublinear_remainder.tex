@@ -3,6 +3,7 @@
 \begin{theorem}[Vanishing normalized logarithmic remainder]
   \label{thm:mean_tree_sublinear_remainder}
   \lean{Matrix.MeanTree.tendsto_rough_lower_remainder_div_nat}
+  \leanok
   Fix real numbers $s,G,t,c,C_f$ and a real sequence $(\varepsilon_k)$
   such that $\varepsilon_k/k\to0$ as $k\to\infty$. Put
   \begin{align*}
@@ -15,7 +16,7 @@
   This is the scalar limit for the explicit remainder in the rough
   lower norm estimate of \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   For every fixed real $a$, the limit
   $\log(k+a)/k\to0$ follows by substituting $x=k+a$ in
   $\log x/(x-a)\to0$. The cases $a=1,2$, together with the assumption
