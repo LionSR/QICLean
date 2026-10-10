@@ -1,0 +1,1138 @@
+\section{Exponential errors and inverse polynomial mass}
+\label{sec:exponential_polynomial_absorption}
+
+The following scalar estimate is used to compare a finite sum of
+exponential errors with an inverse polynomial mass in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Exponential decay below a shifted inverse power]
+    \label{thm:exponential_polynomial_absorption}
+    \lean{Real.eventually_mul_exp_neg_le_inv_four_pow_add_one}
+    \leanok
+    Let $c>0$, let $m\in\mathbb R$, and let $d$ be a nonnegative integer.
+    For all sufficiently large integers $k$,
+    \begin{align*}
+        m e^{-ck} & \le\frac{1}{4(k+1)^d}.
+    \end{align*}
+    In particular, the statement applies when $m$ counts a finite family of
+    cutoffs, including the empty family.
+\end{theorem}
+\begin{proof}\leanok
+    For fixed $c>0$ and $d\ge0$, the quantity $x^d e^{-cx}$ tends to zero
+    as $x\to\infty$. Consequently
+    \begin{align*}
+        4m(k+1)^d e^{-ck}
+         & =4m e^c\,(k+1)^d e^{-c(k+1)}
+        \longrightarrow 0.
+    \end{align*}
+    It is therefore eventually at most one. Division by the positive
+    quantity $4(k+1)^d$ gives the conclusion.
+\end{proof}
+
+\section{Finitely many exponential losses}
+\label{sec:finite_exponential_retained_mass}
+
+The following scalar estimates compare finitely many regional failures
+with an inverse polynomial label mass, as required in
+\cite[Section~7]{OpenAI2026AreaLaw}. They do not assume that the
+individual exponential rates are equal.
+
+\begin{theorem}[A finite sum of exponential errors]
+\label{thm:finite_exponential_polynomial_absorption}
+\lean{Real.eventually_sum_exp_neg_le_inv_four_pow_add_one}
+    \leanok
+\uses{thm:exponential_polynomial_absorption}
+Let $I$ be a finite set, let $c_i>0$ for every $i\in I$, and let
+$d\ge0$ be an integer. For all sufficiently large integers $k$,
+\begin{align}
+ \sum_{i\in I}e^{-c_i k}&\le\frac{1}{4(k+1)^d}.
+\end{align}
+The set $I$ may be empty.
+\end{theorem}
+\begin{proof}
+    \leanok
+If $I$ is empty, the left side is zero. Otherwise write $m=|I|>0$.
+For each $i$, exponential decay gives
+$m e^{-c_i k}\le 1/(4(k+1)^d)$ eventually. Finiteness gives a common
+threshold after which all these inequalities hold. Sum them and cancel
+the positive factor $m$.
+\end{proof}
+
+\begin{theorem}[Retention of half the original mass]
+\label{thm:half_mass_after_finite_exponential_losses}
+\lean{Real.eventually_half_mass_of_exponential_losses}
+    \leanok
+\uses{thm:finite_exponential_polynomial_absorption}
+Let $q_k,r_k$ and $\ell_{i,k}$ be real sequences indexed by integers
+$k\ge0$, with $i$ in a finite set $I$, and let $d\ge0$ be an integer.
+Suppose $q_k\ge 1/(2(k+1)^d)$ for all sufficiently large $k$ and
+$r_k\ge q_k-\sum_{i\in I}\ell_{i,k}$ for every $k$.
+Suppose also that, for each $i\in I$, there is a constant $c_i>0$ for which
+$\ell_{i,k}\le e^{-c_i k}$ for all sufficiently large $k$.
+Then, for all sufficiently large $k$,
+\begin{align}
+ r_k&\ge\frac{q_k}{2},
+ &r_k&\ge\frac{1}{4(k+1)^d}.
+\end{align}
+No additional sign assumptions on the sequences are required.
+\end{theorem}
+\begin{proof}
+    \leanok
+Intersect the finitely many eventual tail bounds and apply Theorem~\ref{thm:finite_exponential_polynomial_absorption}. Thus, with $t_k=1/(4(k+1)^d)$, the total loss is eventually at
+most $t_k$, while $q_k\ge2t_k$. The retained-mass inequality gives
+\begin{align}
+ r_k&\ge q_k-t_k\ge q_k/2\ge t_k.
+\end{align}
+The quantity $q_k$ is the same original mass; no new selection is involved.
+\end{proof}
+
+\section{Functional calculus of the finite-spectrum surprisal}
+\label{sec:surprisal_functional_calculus}
+
+For a real number $u$, put $\ell(u)=\log|u|$ when $u\ne0$ and
+$\ell(0)=0$. For a finite Hermitian matrix $A$, define $\ell(A)$ by
+spectral functional calculus. On positive eigenvalues this is the usual
+logarithm, with value zero on the kernel. This convention allows the
+two cutoff expressions in \cite[Section~7]{OpenAI2026AreaLaw} to be
+identified also for singular densities.
+
+\begin{theorem}[Composition with the negative logarithm]
+    \label{thm:surprisal_functional_calculus}
+    \lean{Matrix.IsHermitian.cfc_neg_log_eq}
+    \leanok
+    For every finite Hermitian matrix $A$ and every function
+    $f:\mathbb R\to\mathbb R$,
+    \begin{align*}
+        f(-\ell(A)) & =(f\circ(-\ell))(A).
+    \end{align*}
+    No positivity or invertibility of $A$, and no continuity of $f$ on the
+    whole real line, is required. In particular, for any real $a$, the strict
+    upper spectral cutoff of $-\ell(A)$ equals the functional calculus on
+    $A$ of the function $u\mapsto\mathbf1_{\{a<-\ell(u)\}}$.
+\end{theorem}
+\begin{proof}\leanok
+    Every function on the finite spectrum of $A$ is continuous in its
+    relative topology, and the same holds on its image under $-\ell$.
+    The composition rule for spectral functional calculus therefore applies.
+    At a zero eigenvalue, both sides have the value $f(0)$.
+\end{proof}
+
+\section{Exponential upper tails of finite-copy surprisal}
+\label{sec:iid_surprisal_exponential}
+
+The concentration step in \cite[Section~7]{OpenAI2026AreaLaw} concerns a
+fixed finite probability law. Its exponential rate may depend on that law.
+Throughout, $0\log 0=0$; the value assigned to the logarithm at a zero
+weight does not affect any probability or trace below.
+
+\begin{theorem}[The upper tail of a finite product law]
+    \label{thm:iid_surprisal_exponential_finite_law}
+    \lean{Entropy.exists_surprisal_upper_tail_pi_le_exp}
+    \leanok
+    Let $(p_i)_{i\in I}$ be a finite family with $p_i\ge0$ and
+    $\sum_i p_i=1$, and set $H=-\sum_i p_i\log p_i$. There is a constant
+    $c>0$, depending only on this family, such that for every integer $k\ge1$,
+    \begin{align*}
+        \sum_{x\in I^k:\,-\log\prod_{j=0}^{k-1} p_{x_j}>k(H+1)}
+        \prod_{j=0}^{k-1} p_{x_j}
+         & \le e^{-ck}.
+    \end{align*}
+    Tuples containing a zero weight contribute zero to the sum.
+\end{theorem}
+\begin{proof}\leanok
+    Define $X(i)=-\log p_i$ when $p_i>0$, and $X(i)=0$ otherwise. Since
+    $p_i\le1$, the variable $X$ lies in $[0,M]$, where
+    $M=1+\sum_i|X(i)|>0$. Its expectation under the law $(p_i)_i$ is $H$.
+    For independent samples $X_0,\ldots,X_{k-1}$, Hoeffding's inequality gives
+    \begin{align*}
+        \mathbb P\!\left(\sum_{j=0}^{k-1}(X_j-H)\ge k\right)
+         & \le \exp\!\left(-\frac{2k}{M^2}\right).
+    \end{align*}
+    On every tuple of positive probability, the sum of the surprisals equals
+    the surprisal of the product weight. The strict event in the statement is
+    contained in the displayed event. Thus $c=2/M^2$ is admissible, including
+    when the probability law is concentrated at a single point.
+\end{proof}
+
+\begin{theorem}[The upper tail of a density matrix]
+    \label{thm:iid_surprisal_exponential_density}
+    \lean{Matrix.PosSemidef.exists_re_trace_surprisal_upper_tail_finKronecker_le_exp}
+    \leanok
+    \uses{thm:iid_surprisal_exponential_finite_law,thm:iid_surprisal_spectral_distribution}
+    Let $\rho\ge0$ be a matrix on a finite-dimensional Hilbert space with
+    $\operatorname{Tr}\rho=1$. Write $S=S(\rho)$,
+    $\rho_k=\rho^{\otimes k}$, and $L_k=-\log\rho_k$, taking the logarithm
+    to be zero on the kernel. There is a constant $c>0$, depending only on
+    $\rho$, such that for every integer $k\ge1$,
+    \begin{align*}
+        \operatorname{Re}\operatorname{Tr}\!\left(
+        \rho_k\mathbf1_{(k(S+1),\infty)}(L_k)\right)
+         & \le e^{-ck}.
+    \end{align*}
+    The matrix $\rho$ may be singular.
+\end{theorem}
+\begin{proof}\leanok
+    The eigenvalues of $\rho$ form a finite probability distribution whose
+    entropy is $S$. The product spectral distribution identifies the trace
+    with the preceding finite-product tail. Zero eigenvalues have zero trace
+    weight, so the value of the logarithm on the kernel causes no additional
+    term.
+\end{proof}
+
+\section{A common upper cutoff for the Schur labels}
+\label{sec:schur-common-cutoffs}
+
+Let $F$ be a finite set of sites with finite coordinate sets $I_f$,
+and let $k\ge0$. For a region $B\subseteq F$, write
+$P_B^\lambda$ for the central isotypic projection of its copy-permutation
+action and
+\begin{align}
+ C_B(a)&=\sum_{\lambda:\,\log\dim\lambda\le a}P_B^\lambda.
+\end{align}
+Thus $C_B(a)$ is the closed cutoff of
+Definition~\ref{def:schur_label_cutoff}. The following simultaneous
+projection estimates are used in
+\cite[Section~7, lines~332--354]{OpenAI2026AreaLaw}.
+
+\begin{definition}[Common cutoff]
+\label{def:schur-common-cutoff}
+\lean{TensorPower.commonLabelCutoff}
+    \leanok
+\uses{def:schur_label_cutoff}
+For a finite list $\mathcal B=(B_1,\ldots,B_m)$ and real thresholds
+$a_B$, put $C_j=C_{B_j}(a_{B_j})$ and set
+$C=\prod_{j=1}^m C_j$, in the order of the list.
+The empty product is the identity. Repeated regions are permitted.
+\end{definition}
+
+\begin{theorem}[Common projection and finite union bound]
+\label{thm:schur-common-cutoff-mass}
+\lean{TensorPower.norm_commonLabelCutoff_auxLabel_ge}
+    \leanok
+\uses{def:schur-common-cutoff,thm:schur_label_commutation}
+Suppose that the regions in $\mathcal B$ are pairwise comparable by
+inclusion, and let $R\subseteq F$ be disjoint from every $B_j$.
+For any irreducible label $\lambda$ of $\mathfrak S_k$, put
+$Q=P_R^\lambda$. Then every vector $\psi$ satisfies
+\begin{align}
+ \|CQ\psi\|^2
+ &\ge \|Q\psi\|^2-\sum_{j=1}^m\|(I-C_j)\psi\|^2.
+\end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+Nestedness makes the $C_j$ commute, and disjointness makes each $C_j$
+commute with $Q$. For an orthogonal projection $P$,
+$\|Pv\|^2+\|(I-P)v\|^2=\|v\|^2$.
+Apply this identity successively. At each step the removed component is
+a commuting orthogonal projection of $(I-C_j)\psi$, so its norm is
+at most $\|(I-C_j)\psi\|$. Summing the losses gives the inequality.
+\end{proof}
+
+\begin{theorem}[Normalized symmetric common projection]
+\label{thm:schur-common-cutoff-vector}
+\lean{TensorPower.exists_commonLabelCutoff_vector}
+    \leanok
+\uses{thm:schur-common-cutoff-mass}
+Under the hypotheses of Theorem~\ref{thm:schur-common-cutoff-mass},
+suppose that $\psi$ is invariant under simultaneous copy permutations and
+\begin{align}
+ q&:=\|Q\psi\|^2-\sum_{j=1}^m\|(I-C_j)\psi\|^2>0.
+\end{align}
+There is a unit vector $\varphi$, invariant under simultaneous copy
+permutations, with $Q\varphi=\varphi$ and $C_j\varphi=\varphi$ for every
+$j$, and
+\begin{align}
+ |\langle\varphi,Q\psi\rangle|^2&=\|CQ\psi\|^2\ge q.
+\end{align}
+No normalization of $\psi$ is required.
+\end{theorem}
+\begin{proof}
+    \leanok
+Set $v=CQ\psi$. Theorem~\ref{thm:schur-common-cutoff-mass} gives
+$v\ne0$, so take $\varphi=v/\|v\|$. The commuting projection
+identities imply the range conditions. Each subsystem central projection
+commutes with simultaneous copy permutations, which preserves the symmetry.
+Since $C$ is an orthogonal projection,
+$\langle v,Q\psi\rangle=\langle v,v\rangle$; normalization gives the overlap.
+\end{proof}
+
+\begin{theorem}[Preservation of the selected Bell range]
+\label{thm:schur-common-cutoff-bell}
+\lean{TensorPower.exists_commonLabelCutoff_bell_vector}
+\leanok
+\uses{thm:schur-common-cutoff-vector}
+Let $\psi_0\in\mathbb C^A\otimes\mathbb C^B$, where $A$ and $B$ are
+finite sets. Select spectral indices $E$ of its actual $A$-marginal,
+and suppose their spectral mass $z_E$ is positive. Let
+$J_E:\mathbb C^E\to\mathbb C^A$ be the corresponding eigenvector
+isometry, and set
+\begin{align}
+ \beta_E&=|E|^{-1/2}\sum_{e\in E}J_E|e\rangle\otimes|e\rangle,
+ &\Pi_E&=|\beta_E\rangle\langle\beta_E|.
+\end{align}
+Retain all the hypotheses on $F,k,\mathcal B,R,\lambda,\psi$ and $q$
+of Theorem~\ref{thm:schur-common-cutoff-vector}. Then there is a unit
+vector $\Phi$ in $(\mathbb C^A\otimes\mathbb C^E)^{\otimes k}$ tensored
+with the exterior copy space, such that
+\begin{align}
+ (\Pi_E^{\otimes k}\otimes I)\Phi&=\Phi,
+ &(I\otimes Q)\Phi&=\Phi,\\
+ (I\otimes C_j)\Phi&=\Phi &&(1\le j\le m),\\
+ \bigl|\langle\Phi,\beta_E^{\otimes k}\otimes Q\psi\rangle\bigr|^2
+ &=\|CQ\psi\|^2.
+\end{align}
+After the canonical identification of copies of a product with the product
+of copy spaces, $\Phi$ is invariant under simultaneous copy permutations.
+The original vector $\psi_0$ need not be normalized.
+\end{theorem}
+\begin{proof}
+\leanok
+Take $\Phi=\beta_E^{\otimes k}\otimes\varphi$, where $\varphi$ is given
+by Theorem~\ref{thm:schur-common-cutoff-vector}. Positive spectral mass
+implies $E\ne\varnothing$, hence $\|\beta_E\|=1$. Tensor products give
+the range conditions, the symmetry, and the exact overlap identity.
+\end{proof}
+
+\section{Physical regions and the prescribed compressed-state thresholds}
+\label{sec:compressed_physical_regions}
+
+Let $V$ be a finite set of physical sites. Fix $X\subseteq V$ and the augmented site
+set $\widehat V=\{r\}\sqcup X^c$ of
+Definition~\ref{def:compressed_site_family}. These identifications express
+the nested exterior regions and their thresholds from
+\cite[Section~7]{OpenAI2026AreaLaw} in the same site coordinates as the
+actual compressed vector.
+
+\begin{definition}[Extracting the physical sites]
+\label{def:extract_compressed_physical_region}
+\lean{FiniteProduct.extractExteriorRegion}
+\leanok
+For a region $D\subseteq\widehat V$, let
+\begin{align}
+ \operatorname{phys}_X(D)&=\{v\in X^c: v\text{ occurs as a physical site in }D\},
+\end{align}
+regarded as a subset of the original site set $V$. The auxiliary site
+contributes no element to this set.
+\end{definition}
+
+\begin{theorem}[Recovery of an original exterior region]
+\label{thm:extract_lifted_physical_region}
+\lean{FiniteProduct.extractExteriorRegion_exteriorRegion}
+\leanok
+\uses{def:extract_compressed_physical_region,def:compressed_site_family}
+If $B\subseteq V$ is disjoint from $X$, then
+\begin{align}
+ \operatorname{phys}_X(\widehat B)&=B.
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+A physical site in $\widehat B$ belongs to $B$. Conversely, disjointness
+places every site of $B$ in $X^c$, so that it occurs in $\widehat B$.
+\end{proof}
+
+\begin{theorem}[Inclusion, nesting, and auxiliary disjointness]
+\label{thm:lifted_physical_regions_nested}
+\lean{FiniteProduct.monotone_exteriorRegion,FiniteProduct.exteriorRegion_disjoint_auxiliary,FiniteProduct.pairwise_exteriorRegion}
+\leanok
+\uses{def:compressed_site_family}
+For arbitrary physical regions $B,C\subseteq V$,
+\begin{align}
+ B\subseteq C&\ \Longrightarrow\ \widehat B\subseteq\widehat C,
+ &\widehat B\cap\{r\}&=\varnothing.
+\end{align}
+Consequently, a finite list whose regions are pairwise comparable by
+inclusion remains pairwise comparable after lifting. The list may contain
+repeated regions.
+\end{theorem}
+\begin{proof}
+\leanok
+Intersecting with $X^c$ preserves inclusion, and the lift contains only
+physical sites. Apply preservation of inclusion to each comparison in the
+original list.
+\end{proof}
+
+\begin{definition}[The threshold determined by the original state]
+\label{def:compressed_regional_threshold}
+\lean{FiniteProduct.compressedRegionalThreshold}
+\leanok
+\uses{def:extract_compressed_physical_region}
+Let the local physical coordinate sets be finite. Given an original vector
+$\Omega$, a spectral selection $E$ on $X$ with actual mass $z$, and a
+copy number $k\ge0$, define for $D\subseteq\widehat V$
+\begin{align}
+ a_k(D)&=k\left(\frac{S(\rho^\Omega_{\operatorname{phys}_X(D)})}{z}+1\right).
+\end{align}
+Here the formula is extended to $z=0$ by setting $a_k(D)=k$. Positive
+selected mass is required when this threshold is used in the exponential
+cutoff estimate.
+\end{definition}
+
+\begin{theorem}[The threshold on a lifted physical region]
+\label{thm:compressed_regional_threshold_lifted}
+\lean{FiniteProduct.compressedRegionalThreshold_exteriorRegion}
+\leanok
+\uses{def:compressed_regional_threshold,thm:extract_lifted_physical_region}
+For every $B$ disjoint from $X$,
+\begin{align}
+ a_k(\widehat B)&=k\left(\frac{S(\rho_B^\Omega)}{z}+1\right),
+\end{align}
+with the same convention at $z=0$. No normalization of $\Omega$ is needed
+for this identity.
+\end{theorem}
+\begin{proof}
+\leanok
+Substitute $\operatorname{phys}_X(\widehat B)=B$ in the definition.
+\end{proof}
+
+\section{Compressed physical and auxiliary sites}
+\label{sec:compressed_site_coordinates}
+
+\begin{definition}[The auxiliary site and exterior physical regions]
+    \label{def:compressed_site_family}
+    \lean{FiniteProduct.compressedSiteSpace,FiniteProduct.exteriorRegion}
+    \leanok
+    Let $V$ be a finite set of physical sites, with local coordinate
+    sets $I_v$, and let $X\subseteq V$. For an auxiliary coordinate
+    set $R$, define
+    \begin{align}
+        \widehat V&=\{r\}\sqcup X^c,&
+        \widehat I_r&=R,&
+        \widehat I_v&=I_v\quad(v\in X^c).
+    \end{align}
+    A physical region $B\subseteq V$ becomes
+    $\widehat B=B\cap X^c$, included in $\widehat V$ and excluding the
+    auxiliary site. These are the exterior coordinates in
+    \cite[\texttt{07-comparators.tex}, lines 240--247 and
+    283--308]{OpenAI2026AreaLaw}. They require no choice of a vector or
+    spectral subspace, and no coordinate set is required to be nonempty.
+\end{definition}
+
+\section{Copy coordinates of the actual auxiliary factor}
+\label{sec:compressed_typical_auxiliary_coordinates}
+
+Use the augmented site family $\widehat V=\{r\}\sqcup X^c$ and local
+coordinates of Definition~\ref{def:compressed_site_family}. The
+auxiliary region is precisely $\{r\}$. The following identities use the
+physical-complement copies first and the auxiliary copies second, as in
+the Schmidt-selected vector of \cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{definition}[Collecting the exterior copies]
+\label{def:compressed_exterior_copy_coordinates}
+\lean{TensorPower.exteriorCopyEquiv}
+\leanok
+\uses{def:compressed_site_family}
+For $k\ge0$, define the bijection
+\begin{align}
+ e_k:\left(\prod_{f\in\widehat V}\widehat I_f\right)^k
+  &\longrightarrow\Omega_{X^c}^k\times A^k,\\
+ e_k((x_j)_j)&=((x_j|_{X^c})_j,(x_j(r))_j).
+\end{align}
+Its inverse places each physical configuration and auxiliary index in the
+same copy.
+\end{definition}
+
+\begin{theorem}[The auxiliary subsystem action]
+\label{thm:compressed_auxiliary_copy_action}
+\lean{TensorPower.exteriorCopyEquiv_subsystemPerm_none}
+\leanok
+\uses{def:compressed_exterior_copy_coordinates}
+Let $\sigma\in\mathfrak S_k$ act only on the copies of the auxiliary
+site. If $e_k(x)=(b,a)$, then
+\begin{align}
+ e_k(\sigma_{\{r\}}x)&=(b,(a_{\sigma^{-1}(j)})_j).
+\end{align}
+Thus the physical-complement coordinates are fixed, and the auxiliary
+coordinates carry the ordinary copy action.
+\end{theorem}
+\begin{proof}
+\leanok
+Every physical site lies outside $\{r\}$, while the auxiliary site lies
+inside it. Substitution in the definition of the subsystem action gives
+the asserted action formula.
+\end{proof}
+
+\begin{theorem}[The same tensor-power vector in product coordinates]
+\label{thm:compressed_exterior_product_coordinates}
+\lean{TensorPower.exteriorCopyEquiv_prod}
+\leanok
+\uses{def:compressed_exterior_copy_coordinates}
+For any function $\chi:A\times\Omega_{X^c}\to\mathbb C$, set
+$\chi_{\mathrm{site}}=\chi\circ e$. Then for every
+$(b,a)\in\Omega_{X^c}^k\times A^k$,
+\begin{align}
+ \prod_{j=0}^{k-1}\chi_{\mathrm{site}}\bigl((e_k^{-1}(b,a))_j\bigr)
+ &=\prod_{j=0}^{k-1}\chi(a_j,b_j).
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+In each copy, the inverse coordinate identification has auxiliary value
+$a_j$ and physical-complement configuration $b_j$. The factors on the two
+sides are therefore equal term by term.
+\end{proof}
+
+\begin{theorem}[Simultaneous-copy symmetry]
+\label{thm:compressed_site_product_symmetry}
+\lean{TensorPower.compressedSite_prod_mem_symmetricSubspace}
+\leanok
+\uses{def:compressed_site_family}
+Assume that $A$ and the local physical coordinate sets are finite. For
+every function $\chi:A\times\Omega_{X^c}\to\mathbb C$, the vector
+\begin{align}
+ \Psi_k((x_j)_j)&=\prod_{j=0}^{k-1}\chi_{\mathrm{site}}(x_j)
+\end{align}
+is fixed by every simultaneous permutation of its $k$ copies. No
+normalization assumption is needed.
+\end{theorem}
+\begin{proof}
+\leanok
+The permutation changes only the order of the factors in the finite
+product.
+\end{proof}
+
+For the actual compressed spectral vector, the product in
+Theorem~\ref{thm:compressed_exterior_product_coordinates} uses exactly
+the selected coordinate $a_j\in\{0,\ldots,|E|-1\}$ and the original
+physical-complement configuration $b_j$. It therefore identifies the
+given vector without making another choice of a spectral set or a
+Schur-label sequence.
+
+\section{Common cutoffs for the actual compressed state}
+\label{sec:compressed_typical_common_cutoffs}
+
+Let $V$ be a finite set of sites with finite coordinate sets, let
+$\Omega$ be a unit physical vector, and fix $X\subseteq V$.
+Select spectral indices $E$ of its actual marginal $\rho_X^\Omega$,
+with $d=|E|$ and mass $z=\sum_{i\in E}p_i>0$. In the fixed enumeration
+of $E$, let $J_E:\mathbb C^d\to\mathcal H_X$ be the eigenvector isometry.
+Place the vector $\chi=z^{-1/2}(J_E^*\otimes I)\Omega$ at the augmented
+sites $\widehat V=\{r\}\sqcup X^c$ to obtain $\chi_{\mathrm{site}}$,
+and put $\Psi_k=\chi_{\mathrm{site}}^{\otimes k}$.
+These are the actual selected coordinates of
+\cite[Section~7, lines~240--247 and 332--354]{OpenAI2026AreaLaw}.
+
+Fix a finite list $\mathcal B=(B_1,\ldots,B_m)$ of regions disjoint from
+$X$, pairwise comparable by inclusion. The list may be empty or contain
+repetitions. For any prescribed sequence of irreducible labels $\lambda_k$
+of $\mathfrak S_k$, define
+\begin{align}
+ Q_k&=P_{\{r\}}^{\lambda_k},
+ &C_{j,k}&=C_{\widehat B_j}\!\left(k\left(S(\rho_{B_j}^\Omega)/z+1\right)\right),\\
+ C_k&=\prod_{j=1}^m C_{j,k},
+ &q_k&=\|Q_k\Psi_k\|^2,\\
+ \ell_k&=\sum_{j=1}^m\|(I-C_{j,k})\Psi_k\|^2,
+ &r_k&=\|C_kQ_k\Psi_k\|^2.
+ \label{eq:compressed_common_masses}
+\end{align}
+The cutoff thresholds use the original regional entropies and the same
+selected mass $z$. Each product follows the order of the prescribed list.
+
+\begin{theorem}[Retention of the same auxiliary-label mass]
+\label{thm:compressed_typical_common_retained_mass}
+\lean{FiniteProduct.eventually_commonLabelCutoff_compressedTypicalSite_retains_mass}
+\leanok
+\uses{thm:compressed_typical_regional_exponential_tail,thm:half_mass_after_finite_exponential_losses,thm:schur-common-cutoff-mass,thm:lifted_physical_regions_nested,thm:compressed_regional_threshold_lifted}
+Assume that $q_k\ge 1/(2(k+1)^{d^2})$ for all sufficiently large $k$.
+Then, for all sufficiently large $k$,
+\begin{align}
+ q_k-\ell_k&\ge q_k/2,
+ &q_k-\ell_k&\ge\frac{1}{4(k+1)^{d^2}}>0,\\
+ r_k&\ge q_k/2,
+ &r_k&\ge\frac{1}{4(k+1)^{d^2}}.
+\end{align}
+The label sequence is the prescribed sequence in
+(\ref{eq:compressed_common_masses}).
+\end{theorem}
+\begin{proof}\leanok
+For each fixed list position, Theorem~\ref{thm:compressed_typical_regional_exponential_tail}
+bounds its loss by $e^{-c_jk}$ for some $c_j>0$ and every $k\ge1$.
+Theorem~\ref{thm:half_mass_after_finite_exponential_losses} gives the two
+bounds on $q_k-\ell_k$, and its lower bound is strictly positive.
+The lifted regions remain nested and avoid the auxiliary site by
+Theorem~\ref{thm:lifted_physical_regions_nested}. Thus the finite projection
+union bound gives $q_k-\ell_k\le r_k$, proving the remaining inequalities.
+\end{proof}
+
+\begin{theorem}[A Bell vector with the same common-cutoff mass]
+\label{thm:compressed_typical_common_bell_vector}
+\lean{FiniteProduct.eventually_exists_commonLabelCutoff_compressedTypical_bell_vector}
+\leanok
+\uses{thm:compressed_typical_common_retained_mass,thm:compressed_site_product_symmetry,thm:schur-common-cutoff-bell}
+Assume the same eventual lower bound
+$q_k\ge 1/(2(k+1)^{d^2})$. Let $\beta_E$ be the actual selected Bell vector
+on $\mathcal H_X\otimes\mathbb C^E$, with projection
+$\Pi_E=|\beta_E\rangle\langle\beta_E|$, and put
+$\mathrm{post}_k=\beta_E^{\otimes k}\otimes\Psi_k$.
+For all sufficiently large $k$, there is a unit vector $\varphi_k$ such that
+\begin{align}
+ (\Pi_E^{\otimes k}\otimes I)\varphi_k&=\varphi_k,
+ &(I\otimes Q_k)\varphi_k&=\varphi_k,\\
+ (I\otimes C_{j,k})\varphi_k&=\varphi_k &&(1\le j\le m),\\
+ \bigl|\langle\varphi_k,(I\otimes Q_k)\mathrm{post}_k\rangle\bigr|^2
+ &=r_k,\\
+ r_k&\ge q_k/2,
+ &r_k&\ge\frac{1}{4(k+1)^{d^2}}.
+\end{align}
+The vector $\varphi_k$ is invariant under simultaneous copy permutations,
+using the canonical identification of copies of a product with the product
+of copy spaces. The left Bell coordinate is indexed by $E$ and the right
+auxiliary coordinate by its fixed enumeration $\{0,\ldots,d-1\}$.
+The eventual threshold may depend on the original state, selection,
+region list, and prescribed label sequence.
+\end{theorem}
+\begin{proof}\leanok
+Theorem~\ref{thm:compressed_typical_common_retained_mass} makes
+$q_k-\ell_k$ eventually positive and gives the bounds on $r_k$.
+The vector $\Psi_k$ is symmetric by
+Theorem~\ref{thm:compressed_site_product_symmetry}. Apply
+Theorem~\ref{thm:schur-common-cutoff-bell} to this actual exterior vector,
+with the original selected Bell vector and the same label $\lambda_k$.
+Its exact overlap identity gives $r_k$ from
+(\ref{eq:compressed_common_masses}).
+\end{proof}
+
+\section{The same auxiliary-label mass after regrouping}
+\label{sec:compressed_typical_label_mass}
+
+The following coordinate identity identifies the auxiliary projection in
+the site description with the projection used to choose the label in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+
+
+\begin{theorem}[The actual auxiliary isotypic projection]
+\label{thm:compressed_site_label_projection_coordinates}
+\lean{TensorPower.labelProj_compressedSite_submatrix}
+\leanok
+\uses{thm:group_algebra_product_coordinates,thm:compressed_auxiliary_copy_action}
+Use the augmented site family $\widehat V=\{r\}\sqcup X^c$, with
+finite auxiliary coordinate set $A$ and finite local physical coordinate
+sets. Let $T_k$ be the unitary induced by the bijection $e_k$ of
+Definition~\ref{def:compressed_exterior_copy_coordinates}. For every
+$k\ge0$ and every irreducible label $\lambda$ of $\mathfrak S_k$,
+\begin{align}
+ T_k\Pi_{\{r\},\lambda}T_k^*
+ &=I_{\Omega_{X^c}^k}\otimes\Pi^{A,k}_\lambda,
+\end{align}
+where the left projection is for the actual auxiliary subsystem action
+and the right projection is for the ordinary copy action on $A^k$.
+The label $\lambda$ is unchanged.
+\end{theorem}
+\begin{proof}
+\leanok
+The auxiliary copy-action identity supplies the product equivariance.
+Apply Theorem~\ref{thm:group_algebra_product_coordinates} to the central idempotent of the given
+irreducible label.
+\end{proof}
+
+\begin{theorem}[Equality of the auxiliary projected masses]
+\label{thm:compressed_site_label_mass_coordinates}
+\lean{TensorPower.norm_sq_labelProj_compressedSite_prod,TensorPower.norm_sq_labelProj_compressedTypicalSite_prod}
+\leanok
+\uses{thm:compressed_site_label_projection_coordinates,thm:compressed_exterior_product_coordinates}
+For any function $\chi:A\times\Omega_{X^c}\to\mathbb C$, define
+\begin{align}
+ \Psi_k((x_j)_j)&=\prod_{j=0}^{k-1}\chi(e(x_j)),
+ &w_k(b,a)&=\prod_{j=0}^{k-1}\chi(a_j,b_j).
+\end{align}
+For every irreducible label $\lambda$ of $\mathfrak S_k$,
+\begin{align}
+ \|\Pi_{\{r\},\lambda}\Psi_k\|^2
+ &=\|(I_{\Omega_{X^c}^k}\otimes\Pi^{A,k}_\lambda)w_k\|^2.
+\end{align}
+In particular, take $A=\{0,\ldots,|E|-1\}$ and take $\chi$ to be
+the actual compressed spectral vector of an original physical vector
+$\Omega$, with the selected indices in their fixed order. The right
+side is then exactly the auxiliary-label mass of that same compressed
+vector in physical-complement-first coordinates. The identity applies
+to every member of an already chosen label sequence. It includes zero
+copies and zero selected mass and requires no normalization or symmetry
+assumption.
+\end{theorem}
+\begin{proof}
+\leanok
+The product-coordinate identity gives $T_k\Psi_k=w_k$. Combine this
+with Theorem~\ref{thm:compressed_site_label_projection_coordinates} and use preservation of norm by
+$T_k$. Substitution of the actual compressed spectral vector gives the
+last assertion without making another selection of a vector or a label.
+\end{proof}
+
+\section{Regional marginals after spectral compression}
+\label{sec:compressed_typical_regional_marginal}
+
+Let $F$ be a finite set of sites with finite local coordinate sets, and
+let $\Omega$ be any vector in the resulting tensor product. Fix disjoint
+regions $X,B\subseteq F$. View $\Omega$ in
+$\mathcal H_X\otimes\mathcal H_{X^c}$, and choose a set $E$ of
+eigenvalue indices of its marginal on $X$. Let
+$J_E:\mathbb C^{|E|}\to\mathcal H_X$ have the corresponding
+orthonormal eigenvectors as columns, ordered by the fixed enumeration of
+$E$, and set
+\begin{align}
+ P_E&=J_EJ_E^*,
+ &z&=\operatorname{Tr}(P_E\rho_X),\\
+ \psi&=z^{-1/2}(P_E\otimes I)\Omega,
+ &\chi&=z^{-1/2}(J_E^*\otimes I)\Omega.
+\end{align}
+The vector $\psi$ is regarded in the original physical coordinates,
+whereas $\chi\in\mathbb C^{|E|}\otimes\mathcal H_{X^c}$.
+When $z=0$, set $\psi=\chi=0$. This is the
+selected spectral compression used in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[The marginal on a disjoint region is preserved]
+\label{thm:compressed_typical_regional_marginal}
+\lean{FiniteProduct.partialTraceLeft_compressedTypicalPureState_region}
+\leanok
+\uses{thm:compressed_typical_vector}
+Use the canonical physical coordinate split
+$\mathcal H_{X^c}=\mathcal H_B\otimes\mathcal H_{(X\cup B)^c}$
+to write $\chi(r,b,c)$. Place the discarded coordinates first by setting
+$\tau((r,c),b)=\chi(r,b,c)$. Then
+\begin{align}
+ \operatorname{Tr}_{\mathbb C^{|E|}\otimes\mathcal H_{(X\cup B)^c}}
+       |\tau\rangle\langle\tau|
+ &=\operatorname{Tr}_{\mathcal H_{B^c}}|\psi\rangle\langle\psi|.
+\end{align}
+There is no normalization assumption on $\Omega$ and no positive-mass
+assumption on $E$.
+\end{theorem}
+\begin{proof}
+\leanok
+Embedding the selected coordinate space by $J_E$ takes $\chi$ to
+$\psi$. Since $J_E$ is an isometry, this embedding preserves the entire
+marginal on $X^c$. Trace that marginal further over $(X\cup B)^c$.
+In coordinates, this amounts to replacing the sum over the selected
+index $r$ by the sum over the original $X$ coordinates and then
+interchanging the two finite sums. The resulting matrix is precisely the
+regional marginal of the same selected vector $\psi$.
+\end{proof}
+
+\section{The actual compressed state's regional cutoff losses}
+\label{sec:compressed_typical_regional_tail}
+
+Let $V$ be a finite set of sites with finite local coordinate sets, let
+$\Omega$ be a physical vector, and fix a region $X\subseteq V$.
+Select eigenvalue indices $E$ of the actual marginal $\rho_X^\Omega$,
+with selected mass $z=\operatorname{Tr}(P_E\rho_X^\Omega)>0$.
+Let $J_E$ have those orthonormal eigenvectors as columns in their fixed
+order. In the $X,X^c$ coordinates, write
+\begin{align}
+ \chi&=z^{-1/2}(J_E^*\otimes I)\Omega.
+\end{align}
+Place its selected coordinate at the auxiliary site $r$ and its remaining
+coordinates at their original sites in $X^c$, obtaining the actual vector
+$\chi_{\mathrm{site}}$ on $\widehat V=\{r\}\sqcup X^c$.
+These are the selected state and mass of
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Normalization in the actual site coordinates]
+\label{thm:compressed_typical_site_norm}
+\lean{FiniteProduct.norm_compressedTypicalSiteState}
+\leanok
+\uses{def:compressed_site_family,thm:compressed_typical_vector}
+The actual compressed vector satisfies
+\begin{align}
+ \|\chi_{\mathrm{site}}\|&=1.
+\end{align}
+Only $z>0$ is required; the original vector $\Omega$ need not be unit.
+\end{theorem}
+\begin{proof}
+\leanok
+The coordinate identification first separates the auxiliary site and then
+identifies its ordered indices with $E$. It is an isometry from the
+selected coordinate space to the site description. The selected compressed
+vector has squared norm $z^{-1}z=1$.
+\end{proof}
+
+\begin{theorem}[The compressed regional entropy bound]
+\label{thm:compressed_typical_site_entropy}
+\lean{FiniteProduct.entropy_compressedTypicalSiteState_le}
+\leanok
+\uses{thm:compressed_site_actual_regional_marginal}
+Assume in addition that $\|\Omega\|=1$. For every physical region
+$B$ disjoint from $X$, regard $B$ as the exterior-site region
+$\widehat B$. Then
+\begin{align}
+ S\!\left(\rho_{\widehat B}^{\chi_{\mathrm{site}}}\right)
+ &\le\frac{S(\rho_B^\Omega)}{z}.
+\end{align}
+\end{theorem}
+\begin{proof}
+\leanok
+The actual compressed regional marginal, after the canonical coordinate
+identification, equals the marginal of the actual selected physical
+vector. Entropy is unchanged by this identification. The selected-state
+entropy inequality bounds the latter entropy by $S(\rho_B^\Omega)/z$.
+The mass $z$ is the same original spectral-selection mass throughout.
+\end{proof}
+
+\begin{theorem}[Exponential loss of an actual regional Schur cutoff]
+\label{thm:compressed_typical_regional_exponential_tail}
+\lean{FiniteProduct.exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp}
+\leanok
+\uses{thm:compressed_typical_site_norm,thm:compressed_typical_site_entropy,thm:iid_schur_label_exponential,thm:subsystem_label_cutoff_regional_trace}
+Assume $\|\Omega\|=1$ and $X\cap B=\varnothing$. Let
+$P_{\widehat B}^{(k)}(a)$ be the closed central-label cutoff
+$\log\dim\lambda\le a$ for the actual subsystem copy action on
+$\widehat B$. There is a constant $c>0$ such that for every integer
+$k\ge1$,
+\begin{align}
+ \left\|\left(I-P_{\widehat B}^{(k)}
+      \!\left(k\left(\frac{S(\rho_B^\Omega)}{z}+1\right)\right)\right)
+      \chi_{\mathrm{site}}^{\otimes k}\right\|^2
+ &\le e^{-ck}.
+\end{align}
+The rate may depend on the fixed original state, selection, and region.
+The region may be empty and its marginal may be singular.
+\end{theorem}
+\begin{proof}
+\leanok
+The actual regional marginal of $\chi_{\mathrm{site}}$ is positive
+and has trace one by Theorem~\ref{thm:compressed_typical_site_norm}.
+Its entropy is bounded by Theorem~\ref{thm:compressed_typical_site_entropy}.
+Apply Theorem~\ref{thm:iid_schur_label_exponential} with
+$s=S(\rho_B^\Omega)/z$, then use
+Theorem~\ref{thm:subsystem_label_cutoff_regional_trace} to identify the trace
+tail with the squared cutoff failure norm of $\chi_{\mathrm{site}}^{\otimes k}$.
+\end{proof}
+
+\section{The compressed vector as a family of physical sites}
+\label{sec:compressed_typical_site_coordinates}
+
+Let $V$ be a finite set of physical sites, let $I_v$ be its local
+coordinate sets, and fix $X\subseteq V$. Write
+$\Omega_D=\prod_{v\in D}I_v$ for the configurations of a region $D$.
+The selected spectral coordinates can be regarded as one additional site,
+as in the rough comparison of \cite[Section~7]{OpenAI2026AreaLaw}.
+
+Use the augmented family $\widehat V=\{r\}\sqcup X^c$ of
+Definition~\ref{def:compressed_site_family}, with auxiliary coordinate set
+$A$, and write $\widehat B=B\cap X^c$ for its physical regions.
+The canonical coordinate bijection is
+\begin{align}
+ e:\prod_{f\in\widehat V}\widehat I_f
+   &\longrightarrow A\times\Omega_{X^c},
+ &e(x)&=(x_r,(x_v)_{v\in X^c}).
+\end{align}
+
+\begin{definition}[Regional and discarded coordinates]
+\label{def:compressed_site_region_coordinates}
+\lean{FiniteProduct.exteriorRegionEquiv,FiniteProduct.exteriorComplementEquiv}
+\leanok
+\uses{def:compressed_site_family}
+For every $B\subseteq V$, evaluation of the auxiliary and physical
+coordinates gives a bijection
+\begin{align}
+ e_C:\prod_{f\in\widehat B^c}\widehat I_f
+   &\longrightarrow A\times\Omega_{(X\cup B)^c}.
+\end{align}
+If $X\cap B=\varnothing$, evaluation of the physical coordinates also
+gives a bijection
+\begin{align}
+ e_B:\prod_{f\in\widehat B}\widehat I_f
+   &\longrightarrow\Omega_B.
+\end{align}
+The inverses assign these values to the same auxiliary and physical sites.
+No local coordinate set is required to be nonempty or finite for these
+bijections.
+\end{definition}
+
+\begin{theorem}[Compatibility of the regional split]
+\label{thm:compressed_site_region_split}
+\lean{FiniteProduct.piOptionEquivProd_split_exteriorRegion}
+\leanok
+\uses{def:compressed_site_region_coordinates}
+Suppose $X\cap B=\varnothing$. Let $b$ and $c$ be configurations on
+$\widehat B$ and $\widehat B^c$, respectively, and write $e_C(c)=(a,d)$.
+Joining $b$ and $c$ into one exterior-site configuration and then applying
+$e$ gives
+\begin{align}
+ e(b\cup c)&=(a,e_B(b)\cup d).
+\end{align}
+On the right, the union joins the physical configurations on $B$ and
+$(X\cup B)^c$ to a configuration on $X^c$.
+\end{theorem}
+\begin{proof}
+\leanok
+At the auxiliary site, both sides have value $a$. At a physical site in
+$B$, both have the value prescribed by $b$; at every other site of $X^c$,
+both have the value prescribed by $d$.
+\end{proof}
+
+\begin{theorem}[The actual selected marginal in exterior-site coordinates]
+\label{thm:compressed_site_actual_regional_marginal}
+\lean{FiniteProduct.reducedPure_compressedTypicalSiteState}
+\leanok
+\uses{thm:compressed_site_region_split,thm:compressed_typical_regional_marginal}
+Assume now that the local coordinate sets are finite. Let $\Omega$ be
+any original physical vector, and let $E$ select eigenvalue indices of its
+marginal on $X$. Let $\psi$ be its actual selected vector and let
+$\chi\in\mathbb C^{|E|}\otimes\mathbb C^{\Omega_{X^c}}$ be its
+actual compressed vector, with the selected indices in their fixed order.
+Take $A=\{0,\ldots,|E|-1\}$ and define
+$\chi_{\mathrm{site}}(x)=\chi(e(x))$.
+
+If $X\cap B=\varnothing$ and $U_B$ is the unitary coordinate
+identification induced by $e_B$, then
+\begin{align}
+ U_B\operatorname{Tr}_{\widehat B^c}
+   |\chi_{\mathrm{site}}\rangle\langle\chi_{\mathrm{site}}|U_B^*
+ &=\operatorname{Tr}_{B^c}|\psi\rangle\langle\psi|.
+\end{align}
+The identity does not require normalization of $\Omega$ or positive
+selected mass.
+\end{theorem}
+\begin{proof}
+\leanok
+The split identity identifies the discarded coordinates with the selected
+index and the physical complement of $X\cup B$. Reindex the finite
+partial-trace sum by $e_C$, and apply preservation of the regional marginal
+under the actual spectral compression.
+\end{proof}
+
+\section{Permutation representations in product coordinates}
+\label{sec:group_algebra_product_coordinates}
+
+The coordinate identity below applies to the regional copy actions in
+\cite[Section~5, lines~14--27 and 73--80]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Group-algebra operators in product coordinates]
+\label{thm:group_algebra_product_coordinates}
+\lean{PermutationRepresentation.groupAlgebraRep_submatrix_of_prod_action}
+    \leanok
+Let a group $G$ act by permutations on finite sets $Z$ and $B$, with
+actions $\alpha$ and $\beta$. Let $A$ be any set and
+$e:Z\to A\times B$ a bijection satisfying
+\begin{align}
+ e(\alpha(g)z)&=((ez)_A,\beta(g)(ez)_B)
+\end{align}
+for every $g\in G$ and $z\in Z$. Let $\pi_\alpha$ and $\pi_\beta$ be
+the linear extensions of the two permutation representations to
+$\mathbb C[G]$. For every $h\in\mathbb C[G]$, $a,a'\in A$, and
+$b,b'\in B$,
+\begin{align}
+ \bigl(\pi_\alpha(h)\bigr)_{e^{-1}(a,b),e^{-1}(a',b')}
+   &=\delta_{a,a'}\bigl(\pi_\beta(h)\bigr)_{b,b'}.
+\end{align}
+Equivalently, the matrix in product coordinates is
+$I_A\otimes\pi_\beta(h)$. Neither $G$ nor $A$ is required to be finite.
+\end{theorem}
+\begin{proof}
+    \leanok
+For a single group element, the permutation-matrix entry at $(x,y)$ is
+one precisely when $\alpha(g)y=x$. Equivariance expresses this as
+equality of the first coordinates and the corresponding permutation
+condition on the second coordinates. This gives the identity for group
+elements. Extend it by linearity over the finite support of $h$.
+\end{proof}
+
+\section{Exponential upper tails of the actual copy labels}
+\label{sec:iid_schur_label_exponential}
+
+For a finite density matrix $\rho$, let $\Pi^{(k)}_\lambda$ be the
+central isotypic projections of the permutation action on its $k$ copies,
+and define the closed label cutoff
+\begin{align}
+ P_k(a)&=\sum_{\lambda:\,\log\dim\lambda\le a}\Pi^{(k)}_\lambda.
+\end{align}
+The following consequence of the supported comparison with surprisal is
+the fixed-system exponential estimate used in
+\cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Independent-copy Schur tails above an entropy bound]
+\label{thm:iid_schur_label_exponential}
+\lean{Matrix.PosSemidef.exists_re_trace_one_sub_labelCutoff_finKronecker_le_exp}
+\leanok
+\uses{thm:schur_label_tail_surprisal,thm:iid_surprisal_exponential_density,thm:surprisal_functional_calculus}
+Let $\rho\ge0$ be a finite matrix with $\operatorname{Tr}\rho=1$,
+and let $s\in\mathbb R$ satisfy $S(\rho)\le s$. There is a constant
+$c>0$ such that, for every integer $k\ge1$,
+\begin{align}
+ \operatorname{Re}\operatorname{Tr}\!\left(
+   \rho^{\otimes k}\bigl(I-P_k(k(s+1))\bigr)\right)
+ &\le e^{-ck}.
+\end{align}
+Singular density matrices are included. The permutation invariance is that of the actual tensor power.
+\end{theorem}
+\begin{proof}
+\leanok
+The actual tensor power $\rho_k=\rho^{\otimes k}$ is positive, has
+trace one, and commutes with all copy permutations. The supported Schur
+comparison therefore bounds its removed label mass at threshold $a$ by
+\begin{align}
+ \operatorname{Re}\operatorname{Tr}\!\left(
+   \rho_k\mathbf1_{(a,\infty)}(-\log\rho_k)\right),
+\end{align}
+where the logarithm is zero on the kernel. The functional-calculus
+composition identity gives precisely this cutoff expression. Since
+$k(S(\rho)+1)\le k(s+1)$, the strict upper tail at the latter threshold
+is contained in that at the former. The eigenvalue weights are
+nonnegative, so this inclusion also orders their trace masses. Apply the
+exponential surprisal bound at $k(S(\rho)+1)$.
+\end{proof}
+
+\section{Spectral cutoffs of the label observable}
+\label{sec:schur_label_cutoffs}
+
+Let a finite group $G$ act by permutations on a finite set $X$, and write
+$\pi^\lambda$ for the orthogonal projections onto the irreducible labels.
+Set $d_\lambda=\dim\lambda$ and
+$F=\sum_\lambda(\log d_\lambda)\pi^\lambda$.
+The following statements express the supported tail comparison used in
+\cite[Section~7, upper comparisons]{OpenAI2026AreaLaw}.
+
+\begin{definition}[The closed label cutoff]
+    \label{def:schur_label_cutoff}
+    \lean{PermutationRepresentation.labelCutoff}
+    \leanok
+    \uses{def:label_projectors}
+    For $a\in\mathbb R$, define
+    \begin{align*}
+        C(a) & =\sum_{\log d_\lambda\le a}\pi^\lambda.
+    \end{align*}
+\end{definition}
+
+\begin{theorem}[The label cutoff is a spectral projection]
+    \label{thm:schur_label_cutoff_spectral}
+    \lean{PermutationRepresentation.labelCutoff_eq_spectralProjectionGE}
+    \leanok
+    \uses{def:schur_label_cutoff,lem:label_projectors,lem:orthogonal_resolution_cfc}
+    For every $a\in\mathbb R$,
+    \begin{align*}
+        C(a) & =\mathbf1_{(-\infty,a]}(F)
+        =\mathbf1_{[-a,\infty)}(-F).
+    \end{align*}
+    The cutoff includes labels exactly at the threshold.
+\end{theorem}
+\begin{proof}\leanok
+    Compute the functional calculus in the orthogonal label decomposition.
+    The coefficient on the $\lambda$ subspace is one precisely when
+    $\log d_\lambda\le a$.
+\end{proof}
+
+\begin{theorem}[Label tails are bounded by surprisal tails]
+    \label{thm:schur_label_tail_surprisal}
+    \lean{PermutationRepresentation.re_trace_mul_one_sub_labelCutoff_le}
+    \leanok
+    \uses{def:schur_label_cutoff,thm:schur_label_surprisal}
+    Let $\rho$ be a positive semidefinite matrix on $\mathbb C^X$ with
+    $\operatorname{Tr}\rho=1$, commuting with every permutation operator
+    of the action. For every $a\in\mathbb R$,
+    \begin{align*}
+        \operatorname{Re}\operatorname{Tr}\bigl(\rho(1-C(a))\bigr)
+         & \le \operatorname{Re}\operatorname{Tr}\bigl(
+        \rho\mathbf1_{(a,\infty)}(-\log\rho)\bigr).
+    \end{align*}
+    The logarithm is assigned value zero on the kernel of $\rho$.
+\end{theorem}
+\begin{proof}\leanok
+    Use the joint orthogonal decomposition for $\rho$ and the label
+    projectors. On a nonzero joint subspace with eigenvalue $u>0$ and label
+    $\lambda$, the trace-one condition gives $u d_\lambda\le1$.
+    Consequently $\log d_\lambda\le-\log u$, so the event
+    $\log d_\lambda>a$ is contained in $-\log u>a$.
+    Multiply this scalar comparison by $u$ and sum the traces of the joint
+    projections. Subspaces with $u=0$ contribute zero to both sides.
+\end{proof}
+
+\section{Regional copy coordinates and cutoff mass}
+\label{sec:subsystem_label_coordinates}
+
+Let $F$ be a finite set of sites, with a set of local coordinates $I_f$ at
+each site. For $B\subseteq F$, write
+$\Omega_B=\prod_{f\in B}I_f$ and $\Omega=\prod_{f\in F}I_f$.
+These coordinates identify the subsystem permutation action used in the
+rough comparison of \cite[Section~7]{OpenAI2026AreaLaw}.
+
+\begin{definition}[Complementary and regional copy coordinates]
+\label{def:subsystem_split_coordinates}
+\lean{TensorPower.subsystemSplitEquiv}
+    \leanok
+For every $k\ge0$, define the bijection
+\begin{align}
+ e_B:\Omega^k&\longrightarrow\Omega_{B^c}^k\times\Omega_B^k,
+ & e_B((x_j)_j)&=((x_j|_{B^c})_j,(x_j|_B)_j).
+\end{align}
+Its inverse joins the two restricted configurations in each copy.
+\end{definition}
+
+\begin{theorem}[The subsystem action in split coordinates]
+\label{thm:subsystem_split_permutation}
+\lean{TensorPower.subsystemSplitEquiv_subsystemPerm}
+    \leanok
+\uses{def:subsystem_split_coordinates}
+Let $\sigma\in\mathfrak S_k$ act on the copies at sites in $B$, fixing
+the coordinates at sites in $B^c$. If $e_B(x)=(c,r)$, then
+\begin{align}
+ e_B(\sigma_B x)&=(c,(r_{\sigma^{-1}(j)})_j).
+\end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+Restriction to $B^c$ sees only fixed coordinates. Restriction to $B$ sees
+exactly the copy permutation, with the inverse permutation in the
+coordinate formula for the left action.
+\end{proof}
+
+Assume henceforth that every $I_f$ is finite. Let $T_B$ be the unitary
+coordinate identification induced by $e_B$, so that
+$(T_Bv)(c,r)=v(e_B^{-1}(c,r))$. Write $\Pi_{B,\lambda}$ for the central
+isotypic projection of the subsystem action, and write
+$\Pi^{\mathrm{reg}}_\lambda$ for that of the ordinary copy action on
+$\mathbb C^{\Omega_B^k}$. Define the closed cutoffs
+\begin{align}
+ P_B(a)&=\sum_{\lambda:\,\log\dim\lambda\le a}\Pi_{B,\lambda},
+ &P^{\mathrm{reg}}_B(a)
+ &=\sum_{\lambda:\,\log\dim\lambda\le a}\Pi^{\mathrm{reg}}_\lambda.
+\end{align}
+
+\begin{theorem}[Regional Schur projections and cutoffs]
+\label{thm:subsystem_label_projection_coordinates}
+\lean{TensorPower.labelProj_subsystemPerm_submatrix,TensorPower.labelCutoff_subsystemPerm_submatrix}
+    \leanok
+\uses{thm:subsystem_split_permutation,thm:group_algebra_product_coordinates}
+For every irreducible label $\lambda$ of $\mathfrak S_k$ and every
+$a\in\mathbb R$,
+\begin{align}
+ T_B\Pi_{B,\lambda}T_B^*
+   &=I_{\Omega_{B^c}^k}\otimes\Pi^{\mathrm{reg}}_\lambda,\\
+ T_BP_B(a)T_B^*
+   &=I_{\Omega_{B^c}^k}\otimes P^{\mathrm{reg}}_B(a).
+\end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+Apply the group-algebra product-coordinate identity to the actual
+subsystem action and the central idempotent of $\lambda$. Theorem~\ref{thm:subsystem_split_permutation} supplies its equivariance hypothesis. Summing the
+resulting projection identities with $\log\dim\lambda\le a$ gives the
+cutoff identity.
+\end{proof}
+
+\begin{theorem}[Cutoff failure as a regional trace]
+\label{thm:subsystem_label_cutoff_regional_trace}
+\lean{TensorPower.norm_sq_one_sub_labelCutoff_subsystemPerm_prod}
+    \leanok
+\uses{thm:subsystem_label_projection_coordinates}
+For any vector $\psi\in\mathbb C^\Omega$, let
+$\rho_B=\operatorname{Tr}_{B^c}|\psi\rangle\langle\psi|$ be its
+actual regional marginal. For every $k\ge0$ and $a\in\mathbb R$,
+\begin{align}
+ \bigl\|(I-P_B(a))\psi^{\otimes k}\bigr\|^2
+ &=\operatorname{Re}\operatorname{Tr}\!\left(
+    \rho_B^{\otimes k}(I-P^{\mathrm{reg}}_B(a))\right).
+\end{align}
+No normalization of $\psi$ is required. The identity includes empty
+regions, zero copies, and singular marginals.
+\end{theorem}
+\begin{proof}
+    \leanok
+In the split coordinates, the cutoff complement is the identity on the
+complementary copies tensored with the regional cutoff complement. Both
+are orthogonal projections. Hence its squared norm on the vector is its
+expectation in the corresponding pure-state matrix. Tracing the
+complementary copies gives $\rho_B^{\otimes k}$, which proves the
+identity.
+\end{proof}
