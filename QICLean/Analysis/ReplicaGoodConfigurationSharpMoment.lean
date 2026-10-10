@@ -115,8 +115,10 @@ theorem replicaGoodConfigurationMarginal_exp_merge_sub_physical_sharp_le
         mass * Real.exp ((((d 0 * d 3) ^ 2 : ℕ) : ℝ) * Real.log ((m : ℝ) + 1))
       rw [← hpoly]
       exact hm.1.trans_eq (mul_comm _ mass)
-    · simpa only [M, A, Matrix.cons_val_succ, Matrix.cons_val_zero,
-        hpoly, mul_comm] using hm.2
+    · change (ρ * NormedSpace.exp ((b : ℂ) • DR)).trace.re ≤
+        mass * Real.exp ((((d 2 * d 4) ^ 2 : ℕ) : ℝ) * Real.log ((m : ℝ) + 1))
+      rw [← hpoly]
+      exact hm.2.trans_eq (mul_comm _ mass)
     · exact hQ.2
     · exact hV.2
     · exact hY.1
