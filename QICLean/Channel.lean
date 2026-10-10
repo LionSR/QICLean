@@ -104,6 +104,8 @@ import QICLean.Channel.POVM.Uniqueness
 import QICLean.Channel.PPTIndecomposable
 import QICLean.Channel.PSDConeAutomorphism
 import QICLean.Channel.PartialTrace
+import QICLean.Channel.PartialTraceBasisInvariance
+import QICLean.Channel.PartialTraceBlocks
 import QICLean.Channel.PartialTranspose
 import QICLean.Channel.Peripheral
 import QICLean.Channel.PerronFrobenius

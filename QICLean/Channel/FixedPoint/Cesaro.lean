@@ -7,6 +7,7 @@ import QICLean.Algebra.HermitianHelpers
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Channel.Basic
 import QICLean.Channel.Schwarz.PositiveMapProperties
+import Mathlib.Dynamics.BirkhoffSum.Average
 
 /-!
 # Fixed point existence via Cesàro means
@@ -318,6 +319,19 @@ noncomputable def cesaroMean (E : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix 
 
 theorem cesaroMean_eq (X : Matrix (Fin D) (Fin D) ℂ) (N : ℕ) :
     cesaroMean E X N = (1 / (N : ℂ)) • ∑ n ∈ Finset.range N, (E ^ n) X := rfl
+
+/-- The zero-indexed Cesàro mean is the corresponding Birkhoff average.
+
+This equality connects the elementary finite sum used in `cesaroMean` with
+the mean-ergodic projection formalized through `birkhoffAverage`. -/
+theorem cesaroMean_eq_birkhoffAverage
+    (X : Matrix (Fin D) (Fin D) ℂ) (N : ℕ) :
+    cesaroMean E X N = birkhoffAverage ℂ E _root_.id N X := by
+  simp only [cesaroMean_eq, birkhoffAverage, birkhoffSum, id_eq, one_div]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro n _
+  exact Module.End.pow_apply E n X
 
 /-- Key lemma: telescoping. `E(σ_N) - σ_N = (E^N(X) - X) / N`. -/
 theorem cesaroMean_telescope (X : Matrix (Fin D) (Fin D) ℂ) (N : ℕ) (_hN : 0 < N) :

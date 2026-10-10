@@ -27,7 +27,7 @@ structure `CycleStructure T`.  All results below are sorry-free.
 The remaining *existence* direction of Theorem 6.16 — that every TP positive
 Schwarz map admits such a block-permutation decomposition on its asymptotic
 image — relies on Wolf Theorem 6.14 (Wedderburn decomposition of the
-fixed-point algebra, issues #27/#360) and is left to future work.
+fixed-point algebra) and is left to future work.
 
 ## Main definitions
 

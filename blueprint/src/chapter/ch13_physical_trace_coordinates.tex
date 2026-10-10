@@ -1,0 +1,173 @@
+\chapter{Partial Traces in Orthonormal Coordinates}
+\label{ch:physical_trace_coordinates}
+
+We record the coordinate and integrability facts used to estimate physical
+output operators in \cite[proof of Theorem~5.2]{OpenAI2026PolynomialPEPS},
+\texttt{04-compression.tex}, lines 383--549. The matrices need not be positive
+or self-adjoint. All norms denoted by $\|\cdot\|_1$ are rectangular trace norms.
+
+\begin{theorem}[Isometric coordinates and the reduced trace norm]
+    \label{thm:physical_trace_isometries}
+    \lean{Matrix.rectangularTraceNorm_partialTraceRight_isometries}
+    \leanok
+    Let $X,Y,D,E$ be finite index sets and let
+    $U:\C^X\to\C^Y$ and $V:\C^D\to\C^E$ satisfy
+    $U^{\dagger}U=I$ and $V^{\dagger}V=I$.
+    Every matrix $M$ on $\C^X\otimes\C^D$ satisfies
+    \begin{align}
+        \bigl\|\operatorname{tr}_{E}
+        ((U\otimes V)M(U\otimes V)^{\dagger})\bigr\|_1
+         & =\|\operatorname{tr}_{D}M\|_1.
+        \label{eq:physical_trace_isometries}
+    \end{align}
+    Neither isometry is required to be onto.
+\end{theorem}
+
+\begin{proof}\leanok
+    The partial trace on the left equals
+    $U(\operatorname{tr}_{D}M)U^{\dagger}$ because
+    $V^{\dagger}V=I$. Left and right multiplication by isometries preserve
+    the nonzero singular values, giving (\ref{eq:physical_trace_isometries}).
+\end{proof}
+
+\begin{theorem}[Independence of product orthonormal coordinates]
+    \label{thm:physical_trace_basis_independence}
+    \lean{OrthonormalBasis.tensorProduct_basisChange}
+    \lean{OrthonormalBasis.tensorProduct_rankOne_basisChange}
+    \lean{OrthonormalBasis.rectangularTraceNorm_partialTrace_sum_rankOne_basis_eq}
+    \leanok
+    \uses{thm:physical_trace_isometries}
+    Let $\mathcal H,\mathcal K$ be complex inner-product spaces with finite
+    orthonormal bases $b_X,b_Y$ and $b_D,b_E$, respectively.
+    Write $C_{YX}$ and $C_{ED}$ for the two changes of coordinates.
+    The change from $b_X\otimes b_D$ to $b_Y\otimes b_E$ is
+    $C_{YX}\otimes C_{ED}$. If $[z]_{XD}$ denotes product coordinates,
+    then for arbitrary $z,t\in\mathcal H\otimes\mathcal K$,
+    \begin{align}
+        (C_{YX}\otimes C_{ED})[z]_{XD}[t]_{XD}^{\dagger}
+        (C_{YX}\otimes C_{ED})^{\dagger}
+         & =[z]_{YE}[t]_{YE}^{\dagger}.
+        \label{eq:physical_trace_rank_one_coordinates}
+    \end{align}
+    Consequently, for every finite family $z_i,t_i$ and complex coefficients
+    $c_i$,
+    \begin{align}
+        \left\|\operatorname{tr}_{E}
+        \sum_i c_i[z_i]_{YE}[t_i]_{YE}^{\dagger}\right\|_1
+         & =\left\|\operatorname{tr}_{D}
+        \sum_i c_i[z_i]_{XD}[t_i]_{XD}^{\dagger}\right\|_1.
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    A product-basis coordinate is the product of the two endpoint coordinates,
+    which gives the Kronecker formula for the change of basis. Multiplication
+    by that matrix sends $[z]_{XD}$ to $[z]_{YE}$, proving
+    (\ref{eq:physical_trace_rank_one_coordinates}). Distribute the coordinate
+    changes through the finite sum and apply
+    Theorem~\ref{thm:physical_trace_isometries}.
+\end{proof}
+
+\begin{theorem}[Reconstruction from rectangular blocks]
+    \label{thm:physical_trace_block_reconstruction}
+    \lean{Matrix.eq_sum_single_kronecker_submatrix}
+    \lean{Matrix.rectangularTraceNorm_le_sum_submatrix}
+    \leanok
+    Let $M$ have rows indexed by $X\times I$ and columns indexed by
+    $Y\times J$, where $X,Y$ are finite. Put
+    $(M_{xy})_{ij}=M_{(x,i),(y,j)}$. Then
+    \begin{align}
+        M=\sum_{x\in X}\sum_{y\in Y}|x\rangle\langle y|\otimes M_{xy}.
+        \label{eq:physical_trace_block_reconstruction}
+    \end{align}
+    If $I,J$ are also finite, then
+    \begin{align}
+        \|M\|_1\leq\sum_{x\in X}\sum_{y\in Y}\|M_{xy}\|_1.
+        \label{eq:physical_trace_block_bound}
+    \end{align}
+    No factor depending on the dimensions of the blocks appears.
+\end{theorem}
+
+\begin{proof}\leanok
+    At entry $((x,i),(y,j))$, all matrix-unit summands except $(x,y)$ vanish.
+    For the inequality, apply the triangle inequality to
+    (\ref{eq:physical_trace_block_reconstruction}) and use
+    $\||x\rangle\langle y|\otimes N\|_1=\|N\|_1$.
+\end{proof}
+
+\begin{theorem}[Blocks commute with the discarded partial trace]
+    \label{thm:physical_trace_blocks}
+    \lean{Matrix.submatrix_partialTraceRight}
+    \leanok
+    Let $X,Y$ be arbitrary index sets, let $D$ be finite, and let $M$ be
+    a matrix with rows and columns indexed by $(X\times Y)\times D$.
+    Fix $x,x'\in X$. Taking the $(x,x')$ block after tracing out $D$
+    gives the same matrix as first taking that block and then tracing out $D$:
+    \begin{align}
+        (\operatorname{tr}_D M)_{xx'}
+         & =\operatorname{tr}_D(M_{xx'}).
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    Both sides have entry
+    $\sum_{d\in D}M_{((x,y),d),((x',y'),d)}$ at $(y,y')$.
+\end{proof}
+
+\begin{theorem}[An averaged block bound]
+    \label{thm:physical_trace_integral_blocks}
+    \lean{Matrix.integral_rectangularTraceNorm_le_sum_submatrix}
+    \leanok
+    \uses{thm:physical_trace_block_reconstruction}
+    Let $(\Omega,\mu)$ be a measure space and let
+    $M(\omega)$ be a finite rectangular block matrix as in
+    Theorem~\ref{thm:physical_trace_block_reconstruction}.
+    Suppose every function $\omega\mapsto\|M_{xy}(\omega)\|_1$ is integrable.
+    Then
+    \begin{align}
+        \int\|M(\omega)\|_1\,d\mu(\omega)
+         & \leq\sum_{x,y}\int\|M_{xy}(\omega)\|_1\,d\mu(\omega).
+        \label{eq:physical_trace_integral_blocks}
+    \end{align}
+    Here the Bochner integral is assigned the value zero when its integrand
+    is not integrable. The assertion does not itself imply integrability
+    of the full trace norm.
+\end{theorem}
+
+\begin{proof}\leanok
+    The sum of the block norms is integrable and dominates the nonnegative
+    full trace norm by (\ref{eq:physical_trace_block_bound}). If the latter
+    is integrable, integrate this inequality and exchange the finite sum
+    with the integral. Otherwise the left side is zero by the stated
+    convention, whereas the right side is nonnegative.
+\end{proof}
+
+\begin{theorem}[Integrability of finite matrix combinations]
+    \label{thm:physical_trace_matrix_integrability}
+    \lean{ProbabilityTheory.integrable_rectangularTraceNorm_sum}
+    \lean{ProbabilityTheory.integrable_rectangularTraceNorm_sum_of_memLp_two}
+    \leanok
+    Let $\mu$ be a finite measure, let $J$ be finite, and fix finite
+    rectangular complex matrices $A_j$. Suppose the scalar functions
+    $z_j:\Omega\to\C$ satisfy $z_i\overline{z_j}\in L^1(\mu)$ for all
+    $i,j\in J$. Then
+    $\omega\mapsto\|\sum_jz_j(\omega)A_j\|_1$ is integrable.
+    In particular, it is enough that each $z_j$ belongs to $L^2(\mu)$.
+    No independence or prescribed covariance is assumed.
+\end{theorem}
+
+\begin{proof}\leanok
+    The diagonal product hypothesis gives $|z_j|^2\in L^1$.
+    Taking its square root gives measurability of $|z_j|$, and finiteness
+    of the measure then gives $|z_j|\in L^1$.
+    The Gram matrix of $\sum_jz_jA_j$ depends only on the measurable pair
+    products. Its positive square root therefore shows that the trace norm
+    is measurable. The pointwise bound
+    \begin{align}
+        \left\|\sum_j z_jA_j\right\|_1\leq\sum_j|z_j|\,\|A_j\|_1
+    \end{align}
+    gives integrability by domination.
+    Finally, if all coefficients are square-integrable, complex conjugation
+    preserves that property and Cauchy--Schwarz gives the required pairwise
+    integrability.
+\end{proof}

@@ -10,9 +10,8 @@ import QICLean.Analysis.Entropy
 
 This module places the von Neumann entropy of `TNLean.Analysis.Entropy`
 in the `Entropy` namespace. It is the first of three files in
-`QICLean/Entropy/` supporting the Simple MPDO RFP track
-(see issue #236, infrastructure request #613, and the umbrella task
-#239).
+`QICLean/Entropy/` supporting simple matrix product density operators at
+renormalization fixed points.
 
 The underlying eigenvalue-based definition, the nonnegativity proof,
 and the `S(ρ) ≤ log D` bound live in `TNLean.Analysis.Entropy`. To

@@ -45,7 +45,7 @@ The forward implication is proved in
 * Ruskai, "Inequalities for quantum entropy: A review with conditions for
   equality", JMP 43, 4358 (2002)
 * Hayden, Jozsa, Petz, Winter, Commun. Math. Phys. 246, 359--374 (2004)
-* arXiv:1606.00608 Appendix C (the downstream target of issue #632 / #236)
+* arXiv:1606.00608 Appendix C (the downstream application)
 * Blueprint `def:entropy_quantum_markov_decomposition`,
   `thm:entropy_ssa_equality_quantum_markov`
 -/

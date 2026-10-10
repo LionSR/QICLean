@@ -11,9 +11,8 @@ import QICLean.Entropy.VonNeumann
 # Strong subadditivity (theorem formulation and basic corollaries)
 
 This module states **strong subadditivity** (SSA) of the von Neumann
-entropy as a theorem inside the `Entropy` namespace, following the
-roadmap of issue #613 for the Simple MPDO RFP track (issue #236,
-umbrella #239).
+entropy as a theorem inside the `Entropy` namespace, for use with simple
+matrix product density operators at renormalization fixed points.
 
 SSA is the statement that for any tripartite density matrix
 `ρ_ABC` on `A ⊗ B ⊗ C`,

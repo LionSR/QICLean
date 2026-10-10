@@ -1051,6 +1051,55 @@ The TP-gauge application follows~\cite[Appendix~A]{Cirac2016MPDO_arXiv}.
 \end{proof}
 
 
+\begin{theorem}[Upper Collatz--Wielandt bound on the spectral radius]
+    \label{thm:upper_collatz_wielandt_spectral_radius_bound}
+    \lean{spectralRadius_le_of_upperCollatzWielandtFeasible_of_posDef}
+    \leanok
+    \uses{def:positive_map, def:collatz_wielandt_feasible}
+    Let $D\geq1$, let $T:\MN{D}\to\MN{D}$ be positive, and let $(X,a)$ be
+    upper feasible with $X>0$. Then $\varrho(T)\leq a$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:positive_unital_spectral_radius}
+    Put $U(A)=X^{-1/2}T(X^{1/2}AX^{1/2})X^{-1/2}$. This map is positive,
+    has the same spectrum as $T$, and satisfies $0\leq U(\Id)\leq a\Id$.
+    Every eigenvalue $\mu$ of a positive map obeys $|\mu|\leq\|U(\Id)\|$
+    by the Russo--Dye estimate behind
+    Theorem~\ref{thm:positive_unital_spectral_radius}, and
+    $\|U(\Id)\|\leq a$.
+\end{proof}
+
+\begin{theorem}[Spectral radius and positive eigenvectors]
+    \label{thm:wolf_spectral_radius_positive_eigenvector}
+    \lean{exists_density_eigenvector_spectralRadius}
+    \leanok
+    \uses{def:positive_map, def:density_matrices}
+    Let $D\geq1$ and let $T:\MN{D}\to\MN{D}$ be a positive map with spectral
+    radius $\varrho(T)$. Then $\varrho(T)$ is an eigenvalue of $T$ with a
+    positive semidefinite eigenvector of unit trace:
+    there is $X\geq0$ with $\tr X=1$ and $T(X)=\varrho(T)X$.
+    This is \cite[Theorem~6.5]{Wolf2012Quantum}, stated there without proof.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:pf_eigenvector_existence,
+        thm:upper_collatz_wielandt_spectral_radius_bound}
+    For $\varepsilon>0$ set
+    $T_\varepsilon(Y)=T(Y)+\varepsilon\tr(Y)\Id/D$. It maps density matrices to
+    positive definite matrices, so
+    Theorem~\ref{thm:pf_eigenvector_existence} gives a density matrix
+    $X_\varepsilon>0$ with $T_\varepsilon(X_\varepsilon)=r_\varepsilon X_\varepsilon$
+    and $r_\varepsilon=\tr T(X_\varepsilon)+\varepsilon$. Since
+    $r_\varepsilon X_\varepsilon-T(X_\varepsilon)=\varepsilon\Id/D\geq0$,
+    Theorem~\ref{thm:upper_collatz_wielandt_spectral_radius_bound} gives
+    $\varrho(T)\leq r_\varepsilon$. Along a sequence $\varepsilon_n\to0$,
+    compactness of the density matrices gives a subsequence with
+    $X_{\varepsilon_n}\to X$, and then $r_{\varepsilon_n}\to r=\tr T(X)$ and
+    $T(X)=rX$. Hence $\varrho(T)\leq r$, while $r\leq\varrho(T)$ because $r$
+    is an eigenvalue.
+\end{proof}
+
 
 
 \section{Completely positive primitive maps}
