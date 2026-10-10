@@ -23,6 +23,7 @@ import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingHermitian
+import QICLean.Analysis.CompressedInverseFloor
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ContractionChain
@@ -45,13 +46,16 @@ import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
+import QICLean.Analysis.ExponentialPolynomialAbsorption
 import QICLean.Analysis.FiniteCoordinateNowosad
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
+import QICLean.Analysis.FiniteExponentialRetainedMass
 import QICLean.Analysis.FiniteRangeKnabe
 import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.FloorKKT
+import QICLean.Analysis.FloorPin
 import QICLean.Analysis.GammaRatio
 import QICLean.Analysis.GapPerturbation
 import QICLean.Analysis.GaussianFilter
@@ -81,6 +85,7 @@ import QICLean.Analysis.LiebOperatorIntegral
 import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
 import QICLean.Analysis.LogClipping
+import QICLean.Analysis.LogarithmicEnvelope
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
@@ -110,6 +115,7 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
+import QICLean.Analysis.ProjectionCalculus
 import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.PureStateTraceDistance
@@ -144,6 +150,7 @@ import QICLean.Analysis.ResolventPhaseBound
 import QICLean.Analysis.ResolventPhaseGap
 import QICLean.Analysis.RestoringCoefficientBound
 import QICLean.Analysis.RootChannel
+import QICLean.Analysis.RootChannelWord
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RpowConvexity
@@ -164,6 +171,7 @@ import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
+import QICLean.Analysis.SpectralExponentialDrop
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
@@ -183,6 +191,7 @@ import QICLean.Analysis.SupportCompression
 import QICLean.Analysis.SupportInverseSandwich
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
+import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
