@@ -74,7 +74,7 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
     Matrix.ext fun x y ↦ by
       simpa only [Matrix.reindex_apply, Matrix.submatrix_apply,
         Equiv.symm_apply_apply, Equiv.trans_apply, Equiv.prodComm_apply,
-        Equiv.prodAssoc_apply,
+        Equiv.prodAssoc_apply, Prod.swap,
         ← Matrix.one_kronecker_one (α := ℂ) (m := Fin k → R)
           (n := Fin k → (v : V) → β v), Matrix.kroneckerMap_apply,
         eC, I, mul_rotate'
