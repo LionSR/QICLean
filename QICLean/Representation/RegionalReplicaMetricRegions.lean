@@ -108,6 +108,8 @@ theorem replicaMetric_lifted_region_geometry {J : Type*} (G : ℕ)
       (∀ j g, F j g = (L j g ∪ E j g)ᶜ) ∧
       ∀ j j' g h, g < h → L j g ∪ E j g ⊆ L j' h := by
   intro L F E
+  have hfar (j : J) (g : Fin G) : F j g = (L j g ∪ E j g)ᶜ := by
+    simp [F, L, E, Finset.ext_iff, Option.forall]
   done
 
 end TensorPower
