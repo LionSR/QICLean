@@ -78,7 +78,9 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
         ← Matrix.one_kronecker_one (α := ℂ) (m := Fin k → R)
           (n := Fin k → (v : V) → β v), Matrix.kroneckerMap_apply,
         eC, I] using
-        congrArg (fun H ↦ H (eC x) (eC y)) hLC
+        (congrArg (fun H ↦ H (eC x) (eC y)) hLC).trans
+          (congrArg₂ (labelProj (subsystemPerm k ι₀ {some none}) ellC)
+            (eC.symm_apply_apply x) (eC.symm_apply_apply y))
   done
 
 end TensorPower
