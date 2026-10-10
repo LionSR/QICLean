@@ -69,7 +69,7 @@ theorem tendsto_rough_lower_remainder_div_nat
     have hnorm := hinner.norm
     simp only [norm_zero] at hnorm
     refine hnorm.congr' (Eventually.of_forall (fun k ↦ ?_))
-    rw [Real.norm_eq_abs, abs_div, abs_of_nonneg (Nat.cast_nonneg (R := ℝ) k)]
+    rw [Real.norm_eq_abs, abs_div, abs_of_nonneg (Nat.cast_nonneg (α := ℝ) k)]
   have hinv : Tendsto (fun k : ℕ ↦ (k : ℝ)⁻¹) atTop (𝓝 0) :=
     tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
   have hconst : Tendsto (fun k : ℕ ↦
