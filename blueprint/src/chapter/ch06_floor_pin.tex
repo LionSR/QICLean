@@ -1,0 +1,41 @@
+\section{Averaging matrix lower bounds}
+\label{sec:matrix_floor_pin}
+
+\begin{theorem}[Averaging two lower bounds]
+\label{thm:matrix_floor_pin}
+\lean{Matrix.floor_pin_le}
+\leanok
+Let $A,P$ be complex matrices on a finite-dimensional space and let
+$b,c\in\mathbb R$. If $2bI\le A$ and $cP\le A$, then
+\begin{align}
+ b(I-P)+\left(b+\frac c2\right)P\le A.
+\end{align}
+No projection or commutation assumption on $P$ is needed. This is the
+averaging step preceding the logarithmic comparison in
+\cite[Section~7, lines~603--615]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+Add the two assumed inequalities and divide by two. The resulting lower
+matrix $bI+(c/2)P$ equals the displayed expression.
+\end{proof}
+
+\begin{theorem}[Adding the complementary term]
+\label{thm:matrix_identity_extension_floor}
+\lean{Matrix.identity_extension_floor}
+\leanok
+Let $T,S$ be complex matrices on a finite-dimensional space and let
+$c\in\mathbb R$. If $S\le I$, $c\le1$ and $cS\le T$, then
+\begin{align}
+ cI\le T+(I-S).
+\end{align}
+In particular, this applies to extension by the identity off the range
+of an orthogonal projection. The inequality itself does not require
+$S$ to be a projection. This auxiliary order inequality extends a lower
+bound to the whole space.
+\end{theorem}
+\begin{proof}
+\leanok
+Since $I-S\ge0$ and $c\le1$, one has $c(I-S)\le I-S$.
+Add this inequality to $cS\le T$.
+\end{proof}
