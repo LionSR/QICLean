@@ -85,6 +85,13 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
         (congrArg (fun H ↦ H (eC x) (eC y)) hLC).trans
           (congrArg₂ (labelProj (subsystemPerm k ι₀ {some none}) ellC)
             (eC.symm_apply_apply x) (eC.symm_apply_apply y))
+  let eR := e.trans
+    ((Equiv.prodAssoc (Fin k → (x : V) → β x) (Fin k → C) (Fin k → R)).symm.trans
+      (Equiv.prodComm ((Fin k → (x : V) → β x) × (Fin k → C)) (Fin k → R)))
+  have heR (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
+      prodLeft ((Fin k → (v : V) → β v) × (Fin k → C)) (copyPerm R k) σ (eR x) =
+        eR (subsystemPerm k ι₀ {none} σ x) := by
+    simp [eR, e, globalReplicaCopiesEquiv, prodLeft_apply, subsystemPerm_apply]
   done
 
 end TensorPower
