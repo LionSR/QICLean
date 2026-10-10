@@ -37,10 +37,6 @@ namespace Entropy
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- The entropy `S_Ω(D)` of the regional state of `Ω` on `D`. -/
-noncomputable def regionEntropy (D : Finset V) (Ω : EuclideanSpace ℂ (SiteConfig n)) : ℝ :=
-  vonNeumannEntropy (regionState D Ω) (regionState_isHermitian D Ω)
-
 /-- Expectations of reindexed regional states. -/
 theorem trace_regionState_submatrix_mul {D : Finset V} {κ : Type*} [Fintype κ]
     (f : RegionConfig n D ≃ κ) (Ω : EuclideanSpace ℂ (SiteConfig n)) (K : Matrix κ κ ℂ) :
