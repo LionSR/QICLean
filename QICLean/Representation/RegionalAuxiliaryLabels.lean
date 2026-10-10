@@ -77,7 +77,7 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
         Equiv.prodAssoc_apply,
         ← Matrix.one_kronecker_one (α := ℂ) (m := Fin k → R)
           (n := Fin k → (v : V) → β v), Matrix.kroneckerMap_apply,
-        eC, I, mul_comm, mul_left_comm, mul_assoc] using
+        eC, I] using
         congrArg (fun H ↦ H (eC x) (eC y)) hLC
   done
 
