@@ -65,6 +65,7 @@ import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.PhysicalMergeHolder
 import QICLean.Representation.RegionPowerSymbol
+import QICLean.Representation.RegionalAuxiliaryLabels
 import QICLean.Representation.RegionalFiveFactorCoordinates
 import QICLean.Representation.RegionalPhysicalVector
 import QICLean.Representation.RegionalReplicaMetric
@@ -91,6 +92,7 @@ import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
 import QICLean.Representation.ReplicaSymmetricBandCommute
+import QICLean.Representation.ReplicaSymmetricBandLabelPreservation
 import QICLean.Representation.ReplicaSymmetricMeanTreeProduct
 import QICLean.Representation.ReplicaSymmetricMetricFloor
 import QICLean.Representation.ReplicaTransport

@@ -139,6 +139,8 @@ import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RegionalLowDefectLowerPin
+import QICLean.Analysis.RegionalLowDefectMass
+import QICLean.Analysis.RegionalLowDefectProductMass
 import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
