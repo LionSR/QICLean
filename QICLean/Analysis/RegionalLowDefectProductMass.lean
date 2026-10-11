@@ -115,7 +115,7 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
     change (star (Z *ᵥ φ.ofLp) ⬝ᵥ (P *ᵥ (Z *ᵥ φ.ofLp))).re =
       (star φ.ofLp ⬝ᵥ ((Zᴴ * P * Z) *ᵥ φ.ofLp)).re
     rw [← mulVec_mulVec, ← mulVec_mulVec]
-    done
+    rw [star_dotProduct_mulVec Zᴴ φ.ofLp, conjTranspose_conjTranspose]
   done
 
 end Matrix
