@@ -60,7 +60,7 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
   have heC (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
       prodLeft ((Fin k → R) × (Fin k → (v : V) → β v)) (copyPerm C k) σ (eC x) =
         eC (subsystemPerm k ι₀ {some none} σ x) := by
-    simp [eC, e, globalReplicaCopiesEquiv, prodLeft_apply, copyPerm_apply, subsystemPerm_apply]
+    simp [eC, e, globalReplicaCopiesEquiv, prodLeft_apply, subsystemPerm_apply]
     rfl
   have hLC : labelProj (copyPerm C k) ellC ⊗ₖ
       (1 : Matrix ((Fin k → R) × (Fin k → (x : V) → β x))
