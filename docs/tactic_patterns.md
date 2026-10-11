@@ -92,7 +92,6 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveat:** Positivity is proved for the actual coefficient. The sharp
   variance term is retained exactly when its logarithm is normalized.
 
-
 ### Replica regions with two auxiliary sites — shared geometric statement (2026-10-11)
 
 - **Pattern:** Lift physical regions to the common site family, adjoin the
@@ -108,6 +107,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveat:** The nesting hypothesis ranges over every pair of terminal
   labels in distinct ordered bands. No comparison between labels in the
   same band is required.
+
 ### A common polynomial exponent over finitely many cuts — candidate (2026-10-11)
 
 - **Pattern:** Choose each regional exponent, take the maximum of their finite
@@ -175,21 +175,6 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Distinguish a partially applied coordinate function from a
   matrix entry; entrywise matrix expressions use the existing `Matrix.*_apply`
   lemmas instead.
-
-### The range of a product of commuting projections — candidate (2026-10-09)
-
-- **Pattern:** Multiply an actual product projection by each of its factors,
-  then transfer the resulting matrix identities to every fixed vector.
-- **Seen:** `Matrix.replicaLowDefectProjection_fixed_conditions` uses one
-  local matrix-to-vector implication for the physical cutoff, auxiliary
-  label product, and simultaneous symmetry. The individual auxiliary
-  equations then use the same tensor-product multiplication identity.
-- **Abstraction:** Reuse `IsStarProjection.mul`, the existing central-label
-  commutations, and `symProj_mulVec_mem`. The symmetry average's projection
-  properties follow from `exists_labelProj_eq_symProj`; no new averaging
-  theorem or tactic is introduced.
-- **Caveat:** The derived commutations concern the cutoff, auxiliary labels,
-  and symmetry. They do not imply commutation with a replica metric.
 
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
 
@@ -770,6 +755,19 @@ by the same rectangular coordinate map; use
 not a separate isometry identity or commutation with a metric. The regional
 cutoff covariance applies these arguments to the actual rank-one ground
 projector, the defect cutoff, and the original auxiliary labels.
+
+### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
+
+- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
+  orthogonal resolution, then apply scalar functional calculus to the two
+  assigned values.
+- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
+  `QICLean/Analysis/ProjectionCalculus.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
+  or separate continuity argument is required.
+- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
+  Positivity needed for later logarithmic comparisons belongs to those
+  comparisons, rather than this general calculation.
 ### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
 
 - **Pattern:** Transport an eventual Schur projection-mass bound through the
@@ -800,18 +798,6 @@ projector, the defect cutoff, and the original auxiliary labels.
 - **Decision:** No new tactic or finite-family abstraction is introduced.
   These three uses are in one structural definition; reconsider only if
   another family produces independent repetition.
-### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
-
-- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
-  orthogonal resolution, then apply scalar functional calculus to the two
-  assigned values.
-- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
-  `QICLean/Analysis/ProjectionCalculus.lean`.
-- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
-  or separate continuity argument is required.
-- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
-  Positivity needed for later logarithmic comparisons belongs to those
-  comparisons, rather than this general calculation.
 
 ### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
 
@@ -824,3 +810,27 @@ projector, the defect cutoff, and the original auxiliary labels.
 - **Caveats:** Nonnegative scalar multiplication is established before the
   algebraic conversion. No projection or commutation assumption is needed
   for these two additive comparisons.
+### Chronological prefix and suffix coordinates — candidate (2026-10-09)
+
+- **Pattern:** Express a retained prefix as the predicate filter of the original
+  prefix, and a full suffix as the corresponding list drop.
+- **Seen:** The consecutive-difference calculation and both endpoint
+  calculations in `PoissonWord.foldl_sub_partitionWords_fst_eq_sum`, in
+  `QICLean/Probability/PoissonWordTelescope.lean`; three occurrences in one file.
+- **Abstraction:** Reuse `ofFn_partitionWords_fst`, `ofFn_take`, and `ofFn_drop`
+  with `simp only`. A further lemma or simp set is deferred until the pattern
+  also occurs in a second file.
+- **Caveats:** Normalize the word coordinates before simplifying list maps.
+  Otherwise `List.map_ofFn` can remove the form needed for the filter identity.
+  Full suffixes and retained prefixes refer to the same original word.
+
+### Contractive chronological folds — candidate (2026-10-09)
+
+- **Pattern:** A fold of maps satisfying `‖E i y‖ ≤ ‖y‖` preserves the norm
+  bound of its initial vector.
+- **Seen:** The local `hact` arguments in `PoissonWordOmissionBound.lean` and
+  `PoissonWordExpectedOmission.lean`; two occurrences in two files.
+- **Abstraction:** Reuse `List.foldlRecOn` with the invariant `‖z‖ ≤ ‖y‖`.
+  A general norm inequality for folds should be considered at a third occurrence.
+- **Caveats:** No norm compatibility with the scalar action is needed; the
+  contraction hypothesis concerns the additive seminorm directly.

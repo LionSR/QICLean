@@ -1,0 +1,36 @@
+\section{Entropy of the selected Schmidt auxiliary state}
+
+The selected Schmidt vector determines the entropy appearing in the
+asymptotic auxiliary label dimension. Its entropy is that of the same
+normalized spectral restriction used in the typical-set construction
+of \cite[Section~8]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Entropy after relabeling the selected Schmidt factor]
+  \label{thm:selected_schmidt_auxiliary_entropy}
+  \lean{Matrix.entropy_compressedTypicalPureState_equivFin_swap}
+  \leanok
+  Let $\Omega\in\mathcal H_A\otimes\mathcal H_B$, and diagonalize
+  $\rho_A=\operatorname{Tr}_B|\Omega\rangle\langle\Omega|$
+  in an orthonormal basis $(e_i)$, with eigenvalues $(p_i)$.
+  Choose a set $E$ of eigenvector indices with
+  $z=\sum_{i\in E}p_i>0$. Write $\Pi_E$ for the corresponding
+  spectral projection and put $\sigma=z^{-1}\Pi_E\rho_A\Pi_E$.
+  Compress the selected factor to $\mathbb C^E$, normalize by
+  $z^{-1/2}$, interchange the two factors, and relabel $E$ by
+  $\{1,\ldots,|E|\}$. If $\psi\in\mathcal H_B\otimes\mathbb C^{|E|}$
+  is this vector, then
+  \[
+    S\!\left(\operatorname{Tr}_B|\psi\rangle\langle\psi|\right)
+    =S(\sigma).
+  \]
+  No normalization of the original vector is required.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:entropy_typical_density_spectrum}
+  The auxiliary marginal of $\psi$ is diagonal with entries $p_i/z$
+  for $i\in E$. Relabeling the finite index set preserves the sum
+  defining its entropy. The normalized spectral restriction has the
+  same selected eigenvalues, with additional zero eigenvalues on the
+  orthogonal complement. Those zero eigenvalues contribute zero.
+\end{proof}
