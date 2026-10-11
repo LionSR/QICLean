@@ -195,6 +195,8 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
         (Finset.insert_nonempty _ _) :=
     Finset.le_max' (insert (0 : ℝ) (Finset.univ.image f)) (f p)
       (Finset.mem_insert_of_mem (Finset.mem_image_of_mem f (Finset.mem_univ p)))
+  have hgapmax (j : J) (g : Fin G) : entropyGap j g ≤ gmax :=
+    hmax (fun p ↦ entropyGap p.1 p.2) (j, g)
   done
 
 end Matrix
