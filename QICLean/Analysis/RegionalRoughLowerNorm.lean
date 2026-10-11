@@ -162,7 +162,7 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
     simp (disch := positivity) only
       [pinCoeff, Real.log_mul, Real.log_exp, Real.log_rpow, r, rate]
     field_simp [ht.ne']
-    done
+    ring
   done
 
 end Matrix
