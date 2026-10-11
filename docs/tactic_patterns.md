@@ -59,6 +59,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Blank norms are Euclidean. The copied ancillary coordinate runs
   over the whole basis, including coordinates with zero assigned probability.
 
+### Hermitian rectangular intertwiners — promoted mathematical lemmas
+
+- **Pattern:** From `A * J = J * B` for Hermitian matrices, move the adjoint
+  intertwiner through the matrices and transport sandwiches `J * H * Jᴴ`.
+- **Consumers:** Power-derivative covariance, geometric-mean derivative
+  covariance, and mean-tree derivative and leaf-map covariance.
+- **Abstraction:** Reuse `Matrix.IsHermitian.conjTranspose_intertwine` and
+  `Matrix.IsHermitian.sandwich_intertwine` from
+  `QICLean/Algebra/MatrixSandwichIntertwine.lean`. Compression identities use
+  the same embedding lemmas with `Jᴴ`.
+- **Caveats:** These are algebraic identities for rectangular intertwiners.
+  Norm preservation requires an isometry; positivity of a compressed operator
+  does not identify its inverse with a compressed inverse.
+
 ## Candidates
 
 ### The range of a product of commuting projections — candidate (2026-10-09)
@@ -678,3 +692,53 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The mass belongs to the normalized selected state before any
   common regional cutoff. It is not a conditional mass after projecting,
   and no second label selection is made.
+
+### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
+
+- **Pattern:** Add and rescale inequalities in the matrix order, then identify
+  the resulting linear combination with the desired expression by `module`.
+- **Seen:** `Analysis/FloorPin.lean`, in `floor_pin_le` and
+  `identity_extension_floor`; two occurrences in one file.
+- **Abstraction:** The standard order lemmas and `module` suffice. A further
+  independent occurrence may justify a helper for the shared scalar identity.
+- **Caveats:** Nonnegative scalar multiplication is established before the
+  algebraic conversion. No projection or commutation assumption is needed
+  for these two additive comparisons.
+
+### Chronological prefix and suffix coordinates — candidate (2026-10-09)
+
+- **Pattern:** Express a retained prefix as the predicate filter of the original
+  prefix, and a full suffix as the corresponding list drop.
+- **Seen:** The consecutive-difference calculation and both endpoint
+  calculations in `PoissonWord.foldl_sub_partitionWords_fst_eq_sum`, in
+  `QICLean/Probability/PoissonWordTelescope.lean`; three occurrences in one file.
+- **Abstraction:** Reuse `ofFn_partitionWords_fst`, `ofFn_take`, and `ofFn_drop`
+  with `simp only`. A further lemma or simp set is deferred until the pattern
+  also occurs in a second file.
+- **Caveats:** Normalize the word coordinates before simplifying list maps.
+  Otherwise `List.map_ofFn` can remove the form needed for the filter identity.
+  Full suffixes and retained prefixes refer to the same original word.
+
+### Contractive chronological folds — candidate (2026-10-09)
+
+- **Pattern:** A fold of maps satisfying `‖E i y‖ ≤ ‖y‖` preserves the norm
+  bound of its initial vector.
+- **Seen:** The local `hact` arguments in `PoissonWordOmissionBound.lean` and
+  `PoissonWordExpectedOmission.lean`; two occurrences in two files.
+- **Abstraction:** Reuse `List.foldlRecOn` with the invariant `‖z‖ ≤ ‖y‖`.
+  A general norm inequality for folds should be considered at a third occurrence.
+- **Caveats:** No norm compatibility with the scalar action is needed; the
+  contraction hypothesis concerns the additive seminorm directly.
+
+### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
+
+- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
+  orthogonal resolution, then apply scalar functional calculus to the two
+  assigned values.
+- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
+  `QICLean/Analysis/ProjectionCalculus.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
+  or separate continuity argument is required.
+- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
+  Positivity needed for later logarithmic comparisons belongs to those
+  comparisons, rather than this general calculation.
