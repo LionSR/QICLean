@@ -259,9 +259,10 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
   apply regional_lower_pin_pullback β C R Ω hΩ Q Y hQY t k ellC ellR τ hb₀ hbb _ n Z
   have h := (hlocal (Q, Y) k ψ hψ ellC ellR K r hmoment' htr htone hK
     τ S ε hτ hτhalf hlabel).1
-  simpa only [hg, b₀, f, Λ, D, ψ, ι,
-    (show Real.log (Fintype.card (ι (Q, Y) 3)) +
-      Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using h
+  set_option pp.all true in
+    simpa only [hg, b₀, f, Λ, D, ψ, ι,
+      (show Real.log (Fintype.card (ι (Q, Y) 3)) +
+        Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using h
 
 
 end Matrix
