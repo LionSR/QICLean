@@ -3,6 +3,7 @@
 \begin{theorem}[A common sharp lower bound for the original physical cuts]
   \label{thm:global_regional_low_defect_sharp_lower_bound}
   \lean{Matrix.exists_globalReplicaLowDefectProjection_sharp_lower_pin}
+  \leanok
   Fix a finite physical site set $V$, nonzero finite-dimensional spaces
   $H_v$, and two nonzero finite-dimensional auxiliary spaces $H_c,H_r$.
   For every $t>0$, there is $c\geq0$, depending only on these spaces and
@@ -49,7 +50,7 @@
   This is the regional sharp lower bound under the original marginal
   moment hypotheses in \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
   \uses{thm:actual_low_defect_sharp_lower_bound,thm:regional_physical_vector_norm,thm:regional_physical_spectral_statistics,thm:regional_low_defect_projection_global,thm:regional_squared_inverse_metric_coordinates}
   Apply the five-factor sharp lower bound after grouping the original
   physical sites into $Q,Y,F$. The grouping preserves the norm, and each
