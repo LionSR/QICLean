@@ -29,4 +29,8 @@ theorem IsStarProjection.exists_matrix_range_isometry
     {m : Type*} [Fintype m] {P : Matrix m m ℂ} (hP : IsStarProjection P) :
     ∃ (n : ℕ) (Z : Matrix m (Fin n) ℂ), Zᴴ * Z = 1 ∧ Z * Zᴴ = P := by
   classical
+  have hFin : IsOrthogonalProjection
+      (P.submatrix (Fintype.equivFin m).symm (Fintype.equivFin m).symm) :=
+    ⟨hP.isSelfAdjoint.isHermitian.submatrix _,
+      (hP.isIdempotentElem.map (Matrix.reindexRingEquiv ℂ (Fintype.equivFin m))).eq⟩
   done
