@@ -1,0 +1,57 @@
+\section{Quadratic forms under compression and relabelling}
+
+The following elementary facts pass from operator inequalities to the
+expectations of fixed vectors, as in the metric comparisons of
+\cite[Section~8]{OpenAI2026AreaLaw}.
+For complex matrices, $A\leq B$ means that $B-A$ is positive semidefinite.
+All index sets below are finite and may be empty.
+
+\begin{theorem}[Order of real quadratic forms]
+  \label{thm:quadratic_form_order}
+  \lean{Matrix.re_dotProduct_mulVec_le_of_le}
+  \leanok
+  Let $A,B$ be complex matrices indexed by the same finite set. If $A\leq B$,
+  then every complex vector $v$ on that set satisfies
+  $\operatorname{Re}(v^*Av)\leq\operatorname{Re}(v^*Bv)$.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  Positivity of $B-A$ gives
+  $0\leq\operatorname{Re}(v^*(B-A)v)$; expanding this expression gives
+  the conclusion.
+\end{proof}
+
+\begin{theorem}[Quadratic bound on a fixed vector]
+  \label{thm:hermitian_compression_quadratic}
+  \lean{Matrix.IsHermitian.re_dotProduct_mulVec_le_of_compression_le}
+  \leanok
+  Let $P,M$ be complex matrices indexed by the same finite set, with
+  $P=P^*$. Suppose that $c\in\mathbb R$, $PMP\leq cP$, and $Pv=v$.
+  Then $\operatorname{Re}(v^*Mv)\leq c\operatorname{Re}(v^*v)$.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  \uses{thm:quadratic_form_order}
+  Since $Pv=v$ and $P=P^*$, one has $v^*P=v^*$. Consequently,
+  $v^*PMPv=v^*Mv$ and
+  $\operatorname{Re}(v^*(cP)v)=c\operatorname{Re}(v^*v)$.
+  Apply Theorem~\ref{thm:quadratic_form_order} to $PMP\leq cP$.
+\end{proof}
+
+\begin{theorem}[Relabelling a quadratic form]
+  \label{thm:quadratic_form_reindex}
+  \lean{Matrix.star_dotProduct_submatrix_equiv}
+  \leanok
+  Let $e\colon I\to J$ be a bijection of finite sets, let $H$ be a complex
+  matrix indexed by $I$, and let $w\in\mathbb C^J$. Define the matrix
+  $H^e$ by $H^e_{a,b}=H_{e^{-1}(a),e^{-1}(b)}$. Then
+  $w^*H^e w=(w\circ e)^*H(w\circ e)$.
+\end{theorem}
+
+\begin{proof}
+  \leanok
+  In the finite sum defining the left-hand side, substitute $a=e(i)$ and
+  $b=e(j)$. This gives the right-hand side term by term.
+\end{proof}

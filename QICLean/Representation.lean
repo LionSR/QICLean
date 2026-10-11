@@ -31,9 +31,12 @@ import QICLean.Representation.CompressedTypicalLabelSequence
 import QICLean.Representation.ExteriorPieri
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
+import QICLean.Representation.GoodAuxiliaryPairCompression
 import QICLean.Representation.GroupAlgebraProductCoordinates
+import QICLean.Representation.GroupedConfigurationTransport
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
+import QICLean.Representation.GroupedLabelSymmetricSupport
 import QICLean.Representation.HighLabelWindow
 import QICLean.Representation.HighestWeight
 import QICLean.Representation.HookDimension
@@ -66,10 +69,13 @@ import QICLean.Representation.RelativePin
 import QICLean.Representation.RelativePinAlgebra
 import QICLean.Representation.RelativePinCommute
 import QICLean.Representation.RelativePinCompensator
+import QICLean.Representation.ReplicaDisjointMetricPositivity
 import QICLean.Representation.ReplicaEtaForms
 import QICLean.Representation.ReplicaGammaIntegral
+import QICLean.Representation.ReplicaGroupedInverse
 import QICLean.Representation.ReplicaIntegral
 import QICLean.Representation.ReplicaLift
+import QICLean.Representation.ReplicaLowDefectSymmetricCoordinates
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
@@ -100,8 +106,10 @@ import QICLean.Representation.SkewSymbolBound
 import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarFunction
 import QICLean.Representation.StarOperator
+import QICLean.Representation.SubsystemLabelCommutation
 import QICLean.Representation.SubsystemLabelCoordinates
 import QICLean.Representation.SubsystemTransport
+import QICLean.Representation.SymmetricProjectionCoordinates
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
 import QICLean.Representation.TrivialLabel

@@ -75,6 +75,59 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### The range of a product of commuting projections — candidate (2026-10-09)
+
+- **Pattern:** Multiply an actual product projection by each of its factors,
+  then transfer the resulting matrix identities to every fixed vector.
+- **Seen:** `Matrix.replicaLowDefectProjection_fixed_conditions` uses one
+  local matrix-to-vector implication for the physical cutoff, auxiliary
+  label product, and simultaneous symmetry. The individual auxiliary
+  equations then use the same tensor-product multiplication identity.
+- **Abstraction:** Reuse `IsStarProjection.mul`, the existing central-label
+  commutations, and `symProj_mulVec_mem`. The symmetry average's projection
+  properties follow from `exists_labelProj_eq_symProj`; no new averaging
+  theorem or tactic is introduced.
+- **Caveat:** The derived commutations concern the cutoff, auxiliary labels,
+  and symmetry. They do not imply commutation with a replica metric.
+
+### Separate merge moments before Hölder — candidate (2026-10-09)
+
+- **Pattern:** Express an exponential trace on a product space through its
+  actual marginal, then preserve the component mass under a coordinate exchange.
+- **Seen:** The two estimates formerly local to
+  `replicaGoodPairMarginal_exp_sum_mergeDeficit_le` are reused by the separate
+  full-density estimate in `ReplicaGoodConfigurationIndividualMergeMoment`.
+- **Abstraction:** The public
+  `replicaGoodPairMarginal_exp_mergeDeficits_le` contains both separate bounds.
+  The arithmetic-mean theorem uses it at twice the parameter; the full-density
+  theorem transports each bound by the existing paired-coordinate equivalence.
+- **Caveat:** The same actual excitation component occurs throughout, including
+  zero mass. No normalized auxiliary marginal or nonvanishing assumption is added.
+- **Coordinate simplification:** As in the existing paired exponential transport,
+  use `Matrix.submatrix_smul` followed by `Pi.smul_apply` at both coordinate
+  arguments. The first equality concerns a function of the two coordinate maps;
+  reducing its applications exposes the actual transported matrix. This reuses
+  the existing Mathlib statements and needs no new tactic.
+
+
+### Scalar multiplication in partially applied matrix coordinates — candidate (2026-10-09)
+
+- **Pattern:** After rewriting `submatrix_smul`, a coordinate equivalence may
+  still be supplied as a partially applied function. Scalar multiplication
+  then needs evaluation at both matrix indices before an existing coordinate
+  identity matches.
+- **Seen:** The singleton exponential transport in
+  `QICLean/Analysis/ReplicaGoodConfigurationSingletonMoment.lean`, both for the
+  five-factor coordinates and for the physical singleton coordinates.
+- **Abstraction:** Reuse Mathlib's `Pi.smul_apply`, followed by the existing
+  `Matrix.reindex_exp` and `Matrix.exp_kronecker_one` identities. The group
+  algebra comparison uses canonical finite-function and product decidable
+  equality instances, matching the existing product-action theorem.
+  No new tactic, global instance, or mathematical comparison is introduced.
+- **Caveats:** Distinguish a partially applied coordinate function from a
+  matrix entry; entrywise matrix expressions use the existing `Matrix.*_apply`
+  lemmas instead.
+
 ### Orthogonal projection mass from the actual marginal — candidate (2026-10-07)
 
 - **Pattern:** Use the partial-trace pairing, cyclicity of trace and the pure
@@ -574,6 +627,59 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   An arbitrary positive semidefinite trace weight need not commute with the
   observables. The factor Y is independent of the combined exterior QV.
 
+### Reindexing sums and scalar multiples — existing lemmas (2026-10-09)
+
+- **Pattern:** Apply a matrix reindexing identity to fixed row and column
+  maps before simplifying a transported representation.
+- **Seen:** The addition and scalar branches of
+  `TensorPower.fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep` in
+  `QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean`, and the exponential
+  transport in the separate `GroupedConfigurationTransport` contribution.
+  `Matrix.PosDef.lower_pin_of_reindexed_inverse_compression` in
+  `QICLean/Analysis/IsometricLowerPin.lean` also uses subtraction and scalar
+  reindexing when transporting a positive matrix difference.
+- **Abstraction:** Reuse Mathlib's `Matrix.submatrix_add`,
+  `Matrix.submatrix_sub` and `Matrix.submatrix_smul`, followed by the
+  corresponding `Pi.add_apply`, `Pi.sub_apply` or `Pi.smul_apply`.
+  The matrix lemmas are equalities of functions of the two coordinate
+  maps. Their applications must reduce before a transported matrix can
+  match a previously established identity. No new tactic is needed.
+- **Caveat:** When only an outer sum is to be transported, rewrite it once.
+  Recursive simplification can expand the defining sum of a central
+  observable and obscure the existing representation identity. For inverse
+  coordinate equivalences, use `Equiv.symm_comp_self` before
+  `Matrix.submatrix_id_id`; expanding composition into a lambda first can
+  leave the identity reindexing unreduced.
+
+### Symmetry of an excitation component under a copy subgroup — candidate (2026-10-09)
+
+- **Pattern:** Prove that the subgroup preserves the actual excited subset,
+  apply the existing covariance of the physical excitation operator, and
+  transport the fixed-vector equation through the specified coordinate equivalence.
+- **Seen:** `Analysis/ReplicaBadCopyExponential.lean`; the covariance is already
+  provided by `Analysis/ReplicaExcitationSymmetry.lean`.
+- **Abstraction:** Reuse `replicaExcitationProjection_kronecker_mulVec_preserves_fixed`
+  and `Matrix.submatrix_mulVec_equiv`. The subset calculation is specific to
+  the good/bad enumeration. No new tactic or general covariance result is needed.
+- **Caveats:** The actual component may be zero. No component normalization,
+  ambient positivity of a signed label entropy, or commutation of the excitation
+  operator with a replica metric is introduced.
+
+### Products of permutation indicators — existing Mathlib lemma (2026-10-09)
+
+- **Pattern:** After transporting a permutation entry through a product
+  coordinate equivalence, the entry is the indicator of a conjunction.
+  A Kronecker product gives the product of the individual indicators.
+- **Reuse:** `ite_zero_mul_ite_zero` combines these indicators directly.
+  `Analysis/ReplicaBadCopyExponential.lean` uses
+  `simp only [ite_zero_mul_ite_zero, one_mul]` for three factors.
+- **Reason:** The former case split followed by unrestricted `simp_all`
+  revisited universally quantified coordinate identities and exhausted
+  the default heartbeat limit. The restricted existing identity closes
+  the actual scalar goal without a new theorem, tactic, or larger limit.
+- **Caveat:** First prove the actual coordinate equivalence and reduce the
+  entries. The scalar identity supplies no permutation covariance itself.
+
 ### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
 
 - **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
@@ -586,19 +692,6 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Scalar values may coincide, and projection ranges may be zero.
   Positivity needed for later logarithmic comparisons belongs to those
   comparisons, rather than this general calculation.
-
-### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
-
-- **Pattern:** Add and rescale inequalities in the matrix order, then identify
-  the resulting linear combination with the desired expression by `module`.
-- **Seen:** `Analysis/FloorPin.lean`, in `floor_pin_le` and
-  `identity_extension_floor`; two occurrences in one file.
-- **Abstraction:** The standard order lemmas and `module` suffice. A further
-  independent occurrence may justify a helper for the shared scalar identity.
-- **Caveats:** Nonnegative scalar multiplication is established before the
-  algebraic conversion. No projection or commutation assumption is needed
-  for these two additive comparisons.
-
 ### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
 
 - **Pattern:** Transport an eventual Schur projection-mass bound through the
@@ -612,6 +705,18 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** The mass belongs to the normalized selected state before any
   common regional cutoff. It is not a conditional mass after projecting,
   and no second label selection is made.
+
+### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
+
+- **Pattern:** Add and rescale inequalities in the matrix order, then identify
+  the resulting linear combination with the desired expression by `module`.
+- **Seen:** `Analysis/FloorPin.lean`, in `floor_pin_le` and
+  `identity_extension_floor`; two occurrences in one file.
+- **Abstraction:** The standard order lemmas and `module` suffice. A further
+  independent occurrence may justify a helper for the shared scalar identity.
+- **Caveats:** Nonnegative scalar multiplication is established before the
+  algebraic conversion. No projection or commutation assumption is needed
+  for these two additive comparisons.
 
 ### Chronological prefix and suffix coordinates — candidate (2026-10-09)
 

@@ -1,0 +1,51 @@
+\section{The sharp lower bound in symmetric coordinates}
+
+\begin{theorem}[Actual sharp lower bound]
+  \label{thm:actual_low_defect_sharp_lower_bound}
+  \lean{Matrix.exists_replicaLowDefectProjection_sharp_lower_pin}
+  \leanok
+  Fix five nonzero finite-dimensional spaces and $t>0$.
+  There exists $C_0\geq0$, depending only on these spaces and $t$,
+  with the following property.
+  Use the original unit state, auxiliary labels, marginal moment
+  assumptions, and parameters of
+  Theorem~\ref{thm:actual_low_defect_inverse_sharp_compression}.
+  Let $A_k$ be the original squared metric in five-factor coordinates
+  and let $P$ be the original symmetric, fixed-label low-defect
+  projection. If $U$ changes five-factor coordinates to the
+  physical-and-two-auxiliary coordinates, put
+  \begin{align*}
+    \widehat P=U^*PU,\qquad
+    b_k=(k+1)e^{kh(\tau)}c_k,
+  \end{align*}
+  where $c_k$ is given by~(\ref{eq:sharp_uniform_rate}).
+  Then
+  \begin{align*}
+    b_k^{-1}\widehat P\leq A_k.
+  \end{align*}
+  Moreover, let $P_{\mathrm{sym}}$ be simultaneous copy symmetry
+  in five-factor coordinates. For every matrix $Z$ with
+  $ZZ^*=P_{\mathrm{sym}}$, the matrix $Z^*\widehat PZ$ is an
+  orthogonal projection and
+  \begin{align*}
+    b_k^{-1}Z^*\widehat PZ\leq Z^*A_kZ.
+  \end{align*}
+  The constant is chosen before all copy, state, label, moment and
+  cutoff data. This is the sharp lower bound used in
+  \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:actual_low_defect_inverse_sharp_compression,
+    thm:reindexed_inverse_compression_lower_bound,
+    thm:compressed_actual_low_defect_projection}
+  The sharp inverse compression gives
+  $P(UA_k^{-1}U^*)P\leq b_kP$ with $b_k>0$.
+  Positivity of $A_k$ follows from its three disjoint subsystems.
+  The inverse-compression inequality therefore gives
+  $b_k^{-1}\widehat P\leq A_k$, and compression by $Z$ preserves
+  this inequality.
+  The actual low-defect projection is supported on simultaneous
+  symmetry; together with $ZZ^*=P_{\mathrm{sym}}$, this proves
+  that $Z^*\widehat PZ$ is an orthogonal projection.
+\end{proof}
