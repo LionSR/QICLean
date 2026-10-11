@@ -99,6 +99,6 @@ theorem globalReplicaLowDefectProjection_gap_mass_ge
       star v₀ ⬝ᵥ (A *ᵥ v₀) = star v ⬝ᵥ (A.submatrix e e *ᵥ v) := by
     simpa only [v₀, WithLp.ofLp_toLp, Function.comp_def, Equiv.symm_symm] using
       (star_dotProduct_submatrix_equiv A e.symm (fun x => v x)).symm
-  simpa only [hquad] using hmass
+  simpa only [hquad, globalReplicaMeanHamiltonian, globalReplicaLowDefectProjection, e] using hmass
 
 end Matrix
