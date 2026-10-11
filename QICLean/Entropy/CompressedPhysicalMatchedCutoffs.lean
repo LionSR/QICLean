@@ -77,6 +77,7 @@ local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian (reducedPure_posSemidef β Ω X)) E
 local notation "L" => Fin k → Configuration β X × E
 
+open Classical in
 /-- The same common-cutoff vector satisfies the actual matched-region
 cutoff, with the entropy and excess-dimension bounds stated on the
 original physical sites. The premise `hcuts` is exactly the already
