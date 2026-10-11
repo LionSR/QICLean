@@ -128,6 +128,12 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
         Eq.mp (congrArg (fun H ↦ H * H = H) (hl (copyPerm
           ((v : Option ↥(Xᶜ)) → ιe v) k)))
           (labelProj_mul_self _ l))
+  have hPcontain : Z * Zᴴ * P = P := by
+    rw [hZZ]
+    change symProj (copyPerm ((v : Option (Option V)) → ι₀ v) k) *
+      (J * Pe * Jᴴ) = J * Pe * Jᴴ
+    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc,
+      symProj_mul_bellInsertion β X C R k b, Matrix.mul_assoc J Pe Pe, hPe]
   done
 
 end TensorPower
