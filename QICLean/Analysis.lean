@@ -145,6 +145,7 @@ import QICLean.Analysis.RegionalLowDefectMass
 import QICLean.Analysis.RegionalLowDefectProductMass
 import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Analysis.RegionalPhysicalMarginals
+import QICLean.Analysis.RegionalSharpLowerNorm
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
