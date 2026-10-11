@@ -158,6 +158,10 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
       (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).2.2] using
       hpin_original (Q j g) (Y j g) (hdisj j g)
   have hpinCoeff : 0 < pinCoeff := by positivity
+  have hlog : Real.log pinCoeff = r - 2 * t * (k : ℝ) * rate := by
+    simp (disch := positivity) only
+      [pinCoeff, Real.log_mul, Real.log_exp, Real.log_rpow, r, rate]
+    done
   done
 
 end Matrix
