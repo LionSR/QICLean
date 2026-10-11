@@ -57,6 +57,61 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
   let eC := e.trans
     ((Equiv.prodComm (Fin k → (x : V) → β x) ((Fin k → C) × (Fin k → R))).trans
       (Equiv.prodAssoc (Fin k → C) (Fin k → R) (Fin k → (x : V) → β x)))
-  done
+  have heC (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
+      prodLeft ((Fin k → R) × (Fin k → (v : V) → β v)) (copyPerm C k) σ (eC x) =
+        eC (subsystemPerm k ι₀ {some none} σ x) := by
+    simp [eC, e, globalReplicaCopiesEquiv, prodLeft_apply, subsystemPerm_apply]
+    rfl
+  have hLC : labelProj (copyPerm C k) ellC ⊗ₖ
+      (1 : Matrix ((Fin k → R) × (Fin k → (x : V) → β x))
+        ((Fin k → R) × (Fin k → (x : V) → β x)) ℂ) =
+      Matrix.reindex eC eC (labelProj (subsystemPerm k ι₀ {some none}) ellC) :=
+    (labelProj_prodLeft (Z := (Fin k → R) × (Fin k → (x : V) → β x))
+      (copyPerm C k) ellC).symm.trans (labelProj_of_intertwine eC heC ellC)
+  have hleft : (I ⊗ₖ (labelProj (copyPerm C k) ellC ⊗ₖ
+      (1 : Matrix (Fin k → R) (Fin k → R) ℂ))).submatrix e e =
+      labelProj (subsystemPerm k ι₀ {some none}) ellC :=
+    Matrix.ext fun x y ↦ by
+      simpa only [Matrix.reindex_apply, Matrix.submatrix_apply,
+        Equiv.symm_apply_apply, Equiv.trans_apply, Equiv.prodComm_apply,
+        Equiv.prodAssoc_apply, Prod.swap,
+        ← Matrix.one_kronecker_one (α := ℂ) (m := Fin k → R)
+          (n := Fin k → (v : V) → β v), Matrix.kroneckerMap_apply,
+        eC, I, mul_rotate'
+          ((1 : Matrix (Fin k → (v : V) → β v) (Fin k → (v : V) → β v) ℂ)
+            (e x).1 (e y).1)
+          (labelProj (copyPerm C k) ellC (e x).2.1 (e y).2.1)
+          ((1 : Matrix (Fin k → R) (Fin k → R) ℂ) (e x).2.2 (e y).2.2)] using
+        (congrArg (fun H ↦ H (eC x) (eC y)) hLC).trans
+          (congrArg₂ (labelProj (subsystemPerm k ι₀ {some none}) ellC)
+            (eC.symm_apply_apply x) (eC.symm_apply_apply y))
+  let eR := e.trans
+    ((Equiv.prodAssoc (Fin k → (x : V) → β x) (Fin k → C) (Fin k → R)).symm.trans
+      (Equiv.prodComm ((Fin k → (x : V) → β x) × (Fin k → C)) (Fin k → R)))
+  have heR (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
+      prodLeft ((Fin k → (v : V) → β v) × (Fin k → C)) (copyPerm R k) σ (eR x) =
+        eR (subsystemPerm k ι₀ {none} σ x) := by
+    simp [eR, e, globalReplicaCopiesEquiv, prodLeft_apply, subsystemPerm_apply]
+    rfl
+  have hLR : labelProj (copyPerm R k) ellR ⊗ₖ
+      (1 : Matrix ((Fin k → (x : V) → β x) × (Fin k → C))
+        ((Fin k → (x : V) → β x) × (Fin k → C)) ℂ) =
+      Matrix.reindex eR eR (labelProj (subsystemPerm k ι₀ {none}) ellR) :=
+    (labelProj_prodLeft (Z := (Fin k → (x : V) → β x) × (Fin k → C))
+      (copyPerm R k) ellR).symm.trans (labelProj_of_intertwine eR heR ellR)
+  exact ⟨hleft, Matrix.ext fun x y ↦ by
+    simpa only [Matrix.reindex_apply, Matrix.submatrix_apply,
+      Equiv.symm_apply_apply, Equiv.trans_apply, Equiv.prodComm_apply,
+      Equiv.prodAssoc_symm_apply, Prod.swap,
+      ← Matrix.one_kronecker_one (α := ℂ) (m := Fin k → (v : V) → β v)
+        (n := Fin k → C), Matrix.kroneckerMap_apply,
+      eR, I, mul_rotate'
+        (labelProj (copyPerm R k) ellR (e x).2.2 (e y).2.2)
+        ((1 : Matrix (Fin k → (v : V) → β v) (Fin k → (v : V) → β v) ℂ)
+          (e x).1 (e y).1)
+        ((1 : Matrix (Fin k → C) (Fin k → C) ℂ) (e x).2.1 (e y).2.1)] using
+      (congrArg (fun H ↦ H (eR x) (eR y)) hLR).trans
+        (congrArg₂ (labelProj (subsystemPerm k ι₀ {none}) ellR)
+          (eR.symm_apply_apply x) (eR.symm_apply_apply y))⟩
 
 end TensorPower
