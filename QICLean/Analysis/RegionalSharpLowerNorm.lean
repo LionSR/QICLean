@@ -214,6 +214,12 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
               (sub_nonneg.mpr (hτhalf.trans (by norm_num)))).trans
               ((mul_le_mul_of_nonneg_right (sub_le_self 1 hτ.le) hmax0).trans_eq
                 (one_mul gmax))) (2 * S))))
+  have hpNorm : ‖toEuclideanLin Zᴴ ξ‖ ≤ 1 :=
+    (l2_opNorm_mulVec Zᴴ ξ).trans
+      ((mul_le_mul
+        ((l2_opNorm_conjTranspose Z).le.trans
+          (l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hZ))
+        hξnorm (norm_nonneg ξ) zero_le_one).trans (one_mul (1 : ℝ)).le)
   done
 
 end Matrix
