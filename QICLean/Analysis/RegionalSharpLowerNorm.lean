@@ -126,6 +126,9 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
   obtain ⟨Cf, hCf, hfloor⟩ :=
     exists_replicaMetric_symProj_isometric_floor ι₀ ht
   refine ⟨c, Cf, hc, hCf, ?_⟩
+  intro k n hk H Ω E₀ gap hgap hΩ hgap_pos Z hZ hZZ J _ _ G Q Y hdisj hnest
+    K rMom hmoment htr htone hK T ellC ellR S ε s hlabel hs ξ hξ hξnorm hsym hC hR
+    W L F E A B M w φ v δ entropyGap gaps gmax d r b
   done
 
 end Matrix
