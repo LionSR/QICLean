@@ -75,6 +75,22 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Replica regions with two auxiliary sites — shared geometric statement (2026-10-11)
+
+- **Pattern:** Lift physical regions to the common site family, adjoin the
+  left auxiliary site, and identify the far factor as the complement of
+  the lifted left and middle regions. Transport the given cross-band
+  nesting through the same physical inclusion.
+- **Consumers:** The normalized product-mass estimate and the rough and
+  sharp lower-norm applications require these same three conclusions.
+- **Decision:** `TensorPower.replicaMetric_lifted_region_geometry` states
+  them together in `Representation/RegionalReplicaMetricRegions.lean`.
+  Its proof uses finite-set membership and monotonicity of images and
+  insertion; no custom tactic is introduced.
+- **Caveat:** The nesting hypothesis ranges over every pair of terminal
+  labels in distinct ordered bands. No comparison between labels in the
+  same band is required.
+
 ### The range of a product of commuting projections — candidate (2026-10-09)
 
 - **Pattern:** Multiply an actual product projection by each of its factors,

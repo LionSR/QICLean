@@ -93,4 +93,31 @@ theorem regionalOriginalRegion_metric_partition (Q Y : Finset V) :
     generalize hi : regionalFactorIndex Q Y v = i
     fin_cases i <;> simp
 
+/-- Adding the original auxiliary sites preserves disjointness and all-status
+cross-band nesting, and identifies the far region as the actual complement.
+Source: `07-comparators.tex`, `comparator:nesting`, lines 80–110 and 421–443. -/
+theorem replicaMetric_lifted_region_geometry {J : Type*} (G : ℕ)
+    (Q Y : J → Fin G → Finset V)
+    (hdisj : ∀ j g, Disjoint (Q j g) (Y j g))
+    (hnest : ∀ j j' g h, g < h → Q j g ∪ Y j g ⊆ Q j' h) :
+    let L := fun j g => insert (some none) ((Q j g).image fun x => some (some x))
+    let F := fun j g => insert none
+      (((Q j g ∪ Y j g)ᶜ).image fun x => some (some x))
+    let E := fun j g => (Y j g).image fun x => some (some x)
+    (∀ j g, Disjoint (L j g) (E j g)) ∧
+      (∀ j g, F j g = (L j g ∪ E j g)ᶜ) ∧
+      ∀ j j' g h, g < h → L j g ∪ E j g ⊆ L j' h := by
+  intro L F E
+  have hfar (j : J) (g : Fin G) : F j g = (L j g ∪ E j g)ᶜ := by
+    simp [F, L, E, Finset.ext_iff, Option.forall]
+  have hdisj' (j : J) (g : Fin G) : Disjoint (L j g) (E j g) := by
+    simpa only [(regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).1,
+      (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).2.2] using
+      (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).1
+  exact ⟨hdisj', hfar, fun j j' g h hgh ↦ by
+    simpa only [L, E, Finset.image_union, Finset.insert_union] using
+      Finset.insert_subset_insert (some none)
+        (Finset.image_subset_image (f := fun x : V ↦ some (some x))
+          (hnest j j' g h hgh))⟩
+
 end TensorPower

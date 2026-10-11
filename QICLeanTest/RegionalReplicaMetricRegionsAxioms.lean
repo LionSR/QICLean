@@ -7,11 +7,12 @@ import QICLean.Representation.RegionalReplicaMetricRegions
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
-/-! Audit the actual left, far and middle regions and their induced partition. -/
+/-! Audit the actual metric regions, their partition and their nesting. -/
 
 run_cmd do
   let names := #[``TensorPower.regionalOriginalRegion_metric_regions,
-    ``TensorPower.regionalOriginalRegion_metric_partition]
+    ``TensorPower.regionalOriginalRegion_metric_partition,
+    ``TensorPower.replicaMetric_lifted_region_geometry]
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   for decl in names do
     unless (← Lean.getEnv).contains decl do
