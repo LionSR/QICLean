@@ -208,6 +208,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
       labelProj (subsystemPerm k ι {none}) ell) *ᵥ post) x
   rw [← hP, ← hQ, ← hpost, Matrix.submatrix_mulVec_equiv,
     Matrix.submatrix_mulVec_equiv]
-  simpa only [Function.comp_def, Equiv.apply_symm_apply] using hx
+  simpa only [Function.comp_def, Equiv.apply_symm_apply, WithLp.ofLp_smul,
+    WithLp.ofLp_toLp, Pi.smul_apply, smul_eq_mul] using hx
 
 end FiniteProduct
