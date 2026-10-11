@@ -73,7 +73,8 @@ variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
   (E : Finset (Configuration β X)) (k : ℕ)
 
 local notation "ι" => compressedSiteSpace β X (Fin E.card)
-local notation "z" => (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
+local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
+  (Matrix.PosSemidef.isHermitian (reducedPure_posSemidef β Ω X)) E
 local notation "L" => Fin k → Configuration β X × E
 
 /-- The same common-cutoff vector satisfies the actual matched-region
