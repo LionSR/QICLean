@@ -108,6 +108,11 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
         Q (fun j g ↦ E (Y j g)) hgeometry.1 hgeometry.2.2
        Matrix.MeanTree.posDef_listProd_ofFn (fun g ↦ hroots.1 g T)
          (fun g h hgh ↦ hroots.2 g h hgh T T))
+  have hband (g : Fin K) : T.eval (A · g) * Z = Z * T.eval (B · g) :=
+    Matrix.MeanTree.eval_intertwine
+      (fun j ↦ (posDef_bellMetric_factors β X C R ht k (U j g) (Y j g)
+        (hdisj j g)).1)
+      (fun j ↦ (hleaf j g).1) Z (fun j ↦ (hleaf j g).2) T
   done
 
 end TensorPower
