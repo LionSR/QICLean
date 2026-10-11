@@ -80,6 +80,16 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
     M.PosDef ∧ ∀ s : ℝ, (Z * M ^ s * Zᴴ) * P = P * N ^ s := by
   classical
   intro e J Pe P W Q F E A D B M N
+  have hgeometry := replicaMetric_lifted_region_geometry K
+    (fun j g ↦ X ∪ U j g) (fun j g ↦ Y j g \ X)
+    (fun j g ↦ Finset.disjoint_union_left.mpr
+      ⟨Finset.disjoint_sdiff, (hdisj j g).mono_right Finset.sdiff_subset⟩)
+    (fun j j' g h hgh ↦ Finset.union_subset
+      (Finset.union_subset_union_right
+        (Finset.subset_union_left.trans (hnest j j' g h hgh)))
+      ((Finset.sdiff_subset.trans
+        (Finset.subset_union_right.trans (hnest j j' g h hgh))).trans
+          Finset.subset_union_right))
   done
 
 end TensorPower
