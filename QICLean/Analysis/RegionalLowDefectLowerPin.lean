@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.ReplicaLowDefectRoughLowerPin
+import QICLean.Analysis.ReplicaLowDefectSharpLowerPin
+import QICLean.Analysis.RegionalPhysicalMarginals
 import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Representation.RegionalReplicaMetric
 import QICLean.Representation.RegionalPhysicalVector
 
 /-!
-# A uniform rough regional lower bound in one symmetric coordinate space
+# Uniform regional lower bounds in one symmetric coordinate space
 
 The original physical vector and auxiliary labels determine one global
 low-defect projection. Each regional estimate is transported to this
@@ -17,9 +19,10 @@ projection by the actual grouping equivalence. The polynomial constant is
 then replaced by a maximum over the finite set of physical cuts, before
 the copy number, vector, labels, cutoffs or symmetric coordinates are chosen.
 
-The rough estimate requires no marginal moment hypothesis. The projection
-transport and the inverse-compression bound are derived from their original
-definitions and the regional comparison.
+The rough estimate requires no marginal moment hypothesis. The sharp estimate
+uses the surprisal moments of the three reductions of the original vector.
+The projection transport and inverse-compression bounds are derived from
+the original definitions and the regional comparisons.
 
 Source: *A two-dimensional area law from a global spectral gap*, September 24,
 2026, `07-comparators.tex`, lines 421--456 and 585--615,
@@ -166,5 +169,100 @@ theorem exists_globalReplicaLowDefectProjection_rough_lower_pin
       (Real.exp_pos _).le
   exact regional_lower_pin_pullback β C R Ω hΩ Q Y hQY t k ellC ellR τ
     hb₀ hbb (hlocal (Q, Y) k ψ hψ ellC ellR τ S ε hτ hτhalf hlabel).1 n Z
+
+/-- One sharp polynomial constant works for all regional cuts. The moment
+hypotheses concern the three reductions of the original vector, while the
+same global projection and the same symmetric coordinates are used for
+every cut. Source: `07-comparators.tex`, `comparator:lower-pin`, lines 585--615. -/
+theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
+    {t : ℝ} (ht : 0 < t) :
+    ∃ c : ℝ, 0 ≤ c ∧ ∀ (k : ℕ) (Ω : ((v : V) → β v) → ℂ),
+      ‖WithLp.toLp 2 Ω‖ = 1 →
+      ∀ (ellC ellR : IrrepLabel (Equiv.Perm (Fin k))) (τ S ε : ℝ),
+      0 ≤ τ → τ ≤ 1 / 2 →
+      2 * (k : ℝ) * S - ε ≤ Real.log ellC.dim + Real.log ellR.dim →
+      let P := globalReplicaLowDefectProjection β C R Ω k ellC ellR τ
+      let d := Real.log (Fintype.card C) + Real.log (Fintype.card R)
+      ∀ (n : ℕ) (Z : Matrix (Config k (addedSiteSpace (addedSiteSpace β C) R)) (Fin n) ℂ),
+        Z * Zᴴ = symProj (copyPerm ((v : Option (Option V)) →
+          addedSiteSpace (addedSiteSpace β C) R v) k) →
+        IsStarProjection (Zᴴ * P * Z) ∧
+          ∀ (Q Y : Finset V), Disjoint Q Y → ∀ (K r : ℝ),
+            (∀ j : Fin 3, ∀ v : ℝ, |v| ≤ r →
+              let T := FiniteProduct.regionalPhysicalRegion Q Y j
+              Real.log (Entropy.surprisalMoment
+                (FiniteProduct.reducedPure_posSemidef β (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues v) ≤
+                  v * FiniteProduct.entropy β (WithLp.toLp 2 Ω) T + K * v ^ 2) →
+            20 * t ≤ r → 20 * t ≤ 1 → 0 ≤ K →
+            let g := FiniteProduct.entropy β (WithLp.toLp 2 Ω) Q +
+              FiniteProduct.entropy β (WithLp.toLp 2 Ω) (Q ∪ Y)ᶜ -
+              FiniteProduct.entropy β (WithLp.toLp 2 Ω) Y
+            let b := ((k : ℝ) + 1) * Real.exp (k * Real.binEntropy τ) *
+              (((k : ℝ) + 2) ^ c * Real.exp
+                (-(k : ℝ) * (2 * t) *
+                  (2 * S + (1 - τ) * g - τ * d - 3 * Real.binEntropy τ) +
+                    (2 * t) * ε + 25 * (k : ℝ) * K * (2 * t) ^ 2))
+            let W := replicaMetric (addedSiteSpace (addedSiteSpace β C) R) t k
+            let A := ((W (regionalOriginalRegion Q Y {0, 3}))⁻¹ *
+              (W (regionalOriginalRegion Q Y {2, 4}))⁻¹ *
+                W (regionalOriginalRegion Q Y {1})) ^ 2
+            b⁻¹ • (Zᴴ * P * Z) ≤ Zᴴ * A * Z := by
+  classical
+  let ι := fun p : Finset V × Finset V => regionalFiveFactorSpace β C R p.1 p.2
+  choose c₀ _hc₀ hlocal using fun p : Finset V × Finset V =>
+    exists_replicaLowDefectProjection_sharp_lower_pin (ι p) ht
+  let D := fun (p : Finset V × Finset V) (j : Fin 5) => Fintype.card (ι p j)
+  let Λ := fun p : Finset V × Finset V =>
+    ((((D p 0 * D p 3) ^ 2 : ℕ) : ℝ) + (((D p 2 * D p 4) ^ 2 : ℕ) : ℝ) +
+      ((D p 0 ^ 2 : ℕ) : ℝ) / 2 + ((D p 2 ^ 2 : ℕ) : ℝ) / 2) / 5
+  let f := fun p : Finset V × Finset V => c₀ p + Λ p
+  let c := max 0 ((Finset.univ : Finset (Finset V × Finset V)).sup'
+    Finset.univ_nonempty f)
+  have hfc (p : Finset V × Finset V) : f p ≤ c :=
+    (Finset.le_sup' f (Finset.mem_univ p)).trans (le_max_right _ _)
+  refine ⟨c, le_max_left _ _, ?_⟩
+  intro k Ω hΩ ellC ellR τ S ε hτ hτhalf hlabel P d n Z hZZ
+  refine ⟨(globalReplicaLowDefectProjection_properties β C R Ω hΩ k ellC ellR τ).2.2
+    n Z hZZ, ?_⟩
+  intro Q Y hQY K r hmoment htr htone hK g b W A
+  let ψ := Ω ∘ (FiniteProduct.regionalPhysicalEquiv β Q Y hQY).symm
+  have hψ : ‖WithLp.toLp 2 ψ‖ = 1 :=
+    (FiniteProduct.norm_regionalPhysicalVector β Ω Q Y hQY).trans hΩ
+  have hstats := regional_physicalSingleton_spectral_statistics β C R Ω Q Y hQY
+  have hmoment' (j : Fin 3) (v : ℝ) (hv : |v| ≤ r) :
+      Real.log (Entropy.surprisalMoment
+        (posSemidef_physicalSingletonDensity (ι (Q, Y)) ψ j).isHermitian.eigenvalues v) ≤
+      v * vonNeumannEntropy (physicalSingletonDensity (ι (Q, Y)) ψ j)
+        (posSemidef_physicalSingletonDensity (ι (Q, Y)) ψ j).isHermitian + K * v ^ 2 := by
+    rw [(hstats j).2 v, (hstats j).1]
+    exact hmoment j v hv
+  have hg :
+      vonNeumannEntropy (physicalSingletonDensity (ι (Q, Y)) ψ 0)
+          (posSemidef_physicalSingletonDensity (ι (Q, Y)) ψ 0).isHermitian +
+        vonNeumannEntropy (physicalSingletonDensity (ι (Q, Y)) ψ 2)
+          (posSemidef_physicalSingletonDensity (ι (Q, Y)) ψ 2).isHermitian -
+        vonNeumannEntropy (physicalSingletonDensity (ι (Q, Y)) ψ 1)
+          (posSemidef_physicalSingletonDensity (ι (Q, Y)) ψ 1).isHermitian = g := by
+    simpa only [(hstats 0).1, (hstats 2).1, (hstats 1).1]
+  let b₀ := ((k : ℝ) + 1) * Real.exp (k * Real.binEntropy τ) *
+    (((k : ℝ) + 2) ^ f (Q, Y) * Real.exp
+      (-(k : ℝ) * (2 * t) *
+        (2 * S + (1 - τ) * g - τ * d - 3 * Real.binEntropy τ) +
+          (2 * t) * ε + 25 * (k : ℝ) * K * (2 * t) ^ 2))
+  have hb₀ : 0 < b₀ := by dsimp only [b₀]; positivity
+  have hbb : b₀ ≤ b := by
+    apply mul_le_mul_of_nonneg_left _ (by positivity)
+    exact mul_le_mul_of_nonneg_right
+      (Real.rpow_le_rpow_of_exponent_le
+        (by linarith only [(Nat.cast_nonneg k : (0 : ℝ) ≤ k)]) (hfc (Q, Y)))
+      (Real.exp_pos _).le
+  apply regional_lower_pin_pullback β C R Ω hΩ Q Y hQY t k ellC ellR τ hb₀ hbb _ n Z
+  have h := (hlocal (Q, Y) k ψ hψ ellC ellR K r hmoment' htr htone hK
+    τ S ε hτ hτhalf hlabel).1
+  set_option pp.all true in
+    simpa only [hg, b₀, f, Λ, D, ψ, ι,
+      (show Real.log (Fintype.card (ι (Q, Y) 3)) +
+        Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using h
+
 
 end Matrix

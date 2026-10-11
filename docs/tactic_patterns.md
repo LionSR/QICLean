@@ -90,6 +90,73 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveat:** The nesting hypothesis ranges over every pair of terminal
   labels in distinct ordered bands. No comparison between labels in the
   same band is required.
+### A common polynomial exponent over finitely many cuts — candidate (2026-10-11)
+
+- **Pattern:** Choose each regional exponent, take the maximum of their finite
+  family and zero, and increase the positive-base power before taking its
+  reciprocal in an operator lower bound.
+- **Seen:** The rough and sharp theorems in
+  `QICLean/Analysis/RegionalLowDefectLowerPin.lean` have two occurrences in
+  one file. The matrix-order transport itself is already shared through
+  `regional_lower_pin_pullback`.
+- **Abstraction:** The current proofs use `Finset.le_sup'`,
+  `Real.rpow_le_rpow_of_exponent_le`, and the shared pullback. A third
+  occurrence in another file would justify a common finite-family helper.
+- **Caveat:** Only the polynomial exponent is absorbed; the exponential
+  subset count and the variance term remain in the coefficient.
+
+### The range of a product of commuting projections — candidate (2026-10-09)
+
+- **Pattern:** Multiply an actual product projection by each of its factors,
+  then transfer the resulting matrix identities to every fixed vector.
+- **Seen:** `Matrix.replicaLowDefectProjection_fixed_conditions` uses one
+  local matrix-to-vector implication for the physical cutoff, auxiliary
+  label product, and simultaneous symmetry. The individual auxiliary
+  equations then use the same tensor-product multiplication identity.
+- **Abstraction:** Reuse `IsStarProjection.mul`, the existing central-label
+  commutations, and `symProj_mulVec_mem`. The symmetry average's projection
+  properties follow from `exists_labelProj_eq_symProj`; no new averaging
+  theorem or tactic is introduced.
+- **Caveat:** The derived commutations concern the cutoff, auxiliary labels,
+  and symmetry. They do not imply commutation with a replica metric.
+
+### Separate merge moments before Hölder — candidate (2026-10-09)
+
+- **Pattern:** Express an exponential trace on a product space through its
+  actual marginal, then preserve the component mass under a coordinate exchange.
+- **Seen:** The two estimates formerly local to
+  `replicaGoodPairMarginal_exp_sum_mergeDeficit_le` are reused by the separate
+  full-density estimate in `ReplicaGoodConfigurationIndividualMergeMoment`.
+- **Abstraction:** The public
+  `replicaGoodPairMarginal_exp_mergeDeficits_le` contains both separate bounds.
+  The arithmetic-mean theorem uses it at twice the parameter; the full-density
+  theorem transports each bound by the existing paired-coordinate equivalence.
+- **Caveat:** The same actual excitation component occurs throughout, including
+  zero mass. No normalized auxiliary marginal or nonvanishing assumption is added.
+- **Coordinate simplification:** As in the existing paired exponential transport,
+  use `Matrix.submatrix_smul` followed by `Pi.smul_apply` at both coordinate
+  arguments. The first equality concerns a function of the two coordinate maps;
+  reducing its applications exposes the actual transported matrix. This reuses
+  the existing Mathlib statements and needs no new tactic.
+
+
+### Scalar multiplication in partially applied matrix coordinates — candidate (2026-10-09)
+
+- **Pattern:** After rewriting `submatrix_smul`, a coordinate equivalence may
+  still be supplied as a partially applied function. Scalar multiplication
+  then needs evaluation at both matrix indices before an existing coordinate
+  identity matches.
+- **Seen:** The singleton exponential transport in
+  `QICLean/Analysis/ReplicaGoodConfigurationSingletonMoment.lean`, both for the
+  five-factor coordinates and for the physical singleton coordinates.
+- **Abstraction:** Reuse Mathlib's `Pi.smul_apply`, followed by the existing
+  `Matrix.reindex_exp` and `Matrix.exp_kronecker_one` identities. The group
+  algebra comparison uses canonical finite-function and product decidable
+  equality instances, matching the existing product-action theorem.
+  No new tactic, global instance, or mathematical comparison is introduced.
+- **Caveats:** Distinguish a partially applied coordinate function from a
+  matrix entry; entrywise matrix expressions use the existing `Matrix.*_apply`
+  lemmas instead.
 
 ### The range of a product of commuting projections — candidate (2026-10-09)
 
