@@ -1,0 +1,110 @@
+% Source: OpenAI2026AreaLaw, 05-replicas.tex, lines 99--115, 281--316,
+% and 452--465; 07-comparators.tex, lines 454--476 and 603--621.
+
+\section{A polynomial floor on complete symmetric copies}
+
+\begin{theorem}[Symmetric-sector replica metric floor]
+    \label{thm:replica_symmetric_floor}
+    \lean{TensorPower.exists_replicaMetric_symmetric_floor}
+    \leanok
+    \uses{def:copy_permutations, thm:replica_metric_basic}
+    Let $V$ be a finite set of sites, and let $\iota_v$ be a finite nonempty
+    coordinate set for every $v\in V$. Put
+    $\mathcal V=\bigotimes_{v\in V}\C^{\iota_v}$ and
+    $d=\dim\mathcal V=\prod_{v\in V}|\iota_v|$. Fix $t>0$. For every
+    subsystem $Q\subseteq V$, use the common replica metric
+    $W_{Q,k}=\sum_\lambda w_k(\lambda)\pi^\lambda_{Q,k}$ from
+    Theorem~\ref{thm:replica_metric_basic}, with every label padded to the
+    same full dimension $d$.
+
+    There exists $C\ge0$, depending on the fixed system and $t$, such that
+    the following holds for every $k\ge0$ and every pairwise disjoint
+    cover $P\cup Y\cup F=V$. Let $\Pi_k$ be the orthogonal projection onto
+    $\operatorname{Sym}^k\mathcal V$, and define the full-space operators
+    and the scalar
+    \begin{align}
+        L_k & =W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k}, &
+        A_k & =L_k^2,                           &
+        c_k & =(k+2)^{-C}.
+        \label{eq:replica_floor_metric}
+    \end{align}
+    Then $0<c_k\le1$, and, in the positive-semidefinite order,
+    \begin{align}
+        \Pi_k A_k^{-1}\Pi_k & \le c_k^{-1}\Pi_k,
+        \label{eq:replica_floor_inverse}                   \\
+        c_k\Pi_k            & \le\Pi_k A_k\Pi_k,
+        \label{eq:replica_floor_symmetric}                 \\
+        c_k I               & \le\Pi_k A_k\Pi_k+(I-\Pi_k).
+        \label{eq:replica_floor_extension}
+    \end{align}
+    The exponent $C$ is independent of $k$ and of $P,Y,F$. Empty parts,
+    $k=0$, and the empty set of sites are included, with the empty tensor
+    product equal to $\C$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:replica_metric_whole_inverse,
+        thm:replica_partition_nonnegative_support, thm:spectral_exponential_drop,
+        lem:trivial_label, thm:replica_metric_basic, thm:schur_label_commutation,
+        thm:nested_label_observable_symmetry,
+        thm:area_law_compressed_inverse_floor,
+        thm:matrix_identity_extension_floor}
+    Choose $C\ge0$ from Theorem~\ref{thm:replica_metric_whole_inverse} before
+    choosing $k$ or the partition. Set
+    $H_k=F_{P,k}+F_{F,k}-F_{Y,k}$, where
+    $F_{Q,k}=\sum_\lambda(\log d_\lambda)\pi^\lambda_{Q,k}$, and let
+    $J_k=\mathbf 1_{[0,\infty)}(H_k)$. The whole-space inverse comparison
+    and Theorem~\ref{thm:replica_partition_nonnegative_support} give
+    \begin{align}
+        A_k^{-1} & \le(k+2)^C e^{-2tH_k},
+        \label{eq:replica_floor_whole_inverse} \\
+        J_k\Pi_k & =\Pi_k=\Pi_kJ_k.
+        \label{eq:replica_floor_support}
+    \end{align}
+    The second equality in (\ref{eq:replica_floor_support}) is the adjoint
+    of the first. Both $J_k$ and $\Pi_k$ are orthogonal projections; for
+    $\Pi_k$ this also follows from Lemma~\ref{lem:trivial_label}.
+    Theorem~\ref{thm:spectral_exponential_drop}, applied to $H_k$ and zero
+    with parameter $2t\ge0$, gives $J_ke^{-2tH_k}J_k\le I$. Congruence by
+    $\Pi_k$ and (\ref{eq:replica_floor_support}) therefore yield
+    \begin{align}
+        \Pi_ke^{-2tH_k}\Pi_k
+         & =\Pi_kJ_ke^{-2tH_k}J_k\Pi_k\le\Pi_k.
+        \label{eq:replica_floor_exponential}
+    \end{align}
+    Apply congruence by $\Pi_k$ to
+    (\ref{eq:replica_floor_whole_inverse}) and then use
+    (\ref{eq:replica_floor_exponential}). This gives
+    $\Pi_kA_k^{-1}\Pi_k\le(k+2)^C\Pi_k$, which is
+    (\ref{eq:replica_floor_inverse}).
+
+    The three metric factors are positive definite by
+    Theorem~\ref{thm:replica_metric_basic}. Their inverses are the label
+    observables with reciprocal weights. Label observables of disjoint
+    subsystems commute, so $L_k$ is invertible and Hermitian.
+    Theorem~\ref{thm:nested_label_observable_symmetry}, with the containing
+    subsystem equal to $V$, shows that all three factors commute with
+    $\Pi_k$. Thus $L_k\Pi_k=\Pi_kL_k$.
+    Theorem~\ref{thm:area_law_compressed_inverse_floor} applies to
+    (\ref{eq:replica_floor_inverse}): explicitly, congruence by $L_k$ gives
+    \begin{align}
+        \Pi_k
+         & =L_k\Pi_kA_k^{-1}\Pi_kL_k
+        \le(k+2)^C L_k\Pi_kL_k
+        =(k+2)^C\Pi_kA_k\Pi_k.
+    \end{align}
+    Since $(k+2)^C>0$ and $c_k=((k+2)^C)^{-1}$, this proves
+    (\ref{eq:replica_floor_symmetric}). Finally, $C\ge0$ and $k+2\ge1$
+    imply $0<c_k\le1$. Theorem~\ref{thm:matrix_identity_extension_floor}
+    applies; equivalently,
+    \begin{align}
+        c_kI
+         & =c_k\Pi_k+c_k(I-\Pi_k)
+        \le\Pi_kA_k\Pi_k+(I-\Pi_k),
+    \end{align}
+    giving (\ref{eq:replica_floor_extension}).
+\end{proof}
+
+This is the polynomial lower bound for the partition metric obtained from
+\cite[Lemmas~6.1--6.2]{OpenAI2026AreaLaw}. It supplies the complete symmetric
+space floor used when combining the lower pins in the comparator argument.
