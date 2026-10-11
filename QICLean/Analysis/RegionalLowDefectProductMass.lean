@@ -88,6 +88,46 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
         let P := Zᴴ * globalReplicaLowDefectProjection β C R Ω k ellC ellR τ * Z
         IsStarProjection P ∧ 1 - δ / τ ≤ (star φ ⬝ᵥ (P *ᵥ φ)).re := by
   intro W L F E A B M w φ v δ
-  done
+  obtain ⟨hLE, hfar, hnestL⟩ :
+      (∀ j g, Disjoint (L j g) (E j g)) ∧
+        (∀ j g, F j g = (L j g ∪ E j g)ᶜ) ∧
+          ∀ j j' g h, g < h → L j g ∪ E j g ⊆ L j' h :=
+    replicaMetric_lifted_region_geometry G Q Y hdisj hnest
+  obtain ⟨hM, hw, hv, hsymv, hlabels⟩ :
+      M.PosDef ∧ w ≠ 0 ∧ ‖v‖ = 1 ∧
+        symProj (copyPerm ((x : Option (Option V)) → ι₀ x) k) *ᵥ v = v ∧
+          ∀ (a : Option (Option V)) (ell : IrrepLabel (Equiv.Perm (Fin k))),
+            labelProj (subsystemPerm k ι₀ {a}) ell *ᵥ ξ = ξ →
+              labelProj (subsystemPerm k ι₀ {a}) ell *ᵥ v = v := by
+    simpa only [W, A, B, M, w, φ, v, hfar] using
+      (replicaMetric_normalized_symProj_bandProduct_mem_original_labels
+        ι₀ k n Z hZ hZZ ht G L E hLE hnestL T).elim
+          (fun hM hfilter => And.intro hM (hfilter s ξ hξ hsym))
+  have hmass (τ : ℝ) (hτ : 0 < τ) :
+      1 - δ / τ ≤
+        (star v ⬝ᵥ (globalReplicaLowDefectProjection β C R Ω k ellC ellR τ *ᵥ v)).re :=
+    globalReplicaLowDefectProjection_gap_mass_ge β C R hgap hΩ hgap_pos hk
+      ellC ellR hτ v hv hsymv
+      (hlabels (some none) ellC hC) (hlabels none ellR hR)
+  have hquad (P : Matrix (Config k ι₀) (Config k ι₀) ℂ) :
+      (star v ⬝ᵥ (P *ᵥ v)).re =
+        (star φ ⬝ᵥ ((Zᴴ * P * Z) *ᵥ φ)).re := by
+    change (star (Z *ᵥ φ.ofLp) ⬝ᵥ (P *ᵥ (Z *ᵥ φ.ofLp))).re =
+      (star φ.ofLp ⬝ᵥ ((Zᴴ * P * Z) *ᵥ φ.ofLp)).re
+    rw [← mulVec_mulVec, ← mulVec_mulVec]
+    rw [star_dotProduct_mulVec Zᴴ φ.ofLp, conjTranspose_conjTranspose]
+  have hn : (star v ⬝ᵥ v).re = 1 := by
+    simpa only [RCLike.re_to_complex, PiLp.coe_symm_continuousLinearEquiv,
+      WithLp.toLp_ofLp, hv, one_pow] using re_star_dotProduct_self_eq_norm_sq v
+  have hδ : 0 ≤ δ := (sub_le_self_iff (1 : ℝ)).mp (by
+    simpa only [div_one, one_mulVec, hn] using
+      (hmass 1 zero_lt_one).trans
+        (re_dotProduct_mulVec_le_of_le
+          (globalReplicaLowDefectProjection_properties β C R Ω hΩ k ellC ellR 1).1.le_one
+          v.ofLp))
+  exact ⟨hM, hw, norm_smul_inv_norm (𝕜 := ℂ) hw, hv, hδ, fun τ hτ =>
+    ⟨(globalReplicaLowDefectProjection_properties β C R Ω hΩ k ellC ellR τ).2.2 n Z hZZ,
+      (hmass τ hτ).trans_eq
+        (hquad (globalReplicaLowDefectProjection β C R Ω k ellC ellR τ))⟩⟩
 
 end Matrix
