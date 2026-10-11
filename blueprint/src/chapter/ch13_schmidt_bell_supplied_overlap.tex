@@ -1,0 +1,62 @@
+\section{Overlap with the supplied-label physical prevector}
+
+Let $V$ be finite with finite coordinate sets $D_v$, and fix $X\subseteq V$.
+Put $A=\prod_{v\in X}D_v$ and $B=\prod_{v\notin X}D_v$.
+Fix $\Omega\in\ell^2(A\times B)$, a selected spectral set $E\subseteq A$,
+and its fixed enumeration $\iota:E\to\{0,\ldots,d-1\}$, where $d=|E|$.
+Let $\widehat B$ be the exterior configuration set with physical coordinates
+in $X^c$ and retained auxiliary register $R=\{0,\ldots,d-1\}$.
+No normalization of $\Omega$ is imposed.
+
+\begin{definition}[The supplied-label prevector on the exterior sites]
+    \label{def:schmidt_bell_site_prevector}
+    \lean{FiniteProduct.schmidtBellSitePrevector}
+    \uses{def:replica_prevector,def:schmidt_bell_site_coordinates}
+    Fix $k\geq0$ and an irreducible label $\ell$ of $\mathfrak S_k$.
+    Let $v_{k,\ell}$ be the original prevector in the canonical coordinates
+    $(A\times B)^k\times(R^k\times R^k)$.
+    The regrouping
+    \begin{align*}
+        r_k\bigl((a_j,c_j)_j,((r_j)_j,(b_j)_j)\bigr)
+        &=((a_j,b_j)_j,((c_j)_j,(r_j)_j))
+    \end{align*}
+    and the fixed bijection $e_k$ of
+    Definition~\ref{def:schmidt_bell_site_coordinates} give
+    \begin{align*}
+        v^{\mathrm{site}}_{k,\ell}&=v_{k,\ell}\circ r_k\circ e_k
+        \in\ell^2((A\times E)^k\times\widehat B^k).
+    \end{align*}
+    The original state and supplied label are unchanged, as in
+    \cite[Section~8, lines~240--254 and~283--290]{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{theorem}[Exact overlap for the supplied label]
+    \label{thm:schmidt_bell_supplied_overlap}
+    \lean{FiniteProduct.inner_schmidtBellSitePrevector}
+    \uses{def:schmidt_bell_site_prevector,thm:schmidt_bell_site_post}
+    Suppose the actual selected mass $z=\sum_{i\in E}p_i$ is positive.
+    Let $P=(|\beta_E\rangle\langle\beta_E|)^{\otimes k}\otimes I$
+    be the selected Bell projection, let
+    $Q_\ell=I\otimes\Pi_{R,\ell}$, and let
+    $\operatorname{post}_{E,k}$ be the actual selected product vector
+    in the same exterior-site coordinates.
+    For every supplied $\varphi$ satisfying $P\varphi=\varphi$,
+    \begin{align*}
+        \langle\varphi,v^{\mathrm{site}}_{k,\ell}\rangle
+        &=\left(\frac{\sqrt z}{d}\right)^k
+        \langle\varphi,Q_\ell\operatorname{post}_{E,k}\rangle.
+    \end{align*}
+    Neither normalization nor copy symmetry of $\varphi$ is required.
+    The identity holds also for $k=0$ and retains the supplied label.
+    It is the overlap consequence of
+    \cite[Section~8, lines~283--290 and~346--354]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:schmidt_bell_site_pin}
+    The Bell projection is self-adjoint. Thus
+    $\langle\varphi,v^{\mathrm{site}}_{k,\ell}\rangle
+    =\langle P\varphi,v^{\mathrm{site}}_{k,\ell}\rangle
+    =\langle\varphi,Pv^{\mathrm{site}}_{k,\ell}\rangle$.
+    Apply the exact Bell identity and use linearity in the second argument.
+    The scalar is consequently not conjugated.
+\end{proof}
