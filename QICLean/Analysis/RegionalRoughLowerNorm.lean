@@ -172,6 +172,12 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
       (sub_le_self (2 * S) (mul_nonneg hτ.le
         (add_nonneg (Real.log_natCast_nonneg (Fintype.card C))
           (Real.log_natCast_nonneg (Fintype.card R)))))
+  have hpNorm : ‖toEuclideanLin Zᴴ ξ‖ ≤ 1 :=
+    (l2_opNorm_mulVec Zᴴ ξ).trans
+      ((mul_le_mul
+        ((l2_opNorm_conjTranspose Z).le.trans
+          (l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hZ))
+        hξnorm (norm_nonneg ξ) zero_le_one).trans (one_mul (1 : ℝ)).le)
   done
 
 end Matrix
