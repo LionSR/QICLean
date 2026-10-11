@@ -188,6 +188,7 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
     hfloorB (fun j g ↦ hcoefficient ▸ hpinB j g)
     hs (toEuclideanLin Zᴴ ξ) hp hpNorm
     (fun _ ↦ div_nonneg hδ hτ.le) (fun _ ↦ (hmass τ hτ).2)
-  done
+  simpa only [← Finset.sum_mul, T.sum_weight, one_mul, Finset.sum_const,
+    Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc, M, w] using! hnorm
 
 end Matrix
