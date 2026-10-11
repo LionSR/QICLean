@@ -75,6 +75,24 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Projection coefficients and exponential rates — candidate (2026-10-11)
+
+- **Pattern:** Take the logarithm of a positive product of polynomial and
+  exponential factors, identify it with a remainder minus the leading
+  rate, and express the reciprocal coefficient as the corresponding
+  exponential lower bound.
+- **Seen:** The rough and sharp norm comparisons in
+  `Analysis/RegionalRoughLowerNorm.lean` and
+  `Analysis/RegionalSharpLowerNorm.lean` have two occurrences. The sharp
+  rate also includes the variance correction.
+- **Abstraction:** Existing `Real.log_mul`, `Real.log_rpow`,
+  `Real.exp_log` and polynomial normalization suffice for these two uses.
+  A third independent occurrence would justify a common scalar lemma;
+  no new tactic is introduced.
+- **Caveat:** Positivity is proved for the actual coefficient. The sharp
+  variance term is retained exactly when its logarithm is normalized.
+
+
 ### Replica regions with two auxiliary sites — shared geometric statement (2026-10-11)
 
 - **Pattern:** Lift physical regions to the common site family, adjoin the

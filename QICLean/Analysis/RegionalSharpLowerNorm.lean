@@ -241,6 +241,6 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
       (∑ j, T.weight j * leafRate j g) = rate g := by
     simp only [leafRate, rate, mul_add, mul_sub, Finset.sum_add_distrib,
       Finset.sum_sub_distrib, ← Finset.sum_mul, T.sum_weight, one_mul, hlinear]
-  done
+  simpa only [hrate_sum, M, w] using! hnorm
 
 end Matrix
