@@ -1,0 +1,48 @@
+\section{Regional moments of the actual good-copy density}
+\label{sec:replica_good_configuration_regional_moment}
+
+\begin{theorem}[Regional observable identity]
+\label{thm:replica_good_configuration_regional_expectation}
+\lean{Matrix.trace_replicaGoodConfigurationMarginal_regional_mul}
+\leanok
+Let $\Omega$ be a unit one-copy physical vector.
+Choose any bipartite coordinate decomposition of the original physical
+space as $U\otimes T$, and set
+$\sigma_U=\operatorname{Tr}_T|\Omega\rangle\langle\Omega|$.
+Let $w$ and $\rho_G$ be as in
+Theorem~\ref{thm:replica_good_configuration_product}, with $m$ good
+copies. For every matrix $H$ on $U^{\otimes m}$, interpreted as an
+observable on the same good-copy density by adjoining identities,
+\begin{align*}
+ \operatorname{Tr}\bigl(\rho_G(H\otimes I)\bigr)
+ =\|w\|^2\operatorname{Tr}(\sigma_U^{\otimes m}H).
+\end{align*}
+All coordinate changes are induced by the chosen bipartite decomposition.
+This is the regional reduction in
+\cite[Section~8, lines~550--560]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_good_configuration_physical_expectation,thm:partial_trace_tensor_power_reindex}
+First trace the auxiliary coordinates, then trace the good copies of
+$T$. The tensor-product partial-trace identity gives
+$\sigma_U^{\otimes m}$.
+\end{proof}
+
+\begin{theorem}[Signed regional label moments]
+\label{thm:replica_good_configuration_regional_label_moment}
+\lean{Matrix.trace_replicaGoodConfigurationMarginal_regional_exp_labelEntropy}
+\leanok
+Let $F_{U,m}$ be the label entropy observable for the copy permutations
+of $U^{\otimes m}$. For every real $a$,
+\begin{align*}
+ \operatorname{Tr}\bigl(\rho_G(e^{aF_{U,m}}\otimes I)\bigr)
+ =\|w\|^2\operatorname{Tr}(\sigma_U^{\otimes m}e^{aF_{U,m}}).
+\end{align*}
+The component may vanish; no division by its mass is involved.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_good_configuration_regional_expectation}
+Apply the regional observable identity to $H=e^{aF_{U,m}}$.
+\end{proof}

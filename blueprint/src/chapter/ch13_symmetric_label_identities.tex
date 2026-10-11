@@ -1,0 +1,89 @@
+\section{Labels on a symmetric subsystem}
+\label{sec:symmetric_subsystem_labels}
+
+Let $F$ be a finite set of factor labels, let $I_a$ be a finite coordinate
+set for each $a\in F$, and let $k\geq 0$ be an integer. Set
+$\mathcal V=\bigotimes_{a\in F}\C^{I_a}$ and
+$\mathcal H=\mathcal V^{\otimes k}$. The coordinate sets may be empty;
+the tensor product over an empty factor set and the zeroth tensor power
+are both $\C$.
+
+For $A\subseteq F$, let $U_A(\sigma)$ permute the $k$ copies of the
+factors in $A$, leaving the other factors fixed. Write
+$\Pi_{A,k}=(k!)^{-1}\sum_{\sigma\in S_k}U_A(\sigma)$ for the orthogonal
+projection onto the vectors fixed by all these permutations. If $e_\lambda$
+is the central idempotent of the irreducible label $\lambda$ of $S_k$,
+write $\pi^\lambda_{A,k}$ for its image under this permutation
+representation. Let $d_\lambda\geq 1$ be the dimension of that irreducible
+representation, and set
+$F_{A,k}=\sum_\lambda(\log d_\lambda)\pi^\lambda_{A,k}$.
+
+The following identities are consequences of the central-label argument
+in~\cite[Lemma~6.1(2)]{OpenAI2026AreaLaw}. All operators act on the same
+space $\mathcal H$.
+
+\begin{theorem}[Complementary labels inside a union]
+    \label{thm:symmetric_union_label_projectors}
+    \lean{TensorPower.labelProj_mul_symProj_union}
+    \leanok
+    Let $A,B\subseteq F$ be disjoint. For every irreducible label
+    $\lambda$ of $S_k$,
+    \begin{align}
+        \pi^\lambda_{A,k}\Pi_{A\cup B,k}
+         & =\pi^\lambda_{B,k}\Pi_{A\cup B,k}.
+        \label{eq:symmetric_union_projectors}
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    Disjointness gives
+    $U_{A\cup B}(\sigma)=U_A(\sigma)U_B(\sigma)$.
+    If $v$ belongs to the range of $\Pi_{A\cup B,k}$, then
+    $U_B(\sigma)v=U_A(\sigma^{-1})v$.
+    The coefficients of $e_\lambda$ are invariant under inversion in
+    $S_k$. Summing the last identity with these coefficients gives
+    $\pi^\lambda_{B,k}v=\pi^\lambda_{A,k}v$.
+    Apply this equality to every column of $\Pi_{A\cup B,k}$.
+\end{proof}
+
+\begin{theorem}[Complementary logarithmic labels inside a union]
+    \label{thm:symmetric_union_logarithmic_labels}
+    \lean{TensorPower.labelEntropy_mul_symProj_union}
+    \leanok
+    Let $A,B\subseteq F$ be disjoint. Then
+    \begin{align}
+        F_{A,k}\Pi_{A\cup B,k}
+         & =F_{B,k}\Pi_{A\cup B,k}.
+        \label{eq:symmetric_union_logarithmic_labels}
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:symmetric_union_label_projectors}
+    Multiply~(\ref{eq:symmetric_union_projectors}) by
+    $\log d_\lambda$ and sum over the irreducible labels.
+\end{proof}
+
+\begin{theorem}[Nested label observables and symmetry]
+    \label{thm:nested_label_observable_symmetry}
+    \lean{TensorPower.commute_labelObservable_symProj_of_subset}
+    \leanok
+    Let $A,B\subseteq F$ satisfy $A\subseteq B$, and let $f$ be any
+    real-valued function on the irreducible labels of $S_k$. Then
+    \begin{align}
+        \left(\sum_\lambda f(\lambda)\pi^\lambda_{A,k}\right)\Pi_{B,k}
+         & =\Pi_{B,k}\left(\sum_\lambda f(\lambda)\pi^\lambda_{A,k}\right).
+        \label{eq:nested_label_observable_symmetry}
+    \end{align}
+\end{theorem}
+
+\begin{proof}\leanok
+    For each $\sigma\in S_k$, nesting gives
+    $U_B(\sigma)=U_A(\sigma)U_{B\setminus A}(\sigma)$.
+    The image of the central idempotent $e_\lambda$ commutes with
+    $U_A(\sigma)$, while disjointness of $A$ and $B\setminus A$ makes it
+    commute with $U_{B\setminus A}(\sigma)$.
+    Thus $\pi^\lambda_{A,k}$ commutes with every $U_B(\sigma)$.
+    Sum first over $\sigma$ to obtain commutation with $\Pi_{B,k}$,
+    and then over $\lambda$ with coefficients $f(\lambda)$.
+\end{proof}

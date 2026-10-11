@@ -1,0 +1,72 @@
+% The exact proof source passed strict native-context checks and kernel audits.
+% Ordinary module verification and declaration checks remain pending.
+
+\section{Uniform floors for band metrics and mean trees}
+
+\begin{theorem}[Uniform floor for symmetric band metrics]
+    \label{thm:replica_symmetric_band_floor}
+    \lean{TensorPower.ReplicaTransport.exists_symBandMetric_floor}
+    \leanok
+    \uses{lem:replica_symmetric_metric}
+    Fix a finite tensor product $\mathcal V=\bigotimes_{v\in V}\C^{n_v}$,
+    with $n_v>0$, and let $t>0$. The replica metrics use one common label
+    weight padded to the original full dimension $\dim\mathcal V$.
+    There exists $C\ge0$, chosen before the copy number and partition,
+    such that every $k\ge0$ and every partition $\pi=(P,Y,F)$ satisfy
+    \begin{align}
+        (k+2)^{-C}I\le\widetilde A_k(\pi),
+    \end{align}
+    where $\widetilde A_k(\pi)=\Pi_kA_k(\pi)+(I-\Pi_k)$ is the existing
+    identity extension of the symmetric band metric and
+    $A_k(\pi)=(W_{P,k}^{-1}W_{F,k}^{-1}W_{Y,k})^2$.
+    Empty parts, $k=0$, and an empty set of sites are included.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:replica_symmetric_floor, lem:replica_symmetric_metric}
+    Choose the exponent from Theorem~\ref{thm:replica_symmetric_floor}
+    for the fixed system and $t$. Its identity-extension inequality is
+    \begin{align}
+        (k+2)^{-C}I\le\Pi_kA_k(\pi)\Pi_k+(I-\Pi_k).
+    \end{align}
+    The band metric commutes with $\Pi_k$, and $\Pi_k^2=\Pi_k$.
+    Hence $\Pi_kA_k(\pi)\Pi_k=\Pi_kA_k(\pi)$, proving the assertion.
+\end{proof}
+
+\begin{theorem}[Uniform floor for mean trees of symmetric band metrics]
+    \label{thm:replica_symmetric_mean_floor}
+    \lean{TensorPower.ReplicaTransport.exists_meanTree_symBandMetric_floor}
+    \leanok
+    \uses{lem:replica_symmetric_metric, def:mean_tree}
+    Fix the same finite tensor product and $t>0$. There exists $C\ge0$
+    such that, for every $k\ge0$, every label set $J$, not necessarily finite, every
+    family of partitions $(\pi_j)_{j\in J}$, and every nonempty finite
+    rooted weighted binary tree $\mathcal T$ with terminal labels in $J$,
+    its root satisfies
+    \begin{align}
+        (k+2)^{-C}I
+        \le\mathcal T\bigl(\widetilde A_k(\pi_j):j\bigr).
+    \end{align}
+    The exponent is chosen before the copy number, label set, partitions,
+    tree and interpolation parameters. Repeated terminal labels, zero
+    terminal weights, and interpolation parameters at either endpoint
+    are allowed.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:replica_symmetric_band_floor, thm:mean_tree_properties}
+    Choose $C$ from Theorem~\ref{thm:replica_symmetric_band_floor} and put
+    $c=(k+2)^{-C}>0$. Every terminal input is bounded below by the
+    positive definite matrix $cI$. Monotonicity of the mean tree and its
+    value on a constant input give
+    \begin{align}
+        cI=\mathcal T(cI:j)
+        \le\mathcal T\bigl(\widetilde A_k(\pi_j):j\bigr).
+    \end{align}
+\end{proof}
+
+% Source: 06-transport.tex, transport:means, lines 40--62;
+% 07-comparators.tex, lower comparator argument, lines 603--621.
+These are direct consequences of the replica floor and monotonicity of
+finite mean trees used in the lower comparator argument
+of \cite{OpenAI2026AreaLaw}.
