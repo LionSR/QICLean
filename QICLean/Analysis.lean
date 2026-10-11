@@ -24,6 +24,7 @@ import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingExponentialOrder
 import QICLean.Analysis.CommutingHermitian
+import QICLean.Analysis.CompressedInverseFloor
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ContractionChain
@@ -92,6 +93,7 @@ import QICLean.Analysis.LiebOperatorIntegral
 import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
 import QICLean.Analysis.LogClipping
+import QICLean.Analysis.LogarithmicEnvelope
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
@@ -109,6 +111,7 @@ import QICLean.Analysis.MeanTreeMultibandLowerNorm
 import QICLean.Analysis.MeanTreeProjectionLogBound
 import QICLean.Analysis.MeanTreeProjectionMassBound
 import QICLean.Analysis.MeanTreeProjectionSectors
+import QICLean.Analysis.MeanTreeSublinearRemainder
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.NormalizedInversePowerLogBound
@@ -120,6 +123,8 @@ import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.OrthonormalMatrixNorm
 import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
+import QICLean.Analysis.PhysicalSingletonDensity
+import QICLean.Analysis.PhysicalSingletonEntropy
 import QICLean.Analysis.PoissonContractionDecay
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
@@ -138,10 +143,12 @@ import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
+import QICLean.Analysis.RectangularTraceNormTruncation
 import QICLean.Analysis.RegionalLowDefectLowerPin
 import QICLean.Analysis.RegionalLowDefectMass
 import QICLean.Analysis.RegionalLowDefectProductMass
 import QICLean.Analysis.RegionalLowDefectProjection
+import QICLean.Analysis.RegionalPhysicalMarginals
 import QICLean.Analysis.RegionalRoughLowerNorm
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
@@ -150,6 +157,8 @@ import QICLean.Analysis.ReplicaBadCopyExponential
 import QICLean.Analysis.ReplicaComponentInverseGoodExpectation
 import QICLean.Analysis.ReplicaComponentInverseRough
 import QICLean.Analysis.ReplicaComponentInverseRoughUniform
+import QICLean.Analysis.ReplicaComponentInverseSharp
+import QICLean.Analysis.ReplicaComponentInverseSharpUniform
 import QICLean.Analysis.ReplicaComponentMergeMoment
 import QICLean.Analysis.ReplicaComponentUniformRate
 import QICLean.Analysis.ReplicaDefect
@@ -160,9 +169,15 @@ import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
 import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
 import QICLean.Analysis.ReplicaGoodConfigurationDensity
 import QICLean.Analysis.ReplicaGoodConfigurationExpectation
+import QICLean.Analysis.ReplicaGoodConfigurationIndividualMergeMoment
 import QICLean.Analysis.ReplicaGoodConfigurationMergeMoment
 import QICLean.Analysis.ReplicaGoodConfigurationMergeTransport
 import QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
+import QICLean.Analysis.ReplicaGoodConfigurationProduct
+import QICLean.Analysis.ReplicaGoodConfigurationRegionalMoment
+import QICLean.Analysis.ReplicaGoodConfigurationSharpMoment
+import QICLean.Analysis.ReplicaGoodConfigurationSignedMoments
+import QICLean.Analysis.ReplicaGoodConfigurationSingletonMoment
 import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
@@ -174,6 +189,8 @@ import QICLean.Analysis.ReplicaJointDensity
 import QICLean.Analysis.ReplicaLowDefectCoordinateCovariance
 import QICLean.Analysis.ReplicaLowDefectProjection
 import QICLean.Analysis.ReplicaLowDefectRoughLowerPin
+import QICLean.Analysis.ReplicaLowDefectSharpCompression
+import QICLean.Analysis.ReplicaLowDefectSharpLowerPin
 import QICLean.Analysis.ReplicaMarginalSymmetry
 import QICLean.Analysis.ReplicaPermutationCovariance
 import QICLean.Analysis.ReplicaPhysicalLabelMoment
@@ -187,6 +204,7 @@ import QICLean.Analysis.ResolventPhaseBound
 import QICLean.Analysis.ResolventPhaseGap
 import QICLean.Analysis.RestoringCoefficientBound
 import QICLean.Analysis.RootChannel
+import QICLean.Analysis.RootChannelWord
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RpowConvexity
@@ -229,6 +247,7 @@ import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
+import QICLean.Analysis.SurprisalProductMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
