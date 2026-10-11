@@ -117,8 +117,8 @@ theorem labelProj_schmidtBellSiteEquiv
       (labelProj_compressedSite_submatrix β X (Fin E.card) k ell)
     simpa only [Matrix.submatrix_apply, Equiv.symm_apply_apply,
       Matrix.kroneckerMap_apply, mul_comm] using h.symm
-  change (1 : Matrix (Fin k → A × Fin E.card) (Fin k → A × Fin E.card) ℂ).
-      submatrix eL eL ⊗ₖ
+  change (1 : Matrix (Fin k → A × Fin E.card) (Fin k → A × Fin E.card) ℂ).submatrix
+      eL eL ⊗ₖ
     (labelProj (copyPerm (Fin E.card) k) ell ⊗ₖ
       (1 : Matrix (Fin k → B) (Fin k → B) ℂ)).submatrix eR eR = _
   rw [Matrix.submatrix_one_equiv, hQ]
