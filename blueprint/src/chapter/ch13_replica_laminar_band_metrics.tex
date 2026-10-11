@@ -1,0 +1,100 @@
+\section{Replica metrics of nested regional bands}
+\label{sec:replica_laminar_band_metrics}
+
+Let $F$ be a finite set of sites with finite local configuration sets.
+All replica weights below are computed using the same full local family.
+
+\begin{theorem}[Central observables of a laminar pair]
+\label{thm:laminar_subsystem_label_commutation}
+\lean{TensorPower.commute_labelObservables_subsystemPerm_of_laminar}
+\leanok
+For $R,S\subseteq F$, suppose that $R\subseteq S$, $S\subseteq R$,
+or $R\cap S=\varnothing$. Then every real central label observable
+of the copy action on $R$ commutes with every such observable on $S$.
+This is the laminar form of \cite[Lemma~6.1(2)]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:subgroup_subsystem_label_commutation}
+Apply restricted-copy commutation to the identity homomorphism, reversing
+the order of the two observables in the second inclusion case.
+\end{proof}
+
+Assume henceforth that every local space is nonzero and $t\ge0$.
+Write $W(S)$ for its replica metric on $S$, at a fixed copy number $k\ge0$.
+
+\begin{theorem}[Positive products of laminar band factors]
+\label{thm:positive_laminar_replica_product}
+\lean{TensorPower.posDef_replicaPinnedLeaf,TensorPower.posDef_replicaPinnedFactor}
+\leanok
+For $g\in\{0,\ldots,K-1\}$, let $Q_g,Y_g\subseteq F$ satisfy
+\[
+ Q_g\cap Y_g=\varnothing,\qquad Q_g\cup Y_g\subseteq Q_h\quad(g<h).
+\]
+Then the ordered product
+\[
+ \prod_{g=0}^{K-1}
+ \bigl(W(Q_g)^{-1}W(Q_g\cup Y_g)^{-1}W(Y_g)\bigr)^2
+\]
+is positive definite. In particular, each single squared factor is positive
+definite. The empty product is included. This is the positive laminar
+product used in \cite[Section~8, lines~367--378]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:laminar_subsystem_label_commutation,thm:replica_metric_basic}
+All regions occurring in the product are nested or disjoint. Their central
+metrics and inverse metrics therefore commute. Each metric is positive
+definite, as is its inverse; products of commuting positive definite
+matrices are positive definite.
+\end{proof}
+
+\begin{theorem}[Commutation across all band statuses]
+\label{thm:laminar_replica_band_commutation}
+\lean{TensorPower.replicaPinnedBands_posDef_commute}
+\leanok
+For an arbitrary status set $J$, suppose
+\[
+ Q_{jg}\cap Y_{jg}=\varnothing,\qquad
+ Q_{jg}\cup Y_{jg}\subseteq Q_{j'h}\quad(g<h)
+\]
+for every $j,j'\in J$. Set
+\[
+ D_{jg}=\bigl(W(Q_{jg})^{-1}W(Q_{jg}\cup Y_{jg})^{-1}W(Y_{jg})\bigr)^2.
+\]
+Every $D_{jg}$ is positive definite, and $D_{jg}$ commutes with $D_{j'h}$
+whenever $g\ne h$. This is the cross-status commutation in
+\cite[Section~7, lines~268--276; Section~8, lines~20--37]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:positive_laminar_replica_product,thm:laminar_subsystem_label_commutation}
+If $g<h$, every region from the earlier factor lies in $Q_{j'h}$.
+It is therefore contained in both later inner regions and disjoint from
+the later band. All constituent central observables commute. The case
+$h<g$ follows by symmetry; positivity is the single-band case above.
+\end{proof}
+
+\begin{theorem}[The far-region factor on the symmetric space]
+\label{thm:symmetric_replica_factor_action}
+\lean{TensorPower.replicaMetric_factors_symProj}
+\leanok
+Let $\Pi$ project onto simultaneous copy symmetry. For arbitrary regions
+$Q,Y\subseteq F$, with no disjointness assumption, put
+\[
+ A=\bigl(W(Q)^{-1}W((Q\cup Y)^c)^{-1}W(Y)\bigr)^2,
+ \qquad D=\bigl(W(Q)^{-1}W(Q\cup Y)^{-1}W(Y)\bigr)^2.
+\]
+Both matrices commute with $\Pi$, and $A\Pi=\Pi D$.
+Thus the original far-region factor and the laminar factor agree on the
+actual symmetric space, as used in
+\cite[Section~8, lines~299--308]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:schur_label_commutation,thm:signed_subgroup_label_symmetric_nonnegative}
+Every subsystem central observable commutes with simultaneous symmetry.
+Complementary label projections agree after multiplication by $\Pi$;
+summing them with the reciprocal weights gives the corresponding inverse
+metric identity. Multiply the three intertwining identities and square.
+\end{proof}

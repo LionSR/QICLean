@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Representation
 
+import QICLean.Representation.AddedSiteSpace
 import QICLean.Representation.Alternant
 import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.BranchProbability
@@ -64,6 +65,9 @@ import QICLean.Representation.PartitionCount
 import QICLean.Representation.PermutationRepresentation
 import QICLean.Representation.PhysicalMergeHolder
 import QICLean.Representation.RegionPowerSymbol
+import QICLean.Representation.RegionalFiveFactorCoordinates
+import QICLean.Representation.RegionalPhysicalVector
+import QICLean.Representation.RegionalReplicaMetric
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.RelativePin
 import QICLean.Representation.RelativePinAlgebra
@@ -74,6 +78,7 @@ import QICLean.Representation.ReplicaEtaForms
 import QICLean.Representation.ReplicaGammaIntegral
 import QICLean.Representation.ReplicaGroupedInverse
 import QICLean.Representation.ReplicaIntegral
+import QICLean.Representation.ReplicaLaminarBandMetrics
 import QICLean.Representation.ReplicaLift
 import QICLean.Representation.ReplicaLowDefectSymmetricCoordinates
 import QICLean.Representation.ReplicaMarkedRatio
@@ -84,6 +89,8 @@ import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
+import QICLean.Representation.ReplicaSymmetricBandCommute
+import QICLean.Representation.ReplicaSymmetricMeanTreeProduct
 import QICLean.Representation.ReplicaSymmetricMetricFloor
 import QICLean.Representation.ReplicaSymmetricSupport
 import QICLean.Representation.ReplicaTransport

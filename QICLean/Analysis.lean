@@ -77,6 +77,7 @@ import QICLean.Analysis.InverseCompressionLowerPin
 import QICLean.Analysis.InversePowerLogJensen
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
+import QICLean.Analysis.IsometricIntertwiningCommute
 import QICLean.Analysis.IsometricLowerPin
 import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockPower
@@ -129,6 +130,7 @@ import QICLean.Analysis.PolarUnitaryCorrectionKronecker
 import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
+import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
 import QICLean.Analysis.ProjectionCalculus
@@ -141,6 +143,8 @@ import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RectangularTraceNormTruncation
+import QICLean.Analysis.RegionalLowDefectLowerPin
+import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
@@ -177,6 +181,7 @@ import QICLean.Analysis.ReplicaGoodPhysicalSupport
 import QICLean.Analysis.ReplicaInverseRoughCompression
 import QICLean.Analysis.ReplicaJointAuxiliaryExponential
 import QICLean.Analysis.ReplicaJointDensity
+import QICLean.Analysis.ReplicaLowDefectCoordinateCovariance
 import QICLean.Analysis.ReplicaLowDefectProjection
 import QICLean.Analysis.ReplicaLowDefectRoughLowerPin
 import QICLean.Analysis.ReplicaLowDefectSharpCompression

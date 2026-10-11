@@ -680,6 +680,34 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveat:** First prove the actual coordinate equivalence and reduce the
   entries. The scalar identity supplies no permutation covariance itself.
 
+### Central observables after restricting the copy action — shared theorem (2026-10-09)
+
+- **Pattern:** Factor a larger subsystem action into a smaller subsystem and
+  its disjoint complement, then pass centrality through the group algebra.
+- **Reuse:** `TensorPower.commute_subgroup_labelObservables_of_subset_or_disjoint`
+  in `Representation/SubsystemLabelCommutation.lean` treats a common arbitrary
+  homomorphism of copy permutation groups. The laminar band argument specializes
+  it to the identity homomorphism and reverses the nested case when required.
+  The joint auxiliary exponential contribution uses the same theorem for the
+  actual good-copy subgroup, replacing its private copy.
+- **Caveats:** Both actions use the same restriction homomorphism. No injectivity,
+  nonempty local-space assumption, or commutation of arbitrary overlapping
+  subsystems is inferred. Symmetric-range commutation separately reuses the
+  existing subgroup projection theorem from `GroupedLabelSymmetricSupport`.
+
+### Projections under equivariant coordinates
+
+The original replica cutoff uses the same two elementary arguments in its
+five-factor and global coordinates. Equivariant permutation matrices transport
+the group average; `PermutationRepresentation.symProj_of_intertwine` records
+this once. A contained projection then remains a projection after compression
+by the same rectangular coordinate map; use
+`Matrix.isStarProjection_conjTranspose_mul_mul_of_mul_range_eq` in
+`Algebra/OrthogonalProjection.lean`. The latter needs only `P * (Z * Zᴴ) = P`,
+not a separate isometry identity or commutation with a metric. The regional
+cutoff covariance applies these arguments to the actual rank-one ground
+projector, the defect cutoff, and the original auxiliary labels.
+
 ### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
 
 - **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
@@ -706,6 +734,23 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   common regional cutoff. It is not a conditional mass after projecting,
   and no second label selection is made.
 
+### Instances for a finite family of coordinate spaces — candidate (2026-10-09)
+
+- **Pattern:** Construct Fintype, DecidableEq and Nonempty instances for a
+  dependent family with five explicitly specified fibers.
+- **Seen:** The three instances in
+  `Representation/RegionalFiveFactorCoordinates.lean`; one file.
+- **Reuse:** Use the existing dependent eliminator `Fin.cases`, with
+  `inferInstanceAs` naming each actual fiber and `fun i => Fin.elim0 i`
+  for the empty final case. This preserves the canonical component
+  instances and handles families valued in Type as well as Prop.
+- **Reason:** A `fin_cases` proof through list membership cannot eliminate
+  that proposition into these Type-valued instances. Merely unfolding the
+  family leaves vector notation at the instance-synthesis boundary.
+- **Decision:** No new tactic or finite-family abstraction is introduced.
+  These three uses are in one structural definition; reconsider only if
+  another family produces independent repetition.
+
 ### Scalar identities after adding matrix inequalities — candidate (2026-10-09)
 
 - **Pattern:** Add and rescale inequalities in the matrix order, then identify
@@ -717,7 +762,6 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Nonnegative scalar multiplication is established before the
   algebraic conversion. No projection or commutation assumption is needed
   for these two additive comparisons.
-
 ### Chronological prefix and suffix coordinates — candidate (2026-10-09)
 
 - **Pattern:** Express a retained prefix as the predicate filter of the original

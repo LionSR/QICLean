@@ -1,0 +1,34 @@
+\section{Regional coordinates in one global replica space}
+\label{sec:regional_five_factor_coordinates}
+
+\begin{definition}[Regional grouping and fixed auxiliary registers]
+\label{def:regional_five_factor_coordinates}
+\lean{TensorPower.addedSiteSpace,FiniteProduct.regionalPhysicalEquiv,TensorPower.replicaPhysicalCoordinateEquiv,TensorPower.regionalFiveFactorSpace,TensorPower.globalReplicaCopiesEquiv,TensorPower.regionalFiveFactorCopyEquiv}
+\leanok
+Let $\mathcal H_{\mathrm{phys}}$ be a finite tensor product of local
+coordinate spaces, and fix auxiliary coordinate spaces $C,R$.
+An added site is distinguished from the original sites; applying this
+construction twice retains two distinct auxiliary coordinates.
+For disjoint physical regions $Q,Y$, write $F=(Q\cup Y)^c$.
+Restriction of configurations gives the equivalence
+\begin{align}
+ e_{Q,Y}:\mathcal B_{\mathrm{phys}}
+   \longrightarrow\mathcal B_Q\times(\mathcal B_Y\times\mathcal B_F).
+\end{align}
+The five coordinate factors, in order, are $Q,Y,F,C,R$.
+
+On $k$ copies, let $G_k$ extract the original physical copies and the
+two original auxiliary registers from the full configuration. For any
+physical coordinate equivalence $e$, let $E_k(e)$ apply $e$ independently
+to those physical copies and act identically on both auxiliary registers.
+Finally let $F_k$ be the five-factor regrouping into these three registers.
+The actual regional equivalence is
+\begin{align}
+ \Xi_{Q,Y,k}=F_k^{-1}\circ E_k(e_{Q,Y})\circ G_k.
+\end{align}
+It maps the original full configurations to the grouped five-factor
+configurations. The auxiliary coordinate sets and their order are
+unchanged. Empty regions and zero copies are included. These are the
+coordinate identifications in
+\cite[Section~8, lines~20--37 and~80--110]{OpenAI2026AreaLaw}.
+\end{definition}

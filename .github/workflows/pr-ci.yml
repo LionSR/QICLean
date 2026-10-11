@@ -219,11 +219,102 @@ jobs:
       # documenting the invariant this repository must keep true for TNLean;
       # TNLean's own pr-ci.yml carries the real comparison step.
 
+      - name: Build the uniform regional rough lower bound
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.RegionalLowDefectLowerPin \
+            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the uniform regional rough lower bound strictly
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/RegionalPhysicalVector.lean \
+            QICLean/Analysis/RegionalLowDefectLowerPin.lean \
+            QICLeanTest/RegionalLowDefectLowerPinAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build the original regional replica metric
+        run: |
+          set -eo pipefail
+          lake build QICLean.Representation.RegionalReplicaMetric \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the original regional replica metric strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/RegionalReplicaMetric.lean \
+            QICLeanTest/RegionalReplicaMetricAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build common regional low-defect projection
+        run: |
+          set -eo pipefail
+          lake build QICLean.Analysis.RegionalLowDefectProjection \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check common regional low-defect projection strictly
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Algebra/OrthogonalProjection.lean \
+            QICLean/Representation/AddedSiteSpace.lean \
+            QICLean/Representation/SymmetricProjectionCoordinates.lean \
+            QICLean/Representation/RegionalFiveFactorCoordinates.lean \
+            QICLean/Analysis/ReplicaLowDefectCoordinateCovariance.lean \
+            QICLean/Analysis/RegionalLowDefectProjection.lean \
+            QICLeanTest/RegionalLowDefectProjectionAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build actual symmetric band-product target
+        run: |
+          set -eo pipefail
+          lake build QICLean.Representation.ReplicaSymmetricMeanTreeProduct \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check actual symmetric band products strictly
+        timeout-minutes: 12
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/SubsystemLabelCommutation.lean \
+            QICLean/Representation/ReplicaLaminarBandMetrics.lean \
+            QICLean/Analysis/PositiveProjectionCompression.lean \
+            QICLean/Analysis/IsometricIntertwiningCommute.lean \
+            QICLean/Representation/ReplicaSymmetricBandCommute.lean \
+            QICLean/Representation/ReplicaSymmetricMeanTreeProduct.lean \
+            QICLeanTest/ReplicaSymmetricMeanTreeProductAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       - name: Build the actual sharp lower bound and capture timings
         run: |
           set -eo pipefail
           lake build QICLean.Analysis.ReplicaLowDefectSharpLowerPin \
-            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check the actual sharp lower bound strictly
         timeout-minutes: 4
