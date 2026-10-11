@@ -83,8 +83,9 @@ theorem globalReplicaLowDefectProjection_gap_mass_ge
   obtain ⟨hLC, hLR⟩ := labelProj_globalReplicaCopiesEquiv_auxiliary β C R k ellC ellR
   have hC₀ := fixed_in_original_coordinates e _ (fun x => v x) (hLC.symm ▸ hC)
   have hR₀ := fixed_in_original_coordinates e _ (fun x => v x) (hLR.symm ▸ hR)
-  have hS₀ := fixed_in_original_coordinates e _ (fun x => v x)
-    ((symProj_replicaJointCopyPerm_submatrix_globalReplicaCopiesEquiv β C R k).symm ▸ hsym)
+  have hS₀ : symProj (replicaJointCopyPerm ((x : V) → β x) C R k) *ᵥ v₀ = v₀ :=
+    fixed_in_original_coordinates e _ (fun x => v x)
+      ((symProj_replicaJointCopyPerm_submatrix_globalReplicaCopiesEquiv β C R k).symm ▸ hsym)
   have hperm (σ : Equiv.Perm (Fin k)) :
       (permOp (copyPerm ((x : V) → β x) k) σ ⊗ₖ
         (permOp (copyPerm C k) σ ⊗ₖ permOp (copyPerm R k) σ)) *ᵥ v₀ = v₀ := by
