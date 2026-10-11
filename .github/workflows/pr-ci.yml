@@ -219,11 +219,83 @@ jobs:
       # documenting the invariant this repository must keep true for TNLean;
       # TNLean's own pr-ci.yml carries the real comparison step.
 
+      - name: Build the selected Schmidt entropy identity
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          timeout --signal=INT --kill-after=5s 300s \
+            lake build QICLean.Entropy.SelectedSchmidtEntropy \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check selected Schmidt entropy strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Entropy/SelectedSchmidtEntropy.lean \
+            QICLeanTest/SelectedSchmidtEntropyAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
+      - name: Build the sublinear lower remainder target first
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          timeout --signal=INT --kill-after=5s 300s \
+            lake build QICLean.Analysis.MeanTreeSublinearRemainder \
+            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the sublinear lower remainder and its axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeSublinearRemainder.lean \
+            QICLeanTest/MeanTreeSublinearRemainderAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
+      - name: Build the common symmetric-space metric floor and capture timings
+        run: |
+          set -eo pipefail
+          lake build QICLean.Representation.ReplicaSymmetricMetricFloor \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the common symmetric-space metric floor strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/ReplicaSymmetricMetricFloor.lean \
+            QICLeanTest/ReplicaSymmetricMetricFloorAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
       - name: Build the original regional physical marginals
         run: |
           set -eo pipefail
           lake build QICLean.Analysis.RegionalPhysicalMarginals \
-            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check the original regional physical marginals strictly
         timeout-minutes: 4
@@ -388,78 +460,6 @@ jobs:
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
               "$file"
-          done
-
-      - name: Build the common symmetric-space metric floor and capture timings
-        run: |
-          set -eo pipefail
-          lake build QICLean.Representation.ReplicaSymmetricMetricFloor \
-            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
-
-      - name: Check the common symmetric-space metric floor strictly
-        timeout-minutes: 4
-        run: |
-          set -euo pipefail
-          for file in \
-            QICLean/Representation/ReplicaSymmetricMetricFloor.lean \
-            QICLeanTest/ReplicaSymmetricMetricFloorAxioms.lean; do
-            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
-              lake env lean -j1 \
-              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
-              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
-              "$file"
-          done
-
-      - name: Build the sublinear lower remainder target first
-        timeout-minutes: 6
-        env:
-          LEAN_NUM_THREADS: 1
-        run: |
-          set -euo pipefail
-          timeout --signal=INT --kill-after=5s 300s \
-            lake build QICLean.Analysis.MeanTreeSublinearRemainder \
-            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
-
-      - name: Check the sublinear lower remainder and its axioms strictly
-        timeout-minutes: 4
-        env:
-          LEAN_NUM_THREADS: 1
-        run: |
-          set -euo pipefail
-          for file in \
-            QICLean/Analysis/MeanTreeSublinearRemainder.lean \
-            QICLeanTest/MeanTreeSublinearRemainderAxioms.lean; do
-            timeout --signal=INT --kill-after=5s 90s \
-              lake env lean -j1 \
-              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
-              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
-              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
-          done
-
-      - name: Build the selected Schmidt entropy identity
-        timeout-minutes: 6
-        env:
-          LEAN_NUM_THREADS: 1
-        run: |
-          set -euo pipefail
-          timeout --signal=INT --kill-after=5s 300s \
-            lake build QICLean.Entropy.SelectedSchmidtEntropy \
-            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
-
-      - name: Check selected Schmidt entropy strictly
-        timeout-minutes: 4
-        env:
-          LEAN_NUM_THREADS: 1
-        run: |
-          set -euo pipefail
-          for file in \
-            QICLean/Entropy/SelectedSchmidtEntropy.lean \
-            QICLeanTest/SelectedSchmidtEntropyAxioms.lean; do
-            timeout --signal=INT --kill-after=5s 90s \
-              lake env lean -j1 \
-              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
-              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
-              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
           done
 
       - name: Build the actual sharp lower bound and capture timings
