@@ -107,6 +107,8 @@ import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.ReplicaWholeInverse
 import QICLean.Representation.SchmidtBellCommonCutoffs
 import QICLean.Representation.SchmidtBellPrevector
+import QICLean.Representation.SchmidtBellPrevectorOverlap
+import QICLean.Representation.SchmidtBellSitePin
 import QICLean.Representation.SchmidtBellWitnessCoordinates
 import QICLean.Representation.SchmidtBellWitnessRange
 import QICLean.Representation.SchurLabelCommutation
