@@ -46,6 +46,9 @@ local notation "B" => Configuration β Xᶜ
 local notation "ι" => compressedSiteSpace β X (Fin E.card)
 local notation "M" => (Fin k → A × E) × Config k ι
 
+local instance schmidtBellOverlapConfigurationDecidableEq : DecidableEq (Configuration β X) :=
+  Fintype.decidablePiFintype
+
 variable (Ω : EuclideanSpace ℂ (Configuration β X × Configuration β Xᶜ))
 
 /-- The original physical prevector in the actual selected-Bell and exterior
