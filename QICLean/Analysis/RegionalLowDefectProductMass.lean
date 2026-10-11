@@ -119,6 +119,12 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
   have hn : (star v ⬝ᵥ v).re = 1 := by
     simpa only [RCLike.re_to_complex, PiLp.coe_symm_continuousLinearEquiv,
       WithLp.toLp_ofLp, hv, one_pow] using re_star_dotProduct_self_eq_norm_sq v
+  have hδ : 0 ≤ δ := (sub_le_self_iff (1 : ℝ)).mp (by
+    simpa only [div_one, one_mulVec, hn] using
+      (hmass 1 zero_lt_one).trans
+        (re_dotProduct_mulVec_le_of_le
+          (globalReplicaLowDefectProjection_properties β C R Ω hΩ k ellC ellR 1).1.le_one
+          v.ofLp))
   done
 
 end Matrix
