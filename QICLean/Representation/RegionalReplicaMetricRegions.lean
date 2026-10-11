@@ -114,6 +114,10 @@ theorem replicaMetric_lifted_region_geometry {J : Type*} (G : ℕ)
     simpa only [(regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).1,
       (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).2.2] using
       (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).1
-  done
+  exact ⟨hdisj', hfar, fun j j' g h hgh ↦ by
+    simpa only [L, E, Finset.image_union, Finset.insert_union] using
+      Finset.insert_subset_insert (some none)
+        (Finset.image_subset_image (f := fun x : V ↦ some (some x))
+          (hnest j j' g h hgh))⟩
 
 end TensorPower
