@@ -88,6 +88,11 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
         let P := Zᴴ * globalReplicaLowDefectProjection β C R Ω k ellC ellR τ * Z
         IsStarProjection P ∧ 1 - δ / τ ≤ (star φ ⬝ᵥ (P *ᵥ φ)).re := by
   intro W L F E A B M w φ v δ
+  obtain ⟨hLE, hfar, hnestL⟩ :
+      (∀ j g, Disjoint (L j g) (E j g)) ∧
+        (∀ j g, F j g = (L j g ∪ E j g)ᶜ) ∧
+          ∀ j j' g h, g < h → L j g ∪ E j g ⊆ L j' h :=
+    replicaMetric_lifted_region_geometry G Q Y hdisj hnest
   done
 
 end Matrix
