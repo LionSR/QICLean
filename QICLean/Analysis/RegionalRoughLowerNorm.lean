@@ -128,6 +128,11 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
     simpa only [B, A, W, hfar] using
       ((replicaMetric_symProj_compressions_posDef_commute
         ι₀ k n Z hZ hZZ ht.le G L E hLE hnestL).1 j g).1
+  have hcomm (g h : Fin G) (hgh : g ≠ h) :
+      Commute (T.eval (B · g)) (T.eval (B · h)) := by
+    simpa only [B, A, W, hfar] using
+      (replicaMetric_symProj_meanTree_roots_commute
+        ι₀ k n Z hZ hZZ ht.le G L E hLE hnestL).2 g h hgh T T
   done
 
 end Matrix
