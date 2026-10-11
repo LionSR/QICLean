@@ -11,6 +11,7 @@ No normalization of $\Omega$ is imposed.
 \begin{definition}[The supplied-label prevector on the exterior sites]
     \label{def:schmidt_bell_site_prevector}
     \lean{FiniteProduct.schmidtBellSitePrevector}
+    \leanok
     \uses{def:replica_prevector,def:schmidt_bell_site_coordinates}
     Fix $k\geq0$ and an irreducible label $\ell$ of $\mathfrak S_k$.
     Let $v_{k,\ell}$ be the original prevector in the canonical coordinates
@@ -33,6 +34,7 @@ No normalization of $\Omega$ is imposed.
 \begin{theorem}[Exact overlap for the supplied label]
     \label{thm:schmidt_bell_supplied_overlap}
     \lean{FiniteProduct.inner_schmidtBellSitePrevector}
+    \leanok
     \uses{def:schmidt_bell_site_prevector,thm:schmidt_bell_site_post}
     Suppose the actual selected mass $z=\sum_{i\in E}p_i$ is positive.
     Let $P=(|\beta_E\rangle\langle\beta_E|)^{\otimes k}\otimes I$
@@ -51,7 +53,7 @@ No normalization of $\Omega$ is imposed.
     It is the overlap consequence of
     \cite[Section~8, lines~283--290 and~346--354]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:schmidt_bell_site_pin}
     The Bell projection is self-adjoint. Thus
     $\langle\varphi,v^{\mathrm{site}}_{k,\ell}\rangle
