@@ -12,6 +12,7 @@ import QICLean.Entropy.AuxiliaryPairEntropy
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.BufferDiscount
 import QICLean.Entropy.ClassicalMutualInformation
+import QICLean.Entropy.CompressedPhysicalMatchedCutoffs
 import QICLean.Entropy.CompressedPhysicalRegions
 import QICLean.Entropy.CompressedSiteCoordinates
 import QICLean.Entropy.CompressedTypicalCommonBellVector

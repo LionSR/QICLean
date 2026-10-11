@@ -1,0 +1,148 @@
+\section{Transferring cutoffs between comparable regions}
+
+\begin{theorem}[Dimension of an occurring label]
+    \label{thm:occurring_label_dimension}
+    \lean{PermutationRepresentation.dim_le_card_of_labelProj_ne_zero}
+    \uses{def:label_projectors}
+    Let a finite group $G$ act by permutations on a finite set $Y$.
+    If the projector $\pi^\lambda$ for an irreducible label $\lambda$
+    is nonzero, then $\dim\lambda\leq |Y|$.
+\end{theorem}
+\begin{proof}
+    \uses{lem:isotypic_dimension}
+    The range $W$ of $\pi^\lambda$ is a nonzero invariant subspace on
+    which $\pi^\lambda$ acts as the identity. Hence
+    $\dim\lambda\leq\dim W\leq\dim\C^Y=|Y|$.
+\end{proof}
+
+\begin{theorem}[Dimension of a subsystem label]
+    \label{thm:occurring_subsystem_label_dimension}
+    \lean{TensorPower.dim_le_pow_card_of_subsystem_labelProj_ne_zero}
+    \uses{def:copy_permutations,def:label_projectors}
+    Let $F$ be a finite set of sites with finite coordinate sets $I_f$,
+    and write $\mathcal H_B=\bigotimes_{f\in B}\C^{I_f}$ for $B\subseteq F$.
+    For $k\geq0$, let $\pi_B^\lambda$ denote the projector for the
+    $B$-subsystem copy action of $S_k$. Then
+    $\pi_B^\lambda\ne0$ implies $\dim\lambda\leq(\dim\mathcal H_B)^k$.
+\end{theorem}
+\begin{proof}
+    \uses{thm:subsystem_label_projection_coordinates,thm:occurring_label_dimension}
+    In regional and complementary coordinates the projector is
+    $I\otimes\pi^\lambda$ on the $k$ copies of $\mathcal H_B$.
+    A nonzero subsystem projector therefore gives a nonzero regional
+    projector. Apply the dimension estimate to its coordinate space.
+\end{proof}
+
+\begin{theorem}[Absorption of cutoffs on comparable regions]
+    \label{thm:matched_schur_cutoff_absorption}
+    \lean{TensorPower.labelCutoff_subsystemPerm_mul_of_nested}
+    \uses{def:schur_label_cutoff}
+    In the same finite tensor product, put
+    $P_B(a)=\sum_{\log\dim\lambda\leq a}\pi_B^\lambda$.
+    Suppose $B\subseteq Q$ or $Q\subseteq B$. For real $a,t$ satisfying
+    $a+k\log\dim\mathcal H_{B\triangle Q}\leq t$, one has
+    $P_Q(t)P_B(a)=P_B(a)$.
+    This is the cutoff comparison in
+    \cite[Section~8, lines~356--365]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:schur_label_merge_dimensions,thm:occurring_subsystem_label_dimension}
+    Resolve the identity into labels on the difference region. On a
+    nonzero joint block, the compatible-label dimension inequalities and
+    the difference-region dimension estimate give
+    \begin{align*}
+        \log\dim\nu\leq\log\dim\lambda+k\log\dim\mathcal H_{B\triangle Q}.
+    \end{align*}
+    Thus every nonzero joint block retained by $P_B(a)$ is retained by
+    $P_Q(t)$. Summing the joint blocks proves the identity.
+\end{proof}
+
+\begin{theorem}[Transfer of a cutoff with a spectator factor]
+    \label{thm:matched_schur_cutoff_vector}
+    \lean{TensorPower.toEuclideanLin_labelCutoff_of_matched}
+    \uses{def:schur_label_cutoff}
+    Let $\mathcal D$ be any finite-dimensional coordinate space, and
+    let $\varphi\in\mathcal D\otimes\mathcal H_F^{\otimes k}$.
+    Suppose $B,Q$ are comparable, $z>0$, and the real parameters satisfy
+    $s\leq B_{\rm sh}$ and
+    $1+\log\dim\mathcal H_{B\triangle Q}\leq B_{\rm exc}$.
+    Then
+    \begin{align*}
+        (I\otimes P_B(k(s/z+1)))\varphi=\varphi
+        \quad\Longrightarrow\quad
+        (I\otimes P_Q(k(B_{\rm sh}/z+B_{\rm exc})))\varphi=\varphi.
+    \end{align*}
+    No normalization of $\varphi$ is required.
+\end{theorem}
+\begin{proof}
+    \uses{thm:matched_schur_cutoff_absorption}
+    The hypotheses give
+    $k(s/z+1)+k\log\dim\mathcal H_{B\triangle Q}
+    \leq k(B_{\rm sh}/z+B_{\rm exc})$.
+    Tensor the absorption identity with $I_{\mathcal D}$ and apply it
+    to $\varphi$.
+\end{proof}
+
+\begin{theorem}[Symmetric differences of exterior regions]
+    \label{thm:exterior_region_symmetric_difference}
+    \lean{FiniteProduct.exteriorRegion_symmDiff}
+    \uses{def:compressed_site_family}
+    For a finite site set $V$ and $X,B,Q\subseteq V$, write
+    $\widehat B$ for the exterior lift of $B$ to
+    $\widehat V=\{*\}\sqcup X^c$. Then
+    $\widehat{B\triangle Q}=\widehat B\triangle\widehat Q$.
+\end{theorem}
+\begin{proof}
+    The auxiliary site belongs to neither side. At each exterior physical
+    site, both memberships mean membership in exactly one of $B,Q$.
+\end{proof}
+
+\begin{theorem}[Physical dimension of an exterior difference]
+    \label{thm:exterior_difference_dimension}
+    \lean{FiniteProduct.card_configuration_exteriorRegion_symmDiff}
+    \uses{def:compressed_site_family}
+    Give the physical sites finite coordinate sets $I_v$ and the
+    auxiliary site any finite coordinate set $R$.
+    If $X$ is disjoint from both $B$ and $Q$, then
+    $\dim\widehat{\mathcal H}_{\widehat B\triangle\widehat Q}
+    =\dim\mathcal H_{B\triangle Q}$.
+\end{theorem}
+\begin{proof}
+    \uses{thm:exterior_region_symmetric_difference,def:compressed_site_region_coordinates}
+    The set $B\triangle Q$ is disjoint from $X$. Its exterior
+    configurations are in bijection with its original physical
+    configurations, and the auxiliary coordinate does not occur.
+\end{proof}
+
+\begin{theorem}[Matched cutoffs in the original physical dimensions]
+    \label{thm:compressed_physical_matched_cutoff}
+    \lean{FiniteProduct.toEuclideanLin_compressedPhysicalCutoff_of_matched}
+    \uses{def:compressed_site_family,def:compressed_regional_threshold,def:schur_label_cutoff}
+    Let $\Omega\in\mathcal H_V$, let $E$ select eigenvectors of its
+    reduced matrix on $X$, and let their total mass be $z>0$.
+    The compressed system has auxiliary coordinate set $\{0,\ldots,|E|-1\}$.
+    Put $\mathcal L_k=(\mathcal H_X\otimes\C^E)^{\otimes k}$, and let
+    $\varphi\in\mathcal L_k\otimes\widehat{\mathcal H}_{\widehat V}^{\otimes k}$.
+    Let $\mathcal R$ be a finite list of regions containing $B$, and suppose
+    that for every $C\in\mathcal R$,
+    \begin{align*}
+        (I\otimes\widehat P_{\widehat C}(a_k(\widehat C)))\varphi=\varphi.
+    \end{align*}
+    Suppose $X$ is disjoint from $B,Q$, these two regions are comparable,
+    $S(\rho_B^\Omega)\leq B_{\rm sh}$, and
+    $1+\log\dim\mathcal H_{B\triangle Q}\leq B_{\rm exc}$.
+    Then
+    \begin{align*}
+        (I\otimes\widehat P_{\widehat Q}(k(B_{\rm sh}/z+B_{\rm exc})))\varphi=\varphi.
+    \end{align*}
+    The vector $\Omega$ need not be normalized. This is the matched-region
+    implication in \cite[Section~8, lines~332--365]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:compressed_regional_threshold_lifted,thm:lifted_physical_regions_nested,thm:exterior_difference_dimension,thm:matched_schur_cutoff_vector}
+    Use the supplied range equation for $B$ and substitute
+    $a_k(\widehat B)=k(S(\rho_B^\Omega)/z+1)$.
+    The exterior lifts remain comparable, and their difference has
+    exactly the original physical dimension. Apply the spectator-factor
+    cutoff transfer with $\mathcal D=\mathcal L_k$ to the same $\varphi$.
+\end{proof}

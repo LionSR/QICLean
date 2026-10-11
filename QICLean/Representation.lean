@@ -56,6 +56,7 @@ import QICLean.Representation.LabelProjectors
 import QICLean.Representation.MarkedSimilaritySymbol
 import QICLean.Representation.MarkedStar
 import QICLean.Representation.MarkedSymbol
+import QICLean.Representation.MatchedSchurCutoffs
 import QICLean.Representation.MergeDimensions
 import QICLean.Representation.MergeExponential
 import QICLean.Representation.MergeMoment
@@ -119,6 +120,7 @@ import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemLabelCommutation
 import QICLean.Representation.SubsystemLabelCoordinates
 import QICLean.Representation.SubsystemTransport
+import QICLean.Representation.SupportedSubsystemLabelDimension
 import QICLean.Representation.SymmetricProjectionCoordinates
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
