@@ -54,6 +54,12 @@ theorem abs_entropy_sub_le_sqrt_traceDistance
       (Matrix.traceDistance_submatrix_equiv (splitEquiv β R).symm
         (Matrix.posSemidef_vecMulVec_self_star Ω).isHermitian
         (Matrix.posSemidef_vecMulVec_self_star Φ).isHermitian)
-  done
+  exact hcont.trans (mul_le_mul_of_nonneg_right
+    (mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt hdist) (by norm_num))
+    (Real.log_nonneg (one_le_mul_of_one_le_of_one_le
+      (Real.one_le_exp zero_le_one)
+      (Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr
+        (Matrix.PosSemidef.nonempty_of_trace_eq_one
+          (trace_reducedPure β Ω hΩ R)))))))
 
 end FiniteProduct
