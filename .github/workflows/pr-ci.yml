@@ -436,6 +436,32 @@ jobs:
               "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
           done
 
+      - name: Build the selected Schmidt entropy identity
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          timeout --signal=INT --kill-after=5s 300s \
+            lake build QICLean.Entropy.SelectedSchmidtEntropy \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check selected Schmidt entropy strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Entropy/SelectedSchmidtEntropy.lean \
+            QICLeanTest/SelectedSchmidtEntropyAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
       - name: Build the actual sharp lower bound and capture timings
         run: |
           set -eo pipefail
