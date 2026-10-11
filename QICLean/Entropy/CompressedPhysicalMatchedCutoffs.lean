@@ -106,7 +106,8 @@ theorem toEuclideanLin_compressedPhysicalCutoff_of_matched
   rw [compressedRegionalThreshold_exteriorRegion β Ω X B hXB E k] at hφ
   have hmatch : exteriorRegion X B ⊆ exteriorRegion X Q ∨
       exteriorRegion X Q ⊆ exteriorRegion X B :=
-    hnested.imp (monotone_exteriorRegion X) (monotone_exteriorRegion X)
+    hnested.imp (fun hBQ ↦ monotone_exteriorRegion X hBQ)
+      (fun hQB ↦ monotone_exteriorRegion X hQB)
   have hexc' : 1 + Real.log
       (Fintype.card (Configuration ι (exteriorRegion X B ∆ exteriorRegion X Q))) ≤ Bexc := by
     rw [card_configuration_exteriorRegion_symmDiff β X B Q (Fin E.card) hXB hXQ]
