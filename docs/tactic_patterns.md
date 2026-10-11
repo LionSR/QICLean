@@ -838,3 +838,12 @@ intertwining equations in their given order. The original roots need not
 commute. Positivity of the exterior product follows separately from
 `replicaPinnedTree_eval_eq_prod` and the positive ordered leaves, with the
 same original full-family weights. Empty products remain included.
+
+### Real powers with fixed symmetric coordinates — planned existing-lemma use
+
+The Bell power comparison retains one supplied symmetric isometry Z and
+forms the product of means of Zᴴ A Z, exactly as in the lower norm estimates.
+`replicaMetric_symProj_compressions_posDef_commute` and
+`MeanTree.eval_intertwine` give the band equations. Ordered multiplication
+then gives the equation for the same product, and `PosSemidef.rpow_intertwine`
+applies with rectangular map Zᴴ P. No second compression is selected.

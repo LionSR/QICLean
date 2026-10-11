@@ -1,0 +1,62 @@
+\section{Real powers in fixed symmetric coordinates}
+
+\begin{theorem}[Bell restriction of the compressed band product]
+    \label{thm:bell_compressed_band_product_powers}
+    \lean{TensorPower.replicaMetric_compressed_bandProduct_bellPin_rpow}
+    \uses{thm:replica_metric_basic,def:bell_insertion_coordinates}
+    Let the original finite site family consist of the physical registers
+    and two auxiliary registers $C,R$, all with finite nonempty coordinate
+    sets. Fix a physical region $X$, a replica parameter $t\ge0$, a copy
+    number $k\ge0$, and an isometry $Z:\C^n\to\mathcal H_k$ with
+    $ZZ^*=\Pi_0$, where $\Pi_0$ is full simultaneous-copy symmetry.
+    Let $J_k$ insert the tensor power of an arbitrary vector on $X\cup C$,
+    let $\Pi_E$ be exterior copy symmetry, and put $P_k=J_k\Pi_EJ_k^*$.
+
+    Suppose the physical regions satisfy
+    \begin{align*}
+        U_{jg}\cap Y_{jg}&=\varnothing,\\
+        U_{jg}\cup Y_{jg}&\subseteq U_{j'h}\qquad(g<h).
+    \end{align*}
+    All replica metrics $W$ use the original full-family weights. Write
+    $E(B)=B\setminus X$, viewed as a subsystem of the original family, and set
+    \begin{align*}
+        Q_{jg}&=C\cup X\cup U_{jg},&
+        F_{jg}&=R\cup(X\cup U_{jg}\cup Y_{jg})^c,\\
+        A_{jg}&=(W_{Q_{jg}}^{-1}W_{F_{jg}}^{-1}W_{E(Y_{jg})})^2,&
+        D_{jg}&=(W_{E(U_{jg})}^{-1}W_{E(U_{jg}\cup Y_{jg})}^{-1}
+                    W_{E(Y_{jg})})^2.
+    \end{align*}
+    Complements here are taken among physical sites. For the same finite
+    weighted mean tree $\mathcal T$ in every band, define
+    \begin{align*}
+        M&=\prod_{g=0}^{K-1}\mathcal T\bigl((Z^*A_{jg}Z)_j\bigr),&
+        N&=\prod_{g=0}^{K-1}\mathcal T\bigl((D_{jg})_j\bigr).
+    \end{align*}
+    Then $M$ is positive definite, and for every $s\in\R$,
+    \begin{align*}
+        (ZM^sZ^*)P_k=P_kN^s.
+    \end{align*}
+    Empty band products are included. The inserted vector need not be unit.
+\end{theorem}
+\begin{proof}
+    \uses{thm:bell_band_product_pin_action,thm:bell_metric_factor_positivity,
+        thm:bell_insertion_isometry_symmetry,thm:replica_symmetric_band_compressions,
+        thm:replica_symmetric_band_mean_roots,thm:mean_intertwiner_root,
+        thm:mean_intertwiner_power,thm:mean_tree_properties}
+    The actual band factors intertwine with their compressions through
+    $Z$. The same is true of their matrix means and their ordered products.
+    The compressed band roots are positive and commute across different
+    bands, so $M$ is positive definite. The exterior product $N$ is also
+    positive definite.
+
+    Full copy symmetry contains the inserted symmetric range, hence
+    $ZZ^*P_k=P_k$. Combining the band intertwiners with the Bell restriction
+    gives
+    \begin{align*}
+        M(Z^*P_k)=(Z^*P_k)N.
+    \end{align*}
+    Functional calculus gives the same equality for every real power.
+    Multiplying by $Z$ and using $ZZ^*P_k=P_k$ proves the claim. These are
+    the fixed symmetric coordinates used in
+    \cite[\texttt{07-comparators.tex}, lines 80--110, 299--308 and 370--381]{OpenAI2026AreaLaw}.
+\end{proof}
