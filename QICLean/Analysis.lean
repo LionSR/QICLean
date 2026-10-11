@@ -111,6 +111,7 @@ import QICLean.Analysis.MeanTreeMultibandLowerNorm
 import QICLean.Analysis.MeanTreeProjectionLogBound
 import QICLean.Analysis.MeanTreeProjectionMassBound
 import QICLean.Analysis.MeanTreeProjectionSectors
+import QICLean.Analysis.MeanTreeSublinearRemainder
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.NormalizedInversePowerLogBound
@@ -145,6 +146,7 @@ import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RectangularTraceNormTruncation
 import QICLean.Analysis.RegionalLowDefectLowerPin
 import QICLean.Analysis.RegionalLowDefectProjection
+import QICLean.Analysis.RegionalPhysicalMarginals
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
