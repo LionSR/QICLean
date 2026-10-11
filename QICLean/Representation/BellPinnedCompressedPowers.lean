@@ -94,6 +94,8 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
       (X ∪ U j g) ∪ (Y j g \ X) = X ∪ (U j g ∪ Y j g) := by
     simp only [Finset.union_assoc, Finset.union_left_comm X (U j g),
       Finset.union_sdiff_self_eq_union]
+  have hfar (j : S) (g : Fin K) : F j g = (Q j g ∪ E (Y j g))ᶜ := by
+    simpa only [hunion] using hgeometry.2.1 j g
   done
 
 end TensorPower
