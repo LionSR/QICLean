@@ -16,6 +16,10 @@ import QICLean.Representation.Alternant
 import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.BellInsertionCoordinates
 import QICLean.Representation.BellInsertionSymmetry
+import QICLean.Representation.BellMetricFactorPositivity
+import QICLean.Representation.BellPinnedMetricCoordinates
+import QICLean.Representation.BellPinnedTreeAction
+import QICLean.Representation.BellSymmetricPinProjection
 import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri

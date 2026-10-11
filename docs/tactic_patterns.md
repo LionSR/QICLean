@@ -802,3 +802,14 @@ projector, the defect cutoff, and the original auxiliary labels.
   A general norm inequality for folds should be considered at a third occurrence.
 - **Caveats:** No norm compatibility with the scalar action is needed; the
   contraction hypothesis concerns the additive seminorm directly.
+
+### Bell restriction of positive mean trees — existing lemmas (2026-10-11)
+
+The metric restriction uses `IsHermitian.conjTranspose_intertwine` for the
+adjoint equation and `Matrix.MeanTree.eval_intertwine` for the same tree of
+positive factors. Its real powers use `PosSemidef.rpow_intertwine`.
+Full-copy symmetry commutation is the containing-subsystem label theorem
+with the full subsystem; the group-algebra argument is not repeated.
+The inserted vector need not be unit for these identities. Unit norm is
+used only to conclude that the inserted symmetric operator is a projection.
+Every replica weight retains the original full-family dimension.
