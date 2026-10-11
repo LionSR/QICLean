@@ -93,6 +93,16 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
         (∀ j g, F j g = (L j g ∪ E j g)ᶜ) ∧
           ∀ j j' g h, g < h → L j g ∪ E j g ⊆ L j' h :=
     replicaMetric_lifted_region_geometry G Q Y hdisj hnest
+  obtain ⟨hM, hw, hv, hsymv, hlabels⟩ :
+      M.PosDef ∧ w ≠ 0 ∧ ‖v‖ = 1 ∧
+        symProj (copyPerm ((x : Option (Option V)) → ι₀ x) k) *ᵥ v = v ∧
+          ∀ (a : Option (Option V)) (ell : IrrepLabel (Equiv.Perm (Fin k))),
+            labelProj (subsystemPerm k ι₀ {a}) ell *ᵥ ξ = ξ →
+              labelProj (subsystemPerm k ι₀ {a}) ell *ᵥ v = v := by
+    simpa only [W, A, B, M, w, φ, v, hfar] using
+      (replicaMetric_normalized_symProj_bandProduct_mem_original_labels
+        ι₀ k n Z hZ hZZ ht G L E hLE hnestL T).elim
+          (fun hM hfilter => And.intro hM (hfilter s ξ hξ hsym))
   done
 
 end Matrix
