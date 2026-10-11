@@ -113,6 +113,15 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
       (fun j ↦ (posDef_bellMetric_factors β X C R ht k (U j g) (Y j g)
         (hdisj j g)).1)
       (fun j ↦ (hleaf j g).1) Z (fun j ↦ (hleaf j g).2) T
+  have hprod :
+      (List.ofFn fun g ↦ T.eval (A · g)).prod * Z = Z * M := by
+    have h := List.prod_hom_rel (List.ofFn (id : Fin K → Fin K))
+      (r := fun L R ↦ L * Z = Z * R)
+      (f := fun g ↦ T.eval (A · g)) (g := fun g ↦ T.eval (B · g))
+      (by simp only [Matrix.one_mul, Matrix.mul_one]) (by
+        intro g L R hLR
+        rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc, hband g, Matrix.mul_assoc])
+    simpa only [M, List.map_ofFn, Function.comp_id] using h
   done
 
 end TensorPower
