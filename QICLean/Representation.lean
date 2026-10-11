@@ -31,14 +31,9 @@ import QICLean.Representation.CompressedTypicalLabelSequence
 import QICLean.Representation.ExteriorPieri
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
-<<<<<<< HEAD
 import QICLean.Representation.GoodAuxiliaryPairCompression
 import QICLean.Representation.GroupAlgebraProductCoordinates
 import QICLean.Representation.GroupedConfigurationTransport
-||||||| f2b3457b
-=======
-import QICLean.Representation.GroupAlgebraProductCoordinates
->>>>>>> origin/main
 import QICLean.Representation.GroupedCopies
 import QICLean.Representation.GroupedLabelEntropy
 import QICLean.Representation.GroupedLabelSymmetricSupport
@@ -89,13 +84,8 @@ import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
-<<<<<<< HEAD
-import QICLean.Representation.ReplicaSymmetricMetricFloor
-||||||| merged common ancestors
-=======
 import QICLean.Representation.ReplicaSymmetricMetricFloor
 import QICLean.Representation.ReplicaSymmetricSupport
->>>>>>> origin/feat/replica-sharp-lower-pin
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.ReplicaWholeInverse
@@ -116,13 +106,8 @@ import QICLean.Representation.SkewSymbolBound
 import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarFunction
 import QICLean.Representation.StarOperator
-<<<<<<< HEAD
 import QICLean.Representation.SubsystemLabelCommutation
 import QICLean.Representation.SubsystemLabelCoordinates
-||||||| f2b3457b
-=======
-import QICLean.Representation.SubsystemLabelCoordinates
->>>>>>> origin/main
 import QICLean.Representation.SubsystemTransport
 import QICLean.Representation.SymmetricProjectionCoordinates
 import QICLean.Representation.TensorPowerAction
