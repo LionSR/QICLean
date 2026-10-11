@@ -160,6 +160,9 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
         (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.1
         (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.2.1
         (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.2.2 n Z hZ hZZ).2
+  let leafRate := fun (j : J) (g : Fin G) ↦
+    2 * S + (1 - τ) * entropyGap j g - τ * d -
+      (3 + 1 / (2 * t)) * Real.binEntropy τ - 50 * K * t
   done
 
 end Matrix
