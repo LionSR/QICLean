@@ -18,6 +18,7 @@ import QICLean.Analysis.CfcComplex
 import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
+import QICLean.Analysis.CfcLogListProduct
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
@@ -73,6 +74,7 @@ import QICLean.Analysis.IidTailThreshold
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.InvariantExponentialComparison
 import QICLean.Analysis.InverseCompressionLowerPin
+import QICLean.Analysis.InversePowerLogJensen
 import QICLean.Analysis.IsometricCompression
 import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.IsometricIntertwiningCommute
@@ -102,8 +104,16 @@ import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
+import QICLean.Analysis.MeanTreeExponentialLowerNorm
+import QICLean.Analysis.MeanTreeLogFloorDeficit
+import QICLean.Analysis.MeanTreeLogFloorExp
+import QICLean.Analysis.MeanTreeMultibandLowerNorm
+import QICLean.Analysis.MeanTreeProjectionLogBound
+import QICLean.Analysis.MeanTreeProjectionMassBound
+import QICLean.Analysis.MeanTreeProjectionSectors
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
+import QICLean.Analysis.NormalizedInversePowerLogBound
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
@@ -132,6 +142,7 @@ import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
+import QICLean.Analysis.RectangularTraceNormTruncation
 import QICLean.Analysis.RegionalLowDefectLowerPin
 import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Analysis.RelativeEntropyResolventIntegral

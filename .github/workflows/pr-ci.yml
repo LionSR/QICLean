@@ -212,6 +212,13 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
+      # of a confusing kernel error downstream in TNLean. See
+      # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to
+      # check against (it is the leaf), so this step is a no-op placeholder
+      # documenting the invariant this repository must keep true for TNLean;
+      # TNLean's own pr-ci.yml carries the real comparison step.
+
       - name: Build the original metric regions
         run: |
           set -eo pipefail
@@ -499,6 +506,7 @@ jobs:
           set -eo pipefail
           lake build QICLean.Representation.GroupedLabelSymmetricSupport QICLean.Analysis.ReplicaBadCopyExponential \
             2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
       - name: Build the individual component merge moments and capture timings
         run: |
           set -eo pipefail
@@ -639,17 +647,11 @@ jobs:
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
               "$file"
           done
+
       - name: Build good-copy singleton moment target and capture timings
         run: |
           set -eo pipefail
           lake build QICLean.Analysis.ReplicaGoodConfigurationSingletonMoment 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
-
-      # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
-      # of a confusing kernel error downstream in TNLean. See
-      # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to
-      # check against (it is the leaf), so this step is a no-op placeholder
-      # documenting the invariant this repository must keep true for TNLean;
-      # TNLean's own pr-ci.yml carries the real comparison step.
 
       - name: Build grouped coordinates and good-copy expectations with timings
         run: |
@@ -735,76 +737,6 @@ jobs:
               -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
               "$file"
           done
-
-      - name: Build rectangular window API targets early
-        run: lake build QICLean.Channel.WindowMinorization QICLean.Kraus.RectangularChain QICLean.Algebra.MatrixDependentEntries QICLean.Analysis.GeometricDecay
-
-      - name: Check rectangular window regressions strictly
-        run: >
-          LEAN_NUM_THREADS=1 lake env lean -j1
-          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
-          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
-          QICLeanTest/WindowMinorization.lean
-
-
-      - name: Build Hermitian intertwiner, path, and inner-action targets
-        run: >
-          lake build QICLean.Analysis.HermitianIntertwiner
-          QICLean.Analysis.HermitianUnitaryPath QICLean.Analysis.KroneckerExponential
-          QICLean.Algebra.MatrixUnitConjugator QICLean.Analysis.DifferentiableInnerAction
-
-      - name: Check Hermitian intertwiner, path, and inner-action regressions strictly
-        run: |
-          set -e
-          for example in HermitianIntertwiner ContinuousHermitianPath DifferentiableInnerAction; do
-            LEAN_NUM_THREADS=1 lake env lean -j1 \
-              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
-              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
-              "QICLeanTest/$example.lean"
-          done
-
-      - name: Build finite-product entropy and two-family targets
-        run: >
-          lake build QICLean.Channel.FiniteProduct QICLean.Entropy.Bipartite
-          QICLean.Entropy.FiniteProduct QICLean.Entropy.OrderedEntropyAlgebra
-          QICLean.Entropy.TwoFamilies QICLean.Entropy.FiniteProductConditional
-
-      - name: Check finite-product entropy regressions and axiom guards strictly
-        run: |
-          set -e
-          for example in OrderedEntropyAlgebra FiniteProductEntropy; do
-            LEAN_NUM_THREADS=1 lake env lean -j1 \
-              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
-              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
-              "QICLeanTest/$example.lean"
-          done
-
-      - name: Build conditional two-family entropy target
-        run: lake build QICLean.Entropy.ConditionalTwoFamilies
-
-      - name: Check conditional two-family entropy regressions strictly
-        run: >
-          LEAN_NUM_THREADS=1 lake env lean -j1
-          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
-          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
-          QICLeanTest/ConditionalTwoFamilies.lean
-
-      - name: Build Lean project and capture timings
-        run: |
-          set -eo pipefail
-          {
-            lake build QICLean.Analysis.ProjectionQuadraticBound
-            lake build QICLean.Analysis.CommutingExponentialOrder QICLean.Analysis.ProjectionCfcUpperBound QICLean.Analysis.InvariantExponentialComparison
-            lake build QICLean.Representation.ReplicaGroupedInverse QICLean.Representation.ReplicaDisjointMetricPositivity
-            lake build QICLean.Analysis.FiveMomentExponentialBound QICLean.Analysis.ReplicaComponentUniformRate
-            lake build QICLean.Analysis.ReplicaExcitationCompression
-            lake build QICLean.Analysis.ReplicaLowDefectProjection
-            lake build QICLean.Analysis.InverseCompressionLowerPin
-            lake build QICLean.Algebra.TensorPowerPartialTrace QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
-            lake build QICLean.Analysis.ReplicaGoodConfigurationProduct
-            lake build
-            lake build lint_style
-          } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check quadratic-form comparisons strictly
         timeout-minutes: 4
@@ -924,22 +856,6 @@ jobs:
               "$file"
           done
 
-      - name: Check the good-copy product and density consequences strictly
-        timeout-minutes: 8
-        run: |
-          set -euo pipefail
-          for file in \
-            QICLean/Analysis/ReplicaGoodConfigurationDensity.lean \
-            QICLean/Analysis/ReplicaJointDensity.lean \
-            QICLean/Analysis/ReplicaGoodConfigurationProduct.lean \
-            QICLeanTest/ReplicaGoodConfigurationProductAxioms.lean; do
-            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
-              lake env lean -j1 \
-              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
-              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
-              "$file"
-          done
-
       - name: Check good-copy regional moments strictly
         timeout-minutes: 4
         run: |
@@ -961,6 +877,208 @@ jobs:
           for file in \
             QICLean/Analysis/ReplicaGoodConfigurationSingletonMoment.lean \
             QICLeanTest/ReplicaGoodCopySingletonMomentsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Build rectangular window API targets early
+        run: lake build QICLean.Channel.WindowMinorization QICLean.Kraus.RectangularChain QICLean.Algebra.MatrixDependentEntries QICLean.Analysis.GeometricDecay
+
+      - name: Check rectangular window regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/WindowMinorization.lean
+
+
+      - name: Build Hermitian intertwiner, path, and inner-action targets
+        run: >
+          lake build QICLean.Analysis.HermitianIntertwiner
+          QICLean.Analysis.HermitianUnitaryPath QICLean.Analysis.KroneckerExponential
+          QICLean.Algebra.MatrixUnitConjugator QICLean.Analysis.DifferentiableInnerAction
+
+      - name: Check Hermitian intertwiner, path, and inner-action regressions strictly
+        run: |
+          set -e
+          for example in HermitianIntertwiner ContinuousHermitianPath DifferentiableInnerAction; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
+      - name: Build finite-product entropy and two-family targets
+        run: >
+          lake build QICLean.Channel.FiniteProduct QICLean.Entropy.Bipartite
+          QICLean.Entropy.FiniteProduct QICLean.Entropy.OrderedEntropyAlgebra
+          QICLean.Entropy.TwoFamilies QICLean.Entropy.FiniteProductConditional
+
+      - name: Check finite-product entropy regressions and axiom guards strictly
+        run: |
+          set -e
+          for example in OrderedEntropyAlgebra FiniteProductEntropy; do
+            LEAN_NUM_THREADS=1 lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "QICLeanTest/$example.lean"
+          done
+
+      - name: Build conditional two-family entropy target
+        run: lake build QICLean.Entropy.ConditionalTwoFamilies
+
+      - name: Check conditional two-family entropy regressions strictly
+        run: >
+          LEAN_NUM_THREADS=1 lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/ConditionalTwoFamilies.lean
+
+      - name: Build Lean project and capture timings
+        run: |
+          set -eo pipefail
+          {
+            lake build QICLean.Analysis.MeanTreeProjectionSectors
+            lake build QICLean.Analysis.MeanTreeExponentialLowerNorm
+            lake build QICLean.Analysis.ReplicaGoodConfigurationProduct
+            lake build QICLean.Analysis.ProjectionQuadraticBound
+            lake build QICLean.Analysis.CommutingExponentialOrder QICLean.Analysis.ProjectionCfcUpperBound QICLean.Analysis.InvariantExponentialComparison
+            lake build QICLean.Representation.ReplicaGroupedInverse QICLean.Representation.ReplicaDisjointMetricPositivity
+            lake build QICLean.Analysis.FiveMomentExponentialBound QICLean.Analysis.ReplicaComponentUniformRate
+            lake build QICLean.Analysis.ReplicaExcitationCompression
+            lake build QICLean.Analysis.ReplicaLowDefectProjection
+            lake build QICLean.Analysis.InverseCompressionLowerPin
+            lake build QICLean.Algebra.TensorPowerPartialTrace QICLean.Analysis.ReplicaGoodConfigurationPairMarginal
+            lake build
+            lake build lint_style
+          } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check mean trees on complementary projection ranges strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeProjectionSectors.lean \
+            QICLeanTest/MeanTreeProjectionSectorsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the logarithmic projection comparison strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeProjectionLogBound.lean \
+            QICLeanTest/MeanTreeProjectionLogBoundAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the logarithmic projection-mass estimate strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeProjectionMassBound.lean \
+            QICLeanTest/MeanTreeProjectionMassBoundAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check inverse-power logarithmic Jensen strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/InversePowerLogJensen.lean \
+            QICLeanTest/InversePowerLogJensenAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check normalized inverse-power logarithmic bounds strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/NormalizedInversePowerLogBound.lean \
+            QICLeanTest/NormalizedInversePowerLogAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check logarithmic product and floor estimates strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/CfcLogListProduct.lean \
+            QICLean/Analysis/MeanTreeLogFloorExp.lean \
+            QICLeanTest/LogarithmicComparisonsAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the logarithmic deficit estimate strictly
+        timeout-minutes: 4
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeLogFloorDeficit.lean \
+            QICLeanTest/MeanTreeLogFloorDeficitAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check projection lower norm comparisons strictly
+        timeout-minutes: 6
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeMultibandLowerNorm.lean \
+            QICLean/Analysis/MeanTreeExponentialLowerNorm.lean \
+            QICLeanTest/MeanTreeLowerNormAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the good-copy product and density consequences strictly
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodConfigurationDensity.lean \
+            QICLean/Analysis/ReplicaJointDensity.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationProduct.lean \
+            QICLeanTest/ReplicaGoodConfigurationProductAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
