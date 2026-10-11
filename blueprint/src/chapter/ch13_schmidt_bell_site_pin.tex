@@ -1,0 +1,102 @@
+\section{The selected Bell projection in exterior-site coordinates}
+\label{sec:schmidt_bell_site_pin}
+
+Let $V$ be finite, let $D_v$ be finite coordinate sets, and fix $X\subseteq V$.
+Write $A=\prod_{v\in X}D_v$ and $B=\prod_{v\notin X}D_v$.
+For $E\subseteq A$, put $d=|E|$ and let $\iota:E\to\{0,\ldots,d-1\}$
+be the fixed enumeration. The exterior sites are $\{r\}\sqcup X^c$, with
+coordinate set $\{0,\ldots,d-1\}$ at $r$ and $D_v$ at each physical site.
+Denote their configuration set by $\widehat B$.
+
+\begin{definition}[Enumerating the selected coordinates and collecting the exterior copies]
+    \label{def:schmidt_bell_site_coordinates}
+    \lean{FiniteProduct.schmidtBellSiteEquiv}
+    \uses{def:compressed_site_family,def:compressed_exterior_copy_coordinates}
+    For $k\ge0$, define the bijection
+    \begin{align*}
+        e_k:(A\times E)^k\times\widehat B^k
+        &\longrightarrow (A\times\{0,\ldots,d-1\})^k
+        \times\bigl(\{0,\ldots,d-1\}^k\times B^k\bigr),\\
+        e_k((a_j,i_j)_j,(x_j)_j)
+        &=((a_j,\iota(i_j))_j,((x_j(r))_j,((x_j(v))_{v\notin X})_j)).
+    \end{align*}
+    Let $U_k f=f\circ e_k$ be the induced unitary between coordinate spaces.
+\end{definition}
+
+Fix $\Omega\in\ell^2(A\times B)$ and use its left marginal to define the
+selected Bell vector $\beta_E\in\ell^2(A\times E)$ and compressed vector
+$\chi_E\in\ell^2(E\times B)$.
+Write $\beta_d(a,s)=\beta_E(a,\iota^{-1}(s))$ and
+$\chi_d(s,b)=\chi_E(\iota^{-1}(s),b)$.
+These definitions use the zero-inverse convention when the selected mass
+vanishes; the coordinate identities below require no normalization.
+
+\begin{theorem}[The Bell and auxiliary projections after collecting the exterior sites]
+    \label{thm:schmidt_bell_site_projections}
+    \lean{FiniteProduct.selectedBellProjection_schmidtBellSiteEquiv,FiniteProduct.labelProj_schmidtBellSiteEquiv}
+    \uses{def:schmidt_bell_site_coordinates,def:typical_bell_projection}
+    Let $P_{E,k}=(|\beta_E\rangle\langle\beta_E|)^{\otimes k}$ and
+    $P_{d,k}=(|\beta_d\rangle\langle\beta_d|)^{\otimes k}$.
+    For every irreducible label $\lambda$ of $\mathfrak S_k$,
+    \begin{align*}
+        U_k(P_{d,k}\otimes I)U_k^*&=P_{E,k}\otimes I_{\widehat B^k},\\
+        U_k\bigl(I\otimes(\Pi^{d,k}_\lambda\otimes I_{B^k})\bigr)U_k^*
+        &=I_{(A\times E)^k}\otimes\Pi_{\{r\},\lambda}.
+    \end{align*}
+    Here $\Pi^{d,k}_\lambda$ is the central projection for the ordinary copy
+    action on $\{0,\ldots,d-1\}^k$, and $\Pi_{\{r\},\lambda}$ acts on the
+    auxiliary exterior site.
+\end{theorem}
+\begin{proof}
+    \uses{def:schmidt_bell_site_coordinates,thm:compressed_site_label_projection_coordinates}
+    In each Bell factor, enumeration followed by its inverse returns the
+    original selected index. The identity on the exterior factors remains
+    the identity under the bijection. The second equality is the auxiliary
+    copy-action identity, with the auxiliary and physical factors interchanged.
+\end{proof}
+
+\begin{theorem}[The selected product vector in exterior-site coordinates]
+    \label{thm:schmidt_bell_site_post}
+    \lean{FiniteProduct.schmidtBellSiteEquiv_post}
+    \uses{def:schmidt_bell_site_coordinates,def:compressed_typical_vector}
+    Define
+    \begin{align*}
+        \operatorname{post}_{E,k}((a_j,i_j)_j,(x_j)_j)
+        &=\prod_{j=0}^{k-1}\beta_E(a_j,i_j)
+        \prod_{j=0}^{k-1}\chi_E\bigl(\iota^{-1}(x_j(r)),
+        (x_j(v))_{v\notin X}\bigr).
+    \end{align*}
+    Then $U_k(\beta_d^{\otimes k}\otimes\chi_d^{\otimes k})
+    =\operatorname{post}_{E,k}$, where the coordinates of the vector on the
+    left are ordered as $(AC)^k$, $R^k$, $B^k$.
+\end{theorem}
+\begin{proof}
+    \uses{def:schmidt_bell_site_coordinates}
+    Substitution of $e_k$ into the two finite products cancels
+    $\iota^{-1}\iota$ in every left auxiliary coordinate.
+\end{proof}
+
+\begin{theorem}[The Bell identity on the actual exterior sites]
+    \label{thm:schmidt_bell_site_pin}
+    \lean{FiniteProduct.selectedBellProjection_replicaPrevector_site}
+    \uses{def:replica_prevector,thm:schmidt_bell_site_projections,thm:schmidt_bell_site_post}
+    Suppose the selected mass $z=\sum_{i\in E}p_i$ is positive.
+    Let $v_{k,\lambda}$ be the original initial vector of
+    (\ref{eq:schmidt_bell_initial_vector}), expressed in the coordinates
+    $(AC)^k$, $R^k$, $B^k$. For every $k\ge0$ and every $\lambda$,
+    \begin{align*}
+        (P_{E,k}\otimes I_{\widehat B^k})U_kv_{k,\lambda}
+        &=\left(\frac{\sqrt z}{d}\right)^k
+        (I_{(A\times E)^k}\otimes\Pi_{\{r\},\lambda})
+        \operatorname{post}_{E,k}.
+    \end{align*}
+    This is the exterior-site form of the Bell identity in
+    \cite[Section~8]{OpenAI2026AreaLaw}, equation
+    \textup{(comparator:bell-pin)}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:schmidt_bell_prevector_pin,thm:schmidt_bell_site_projections,thm:schmidt_bell_site_post}
+    Apply $U_k$ to the selected Bell identity and substitute the two
+    projection identities and the product-vector identity. The coordinate
+    change preserves both the label and the scalar $(\sqrt z/d)^k$.
+\end{proof}
