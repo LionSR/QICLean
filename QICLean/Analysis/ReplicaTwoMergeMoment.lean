@@ -159,6 +159,66 @@ Manuscript: September 24, 2026, comparator:merge-moments and comparator:componen
 lines 23, 103–110 and 524–555.
 -/
 
+/-- Each separate merge exponential on the actual common good-pair
+marginal obeys its own polynomial moment bound. The parameter is any real
+number at most one; no normalization or nonvanishing of the excitation
+component is required. Both inequalities retain its original mass.
+Source: September 24, 2026 area-law manuscript, `07-comparators.tex`,
+lines 524–549, `comparator:merge-moments`. -/
+theorem replicaGoodPairMarginal_exp_mergeDeficits_le {Q Y V C R : Type*}
+    [Fintype Q] [DecidableEq Q] [Fintype Y] [DecidableEq Y]
+    [Fintype V] [DecidableEq V] [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
+    (Ω : Q × (Y × V) → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) (k : ℕ) (B : Finset (Fin k))
+    (u : (Fin k → Q × (Y × V)) × ((Fin k → C) × (Fin k → R)) → ℂ)
+    (hu : ∀ σ : Equiv.Perm (Fin k),
+      (permOp (TensorPower.copyPerm (Q × (Y × V)) k) σ ⊗ₖ
+        (permOp (TensorPower.copyPerm C k) σ ⊗ₖ
+          permOp (TensorPower.copyPerm R k) σ)) *ᵥ u = u)
+    (a : ℝ) (ha : a ≤ 1) :
+    let m := Bᶜ.card
+    let ρ := replicaGoodPairMarginal Ω k B u
+    let w := (replicaExcitationProjection Ω k B ⊗ₖ
+      (1 : Matrix ((Fin k → C) × (Fin k → R)) ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ u
+    let DC := TensorPower.pairMergeDeficit Q C m ⊗ₖ
+      (1 : Matrix ((Fin m → V) × (Fin m → R)) ((Fin m → V) × (Fin m → R)) ℂ)
+    let DR := (1 : Matrix ((Fin m → Q) × (Fin m → C)) ((Fin m → Q) × (Fin m → C)) ℂ) ⊗ₖ
+      TensorPower.pairMergeDeficit V R m
+    (ρ * NormedSpace.exp ((a : ℂ) • DC)).trace.re ≤
+      (((m + 1) ^ ((Fintype.card Q * Fintype.card C) ^ 2) : ℕ) : ℝ) *
+        ‖WithLp.toLp 2 w‖ ^ 2 ∧
+    (ρ * NormedSpace.exp ((a : ℂ) • DR)).trace.re ≤
+      (((m + 1) ^ ((Fintype.card V * Fintype.card R) ^ 2) : ℕ) : ℝ) *
+        ‖WithLp.toLp 2 w‖ ^ 2 := by
+  classical
+  intro m ρ w DC DR
+  have hQC : (ρ * NormedSpace.exp ((a : ℂ) • DC)).trace.re ≤
+      (((m + 1) ^ ((Fintype.card Q * Fintype.card C) ^ 2) : ℕ) : ℝ) *
+        ‖WithLp.toLp 2 w‖ ^ 2 := by
+    rw [TensorPower.trace_exp_pairMergeDeficit_left,
+      partialTraceRight_replicaGoodPairMarginal]
+    exact replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le Ω hΩ k B u hu ha
+  have hVR : (ρ * NormedSpace.exp ((a : ℂ) • DR)).trace.re ≤
+      (((m + 1) ^ ((Fintype.card V * Fintype.card R) ^ 2) : ℕ) : ℝ) *
+        ‖WithLp.toLp 2 w‖ ^ 2 := by
+    rw [TensorPower.trace_exp_pairMergeDeficit_right,
+      partialTraceLeft_replicaGoodPairMarginal]
+    have hlocal := replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le
+      (fun x : V × (Y × Q) => Ω (x.2.2, (x.2.1, x.1)))
+      ((norm_physicalExchange Ω).trans hΩ) k B
+      (fun x => u ((fun i => ((x.1 i).2.2, ((x.1 i).2.1, (x.1 i).1))),
+        (x.2.2, x.2.1))) (swapped_fixed k u hu) ha
+    have hnorm :
+        ‖WithLp.toLp 2 ((replicaExcitationProjection
+          (fun x : V × (Y × Q) => Ω (x.2.2, (x.2.1, x.1))) k B ⊗ₖ
+          (1 : Matrix ((Fin k → R) × (Fin k → C)) ((Fin k → R) × (Fin k → C)) ℂ)) *ᵥ
+          (fun x => u ((fun i => ((x.1 i).2.2, ((x.1 i).2.1, (x.1 i).1))),
+            (x.2.2, x.2.1))))‖ = ‖WithLp.toLp 2 w‖ := by
+      simpa [physicalExchange, Equiv.arrowCongr, Function.comp_def, Prod.map, Prod.swap] using
+        norm_excitation_reindex (physicalExchange Q Y V)
+          (Equiv.prodComm (Fin k → C) (Fin k → R)) Ω k B u
+    simpa only [hnorm, TensorPower.pairMergeDeficit, m] using hlocal
+  exact ⟨hQC, hVR⟩
+
 /-- The exponential of the two actual merge deficits on the common good-copy
 marginal is bounded by the average of their polynomial bounds, multiplied by
 the squared norm of the same excitation component. The physical middle region
@@ -204,31 +264,7 @@ theorem replicaGoodPairMarginal_exp_sum_mergeDeficit_le {Q Y V C R : Type*}
       (TensorPower.isHermitian_pairMergeDeficit V R m).eq, conjTranspose_one]
   have hAM := hρ.re_trace_mul_exp_add_le_half_sum hDC hDR
     (TensorPower.commute_pairMergeDeficit_lifts Q C m V R) a
-  have hQC : (ρ * NormedSpace.exp (((2 * a : ℝ) : ℂ) • DC)).trace.re ≤
-      (((m + 1) ^ ((Fintype.card Q * Fintype.card C) ^ 2) : ℕ) : ℝ) *
-        ‖WithLp.toLp 2 w‖ ^ 2 := by
-    rw [TensorPower.trace_exp_pairMergeDeficit_left,
-      partialTraceRight_replicaGoodPairMarginal]
-    exact replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le Ω hΩ k B u hu ha
-  have hVR : (ρ * NormedSpace.exp (((2 * a : ℝ) : ℂ) • DR)).trace.re ≤
-      (((m + 1) ^ ((Fintype.card V * Fintype.card R) ^ 2) : ℕ) : ℝ) *
-        ‖WithLp.toLp 2 w‖ ^ 2 := by
-    rw [TensorPower.trace_exp_pairMergeDeficit_right,
-      partialTraceLeft_replicaGoodPairMarginal]
-    have hlocal := replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le
-      (fun x : V × (Y × Q) => Ω (x.2.2, (x.2.1, x.1)))
-      ((norm_physicalExchange Ω).trans hΩ) k B
-      (fun x => u ((fun i => ((x.1 i).2.2, ((x.1 i).2.1, (x.1 i).1))),
-        (x.2.2, x.2.1))) (swapped_fixed k u hu) ha
-    have hnorm :
-        ‖WithLp.toLp 2 ((replicaExcitationProjection
-          (fun x : V × (Y × Q) => Ω (x.2.2, (x.2.1, x.1))) k B ⊗ₖ
-          (1 : Matrix ((Fin k → R) × (Fin k → C)) ((Fin k → R) × (Fin k → C)) ℂ)) *ᵥ
-          (fun x => u ((fun i => ((x.1 i).2.2, ((x.1 i).2.1, (x.1 i).1))),
-            (x.2.2, x.2.1))))‖ = ‖WithLp.toLp 2 w‖ := by
-      simpa [physicalExchange, Equiv.arrowCongr, Function.comp_def, Prod.map, Prod.swap] using
-        norm_excitation_reindex (physicalExchange Q Y V)
-          (Equiv.prodComm (Fin k → C) (Fin k → R)) Ω k B u
-    simpa only [hnorm, TensorPower.pairMergeDeficit, m] using hlocal
+  obtain ⟨hQC, hVR⟩ :=
+    replicaGoodPairMarginal_exp_mergeDeficits_le Ω hΩ k B u hu (2 * a) ha
   linarith only [hAM, hQC, hVR]
 end Matrix

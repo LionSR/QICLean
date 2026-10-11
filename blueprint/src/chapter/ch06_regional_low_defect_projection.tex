@@ -4,6 +4,7 @@
 \begin{definition}[The common global projection]
 \label{def:global_replica_low_defect_projection}
 \lean{Matrix.globalReplicaLowDefectProjection}
+\leanok
 Fix the original physical vector $\Omega$, the two auxiliary labels,
 the copy number $k$, and the cutoff $\tau k$. Let $P_0$ be the actual
 low-defect projection in the physical-copy and two auxiliary registers.
@@ -18,6 +19,7 @@ This projection is defined without a regional cut, metric, or mean tree.
 \begin{theorem}[Common symmetry and common projection]
 \label{thm:regional_low_defect_projection_global}
 \lean{TensorPower.symProj_replicaJointCopyPerm_submatrix_globalReplicaCopiesEquiv,Matrix.globalReplicaLowDefectProjection_properties,Matrix.regionalFiveFactor_lowDefectProjection_eq_global}
+\leanok
 Assume $\|\Omega\|=1$, and let $Q_k$ denote simultaneous symmetry on
 the original full configuration space. Then $P_{\mathrm{glob}}$ is an
 orthogonal projection and
@@ -38,6 +40,7 @@ symmetric coordinates. See
 \cite[Section~8, lines~20--37, 421--456 and~603--615]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{def:regional_five_factor_coordinates,thm:replica_low_defect_coordinate_covariance,thm:symmetric_projection_equivariant_coordinates,thm:contained_projection_compression,thm:replica_low_defect_projection_conditions}
 The fixed regrouping intertwines the actual simultaneous permutations.
 The native cutoff ends with their symmetry projection, giving the
