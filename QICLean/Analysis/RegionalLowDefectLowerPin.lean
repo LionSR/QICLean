@@ -244,6 +244,7 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
         vonNeumannEntropy (physicalSingletonDensity (ι (Q, Y)) ψ 1)
           (posSemidef_physicalSingletonDensity (ι (Q, Y)) ψ 1).isHermitian = g := by
     rw [(hstats 0).1, (hstats 2).1, (hstats 1).1]
+    rfl
   let b₀ := ((k : ℝ) + 1) * Real.exp (k * Real.binEntropy τ) *
     (((k : ℝ) + 2) ^ f (Q, Y) * Real.exp
       (-(k : ℝ) * (2 * t) *
