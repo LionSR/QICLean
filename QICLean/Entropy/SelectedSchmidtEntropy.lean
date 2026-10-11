@@ -43,6 +43,16 @@ theorem entropy_compressedTypicalPureState_equivFin_swap (hz : 0 < z) :
         vonNeumannEntropy ((hρA).isHermitian.normalizedSpectralRestriction E)
           ((hρA).normalizedSpectralRestriction_posSemidef E hz).isHermitian := by
   intro ψ
+  have hdiag : partialTraceLeft (vecMulVec ψ (star ψ)) =
+      diagonal (fun r : Fin E.card =>
+        ((((hρA).isHermitian.eigenvalues ((Finset.equivFin E).symm r)) / z : ℝ) : ℂ)) :=
+    Matrix.ext fun r s => by
+      simpa only [ψ, partialTraceLeft_apply, partialTraceRight_apply,
+        vecMulVec_apply, Pi.star_apply, diagonal_apply,
+        (Finset.equivFin E).symm.injective.eq_iff] using
+          congrArg (fun M : Matrix E E ℂ =>
+            M ((Finset.equivFin E).symm r) ((Finset.equivFin E).symm s))
+            (partialTraceRight_compressedTypicalPureState Ω E hz)
   done
 
 end Matrix
