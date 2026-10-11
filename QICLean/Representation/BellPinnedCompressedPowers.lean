@@ -122,6 +122,12 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
         intro g L R hLR
         rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc, hband g, Matrix.mul_assoc])
     simpa only [M, List.map_ofFn, Function.comp_id] using h
+  have hPe : Pe * Pe = Pe :=
+    (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
+      (X := Config k ιe)).elim (fun l hl ↦
+        Eq.mp (congrArg (fun H ↦ H * H = H) (hl (copyPerm
+          ((v : Option ↥(Xᶜ)) → ιe v) k)))
+          (labelProj_mul_self _ l))
   done
 
 end TensorPower
