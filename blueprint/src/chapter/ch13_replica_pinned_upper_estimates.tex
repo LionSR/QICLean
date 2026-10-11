@@ -8,6 +8,7 @@ are computed from the original full system.
 \begin{theorem}[The regions of successive bands]
 \label{thm:replica_band_regions_subset_or_disjoint}
 \lean{TensorPower.replicaBandRegions_subset_or_disjoint}
+    \leanok
 Let $F$ be a set and let $U_g,Y_g$ be finite subsets indexed by
 $0\le g<K$. Suppose
 \begin{align*}
@@ -18,6 +19,7 @@ $U_h,Y_h,U_h\cup Y_h$, then $R\subseteq S$, $S\subseteq R$, or
 $R\cap S=\varnothing$.
 \end{theorem}
 \begin{proof}
+    \leanok
 For $g<h$, the set $R$ lies in $U_h$, so it is contained in $U_h$
 and $U_h\cup Y_h$ and disjoint from $Y_h$. The case $h<g$ follows
 by symmetry. For $g=h$, use the disjointness of $U_g,Y_g$ and their
@@ -27,6 +29,7 @@ inclusions in their union.
 \begin{theorem}[Replica metrics on a label cutoff]
     \label{thm:replica_metric_cutoff_norm}
     \lean{TensorPower.exists_replicaMetric_cutoff_norm_bound}
+    \leanok
     \uses{def:schur_label_cutoff}
     Let the original system be a finite tensor product of nonzero
     finite-dimensional spaces, and fix $t>0$. Write $W_{Q,k}$ for its
@@ -49,6 +52,7 @@ inclusions in their union.
     the original full system.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:replica_metric_comparison,lem:orthogonal_resolution_cfc}
     On each nonzero label subspace, the replica-weight comparison gives
     \begin{align*}
@@ -71,6 +75,7 @@ inclusions in their union.
 \begin{theorem}[Expectation of a pinned product leaf]
     \label{thm:replica_pinned_leaf_expectation}
     \lean{TensorPower.exists_replicaPinnedLeaf_expectation_le}
+    \leanok
     Fix a finite tensor product of nonzero finite-dimensional spaces and
     $t>0$. Use the replica weights of this original full system to define
     $W_{Q,k}$ on every subsystem. There is $C\ge0$ such that the following
@@ -99,6 +104,7 @@ inclusions in their union.
     its identification with the Bell restriction is separate.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:replica_metric_cutoff_norm,thm:laminar_subsystem_label_commutation,thm:replica_band_regions_subset_or_disjoint}
     Write $C_0$ for the exponent in the metric cutoff estimate and put
     $p=(k+2)^{C_0}$ and $e=\exp(tT)$. The region relations make every
@@ -129,12 +135,14 @@ in \cite[Section~8, upper comparisons]{OpenAI2026AreaLaw}.
 \begin{theorem}[A uniform leaf bound]
     \label{thm:mean_tree_uniform_expectation}
     \lean{Matrix.MeanTree.re_inner_eval_le_of_forall}
+    \leanok
 
     Let $L>0$ and let $\varphi$ be any vector. If
     $\langle\varphi,A_j\varphi\rangle\le L$ for every $j$, then
     $\langle\varphi,M\varphi\rangle\le L$.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:mean_tree_properties}
     Vector Jensen and monotonicity of nonnegative real powers give
     \begin{align*}
@@ -147,11 +155,13 @@ in \cite[Section~8, upper comparisons]{OpenAI2026AreaLaw}.
 \begin{theorem}[A uniform bound after a fractional power]
     \label{thm:mean_tree_uniform_power_expectation}
     \lean{Matrix.MeanTree.re_inner_rpow_eval_le_of_forall}
+    \leanok
     Under the same hypotheses, suppose additionally that
     $\|\varphi\|=1$. For every $p\in[0,1]$,
     $\langle\varphi,M^p\varphi\rangle\le L^p$.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:mean_tree_uniform_expectation,lem:weighted_geometric_mean_vertex}
     Apply concavity of $x\mapsto x^p$ to the spectral probability measure
     of $M$ at $\varphi$, and then apply the uniform root bound:
@@ -164,6 +174,7 @@ in \cite[Section~8, upper comparisons]{OpenAI2026AreaLaw}.
 \begin{theorem}[An overlap bound for an inverse power]
     \label{thm:mean_tree_uniform_inverse_overlap}
     \lean{Matrix.MeanTree.norm_inner_sq_le_rpow_mul_inverse_norm_sq}
+    \leanok
     Under the same hypotheses with $\|\varphi\|=1$, for every
     $s\in[0,1/2]$ and every vector $u$,
     \begin{align*}
@@ -172,6 +183,7 @@ in \cite[Section~8, upper comparisons]{OpenAI2026AreaLaw}.
     \end{align*}
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:mean_tree_uniform_power_expectation}
     Cauchy--Schwarz with opposite powers gives
     $|\langle\varphi,u\rangle|^2
@@ -183,6 +195,7 @@ in \cite[Section~8, upper comparisons]{OpenAI2026AreaLaw}.
 
     \label{thm:replica_pinned_tree_band_product}
     \lean{TensorPower.replicaPinnedTree_eval_eq_prod}
+    \leanok
     Fix a finite tensor product of nonzero finite-dimensional spaces and
     $t\ge0$. Use its original full-system weights to define the replica
     metrics $W_{Q,k}$. Let $\mathcal T$ be one weighted geometric-mean tree
@@ -209,6 +222,7 @@ in \cite[Section~8, upper comparisons]{OpenAI2026AreaLaw}.
     \texttt{07-comparators.tex}, lines 367--375]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:laminar_replica_band_commutation,thm:mean_tree_properties}
 
     Each $D_{j,g}$ is positive definite by the one-band case of the
@@ -224,6 +238,7 @@ in \cite[Section~8, upper comparisons]{OpenAI2026AreaLaw}.
 
     \label{thm:replica_pinned_tree_inverse_overlap}
     \lean{TensorPower.exists_replicaPinnedTree_inverse_norm_bound}
+    \leanok
     Fix the original finite tensor product, $t>0$, and a finite leaf-label
     set $J$. There is $C\ge0$ such that the following holds for every copy
     number $k$, every number $K$ of bands, and every weighted mean tree
@@ -246,6 +261,7 @@ in \cite[Section~8, upper comparisons]{OpenAI2026AreaLaw}.
     \cite[\texttt{07-comparators.tex}, lines 367--381]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:replica_pinned_tree_band_product,thm:replica_pinned_leaf_expectation,thm:mean_tree_uniform_inverse_overlap,thm:positive_laminar_replica_product}
 
     The homogeneous leaf estimate gives the same positive bound
