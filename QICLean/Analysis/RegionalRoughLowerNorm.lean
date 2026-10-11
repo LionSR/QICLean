@@ -165,6 +165,13 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
     ring
   have hcoefficient : pinCoeff⁻¹ = Real.exp (2 * t * (k : ℝ) * rate - r) := by
     rw [← Real.exp_log hpinCoeff, ← Real.exp_neg, hlog, neg_sub]
+  have hrate : rate ≤ 2 * S :=
+    (sub_le_self (2 * S - τ * d)
+      (mul_nonneg (show 0 ≤ 3 + 1 / (2 * t) by positivity)
+        (Real.binEntropy_nonneg hτ.le (hτhalf.trans (by norm_num))))).trans
+      (sub_le_self (2 * S) (mul_nonneg hτ.le
+        (add_nonneg (Real.log_natCast_nonneg (Fintype.card C))
+          (Real.log_natCast_nonneg (Fintype.card R)))))
   done
 
 end Matrix
