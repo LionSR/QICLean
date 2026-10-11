@@ -8,6 +8,7 @@ of \cite[Section~8]{OpenAI2026AreaLaw}.
 \begin{theorem}[Entropy after relabeling the selected Schmidt factor]
   \label{thm:selected_schmidt_auxiliary_entropy}
   \lean{Matrix.entropy_compressedTypicalPureState_equivFin_swap}
+  \leanok
   Let $\Omega\in\mathcal H_A\otimes\mathcal H_B$, and diagonalize
   $\rho_A=\operatorname{Tr}_B|\Omega\rangle\langle\Omega|$
   in an orthonormal basis $(e_i)$, with eigenvalues $(p_i)$.
@@ -25,6 +26,7 @@ of \cite[Section~8]{OpenAI2026AreaLaw}.
   No normalization of the original vector is required.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:entropy_typical_density_spectrum}
   The auxiliary marginal of $\psi$ is diagonal with entries $p_i/z$
   for $i\in E$. Relabeling the finite index set preserves the sum
