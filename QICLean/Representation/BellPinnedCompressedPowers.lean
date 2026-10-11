@@ -90,6 +90,10 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
       ((Finset.sdiff_subset.trans
         (Finset.subset_union_right.trans (hnest j j' g h hgh))).trans
           Finset.subset_union_right))
+  have hunion (j : S) (g : Fin K) :
+      (X ∪ U j g) ∪ (Y j g \ X) = X ∪ (U j g ∪ Y j g) := by
+    simp only [Finset.union_assoc, Finset.union_left_comm X (U j g),
+      Finset.union_sdiff_self_eq_union]
   done
 
 end TensorPower
