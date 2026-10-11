@@ -191,7 +191,8 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
             (∀ j : Fin 3, ∀ v : ℝ, |v| ≤ r →
               let T := FiniteProduct.regionalPhysicalRegion Q Y j
               Real.log (Entropy.surprisalMoment
-                (FiniteProduct.reducedPure_posSemidef β (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues v) ≤
+                (FiniteProduct.reducedPure_posSemidef β (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues
+                v) ≤
                   v * FiniteProduct.entropy β (WithLp.toLp 2 Ω) T + K * v ^ 2) →
             20 * t ≤ r → 20 * t ≤ 1 → 0 ≤ K →
             let g := FiniteProduct.entropy β (WithLp.toLp 2 Ω) Q +
@@ -243,7 +244,8 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
           (posSemidef_physicalSingletonDensity (ι (Q, Y)) ψ 2).isHermitian -
         vonNeumannEntropy (physicalSingletonDensity (ι (Q, Y)) ψ 1)
           (posSemidef_physicalSingletonDensity (ι (Q, Y)) ψ 1).isHermitian = g := by
-    simpa only [(hstats 0).1, (hstats 2).1, (hstats 1).1]
+    rw [(hstats 0).1, (hstats 2).1, (hstats 1).1]
+    rfl
   let b₀ := ((k : ℝ) + 1) * Real.exp (k * Real.binEntropy τ) *
     (((k : ℝ) + 2) ^ f (Q, Y) * Real.exp
       (-(k : ℝ) * (2 * t) *
@@ -259,10 +261,11 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
   apply regional_lower_pin_pullback β C R Ω hΩ Q Y hQY t k ellC ellR τ hb₀ hbb _ n Z
   have h := (hlocal (Q, Y) k ψ hψ ellC ellR K r hmoment' htr htone hK
     τ S ε hτ hτhalf hlabel).1
-  set_option pp.all true in
-    simpa only [hg, b₀, f, Λ, D, ψ, ι,
-      (show Real.log (Fintype.card (ι (Q, Y) 3)) +
-        Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using h
+  dsimp +instances only [ι, regionalFiveFactorSpaceFintype,
+    regionalFiveFactorSpaceDecidableEq, regionalLowerPin_decidableEqPhysical] at h ⊢
+  simpa only [hg, b₀, f, Λ, D, ψ, ι,
+    (show Real.log (Fintype.card (ι (Q, Y) 3)) +
+      Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using! h
 
 
 end Matrix
