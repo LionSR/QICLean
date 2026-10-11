@@ -96,6 +96,12 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
       Finset.union_sdiff_self_eq_union]
   have hfar (j : S) (g : Fin K) : F j g = (Q j g ∪ E (Y j g))ᶜ := by
     simpa only [hunion] using hgeometry.2.1 j g
+  have hleaf (j : S) (g : Fin K) :
+      (B j g).PosDef ∧ A j g * Z = Z * B j g := by
+    simpa only [B, A, W, hfar] using
+      (let h := (replicaMetric_symProj_compressions_posDef_commute ι₀ k n Z hZ hZZ ht K
+        Q (fun j g ↦ E (Y j g)) hgeometry.1 hgeometry.2.2).1 j g
+       And.intro h.1 h.2.1)
   done
 
 end TensorPower
