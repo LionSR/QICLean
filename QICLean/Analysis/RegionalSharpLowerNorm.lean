@@ -237,6 +237,10 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
       (fun j _ ↦ mul_left_comm (T.weight j) (1 - τ) (entropyGap j g))).trans
       (Finset.mul_sum Finset.univ
         (fun j ↦ T.weight j * entropyGap j g) (1 - τ)).symm
+  have hrate_sum (g : Fin G) :
+      (∑ j, T.weight j * leafRate j g) = rate g := by
+    simp only [leafRate, rate, mul_add, mul_sub, Finset.sum_add_distrib,
+      Finset.sum_sub_distrib, ← Finset.sum_mul, T.sum_weight, one_mul, hlinear]
   done
 
 end Matrix
