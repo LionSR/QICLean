@@ -84,6 +84,8 @@ import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
+import QICLean.Representation.ReplicaSymmetricMetricFloor
+import QICLean.Representation.ReplicaSymmetricSupport
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.ReplicaWholeInverse
