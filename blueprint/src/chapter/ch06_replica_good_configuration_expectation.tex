@@ -1,0 +1,74 @@
+\section{The actual good density and subgroup expectations}
+\label{sec:replica_good_configuration_expectation}
+
+\begin{definition}[Coordinates of the traced copies]
+\label{def:bad_configuration_trace_equiv}
+\lean{TensorPower.badConfigurationTraceEquiv}
+\leanok
+Write $[k]=\{0,\ldots,k-1\}$. Let $B\subseteq[k]$ have cardinality $r$, and fix its standard finite
+enumeration $[r]\simeq B$. A five-factor configuration on $[r]$
+corresponds to a physical $QYV$ configuration indexed by $B$ and
+auxiliary $C,R$ configurations indexed by $[r]$. Grouping the physical
+factors and applying this enumeration gives an equivalence of these
+coordinate sets. This is the change of traced coordinates used in
+\cite[Section~8, lines~520--549]{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{theorem}[The actual density as a partial trace]
+\label{thm:replica_good_configuration_grouped_density}
+\lean{Matrix.replicaGoodConfigurationMarginal_eq_grouped_partialTrace}
+\leanok
+Let $\Omega$ and $u$ be arbitrary physical and full vectors, and put
+$w=(R_B\otimes I)u$. Let $f$ be $w$ in five-factor coordinates,
+and let $\eta$ be the coordinate decomposition into the actual good
+copies $B^c$ and bad copies $B$. The actual five-factor good density
+$\rho_G$ satisfies
+\begin{align*}
+ \rho_G=\operatorname{Tr}_{\mathrm{bad}}
+       |f\circ\eta^{-1}\rangle\langle f\circ\eta^{-1}|.
+\end{align*}
+No normalization or symmetry is assumed.
+\end{theorem}
+\begin{proof}\leanok
+\uses{def:bad_configuration_trace_equiv,def:grouped_configuration_equiv}
+The good coordinates in the two descriptions coincide. The bad
+coordinates differ exactly by the equivalence in
+Definition~\ref{def:bad_configuration_trace_equiv}. Changing the
+summation variable in the partial trace proves the identity.
+\end{proof}
+
+\begin{theorem}[Good-subgroup exponential expectations]
+\label{thm:replica_good_configuration_exponential_expectation}
+\lean{Matrix.replicaExcitationComponent_exp_good_eq_trace_goodConfigurationMarginal,Matrix.replicaExcitationComponent_exp_good_without_auxiliary_eq_trace}
+\leanok
+Retain the same $\Omega,u,B,w,f$ and density $\rho_G$, and let
+$m=|B^c|$. For every finite family of subsystems $S_j$ and real
+coefficients $a_j$,
+\begin{align*}
+ \Bigl\langle f,\exp\Bigl(\sum_j a_jF_{S_j,g}\Bigr)f\Bigr\rangle
+ =\operatorname{Tr}\Bigl(\rho_G
+       \exp\Bigl(\sum_j a_jF_{S_j,m}\Bigr)\Bigr).
+\end{align*}
+Here the left-hand observables are the actual good-subgroup entropies
+on the full space; those on the right act on the $m$ good copies.
+For $H_g=F_{QC,g}+F_{VR,g}-F_{Y,g}-F_{C,g}-F_{R,g}$,
+$\Delta_{QC}=F_{Q,m}+F_{C,m}-F_{QC,m}$,
+$\Delta_{VR}=F_{V,m}+F_{R,m}-F_{VR,m}$ and
+$G_m=F_{Q,m}+F_{V,m}-F_{Y,m}$, this gives
+\begin{align*}
+ \langle f,e^{-aH_g}f\rangle
+ =\operatorname{Tr}\bigl(\rho_Ge^{a(\Delta_{QC}+\Delta_{VR}-G_m)}\bigr)
+\end{align*}
+for every real $a$. These are exact complex equalities, without
+normalization, symmetry or commutation assumptions on the region
+family, as used in
+\cite[Section~8, lines~454--560]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:replica_good_configuration_grouped_density,thm:grouped_configuration_exponential}
+In the grouped coordinates the full exponential equals the good-copy
+exponential tensored with the bad-copy identity. The defining identity
+of the partial trace gives the first equality. Apply it to the five
+regions $QC,VR,Y,C,R$ with coefficients $-a,-a,a,a,a$ and cancel
+the $Q,V$ singleton terms to obtain the second.
+\end{proof}
