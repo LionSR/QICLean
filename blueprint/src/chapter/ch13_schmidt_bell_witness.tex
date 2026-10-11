@@ -19,6 +19,7 @@ All statements below hold for every integer $k\geq0$.
 \begin{definition}[Coordinates for the supplied Bell witness]
     \label{def:schmidt_bell_witness_coordinates}
     \lean{FiniteProduct.schmidtBellWitnessEquiv}
+    \leanok
     \uses{def:bell_insertion_coordinates,def:added_site_copy_separation}
     Group $X$ with $C$ in each copy, and then separate these $k$ pairs
     from the exterior copies. The resulting bijection is
@@ -37,6 +38,7 @@ of $b_E^{\otimes k}$.
 \begin{theorem}[The selected Bell outer product under insertion]
     \label{thm:schmidt_bell_witness_outer_product}
     \lean{FiniteProduct.bellInsertion_mul_conjTranspose_selectedBell}
+    \leanok
     \uses{def:schmidt_bell_witness_coordinates,def:added_site_tensor_insertion}
     The insertion satisfies
     \begin{align*}
@@ -44,7 +46,7 @@ of $b_E^{\otimes k}$.
     \end{align*}
     No normalization or positive selected-mass hypothesis is required.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     The matrix entry of $J$ is the product of the $k$ Bell coefficients,
     multiplied by the indicator that the exterior configurations agree.
     In $JJ^*$ the sum over the exterior configuration collapses to that
@@ -55,6 +57,7 @@ of $b_E^{\otimes k}$.
 \begin{theorem}[The range of a supplied symmetric Bell witness]
     \label{thm:schmidt_bell_witness_range}
     \lean{FiniteProduct.schmidtBellWitness_pullback_range}
+    \leanok
     \uses{def:schmidt_bell_witness_coordinates}
     Let $\varphi\in\ell^2((A\times C)^k\times\mathcal H_e^k)$ be invariant
     under simultaneous permutation of the $k$ copies in both factors, and
@@ -67,7 +70,7 @@ of $b_E^{\otimes k}$.
     \end{align*}
     The vector $\varphi$ need not be normalized.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:schmidt_bell_witness_outer_product,thm:bell_insertion_isometry_symmetry}
     The map $\tau_k$ commutes with simultaneous copy permutations, so
     $\Phi$ is symmetric. The Bell-range hypothesis gives $JJ^*\Phi=\Phi$.
@@ -78,6 +81,7 @@ of $b_E^{\otimes k}$.
 \begin{theorem}[The supplied auxiliary label in witness coordinates]
     \label{thm:schmidt_bell_witness_auxiliary_label}
     \lean{FiniteProduct.labelProj_schmidtBellWitnessEquiv_auxiliary}
+    \leanok
     \uses{def:schmidt_bell_witness_coordinates,def:label_projectors}
     For every irreducible label $\ell$ of $\mathfrak S_k$, let
     $\Pi^e_{R,\ell}$ and $\Pi_{R,\ell}$ be the label projections on the
@@ -88,7 +92,7 @@ of $b_E^{\otimes k}$.
         &=\Pi_{R,\ell}.
     \end{align*}
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:group_algebra_product_coordinates}
     A permutation on $R$ fixes the selected Bell coordinates and acts on
     the exterior register $R$. Transport the central idempotent for
@@ -98,6 +102,7 @@ of $b_E^{\otimes k}$.
 \begin{theorem}[Exterior cutoffs in witness coordinates]
     \label{thm:schmidt_bell_witness_exterior_cutoffs}
     \lean{FiniteProduct.labelCutoff_schmidtBellWitnessEquiv_exterior}
+    \leanok
     \uses{def:schmidt_bell_witness_coordinates,def:schur_label_cutoff}
     For any $U\subseteq V$ and $a\in\mathbb R$, let
     $Q_{U\setminus X}(a)$ be the sum of the label projections with
@@ -112,7 +117,7 @@ of $b_E^{\otimes k}$.
     identity used for the supplied common vector in
     \cite[Section~8, lines~346--365]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:bell_insertion_subsystem_coordinates,thm:group_algebra_product_coordinates}
     An exterior subsystem permutation fixes every Bell coordinate.
     Transport the central group-algebra element
