@@ -1,0 +1,42 @@
+\section{A lower bound from a compressed inverse}
+
+All operators in this section act on a finite-dimensional complex
+Hilbert space, which may have dimension zero. Operator inequalities
+refer to the positive-semidefinite order.
+
+\begin{theorem}[Transferring a bound between Gram matrices]
+\label{thm:gram_operator_bound}
+\lean{Matrix.mul_conjTranspose_le_smul_one_of_conjTranspose_mul_le}
+\leanok
+Let $T$ be an operator and let $c\ge0$. If $T^*T\le c\Id$, then
+$TT^*\le c\Id$.
+\end{theorem}
+\begin{proof}\leanok
+The hypothesis gives $\|T\|^2=\|T^*T\|\le c$. Thus
+$TT^*\le\|T\|^2\Id\le c\Id$.
+\end{proof}
+
+\begin{theorem}[A lower bound from a compressed inverse]
+\label{thm:inverse_compression_lower_pin}
+\lean{Matrix.PosDef.inv_smul_projection_le_of_compression_inv_le}
+\leanok
+Let $A$ be positive definite, let $P$ be an orthogonal projection, and
+let $c>0$. Then
+\begin{align}
+ PA^{-1}P\le cP \quad&\Longrightarrow\quad c^{-1}P\le A.\notag
+\end{align}
+No commutation between $A$ and $P$ is required. This is the implication
+from the compressed-inverse estimate to the lower bound in
+\cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:gram_operator_bound}
+Put $S=A^{1/2}$ and $T=S^{-1}P$. Since $0\le P\le\Id$, the hypothesis
+gives $T^*T=PA^{-1}P\le c\Id$. Theorem~\ref{thm:gram_operator_bound}
+yields $TT^*\le c\Id$. Congruence by $S$, together with
+$ST=T^*S=P$, now gives
+\begin{align}
+ P=P^2=S(TT^*)S&\le cS^2=cA.\notag
+\end{align}
+Dividing by $c$ proves the assertion.
+\end{proof}

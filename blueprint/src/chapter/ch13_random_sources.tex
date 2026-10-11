@@ -206,6 +206,58 @@ Hilbert--Schmidt square.
     positive eigenspaces, so this map is a contraction.
 \end{proof}
 
+\begin{theorem}[H\"older bound for the rectangular trace norm]
+    \label{thm:random_trace_holder}
+    \lean{Matrix.rectangularTraceNorm_mul_transpose_le}
+    \leanok
+    \uses{thm:random_trace_duality}
+    For complex matrices $A$ of size $m\times p$ and $B$ of size $n\times p$,
+    $\lVert AB^T\rVert_1\leq\lVert A\rVert_2\lVert B\rVert_2$. No dimension
+    enters. This is the bound used in the proof of
+    \cite[Lemma~6.2]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:group-nuclear, 05-frames.tex:157--164.
+\end{theorem}
+
+\begin{proof}\leanok
+    Let $v_j$ be an orthonormal eigenbasis of $(AB^T)^\dagger AB^T$, so
+    $\lVert AB^T\rVert_1=\sum_j\lVert AB^Tv_j\rVert$. For each $j$ with
+    $AB^Tv_j\neq0$, put $u_j=AB^Tv_j/\lVert AB^Tv_j\rVert$; these vectors
+    are orthonormal. Then
+    $\lVert AB^Tv_j\rVert=\langle A^\dagger u_j,B^Tv_j\rangle
+        \leq\lVert A^\dagger u_j\rVert\lVert B^Tv_j\rVert$.
+    The Cauchy--Schwarz inequality for the sum, Bessel's inequality
+    $\sum_j\lVert A^\dagger u_j\rVert^2\leq\lVert A\rVert_2^2$, and
+    Parseval's identity $\sum_j\lVert B^Tv_j\rVert^2=\lVert B\rVert_2^2$
+    give the bound.
+\end{proof}
+
+\begin{theorem}[Truncation to the leading singular directions]
+    \label{thm:random_trace_truncation}
+    \lean{Matrix.rightSingularBasis}
+    \lean{Matrix.orthonormalProjector}
+    \lean{Matrix.exists_orthonormal_truncation}
+    \leanok
+    \uses{thm:random_trace_duality}
+    Let $M$ be a complex rectangular matrix and $k\geq0$. There is an
+    orthonormal family $f_1,\dots,f_r$ with $r\leq k$ whose orthogonal
+    projector $P=\sum_i f_if_i^\dagger$ satisfies
+    $(k+1)\lVert M-MP\rVert_2^2\leq\lVert M\rVert_1^2$. If the domain of
+    $M$ has dimension at most $k$, then $M=MP$. No dimension enters the
+    estimate. This is the singular-value tail estimate in the proof of
+    \cite[Lemma~6.2]{OpenAI2026PolynomialPEPS}.
+    % Source: proof of lem:group-tensor, 05-frames.tex:166--174.
+\end{theorem}
+
+\begin{proof}\leanok
+    Let $s_0\geq s_1\geq\cdots$ be the singular values of $M$, with right
+    singular vectors $v_j$, and project onto the first $\min(k,n)$ of
+    them, where $n$ is the dimension of the domain. By Parseval's identity,
+    $\lVert M-MP\rVert_2^2=\sum_{j\geq k}s_j^2$. Each term is at most
+    $s_ks_j$, so the tail is at most $s_k\lVert M\rVert_1$. Monotonicity
+    gives $(k+1)s_k\leq s_0+\cdots+s_k\leq\lVert M\rVert_1$, and
+    multiplying the two bounds gives the claim.
+\end{proof}
+
 \begin{theorem}[Two-weight quarter-power comparisons]
     \label{thm:random_quarter_weights}
     \lean{Matrix.rectangularTraceNorm_halfWeighted_le}
