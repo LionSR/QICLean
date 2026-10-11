@@ -163,6 +163,12 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
   let leafRate := fun (j : J) (g : Fin G) ↦
     2 * S + (1 - τ) * entropyGap j g - τ * d -
       (3 + 1 / (2 * t)) * Real.binEntropy τ - 50 * K * t
+  let pinCoeff := fun (j : J) (g : Fin G) ↦
+    ((k : ℝ) + 1) * Real.exp (k * Real.binEntropy τ) *
+      (((k : ℝ) + 2) ^ c * Real.exp
+        (-(k : ℝ) * (2 * t) *
+          (2 * S + (1 - τ) * entropyGap j g - τ * d - 3 * Real.binEntropy τ) +
+            (2 * t) * ε + 25 * (k : ℝ) * K * (2 * t) ^ 2))
   done
 
 end Matrix
