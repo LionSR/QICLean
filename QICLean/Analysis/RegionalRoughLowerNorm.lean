@@ -109,6 +109,14 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
   refine ⟨c, Cf, hc, hCf, ?_⟩
   intro k n hk H Ω E₀ gap hgap hΩ hgap_pos Z hZ hZZ J _ _ G Q Y hdisj hnest
     T ellC ellR S ε s hlabel hs ξ hξ hξnorm hsym hC hR W L F E A B M w φ v δ d r b
+  obtain ⟨hM, hw, hφ, hv, hδ, hmass⟩ :
+      M.PosDef ∧ w ≠ 0 ∧ ‖φ‖ = 1 ∧ ‖v‖ = 1 ∧ 0 ≤ δ ∧
+        ∀ τ : ℝ, 0 < τ →
+          let P := Zᴴ * globalReplicaLowDefectProjection β C R Ω k ellC ellR τ * Z
+          IsStarProjection P ∧ 1 - δ / τ ≤ (star φ ⬝ᵥ (P *ᵥ φ)).re :=
+    replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
+      β C R hgap hΩ hgap_pos k n hk Z hZ hZZ ht.le
+      G Q Y hdisj hnest T ellC ellR s ξ hξ hsym hC hR
   done
 
 end Matrix
