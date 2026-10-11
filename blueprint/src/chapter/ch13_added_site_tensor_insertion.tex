@@ -1,0 +1,96 @@
+\section{Inserting a tensor power at an additional site}
+
+\begin{definition}[Insertion at an additional site]
+    \label{def:added_site_tensor_insertion}
+    \lean{TensorPower.addedSiteInsertion}
+    \uses{def:regional_five_factor_coordinates}
+    Let $F$ be a finite set of sites with finite coordinate sets $I_f$,
+    let $A$ be an additional coordinate set, and let $k\geq0$.
+    Write $\mathcal C_k$ for the configurations of $k$ copies of the
+    original sites, and $\widetilde{\mathcal C}_k$ for the configurations
+    after adjoining a site $*$ with coordinate set $A$.
+    For any $b:A\to\C$, define the rectangular matrix $J_b$ by
+    \begin{align*}
+        J_b(x,y)=\left(\prod_{j=0}^{k-1}b(x_j(*))\right)
+        \mathbf 1_{\{x|_F=y\}}.
+    \end{align*}
+    Thus insertion retains every original coordinate and places the
+    same vector at the additional site in every copy. This is the
+    tensor insertion in \cite[Section~8, lines~283--308]{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{theorem}[Action of the insertion matrix]
+    \label{thm:added_site_tensor_insertion_action}
+    \lean{TensorPower.addedSiteInsertion_mulVec}
+    \uses{def:added_site_tensor_insertion}
+    For every $v:\mathcal C_k\to\C$,
+    \begin{align*}
+        (J_bv)(x)=\left(\prod_{j=0}^{k-1}b(x_j(*))\right)v(x|_F).
+    \end{align*}
+    This identity does not require $A$ to be finite.
+\end{theorem}
+\begin{proof}
+    Expand the matrix-vector product. The indicator restricts the
+    finite sum to the single original configuration $x|_F$.
+\end{proof}
+
+\begin{theorem}[Subsystem permutations and insertion]
+    \label{thm:added_site_tensor_insertion_permutations}
+    \lean{TensorPower.permOp_mul_addedSiteInsertion,TensorPower.permOp_mul_addedSiteInsertion_exterior}
+    \uses{def:copy_permutations,def:added_site_tensor_insertion}
+    Suppose also that $A$ is finite. Let $Q\subseteq F$ and
+    $\sigma\in S_k$. Denote the original subsystem action by $U_Q(\sigma)$
+    and the enlarged subsystem action by $\widetilde U_R(\sigma)$.
+    Then
+    \begin{align*}
+        \widetilde U_{Q\cup\{*\}}(\sigma)J_b&=J_bU_Q(\sigma),\\
+        \widetilde U_Q(\sigma)J_b&=J_bU_Q(\sigma).
+    \end{align*}
+    Both identities hold for every $b$, including the zero vector,
+    and every $k$, including zero.
+\end{theorem}
+\begin{proof}
+    \uses{thm:added_site_tensor_insertion_action}
+    Apply both sides to an arbitrary vector. On the original coordinates
+    the two actions agree. In the first identity, the action on the new
+    coordinates permutes the factors of $\prod_j b(x_j(*))$, leaving the
+    product unchanged. In the second identity these coordinates are fixed.
+\end{proof}
+
+\begin{theorem}[Group-algebra operators and insertion]
+    \label{thm:added_site_tensor_insertion_group_algebra}
+    \lean{TensorPower.groupAlgebraRep_mul_addedSiteInsertion,TensorPower.groupAlgebraRep_mul_addedSiteInsertion_exterior}
+    \uses{thm:added_site_tensor_insertion_permutations}
+    For $a=\sum_{\sigma\in S_k}a_\sigma\sigma\in\C[S_k]$, put
+    $U_Q(a)=\sum_\sigma a_\sigma U_Q(\sigma)$, and define
+    $\widetilde U_R(a)$ in the same way. Then
+    \begin{align*}
+        \widetilde U_{Q\cup\{*\}}(a)J_b&=J_bU_Q(a),\\
+        \widetilde U_Q(a)J_b&=J_bU_Q(a).
+    \end{align*}
+    The same group-algebra element occurs on both sides.
+\end{theorem}
+\begin{proof}
+    Sum the corresponding permutation identities with coefficients
+    $a_\sigma$ and use bilinearity of matrix multiplication.
+\end{proof}
+
+\begin{theorem}[Label observables and insertion]
+    \label{thm:added_site_tensor_insertion_label_observables}
+    \lean{TensorPower.labelObservable_mul_addedSiteInsertion,TensorPower.labelObservable_mul_addedSiteInsertion_exterior}
+    \uses{def:label_projectors,thm:added_site_tensor_insertion_group_algebra}
+    Let $f$ be any real-valued function on the irreducible labels of $S_k$,
+    and let $L_Q(f)=\sum_\lambda f(\lambda)\pi_Q^\lambda$.
+    With the analogous notation for the enlarged family,
+    \begin{align*}
+        \widetilde L_{Q\cup\{*\}}(f)J_b&=J_bL_Q(f),\\
+        \widetilde L_Q(f)J_b&=J_bL_Q(f).
+    \end{align*}
+    In particular, these identities retain any chosen original-system
+    label weights. The weights are not recomputed on the enlarged family.
+\end{theorem}
+\begin{proof}
+    Apply the group-algebra identities to
+    $\sum_\lambda f(\lambda)e_\lambda$, where $e_\lambda$ is the central
+    idempotent for the label $\lambda$.
+\end{proof}

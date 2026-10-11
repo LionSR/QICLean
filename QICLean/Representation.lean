@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Representation
 
 import QICLean.Representation.AddedSiteSpace
+import QICLean.Representation.AddedSiteTensorInsertion
 import QICLean.Representation.Alternant
 import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.BranchProbability
