@@ -33,4 +33,5 @@ theorem IsStarProjection.exists_matrix_range_isometry
       (P.submatrix (Fintype.equivFin m).symm (Fintype.equivFin m).symm) :=
     ⟨hP.isSelfAdjoint.isHermitian.submatrix _,
       (hP.isIdempotentElem.map (Matrix.reindexRingEquiv ℂ (Fintype.equivFin m))).eq⟩
+  obtain ⟨n, V, hV, hVV⟩ := hFin.exists_range_isometry
   done
