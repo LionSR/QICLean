@@ -29,6 +29,7 @@ namespace Matrix
 
 variable {a b : Type*} [Fintype a] [Fintype b] [DecidableEq a]
 
+omit [Fintype a] [DecidableEq a] in
 /-- Discarding a possibly zero or subnormalized pure register retains its
 actual squared norm as a scalar. Source: `eq:reference-junk`. -/
 theorem partialTraceRight_tensorVector_eq_smul
@@ -130,6 +131,7 @@ theorem rectangularTraceNorm_sub_pure_le_of_product_reference
           Ψ Ω Ξ hΨ hΩ hΞ herror hlower))
     _ = _ := by ring
 
+omit [DecidableEq a] in
 /-- The same joint vector retains norm at least `1 - δ - ε`; this does not
 require the vector itself to be contractive. Source: §8.1, the normalization
 estimate preceding `eq:protocol-density`. -/
@@ -142,6 +144,7 @@ theorem one_sub_le_norm_of_product_reference
   rw [norm_euclideanTensorVector, hΩ, one_mul, norm_sub_rev] at hreverse
   linarith
 
+omit [DecidableEq a] in
 /-- The unnormalized physical density has trace deficit at most `2(δ + ε)`.
 This remains valid when the lower bound `1 - δ - ε` is negative, so no
 small-error premise is hidden in the estimate. Source: §8.1, normalization
@@ -151,6 +154,7 @@ theorem trace_deficit_partialTraceRight_le_of_product_reference
     (Ξ : EuclideanSpace ℂ b) (hΩ : ‖Ω‖ = 1) {ε δ : ℝ}
     (herror : ‖Ψ - euclideanTensorVector Ω Ξ‖ ≤ ε) (hlower : 1 - δ ≤ ‖Ξ‖) :
     1 - (partialTraceRight (euclideanOuterProduct Ψ Ψ)).trace.re ≤ 2 * (δ + ε) := by
+  classical
   rw [trace_partialTraceRight, trace_euclideanOuterProduct_self,
     ← Complex.ofReal_pow, Complex.ofReal_re]
   have hnorm := one_sub_le_norm_of_product_reference Ψ Ω Ξ hΩ herror hlower
