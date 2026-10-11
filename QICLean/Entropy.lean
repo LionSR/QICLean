@@ -48,22 +48,12 @@ import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
 import QICLean.Entropy.FiniteProductTypicalState
 import QICLean.Entropy.GapSurprisal
-<<<<<<< HEAD
 import QICLean.Entropy.IidSchurExponentialMoments
 import QICLean.Entropy.IidSchurLabelExponential
 import QICLean.Entropy.IidSchurSignedMoments
-||||||| f2b3457b
-=======
-import QICLean.Entropy.IidSchurLabelExponential
->>>>>>> origin/main
 import QICLean.Entropy.IidSurprisal
-<<<<<<< HEAD
 import QICLean.Entropy.IidSurprisalExponential
 import QICLean.Entropy.IidSurprisalMomentExponential
-||||||| f2b3457b
-=======
-import QICLean.Entropy.IidSurprisalExponential
->>>>>>> origin/main
 import QICLean.Entropy.LocalLift
 import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison

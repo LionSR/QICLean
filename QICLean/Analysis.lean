@@ -123,12 +123,8 @@ import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProjectedEvolution
-<<<<<<< HEAD
-import QICLean.Analysis.ProjectionCfcUpperBound
-||||||| f2b3457b
-=======
 import QICLean.Analysis.ProjectionCalculus
->>>>>>> origin/main
+import QICLean.Analysis.ProjectionCfcUpperBound
 import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.ProjectionQuadraticBound
@@ -156,7 +152,6 @@ import QICLean.Analysis.ReplicaExcitationSymmetry
 import QICLean.Analysis.ReplicaGoodAuxiliaryLabelBound
 import QICLean.Analysis.ReplicaGoodAuxiliaryMarginal
 import QICLean.Analysis.ReplicaGoodConfigurationDensity
-<<<<<<< HEAD
 import QICLean.Analysis.ReplicaGoodConfigurationExpectation
 import QICLean.Analysis.ReplicaGoodConfigurationIndividualMergeMoment
 import QICLean.Analysis.ReplicaGoodConfigurationMergeMoment
@@ -167,10 +162,6 @@ import QICLean.Analysis.ReplicaGoodConfigurationRegionalMoment
 import QICLean.Analysis.ReplicaGoodConfigurationSharpMoment
 import QICLean.Analysis.ReplicaGoodConfigurationSignedMoments
 import QICLean.Analysis.ReplicaGoodConfigurationSingletonMoment
-||||||| f2b3457b
-=======
-import QICLean.Analysis.ReplicaGoodConfigurationProduct
->>>>>>> origin/main
 import QICLean.Analysis.ReplicaGoodCopyDensity
 import QICLean.Analysis.ReplicaGoodCopyFactorization
 import QICLean.Analysis.ReplicaGoodPairMarginal
