@@ -125,6 +125,7 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
     | some (some x) => ‹∀ x, Nonempty (β x)› x
   obtain ⟨Cf, hCf, hfloor⟩ :=
     exists_replicaMetric_symProj_isometric_floor ι₀ ht
+  refine ⟨c, Cf, hc, hCf, ?_⟩
   done
 
 end Matrix
