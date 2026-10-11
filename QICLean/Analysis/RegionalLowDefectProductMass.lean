@@ -109,6 +109,11 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
     globalReplicaLowDefectProjection_gap_mass_ge β C R hgap hΩ hgap_pos hk
       ellC ellR hτ v hv hsymv
       (hlabels (some none) ellC hC) (hlabels none ellR hR)
+  have hquad (P : Matrix (Config k ι₀) (Config k ι₀) ℂ) :
+      (star v ⬝ᵥ (P *ᵥ v)).re =
+        (star φ ⬝ᵥ ((Zᴴ * P * Z) *ᵥ φ)).re := by
+    simpa only [v, conjTranspose_conjTranspose, mulVec_mulVec, mul_assoc] using
+      congrArg Complex.re (star_dotProduct_mulVec Zᴴ φ.ofLp (P *ᵥ (Z *ᵥ φ.ofLp))).symm
   done
 
 end Matrix
