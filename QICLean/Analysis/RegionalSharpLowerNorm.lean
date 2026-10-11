@@ -209,7 +209,7 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
           (mul_nonneg hτ.le
             (add_nonneg (Real.log_natCast_nonneg (Fintype.card C))
               (Real.log_natCast_nonneg (Fintype.card R))))).trans
-          (add_le_add_left
+          (add_le_add_right
             ((mul_le_mul_of_nonneg_left (hgapmax j g)
               (sub_nonneg.mpr (hτhalf.trans (by norm_num)))).trans
               ((mul_le_mul_of_nonneg_right (sub_le_self 1 hτ.le) hmax0).trans_eq
