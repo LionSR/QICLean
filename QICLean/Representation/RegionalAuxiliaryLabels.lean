@@ -99,6 +99,19 @@ theorem labelProj_globalReplicaCopiesEquiv_auxiliary
       Matrix.reindex eR eR (labelProj (subsystemPerm k ι₀ {none}) ellR) :=
     (labelProj_prodLeft (Z := (Fin k → (x : V) → β x) × (Fin k → C))
       (copyPerm R k) ellR).symm.trans (labelProj_of_intertwine eR heR ellR)
-  done
+  exact ⟨hleft, Matrix.ext fun x y ↦ by
+    simpa only [Matrix.reindex_apply, Matrix.submatrix_apply,
+      Equiv.symm_apply_apply, Equiv.trans_apply, Equiv.prodComm_apply,
+      Equiv.prodAssoc_symm_apply, Prod.swap,
+      ← Matrix.one_kronecker_one (α := ℂ) (m := Fin k → (v : V) → β v)
+        (n := Fin k → C), Matrix.kroneckerMap_apply,
+      eR, I, mul_rotate'
+        (labelProj (copyPerm R k) ellR (e x).2.2 (e y).2.2)
+        ((1 : Matrix (Fin k → (v : V) → β v) (Fin k → (v : V) → β v) ℂ)
+          (e x).1 (e y).1)
+        ((1 : Matrix (Fin k → C) (Fin k → C) ℂ) (e x).2.1 (e y).2.1)] using
+      (congrArg (fun H ↦ H (eR x) (eR y)) hLR).trans
+        (congrArg₂ (labelProj (subsystemPerm k ι₀ {none}) ellR)
+          (eR.symm_apply_apply x) (eR.symm_apply_apply y))⟩
 
 end TensorPower
