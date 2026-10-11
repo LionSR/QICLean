@@ -265,7 +265,7 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
     set_option pp.maxSteps 50000 in
       simpa only [hg, b₀, f, Λ, D, ψ, ι,
         (show Real.log (Fintype.card (ι (Q, Y) 3)) +
-          Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using h
+          Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using! h
 
 
 end Matrix
