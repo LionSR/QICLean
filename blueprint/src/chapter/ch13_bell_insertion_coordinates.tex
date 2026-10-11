@@ -3,6 +3,7 @@
 \begin{definition}[Separating the added copies]
     \label{def:added_site_copy_separation}
     \lean{TensorPower.addedSiteConfigEquiv}
+    \leanok
     \uses{def:added_site_tensor_insertion}
     Let $F$ be a finite set with finite coordinate sets $I_f$, let $A$
     be another finite coordinate set, and let $k\geq0$.
@@ -19,6 +20,7 @@
 \begin{theorem}[Gram matrix of a tensor-power insertion]
     \label{thm:added_site_insertion_gram}
     \lean{TensorPower.addedSiteInsertion_conjTranspose_mul,TensorPower.isIsometry_addedSiteInsertion}
+    \leanok
     \uses{def:added_site_tensor_insertion,def:added_site_copy_separation}
     For every $b:A\to\C$, the insertion matrix $J_b$ satisfies
     \begin{align*}
@@ -28,7 +30,7 @@
     In particular, if $\|b\|_2=1$, then $J_b$ is an isometry.
     The identity includes $k=0$ and empty coordinate sets.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Reindex the sum defining the Gram matrix by $s_k$.
     The original-coordinate indicators give $\mathbf1_{\{x=y\}}$.
     The remaining sum is
@@ -39,6 +41,7 @@
 \begin{theorem}[Copy symmetry under insertion]
     \label{thm:added_site_insertion_copy_symmetry}
     \lean{TensorPower.permOp_copyPerm_mul_addedSiteInsertion,TensorPower.symProj_mul_addedSiteInsertion,TensorPower.addedSiteInsertion_mulVec_mem_symmetricSubspace}
+    \leanok
     \uses{thm:added_site_tensor_insertion_permutations}
     Let $U(\sigma)$ and $\widetilde U(\sigma)$ denote simultaneous copy
     permutations before and after insertion. Let $P_{\rm sym}$ and
@@ -51,7 +54,7 @@
     Consequently, $J_bv$ is symmetric whenever $v$ is symmetric.
     Neither vector is required to be normalized.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Specialize the subsystem identity to all original sites.
     Averaging over $\mathfrak S_k$ gives the projection identity.
     Applying the permutation identity to a fixed vector proves the last
@@ -71,6 +74,7 @@ $\mathcal H_e=B_X\times R$, with $R$ retained as an individual site.
 \begin{definition}[Grouping the inserted Bell coordinates]
     \label{def:bell_insertion_coordinates}
     \lean{TensorPower.bellInsertionSiteEquiv,TensorPower.bellInsertionCopyEquiv}
+    \leanok
     \uses{def:compressed_site_family}
     Group the coordinates of $X$ with $C$, and leave $R$ and all
     complementary physical coordinates separate. This gives
@@ -87,6 +91,7 @@ $\mathcal H_e=B_X\times R$, with $R$ retained as an individual site.
 \begin{theorem}[Subsystem actions in the Bell coordinates]
     \label{thm:bell_insertion_subsystem_coordinates}
     \lean{TensorPower.bellInsertionCopyEquiv_subsystemPerm_withPin,TensorPower.bellInsertionCopyEquiv_subsystemPerm_exterior,TensorPower.labelObservable_bellInsertionCopyEquiv_withPin,TensorPower.labelObservable_bellInsertionCopyEquiv_exterior}
+    \leanok
     \uses{def:bell_insertion_coordinates,def:copy_permutations,def:label_projectors}
     Fix any $U\subseteq V$ and write $\widehat U$ for its exterior part
     $U\setminus X$. Denote the new bundled site $A_X\times C$ by $*$.
@@ -108,7 +113,7 @@ $\mathcal H_e=B_X\times R$, with $R$ retained as an individual site.
     \end{align*}
     No disjointness condition on $X$ and $U$ is required.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     On the bundled site, the first action permutes all coordinates of
     $X$ and $C$ together; the second action fixes them. Both actions fix
     $R$ and agree on each complementary physical site.
@@ -123,6 +128,7 @@ be the insertion expressed in the original physical coordinates.
 \begin{theorem}[Label observables through the physical insertion]
     \label{thm:bell_insertion_label_intertwining}
     \lean{TensorPower.labelObservable_mul_bellInsertion_withPin,TensorPower.labelObservable_mul_bellInsertion_exterior,TensorPower.labelObservable_mul_bellInsertion_auxiliary}
+    \leanok
     \uses{thm:bell_insertion_subsystem_coordinates,thm:added_site_tensor_insertion_label_observables}
     For every $b$, $U\subseteq V$, and real label function $f$,
     \begin{align*}
@@ -133,7 +139,7 @@ be the insertion expressed in the original physical coordinates.
     The same function $f$ occurs on both sides of each equality.
     The registers $C$ and $R$ need not have the same dimension.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Use the subsystem coordinate identities and the two insertion
     identities for label observables. For the last equality, the
     original register $R$ becomes the retained exterior register $R$.
@@ -142,6 +148,7 @@ be the insertion expressed in the original physical coordinates.
 \begin{theorem}[Isometry and copy symmetry of the physical insertion]
     \label{thm:bell_insertion_isometry_symmetry}
     \lean{TensorPower.isIsometry_bellInsertion,TensorPower.permOp_copyPerm_mul_bellInsertion,TensorPower.symProj_mul_bellInsertion}
+    \leanok
     \uses{thm:added_site_insertion_gram,thm:added_site_insertion_copy_symmetry,def:bell_insertion_coordinates}
     The coordinate change $e_k$ commutes with simultaneous copy
     permutations. Hence, for every $b$ and $\sigma\in\mathfrak S_k$,
@@ -152,7 +159,7 @@ be the insertion expressed in the original physical coordinates.
     If $\|b\|_2=1$, then also $J^*J=I$.
     These identities include zero copies and empty coordinate sets.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     The map $e_k$ acts separately in each copy, so it commutes with
     their simultaneous permutation. Transport the corresponding
     rectangular identity and average over $\mathfrak S_k$.
