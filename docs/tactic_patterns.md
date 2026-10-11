@@ -75,6 +75,23 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Products preserving common spectral cutoffs — candidate (2026-10-11)
+
+- **Pattern:** Prove that each factor preserves a common fixed subspace and
+  bounds the norm there, then compose the estimates in the prescribed order.
+- **Seen:** The two inverse metrics and the direct metric in
+  `Representation/ReplicaPinnedLeafExpectation.lean`; one mathematical
+  application with three factors in one file.
+- **Abstraction:** The private lemmas `norm_mul_on_invariant` and
+  `norm_listProd_on_invariant` express composition and finite iteration.
+  Preservation follows from the existing commutation theorem for nested
+  or disjoint subsystems. A second independent application may justify
+  exposing these elementary matrix lemmas; no custom tactic is introduced.
+- **Caveat:** Bounds on individual vectors do not compose without the
+  preservation statement. Commutation is derived from the actual region
+  relations and does not extend to arbitrary overlapping regions.
+
+
 ### Replica regions with two auxiliary sites — shared geometric statement (2026-10-11)
 
 - **Pattern:** Lift physical regions to the common site family, adjoin the
