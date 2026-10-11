@@ -42,6 +42,18 @@ theorem abs_entropy_sub_le_sqrt_traceDistance
   have hcont := Entropy.abs_vonNeumannEntropy_sub_le_sqrt
     (reducedPure_posSemidef β Ω R) (reducedPure_posSemidef β Φ R)
     (trace_reducedPure β Ω hΩ R) (trace_reducedPure β Φ hΦ R)
+  have hdist : Matrix.traceDistance (reducedPure β Ω R) (reducedPure β Φ R) ≤
+      Matrix.traceDistance (Matrix.vecMulVec Ω (star Ω))
+        (Matrix.vecMulVec Φ (star Φ)) :=
+    (Matrix.traceDistance_partialTraceRight_le
+      ((Matrix.posSemidef_vecMulVec_self_star Ω).submatrix (splitEquiv β R).symm).isHermitian
+      ((Matrix.posSemidef_vecMulVec_self_star Φ).submatrix (splitEquiv β R).symm).isHermitian
+      ((Matrix.trace_partialTraceRight _).symm.trans
+        ((trace_reducedPure β Ω hΩ R).trans
+          ((trace_reducedPure β Φ hΦ R).symm.trans (Matrix.trace_partialTraceRight _))))).trans_eq
+      (Matrix.traceDistance_submatrix_equiv (splitEquiv β R).symm
+        (Matrix.posSemidef_vecMulVec_self_star Ω).isHermitian
+        (Matrix.posSemidef_vecMulVec_self_star Φ).isHermitian)
   done
 
 end FiniteProduct
