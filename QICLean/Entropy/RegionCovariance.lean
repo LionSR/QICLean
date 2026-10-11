@@ -50,6 +50,14 @@ noncomputable def relabelVector (e : V ≃ V')
     (Ω : EuclideanSpace ℂ (SiteConfig n)) : EuclideanSpace ℂ (SiteConfig n') :=
   WithLp.toLp 2 fun σ ↦ Ω ((siteConfigurationEquiv e f).symm σ)
 
+/-- Expressing a vector in the transported configuration basis preserves its
+Euclidean norm. -/
+@[simp] theorem norm_relabelVector (e : V ≃ V')
+    (f : ∀ v, Fin (n v) ≃ Fin (n' (e v)))
+    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
+    ‖relabelVector e f Ω‖ = ‖Ω‖ :=
+  (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (siteConfigurationEquiv e f)).norm_map Ω
+
 /-- Covariance of a regional pure-state matrix under site and basis-label
 bijections. The vector need not be normalized. -/
 theorem regionState_relabel (D : Finset V) (D' : Finset V') (e : V ≃ V')

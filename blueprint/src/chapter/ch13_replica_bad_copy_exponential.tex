@@ -1,0 +1,87 @@
+\section{Removal of the bad-copy exponential}
+\label{sec:replica_bad_copy_exponential}
+
+\begin{theorem}[Removal on the bad symmetric subspace]
+\label{thm:grouped_signed_exponential_comparison}
+\lean{TensorPower.re_dotProduct_exp_grouped_signedLabelEntropy_le}
+\leanok
+\uses{thm:signed_subgroup_label_symmetric_nonnegative,
+  thm:grouped_copy_label_commutation,
+  thm:fixed_vector_exp_contraction}
+Divide $k$ copies into groups of sizes $m$ and $r$. For pairwise
+disjoint regions $P,Y,F$ covering the one-copy space, define
+$G_g=F_{P,g}+F_{F,g}-F_{Y,g}$ and
+$G_b=F_{P,b}+F_{F,b}-F_{Y,b}$. If $v$ is simultaneously symmetric
+on the bad copies, then every $a\ge0$ satisfies
+\begin{align}
+ \langle v,e^{-a(G_g+G_b)}v\rangle
+ &\le\langle v,e^{-aG_g}v\rangle.
+ \label{eq:grouped_signed_exponential}
+\end{align}
+Both expectations are real. No normalization of $v$ is assumed.
+\end{theorem}
+\begin{proof}\leanok
+Let $\Pi_b$ be simultaneous symmetry on the bad copies. Its
+compression of $G_b$ is nonnegative and it commutes with $G_b$.
+Functional calculus on its range gives
+$\Pi_b e^{-aG_b}\Pi_b\le\Pi_b$.
+The good operator commutes with $\Pi_b$ and $G_b$. Apply
+Theorem~\ref{thm:fixed_vector_exp_contraction} with
+$A=-aG_g$ and $B=-aG_b$.
+\end{proof}
+
+Let the five factors be ordered as $Q,Y,V,C,R$. Denote by $\Gamma_k$
+the coordinate equivalence
+\begin{align}
+ \Gamma_k(x)
+ &=\bigl((x_{j,Q},x_{j,Y},x_{j,V})_{j=0}^{k-1},
+          ((x_{j,C})_{j=0}^{k-1},(x_{j,R})_{j=0}^{k-1})\bigr).
+\end{align}
+For a physical vector $\Omega$, set
+$R_\Omega=|\Omega\rangle\langle\Omega|$ and
+$E_B=\bigotimes_{j=0}^{k-1} E_j$, where $E_j=I-R_\Omega$ for
+$j\in B$ and $E_j=R_\Omega$ otherwise. These are algebraic
+operators for arbitrary $\Omega$; when $\Omega$ has norm one,
+$E_B$ is the corresponding excitation projection.
+
+\begin{theorem}[Symmetry of the actual bad-copy component]
+\label{thm:actual_bad_copy_component_symmetry}
+\lean{TensorPower.fiveFactorCopiesEquiv_simultaneous_permOp,
+  Matrix.replicaGoodBadSplit_bad_image,
+  Matrix.replicaExcitationComponent_mem_bad_invariantSubspace}
+\leanok
+Suppose $u$ is fixed by simultaneous permutation of the physical
+copies and both auxiliary copy registers. Let
+$w=(E_B\otimes I_{C^k\otimes R^k})u$ and $f=w\circ\Gamma_k$.
+Enumerate the complement of $B$ as the good copies and $B$ as the
+bad copies. Then $f$ is simultaneously symmetric under permutation
+of the bad copies. No normalization of $u$ or $\Omega$ is required.
+This is the symmetry inheritance in
+\cite[Section~8, lines 441--456]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+The equivalence $\Gamma_k$ carries simultaneous copy permutation
+to its physical and two auxiliary tensor factors. A permutation
+within $B$ preserves $B$, so covariance of the excitation operators
+gives $U_\sigma E_B=E_BU_\sigma$. Thus the physical excitation
+operation preserves the original simultaneous symmetry for every
+bad-copy permutation. Pulling back by $\Gamma_k$ proves the claim.
+\end{proof}
+
+\begin{theorem}[Removal for the literal excitation component]
+\label{thm:actual_component_bad_exponential_removal}
+\lean{Matrix.replicaExcitationComponent_exp_grouped_le_good}
+\leanok
+\uses{thm:actual_bad_copy_component_symmetry,
+  thm:grouped_signed_exponential_comparison}
+With the same $u,\Omega,B,w,f$ as in
+Theorem~\ref{thm:actual_bad_copy_component_symmetry}, take
+$P=Q\cup C$ and $F=V\cup R$. Then
+(\ref{eq:grouped_signed_exponential}) holds for this actual
+component $f$, with these regions and every $a\ge0$.
+\end{theorem}
+\begin{proof}\leanok
+The three regions are disjoint and cover all five factors.
+Apply Theorem~\ref{thm:grouped_signed_exponential_comparison} to
+the bad-copy symmetry just derived for $f$.
+\end{proof}
