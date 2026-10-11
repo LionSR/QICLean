@@ -4,6 +4,7 @@
 \begin{theorem}[Mass and nonnegative energy deficit]
 \label{thm:regional_low_defect_product_mass}
 \lean{Matrix.replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge}
+\leanok
 Let the physical and two auxiliary coordinate spaces be finite and nonzero.
 Suppose that $\|\Omega\|=1$, $\gamma>0$, and
 \begin{align*}
@@ -49,7 +50,7 @@ terminal labels, zero tree weights, and $G=0$ are allowed.
 This is the mass estimate used in
 \cite[Section~8, lines~421--443]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
 \uses{thm:replica_metric_lifted_region_geometry,thm:replica_symmetric_band_label_preservation,thm:global_low_defect_gap_mass,thm:regional_low_defect_projection_global,def:global_replica_mean_hamiltonian}
 The actual lifted regions satisfy the hypotheses of the label-preservation
 theorem. Hence the same normalized vector $v$ has simultaneous symmetry
