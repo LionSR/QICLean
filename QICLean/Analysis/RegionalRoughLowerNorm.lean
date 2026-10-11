@@ -144,6 +144,8 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
         (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.1
         (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.2.1
         (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.2.2 n Z hZ hZZ).2
+  have hpin_original :=
+    (hlower k Ω hΩ ellC ellR τ S ε hτ.le hτhalf hlabel n Z hZZ).2
   done
 
 end Matrix
