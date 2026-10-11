@@ -169,6 +169,15 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
         (-(k : ℝ) * (2 * t) *
           (2 * S + (1 - τ) * entropyGap j g - τ * d - 3 * Real.binEntropy τ) +
             (2 * t) * ε + 25 * (k : ℝ) * K * (2 * t) ^ 2))
+  have hpinB (j : J) (g : Fin G) :
+      (pinCoeff j g)⁻¹ •
+        (Zᴴ * globalReplicaLowDefectProjection β C R Ω k ellC ellR τ * Z) ≤ B j g := by
+    simpa only [pinCoeff, entropyGap, d, B, A, W,
+      (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).1,
+      (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).2.1,
+      (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).2.2] using
+      (hlower k Ω hΩ ellC ellR τ S ε hτ.le hτhalf hlabel n Z hZZ).2
+        (Q j g) (Y j g) (hdisj j g) K rMom (hmoment j g) htr htone hK
   done
 
 end Matrix
