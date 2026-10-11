@@ -133,6 +133,7 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
     replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
       β C R hgap hΩ hgap_pos k n hk Z hZ hZZ ht.le
       G Q Y hdisj hnest T ellC ellR s ξ hξ hsym hC hR
+  refine ⟨hw, hv, hδ, fun τ hτ hτhalf ↦ ?_⟩
   done
 
 end Matrix
