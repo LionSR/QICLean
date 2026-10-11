@@ -42,8 +42,11 @@ local instance replicaLaminarBandMetrics_decidableEqConfig (k : ℕ) :
 
 omit [Fintype F] in
 /-- Successive disjoint bands form a laminar family, including their inner
-regions and inner-region unions. -/
-private theorem leaf_regions_laminar {K : ℕ} (U Y : Fin K → Finset F)
+regions and inner-region unions.
+
+Source: area-law manuscript, `07-comparators.tex`, `comparator:nesting`
+and lines 364–367. -/
+theorem replicaBandRegions_subset_or_disjoint {K : ℕ} (U Y : Fin K → Finset F)
     (hdisj : ∀ g, Disjoint (U g) (Y g))
     (hnest : ∀ g h, g < h → U g ∪ Y g ⊆ U h)
     {g h : Fin K} {R S : Finset F}
@@ -129,7 +132,7 @@ theorem posDef_replicaPinnedLeaf {t : ℝ} (ht : 0 ≤ t) (k K : ℕ)
       Commute (labelObservable (subsystemPerm k ι A) f)
         (labelObservable (subsystemPerm k ι B) f') :=
     commute_labelObservables_subsystemPerm_of_laminar ι k
-      (leaf_regions_laminar U Y hdisj hnest hA hB) f f'
+      (replicaBandRegions_subset_or_disjoint U Y hdisj hnest hA hB) f f'
   have hroot (g : Fin K) : (root g).PosDef := by
     have hU := posDef_replicaMetric ι ht k (U g)
     have hUY := posDef_replicaMetric ι ht k (U g ∪ Y g)

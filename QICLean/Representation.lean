@@ -86,6 +86,9 @@ import QICLean.Representation.ReplicaLowDefectSymmetricCoordinates
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
 import QICLean.Representation.ReplicaMetric
+import QICLean.Representation.ReplicaMetricCutoffNorm
+import QICLean.Representation.ReplicaPinnedLeafExpectation
+import QICLean.Representation.ReplicaPinnedTreeExpectation
 import QICLean.Representation.ReplicaPrevector
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity

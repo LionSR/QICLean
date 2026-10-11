@@ -112,6 +112,7 @@ import QICLean.Analysis.MeanTreeProjectionLogBound
 import QICLean.Analysis.MeanTreeProjectionMassBound
 import QICLean.Analysis.MeanTreeProjectionSectors
 import QICLean.Analysis.MeanTreeSublinearRemainder
+import QICLean.Analysis.MeanTreeUniformExpectation
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.NormalizedInversePowerLogBound
