@@ -144,8 +144,8 @@ theorem schmidtBellSiteEquiv_post :
         ((Finset.equivFin E).symm (x.2 j none), fun v ↦ x.2 j (some v))) = _
   simp only [Equiv.symm_apply_apply]
 
-local notation "z" => (posSemidef_vecMulVec_self_star Ω).partialTraceRight.
-  isHermitian.spectralRestrictionMass E
+local notation "z" =>
+  (posSemidef_vecMulVec_self_star Ω).partialTraceRight.isHermitian.spectralRestrictionMass E
 
 /-- The universal selected-Bell identity in the actual exterior-site
 coordinates. The prevector is the original prevector pulled back by the
