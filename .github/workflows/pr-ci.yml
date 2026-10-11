@@ -410,6 +410,32 @@ jobs:
               "$file"
           done
 
+      - name: Build the sublinear lower remainder target first
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          timeout --signal=INT --kill-after=5s 300s \
+            lake build QICLean.Analysis.MeanTreeSublinearRemainder \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the sublinear lower remainder and its axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/MeanTreeSublinearRemainder.lean \
+            QICLeanTest/MeanTreeSublinearRemainderAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
       - name: Build the actual sharp lower bound and capture timings
         run: |
           set -eo pipefail
