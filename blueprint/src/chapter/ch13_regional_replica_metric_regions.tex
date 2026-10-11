@@ -27,6 +27,7 @@ with all of $Y$.
 \begin{theorem}[Nesting after adjoining the auxiliary sites]
 \label{thm:replica_metric_lifted_region_geometry}
 \lean{TensorPower.replicaMetric_lifted_region_geometry}
+\leanok
 Let $Q_{jg},Y_{jg}$ be physical regions, indexed by arbitrary terminal
 labels $j$ and bands $0\leq g<G$. Assume that every pair is disjoint
 and that $Q_{jg}\cup Y_{jg}\subseteq Q_{j'h}$ for all $j,j'$ whenever
@@ -43,9 +44,11 @@ whenever $g<h$. These are the lifted regions used in
 \cite[Section~8, lines~80--110 and~421--443]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+\leanok
+\uses{thm:regional_replica_metric_regions,thm:regional_replica_metric_partition}
 The two auxiliary sites are distinct and lie outside the physical sites.
-Thus disjointness and the complement identity follow by separating the
-two auxiliary sites from a physical site. Finally,
+The induced partition gives disjointness. The complement identity follows
+by separating the two auxiliary sites from a physical site. Finally,
 $L_{jg}\cup E_{jg}=\{c\}\cup(Q_{jg}\cup Y_{jg})$; adjoining the same
 site to the given physical inclusion proves the nesting assertion.
 \end{proof}
