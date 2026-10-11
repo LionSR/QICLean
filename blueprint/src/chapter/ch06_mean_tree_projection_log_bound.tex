@@ -1,0 +1,42 @@
+\section{A logarithmic lower bound on complementary ranges}
+\label{sec:mean_tree_projection_log_bound}
+
+\begin{theorem}[The logarithm of a projection lower comparison]
+\label{thm:mean_tree_projection_log_lower_bound}
+\lean{Matrix.MeanTree.log_projection_sectors_le_log_eval}
+\leanok
+\uses{def:mean_tree}
+Let $I$ and $J$ be finite sets, let $P$ be an orthogonal projection on
+$\C^I$, and let $T$ be a weighted binary tree with labels in $J$ and
+terminal weights $w_j$. Suppose $b>0$, $d_j>0$, and
+$b(\Id-P)+d_jP\le A_j$ for every $j\in J$. Then
+\begin{align}
+ (\log b)(\Id-P)+\left(\sum_{j\in J}w_j\log d_j\right)P
+ &\le\log T(A).
+ \label{eq:mean_tree_projection_log_lower_bound}
+\end{align}
+No commutation condition is imposed on the matrices $A_j$.
+Repeated leaf labels and zero terminal weights are permitted.
+This is the operator comparison used before the projection-mass estimate
+in \cite[lines~603--640 of the norm-comparison argument]{OpenAI2026AreaLaw}.
+% Source: 07-comparators.tex, revision
+% adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:mean_tree_projection_sector_lower_bound,
+  thm:positive_projection_sectors,thm:area_law_affine_projection_calculus}
+Put $r=\prod_{j\in J}d_j^{w_j}>0$.
+Theorem~\ref{thm:mean_tree_projection_sector_lower_bound} gives
+$b(\Id-P)+rP\le T(A)$. The lower matrix is positive definite by
+Theorem~\ref{thm:positive_projection_sectors}, so monotonicity of the
+operator logarithm gives
+\begin{align}
+ \log\bigl(b(\Id-P)+rP\bigr)&\le\log T(A).\notag
+\end{align}
+Rewrite $b(\Id-P)+rP=b\Id+(r-b)P$ and apply
+Theorem~\ref{thm:area_law_affine_projection_calculus} with $f=\log$.
+Its logarithm is $(\log b)(\Id-P)+(\log r)P$.
+The identity $\log r=\sum_{j\in J}w_j\log d_j$ proves
+(\ref{eq:mean_tree_projection_log_lower_bound}).
+\end{proof}

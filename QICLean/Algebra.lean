@@ -56,6 +56,7 @@ import QICLean.Algebra.MatrixRankBaseChange
 import QICLean.Algebra.MatrixRankClosed
 import QICLean.Algebra.MatrixRankKronecker
 import QICLean.Algebra.MatrixReindexUnitary
+import QICLean.Algebra.MatrixSandwichIntertwine
 import QICLean.Algebra.MatrixSpectralDecomp
 import QICLean.Algebra.MatrixStabilization
 import QICLean.Algebra.MatrixTracePairing
@@ -104,6 +105,7 @@ import QICLean.Algebra.StarSubalgebraSpatial
 import QICLean.Algebra.StarSubalgebraUnitaryIntertwiner
 import QICLean.Algebra.SwapTrace
 import QICLean.Algebra.TaggedInterleavings
+import QICLean.Algebra.TensorPowerPartialTrace
 import QICLean.Algebra.TraceFormDuality
 import QICLean.Algebra.TracePowerCharPoly
 import QICLean.Algebra.TracePurity

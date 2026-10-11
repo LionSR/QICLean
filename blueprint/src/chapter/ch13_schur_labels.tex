@@ -180,11 +180,12 @@ lemma~\cite[Lemma 6.1]{OpenAI2026AreaLaw}.
     subsystem copy action along $\theta$. For a real function $f$ on the
     irreducible labels of $S_m$, write
     $F_{Q,\theta}(f)=\sum_\lambda f(\lambda)\pi^\lambda_{Q,\theta}$.
-    If $Q\subseteq Q'$ or $Q\cap Q'=\varnothing$, then
-    \[
-       [F_{Q,\theta}(f),F_{Q',\theta}(g)]=0
-    \]
-    for all real label functions $f,g$. The local spaces are arbitrary
+    For all real label functions $f,g$, if $Q\subseteq Q'$ or
+    $Q\cap Q'=\varnothing$, then
+    \begin{align}
+       [F_{Q,\theta}(f),F_{Q',\theta}(g)]=0.
+    \end{align}
+    The local spaces are arbitrary
     finite-dimensional spaces, and $\theta$ need not be injective.
     This is the restricted-copy form of
     \cite[Lemma 6.1(2), Section 8]{OpenAI2026AreaLaw}.
@@ -1017,3 +1018,5 @@ $e_r(y)=\sum_{|S|=r}\prod_{i\in S}y_i$ for the elementary symmetric polynomial.
 
 \input{fragment/excitation_subset_counts}
 \input{fragment/uniform_bell_label}
+
+\input{chapter/ch13_grouped_configuration_transport}

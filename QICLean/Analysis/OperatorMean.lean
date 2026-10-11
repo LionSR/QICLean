@@ -10,9 +10,16 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.OperatorMean.BlockDiagonal
 import QICLean.Analysis.OperatorMean.FiniteTree
+import QICLean.Analysis.OperatorMean.GeometricMeanDerivativeIntertwine
+import QICLean.Analysis.OperatorMean.GeometricMeanIntertwine
+import QICLean.Analysis.OperatorMean.LeafStateIntertwine
 import QICLean.Analysis.OperatorMean.LeafStates
 import QICLean.Analysis.OperatorMean.MatrixPowers
 import QICLean.Analysis.OperatorMean.MeanDerivative
+import QICLean.Analysis.OperatorMean.MeanTreeDerivativeIntertwine
+import QICLean.Analysis.OperatorMean.MeanTreeIntertwine
 import QICLean.Analysis.OperatorMean.PowerDerivative
+import QICLean.Analysis.OperatorMean.PowerDerivativeIntertwine
+import QICLean.Analysis.OperatorMean.RealPowerIntertwine
 import QICLean.Analysis.OperatorMean.TreeDerivative
 import QICLean.Analysis.OperatorMean.WeightedGeometricMean
