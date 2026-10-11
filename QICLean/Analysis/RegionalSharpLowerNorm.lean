@@ -135,6 +135,11 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
       G Q Y hdisj hnest T ellC ellR s ξ hξ hsym hC hR
   refine ⟨hw, hv, hδ, fun τ hτ hτhalf ↦ ?_⟩
   intro rate
+  obtain ⟨hLE, hfar, hnestL⟩ :
+      (∀ j g, Disjoint (L j g) (E j g)) ∧
+        (∀ j g, F j g = (L j g ∪ E j g)ᶜ) ∧
+          ∀ j j' g h, g < h → L j g ∪ E j g ⊆ L j' h :=
+    replicaMetric_lifted_region_geometry G Q Y hdisj hnest
   done
 
 end Matrix
