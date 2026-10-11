@@ -125,6 +125,9 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
         (re_dotProduct_mulVec_le_of_le
           (globalReplicaLowDefectProjection_properties β C R Ω hΩ k ellC ellR 1).1.le_one
           v.ofLp))
-  done
+  exact ⟨hM, hw, norm_smul_inv_norm (𝕜 := ℂ) hw, hv, hδ, fun τ hτ =>
+    ⟨(globalReplicaLowDefectProjection_properties β C R Ω hΩ k ellC ellR τ).2.2 n Z hZZ,
+      (hmass τ hτ).trans_eq
+        (hquad (globalReplicaLowDefectProjection β C R Ω k ellC ellR τ))⟩⟩
 
 end Matrix
