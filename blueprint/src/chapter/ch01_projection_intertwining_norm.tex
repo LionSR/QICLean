@@ -3,6 +3,7 @@
 \begin{theorem}[Projected norm comparison]
     \label{thm:projection_intertwining_norm}
     \lean{Matrix.norm_projected_le_of_isometric_intertwine}
+    \leanok
     Let $\mathcal H$ and $\mathcal K$ be finite-dimensional complex Hilbert
     spaces, let $Z:\mathcal K\to\mathcal H$ satisfy $Z^*Z=I$, and let
     $P$ be an orthogonal projection on $\mathcal H$. Suppose that $A$ on
@@ -17,7 +18,7 @@
     Neither matrix is required to be positive, and either Hilbert space
     may have dimension zero.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:mean_intertwiner_sandwich,def:construction_domain_extension}
     Taking adjoints gives $NP=PZAZ^*$. Contractivity of $P$ and the
     isometry property of $Z$ therefore yield
