@@ -79,6 +79,7 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
     let N := (List.ofFn fun g ↦ T.eval (D · g)).prod
     M.PosDef ∧ ∀ s : ℝ, (Z * M ^ s * Zᴴ) * P = P * N ^ s := by
   classical
+  intro e J Pe P W Q F E A D B M N
   done
 
 end TensorPower
