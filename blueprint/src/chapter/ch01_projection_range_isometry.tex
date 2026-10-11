@@ -8,6 +8,7 @@ This elementary construction is used for the symmetric restrictions in
 \begin{theorem}[Isometric coordinates for a projection]
     \label{thm:projection_range_isometry}
     \lean{IsStarProjection.exists_matrix_range_isometry}
+    \leanok
     Let $I$ be a finite set and let $P\in\mathbb C^{I\times I}$ satisfy
     $P^*=P$ and $P^2=P$. Then there exist an integer $n\ge0$ and
     $Z\in\mathbb C^{I\times\{0,\ldots,n-1\}}$ such that
@@ -19,6 +20,7 @@ This elementary construction is used for the symmetric restrictions in
 \end{theorem}
 
 \begin{proof}
+    \leanok
     Enumerate the ambient coordinates, choose an orthonormal basis of the
     projection range in these coordinates, and transport the resulting
     isometry back to the original index set. The two matrix identities are
