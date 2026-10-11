@@ -10,8 +10,12 @@ Authors: QICLean contributors
 
 import QICLean.Representation.AddedSiteSpace
 import QICLean.Representation.AddedSiteTensorInsertion
+import QICLean.Representation.AddedSiteTensorInsertionNorm
+import QICLean.Representation.AddedSiteTensorInsertionSymmetry
 import QICLean.Representation.Alternant
 import QICLean.Representation.BadCopyLabelDimension
+import QICLean.Representation.BellInsertionCoordinates
+import QICLean.Representation.BellInsertionSymmetry
 import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
