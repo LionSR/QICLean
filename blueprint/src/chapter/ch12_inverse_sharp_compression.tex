@@ -32,7 +32,6 @@ their derivation from the Hamiltonian is a separate result.
   Suppose also that $0\leq\tau\leq\frac12$ and
   $2kS-\varepsilon\leq\log\dim\lambda_C+\log\dim\lambda_R$.
   For any $B\subseteq\{0,\ldots,k-1\}$ with $|B|\leq\tau k$, let
-  For any $B\subseteq\{1,\ldots,k\}$ with $|B|\leq\tau k$, let
   $w=(P_B(\Omega)\otimes I)u$, and express $w$ in five-factor
   coordinates as $f$. Set
   \begin{align}
@@ -47,6 +46,7 @@ their derivation from the Hamiltonian is a separate result.
   cutoff data. The vector $u$ and its component may be zero.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:actual_component_inverse_sharp,
     thm:physical_singleton_entropy_difference,
     thm:replica_component_uniform_prefactor}
@@ -64,6 +64,7 @@ their derivation from the Hamiltonian is a separate result.
 \begin{theorem}[Actual sharp low-defect inverse compression]
   \label{thm:actual_low_defect_inverse_sharp_compression}
   \lean{Matrix.exists_replicaLowDefectProjection_inverse_sharp_compression_le}
+  \leanok
   For each $t>0$, a constant $C_0\geq0$ depending only on $t$ and
   the five spaces has the following property.
   Use the state, moment, label and cutoff assumptions of
@@ -82,6 +83,7 @@ their derivation from the Hamiltonian is a separate result.
   assumptions and the original label lower bound retained explicitly.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{thm:actual_component_inverse_sharp_uniform,
     thm:replica_low_defect_compression_from_components}
   Positivity of the inverse squared metric follows from the
