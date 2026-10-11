@@ -1,0 +1,65 @@
+\section{Commutation of the compressed replica bands}
+\label{sec:replica_symmetric_band_commute}
+
+Let $F$ be a finite set of sites with finite nonempty local configuration
+sets. Fix a copy number $k\ge0$, a parameter $t\ge0$, and the replica
+metrics $W(S)$ computed with the original full-system label weights.
+Let $\Pi$ be the projection onto the simultaneous copy-symmetric space,
+and fix $Z$ with $Z^*Z=I$ and $ZZ^*=\Pi$.
+For a set of labels $J$ and bands $g\in\{0,\ldots,K-1\}$, suppose
+\begin{align*}
+ Q_{jg}\cap Y_{jg}=\varnothing,\qquad
+ Q_{jg}\cup Y_{jg}\subseteq Q_{j'h}\quad(g<h)
+\end{align*}
+for every $j,j'$. Define the original and laminar factors, respectively, by
+\begin{align*}
+ A_{jg}&=\bigl(W(Q_{jg})^{-1}W((Q_{jg}\cup Y_{jg})^c)^{-1}W(Y_{jg})\bigr)^2,\\
+ D_{jg}&=\bigl(W(Q_{jg})^{-1}W(Q_{jg}\cup Y_{jg})^{-1}W(Y_{jg})\bigr)^2,
+ & B_{jg}&=Z^*A_{jg}Z.
+\end{align*}
+
+\begin{theorem}[Positive commuting compressions]
+\label{thm:replica_symmetric_band_compressions}
+\lean{TensorPower.replicaMetric_symProj_compressions_posDef_commute}
+\leanok
+For every $j,g$, the actual compression $B_{jg}$ is positive definite and
+\begin{align*}
+ A_{jg}Z=ZB_{jg},\qquad D_{jg}Z=ZB_{jg}.
+\end{align*}
+If $g\ne h$, then $B_{jg}B_{j'h}=B_{j'h}B_{jg}$ for all $j,j'$.
+This gives the symmetric-space commutation required in
+\cite[Section~7, lines~268--276; Section~8, lines~20--37]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:symmetric_replica_factor_action,thm:laminar_replica_band_commutation,thm:positive_projection_compression,thm:isometric_intertwining_commute}
+Complementary label agreement gives $A_{jg}\Pi=\Pi D_{jg}$,
+and $D_{jg}$ preserves the symmetric space. Each $D_{jg}$ is positive
+definite. Thus the actual compression is positive definite and both
+intertwining identities hold. Cross-status nesting makes every pair of
+regions occurring in different laminar bands either nested or disjoint,
+so the corresponding central label observables commute. Consequently
+$D_{jg}$ and $D_{j'h}$ commute when $g\ne h$, and commutation descends
+through the common isometry $Z$.
+\end{proof}
+
+\begin{theorem}[Commuting band means]
+\label{thm:replica_symmetric_band_mean_roots}
+\lean{TensorPower.replicaMetric_symProj_meanTree_roots_commute}
+\leanok
+Every weighted mean tree $T$ with terminal labels in $J$ satisfies
+$T(B_{\cdot g})>0$. For $g\ne h$ and any two such trees $T,T'$, one has
+\begin{align*}
+ T(B_{\cdot g})T'(B_{\cdot h})
+ =T'(B_{\cdot h})T(B_{\cdot g}).
+\end{align*}
+The isometry $Z$ is the same for all bands and trees. Repeated terminal
+labels and zero edge weights are allowed.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_symmetric_band_compressions}
+Positivity is preserved by each weighted geometric mean. A matrix
+commuting with every leaf commutes with the mean root; applying this
+observation to both trees gives the assertion.
+\end{proof}

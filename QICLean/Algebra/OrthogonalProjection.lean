@@ -50,6 +50,28 @@ theorem IsStarProjection.isOrthogonalProjection {P : Matrix (Fin D) (Fin D) ℂ}
   change Pᴴ = P
   simpa [Matrix.star_eq_conjTranspose] using hP.2
 
+namespace Matrix
+
+/-- A projection supported in the range of a rectangular matrix remains
+a projection after compression. The range identity is sufficient; an
+additional isometry hypothesis is unnecessary. -/
+theorem isStarProjection_conjTranspose_mul_mul_of_mul_range_eq
+    {m n : Type*} [Fintype m] [Fintype n]
+    {P : Matrix m m ℂ} (hP : IsStarProjection P)
+    (Z : Matrix m n ℂ) (hPZ : P * (Z * Zᴴ) = P) :
+    IsStarProjection (Zᴴ * P * Z) := by
+  refine ⟨?_, ?_⟩
+  · change (Zᴴ * P * Z) * (Zᴴ * P * Z) = Zᴴ * P * Z
+    calc
+      (Zᴴ * P * Z) * (Zᴴ * P * Z) =
+          Zᴴ * ((P * (Z * Zᴴ)) * P) * Z := by simp only [Matrix.mul_assoc]
+      _ = Zᴴ * P * Z := by rw [hPZ, hP.isIdempotentElem.eq]
+  · change (Zᴴ * P * Z)ᴴ = Zᴴ * P * Z
+    simp only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose,
+      hP.isSelfAdjoint.isHermitian.eq, Matrix.mul_assoc]
+
+end Matrix
+
 /-- Let $Q$ be an orthogonal projection on one finite-dimensional space and
 let $U$ be a coisometry onto that space.  Then $U^*QU$ is an orthogonal
 projection on the domain of $U$. -/

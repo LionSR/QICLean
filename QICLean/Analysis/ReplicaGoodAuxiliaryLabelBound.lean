@@ -39,8 +39,10 @@ open scoped MatrixOrder ComplexOrder Kronecker
 namespace Matrix
 
 /-- Enumerate the actual good coordinates first and bad coordinates second.
-OpenAI area-law manuscript, `07-comparators.tex`, lines 441–456 and 481–493. -/
-private noncomputable def replicaGoodBadSplit {k : ℕ} (B : Finset (Fin k)) :
+Source: *A two-dimensional area law from a global spectral gap*, September 24,
+2026, `07-comparators.tex`, lines 441–456 and 481–493, revision
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`. -/
+noncomputable def replicaGoodBadSplit {k : ℕ} (B : Finset (Fin k)) :
     Fin (Bᶜ).card ⊕ Fin B.card ≃ Fin k :=
   ((Equiv.sumCongr (Bᶜ).equivFin.symm B.equivFin.symm).trans
     (Equiv.sumComm ↥(Bᶜ) ↥B)).trans

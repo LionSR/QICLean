@@ -1,0 +1,36 @@
+\section{The same-tree product in symmetric coordinates}
+\label{sec:replica_symmetric_mean_tree_product}
+
+\begin{theorem}[The actual common-tree product]
+\label{thm:replica_symmetric_common_tree_product}
+\lean{TensorPower.replicaMetric_symProj_meanTree_eq_product}
+\leanok
+Fix a finite family of nonzero local spaces. Let $Q_{j,g},Y_{j,g}$
+be disjoint regional pairs satisfying
+$Q_{j,g}\cup Y_{j,g}\subseteq Q_{j',h}$ for $g<h$ and all statuses
+$j,j'$. Fix $t\ge0$ and an isometry $Z$ onto simultaneous copy symmetry.
+Use the original full-family Schur weights and set
+\begin{align}
+ A_{j,g}&=(W_{Q_{j,g}}^{-1}W_{(Q_{j,g}\cup Y_{j,g})^c}^{-1}
+ W_{Y_{j,g}})^2,\qquad B_{j,g}=Z^*A_{j,g}Z.
+\end{align}
+Then
+\begin{align}
+ Z^*\Bigl(\prod_gA_{j,g}\Bigr)Z&=\prod_gB_{j,g},\\
+ T\Bigl(j\mapsto Z^*(\prod_gA_{j,g})Z\Bigr)
+   &=\prod_gT(j\mapsto B_{j,g})
+\end{align}
+for every weighted mean tree $T$. Every band uses the same tree and
+therefore the same full terminal-path probabilities, exactly as in
+\cite[Section~8, lines~114--121]{OpenAI2026AreaLaw}.
+The empty band family and zero edge weights are included.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{thm:replica_symmetric_band_compressions,thm:mean_tree_properties}
+The actual identities $A_{j,g}Z=ZB_{j,g}$ multiply in the original
+order, and multiplication by $Z^*$ gives the first equality.
+The compressed band factors are positive definite and different bands
+commute for every pair of statuses. The product identity for finite
+mean trees gives the second equality.
+\end{proof}
