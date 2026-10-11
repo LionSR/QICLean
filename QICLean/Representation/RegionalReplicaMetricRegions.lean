@@ -110,6 +110,10 @@ theorem replicaMetric_lifted_region_geometry {J : Type*} (G : ℕ)
   intro L F E
   have hfar (j : J) (g : Fin G) : F j g = (L j g ∪ E j g)ᶜ := by
     simp [F, L, E, Finset.ext_iff, Option.forall]
+  have hdisj' (j : J) (g : Fin G) : Disjoint (L j g) (E j g) := by
+    simpa only [(regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).1,
+      (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).2.2] using
+      (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).1
   done
 
 end TensorPower
