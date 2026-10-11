@@ -179,6 +179,11 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
       (hlower k Ω hΩ ellC ellR τ S ε hτ.le hτhalf hlabel n Z hZZ).2
         (Q j g) (Y j g) (hdisj j g) K rMom (hmoment j g) htr htone hK
   have hpinCoeff (j : J) (g : Fin G) : 0 < pinCoeff j g := by positivity
+  have hlog (j : J) (g : Fin G) :
+      Real.log (pinCoeff j g) = r - 2 * t * (k : ℝ) * leafRate j g := by
+    simp (disch := positivity) only
+      [pinCoeff, Real.log_mul, Real.log_exp, Real.log_rpow, r, leafRate]
+    done
   done
 
 end Matrix
