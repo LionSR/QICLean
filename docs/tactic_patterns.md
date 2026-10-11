@@ -707,6 +707,19 @@ by the same rectangular coordinate map; use
 not a separate isometry identity or commutation with a metric. The regional
 cutoff covariance applies these arguments to the actual rank-one ground
 projector, the defect cutoff, and the original auxiliary labels.
+
+### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
+
+- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
+  orthogonal resolution, then apply scalar functional calculus to the two
+  assigned values.
+- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
+  `QICLean/Analysis/ProjectionCalculus.lean`.
+- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
+  or separate continuity argument is required.
+- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
+  Positivity needed for later logarithmic comparisons belongs to those
+  comparisons, rather than this general calculation.
 ### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
 
 - **Pattern:** Transport an eventual Schur projection-mass bound through the
@@ -749,7 +762,6 @@ projector, the defect cutoff, and the original auxiliary labels.
 - **Caveats:** Nonnegative scalar multiplication is established before the
   algebraic conversion. No projection or commutation assumption is needed
   for these two additive comparisons.
-
 ### Chronological prefix and suffix coordinates — candidate (2026-10-09)
 
 - **Pattern:** Express a retained prefix as the predicate filter of the original
@@ -774,16 +786,3 @@ projector, the defect cutoff, and the original auxiliary labels.
   A general norm inequality for folds should be considered at a third occurrence.
 - **Caveats:** No norm compatibility with the scalar action is needed; the
   contraction hypothesis concerns the additive seminorm directly.
-
-### Functional calculus on two complementary sectors — existing lemma (2026-10-09)
-
-- **Pattern:** Regard a self-adjoint idempotent and its complement as a finite
-  orthogonal resolution, then apply scalar functional calculus to the two
-  assigned values.
-- **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
-  `QICLean/Analysis/ProjectionCalculus.lean`.
-- **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
-  or separate continuity argument is required.
-- **Caveats:** Scalar values may coincide, and projection ranges may be zero.
-  Positivity needed for later logarithmic comparisons belongs to those
-  comparisons, rather than this general calculation.
