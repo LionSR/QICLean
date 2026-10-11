@@ -178,6 +178,8 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
         ((l2_opNorm_conjTranspose Z).le.trans
           (l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hZ))
         hξnorm (norm_nonneg ξ) zero_le_one).trans (one_mul (1 : ℝ)).le)
+  have hp : toEuclideanLin Zᴴ ξ ≠ 0 :=
+    fun h ↦ hw ((congrArg (toEuclideanLin (M ^ (-s))) h).trans (map_zero _))
   done
 
 end Matrix
