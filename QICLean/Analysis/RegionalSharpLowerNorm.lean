@@ -230,6 +230,13 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
     hfloorB (fun j g ↦ hcoefficient j g ▸ hpinB j g)
     hs (toEuclideanLin Zᴴ ξ) hp hpNorm
     (fun _ ↦ div_nonneg hδ hτ.le) (fun _ ↦ (hmass τ hτ).2)
+  have hlinear (g : Fin G) :
+      (∑ j, T.weight j * ((1 - τ) * entropyGap j g)) =
+        (1 - τ) * (∑ j, T.weight j * entropyGap j g) :=
+    (Finset.sum_congr rfl
+      (fun j _ ↦ mul_left_comm (T.weight j) (1 - τ) (entropyGap j g))).trans
+      (Finset.mul_sum Finset.univ
+        (fun j ↦ T.weight j * entropyGap j g) (1 - τ)).symm
   done
 
 end Matrix
