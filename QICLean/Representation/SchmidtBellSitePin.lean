@@ -115,7 +115,7 @@ theorem labelProj_schmidtBellSiteEquiv
       (1 : Matrix (Fin k → B) (Fin k → B) ℂ) (e0 x).1 (e0 y).1 = _
     have h := congrArg (fun Q ↦ Q (e0 x) (e0 y))
       (labelProj_compressedSite_submatrix β X (Fin E.card) k ell)
-    simpa only [Matrix.submatrix_apply, Equiv.symm_apply_apply,
+    simpa only [e0, Matrix.submatrix_apply, Equiv.symm_apply_apply,
       Matrix.kroneckerMap_apply, mul_comm] using h.symm
   change (1 : Matrix (Fin k → A × Fin E.card) (Fin k → A × Fin E.card) ℂ).submatrix
       eL eL ⊗ₖ
