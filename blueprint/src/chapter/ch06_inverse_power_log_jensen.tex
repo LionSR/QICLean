@@ -1,0 +1,56 @@
+\section{Inverse powers from logarithmic expectations}
+\label{sec:inverse_power_log_jensen}
+
+These inequalities give the inverse-power step in the proof of the sharp
+comparison in \cite[lines~383--395 of the norm-comparison argument]{OpenAI2026AreaLaw}.
+% Source: 07-comparators.tex, revision
+% adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+
+\begin{theorem}[Exponential Jensen for an inverse power]
+\label{thm:inverse_power_log_jensen}
+\lean{Matrix.PosDef.exp_neg_mul_re_inner_cfc_log_le_norm_rpow_neg_sq}
+\leanok
+Let $I$ be a finite set, let $M$ be a positive definite matrix on $\C^I$,
+and let $\varphi\in\C^I$ satisfy $\|\varphi\|=1$. For every $s\in\R$,
+\begin{align}
+ \exp\!\left(-2s\,\operatorname{Re}
+   \langle\varphi,(\log M)\varphi\rangle\right)
+ &\le \|M^{-s}\varphi\|^2.
+ \label{eq:inverse_power_log_jensen}
+\end{align}
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:support_log_vector_jensen, thm:log_rpow_posdef}
+The matrix $M^{-2s}$ is positive definite, so its support is the whole
+space and $\langle\varphi,M^{-2s}\varphi\rangle>0$.
+Logarithmic Jensen, $\log(M^{-2s})=-2s\log M$, and
+$\langle\varphi,M^{-2s}\varphi\rangle=\|M^{-s}\varphi\|^2$ give
+\begin{align}
+ -2s\,\operatorname{Re}\langle\varphi,(\log M)\varphi\rangle
+ &\le \log\|M^{-s}\varphi\|^2. \notag
+\end{align}
+Exponentiation proves (\ref{eq:inverse_power_log_jensen}).
+\end{proof}
+
+\begin{theorem}[Inverse-power bound with the original squared norm]
+\label{thm:inverse_power_normalized_log_bound}
+\lean{Matrix.PosDef.norm_sq_mul_exp_le_norm_rpow_neg_sq_of_normalized_log_le}
+\leanok
+Let $I$ be a finite set, let $M$ be a positive definite matrix on $\C^I$,
+and let $p\in\C^I$ satisfy $q=\|p\|^2>0$. Put $\varphi=p/\|p\|$.
+If $L\in\R$ satisfies
+$\operatorname{Re}\langle\varphi,(\log M)\varphi\rangle\le L$, then,
+for every $s\ge0$,
+\begin{align}
+ q e^{-2sL}&\le\|M^{-s}p\|^2.
+ \label{eq:inverse_power_mass_bound}
+\end{align}
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:inverse_power_log_jensen}
+The vector $\varphi$ is a unit vector. Since $-2s\le0$,
+$e^{-2sL}\le
+ \exp(-2s\,\operatorname{Re}\langle\varphi,(\log M)\varphi\rangle)$.
+Apply Theorem~\ref{thm:inverse_power_log_jensen} and multiply by $q$.
+Linearity gives $q\|M^{-s}\varphi\|^2=\|M^{-s}p\|^2$.
+\end{proof}
