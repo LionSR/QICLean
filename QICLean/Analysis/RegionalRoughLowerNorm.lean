@@ -180,6 +180,14 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
         hξnorm (norm_nonneg ξ) zero_le_one).trans (one_mul (1 : ℝ)).le)
   have hp : toEuclideanLin Zᴴ ξ ≠ 0 :=
     fun h ↦ hw ((congrArg (toEuclideanLin (M ^ (-s))) h).trans (map_zero _))
+  have hnorm := MeanTree.explicit_lower_norm_of_exponential_projection_lower_bound
+    (fun _ : Fin G ↦ T) hB hcomm
+    (fun _ ↦ (hmass τ hτ).1) (fun _ ↦ show 0 < b by positivity)
+    (fun _ ↦ show 0 ≤ 2 * t * (k : ℝ) by positivity)
+    (fun _ _ ↦ rate) (fun _ ↦ 2 * S) (fun _ ↦ r) (fun _ _ ↦ hrate)
+    hfloorB (fun j g ↦ hcoefficient ▸ hpinB j g)
+    hs (toEuclideanLin Zᴴ ξ) hp hpNorm
+    (fun _ ↦ div_nonneg hδ hτ.le) (fun _ ↦ (hmass τ hτ).2)
   done
 
 end Matrix
