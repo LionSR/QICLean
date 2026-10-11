@@ -11,6 +11,7 @@ separate result.
 \begin{theorem}[Five moments in the actual good-copy density]
   \label{thm:actual_good_configuration_sharp_moment}
   \lean{Matrix.replicaGoodConfigurationMarginal_exp_merge_sub_physical_sharp_le}
+  \leanok
   Let $\Omega$ be a unit physical vector, and let $u$ be fixed by
   simultaneous permutations of the $k$ copies of the physical and
   auxiliary factors. For $B\subseteq\{1,\ldots,k\}$, put $m=|B^c|$,
@@ -46,6 +47,7 @@ separate result.
   \]
   This includes $w=0$ and $m=0$.
 \end{theorem}
+\begin{proof}\leanok
 \begin{proof}
   \uses{thm:physical_merge_holder,thm:replica_good_configuration_individual_merge_moments,
     thm:replica_good_configuration_signed_singleton_moments,thm:five_moment_common_mass}
