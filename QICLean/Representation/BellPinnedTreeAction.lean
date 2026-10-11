@@ -115,7 +115,8 @@ theorem replicaMetric_factors_bellPin [∀ v, Nonempty (ι₀ v)]
   have hSym : Pe.IsHermitian :=
     (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
       (X := Config k ιe)).elim (fun l hl ↦
-        (hl (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)) ▸ isHermitian_labelProj _ l)
+        Eq.mp (congrArg Matrix.IsHermitian
+          (hl (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k))) (isHermitian_labelProj _ l))
   have hP : P.IsHermitian := Matrix.isHermitian_mul_mul_conjTranspose J hSym
   have hpos := posDef_bellMetric_factors β X C R ht k U Y hUY
   have hA : A.IsHermitian := hpos.1.isHermitian
