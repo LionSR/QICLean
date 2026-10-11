@@ -802,3 +802,11 @@ projector, the defect cutoff, and the original auxiliary labels.
   A general norm inequality for folds should be considered at a third occurrence.
 - **Caveats:** No norm compatibility with the scalar action is needed; the
   contraction hypothesis concerns the additive seminorm directly.
+
+### Norms under projected Hermitian intertwining — existing lemmas (2026-10-11)
+
+The projected norm comparison reuses `Matrix.norm_toLp_mulVec_of_isometry`
+for the rectangular isometry and `IsHermitian.conjTranspose_intertwine`
+for the reversed equation. The remaining estimate is contractivity of an
+orthogonal projection. No positivity or equality of the isometry range
+with the projected range is needed.
