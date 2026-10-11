@@ -34,4 +34,5 @@ theorem IsStarProjection.exists_matrix_range_isometry
     ⟨hP.isSelfAdjoint.isHermitian.submatrix _,
       (hP.isIdempotentElem.map (Matrix.reindexRingEquiv ℂ (Fintype.equivFin m))).eq⟩
   obtain ⟨n, V, hV, hVV⟩ := hFin.exists_range_isometry
+  refine ⟨n, V.submatrix (Fintype.equivFin m) id, ?_, ?_⟩
   done
