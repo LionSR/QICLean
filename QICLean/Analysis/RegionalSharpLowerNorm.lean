@@ -188,6 +188,13 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
   have hcoefficient (j : J) (g : Fin G) :
       (pinCoeff j g)⁻¹ = Real.exp (2 * t * (k : ℝ) * leafRate j g - r) := by
     rw [← Real.exp_log (hpinCoeff j g), ← Real.exp_neg, hlog, neg_sub]
+  obtain ⟨hmax0, hgapmax⟩ :
+      0 ≤ gmax ∧ ∀ (j : J) (g : Fin G), entropyGap j g ≤ gmax :=
+    ⟨Finset.le_max' (insert (0 : ℝ) gaps) 0 (Finset.mem_insert_self 0 gaps),
+      fun j g ↦ Finset.le_max' (insert (0 : ℝ) gaps) (entropyGap j g)
+        (Finset.mem_insert_of_mem
+          (Finset.mem_image_of_mem (fun p : J × Fin G ↦ entropyGap p.1 p.2)
+            (Finset.mem_univ (j, g))))⟩
   done
 
 end Matrix
