@@ -183,6 +183,7 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
       Real.log (pinCoeff j g) = r - 2 * t * (k : ℝ) * leafRate j g := by
     simp (disch := positivity) only
       [pinCoeff, Real.log_mul, Real.log_exp, Real.log_rpow, r, leafRate]
+    field_simp [ht.ne']
     done
   done
 
