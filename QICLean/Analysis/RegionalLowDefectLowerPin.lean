@@ -191,7 +191,8 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
             (∀ j : Fin 3, ∀ v : ℝ, |v| ≤ r →
               let T := FiniteProduct.regionalPhysicalRegion Q Y j
               Real.log (Entropy.surprisalMoment
-                (FiniteProduct.reducedPure_posSemidef β (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues v) ≤
+                (FiniteProduct.reducedPure_posSemidef β (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues
+                v) ≤
                   v * FiniteProduct.entropy β (WithLp.toLp 2 Ω) T + K * v ^ 2) →
             20 * t ≤ r → 20 * t ≤ 1 → 0 ≤ K →
             let g := FiniteProduct.entropy β (WithLp.toLp 2 Ω) Q +
@@ -262,11 +263,9 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
     τ S ε hτ hτhalf hlabel).1
   dsimp +instances only [ι, regionalFiveFactorSpaceFintype,
     regionalFiveFactorSpaceDecidableEq, regionalLowerPin_decidableEqPhysical] at h ⊢
-  set_option pp.all true in
-    set_option pp.maxSteps 50000 in
-      simpa only [hg, b₀, f, Λ, D, ψ, ι,
-        (show Real.log (Fintype.card (ι (Q, Y) 3)) +
-          Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using! h
+  simpa only [hg, b₀, f, Λ, D, ψ, ι,
+    (show Real.log (Fintype.card (ι (Q, Y) 3)) +
+      Real.log (Fintype.card (ι (Q, Y) 4)) = d from rfl)] using! h
 
 
 end Matrix
