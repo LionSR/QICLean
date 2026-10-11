@@ -45,5 +45,5 @@ Scratch/
 # Python bytecode
 __pycache__/
 
-# Local provenance records
+# Local attribution-record directories (kept out of version control)
 **/provenance/
