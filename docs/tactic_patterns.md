@@ -598,3 +598,42 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveats:** Nonnegative scalar multiplication is established before the
   algebraic conversion. No projection or commutation assumption is needed
   for these two additive comparisons.
+
+### Auxiliary-label mass in compressed-site coordinates — candidate (2026-10-09)
+
+- **Pattern:** Transport an eventual Schur projection-mass bound through the
+  actual exterior coordinate isometry, retaining the same label sequence.
+- **Seen:** `Representation/CompressedTypicalLabelSequence.lean` and
+  `Representation/SchmidtBellCommonCutoffs.lean`; two occurrences in two files.
+- **Abstraction:** Both use
+  `TensorPower.norm_sq_labelProj_compressedTypicalSite_prod`, followed by
+  reciprocal and natural-power coercion identities. A third independent use
+  should supply a helper for the eventual inequality.
+- **Caveats:** The mass belongs to the normalized selected state before any
+  common regional cutoff. It is not a conditional mass after projecting,
+  and no second label selection is made.
+
+### Chronological prefix and suffix coordinates — candidate (2026-10-09)
+
+- **Pattern:** Express a retained prefix as the predicate filter of the original
+  prefix, and a full suffix as the corresponding list drop.
+- **Seen:** The consecutive-difference calculation and both endpoint
+  calculations in `PoissonWord.foldl_sub_partitionWords_fst_eq_sum`, in
+  `QICLean/Probability/PoissonWordTelescope.lean`; three occurrences in one file.
+- **Abstraction:** Reuse `ofFn_partitionWords_fst`, `ofFn_take`, and `ofFn_drop`
+  with `simp only`. A further lemma or simp set is deferred until the pattern
+  also occurs in a second file.
+- **Caveats:** Normalize the word coordinates before simplifying list maps.
+  Otherwise `List.map_ofFn` can remove the form needed for the filter identity.
+  Full suffixes and retained prefixes refer to the same original word.
+
+### Contractive chronological folds — candidate (2026-10-09)
+
+- **Pattern:** A fold of maps satisfying `‖E i y‖ ≤ ‖y‖` preserves the norm
+  bound of its initial vector.
+- **Seen:** The local `hact` arguments in `PoissonWordOmissionBound.lean` and
+  `PoissonWordExpectedOmission.lean`; two occurrences in two files.
+- **Abstraction:** Reuse `List.foldlRecOn` with the invariant `‖z‖ ≤ ‖y‖`.
+  A general norm inequality for folds should be considered at a third occurrence.
+- **Caveats:** No norm compatibility with the scalar action is needed; the
+  contraction hypothesis concerns the additive seminorm directly.

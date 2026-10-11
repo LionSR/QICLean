@@ -278,6 +278,7 @@ jobs:
           {
             lake build QICLean.Analysis.MeanTreeProjectionSectors
             lake build QICLean.Analysis.MeanTreeExponentialLowerNorm
+            lake build QICLean.Analysis.ReplicaGoodConfigurationProduct
             lake build
             lake build lint_style
           } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
@@ -389,6 +390,46 @@ jobs:
             QICLean/Analysis/MeanTreeMultibandLowerNorm.lean \
             QICLean/Analysis/MeanTreeExponentialLowerNorm.lean \
             QICLeanTest/MeanTreeLowerNormAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check the good-copy product and density consequences strictly
+        timeout-minutes: 8
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/ReplicaGoodConfigurationDensity.lean \
+            QICLean/Analysis/ReplicaJointDensity.lean \
+            QICLean/Analysis/ReplicaGoodConfigurationProduct.lean \
+            QICLeanTest/ReplicaGoodConfigurationProductAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file"
+          done
+
+      - name: Check compression-coordinate kernel dependencies strictly
+        timeout-minutes: 2
+        run: >
+          LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s
+          lake env lean -j1
+          -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false
+          -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true
+          QICLeanTest/CompressionCoordinatesAxioms.lean
+
+      - name: Check finite-family transport sources and regressions strictly
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Analysis/LogarithmicEnvelope.lean \
+            QICLean/Representation/ReplicaTransport/FiniteFamily.lean \
+            QICLeanTest/FiniteFamilyTransport.lean \
+            QICLeanTest/FiniteFamilyTransportAxioms.lean; do
             LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
