@@ -36,10 +36,10 @@ theorem IsStarProjection.exists_matrix_range_isometry
   obtain ⟨n, V, hV, hVV⟩ := hFin.exists_range_isometry
   refine ⟨n, V.submatrix (Fintype.equivFin m) id, ?_, ?_⟩
   case refine_2 =>
-    simpa only [Matrix.conjTranspose_submatrix,
-      Matrix.submatrix_mul_equiv V Vᴴ (Fintype.equivFin m)
-        (Equiv.refl (Fin n)) (Fintype.equivFin m),
+    simpa only [Matrix.conjTranspose_submatrix, Equiv.coe_refl,
       Matrix.submatrix_submatrix, Equiv.symm_comp_self, Matrix.submatrix_id_id] using
-      congrArg (fun A : Matrix (Fin (Fintype.card m)) (Fin (Fintype.card m)) ℂ ↦
-        A.submatrix (Fintype.equivFin m) (Fintype.equivFin m)) hVV
+      (Matrix.submatrix_mul_equiv V Vᴴ (Fintype.equivFin m)
+        (Equiv.refl (Fin n)) (Fintype.equivFin m)).trans
+        (congrArg (fun A : Matrix (Fin (Fintype.card m)) (Fin (Fintype.card m)) ℂ ↦
+          A.submatrix (Fintype.equivFin m) (Fintype.equivFin m)) hVV)
   done
