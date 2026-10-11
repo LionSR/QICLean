@@ -140,6 +140,10 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
         (∀ j g, F j g = (L j g ∪ E j g)ᶜ) ∧
           ∀ j j' g h, g < h → L j g ∪ E j g ⊆ L j' h :=
     replicaMetric_lifted_region_geometry G Q Y hdisj hnest
+  have hB (j : J) (g : Fin G) : (B j g).PosDef := by
+    simpa only [B, A, W, hfar] using
+      ((replicaMetric_symProj_compressions_posDef_commute
+        ι₀ k n Z hZ hZZ ht.le G L E hLE hnestL).1 j g).1
   done
 
 end Matrix
