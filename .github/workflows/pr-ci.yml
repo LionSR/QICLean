@@ -212,6 +212,17 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      - name: Build the ordered Bell band product early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.BellPinnedProductAction \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
       - name: Build the replica upper estimates early
         timeout-minutes: 6
         env:
@@ -1131,6 +1142,22 @@ jobs:
             lake build
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check the ordered Bell band product and standard axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/BellPinnedProductAction.lean \
+            QICLeanTest/BellPinnedProductAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
 
       - name: Check replica upper estimates and standard axioms strictly
         timeout-minutes: 11

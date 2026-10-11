@@ -830,3 +830,11 @@ with the full subsystem; the group-algebra argument is not repeated.
 The inserted vector need not be unit for these identities. Unit norm is
 used only to conclude that the inserted symmetric operator is a projection.
 Every replica weight retains the original full-family dimension.
+
+### Ordered products of rectangular intertwiners — existing lemma (2026-10-11)
+
+The Bell band product uses `List.rel_prod` to multiply rectangular
+intertwining equations in their given order. The original roots need not
+commute. Positivity of the exterior product follows separately from
+`replicaPinnedTree_eval_eq_prod` and the positive ordered leaves, with the
+same original full-family weights. Empty products remain included.

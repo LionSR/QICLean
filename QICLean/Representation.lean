@@ -18,6 +18,7 @@ import QICLean.Representation.BellInsertionCoordinates
 import QICLean.Representation.BellInsertionSymmetry
 import QICLean.Representation.BellMetricFactorPositivity
 import QICLean.Representation.BellPinnedMetricCoordinates
+import QICLean.Representation.BellPinnedProductAction
 import QICLean.Representation.BellPinnedTreeAction
 import QICLean.Representation.BellSymmetricPinProjection
 import QICLean.Representation.BranchProbability
