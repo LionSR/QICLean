@@ -29,7 +29,7 @@ vector, or new auxiliary label is supplied or selected.
   `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open scoped Matrix Kronecker symmDiff
+open scoped Matrix Kronecker symmDiff ComplexOrder
 open Matrix PermutationRepresentation TensorPower
 
 universe u
