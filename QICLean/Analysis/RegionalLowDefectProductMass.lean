@@ -114,8 +114,8 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
         (star φ ⬝ᵥ ((Zᴴ * P * Z) *ᵥ φ)).re := by
     change (star (Z *ᵥ φ.ofLp) ⬝ᵥ (P *ᵥ (Z *ᵥ φ.ofLp))).re =
       (star φ.ofLp ⬝ᵥ ((Zᴴ * P * Z) *ᵥ φ.ofLp)).re
-    rw [← mulVec_mulVec, ← mulVec_mulVec]
-    rw [star_dotProduct_mulVec Zᴴ φ.ofLp, conjTranspose_conjTranspose]
+    rw [← mulVec_mulVec, ← mulVec_mulVec,
+      star_dotProduct_mulVec Zᴴ φ.ofLp, conjTranspose_conjTranspose]
   have hn : (star v ⬝ᵥ v).re = 1 := by
     simpa only [RCLike.re_to_complex, PiLp.coe_symm_continuousLinearEquiv,
       WithLp.toLp_ofLp, hv, one_pow] using re_star_dotProduct_self_eq_norm_sq v
