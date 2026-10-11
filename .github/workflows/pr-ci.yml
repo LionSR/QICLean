@@ -212,6 +212,17 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      - name: Build matched physical cutoffs early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Entropy.CompressedPhysicalMatchedCutoffs \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
       - name: Build supplied Bell witness identities early
         timeout-minutes: 6
         env:
@@ -1120,6 +1131,24 @@ jobs:
             lake build
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check matched physical cutoffs and standard axioms strictly
+        timeout-minutes: 8
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/SupportedSubsystemLabelDimension.lean \
+            QICLean/Representation/MatchedSchurCutoffs.lean \
+            QICLean/Entropy/CompressedPhysicalMatchedCutoffs.lean \
+            QICLeanTest/PhysicalMatchedCutoffsAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
 
       - name: Check supplied Bell witness identities and standard axioms strictly
         timeout-minutes: 5
