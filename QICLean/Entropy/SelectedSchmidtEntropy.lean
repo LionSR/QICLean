@@ -53,6 +53,15 @@ theorem entropy_compressedTypicalPureState_equivFin_swap (hz : 0 < z) :
           congrArg (fun M : Matrix E E ℂ =>
             M ((Finset.equivFin E).symm r) ((Finset.equivFin E).symm s))
             (partialTraceRight_compressedTypicalPureState Ω E hz)
-  done
+  exact
+    let hd := hdiag ▸ (posSemidef_vecMulVec_self_star ψ).partialTraceLeft.isHermitian
+    (vonNeumannEntropy_congr hdiag
+      (posSemidef_vecMulVec_self_star ψ).partialTraceLeft.isHermitian hd).trans
+      ((vonNeumannEntropy_diagonal
+        (fun r : Fin E.card => (hρA).isHermitian.eigenvalues
+          ((Finset.equivFin E).symm r) / z) hd).trans
+        (((Finset.equivFin E).symm.sum_comp
+          (fun i : E => Real.negMulLog ((hρA).isHermitian.eigenvalues i / z))).trans
+          ((hρA).entropy_normalizedSpectralRestriction E hz).symm))
 
 end Matrix

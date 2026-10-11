@@ -303,7 +303,7 @@ jobs:
           {
             lake build
             lake build lint_style
-          } 2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+          } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check compression-coordinate kernel dependencies strictly
         timeout-minutes: 2
