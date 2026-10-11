@@ -7,6 +7,7 @@ finite system, by contraction under the partial trace.
 \begin{theorem}[Continuity of regional entropy]
   \label{thm:finite_product_entropy_continuity}
   \lean{FiniteProduct.abs_entropy_sub_le_sqrt_traceDistance}
+  \leanok
   Let $V$ be a finite set, with finite coordinate sets $\mathcal B_v$, and
   let $\mathcal H_R=\mathbb C^{\prod_{v\in R}\mathcal B_v}$ for $R\subseteq V$.
   For unit vectors $\Omega,\Phi\in\mathcal H_V$, write
@@ -23,6 +24,7 @@ finite system, by contraction under the partial trace.
   are supplied to the estimate; no further choice is made.
 \end{theorem}
 \begin{proof}
+  \leanok
   \uses{cor:entropy_mutual_information_continuity,lem:trace_distance_jordan}
   Split the original coordinates into the region and its complement.
   The two regional densities are positive semidefinite with trace one.
