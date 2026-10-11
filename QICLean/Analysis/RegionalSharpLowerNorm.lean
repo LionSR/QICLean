@@ -149,6 +149,17 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
     simpa only [B, A, W, hfar] using
       (replicaMetric_symProj_meanTree_roots_commute
         ι₀ k n Z hZ hZZ ht.le G L E hLE hnestL).2 g h hgh T T
+  have hfloorB (j : J) (g : Fin G) :
+      (2 * b) • (1 : Matrix (Fin n) (Fin n) ℂ) ≤ B j g := by
+    simpa only [b, mul_div_cancel₀ _ (two_ne_zero : (2 : ℝ) ≠ 0), B, A, W,
+      (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).1,
+      (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).2.1,
+      (regionalOriginalRegion_metric_regions (Q j g) (Y j g) (hdisj j g)).2.2] using
+      (hfloor k _ _ _
+        (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).1
+        (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.1
+        (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.2.1
+        (regionalOriginalRegion_metric_partition (Q j g) (Y j g)).2.2.2 n Z hZ hZZ).2
   done
 
 end Matrix
