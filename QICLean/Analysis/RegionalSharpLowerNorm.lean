@@ -119,6 +119,10 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
             -Real.log (‖w‖ ^ 2) := by
   obtain ⟨c, hc, hlower⟩ :=
     exists_globalReplicaLowDefectProjection_sharp_lower_pin β C R ht
+  letI : ∀ x, Nonempty (ι₀ x) := fun
+    | none => ‹Nonempty R›
+    | some none => ‹Nonempty C›
+    | some (some x) => ‹Nonempty (β x)›
   done
 
 end Matrix
