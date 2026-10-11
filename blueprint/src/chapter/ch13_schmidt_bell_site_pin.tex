@@ -11,6 +11,7 @@ Denote their configuration set by $\widehat B$.
 \begin{definition}[Enumerating the selected coordinates and collecting the exterior copies]
     \label{def:schmidt_bell_site_coordinates}
     \lean{FiniteProduct.schmidtBellSiteEquiv}
+    \leanok
     \uses{def:compressed_site_family,def:compressed_exterior_copy_coordinates}
     For $k\ge0$, define the bijection
     \begin{align*}
@@ -34,6 +35,7 @@ vanishes; the coordinate identities below require no normalization.
 \begin{theorem}[The Bell and auxiliary projections after collecting the exterior sites]
     \label{thm:schmidt_bell_site_projections}
     \lean{FiniteProduct.selectedBellProjection_schmidtBellSiteEquiv,FiniteProduct.labelProj_schmidtBellSiteEquiv}
+    \leanok
     \uses{def:schmidt_bell_site_coordinates,def:typical_bell_projection}
     Let $P_{E,k}=(|\beta_E\rangle\langle\beta_E|)^{\otimes k}$ and
     $P_{d,k}=(|\beta_d\rangle\langle\beta_d|)^{\otimes k}$.
@@ -48,6 +50,7 @@ vanishes; the coordinate identities below require no normalization.
     auxiliary exterior site.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{def:schmidt_bell_site_coordinates,thm:compressed_site_label_projection_coordinates}
     In each Bell factor, enumeration followed by its inverse returns the
     original selected index. The identity on the exterior factors remains
@@ -58,6 +61,7 @@ vanishes; the coordinate identities below require no normalization.
 \begin{theorem}[The selected product vector in exterior-site coordinates]
     \label{thm:schmidt_bell_site_post}
     \lean{FiniteProduct.schmidtBellSiteEquiv_post}
+    \leanok
     \uses{def:schmidt_bell_site_coordinates,def:compressed_typical_vector}
     Define
     \begin{align*}
@@ -71,6 +75,7 @@ vanishes; the coordinate identities below require no normalization.
     left are ordered as $(AC)^k$, $R^k$, $B^k$.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{def:schmidt_bell_site_coordinates}
     Substitution of $e_k$ into the two finite products cancels
     $\iota^{-1}\iota$ in every left auxiliary coordinate.
@@ -79,6 +84,7 @@ vanishes; the coordinate identities below require no normalization.
 \begin{theorem}[The Bell identity on the actual exterior sites]
     \label{thm:schmidt_bell_site_pin}
     \lean{FiniteProduct.selectedBellProjection_replicaPrevector_site}
+    \leanok
     \uses{def:replica_prevector,thm:schmidt_bell_site_projections,thm:schmidt_bell_site_post}
     Suppose the selected mass $z=\sum_{i\in E}p_i$ is positive.
     Let $v_{k,\lambda}$ be the original initial vector of
@@ -95,6 +101,7 @@ vanishes; the coordinate identities below require no normalization.
     \textup{(comparator:bell-pin)}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:schmidt_bell_prevector_pin,thm:schmidt_bell_site_projections,thm:schmidt_bell_site_post}
     Apply $U_k$ to the selected Bell identity and substitute the two
     projection identities and the product-vector identity. The coordinate
