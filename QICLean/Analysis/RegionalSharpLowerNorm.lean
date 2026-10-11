@@ -197,6 +197,23 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
       (Finset.mem_insert_of_mem (Finset.mem_image_of_mem f (Finset.mem_univ p)))
   have hgapmax (j : J) (g : Fin G) : entropyGap j g ≤ gmax :=
     hmax (fun p ↦ entropyGap p.1 p.2) (j, g)
+  have hrate (j : J) (g : Fin G) : leafRate j g ≤ 2 * S + gmax :=
+    (sub_le_self
+      (2 * S + (1 - τ) * entropyGap j g - τ * d -
+        (3 + 1 / (2 * t)) * Real.binEntropy τ)
+      (show 0 ≤ 50 * K * t by positivity)).trans
+      ((sub_le_self (2 * S + (1 - τ) * entropyGap j g - τ * d)
+        (mul_nonneg (show 0 ≤ 3 + 1 / (2 * t) by positivity)
+          (Real.binEntropy_nonneg hτ.le (hτhalf.trans (by norm_num))))).trans
+        ((sub_le_self (2 * S + (1 - τ) * entropyGap j g)
+          (mul_nonneg hτ.le
+            (add_nonneg (Real.log_natCast_nonneg (Fintype.card C))
+              (Real.log_natCast_nonneg (Fintype.card R))))).trans
+          (add_le_add_left
+            ((mul_le_mul_of_nonneg_left (hgapmax j g)
+              (sub_nonneg.mpr (hτhalf.trans (by norm_num)))).trans
+              ((mul_le_mul_of_nonneg_right (sub_le_self 1 hτ.le) hmax0).trans_eq
+                (one_mul gmax))) (2 * S))))
   done
 
 end Matrix
