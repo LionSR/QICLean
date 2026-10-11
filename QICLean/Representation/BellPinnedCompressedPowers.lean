@@ -102,6 +102,12 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
       (let h := (replicaMetric_symProj_compressions_posDef_commute ι₀ k n Z hZ hZZ ht K
         Q (fun j g ↦ E (Y j g)) hgeometry.1 hgeometry.2.2).1 j g
        And.intro h.1 h.2.1)
+  have hM : M.PosDef := by
+    simpa only [M, B, A, W, hfar] using
+      (let hroots := replicaMetric_symProj_meanTree_roots_commute ι₀ k n Z hZ hZZ ht K
+        Q (fun j g ↦ E (Y j g)) hgeometry.1 hgeometry.2.2
+       Matrix.MeanTree.posDef_listProd_ofFn (fun g ↦ hroots.1 g T)
+         (fun g h hgh ↦ hroots.2 g h hgh T T))
   done
 
 end TensorPower
