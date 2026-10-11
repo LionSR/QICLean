@@ -42,4 +42,6 @@ theorem IsStarProjection.exists_matrix_range_isometry
         (Equiv.refl (Fin n)) (Fintype.equivFin m)).trans
         (congrArg (fun A : Matrix (Fin (Fintype.card m)) (Fin (Fintype.card m)) ℂ ↦
           A.submatrix (Fintype.equivFin m) (Fintype.equivFin m)) hVV)
-  done
+  simpa only [Matrix.conjTranspose_submatrix,
+    Matrix.submatrix_mul_equiv Vᴴ V id (Fintype.equivFin m) id,
+    Matrix.submatrix_id_id] using hV
