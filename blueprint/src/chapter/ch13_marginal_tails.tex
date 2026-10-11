@@ -326,7 +326,8 @@ depend on the common values there.
 
 \begin{lemma}[Local lifts and the trace argument]
     \label{lem:local_lift}
-    \lean{Entropy.localLift, Entropy.regionState, Entropy.localLift_mul,
+    \lean{Entropy.localLift, Entropy.regionState, Entropy.regionState_isHermitian,
+        Entropy.localLift_mul,
         Entropy.localLift_one, Entropy.localLift_conjTranspose,
         Entropy.isSupportedOn_localLift, Entropy.IsSupportedOn.exists_localLift,
         Entropy.IsSupportedOn.mono, Entropy.IsSupportedOn.mul, Entropy.inner_localLift,
@@ -335,7 +336,8 @@ depend on the common values there.
     \uses{lem:supported_product_decomposition}
     The lift $K\mapsto K\otimes1$ from a region $D$ is a unital multiplicative
     map compatible with adjoints, and its range is the set of operators
-    supported on $D$. Support is monotone in $D$ and closed under products.
+    supported on $D$. The regional pure-state matrix is Hermitian. Support is
+    monotone in $D$ and closed under products.
     For every vector $\varphi$, $\langle\varphi,(K\otimes1)\varphi\rangle=
     \Tr\rho_{\varphi,D}K$. Consequently, if $K$ is invertible and commutes with
     $\rho_{\varphi,D}$, then
@@ -344,10 +346,59 @@ depend on the common values there.
 \end{lemma}
 \begin{proof}\leanok
     The algebraic properties hold for $K\otimes1$ and survive the relabelling.
+    The regional state is the partial trace of a positive semidefinite
+    matrix, and is therefore Hermitian.
     The expectation formula is the defining property of the partial trace,
     and the last identity follows from cyclicity of the trace, since
     $K^{-1}\rho_{\varphi,D}K=\rho_{\varphi,D}$.
 \end{proof}
+
+\begin{theorem}[Regional states under bijections of tensor factors]
+    \label{thm:region_state_relabel}
+    \lean{Entropy.siteConfigurationEquiv, Entropy.regionConfigurationEquiv,
+        Entropy.complementConfigurationEquiv, Entropy.relabelVector,
+        Entropy.regionState_relabel}
+    \leanok
+    \uses{lem:local_lift}
+    Let $V,V'$ be finite sets of sites, let $e:V\to V'$ be a bijection,
+    and let $n_v,n'_{v'}$ be nonnegative integer local dimensions.
+    Write $E_v=\{i\in\mathbb N:i<n_v\}$ and
+    $E'_{v'}=\{i\in\mathbb N:i<n'_{v'}\}$ for the local bases. Suppose that
+    $f_v:E_v\to E'_{e(v)}$ is a bijection for each $v\in V$.
+    These bijections induce a configuration bijection $f$ and, for
+    $D\subseteq V$ and $D'=e(D)$, a regional configuration bijection $f_D$.
+    Write $T\Omega(\sigma')=\Omega(f^{-1}(\sigma'))$ for the transported vector
+    and $U_D$ for the permutation isometry induced by $f_D$. Then
+    $\rho_{T\Omega,D'}=U_D\rho_{\Omega,D}U_D^*$.
+    No normalization assumption is required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:partial_trace_petz_product_reindexing}
+    Let $u',v'$ be configurations on $D'$. By
+    Lemma~\ref{lem:partial_trace_petz_product_reindexing}, the bijection of
+    complementary configurations changes variables in the defining partial trace:
+    \begin{align}
+        \rho_{T\Omega,D'}(u',v')
+        &=\sum_{w'}T\Omega(u',w')\overline{T\Omega(v',w')}
+          =\rho_{\Omega,D}(f_D^{-1}(u'),f_D^{-1}(v')).\notag
+    \end{align}
+    This is the asserted conjugation identity.
+\end{proof}
+
+\begin{theorem}[Regional entropy under bijections of tensor factors]
+    \label{thm:region_entropy_relabel}
+    \lean{Entropy.regionEntropy_relabel}
+    \leanok
+    \uses{thm:region_state_relabel, def:von_neumann_entropy}
+    Under the hypotheses of Theorem~\ref{thm:region_state_relabel},
+    $S_{T\Omega}(D')=S_\Omega(D)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:region_state_relabel, thm:entropy_submatrix_equiv}
+    By Theorem~\ref{thm:entropy_submatrix_equiv}, conjugation by a permutation
+    isometry preserves the von Neumann entropy of the regional state.
+\end{proof}
+
 
 \begin{lemma}[Stationarity of one filter]
     \label{lem:filter_stationarity}
