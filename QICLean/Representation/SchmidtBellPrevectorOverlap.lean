@@ -63,8 +63,9 @@ def schmidtBellSitePrevector (ell : IrrepLabel (Equiv.Perm (Fin k))) :
   WithLp.toLp 2 (replicaPrevector Ω E.card k ell ∘
     (r ∘ schmidtBellSiteEquiv β X E k))
 
-local notation "z" =>
-  (posSemidef_vecMulVec_self_star Ω).partialTraceRight.isHermitian.spectralRestrictionMass E
+local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
+  (Matrix.PosSemidef.isHermitian (Matrix.PosSemidef.partialTraceRight
+    (Matrix.posSemidef_vecMulVec_self_star Ω))) E
 
 /-- A vector in the actual selected Bell range has an exact inner product
 with the original prevector. The scalar is not conjugated, since the complex
