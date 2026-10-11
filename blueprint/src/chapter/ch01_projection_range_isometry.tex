@@ -1,0 +1,25 @@
+\section{Isometric coordinates for an orthogonal projection}
+
+The restriction of an operator to a projection range can be expressed in
+orthonormal coordinates without imposing an ordering on the ambient basis.
+This elementary construction is used for the symmetric restrictions in
+\cite[Section~8, lines~80--110 and 370--381]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[Isometric coordinates for a projection]
+    \label{thm:projection_range_isometry}
+    \lean{IsStarProjection.exists_matrix_range_isometry}
+    Let $I$ be a finite set and let $P\in\mathbb C^{I\times I}$ satisfy
+    $P^*=P$ and $P^2=P$. Then there exist an integer $n\ge0$ and
+    $Z\in\mathbb C^{I\times\{0,\ldots,n-1\}}$ such that
+    \begin{align*}
+        Z^*Z=I_n,\qquad ZZ^*=P.
+    \end{align*}
+    The assertion includes the empty ambient set and the zero projection.
+\end{theorem}
+
+\begin{proof}
+    Enumerate the ambient coordinates, choose an orthonormal basis of the
+    projection range in these coordinates, and transport the resulting
+    isometry back to the original index set. The two matrix identities are
+    preserved by the coordinate equivalence.
+\end{proof}
