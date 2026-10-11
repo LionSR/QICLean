@@ -10,6 +10,7 @@ The coordinate sets may be empty, and no normalization is imposed on $\Omega$.
 \begin{definition}[The three original physical regions]
   \label{def:regional_physical_regions}
   \lean{FiniteProduct.regionalPhysicalRegion}
+  \leanok
   For regions $Q,Y\subseteq V$, define
   \begin{align*}
     T_0=Q,\qquad T_1=Y,\qquad T_2=(Q\cup Y)^c.
@@ -19,6 +20,7 @@ The coordinate sets may be empty, and no normalization is imposed on $\Omega$.
 \begin{theorem}[The original reductions after regional grouping]
   \label{thm:regional_physical_singleton_densities}
   \lean{Matrix.regional_physicalSingletonDensity_eq_reducedPure}
+  \leanok
   \uses{def:regional_physical_regions,def:regional_five_factor_coordinates,def:physical_singleton_density}
   Suppose $Q$ and $Y$ are disjoint, and fix any two finite auxiliary
   coordinate sets $C,R$. Let $e_{Q,Y}$ be restriction of configurations to
@@ -35,7 +37,7 @@ The coordinate sets may be empty, and no normalization is imposed on $\Omega$.
   of \cite[Section~8]{OpenAI2026AreaLaw}.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
   For the first reduction, the discarded coordinates are
   $\mathcal B_Y\times\mathcal B_{(Q\cup Y)^c}$, which are the original
   coordinates on $Q^c$. For the second, they are
@@ -48,6 +50,7 @@ The coordinate sets may be empty, and no normalization is imposed on $\Omega$.
 \begin{theorem}[Preservation of entropy and surprisal moments]
   \label{thm:regional_physical_spectral_statistics}
   \lean{Matrix.regional_physicalSingleton_spectral_statistics}
+  \leanok
   \uses{thm:regional_physical_singleton_densities}
   Under the hypotheses of Theorem~\ref{thm:regional_physical_singleton_densities},
   let $j\in\{0,1,2\}$. For a positive semidefinite matrix $\rho$ with
@@ -63,7 +66,7 @@ The coordinate sets may be empty, and no normalization is imposed on $\Omega$.
   \end{align*}
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
   The two matrices are equal in the same original regional basis by
   Theorem~\ref{thm:regional_physical_singleton_densities}. Their eigenvalue
   lists therefore agree, and so do the displayed finite sums.
