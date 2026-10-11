@@ -103,6 +103,12 @@ theorem replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge
       (replicaMetric_normalized_symProj_bandProduct_mem_original_labels
         ι₀ k n Z hZ hZZ ht G L E hLE hnestL T).elim
           (fun hM hfilter => And.intro hM (hfilter s ξ hξ hsym))
+  have hmass (τ : ℝ) (hτ : 0 < τ) :
+      1 - δ / τ ≤
+        (star v ⬝ᵥ (globalReplicaLowDefectProjection β C R Ω k ellC ellR τ *ᵥ v)).re :=
+    globalReplicaLowDefectProjection_gap_mass_ge β C R hgap hΩ hgap_pos hk
+      ellC ellR hτ v hv hsymv
+      (hlabels (some none) ellC hC) (hlabels none ellR hR)
   done
 
 end Matrix
