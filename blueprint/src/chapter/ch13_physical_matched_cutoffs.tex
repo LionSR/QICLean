@@ -3,12 +3,13 @@
 \begin{theorem}[Dimension of an occurring label]
     \label{thm:occurring_label_dimension}
     \lean{PermutationRepresentation.dim_le_card_of_labelProj_ne_zero}
+    \leanok
     \uses{def:label_projectors}
     Let a finite group $G$ act by permutations on a finite set $Y$.
     If the projector $\pi^\lambda$ for an irreducible label $\lambda$
     is nonzero, then $\dim\lambda\leq |Y|$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{lem:isotypic_dimension}
     The range $W$ of $\pi^\lambda$ is a nonzero invariant subspace on
     which $\pi^\lambda$ acts as the identity. Hence
@@ -18,6 +19,7 @@
 \begin{theorem}[Dimension of a subsystem label]
     \label{thm:occurring_subsystem_label_dimension}
     \lean{TensorPower.dim_le_pow_card_of_subsystem_labelProj_ne_zero}
+    \leanok
     \uses{def:copy_permutations,def:label_projectors}
     Let $F$ be a finite set of sites with finite coordinate sets $I_f$,
     and write $\mathcal H_B=\bigotimes_{f\in B}\C^{I_f}$ for $B\subseteq F$.
@@ -25,7 +27,7 @@
     $B$-subsystem copy action of $S_k$. Then
     $\pi_B^\lambda\ne0$ implies $\dim\lambda\leq(\dim\mathcal H_B)^k$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:subsystem_label_projection_coordinates,thm:occurring_label_dimension}
     In regional and complementary coordinates the projector is
     $I\otimes\pi^\lambda$ on the $k$ copies of $\mathcal H_B$.
@@ -36,6 +38,7 @@
 \begin{theorem}[Absorption of cutoffs on comparable regions]
     \label{thm:matched_schur_cutoff_absorption}
     \lean{TensorPower.labelCutoff_subsystemPerm_mul_of_nested}
+    \leanok
     \uses{def:schur_label_cutoff}
     In the same finite tensor product, put
     $P_B(a)=\sum_{\log\dim\lambda\leq a}\pi_B^\lambda$.
@@ -45,7 +48,7 @@
     This is the cutoff comparison in
     \cite[Section~8, lines~356--365]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:schur_label_merge_dimensions,thm:occurring_subsystem_label_dimension}
     Resolve the identity into labels on the difference region. On a
     nonzero joint block, the compatible-label dimension inequalities and
@@ -60,6 +63,7 @@
 \begin{theorem}[Transfer of a cutoff with a spectator factor]
     \label{thm:matched_schur_cutoff_vector}
     \lean{TensorPower.toEuclideanLin_labelCutoff_of_matched}
+    \leanok
     \uses{def:schur_label_cutoff}
     Let $\mathcal D$ be any finite-dimensional coordinate space, and
     let $\varphi\in\mathcal D\otimes\mathcal H_F^{\otimes k}$.
@@ -74,7 +78,7 @@
     \end{align*}
     No normalization of $\varphi$ is required.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:matched_schur_cutoff_absorption}
     The hypotheses give
     $k(s/z+1)+k\log\dim\mathcal H_{B\triangle Q}
@@ -86,13 +90,14 @@
 \begin{theorem}[Symmetric differences of exterior regions]
     \label{thm:exterior_region_symmetric_difference}
     \lean{FiniteProduct.exteriorRegion_symmDiff}
+    \leanok
     \uses{def:compressed_site_family}
     For a finite site set $V$ and $X,B,Q\subseteq V$, write
     $\widehat B$ for the exterior lift of $B$ to
     $\widehat V=\{*\}\sqcup X^c$. Then
     $\widehat{B\triangle Q}=\widehat B\triangle\widehat Q$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     The auxiliary site belongs to neither side. At each exterior physical
     site, both memberships mean membership in exactly one of $B,Q$.
 \end{proof}
@@ -100,6 +105,7 @@
 \begin{theorem}[Physical dimension of an exterior difference]
     \label{thm:exterior_difference_dimension}
     \lean{FiniteProduct.card_configuration_exteriorRegion_symmDiff}
+    \leanok
     \uses{def:compressed_site_family}
     Give the physical sites finite coordinate sets $I_v$ and the
     auxiliary site any finite coordinate set $R$.
@@ -107,7 +113,7 @@
     $\dim\widehat{\mathcal H}_{\widehat B\triangle\widehat Q}
     =\dim\mathcal H_{B\triangle Q}$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:exterior_region_symmetric_difference,def:compressed_site_region_coordinates}
     The set $B\triangle Q$ is disjoint from $X$. Its exterior
     configurations are in bijection with its original physical
@@ -117,6 +123,7 @@
 \begin{theorem}[Matched cutoffs in the original physical dimensions]
     \label{thm:compressed_physical_matched_cutoff}
     \lean{FiniteProduct.toEuclideanLin_compressedPhysicalCutoff_of_matched}
+    \leanok
     \uses{def:compressed_site_family,def:compressed_regional_threshold,def:schur_label_cutoff}
     Let $\Omega\in\mathcal H_V$, let $E$ select eigenvectors of its
     reduced matrix on $X$, and let their total mass be $z>0$.
@@ -138,7 +145,7 @@
     The vector $\Omega$ need not be normalized. This is the matched-region
     implication in \cite[Section~8, lines~332--365]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:compressed_regional_threshold_lifted,thm:lifted_physical_regions_nested,thm:exterior_difference_dimension,thm:matched_schur_cutoff_vector}
     Use the supplied range equation for $B$ and substitute
     $a_k(\widehat B)=k(S(\rho_B^\Omega)/z+1)$.
