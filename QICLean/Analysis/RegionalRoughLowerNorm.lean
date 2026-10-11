@@ -163,6 +163,8 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm
       [pinCoeff, Real.log_mul, Real.log_exp, Real.log_rpow, r, rate]
     field_simp [ht.ne']
     ring
+  have hcoefficient : pinCoeff⁻¹ = Real.exp (2 * t * (k : ℝ) * rate - r) := by
+    rw [← Real.exp_log hpinCoeff, ← Real.exp_neg, hlog, neg_sub]
   done
 
 end Matrix
