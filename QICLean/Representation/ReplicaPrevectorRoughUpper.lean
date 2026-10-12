@@ -130,6 +130,12 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
         (ψ := copyPerm ((o : Option (Option V)) →
           addedSiteSpace (addedSiteSpace β E) (Fin E.card) o) k)
         (fun σ x ↦ funext fun j ↦ rfl))
+  have hZEZ : ZE * ZEᴴ = symProj (copyPerm ((o : Option (Option V)) →
+      addedSiteSpace (addedSiteSpace β E) (Fin E.card) o) k) := by
+    simpa only [ZE, Matrix.conjTranspose_submatrix, Equiv.coe_refl] using
+      ((Matrix.submatrix_mul_equiv Z Zᴴ e.symm (Equiv.refl (Fin n)) e.symm).trans
+        (congrArg (fun A : Matrix (Config k ι₀) (Config k ι₀) ℂ ↦
+          A.submatrix e.symm e.symm) hZZ)).trans hSymm.symm
   done
 
 end FiniteProduct
