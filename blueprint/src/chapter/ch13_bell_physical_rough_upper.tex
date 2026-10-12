@@ -3,6 +3,7 @@
 \begin{theorem}[The upper bound with a supplied common label]
     \label{thm:bell_physical_rough_upper}
     \lean{FiniteProduct.eventually_suppliedSchmidtBell_rough_upper}
+    \leanok
     \uses{thm:schmidt_bell_physical_witness,def:bell_overlap_remainder}
     Retain the physical family, unit state $\Omega$, region $X$, positive-mass
     spectral selection $E$, auxiliary registers $C=E$ and $R=[d]$, and
@@ -52,7 +53,7 @@
     Both $c$ and the eventual threshold precede all the choices of
     $n,Z,K,U,Y,T,B_{\mathrm{sh}},B_{\mathrm{exc}},s$ above.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:schmidt_bell_physical_witness,thm:bell_compressed_inverse_norm,
         thm:bell_overlap_log_bound}
     The physical-witness theorem gives nonempty coordinate sets and a unit
