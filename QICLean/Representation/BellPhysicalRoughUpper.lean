@@ -118,6 +118,9 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
   obtain ⟨Φ, hΦ, _, _, _, hover, hcuts⟩ := hw
   intro n Z hZ hZZ K U Y hUY hnest hXY T Bsh Bexc hsh hmatch s hs
     τ v extRegion W Q F H M Nsq
+  have hu := hC k n Z hZ hZZ K U Y hUY hnest (selectedBellVector ΩX E) hb
+    T ((k : ℝ) * (Bsh / z + Bexc)) Φ v hΦ
+    (hcuts K U Y Bsh Bexc hsh hXY hmatch) s hs
   done
 
 end FiniteProduct
