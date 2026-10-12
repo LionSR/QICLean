@@ -212,6 +212,17 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      - name: Build Bell register coordinates early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.BellInsertionRegisterCoordinates \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
       - name: Build physical Bell insertion coordinates early
         timeout-minutes: 6
         env:
@@ -1109,6 +1120,22 @@ jobs:
             lake build
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check Bell register coordinates and standard axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/BellInsertionRegisterCoordinates.lean \
+            QICLeanTest/BellInsertionRegisterCoordinatesAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
 
       - name: Check physical Bell insertion coordinates and standard axioms strictly
         timeout-minutes: 9

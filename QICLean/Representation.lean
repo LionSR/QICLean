@@ -15,6 +15,7 @@ import QICLean.Representation.AddedSiteTensorInsertionSymmetry
 import QICLean.Representation.Alternant
 import QICLean.Representation.BadCopyLabelDimension
 import QICLean.Representation.BellInsertionCoordinates
+import QICLean.Representation.BellInsertionRegisterCoordinates
 import QICLean.Representation.BellInsertionSymmetry
 import QICLean.Representation.BranchProbability
 import QICLean.Representation.Branching
