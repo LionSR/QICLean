@@ -6,6 +6,8 @@ Authors: Sirui Lu
 import QICLean.Analysis.RegionalRoughLowerNorm
 import QICLean.Analysis.RoughLowerCoefficient
 import QICLean.Analysis.MeanTreeSublinearRemainder
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
 
 /-!
 # The rough lower comparison at fixed total band weight
@@ -35,6 +37,59 @@ open TensorPower PermutationRepresentation
 open scoped BigOperators Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 namespace Matrix
+
+/-- The exact floor remainder. Source:07-comparators.tex585–651, adc7f124. -/
+private theorem abs_log_rough_lower_floor (k : ℕ) (Cf : ℝ) (hCf : 0 ≤ Cf) :
+    |Real.log (((k : ℝ) + 2) ^ (-Cf) / 2)| =
+      Cf * Real.log ((k : ℝ) + 2) + Real.log 2 := by
+  rw [Real.log_div
+        (Real.rpow_pos_of_pos
+          (add_pos_of_nonneg_of_pos (Nat.cast_nonneg k) zero_lt_two) (-Cf)).ne'
+        two_ne_zero,
+      Real.log_rpow (add_pos_of_nonneg_of_pos (Nat.cast_nonneg k) zero_lt_two),
+      neg_mul, sub_eq_add_neg, ← neg_add, abs_neg,
+      abs_of_nonneg (add_nonneg
+        (mul_nonneg hCf (Real.log_nonneg
+          (one_le_two.trans (le_add_of_nonneg_left (Nat.cast_nonneg k)))))
+        (Real.log_nonneg one_le_two))]
+
+/-- Numerical normalization of the same explicit lower expression.
+Source:07-comparators.tex153–169,585–651;08-scanner.tex755–769,adc7f124. -/
+private theorem rough_lower_three_of_explicit
+    (K k : ℕ) (hK : 8 ≤ K) (hk : 0 < k)
+    (Cf S D h delta tau r A : ℝ)
+    (hCf : 0 ≤ Cf) (hD : 0 ≤ D) (hh : 0 ≤ h)
+    (hdelta : 0 ≤ delta) (htau : 0 < tau)
+    (hraw : 2 * (1 / 4 : ℝ) * (K : ℝ) *
+      (2 * (2 / (K : ℝ)) * (k : ℝ) *
+        (2 * S - tau * (D + D) - (3 + 1 / (2 * (2 / (K : ℝ)))) * h -
+          (delta / tau) * max 0 (2 * S)) -
+        (2 * |r| + |Real.log (((k : ℝ) + 2) ^ (-Cf) / 2)| +
+          Real.log 2 + Real.log (3 / 2))) ≤ A) :
+    4 * S - 6 * (tau * D + h / (4 / (K : ℝ))) -
+      3 * (delta / tau) * max 0 (2 * S) -
+      ((K : ℝ) / 2 * (2 * |r| + Cf * Real.log ((k : ℝ) + 2) +
+        2 * Real.log 2 + Real.log (3 / 2))) / (k : ℝ) ≤ A / (k : ℝ) := by
+  have hKreal : (8 : ℝ) ≤ K := by exact_mod_cast hK
+  have hKpos : (0 : ℝ) < K := by linarith only [hKreal]
+  have ha : 0 < 4 / (K : ℝ) := div_pos (by norm_num) hKpos
+  have haHalf : 4 / (K : ℝ) ≤ 1 / 2 := (div_le_iff₀ hKpos).2 (by linarith only [hKreal])
+  have hcoefficient := Real.rough_lower_coefficient_three S D h delta tau (4 / (K : ℝ))
+    hD hh hdelta htau ha haHalf
+  rw [abs_log_rough_lower_floor k Cf hCf] at hraw
+  have htwot : 2 * (2 / (K : ℝ)) = 4 / (K : ℝ) := by ring
+  rw [htwot] at hraw
+  have hnormalization (u R : ℝ) :
+      (2 * (1 / 4 : ℝ) * (K : ℝ) * (4 / (K : ℝ) * (k : ℝ) * u - R)) / (k : ℝ) =
+        2 * u - (K : ℝ) / 2 * R / (k : ℝ) := by
+    field_simp [hKpos.ne', show (k : ℝ) ≠ 0 by exact_mod_cast (Nat.ne_of_gt hk)]
+    ring
+  have hdiv := div_le_div_of_nonneg_right hraw (Nat.cast_nonneg (α := ℝ) k)
+  rw [hnormalization] at hdiv
+  convert (sub_le_sub_right hcoefficient
+    ((K : ℝ) / 2 * (2 * |r| + (Cf * Real.log ((k : ℝ) + 2) + Real.log 2) +
+      Real.log 2 + Real.log (3 / 2)) / (k : ℝ))).trans hdiv using 1
+  ring
 
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ x, Fintype (β x)] [∀ x, DecidableEq (β x)]
@@ -97,6 +152,7 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
               3 * (δ / τ) * max 0 (2 * S) - remainder ≤
             -Real.log (‖w‖ ^ 2) / (k : ℝ) := by
   have hKreal : (8 : ℝ) ≤ K := by exact_mod_cast hK
+  have hKpos : (0 : ℝ) < K := by linarith only [hKreal]
   done
 
 end Matrix
