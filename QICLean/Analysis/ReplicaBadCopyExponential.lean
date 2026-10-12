@@ -64,14 +64,7 @@ theorem re_dotProduct_exp_grouped_signedLabelEntropy_le
       (star v ⬝ᵥ (NormedSpace.exp ((-a) • Gg) *ᵥ v)).re := by
   intro Lg Lb Gg Gb
   let Q := symProj ((subsystemPerm k ι Finset.univ).comp (groupHom₂ e))
-  have hQ : IsStarProjection Q :=
-    (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin r))
-      (X := Config k ι)).elim (fun ell h =>
-        Eq.mp (congrArg IsStarProjection
-          (h ((subsystemPerm k ι Finset.univ).comp (groupHom₂ e))))
-          (show IsStarProjection
-            (labelProj ((subsystemPerm k ι Finset.univ).comp (groupHom₂ e)) ell) from
-              ⟨labelProj_mul_self _ ell, (isHermitian_labelProj _ ell).isSelfAdjoint⟩))
+  have hQ : IsStarProjection Q := isStarProjection_symProj _
   have hQv : Q *ᵥ v = v := symProj_mulVec_of_mem _ hv
   have hbad := subgroup_signedLabelEntropy_symProj_nonneg ι (groupHom₂ e)
     P Y F hPY hPF hYF hcover

@@ -139,13 +139,7 @@ private theorem lowDefect_factors (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖
     exact (Commute.sum_right _ _ _ fun σ _ => hQperm σ).smul_right _
   have hLS : Commute L S := by
     exact (Commute.sum_right _ _ _ fun σ _ => hLperm σ).smul_right _
-  exact ⟨hQ, hL,
-    (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
-      (X := (Fin k → A) × ((Fin k → C) × (Fin k → R)))).elim (fun l hl =>
-        Eq.mp (congrArg IsStarProjection (hl (replicaJointCopyPerm A C R k)))
-          (show IsStarProjection (labelProj (replicaJointCopyPerm A C R k) l) from
-            ⟨labelProj_mul_self _ l, (isHermitian_labelProj _ l).isSelfAdjoint⟩)),
-    hQL, hQS, hLS⟩
+  exact ⟨hQ, hL, isStarProjection_symProj _, hQL, hQS, hLS⟩
 
 /-- The actual low-defect sector is an orthogonal projection; all three
 commutations follow from the literal copy actions and the central

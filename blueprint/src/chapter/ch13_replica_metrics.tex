@@ -519,12 +519,13 @@ eigenbasis. The following statements show that such averages are central label f
     \label{lem:trivial_label}
     \lean{IrrepLabel.averagingElement, IrrepLabel.augmentation,
         IrrepLabel.exists_centralIdem_eq_averagingElement,
-        PermutationRepresentation.exists_labelProj_eq_symProj}
+        PermutationRepresentation.exists_labelProj_eq_symProj,
+        PermutationRepresentation.isStarProjection_symProj}
     \leanok
     \uses{def:irrep_labels}
     The averaging element $|G|^{-1}\sum_gg$ of $\C[G]$ is one of the central idempotents
     $e_\lambda$. Hence, for every permutation action, the projector onto the invariant
-    vectors is a label projector.
+    vectors is a label projector. In particular it is an orthogonal projection.
 \end{lemma}
 
 \begin{proof}\leanok
@@ -532,7 +533,7 @@ eigenbasis. The following statements show that such averages are central label f
     The augmentations of the $e_\lambda$ are idempotent, sum to one and have vanishing
     pairwise products, so exactly one $e_{\lambda_0}$ has $\varepsilon e_{\lambda_0}=\varepsilon$.
     In the simple block of $\lambda_0$ the central idempotent $\varepsilon e_{\lambda_0}$ is
-    nonzero, hence equal to $e_{\lambda_0}$.
+    nonzero, hence equal to $e_{\lambda_0}$. Label projectors are self-adjoint idempotents.
 \end{proof}
 
 \begin{theorem}[Coherent-state resolution]
