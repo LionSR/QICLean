@@ -88,6 +88,15 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
   obtain ⟨c, hc, hC⟩ := exists_replicaPinnedTree_inverse_norm_bound (J := S) ι₀ ht
   refine ⟨c, hc, fun k n Z hZ hZZ K U Y hdisj hnest b hb T a φ u hφ ↦ ?_⟩
   intro E hcuts s hs e J Pe P W Q F A B M
+  have hnorm :=
+    let hp := replicaMetric_compressed_bandProduct_bellPin_rpow
+      β X C R k n Z hZ hZZ ht.le K U Y hdisj hnest b T
+    let hn := (replicaMetric_bandProduct_bellPin
+      β X C R ht.le k K U Y hdisj hnest b T).1
+    Matrix.norm_projected_le_of_isometric_intertwine
+      (hp.1.rpow_isHermitian (-s)) (hn.rpow_isHermitian (-s))
+      (isStarProjection_bellInsertion_symProj β X C R k b hb)
+      hZ (hp.2 (-s)) u
   done
 
 end TensorPower
