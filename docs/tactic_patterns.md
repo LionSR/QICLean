@@ -867,6 +867,33 @@ projector, the defect cutoff, and the original auxiliary labels.
 - **Caveats:** No norm compatibility with the scalar action is needed; the
   contraction hypothesis concerns the additive seminorm directly.
 
+### Logarithmic consequences of positive overlap bounds — existing lemmas (2026-10-12)
+
+The scalar Bell-overlap estimate derives positivity before using
+`Real.log_le_log`. Existing logarithm rules for products, quotients,
+natural powers, real powers and exponentials give the exact leading term.
+Monotonicity then bounds the polynomial error uniformly in the inverse-power
+exponent. No new logarithm tactic is needed.
+
+### Natural-count logarithmic remainders — candidate (2026-10-12)
+
+- **Pattern:** Show that a fixed linear combination of 1/k and
+  log(k+a)/k tends to zero along natural replica counts.
+- **Consumers:** `Real.tendsto_bellOverlapRemainder` in
+  `Analysis/BellOverlapLogBound.lean` and the private shifted-log lemma
+  in `Analysis/MeanTreeSublinearRemainder.lean`.
+- **Existing result:** Specialize
+  `Real.tendsto_pow_log_div_mul_add_atTop` to `(1, -a, 1)` and compose
+  with natural-number coercion followed by addition of `a`. Use
+  `tendsto_inv_atTop_zero` for the constant term.
+- **Decision:** Two independent proofs have been identified. Reusing the
+  private shifted-log lemma twice is not a third proof. Record the
+  pattern without introducing a new tactic; a third independent use
+  would justify one shared shifted-log limit theorem.
+- **Caveat:** Every coefficient is fixed before the replica count tends
+  to infinity. This argument gives no uniform threshold over varying
+  dimensions or polynomial degrees.
+
 ### Bell restriction of positive mean trees — existing lemmas (2026-10-11)
 
 The metric restriction uses `IsHermitian.conjTranspose_intertwine` for the
