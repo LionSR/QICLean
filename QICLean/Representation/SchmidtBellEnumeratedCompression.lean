@@ -148,6 +148,7 @@ theorem schmidtBellSitePrevector_compressed_enumerate_C
       globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k
     ZFᴴ *ᵥ vF = ZEᴴ *ᵥ vE := by
   classical
+  intro ΩX ιE ιF changeSite e ZE τ vE vF
   done
 
 end FiniteProduct
