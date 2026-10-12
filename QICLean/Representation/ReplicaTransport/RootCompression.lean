@@ -77,6 +77,11 @@ theorem rootPath_compressed_bandProduct
       Commute (B j g) (B j' g') :=
     Matrix.commute_of_isometric_intertwine hZ (hext j g) (hext j' g')
       ((D.crossBandCommute_iff (n := n) t k).mp hcomm j j' g g' hgg')
+  have hM : M.PosDef :=
+    MeanTree.posDef_listProd_ofFn
+      (fun g ↦ MeanTree.posDef_eval (fun j ↦ (hleaf j g).1) T)
+      (fun g g' hgg' ↦ MeanTree.commute_eval_band
+        (fun j g ↦ (hleaf j g).1) hBcomm T hgg')
   done
 
 end TensorPower.ReplicaTransport.TransportData
