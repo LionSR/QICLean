@@ -71,6 +71,8 @@ theorem bellInsertion_submatrix_C_equiv
   simp only [Equiv.coe_fn_mk, Pi.map_apply, id_eq]
   congr 1
   congr 2
-  done
+  exact funext fun j ↦ funext fun
+    | none => rfl
+    | some v => rfl
 
 end TensorPower
