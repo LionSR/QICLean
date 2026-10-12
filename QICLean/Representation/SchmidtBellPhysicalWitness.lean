@@ -110,6 +110,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   intro ΩX ψ Ψ q hmass
   have hw := eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
     β Ω X E hΩ hz regions hnested hdisjoint ell hmass
+  have hb := Matrix.norm_selectedBellVector ΩX E hz
   done
 
 end FiniteProduct
