@@ -61,10 +61,10 @@ theorem rootPath_compressed_bandProduct
   intro T A B M
   have hleaf (j : Σ h, Option (C h)) (g : Fin K) :
       (B j g).PosDef ∧ A j g * Z = Z * B j g :=
-    let h := (posDef_bandMetric (D.isPartition_leafPart hD j g) ht k)
-      .compression_of_projection_intertwine hZ hZZ
-        (commute_symProj_bandMetric t k (D.leafPart j g)).symm.eq
-        (commute_symProj_bandMetric t k (D.leafPart j g)).symm
+    let h := (posDef_bandMetric
+      (D.isPartition_leafPart hD j g) ht k).compression_of_projection_intertwine hZ hZZ
+      (commute_symProj_bandMetric t k (D.leafPart j g)).symm.eq
+      (commute_symProj_bandMetric t k (D.leafPart j g)).symm
     ⟨h.2.1, h.2.2.1⟩
   done
 
