@@ -1,0 +1,62 @@
+\section{Enumerating the selected auxiliary register}
+
+\begin{theorem}[The same prevector after enumeration]
+    \label{thm:schmidt_bell_enumerated_prevector}
+    \lean{FiniteProduct.schmidtBellSitePrevector_enumerate_C}
+    \leanok
+    \uses{def:replica_prevector,def:schmidt_bell_site_prevector,def:schmidt_bell_witness_coordinates,def:regional_five_factor_coordinates}
+    Let $V$ be finite with finite coordinate sets $D_v$, and fix
+    $X\subseteq V$. Put $D_V=\prod_{v\in V}D_v$,
+    $A=\prod_{v\in X}D_v$ and $B=\prod_{v\notin X}D_v$.
+    Let $\Omega\in\ell^2(D_V)$ be arbitrary, and let $\Omega_X$ be
+    the same vector in $\ell^2(A\times B)$ under restriction of
+    configurations. Fix $E\subseteq A$, put $d=|E|$ and
+    $D=\{0,\ldots,d-1\}$, and retain the fixed enumeration
+    $\iota:E\to D$.
+
+    The two descriptions of the full configuration space are
+    $\mathcal H_E=D_V\times E\times D$ and
+    $\mathcal H_D=D_V\times D\times D$.
+    For every integer $k\geq0$, the change of the left auxiliary
+    coordinate and the grouping of copies are
+    \begin{align*}
+        e_k:\mathcal H_D^k&\longrightarrow\mathcal H_E^k,
+        &e_k((x_j,c_j,r_j)_j)&=(x_j,\iota^{-1}(c_j),r_j)_j,\\
+        G_k:\mathcal H_D^k&\longrightarrow D_V^k\times(D^k\times D^k),
+        &G_k((x_j,c_j,r_j)_j)&=((x_j)_j,((c_j)_j,(r_j)_j)).
+    \end{align*}
+    Let $\tau_k:\mathcal H_E^k\to(A\times E)^k\times(B\times D)^k$
+    be the fixed witness coordinates of
+    Definition~\ref{def:schmidt_bell_witness_coordinates}.
+    For any irreducible label $\ell$ of $\mathfrak S_k$, let
+    $v^{\mathrm{site}}_{k,\ell}(\Omega_X,E)$ be the prevector of
+    Definition~\ref{def:schmidt_bell_site_prevector}, and let
+    $\mathrm{pre}_{k,\ell}^{\Omega}$ be the original prevector in
+    $D_V^k\times(D^k\times D^k)$ with that same label. Then
+    \begin{align*}
+        v^{\mathrm{site}}_{k,\ell}(\Omega_X,E)\circ\tau_k\circ e_k
+        &=\mathrm{pre}_{k,\ell}^{\Omega}\circ G_k.
+    \end{align*}
+    No normalization or positive selected-mass hypothesis is required.
+    Empty $E$ and zero copies are included. This is the change of
+    coordinates between the initial vector and the selected Bell
+    coordinates in
+    \cite[Section~8, lines~130--147, 240--254 and~283--290]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:replica_prevector,def:schmidt_bell_site_prevector,def:schmidt_bell_witness_coordinates}
+    Write $a_{k,\ell}(c,r)$ for the coefficient of the labelled auxiliary
+    Bell vector $(I_C\otimes\Pi_{R,\ell})U_k$ at $(c,r)\in D^k\times D^k$.
+    In the composition with $e_k$, the enumeration of the left auxiliary
+    coordinate cancels $\iota^{-1}$, so this coefficient remains
+    $a_{k,\ell}(c,r)$. The physical coordinates are the restrictions to
+    $X$ and $X^c$. Therefore both sides at $((x_j,c_j,r_j))_j$ are identified by
+    \begin{align*}
+        \left(\prod_{j=0}^{k-1}\Omega_X(x_j|_X,x_j|_{X^c})\right)
+        a_{k,\ell}((c_j)_j,(r_j)_j)
+        &=\left(\prod_{j=0}^{k-1}\Omega(x_j)\right)
+        a_{k,\ell}((c_j)_j,(r_j)_j).
+    \end{align*}
+    The equality uses only the definition of the split vector $\Omega_X$.
+\end{proof}

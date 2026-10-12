@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.AdjointEigenvalues
 import QICLean.Analysis.AsymptoticStateConvergence
+import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
 import QICLean.Analysis.Birkhoff
 import QICLean.Analysis.CStarCompletion
@@ -153,6 +154,7 @@ import QICLean.Analysis.RegionalLowDefectProductMass
 import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Analysis.RegionalPhysicalMarginals
 import QICLean.Analysis.RegionalRoughLowerNorm
+import QICLean.Analysis.RegionalRoughLowerThree
 import QICLean.Analysis.RegionalSharpLowerNorm
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
@@ -211,6 +213,7 @@ import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootChannelWord
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
+import QICLean.Analysis.RoughLowerCoefficient
 import QICLean.Analysis.RpowConvexity
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo

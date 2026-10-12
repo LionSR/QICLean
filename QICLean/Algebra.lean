@@ -52,6 +52,7 @@ import QICLean.Algebra.MatrixKroneckerEmbed
 import QICLean.Algebra.MatrixMulRange
 import QICLean.Algebra.MatrixOperatorSpace
 import QICLean.Algebra.MatrixPosDefTransport
+import QICLean.Algebra.MatrixProductIntertwine
 import QICLean.Algebra.MatrixRankBaseChange
 import QICLean.Algebra.MatrixRankClosed
 import QICLean.Algebra.MatrixRankKronecker

@@ -1,0 +1,54 @@
+\section{Changes of coordinates in the inserted register}
+
+\begin{theorem}[Local coordinate changes and copy permutations]
+    \label{thm:subsystem_local_coordinate_change}
+    \lean{TensorPower.subsystemPerm_piCongrRight}
+    \leanok
+    \uses{def:copy_permutations}
+    Let $F$ be a set of sites, let $A_f,B_f$ be coordinate sets, and
+    let $c_f:B_f\to A_f$ be bijections. For $k\geq0$, define
+    $e_k:(\prod_{f\in F}B_f)^k\to(\prod_{f\in F}A_f)^k$ by
+    $(e_kx)_{i,f}=c_f(x_{i,f})$.
+    If $Q\subseteq F$ is finite and $\sigma\in\mathfrak S_k$, then
+    \begin{align*}
+        e_k\bigl(U_Q^B(\sigma)x\bigr)&=U_Q^A(\sigma)e_k(x).
+    \end{align*}
+    The coordinate sets need not be finite or nonempty.
+    This is the coordinate invariance of the replica action in
+    \cite[Section~6, lines~24--27]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    At a site in $Q$, both sides have coordinate
+    $c_f(x_{\sigma^{-1}(i),f})$; outside $Q$, both have coordinate
+    $c_f(x_{i,f})$.
+\end{proof}
+
+\begin{theorem}[Changing the inserted register]
+    \label{thm:bell_insertion_register_coordinates}
+    \lean{TensorPower.bellInsertion_submatrix_C_equiv}
+    \leanok
+    \uses{def:bell_insertion_coordinates,def:added_site_tensor_insertion}
+    Let $V$ and the physical coordinate sets $D_v$ be finite, fix
+    $X\subseteq V$, and put $A_X=\prod_{v\in X}D_v$ and
+    $B_X=\prod_{v\notin X}D_v$.
+    Let $C,D,R$ be finite coordinate sets and $c:D\to C$ a bijection.
+    For an arbitrary $b:A_X\times C\to\C$, set $b_D(a,d)=b(a,c(d))$.
+    The map $e_k$ from the family with register $D$ to the family with
+    register $C$ applies $c$ to that register in every copy and fixes
+    all physical coordinates and $R$.
+    Let $J_C(b)$ and $J_D(b_D)$ be the corresponding Bell insertion
+    matrices, with the same exterior columns $(B_X\times R)^k$.
+    For every row $x$ and exterior column $y$,
+    \begin{align*}
+        J_D(b_D)(x,y)&=J_C(b)(e_kx,y).
+    \end{align*}
+    This identity includes $k=0$, empty coordinate sets, and $b=0$.
+    It expresses the change of the auxiliary enumeration in
+    \cite[Section~8, lines~283--308]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    Each matrix entry is the product of the $k$ inserted coefficients
+    and the indicator that the exterior row coordinates equal $y$.
+    The coefficients agree by the definition of $b_D$, and $e_k$
+    fixes the exterior coordinates.
+\end{proof}

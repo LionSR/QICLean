@@ -1,0 +1,84 @@
+\section{A physical test vector with the supplied auxiliary label}
+
+The following consequence of the common cutoff estimate keeps the selected
+state and auxiliary label fixed. The test vector is chosen before the matched
+regional cutoffs. All limiting statements concern one fixed physical system,
+as in \cite[Section~8, lines~332--381]{OpenAI2026AreaLaw}.
+
+\begin{theorem}[A test vector for the supplied prevector]
+    \label{thm:schmidt_bell_physical_witness}
+    \lean{FiniteProduct.eventually_exists_suppliedSchmidtBell_physicalWitness}
+    \leanok
+    \uses{def:schmidt_bell_witness_coordinates,def:schmidt_bell_site_prevector}
+    Let $\beta$ be a finite family of finite coordinate sets, let $\Omega$ be
+    a unit vector on its product, and let $X$ be a set of physical sites.
+    Fix a spectral selection $E$ of the reduced density on $X$, of mass
+    $z>0$, and put $d=|E|$. The two auxiliary coordinate sets are $C=E$ and
+    $R=[d]=\{0,\ldots,d-1\}$. Let $\psi$ be the corresponding normalized
+    compressed selected vector on $X^c\times R$, and let $\Psi_k$ be its
+    tensor power in exterior-site coordinates. Let $\ell_k$ be a supplied
+    sequence of auxiliary labels. Suppose that, for all sufficiently large $k$,
+    \begin{align*}
+        q_k:=\|\Pi^{R}_{\ell_k}\Psi_k\|^2
+        &\ge \frac{1}{2(k+1)^{d^2}}.
+    \end{align*}
+    Fix a finite nested list $\mathcal R$ of physical regions disjoint from
+    $X$, and an arbitrary index set $S$. Let $b$ be the selected Bell vector
+    on $X\times E$. Then every original and auxiliary coordinate set is
+    nonempty and $\|b\|=1$.
+
+    Write $\tau_k$ for the selected-Bell witness coordinates, $J_k$ for the
+    actual insertion of $b^{\otimes k}$ in physical coordinates, and
+    $\Pi_{\mathrm{ext},k}$ for simultaneous copy symmetry on the exterior
+    sites. Put $P_k=J_k\Pi_{\mathrm{ext},k}J_k^*$, and let $v_k$ be the
+    pullback through $\tau_k$ of the supplied-label prevector in
+    Definition~\ref{def:schmidt_bell_site_prevector}.
+    For all sufficiently large $k$, there is a vector $\Phi_k$ such that
+    \begin{align*}
+        \|\Phi_k\|&=1, \\
+        P_k\Phi_k&=\Phi_k, \\
+        \Pi^R_{\ell_k}\Phi_k&=\Phi_k, \\
+        |\langle\Phi_k,P_kv_k\rangle|^2
+        &\ge\frac{(z/d^2)^k}{4(k+1)^{d^2}}.
+    \end{align*}
+    The vector $\Phi_k$ is invariant under simultaneous copy permutations.
+
+    This same vector has the following property for every $K\ge0$, every
+    pair of families $U,Y:S\times\{0,\ldots,K-1\}\to2^V$, and all real
+    $B_{\mathrm{sh}},B_{\mathrm{exc}}$. Suppose that
+    $S_\Omega(D)\le B_{\mathrm{sh}}$ for every $D\in\mathcal R$, that
+    $X$ is disjoint from every $U_{jg}\cup Y_{jg}$, and that each
+    $Q\in\{U_{jg},U_{jg}\cup Y_{jg}\}$ has a region $D\in\mathcal R$
+    comparable to $Q$ with
+    \begin{align*}
+        1+\log\dim\mathcal H_{D\triangle Q}&\le B_{\mathrm{exc}}.
+    \end{align*}
+    Set $a_k=k(B_{\mathrm{sh}}/z+B_{\mathrm{exc}})$. If
+    $\Pi_{Q,\le a_k}$ denotes the original physical exterior cutoff,
+    omitting $X$ and both auxiliary sites, then
+    \begin{align*}
+        \Pi_{U_{jg},\le a_k}\Phi_k&=\Phi_k, \\
+        \Pi_{U_{jg}\cup Y_{jg},\le a_k}\Phi_k&=\Phi_k
+    \end{align*}
+    for all $j,g$. The vector and the eventual threshold are chosen before
+    these matched families and bounds; no common threshold over different
+    physical states or ambient systems is asserted.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:compressed_typical_common_retained_mass,thm:compressed_typical_common_bell_vector,thm:schmidt_bell_witness_range,thm:schmidt_bell_witness_auxiliary_label,thm:schmidt_bell_witness_exterior_cutoffs,thm:compressed_physical_matched_cutoff,thm:schmidt_bell_supplied_overlap}
+    The regional exponential losses are eventually smaller than half the
+    supplied inverse-polynomial mass. The common projection therefore has
+    positive mass at least $1/[4(k+1)^{d^2}]$ before normalization. Apply the
+    common Bell-vector construction with the given label and pull its vector
+    back through $\tau_k$. This preserves its norm, symmetry, auxiliary label
+    and Bell range. The exact Bell-pinning coefficient is
+    $(\sqrt z/d)^k$, whose squared modulus is $(z/d^2)^k$. Self-adjointness
+    of $P_k$ gives $\langle\Phi_k,P_kv_k\rangle=\langle\Phi_k,v_k\rangle$
+    because $P_k\Phi_k=\Phi_k$.
+    Each matched-cutoff estimate applies to the same common vector, and its
+    coordinate pullback gives the two stated physical cutoff equations.
+    Finally, a nonzero coordinate of the unit vector $\Omega$ and the positive
+    selected mass give the asserted nonemptiness; the selected Bell vector
+    has unit norm by its defining spectral embedding.
+\end{proof}

@@ -1,0 +1,71 @@
+\section{The transport root in symmetric coordinates}
+
+\begin{theorem}[Ordered products through a rectangular intertwiner]
+    \label{thm:matrix_ordered_product_intertwining}
+    \lean{Matrix.listProd_ofFn_intertwine}
+    \leanok
+    Let $R$ be a semiring, let $I,J$ be finite index sets, and fix
+    $Z\in R^{I\times J}$. For $0\leq g<K$, let
+    $A_g\in R^{I\times I}$ and $B_g\in R^{J\times J}$ satisfy
+    $A_gZ=ZB_g$. Then
+    \begin{align*}
+        \left(\prod_{g=0}^{K-1}A_g\right)Z
+        & = Z\left(\prod_{g=0}^{K-1}B_g\right),
+    \end{align*}
+    where both products are taken in increasing order. The assertion
+    includes $K=0$ and empty index sets.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The empty products give $I_IZ=ZI_J$. If $LZ=ZM$, then
+    $(A_gL)Z=A_g(ZM)=(A_gZ)M=Z(B_gM)$. Induction over the ordered
+    factors proves the assertion.
+\end{proof}
+
+\begin{theorem}[Compression of the transport root]
+    \label{thm:replica_transport_root_compression}
+    \lean{TensorPower.ReplicaTransport.TransportData.rootPath_compressed_bandProduct}
+    \leanok
+    Let the site dimensions be positive and let $t\geq 0$.
+    Fix admissible transport data: a weighted history tree and its conditional
+    choice trees, with positive history and conditional weights, old
+    partitions in $K$ bands, and moves that transfer subsets of the middle
+    regions. For a terminal label $j$ and band $g$, let $A_{j,g}$ be the raw
+    band metric of its actual partition. Assume that metrics from distinct
+    bands commute on the copy-symmetric subspace $\mathcal S_k$.
+
+    Write $\Pi$ for the orthogonal projection onto $\mathcal S_k$ and let
+    $Z:\mathbb C^r\longrightarrow\mathcal H^{\otimes k}$ satisfy
+    $Z^*Z=I$ and $ZZ^*=\Pi$.
+    For $p\in\mathbb R$, put $\bar p=\max(0,\min(1,p))$ and let
+    $T_{\bar p}$ be the actual interpolated transport tree. Define
+    \begin{align}
+        \widetilde A_{j,g}&=\Pi A_{j,g}+(I-\Pi),&
+        B_{j,g}&=Z^*A_{j,g}Z,\notag\\
+        \widehat M_p&=T_{\bar p}\!\left(
+          \left(\prod_{g=0}^{K-1}\widetilde A_{j,g}\right)_j\right),&
+        M_p&=\prod_{g=0}^{K-1}T_{\bar p}\bigl((B_{j,g})_j\bigr).
+        \label{eq:transport_compressed_roots}
+    \end{align}
+    Then $M_p$ is positive definite and $\widehat M_p Z=ZM_p$.
+    This is the symmetric-coordinate form of the band factorization in
+    \cite[Sections~7 and~8]{OpenAI2026AreaLaw}; it uses the same tree in
+    every band, including at the endpoints of the interpolation.
+\end{theorem}
+\begin{proof}
+    \uses{lem:replica_symmetric_metric,thm:mean_intertwiner_root,thm:mean_tree_properties,
+        thm:matrix_ordered_product_intertwining}
+    \leanok
+    Each $A_{j,g}$ is positive definite and commutes with $\Pi$.
+    The equations for $Z$ give $\Pi Z=Z$, hence
+    $A_{j,g}Z=ZB_{j,g}$ and $\widetilde A_{j,g}Z=ZB_{j,g}$.
+    Thus the compressed matrices are positive definite and metrics from
+    distinct bands commute after compression. The roots of their common
+    tree consequently commute, so their ordered product is positive definite.
+
+    The extended metrics commute across distinct bands. Factor the tree
+    evaluation of their products in (\ref{eq:transport_compressed_roots})
+    into the ordered product of the band roots. Intertwining each band root
+    with its compressed root and multiplying these identities gives
+    $\widehat M_pZ=ZM_p$.
+\end{proof}
