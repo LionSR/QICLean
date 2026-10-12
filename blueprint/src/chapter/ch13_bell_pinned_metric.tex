@@ -18,12 +18,13 @@ its literal region among the exterior sites.
 \begin{theorem}[Central subsystem labels and full copy symmetry]
     \label{thm:central_label_full_symmetry}
     \lean{TensorPower.commute_labelObservable_symProj}
+    \leanok
     For a finite family of finite coordinate spaces, let $L_Q(f)$ be
     the central label observable of a subsystem $Q$, with arbitrary
     real label function $f$. If $\Pi$ is the full simultaneous-copy
     symmetric projection, then $L_Q(f)\Pi=\Pi L_Q(f)$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:schur_label_commutation}
     Apply the containing-subsystem commutation theorem with the full
     system as the containing subsystem. This is the symmetry
@@ -34,6 +35,7 @@ its literal region among the exterior sites.
 \begin{theorem}[The far-region label on the inserted symmetric range]
     \label{thm:bell_far_label_on_symmetric_range}
     \lean{TensorPower.labelObservable_mul_bellInsertion_symProj_far}
+    \leanok
     For every real function $f$ of the irreducible copy-permutation label,
     let $L_Q(f)=\sum_\lambda f(\lambda)\pi_Q^\lambda$. Then
     \begin{align*}
@@ -45,7 +47,7 @@ its literal region among the exterior sites.
     \cite[\texttt{07-comparators.tex}, lines 299--308,
     \texttt{comparator:pinned-metric}]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:bell_insertion_isometry_symmetry,thm:bell_insertion_label_intertwining,
         thm:schur_label_commutation,thm:central_label_full_symmetry}
     The actual insertion intertwines the original and exterior symmetry
@@ -59,6 +61,7 @@ its literal region among the exterior sites.
 \begin{theorem}[The actual pinned metric factor]
     \label{thm:bell_actual_pinned_metric_factor}
     \lean{TensorPower.replicaMetric_factor_mul_bellInsertion_symProj}
+    \leanok
     Assume the original registers have nonempty finite coordinate sets,
     and let $t\ge0$. Define every replica metric $W_Q$ using the original
     full-system dimension, including when $Q$ lies entirely in the
@@ -74,7 +77,7 @@ its literal region among the exterior sites.
     \texttt{comparator:pinned-metric}]{OpenAI2026AreaLaw}.
     The statement includes zero copies.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:bell_far_label_on_symmetric_range,thm:bell_insertion_label_intertwining}
     The original replica weights are strictly positive, so the inverse
     metric is the central label observable with reciprocal original
@@ -95,6 +98,7 @@ its literal region among the exterior sites.
 \begin{theorem}[Positivity of the actual Bell metric factors]
     \label{thm:bell_metric_factor_positivity}
     \lean{TensorPower.posDef_bellMetric_factors}
+    \leanok
     Use the original full-family replica metrics and regions
     \begin{align*}
         P(U)&=C\cup X\cup U, &
@@ -110,7 +114,7 @@ its literal region among the exterior sites.
     \end{align*}
     are positive definite, for arbitrary $X$ and every copy number $k\ge0$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:bell_actual_pinned_metric_factor,thm:positive_laminar_replica_product,
         thm:laminar_subsystem_label_commutation}
     The regions $P(U)$, $F(U\cup Y)$ and $E(Y)$ are pairwise disjoint.
@@ -127,6 +131,7 @@ its literal region among the exterior sites.
 \begin{theorem}[The actual Bell-inserted symmetric projection]
     \label{thm:bell_symmetric_pin_projection}
     \lean{TensorPower.isStarProjection_bellInsertion_symProj}
+    \leanok
     Let $b$ be a unit vector in the coordinates of the physical region $X$
     together with its auxiliary coordinate $C$. Let $J_k$ be its literal
     $k$-copy insertion into the original coordinates, leaving the distinct
@@ -139,7 +144,7 @@ its literal region among the exterior sites.
     is an orthogonal projection. The assertion includes $k=0$ and
     arbitrary finite coordinate sets.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:bell_insertion_isometry_symmetry}
     The unit norm of $b$ gives $J_k^*J_k=I$ for the actual insertion.
     The finite-group average $\Pi_E$ is self-adjoint and idempotent.
@@ -159,6 +164,7 @@ hold for an arbitrary inserted vector.
 \begin{theorem}[Exterior labels preserve the actual pin]
     \label{thm:exterior_labels_bell_pin}
     \lean{TensorPower.commute_labelObservable_bellPin}
+    \leanok
     For every physical region $Q$ and every real label function $f$, the
     original-system central observable on $E(Q)=Q\setminus X$ satisfies
     \begin{align*}
@@ -166,7 +172,7 @@ hold for an arbitrary inserted vector.
     \end{align*}
     The original and exterior label functions are identical.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:bell_insertion_label_intertwining,thm:central_label_full_symmetry}
     The actual insertion identity gives $L_{E(Q)}(f)J_k=J_kL_E(f)$.
     Self-adjointness gives its adjoint identity. The exterior central
@@ -179,6 +185,7 @@ hold for an arbitrary inserted vector.
 \begin{theorem}[The actual metric factors on the pin]
     \label{thm:bell_metric_factors_pin_action}
     \lean{TensorPower.replicaMetric_factors_bellPin}
+    \leanok
     Assume that the original registers have nonempty finite coordinate
     sets, $t\ge0$, and $U\cap Y=\varnothing$. All replica metrics below
     use the original full-system dimension. Set
@@ -194,7 +201,7 @@ hold for an arbitrary inserted vector.
     \end{align*}
     The physical region $X$ and the inserted vector are arbitrary.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:exterior_labels_bell_pin,thm:bell_actual_pinned_metric_factor,
         thm:bell_metric_factor_positivity}
     The preceding lemma applies to the original replica weights and their
@@ -209,6 +216,7 @@ hold for an arbitrary inserted vector.
 \begin{theorem}[Weighted means and real powers on the actual pin]
     \label{thm:bell_mean_tree_pin_action}
     \lean{TensorPower.replicaMetric_meanTree_bellPin}
+    \leanok
     Let $A_j,D_j$ be the preceding factors for a family of pairs
     $U_j,Y_j$ with $U_j\cap Y_j=\varnothing$, and let $\mathcal T$ be
     any finite weighted mean tree whose leaves have these labels. Then
@@ -219,7 +227,7 @@ hold for an arbitrary inserted vector.
     \end{align*}
     The statement includes negative powers and $k=0$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:bell_metric_factors_pin_action,thm:bell_metric_factor_positivity,
         thm:mean_intertwiner_root,thm:mean_intertwiner_power,thm:mean_tree_properties}
     Each actual factor is positive definite. The weighted mean preserves

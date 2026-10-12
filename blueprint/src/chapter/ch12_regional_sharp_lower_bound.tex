@@ -1,0 +1,70 @@
+\section{A sharp regional lower bound}
+
+\begin{theorem}[A common sharp lower bound for the original physical cuts]
+  \label{thm:global_regional_low_defect_sharp_lower_bound}
+  \lean{Matrix.exists_globalReplicaLowDefectProjection_sharp_lower_pin}
+  \leanok
+  Fix a finite physical site set $V$, nonzero finite-dimensional spaces
+  $H_v$, and two nonzero finite-dimensional auxiliary spaces $H_c,H_r$.
+  For every $t>0$, there is $c\geq0$, depending only on these spaces and
+  $t$, with the following property.
+
+  Let $k\geq0$, let $\Omega\in\bigotimes_{v\in V}H_v$ be a unit vector,
+  and let $\lambda_c,\lambda_r$ be the auxiliary labels. Suppose
+  $0\leq\tau\leq\tfrac12$ and
+  \begin{align*}
+    2kS_0-\varepsilon
+      \leq\log\dim\lambda_c+\log\dim\lambda_r.
+  \end{align*}
+  Let $P_{\mathrm{glob}}$ be the common projection of
+  Definition~\ref{def:global_replica_low_defect_projection}, formed from
+  this vector, these labels, and the defect cutoff $\tau k$.
+  For every rectangular matrix $Z$ satisfying $ZZ^*=Q_k$, where $Q_k$
+  is the projection onto simultaneous copy symmetry, the matrix
+  $P_Z=Z^*P_{\mathrm{glob}}Z$ is an orthogonal projection.
+
+  Let $Q,Y\subseteq V$ be disjoint and put $F=(Q\cup Y)^c$.
+  Write $\rho_0,\rho_1,\rho_2$ for the reductions of the original pure
+  state on $Q,Y,F$, respectively. Suppose $K\geq0$, $20t\leq r$,
+  $20t\leq1$, and, for $j=0,1,2$ and $|v|\leq r$,
+  \begin{align*}
+    \log\sum_{p\in\operatorname{spec}(\rho_j),\ p>0}p^{1-v}
+      \leq vS(\rho_j)+Kv^2,
+  \end{align*}
+  where eigenvalues are counted with multiplicity. Set
+  \begin{align*}
+    g&=S(\rho_0)+S(\rho_2)-S(\rho_1),\\
+    d&=\log\dim H_c+\log\dim H_r,\\
+    b_k&=(k+1)e^{kh(\tau)}(k+2)^c
+      \exp\bigl(-2tk[2S_0+(1-\tau)g-\tau d-3h(\tau)]
+        +2t\varepsilon+25kK(2t)^2\bigr),\\
+    A_{Q,Y}&=\bigl(W_{t,k}(Q\cup\{c\})^{-1}
+      W_{t,k}(F\cup\{r\})^{-1}W_{t,k}(Y)\bigr)^2.
+  \end{align*}
+  Every metric retains the weights of the original full site family.
+  Then
+  \begin{align*}
+    b_k^{-1}P_Z\leq Z^*A_{Q,Y}Z.
+  \end{align*}
+  The same constant, projection, and symmetric coordinates serve all cuts.
+  This is the regional sharp lower bound under the original marginal
+  moment hypotheses in \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:actual_low_defect_sharp_lower_bound,thm:regional_physical_vector_norm,thm:regional_physical_spectral_statistics,thm:regional_low_defect_projection_global,thm:regional_squared_inverse_metric_coordinates}
+  Apply the five-factor sharp lower bound after grouping the original
+  physical sites into $Q,Y,F$. The grouping preserves the norm, and each
+  grouped marginal has exactly the entropy and surprisal moments of the
+  corresponding original reduction.
+
+  The polynomial exponent has the form $c_{Q,Y}+\Lambda_{Q,Y}$.
+  Take the maximum of these finitely many exponents and zero before
+  choosing the copy number, state, labels, moments, cutoff, or coordinates.
+  Replacing each exponent by this maximum increases the positive
+  coefficient $b_k$ and weakens its reciprocal lower bound.
+
+  Pull back the resulting matrix inequality along the actual regional
+  coordinate equivalence and conjugate by $Z$. The projection and metric
+  identities give $P_{\mathrm{glob}}$ and $A_{Q,Y}$, respectively.
+  The common projection theorem gives the projection property of $P_Z$.
+\end{proof}

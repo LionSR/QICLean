@@ -91,6 +91,37 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   preservation statement. Commutation is derived from the actual region
   relations and does not extend to arbitrary overlapping regions.
 
+### Projection coefficients and exponential rates — candidate (2026-10-11)
+
+- **Pattern:** Take the logarithm of a positive product of polynomial and
+  exponential factors, identify it with a remainder minus the leading
+  rate, and express the reciprocal coefficient as the corresponding
+  exponential lower bound.
+- **Seen:** The rough and sharp norm comparisons in
+  `Analysis/RegionalRoughLowerNorm.lean` and
+  `Analysis/RegionalSharpLowerNorm.lean` have two occurrences. The sharp
+  rate also includes the variance correction.
+- **Abstraction:** Existing `Real.log_mul`, `Real.log_rpow`,
+  `Real.exp_log` and polynomial normalization suffice for these two uses.
+  A third independent occurrence would justify a common scalar lemma;
+  no new tactic is introduced.
+- **Caveat:** Positivity is proved for the actual coefficient. The sharp
+  variance term is retained exactly when its logarithm is normalized.
+
+### A common polynomial exponent over finitely many cuts — candidate (2026-10-11)
+
+- **Pattern:** Choose each regional exponent, take the maximum of their finite
+  family and zero, and increase the positive-base power before taking its
+  reciprocal in an operator lower bound.
+- **Seen:** The rough and sharp theorems in
+  `QICLean/Analysis/RegionalLowDefectLowerPin.lean` have two occurrences in
+  one file. The matrix-order transport itself is already shared through
+  `regional_lower_pin_pullback`.
+- **Abstraction:** The current proofs use `Finset.le_sup'`,
+  `Real.rpow_le_rpow_of_exponent_le`, and the shared pullback. A third
+  occurrence in another file would justify a common finite-family helper.
+- **Caveat:** Only the polynomial exponent is absorbed; the exponential
+  subset count and the variance term remain in the coefficient.
 
 ### Replica regions with two auxiliary sites — shared geometric statement (2026-10-11)
 
