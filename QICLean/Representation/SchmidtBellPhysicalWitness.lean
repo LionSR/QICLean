@@ -153,7 +153,9 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     rw [hpair, hinner, norm_mul, mul_pow]
     erw [hc]
     erw [hφoverlap]
-    done
+    simpa only [div_eq_mul_inv, one_mul] using!
+      (mul_le_mul_of_nonneg_left hbound
+        (pow_nonneg (div_nonneg hz.le (sq_nonneg (E.card : ℝ))) k))
   all_goals done
 
 end FiniteProduct
