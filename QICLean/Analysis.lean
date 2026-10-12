@@ -211,6 +211,7 @@ import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootChannelWord
 import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
+import QICLean.Analysis.RoughLowerCoefficient
 import QICLean.Analysis.RpowConvexity
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo

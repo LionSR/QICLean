@@ -1,0 +1,24 @@
+\section{A numerical lower comparison}
+
+\begin{theorem}[Coefficient in the rough lower comparison]
+    \label{thm:rough_lower_coefficient_three}
+    \lean{Real.rough_lower_coefficient_three}
+    Let $S\in\mathbb R$, let $D,h,\delta\geq 0$, and suppose that
+    $\tau>0$ and $0<a\leq 1/2$. Then
+    \begin{align}
+        4S-6\left(\tau D+\frac h a\right)
+          -3\frac\delta\tau\max(0,2S)
+        &\leq
+        2\left(2S-2\tau D-\left(3+\frac1a\right)h
+          -\frac\delta\tau\max(0,2S)\right).
+        \label{eq:rough_lower_coefficient}
+    \end{align}
+    This numerical estimate is used in the rough lower comparison of
+    \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    The difference between the right and left sides of
+    (\ref{eq:rough_lower_coefficient}) is
+    $2\tau D+(4/a-6)h+(\delta/\tau)\max(0,2S)$.
+    Each summand is nonnegative, since $1/a\geq 2$.
+\end{proof}
