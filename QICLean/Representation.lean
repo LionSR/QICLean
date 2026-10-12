@@ -117,6 +117,8 @@ import QICLean.Representation.SchmidtBellCommonCutoffs
 import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchmidtBellWitnessCoordinates
 import QICLean.Representation.SchmidtBellWitnessRange
+import QICLean.Representation.SchmidtBellPrevectorOverlap
+import QICLean.Representation.SchmidtBellSitePin
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelCutoff
 import QICLean.Representation.SchurLabelEstimates
