@@ -126,6 +126,14 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   intro τ J Pe P v
   have hΦ := schmidtBellWitness_pullback_range β X E k ΩX φ
     (by simpa only [mem_invariantSubspace, permOp_mulVec] using hφsym) hφBell
+  have hpull (A' : Matrix ((Fin k → A × E) × Config k ιe)
+      ((Fin k → A × E) × Config k ιe) ℂ) (hA' : toEuclideanLin A' φ = φ) :
+      toEuclideanLin (A'.submatrix τ τ) (WithLp.toLp 2 (φ ∘ τ)) =
+        WithLp.toLp 2 (φ ∘ τ) := by
+    simpa only [toEuclideanLin, toLpLin_apply, WithLp.ofLp_toLp,
+      submatrix_mulVec_equiv, Function.comp_def, Equiv.apply_symm_apply] using!
+      congrArg (fun w : EuclideanSpace ℂ ((Fin k → A × E) × Config k ιe) ↦
+        WithLp.toLp 2 (w ∘ τ)) hA'
   refine ⟨WithLp.toLp 2 (φ ∘ τ),
     ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).norm_map φ).trans hφnorm,
     hΦ.1, hΦ.2, ?_, ?_, ?_⟩
