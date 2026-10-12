@@ -73,6 +73,10 @@ theorem rootPath_compressed_bandProduct
     simpa only [symBandMetric, Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul,
       (commute_symProj_bandMetric t k (D.leafPart j g)).eq, Matrix.mul_assoc,
       hPZ, sub_self, add_zero] using (hleaf j g).2
+  have hBcomm (j j' : Σ h, Option (C h)) (g g' : Fin K) (hgg' : g ≠ g') :
+      Commute (B j g) (B j' g') :=
+    Matrix.commute_of_isometric_intertwine hZ (hext j g) (hext j' g')
+      ((D.crossBandCommute_iff (n := n) t k).mp hcomm j j' g g' hgg')
   done
 
 end TensorPower.ReplicaTransport.TransportData
