@@ -109,6 +109,13 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
     (S := S) β Ω X E hΩ hz regions hnested hdisjoint ell ht hmass
   refine ⟨c, hc, hu.mono fun k hk n Z hZ hZZ K U Y hUY hnest hXY
     T Bsh Bexc hsh hmatch s hs ↦ ?_⟩
+  let e : Config k ι₀ ≃
+      Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
+    Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight fun o ↦
+      match o with
+      | none => Equiv.refl (Fin E.card)
+      | some none => (Finset.equivFin E).symm
+      | some (some v) => Equiv.refl (β v)
   done
 
 end FiniteProduct
