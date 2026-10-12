@@ -1,0 +1,72 @@
+\section{Inverse powers in the supplied symmetric coordinates}
+
+\begin{theorem}[The cutoff estimate in fixed symmetric coordinates]
+    \label{thm:bell_compressed_inverse_norm}
+    \lean{TensorPower.exists_replicaMetric_compressed_bell_inverse_norm_bound}
+    \leanok
+    \uses{thm:bell_compressed_band_product_powers}
+    Fix a finite family of nonempty physical coordinate sets, two finite
+    nonempty auxiliary registers $C,R$, a physical region $X$, a finite
+    status set, and $t>0$.
+    There is a constant $c\ge0$ with the following property, chosen before
+    the copy number, the symmetric coordinates, the band regions, the
+    mean tree, the cutoff and the vectors below.
+
+    Let $Z:\C^n\to\mathcal H_k$ be any isometry onto the full simultaneous
+    symmetric subspace. Let $U_{jg},Y_{jg}$ be indexed by this status
+    set and $0\le g<K$, with
+    \begin{align*}
+        U_{jg}\cap Y_{jg}&=\varnothing,&
+        U_{jg}\cup Y_{jg}&\subseteq U_{j'h}\quad(g<h).
+    \end{align*}
+    Use the original full-family metric weights, the same weighted mean
+    tree in every band, and the compressed product $M$ of
+    Theorem~\ref{thm:bell_compressed_band_product_powers}. Insert any unit
+    vector on $X\cup C$, and let $P=J_k\Pi_EJ_k^*$ be the resulting
+    orthogonal projection, where $\Pi_E$ denotes exterior simultaneous
+    copy symmetry.
+
+    Put $E(B)=B\setminus X$, viewed inside the original family. Let
+    $a\in\R$ and let $\varphi$ be a unit vector in the original replica
+    space such that the cutoff projectors satisfy
+    \begin{align*}
+        \Pi_{E(U_{jg})}^{\le a}\varphi&=\varphi,&
+        \Pi_{E(U_{jg}\cup Y_{jg})}^{\le a}\varphi&=\varphi
+    \end{align*}
+    for every $j,g$. Then, for every vector $u$ and $0\le2s\le1$,
+    \begin{align*}
+        |\langle\varphi,Pu\rangle|^2
+        &\le \bigl((k+2)^{cK}\exp(4tKa)\bigr)^{2s}
+            \|M^{-s}Z^*u\|^2.
+    \end{align*}
+    Empty band products and zero copies are included. No normalization
+    or symmetry condition is imposed on $u$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:replica_pinned_tree_inverse_overlap,thm:bell_compressed_band_product_powers,
+        thm:projection_intertwining_norm,thm:bell_symmetric_pin_projection}
+    Apply the exterior cutoff estimate to the test vector $\varphi$ and
+    the vector $Pu$. The map $B\mapsto E(B)$ preserves unions, inclusions
+    and disjointness, so the stated hypotheses give precisely the
+    geometry and cutoffs required there. Its constant depends on the
+    fixed replica family and $t$ and therefore has the asserted order of
+    quantification.
+
+    Write $N$ for the ordered exterior product. The real-power identity
+    in Theorem~\ref{thm:bell_compressed_band_product_powers}, evaluated at
+    $-s$, gives
+    \begin{align*}
+        (ZM^{-s}Z^*)P=PN^{-s}.
+    \end{align*}
+    Both powers are Hermitian and $P$ is an orthogonal projection.
+    The projected norm comparison consequently gives
+    \begin{align*}
+        \|N^{-s}Pu\|\le\|M^{-s}Z^*u\|.
+    \end{align*}
+    Substitution into the exterior cutoff estimate proves the result.
+    This is the inverse-power step in
+    \cite[\texttt{07-comparators.tex}, lines 299--308 and 370--381]{OpenAI2026AreaLaw}.
+    In the physical application, the unit inserted vector and the
+    common cutoff conditions must be obtained for the selected state.
+\end{proof}

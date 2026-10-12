@@ -14,6 +14,7 @@ import QICLean.Representation.AddedSiteTensorInsertionNorm
 import QICLean.Representation.AddedSiteTensorInsertionSymmetry
 import QICLean.Representation.Alternant
 import QICLean.Representation.BadCopyLabelDimension
+import QICLean.Representation.BellCompressedInverseNorm
 import QICLean.Representation.BellInsertionCoordinates
 import QICLean.Representation.BellInsertionSymmetry
 import QICLean.Representation.BellMetricFactorPositivity
