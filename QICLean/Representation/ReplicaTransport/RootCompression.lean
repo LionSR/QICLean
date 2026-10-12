@@ -99,6 +99,13 @@ theorem rootPath_compressed_bandProduct
         intro g L R hLR
         rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc, hband g, Matrix.mul_assoc])
     simpa only [M, List.map_ofFn, Function.comp_id] using h
+  have hroot : D.rootPath n t k p =
+      (List.ofFn fun g ↦ T.eval (fun j ↦ symBandMetric n t k (D.leafPart j g))).prod :=
+    (congrArg (fun inputs ↦ T.eval inputs)
+      (funext (D.input_eq_prod (n := n) t k))).trans
+      (MeanTree.eval_listProd_ofFn
+        (fun j g ↦ posDef_symBandMetric (D.isPartition_leafPart hD j g) ht k)
+        ((D.crossBandCommute_iff (n := n) t k).mp hcomm) T)
   done
 
 end TensorPower.ReplicaTransport.TransportData
