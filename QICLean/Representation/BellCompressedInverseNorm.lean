@@ -108,6 +108,9 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
     T a φ (toEuclideanLin P u) hφ
     (by simpa only [E, Finset.union_sdiff_distrib, Finset.image_union] using hcuts)
     s hs
-  done
+  exact hupper.trans (mul_le_mul_of_nonneg_left
+    (by simpa only [M, B, A, W, Q, F, E, Finset.union_sdiff_distrib,
+      Finset.image_union] using
+      pow_le_pow_left₀ (norm_nonneg _) hnorm 2) (by positivity))
 
 end TensorPower
