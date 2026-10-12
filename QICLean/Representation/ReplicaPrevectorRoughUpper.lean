@@ -120,6 +120,16 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
   have hZE : ZEᴴ * ZE = 1 := by
     simpa only [ZE, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv,
       Matrix.submatrix_id_id] using hZ
+  have hSymm :
+      symProj (copyPerm ((o : Option (Option V)) →
+        addedSiteSpace (addedSiteSpace β E) (Fin E.card) o) k) =
+      (symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k)).submatrix e.symm e.symm := by
+    simpa only [Matrix.reindex_apply] using
+      (symProj_of_intertwine e
+        (φ := copyPerm ((o : Option (Option V)) → ι₀ o) k)
+        (ψ := copyPerm ((o : Option (Option V)) →
+          addedSiteSpace (addedSiteSpace β E) (Fin E.card) o) k)
+        (fun σ x ↦ funext fun j ↦ rfl))
   done
 
 end FiniteProduct
