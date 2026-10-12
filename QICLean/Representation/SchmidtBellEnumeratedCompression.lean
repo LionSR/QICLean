@@ -92,6 +92,11 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
   have hw : replicaLabelWeight (k := k) ιF t = replicaLabelWeight (k := k) ιE t :=
     funext fun ell ↦
       congrArg (fun d : ℕ ↦ Partition.replicaWeight t (TensorPower.part d ell)) hdim
+  have hact (R : Finset (Option (Option V))) (σ : Equiv.Perm (Fin k))
+      (x : Config k ιE) :
+      subsystemPerm k ιF R σ (e.symm x) = e.symm (subsystemPerm k ιE R σ x) := by
+    simpa only [Equiv.apply_symm_apply, Equiv.symm_apply_apply] using
+      congrArg e.symm (subsystemPerm_piCongrRight ιE ιF changeSite k R σ (e.symm x))
   done
 
 /-- The compressed original prevector is unchanged when the selected
