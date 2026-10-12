@@ -89,6 +89,9 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
   intro ιE ιF changeSite e ZE WE WF Q F extRegion AE AF BE BF ME MF
   have hdim : replicaDim ιF = replicaDim ιE :=
     Fintype.card_congr (Equiv.piCongrRight changeSite)
+  have hw : replicaLabelWeight (k := k) ιF t = replicaLabelWeight (k := k) ιE t :=
+    funext fun ell ↦
+      congrArg (fun d : ℕ ↦ Partition.replicaWeight t (TensorPower.part d ell)) hdim
   done
 
 /-- The compressed original prevector is unchanged when the selected
