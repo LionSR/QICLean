@@ -183,7 +183,12 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
       rw [labelCutoff_schmidtBellWitnessEquiv_exterior β X E k Q a] at htransport
       simp only [extRegion, toEuclideanLin, toLpLin_apply] at htransport ⊢
       exact htransport
-    done
+    exact ⟨
+      (hmatch j g (U j g) (Or.inl rfl)).elim (fun D hD ↦
+        hcut (U j g) D hD.1
+          ((hXY j g).mono_right Finset.subset_union_left) hD.2.1 hD.2.2),
+      (hmatch j g (U j g ∪ Y j g) (Or.inr rfl)).elim (fun D hD ↦
+        hcut (U j g ∪ Y j g) D hD.1 (hXY j g) hD.2.1 hD.2.2)⟩
   all_goals done
 
 end FiniteProduct
