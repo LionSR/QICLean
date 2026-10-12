@@ -147,7 +147,10 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
       rw [Complex.norm_pow, Complex.norm_div,
         Complex.norm_of_nonneg (Real.sqrt_nonneg z), Complex.norm_natCast,
         pow_right_comm (Real.sqrt z / (E.card : ℝ)) k 2, div_pow, Real.sq_sqrt hz.le]
-    done
+    simpa only [hpair, hinner, norm_mul, mul_pow, hc, hφoverlap,
+      div_eq_mul_inv, mul_one, one_mul] using!
+      (mul_le_mul_of_nonneg_left hbound
+        (show 0 ≤ (z / (E.card : ℝ) ^ 2) ^ k by positivity))
   all_goals done
 
 end FiniteProduct
