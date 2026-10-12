@@ -1470,6 +1470,21 @@ jobs:
               "QICLeanTest/$example.lean"
           done
 
+      - name: Check product-reference density regressions strictly
+        timeout-minutes: 7
+        run: |
+          set -euo pipefail
+          for file in QICLean/Analysis/RectangularTraceNormAlgebra.lean \
+              QICLean/Analysis/ProductReferenceDensityError.lean \
+              QICLeanTest/ProductReferenceDensityError.lean \
+              QICLeanTest/ProductReferenceDensityErrorAxioms.lean; do
+            LEAN_NUM_THREADS=1 timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -DautoImplicit=false -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
       - name: Check compression source reduction regressions strictly
         run: |
           set -euo pipefail

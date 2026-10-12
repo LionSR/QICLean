@@ -134,6 +134,31 @@ theorem rectangularTraceNorm_isometry_sandwich
       rw [Matrix.mul_assoc, hL, Matrix.mul_one]
     simpa only [heq] using h
 
+/-- Independently reindexing the row and column spaces preserves the rectangular
+trace norm, including when either space is empty. -/
+@[simp]
+theorem rectangularTraceNorm_reindex
+    {p q : Type*} [Fintype p] [Fintype q] [DecidableEq q]
+    (e : m ≃ p) (f : n ≃ q) (A : Matrix m n ℂ) :
+    rectangularTraceNorm (reindex e f A) = rectangularTraceNorm A := by
+  classical
+  let K : Matrix p m ℂ := (1 : Matrix m m ℂ).submatrix e.symm id
+  let L : Matrix q n ℂ := (1 : Matrix n n ℂ).submatrix f.symm id
+  have hK : Kᴴ * K = 1 := by
+    simp only [K, conjTranspose_submatrix, conjTranspose_one,
+      submatrix_mul_equiv, Matrix.one_mul, submatrix_id_id]
+  have hL : Lᴴ * L = 1 := by
+    simp only [L, conjTranspose_submatrix, conjTranspose_one,
+      submatrix_mul_equiv, Matrix.one_mul, submatrix_id_id]
+  have hKA : K * A = A.submatrix e.symm id :=
+    one_submatrix_mul e.symm (Equiv.refl m) A
+  have hKAL : K * A * Lᴴ = reindex e f A := by
+    rw [hKA]
+    simp only [L, conjTranspose_submatrix, conjTranspose_one]
+    exact mul_submatrix_one (Equiv.refl n) f.symm (A.submatrix e.symm id)
+  rw [← hKAL]
+  exact rectangularTraceNorm_isometry_sandwich A K L hK hL
+
 /-- Insert a fixed basis coordinate into the first factor of a product
 register. This embedding is isometric and makes no assumption on the size
 of the second register. -/
