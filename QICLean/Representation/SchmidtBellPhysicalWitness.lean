@@ -164,6 +164,9 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     simpa only [div_eq_mul_inv, one_mul] using!
       (mul_le_mul_of_nonneg_left hbound
         (pow_nonneg (div_nonneg hz.le (sq_nonneg (E.card : ℝ))) k))
+  case refine_3 =>
+    intro K U Y Bsh Bexc hsh hXY hmatch a extRegion j g
+    done
   all_goals done
 
 end FiniteProduct
