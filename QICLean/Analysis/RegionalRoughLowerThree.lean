@@ -154,6 +154,9 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
   have hKreal : (8 : ℝ) ≤ K := by exact_mod_cast hK
   have hKpos : (0 : ℝ) < K := by linarith only [hKreal]
   have ht : 0 < 2 / (K : ℝ) := div_pos zero_lt_two hKpos
+  have htSmall : 4 * (2 / (K : ℝ)) ≤ 1 := by
+    simpa only [← mul_div_assoc, show (4 : ℝ) * 2 = 8 by norm_num] using
+      (div_le_one hKpos).2 hKreal
   done
 
 end Matrix
