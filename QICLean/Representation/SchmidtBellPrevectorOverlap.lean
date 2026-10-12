@@ -37,7 +37,7 @@ noncomputable section
 
 namespace FiniteProduct
 
-variable {V : Type} [Fintype V] [DecidableEq V]
+variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ)
 

@@ -1,0 +1,240 @@
+\section{Bell restriction of replica metrics and their means}
+
+Let the original site family have physical coordinates $\beta$ and two
+separate auxiliary coordinates $C,R$. Group $X$ with $C$ into a Bell
+coordinate, let $J_k$ be its actual tensor-power insertion in the original
+coordinates, and let $\Pi_E$ project onto the symmetric subspace of the
+exterior family. Put $K_k=J_k\Pi_E$. For a physical region $U$, write
+\begin{align*}
+    P(U)&=C\cup X\cup U, &
+    F(U)&=R\cup(X\cup U)^c, &
+    E(U)&=U\setminus X,
+\end{align*}
+where the complements in $F(U)$ are taken among the physical sites and
+$E(U)$ is included in the original full family. Thus $F(U)=P(U)^c$ as
+subsystems of the original family. The same letter $E(U)$ also denotes
+its literal region among the exterior sites.
+
+\begin{theorem}[Central subsystem labels and full copy symmetry]
+    \label{thm:central_label_full_symmetry}
+    \lean{TensorPower.commute_labelObservable_symProj}
+    \leanok
+    For a finite family of finite coordinate spaces, let $L_Q(f)$ be
+    the central label observable of a subsystem $Q$, with arbitrary
+    real label function $f$. If $\Pi$ is the full simultaneous-copy
+    symmetric projection, then $L_Q(f)\Pi=\Pi L_Q(f)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:schur_label_commutation}
+    Apply the containing-subsystem commutation theorem with the full
+    system as the containing subsystem. This is the symmetry
+    used in \cite[\texttt{05-replicas.tex}, lines 101--102;
+    \texttt{07-comparators.tex}, lines 299--308]{OpenAI2026AreaLaw}.
+\end{proof}
+
+\begin{theorem}[The far-region label on the inserted symmetric range]
+    \label{thm:bell_far_label_on_symmetric_range}
+    \lean{TensorPower.labelObservable_mul_bellInsertion_symProj_far}
+    \leanok
+    For every real function $f$ of the irreducible copy-permutation label,
+    let $L_Q(f)=\sum_\lambda f(\lambda)\pi_Q^\lambda$. Then
+    \begin{align*}
+        L_{F(U)}^{\mathrm{original}}(f)K_k
+        &=K_k L_{E(U)}^{\mathrm{exterior}}(f).
+    \end{align*}
+    The label function is unchanged, and the inserted vector is arbitrary.
+    Finite coordinate sets may be empty. This is the far-region label identification in
+    \cite[\texttt{07-comparators.tex}, lines 299--308,
+    \texttt{comparator:pinned-metric}]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bell_insertion_isometry_symmetry,thm:bell_insertion_label_intertwining,
+        thm:schur_label_commutation,thm:central_label_full_symmetry}
+    The actual insertion intertwines the original and exterior symmetry
+    projections. On the original symmetric subspace, the complementary
+    regions $F(U)$ and $P(U)$ have the same label projectors.
+    The coordinate identity for the insertion changes the $P(U)$ label
+    to the exterior $E(U)$ label. Finally, this exterior central label
+    observable commutes with the full exterior symmetry projection.
+\end{proof}
+
+\begin{theorem}[The actual pinned metric factor]
+    \label{thm:bell_actual_pinned_metric_factor}
+    \lean{TensorPower.replicaMetric_factor_mul_bellInsertion_symProj}
+    \leanok
+    Assume the original registers have nonempty finite coordinate sets,
+    and let $t\ge0$. Define every replica metric $W_Q$ using the original
+    full-system dimension, including when $Q$ lies entirely in the
+    exterior. For arbitrary physical regions $U,Y$ and any inserted
+    Bell-coordinate vector,
+    \begin{align*}
+        \bigl(W_{P(U)}^{-1}W_{F(U\cup Y)}^{-1}W_{E(Y)}\bigr)^2K_k
+        &=\bigl(W_{E(U)}^{-1}W_{E(U\cup Y)}^{-1}W_{E(Y)}\bigr)^2K_k.
+    \end{align*}
+    When $U,Y$ are disjoint from $X$, these are precisely the two
+    three-factor products in
+    \cite[\texttt{07-comparators.tex}, lines 299--308,
+    \texttt{comparator:pinned-metric}]{OpenAI2026AreaLaw}.
+    The statement includes zero copies.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bell_far_label_on_symmetric_range,thm:bell_insertion_label_intertwining}
+    The original replica weights are strictly positive, so the inverse
+    metric is the central label observable with reciprocal original
+    weights. Apply the insertion identities to the first and third
+    factors, and the preceding complementary-label identity to the
+    second factor. The corresponding exterior observables commute with
+    the exterior symmetry projection. Thus each factor intertwines
+    through $K_k$. Multiplying the three rectangular identities and then
+    squaring proves the result.
+
+    No replica weight is recomputed from the compressed family. The
+    auxiliary-label insertion identity preserves any already chosen
+    $R$ label through the same map; the displayed equality holds on the
+    entire inserted symmetric range. Restriction of the weighted mean
+    tree to this range remains a separate step.
+\end{proof}
+
+\begin{theorem}[Positivity of the actual Bell metric factors]
+    \label{thm:bell_metric_factor_positivity}
+    \lean{TensorPower.posDef_bellMetric_factors}
+    \leanok
+    Use the original full-family replica metrics and regions
+    \begin{align*}
+        P(U)&=C\cup X\cup U, &
+        F(U)&=R\cup(X\cup U)^c, &
+        E(U)&=U\setminus X
+    \end{align*}
+    from the actual Bell coordinate identity. Suppose the original
+    coordinate sets are finite and nonempty, $t\ge0$, and $U\cap Y=\varnothing$.
+    Then both matrices
+    \begin{align*}
+        A&=\bigl(W_{P(U)}^{-1}W_{F(U\cup Y)}^{-1}W_{E(Y)}\bigr)^2,\\
+        D&=\bigl(W_{E(U)}^{-1}W_{E(U\cup Y)}^{-1}W_{E(Y)}\bigr)^2
+    \end{align*}
+    are positive definite, for arbitrary $X$ and every copy number $k\ge0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bell_actual_pinned_metric_factor,thm:positive_laminar_replica_product,
+        thm:laminar_subsystem_label_commutation}
+    The regions $P(U)$, $F(U\cup Y)$ and $E(Y)$ are pairwise disjoint.
+    Their replica metrics are positive definite and commute; their
+    inverses retain these properties. Their product and its square
+    are therefore positive definite. For the second matrix, the regions
+    $E(U)$ and $E(Y)$ are disjoint and
+    $E(U\cup Y)=E(U)\cup E(Y)$. Apply positivity of a single pinned band. Every metric throughout uses the
+    original full-family weights, as in
+    \cite[\texttt{07-comparators.tex}, lines 299--308,
+    \texttt{comparator:pinned-metric}]{OpenAI2026AreaLaw}.
+\end{proof}
+
+\begin{theorem}[The actual Bell-inserted symmetric projection]
+    \label{thm:bell_symmetric_pin_projection}
+    \lean{TensorPower.isStarProjection_bellInsertion_symProj}
+    \leanok
+    Let $b$ be a unit vector in the coordinates of the physical region $X$
+    together with its auxiliary coordinate $C$. Let $J_k$ be its literal
+    $k$-copy insertion into the original coordinates, leaving the distinct
+    auxiliary coordinate $R$ and the physical complement of $X$ as the
+    exterior system. If $\Pi_E$ is the simultaneous-copy symmetric
+    projection on this exterior system, then
+    \begin{align*}
+        P_k=J_k\Pi_EJ_k^*
+    \end{align*}
+    is an orthogonal projection. The assertion includes $k=0$ and
+    arbitrary finite coordinate sets.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bell_insertion_isometry_symmetry}
+    The unit norm of $b$ gives $J_k^*J_k=I$ for the actual insertion.
+    The finite-group average $\Pi_E$ is self-adjoint and idempotent.
+    Conjugating it by this isometry therefore gives a self-adjoint,
+    idempotent operator on the original coordinates. This is the
+    projection onto the inserted symmetric subspace used in
+    \cite[\texttt{07-comparators.tex}, lines 283--308,
+    \texttt{comparator:pinned-metric}]{OpenAI2026AreaLaw}.
+\end{proof}
+
+Let $J_k$ be the literal Bell-coordinate insertion into the original full
+site family, and let $\Pi_E$ be the full copy-symmetry projection on the
+exterior system. Write $P_k=J_k\Pi_EJ_k^*$. This is an orthogonal projection
+when the inserted vector is unit. The following algebraic identities also
+hold for an arbitrary inserted vector.
+
+\begin{theorem}[Exterior labels preserve the actual pin]
+    \label{thm:exterior_labels_bell_pin}
+    \lean{TensorPower.commute_labelObservable_bellPin}
+    \leanok
+    For every physical region $Q$ and every real label function $f$, the
+    original-system central observable on $E(Q)=Q\setminus X$ satisfies
+    \begin{align*}
+        L_{E(Q)}(f)P_k=P_kL_{E(Q)}(f).
+    \end{align*}
+    The original and exterior label functions are identical.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bell_insertion_label_intertwining,thm:central_label_full_symmetry}
+    The actual insertion identity gives $L_{E(Q)}(f)J_k=J_kL_E(f)$.
+    Self-adjointness gives its adjoint identity. The exterior central
+    observable $L_E(f)$ commutes with $\Pi_E$, so multiplication of these
+    identities proves the assertion. This is the invariant pin in
+    \cite[\texttt{07-comparators.tex}, lines 291--308,
+    \texttt{comparator:pinned-metric}]{OpenAI2026AreaLaw}.
+\end{proof}
+
+\begin{theorem}[The actual metric factors on the pin]
+    \label{thm:bell_metric_factors_pin_action}
+    \lean{TensorPower.replicaMetric_factors_bellPin}
+    \leanok
+    Assume that the original registers have nonempty finite coordinate
+    sets, $t\ge0$, and $U\cap Y=\varnothing$. All replica metrics below
+    use the original full-system dimension. Set
+    \begin{align*}
+        Q&=C\cup X\cup U,&
+        F&=R\cup(X\cup U\cup Y)^c,\\
+        A&=(W_Q^{-1}W_F^{-1}W_{E(Y)})^2,&
+        D&=(W_{E(U)}^{-1}W_{E(U\cup Y)}^{-1}W_{E(Y)})^2.
+    \end{align*}
+    Then
+    \begin{align*}
+        AP_k=P_kA=P_kD=DP_k.
+    \end{align*}
+    The physical region $X$ and the inserted vector are arbitrary.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:exterior_labels_bell_pin,thm:bell_actual_pinned_metric_factor,
+        thm:bell_metric_factor_positivity}
+    The preceding lemma applies to the original replica weights and their
+    reciprocals, proving that $D$ commutes with $P_k$. The actual
+    three-factor insertion identity, multiplied on the right by $J_k^*$,
+    gives $AP_k=DP_k$. Both factors are positive definite and $P_k$ is
+    self-adjoint. Taking adjoints yields the remaining equality. This
+    supplies the concrete factor restriction in
+    \cite[\texttt{07-comparators.tex}, lines 299--308]{OpenAI2026AreaLaw}.
+\end{proof}
+
+\begin{theorem}[Weighted means and real powers on the actual pin]
+    \label{thm:bell_mean_tree_pin_action}
+    \lean{TensorPower.replicaMetric_meanTree_bellPin}
+    \leanok
+    Let $A_j,D_j$ be the preceding factors for a family of pairs
+    $U_j,Y_j$ with $U_j\cap Y_j=\varnothing$, and let $\mathcal T$ be
+    any finite weighted mean tree whose leaves have these labels. Then
+    $\mathcal T(A)$ and $\mathcal T(D)$ commute with $P_k$, and
+    \begin{align*}
+        \mathcal T(A)P_k&=P_k\mathcal T(D),\\
+        \mathcal T(A)^sP_k&=P_k\mathcal T(D)^s\qquad(s\in\R).
+    \end{align*}
+    The statement includes negative powers and $k=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bell_metric_factors_pin_action,thm:bell_metric_factor_positivity,
+        thm:mean_intertwiner_root,thm:mean_intertwiner_power,thm:mean_tree_properties}
+    Each actual factor is positive definite. The weighted mean preserves
+    a common rectangular intertwining, so the preceding identity passes
+    through every node of the same tree. Functional calculus then gives
+    every real power. Commutation passes through the tree by the same
+    established mean identities. This is the single-band restriction
+    used before the product of band roots in
+    \cite[\texttt{07-comparators.tex}, lines 370--381]{OpenAI2026AreaLaw}.
+\end{proof}
