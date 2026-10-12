@@ -114,6 +114,9 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   obtain ⟨x, _⟩ := Function.ne_iff.mp
     (fun h : Ω.ofLp = 0 ↦ (norm_ne_zero_iff.mp (hΩ.trans_ne one_ne_zero))
       ((WithLp.ofLp_eq_zero 2).mp h))
+  have hE : 0 < E.card := Finset.card_pos.mpr
+    (Finset.nonempty_iff_ne_empty.mpr fun he ↦ by
+      simp [he, IsHermitian.spectralRestrictionMass] at hz)
   done
 
 end FiniteProduct
