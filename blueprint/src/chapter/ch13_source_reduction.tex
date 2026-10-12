@@ -352,3 +352,92 @@ These calculations give the source and error estimates used in
     The uniform case uses the uniform telescoping estimate in the same
     way. An empty marked set makes the two chains identical.
 \end{proof}
+
+\section{A product reference with private norm loss}
+
+\begin{theorem}[Density error of a subnormalized product reference]
+    \label{thm:product_reference_density_error}
+    \lean{Matrix.partialTraceRight_tensorVector_eq_smul}
+    \lean{Matrix.rectangularTraceNorm_product_reference_sub_le}
+    \lean{Matrix.rectangularTraceNorm_partialTraceRight_sub_product_reference_le}
+    \lean{Matrix.rectangularTraceNorm_partialTraceRight_sub_product_reference_le_of_norm_sub_le}
+    Let $\mathcal H_A,\mathcal H_E$ be finite-dimensional Euclidean spaces,
+    $\Omega\in\mathcal H_A$ a unit vector, and $\Xi\in\mathcal H_E$ with
+    $\lVert\Xi\rVert\leq1$. For $\Psi\in\mathcal H_A\otimes\mathcal H_E$
+    with $\lVert\Psi\rVert\leq1$, write
+    $\rho_\Psi=\Tr_E|\Psi\rangle\langle\Psi|$. Then
+    \begin{align}
+        \Tr_E|\Omega\otimes\Xi\rangle\langle\Omega\otimes\Xi|
+          &=\lVert\Xi\rVert^2|\Omega\rangle\langle\Omega|,\\
+        \lVert\rho_\Psi-|\Omega\rangle\langle\Omega|\rVert_1
+          &\leq 2\lVert\Psi-\Omega\otimes\Xi\rVert
+              +1-\lVert\Xi\rVert^2.
+    \end{align}
+    In particular, if $\lVert\Psi-\Omega\otimes\Xi\rVert\leq\varepsilon$
+    and $1-\delta\leq\lVert\Xi\rVert$, the density error is at most
+    $2\varepsilon+2\delta$. Neither $\Xi\ne0$ nor $\delta\leq1$ is required.
+    These estimates give the explicit constants in the passage from the
+    product reference to the physical density in
+    \cite[Section~8.1]{OpenAI2026PolynomialPEPS}.
+    % Source: eq:reference-junk and eq:protocol-density, 07-assembly.tex:21--51.
+\end{theorem}
+
+\begin{proof}
+    \uses{thm:reduction_pure_error}
+    Taking the partial trace of the product density gives the first
+    identity. Its difference from $|\Omega\rangle\langle\Omega|$ has
+    trace norm $1-\lVert\Xi\rVert^2$. Both joint vectors have norm at
+    most one, so Theorem~\ref{thm:reduction_pure_error} bounds the density
+    difference between $\Psi$ and $\Omega\otimes\Xi$ by twice their
+    vector difference. The triangle inequality gives the stated bound.
+    Finally, for $s=\lVert\Xi\rVert$, one has
+    $1-s^2\leq2(1-s)\leq2\delta$.
+\end{proof}
+
+\begin{corollary}[Retained norm and compression error]
+    \label{cor:product_reference_norm_compression}
+    \lean{Matrix.one_sub_le_norm_of_product_reference}
+    \lean{Matrix.trace_deficit_partialTraceRight_le_of_product_reference}
+    \lean{Matrix.rectangularTraceNorm_sub_pure_le_of_product_reference}
+    Under the preceding hypotheses,
+    \begin{align}
+        \lVert\Psi\rVert &\geq1-\delta-\varepsilon,\\
+        1-\tr\rho_\Psi &\leq2(\delta+\varepsilon).
+    \end{align}
+    These two inequalities remain true without the upper bounds on
+    $\lVert\Psi\rVert$ and $\lVert\Xi\rVert$; the second is then a signed
+    trace-deficit bound. If an arbitrary operator $\sigma$ satisfies
+    $\lVert\sigma-\rho_\Psi\rVert_1\leq\kappa$, then, with the original
+    upper norm bounds,
+    \begin{align}
+        \lVert\sigma-|\Omega\rangle\langle\Omega|\rVert_1
+          &\leq\kappa+2\varepsilon+2\delta.
+    \end{align}
+    Positivity and Hermiticity of $\sigma$ are unnecessary.
+    This is the error accumulation in
+    \cite[Section~8.1]{OpenAI2026PolynomialPEPS}.
+\end{corollary}
+
+\begin{proof}
+    \uses{thm:product_reference_density_error}
+    The reverse triangle inequality gives the norm bound. Since
+    $\tr\rho_\Psi=\lVert\Psi\rVert^2$, the inequality
+    $1-t^2\leq2(1-t)$ gives the trace-deficit bound even when
+    $1-\delta-\varepsilon$ is negative. The last estimate is the
+    triangle inequality through the density of the same joint vector
+    $\Psi$.
+\end{proof}
+
+\begin{lemma}[Independence of finite coordinate enumerations]
+    \label{lem:rectangular_trace_norm_reindex}
+    \lean{Matrix.rectangularTraceNorm_reindex}
+    Independent bijections of the finite row and column coordinates of
+    a complex matrix preserve its nuclear norm, including when either
+    coordinate set is empty.
+\end{lemma}
+
+\begin{proof}
+    The two coordinate changes are isometries. Multiplication by their
+    matrices on the left and right preserves all singular values and
+    hence their sum.
+\end{proof}

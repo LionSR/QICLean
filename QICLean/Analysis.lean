@@ -112,6 +112,7 @@ import QICLean.Analysis.MeanTreeProjectionLogBound
 import QICLean.Analysis.MeanTreeProjectionMassBound
 import QICLean.Analysis.MeanTreeProjectionSectors
 import QICLean.Analysis.MeanTreeSublinearRemainder
+import QICLean.Analysis.MeanTreeUniformExpectation
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.NeumannInverse
 import QICLean.Analysis.NormalizedInversePowerLogBound
@@ -133,11 +134,13 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
+import QICLean.Analysis.ProductReferenceDensityError
 import QICLean.Analysis.ProjectedEvolution
 import QICLean.Analysis.ProjectionCalculus
 import QICLean.Analysis.ProjectionCfcUpperBound
 import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
+import QICLean.Analysis.ProjectionIntertwiningNorm
 import QICLean.Analysis.ProjectionQuadraticBound
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
@@ -145,8 +148,12 @@ import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RectangularTraceNormTruncation
 import QICLean.Analysis.RegionalLowDefectLowerPin
+import QICLean.Analysis.RegionalLowDefectMass
+import QICLean.Analysis.RegionalLowDefectProductMass
 import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Analysis.RegionalPhysicalMarginals
+import QICLean.Analysis.RegionalRoughLowerNorm
+import QICLean.Analysis.RegionalSharpLowerNorm
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic

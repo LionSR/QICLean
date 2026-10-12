@@ -1,0 +1,47 @@
+\section{The original gap in the common replica coordinates}
+\label{sec:regional_low_defect_mass}
+
+Let $\mathcal H$ be a finite physical tensor product, let $C,R$ be finite
+auxiliary coordinate spaces, and let $G_k$ be the fixed physical-copy
+regrouping of Definition~\ref{def:regional_five_factor_coordinates}.
+
+\begin{definition}[The original mean replica Hamiltonian]
+\label{def:global_replica_mean_hamiltonian}
+\lean{Matrix.globalReplicaMeanHamiltonian}
+\leanok
+For the original physical Hamiltonian $H$, define in the global coordinates
+\begin{align}
+ \overline H_k
+ =G_k^*\left(\frac1k\sum_{i=1}^k H_i\otimes I_{C^{\otimes k}\otimes R^{\otimes k}}\right)G_k.
+\end{align}
+Here $H_i$ acts on the $i$th physical copy. At $k=0$, set
+$\overline H_0=0$.
+\end{definition}
+
+\begin{theorem}[The original gap and the common cutoff mass]
+\label{thm:global_low_defect_gap_mass}
+\lean{Matrix.globalReplicaLowDefectProjection_gap_mass_ge}
+\leanok
+Suppose $\|\Omega\|=1$, $\gamma>0$, and
+\begin{align}
+ H-E_0I\geq\gamma(I-|\Omega\rangle\langle\Omega|).
+\end{align}
+Let $k>0$ and $\tau>0$. Let $v$ be a unit vector with simultaneous
+copy symmetry and the two original auxiliary labels $\ell_C,\ell_R$.
+For the common projection $\Pi$ of
+Definition~\ref{def:global_replica_low_defect_projection},
+\begin{align}
+ \operatorname{Re}\langle v,\Pi v\rangle
+ \geq 1-\frac{\operatorname{Re}\langle v,\overline H_kv\rangle-E_0}{\gamma\tau}.
+\end{align}
+This is the actual energy expectation in the cutoff estimate of
+\cite[Section~8, lines~421--443]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+\leanok
+\uses{def:global_replica_low_defect_projection,def:global_replica_mean_hamiltonian,thm:global_replica_auxiliary_labels,thm:regional_low_defect_projection_global,thm:replica_low_defect_projection_gap_mass}
+Transport $v$ to the fixed physical-copy coordinates. The exact symmetry
+and auxiliary identities put it in the original joint sector, and the
+regrouping preserves its norm. Apply the replica gap estimate, then
+transport the projection and energy quadratic forms back by $G_k$.
+\end{proof}
