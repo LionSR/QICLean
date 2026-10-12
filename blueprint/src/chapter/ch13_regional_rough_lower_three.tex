@@ -1,0 +1,53 @@
+\section{The lower comparison at fixed total band weight}
+
+\begin{theorem}[A rough lower comparison with coefficient three]
+    \label{thm:regional_rough_lower_three}
+    \lean{Matrix.exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three}
+    \leanok
+    \uses{thm:regional_rough_lower_norm,thm:rough_lower_coefficient_three}
+    In the setting of Theorem~\ref{thm:regional_rough_lower_norm}, suppose
+    that both auxiliary spaces have dimension $d\geq1$, that the two
+    auxiliary labels are the same label $\lambda$, and that the number
+    of bands is $K\geq8$. Choose
+    \begin{align*}
+        a=\frac4K,\qquad t=\frac2K,\qquad s=\frac14.
+    \end{align*}
+    There are constants $c,C_f\geq0$, chosen before the physical state,
+    copy number, mean tree, regions, symmetric coordinates and label.
+    Retain the same band product $M$, initial vector $\xi$, and vectors
+    \begin{align*}
+        w=M^{-1/4}Z^*\xi,\qquad
+        \varphi=w/\|w\|,\qquad v=Z\varphi.
+    \end{align*}
+    In particular, $\xi\ne0$, $\|\xi\|\leq1$, simultaneous symmetry,
+    the two auxiliary label equations, the global gap and the nested
+    region assumptions are those of that theorem. Assume
+    $2kS-\varepsilon\leq2\log\dim\lambda$. Put
+    \begin{align*}
+        \delta_k & =\frac{\langle v,\overline H_kv\rangle-E_0}{\gamma}, \\
+        r_k      & =\log(k+1)+c\log(k+2)+a\varepsilon,                  \\
+        \rho_k   & =\frac{K}{2k}
+        \left(2|r_k|+C_f\log(k+2)+2\log2+\log(3/2)\right).
+    \end{align*}
+    Then $w\ne0$, $\|v\|=1$, and $\delta_k\geq0$.
+    For every $0<\tau\leq1/2$,
+    \begin{align*}
+        4S-6\left(\tau\log d+\frac{h(\tau)}a\right)
+        -3\frac{\delta_k}{\tau}\max(0,2S)-\rho_k
+        \leq-\frac{\log\|w\|^2}{k}.
+    \end{align*}
+    No sign condition is imposed on $S$ or $\varepsilon$, and no upper
+    bound on $\delta_k$ is required. This is a consequence for a supplied
+    initial vector, used in the physical comparison of
+    \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Apply the explicit rough lower comparison at $t=2/K$ and $s=1/4$.
+    Both auxiliary dimensions are $d$, and $aK=4$.
+    Since $K\geq8$, one has $0<a\leq1/2$.
+    The coefficient estimate applies to $D=\log d$, the binary entropy,
+    and the nonnegative defect obtained from the same global gap.
+    Expanding $|\log((k+2)^{-C_f}/2)|$ retains both occurrences of
+    $\log2$. Division by the positive copy number gives the claim.
+\end{proof}
