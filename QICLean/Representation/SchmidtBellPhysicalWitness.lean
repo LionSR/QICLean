@@ -50,6 +50,9 @@ local notation "ιe" => compressedSiteSpace β X (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian (reducedPure_posSemidef β Ω X)) E
 
+local instance schmidtBellPhysicalWitnessConfigDecidableEq (k : ℕ) :
+    DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
+
 open Classical in
 /-- The supplied auxiliary-label mass bound produces one eventual unit
 physical test vector for all matched cutoff families. Its overlap is with
