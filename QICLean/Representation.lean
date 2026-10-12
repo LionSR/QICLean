@@ -105,6 +105,7 @@ import QICLean.Representation.ReplicaMetricCutoffNorm
 import QICLean.Representation.ReplicaPinnedLeafExpectation
 import QICLean.Representation.ReplicaPinnedTreeExpectation
 import QICLean.Representation.ReplicaPrevector
+import QICLean.Representation.ReplicaPrevectorRoughUpper
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
