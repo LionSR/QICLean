@@ -159,6 +159,7 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
       (div_le_one hKpos).2 hKreal
   obtain ⟨c, Cf, hc, hCf, hbound⟩ :=
     exists_replicaMetric_symProj_bandProduct_rough_lower_norm β (Fin d) (Fin d) ht htSmall
+  refine ⟨c, Cf, hc, hCf, ?_⟩
   done
 
 end Matrix
