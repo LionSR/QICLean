@@ -106,6 +106,7 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
           8 * s * t * (K : ℝ) * (Bsh / z + Bexc) +
           Real.bellOverlapRemainder E.card c K k := by
   classical
+  intro ΩX ψ Ψ q hmass
   done
 
 end FiniteProduct
