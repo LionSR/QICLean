@@ -124,7 +124,8 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   filter_upwards [hw] with k ⟨φ, hφnorm, hφsym, hφBell, hφlabel, hφcuts,
     hφoverlap, hhalf, hbound⟩
   intro τ J Pe P v
-  have hΦ := schmidtBellWitness_pullback_range β X E k ΩX φ hφsym hφBell
+  have hΦ := schmidtBellWitness_pullback_range β X E k ΩX φ
+    (by simpa only [mem_invariantSubspace, permOp_mulVec] using hφsym) hφBell
   done
 
 end FiniteProduct
