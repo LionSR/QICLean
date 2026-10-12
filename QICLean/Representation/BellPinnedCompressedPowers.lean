@@ -134,6 +134,21 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
       (J * Pe * Jᴴ) = J * Pe * Jᴴ
     rw [← Matrix.mul_assoc, ← Matrix.mul_assoc,
       symProj_mul_bellInsertion β X C R k b, Matrix.mul_assoc J Pe Pe, hPe]
-  done
+  have hbell : N.PosDef ∧
+      (List.ofFn fun g ↦ T.eval (A · g)).prod * P = P * N := by
+    have h := replicaMetric_bandProduct_bellPin β X C R ht k K U Y hdisj hnest b T
+    exact ⟨h.1, h.2.2.2⟩
+  have hL : M * (Zᴴ * P) = Zᴴ * P * N := by
+    calc M * (Zᴴ * P) = Zᴴ * (Z * M) * Zᴴ * P := by
+          rw [← Matrix.mul_assoc Zᴴ Z M, hZ, Matrix.one_mul, Matrix.mul_assoc]
+      _ = Zᴴ * (List.ofFn fun g ↦ T.eval (A · g)).prod * (Z * Zᴴ * P) := by
+          rw [← hprod]; simp only [Matrix.mul_assoc]
+      _ = Zᴴ * P * N := by
+          rw [hPcontain, Matrix.mul_assoc, hbell.2, ← Matrix.mul_assoc]
+  refine ⟨hM, fun s ↦ ?_⟩
+  have h := Matrix.PosSemidef.rpow_intertwine hM.posSemidef hbell.1.posSemidef
+    (Zᴴ * P) hL s
+  calc Z * M ^ s * Zᴴ * P = Z * (M ^ s * (Zᴴ * P)) := by simp only [Matrix.mul_assoc]
+    _ = P * N ^ s := by rw [h, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPcontain]
 
 end TensorPower
