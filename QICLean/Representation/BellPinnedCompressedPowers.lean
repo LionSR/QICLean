@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Representation.BellPinnedProductAction
 import QICLean.Representation.ReplicaSymmetricBandCommute
 import QICLean.Representation.RegionalReplicaMetricRegions
+import QICLean.Algebra.MatrixProductIntertwine
 
 /-!
 # Bell restriction in fixed symmetric coordinates
@@ -114,20 +115,11 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
         (hdisj j g)).1)
       (fun j ↦ (hleaf j g).1) Z (fun j ↦ (hleaf j g).2) T
   have hprod :
-      (List.ofFn fun g ↦ T.eval (A · g)).prod * Z = Z * M := by
-    have h := List.prod_hom_rel (List.ofFn (id : Fin K → Fin K))
-      (r := fun L R ↦ L * Z = Z * R)
-      (f := fun g ↦ T.eval (A · g)) (g := fun g ↦ T.eval (B · g))
-      (by simp only [Matrix.one_mul, Matrix.mul_one]) (by
-        intro g L R hLR
-        rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc, hband g, Matrix.mul_assoc])
-    simpa only [M, List.map_ofFn, Function.comp_id] using h
+      (List.ofFn fun g ↦ T.eval (A · g)).prod * Z = Z * M :=
+    Matrix.listProd_ofFn_intertwine Z hband
   have hPe : Pe * Pe = Pe :=
-    (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
-      (X := Config k ιe)).elim (fun l hl ↦
-        Eq.mp (congrArg (fun H ↦ H * H = H) (hl (copyPerm
-          ((v : Option ↥(Xᶜ)) → ιe v) k)))
-          (labelProj_mul_self _ l))
+    (isStarProjection_symProj
+      (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)).isIdempotentElem.eq
   have hPcontain : Z * Zᴴ * P = P := by
     rw [hZZ]
     change symProj (copyPerm ((v : Option (Option V)) → ι₀ v) k) *
