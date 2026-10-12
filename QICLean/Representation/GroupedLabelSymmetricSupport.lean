@@ -129,11 +129,7 @@ theorem subgroup_signedLabelEntropy_symProj_nonneg
     (fun σ => subsystemPerm_union k ι hPF (θ σ))
   have hGQ' : G * Q = D * Q := by
     simp only [G, D, sub_mul, add_mul, hY]
-  have hQH : Q.IsHermitian :=
-    (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin r))
-      (X := Config k ι)).elim (fun ell h =>
-        Eq.mp (congrArg Matrix.IsHermitian (h ((subsystemPerm k ι Finset.univ).comp θ)))
-          (isHermitian_labelProj _ ell))
+  have hQH : Q.IsHermitian := (isStarProjection_symProj _).isSelfAdjoint.isHermitian
   refine ⟨hGQ, ?_⟩
   apply Matrix.le_iff.mpr
   rw [sub_zero, mul_assoc, hGQ', ← mul_assoc]

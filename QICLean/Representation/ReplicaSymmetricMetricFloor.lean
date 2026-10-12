@@ -63,13 +63,7 @@ theorem exists_replicaMetric_symmetric_floor {t : ℝ} (ht : 0 < t) :
   intro k P Y F hPY hPF hYF hcover S W A c
   have hJS := spectralProjectionGE_labelDeficit_mul_symProj_of_partition
     ι k P Y F hPY hPF hYF hcover
-  obtain ⟨l₀, hl₀⟩ := exists_labelProj_eq_symProj
-    (G := Equiv.Perm (Fin k)) (X := Config k ι)
-  have hSproj : IsStarProjection S := by
-    simpa only [S, ← hl₀ (copyPerm ((v : V) → ι v) k)] using
-      isStarProjection_iff'.mpr
-        ⟨labelProj_mul_self (copyPerm ((v : V) → ι v) k) l₀,
-          (isHermitian_labelProj (copyPerm ((v : V) → ι v) k) l₀).eq⟩
+  have hSproj : IsStarProjection S := isStarProjection_symProj _
   let H := labelEntropy (subsystemPerm k ι P) +
     labelEntropy (subsystemPerm k ι F) - labelEntropy (subsystemPerm k ι Y)
   have hH : H.IsHermitian :=
@@ -174,12 +168,7 @@ theorem exists_replicaMetric_symProj_inverse_bound_and_floor
   let G := L P + L F - L Y
   let p : ℝ := ((k : ℝ) + 2) ^ C
   have hp : 0 < p := Real.rpow_pos_of_pos (by positivity) C
-  have hQ : IsStarProjection Q :=
-    (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
-      (X := Config k ι)).elim (fun l hl =>
-        Eq.mp (congrArg IsStarProjection (hl (copyPerm ((v : V) → ι v) k)))
-          (show IsStarProjection (labelProj (copyPerm ((v : V) → ι v) k) l) from
-            ⟨labelProj_mul_self _ l, (isHermitian_labelProj _ l).isSelfAdjoint⟩))
+  have hQ : IsStarProjection Q := isStarProjection_symProj _
   have hQH : Q.IsHermitian := hQ.isSelfAdjoint.isHermitian
   have hG : G.IsHermitian :=
     ((isHermitian_labelObservable _ _).add (isHermitian_labelObservable _ _)).sub

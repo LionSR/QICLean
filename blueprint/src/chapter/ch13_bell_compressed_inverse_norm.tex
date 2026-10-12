@@ -3,6 +3,7 @@
 \begin{theorem}[The cutoff estimate in fixed symmetric coordinates]
     \label{thm:bell_compressed_inverse_norm}
     \lean{TensorPower.exists_replicaMetric_compressed_bell_inverse_norm_bound}
+    \leanok
     \uses{thm:bell_compressed_band_product_powers}
     Fix a finite family of nonempty physical coordinate sets, two finite
     nonempty auxiliary registers $C,R$, a physical region $X$, a finite
@@ -42,6 +43,7 @@
     or symmetry condition is imposed on $u$.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:replica_pinned_tree_inverse_overlap,thm:bell_compressed_band_product_powers,
         thm:projection_intertwining_norm,thm:bell_symmetric_pin_projection}
     Apply the exterior cutoff estimate to the test vector $\varphi$ and
