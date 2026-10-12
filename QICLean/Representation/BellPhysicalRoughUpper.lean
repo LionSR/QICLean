@@ -110,6 +110,10 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
   obtain ⟨hsite, hb, hw⟩ :=
     eventually_exists_suppliedSchmidtBell_physicalWitness
       (S := S) β Ω X E hΩ hz regions hnested hdisjoint ell hmass
+  obtain ⟨c, hc, hC⟩ :=
+    letI : ∀ o, Nonempty (ι₀ o) := hsite
+    exists_replicaMetric_compressed_bell_inverse_norm_bound
+      (S := S) β X E (Fin E.card) ht
   done
 
 end FiniteProduct
