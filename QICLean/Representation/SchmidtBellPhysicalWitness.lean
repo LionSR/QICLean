@@ -141,6 +141,12 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
           hΦ.2).trans
           ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).inner_map_map φ
             (schmidtBellSitePrevector β X E k ΩX (ell k))))
+    have hc :
+        ‖(((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k)‖ ^ 2 =
+          (z / (E.card : ℝ) ^ 2) ^ k := by
+      rw [Complex.norm_pow, Complex.norm_div,
+        Complex.norm_of_nonneg (Real.sqrt_nonneg z), Complex.norm_natCast,
+        pow_right_comm (Real.sqrt z / (E.card : ℝ)) k 2, div_pow, Real.sq_sqrt hz.le]
     done
   all_goals done
 
