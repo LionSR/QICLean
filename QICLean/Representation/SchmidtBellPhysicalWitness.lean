@@ -72,7 +72,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun k ↦
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ιe {none}) (ell k)) (Ψ k)‖ ^ 2
@@ -142,7 +142,6 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     hΦ.1, hΦ.2, ?_, ?_, ?_⟩
   case refine_2 =>
     have hinner := inner_schmidtBellSitePrevector β X E k ΩX hz (ell k) φ hφBell
-    letI : DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
     have hpair :
         inner ℂ (WithLp.toLp 2 (φ ∘ τ)) (toEuclideanLin P v) =
           inner ℂ φ (schmidtBellSitePrevector β X E k ΩX (ell k)) :=
