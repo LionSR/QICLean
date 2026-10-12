@@ -88,6 +88,17 @@ theorem rootPath_compressed_bandProduct
     MeanTree.eval_intertwine
       (fun j ↦ posDef_symBandMetric (D.isPartition_leafPart hD j g) ht k)
       (fun j ↦ (hleaf j g).1) Z (fun j ↦ hext j g) T
+  have hprod :
+      (List.ofFn fun g ↦ T.eval (fun j ↦ symBandMetric n t k (D.leafPart j g))).prod * Z =
+        Z * M := by
+    have h := List.prod_hom_rel (List.ofFn (id : Fin K → Fin K))
+      (r := fun L R ↦ L * Z = Z * R)
+      (f := fun g ↦ T.eval (fun j ↦ symBandMetric n t k (D.leafPart j g)))
+      (g := fun g ↦ T.eval (B · g))
+      (by simp only [Matrix.one_mul, Matrix.mul_one]) (by
+        intro g L R hLR
+        rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc, hband g, Matrix.mul_assoc])
+    simpa only [M, List.map_ofFn, Function.comp_id] using h
   done
 
 end TensorPower.ReplicaTransport.TransportData
