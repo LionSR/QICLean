@@ -147,9 +147,10 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       WithLp.ofLp_toLp] using!
       congrArg (WithLp.toLp 2)
         (schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
-  simpa only [
-    ← (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2,
-    ← hp] using!
-    hk n ZE hZE hZEZ K U Y hUY hnest hXY T Bsh Bexc hsh hmatch s hs
+  have hNsq := congrArg₂
+    (fun (P : Matrix (Fin n) (Fin n) ℂ) (u : EuclideanSpace ℂ (Fin n)) ↦
+      ‖toEuclideanLin (P ^ (-s)) u‖ ^ 2)
+    (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2 hp
+  done
 
 end FiniteProduct
