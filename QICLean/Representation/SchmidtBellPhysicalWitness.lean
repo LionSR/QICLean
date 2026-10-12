@@ -126,6 +126,9 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   intro τ J Pe P v
   have hΦ := schmidtBellWitness_pullback_range β X E k ΩX φ
     (by simpa only [mem_invariantSubspace, permOp_mulVec] using hφsym) hφBell
-  done
+  refine ⟨WithLp.toLp 2 (φ ∘ τ),
+    ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).norm_map φ).trans hφnorm,
+    hΦ.1, hΦ.2, ?_, ?_, ?_⟩
+  all_goals done
 
 end FiniteProduct
