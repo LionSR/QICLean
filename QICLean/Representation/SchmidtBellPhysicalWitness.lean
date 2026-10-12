@@ -177,6 +177,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
         toEuclideanLin (labelCutoff (subsystemPerm k ι₀ (extRegion Q)) a)
           (WithLp.toLp 2 (φ ∘ τ)) = WithLp.toLp 2 (φ ∘ τ) := by
       have htransport := hpull _ (hmatched Q D hD hXQ hDQ hexc)
+      rw [τ, labelCutoff_schmidtBellWitnessEquiv_exterior β X E k Q a] at htransport
       done
     done
   all_goals done
