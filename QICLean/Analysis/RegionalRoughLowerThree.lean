@@ -5,7 +5,6 @@ Authors: Sirui Lu
 -/
 import QICLean.Analysis.RegionalRoughLowerNorm
 import QICLean.Analysis.RoughLowerCoefficient
-import QICLean.Analysis.MeanTreeSublinearRemainder
 import Mathlib.Tactic.FieldSimp
 import Mathlib.Tactic.Ring
 
