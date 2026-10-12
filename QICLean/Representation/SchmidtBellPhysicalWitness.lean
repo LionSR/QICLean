@@ -149,6 +149,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
       rw [Complex.norm_pow, Complex.norm_div,
         Complex.norm_of_nonneg (Real.sqrt_nonneg z), Complex.norm_natCast,
         pow_right_comm (Real.sqrt z / (E.card : ℝ)) k 2, div_pow, Real.sq_sqrt hz.le]
+    simp only [toEuclideanLin, toLpLin_apply] at hpair ⊢
     simpa only [P, Pe, hpair, hinner, norm_mul, mul_pow, hc, hφoverlap,
       div_eq_mul_inv, mul_one, one_mul] using!
       (mul_le_mul_of_nonneg_left hbound
