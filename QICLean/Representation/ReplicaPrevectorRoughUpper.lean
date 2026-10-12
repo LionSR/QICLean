@@ -107,6 +107,8 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
   intro ΩX ψ Ψ q hmass
   obtain ⟨c, hc, hu⟩ := eventually_suppliedSchmidtBell_rough_upper
     (S := S) β Ω X E hΩ hz regions hnested hdisjoint ell ht hmass
+  refine ⟨c, hc, hu.mono fun k hk n Z hZ hZZ K U Y hUY hnest hXY
+    T Bsh Bexc hsh hmatch s hs ↦ ?_⟩
   done
 
 end FiniteProduct
