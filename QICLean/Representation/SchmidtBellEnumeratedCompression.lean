@@ -106,6 +106,9 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
           (replicaLabelWeight ιE t ell : ℂ) • IrrepLabel.centralIdem ell))
   have hA (j : S) (g : Fin K) : AF j g = (AE j g).submatrix e e := by
     simp only [AF, AE, hW, Matrix.inv_submatrix_equiv, pow_two, Matrix.submatrix_mul_equiv]
+  have hrecover : ZE.submatrix e (id : Fin n → Fin n) = ZF := by
+    simp only [ZE, Matrix.submatrix_submatrix, Function.comp_id, Equiv.symm_comp_self,
+      Matrix.submatrix_id_id]
   done
 
 /-- The compressed original prevector is unchanged when the selected
