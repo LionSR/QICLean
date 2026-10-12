@@ -122,6 +122,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   occurrence in another file would justify a common finite-family helper.
 - **Caveat:** Only the polynomial exponent is absorbed; the exponential
   subset count and the variance term remain in the coefficient.
+
 ### Replica regions with two auxiliary sites — shared geometric statement (2026-10-11)
 
 - **Pattern:** Lift physical regions to the common site family, adjoin the
@@ -137,21 +138,6 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Caveat:** The nesting hypothesis ranges over every pair of terminal
   labels in distinct ordered bands. No comparison between labels in the
   same band is required.
-
-### A common polynomial exponent over finitely many cuts — candidate (2026-10-11)
-
-- **Pattern:** Choose each regional exponent, take the maximum of their finite
-  family and zero, and increase the positive-base power before taking its
-  reciprocal in an operator lower bound.
-- **Seen:** The rough and sharp theorems in
-  `QICLean/Analysis/RegionalLowDefectLowerPin.lean` have two occurrences in
-  one file. The matrix-order transport itself is already shared through
-  `regional_lower_pin_pullback`.
-- **Abstraction:** The current proofs use `Finset.le_sup'`,
-  `Real.rpow_le_rpow_of_exponent_le`, and the shared pullback. A third
-  occurrence in another file would justify a common finite-family helper.
-- **Caveat:** Only the polynomial exponent is absorbed; the exponential
-  subset count and the variance term remain in the coefficient.
 
 ### The range of a product of commuting projections — candidate (2026-10-09)
 
@@ -892,6 +878,7 @@ forms the product of means of Zᴴ A Z, exactly as in the lower norm estimates.
 `MeanTree.eval_intertwine` give the band equations. Ordered multiplication
 then gives the equation for the same product, and `PosSemidef.rpow_intertwine`
 applies with rectangular map Zᴴ P. No second compression is selected.
+
 ### Norms under projected Hermitian intertwining — existing lemmas (2026-10-11)
 
 The projected norm comparison reuses `Matrix.norm_toLp_mulVec_of_isometry`
