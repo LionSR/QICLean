@@ -129,6 +129,9 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   refine ⟨WithLp.toLp 2 (φ ∘ τ),
     ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).norm_map φ).trans hφnorm,
     hΦ.1, hΦ.2, ?_, ?_, ?_⟩
+  case refine_2 =>
+    have hinner := inner_schmidtBellSitePrevector β X E k ΩX hz (ell k) φ hφBell
+    done
   all_goals done
 
 end FiniteProduct
