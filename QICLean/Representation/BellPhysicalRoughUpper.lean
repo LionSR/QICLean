@@ -51,6 +51,7 @@ local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
 local instance bellPhysicalRoughUpperConfigDecidableEq (k : ℕ) :
     DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
 
+set_option diagnostics true in
 open Classical in
 /-- The rough upper estimate for the original supplied-label prevector and
 actual compressed band metric. The auxiliary-mass premise belongs to the
