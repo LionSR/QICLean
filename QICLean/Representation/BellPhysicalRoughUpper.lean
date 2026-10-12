@@ -116,6 +116,8 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
       (S := S) β X E (Fin E.card) ht
   refine ⟨c, hc, (hw.and (eventually_ge_atTop 1)).mono (fun k ⟨hw, hk⟩ ↦ ?_)⟩
   obtain ⟨Φ, hΦ, _, _, _, hover, hcuts⟩ := hw
+  intro n Z hZ hZZ K U Y hUY hnest hXY T Bsh Bexc hsh hmatch s hs
+    τ v extRegion W Q F H M Nsq
   done
 
 end FiniteProduct
