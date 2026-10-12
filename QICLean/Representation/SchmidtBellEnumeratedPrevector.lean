@@ -74,6 +74,7 @@ theorem schmidtBellSitePrevector_enumerate_C
   simp only [Equiv.apply_symm_apply, replicaPrevector, ΩX,
     LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply,
     Equiv.symm_apply_apply]
-  simp only [(Finset.equivFin E).apply_symm_apply, (splitEquiv β X).symm_apply_apply]
+  dsimp only [ιF, addedSiteSpace] at x
+  done
 
 end FiniteProduct
