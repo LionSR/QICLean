@@ -8,6 +8,7 @@ as in \cite[Section~8, lines~332--381]{OpenAI2026AreaLaw}.
 \begin{theorem}[A test vector for the supplied prevector]
     \label{thm:schmidt_bell_physical_witness}
     \lean{FiniteProduct.eventually_exists_suppliedSchmidtBell_physicalWitness}
+    \leanok
     \uses{def:schmidt_bell_witness_coordinates,def:schmidt_bell_site_prevector}
     Let $\beta$ be a finite family of finite coordinate sets, let $\Omega$ be
     a unit vector on its product, and let $X$ be a set of physical sites.
@@ -64,7 +65,7 @@ as in \cite[Section~8, lines~332--381]{OpenAI2026AreaLaw}.
     physical states or ambient systems is asserted.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:compressed_typical_common_retained_mass,thm:compressed_typical_common_bell_vector,thm:schmidt_bell_witness_range,thm:schmidt_bell_witness_auxiliary_label,thm:schmidt_bell_witness_exterior_cutoffs,thm:compressed_physical_matched_cutoff,thm:schmidt_bell_supplied_overlap}
     The regional exponential losses are eventually smaller than half the
     supplied inverse-polynomial mass. The common projection therefore has
