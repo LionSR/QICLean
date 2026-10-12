@@ -117,6 +117,10 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   have hE : 0 < E.card := Finset.card_pos.mpr
     (Finset.nonempty_iff_ne_empty.mpr fun he ↦ by
       simp [he, IsHermitian.spectralRestrictionMass] at hz)
+  refine ⟨(fun
+    | none => ⟨⟨0, hE⟩⟩
+    | some none => (Finset.card_pos.mp hE).coe_sort
+    | some (some v) => ⟨x v⟩), hb, ?_⟩
   done
 
 end FiniteProduct
