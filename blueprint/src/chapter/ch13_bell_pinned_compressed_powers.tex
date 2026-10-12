@@ -3,6 +3,7 @@
 \begin{theorem}[Bell restriction of the compressed band product]
     \label{thm:bell_compressed_band_product_powers}
     \lean{TensorPower.replicaMetric_compressed_bandProduct_bellPin_rpow}
+    \leanok
     \uses{thm:replica_metric_basic,def:bell_insertion_coordinates}
     Let the original finite site family consist of the physical registers
     and two auxiliary registers $C,R$, all with finite nonempty coordinate
@@ -38,7 +39,7 @@
     \end{align*}
     Empty band products are included. The inserted vector need not be unit.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:bell_band_product_pin_action,thm:bell_metric_factor_positivity,
         thm:bell_insertion_isometry_symmetry,thm:replica_symmetric_band_compressions,
         thm:replica_symmetric_band_mean_roots,thm:mean_intertwiner_root,
