@@ -86,6 +86,7 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
           (2 * s) * ‖toEuclideanLin (M ^ (-s)) (toEuclideanLin Zᴴ u)‖ ^ 2 := by
   classical
   obtain ⟨c, hc, hC⟩ := exists_replicaPinnedTree_inverse_norm_bound (J := S) ι₀ ht
+  refine ⟨c, hc, fun k n Z hZ hZZ K U Y hdisj hnest b hb T a φ u hφ ↦ ?_⟩
   done
 
 end TensorPower
