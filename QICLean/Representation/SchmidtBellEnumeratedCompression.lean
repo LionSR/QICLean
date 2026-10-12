@@ -95,7 +95,7 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
   have hact (R : Finset (Option (Option V))) (σ : Equiv.Perm (Fin k))
       (x : Config k ιE) :
       subsystemPerm k ιF R σ (e.symm x) = e.symm (subsystemPerm k ιE R σ x) := by
-    simpa only [Equiv.apply_symm_apply, Equiv.symm_apply_apply] using
+    simpa only [e, Equiv.apply_symm_apply, Equiv.symm_apply_apply] using
       congrArg e.symm (subsystemPerm_piCongrRight ιE ιF changeSite k R σ (e.symm x))
   done
 
