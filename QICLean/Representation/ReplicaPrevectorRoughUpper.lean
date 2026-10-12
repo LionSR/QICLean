@@ -147,6 +147,9 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       WithLp.ofLp_toLp] using!
       congrArg (WithLp.toLp 2)
         (schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
-  done
+  simpa only [
+    ← (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2,
+    ← hp] using!
+    hk n ZE hZE hZEZ K U Y hUY hnest hXY T Bsh Bexc hsh hmatch s hs
 
 end FiniteProduct
