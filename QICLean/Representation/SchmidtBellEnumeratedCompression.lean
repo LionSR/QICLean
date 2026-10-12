@@ -112,7 +112,7 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
   have hB (j : S) (g : Fin K) : BF j g = BE j g := by
     simp only [BF, BE, hA, ← hrecover, Matrix.conjTranspose_submatrix,
       Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]
-  done
+  exact ⟨hB, by simp only [MF, ME, hB]⟩
 
 /-- The compressed original prevector is unchanged when the selected
 C register is enumerated. The physical vector, selected set, label, supplied
