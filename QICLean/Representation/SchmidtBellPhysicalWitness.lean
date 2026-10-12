@@ -121,6 +121,8 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     | none => ⟨⟨0, hE⟩⟩
     | some none => (Finset.card_pos.mp hE).coe_sort
     | some (some v) => ⟨x v⟩), hb, ?_⟩
+  filter_upwards [hw] with k ⟨φ, hφnorm, hφsym, hφBell, hφlabel, hφcuts,
+    hφoverlap, hhalf, hbound⟩
   done
 
 end FiniteProduct
