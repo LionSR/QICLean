@@ -123,6 +123,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     | some (some v) => ⟨x v⟩), hb, ?_⟩
   filter_upwards [hw] with k ⟨φ, hφnorm, hφsym, hφBell, hφlabel, hφcuts,
     hφoverlap, hhalf, hbound⟩
+  intro τ J Pe P v
   done
 
 end FiniteProduct
