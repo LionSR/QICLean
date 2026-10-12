@@ -151,6 +151,10 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
     (fun (P : Matrix (Fin n) (Fin n) ℂ) (u : EuclideanSpace ℂ (Fin n)) ↦
       ‖toEuclideanLin (P ^ (-s)) u‖ ^ 2)
     (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2 hp
-  done
+  exact Eq.mp (congrArg (fun r : ℝ ↦ 0 < r ∧ -Real.log r / (k : ℝ) ≤
+    2 * Real.log (E.card : ℝ) - Real.log z +
+      8 * s * t * (K : ℝ) * (Bsh / z + Bexc) +
+      Real.bellOverlapRemainder E.card c K k) hNsq.symm)
+    (hk n ZE hZE hZEZ K U Y hUY hnest hXY T Bsh Bexc hsh hmatch s hs)
 
 end FiniteProduct
