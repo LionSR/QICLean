@@ -1,0 +1,86 @@
+\section{Enumeration in fixed compressed coordinates}
+
+\begin{theorem}[Compressed band products under enumeration]
+    \label{thm:schmidt_bell_enumerated_band_product}
+    \lean{FiniteProduct.replicaMetric_compressed_bandProduct_enumerate_C}
+    \uses{thm:schmidt_bell_enumerated_prevector,thm:replica_metric_basic,def:mean_tree}
+    Retain the finite coordinate sets, selected set $E$, enumeration
+    $\iota:E\to D$ and bijection $e_k:\mathcal H_D^k\to\mathcal H_E^k$
+    of Theorem~\ref{thm:schmidt_bell_enumerated_prevector}.
+    Fix $k,n\geq0$ and an arbitrary matrix
+    $Z_D:\C^n\to\ell^2(\mathcal H_D^k)$. Define $Z_E$ by
+    $Z_E(x,a)=Z_D(e_k^{-1}x,a)$, retaining the same columns.
+
+    Let $t\in\R$. Write $W^D_{Q,k}$ and $W^E_{Q,k}$ for the replica
+    metrics on the two full families, using their full one-copy dimensions
+    in the common label weights. Fix an integer $K\geq0$, a set $J$,
+    regions $U_{j,g},Y_{j,g}\subseteq V$ for $j\in J$ and $0\leq g<K$,
+    and a weighted binary mean tree $\mathcal T$ with labels in $J$.
+    In the augmented site set $V\sqcup\{c,r\}$ put
+    \begin{align*}
+        Q_{j,g} & = \{c\}\cup X\cup U_{j,g},\\
+        F_{j,g} & = \{r\}\cup\bigl(X\cup U_{j,g}\cup Y_{j,g}\bigr)^c,\\
+        \mathcal E(B) & = B\setminus X.
+    \end{align*}
+    Here complements are taken in $V$, and physical subsets are identified
+    with their images in the augmented site set. For $\sigma\in\{D,E\}$
+    define the ordered factors and their compressions by
+    \begin{align*}
+        A^\sigma_{j,g} & =
+        \left((W^\sigma_{Q_{j,g},k})^{-1}
+        (W^\sigma_{F_{j,g},k})^{-1}
+        W^\sigma_{\mathcal E(Y_{j,g}),k}\right)^2,\\
+        B^\sigma_{j,g} & = Z_\sigma^*A^\sigma_{j,g}Z_\sigma,\\
+        M_\sigma & = \prod_{g=0}^{K-1}\mathcal T(B^\sigma_{\cdot,g}),
+    \end{align*}
+    with the last product in increasing order of $g$. Then
+    $B^D_{j,g}=B^E_{j,g}$ for every $j,g$, and $M_D=M_E$.
+    A singular matrix is assigned inverse zero.
+    No isometry, positivity, disjointness or nesting assumption is needed.
+    The statement includes zero columns, an empty band family and empty
+    coordinate sets. It identifies the compressed matrices used in
+    \cite[Section~8, lines~80--110, 283--308 and~370--381]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:subsystem_local_coordinate_change,lem:subsystem_label_transport}
+    The one-copy configuration bijection preserves the full dimension,
+    hence the label weights. It intertwines every subsystem copy action,
+    so $W^D_{Q,k}(x,y)=W^E_{Q,k}(e_kx,e_ky)$.
+    Inverse, ordered multiplication and squaring preserve this identity.
+    Changing both summation variables by $e_k$ in each compressed matrix
+    entry therefore gives
+    \begin{align*}
+        (Z_D^*A^D_{j,g}Z_D)_{a,b}
+        & = \sum_{x,y\in\mathcal H_E^k}
+        \overline{Z_E(x,a)}\,A^E_{j,g}(x,y)\,Z_E(y,b)
+        = (Z_E^*A^E_{j,g}Z_E)_{a,b}.
+    \end{align*}
+    Equal leaf inputs give equal evaluations of the same tree, and then
+    equal ordered products.
+\end{proof}
+
+\begin{theorem}[The compressed original prevector]
+    \label{thm:schmidt_bell_enumerated_compressed_prevector}
+    \lean{FiniteProduct.schmidtBellSitePrevector_compressed_enumerate_C}
+    \uses{thm:schmidt_bell_enumerated_prevector}
+    Retain the physical vector $\Omega$, selected set $E$, copy number $k$
+    and irreducible label $\ell$ of
+    Theorem~\ref{thm:schmidt_bell_enumerated_prevector}. Set
+    $v_E=v^{\mathrm{site}}_{k,\ell}(\Omega_X,E)\circ\tau_k$ and
+    $v_D=\mathrm{pre}_{k,\ell}^{\Omega}\circ G_k$.
+    For any $Z_D:\C^n\to\ell^2(\mathcal H_D^k)$ define
+    $Z_E(x,a)=Z_D(e_k^{-1}x,a)$. Then $Z_D^*v_D=Z_E^*v_E$.
+    No normalization or positive selected-mass hypothesis is imposed.
+    This is the compressed form of the coordinate identification in
+    \cite[Section~8, lines~130--147, 240--254 and~283--290]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:schmidt_bell_enumerated_prevector}
+    The prevector identity gives $v_D=v_E\circ e_k$. Changing the summation
+    variable by $e_k$ gives, for each column $a$,
+    \begin{align*}
+        (Z_D^*v_D)_a
+        & = \sum_{x\in\mathcal H_E^k}\overline{Z_E(x,a)}\,v_E(x)
+        = (Z_E^*v_E)_a.
+    \end{align*}
+\end{proof}

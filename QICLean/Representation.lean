@@ -116,6 +116,7 @@ import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.ReplicaWholeInverse
 import QICLean.Representation.SchmidtBellCommonCutoffs
+import QICLean.Representation.SchmidtBellEnumeratedCompression
 import QICLean.Representation.SchmidtBellEnumeratedPrevector
 import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchmidtBellPrevectorOverlap
