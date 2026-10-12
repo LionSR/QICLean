@@ -150,6 +150,7 @@ theorem schmidtBellSitePrevector_compressed_enumerate_C
   classical
   intro ΩX ιE ιF changeSite e ZE τ vE vF
   have hv : vE ∘ e = vF := schmidtBellSitePrevector_enumerate_C β Ω X E k ell
-  done
+  simpa only [ZE, Matrix.conjTranspose_submatrix, Equiv.symm_symm, Function.comp_id, hv] using
+    (Matrix.submatrix_mulVec_equiv ZFᴴ vE (id : Fin n → Fin n) e.symm).symm
 
 end FiniteProduct
