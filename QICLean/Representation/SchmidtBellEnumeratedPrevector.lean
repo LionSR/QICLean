@@ -64,6 +64,13 @@ theorem schmidtBellSitePrevector_enumerate_C
         globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k := by
   intro ΩX ιE ιF changeSite e τ
   funext x
+  change replicaPrevector ΩX E.card k ell
+      ((fun j ↦ splitEquiv β X (fun v ↦ x j (some (some v)))),
+        ((fun j ↦ (Finset.equivFin E) ((Finset.equivFin E).symm (x j (some none)))),
+          (fun j ↦ x j none))) =
+    replicaPrevector Ω E.card k ell
+      ((fun j v ↦ x j (some (some v))),
+        ((fun j ↦ x j (some none)), (fun j ↦ x j none)))
   done
 
 end FiniteProduct
