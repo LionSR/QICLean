@@ -116,6 +116,7 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       | none => Equiv.refl (Fin E.card)
       | some none => (Finset.equivFin E).symm
       | some (some v) => Equiv.refl (β v)
+  let ZE := Z.submatrix e.symm (id : Fin n → Fin n)
   done
 
 end FiniteProduct
