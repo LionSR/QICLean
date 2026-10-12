@@ -892,3 +892,10 @@ forms the product of means of Zᴴ A Z, exactly as in the lower norm estimates.
 `MeanTree.eval_intertwine` give the band equations. Ordered multiplication
 then gives the equation for the same product, and `PosSemidef.rpow_intertwine`
 applies with rectangular map Zᴴ P. No second compression is selected.
+### Norms under projected Hermitian intertwining — existing lemmas (2026-10-11)
+
+The projected norm comparison reuses `Matrix.norm_toLp_mulVec_of_isometry`
+for the rectangular isometry and `IsHermitian.conjTranspose_intertwine`
+for the reversed equation. The remaining estimate is contractivity of an
+orthogonal projection. No positivity or equality of the isometry range
+with the projected range is needed.
