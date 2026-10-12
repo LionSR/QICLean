@@ -45,7 +45,7 @@ Source: area-law manuscript, `07-comparators.tex`, lines 130--147,
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`. -/
 theorem schmidtBellSitePrevector_enumerate_C
     {V : Type} [Fintype V] [DecidableEq V]
-    (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+    (β : V → Type) [∀ v, Fintype (β v)]
     (Ω : EuclideanSpace ℂ ((v : V) → β v))
     (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) :
@@ -71,9 +71,8 @@ theorem schmidtBellSitePrevector_enumerate_C
     replicaPrevector Ω E.card k ell
       ((fun j v ↦ x j (some (some v))),
         ((fun j ↦ x j (some none)), (fun j ↦ x j none)))
-  simp only [Equiv.apply_symm_apply, replicaPrevector, ΩX,
-    LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply,
-    Equiv.symm_apply_apply]
+  simp only [replicaPrevector, ΩX,
+    LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply]
   dsimp only [ιF, addedSiteSpace] at x
   simp only [(Finset.equivFin E).apply_symm_apply, (splitEquiv β X).symm_apply_apply]
 
