@@ -132,7 +132,9 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   case refine_2 =>
     have hinner := inner_schmidtBellSitePrevector β X E k ΩX hz (ell k) φ hφBell
     letI : DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
-    have hpair :=
+    have hpair :
+        inner ℂ (WithLp.toLp 2 (φ ∘ τ)) (toEuclideanLin P v) =
+          inner ℂ φ (schmidtBellSitePrevector β X E k ΩX (ell k)) :=
       ((isSymmetric_toEuclideanLin_iff.mpr
         (isHermitian_mul_mul_conjTranspose J
           (isHermitian_symProj (Ω := ((o : Option ↥(Xᶜ)) → ιe o)) (k := k))))
