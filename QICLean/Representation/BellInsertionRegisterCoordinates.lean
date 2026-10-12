@@ -36,6 +36,7 @@ theorem subsystemPerm_piCongrRight
     let e := Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight c
     e (subsystemPerm k κ Q σ x) = subsystemPerm k ι Q σ (e x) := by
   intro e
+  funext j f
   done
 
 /-- Enumerating C changes only the rows of the actual Bell insertion. The
