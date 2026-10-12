@@ -97,6 +97,17 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
       (hp.1.rpow_isHermitian (-s)) (hn.rpow_isHermitian (-s))
       (isStarProjection_bellInsertion_symProj β X C R k b hb)
       hZ (hp.2 (-s)) u
+  have hupper := hC k K (fun j g ↦ E (U j g)) (fun j g ↦ E (Y j g))
+    (fun j g ↦ (Finset.disjoint_image
+      ((Option.some_injective (Option V)).comp (Option.some_injective V))).2
+        (Disjoint.mono Finset.sdiff_subset Finset.sdiff_subset (hdisj j g)))
+    (fun j j' g h hgh ↦ by
+      simpa only [E, Finset.union_sdiff_distrib, Finset.image_union] using
+        (Finset.image_subset_image (f := fun v : V ↦ some (some v))
+          (Finset.sdiff_subset_sdiff_left X (hnest j j' g h hgh))))
+    T a φ (toEuclideanLin P u) hφ
+    (by simpa only [E, Finset.union_sdiff_distrib, Finset.image_union] using hcuts)
+    s hs
   done
 
 end TensorPower
