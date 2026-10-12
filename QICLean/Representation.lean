@@ -18,6 +18,7 @@ import QICLean.Representation.BellCompressedInverseNorm
 import QICLean.Representation.BellInsertionCoordinates
 import QICLean.Representation.BellInsertionSymmetry
 import QICLean.Representation.BellMetricFactorPositivity
+import QICLean.Representation.BellPhysicalRoughUpper
 import QICLean.Representation.BellPinnedCompressedPowers
 import QICLean.Representation.BellPinnedMetricCoordinates
 import QICLean.Representation.BellPinnedProductAction
