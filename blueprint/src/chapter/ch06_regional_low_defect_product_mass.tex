@@ -1,0 +1,64 @@
+\section{Defect mass of the normalized band-product vector}
+\label{sec:regional_low_defect_product_mass}
+
+\begin{theorem}[Mass and nonnegative energy deficit]
+\label{thm:regional_low_defect_product_mass}
+\lean{Matrix.replicaMetric_normalized_symProj_bandProduct_lowDefect_mass_ge}
+\leanok
+Let the physical and two auxiliary coordinate spaces be finite and nonzero.
+Suppose that $\|\Omega\|=1$, $\gamma>0$, and
+\begin{align*}
+ H-E_0I\geq\gamma(I-|\Omega\rangle\langle\Omega|).
+\end{align*}
+Fix $k>0$, an isometry $Z$ onto simultaneous copy symmetry, and a nonzero
+symmetric vector $\xi$ in the original auxiliary sectors
+$\ell_C,\ell_R$. For terminal labels $j$ and bands $0\leq g<G$, let
+$Q_{jg},Y_{jg}$ be disjoint physical regions such that, whenever $g<h$,
+\begin{align*}
+ Q_{jg}\cup Y_{jg}\subseteq Q_{j'h}
+\end{align*}
+for every pair of terminal labels $j,j'$. Let $t\geq0$, retain the
+original full-system replica weights, and set
+\begin{align*}
+ A_{jg}&=\bigl(W(CQ_{jg})^{-1}
+ W(R(Q_{jg}\cup Y_{jg})^c)^{-1}W(Y_{jg})\bigr)^2,\\
+ B_{jg}&=Z^*A_{jg}Z,
+ &M&=\prod_{g=0}^{G-1}T(B_{\cdot g}),
+\end{align*}
+where every band uses the same weighted mean tree $T$.
+The symbols $C$ and $R$ in these regions denote the two auxiliary sites;
+the complement in the second factor is taken among physical sites.
+Let $\overline H_k$ be the physical replica average with both auxiliary
+identities, in the global coordinates of
+Definition~\ref{def:global_replica_mean_hamiltonian}.
+For any real $s$, define
+\begin{align*}
+ w=M^{-s}Z^*\xi,\qquad
+ \phi=\frac{w}{\|w\|},\qquad v=Z\phi,\qquad
+ \delta=\frac{\operatorname{Re}\langle v,\overline H_kv\rangle-E_0}{\gamma}.
+\end{align*}
+Then $M$ is positive definite, $w\ne0$, $\|\phi\|=\|v\|=1$, and
+$\delta\geq0$. For every $\tau>0$, the common projection
+$\Pi_\tau$ from Definition~\ref{def:global_replica_low_defect_projection}
+has an orthogonal projection $P_\tau=Z^*\Pi_\tau Z$ as its compression, and
+\begin{align*}
+ \operatorname{Re}\langle\phi,P_\tau\phi\rangle
+ \geq 1-\frac{\delta}{\tau}.
+\end{align*}
+The cutoff parameter is chosen after the normalized vector. Repeated
+terminal labels, zero tree weights, and $G=0$ are allowed.
+This is the mass estimate used in
+\cite[Section~8, lines~421--443]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+\uses{thm:replica_metric_lifted_region_geometry,thm:replica_symmetric_band_label_preservation,thm:global_low_defect_gap_mass,thm:regional_low_defect_projection_global,def:global_replica_mean_hamiltonian}
+The actual lifted regions satisfy the hypotheses of the label-preservation
+theorem. Hence the same normalized vector $v$ has simultaneous symmetry
+and both original auxiliary labels. Apply the original gap estimate to
+$v$ for each $\tau>0$. The equality $v=Z\phi$ identifies its projection
+mass with the displayed compressed quadratic form. Since the common
+projection is contained in the symmetric range, its compression is an
+orthogonal projection. Its mass on the unit vector $\phi$ is at most one.
+Taking $\tau=1$ in the gap estimate therefore gives $1-\delta\leq1$,
+and hence $\delta\geq0$.
+\end{proof}

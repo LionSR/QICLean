@@ -1,0 +1,30 @@
+\section{A norm comparison through an orthogonal projection}
+
+\begin{theorem}[Projected norm comparison]
+    \label{thm:projection_intertwining_norm}
+    \lean{Matrix.norm_projected_le_of_isometric_intertwine}
+    \leanok
+    Let $\mathcal H$ and $\mathcal K$ be finite-dimensional complex Hilbert
+    spaces, let $Z:\mathcal K\to\mathcal H$ satisfy $Z^*Z=I$, and let
+    $P$ be an orthogonal projection on $\mathcal H$. Suppose that $A$ on
+    $\mathcal K$ and $N$ on $\mathcal H$ are self-adjoint and
+    \begin{align*}
+        (ZAZ^*)P=PN.
+    \end{align*}
+    Then every $u\in\mathcal H$ satisfies
+    \begin{align*}
+        \|NPu\|\le \|AZ^*u\|.
+    \end{align*}
+    Neither matrix is required to be positive, and either Hilbert space
+    may have dimension zero.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:mean_intertwiner_sandwich,def:construction_domain_extension}
+    Taking adjoints gives $NP=PZAZ^*$. Contractivity of $P$ and the
+    isometry property of $Z$ therefore yield
+    \begin{align*}
+        \|NPu\|=\|PZAZ^*u\|\le\|ZAZ^*u\|=\|AZ^*u\|.
+    \end{align*}
+    This is the norm comparison used for the restricted metric powers in
+    \cite[\texttt{07-comparators.tex}, lines 283--308 and 370--381]{OpenAI2026AreaLaw}.
+\end{proof}

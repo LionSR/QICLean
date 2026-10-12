@@ -1,0 +1,85 @@
+\section{The rough lower norm comparison in physical coordinates}
+
+\begin{theorem}[Explicit rough lower norm bound]
+  \label{thm:regional_rough_lower_norm}
+  \lean{Matrix.exists_replicaMetric_symProj_bandProduct_rough_lower_norm}
+  \leanok
+  Fix nonzero finite physical site spaces, nonzero auxiliary spaces $C,R$,
+  and $0<t\leq1/4$. There are $c,C_f\geq0$, depending only on these
+  spaces and $t$, with the following property.
+
+  Let $\Omega$ be a unit physical vector, let $\gamma>0$, and suppose
+  \begin{align*}
+    H-E_0I\geq\gamma(I-|\Omega\rangle\langle\Omega|).
+  \end{align*}
+  Fix $k>0$, an isometry $Z$ onto simultaneous copy symmetry, and
+  disjoint physical regions $Q_{j,g},Y_{j,g}$ such that
+  $Q_{j,g}\cup Y_{j,g}\subseteq Q_{j',h}$ whenever $g<h$.
+  Let $T$ be one finite weighted mean tree, used for all $G$ bands.
+  Suppose the nonzero vector $\xi$ is simultaneously symmetric,
+  has norm at most one, and has the two original auxiliary labels
+  $\lambda_C,\lambda_R$, where
+  \begin{align*}
+    2kS-\varepsilon\leq\log\dim\lambda_C+\log\dim\lambda_R.
+  \end{align*}
+  In the full original site coordinates, put
+  \begin{align*}
+    A_{j,g}
+      &=\bigl(W_{C\cup Q_{j,g}}^{-1}
+          W_{R\cup(Q_{j,g}\cup Y_{j,g})^c}^{-1}W_{Y_{j,g}}\bigr)^2,\\
+    B_{j,g}&=Z^*A_{j,g}Z,\qquad
+    M=\prod_{g=1}^{G}T(B_{\cdot,g}).
+  \end{align*}
+  For $s\geq0$, define
+  \begin{align*}
+    w=M^{-s}Z^*\xi,\qquad \varphi=w/\|w\|,\qquad v=Z\varphi,\qquad
+    E_{\rm def}=\frac{\langle v,\overline H v\rangle-E_0}{\gamma},
+  \end{align*}
+  where $\overline H$ is the averaged original physical Hamiltonian
+  with the two auxiliary identities.
+  Then $w\ne0$, $\|v\|=1$, and $E_{\rm def}\geq0$.
+  For every $0<\tau\leq1/2$, set
+  \begin{align*}
+    d&=\log\dim C+\log\dim R,\\
+    L_\tau&=2S-\tau d-\left(3+\frac1{2t}\right)h(\tau),\\
+    r_k&=\log(k+1)+c\log(k+2)+2t\varepsilon,\qquad
+    b_k=\frac{(k+2)^{-C_f}}2.
+  \end{align*}
+  The same vector satisfies
+  \begin{align*}
+    2sG\left[
+      2tk\left(L_\tau-\frac{E_{\rm def}}\tau\max(0,2S)\right)
+      -\left(2|r_k|+|\log b_k|+\log2+\log(3/2)\right)
+    \right]
+    \leq-\log\|w\|^2.
+  \end{align*}
+  The constants are chosen before the copy number, vector, labels,
+  tree, regions and symmetric coordinates. This is an intermediate
+  form of the rough lower comparison in
+  \cite[Section~8]{OpenAI2026AreaLaw}; the selected common initial vector
+  supplies its hypotheses in the physical application.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{thm:global_regional_low_defect_rough_lower_bound,
+    thm:symmetric_replica_isometric_floor,
+    thm:replica_metric_lifted_region_geometry,
+    thm:replica_symmetric_band_compressions,
+    thm:replica_symmetric_band_mean_roots,
+    thm:regional_low_defect_product_mass,
+    thm:mean_tree_exponential_lower_norm}
+  Choose the uniform regional and symmetric-floor constants before
+  choosing any copy or state data. The original regions form a disjoint
+  partition, and nesting makes the band roots commute.
+  Each compressed leaf is bounded below by $2b_kI$ and by
+  $e^{2tkL_\tau-r_k}P$, where $P$ is the same compressed global
+  low-defect projection. The original labels and simultaneous symmetry
+  are preserved by the actual inverse power and normalization.
+  Applying the original gap gives projection mass at least
+  $1-E_{\rm def}/\tau$; its upper bound by one also gives
+  $E_{\rm def}\geq0$.
+  The explicit mean-tree lower norm estimate now applies with
+  $\kappa=2tk$, upper rate $2S$, and constant terminal rate $L_\tau$.
+  Since terminal weights sum to one, their average of $L_\tau$ is
+  $L_\tau$. Summing over the $G$ bands gives the stated inequality.
+\end{proof}
