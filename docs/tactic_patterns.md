@@ -855,3 +855,12 @@ for the rectangular isometry and `IsHermitian.conjTranspose_intertwine`
 for the reversed equation. The remaining estimate is contractivity of an
 orthogonal projection. No positivity or equality of the isometry range
 with the projected range is needed.
+
+### Cutoff estimates in fixed symmetric coordinates — existing lemmas (2026-10-12)
+
+The compressed inverse-norm estimate applies the existing exterior cutoff
+bound to the projected vector. The same-isometry real-power identity and
+`Matrix.norm_projected_le_of_isometric_intertwine` compare the inverse norms.
+No inverse-power vector or symmetric coordinates are chosen a second time.
+The region map removes the physical insertion region and then embeds into
+the original family, so all metric weights retain the full-family dimension.

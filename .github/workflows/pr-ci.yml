@@ -223,6 +223,17 @@ jobs:
             lake --fail-fast build QICLean.Analysis.ProjectionIntertwiningNorm \
             2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
+      - name: Build the Bell compressed inverse norm estimate early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.BellCompressedInverseNorm \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
       - name: Build Bell powers in fixed symmetric coordinates early
         timeout-minutes: 6
         env:
@@ -1174,6 +1185,22 @@ jobs:
           for file in \
             QICLean/Analysis/ProjectionIntertwiningNorm.lean \
             QICLeanTest/ProjectionIntertwiningNormAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
+      - name: Check Bell compressed inverse norms and standard axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/BellCompressedInverseNorm.lean \
+            QICLeanTest/BellCompressedInverseNormAxioms.lean; do
             timeout --signal=INT --kill-after=5s 90s \
               lake env lean -j1 \
               -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
