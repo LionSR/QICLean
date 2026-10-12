@@ -162,6 +162,9 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
   refine ⟨c, Cf, hc, hCf, ?_⟩
   intro k n hk H Ω E₀ gap hgap hΩ hgap_pos Z hZ hZZ J _ _ Q Y hdisj hnest
     T ell S ε hlabel ξ hξ hξnorm hsym hC hR a t W L F E A B M w φ v δ r remainder
+  obtain ⟨hw, hv, hδ, hlower⟩ :=
+    hbound k n hk H Ω E₀ gap hgap hΩ hgap_pos Z hZ hZZ J K Q Y hdisj hnest
+      T ell ell S ε (1 / 4 : ℝ) hlabel (by norm_num) ξ hξ hξnorm hsym hC hR
   done
 
 end Matrix
