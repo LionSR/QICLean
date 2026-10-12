@@ -71,6 +71,8 @@ theorem schmidtBellSitePrevector_enumerate_C
     replicaPrevector Ω E.card k ell
       ((fun j v ↦ x j (some (some v))),
         ((fun j ↦ x j (some none)), (fun j ↦ x j none)))
-  done
+  simp only [Equiv.apply_symm_apply, replicaPrevector, ΩX,
+    LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply,
+    Equiv.symm_apply_apply]
 
 end FiniteProduct
