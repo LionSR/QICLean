@@ -166,6 +166,13 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
     hbound k n hk H Ω E₀ gap hgap hΩ hgap_pos Z hZ hZZ J K Q Y hdisj hnest
       T ell ell S ε (1 / 4 : ℝ) hlabel (by norm_num) ξ hξ hξnorm hsym hC hR
   refine ⟨hw, hv, hδ, fun τ hτ hτhalf ↦ ?_⟩
-  done
+  exact rough_lower_three_of_explicit K k hK hk Cf S (Real.log (d : ℝ))
+    (Real.binEntropy τ) δ τ r (-Real.log (‖w‖ ^ 2)) hCf
+    (Real.log_natCast_nonneg d)
+    (Real.binEntropy_nonneg hτ.le (hτhalf.trans (by norm_num))) hδ hτ
+    (by
+      simpa only [Fintype.card_fin, r, a,
+        show 2 * (2 / (K : ℝ)) * ε = (4 / (K : ℝ)) * ε by ring] using
+        hlower τ hτ hτhalf)
 
 end Matrix
