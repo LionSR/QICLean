@@ -104,6 +104,8 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
         (φ := subsystemPerm k ιE R) (ψ := subsystemPerm k ιF R) (hact R)
         (∑ ell : IrrepLabel (Equiv.Perm (Fin k)),
           (replicaLabelWeight ιE t ell : ℂ) • IrrepLabel.centralIdem ell))
+  have hA (j : S) (g : Fin K) : AF j g = (AE j g).submatrix e e := by
+    simp only [AF, AE, hW, Matrix.inv_submatrix_equiv, pow_two, Matrix.submatrix_mul_equiv]
   done
 
 /-- The compressed original prevector is unchanged when the selected
