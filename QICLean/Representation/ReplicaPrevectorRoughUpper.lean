@@ -136,9 +136,16 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       ((Matrix.submatrix_mul_equiv Z Zᴴ e.symm (Equiv.refl (Fin n)) e.symm).trans
         (congrArg (fun P : Matrix (Config k ι₀) (Config k ι₀) ℂ ↦
           P.submatrix e.symm e.symm) hZZ)).trans hSymm.symm
-  simpa only [Matrix.toEuclideanLin, Matrix.toLpLin_apply, WithLp.ofLp_toLp,
-    ← (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2,
-    ← schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k)] using
-    hk n ZE hZE hZEZ K U Y hUY hnest hXY T Bsh Bexc hsh hmatch s hs
+  have hp :
+      toEuclideanLin Zᴴ (WithLp.toLp 2
+        (replicaPrevector Ω E.card k (ell k) ∘
+          globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)) =
+      toEuclideanLin ZEᴴ (WithLp.toLp 2
+        (schmidtBellSitePrevector β X E k ΩX (ell k) ∘
+          schmidtBellWitnessEquiv β X E k)) := by
+    simpa only [Matrix.toEuclideanLin, Matrix.toLpLin_apply, WithLp.ofLp_toLp] using
+      congrArg (WithLp.toLp 2)
+        (schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
+  done
 
 end FiniteProduct
