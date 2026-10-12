@@ -68,6 +68,7 @@ theorem bellInsertion_submatrix_C_equiv
   simp only [bellInsertionCopyEquiv, Equiv.piCongrRight_apply, Pi.map_apply,
     bellInsertionSiteEquiv, Equiv.coe_fn_mk, e, changeSite, Equiv.refl_apply, id_eq]
   dsimp only [Equiv.piCongrRight, Equiv.refl, Pi.map]
+  simp only [Equiv.coe_fn_mk, Pi.map_apply, id_eq]
   done
 
 end TensorPower
