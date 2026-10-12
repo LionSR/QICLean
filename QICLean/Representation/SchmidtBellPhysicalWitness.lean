@@ -171,6 +171,13 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
         (hexc : 1 + Real.log (Fintype.card (Configuration β (D ∆ Q))) ≤ Bexc) :=
       toEuclideanLin_compressedPhysicalCutoff_of_matched β Ω X E k regions hD
         (hdisjoint D hD) hXQ hDQ hz (hsh D hD) hexc φ hφcuts
+    have hcut (Q D : Finset V) (hD : D ∈ regions) (hXQ : Disjoint X Q)
+        (hDQ : D ⊆ Q ∨ Q ⊆ D)
+        (hexc : 1 + Real.log (Fintype.card (Configuration β (D ∆ Q))) ≤ Bexc) :
+        toEuclideanLin (labelCutoff (subsystemPerm k ι₀ (extRegion Q)) a)
+          (WithLp.toLp 2 (φ ∘ τ)) = WithLp.toLp 2 (φ ∘ τ) := by
+      simpa only [τ, labelCutoff_schmidtBellWitnessEquiv_exterior] using!
+        hpull _ (hmatched Q D hD hXQ hDQ hexc)
     done
   all_goals done
 
