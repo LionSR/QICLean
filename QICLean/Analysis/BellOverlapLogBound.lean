@@ -73,4 +73,22 @@ theorem neg_log_div_le_of_bell_overlap_bound (d K k : ℕ) (hd : 0 < d) (hk : 1 
     div_mul_cancel₀ _ (ne_of_gt (Nat.cast_pos.mpr (Nat.succ_le_iff.mp hk)))]
   nlinarith only [hlog, hdim, hpoly]
 
+/-- For fixed dimensions and polynomial degree, the logarithmic overlap error
+vanishes as the replica count tends to infinity. No sign condition on the fixed
+coefficient is required for this limit. Source: area-law manuscript,
+`07-comparators.tex`, lines 332–381 and 659–667, `comparator:rough-upper`. -/
+theorem tendsto_bellOverlapRemainder (d : ℕ) (c : ℝ) (K : ℕ) :
+    Tendsto (bellOverlapRemainder d c K) atTop (𝓝 0) := by
+  have hshift : Tendsto (fun k : ℕ ↦ (k : ℝ) + 2) atTop atTop :=
+    tendsto_atTop_add_const_right _ _ tendsto_natCast_atTop_atTop
+  have hlog := (tendsto_pow_log_div_mul_add_atTop 1 (-2) 1 one_ne_zero).comp hshift
+  simp only [Function.comp_def, pow_one, one_mul, add_neg_cancel_right] at hlog
+  have hinv : Tendsto (fun k : ℕ ↦ (k : ℝ)⁻¹) atTop (𝓝 0) :=
+    tendsto_inv_atTop_zero.comp tendsto_natCast_atTop_atTop
+  change Tendsto (fun k : ℕ ↦ bellOverlapRemainder d c K k) atTop (𝓝 0)
+  have hconst : Tendsto (fun k : ℕ ↦ Real.log 4 / (k : ℝ)) atTop (𝓝 0) := by
+    simpa only [div_eq_mul_inv, mul_zero] using hinv.const_mul (Real.log 4)
+  simpa only [bellOverlapRemainder, add_div, mul_div_assoc, mul_zero, add_zero] using
+    hconst.add (hlog.const_mul ((d : ℝ) ^ 2 + c * (K : ℝ)))
+
 end Real

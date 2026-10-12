@@ -43,3 +43,19 @@
     of the original auxiliary-label prevector; the assumed overlap
     inequality must be obtained for that same vector.
 \end{proof}
+
+\begin{theorem}[Vanishing of the overlap remainder]
+    \label{thm:bell_overlap_remainder_tendsto}
+    \lean{Real.tendsto_bellOverlapRemainder}
+    \uses{def:bell_overlap_remainder}
+    For every fixed $d,K\in\N$ and $c\in\R$,
+    \begin{align*}
+        \lim_{k\to\infty}R_{d,c,K}(k)=0.
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    Both $1/k$ and $\log(k+2)/k$ tend to zero. The coefficients
+    $\log4$ and $d^2+cK$ are fixed. This gives the vanishing error
+    used in the replica limit in
+    \cite[\texttt{07-comparators.tex}, lines 659--667]{OpenAI2026AreaLaw}.
+\end{proof}

@@ -7,11 +7,12 @@ import QICLean.Analysis.BellOverlapLogBound
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
-/-! Standard-axiom audit of the logarithmic consequence of a Bell overlap. -/
+/-! Standard-axiom audit of the Bell-overlap logarithmic bound and its vanishing remainder. -/
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let decls := #[``Real.neg_log_div_le_of_bell_overlap_bound]
+  let decls := #[``Real.neg_log_div_le_of_bell_overlap_bound,
+    ``Real.tendsto_bellOverlapRemainder]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
