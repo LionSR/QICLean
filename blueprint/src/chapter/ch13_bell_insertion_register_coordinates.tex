@@ -3,6 +3,7 @@
 \begin{theorem}[Local coordinate changes and copy permutations]
     \label{thm:subsystem_local_coordinate_change}
     \lean{TensorPower.subsystemPerm_piCongrRight}
+    \leanok
     \uses{def:copy_permutations}
     Let $F$ be a set of sites, let $A_f,B_f$ be coordinate sets, and
     let $c_f:B_f\to A_f$ be bijections. For $k\geq0$, define
@@ -16,7 +17,7 @@
     This is the coordinate invariance of the replica action in
     \cite[Section~6, lines~24--27]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     At a site in $Q$, both sides have coordinate
     $c_f(x_{\sigma^{-1}(i),f})$; outside $Q$, both have coordinate
     $c_f(x_{i,f})$.
@@ -25,6 +26,7 @@
 \begin{theorem}[Changing the inserted register]
     \label{thm:bell_insertion_register_coordinates}
     \lean{TensorPower.bellInsertion_submatrix_C_equiv}
+    \leanok
     \uses{def:bell_insertion_coordinates,def:added_site_tensor_insertion}
     Let $V$ and the physical coordinate sets $D_v$ be finite, fix
     $X\subseteq V$, and put $A_X=\prod_{v\in X}D_v$ and
@@ -44,7 +46,7 @@
     It expresses the change of the auxiliary enumeration in
     \cite[Section~8, lines~283--308]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Each matrix entry is the product of the $k$ inserted coefficients
     and the indicator that the exterior row coordinates equal $y$.
     The coefficients agree by the definition of $b_D$, and $e_k$
