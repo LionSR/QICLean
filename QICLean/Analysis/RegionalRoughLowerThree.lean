@@ -96,6 +96,7 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
           4 * S - 6 * (τ * Real.log (d : ℝ) + Real.binEntropy τ / a) -
               3 * (δ / τ) * max 0 (2 * S) - remainder ≤
             -Real.log (‖w‖ ^ 2) / (k : ℝ) := by
+  have hKreal : (8 : ℝ) ≤ K := by exact_mod_cast hK
   done
 
 end Matrix
