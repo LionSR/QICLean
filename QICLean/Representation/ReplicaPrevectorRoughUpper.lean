@@ -117,6 +117,9 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       | some none => (Finset.equivFin E).symm
       | some (some v) => Equiv.refl (β v)
   let ZE := Z.submatrix e.symm (id : Fin n → Fin n)
+  have hZE : ZEᴴ * ZE = 1 := by
+    simpa only [ZE, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv,
+      Matrix.submatrix_id_id] using hZ
   done
 
 end FiniteProduct
