@@ -30,6 +30,7 @@ September 24, 2026, `07-comparators.tex`, lines 153--163, 283--308,
 
 open Filter Topology Matrix PermutationRepresentation TensorPower
 open scoped BigOperators Matrix Kronecker InnerProductSpace ComplexOrder symmDiff
+open scoped MatrixOrder Matrix.Norms.L2Operator
 
 noncomputable section
 
