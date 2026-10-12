@@ -149,6 +149,7 @@ theorem schmidtBellSitePrevector_compressed_enumerate_C
     ZFᴴ *ᵥ vF = ZEᴴ *ᵥ vE := by
   classical
   intro ΩX ιE ιF changeSite e ZE τ vE vF
+  have hv : vE ∘ e = vF := schmidtBellSitePrevector_enumerate_C β Ω X E k ell
   done
 
 end FiniteProduct
