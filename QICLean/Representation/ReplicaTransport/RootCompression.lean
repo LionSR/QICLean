@@ -106,6 +106,6 @@ theorem rootPath_compressed_bandProduct
       (MeanTree.eval_listProd_ofFn
         (fun j g ↦ posDef_symBandMetric (D.isPartition_leafPart hD j g) ht k)
         ((D.crossBandCommute_iff (n := n) t k).mp hcomm) T)
-  done
+  exact ⟨hM, (congrArg (fun L ↦ L * Z) hroot).trans hprod⟩
 
 end TensorPower.ReplicaTransport.TransportData
