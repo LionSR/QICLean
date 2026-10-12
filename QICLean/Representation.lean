@@ -14,9 +14,12 @@ import QICLean.Representation.AddedSiteTensorInsertionNorm
 import QICLean.Representation.AddedSiteTensorInsertionSymmetry
 import QICLean.Representation.Alternant
 import QICLean.Representation.BadCopyLabelDimension
+import QICLean.Representation.BellCompressedInverseNorm
 import QICLean.Representation.BellInsertionCoordinates
+import QICLean.Representation.BellInsertionRegisterCoordinates
 import QICLean.Representation.BellInsertionSymmetry
 import QICLean.Representation.BellMetricFactorPositivity
+import QICLean.Representation.BellPhysicalRoughUpper
 import QICLean.Representation.BellPinnedCompressedPowers
 import QICLean.Representation.BellPinnedMetricCoordinates
 import QICLean.Representation.BellPinnedProductAction
@@ -102,6 +105,7 @@ import QICLean.Representation.ReplicaMetricCutoffNorm
 import QICLean.Representation.ReplicaPinnedLeafExpectation
 import QICLean.Representation.ReplicaPinnedTreeExpectation
 import QICLean.Representation.ReplicaPrevector
+import QICLean.Representation.ReplicaPrevectorRoughUpper
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
@@ -115,6 +119,9 @@ import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.ReplicaWholeInverse
 import QICLean.Representation.SchmidtBellCommonCutoffs
+import QICLean.Representation.SchmidtBellEnumeratedCompression
+import QICLean.Representation.SchmidtBellEnumeratedPrevector
+import QICLean.Representation.SchmidtBellPhysicalWitness
 import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchmidtBellPrevectorOverlap
 import QICLean.Representation.SchmidtBellSitePin

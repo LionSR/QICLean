@@ -1,0 +1,52 @@
+\section{The rough upper bound in physical coordinates}
+
+\begin{theorem}[The upper bound after enumerating the auxiliary space]
+    \label{thm:replica_prevector_rough_upper}
+    \lean{FiniteProduct.eventually_suppliedReplicaPrevector_rough_upper}
+    \leanok
+    \uses{thm:bell_physical_rough_upper,thm:schmidt_bell_enumerated_prevector}
+    Retain the physical family, unit vector $\Omega$, region $X$, spectral
+    selection $E$, positive mass $z$, supplied label sequence $\ell_k$,
+    nested list $\mathcal R$ and $t>0$ of
+    Theorem~\ref{thm:bell_physical_rough_upper}, including its eventual
+    auxiliary-mass hypothesis. Put $d=|E|$ and now take both auxiliary
+    registers to be $[d]$.
+
+    There exists $c\ge0$ such that, for every sufficiently large $k$, the
+    following statement holds. Choose a symmetric isometry $Z$ and band
+    data $K,U,Y,\mathcal T,B_{\mathrm{sh}},B_{\mathrm{exc}},s$ satisfying
+    all the disjointness, nesting, entropy, matching and exponent
+    hypotheses of Theorem~\ref{thm:bell_physical_rough_upper}. Form the
+    same ordered compressed product $M$ with the full-family weights on
+    the enumerated registers. In the notation of
+    Theorem~\ref{thm:schmidt_bell_enumerated_prevector}, put
+    $v_k=\mathrm{pre}_{k,\ell_k}^{\Omega}\circ G_k$ and
+    $N_k^2=\|M^{-s}Z^*v_k\|^2$. Then $N_k^2>0$ and
+    \begin{align*}
+        -\frac{\log N_k^2}{k}
+        \le 2\log d-\log z
+        +8stK\left(\frac{B_{\mathrm{sh}}}{z}+B_{\mathrm{exc}}\right)
+        +R_{d,c,K}(k).
+    \end{align*}
+    The constant and eventual threshold precede all the choices of
+    symmetric coordinates and band data. This is the physical-coordinate
+    form of the upper estimate in
+    \cite[Section~8, lines~130--163 and~332--381]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:bell_physical_rough_upper,thm:schmidt_bell_enumerated_band_product,
+        thm:schmidt_bell_enumerated_compressed_prevector,
+        thm:symmetric_projection_equivariant_coordinates}
+    Let $e_k$ carry enumerated configurations to selected configurations,
+    and define $Z_E(x,a)=Z(e_k^{-1}x,a)$. The bijection intertwines the
+    simultaneous copy permutations. It therefore transports the symmetric
+    projection, so $Z_E$ is an isometry onto the same symmetric space in
+    selected coordinates. The two compressed identities give
+    \begin{align*}
+        M_E      & =M,      \\
+        Z_E^*v_E & =Z^*v_k.
+    \end{align*}
+    Thus $\|M_E^{-s}Z_E^*v_E\|^2=N_k^2$. Apply
+    Theorem~\ref{thm:bell_physical_rough_upper} with $Z_E$.
+\end{proof}

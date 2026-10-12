@@ -1,0 +1,80 @@
+\section{The rough upper bound for the original prevector}
+
+\begin{theorem}[The upper bound with a supplied common label]
+    \label{thm:bell_physical_rough_upper}
+    \lean{FiniteProduct.eventually_suppliedSchmidtBell_rough_upper}
+    \leanok
+    \uses{thm:schmidt_bell_physical_witness,def:bell_overlap_remainder}
+    Retain the physical family, unit state $\Omega$, region $X$, positive-mass
+    spectral selection $E$, auxiliary registers $C=E$ and $R=[d]$, and
+    supplied label sequence of Theorem~\ref{thm:schmidt_bell_physical_witness}.
+    In particular, $d=|E|$, the selected mass is $z>0$, and the actual
+    compressed tensor powers satisfy
+    \begin{align*}
+        \|\Pi^R_{\ell_k}\Psi_k\|^2
+        \ge \frac{1}{2(k+1)^{d^2}}
+    \end{align*}
+    for all sufficiently large $k$. Fix a finite nested list $\mathcal R$
+    of physical regions disjoint from $X$, a finite status set $S$, and $t>0$.
+
+    There is a constant $c\ge0$ such that, for all sufficiently large $k$,
+    the following holds. Let $Z:\C^n\to\mathcal H_k$ be any isometry onto
+    the full simultaneous symmetric subspace. Choose $K\ge0$ and regions
+    $U_{jg},Y_{jg}$, indexed by $j\in S$ and $0\le g<K$, such that
+    \begin{align*}
+        U_{jg}\cap Y_{jg}&=\varnothing,\\
+        U_{jg}\cup Y_{jg}&\subseteq U_{j'h}\quad(g<h),\\
+        X\cap(U_{jg}\cup Y_{jg})&=\varnothing.
+    \end{align*}
+    Let $T$ be any weighted matrix mean tree on $S$. Suppose that real
+    bounds $B_{\mathrm{sh}},B_{\mathrm{exc}}$ satisfy
+    $S_\Omega(D)\le B_{\mathrm{sh}}$ for $D\in\mathcal R$, and that every
+    $Q\in\{U_{jg},U_{jg}\cup Y_{jg}\}$ has a region $D\in\mathcal R$
+    comparable to $Q$ with
+    \begin{align*}
+        1+\log\dim\mathcal H_{D\triangle Q}\le B_{\mathrm{exc}}.
+    \end{align*}
+    Use the original full-family weights and put
+    \begin{align*}
+        Q_{jg}&=C\cup X\cup U_{jg},&
+        F_{jg}&=R\cup\bigl(X\cup U_{jg}\cup Y_{jg}\bigr)^c,\\
+        H_{jg}&=\bigl(W_{Q_{jg}}^{-1}W_{F_{jg}}^{-1}W_{Y_{jg}}\bigr)^2,&
+        M&=\prod_{g=0}^{K-1}T\bigl((Z^*H_{jg}Z)_{j\in S}\bigr).
+    \end{align*}
+    Let $v_k$ be the same supplied-label prevector as in
+    Theorem~\ref{thm:schmidt_bell_physical_witness}. For every $0\le2s\le1$,
+    the squared norm $N_k^2=\|M^{-s}Z^*v_k\|^2$ is positive, and
+    \begin{align*}
+        -\frac{\log N_k^2}{k}
+        \le 2\log d-\log z
+            +8stK\left(\frac{B_{\mathrm{sh}}}{z}+B_{\mathrm{exc}}\right)
+            +R_{d,c,K}(k).
+    \end{align*}
+    Both $c$ and the eventual threshold precede all the choices of
+    $n,Z,K,U,Y,T,B_{\mathrm{sh}},B_{\mathrm{exc}},s$ above.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:schmidt_bell_physical_witness,thm:bell_compressed_inverse_norm,
+        thm:bell_overlap_log_bound}
+    The physical-witness theorem gives nonempty coordinate sets and a unit
+    selected Bell vector. Apply the compressed inverse-norm estimate to
+    obtain $c$. Intersect the eventual witness statement with $k\ge1$.
+    The witness $\Phi_k$ is chosen before the matched regions and bounds,
+    and hence serves every subsequent choice in the statement.
+
+    Put $B=B_{\mathrm{sh}}/z+B_{\mathrm{exc}}$. The witness satisfies the
+    actual exterior cutoffs at $a_k=kB$. Its overlap lower bound and the
+    inverse-norm estimate, applied with the same insertion projection $P_k$,
+    give
+    \begin{align*}
+        \frac{(z/d^2)^k}{4(k+1)^{d^2}}
+        \le |\langle\Phi_k,P_kv_k\rangle|^2
+        \le \bigl((k+2)^{cK}\exp(4tKkB)\bigr)^{2s}N_k^2.
+    \end{align*}
+    Positive selected mass implies $d>0$. The logarithmic overlap bound
+    therefore proves positivity of $N_k^2$ and the displayed inequality.
+    The matrix $M$, its coordinates $Z$, the prevector and its label are
+    unchanged throughout. This proves the upper estimate in
+    \cite[Section~8, lines 153--163 and 332--381]{OpenAI2026AreaLaw}
+    for the supplied common-label sequence.
+\end{proof}
