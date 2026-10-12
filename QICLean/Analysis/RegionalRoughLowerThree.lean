@@ -153,6 +153,7 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
             -Real.log (‖w‖ ^ 2) / (k : ℝ) := by
   have hKreal : (8 : ℝ) ≤ K := by exact_mod_cast hK
   have hKpos : (0 : ℝ) < K := by linarith only [hKreal]
+  have ht : 0 < 2 / (K : ℝ) := div_pos zero_lt_two hKpos
   done
 
 end Matrix
