@@ -150,7 +150,8 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
         Complex.norm_of_nonneg (Real.sqrt_nonneg z), Complex.norm_natCast,
         pow_right_comm (Real.sqrt z / (E.card : ℝ)) k 2, div_pow, Real.sq_sqrt hz.le]
     simp only [toEuclideanLin, toLpLin_apply] at hpair ⊢
-    rw [hpair, hinner, norm_mul, mul_pow, hc]
+    rw [hpair, hinner, norm_mul, mul_pow]
+    erw [hc]
     done
   all_goals done
 
