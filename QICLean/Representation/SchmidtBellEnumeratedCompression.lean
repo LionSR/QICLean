@@ -36,6 +36,13 @@ noncomputable section
 
 namespace FiniteProduct
 
+local instance schmidtBellEnumeratedCompressionConfigDecidableEq
+    {V : Type} [Fintype V] [DecidableEq V]
+    (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+    (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ) :
+    DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
+  Fintype.decidablePiFintype
+
 /-- Enumerating the selected C register preserves each actual compressed
 band factor and the ordered product of evaluations of the same mean tree.
 The supplied matrix on the enumerated register and its `Fin n` columns are
