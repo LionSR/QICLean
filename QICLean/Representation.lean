@@ -118,12 +118,9 @@ import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
 import QICLean.Representation.ReplicaWholeInverse
 import QICLean.Representation.SchmidtBellCommonCutoffs
-<<<<<<< HEAD
-import QICLean.Representation.SchmidtBellPhysicalWitness
-=======
 import QICLean.Representation.SchmidtBellEnumeratedCompression
 import QICLean.Representation.SchmidtBellEnumeratedPrevector
->>>>>>> dd4c72815a63a11f1961dfbf9dc10988fc067e6a
+import QICLean.Representation.SchmidtBellPhysicalWitness
 import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchmidtBellPrevectorOverlap
 import QICLean.Representation.SchmidtBellSitePin
