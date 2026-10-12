@@ -3,6 +3,7 @@
 \begin{theorem}[Compressed band products under enumeration]
     \label{thm:schmidt_bell_enumerated_band_product}
     \lean{FiniteProduct.replicaMetric_compressed_bandProduct_enumerate_C}
+    \leanok
     \uses{thm:schmidt_bell_enumerated_prevector,thm:replica_metric_basic,def:mean_tree}
     Retain the finite coordinate sets, selected set $E$, enumeration
     $\iota:E\to D$ and bijection $e_k:\mathcal H_D^k\to\mathcal H_E^k$
@@ -42,6 +43,7 @@
     \cite[Section~8, lines~80--110, 283--308 and~370--381]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:subsystem_local_coordinate_change,lem:subsystem_label_transport}
     The one-copy configuration bijection preserves the full dimension,
     hence the label weights. It intertwines every subsystem copy action,
@@ -62,6 +64,7 @@
 \begin{theorem}[The compressed original prevector]
     \label{thm:schmidt_bell_enumerated_compressed_prevector}
     \lean{FiniteProduct.schmidtBellSitePrevector_compressed_enumerate_C}
+    \leanok
     \uses{thm:schmidt_bell_enumerated_prevector}
     Retain the physical vector $\Omega$, selected set $E$, copy number $k$
     and irreducible label $\ell$ of
@@ -75,6 +78,7 @@
     \cite[Section~8, lines~130--147, 240--254 and~283--290]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:schmidt_bell_enumerated_prevector}
     The prevector identity gives $v_D=v_E\circ e_k$. Changing the summation
     variable by $e_k$ gives, for each column $a$,
