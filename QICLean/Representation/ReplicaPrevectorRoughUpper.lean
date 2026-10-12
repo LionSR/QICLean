@@ -144,7 +144,7 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
         (schmidtBellSitePrevector β X E k ΩX (ell k) ∘
           schmidtBellWitnessEquiv β X E k)) := by
     simpa only [ZE, e, ΩX, Matrix.toEuclideanLin, Matrix.toLpLin_apply,
-      WithLp.ofLp_toLp] using
+      WithLp.ofLp_toLp] using!
       congrArg (WithLp.toLp 2)
         (schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
   done
