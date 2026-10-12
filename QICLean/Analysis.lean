@@ -152,6 +152,8 @@ import QICLean.Analysis.RegionalLowDefectProjection
 import QICLean.Analysis.RegionalPhysicalMarginals
 import QICLean.Analysis.RegionalSharpLowerNorm
 import QICLean.Analysis.RegionalRoughLowerNorm
+import QICLean.Analysis.RegionalLowDefectProjection
+import QICLean.Analysis.RegionalPhysicalMarginals
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
