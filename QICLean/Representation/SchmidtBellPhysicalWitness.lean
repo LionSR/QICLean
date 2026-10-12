@@ -152,6 +152,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     simp only [toEuclideanLin, toLpLin_apply] at hpair ⊢
     rw [hpair, hinner, norm_mul, mul_pow]
     erw [hc]
+    erw [hφoverlap]
     done
   all_goals done
 
