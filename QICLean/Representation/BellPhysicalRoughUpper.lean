@@ -121,6 +121,9 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
   have hu := hC k n Z hZ hZZ K U Y hUY hnest (selectedBellVector ΩX E) hb
     T ((k : ℝ) * (Bsh / z + Bexc)) Φ v hΦ
     (hcuts K U Y Bsh Bexc hsh hXY hmatch) s hs
+  refine Real.neg_log_div_le_of_bell_overlap_bound E.card K k
+    (Fin.pos_iff_nonempty.mpr (hsite none)) hk z c t (Bsh / z + Bexc) s Nsq
+    hz hc hs ?_
   done
 
 end FiniteProduct
