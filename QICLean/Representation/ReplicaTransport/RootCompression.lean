@@ -82,6 +82,12 @@ theorem rootPath_compressed_bandProduct
       (fun g ↦ MeanTree.posDef_eval (fun j ↦ (hleaf j g).1) T)
       (fun g g' hgg' ↦ MeanTree.commute_eval_band
         (fun j g ↦ (hleaf j g).1) hBcomm T hgg')
+  have hband (g : Fin K) :
+      T.eval (fun j ↦ symBandMetric n t k (D.leafPart j g)) * Z =
+        Z * T.eval (B · g) :=
+    MeanTree.eval_intertwine
+      (fun j ↦ posDef_symBandMetric (D.isPartition_leafPart hD j g) ht k)
+      (fun j ↦ (hleaf j g).1) Z (fun j ↦ hext j g) T
   done
 
 end TensorPower.ReplicaTransport.TransportData
