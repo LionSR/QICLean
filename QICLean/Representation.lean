@@ -97,6 +97,7 @@ import QICLean.Representation.ReplicaLift
 import QICLean.Representation.ReplicaLowDefectSymmetricCoordinates
 import QICLean.Representation.ReplicaMarkedRatio
 import QICLean.Representation.ReplicaMarkedRatioInverse
+import QICLean.Representation.ReplicaMeanIdentityExtension
 import QICLean.Representation.ReplicaMetric
 import QICLean.Representation.ReplicaMetricCutoffNorm
 import QICLean.Representation.ReplicaPinnedLeafExpectation
