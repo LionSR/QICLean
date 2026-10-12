@@ -1,0 +1,48 @@
+\section{Ordered band products on the Bell range}
+
+\begin{theorem}[The actual ordered band product on the Bell pin]
+    \label{thm:bell_band_product_pin_action}
+    \lean{TensorPower.replicaMetric_bandProduct_bellPin}
+    Assume that the original site family is finite and each physical and
+    auxiliary coordinate set is finite and nonempty.
+    Retain the original full-system weights, $t\ge0$, and the actual
+    Bell-inserted symmetric operator $P_k=J_k\Pi_EJ_k^*$. For physical
+    regions $U_{jg},Y_{jg}$, assume
+    \begin{align*}
+        U_{jg}\cap Y_{jg}&=\varnothing,\\
+        U_{jg}\cup Y_{jg}&\subseteq U_{j'h}\qquad(g<h).
+    \end{align*}
+    Let $A_{jg},D_{jg}$ be the original and exterior metric factors of
+    Theorem~\ref{thm:bell_metric_factors_pin_action}. Evaluate the same
+    finite weighted mean tree $\mathcal T$ in every band, and form the
+    ordered products
+    \begin{align*}
+        M&=\prod_{g=0}^{K-1}\mathcal T(A_{\bullet g}),&
+        N&=\prod_{g=0}^{K-1}\mathcal T(D_{\bullet g}).
+    \end{align*}
+    Then $N$ is positive definite, both $M$ and $N$ commute with $P_k$,
+    and
+    \begin{align*}
+        MP_k=P_kN.
+    \end{align*}
+    The inserted vector is arbitrary. The assertion includes $K=0$
+    and $k=0$ and does not assert that $M$ is positive definite on the
+    unrestricted original space.
+\end{theorem}
+\begin{proof}
+    \uses{thm:bell_mean_tree_pin_action,thm:replica_pinned_tree_band_product,
+        thm:positive_laminar_replica_product,thm:mean_tree_properties}
+    The actual single-band intertwining multiplies in band order, without
+    requiring commutation between the original roots. Each root commutes
+    with $P_k$, so its ordered product does as well.
+
+    Removing $X$ and including the remaining physical sites in the original
+    family preserves unions, inclusions, and disjointness. Thus the
+    exterior factors satisfy the actual nested-band hypotheses. Their
+    product of tree roots equals the tree of their positive ordered
+    product leaves and is therefore positive definite. This identifies
+    the ordered product used in
+    \cite[\texttt{07-comparators.tex}, lines 370--381]{OpenAI2026AreaLaw}.
+    Real powers of the original product still require its actual
+    symmetric restriction.
+\end{proof}

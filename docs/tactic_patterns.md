@@ -75,6 +75,23 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Products preserving common spectral cutoffs — candidate (2026-10-11)
+
+- **Pattern:** Prove that each factor preserves a common fixed subspace and
+  bounds the norm there, then compose the estimates in the prescribed order.
+- **Seen:** The two inverse metrics and the direct metric in
+  `Representation/ReplicaPinnedLeafExpectation.lean`; one mathematical
+  application with three factors in one file.
+- **Abstraction:** The private lemmas `norm_mul_on_invariant` and
+  `norm_listProd_on_invariant` express composition and finite iteration.
+  Preservation follows from the existing commutation theorem for nested
+  or disjoint subsystems. A second independent application may justify
+  exposing these elementary matrix lemmas; no custom tactic is introduced.
+- **Caveat:** Bounds on individual vectors do not compose without the
+  preservation statement. Commutation is derived from the actual region
+  relations and does not extend to arbitrary overlapping regions.
+
+
 ### Replica regions with two auxiliary sites — shared geometric statement (2026-10-11)
 
 - **Pattern:** Lift physical regions to the common site family, adjoin the
@@ -802,3 +819,31 @@ projector, the defect cutoff, and the original auxiliary labels.
   A general norm inequality for folds should be considered at a third occurrence.
 - **Caveats:** No norm compatibility with the scalar action is needed; the
   contraction hypothesis concerns the additive seminorm directly.
+
+### Bell restriction of positive mean trees — existing lemmas (2026-10-11)
+
+The metric restriction uses `IsHermitian.conjTranspose_intertwine` for the
+adjoint equation and `Matrix.MeanTree.eval_intertwine` for the same tree of
+positive factors. Its real powers use `PosSemidef.rpow_intertwine`.
+Full-copy symmetry commutation is the containing-subsystem label theorem
+with the full subsystem; the group-algebra argument is not repeated.
+The inserted vector need not be unit for these identities. Unit norm is
+used only to conclude that the inserted symmetric operator is a projection.
+Every replica weight retains the original full-family dimension.
+
+### Ordered products of rectangular intertwiners — existing lemma (2026-10-11)
+
+The Bell band product uses `List.rel_prod` to multiply rectangular
+intertwining equations in their given order. The original roots need not
+commute. Positivity of the exterior product follows separately from
+`replicaPinnedTree_eval_eq_prod` and the positive ordered leaves, with the
+same original full-family weights. Empty products remain included.
+
+### Real powers with fixed symmetric coordinates — planned existing-lemma use
+
+The Bell power comparison retains one supplied symmetric isometry Z and
+forms the product of means of Zᴴ A Z, exactly as in the lower norm estimates.
+`replicaMetric_symProj_compressions_posDef_commute` and
+`MeanTree.eval_intertwine` give the band equations. Ordered multiplication
+then gives the equation for the same product, and `PosSemidef.rpow_intertwine`
+applies with rectangular map Zᴴ P. No second compression is selected.

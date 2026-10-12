@@ -212,6 +212,72 @@ jobs:
       - name: Require prebuilt Mathlib artifacts
         run: test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
 
+      - name: Build Bell powers in fixed symmetric coordinates early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.BellPinnedCompressedPowers \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Build the ordered Bell band product early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.BellPinnedProductAction \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Build the replica upper estimates early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.ReplicaPinnedTreeExpectation \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Build Bell restriction of replica metrics early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.BellPinnedTreeAction \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Build physical Bell insertion coordinates early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.BellInsertionSymmetry \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Build tensor-power insertion early
+        timeout-minutes: 6
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          test -f .lake/packages/mathlib/.lake/build/lib/lean/Mathlib.olean
+          timeout --signal=INT --kill-after=5s 300s \
+            lake --fail-fast build QICLean.Representation.AddedSiteTensorInsertion \
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
       # Toolchain/Mathlib-revision lockstep guard: fails clean here instead
       # of a confusing kernel error downstream in TNLean. See
       # docs/UPGRADE_RUNBOOK.md §3. QICLean has no upstream dependency to
@@ -253,7 +319,7 @@ jobs:
           set -euo pipefail
           timeout --signal=INT --kill-after=5s 300s \
             lake build QICLean.Analysis.MeanTreeSublinearRemainder \
-            2>&1 | tee "$RUNNER_TEMP/lake-build.log"
+            2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
 
       - name: Check the sublinear lower remainder and its axioms strictly
         timeout-minutes: 4
@@ -1087,6 +1153,112 @@ jobs:
             lake build
             lake build lint_style
           } 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+
+      - name: Check Bell compressed powers and standard axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/BellPinnedCompressedPowers.lean \
+            QICLeanTest/BellPinnedCompressedPowersAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
+      - name: Check the ordered Bell band product and standard axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/BellPinnedProductAction.lean \
+            QICLeanTest/BellPinnedProductAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
+      - name: Check replica upper estimates and standard axioms strictly
+        timeout-minutes: 11
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/ReplicaLaminarBandMetrics.lean \
+            QICLean/Representation/ReplicaMetricCutoffNorm.lean \
+            QICLean/Representation/ReplicaPinnedLeafExpectation.lean \
+            QICLean/Analysis/MeanTreeUniformExpectation.lean \
+            QICLean/Representation/ReplicaPinnedTreeExpectation.lean \
+            QICLeanTest/ReplicaPinnedUpperEstimatesAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
+      - name: Check Bell metric restriction and standard axioms strictly
+        timeout-minutes: 9
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/BellPinnedMetricCoordinates.lean \
+            QICLean/Representation/BellMetricFactorPositivity.lean \
+            QICLean/Representation/BellSymmetricPinProjection.lean \
+            QICLean/Representation/BellPinnedTreeAction.lean \
+            QICLeanTest/BellPinnedMetricAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
+      - name: Check physical Bell insertion coordinates and standard axioms strictly
+        timeout-minutes: 9
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/AddedSiteTensorInsertionNorm.lean \
+            QICLean/Representation/AddedSiteTensorInsertionSymmetry.lean \
+            QICLean/Representation/BellInsertionCoordinates.lean \
+            QICLean/Representation/BellInsertionSymmetry.lean \
+            QICLeanTest/BellInsertionCoordinatesAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
+
+      - name: Check tensor-power insertion and standard axioms strictly
+        timeout-minutes: 4
+        env:
+          LEAN_NUM_THREADS: 1
+        run: |
+          set -euo pipefail
+          for file in \
+            QICLean/Representation/AddedSiteTensorInsertion.lean \
+            QICLeanTest/AddedSiteTensorInsertionAxioms.lean; do
+            timeout --signal=INT --kill-after=5s 90s \
+              lake env lean -j1 \
+              -Dpp.unicode.fun=true -DrelaxedAutoImplicit=false -DautoImplicit=false \
+              -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true \
+              "$file" 2>&1 | tee -a "$RUNNER_TEMP/lake-build.log"
+          done
 
       - name: Check mean trees on complementary projection ranges strictly
         timeout-minutes: 4
