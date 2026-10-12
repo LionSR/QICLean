@@ -157,6 +157,8 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
   have htSmall : 4 * (2 / (K : ℝ)) ≤ 1 := by
     simpa only [← mul_div_assoc, show (4 : ℝ) * 2 = 8 by norm_num] using
       (div_le_one hKpos).2 hKreal
+  obtain ⟨c, Cf, hc, hCf, hbound⟩ :=
+    exists_replicaMetric_symProj_bandProduct_rough_lower_norm β (Fin d) (Fin d) ht htSmall
   done
 
 end Matrix
