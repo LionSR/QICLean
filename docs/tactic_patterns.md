@@ -75,6 +75,54 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Products preserving common spectral cutoffs — candidate (2026-10-11)
+
+- **Pattern:** Prove that each factor preserves a common fixed subspace and
+  bounds the norm there, then compose the estimates in the prescribed order.
+- **Seen:** The two inverse metrics and the direct metric in
+  `Representation/ReplicaPinnedLeafExpectation.lean`; one mathematical
+  application with three factors in one file.
+- **Abstraction:** The private lemmas `norm_mul_on_invariant` and
+  `norm_listProd_on_invariant` express composition and finite iteration.
+  Preservation follows from the existing commutation theorem for nested
+  or disjoint subsystems. A second independent application may justify
+  exposing these elementary matrix lemmas; no custom tactic is introduced.
+- **Caveat:** Bounds on individual vectors do not compose without the
+  preservation statement. Commutation is derived from the actual region
+  relations and does not extend to arbitrary overlapping regions.
+
+### Projection coefficients and exponential rates — candidate (2026-10-11)
+
+- **Pattern:** Take the logarithm of a positive product of polynomial and
+  exponential factors, identify it with a remainder minus the leading
+  rate, and express the reciprocal coefficient as the corresponding
+  exponential lower bound.
+- **Seen:** The rough and sharp norm comparisons in
+  `Analysis/RegionalRoughLowerNorm.lean` and
+  `Analysis/RegionalSharpLowerNorm.lean` have two occurrences. The sharp
+  rate also includes the variance correction.
+- **Abstraction:** Existing `Real.log_mul`, `Real.log_rpow`,
+  `Real.exp_log` and polynomial normalization suffice for these two uses.
+  A third independent occurrence would justify a common scalar lemma;
+  no new tactic is introduced.
+- **Caveat:** Positivity is proved for the actual coefficient. The sharp
+  variance term is retained exactly when its logarithm is normalized.
+
+### A common polynomial exponent over finitely many cuts — candidate (2026-10-11)
+
+- **Pattern:** Choose each regional exponent, take the maximum of their finite
+  family and zero, and increase the positive-base power before taking its
+  reciprocal in an operator lower bound.
+- **Seen:** The rough and sharp theorems in
+  `QICLean/Analysis/RegionalLowDefectLowerPin.lean` have two occurrences in
+  one file. The matrix-order transport itself is already shared through
+  `regional_lower_pin_pullback`.
+- **Abstraction:** The current proofs use `Finset.le_sup'`,
+  `Real.rpow_le_rpow_of_exponent_le`, and the shared pullback. A third
+  occurrence in another file would justify a common finite-family helper.
+- **Caveat:** Only the polynomial exponent is absorbed; the exponential
+  subset count and the variance term remain in the coefficient.
+
 ### Replica regions with two auxiliary sites — shared geometric statement (2026-10-11)
 
 - **Pattern:** Lift physical regions to the common site family, adjoin the
@@ -829,3 +877,39 @@ exponent. No new logarithm tactic is needed.
 - **Caveat:** Every coefficient is fixed before the replica count tends
   to infinity. This argument gives no uniform threshold over varying
   dimensions or polynomial degrees.
+
+### Bell restriction of positive mean trees — existing lemmas (2026-10-11)
+
+The metric restriction uses `IsHermitian.conjTranspose_intertwine` for the
+adjoint equation and `Matrix.MeanTree.eval_intertwine` for the same tree of
+positive factors. Its real powers use `PosSemidef.rpow_intertwine`.
+Full-copy symmetry commutation is the containing-subsystem label theorem
+with the full subsystem; the group-algebra argument is not repeated.
+The inserted vector need not be unit for these identities. Unit norm is
+used only to conclude that the inserted symmetric operator is a projection.
+Every replica weight retains the original full-family dimension.
+
+### Ordered products of rectangular intertwiners — existing lemma (2026-10-11)
+
+The Bell band product uses `List.rel_prod` to multiply rectangular
+intertwining equations in their given order. The original roots need not
+commute. Positivity of the exterior product follows separately from
+`replicaPinnedTree_eval_eq_prod` and the positive ordered leaves, with the
+same original full-family weights. Empty products remain included.
+
+### Real powers with fixed symmetric coordinates — planned existing-lemma use
+
+The Bell power comparison retains one supplied symmetric isometry Z and
+forms the product of means of Zᴴ A Z, exactly as in the lower norm estimates.
+`replicaMetric_symProj_compressions_posDef_commute` and
+`MeanTree.eval_intertwine` give the band equations. Ordered multiplication
+then gives the equation for the same product, and `PosSemidef.rpow_intertwine`
+applies with rectangular map Zᴴ P. No second compression is selected.
+
+### Norms under projected Hermitian intertwining — existing lemmas (2026-10-11)
+
+The projected norm comparison reuses `Matrix.norm_toLp_mulVec_of_isometry`
+for the rectangular isometry and `IsHermitian.conjTranspose_intertwine`
+for the reversed equation. The remaining estimate is contractivity of an
+orthogonal projection. No positivity or equality of the isometry range
+with the projected range is needed.

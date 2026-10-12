@@ -1,0 +1,36 @@
+\section{Regional entropy under a change of pure state}
+
+The continuity estimate for the entropy of a fixed region involves the
+dimension of that region. The trace distance may be taken on the complete
+finite system, by contraction under the partial trace.
+
+\begin{theorem}[Continuity of regional entropy]
+  \label{thm:finite_product_entropy_continuity}
+  \lean{FiniteProduct.abs_entropy_sub_le_sqrt_traceDistance}
+  \leanok
+  Let $V$ be a finite set, with finite coordinate sets $\mathcal B_v$, and
+  let $\mathcal H_R=\mathbb C^{\prod_{v\in R}\mathcal B_v}$ for $R\subseteq V$.
+  For unit vectors $\Omega,\Phi\in\mathcal H_V$, write
+  $\rho_\Omega=|\Omega\rangle\langle\Omega|$,
+  $\rho_\Phi=|\Phi\rangle\langle\Phi|$, and
+  $\delta=\tfrac12\|\rho_\Omega-\rho_\Phi\|_1$.
+  Then every region $R\subseteq V$ satisfies
+  \begin{align*}
+    |S_\Omega(R)-S_\Phi(R)|
+    \le 4\sqrt\delta\,\log(e\dim\mathcal H_R).
+  \end{align*}
+  This is the regional form of Lemma~2.1 used in the scanner argument
+  of \cite[Section~9]{OpenAI2026AreaLaw}. The two vectors and the region
+  are supplied to the estimate; no further choice is made.
+\end{theorem}
+\begin{proof}
+  \leanok
+  \uses{cor:entropy_mutual_information_continuity,lem:trace_distance_jordan}
+  Split the original coordinates into the region and its complement.
+  The two regional densities are positive semidefinite with trace one.
+  Apply the square-root continuity estimate to these densities. Partial
+  trace contracts their trace distance, and relabeling the original
+  coordinates leaves the full trace distance unchanged. The regional
+  dimension is positive because its density has trace one, so the
+  logarithmic factor is nonnegative and the stated bound follows.
+\end{proof}

@@ -1,0 +1,126 @@
+\section{The supplied Bell witness in physical coordinates}
+
+Let $V$ be finite with finite coordinate sets $D_v$, and fix $X\subseteq V$.
+Put $A=\prod_{v\in X}D_v$ and $B=\prod_{v\notin X}D_v$.
+Fix an arbitrary vector $\Omega\in\ell^2(A\times B)$ and a set $E\subseteq A$
+of spectral indices for its first marginal. The selected eigenvectors $u_i$
+define
+\begin{align*}
+    b_E&=|E|^{-1/2}\sum_{i\in E}u_i\otimes|i\rangle,
+    &P_E&=|b_E\rangle\langle b_E|.
+\end{align*}
+When $E$ is empty, $b_E$ is the zero vector on the empty coordinate space.
+Let $C=E$ and $R=\{0,\ldots,|E|-1\}$ be distinct auxiliary registers,
+with their fixed enumeration retained throughout.
+Write $\mathcal H=D_V\times C\times R$ for the original configuration set
+and $\mathcal H_e=B\times R$ for the exterior configuration set.
+All statements below hold for every integer $k\geq0$.
+
+\begin{definition}[Coordinates for the supplied Bell witness]
+    \label{def:schmidt_bell_witness_coordinates}
+    \lean{FiniteProduct.schmidtBellWitnessEquiv}
+    \leanok
+    \uses{def:bell_insertion_coordinates,def:added_site_copy_separation}
+    Group $X$ with $C$ in each copy, and then separate these $k$ pairs
+    from the exterior copies. The resulting bijection is
+    \begin{align*}
+        \tau_k:\mathcal H^k&\longrightarrow(A\times C)^k\times\mathcal H_e^k,\\
+        \tau_k((x_j,c_j,r_j)_j)&=((x_j|_X,c_j)_j,(x_j|_{X^c},r_j)_j).
+    \end{align*}
+    These are the fixed coordinates used in
+    \cite[Section~8, lines~240--254 and~283--290]{OpenAI2026AreaLaw}.
+\end{definition}
+
+Let $W_kv=v\circ\tau_k$ and let
+$J:\ell^2(\mathcal H_e^k)\to\ell^2(\mathcal H^k)$ be the physical insertion
+of $b_E^{\otimes k}$.
+
+\begin{theorem}[The selected Bell outer product under insertion]
+    \label{thm:schmidt_bell_witness_outer_product}
+    \lean{FiniteProduct.bellInsertion_mul_conjTranspose_selectedBell}
+    \leanok
+    \uses{def:schmidt_bell_witness_coordinates,def:added_site_tensor_insertion}
+    The insertion satisfies
+    \begin{align*}
+        JJ^*&=W_k(P_E^{\otimes k}\otimes I_{\mathcal H_e^k})W_k^*.
+    \end{align*}
+    No normalization or positive selected-mass hypothesis is required.
+\end{theorem}
+\begin{proof}\leanok
+    The matrix entry of $J$ is the product of the $k$ Bell coefficients,
+    multiplied by the indicator that the exterior configurations agree.
+    In $JJ^*$ the sum over the exterior configuration collapses to that
+    indicator. The remaining product is the corresponding entry of
+    $P_E^{\otimes k}$.
+\end{proof}
+
+\begin{theorem}[The range of a supplied symmetric Bell witness]
+    \label{thm:schmidt_bell_witness_range}
+    \lean{FiniteProduct.schmidtBellWitness_pullback_range}
+    \leanok
+    \uses{def:schmidt_bell_witness_coordinates}
+    Let $\varphi\in\ell^2((A\times C)^k\times\mathcal H_e^k)$ be invariant
+    under simultaneous permutation of the $k$ copies in both factors, and
+    suppose $(P_E^{\otimes k}\otimes I)\varphi=\varphi$.
+    Let $P_{e,\mathrm{sym}}$ average the simultaneous copy permutations
+    on $\mathcal H_e^k$. Then the same vector in physical coordinates,
+    $\Phi=W_k\varphi$, is symmetric and satisfies
+    \begin{align*}
+        JP_{e,\mathrm{sym}}J^*\Phi&=\Phi.
+    \end{align*}
+    The vector $\varphi$ need not be normalized.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:schmidt_bell_witness_outer_product,thm:bell_insertion_isometry_symmetry}
+    The map $\tau_k$ commutes with simultaneous copy permutations, so
+    $\Phi$ is symmetric. The Bell-range hypothesis gives $JJ^*\Phi=\Phi$.
+    The insertion identity $JP_{e,\mathrm{sym}}=P_{\mathrm{sym}}J$ then gives
+    $JP_{e,\mathrm{sym}}J^*\Phi=P_{\mathrm{sym}}\Phi=\Phi$.
+\end{proof}
+
+\begin{theorem}[The supplied auxiliary label in witness coordinates]
+    \label{thm:schmidt_bell_witness_auxiliary_label}
+    \lean{FiniteProduct.labelProj_schmidtBellWitnessEquiv_auxiliary}
+    \leanok
+    \uses{def:schmidt_bell_witness_coordinates,def:label_projectors}
+    For every irreducible label $\ell$ of $\mathfrak S_k$, let
+    $\Pi^e_{R,\ell}$ and $\Pi_{R,\ell}$ be the label projections on the
+    retained register $R$ in the exterior and original coordinates.
+    Then
+    \begin{align*}
+        W_k(I_{(A\times C)^k}\otimes\Pi^e_{R,\ell})W_k^*
+        &=\Pi_{R,\ell}.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:group_algebra_product_coordinates}
+    A permutation on $R$ fixes the selected Bell coordinates and acts on
+    the exterior register $R$. Transport the central idempotent for
+    the same label $\ell$ along this product action.
+\end{proof}
+
+\begin{theorem}[Exterior cutoffs in witness coordinates]
+    \label{thm:schmidt_bell_witness_exterior_cutoffs}
+    \lean{FiniteProduct.labelCutoff_schmidtBellWitnessEquiv_exterior}
+    \leanok
+    \uses{def:schmidt_bell_witness_coordinates,def:schur_label_cutoff}
+    For any $U\subseteq V$ and $a\in\mathbb R$, let
+    $Q_{U\setminus X}(a)$ be the sum of the label projections with
+    $\log d_\ell\leq a$ on the indicated original physical sites, and
+    let $Q^e_{U\setminus X}(a)$ denote the same cutoff in the exterior
+    coordinates. Then
+    \begin{align*}
+        W_k(I_{(A\times C)^k}\otimes Q^e_{U\setminus X}(a))W_k^*
+        &=Q_{U\setminus X}(a).
+    \end{align*}
+    The label and threshold are unchanged. This is the coordinate
+    identity used for the supplied common vector in
+    \cite[Section~8, lines~346--365]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bell_insertion_subsystem_coordinates,thm:group_algebra_product_coordinates}
+    An exterior subsystem permutation fixes every Bell coordinate.
+    Transport the central group-algebra element
+    $\sum_\ell\mathbf1_{\{\log d_\ell\leq a\}}e_\ell$ along this product
+    action. The coefficients and subsystem are the same on both sides.
+\end{proof}
