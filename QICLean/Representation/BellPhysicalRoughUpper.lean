@@ -124,6 +124,6 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
   refine Real.neg_log_div_le_of_bell_overlap_bound E.card K k
     (Fin.pos_iff_nonempty.mpr (hsite none)) hk z c t (Bsh / z + Bexc) s Nsq
     hz hc hs ?_
-  done
+  simpa only [mul_assoc] using hover.trans hu
 
 end FiniteProduct
