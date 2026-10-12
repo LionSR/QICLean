@@ -85,6 +85,7 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
         (((k : ℝ) + 2) ^ (c * (K : ℝ)) * Real.exp (4 * t * (K : ℝ) * a)) ^
           (2 * s) * ‖toEuclideanLin (M ^ (-s)) (toEuclideanLin Zᴴ u)‖ ^ 2 := by
   classical
+  obtain ⟨c, hc, hC⟩ := exists_replicaPinnedTree_inverse_norm_bound (J := S) ι₀ ht
   done
 
 end TensorPower
