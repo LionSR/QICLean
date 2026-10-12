@@ -179,7 +179,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
       have htransport := hpull _ (hmatched Q D hD hXQ hDQ hexc)
       rw [labelCutoff_schmidtBellWitnessEquiv_exterior β X E k Q a] at htransport
       simp only [extRegion, toEuclideanLin, toLpLin_apply] at htransport ⊢
-      done
+      exact htransport
     done
   all_goals done
 
