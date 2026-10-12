@@ -111,6 +111,9 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   have hw := eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
     β Ω X E hΩ hz regions hnested hdisjoint ell hmass
   have hb := Matrix.norm_selectedBellVector ΩX E hz
+  obtain ⟨x, _⟩ := Function.ne_iff.mp
+    (fun h : Ω.ofLp = 0 ↦ (norm_ne_zero_iff.mp (hΩ.trans_ne one_ne_zero))
+      ((WithLp.ofLp_eq_zero 2).mp h))
   done
 
 end FiniteProduct
