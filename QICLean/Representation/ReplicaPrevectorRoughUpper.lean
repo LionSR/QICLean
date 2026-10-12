@@ -105,6 +105,8 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
           Real.bellOverlapRemainder E.card c K k := by
   classical
   intro ΩX ψ Ψ q hmass
+  obtain ⟨c, hc, hu⟩ := eventually_suppliedSchmidtBell_rough_upper
+    (S := S) β Ω X E hΩ hz regions hnested hdisjoint ell ht hmass
   done
 
 end FiniteProduct
