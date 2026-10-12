@@ -160,6 +160,8 @@ theorem exists_replicaMetric_symProj_bandProduct_rough_lower_norm_three
   obtain ⟨c, Cf, hc, hCf, hbound⟩ :=
     exists_replicaMetric_symProj_bandProduct_rough_lower_norm β (Fin d) (Fin d) ht htSmall
   refine ⟨c, Cf, hc, hCf, ?_⟩
+  intro k n hk H Ω E₀ gap hgap hΩ hgap_pos Z hZ hZZ J _ _ Q Y hdisj hnest
+    T ell S ε hlabel ξ hξ hξnorm hsym hC hR a t W L F E A B M w φ v δ r remainder
   done
 
 end Matrix
