@@ -87,6 +87,8 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
     (∀ j g, BF j g = BE j g) ∧ MF = ME := by
   classical
   intro ιE ιF changeSite e ZE WE WF Q F extRegion AE AF BE BF ME MF
+  have hdim : replicaDim ιF = replicaDim ιE :=
+    Fintype.card_congr (Equiv.piCongrRight changeSite)
   done
 
 /-- The compressed original prevector is unchanged when the selected
