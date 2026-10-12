@@ -131,6 +131,15 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     hΦ.1, hΦ.2, ?_, ?_, ?_⟩
   case refine_2 =>
     have hinner := inner_schmidtBellSitePrevector β X E k ΩX hz (ell k) φ hφBell
+    have hpair :=
+      ((isSymmetric_toEuclideanLin_iff.mpr
+        (isHermitian_mul_mul_conjTranspose J
+          (isHermitian_symProj (Ω := ((o : Option ↥(Xᶜ)) → ιe o)) (k := k))))
+        (WithLp.toLp 2 (φ ∘ τ)) v).symm.trans
+        ((congrArg (fun w : EuclideanSpace ℂ (Config k ι₀) ↦ inner ℂ w v)
+          hΦ.2).trans
+          ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).inner_map_map φ
+            (schmidtBellSitePrevector β X E k ΩX (ell k))))
     done
   all_goals done
 
