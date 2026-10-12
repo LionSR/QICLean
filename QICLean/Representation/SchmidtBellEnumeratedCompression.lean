@@ -97,6 +97,13 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
       subsystemPerm k ιF R σ (e.symm x) = e.symm (subsystemPerm k ιE R σ x) := by
     simpa only [e, Equiv.apply_symm_apply, Equiv.symm_apply_apply] using
       congrArg e.symm (subsystemPerm_piCongrRight ιE ιF changeSite k R σ (e.symm x))
+  have hW (R : Finset (Option (Option V))) : WF R = (WE R).submatrix e e := by
+    simpa only [WF, WE, replicaMetric, hw, labelObservable_eq_groupAlgebraRep,
+      Matrix.reindex_apply, Equiv.symm_symm] using
+      (groupAlgebraRep_of_intertwine e.symm
+        (φ := subsystemPerm k ιE R) (ψ := subsystemPerm k ιF R) (hact R)
+        (∑ ell : IrrepLabel (Equiv.Perm (Fin k)),
+          (replicaLabelWeight ιE t ell : ℂ) • IrrepLabel.centralIdem ell))
   done
 
 /-- The compressed original prevector is unchanged when the selected
