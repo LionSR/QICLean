@@ -66,6 +66,8 @@ theorem rootPath_compressed_bandProduct
       (commute_symProj_bandMetric t k (D.leafPart j g)).symm.eq
       (commute_symProj_bandMetric t k (D.leafPart j g)).symm
     ⟨h.2.1, h.2.2.1⟩
+  have hPZ : symProj (copyPerm (SiteConfig n) k) * Z = Z := by
+    rw [← hZZ, Matrix.mul_assoc, hZ, Matrix.mul_one]
   done
 
 end TensorPower.ReplicaTransport.TransportData
