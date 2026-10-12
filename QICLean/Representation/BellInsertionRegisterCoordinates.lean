@@ -64,6 +64,7 @@ theorem bellInsertion_submatrix_C_equiv
     JD = JC.submatrix e id := by
   intro ιC ιD changeSite e exterior JC JD
   ext x y
-  rfl
+  dsimp only [JD, JC, Matrix.submatrix_apply, addedSiteInsertion]
+  done
 
 end TensorPower
