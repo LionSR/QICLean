@@ -108,6 +108,8 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
               (labelCutoff (subsystemPerm k ι₀ (extRegion (U j g ∪ Y j g))) a) Φ = Φ := by
   classical
   intro ΩX ψ Ψ q hmass
+  have hw := eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
+    β Ω X E hΩ hz regions hnested hdisjoint ell hmass
   done
 
 end FiniteProduct
