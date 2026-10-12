@@ -178,7 +178,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
           (WithLp.toLp 2 (φ ∘ τ)) = WithLp.toLp 2 (φ ∘ τ) := by
       have htransport := hpull _ (hmatched Q D hD hXQ hDQ hexc)
       rw [labelCutoff_schmidtBellWitnessEquiv_exterior β X E k Q a] at htransport
-      done
+      exact htransport
     done
   all_goals done
 
