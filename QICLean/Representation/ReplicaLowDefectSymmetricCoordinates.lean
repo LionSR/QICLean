@@ -67,10 +67,8 @@ theorem isStarProjection_compressed_replicaLowDefectProjection
     Ω hΩ k ellC ellR τ
   have hPS : P * S = P := by
     change (_ * _ * S) * S = _ * _ * S
-    obtain ⟨l, hl⟩ := exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
-      (X := (Fin k → ι 0 × (ι 1 × ι 2)) × ((Fin k → ι 3) × (Fin k → ι 4)))
-    simp only [S, Matrix.mul_assoc, ← hl (replicaJointCopyPerm (ι 0 × (ι 1 × ι 2))
-      (ι 3) (ι 4) k), labelProj_mul_self]
+    simp only [S, Matrix.mul_assoc, (isStarProjection_symProj (replicaJointCopyPerm
+      (ι 0 × (ι 1 × ι 2)) (ι 3) (ι 4) k)).isIdempotentElem.eq]
   have hPe : IsStarProjection (P.submatrix e e) := by
     refine ⟨?_, (hP.isSelfAdjoint.isHermitian.submatrix e).isSelfAdjoint⟩
     change P.submatrix e e * P.submatrix e e = P.submatrix e e

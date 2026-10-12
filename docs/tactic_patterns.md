@@ -11,6 +11,22 @@ No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
+### The invariant projector is an orthogonal projection — promoted (2026-10-12)
+
+- **Pattern:** Obtain a label `l₀` from `exists_labelProj_eq_symProj`,
+  rewrite the invariant projector as `labelProj φ l₀`, and assemble
+  `IsStarProjection` from `labelProj_mul_self` and `isHermitian_labelProj`.
+- **Result:** `PermutationRepresentation.isStarProjection_symProj` in
+  `QICLean/Representation/TrivialLabel.lean`, for every finite group and
+  permutation action.
+- **Consumers:** `ReplicaBadCopyExponential`, `GroupedLabelSymmetricSupport`,
+  `ReplicaLowDefectProjection`, `RegionalLowDefectProjection`,
+  `ReplicaSymmetricMetricFloor` (twice) and
+  `ReplicaLowDefectSymmetricCoordinates`.
+- **Decision:** A lemma suffices; no tactic is introduced. The remaining
+  inline derivations in the Bell-pinned modules can switch to the lemma
+  when those modules are next edited.
+
 ### Operator norm in orthonormal coordinates — promoted (2026-10-08)
 
 - **Pattern:** Identify the matrix of a continuous linear map in finite

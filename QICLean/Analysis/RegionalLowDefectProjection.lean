@@ -112,14 +112,8 @@ theorem globalReplicaLowDefectProjection_properties
     rw [Matrix.submatrix_mul_equiv, hP₀.isIdempotentElem.eq]
   have hP₀Q₀ : P₀ * Q₀ = P₀ := by
     change (_ * _ * Q₀) * Q₀ = _ * _ * Q₀
-    rw [Matrix.mul_assoc, ((exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
-      (X := (Fin k → ((v : V) → β v)) × ((Fin k → C) × (Fin k → R)))).elim
-        (fun l hl => Eq.mp (congrArg IsStarProjection
-          (hl (replicaJointCopyPerm ((v : V) → β v) C R k)))
-            (show IsStarProjection
-              (labelProj (replicaJointCopyPerm ((v : V) → β v) C R k) l) from
-        ⟨labelProj_mul_self _ l,
-          (isHermitian_labelProj _ l).isSelfAdjoint⟩))).isIdempotentElem.eq]
+    rw [Matrix.mul_assoc, (isStarProjection_symProj
+      (replicaJointCopyPerm ((v : V) → β v) C R k)).isIdempotentElem.eq]
   have hPQ : P * Q = P := by
     dsimp only [Q]
     rw [← symProj_replicaJointCopyPerm_submatrix_globalReplicaCopiesEquiv β C R k]

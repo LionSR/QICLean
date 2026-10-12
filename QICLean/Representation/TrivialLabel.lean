@@ -18,7 +18,8 @@ permutations of a tensor power this identifies the projector `Π_k` onto the sym
 ## Main declarations
 
 * `IrrepLabel.averagingElement`, `IrrepLabel.exists_centralIdem_eq_averagingElement`.
-* `PermutationRepresentation.exists_labelProj_eq_symProj`.
+* `PermutationRepresentation.exists_labelProj_eq_symProj`,
+  `PermutationRepresentation.isStarProjection_symProj`.
 -/
 
 open MonoidAlgebra
@@ -176,5 +177,14 @@ theorem exists_labelProj_eq_symProj :
     ∃ l₀ : IrrepLabel G, ∀ φ : G →* Equiv.Perm X, labelProj φ l₀ = symProj φ := by
   obtain ⟨l₀, hl₀⟩ := IrrepLabel.exists_centralIdem_eq_averagingElement (G := G)
   exact ⟨l₀, fun φ => by rw [labelProj, hl₀, groupAlgebraRep_averagingElement]⟩
+
+/-- The invariant projector `Π = |G|⁻¹ ∑_g U(g)` of a finite permutation action is an
+orthogonal projection. The coordinate set may be empty. For the copy permutations of the
+five factors this is the simultaneous symmetric projection in the area-law manuscript,
+`07-comparators.tex`, lines 427–439. -/
+theorem isStarProjection_symProj (φ : G →* Equiv.Perm X) : IsStarProjection (symProj φ) := by
+  obtain ⟨l₀, hl₀⟩ := exists_labelProj_eq_symProj (G := G) (X := X)
+  rw [← hl₀ φ]
+  exact ⟨labelProj_mul_self φ l₀, (isHermitian_labelProj φ l₀).isSelfAdjoint⟩
 
 end PermutationRepresentation
