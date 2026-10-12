@@ -169,19 +169,18 @@ shortened module path with the `QICLean/` prefix dropped — for example
 **What CI runs**, under `.github/workflows/`:
 
 - `pr-ci.yml` — the main pipeline on pushes and pull requests: builds the
-  library and runs the text-based style linter, checks that Lean
-  compilation times for changed modules stay under their limit, enforces
-  module-length and numbered-sequel-file policies, and compiles the
-  blueprint (including its reader-facing prose checks).
+  library and runs the text-based style linter, elaborates the changed Lean
+  files and every affected test strictly (selected by
+  `scripts/ci_lean_checks.py`, so new modules and tests need no workflow
+  edit), checks that Lean compilation times for changed modules stay under
+  their limit, enforces module-length and numbered-sequel-file policies,
+  checks that the generated `QICLean.lean` aggregator is complete, and
+  compiles the blueprint (including its reader-facing prose checks).
 - `blueprint.yml` — compiles and deploys the blueprint (web and PDF) on
   pushes to `main` that touch Lean or blueprint files.
-- `badges.yml` — weekly (and manually triggerable) refresh of the README
-  status badges (sorry/axiom counts, Lean/Mathlib versions, and blueprint
-  `\leanok` coverage).
 - `docgen.yml` — a weekly (and manually triggerable) full API-documentation
-  build.
-- `import-completeness.yml` — checks that the generated `QICLean.lean`
-  aggregator is complete after a change to it.
+  build, which also refreshes the README status badges (sorry/axiom counts,
+  Lean/Mathlib versions, and blueprint `\leanok` coverage).
 - `update.yml` — a manually triggered dependency-update check.
 - `create-release.yml` — creates a release when the version changes.
 
