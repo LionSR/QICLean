@@ -166,6 +166,11 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
         (pow_nonneg (div_nonneg hz.le (sq_nonneg (E.card : ℝ))) k))
   case refine_3 =>
     intro K U Y Bsh Bexc hsh hXY hmatch a extRegion j g
+    have hmatched (Q D : Finset V) (hD : D ∈ regions) (hXQ : Disjoint X Q)
+        (hDQ : D ⊆ Q ∨ Q ⊆ D)
+        (hexc : 1 + Real.log (Fintype.card (Configuration β (D ∆ Q))) ≤ Bexc) :=
+      toEuclideanLin_compressedPhysicalCutoff_of_matched β Ω X E k regions hD
+        (hdisjoint D hD) hXQ hDQ hz (hsh D hD) hexc φ hφcuts
     done
   all_goals done
 
