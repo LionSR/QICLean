@@ -68,6 +68,11 @@ theorem rootPath_compressed_bandProduct
     ⟨h.2.1, h.2.2.1⟩
   have hPZ : symProj (copyPerm (SiteConfig n) k) * Z = Z := by
     rw [← hZZ, Matrix.mul_assoc, hZ, Matrix.mul_one]
+  have hext (j : Σ h, Option (C h)) (g : Fin K) :
+      symBandMetric n t k (D.leafPart j g) * Z = Z * B j g := by
+    simpa only [symBandMetric, Matrix.add_mul, Matrix.sub_mul, Matrix.one_mul,
+      (commute_symProj_bandMetric t k (D.leafPart j g)).eq, Matrix.mul_assoc,
+      hPZ, sub_self, add_zero] using (hleaf j g).2
   done
 
 end TensorPower.ReplicaTransport.TransportData
