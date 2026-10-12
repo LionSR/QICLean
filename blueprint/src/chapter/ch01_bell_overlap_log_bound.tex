@@ -1,0 +1,45 @@
+\section{The logarithmic consequence of a Bell overlap}
+
+\begin{definition}[The overlap remainder]
+    \label{def:bell_overlap_remainder}
+    \lean{Real.bellOverlapRemainder}
+    For natural numbers $d,K,k$ and $c\in\R$, put
+    \begin{align*}
+        R_{d,c,K}(k)
+        =\frac{\log4+(d^2+cK)\log(k+2)}{k}.
+    \end{align*}
+    The estimates below concern positive $k$.
+\end{definition}
+
+\begin{theorem}[A logarithmic upper bound from the overlap]
+    \label{thm:bell_overlap_log_bound}
+    \lean{Real.neg_log_div_le_of_bell_overlap_bound}
+    \uses{def:bell_overlap_remainder}
+    Let $d,k$ be positive integers, $K$ a nonnegative integer, $z>0$,
+    $c\ge0$, and $0\le2s\le1$. Let $t,B,r\in\R$. Suppose that
+    \begin{align*}
+        \frac{(z/d^2)^k}{4(k+1)^{d^2}}
+        \le\bigl((k+2)^{cK}\exp(4tKkB)\bigr)^{2s}r.
+    \end{align*}
+    Then $r>0$ and
+    \begin{align*}
+        -\frac{\log r}{k}
+        \le2\log d-\log z+8stKB+R_{d,c,K}(k).
+    \end{align*}
+    The remainder is independent of $s,t,B,z$.
+\end{theorem}
+\begin{proof}
+    The left side of the assumed inequality and the coefficient of $r$
+    are positive. Thus $r>0$. Taking logarithms, expanding the products
+    and powers, and dividing by $k$ gives the stated leading terms with
+    remainder
+    \begin{align*}
+        \frac{\log4+d^2\log(k+1)+2scK\log(k+2)}{k}.
+    \end{align*}
+    Use $\log(k+1)\le\log(k+2)$ and $2s\le1$ to bound this remainder
+    by $R_{d,c,K}(k)$. This is the scalar step in
+    \cite[\texttt{07-comparators.tex}, lines 153--163 and 332--381]{OpenAI2026AreaLaw}.
+    In the physical comparison, $r$ is the squared inverse-power norm
+    of the original auxiliary-label prevector; the assumed overlap
+    inequality must be obtained for that same vector.
+\end{proof}

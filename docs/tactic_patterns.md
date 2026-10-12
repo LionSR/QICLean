@@ -802,3 +802,11 @@ projector, the defect cutoff, and the original auxiliary labels.
   A general norm inequality for folds should be considered at a third occurrence.
 - **Caveats:** No norm compatibility with the scalar action is needed; the
   contraction hypothesis concerns the additive seminorm directly.
+
+### Logarithmic consequences of positive overlap bounds — existing lemmas (2026-10-12)
+
+The scalar Bell-overlap estimate derives positivity before using
+`Real.log_le_log`. Existing logarithm rules for products, quotients,
+natural powers, real powers and exponentials give the exact leading term.
+Monotonicity then bounds the polynomial error uniformly in the inverse-power
+exponent. No new logarithm tactic is needed.
