@@ -115,6 +115,7 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
     exists_replicaMetric_compressed_bell_inverse_norm_bound
       (S := S) β X E (Fin E.card) ht
   refine ⟨c, hc, (hw.and (eventually_ge_atTop 1)).mono (fun k ⟨hw, hk⟩ ↦ ?_)⟩
+  obtain ⟨Φ, hΦ, _, _, _, hover, hcuts⟩ := hw
   done
 
 end FiniteProduct
