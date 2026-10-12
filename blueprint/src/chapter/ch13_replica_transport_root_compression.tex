@@ -3,6 +3,7 @@
 \begin{theorem}[Ordered products through a rectangular intertwiner]
     \label{thm:matrix_ordered_product_intertwining}
     \lean{Matrix.listProd_ofFn_intertwine}
+    \leanok
     Let $R$ be a semiring, let $I,J$ be finite index sets, and fix
     $Z\in R^{I\times J}$. For $0\leq g<K$, let
     $A_g\in R^{I\times I}$ and $B_g\in R^{J\times J}$ satisfy
@@ -15,6 +16,7 @@
     includes $K=0$ and empty index sets.
 \end{theorem}
 \begin{proof}
+    \leanok
     The empty products give $I_IZ=ZI_J$. If $LZ=ZM$, then
     $(A_gL)Z=A_g(ZM)=(A_gZ)M=Z(B_gM)$. Induction over the ordered
     factors proves the assertion.
@@ -23,6 +25,7 @@
 \begin{theorem}[Compression of the transport root]
     \label{thm:replica_transport_root_compression}
     \lean{TensorPower.ReplicaTransport.TransportData.rootPath_compressed_bandProduct}
+    \leanok
     Let the site dimensions be positive and let $t\geq 0$.
     Fix admissible transport data: a weighted history tree and its conditional
     choice trees, with positive history and conditional weights, old
@@ -52,6 +55,7 @@
 \begin{proof}
     \uses{lem:replica_symmetric_metric,thm:mean_intertwiner_root,thm:mean_tree_properties,
         thm:matrix_ordered_product_intertwining}
+    \leanok
     Each $A_{j,g}$ is positive definite and commutes with $\Pi$.
     The equations for $Z$ give $\Pi Z=Z$, hence
     $A_{j,g}Z=ZB_{j,g}$ and $\widetilde A_{j,g}Z=ZB_{j,g}$.

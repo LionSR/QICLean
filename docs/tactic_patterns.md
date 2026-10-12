@@ -40,7 +40,8 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Consumers:** `ReplicaBadCopyExponential`, `GroupedLabelSymmetricSupport`,
   `ReplicaLowDefectProjection`, `RegionalLowDefectProjection`,
   `ReplicaSymmetricMetricFloor` (twice) and
-  `ReplicaLowDefectSymmetricCoordinates`.
+  `ReplicaLowDefectSymmetricCoordinates`, and
+  `BellPinnedCompressedPowers` (the idempotence field).
 - **Decision:** A lemma suffices; no tactic is introduced. The remaining
   inline derivations in the Bell-pinned modules can switch to the lemma
   when those modules are next edited.
