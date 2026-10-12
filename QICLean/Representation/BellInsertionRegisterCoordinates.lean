@@ -37,7 +37,7 @@ theorem subsystemPerm_piCongrRight
     e (subsystemPerm k κ Q σ x) = subsystemPerm k ι Q σ (e x) := by
   intro e
   funext j f
-  done
+  simp only [e, Equiv.piCongrRight_apply, Pi.map_apply, subsystemPerm_apply, apply_ite]
 
 /-- Enumerating C changes only the rows of the actual Bell insertion. The
 exterior columns and the original R register remain fixed. Source:
