@@ -46,10 +46,8 @@ exterior columns and the original R register remain fixed. Source:
 area-law manuscript, `07-comparators.tex`, lines 283--308. -/
 theorem bellInsertion_submatrix_C_equiv
     {V : Type u} [Fintype V] [DecidableEq V]
-    (β : V → Type u) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+    (β : V → Type u)
     (X : Finset V) (C D R : Type u)
-    [Fintype C] [DecidableEq C] [Fintype D] [DecidableEq D]
-    [Fintype R] [DecidableEq R]
     (c : D ≃ C) (k : ℕ) (b : FiniteProduct.Configuration β X × C → ℂ) :
     let ιC := addedSiteSpace (addedSiteSpace β C) R
     let ιD := addedSiteSpace (addedSiteSpace β D) R
@@ -69,9 +67,9 @@ theorem bellInsertion_submatrix_C_equiv
   ext x y
   dsimp only [JD, JC, Matrix.submatrix_apply, addedSiteInsertion]
   simp only [bellInsertionCopyEquiv, Equiv.piCongrRight_apply, Pi.map_apply,
-    bellInsertionSiteEquiv, Equiv.coe_fn_mk, e, changeSite, Equiv.refl_apply, id_eq]
+    bellInsertionSiteEquiv, Equiv.coe_fn_mk, e, changeSite, id_eq]
   dsimp only [Equiv.piCongrRight, Equiv.refl, Pi.map]
-  simp only [Equiv.coe_fn_mk, Pi.map_apply, id_eq]
+  simp only [Equiv.coe_fn_mk, Pi.map_apply]
   congr 1
   congr 2
   exact funext fun j ↦ funext fun
