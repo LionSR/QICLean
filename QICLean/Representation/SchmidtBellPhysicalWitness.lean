@@ -189,6 +189,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
           ((hXY j g).mono_right Finset.subset_union_left) hD.2.1 hD.2.2),
       (hmatch j g (U j g ∪ Y j g) (Or.inr rfl)).elim (fun D hD ↦
         hcut (U j g ∪ Y j g) D hD.1 (hXY j g) hD.2.1 hD.2.2)⟩
-  all_goals done
+  case refine_1 =>
+    simpa only [τ, labelProj_schmidtBellWitnessEquiv_auxiliary] using! hpull _ hφlabel
 
 end FiniteProduct
