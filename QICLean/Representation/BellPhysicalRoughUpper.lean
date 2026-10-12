@@ -51,7 +51,6 @@ local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
 local instance bellPhysicalRoughUpperConfigDecidableEq (k : ℕ) :
     DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
 
-set_option diagnostics true in
 open Classical in
 /-- The rough upper estimate for the original supplied-label prevector and
 actual compressed band metric. The auxiliary-mass premise belongs to the
@@ -70,7 +69,7 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
     let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun k ↦
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ιe {none}) (ell k)) (Ψ k)‖ ^ 2
