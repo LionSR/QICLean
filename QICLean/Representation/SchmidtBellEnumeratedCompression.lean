@@ -109,6 +109,9 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
   have hrecover : ZE.submatrix e (id : Fin n → Fin n) = ZF := by
     simp only [ZE, Matrix.submatrix_submatrix, Function.comp_id, Equiv.symm_comp_self,
       Matrix.submatrix_id_id]
+  have hB (j : S) (g : Fin K) : BF j g = BE j g := by
+    simp only [BF, BE, hA, ← hrecover, Matrix.conjTranspose_submatrix,
+      Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id]
   done
 
 /-- The compressed original prevector is unchanged when the selected
