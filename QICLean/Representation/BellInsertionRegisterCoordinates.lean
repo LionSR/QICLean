@@ -63,6 +63,7 @@ theorem bellInsertion_submatrix_C_equiv
       (fun x ↦ b (x.1, c x.2))).submatrix (bellInsertionCopyEquiv β X D R k) id
     JD = JC.submatrix e id := by
   intro ιC ιD changeSite e exterior JC JD
+  ext x y
   done
 
 end TensorPower
