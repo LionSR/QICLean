@@ -87,6 +87,7 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
   classical
   obtain ⟨c, hc, hC⟩ := exists_replicaPinnedTree_inverse_norm_bound (J := S) ι₀ ht
   refine ⟨c, hc, fun k n Z hZ hZZ K U Y hdisj hnest b hb T a φ u hφ ↦ ?_⟩
+  intro E hcuts s hs e J Pe P W Q F A B M
   done
 
 end TensorPower
