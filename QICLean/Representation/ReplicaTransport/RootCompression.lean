@@ -58,6 +58,7 @@ theorem rootPath_compressed_bandProduct
     let M := (List.ofFn fun g : Fin K ↦ T.eval (B · g)).prod
     M.PosDef ∧ D.rootPath n t k p * Z = Z * M := by
   classical
+  intro T A B M
   done
 
 end TensorPower.ReplicaTransport.TransportData
