@@ -1,5 +1,25 @@
 \section{The transport root in symmetric coordinates}
 
+\begin{theorem}[Ordered products through a rectangular intertwiner]
+    \label{thm:matrix_ordered_product_intertwining}
+    \lean{Matrix.listProd_ofFn_intertwine}
+    Let $R$ be a semiring, let $I,J$ be finite index sets, and fix
+    $Z\in R^{I\times J}$. For $0\leq g<K$, let
+    $A_g\in R^{I\times I}$ and $B_g\in R^{J\times J}$ satisfy
+    $A_gZ=ZB_g$. Then
+    \begin{align*}
+        \left(\prod_{g=0}^{K-1}A_g\right)Z
+        & = Z\left(\prod_{g=0}^{K-1}B_g\right),
+    \end{align*}
+    where both products are taken in increasing order. The assertion
+    includes $K=0$ and empty index sets.
+\end{theorem}
+\begin{proof}
+    The empty products give $I_IZ=ZI_J$. If $LZ=ZM$, then
+    $(A_gL)Z=A_g(ZM)=(A_gZ)M=Z(B_gM)$. Induction over the ordered
+    factors proves the assertion.
+\end{proof}
+
 \begin{theorem}[Compression of the transport root]
     \label{thm:replica_transport_root_compression}
     \lean{TensorPower.ReplicaTransport.TransportData.rootPath_compressed_bandProduct}
@@ -30,7 +50,8 @@
     every band, including at the endpoints of the interpolation.
 \end{theorem}
 \begin{proof}
-    \uses{lem:replica_symmetric_metric,thm:mean_intertwiner_root,thm:mean_tree_properties}
+    \uses{lem:replica_symmetric_metric,thm:mean_intertwiner_root,thm:mean_tree_properties,
+        thm:matrix_ordered_product_intertwining}
     Each $A_{j,g}$ is positive definite and commutes with $\Pi$.
     The equations for $Z$ give $\Pi Z=Z$, hence
     $A_{j,g}Z=ZB_{j,g}$ and $\widetilde A_{j,g}Z=ZB_{j,g}$.

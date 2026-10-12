@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.ReplicaSymmetricBandCommute
+import QICLean.Algebra.MatrixProductIntertwine
 
 /-!
 # The common-tree product in fixed symmetric coordinates
@@ -59,14 +60,8 @@ theorem replicaMetric_symProj_meanTree_eq_product
   obtain ⟨hleaf, hcomm⟩ :=
     replicaMetric_symProj_compressions_posDef_commute ι k n Z hZ hZZ ht K Q Y hdisj hnest
   have hprod (j : J) :
-      (List.ofFn (A j)).prod * Z = Z * (List.ofFn (B j)).prod := by
-    have h := List.prod_hom_rel (List.ofFn (id : Fin K → Fin K))
-      (r := fun L R => L * Z = Z * R) (f := A j) (g := B j)
-      (by simp only [Matrix.one_mul, Matrix.mul_one]) (by
-        intro g L R hLR
-        rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc,
-          (hleaf j g).2.1, Matrix.mul_assoc])
-    simpa only [List.map_ofFn, Function.comp_id] using h
+      (List.ofFn (A j)).prod * Z = Z * (List.ofFn (B j)).prod :=
+    Matrix.listProd_ofFn_intertwine Z (fun g ↦ (hleaf j g).2.1)
   have hcompression (j : J) :
       Zᴴ * (List.ofFn (A j)).prod * Z = (List.ofFn (B j)).prod := by
     rw [Matrix.mul_assoc, hprod, ← Matrix.mul_assoc, hZ, one_mul]

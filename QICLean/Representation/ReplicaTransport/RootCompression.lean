@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.ReplicaTransport.Energy
+import QICLean.Algebra.MatrixProductIntertwine
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.IsometricIntertwiningCommute
 import QICLean.Analysis.OperatorMean.MeanTreeIntertwine
@@ -90,15 +91,7 @@ theorem rootPath_compressed_bandProduct
       (fun j ↦ (hleaf j g).1) Z (fun j ↦ hext j g) T
   have hprod :
       (List.ofFn fun g ↦ T.eval (fun j ↦ symBandMetric n t k (D.leafPart j g))).prod * Z =
-        Z * M := by
-    have h := List.prod_hom_rel (List.ofFn (id : Fin K → Fin K))
-      (r := fun L R ↦ L * Z = Z * R)
-      (f := fun g ↦ T.eval (fun j ↦ symBandMetric n t k (D.leafPart j g)))
-      (g := fun g ↦ T.eval (B · g))
-      (by simp only [Matrix.one_mul, Matrix.mul_one]) (by
-        intro g L R hLR
-        rw [Matrix.mul_assoc, hLR, ← Matrix.mul_assoc, hband g, Matrix.mul_assoc])
-    simpa only [M, List.map_ofFn, Function.comp_id] using h
+        Z * M := Matrix.listProd_ofFn_intertwine Z hband
   have hroot : D.rootPath n t k p =
       (List.ofFn fun g ↦ T.eval (fun j ↦ symBandMetric n t k (D.leafPart j g))).prod :=
     (congrArg (fun inputs ↦ T.eval inputs)

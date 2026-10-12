@@ -7,6 +7,24 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Ordered products of rectangular intertwiners — promoted (2026-10-12)
+
+- **Pattern:** From `A g * Z = Z * B g` for every factor, derive the same
+  equation for the two ordered products. Three proofs used
+  `List.prod_hom_rel`, the same rectangular associativity calculation, and
+  `List.map_ofFn`.
+- **Result:** `Matrix.listProd_ofFn_intertwine` in
+  `QICLean/Algebra/MatrixProductIntertwine.lean`, over an arbitrary semiring
+  and arbitrary finite row and column index types.
+- **Consumers:** `ReplicaSymmetricMeanTreeProduct`,
+  `BellPinnedCompressedPowers`, and `ReplicaTransport/RootCompression`.
+  Each now applies the common lemma once.
+- **Decision:** A mathematical lemma suffices; no tactic is introduced.
+  It preserves the original order, including an empty product, and needs
+  no positivity, commutation, nonempty coordinate set, or isometry.
+  `BellPinnedProductAction` retains its separate direct use of
+  `List.rel_prod`; positivity of its exterior product is proved separately.
+
 No new tactic or automation is introduced for shifted spectral truncation.
 The proofs reuse existing functional-calculus identities, projection
 rank/trace comparison, range-of-composition, and scalar real-power bounds.
@@ -877,14 +895,6 @@ with the full subsystem; the group-algebra argument is not repeated.
 The inserted vector need not be unit for these identities. Unit norm is
 used only to conclude that the inserted symmetric operator is a projection.
 Every replica weight retains the original full-family dimension.
-
-### Ordered products of rectangular intertwiners — existing lemma (2026-10-11)
-
-The Bell band product uses `List.rel_prod` to multiply rectangular
-intertwining equations in their given order. The original roots need not
-commute. Positivity of the exterior product follows separately from
-`replicaPinnedTree_eval_eq_prod` and the positive ordered leaves, with the
-same original full-family weights. Empty products remain included.
 
 ### Real powers with fixed symmetric coordinates — planned existing-lemma use
 
