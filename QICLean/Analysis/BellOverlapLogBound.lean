@@ -54,6 +54,23 @@ theorem neg_log_div_le_of_bell_overlap_bound (d K k : ℕ) (hd : 0 < d) (hk : 1 
     0 < r ∧ -Real.log r / (k : ℝ) ≤
       2 * Real.log (d : ℝ) - Real.log z + 8 * s * t * (K : ℝ) * B +
         bellOverlapRemainder d c K k := by
-  done
+  have hleft : 0 < (z / (d : ℝ) ^ 2) ^ k /
+      (4 * (((k + 1 : ℕ) : ℝ) ^ (d ^ 2))) := by positivity
+  have hcoef : 0 < (((k : ℝ) + 2) ^ (c * (K : ℝ)) *
+      Real.exp (4 * t * (K : ℝ) * (k : ℝ) * B)) ^ (2 * s) := by positivity
+  have hr : 0 < r := pos_of_mul_pos_right (hleft.trans_le hbound) hcoef.le
+  have hlog := Real.log_le_log hleft hbound
+  simp (disch := positivity) only [Real.log_div, Real.log_mul, Real.log_pow,
+    Real.log_rpow, Real.log_exp, Nat.cast_add, Nat.cast_pow, Nat.cast_one, Nat.cast_ofNat] at hlog
+  have hdim := mul_le_mul_of_nonneg_left
+    (Real.log_le_log (by positivity) (by linarith : (k : ℝ) + 1 ≤ (k : ℝ) + 2))
+    (sq_nonneg (d : ℝ))
+  have hpoly := mul_le_mul_of_nonneg_right hs.2
+    (mul_nonneg (mul_nonneg hc (Nat.cast_nonneg K))
+      (Real.log_nonneg (by linarith [Nat.cast_nonneg (α := ℝ) k] : 1 ≤ (k : ℝ) + 2)))
+  refine ⟨hr, (div_le_iff₀ (Nat.cast_pos.mpr (Nat.succ_le_iff.mp hk))).2 ?_⟩
+  rw [bellOverlapRemainder, add_mul,
+    div_mul_cancel₀ _ (ne_of_gt (Nat.cast_pos.mpr (Nat.succ_le_iff.mp hk)))]
+  nlinarith only [hlog, hdim, hpoly]
 
 end Real
