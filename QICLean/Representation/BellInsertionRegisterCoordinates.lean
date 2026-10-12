@@ -38,6 +38,8 @@ theorem subsystemPerm_piCongrRight
   intro e
   funext j f
   simp only [e, Equiv.piCongrRight_apply, Pi.map_apply, subsystemPerm_apply, apply_ite]
+  exact if hf : f ∈ Q then by simp only [hf, ite_true]
+    else by simp only [hf, ite_false]
 
 /-- Enumerating C changes only the rows of the actual Bell insertion. The
 exterior columns and the original R register remain fixed. Source:
