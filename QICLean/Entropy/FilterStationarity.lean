@@ -24,11 +24,13 @@ Hermitian, and `L` commutes with `ρ`. No commutation between distinct filters i
 
 ## Main results
 
-* `Entropy.re_inner_commutator_eq_zero_of_isLocalMax`: the first-order condition.
+* `Entropy.re_inner_commutator_eq_zero_of_isLocalExtr`: the first-order condition.
 * `Entropy.isHermitian_of_re_trace_mul_skew_eq_zero`,
   `Entropy.commute_of_isHermitian_inv_mul_mul`: the matrix consequences.
 * `Entropy.inner_liftProd_conj`: the descending trace argument for a chain of filters.
-* `Entropy.commute_regionState_of_unitary_max`: stationarity of one filter.
+* `Entropy.commute_regionState_of_unitary_extr`: stationarity of one filter, with the
+  maximum and minimum cases `commute_regionState_of_unitary_max` and
+  `commute_regionState_of_unitary_min`.
 
 ## References
 
@@ -67,13 +69,14 @@ noncomputable def mulApplyCLM {p : Type*} [Fintype p] [DecidableEq p]
       map_smul' := fun c X ↦ by simp }
 
 /-- **First-order condition under unitary conjugation.** If
-`t ↦ ‖A Φ(e^{tB} K e^{-tB}) w‖²` has a local maximum at `t = 0` for a linear map `Φ`, then
+`t ↦ ‖A Φ(e^{tB} K e^{-tB}) w‖²` has a local extremum at `t = 0` for a linear map `Φ`, then
 `Re ⟨A Φ(K) w, A Φ(B K - K B) w⟩ = 0`.
-Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 358–366. -/
-theorem re_inner_commutator_eq_zero_of_isLocalMax {p : Type*} [Fintype p] [DecidableEq p]
+Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 358–366; the minimum case is
+used in the PEPS manuscript, `03-patches.tex`, lines 136–160. -/
+theorem re_inner_commutator_eq_zero_of_isLocalExtr {p : Type*} [Fintype p] [DecidableEq p]
     (Φ : Matrix m m ℂ →ₗ[ℂ] Matrix p p ℂ) (A : Matrix p p ℂ) (K B : Matrix m m ℂ)
     (w : EuclideanSpace ℂ p)
-    (hmax : IsLocalMax (fun t : ℝ ↦ ‖toEuclideanLin (A * Φ (NormedSpace.exp ((t : ℂ) • B) * K *
+    (hext : IsLocalExtr (fun t : ℝ ↦ ‖toEuclideanLin (A * Φ (NormedSpace.exp ((t : ℂ) • B) * K *
       NormedSpace.exp ((-(t : ℂ)) • B))) w‖ ^ 2) 0) :
     (⟪toEuclideanLin (A * Φ K) w, toEuclideanLin (A * Φ (B * K - K * B)) w⟫_ℂ).re = 0 := by
   have hMF := ((hasDerivAt_exp_conj B K).hasFDerivAt.restrictScalars ℝ)
@@ -95,7 +98,7 @@ theorem re_inner_commutator_eq_zero_of_isLocalMax {p : Type*} [Fintype p] [Decid
         NormedSpace.exp ((-(t : ℂ)) • B))) w := rfl
     rw [hvt, ← RCLike.re_to_complex, ← @norm_sq_eq_re_inner ℂ]
   rw [hfun] at hre
-  have h0 := hmax.hasDerivAt_eq_zero hre
+  have h0 := hext.hasDerivAt_eq_zero hre
   simp only [v, Function.comp_apply, Complex.reCLM_apply, Complex.add_re,
     Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero, Matrix.one_mul,
     Matrix.mul_one, ContinuousLinearMap.coe_restrictScalars',
@@ -105,6 +108,16 @@ theorem re_inner_commutator_eq_zero_of_isLocalMax {p : Type*} [Fintype p] [Decid
   change (⟪toEuclideanLin (A * Φ K) w, toEuclideanLin (A * Φ (B * K - K * B)) w⟫_ℂ).re +
     (⟪toEuclideanLin (A * Φ K) w, toEuclideanLin (A * Φ (B * K - K * B)) w⟫_ℂ).re = 0 at h0
   linarith
+
+/-- The maximum case of `re_inner_commutator_eq_zero_of_isLocalExtr`.
+Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 358–366. -/
+theorem re_inner_commutator_eq_zero_of_isLocalMax {p : Type*} [Fintype p] [DecidableEq p]
+    (Φ : Matrix m m ℂ →ₗ[ℂ] Matrix p p ℂ) (A : Matrix p p ℂ) (K B : Matrix m m ℂ)
+    (w : EuclideanSpace ℂ p)
+    (hmax : IsLocalMax (fun t : ℝ ↦ ‖toEuclideanLin (A * Φ (NormedSpace.exp ((t : ℂ) • B) * K *
+      NormedSpace.exp ((-(t : ℂ)) • B))) w‖ ^ 2) 0) :
+    (⟪toEuclideanLin (A * Φ K) w, toEuclideanLin (A * Φ (B * K - K * B)) w⟫_ℂ).re = 0 :=
+  re_inner_commutator_eq_zero_of_isLocalExtr Φ A K B w (Or.inr hmax)
 
 omit [DecidableEq m] in
 /-- A matrix whose trace pairing with every skew-Hermitian matrix has zero real part is
@@ -325,19 +338,23 @@ theorem toEuclideanLin_mul_apply' {m : Type*} [Fintype m] [DecidableEq m] (X Y :
     toEuclideanLin (X * Y) v = toEuclideanLin X (toEuclideanLin Y v) := by
   simp [toLpLin_apply, mulVec_mulVec]
 
-/-- **Stationarity of one filter.** Let `K > 0` on a region `D` maximize
+/-- **Stationarity of one filter.** Let `K > 0` on a region `D` maximize or minimize
 `‖A (K ⊗ 1) C w‖` over its unitary orbit, where `A` is the product of a descending chain for
 the output `ψ = A (K ⊗ 1) C w` whose regions contain `D`. Then `K` commutes with the regional
 state of `ψ` on `D`.
 Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 356–381,
-`eq:initial-filter-commutation`. -/
-theorem commute_regionState_of_unitary_max {D : Finset V}
+`eq:initial-filter-commutation`; PEPS manuscript, `03-patches.tex`, lines 136–168,
+`eq:patch-stationarity-commutation`. -/
+theorem commute_regionState_of_unitary_extr {D : Finset V}
     {K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ} (hK : K.PosDef)
     {outer : List (RegionFilter n)} (C : Matrix (SiteConfig n) (SiteConfig n) ℂ)
     (w : EuclideanSpace ℂ (SiteConfig n)) (σ₀ : SiteConfig n)
-    (hmax : ∀ U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, Uᴴ * U = 1 →
+    (hext : (∀ U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, Uᴴ * U = 1 →
       ‖toEuclideanLin (liftProd outer * localLift D (U * K * Uᴴ) * C) w‖ ≤
-        ‖toEuclideanLin (liftProd outer * localLift D K * C) w‖)
+        ‖toEuclideanLin (liftProd outer * localLift D K * C) w‖) ∨
+      (∀ U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, Uᴴ * U = 1 →
+        ‖toEuclideanLin (liftProd outer * localLift D K * C) w‖ ≤
+          ‖toEuclideanLin (liftProd outer * localLift D (U * K * Uᴴ) * C) w‖))
     (hchain : IsDescendingChain (toEuclideanLin (liftProd outer * localLift D K * C) w) outer)
     (hsub : ∀ p ∈ outer, D ⊆ p.1) :
     K * regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) =
@@ -353,15 +370,22 @@ theorem commute_regionState_of_unitary_max {D : Finset V}
   have hstat : ∀ b : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, bᴴ = -b →
       ((K⁻¹ * ρ * K * b).trace).re = 0 := by
     intro b hb
-    have hloc : IsLocalMax (fun t : ℝ ↦ ‖toEuclideanLin (A * Φ (NormedSpace.exp ((t : ℂ) • b) *
+    have hloc : IsLocalExtr (fun t : ℝ ↦ ‖toEuclideanLin (A * Φ (NormedSpace.exp ((t : ℂ) • b) *
         K * NormedSpace.exp ((-(t : ℂ)) • b))) w‖ ^ 2) 0 := by
-      refine Filter.Eventually.of_forall fun t ↦ ?_
-      simp only [hΦ, Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero,
-        Matrix.one_mul, Matrix.mul_one]
-      rw [← exp_smul_conjTranspose_of_skew hb t]
-      exact pow_le_pow_left₀ (norm_nonneg _) (hmax _
-        (exp_smul_conjTranspose_mul_self_of_skew hb t)) 2
-    have h1 := re_inner_commutator_eq_zero_of_isLocalMax Φ A K b w hloc
+      rcases hext with hmax | hmin
+      · refine Or.inr (Filter.Eventually.of_forall fun t ↦ ?_)
+        simp only [hΦ, Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero,
+          Matrix.one_mul, Matrix.mul_one]
+        rw [← exp_smul_conjTranspose_of_skew hb t]
+        exact pow_le_pow_left₀ (norm_nonneg _) (hmax _
+          (exp_smul_conjTranspose_mul_self_of_skew hb t)) 2
+      · refine Or.inl (Filter.Eventually.of_forall fun t ↦ ?_)
+        simp only [hΦ, Complex.ofReal_zero, zero_smul, neg_zero, NormedSpace.exp_zero,
+          Matrix.one_mul, Matrix.mul_one]
+        rw [← exp_smul_conjTranspose_of_skew hb t]
+        exact pow_le_pow_left₀ (norm_nonneg _) (hmin _
+          (exp_smul_conjTranspose_mul_self_of_skew hb t)) 2
+    have h1 := re_inner_commutator_eq_zero_of_isLocalExtr Φ A K b w hloc
     rw [hΦ, hΦ] at h1
     -- rewrite the derivative vector through the chain
     set Y := localLift D (b - K * b * K⁻¹)
@@ -390,6 +414,39 @@ theorem commute_regionState_of_unitary_max {D : Finset V}
     exact h1
   have hherm := isHermitian_of_re_trace_mul_skew_eq_zero hstat
   exact commute_of_isHermitian_inv_mul_mul hK (regionState_isHermitian D ψ) hherm
+
+/-- **Stationarity of one maximizing filter.** The maximum case of
+`commute_regionState_of_unitary_extr`.
+Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 356–381,
+`eq:initial-filter-commutation`. -/
+theorem commute_regionState_of_unitary_max {D : Finset V}
+    {K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ} (hK : K.PosDef)
+    {outer : List (RegionFilter n)} (C : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (w : EuclideanSpace ℂ (SiteConfig n)) (σ₀ : SiteConfig n)
+    (hmax : ∀ U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, Uᴴ * U = 1 →
+      ‖toEuclideanLin (liftProd outer * localLift D (U * K * Uᴴ) * C) w‖ ≤
+        ‖toEuclideanLin (liftProd outer * localLift D K * C) w‖)
+    (hchain : IsDescendingChain (toEuclideanLin (liftProd outer * localLift D K * C) w) outer)
+    (hsub : ∀ p ∈ outer, D ⊆ p.1) :
+    K * regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) =
+      regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) * K :=
+  commute_regionState_of_unitary_extr hK C w σ₀ (Or.inl hmax) hchain hsub
+
+/-- **Stationarity of one minimizing filter.** The minimum case of
+`commute_regionState_of_unitary_extr`.
+PEPS manuscript, `03-patches.tex`, lines 136–168, `eq:patch-stationarity-commutation`. -/
+theorem commute_regionState_of_unitary_min {D : Finset V}
+    {K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ} (hK : K.PosDef)
+    {outer : List (RegionFilter n)} (C : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (w : EuclideanSpace ℂ (SiteConfig n)) (σ₀ : SiteConfig n)
+    (hmin : ∀ U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, Uᴴ * U = 1 →
+      ‖toEuclideanLin (liftProd outer * localLift D K * C) w‖ ≤
+        ‖toEuclideanLin (liftProd outer * localLift D (U * K * Uᴴ) * C) w‖)
+    (hchain : IsDescendingChain (toEuclideanLin (liftProd outer * localLift D K * C) w) outer)
+    (hsub : ∀ p ∈ outer, D ⊆ p.1) :
+    K * regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) =
+      regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) * K :=
+  commute_regionState_of_unitary_extr hK C w σ₀ (Or.inr hmin) hchain hsub
 
 omit [Fintype V] [DecidableEq V] in
 /-- `A ⊗ 1` and `1 ⊗ B` commute. -/

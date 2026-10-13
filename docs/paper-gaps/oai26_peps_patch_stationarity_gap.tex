@@ -4,10 +4,10 @@
 \input{command}
 \title{The remaining stationarity step for the patch regulator}
 \author{}
-\date{2026-10-07}
+\date{2026-10-07; resolved 2026-10-13}
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{open}
+\gapnote{scope-restriction}{resolved}
 
 \section{Source argument}
 The September 24, 2026 manuscript \emph{Polynomial PEPS approximation of
@@ -37,7 +37,7 @@ $\operatorname{tr}T\le1/4$ at its stated starting radius. These are
 auxiliary implications with their hypotheses explicitly stated; they do not
 assert those hypotheses at every minimizer of the ordered patch objective.
 
-\section{Required continuation}
+\section{Original continuation}
 The remaining work is to derive the commutation and derivative identities
 for the actual ordered objective by descending trace calculations, with
 the same normalized output marginals as in the source. Closed-simplex
@@ -47,4 +47,32 @@ A separable scalar shifted-power objective is sufficient for the last-filter
 calculation; it must not be identified with the full ordered objective
 without this argument. Until the continuation is proved, the unconditional
 active-minimizer trace bound and Proposition 4.1 remain unformalized.
+
+\section{Resolution}
+The continuation is proved in \path{QICLean/Entropy/PatchStationarity.lean}.
+For an ordered list of factors with nested regions, positive exponents and
+density matrices $x_j$ minimizing $\|L_m\cdots L_1\Omega\|$ over the
+densities, every regional state $\rho_j$ of the normalized output satisfies
+$[x_j,\rho_j]=0$ and $\rho_j\le x_j+bI$ (\texttt{Entropy.patch\_stationarity});
+consequently the regulator bounds hold at every minimizer
+(\texttt{Entropy.patch\_shiftedRegulator\_bounds}).
+No hypothesis beyond the source's is added.
+
+The commutation is proved in decreasing order of $j$ by the unitary variation
+$x_j\mapsto Ux_jU^*$ and the descending trace identity, as in the source.
+For the order, the source's coordinate conditions
+\texttt{eq:patch-simplex-derivative} and \texttt{eq:patch-kkt} are replaced by
+an equivalent operator argument. Vary $x_j$ along the segment toward a density
+$y$ commuting with $x_j$; the one-sided first-order condition and the
+descending trace identity give
+$\operatorname{Re}\operatorname{tr}(Gy)\le\operatorname{Re}\operatorname{tr}(Gx_j)=:\lambda$
+with $G=\rho_j(x_j+bI)^{-1}$. Testing $y$ against the rank-one projections of a
+common eigenbasis of $G$ and $x_j$ gives $G\le\lambda I$, and
+$\lambda=\operatorname{tr}\rho_j-b\operatorname{tr}G\le1$. Hence
+$\rho_j=G(x_j+bI)\le\lambda(x_j+bI)\le x_j+bI$.
+
+The density order, projection rank and complementary tail bounds used by
+\texttt{Matrix.PosSemidef.trace\_shiftedRegulator\_le\_quarter} remain
+explicit hypotheses there; only the first two hypotheses of the regulator
+estimate (commutation and density order) are discharged here.
 \end{document}

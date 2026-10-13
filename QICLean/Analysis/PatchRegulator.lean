@@ -23,8 +23,9 @@ September 24, 2026, `03-patches.tex:397–413`, equation
 
 **Scope restriction (operator consequences):** The density order, projection
 rank, and complementary tail bounds are supplied explicitly where used.
-Their derivation from the native patch minimization problem remains separate;
-see `docs/paper-gaps/oai26_peps_patch_stationarity_gap.tex`.
+The commutation and density order at every minimizer of the patch objective
+are derived in `Entropy.patch_stationarity`; the rank and tail bounds remain
+explicit hypotheses. See `docs/paper-gaps/oai26_peps_patch_stationarity_gap.tex`.
 The proofs are original; no upstream Lean proof text is reused.
 -/
 

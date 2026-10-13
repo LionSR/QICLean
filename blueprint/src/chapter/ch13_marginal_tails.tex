@@ -405,10 +405,13 @@ depend on the common values there.
     \lean{Entropy.re_inner_commutator_eq_zero_of_isLocalMax,
         Entropy.isHermitian_of_re_trace_mul_skew_eq_zero,
         Entropy.commute_of_isHermitian_inv_mul_mul, Entropy.inner_liftProd_conj,
-        Entropy.commute_regionState_of_unitary_max}
+        Entropy.commute_regionState_of_unitary_max,
+        Entropy.re_inner_commutator_eq_zero_of_isLocalExtr,
+        Entropy.commute_regionState_of_unitary_extr,
+        Entropy.commute_regionState_of_unitary_min}
     \leanok
     \uses{lem:local_lift}
-    Let $K>0$ on a region $D$ maximize $\lVert A(K\otimes1)Cw\rVert$ over its
+    Let $K>0$ on a region $D$ maximize or minimize $\lVert A(K\otimes1)Cw\rVert$ over its
     unitary orbit, where $A$ is a product of invertible filters on regions
     containing $D$, each commuting with the regional state of the output
     $\psi=A(K\otimes1)Cw$ on its region. Then $K$ commutes with $\rho_{\psi,D}$.

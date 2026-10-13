@@ -5,9 +5,10 @@ Let $I$ be a finite index set. Matrix inequalities refer to the order defined
 by positive semidefiniteness. The following estimates give the operator and
 trace consequences used in \cite[Section~4, regulator estimate]{OpenAI2026PolynomialPEPS}.
 
-% These are auxiliary estimates with the displayed order, rank, and tail
-% hypotheses. They do not assert stationarity of the ordered patch objective
-% or Proposition 4.1 of the source manuscript.
+% The first three estimates take the displayed order, rank, and tail
+% hypotheses. The stationarity theorem below derives the commutation and the
+% order from minimality of the ordered patch objective. Proposition 4.1 of the
+% source manuscript is not asserted.
 
 \begin{theorem}[Projection trace estimate]
 \label{thm:patch_projection_trace}
@@ -71,4 +72,41 @@ The preceding two theorems give
 \end{align}
 Since $\log8\ge0$ and $u\ge0$, the radius assumption implies
 $-R+C(1+u)\le-\log8$. The exponential term is therefore at most $1/8$.
+\end{proof}
+
+\begin{theorem}[Stationarity of the ordered patch objective]
+\label{thm:patch_stationarity}
+\lean{Entropy.patch_stationarity, Entropy.patch_shiftedRegulator_bounds}
+\leanok
+\uses{lem:filter_stationarity,lem:commuting_hermitian,thm:patch_regulator_order}
+Let $X_1\subseteq\cdots\subseteq X_m$ be regions of a finite system, let
+$a_1,\dots,a_m>0$ and $b>0$, and let $\Omega$ be a vector. For density
+matrices $x_j$ on $X_j$ put $L_j=(x_j+b\Id)^{-a_j/2}$, extended by the
+identity, and $M=L_m\cdots L_1$. Suppose $(x_1,\dots,x_m)$ minimizes
+$\lVert M\Omega\rVert$ among all such tuples of density matrices. Let
+$\rho_j$ be the state on $X_j$ of the normalized vector $\phi=M\Omega/\lVert
+M\Omega\rVert$, with $\phi=0$ when $M\Omega=0$. Then for every $j$
+\begin{align}
+ x_j\rho_j=\rho_jx_j,\qquad \rho_j\le x_j+b\Id .
+\end{align}
+Consequently the regulator $b\rho_j(x_j+b\Id)^{-1}$ satisfies the bounds of
+Theorem~\ref{thm:patch_regulator_order}. This is the descending stationarity
+step in the proof of \cite[Proposition~4.1]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+\leanok
+Proceed from the largest region inward. When the filters $L_k$ with $k>j$
+already commute with $\rho_k$, conjugating $x_j$ by a unitary keeps it a
+density matrix, and Lemma~\ref{lem:filter_stationarity} applied to the minimum
+shows that $L_j$, and hence $x_j$, commutes with $\rho_j$.
+
+For the order, set $G=\rho_j(x_j+b\Id)^{-1}$, which is positive and commutes
+with $x_j$. For a density matrix $y$ commuting with $x_j$, the segment
+$x_j+s(y-x_j)$ stays feasible for $0\le s\le1$. Its one-sided derivative at
+$s=0$, after the outer filters are removed by the descending trace argument, is
+$-\tfrac{a_j}{2}\operatorname{Re}\Tr(G(y-x_j))$, so minimality gives
+$\operatorname{Re}\Tr(Gy)\le\lambda:=\operatorname{Re}\Tr(Gx_j)$. Testing
+$y$ on rank-one projections of a common eigenbasis of $G$ and $x_j$
+(Lemma~\ref{lem:commuting_hermitian}) gives $G\le\lambda\Id$. Since
+$\lambda=\Tr\rho_j-b\Tr G\le1$, we get $\rho_j\le\lambda(x_j+b\Id)\le x_j+b\Id$.
 \end{proof}
