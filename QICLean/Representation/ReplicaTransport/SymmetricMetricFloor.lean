@@ -83,4 +83,41 @@ theorem exists_meanTree_symBandMetric_floor {t : ℝ} (ht : 0 < t) :
   simpa only [T.eval_const hI] using
     T.eval_mono (fun _ => hI) (fun j => hfloor k (π j) (hπ j))
 
+/-- A fixed number of commuting band factors has a polynomial lower bound
+uniform over all finite mean trees, copy counts, partitions and parameters.
+Auxiliary product estimate for OpenAI, `05-replicas.tex`, `replicas:leaf-floor`,
+lines 452--465, and `06-transport.tex`, `transport:means`, lines 40--62. -/
+theorem exists_meanTree_symBandMetric_prod_floor {t : ℝ} (ht : 0 < t) :
+    ∃ C : ℝ, 0 ≤ C ∧ ∀ (K k : ℕ) {J : Type*} (π : J → Fin K → PYF V),
+      (∀ j g, (π j g).IsPartition) →
+      (∀ j, (List.ofFn fun g => symBandMetric n t k (π j g)).Pairwise
+        fun A B => Commute A B) → ∀ T : Matrix.MeanTree J,
+      ((k : ℝ) + 2) ^ (-(C * (K : ℝ))) •
+        (1 : Matrix (Config k fun v => Fin (n v))
+          (Config k fun v => Fin (n v)) ℂ) ≤
+            T.eval (fun j => (List.ofFn fun g => symBandMetric n t k (π j g)).prod) := by
+  classical
+  obtain ⟨C, hC, hfloor⟩ := exists_symBandMetric_floor n ht
+  refine ⟨C, hC, ?_⟩
+  intro K k J π hπ hcomm T
+  have hleaf : ∀ j, (((k : ℝ) + 2) ^ (-C)) ^ K •
+      (1 : Matrix (Config k fun v => Fin (n v))
+        (Config k fun v => Fin (n v)) ℂ) ≤
+      (List.ofFn fun g => symBandMetric n t k (π j g)).prod := fun j => by
+    simpa only [List.length_ofFn] using Matrix.pow_smul_one_le_list_prod
+      (Real.rpow_nonneg (by positivity) (-C))
+      (List.forall_mem_ofFn_iff.mpr fun g => hfloor k (π j g) (hπ j g))
+      (hcomm j)
+  have hinput : ∀ j, ((k : ℝ) + 2) ^ (-(C * (K : ℝ))) •
+      (1 : Matrix (Config k fun v => Fin (n v))
+        (Config k fun v => Fin (n v)) ℂ) ≤
+      (List.ofFn fun g => symBandMetric n t k (π j g)).prod := fun j => by
+    simpa only [← Real.rpow_mul_natCast (show 0 ≤ (k : ℝ) + 2 by positivity),
+      neg_mul] using hleaf j
+  have hI : (((k : ℝ) + 2) ^ (-(C * (K : ℝ))) •
+      (1 : Matrix (Config k fun v => Fin (n v))
+        (Config k fun v => Fin (n v)) ℂ)).PosDef :=
+    PosDef.one.smul (Real.rpow_pos_of_pos (by positivity) _)
+  simpa only [T.eval_const hI] using T.eval_mono (fun _ => hI) hinput
+
 end TensorPower.ReplicaTransport
