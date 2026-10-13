@@ -20,9 +20,9 @@ is the last-filter case of the patch argument; no identity for a noncommuting
 ordered chain is asserted.
 
 **Scope restriction (last-filter case):** The concrete declarations describe
-one diagonal filter. The descending trace argument needed for earlier factors
-of the source's ordered chain is recorded in
-`docs/paper-gaps/oai26_peps_patch_stationarity_gap.tex`.
+one diagonal filter. The ordered chain, with the descending trace argument for
+earlier factors, is treated in operator form by `Entropy.patch_stationarity`;
+see `docs/paper-gaps/oai26_peps_patch_stationarity_gap.tex`.
 
 Source: OpenAI, polynomial PEPS manuscript, September 24, 2026,
 `03-patches.tex`, equations `eq:patch-simplex-derivative`, `eq:patch-kkt`,
