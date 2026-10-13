@@ -8,6 +8,7 @@ comparison of \cite[Section~7]{OpenAI2026AreaLaw}.
 \begin{theorem}[A two-factor order comparison]
     \label{thm:kronecker_order_two_factors}
     \lean{Matrix.kronecker_mono_of_posSemidef}
+    \leanok
     Let $A,B$ be complex matrices indexed by $I$, and let $C,D$ be complex
     matrices indexed by $J$. Suppose that $A\le B$, $C\le D$, $B\ge0$, and
     $C\ge0$. Then $A\otimes C\le B\otimes D$.
@@ -15,6 +16,7 @@ comparison of \cite[Section~7]{OpenAI2026AreaLaw}.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     Since $B$ and $C$ are positive semidefinite, the linear maps
     $X\mapsto X\otimes C$ and $Y\mapsto B\otimes Y$ are positive and hence
     preserve order. Consequently,
@@ -26,6 +28,7 @@ comparison of \cite[Section~7]{OpenAI2026AreaLaw}.
 \begin{theorem}[Order of finite tensor products]
     \label{thm:finite_kronecker_order}
     \lean{Matrix.finKronecker_mono}
+    \leanok
     Let $N\ge0$. For each $0\le i<N$, let $I_i$ be a finite set and let
     $A_i,B_i$ be complex matrices indexed by $I_i$.
     If $0\le A_i\le B_i$ for every $i$, then
@@ -38,6 +41,7 @@ comparison of \cite[Section~7]{OpenAI2026AreaLaw}.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{thm:kronecker_order_two_factors}
     Induct on $N$. The empty product gives equality. For the induction
     step, write $A'$ and $B'$ for the products of all factors after the
