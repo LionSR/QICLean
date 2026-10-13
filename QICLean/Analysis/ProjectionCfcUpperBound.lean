@@ -99,4 +99,17 @@ theorem IsHermitian.compression_exp_neg_smul_le_of_lower_bound
       (hA.smul (show IsSelfAdjoint (-a) by simp [isSelfAdjoint_iff])).isSelfAdjoint] at h
   exact h
 
+/-- A positive scalar lower bound controls every nonpositive real power.
+This is the scalar functional-calculus consequence used after the metric floor
+in OpenAI, `07-comparators.tex`, lines 603--621. -/
+theorem PosDef.rpow_le_smul_one_of_scalar_floor {M : Matrix n n ℂ} (hM : M.PosDef)
+    {b s : ℝ} (hb : 0 < b) (hs : s ≤ 0) (hfloor : b • (1 : Matrix n n ℂ) ≤ M) :
+    M ^ s ≤ b ^ s • (1 : Matrix n n ℂ) := by
+  classical
+  simpa only [Matrix.one_mul, Matrix.mul_one,
+    ← CFC.rpow_eq_cfc_real (nonneg_iff_posSemidef.mpr hM.posSemidef)] using
+    hM.isHermitian.compression_cfc_le_of_lower_bound (IsStarProjection.one _)
+      (Commute.one_right M) (by simpa only [Matrix.one_mul, Matrix.mul_one] using hfloor)
+      (fun x : ℝ => x ^ s) (fun x hx => Real.rpow_le_rpow_of_nonpos hb hx hs)
+
 end Matrix

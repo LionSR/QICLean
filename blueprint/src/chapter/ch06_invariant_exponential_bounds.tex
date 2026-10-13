@@ -35,6 +35,24 @@ dimension zero. Matrix order means positive semidefinite order.
   of $P$ agree. Compressing the inequality gives the result.
 \end{proof}
 
+\begin{theorem}[Nonpositive powers under a scalar lower bound]
+    \label{thm:scalar_floor_nonpositive_power}
+    \lean{Matrix.PosDef.rpow_le_smul_one_of_scalar_floor}
+    \leanok
+    Let $M$ be a positive definite complex matrix on a finite-dimensional
+    space, which may have dimension zero. Suppose that $b>0$, $s\le0$,
+    and $bI\le M$. Then $M^s\le b^sI$, with powers defined by spectral
+    functional calculus.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:invariant_range_functional_bound}
+    For every $x\ge b>0$, one has $x^s\le b^s$.
+    Apply Theorem~\ref{thm:invariant_range_functional_bound} with
+    $P=I$ and $f(x)=x^s$.
+\end{proof}
+
 \begin{theorem}[Negative exponential on an invariant range]
   \label{thm:invariant_range_negative_exp}
   \lean{Matrix.IsHermitian.compression_exp_neg_smul_le_of_lower_bound}
