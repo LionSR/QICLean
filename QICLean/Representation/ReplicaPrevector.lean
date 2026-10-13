@@ -208,6 +208,61 @@ private theorem projected_prod_omegaVec_fixed (d k : ℕ)
   dsimp only [w]
   rw [mulVec_mulVec, hc.eq, ← mulVec_mulVec, prod_omegaVec_copyPerm_fixed]
 
+/-- The explicit initial vector is fixed by simultaneous permutations of the
+physical and both auxiliary copy systems, for every supplied auxiliary label.
+Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 130–147,
+`comparator:prevector`. -/
+theorem replicaPrevector_copyPerm_fixed {A : Type*} [Fintype A] [DecidableEq A]
+    (Ω : A → ℂ) (d k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k)))
+    (σ : Equiv.Perm (Fin k)) :
+    (permOp (copyPerm A k) σ ⊗ₖ
+      (permOp (copyPerm (Fin d) k) σ ⊗ₖ permOp (copyPerm (Fin d) k) σ)) *ᵥ
+        replicaPrevector Ω d k ell = replicaPrevector Ω d k ell := by
+  let w : (Fin k → Fin d) × (Fin k → Fin d) → ℂ :=
+    ((1 : Matrix (Fin k → Fin d) (Fin k → Fin d) ℂ) ⊗ₖ
+      labelProj (copyPerm (Fin d) k) ell) *ᵥ
+        (fun x : (Fin k → Fin d) × (Fin k → Fin d) ↦
+          ∏ i, omegaVec d (x.1 i, x.2 i))
+  change (permOp (copyPerm A k) σ ⊗ₖ
+    (permOp (copyPerm (Fin d) k) σ ⊗ₖ permOp (copyPerm (Fin d) k) σ)) *ᵥ
+    (fun x ↦ (∏ i, Ω (x.1 i)) * w x.2) = _
+  rw [kronecker_mulVec_product _ _ (fun x : Fin k → A ↦ ∏ i, Ω (x i)) w,
+    prod_copyPerm_fixed, (projected_prod_omegaVec_fixed d k ell).2.2 σ]
+  rfl
+
+/-- The explicit initial vector has the supplied label on each auxiliary
+copy system, without a normalization or nonvanishing assumption.
+Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 130–147,
+`comparator:prevector`. -/
+theorem replicaPrevector_auxiliary_label_fixed {A : Type*} [Fintype A] [DecidableEq A]
+    (Ω : A → ℂ) (d k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
+    let v := replicaPrevector Ω d k ell
+    let P := labelProj (copyPerm (Fin d) k) ell
+    ((1 : Matrix (Fin k → A) (Fin k → A) ℂ) ⊗ₖ
+      (P ⊗ₖ (1 : Matrix (Fin k → Fin d) (Fin k → Fin d) ℂ))) *ᵥ v = v ∧
+    ((1 : Matrix (Fin k → A) (Fin k → A) ℂ) ⊗ₖ
+      ((1 : Matrix (Fin k → Fin d) (Fin k → Fin d) ℂ) ⊗ₖ P)) *ᵥ v = v := by
+  classical
+  intro v P
+  dsimp only [v, P, replicaPrevector]
+  unfold TensorPower.replicaPrevector
+  simp only [kronecker_mulVec_product _ _ (fun x : Fin k → A ↦ ∏ i, Ω (x i))
+    (((1 : Matrix (Fin k → Fin d) (Fin k → Fin d) ℂ) ⊗ₖ
+      labelProj (copyPerm (Fin d) k) ell) *ᵥ
+        (fun x : (Fin k → Fin d) × (Fin k → Fin d) ↦
+          ∏ i, omegaVec d (x.1 i, x.2 i))), one_mulVec]
+  exact And.intro
+      (congrArg
+        (fun w : (Fin k → Fin d) × (Fin k → Fin d) → ℂ ↦
+          fun x : (Fin k → A) × ((Fin k → Fin d) × (Fin k → Fin d)) ↦
+            (∏ i, Ω (x.1 i)) * w x.2)
+        (projected_prod_omegaVec_fixed d k ell).1)
+      (congrArg
+        (fun w : (Fin k → Fin d) × (Fin k → Fin d) → ℂ ↦
+          fun x : (Fin k → A) × ((Fin k → Fin d) × (Fin k → Fin d)) ↦
+            (∏ i, Ω (x.1 i)) * w x.2)
+        (projected_prod_omegaVec_fixed d k ell).2.1)
+
 private theorem replicaPrevector_properties {A : Type*} [Fintype A] [DecidableEq A]
     (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) (H : Matrix A A ℂ) (E₀ : ℝ)
     (hE : H *ᵥ Ω = (E₀ : ℂ) • Ω) (d k : ℕ) (hd : 0 < d) (hk : 0 < k)
@@ -243,7 +298,7 @@ private theorem replicaPrevector_properties {A : Type*} [Fintype A] [DecidableEq
     rw [hn]
     exact (norm_mulVec_projection_le (isStarProjection_one_kronecker_label d k l) u).trans_eq
       (norm_prod_omegaVec d k hd)
-  obtain ⟨hleft, hright, hsym⟩ := projected_prod_omegaVec_fixed d k l
+  obtain ⟨hleft, hright, _⟩ := projected_prod_omegaVec_fixed d k l
   refine ⟨hvne, hvnorm,
     replicaMeanHamiltonian_kronecker_mulVec_prod hE hk w, ?_, ?_, ?_⟩
   · change ((1 : Matrix (Fin k → A) (Fin k → A) ℂ) ⊗ₖ (P ⊗ₖ 1)) *ᵥ
@@ -254,13 +309,7 @@ private theorem replicaPrevector_properties {A : Type*} [Fintype A] [DecidableEq
       (fun x => (∏ i, Ω (x.1 i)) * w x.2) = _
     rw [kronecker_mulVec_product _ _ (fun x : Fin k → A => ∏ i, Ω (x i)) w, one_mulVec, hright]
     rfl
-  · intro σ
-    change (permOp (copyPerm A k) σ ⊗ₖ
-      (permOp (copyPerm (Fin d) k) σ ⊗ₖ permOp (copyPerm (Fin d) k) σ)) *ᵥ
-      (fun x => (∏ i, Ω (x.1 i)) * w x.2) = _
-    rw [kronecker_mulVec_product _ _ (fun x : Fin k → A => ∏ i, Ω (x i)) w,
-      prod_copyPerm_fixed, hsym]
-    rfl
+  · exact replicaPrevector_copyPerm_fixed Ω d k l
 
 /-- The initial vector is constructed with the very same sequence selected
 from the actual reduced density of the unit bipartite vector. For every
