@@ -966,3 +966,23 @@ the original family, so all metric weights retain the full-family dimension.
 - **Scope:** Preserve the supplied terminal labels and increasing band order,
   including an empty product. No positivity or finiteness assumption on
   the history and choice sets is used.
+
+### Regional expectations in product coordinates — candidate (2026-10-13)
+
+- **Pattern:** Split each copy into complementary and regional coordinates,
+  identify the regional operator as an identity tensor factor, and apply
+  the partial-trace identity for a pure tensor power.
+- **Seen:** `norm_sq_one_sub_labelCutoff_subsystemPerm_prod` in
+  `Representation/SubsystemLabelCoordinates.lean` and
+  `re_inner_exp_labelEntropy_subsystemPerm_prod` in
+  `Representation/SubsystemLabelExponential.lean`.
+- **Existing results:** `labelProj_subsystemPerm_submatrix` identifies the
+  regional projections; `partialTraceLeft_vecMulVec_prod` and
+  `trace_partialTraceLeft_mul` give the corresponding trace pairing.
+- **Decision:** Two occurrences across two files. The projection-norm and
+  exponential-expectation proofs already reuse these results; no new
+  tactic is introduced. A third use would justify a common expectation
+  identity for an arbitrary regional operator.
+- **Scope:** The one-copy vector need not be normalized. Preserve the actual
+  regional marginal, the complementary-first coordinate order, zero
+  replicas, and empty local coordinate sets.
