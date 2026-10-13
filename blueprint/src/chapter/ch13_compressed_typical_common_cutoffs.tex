@@ -1230,3 +1230,44 @@ identity.
     their exponentials. Multiplicativity of conjugation and invariance
     of the trace prove the assertion.
 \end{proof}
+
+\begin{theorem}[Exponential moments after spectral selection]
+    \label{thm:compressed_typical_exponential_domination}
+    \lean{TensorPower.re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le}
+    \uses{thm:compressed_typical_exponential_regional_trace}
+    Retain the physical vector $\Omega$, disjoint regions $X,Q$, selected
+    indices $E$, their enumeration, and the compressed product vector
+    $\Psi_k$ from Theorem~\ref{thm:compressed_typical_exponential_regional_trace}.
+    Suppose the actual selected mass is
+    $z=\operatorname{Tr}(P_E\rho_X)>0$, where
+    $\rho_X=\operatorname{Tr}_{X^c}|\Omega\rangle\langle\Omega|$.
+    Write $\rho_Q=\operatorname{Tr}_{Q^c}|\Omega\rangle\langle\Omega|$
+    for the original physical marginal. For every $k\ge0$ and
+    $u\in\mathbb R$,
+    \begin{align}
+        \operatorname{Re}\langle\Psi_k,e^{uF_{\widehat Q,k}}\Psi_k\rangle
+         & \le z^{-k}\operatorname{Re}\operatorname{Tr}\!\left(
+        \rho_Q^{\otimes k}e^{uF^{\mathrm{reg}}_{Q,k}}\right).
+    \end{align}
+    The vector $\Omega$ need not be normalized. The comparison includes
+    zero copies and empty regions. It is the selected-marginal estimate
+    used in the sharp upper comparison of \cite[Section~7]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:compressed_typical_exponential_regional_trace,thm:finite_kronecker_order}
+    Let $\sigma_Q$ be the marginal of the same selected physical vector.
+    Since $Q$ is disjoint from the region of spectral selection, the
+    original marginal is the sum of $z\sigma_Q$ and a positive
+    semidefinite remainder. Hence $0\le\sigma_Q\le z^{-1}\rho_Q$.
+    Theorem~\ref{thm:finite_kronecker_order} gives
+    \begin{align}
+        \sigma_Q^{\otimes k} & \le z^{-k}\rho_Q^{\otimes k}.
+    \end{align}
+    The label entropy is Hermitian, so its exponential
+    $e^{uF^{\mathrm{reg}}_{Q,k}}$ is positive for every real $u$.
+    Taking its trace pairing with this operator inequality preserves
+    the order. Theorem~\ref{thm:compressed_typical_exponential_regional_trace}
+    identifies the resulting left side with the actual compressed
+    expectation. At $k=0$, both tensor powers are the scalar identity,
+    so the same argument applies.
+\end{proof}
