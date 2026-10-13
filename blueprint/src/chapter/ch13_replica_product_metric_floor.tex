@@ -84,3 +84,70 @@
     bound gives $N^2\le(r^{-C})^{-1/2}\|\xi\|^2\le r^{C/2}$.
     Taking logarithms and using $\log(r^{C/2})=(C/2)\log r$ gives the result.
 \end{proof}
+
+
+\section{Floors for transport roots}
+
+\begin{theorem}[Uniform floor for transport roots]
+	\label{thm:replica_transport_root_floor}
+	\lean{TensorPower.ReplicaTransport.exists_rootPath_scalar_floor}
+	\leanok
+	\uses{lem:replica_symmetric_metric, def:mean_tree}
+	Fix $\mathcal V=\bigotimes_{v\in V}\C^{n_v}$ with $n_v>0$ and $t>0$.
+	There exists $C_0\ge0$ such that the following holds for every
+	admissible transport round with $K\ge0$ bands and every copy count $k\ge0$.
+	The old parts form partitions, each move transfers a subsystem of its
+	middle part, and the history and conditional choice weights are positive.
+	Suppose that the identity-extended band metrics at distinct band positions
+	commute for every pair of terminal labels. Write $\pi_{j,g}$ for the
+	partition at terminal label $j$ and band $g$, and set
+	$A_j=\prod_{g=0}^{K-1}\widetilde A_k(\pi_{j,g})$.
+	For $q\in\R$, let $\bar q=\max(0,\min(1,q))$ and let
+	$\mathcal T_{\bar q}$ be the interpolated terminal tree of the given round.
+	Its root $M(q)=\mathcal T_{\bar q}(A_j:j)$ satisfies
+	\begin{align}
+		(k+2)^{-C_0K}I\le M(q).
+	\end{align}
+	The constant is chosen before the number of bands, history and choice
+	sets, transport round, copy count and parameter. The history and choice
+	sets are not assumed finite.
+\end{theorem}
+
+\begin{proof}
+	\leanok
+	\uses{thm:replica_symmetric_product_mean_floor}
+	The validity of the moves ensures that every terminal triple is a
+	partition. The commutation assumption, applied with the same terminal
+	label on both sides, gives pairwise commutation within each product
+	$A_j$. Apply Theorem~\ref{thm:replica_symmetric_product_mean_floor} to
+	these partitions and the given tree $\mathcal T_{\bar q}$.
+\end{proof}
+
+
+\begin{theorem}[Logarithmic normalization bound for transport roots]
+	\label{thm:replica_transport_root_log_norm}
+	\lean{TensorPower.ReplicaTransport.exists_rootPath_log_filteredNormSq_bound}
+	\leanok
+	Fix the physical dimensions and $t>0$ as in
+	Theorem~\ref{thm:replica_transport_root_floor}. There exists $C_0\ge0$
+	such that every admissible transport round satisfying the same band
+	commutation assumption obeys the following bound. For its root $M(q)$,
+	with any $K,k\ge0$, $q\in\R$, and $\xi$ with $\|\xi\|\le1$,
+	\begin{align}
+		\log\|M(q)^{-1/4}\xi\|^2\le\frac{C_0K}{2}\log(k+2).
+	\end{align}
+	The constant is chosen before the history and choice sets, transport
+	round, numbers of bands and copies, interpolation parameter and vector.
+	The real logarithm is assigned the value zero at zero.
+\end{theorem}
+
+\begin{proof}
+	\leanok
+	\uses{thm:replica_transport_root_floor, thm:polynomial_floor_filtered_log,
+		thm:mean_tree_properties}
+	Choose $C_0$ from Theorem~\ref{thm:replica_transport_root_floor}.
+	Every terminal input is positive definite, and so is its mean-tree
+	root $M(q)$. Since $C_0K\ge0$ and $k+2\ge1$, the scalar floor
+	$(k+2)^{-C_0K}I\le M(q)$ satisfies the hypotheses of
+	Theorem~\ref{thm:polynomial_floor_filtered_log}, which gives the bound.
+\end{proof}
