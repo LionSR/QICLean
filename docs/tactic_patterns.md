@@ -966,3 +966,21 @@ the original family, so all metric weights retain the full-family dimension.
 - **Scope:** Preserve the supplied terminal labels and increasing band order,
   including an empty product. No positivity or finiteness assumption on
   the history and choice sets is used.
+
+### Tensor order from positive factors — promoted helper (2026-10-13)
+
+- **Pattern:** Compare two tensor products by changing one factor at a time.
+  Each comparison is the monotonicity of a positive linear map obtained by
+  tensoring with a fixed positive semidefinite matrix.
+- **Occurrences:** The two factor comparisons in `Matrix.finKronecker_mono`
+  and the two formerly explicit comparisons in `Entropy.RestoringNorm`.
+- **Helper:** `Matrix.kronecker_mono_of_posSemidef` in
+  `Algebra/FiniteKroneckerOrder.lean` assumes `A ≤ B`, `C ≤ D`, positivity
+  of `B` and positivity of `C`, and proves `A ⊗ C ≤ B ⊗ D`.
+- **Reuse:** The finite induction and the scalar-identity bound in
+  `Entropy/RestoringNorm.lean` both apply this helper. The latter retains
+  its possibly indefinite lower first factor; no assumption was added.
+- **Implementation:** `PositiveLinearMap.mk₀`, `kroneckerBilinear`, and
+  `PosSemidef.kronecker` suffice. Use `Matrix.nonneg_iff_posSemidef.mp`
+  explicitly inside the constructor when elaboration unfolds matrix order.
+  No new tactic is needed.

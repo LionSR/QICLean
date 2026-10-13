@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.FiniteKroneckerOrder
 import QICLean.Entropy.RestoringOperators
 import QICLean.Channel.PartialTrace
 import Mathlib.Analysis.Matrix.Order
@@ -117,19 +118,9 @@ private theorem kronecker_le_smul_one {M N : Type*}
     {A : Matrix M M ℂ} {B : Matrix N N ℂ} (hA : A ≤ 1)
     (hB : B.PosSemidef) {c : ℝ} (hBc : B ≤ c • (1 : Matrix N N ℂ)) :
     A ⊗ₖ B ≤ c • (1 : Matrix (M × N) (M × N) ℂ) := by
-  have h₁ : A ⊗ₖ B ≤ (1 : Matrix M M ℂ) ⊗ₖ B := by
-    exact Matrix.le_iff.mpr (by
-      convert (Matrix.le_iff.mp hA).kronecker hB using 1
-      ext i j
-      simp only [Matrix.sub_apply, kroneckerMap_apply, sub_mul])
-  have h₂ : (1 : Matrix M M ℂ) ⊗ₖ B ≤
-      (1 : Matrix M M ℂ) ⊗ₖ (c • (1 : Matrix N N ℂ)) := by
-    exact Matrix.le_iff.mpr (by
-      convert (PosSemidef.one : (1 : Matrix M M ℂ).PosSemidef).kronecker
-        (Matrix.le_iff.mp hBc) using 1
-      ext i j
-      simp only [Matrix.sub_apply, kroneckerMap_apply, mul_sub])
-  exact (h₁.trans h₂).trans_eq (by rw [kronecker_smul, one_kronecker_one])
+  exact
+    (Matrix.kronecker_mono_of_posSemidef hA hBc PosSemidef.one hB).trans_eq
+      (by rw [Matrix.kronecker, kronecker_smul, one_kronecker_one])
 
 private theorem norm_le_sqrt_of_gram_le {N : Type*} [Fintype N] [DecidableEq N]
     (A : Matrix N N ℂ) {c : ℝ} (hc : 0 ≤ c)
