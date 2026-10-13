@@ -1178,3 +1178,53 @@ identity.
     claimed equality. The coordinate identification preserves the inner
     product.
 \end{proof}
+
+\begin{theorem}[Compressed-state regional exponential expectations]
+    \label{thm:compressed_typical_exponential_regional_trace}
+    \lean{TensorPower.re_inner_exp_labelEntropy_compressedTypicalSiteState_prod}
+    \uses{def:compressed_site_family,def:compressed_site_region_coordinates}
+    Let $V$ be a finite set of sites with finite local coordinate sets,
+    let $\Omega$ be any physical vector, and let $X,Q\subseteq V$ be disjoint.
+    Choose spectral indices $E$ of the marginal on $X$, with their fixed
+    enumeration. Let $\psi$ and $\chi$ be the selected physical vector and
+    its compressed representative from
+    Section~\ref{sec:compressed_typical_regional_marginal}, with both
+    vectors set to zero when the selected mass is zero. Place $\chi$ on
+    the augmented sites $\widehat V=\{r\}\sqcup X^c$ and set
+    $\Psi_k=\chi_{\mathrm{site}}^{\otimes k}$. Write $\widehat Q$ for
+    the image of $Q$ in this augmented family.
+    Write $\sigma_Q=\operatorname{Tr}_{Q^c}|\psi\rangle\langle\psi|$,
+    and let $F_{\widehat Q,k}$ and $F^{\mathrm{reg}}_{Q,k}$ be the label
+    entropies of the augmented subsystem and the ordinary copy action on
+    the original regional space, respectively. For every $k\ge0$ and
+    $u\in\mathbb R$,
+    \begin{align}
+        \operatorname{Re}\langle\Psi_k,e^{uF_{\widehat Q,k}}\Psi_k\rangle
+         & =\operatorname{Re}\operatorname{Tr}\!\left(
+        \sigma_Q^{\otimes k}e^{uF^{\mathrm{reg}}_{Q,k}}\right).
+    \end{align}
+    No normalization of $\Omega$ or positivity of the selected mass is
+    required. Empty regions and empty local coordinate sets are included.
+    This is the compressed-state expectation identity used in the sharp
+    upper comparison of \cite[Section~7]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:subsystem_label_exponential_regional_trace,thm:compressed_site_actual_regional_marginal}
+    Theorem~\ref{thm:subsystem_label_exponential_regional_trace} expresses
+    the left side as the trace against the tensor power of the actual
+    compressed regional marginal $\widehat\sigma_Q$. Let $T_k$ be the
+    unitary induced, in each copy, by the regional coordinate bijection.
+    Theorem~\ref{thm:compressed_site_actual_regional_marginal} and the
+    covariance of the copy action give, with $\widehat F^{\mathrm{reg}}_{Q,k}$
+    the label entropy on the compressed regional copy space,
+    \begin{align}
+        T_k\widehat\sigma_Q^{\otimes k}T_k^*
+         & =\sigma_Q^{\otimes k},   \\
+        T_k\widehat F^{\mathrm{reg}}_{Q,k}T_k^*
+         & =F^{\mathrm{reg}}_{Q,k}.
+    \end{align}
+    For the second identity, the same central group-algebra element
+    defines both label entropies. Conjugation therefore also identifies
+    their exponentials. Multiplicativity of conjugation and invariance
+    of the trace prove the assertion.
+\end{proof}

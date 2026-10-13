@@ -749,6 +749,12 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   coordinate equivalences, use `Equiv.symm_comp_self` before
   `Matrix.submatrix_id_id`; expanding composition into a lambda first can
   leave the identity reindexing unreduced.
+- **Further use:** `Representation/CompressedTypicalExponential.lean`
+  transports the exponential of the regional label entropy by
+  `Matrix.reindex_exp` and the same scalar-submatrix identities. The
+  tensor-density identity follows entrywise from `Matrix.finKronecker_apply`
+  and the actual one-copy marginal identity. The final trace transport
+  reuses `Matrix.submatrix_mul_equiv` and `Matrix.trace_reindex`.
 
 ### Symmetry of an excitation component under a copy subgroup — candidate (2026-10-09)
 
