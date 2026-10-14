@@ -129,6 +129,35 @@ theorem commute_labelProj_subsystemPerm_of_disjoint {Q Q' : Finset F} (h : Disjo
     Commute (labelProj (subsystemPerm k ι Q) l) (labelProj (subsystemPerm k ι Q') l') :=
   commute_groupAlgebraRep_subsystemPerm_of_disjoint ι k h _ _
 
+/-- A one-site label projector commutes with every subsystem label observable.
+This is the singleton case of Lemma 6.1(2) of the area-law paper,
+`05-replicas.tex`, lines 101–103 and 168–181. Empty local coordinate sets
+and zero copies are included. -/
+theorem commute_labelProj_singleton_labelObservable (a : F)
+    (ell : IrrepLabel (Equiv.Perm (Fin k))) (S : Finset F)
+    (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
+    Commute (labelProj (subsystemPerm k ι {a}) ell)
+      (labelObservable (subsystemPerm k ι S) f) := by
+  exact Commute.sum_right Finset.univ _ _ fun ell' _ ↦
+    (if ha : a ∈ S then
+      commute_labelProj_subsystemPerm_of_subset ι k
+        (Finset.singleton_subset_iff.mpr ha) ell ell'
+    else
+      commute_labelProj_subsystemPerm_of_disjoint ι k
+        (Finset.disjoint_singleton_left.mpr ha) ell ell').smul_right (f ell' : ℂ)
+
+/-- A subsystem label projector commutes with symmetry on a containing subsystem.
+Area-law paper, Lemma 6.1(2), `05-replicas.tex`, lines 101–103 and 172–175. -/
+theorem commute_labelProj_symProj_of_subset (A B : Finset F) (hAB : A ⊆ B)
+    (ell : IrrepLabel (Equiv.Perm (Fin k))) :
+    Commute (labelProj (subsystemPerm k ι A) ell) (symProj (subsystemPerm k ι B)) := by
+  unfold symProj
+  refine (Commute.sum_right (R := Matrix (Config k ι) (Config k ι) ℂ)
+    _ _ _ (fun σ _ => ?_)).smul_right _
+  simpa only [labelProj, groupAlgebraRep_single, one_smul] using
+    commute_groupAlgebraRep_subsystemPerm_of_subset ι k hAB
+      (IrrepLabel.centralIdem_mem_center ell) (MonoidAlgebra.single σ (1 : ℂ))
+
 /-- On the symmetric subspace, a central label function of `Q` agrees with the same
 central label function of the complement `Qᶜ` (`05-replicas.tex`, lines 176–181). -/
 theorem groupAlgebraRep_mulVec_compl_of_mem_symmetricSubspace (Q : Finset F)

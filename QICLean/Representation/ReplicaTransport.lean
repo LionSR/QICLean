@@ -15,6 +15,7 @@ import QICLean.Representation.ReplicaTransport.EntropyGain
 import QICLean.Representation.ReplicaTransport.FiniteFamily
 import QICLean.Representation.ReplicaTransport.Integrated
 import QICLean.Representation.ReplicaTransport.IntegratedEntropy
+import QICLean.Representation.ReplicaTransport.LabelPreservation
 import QICLean.Representation.ReplicaTransport.LeafMeasure
 import QICLean.Representation.ReplicaTransport.Prerequisites
 import QICLean.Representation.ReplicaTransport.Proposition

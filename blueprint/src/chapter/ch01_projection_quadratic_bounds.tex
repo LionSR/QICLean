@@ -55,3 +55,57 @@ All index sets below are finite and may be empty.
   In the finite sum defining the left-hand side, substitute $a=e(i)$ and
   $b=e(j)$. This gives the right-hand side term by term.
 \end{proof}
+
+% Source: OpenAI2026AreaLaw, 05-replicas.tex, replicas:leaf-floor,
+% lines 452--465, revision adc7f1241b42e322a6451854ab7e4b4c146bf78a.
+% These are elementary auxiliary order estimates, not the replica-metric floor itself.
+\section{Scalar lower bounds for commuting products}
+
+For complex matrices, $A\le B$ means that $B-A$ is positive semidefinite.
+The following estimates combine scalar lower bounds for commuting band
+metrics in the replica construction of~\cite{OpenAI2026AreaLaw}.
+All matrices are indexed by the same finite set $I$, which may be empty.
+
+\begin{theorem}[Multiplication of scalar lower bounds]
+    \label{thm:commuting_product_scalar_bound}
+    \lean{Matrix.smul_one_le_mul_of_commute}
+    \leanok
+    Let $A,B$ be complex matrices indexed by $I$, and let $a,b\in\mathbb R$.
+    Suppose that $a\ge0$, $b\ge0$, $aI\le A$, $bI\le B$, and $AB=BA$.
+    Then $(ab)I\le AB$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The bound $B\ge bI\ge0$ makes $B$ positive semidefinite.
+    The positive semidefinite matrices $A-aI$ and $B$ commute, so their
+    product is positive semidefinite. Since $a\ge0$, the identity
+    \begin{align}
+        AB-abI=(A-aI)B+a(B-bI)\ge0
+        \label{eq:commuting_product_floor_decomposition}
+    \end{align}
+    gives the conclusion.
+\end{proof}
+
+\begin{theorem}[A common scalar lower bound for an ordered product]
+    \label{thm:commuting_list_scalar_bound}
+    \lean{Matrix.pow_smul_one_le_list_prod}
+    \leanok
+    Let $(A_0,\ldots,A_{m-1})$ be any finite list of complex matrices
+    indexed by $I$, and let $b\ge0$. Suppose that $bI\le A_j$ for every
+    position $j$ and that the matrices at distinct positions commute.
+    Then $b^m I\le A_0\cdots A_{m-1}$.
+    Repeated matrices are allowed. For the empty list, the product is $I$
+    and $b^0=1$, including when $b=0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:commuting_product_scalar_bound}
+    Induct on the length of the list. The empty product gives equality.
+    Write a nonempty list as $A$ followed by a list of length $m$ whose
+    ordered product is $B$. The induction hypothesis gives $b^m I\le B$.
+    Since $A$ commutes with every factor of $B$, it commutes with $B$.
+    Theorem~\ref{thm:commuting_product_scalar_bound}, applied to the scalar
+    bounds $bI\le A$ and $b^m I\le B$, gives $b^{m+1}I\le AB$.
+\end{proof}
