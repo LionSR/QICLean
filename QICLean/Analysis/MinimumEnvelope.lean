@@ -60,7 +60,9 @@ theorem lower_envelope_le_affine_of_hasDerivWithinAt {ι : Type*}
       f t x = g t ∧ HasDerivWithinAt (fun z ↦ f z x) d (Ici t) t ∧ d ≤ c) :
     ∀ ⦃r⦄, r ∈ Icc a b → g r ≤ g a + c * (r - a) :=
   have hB : ∀ t, HasDerivAt (fun r : ℝ ↦ g a + c * (r - a)) c t :=
-    fun t ↦ (mul_one c) ▸ (((hasDerivAt_id t).sub_const a).const_mul c).const_add (g a)
+    fun t ↦ (congrArg
+      (fun d : ℝ ↦ HasDerivAt (fun r : ℝ ↦ g a + c * (r - a)) d t) (mul_one c)).mp
+        ((((hasDerivAt_id t).sub_const a).const_mul c).const_add (g a))
   have hBa : g a + c * (a - a) = g a :=
     calc
       g a + c * (a - a) = g a + c * 0 := congrArg (fun z ↦ g a + c * z) (sub_self a)
@@ -86,5 +88,6 @@ theorem lower_envelope_le_affine_of_hasDerivWithinAt {ι : Type*}
               slope g t z = (g z - g t) / (z - t) := slope_def_field _ _ _
               _ ≤ (f z x - f t x) / (z - t) :=
                 div_le_div_of_nonneg_right hcomp (sub_nonneg.mpr hz.2.1.le)
-              _ = slope (fun r ↦ f r x) t z := (slope_def_field _ _ _).symm
+              _ = slope (fun r ↦ f r x) t z :=
+                (slope_def_field (fun r : ℝ ↦ f r x) t z).symm
           hslope.trans_lt hz.1
