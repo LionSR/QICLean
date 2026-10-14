@@ -114,6 +114,7 @@ $\lambda=\Tr\rho_j-b\Tr G\le1$, we get $\rho_j\le\lambda(x_j+b\Id)\le x_j+b\Id$.
 \begin{theorem}[First-order inequalities for normalized patch outputs]
 \label{thm:patch_normalized_first_variation}
 \lean{Entropy.re_trace_variation_le_of_isPatchMinimizer}
+\leanok
 Let $X_0\subseteq\cdots\subseteq X_{m-1}$ be regions of a finite tensor-product
 system, let $a_0,\dots,a_{m-1}>0$ and $b>0$, and let $\Omega$ be a vector.
 For density matrices $x_j$ on $X_j$, put $L_j=(x_j+b\Id)^{-a_j/2}$,
@@ -133,6 +134,7 @@ This is the first-order inequality used in
 \cite[Section~4, first-order patch inequalities]{OpenAI2026PolynomialPEPS}.
 \end{theorem}
 \begin{proof}
+\leanok
 \uses{lem:filter_stationarity}
 Write $\Psi=M\Omega$, and let $\sigma_j$ be the reduced matrix of
 $\ketbra{\Psi}{\Psi}$ on $X_j$. The descending stationarity argument gives
