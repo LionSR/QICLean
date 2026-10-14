@@ -289,6 +289,81 @@ inclusions in their union.
 \end{proof}
 
 
+\section{Upper conditioning in a supplied sector}
+\label{sec:mean_tree_supplied_projection_upper}
+
+% Source: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% 07-comparators.tex, lines 383--404.
+
+\begin{theorem}[Quadratic contraction by a commuting projection]
+    \label{thm:commuting_projection_quadratic_upper}
+    \lean{Matrix.PosSemidef.re_dotProduct_projection_mulVec_le}
+    Let $A$ be positive semidefinite and $P$ an orthogonal projection
+    commuting with $A$. For every vector $p$,
+    \[
+        \langle Pp,APp\rangle\leq\langle p,Ap\rangle.
+    \]
+\end{theorem}
+\begin{proof}
+    The complementary sandwich satisfies
+    $(I-P)^*A(I-P)=A-PAP\geq0$. Evaluate this inequality at $p$,
+    using $P^*=P$ to identify the compressed quadratic form.
+\end{proof}
+
+\begin{theorem}[A terminal-weighted upper bound in a supplied sector]
+    \label{thm:mean_tree_supplied_projection_upper}
+    \lean{Matrix.MeanTree.re_inner_log_eval_le_of_projection}
+    Let $T$ be a finite weighted mean tree with positive definite leaf
+    matrices $A_j$ and terminal weights $w_j$. Let $P$ be a supplied
+    orthogonal projection commuting with every $A_j$, and let $p$ be
+    a supplied vector with $q=\|Pp\|^2>0$. Put $\phi=Pp/\|Pp\|$.
+    Then
+    \[
+        \langle\phi,\log(T(A))\phi\rangle
+        \leq-\log q+\sum_jw_j\log\langle p,A_jp\rangle.
+    \]
+    The original vector need not have norm one. The leaves need not
+    commute with one another. Repeated labels and zero terminal weights
+    remain included.
+\end{theorem}
+\begin{proof}
+    \uses{thm:commuting_projection_quadratic_upper}
+    The projection commutes with the root $M=T(A)$, which is positive
+    definite. Vector log Jensen, quadratic contraction at that root,
+    and vector mean Jensen give
+    \[
+        \langle\phi,\log M\,\phi\rangle
+        \leq\log\langle\phi,M\phi\rangle
+        \leq\log\left(q^{-1}\langle p,Mp\rangle\right)
+        \leq\log\left(q^{-1}
+            \prod_j\langle p,A_jp\rangle^{w_j}\right).
+    \]
+    Every logarithm has a positive argument, since $q>0$ implies $p\ne0$.
+    Expanding the scalar product logarithm gives the asserted bound.
+    This retains the exact conditioning cost in
+    \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{proof}
+
+\begin{theorem}[The supplied mass in a one-band inverse norm]
+    \label{thm:mean_tree_projection_inverse_norm_upper_consumer}
+    \lean{Matrix.MeanTree.mass_rpow_mul_exp_le_norm_rpow_neg_eval_projection_sq}
+    Under the preceding hypotheses, for every real $s\geq0$,
+    \[
+        q^{1+2s}\exp\left(-2s\sum_jw_j
+            \log\langle p,A_jp\rangle\right)
+        \leq\|T(A)^{-s}Pp\|^2.
+    \]
+    This is a one-band statement. It neither selects the projection
+    nor supplies a lower bound on its mass.
+\end{theorem}
+\begin{proof}
+    \uses{thm:mean_tree_supplied_projection_upper}
+    Apply inverse-power exponential Jensen to the literal normalized
+    vector $Pp/\|Pp\|$ and then undo normalization. The retained factor
+    $q$ and the conditioning term $-\log q$ give
+    $q\exp(2s\log q)=q^{1+2s}$.
+\end{proof}
+
 \section{Uniform quadratic-form bounds through a mean tree}
 \label{sec:mean_tree_uniform_expectation}
 

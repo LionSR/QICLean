@@ -1044,3 +1044,13 @@ three cube roots contribute one inverse selection-mass power. The Bell
 expectation identity transports the same central label function through
 the actual isometry. No new tactic or duplicated iid proof is introduced,
 and every replica metric retains the original full-family weights.
+
+### Supplied-sector logarithmic conditioning — existing lemmas (2026-10-14)
+
+The upper tree comparison reuses `MeanTree.commute_eval_right`, vector
+mean Jensen, support-aware log Jensen, and the existing inverse-power
+normalization theorem. A single quadratic contraction lemma is evaluated
+at the commuting root, so the exact supplied mass is extracted once,
+before the terminal-weighted product is expanded. The Euclidean pairing
+conversion uses directed rewrites rather than commutative simplification.
+No new tactic or duplicate tree induction is introduced.
