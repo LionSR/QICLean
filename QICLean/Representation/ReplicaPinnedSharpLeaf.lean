@@ -39,6 +39,19 @@ open scoped BigOperators InnerProductSpace ComplexOrder MatrixOrder Matrix.Norms
 noncomputable section
 namespace TensorPower
 
+local instance replicaPinnedSharpLeafRegionDecidableEq
+    {V : Type} [Fintype V] [DecidableEq V]
+    (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+    (X : Finset V) : DecidableEq (Configuration β X) :=
+  Fintype.decidablePiFintype
+
+local instance replicaPinnedSharpLeafConfigDecidableEq
+    {V : Type} [Fintype V] [DecidableEq V]
+    (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+    (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ) :
+    DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
+  Fintype.decidablePiFintype
+
 /-- Three-factor Hölder for the actual nested/disjoint label observables.
 The trace weight need not be normalized or commute with the observables.
 Source: OpenAI area-law manuscript, 07-comparators.tex, lines 405–412. -/
@@ -129,7 +142,6 @@ theorem re_inner_exp_labelEntropy_bellInsertion
     ← dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hE,
     ← Matrix.mul_assoc, hJ, Matrix.one_mul, dotProduct_comm]
 
-open scoped Classical in
 private theorem re_inner_exp_labelEntropy_selectedBellPost_le
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
@@ -199,7 +211,7 @@ private theorem compressedTypicalSiteTensor_ne_zero
     Equiv.piOptionEquivProd.symm ((Finset.equivFin E) c.1, c.2)
   intro h
   have hval := congrFun h (fun _ : Fin k ↦ x₀)
-  simp only [Ψ, χ, WithLp.ofLp_toLp, x₀, Equiv.apply_symm_apply,
+  simp only [Ψ, χ, x₀, Equiv.apply_symm_apply,
     Equiv.symm_apply_apply, Finset.prod_const, Finset.card_univ, Fintype.card_fin,
     Pi.zero_apply] at hval
   exact pow_ne_zero k hc hval
@@ -256,7 +268,6 @@ private theorem three_rpow_exp_bound {x y z A B C : ℝ}
   congr 1
   ring
 
-open scoped Classical in
 /-- A same-vector, same-selection sharp upper bound for the actual pinned
 factor. The original augmented family supplies every replica weight. The
 constant is chosen before the copy number, either region, and their moment
