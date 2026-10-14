@@ -114,6 +114,7 @@ $\lambda=\Tr\rho_j-b\Tr G\le1$, we get $\rho_j\le\lambda(x_j+b\Id)\le x_j+b\Id$.
 \begin{theorem}[Clipped joint eigenvalues]
 \label{thm:shifted_density_clipping}
 \lean{Matrix.PosSemidef.exists_unitary_diagonal_clipped_of_forall_density}
+\leanok
 Let $x,\rho\in\C^{I\times I}$ be commuting density matrices and let $b>0$.
 Suppose that every density matrix $y$ commuting with $x$ satisfies
 \begin{align}
@@ -130,6 +131,7 @@ This is the consequence of the first-order inequalities used in
 \end{theorem}
 \begin{proof}
 \uses{lem:commuting_hermitian,thm:rpow_conj_unitary}
+\leanok
 Simultaneous diagonalization gives $s_i,p_i\ge0$ and
 $\sum_i s_i=\sum_i p_i=1$. Set $g_i=p_i/(s_i+b)$ and
 $\lambda=\sum_i s_i g_i$. Testing (\ref{eq:shifted_density_variation})
