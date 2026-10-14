@@ -524,6 +524,7 @@ inclusions in their union.
 \begin{theorem}[The same auxiliary label through Bell insertion]
     \label{thm:selected_bell_auxiliary_intertwining}
     \lean{TensorPower.labelProj_mul_bellInsertion_auxiliary,TensorPower.norm_labelProj_bellInsertion_auxiliary}
+    \leanok
     Let $J_b$ insert $b^{\otimes k}$ on the physical region $X$ and
     auxiliary register $C$, retaining the distinct auxiliary register $R$.
     Let $Q_\lambda$ and $Q^e_\lambda$ be the central projections of the
@@ -534,6 +535,7 @@ inclusions in their union.
     These assertions include zero copies and empty coordinate spaces.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:bell_insertion_label_intertwining,thm:bell_insertion_isometry_symmetry}
     Apply the auxiliary-label observable identity to the indicator
     function $\mu\mapsto\mathbf1_{\{\mu=\lambda\}}$.
@@ -555,6 +557,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
 \begin{theorem}[Exact mass in the supplied auxiliary sector]
     \label{thm:selected_bell_post_mass}
     \lean{TensorPower.norm_sq_labelProj_selectedBellPost_eq,TensorPower.norm_sq_labelProj_selectedBellPost_prod}
+    \leanok
     Suppose the actual selected mass $z$ is positive. Let
     $\psi(b,r)=\chi_E(\iota^{-1}(r),b)$ put the physical complement first,
     and group its $k$ physical factors before its $k$ auxiliary factors.
@@ -568,6 +571,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
     holds pointwise along any already chosen label sequence.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:selected_bell_auxiliary_intertwining,thm:compressed_site_label_mass_coordinates}
     Positive selected mass makes $b_E$ unit, and the insertion preserves
     the norm of its supplied auxiliary sector. Regrouping the exterior
@@ -578,6 +582,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
 \begin{theorem}[The postvector in separated Bell coordinates]
     \label{thm:selected_bell_post_pullback}
     \lean{TensorPower.selectedBellPost_eq_pullback}
+    \leanok
     Let $\tau_k$ separate the selected Bell coordinates from the
     exterior coordinates, and let $W_kf=f\circ\tau_k$.
     The literal postvector satisfies
@@ -589,6 +594,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
     hypothesis and includes zero copies.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{def:selected_bell_postvector,def:schmidt_bell_witness_coordinates,
         thm:added_site_tensor_insertion_action}
     Applying the insertion matrix multiplies the exterior coefficient by
@@ -599,12 +605,14 @@ vector of Definition~\ref{def:selected_bell_postvector}.
 \begin{theorem}[Symmetry of the supplied postvector sector]
     \label{thm:selected_bell_post_sector_symmetry}
     \lean{TensorPower.symProj_labelProj_selectedBellPost}
+    \leanok
     Let $S_k$ average simultaneous permutations of the original copies.
     For every supplied label $\lambda$,
     $S_kQ_\lambda\mathrm{post}_k=Q_\lambda\mathrm{post}_k$.
     No normalization or positive selected-mass hypothesis is required.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:selected_bell_auxiliary_intertwining,
         thm:bell_insertion_isometry_symmetry,thm:central_label_full_symmetry}
     If $S^e_k$ is exterior copy symmetry, the pure tensor satisfies
@@ -621,6 +629,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
 \begin{theorem}[The exact symmetric Bell pin]
     \label{thm:selected_bell_post_exact_pin}
     \lean{TensorPower.bellPin_schmidtBellPrevector_eq_selectedBellPost}
+    \leanok
     Suppose $z>0$. Let $v_{k,\lambda}$ be the original physical prevector
     with its supplied auxiliary label, expressed in the original physical
     sites, selected left register $E$, and enumerated right register $R$.
@@ -636,6 +645,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
     \cite[\texttt{07-comparators.tex}, lines 283--290]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:schmidt_bell_site_pin,thm:schmidt_bell_witness_outer_product,
         thm:schmidt_bell_witness_auxiliary_label,thm:selected_bell_post_pullback,
         thm:selected_bell_post_sector_symmetry,thm:bell_insertion_isometry_symmetry}
@@ -651,6 +661,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
 \begin{theorem}[Physical inverse norm with the exact pin cost]
     \label{thm:selected_bell_post_inverse_transport}
     \lean{TensorPower.selectedBellPost_inverse_norm_le_physical}
+    \leanok
     Assume $\|\Omega\|=1$ and $z>0$. Fix $t\ge0$, $k\ge0$, and an
     isometry $Z:\C^n\to\mathcal H_k$ with $ZZ^*=S_k$.
     Let $U_{jg},Y_{jg}$ satisfy $U_{jg}\cap Y_{jg}=\varnothing$ and,
@@ -670,6 +681,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
     \cite[\texttt{07-comparators.tex}, lines 283--308 and 383--418]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:selected_bell_post_exact_pin,thm:bell_compressed_band_product_powers,
         thm:bell_band_product_pin_action,thm:bell_symmetric_pin_projection,
         thm:projection_intertwining_norm}
