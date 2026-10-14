@@ -5,6 +5,53 @@ The estimates below are the quadratic-form and inverse-power steps in
 \cite[Section~8, lines~367--381]{OpenAI2026AreaLaw}. All replica weights
 are computed from the original full system.
 
+% Source: OpenAI/math revision adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% 07-comparators.tex, comparator:pinned-metric, lines 299--308 and 405--415.
+\begin{theorem}[Exponential upper bound for one pinned metric factor]
+    \label{thm:replica_pinned_factor_exp_upper}
+    \lean{TensorPower.exists_replicaPinnedFactor_le_exp}
+    \leanok
+    \uses{thm:replica_metric_basic,def:label_projectors}
+    Fix a finite tensor product of nonzero finite-dimensional Hilbert
+    spaces and $t>0$. On every subsystem $Q$, use the replica metric
+    $W_{Q,k}$ defined by the common weights of the original full system,
+    and put $F_{Q,k}=\sum_\lambda(\log d_\lambda)\pi_{Q,k}^\lambda$.
+    There is $C\ge0$, depending on the fixed local spaces and $t$, such
+    that for every integer $k\ge0$ and every pair of disjoint regions
+    $U,Y$,
+    \begin{align*}
+        \bigl(W_{U,k}^{-1}W_{U\cup Y,k}^{-1}W_{Y,k}\bigr)^2
+         & \le (k+2)^C
+        \exp\bigl(2t(F_{U,k}+F_{U\cup Y,k}-F_{Y,k})\bigr).
+    \end{align*}
+    The inequality holds on the whole copy space. Empty regions and
+    zero copies are included. With $a=2t$, it gives the exponential
+    comparison in the proof of the sharp upper bound
+    in \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:replica_metric_comparison,thm:schur_label_commutation,
+        lem:orthogonal_resolution,lem:orthogonal_resolution_cfc}
+    Since $U\subseteq U\cup Y$, $Y\subseteq U\cup Y$, and
+    $U\cap Y=\varnothing$, the three families of label projections
+    commute. Their products form a common orthogonal resolution.
+    On a nonzero product with labels $\alpha,\beta,\gamma$ for
+    $U,U\cup Y,Y$, respectively, the squared metric factor has coefficient
+    $q=(w_k(\gamma)/(w_k(\alpha)w_k(\beta)))^2$.
+    Let $C_0\ge0$ be the constant in the logarithmic weight comparison
+    of Theorem~\ref{thm:replica_metric_comparison}. Applying its lower
+    bound to the first two weights and its upper bound to the third gives
+    \begin{align*}
+        \log q
+         & \le 6C_0\log(k+2)
+        +2t(\log d_\alpha+\log d_\beta-\log d_\gamma).
+    \end{align*}
+    All weights are positive. Exponentiating and summing over the common
+    orthogonal resolution proves the assertion with $C=6C_0$.
+    Zero products of label projections contribute nothing to either side.
+\end{proof}
+
 \begin{theorem}[The regions of successive bands]
 \label{thm:replica_band_regions_subset_or_disjoint}
 \lean{TensorPower.replicaBandRegions_subset_or_disjoint}
