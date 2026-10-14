@@ -1032,3 +1032,15 @@ The scalar factor in a finite tensor power is obtained entrywise from
 `Finset.prod_mul_distrib`; this proof is recorded as a single occurrence,
 with no new abstraction. The zero-copy product and the original selected
 mass are preserved.
+
+### Three signed selected moments — existing lemmas (2026-10-14)
+
+The sharp leaf argument reuses
+`Matrix.PosSemidef.re_trace_mul_exp_sum_le_prod` for three commuting
+observables. One region-parameterized local estimate combines spectral
+selection and the existing iid signed moments for U, U union Y, and Y.
+The positive and negative rates retain their separate coefficients;
+three cube roots contribute one inverse selection-mass power. The Bell
+expectation identity transports the same central label function through
+the actual isometry. No new tactic or duplicated iid proof is introduced,
+and every replica metric retains the original full-family weights.

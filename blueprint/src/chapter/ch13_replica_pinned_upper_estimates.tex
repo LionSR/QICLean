@@ -2,7 +2,7 @@
 \label{sec:replica_pinned_upper_estimates}
 
 The estimates below are the quadratic-form and inverse-power steps in
-\cite[Section~8, lines~367--381]{OpenAI2026AreaLaw}. All replica weights
+\cite[Section~8, lines~367--418]{OpenAI2026AreaLaw}. All replica weights
 are computed from the original full system.
 
 % Source: OpenAI/math revision adc7f1241b42e322a6451854ab7e4b4c146bf78a,
@@ -50,6 +50,120 @@ are computed from the original full system.
     All weights are positive. Exponentiating and summing over the common
     orthogonal resolution proves the assertion with $C=6C_0$.
     Zero products of label projections contribute nothing to either side.
+\end{proof}
+
+% Source: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% 07-comparators.tex, lines 383--418. This is a leaf estimate only.
+
+\begin{theorem}[Three signed regional moments]
+    \label{thm:pinned_three_moment_holder}
+    \lean{TensorPower.re_trace_mul_exp_pinnedLabels_le}
+    Fix a finite family of finite-dimensional spaces and disjoint regions
+    $U,Y$. On $k$ copies, write $F_Q$ for the central label entropy of
+    region $Q$. For every positive semidefinite matrix $\rho$ on the whole
+    copy space and every real $a$,
+    \begin{align}
+        \operatorname{Re}\operatorname{Tr}
+            \bigl(\rho e^{a(F_U+F_{U\cup Y}-F_Y)}\bigr)
+        &\leq
+        \bigl(\operatorname{Re}\operatorname{Tr}(\rho e^{3aF_U})\bigr)^{1/3}
+        \bigl(\operatorname{Re}\operatorname{Tr}(\rho e^{3aF_{U\cup Y}})\bigr)^{1/3}
+        \bigl(\operatorname{Re}\operatorname{Tr}(\rho e^{-3aF_Y})\bigr)^{1/3}.
+    \end{align}
+    The matrix $\rho$ need not have trace one or commute with the three
+    label observables. This is the three-factor inequality used in
+    \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:schur_label_commutation}
+    The regions $U,Y,U\cup Y$ are pairwise nested or disjoint. Their
+    central label observables therefore commute. Apply equal-weight trace
+    H\"older to the three Hermitian matrices $F_U,F_{U\cup Y},-F_Y$.
+\end{proof}
+
+\begin{theorem}[Exterior exponential moments under Bell insertion]
+    \label{thm:pinned_exponential_bell_insertion}
+    \lean{TensorPower.re_inner_exp_labelEntropy_bellInsertion}
+    Let $J_k$ insert the tensor power of a unit vector on the grouped
+    physical region $X$ and auxiliary register $C$, with the original
+    physical coordinates restored after insertion. The auxiliary register
+    $R$ and the physical coordinates outside $X$ remain separate.
+    Write $F_Q^{\mathrm{ext}}$ for the central label entropy on the
+    exterior part of $Q$, and $F_{Q\setminus X}^{\mathrm{full}}$ for the
+    corresponding operator in the original augmented space.
+    For every exterior vector $\Psi$, real $u$, and physical region $Q$,
+    \begin{align}
+        \langle J_k\Psi,e^{uF_{Q\setminus X}^{\mathrm{full}}}J_k\Psi\rangle
+        =\langle\Psi,e^{uF_Q^{\mathrm{ext}}}\Psi\rangle.
+    \end{align}
+\end{theorem}
+\begin{proof}
+    The central function $\lambda\mapsto e^{u\log\dim\lambda}$ gives
+    $e^{uF_{Q\setminus X}^{\mathrm{full}}}J_k
+      =J_ke^{uF_Q^{\mathrm{ext}}}$. Multiplication on the left by
+    $J_k^*$ and $J_k^*J_k=I$ prove the identity. No metric weight is
+    changed by this calculation.
+\end{proof}
+
+\begin{theorem}[A sharp upper bound for a pinned leaf]
+    \label{thm:replica_pinned_sharp_leaf}
+    \lean{TensorPower.exists_log_re_inner_replicaPinnedFactor_post_le}
+    Fix a unit physical vector $\Omega$, a physical region $X$, and a
+    spectral selection $E$ of its $X$ marginal with mass $z>0$.
+    Let $\chi_E$ be its normalized compressed selected vector, with the
+    selected register enumerated by $\{0,\ldots,|E|-1\}$, and let $b_E$
+    be the normalized selected Bell vector on $X\otimes\mathbb C^E$.
+    Set $p_k=J_k\chi_E^{\otimes k}$, where $J_k$ inserts $b_E^{\otimes k}$
+    in the original physical coordinates. The original augmented family
+    is the physical family together with $\mathbb C^E$ and
+    $\mathbb C^{|E|}$.
+
+    Fix $a>0$ and real $K,r$ with $6a\leq r$ and $6a\leq1$.
+    There is a constant $C\geq0$, independent of $k,U,Y$, with the
+    following property. Let $U,Y$ be disjoint physical regions, both
+    disjoint from $X$. For $Q\in\{U,U\cup Y,Y\}$, let $\rho_Q$ be the
+    original marginal of $\Omega$, and put $S_Q=S(\rho_Q)$. Suppose
+    each marginal satisfies
+    $\log M_{\rho_Q}(v)\leq vS_Q+Kv^2$ for all $|v|\leq r$,
+    with zero spectral weights contributing zero to the moment.
+    Write $W_Q$ for the replica metric of the original augmented family
+    at parameter $a/2$, acting on the original physical copy of $Q$, and
+    put $D_{U,Y}=(W_U^{-1}W_{U\cup Y}^{-1}W_Y)^2$.
+    Then
+    \begin{align}
+        \log\langle p_k,D_{U,Y}p_k\rangle
+        \leq{}&ka(S_U+S_{U\cup Y}-S_Y)+12Kka^2-k\log z\notag\\
+        &+C\log(k+2)+\frac{(\dim H_Y)^2}{6}\log(k+1).
+        \label{eq:pinned_sharp_leaf_rate}
+    \end{align}
+    The fixed constant $C$ may depend on the full augmented family and
+    on $a$. Singular marginals, empty regions and zero copies are included.
+    This is the leaf estimate in the sharp-upper proof of
+    \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:pinned_three_moment_holder,
+        thm:pinned_exponential_bell_insertion,
+        thm:replica_pinned_factor_exp_upper,
+        thm:compressed_typical_exponential_domination,
+        thm:iid_schur_exponential_moments}
+    The original-family metric comparison, evaluated against
+    $|p_k\rangle\langle p_k|$, bounds the expectation by
+    $(k+2)^C\langle p_k,e^{a(F_U+F_{U\cup Y}-F_Y)}p_k\rangle$.
+    Apply three-factor H\"older. The exterior insertion identity and
+    spectral-selection domination bound each factor's moment by
+    $z^{-k}$ times its original iid physical moment.
+
+    The two positive moments at $3a$ have logarithmic bounds
+    $3akS_U+9Kka^2$ and $3akS_{U\cup Y}+9Kka^2$.
+    The negative moment has logarithmic bound
+    $-3akS_Y+18Kka^2+(\dim H_Y)^2\log(k+1)/2$.
+    Taking the three cube roots therefore gives quadratic coefficient
+    $(9+9+18)/3=12$ and mass exponent $(-k-k-k)/3=-k$.
+    Adding $C\log(k+2)$ proves (\ref{eq:pinned_sharp_leaf_rate}).
+    The selected compressed vector is nonzero, the Bell insertion is
+    isometric, and $D_{U,Y}$ is positive definite, so its expectation is
+    strictly positive and taking its logarithm is legitimate.
 \end{proof}
 
 \begin{theorem}[The regions of successive bands]
