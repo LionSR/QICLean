@@ -111,6 +111,7 @@ import QICLean.Analysis.MeanTreeLogFloorExp
 import QICLean.Analysis.MeanTreeMultibandLowerNorm
 import QICLean.Analysis.MeanTreeProjectionLogBound
 import QICLean.Analysis.MeanTreeProjectionMassBound
+import QICLean.Analysis.MeanTreeProjectionMultibandUpper
 import QICLean.Analysis.MeanTreeProjectionSectors
 import QICLean.Analysis.MeanTreeProjectionUpper
 import QICLean.Analysis.MeanTreeSublinearRemainder

@@ -370,6 +370,154 @@ inclusions in their union.
     $q\exp(2s\log q)=q^{1+2s}$.
 \end{proof}
 
+\section{Sharp bounds in the same supplied sector}
+\label{sec:selected_bell_post_sharp_tree}
+
+% Static source candidate; no completion marks before successful verification.
+% Source: openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a,
+% 07-comparators.tex, lines 383--418.
+
+\begin{theorem}[One supplied sector across commuting bands]
+    \label{thm:mean_tree_projection_multiband_log_upper}
+    \lean{Matrix.MeanTree.re_inner_log_eval_prod_le_of_projection}
+    \leanok
+    For each $g\in\{1,\ldots,G\}$, let $T_g$ be a finite weighted mean
+    tree with positive definite leaves $A_{j,g}$ and terminal weights
+    $w_{j,g}$. Suppose its roots $M_g=T_g(A_{\cdot,g})$ commute across
+    distinct bands. Let $P$ be a supplied orthogonal projection commuting
+    with every leaf, and let $p$ satisfy $q=\|Pp\|^2>0$.
+    Put $M=\prod_{g=1}^G M_g$ in band order and $\phi=Pp/\|Pp\|$.
+    Then
+    \begin{align}
+        \langle\phi,\log M\,\phi\rangle
+        &\leq-G\log q+
+            \sum_{g=1}^G\sum_jw_{j,g}\log\langle p,A_{j,g}p\rangle.
+    \end{align}
+    No normalization of $p$ or mutual commutation of leaves in a single
+    band is required. Empty band products are included.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:mean_tree_supplied_projection_upper}
+    Positivity and commutation of the roots give
+    $\log M=\sum_g\log M_g$. Apply the supplied-sector logarithmic
+    bound to each root, always with the same $P$, $p$ and $q$, and sum.
+    Each band contributes exactly $-\log q$.
+\end{proof}
+
+\begin{theorem}[The supplied mass in a multi-band inverse norm]
+    \label{thm:mean_tree_projection_multiband_inverse_upper}
+    \lean{Matrix.MeanTree.mass_rpow_mul_exp_le_norm_rpow_neg_eval_prod_projection_sq}
+    \leanok
+    Under the hypotheses of
+    Theorem~\ref{thm:mean_tree_projection_multiband_log_upper}, every real
+    $s\geq0$ satisfies
+    \begin{align}
+        q^{1+2sG}\exp\left(-2s\sum_{g=1}^G\sum_jw_{j,g}
+            \log\langle p,A_{j,g}p\rangle\right)
+        &\leq\|M^{-s}Pp\|^2.
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:mean_tree_projection_multiband_log_upper}
+    Exponential Jensen in $Pp/\|Pp\|$ gives
+    $q\exp(-2s\langle\phi,\log M\,\phi\rangle)
+        \leq\|M^{-s}Pp\|^2$.
+    Substitute the logarithmic bound and combine
+    $q\exp(2sG\log q)=q^{1+2sG}$.
+\end{proof}
+
+\begin{definition}[The selected Bell postvector]
+    \label{def:selected_bell_postvector}
+    \lean{TensorPower.selectedBellPost}
+    \leanok
+    Let $\Omega$ be a physical vector, let $X$ be a region, and let $E$
+    be a finite spectral selection of its reduced state on $X$.
+    Write $\Omega_X$ in the coordinates $H_X\otimes H_{X^c}$, let
+    $\chi_E$ be its selected compression with inverse-square-root mass
+    normalization and the selected
+    eigenvectors enumerated by $\{1,\ldots,|E|\}$, and let $b_E$ be
+    the corresponding selected Bell vector. In the original physical
+    coordinates augmented by $E$ and $\{1,\ldots,|E|\}$, define
+    $\mathrm{post}_k=J_{b_E}\chi_E^{\otimes k}$, where $J_{b_E}$ is
+    the literal Bell insertion, with the physical coordinates unchanged.
+    The algebraic definitions also apply at zero selected mass and zero copies.
+\end{definition}
+
+\begin{theorem}[Terminal-weighted sharp bounds for the selected postvector]
+    \label{thm:selected_bell_post_sharp_tree}
+    \lean{TensorPower.exists_selectedBellPost_sharp_tree_bounds}
+    \leanok
+    Fix a finite physical family, a unit vector $\Omega$, a region $X$,
+    a spectral selection $E$ of positive mass $z$, and real parameters
+    $a>0$, $K$, $r$ with $6a\leq r$ and $6a\leq1$.
+    There is a nonnegative constant $C$, chosen before the copy number,
+    bands, terminal labels, regions and weighted tree, with the following property.
+
+    Let $U_{j,g},Y_{j,g}$ be disjoint from $X$ and each other, with
+    $U_{j,g}\cup Y_{j,g}\subseteq U_{j',h}$ whenever $g<h$.
+    Suppose each original physical marginal on
+    $Q\in\{U_{j,g},U_{j,g}\cup Y_{j,g},Y_{j,g}\}$ obeys the one-copy
+    surprisal bound
+    \begin{align}
+        \log\operatorname{Tr}\rho_Q^{1-v}
+        &\leq vS_\Omega(Q)+Kv^2
+    \end{align}
+    for every $|v|\leq r$, with the support convention for singular marginals.
+    Let $T$ be a finite weighted mean tree with terminal weights $w_j$,
+    let $W$ use the original full-family replica weights at $a/2$, and
+    write $\operatorname{ext}Q$ for the physical coordinates of $Q\setminus X$
+    in the augmented family. Define the actual exterior factors by
+    \begin{align}
+        D_{j,g}
+        &=\left(W_{\operatorname{ext}U_{j,g}}^{-1}
+            W_{\operatorname{ext}(U_{j,g}\cup Y_{j,g})}^{-1}
+            W_{\operatorname{ext}Y_{j,g}}\right)^2.
+    \end{align}
+    Put
+    $M=\prod_gT(D_{\cdot,g})$ in band order.
+    For the supplied auxiliary label $\lambda$, set
+    $P=\pi_R^\lambda$, $q=\|P\mathrm{post}_k\|^2$ and suppose $q>0$.
+    Define
+    \begin{align}
+        L_k
+        &=ka\sum_g\sum_jw_j
+            \bigl(S_\Omega(U_{j,g})+S_\Omega(U_{j,g}\cup Y_{j,g})
+                -S_\Omega(Y_{j,g})\bigr)\notag\\
+        &\quad+G\bigl(12Kka^2-k\log z+C\log(k+2)\bigr).
+    \end{align}
+    For $\phi=P\mathrm{post}_k/\|P\mathrm{post}_k\|$ and every real $s\geq0$,
+    \begin{align}
+        \langle\phi,\log M\,\phi\rangle&\leq-G\log q+L_k,\\
+        q^{1+2sG}\exp(-2sL_k)&\leq\|M^{-s}P\mathrm{post}_k\|^2.
+    \end{align}
+    These finite-copy bounds retain the supplied label and its exact mass.
+    They do not select the label, give a polynomial lower bound for $q$,
+    or identify the inverse norm with the original physical comparison vector.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:selected_bell_postvector,thm:replica_pinned_sharp_leaf,
+        thm:mean_tree_projection_multiband_log_upper,
+        thm:mean_tree_projection_multiband_inverse_upper}
+    Unit norm and positive selected mass give the nonempty coordinate
+    factors required for positivity. Nesting gives positive definite
+    pinned factors and cross-band commutation. A one-site central label
+    projection commutes with every subsystem label observable, hence with
+    the actual metric factors and their inverses.
+
+    Let $C_0$ be the uniform replica-weight coefficient in the sharp
+    leaf bound and choose
+    $C=C_0+\sum_{Q\subseteq V}(\dim H_Q)^2/6$.
+    Since $\log(k+1)\leq\log(k+2)$, this one fixed coefficient absorbs
+    every leaf's dimensional remainder. Apply the sharp leaf estimate
+    to the literal same $\Omega$ and $E$, multiply by $w_j\geq0$ and
+    sum. The identity $\sum_jw_j=1$ leaves one cost $-k\log z$ per band.
+    The two multi-band inequalities then give the conclusions without
+    changing the projection, its mass, or any terminal weight.
+\end{proof}
+
 \section{Uniform quadratic-form bounds through a mean tree}
 \label{sec:mean_tree_uniform_expectation}
 

@@ -1054,3 +1054,18 @@ at the commuting root, so the exact supplied mass is extracted once,
 before the terminal-weighted product is expanded. The Euclidean pairing
 conversion uses directed rewrites rather than commutative simplification.
 No new tactic or duplicate tree induction is introduced.
+
+### Same-sector conditioning across ordered bands — candidate (2026-10-14)
+
+- **Pattern:** Split the logarithm of a commuting ordered product, apply one
+  fixed projection/vector bound in every summand, and undo normalization once.
+- **Reuse:** `cfc_log_listProd_ofFn`, the supplied-projection single-band upper
+  theorem, and inverse-power logarithmic Jensen already supply the substantive
+  steps. The multi-band theorem keeps the exact shared mass power rather than
+  recreating normalization separately in each consumer.
+- **Consumer:** The selected Bell postvector theorem derives actual metric and
+  auxiliary-label commutations before applying that analytic theorem. A private
+  weighted-affine-sum identity accounts for terminal weights summing to one.
+- **Decision:** Two mathematical interfaces and one local scalar helper suffice;
+  no new tactic, simp set, instance budget or proof option is introduced. The
+  finite-Pi coordinate decision procedures match the accepted sharp-leaf module.
