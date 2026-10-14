@@ -226,7 +226,9 @@ theorem exists_selectedBellPost_sharp_tree_bounds
               ((Fintype.card (Configuration β (Y j g)) : ℝ) ^ 2 / 6) *
                 Real.log ((k : ℝ) + 1) at hb
     have hdim : (Fintype.card (Configuration β (Y j g)) : ℝ) ^ 2 / 6 ≤ d :=
-      Finset.single_le_sum (fun Q _ ↦ by positivity) (Finset.mem_univ (Y j g))
+      Finset.single_le_sum (s := Finset.univ)
+        (f := fun Q : Finset V ↦ (Fintype.card (Configuration β Q) : ℝ) ^ 2 / 6)
+        (fun Q _ ↦ by positivity) (Finset.mem_univ (Y j g))
     have hlog1 : 0 ≤ Real.log ((k : ℝ) + 1) := Real.log_nonneg (by positivity)
     have hlog12 : Real.log ((k : ℝ) + 1) ≤ Real.log ((k : ℝ) + 2) :=
       Real.log_le_log (by positivity) (by linarith only)
@@ -248,7 +250,7 @@ theorem exists_selectedBellPost_sharp_tree_bounds
         rfl
   have hlog := MeanTree.re_inner_log_eval_prod_le_of_projection
     (fun _ : Fin G ↦ T) hD hroots hP hPD p hq
-  refine ⟨hlog.trans (add_le_add_left hsum _), ?_⟩
+  refine ⟨hlog.trans (add_le_add (le_refl (-(G : ℝ) * Real.log q)) hsum), ?_⟩
   intro s hs
   have hnorm := MeanTree.mass_rpow_mul_exp_le_norm_rpow_neg_eval_prod_projection_sq
     (fun _ : Fin G ↦ T) hD hroots hP hPD p hq hs
