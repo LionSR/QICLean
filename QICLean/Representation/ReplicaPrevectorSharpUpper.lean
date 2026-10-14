@@ -106,7 +106,7 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
   classical
   intro ΩX ψ hmass
   obtain ⟨C, hC, hlim, hu⟩ :=
-    eventually_suppliedSchmidtBell_sharp_upper β Ω hΩ X E hz ha har ha1 ell hmass
+    eventually_suppliedSchmidtBell_sharp_upper (K := K) β Ω hΩ X E hz ha har ha1 ell hmass
   refine ⟨C, hC, hlim, hu.mono ?_⟩
   intro k hk n Z hZ hZZ G ι instF instD U Y hXU hXY hUY hnest hmom T s hs
   intro v W Q F ext A M Nsq S

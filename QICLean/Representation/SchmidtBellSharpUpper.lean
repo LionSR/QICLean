@@ -109,7 +109,7 @@ theorem eventually_suppliedSchmidtBell_sharp_upper
             Real.bellOverlapRemainder E.card C G k := by
   intro ΩX ψ hmass
   obtain ⟨C, hC, htree⟩ :=
-    exists_selectedBellPost_sharp_tree_bounds β Ω hΩ X E hz ha har ha1
+    exists_selectedBellPost_sharp_tree_bounds (K := K) β Ω hΩ X E hz ha har ha1
   have hE : E.Nonempty := Finset.nonempty_iff_ne_empty.mpr fun he ↦ by
     simp [he, Matrix.IsHermitian.spectralRestrictionMass] at hz
   refine ⟨C + (E.card : ℝ) ^ 2 + 1, by positivity,
