@@ -487,7 +487,10 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   actions before using their individual fixed-vector equations.
 - **Seen:** The two auxiliary-label equations and simultaneous symmetry in
   `QICLean/Representation/ReplicaPrevector.lean` share the private generic
-  `kronecker_mulVec_product` lemma. The mean-energy calculation in
+  `kronecker_mulVec_product` lemma. The public supplied-label theorem
+  reuses this identity with explicit vector arguments and lifts the two
+  auxiliary fixed-vector equalities through the physical product factor.
+  The mean-energy calculation in
   `QICLean/Analysis/ReplicaDefect.lean` has a prior identity-spectator variant.
 - **Abstraction:** The new calculation is written once and reused for all
   three actions. The norm calculation reuses the existing public quadratic

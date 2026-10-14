@@ -230,6 +230,39 @@ theorem replicaPrevector_copyPerm_fixed {A : Type*} [Fintype A] [DecidableEq A]
     prod_copyPerm_fixed, (projected_prod_omegaVec_fixed d k ell).2.2 σ]
   rfl
 
+/-- The explicit initial vector has the supplied label on each auxiliary
+copy system, without a normalization or nonvanishing assumption.
+Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 130–147,
+`comparator:prevector`. -/
+theorem replicaPrevector_auxiliary_label_fixed {A : Type*} [Fintype A] [DecidableEq A]
+    (Ω : A → ℂ) (d k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
+    let v := replicaPrevector Ω d k ell
+    let P := labelProj (copyPerm (Fin d) k) ell
+    ((1 : Matrix (Fin k → A) (Fin k → A) ℂ) ⊗ₖ
+      (P ⊗ₖ (1 : Matrix (Fin k → Fin d) (Fin k → Fin d) ℂ))) *ᵥ v = v ∧
+    ((1 : Matrix (Fin k → A) (Fin k → A) ℂ) ⊗ₖ
+      ((1 : Matrix (Fin k → Fin d) (Fin k → Fin d) ℂ) ⊗ₖ P)) *ᵥ v = v := by
+  classical
+  intro v P
+  dsimp only [v, P, replicaPrevector]
+  unfold TensorPower.replicaPrevector
+  simp only [kronecker_mulVec_product _ _ (fun x : Fin k → A ↦ ∏ i, Ω (x i))
+    (((1 : Matrix (Fin k → Fin d) (Fin k → Fin d) ℂ) ⊗ₖ
+      labelProj (copyPerm (Fin d) k) ell) *ᵥ
+        (fun x : (Fin k → Fin d) × (Fin k → Fin d) ↦
+          ∏ i, omegaVec d (x.1 i, x.2 i))), one_mulVec]
+  exact And.intro
+      (congrArg
+        (fun w : (Fin k → Fin d) × (Fin k → Fin d) → ℂ ↦
+          fun x : (Fin k → A) × ((Fin k → Fin d) × (Fin k → Fin d)) ↦
+            (∏ i, Ω (x.1 i)) * w x.2)
+        (projected_prod_omegaVec_fixed d k ell).1)
+      (congrArg
+        (fun w : (Fin k → Fin d) × (Fin k → Fin d) → ℂ ↦
+          fun x : (Fin k → A) × ((Fin k → Fin d) × (Fin k → Fin d)) ↦
+            (∏ i, Ω (x.1 i)) * w x.2)
+        (projected_prod_omegaVec_fixed d k ell).2.1)
+
 private theorem replicaPrevector_properties {A : Type*} [Fintype A] [DecidableEq A]
     (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) (H : Matrix A A ℂ) (E₀ : ℝ)
     (hE : H *ᵥ Ω = (E₀ : ℂ) • Ω) (d k : ℕ) (hd : 0 < d) (hk : 0 < k)
