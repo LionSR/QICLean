@@ -700,6 +700,114 @@ vector of Definition~\ref{def:selected_bell_postvector}.
     Squaring and using $|\sqrt z/d|^{2k}=(z/d^2)^k$ proves the result.
 \end{proof}
 
+\section{The sharp rate for the supplied physical label sequence}
+\label{sec:physical_sharp_supplied_sequence}
+
+\begin{theorem}[The logarithmic sharp rate]
+    \label{thm:sharp_bell_logarithmic_rate}
+    \lean{Real.neg_log_div_le_of_sharp_bell_bound}
+    \leanok
+    Let $d,k$ be positive integers, $G\ge0$, $z>0$, $C\ge0$ and
+    $0\le2s\le1$. For real $a,K,\Sigma$, put
+    \begin{align*}
+        p&=1+2sG,\\
+        L_k&=ka\Sigma+G\bigl(12Kka^2-k\log z+C\log(k+2)\bigr).
+    \end{align*}
+    Suppose $q\ge[2(k+1)^{d^2}]^{-1}$ and
+    $(z/d^2)^kq^p e^{-2sL_k}\le r$. Then $r>0$ and
+    \begin{align*}
+        -\frac{\log r}{k}
+        &\le 2\log d-\log z+2sa\Sigma+24sGKa^2-2sG\log z
+          +R_{d,C+d^2+1,G}(k),\\
+        R_{d,c,G}(k)
+        &:=\frac{\log4+(d^2+cG)\log(k+2)}{k}.
+    \end{align*}
+    For fixed $d,c,G$, this remainder tends to zero as $k\to\infty$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The lower bound on $q$ makes the finite lower bound positive. Taking
+    logarithms gives
+    $-\log r\le k(2\log d-\log z)+2sL_k-p\log q$.
+    Moreover, $-\log q\le\log2+d^2\log(k+1)$ and $p\le1+G$.
+    Since $\log(k+1)\le\log(k+2)$ and $\log2\le\log(k+2)$, the error numerator
+    is at most $\log4+(d^2+(C+d^2+1)G)\log(k+2)$. Divide by $k>0$.
+    The fixed-parameter remainder vanishes because $k^{-1}\to0$ and
+    $k^{-1}\log(k+2)\to0$.
+\end{proof}
+
+\begin{theorem}[The sharp physical rate for the supplied sequence]
+    \label{thm:supplied_schmidt_bell_sharp_rate}
+    \lean{TensorPower.eventually_suppliedSchmidtBell_sharp_upper}
+    \leanok
+    Fix a unit physical vector $\Omega$, a region $X$, a selected Schmidt
+    set $E$ of mass $z>0$, and parameters $a>0$, $6a\le r_0$ and $6a\le1$.
+    Write $d=|E|$. Supply the same label sequence $\ell_k$ as in the physical
+    prevector construction, and suppose its compressed tensor powers have
+    auxiliary-sector mass at least $[2(k+1)^{d^2}]^{-1}$ eventually.
+
+    There is $c\ge0$ and a threshold such that, for every larger $k$, every
+    supplied symmetric isometry $Z$, every band count $G$, and every weighted
+    mean tree $\mathcal T$ with terminal weights $w_j$, the following holds.
+    The regions $U_{j,g},Y_{j,g}$ are disjoint from $X$, satisfy the band
+    disjointness and cross-terminal nesting conditions, and their three
+    marginals satisfy the physical surprisal moment bound with coefficient
+    $K$ for all parameters of absolute value at most $r_0$. Put
+    \begin{align*}
+        \Sigma
+        &=\sum_{g<G}\sum_jw_j
+          \bigl(S(U_{j,g})+S(U_{j,g}\cup Y_{j,g})-S(Y_{j,g})\bigr).
+    \end{align*}
+    Let $M_k$ be the actual compressed product of band means at metric scale
+    $a/2$, with the original full-family weights, and let $v_k$ be the actual
+    physical prevector with left register $E$ and right register
+    $\{0,\ldots,d-1\}$. For every $0\le2s\le1$,
+    \begin{align*}
+        N_k&:=\|M_k^{-s}Z^*v_k\|^2>0,\\
+        -\frac{\log N_k}{k}
+        &\le 2\log d-\log z+2sa\Sigma+24sGKa^2-2sG\log z
+          +R_{d,c,G}(k).
+    \end{align*}
+    The constant and threshold precede the symmetric coordinates, bands,
+    regions and tree. For every fixed $G$, $R_{d,c,G}(k)\to0$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:selected_bell_post_mass,thm:selected_bell_post_sharp_tree,thm:selected_bell_post_inverse_transport,thm:sharp_bell_logarithmic_rate}
+    The exact insertion identity transfers the supplied sequence's mass to
+    the same selected postvector. Its sharp weighted tree estimate, followed
+    by the exact symmetric-pin norm transport, gives
+    $(z/d^2)^kq_k^{1+2sG}e^{-2sL_k}\le N_k$ for those same labels.
+    Apply the logarithmic estimate with $c=C+d^2+1$. The physical data and
+    band count remain fixed when the remainder tends to zero.
+\end{proof}
+
+\begin{theorem}[The original enumerated physical coordinates]
+    \label{thm:supplied_replica_prevector_sharp_rate}
+    \lean{FiniteProduct.eventually_suppliedReplicaPrevector_sharp_upper}
+    \leanok
+    The preceding conclusion holds for the original physical prevector with
+    both auxiliary registers $\{0,\ldots,d-1\}$, its supplied symmetric
+    coordinates, and the actual compressed metric formed from that full
+    augmented family. The label sequence, column space, entropy sum,
+    constant and vanishing remainder are unchanged.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:supplied_schmidt_bell_sharp_rate}
+    Enumerate $E$ and pull the supplied isometry back along that row-coordinate
+    equivalence. Equivariance transports the symmetric projection and
+    preserves the isometry identities. The coordinate equalities
+    identify both the actual compressed band product and the compressed
+    prevector on the same column space. Consequently their inverse-power
+    squared norm is identical, so the preceding estimate applies directly.
+\end{proof}
+
+These statements apply to an already supplied physical label sequence and do
+not select a second sequence. Its energy, both-label, symmetry and label-entropy
+conclusions remain available. The geometric entropy estimate and the final
+area-law comparison are separate.
+
 \section{Uniform quadratic-form bounds through a mean tree}
 \label{sec:mean_tree_uniform_expectation}
 

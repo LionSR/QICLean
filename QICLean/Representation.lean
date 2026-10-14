@@ -112,6 +112,7 @@ import QICLean.Representation.ReplicaPinnedSharpTree
 import QICLean.Representation.ReplicaPinnedTreeExpectation
 import QICLean.Representation.ReplicaPrevector
 import QICLean.Representation.ReplicaPrevectorRoughUpper
+import QICLean.Representation.ReplicaPrevectorSharpUpper
 import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
@@ -130,6 +131,7 @@ import QICLean.Representation.SchmidtBellEnumeratedPrevector
 import QICLean.Representation.SchmidtBellPhysicalWitness
 import QICLean.Representation.SchmidtBellPrevector
 import QICLean.Representation.SchmidtBellPrevectorOverlap
+import QICLean.Representation.SchmidtBellSharpUpper
 import QICLean.Representation.SchmidtBellSitePin
 import QICLean.Representation.SchmidtBellWitnessCoordinates
 import QICLean.Representation.SchmidtBellWitnessRange

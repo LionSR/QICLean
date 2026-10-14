@@ -1088,3 +1088,14 @@ No new tactic or duplicate tree induction is introduced.
 - **Decision:** Reuse the named finite-Pi decision procedures of the literal
   postvector definition. One local coordinate-action equality is sufficient;
   there is no new tactic, simp set, instance budget or proof option.
+
+### Sharp supplied-sequence logarithmic rate
+
+- The selected-sector mass identity and actual inverse transport are applied to
+  one supplied physical label sequence; no new transport or norm tactic is used.
+- The scalar logarithm calculation reuses the accepted Bell remainder and its
+  fixed-parameter limit. The sharp mass exponent requires a separate compact-
+  interval error bound, so this is not a fourth copy of a common tactic pattern.
+- Enumeration reuses the accepted compressed metric/prevector equalities and
+  equivariant symmetric-projection theorem. This is the second actual rate
+  consumer after the rough upper bound; no new coordinate tactic is introduced.
