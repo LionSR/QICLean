@@ -32,7 +32,7 @@ attribute [local instance] sharpTreeRegionDecidableEq sharpTreeSiteDecidableEq
   sharpTreeConfigDecidableEq
 
 private theorem norm_label_intertwine_of_isometry
-    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq n]
+    {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (J : Matrix m n ℂ) (P : Matrix m m ℂ) (Q : Matrix n n ℂ)
     (hJ : Jᴴ * J = 1) (hPQ : P * J = J * Q) (ψ : EuclideanSpace ℂ n) :
     ‖toEuclideanLin P (toEuclideanLin J ψ)‖ = ‖toEuclideanLin Q ψ‖ := by
