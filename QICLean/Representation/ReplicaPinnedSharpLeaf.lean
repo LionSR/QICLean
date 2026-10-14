@@ -49,8 +49,19 @@ local instance replicaPinnedSharpLeafConfigDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ) :
-    DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
-  Fintype.decidablePiFintype
+    DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) := by
+  let instSite : ∀ f : Option (Option V),
+      DecidableEq (addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) := fun f ↦ by
+    cases f with
+    | none => exact (inferInstance : DecidableEq (Fin E.card))
+    | some f =>
+      cases f with
+      | none => exact (inferInstance : DecidableEq E)
+      | some v => exact (inferInstance : DecidableEq (β v))
+  let instCopy : DecidableEq ((f : Option (Option V)) →
+      addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) :=
+    @Fintype.decidablePiFintype _ _ instSite inferInstance
+  exact @Fintype.decidablePiFintype _ _ (fun _ ↦ instCopy) inferInstance
 
 /-- Three-factor Hölder for the actual nested/disjoint label observables.
 The trace weight need not be normalized or commute with the observables.
