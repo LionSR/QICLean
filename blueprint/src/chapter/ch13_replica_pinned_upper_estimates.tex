@@ -298,6 +298,7 @@ inclusions in their union.
 \begin{theorem}[Quadratic contraction by a commuting projection]
     \label{thm:commuting_projection_quadratic_upper}
     \lean{Matrix.PosSemidef.re_dotProduct_projection_mulVec_le}
+    \leanok
     Let $A$ be positive semidefinite and $P$ an orthogonal projection
     commuting with $A$. For every vector $p$,
     \[
@@ -305,6 +306,7 @@ inclusions in their union.
     \]
 \end{theorem}
 \begin{proof}
+    \leanok
     The complementary sandwich satisfies
     $(I-P)^*A(I-P)=A-PAP\geq0$. Evaluate this inequality at $p$,
     using $P^*=P$ to identify the compressed quadratic form.
@@ -313,6 +315,7 @@ inclusions in their union.
 \begin{theorem}[A terminal-weighted upper bound in a supplied sector]
     \label{thm:mean_tree_supplied_projection_upper}
     \lean{Matrix.MeanTree.re_inner_log_eval_le_of_projection}
+    \leanok
     Let $T$ be a finite weighted mean tree with positive definite leaf
     matrices $A_j$ and terminal weights $w_j$. Let $P$ be a supplied
     orthogonal projection commuting with every $A_j$, and let $p$ be
@@ -327,6 +330,7 @@ inclusions in their union.
     remain included.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:commuting_projection_quadratic_upper}
     The projection commutes with the root $M=T(A)$, which is positive
     definite. Vector log Jensen, quadratic contraction at that root,
@@ -347,6 +351,7 @@ inclusions in their union.
 \begin{theorem}[The supplied mass in a one-band inverse norm]
     \label{thm:mean_tree_projection_inverse_norm_upper_consumer}
     \lean{Matrix.MeanTree.mass_rpow_mul_exp_le_norm_rpow_neg_eval_projection_sq}
+    \leanok
     Under the preceding hypotheses, for every real $s\geq0$,
     \[
         q^{1+2s}\exp\left(-2s\sum_jw_j
@@ -357,6 +362,7 @@ inclusions in their union.
     nor supplies a lower bound on its mass.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:mean_tree_supplied_projection_upper}
     Apply inverse-power exponential Jensen to the literal normalized
     vector $Pp/\|Pp\|$ and then undo normalization. The retained factor
