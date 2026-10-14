@@ -139,6 +139,33 @@ private theorem inv_pow_mul_exp_eq (z : ℝ) (hz : 0 < z) (k : ℕ) (b : ℝ) :
   congr 1
   ring
 
+private theorem signed_moments_of_marginal_domination
+    {n : Type*} [Fintype n] [DecidableEq n] {σ : Matrix n n ℂ}
+    (hσ : σ.PosSemidef) (htr : σ.trace = 1) {K r : ℝ}
+    (hmoment : ∀ v : ℝ, |v| ≤ r →
+      Real.log (Entropy.surprisalMoment hσ.isHermitian.eigenvalues v) ≤
+        v * vonNeumannEntropy σ hσ.isHermitian + K * v ^ 2)
+    (k : ℕ) (M : ℝ → ℝ) {z u : ℝ} (hz : 0 < z)
+    (hu : 0 ≤ u) (hur : 2 * u ≤ r) (hu1 : 2 * u ≤ 1)
+    (htransfer : ∀ v : ℝ, M v ≤ z⁻¹ ^ k *
+      (Matrix.finKronecker (fun _ : Fin k ↦ σ) *
+        NormedSpace.exp ((v : ℂ) • labelEntropy (copyPerm n k))).trace.re) :
+    let S := vonNeumannEntropy σ hσ.isHermitian
+    M u ≤ Real.exp (u * ((k : ℝ) * S) + k * K * u ^ 2 - k * Real.log z) ∧
+    M (-u) ≤ Real.exp ((-u) * ((k : ℝ) * S) +
+      (2 * k * K * u ^ 2 + ((Fintype.card n : ℝ) ^ 2 / 2) *
+        Real.log ((k : ℝ) + 1)) - k * Real.log z) := by
+  intro S
+  have hiid := Matrix.PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
+    hσ htr hmoment k hu hur hu1
+  constructor
+  · have h := (htransfer u).trans
+      (mul_le_mul_of_nonneg_left hiid.1 (pow_nonneg (inv_nonneg.mpr hz.le) k))
+    simpa only [inv_pow_mul_exp_eq z hz, S] using h
+  · have h := (htransfer (-u)).trans
+      (mul_le_mul_of_nonneg_left hiid.2 (pow_nonneg (inv_nonneg.mpr hz.le) k))
+    simpa only [inv_pow_mul_exp_eq z hz, S, Nat.cast_pow] using h
+
 private theorem three_rpow_exp_bound {x y z A B C : ℝ}
     (hx : 0 ≤ x) (hy : 0 ≤ y) (hz : 0 ≤ z)
     (hA : x ≤ Real.exp A) (hB : y ≤ Real.exp B) (hC : z ≤ Real.exp C) :
@@ -258,28 +285,22 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
         (2 * k * K * (3 * a) ^ 2 +
           ((Fintype.card (Configuration β Q) : ℝ) ^ 2 / 2) *
             Real.log ((k : ℝ) + 1)) - k * Real.log z) := by
-    have hiid := Matrix.PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
-        (reducedPure_posSemidef β Ω Q) (trace_reducedPure β Ω hΩ Q) (hmoment Q hQ) k
-        (show 0 ≤ 3 * a by linarith) (by linarith) (by linarith)
     have htransfer (v : ℝ) : M Q v ≤ z⁻¹ ^ k *
         (Matrix.finKronecker (fun _ : Fin k ↦ reducedPure β Ω Q) *
           NormedSpace.exp ((v : ℂ) •
             labelEntropy (copyPerm (Configuration β Q) k))).trace.re := by
+      have hpair : M Q v =
+          (⟪p, Matrix.toEuclideanLin (NormedSpace.exp ((v : ℂ) • L Q)) p⟫_ℂ).re :=
+        (congrArg Complex.re (Entropy.inner_toEuclideanLin_eq_trace _ p)).symm
       have heq := re_inner_exp_labelEntropy_bellInsertion β X E (Fin E.card)
         k b hb Ψ Q v
       have hle := re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
         β Ω X Q hXQ E hz k v
-      simpa only [M, L, ρ, p, J, b, Ψ, χ, ΩX, z, ι₀, ι₀', ext,
-        Entropy.inner_toEuclideanLin_eq_trace] using heq.trans_le hle
-    constructor
-    · have h := (htransfer (3 * a)).trans
-        (mul_le_mul_of_nonneg_left hiid.1 (pow_nonneg (inv_nonneg.mpr hz.le) k))
-      simpa only [inv_pow_mul_exp_eq z hz, S] using h
-    · have h := (htransfer (-3 * a)).trans
-        (mul_le_mul_of_nonneg_left
-          (by simpa only [neg_mul] using hiid.2)
-          (pow_nonneg (inv_nonneg.mpr hz.le) k))
-      simpa only [inv_pow_mul_exp_eq z hz, S, Nat.cast_pow] using h
+      exact hpair.trans_le (heq.trans_le hle)
+    simpa only [S, neg_mul] using signed_moments_of_marginal_domination
+      (reducedPure_posSemidef β Ω Q) (trace_reducedPure β Ω hΩ Q)
+      (hmoment Q hQ) k (M Q) hz
+      (show 0 ≤ 3 * a by linarith) (by linarith) (by linarith) htransfer
   have hU := (hmoment_post U hXU (Or.inl rfl)).1
   have hV := (hmoment_post (U ∪ Y) (Finset.disjoint_union_right.mpr ⟨hXU, hXY⟩)
     (Or.inr (Or.inl rfl))).1
