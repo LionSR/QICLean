@@ -33,10 +33,10 @@ namespace Matrix
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
+omit [DecidableEq n] in
 /-- A commuting orthogonal projection can only decrease the quadratic form of
 a positive semidefinite matrix. The projection and the vector remain fixed.
 Source: `07-comparators.tex`, lines 391–404. -/
-omit [DecidableEq n] in
 theorem PosSemidef.re_dotProduct_projection_mulVec_le
     {A P : Matrix n n ℂ} (hA : A.PosSemidef) (hP : IsStarProjection P)
     (hPA : Commute P A) (p : n → ℂ) :
