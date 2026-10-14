@@ -229,7 +229,8 @@ theorem exists_selectedBellPost_sharp_tree_bounds
       Finset.single_le_sum (s := Finset.univ)
         (f := fun Q : Finset V ↦ (Fintype.card (Configuration β Q) : ℝ) ^ 2 / 6)
         (fun Q _ ↦ by positivity) (Finset.mem_univ (Y j g))
-    have hlog1 : 0 ≤ Real.log ((k : ℝ) + 1) := Real.log_nonneg (by positivity)
+    have hlog1 : 0 ≤ Real.log ((k : ℝ) + 1) := Real.log_nonneg
+      (le_add_of_nonneg_left (show (0 : ℝ) ≤ k from Nat.cast_nonneg k))
     have hlog12 : Real.log ((k : ℝ) + 1) ≤ Real.log ((k : ℝ) + 2) :=
       Real.log_le_log (by positivity) (by linarith only)
     have hdimlog := (mul_le_mul_of_nonneg_right hdim hlog1).trans
