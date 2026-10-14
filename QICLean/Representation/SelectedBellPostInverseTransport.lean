@@ -25,7 +25,7 @@ Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 283--308,
 -/
 
 open Matrix PermutationRepresentation FiniteProduct
-open scoped BigOperators Matrix Kronecker MatrixOrder Matrix.Norms.L2Operator
+open scoped BigOperators Matrix Kronecker ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 noncomputable section
 
@@ -58,7 +58,7 @@ theorem selectedBellPost_inverse_norm_le_physical
     (T : MeanTree S) (ell : IrrepLabel (Equiv.Perm (Fin k))) (s : ℝ) :
     let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
     let z := (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
     let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
       (schmidtBellSitePrevector β X E k ΩX ell ∘ schmidtBellWitnessEquiv β X E k)
     let W := replicaMetric ι₀ t k

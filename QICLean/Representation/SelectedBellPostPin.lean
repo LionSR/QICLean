@@ -21,7 +21,7 @@ and 383--418, revision `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
 open Matrix PermutationRepresentation FiniteProduct
-open scoped BigOperators Matrix Kronecker
+open scoped BigOperators Matrix Kronecker ComplexOrder
 
 noncomputable section
 
@@ -44,7 +44,7 @@ local notation "L" => Fin k → A × E
 /-- The literal inserted postvector is the pullback of the actual selected
 Bell tensor and compressed selected tensor in witness coordinates. -/
 theorem selectedBellPost_eq_pullback :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
     let post : EuclideanSpace ℂ (L × Config k ιe) := WithLp.toLp 2
       (fun x ↦ (∏ j, selectedBellVector ΩX E (x.1 j)) *
         ∏ j, compressedTypicalPureState ΩX E
@@ -70,7 +70,7 @@ theorem symProj_labelProj_selectedBellPost
       (toEuclideanLin Q (selectedBellPost β Ω X E k)) =
         toEuclideanLin Q (selectedBellPost β Ω X E k) := by
   intro Q
-  let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+  let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
   let χ : ((o : Option ↥(Xᶜ)) → ιe o) → ℂ := fun x ↦
     compressedTypicalPureState ΩX E
       ((Finset.equivFin E).symm (x none), fun v ↦ x (some v))
@@ -117,7 +117,7 @@ theorem bellPin_schmidtBellPrevector_eq_selectedBellPost
     (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) :
     let z := (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
     let J := (addedSiteInsertion ιe (A × E) k (selectedBellVector ΩX E)).submatrix
       (bellInsertionCopyEquiv β X E (Fin E.card) k) id
     let Pe := symProj (copyPerm ((o : Option ↥(Xᶜ)) → ιe o) k)

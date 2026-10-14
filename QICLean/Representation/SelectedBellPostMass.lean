@@ -21,11 +21,28 @@ and 383--404, revision `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
 open Matrix PermutationRepresentation FiniteProduct
-open scoped BigOperators Matrix Kronecker
+open scoped BigOperators Matrix Kronecker ComplexOrder
 
 noncomputable section
 
 namespace TensorPower
+
+-- Match the finite-Pi decision procedures before both generic and selected states.
+attribute [local instance] sharpTreeRegionDecidableEq sharpTreeSiteDecidableEq
+  sharpTreeConfigDecidableEq
+
+private theorem norm_label_intertwine_of_isometry
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq n]
+    (J : Matrix m n ℂ) (P : Matrix m m ℂ) (Q : Matrix n n ℂ)
+    (hJ : Jᴴ * J = 1) (hPQ : P * J = J * Q) (ψ : EuclideanSpace ℂ n) :
+    ‖toEuclideanLin P (toEuclideanLin J ψ)‖ = ‖toEuclideanLin Q ψ‖ := by
+  calc
+    _ = ‖toEuclideanLin (P * J) ψ‖ := by
+      simp only [toLpLin_mul_same, LinearMap.comp_apply]
+    _ = ‖toEuclideanLin (J * Q) ψ‖ := by rw [hPQ]
+    _ = ‖toEuclideanLin J (toEuclideanLin Q ψ)‖ := by
+      simp only [toLpLin_mul_same, LinearMap.comp_apply]
+    _ = _ := Matrix.norm_toLp_mulVec_of_isometry J hJ _
 
 section GeneralInsertion
 
@@ -62,19 +79,11 @@ theorem norm_labelProj_bellInsertion_auxiliary (k : ℕ)
     ‖toEuclideanLin
       (labelProj (subsystemPerm k (compressedSiteSpace β X R) {none}) ell) ψ‖ := by
   intro J
-  have hJ : Jᴴ * J = 1 := isIsometry_bellInsertion β X C R k b hb
-  have hmove := labelProj_mul_bellInsertion_auxiliary β X C R k ell b
-  change ‖WithLp.toLp 2
-      (labelProj (subsystemPerm k (addedSiteSpace (addedSiteSpace β C) R) {none}) ell *ᵥ
-        (J *ᵥ ψ.ofLp))‖ = _
-  rw [Matrix.mulVec_mulVec, hmove, ← Matrix.mulVec_mulVec]
-  exact Matrix.norm_toLp_mulVec_of_isometry J hJ _
+  exact norm_label_intertwine_of_isometry J _ _
+    (isIsometry_bellInsertion β X C R k b hb)
+    (labelProj_mul_bellInsertion_auxiliary β X C R k ell b) ψ
 
 end GeneralInsertion
-
--- Match the finite-Pi decision procedures in the literal postvector definition.
-attribute [local instance] sharpTreeRegionDecidableEq sharpTreeSiteDecidableEq
-  sharpTreeConfigDecidableEq
 
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
@@ -88,7 +97,7 @@ theorem norm_sq_labelProj_selectedBellPost_eq
     (E : Finset (Configuration β X))
     (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
     let χ : Fin E.card × Configuration β Xᶜ → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
@@ -117,7 +126,7 @@ theorem norm_sq_labelProj_selectedBellPost_prod
     (E : Finset (Configuration β X))
     (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
     let ψ : Configuration β Xᶜ × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     ‖toEuclideanLin
