@@ -74,6 +74,7 @@ import QICLean.Entropy.MutualInformationBasic
 import QICLean.Entropy.MutualInformationDataProcessing
 import QICLean.Entropy.MutualInformationOperatorSchmidt
 import QICLean.Entropy.OrderedEntropyAlgebra
+import QICLean.Entropy.PatchNormalizedFirstVariation
 import QICLean.Entropy.PatchStationarity
 import QICLean.Entropy.PhysicalBufferOverlap
 import QICLean.Entropy.PositiveOverlappingProduct

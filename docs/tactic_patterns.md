@@ -110,6 +110,19 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Normalized regional states — candidate (2026-10-15)
+
+- **Pattern:** Expand the normalized patch output and use `regionState_smul`
+  to express its regional matrix as the unnormalized regional matrix times
+  the squared inverse norm. The multiplier is nonnegative even at zero output.
+- **Seen:** `Entropy.patch_stationarity` in `Entropy/PatchStationarity.lean`
+  and `Entropy.re_trace_variation_le_of_isPatchMinimizer` in
+  `Entropy/PatchNormalizedFirstVariation.lean`.
+- **Abstraction:** Both proofs reuse `regionState_smul`. A third occurrence
+  would justify a direct regional-state identity for `patchState`.
+- **Caveat:** Multiplication by the squared inverse norm is valid at zero;
+  cancelling the norm would require a separate nonvanishing argument.
+
 ### Products preserving common spectral cutoffs — candidate (2026-10-11)
 
 - **Pattern:** Prove that each factor preserves a common fixed subspace and

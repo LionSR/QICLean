@@ -110,3 +110,42 @@ $y$ on rank-one projections of a common eigenbasis of $G$ and $x_j$
 (Lemma~\ref{lem:commuting_hermitian}) gives $G\le\lambda\Id$. Since
 $\lambda=\Tr\rho_j-b\Tr G\le1$, we get $\rho_j\le\lambda(x_j+b\Id)\le x_j+b\Id$.
 \end{proof}
+
+\begin{theorem}[First-order inequalities for normalized patch outputs]
+\label{thm:patch_normalized_first_variation}
+\lean{Entropy.re_trace_variation_le_of_isPatchMinimizer}
+Let $X_0\subseteq\cdots\subseteq X_{m-1}$ be regions of a finite tensor-product
+system, let $a_0,\dots,a_{m-1}>0$ and $b>0$, and let $\Omega$ be a vector.
+For density matrices $x_j$ on $X_j$, put $L_j=(x_j+b\Id)^{-a_j/2}$,
+extended by the identity outside $X_j$, and $M=L_{m-1}\cdots L_0$.
+Suppose that $(x_j)_{j=0}^{m-1}$ minimizes $\lVert M\Omega\rVert$ over all
+such tuples of density matrices, with the regions and exponents fixed.
+Set $\phi=M\Omega/\lVert M\Omega\rVert$, with $\phi=0$ when $M\Omega=0$,
+and let $\rho_j$ be its reduced matrix on $X_j$.
+Then, for every $j$ and every density matrix $y$ on $X_j$ commuting with $x_j$,
+\begin{align}
+ \operatorname{Re}\tr\bigl(\rho_j(x_j+b\Id)^{-1}y\bigr)
+ &\le \operatorname{Re}\tr\bigl(\rho_j(x_j+b\Id)^{-1}x_j\bigr).
+ \label{eq:patch_normalized_variation}
+\end{align}
+Repeated regions and the empty product are allowed.
+This is the first-order inequality used in
+\cite[Section~4, first-order patch inequalities]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+\uses{lem:filter_stationarity}
+Write $\Psi=M\Omega$, and let $\sigma_j$ be the reduced matrix of
+$\ketbra{\Psi}{\Psi}$ on $X_j$. The descending stationarity argument gives
+commutation of each outer filter with the corresponding reduced matrix.
+The segment $x_j+t(y-x_j)$ is feasible for $0\le t\le1$.
+Differentiating at $t=0$ and removing the outer filters gives
+\begin{align}
+ \operatorname{Re}\tr\bigl(\sigma_j(x_j+b\Id)^{-1}y\bigr)
+ &\le \operatorname{Re}\tr\bigl(\sigma_j(x_j+b\Id)^{-1}x_j\bigr).
+ \label{eq:patch_unnormalized_variation}
+\end{align}
+Set $c=\lVert\Psi\rVert^{-2}$ when $\Psi\ne0$, and $c=0$ otherwise.
+Then $c\ge0$ and $\rho_j=c\sigma_j$. Multiplying
+(\ref{eq:patch_unnormalized_variation}) by $c$ proves
+(\ref{eq:patch_normalized_variation}), including the case $\Psi=0$.
+\end{proof}
