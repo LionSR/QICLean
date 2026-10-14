@@ -73,9 +73,9 @@ theorem lower_envelope_le_affine_of_hasDerivWithinAt {ι : Type*}
     hg hBa.ge
     (continuous_iff_continuousAt.mpr (fun t ↦ (hB t).continuousAt)).continuousOn
     (fun t _ ↦ (hB t).hasDerivWithinAt)
-    fun t ht q hq ↦
+    fun t ht _q hq ↦
       match hcontact t ht with
-      | ⟨x, hx, d, heq, hder, hd⟩ =>
+      | ⟨x, hx, _d, heq, hder, hd⟩ =>
         ((hder.liminf_right_slope_le (lt_of_le_of_lt hd hq)).and_eventually
           (Ioc_mem_nhdsGT ht.2)).mono fun z hz ↦
           have hcomp : g z - g t ≤ f z x - f t x :=
