@@ -109,7 +109,7 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
     eventually_suppliedSchmidtBell_sharp_upper (K := K) β Ω hΩ X E hz ha har ha1 ell hmass
   refine ⟨C, hC, hlim, hu.mono ?_⟩
   intro k hk n Z hZ hZZ G ι instF instD U Y hXU hXY hUY hnest hmom T s hs
-  intro v W Q F ext A M Nsq S
+    v W Q F ext A M Nsq S
   let e : Config k ι₀ ≃
       Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
     Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight fun o ↦
