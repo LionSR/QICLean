@@ -1069,3 +1069,22 @@ No new tactic or duplicate tree induction is introduced.
 - **Decision:** Two mathematical interfaces and one local scalar helper suffice;
   no new tactic, simp set, instance budget or proof option is introduced. The
   finite-Pi coordinate decision procedures match the accepted sharp-leaf module.
+
+### Literal selected-sector mass and pin transport — existing lemmas (2026-10-14)
+
+- **Pattern:** Specialize a real central-label observable to the indicator of
+  one supplied irreducible label, then use the actual insertion isometry to
+  preserve its projected norm. This retains the label rather than selecting
+  another sector after changing coordinates.
+- **Reuse:** `norm_toLp_mulVec_of_isometry` gives norm preservation, and
+  `norm_projected_le_of_isometric_intertwine` handles the adjoint orientation
+  and orthogonal-projection contraction for real powers. No new inner-product
+  calculation, functional-calculus proof or projection tactic is needed.
+- **State equality:** The supplied site Bell identity is pulled back through
+  the explicit witness bijection. Pure-tensor symmetry and auxiliary-label
+  commutation upgrade the range pin to the inserted symmetric pin, with the
+  scalar coefficient unchanged. The exact squared coefficient is established
+  by the existing complex norm and real square-root identities.
+- **Decision:** Reuse the named finite-Pi decision procedures of the literal
+  postvector definition. One local coordinate-action equality is sufficient;
+  there is no new tactic, simp set, instance budget or proof option.

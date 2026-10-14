@@ -518,6 +518,176 @@ inclusions in their union.
     changing the projection, its mass, or any terminal weight.
 \end{proof}
 
+\section{Exact mass and physical transport in the selected sector}
+\label{sec:selected_bell_sector_transport}
+
+\begin{theorem}[The same auxiliary label through Bell insertion]
+    \label{thm:selected_bell_auxiliary_intertwining}
+    \lean{TensorPower.labelProj_mul_bellInsertion_auxiliary,TensorPower.norm_labelProj_bellInsertion_auxiliary}
+    Let $J_b$ insert $b^{\otimes k}$ on the physical region $X$ and
+    auxiliary register $C$, retaining the distinct auxiliary register $R$.
+    Let $Q_\lambda$ and $Q^e_\lambda$ be the central projections of the
+    same irreducible label $\lambda$ on the original and exterior $R$
+    copies. Then $Q_\lambda J_b=J_bQ^e_\lambda$.
+    If $\|b\|=1$, every exterior vector $\psi$ satisfies
+    $\|Q_\lambda J_b\psi\|=\|Q^e_\lambda\psi\|$.
+    These assertions include zero copies and empty coordinate spaces.
+\end{theorem}
+\begin{proof}
+    \uses{thm:bell_insertion_label_intertwining,thm:bell_insertion_isometry_symmetry}
+    Apply the auxiliary-label observable identity to the indicator
+    function $\mu\mapsto\mathbf1_{\{\mu=\lambda\}}$.
+    A unit inserted vector gives $J_b^*J_b=I$, so
+    $\|Q_\lambda J_b\psi\|=\|J_bQ^e_\lambda\psi\|
+      =\|Q^e_\lambda\psi\|$.
+\end{proof}
+
+Fix a physical vector $\Omega$, a region $X$, and a set $E$ of spectral
+indices for its actual marginal on $X$. Put $d=|E|$, and retain the fixed
+enumeration of $E$ by $\{0,\ldots,d-1\}$. The left auxiliary register is
+$C=E$; the right register is $R=\{0,\ldots,d-1\}$.
+Let $B$ be the physical coordinate set on $X^c$.
+Write $b_E$ for the selected Bell vector, $\chi_E$ for the selected
+compressed vector, and $\Psi_k$ for its tensor power in the
+exterior sites $R\cup X^c$. Thus $\mathrm{post}_k=J_{b_E}\Psi_k$ is the
+vector of Definition~\ref{def:selected_bell_postvector}.
+
+\begin{theorem}[Exact mass in the supplied auxiliary sector]
+    \label{thm:selected_bell_post_mass}
+    \lean{TensorPower.norm_sq_labelProj_selectedBellPost_eq,TensorPower.norm_sq_labelProj_selectedBellPost_prod}
+    Suppose the actual selected mass $z$ is positive. Let
+    $\psi(b,r)=\chi_E(\iota^{-1}(r),b)$ put the physical complement first,
+    and group its $k$ physical factors before its $k$ auxiliary factors.
+    For every $k\ge0$ and every supplied label $\lambda$,
+    \begin{align*}
+        \|Q_\lambda\mathrm{post}_k\|^2
+        &=\|Q^e_\lambda\Psi_k\|^2
+          =\|(I_{B^k}\otimes\Pi^{d,k}_\lambda)\psi^{\otimes k}\|^2.
+    \end{align*}
+    No normalization of $\Omega$ is required. In particular, the equality
+    holds pointwise along any already chosen label sequence.
+\end{theorem}
+\begin{proof}
+    \uses{thm:selected_bell_auxiliary_intertwining,thm:compressed_site_label_mass_coordinates}
+    Positive selected mass makes $b_E$ unit, and the insertion preserves
+    the norm of its supplied auxiliary sector. Regrouping the exterior
+    coordinates is unitary and carries the same auxiliary projection to
+    $I_{B^k}\otimes\Pi^{d,k}_\lambda$. Neither operation changes the label.
+\end{proof}
+
+\begin{theorem}[The postvector in separated Bell coordinates]
+    \label{thm:selected_bell_post_pullback}
+    \lean{TensorPower.selectedBellPost_eq_pullback}
+    Let $\tau_k$ separate the selected Bell coordinates from the
+    exterior coordinates, and let $W_kf=f\circ\tau_k$.
+    The literal postvector satisfies
+    \begin{align*}
+        \mathrm{post}_k
+        &=W_k\bigl(b_E^{\otimes k}\otimes\Psi_k\bigr).
+    \end{align*}
+    This coordinate equality requires no normalization or positive-mass
+    hypothesis and includes zero copies.
+\end{theorem}
+\begin{proof}
+    \uses{def:selected_bell_postvector,def:schmidt_bell_witness_coordinates,
+        thm:added_site_tensor_insertion_action}
+    Applying the insertion matrix multiplies the exterior coefficient by
+    $\prod_jb_E(x_j|_X,c_j)$. The remaining coefficient is precisely the
+    product defining $\Psi_k$ in the exterior coordinates of $\tau_k$.
+\end{proof}
+
+\begin{theorem}[Symmetry of the supplied postvector sector]
+    \label{thm:selected_bell_post_sector_symmetry}
+    \lean{TensorPower.symProj_labelProj_selectedBellPost}
+    Let $S_k$ average simultaneous permutations of the original copies.
+    For every supplied label $\lambda$,
+    $S_kQ_\lambda\mathrm{post}_k=Q_\lambda\mathrm{post}_k$.
+    No normalization or positive selected-mass hypothesis is required.
+\end{theorem}
+\begin{proof}
+    \uses{thm:selected_bell_auxiliary_intertwining,
+        thm:bell_insertion_isometry_symmetry,thm:central_label_full_symmetry}
+    If $S^e_k$ is exterior copy symmetry, the pure tensor satisfies
+    $S^e_k\Psi_k=\Psi_k$ and the central auxiliary projection commutes
+    with $S^e_k$. Since $S_kJ_{b_E}=J_{b_E}S^e_k$,
+    \begin{align*}
+        S_kQ_\lambda J_{b_E}\Psi_k
+        &=J_{b_E}S^e_kQ^e_\lambda\Psi_k
+          =J_{b_E}Q^e_\lambda\Psi_k
+          =Q_\lambda J_{b_E}\Psi_k.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}[The exact symmetric Bell pin]
+    \label{thm:selected_bell_post_exact_pin}
+    \lean{TensorPower.bellPin_schmidtBellPrevector_eq_selectedBellPost}
+    Suppose $z>0$. Let $v_{k,\lambda}$ be the original physical prevector
+    with its supplied auxiliary label, expressed in the original physical
+    sites, selected left register $E$, and enumerated right register $R$.
+    Set $\mathsf P_k=J_{b_E}S^e_kJ_{b_E}^*$. Then
+    \begin{align*}
+        \mathsf P_kv_{k,\lambda}
+        &=\left(\frac{\sqrt z}{d}\right)^k
+            Q_\lambda\mathrm{post}_k.
+    \end{align*}
+    The state, selected set, enumeration and label are the same on both
+    sides. This holds for every $k\ge0$, without a unit-norm condition on
+    $\Omega$, and is the symmetric-pin form of
+    \cite[\texttt{07-comparators.tex}, lines 283--290]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:schmidt_bell_site_pin,thm:schmidt_bell_witness_outer_product,
+        thm:schmidt_bell_witness_auxiliary_label,thm:selected_bell_post_pullback,
+        thm:selected_bell_post_sector_symmetry,thm:bell_insertion_isometry_symmetry}
+    Pull back the selected Bell identity by $\tau_k$. The two projection
+    identities and the literal postvector equality give
+    $J_{b_E}J_{b_E}^*v_{k,\lambda}
+      =(\sqrt z/d)^kQ_\lambda\mathrm{post}_k$.
+    Insertion symmetry gives
+    $\mathsf P_k=S_kJ_{b_E}J_{b_E}^*$.
+    The supplied postvector sector is fixed by $S_k$, proving the claim.
+\end{proof}
+
+\begin{theorem}[Physical inverse norm with the exact pin cost]
+    \label{thm:selected_bell_post_inverse_transport}
+    \lean{TensorPower.selectedBellPost_inverse_norm_le_physical}
+    Assume $\|\Omega\|=1$ and $z>0$. Fix $t\ge0$, $k\ge0$, and an
+    isometry $Z:\C^n\to\mathcal H_k$ with $ZZ^*=S_k$.
+    Let $U_{jg},Y_{jg}$ satisfy $U_{jg}\cap Y_{jg}=\varnothing$ and,
+    for every $g<h$, $U_{jg}\cup Y_{jg}\subseteq U_{j'h}$.
+    Define $M$ and $N$ as in
+    Theorem~\ref{thm:bell_compressed_band_product_powers}, using the same
+    weighted mean tree in every band and the original full-family
+    replica weights. For every supplied label $\lambda$ and every
+    real $s$,
+    \begin{align*}
+        \left(\frac z{d^2}\right)^k
+          \|N^{-s}Q_\lambda\mathrm{post}_k\|^2
+        &\le\|M^{-s}Z^*v_{k,\lambda}\|^2.
+    \end{align*}
+    Empty band products and zero copies are included. This is the
+    finite-copy pin-norm comparison used in
+    \cite[\texttt{07-comparators.tex}, lines 283--308 and 383--418]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:selected_bell_post_exact_pin,thm:bell_compressed_band_product_powers,
+        thm:bell_band_product_pin_action,thm:bell_symmetric_pin_projection,
+        thm:projection_intertwining_norm}
+    The unit physical state and positive selected mass imply nonempty
+    original coordinate sets. The actual band-product theorems give
+    positive $M,N$ and
+    $(ZM^{-s}Z^*)\mathsf P_k=\mathsf P_kN^{-s}$.
+    Since $b_E$ is unit, $\mathsf P_k$ is an orthogonal projection.
+    The projected norm comparison and the exact pin identity yield
+    \begin{align*}
+        \left|\left(\frac{\sqrt z}{d}\right)^k\right|
+          \|N^{-s}Q_\lambda\mathrm{post}_k\|
+        &=\|N^{-s}\mathsf P_kv_{k,\lambda}\|
+          \le\|M^{-s}Z^*v_{k,\lambda}\|.
+    \end{align*}
+    Squaring and using $|\sqrt z/d|^{2k}=(z/d^2)^k$ proves the result.
+\end{proof}
+
 \section{Uniform quadratic-form bounds through a mean tree}
 \label{sec:mean_tree_uniform_expectation}
 
