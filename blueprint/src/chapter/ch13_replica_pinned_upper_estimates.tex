@@ -380,6 +380,7 @@ inclusions in their union.
 \begin{theorem}[One supplied sector across commuting bands]
     \label{thm:mean_tree_projection_multiband_log_upper}
     \lean{Matrix.MeanTree.re_inner_log_eval_prod_le_of_projection}
+    \leanok
     For each $g\in\{1,\ldots,G\}$, let $T_g$ be a finite weighted mean
     tree with positive definite leaves $A_{j,g}$ and terminal weights
     $w_{j,g}$. Suppose its roots $M_g=T_g(A_{\cdot,g})$ commute across
@@ -396,6 +397,7 @@ inclusions in their union.
     band is required. Empty band products are included.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:mean_tree_supplied_projection_upper}
     Positivity and commutation of the roots give
     $\log M=\sum_g\log M_g$. Apply the supplied-sector logarithmic
@@ -406,6 +408,7 @@ inclusions in their union.
 \begin{theorem}[The supplied mass in a multi-band inverse norm]
     \label{thm:mean_tree_projection_multiband_inverse_upper}
     \lean{Matrix.MeanTree.mass_rpow_mul_exp_le_norm_rpow_neg_eval_prod_projection_sq}
+    \leanok
     Under the hypotheses of
     Theorem~\ref{thm:mean_tree_projection_multiband_log_upper}, every real
     $s\geq0$ satisfies
@@ -416,6 +419,7 @@ inclusions in their union.
     \end{align}
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:mean_tree_projection_multiband_log_upper}
     Exponential Jensen in $Pp/\|Pp\|$ gives
     $q\exp(-2s\langle\phi,\log M\,\phi\rangle)
@@ -427,6 +431,7 @@ inclusions in their union.
 \begin{definition}[The selected Bell postvector]
     \label{def:selected_bell_postvector}
     \lean{TensorPower.selectedBellPost}
+    \leanok
     Let $\Omega$ be a physical vector, let $X$ be a region, and let $E$
     be a finite spectral selection of its reduced state on $X$.
     Write $\Omega_X$ in the coordinates $H_X\otimes H_{X^c}$, let
@@ -443,6 +448,7 @@ inclusions in their union.
 \begin{theorem}[Terminal-weighted sharp bounds for the selected postvector]
     \label{thm:selected_bell_post_sharp_tree}
     \lean{TensorPower.exists_selectedBellPost_sharp_tree_bounds}
+    \leanok
     Fix a finite physical family, a unit vector $\Omega$, a region $X$,
     a spectral selection $E$ of positive mass $z$, and real parameters
     $a>0$, $K$, $r$ with $6a\leq r$ and $6a\leq1$.
@@ -491,6 +497,7 @@ inclusions in their union.
     or identify the inverse norm with the original physical comparison vector.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{def:selected_bell_postvector,thm:replica_pinned_sharp_leaf,
         thm:mean_tree_projection_multiband_log_upper,
         thm:mean_tree_projection_multiband_inverse_upper}
