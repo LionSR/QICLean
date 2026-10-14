@@ -487,7 +487,10 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   actions before using their individual fixed-vector equations.
 - **Seen:** The two auxiliary-label equations and simultaneous symmetry in
   `QICLean/Representation/ReplicaPrevector.lean` share the private generic
-  `kronecker_mulVec_product` lemma. The mean-energy calculation in
+  `kronecker_mulVec_product` lemma. The public supplied-label theorem
+  reuses this identity with explicit vector arguments and lifts the two
+  auxiliary fixed-vector equalities through the physical product factor.
+  The mean-energy calculation in
   `QICLean/Analysis/ReplicaDefect.lean` has a prior identity-spectator variant.
 - **Abstraction:** The new calculation is written once and reused for all
   three actions. The norm calculation reuses the existing public quadratic
@@ -670,7 +673,8 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Pattern:** Form a product of commuting orthogonal resolutions and recover
   a function of either coordinate by summing the other resolution to the identity.
 - **Seen:** `GroupedLabelEntropy.lean`, `SchurSurprisal.lean`,
-  `MergeExponential.lean`, and `WeightedTraceHolder.lean`.
+  `MergeExponential.lean`, `WeightedTraceHolder.lean`,
+  `ReplicaWholeInverse.lean`, and `ReplicaPinnedMetricUpper.lean`.
 - **Abstraction:** `Matrix.IsOrthogonalResolution.prod_hom_fst` and
   `prod_hom_snd` in `Analysis/OrthogonalResolution.lean`. `MergeExponential.lean` and
   `WeightedTraceHolder.lean` use these two lemmas; the private helpers in
@@ -681,6 +685,12 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   still form the actual resolutions; matrix order is obtained separately from
   scalar inequalities on nonzero joint components. No compatibility premise
   is added to any source theorem.
+- **Local repetition (2026-10-13):** The three coordinate identities in
+  `ReplicaPinnedMetricUpper.lean` repeat local names for the same three
+  resolutions and their first product. All three calculations already use
+  `prod_hom_fst` and `prod_hom_snd`; no finite-sum argument is copied.
+  This repetition occurs within one proof and does not warrant another
+  general lemma or tactic.
 
 ### Physical support through an auxiliary partial trace — candidate (2026-10-08)
 

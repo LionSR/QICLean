@@ -22,32 +22,7 @@ The initial vector below is the construction in
     All products and projections here act on the actual finite copy spaces.
 \end{definition}
 
-\begin{theorem}[Symmetry of the explicit initial vector]
-    \label{thm:replica_prevector_symmetry}
-    \lean{TensorPower.replicaPrevector_copyPerm_fixed}
-    \leanok
-    \uses{def:replica_prevector}
-    For every label $\lambda$ and every permutation $\sigma\in S_k$, let
-    $R_A(\sigma)$ and $R_d(\sigma)$ permute the copies of the physical and
-    auxiliary systems, respectively. Then
-    \begin{align}
-        (R_A(\sigma)\otimes(R_d(\sigma)\otimes R_d(\sigma)))v_{k,\lambda}
-        =v_{k,\lambda}.
-    \end{align}
-\end{theorem}
-\begin{proof}
-    \leanok
-    \uses{def:replica_prevector}
-    Reindexing each repeated product gives
-    \begin{align}
-        R_A(\sigma)\Omega^{\otimes k}       & =\Omega^{\otimes k}, \\
-        (R_d(\sigma)\otimes R_d(\sigma))U_k & =U_k.
-    \end{align}
-    The central projector $\Pi_\lambda$ commutes with $R_d(\sigma)$.
-    Consequently $I_C\otimes\Pi_\lambda$ preserves the invariance of $U_k$,
-    and tensoring with $\Omega^{\otimes k}$ gives the asserted identity.
-\end{proof}
-
+\input{chapter/ch12_replica_prevector_properties}
 Let $\Omega\in\mathbb C^A$ and
 $\psi\in\mathbb C^S\otimes\mathbb C^d$ be unit vectors. Suppose that
 $H\Omega=E_0\Omega$, with $E_0\in\mathbb R$.

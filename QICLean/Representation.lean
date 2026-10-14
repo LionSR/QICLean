@@ -106,6 +106,7 @@ import QICLean.Representation.ReplicaMeanIdentityExtension
 import QICLean.Representation.ReplicaMetric
 import QICLean.Representation.ReplicaMetricCutoffNorm
 import QICLean.Representation.ReplicaPinnedLeafExpectation
+import QICLean.Representation.ReplicaPinnedMetricUpper
 import QICLean.Representation.ReplicaPinnedTreeExpectation
 import QICLean.Representation.ReplicaPrevector
 import QICLean.Representation.ReplicaPrevectorRoughUpper
