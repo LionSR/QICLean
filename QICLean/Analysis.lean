@@ -223,6 +223,7 @@ import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
+import QICLean.Analysis.SharpBellOverlapLogBound
 import QICLean.Analysis.ShiftedDensityCommutation
 import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.ShiftedDensityTruncation
