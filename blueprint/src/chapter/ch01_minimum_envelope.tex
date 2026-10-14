@@ -1,0 +1,49 @@
+\section{Scalar minima and one-sided growth}
+\label{sec:minimum_envelope}
+
+The following scalar comparisons support the minimum-growth argument in the
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex\#L421-L481}{polynomial-PEPS manuscript}.
+% These general scalar statements do not establish the derivative bounds
+% for the ordered matrix filters or the source-labelled patch growth theorem.
+
+\begin{theorem}[Lipschitz continuity of an attained minimum]
+    \label{thm:minimum_envelope_lipschitz}
+    \lean{lipschitzOnWith_of_isLeast}
+    Let $X$ be a pseudometric space, let $J\subseteq X$, let $S$ be a set,
+    and let $f:X\times S\to\R$. Suppose that, for every $t\in J$,
+    $g(t)=\min_{x\in S}f(t,x)$ is attained. If every $f(\cdot,x)$ is
+    $C$-Lipschitz on $J$, with the same $C\ge0$, then $g$ is
+    $C$-Lipschitz on $J$.
+\end{theorem}
+\begin{proof}
+    Choose a minimizer $x_v$ at $v\in J$. For $u\in J$,
+    \begin{align*}
+        g(u)-g(v)
+         & \le f(u,x_v)-f(v,x_v)
+        \le C d(u,v).
+    \end{align*}
+    Exchange $u$ and $v$ to obtain $|g(u)-g(v)|\le C d(u,v)$.
+\end{proof}
+
+\begin{theorem}[Growth from contacting right derivatives]
+    \label{thm:minimum_envelope_affine}
+    \lean{lower_envelope_le_affine_of_hasDerivWithinAt}
+    Let $f:\R\times S\to\R$ and let $g:\R\to\R$ be continuous on
+    $[a,b]$. Suppose $g(t)\le f(t,x)$ for every $t\in[a,b]$ and
+    $x\in S$. Assume that, for every $t\in[a,b)$, there exists
+    $x_t\in S$ such that $f(t,x_t)=g(t)$ and the right derivative of
+    $f(\cdot,x_t)$ at $t$ exists and is at most $c$. Then every
+    $r\in[a,b]$ satisfies $g(r)\le g(a)+c(r-a)$.
+\end{theorem}
+\begin{proof}
+    Fix $t\in[a,b)$ and its contacting branch. For $t<z\le b$,
+    \begin{align*}
+        \frac{g(z)-g(t)}{z-t}
+         & \le \frac{f(z,x_t)-f(t,x_t)}{z-t}.
+    \end{align*}
+    For every $q>c$, the right-hand side is less than $q$ at points
+    arbitrarily close to $t$ from the right. The same holds for the
+    left-hand side. The one-sided slope comparison for continuous
+    functions, applied to the affine function $g(a)+c(r-a)$, gives
+    the conclusion. No derivative is required at $b$.
+\end{proof}
