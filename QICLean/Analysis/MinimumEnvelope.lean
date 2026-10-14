@@ -34,7 +34,7 @@ theorem lipschitzOnWith_of_isLeast {X ι : Type*} [PseudoMetricSpace X]
     have hbound : ∀ u ∈ J, ∀ v ∈ J, g u - g v ≤ (C : ℝ) * dist u v :=
       fun u hu v hv ↦
         match (hmin v hv).1 with
-        | ⟨x, hx, heq⟩ ↦
+        | ⟨x, hx, heq⟩ =>
           calc
             g u - g v ≤ f u x - g v :=
               sub_le_sub_right ((hmin u hu).2 (mem_image_of_mem (f u) hx)) _
@@ -73,7 +73,7 @@ theorem lower_envelope_le_affine_of_hasDerivWithinAt {ι : Type*}
     (fun t _ ↦ (hB t).hasDerivWithinAt)
     fun t ht q hq ↦
       match hcontact t ht with
-      | ⟨x, hx, d, heq, hder, hd⟩ ↦
+      | ⟨x, hx, d, heq, hder, hd⟩ =>
         ((hder.liminf_right_slope_le (lt_of_le_of_lt hd hq)).and_eventually
           (Ioc_mem_nhdsGT ht.2)).mono fun z hz ↦
           have hcomp : g z - g t ≤ f z x - f t x :=
