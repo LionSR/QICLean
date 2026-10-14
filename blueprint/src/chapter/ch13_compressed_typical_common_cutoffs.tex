@@ -1136,3 +1136,45 @@ expectation in the corresponding pure-state matrix. Tracing the
 complementary copies gives $\rho_B^{\otimes k}$, which proves the
 identity.
 \end{proof}
+
+\begin{theorem}[Regional exponential expectations]
+    \label{thm:subsystem_label_exponential_regional_trace}
+    \lean{TensorPower.re_inner_exp_labelEntropy_subsystemPerm_prod}
+    \leanok
+    \uses{thm:subsystem_label_projection_coordinates}
+    For any vector $\psi\in\mathbb C^\Omega$, let
+    $\rho_B=\operatorname{Tr}_{B^c}|\psi\rangle\langle\psi|$.
+    For every $k\ge0$, define the label observables
+    \begin{align}
+        F_{B,k} & =\sum_\lambda(\log\dim\lambda)\Pi_{B,\lambda},
+                & F^{\mathrm{reg}}_{B,k}
+                & =\sum_\lambda(\log\dim\lambda)\Pi^{\mathrm{reg}}_\lambda.
+    \end{align}
+    Then, for every $u\in\mathbb R$,
+    \begin{align}
+        \operatorname{Re}\langle\psi^{\otimes k},
+        e^{uF_{B,k}}\psi^{\otimes k}\rangle
+         & =\operatorname{Re}\operatorname{Tr}\!\left(
+        \rho_B^{\otimes k}e^{uF^{\mathrm{reg}}_{B,k}}\right).
+    \end{align}
+    No normalization of $\psi$ is required. The identity includes zero
+    copies, empty regions, and empty local coordinate sets. It is the
+    regional trace identity used in the sharp upper comparison of
+    \cite[Section~8]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:subsystem_label_projection_coordinates,thm:pure_tensor_power_marginal}
+    Expand the exponential in the orthogonal label projections and apply
+    Theorem~\ref{thm:subsystem_label_projection_coordinates}. This gives
+    \begin{align}
+        T_B e^{uF_{B,k}}T_B^*
+         & =I_{\Omega_{B^c}^k}\otimes e^{uF^{\mathrm{reg}}_{B,k}}.
+    \end{align}
+    Put $\xi=T_B\psi^{\otimes k}$. By
+    Theorem~\ref{thm:pure_tensor_power_marginal}, tracing the complementary
+    copies of $|\xi\rangle\langle\xi|$ gives $\rho_B^{\otimes k}$.
+    The defining trace identity for the partial trace therefore gives the
+    claimed equality. The coordinate identification preserves the inner
+    product.
+\end{proof}
