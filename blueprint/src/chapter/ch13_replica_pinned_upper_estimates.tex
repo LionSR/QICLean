@@ -706,6 +706,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
 \begin{theorem}[The logarithmic sharp rate]
     \label{thm:sharp_bell_logarithmic_rate}
     \lean{Real.neg_log_div_le_of_sharp_bell_bound}
+    \leanok
     Let $d,k$ be positive integers, $G\ge0$, $z>0$, $C\ge0$ and
     $0\le2s\le1$. For real $a,K,\Sigma$, put
     \begin{align*}
@@ -724,6 +725,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
     For fixed $d,c,G$, this remainder tends to zero as $k\to\infty$.
 \end{theorem}
 \begin{proof}
+    \leanok
     The lower bound on $q$ makes the finite lower bound positive. Taking
     logarithms gives
     $-\log r\le k(2\log d-\log z)+2sL_k-p\log q$.
@@ -737,6 +739,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
 \begin{theorem}[The sharp physical rate for the supplied sequence]
     \label{thm:supplied_schmidt_bell_sharp_rate}
     \lean{TensorPower.eventually_suppliedSchmidtBell_sharp_upper}
+    \leanok
     Fix a unit physical vector $\Omega$, a region $X$, a selected Schmidt
     set $E$ of mass $z>0$, and parameters $a>0$, $6a\le r_0$ and $6a\le1$.
     Write $d=|E|$. Supply the same label sequence $\ell_k$ as in the physical
@@ -769,6 +772,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
     regions and tree. For every fixed $G$, $R_{d,c,G}(k)\to0$.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:selected_bell_post_mass,thm:selected_bell_post_sharp_tree,thm:selected_bell_post_inverse_transport,thm:sharp_bell_logarithmic_rate}
     The exact insertion identity transfers the supplied sequence's mass to
     the same selected postvector. Its sharp weighted tree estimate, followed
@@ -781,6 +785,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
 \begin{theorem}[The original enumerated physical coordinates]
     \label{thm:supplied_replica_prevector_sharp_rate}
     \lean{FiniteProduct.eventually_suppliedReplicaPrevector_sharp_upper}
+    \leanok
     The preceding conclusion holds for the original physical prevector with
     both auxiliary registers $\{0,\ldots,d-1\}$, its supplied symmetric
     coordinates, and the actual compressed metric formed from that full
@@ -788,6 +793,7 @@ vector of Definition~\ref{def:selected_bell_postvector}.
     constant and vanishing remainder are unchanged.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:supplied_schmidt_bell_sharp_rate}
     Enumerate $E$ and pull the supplied isometry back along that row-coordinate
     equivalence. Equivariance transports the symmetric projection and
