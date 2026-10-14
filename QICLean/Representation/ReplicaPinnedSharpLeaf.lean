@@ -226,8 +226,8 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
     (show 0 < a / 2 by linarith)
   refine ⟨C, hC, ?_⟩
   intro k U Y hXU hXY hUY hmoment z ΩX χ Ψ ι₀' b J p W ext D S
-  have hzX : 0 < (Matrix.posSemidef_vecMulVec_self_star ΩX).partialTraceRight.isHermitian
-      .spectralRestrictionMass E := hz
+  have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
+      (Matrix.posSemidef_vecMulVec_self_star ΩX).partialTraceRight.isHermitian E := hz
   have hb : ‖WithLp.toLp 2 b‖ = 1 := by
     simpa only [b, WithLp.toLp_ofLp] using Matrix.norm_selectedBellVector ΩX E hzX
   have hJ : Jᴴ * J = 1 := isIsometry_bellInsertion β X E (Fin E.card) k b hb
@@ -258,9 +258,8 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
         (2 * k * K * (3 * a) ^ 2 +
           ((Fintype.card (Configuration β Q) : ℝ) ^ 2 / 2) *
             Real.log ((k : ℝ) + 1)) - k * Real.log z) := by
-    have hiid := (reducedPure_posSemidef β Ω Q)
-      .re_trace_finKronecker_exp_signed_labelEntropy_le
-        (trace_reducedPure β Ω hΩ Q) (hmoment Q hQ) k
+    have hiid := Matrix.PosSemidef.re_trace_finKronecker_exp_signed_labelEntropy_le
+        (reducedPure_posSemidef β Ω Q) (trace_reducedPure β Ω hΩ Q) (hmoment Q hQ) k
         (show 0 ≤ 3 * a by linarith) (by linarith) (by linarith)
     have htransfer (v : ℝ) : M Q v ≤ z⁻¹ ^ k *
         (Matrix.finKronecker (fun _ : Fin k ↦ reducedPure β Ω Q) *
@@ -326,7 +325,7 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
         (ext U) (ext Y) hextdisj
   have hpos : 0 < (⟪p, Matrix.toEuclideanLin D p⟫_ℂ).re := by
     simpa only [p, EuclideanSpace.inner_eq_star_dotProduct, Matrix.toLpLin_apply,
-      WithLp.ofLp_toLp, dotProduct_comm] using hD.re_dotProduct_pos hpne
+      dotProduct_comm] using hD.re_dotProduct_pos hpne
   apply (Real.log_le_iff_le_exp hpos).2
   rw [Entropy.inner_toEuclideanLin_eq_trace]
   convert hbound using 1
