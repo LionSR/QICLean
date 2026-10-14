@@ -351,7 +351,7 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
       | none => exact (inferInstance : Nonempty E)
       | some v => exact (inferInstance : Nonempty (β v))
   obtain ⟨C, hC, hweight⟩ := exists_replicaPinnedFactor_le_exp ι₀
-    (div_pos ha (by norm_num))
+    (show 0 < a / 2 from div_pos ha (by norm_num))
   refine ⟨C, hC, ?_⟩
   intro k U Y hXU hXY hUY hmoment z ΩX χ Ψ ι₀' b J p W ext D S
   have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
@@ -398,7 +398,7 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
     simpa only [S, neg_mul] using signed_moments_of_marginal_domination
       (reducedPure_posSemidef β Ω Q) (trace_reducedPure β Ω hΩ Q)
       (hmoment Q hQ) k (M Q) hz
-      (mul_nonneg (by norm_num) ha.le) (by linarith only [har])
+      (show 0 ≤ 3 * a from mul_nonneg (by norm_num) ha.le) (by linarith only [har])
       (by linarith only [ha1]) htransfer
   have hU := (hmoment_post U hXU (Or.inl rfl)).1
   have hV := (hmoment_post (U ∪ Y) (Finset.disjoint_union_right.mpr ⟨hXU, hXY⟩)
@@ -425,7 +425,7 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
     exact hΨne hh
   have hD : D.PosDef := by
     simpa only [D, W, hextunion] using
-      posDef_replicaPinnedFactor ι₀' (div_nonneg ha.le (by norm_num)) k
+      posDef_replicaPinnedFactor ι₀' (show 0 ≤ a / 2 from div_nonneg ha.le (by norm_num)) k
         (ext U) (ext Y) hextdisj
   have hpos : 0 < (⟪p, Matrix.toEuclideanLin D p⟫_ℂ).re := by
     rw [EuclideanSpace.inner_eq_star_dotProduct, Matrix.toLpLin_apply, dotProduct_comm]
