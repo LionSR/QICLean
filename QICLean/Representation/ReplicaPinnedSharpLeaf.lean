@@ -45,22 +45,26 @@ local instance replicaPinnedSharpLeafRegionDecidableEq
     (X : Finset V) : DecidableEq (Configuration β X) :=
   Fintype.decidablePiFintype
 
+local instance replicaPinnedSharpLeafSiteDecidableEq
+    {V : Type} [Fintype V] [DecidableEq V]
+    (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+    (X : Finset V) (E : Finset (Configuration β X)) (f : Option (Option V)) :
+    DecidableEq (addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) := by
+  cases f with
+  | none => exact (inferInstance : DecidableEq (Fin E.card))
+  | some f =>
+    cases f with
+    | none => exact (inferInstance : DecidableEq E)
+    | some v => exact (inferInstance : DecidableEq (β v))
+
 local instance replicaPinnedSharpLeafConfigDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ) :
     DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) := by
-  let instSite : ∀ f : Option (Option V),
-      DecidableEq (addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) := fun f ↦ by
-    cases f with
-    | none => exact (inferInstance : DecidableEq (Fin E.card))
-    | some f =>
-      cases f with
-      | none => exact (inferInstance : DecidableEq E)
-      | some v => exact (inferInstance : DecidableEq (β v))
   let instCopy : DecidableEq ((f : Option (Option V)) →
       addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) :=
-    @Fintype.decidablePiFintype _ _ instSite inferInstance
+    @Fintype.decidablePiFintype _ _ (replicaPinnedSharpLeafSiteDecidableEq β X E) inferInstance
   exact @Fintype.decidablePiFintype _ _ (fun _ ↦ instCopy) inferInstance
 
 /-- Three-factor Hölder for the actual nested/disjoint label observables.
@@ -347,7 +351,7 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
       | none => exact (inferInstance : Nonempty E)
       | some v => exact (inferInstance : Nonempty (β v))
   obtain ⟨C, hC, hweight⟩ := exists_replicaPinnedFactor_le_exp ι₀
-    (show 0 < a / 2 by linarith)
+    (div_pos ha (by norm_num))
   refine ⟨C, hC, ?_⟩
   intro k U Y hXU hXY hUY hmoment z ΩX χ Ψ ι₀' b J p W ext D S
   have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
@@ -394,7 +398,8 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
     simpa only [S, neg_mul] using signed_moments_of_marginal_domination
       (reducedPure_posSemidef β Ω Q) (trace_reducedPure β Ω hΩ Q)
       (hmoment Q hQ) k (M Q) hz
-      (show 0 ≤ 3 * a by linarith) (by linarith) (by linarith) htransfer
+      (mul_nonneg (by norm_num) ha.le) (by linarith only [har])
+      (by linarith only [ha1]) htransfer
   have hU := (hmoment_post U hXU (Or.inl rfl)).1
   have hV := (hmoment_post (U ∪ Y) (Finset.disjoint_union_right.mpr ⟨hXU, hXY⟩)
     (Or.inr (Or.inl rfl))).1
@@ -420,11 +425,11 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
     exact hΨne hh
   have hD : D.PosDef := by
     simpa only [D, W, hextunion] using
-      posDef_replicaPinnedFactor ι₀ (show 0 ≤ a / 2 by linarith) k
+      posDef_replicaPinnedFactor ι₀' (div_nonneg ha.le (by norm_num)) k
         (ext U) (ext Y) hextdisj
   have hpos : 0 < (⟪p, Matrix.toEuclideanLin D p⟫_ℂ).re := by
-    simpa only [p, EuclideanSpace.inner_eq_star_dotProduct, Matrix.toLpLin_apply,
-      dotProduct_comm] using hD.re_dotProduct_pos hpne
+    rw [EuclideanSpace.inner_eq_star_dotProduct, Matrix.toLpLin_apply, dotProduct_comm]
+    exact hD.re_dotProduct_pos hpne
   apply (Real.log_le_iff_le_exp hpos).2
   rw [Entropy.inner_toEuclideanLin_eq_trace]
   convert hbound using 1
