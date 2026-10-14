@@ -36,10 +36,12 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 /-- A commuting orthogonal projection can only decrease the quadratic form of
 a positive semidefinite matrix. The projection and the vector remain fixed.
 Source: `07-comparators.tex`, lines 391–404. -/
+omit [DecidableEq n] in
 theorem PosSemidef.re_dotProduct_projection_mulVec_le
     {A P : Matrix n n ℂ} (hA : A.PosSemidef) (hP : IsStarProjection P)
     (hPA : Commute P A) (p : n → ℂ) :
     (star (P *ᵥ p) ⬝ᵥ (A *ᵥ (P *ᵥ p))).re ≤ (star p ⬝ᵥ (A *ᵥ p)).re := by
+  classical
   have hPAP : P * A * P = P * A := by
     rw [hPA.eq, Matrix.mul_assoc, hP.isIdempotentElem.eq, ← hPA.eq]
   have hcomplement : (1 - P)ᴴ * A * (1 - P) = A - P * A * P := by
@@ -52,7 +54,8 @@ theorem PosSemidef.re_dotProduct_projection_mulVec_le
         abel
   have hpositive := hA.conjTranspose_mul_mul_same (1 - P)
   rw [hcomplement] at hpositive
-  have hreal := hpositive.re_dotProduct_nonneg p
+  have hreal : 0 ≤ (star p ⬝ᵥ ((A - P * A * P) *ᵥ p)).re :=
+    hpositive.re_dotProduct_nonneg p
   rw [Matrix.sub_mulVec, dotProduct_sub, Complex.sub_re] at hreal
   rw [hP.isSelfAdjoint.isHermitian.star_mulVec_dotProduct,
     Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]
@@ -114,7 +117,8 @@ theorem re_inner_log_eval_le_of_projection
     intro h
     simp [h] at hφdot
   have he : ∀ j, 0 < e j := fun j ↦ by
-    rw [e, re_inner_toEuclideanLin_eq_dotProduct]
+    dsimp only [e]
+    rw [re_inner_toEuclideanLin_eq_dotProduct]
     exact (hA j).re_dotProduct_pos hpne
   have hrootpos : 0 < (inner ℂ φ (toEuclideanLin M φ)).re := by
     rw [re_inner_toEuclideanLin_eq_dotProduct]
