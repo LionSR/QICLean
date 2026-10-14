@@ -93,8 +93,9 @@ theorem symProj_labelProj_selectedBellPost
   have hQJ : Q * J = J * Qe :=
     labelProj_mul_bellInsertion_auxiliary β X E (Fin E.card) k ell
       (selectedBellVector ΩX E)
-  have hSJ := symProj_mul_bellInsertion β X E (Fin E.card) k
-    (selectedBellVector ΩX E)
+  have hSJ : symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k) * J =
+      J * Pe := symProj_mul_bellInsertion β X E (Fin E.card) k
+        (selectedBellVector ΩX E)
   apply WithLp.ofLp_injective 2
   change symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k) *ᵥ
       (Q *ᵥ (J *ᵥ Ψ)) = Q *ᵥ (J *ᵥ Ψ)
@@ -137,16 +138,9 @@ theorem bellPin_schmidtBellPrevector_eq_selectedBellPost
       ∏ j, compressedTypicalPureState ΩX E
         ((Finset.equivFin E).symm (x.2 j none), fun w ↦ x.2 j (some w)))
   let c : ℂ := ((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k
-  have hpull (D : Matrix (L × Config k ιe) (L × Config k ιe) ℂ)
-      (w : EuclideanSpace ℂ (L × Config k ιe)) :
-      toEuclideanLin (D.submatrix τ τ) (WithLp.toLp 2 (w ∘ τ)) =
-        WithLp.toLp 2 ((toEuclideanLin D w) ∘ τ) := by
-    ext x
-    simp only [toEuclideanLin, toLpLin_apply, WithLp.ofLp_toLp,
-      Matrix.submatrix_mulVec_equiv, Function.comp_def, Equiv.apply_symm_apply]
   have hraw := selectedBellProjection_replicaPrevector_site β X E k ΩX hz ell
-  change toEuclideanLin R (schmidtBellSitePrevector β X E k ΩX ell) =
-    c • toEuclideanLin Qw post at hraw
+  change WithLp.toLp 2 (R *ᵥ (schmidtBellSitePrevector β X E k ΩX ell).ofLp) =
+    c • WithLp.toLp 2 (Qw *ᵥ post.ofLp) at hraw
   have hJJ : J * Jᴴ = R.submatrix τ τ :=
     bellInsertion_mul_conjTranspose_selectedBell β X E k ΩX
   have hQ : Qw.submatrix τ τ = Q :=
@@ -155,16 +149,21 @@ theorem bellPin_schmidtBellPrevector_eq_selectedBellPost
     selectedBellPost_eq_pullback β Ω X E k
   have hpin : toEuclideanLin (J * Jᴴ) v =
       c • toEuclideanLin Q (selectedBellPost β Ω X E k) := by
-    rw [hJJ]
-    change toEuclideanLin (R.submatrix τ τ)
-      (WithLp.toLp 2 (schmidtBellSitePrevector β X E k ΩX ell ∘ τ)) = _
-    rw [hpull, hraw, ← hQ, hpost, hpull]
-    rfl
+    rw [hJJ, ← hQ, hpost]
+    ext x
+    have hx := congrArg (fun w : EuclideanSpace ℂ (L × Config k ιe) ↦ w (τ x)) hraw
+    change ((R.submatrix τ τ) *ᵥ
+        ((schmidtBellSitePrevector β X E k ΩX ell).ofLp ∘ τ)) x =
+      c * ((Qw.submatrix τ τ) *ᵥ (post.ofLp ∘ τ)) x
+    rw [Matrix.submatrix_mulVec_equiv, Matrix.submatrix_mulVec_equiv]
+    simpa only [Function.comp_def, Equiv.apply_symm_apply, WithLp.ofLp_smul,
+      WithLp.ofLp_toLp, Pi.smul_apply, smul_eq_mul] using hx
   let S := symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k)
+  have hSJ : S * J = J * Pe :=
+    symProj_mul_bellInsertion β X E (Fin E.card) k (selectedBellVector ΩX E)
   have hP : P = S * (J * Jᴴ) := by
-    rw [← Matrix.mul_assoc]
-    change J * Pe * Jᴴ = (S * J) * Jᴴ
-    rw [symProj_mul_bellInsertion β X E (Fin E.card) k (selectedBellVector ΩX E)]
+    change J * Pe * Jᴴ = S * (J * Jᴴ)
+    rw [← Matrix.mul_assoc, hSJ]
   rw [hP, toLpLin_mul_same, LinearMap.comp_apply, hpin, map_smul]
   rw [symProj_labelProj_selectedBellPost β Ω X E k ell]
 
