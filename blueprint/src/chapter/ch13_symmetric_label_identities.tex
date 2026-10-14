@@ -87,3 +87,138 @@ space $\mathcal H$.
     Sum first over $\sigma$ to obtain commutation with $\Pi_{B,k}$,
     and then over $\lambda$ with coefficients $f(\lambda)$.
 \end{proof}
+
+
+\begin{theorem}[One-site labels commute with subsystem observables]
+    \label{thm:singleton_label_observable_commutation}
+    \lean{TensorPower.commute_labelProj_singleton_labelObservable}
+    \leanok
+    \uses{def:copy_permutations,lem:label_projectors}
+    Let $a\in F$, let $S\subseteq F$, and let $f$ be a real-valued
+    function on the irreducible labels of $S_k$. For every label $\lambda$,
+    \begin{align}
+        \pi^\lambda_{\{a\},k}
+        \left(\sum_\mu f(\mu)\pi^\mu_{S,k}\right)
+         & =\left(\sum_\mu f(\mu)\pi^\mu_{S,k}\right)
+        \pi^\lambda_{\{a\},k}.
+    \end{align}
+    Empty local coordinate sets and $k=0$ are allowed. This is the
+    one-site consequence of~\cite[Lemma~6.1(2)]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:schur_label_commutation}
+    If $a\in S$, then $\{a\}\subseteq S$; otherwise $\{a\}$ and $S$
+    are disjoint. In either case, the one-site label projector commutes
+    with each $\pi^\mu_{S,k}$. Multiply by $f(\mu)$ and sum over $\mu$.
+\end{proof}
+
+
+\begin{theorem}[Nested label projectors and symmetry]
+    \label{thm:nested_label_projector_symmetry}
+    \lean{TensorPower.commute_labelProj_symProj_of_subset}
+    \leanok
+    \uses{def:copy_permutations,lem:label_projectors}
+    Let $A,B\subseteq F$ satisfy $A\subseteq B$. For every irreducible
+    label $\lambda$ of $S_k$,
+    \begin{align}
+        \pi^\lambda_{A,k}\Pi_{B,k}
+         & =\Pi_{B,k}\pi^\lambda_{A,k}.
+    \end{align}
+    This includes empty coordinate sets and $k=0$, and follows from
+    \cite[Lemma~6.1(2)]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:schur_label_commutation}
+    The label projector of $A$ commutes with each copy permutation of
+    $B$. Averaging these permutations gives the asserted commutation
+    with $\Pi_{B,k}$.
+\end{proof}
+
+
+\begin{theorem}[One-site labels and terminal transport metrics]
+    \label{thm:transport_input_singleton_label_commutation}
+    \lean{TensorPower.ReplicaTransport.TransportData.commute_labelProj_singleton_input}
+    \leanok
+    \uses{def:copy_permutations,lem:label_projectors}
+    Let $I$ be a finite set of sites with local dimensions $n_i\ge0$,
+    and fix $k,K\ge0$ and $t\in\R$. Fix transport data consisting of
+    a finite history tree with labels in a set $H$, a finite conditional
+    choice tree at each $h\in H$, old triples in $K$ bands, and their
+    prescribed moves. The history and choice sets may be arbitrary.
+    For a terminal label $j=(h,\mathrm{old})$ or $j=(h,c,\mathrm{new})$,
+    let $\widetilde A_{j,g}$ be the extended band metric of its prescribed
+    triple and put
+    \begin{align*}
+        A_j & =\prod_{g=0}^{K-1}\widetilde A_{j,g},
+    \end{align*}
+    with the factors in increasing band order. For every site $a\in I$
+    and irreducible label $\lambda$ of $S_k$,
+    \begin{align*}
+        \pi^\lambda_{\{a\},k}A_j
+         & =A_j\pi^\lambda_{\{a\},k}.
+    \end{align*}
+    Empty local coordinate sets, zero replicas, and the empty band
+    product are included. This is a consequence of the one-site
+    commutation in~\cite[Lemma~6.1(2)]{OpenAI2026AreaLaw} for the terminal
+    products of~\cite[Proposition~7.4]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:singleton_label_band_metric_commutation}
+    Put $X=\pi^\lambda_{\{a\},k}$. Each band factor satisfies
+    $X\widetilde A_{j,g}=\widetilde A_{j,g}X$. Repeated multiplication
+    gives
+    $X\prod_g\widetilde A_{j,g}=(\prod_g\widetilde A_{j,g})X$ in the
+    same order. For an old terminal label this is the old metric; for
+    a new terminal label it is the new metric.
+\end{proof}
+
+\begin{theorem}[One-site labels under filtering]
+    \label{thm:transport_filtered_singleton_label}
+    \lean{TensorPower.ReplicaTransport.TransportData.labelProj_singleton_mulVec_filteredVector}
+    \leanok
+    \uses{def:mean_tree,def:copy_permutations,lem:label_projectors}
+    Let the site dimensions be positive, let $k\ge0$, and let $t\ge0$.
+    Fix admissible transport data: the history and conditional weights
+    are positive, the old triples are partitions, and every move transfers
+    a subset of the middle region to an outer region. For any terminal
+    labels $j,j'$ and distinct bands $g,g'$, assume that the raw band
+    metrics $A_{j,g}$ and $A_{j',g'}$ commute on the copy-symmetric
+    subspace $\mathcal S_k$. Put
+    $\widetilde A_{j,g}=\Pi A_{j,g}+(I-\Pi)$ and
+    $A_j=\prod_{g=0}^{K-1}\widetilde A_{j,g}$ in increasing band order.
+
+    For $p\in\R$, set $\bar p=\max(0,\min(1,p))$ and let
+    $T_{\bar p}$ be the interpolated tree formed from the supplied
+    history and conditional trees. For a vector $x$, define
+    \begin{align*}
+        M(p) & =T_{\bar p}\bigl((A_j)_j\bigr),         \\
+        v(p) & =\frac{M(p)^{-1/4}x}{\|M(p)^{-1/4}x\|},
+    \end{align*}
+    where $v(p)=0$ when $x=0$. If
+    $\pi^\lambda_{\{a\},k}x=x$ for a site $a$ and a label $\lambda$,
+    then $\pi^\lambda_{\{a\},k}v(p)=v(p)$ for every real $p$.
+    The label and initial vector are the same throughout. The filtering
+    is that of~\cite[Proposition~7.4]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:transport_input_singleton_label_commutation,
+        lem:replica_symmetric_metric,thm:mean_tree_properties,
+        lem:transport_states_commutant}
+    The terminal inputs are positive definite. Put
+    $X=\pi^\lambda_{\{a\},k}$. Terminal commutation gives $XA_j=A_jX$,
+    and commutation passes through each weighted geometric mean of the
+    same tree. Hence $XM(p)=M(p)X$. Functional calculus gives
+    \begin{align*}
+        XM(p)^{-1/4}x & =M(p)^{-1/4}Xx=M(p)^{-1/4}x.
+    \end{align*}
+    Multiplication by the scalar normalization preserves this equality,
+    including when $x=0$.
+\end{proof}

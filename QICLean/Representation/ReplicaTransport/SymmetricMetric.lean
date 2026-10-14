@@ -102,6 +102,31 @@ theorem commute_permOp_symBandMetric (t : ℝ) (k : ℕ) (π : PYF V) (s : Equiv
   (commute_proj_mul_add_one_sub (commute_permOp_symProj k s).symm
     (commute_permOp_bandMetric t k π s).symm).symm
 
+/-- A one-site label projector commutes with every extended band metric.
+This follows from the nested and disjoint commutation in Lemma 6.1(2) of the area-law
+paper (`05-replicas.tex`, lines 101–103 and 168–181) and the band metric of Proposition 7.4
+(`06-transport.tex`, display `transport:band-metric`, lines 251–258). No partition or
+positivity assumption is required. -/
+theorem commute_labelProj_singleton_symBandMetric
+    (t : ℝ) (k : ℕ) (π : PYF V) (a : V)
+    (ell : IrrepLabel (Equiv.Perm (Fin k))) :
+    Commute (labelProj (subsystemPerm k (fun v => Fin (n v)) {a}) ell)
+      (symBandMetric n t k π) := by
+  have hW : ∀ Q : Finset V,
+      Commute (labelProj (subsystemPerm k (fun v => Fin (n v)) {a}) ell)
+        (replicaMetric (fun v => Fin (n v)) t k Q) := fun Q =>
+    commute_labelProj_singleton_labelObservable (fun v => Fin (n v)) k a ell Q _
+  have hA : Commute (labelProj (subsystemPerm k (fun v => Fin (n v)) {a}) ell)
+      (bandMetric n t k π) :=
+    ((((commute_inv_right (hW π.P)).mul_right (commute_inv_right (hW π.F))).mul_right
+      (hW π.Y)).pow_right 2)
+  have hPe : Commute (labelProj (subsystemPerm k (fun v => Fin (n v)) {a}) ell)
+      (symProj (copyPerm (SiteConfig n) k)) := by
+    simpa only [subsystemPerm_univ] using
+      commute_labelProj_symProj_of_subset (fun v => Fin (n v)) k {a} Finset.univ
+        (Finset.subset_univ _) ell
+  exact (commute_proj_mul_add_one_sub hPe.symm hA.symm).symm
+
 /-- An extended band metric commutes with every matrix that commutes with the band metric and
 with every copy permutation. -/
 theorem commute_symBandMetric_of_commute {t : ℝ} {k : ℕ} {π : PYF V}

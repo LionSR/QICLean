@@ -102,6 +102,52 @@ which gives the proposition without hypotheses beyond those of the source.
     its complement.
 \end{proof}
 
+\begin{theorem}[One-site labels and extended band metrics]
+    \label{thm:singleton_label_band_metric_commutation}
+    \lean{TensorPower.ReplicaTransport.commute_labelProj_singleton_symBandMetric}
+    \leanok
+    \uses{def:copy_permutations,def:label_projectors,thm:replica_metric_basic}
+    Let $I$ be a finite set of sites with local dimensions $n_i\ge0$, let
+    $k\ge0$, and let $t\in\R$. Write $W_{S,k}(t)$ for the regional replica
+    metric, using the label weights of the full one-copy space, and let
+    $\Pi$ project onto simultaneous copy symmetry. For arbitrary subsets
+    $P,Y,F\subseteq I$, set
+    \begin{align*}
+        A            & =\bigl(W_{P,k}(t)^{-1}W_{F,k}(t)^{-1}W_{Y,k}(t)\bigr)^2, \\
+        \widetilde A & =\Pi A+(I-\Pi).
+    \end{align*}
+    Here the inverse of a singular matrix is interpreted as zero.
+    For every site $a\in I$ and irreducible label $\lambda$ of $S_k$,
+    \begin{align*}
+        \pi^\lambda_{\{a\},k}\widetilde A
+         & =\widetilde A\pi^\lambda_{\{a\},k}.
+    \end{align*}
+    Empty local coordinate sets and zero replicas are included. The
+    regional commutation is a consequence of
+    \cite[Lemma~6.1(2)]{OpenAI2026AreaLaw}, applied to the band metric
+    of \cite[Proposition~7.4]{OpenAI2026AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:singleton_label_observable_commutation,
+        thm:nested_label_projector_symmetry}
+    Put $X=\pi^\lambda_{\{a\},k}$. The one-site commutation theorem gives
+    $XW_{S,k}(t)=W_{S,k}(t)X$ for every region $S$. Commutation is preserved
+    by inversion: this follows by multiplying by the inverse on both
+    sides when the matrix is invertible, and from the zero convention
+    when it is singular. It is also preserved by products and powers,
+    so $XA=AX$ with the displayed factor order. Since $\{a\}\subseteq I$,
+    the containing-subsystem symmetry theorem gives $X\Pi=\Pi X$.
+    Therefore
+    \begin{align*}
+        X\widetilde A
+         & =X\Pi A+X(I-\Pi)
+        =\Pi AX+(I-\Pi)X
+        =\widetilde A X.
+    \end{align*}
+\end{proof}
+
 \begin{lemma}[Transport states on replicas]\label{lem:replica_transport_states}
     \lean{TensorPower.ReplicaTransport.TransportData.posSemidef_state,
       TensorPower.ReplicaTransport.TransportData.trace_state,

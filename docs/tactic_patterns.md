@@ -487,7 +487,10 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   actions before using their individual fixed-vector equations.
 - **Seen:** The two auxiliary-label equations and simultaneous symmetry in
   `QICLean/Representation/ReplicaPrevector.lean` share the private generic
-  `kronecker_mulVec_product` lemma. The mean-energy calculation in
+  `kronecker_mulVec_product` lemma. The public supplied-label theorem
+  reuses this identity with explicit vector arguments and lifts the two
+  auxiliary fixed-vector equalities through the physical product factor.
+  The mean-energy calculation in
   `QICLean/Analysis/ReplicaDefect.lean` has a prior identity-spectator variant.
 - **Abstraction:** The new calculation is written once and reused for all
   three actions. The norm calculation reuses the existing public quadratic
@@ -956,3 +959,20 @@ bound to the projected vector. The same-isometry real-power identity and
 No inverse-power vector or symmetric coordinates are chosen a second time.
 The region map removes the physical insertion region and then embeds into
 the original family, so all metric weights retain the full-family dimension.
+
+### Commutation with terminal band products — candidate (2026-10-13)
+
+- **Pattern:** Prove commutation with each factor of the ordered band product,
+  use `Commute.list_prod_right` and `List.mem_ofFn`, then identify the old
+  and new terminal inputs by their definitions.
+- **Seen:** `TransportData.commute_permOp_input` in
+  `Representation/ReplicaTransport/States.lean` and
+  `TransportData.commute_labelProj_singleton_input` in
+  `Representation/ReplicaTransport/LabelPreservation.lean`.
+- **Decision:** Two occurrences across two files. The existing list-product
+  commutation theorem handles the algebra; no new tactic is introduced.
+  A third mathematical consumer would justify a general theorem for
+  terminal-input commutation.
+- **Scope:** Preserve the supplied terminal labels and increasing band order,
+  including an empty product. No positivity or finiteness assumption on
+  the history and choice sets is used.

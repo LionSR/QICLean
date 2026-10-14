@@ -15,11 +15,13 @@ import QICLean.Representation.ReplicaTransport.EntropyGain
 import QICLean.Representation.ReplicaTransport.FiniteFamily
 import QICLean.Representation.ReplicaTransport.Integrated
 import QICLean.Representation.ReplicaTransport.IntegratedEntropy
+import QICLean.Representation.ReplicaTransport.LabelPreservation
 import QICLean.Representation.ReplicaTransport.LeafMeasure
 import QICLean.Representation.ReplicaTransport.Prerequisites
 import QICLean.Representation.ReplicaTransport.Proposition
 import QICLean.Representation.ReplicaTransport.RelativePinBound
 import QICLean.Representation.ReplicaTransport.RootCompression
+import QICLean.Representation.ReplicaTransport.RootMetricFloor
 import QICLean.Representation.ReplicaTransport.Setup
 import QICLean.Representation.ReplicaTransport.SplitSkewBound
 import QICLean.Representation.ReplicaTransport.States

@@ -1,0 +1,54 @@
+\begin{theorem}[Symmetry of the explicit initial vector]
+    \label{thm:replica_prevector_symmetry}
+    \lean{TensorPower.replicaPrevector_copyPerm_fixed}
+    \leanok
+    \uses{def:replica_prevector}
+    For every label $\lambda$ and every permutation $\sigma\in S_k$, let
+    $R_A(\sigma)$ and $R_d(\sigma)$ permute the copies of the physical and
+    auxiliary systems, respectively. Then
+    \begin{align}
+        (R_A(\sigma)\otimes(R_d(\sigma)\otimes R_d(\sigma)))v_{k,\lambda}
+        =v_{k,\lambda}.
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:replica_prevector}
+    Reindexing each repeated product gives
+    \begin{align}
+        R_A(\sigma)\Omega^{\otimes k}       & =\Omega^{\otimes k}, \\
+        (R_d(\sigma)\otimes R_d(\sigma))U_k & =U_k.
+    \end{align}
+    The central projector $\Pi_\lambda$ commutes with $R_d(\sigma)$.
+    Consequently $I_C\otimes\Pi_\lambda$ preserves the invariance of $U_k$,
+    and tensoring with $\Omega^{\otimes k}$ gives the asserted identity.
+\end{proof}
+
+\begin{theorem}[The supplied label on both auxiliary systems]
+    \label{thm:replica_prevector_auxiliary_labels}
+    \lean{TensorPower.replicaPrevector_auxiliary_label_fixed}
+    \leanok
+    \uses{def:replica_prevector}
+    Let $A$ be a finite set, let $\Omega\in\mathbb C^A$, and let
+    $d,k\in\mathbb N$. For every label $\lambda$ of $S_k$, the initial
+    vector $v_{k,\lambda}$ has label $\lambda$ on both auxiliary systems:
+    \begin{align}
+        (I_{A^k}\otimes(\Pi_\lambda\otimes I_R))v_{k,\lambda}
+         & =v_{k,\lambda}, \\
+        (I_{A^k}\otimes(I_C\otimes\Pi_\lambda))v_{k,\lambda}
+         & =v_{k,\lambda}.
+    \end{align}
+    The identities include $d=0$, $k=0$, and the zero physical vector,
+    with the conventions of Definition~\ref{def:replica_prevector}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:replica_prevector,thm:uniform_bell_matching_labels}
+    Put $w=(I_C\otimes\Pi_\lambda)U_k$. Idempotence gives
+    $(I_C\otimes\Pi_\lambda)w=w$. By Theorem~\ref{thm:uniform_bell_matching_labels}, the central label
+    projections have the same action on the two halves of the repeated uniform pair:
+    $(\Pi_\lambda\otimes I_R)U_k=(I_C\otimes\Pi_\lambda)U_k$.
+    Since the two projections commute, this also gives
+    $(\Pi_\lambda\otimes I_R)w=w$. Tensoring both identities with
+    $\Omega^{\otimes k}$ proves the assertion.
+\end{proof}
