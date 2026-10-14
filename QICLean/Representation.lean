@@ -41,6 +41,8 @@ import QICLean.Representation.CommonSchurCutoffs
 import QICLean.Representation.CommutantDimension
 import QICLean.Representation.CompatiblePhysicalLabel
 import QICLean.Representation.CompressedTypicalAuxiliaryCoordinates
+import QICLean.Representation.CompressedTypicalExponential
+import QICLean.Representation.CompressedTypicalExponentialDomination
 import QICLean.Representation.CompressedTypicalLabelMass
 import QICLean.Representation.CompressedTypicalLabelSequence
 import QICLean.Representation.ExteriorPieri

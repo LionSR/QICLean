@@ -759,6 +759,12 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   coordinate equivalences, use `Equiv.symm_comp_self` before
   `Matrix.submatrix_id_id`; expanding composition into a lambda first can
   leave the identity reindexing unreduced.
+- **Further use:** `Representation/CompressedTypicalExponential.lean`
+  transports the exponential of the regional label entropy by
+  `Matrix.reindex_exp` and the same scalar-submatrix identities. The
+  tensor-density identity follows entrywise from `Matrix.finKronecker_apply`
+  and the actual one-copy marginal identity. The final trace transport
+  reuses `Matrix.submatrix_mul_equiv` and `Matrix.trace_reindex`.
 
 ### Symmetry of an excitation component under a copy subgroup — candidate (2026-10-09)
 
@@ -996,3 +1002,33 @@ the original family, so all metric weights retain the full-family dimension.
 - **Scope:** The one-copy vector need not be normalized. Preserve the actual
   regional marginal, the complementary-first coordinate order, zero
   replicas, and empty local coordinate sets.
+
+### Tensor order from positive factors — promoted helper (2026-10-13)
+
+- **Pattern:** Compare two tensor products by changing one factor at a time.
+  Each comparison is the monotonicity of a positive linear map obtained by
+  tensoring with a fixed positive semidefinite matrix.
+- **Occurrences:** The two factor comparisons in `Matrix.finKronecker_mono`
+  and the two formerly explicit comparisons in `Entropy.RestoringNorm`.
+- **Helper:** `Matrix.kronecker_mono_of_posSemidef` in
+  `Algebra/FiniteKroneckerOrder.lean` assumes `A ≤ B`, `C ≤ D`, positivity
+  of `B` and positivity of `C`, and proves `A ⊗ C ≤ B ⊗ D`.
+- **Reuse:** The finite induction and the scalar-identity bound in
+  `Entropy/RestoringNorm.lean` both apply this helper. The latter retains
+  its possibly indefinite lower first factor; no assumption was added.
+- **Implementation:** `PositiveLinearMap.mk₀`, `kroneckerBilinear`, and
+  `PosSemidef.kronecker` suffice. Use `Matrix.nonneg_iff_posSemidef.mp`
+  explicitly inside the constructor when elaboration unfolds matrix order.
+  No new tactic is needed.
+
+### Selected-marginal exponential comparisons — existing lemmas (2026-10-13)
+
+The comparison after spectral selection reuses `Matrix.finKronecker_mono`
+for the actual marginal order and
+`Matrix.PosSemidef.re_trace_mul_le_re_trace_mul` for the positive exponential
+trace pairing. `IsSelfAdjoint.exp_nonneg` supplies positivity for every real
+exponential parameter. No commutation assumption or new tactic is needed.
+The scalar factor in a finite tensor power is obtained entrywise from
+`Finset.prod_mul_distrib`; this proof is recorded as a single occurrence,
+with no new abstraction. The zero-copy product and the original selected
+mass are preserved.
