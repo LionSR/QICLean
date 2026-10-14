@@ -83,7 +83,7 @@ theorem re_trace_mul_exp_pinnedLabels_le
     · exact Commute.refl _
   have h := hρ.re_trace_mul_exp_sum_le_prod 2 A hA hcomm a
   simpa [A, Fin.sum_univ_succ, Fin.prod_univ_succ, sub_eq_add_neg,
-    neg_smul, smul_neg, Complex.ofReal_neg, mul_assoc] using h
+    neg_smul, smul_neg, Complex.ofReal_neg, add_assoc, mul_assoc] using h
 
 private theorem exp_smul_labelEntropy_eq_labelObservable
     {G n : Type*} [Group G] [Fintype G] [Fintype n] [DecidableEq n]
@@ -124,8 +124,7 @@ theorem re_inner_exp_labelEntropy_bellInsertion
     (fun l ↦ Real.exp (u * Real.log l.dim)) b
   rw [← exp_smul_labelEntropy_eq_labelObservable,
     ← exp_smul_labelEntropy_eq_labelObservable] at hE
-  simp only [p, EuclideanSpace.inner_eq_star_dotProduct,
-    Matrix.toLpLin_apply, WithLp.ofLp_toLp]
+  simp only [p, EuclideanSpace.inner_eq_star_dotProduct, Matrix.toLpLin_apply]
   rw [dotProduct_comm _ (star (J *ᵥ WithLp.ofLp Ψ)), Matrix.star_mulVec,
     ← dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hE,
     ← Matrix.mul_assoc, hJ, Matrix.one_mul, dotProduct_comm]
@@ -155,6 +154,7 @@ private theorem three_rpow_exp_bound {x y z A B C : ℝ}
   congr 1
   ring
 
+open scoped Classical in
 /-- A same-vector, same-selection sharp upper bound for the actual pinned
 factor. The original augmented family supplies every replica weight. The
 constant is chosen before the copy number, either region, and their moment
@@ -209,22 +209,25 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
       ext x
       exact h x
     simp only [hzero, norm_zero, zero_ne_one] at hΩ
-  letI : ∀ v, Nonempty (β v) := fun v ↦ ⟨x v⟩
+  let : ∀ v, Nonempty (β v) := fun v ↦ ⟨x v⟩
   have hE : E.Nonempty := Finset.nonempty_iff_ne_empty.mpr fun he ↦ by
     simp [he, Matrix.IsHermitian.spectralRestrictionMass] at hz
-  letI : Nonempty E := ⟨⟨Classical.choose hE, Classical.choose_spec hE⟩⟩
-  letI : Nonempty (Fin E.card) := ⟨⟨0, Finset.card_pos.mpr hE⟩⟩
+  let : Nonempty E := ⟨⟨Classical.choose hE, Classical.choose_spec hE⟩⟩
+  let : Nonempty (Fin E.card) := ⟨⟨0, Finset.card_pos.mpr hE⟩⟩
   let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-  letI : ∀ v, Nonempty (ι₀ v) := fun v ↦ by
+  let : ∀ v, Nonempty (ι₀ v) := fun v ↦ by
     cases v with
-    | none => exact inferInstance
-    | some v => cases v <;> exact inferInstance
+    | none => exact (inferInstance : Nonempty (Fin E.card))
+    | some v =>
+      cases v with
+      | none => exact (inferInstance : Nonempty E)
+      | some v => exact (inferInstance : Nonempty (β v))
   obtain ⟨C, hC, hweight⟩ := exists_replicaPinnedFactor_le_exp ι₀
     (show 0 < a / 2 by linarith)
   refine ⟨C, hC, ?_⟩
   intro k U Y hXU hXY hUY hmoment z ΩX χ Ψ ι₀' b J p W ext D S
-  have hzX : 0 < (Matrix.posSemidef_vecMulVec_self_star ΩX).partialTraceRight.isHermitian.
-      spectralRestrictionMass E := hz
+  have hzX : 0 < (Matrix.posSemidef_vecMulVec_self_star ΩX).partialTraceRight.isHermitian
+      .spectralRestrictionMass E := hz
   have hb : ‖WithLp.toLp 2 b‖ = 1 := by
     simpa only [b, WithLp.toLp_ofLp] using Matrix.norm_selectedBellVector ΩX E hzX
   have hJ : Jᴴ * J = 1 := isIsometry_bellInsertion β X E (Fin E.card) k b hb
@@ -255,8 +258,8 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
         (2 * k * K * (3 * a) ^ 2 +
           ((Fintype.card (Configuration β Q) : ℝ) ^ 2 / 2) *
             Real.log ((k : ℝ) + 1)) - k * Real.log z) := by
-    have hiid := (reducedPure_posSemidef β Ω Q).
-      re_trace_finKronecker_exp_signed_labelEntropy_le
+    have hiid := (reducedPure_posSemidef β Ω Q)
+      .re_trace_finKronecker_exp_signed_labelEntropy_le
         (trace_reducedPure β Ω hΩ Q) (hmoment Q hQ) k
         (show 0 ≤ 3 * a by linarith) (by linarith) (by linarith)
     have htransfer (v : ℝ) : M Q v ≤ z⁻¹ ^ k *
