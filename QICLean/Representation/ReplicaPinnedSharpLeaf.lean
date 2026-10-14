@@ -129,6 +129,81 @@ theorem re_inner_exp_labelEntropy_bellInsertion
     ← dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc, hE,
     ← Matrix.mul_assoc, hJ, Matrix.one_mul, dotProduct_comm]
 
+open scoped Classical in
+private theorem re_inner_exp_labelEntropy_selectedBellPost_le
+    {V : Type} [Fintype V] [DecidableEq V]
+    (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+    (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X Q : Finset V)
+    (hXQ : Disjoint X Q) (E : Finset (Configuration β X))
+    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (k : ℕ) (u : ℝ) :
+    let z := (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
+    let χ : Fin E.card × Configuration β Xᶜ → ℂ := fun x ↦
+      Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
+    let Ψ := WithLp.toLp 2
+      (fun x : Config k (compressedSiteSpace β X (Fin E.card)) ↦
+        ∏ j, χ (Equiv.piOptionEquivProd (x j)))
+    let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
+    let b : Configuration β X × E → ℂ := Matrix.selectedBellVector ΩX E
+    let J := (addedSiteInsertion (compressedSiteSpace β X (Fin E.card))
+      (Configuration β X × E) k b).submatrix
+        (bellInsertionCopyEquiv β X E (Fin E.card) k) id
+    let p := WithLp.toLp 2 (J *ᵥ WithLp.ofLp Ψ)
+    (⟪p, Matrix.toEuclideanLin (NormedSpace.exp ((u : ℂ) •
+      labelEntropy (subsystemPerm k ι₀ ((Q \ X).image fun v ↦ some (some v))))) p⟫_ℂ).re ≤
+      z⁻¹ ^ k * (Matrix.finKronecker (fun _ : Fin k ↦ reducedPure β Ω Q) *
+        NormedSpace.exp ((u : ℂ) • labelEntropy (copyPerm (Configuration β Q) k))).trace.re := by
+  classical
+  intro z ΩX χ Ψ ι₀ b J p
+  have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
+      (Matrix.posSemidef_vecMulVec_self_star ΩX).partialTraceRight.isHermitian E := hz
+  have hb : ‖WithLp.toLp 2 b‖ = 1 := by
+    simpa only [b, WithLp.toLp_ofLp] using Matrix.norm_selectedBellVector ΩX E hzX
+  calc
+    _ = (⟪Ψ, Matrix.toEuclideanLin (NormedSpace.exp ((u : ℂ) •
+        labelEntropy (subsystemPerm k (compressedSiteSpace β X (Fin E.card))
+          (exteriorRegion X Q)))) Ψ⟫_ℂ).re :=
+      re_inner_exp_labelEntropy_bellInsertion β X E (Fin E.card) k b hb Ψ Q u
+    _ ≤ _ := re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
+      β Ω X Q hXQ E hz k u
+
+private theorem compressedTypicalSiteTensor_ne_zero
+    {V : Type} [Fintype V] [DecidableEq V]
+    (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
+    (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
+    (E : Finset (Configuration β X))
+    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (k : ℕ) :
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
+    let χ : Fin E.card × Configuration β Xᶜ → ℂ := fun x ↦
+      Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
+    let Ψ := WithLp.toLp 2
+      (fun x : Config k (compressedSiteSpace β X (Fin E.card)) ↦
+        ∏ j, χ (Equiv.piOptionEquivProd (x j)))
+    WithLp.ofLp Ψ ≠ 0 := by
+  classical
+  intro ΩX χ Ψ
+  have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
+      (Matrix.posSemidef_vecMulVec_self_star ΩX).partialTraceRight.isHermitian E := hz
+  have hχne : ∃ c, Matrix.compressedTypicalPureState ΩX E c ≠ 0 := by
+    by_contra! h
+    have hzero : Matrix.compressedTypicalPureState ΩX E = 0 := by
+      ext c
+      exact h c
+    have hn := Matrix.norm_compressedTypicalPureState ΩX E hzX
+    rw [hzero, norm_zero] at hn
+    norm_num at hn
+  obtain ⟨c, hc⟩ := hχne
+  let x₀ : (v : Option ↥(Xᶜ)) → compressedSiteSpace β X (Fin E.card) v :=
+    Equiv.piOptionEquivProd.symm ((Finset.equivFin E) c.1, c.2)
+  intro h
+  have hval := congrFun h (fun _ : Fin k ↦ x₀)
+  simp only [Ψ, χ, WithLp.ofLp_toLp, x₀, Equiv.apply_symm_apply,
+    Equiv.symm_apply_apply, Finset.prod_const, Finset.card_univ, Fintype.card_fin,
+    Pi.zero_apply] at hval
+  exact pow_ne_zero k hc hval
+
 private theorem inv_pow_mul_exp_eq (z : ℝ) (hz : 0 < z) (k : ℕ) (b : ℝ) :
     z⁻¹ ^ k * Real.exp b = Real.exp (b - (k : ℝ) * Real.log z) := by
   have hpow : z⁻¹ ^ k = Real.exp (-(k : ℝ) * Real.log z) := by
@@ -292,11 +367,8 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
       have hpair : M Q v =
           (⟪p, Matrix.toEuclideanLin (NormedSpace.exp ((v : ℂ) • L Q)) p⟫_ℂ).re :=
         (congrArg Complex.re (Entropy.inner_toEuclideanLin_eq_trace _ p)).symm
-      have heq := re_inner_exp_labelEntropy_bellInsertion β X E (Fin E.card)
-        k b hb Ψ Q v
-      have hle := re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
-        β Ω X Q hXQ E hz k v
-      exact hpair.trans_le (heq.trans_le hle)
+      exact hpair.trans_le
+        (re_inner_exp_labelEntropy_selectedBellPost_le β Ω X Q hXQ E hz k v)
     simpa only [S, neg_mul] using signed_moments_of_marginal_domination
       (reducedPure_posSemidef β Ω Q) (trace_reducedPure β Ω hΩ Q)
       (hmoment Q hQ) k (M Q) hz
@@ -317,24 +389,8 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
     Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero] at hupper
   have hbound := hupper.trans (mul_le_mul_of_nonneg_left (hholder.trans hthree)
     (Real.rpow_nonneg (by positivity : 0 ≤ (k : ℝ) + 2) C))
-  have hχne : ∃ c, Matrix.compressedTypicalPureState ΩX E c ≠ 0 := by
-    by_contra! h
-    have hzero : Matrix.compressedTypicalPureState ΩX E = 0 := by
-      ext c
-      exact h c
-    have hn := Matrix.norm_compressedTypicalPureState ΩX E hzX
-    rw [hzero, norm_zero] at hn
-    norm_num at hn
-  obtain ⟨c, hc⟩ := hχne
-  let x₀ : (v : Option ↥(Xᶜ)) → compressedSiteSpace β X (Fin E.card) v :=
-    Equiv.piOptionEquivProd.symm ((Finset.equivFin E) c.1, c.2)
-  have hΨne : WithLp.ofLp Ψ ≠ 0 := by
-    intro h
-    have hval := congrFun h (fun _ : Fin k ↦ x₀)
-    simp only [Ψ, χ, WithLp.ofLp_toLp, x₀, Equiv.apply_symm_apply,
-      Equiv.symm_apply_apply, Finset.prod_const, Finset.card_univ, Fintype.card_fin,
-      Pi.zero_apply] at hval
-    exact pow_ne_zero k hc hval
+  have hΨne : WithLp.ofLp Ψ ≠ 0 :=
+    compressedTypicalSiteTensor_ne_zero β Ω X E hz k
   have hpne : J *ᵥ WithLp.ofLp Ψ ≠ 0 := by
     intro h
     have hh := congrArg (fun v ↦ Jᴴ *ᵥ v) h
