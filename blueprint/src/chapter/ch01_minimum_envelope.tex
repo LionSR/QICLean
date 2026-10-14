@@ -9,6 +9,7 @@ The following scalar comparisons support the minimum-growth argument in the
 \begin{theorem}[Lipschitz continuity of an attained minimum]
     \label{thm:minimum_envelope_lipschitz}
     \lean{lipschitzOnWith_of_isLeast}
+    \leanok
     Let $X$ be a pseudometric space, let $J\subseteq X$, let $S$ be a set,
     and let $f:X\times S\to\R$. Suppose that, for every $t\in J$,
     $g(t)=\min_{x\in S}f(t,x)$ is attained. If every $f(\cdot,x)$ is
@@ -16,6 +17,7 @@ The following scalar comparisons support the minimum-growth argument in the
     $C$-Lipschitz on $J$.
 \end{theorem}
 \begin{proof}
+    \leanok
     Choose a minimizer $x_v$ at $v\in J$. For $u\in J$,
     \begin{align*}
         g(u)-g(v)
@@ -28,6 +30,7 @@ The following scalar comparisons support the minimum-growth argument in the
 \begin{theorem}[Growth from contacting right derivatives]
     \label{thm:minimum_envelope_affine}
     \lean{lower_envelope_le_affine_of_hasDerivWithinAt}
+    \leanok
     Let $f:\R\times S\to\R$ and let $g:\R\to\R$ be continuous on
     $[a,b]$. Suppose $g(t)\le f(t,x)$ for every $t\in[a,b]$ and
     $x\in S$. Assume that, for every $t\in[a,b)$, there exists
@@ -36,6 +39,7 @@ The following scalar comparisons support the minimum-growth argument in the
     $r\in[a,b]$ satisfies $g(r)\le g(a)+c(r-a)$.
 \end{theorem}
 \begin{proof}
+    \leanok
     Fix $t\in[a,b)$ and its contacting branch. For $t<z\le b$,
     \begin{align*}
         \frac{g(z)-g(t)}{z-t}
