@@ -188,6 +188,7 @@ $p_i=\lambda(s_i+b)$. These two cases give the stated maximum.
 \begin{theorem}[Inverse-power filters with clipped eigenvalues]
     \label{thm:shifted_filter_clipping}
     \lean{Matrix.exists_clipped_rpow_add_smul_one_of_diagonal_max}
+    \leanok
     Let $I$ be finite, let $x,\rho,U\in\C^{I\times I}$, and let
     $s,p\in\R^I$. Suppose that $U$ is unitary and
     \begin{align}
@@ -211,6 +212,7 @@ $p_i=\lambda(s_i+b)$. These two cases give the stated maximum.
     \cite[Section~4, clipped eigenvalues]{OpenAI2026PolynomialPEPS}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:rpow_conj_unitary,lem:clipped_filter_cost}
     Put $g_i=s_i+b=\max\{p_i/\lambda,b\}>0$. Functional calculus in the
     supplied unitary basis gives $L=U\operatorname{diag}(g_i^{-a/2})U^*$.
