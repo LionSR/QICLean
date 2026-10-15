@@ -165,6 +165,7 @@ The empty product has one element.
 \begin{theorem}[Summing conditional information costs]
     \label{thm:finite_product_conditional_cost_sum}
     \lean{FiniteProduct.mutualInformation_union_biUnion_le_of_conditional}
+    \leanok
     \uses{def:finite_product_regional_entropy,def:finite_product_conditional_information}
     Let $\psi$ be a vector in a finite tensor product, let $B,C$ be regional
     subsystems, and let $(G_i)_{i\in S}$ be a finite family of regions.
@@ -185,7 +186,7 @@ The empty product has one element.
     This is the finite summation used in the proof of
     \cite[Proposition~3.4]{OpenAI2026PolynomialPEPS}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{def:finite_product_regional_entropy,def:finite_product_conditional_information}
     Induct on the finite set $S$. The empty case is equality.
     On adding a new index $i$, write $B'=B\cup\bigcup_{j\in S}G_j$.
