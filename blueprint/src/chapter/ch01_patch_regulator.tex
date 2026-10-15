@@ -184,3 +184,43 @@ $s_i g_i\le(s_i+b)g_i=p_i$, and summation gives $\lambda\le1$.
 If $s_i=0$, then $p_i=g_i b\le\lambda b$; if $s_i>0$, then
 $p_i=\lambda(s_i+b)$. These two cases give the stated maximum.
 \end{proof}
+
+\begin{theorem}[Inverse-power filters with clipped eigenvalues]
+    \label{thm:shifted_filter_clipping}
+    \lean{Matrix.exists_clipped_rpow_add_smul_one_of_diagonal_max}
+    \leanok
+    Let $I$ be finite, let $x,\rho,U\in\C^{I\times I}$, and let
+    $s,p\in\R^I$. Suppose that $U$ is unitary and
+    \begin{align}
+        x    & =U\operatorname{diag}(s_i)U^*, \\
+        \rho & =U\operatorname{diag}(p_i)U^*.
+    \end{align}
+    Let $b,\lambda>0$ and $a\ge0$, and suppose that
+    $s_i+b=\max\{p_i/\lambda,b\}$ for every $i\in I$.
+    Set $L=(x+b\Id)^{-a/2}$. Then $L\rho=\rho L$, and there are a unitary
+    $W$ and real families $\ell,q\in\R^I$ such that $\ell_i>0$ for all $i$,
+    \begin{align}
+        L    & =W\operatorname{diag}(\ell_i)W^*, \\
+        \rho & =W\operatorname{diag}(q_i)W^*.
+    \end{align}
+    For every $i,k\in I$ with $q_i,q_k>0$,
+    \begin{align}
+        |\log\ell_i-\log\ell_k|
+         & \le \frac a2|\log q_i-\log q_k|.
+    \end{align}
+    This gives the logarithmic bound for inverse-power filters in
+    \cite[Section~4, clipped eigenvalues]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:rpow_conj_unitary,lem:clipped_filter_cost}
+    Put $g_i=s_i+b=\max\{p_i/\lambda,b\}>0$. Functional calculus in the
+    supplied unitary basis gives $L=U\operatorname{diag}(g_i^{-a/2})U^*$.
+    The two diagonal matrices commute, so their conjugates $L$ and $\rho$
+    commute. Choose $W=U$, $\ell_i=g_i^{-a/2}$ and $q_i=p_i$.
+    Lemma~\ref{lem:clipped_filter_cost} bounds the logarithmic differences
+    of $g_i^{a/2}$ by $(a/2)|\log p_i-\log p_k|$ whenever $p_i,p_k>0$.
+    Since $\log(g_i^{-a/2})=-\log(g_i^{a/2})$, the absolute difference is
+    unchanged. This proves the estimate, including $a=0$; an empty index set
+    requires no separate argument.
+\end{proof}

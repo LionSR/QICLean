@@ -229,6 +229,7 @@ import QICLean.Analysis.ShiftedDensityClipping
 import QICLean.Analysis.ShiftedDensityCommutation
 import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.ShiftedDensityTruncation
+import QICLean.Analysis.ShiftedFilterClipping
 import QICLean.Analysis.ShiftedPowerDerivative
 import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
