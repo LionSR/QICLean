@@ -45,6 +45,7 @@ import QICLean.Entropy.FilterStationarity
 import QICLean.Entropy.FilterZeroFloor
 import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.FiniteProductConditionalSum
 import QICLean.Entropy.FiniteProductContinuity
 import QICLean.Entropy.FiniteProductInformation
 import QICLean.Entropy.FiniteProductSplitting
