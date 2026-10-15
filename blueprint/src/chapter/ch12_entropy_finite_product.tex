@@ -162,4 +162,36 @@ The empty product has one element.
     region and use disjointness.
 \end{proof}
 
+\begin{theorem}[Summing conditional information costs]
+    \label{thm:finite_product_conditional_cost_sum}
+    \lean{FiniteProduct.mutualInformation_union_biUnion_le_of_conditional}
+    \uses{def:finite_product_regional_entropy,def:finite_product_conditional_information}
+    Let $\psi$ be a vector in a finite tensor product, let $B,C$ be regional
+    subsystems, and let $(G_i)_{i\in S}$ be a finite family of regions.
+    For each $i\in S$, fix a real number $c_i$. Suppose that, for every
+    $T\subseteq S$ and every $i\in S\setminus T$,
+    \begin{align}
+        I_\psi\left(G_i:C\,\middle|\,B\cup\bigcup_{j\in T}G_j\right)
+         & \le c_i.
+        \notag
+    \end{align}
+    Then
+    \begin{align}
+        I_\psi\left(B\cup\bigcup_{i\in S}G_i:C\right)
+         & \le I_\psi(B:C)+\sum_{i\in S}c_i.
+        \notag
+    \end{align}
+    The vector need not be normalized, and the regions may overlap.
+    This is the finite summation used in the proof of
+    \cite[Proposition~3.4]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+    \uses{def:finite_product_regional_entropy,def:finite_product_conditional_information}
+    Induct on the finite set $S$. The empty case is equality.
+    On adding a new index $i$, write $B'=B\cup\bigcup_{j\in S}G_j$.
+    Expanding the entropy expressions gives
+    $I_\psi(B'\cup G_i:C)=I_\psi(B':C)+I_\psi(G_i:C\mid B')$.
+    Apply the induction hypothesis and the assumed bound for the last term.
+\end{proof}
+
 \input{chapter/ch12_entropy_finite_product_splitting}
