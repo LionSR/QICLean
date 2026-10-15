@@ -110,3 +110,36 @@ $y$ on rank-one projections of a common eigenbasis of $G$ and $x_j$
 (Lemma~\ref{lem:commuting_hermitian}) gives $G\le\lambda\Id$. Since
 $\lambda=\Tr\rho_j-b\Tr G\le1$, we get $\rho_j\le\lambda(x_j+b\Id)\le x_j+b\Id$.
 \end{proof}
+
+\begin{theorem}[Clipped joint eigenvalues]
+\label{thm:shifted_density_clipping}
+\lean{Matrix.PosSemidef.exists_unitary_diagonal_clipped_of_forall_density}
+\leanok
+Let $x,\rho\in\C^{I\times I}$ be commuting density matrices and let $b>0$.
+Suppose that every density matrix $y$ commuting with $x$ satisfies
+\begin{align}
+ \operatorname{Re}\tr\bigl(\rho(x+b\Id)^{-1}y\bigr)
+ &\le \operatorname{Re}\tr\bigl(\rho(x+b\Id)^{-1}x\bigr).
+ \label{eq:shifted_density_variation}
+\end{align}
+Then there are a unitary $U$, real families $(s_i)_{i\in I}$ and
+$(p_i)_{i\in I}$, and $0<\lambda\le1$ such that
+$x=U\operatorname{diag}(s_i)U^*$, $\rho=U\operatorname{diag}(p_i)U^*$, and
+$s_i+b=\max\{p_i/\lambda,b\}$ for every $i\in I$.
+This is the consequence of the first-order inequalities used in
+\cite[Section~4, clipped eigenvalues]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+\uses{lem:commuting_hermitian,thm:rpow_conj_unitary}
+\leanok
+Simultaneous diagonalization gives $s_i,p_i\ge0$ and
+$\sum_i s_i=\sum_i p_i=1$. Set $g_i=p_i/(s_i+b)$ and
+$\lambda=\sum_i s_i g_i$. Testing (\ref{eq:shifted_density_variation})
+on each rank-one projection in this basis gives $g_i\le\lambda$.
+Since $\sum_i s_i g_i=\sum_i s_i\lambda$, equality holds in each
+inequality $s_i g_i\le s_i\lambda$. Thus $g_i=\lambda$ when $s_i>0$.
+Some $p_i$ is positive, so $\lambda>0$. Also
+$s_i g_i\le(s_i+b)g_i=p_i$, and summation gives $\lambda\le1$.
+If $s_i=0$, then $p_i=g_i b\le\lambda b$; if $s_i>0$, then
+$p_i=\lambda(s_i+b)$. These two cases give the stated maximum.
+\end{proof}
