@@ -507,6 +507,105 @@ depend on the common values there.
     Lemma~\ref{lem:filter_clipping} applies with $\sum q=\lVert\psi\rVert^2>0$.
 \end{proof}
 
+\begin{theorem}[Positivity of feasible filters]
+    \label{thm:feasible_filter_posSemidef}
+    \lean{Entropy.IsFeasibleFilter.posSemidef}
+    \leanok
+    \uses{prop:stationary_filter_clipped}
+    For real $f$ and $a$, call a matrix $K$ feasible at floor $f$ and
+    weight $a$ if some unitary $U$ and weights $y_i\ge f$ with
+    $\sum_i y_i=1$ satisfy
+    \begin{align}
+        K&=U\operatorname{diag}(y_i^{a/2})U^*.
+        \label{eq:feasible_filter_coordinates}
+    \end{align}
+    If $f\ge0$, every such matrix is positive semidefinite, for any real
+    weight $a$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Every $y_i$ is nonnegative, so every $y_i^{a/2}$ is nonnegative.
+    Unitary conjugation preserves positive semidefiniteness.
+\end{proof}
+
+\begin{theorem}[Spectral decomposition and trace]
+    \label{thm:hermitian_spectral_trace}
+    \lean{Matrix.IsHermitian.trace_cfc_eq_sum,
+        Matrix.IsHermitian.spectral_form}
+    \leanok
+    Let $A$ be a Hermitian matrix on a finite index set over $\mathbb R$
+    or $\mathbb C$, with eigenvalues $\lambda_i$, and let
+    $g:\mathbb R\to\mathbb R$ be arbitrary. Then
+    $\Tr g(A)=\sum_i g(\lambda_i)$. In the complex case, if $U$ is
+    its eigenvector unitary, then
+    $A=U\operatorname{diag}(\lambda_i)U^*$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The spectral theorem gives the decomposition. Functional calculus
+    applies $g$ to the diagonal entries; cyclicity of the trace removes
+    the unitary conjugation and leaves the sum of those entries.
+\end{proof}
+
+\begin{theorem}[Trace normalization of feasible filters]
+    \label{thm:feasible_filter_trace_normalization}
+    \lean{Entropy.IsFeasibleFilter.trace_cfc_rpow,
+        Entropy.isFeasibleFilter_zero_iff,
+        Entropy.isFeasibleFilter_zero_iff_eigenvalues}
+    \leanok
+    \uses{prop:stationary_filter_clipped}
+    Let $K$ be a complex matrix on a finite index set and let $a>0$.
+    Then $K$ is feasible at floor zero and weight $a$ if and only if
+    $K\ge0$ and $\Tr K^{2/a}=1$, where the power is defined by real
+    continuous functional calculus. Equivalently, for $K\ge0$ with
+    eigenvalues $\lambda_i$, feasibility holds if and only if
+    $\sum_i\lambda_i^{2/a}=1$. The index set may be empty and $K$ may
+    be singular.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:feasible_filter_posSemidef, prop:stationary_filter_clipped,
+        thm:hermitian_spectral_trace}
+    For a representation in~(\ref{eq:feasible_filter_coordinates}) with
+    $f=0$, positivity follows from
+    Theorem~\ref{thm:feasible_filter_posSemidef}. Compute the trace in
+    the basis given by $U$. Since $a>0$, the identity
+    $(y_i^{a/2})^{2/a}=y_i$ holds even when $y_i=0$, so the trace is
+    $\sum_i y_i=1$.
+
+    Conversely, diagonalize $K\ge0$ and put $y_i=\lambda_i^{2/a}$.
+    The trace condition gives $\sum_i y_i=1$, while $y_i\ge0$ and
+    $y_i^{a/2}=\lambda_i$. This reconstructs
+    (\ref{eq:feasible_filter_coordinates}) at floor zero. The same
+    trace computation gives the eigenvalue formulation.
+\end{proof}
+
+The theorem identifies the matrices satisfying the trace normalization
+used in the companion filter construction of
+Ref.~\cite{OpenAI2026PEPSFiltersEnergy}. It does not select a unique
+spectral basis. When the index set is empty, both normalized sets are
+empty. The positive-weight assumption is essential: at $a=0$, the
+identity matrix in dimension two is feasible, but the zeroth real power
+has trace two.
+
+\begin{theorem}[Feasibility under reindexing]
+    \label{thm:feasible_filter_reindex}
+    \lean{Entropy.IsFeasibleFilter.reindex,
+        Entropy.isFeasibleFilter_reindex_iff}
+    \leanok
+    \uses{prop:stationary_filter_clipped}
+    Let $e:I\to J$ be a bijection of finite index sets and let $f,a$ be
+    arbitrary real numbers. Reindexing both matrix indices by $e$
+    preserves feasibility at floor $f$ and weight $a$ in both directions.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Transport $U$ by the same row and column bijection and replace the
+    weights by $y\circ e^{-1}$. Matrix multiplication, adjoints, the
+    identity, and the sum of the weights are preserved. The inverse
+    bijection gives the converse.
+\end{proof}
+
 \begin{theorem}[All stationary filters are clipped]
     \label{thm:all_filters_clipped}
     \lean{Entropy.chainList, Entropy.liftProd_chainList_split,

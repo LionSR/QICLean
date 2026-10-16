@@ -7,6 +7,20 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Reciprocal real powers — existing mathematical lemma (2026-10-16)
+
+- **Pattern:** Normalize or reconstruct a nonnegative eigenvalue by composing
+  real powers whose exponents multiply to one.
+- **Consumers:** `IsFeasibleFilter.of_common_basis` in `FilterOptimizer` and
+  `IsFeasibleFilter.trace_cfc_rpow` / `isFeasibleFilter_zero_iff` in
+  `FilterFeasibility`.
+- **Decision:** Reuse `Real.rpow_mul`, followed by the scalar reciprocal
+  identity and `Real.rpow_one`. No new tactic or duplicate power theorem is
+  needed, and the existing provider is unchanged.
+- **Caveat:** Keep the nonnegative-base premise and the nonzero denominator.
+  Replacing this calculation by an exponential-of-log convention changes
+  its value at zero and is invalid for singular filters.
+
 ### Ordered products of rectangular intertwiners — promoted (2026-10-12)
 
 - **Pattern:** From `A g * Z = Z * B g` for every factor, derive the same

@@ -36,6 +36,7 @@ import QICLean.Entropy.FilterChainEnergy
 import QICLean.Entropy.FilterClipping
 import QICLean.Entropy.FilterConjugation
 import QICLean.Entropy.FilterEnergy
+import QICLean.Entropy.FilterFeasibility
 import QICLean.Entropy.FilterMaximizer
 import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FilterOptimizer
