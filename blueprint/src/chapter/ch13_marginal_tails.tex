@@ -606,6 +606,122 @@ has trace two.
     bijection gives the converse.
 \end{proof}
 
+\begin{theorem}[Selected regional matrix products]
+    \label{thm:selected_filter_product}
+    \lean{Entropy.liftProd_chainList_eq}
+    \uses{lem:local_lift, thm:all_filters_clipped}
+    Let $(D_j)_{j\in\mathbb N}$ be regions in a finite site set, let
+    $K_j$ be an arbitrary regional matrix for $j<m$, and choose a subset
+    of these indices. If its elements in increasing order are
+    $j_1<\cdots<j_r$, the product of the associated local lifts in the
+    reversed list is $L_{j_r}\cdots L_{j_1}$. The empty list has product
+    equal to the identity. No nesting or feasibility assumption is needed.
+\end{theorem}
+\begin{proof}
+    Expanding the list of selected regional matrices and then taking
+    their local lifts yields the same ordered list of full matrices.
+\end{proof}
+
+\begin{theorem}[Coordinate changes for matrix actions]
+    \label{thm:coordinate_matrix_action}
+    \lean{Matrix.reindex_mulVec, Entropy.norm_relabelVector}
+    \uses{thm:region_state_relabel}
+    Let $e:I\to J$ be a bijection of finite coordinate sets, let $R$ be
+    a possibly nonunital, nonassociative semiring, let $M$ be a matrix
+    over $R$ indexed by $I$, and let $v\in R^I$. Writing $M'$ for the
+    matrix with both indices reindexed by $e$, one has
+    $M'(v\circ e^{-1})=(Mv)\circ e^{-1}$.
+    For the complex configuration vectors of
+    Theorem~\ref{thm:region_state_relabel}, the corresponding map $T$
+    also satisfies $\|T\Omega\|=\|\Omega\|$.
+\end{theorem}
+\begin{proof}
+    Changing variables in the finite matrix-vector sum gives the first
+    identity. The configuration bijection acts on Euclidean space as
+    a permutation isometry, which gives the norm identity.
+\end{proof}
+
+\begin{theorem}[Successive matrix actions]
+    \label{thm:ordered_matrix_action}
+    \lean{Matrix.foldl_toEuclideanCLM_eq_reverse_prod,
+        Entropy.foldl_localLift_eq_liftProd_chainList}
+    \uses{lem:local_lift, thm:all_filters_clipped}
+    Let $I$ be a finite set, let $\mathbb K$ be $\mathbb R$ or $\mathbb C$,
+    and let $M_0,\ldots,M_{m-1}$ be matrices on $\mathbb K^I$.
+    Starting at $\psi_0=\Omega$ and setting $\psi_{j+1}=M_j\psi_j$ gives
+    $\psi_m=M_{m-1}\cdots M_0\Omega$. In particular, successive applications
+    of the local lifts $L_j$ give their product in decreasing index order.
+    No commutation or invertibility assumption is required. When $m=0$,
+    the output is $\Omega$; the coordinate set $I$ may also be empty.
+\end{theorem}
+\begin{proof}
+    \uses{thm:selected_filter_product}
+    Induction on the list uses $\psi_{j+1}=M_j\psi_j$ and associativity of
+    matrix action. Appending the first applied factor on the right of
+    the remaining reversed product preserves the order of all factors.
+\end{proof}
+
+\begin{theorem}[Ordered local products under site bijections]
+    \label{thm:filter_output_relabel}
+    \lean{Entropy.localLift_relabel, Entropy.liftProd_chainList_relabel,
+        Entropy.relabelVector_liftProd_chainList,
+        Entropy.relabelVector_normalized_liftProd_chainList}
+    \uses{lem:local_lift, thm:region_state_relabel}
+    Use the site and local-basis bijections of
+    Theorem~\ref{thm:region_state_relabel}. Let $(D_j)_{j\in\mathbb N}$
+    and $(D'_j)_{j\in\mathbb N}$ be regions with $D'_j=e(D_j)$ for every
+    $j$. For $j<m$, choose an arbitrary matrix $K_j$ on $D_j$, and let
+    $K'_j=U_{D_j}K_jU_{D_j}^*$. Write $L_j$ and $L'_j$ for their local
+    lifts. Then $TL_j=L'_jT$. For every selected subset of the indices
+    $j<m$, let $A$ and $A'$ be the corresponding products in decreasing
+    index order. For every input $\Omega$,
+    \begin{align}
+        TA\Omega&=A'T\Omega,\notag\\
+        T\bigl(\|A\Omega\|^{-1}A\Omega\bigr)
+            &=\|A'T\Omega\|^{-1}A'T\Omega.\notag
+    \end{align}
+    Here $0^{-1}=0$. Empty regions, empty local bases, empty selected
+    sets, singular matrices, and repeated regions are allowed.
+\end{theorem}
+\begin{proof}
+    \uses{thm:coordinate_matrix_action, thm:selected_filter_product}
+    In the region-complement coordinates, a local lift has entries
+    $K_j(u,v)\delta_{w,z}$. Relabelling replaces $u,v$ by their inverse
+    regional images and $w,z$ by their inverse complementary images.
+    The complementary bijection preserves equality, so it preserves
+    $\delta_{w,z}$. Reindexing preserves matrix multiplication and the
+    identity, hence the ordered products. Changing variables in the
+    matrix-vector sum proves the output identity. Since $T$ preserves
+    norms and scalar multiplication, it also preserves normalization,
+    even when the output vanishes.
+\end{proof}
+
+\begin{theorem}[Global comparison under site bijections]
+    \label{thm:filter_max_comparison_relabel}
+    \lean{Entropy.forall_norm_liftProd_chainList_le_relabel_iff}
+    \uses{thm:filter_output_relabel, thm:feasible_filter_reindex}
+    Under the hypotheses of Theorem~\ref{thm:filter_output_relabel}, fix
+    arbitrary real floors $b_j$ and weights $a_j$ for $j<m$.
+    Let $A(K)$ denote the product of all local lifts in decreasing index
+    order. For any distinguished family $K$, the inequality
+    $\|A(G)\Omega\|\le\|A(K)\Omega\|$ for every family $G$ feasible at
+    $(b_j,a_j)$ holds if and only if the corresponding inequality holds
+    for $K'$ and $T\Omega$ against every feasible family on the regions
+    $D'_j$. The distinguished family itself need not be feasible.
+\end{theorem}
+\begin{proof}
+    \uses{thm:filter_output_relabel, thm:feasible_filter_reindex}
+    The regional bijections preserve feasibility and the norm of every
+    ordered output. Every competitor on the target regions is the image
+    of its inverse-reindexed family. Applying the inequality to that
+    family proves one direction, and reindexing a source competitor
+    proves the other.
+\end{proof}
+
+% These are generic matrix identities for the ascending application convention
+% of OpenAI2026PEPSFiltersEnergy, Basic.lean:166--179. They do not assert equality
+% with unimported source types or complete the geometric/physical comparison.
+
 \begin{theorem}[All stationary filters are clipped]
     \label{thm:all_filters_clipped}
     \lean{Entropy.chainList, Entropy.liftProd_chainList_split,

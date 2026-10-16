@@ -40,6 +40,7 @@ import QICLean.Entropy.FilterFeasibility
 import QICLean.Entropy.FilterMaximizer
 import QICLean.Entropy.FilterMoment
 import QICLean.Entropy.FilterOptimizer
+import QICLean.Entropy.FilterOutputCovariance
 import QICLean.Entropy.FilterPower
 import QICLean.Entropy.FilterPrefix
 import QICLean.Entropy.FilterStationarity
