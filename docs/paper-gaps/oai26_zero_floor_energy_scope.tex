@@ -110,13 +110,33 @@ not reproved here.\footnote{See
 \leanid{TNLean.PEPS.AreaLaw.nearestNeighbor_crossing_budget} in
 \href{https://github.com/LionSR/TNLean/blob/0afd1775b8ef7861082bab9a4d0fcb5f006792ac/TNLean/PEPS/AreaLaw/EdgeCrossingBudget.lean\#L154-L172}{EdgeCrossingBudget.lean}.}
 
-The comparison with the complete companion-source assertion remains open.
-It still requires identification of the source's positive filters
-with trace-power one and the floor-zero feasible filters, identification
-of the ordered lifted products and their maximizing properties, and
-the physical grid specialization, including the Hermitian-term
-reduction and original full-system gap. The new absolute estimate
-does not require a ground-state lower-bound argument.
+For each positive weight $a$, the floor-zero feasible matrices are now
+characterized as the positive-semidefinite matrices with
+$\Tr K^{2/a}=1$. Equivalently, their nonnegative eigenvalues satisfy
+$\sum_i\lambda_i^{2/a}=1$. This includes singular matrices and empty
+finite index sets. Reindexing preserves feasibility at arbitrary real
+floors and weights.\footnote{See
+\leanid{Entropy.isFeasibleFilter_zero_iff},
+\leanid{Entropy.isFeasibleFilter_zero_iff_eigenvalues}, and
+\leanid{Entropy.isFeasibleFilter_reindex_iff} in
+\doclink{QICLean/Entropy/FilterFeasibility}.
+The spectral reconstruction adapts
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/MathematicalPhysics/PEPSFilters/Coordinates.lean\#L114-L132}{the companion coordinate argument}.
+The reciprocal real exponent here is strictly positive, so its real
+continuous-functional-calculus power vanishes on the kernel. The
+source's supported complex-power curve also vanishes there, even at
+exponent zero; the exponential-of-log convention does not. At exponent
+zero, real continuous functional calculus instead gives the identity.}
+
+This characterizes the same matrix condition as the source's trace-power
+normalization. It does not assert a literal equality with an unimported
+source filter type or a bijection of its nonunique spectral coordinates.
+The comparison with the complete companion-source assertion remains open:
+it still requires the exact local-lift and ordered-output identities,
+transport of admissibility and global maximality for the same chosen
+family, and the physical grid specialization, including the
+Hermitian-term reduction and original full-system gap. The new absolute
+estimate does not require a ground-state lower-bound argument.
 
 The geometric producer additionally needs its uniform collar and
 harmonic-weight construction, the specified weight sum, and its upper
