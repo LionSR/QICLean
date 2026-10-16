@@ -528,11 +528,11 @@ depend on the common values there.
     Unitary conjugation preserves positive semidefiniteness.
 \end{proof}
 
-%% Completion marks for this imported support entry await declaration checking.
 \begin{theorem}[Spectral decomposition and trace]
     \label{thm:hermitian_spectral_trace}
     \lean{Matrix.IsHermitian.trace_cfc_eq_sum,
         Matrix.IsHermitian.spectral_form}
+    \leanok
     Let $A$ be a Hermitian matrix on a finite index set over $\mathbb R$
     or $\mathbb C$, with eigenvalues $\lambda_i$, and let
     $g:\mathbb R\to\mathbb R$ be arbitrary. Then
@@ -541,6 +541,7 @@ depend on the common values there.
     $A=U\operatorname{diag}(\lambda_i)U^*$.
 \end{theorem}
 \begin{proof}
+    \leanok
     The spectral theorem gives the decomposition. Functional calculus
     applies $g$ to the diagonal entries; cyclicity of the trace removes
     the unitary conjugation and leaves the sum of those entries.
