@@ -2,7 +2,7 @@
 \usepackage{amsmath,amssymb,xurl}
 \usepackage[hidelinks]{hyperref}
 \input{command}
-\title{The weight range and coefficient for zero-floor maximizing filters}
+\title{Source comparison for sharp zero-floor maximizing filters}
 \author{}
 \date{2026-10-16}
 \begin{document}
@@ -26,66 +26,105 @@ $\phi$ satisfies
     &\le q^2J\sum_j b_j a_j^2.
     \label{eq:zero_floor_source_overlap}
 \end{align}
-The source first takes a compact limit of regularized maximizing families,
+The source takes a compact limit of regularized maximizing families,
 proves that the limiting maximal output norm is positive, and then passes
 the energy and overlap bounds through normalization.\footnote{Source
 \leanid{exists_maximizer_energy}, lines 62--109 of
-\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/MathematicalPhysics/PEPSFilters/EnergyOptimizer.lean}{EnergyOptimizer.lean}.}
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/MathematicalPhysics/PEPSFilters/EnergyOptimizer.lean}{EnergyOptimizer.lean}.
+The positive-regularization estimate is
+\leanid{exists_regularized_maximizer_energy}, lines 29--60.}
 
-\section{The restricted estimate}
+\section{The preserved coarse estimate}
 
-The present result applies to arbitrary finite sites and supported
+The original statements apply to arbitrary finite sites and supported
 Hermitian terms $H=\sum_i h_i$, with $\|h_i\|\le c_0$ and
-$H\Omega=E_0\Omega$, where $\Omega\ne0$. It assumes nested regions,
+$H\Omega=E_0\Omega$, where $\Omega\ne0$. They assume nested regions,
 $0<a_j\le1/2$, and that each support $S_i$ is split by at most one region.
-Write $d_i=\dim\mathcal H_{S_i}$ and let $C_j$ be the terms split by $D_j$.
-One floor-zero norm maximizer has output $\psi\ne0$ and obeys
+If $C_j$ is the set of terms split by $D_j$, their energy budget is
 \begin{align}
- B&=\sum_j4a_j^2\sum_{i\in C_j}d_i^2c_0,
-   \label{eq:zero_floor_coarse_constant}\\
- \operatorname{Re}\langle\psi,H\psi\rangle-E_0\|\psi\|^2
-   &\le B\|\psi\|^2.
-   \label{eq:zero_floor_homogeneous}
+  B_{\mathrm{coarse}}
+    &=\sum_j4a_j^2\sum_{i\in C_j}(\dim\mathcal H_{S_i})^2c_0.
+    \label{eq:zero_floor_coarse_constant}
 \end{align}
-Consequently its unit normalized output has energy excess at most $B$.
-A full-system gap yields an overlap bound for the same witness when
-$\Omega$ is normalized. The energy assertion alone does not assume that
-$E_0$ is the ground energy, so it states an upper bound rather than an
-absolute-value estimate.\footnote{Formal declarations
+One floor-zero norm maximizer has nonzero output and normalized energy
+excess at most $B_{\mathrm{coarse}}$.\footnote{The unchanged declarations are
 \leanid{Entropy.exists_max_feasible_chain_zero_floor_energy} and
 \leanid{Entropy.exists_max_feasible_chain_zero_floor_normalized_energy}
 in \doclink{QICLean/Entropy/FilterZeroFloorEnergy}.}
+These statements retain their original hypotheses and conclusions.
 
-Both the weight restriction and the coefficient in
-(\ref{eq:zero_floor_coarse_constant}) enter before taking the limit:
-they are the hypotheses and conclusion of the available positive-floor
-maximizing-family energy estimate. The compactness argument introduces
-neither restriction. It instead passes the closed inequality
-(\ref{eq:zero_floor_homogeneous}) to a limiting maximizer. A fixed uniform
-positive-floor competitor shows that this maximizer has nonzero output,
-so division by its squared norm is legitimate.\footnote{The positive-floor
-provider is \leanid{Entropy.re_inner_sub_le_of_max} in
+\section{The sharp arbitrary-site estimate}
+
+The sharp statements allow $0<a_j\le1$ under the same nesting,
+single-split and eigenvector hypotheses. Define
+\begin{align}
+  d_{ij}&=\dim\mathcal H_{S_i\cap D_j},\notag\\
+  B_{\mathrm{in}}&=\sum_j a_j^2\sum_{i\in C_j}d_{ij}^2c_0.
+  \label{eq:zero_floor_inside_budget}
+\end{align}
+At a positive-floor norm maximum, every filter is clipped relative to
+the regional state of the output. The sharp stationary-chain estimate
+gives the one-sided energy bound with $B_{\mathrm{in}}$.
+Apply it again to $-h_i$ and eigenvalue $-E_0$, using the same
+maximizing family. This gives the absolute energy bound without any
+ground-state hypothesis.\footnote{The positive-floor declarations are
+\leanid{Entropy.re_inner_sub_le_of_max_sharp} and
+\leanid{Entropy.abs_re_inner_sub_le_of_max_sharp}; they use
+\leanid{Entropy.forall_clipped_of_max} and
+\leanid{Entropy.re_inner_sub_le_of_chain_sharp}. See
+\doclink{QICLean/Entropy/FilterChain} and
 \doclink{QICLean/Entropy/FilterChainEnergy}.}
 
-\section{Remaining comparison}
+Pass the closed homogeneous condition to a limiting maximizing family:
+\begin{align}
+  |\operatorname{Re}\langle\psi,H\psi\rangle-E_0\|\psi\|^2|
+    &\le B_{\mathrm{in}}\|\psi\|^2.
+    \label{eq:zero_floor_sharp_homogeneous}
+\end{align}
+A fixed strictly positive uniform competitor proves $\psi\ne0$.
+The same family's normalized output $\phi=\psi/\|\psi\|$ therefore has
+unit norm and absolute energy error at most $B_{\mathrm{in}}$.
+No gap, ground-state assumption or normalized input is needed for this
+assertion. Empty filter chains and empty interaction families are
+allowed; no separate sign assumption on $c_0$ is imposed.\footnote{The
+sharp zero-floor declarations are
+\leanid{Entropy.exists_max_feasible_chain_zero_floor_abs_energy_sharp}
+and
+\leanid{Entropy.exists_max_feasible_chain_zero_floor_normalized_abs_energy_sharp}.
+They use the same closed-condition limit and nonvanishing results as
+the coarse statements.}
+For a normalized input and a positive full-system gap, the gap estimate
+also yields overlap squared at least $1-B_{\mathrm{in}}/\Delta$ for
+this same chosen output.
 
-For two-site interactions of local dimension $q$, using the full support
-dimension in (\ref{eq:zero_floor_coarse_constant}) gives $4q^4$, not the
-$q^2$ in (\ref{eq:zero_floor_source_energy}). Thus the zero-floor result
-does not establish (\ref{eq:zero_floor_source_energy}) throughout the
-source's weight range, nor its complete physical conclusion.
+\section{Remaining source comparison}
 
-To remove this restriction, derive a maximizing-family positive-floor
-estimate with weights at most one and the inside-support dimension from
-the existing sharp chain inequality. Then use the same closed-condition
-limit theorem, identify the grid terms and feasible filters with the source
-representations, and apply the ground-state lower bound and full-system gap.
-The geometric producer additionally needs its uniform collar, weight and
-representation arguments.\footnote{Selective-port comparison remains
+For one-site and two-site nearest-neighbor interactions, no one-site term
+crosses a cut, and each crossing two-site support has exactly one inside
+endpoint. Thus $d_{ij}=q$ for each crossing term and
+$B_{\mathrm{in}}=q^2J\sum_j b_j a_j^2$. The generic weight range and
+dimension coefficient now agree with those of
+(\ref{eq:zero_floor_source_energy}). The exact nearest-neighbor
+counting identity is already established separately in TNLean; it is
+not reproved here.\footnote{See
+\leanid{TNLean.PEPS.AreaLaw.nearestNeighbor_crossing_budget} in
+\href{https://github.com/LionSR/TNLean/blob/0afd1775b8ef7861082bab9a4d0fcb5f006792ac/TNLean/PEPS/AreaLaw/EdgeCrossingBudget.lean#L154-L172}{EdgeCrossingBudget.lean}.}
+
+The comparison with the complete companion-source assertion remains open.
+It still requires identification of the source's positive filters
+with trace-power one and the floor-zero feasible filters, identification
+of the ordered lifted products and their maximizing properties, and
+the physical grid specialization, including the Hermitian-term
+reduction and original full-system gap. The new absolute estimate
+does not require a ground-state lower-bound argument.
+
+The geometric producer additionally needs its uniform collar and
+harmonic-weight construction, the specified weight sum, and its upper
+norm comparison. None of those geometric conclusions is asserted by the
+generic energy estimates.\footnote{The selective-source comparison remains
 tracked in \href{https://github.com/LionSR/TNLean/issues/8741}{TNLean issue 8741}.}
-The verdict is a scope restriction of the companion-source comparison,
-not an error in its assertion. The restricted theorem is useful on its
-stated domain; the source comparison remains open.
+This note records the remaining difference of representations and
+physical conclusions, rather than an error in the source assertion.
 
 \bibliographystyle{alpha}
 \bibliography{references}

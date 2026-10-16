@@ -12,7 +12,11 @@ run_cmd do
   for decl in #[``Entropy.exists_max_feasible_chain_mem_of_pos_floor,
       ``Entropy.norm_liftProd_pos_of_zero_floor_max,
       ``Entropy.exists_max_feasible_chain_zero_floor_energy,
-      ``Entropy.exists_max_feasible_chain_zero_floor_normalized_energy] do
+      ``Entropy.exists_max_feasible_chain_zero_floor_normalized_energy,
+      ``Entropy.re_inner_sub_le_of_max_sharp,
+      ``Entropy.abs_re_inner_sub_le_of_max_sharp,
+      ``Entropy.exists_max_feasible_chain_zero_floor_abs_energy_sharp,
+      ``Entropy.exists_max_feasible_chain_zero_floor_normalized_abs_energy_sharp] do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
     let axioms ← Lean.collectAxioms decl

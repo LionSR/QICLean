@@ -24,6 +24,10 @@ maximizer has nonzero output before it is normalized.
 * `exists_max_feasible_chain_zero_floor_energy`: a zero-floor maximizer with nonzero
   output and the homogeneous single-split energy estimate.
 * `exists_max_feasible_chain_zero_floor_normalized_energy`: its normalized energy estimate.
+* `exists_max_feasible_chain_zero_floor_abs_energy_sharp`: the sharp homogeneous
+  absolute estimate with weights at most one and inside-support dimensions.
+* `exists_max_feasible_chain_zero_floor_normalized_abs_energy_sharp`: the same
+  family's unit normalized output and sharp absolute energy estimate.
 
 ## References
 
@@ -32,9 +36,10 @@ The compact-limit argument adapts OpenAI's
 `exists_maximizer_energy`, at revision `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 The coordinate-family argument is replaced by compactness of QICLean's existing feasible
 sets and its passage from positive-floor norm bounds to zero floor. The result is stated
-for arbitrary finite sites and supported interactions. It retains the weight restriction
-and energy coefficient of `re_inner_sub_le_of_max`; it does not assert the upstream sharp
-nearest-neighbor coefficient or the complete geometric-optimizer conclusion.
+for arbitrary finite sites and supported interactions. The original exports retain the
+coarse coefficient of `re_inner_sub_le_of_max`. The sharp exports instead use
+`abs_re_inner_sub_le_of_max_sharp` for weights at most one. Neither set of exports identifies
+QICLean's feasible filters with the source representations or proves the geometric producer.
 -/
 
 open Complex Matrix Filter Topology
@@ -199,8 +204,8 @@ neither a spectral gap nor a normalized input is needed for this energy statemen
 of OpenAI's `EnergyOptimizer.lean`, lines 62–109, with `a ≤ 1/2` and the coarse
 `4 * supportDim²` coefficient from `re_inner_sub_le_of_max`. The source permits
 `a ≤ 1` with the sharp nearest-neighbor coefficient. See
-`docs/paper-gaps/oai26_zero_floor_energy_scope.tex`; removal requires a sharp
-positive-floor maximizing-family estimate before applying the same compact limit. -/
+`docs/paper-gaps/oai26_zero_floor_energy_scope.tex`. The sharp absolute estimate below
+removes these two restrictions while leaving this statement unchanged. -/
 theorem exists_max_feasible_chain_zero_floor_energy (D : ℕ → Finset V)
     (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
     (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha2 : ∀ j, a j ≤ 1 / 2)
@@ -284,8 +289,8 @@ excitation-energy bound. Normalization occurs only after positivity of the outpu
 **Scope restriction (weights and coefficient):** This consequence retains the
 `a ≤ 1/2` and coarse dimension coefficient of the homogeneous theorem, rather than
 OpenAI's full `EnergyOptimizer.lean`, lines 62–109, conclusion. See
-`docs/paper-gaps/oai26_zero_floor_energy_scope.tex` for the sharp positive-floor
-estimate and source-representation comparison still required. -/
+`docs/paper-gaps/oai26_zero_floor_energy_scope.tex` for the sharp estimate below
+and the source-representation comparison still required. -/
 theorem exists_max_feasible_chain_zero_floor_normalized_energy (D : ℕ → Finset V)
     (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
     (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha2 : ∀ j, a j ≤ 1 / 2)
@@ -313,5 +318,161 @@ theorem exists_max_feasible_chain_zero_floor_normalized_energy (D : ℕ → Fins
   · rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm,
       inv_mul_cancel₀ hpos.ne']
   · exact (normalized_energy_le_iff _ (norm_pos_iff.mp hpos) _ _).mpr henergy
+
+/-- Absolute normalized and homogeneous energy bounds agree at a nonzero vector. -/
+private theorem normalized_abs_energy_le_iff {ι : Type*} [Fintype ι] [DecidableEq ι]
+    (H : Matrix ι ι ℂ) {ψ : EuclideanSpace ℂ ι} (hψ : ψ ≠ 0) (E₀ B : ℝ) :
+    |(⟪((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ,
+        toEuclideanLin H (((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ)⟫_ℂ).re - E₀| ≤ B ↔
+      |(⟪ψ, toEuclideanLin H ψ⟫_ℂ).re - E₀ * ‖ψ‖ ^ 2| ≤ B * ‖ψ‖ ^ 2 := by
+  have hr : ‖ψ‖ ≠ 0 := norm_ne_zero_iff.mpr hψ
+  have hpair : (⟪((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ,
+        toEuclideanLin H (((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ)⟫_ℂ).re =
+      ‖ψ‖⁻¹ ^ 2 * (⟪ψ, toEuclideanLin H ψ⟫_ℂ).re := by
+    simp [map_smul, inner_smul_left, inner_smul_right, Complex.mul_re, pow_two]
+    ring
+  have hscale : ‖ψ‖⁻¹ ^ 2 *
+      ((⟪ψ, toEuclideanLin H ψ⟫_ℂ).re - E₀ * ‖ψ‖ ^ 2) =
+      ‖ψ‖⁻¹ ^ 2 * (⟪ψ, toEuclideanLin H ψ⟫_ℂ).re - E₀ := by
+    have hi : ‖ψ‖⁻¹ ^ 2 * ‖ψ‖ ^ 2 = 1 := by field_simp [hr]
+    calc
+      _ = ‖ψ‖⁻¹ ^ 2 * (⟪ψ, toEuclideanLin H ψ⟫_ℂ).re -
+          E₀ * (‖ψ‖⁻¹ ^ 2 * ‖ψ‖ ^ 2) := by ring
+      _ = _ := by rw [hi, mul_one]
+  rw [hpair, ← hscale, abs_mul, abs_of_nonneg (sq_nonneg ‖ψ‖⁻¹)]
+  constructor
+  · intro h
+    have hmul := mul_le_mul_of_nonneg_left h (sq_nonneg ‖ψ‖)
+    have hi : ‖ψ‖ ^ 2 * ‖ψ‖⁻¹ ^ 2 = 1 := by field_simp [hr]
+    rw [← mul_assoc, hi, one_mul] at hmul
+    simpa only [mul_comm] using hmul
+  · intro h
+    have hmul := mul_le_mul_of_nonneg_left h (sq_nonneg ‖ψ‖⁻¹)
+    have hi : ‖ψ‖⁻¹ ^ 2 * ‖ψ‖ ^ 2 = 1 := by field_simp [hr]
+    have hright : ‖ψ‖⁻¹ ^ 2 * (B * ‖ψ‖ ^ 2) = B := by
+      calc
+        _ = B * (‖ψ‖⁻¹ ^ 2 * ‖ψ‖ ^ 2) := by ring
+        _ = B := by rw [hi, mul_one]
+    rwa [hright] at hmul
+
+/-- Some zero-floor norm maximizer retains the sharp absolute energy bound for
+`0 < a_j ≤ 1`, with the actual inside-support dimensions. The same family is globally
+maximizing, has nonzero output, and obeys the homogeneous estimate. The input need
+only be a nonzero eigenvector; the filters may be singular.
+
+This sharp continuation of the compact-limit argument above uses the positive-floor
+bound for both `H` and `-H` before taking the limit. The source representation and
+geometric-producer comparison remain separate; see
+`docs/paper-gaps/oai26_zero_floor_energy_scope.tex`. -/
+theorem exists_max_feasible_chain_zero_floor_abs_energy_sharp (D : ℕ → Finset V)
+    (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
+    (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha1 : ∀ j, a j ≤ 1)
+    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i))
+    (hherm : ∀ i, (h i).IsHermitian) {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m,
+      ∀ j' ∈ splitIndices (S i) D m, j = j')
+    {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
+    ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
+      (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+        (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
+        ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
+          ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧
+      let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
+      0 < ‖ψ‖ ∧ |(⟪ψ, toEuclideanLin (∑ i, h i) ψ⟫_ℂ).re - E₀ * ‖ψ‖ ^ 2| ≤
+        (∑ j : Fin m, a j ^ 2 *
+          ∑ i ∈ crossingTerms S (D j),
+            Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀) * ‖ψ‖ ^ 2 := by
+  classical
+  obtain ⟨σ₀, -⟩ : ∃ σ : SiteConfig n, Ω σ ≠ 0 := by
+    by_contra hcon
+    push Not at hcon
+    exact hΩ (by ext σ; exact hcon σ)
+  have hne (j : Fin m) : Nonempty (RegionConfig n (D j)) := ⟨fun v ↦ σ₀ v⟩
+  let B := ∑ j : Fin m, a j ^ 2 *
+    ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀
+  let Ψ := fun K : (j : Fin m) →
+      Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ ↦
+    toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
+  have hΨ : Continuous Ψ := by
+    simp_rw [Ψ, liftProd_chainList_eq]
+    have hp : Continuous fun K : (j : Fin m) →
+        Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ ↦
+        ((((List.finRange m).filter fun _ ↦ decide True).reverse).map
+          fun j : Fin m ↦ localLift (D j) (K j)).prod :=
+      continuous_list_prod _ fun j _ ↦
+        ((localLiftₗ (D j)).continuous_of_finiteDimensional).comp (continuous_apply j)
+    simp only [toLpLin_apply]
+    exact (PiLp.continuous_toLp 2 _).comp (hp.matrix_mulVec continuous_const)
+  let T := {K | |(⟪Ψ K, toEuclideanLin (∑ i, h i) (Ψ K)⟫_ℂ).re -
+    E₀ * ‖Ψ K‖ ^ 2| ≤ B * ‖Ψ K‖ ^ 2}
+  have hT : IsClosed T := by
+    apply isClosed_le
+    · exact ((Complex.continuous_re.comp
+        (hΨ.inner ((toEuclideanLin (∑ i, h i)).continuous_of_finiteDimensional.comp hΨ))).sub
+          (continuous_const.mul (hΨ.norm.pow 2))).abs
+    · exact continuous_const.mul (hΨ.norm.pow 2)
+  have hpos (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) :
+      ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+        (∀ j : Fin m,
+          IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K j)) ∧
+        (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+          (∀ j : Fin m,
+            IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K' j)) →
+          ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
+            ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧ K ∈ T := by
+    let f : Fin m → ℝ := fun j ↦ δ / Fintype.card (RegionConfig n (D j))
+    have hd (j : Fin m) : (0 : ℝ) < Fintype.card (RegionConfig n (D j)) := by
+      let := hne j
+      exact_mod_cast Fintype.card_pos
+    have hf (j : Fin m) : 0 < f j := div_pos hδ0 (hd j)
+    have hcard (j : Fin m) : Fintype.card (RegionConfig n (D j)) * f j < 1 := by
+      dsimp [f]
+      rwa [mul_div_cancel₀ _ (hd j).ne']
+    obtain ⟨K, hK, hmax⟩ := exists_max_feasible_chain D f a (fun j ↦ (hf j).le)
+      (fun j ↦ (ha j).le) hne (fun j ↦ (hcard j).le) Ω
+    refine ⟨K, hK, hmax, ?_⟩
+    exact (normalized_abs_energy_le_iff (∑ i, h i)
+      (toEuclideanLin_liftProd_chainList_ne_zero D hf hK (fun _ ↦ True) hΩ) E₀ B).mp
+      (abs_re_inner_sub_le_of_max_sharp D hD f a hf ha ha1 hcard K hK hΩ σ₀ hmax
+        h S hsupp hherm hnorm hsingle heig)
+  obtain ⟨K, hK, hmax, henergy⟩ := exists_max_feasible_chain_mem_of_pos_floor D a
+    (fun j ↦ (ha j).le) hne Ω T hT hpos
+  exact ⟨K, hK, hmax, norm_liftProd_pos_of_zero_floor_max D a hne hΩ hmax, henergy⟩
+
+/-- A sharp zero-floor maximizer has unit normalized output and absolute energy
+error bounded by the inside-support budget, for `0 < a_j ≤ 1`. All conclusions concern
+the same family. No ground-state or gap hypothesis is required. This is the generic
+analytic conclusion corresponding to OpenAI's `EnergyOptimizer.lean`, lines 62–109;
+the source-filter and physical-grid representation comparison is not asserted. -/
+theorem exists_max_feasible_chain_zero_floor_normalized_abs_energy_sharp (D : ℕ → Finset V)
+    (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
+    (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha1 : ∀ j, a j ≤ 1)
+    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i))
+    (hherm : ∀ i, (h i).IsHermitian) {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m,
+      ∀ j' ∈ splitIndices (S i) D m, j = j')
+    {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
+    ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
+      (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+        (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
+        ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
+          ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧
+      let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
+      let φ := ((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ
+      0 < ‖ψ‖ ∧ ‖φ‖ = 1 ∧ |(⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀| ≤
+        ∑ j : Fin m, a j ^ 2 *
+          ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀ := by
+  obtain ⟨K, hK, hmax, hpos, henergy⟩ := exists_max_feasible_chain_zero_floor_abs_energy_sharp
+    D hD a ha ha1 hΩ h S hsupp hherm hnorm hsingle heig
+  refine ⟨K, hK, hmax, hpos, ?_, ?_⟩
+  · rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm,
+      inv_mul_cancel₀ hpos.ne']
+  · exact (normalized_abs_energy_le_iff _ (norm_pos_iff.mp hpos) _ _).mpr henergy
 
 end Entropy
