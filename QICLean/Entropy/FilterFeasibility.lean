@@ -82,7 +82,7 @@ theorem isFeasibleFilter_zero_iff {a : ℝ} (ha : 0 < a) {K : Matrix m m ℂ} :
     · intro i
       exact Real.rpow_nonneg (hK.eigenvalues_nonneg i) _
     · rw [hK.isHermitian.cfc_eq, hK.isHermitian.trace_cfc_eq_sum,
-        ← Complex.ofReal_sum] at htr
+        RCLike.ofReal_eq_complex_ofReal, ← Complex.ofReal_sum] at htr
       exact_mod_cast htr
     · have hp (i : m) : (hK.isHermitian.eigenvalues i ^ (2 / a)) ^ (a / 2) =
           hK.isHermitian.eigenvalues i := by
@@ -97,7 +97,7 @@ theorem isFeasibleFilter_zero_iff_eigenvalues {a : ℝ} (ha : 0 < a)
     {K : Matrix m m ℂ} (hK : K.PosSemidef) :
     IsFeasibleFilter 0 a K ↔ ∑ i, hK.isHermitian.eigenvalues i ^ (2 / a) = 1 := by
   rw [isFeasibleFilter_zero_iff ha, and_iff_right hK, hK.isHermitian.cfc_eq,
-    hK.isHermitian.trace_cfc_eq_sum, ← Complex.ofReal_sum]
+    hK.isHermitian.trace_cfc_eq_sum, RCLike.ofReal_eq_complex_ofReal, ← Complex.ofReal_sum]
   rw [← Complex.ofReal_one, Complex.ofReal_inj]
 
 /-- Reindexing the matrix and its simplex witness preserves feasibility for
@@ -115,6 +115,7 @@ theorem IsFeasibleFilter.reindex {f a : ℝ} {K : Matrix m m ℂ}
     rw [← submatrix_mul_equiv _ _ e.symm e.symm e.symm,
       ← submatrix_mul_equiv _ _ e.symm e.symm e.symm,
       submatrix_diagonal_equiv, conjTranspose_submatrix]
+    rfl
 
 /-- Feasibility depends only on the matrix up to an equivalence of its finite
 index set. No positivity or nonemptiness assumption is needed. -/
