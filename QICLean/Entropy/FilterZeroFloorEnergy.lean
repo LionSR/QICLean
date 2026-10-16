@@ -57,15 +57,17 @@ theorem exists_max_feasible_chain_mem_of_pos_floor (D : ℕ → Finset V)
     (hT : IsClosed T)
     (hpos : ∀ δ : ℝ, 0 < δ → δ < 1 →
       ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-        (∀ j, IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K j)) ∧
+        (∀ j : Fin m,
+          IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K j)) ∧
         (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-          (∀ j, IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K' j)) →
+          (∀ j : Fin m,
+            IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K' j)) →
           ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
             ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧ K ∈ T) :
     ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-      (∀ j, IsFeasibleFilter 0 (a j) (K j)) ∧
+      (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
       (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-        (∀ j, IsFeasibleFilter 0 (a j) (K' j)) →
+        (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧ K ∈ T := by
   classical
@@ -79,8 +81,8 @@ theorem exists_max_feasible_chain_mem_of_pos_floor (D : ℕ → Finset V)
     dsimp [δ]
     linarith
   have hδ : Tendsto δ atTop (𝓝 0) := by
-    simpa [δ] using
-      (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (1 / 2)
+    simpa only [δ, one_div, mul_zero] using
+      (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (1 / 2 : ℝ)
   choose K hK hmax hKT using fun k ↦ hpos (δ k) (hδ0 k) (hδ1 k)
   let S := Set.pi Set.univ fun j : Fin m ↦
     {L : Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ |
@@ -129,14 +131,14 @@ lemma norm_liftProd_pos_of_zero_floor_max (D : ℕ → Finset V) (a : Fin m → 
     {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0)
     {K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ}
     (hmax : ∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-      (∀ j, IsFeasibleFilter 0 (a j) (K' j)) →
+      (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
       ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
         ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) :
     0 < ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖ := by
   classical
   let f : Fin m → ℝ := fun j ↦ 1 / (2 * Fintype.card (RegionConfig n (D j)))
   have hd (j : Fin m) : (0 : ℝ) < Fintype.card (RegionConfig n (D j)) := by
-    letI := hne j
+    let := hne j
     exact_mod_cast Fintype.card_pos
   have hf (j : Fin m) : 0 < f j := by
     dsimp [f]
@@ -151,7 +153,7 @@ lemma norm_liftProd_pos_of_zero_floor_max (D : ℕ → Finset V) (a : Fin m → 
   choose U hU using fun j : Fin m ↦ show
       ∃ U : Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
         IsFeasibleFilter (f j) (a j) U from by
-    letI := hne j
+    let := hne j
     exact ⟨_, isFeasibleFilter_uniform (a := a j) (hcard j)⟩
   have hU0 := toEuclideanLin_liftProd_chainList_ne_zero D hf hU (fun _ ↦ True) hΩ
   exact (norm_pos_iff.mpr hU0).trans_le (hmax U fun j ↦ (hU j).mono_floor (hf j).le)
@@ -167,7 +169,7 @@ private theorem normalized_energy_le_iff {ι : Type*} [Fintype ι] [DecidableEq 
         toEuclideanLin H (((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ)⟫_ℂ).re =
       ‖ψ‖⁻¹ ^ 2 * (⟪ψ, toEuclideanLin H ψ⟫_ℂ).re := by
     simp [map_smul, inner_smul_left, inner_smul_right, Complex.mul_re, pow_two]
-    <;> ring
+    ring
   rw [hpair]
   constructor
   · intro h
@@ -210,9 +212,9 @@ theorem exists_max_feasible_chain_zero_floor_energy (D : ℕ → Finset V)
       ∀ j' ∈ splitIndices (S i) D m, j = j')
     {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
     ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-      (∀ j, IsFeasibleFilter 0 (a j) (K j)) ∧
+      (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
       (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-        (∀ j, IsFeasibleFilter 0 (a j) (K' j)) →
+        (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧
       let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
@@ -222,7 +224,7 @@ theorem exists_max_feasible_chain_zero_floor_energy (D : ℕ → Finset V)
   classical
   obtain ⟨σ₀, -⟩ : ∃ σ : SiteConfig n, Ω σ ≠ 0 := by
     by_contra hcon
-    push_neg at hcon
+    push Not at hcon
     exact hΩ (by ext σ; exact hcon σ)
   have hne (j : Fin m) : Nonempty (RegionConfig n (D j)) := ⟨fun v ↦ σ₀ v⟩
   let B := ∑ j : Fin m, 4 * a j ^ 2 *
@@ -250,14 +252,16 @@ theorem exists_max_feasible_chain_zero_floor_energy (D : ℕ → Finset V)
     · exact continuous_const.mul (hΨ.norm.pow 2)
   have hpos (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) :
       ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-        (∀ j, IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K j)) ∧
+        (∀ j : Fin m,
+          IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K j)) ∧
         (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-          (∀ j, IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K' j)) →
+          (∀ j : Fin m,
+            IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K' j)) →
           ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
             ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧ K ∈ T := by
     let f : Fin m → ℝ := fun j ↦ δ / Fintype.card (RegionConfig n (D j))
     have hd (j : Fin m) : (0 : ℝ) < Fintype.card (RegionConfig n (D j)) := by
-      letI := hne j
+      let := hne j
       exact_mod_cast Fintype.card_pos
     have hf (j : Fin m) : 0 < f j := div_pos hδ0 (hd j)
     have hcard (j : Fin m) : Fintype.card (RegionConfig n (D j)) * f j < 1 := by
@@ -293,9 +297,9 @@ theorem exists_max_feasible_chain_zero_floor_normalized_energy (D : ℕ → Fins
       ∀ j' ∈ splitIndices (S i) D m, j = j')
     {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
     ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-      (∀ j, IsFeasibleFilter 0 (a j) (K j)) ∧
+      (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
       (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
-        (∀ j, IsFeasibleFilter 0 (a j) (K' j)) →
+        (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧
       let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
