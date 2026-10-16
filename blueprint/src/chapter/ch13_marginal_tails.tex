@@ -1019,6 +1019,7 @@ edges are separate steps in the patch argument.
     \label{thm:filter_max_sharp_energy}
     \lean{Entropy.re_inner_sub_le_of_max_sharp,
         Entropy.abs_re_inner_sub_le_of_max_sharp}
+    \leanok
     \uses{prop:stationary_filter_clipped,lem:local_lift}
     Let $D_0\subseteq\cdots\subseteq D_{m-1}$ be regions of a finite
     system, let $0<a_j\le1$, and let $f_j>0$ with
@@ -1038,7 +1039,7 @@ edges are separate steps in the patch argument.
     $|\operatorname{Re}\langle\phi,H\phi\rangle-E_0|
     \le B_{\mathrm{in}}$, and hence also the corresponding one-sided bound.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:all_filters_clipped,prop:stationary_filter_clipped,
         prop:filter_maximizer,thm:chain_energy,thm:patch_sharp_energy}
     Positive floors make the output nonzero. Clipping and commutation
@@ -1056,6 +1057,7 @@ edges are separate steps in the patch argument.
     \label{thm:filter_zero_floor_sharp_energy}
     \lean{Entropy.exists_max_feasible_chain_zero_floor_abs_energy_sharp,
         Entropy.exists_max_feasible_chain_zero_floor_normalized_abs_energy_sharp}
+    \leanok
     \uses{prop:stationary_filter_clipped,lem:local_lift}
     Let $D_0\subseteq\cdots\subseteq D_{m-1}$ and $0<a_j\le1$.
     Suppose $\Omega\ne0$, $H\Omega=E_0\Omega$, and $H=\sum_i h_i$,
@@ -1075,7 +1077,7 @@ edges are separate steps in the patch argument.
     $|\operatorname{Re}\langle\phi,H\phi\rangle-E_0|
     \le B_{\mathrm{in}}$. The filters may be singular.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:filter_max_sharp_energy,thm:filter_zero_floor_closed_max,
         lem:filter_zero_floor_nonzero,prop:filter_maximizer}
     At each positive floor, Theorem~\ref{thm:filter_max_sharp_energy}
