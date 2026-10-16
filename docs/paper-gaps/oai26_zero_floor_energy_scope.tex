@@ -1,0 +1,92 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb,xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{The weight range and coefficient for zero-floor maximizing filters}
+\author{}
+\date{2026-10-16}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+\section{Source assertion}
+
+The companion development of Ref.~\cite{OpenAI2026PEPSFiltersEnergy}
+constructs a norm-maximizing product of nested filters on a square grid.
+For a local dimension $q$, interaction bound $J$, normalized unique ground
+vector $\Omega$ of energy $E_0$, and full-system gap $\Delta$, it permits
+weights $0<a_j\le1$. Each edge crosses at most one filtering region $D_j$.
+If $b_j$ counts the edges crossing $D_j$, the selected normalized output
+$\phi$ satisfies
+\begin{align}
+  |\langle\phi,H\phi\rangle-E_0|
+    &\le q^2J\sum_j b_j a_j^2,
+    \label{eq:zero_floor_source_energy}\\
+  \Delta(1-|\langle\Omega,\phi\rangle|^2)
+    &\le q^2J\sum_j b_j a_j^2.
+    \label{eq:zero_floor_source_overlap}
+\end{align}
+The source first takes a compact limit of regularized maximizing families,
+proves that the limiting maximal output norm is positive, and then passes
+the energy and overlap bounds through normalization.\footnote{Source
+\leanid{exists_maximizer_energy}, lines 62--109 of
+\href{https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/lean/OAI/MathematicalPhysics/PEPSFilters/EnergyOptimizer.lean}{EnergyOptimizer.lean}.}
+
+\section{The restricted estimate}
+
+The present result applies to arbitrary finite sites and supported
+Hermitian terms $H=\sum_i h_i$, with $\|h_i\|\le c_0$ and
+$H\Omega=E_0\Omega$, where $\Omega\ne0$. It assumes nested regions,
+$0<a_j\le1/2$, and that each support $S_i$ is split by at most one region.
+Write $d_i=\dim\mathcal H_{S_i}$ and let $C_j$ be the terms split by $D_j$.
+One floor-zero norm maximizer has output $\psi\ne0$ and obeys
+\begin{align}
+ B&=\sum_j4a_j^2\sum_{i\in C_j}d_i^2c_0,
+   \label{eq:zero_floor_coarse_constant}\\
+ \operatorname{Re}\langle\psi,H\psi\rangle-E_0\|\psi\|^2
+   &\le B\|\psi\|^2.
+   \label{eq:zero_floor_homogeneous}
+\end{align}
+Consequently its unit normalized output has energy excess at most $B$.
+A full-system gap yields an overlap bound for the same witness when
+$\Omega$ is normalized. The energy assertion alone does not assume that
+$E_0$ is the ground energy, so it states an upper bound rather than an
+absolute-value estimate.\footnote{Formal declarations
+\leanid{Entropy.exists_max_feasible_chain_zero_floor_energy} and
+\leanid{Entropy.exists_max_feasible_chain_zero_floor_normalized_energy}
+in \doclink{QICLean/Entropy/FilterZeroFloorEnergy}.}
+
+Both the weight restriction and the coefficient in
+(\ref{eq:zero_floor_coarse_constant}) enter before taking the limit:
+they are the hypotheses and conclusion of the available positive-floor
+maximizing-family energy estimate. The compactness argument introduces
+neither restriction. It instead passes the closed inequality
+(\ref{eq:zero_floor_homogeneous}) to a limiting maximizer. A fixed uniform
+positive-floor competitor shows that this maximizer has nonzero output,
+so division by its squared norm is legitimate.\footnote{The positive-floor
+provider is \leanid{Entropy.re_inner_sub_le_of_max} in
+\doclink{QICLean/Entropy/FilterChainEnergy}.}
+
+\section{Remaining comparison}
+
+For two-site interactions of local dimension $q$, using the full support
+dimension in (\ref{eq:zero_floor_coarse_constant}) gives $4q^4$, not the
+$q^2$ in (\ref{eq:zero_floor_source_energy}). Thus the zero-floor result
+does not establish (\ref{eq:zero_floor_source_energy}) throughout the
+source's weight range, nor its complete physical conclusion.
+
+To remove this restriction, derive a maximizing-family positive-floor
+estimate with weights at most one and the inside-support dimension from
+the existing sharp chain inequality. Then use the same closed-condition
+limit theorem, identify the grid terms and feasible filters with the source
+representations, and apply the ground-state lower bound and full-system gap.
+The geometric producer additionally needs its uniform collar, weight and
+representation arguments.\footnote{Selective-port comparison remains
+tracked in \href{https://github.com/LionSR/TNLean/issues/8741}{TNLean issue 8741}.}
+The verdict is a scope restriction of the companion-source comparison,
+not an error in its assertion. The restricted theorem is useful on its
+stated domain; the source comparison remains open.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

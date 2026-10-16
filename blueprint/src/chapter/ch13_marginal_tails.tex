@@ -696,6 +696,85 @@ depend on the common values there.
     norm is continuous in the filters.
 \end{proof}
 
+
+\begin{theorem}[Closed conditions for maximizing filters]
+    \label{thm:filter_zero_floor_closed_max}
+    \lean{Entropy.exists_max_feasible_chain_mem_of_pos_floor}
+    \uses{prop:stationary_filter_clipped}
+    Let $D_0,\ldots,D_{m-1}$ be regions of a finite system, with
+    nonempty regional configuration spaces and weights $a_j\ge0$.
+    Fix an input vector $\Omega$. Suppose a closed set of filter families
+    contains a norm-maximizing family at every floor $\delta/d_j$,
+    where $0<\delta<1$ and $d_j=\dim\mathcal H_{D_j}$.
+    Then it contains a maximizing family at floor zero.
+\end{theorem}
+\begin{proof}
+    \uses{prop:filter_maximizer,prop:zero_floor_comparison,thm:buffer_discount}
+    Positive-floor feasible families belong to the compact set of
+    zero-floor feasible families. Choose $\delta_k=1/(2(k+1))$ and a
+    convergent subsequence of the corresponding maximizers. Closedness
+    preserves the stated condition. Every family at a fixed positive
+    floor is admissible along a sufficiently late part of the subsequence,
+    so continuity bounds its output norm by the limiting norm.
+    Approximation by positive-floor families gives the same comparison
+    at floor zero.
+\end{proof}
+
+\begin{lemma}[Nonzero output from norm dominance]
+    \label{lem:filter_zero_floor_nonzero}
+    \lean{Entropy.norm_liftProd_pos_of_zero_floor_max}
+    \uses{prop:stationary_filter_clipped}
+    Let $D_0,\ldots,D_{m-1}$ be regions of a finite system with nonempty
+    regional configuration spaces, and let $a_j$ be arbitrary real weights.
+    If $\Omega\ne0$ and a filter family has output norm at least that of
+    every floor-zero feasible family, then its output is nonzero.
+    The family being compared need not itself be feasible.
+\end{lemma}
+\begin{proof}
+    \uses{prop:filter_maximizer,thm:buffer_discount}
+    The uniform family is feasible at floors $1/(2d_j)$, where
+    $d_j=\dim\mathcal H_{D_j}$, and its product is invertible.
+    Its output on $\Omega$ has positive norm, which is a lower bound
+    for the output norm of the given family.
+\end{proof}
+
+\begin{theorem}[Excitation energy without a positive floor]
+    \label{thm:filter_zero_floor_energy}
+    \lean{Entropy.exists_max_feasible_chain_zero_floor_energy,
+        Entropy.exists_max_feasible_chain_zero_floor_normalized_energy}
+    \uses{lem:local_lift,prop:stationary_filter_clipped}
+    Let $D_0\subseteq\cdots\subseteq D_{m-1}$ be regions of a finite system,
+    and let $0<a_j\le1/2$. Suppose $\Omega\ne0$ and $H\Omega=E_0\Omega$,
+    where $H=\sum_i h_i$, each $h_i$ is Hermitian, supported on $S_i$,
+    and $\lVert h_i\rVert\le c_0$. Assume each $S_i$ is split by at most
+    one $D_j$. Put
+    \begin{align}
+        B&=\sum_j4a_j^2\sum_{i:\,D_j\text{ splits }S_i}
+            (\dim\mathcal H_{S_i})^2c_0.
+    \end{align}
+    There is a floor-zero feasible family that maximizes the output norm
+    and has nonzero output $\psi=K_{m-1}\cdots K_0\Omega$ satisfying
+    \begin{align}
+        \operatorname{Re}\langle\psi,H\psi\rangle-E_0\lVert\psi\rVert^2
+        &\le B\lVert\psi\rVert^2.
+        \label{eq:filter_zero_floor_energy}
+    \end{align}
+    Thus $\phi=\psi/\lVert\psi\rVert$ has unit norm and
+    $\operatorname{Re}\langle\phi,H\phi\rangle-E_0\le B$.
+    The maximizing filters may be singular.
+\end{theorem}
+\begin{proof}
+    \uses{thm:chain_energy,thm:filter_zero_floor_closed_max,
+        lem:filter_zero_floor_nonzero,prop:filter_maximizer}
+    At every positive floor, the maximizing-family energy estimate
+    implies (\ref{eq:filter_zero_floor_energy}). Its two sides are
+    continuous functions of the filter matrices, so it defines a closed
+    set even at zero output. Theorem~\ref{thm:filter_zero_floor_closed_max}
+    supplies a maximizing family in that set.
+    Lemma~\ref{lem:filter_zero_floor_nonzero} makes its output nonzero.
+    Divide by its squared norm.
+\end{proof}
+
 \begin{lemma}[Trial filters on a disjoint union]
     \label{lem:trial_filters}
     \lean{Entropy.localLift_apply, Entropy.regionUnionEquiv, Entropy.localLift_union_kronecker,
