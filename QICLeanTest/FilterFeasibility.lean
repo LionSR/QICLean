@@ -36,7 +36,7 @@ example {a : ℝ} (ha : 0 < a) {K : Matrix (Fin 2) (Fin 2) ℂ}
 -- There is no simplex witness on the empty index set, at any floor or weight.
 example (f a : ℝ) (K : Matrix (Fin 0) (Fin 0) ℂ) : ¬ IsFeasibleFilter f a K := by
   rintro ⟨_, y, _, _, hs, _⟩
-  simpa using hs
+  simp at hs
 
 -- The full equivalence itself has no hidden nonemptiness premise.
 example {a : ℝ} (ha : 0 < a) (K : Matrix (Fin 0) (Fin 0) ℂ) :
@@ -66,9 +66,7 @@ example : IsFeasibleFilter 0 0 (1 : Matrix (Fin 2) (Fin 2) ℂ) ∧
   · have htr :
         (cfc (fun x : ℝ ↦ x ^ (2 / (0 : ℝ)))
           (1 : Matrix (Fin 2) (Fin 2) ℂ)).trace = 2 := by
-      simpa [Fin.sum_univ_two] using
-        (trace_cfc_conj_diagonal (m := Fin 2) (U := 1) (by simp)
-          (fun _ ↦ 1) (fun x : ℝ ↦ x ^ (2 / (0 : ℝ))))
+      simp [Fin.sum_univ_two]
     rw [htr]
     norm_num
 

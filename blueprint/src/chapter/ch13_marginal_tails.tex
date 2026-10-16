@@ -507,10 +507,10 @@ depend on the common values there.
     Lemma~\ref{lem:filter_clipping} applies with $\sum q=\lVert\psi\rVert^2>0$.
 \end{proof}
 
-%% Completion marks for the following entries await hosted validation.
 \begin{theorem}[Positivity of feasible filters]
     \label{thm:feasible_filter_posSemidef}
     \lean{Entropy.IsFeasibleFilter.posSemidef}
+    \leanok
     \uses{prop:stationary_filter_clipped}
     For real $f$ and $a$, call a matrix $K$ feasible at floor $f$ and
     weight $a$ if some unitary $U$ and weights $y_i\ge f$ with
@@ -523,10 +523,12 @@ depend on the common values there.
     weight $a$.
 \end{theorem}
 \begin{proof}
+    \leanok
     Every $y_i$ is nonnegative, so every $y_i^{a/2}$ is nonnegative.
     Unitary conjugation preserves positive semidefiniteness.
 \end{proof}
 
+%% Completion marks for this imported support entry await declaration checking.
 \begin{theorem}[Spectral decomposition and trace]
     \label{thm:hermitian_spectral_trace}
     \lean{Matrix.IsHermitian.trace_cfc_eq_sum,
@@ -549,6 +551,7 @@ depend on the common values there.
     \lean{Entropy.IsFeasibleFilter.trace_cfc_rpow,
         Entropy.isFeasibleFilter_zero_iff,
         Entropy.isFeasibleFilter_zero_iff_eigenvalues}
+    \leanok
     \uses{prop:stationary_filter_clipped}
     Let $K$ be a complex matrix on a finite index set and let $a>0$.
     Then $K$ is feasible at floor zero and weight $a$ if and only if
@@ -559,6 +562,7 @@ depend on the common values there.
     be singular.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:feasible_filter_posSemidef, prop:stationary_filter_clipped,
         thm:hermitian_spectral_trace}
     For a representation in~(\ref{eq:feasible_filter_coordinates}) with
@@ -587,12 +591,14 @@ has trace two.
     \label{thm:feasible_filter_reindex}
     \lean{Entropy.IsFeasibleFilter.reindex,
         Entropy.isFeasibleFilter_reindex_iff}
+    \leanok
     \uses{prop:stationary_filter_clipped}
     Let $e:I\to J$ be a bijection of finite index sets and let $f,a$ be
     arbitrary real numbers. Reindexing both matrix indices by $e$
     preserves feasibility at floor $f$ and weight $a$ in both directions.
 \end{theorem}
 \begin{proof}
+    \leanok
     Transport $U$ by the same row and column bijection and replace the
     weights by $y\circ e^{-1}$. Matrix multiplication, adjoints, the
     identity, and the sum of the weights are preserved. The inverse
