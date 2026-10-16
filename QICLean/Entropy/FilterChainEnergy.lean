@@ -26,6 +26,8 @@ energy estimate. Since `K H K⁻¹ φ = E₀ φ` whenever `H Ω = E₀ Ω`, summ
 * `Entropy.abs_re_inner_sub_chain_conj_le`: the estimate for one term of the Hamiltonian.
 * `Entropy.re_inner_sub_le_of_chain`: the excitation energy of a stationary nested product.
 * `Entropy.re_inner_sub_le_of_max`: the excitation energy of the optimal nested product.
+* `Entropy.re_inner_sub_le_of_max_sharp`: the full-range inside-support estimate.
+* `Entropy.abs_re_inner_sub_le_of_max_sharp`: the absolute estimate for the same maximizer.
 
 ## References
 
@@ -562,5 +564,99 @@ theorem re_inner_sub_le_of_max (D : ℕ → Finset V) (hD : ∀ i j : Fin m, i �
   exact re_inner_sub_le_of_chain D hD K hunit hφ a ha2
     (fun j ↦ clipped_smul hc (forall_clipped_of_max D hD f a hf ha hcard K hK Ω σ₀ hmax hψ j))
     h S hsupp hherm σ₀ hnorm hsingle (toEuclideanLin_conj_apply_eq heig hinv _)
+
+/-- A positive-floor norm-maximizing family obeys the inside-support energy estimate
+for the full range `0 < a_j ≤ 1`. This applies the sharp stationary-chain theorem to
+the existing clipping conclusion, without changing the compatibility theorem above.
+Compare OpenAI's `EnergyOptimizer.lean`, lines 29–60, at revision
+`adc7f1241b42e322a6451854ab7e4b4c146bf78a`; this estimate is independently written
+using QICLean's positive-floor feasible sets. -/
+theorem re_inner_sub_le_of_max_sharp (D : ℕ → Finset V) (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
+    (f a : Fin m → ℝ) (hf : ∀ j, 0 < f j) (ha : ∀ j, 0 < a j) (ha1 : ∀ j, a j ≤ 1)
+    (hcard : ∀ j : Fin m, Fintype.card (RegionConfig n (D j)) * f j < 1)
+    (K : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ)
+    (hK : ∀ j, IsFeasibleFilter (f j) (a j) (K j)) {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    (hΩ : Ω ≠ 0) (σ₀ : SiteConfig n)
+    (hmax : ∀ K' : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ,
+      (∀ j, IsFeasibleFilter (f j) (a j) (K' j)) →
+      ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
+        ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i)) (hherm : ∀ i, (h i).IsHermitian)
+    {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m, ∀ j' ∈ splitIndices (S i) D m, j = j')
+    {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
+    (⟪((‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖⁻¹ : ℝ) : ℂ) •
+        toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω,
+      toEuclideanLin (∑ i, h i)
+        (((‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖⁻¹ : ℝ) : ℂ) •
+          toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω)⟫_ℂ).re - E₀ ≤
+      ∑ j : Fin m, a j ^ 2 *
+        ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀ := by
+  set ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
+  have hψ : ψ ≠ 0 := toEuclideanLin_liftProd_chainList_ne_zero D hf hK _ hΩ
+  have hunit : ∀ i, IsUnit (K i).det := fun i ↦
+    (Matrix.isUnit_iff_isUnit_det _).mp ((hK i).posDef (hf i)).isUnit
+  have hc : (((‖ψ‖⁻¹ : ℝ)) : ℂ) ≠ 0 := by
+    rw [Complex.ofReal_ne_zero]; exact inv_ne_zero (norm_ne_zero_iff.mpr hψ)
+  have hφ : ‖(((‖ψ‖⁻¹ : ℝ)) : ℂ) • ψ‖ = 1 := by
+    rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm,
+      inv_mul_cancel₀ (norm_ne_zero_iff.mpr hψ)]
+  have hinv : liftProdInv (chainList D K fun _ ↦ True) *
+      liftProd (chainList D K fun _ ↦ True) = 1 := by
+    refine liftProdInv_mul_liftProd_of_isUnit fun p hp ↦ ?_
+    obtain ⟨i, _, rfl⟩ := List.mem_map.mp hp
+    exact hunit i
+  exact re_inner_sub_le_of_chain_sharp D hD K hunit hφ a ha1
+    (fun j ↦ clipped_smul hc (forall_clipped_of_max D hD f a hf ha hcard K hK Ω σ₀ hmax hψ j))
+    h S hsupp hherm σ₀ hnorm hsingle (toEuclideanLin_conj_apply_eq heig hinv _)
+
+/-- The same positive-floor maximizer has a two-sided sharp energy bound.
+Apply the one-sided bound to the terms `h_i` and `-h_i`; feasibility and maximality
+are unchanged. The input need only be a nonzero eigenvector, not a ground vector.
+Compare OpenAI's `EnergyOptimizer.lean`, lines 29–60, at the revision cited above. -/
+theorem abs_re_inner_sub_le_of_max_sharp (D : ℕ → Finset V) (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
+    (f a : Fin m → ℝ) (hf : ∀ j, 0 < f j) (ha : ∀ j, 0 < a j) (ha1 : ∀ j, a j ≤ 1)
+    (hcard : ∀ j : Fin m, Fintype.card (RegionConfig n (D j)) * f j < 1)
+    (K : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ)
+    (hK : ∀ j, IsFeasibleFilter (f j) (a j) (K j)) {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    (hΩ : Ω ≠ 0) (σ₀ : SiteConfig n)
+    (hmax : ∀ K' : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ,
+      (∀ j, IsFeasibleFilter (f j) (a j) (K' j)) →
+      ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
+        ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i)) (hherm : ∀ i, (h i).IsHermitian)
+    {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m, ∀ j' ∈ splitIndices (S i) D m, j = j')
+    {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
+    let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
+    let φ := ((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ
+    |(⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀| ≤
+      ∑ j : Fin m, a j ^ 2 *
+        ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀ := by
+  have hu := re_inner_sub_le_of_max_sharp D hD f a hf ha ha1 hcard K hK hΩ σ₀ hmax
+    h S hsupp hherm hnorm hsingle heig
+  have hsupp_neg (i : ι) : IsSupportedOn (-h i) (S i) := by
+    constructor
+    · intro σ τ hστ
+      change -(h i σ τ) = 0
+      rw [(hsupp i).1 σ τ hστ, neg_zero]
+    · intro σ τ σ' τ' hσ hτ hστ hστ'
+      change -(h i σ τ) = -(h i σ' τ')
+      exact congrArg Neg.neg ((hsupp i).2 σ τ σ' τ' hσ hτ hστ hστ')
+  have heig_neg : toEuclideanLin (∑ i, -h i) Ω = ((-E₀ : ℝ) : ℂ) • Ω := by
+    rw [Finset.sum_neg_distrib, map_neg, LinearMap.neg_apply, heig,
+      Complex.ofReal_neg, neg_smul]
+  have hl := re_inner_sub_le_of_max_sharp D hD f a hf ha ha1 hcard K hK hΩ σ₀ hmax
+    (fun i ↦ -h i) S hsupp_neg (fun i ↦ (hherm i).neg)
+    (fun i ↦ by simpa only [norm_neg] using hnorm i) hsingle heig_neg
+  dsimp only
+  apply abs_le.mpr
+  constructor
+  · simp only [Finset.sum_neg_distrib, map_neg, LinearMap.neg_apply,
+      inner_neg_right, Complex.neg_re, sub_neg_eq_add] at hl
+    linarith
+  · exact hu
 
 end Entropy

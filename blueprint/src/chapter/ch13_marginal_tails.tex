@@ -696,6 +696,88 @@ depend on the common values there.
     norm is continuous in the filters.
 \end{proof}
 
+
+\begin{theorem}[Closed conditions for maximizing filters]
+    \label{thm:filter_zero_floor_closed_max}
+    \lean{Entropy.exists_max_feasible_chain_mem_of_pos_floor}
+    \leanok
+    \uses{prop:stationary_filter_clipped}
+    Let $D_0,\ldots,D_{m-1}$ be regions of a finite system, with
+    nonempty regional configuration spaces and weights $a_j\ge0$.
+    Fix an input vector $\Omega$. Suppose a closed set of filter families
+    contains a norm-maximizing family at every floor $\delta/d_j$,
+    where $0<\delta<1$ and $d_j=\dim\mathcal H_{D_j}$.
+    Then it contains a maximizing family at floor zero.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{prop:filter_maximizer,prop:zero_floor_comparison,thm:buffer_discount}
+    Positive-floor feasible families belong to the compact set of
+    zero-floor feasible families. Choose $\delta_k=1/(2(k+1))$ and a
+    convergent subsequence of the corresponding maximizers. Closedness
+    preserves the stated condition. Every family at a fixed positive
+    floor is admissible along a sufficiently late part of the subsequence,
+    so continuity bounds its output norm by the limiting norm.
+    Approximation by positive-floor families gives the same comparison
+    at floor zero.
+\end{proof}
+
+\begin{lemma}[Nonzero output from norm dominance]
+    \label{lem:filter_zero_floor_nonzero}
+    \lean{Entropy.norm_liftProd_pos_of_zero_floor_max}
+    \leanok
+    \uses{prop:stationary_filter_clipped}
+    Let $D_0,\ldots,D_{m-1}$ be regions of a finite system with nonempty
+    regional configuration spaces, and let $a_j$ be arbitrary real weights.
+    If $\Omega\ne0$ and a filter family has output norm at least that of
+    every floor-zero feasible family, then its output is nonzero.
+    The family being compared need not itself be feasible.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{prop:filter_maximizer,thm:buffer_discount}
+    The uniform family is feasible at floors $1/(2d_j)$, where
+    $d_j=\dim\mathcal H_{D_j}$, and its product is invertible.
+    Its output on $\Omega$ has positive norm, which is a lower bound
+    for the output norm of the given family.
+\end{proof}
+
+\begin{theorem}[Excitation energy without a positive floor]
+    \label{thm:filter_zero_floor_energy}
+    \lean{Entropy.exists_max_feasible_chain_zero_floor_energy,
+        Entropy.exists_max_feasible_chain_zero_floor_normalized_energy}
+    \leanok
+    \uses{lem:local_lift,prop:stationary_filter_clipped}
+    Let $D_0\subseteq\cdots\subseteq D_{m-1}$ be regions of a finite system,
+    and let $0<a_j\le1/2$. Suppose $\Omega\ne0$ and $H\Omega=E_0\Omega$,
+    where $H=\sum_i h_i$, each $h_i$ is Hermitian, supported on $S_i$,
+    and $\lVert h_i\rVert\le c_0$. Assume each $S_i$ is split by at most
+    one $D_j$. Put
+    \begin{align}
+        B&=\sum_j4a_j^2\sum_{i:\,D_j\text{ splits }S_i}
+            (\dim\mathcal H_{S_i})^2c_0.
+    \end{align}
+    There is a floor-zero feasible family that maximizes the output norm
+    and has nonzero output $\psi=K_{m-1}\cdots K_0\Omega$ satisfying
+    \begin{align}
+        \operatorname{Re}\langle\psi,H\psi\rangle-E_0\lVert\psi\rVert^2
+        &\le B\lVert\psi\rVert^2.
+        \label{eq:filter_zero_floor_energy}
+    \end{align}
+    Thus $\phi=\psi/\lVert\psi\rVert$ has unit norm and
+    $\operatorname{Re}\langle\phi,H\phi\rangle-E_0\le B$.
+    The maximizing filters may be singular.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:chain_energy,thm:filter_zero_floor_closed_max,
+        lem:filter_zero_floor_nonzero,prop:filter_maximizer}
+    At every positive floor, the maximizing-family energy estimate
+    implies (\ref{eq:filter_zero_floor_energy}). Its two sides are
+    continuous functions of the filter matrices, so it defines a closed
+    set even at zero output. Theorem~\ref{thm:filter_zero_floor_closed_max}
+    supplies a maximizing family in that set.
+    Lemma~\ref{lem:filter_zero_floor_nonzero} makes its output nonzero.
+    Divide by its squared norm.
+\end{proof}
+
 \begin{lemma}[Trial filters on a disjoint union]
     \label{lem:trial_filters}
     \lean{Entropy.localLift_apply, Entropy.regionUnionEquiv, Entropy.localLift_union_kronecker,
@@ -932,3 +1014,79 @@ from the same Hermitian pairing and weighted row and column bounds.
 These estimates assume the stated commutation and clipping properties.
 Deriving them from a particular minimum and counting physical crossing
 edges are separate steps in the patch argument.
+
+\begin{theorem}[Sharp energy of a maximizing nested product]
+    \label{thm:filter_max_sharp_energy}
+    \lean{Entropy.re_inner_sub_le_of_max_sharp,
+        Entropy.abs_re_inner_sub_le_of_max_sharp}
+    \leanok
+    \uses{prop:stationary_filter_clipped,lem:local_lift}
+    Let $D_0\subseteq\cdots\subseteq D_{m-1}$ be regions of a finite
+    system, let $0<a_j\le1$, and let $f_j>0$ with
+    $f_j\dim\mathcal H_{D_j}<1$. Suppose a feasible family $K_j$
+    maximizes the output norm. Assume $\Omega\ne0$,
+    $H\Omega=E_0\Omega$, and $H=\sum_i h_i$, where each $h_i$ is
+    Hermitian, supported on $S_i$, and has norm at most $c_0$.
+    Each $S_i$ is split by at most one $D_j$. Put
+    \begin{align}
+        B_{\mathrm{in}}
+        &=\sum_j a_j^2\sum_{i:\,D_j\text{ splits }S_i}
+            (\dim\mathcal H_{S_i\cap D_j})^2c_0.
+        \label{eq:filter_inside_budget}
+    \end{align}
+    The normalized output $\phi=K_{m-1}\cdots K_0\Omega/
+    \lVert K_{m-1}\cdots K_0\Omega\rVert$ satisfies
+    $|\operatorname{Re}\langle\phi,H\phi\rangle-E_0|
+    \le B_{\mathrm{in}}$, and hence also the corresponding one-sided bound.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:all_filters_clipped,prop:stationary_filter_clipped,
+        prop:filter_maximizer,thm:chain_energy,thm:patch_sharp_energy}
+    Positive floors make the output nonzero. Clipping and commutation
+    hold for every filter by Theorem~\ref{thm:all_filters_clipped} and
+    persist after normalization. The conjugated eigenvector equation is
+    $KHK^{-1}\phi=E_0\phi$, so Theorem~\ref{thm:patch_sharp_energy}
+    gives the upper bound with (\ref{eq:filter_inside_budget}).
+    Apply the same argument to $-h_i$ and eigenvalue $-E_0$.
+    The feasible family and its maximizing property are unchanged;
+    supports, Hermiticity and norm bounds are preserved. The second
+    inequality bounds the negative of the same energy difference.
+\end{proof}
+
+\begin{theorem}[Sharp absolute energy without a positive floor]
+    \label{thm:filter_zero_floor_sharp_energy}
+    \lean{Entropy.exists_max_feasible_chain_zero_floor_abs_energy_sharp,
+        Entropy.exists_max_feasible_chain_zero_floor_normalized_abs_energy_sharp}
+    \leanok
+    \uses{prop:stationary_filter_clipped,lem:local_lift}
+    Let $D_0\subseteq\cdots\subseteq D_{m-1}$ and $0<a_j\le1$.
+    Suppose $\Omega\ne0$, $H\Omega=E_0\Omega$, and $H=\sum_i h_i$,
+    with $h_i$ Hermitian, supported on $S_i$, and
+    $\lVert h_i\rVert\le c_0$. Assume each $S_i$ is split by at
+    most one $D_j$, and let $B_{\mathrm{in}}$ be
+    (\ref{eq:filter_inside_budget}). There is a floor-zero feasible
+    family $K_j$ that maximizes the output norm and whose output
+    $\psi=K_{m-1}\cdots K_0\Omega$ is nonzero and satisfies
+    \begin{align}
+        |\operatorname{Re}\langle\psi,H\psi\rangle-E_0\lVert\psi\rVert^2|
+        &\le B_{\mathrm{in}}\lVert\psi\rVert^2.
+        \label{eq:filter_zero_sharp_energy}
+    \end{align}
+    The same family has unit normalized output
+    $\phi=\psi/\lVert\psi\rVert$ and
+    $|\operatorname{Re}\langle\phi,H\phi\rangle-E_0|
+    \le B_{\mathrm{in}}$. The filters may be singular.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:filter_max_sharp_energy,thm:filter_zero_floor_closed_max,
+        lem:filter_zero_floor_nonzero,prop:filter_maximizer}
+    At each positive floor, Theorem~\ref{thm:filter_max_sharp_energy}
+    gives (\ref{eq:filter_zero_sharp_energy}) after multiplication
+    by the squared output norm. The absolute homogeneous difference
+    is continuous in the filter matrices, including at zero output.
+    Its sublevel condition is therefore closed. Apply
+    Theorem~\ref{thm:filter_zero_floor_closed_max} to obtain a
+    maximizing family satisfying that condition.
+    Lemma~\ref{lem:filter_zero_floor_nonzero} proves nonvanishing,
+    after which division by the squared norm gives the normalized bound.
+\end{proof}
