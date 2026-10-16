@@ -66,7 +66,7 @@ example : IsFeasibleFilter 0 0 (1 : Matrix (Fin 2) (Fin 2) ℂ) ∧
   · have htr :
         (cfc (fun x : ℝ ↦ x ^ (2 / (0 : ℝ)))
           (1 : Matrix (Fin 2) (Fin 2) ℂ)).trace = 2 := by
-      simp [Fin.sum_univ_two]
+      simp
     rw [htr]
     norm_num
 
