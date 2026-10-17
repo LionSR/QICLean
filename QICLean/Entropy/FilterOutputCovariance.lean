@@ -75,7 +75,7 @@ theorem localLift_relabel (D : Finset V) (D' : Finset V') (e : V ≃ V')
       (if C.symm ((cutEquiv n' D') σ).2 = C.symm ((cutEquiv n' D') τ).2 then 1 else 0) =
     K (R.symm ((cutEquiv n' D') σ).1) (R.symm ((cutEquiv n' D') τ).1) *
       (if ((cutEquiv n' D') σ).2 = ((cutEquiv n' D') τ).2 then 1 else 0)
-  rw [C.symm.injective.eq_iff]
+  simp only [C.symm.injective.eq_iff]
 
 variable (D : ℕ → Finset V) (D' : ℕ → Finset V') (e : V ≃ V')
   (hD : ∀ j v, v ∈ D j ↔ e v ∈ D' j)
@@ -96,7 +96,7 @@ theorem liftProd_chainList_relabel
     coe_reindexAlgEquiv, hL] using
     map_list_prod (reindexAlgEquiv ℂ ℂ (siteConfigurationEquiv e f))
       ((((List.finRange m).filter fun j ↦ decide (P j)).reverse).map
-        fun j ↦ localLift (D j) (K j))
+        fun j : Fin m ↦ localLift (D j) (K j))
 
 /-- The same input and regional matrices have the same ordered output in the
 transported configuration basis. -/
@@ -154,8 +154,8 @@ theorem forall_norm_liftProd_chainList_le_relabel_iff
     rw [← relabelVector_liftProd_chainList D D' e hD f, norm_relabelVector]
   constructor
   · intro h K' hK'
-    simpa only [hnorm] using
-      h (fun j ↦ reindex (R j) (R j) (K' j)) (fun j ↦ (hK' j).reindex (R j))
+    rw [← hnorm K', ← hnorm K]
+    exact h (fun j ↦ reindex (R j) (R j) (K' j)) (fun j ↦ (hK' j).reindex (R j))
   · intro h K' hK'
     let L (j : Fin m) := reindex (R j).symm (R j).symm (K' j)
     have hL (j : Fin m) : reindex (R j) (R j) (L j) = K' j := by
