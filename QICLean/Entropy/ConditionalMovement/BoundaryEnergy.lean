@@ -231,7 +231,7 @@ theorem coefficient_kernel [Finite Y] (W : Matrix Y (X × F) ℂ) (r : Y → ℝ
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ)))
     (i : X × Y) (f : F) (hi : r i.2 = 0) : coefficient W i f = 0 := by
   classical
-  letI : Fintype Y := Fintype.ofFinite Y
+  let : Fintype Y := Fintype.ofFinite Y
   have hh := congrArg (fun A : Matrix Y (X × F) ℂ => A i.2 (i.1, f))
     (NormalizedRows.kernel_mul_zero W r hW)
   simpa [NormalizedRows.kernel, diagonal_mul, hi, coefficient] using hh
