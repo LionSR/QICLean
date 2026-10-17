@@ -41,15 +41,15 @@ example {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 -- Empty regions remain valid when every physical alphabet is empty.
 example (K : Matrix (RegionConfig (fun _ : Fin 2 ↦ 0) ∅)
     (RegionConfig (fun _ : Fin 2 ↦ 0) ∅) ℂ) :
-    reindex (siteConfigurationEquiv (Equiv.swap (0 : Fin 2) 1)
-        (fun _ ↦ Equiv.refl (Fin 0)))
-      (siteConfigurationEquiv (Equiv.swap (0 : Fin 2) 1)
-        (fun _ ↦ Equiv.refl (Fin 0))) (localLift ∅ K) =
+    reindex (siteConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
+        (Equiv.swap (0 : Fin 2) 1) (fun _ ↦ Equiv.refl (Fin 0)))
+      (siteConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
+        (Equiv.swap (0 : Fin 2) 1) (fun _ ↦ Equiv.refl (Fin 0))) (localLift ∅ K) =
       localLift ∅ (reindex
-        (regionConfigurationEquiv ∅ ∅ (Equiv.swap (0 : Fin 2) 1)
-          (by simp) (fun _ ↦ Equiv.refl (Fin 0)))
-        (regionConfigurationEquiv ∅ ∅ (Equiv.swap (0 : Fin 2) 1)
-          (by simp) (fun _ ↦ Equiv.refl (Fin 0))) K) :=
+        (regionConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
+          ∅ ∅ (Equiv.swap (0 : Fin 2) 1) (by simp) (fun _ ↦ Equiv.refl (Fin 0)))
+        (regionConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
+          ∅ ∅ (Equiv.swap (0 : Fin 2) 1) (by simp) (fun _ ↦ Equiv.refl (Fin 0))) K) :=
   localLift_relabel ∅ ∅ _ (by simp) _ K
 
 -- A non-involutive site cycle and a local basis exchange fix the transport direction.
@@ -58,11 +58,16 @@ example (K : Matrix (RegionConfig (fun _ : Fin 3 ↦ 2) {0})
     let e := (Equiv.swap (0 : Fin 3) 1).trans (Equiv.swap 1 2)
     let hD : ∀ v : Fin 3, v ∈ ({0} : Finset (Fin 3)) ↔ e v ∈ ({2} : Finset (Fin 3)) := by
       intro v
-      fin_cases v <;> simp [e]
+      fin_cases v <;> decide
     let f := fun _ : Fin 3 ↦ Equiv.swap (0 : Fin 2) 1
-    reindex (siteConfigurationEquiv e f) (siteConfigurationEquiv e f) (localLift {0} K) =
-      localLift {2} (reindex (regionConfigurationEquiv {0} {2} e hD f)
-        (regionConfigurationEquiv {0} {2} e hD f) K) := by
+    reindex (siteConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2) e f)
+      (siteConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2) e f)
+      (localLift {0} K) =
+      localLift {2} (reindex
+        (regionConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2)
+          {0} {2} e hD f)
+        (regionConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2)
+          {0} {2} e hD f) K) := by
   dsimp only
   exact localLift_relabel _ _ _ _ _ K
 
@@ -82,7 +87,8 @@ example : firstProjection.PosSemidef ∧ complexProjection.PosSemidef ∧
   · exact (posSemidef_vecMulVec_self_star (![1, I] : Fin 2 → ℂ)).smul
       (by norm_num : (0 : ℝ) ≤ 1 / 2)
   · norm_num [firstProjection, det_fin_two]
-  · norm_num [complexProjection, det_fin_two, vecMulVec_apply, Complex.ext_iff]
+  · norm_num [complexProjection, det_fin_two, Matrix.smul_apply, vecMulVec_apply,
+      Complex.ext_iff]
 
 -- The ascending fold is Q P e₀ = (e₀ + i e₁)/2.
 example : ([firstProjection, complexProjection].map
@@ -93,7 +99,7 @@ example : ([firstProjection, complexProjection].map
   ext i
   fin_cases i <;>
     norm_num [firstProjection, complexProjection, toLpLin_apply, mulVec, dotProduct,
-      Fin.sum_univ_two, mul_apply, vecMulVec_apply, Complex.ext_iff]
+      Fin.sum_univ_two, mul_apply, Matrix.smul_apply, vecMulVec_apply, Complex.ext_iff]
 
 -- The ascending matrix product gives a different vector.
 example : toEuclideanLin (firstProjection * complexProjection)
@@ -121,7 +127,8 @@ example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
     let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) 0
     relabelVector e f (((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ) = 0 := by
   have h := relabelVector_normalized_liftProd_chainList D D' e hD f K (fun _ ↦ True) 0
-  simpa [relabelVector] using h
+  have hzero : relabelVector e f (0 : EuclideanSpace ℂ (SiteConfig n)) = 0 := rfl
+  simpa only [map_zero, hzero, smul_zero] using h
 
 -- Every target competitor is covered, at arbitrary floors/weights and without hK.
 example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
