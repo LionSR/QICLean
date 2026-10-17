@@ -131,12 +131,24 @@ zero, real continuous functional calculus instead gives the identity.}
 This characterizes the same matrix condition as the source's trace-power
 normalization. It does not assert a literal equality with an unimported
 source filter type or a bijection of its nonunique spectral coordinates.
+The generic ordered-output comparison now identifies successive local
+matrix actions with the reverse product. Site and local-basis bijections
+preserve the local lifts, the ordered output, its inverse-norm normalization,
+and comparison against every feasible competitor. These identities allow
+singular filters, empty regions and chains, and zero outputs; no second
+maximizer is selected.\footnote{See
+\leanid{Matrix.foldl_toEuclideanCLM_eq_reverse_prod} in
+\doclink{QICLean/Algebra/OrderedMatrixAction}, and
+\leanid{Entropy.localLift_relabel},
+\leanid{Entropy.relabelVector_normalized_liftProd_chainList}, and
+\leanid{Entropy.forall_norm_liftProd_chainList_le_relabel_iff} in
+\doclink{QICLean/Entropy/FilterOutputCovariance}.}
 The comparison with the complete companion-source assertion remains open:
-it still requires the exact local-lift and ordered-output identities,
-transport of admissibility and global maximality for the same chosen
-family, and the physical grid specialization, including the
-Hermitian-term reduction and original full-system gap. The new absolute
-estimate does not require a ground-state lower-bound argument.
+the matrix statements must still be connected to the literal source
+filter interface and to the same family in the physical grid
+specialization, including the Hermitian-term reduction and original
+full-system gap. The new absolute estimate does not require a
+ground-state lower-bound argument.
 
 The geometric producer additionally needs its uniform collar and
 harmonic-weight construction, the specified weight sum, and its upper
