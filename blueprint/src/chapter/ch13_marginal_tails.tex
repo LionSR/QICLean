@@ -609,6 +609,7 @@ has trace two.
 \begin{theorem}[Selected regional matrix products]
     \label{thm:selected_filter_product}
     \lean{Entropy.liftProd_chainList_eq}
+    \leanok
     \uses{lem:local_lift, thm:all_filters_clipped}
     Let $(D_j)_{j\in\mathbb N}$ be regions in a finite site set, let
     $K_j$ be an arbitrary regional matrix for $j<m$, and choose a subset
@@ -618,6 +619,7 @@ has trace two.
     equal to the identity. No nesting or feasibility assumption is needed.
 \end{theorem}
 \begin{proof}
+    \leanok
     Expanding the list of selected regional matrices and then taking
     their local lifts yields the same ordered list of full matrices.
 \end{proof}
@@ -625,6 +627,7 @@ has trace two.
 \begin{theorem}[Coordinate changes for matrix actions]
     \label{thm:coordinate_matrix_action}
     \lean{Matrix.reindex_mulVec, Entropy.norm_relabelVector}
+    \leanok
     \uses{thm:region_state_relabel}
     Let $e:I\to J$ be a bijection of finite coordinate sets, let $R$ be
     a possibly nonunital, nonassociative semiring, let $M$ be a matrix
@@ -636,6 +639,7 @@ has trace two.
     also satisfies $\|T\Omega\|=\|\Omega\|$.
 \end{theorem}
 \begin{proof}
+    \leanok
     Changing variables in the finite matrix-vector sum gives the first
     identity. The configuration bijection acts on Euclidean space as
     a permutation isometry, which gives the norm identity.
@@ -645,6 +649,7 @@ has trace two.
     \label{thm:ordered_matrix_action}
     \lean{Matrix.foldl_toEuclideanCLM_eq_reverse_prod,
         Entropy.foldl_localLift_eq_liftProd_chainList}
+    \leanok
     \uses{lem:local_lift, thm:all_filters_clipped}
     Let $I$ be a finite set, let $\mathbb K$ be $\mathbb R$ or $\mathbb C$,
     and let $M_0,\ldots,M_{m-1}$ be matrices on $\mathbb K^I$.
@@ -655,6 +660,7 @@ has trace two.
     the output is $\Omega$; the coordinate set $I$ may also be empty.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:selected_filter_product}
     Induction on the list uses $\psi_{j+1}=M_j\psi_j$ and associativity of
     matrix action. Appending the first applied factor on the right of
@@ -666,6 +672,7 @@ has trace two.
     \lean{Entropy.localLift_relabel, Entropy.liftProd_chainList_relabel,
         Entropy.relabelVector_liftProd_chainList,
         Entropy.relabelVector_normalized_liftProd_chainList}
+    \leanok
     \uses{lem:local_lift, thm:region_state_relabel}
     Use the site and local-basis bijections of
     Theorem~\ref{thm:region_state_relabel}. Let $(D_j)_{j\in\mathbb N}$
@@ -684,6 +691,7 @@ has trace two.
     sets, singular matrices, and repeated regions are allowed.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:coordinate_matrix_action, thm:selected_filter_product}
     In the region-complement coordinates, a local lift has entries
     $K_j(u,v)\delta_{w,z}$. Relabelling replaces $u,v$ by their inverse
@@ -699,6 +707,7 @@ has trace two.
 \begin{theorem}[Global comparison under site bijections]
     \label{thm:filter_max_comparison_relabel}
     \lean{Entropy.forall_norm_liftProd_chainList_le_relabel_iff}
+    \leanok
     \uses{thm:filter_output_relabel, thm:feasible_filter_reindex}
     Under the hypotheses of Theorem~\ref{thm:filter_output_relabel}, fix
     arbitrary real floors $b_j$ and weights $a_j$ for $j<m$.
@@ -710,6 +719,7 @@ has trace two.
     $D'_j$. The distinguished family itself need not be feasible.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:filter_output_relabel, thm:feasible_filter_reindex}
     The regional bijections preserve feasibility and the norm of every
     ordered output. Every competitor on the target regions is the image
