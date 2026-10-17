@@ -77,6 +77,10 @@ private noncomputable def firstProjection : Matrix (Fin 2) (Fin 2) ℂ :=
 private noncomputable def complexProjection : Matrix (Fin 2) (Fin 2) ℂ :=
   (1 / 2 : ℝ) • vecMulVec ![1, I] (star ![1, I])
 
+private theorem complexProjection_apply (i j : Fin 2) :
+    complexProjection i j = (1 / 2 : ℝ) •
+      ((![1, I] : Fin 2 → ℂ) i * star ((![1, I] : Fin 2 → ℂ) j)) := rfl
+
 -- P = diag(1,0), Q = (1/2)[[1,-i],[i,1]] are singular PSD matrices.
 example : firstProjection.PosSemidef ∧ complexProjection.PosSemidef ∧
     firstProjection.det = 0 ∧ complexProjection.det = 0 := by
@@ -87,8 +91,7 @@ example : firstProjection.PosSemidef ∧ complexProjection.PosSemidef ∧
   · exact (posSemidef_vecMulVec_self_star (![1, I] : Fin 2 → ℂ)).smul
       (by norm_num : (0 : ℝ) ≤ 1 / 2)
   · norm_num [firstProjection, det_fin_two]
-  · norm_num [complexProjection, det_fin_two, Matrix.smul_apply, vecMulVec_apply,
-      Complex.ext_iff]
+  · norm_num [det_fin_two, complexProjection_apply, Complex.ext_iff]
 
 -- The ascending fold is Q P e₀ = (e₀ + i e₁)/2.
 example : ([firstProjection, complexProjection].map
@@ -98,8 +101,8 @@ example : ([firstProjection, complexProjection].map
   rw [foldl_toEuclideanCLM_eq_reverse_prod]
   ext i
   fin_cases i <;>
-    norm_num [firstProjection, complexProjection, toLpLin_apply, mulVec, dotProduct,
-      Fin.sum_univ_two, mul_apply, Matrix.smul_apply, vecMulVec_apply, Complex.ext_iff]
+    norm_num [firstProjection, complexProjection_apply, toLpLin_apply, mulVec, dotProduct,
+      Fin.sum_univ_two, mul_apply, Complex.ext_iff]
 
 -- The ascending matrix product gives a different vector.
 example : toEuclideanLin (firstProjection * complexProjection)
@@ -128,7 +131,9 @@ example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
     relabelVector e f (((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ) = 0 := by
   have h := relabelVector_normalized_liftProd_chainList D D' e hD f K (fun _ ↦ True) 0
   have hzero : relabelVector e f (0 : EuclideanSpace ℂ (SiteConfig n)) = 0 := rfl
-  simpa only [map_zero, hzero, smul_zero] using h
+  dsimp only at h ⊢
+  rw [h]
+  simp only [hzero, map_zero, smul_zero]
 
 -- Every target competitor is covered, at arbitrary floors/weights and without hK.
 example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
