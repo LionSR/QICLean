@@ -26,7 +26,7 @@ variable {ι 𝕜 : Type*} [Fintype ι] [DecidableEq ι] [RCLike 𝕜]
 matrix product, including the empty list and an empty coordinate type. -/
 theorem foldl_toEuclideanCLM_eq_reverse_prod (l : List (Matrix ι ι 𝕜))
     (Ω : EuclideanSpace 𝕜 ι) :
-    (l.map toEuclideanCLM).foldl (fun ψ T ↦ T ψ) Ω =
+    (l.map (fun A ↦ toEuclideanCLM A)).foldl (fun ψ T ↦ T ψ) Ω =
       toEuclideanLin l.reverse.prod Ω := by
   rw [List.foldl_map]
   change l.foldl (fun ψ A ↦ toEuclideanLin A ψ) Ω = _
