@@ -51,7 +51,8 @@ its kernel completion.
 
 \begin{lemma}[Conditional filtered Gram moment]
     \label{lem:conditional_filtered_gram_moment}
-    % \lean{ConditionalMovement.ConditionalCollision.conditional_gramMoment_bounds}
+    \lean{ConditionalMovement.ConditionalCollision.conditional_gramMoment_bounds}
+    \leanok
     \uses{def:density_matrices,def:conditional_entropy}
     Let $X,P,F$ be finite sets with $X\ne\varnothing$, and let
     $r:P\to[0,\infty)$ and
@@ -88,7 +89,7 @@ its kernel completion.
     argument of~\cite[Section~5.1]{OpenAI2026AreaLaw}.
 \end{lemma}
 
-\begin{proof}
+\begin{proof}\leanok
     Positivity gives
     $\operatorname{supp}\rho\subseteq
     \mathbb C^X\otimes\operatorname{supp}\sigma$.
@@ -159,7 +160,8 @@ complement.
 
 \begin{theorem}[Relative logarithmic moments]
     \label{thm:conditional_relative_log_moments}
-    % \lean{Entropy.conditional_relative_log_moments}
+    \lean{Entropy.conditional_relative_log_moments}
+    \leanok
     \uses{def:density_matrices,def:conditional_entropy,def:kernel_completion}
     For the weights and logarithmic values in
     (\ref{eq:conditional_log_law}), every $w_{ji}$ is nonnegative and
@@ -172,7 +174,7 @@ complement.
     These are the relative logarithmic moment bounds in
     \cite[Section~5.1]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Orthonormality gives the total mass $\sum_i p_i=1$.
     Let $P_\rho$ and $P_\sigma$ be the support projections of $\rho$ and
     $\sigma$. Positivity gives
@@ -201,7 +203,8 @@ complement.
 
 \begin{theorem}[Signed logarithmic generating function and second moment]
     \label{thm:conditional_relative_log_mgf}
-    % \lean{Entropy.conditional_relative_log_mgf_le}
+    \lean{Entropy.conditional_relative_log_mgf_le}
+    \leanok
     \uses{thm:conditional_relative_log_moments}
     Every real $b$ satisfying $|b|\ell\le c$ obeys both estimates
     \begin{align}
@@ -213,7 +216,7 @@ complement.
     \cite[Section~5.1]{OpenAI2026AreaLaw}; the constants are independent of
     both dimensions and of $\rho$.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Put $\lambda=\log d\ge0$. The two exponential moments of
     Theorem~\ref{thm:conditional_relative_log_moments} imply
     $\mathbb E e^{|L|-\lambda}\le2$.
@@ -252,7 +255,8 @@ complement.
 
 \begin{theorem}[Conditional Schatten estimate]
     \label{thm:conditional_schatten_log}
-    % \lean{Entropy.conditional_schatten_log_le}
+    \lean{Entropy.conditional_schatten_log_le}
+    \leanok
     \uses{lem:conditional_filtered_gram_moment,lem:kernel_completion_rpow}
     Let $a>0$ satisfy $a\ell\le c$. Set
     \begin{align}
@@ -268,7 +272,7 @@ complement.
     This is the conditional Schatten estimate of
     \cite[Section~5.1]{OpenAI2026AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Since $\ell\ge1$, one has $a\le1/8$. Put $\beta=2a$; then
     $0<\beta\le1/4$ and
     $\beta\log d/(1-\beta)\le1$.
