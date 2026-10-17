@@ -21,7 +21,12 @@ adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
 `lean/OAI/MathematicalPhysics/PEPSMove/BoundaryEnergy.lean`, all declarations of the file;
 modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
 `ConditionalMovement`, the imports are restricted to the needed modules, and operator
-spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+spacing and line breaks are normalized. Proof-only decidable-equality instances are
+supplied locally, and the proof-only `Fintype Y` assumption in `coefficient_kernel` is
+replaced by `Finite Y`. In `paired_entropy_boundary`, the repeated filtered Gram-moment
+positivity and entropy upper-bound argument is replaced by an application of
+`ConditionalCollision.conditional_gramMoment_bounds`; its lower-bound conclusion is unused.
+The remaining calculations are unchanged.
 -/
 
 namespace ConditionalMovement
@@ -132,6 +137,7 @@ open Matrix SupportedCurve SpectralCurve MatrixInterpolation QuantumSSA
 variable {X Y P F : Type*} [Fintype X] [Fintype Y] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq Y] [DecidableEq P] [DecidableEq F]
 
+omit [DecidableEq F] in
 theorem paired_entropy_boundary [Nonempty X] [Nonempty P]
     (W : Matrix Y (X × (P × F)) ℂ) (r : Y → ℝ) (hr : ∀ y, 0 ≤ r y)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ))) (hsum : ∑ y, r y = 1)
@@ -155,6 +161,7 @@ theorem paired_entropy_boundary [Nonempty X] [Nonempty P]
       (E : Matrix (X × Y) (X × Y) ℂ).conjTranspose))).re * Real.exp (-β * Ht + ε) ≤
         Real.exp (-β * (conditionalEntropy W r + H) + 2 * ε +
           100000 * Real.rpow β (5 / 4 : ℝ) * l ^ 2 * (1 + (t / β) ^ 2)) := by
+  classical
   dsimp only
   let hA := (density_pos W).isHermitian
   let A := power 1 (fun j : X × Y => r j.2) ((-β / 2 : ℝ) : ℂ) *
@@ -173,20 +180,8 @@ theorem paired_entropy_boundary [Nonempty X] [Nonempty P]
   let Q := 100000 * Real.rpow β (5 / 4 : ℝ) * l ^ 2 * (1 + (t / β) ^ 2)
   let M := gramMoment A (1 / (1 - β)) ^ (1 - β)
   have hβ1 : β < 1 := by linarith
-  have hp := (density_pos W).eigenvalues_nonneg
-  have hmass := density_spectrum_sum W r hW hsum
-  have hlow := one_filter_self_lower hA.eigenvectorUnitary hA.eigenvalues
-    (fun j : X × Y => r j.2) hp (fun j => hr j.2) hmass
-    (spectral_support W r hW) β hβ
-  dsimp only at hlow
-  have hZ : 0 < gramMoment A (1 / (1 - β)) :=
-    gramMoment_pos_of_filter_pos hA.eigenvectorUnitary hA.eigenvalues hp hmass.le
-      A β hβ hβ1 ((Real.exp_pos _).trans_le hlow)
-  have hu := one_filter_entropy_bound W r hr hW hsum T q
-    (optimizerWeights_nonneg A β) (optimizerWeights_sum A β hZ).le β hβ (by linarith) hsmall
-  dsimp only at hu
-  change (trace (power T q (β : ℂ) * (A * A.conjTranspose))).re ≤ _ at hu
-  rw [optimizer_attains A β hβ1 hZ] at hu
+  obtain ⟨_, hZ, hu⟩ := conditional_gramMoment_bounds W r hr hW hsum β hβ
+    (by linarith only [hβfourth]) hsmall
   change M ≤ Real.exp (-β * conditionalEntropy W r + ε) at hu
   have habs := opposite_entropy_absorbed W r hr hW hsum V s hs hss β t l hβ hβfourth hl hl' hsmall
   dsimp only at habs
@@ -231,10 +226,12 @@ open Matrix SupportedCurve SpectralCurve MatrixInterpolation QuantumSSA
 variable {X Y P F : Type*} [Fintype X] [Fintype Y] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq Y] [DecidableEq P] [DecidableEq F]
 
-omit [DecidableEq X] [DecidableEq F] in
-theorem coefficient_kernel (W : Matrix Y (X × F) ℂ) (r : Y → ℝ)
+omit [Fintype Y] [DecidableEq X] [DecidableEq F] in
+theorem coefficient_kernel [Finite Y] (W : Matrix Y (X × F) ℂ) (r : Y → ℝ)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ)))
     (i : X × Y) (f : F) (hi : r i.2 = 0) : coefficient W i f = 0 := by
+  classical
+  letI : Fintype Y := Fintype.ofFinite Y
   have hh := congrArg (fun A : Matrix Y (X × F) ℂ => A i.2 (i.1, f))
     (NormalizedRows.kernel_mul_zero W r hW)
   simpa [NormalizedRows.kernel, diagonal_mul, hi, coefficient] using hh
@@ -262,6 +259,7 @@ theorem hsEnergy_phase_real (U : unitary (Matrix (X × P) (X × P) ℂ)) (s : (X
       hsEnergy (power U s ((β / 2 : ℝ) : ℂ) * C) := by
   rw [add_comm, ← phase_mul_power, Matrix.mul_assoc, hsEnergy_unitary_left]
 
+omit [DecidableEq F] in
 theorem one_filter_with_marginal_phase [Nonempty X]
     (C : Matrix (X × P) F ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hC : ptrL (C * C.conjTranspose) = diagonal (fun p => (r p : ℂ))) (hsum : ∑ p, r p = 1)
@@ -273,6 +271,7 @@ theorem one_filter_with_marginal_phase [Nonempty X]
       power 1 (fun j : X × P => r j.2) ((-β / 2 : ℝ) + Complex.I * (t : ℂ)) * C) ≤
       Real.exp (-β * QuantumSSA.conditionalEntropy (C * C.conjTranspose) +
         3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32)) := by
+  classical
   let E := phase 1 (fun j : X × P => r j.2) t
   have hp : power 1 (fun j : X × P => r j.2) ((-β / 2 : ℝ) + Complex.I * (t : ℂ)) =
       (E : Matrix (X × P) (X × P) ℂ) * power 1 (fun j : X × P => r j.2) ((-β / 2 : ℝ) : ℂ) := by
@@ -334,6 +333,7 @@ open Matrix SupportedCurve SpectralCurve MatrixInterpolation QuantumSSA
 variable {X Y P F : Type*} [Fintype X] [Fintype Y] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq Y] [DecidableEq P] [DecidableEq F]
 
+omit [DecidableEq F] in
 theorem right_boundary_entropy [Nonempty X]
     (W : Matrix Y (X × (P × F)) ℂ) (r : Y → ℝ)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ)))
@@ -354,6 +354,7 @@ theorem right_boundary_entropy [Nonempty X]
           * coefficient W) *
         (reshuffle ((K : Matrix (X × Y) (X × Y) ℂ) * coefficient W)).conjTranspose) +
         3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32)) := by
+  classical
   dsimp only
   let K := phase V v (-t) * phase 1 (fun j : X × Y => r j.2) t
   have hV : power V v (-Complex.I * (t : ℂ)) = (phase V v (-t) : Matrix (X × Y) (X × Y) ℂ) := by
@@ -372,6 +373,7 @@ theorem right_boundary_entropy [Nonempty X]
   push_cast
   ring_nf
 
+omit [DecidableEq F] in
 theorem boundary_pair_energy [Nonempty X] [Nonempty P]
     (W : Matrix Y (X × (P × F)) ℂ) (r : Y → ℝ) (hr : ∀ i, 0 ≤ r i)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ))) (hrsum : ∑ i, r i = 1)
@@ -399,6 +401,7 @@ theorem boundary_pair_energy [Nonempty X] [Nonempty P]
         power 1 (fun j : X × Y => r j.2) (Complex.I * (t : ℂ)) * coefficient W)) ≤
       Real.exp (-β * (conditionalEntropy W r + H) + 2 * ε +
         100000 * Real.rpow β (5 / 4 : ℝ) * l ^ 2 * (1 + (t / β) ^ 2)) := by
+  classical
   dsimp only
   have hL := left_boundary_trace W r S s p V v β t
   have hR := right_boundary_entropy W r hW p hp hpsum hP S s hs hsum V v hvne

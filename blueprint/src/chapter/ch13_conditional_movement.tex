@@ -46,6 +46,256 @@ its kernel completion.
     $\rho$; for the last one use $0^s=0$ when $s\ne0$.
 \end{proof}
 
+\section{Conditional Gram moments}
+\label{sec:conditional_gram_moments}
+
+\begin{lemma}[Conditional filtered Gram moment]
+    \label{lem:conditional_filtered_gram_moment}
+    % \lean{ConditionalMovement.ConditionalCollision.conditional_gramMoment_bounds}
+    \uses{def:density_matrices,def:conditional_entropy}
+    Let $X,P,F$ be finite sets with $X\ne\varnothing$, and let
+    $r:P\to[0,\infty)$ and
+    $W:\mathbb C^{X\times F}\to\mathbb C^P$ satisfy
+    \begin{align}
+        WW^*&=\operatorname{diag}(r_p),\notag\\
+        \sum_{p\in P}r_p&=1.\notag
+    \end{align}
+    Define $C_{(x,p),f}=W_{p,(x,f)}$, $\rho=CC^*$,
+    $\sigma=\operatorname{diag}(r_p)$ and $d=|X|$. Then $\rho$ is a
+    density matrix on $\mathbb C^X\otimes\mathbb C^P$ with marginal
+    $\sigma$ on $P$. Write $S=S(\rho)-S(\sigma)$.
+    For every real $\beta$ such that
+    \begin{align}
+        0&<\beta\le\frac13,\notag\\
+        \frac{\beta}{1-\beta}\log d&\le1,\notag
+    \end{align}
+    put
+    \begin{align}
+        B&=(I_X\otimes\sigma^{-\beta/2})\rho^{1/2},\notag\\
+        G&=BB^*,\notag\\
+        \alpha&=\frac1{1-\beta},\notag\\
+        M&=\operatorname{Tr}(G^\alpha).\notag
+    \end{align}
+    Here negative powers vanish on the kernel. Then $M>0$ and
+    \begin{align}
+        e^{-\beta S}\le\operatorname{Re}\operatorname{Tr}(\rho^\beta G),\notag\\
+        M^{1-\beta}
+        \le\exp\!\left(-\beta S+
+          \frac{3\beta^2}{1-\beta}
+            \bigl(16e(\log d)^2+32\bigr)\right).\notag
+    \end{align}
+    This is the filtered Gram-moment estimate in the conditional Schatten
+    argument of~\cite[Section~5.1]{OpenAI2026AreaLaw}.
+\end{lemma}
+
+\begin{proof}
+    Positivity gives
+    $\operatorname{supp}\rho\subseteq
+    \mathbb C^X\otimes\operatorname{supp}\sigma$.
+    Thus using inverse powers on the support gives the same filtered
+    matrix as using the kernel completion of $\sigma$.
+    The spectral trace-pairing lower bound in the conditional Schatten
+    argument gives
+    \begin{align}
+        e^{-\beta S}\le\operatorname{Tr}(\rho^\beta G).\notag
+    \end{align}
+    Its left side is positive, so $G\ne0$ and hence $M>0$.
+
+    Put $t=\beta/(1-\beta)$. Then $0<t\le1/2$ and $t\log d\le1$.
+    In eigenbases of $\rho$ and $I_X\otimes\sigma$, the weights
+    $w_{ji}=p_i|\langle e_j,f_i\rangle|^2$ and logarithmic values
+    $L_{ji}=\log p_i-\log r_{j_P}$ on the positive-weight terms have
+    total mass one, mean $-S$, and exponential moments at $1$ and $-1$
+    at most $d$. On zero-weight terms assign $L_{ji}$ any finite value;
+    these terms contribute zero to every expectation.
+    The scalar exponential-moment estimate therefore gives
+    \begin{align}
+        \mathbb E e^{tL}
+        \le\exp\!\left(-tS+3t^2
+            \bigl(16e(\log d)^2+32\bigr)\right).\notag
+    \end{align}
+    The trace-pairing form of the same Schatten argument implies, for
+    every density matrix $\tau$ on $\mathbb C^X\otimes\mathbb C^P$,
+    \begin{align}
+        \operatorname{Tr}(\tau^\beta G)
+        \le\bigl(\mathbb E e^{tL}\bigr)^{1-\beta}.\notag
+    \end{align}
+    Choose $\tau=G^\alpha/M$, which is a density matrix because $M>0$.
+    Since $\alpha\beta+1=\alpha$, spectral calculus gives
+    \begin{align}
+        \operatorname{Tr}(\tau^\beta G)=M^{1-\beta}.\notag
+    \end{align}
+    The result follows from $(1-\beta)t=\beta$ and
+    $(1-\beta)t^2=\beta^2/(1-\beta)$.
+\end{proof}
+
+\section{Relative logarithmic moments}
+\label{sec:conditional_relative_log_moments}
+
+Let $\rho$ be a density matrix on the finite-dimensional complex systems
+$xU$, and put $\sigma=\operatorname{Tr}_x\rho$ and $d=\dim x$.
+Since $\operatorname{Tr}\rho=1$, one has $d\ge1$.
+Put $Q=I_x\otimes\widehat\sigma$ and $\ell=1+\log d=\log(ed)$,
+and fix the universal constants $c=1/8$ and $C=256e+512$.
+Here $\widehat\sigma=\sigma+\Pi_{\ker\sigma}$, as in
+Definition~\ref{def:kernel_completion}. The density and its marginal may
+be singular.
+
+Use orthonormal eigenbases $(f_i)$ of $\rho$ and $(u_v)$ of $\sigma$,
+with eigenvalues $p_i$ and $r_v$. In the tensor-product eigenbasis
+$e_j=e_{j_x}\otimes u_{j_U}$ of $Q$, define
+\begin{align}
+    q_j&=\begin{cases}1,&r_{j_U}=0,\\r_{j_U},&r_{j_U}>0,\end{cases}\notag\\
+    w_{ji}&=p_i|\langle e_j,f_i\rangle|^2,\notag\\
+    L_{ji}&=\log p_i-\log q_j.
+    \label{eq:conditional_log_law}
+\end{align}
+In these finite sums assign $\log0=0$; its terms have weight zero.
+For a function $f$ of the values $L_{ji}$, write
+$\mathbb E f(L)=\sum_{j,i}w_{ji}f(L_{ji})$.
+The chosen basis of $Q$ respects $x\otimes\operatorname{supp}\sigma$,
+including when the eigenvalue one occurs both there and on its orthogonal
+complement.
+
+\begin{theorem}[Relative logarithmic moments]
+    \label{thm:conditional_relative_log_moments}
+    % \lean{Entropy.conditional_relative_log_moments}
+    \uses{def:density_matrices,def:conditional_entropy,def:kernel_completion}
+    For the weights and logarithmic values in
+    (\ref{eq:conditional_log_law}), every $w_{ji}$ is nonnegative and
+    $\sum_{j,i}w_{ji}=1$. Moreover,
+    \begin{align}
+        \mathbb E L&=-S(x\mid U)_\rho,\notag\\
+        \mathbb E e^L&\le d,\notag\\
+        \mathbb E e^{-L}&\le d.\notag
+    \end{align}
+    These are the relative logarithmic moment bounds in
+    \cite[Section~5.1]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    Orthonormality gives the total mass $\sum_i p_i=1$.
+    Let $P_\rho$ and $P_\sigma$ be the support projections of $\rho$ and
+    $\sigma$. Positivity gives
+    $\operatorname{supp}\rho\subseteq x\otimes\operatorname{supp}\sigma$;
+    hence the kernel of $\sigma$ contributes no joint weight.
+    Expanding the spectral sums gives
+    \begin{align}
+        \mathbb E L
+        &=\operatorname{Tr}(\rho\log\rho)
+          -\operatorname{Tr}(\sigma\log\sigma)
+          =-S(x\mid U)_\rho,\notag\\
+        \mathbb E e^L&=\operatorname{Tr}(\rho^2Q^{-1}),\notag\\
+        \mathbb E e^{-L}&=\operatorname{Tr}(P_\rho Q).\notag
+    \end{align}
+    Positivity of the blocks of $\rho$ and Cauchy--Schwarz give
+    $\rho\le d(I_x\otimes\sigma)\le dQ$.
+    Consequently $\rho^{1/2}Q^{-1}\rho^{1/2}\le dI$, and
+    $\operatorname{Tr}(\rho^2Q^{-1})\le d\operatorname{Tr}\rho=d$.
+    The support inclusion also gives
+    \begin{align}
+        \operatorname{Tr}(P_\rho Q)
+        \le\operatorname{Tr}\bigl((I_x\otimes P_\sigma)Q\bigr)
+        =d\operatorname{Tr}\sigma=d.\notag
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Signed logarithmic generating function and second moment]
+    \label{thm:conditional_relative_log_mgf}
+    % \lean{Entropy.conditional_relative_log_mgf_le}
+    \uses{thm:conditional_relative_log_moments}
+    Every real $b$ satisfying $|b|\ell\le c$ obeys both estimates
+    \begin{align}
+        \log\mathbb E e^{bL}
+        &\le-bS(x\mid U)_\rho+Cb^2\ell^2,\notag\\
+        \mathbb E\bigl[L^2e^{|bL|}\bigr]&\le C\ell^2.\notag
+    \end{align}
+    These are the generating-function and tilted second-moment estimates in
+    \cite[Section~5.1]{OpenAI2026AreaLaw}; the constants are independent of
+    both dimensions and of $\rho$.
+\end{theorem}
+\begin{proof}
+    Put $\lambda=\log d\ge0$. The two exponential moments of
+    Theorem~\ref{thm:conditional_relative_log_moments} imply
+    $\mathbb E e^{|L|-\lambda}\le2$.
+    For $0\le t\le1/2$ with $t\lambda\le1$, convexity of the exponential
+    gives $\mathbb E e^{t|L|}\le2e$. The scalar bound
+    \begin{align}
+        L^2\le8\lambda^2+16e^{|L|/2-\lambda}\notag
+    \end{align}
+    therefore yields the wider-range second-moment estimate
+    \begin{align}
+        \mathbb E\bigl[L^2e^{t|L|}\bigr]
+        \le16e\lambda^2+32.\notag
+    \end{align}
+    Taylor's inequality and $1+y\le e^y$ now give, in this same range,
+    \begin{align}
+        \mathbb E e^{tL}
+        \le\exp\!\bigl(t\mathbb E L
+            +3t^2(16e\lambda^2+32)\bigr).
+        \label{eq:conditional_log_raw_mgf}
+    \end{align}
+    For $b\ge0$, take $t=b$. For $b<0$, apply the same scalar argument
+    to $-L$ and $t=-b$: the two exponential moments exchange roles,
+    $t\mathbb E(-L)=b\mathbb E L$, and $t^2=b^2$.
+    The hypothesis $|b|\ell\le1/8$ supplies all these scalar conditions.
+    The generating function is positive because its weights are nonnegative
+    with total mass one. Taking logarithms and using
+    $\mathbb E L=-S(x\mid U)_\rho$ proves the logarithmic bound, since
+    \begin{align}
+        3b^2(16e\lambda^2+32)
+        \le(48e+96)b^2\ell^2\le Cb^2\ell^2.\notag
+    \end{align}
+    For the second-moment bound use $t=|b|$ and
+    $e^{|bL|}=e^{|b||L|}$, followed by
+    $16e\lambda^2+32\le C\ell^2$.
+\end{proof}
+
+\begin{theorem}[Conditional Schatten estimate]
+    \label{thm:conditional_schatten_log}
+    % \lean{Entropy.conditional_schatten_log_le}
+    \uses{lem:conditional_filtered_gram_moment,lem:kernel_completion_rpow}
+    Let $a>0$ satisfy $a\ell\le c$. Set
+    \begin{align}
+        K&=Q^{-a}\rho Q^{-a},\notag\\
+        \alpha&=\frac1{1-2a},\notag\\
+        Z&=\bigl(\operatorname{Tr}K^\alpha\bigr)^{1/\alpha}.
+        \label{eq:conditional_schatten_quantity}
+    \end{align}
+    Then $Z>0$ and
+    \begin{align}
+        \log Z\le-2aS(x\mid U)_\rho+Ca^2\ell^2.\notag
+    \end{align}
+    This is the conditional Schatten estimate of
+    \cite[Section~5.1]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    Since $\ell\ge1$, one has $a\le1/8$. Put $\beta=2a$; then
+    $0<\beta\le1/4$ and
+    $\beta\log d/(1-\beta)\le1$.
+    In an eigenbasis of $\sigma$, reshape a square-root factorization of
+    $\rho$ into a matrix $W$ as in
+    Lemma~\ref{lem:conditional_filtered_gram_moment}.
+    The resulting density has the same conditional entropy as $\rho$.
+    The support inclusion
+    $\operatorname{supp}\rho\subseteq x\otimes\operatorname{supp}\sigma$
+    implies that the kernel projection of $\sigma$ annihilates
+    $\rho^{1/2}$. Consequently its powers vanishing on the kernel agree,
+    after multiplication by $\rho^{1/2}$, with the completed powers.
+    Thus the filtered Gram matrix in that lemma is unitarily conjugate
+    to $K$, and $\alpha=1/(1-\beta)$.
+    Unitary invariance of the spectral trace and the lemma give $Z>0$ and
+    \begin{align}
+        Z\le\exp\!\left(-2aS(x\mid U)_\rho+
+            \frac{12a^2}{1-2a}(16e\log^2d+32)\right).\notag
+    \end{align}
+    Since $1-2a\ge3/4$ and
+    $16e\log^2d+32\le(16e+32)\ell^2$, the remainder is at most
+    $(256e+512)a^2\ell^2$. Taking logarithms proves the claim.
+\end{proof}
+
+
+\section{Conditional movement}
+
 \begin{theorem}[Conditional movement estimate]
     \label{thm:conditional_movement}
     \lean{Entropy.conditionalMovement_norm_le}
@@ -71,7 +321,7 @@ its kernel completion.
     in $\theta$ is $\operatorname{tr}(\Pi_{\ker\rho_U}\rho_U)=0$. The kernel
     projection of $\rho_P$ annihilates every vector obtained from $\theta$ by
     an operator on $xU$, because the two operators act on different factors.
-    By the preceding lemma both kernel completions may therefore be replaced
+    By Lemma~\ref{lem:kernel_completion_rpow}, both kernel completions may therefore be replaced
     by the powers vanishing on the kernels. For these powers the estimate is
     the interpolation argument of~\cite[proof of Lemma~5.1]{OpenAI2026AreaLaw}:
     the analytic family
