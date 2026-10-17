@@ -12,11 +12,13 @@ open scoped ComplexOrder
 
 -- Empty lists act as the identity, without a nonempty coordinate type.
 example {ι : Type*} [Fintype ι] [DecidableEq ι] (Ω : EuclideanSpace ℂ ι) :
-    (([] : List (Matrix ι ι ℂ)).map (fun A ↦ toEuclideanCLM A)).foldl
+    (([] : List (Matrix ι ι ℂ)).map
+      (fun A ↦ toEuclideanCLM (n := ι) (𝕜 := ℂ) A)).foldl
       (fun ψ T ↦ T ψ) Ω = Ω := rfl
 
 example (l : List (Matrix (Fin 0) (Fin 0) ℂ)) (Ω : EuclideanSpace ℂ (Fin 0)) :
-    (l.map (fun A ↦ toEuclideanCLM A)).foldl (fun ψ T ↦ T ψ) Ω = toEuclideanLin l.reverse.prod Ω :=
+    (l.map (fun A ↦ toEuclideanCLM (n := Fin 0) (𝕜 := ℂ) A)).foldl (fun ψ T ↦ T ψ) Ω =
+      toEuclideanLin l.reverse.prod Ω :=
   foldl_toEuclideanCLM_eq_reverse_prod l Ω
 
 -- Empty chains preserve the input.
@@ -31,7 +33,8 @@ example {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 example {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
     (D : Finset V) (K L : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
     (Ω : EuclideanSpace ℂ (SiteConfig n)) :
-    ([localLift D K, localLift D L].map (fun A ↦ toEuclideanCLM A)).foldl (fun ψ T ↦ T ψ) Ω =
+    ([localLift D K, localLift D L].map
+      (fun A ↦ toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ) A)).foldl (fun ψ T ↦ T ψ) Ω =
       toEuclideanLin (localLift D L * localLift D K) Ω := by
   simpa using foldl_toEuclideanCLM_eq_reverse_prod [localLift D K, localLift D L] Ω
 
@@ -82,7 +85,8 @@ example : firstProjection.PosSemidef ∧ complexProjection.PosSemidef ∧
   · norm_num [complexProjection, det_fin_two, vecMulVec_apply, Complex.ext_iff]
 
 -- The ascending fold is Q P e₀ = (e₀ + i e₁)/2.
-example : ([firstProjection, complexProjection].map (fun A ↦ toEuclideanCLM A)).foldl
+example : ([firstProjection, complexProjection].map
+    (fun A ↦ toEuclideanCLM (n := Fin 2) (𝕜 := ℂ) A)).foldl
       (fun ψ T ↦ T ψ) (WithLp.toLp 2 ![(1 : ℂ), 0]) =
     WithLp.toLp 2 ![(1 / 2 : ℂ), I / 2] := by
   rw [foldl_toEuclideanCLM_eq_reverse_prod]

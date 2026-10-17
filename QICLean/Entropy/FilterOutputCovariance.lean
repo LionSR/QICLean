@@ -48,7 +48,8 @@ used by the filter chain. No commutation or nesting is assumed. -/
 theorem foldl_localLift_eq_liftProd_chainList (D : ℕ → Finset V)
     (K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ)
     (Ω : EuclideanSpace ℂ (SiteConfig n)) :
-    (List.ofFn fun j ↦ toEuclideanCLM (localLift (D j) (K j))).foldl
+    (List.ofFn fun j ↦
+      toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ) (localLift (D j) (K j))).foldl
         (fun ψ T ↦ T ψ) Ω =
       toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω := by
   simpa [liftProd_chainList_eq, List.ofFn_eq_map, List.map_reverse,
