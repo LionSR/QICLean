@@ -25,6 +25,8 @@ Proof outline:
 * `splitEta_eq_splitBandEta` — `η_{i,j}` is the split entropy of the exceptional band;
 * `trace_state_skewSquare_le` — Lemma 6.4 at every split term--leaf pair, with one common
   remainder (display `transport:symbol-cost`, lines 736--748);
+* `exists_trace_skewSquare_le_of_splitSkewBoundAt`, `exists_energy_le_of_splitSkewBoundAt` —
+  the symbol cost and the energy estimate with constants given by those of Lemma 6.4;
 * `Matrix.Transport.re_star_dotProduct_mulVec_le_energy` (generic block argument) per
   term, then summation over `i` using `M^s v = pre / N` and `Hbar pre = E₀ pre`
   (lines 750--766).
@@ -368,30 +370,31 @@ theorem splitEta_eq_splitBandEta (hcompat : D.SupportCompatible E) {i : ι}
     fun g' hg' hne => absurd (D.contains_of_ne E hcompat hg hne) ?_
   exact (Finset.mem_filter.mp hg').2
 
-/-- **Symbol cost at the split leaves** (`06-transport.tex`, display
-`transport:symbol-cost`, lines 736--748): one remainder `r_k → 0` serves all split
-term--leaf pairs, uniformly over density matrices on `𝒮_k`. The split case of Lemma 6.4 of
-the source enters as the hypothesis `SplitSkewBound`. -/
-theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
-    ∃ c₀ Csym esym : ℝ, 0 < c₀ ∧
-      ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
-        {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
-        [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
-        {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
-        D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
-        ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
-        (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
-        ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧ (∀ k, 0 ≤ r k) ∧
-          ∀ (k : ℕ) (i : ι), ∀ j ∈ D.splitLeaves E i,
-            ∀ ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ,
-            ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
-            (ρ * Transport.skewSquare (D.input n (a / 2) k j)
-                (copyMean n k (E.term i))).trace.re ≤
-              Csym * a ^ 2 * ℓ ^ esym * realCoherentIntegral k (base n) ρ (fun θ =>
-                D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) + r k := by
-  obtain ⟨c, Csym, esym, hc, hsym⟩ := hskew
-  refine ⟨min c (1 / 4), max Csym 0, max esym 0, lt_min hc (by norm_num), ?_⟩
+-- The remainder is a sum over the finite index type of the terms.
+set_option linter.unusedFintypeInType false in
+/-- **Symbol cost at the split leaves, at explicit constants** (`06-transport.tex`, display
+`transport:symbol-cost`, lines 736--748). From the split case of Lemma 6.4 at threshold `c`,
+constant `Csym` and exponent `esym`, the bound holds for `a ℓ ≤ min c (1/4)` with constant
+`max Csym 0` and exponent `max esym 0`. -/
+theorem exists_trace_skewSquare_le_of_splitSkewBoundAt {c Csym esym : ℝ}
+    (hskew : SplitSkewBoundAt.{u} c Csym esym) :
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+      {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
+      [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
+      {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
+      D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
+      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ min c (1 / 4) →
+      (∀ k, D.CrossBandCommute n (a / 2) k) →
+      (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
+      ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧ (∀ k, 0 ≤ r k) ∧
+        ∀ (k : ℕ) (i : ι), ∀ j ∈ D.splitLeaves E i,
+          ∀ ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ,
+          ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+          (ρ * Transport.skewSquare (D.input n (a / 2) k j)
+              (copyMean n k (E.term i))).trace.re ≤
+            max Csym 0 * a ^ 2 * ℓ ^ max esym 0 * realCoherentIntegral k (base n) ρ (fun θ =>
+              D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) + r k := by
   intro V _ _ n _ K H _ _ C _ _ D ι _ E hD h0 h1 hEsupp hcompat a ℓ ha hℓ haℓ hcomm hℓD
   have haℓ' : a ≤ a * ℓ := le_mul_of_one_le_right ha.le hℓ
   have hac : a * ℓ ≤ c := haℓ.trans (min_le_left _ _)
@@ -415,7 +418,7 @@ theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}
       have hlogc : 2 * (a / 2) * logDim n (E.support i) ≤ c := by
         rw [show 2 * (a / 2) = a by ring]
         exact (mul_le_mul_of_nonneg_left hlog ha.le).trans hac
-      obtain ⟨r, hr, hbound⟩ := hsym n (D.leafPart j g) (D.isPartition_leafPart hD j g)
+      obtain ⟨r, hr, hbound⟩ := hskew n (D.leafPart j g) (D.isPartition_leafPart hD j g)
         (E.support i) (E.term i) (h0 i) (h1 i) (hEsupp i) hsplit (by linarith)
         (by linarith) hlogc
       refine ⟨r, hr, fun k _ ρ hρ htr hsymρ => ?_⟩
@@ -448,6 +451,31 @@ theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}
     exact (le_abs_self _).trans (Finset.single_le_sum (f := fun x => |r x k|)
       (fun x _ => abs_nonneg _) (Finset.mem_univ (i, j)))
 
+/-- **Symbol cost at the split leaves** (`06-transport.tex`, display
+`transport:symbol-cost`, lines 736--748): one remainder `r_k → 0` serves all split
+term--leaf pairs, uniformly over density matrices on `𝒮_k`. The split case of Lemma 6.4 of
+the source enters as the hypothesis `SplitSkewBound`. -/
+theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
+    ∃ c₀ Csym esym : ℝ, 0 < c₀ ∧
+      ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+        {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
+        [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
+        {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
+        D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
+        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+        ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
+        (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
+        ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧ (∀ k, 0 ≤ r k) ∧
+          ∀ (k : ℕ) (i : ι), ∀ j ∈ D.splitLeaves E i,
+            ∀ ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ,
+            ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+            (ρ * Transport.skewSquare (D.input n (a / 2) k j)
+                (copyMean n k (E.term i))).trace.re ≤
+              Csym * a ^ 2 * ℓ ^ esym * realCoherentIntegral k (base n) ρ (fun θ =>
+                D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) + r k := by
+  obtain ⟨_, _, _, hc, h⟩ := hskew
+  exact ⟨_, _, _, lt_min hc (by norm_num), exists_trace_skewSquare_le_of_splitSkewBoundAt h⟩
+
 omit [∀ v, NeZero (n v)] [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)]
   [Fintype ι] in
 /-- `η_{i,j}^{1/8}` is continuous in the one-copy vector. -/
@@ -458,32 +486,34 @@ theorem continuous_splitEta_rpow (i : ι) (j : Σ h, Option (C h)) :
   unfold splitEta
   exact continuous_finsetSum _ fun g _ => continuous_splitBandEta _ _
 
-/-- **Energy estimate** (area-law paper, Proposition 7.4, display `transport:energy`,
-`06-transport.tex` lines 417--426 and 588--766). The split weight `W_i(p)` enters twice;
-the remainder is uniform in `p`, in `pre` and in the replica state; support dimensions
-enter the coefficient only through `ℓ`. The split case of Lemma 6.4 of the source enters as
-the hypothesis `SplitSkewBound`. -/
-theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
-    ∃ c₀ Cen een : ℝ, 0 < c₀ ∧
-      ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
-        {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
-        [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
-        {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
-        D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
-        ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
-        (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
-        ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧
-          ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
-            pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1,
-            ∀ E₀ : ℝ, E.replicaEnergy k *ᵥ pre = (E₀ : ℂ) • pre →
-              let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
-              (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
-                2 * E₀ + Cen * a ^ 2 * ℓ ^ een * D.energyError E (a / 2) k pre p + r k := by
-  obtain ⟨c₀, Csym, esym, hc₀, hT⟩ := exists_trace_skewSquare_le_of_splitSkewBound hskew
-  refine ⟨c₀, 3 / 2 * Csym, esym, hc₀, ?_⟩
+/-- **Energy estimate at explicit constants** (area-law paper, Proposition 7.4, display
+`transport:energy`, `06-transport.tex` lines 417--426 and 588--766). From the split case of
+Lemma 6.4 at threshold `c`, constant `Csym` and exponent `esym`, the bound holds for
+`a ℓ ≤ min c (1/4)` with constant `3/2 · max Csym 0` and exponent `max esym 0`. -/
+theorem exists_energy_le_of_splitSkewBoundAt {c Csym esym : ℝ}
+    (hskew : SplitSkewBoundAt.{u} c Csym esym) :
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+      {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
+      [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
+      {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
+      D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
+      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ min c (1 / 4) →
+      (∀ k, D.CrossBandCommute n (a / 2) k) →
+      (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
+      ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧
+        ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
+          pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1,
+          ∀ E₀ : ℝ, E.replicaEnergy k *ᵥ pre = (E₀ : ℂ) • pre →
+            let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
+            (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
+              2 * E₀ + 3 / 2 * max Csym 0 * a ^ 2 * ℓ ^ max esym 0 *
+                D.energyError E (a / 2) k pre p + r k := by
   intro V _ _ n _ K H _ _ C _ _ D ι _ E hD h0 h1 hEsupp hcompat a ℓ ha hℓ haℓ hcomm hℓD
-  obtain ⟨r, hr, hr0, hbound⟩ := hT n D E hD h0 h1 hEsupp hcompat ha hℓ haℓ hcomm hℓD
+  obtain ⟨r, hr, hr0, hbound⟩ := exists_trace_skewSquare_le_of_splitSkewBoundAt hskew n D E hD
+    h0 h1 hEsupp hcompat ha hℓ haℓ hcomm hℓD
+  generalize max Csym 0 = Csym at hbound ⊢
+  generalize max esym 0 = esym at hbound ⊢
   refine ⟨fun k => 3 / 4 * (Fintype.card ι : ℝ) * r k, by
     simpa using hr.const_mul (3 / 4 * (Fintype.card ι : ℝ)), ?_⟩
   intro k pre hsym hpre p hp E₀ hE₀ v
@@ -621,6 +651,31 @@ theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
       have := mul_le_mul_of_nonneg_left hWW (by linarith [hr0 k] : (0 : ℝ) ≤ 3 / 4 * r k)
       rw [hκ]
       linarith
+
+/-- **Energy estimate** (area-law paper, Proposition 7.4, display `transport:energy`,
+`06-transport.tex` lines 417--426 and 588--766). The split weight `W_i(p)` enters twice;
+the remainder is uniform in `p`, in `pre` and in the replica state; support dimensions
+enter the coefficient only through `ℓ`. The split case of Lemma 6.4 of the source enters as
+the hypothesis `SplitSkewBound`. -/
+theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
+    ∃ c₀ Cen een : ℝ, 0 < c₀ ∧
+      ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+        {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
+        [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
+        {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
+        D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
+        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+        ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
+        (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
+        ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧
+          ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
+            pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1,
+            ∀ E₀ : ℝ, E.replicaEnergy k *ᵥ pre = (E₀ : ℂ) • pre →
+              let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
+              (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
+                2 * E₀ + Cen * a ^ 2 * ℓ ^ een * D.energyError E (a / 2) k pre p + r k := by
+  obtain ⟨_, _, _, hc, h⟩ := hskew
+  exact ⟨_, _, _, lt_min hc (by norm_num), exists_energy_le_of_splitSkewBoundAt h⟩
 
 end TransportData
 
