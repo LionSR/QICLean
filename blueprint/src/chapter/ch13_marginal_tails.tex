@@ -12,7 +12,7 @@ the negative logarithm of a marginal eigenvalue, sampled with that
 eigenvalue as its probability, concentrates around the entropy of the
 marginal. This chapter proves the moment and tail bounds
 of~\cite[Lemma~3.1]{OpenAI2026AreaLaw} for a bipartition $\mathcal
-H_B\otimes\mathcal H_{B^c}$. Every term acts on one factor only, except the
+    H_B\otimes\mathcal H_{B^c}$. Every term acts on one factor only, except the
 crossing terms, each of which is a sum of at most $d_i^2$ products
 $c_\alpha\otimes d_\alpha$ with $\lVert c_\alpha\rVert\lVert d_\alpha\rVert\le c_0$.
 A term supported on sites of total dimension $d_i$ has such a
@@ -135,7 +135,8 @@ $\sigma=\operatorname{diag}(s)$.
 \begin{theorem}[Marginal moment and tail bounds, bipartite form]
     \label{thm:marginal_tails}
     \lean{Entropy.log_surprisalMoment_eigenvalues_le,
-        Entropy.surprisalTail_eigenvalues_le}
+        Entropy.surprisalTail_eigenvalues_le,
+        Entropy.cutBasisChange_conj_sum_kronecker}
     \leanok
     \uses{lem:marginal_tilt, lem:surprisal_halving}
     Let $\mathsf H=\sum_ih_i$ on $\mathcal H_B\otimes\mathcal H_{B^c}$ with
@@ -267,11 +268,11 @@ depend on the common values there.
     \uses{lem:trace_holder, thm:marginal_tails}
     Let $L\ge0$ act on $\mathcal H_B$ with $\Tr L^{2/a}=1$, $0<a<1$. For a
     unit vector with marginal $\rho$, $\lVert(L\otimes1)\Psi\rVert^2=\Tr\rho
-    L^2\le(\Tr\rho^{1/(1-a)})^{1-a}=M(-a/(1-a))^{1-a}$. Under the hypotheses
+        L^2\le(\Tr\rho^{1/(1-a)})^{1-a}=M(-a/(1-a))^{1-a}$. Under the hypotheses
     of Theorem~\ref{thm:marginal_tails}, if $a\le1/2$ and
     $a/(1-a)\le1/(32\sqrt{(1+\vartheta)\mathcal B})$, then
     $\lVert(L\otimes1)\Psi\rVert^2\le\exp(-aS(\rho)+1024\mathrm e\vartheta
-    \mathcal Ba^2)$.
+        \mathcal Ba^2)$.
 \end{lemma}
 \begin{proof}\leanok
     Apply Lemma~\ref{lem:trace_holder} with exponents $1/(1-a)$ and $1/a$ to
@@ -307,12 +308,12 @@ depend on the common values there.
     \uses{lem:modular_conjugation_quadratic, lem:clipped_filter_cost}
     Let the marginal of $\Theta$ be $\operatorname{diag}(s)$ with $\sum s=1$, let
     $X=\sum_\alpha c_\alpha\otimes d_\alpha$ be Hermitian, and let $L=
-    \operatorname{diag}(l)$ with $l>0$ and
+        \operatorname{diag}(l)$ with $l>0$ and
     $|\log(l_j/l_k)|\le\frac a2|\log(s_j/s_k)|$ for positive $s_j,s_k$, where
     $a\le1/2$. Then
     $|\operatorname{Re}(\langle\Theta,X\Theta\rangle-\langle\Theta,(L\otimes1)
-    X(L^{-1}\otimes1)\Theta\rangle)|\le4a^2\sum_\alpha\lVert c_\alpha\rVert
-    \lVert d_\alpha\rVert$.
+        X(L^{-1}\otimes1)\Theta\rangle)|\le4a^2\sum_\alpha\lVert c_\alpha\rVert
+        \lVert d_\alpha\rVert$.
 \end{lemma}
 \begin{proof}\leanok
     Hermitian pairing writes the real part as
@@ -339,10 +340,10 @@ depend on the common values there.
     supported on $D$. The regional pure-state matrix is Hermitian. Support is
     monotone in $D$ and closed under products.
     For every vector $\varphi$, $\langle\varphi,(K\otimes1)\varphi\rangle=
-    \Tr\rho_{\varphi,D}K$. Consequently, if $K$ is invertible and commutes with
+        \Tr\rho_{\varphi,D}K$. Consequently, if $K$ is invertible and commutes with
     $\rho_{\varphi,D}$, then
     $\langle\varphi,(K\otimes1)Y(K^{-1}\otimes1)\varphi\rangle=\langle\varphi,
-    Y\varphi\rangle$ for every $Y$ supported on $D$.
+        Y\varphi\rangle$ for every $Y$ supported on $D$.
 \end{lemma}
 \begin{proof}\leanok
     The algebraic properties hold for $K\otimes1$ and survive the relabelling.
@@ -379,8 +380,8 @@ depend on the common values there.
     complementary configurations changes variables in the defining partial trace:
     \begin{align}
         \rho_{T\Omega,D'}(u',v')
-        &=\sum_{w'}T\Omega(u',w')\overline{T\Omega(v',w')}
-          =\rho_{\Omega,D}(f_D^{-1}(u'),f_D^{-1}(v')).\notag
+         & =\sum_{w'}T\Omega(u',w')\overline{T\Omega(v',w')}
+        =\rho_{\Omega,D}(f_D^{-1}(u'),f_D^{-1}(v')).\notag
     \end{align}
     This is the asserted conjugation identity.
 \end{proof}
@@ -461,10 +462,13 @@ depend on the common values there.
     floor give the rest.
 \end{proof}
 
-\begin{lemma}[Conjugation by a filter commuting with the marginal]
-    \label{lem:filter_energy_term}
+\begin{theorem}[Conjugation by a filter commuting with the marginal]
+    \label{thm:filter_energy_term}
     \lean{Entropy.toEuclideanLin_diagonal_kronecker_one, Entropy.inner_conj_unitary,
         Entropy.abs_re_inner_sub_conj_le_of_common_basis,
+        Entropy.norm_modularExpectation_kronecker_le_of_log_clipping,
+        Entropy.abs_re_inner_sub_inner_conj_le_logarithmic,
+        Entropy.abs_re_inner_sub_conj_le_of_common_basis_logarithmic,
         Entropy.commute_of_isSupportedOn_disjoint}
     \leanok
     \uses{lem:filter_conjugation, lem:commuting_hermitian}
@@ -474,11 +478,76 @@ depend on the common values there.
     $L\otimes1$ changes the real part of its expectation by at most
     $4a^2\sum\lVert c_\alpha\rVert\lVert d_\alpha\rVert$. Operators supported on
     disjoint regions commute.
-\end{lemma}
+
+    Let $\varphi$ be a unit vector whose marginal on the first factor is
+    $\rho=U\operatorname{diag}(p)U^*$, with $U$ unitary, $p_i\ge0$ and
+    $\sum_i p_i=1$. Let $L=U\operatorname{diag}(l)U^*$ with $l_i>0$, and
+    suppose that $a\ge0$ satisfies
+    \begin{align*}
+        |\log l_i-\log l_k|\le\frac a2|\log p_i-\log p_k|
+    \end{align*}
+    whenever $p_i,p_k>0$. For Hermitian $X$ with $\|X\|\le c_0$ and a
+    decomposition $X=\sum_{r=0}^{N-1} c_r\otimes d_r$ satisfying
+    $\|c_r\|\|d_r\|\le c_0$, define
+    \begin{align*}
+        g(z)=\langle\varphi,(L^z\otimes I)X(L^{-z}\otimes I)\varphi\rangle.
+    \end{align*}
+    This function is entire, satisfies $|g(\mathrm iy)|\le c_0$ for real
+    $y$, and obeys
+    \begin{align*}
+        |g(z)|\le2Nc_0
+    \end{align*}
+    whenever $a|\operatorname{Re}z|\le1$. If $\ell\ge1$,
+    $\log(2N)\le2\ell$ and $2a\ell\le1$, then
+    \begin{align*}
+        \bigl|\operatorname{Re}\bigl(g(1)-g(0)\bigr)\bigr|
+        \le8\mathrm e\,c_0\ell^2a^2.
+    \end{align*}
+    The condition $a\le1/(4\ell)$ used in
+    \href{https://github.com/LionSR/TNLean/blob/67ea93e29f7c088f766b271208a2fde4cccf04a6/docs/notes/one_dimensional_note/part1_arealaw.tex#L711-L734}{Remark~6.3 of the one-dimensional note}
+    is sufficient. In particular, a supported term with a decomposition of
+    at most $d^2$ such products, where $d\ge1$, admits
+    $\ell=\log(\mathrm e d)$.
+\end{theorem}
 \begin{proof}\leanok
     Transport by $U^*\otimes1$ to the Schmidt coordinates and apply
     Lemma~\ref{lem:filter_conjugation}. For disjoint supports, both operators
     are of the forms $A\otimes1$ and $1\otimes B$ across the same cut.
+
+    \uses{lem:strip_quadratic, lem:supported_product_decomposition}
+    In the common eigenbasis, write the rows of
+    $(U^*\otimes I)\varphi$ as $\sqrt{p_i}\,\omega_i$. The nonzero
+    $\omega_i$ are orthonormal. Clipping and
+    $a|\operatorname{Re}z|\le1$ give
+    \begin{align*}
+        \sqrt{p_ip_k}\,
+        \exp\bigl(\operatorname{Re}z(\log l_i-\log l_k)\bigr)
+         & \le\sqrt{p_ip_k}\,
+        \exp\bigl(\tfrac12|\log p_i-\log p_k|\bigr) \\
+         & =\max\{p_i,p_k\}\le p_i+p_k
+    \end{align*}
+    for positive $p_i,p_k$. If either probability vanishes, its actual
+    Schmidt row vanishes. The weighted row and column estimate in
+    Lemma~\ref{lem:filter_conjugation} therefore bounds a product term by
+    $2\|c_r\|\|d_r\|$ throughout this strip. Summing proves the asserted
+    bound for $g$. On the imaginary axis $L^{\mathrm iy}$ is unitary, and
+    Hermiticity gives $g(-x)=\overline{g(x)}$ for real $x$.
+
+    If $a=0$, clipping makes the filter eigenvalues equal on the positive
+    marginal support, so $g$ is constant. If $N=0$, then $X=0$. Otherwise,
+    for $a>0$ put $f(w)=g(4w/a)$. On
+    $|\operatorname{Re}w|\le1/4$ one has $|f(w)|\le2Nc_0$, while
+    $|f(\mathrm iy)|\le c_0$. Lemma~\ref{lem:strip_quadratic}, with
+    $m=2N$ and $x=a/4$, gives
+    \begin{align*}
+        \bigl|\operatorname{Re}\bigl(g(1)-g(0)\bigr)\bigr|
+         & \le128\mathrm e\,c_0\ell^2(a/4)^2
+        =8\mathrm e\,c_0\ell^2a^2.
+    \end{align*}
+    The smallness condition ensures $a/4\le1/(8\ell)$. Finally,
+    $N\le d^2$ and $d\ge1$ imply
+    $\log(2N)\le2\log(\mathrm e d)$; the supported decomposition is
+    Lemma~\ref{lem:supported_product_decomposition}.
 \end{proof}
 
 \begin{proposition}[Stationary filters are clipped]
@@ -516,7 +585,7 @@ depend on the common values there.
     weight $a$ if some unitary $U$ and weights $y_i\ge f$ with
     $\sum_i y_i=1$ satisfy
     \begin{align}
-        K&=U\operatorname{diag}(y_i^{a/2})U^*.
+        K & =U\operatorname{diag}(y_i^{a/2})U^*.
         \label{eq:feasible_filter_coordinates}
     \end{align}
     If $f\ge0$, every such matrix is positive semidefinite, for any real
@@ -683,9 +752,9 @@ has trace two.
     $j<m$, let $A$ and $A'$ be the corresponding products in decreasing
     index order. For every input $\Omega$,
     \begin{align}
-        TA\Omega&=A'T\Omega,\notag\\
+        TA\Omega & =A'T\Omega,\notag                   \\
         T\bigl(\|A\Omega\|^{-1}A\Omega\bigr)
-            &=\|A'T\Omega\|^{-1}A'T\Omega.\notag
+                 & =\|A'T\Omega\|^{-1}A'T\Omega.\notag
     \end{align}
     Here $0^{-1}=0$. Empty regions, empty local bases, empty selected
     sets, singular matrices, and repeated regions are allowed.
@@ -740,7 +809,7 @@ has trace two.
     \leanok
     \uses{prop:stationary_filter_clipped}
     Let feasible filters $K_j$ on nested regions $D_0\subseteq\dots\subseteq
-    D_{m-1}$ maximize $\lVert L_{m-1}\cdots L_0\Omega\rVert$ over the product of
+        D_{m-1}$ maximize $\lVert L_{m-1}\cdots L_0\Omega\rVert$ over the product of
     the feasible sets, with nonzero output $\psi$ and $\#\cdot f_j<1$. Then for
     every $j$, $K_j$ commutes with $\rho_{\psi,D_j}$, and in a common eigenbasis
     its eigenvalue ratios are clipped.
@@ -778,7 +847,7 @@ has trace two.
     \lean{Entropy.inner_cutOperator, Entropy.cutOperator_mul, Entropy.inv_conj_diagonal,
         Entropy.abs_re_inner_sub_conj_localLift_le}
     \leanok
-    \uses{lem:filter_energy_term}
+    \uses{thm:filter_energy_term}
     Let $\varphi$ be a unit vector, $B$ a region, and let $L=W\operatorname{diag}(l)W^*$ and
     $\rho_{\varphi,B}=W\operatorname{diag}(q)W^*$ with $W$ unitary, $l>0$, and
     $\lvert\log l_i-\log l_k\rvert\le\tfrac a2\lvert\log q_i-\log q_k\rvert$ for positive
@@ -786,14 +855,14 @@ has trace two.
     $\lVert X\rVert\le c_0$,
     \[
         \bigl\lvert\Re\bigl(\langle\varphi,X\varphi\rangle
-            -\langle\varphi,LXL^{-1}\varphi\rangle\bigr)\bigr\rvert
+        -\langle\varphi,LXL^{-1}\varphi\rangle\bigr)\bigr\rvert
         \le 4a^2d_S^2c_0,\qquad d_S=\prod_{v\in S}\dim\mathcal H_v.
     \]
 \end{lemma}
 \begin{proof}\leanok
     In cut coordinates for $B\mid B^c$ the operator $X$ is a sum of at most $d_S^2$ products
     $c\otimes d$ with $\lVert c\rVert\lVert d\rVert\le c_0$, and
-    Lemma~\ref{lem:filter_energy_term} applies.
+    Theorem~\ref{thm:filter_energy_term} applies.
 \end{proof}
 
 \begin{lemma}[One interaction term]
@@ -855,7 +924,7 @@ has trace two.
 \end{lemma}
 \begin{proof}\leanok
     $s\lVert\psi\rVert\le\lvert\langle\Omega,\psi\rangle\rvert
-    =\lvert\langle L_k\Omega,L_{k-1}\cdots L_0\Omega\rangle\rvert$, and Cauchy--Schwarz applies.
+        =\lvert\langle L_k\Omega,L_{k-1}\cdots L_0\Omega\rangle\rvert$, and Cauchy--Schwarz applies.
 \end{proof}
 
 \begin{lemma}[Feasible filters on a region]
@@ -977,14 +1046,14 @@ has trace two.
     and $\lVert h_i\rVert\le c_0$. Assume each $S_i$ is split by at most
     one $D_j$. Put
     \begin{align}
-        B&=\sum_j4a_j^2\sum_{i:\,D_j\text{ splits }S_i}
-            (\dim\mathcal H_{S_i})^2c_0.
+        B & =\sum_j4a_j^2\sum_{i:\,D_j\text{ splits }S_i}
+        (\dim\mathcal H_{S_i})^2c_0.
     \end{align}
     There is a floor-zero feasible family that maximizes the output norm
     and has nonzero output $\psi=K_{m-1}\cdots K_0\Omega$ satisfying
     \begin{align}
         \operatorname{Re}\langle\psi,H\psi\rangle-E_0\lVert\psi\rVert^2
-        &\le B\lVert\psi\rVert^2.
+         & \le B\lVert\psi\rVert^2.
         \label{eq:filter_zero_floor_energy}
     \end{align}
     Thus $\phi=\psi/\lVert\psi\rVert$ has unit norm and
@@ -1018,9 +1087,9 @@ has trace two.
     disjoint from $X$ the regional state of $\Omega$ is the sum of those of the vectors
     $P_i\Omega$. For regions $T_j$ disjoint from $X$ and filters $M_j$ on $T_j$, the filters
     $P_i\otimes M_j$ on $X\cup T_j$ are nonnegative with $\operatorname{Tr}(P_i\otimes
-    M_j)^{2/a}=\operatorname{Tr}M_j^{2/a}$, and
+        M_j)^{2/a}=\operatorname{Tr}M_j^{2/a}$, and
     $\lVert M_{m-1}\cdots M_0P_i\Omega\rVert\le\lVert(P_i\otimes M_{m-1})\cdots
-    (P_i\otimes M_0)\Omega\rVert$.
+        (P_i\otimes M_0)\Omega\rVert$.
 \end{lemma}
 \begin{proof}\leanok
     On a disjoint union the lift of $A\otimes B$ is the product of the lifts of $A$ and of $B$.
@@ -1053,7 +1122,7 @@ has trace two.
     $M_{k-1}^{1+iy}\cdots M_0^{1+iy}=(U_{k-1}\cdots U_0)(V_{k-2}^*M_{k-1}V_{k-2})\cdots M_0$,
     with $U_j=M_j^{iy}$ and $V_j=U_j\cdots U_0$, writes $F(1+iy)$ as a unitary applied to a
     nested product of unitary conjugates. The three-lines theorem gives $\lVert F(x)\rVert\le
-    B^x$. Since $F(0)=\xi$, the one-sided derivative of $\lVert F(x)\rVert^2-B^{2x}$ at $x=0$
+        B^x$. Since $F(0)=\xi$, the one-sided derivative of $\lVert F(x)\rVert^2-B^{2x}$ at $x=0$
     is nonpositive, which is the second claim.
 \end{proof}
 
@@ -1093,14 +1162,14 @@ has trace two.
     lies in a region $T$ disjoint from $X$, then
     \[
         2S(X\mid T)\le S(X)+\sum_{j<m}1024e\vartheta\mathcal B_ja_j^2
-            -m\log(1-E/\Delta).
+        -m\log(1-E/\Delta).
     \]
 \end{theorem}
 \begin{proof}\leanok
     By Proposition~\ref{prop:zero_floor_comparison} and Lemma~\ref{lem:region_filter_norm}, every
     nested product of nonnegative filters on the $D_j$ has output norm at most
     $B=\prod_k x_k/\sqrt{1-E/\Delta}^{\,m}$ with $x_k^2=\exp(-a_kS(D_k)+1024e\vartheta\mathcal
-    B_ka_k^2)$. For a Schmidt index $i$ with $p_i>0$, Lemma~\ref{lem:trial_filters} bounds the
+        B_ka_k^2)$. For a Schmidt index $i$ with $p_i>0$, Lemma~\ref{lem:trial_filters} bounds the
     nested products of filters on the $T_j$ applied to $\xi_i=P_i\Omega/\sqrt{p_i}$ by
     $B/\sqrt{p_i}$. Theorem~\ref{thm:filter_three_lines} with the filters
     $((1-\delta)\rho_{\xi_i,T_j}+\delta/d)^{a_j/2}$ gives, as $\delta\downarrow0$,
@@ -1223,7 +1292,7 @@ from the same Hermitian pairing and weighted row and column bounds.
     \begin{align*}
         \operatorname{Re}\langle\phi,H\phi\rangle-E_0
         \le \sum_j a_j^2\sum_{i:\,D_j\text{ splits }S_i}
-            d_{S_i\cap D_j}^2 J.
+        d_{S_i\cap D_j}^2 J.
     \end{align*}
 \end{theorem}
 \begin{proof}\leanok
@@ -1255,14 +1324,14 @@ edges are separate steps in the patch argument.
     Each $S_i$ is split by at most one $D_j$. Put
     \begin{align}
         B_{\mathrm{in}}
-        &=\sum_j a_j^2\sum_{i:\,D_j\text{ splits }S_i}
-            (\dim\mathcal H_{S_i\cap D_j})^2c_0.
+         & =\sum_j a_j^2\sum_{i:\,D_j\text{ splits }S_i}
+        (\dim\mathcal H_{S_i\cap D_j})^2c_0.
         \label{eq:filter_inside_budget}
     \end{align}
     The normalized output $\phi=K_{m-1}\cdots K_0\Omega/
-    \lVert K_{m-1}\cdots K_0\Omega\rVert$ satisfies
+        \lVert K_{m-1}\cdots K_0\Omega\rVert$ satisfies
     $|\operatorname{Re}\langle\phi,H\phi\rangle-E_0|
-    \le B_{\mathrm{in}}$, and hence also the corresponding one-sided bound.
+        \le B_{\mathrm{in}}$, and hence also the corresponding one-sided bound.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:all_filters_clipped,prop:stationary_filter_clipped,
@@ -1294,13 +1363,13 @@ edges are separate steps in the patch argument.
     $\psi=K_{m-1}\cdots K_0\Omega$ is nonzero and satisfies
     \begin{align}
         |\operatorname{Re}\langle\psi,H\psi\rangle-E_0\lVert\psi\rVert^2|
-        &\le B_{\mathrm{in}}\lVert\psi\rVert^2.
+         & \le B_{\mathrm{in}}\lVert\psi\rVert^2.
         \label{eq:filter_zero_sharp_energy}
     \end{align}
     The same family has unit normalized output
     $\phi=\psi/\lVert\psi\rVert$ and
     $|\operatorname{Re}\langle\phi,H\phi\rangle-E_0|
-    \le B_{\mathrm{in}}$. The filters may be singular.
+        \le B_{\mathrm{in}}$. The filters may be singular.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:filter_max_sharp_energy,thm:filter_zero_floor_closed_max,

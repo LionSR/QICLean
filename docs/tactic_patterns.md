@@ -7,6 +7,19 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Transport of a finite product decomposition — promoted lemma (2026-10-18)
+
+- **Seen:** `Entropy.hasProductDecomposition_conj` and both common-basis
+  conjugation estimates in `FilterEnergy.lean`: three finite-sum calculations
+  across two files.
+- **Lemma:** `Entropy.cutBasisChange_conj_sum_kronecker` transports the same
+  factors termwise. The existing one-term conjugation identity and
+  norm-contraction lemma supply the algebra and the bounds; no fresh
+  decomposition is chosen.
+- **Refactor:** All three finite-sum calculations invoke this direct equality.
+- **Caveat:** The equality itself needs no unitary assumption. Unitarity is
+  used separately for norm bounds and invariance of expectations.
+
 ### Reciprocal real powers — existing mathematical lemma (2026-10-16)
 
 - **Pattern:** Normalize or reconstruct a nonnegative eigenvalue by composing
