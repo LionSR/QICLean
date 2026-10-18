@@ -38,6 +38,8 @@ vector obtained from `θ` by an operator on `xU`.
 
 ## Main results
 
+* `Entropy.conditionalMovement_norm_le_explicit` — Lemma 5.1 at the named constants
+  `conditionalMovementConst` and `conditionalMovementThreshold`.
 * `Entropy.conditionalMovement_norm_le` — Lemma 5.1 (`lem:movement`).
 
 ## References
@@ -155,11 +157,15 @@ noncomputable def movementMarginalXP (θ : (X × U) × (P × F) → ℂ) : Matri
   partialTraceRight (vecMulVec (θ ∘ Equiv.prodProdProdComm X P U F)
     (star (θ ∘ Equiv.prodProdProdComm X P U F)))
 
+-- `partialTraceRight` and `PosSemidef` use the `Fintype` instances in the proof.
+set_option linter.unusedFintypeInType false in
 omit [DecidableEq X] [DecidableEq U] [DecidableEq P] [DecidableEq F] in
 theorem movementMarginalXU_posSemidef (θ : (X × U) × (P × F) → ℂ) :
     (movementMarginalXU θ).PosSemidef :=
   (posSemidef_vecMulVec_self_star θ).partialTraceRight
 
+-- `partialTraceRight` and `PosSemidef` use the `Fintype` instances in the proof.
+set_option linter.unusedFintypeInType false in
 omit [DecidableEq X] [DecidableEq U] [DecidableEq P] [DecidableEq F] in
 theorem movementMarginalXP_posSemidef (θ : (X × U) × (P × F) → ℂ) :
     (movementMarginalXP θ).PosSemidef :=
@@ -252,27 +258,46 @@ theorem norm_toLp_comp_equiv {ι κ : Type*} [Fintype ι] [Fintype κ] (e : ι �
 
 end Translation
 
-/-- **Conditional movement estimate** (area-law manuscript, Lemma 5.1,
-`lem:movement`, `04-conditional.tex`, lines 118–135).  Let `θ` be a unit vector on
-`x U P F`, `d = dim x` and `ℓ = log (e d)`.  There are universal constants
-`c, C > 0` such that for `0 < a`, `a ℓ ≤ c`, and all positive semidefinite `σ` on
-`x P` and `τ` on `x U` of trace at most one (densities or subdensities),
+/-- The constant `C = 200000` of the conditional movement estimate (area-law manuscript,
+Lemma 5.1, `lem:movement`, `04-conditional.tex`, lines 118–135), the coefficient of
+`a^{5/4} ℓ²` in `Entropy.conditionalMovement_norm_le_explicit`. -/
+noncomputable def conditionalMovementConst : ℝ := 200000
+
+/-- The threshold `c = 1/8` of the conditional movement estimate (area-law manuscript,
+Lemma 5.1, `lem:movement`, `04-conditional.tex`, lines 118–135): the estimate
+`Entropy.conditionalMovement_norm_le_explicit` holds for `a log(e dim x) ≤ c`. -/
+noncomputable def conditionalMovementThreshold : ℝ := 1 / 8
+
+/-- The constant of Lemma 5.1 is positive. -/
+theorem conditionalMovementConst_pos : 0 < conditionalMovementConst := by
+  norm_num [conditionalMovementConst]
+
+/-- The threshold of Lemma 5.1 is positive. -/
+theorem conditionalMovementThreshold_pos : 0 < conditionalMovementThreshold := by
+  norm_num [conditionalMovementThreshold]
+
+/-- **Conditional movement estimate at the named constants** (area-law manuscript,
+Lemma 5.1, `lem:movement`, `04-conditional.tex`, lines 118–135).  Let `θ` be a unit vector
+on `x U P F`, `d = dim x` and `ℓ = log (e d)`.  For `0 < a`,
+`a ℓ ≤ conditionalMovementThreshold`, and all positive semidefinite `σ` on `x P` and `τ` on
+`x U` of trace at most one (densities or subdensities),
 `‖σ^{a/2} ρ̂_P^{-a/2} τ^{a/2} ρ̂_U^{-a/2} θ‖ ≤ exp (-(a/2) η + C a^{5/4} ℓ²)` with
-`η = S(x|P)_θ + S(x|U)_θ`.  The constants are `C = 200000` and `c = 1/8`. -/
-theorem conditionalMovement_norm_le :
-    ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
-      ∀ {X U P F : Type*} [Fintype X] [Fintype U] [Fintype P] [Fintype F]
-        [DecidableEq X] [DecidableEq U] [DecidableEq P] [DecidableEq F]
-        (θ : EuclideanSpace ℂ ((X × U) × (P × F))), ‖θ‖ = 1 →
-        ∀ (σ : Matrix (X × P) (X × P) ℂ) (τ : Matrix (X × U) (X × U) ℂ),
-          σ.PosSemidef → σ.trace.re ≤ 1 → τ.PosSemidef → τ.trace.re ≤ 1 →
-          ∀ a : ℝ, 0 < a → a * Real.log (Real.exp 1 * Fintype.card X) ≤ c →
-            ‖(WithLp.toLp 2 (movementOperator θ.ofLp σ τ a *ᵥ θ.ofLp) :
-                EuclideanSpace ℂ ((X × U) × (P × F)))‖ ≤
-              Real.exp (-(a / 2) * movementEta θ.ofLp +
-                C * a ^ (5 / 4 : ℝ) * Real.log (Real.exp 1 * Fintype.card X) ^ 2) := by
-  refine ⟨200000, 1 / 8, by norm_num, by norm_num, ?_⟩
+`η = S(x|P)_θ + S(x|U)_θ` and `C = conditionalMovementConst`. -/
+theorem conditionalMovement_norm_le_explicit :
+    ∀ {X U P F : Type*} [Fintype X] [Fintype U] [Fintype P] [Fintype F]
+      [DecidableEq X] [DecidableEq U] [DecidableEq P] [DecidableEq F]
+      (θ : EuclideanSpace ℂ ((X × U) × (P × F))), ‖θ‖ = 1 →
+      ∀ (σ : Matrix (X × P) (X × P) ℂ) (τ : Matrix (X × U) (X × U) ℂ),
+        σ.PosSemidef → σ.trace.re ≤ 1 → τ.PosSemidef → τ.trace.re ≤ 1 →
+        ∀ a : ℝ, 0 < a →
+          a * Real.log (Real.exp 1 * Fintype.card X) ≤ conditionalMovementThreshold →
+          ‖(WithLp.toLp 2 (movementOperator θ.ofLp σ τ a *ᵥ θ.ofLp) :
+              EuclideanSpace ℂ ((X × U) × (P × F)))‖ ≤
+            Real.exp (-(a / 2) * movementEta θ.ofLp + conditionalMovementConst *
+              a ^ (5 / 4 : ℝ) * Real.log (Real.exp 1 * Fintype.card X) ^ 2) := by
   intro X U P F _ _ _ _ _ _ _ _ θ hθ σ τ hσ hσtr hτ hτtr a ha hsmall
+  rw [conditionalMovementThreshold] at hsmall
+  rw [conditionalMovementConst]
   set l := Real.log (Real.exp 1 * Fintype.card X)
   let C : Matrix (X × U) (P × F) ℂ := fun i j => θ.ofLp (i, j)
   have hv : θ.ofLp = coefficientVector C := rfl
@@ -352,5 +377,28 @@ theorem conditionalMovement_norm_le :
         rw [Matrix.mul_assoc S1, Matrix.mul_assoc T1]; rfl
     _ ≤ _ := hh
     _ = _ := by congr 1; ring
+
+/-- **Conditional movement estimate** (area-law manuscript, Lemma 5.1,
+`lem:movement`, `04-conditional.tex`, lines 118–135).  Let `θ` be a unit vector on
+`x U P F`, `d = dim x` and `ℓ = log (e d)`.  There are universal constants
+`c, C > 0` such that for `0 < a`, `a ℓ ≤ c`, and all positive semidefinite `σ` on
+`x P` and `τ` on `x U` of trace at most one (densities or subdensities),
+`‖σ^{a/2} ρ̂_P^{-a/2} τ^{a/2} ρ̂_U^{-a/2} θ‖ ≤ exp (-(a/2) η + C a^{5/4} ℓ²)` with
+`η = S(x|P)_θ + S(x|U)_θ`.  The constants are `C = 200000` and `c = 1/8`
+(`conditionalMovementConst`, `conditionalMovementThreshold`). -/
+theorem conditionalMovement_norm_le :
+    ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
+      ∀ {X U P F : Type*} [Fintype X] [Fintype U] [Fintype P] [Fintype F]
+        [DecidableEq X] [DecidableEq U] [DecidableEq P] [DecidableEq F]
+        (θ : EuclideanSpace ℂ ((X × U) × (P × F))), ‖θ‖ = 1 →
+        ∀ (σ : Matrix (X × P) (X × P) ℂ) (τ : Matrix (X × U) (X × U) ℂ),
+          σ.PosSemidef → σ.trace.re ≤ 1 → τ.PosSemidef → τ.trace.re ≤ 1 →
+          ∀ a : ℝ, 0 < a → a * Real.log (Real.exp 1 * Fintype.card X) ≤ c →
+            ‖(WithLp.toLp 2 (movementOperator θ.ofLp σ τ a *ᵥ θ.ofLp) :
+                EuclideanSpace ℂ ((X × U) × (P × F)))‖ ≤
+              Real.exp (-(a / 2) * movementEta θ.ofLp +
+                C * a ^ (5 / 4 : ℝ) * Real.log (Real.exp 1 * Fintype.card X) ^ 2) :=
+  ⟨_, _, conditionalMovementConst_pos, conditionalMovementThreshold_pos,
+    conditionalMovement_norm_le_explicit⟩
 
 end Entropy
