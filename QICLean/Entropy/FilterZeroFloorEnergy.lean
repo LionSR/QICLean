@@ -289,8 +289,8 @@ excitation-energy bound. Normalization occurs only after positivity of the outpu
 **Scope restriction (weights and coefficient):** This consequence retains the
 `a ≤ 1/2` and coarse dimension coefficient of the homogeneous theorem, rather than
 OpenAI's full `EnergyOptimizer.lean`, lines 62–109, conclusion. See
-`docs/paper-gaps/oai26_zero_floor_energy_scope.tex` for the sharp estimate below
-and the source-representation comparison still required. -/
+`docs/paper-gaps/oai26_zero_floor_energy_scope.tex` for the sharp estimate below;
+the comparison with the source's filter representation is not pursued. -/
 theorem exists_max_feasible_chain_zero_floor_normalized_energy (D : ℕ → Finset V)
     (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
     (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha2 : ∀ j, a j ≤ 1 / 2)
@@ -361,8 +361,8 @@ maximizing, has nonzero output, and obeys the homogeneous estimate. The input ne
 only be a nonzero eigenvector; the filters may be singular.
 
 This sharp continuation of the compact-limit argument above uses the positive-floor
-bound for both `H` and `-H` before taking the limit. The source representation and
-geometric-producer comparison remain separate; see
+bound for both `H` and `-H` before taking the limit. The comparison with the source's
+filter representation and its geometric construction is not pursued; see
 `docs/paper-gaps/oai26_zero_floor_energy_scope.tex`. -/
 theorem exists_max_feasible_chain_zero_floor_abs_energy_sharp (D : ℕ → Finset V)
     (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)

@@ -26,6 +26,10 @@ estimate transfers the localization of a Hermitian `M` to its absolute value.
 * `SpectralFilter.exists_norm_positiveConstraint_sub_map_le`: the tail estimate
   `eq:quasilocal-positive-tail` of Proposition 4.3 for an abstract localizing map.
 
+Each existential statement has a companion theorem at named constants: `kernelTailConst`,
+`filterTailConst`, `filterLocalityConst`, `filterLocalityRate`,
+`positiveConstraintLocalityConst` and `positiveConstraintLocalityRate`.
+
 ## References
 
 * OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
@@ -53,20 +57,29 @@ theorem kernelExponent_le_one (p : ℕ) : kernelExponent p ≤ 1 := by
   unfold kernelExponent
   rw [div_le_one (by positivity)]; linarith
 
-/-- **Kernel tail**: there is `K₀ > 0` with
-`|f(t)| ≤ K₀ (1 + |t|)^{-2} e^{-(c/2) T^α}` whenever `0 ≤ T ≤ |t|`, where `c` is the
-decay rate of Lemma 4.2. The factor `(1 + |t|)^{-2}` makes the bound integrable. -/
-theorem abs_spectralKernel_le_tail {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ) :
-    ∃ K₀ : ℝ, 0 < K₀ ∧ ∀ t T : ℝ, 0 ≤ T → T ≤ |t| →
-      |spectralKernel p δ t| ≤
-        K₀ / (1 + |t|) ^ 2 * Real.exp (-(kernelDecayRate p δ / 2 * T ^ kernelExponent p)) := by
-  obtain ⟨A₄, hA₄⟩ := one_add_abs_pow_mul_abs_spectralKernel_le hp hδ 4
+/-- The kernel tail constant `K₀ = √(max {A₄, 1} · K)`, where `A₄ = kernelMomentBound p δ 4`
+bounds `(1 + |t|)^4 |f(t)|` and `K = kernelDecayConst δ` is the prefactor of Lemma 4.2. -/
+noncomputable def kernelTailConst (p : ℕ) (δ : ℝ) : ℝ :=
+  Real.sqrt (max (kernelMomentBound p δ 4) 1 * kernelDecayConst δ)
+
+theorem kernelTailConst_pos {p : ℕ} {δ : ℝ} (hδ : 0 < δ) : 0 < kernelTailConst p δ := by
+  have := kernelDecayConst_pos hδ
+  unfold kernelTailConst
+  exact Real.sqrt_pos.mpr (mul_pos (lt_max_of_lt_right one_pos) this)
+
+/-- **Kernel tail**, explicit constant:
+`|f(t)| ≤ K₀ (1 + |t|)^{-2} e^{-(c/2) T^α}` whenever `0 ≤ T ≤ |t|`, with
+`K₀ = kernelTailConst p δ` and `c` the decay rate of Lemma 4.2. -/
+theorem abs_spectralKernel_le_kernelTailConst {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ)
+    (t T : ℝ) (hT : 0 ≤ T) (hTt : T ≤ |t|) :
+    |spectralKernel p δ t| ≤ kernelTailConst p δ / (1 + |t|) ^ 2 *
+      Real.exp (-(kernelDecayRate p δ / 2 * T ^ kernelExponent p)) := by
+  have hA₄ := one_add_abs_pow_mul_abs_spectralKernel_le_kernelMomentBound hp hδ 4
   set K := kernelDecayConst δ
   set c := kernelDecayRate p δ
   have hK : 0 < K := kernelDecayConst_pos hδ
   have hc : 0 < c := kernelDecayRate_pos hp hδ
-  set A := max A₄ 1
-  refine ⟨Real.sqrt (A * K), Real.sqrt_pos.mpr (by positivity), fun t T hT hTt => ?_⟩
+  set A := max (kernelMomentBound p δ 4) 1
   set R := 1 + |t| with hR
   have hR0 : 0 < R := by positivity
   set α := kernelExponent p
@@ -92,8 +105,17 @@ theorem abs_spectralKernel_le_tail {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 
     rw [← hX] at hsq
     exact (sq_le_sq₀ hf0 (by positivity)).mp hsq
   refine hfX.trans ?_
-  simp only [X]
+  simp only [X, kernelTailConst, A, K]
   gcongr
+
+/-- **Kernel tail**: there is `K₀ > 0` with
+`|f(t)| ≤ K₀ (1 + |t|)^{-2} e^{-(c/2) T^α}` whenever `0 ≤ T ≤ |t|`, where `c` is the
+decay rate of Lemma 4.2. The factor `(1 + |t|)^{-2}` makes the bound integrable. -/
+theorem abs_spectralKernel_le_tail {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ) :
+    ∃ K₀ : ℝ, 0 < K₀ ∧ ∀ t T : ℝ, 0 ≤ T → T ≤ |t| →
+      |spectralKernel p δ t| ≤
+        K₀ / (1 + |t|) ^ 2 * Real.exp (-(kernelDecayRate p δ / 2 * T ^ kernelExponent p)) :=
+  ⟨_, kernelTailConst_pos hδ, abs_spectralKernel_le_kernelTailConst hp hδ⟩
 
 /-- `∫ (1 + |t|)^{-2} dt < ∞`. -/
 theorem integrable_inv_one_add_abs_sq :
@@ -119,28 +141,40 @@ section Matrix
 
 open Matrix
 
+/-- The constant `K₁ = 2 K₀ ∫ (1 + |t|)^{-2} dt` of the explicit localization bound, with
+`K₀ = kernelTailConst p δ`. The integral is the definite real number `2`; it is kept in
+integral form. -/
+noncomputable def filterTailConst (p : ℕ) (δ : ℝ) : ℝ :=
+  2 * kernelTailConst p δ * ∫ t : ℝ, 1 / (1 + |t|) ^ 2
+
+theorem filterTailConst_nonneg (p : ℕ) {δ : ℝ} (hδ : 0 < δ) : 0 ≤ filterTailConst p δ := by
+  have := kernelTailConst_pos (p := p) hδ
+  have hI : 0 ≤ ∫ t : ℝ, 1 / (1 + |t|) ^ 2 := integral_nonneg fun t => by positivity
+  unfold filterTailConst; positivity
+
 /-- **Localization of the filtered operator**, explicit form (`03-quasilocal.tex`,
-`eq:quasilocal-filter-locality`, lines 285–297). There is `K₁ ≥ 0`, depending only on `p`
-and `δ`, such that for every linear map `L` on matrices, every Hermitian `H`, and every `A`:
-if `‖τ_t(A) - L τ_t(A)‖ ≤ ‖A‖ min {2, C e^{v |t| - c l}}` for all `t`, with `v, c > 0`,
-`C, l ≥ 0`, then
+`eq:quasilocal-filter-locality`, lines 285–297). Let `L` be a linear map on matrices, `H`
+Hermitian, and `‖τ_t(A) - L τ_t(A)‖ ≤ ‖A‖ min {2, C e^{v |t| - c l}}` for all `t`, with
+`v, c > 0`, `C, l ≥ 0`. Then
 `‖F(A) - L F(A)‖ ≤ ‖A‖ (C e^{-c l / 2} ‖f‖₁ + K₁ e^{-(c_f/2) (c l / (2 v))^α})`, where
-`F(A) = ∫ f(t) e^{itH} A e^{-itH} dt` and `c_f` is the kernel decay rate. -/
-theorem exists_norm_filterIntegral_sub_map_le' {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ) :
-    ∃ K₁ : ℝ, 0 ≤ K₁ ∧ ∀ {n : Type*} [Fintype n] [DecidableEq n] {H : Matrix n n ℂ},
-      H.IsHermitian → ∀ (A : Matrix n n ℂ) (L : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ)
-      {C v c l : ℝ}, 0 ≤ C → 0 < v → 0 < c → 0 ≤ l →
-      (∀ t : ℝ, ‖hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t) -
-          L (hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t))‖ ≤
-        ‖A‖ * min 2 (C * Real.exp (v * |t| - c * l))) →
-      ‖filterIntegral p δ H A - L (filterIntegral p δ H A)‖ ≤
-        ‖A‖ * (C * Real.exp (-(c * l / 2)) * filterL1 p δ +
-          K₁ * Real.exp (-(kernelDecayRate p δ / 2 * (c * l / (2 * v)) ^ kernelExponent p))) := by
-  obtain ⟨K₀, hK₀, htail⟩ := abs_spectralKernel_le_tail hp hδ
+`F(A) = ∫ f(t) e^{itH} A e^{-itH} dt`, `c_f` is the kernel decay rate and
+`K₁ = filterTailConst p δ`. -/
+theorem norm_filterIntegral_sub_map_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ)
+    {n : Type*} [Fintype n] [DecidableEq n] {H : Matrix n n ℂ} (hH : H.IsHermitian)
+    (A : Matrix n n ℂ) (L : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) {C v c l : ℝ} (hC : 0 ≤ C)
+    (hv : 0 < v) (hc : 0 < c) (hl : 0 ≤ l)
+    (hτ : ∀ t : ℝ, ‖hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t) -
+        L (hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t))‖ ≤
+      ‖A‖ * min 2 (C * Real.exp (v * |t| - c * l))) :
+    ‖filterIntegral p δ H A - L (filterIntegral p δ H A)‖ ≤
+      ‖A‖ * (C * Real.exp (-(c * l / 2)) * filterL1 p δ + filterTailConst p δ *
+        Real.exp (-(kernelDecayRate p δ / 2 * (c * l / (2 * v)) ^ kernelExponent p))) := by
+  have htail := abs_spectralKernel_le_kernelTailConst hp hδ
+  set K₀ := kernelTailConst p δ
+  have hK₀ : 0 < K₀ := kernelTailConst_pos hδ
   set I := ∫ t : ℝ, 1 / (1 + |t|) ^ 2
   have hI : 0 ≤ I := integral_nonneg fun t => by positivity
-  refine ⟨2 * K₀ * I, by positivity, ?_⟩
-  intro n _ _ H hH A L C v c l hC hv hc hl hτ
+  rw [filterTailConst]
   set T := c * l / (2 * v) with hTdef
   have hT : 0 ≤ T := by positivity
   set ε := Real.exp (-(kernelDecayRate p δ / 2 * T ^ kernelExponent p))
@@ -196,25 +230,66 @@ theorem exists_norm_filterIntegral_sub_map_le' {p : ℕ} (hp : 1 ≤ p) {δ : �
   simp only [g]
   rw [integral_const_mul, integral_add ((integrable_spectralKernel hp hδ).abs.const_mul _)
     (integrable_inv_one_add_abs_sq.const_mul _), integral_const_mul, integral_const_mul]
-  simp only [filterL1, I, ε]
+  simp only [filterL1, ε]
   ring
 
-/-- **Localization of the filtered operator** (`03-quasilocal.tex`,
-`eq:quasilocal-filter-locality`, lines 285–297): with `α = p / (p + 1)`, there are
-`C' ≥ 0` and `c' > 0`, depending only on `p, δ, C, v, c`, such that the localization
-hypothesis of `exists_norm_filterIntegral_sub_map_le'` gives
-`‖F(A) - L F(A)‖ ≤ C' e^{-c' l^α} ‖A‖`. -/
-theorem exists_norm_filterIntegral_sub_map_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ)
-    {C v c : ℝ} (hC : 0 ≤ C) (hv : 0 < v) (hc : 0 < c) :
-    ∃ C' c' : ℝ, 0 ≤ C' ∧ 0 < c' ∧ ∀ {n : Type*} [Fintype n] [DecidableEq n]
-      {H : Matrix n n ℂ}, H.IsHermitian → ∀ (A : Matrix n n ℂ)
-      (L : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) {l : ℝ}, 0 ≤ l →
+/-- **Localization of the filtered operator**, explicit form (`03-quasilocal.tex`,
+`eq:quasilocal-filter-locality`, lines 285–297). There is `K₁ ≥ 0`, depending only on `p`
+and `δ`, such that for every linear map `L` on matrices, every Hermitian `H`, and every `A`:
+if `‖τ_t(A) - L τ_t(A)‖ ≤ ‖A‖ min {2, C e^{v |t| - c l}}` for all `t`, with `v, c > 0`,
+`C, l ≥ 0`, then
+`‖F(A) - L F(A)‖ ≤ ‖A‖ (C e^{-c l / 2} ‖f‖₁ + K₁ e^{-(c_f/2) (c l / (2 v))^α})`, where
+`F(A) = ∫ f(t) e^{itH} A e^{-itH} dt` and `c_f` is the kernel decay rate. -/
+theorem exists_norm_filterIntegral_sub_map_le' {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ) :
+    ∃ K₁ : ℝ, 0 ≤ K₁ ∧ ∀ {n : Type*} [Fintype n] [DecidableEq n] {H : Matrix n n ℂ},
+      H.IsHermitian → ∀ (A : Matrix n n ℂ) (L : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ)
+      {C v c l : ℝ}, 0 ≤ C → 0 < v → 0 < c → 0 ≤ l →
       (∀ t : ℝ, ‖hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t) -
           L (hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t))‖ ≤
         ‖A‖ * min 2 (C * Real.exp (v * |t| - c * l))) →
       ‖filterIntegral p δ H A - L (filterIntegral p δ H A)‖ ≤
-        C' * Real.exp (-(c' * l ^ kernelExponent p)) * ‖A‖ := by
-  obtain ⟨K₁, hK₁, hloc⟩ := exists_norm_filterIntegral_sub_map_le' hp hδ
+        ‖A‖ * (C * Real.exp (-(c * l / 2)) * filterL1 p δ +
+          K₁ * Real.exp (-(kernelDecayRate p δ / 2 * (c * l / (2 * v)) ^ kernelExponent p))) :=
+  ⟨filterTailConst p δ, filterTailConst_nonneg p hδ, fun hH A L _ _ _ _ hC hv hc hl hτ =>
+    norm_filterIntegral_sub_map_le hp hδ hH A L hC hv hc hl hτ⟩
+
+/-- The prefactor `C' = C e^{c/2} ‖f‖₁ + K₁` of the stretched-exponential localization bound,
+with `K₁ = filterTailConst p δ`. -/
+noncomputable def filterLocalityConst (p : ℕ) (δ C c : ℝ) : ℝ :=
+  C * Real.exp (c / 2) * filterL1 p δ + filterTailConst p δ
+
+/-- The rate `c' = min {c / 2, (c_f / 2) (c / (2 v))^α}` of the stretched-exponential
+localization bound, with `c_f = kernelDecayRate p δ` and `α = p / (p + 1)`. -/
+noncomputable def filterLocalityRate (p : ℕ) (δ v c : ℝ) : ℝ :=
+  min (c / 2) (kernelDecayRate p δ / 2 * (c / (2 * v)) ^ kernelExponent p)
+
+theorem filterLocalityConst_nonneg (p : ℕ) {δ C : ℝ} (hδ : 0 < δ) (hC : 0 ≤ C) (c : ℝ) :
+    0 ≤ filterLocalityConst p δ C c :=
+  add_nonneg (by have := filterL1_nonneg p δ; positivity) (filterTailConst_nonneg p hδ)
+
+theorem filterLocalityRate_pos {p : ℕ} (hp : 1 ≤ p) {δ v c : ℝ} (hδ : 0 < δ) (hv : 0 < v)
+    (hc : 0 < c) : 0 < filterLocalityRate p δ v c := by
+  have := kernelDecayRate_pos hp hδ
+  exact lt_min (by positivity) (by positivity)
+
+/-- **Localization of the filtered operator**, explicit stretched-exponential form
+(`03-quasilocal.tex`, `eq:quasilocal-filter-locality`, lines 285–297): under the
+localization hypothesis of `norm_filterIntegral_sub_map_le`,
+`‖F(A) - L F(A)‖ ≤ C' e^{-c' l^α} ‖A‖` with `C' = filterLocalityConst p δ C c` and
+`c' = filterLocalityRate p δ v c`. -/
+theorem norm_filterIntegral_sub_map_le_filterLocalityConst_mul {p : ℕ} (hp : 1 ≤ p) {δ : ℝ}
+    (hδ : 0 < δ) {C v c : ℝ} (hC : 0 ≤ C) (hv : 0 < v) (hc : 0 < c)
+    {n : Type*} [Fintype n] [DecidableEq n] {H : Matrix n n ℂ} (hH : H.IsHermitian)
+    (A : Matrix n n ℂ) (L : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) {l : ℝ} (hl : 0 ≤ l)
+    (hτ : ∀ t : ℝ, ‖hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t) -
+        L (hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t))‖ ≤
+      ‖A‖ * min 2 (C * Real.exp (v * |t| - c * l))) :
+    ‖filterIntegral p δ H A - L (filterIntegral p δ H A)‖ ≤
+      filterLocalityConst p δ C c *
+        Real.exp (-(filterLocalityRate p δ v c * l ^ kernelExponent p)) * ‖A‖ := by
+  rw [filterLocalityConst, filterLocalityRate]
+  set K₁ := filterTailConst p δ
+  have hK₁ : 0 ≤ K₁ := filterTailConst_nonneg p hδ
   set α := kernelExponent p
   have hα := kernelExponent_pos hp
   have hα1 := kernelExponent_le_one p
@@ -222,10 +297,7 @@ theorem exists_norm_filterIntegral_sub_map_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ
   have hcf : 0 < cf := kernelDecayRate_pos hp hδ
   set c₂ := min (c / 2) (cf / 2 * (c / (2 * v)) ^ α)
   have hc₂ : 0 < c₂ := lt_min (by positivity) (by positivity)
-  refine ⟨C * Real.exp (c / 2) * filterL1 p δ + K₁, c₂,
-    add_nonneg (by have := filterL1_nonneg p δ; positivity) hK₁, hc₂, ?_⟩
-  intro n _ _ H hH A L l hl hτ
-  refine (hloc hH A L hC hv hc hl hτ).trans ?_
+  refine (norm_filterIntegral_sub_map_le hp hδ hH A L hC hv hc hl hτ).trans ?_
   have hl' : 0 ≤ l ^ α := Real.rpow_nonneg hl _
   have e1 : Real.exp (-(c * l / 2)) ≤ Real.exp (c / 2) * Real.exp (-(c₂ * l ^ α)) := by
     rw [← Real.exp_add]
@@ -245,6 +317,26 @@ theorem exists_norm_filterIntegral_sub_map_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ
           K₁ * Real.exp (-(c₂ * l ^ α))) := by gcongr
     _ = (C * Real.exp (c / 2) * filterL1 p δ + K₁) * Real.exp (-(c₂ * l ^ α)) * ‖A‖ := by
         ring
+
+/-- **Localization of the filtered operator** (`03-quasilocal.tex`,
+`eq:quasilocal-filter-locality`, lines 285–297): with `α = p / (p + 1)`, there are
+`C' ≥ 0` and `c' > 0`, depending only on `p, δ, C, v, c`, such that the localization
+hypothesis of `norm_filterIntegral_sub_map_le` gives
+`‖F(A) - L F(A)‖ ≤ C' e^{-c' l^α} ‖A‖`. -/
+theorem exists_norm_filterIntegral_sub_map_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ)
+    {C v c : ℝ} (hC : 0 ≤ C) (hv : 0 < v) (hc : 0 < c) :
+    ∃ C' c' : ℝ, 0 ≤ C' ∧ 0 < c' ∧ ∀ {n : Type*} [Fintype n] [DecidableEq n]
+      {H : Matrix n n ℂ}, H.IsHermitian → ∀ (A : Matrix n n ℂ)
+      (L : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) {l : ℝ}, 0 ≤ l →
+      (∀ t : ℝ, ‖hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t) -
+          L (hermitianUnitaryPath H t * A * hermitianUnitaryPath H (-t))‖ ≤
+        ‖A‖ * min 2 (C * Real.exp (v * |t| - c * l))) →
+      ‖filterIntegral p δ H A - L (filterIntegral p δ H A)‖ ≤
+        C' * Real.exp (-(c' * l ^ kernelExponent p)) * ‖A‖ :=
+  ⟨filterLocalityConst p δ C c, filterLocalityRate p δ v c,
+    filterLocalityConst_nonneg p hδ hC c, filterLocalityRate_pos hp hδ hv hc,
+    fun hH A L _ hl hτ =>
+      norm_filterIntegral_sub_map_le_filterLocalityConst_mul hp hδ hC hv hc hH A L hl hτ⟩
 
 /-- **Localization of the absolute value** (`03-quasilocal.tex`, lines 318–334): if `L` is
 a contraction, `M` and `L M` are Hermitian, and `L` fixes `|L M|`, then
@@ -268,6 +360,93 @@ theorem norm_abs_sub_map_abs_le {n : Type*} [Fintype n] [DecidableEq n]
         (norm_add_le _ _).trans (add_le_add le_rfl (hcontr _))
     _ = 2 * ‖CFC.abs M - CFC.abs (L M)‖ := by rw [norm_sub_rev]; ring
     _ ≤ 2 * Real.sqrt (2 * ‖M‖ * ‖M - L M‖) := by gcongr
+
+/-- The prefactor `C₃ = c_*⁻¹ · 2 √(2 c_* C' J)` of the tail of the positive constraints, with
+`c_* = positiveNormalization p (Δ / 2) J` and `C' = filterLocalityConst p (Δ / 2) C c`. -/
+noncomputable def positiveConstraintLocalityConst (p : ℕ) (Δ J C c : ℝ) : ℝ :=
+  (positiveNormalization p (Δ / 2) J)⁻¹ * 2 *
+    Real.sqrt (2 * positiveNormalization p (Δ / 2) J * filterLocalityConst p (Δ / 2) C c * J)
+
+/-- The rate `c₃ = c' / 2` of the tail of the positive constraints, with
+`c' = filterLocalityRate p (Δ / 2) v c`. -/
+noncomputable def positiveConstraintLocalityRate (p : ℕ) (Δ v c : ℝ) : ℝ :=
+  filterLocalityRate p (Δ / 2) v c / 2
+
+theorem positiveConstraintLocalityConst_nonneg (p : ℕ) (Δ J C c : ℝ) :
+    0 ≤ positiveConstraintLocalityConst p Δ J C c :=
+  mul_nonneg (mul_nonneg (inv_nonneg.mpr (positiveNormalization_pos p (Δ / 2) J).le)
+    zero_le_two) (Real.sqrt_nonneg _)
+
+theorem positiveConstraintLocalityRate_pos {p : ℕ} (hp : 1 ≤ p) {Δ v c : ℝ} (hΔ : 0 < Δ)
+    (hv : 0 < v) (hc : 0 < c) : 0 < positiveConstraintLocalityRate p Δ v c :=
+  half_pos (filterLocalityRate_pos hp (half_pos hΔ) hv hc)
+
+/-- **Tail of the positive constraints**, explicit constants (Proposition 4.3,
+`eq:quasilocal-positive-tail`, `03-quasilocal.tex`, lines 240–243 and 285–334). Under the
+hypotheses of `exists_norm_positiveConstraint_sub_map_le`,
+`‖k - L k‖ ≤ C₃ e^{-c₃ l^α}` with `C₃ = positiveConstraintLocalityConst p Δ J C c` and
+`c₃ = positiveConstraintLocalityRate p Δ v c`. -/
+theorem norm_positiveConstraint_sub_map_le {p : ℕ} (hp : 1 ≤ p) {Δ J C v c : ℝ}
+    (hΔ : 0 < Δ) (hJ : 0 ≤ J) (hC : 0 ≤ C) (hv : 0 < v) (hc : 0 < c)
+    {n : Type*} [Fintype n] [DecidableEq n] {H : Matrix n n ℂ} {Ω : EuclideanSpace ℂ n}
+    {h : Matrix n n ℂ} (hH : H.IsHermitian) (hΩ : ‖Ω‖ = 1) (hh : h.IsHermitian)
+    (hhJ : ‖h‖ ≤ J) (L : Matrix n n ℂ →ₗ[ℂ] Matrix n n ℂ) (hcontr : ∀ X, ‖L X‖ ≤ ‖X‖)
+    (hunit : L 1 = 1) (hherm : ∀ X, X.IsHermitian → (L X).IsHermitian)
+    (hfix : L (CFC.abs (L (centeredFilter p (Δ / 2) H Ω h))) =
+      CFC.abs (L (centeredFilter p (Δ / 2) H Ω h)))
+    {l : ℝ} (hl : 0 ≤ l)
+    (hτ : ∀ t : ℝ, ‖hermitianUnitaryPath H t * h * hermitianUnitaryPath H (-t) -
+        L (hermitianUnitaryPath H t * h * hermitianUnitaryPath H (-t))‖ ≤
+      ‖h‖ * min 2 (C * Real.exp (v * |t| - c * l))) :
+    ‖positiveConstraint (positiveNormalization p (Δ / 2) J) (centeredFilter p (Δ / 2) H Ω h) -
+        L (positiveConstraint (positiveNormalization p (Δ / 2) J)
+          (centeredFilter p (Δ / 2) H Ω h))‖ ≤
+      positiveConstraintLocalityConst p Δ J C c *
+        Real.exp (-(positiveConstraintLocalityRate p Δ v c * l ^ kernelExponent p)) := by
+  have hδ : 0 < Δ / 2 := half_pos hΔ
+  rw [positiveConstraintLocalityConst, positiveConstraintLocalityRate]
+  set C' := filterLocalityConst p (Δ / 2) C c
+  set c' := filterLocalityRate p (Δ / 2) v c
+  have hC' : 0 ≤ C' := filterLocalityConst_nonneg p hδ hC c
+  set cs := positiveNormalization p (Δ / 2) J
+  have hcs : 0 < cs := positiveNormalization_pos p (Δ / 2) J
+  set M := centeredFilter p (Δ / 2) H Ω h
+  have hM : M.IsHermitian := isHermitian_centeredFilter p _ hH Ω hh
+  have hMn : ‖M‖ ≤ cs := by
+    refine (norm_centeredFilter_le hp hδ hH hΩ h).trans ?_
+    refine (mul_le_mul_of_nonneg_right hhJ
+      (add_nonneg (filterL1_nonneg _ _) zero_le_one)).trans (le_max_right _ _)
+  -- `M - L M` is the localization error of the filtered term.
+  have hML : M - L M = filterIntegral p (Δ / 2) H h - L (filterIntegral p (Δ / 2) H h) := by
+    simp only [M, centeredFilter, map_sub, map_smul, hunit]; abel
+  have hMLn : ‖M - L M‖ ≤ C' * Real.exp (-(c' * l ^ kernelExponent p)) * J := by
+    rw [hML]
+    refine (norm_filterIntegral_sub_map_le_filterLocalityConst_mul hp hδ hC hv hc hH h L hl
+      hτ).trans ?_
+    gcongr
+  have habs := norm_abs_sub_map_abs_le hM L hcontr (hherm M hM) hfix
+  have hk : positiveConstraint cs M - L (positiveConstraint cs M) =
+      cs⁻¹ • (CFC.abs M - L (CFC.abs M)) := by
+    simp only [positiveConstraint, LinearMap.map_smul_of_tower, smul_sub]
+  rw [hk, norm_smul, Real.norm_of_nonneg (inv_nonneg.mpr hcs.le)]
+  set e := Real.exp (-(c' * l ^ kernelExponent p))
+  have he : 0 ≤ e := (Real.exp_pos _).le
+  have hsqrt : Real.sqrt (2 * ‖M‖ * ‖M - L M‖) ≤
+      Real.sqrt (2 * cs * C' * J) * Real.exp (-(c' / 2 * l ^ kernelExponent p)) := by
+    have hee : Real.exp (-(c' / 2 * l ^ kernelExponent p)) = Real.sqrt e := by
+      rw [eq_comm, Real.sqrt_eq_iff_mul_self_eq he (Real.exp_pos _).le, ← Real.exp_add]
+      ring_nf; rfl
+    rw [hee, ← Real.sqrt_mul (by positivity)]
+    refine Real.sqrt_le_sqrt ?_
+    calc 2 * ‖M‖ * ‖M - L M‖ ≤ 2 * cs * (C' * e * J) := by
+          gcongr
+      _ = 2 * cs * C' * J * e := by ring
+  calc cs⁻¹ * ‖CFC.abs M - L (CFC.abs M)‖
+      ≤ cs⁻¹ * (2 * (Real.sqrt (2 * cs * C' * J) *
+          Real.exp (-(c' / 2 * l ^ kernelExponent p)))) := by
+        gcongr; exact habs.trans (by gcongr)
+    _ = cs⁻¹ * 2 * Real.sqrt (2 * cs * C' * J) *
+          Real.exp (-(c' / 2 * l ^ kernelExponent p)) := by ring
 
 /-- **Tail of the positive constraints** (Proposition 4.3, `eq:quasilocal-positive-tail`,
 `03-quasilocal.tex`, lines 240–243 and 285–334), for an abstract localizing map. Fix
@@ -293,49 +472,13 @@ theorem exists_norm_positiveConstraint_sub_map_le {p : ℕ} (hp : 1 ≤ p) {Δ J
       ‖positiveConstraint (positiveNormalization p (Δ / 2) J) (centeredFilter p (Δ / 2) H Ω h) -
           L (positiveConstraint (positiveNormalization p (Δ / 2) J)
             (centeredFilter p (Δ / 2) H Ω h))‖ ≤
-        C₃ * Real.exp (-(c₃ * l ^ kernelExponent p)) := by
-  have hδ : 0 < Δ / 2 := half_pos hΔ
-  obtain ⟨C', c', hC', hc', hloc⟩ := exists_norm_filterIntegral_sub_map_le hp hδ hC hv hc
-  set cs := positiveNormalization p (Δ / 2) J
-  have hcs : 0 < cs := positiveNormalization_pos p (Δ / 2) J
-  refine ⟨cs⁻¹ * 2 * Real.sqrt (2 * cs * C' * J), c' / 2, by positivity, by positivity, ?_⟩
-  intro n _ _ H Ω h hH hΩ hh hhJ L hcontr hunit hherm hfix l hl hτ
-  set M := centeredFilter p (Δ / 2) H Ω h
-  have hM : M.IsHermitian := isHermitian_centeredFilter p _ hH Ω hh
-  have hMn : ‖M‖ ≤ cs := by
-    refine (norm_centeredFilter_le hp hδ hH hΩ h).trans ?_
-    refine (mul_le_mul_of_nonneg_right hhJ
-      (add_nonneg (filterL1_nonneg _ _) zero_le_one)).trans (le_max_right _ _)
-  -- `M - L M` is the localization error of the filtered term.
-  have hML : M - L M = filterIntegral p (Δ / 2) H h - L (filterIntegral p (Δ / 2) H h) := by
-    simp only [M, centeredFilter, map_sub, map_smul, hunit]; abel
-  have hMLn : ‖M - L M‖ ≤ C' * Real.exp (-(c' * l ^ kernelExponent p)) * J := by
-    rw [hML]
-    refine (hloc hH h L hl hτ).trans ?_
-    gcongr
-  have habs := norm_abs_sub_map_abs_le hM L hcontr (hherm M hM) hfix
-  have hk : positiveConstraint cs M - L (positiveConstraint cs M) =
-      cs⁻¹ • (CFC.abs M - L (CFC.abs M)) := by
-    simp only [positiveConstraint, LinearMap.map_smul_of_tower, smul_sub]
-  rw [hk, norm_smul, Real.norm_of_nonneg (inv_nonneg.mpr hcs.le)]
-  set e := Real.exp (-(c' * l ^ kernelExponent p))
-  have he : 0 ≤ e := (Real.exp_pos _).le
-  have hsqrt : Real.sqrt (2 * ‖M‖ * ‖M - L M‖) ≤
-      Real.sqrt (2 * cs * C' * J) * Real.exp (-(c' / 2 * l ^ kernelExponent p)) := by
-    have hee : Real.exp (-(c' / 2 * l ^ kernelExponent p)) = Real.sqrt e := by
-      rw [eq_comm, Real.sqrt_eq_iff_mul_self_eq he (Real.exp_pos _).le, ← Real.exp_add]
-      ring_nf; rfl
-    rw [hee, ← Real.sqrt_mul (by positivity)]
-    refine Real.sqrt_le_sqrt ?_
-    calc 2 * ‖M‖ * ‖M - L M‖ ≤ 2 * cs * (C' * e * J) := by
-          gcongr
-      _ = 2 * cs * C' * J * e := by ring
-  calc cs⁻¹ * ‖CFC.abs M - L (CFC.abs M)‖
-      ≤ cs⁻¹ * (2 * (Real.sqrt (2 * cs * C' * J) *
-          Real.exp (-(c' / 2 * l ^ kernelExponent p)))) := by
-        gcongr; exact habs.trans (by gcongr)
-    _ = cs⁻¹ * 2 * Real.sqrt (2 * cs * C' * J) *
-          Real.exp (-(c' / 2 * l ^ kernelExponent p)) := by ring
+        C₃ * Real.exp (-(c₃ * l ^ kernelExponent p)) :=
+  ⟨positiveConstraintLocalityConst p Δ J C c, positiveConstraintLocalityRate p Δ v c,
+    positiveConstraintLocalityConst_nonneg p Δ J C c,
+    positiveConstraintLocalityRate_pos hp hΔ hv hc,
+    fun hH hΩ hh hhJ L hcontr hunit hherm hfix _ hl hτ =>
+      norm_positiveConstraint_sub_map_le hp hΔ hJ hC hv hc hH hΩ hh hhJ L hcontr hunit hherm
+        hfix hl hτ⟩
 
 end Matrix
 
