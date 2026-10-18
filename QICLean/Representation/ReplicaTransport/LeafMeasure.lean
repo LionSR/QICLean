@@ -26,7 +26,7 @@ terminal weight. Inactive leaves carry the zero measure.
 
 Reference: *A two-dimensional area law from a global spectral gap*, Proposition 7.4,
 `06-transport.tex`, displays `transport:coherent-measure` and `transport:states`,
-lines 364--401. The remaining scanner conclusions are recorded in
+lines 364--401. The scope of this representation is recorded in
 `docs/paper-gaps/oai26_literal_transport_measures.tex`.
 The proofs are written from the paper; no source was adapted.
 -/
