@@ -39,11 +39,15 @@ of~\cite[Proposition~3.3]{OpenAI2026AreaLaw}.
     \label{lem:scale_recurrence}
     \lean{Entropy.le_pow_of_scale_recurrence,
         Entropy.exists_le_mul_rpow_of_scale_recurrence,
+        Entropy.le_scaleRecurrenceConst_mul_rpow,
+        Entropy.scaleRecurrenceConst,
+        Entropy.scaleRecurrenceExponent,
         Entropy.one_lt_log_div_log_lt_two}
     \leanok
     Let $F$ be nondecreasing on the positive integers, $M\ge2$ an integer,
     $\lambda>M$ and $K\ge0$, with $F(Mr)\le\lambda F(r)+Kr$ for all
-    $r\ge1$. Then $F(r)\le Cr^{\log_M\lambda}$ for all $r\ge1$. If
+    $r\ge1$. Then $F(r)\le Cr^{\log_M\lambda}$ for all $r\ge1$, with
+    $C=(B+K/(\lambda-M))M^{\log_M\lambda}$ for any $B\ge|F(1)|$. If
     $M<\lambda<M^2$, then $1<\log_M\lambda<2$.
 \end{lemma}
 \begin{proof}\leanok
