@@ -1307,6 +1307,106 @@ has trace two.
     left side below by $2S(X\mid T)$.
 \end{proof}
 
+\begin{theorem}[Weighted conditional entropy with logarithmic energy cost]
+    \label{thm:buffer_weighted_logarithmic}
+    \lean{Entropy.sum_mul_condEntropy_le_logarithmic}
+    \leanok
+    Let $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$ be a finite
+    tensor product. Let $X$ be a region and let
+    $T_0\subseteq T_1\subseteq\cdots$ be regions disjoint from $X$.
+    Put $D_j=X\cup T_j$, and let $0<a_j\le\tfrac12$.
+    Suppose that $\Omega$ is a unit vector and $H=\sum_{i\in I}h_i$,
+    where each $h_i$ is Hermitian, supported on $S_i$, and
+    $\lVert h_i\rVert\le c_0$, with $c_0\ge0$. Assume
+    \begin{align*}
+        H\Omega & =E_0\Omega,                                          \\
+        H-E_0I  & \ge\Delta(I-\lvert\Omega\rangle\langle\Omega\rvert),
+        \qquad \Delta>0.
+    \end{align*}
+    Each $S_i$ is split by at most one $D_j$. Define
+    \begin{align*}
+        d_i          & =\prod_{v\in S_i}n_v,\qquad \ell_i=\log(\mathrm e d_i), \\
+        \mathcal C_j & =\{i\in I:S_i\cap D_j\ne\varnothing,
+        \ S_i\setminus D_j\ne\varnothing\},                                    \\
+        \mathcal B_j & =1+\sum_{i\in\mathcal C_j}\ell_i^2,
+        \qquad \vartheta=c_0/\Delta,                                           \\
+        \mathcal E_m & =8\mathrm e\sum_{j=0}^{m-1}a_j^2
+        \sum_{i\in\mathcal C_j}c_0\ell_i^2.
+    \end{align*}
+    Fix $m\ge0$ and $E<\Delta$. Suppose that $\mathcal E_m\le E$
+    and, for every $j<m$, that
+    \begin{align*}
+        \frac{a_j}{1-a_j}
+        \le\frac{1}{32\sqrt{(1+\vartheta)\mathcal B_j}}.
+    \end{align*}
+    Writing $S(X\mid T)=S(X\cup T)-S(T)$, one has
+    \begin{align*}
+        \sum_{j=0}^{m-1}a_jS(X\mid T_j)
+        \le S(X)+1024\mathrm e\vartheta
+        \sum_{j=0}^{m-1}\mathcal B_j a_j^2
+        -m\log(1-E/\Delta).
+    \end{align*}
+    This is the weighted norm-comparison argument in
+    \cite[Lemma~3.2]{OpenAI2026AreaLaw}, with the logarithmic energy
+    coefficient of
+    \href{https://github.com/LionSR/TNLean/blob/67ea93e29f7c088f766b271208a2fde4cccf04a6/docs/notes/one_dimensional_note/part1_arealaw.tex#L711-L734}{Remark~6.3 of the one-dimensional note}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:logarithmic_zero_floor_comparison, lem:region_filter_norm,
+        lem:trial_filters, thm:filter_three_lines, thm:buffer_discount}
+    The admissibility assumption and $\ell_i^2\le\mathcal B_j$
+    for $i\in\mathcal C_j$ give
+    $32a_j\ell_i\le1-a_j$, hence $2a_j\ell_i\le1$.
+    Thus no further smallness assumption is needed to apply
+    Theorem~\ref{thm:logarithmic_zero_floor_comparison}.
+    Lemma~\ref{lem:region_filter_norm} bounds every single-filter
+    norm by $x_j$, where
+    \begin{align*}
+        x_j^2=\exp\bigl(-a_jS(D_j)
+        +1024\mathrm e\vartheta\mathcal B_j a_j^2\bigr).
+    \end{align*}
+    Consequently every feasible product at floor zero has norm at most
+    $B=\prod_{j<m}x_j/(\sqrt{1-E/\Delta})^m$.
+    Schmidt pinning, the trial filters and the three-lines argument
+    in Theorem~\ref{thm:buffer_discount} give
+    \begin{align*}
+        -2\log B & \le S(X)+\sum_{j=0}^{m-1}a_jS(T_j), \\
+        2\log B  & =-\sum_{j=0}^{m-1}a_jS(D_j)
+        +1024\mathrm e\vartheta\sum_{j=0}^{m-1}\mathcal B_j a_j^2
+        -m\log(1-E/\Delta).
+    \end{align*}
+    Combining these inequalities proves the assertion. The same
+    $E$ and $x_j$ apply at every positive floor before passage to
+    floor zero. No total-mass condition on the weights is used.
+\end{proof}
+
+\begin{theorem}[The entropy discount from a buffer with logarithmic energy cost]
+    \label{thm:buffer_discount_logarithmic}
+    \lean{Entropy.two_mul_condEntropy_le_logarithmic}
+    \leanok
+    Under the hypotheses of
+    Theorem~\ref{thm:buffer_weighted_logarithmic}, assume in addition
+    that $\sum_{j<m}a_j=2$. Let $T'$ be disjoint from $X$ and
+    contain every $T_j$ with $j<m$. Then
+    \begin{align*}
+        2S(X\mid T')\le S(X)
+        +1024\mathrm e\vartheta\sum_{j=0}^{m-1}\mathcal B_j a_j^2
+        -m\log(1-E/\Delta).
+    \end{align*}
+    This is the conditional-entropy conclusion in
+    \cite[Lemma~3.2]{OpenAI2026AreaLaw}, with the same logarithmic
+    energy budget $\mathcal E_m$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:buffer_weighted_logarithmic, thm:region_ssa}
+    Strong subadditivity gives $S(X\mid T')\le S(X\mid T_j)$
+    for every $j<m$. Multiply by $a_j>0$, sum, and use the
+    total mass two. The weighted estimate of
+    Theorem~\ref{thm:buffer_weighted_logarithmic} completes the proof.
+\end{proof}
+
 \subsection{Sharp one-crossing estimate for polynomial patches}
 
 The polynomial-PEPS patch argument uses the explicit constant in
