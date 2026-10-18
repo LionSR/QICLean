@@ -397,6 +397,39 @@ private theorem sum_mul_condEntropy_le_of_norm_comparison (X : Finset V) (T : �
   rw [hlhs]
   linarith
 
+/-- Combining the two norm comparisons with a quadratic energy budget of coefficient
+`κ ≥ 1` gives the weighted conditional-entropy bound, with loss `-m log (1 - E/Δ)`.
+The norm comparison is derived for the same zero-floor family used in the entropy
+argument.
+Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 443–556; TNLean
+one-dimensional note, `part1_arealaw.tex`, `eq:energy`, lines 517–522. -/
+theorem sum_mul_condEntropy_le_quadratic (X : Finset V) (T : ℕ → Finset V)
+    (hT : ∀ i j, i ≤ j → T i ⊆ T j) (hXT : ∀ j, Disjoint X (T j)) (a : ℕ → ℝ)
+    (ha : ∀ j, 0 < a j) (ha2 : ∀ j, a j ≤ 1 / 2) {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    (hΩ : ‖Ω‖ = 1) {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i)) (hherm : ∀ i, (h i).IsHermitian)
+    {c₀ : ℝ} (hc₀ : 0 ≤ c₀) (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hsingle : ∀ i j j', ((∃ v ∈ S i, v ∈ X ∪ T j) ∧ ∃ v ∈ S i, v ∉ X ∪ T j) →
+      ((∃ v ∈ S i, v ∈ X ∪ T j') ∧ ∃ v ∈ S i, v ∉ X ∪ T j') → j = j')
+    {E₀ Δ : ℝ} (hΔ : 0 < Δ) (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω)
+    (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
+      (Δ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
+    {κ : ℝ} (hκ : 1 ≤ κ)
+    {m : ℕ} {E : ℝ} (hEΔ : E < Δ) (hE : ∑ j ∈ Finset.range m,
+      κ * a j ^ 2 * ∑ i ∈ crossingTerms S (X ∪ T j), supportDim n (S i) ^ 2 * c₀ ≤ E)
+    (hu : ∀ j < m, a j / (1 - a j) ≤
+      tailRadius (c₀ / Δ) (cutLogBudget (crossingTerms S (X ∪ T j)) (supportDim n ∘ S))) :
+    ∑ j ∈ Finset.range m, a j * (regionEntropy (X ∪ T j) Ω - regionEntropy (T j) Ω) ≤
+      regionEntropy X Ω + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
+        cutLogBudget (crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        m * Real.log (1 - E / Δ) := by
+  refine sum_mul_condEntropy_le_of_norm_comparison X T hT hXT a ha ha2 hΩ
+    h S hsupp hherm hc₀ hnorm hΔ heig hgap hEΔ hu ?_
+  intro x hx0 hx K hK
+  exact pow_sqrt_mul_norm_le_of_zero_floor_quadratic (fun j ↦ X ∪ T j)
+    (fun i j hij ↦ Finset.union_subset_union le_rfl (hT i j hij)) a ha ha2 hΩ
+    h S hsupp hherm hnorm hsingle hΔ heig hgap hκ hEΔ hE hx0 hx hK
+
 /-- **The two norm comparisons combined.** Let `X` be a region, `T_0 ⊆ T_1 ⊆ ⋯` regions
 disjoint from `X`, and `D_j = X ∪ T_j`, with weights `0 < a_j ≤ 1/2`. Let `Ω` be a unit vector
 with `H Ω = E₀ Ω` and `H - E₀ ≥ Δ (1 - |Ω⟩⟨Ω|)`, `Δ > 0`, where `H = ∑_i h_i` with `h_i`
@@ -425,12 +458,43 @@ theorem sum_mul_condEntropy_le (X : Finset V) (T : ℕ → Finset V)
       regionEntropy X Ω + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
         cutLogBudget (crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
-  refine sum_mul_condEntropy_le_of_norm_comparison X T hT hXT a ha ha2 hΩ
-    h S hsupp hherm hc₀ hnorm hΔ heig hgap hEΔ hu ?_
-  intro x hx0 hx K hK
-  exact pow_sqrt_mul_norm_le_of_zero_floor (fun j ↦ X ∪ T j)
-    (fun i j hij ↦ Finset.union_subset_union le_rfl (hT i j hij)) a ha ha2 hΩ
-    h S hsupp hherm hnorm hsingle hΔ heig hgap hEΔ hE hx0 hx hK
+  exact sum_mul_condEntropy_le_quadratic (κ := 4) X T hT hXT a ha ha2 hΩ h S hsupp hherm hc₀
+    hnorm hsingle hΔ heig hgap (by norm_num) hEΔ hE hu
+
+/-- If the weights sum to two, strong subadditivity turns the quadratic weighted bound
+with coefficient `κ ≥ 1` into the buffer inequality
+`2 S(X | T′) ≤ S(X) + ∑_{j<m} 1024 e (c₀/Δ) ℬ_j a_j² - m log (1 - E/Δ)`.
+Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 556–568,
+`eq:initial-buffer-discount`; TNLean one-dimensional note, `part1_arealaw.tex`,
+`eq:energy`, lines 517–522. -/
+theorem two_mul_condEntropy_le_quadratic (X : Finset V) (T : ℕ → Finset V)
+    (hT : ∀ i j, i ≤ j → T i ⊆ T j) (hXT : ∀ j, Disjoint X (T j)) (a : ℕ → ℝ)
+    (ha : ∀ j, 0 < a j) (ha2 : ∀ j, a j ≤ 1 / 2) {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    (hΩ : ‖Ω‖ = 1) {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i)) (hherm : ∀ i, (h i).IsHermitian)
+    {c₀ : ℝ} (hc₀ : 0 ≤ c₀) (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hsingle : ∀ i j j', ((∃ v ∈ S i, v ∈ X ∪ T j) ∧ ∃ v ∈ S i, v ∉ X ∪ T j) →
+      ((∃ v ∈ S i, v ∈ X ∪ T j') ∧ ∃ v ∈ S i, v ∉ X ∪ T j') → j = j')
+    {E₀ Δ : ℝ} (hΔ : 0 < Δ) (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω)
+    (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
+      (Δ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
+    {κ : ℝ} (hκ : 1 ≤ κ)
+    {m : ℕ} {E : ℝ} (hEΔ : E < Δ) (hE : ∑ j ∈ Finset.range m,
+      κ * a j ^ 2 * ∑ i ∈ crossingTerms S (X ∪ T j), supportDim n (S i) ^ 2 * c₀ ≤ E)
+    (hu : ∀ j < m, a j / (1 - a j) ≤
+      tailRadius (c₀ / Δ) (cutLogBudget (crossingTerms S (X ∪ T j)) (supportDim n ∘ S)))
+    (hmass : ∑ j ∈ Finset.range m, a j = 2) {T' : Finset V} (hXT' : Disjoint X T')
+    (hTT' : ∀ j < m, T j ⊆ T') :
+    2 * (regionEntropy (X ∪ T') Ω - regionEntropy T' Ω) ≤
+      regionEntropy X Ω + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
+        cutLogBudget (crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        m * Real.log (1 - E / Δ) := by
+  have hmain := sum_mul_condEntropy_le_quadratic X T hT hXT a ha ha2 hΩ
+    h S hsupp hherm hc₀ hnorm hsingle hΔ heig hgap hκ hEΔ hE hu
+  refine le_trans ?_ hmain
+  rw [← hmass, Finset.sum_mul]
+  refine Finset.sum_le_sum fun j hj ↦ mul_le_mul_of_nonneg_left ?_ (ha j).le
+  exact regionEntropy_cond_anti hXT' (hTT' j (Finset.mem_range.mp hj)) Ω
 
 /-- **The entropy discount from a buffer.** Under the hypotheses of `sum_mul_condEntropy_le`,
 if the weights have total mass `∑_{j<m} a_j = 2` and every `T_j` lies in a region `T` disjoint
@@ -460,12 +524,8 @@ theorem two_mul_condEntropy_le (X : Finset V) (T : ℕ → Finset V)
       regionEntropy X Ω + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
         cutLogBudget (crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
-  have hmain := sum_mul_condEntropy_le X T hT hXT a ha ha2 hΩ h S hsupp hherm hc₀ hnorm hsingle hΔ
-    heig hgap hEΔ hE hu
-  refine le_trans ?_ hmain
-  rw [← hmass, Finset.sum_mul]
-  refine Finset.sum_le_sum fun j hj ↦ mul_le_mul_of_nonneg_left ?_ (ha j).le
-  exact regionEntropy_cond_anti hXT' (hTT' j (Finset.mem_range.mp hj)) Ω
+  exact two_mul_condEntropy_le_quadratic (κ := 4) X T hT hXT a ha ha2 hΩ h S hsupp hherm hc₀
+    hnorm hsingle hΔ heig hgap (by norm_num) hEΔ hE hu hmass hXT' hTT'
 
 /-- Tail-radius admissibility implies the scalar smallness needed at each crossing.
 Area-law manuscript, `02-initial.tex`, lines 443–585; TNLean one-dimensional note,
