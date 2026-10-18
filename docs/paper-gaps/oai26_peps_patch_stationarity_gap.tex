@@ -2,7 +2,7 @@
 \usepackage{amsmath,amssymb,xurl}
 \usepackage[hidelinks]{hyperref}
 \input{command}
-\title{The remaining stationarity step for the patch regulator}
+\title{The stationarity step for the patch regulator}
 \author{}
 \date{2026-10-07; resolved 2026-10-13}
 \begin{document}
@@ -45,8 +45,9 @@ first-order conditions can then imply the density order, and the regulator
 estimate can be applied without an additional hypothesis on minimizers.
 A separable scalar shifted-power objective is sufficient for the last-filter
 calculation; it must not be identified with the full ordered objective
-without this argument. Until the continuation is proved, the unconditional
-active-minimizer trace bound and Proposition 4.1 remain unformalized.
+without this argument. Before the continuation was proved, the
+unconditional active-minimizer trace bound and Proposition 4.1 were
+unformalized.
 
 \section{Resolution}
 The continuation is proved in \path{QICLean/Entropy/PatchStationarity.lean}.
@@ -75,4 +76,15 @@ The density order, projection rank and complementary tail bounds used by
 \texttt{Matrix.PosSemidef.trace\_shiftedRegulator\_le\_quarter} remain
 explicit hypotheses there; only the first two hypotheses of the regulator
 estimate (commutation and density order) are discharged here.
+
+The projection-rank and complementary-tail hypotheses are discharged in
+TNLean at an actual patch minimum. They follow from the entropy bound on
+the original marginal and its trace-norm distance to the same normalized
+minimizing output.\footnote{See
+\texttt{TNLean.PEPS.trace\_regularizedPatchRegulator\_le\_quarter\_of\_isMinOn} in
+\href{https://github.com/LionSR/TNLean/blob/442d18ba754ece8b979097f534316fc0ca52e661/TNLean/PEPS/AreaLaw/RegularizedPatchActualRegulatorTrace.lean\#L72}{\path{TNLean/PEPS/AreaLaw/RegularizedPatchActualRegulatorTrace.lean}}.}
+TNLean's proof of Proposition 4.1 supplies those two bounds from the area
+law.\footnote{See
+\texttt{TNLean.PEPS.Approximation.adaptivePatchConstraint} in
+\href{https://github.com/LionSR/TNLean/blob/442d18ba754ece8b979097f534316fc0ca52e661/TNLean/PEPS/Approximation/PolynomialPEPSTheorem.lean\#L45-L46}{\path{TNLean/PEPS/Approximation/PolynomialPEPSTheorem.lean}}.}
 \end{document}

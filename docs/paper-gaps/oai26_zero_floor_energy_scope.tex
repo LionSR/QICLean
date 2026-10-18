@@ -143,18 +143,31 @@ maximizer is selected.\footnote{See
 \leanid{Entropy.relabelVector_normalized_liftProd_chainList}, and
 \leanid{Entropy.forall_norm_liftProd_chainList_le_relabel_iff} in
 \doclink{QICLean/Entropy/FilterOutputCovariance}.}
-The comparison with the complete companion-source assertion remains open:
-the matrix statements must still be connected to the literal source
-filter interface and to the same family in the physical grid
-specialization, including the Hermitian-term reduction and original
-full-system gap. The new absolute estimate does not require a
-ground-state lower-bound argument.
+The physical grid specialization is proved in TNLean for the original
+square Hamiltonian. The Hermitian-part transport preserves the
+Hamiltonian sum and interaction bound, and the same maximizing family
+satisfies the energy bound and the full-system gap fidelity bound with
+the exact weighted crossing count.\footnote{See
+\leanid{TNLean.PEPS.Approximation.SquareHamiltonian.exists_zero_floor_maximizer_energy_fidelity}
+in
+\href{https://github.com/LionSR/TNLean/blob/442d18ba754ece8b979097f534316fc0ca52e661/TNLean/PEPS/Approximation/SquareZeroFloorOptimizer.lean\#L53-L135}{SquareZeroFloorOptimizer.lean}.}
+The absolute estimate does not require a ground-state lower-bound
+argument. Two comparisons with the complete companion-source assertion
+remain open. First, the matrix statements are not connected to the
+literal source filter interface.
 
-The geometric producer additionally needs its uniform collar and
+Second, the geometric producer needs its uniform collar and
 harmonic-weight construction, the specified weight sum, and its upper
 norm comparison. None of those geometric conclusions is asserted by the
 generic energy estimates.\footnote{The selective-source comparison remains
 tracked in \href{https://github.com/LionSR/TNLean/issues/8741}{TNLean issue 8741}.}
+TNLean's proofs of Theorem~1.1 of the polynomial-PEPS manuscript and of
+the two-dimensional area law do not use the zero-floor maximizer
+estimates; they follow the patch-regulator route.\footnote{See
+\leanid{TNLean.PEPS.Approximation.polynomialPEPSApproximation} in
+\href{https://github.com/LionSR/TNLean/blob/442d18ba754ece8b979097f534316fc0ca52e661/TNLean/PEPS/Approximation/PolynomialPEPSTheorem.lean\#L55-L56}{PolynomialPEPSTheorem.lean}
+and \leanid{TNLean.PEPS.AreaLaw.uniformAreaLaw} in
+\href{https://github.com/LionSR/TNLean/blob/442d18ba754ece8b979097f534316fc0ca52e661/TNLean/PEPS/AreaLaw/AreaLawTheorem.lean\#L45-L47}{AreaLawTheorem.lean}.}
 This note records the remaining difference of representations and
 physical conclusions, rather than an error in the source assertion.
 
