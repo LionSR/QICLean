@@ -30,7 +30,8 @@ Proof outline:
   (display `transport:log-relative`);
 * `exists_entropyGain_le_exactDerivative_of_relativePin` — summation over bands and
   histories, with `∑_h w_h = 1` and `∫ m_{1/4} = 1/2`, assuming Lemma 6.3 in the form
-  `RelativePinBound`.
+  `RelativePinBound`, and its form at explicit constants
+  `exists_entropyGain_le_exactDerivative_of_relativePinBoundAt`.
 
 The proofs are written from the paper; no Lean source was adapted.
 -/
@@ -333,26 +334,24 @@ theorem cfc_log_relRatio_eq_sum (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {
   all_goals refine Commute.mul_right (Commute.mul_right ?_ ?_) ?_
   all_goals first | exact r1 _ | exact r2 _ | exact r3 _ | exact hBB
 
-/-- **Entropy-gain lower bound** (area-law paper, Proposition 7.4, display
-`transport:entropy-gain`, `06-transport.tex` lines 409--416 and 495--583). The constants
-`c₀`, `C`, `e` are universal; `β_k = O(log(k+1))` depends only on the fixed data. Lemma 6.3
-of the source enters as the hypothesis `RelativePinBound`. -/
-theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePinBound.{u}) :
-    ∃ c₀ Cent eent : ℝ, 0 < c₀ ∧
-      ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
-        {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
-        [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C),
-        D.IsAdmissible → ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ →
-        (∀ k, D.CrossBandCommute n (a / 2) k) →
-        (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
-        ∃ β : ℕ → ℝ, (β =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧
-          ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
-            pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1,
-              (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
-                  Cent * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ eent - β k ≤
-                D.exactDerivative n (a / 2) k pre p := by
-  obtain ⟨c₁, Cpin, epin, hc₁, hpinAll⟩ := hpin
-  refine ⟨min c₁ (1 / 4), |Cpin| / 2, max epin 0, lt_min hc₁ (by norm_num), ?_⟩
+/-- **Entropy-gain lower bound at explicit constants** (area-law paper, Proposition 7.4,
+display `transport:entropy-gain`, `06-transport.tex` lines 409--416 and 495--583). From
+Lemma 6.3 at threshold `c₁`, constant `Cpin` and exponent `epin`, the bound holds for
+`a ℓ ≤ min c₁ (1/4)` with constant `|Cpin| / 2` and exponent `max epin 0`. -/
+theorem exists_entropyGain_le_exactDerivative_of_relativePinBoundAt {c₁ Cpin epin : ℝ}
+    (hpinAll : RelativePinBoundAt.{u} c₁ Cpin epin) :
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+      {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
+      [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C),
+      D.IsAdmissible → ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ min c₁ (1 / 4) →
+      (∀ k, D.CrossBandCommute n (a / 2) k) →
+      (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
+      ∃ β : ℕ → ℝ, (β =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧
+        ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
+          pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1,
+            (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
+                |Cpin| / 2 * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ max epin 0 - β k ≤
+              D.exactDerivative n (a / 2) k pre p := by
   intro V _ _ n _ K H _ _ C _ _ D hD a ℓ ha hℓ haℓ hcomm hdim
   have haℓc : a * ℓ ≤ c₁ := haℓ.trans (min_le_left _ _)
   have ha4 : a ≤ 1 / 4 := by
@@ -569,6 +568,28 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePin
     _ ≤ D.exactDerivative n (a / 2) k pre p :=
         Finset.sum_le_sum fun h _ => mul_le_mul_of_nonneg_left (hhist h)
           (hD.histWeight_pos h).le
+
+/-- **Entropy-gain lower bound** (area-law paper, Proposition 7.4, display
+`transport:entropy-gain`, `06-transport.tex` lines 409--416 and 495--583). The constants
+`c₀`, `C`, `e` are universal; `β_k = O(log(k+1))` depends only on the fixed data. Lemma 6.3
+of the source enters as the hypothesis `RelativePinBound`. -/
+theorem exists_entropyGain_le_exactDerivative_of_relativePin (hpin : RelativePinBound.{u}) :
+    ∃ c₀ Cent eent : ℝ, 0 < c₀ ∧
+      ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+        {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
+        [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C),
+        D.IsAdmissible → ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ →
+        (∀ k, D.CrossBandCommute n (a / 2) k) →
+        (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
+        ∃ β : ℕ → ℝ, (β =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧
+          ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
+            pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1,
+              (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
+                  Cent * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ eent - β k ≤
+                D.exactDerivative n (a / 2) k pre p := by
+  obtain ⟨_, _, _, hc₁, h⟩ := hpin
+  exact ⟨_, _, _, lt_min hc₁ (by norm_num),
+    exists_entropyGain_le_exactDerivative_of_relativePinBoundAt h⟩
 
 end TransportData
 

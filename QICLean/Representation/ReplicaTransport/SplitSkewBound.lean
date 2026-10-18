@@ -38,6 +38,8 @@ The proofs are written from the paper; no Lean source was adapted.
 
 * `TensorPower.re_coherentIntegral_ofReal` — the complex and real coherent integrals agree.
 * `TensorPower.mul_skewOperator_eq_mul_skewSquare` — the two skew operators agree on `𝒮_k`.
+* `TensorPower.ReplicaTransport.splitSkewBoundAt` — `SplitSkewBoundAt` holds at the named
+  constants, with `C = splitSkewConst`.
 * `TensorPower.ReplicaTransport.splitSkewBound` — `SplitSkewBound` holds.
 -/
 
@@ -316,11 +318,16 @@ theorem eventually_re_trace_skewSquare_le [∀ v, NeZero (n v)] {π : PYF V}
     rw [hf, ← Real.rpow_natCast] at hb
     exact_mod_cast hb
 
-/-- **Lemma 6.4 at a split leaf** (`05-replicas.tex`, display `replicas:skew-bound`,
-lines 640–660, in the form used by `06-transport.tex`, lines 735–748): `SplitSkewBound` holds,
-with `c = 1/8`, `C = 2 skewConst` and exponent `4`. -/
-theorem splitSkewBound : SplitSkewBound.{u} := by
-  refine ⟨1 / 8, 2 * Entropy.ConditionalSkew.skewConst, 4, by norm_num, ?_⟩
+/-- The constant `C = 2 skewConst` of Lemma 6.4 at a split leaf (`05-replicas.tex`, display
+`replicas:skew-bound`, lines 640–660), the coefficient in `splitSkewBoundAt`. -/
+noncomputable def splitSkewConst : ℝ := 2 * Entropy.ConditionalSkew.skewConst
+
+/-- **Lemma 6.4 at a split leaf, at the named constants** (`05-replicas.tex`, display
+`replicas:skew-bound`, lines 640–660, in the form used by `06-transport.tex`,
+lines 735–748): `SplitSkewBoundAt` holds with threshold `1/8`, constant `splitSkewConst`
+and exponent `4`. -/
+theorem splitSkewBoundAt : SplitSkewBoundAt.{u} (1 / 8) splitSkewConst 4 := by
+  rw [splitSkewConst]
   intro V _ _ n _ π hπ D h h0 h1 hh hsplit t ht0 _ hsmall
   set M : ∀ k, Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
     fun k => Transport.skewSquare (bandMetric n t k π) (copyMean n k h)
@@ -350,5 +357,11 @@ theorem splitSkewBound : SplitSkewBound.{u} := by
         with k hk ρ
       linarith [hk ρ.1 ρ.2.1 ρ.2.2.1 ρ.2.2.2])
   exact ⟨r, hr, fun k ρ hρ htr hs => by linarith [hle k ⟨ρ, hρ, htr, hs⟩]⟩
+
+/-- **Lemma 6.4 at a split leaf** (`05-replicas.tex`, display `replicas:skew-bound`,
+lines 640–660, in the form used by `06-transport.tex`, lines 735–748): `SplitSkewBound` holds,
+with `c = 1/8`, `C = 2 skewConst` and exponent `4`. -/
+theorem splitSkewBound : SplitSkewBound.{u} :=
+  ⟨_, _, _, by norm_num, splitSkewBoundAt⟩
 
 end TensorPower.ReplicaTransport
