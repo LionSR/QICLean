@@ -1414,6 +1414,118 @@ These estimates assume the stated commutation and clipping properties.
 Deriving them from a particular minimum and counting physical crossing
 edges are separate steps in the patch argument.
 
+\begin{theorem}[Logarithmic energy of a stationary nested product]
+    \label{thm:chain_logarithmic_energy}
+    \lean{Entropy.re_inner_sub_le_of_chain_logarithmic}
+    \leanok
+    Let $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$ be a finite
+    tensor product, let $D_0\subseteq\cdots\subseteq D_{m-1}$ be
+    regions, and let $\varphi$ be a unit vector. Suppose that each
+    positive invertible filter $K_j$ on $D_j$ has a common
+    orthonormal eigenbasis with the actual marginal
+    $\rho_{\varphi,D_j}$, with eigenvalues $l_{j,r}>0$ and
+    $p_{j,r}\ge0$. Let $a_j\ge0$. For each $j$ and each pair $r,s$
+    with $p_{j,r},p_{j,s}>0$, assume
+    \begin{align*}
+        |\log l_{j,r}-\log l_{j,s}|
+        \le\frac{a_j}{2}|\log p_{j,r}-\log p_{j,s}|.
+    \end{align*}
+    Let $H=\sum_{i\in I}h_i$ be a finite sum of Hermitian operators,
+    with $h_i$ supported on $S_i$ and $\lVert h_i\rVert\le c_0$.
+    Put
+    \begin{align*}
+        d_i          & =\prod_{v\in S_i}n_v,\qquad \ell_i=\log(\mathrm e d_i), \\
+        \mathcal C_j & =\{i\in I:S_i\cap D_j\ne\varnothing,
+        \ S_i\setminus D_j\ne\varnothing\}.
+    \end{align*}
+    Assume that each $S_i$ is split by at most one region $D_j$.
+    For every $j$ and every $i\in\mathcal C_j$, assume
+    \begin{align*}
+        2a_j\ell_i\le1.
+    \end{align*}
+    Write $\widehat K_j=K_j\otimes I_{D_j^c}$ and
+    $K=\widehat K_{m-1}\cdots\widehat K_0$. If $E_0$ is real and
+    $KHK^{-1}\varphi=E_0\varphi$, then
+    \begin{align*}
+        \operatorname{Re}\langle\varphi,H\varphi\rangle-E_0
+        \le8\mathrm e\sum_{j=0}^{m-1}a_j^2
+        \sum_{i\in\mathcal C_j}c_0\ell_i^2.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:chain_term_conjugation_logarithmic}
+    Unit normalization and the conjugated eigenvector equation give
+    $\langle\varphi,KHK^{-1}\varphi\rangle=E_0$. Thus the energy
+    difference is the sum, over $i$, of the real expectation
+    differences for $h_i$. Bound each summand by its absolute value
+    and apply Theorem~\ref{thm:chain_term_conjugation_logarithmic}.
+    The smallness assumption applies precisely at the region that
+    splits $S_i$, if such a region exists. Interchanging the finite
+    sums gives the stated expression. The coefficient is that of
+    \href{https://github.com/LionSR/TNLean/blob/67ea93e29f7c088f766b271208a2fde4cccf04a6/docs/notes/one_dimensional_note/part1_arealaw.tex#L711-L734}{Remark~6.3 of the one-dimensional note};
+    the summation is the passage to the product energy in the
+    area-law manuscript, \texttt{02-initial.tex}, lines 407--441.
+\end{proof}
+
+\begin{theorem}[Logarithmic energy of a maximizing nested product]
+    \label{thm:filter_max_logarithmic_energy}
+    \lean{Entropy.re_inner_sub_le_of_max_logarithmic}
+    \leanok
+    Let $D_0\subseteq\cdots\subseteq D_{m-1}$ be regions of a finite
+    tensor product $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$.
+    Let $a_j>0$ and $f_j>0$, with
+    $f_j\dim\mathcal H_{D_j}<1$ for every $j$. Suppose that each
+    $K_j$ is feasible at floor $f_j$ and weight $a_j$, and that the
+    family maximizes the norm of its output on a nonzero vector
+    $\Omega$ among all such feasible families. Here feasibility means
+    that $K_j=U_j\operatorname{diag}(y_{j,r}^{a_j/2})U_j^*$ for a
+    unitary $U_j$ and real weights $y_{j,r}\ge f_j$ summing to one.
+    Let $H=\sum_{i\in I}h_i$ be a finite sum of Hermitian operators,
+    with $h_i$ supported on $S_i$ and $\lVert h_i\rVert\le c_0$.
+    Assume that $H\Omega=E_0\Omega$ for a real $E_0$, and that each
+    $S_i$ is split by at most one $D_j$. Define
+    \begin{align*}
+        d_i          & =\prod_{v\in S_i}n_v,\qquad \ell_i=\log(\mathrm e d_i), \\
+        \mathcal C_j & =\{i\in I:S_i\cap D_j\ne\varnothing,
+        \ S_i\setminus D_j\ne\varnothing\}.
+    \end{align*}
+    For every $j$ and every $i\in\mathcal C_j$, assume
+    \begin{align*}
+        2a_j\ell_i\le1.
+    \end{align*}
+    Write $\widehat K_j=K_j\otimes I_{D_j^c}$ and put
+    \begin{align*}
+        K & =\widehat K_{m-1}\cdots\widehat K_0,\qquad
+        \psi=K\Omega,\qquad \varphi=\frac{\psi}{\lVert\psi\rVert}.
+    \end{align*}
+    Then $\psi\ne0$, and the actual normalized output satisfies
+    \begin{align*}
+        \operatorname{Re}\langle\varphi,H\varphi\rangle-E_0
+        \le8\mathrm e\sum_{j=0}^{m-1}a_j^2
+        \sum_{i\in\mathcal C_j}c_0\ell_i^2.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{prop:filter_maximizer, thm:all_filters_clipped,
+        thm:chain_logarithmic_energy}
+    Positive floors make every $K_j$ invertible, so
+    Proposition~\ref{prop:filter_maximizer} gives $\psi\ne0$ and
+    $\varphi$ is a unit vector. Actual maximality gives marginal
+    commutation and common-basis clipping for $\psi$ by
+    Theorem~\ref{thm:all_filters_clipped}. Normalization multiplies
+    each marginal by the same positive scalar
+    $\lVert\psi\rVert^{-2}$. Commutation is preserved, and the
+    added constant in each logarithmic marginal eigenvalue cancels
+    in differences on the positive spectrum. The filters therefore
+    satisfy the same clipping inequalities relative to the actual
+    marginals of $\varphi$. The eigenvector equation gives
+    $KHK^{-1}\varphi=E_0\varphi$. Apply
+    Theorem~\ref{thm:chain_logarithmic_energy}. These are the
+    optimizer and normalization passages in the area-law manuscript,
+    \texttt{02-initial.tex}, lines 342--441; no clipping or
+    normalization data of an unrelated vector are assumed.
+\end{proof}
+
 \begin{theorem}[Sharp energy of a maximizing nested product]
     \label{thm:filter_max_sharp_energy}
     \lean{Entropy.re_inner_sub_le_of_max_sharp,

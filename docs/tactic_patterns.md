@@ -7,6 +7,27 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Summing termwise conjugation bounds — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic stationary energy estimates in
+  `Entropy.FilterChainEnergy`; two numerical envelopes in one file.
+- **Decision:** One private mathematical lemma converts a conjugated
+  eigenvector equation and termwise bounds into an energy sum over the
+  actual crossing pairs. The caller supplies its envelope.
+- **Caveat:** Linearity and the crossing-index interchange require neither
+  positivity of the envelope nor additional spectral hypotheses.
+
+### Normalization of the actual maximizing output — shared private lemma (2026-10-18)
+
+- **Seen:** Coarse, sharp polynomial and logarithmic maximizer estimates in
+  `Entropy.FilterChainEnergy`; three consumers in one file.
+- **Decision:** Derive invertibility, unit normalization, common-basis
+  clipping and inverse-product cancellation once for the actual output.
+  Each energy theorem supplies its own numerical estimate.
+- **Caveat:** Positive floors and maximality give these conclusions; they
+  are not supplied output assumptions. No global weight upper bound is
+  needed for this common construction. Existing ranges are preserved.
+
 ### Numerical bounds after stripping a nested filter product — shared private lemma (2026-10-18)
 
 - **Seen:** The sharp polynomial and logarithmic conjugation estimates in
