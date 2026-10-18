@@ -373,8 +373,10 @@ depend on the common values there.
     No normalization assumption is required.
 \end{theorem}
 \begin{proof}\leanok
-    Let $u',v'$ be configurations on $D'$. The bijection of complementary
-    configurations changes variables in the defining partial trace:
+    \uses{lem:partial_trace_petz_product_reindexing}
+    Let $u',v'$ be configurations on $D'$. By
+    Lemma~\ref{lem:partial_trace_petz_product_reindexing}, the bijection of
+    complementary configurations changes variables in the defining partial trace:
     \begin{align}
         \rho_{T\Omega,D'}(u',v')
         &=\sum_{w'}T\Omega(u',w')\overline{T\Omega(v',w')}
@@ -385,15 +387,16 @@ depend on the common values there.
 
 \begin{theorem}[Regional entropy under bijections of tensor factors]
     \label{thm:region_entropy_relabel}
-    \lean{Entropy.regionEntropy, Entropy.regionEntropy_relabel}
+    \lean{Entropy.regionEntropy_relabel}
     \leanok
     \uses{thm:region_state_relabel, def:von_neumann_entropy}
     Under the hypotheses of Theorem~\ref{thm:region_state_relabel},
     $S_{T\Omega}(D')=S_\Omega(D)$.
 \end{theorem}
 \begin{proof}\leanok
-    Conjugation by a permutation isometry preserves the eigenvalues of the
-    regional state, and hence its von Neumann entropy.
+    \uses{thm:region_state_relabel, thm:entropy_submatrix_equiv}
+    By Theorem~\ref{thm:entropy_submatrix_equiv}, conjugation by a permutation
+    isometry preserves the von Neumann entropy of the regional state.
 \end{proof}
 
 

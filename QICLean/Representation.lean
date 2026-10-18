@@ -61,8 +61,10 @@ import QICLean.Representation.ReplicaRatio
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.ReplicaSiteOp
 import QICLean.Representation.ReplicaSpectralLaw
+import QICLean.Representation.ReplicaSymmetricRangeIsometry
 import QICLean.Representation.ReplicaTransport
 import QICLean.Representation.ReplicaWeight
+import QICLean.Representation.ReplicaWholeInverse
 import QICLean.Representation.SchurLabelCommutation
 import QICLean.Representation.SchurLabelEstimates
 import QICLean.Representation.SchurSurprisal
@@ -74,6 +76,8 @@ import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarFunction
 import QICLean.Representation.StarOperator
 import QICLean.Representation.SubsystemTransport
+import QICLean.Representation.SymmetricProjection
+import QICLean.Representation.SymmetricRangeIsometry
 import QICLean.Representation.TensorPowerAction
 import QICLean.Representation.TensorPowerRpow
 import QICLean.Representation.TrivialLabel
