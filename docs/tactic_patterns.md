@@ -7,6 +7,30 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Prefix comparison for the actual maximizing family — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic successor comparisons in
+  `Entropy.FilterPrefix`; two energy budgets in one file.
+- **Decision:** One private lemma selects an actual maximizing prefix and
+  applies the energy estimate to that same family and its normalized
+  output. The gap and existing overlap comparison finish the argument.
+- **Caveat:** The core requires no global upper-weight bound or sign on
+  the energy budget. Strict `E < Δ` enters only in the later floor-zero
+  division. Existing physical statements retain their original ranges.
+- **Iteration:** Reuse `pow_mul_le_prod_of_step` and
+  `norm_le_of_forall_floor`; no new telescoping or continuity machinery.
+
+### Configuration witnesses from nonzero vectors — existing Mathlib lemmas (2026-10-18)
+
+- **Seen:** The shared successor, its physical callers and the new
+  logarithmic floor-zero comparison in `FilterPrefix` and `FilterZeroFloor`.
+- **Decision:** Reuse `WithLp.ofLp_eq_zero` at exponent two and
+  `Function.ne_iff`. This replaces the repeated coordinatewise
+  contradiction proof with existing mathematical lemmas.
+- **Caveat:** The coordinate supplies only the existing configuration
+  witness. No nonempty-space premise or physical witness structure is
+  added, and no nonvanishing coordinate enters the energy statement.
+
 ### Summing termwise conjugation bounds — shared private lemma (2026-10-18)
 
 - **Seen:** The polynomial and logarithmic stationary energy estimates in
