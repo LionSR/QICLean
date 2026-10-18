@@ -23,9 +23,11 @@ The proofs are written from the paper; no Lean source was adapted.
 ## Main declarations
 
 * `Matrix.smul_vecMulVec_le_of_forall` — a rank-one Loewner bound from quadratic forms.
+* `TensorPower.ReplicaTransport.relativePinBoundAt` — Lemma 6.3 in the form
+  `RelativePinBoundAt`, at the named constants.
 * `TensorPower.ReplicaTransport.relativePinBound` — Lemma 6.3 in the form `RelativePinBound`.
 * `TensorPower.ReplicaTransport.transport_of_splitSkewBound` — Proposition 7.4 assuming only
-  the split-leaf skew bound.
+  the split-leaf skew bound, and `transport_of_splitSkewBoundAt` at explicit constants.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder unitInterval
@@ -144,15 +146,16 @@ theorem rpow_neg_half_eq_inv_sqrt {m : Type*} [Fintype m] [DecidableEq m] {A : M
   rw [CFC.sqrt_eq_rpow, eq_comm]
   exact Matrix.inv_eq_right_inv (hA.rpow_mul_rpow_neg (1 / 2))
 
-/-- **Lemma 6.3 in the form used by the transport estimate** (`05-replicas.tex`, display
-`replicas:relative-pin`, lines 486–505, read with the entropy `transport:move-eta` of
-`06-transport.tex`, lines 315–328): `RelativePinBound` holds. For a move to `P` the exponent
-`η_θ = S_θ(x|P) + S_θ(x|Y \ x)` of `TensorPower.relativePin_regionalMovementEta` is
-`I_θ(x:F|P)`; for a move to `F` the outer parts are exchanged; a choice making no move has
-relative metric `I`. -/
-theorem relativePinBound : RelativePinBound.{u} := by
-  obtain ⟨C, c, hC, hc, H⟩ := relativePin_regionalMovementEta.{u}
-  refine ⟨c, C, 2, hc, ?_⟩
+/-- **Lemma 6.3 in the form used by the transport estimate, at the named constants**
+(`05-replicas.tex`, display `replicas:relative-pin`, lines 486–505): `RelativePinBoundAt`
+holds with threshold `Entropy.conditionalMovementThreshold`, constant
+`TensorPower.relativePinConst` and exponent `2`. -/
+theorem relativePinBoundAt :
+    RelativePinBoundAt.{u} conditionalMovementThreshold relativePinConst 2 := by
+  have H := @relativePin_regionalMovementEta_explicit.{u}
+  have hC := relativePinConst_pos
+  generalize relativePinConst = C at H hC ⊢
+  generalize conditionalMovementThreshold = c at H ⊢
   intro V _ _ n _ π hπ m hm t ht0 ht14 hsmall
   have ht0' : (0 : ℝ) ≤ t := ht0.le
   have hA := posDef_bandMetric (n := n) hπ ht0'
@@ -231,6 +234,48 @@ theorem relativePinBound : RelativePinBound.{u} := by
     rw [regionalMovementEta_eq_cmi_left h4.swap, ← logDim_eq] at this
     simpa [moveEta, Move.subsystem, Real.rpow_two] using this
 
+/-- **Lemma 6.3 in the form used by the transport estimate** (`05-replicas.tex`, display
+`replicas:relative-pin`, lines 486–505, read with the entropy `transport:move-eta` of
+`06-transport.tex`, lines 315–328): `RelativePinBound` holds. For a move to `P` the exponent
+`η_θ = S_θ(x|P) + S_θ(x|Y \ x)` of `TensorPower.relativePin_regionalMovementEta` is
+`I_θ(x:F|P)`; for a move to `F` the outer parts are exchanged; a choice making no move has
+relative metric `I`. -/
+theorem relativePinBound : RelativePinBound.{u} :=
+  ⟨_, _, _, conditionalMovementThreshold_pos, relativePinBoundAt⟩
+
+/-- **Proposition 7.4 assuming only the split-leaf skew bound, at explicit constants**
+(area-law paper, `prop:transport`, `06-transport.tex` lines 377--434): the relative coherent
+pin enters at its named constants (`relativePinBoundAt`), and the skew bound in the form
+`SplitSkewBoundAt cskew Csym esym`. -/
+theorem transport_of_splitSkewBoundAt {cskew Csym esym : ℝ}
+    (hskew : SplitSkewBoundAt.{u} cskew Csym esym) :
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+      {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
+      [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
+      {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
+      D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
+      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ →
+      a * ℓ ≤ min (min conditionalMovementThreshold (1 / 4)) (min cskew (1 / 4)) →
+      (∀ k, D.CrossBandCommute n (a / 2) k) →
+      (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
+      (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
+      ∃ β r : ℕ → ℝ, (β =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧ Tendsto r atTop (𝓝 0) ∧
+        ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
+          pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1,
+            HasDerivAt
+              (fun q => -Real.log (Transport.filteredNormSq (D.rootPath n (a / 2) k q) pre))
+              (D.exactDerivative n (a / 2) k pre p) p ∧
+            (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
+                |relativePinConst| / 2 * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ max (2 : ℝ) 0 - β k ≤
+              D.exactDerivative n (a / 2) k pre p ∧
+            ∀ E₀ : ℝ, E.replicaEnergy k *ᵥ pre = (E₀ : ℂ) • pre →
+              let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
+              (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
+                2 * E₀ + 3 / 2 * max Csym 0 * a ^ 2 * ℓ ^ max esym 0 *
+                  D.energyError E (a / 2) k pre p + r k :=
+  transport_of_relativePinBoundAt_of_splitSkewBoundAt relativePinBoundAt hskew
+
 /-- **Proposition 7.4, entropy and energy transport, assuming only the split-leaf skew bound**
 (area-law paper, `prop:transport`, `06-transport.tex` lines 377--434): the relative coherent
 pin is `TensorPower.ReplicaTransport.relativePinBound`. -/
@@ -257,7 +302,9 @@ theorem transport_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
               ∀ E₀ : ℝ, E.replicaEnergy k *ᵥ pre = (E₀ : ℂ) • pre →
                 let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
                 (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
-                  2 * E₀ + Cen * a ^ 2 * ℓ ^ een * D.energyError E (a / 2) k pre p + r k :=
-  transport_of_relativePin_of_splitSkewBound relativePinBound hskew
+                  2 * E₀ + Cen * a ^ 2 * ℓ ^ een * D.energyError E (a / 2) k pre p + r k := by
+  obtain ⟨_, _, _, hc, h⟩ := hskew
+  exact ⟨_, _, _, _, _, lt_min (lt_min conditionalMovementThreshold_pos (by norm_num))
+    (lt_min hc (by norm_num)), transport_of_splitSkewBoundAt h⟩
 
 end TensorPower.ReplicaTransport

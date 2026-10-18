@@ -41,7 +41,8 @@ The proofs are written from the paper; no Lean source was adapted.
 ## Main declarations
 
 * `Entropy.frameMarginalP_posSemidef`, `Entropy.trace_frameMarginalP`.
-* `TensorPower.relativePin` — **Lemma 6.3**.
+* `TensorPower.relativePin` — **Lemma 6.3**, and `TensorPower.relativePin_explicit` at the
+  named constants `relativePinConst` and `Entropy.conditionalMovementThreshold`.
 -/
 
 open MeasureTheory Matrix PermutationRepresentation Entropy
@@ -135,28 +136,33 @@ theorem _root_.Entropy.FourPartition.moveParts {V : Type*} {P x Y F : Finset V}
     (h : Entropy.FourPartition P x Y F) : MoveParts P x Y F :=
   ⟨h.Px, h.PY, h.PF, h.xY, h.xF, h.YF⟩
 
-/-- **Lemma 6.3, the relative coherent pin** (`05-replicas.tex`, equation
-`replicas:relative-pin`, lines 486–509). Let `P, x, Y₀, F` partition the sites, `0 < t ≤ 1`,
-`a = 2t` with `a log(e dim x) ≤ c`. There is a polynomial `K (k + 2)^N`, uniform in `θ`, such
-that for every unit vector `θ` and every `w`,
-`exp{k a [η_θ - C a^{1/4} log²(e dim x)]} |⟨θ^{⊗k}, w⟩|² ≤ K (k + 2)^N ⟨w, C_{x,k} w⟩`, that is,
-`C_{x,k} ≥ (K (k + 2)^N)^{-1} exp{k a [η_θ - C a^{1/4} log²(e dim x)]} P_{θ,k}`, with
-`η_θ = S_θ(x|P) + S_θ(x|Y₀)`. The constants `C` and `c` are universal. -/
-theorem relativePin :
-    ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
-      ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
-        {P x Y F : Finset V} (h : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
-        2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤ c →
-        ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
-          ∀ w : Config k (fun v => Fin (n v)) → ℂ,
-            ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
-              Real.exp (k * (2 * t) * (movementEta (frameVector h θ) -
-                C * (2 * t) ^ (1 / 4 : ℝ) *
-                  Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
-            K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re := by
-  obtain ⟨C₀, c, hC₀, hc, Hmove⟩ := regionalMovement_norm_le.{u}
-  refine ⟨2 * C₀, c, by positivity, hc, ?_⟩
+/-- The constant `C` of Lemma 6.3 (`05-replicas.tex`, lines 486–509), twice the constant
+`conditionalMovementConst` of Lemma 5.1: the coefficient of `a^{1/4} log²(e dim x)` in
+`TensorPower.relativePin_explicit`. -/
+noncomputable def relativePinConst : ℝ := 2 * conditionalMovementConst
+
+/-- The constant of Lemma 6.3 is positive. -/
+theorem relativePinConst_pos : 0 < relativePinConst :=
+  mul_pos two_pos conditionalMovementConst_pos
+
+/-- **Lemma 6.3, the relative coherent pin, at the named constants** (`05-replicas.tex`,
+equation `replicas:relative-pin`, lines 486–509): the bound of `TensorPower.relativePin` with
+`C = relativePinConst` for `a log(e dim x) ≤ conditionalMovementThreshold`. -/
+theorem relativePin_explicit :
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
+      {P x Y F : Finset V} (h : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
+      2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤
+        conditionalMovementThreshold →
+      ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+        ∀ w : Config k (fun v => Fin (n v)) → ℂ,
+          ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
+            Real.exp (k * (2 * t) * (movementEta (frameVector h θ) -
+              relativePinConst * (2 * t) ^ (1 / 4 : ℝ) *
+                Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
+          K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re := by
   intro V _ _ n _ P x Y F h t ht0 ht1 hsmall
+  rw [relativePinConst]
+  set C₀ := conditionalMovementConst
   have σ₀ : SiteConfig n := fun v => ⟨0, Nat.pos_of_ne_zero (NeZero.ne (n v))⟩
   obtain ⟨Cc, hCc0, Hcomp⟩ := exists_l2_opNorm_compensator_le (n := n) ht0
   obtain ⟨Ω₁, _, P₁, hP₁, σ, hσ, hint₁, heq₁⟩ :=
@@ -260,8 +266,8 @@ theorem relativePin :
         ← CFC.rpow_eq_cfc_real hω'.1.posSemidef.nonneg]
       simp only [v, DP, DY, ρP, ρY, mulVec_mulVec, Matrix.mul_assoc]
       rw [← Matrix.mul_assoc (localLift (x ∪ Y) _), hcomm, Matrix.mul_assoc]
-    have hone := Hmove h θ hθ (σ ω) (τ ω') hω.1.posSemidef hω.2 hω'.1.posSemidef hω'.2
-      (2 * t) h2t hsmall
+    have hone := regionalMovement_norm_le_explicit h θ hθ (σ ω) (τ ω') hω.1.posSemidef hω.2
+      hω'.1.posSemidef hω'.2 (2 * t) h2t hsmall
     rw [← hop] at hone
     calc ‖(EuclideanSpace.equiv _ ℂ).symm
           ((localLift (P ∪ x) (σ ω ^ t) * localLift (x ∪ Y) (τ ω' ^ t)) *ᵥ v)‖ ^ k
@@ -310,5 +316,26 @@ theorem relativePin :
         rw [hpow]
         linear_combination (((k : ℝ) + 2) ^ (4 * Cc) *
           (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re) * hE2
+
+/-- **Lemma 6.3, the relative coherent pin** (`05-replicas.tex`, equation
+`replicas:relative-pin`, lines 486–509). Let `P, x, Y₀, F` partition the sites, `0 < t ≤ 1`,
+`a = 2t` with `a log(e dim x) ≤ c`. There is a polynomial `K (k + 2)^N`, uniform in `θ`, such
+that for every unit vector `θ` and every `w`,
+`exp{k a [η_θ - C a^{1/4} log²(e dim x)]} |⟨θ^{⊗k}, w⟩|² ≤ K (k + 2)^N ⟨w, C_{x,k} w⟩`, that is,
+`C_{x,k} ≥ (K (k + 2)^N)^{-1} exp{k a [η_θ - C a^{1/4} log²(e dim x)]} P_{θ,k}`, with
+`η_θ = S_θ(x|P) + S_θ(x|Y₀)`. The constants `C` and `c` are universal. -/
+theorem relativePin :
+    ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
+      ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
+        {P x Y F : Finset V} (h : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
+        2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤ c →
+        ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+          ∀ w : Config k (fun v => Fin (n v)) → ℂ,
+            ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
+              Real.exp (k * (2 * t) * (movementEta (frameVector h θ) -
+                C * (2 * t) ^ (1 / 4 : ℝ) *
+                  Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
+            K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re :=
+  ⟨_, _, relativePinConst_pos, conditionalMovementThreshold_pos, relativePin_explicit⟩
 
 end TensorPower
