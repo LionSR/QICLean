@@ -44,6 +44,47 @@ universe u
 
 namespace TensorPower.ReplicaTransport
 
+/-- **Proposition 7.4 at explicit constants** (area-law paper, `prop:transport`,
+`06-transport.tex` lines 377--434). From Lemma 6.3 in the form `RelativePinBoundAt c₁ Cpin
+epin` and the split-leaf skew bound in the form `SplitSkewBoundAt c₂ Csym esym`, the
+proposition holds for `a ℓ ≤ min (min c₁ (1/4)) (min c₂ (1/4))`, with entropy constant
+`|Cpin| / 2` and exponent `max epin 0`, and energy constant `3/2 · max Csym 0` and exponent
+`max esym 0`. -/
+theorem transport_of_relativePinBoundAt_of_splitSkewBoundAt {c₁ Cpin epin c₂ Csym esym : ℝ}
+    (hpin : RelativePinBoundAt.{u} c₁ Cpin epin) (hskew : SplitSkewBoundAt.{u} c₂ Csym esym) :
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+      {K : ℕ} {H : Type*} [Fintype H] [DecidableEq H] {C : H → Type*}
+      [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
+      {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
+      D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
+      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ min (min c₁ (1 / 4)) (min c₂ (1 / 4)) →
+      (∀ k, D.CrossBandCommute n (a / 2) k) →
+      (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
+      (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
+      ∃ β r : ℕ → ℝ, (β =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧ Tendsto r atTop (𝓝 0) ∧
+        ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
+          pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1,
+            HasDerivAt
+              (fun q => -Real.log (Transport.filteredNormSq (D.rootPath n (a / 2) k q) pre))
+              (D.exactDerivative n (a / 2) k pre p) p ∧
+            (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
+                |Cpin| / 2 * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ max epin 0 - β k ≤
+              D.exactDerivative n (a / 2) k pre p ∧
+            ∀ E₀ : ℝ, E.replicaEnergy k *ᵥ pre = (E₀ : ℂ) • pre →
+              let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
+              (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
+                2 * E₀ + 3 / 2 * max Csym 0 * a ^ 2 * ℓ ^ max esym 0 *
+                  D.energyError E (a / 2) k pre p + r k := by
+  intro V _ _ n _ K H _ _ C _ _ D ι _ E hD hE0 hE1 hEs hcompat a ℓ ha hℓ haℓ hcomm hℓm hℓs
+  obtain ⟨β, hβ, hent⟩ := TransportData.exists_entropyGain_le_exactDerivative_of_relativePinBoundAt
+    hpin n D hD ha hℓ (haℓ.trans (min_le_left _ _)) hcomm hℓm
+  obtain ⟨r, hr, hen⟩ := TransportData.exists_energy_le_of_splitSkewBoundAt hskew n D E hD hE0
+    hE1 hEs hcompat ha hℓ (haℓ.trans (min_le_right _ _)) hcomm hℓs
+  refine ⟨β, r, hβ, hr, fun k pre hpre hne p hp => ⟨?_, hent k pre hpre hne p hp,
+    fun E₀ hE => hen k pre hpre hne p hp E₀ hE⟩⟩
+  exact D.hasDerivAt_exactDerivative hD (by positivity) (hcomm k) hne hp
+
 /-- **Proposition 7.4, entropy and energy transport** (area-law paper, `prop:transport`,
 `06-transport.tex` lines 377--434), assuming the relative coherent pin of Lemma 6.3 and the
 split-leaf skew bound of Lemma 6.4 in the forms `RelativePinBound` and `SplitSkewBound`.
@@ -75,16 +116,9 @@ theorem transport_of_relativePin_of_splitSkewBound (hpin : RelativePinBound.{u})
                 let v := Transport.filteredVector (D.rootPath n (a / 2) k p) pre
                 (star v ⬝ᵥ (E.replicaEnergy k *ᵥ v)).re ≤
                   2 * E₀ + Cen * a ^ 2 * ℓ ^ een * D.energyError E (a / 2) k pre p + r k := by
-  obtain ⟨c₁, Cent, eent, hc₁, hG2⟩ :=
-    TransportData.exists_entropyGain_le_exactDerivative_of_relativePin hpin
-  obtain ⟨c₂, Cen, een, hc₂, hG4⟩ := TransportData.exists_energy_le_of_splitSkewBound hskew
-  refine ⟨min c₁ c₂, Cent, eent, Cen, een, lt_min hc₁ hc₂, ?_⟩
-  intro V _ _ n _ K H _ _ C _ _ D ι _ E hD hE0 hE1 hEs hcompat a ℓ ha hℓ haℓ hcomm hℓm hℓs
-  obtain ⟨β, hβ, hent⟩ := hG2 n D hD ha hℓ (haℓ.trans (min_le_left _ _)) hcomm hℓm
-  obtain ⟨r, hr, hen⟩ := hG4 n D E hD hE0 hE1 hEs hcompat ha hℓ (haℓ.trans (min_le_right _ _))
-    hcomm hℓs
-  refine ⟨β, r, hβ, hr, fun k pre hpre hne p hp => ⟨?_, hent k pre hpre hne p hp,
-    fun E₀ hE => hen k pre hpre hne p hp E₀ hE⟩⟩
-  exact D.hasDerivAt_exactDerivative hD (by positivity) (hcomm k) hne hp
+  obtain ⟨_, _, _, hc₁, hpin⟩ := hpin
+  obtain ⟨_, _, _, hc₂, hskew⟩ := hskew
+  exact ⟨_, _, _, _, _, lt_min (lt_min hc₁ (by norm_num)) (lt_min hc₂ (by norm_num)),
+    transport_of_relativePinBoundAt_of_splitSkewBoundAt hpin hskew⟩
 
 end TensorPower.ReplicaTransport
