@@ -420,6 +420,7 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
 \begin{lemma}[Kernel tail]
     \label{lem:spectral_kernel_tail}
     \lean{SpectralFilter.abs_spectralKernel_le_tail,
+        SpectralFilter.abs_spectralKernel_le_kernelTailConst,
         SpectralFilter.integrable_inv_one_add_abs_sq}
     \leanok
     \uses{thm:spectral_kernel_decay}
@@ -435,7 +436,9 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
 \begin{theorem}[Localization of filtered operators]
     \label{thm:filter_localization}
     \lean{SpectralFilter.exists_norm_filterIntegral_sub_map_le',
-        SpectralFilter.exists_norm_filterIntegral_sub_map_le}
+        SpectralFilter.exists_norm_filterIntegral_sub_map_le,
+        SpectralFilter.norm_filterIntegral_sub_map_le,
+        SpectralFilter.norm_filterIntegral_sub_map_le_filterLocalityConst_mul}
     \leanok
     \uses{lem:spectral_kernel_tail, def:filter_integral}
     Let $C\ge0$ and $v,c>0$. There are $C',c'>0$, depending only on
@@ -453,7 +456,8 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
 \begin{theorem}[Tail of the positive constraints]
     \label{thm:positive_constraint_tail}
     \lean{SpectralFilter.norm_abs_sub_map_abs_le,
-        SpectralFilter.exists_norm_positiveConstraint_sub_map_le}
+        SpectralFilter.exists_norm_positiveConstraint_sub_map_le,
+        SpectralFilter.norm_positiveConstraint_sub_map_le}
     \leanok
     \uses{thm:filter_localization, thm:positive_replacement, lem:sqrt_holder}
     If $L$ is a contraction, $M$ and $LM$ are Hermitian, and $L$ fixes $|LM|$,
