@@ -279,6 +279,51 @@ This section proves attainment and the matching upper bound used in
 Theorem~\ref{thm:ky_fan_maximum_principle}. For Hermitian $A$, write $S_k(A)$
 for the sum introduced in Definition~\ref{def:ky_fan_norm}.
 
+\begin{theorem}[Projection onto the leading eigenvectors]
+    \label{thm:leading_eigenprojection}
+    \lean{Matrix.IsHermitian.leadingEigenprojection_spec}
+    \lean{Matrix.IsHermitian.leadingEigenprojection}
+    \leanok
+    \uses{def:ky_fan_norm}
+    Let $A\in\MN{D}$ be Hermitian, and let $(u_j)_{0\le j<D}$ be its chosen
+    orthonormal eigenbasis, with corresponding eigenvalues in nonincreasing
+    order. For every $k\in\N$, define
+    \begin{align}
+        P_k=\sum_{0\le j<\min(k,D)}\ketbra{u_j}{u_j}.\notag
+    \end{align}
+    Then $P_k$ is an orthogonal projection and
+    \begin{align}
+        \operatorname{ran}P_k
+                               & =\spn_{\C}\{u_j:0\le j<\min(k,D)\},\notag \\
+        \operatorname{rank}P_k & =\min(k,D),\notag                         \\
+        \re\tr(P_kA)           & =S_k(A),\notag                            \\
+        \re\tr((\Id-P_k)A)     & =\re\tr(A)-S_k(A).\notag
+    \end{align}
+    A repeated eigenvalue at the cutoff retains only the indicated vectors
+    of the chosen basis. In particular, $P_0=0$ and $P_k=\Id$ for $k\ge D$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:ky_fan_norm}
+    This is the leading-eigenvector construction underlying
+    \cite[Chapter~3, Lemma~3.1]{Wolf2012Quantum}.
+    In the chosen eigenbasis, $P_k$ is diagonal with entry one on the
+    first $\min(k,D)$ coordinates and zero elsewhere. Thus it is Hermitian
+    and idempotent, and
+    \begin{align}
+        P_ku_j=
+        \begin{cases}
+            u_j, & j<k,    \\
+            0,   & j\ge k.
+        \end{cases}\notag
+    \end{align}
+    Expanding a vector in this basis proves the asserted range equality.
+    The trace of $P_k$ counts the selected coordinates and equals its rank;
+    pairing the same diagonal with $A$ gives the sum $S_k(A)$.
+    Finally, $(\Id-P_k)A=A-P_kA$ and linearity of the trace give the
+    complementary mass. Empty sums give the same conclusions when $D=0$.
+\end{proof}
+
 \begin{theorem}[Achievability of the largest-eigenvalue sum]
     \label{thm:ky_fan_achievability}
     \lean{Matrix.IsHermitian.exists_isProj_trace_eq_kyFanNorm}
@@ -289,10 +334,9 @@ for the sum introduced in Definition~\ref{def:ky_fan_norm}.
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{def:ky_fan_norm}
-    Diagonalize $A=U\diag(\lambda_i)U^\dagger$ and take $P$ to be the
-    projection onto the span of the eigenvectors with the $\min(k,D)$ largest
-    eigenvalues. Then $\re\tr(PA)=\sum_{i\le k}\lambda_i=S_k(A)$.
+    \uses{thm:leading_eigenprojection}
+    Take the projection $P=P_k$ from Theorem~\ref{thm:leading_eigenprojection}.
+    Its rank and captured trace give the assertion.
 \end{proof}
 
 \begin{theorem}[Upper bound for the largest-eigenvalue sum]
