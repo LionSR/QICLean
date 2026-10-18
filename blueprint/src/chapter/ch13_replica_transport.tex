@@ -184,8 +184,11 @@ which gives the proposition without hypotheses beyond those of the source.
 \begin{theorem}[Entropy and energy transport, assuming Lemmas 6.3 and 6.4]
     \label{thm:replica_transport_conditional}
     \lean{TensorPower.ReplicaTransport.transport_of_relativePin_of_splitSkewBound,
+      TensorPower.ReplicaTransport.transport_of_relativePinBoundAt_of_splitSkewBoundAt,
       TensorPower.ReplicaTransport.TransportData.exists_entropyGain_le_exactDerivative_of_relativePin,
+      TensorPower.ReplicaTransport.TransportData.exists_entropyGain_le_exactDerivative_of_relativePinBoundAt,
       TensorPower.ReplicaTransport.TransportData.exists_energy_le_of_splitSkewBound,
+      TensorPower.ReplicaTransport.TransportData.exists_energy_le_of_splitSkewBoundAt,
       TensorPower.ReplicaTransport.TransportData.smul_coherentProj_le_bandRelRatio,
       TensorPower.ReplicaTransport.TransportData.cfc_log_relRatio_eq_sum}
     \leanok
@@ -233,7 +236,9 @@ which gives the proposition without hypotheses beyond those of the source.
       TensorPower.ReplicaTransport.fourPartition_of_isPartition,
       TensorPower.ReplicaTransport.isBigO_neg_log_inv_poly,
       TensorPower.ReplicaTransport.relativePinBound,
-      TensorPower.ReplicaTransport.transport_of_splitSkewBound}
+      TensorPower.ReplicaTransport.relativePinBoundAt,
+      TensorPower.ReplicaTransport.transport_of_splitSkewBound,
+      TensorPower.ReplicaTransport.transport_of_splitSkewBoundAt}
     \leanok
     \uses{thm:replica_transport_conditional, thm:relative_pin, lem:movement_eta_regional}
     The relative coherent pin holds in the form assumed in
@@ -299,7 +304,9 @@ which gives the proposition without hypotheses beyond those of the source.
       TensorPower.ReplicaTransport.posSemidef_of_localLift,
       TensorPower.ReplicaTransport.exists_tendsto_zero_forall_le,
       TensorPower.ReplicaTransport.eventually_re_trace_skewSquare_le,
-      TensorPower.ReplicaTransport.splitSkewBound}
+      TensorPower.ReplicaTransport.splitSkewBound,
+      TensorPower.ReplicaTransport.splitSkewConst,
+      TensorPower.ReplicaTransport.splitSkewBoundAt}
     \leanok
     \uses{thm:replica_transport_skew_conditional}
     Let $0\le h\le1$ have designated support $D$ meeting $Y$ and exactly one of the outer
@@ -324,7 +331,13 @@ which gives the proposition without hypotheses beyond those of the source.
 \end{proof}
 
 \begin{theorem}[Entropy and energy transport]\label{thm:replica_transport}
-    \lean{TensorPower.ReplicaTransport.transport}
+    \lean{TensorPower.ReplicaTransport.transport,
+      TensorPower.ReplicaTransport.transport_explicit,
+      TensorPower.ReplicaTransport.transportThreshold,
+      TensorPower.ReplicaTransport.transportEntropyConst,
+      TensorPower.ReplicaTransport.transportEntropyExponent,
+      TensorPower.ReplicaTransport.transportEnergyConst,
+      TensorPower.ReplicaTransport.transportEnergyExponent}
     \leanok
     \uses{thm:replica_transport_skew_conditional, thm:replica_split_skew_bound,
       cor:replica_transport_integrated, lem:replica_entropy_gain_integrable}
@@ -335,7 +348,10 @@ which gives the proposition without hypotheses beyond those of the source.
     below a universal threshold. Namely, for every $k$ and nonzero $x\in\mathcal S_k$: at
     every $0<p<1$ the exact derivative, the entropy-gain lower bound and the energy bound
     hold, and the entropy-gain lower bound integrates over every $[p_0,p_1]\subseteq[0,1]$
-    to $\log N(p_0)^2-\log N(p_1)^2$.
+    to $\log N(p_0)^2-\log N(p_1)^2$. One may take the threshold $1/8$, the entropy
+    constant $200000$ with exponent $2$, and the energy constant $3C$ with exponent $4$,
+    where $C=18\pi^2+6144\,e^{\pi^2+1}$ is the constant of
+    Theorem~\ref{thm:conditional_skew}.
 \end{theorem}
 
 \begin{proof}\leanok

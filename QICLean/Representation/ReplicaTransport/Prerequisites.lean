@@ -24,6 +24,10 @@ from the skew bound in `ReplicaTransport.SplitSkewBound` (`splitSkewBound`).
 designated support meets `Y` and exactly one outer part. The source lemma requires only
 that `h` be supported on `P ∪ Y`; the split case is the specialization consumed by
 Proposition 7.4 (`06-transport.tex` lines 735--748).
+
+`RelativePinBoundAt` and `SplitSkewBoundAt` are the same propositions at given constants;
+the transport estimate is proved from them with its constants as explicit functions of
+theirs.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
@@ -75,5 +79,37 @@ def SplitSkewBound : Prop :=
                   realCoherentIntegral k (TransportData.base n) ρ (fun θ =>
                     splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) +
                 r k
+
+/-- `RelativePinBound` at the given threshold `c`, constant `Cpin` and exponent `epin`
+(`05-replicas.tex`, display `replicas:relative-pin`, lines 480--500). -/
+def RelativePinBoundAt (c Cpin epin : ℝ) : Prop :=
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+      (π : PYF V), π.IsPartition → ∀ (m : Move V), m.IsValid π →
+      ∀ {t : ℝ}, 0 < t → t < 1 / 4 → 2 * t * logDim n m.subsystem ≤ c →
+      ∃ b : ℕ → ℝ, (∀ k, 0 < b k) ∧
+        ((fun k : ℕ => -Real.log (b k)) =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧
+        ∀ (k : ℕ) (θ : SiteConfig n → ℂ), star θ ⬝ᵥ θ = 1 →
+          (b k * Real.exp ((k : ℝ) * (2 * t) *
+              (moveEta n π m ((EuclideanSpace.equiv _ ℂ).symm θ) -
+                Cpin * (2 * t) ^ (1 / 4 : ℝ) * logDim n m.subsystem ^ epin))) •
+              coherentProj k θ ≤
+            bandMetric n t k π ^ (-(1 / 2) : ℝ) * bandMetric n t k (m.apply π) *
+              bandMetric n t k π ^ (-(1 / 2) : ℝ)
+
+/-- `SplitSkewBound` at the given threshold `c`, constant `Csym` and exponent `esym`
+(`05-replicas.tex`, display `replicas:skew-bound`, lines 645--660). -/
+def SplitSkewBoundAt (c Csym esym : ℝ) : Prop :=
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
+      (π : PYF V), π.IsPartition → ∀ (D : Finset V) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ),
+      0 ≤ h → h ≤ 1 → IsSupportedOn h D → (π.SplitsToP D ∨ π.SplitsToF D) →
+      ∀ {t : ℝ}, 0 < t → t < 1 / 4 → 2 * t * logDim n D ≤ c →
+      ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧
+        ∀ (k : ℕ) (ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ),
+          ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+          (ρ * Matrix.Transport.skewSquare (bandMetric n t k π) (copyMean n k h)).trace.re ≤
+            Csym * (2 * t) ^ 2 * logDim n D ^ esym *
+                realCoherentIntegral k (TransportData.base n) ρ (fun θ =>
+                  splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ)) +
+              r k
 
 end TensorPower.ReplicaTransport
