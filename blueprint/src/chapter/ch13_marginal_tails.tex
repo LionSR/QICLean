@@ -991,6 +991,134 @@ has trace two.
 \end{proof}
 
 
+\begin{theorem}[One logarithmic prefix comparison]
+    \label{thm:logarithmic_prefix_step}
+    \lean{Entropy.sqrt_mul_chainOptimum_succ_le_logarithmic}
+    \leanok
+    Let $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$ be a finite
+    tensor product, let $D_0\subseteq D_1\subseteq\cdots$, and let
+    $a_j>0$ and $f_j>0$ satisfy $f_j\dim\mathcal H_{D_j}<1$.
+    A feasible filter on $D_j$ has the form
+    $U\operatorname{diag}(y_r^{a_j/2})U^*$, where $U$ is unitary,
+    $y_r\ge f_j$ and $\sum_r y_r=1$. Let $N_r$ be the maximum of
+    $\lVert\widehat L_{r-1}\cdots\widehat L_0\Omega\rVert$ over
+    these feasible families, where $\widehat L_j=L_j\otimes I_{D_j^c}$.
+    Suppose that $\Omega$ is a unit vector, $H=\sum_{i\in I}h_i$,
+    and each $h_i$ is Hermitian, supported on $S_i$, with
+    $\lVert h_i\rVert\le c_0$. Assume
+    \begin{align*}
+        H\Omega & =E_0\Omega,                                          \\
+        H-E_0I  & \ge\Delta(I-\lvert\Omega\rangle\langle\Omega\rvert),
+        \qquad \Delta>0.
+    \end{align*}
+    Each $S_i$ is split by at most one of the regions. Put
+    \begin{align*}
+        \ell_i       & =\log\Bigl(\mathrm e\prod_{v\in S_i}n_v\Bigr), \\
+        \mathcal C_j & =\{i\in I:S_i\cap D_j\ne\varnothing,
+        \ S_i\setminus D_j\ne\varnothing\},                           \\
+        B_r          & =8\mathrm e\sum_{j=0}^{r-1}a_j^2
+        \sum_{i\in\mathcal C_j}c_0\ell_i^2.
+    \end{align*}
+    Fix $k\ge0$ and $E,x\in\mathbb R$. Assume $B_{k+1}\le E$,
+    and assume $2a_j\ell_i\le1$ for every $j<k+1$ and
+    $i\in\mathcal C_j$. If every feasible filter $L$ on $D_k$
+    satisfies $\lVert\widehat L\Omega\rVert\le x$, then
+    \begin{align*}
+        \sqrt{1-E/\Delta}\,N_{k+1}\le xN_k.
+    \end{align*}
+    No bound on $E$ relative to $\Delta$ is required. The square
+    root is the nonnegative real square root, equal to zero for a
+    nonpositive argument. This is the prefix comparison in
+    \cite[Lemma~3.2]{OpenAI2026AreaLaw}, with the local energy
+    coefficient from
+    \href{https://github.com/LionSR/TNLean/blob/67ea93e29f7c088f766b271208a2fde4cccf04a6/docs/notes/one_dimensional_note/part1_arealaw.tex#L711-L734}{Remark~6.3 of the one-dimensional note}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:filter_max_logarithmic_energy, lem:prefix_step,
+        prop:filter_maximizer}
+    Choose an actual maximizing family of length $k+1$. Positive
+    floors make its output $\psi$ nonzero. The logarithmic energy
+    estimate applies to the normalization of this same $\psi$,
+    and the gap gives squared overlap at least $1-E/\Delta$.
+    Monotonicity of the real square root gives overlap at least
+    $\sqrt{1-E/\Delta}$. Splitting off the last filter and using
+    Lemma~\ref{lem:prefix_step} bounds the preceding output by
+    $N_k$ and the last single-filter norm by $x$. No independent
+    normalized output or clipping data are assumed.
+\end{proof}
+
+\begin{theorem}[Iterated logarithmic prefix comparison]
+    \label{thm:logarithmic_prefix_product}
+    \lean{Entropy.pow_sqrt_mul_chainOptimum_le_logarithmic}
+    \leanok
+    Keep the system, positive floors, positive weights and
+    Hamiltonian hypotheses of
+    Theorem~\ref{thm:logarithmic_prefix_step}. Fix $m\ge0$ and
+    $E\in\mathbb R$. Assume $B_m\le E$ and $2a_j\ell_i\le1$
+    for every $j<m$ and $i\in\mathcal C_j$. Let $x_j\ge0$,
+    and suppose that for $j<m$ every feasible filter on $D_j$
+    satisfies $\lVert\widehat L\Omega\rVert\le x_j$. Then
+    \begin{align*}
+        \bigl(\sqrt{1-E/\Delta}\bigr)^mN_m
+        \le\prod_{j=0}^{m-1}x_j.
+    \end{align*}
+    No additional sign or upper bound on $E$ is assumed.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:logarithmic_prefix_step, thm:first_norm_comparison}
+    Every summand of $B_m$ is nonnegative: for each actual
+    interaction, $\lVert h_i\rVert\le c_0$ implies $c_0\ge0$.
+    Thus $B_{k+1}\le B_m$ for $k<m$. The same $E$ and the
+    restricted crossing-pair smallness conditions apply to every
+    prefix. Iterate Theorem~\ref{thm:logarithmic_prefix_step},
+    using $x_j\ge0$ and $N_0=\lVert\Omega\rVert=1$.
+    Empty interaction families and empty products require no
+    separate nonemptiness assumption.
+\end{proof}
+
+\begin{theorem}[Logarithmic norm comparison at floor zero]
+    \label{thm:logarithmic_zero_floor_comparison}
+    \lean{Entropy.pow_sqrt_mul_norm_le_of_zero_floor_logarithmic}
+    \leanok
+    Keep the regions, positive weights and Hamiltonian hypotheses
+    of Theorem~\ref{thm:logarithmic_prefix_step}, without fixing
+    positive floors. Fix $m\ge0$ and $E<\Delta$, and assume
+    $B_m\le E$ and $2a_j\ell_i\le1$ for every $j<m$ and
+    $i\in\mathcal C_j$. Let $x_j\ge0$. For $j<m$, suppose that
+    $\lVert\widehat L\Omega\rVert\le x_j$ for every positive
+    floor $f$ and every filter feasible at that floor and weight
+    $a_j$. Every family feasible at floor zero, namely
+    \begin{align*}
+        K_j     & =U_j\operatorname{diag}(y_{j,r}^{a_j/2})U_j^*, \\
+        y_{j,r} & \ge0,\qquad \sum_r y_{j,r}=1,
+    \end{align*}
+    then satisfies
+    \begin{align*}
+        \bigl(\sqrt{1-E/\Delta}\bigr)^m
+        \lVert\widehat K_{m-1}\cdots\widehat K_0\Omega\rVert
+        \le\prod_{j=0}^{m-1}x_j.
+    \end{align*}
+    Both $E$ and the bounds $x_j$ are uniform in the positive
+    floors. The floor-zero filters may be singular; no clipping
+    condition is imposed on them.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:logarithmic_prefix_product, prop:zero_floor_comparison}
+    Write $d_j=\dim\mathcal H_{D_j}$, which is positive since
+    $\Omega\ne0$. For $0<\delta<1$, replace the spectral parameters by
+    $(1-\delta)y_{j,r}+\delta/d_j$. The resulting filters are
+    feasible at floors $\delta/d_j$ and converge to $K_j$.
+    The energy budget and smallness conditions contain no floor,
+    and the single-filter bounds are uniform in that floor.
+    Apply Theorem~\ref{thm:logarithmic_prefix_product} at each
+    raised floor. Since $E<\Delta$, the square-root factor is
+    positive; the uniform bound passes to the floor-zero output
+    by continuity, as in Proposition~\ref{prop:zero_floor_comparison}.
+\end{proof}
+
 \begin{theorem}[Closed conditions for maximizing filters]
     \label{thm:filter_zero_floor_closed_max}
     \lean{Entropy.exists_max_feasible_chain_mem_of_pos_floor}
