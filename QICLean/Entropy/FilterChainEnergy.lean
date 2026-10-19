@@ -27,6 +27,8 @@ energy estimate. Since `K H K⁻¹ φ = E₀ φ` whenever `H Ω = E₀ Ω`, summ
 * `Entropy.abs_re_inner_sub_conj_localLift_le_logarithmic`: the supported logarithmic bound.
 * `Entropy.abs_re_inner_sub_chain_conj_le_logarithmic`: its single-splitting chain version.
 * `Entropy.re_inner_sub_le_of_chain`: the excitation energy of a stationary nested product.
+* `Entropy.re_inner_sub_le_of_chain_logarithmic`: its logarithmic support-dimension bound.
+* `Entropy.re_inner_sub_le_of_max_logarithmic`: the logarithmic bound for the actual maximizer.
 * `Entropy.re_inner_sub_le_of_max`: the excitation energy of the optimal nested product.
 * `Entropy.re_inner_sub_le_of_max_sharp`: the full-range inside-support estimate.
 * `Entropy.abs_re_inner_sub_le_of_max_sharp`: the absolute estimate for the same maximizer.
@@ -45,6 +47,10 @@ The logarithmic refinement follows the one-dimensional area-law note,
 `part1_arealaw.tex`, lines 711–734 (`rem:sharper`). It bounds the supported local
 cost by `8 e c₀ log(e d_S)² a²` when `a ≥ 0` and `2 a log(e d_S) ≤ 1`.
 The chain version imposes this smallness only at the actual splitting region.
+Summing over interactions gives the same logarithmic bound for the excitation
+energy, with smallness only at actual crossing pairs. For a positive-floor
+norm-maximizing family, normalization and clipping are derived for its actual
+output, without a further global upper bound on the weights.
 The full-range polynomial estimates above retain their original assumptions.
 
 Independently written from the manuscript; no upstream Lean proof text is reused.
@@ -523,6 +529,40 @@ theorem toEuclideanLin_conj_apply_eq {k : Type*} [Fintype k] [DecidableEq k]
   rw [map_smul, ← toEuclideanLin_mul_apply, h, toEuclideanLin_mul_apply, heig, map_smul,
     smul_comm]
 
+/-- Sum termwise expectation bounds over the interactions crossing each region.
+Area-law manuscript, `02-initial.tex`, lines 407–441, `eq:initial-product-energy`. -/
+private theorem re_inner_sub_le_of_term_bounds (D : ℕ → Finset V)
+    {ι : Type*} [Fintype ι]
+    (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ) (S : ι → Finset V)
+    {P Q : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+    {φ : EuclideanSpace ℂ (SiteConfig n)} (hφ : ‖φ‖ = 1) {E₀ : ℝ}
+    (heig : toEuclideanLin (P * (∑ i, h i) * Q) φ = (E₀ : ℂ) • φ)
+    (bound : Fin m → ι → ℝ)
+    (hterm : ∀ i,
+      |(⟪φ, toEuclideanLin (h i) φ⟫_ℂ -
+        ⟪φ, toEuclideanLin (P * h i * Q) φ⟫_ℂ).re| ≤
+        ∑ j ∈ splitIndices (S i) D m, bound j i) :
+    (⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀ ≤
+      ∑ j : Fin m, ∑ i ∈ crossingTerms S (D j), bound j i := by
+  classical
+  have hE : ⟪φ, toEuclideanLin (P * (∑ i, h i) * Q) φ⟫_ℂ = E₀ := by
+    rw [heig, inner_smul_right, inner_self_eq_norm_sq_to_K, hφ]
+    simp
+  have hsum : ∀ Y : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ,
+      ⟪φ, toEuclideanLin (∑ i, Y i) φ⟫_ℂ = ∑ i, ⟪φ, toEuclideanLin (Y i) φ⟫_ℂ := fun Y ↦ by
+    rw [map_sum, LinearMap.sum_apply, inner_sum]
+  have hexp : (⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀ =
+      ∑ i, (⟪φ, toEuclideanLin (h i) φ⟫_ℂ - ⟪φ, toEuclideanLin (P * h i * Q) φ⟫_ℂ).re := by
+    rw [← Complex.ofReal_re E₀, ← hE, ← Complex.sub_re, Finset.mul_sum, Finset.sum_mul, hsum, hsum,
+      ← Finset.sum_sub_distrib, Complex.re_sum]
+  rw [hexp]
+  calc ∑ i, (⟪φ, toEuclideanLin (h i) φ⟫_ℂ - ⟪φ, toEuclideanLin (P * h i * Q) φ⟫_ℂ).re
+      ≤ ∑ i, ∑ j ∈ splitIndices (S i) D m, bound j i :=
+        Finset.sum_le_sum fun i _ ↦ (le_abs_self _).trans (hterm i)
+    _ = ∑ j : Fin m, ∑ i ∈ crossingTerms S (D j), bound j i := by
+        refine Finset.sum_comm' fun i j ↦ ?_
+        simp [mem_splitIndices, crossingTerms]
+
 /-- **Excitation energy of a stationary nested product.** Let `K_j` be invertible filters on
 nested regions `D_j`, each commuting with the regional state of the unit vector `φ` and clipped
 relative to it, with weights `a_j ≤ 1`. Let `H = ∑_i h_i` with `h_i` Hermitian, supported on
@@ -553,33 +593,11 @@ theorem re_inner_sub_le_of_chain_sharp (D : ℕ → Finset V) (hD : ∀ i j : Fi
     (⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀ ≤
       ∑ j : Fin m, a j ^ 2 *
         ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀ := by
-  classical
-  set P := liftProd (chainList D K fun _ ↦ True)
-  set Pi := liftProdInv (chainList D K fun _ ↦ True)
-  have hE : ⟪φ, toEuclideanLin (P * (∑ i, h i) * Pi) φ⟫_ℂ = E₀ := by
-    rw [heig, inner_smul_right, inner_self_eq_norm_sq_to_K, hφ]
-    simp
-  have hsum : ∀ Y : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ,
-      ⟪φ, toEuclideanLin (∑ i, Y i) φ⟫_ℂ = ∑ i, ⟪φ, toEuclideanLin (Y i) φ⟫_ℂ := fun Y ↦ by
-    rw [map_sum, LinearMap.sum_apply, inner_sum]
-  have hexp : (⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀ =
-      ∑ i, (⟪φ, toEuclideanLin (h i) φ⟫_ℂ - ⟪φ, toEuclideanLin (P * h i * Pi) φ⟫_ℂ).re := by
-    rw [← Complex.ofReal_re E₀, ← hE, ← Complex.sub_re, Finset.mul_sum, Finset.sum_mul, hsum, hsum,
-      ← Finset.sum_sub_distrib, Complex.re_sum]
-  rw [hexp]
-  calc ∑ i, (⟪φ, toEuclideanLin (h i) φ⟫_ℂ - ⟪φ, toEuclideanLin (P * h i * Pi) φ⟫_ℂ).re
-      ≤ ∑ i, ∑ j ∈ splitIndices (S i) D m,
-          a j ^ 2 * (Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀) :=
-        Finset.sum_le_sum fun i _ ↦ (le_abs_self _).trans
-          (abs_re_inner_sub_chain_conj_le_sharp D hD K hunit hφ a ha hcl (hsupp i) (hherm i) σ₀
-            (hnorm i) (hsingle i))
-    _ = ∑ j : Fin m, ∑ i ∈ crossingTerms S (D j),
-          a j ^ 2 * (Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀) := by
-        refine Finset.sum_comm' fun i j ↦ ?_
-        simp [mem_splitIndices, crossingTerms]
-    _ = ∑ j : Fin m, a j ^ 2 *
-          ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀ := by
-        simp only [Finset.mul_sum]
+  have h := re_inner_sub_le_of_term_bounds D h S hφ heig
+    (fun j i ↦ a j ^ 2 * (Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀))
+    (fun i ↦ abs_re_inner_sub_chain_conj_le_sharp D hD K hunit hφ a ha hcl
+      (hsupp i) (hherm i) σ₀ (hnorm i) (hsingle i))
+  simpa only [Finset.mul_sum] using h
 
 /-- **Excitation energy of a stationary nested product.** Let `K_j` be invertible filters on
 nested regions `D_j`, each commuting with the regional state of the unit vector `φ` and clipped
@@ -628,6 +646,92 @@ theorem re_inner_sub_le_of_chain (D : ℕ → Finset V) (hD : ∀ i j : Fin m, i
       nlinarith [mul_nonneg (sq_nonneg (a j))
         (mul_nonneg (sq_nonneg (supportDim n (S i) : ℝ)) hc₀)]
 
+/-- The logarithmic excitation-energy bound for a stationary nested product.
+Smallness is required only at actual crossing pairs. TNLean one-dimensional note,
+`part1_arealaw.tex`, lines 711–734 (`rem:sharper`); area-law manuscript,
+`02-initial.tex`, lines 407–441, `eq:initial-product-energy`. -/
+theorem re_inner_sub_le_of_chain_logarithmic (D : ℕ → Finset V)
+    (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
+    (K : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ)
+    (hunit : ∀ i, IsUnit (K i).det) {φ : EuclideanSpace ℂ (SiteConfig n)} (hφ : ‖φ‖ = 1)
+    (a : Fin m → ℝ) (ha : ∀ j, 0 ≤ a j)
+    (hcl : ∀ j, K j * regionState (D j) φ = regionState (D j) φ * K j ∧
+      ∃ (W : Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ)
+        (l q : RegionConfig n (D j) → ℝ),
+        Wᴴ * W = 1 ∧ (∀ i, 0 < l i) ∧ K j = W * diagonal (fun i ↦ (l i : ℂ)) * Wᴴ ∧
+        regionState (D j) φ = W * diagonal (fun i ↦ (q i : ℂ)) * Wᴴ ∧
+        ∀ i k, 0 < q i → 0 < q k →
+          |Real.log (l i) - Real.log (l k)| ≤ a j / 2 * |Real.log (q i) - Real.log (q k)|)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i)) (hherm : ∀ i, (h i).IsHermitian)
+    (σ₀ : SiteConfig n) {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m, ∀ j' ∈ splitIndices (S i) D m, j = j')
+    (hsmall : ∀ j : Fin m, ∀ i ∈ crossingTerms S (D j),
+      2 * a j * Real.log (Real.exp 1 * supportDim n (S i)) ≤ 1)
+    {E₀ : ℝ}
+    (heig : toEuclideanLin (liftProd (chainList D K fun _ ↦ True) * (∑ i, h i) *
+      liftProdInv (chainList D K fun _ ↦ True)) φ = (E₀ : ℂ) • φ) :
+    (⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀ ≤
+      ∑ j : Fin m, 8 * Real.exp 1 * a j ^ 2 *
+        ∑ i ∈ crossingTerms S (D j),
+          Real.log (Real.exp 1 * supportDim n (S i)) ^ 2 * c₀ := by
+  have hterm (i : ι) := abs_re_inner_sub_chain_conj_le_logarithmic D hD K hunit hφ a ha hcl
+    (hsupp i) (hherm i) σ₀ (hnorm i) (hsingle i) (fun j hj ↦ hsmall j i (by
+      simpa [mem_splitIndices, crossingTerms] using hj))
+  have h := re_inner_sub_le_of_term_bounds D h S hφ heig
+    (fun j i ↦ 8 * Real.exp 1 * c₀ * Real.log (Real.exp 1 * supportDim n (S i)) ^ 2 * a j ^ 2)
+    hterm
+  refine h.trans_eq ?_
+  simp only [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro j _
+  apply Finset.sum_congr rfl
+  intro i _
+  ring
+
+/-- Invertibility, normalization and clipping for the actual norm-maximizing output.
+Area-law manuscript, `02-initial.tex`, lines 342–441, `eq:initial-product-energy`. -/
+private theorem normalized_chain_data_of_max (D : ℕ → Finset V)
+    (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
+    (f a : Fin m → ℝ) (hf : ∀ j, 0 < f j) (ha : ∀ j, 0 < a j)
+    (hcard : ∀ j : Fin m, Fintype.card (RegionConfig n (D j)) * f j < 1)
+    (K : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ)
+    (hK : ∀ j, IsFeasibleFilter (f j) (a j) (K j)) {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    (hΩ : Ω ≠ 0) (σ₀ : SiteConfig n)
+    (hmax : ∀ K' : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ,
+      (∀ j, IsFeasibleFilter (f j) (a j) (K' j)) →
+      ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
+        ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) :
+    let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
+    let φ := ((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ
+    (∀ j, IsUnit (K j).det) ∧ ‖φ‖ = 1 ∧
+    (∀ j, K j * regionState (D j) φ = regionState (D j) φ * K j ∧
+      ∃ (W : Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ)
+        (l q : RegionConfig n (D j) → ℝ),
+        Wᴴ * W = 1 ∧ (∀ i, 0 < l i) ∧ K j = W * diagonal (fun i ↦ (l i : ℂ)) * Wᴴ ∧
+        regionState (D j) φ = W * diagonal (fun i ↦ (q i : ℂ)) * Wᴴ ∧
+        ∀ i k, 0 < q i → 0 < q k →
+          |Real.log (l i) - Real.log (l k)| ≤ a j / 2 * |Real.log (q i) - Real.log (q k)|) ∧
+    liftProdInv (chainList D K fun _ ↦ True) *
+      liftProd (chainList D K fun _ ↦ True) = 1 := by
+  set ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
+  have hψ : ψ ≠ 0 := toEuclideanLin_liftProd_chainList_ne_zero D hf hK _ hΩ
+  have hunit : ∀ i, IsUnit (K i).det := fun i ↦
+    (Matrix.isUnit_iff_isUnit_det _).mp ((hK i).posDef (hf i)).isUnit
+  have hc : (((‖ψ‖⁻¹ : ℝ)) : ℂ) ≠ 0 := by
+    rw [Complex.ofReal_ne_zero]; exact inv_ne_zero (norm_ne_zero_iff.mpr hψ)
+  have hφ : ‖(((‖ψ‖⁻¹ : ℝ)) : ℂ) • ψ‖ = 1 := by
+    rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm,
+      inv_mul_cancel₀ (norm_ne_zero_iff.mpr hψ)]
+  have hinv : liftProdInv (chainList D K fun _ ↦ True) *
+      liftProd (chainList D K fun _ ↦ True) = 1 := by
+    refine liftProdInv_mul_liftProd_of_isUnit fun p hp ↦ ?_
+    obtain ⟨i, _, rfl⟩ := List.mem_map.mp hp
+    exact hunit i
+  exact ⟨hunit, hφ,
+    fun j ↦ clipped_smul hc (forall_clipped_of_max D hD f a hf ha hcard K hK Ω σ₀ hmax hψ j),
+    hinv⟩
+
 /-- **Excitation energy of the optimal nested product.** Let feasible filters `K_j` on nested
 regions `D_j`, with floors `f_j > 0`, `card · f_j < 1` and weights `0 < a_j ≤ 1/2`, maximize
 `‖L_{m-1} ⋯ L_0 Ω‖`, where `Ω ≠ 0` satisfies `H Ω = E₀ Ω` for `H = ∑_i h_i` with `h_i`
@@ -657,22 +761,9 @@ theorem re_inner_sub_le_of_max (D : ℕ → Finset V) (hD : ∀ i j : Fin m, i �
         (((‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖⁻¹ : ℝ) : ℂ) •
           toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω)⟫_ℂ).re - E₀ ≤
       ∑ j : Fin m, 4 * a j ^ 2 * ∑ i ∈ crossingTerms S (D j), supportDim n (S i) ^ 2 * c₀ := by
-  set ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
-  have hψ : ψ ≠ 0 := toEuclideanLin_liftProd_chainList_ne_zero D hf hK _ hΩ
-  have hunit : ∀ i, IsUnit (K i).det := fun i ↦
-    (Matrix.isUnit_iff_isUnit_det _).mp ((hK i).posDef (hf i)).isUnit
-  have hc : (((‖ψ‖⁻¹ : ℝ)) : ℂ) ≠ 0 := by
-    rw [Complex.ofReal_ne_zero]; exact inv_ne_zero (norm_ne_zero_iff.mpr hψ)
-  have hφ : ‖(((‖ψ‖⁻¹ : ℝ)) : ℂ) • ψ‖ = 1 := by
-    rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm,
-      inv_mul_cancel₀ (norm_ne_zero_iff.mpr hψ)]
-  have hinv : liftProdInv (chainList D K fun _ ↦ True) *
-      liftProd (chainList D K fun _ ↦ True) = 1 := by
-    refine liftProdInv_mul_liftProd_of_isUnit fun p hp ↦ ?_
-    obtain ⟨i, _, rfl⟩ := List.mem_map.mp hp
-    exact hunit i
-  exact re_inner_sub_le_of_chain D hD K hunit hφ a ha2
-    (fun j ↦ clipped_smul hc (forall_clipped_of_max D hD f a hf ha hcard K hK Ω σ₀ hmax hψ j))
+  obtain ⟨hunit, hφ, hcl, hinv⟩ :=
+    normalized_chain_data_of_max D hD f a hf ha hcard K hK hΩ σ₀ hmax
+  exact re_inner_sub_le_of_chain D hD K hunit hφ a ha2 hcl
     h S hsupp hherm σ₀ hnorm hsingle (toEuclideanLin_conj_apply_eq heig hinv _)
 
 /-- A positive-floor norm-maximizing family obeys the inside-support energy estimate
@@ -703,22 +794,9 @@ theorem re_inner_sub_le_of_max_sharp (D : ℕ → Finset V) (hD : ∀ i j : Fin 
           toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω)⟫_ℂ).re - E₀ ≤
       ∑ j : Fin m, a j ^ 2 *
         ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀ := by
-  set ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
-  have hψ : ψ ≠ 0 := toEuclideanLin_liftProd_chainList_ne_zero D hf hK _ hΩ
-  have hunit : ∀ i, IsUnit (K i).det := fun i ↦
-    (Matrix.isUnit_iff_isUnit_det _).mp ((hK i).posDef (hf i)).isUnit
-  have hc : (((‖ψ‖⁻¹ : ℝ)) : ℂ) ≠ 0 := by
-    rw [Complex.ofReal_ne_zero]; exact inv_ne_zero (norm_ne_zero_iff.mpr hψ)
-  have hφ : ‖(((‖ψ‖⁻¹ : ℝ)) : ℂ) • ψ‖ = 1 := by
-    rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_norm,
-      inv_mul_cancel₀ (norm_ne_zero_iff.mpr hψ)]
-  have hinv : liftProdInv (chainList D K fun _ ↦ True) *
-      liftProd (chainList D K fun _ ↦ True) = 1 := by
-    refine liftProdInv_mul_liftProd_of_isUnit fun p hp ↦ ?_
-    obtain ⟨i, _, rfl⟩ := List.mem_map.mp hp
-    exact hunit i
-  exact re_inner_sub_le_of_chain_sharp D hD K hunit hφ a ha1
-    (fun j ↦ clipped_smul hc (forall_clipped_of_max D hD f a hf ha hcard K hK Ω σ₀ hmax hψ j))
+  obtain ⟨hunit, hφ, hcl, hinv⟩ :=
+    normalized_chain_data_of_max D hD f a hf ha hcard K hK hΩ σ₀ hmax
+  exact re_inner_sub_le_of_chain_sharp D hD K hunit hφ a ha1 hcl
     h S hsupp hherm σ₀ hnorm hsingle (toEuclideanLin_conj_apply_eq heig hinv _)
 
 /-- The same positive-floor maximizer has a two-sided sharp energy bound.
@@ -768,5 +846,38 @@ theorem abs_re_inner_sub_le_of_max_sharp (D : ℕ → Finset V) (hD : ∀ i j : 
       inner_neg_right, Complex.neg_re, sub_neg_eq_add] at hl
     linarith
   · exact hu
+
+/-- The logarithmic energy estimate for the actual normalized output of a positive-floor
+norm-maximizing filter family. Smallness is needed only at crossing pairs.
+TNLean one-dimensional note, `part1_arealaw.tex`, lines 711–734 (`rem:sharper`);
+area-law manuscript, `02-initial.tex`, lines 342–441, `eq:initial-product-energy`. -/
+theorem re_inner_sub_le_of_max_logarithmic (D : ℕ → Finset V)
+    (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
+    (f a : Fin m → ℝ) (hf : ∀ j, 0 < f j) (ha : ∀ j, 0 < a j)
+    (hcard : ∀ j : Fin m, Fintype.card (RegionConfig n (D j)) * f j < 1)
+    (K : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ)
+    (hK : ∀ j, IsFeasibleFilter (f j) (a j) (K j)) {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    (hΩ : Ω ≠ 0) (σ₀ : SiteConfig n)
+    (hmax : ∀ K' : (i : Fin m) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ,
+      (∀ j, IsFeasibleFilter (f j) (a j) (K' j)) →
+      ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
+        ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i)) (hherm : ∀ i, (h i).IsHermitian)
+    {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
+    (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m, ∀ j' ∈ splitIndices (S i) D m, j = j')
+    (hsmall : ∀ j : Fin m, ∀ i ∈ crossingTerms S (D j),
+      2 * a j * Real.log (Real.exp 1 * supportDim n (S i)) ≤ 1)
+    {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
+    let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
+    let φ := ((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ
+    (⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀ ≤
+      ∑ j : Fin m, 8 * Real.exp 1 * a j ^ 2 *
+        ∑ i ∈ crossingTerms S (D j),
+          Real.log (Real.exp 1 * supportDim n (S i)) ^ 2 * c₀ := by
+  obtain ⟨hunit, hφ, hcl, hinv⟩ :=
+    normalized_chain_data_of_max D hD f a hf ha hcard K hK hΩ σ₀ hmax
+  exact re_inner_sub_le_of_chain_logarithmic D hD K hunit hφ a (fun j ↦ (ha j).le) hcl
+    h S hsupp hherm σ₀ hnorm hsingle hsmall (toEuclideanLin_conj_apply_eq heig hinv _)
 
 end Entropy
