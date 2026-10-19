@@ -7,6 +7,23 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Entropy comparison with a supplied uniform norm bound — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic buffered-discount theorems in
+  `Entropy.BufferDiscount`; two energy envelopes in one file.
+- **Decision:** Share the positive single-filter bounds, trial/Schmidt
+  comparison, logarithm calculation and entropy rearrangement. Each
+  wrapper proves the uniform norm comparison for the same actual
+  zero-floor family using its own energy estimate.
+- **Caveat:** The callback is private. Neither public theorem assumes a
+  norm-comparison witness or clipping at floor zero. The energy budget
+  and local bounds remain independent of the raised positive floors.
+- **Scalar step:** A private scalar lemma derives crossing smallness
+  from the existing tail-radius admissibility. Its real parameter is
+  generic; no positivity of a marginal eigenvalue is required.
+- **Reused:** Existing `Function.ne_iff` and `WithLp.ofLp_eq_zero` supply
+  configuration witnesses without another coordinatewise contradiction.
+
 ### Prefix comparison for the actual maximizing family — shared private lemma (2026-10-18)
 
 - **Seen:** The polynomial and logarithmic successor comparisons in

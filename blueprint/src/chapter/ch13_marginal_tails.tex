@@ -945,49 +945,109 @@ has trace two.
 
 \begin{theorem}[The first norm comparison]
     \label{thm:first_norm_comparison}
+    \lean{Entropy.sqrt_mul_chainOptimum_succ_le_quadratic,
+        Entropy.pow_sqrt_mul_chainOptimum_le_quadratic}
     \lean{Entropy.chainOptimum, Entropy.chainOptimum_zero, Entropy.exists_eq_chainOptimum,
         Entropy.norm_le_chainOptimum, Entropy.pow_mul_le_prod_of_step,
         Entropy.sq_norm_inner_ge_of_gap, Entropy.sqrt_mul_chainOptimum_succ_le,
         Entropy.pow_sqrt_mul_chainOptimum_le}
     \leanok
-    \uses{lem:prefix_step, thm:chain_energy, prop:filter_maximizer}
-    Let $N_k$ be the largest output norm $\lVert L_{k-1}\cdots L_0\Omega\rVert$ over feasible
-    filters on the first $k$ nested regions, where the floors are positive with
-    $\#\cdot f_j<1$ and $0<a_j\le\tfrac12$. Let $\Omega$ be a unit vector with
-    $H\Omega=E_0\Omega$ and $H-E_0\ge\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$, where
-    $\Delta>0$ and $H=\sum_ih_i$ with $h_i$ Hermitian, supported on $S_i$, $\lVert h_i\rVert\le c_0$,
-    and every $S_i$ split by at most one region. If
-    $\sum_{j<m}4a_j^2\sum_{i\text{ crossing }D_j}d_{S_i}^2c_0\le E$ and every feasible filter
-    on $D_k$ has $\lVert L\Omega\rVert\le x_k$, then
-    \[
-        \sqrt{1-E/\Delta}^{\,m}N_m\le\prod_{k<m}x_k .
-    \]
+    \uses{lem:prefix_step, prop:filter_maximizer}
+    Let $V$ and $I$ be finite sets, let $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$,
+    and let $N_k$ be the largest output norm $\lVert L_{k-1}\cdots L_0\Omega\rVert$ over feasible
+    filters on the first $k$ nested regions $D_0\subseteq D_1\subseteq\cdots$,
+    where, for every $j\ge0$, the floor satisfies
+    $0<f_j$ and $f_j\dim\mathcal H_{D_j}<1$, and $0<a_j\le\tfrac12$. Let $\Omega$ be a unit vector with
+    $H\Omega=E_0\Omega$ and $H-E_0\ge\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$,
+    where $\Delta>0$ and $H=\sum_{i\in I}h_i$ is a finite sum of Hermitian terms
+    supported on $S_i$, with $\lVert h_i\rVert\le c_0$.
+    For $j\ge0$, let $\mathcal C_j=\{i\in I:S_i\cap D_j\ne\varnothing,
+        S_i\setminus D_j\ne\varnothing\}$. Assume that for every $i\in I$
+    and $j,j'\ge0$, membership in both $\mathcal C_j$ and $\mathcal C_{j'}$
+    implies $j=j'$; thus each support is split by at most one region.
+    For a real coefficient $\kappa$, impose the following condition and
+    define $d_i$, $A_j$ and $Q_r$ for $i\in I$, $j\ge0$ and $r\in\mathbb N$:
+    \begin{align}
+        \kappa & \ge1,\notag                                                            \\
+        d_i    & =\prod_{v\in S_i}n_v,\qquad A_j=\sum_{i\in\mathcal C_j}d_i^2c_0,\notag \\
+        Q_r    & =\sum_{j=0}^{r-1}\kappa a_j^2\sum_{i\in\mathcal C_j}d_i^2c_0.\notag
+    \end{align}
+    Identify regional filters with their identity extensions to $\mathcal H$.
+    For $k\ge0$ and real $E,x$, if $Q_{k+1}\le E$ and every filter
+    on $D_k$ feasible at floor $f_k$ satisfies $\lVert L\Omega\rVert\le x$, then
+    \begin{align}
+        \sqrt{1-E/\Delta}\,N_{k+1}\le xN_k.\notag
+    \end{align}
+    For $m\in\mathbb N$, if $Q_m\le E$, $x_j\ge0$ for every $j\ge0$,
+    and every filter on $D_j$ feasible at the specified floor $f_j$ has
+    norm at most $x_j$ on $\Omega$ for each $0\le j<m$, then
+    \begin{align}
+        \bigl(\sqrt{1-E/\Delta}\bigr)^mN_m
+        \le\prod_{j=0}^{m-1}x_j.\notag
+    \end{align}
+    No upper bound on $E$ is required; the nonnegative real square root
+    is zero on nonpositive arguments. The cases $\kappa=1,2,4$ are all
+    included; $\kappa=4$ recovers the coefficient-four comparison.
 \end{theorem}
-\begin{proof}\leanok
-    The optimum is attained by Proposition~\ref{prop:filter_maximizer}. By
-    Theorem~\ref{thm:chain_energy} and the gap, the normalized output of an optimal prefix of
-    length $k+1$ has squared overlap at least $1-E/\Delta$ with $\Omega$, and
-    Lemma~\ref{lem:prefix_step} gives $\sqrt{1-E/\Delta}\,N_{k+1}\le x_kN_k$. Telescoping from
-    $N_0=1$ gives the claim.
+\begin{proof}
+    \leanok
+    \uses{thm:filter_max_sharp_energy,lem:prefix_step,prop:filter_maximizer}
+    Choose the actual maximizing family of length $k+1$ and normalize its
+    nonzero output. Theorem~\ref{thm:filter_max_sharp_energy}, followed by
+    the inside-support dimension bound, gives energy at most
+    $\sum_{j\le k}a_j^2A_j\le Q_{k+1}\le E$ for this same output.
+    The gap gives squared overlap at least $1-E/\Delta$ with $\Omega$,
+    and Lemma~\ref{lem:prefix_step} gives the successor inequality.
+    Every summand of $Q_m$ is nonnegative: for each actual interaction,
+    $\lVert h_i\rVert\le c_0$ implies $c_0\ge0$; an empty interaction
+    family contributes zero. Hence $Q_{k+1}\le Q_m$ for $k<m$.
+    Iterate the successor inequality using $x_j\ge0$ and $N_0=1$.
 \end{proof}
 
-\begin{proposition}[The first norm comparison at floor zero]
-    \label{prop:zero_floor_comparison}
+\begin{theorem}[The first norm comparison at floor zero]
+    \label{thm:zero_floor_comparison}
+    \lean{Entropy.pow_sqrt_mul_norm_le_of_zero_floor_quadratic}
     \lean{Entropy.isFeasibleFilter_floorRaise, Entropy.norm_le_of_forall_floor,
         Entropy.pow_sqrt_mul_norm_le_of_zero_floor}
     \leanok
     \uses{thm:first_norm_comparison}
-    Under the hypotheses of Theorem~\ref{thm:first_norm_comparison} with $E<\Delta$, and bounds
-    $\lVert L\Omega\rVert\le x_k$ for filters on $D_k$ feasible at any positive floor, every
-    family of $m$ nonnegative filters $L_j=U_j\operatorname{diag}(y_j^{a_j/2})U_j^*$ with
-    $y_j\ge0$ and $\sum y_j=1$ satisfies
-    $\sqrt{1-E/\Delta}^{\,m}\lVert L_{m-1}\cdots L_0\Omega\rVert\le\prod_{k<m}x_k$.
-\end{proposition}
-\begin{proof}\leanok
-    The filters $U_j\operatorname{diag}\bigl(((1-\delta)y_j+\delta/d_j)^{a_j/2}\bigr)U_j^*$ are
-    feasible at the floor $\delta/d_j$ and converge to $L_j$ as $\delta\downarrow0$. The bound
-    of Theorem~\ref{thm:first_norm_comparison} does not depend on the floor, and the output
-    norm is continuous in the filters.
+    Retain the regions, weights, Hamiltonian hypotheses and coefficient
+    $\kappa$ of Theorem~\ref{thm:first_norm_comparison}, including its
+    single-splitting condition for every $i\in I$ and $j,j'\ge0$, but
+    without fixing positive floors. Let $m\in\mathbb N$ and assume
+    \begin{align}
+        \kappa & \ge1,\notag                   \\
+        Q_m    & =\sum_{j=0}^{m-1}\kappa a_j^2
+        \sum_{i\in\mathcal C_j}d_i^2c_0\le E<\Delta.\notag
+    \end{align}
+    Let $x_j\ge0$ for every $j\ge0$. For each $0\le j<m$, assume
+    that every $f>0$ and every filter $L$ on $D_j$ feasible at floor $f$
+    satisfy $\lVert L\Omega\rVert\le x_j$.
+    Every family $(K_j)_{0\le j<m}$ feasible at floor zero, of the form
+    \begin{align}
+        K_j     & =U_j\operatorname{diag}(y_{j,r}^{a_j/2})U_j^*,\notag \\
+        y_{j,r} & \ge0,\qquad\sum_r y_{j,r}=1,\notag
+    \end{align}
+    where $0\le j<m$, $0\le r<\dim\mathcal H_{D_j}$ and $U_j$ is unitary, satisfies
+    \begin{align}
+        \bigl(\sqrt{1-E/\Delta}\bigr)^m
+        \lVert K_{m-1}\cdots K_0\Omega\rVert
+        \le\prod_{j=0}^{m-1}x_j.\notag
+    \end{align}
+    The same $E$ and $x_j$ are used at every positive floor. No clipping
+    or invertibility condition is imposed on the floor-zero filters.
+    In particular $\kappa=4$ recovers the coefficient-four comparison.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:first_norm_comparison}
+    Since $\Omega\ne0$, each $r_j=\dim\mathcal H_{D_j}$ is positive.
+    For $0<\delta<1$, replace the
+    spectral parameters $y_{j,r}$ by $(1-\delta)y_{j,r}+\delta/r_j$.
+    The resulting filters are feasible at floors $\delta/r_j$ and converge
+    to $K_j$. Neither $Q_m$ nor the bounds $x_j$ depend on $\delta$.
+    Apply Theorem~\ref{thm:first_norm_comparison} and pass to the limit
+    using continuity of the product and its norm.
 \end{proof}
 
 
@@ -1106,7 +1166,7 @@ has trace two.
 \end{theorem}
 \begin{proof}
     \leanok
-    \uses{thm:logarithmic_prefix_product, prop:zero_floor_comparison}
+    \uses{thm:logarithmic_prefix_product, thm:zero_floor_comparison}
     Write $d_j=\dim\mathcal H_{D_j}$, which is positive since
     $\Omega\ne0$. For $0<\delta<1$, replace the spectral parameters by
     $(1-\delta)y_{j,r}+\delta/d_j$. The resulting filters are
@@ -1116,7 +1176,7 @@ has trace two.
     Apply Theorem~\ref{thm:logarithmic_prefix_product} at each
     raised floor. Since $E<\Delta$, the square-root factor is
     positive; the uniform bound passes to the floor-zero output
-    by continuity, as in Proposition~\ref{prop:zero_floor_comparison}.
+    by continuity, as in Theorem~\ref{thm:zero_floor_comparison}.
 \end{proof}
 
 \begin{theorem}[Closed conditions for maximizing filters]
@@ -1132,7 +1192,7 @@ has trace two.
     Then it contains a maximizing family at floor zero.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{prop:filter_maximizer,prop:zero_floor_comparison,thm:buffer_discount}
+    \uses{prop:filter_maximizer,thm:zero_floor_comparison,thm:buffer_discount}
     Positive-floor feasible families belong to the compact set of
     zero-floor feasible families. Choose $\delta_k=1/(2(k+1))$ and a
     convergent subsequence of the corresponding maximizers. Closedness
@@ -1273,38 +1333,181 @@ has trace two.
     state of $A\cup B\cup C$, viewed as a tripartite matrix, so strong subadditivity applies.
 \end{proof}
 
-\begin{theorem}[The entropy discount from a buffer]
+\begin{theorem}[Weighted entropy and the buffered discount]
     \label{thm:buffer_discount}
+    \lean{Entropy.sum_mul_condEntropy_le_quadratic,
+        Entropy.two_mul_condEntropy_le_quadratic}
     \lean{Entropy.IsFeasibleFilter.mono_floor, Entropy.exists_trial_filter,
         Entropy.neg_sum_le_log_of_trial, Entropy.sum_norm_sq_mul_regionEntropy_le,
         Entropy.neg_two_mul_log_le_entropy, Entropy.sum_mul_condEntropy_le,
         Entropy.two_mul_condEntropy_le}
     \leanok
-    \uses{prop:zero_floor_comparison, lem:region_filter_norm, lem:trial_filters,
-        thm:filter_three_lines, thm:region_ssa}
-    Let $X$ be a region, $T_0\subseteq T_1\subseteq\cdots$ regions disjoint from $X$, and
-    $D_j=X\cup T_j$, with weights $0<a_j\le\tfrac12$ of total mass
-    $\sum_{j<m}a_j=2$. Let $\Omega$, $H$ and $\Delta$ be as in
-    Theorem~\ref{thm:first_norm_comparison} for the regions $D_j$, with energy budget at most
-    $E<\Delta$, and suppose every $a_j/(1-a_j)$ is admissible for the cut $D_j$. If every $T_j$
-    lies in a region $T$ disjoint from $X$, then
-    \[
-        2S(X\mid T)\le S(X)+\sum_{j<m}1024e\vartheta\mathcal B_ja_j^2
-        -m\log(1-E/\Delta).
-    \]
+    \uses{thm:zero_floor_comparison,lem:region_filter_norm,lem:trial_filters,
+        thm:filter_three_lines,thm:region_ssa}
+    Let $X$ be a region, let $T_0\subseteq T_1\subseteq\cdots$ be regions
+    disjoint from $X$, and put $D_j=X\cup T_j$.
+    Retain the unit vector, Hamiltonian hypotheses, weights
+    $0<a_j\le\tfrac12$ for every $j\ge0$, and coefficient $\kappa$ of
+    Theorem~\ref{thm:first_norm_comparison} for these regions. In particular,
+    if $i\in\mathcal C_j\cap\mathcal C_{j'}$ for $i\in I$ and
+    $j,j'\ge0$, then $j=j'$. Assume $c_0\ge0$ and put $\vartheta=c_0/\Delta$.
+    For every $j\ge0$, put
+    \begin{align}
+        \mathcal B_j=1+\sum_{i\in\mathcal C_j}\log^2(\mathrm e d_i).
+        \notag
+    \end{align}
+    Let $m\in\mathbb N$ and suppose
+    \begin{align}
+        \kappa & \ge1,\notag                   \\
+        Q_m    & =\sum_{j=0}^{m-1}\kappa a_j^2
+        \sum_{i\in\mathcal C_j}d_i^2c_0\le E<\Delta.\notag
+    \end{align}
+    Suppose also that, for every $0\le j<m$,
+    \begin{align}
+        \frac{a_j}{1-a_j}
+        \le\frac{1}{32\sqrt{(1+\vartheta)\mathcal B_j}}.\notag
+    \end{align}
+    Then
+    \begin{align}
+        \sum_{j=0}^{m-1}a_jS(X\mid T_j)
+        \le S(X)+1024\mathrm e\vartheta
+        \sum_{j=0}^{m-1}\mathcal B_j a_j^2
+        -m\log(1-E/\Delta).\notag
+    \end{align}
+    If $\sum_{j<m}a_j=2$ and $T'$ is disjoint from $X$ and contains
+    every $T_j$ with $j<m$, then
+    \begin{align}
+        2S(X\mid T')\le S(X)+1024\mathrm e\vartheta
+        \sum_{j=0}^{m-1}\mathcal B_j a_j^2
+        -m\log(1-E/\Delta).\notag
+    \end{align}
+    The coefficient-four instance is $\kappa=4$; the same conclusions
+    also hold for $\kappa=1$ and $\kappa=2$.
+    This is the pair of norm comparisons and the strong-subadditivity
+    argument of \cite[Lemma~3.2]{OpenAI2026AreaLaw} with the stated energy
+    budget.
 \end{theorem}
-\begin{proof}\leanok
-    By Proposition~\ref{prop:zero_floor_comparison} and Lemma~\ref{lem:region_filter_norm}, every
-    nested product of nonnegative filters on the $D_j$ has output norm at most
-    $B=\prod_k x_k/\sqrt{1-E/\Delta}^{\,m}$ with $x_k^2=\exp(-a_kS(D_k)+1024e\vartheta\mathcal
-        B_ka_k^2)$. For a Schmidt index $i$ with $p_i>0$, Lemma~\ref{lem:trial_filters} bounds the
-    nested products of filters on the $T_j$ applied to $\xi_i=P_i\Omega/\sqrt{p_i}$ by
-    $B/\sqrt{p_i}$. Theorem~\ref{thm:filter_three_lines} with the filters
-    $((1-\delta)\rho_{\xi_i,T_j}+\delta/d)^{a_j/2}$ gives, as $\delta\downarrow0$,
-    $-\sum_j\tfrac{a_j}2S_{\xi_i}(T_j)\le\log B-\tfrac12\log p_i$. Averaging with weights $p_i$
-    and using concavity of the entropy gives $-2\log B\le S(X)+\sum_ja_jS(T_j)$. Hence
-    $\sum_ja_jS(X\mid T_j)\le S(X)+\text{error}$, and Theorem~\ref{thm:region_ssa} bounds the
-    left side below by $2S(X\mid T)$.
+\begin{proof}
+    \leanok
+    \uses{thm:zero_floor_comparison,lem:region_filter_norm,lem:trial_filters,
+        thm:filter_three_lines,thm:region_ssa}
+    Theorem~\ref{thm:zero_floor_comparison} and
+    Lemma~\ref{lem:region_filter_norm} bound every feasible product at
+    floor zero by $B=\prod_{j<m}x_j/(\sqrt{1-E/\Delta})^m$, where the
+    positive numbers $x_j$ satisfy $x_j^2=\exp(-a_jS(D_j)+1024\mathrm e\vartheta\mathcal B_ja_j^2)$.
+    Schmidt pinning, the trial filters and the three-lines argument give
+    $-2\log B\le S(X)+\sum_{j<m}a_jS(T_j)$. On the other hand,
+    \begin{align}
+        2\log B=-\sum_{j=0}^{m-1}a_jS(D_j)
+        +1024\mathrm e\vartheta\sum_{j=0}^{m-1}\mathcal B_ja_j^2
+        -m\log(1-E/\Delta).\notag
+    \end{align}
+    Combining these inequalities gives the weighted estimate without a
+    total-mass assumption. Strong subadditivity gives
+    $S(X\mid T')\le S(X\mid T_j)$; multiplication by $a_j>0$ and summation
+    give the full discount when the total mass is two. The only change
+    for the coefficient $\kappa$ is the established uniform norm bound;
+    the entropy and logarithm calculations are unchanged.
+\end{proof}
+
+\begin{theorem}[Weighted conditional entropy with logarithmic energy cost]
+    \label{thm:buffer_weighted_logarithmic}
+    \lean{Entropy.sum_mul_condEntropy_le_logarithmic}
+    \leanok
+    Let $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$ be a finite
+    tensor product. Let $X$ be a region and let
+    $T_0\subseteq T_1\subseteq\cdots$ be regions disjoint from $X$.
+    Put $D_j=X\cup T_j$, and let $0<a_j\le\tfrac12$.
+    Suppose that $\Omega$ is a unit vector and $H=\sum_{i\in I}h_i$,
+    where each $h_i$ is Hermitian, supported on $S_i$, and
+    $\lVert h_i\rVert\le c_0$, with $c_0\ge0$. Assume
+    \begin{align*}
+        H\Omega & =E_0\Omega,                                          \\
+        H-E_0I  & \ge\Delta(I-\lvert\Omega\rangle\langle\Omega\rvert),
+        \qquad \Delta>0.
+    \end{align*}
+    Each $S_i$ is split by at most one $D_j$. Define
+    \begin{align*}
+        d_i          & =\prod_{v\in S_i}n_v,\qquad \ell_i=\log(\mathrm e d_i), \\
+        \mathcal C_j & =\{i\in I:S_i\cap D_j\ne\varnothing,
+        \ S_i\setminus D_j\ne\varnothing\},                                    \\
+        \mathcal B_j & =1+\sum_{i\in\mathcal C_j}\ell_i^2,
+        \qquad \vartheta=c_0/\Delta,                                           \\
+        \mathcal E_m & =8\mathrm e\sum_{j=0}^{m-1}a_j^2
+        \sum_{i\in\mathcal C_j}c_0\ell_i^2.
+    \end{align*}
+    Fix $m\ge0$ and $E<\Delta$. Suppose that $\mathcal E_m\le E$
+    and, for every $j<m$, that
+    \begin{align*}
+        \frac{a_j}{1-a_j}
+        \le\frac{1}{32\sqrt{(1+\vartheta)\mathcal B_j}}.
+    \end{align*}
+    Writing $S(X\mid T)=S(X\cup T)-S(T)$, one has
+    \begin{align*}
+        \sum_{j=0}^{m-1}a_jS(X\mid T_j)
+        \le S(X)+1024\mathrm e\vartheta
+        \sum_{j=0}^{m-1}\mathcal B_j a_j^2
+        -m\log(1-E/\Delta).
+    \end{align*}
+    This is the weighted norm-comparison argument in
+    \cite[Lemma~3.2]{OpenAI2026AreaLaw}, with the logarithmic energy
+    coefficient of
+    \href{https://github.com/LionSR/TNLean/blob/67ea93e29f7c088f766b271208a2fde4cccf04a6/docs/notes/one_dimensional_note/part1_arealaw.tex#L711-L734}{Remark~6.3 of the one-dimensional note}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:logarithmic_zero_floor_comparison, lem:region_filter_norm,
+        lem:trial_filters, thm:filter_three_lines, thm:buffer_discount}
+    The admissibility assumption and $\ell_i^2\le\mathcal B_j$
+    for $i\in\mathcal C_j$ give
+    $32a_j\ell_i\le1-a_j$, hence $2a_j\ell_i\le1$.
+    Thus no further smallness assumption is needed to apply
+    Theorem~\ref{thm:logarithmic_zero_floor_comparison}.
+    Lemma~\ref{lem:region_filter_norm} bounds every single-filter
+    norm by $x_j$, where
+    \begin{align*}
+        x_j^2=\exp\bigl(-a_jS(D_j)
+        +1024\mathrm e\vartheta\mathcal B_j a_j^2\bigr).
+    \end{align*}
+    Consequently every feasible product at floor zero has norm at most
+    $B=\prod_{j<m}x_j/(\sqrt{1-E/\Delta})^m$.
+    Schmidt pinning, the trial filters and the three-lines argument
+    in Theorem~\ref{thm:buffer_discount} give
+    \begin{align*}
+        -2\log B & \le S(X)+\sum_{j=0}^{m-1}a_jS(T_j), \\
+        2\log B  & =-\sum_{j=0}^{m-1}a_jS(D_j)
+        +1024\mathrm e\vartheta\sum_{j=0}^{m-1}\mathcal B_j a_j^2
+        -m\log(1-E/\Delta).
+    \end{align*}
+    Combining these inequalities proves the assertion. The same
+    $E$ and $x_j$ apply at every positive floor before passage to
+    floor zero. No total-mass condition on the weights is used.
+\end{proof}
+
+\begin{theorem}[The entropy discount from a buffer with logarithmic energy cost]
+    \label{thm:buffer_discount_logarithmic}
+    \lean{Entropy.two_mul_condEntropy_le_logarithmic}
+    \leanok
+    Under the hypotheses of
+    Theorem~\ref{thm:buffer_weighted_logarithmic}, assume in addition
+    that $\sum_{j<m}a_j=2$. Let $T'$ be disjoint from $X$ and
+    contain every $T_j$ with $j<m$. Then
+    \begin{align*}
+        2S(X\mid T')\le S(X)
+        +1024\mathrm e\vartheta\sum_{j=0}^{m-1}\mathcal B_j a_j^2
+        -m\log(1-E/\Delta).
+    \end{align*}
+    This is the conditional-entropy conclusion in
+    \cite[Lemma~3.2]{OpenAI2026AreaLaw}, with the same logarithmic
+    energy budget $\mathcal E_m$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:buffer_weighted_logarithmic, thm:region_ssa}
+    Strong subadditivity gives $S(X\mid T')\le S(X\mid T_j)$
+    for every $j<m$. Multiply by $a_j>0$, sum, and use the
+    total mass two. The weighted estimate of
+    Theorem~\ref{thm:buffer_weighted_logarithmic} completes the proof.
 \end{proof}
 
 \subsection{Sharp one-crossing estimate for polynomial patches}
