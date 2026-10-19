@@ -26,7 +26,8 @@ The proofs are written from the paper; no Lean source was adapted.
 
 * `TensorPower.leafMetric_comm`, `TensorPower.markedSimilarity_comm` — the partition metric is
   symmetric in the outer parts.
-* `TensorPower.relativePin_regionalMovementEta` — Lemma 6.3 with `η_θ = S_θ(x|P) + S_θ(x|Y₀)`.
+* `TensorPower.relativePin_regionalMovementEta` — Lemma 6.3 with `η_θ = S_θ(x|P) + S_θ(x|Y₀)`,
+  and `TensorPower.relativePin_regionalMovementEta_explicit` at the named constants.
 * `TensorPower.relativePin_toF` — Lemma 6.3 for a move to `F`.
 * `TensorPower.SkewPartition.skewEta_transport` — `I(x:F|U)` of the transported vector is
   `S_θ(x|P) + S_θ(x|U)`.
@@ -71,6 +72,28 @@ end Symmetry
 
 /-! ### The relative coherent pin -/
 
+/-- **Lemma 6.3 with `η_θ` in region form, at the named constants** (`05-replicas.tex`,
+equation `replicas:relative-pin`, lines 486–505): the bound of
+`TensorPower.relativePin_regionalMovementEta` with `C = relativePinConst` for
+`a log(e dim x) ≤ Entropy.conditionalMovementThreshold`. -/
+theorem relativePin_regionalMovementEta_explicit :
+    ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
+      {P x Y F : Finset V} (_ : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
+      2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤
+        conditionalMovementThreshold →
+      ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+        ∀ w : Config k (fun v => Fin (n v)) → ℂ,
+          ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
+            Real.exp (k * (2 * t) * (regionalMovementEta P x Y θ -
+              relativePinConst * (2 * t) ^ (1 / 4 : ℝ) *
+                Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
+          K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re := by
+  intro V _ _ n _ P x Y F h t ht0 ht1 hsmall
+  obtain ⟨K, N, hK, H'⟩ := relativePin_explicit h ht0 ht1 hsmall
+  refine ⟨K, N, hK, fun k θ hθ w => ?_⟩
+  rw [← h.movementEta_frameVector θ]
+  exact H' k θ hθ w
+
 /-- **Lemma 6.3, the relative coherent pin, with `η_θ` in region form** (`05-replicas.tex`,
 equation `replicas:relative-pin`, lines 486–505). Let `P, x, Y₀, F` partition the sites,
 `0 < t ≤ 1`, `a = 2t` with `a log(e dim x) ≤ c`. There is a polynomial `K (k + 2)^N`, uniform in
@@ -90,13 +113,9 @@ theorem relativePin_regionalMovementEta :
               Real.exp (k * (2 * t) * (regionalMovementEta P x Y θ -
                 C * (2 * t) ^ (1 / 4 : ℝ) *
                   Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
-            K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re := by
-  obtain ⟨C, c, hC, hc, H⟩ := relativePin.{u}
-  refine ⟨C, c, hC, hc, fun h t ht0 ht1 hsmall => ?_⟩
-  obtain ⟨K, N, hK, H'⟩ := H h ht0 ht1 hsmall
-  refine ⟨K, N, hK, fun k θ hθ w => ?_⟩
-  rw [← h.movementEta_frameVector θ]
-  exact H' k θ hθ w
+            K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re :=
+  ⟨_, _, relativePinConst_pos, conditionalMovementThreshold_pos,
+    relativePin_regionalMovementEta_explicit⟩
 
 /-- **Lemma 6.3 for a move to `F`** (`05-replicas.tex`, lines 502–503: "the same statement
 holds for a move to `F` after exchanging the outer parts"). With `A_k = A_k(P, xY₀, F)`,

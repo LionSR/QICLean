@@ -111,6 +111,15 @@ theorem cutBasisChange_conj_kronecker (c : Matrix α α ℂ)
   rw [cutBasisChange_conjTranspose, cutBasisChange, ← mul_kronecker_mul, ← mul_kronecker_mul]
   simp
 
+omit [DecidableEq α] in
+/-- A change of basis on the first factor transports a finite product sum termwise. -/
+theorem cutBasisChange_conj_sum_kronecker {ι : Type*} [Fintype ι]
+    (c : ι → Matrix α α ℂ) (d : ι → Matrix β β ℂ) :
+    cutBasisChange U * (∑ r, c r ⊗ₖ d r) * (cutBasisChange U)ᴴ =
+      ∑ r, (Uᴴ * c r * U) ⊗ₖ d r := by
+  rw [Finset.mul_sum, Finset.sum_mul]
+  exact Finset.sum_congr rfl fun r _ ↦ cutBasisChange_conj_kronecker (c r) (d r)
+
 theorem isOneSided_conj (hU : Uᴴ * U = 1) {X : Matrix (α × β) (α × β) ℂ}
     (hX : IsOneSided X) : IsOneSided (cutBasisChange U * X * (cutBasisChange U)ᴴ) := by
   rcases hX with ⟨A, rfl⟩ | ⟨A, rfl⟩
@@ -123,8 +132,7 @@ theorem hasProductDecomposition_conj (hU' : U * Uᴴ = 1)
     HasProductDecomposition (cutBasisChange U * X * (cutBasisChange U)ᴴ) c₀ N := by
   obtain ⟨M, c, d, hM, rfl, hcd⟩ := hX
   refine ⟨M, fun a ↦ Uᴴ * c a * U, d, hM, ?_, fun a ↦ ?_⟩
-  · rw [Finset.mul_sum, Finset.sum_mul]
-    exact Finset.sum_congr rfl fun a _ ↦ cutBasisChange_conj_kronecker (c a) (d a)
+  · exact cutBasisChange_conj_sum_kronecker _ _
   · have h := norm_mul_mul_conjTranspose_le (V := Uᴴ)
       (by rw [conjTranspose_conjTranspose]; exact hU') (c a)
     rw [conjTranspose_conjTranspose] at h

@@ -7,6 +7,96 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Entropy comparison with a supplied uniform norm bound — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic buffered-discount theorems in
+  `Entropy.BufferDiscount`; two energy envelopes in one file.
+- **Decision:** Share the positive single-filter bounds, trial/Schmidt
+  comparison, logarithm calculation and entropy rearrangement. Each
+  wrapper proves the uniform norm comparison for the same actual
+  zero-floor family using its own energy estimate.
+- **Caveat:** The callback is private. Neither public theorem assumes a
+  norm-comparison witness or clipping at floor zero. The energy budget
+  and local bounds remain independent of the raised positive floors.
+- **Scalar step:** A private scalar lemma derives crossing smallness
+  from the existing tail-radius admissibility. Its real parameter is
+  generic; no positivity of a marginal eigenvalue is required.
+- **Reused:** Existing `Function.ne_iff` and `WithLp.ofLp_eq_zero` supply
+  configuration witnesses without another coordinatewise contradiction.
+
+### Prefix comparison for the actual maximizing family — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic successor comparisons in
+  `Entropy.FilterPrefix`; two energy budgets in one file.
+- **Decision:** One private lemma selects an actual maximizing prefix and
+  applies the energy estimate to that same family and its normalized
+  output. The gap and existing overlap comparison finish the argument.
+- **Caveat:** The core requires no global upper-weight bound or sign on
+  the energy budget. Strict `E < Δ` enters only in the later floor-zero
+  division. Existing physical statements retain their original ranges.
+- **Iteration:** Reuse `pow_mul_le_prod_of_step` and
+  `norm_le_of_forall_floor`; no new telescoping or continuity machinery.
+
+### Configuration witnesses from nonzero vectors — existing Mathlib lemmas (2026-10-18)
+
+- **Seen:** The shared successor, its physical callers and the new
+  logarithmic floor-zero comparison in `FilterPrefix` and `FilterZeroFloor`.
+- **Decision:** Reuse `WithLp.ofLp_eq_zero` at exponent two and
+  `Function.ne_iff`. This replaces the repeated coordinatewise
+  contradiction proof with existing mathematical lemmas.
+- **Caveat:** The coordinate supplies only the existing configuration
+  witness. No nonempty-space premise or physical witness structure is
+  added, and no nonvanishing coordinate enters the energy statement.
+
+### Summing termwise conjugation bounds — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic stationary energy estimates in
+  `Entropy.FilterChainEnergy`; two numerical envelopes in one file.
+- **Decision:** One private mathematical lemma converts a conjugated
+  eigenvector equation and termwise bounds into an energy sum over the
+  actual crossing pairs. The caller supplies its envelope.
+- **Caveat:** Linearity and the crossing-index interchange require neither
+  positivity of the envelope nor additional spectral hypotheses.
+
+### Normalization of the actual maximizing output — shared private lemma (2026-10-18)
+
+- **Seen:** Coarse, sharp polynomial and logarithmic maximizer estimates in
+  `Entropy.FilterChainEnergy`; three consumers in one file.
+- **Decision:** Derive invertibility, unit normalization, common-basis
+  clipping and inverse-product cancellation once for the actual output.
+  Each energy theorem supplies its own numerical estimate.
+- **Caveat:** Positive floors and maximality give these conclusions; they
+  are not supplied output assumptions. No global weight upper bound is
+  needed for this common construction. Existing ranges are preserved.
+
+### Numerical bounds after stripping a nested filter product — shared private lemma (2026-10-18)
+
+- **Seen:** The sharp polynomial and logarithmic conjugation estimates in
+  `Entropy.FilterChainEnergy`; two numerical applications in one file.
+- **Decision:** Reuse one private mathematical reduction with an arbitrary
+  local expectation envelope. Containing filters preserve the expectation;
+  disjoint filters commute with the supported observable. At most one
+  splitting filter remains.
+- **Caveat:** Nonnegativity of the envelope is derived from its local
+  absolute-value bound. This introduces no sign assumption on the weights
+  of the existing sharp theorem and no smallness outside splitting regions.
+- **Mechanism:** The existing sharp and coarse public results keep their
+  statements; the coarse theorem uses the sharp one. No tactic or new
+  filter predicate is introduced.
+
+### Transport of a finite product decomposition — promoted lemma (2026-10-18)
+
+- **Seen:** `Entropy.hasProductDecomposition_conj` and both common-basis
+  conjugation estimates in `FilterEnergy.lean`: three finite-sum calculations
+  across two files.
+- **Lemma:** `Entropy.cutBasisChange_conj_sum_kronecker` transports the same
+  factors termwise. The existing one-term conjugation identity and
+  norm-contraction lemma supply the algebra and the bounds; no fresh
+  decomposition is chosen.
+- **Refactor:** All three finite-sum calculations invoke this direct equality.
+- **Caveat:** The equality itself needs no unitary assumption. Unitarity is
+  used separately for norm bounds and invariance of expectations.
+
 ### Reciprocal real powers — existing mathematical lemma (2026-10-16)
 
 - **Pattern:** Normalize or reconstruct a nonnegative eigenvalue by composing
