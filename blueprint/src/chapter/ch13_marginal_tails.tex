@@ -1281,6 +1281,111 @@ from the same Hermitian pairing and weighted row and column bounds.
     If there is no crossing, the expectation difference is zero.
 \end{proof}
 
+\begin{theorem}[Logarithmic cost of one splitting filter]
+    \label{thm:split_filter_conjugation_logarithmic}
+    \lean{Entropy.abs_re_inner_sub_conj_localLift_le_logarithmic}
+    \leanok
+    Let $\varphi$ be a unit vector in a finite tensor product
+    $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$, let $B,S\subseteq V$,
+    and put
+    \begin{align*}
+        d_S=\prod_{v\in S}n_v,\qquad \ell_S=\log(\mathrm e d_S).
+    \end{align*}
+    Suppose that the positive invertible filter $L$ on $\mathcal H_B$
+    and the actual marginal $\rho_{\varphi,B}$ have a common
+    orthonormal eigenbasis, with eigenvalues $l_i>0$ and $p_i\ge0$.
+    Let $a\ge0$. Assume that for every pair $i,k$ with
+    $p_i,p_k>0$,
+    \begin{align*}
+        |\log l_i-\log l_k|
+        \le\frac a2|\log p_i-\log p_k|.
+    \end{align*}
+    Assume also that
+    \begin{align*}
+        2a\ell_S\le1.
+    \end{align*}
+    For every Hermitian operator $X$ supported on $S$ with
+    $\lVert X\rVert\le c_0$, writing
+    $\widehat L=L\otimes I_{B^c}$, one has
+    \begin{align*}
+        \left|\operatorname{Re}\left(
+        \langle\varphi,X\varphi\rangle
+        -\langle\varphi,\widehat L X\widehat L^{-1}\varphi\rangle
+        \right)\right|
+        \le8\mathrm e\,c_0\ell_S^2a^2.
+    \end{align*}
+    The smallness condition in
+    \href{https://github.com/LionSR/TNLean/blob/67ea93e29f7c088f766b271208a2fde4cccf04a6/docs/notes/one_dimensional_note/part1_arealaw.tex#L711-L734}{Remark~6.3 of the one-dimensional note}
+    is sufficient for the displayed hypothesis.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:filter_energy_term, lem:patch_inside_decomposition}
+    The existence of the unit vector implies $n_v\ge1$ at every site,
+    so $d_S\ge1$ and $\ell_S\ge1$. By
+    Theorem~\ref{lem:patch_inside_decomposition}, the operator in cut
+    coordinates has a product decomposition with
+    $N\le d_{S\cap B}^2\le d_S^2$ terms and product norms at most
+    $c_0$. Hence
+    \begin{align*}
+        \log(2N)\le2\log(\mathrm e d_S)=2\ell_S;
+    \end{align*}
+    if $N=0$, the operator vanishes and the conclusion is immediate.
+    Relabelling tensor coordinates preserves the operator norm and
+    the expectation. The logarithmic estimate of
+    Theorem~\ref{thm:filter_energy_term}, applied to the common
+    eigenbasis of the filter and the actual marginal, gives the result.
+\end{proof}
+
+\begin{theorem}[Logarithmic cost of a single crossing in a nested chain]
+    \label{thm:chain_term_conjugation_logarithmic}
+    \lean{Entropy.abs_re_inner_sub_chain_conj_le_logarithmic}
+    \leanok
+    Let $D_0\subseteq\cdots\subseteq D_{m-1}$ be regions of a finite
+    tensor product, and let $\varphi$ be a unit vector. Suppose that
+    each positive invertible filter $K_j$ on $D_j$ has a common
+    orthonormal eigenbasis with $\rho_{\varphi,D_j}$, with eigenvalues
+    $l_{j,i}>0$ and $p_{j,i}\ge0$. Let $a_j\ge0$. For each $j$,
+    assume that for every pair $i,k$ with $p_{j,i},p_{j,k}>0$,
+    \begin{align*}
+        |\log l_{j,i}-\log l_{j,k}|
+        \le\frac{a_j}{2}|\log p_{j,i}-\log p_{j,k}|.
+    \end{align*}
+    Let $X$ be Hermitian, supported on $S$, with
+    $\lVert X\rVert\le c_0$, and put
+    \begin{align*}
+        d_S          & =\prod_{v\in S}n_v,\qquad \ell_S=\log(\mathrm e d_S), \\
+        \mathcal J_S & =\{j:S\cap D_j\ne\varnothing,
+        \ S\setminus D_j\ne\varnothing\}.
+    \end{align*}
+    Assume $|\mathcal J_S|\le1$ and
+    $2a_j\ell_S\le1$ for every $j\in\mathcal J_S$.
+    With $\widehat K_j=K_j\otimes I_{D_j^c}$ and
+    $K=\widehat K_{m-1}\cdots\widehat K_0$, one has
+    \begin{align*}
+        \left|\operatorname{Re}\left(
+        \langle\varphi,X\varphi\rangle
+        -\langle\varphi,KXK^{-1}\varphi\rangle
+        \right)\right|
+        \le\sum_{j\in\mathcal J_S}
+        8\mathrm e\,c_0\ell_S^2a_j^2.
+    \end{align*}
+    No smallness condition is imposed at indices outside
+    $\mathcal J_S$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:split_filter_conjugation_logarithmic, lem:local_lift}
+    If $j\in\mathcal J_S$, nesting and the single-crossing assumption
+    imply that every earlier region is disjoint from $S$ and every
+    later region contains $S$. The earlier filters commute with $X$.
+    The later filters commute with their actual marginals, and the
+    trace identity of Lemma~\ref{lem:local_lift} removes them from
+    the expectation, starting with the outermost filter. The remaining
+    expectation difference is the conjugation by $\widehat K_j$.
+    Apply Theorem~\ref{thm:split_filter_conjugation_logarithmic}.
+    If $\mathcal J_S$ is empty, the same disjoint-support and trace
+    identities leave the expectation unchanged, and the sum is zero.
+\end{proof}
+
 \begin{theorem}[Sharp stationary-chain excitation energy]
     \label{thm:patch_sharp_energy}
     \lean{Entropy.re_inner_sub_le_of_chain_sharp}

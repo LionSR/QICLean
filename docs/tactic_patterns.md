@@ -7,6 +7,21 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Numerical bounds after stripping a nested filter product — shared private lemma (2026-10-18)
+
+- **Seen:** The sharp polynomial and logarithmic conjugation estimates in
+  `Entropy.FilterChainEnergy`; two numerical applications in one file.
+- **Decision:** Reuse one private mathematical reduction with an arbitrary
+  local expectation envelope. Containing filters preserve the expectation;
+  disjoint filters commute with the supported observable. At most one
+  splitting filter remains.
+- **Caveat:** Nonnegativity of the envelope is derived from its local
+  absolute-value bound. This introduces no sign assumption on the weights
+  of the existing sharp theorem and no smallness outside splitting regions.
+- **Mechanism:** The existing sharp and coarse public results keep their
+  statements; the coarse theorem uses the sharp one. No tactic or new
+  filter predicate is introduced.
+
 ### Transport of a finite product decomposition — promoted lemma (2026-10-18)
 
 - **Seen:** `Entropy.hasProductDecomposition_conj` and both common-basis
