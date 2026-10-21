@@ -102,14 +102,57 @@ estimates.
     the vectors in the second case.
 \end{proof}
 
-For the nearest-neighbour Hamiltonian of~\cite{Landau2013PolynomialTime},
-the local positive contractions give $H\le(N-1)1$. An attained first
-excited energy therefore satisfies $E_1\le N-1<N$. Taking $M=N$ gives
-\begin{align}
-    B=\frac{1-H/N}{1-E_0/N},\qquad
-    \rho=\frac{1-E_1/N}{1-E_0/N}.
-\end{align}
-If a unit ground vector $\Omega$ satisfies the global gap inequality
-with $\Delta=E_1-E_0$,
-Theorem~\ref{thm:global_gap_ground_projection} identifies
-$P=|\Omega\rangle\langle\Omega|$.
+\begin{theorem}[The power estimate for positive contraction terms]
+    \label{thm:physical_power_filter}
+    \lean{Matrix.power_filter_spec_of_posSemidef_terms}
+    \leanok
+    Let $H=\sum_{i\in\mathcal I}h_i$, where $\mathcal I$ is finite and
+    $0\le h_i\le1$. Put $N=|\mathcal I|+1$.
+    Let $\Omega$ be a unit vector satisfying
+    \begin{align*}
+        H\Omega=E_0\Omega,\qquad
+        H-E_0\,1\ge\Delta(1-|\Omega\rangle\langle\Omega|),
+    \end{align*}
+    where $\Delta>0$ and $E_0+\Delta\in\operatorname{spec}(H)$.
+    For every integer $m\ge0$, define
+    \begin{align*}
+        A_m=\left(\frac{1-H/N}{1-E_0/N}\right)^m,\qquad
+        r=\frac{1-(E_0+\Delta)/N}{1-E_0/N}.
+    \end{align*}
+    Then
+    \begin{align*}
+        A_m\ge0,\qquad \|A_m\|=1,\qquad A_m\Omega=\Omega,\qquad
+        \|A_m-|\Omega\rangle\langle\Omega|\|\le r^m.
+    \end{align*}
+    Every unit vector $\psi$ orthogonal to $\Omega$ satisfies
+    \begin{align*}
+        \|A_m\psi\|\le r^m,\qquad
+        |\langle\psi,A_m\psi\rangle|\le r^m.
+    \end{align*}
+    This is the spectral estimate of~\cite{Landau2013PolynomialTime},
+    equation e:cutdown, with the actual first excited energy $E_0+\Delta$.
+    For its chain of $N$ sites, $\mathcal I$ indexes the $N-1$ physical
+    interactions. Spatial locality is unnecessary for this estimate.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:spectral_power_ground_projection,thm:global_gap_ground_projection,
+        thm:gaussian_gap_dichotomy}
+    Summing $h_i\le1$ gives $H\le(N-1)1$. Gap attainment therefore implies
+    $E_0<E_0+\Delta\le N-1<N$, so the normalizing denominator is positive.
+    The global gap dichotomy puts the spectrum in
+    $\{E_0\}\cup[E_0+\Delta,N]$.
+    Apply Theorem~\ref{thm:spectral_power_ground_projection} with $M=N$,
+    and identify its ground projection by
+    Theorem~\ref{thm:global_gap_ground_projection}.
+    The identities
+    \begin{align*}
+        \frac{1-H/N}{1-E_0/N}=\frac{N\,1-H}{N-E_0},\qquad
+        r=\frac{N-(E_0+\Delta)}{N-E_0}
+    \end{align*}
+    identify the power and its rate. The ground projection fixes $\Omega$
+    and is nonzero, giving norm one and $A_m\Omega=\Omega$.
+    It annihilates an orthogonal vector $\psi$, so the operator-norm
+    estimate gives $\|A_m\psi\|\le r^m$. Cauchy--Schwarz gives the last bound.
+\end{proof}
