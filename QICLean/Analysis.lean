@@ -65,6 +65,7 @@ import QICLean.Analysis.GapPerturbation
 import QICLean.Analysis.GaussianFilter
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
+import QICLean.Analysis.GroundProjection
 import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
 import QICLean.Analysis.HermitianIntertwiner
@@ -137,6 +138,7 @@ import QICLean.Analysis.PosSemidefCommute
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
+import QICLean.Analysis.PowerSpectralFilter
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProductReferenceDensityError
 import QICLean.Analysis.ProjectedEvolution

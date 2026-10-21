@@ -1,0 +1,115 @@
+\section{Power approximations to a ground projection}
+\label{sec:spectral_power_projection}
+
+The power approximation of~\cite{Landau2013PolynomialTime} is a spectral
+construction. Locality enters the separate expansion and Schmidt-rank
+estimates.
+
+\begin{theorem}[Power approximation at an isolated ground energy]
+    \label{thm:spectral_power_ground_projection}
+    \lean{Matrix.IsHermitian.power_approximates_isolated_energy_projection}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    Let $H$ be a Hermitian matrix with
+    \begin{align}
+        \operatorname{spec}(H)\subseteq\{E_0\}\cup[E_1,M],
+        \qquad E_0<E_1\le M.
+    \end{align}
+    Let $P=1-\boldsymbol{1}_{[E_1,\infty)}(H)$ be the spectral projection
+    at $E_0$, which may be zero, and set
+    \begin{align}
+        B=\frac{M\,1-H}{M-E_0},\qquad
+        A_m=B^m,\qquad
+        \rho=\frac{M-E_1}{M-E_0}.
+    \end{align}
+    Then $0\le\rho<1$, $B\ge0$, and, for every integer $m\ge0$,
+    \begin{align}
+        A_m\ge0,\qquad A_mP=PA_m=P,\qquad
+        \|A_m-P\|\le\rho^m,\qquad \|A_m\|\le1.
+    \end{align}
+    If $P\ne0$, then $\|A_m\|=1$. These statements allow an empty
+    matrix index set and arbitrary multiplicity of the ground energy.
+    At $m=0$, the error bound is $\|1-P\|\le1$, including when $\rho=0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:closed_threshold_projection}
+    In a spectral representation of $H$, put
+    $f(t)=(M-t)/(M-E_0)$ and $g(t)=\boldsymbol{1}_{\{E_0\}}(t)$.
+    On the spectrum, $f(E_0)=1$ and $0\le f(t)\le\rho<1$ for
+    $E_1\le t\le M$. Thus $f\ge0$, $f^m\ge0$, $f^mg=g$,
+    $|f^m-g|\le\rho^m$, and $|f^m|\le1$ on the spectrum.
+    The spectral theorem gives the assertions for $B=f(H)$,
+    $A_m=f(H)^m$, and $P=g(H)$. If $P\ne0$, absorption and the
+    operator norm give
+    $0<\|P\|=\|A_mP\|\le\|A_m\|\|P\|$, so $\|A_m\|\ge1$.
+\end{proof}
+
+\begin{corollary}[A logarithmic power threshold]
+    \label{cor:spectral_power_log_threshold}
+    \lean{Matrix.IsHermitian.norm_power_sub_projection_le_of_log_threshold}
+    \leanok
+    \uses{thm:spectral_power_ground_projection}
+    With the hypotheses and notation of
+    Theorem~\ref{thm:spectral_power_ground_projection}, let $\eta>0$.
+    If the integer $m\ge0$ satisfies
+    \begin{align}
+        m\ge\frac{M-E_0}{E_1-E_0}\log\frac1\eta,
+    \end{align}
+    then $\|A_m-P\|\le\eta$.
+\end{corollary}
+
+\begin{proof}
+    \leanok
+    \uses{thm:spectral_power_ground_projection}
+    Put $a=M-E_0$ and $\delta=E_1-E_0$. Then $0<\delta\le a$.
+    Since $1-x\le e^{-x}$,
+    \begin{align}
+        \rho^m=\left(1-\frac\delta a\right)^m
+        \le\exp\left(-\frac{m\delta}{a}\right)\le\eta.
+    \end{align}
+    Apply Theorem~\ref{thm:spectral_power_ground_projection}.
+\end{proof}
+
+\begin{theorem}[Identification from a global gap]
+    \label{thm:global_gap_ground_projection}
+    \lean{Matrix.IsHermitian.complement_spectralProjectionGE_eq_rankOne}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    Let $H$ be Hermitian, let $\Omega$ be a unit vector with
+    $H\Omega=E_0\Omega$, and let $\Delta>0$. Suppose that
+    \begin{align}
+        H-E_0\,1\ge\Delta
+          \bigl(1-|\Omega\rangle\langle\Omega|\bigr).
+    \end{align}
+    Then
+    \begin{align}
+        1-\boldsymbol{1}_{[E_0+\Delta,\infty)}(H)
+        =|\Omega\rangle\langle\Omega|.
+    \end{align}
+    The identity also holds in one dimension for every positive $\Delta$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:gaussian_gap_dichotomy}
+    Compare the two operators on an orthonormal eigenbasis of $H$.
+    By Theorem~\ref{thm:gaussian_gap_dichotomy}, each basis vector either
+    has energy $E_0$ and lies on the line spanned by $\Omega$, or has
+    energy at least $E_0+\Delta$ and is orthogonal to $\Omega$.
+    Both operators fix the vectors in the first case and annihilate
+    the vectors in the second case.
+\end{proof}
+
+For the nearest-neighbour Hamiltonian of~\cite{Landau2013PolynomialTime},
+the local positive contractions give $H\le(N-1)1$. An attained first
+excited energy therefore satisfies $E_1\le N-1<N$. Taking $M=N$ gives
+\begin{align}
+    B=\frac{1-H/N}{1-E_0/N},\qquad
+    \rho=\frac{1-E_1/N}{1-E_0/N}.
+\end{align}
+If a unit ground vector $\Omega$ satisfies the global gap inequality
+with $\Delta=E_1-E_0$,
+Theorem~\ref{thm:global_gap_ground_projection} identifies
+$P=|\Omega\rangle\langle\Omega|$.

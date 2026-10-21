@@ -1216,3 +1216,15 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Isolated ground projection as an indicator — candidate (2026-10-22)
+
+- **Pattern:** On a finite Hermitian spectrum contained in one isolated energy
+  and a higher interval, express the complement of the closed threshold
+  projection as the indicator of the isolated energy.
+- **Seen:** `Analysis/PowerSpectralFilter.lean`, local `hPg`; the corresponding
+  local `hPg` in `Analysis/ChebyshevSpectralFilter.lean` (proposed in QICLean
+  PR 860).
+- **Decision:** Two occurrences across the two spectral-filter developments.
+  Retain the short local calculations for now; consider a shared projection
+  lemma if a third consumer requires the same identification.
