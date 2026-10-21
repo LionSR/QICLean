@@ -21,6 +21,7 @@ import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CfcLogListProduct
 import QICLean.Analysis.ChebyshevFilter
+import QICLean.Analysis.ChebyshevSpectralFilter
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression

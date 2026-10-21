@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.ChebyshevFilter
+import QICLean.Analysis.ChebyshevSpectralFilter
 
 /-! # Kernel dependencies of the Chebyshev filter estimates -/
 
@@ -21,3 +21,15 @@ depends on axioms: [propext, Classical.choice, Quot.sound] -/
 depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Polynomial.Chebyshev.exists_interval_shrinking_polynomial
+
+/-- info:
+'Matrix.IsHermitian.exists_polynomial_spectral_filter'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.IsHermitian.exists_polynomial_spectral_filter
+
+/-- info:
+'Matrix.IsHermitian.exists_polynomial_approximating_isolated_energy_projection'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.IsHermitian.exists_polynomial_approximating_isolated_energy_projection
