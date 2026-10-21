@@ -102,6 +102,7 @@ import QICLean.Entropy.SelectedSchmidtEntropy
 import QICLean.Entropy.SpectralTail
 import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.SupportedMarginalTails
+import QICLean.Entropy.SupportedOperatorSchmidtRank
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies
 import QICLean.Entropy.TypicalBellPin

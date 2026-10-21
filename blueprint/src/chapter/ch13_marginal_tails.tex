@@ -1557,6 +1557,37 @@ from the same Hermitian pairing and weighted row and column bounds.
     No enlargement to the dimension of all of $S$ is needed.
 \end{proof}
 
+\begin{theorem}[Operator-Schmidt rank from designated supports]
+    \label{thm:supported_operator_schmidt_rank}
+    \lean{Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le,
+        Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$, where $V$ is finite
+    and the $n_v$ are nonnegative integers. Let $T$ be supported on $S\subseteq V$.
+    Across $B\sqcup B^c=V$,
+    \begin{align}
+        \operatorname{OSR}_B(T)
+         & \le\left(\prod_{v\in S\cap B}n_v\right)^2.\notag
+    \end{align}
+    If $S\subseteq B$ or $S\cap B=\varnothing$, then
+    $\operatorname{OSR}_B(T)\le1$.
+    These conclusions include empty configuration spaces and an empty set
+    of sites.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:bipartite_operator_schmidt_rank,
+        lem:patch_inside_decomposition, lem:supported_product_decomposition}
+    If the global configuration space is empty, $T=0$ and its
+    operator-Schmidt rank is zero. Otherwise, choose one configuration.
+    Theorem~\ref{lem:patch_inside_decomposition} supplies a product
+    decomposition with at most $(\prod_{v\in S\cap B}n_v)^2$ terms.
+    Discarding the norm bounds and using minimality of operator-Schmidt
+    rank gives the first conclusion. For one-sided support,
+    Lemma~\ref{lem:supported_product_decomposition} writes $T$ as
+    $U\otimes1$ or $1\otimes W$, each a one-term decomposition.
+\end{proof}
+
 \begin{theorem}[Sharp clipped conjugation]
     \label{thm:patch_sharp_conjugation}
     \lean{Entropy.abs_re_inner_sub_inner_conj_le_sharp,
