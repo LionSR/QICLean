@@ -29,4 +29,3 @@ set_option linter.hashCommand false
 'Matrix.operatorSchmidtRank_mul_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Matrix.operatorSchmidtRank_mul_le
-
