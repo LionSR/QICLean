@@ -48,11 +48,14 @@ For each selected subset $A\subseteq S$, the same points and scalar coefficients
         &=\sum_{r=0}^{t-1}\left(\sum_{\alpha\in A}c_{\alpha r}\right)P_f(z_r).
     \label{eq:aklv13_interp_sum}
 \end{align}
+\begin{samepage}
 These identities allow zero and dependent coefficient operators. The scalar
 and vector recovery identities are proved by
 \leanid{MvPolynomial.exists_monomial_evaluation_recovery} and
 \leanid{MvPolynomial.monomial_evaluation_recovery_smul}.
 For $S=\varnothing$, there are no coefficients to recover and all sums are empty.
+\par
+\end{samepage}
 
 In the source, $t=\binom{\ell-k+s}{s}$ and the operators
 $P_{i,\ell k}(z_r)$ are said to form a basis of the coefficient-operator
