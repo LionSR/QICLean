@@ -18,7 +18,7 @@ without restricting its multiplicity.
 **Local fix (positivity):** ALVV's positive-semidefinite spectral-AGSP definition
 is not satisfied by every unsquared normalized Chebyshev filter. The statements
 here give Hermiticity and the spectral estimates, with the source error recorded
-in `docs/paper-gaps/alvv_chebyshev_filter_positivity.tex`.
+in `docs/paper-gaps/alvv16_chebyshev_filter_positivity.tex`.
 
 Sources: AKLV, arXiv:1301.1162v1, lines 296–325 and 541–583; ALVV,
 arXiv:1602.08828v2, the eigenspace, low-energy order and contraction assertions
