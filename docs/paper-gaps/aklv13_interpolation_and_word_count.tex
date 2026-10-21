@@ -1,0 +1,104 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\input{command}
+\title{Interpolation and Word Counting in the AKLV Rank Argument}
+\author{}
+\date{October 21, 2026}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+The resolved correction concerns the interpolation wording in the proof of
+Lemma~4.2 of Arad, Kitaev, Landau and Vazirani,
+\href{https://arxiv.org/abs/1301.1162v1}{arXiv:1301.1162v1},
+label \texttt{l:agsp},
+\path{References/1301.1162/1dfrustrated34.tex}, lines~626--644.
+The corrected word count below is required by the remaining rank argument;
+that count and the resulting operator Schmidt rank theorem are not claimed
+formalized here.
+
+\section{Interpolation requires a spanning family}
+
+Let $S$ be a finite set of distinct monomials in complex variables, with
+$t=|S|$, and write $m_\alpha(z)$ for the monomial indexed by $\alpha\in S$.
+There are $t$ evaluation points $z_0,\ldots,z_{t-1}$ and complex numbers
+$c_{\alpha r}$, chosen from $S$ alone, such that
+\begin{align}
+    \sum_{r=0}^{t-1} c_{\alpha r}m_\beta(z_r)
+        &= \begin{cases}1,&\alpha=\beta,\\0,&\alpha\ne\beta.\end{cases}
+    \label{eq:aklv13_interp_scalar}
+\end{align}
+Indeed, the vectors $(m_\beta(z))_{\beta\in S}$ span $\mathbb C^S$:
+a linear functional annihilating every such vector gives a polynomial
+vanishing at every complex assignment, and hence the zero polynomial.
+Choosing a basis from these evaluation vectors gives
+(\ref{eq:aklv13_interp_scalar}).
+This basis lies in $\mathbb C^S$, not in a space of coefficient operators.
+
+For every complex vector space $V$ and every family $(f_\beta)_{\beta\in S}$
+in $V$, put $P_f(z)=\sum_{\beta\in S}m_\beta(z)f_\beta$.
+For each selected subset $A\subseteq S$, the same points and scalar coefficients give
+\begin{align}
+    f_\alpha
+        &=\sum_{r=0}^{t-1}c_{\alpha r}P_f(z_r),
+    \label{eq:aklv13_interp_vector}\\
+    \sum_{\alpha\in A}f_\alpha
+        &=\sum_{r=0}^{t-1}\left(\sum_{\alpha\in A}c_{\alpha r}\right)P_f(z_r).
+    \label{eq:aklv13_interp_sum}
+\end{align}
+These identities allow zero and dependent coefficient operators. The scalar
+and vector recovery identities are proved by
+\leanid{MvPolynomial.exists_monomial_evaluation_recovery} and
+\leanid{MvPolynomial.monomial_evaluation_recovery_smul}.
+For $S=\varnothing$, there are no coefficients to recover and all sums are empty.
+
+In the source, $t=\binom{\ell-k+s}{s}$ and the operators
+$P_{i,\ell k}(z_r)$ are said to form a basis of the coefficient-operator
+space (lines~637--643). They need only span that space.
+For example, if $I\ne0$ and $P(z)=(1+z)I$, both nonzero coefficients equal
+$I$, so the coefficient space has dimension one although $t=2$.
+The homogeneous example $P(z_0,z_1)=(z_0+z_1)I$ has the same defect and
+matches the source's fixed-total-degree setting.
+Equation~(\ref{eq:aklv13_interp_sum})
+proves precisely the conclusion needed at source line~644, without
+requiring the coefficient operators to be linearly independent.
+
+\section{The number of collapsed words}
+
+For integers $0\le k\le\ell$, a word with exactly $k$ occurrences of $H_i$
+has, after commuting $A$ and $B$ within each intervening gap, the form
+\begin{align}
+    A^{a_0}B^{b_0}H_i A^{a_1}B^{b_1}H_i\cdots H_i A^{a_k}B^{b_k},
+    \qquad \sum_{r=0}^{k}(a_r+b_r)=\ell-k.
+    \label{eq:aklv13_word_form}
+\end{align}
+There are $2k+2$ nonnegative exponents. Their number of possible tuples is
+\begin{align}
+    \binom{(\ell-k)+(2k+2)-1}{(2k+2)-1}
+        &=\binom{\ell+k+1}{2k+1}.
+    \label{eq:aklv13_word_count}
+\end{align}
+Different tuples may yield the same operator; the count is an upper bound
+on the number of collected operator expressions, not an independence claim.
+
+Source lines~651 and~657 instead print $\binom{\ell+k}{2k+1}$.
+Already $k=0$, which belongs to the source's range
+$0\le k\le\lfloor\ell/s\rfloor$ for every positive $s$, gives $\ell+1$
+patterns $A^aB^{\ell-a}$ rather than the printed $\ell$.
+At $k=\ell$, the single pattern $H_i^\ell$ gives one rather than zero;
+this also covers the constant-power case $\ell=k=0$ when powers are
+assembled into a polynomial.
+
+The corrected upper index also appears in Arad, Landau, Vazirani and
+Vidick, \href{https://arxiv.org/abs/1602.08828v2}{arXiv:1602.08828v2},
+Proposition~\texttt{prop:Cheby-AGSP-eff},
+\path{References/1602.08828/local_alg_arxiv_v2.tex}, lines~1324 and~1328:
+the two-cut count contains
+$\binom{k+j_1+1}{2j_1+1}\binom{k+j_2+1}{2j_2+1}$.
+The interpolation identities do not establish the locality estimates,
+word-rank bounds, or subsequent rank assembly. Those remain separate
+parts of the operator Schmidt rank argument.
+
+\end{document}
