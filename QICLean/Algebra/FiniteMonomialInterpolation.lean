@@ -30,7 +30,7 @@ Lemma l:agsp, lines 626–644. It does not assert the subsequent locality or
 operator-Schmidt-rank estimates.
 -/
 
-open scoped BigOperators Classical
+open scoped BigOperators
 
 namespace MvPolynomial
 
@@ -38,6 +38,7 @@ private theorem evaluation_monomials_linearIndependent {σ : Type*}
     (S : Finset (σ →₀ ℕ)) :
     LinearIndependent ℂ (fun (β : S) (z : σ → ℂ) =>
       eval z (monomial (β : σ →₀ ℕ) (1 : ℂ))) := by
+  classical
   let E : MvPolynomial σ ℂ →ₗ[ℂ] ((σ → ℂ) → ℂ) :=
     LinearMap.pi fun z => (aeval z).toLinearMap
   have hinj : Function.Injective E := fun p q h => funext (congrFun h)
@@ -45,6 +46,7 @@ private theorem evaluation_monomials_linearIndependent {σ : Type*}
     (fun β : S => (β : σ →₀ ℕ)) Subtype.val_injective).map' E
       (LinearMap.ker_eq_bot.mpr hinj)
 
+open Classical in
 /-- Finite monomial interpolation, AKLV arXiv:1301.1162v1,
 Lemma l:agsp, lines 626–644. The evaluations recover coefficients without
 requiring the coefficient operators to be linearly independent. -/
@@ -79,6 +81,7 @@ theorem exists_monomial_evaluation_recovery
   refine ⟨z, c, fun α β => ?_⟩
   simpa [← hz, Pi.single_apply, eq_comm] using congrFun (hc α) β
 
+open Classical in
 /-- The same scalar interpolation witnesses recover coefficients in any
 complex vector space. AKLV arXiv:1301.1162v1, Lemma l:agsp, lines 626–644. -/
 theorem monomial_evaluation_recovery_smul
