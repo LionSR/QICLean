@@ -1,0 +1,32 @@
+\section{Powers of finite sums}
+\label{sec:finite_sum_powers}
+
+The word expansion in the approximate ground-state projector of~\cite{Landau2013PolynomialTime} is valid without
+commutation of the local operators. The following algebraic statement
+preserves the order of every factor.
+
+\begin{theorem}[Ordered expansion of a finite-sum power]
+    \label{thm:finite_sum_power_ordered_words}
+    \lean{Fintype.sum_pow_eq_sum_ordered_words}
+    \leanok
+    Let $R$ be a semiring, let $I$ be a finite set, and let $P_i\in R$
+    for $i\in I$. For every integer $m\ge0$,
+    \begin{align}
+        \left(\sum_{i\in I}P_i\right)^m
+        =\sum_{w\in I^{\{0,\ldots,m-1\}}}
+            P_{w(0)}P_{w(1)}\cdots P_{w(m-1)}.
+    \end{align}
+    The factors on the right occur in the indicated order.
+    For $m=0$, the unique empty word contributes the multiplicative identity,
+    including when $I$ is empty. For $m>0$ and $I$ empty, both sides vanish.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Induct on $m$. At $m=0$, the empty product gives the assertion.
+    In the induction step, write
+    $(\sum_i P_i)^{m+1}=(\sum_i P_i)(\sum_i P_i)^m$.
+    Distribute multiplication over both sums. Every word of length $m+1$
+    is uniquely determined by its first letter and its remaining word of
+    length $m$, giving the required indexing of the sum.
+\end{proof}
