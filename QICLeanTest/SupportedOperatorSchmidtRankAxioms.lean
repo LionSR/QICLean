@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.SupportedOperatorSchmidtRank
+import QICLean.Entropy.SupportedOperatorSchmidtWords
 
-/-! # Axiom guards for operator Schmidt rank from designated supports -/
+/-! # Axiom guards for supported operators and ordered products -/
 
 set_option autoImplicit false
 set_option linter.hashCommand false
@@ -19,3 +19,9 @@ set_option linter.hashCommand false
 'Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one
+
+/-- info:
+'Entropy.operatorSchmidtRank_cutOperator_list_prod_le'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Entropy.operatorSchmidtRank_cutOperator_list_prod_le

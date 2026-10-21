@@ -40,12 +40,13 @@ lines 584–588, and AKLV, arXiv:1301.1162v1, Lemma l:agsp, lines 646–657.
 The existing decomposition is proved in the two-dimensional area-law
 manuscript, 02-initial.tex, lines 126–133. -/
 theorem IsSupportedOn.operatorSchmidtRank_cutOperator_le
-    {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
+    {V : Type*} [Finite V] [DecidableEq V] {n : V → ℕ}
     {A X : Finset V}
     {T : Matrix (SiteConfig n) (SiteConfig n) ℂ}
     (hT : IsSupportedOn T X) :
     Matrix.operatorSchmidtRank (cutOperator A T) ≤
       (∏ v ∈ X ∩ A, n v) ^ 2 := by
+  let := Fintype.ofFinite V
   by_cases hconfig : Nonempty (SiteConfig n)
   case neg =>
     have : IsEmpty (SiteConfig n) := ⟨fun σ => hconfig ⟨σ⟩⟩
@@ -61,11 +62,12 @@ theorem IsSupportedOn.operatorSchmidtRank_cutOperator_le
 Schmidt rank at most one. LVV, arXiv:1307.5143v1, lines 584–588;
 AKLV, arXiv:1301.1162v1, Lemma l:agsp, lines 646–653. -/
 theorem IsSupportedOn.operatorSchmidtRank_cutOperator_le_one
-    {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
+    {V : Type*} [Finite V] [DecidableEq V] {n : V → ℕ}
     {A X : Finset V}
     {T : Matrix (SiteConfig n) (SiteConfig n) ℂ}
     (hT : IsSupportedOn T X) (hside : X ⊆ A ∨ Disjoint X A) :
     Matrix.operatorSchmidtRank (cutOperator A T) ≤ 1 := by
+  let := Fintype.ofFinite V
   by_cases hconfig : Nonempty (SiteConfig n)
   case neg =>
     have : IsEmpty (SiteConfig n) := ⟨fun σ => hconfig ⟨σ⟩⟩
