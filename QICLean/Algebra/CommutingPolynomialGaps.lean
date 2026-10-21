@@ -189,4 +189,3 @@ theorem Finset.card_piAntidiag_univ_fin_prod_bool (m k : ℕ) :
   simp only [Fintype.card_prod, Fintype.card_fin, Fintype.card_bool]
   have h : (k + 1) * 2 + m - 1 = m + (2 * k + 1) := by omega
   simpa only [h, Nat.add_assoc] using (Nat.choose_symm_add (a := m) (b := 2 * k + 1))
-

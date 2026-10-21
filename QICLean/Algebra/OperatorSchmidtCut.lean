@@ -25,16 +25,17 @@ open scoped BigOperators Kronecker
 
 namespace Matrix
 
-/-- Moving a tensor factor of dimension dim m across an operator Schmidt cut costs
+/-- Moving a finite tensor factor across an operator Schmidt cut costs
 at most its squared dimension. Supporting algebra for AKLV, arXiv:1301.1162v1,
 Lemma l:agsp, lines 651–654. -/
 theorem operatorSchmidtRank_reindex_prodAssoc_symm_le
-    {l m n : Type*} [Fintype l] [Fintype m] [Fintype n]
+    {l m n : Type*} [Fintype l] [Fintype m] [Finite n]
     (ρ : Matrix (l × (m × n)) (l × (m × n)) ℂ) :
     operatorSchmidtRank
         (ρ.reindex (Equiv.prodAssoc l m n).symm (Equiv.prodAssoc l m n).symm) ≤
       Fintype.card m ^ 2 * operatorSchmidtRank ρ := by
   classical
+  let := Fintype.ofFinite n
   obtain ⟨A, B, hρ⟩ := hasOperatorSchmidtDecomposition_operatorSchmidtRank ρ
   let σ := ρ.reindex (Equiv.prodAssoc l m n).symm (Equiv.prodAssoc l m n).symm
   have hblock (ij : (l × m) × (l × m)) :
@@ -58,12 +59,13 @@ theorem operatorSchmidtRank_reindex_prodAssoc_symm_le
 /-- The same cut-movement estimate with the middle tensor factor moved from left to right.
 Supporting algebra for AKLV, arXiv:1301.1162v1, Lemma l:agsp, lines 651–654. -/
 theorem operatorSchmidtRank_reindex_prodAssoc_le
-    {l m n : Type*} [Fintype l] [Fintype m] [Fintype n]
+    {l m n : Type*} [Fintype l] [Fintype m] [Finite n]
     (ρ : Matrix ((l × m) × n) ((l × m) × n) ℂ) :
     operatorSchmidtRank
         (ρ.reindex (Equiv.prodAssoc l m n) (Equiv.prodAssoc l m n)) ≤
       Fintype.card m ^ 2 * operatorSchmidtRank ρ := by
   classical
+  let := Fintype.ofFinite n
   obtain ⟨A, B, hρ⟩ := hasOperatorSchmidtDecomposition_operatorSchmidtRank ρ
   let σ := ρ.reindex (Equiv.prodAssoc l m n) (Equiv.prodAssoc l m n)
   let C : Fin (operatorSchmidtRank ρ) × (m × m) → Matrix (m × n) (m × n) ℂ :=

@@ -5,7 +5,6 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.CommutingPolynomialGaps
 import QICLean.Algebra.OrderedPolynomialGaps
-import Mathlib.Algebra.Polynomial.Eval.Coeff
 
 /-! # Axiom checks and boundary applications for commuting-gap spans -/
 
@@ -37,7 +36,10 @@ private def boundaryGapSpan {𝕜 R : Type*} [Semiring 𝕜] [Semiring R] [Modul
 example {𝕜 R : Type*} [Semiring 𝕜] [Semiring R] [Module 𝕜 R]
     (A B T : R) (hAB : Commute A B) (m : ℕ) :
     (A + B) ^ m ∈ boundaryGapSpan (𝕜 := 𝕜) A B T m 0 := by
-  simpa [boundaryGapSpan, Polynomial.coeff_zero_eq_eval_zero] using
+  have coeffZero :
+      ((Polynomial.C (A + B) + Polynomial.C T * Polynomial.X) ^ m).coeff 0 = (A + B) ^ m := by
+    simpa using Polynomial.coeff_pow_C_add_C_mul_X_eq_sum_gaps (A + B) T m 0
+  simpa only [boundaryGapSpan, Nat.add_zero, coeffZero] using
     Polynomial.coeff_pow_C_add_C_mul_X_mem_span_commuting_gaps (𝕜 := 𝕜) A B T hAB m 0
 
 -- No ordinary letters: the unique all-zero gap tuple represents T^k, including k=0.
@@ -55,7 +57,10 @@ example {𝕜 R : Type*} [Semiring 𝕜] [Semiring R] [Module 𝕜 R]
 example {𝕜 R : Type*} [Semiring 𝕜] [Semiring R] [Module 𝕜 R]
     (A B T : R) (hAB : Commute A B) :
     A ^ 2 + 2 * A * B + B ^ 2 ∈ boundaryGapSpan (𝕜 := 𝕜) A B T 2 0 := by
-  simpa [boundaryGapSpan, Polynomial.coeff_zero_eq_eval_zero, hAB.add_sq] using
+  have coeffZero :
+      ((Polynomial.C (A + B) + Polynomial.C T * Polynomial.X) ^ 2).coeff 0 = (A + B) ^ 2 := by
+    simpa using Polynomial.coeff_pow_C_add_C_mul_X_eq_sum_gaps (A + B) T 2 0
+  simpa only [boundaryGapSpan, Nat.add_zero, coeffZero, hAB.add_sq] using
     Polynomial.coeff_pow_C_add_C_mul_X_mem_span_commuting_gaps (𝕜 := 𝕜) A B T hAB 2 0
 
 -- All-zero gap exponents give exactly one tuple.

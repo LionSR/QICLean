@@ -57,4 +57,3 @@ example {l n : Type*} [Fintype l] [Fintype n]
     operatorSchmidtRank
         (ρ.reindex (Equiv.prodAssoc l Empty n) (Equiv.prodAssoc l Empty n)) = 0 := by
   exact Nat.eq_zero_of_le_zero (by simpa using operatorSchmidtRank_reindex_prodAssoc_le ρ)
-
