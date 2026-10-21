@@ -167,6 +167,57 @@
     exactly the span of the operator blocks $\rho_{ij}$.
 \end{proof}
 
+\begin{lemma}[A finite spanning bound for operator blocks]
+    \label{lem:operator_schmidt_block_span_bound}
+    \lean{Matrix.operatorSchmidtRank_le_card_of_blocks_mem_span}
+    \leanok
+    Let $\mathbb F$ be a field and let $X$ be a finite bipartite matrix over
+    $\mathbb F$. Define $\operatorname{OSR}_{\mathbb F}(X)$ to be the dimension
+    of the span of its operator blocks. If every block belongs to the span
+    of a finite family $(C_t)_{t\in I}$, then
+    \begin{align*}
+        \operatorname{OSR}_{\mathbb F}(X)\le |I|.
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    \leanok
+    The span of the blocks is contained in $\operatorname{span}\{C_t:t\in I\}$,
+    whose dimension is at most $|I|$.
+\end{proof}
+
+\begin{theorem}[Movement of an operator Schmidt cut]
+    \label{thm:operator_schmidt_cut_movement}
+    \lean{Matrix.operatorSchmidtRank_reindex_prodAssoc_le,
+        Matrix.operatorSchmidtRank_reindex_prodAssoc_symm_le}
+    \leanok
+    Let $X$ be an operator on three finite-dimensional complex spaces
+    $\mathcal H_A\otimes\mathcal H_B\otimes\mathcal H_C$, and put
+    $d_B=\dim\mathcal H_B$. With the canonical association of tensor factors,
+    \begin{align*}
+        \operatorname{OSR}_{AB\mid C}(X)
+            &\le d_B^2\operatorname{OSR}_{A\mid BC}(X), \\
+        \operatorname{OSR}_{A\mid BC}(X)
+            &\le d_B^2\operatorname{OSR}_{AB\mid C}(X).
+    \end{align*}
+    Zero-dimensional factors are included. These inequalities give the
+    linear-algebraic cut comparison used in
+    \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:operator_schmidt_block_span_bound, def:bipartite_operator_schmidt_rank}
+    Choose a shortest decomposition $X=\sum_{t=1}^{r}A_t\otimes B_t$ across
+    $A\mid BC$. For middle-factor indices $u,v$, let $(B_t)_{uv}$ be the
+    corresponding operator block on $\mathcal H_C$. Every block of $X$
+    across $AB\mid C$ is a linear combination of these $r d_B^2$ matrices.
+    The preceding lemma proves the first inequality.
+
+    For the reverse inequality choose a shortest decomposition across
+    $AB\mid C$. If $E_{uv}$ are the middle-factor matrix units, every block
+    across $A\mid BC$ lies in the span of the $r d_B^2$ matrices
+    $E_{uv}\otimes B_t$. Apply the same lemma.
+\end{proof}
+
 \begin{theorem}[Operator-Schmidt rank under local isometries]
     \label{thm:operator_schmidt_rank_local_isometry}
     \lean{Matrix.operatorSchmidtRank_local_mul_le,

@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Algebra.BlockPermutation
 import QICLean.Algebra.BurnsideTheorem
 import QICLean.Algebra.CommutingOverlappingDecomp
+import QICLean.Algebra.CommutingPolynomialGaps
 import QICLean.Algebra.CompactSVD
 import QICLean.Algebra.ComplexPhasePositivity
 import QICLean.Algebra.ConstantPowerSums
@@ -73,6 +74,7 @@ import QICLean.Algebra.NilpotentSubspaceTwo
 import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
+import QICLean.Algebra.OperatorSchmidtCut
 import QICLean.Algebra.OrderedMatrixAction
 import QICLean.Algebra.OrderedPolynomialGaps
 import QICLean.Algebra.OrthogonalProjection
