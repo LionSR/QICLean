@@ -1,0 +1,65 @@
+\section{Chebyshev polynomials for spectral filters}
+
+\begin{theorem}[Exponential growth on the positive half-line]
+    \label{thm:chebyshev_half_exp_sqrt}
+    \lean{Polynomial.Chebyshev.half_exp_sqrt_le_eval_T}\leanok
+    For every natural number $n$ and every real $x\ge1$, the Chebyshev
+    polynomial of the first kind satisfies
+    \begin{align}
+        T_n(x) & \ge\frac12\exp\left(2n\sqrt{\frac{x-1}{x+1}}\right).
+        \label{eq:chebyshev_half_exp_sqrt}
+    \end{align}
+    This is the scalar estimate used in
+    \cite{Arad2013AreaLaw,Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    Put $r=\sqrt{(x-1)/(x+1)}$. Then $0\le r<1$ and
+    $\cosh(\log((1+r)/(1-r)))=x$. The logarithmic inequality
+    $r\le\tfrac12\log((1+r)/(1-r))$ gives $2r\le\operatorname{arcosh}x$.
+    Therefore
+    \begin{align}
+        T_n(x) & =\cosh(n\operatorname{arcosh}x)
+        \ge\tfrac12\exp(n\operatorname{arcosh}x)
+        \ge\tfrac12\exp(2nr).\notag
+    \end{align}
+    These identities also apply when $n=0$ or $x=1$.
+\end{proof}
+
+
+\begin{theorem}[Normalized polynomial on an isolated spectral interval]
+    \label{thm:chebyshev_interval_polynomial}
+    \lean{Polynomial.Chebyshev.exists_interval_shrinking_polynomial}\leanok
+    \uses{thm:chebyshev_half_exp_sqrt}
+    Let $a<b\le u$ be real numbers and let $n\in\mathbb N$.
+    There is a real polynomial $p$ of degree exactly $n$ with $p(a)=1$.
+    It satisfies $p(x)\ge1$ for every $x\le a$, and for every $x\in[b,u]$,
+    \begin{align}
+        |p(x)| & \le2\exp\left(-2n\sqrt{\frac{b-a}{u-a}}\right).
+        \label{eq:chebyshev_interval_polynomial}
+    \end{align}
+    This is the scalar polynomial construction in
+    \cite{Arad2013AreaLaw,Arad2016RigorousRG}, including degree zero and
+    a singleton upper interval.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:chebyshev_half_exp_sqrt}
+    First suppose $b<u$. Put
+    \begin{align}
+        f(x) & =\frac{u+b-2x}{u-b},\notag          \\
+        p(x) & =\frac{T_n(f(x))}{T_n(f(a))}.\notag
+    \end{align}
+    The affine map $f$ takes $[b,u]$ into $[-1,1]$, while $f(a)>1$.
+    Thus $|T_n(f(x))|\le1$ on $[b,u]$ and $T_n(f(a))\ge1$.
+    Theorem~\ref{thm:chebyshev_half_exp_sqrt} and
+    $(f(a)-1)/(f(a)+1)=(b-a)/(u-a)$ give
+    (\ref{eq:chebyshev_interval_polynomial}).
+    The denominator is positive, so the polynomial has degree $n$ and
+    takes value one at $a$. Monotonicity of $\cosh(n\operatorname{arcosh}y)$
+    for $y\ge1$, together with the decreasing affine map $f$, gives
+    $p(x)\ge1$ for $x\le a$.
+
+    If $b=u$, use $p(x)=((u-x)/(u-a))^n$.
+    It has degree $n$, takes value one at $a$ and is at least one to the left.
+    For $n>0$ it vanishes on the upper interval $\{u\}$; for $n=0$ it is
+    the constant one and the required upper bound is two.
+\end{proof}
