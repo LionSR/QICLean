@@ -14,3 +14,8 @@ set_option linter.hashCommand false
 'Fintype.sum_pow_eq_sum_ordered_words' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Fintype.sum_pow_eq_sum_ordered_words
+
+/-- info:
+'Fintype.smul_sub_average_pow_eq_sum_ordered_words' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Fintype.smul_sub_average_pow_eq_sum_ordered_words

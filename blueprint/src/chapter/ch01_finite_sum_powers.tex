@@ -30,3 +30,37 @@ preserves the order of every factor.
     is uniquely determined by its first letter and its remaining word of
     length $m$, giving the required indexing of the sum.
 \end{proof}
+
+\begin{corollary}[Normalized complement expansion]
+    \label{cor:normalized_complement_ordered_words}
+    \lean{Fintype.smul_sub_average_pow_eq_sum_ordered_words}
+    \leanok
+    Let $R$ be a unital complex algebra, let $I$ be a nonempty finite set
+    of cardinality $N$, and let $h_i\in R$. For $c\in\mathbb C$ and every
+    integer $m\ge0$,
+    \begin{align}
+        \left[c\left(1-\frac1N\sum_{i\in I}h_i\right)\right]^m
+        =\left(\frac cN\right)^m
+          \sum_{w\in I^{\{0,\ldots,m-1\}}}
+            (1-h_{w(0)})\cdots(1-h_{w(m-1)}).
+    \end{align}
+    Complex scalars act through the algebra structure. The scalar $c$
+    may vanish, and the factors need not commute.
+\end{corollary}
+
+\begin{proof}
+    \leanok
+    \uses{thm:finite_sum_power_ordered_words}
+    Write $S=\sum_i h_i$. Since $N>0$,
+    \begin{align}
+        \frac1N\sum_i(1-h_i)=1-\frac1N S.
+    \end{align}
+    Take the $m$-th power, move the central scalar outside the power,
+    and apply Theorem~\ref{thm:finite_sum_power_ordered_words} to the
+    complements $1-h_i$.
+\end{proof}
+
+For the chain Hamiltonian of~\cite{Landau2013PolynomialTime}, there are
+$N-1$ local terms. Add the final term $h_N=0$, so that its complement is
+$1$, and choose $c=(1-E_0/N)^{-1}$. This gives the ordered expansion used
+there. Spectral bounds on this operator are separate assertions.
