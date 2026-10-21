@@ -110,23 +110,25 @@ estimates.
     $0\le h_i\le1$. Put $N=|\mathcal I|+1$.
     Let $\Omega$ be a unit vector satisfying
     \begin{align*}
-        H\Omega=E_0\Omega,\qquad
+        H\Omega=E_0\Omega, \\
         H-E_0\,1\ge\Delta(1-|\Omega\rangle\langle\Omega|),
     \end{align*}
     where $\Delta>0$ and $E_0+\Delta\in\operatorname{spec}(H)$.
     For every integer $m\ge0$, define
     \begin{align*}
-        A_m=\left(\frac{1-H/N}{1-E_0/N}\right)^m,\qquad
+        A_m=\left(\frac{1-H/N}{1-E_0/N}\right)^m, \\
         r=\frac{1-(E_0+\Delta)/N}{1-E_0/N}.
     \end{align*}
     Then
     \begin{align*}
-        A_m\ge0,\qquad \|A_m\|=1,\qquad A_m\Omega=\Omega,\qquad
+        A_m\ge0, \\
+        \|A_m\|=1, \\
+        A_m\Omega=\Omega, \\
         \|A_m-|\Omega\rangle\langle\Omega|\|\le r^m.
     \end{align*}
     Every unit vector $\psi$ orthogonal to $\Omega$ satisfies
     \begin{align*}
-        \|A_m\psi\|\le r^m,\qquad
+        \|A_m\psi\|\le r^m, \\
         |\langle\psi,A_m\psi\rangle|\le r^m.
     \end{align*}
     This is the spectral estimate of~\cite{Landau2013PolynomialTime},
@@ -148,11 +150,37 @@ estimates.
     Theorem~\ref{thm:global_gap_ground_projection}.
     The identities
     \begin{align*}
-        \frac{1-H/N}{1-E_0/N}=\frac{N\,1-H}{N-E_0},\qquad
+        \frac{1-H/N}{1-E_0/N}=\frac{N\,1-H}{N-E_0}, \\
         r=\frac{N-(E_0+\Delta)}{N-E_0}
     \end{align*}
     identify the power and its rate. The ground projection fixes $\Omega$
     and is nonzero, giving norm one and $A_m\Omega=\Omega$.
     It annihilates an orthogonal vector $\psi$, so the operator-norm
     estimate gives $\|A_m\psi\|\le r^m$. Cauchy--Schwarz gives the last bound.
+\end{proof}
+
+\begin{corollary}[Physical power approximation at a prescribed accuracy]
+    \label{cor:physical_power_filter_accuracy}
+    \lean{Matrix.norm_power_filter_sub_ground_le_of_log_threshold}
+    \leanok
+    \uses{thm:physical_power_filter}
+    Under the hypotheses and notation of Theorem~\ref{thm:physical_power_filter},
+    let $\eta>0$ and suppose that the integer $m\ge0$ satisfies
+    \begin{align*}
+        m\ge\frac{N-E_0}{\Delta}\log\frac1\eta.
+    \end{align*}
+    Then $\|A_m-|\Omega\rangle\langle\Omega|\|\le\eta$.
+    No upper restriction on $\eta$ is required; at $\eta=1$, $m=0$ is allowed.
+\end{corollary}
+\begin{proof}
+    \leanok
+    \uses{cor:spectral_power_log_threshold,thm:global_gap_ground_projection,
+        thm:gaussian_gap_dichotomy}
+    The local upper bounds and global gap put the spectrum in
+    $\{E_0\}\cup[E_0+\Delta,N]$.
+    Apply Corollary~\ref{cor:spectral_power_log_threshold} with
+    $M=N$ and $E_1=E_0+\Delta$, so $E_1-E_0=\Delta$.
+    The scalar normalization in the preceding proof identifies the actual
+    power, and Theorem~\ref{thm:global_gap_ground_projection} identifies
+    its ground projection with $|\Omega\rangle\langle\Omega|$.
 \end{proof}

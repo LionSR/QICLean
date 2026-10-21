@@ -29,10 +29,9 @@ open scoped Matrix.Norms.L2Operator MatrixOrder ComplexOrder InnerProductSpace
 
 namespace Matrix
 
-/-- Spectral power approximation from positive contraction terms and an
-attained first excited energy. LVV, arXiv:1307.5143v1, lines 209, 283,
-and 599–603, equation e:cutdown. No spatial locality is used. -/
-theorem power_filter_spec_of_posSemidef_terms
+/-- The spectral data and scalar normalization for the positive-contraction power filter.
+LVV, arXiv:1307.5143v1, lines 209, 283, and 599–603, equation e:cutdown. -/
+private theorem physical_power_filter_spectral_data
     {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     (h : κ → Matrix ι ι ℂ)
     (hpos : ∀ i, (h i).PosSemidef) (hupper : ∀ i, h i ≤ 1)
@@ -42,16 +41,16 @@ theorem power_filter_spec_of_posSemidef_terms
     (hgap : ((∑ i, h i) - (E0 : ℂ) • 1 - (Δ : ℂ) •
       (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
     (hΔ : 0 < Δ)
-    (hattain : E0 + Δ ∈ spectrum ℝ (∑ i, h i)) (m : ℕ) :
+    (hattain : E0 + Δ ∈ spectrum ℝ (∑ i, h i)) :
     let H := ∑ i, h i
     let N : ℝ := ((Fintype.card κ + 1 : ℕ) : ℝ)
-    let A : Matrix ι ι ℂ := ((1 - E0 / N)⁻¹ • (1 - N⁻¹ • H)) ^ m
-    let r : ℝ := (1 - (E0 + Δ) / N) / (1 - E0 / N)
-    A.PosSemidef ∧ ‖A‖ = 1 ∧ toEuclideanLin A Ω = Ω ∧
-      ‖A - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))‖ ≤ r ^ m ∧
-      ∀ ψ : EuclideanSpace ℂ ι, ‖ψ‖ = 1 → ⟪Ω, ψ⟫_ℂ = 0 →
-        ‖toEuclideanLin A ψ‖ ≤ r ^ m ∧
-          ‖⟪ψ, toEuclideanLin A ψ⟫_ℂ‖ ≤ r ^ m := by
+    H.IsHermitian ∧ E0 + Δ ≤ N ∧
+      (∀ t ∈ spectrum ℝ H, t = E0 ∨ t ∈ Set.Icc (E0 + Δ) N) ∧
+      (1 - spectralProjectionGE H (E0 + Δ) =
+        vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))) ∧
+      ((1 - E0 / N)⁻¹ • (1 - N⁻¹ • H) =
+        (N - E0)⁻¹ • (N • (1 : Matrix ι ι ℂ) - H)) ∧
+      ((1 - (E0 + Δ) / N) / (1 - E0 / N) = (N - (E0 + Δ)) / (N - E0)) := by
   let H : Matrix ι ι ℂ := ∑ i, h i
   let N : ℝ := ((Fintype.card κ + 1 : ℕ) : ℝ)
   have hHpos : H.PosSemidef := posSemidef_sum Finset.univ fun i _ => hpos i
@@ -87,6 +86,38 @@ theorem power_filter_spec_of_posSemidef_terms
   have hratio : (1 - (E0 + Δ) / N) / (1 - E0 / N) =
       (N - (E0 + Δ)) / (N - E0) := by
     field_simp
+  exact ⟨hH, hE1N.le, hspectrum, hcanonical, hbase, hratio⟩
+
+/-- Spectral power approximation from positive contraction terms and an
+attained first excited energy. LVV, arXiv:1307.5143v1, lines 209, 283,
+and 599–603, equation e:cutdown. No spatial locality is used. -/
+theorem power_filter_spec_of_posSemidef_terms
+    {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
+    (h : κ → Matrix ι ι ℂ)
+    (hpos : ∀ i, (h i).PosSemidef) (hupper : ∀ i, h i ≤ 1)
+    {E0 Δ : ℝ} {Ω : EuclideanSpace ℂ ι}
+    (hΩ : ‖Ω‖ = 1)
+    (hHΩ : (∑ i, h i) *ᵥ WithLp.ofLp Ω = (E0 : ℂ) • WithLp.ofLp Ω)
+    (hgap : ((∑ i, h i) - (E0 : ℂ) • 1 - (Δ : ℂ) •
+      (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
+    (hΔ : 0 < Δ)
+    (hattain : E0 + Δ ∈ spectrum ℝ (∑ i, h i)) (m : ℕ) :
+    let H := ∑ i, h i
+    let N : ℝ := ((Fintype.card κ + 1 : ℕ) : ℝ)
+    let A : Matrix ι ι ℂ := ((1 - E0 / N)⁻¹ • (1 - N⁻¹ • H)) ^ m
+    let r : ℝ := (1 - (E0 + Δ) / N) / (1 - E0 / N)
+    A.PosSemidef ∧ ‖A‖ = 1 ∧ toEuclideanLin A Ω = Ω ∧
+      ‖A - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))‖ ≤ r ^ m ∧
+      ∀ ψ : EuclideanSpace ℂ ι, ‖ψ‖ = 1 → ⟪Ω, ψ⟫_ℂ = 0 →
+        ‖toEuclideanLin A ψ‖ ≤ r ^ m ∧
+          ‖⟪ψ, toEuclideanLin A ψ⟫_ℂ‖ ≤ r ^ m := by
+  let H : Matrix ι ι ℂ := ∑ i, h i
+  let N : ℝ := ((Fintype.card κ + 1 : ℕ) : ℝ)
+  let P : Matrix ι ι ℂ := vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))
+  have h01 : E0 < E0 + Δ := lt_add_of_pos_right E0 hΔ
+  obtain ⟨hH, hE1N, hspectrum, hcanonical, hbase, hratio⟩ :=
+    physical_power_filter_spectral_data h hpos hupper hΩ hHΩ hgap hΔ hattain
+  change 1 - spectralProjectionGE H (E0 + Δ) = P at hcanonical
   have hPΩ : toEuclideanLin P Ω = Ω := by
     simp [P, toEuclideanLin_vecMulVec_star_self_apply, inner_self_eq_norm_sq_to_K, hΩ]
   have hPne : P ≠ 0 := fun hz => by
@@ -94,7 +125,7 @@ theorem power_filter_spec_of_posSemidef_terms
   let K : Matrix ι ι ℂ := ((N - E0)⁻¹ • (N • (1 : Matrix ι ι ℂ) - H)) ^ m
   let q : ℝ := (N - (E0 + Δ)) / (N - E0)
   obtain ⟨_, _, _, _, hKpos, hKP, _, herror, _, hKnorm⟩ :=
-    hH.power_approximates_isolated_energy_projection h01 hE1N.le hspectrum m
+    hH.power_approximates_isolated_energy_projection h01 hE1N hspectrum m
   rw [hcanonical] at hKP herror hKnorm
   have hKΩ : toEuclideanLin K Ω = Ω := by
     simpa only [toEuclideanLin_mul, LinearMap.comp_apply, hPΩ] using
@@ -112,5 +143,36 @@ theorem power_filter_spec_of_posSemidef_terms
   have hinner : ‖⟪ψ, toEuclideanLin K ψ⟫_ℂ‖ ≤ ‖toEuclideanLin K ψ‖ := by
     simpa only [hψ, one_mul] using norm_inner_le_norm ψ (toEuclideanLin K ψ)
   exact ⟨hvec, hinner.trans hvec⟩
+
+/-- An explicit logarithmic accuracy threshold for the physical power filter.
+LVV, arXiv:1307.5143v1, lines 599–603, equation e:cutdown.
+The threshold is an attained first excited energy, as in lines 209 and 283. -/
+theorem norm_power_filter_sub_ground_le_of_log_threshold
+    {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
+    (h : κ → Matrix ι ι ℂ)
+    (hpos : ∀ i, (h i).PosSemidef) (hupper : ∀ i, h i ≤ 1)
+    {E0 Δ : ℝ} {Ω : EuclideanSpace ℂ ι}
+    (hΩ : ‖Ω‖ = 1)
+    (hHΩ : (∑ i, h i) *ᵥ WithLp.ofLp Ω = (E0 : ℂ) • WithLp.ofLp Ω)
+    (hgap : ((∑ i, h i) - (E0 : ℂ) • 1 - (Δ : ℂ) •
+      (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
+    (hΔ : 0 < Δ)
+    (hattain : E0 + Δ ∈ spectrum ℝ (∑ i, h i))
+    {η : ℝ} (hη : 0 < η) (m : ℕ)
+    (hm : ((((Fintype.card κ + 1 : ℕ) : ℝ) - E0) / Δ) *
+      Real.log (1 / η) ≤ (m : ℝ)) :
+    let H := ∑ i, h i
+    let N : ℝ := ((Fintype.card κ + 1 : ℕ) : ℝ)
+    let A : Matrix ι ι ℂ := ((1 - E0 / N)⁻¹ • (1 - N⁻¹ • H)) ^ m
+    ‖A - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))‖ ≤ η := by
+  let H : Matrix ι ι ℂ := ∑ i, h i
+  let N : ℝ := ((Fintype.card κ + 1 : ℕ) : ℝ)
+  obtain ⟨hH, hE1N, hspectrum, hcanonical, hbase, _⟩ :=
+    physical_power_filter_spectral_data h hpos hupper hΩ hHΩ hgap hΔ hattain
+  have hm' : (N - E0) / ((E0 + Δ) - E0) * Real.log (1 / η) ≤ (m : ℝ) := by
+    simpa only [add_sub_cancel_left] using hm
+  have herr := hH.norm_power_sub_projection_le_of_log_threshold
+    (lt_add_of_pos_right E0 hΔ) hE1N hspectrum hη m hm'
+  simpa only [← hbase, hcanonical] using herr
 
 end Matrix

@@ -21,6 +21,12 @@ depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Matrix.power_filter_spec_of_posSemidef_terms
 
+/-- info:
+'Matrix.norm_power_filter_sub_ground_le_of_log_threshold'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.norm_power_filter_sub_ground_le_of_log_threshold
+
 open Matrix
 open scoped Matrix.Norms.L2Operator MatrixOrder ComplexOrder InnerProductSpace
 
@@ -73,3 +79,14 @@ example (m : ℕ) :
     (by simpa using twoLevel_ground) (by simpa using twoLevel_gap)
     zero_lt_one (by simpa using twoLevel_attain) m
   convert hs.2.2.2.1 using 1 <;> norm_num
+
+-- Accuracy one permits exponent zero in this actual two-level physical example.
+example :
+    ‖(1 : Matrix (Fin 2) (Fin 2) ℂ) -
+      vecMulVec (WithLp.ofLp twoLevelΩ) (star (WithLp.ofLp twoLevelΩ))‖ ≤ 1 := by
+  have hs := Matrix.norm_power_filter_sub_ground_le_of_log_threshold
+    (fun _ : Unit => twoLevelH) (fun _ => twoLevelH_pos) (fun _ => twoLevelH_upper)
+    (E0 := 0) (Δ := 1) (Ω := twoLevelΩ) twoLevelΩ_unit
+    (by simpa using twoLevel_ground) (by simpa using twoLevel_gap)
+    zero_lt_one (by simpa using twoLevel_attain) (η := 1) zero_lt_one 0 (by norm_num)
+  simpa only [pow_zero] using hs
