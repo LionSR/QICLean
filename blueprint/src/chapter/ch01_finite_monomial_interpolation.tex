@@ -14,8 +14,11 @@
          & =\begin{cases}1,&\alpha=\beta,\\0,&\alpha\ne\beta.\end{cases}\notag
     \end{align}
     For every complex vector space $V$ and family $(f_\beta)_{\beta\in S}$ in $V$,
-    put $P_f(z)=\sum_{\beta\in S}m_\beta(z)f_\beta$. The same points and
-    coefficients satisfy
+    put
+    \begin{align*}
+        P_f(z)=\sum_{\beta\in S}m_\beta(z)f_\beta.
+    \end{align*}
+    The same points and coefficients satisfy
     \begin{align}
         f_\alpha & =\sum_{r=0}^{t-1}c_{\alpha r}P_f(z_r).\notag
     \end{align}
@@ -43,8 +46,8 @@
     \label{thm:monomial_evaluation_selected_rank}
     \lean{Matrix.operatorSchmidtRank_sum_le_of_monomial_evaluations}
     \leanok
-    Let $S$ be a finite monomial support, let $f_\alpha$ be complex bipartite
-    operator coefficients, and put
+    Let $S$ be a finite monomial support, let $f_\alpha$ be operator coefficients
+    on a tensor product of two finite-dimensional complex spaces, and put
     $P_f(z)=\sum_{\alpha\in S}m_\alpha(z)f_\alpha$.
     If $\operatorname{OSR}(P_f(z))\le r$ for every $z\in\mathbb C^\sigma$,
     where $r\ge0$ is an integer, then every $U\subseteq S$ satisfies
