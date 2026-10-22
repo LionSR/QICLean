@@ -251,3 +251,93 @@
     middle-versus-exterior rank by
     Theorem~\ref{thm:operator_schmidt_middle_rank}.
 \end{proof}
+
+\begin{theorem}[Weighted frequency sums across the middle cut]
+    \label{thm:weighted_full_frequency_middle_rank}
+    \lean{Matrix.operatorSchmidtRank_middle_sum_smul_full_counts_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $I$ be finite and let $H_a$ act on
+    $\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$ for $a\in I$,
+    where the three complex spaces are finite-dimensional.
+    Fix distinct $u,v\in I$ and put $O=I\setminus\{u,v\}$.
+    Suppose that $A_{L,a},A_{M,a},A_{R,a}$ act on the corresponding
+    single factors and satisfy, for every $a\in O$,
+    \begin{align}
+        H_a & =A_{L,a}\otimes\mathbb 1_M\otimes\mathbb 1_R
+        +\mathbb 1_L\otimes A_{M,a}\otimes\mathbb 1_R
+        +\mathbb 1_L\otimes\mathbb 1_M\otimes A_{R,a}.\notag
+    \end{align}
+    Let $U$ act on $\mathcal H_L\otimes\mathcal H_M$ and $V$ on
+    $\mathcal H_M\otimes\mathcal H_R$, with
+    $H_u=U\otimes\mathbb 1_R$ and $H_v=\mathbb 1_L\otimes V$.
+    Let $r_U,r_V,k,i,j$ be natural numbers such that
+    $\operatorname{OSR}_{L\mid M}(U)\le r_U$ and
+    $\operatorname{OSR}_{M\mid R}(V)\le r_V$.
+    Define
+    \begin{align}
+        E_k & =\left\{\alpha:I\to\N:\sum_{a\in I}\alpha(a)=k\right\}, \notag \\
+        T   & =\{\alpha\in E_k:\alpha(u)=i,\ \alpha(v)=j\}.\notag
+    \end{align}
+    For a word $w\in I^{\{0,\ldots,k-1\}}$, write
+    $n_w(a)=|\{t:w(t)=a\}|$, and put
+    \begin{align}
+        C_\alpha & =\sum_{\substack{w\in I^{\{0,\ldots,k-1\}}\\n_w=\alpha}}
+        H_{w(0)}\cdots H_{w(k-1)}.\notag
+    \end{align}
+    Every scalar family $(\lambda_\alpha)_{\alpha:I\to\N}$ satisfies
+    \begin{align}
+        \operatorname{OSR}_{M\mid LR}\!\left(
+        \sum_{\alpha\in T}\lambda_\alpha C_\alpha\right)
+        \le |T|\binom{k+i+1}{2i+1}\binom{k+j+1}{2j+1}r_U^i r_V^j.\notag
+    \end{align}
+    Empty slices and spaces of dimension zero are allowed, with $0^0=1$.
+    These tensor hypotheses give an algebraic auxiliary to the coefficient
+    selection in \cite[Lemma~4.2]{Arad2013AreaLaw} and the simultaneous
+    boundary estimates in \cite[proof of Proposition~5.7]{Arad2016RigorousRG}.
+    The binomial factors use the corrected count in
+    \cite{gap:aklv13_interpolation_and_word_count}.
+    % Physical support and variable-count identifications, low-frequency
+    % selection, cut displacement and the MPO conclusion remain separate.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:finite_monomial_interpolation,
+        thm:operator_schmidt_rank_algebra,
+        thm:two_marker_full_word_counts,
+        thm:tripartite_polynomial_coefficient_rank}
+    If $i+j>k$, the set $T$ is empty. Otherwise $i,j\le k$.
+    The map $\alpha\mapsto\alpha|_O$ is injective on $T$, because the
+    two omitted coordinates have the fixed values $i,j$.
+    Thus the monomials $m_\alpha(z)=\prod_{a\in O}z_a^{\alpha(a)}$,
+    indexed by $\alpha\in T$, are distinct.
+
+    Put $D(z)=\sum_{a\in O}z_aH_a$ and
+    $F_z(X,Y)=D(z)+H_uX+H_vY$.
+    Theorem~\ref{thm:two_marker_full_word_counts} gives the same operator family
+    \begin{align}
+        P(z) & =[Y^j][X^i]F_z(X,Y)^k
+        =\sum_{\alpha\in T}m_\alpha(z)C_\alpha.
+        \label{eq:weighted_frequency_evaluation}
+    \end{align}
+    The local forms of $H_a$ express $D(z)$ as the sum of the three local
+    operators $\sum_{a\in O}z_aA_{L,a}$,
+    $\sum_{a\in O}z_aA_{M,a}$ and $\sum_{a\in O}z_aA_{R,a}$,
+    each tensored with the other two identities.
+    Theorem~\ref{thm:tripartite_polynomial_coefficient_rank} therefore bounds
+    the middle-cut rank of every $P(z)$ by
+    $R=\binom{k+i+1}{2i+1}\binom{k+j+1}{2j+1}r_U^i r_V^j$.
+
+    Set $t=|T|$. By Theorem~\ref{thm:finite_monomial_interpolation}, choose
+    points $z_0,\ldots,z_{t-1}$ and coefficients $c_{\alpha s}$ that recover
+    these monomials. Applying the same recovery coefficients to
+    (\ref{eq:weighted_frequency_evaluation}) gives
+    \begin{align}
+        \sum_{\alpha\in T}\lambda_\alpha C_\alpha
+        =\sum_{s=0}^{t-1}\left(
+        \sum_{\alpha\in T}\lambda_\alpha c_{\alpha s}\right)P(z_s).\notag
+    \end{align}
+    Scalar multiplication does not increase operator Schmidt rank.
+    Subadditivity now gives the bound $tR$, using only this one set of
+    $t$ evaluation points.
+\end{proof}

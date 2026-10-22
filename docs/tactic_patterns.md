@@ -1288,3 +1288,19 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Weighted monomial recovery at common evaluation points — candidate (2026-10-22)
+
+- **Consumers:** `operatorSchmidtRank_sum_le_of_monomial_evaluations` in
+  `Algebra/MonomialEvaluationSchmidtRank.lean` and the private
+  `rank_weighted_sum_of_injective_monomials` in
+  `Algebra/WeightedFrequencySchmidtRank.lean`.
+- **Pattern:** Apply the existing monomial recovery coefficients to the same
+  evaluated operator family, interchange the finite sums, and contract the
+  selected or scalar-weighted coefficients before applying the sum rank bound.
+- **Reuse:** Both arguments invoke
+  `MvPolynomial.monomial_evaluation_recovery_smul`; `Finset.sum_comm`,
+  `Finset.sum_smul` and `Finset.smul_sum` give the finite-sum calculation.
+- **Decision:** Two occurrences across two files. No new tactic or public
+  interpolation theorem is introduced. The weighted argument also transports
+  an injectively indexed finite support and retains one evaluation cardinality.
