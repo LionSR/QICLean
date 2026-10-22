@@ -360,6 +360,53 @@ the chapter boundary.
     same formula defines the rank of an arbitrary complex bipartite matrix.
 \end{definition}
 
+\begin{theorem}[Schmidt rank after application of an operator]
+    \label{thm:schmidt_rank_operator_action}
+    \lean{Matrix.schmidtRank_mulVec_le}
+    \leanok
+    \uses{def:schmidt_rank,def:bipartite_operator_schmidt_rank}
+    Let $I,J$ be finite sets, possibly empty, let
+    $K$ be a complex matrix on $\C^I\otimes\C^J$, and let
+    $\psi\in\C^I\otimes\C^J$. Then
+    \begin{align}
+        \SR(K\psi)&\le\operatorname{OSR}(K)\,\SR(\psi).
+        \notag
+    \end{align}
+    No normalization or positivity is assumed.
+    This is the rank-growth implication used with
+    \cite[Definition~2.1]{Arad2013AreaLaw} and the product-operator
+    decomposition in \cite[equation e:decomp]{Landau2013PolynomialTime}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{def:schmidt_rank,def:bipartite_operator_schmidt_rank,
+        lem:matrix_rank_factorization_coordinate}
+    Put $r=\operatorname{OSR}(K)$ and $s=\SR(\psi)$.
+    Choose a product decomposition $K=\sum_{t=0}^{r-1}A_t\otimes B_t$.
+    The coefficient matrix $C_\psi$ has rank $s$, so
+    Lemma~\ref{lem:matrix_rank_factorization_coordinate} gives
+    $C_\psi=PQ$ with $P\in\C^{I\times s}$ and $Q\in\C^{s\times J}$.
+    The action of each product operator gives
+    \begin{align}
+        C_{K\psi}
+        &=\sum_{t=0}^{r-1}A_tC_\psi B_t^{\mathsf T}
+          =\sum_{t=0}^{r-1}(A_tP)(QB_t^{\mathsf T})=LR,
+        \notag
+    \end{align}
+    where the inner index of $L$ and $R$ is the set of pairs
+    $(t,u)$ with $0\le t<r$ and $0\le u<s$, and
+    \begin{align}
+        L_{i,(t,u)}&=(A_tP)_{i,u},
+        &R_{(t,u),j}&=(QB_t^{\mathsf T})_{u,j}.
+        \notag
+    \end{align}
+    Consequently $\rank(C_{K\psi})=\rank(LR)\le\rank(L)\le rs$.
+    The same formulas apply when either rank is zero, since the set of
+    pairs is then empty.
+\end{proof}
+
+
 \begin{theorem}[Raw Petz factorization for a product reference]
     \label{thm:entropy_petz_product_tensor}
     \lean{Matrix.partialTraceRightPetzMap_productTensor_kronecker,
