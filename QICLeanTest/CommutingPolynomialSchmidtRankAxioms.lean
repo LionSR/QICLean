@@ -26,7 +26,7 @@ private noncomputable def unitGapPolynomial (T : OneFactor) : Polynomial OneFact
   Polynomial.C (1 + 1) + Polynomial.C T * Polynomial.X
 
 private theorem unit_rank_le_one (X : OneFactor) : operatorSchmidtRank X ≤ 1 := by
-  simpa [operatorSchmidtRank] using (LinearMap.finrank_range_le (operatorSchmidtMap X))
+  simpa [operatorSchmidtRank, Module.finrank_matrix] using (LinearMap.finrank_range_le (operatorSchmidtMap X))
 
 private theorem unit_zero_rank : operatorSchmidtRank (0 : OneFactor) ≤ 0 :=
   operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition

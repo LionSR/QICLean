@@ -33,7 +33,7 @@ open scoped BigOperators Kronecker
 
 namespace Matrix
 
-private theorem rank_one_le {l n : Type*} [Fintype l] [Fintype n]
+private theorem rank_one_le {l n : Type*} [Fintype l] [Finite n]
     [DecidableEq (l × n)] : operatorSchmidtRank (1 : Matrix (l × n) (l × n) ℂ) ≤ 1 := by
   classical
   exact operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
