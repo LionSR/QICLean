@@ -10,7 +10,7 @@ import Mathlib.Algebra.Polynomial.Coeff
 
 Two central polynomial variables mark two designated summands of a generating
 polynomial. The same pair of marked counts is obtained in either nesting order,
-even when the coefficient operators coincide or are linearly dependent.
+even when the elements D, U, and V coincide or satisfy algebraic relations.
 No commutation assumption on the coefficient semiring is needed.
 
 This identity supports the simultaneous two-cut coefficient family in ALVV,
