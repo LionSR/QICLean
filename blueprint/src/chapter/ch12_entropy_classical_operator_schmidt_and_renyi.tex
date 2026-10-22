@@ -167,6 +167,45 @@
     exactly the span of the operator blocks $\rho_{ij}$.
 \end{proof}
 
+\begin{theorem}[Algebraic bounds for operator-Schmidt rank]
+    \label{thm:operator_schmidt_rank_algebra}
+    \lean{Matrix.operatorSchmidtRank_add_le,
+        Matrix.operatorSchmidtRank_smul_le,
+        Matrix.operatorSchmidtRank_sum_le,
+        Matrix.operatorSchmidtRank_mul_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $X,Y$ be operators on a tensor product of two finite-dimensional
+    complex spaces, let $c\in\mathbb C$, and let $(X_i)_{i\in S}$ be a
+    finite family of such operators. Then
+    \begin{align}
+        \operatorname{OSR}(X+Y)
+                               & \le\operatorname{OSR}(X)+\operatorname{OSR}(Y),\notag \\
+        \operatorname{OSR}(cX) & \le\operatorname{OSR}(X),\notag                       \\
+        \operatorname{OSR}\!\left(\sum_{i\in S}X_i\right)
+                               & \le\sum_{i\in S}\operatorname{OSR}(X_i),\notag        \\
+        \operatorname{OSR}(XY)
+                               & \le\operatorname{OSR}(X)\operatorname{OSR}(Y).\notag
+    \end{align}
+    The spaces may have dimension zero and the family may be empty.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Choose shortest product decompositions
+    $X=\sum_{i<r}A_i\otimes B_i$ and
+    $Y=\sum_{j<s}C_j\otimes D_j$.
+    Concatenating the two families gives $r+s$ terms for $X+Y$.
+    Replacing $A_i$ by $cA_i$ gives $r$ terms for $cX$.
+    The finite-sum bound follows by induction, starting from the empty
+    decomposition of the zero operator. Finally,
+    \begin{align}
+        XY & =\sum_{i<r}\sum_{j<s}(A_iC_j)\otimes(B_iD_j),\notag
+    \end{align}
+    which has $rs$ terms. Minimality of operator-Schmidt rank gives each
+    inequality.
+\end{proof}
+
 \begin{lemma}[A finite spanning bound for operator blocks]
     \label{lem:operator_schmidt_block_span_bound}
     \lean{Matrix.operatorSchmidtRank_le_card_of_blocks_mem_span}
