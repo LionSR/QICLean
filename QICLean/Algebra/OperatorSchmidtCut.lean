@@ -51,8 +51,8 @@ theorem operatorSchmidtRank_reindex_prodAssoc_symm_le
       apply operatorSchmidtRank_le_card_of_blocks_mem_span σ C
       intro i j
       rw [hblock (i, j)]
-      exact Submodule.sum_mem _ fun t _ ↦
-        Submodule.smul_mem _ _ (Submodule.subset_span ⟨(t, i.2, j.2), rfl⟩)
+      exact Submodule.sum_smul_mem _ _ fun t _ ↦
+        Submodule.subset_span ⟨(t, i.2, j.2), rfl⟩
     _ = Fintype.card m ^ 2 * operatorSchmidtRank ρ := by
       simp [pow_two, Nat.mul_comm, Nat.mul_assoc]
 
@@ -82,8 +82,7 @@ theorem operatorSchmidtRank_reindex_prodAssoc_le
       apply operatorSchmidtRank_le_card_of_blocks_mem_span σ C
       intro i j
       rw [hblock (i, j)]
-      exact Submodule.sum_mem _ fun t _ ↦
-        Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)
+      exact Submodule.sum_smul_mem _ _ fun t _ ↦ Submodule.subset_span ⟨t, rfl⟩
     _ = Fintype.card m ^ 2 * operatorSchmidtRank ρ := by
       simp [pow_two, Nat.mul_comm, Nat.mul_assoc]
 
