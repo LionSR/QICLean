@@ -1,0 +1,99 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+
+\title{The Entropy Estimate for an Approximate Ground-Space Projection\\
+    as the Shrinking Parameter Tends to Zero}
+\author{}
+\date{2026-10-22}
+
+\begin{document}
+\maketitle
+\gapnote{false-source}{open}
+
+The entropy lemma of Arad, Kitaev, Landau and Vazirani states that an approximate
+ground-space projection of operator Schmidt rank at most $D$, with squared
+shrinking parameter $\Delta$, and a product vector of overlap at least $\mu$
+give an entropy bound of the form
+\begin{align}
+    S & \le C\frac{\log\mu^{-1}}{\log\Delta^{-1}}\log D,
+    \label{eq:aklv13_entropy_small_shrinking_printed}
+\end{align}
+where the $O(\cdot)$ notation in the source is read as an absolute
+constant $C$ independent of these parameters.\footnote{The source is
+    \cite{Arad2013AreaLaw}, arXiv version~1.
+    The local source file \path{1dfrustrated34.tex} labels the lemma
+    \path{lem:S} and the equation \path{eq:Sb}, lines~339--348.
+    Its approximate ground-space projection is defined at
+    \path{def:AGSP}, lines~296--324.}
+The estimate \eqref{eq:aklv13_entropy_small_shrinking_printed} fails for
+strictly positive shrinking parameters, even for a fixed two-site
+Hamiltonian with a unique ground state.
+
+Let $\mathcal H=\mathbb C^2\otimes\mathbb C^2$ and put
+\begin{align}
+    \Gamma & =\frac{|00\rangle+|11\rangle}{\sqrt2},
+           & P                                      & =|\Gamma\rangle\langle\Gamma|,
+           & H                                      & =I-P.
+\end{align}
+The single two-site term $H$ is a positive contraction. Its ground state is
+uniquely $\Gamma$ up to phase, its ground energy is zero, and its spectral
+gap is one. For $0<s\le1/\sqrt8$, define
+\begin{align}
+    K_s & =sI+(1-s)P=I-(1-s)H.
+\end{align}
+This is a positive contraction satisfying
+\begin{align}
+    K_s\Gamma & =\Gamma,
+              & K_s\psi  & =s\psi\qquad(\psi\perp\Gamma).
+\end{align}
+Thus the squared shrinking parameter is exactly $\Delta=s^2>0$; it is
+attained on every unit vector in the three-dimensional orthogonal
+complement of $\Gamma$.
+
+In fact, $K_s$ has operator Schmidt rank $D=4$. To see this, let $E_{ab}$
+be the standard matrix units of $M_2(\mathbb C)$. Then
+\begin{align}
+    P & =\frac12\sum_{a,b=0}^1E_{ab}\otimes E_{ab}.
+\end{align}
+In the ordered matrix-unit bases $(E_{00},E_{01},E_{10},E_{11})$, the
+coefficient matrix of $K_s$ is
+\begin{align}
+    \frac{1-s}{2}I_4+s vv^{\mathsf T},
+    \qquad v=(1,0,0,1)^{\mathsf T}.
+\end{align}
+It is positive definite, since $(1-s)/2>0$ and $s>0$, and consequently
+has rank four. Moreover, $D\Delta=4s^2\le1/2$.
+
+The normalized product vector $|00\rangle$ has overlap $\mu=1/\sqrt2$
+with $\Gamma$, while the reduced density matrix is $I_2/2$ and
+$S=\log2$. Substituting these values into
+\eqref{eq:aklv13_entropy_small_shrinking_printed} gives
+\begin{align}
+    \log2 & \le C\frac{(\log2)^2}{\log(s^{-2})}.
+\end{align}
+Taking $s=2^{-t}$ for an integer $t\ge2$ would require
+$1\le C/(2t)$, which is impossible when $t>C/2$. All AGSP parameters
+used here are strictly positive, the shrinking bound is attained, and the
+ground state is unique.
+
+The printed parameter dependence therefore requires a correction before
+it can be used as a uniform entropy estimate. In particular, a bound
+with an additive term proportional to $\log D$ is compatible with this
+example, whereas the printed quotient alone is not. A corrected estimate
+with explicit constants remains to be derived from the Schmidt-weight
+tails of the successive approximations.\footnote{This step is tracked in
+    \href{https://github.com/LionSR/TNLean/issues/9836}{TNLean issue \#9836}.
+    The finite rank-tail entropy estimates are developed in QICLean.}
+This note establishes the counterexample, without claiming a corrected
+general entropy theorem. The source's subsequent area-law corollary has
+a separate conclusion $S\le O(1)\log D$, which is consistent with the
+example.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
