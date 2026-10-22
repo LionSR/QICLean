@@ -88,3 +88,52 @@
     finite-sum rank bounds give at most the sum of the ranks of the indexed
     forms, hence the displayed count times $r^k$.
 \end{proof}
+
+
+\begin{theorem}[Coefficient extraction in one tensor factor]
+    \label{thm:local_polynomial_coefficient_rank}
+    \lean{Matrix.operatorSchmidtRank_coeff_coeff_pow_left_add_right_le}
+    \leanok
+    Let $\mathcal H_L,\mathcal H_R$ be finite-dimensional complex spaces,
+    let $A$ act on $\mathcal H_L$, let $B(Y)$ be a polynomial with operator
+    coefficients on $\mathcal H_R$, and let $T$ act on
+    $\mathcal H_L\otimes\mathcal H_R$ with $\operatorname{OSR}(T)\le r$.
+    In the iterated polynomial algebra with central variables $Y$ and then $X$, put
+    \begin{align*}
+        F(X,Y)&=A\otimes\mathbb 1+\mathbb 1\otimes B(Y)+TX, \\
+        K_{m,j,s}&=[Y^s]\bigl([X^j]F(X,Y)^{m+j}\bigr).
+    \end{align*}
+    For natural numbers $m,j,s,r$,
+    \begin{align*}
+        \operatorname{OSR}(K_{m,j,s})
+            \le\binom{m+2j+1}{2j+1}r^j.
+    \end{align*}
+    Zero-dimensional factors and zero exponents are included, with $0^0=1$.
+    This is supporting algebra for the coefficient restrictions in
+    \cite[Lemma~4.2]{Arad2013AreaLaw} and
+    \cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:polynomial_commuting_gap_span,thm:polynomial_commuting_gap_count,
+        lem:operator_schmidt_block_span_bound,thm:operator_schmidt_rank_algebra}
+    The left operator $A\otimes\mathbb 1$ commutes with
+    $\mathbb 1\otimes B(Y)$. Apply the commuting-gap expansion over the
+    coefficient algebra of operator polynomials in $Y$, retaining complex
+    scalar coefficients. For an exponent tuple $(a_0,b_0,\ldots,a_j,b_j)$
+    with total $m$, choose a shortest decomposition
+    $T=\sum_{t=1}^{r_T}U_t\otimes V_t$, where $r_T=\operatorname{OSR}(T)$.
+    Expanding only the $j$ occurrences of $T$ gives terms
+    \begin{align*}
+        \bigl(A^{a_0}U_{t_1}\cdots U_{t_j}A^{a_j}\bigr)
+        \otimes
+        \bigl(B(Y)^{b_0}V_{t_1}\cdots V_{t_j}B(Y)^{b_j}\bigr).
+    \end{align*}
+    The left factors are independent of $Y$, so taking the coefficient of
+    $Y^s$ leaves at most $r_T^j$ product terms for each exponent tuple.
+    No factors are reordered across an occurrence of $T$.
+    The scalar and finite-sum rank bounds, followed by the exponent-tuple
+    count, give the claimed inequality. This argument bounds the actual
+    extracted coefficient; it does not infer that coefficient extraction
+    preserves arbitrary operator Schmidt rank bounds.
+\end{proof}
