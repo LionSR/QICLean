@@ -138,3 +138,40 @@
     extracted coefficient; it does not infer that coefficient extraction
     preserves arbitrary operator Schmidt rank bounds.
 \end{proof}
+
+
+\begin{theorem}[Interchanging the order of two marked coefficients]
+    \label{thm:polynomial_two_marker_power}
+    \lean{Polynomial.coeff_coeff_pow_two_markers_swap}
+    \leanok
+    Let $\mathcal R$ be a semiring and let $D,U,V\in\mathcal R$.
+    With central polynomial variables, form
+    \begin{align*}
+        F_X(X)&=D+VY+UX\in\mathcal R[Y][X], \\
+        F_Y(Y)&=D+UX+VY\in\mathcal R[X][Y].
+    \end{align*}
+    For natural numbers $k,i,j$,
+    \begin{align*}
+        [Y^j]\bigl([X^i]F_X(X)^k\bigr)
+            =[X^i]\bigl([Y^j]F_Y(Y)^k\bigr).
+    \end{align*}
+    The two marked summands may be equal or linearly dependent.
+    The identity compares the same marked counts in the two nesting orders;
+    it requires no commutation of $D,U,V$.
+    It is supporting algebra for the simultaneous coefficient restrictions in
+    \cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Let $c_{k,i,j}$ denote either coefficient, with value zero when a lower
+    index is negative. At $k=0$ its value is one if $i=j=0$ and zero otherwise.
+    Left multiplication by the generating polynomial gives
+    \begin{align*}
+        c_{k+1,i,j}
+            =Dc_{k,i,j}+Uc_{k,i-1,j}+Vc_{k,i,j-1}.
+    \end{align*}
+    Both nesting orders satisfy this same recurrence and initial condition.
+    Induction on $k$ proves the identity, including the cases $i=0$ or $j=0$.
+    The proof changes only the order of addition, retaining the order of every
+    product. For example, the mixed coefficient at $k=2$ is $UV+VU$.
+\end{proof}

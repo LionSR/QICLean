@@ -238,6 +238,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Coefficient recurrences for powers of marked operators — candidate (2026-10-22)
+
+- **Seen:** The gap-coefficient recurrence in `Algebra/CommutingPolynomialGaps.lean`
+  and the two-marker identity in `Algebra/PolynomialTwoMarkerPower.lean`.
+- **Pattern:** Expand a power by left multiplication and use the constant and
+  monomial coefficient identities, retaining operator order.
+- **Decision:** Two mathematical consumers; keep the direct recurrences. The
+  application checking the mixed coefficient is a fixture, not another consumer.
+- **Caveat:** Only addition is reordered; no commutativity of coefficients is used.
+
 ### Finite scalar span followed by an operator-rank sum — candidate (2026-10-22)
 
 - **Seen:** The final coefficients in `Algebra/CommutingPolynomialSchmidtRank.lean`
