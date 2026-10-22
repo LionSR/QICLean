@@ -35,5 +35,6 @@ example {ι R : Type*} [Fintype ι] [Semiring R] [Algebra ℂ R]
         (List.ofFn (fun p ↦ match w p with
           | none => T
           | some j => H j)).prod) = 1 := by
-  simpa only [Nat.zero_add, pow_zero, Polynomial.coeff_one, if_pos rfl] using
+  simpa only [Nat.zero_add, pow_zero, Polynomial.coeff_one, ite_true,
+    List.ofFn_zero, List.prod_nil] using
     (Polynomial.coeff_pow_sum_smul_add_C_mul_X_eq_sum_counts H T z 0 0).symm
