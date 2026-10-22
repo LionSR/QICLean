@@ -26,6 +26,7 @@ import QICLean.Algebra.FinSum
 import QICLean.Algebra.FiniteCauchySchwarz
 import QICLean.Algebra.FiniteKroneckerOrder
 import QICLean.Algebra.FiniteMonomialInterpolation
+import QICLean.Algebra.FiniteSumPowers
 import QICLean.Algebra.FrameOperator
 import QICLean.Algebra.FrobeniusHilbert
 import QICLean.Algebra.GramMatrixLI
@@ -126,6 +127,7 @@ import QICLean.Algebra.TracePowerCharPoly
 import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.TripartitePolynomialSchmidtRank
+import QICLean.Algebra.TwoMarkerWordCoefficients
 import QICLean.Algebra.UnitModulusPowerSum
 import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums

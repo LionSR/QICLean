@@ -1557,6 +1557,72 @@ from the same Hermitian pairing and weighted row and column bounds.
     No enlargement to the dimension of all of $S$ is needed.
 \end{proof}
 
+\begin{theorem}[Operator-Schmidt rank from designated supports]
+    \label{thm:supported_operator_schmidt_rank}
+    \lean{Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le,
+        Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$, where $V$ is finite
+    and the $n_v$ are nonnegative integers. Let $T$ be supported on $S\subseteq V$.
+    Across $B\sqcup B^c=V$,
+    \begin{align}
+        \operatorname{OSR}_B(T)
+         & \le\left(\prod_{v\in S\cap B}n_v\right)^2.\notag
+    \end{align}
+    If $S\subseteq B$ or $S\cap B=\varnothing$, then
+    $\operatorname{OSR}_B(T)\le1$.
+    These conclusions include empty configuration spaces and an empty set
+    of sites.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:bipartite_operator_schmidt_rank,
+        lem:patch_inside_decomposition, lem:supported_product_decomposition}
+    If the global configuration space is empty, $T=0$ and its
+    operator-Schmidt rank is zero. Otherwise, choose one configuration.
+    Theorem~\ref{lem:patch_inside_decomposition} supplies a product
+    decomposition with at most $(\prod_{v\in S\cap B}n_v)^2$ terms.
+    Discarding the norm bounds and using minimality of operator-Schmidt
+    rank gives the first conclusion. For one-sided support,
+    Lemma~\ref{lem:supported_product_decomposition} writes $T$ as
+    $U\otimes1$ or $1\otimes W$, each a one-term decomposition.
+\end{proof}
+
+\begin{theorem}[Operator-Schmidt rank of an ordered local product]
+    \label{thm:supported_word_schmidt_rank}
+    \lean{Entropy.operatorSchmidtRank_cutOperator_list_prod_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $q\ge0$ be an integer and $V$ a finite site set. Let $(T_t)$ be a
+    family of operators on $\bigotimes_{v\in V}\mathbb C^q$, with $T_t$
+    supported on $X_t\subseteq V$. Fix a cut $B\sqcup B^c=V$ and a finite
+    word $w=(t_0,\ldots,t_{L-1})$. Put $W=T_{t_0}\cdots T_{t_{L-1}}$,
+    with the empty word interpreted as the identity, and let $C$ be the
+    set of positions $j$ for which $X_{t_j}$ meets both $B$ and $B^c$.
+    Then
+    \begin{align}
+        \operatorname{OSR}_B(W)
+         & \le q^{\,2\sum_{j\in C}|X_{t_j}\cap B|}.\notag
+    \end{align}
+    Repeated letters are counted at every occurrence. The result includes
+    $q=0$, empty site sets, and empty or full cuts. The paired indexing of
+    the local tensor factors is discussed in
+    \cite{gap:lvv13_paired_matrix_decomposition}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:supported_operator_schmidt_rank,
+        thm:operator_schmidt_rank_algebra}
+    Induct on the ordered word. The identity is supported on the empty
+    set, so its rank is at most one. For a nonempty word, the change to
+    cut coordinates preserves multiplication of the first letter by the
+    remaining ordered product.
+    Theorem~\ref{thm:supported_operator_schmidt_rank} bounds the first operator by
+    $q^{2|X_t\cap B|}$ if it crosses the cut, and by one otherwise.
+    Multiply this bound with the induction hypothesis using
+    Theorem~\ref{thm:operator_schmidt_rank_algebra}. The powers combine by
+    addition of the exponents, including when $q=0$.
+\end{proof}
+
 \begin{theorem}[Sharp clipped conjugation]
     \label{thm:patch_sharp_conjugation}
     \lean{Entropy.abs_re_inner_sub_inner_conj_le_sharp,
