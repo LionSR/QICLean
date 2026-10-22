@@ -1,0 +1,35 @@
+\section{Local selection of low-frequency indices}
+
+\begin{theorem}[Local choices in two frequency windows]
+    \label{thm:two_window_low_frequency_selectors}
+    \lean{Finset.exists_two_window_low_frequency_selectors}
+    \leanok
+    Let $I$ be a finite set and let $L,R\subseteq I$ be nonempty.
+    There are functions
+    $p_L\colon\N^L\to L$ and $p_R\colon\N^R\to R$ such that, for every
+    frequency function $\nu\colon I\to\N$ and every $k\in\N$ with
+    $\sum_{a\in I}\nu(a)\le k$,
+    \begin{align}
+        \nu\bigl(p_L(\nu|_L)\bigr)&\le\left\lfloor\frac{k}{|L|}\right\rfloor,
+        \notag\\
+        \nu\bigl(p_R(\nu|_R)\bigr)&\le\left\lfloor\frac{k}{|R|}\right\rfloor.
+        \notag
+    \end{align}
+    The functions are chosen before $\nu$ and $k$, and each uses only the
+    frequency function on its own window. The windows may overlap, and
+    $k=0$ is allowed. This is the elementary selection step used in
+    \cite[Lemma~4.2]{Arad2013AreaLaw} and in the simultaneous frequency
+    argument of \cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    For a nonempty window $S$, let $p_S(g)$ be a point where
+    $g\colon S\to\N$ is minimal. For every global frequency function $\nu$,
+    \begin{align}
+        |S|\nu\bigl(p_S(\nu|_S)\bigr)
+            &\le\sum_{a\in S}\nu(a)
+            \le\sum_{a\in I}\nu(a)\le k.\notag
+    \end{align}
+    Since $|S|>0$, division and integrality give the claimed bound.
+    Apply this argument separately to $L$ and $R$; no disjointness is used.
+\end{proof}
