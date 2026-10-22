@@ -102,7 +102,7 @@ private theorem rank_twoCount_reindex_left
     (hU : operatorSchmidtRank (U.reindex e e) ≤ r) (hi : i ≤ k) :
     operatorSchmidtRank ((twoCount D U V k i j).reindex e e) ≤
       (k + i + 1).choose (2 * i + 1) * r ^ i := by
-  letI : Fintype n := Fintype.ofFinite n
+  let : Fintype n := Fintype.ofFinite n
   have ht : (twoCount D U V k i j).reindex e e =
       twoCount (D.reindex e e) (U.reindex e e) (V.reindex e e) k i j :=
     twoCount_map (Matrix.reindexRingEquiv ℂ e).toRingHom D U V k i j
@@ -151,8 +151,8 @@ private theorem rank_left_spectator_le
           (Equiv.prodAssoc l m n) (Equiv.prodAssoc l m n)) ≤
       operatorSchmidtRank U := by
   classical
-  letI : Fintype m := Fintype.ofFinite m
-  letI : Fintype n := Fintype.ofFinite n
+  let : Fintype m := Fintype.ofFinite m
+  let : Fintype n := Fintype.ofFinite n
   obtain ⟨A, B, hU⟩ := hasOperatorSchmidtDecomposition_operatorSchmidtRank U
   apply operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
   refine ⟨A, fun t ↦ B t ⊗ₖ (1 : Matrix n n ℂ), ?_⟩
@@ -171,7 +171,7 @@ private theorem rank_right_spectator_le
             (Equiv.prodComm (l × m) n) (Equiv.prodComm (l × m) n)) ≤
       operatorSchmidtRank V := by
   classical
-  letI : Fintype l := Fintype.ofFinite l
+  let : Fintype l := Fintype.ofFinite l
   obtain ⟨B, C, hV⟩ := hasOperatorSchmidtDecomposition_operatorSchmidtRank V
   apply operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
   refine ⟨C, fun t ↦ (1 : Matrix l l ℂ) ⊗ₖ B t, ?_⟩
