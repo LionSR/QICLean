@@ -67,6 +67,7 @@ import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
 import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
+import QICLean.Analysis.HermitianFactorRepair
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.HermitianUnitaryPath
