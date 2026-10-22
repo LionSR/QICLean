@@ -124,11 +124,12 @@
     with total $m$, choose a shortest decomposition
     $T=\sum_{t=1}^{r_T}U_t\otimes V_t$, where $r_T=\operatorname{OSR}(T)$.
     Expanding only the $j$ occurrences of $T$ gives terms
+    $L_{d,t}\otimes R_{d,t}(Y)$, where
     \begin{align*}
-        \bigl(A^{a_0}U_{t_1}\cdots U_{t_j}A^{a_j}\bigr)
-        \otimes
-        \bigl(B(Y)^{b_0}V_{t_1}\cdots V_{t_j}B(Y)^{b_j}\bigr).
+        L_{d,t}&=\left(\prod_{u=0}^{j-1}A^{a_u}U_{t_{u+1}}\right)A^{a_j}, \\
+        R_{d,t}(Y)&=\left(\prod_{u=0}^{j-1}B(Y)^{b_u}V_{t_{u+1}}\right)B(Y)^{b_j}.
     \end{align*}
+    The products are taken in increasing order of $u$.
     The left factors are independent of $Y$, so taking the coefficient of
     $Y^s$ leaves at most $r_T^j$ product terms for each exponent tuple.
     No factors are reordered across an occurrence of $T$.

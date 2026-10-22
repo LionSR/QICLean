@@ -13,11 +13,15 @@ import Mathlib.LinearAlgebra.Finsupp.LinearCombination
 /-!
 # Coefficient extraction with a fixed family of left factors
 
-An inner central variable occurs only in the right-local ordinary operator.
+An inner central variable occurs only in the ordinary operator on the right tensor factor.
 The crossing operator and the left-local ordinary operator are constant in
 that variable. A commuting-gap expansion then has a finite family of left
 factors independent of the inner variable. Taking any inner coefficient
 therefore preserves the length bound on this family.
+
+**Local fix (count):** The exponent-tuple count retains the additional `+1`
+missing from AKLV, Lemma l:agsp. The correction and its stars-and-bars derivation
+are recorded in `docs/paper-gaps/aklv13_interpolation_and_word_count.tex`.
 
 Supporting algebra for AKLV, arXiv:1301.1162v1, Lemma l:agsp,
 lines 604–617 and 646–653, and ALVV, arXiv:1602.08828v2,
