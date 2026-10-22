@@ -88,6 +88,7 @@ import QICLean.Algebra.OverlappingLiftAlgebra
 import QICLean.Algebra.PartialTraceDomination
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.PiProductTrace
+import QICLean.Algebra.PolynomialLinearFactor
 import QICLean.Algebra.PolynomialTwoMarkerPower
 import QICLean.Algebra.PosSemidefSupport
 import QICLean.Algebra.PositiveSemidefiniteNormalization

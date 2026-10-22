@@ -1,5 +1,29 @@
 \section{Polynomial coefficients as ordered gap sums}
 
+\begin{theorem}[Coefficient after multiplication by a linear polynomial]
+    \label{thm:polynomial_linear_factor_coefficient}
+    \lean{Polynomial.coeff_C_add_C_mul_X_mul_succ}
+    \leanok
+    Let $\mathcal R$ be a semiring, let $D,T\in\mathcal R$, and let
+    $P\in\mathcal R[X]$, where $X$ is central. For a natural number $n$,
+    \begin{align}
+        [X^{n+1}]\bigl((D+TX)P\bigr)
+            =D[X^{n+1}]P+T[X^n]P.\notag
+    \end{align}
+    No commutation of $D$, $T$ or the coefficients of $P$ is required.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Write $P=\sum_{a\ge0}p_aX^a$, with only finitely many nonzero terms.
+    Distributivity gives
+    \begin{align}
+        (D+TX)P=\sum_{a\ge0}(Dp_a)X^a+
+            \sum_{a\ge0}(Tp_a)X^{a+1}.\notag
+    \end{align}
+    Taking the coefficient of degree $n+1$ proves the identity and retains
+    the displayed order of each product.
+\end{proof}
+
 \begin{theorem}[Ordered gap expansion of a coefficient]
     \label{thm:polynomial_ordered_gaps}
     \lean{Polynomial.coeff_pow_C_add_C_mul_X_eq_sum_gaps}
@@ -20,9 +44,10 @@
 \end{theorem}
 \begin{proof}
     \leanok
+    \uses{thm:polynomial_linear_factor_coefficient}
     Let $F_{m,k}$ be the coefficient on the left and $G_{m,k}$ the gap sum
-    on the right. Multiplying the polynomial power on the left by $D+TX$
-    gives
+    on the right. Theorem~\ref{thm:polynomial_linear_factor_coefficient},
+    applied after multiplying the polynomial power on the left by $D+TX$, gives
     \begin{align*}
         F_{m+1,k+1}=D F_{m,k+1}+T F_{m+1,k}.
     \end{align*}

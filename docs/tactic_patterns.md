@@ -7,6 +7,26 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Coefficients after left multiplication by a linear polynomial — promoted (2026-10-22)
+
+- **Consumers:** The ordered-gap equality in `Algebra/OrderedPolynomialGaps.lean`,
+  the commuting-gap span in `Algebra/CommutingPolynomialGaps.lean`, and the
+  two-marker identity in `Algebra/PolynomialTwoMarkerPower.lean`.
+- **Lemma:** `Polynomial.coeff_C_add_C_mul_X_mul_succ` in
+  `Algebra/PolynomialLinearFactor.lean` gives the successor coefficient of
+  `(C D + C T * X) * P` over an arbitrary semiring. It combines the existing
+  constant and monomial coefficient identities without reordering products.
+- **Refactor:** Both gap recurrences invoke the shared lemma after expanding
+  the power on the left. The two-marker proof uses the same coefficient rule
+  over the polynomial semiring and over its coefficient semiring; its distinct
+  induction is retained.
+- **Accounting:** There are three production consumers across three files.
+  The two-marker boundary applications are fixtures, not additional consumers.
+  This entry consolidates the two previously overlapping candidate entries.
+- **Scope:** Only addition may be reordered. The existing constant and leading
+  coefficient arguments remain separate; no coefficient-commutativity premise,
+  custom tactic or additional polynomial framework is introduced.
+
 ### Finite linear combinations in an operator-block span — existing Mathlib lemma (2026-10-22)
 
 - **Consumers:** Both cut-movement proofs in `Algebra/OperatorSchmidtCut.lean`
@@ -237,16 +257,6 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   does not identify its inverse with a compressed inverse.
 
 ## Candidates
-
-### Coefficient recurrences for powers of marked operators — candidate (2026-10-22)
-
-- **Seen:** The gap-coefficient recurrence in `Algebra/CommutingPolynomialGaps.lean`
-  and the two-marker identity in `Algebra/PolynomialTwoMarkerPower.lean`.
-- **Pattern:** Expand a power by left multiplication and use the constant and
-  monomial coefficient identities, retaining operator order.
-- **Decision:** Two mathematical consumers; keep the direct recurrences. The
-  application checking the mixed coefficient is a fixture, not another consumer.
-- **Caveat:** Only addition is reordered; no commutativity of coefficients is used.
 
 ### Finite scalar span followed by an operator-rank sum — candidate (2026-10-22)
 
@@ -1262,12 +1272,3 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
-
-### Degree-one coefficient recurrence — candidate (2026-10-22)
-
-- **Seen:** The private coefficient recurrences in `Algebra/OrderedPolynomialGaps.lean`
-  and `Algebra/CommutingPolynomialGaps.lean`.
-- **Pattern:** Left multiplication by `C D + C T * X` gives the same two-term
-  coefficient recurrence, with constant and leading-coefficient boundaries.
-- **Decision:** Reuse the polynomial coefficient lemmas. There are two consumers;
-  a third use would justify one shared recurrence lemma.
