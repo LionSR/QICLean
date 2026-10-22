@@ -58,7 +58,7 @@ private theorem right_reconstruct {l m n : Type*} [Fintype l] [Fintype m] [Finit
     congrArg (fun y : operatorBlockSpan ρ ↦ (y : Matrix n n ℂ))
       ((rightBasis ρ).sum_repr x)
 
-private theorem right_block_expand {l m n : Type*} [Fintype l] [Fintype m] [Finite n]
+private theorem right_block_expand {l m n : Type*}
     (ρ : Matrix ((l × m) × n) ((l × m) × n) ℂ) {r : ℕ}
     (L : Fin r → Matrix l l ℂ) (Y : Fin r → Matrix (m × n) (m × n) ℂ)
     (hρ : ρ.reindex (Equiv.prodAssoc l m n) (Equiv.prodAssoc l m n) = ∑ a, L a ⊗ₖ Y a)
@@ -107,9 +107,8 @@ private theorem middle_blocks {l m n : Type*} [Fintype l] [Fintype m] [Finite n]
     operatorBlock (middleMatrix ρ) i j ∈ Submodule.span ℂ
       (Set.range (fun pair : Fin r × Fin (Module.finrank ℂ (operatorBlockSpan ρ)) ↦
         L pair.1 ⊗ₖ ((rightBasis ρ) pair.2 : Matrix n n ℂ))) := by
-  exact (middle_block_eq ρ L Y hρ i j).symm ▸
-    Submodule.sum_mem _ (fun pair _ ↦
-      Submodule.smul_mem _ _ (Submodule.subset_span ⟨pair, rfl⟩))
+  rw [middle_block_eq ρ L Y hρ i j]
+  exact Submodule.sum_smul_mem _ _ fun pair _ ↦ Submodule.subset_span ⟨pair, rfl⟩
 
 /-- The middle-versus-exterior rank is at most the product of the two boundary ranks.
 Supporting algebra for ALVV, arXiv:1602.08828v2, prop:Cheby-AGSP-eff, lines 1324 and 1332. -/
