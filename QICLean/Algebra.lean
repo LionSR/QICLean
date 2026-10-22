@@ -69,6 +69,7 @@ import QICLean.Algebra.MatrixTracePowerContinuity
 import QICLean.Algebra.MatrixUnitConjugator
 import QICLean.Algebra.MatrixUnitaryBetween
 import QICLean.Algebra.MinkowskiCanonicalPair
+import QICLean.Algebra.MonomialEvaluationSchmidtRank
 import QICLean.Algebra.NewtonGirard
 import QICLean.Algebra.NilMatrixSubalgebra
 import QICLean.Algebra.NilpotentSubspaceThree
