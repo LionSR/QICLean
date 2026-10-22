@@ -34,10 +34,10 @@ polynomial-variable interchange is used here.
 open scoped BigOperators Kronecker
 noncomputable section
 namespace Matrix
-open Classical
 
 variable {l n : Type*} [Fintype l] [Fintype n]
 
+open Classical in
 /-- Coefficientwise tensoring with a fixed left operator, expressed through
 an existing unital right tensor homomorphism. -/
 private def tensorPolynomial (A : Matrix l l ℂ) (B : Polynomial (Matrix n n ℂ)) :
@@ -45,17 +45,20 @@ private def tensorPolynomial (A : Matrix l l ℂ) (B : Polynomial (Matrix n n �
   Polynomial.C (A ⊗ₖ (1 : Matrix n n ℂ)) *
     B.map (rightKroneckerEmbed (m := l)).toRingHom
 
+open Classical in
 private theorem tensorPolynomial_C (A : Matrix l l ℂ) (B : Matrix n n ℂ) :
     tensorPolynomial A (Polynomial.C B) = Polynomial.C (A ⊗ₖ B) := by
   simp [tensorPolynomial, Polynomial.map_C, ← Polynomial.C_mul,
     rightKroneckerEmbed_apply, ← mul_kronecker_mul]
 
+open Classical in
 private theorem coeff_tensorPolynomial
     (A : Matrix l l ℂ) (B : Polynomial (Matrix n n ℂ)) (s : ℕ) :
     (tensorPolynomial A B).coeff s = A ⊗ₖ B.coeff s := by
   simp [tensorPolynomial, Polynomial.coeff_C_mul, Polynomial.coeff_map,
     rightKroneckerEmbed_apply, ← mul_kronecker_mul]
 
+open Classical in
 private theorem commute_constant_left_rightPolynomial
     (A : Matrix l l ℂ) (B : Polynomial (Matrix n n ℂ)) :
     Commute (Polynomial.C (A ⊗ₖ (1 : Matrix n n ℂ)))
@@ -64,6 +67,7 @@ private theorem commute_constant_left_rightPolynomial
     simp [Polynomial.coeff_C_mul, Polynomial.coeff_mul_C, Polynomial.coeff_map,
       rightKroneckerEmbed_apply, ← mul_kronecker_mul]
 
+open Classical in
 private theorem tensorPolynomial_mul
     (A U : Matrix l l ℂ) (B V : Polynomial (Matrix n n ℂ)) :
     tensorPolynomial A B * tensorPolynomial U V =
@@ -74,6 +78,7 @@ private theorem tensorPolynomial_mul
       (Polynomial.C (A ⊗ₖ (1 : Matrix n n ℂ)))
       (V.map (rightKroneckerEmbed (m := l)).toRingHom)
 
+open Classical in
 private theorem tensorPolynomial_powers
     (A : Matrix l l ℂ) (B : Polynomial (Matrix n n ℂ)) (a b : ℕ) :
     Polynomial.C (A ⊗ₖ (1 : Matrix n n ℂ)) ^ a *
@@ -86,12 +91,14 @@ private theorem tensorPolynomial_powers
     congrArg (fun P : Polynomial (Matrix (l × n) (l × n) ℂ) ↦
       P * (B.map (rightKroneckerEmbed (m := l)).toRingHom) ^ b) hA
 
+open Classical in
 /-- The actual left factors associated with a fixed crossing decomposition. -/
 private def leftGap (A : Matrix l l ℂ) {r : ℕ} (U : Fin r → Matrix l l ℂ)
     (j : ℕ) (d : Fin (j + 1) × Bool → ℕ) (ξ : Fin j → Fin r) : Matrix l l ℂ :=
   (List.ofFn (fun a : Fin j ↦ A ^ d (a.castSucc, false) * U (ξ a))).prod *
     A ^ d (Fin.last j, false)
 
+open Classical in
 /-- The matching right polynomial factors, retaining their original order. -/
 private def rightGap (B : Polynomial (Matrix n n ℂ)) {r : ℕ}
     (V : Fin r → Matrix n n ℂ)
@@ -101,6 +108,7 @@ private def rightGap (B : Polynomial (Matrix n n ℂ)) {r : ℕ}
     B ^ d (a.castSucc, true) * Polynomial.C (V (ξ a)))).prod *
       B ^ d (Fin.last j, true)
 
+open Classical in
 /-- Expanding the crossing factors gives a left family independent of the inner variable.
 The hypothesis is an actual product decomposition, not a rank assumption about a coefficient. -/
 private theorem polynomial_gap_decomposition
@@ -137,6 +145,7 @@ private theorem polynomial_gap_decomposition
     refine Fintype.sum_equiv (Fin.consEquiv (fun _ : Fin (j + 1) ↦ Fin r)) _ _ ?_
     simp [Fin.consEquiv, leftGap, rightGap, List.ofFn_succ, mul_assoc]
 
+open Classical in
 private theorem rank_gap_coefficient_le
     (A : Matrix l l ℂ) (B : Polynomial (Matrix n n ℂ))
     (T : Matrix (l × n) (l × n) ℂ)
@@ -179,6 +188,7 @@ private theorem rank_gap_coefficient_le
         rw [hblock]
         exact Submodule.sum_smul_mem _ _ fun ξ _ ↦ Submodule.subset_span ⟨ξ, rfl⟩)
 
+open Classical in
 /-- Any inner coefficient of a distinguished-letter coefficient has the same
 commuting-gap rank bound when the inner variable occurs only on the right.
 Supporting algebra for ALVV, arXiv:1602.08828v2, prop:Cheby-AGSP-eff,

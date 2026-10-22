@@ -19,10 +19,10 @@ depends on axioms: [propext, Classical.choice, Quot.sound] -/
 open scoped Kronecker
 noncomputable section
 namespace Matrix
-open Classical
 variable {l n : Type*} [Fintype l] [Fintype n]
 
 -- The empty word gives the identity, including empty local index types.
+open Classical in
 example (A : Matrix l l ℂ) (B : Polynomial (Matrix n n ℂ))
     (T : Matrix (l × n) (l × n) ℂ) {r : ℕ} (hT : operatorSchmidtRank T ≤ r) :
     operatorSchmidtRank (1 : Matrix (l × n) (l × n) ℂ) ≤ 1 := by
@@ -30,6 +30,7 @@ example (A : Matrix l l ℂ) (B : Polynomial (Matrix n n ℂ))
     operatorSchmidtRank_coeff_coeff_pow_left_add_right_le A B T hT 0 0 0
 
 -- The inferred conclusion specializes the public theorem to an empty left factor.
+open Classical in
 example (A : Matrix Empty Empty ℂ) (B : Polynomial (Matrix n n ℂ))
     (T : Matrix (Empty × n) (Empty × n) ℂ) {r : ℕ}
     (hT : operatorSchmidtRank T ≤ r) (m j s : ℕ) :=
@@ -37,6 +38,7 @@ example (A : Matrix Empty Empty ℂ) (B : Polynomial (Matrix n n ℂ))
     (l := Empty) (n := n) A B T hT m j s
 
 -- A zero crossing operator admits rank bound zero, at positive distinguished frequency.
+open Classical in
 example (A : Matrix l l ℂ) (B : Polynomial (Matrix n n ℂ)) (m s : ℕ) :=
   operatorSchmidtRank_coeff_coeff_pow_left_add_right_le A B
     (0 : Matrix (l × n) (l × n) ℂ) (r := 0)
