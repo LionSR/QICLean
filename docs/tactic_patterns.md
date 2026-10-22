@@ -1228,3 +1228,17 @@ No new tactic or duplicate tree induction is introduced.
 - **Decision:** Two occurrences across the two spectral-filter developments.
   Retain the short local calculations for now; consider a shared projection
   lemma if a third consumer requires the same identification.
+
+### Finite-sum upper bounds for positive contractions — existing lemmas (2026-10-22)
+
+- **Pattern:** Sum the bounds $h_i\le1$ and identify the constant sum with
+  the number of terms times the identity.
+- **Seen:** The spectral calculation in `Analysis/PhysicalPowerFilter.lean`
+  and both the exponential estimate and logarithmic threshold in
+  `Analysis/PhysicalPowerFilterLowerGap.lean`.
+- **Reuse:** `Finset.sum_le_sum`, `Finset.sum_const`, and
+  `Nat.cast_smul_eq_nsmul` already supply the general inequality and its
+  scalar normalization. These existing lemmas suffice; no new tactic or
+  additional finite-sum theorem is introduced. The new evaluation of an
+  operator upper bound on a unit eigenvector is shared by the two new
+  estimates as one private mathematical lemma.
