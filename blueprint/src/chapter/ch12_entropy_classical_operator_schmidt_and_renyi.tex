@@ -257,6 +257,43 @@
     $E_{uv}\otimes B_t$. Apply the same lemma.
 \end{proof}
 
+\begin{theorem}[Middle-versus-exterior operator Schmidt rank]
+    \label{thm:operator_schmidt_middle_rank}
+    \lean{Matrix.operatorSchmidtRank_middle_le_mul}
+    \leanok
+    Let $X$ act on finite-dimensional complex spaces
+    $\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$. Then
+    \begin{align*}
+        \operatorname{OSR}_{M\mid LR}(X)
+            \le \operatorname{OSR}_{L\mid MR}(X)
+                \operatorname{OSR}_{LM\mid R}(X).
+    \end{align*}
+    Zero-dimensional factors are included. This is the simultaneous-cut
+    algebra used in the proof of~\cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank,thm:operator_schmidt_coefficient_space,lem:operator_schmidt_block_span_bound}
+    Put $r_L=\operatorname{OSR}_{L\mid MR}(X)$ and
+    $r_R=\operatorname{OSR}_{LM\mid R}(X)$.
+    Choose a minimal decomposition $X=\sum_{a=1}^{r_L}L_a\otimes Y_a$.
+    Let $R_1,\ldots,R_{r_R}$ be a basis of the span of the right operator
+    blocks of $X$, and extend its coordinate functionals $\varphi_b$ linearly
+    to all operators on $\mathcal H_R$. For middle indices $i,j$, define
+    \begin{align*}
+        (M_{ab})_{ij}=\varphi_b\bigl((Y_a)_{ij}\bigr).
+    \end{align*}
+    Apply the coordinate functionals to the right blocks of $X$ and reconstruct
+    those blocks in the chosen basis. Linearity gives
+    \begin{align*}
+        X=\sum_{a=1}^{r_L}\sum_{b=1}^{r_R}L_a\otimes M_{ab}\otimes R_b.
+    \end{align*}
+    Across $M\mid LR$, the exterior blocks therefore lie in the span of the
+    $r_Lr_R$ operators $L_a\otimes R_b$. The finite spanning bound proves
+    the inequality. The extension of $\varphi_b$ permits its application to
+    every block of $Y_a$; basis reconstruction is used for the actual blocks of $X$.
+\end{proof}
+
 \begin{theorem}[Operator-Schmidt rank under local isometries]
     \label{thm:operator_schmidt_rank_local_isometry}
     \lean{Matrix.operatorSchmidtRank_local_mul_le,
