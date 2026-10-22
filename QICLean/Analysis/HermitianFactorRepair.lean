@@ -20,10 +20,8 @@ within `2 ε + ε²` of `P`, and the part `(1 - Q) B† B Q` leaving the range o
 vector estimate `|(1 - Q) B† P ψ|² + |Q B† P ψ|² ≤ 1` with
 `|Q B† P ψ| ≥ (1 - ε) |P ψ|`.
 
-The source states no range for `ε`. For `ε > 1` the square root is the real
-square root of a negative number, which is `0` in Lean, and the bound holds
-trivially because `‖B† B Q - P‖ ≤ 2 ≤ 3 ε`; so the statement below carries no
-hypothesis on `ε`.
+The source states no range for `ε`. For `ε > 1` the bound already follows from
+`‖B† B Q - P‖ ≤ 2 ≤ 3 ε`, so the statement below carries no hypothesis on `ε`.
 
 ## Main results
 
