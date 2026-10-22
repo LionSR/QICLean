@@ -179,3 +179,75 @@
     The proof changes only the order of addition, retaining the order of every
     product. For example, the mixed coefficient at $k=2$ is $UV+VU$.
 \end{proof}
+
+
+\begin{theorem}[A tripartite double-frequency rank bound]
+    \label{thm:tripartite_polynomial_coefficient_rank}
+    \lean{Matrix.operatorSchmidtRank_middle_coeff_coeff_pow_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $\mathcal H_L,\mathcal H_M,\mathcal H_R$ be finite-dimensional complex
+    spaces. Let $A_L,A_M,A_R$ act on the corresponding single factors, and
+    let $U$ act on $\mathcal H_L\otimes\mathcal H_M$ and $V$ on
+    $\mathcal H_M\otimes\mathcal H_R$. On the three-factor space, put
+    \begin{align*}
+        D&=A_L\otimes\mathbb 1_M\otimes\mathbb 1_R
+            +\mathbb 1_L\otimes A_M\otimes\mathbb 1_R
+            +\mathbb 1_L\otimes\mathbb 1_M\otimes A_R, \\
+        \widetilde U&=U\otimes\mathbb 1_R, \\
+        \widetilde V&=\mathbb 1_L\otimes V.
+    \end{align*}
+    With central variables $Y$ and then $X$, define
+    \begin{align*}
+        F(X,Y)&=D+\widetilde VY+\widetilde UX, \\
+        K_{k,i,j}&=[Y^j]\bigl([X^i]F(X,Y)^k\bigr).
+    \end{align*}
+    Let $r_U,r_V,k,i,j$ be natural numbers satisfying $i\le k$, $j\le k$,
+    $\operatorname{OSR}_{L\mid M}(U)\le r_U$ and
+    $\operatorname{OSR}_{M\mid R}(V)\le r_V$. Then
+    \begin{align*}
+        \operatorname{OSR}_{M\mid LR}(K_{k,i,j})
+            \le\binom{k+i+1}{2i+1}\binom{k+j+1}{2j+1}r_U^i r_V^j.
+    \end{align*}
+    The spaces may have dimension zero, with $0^0=1$.
+    The binomial factors use the corrected exponent-tuple count in
+    \cite{gap:aklv13_interpolation_and_word_count}.
+    This is supporting algebra for the simultaneous boundary estimates in
+    \cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank,
+        thm:local_polynomial_coefficient_rank,thm:polynomial_two_marker_power,
+        thm:operator_schmidt_middle_rank}
+    Choose shortest product decompositions of $U$ and $V$. Tensoring each
+    summand with the spectator identity gives a decomposition of the same
+    length at its corresponding boundary. Reversing the two factors also
+    preserves the length of a product decomposition. Thus the lifted crossing
+    ranks are at most $r_U$ and $r_V$ in the respective boundary coordinates.
+
+    At the left boundary the ordinary right polynomial is
+    $B_L(Y)=A_M\otimes\mathbb 1_R+\mathbb 1_M\otimes A_R+VY$.
+    Apply Theorem~\ref{thm:local_polynomial_coefficient_rank} with the
+    constant left operator $A_L$, crossing operator $\widetilde U$,
+    outer frequency $i$, remaining degree $k-i$, and inner frequency $j$.
+    This gives
+    \begin{align*}
+        \operatorname{OSR}_{L\mid MR}(K_{k,i,j})
+            \le\binom{k+i+1}{2i+1}r_U^i.
+    \end{align*}
+    At the reflected right boundary the ordinary opposite-factor polynomial
+    is $B_R(X)=A_L\otimes\mathbb 1_M+\mathbb 1_L\otimes A_M+UX$.
+    Theorem~\ref{thm:polynomial_two_marker_power} identifies the same
+    $K_{k,i,j}$ when $V$ is counted by the outer variable.
+    Applying Theorem~\ref{thm:local_polynomial_coefficient_rank} with
+    outer frequency $j$, remaining degree $k-j$, and inner frequency $i$
+    therefore gives
+    \begin{align*}
+        \operatorname{OSR}_{LM\mid R}(K_{k,i,j})
+            \le\binom{k+j+1}{2j+1}r_V^j.
+    \end{align*}
+    Both inequalities concern the same operator. Their product bounds its
+    middle-versus-exterior rank by
+    Theorem~\ref{thm:operator_schmidt_middle_rank}.
+\end{proof}
