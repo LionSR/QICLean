@@ -11,6 +11,12 @@ set_option autoImplicit false
 set_option linter.hashCommand false
 
 /-- info:
+'Polynomial.coeff_C_add_C_mul_X_mul_succ'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Polynomial.coeff_C_add_C_mul_X_mul_succ
+
+/-- info:
 'Polynomial.coeff_coeff_pow_two_markers_swap'
 depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
