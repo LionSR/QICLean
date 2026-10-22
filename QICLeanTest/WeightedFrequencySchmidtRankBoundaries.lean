@@ -25,7 +25,7 @@ private theorem one_dimensional_rank_le_one
     LinearMap.finrank_range_le (Matrix.operatorSchmidtMap X)
 
 open Classical in
-private theorem zero_rank_le_zero {a b : Type*} [Fintype a] [Fintype b] :
+private theorem zero_rank_le_zero {a b : Type*} [Fintype a] [Finite b] :
     Matrix.operatorSchmidtRank (0 : Matrix (a × b) (a × b) ℂ) ≤ 0 := by
   exact Matrix.operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
     ⟨Fin.elim0, Fin.elim0, by simp⟩
