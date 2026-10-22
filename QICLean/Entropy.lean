@@ -31,6 +31,7 @@ import QICLean.Entropy.ConditionalSkewSetup
 import QICLean.Entropy.ConditionalSkewStrip
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
+import QICLean.Entropy.EffectRelativeEntropy
 import QICLean.Entropy.FilterChain
 import QICLean.Entropy.FilterChainEnergy
 import QICLean.Entropy.FilterClipping
