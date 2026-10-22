@@ -152,6 +152,22 @@ theorem partialTraceRight_regionState_union (hBC : Disjoint B C)
     rw [reindex_apply, Equiv.symm_symm]
   rw [h, localLift_union_kronecker, localLift_one, Matrix.mul_one]
 
+/-- The marginal on the second region of the regional state of a disjoint union of two
+regions is the regional state of the second region; the mirror of
+`partialTraceRight_regionState_union`. -/
+theorem partialTraceLeft_regionState_union (hBC : Disjoint B C)
+    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
+    partialTraceLeft ((regionState (B ∪ C) Ω).submatrix (regionUnionEquiv hBC).symm
+      (regionUnionEquiv hBC).symm) = regionState C Ω := by
+  refine eq_of_forall_trace_mul_eq fun N ↦ ?_
+  rw [trace_partialTraceLeft_mul, trace_regionState_submatrix_mul, ← inner_localLift]
+  have h : ((1 : Matrix (RegionConfig n B) (RegionConfig n B) ℂ) ⊗ₖ N).submatrix
+      (regionUnionEquiv hBC) (regionUnionEquiv hBC) =
+      reindex (regionUnionEquiv hBC).symm (regionUnionEquiv hBC).symm
+        ((1 : Matrix (RegionConfig n B) (RegionConfig n B) ℂ) ⊗ₖ N) := by
+    rw [reindex_apply, Equiv.symm_symm]
+  rw [h, localLift_union_kronecker, localLift_one, Matrix.one_mul]
+
 /-- The `A ∪ B` marginal of the tripartite state. -/
 theorem partialTraceRight_reassoc_tripleState (Ω : EuclideanSpace ℂ (SiteConfig n)) :
     partialTraceRight (reassoc (tripleState hAB hAC hBC Ω)) =
