@@ -135,6 +135,7 @@ import QICLean.Analysis.PoissonContractionDecay
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
 import QICLean.Analysis.PosSemidefCommute
+import QICLean.Analysis.PositiveFactorRepair
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
