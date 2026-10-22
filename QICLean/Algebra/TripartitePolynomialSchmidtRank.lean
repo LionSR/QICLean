@@ -82,7 +82,7 @@ private theorem rank_twoCount_left_boundary
     simp only [two_mul, ← Nat.add_assoc, hk]
   have h := operatorSchmidtRank_coeff_coeff_pow_left_add_right_le A
     (Polynomial.C B₀ + Polynomial.C B₁ * Polynomial.X) T hT (k - i) i j
-  simp [twoCount, Polynomial.map_add, Polynomial.map_C, Polynomial.map_mul,
+  simp only [twoCount, Polynomial.map_add, Polynomial.map_C, Polynomial.map_mul,
     Polynomial.map_X, rightKroneckerEmbed, Polynomial.C_add, add_assoc, hk, hc] at h ⊢
   convert h using 1
   congr 8
@@ -91,7 +91,7 @@ open Classical in
 /-- Reindexing into an actual one-sided tensor decomposition transports the
 same coefficient before applying the fixed-left-family bound. -/
 private theorem rank_twoCount_reindex_left
-    {p l n : Type*} [Fintype p] [Fintype l] [Fintype n]
+    {p l n : Type*} [Fintype p] [Fintype l] [Finite n]
     [DecidableEq p] [DecidableEq l] [DecidableEq n]
     (e : p ≃ l × n) (D U V : Matrix p p ℂ)
     (A : Matrix l l ℂ) (B₀ B₁ : Matrix n n ℂ)
@@ -102,6 +102,7 @@ private theorem rank_twoCount_reindex_left
     (hU : operatorSchmidtRank (U.reindex e e) ≤ r) (hi : i ≤ k) :
     operatorSchmidtRank ((twoCount D U V k i j).reindex e e) ≤
       (k + i + 1).choose (2 * i + 1) * r ^ i := by
+  letI : Fintype n := Fintype.ofFinite n
   have ht : (twoCount D U V k i j).reindex e e =
       twoCount (D.reindex e e) (U.reindex e e) (V.reindex e e) k i j :=
     twoCount_map (Matrix.reindexRingEquiv ℂ e).toRingHom D U V k i j
@@ -143,13 +144,15 @@ open Classical in
 /-- Adding an identity spectator to the right does not increase the left
 boundary rank. No spectator dimension is cancelled. -/
 private theorem rank_left_spectator_le
-    {l m n : Type*} [Fintype l] [Fintype m] [Fintype n]
+    {l m n : Type*} [Fintype l] [Finite m] [Finite n]
     (U : Matrix (l × m) (l × m) ℂ) :
     operatorSchmidtRank
         ((U ⊗ₖ (1 : Matrix n n ℂ)).reindex
           (Equiv.prodAssoc l m n) (Equiv.prodAssoc l m n)) ≤
       operatorSchmidtRank U := by
   classical
+  letI : Fintype m := Fintype.ofFinite m
+  letI : Fintype n := Fintype.ofFinite n
   obtain ⟨A, B, hU⟩ := hasOperatorSchmidtDecomposition_operatorSchmidtRank U
   apply operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
   refine ⟨A, fun t ↦ B t ⊗ₖ (1 : Matrix n n ℂ), ?_⟩
@@ -160,7 +163,7 @@ private theorem rank_left_spectator_le
 open Classical in
 /-- The corresponding reflected spectator estimate at the right boundary. -/
 private theorem rank_right_spectator_le
-    {l m n : Type*} [Fintype l] [Fintype m] [Fintype n]
+    {l m n : Type*} [Finite l] [Fintype m] [Fintype n]
     (V : Matrix (m × n) (m × n) ℂ) :
     operatorSchmidtRank
         ((((1 : Matrix l l ℂ) ⊗ₖ V).reindex
@@ -168,6 +171,7 @@ private theorem rank_right_spectator_le
             (Equiv.prodComm (l × m) n) (Equiv.prodComm (l × m) n)) ≤
       operatorSchmidtRank V := by
   classical
+  letI : Fintype l := Fintype.ofFinite l
   obtain ⟨B, C, hV⟩ := hasOperatorSchmidtDecomposition_operatorSchmidtRank V
   apply operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
   refine ⟨C, fun t ↦ (1 : Matrix l l ℂ) ⊗ₖ B t, ?_⟩
@@ -178,7 +182,7 @@ private theorem rank_right_spectator_le
 open Classical in
 /-- The three local ordinary terms in left-boundary coordinates. -/
 private theorem three_local_reindex_left
-    {l m n : Type*} [Fintype l] [Fintype m] [Fintype n]
+    {l m n : Type*}
     (AL : Matrix l l ℂ) (AM : Matrix m m ℂ) (AR : Matrix n n ℂ) :
     (((AL ⊗ₖ (1 : Matrix m m ℂ)) ⊗ₖ (1 : Matrix n n ℂ) +
       ((1 : Matrix l l ℂ) ⊗ₖ AM) ⊗ₖ (1 : Matrix n n ℂ) +
