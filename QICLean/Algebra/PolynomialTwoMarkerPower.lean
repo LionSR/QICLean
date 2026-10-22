@@ -40,7 +40,7 @@ theorem coeff_coeff_pow_two_markers_swap
   | succ k ih =>
     cases i <;> cases j <;>
       simp only [pow_succ', coeff_C_add_C_mul_X_mul_succ, mul_coeff_zero,
-        coeff_add, coeff_C_mul, coeff_C_zero, coeff_X_zero, mul_zero, add_zero,
-        ih, add_assoc, add_comm, add_left_comm]
+        coeff_add, coeff_C_mul, coeff_C_zero, coeff_X_zero, mul_zero, add_zero, zero_add,
+        ih, add_assoc, add_comm]
 
 end Polynomial
