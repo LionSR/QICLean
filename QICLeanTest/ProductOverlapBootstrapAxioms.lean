@@ -17,7 +17,7 @@ three-dimensional orthogonal complement.
 set_option autoImplicit false
 set_option linter.hashCommand false
 
-open scoped Matrix InnerProductSpace Classical
+open scoped Matrix InnerProductSpace
 
 /-- info:
 'Matrix.exists_unit_product_overlap_ge_of_operatorSchmidtRank' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -32,7 +32,6 @@ space or assert an entropy bound.
 -/
 
 open scoped BigOperators Matrix InnerProductSpace ComplexOrder
-open scoped Classical
 
 namespace Matrix
 
@@ -93,6 +92,7 @@ private theorem schmidtRank_smul_eq_of_ne_zero
   exact rank_smul_of_mem_nonZeroDivisors (schmidtCoeffMatrix φ)
     (mem_nonZeroDivisors_of_ne_zero hc)
 
+open Classical in
 /-- Padded descending eigenvalues are all bounded by the first one. -/
 private theorem kyFanNorm_le_mul_one
     {m : Type*} [Fintype m] (ρ : Matrix m m ℂ) (hρ : ρ.PosSemidef) (k : ℕ) :
@@ -116,6 +116,7 @@ private theorem kyFanNorm_le_mul_one
     _ = (k : ℝ) * hρ.isHermitian.descEigenvalue 0 := by
       rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
 
+open Classical in
 /-- Both the strict-index and full-index maximum principles are used. -/
 private theorem unit_overlap_le_rank_mul_top
     {m n : Type*} [Fintype m] [Fintype n]
@@ -140,6 +141,7 @@ private theorem unit_overlap_le_rank_mul_top
     refine hb.trans ((kyFanNorm_le_mul_one (C * Cᴴ) hρ (Fintype.card m)).trans ?_)
     exact mul_le_mul_of_nonneg_right (by exact_mod_cast hcard) (hρ.kyFanNorm_nonneg 1)
 
+open Classical in
 /-- The rank-overlap estimate is homogeneous and includes a zero output. -/
 private theorem overlap_le_rank_mul_top
     {m n : Type*} [Fintype m] [Fintype n]
@@ -173,6 +175,7 @@ private theorem overlap_le_rank_mul_top
             (schmidtCoeffMatrix (WithLp.ofLp Γ))).isHermitian.kyFanNorm 1 * ‖χ‖ ^ 2 := by
         ring
 
+open Classical in
 /-- An actual normalized rank-one maximizer exists, even in left dimension one. -/
 private theorem exists_unit_rank_one_top
     {m n : Type*} [Fintype m] [Fintype n]
@@ -271,6 +274,7 @@ private theorem overlap_scalar_bootstrap
     apply (div_le_iff₀ (by positivity : 0 < 2 * (D : ℝ))).2
     nlinarith only [hh]
 
+open Classical in
 /-- A fixed unit vector preserved by a bipartite operator has a unit product
 vector of overlap at least 1/√(2D) under the stated rank and shrinking tradeoff.
 
