@@ -7,6 +7,19 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Operator Schmidt rank from a finite block span — promoted (2026-10-22)
+
+- **Consumers:** The product-decomposition bound in `Algebra/OperatorSchmidt.lean`
+  and both cut-movement bounds in `Algebra/OperatorSchmidtCut.lean`.
+- **Lemma:** `Matrix.operatorSchmidtRank_le_card_of_blocks_mem_span` combines
+  inclusion of block spans with the dimension bound for a finite spanning family.
+- **Refactor:** Each consumer supplies its actual block expansion. The existing
+  product-decomposition theorem keeps its statement; the two cut bounds derive
+  their spanning families from a shortest decomposition.
+- **Scope:** The shared lemma holds over an arbitrary field, including empty
+  finite factors. No additional spanning assumption enters the cut bounds.
+
+
 ### Entropy comparison with a supplied uniform norm bound — shared private lemma (2026-10-18)
 
 - **Seen:** The polynomial and logarithmic buffered-discount theorems in
@@ -1216,3 +1229,12 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Degree-one coefficient recurrence — candidate (2026-10-22)
+
+- **Seen:** The private coefficient recurrences in `Algebra/OrderedPolynomialGaps.lean`
+  and `Algebra/CommutingPolynomialGaps.lean`.
+- **Pattern:** Left multiplication by `C D + C T * X` gives the same two-term
+  coefficient recurrence, with constant and leading-coefficient boundaries.
+- **Decision:** Reuse the polynomial coefficient lemmas. There are two consumers;
+  a third use would justify one shared recurrence lemma.
