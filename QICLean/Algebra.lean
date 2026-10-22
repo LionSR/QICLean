@@ -12,6 +12,7 @@ import QICLean.Algebra.BlockPermutation
 import QICLean.Algebra.BurnsideTheorem
 import QICLean.Algebra.CommutingOverlappingDecomp
 import QICLean.Algebra.CommutingPolynomialGaps
+import QICLean.Algebra.CommutingPolynomialSchmidtRank
 import QICLean.Algebra.CompactSVD
 import QICLean.Algebra.ComplexPhasePositivity
 import QICLean.Algebra.ConstantPowerSums

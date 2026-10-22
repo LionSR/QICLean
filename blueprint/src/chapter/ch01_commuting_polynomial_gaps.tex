@@ -61,3 +61,30 @@
     Stars and bars gives $\binom{m+2k+1}{m}$, equal to the displayed count
     by the symmetry of binomial coefficients.
 \end{proof}
+
+
+\begin{theorem}[Operator Schmidt rank of a commuting-gap coefficient]
+    \label{thm:polynomial_commuting_gap_rank}
+    \lean{Matrix.operatorSchmidtRank_coeff_pow_C_add_C_mul_X_le}
+    \leanok
+    Let $A,B,T$ be operators on a finite-dimensional complex bipartite space.
+    Suppose $AB=BA$, $\operatorname{OSR}(A),\operatorname{OSR}(B)\le1$, and
+    $\operatorname{OSR}(T)\le r$ for an integer $r\ge0$. For integers $m,k\ge0$,
+    \begin{align*}
+        \operatorname{OSR}\!\left([X^k](A+B+TX)^{m+k}\right)
+            \le\binom{m+2k+1}{2k+1}r^k.
+    \end{align*}
+    Zero-dimensional factors, zero exponents and $r=0$ are included, with
+    the usual convention $0^0=1$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:polynomial_commuting_gap_span, thm:polynomial_commuting_gap_count,
+        thm:operator_schmidt_rank_algebra}
+    Every power of $A$ or $B$ has rank at most one, including the zeroth
+    power. The product inequality therefore bounds each ordered gap form by $r^k$.
+    The coefficient belongs to the span of the fixed finite family of these
+    forms. Choose its scalar coefficients in that family. The scalar and
+    finite-sum rank bounds give at most the sum of the ranks of the indexed
+    forms, hence the displayed count times $r^k$.
+\end{proof}
