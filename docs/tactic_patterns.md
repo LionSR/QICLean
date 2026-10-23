@@ -214,6 +214,22 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Sharp product-overlap inequality — shared private lemma (2026-10-23)
+
+- **Pattern:** Choose an actual unit Schmidt-rank-one maximizer, decompose it
+  into its component along the fixed vector and its perpendicular remainder,
+  and apply the rank-overlap estimate to the image of that same maximizer.
+- **Seen:** The quantitative product-overlap theorem and the rank-one endpoint
+  in `Channel/ProductOverlapBootstrap.lean`.
+- **Abstraction:** `exists_unit_rank_one_overlap_bootstrap` contains the common
+  argument once. The former theorem applies its numerical tradeoff afterward;
+  the endpoint instead uses strict contraction to make the remainder vanish.
+- **Notes:** These are two consumers in one file, below the tactic-promotion
+  threshold. An ordinary helper theorem suffices; no tactic is introduced.
+  The public homogeneous contraction lemma is available to the separate
+  powered-vector argument. Regression applications are not counted as consumers.
+
+
 ### Normalized regional states — candidate (2026-10-15)
 
 - **Pattern:** Expand the normalized patch output and use `regionState_smul`
