@@ -134,7 +134,9 @@ estimate with the same $Q$ and rank exponent $16C$.
 
 \begin{theorem}[Stability of ordered spectral tails]
   \label{thm:spectral_tail_stability}
-  \lean{Matrix.IsHermitian.sum_descEigenvalue_tail_le_add_half_traceNorm}
+  \lean{Matrix.IsHermitian.sum_descEigenvalue_tail_le_add_half_traceNorm,
+    Matrix.IsHermitian.sum_descEigenvalue_tail_le_add_traceDistance,
+    Matrix.traceDistance_eq_rectangularTraceNorm}
   \leanok
   \uses{def:ky_fan_norm,def:trace_norm}
   For Hermitian matrices $\rho,\sigma$ of equal trace on the same finite
