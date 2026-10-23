@@ -71,6 +71,41 @@
     contribute $h(0)=0$.
 \end{proof}
 
+\begin{lemma}[Leading weights of a distribution with bounded entropy]
+    \label{lem:leading_weights_of_bounded_entropy}
+    \lean{Entropy.one_half_le_sum_of_exp_two_mul_probabilityEntropy_le,
+        Matrix.one_half_le_sum_eigenvalues_of_exp_two_mul_vonNeumannEntropy_le}
+    \leanok
+    \uses{def:finite_classical_mutual_information}
+    Let $p=(p_z)_{z\in Z}$ be a probability distribution on a finite set $Z$
+    with entropy $H(p)=\sum_{z\in Z}h(p_z)$, and let $T\subseteq Z$ satisfy
+    $p_b\leq p_a$ for all $a\in T$ and $b\notin T$. If
+    $\exp(2H(p))/2\leq\lvert T\rvert$, then
+    \begin{align}
+        \sum_{z\in T}p_z\geq\frac{1}{2}.
+        \notag
+    \end{align}
+    The same holds for the eigenvalues of a density matrix $\rho$, with $H(p)$
+    replaced by the von Neumann entropy $S(\rho)$. Applied to the squared
+    Schmidt coefficients of a pure state, this is the bound in the section
+    on matrix product states of \cite{Hastings2007AreaLaw} on the number of
+    leading Schmidt coefficients that carry half of the norm.
+\end{lemma}
+\begin{proof}\leanok
+    Write $k=\lvert T\rvert$; since $H(p)\geq0$, the hypothesis gives
+    $k\geq1$. Suppose that $\sum_{z\in T}p_z<1/2$. For $b\notin T$, every
+    $p_a$ with $a\in T$ is at least $p_b$, so $kp_b\leq\sum_{z\in T}p_z<1/2$
+    and $p_b<1/(2k)$. Hence $h(p_b)\geq p_b\log(2k)$, and the weights outside
+    $T$, of total mass greater than $1/2$, give
+    \begin{align}
+        H(p)\geq\sum_{b\notin T}h(p_b)>\frac{1}{2}\log(2k).
+        \notag
+    \end{align}
+    Thus $\exp(2H(p))>2k$, contrary to the hypothesis. The eigenvalues of a
+    density matrix are nonnegative and sum to one, and $S(\rho)$ is the
+    entropy of this distribution.
+\end{proof}
+
 \begin{theorem}[Classical mutual information is bounded by ordinary rank]
     \label{thm:classical_mutual_information_le_log_rank}
     \lean{Entropy.classicalMutualInformation_le_log_rank}
@@ -215,6 +250,27 @@
     $\rho_{AB}(P_A\otimes P_B)=\rho_{AB}$. The support projection of
     $\rho_A\otimes\rho_B$ is $P_A\otimes P_B$. Therefore every vector
     annihilated by $\rho_A\otimes\rho_B$ is annihilated by $\rho_{AB}$.
+\end{proof}
+
+\begin{theorem}[Rank bound from the two marginals]
+    \label{thm:rank_product_marginals}
+    \lean{Matrix.PosSemidef.rank_le_rank_partialTraceRight_mul_rank_partialTraceLeft}
+    \leanok
+    Let $\rho_{AB}\succeq0$ be a finite-dimensional bipartite operator,
+    with marginals $\rho_A$ and $\rho_B$. Then
+    \begin{align}
+        \operatorname{rank}\rho_{AB}
+        &\le\operatorname{rank}\rho_A\,\operatorname{rank}\rho_B.
+    \end{align}
+    No trace normalization is required, and either factor may have dimension zero.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:product_marginals_kernel}
+    The kernel inclusion gives
+    $\dim\ker(\rho_A\otimes\rho_B)\le\dim\ker\rho_{AB}$.
+    By rank-nullity on the common ambient space,
+    $\operatorname{rank}\rho_{AB}\le\operatorname{rank}(\rho_A\otimes\rho_B)$.
+    The rank of a tensor product is the product of the ranks.
 \end{proof}
 
 \begin{theorem}[Compression to both marginal supports]
