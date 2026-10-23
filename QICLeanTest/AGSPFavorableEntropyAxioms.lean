@@ -51,6 +51,7 @@ private theorem norm_one_of_raw_unit
 shrinking condition with δ=-1: no unit vector is perpendicular to its fixed
 unit vector. The favorable entropy theorem is applied to these actual data. -/
 private theorem negative_shrinking_fin_one_pair_entropy_boundary :
+    letI : DecidableEq (Fin 1) := Classical.typeDecidableEq _
     let C := schmidtCoeffMatrix (fun _ : Fin 1 × Fin 1 ↦ (1 : ℂ))
     vonNeumannEntropy (C * Cᴴ) (posSemidef_self_mul_conjTranspose C).isHermitian ≤ 0 := by
   classical
@@ -98,6 +99,7 @@ private theorem negative_shrinking_fin_one_pair_entropy_boundary :
 orthogonal complement. The favorable entropy theorem is applied with D=1
 and δ=0, using the original |00⟩ vector and its actual coefficient matrix. -/
 private theorem zero_shrinking_fin_two_projection_entropy_boundary :
+    letI : DecidableEq (Fin 2) := Classical.typeDecidableEq _
     let C := schmidtCoeffMatrix (Pi.single ((0 : Fin 2), (0 : Fin 2)) (1 : ℂ))
     vonNeumannEntropy (C * Cᴴ) (posSemidef_self_mul_conjTranspose C).isHermitian ≤ 0 := by
   classical
