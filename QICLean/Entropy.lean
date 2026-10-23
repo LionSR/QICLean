@@ -31,6 +31,8 @@ import QICLean.Entropy.ConditionalSkewSetup
 import QICLean.Entropy.ConditionalSkewStrip
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
+import QICLean.Entropy.EffectMutualInformation
+import QICLean.Entropy.EffectRelativeEntropy
 import QICLean.Entropy.FilterChain
 import QICLean.Entropy.FilterChainEnergy
 import QICLean.Entropy.FilterClipping
@@ -60,6 +62,7 @@ import QICLean.Entropy.IidSchurSignedMoments
 import QICLean.Entropy.IidSurprisal
 import QICLean.Entropy.IidSurprisalExponential
 import QICLean.Entropy.IidSurprisalMomentExponential
+import QICLean.Entropy.LeadingWeights
 import QICLean.Entropy.LocalLift
 import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison
