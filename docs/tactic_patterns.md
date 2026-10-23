@@ -1231,3 +1231,23 @@ No new tactic or duplicate tree induction is introduced.
 - **Caveat:** The density coefficient is nonnegative in the weighted
   identity. The final minimum separately treats all complex coefficients
   by Hermitian-part contraction and trace duality.
+
+### Uniform-weight Jensen bounds for entropy contributions (2026-10-23)
+
+- **Seen:** `Analysis.ProbabilityEntropy` and
+  `Analysis.ProbabilityEntropyConcentration` apply concavity of `negMulLog`
+  with reciprocal-cardinality weights, then multiply by the cardinality.
+- **Candidate:** `Entropy.sum_negMulLog_le_mass_log_card` now gives the
+  finite-mass estimate, including an empty set. A future consolidation can
+  put this lower-level estimate before the normalized support theorem and
+  derive the latter from it. There are two occurrences, below the promotion
+  threshold; no new tactic or simp set is introduced.
+
+## Candidate: ordered eigenvalue tails as finite probability tails (2026-10-23)
+
+The conversion from a natural-number interval of descending eigenvalues to the
+complement of a filtered finite ordinal appears in
+`Analysis.VonNeumannEntropySpectralTail` and `Entropy.RenyiRankLowerBound`
+(the latter is developed separately). Both use `Fin.sum_univ_eq_sum_range`
+and the equality between a filtered range and an interval. A third independent
+use should promote this conversion to a shared eigenvalue-sum lemma.

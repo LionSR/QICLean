@@ -1,0 +1,25 @@
+\section{Missing fidelity mass at small error}
+\label{sec:optimized_pure_error_mass}
+
+\begin{theorem}[Missing mass from optimized error]
+  \label{thm:optimized_pure_error_mass}
+  \lean{Real.one_sub_le_half_error_of_optimizedPureTraceError_le}
+  \leanok
+  Let $f\le1$ and $\delta<1$. If the scalar optimized full trace error
+  satisfies $T(f)\le\delta$, then
+  \begin{align}
+    \label{eq:optimized_pure_error_mass}
+    1-f&\le\frac{\delta}{2}.
+  \end{align}
+  No separate lower bound on $f$ is required.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{def:optimized_pure_trace_error}
+  The inequality $T(f)<1$ excludes the saturated branch, so $f\ge1/2$.
+  Thus $(1-f)^2\le f(1-f)$ and
+  $2(1-f)\le2\sqrt{f(1-f)}=T(f)\le\delta$.
+\end{proof}
+
+This is a scalar consequence of the optimized-error formula in
+\cite{Schuch2008EntropyScaling}, lines 160--173 of the source.
+It does not identify that scalar function with a matrix minimization problem.
