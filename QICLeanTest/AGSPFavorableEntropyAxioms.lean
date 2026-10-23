@@ -51,7 +51,6 @@ private theorem norm_one_of_raw_unit
 shrinking condition with δ=-1: no unit vector is perpendicular to its fixed
 unit vector. The favorable entropy theorem is applied to these actual data. -/
 private theorem negative_shrinking_fin_one_pair_entropy_boundary :
-    letI : DecidableEq (Fin 1) := Classical.typeDecidableEq _
     let C := schmidtCoeffMatrix (fun _ : Fin 1 × Fin 1 ↦ (1 : ℂ))
     vonNeumannEntropy (C * Cᴴ) (posSemidef_self_mul_conjTranspose C).isHermitian ≤ 0 := by
   classical
@@ -92,6 +91,8 @@ private theorem negative_shrinking_fin_one_pair_entropy_boundary :
     (D := 1) (δ := (-1 : ℝ))
     (1 : Matrix (Fin 1 × Fin 1) (Fin 1 × Fin 1) ℂ)
     Γ hΓ hfix hperp hrank (by norm_num)
+  rw [Subsingleton.elim (fun a b : Fin 1 ↦ Classical.propDecidable (a = b))
+    (inferInstance : DecidableEq (Fin 1))] at result
   simpa only [Nat.cast_one, Real.log_one, mul_zero, Γ, WithLp.ofLp_toLp] using result
 
 
@@ -99,7 +100,6 @@ private theorem negative_shrinking_fin_one_pair_entropy_boundary :
 orthogonal complement. The favorable entropy theorem is applied with D=1
 and δ=0, using the original |00⟩ vector and its actual coefficient matrix. -/
 private theorem zero_shrinking_fin_two_projection_entropy_boundary :
-    letI : DecidableEq (Fin 2) := Classical.typeDecidableEq _
     let C := schmidtCoeffMatrix (Pi.single ((0 : Fin 2), (0 : Fin 2)) (1 : ℂ))
     vonNeumannEntropy (C * Cᴴ) (posSemidef_self_mul_conjTranspose C).isHermitian ≤ 0 := by
   classical
@@ -138,6 +138,8 @@ private theorem zero_shrinking_fin_two_projection_entropy_boundary :
     simp only [Fin.sum_univ_one, Matrix.single_kronecker_single, one_mul, K]
   have result := vonNeumannEntropy_reduced_le_four_log_of_operatorSchmidtRank
     (D := 1) (δ := (0 : ℝ)) K Γ hΓ hfix hperp hrank (by norm_num)
+  rw [Subsingleton.elim (fun a b : Fin 2 ↦ Classical.propDecidable (a = b))
+    (inferInstance : DecidableEq (Fin 2))] at result
   simpa only [Nat.cast_one, Real.log_one, mul_zero, Γ, WithLp.ofLp_toLp] using result
 
 end Matrix
