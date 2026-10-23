@@ -369,13 +369,13 @@ the chapter boundary.
     $K$ be a complex matrix on $\C^I\otimes\C^J$, and let
     $\psi\in\C^I\otimes\C^J$. Then
     \begin{align}
-        \SR(K\psi)&\le\operatorname{OSR}(K)\,\SR(\psi).
-        \notag
+        \SR(K\psi) & \le\operatorname{OSR}(K)\,\SR(\psi).
+        \label{eq:schmidt_rank_operator_action_rank_bound}
     \end{align}
     No normalization or positivity is assumed.
     This is the rank-growth implication used with
     \cite[Definition~2.1]{Arad2013AreaLaw} and the product-operator
-    decomposition in \cite[equation e:decomp]{Landau2013PolynomialTime}.
+    decomposition in \cite[``Error Reduction'']{Landau2013PolynomialTime}.
 \end{theorem}
 
 \begin{proof}
@@ -390,16 +390,16 @@ the chapter boundary.
     The action of each product operator gives
     \begin{align}
         C_{K\psi}
-        &=\sum_{t=0}^{r-1}A_tC_\psi B_t^{\mathsf T}
-          =\sum_{t=0}^{r-1}(A_tP)(QB_t^{\mathsf T})=LR,
-        \notag
+         & =\sum_{t=0}^{r-1}A_tC_\psi B_t^{\mathsf T}
+        =\sum_{t=0}^{r-1}(A_tP)(QB_t^{\mathsf T})=LR,
+        \label{eq:schmidt_rank_operator_action_rank_factorization}
     \end{align}
     where the inner index of $L$ and $R$ is the set of pairs
     $(t,u)$ with $0\le t<r$ and $0\le u<s$, and
     \begin{align}
-        L_{i,(t,u)}&=(A_tP)_{i,u},
-        &R_{(t,u),j}&=(QB_t^{\mathsf T})_{u,j}.
-        \notag
+        L_{i,(t,u)} & =(A_tP)_{i,u},
+                    & R_{(t,u),j}    & =(QB_t^{\mathsf T})_{u,j}.
+        \label{eq:schmidt_rank_operator_action_factor_entries}
     \end{align}
     Consequently $\rank(C_{K\psi})=\rank(LR)\le\rank(L)\le rs$.
     The same formulas apply when either rank is zero, since the set of
