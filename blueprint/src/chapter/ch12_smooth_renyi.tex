@@ -1,0 +1,74 @@
+\subsection{Finite-order and infimal smoothed R\'enyi entropy}
+
+\begin{definition}[Finite-order R\'enyi entropy]
+    \label{def:renyi_entropy}
+    \lean{renyiEntropy}
+    \leanok
+    \uses{def:von_neumann_entropy}
+    For a density matrix $\rho$ and a finite order $\alpha\ge0$, define
+    \begin{align}
+        S_\alpha(\rho)&=
+        \begin{cases}
+            \log\operatorname{rank}\rho,&\alpha=0,\\
+            S(\rho),&\alpha=1,\\
+            \dfrac{\log\operatorname{tr}(\rho^\alpha)}{1-\alpha},
+                &\alpha\ne0,1.
+        \end{cases}\notag
+    \end{align}
+    Logarithms are natural. The endpoint conventions agree with
+    those in~\cite{SchuchWolfVerstraeteCirac2007}.
+\end{definition}
+
+\begin{definition}[Infimal smoothed R\'enyi entropy]
+    \label{def:infimal_smooth_renyi_entropy}
+    \lean{smoothRenyiEntropyValues,smoothRenyiEntropy}
+    \leanok
+    \uses{def:renyi_entropy}
+    For a density matrix $\rho$ and a radius $\varepsilon\ge0$, let
+    \begin{align}
+        \mathcal V_{\alpha,\varepsilon}(\rho)
+        &=\{S_\alpha(\sigma):\sigma\ge0,\,
+          \operatorname{tr}\sigma=1,\,
+          \|\rho-\sigma\|_1\le\varepsilon\}.\notag\\
+        S_\alpha^\varepsilon(\rho)
+        &=\inf\mathcal V_{\alpha,\varepsilon}(\rho).\notag
+    \end{align}
+    Here $\|\cdot\|_1$ is the full trace norm. The source
+    \cite{SchuchWolfVerstraeteCirac2007} writes a minimum. Whenever the
+    infimum is attained, the two values agree. The witness theorem below
+    does not assume attainment.
+    % The source's minimum-attainment assertion is not formalized here.
+    % At order zero the relevant argument uses lower semicontinuity of rank.
+\end{definition}
+
+\begin{theorem}[The original density is an admissible smoothing witness]
+    \label{thm:renyi_smoothing_self_witness}
+    \lean{renyiEntropy_mem_smoothRenyiEntropyValues}
+    \leanok
+    \uses{def:infimal_smooth_renyi_entropy}
+    If $\rho$ is a density matrix and $\varepsilon\ge0$, then
+    $S_\alpha(\rho)\in\mathcal V_{\alpha,\varepsilon}(\rho)$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Take $\sigma=\rho$ and use $\|\rho-\rho\|_1=0\le\varepsilon$.
+\end{proof}
+
+\begin{theorem}[A witness below every strict upper bound]
+    \label{thm:renyi_smoothing_strict_upper_witness}
+    \lean{exists_densityMatrix_renyiEntropy_lt}
+    \leanok
+    \uses{def:infimal_smooth_renyi_entropy}
+    Let $\rho$ be a density matrix and $\varepsilon\ge0$.
+    If $S_\alpha^\varepsilon(\rho)<T$, there is a density matrix $\sigma$
+    with $\|\rho-\sigma\|_1\le\varepsilon$ and $S_\alpha(\sigma)<T$.
+    In particular, $T=S_\alpha^\varepsilon(\rho)+\eta$ is permitted for
+    every $\eta>0$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:renyi_smoothing_self_witness}
+    The set of admissible entropy values is nonempty. If none of its
+    elements were below $T$, then $T$ would be a lower bound, contradicting
+    $\inf\mathcal V_{\alpha,\varepsilon}(\rho)<T$.
+\end{proof}
