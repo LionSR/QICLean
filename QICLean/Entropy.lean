@@ -99,6 +99,7 @@ import QICLean.Entropy.RestoringMarginal
 import QICLean.Entropy.RestoringNorm
 import QICLean.Entropy.RestoringOperators
 import QICLean.Entropy.RestoringVectors
+import QICLean.Entropy.RightLocalLift
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.SchmidtPinning
 import QICLean.Entropy.SchmidtTilt
