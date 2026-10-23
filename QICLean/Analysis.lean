@@ -125,6 +125,7 @@ import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OptimizedPureErrorMass
+import QICLean.Analysis.OptimizedPureStateTraceError
 import QICLean.Analysis.OptimizedPureTraceError
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
@@ -295,6 +296,7 @@ import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
+import QICLean.Analysis.WeightedPureStateTraceNorm
 import QICLean.Analysis.WeightedRectangular
 import QICLean.Analysis.WeightedSupertrace
 import QICLean.Analysis.WeightedTraceExponential

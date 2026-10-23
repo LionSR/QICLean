@@ -1217,6 +1217,21 @@ No new tactic or duplicate tree induction is introduced.
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
 
+### Weighted pure-state projection identities — shared lemma (2026-10-23)
+
+- **Seen:** The equal-weight pure-state trace distance and the optimized
+  pure-state trace-norm error use the same rank-one projection identities.
+- **Decision:** `Matrix.re_trace_abs_vecMulVec_sub_smul_eq` in
+  `Analysis.WeightedPureStateTraceNorm` contains the projection calculation
+  once. The old trace-distance theorem specializes its coefficient to one;
+  `Analysis.OptimizedPureStateTraceError` uses it after positive rescaling.
+- **Mechanism:** Existing `module` handles scalar polynomial identities
+  after distributivity; existing functional-calculus square-root uniqueness
+  identifies the absolute value. No new tactic is needed.
+- **Caveat:** The density coefficient is nonnegative in the weighted
+  identity. The final minimum separately treats all complex coefficients
+  by Hermitian-part contraction and trace duality.
+
 ### Uniform-weight Jensen bounds for entropy contributions (2026-10-23)
 
 - **Seen:** `Analysis.ProbabilityEntropy` and
