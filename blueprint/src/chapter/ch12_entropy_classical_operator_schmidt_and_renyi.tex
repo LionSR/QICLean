@@ -211,20 +211,21 @@
     \begin{align}
         \sum_{\substack{0\leq b<N \\D^{a+i}\leq b}}p_b
          & \leq\theta^{i+1}.
-        \notag
+        \label{eq:probability_geometric_tail_input}
     \end{align}
     With natural logarithms and the convention $0\log0=0$, the entropy
     $H(p)=-\sum_{b=0}^{N-1}p_b\log p_b$ satisfies
     \begin{align}
         H(p)
          & \leq a\log D+\frac{\log2+\theta\log D}{1-\theta}.
-        \notag
+        \label{eq:probability_geometric_tail_entropy}
     \end{align}
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:probability_entropy_rank_tails}
     Apply Theorem~\ref{thm:probability_entropy_rank_tails} with
-    $R_i=D^{a+i}$ and $t_i=\theta^{i+1}$.
+    $R_i=D^{a+i}$ and $t_i=\theta^{i+1}$,
+    using~(\ref{eq:probability_geometric_tail_input}).
     These ranks are positive and nondecreasing, and
     $\log R_0=a\log D$ and $\log(R_{i+1}/R_i)=\log D$.
     Put $s=\sum_{i=0}^{M-1}\theta^{i+1}$, with $s=0$ when $M=0$.
@@ -238,8 +239,9 @@
          & \leq a\log D+\log2
         +\frac{\theta}{1-\theta}(\log2+\log D)
         =a\log D+\frac{\log2+\theta\log D}{1-\theta}.
-        \notag
+        \label{eq:probability_geometric_tail_sum}
     \end{align}
+    Thus~(\ref{eq:probability_geometric_tail_sum}) proves~(\ref{eq:probability_geometric_tail_entropy}).
 \end{proof}
 
 \begin{lemma}[Leading weights of a distribution with bounded entropy]
