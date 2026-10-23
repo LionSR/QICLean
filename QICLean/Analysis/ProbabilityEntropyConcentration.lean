@@ -17,8 +17,9 @@ logarithm of the ambient cardinality, plus `log 2`.
 
 These elementary estimates provide an alternative to the continuity step in
 the entropy-based approximation obstruction of Schuch–Wolf–Verstraete–Cirac,
-arXiv:0705.0292v2, lines 278–305. That passage uses Audenaert's inequality. They do not assume that the weights are strictly
-positive. Empty parts are included, with the convention `Real.log 0 = 0`.
+arXiv:0705.0292v2, lines 278–305. That passage uses Audenaert's inequality.
+The estimates here do not assume that the weights are strictly positive.
+Empty parts are included, with the convention `Real.log 0 = 0`.
 -/
 
 open scoped BigOperators
