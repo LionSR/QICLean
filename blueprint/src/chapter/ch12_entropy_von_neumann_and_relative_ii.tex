@@ -738,6 +738,29 @@ the chapter boundary.
     It follows that $S(\rho)\le4\log D$.
 \end{proof}
 
+\begin{theorem}[Intertwining in cut coordinates]
+    \label{thm:cut_coordinate_intertwining}
+    \lean{Entropy.cutVector_toEuclideanLin}
+    \leanok
+    Let $V$ be finite, let $n_v\in\N$, and let
+    $\mathcal H=\bigotimes_{v\in V}\C^{n_v}$.
+    For $A\subseteq V$, let $U_A$ be the unitary grouping the configuration
+    coordinates into those on $A$ and those on $V\setminus A$.
+    If $K$ is a linear operator on $\mathcal H$ and
+    $K_A=U_AKU_A^\dagger$, then every $\psi\in\mathcal H$ satisfies
+    $U_A(K\psi)=K_A(U_A\psi)$.
+\end{theorem}
+\begin{proof}\leanok
+    Write $e_A(c)=(c|_A,c|_{V\setminus A})$ for the configuration bijection.
+    In these coordinates,
+    \begin{align}
+        (K_A)_{(a,b),(a',b')}
+         & =K_{e_A^{-1}(a,b),e_A^{-1}(a',b')}.
+        \notag
+    \end{align}
+    Reindexing the finite matrix--vector sum by $e_A$ gives the assertion.
+\end{proof}
+
 \begin{theorem}[Regional entropy from a favorable shrinking tradeoff]
     \label{thm:regional_favorable_tradeoff_entropy}
     \lean{Entropy.regionEntropy_le_four_log_of_cutOperatorSchmidtRank}
@@ -759,10 +782,12 @@ the chapter boundary.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:fixed_vector_favorable_tradeoff_entropy,lem:local_lift,
-        lem:region_filter_norm,lem:entropy_congr}
+        thm:cut_coordinate_intertwining,lem:entropy_congr}
     Let $U$ be the unitary grouping the configuration coordinates into
     those on $A$ and those on $V\setminus A$, and put
     $\Gamma=U\Omega$ and $K_A=UKU^\dagger$.
+    Theorem~\ref{thm:cut_coordinate_intertwining} gives
+    $K_A(Ux)=U(Kx)$ for every $x\in\mathcal H$.
     Then $\|\Gamma\|=1$ and $K_A\Gamma=\Gamma$.
     If $\eta$ is a unit vector perpendicular to $\Gamma$, then
     $U^\dagger\eta$ is a unit vector perpendicular to $\Omega$.
@@ -775,8 +800,8 @@ the chapter boundary.
     coordinates. The partial trace of the original vector satisfies
     \begin{align}
         \rho_A(a,a')
-        &=\sum_b\Gamma(a,b)\overline{\Gamma(a',b)}
-          =(C_\Gamma C_\Gamma^\dagger)(a,a').\notag
+         & =\sum_b\Gamma(a,b)\overline{\Gamma(a',b)}
+        =(C_\Gamma C_\Gamma^\dagger)(a,a').\notag
     \end{align}
     Hence the reduced entropy bounded by that theorem is exactly
     $S(\rho_A)$.
