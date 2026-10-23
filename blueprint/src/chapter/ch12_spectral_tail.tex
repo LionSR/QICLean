@@ -91,3 +91,72 @@ The original-state tail is at most $1/16$. Transfer contributes at most
 $1/32$, hence the weaker bound $1/8$ follows. Apply the positive-regulator
 estimate with the same $Q$ and rank exponent $16C$.
 \end{proof}
+
+\subsection{Rank-constrained approximation}
+
+\begin{theorem}[Spectral tail lower bound for trace-norm approximation]
+  \label{thm:spectral_tail_trace_norm}
+  \lean{Matrix.PosSemidef.sum_descEigenvalue_tail_le_traceNorm,
+    Matrix.PosSemidef.sum_descEigenvalue_tail_le_half_traceNorm}
+  \leanok
+  \uses{def:ky_fan_norm,def:trace_norm}
+  Let $\rho\ge0$ act on an $n$-dimensional Hilbert space, with ordered
+  eigenvalues $\lambda_1\ge\cdots\ge\lambda_n$. Let $\sigma$ be Hermitian
+  with $\operatorname{rank}\sigma\le D$, where $D\ge0$ is an integer.
+  Set $\epsilon(D)=\sum_{i=D+1}^n\lambda_i$, with an empty sum interpreted
+  as zero. Then
+  \begin{align}
+    \epsilon(D)&\le\lVert\rho-\sigma\rVert_1.
+  \end{align}
+  If $\tr\rho=\tr\sigma$, the sharper estimate
+  $\epsilon(D)\le\frac12\lVert\rho-\sigma\rVert_1$ holds.
+  No normalization or strict positivity is required. For density matrices,
+  the first bound is the spectral estimate used in the approximation lower
+  bound of Schuch, Wolf, Verstraete, and Cirac~\cite{Schuch2008EntropyScaling}.
+\end{theorem}
+
+\begin{proof}\leanok
+  \uses{thm:ky_fan_upper_bound,lem:trace_distance_jordan,
+    lem:trace_norm_jordan,lem:psd_trace_pairing_bounds}
+  If $D\ge n$, the tail vanishes. Otherwise let $P$ be the support
+  projection of $\sigma$ and put $Q=1-P$. Ky Fan's maximum principle and
+  positivity of the eigenvalues give
+  \begin{align}
+    \tr(P\rho)&\le\sum_{i=1}^{\operatorname{rank}\sigma}\lambda_i
+      \le\sum_{i=1}^D\lambda_i, &
+    \epsilon(D)&\le\tr(Q\rho)=\tr\bigl(Q(\rho-\sigma)\bigr).
+  \end{align}
+  Writing $H=\rho-\sigma=H_+-H_-$ and using $0\le Q\le1$, we obtain
+  $\tr(QH)\le\tr H_+\le\tr H_++\tr H_-=\lVert H\rVert_1$.
+  When $\tr H=0$, the two Jordan parts have equal trace, so
+  $\tr H_+=\frac12\lVert H\rVert_1$.
+\end{proof}
+
+\begin{theorem}[Stability of ordered spectral tails]
+  \label{thm:spectral_tail_stability}
+  \lean{Matrix.IsHermitian.sum_descEigenvalue_tail_le_add_half_traceNorm}
+  \leanok
+  \uses{def:ky_fan_norm,def:trace_norm}
+  For Hermitian matrices $\rho,\sigma$ of equal trace on the same finite
+  Hilbert space, let $\epsilon_\rho(D)$ and $\epsilon_\sigma(D)$ denote the
+  sums of the eigenvalues after the first $D$, in decreasing order. Then
+  \begin{align}
+    \epsilon_\rho(D)&\le\epsilon_\sigma(D)
+      +\frac12\lVert\rho-\sigma\rVert_1.
+  \end{align}
+  For density matrices, this estimate transfers a truncation bound from a
+  nearby state, as needed in the smooth R\'enyi entropy argument
+  of~\cite{Schuch2008EntropyScaling}.
+\end{theorem}
+
+\begin{proof}\leanok
+  \uses{thm:ky_fan_achievability,thm:ky_fan_upper_bound,
+    lem:trace_distance_jordan,lem:psd_trace_pairing_bounds}
+  The assertion is immediate when $D$ is at least the dimension.
+  Otherwise choose a rank-$D$ spectral projection $P$ onto the largest
+  eigenvalues of $\sigma$ and set $Q=1-P$. Ky Fan's principle gives
+  $\epsilon_\rho(D)\le\tr(Q\rho)$, whereas
+  $\epsilon_\sigma(D)=\tr(Q\sigma)$. Since $0\le Q\le1$, the Jordan
+  decomposition and equality of traces imply
+  $\tr\bigl(Q(\rho-\sigma)\bigr)\le\frac12\lVert\rho-\sigma\rVert_1$.
+\end{proof}
