@@ -32,7 +32,9 @@ Hastings, *Solving gapped Hamiltonians locally*: the sum of the terms of the pow
 `e^{-βH}` that contain every `H_i` with `i ∈ C` and no `H_j` with `j ∈ B(C)`. If `‖H_i‖ ≤ J`, the
 bound reads `‖O‖ (e^{βJ} - 1)^{n_C} Tr e^{-β(H - H_C - H_{B(C)})}`. Together with
 `Matrix.IsHermitian.re_trace_exp_add_le`, which bounds the last trace by
-`e^{β ‖H_C + H_{B(C)}‖} Tr e^{-βH}`, this gives the inequality stated before equation `percb2`.
+`e^{β ‖H_C + H_{B(C)}‖} Tr e^{-βH}`, this gives the inequality before equation `percb2` (lines
+1179–1184) with `‖O‖ Tr e^{-βH}` in place of the printed `Tr(O e^{-βH})`, which is the form that
+`percb2` uses.
 
 ## Proof
 
@@ -504,7 +506,8 @@ write `h_E = ∑_{i ∈ E} h_i`. Then for every matrix `O`,
   ≤ ‖O‖ ∏_{i ∈ S} (e^{‖h_i‖} - 1) Tr e^{-Y}`,
 with operator norms. With `Y = β (H - H_C - H_{B(C)})` and `h_i = β H_i`, the alternating sum is
 the operator `ρ(β, C)` of Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1162–1195,
-and this bound implies the one stated there before equation `percb2`. -/
+and this bound gives the inequality before equation `percb2` with `‖O‖ Tr e^{-βH}` in place of the
+printed `Tr(O e^{-βH})`. -/
 theorem norm_trace_mul_sum_powerset_exp_le (S : Finset κ)
     {Y : Matrix ι ι ℂ} (hY : Y.IsHermitian) (h : κ → Matrix ι ι ℂ)
     (hh : ∀ i ∈ S, (h i).IsHermitian) (O : Matrix ι ι ℂ) :

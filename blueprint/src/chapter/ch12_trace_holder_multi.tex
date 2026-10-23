@@ -100,8 +100,10 @@ Hilbert space. Products of matrices are ordered by increasing index.
     containing every $H_i$ with $i\in C$ and no $H_j$ with $j\in B(C)$.
     Theorem~\ref{thm:trace_exp_add_le} gives
     $\operatorname{tr}e^{-Y}\le e^{\beta\|H_C+H_{B(C)}\|}\operatorname{tr}e^{-\beta H}$,
-    so~(\ref{eq:trace_exp_alternating_sum}) implies the bound stated there
-    before equation (percb2).
+    so~(\ref{eq:trace_exp_alternating_sum}) gives the bound stated there
+    before equation (percb2), lines 1179--1184, with
+    $\|O\|\operatorname{tr}e^{-\beta H}$ in place of the printed
+    $\operatorname{tr}(Oe^{-\beta H})$; this is the form used in (percb2).
 \end{theorem}
 \begin{proof}\leanok
     Prove more generally, by induction on $S$, that for operators $B_j$,
