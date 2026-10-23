@@ -125,10 +125,11 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     $\sum_{i,j}|C_{ij}|^2=1$. For arbitrary vectors $a,b$ of the corresponding
     dimensions, there are unit vectors $u\in\operatorname{range} C$ and
     $v\in\operatorname{range} C^{\mathsf T}$ satisfying
-    \begin{align*}
+    \begin{align}
+        \label{eq:product_overlap_matrix_ranges}
         \left|\sum_{i,j}\overline{a_i b_j}C_{ij}\right|
         \le |\langle a,u\rangle|\,|\langle b,v\rangle|.
-    \end{align*}
+    \end{align}
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:product_overlap_subspaces}

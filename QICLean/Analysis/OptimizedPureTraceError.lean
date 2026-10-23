@@ -104,7 +104,6 @@ theorem sqrt_mul_optimizedPureTraceError_le_pow_of_sq_le {f : ℝ}
     rw [mul_pow, sq_sqrt (by positivity)]
     nlinarith
 
-
 /-- The optimized scalar error decreases with squared fidelity. -/
 theorem optimizedPureTraceError_antitoneOn :
     AntitoneOn optimizedPureTraceError (Set.Icc (0 : ℝ) 1) := by
@@ -122,7 +121,6 @@ theorem optimizedPureTraceError_antitoneOn :
       have hn := sqrt_nonneg (g * (1 - g))
       nlinarith [sq_nonneg (g - 1 / 2)]
     · rw [optimizedPureTraceError, ite_eq_right hghalf]
-
 
 /-- Among finitely many squared fidelities, repeating a factor with maximal fidelity
 has no larger scalar error than their product. Source: arXiv:0705.0292v2,
