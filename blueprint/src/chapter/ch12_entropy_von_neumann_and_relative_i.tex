@@ -13,6 +13,24 @@
     where $0\log 0:=0$.
 \end{definition}
 
+\begin{theorem}[Entropy of the ordered eigenvalues]
+    \label{thm:entropy_ordered_eigenvalues}
+    \lean{vonNeumannEntropy_eq_probabilityEntropy_eigenvalues₀}
+    \leanok
+    \uses{def:von_neumann_entropy}
+    Let $\rho\in\MN{D}$ be Hermitian, and list its eigenvalues as
+    $\lambda_0\ge\cdots\ge\lambda_{D-1}$. Then
+    $S(\rho)=-\sum_{i=0}^{D-1}\lambda_i\log|\lambda_i|$, with $0\log 0=0$.
+    In particular, for a density matrix this is the Shannon entropy of its
+    ordered eigenvalues.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:von_neumann_entropy}
+    Reindex the finite sum defining $S(\rho)$ by the decreasing enumeration
+    of the eigenvalues.
+\end{proof}
+
 \begin{lemma}[Entropy respects equality]\label{lem:entropy_congr}
     \lean{vonNeumannEntropy_congr}
     \leanok
@@ -706,7 +724,7 @@
     bijection onto another finite index set. Then
     \begin{align}
         \log(A_{e^{-1},e^{-1}})
-        &=(\log A)_{e^{-1},e^{-1}}.
+         & =(\log A)_{e^{-1},e^{-1}}.
         \notag
     \end{align}
 \end{theorem}
