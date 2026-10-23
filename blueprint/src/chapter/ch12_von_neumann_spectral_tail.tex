@@ -38,12 +38,11 @@
   Neither positivity nor normalization of $\sigma$ is required.
 \end{theorem}
 \begin{proof}\leanok
-  \uses{thm:von_neumann_spectral_tail}
+  \uses{thm:von_neumann_spectral_tail,thm:spectral_tail_trace_norm}
   The discarded spectral mass is at most $\|\rho-\sigma\|_1$ by the
   support-projection and Ky Fan estimate. Apply the preceding theorem.
 \end{proof}
 
 This is an auxiliary bound for the entropy obstruction discussed in
 \cite{Schuch2008EntropyScaling}, lines 278--305 of the source.
-It does not assert the sharper coefficient $\delta/2$ obtained there from
-additional pure-state information.
+It does not assert the sharper coefficient $\delta/2$ claimed in that passage.
