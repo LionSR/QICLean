@@ -644,7 +644,7 @@ the chapter boundary.
     For every integer $r\ge0$, put $w_r=K^rv$.
     Invariance and iterated homogeneous shrinking give $w_r\perp\Gamma$ and
     \begin{align}
-        K^r\phi   & =a\Gamma+w_r,\notag            \\
+        K^r\phi   & =a\Gamma+w_r,\label{eq:agsp_power_decomposition} \\
         \|w_r\|^2 & \le\theta^r\|v\|^2\le\theta^r.
         \notag
     \end{align}
@@ -657,13 +657,14 @@ the chapter boundary.
     $\tr\rho=1$, and $\rho$ is positive semidefinite. Thus the
     $\lambda_b$ are nonnegative and sum to one.
     For $R=D^r<N$, set $F_R=\sum_{0\le b<R}\lambda_b$.
-    The homogeneous overlap bound gives
+    The homogeneous overlap bound applied to~(\ref{eq:agsp_power_decomposition}) gives
     \begin{align}
         |a|^2        & \le F_R\bigl(|a|^2+\|w_r\|^2\bigr),\notag \\
         (1-F_R)|a|^2 & \le F_R\|w_r\|^2\le\|w_r\|^2.
-        \notag
+        \label{eq:agsp_ky_fan_overlap}
     \end{align}
-    Here $F_R\le1$. Dividing by $|a|^2>0$ bounds the tail after $R$
+    Here $F_R\le1$. Dividing~(\ref{eq:agsp_ky_fan_overlap}) by $|a|^2>0$
+    bounds the tail after $R$
     retained eigenvalues by $\|w_r\|^2/|a|^2$.
     If $R\ge N$, that tail is zero and satisfies the same bound.
     Taking $r=2+i$ therefore gives
@@ -671,9 +672,9 @@ the chapter boundary.
         \sum_{D^{2+i}\le b<N}\lambda_b
          & \le\frac{\|w_{2+i}\|^2}{|a|^2}
         \le\frac{\theta^{2+i}}{\theta}=\theta^{i+1},
-        \notag
+        \label{eq:agsp_tail_estimate}
     \end{align}
-    which proves~(\ref{eq:agsp_schmidt_geometric_tail}).
+    so~(\ref{eq:agsp_tail_estimate}) proves~(\ref{eq:agsp_schmidt_geometric_tail}).
 \end{proof}
 
 \begin{theorem}[Entropy from a favorable shrinking tradeoff]
@@ -719,22 +720,24 @@ the chapter boundary.
     with $a=2$ and $M=N$. Its covering condition follows from
     \begin{align}
         N & \le DN\le D^N\le D^{N+2}.
-        \notag
+        \label{eq:agsp_rank_coverage}
     \end{align}
     Its tail assumptions are
     Theorem~\ref{thm:agsp_geometric_schmidt_tails}. Consequently,
+    using~(\ref{eq:agsp_rank_coverage}),
     \begin{align}
         S(\rho) & \le2\log D+
         \frac{\log2+\theta\log D}{1-\theta}.
-        \notag
+        \label{eq:agsp_entropy_series}
     \end{align}
     Since $0<\theta\le1/4$, $\log2\le\log D$ and $\log D\ge0$,
     one has
     \begin{align}
         \log2+\theta\log D & \le2(1-\theta)\log D.
-        \notag
+        \label{eq:agsp_coefficient_comparison}
     \end{align}
-    Division by $1-\theta>0$ bounds the fraction by $2\log D$.
+    Dividing~(\ref{eq:agsp_coefficient_comparison}) by $1-\theta>0$
+    bounds the fraction in~(\ref{eq:agsp_entropy_series}) by $2\log D$.
     It follows that $S(\rho)\le4\log D$.
 \end{proof}
 
