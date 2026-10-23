@@ -122,6 +122,21 @@
     \uses{lem:density_eigenvalues_sum, thm:density_eigenvalues_le_one}
 \end{proof}
 
+\begin{theorem}[Entropy of a density matrix of rank at most one]
+    \label{thm:entropy_zero_of_rank_le_one}
+    \lean{vonNeumannEntropy_eq_zero_of_rank_le_one}
+    \leanok
+    \uses{def:von_neumann_entropy}
+    Let $\rho$ be a positive semidefinite matrix with $\tr\rho=1$ and
+    $\rank\rho\le1$. Then $S(\rho)=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:entropy_le_log_rank,thm:entropy_nonneg}
+    The trace condition gives $\rank\rho\ge1$, so $\rank\rho=1$.
+    Thus $S(\rho)\le\log(\rank\rho)=0$, while entropy is nonnegative
+    for a density matrix.
+\end{proof}
+
 \begin{lemma}[Entropy from characteristic polynomial roots]
     \label{lem:entropy_charpoly_roots}
     \lean{vonNeumannEntropy_eq_charpoly_roots}
@@ -132,7 +147,7 @@
     \begin{align}
         S(\rho)
          & =\sum_{\lambda\in\mathrm{roots}(\chi_\rho)}
-            ({-}\re(\lambda)\log\re(\lambda)).
+        ({-}\re(\lambda)\log\re(\lambda)).
         \label{eq:entropy_charpoly}
     \end{align}
 \end{lemma}
@@ -359,7 +374,7 @@
     \begin{align}
         D(\rho\Vert\sigma)
          & =\sum_{i,j}P_{ij}
-                          [p_i\log p_i-p_i\log q_j-(p_i-q_j)],
+            [p_i\log p_i-p_i\log q_j-(p_i-q_j)],
         \notag
     \end{align}
     a sum of non-negative terms: each is bounded below by the tangent inequality

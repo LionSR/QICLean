@@ -7,7 +7,7 @@ import QICLean.Channel.MaximalOverlap
 
 /-! Boundary applications of the homogeneous maximal-overlap inequality. -/
 
-open scoped Matrix
+open scoped Matrix ComplexOrder
 
 /-- The zero-rank case is valid even when the second factor is empty. -/
 example (C : Matrix (Fin 1) (Fin 0) ℂ) :
@@ -35,3 +35,9 @@ set_option linter.hashCommand false
 [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Matrix.normSq_trace_conjTranspose_mul_le_kyFanNorm_mul_trace
+
+/-- info:
+'Matrix.trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one' depends on axioms:
+[propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one

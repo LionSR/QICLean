@@ -261,10 +261,32 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     exceeds it. Hence $S_k(A)$ is the maximum.
 \end{proof}
 
-\begin{lemma}[Homogeneous overlap bound]
-    \label{lem:homogeneous_overlap_ky_fan}
-    % The declaration association is activated after ordinary package verification.
-    \uses{def:ky_fan_norm}
+\begin{theorem}[Trace of a unit vector's reduced density matrix]
+    \label{thm:unit_schmidt_coefficient_trace}
+    \lean{Matrix.trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one}
+    \leanok
+    \uses{def:schmidt_rank}
+    Let $I,J$ be finite sets and let $\Gamma\in\C^I\otimes\C^J$ be
+    a unit vector with coefficient matrix $C_\Gamma$. Then
+    $\tr(C_\Gamma C_\Gamma^\dagger)=1$.
+\end{theorem}
+\begin{proof}\leanok
+    Trace cyclicity and the Euclidean norm give
+    \begin{align}
+        \tr(C_\Gamma C_\Gamma^\dagger)
+         & =\tr(C_\Gamma^\dagger C_\Gamma)
+        =\sum_{i\in I}\sum_{j\in J}|(C_\Gamma)_{ij}|^2
+        =\|\Gamma\|^2=1.
+        \notag
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Homogeneous overlap bound]
+    \label{thm:homogeneous_overlap_ky_fan}
+    \lean{Matrix.normSq_trace_conjTranspose_mul_le_kyFanNorm_mul_trace,
+        Matrix.normSq_inner_le_kyFanNorm_mul_normSq}
+    \leanok
+    \uses{def:ky_fan_norm,def:schmidt_rank}
     Let $C,B\in\C^{d\times e}$ and $0\le k<d$ be an integer.
     If $\rank B\le k$, then
     \begin{align}
@@ -273,8 +295,16 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
         \notag
     \end{align}
     No normalization of either matrix is required.
-\end{lemma}
-\begin{proof}
+    Equivalently, let $\Gamma,\chi\in\C^d\otimes\C^e$, and let
+    $C_\Gamma$ be the coefficient matrix of $\Gamma$. If $\SR(\chi)\le k$,
+    then
+    \begin{align}
+        |\langle\Gamma,\chi\rangle|^2
+         & \le\|C_\Gamma C_\Gamma^\dagger\|_{(k)}\,\|\chi\|^2.
+        \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
     \uses{thm:ky_fan_maximum_principle}
     Let $P$ be the orthogonal projection onto the column space of $B$.
     Then $PB=B$ and $\rank P=\rank B\le k$. Cauchy--Schwarz gives
@@ -289,6 +319,9 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     maximum principle: its largest-eigenvalue sums increase with the allowed
     rank. This is the homogeneous form of the upper-bound argument for
     \cite[Lemma~3.1]{Wolf2012Quantum}.
+    For the vector form, take $C=C_\Gamma$ and $B=C_\chi$ and use
+    $\tr(C^\dagger B)=\langle\Gamma,\chi\rangle$ and
+    $\tr(B^\dagger B)=\|\chi\|^2$.
 \end{proof}
 
 \begin{theorem}[Maximal overlap with a fixed Schmidt rank]
