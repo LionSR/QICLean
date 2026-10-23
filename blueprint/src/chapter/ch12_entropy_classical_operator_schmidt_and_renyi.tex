@@ -71,6 +71,117 @@
     contribute $h(0)=0$.
 \end{proof}
 
+
+\begin{theorem}[Entropy from rank-tail bounds]
+    \label{thm:probability_entropy_rank_tails}
+    \lean{Entropy.probabilityEntropy_le_of_rankTailBounds}
+    \leanok
+    \uses{def:finite_classical_mutual_information}
+    Let $N,M\geq0$ be integers, and let $p=(p_a)_{0\leq a<N}$ be a
+    probability distribution. Let $1\leq R_0\leq\cdots\leq R_M$ be integers
+    with $N\leq R_M$. Let $t_0,\ldots,t_{M-1}$ be real numbers such that,
+    for every integer $i$ with $0\leq i<M$,
+    \begin{align}
+        \sum_{\substack{0\leq a<N \\R_i\leq a}}p_a
+         & \leq t_i.
+        \notag
+    \end{align}
+    Then
+    \begin{align}
+        H(p)
+         & \leq \log R_0
+        +\log2\left(1+\sum_{i=0}^{M-1}t_i\right)
+        +\sum_{i=0}^{M-1}t_i\log\frac{R_{i+1}}{R_i}.
+        \label{eq:probability_rank_tail_entropy}
+    \end{align}
+    The probabilities may appear in any order, and repeated ranks are
+    allowed. This is a finite probability estimate for the entropy sums in
+    \cite{Arad2013AreaLaw,Hastings2007AreaLaw,Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:finite_classical_mutual_information}
+    The normalization of $p$ gives $N>0$. For $0\leq a<N$, let $j(a)$ be
+    the least $j\leq M$ with $a<R_j$, and set
+    \begin{align}
+        w_a & =\frac{1}{2^{j(a)+1}R_{j(a)}},
+        \notag                               \\
+        Z   & =\sum_{a=0}^{N-1}w_a.
+        \notag
+    \end{align}
+    Each set $\{a:j(a)=j\}$ has at most $R_j$ elements. Consequently,
+    \begin{align}
+        0<Z
+         & =\sum_{j=0}^{M}
+        \frac{\lvert\{a:j(a)=j\}\rvert}{2^{j+1}R_j}
+        \leq\sum_{j=0}^{M}2^{-j-1}\leq1.
+        \notag
+    \end{align}
+    Apply Gibbs' inequality to the probability distribution $q_a=w_a/Z$:
+    \begin{align}
+        H(p)
+         & \leq-\sum_a p_a\log q_a
+        =\sum_a p_a(-\log w_a)+\log Z
+        \leq\sum_a p_a(-\log w_a).
+        \notag
+    \end{align}
+    Minimality gives $i<j(a)$ precisely when $R_i\leq a$, for $i<M$.
+    A single telescoping identity therefore gives
+    \begin{align}
+        -\log w_a
+         & =\log2+\log R_0
+        +\sum_{i=0}^{M-1}\mathbf1_{\{R_i\leq a\}}
+        \left(\log2+\log\frac{R_{i+1}}{R_i}\right).
+        \notag
+    \end{align}
+    Multiply by $p_a$, sum over $a$, and interchange the two finite sums.
+    Each coefficient $\log2+\log(R_{i+1}/R_i)$ is nonnegative, so the
+    assumed tail inequalities imply~(\ref{eq:probability_rank_tail_entropy}).
+\end{proof}
+
+\begin{theorem}[Entropy from geometric rank tails]
+    \label{thm:probability_entropy_geometric_rank_tails}
+    \lean{Entropy.probabilityEntropy_le_of_geometricRankTailBounds}
+    \leanok
+    \uses{def:finite_classical_mutual_information}
+    Let $N,a,M\geq0$ and $D\geq1$ be integers, let $0\leq\theta<1$,
+    and let $p=(p_b)_{0\leq b<N}$ be a probability distribution:
+    $p_b\geq0$ and $\sum_{b=0}^{N-1}p_b=1$.
+    Suppose that $N\leq D^{a+M}$ and that, for every integer
+    $i$ with $0\leq i<M$,
+    \begin{align}
+        \sum_{\substack{0\leq b<N \\D^{a+i}\leq b}}p_b
+         & \leq\theta^{i+1}.
+        \notag
+    \end{align}
+    With natural logarithms and the convention $0\log0=0$, the entropy
+    $H(p)=-\sum_{b=0}^{N-1}p_b\log p_b$ satisfies
+    \begin{align}
+        H(p)
+         & \leq a\log D+\frac{\log2+\theta\log D}{1-\theta}.
+        \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:probability_entropy_rank_tails}
+    Apply Theorem~\ref{thm:probability_entropy_rank_tails} with
+    $R_i=D^{a+i}$ and $t_i=\theta^{i+1}$.
+    These ranks are positive and nondecreasing, and
+    $\log R_0=a\log D$ and $\log(R_{i+1}/R_i)=\log D$.
+    Put $s=\sum_{i=0}^{M-1}\theta^{i+1}$, with $s=0$ when $M=0$.
+    The finite geometric-sum identity gives
+    $(1-\theta)s=\theta(1-\theta^M)\leq\theta$,
+    hence $s\leq\theta/(1-\theta)$.
+    Since $\log2+\log D\geq0$,
+    \begin{align}
+        H(p)
+         & \leq a\log D+\log2+s(\log2+\log D) \notag \\
+         & \leq a\log D+\log2
+        +\frac{\theta}{1-\theta}(\log2+\log D)
+        =a\log D+\frac{\log2+\theta\log D}{1-\theta}.
+        \notag
+    \end{align}
+\end{proof}
+
 \begin{theorem}[Classical mutual information is bounded by ordinary rank]
     \label{thm:classical_mutual_information_le_log_rank}
     \lean{Entropy.classicalMutualInformation_le_log_rank}

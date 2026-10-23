@@ -138,6 +138,8 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
+import QICLean.Analysis.ProbabilityEntropyGeometricTails
+import QICLean.Analysis.ProbabilityEntropyRankTails
 import QICLean.Analysis.ProductReferenceDensityError
 import QICLean.Analysis.ProjectedEvolution
 import QICLean.Analysis.ProjectionCalculus
