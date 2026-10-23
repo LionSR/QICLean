@@ -124,6 +124,7 @@ import QICLean.Analysis.NormalizedInversePowerLogBound
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
+import QICLean.Analysis.OptimizedPureErrorMass
 import QICLean.Analysis.OptimizedPureStateTraceError
 import QICLean.Analysis.OptimizedPureTraceError
 import QICLean.Analysis.OrthogonalResolution
