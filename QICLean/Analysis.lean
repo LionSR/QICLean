@@ -67,6 +67,7 @@ import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
 import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
+import QICLean.Analysis.HermitianFactorRepair
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.HermitianUnitaryPath
@@ -123,6 +124,8 @@ import QICLean.Analysis.NormalizedInversePowerLogBound
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
 import QICLean.Analysis.OperatorNormConvergence
+import QICLean.Analysis.OptimizedPureErrorMass
+import QICLean.Analysis.OptimizedPureTraceError
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.OrthonormalMatrixNorm
@@ -134,10 +137,13 @@ import QICLean.Analysis.PoissonContractionDecay
 import QICLean.Analysis.PolarUnitaryCorrection
 import QICLean.Analysis.PolarUnitaryCorrectionKronecker
 import QICLean.Analysis.PosSemidefCommute
+import QICLean.Analysis.PositiveFactorRepair
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
+import QICLean.Analysis.ProbabilityEntropyConcentration
+import QICLean.Analysis.ProductOverlapReplacement
 import QICLean.Analysis.ProductReferenceDensityError
 import QICLean.Analysis.ProjectedEvolution
 import QICLean.Analysis.ProjectionCalculus
@@ -246,6 +252,7 @@ import QICLean.Analysis.SpectralProjectionIntertwiner
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
+import QICLean.Analysis.SpectralTailTraceNorm
 import QICLean.Analysis.SqrtHolder
 import QICLean.Analysis.StretchedBallKernel
 import QICLean.Analysis.StretchedExponentialSummability
@@ -264,6 +271,7 @@ import QICLean.Analysis.SurprisalProductMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
+import QICLean.Analysis.TraceExponentialPerturbation
 import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceMulBound
 import QICLean.Analysis.TraceNormAbs
@@ -284,6 +292,7 @@ import QICLean.Analysis.UnitaryEvolution
 import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
+import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
 import QICLean.Analysis.WeightedRectangular
