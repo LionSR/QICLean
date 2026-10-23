@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Algebra.Notation.Lemmas
+import Mathlib.Algebra.Order.BigOperators.GroupWithZero.Finset
+import Mathlib.Data.Finset.Max
 import Mathlib.Algebra.Order.Ring.GeomSum
 import Mathlib.Analysis.Real.Sqrt
 import Mathlib.Tactic.Linarith
@@ -101,5 +103,40 @@ theorem sqrt_mul_optimizedPureTraceError_le_pow_of_sq_le {f : ℝ}
       zero_le_one).mp
     rw [mul_pow, sq_sqrt (by positivity)]
     nlinarith
+
+
+/-- The optimized scalar error decreases with squared fidelity. -/
+theorem optimizedPureTraceError_antitoneOn :
+    AntitoneOn optimizedPureTraceError (Set.Icc (0 : ℝ) 1) := by
+  intro f hf g hg hfg
+  by_cases hfhalf : 1 / 2 ≤ f
+  · have hghalf : 1 / 2 ≤ g := hfhalf.trans hfg
+    simp only [optimizedPureTraceError, ite_eq_left hfhalf, ite_eq_left hghalf]
+    apply mul_le_mul_of_nonneg_left (sqrt_le_sqrt ?_) (by norm_num)
+    nlinarith [mul_nonneg (sub_nonneg.mpr hfg)
+      (show 0 ≤ g + f - 1 by linarith)]
+  · rw [show optimizedPureTraceError f = 1 from ite_eq_right hfhalf]
+    by_cases hghalf : 1 / 2 ≤ g
+    · rw [optimizedPureTraceError, ite_eq_left hghalf]
+      have hs := sq_sqrt (mul_nonneg hg.1 (sub_nonneg.mpr hg.2))
+      have hn := sqrt_nonneg (g * (1 - g))
+      nlinarith [sq_nonneg (g - 1 / 2)]
+    · rw [optimizedPureTraceError, ite_eq_right hghalf]
+
+
+/-- Among finitely many squared fidelities, repeating a factor with maximal fidelity
+has no larger scalar error than their product. Source: arXiv:0705.0292v2,
+lines 421–474, the identical-copy product approximation. -/
+theorem exists_optimizedPureTraceError_pow_le_prod {K : ℕ} (hK : 1 ≤ K)
+    (f : Fin K → ℝ) (hf : ∀ i, f i ∈ Set.Icc (0 : ℝ) 1) :
+    ∃ i, optimizedPureTraceError (f i ^ K) ≤ optimizedPureTraceError (∏ j, f j) := by
+  obtain ⟨i, hi, hmax⟩ := Finset.exists_max_image Finset.univ f
+    ⟨⟨0, hK⟩, Finset.mem_univ _⟩
+  have hprod : ∏ j, f j ≤ f i ^ K := by
+    simpa using Finset.prod_le_prod₀ (fun j _ ↦ (hf j).1) hmax
+  refine ⟨i, optimizedPureTraceError_antitoneOn ?_ ?_ hprod⟩
+  · exact ⟨Finset.prod_nonneg (fun j _ ↦ (hf j).1),
+      Finset.prod_le_one₀ (fun j _ ↦ (hf j).1) (fun j _ ↦ (hf j).2)⟩
+  · exact ⟨pow_nonneg (hf i).1 K, pow_le_one₀ (hf i).1 (hf i).2⟩
 
 end Real
