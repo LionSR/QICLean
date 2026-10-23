@@ -7,13 +7,13 @@
     \uses{def:von_neumann_entropy}
     For a density matrix $\rho$ and a finite order $\alpha\ge0$, define
     \begin{align}
-        S_\alpha(\rho)&=
+        S_\alpha(\rho) & =
         \begin{cases}
-            \log\operatorname{rank}\rho,&\alpha=0,\\
-            S(\rho),&\alpha=1,\\
+            \log\operatorname{rank}\rho, & \alpha=0,     \\
+            S(\rho),                     & \alpha=1,     \\
             \dfrac{\log\operatorname{tr}(\rho^\alpha)}{1-\alpha},
-                &\alpha\ne0,1.
-        \end{cases}\notag
+                                         & \alpha\ne0,1.
+        \end{cases}\label{eq:renyi_entropy_definition}
     \end{align}
     Logarithms are natural. The endpoint conventions agree with
     those in~\cite{SchuchWolfVerstraeteCirac2007}.
@@ -27,11 +27,11 @@
     For a density matrix $\rho$ and a radius $\varepsilon\ge0$, let
     \begin{align}
         \mathcal V_{\alpha,\varepsilon}(\rho)
-        &=\{S_\alpha(\sigma):\sigma\ge0,\,
-          \operatorname{tr}\sigma=1,\,
-          \|\rho-\sigma\|_1\le\varepsilon\}.\notag\\
+         & =\{S_\alpha(\sigma):\sigma\ge0,\,
+        \operatorname{tr}\sigma=1,\,
+        \|\rho-\sigma\|_1\le\varepsilon\}.\label{eq:smooth_renyi_admissible_values}   \\
         S_\alpha^\varepsilon(\rho)
-        &=\inf\mathcal V_{\alpha,\varepsilon}(\rho).\notag
+         & =\inf\mathcal V_{\alpha,\varepsilon}(\rho).\label{eq:smooth_renyi_infimum}
     \end{align}
     Here $\|\cdot\|_1$ is the full trace norm. The source
     \cite{SchuchWolfVerstraeteCirac2007} writes a minimum. Whenever the
