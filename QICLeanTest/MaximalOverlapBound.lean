@@ -9,6 +9,7 @@ import Lean.Util.CollectAxioms
 
 /-! Boundary cases and homogeneous scope of the Schmidt overlap bound. -/
 
+open Matrix
 open scoped ComplexOrder InnerProductSpace
 
 section
@@ -26,7 +27,8 @@ example (Φ : EuclideanSpace ℂ (m × n)) (hΦ : ‖Φ‖ = 1)
     {D : ℕ} (hr : (schmidtCoeffMatrix (WithLp.ofLp Φ)).rank ≤ D) :
     ‖inner ℂ (0 : EuclideanSpace ℂ (m × n)) Φ‖ ^ 2 ≤
       (Matrix.posSemidef_self_mul_conjTranspose
-        (schmidtCoeffMatrix (WithLp.ofLp (0 : EuclideanSpace ℂ (m × n))))).isHermitian.kyFanNorm D :=
+        (schmidtCoeffMatrix
+          (WithLp.ofLp (0 : EuclideanSpace ℂ (m × n))))).isHermitian.kyFanNorm D :=
   Matrix.normSq_inner_le_kyFanNorm 0 Φ hΦ D hr
 
 -- A zero budget needs no separate positivity premise in the public theorem.
@@ -45,7 +47,7 @@ example (Ψ Φ : EuclideanSpace ℂ (m × n)) (hΦ : ‖Φ‖ = 1)
         (schmidtCoeffMatrix (WithLp.ofLp Ψ))).isHermitian.kyFanNorm D := by
   classical
   exact Matrix.normSq_inner_le_kyFanNorm Ψ Φ hΦ D
-    ((schmidtCoeffMatrix (WithLp.ofLp Φ)).rank_le_card_width.trans hD)
+    ((schmidtCoeffMatrix (WithLp.ofLp Φ)).rank_le_card_height.trans hD)
 
 end
 
