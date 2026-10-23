@@ -29,7 +29,7 @@ constant $C$ independent of these parameters.\footnote{The source is
     \path{lem:S} and the equation \path{eq:Sb}, lines~339--348.
     Its approximate ground-space projection is defined at
     \path{def:AGSP}, lines~296--324.}
-The estimate \eqref{eq:aklv13_entropy_small_shrinking_printed} fails for
+The estimate (\ref{eq:aklv13_entropy_small_shrinking_printed}) fails for
 strictly positive shrinking parameters, even for a fixed two-site
 Hamiltonian with a unique ground state.
 
@@ -38,17 +38,20 @@ Let $\mathcal H=\mathbb C^2\otimes\mathbb C^2$ and put
     \Gamma & =\frac{|00\rangle+|11\rangle}{\sqrt2},
            & P                                      & =|\Gamma\rangle\langle\Gamma|,
            & H                                      & =I-P.
+    \label{eq:aklv13_entropy_small_shrinking_bell_hamiltonian}
 \end{align}
 The single two-site term $H$ is a positive contraction. Its ground state is
 uniquely $\Gamma$ up to phase, its ground energy is zero, and its spectral
 gap is one. For $0<s\le1/\sqrt8$, define
 \begin{align}
     K_s & =sI+(1-s)P=I-(1-s)H.
+    \label{eq:aklv13_entropy_small_shrinking_agsp_family}
 \end{align}
 This is a positive contraction satisfying
 \begin{align}
     K_s\Gamma & =\Gamma,
               & K_s\psi  & =s\psi\qquad(\psi\perp\Gamma).
+    \label{eq:aklv13_entropy_small_shrinking_agsp_action}
 \end{align}
 Thus the squared shrinking parameter is exactly $\Delta=s^2>0$; it is
 attained on every unit vector in the three-dimensional orthogonal
@@ -58,12 +61,14 @@ In fact, $K_s$ has operator Schmidt rank $D=4$. To see this, let $E_{ab}$
 be the standard matrix units of $M_2(\mathbb C)$. Then
 \begin{align}
     P & =\frac12\sum_{a,b=0}^1E_{ab}\otimes E_{ab}.
+    \label{eq:aklv13_entropy_small_shrinking_bell_matrix_units}
 \end{align}
 In the ordered matrix-unit bases $(E_{00},E_{01},E_{10},E_{11})$, the
 coefficient matrix of $K_s$ is
 \begin{align}
     \frac{1-s}{2}I_4+s vv^{\mathsf T},
     \qquad v=(1,0,0,1)^{\mathsf T}.
+    \label{eq:aklv13_entropy_small_shrinking_coefficient_matrix}
 \end{align}
 It is positive definite, since $(1-s)/2>0$ and $s>0$, and consequently
 has rank four. Moreover, $D\Delta=4s^2\le1/2$.
@@ -71,9 +76,10 @@ has rank four. Moreover, $D\Delta=4s^2\le1/2$.
 The normalized product vector $|00\rangle$ has overlap $\mu=1/\sqrt2$
 with $\Gamma$, while the reduced density matrix is $I_2/2$ and
 $S=\log2$. Substituting these values into
-\eqref{eq:aklv13_entropy_small_shrinking_printed} gives
+(\ref{eq:aklv13_entropy_small_shrinking_printed}) gives
 \begin{align}
     \log2 & \le C\frac{(\log2)^2}{\log(s^{-2})}.
+    \label{eq:aklv13_entropy_small_shrinking_entropy_substitution}
 \end{align}
 Taking $s=2^{-t}$ for an integer $t\ge2$ would require
 $1\le C/(2t)$, which is impossible when $t>C/2$. All AGSP parameters
