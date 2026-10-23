@@ -78,6 +78,7 @@ import QICLean.Channel.LorentzNormalForm.QubitNormalForm
 import QICLean.Channel.LorentzNormalForm.SpinorAction
 import QICLean.Channel.LorentzNormalForm.SpinorCover
 import QICLean.Channel.LorentzNormalForm.SpinorExponential
+import QICLean.Channel.MarginalRank
 import QICLean.Channel.MarginalSupportAbsorption
 import QICLean.Channel.MarginalSupportWhitenedChoi
 import QICLean.Channel.MaximalOverlap
