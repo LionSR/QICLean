@@ -31,7 +31,9 @@ run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   let decls := #[``Matrix.PosSemidef.sum_descEigenvalue_tail_le_traceNorm,
     ``Matrix.PosSemidef.sum_descEigenvalue_tail_le_half_traceNorm,
-    ``Matrix.IsHermitian.sum_descEigenvalue_tail_le_add_half_traceNorm]
+    ``Matrix.IsHermitian.sum_descEigenvalue_tail_le_add_half_traceNorm,
+    ``Matrix.IsHermitian.sum_descEigenvalue_tail_le_add_traceDistance,
+    ``Matrix.traceDistance_eq_rectangularTraceNorm]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
