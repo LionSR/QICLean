@@ -275,6 +275,7 @@ import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
 import QICLean.Analysis.TraceExponentialPerturbation
 import QICLean.Analysis.TraceHolder
+import QICLean.Analysis.TraceHolderMulti
 import QICLean.Analysis.TraceMulBound
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
