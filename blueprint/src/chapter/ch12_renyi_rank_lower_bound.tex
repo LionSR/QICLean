@@ -36,3 +36,22 @@
   $S_\alpha(\rho)$. A change of orthonormal coordinates preserves the
   rank, trace, trace norm, and trace of every spectral function.
 \end{proof}
+
+
+\begin{theorem}[Regional trace-norm contraction]
+  \label{thm:regional_pure_trace_norm_contraction}
+  \lean{Entropy.rectangularTraceNorm_regionState_sub_le}
+  \leanok
+  For arbitrary vectors $\psi,\phi$ in a finite tensor product and a region $R$,
+  \begin{align}
+    \lVert\rho_{\psi,R}-\rho_{\phi,R}\rVert_1
+      &\le\lVert\lvert\psi\rangle\langle\psi\rvert
+        -\lvert\phi\rangle\langle\phi\rvert\rVert_1.
+  \end{align}
+  The vectors need not be normalized.
+\end{theorem}
+\begin{proof}\leanok
+  Reorder the coordinates to separate the region from its complement and
+  apply trace-norm contraction under partial trace. Reindexing preserves
+  the trace norm.
+\end{proof}

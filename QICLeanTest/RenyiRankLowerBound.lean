@@ -4,12 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.RenyiRankLowerBound
+import QICLean.Entropy.RegionTraceNorm
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
 /-! Zero-error cases and an axiom audit for the Rényi rank lower bound. -/
 
 open Matrix
+open scoped ComplexOrder
 
 -- Exact approximation recovers the usual entropy bound by the logarithm of the rank.
 example {n D : ℕ} {ρ : Matrix (Fin n) (Fin n) ℂ}
@@ -28,7 +30,8 @@ example {α : ℝ} (hα : 1 < α) :
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   let decls := #[``Matrix.PosSemidef.renyiEntropy_add_log_error_le_log_rank,
-    ``Matrix.PosSemidef.renyiEntropy_add_log_error_le_log_rank_of_rectangularTraceNorm]
+    ``Matrix.PosSemidef.renyiEntropy_add_log_error_le_log_rank_of_rectangularTraceNorm,
+    ``Entropy.rectangularTraceNorm_regionState_sub_le]
   for decl in decls do
     let axioms ← Lean.collectAxioms decl
     unless axioms.all (allowed.contains ·) do
