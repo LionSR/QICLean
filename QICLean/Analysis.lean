@@ -143,6 +143,8 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
+import QICLean.Analysis.ProbabilityEntropyConcentration
+import QICLean.Analysis.ProbabilityEntropyRankTails
 import QICLean.Analysis.ProductOverlapReplacement
 import QICLean.Analysis.ProductReferenceDensityError
 import QICLean.Analysis.ProjectedEvolution
@@ -271,6 +273,7 @@ import QICLean.Analysis.SurprisalProductMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
+import QICLean.Analysis.TraceExponentialPerturbation
 import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceMulBound
 import QICLean.Analysis.TraceNormAbs
@@ -291,6 +294,7 @@ import QICLean.Analysis.UnitaryEvolution
 import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
+import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
 import QICLean.Analysis.WeightedPureStateTraceNorm

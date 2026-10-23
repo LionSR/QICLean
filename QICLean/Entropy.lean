@@ -92,9 +92,13 @@ import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.RegionCovariance
 import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionPureApproximationTail
+import QICLean.Entropy.RegionRank
 import QICLean.Entropy.RegionSplit
+import QICLean.Entropy.RegionTraceNorm
 import QICLean.Entropy.RegionUnion
 import QICLean.Entropy.Renyi
+import QICLean.Entropy.RenyiMassBound
+import QICLean.Entropy.RenyiRankLowerBound
 import QICLean.Entropy.RenyiTail
 import QICLean.Entropy.RestoringGroundComponent
 import QICLean.Entropy.RestoringMarginal
