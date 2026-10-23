@@ -1,0 +1,63 @@
+\section{Scalar amplification of optimized pure-state error}
+
+The scalar error below is the expression used in the discussion of optimized
+trace-norm error in \cite{Schuch2008Entropy}
+(arXiv:0705.0292v2, lines 160--173). The trigonometric expression there is
+restricted to angles between zero and $\pi/4$.
+
+\begin{definition}[Scalar optimized error]
+    \label{def:optimized_pure_trace_error}
+    \lean{Real.optimizedPureTraceError, Real.optimizedPureTraceError_nonneg,
+        Real.optimizedPureTraceError_sq,
+        Real.half_le_of_optimizedPureTraceError_lt_one}
+    \leanok
+    For $f\in[0,1]$, define
+    \begin{align*}
+        T(f)=\begin{cases}
+            2\sqrt{f(1-f)},&f\ge\tfrac12,\\
+            1,&f<\tfrac12.
+        \end{cases}
+    \end{align*}
+    Thus $T(f)\ge0$, and $T(f)<1$ implies $f\ge\tfrac12$.
+    On the latter interval, $T(f)^2=4f(1-f)$.
+\end{definition}
+
+\begin{theorem}[Amplification below saturation]
+    \label{thm:optimized_pure_error_power_small}
+    \lean{Real.sqrt_mul_optimizedPureTraceError_le_pow_of_lt_one}
+    \leanok
+    \uses{def:optimized_pure_trace_error}
+    Let $f\in[0,1]$ and let $K\ge1$ be an integer. If $T(f^K)<1$, then
+    $\sqrt{K/4}\,T(f)\le T(f^K)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:optimized_pure_trace_error}
+    Put $g=f^K$. The error hypothesis gives $g\ge\tfrac12$, and
+    $g\le f\le1$. Since $f^i\ge f^K$ for $0\le i<K$, the geometric sum gives
+    \begin{align*}
+        Kg(1-f)\le (1-f)\sum_{i=0}^{K-1}f^i=1-g.
+    \end{align*}
+    Moreover $4g^2\ge1\ge f$. Multiplying the preceding inequality by
+    $4g$ therefore gives $Kf(1-f)\le4g(1-g)$.
+    Substituting the expressions for $T(f)^2$ and $T(g)^2$, then taking
+    nonnegative square roots, proves the assertion.
+\end{proof}
+
+\begin{theorem}[Scalar tensor-power estimate]
+    \label{thm:optimized_pure_error_power}
+    \lean{Real.sqrt_mul_optimizedPureTraceError_le_pow_of_sq_le}
+    \leanok
+    \uses{def:optimized_pure_trace_error}
+    Let $f\in[0,1]$ and let $K\ge1$ be an integer. If $T(f)^2\le2/K$, then
+    $\sqrt{K/8}\,T(f)\le T(f^K)$.
+    This is the scalar inequality underlying
+    \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 472--474.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:optimized_pure_error_power_small,def:optimized_pure_trace_error}
+    If $T(f^K)<1$, apply Theorem~\ref{thm:optimized_pure_error_power_small}
+    and use $K/8\le K/4$.
+    Otherwise $T(f^K)\ge1$, whereas the hypothesis gives
+    $(\sqrt{K/8}\,T(f))^2\le1/4\le1$.
+    Nonnegativity completes the proof.
+\end{proof}
