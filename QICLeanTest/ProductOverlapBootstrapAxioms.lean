@@ -25,6 +25,24 @@ open scoped Matrix InnerProductSpace
 #guard_msgs (whitespace := lax) in
 #print axioms Matrix.exists_unit_product_overlap_ge_of_operatorSchmidtRank
 
+/-- info:
+'Matrix.schmidtRank_le_one_of_operatorSchmidtRank_le_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.schmidtRank_le_one_of_operatorSchmidtRank_le_one
+
+/-- info:
+'Matrix.schmidtRank_smul_eq_of_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.schmidtRank_smul_eq_of_ne_zero
+
+/-- info:
+'Matrix.perpendicular_shrinking_homogeneous' depends on axioms: [propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.perpendicular_shrinking_homogeneous
+
 namespace Matrix
 
 private theorem euclidean_inner_eq_raw
@@ -48,16 +66,17 @@ end Matrix
 namespace Matrix
 
 /-- In a one-dimensional Hilbert space, the identity permits δ=-1 because
-there is no unit vector orthogonal to its given unit vector. All operator,
-vector, rank and shrinking data are supplied explicitly in the application. -/
+there is no unit vector orthogonal to its given unit vector. Both the overlap
+bound and exact Schmidt-rank endpoint are applied to these same concrete data. -/
 private theorem negative_shrinking_fin_one_pair_boundary :
-    ∃ (u : Fin 1 → ℂ) (v : Fin 1 → ℂ),
+    (∃ (u : Fin 1 → ℂ) (v : Fin 1 → ℂ),
       let φ : EuclideanSpace ℂ (Fin 1 × Fin 1) :=
         WithLp.toLp 2 (fun p ↦ u p.1 * v p.2)
       ‖φ‖ = 1 ∧
         1 / Real.sqrt 2 ≤
           ‖⟪(WithLp.toLp 2 (fun _ : Fin 1 × Fin 1 ↦ (1 : ℂ)) :
-            EuclideanSpace ℂ (Fin 1 × Fin 1)), φ⟫_ℂ‖ := by
+            EuclideanSpace ℂ (Fin 1 × Fin 1)), φ⟫_ℂ‖) ∧
+      schmidtRank (fun _ : Fin 1 × Fin 1 ↦ (1 : ℂ)) ≤ 1 := by
   classical
   let Γ : EuclideanSpace ℂ (Fin 1 × Fin 1) :=
     WithLp.toLp 2 (fun _ ↦ (1 : ℂ))
@@ -96,7 +115,12 @@ private theorem negative_shrinking_fin_one_pair_boundary :
     (D := 1) (δ := (-1 : ℝ))
     (1 : Matrix (Fin 1 × Fin 1) (Fin 1 × Fin 1) ℂ)
     Γ hΓ hfix hperp hrank (by norm_num)
-  simpa only [Nat.cast_one, mul_one, Γ] using result
+  constructor
+  · simpa only [Nat.cast_one, mul_one, Γ] using result
+  · exact schmidtRank_le_one_of_operatorSchmidtRank_le_one
+      (δ := (-1 : ℝ))
+      (1 : Matrix (Fin 1 × Fin 1) (Fin 1 × Fin 1) ℂ)
+      Γ hΓ hfix hperp hrank (by norm_num)
 
 /-- An empty left factor cannot satisfy the unit-vector premise. -/
 example {n : Type*} [Fintype n]
@@ -122,14 +146,15 @@ namespace Matrix
 /-- The projection onto |00⟩ in a two-qubit space kills its three-dimensional
 orthogonal complement. The full overlap theorem is applied with D=1 and δ=0. -/
 private theorem zero_shrinking_fin_two_projection_boundary :
-    ∃ (u : Fin 2 → ℂ) (v : Fin 2 → ℂ),
+    (∃ (u : Fin 2 → ℂ) (v : Fin 2 → ℂ),
       let φ : EuclideanSpace ℂ (Fin 2 × Fin 2) :=
         WithLp.toLp 2 (fun p ↦ u p.1 * v p.2)
       ‖φ‖ = 1 ∧
         1 / Real.sqrt 2 ≤
           ‖⟪(WithLp.toLp 2
             (Pi.single ((0 : Fin 2), (0 : Fin 2)) (1 : ℂ)) :
-              EuclideanSpace ℂ (Fin 2 × Fin 2)), φ⟫_ℂ‖ := by
+              EuclideanSpace ℂ (Fin 2 × Fin 2)), φ⟫_ℂ‖) ∧
+      schmidtRank (Pi.single ((0 : Fin 2), (0 : Fin 2)) (1 : ℂ)) ≤ 1 := by
   classical
   let Γ : EuclideanSpace ℂ (Fin 2 × Fin 2) :=
     WithLp.toLp 2 (Pi.single ((0 : Fin 2), (0 : Fin 2)) (1 : ℂ))
@@ -166,6 +191,12 @@ private theorem zero_shrinking_fin_two_projection_boundary :
     simp only [Fin.sum_univ_one, Matrix.single_kronecker_single, one_mul, K]
   have result := exists_unit_product_overlap_ge_of_operatorSchmidtRank
     (D := 1) (δ := (0 : ℝ)) K Γ hΓ hfix hperp hrank (by norm_num)
-  simpa only [Nat.cast_one, mul_one, Γ] using result
+  constructor
+  · simpa only [Nat.cast_one, mul_one, Γ] using result
+  · exact schmidtRank_le_one_of_operatorSchmidtRank_le_one
+      (δ := (3 / 4 : ℝ)) K Γ hΓ hfix
+      (fun ψ hψ horth ↦ ⟨(hperp ψ hψ horth).1,
+        (hperp ψ hψ horth).2.trans (by norm_num)⟩)
+      hrank (by norm_num)
 
 end Matrix
