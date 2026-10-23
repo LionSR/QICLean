@@ -7,7 +7,7 @@ import QICLean.Channel.MaximalOverlap
 
 /-! Boundary applications of the homogeneous maximal-overlap inequality. -/
 
-open scoped Matrix
+open scoped Matrix ComplexOrder
 
 /-- The zero-rank case is valid even when the second factor is empty. -/
 example (C : Matrix (Fin 1) (Fin 0) ℂ) :
