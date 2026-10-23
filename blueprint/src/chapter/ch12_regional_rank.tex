@@ -1,0 +1,51 @@
+\section{Ranks of pure-state reductions}
+\label{sec:regional_rank}
+
+\begin{theorem}[Equality of complementary ranks]
+  \label{thm:complementary_reduced_ranks}
+  \lean{Matrix.rank_partialTraceRight_vecMulVec_eq_rank_partialTraceLeft,
+    FiniteProduct.rank_reducedPure_compl, Entropy.rank_regionState_compl,
+    Entropy.regionState_eq_reducedPure}
+  \leanok
+  The two reduced matrices of a bipartite pure vector have equal rank.
+  Consequently, for a pure vector on a finite tensor product and a region $R$,
+  \begin{align}
+    \operatorname{rank}\rho_{R^c}&=\operatorname{rank}\rho_R.
+  \end{align}
+  No normalization or nonzero-vector assumption is required, and factors of
+  dimension zero are allowed.
+\end{theorem}
+\begin{proof}\leanok
+  If $C$ is the coefficient matrix of the vector, the first marginal is
+  $CC^\ast$ and the second is the complex conjugate of $C^\ast C$.
+  Both Gram matrices have rank $\operatorname{rank}C$. Complex conjugation
+  preserves rank, as do transpose and adjoint. Apply this identity in the
+  coordinates separating $R$ from its complement.
+\end{proof}
+
+\begin{theorem}[Ranks on disjoint unions and between nested regions]
+  \label{thm:regional_union_rank}
+  \lean{FiniteProduct.rank_reducedMatrix_union_le,
+    Entropy.rank_regionState_union_le, Entropy.rank_regionState_sdiff_le}
+  \leanok
+  Let $\rho$ be positive semidefinite on a finite tensor product. For
+  disjoint regions $R,T$,
+  \begin{align}
+    \operatorname{rank}\rho_{R\cup T}
+      &\le\operatorname{rank}\rho_R\operatorname{rank}\rho_T.
+  \end{align}
+  If the full state is pure and $R\subseteq T$, then
+  \begin{align}
+    \operatorname{rank}\rho_{T\setminus R}
+      &\le\operatorname{rank}\rho_R\operatorname{rank}\rho_T.
+  \end{align}
+  Neither estimate requires normalization. Empty regions are included.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:rank_product_marginals,thm:complementary_reduced_ranks}
+  Reexpress $\rho_{R\cup T}$ on the tensor product of the configuration
+  spaces of $R$ and $T$. Its two marginals are $\rho_R$ and $\rho_T$, so the
+  bipartite rank inequality gives the first assertion. For the second,
+  $(T\setminus R)^c=R\cup T^c$ is a disjoint union. Apply the first inequality
+  and equality of the ranks of complementary reductions.
+\end{proof}
