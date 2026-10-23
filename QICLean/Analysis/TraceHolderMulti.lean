@@ -7,6 +7,7 @@ import Mathlib.Analysis.Complex.Hadamard
 import Mathlib.Analysis.Normed.Algebra.MatrixExponential
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic
 import Mathlib.Analysis.SpecialFunctions.Exponential
+import QICLean.Analysis.ContractionChain
 import QICLean.Analysis.TraceMulBound
 
 /-!
@@ -67,11 +68,6 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 
 section Factor
 
-/-- The identity matrix has operator norm at most one (it is zero on the empty index type). -/
-private theorem norm_one_le : ‖(1 : Matrix n n ℂ)‖ ≤ 1 := by
-  rw [← diagonal_one, l2_opNorm_diagonal]
-  exact (pi_norm_le_iff_of_nonneg zero_le_one).2 fun _ ↦ by simp
-
 /-- The exponential of an imaginary multiple of a Hermitian matrix is unitary. -/
 private theorem exp_smul_mem_unitary {K : Matrix n n ℂ} (hK : K.IsHermitian) (y : ℝ) :
     NormedSpace.exp (((y : ℂ) * Complex.I) • K) ∈ unitary (Matrix n n ℂ) := by
@@ -107,7 +103,7 @@ private theorem norm_mul_exp_smul_le_of_re_eq_zero {K : Matrix n n ℂ} (hK : K.
     (B : Matrix n n ℂ) {w : ℂ} (hw : w.re = 0) : ‖B * NormedSpace.exp (w • K)‖ ≤ ‖B‖ := by
   have h := norm_mul_exp_smul_le hK B w
   rw [hw, Complex.ofReal_zero, zero_smul, NormedSpace.exp_zero] at h
-  exact h.trans (mul_le_of_le_one_right (norm_nonneg B) norm_one_le)
+  exact h.trans (mul_le_of_le_one_right (norm_nonneg B) (l2_opNorm_one_le (n := n)))
 
 /-- The derivative of `u ↦ e^{u K}` exists everywhere. -/
 private theorem differentiable_exp_smul (K : Matrix n n ℂ) :
@@ -123,7 +119,7 @@ private theorem differentiable_exp_smul_comp (K : Matrix n n ℂ) {g : ℂ → �
 private theorem norm_list_prod_le {α : Type*} (L : List α) (f : α → Matrix n n ℂ) (g : α → ℝ)
     (h : ∀ x ∈ L, ‖f x‖ ≤ g x ∧ 0 ≤ g x) : ‖(L.map f).prod‖ ≤ (L.map g).prod := by
   induction L with
-  | nil => simpa using norm_one_le
+  | nil => simpa using (l2_opNorm_one_le (n := n))
   | cons x L ih =>
     simp only [List.map_cons, List.prod_cons]
     have hx := h x (by simp)

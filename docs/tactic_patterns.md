@@ -1251,3 +1251,13 @@ complement of a filtered finite ordinal appears in
 (the latter is developed separately). Both use `Fin.sum_univ_eq_sum_range`
 and the equality between a filtered range and an interval. A third independent
 use should promote this conversion to a shared eigenvalue-sum lemma.
+
+### Identity contractions in trace products — existing lemma (2026-10-23)
+
+- **Seen:** The imaginary-weight estimate and the empty product in
+  `Analysis.TraceHolderMulti` need the identity operator norm bound.
+- **Decision:** Reuse `Matrix.l2_opNorm_one_le` from
+  `Analysis.ContractionChain`, rather than repeating its private proof.
+- **Caveat:** The bound is at most one and includes an empty coordinate
+  space. Neither use introduces a nonempty-space assumption.
+- **Mechanism:** A direct mathematical lemma suffices; no tactic is added.
