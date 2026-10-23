@@ -76,3 +76,88 @@ Hilbert space. Products of matrices are ordered by increasing index.
     If $\beta=0$, all $a_j$ vanish; apply the same theorem with $K_j=0$
     and weight one on the first factor, zero on the others.
 \end{proof}
+
+\begin{theorem}[Alternating sums of shifted exponentials]
+    \label{thm:trace_exp_alternating_sum}
+    \lean{Matrix.norm_trace_mul_sum_powerset_exp_le}
+    \leanok
+    \uses{thm:trace_holder_multi, thm:trace_exp_add_le}
+    Let $S$ be a finite set, let $Y$ and $h_i$, $i\in S$, be Hermitian, and
+    write $h_E=\sum_{i\in E}h_i$ for $E\subseteq S$. Then for every operator $O$,
+    \begin{align}
+        \left|\operatorname{tr}\Bigl(O\sum_{E\subseteq S}(-1)^{|S|-|E|}
+        e^{-(Y+h_E)}\Bigr)\right|
+         & \le \|O\|\prod_{i\in S}\bigl(e^{\|h_i\|}-1\bigr)
+        \operatorname{tr}e^{-Y}.
+        \label{eq:trace_exp_alternating_sum}
+    \end{align}
+    Let $H=\sum_iH_i$ and let $C$ be a cluster with boundary $B(C)$. With
+    $Y=\beta(H-H_C-H_{B(C)})$ and $h_i=\beta H_i$ for $i\in C$, one has
+    $Y+h_E=\beta(H-H_{B(C)}-H_{C\setminus E})$, and by inclusion and exclusion
+    the alternating sum is the operator $\rho(\beta,C)$
+    of~\cite{Hastings2006Solving}, arXiv:cond-mat/0508554v3, source lines
+    1162--1195: the sum of the terms of the power series of $e^{-\beta H}$
+    containing every $H_i$ with $i\in C$ and no $H_j$ with $j\in B(C)$.
+    Theorem~\ref{thm:trace_exp_add_le} gives
+    $\operatorname{tr}e^{-Y}\le e^{\beta\|H_C+H_{B(C)}\|}\operatorname{tr}e^{-\beta H}$,
+    so~(\ref{eq:trace_exp_alternating_sum}) implies the bound stated there
+    before equation (percb2).
+\end{theorem}
+\begin{proof}\leanok
+    Prove more generally, by induction on $S$, that for operators $B_j$,
+    Hermitian $Y_j$, and weights $a_j\ge0$ with $\sum_ja_j=1$, the products
+    $T(s)=\prod_jB_je^{-a_j(Y_j+s)}$ satisfy
+    \begin{align}
+        \left|\operatorname{tr}\sum_{E\subseteq S}(-1)^{|S|-|E|}T(h_E)\right|
+         & \le \prod_{i\in S}\bigl(e^{\|h_i\|}-1\bigr)
+        \prod_j\|B_j\|\bigl(\operatorname{tr}e^{-Y_j}\bigr)^{a_j}.
+        \label{eq:trace_exp_alternating_general}
+    \end{align}
+    The case of one factor with $B_0=O$, $Y_0=Y$, $a_0=1$
+    is~(\ref{eq:trace_exp_alternating_sum}). For $S=\emptyset$,
+    (\ref{eq:trace_exp_alternating_general}) is
+    Theorem~\ref{thm:trace_holder_multi} with $K_j=-Y_j$.
+
+    Adding an index $a\notin S$ with $V=h_a$ turns the alternating sum over
+    subsets of $S\cup\{a\}$ into the alternating sum over subsets of $S$ of
+    $T(V+h_E)-T(h_E)$. Write $A_j=a_0+\cdots+a_j$ and change the factors one at
+    a time: in the $j$-th step the factors before $j$ have generators $Y_k+V$,
+    the factors after $j$ have generators $Y_k$, and the $j$-th factor
+    changes from $e^{-a_j(Z+V)}$ to $e^{-a_jZ}$ with $Z=Y_j+h_E$. For
+    $0\le u\le a_j$,
+    \begin{align}
+        \frac{d}{du}\Bigl(e^{-(a_j-u)(Z+V)}e^{-uZ}\Bigr)
+         & =e^{-(a_j-u)(Z+V)}\,V\,e^{-uZ},
+        \label{eq:trace_exp_alternating_duhamel}
+    \end{align}
+    so the derivative of the $j$-th step is an alternating sum of products
+    with one more factor, weights $a_j-u$ and $u$, and $V$ inserted between
+    them. By the induction hypothesis and
+    Theorem~\ref{thm:trace_exp_add_le}, applied as
+    $\operatorname{tr}e^{-(Y_k+V)}\le e^{\|V\|}\operatorname{tr}e^{-Y_k}$
+    to the shifted factors, its trace is at most
+    $\|V\|e^{\|V\|(A_j-u)}$ times the right-hand side
+    of~(\ref{eq:trace_exp_alternating_general}) for $S$. The mean value
+    inequality bounds the $j$-th step by
+    $e^{\|V\|A_j}-e^{\|V\|A_{j-1}}$ times the same quantity, and the sum over
+    $j$ telescopes to $e^{\|V\|}-1$.
+\end{proof}
+
+\begin{theorem}[Alternating sums with uniformly bounded terms]
+    \label{thm:trace_exp_alternating_sum_pow}
+    \lean{Matrix.norm_trace_mul_sum_powerset_exp_le_pow}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum}
+    In the setting of Theorem~\ref{thm:trace_exp_alternating_sum}, assume
+    moreover $\|h_i\|\le J$ for all $i\in S$. Then
+    \begin{align}
+        \left|\operatorname{tr}\Bigl(O\sum_{E\subseteq S}(-1)^{|S|-|E|}
+        e^{-(Y+h_E)}\Bigr)\right|
+         & \le \|O\|\bigl(e^{J}-1\bigr)^{|S|}\operatorname{tr}e^{-Y}.
+    \end{align}
+    For $h_i=\beta H_i$ with $\|H_i\|\le J$ this is the factor
+    $[\exp(J\beta)-1]^{n_C}$ of~\cite{Hastings2006Solving}.
+\end{theorem}
+\begin{proof}\leanok
+    Each factor satisfies $0\le e^{\|h_i\|}-1\le e^{J}-1$.
+\end{proof}
