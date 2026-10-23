@@ -142,6 +142,7 @@ import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
+import QICLean.Analysis.ProbabilityEntropyConcentration
 import QICLean.Analysis.ProductOverlapReplacement
 import QICLean.Analysis.ProductReferenceDensityError
 import QICLean.Analysis.ProjectedEvolution
