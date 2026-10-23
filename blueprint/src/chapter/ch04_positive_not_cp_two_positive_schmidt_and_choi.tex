@@ -368,9 +368,10 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     Let $\Psi,\Phi\in\mathbb C^m\otimes\mathbb C^n$, with
     $\|\Phi\|=1$ and $\SR(\Phi)\le D$, where $D\ge0$ is an integer.
     Set $\rho=\tr_2|\Psi\rangle\langle\Psi|$. Then
-    \[
-        |\langle\Psi,\Phi\rangle|^2\le\|\rho\|_{(D)}.
-    \]
+    \begin{align}
+        |\langle\Psi,\Phi\rangle|^2 & \le\|\rho\|_{(D)}.
+        \label{eq:homogeneous_schmidt_overlap_bound}
+    \end{align}
     No normalization of $\Psi$ is required. If $D\ge m$, the right-hand
     side is $\tr\rho=\|\Psi\|^2$. This is the homogeneous upper bound
     underlying \cite[Lemma~3.1]{Wolf2012Quantum}.
@@ -383,8 +384,13 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     The support projection $P$ of $BB^\dagger$ has rank at most $D$.
     Since $PB=B$ and $\tr(B^\dagger B)=1$, the Hilbert--Schmidt
     Cauchy--Schwarz inequality gives
-    $|\tr(C^\dagger B)|^2\le\tr(PCC^\dagger)$.
-    For $D<m$, the Ky Fan variational bound completes the proof.
+    \begin{align}
+        |\tr(C^\dagger B)|^2 & \le\tr(PCC^\dagger).
+        \label{eq:homogeneous_schmidt_overlap_support}
+    \end{align}
+    For $D<m$, applying the Ky Fan variational bound to
+    (\ref{eq:homogeneous_schmidt_overlap_support}) proves
+    (\ref{eq:homogeneous_schmidt_overlap_bound}).
     For $D\ge m$, ordinary Cauchy--Schwarz gives the bound
     $\|\Psi\|^2=\tr\rho$.
 \end{proof}
