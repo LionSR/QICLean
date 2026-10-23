@@ -32,6 +32,8 @@ bound.
 
 ## Main results
 
+* `Matrix.normSq_trace_conjTranspose_mul_le_kyFanNorm_mul_trace` -- the
+  homogeneous overlap bound without normalization of either matrix.
 * `Matrix.PosSemidef.kyFanNorm_eq_sup_trace_rankLE` -- the positive-semidefinite
   form of Ky Fan's maximum principle over orthogonal projections of rank at most
   k.
@@ -158,15 +160,20 @@ theorem normSq_toEuclid (X : Matrix m n ℂ) :
 /-! ### Upper bound and achievability for the maximal overlap -/
 
 omit [DecidableEq n] in
-/-- **Upper bound for the maximal overlap.** For coefficient matrices C, B with
-B normalized in the Frobenius norm and of rank at most k < card m, the squared
-overlap ‖tr(Cᴴ B)‖² is bounded by the Ky-Fan k-norm of ρ = C Cᴴ.  The
-support projection of B Bᴴ fixes B, so Cauchy–Schwarz reduces the overlap to a
-trace against ρ, which the positive-semidefinite maximum principle caps. -/
-theorem normSq_trace_conjTranspose_mul_le_kyFanNorm (C B : Matrix m n ℂ) {k : ℕ}
-    (hk : k < Fintype.card m) (hBnorm : (Bᴴ * B).trace = 1) (hBrank : B.rank ≤ k) :
+/-- The homogeneous maximal-overlap bound. For rectangular coefficient matrices
+`C` and `B`, if `B` has rank at most `k < card m`, then its squared Frobenius
+pairing with `C` is at most the Ky-Fan `k`-norm of `C Cᴴ` multiplied by the
+squared Frobenius norm of `B`. Neither matrix is required to be normalized.
+This includes `k = 0` and `B = 0`.
+
+The support-projection and Cauchy–Schwarz argument is the homogeneous form of
+Wolf, Chapter 3, Lemma 3.1. -/
+theorem normSq_trace_conjTranspose_mul_le_kyFanNorm_mul_trace
+    (C B : Matrix m n ℂ) {k : ℕ}
+    (hk : k < Fintype.card m) (hBrank : B.rank ≤ k) :
     ‖(Cᴴ * B).trace‖ ^ 2 ≤
-      (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm k := by
+      (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm k *
+        ((Bᴴ * B).trace).re := by
   set hρ := Matrix.posSemidef_self_mul_conjTranspose C with hρdef
   set P := (isHermitian_mul_conjTranspose_self B).supportProj with hPdef
   have hPh : P.IsHermitian := (isHermitian_mul_conjTranspose_self B).supportProj_isHermitian
@@ -176,17 +183,10 @@ theorem normSq_trace_conjTranspose_mul_le_kyFanNorm (C B : Matrix m n ℂ) {k : 
   have hoverlap : (Cᴴ * B).trace = inner (𝕜 := ℂ) (toEuclid (P * C)) (toEuclid B) := by
     rw [inner_toEuclid, Matrix.conjTranspose_mul, hPh.eq]
     rw [Matrix.mul_assoc, hPB]
-  -- Cauchy–Schwarz: ‖tr(Cᴴ B)‖ ≤ ‖P C‖ ‖B‖ = ‖P C‖.
-  have hBunit : ‖toEuclid B‖ = 1 := by
-    have h := normSq_toEuclid B
-    rw [hBnorm] at h
-    have h1 : (‖toEuclid B‖ : ℝ) ^ 2 = 1 := by rw [h]; simp
-    nlinarith [norm_nonneg (toEuclid B), h1]
-  have hcs : ‖(Cᴴ * B).trace‖ ≤ ‖toEuclid (P * C)‖ := by
+  -- Cauchy–Schwarz retains the squared Frobenius norm of B.
+  have hcs : ‖(Cᴴ * B).trace‖ ≤ ‖toEuclid (P * C)‖ * ‖toEuclid B‖ := by
     rw [hoverlap]
-    calc ‖inner (𝕜 := ℂ) (toEuclid (P * C)) (toEuclid B)‖
-        ≤ ‖toEuclid (P * C)‖ * ‖toEuclid B‖ := norm_inner_le_norm _ _
-      _ = ‖toEuclid (P * C)‖ := by rw [hBunit, mul_one]
+    exact norm_inner_le_norm _ _
   -- ‖P C‖² = Re tr(P ρ).
   have hnormPC : (‖toEuclid (P * C)‖ : ℝ) ^ 2 = (Matrix.trace (P * (C * Cᴴ))).re := by
     rw [normSq_toEuclid]
@@ -200,10 +200,28 @@ theorem normSq_trace_conjTranspose_mul_le_kyFanNorm (C B : Matrix m n ℂ) {k : 
   have htrace_le : (Matrix.trace (P * (C * Cᴴ))).re ≤ hρ.isHermitian.kyFanNorm k :=
     hρ.trace_mul_re_le_kyFanNorm_of_rank_le hBrank hk hPh hPi hPrank
   calc ‖(Cᴴ * B).trace‖ ^ 2
-      ≤ ‖toEuclid (P * C)‖ ^ 2 := by
-        exact pow_le_pow_left₀ (norm_nonneg _) hcs 2
-    _ = (Matrix.trace (P * (C * Cᴴ))).re := hnormPC
-    _ ≤ hρ.isHermitian.kyFanNorm k := htrace_le
+      ≤ (‖toEuclid (P * C)‖ * ‖toEuclid B‖) ^ 2 :=
+        pow_le_pow_left₀ (norm_nonneg _) hcs 2
+    _ = ‖toEuclid (P * C)‖ ^ 2 * ‖toEuclid B‖ ^ 2 := mul_pow _ _ _
+    _ = (Matrix.trace (P * (C * Cᴴ))).re * ((Bᴴ * B).trace).re := by
+      rw [hnormPC, normSq_toEuclid]
+    _ ≤ hρ.isHermitian.kyFanNorm k * ((Bᴴ * B).trace).re :=
+      mul_le_mul_of_nonneg_right htrace_le (by
+        rw [← normSq_toEuclid]
+        exact sq_nonneg _)
+
+omit [DecidableEq n] in
+/-- **Upper bound for the maximal overlap.** For coefficient matrices C, B with
+B normalized in the Frobenius norm and of rank at most k < card m, the squared
+overlap ‖tr(Cᴴ B)‖² is bounded by the Ky-Fan k-norm of ρ = C Cᴴ.  The
+support projection of B Bᴴ fixes B, so Cauchy–Schwarz reduces the overlap to a
+trace against ρ, which the positive-semidefinite maximum principle caps. -/
+theorem normSq_trace_conjTranspose_mul_le_kyFanNorm (C B : Matrix m n ℂ) {k : ℕ}
+    (hk : k < Fintype.card m) (hBnorm : (Bᴴ * B).trace = 1) (hBrank : B.rank ≤ k) :
+    ‖(Cᴴ * B).trace‖ ^ 2 ≤
+      (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm k := by
+  simpa only [hBnorm, Complex.one_re, mul_one] using
+    normSq_trace_conjTranspose_mul_le_kyFanNorm_mul_trace C B hk hBrank
 
 /-- A Hermitian matrix has real trace: it equals the real part of its own trace,
 viewed back in the complex numbers. -/
