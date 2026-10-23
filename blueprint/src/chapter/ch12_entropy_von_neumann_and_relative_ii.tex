@@ -756,9 +756,10 @@ the chapter boundary.
     \begin{align}
         (K_A)_{(a,b),(a',b')}
          & =K_{e_A^{-1}(a,b),e_A^{-1}(a',b')}.
-        \notag
+        \label{eq:cut_operator_entries}
     \end{align}
-    Reindexing the finite matrix--vector sum by $e_A$ gives the assertion.
+    Using~(\ref{eq:cut_operator_entries}), reindex the finite matrix--vector sum
+    by $e_A$ to obtain the assertion.
 \end{proof}
 
 \begin{theorem}[Regional entropy from a favorable shrinking tradeoff]
@@ -801,9 +802,11 @@ the chapter boundary.
     \begin{align}
         \rho_A(a,a')
          & =\sum_b\Gamma(a,b)\overline{\Gamma(a',b)}
-        =(C_\Gamma C_\Gamma^\dagger)(a,a').\notag
+        =(C_\Gamma C_\Gamma^\dagger)(a,a').
+        \label{eq:regional_state_coefficients}
     \end{align}
-    Hence the reduced entropy bounded by that theorem is exactly
+    By~(\ref{eq:regional_state_coefficients}), the reduced entropy bounded by
+    that theorem is exactly
     $S(\rho_A)$.
 \end{proof}
 
