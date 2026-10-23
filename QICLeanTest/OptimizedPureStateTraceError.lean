@@ -87,8 +87,8 @@ example :
           rectangularTraceNorm (euclideanOuterProduct scaledTarget scaledTarget) = r} 0 := by
   convert isLeast_optimizedPureTraceError scaledTarget phasedApproximant
       (smul_ne_zero (by norm_num) (ket_ne_zero 0))
-      (smul_ne_zero (by simp) (ket_ne_zero 0)) using 1 <;>
-    norm_num [scaledTarget, phasedApproximant, Real.optimizedPureTraceError,
+      (smul_ne_zero (by simp) (ket_ne_zero 0)) using 1
+  norm_num [scaledTarget, phasedApproximant, Real.optimizedPureTraceError,
       inner_smul_left, inner_smul_right, inner_self_eq_norm_sq_to_K,
       norm_smul, norm_mul, norm_ket]
 
@@ -110,7 +110,8 @@ private theorem orthogonal_minimum :
       rectangularTraceNorm (euclideanOuterProduct (ket 0) (ket 0) -
         z • euclideanOuterProduct (ket 1) (ket 1)) /
           rectangularTraceNorm (euclideanOuterProduct (ket 0) (ket 0)) = r} 1 := by
-  simpa [Real.optimizedPureTraceError, inner_ket_zero_one] using
+  simpa [Real.optimizedPureTraceError, inner_ket_zero_one,
+    show ¬ ((2 : ℝ) ≤ 0) by norm_num] using
     isLeast_optimizedPureTraceError (ket 0) (ket 1) (ket_ne_zero 0) (ket_ne_zero 1)
 
 -- The saturated minimum permits the zero approximant.
@@ -136,15 +137,15 @@ example :
         z • euclideanOuterProduct (ket 0 + ket 1) (ket 0 + ket 1)) /
           rectangularTraceNorm (euclideanOuterProduct (ket 0) (ket 0)) = r} 1 := by
   have hnorm : ‖ket 0 + ket 1‖ ^ 2 = 2 := by
-    simpa [norm_ket, pow_two] using
+    simpa only [norm_ket, pow_two, mul_one, show (1 : ℝ) + 1 = 2 by norm_num] using
       norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero
         (𝕜 := ℂ) (ket 0) (ket 1) inner_ket_zero_one
   have hne : ket 0 + ket 1 ≠ 0 := by
     intro h
     norm_num [h] at hnorm
   convert isLeast_optimizedPureTraceError (ket 0) (ket 0 + ket 1) (ket_ne_zero 0) hne
-    using 1 <;>
-    norm_num [Real.optimizedPureTraceError, inner_add_right,
+    using 1
+  norm_num [Real.optimizedPureTraceError, inner_add_right,
       inner_self_eq_norm_sq_to_K, norm_ket, inner_ket_zero_one, hnorm]
 
 end Matrix
