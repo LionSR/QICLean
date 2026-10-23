@@ -249,6 +249,7 @@ import QICLean.Analysis.SpectralProjectionIntertwiner
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
+import QICLean.Analysis.SpectralTailTraceNorm
 import QICLean.Analysis.SqrtHolder
 import QICLean.Analysis.StretchedBallKernel
 import QICLean.Analysis.StretchedExponentialSummability
