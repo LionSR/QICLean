@@ -61,8 +61,15 @@ theorem regionEntropy_le_four_log_of_cutOperatorSchmidtRank
       Matrix.toEuclideanLin (Entropy.cutOperator A K) (U x) =
         U (Matrix.toEuclideanLin K x) := by
     simpa only [hU] using (Entropy.cutVector_toEuclideanLin A K x).symm
-  have hbound := Matrix.vonNeumannEntropy_reduced_le_four_log_of_operatorSchmidtRank
-    (Entropy.cutOperator A K) (U Ω) ((U.norm_map Ω).trans hΩ)
+  have estimate := Matrix.vonNeumannEntropy_reduced_le_four_log_of_operatorSchmidtRank
+    (D := D) (δ := δ) (Entropy.cutOperator A K) (U Ω) ((U.norm_map Ω).trans hΩ)
+  rw [Subsingleton.elim
+    (fun a b : Entropy.RegionConfig n A ↦ Classical.propDecidable (a = b))
+    (inferInstance : DecidableEq (Entropy.RegionConfig n A)),
+    Subsingleton.elim
+      (fun a b : (v : {v // v ∉ A}) → Fin (n v) ↦ Classical.propDecidable (a = b))
+      (inferInstance : DecidableEq ((v : {v // v ∉ A}) → Fin (n v)))] at estimate
+  have hbound := estimate
     ((hintertwine Ω).trans (congrArg U hfix))
     (fun ψ hψ horth ↦ by
       obtain ⟨horthK, hnormK⟩ := hperp (U.symm ψ)
@@ -75,9 +82,6 @@ theorem regionEntropy_le_four_log_of_cutOperatorSchmidtRank
       · simpa only [hKψ, U.inner_map_map] using horthK
       · simpa only [hKψ, U.norm_map] using hnormK)
     hrank htradeoff
-  rw [Subsingleton.elim
-    (fun a b : Entropy.RegionConfig n A ↦ Classical.propDecidable (a = b))
-    (inferInstance : DecidableEq (Entropy.RegionConfig n A))] at hbound
   let C := Matrix.schmidtCoeffMatrix (WithLp.ofLp (U Ω))
   have hρ : Entropy.regionState A Ω = C * Cᴴ := by
     simpa only [Entropy.regionState, C, hU] using

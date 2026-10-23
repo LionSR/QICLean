@@ -740,6 +740,8 @@ the chapter boundary.
 
 \begin{theorem}[Regional entropy from a favorable shrinking tradeoff]
     \label{thm:regional_favorable_tradeoff_entropy}
+    \lean{Entropy.regionEntropy_le_four_log_of_cutOperatorSchmidtRank}
+    \leanok
     \uses{def:von_neumann_entropy,def:bipartite_operator_schmidt_rank,lem:local_lift}
     Let $V$ be a finite set, let $n_v\in\N$ for each $v\in V$, and let
     $\mathcal H=\bigotimes_{v\in V}\C^{n_v}$.
@@ -755,7 +757,7 @@ the chapter boundary.
     This is the finite-site form of the invariant-line consequence of
     \cite[Corollary~2.4]{Arad2013AreaLaw}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:fixed_vector_favorable_tradeoff_entropy,lem:local_lift,
         lem:region_filter_norm,lem:entropy_congr}
     Let $U$ be the unitary grouping the configuration coordinates into
