@@ -407,6 +407,57 @@ the chapter boundary.
 \end{proof}
 
 
+\begin{theorem}[Homogeneous shrinking on an orthogonal complement]
+    \label{thm:perpendicular_shrink_homogeneous}
+    \lean{Matrix.perpendicular_shrinking_homogeneous}
+    \leanok
+    Let $I$ be finite, let $A:\C^I\to\C^I$ be linear, and let
+    $\Gamma\in\C^I$ and $\delta\in\R$.
+    Suppose that every unit vector $\psi$ orthogonal to $\Gamma$
+    satisfies $\langle\Gamma,A\psi\rangle=0$ and $\|A\psi\|^2\le\delta$.
+    Then every vector $v$ orthogonal to $\Gamma$ satisfies
+    \begin{align}
+        \langle\Gamma,Av\rangle & =0, \notag \\
+        \|Av\|^2                & \le\delta\|v\|^2.
+        \label{eq:perpendicular_shrink_bounds}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    The assertions in~(\ref{eq:perpendicular_shrink_bounds}) hold when $v=0$.
+    Otherwise put $\psi=v/\|v\|$.
+    Then $\|\psi\|=1$, $\langle\Gamma,\psi\rangle=0$, and linearity gives
+    $Av=\|v\|A\psi$. Hence
+    \begin{align}
+        \langle\Gamma,Av\rangle
+         & =\|v\|\langle\Gamma,A\psi\rangle=0, \notag \\
+        \|Av\|^2
+         & =\|v\|^2\|A\psi\|^2\le\delta\|v\|^2.
+        \label{eq:perpendicular_shrink_scaling}
+    \end{align}
+    The estimates in~(\ref{eq:perpendicular_shrink_scaling})
+    give~(\ref{eq:perpendicular_shrink_bounds}).
+\end{proof}
+
+\begin{theorem}[Schmidt rank under nonzero scalar multiplication]
+    \label{thm:schmidt_rank_nonzero_smul}
+    \lean{Matrix.schmidtRank_smul_eq_of_ne_zero}
+    \leanok
+    \uses{def:schmidt_rank}
+    Let $I$ be any set and let $J$ be finite. For an array
+    $\varphi:I\times J\to\C$, let $C_\varphi=(\varphi(i,j))_{i\in I,j\in J}$
+    be its coefficient matrix, and put $\SR(\varphi)=\rank(C_\varphi)$.
+    For every $c\in\C\setminus\{0\}$, one has
+    $\SR(c\varphi)=\SR(\varphi)$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:schmidt_rank}
+    Since $C_{c\varphi}=cC_\varphi$ and $c$ is invertible,
+    the two coefficient matrices have the same column space and hence
+    the same rank. This also applies when $\varphi=0$ or $J$ is empty.
+\end{proof}
+
 \begin{theorem}[Product overlap from an invariant unit vector]
     \label{thm:product_overlap_fixed_invariant_vector}
     \lean{Matrix.exists_unit_product_overlap_ge_of_operatorSchmidtRank}
@@ -437,7 +488,9 @@ the chapter boundary.
 
 \begin{proof}
     \leanok
-    \uses{thm:schmidt_rank_operator_action,
+    \uses{thm:perpendicular_shrink_homogeneous,
+        thm:schmidt_rank_nonzero_smul,
+        thm:schmidt_rank_operator_action,
         thm:operator_schmidt_rank_pos,
         thm:maximal_overlap_schmidt_rank,
         thm:maximal_overlap_schmidt_rank_top,
@@ -488,6 +541,41 @@ the chapter boundary.
     Hence $x\ge1/(2D)$. The rank-one coefficient-matrix factorization
     writes the actual maximizing vector as $u\otimes v$. Taking square
     roots gives~(\ref{eq:product_overlap_lower_bound}).
+\end{proof}
+
+\begin{theorem}[Rank-one invariant-vector endpoint]
+    \label{thm:product_rank_one_invariant}
+    \lean{Matrix.schmidtRank_le_one_of_operatorSchmidtRank_le_one}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank,def:schmidt_rank}
+    Let $I,J$ be finite sets, let $\Gamma\in\C^I\otimes\C^J$ be a unit
+    vector, and suppose that $K\Gamma=\Gamma$ and
+    $\operatorname{OSR}(K)\le1$. Let $\delta\in\R$ satisfy $\delta<1$.
+    Suppose that every unit vector $\psi\perp\Gamma$ satisfies
+    $K\psi\perp\Gamma$ and $\|K\psi\|^2\le\delta$.
+    Then $\Gamma$ has Schmidt rank at most one.
+    This is the rank-one endpoint of the maximizing-vector argument in
+    \cite[Lemma~2.2]{Arad2013AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:perpendicular_shrink_homogeneous,
+        thm:schmidt_rank_nonzero_smul,
+        thm:schmidt_rank_operator_action,
+        thm:operator_schmidt_rank_pos,
+        thm:maximal_overlap_schmidt_rank,
+        thm:maximal_overlap_schmidt_rank_top,
+        lem:matrix_rank_factorization_coordinate}
+    Choose a maximizing unit vector $\phi$ of Schmidt rank at most one and
+    put $a=\langle\Gamma,\phi\rangle$ and $x=|a|^2>0$. The sharp
+    overlap argument gives $1\le x+\delta(1-x)$.
+    Hence $(1-\delta)(1-x)\le0$, and $\delta<1$ implies $x\ge1$.
+    The orthogonal decomposition satisfies
+    $\|\phi-a\Gamma\|^2=1-x\le0$. Thus the remainder vanishes and
+    $\phi=a\Gamma$ with $a\ne0$.
+    Multiplication by a nonzero scalar preserves Schmidt rank, which gives
+    the conclusion.
 \end{proof}
 
 \begin{theorem}[Raw Petz factorization for a product reference]

@@ -82,7 +82,8 @@ private theorem exists_product_of_schmidtRank_le_one
   have hp := congrFun (congrFun hPQ p.1) p.2
   simpa only [Matrix.mul_apply, Fin.sum_univ_one, schmidtCoeffMatrix_apply] using hp.symm
 
-private theorem schmidtRank_smul_eq_of_ne_zero
+/-- Multiplication by a nonzero complex scalar preserves Schmidt rank. -/
+theorem schmidtRank_smul_eq_of_ne_zero
     {m n : Type*} [Fintype n] (c : ℂ) (hc : c ≠ 0) (φ : m × n → ℂ) :
     schmidtRank (c • φ) = schmidtRank φ := by
   have hcoeff : schmidtCoeffMatrix (c • φ) = c • schmidtCoeffMatrix φ := by
@@ -215,8 +216,9 @@ private theorem exists_unit_rank_one_top
   · simpa only [euclidean_inner_eq_raw, WithLp.ofLp_toLp] using heq
   · simpa only [euclidean_inner_eq_raw, WithLp.ofLp_toLp, heq] using hpos
 
-/-- Extend the unit-perpendicular premise without any sign assumption on δ. -/
-private theorem perpendicular_shrinking_homogeneous
+/-- A contraction bound on unit perpendicular vectors extends homogeneously,
+without any sign assumption on the squared-norm bound. -/
+theorem perpendicular_shrinking_homogeneous
     {ι : Type*} [Fintype ι]
     (A : EuclideanSpace ℂ ι →ₗ[ℂ] EuclideanSpace ℂ ι)
     (Γ : EuclideanSpace ℂ ι) (δ : ℝ)
@@ -275,31 +277,25 @@ private theorem overlap_scalar_bootstrap
     nlinarith only [hh]
 
 open Classical in
-/-- A fixed unit vector preserved by a bipartite operator has a unit product
-vector of overlap at least 1/√(2D) under the stated rank and shrinking tradeoff.
-
-AKLV, arXiv:1301.1162v1, Definition 2.1 (`def:AGSP`), Lemma 2.2 (`lem:mu1`),
-and the unique-ground-state applications in Sections 4 and 6.1;
-`1dfrustrated34.tex`, lines 296–337, 534–537 and 879–883.
-The shrinking parameter may be any real number. -/
-theorem exists_unit_product_overlap_ge_of_operatorSchmidtRank
+/-- The maximizing product vector satisfies the sharp overlap inequality before any
+tradeoff restriction is imposed. AKLV, arXiv:1301.1162v1, proof of Lemma 2.2
+(`lem:mu1`), `1dfrustrated34.tex`, lines 331–337. -/
+private theorem exists_unit_rank_one_overlap_bootstrap
     {m n : Type*} [Fintype m] [Fintype n]
     (K : Matrix (m × n) (m × n) ℂ)
-    (Γ : EuclideanSpace ℂ (m × n))
-    (hΓ : ‖Γ‖ = 1)
+    (Γ : EuclideanSpace ℂ (m × n)) (hΓ : ‖Γ‖ = 1)
     (hfix : Matrix.toEuclideanLin K Γ = Γ)
     {D : ℕ} {δ : ℝ}
     (hperp : ∀ ψ : EuclideanSpace ℂ (m × n),
       ‖ψ‖ = 1 → ⟪Γ, ψ⟫_ℂ = 0 →
         ⟪Γ, Matrix.toEuclideanLin K ψ⟫_ℂ = 0 ∧
           ‖Matrix.toEuclideanLin K ψ‖ ^ 2 ≤ δ)
-    (hrank : Matrix.operatorSchmidtRank K ≤ D)
-    (htradeoff : (D : ℝ) * δ ≤ 1 / 2) :
-    ∃ (u : m → ℂ) (v : n → ℂ),
-      let φ : EuclideanSpace ℂ (m × n) :=
-        WithLp.toLp 2 (fun p ↦ u p.1 * v p.2)
-      ‖φ‖ = 1 ∧
-        1 / Real.sqrt (2 * (D : ℝ)) ≤ ‖⟪Γ, φ⟫_ℂ‖ := by
+    (hrank : Matrix.operatorSchmidtRank K ≤ D) :
+    ∃ φ : EuclideanSpace ℂ (m × n), 1 ≤ D ∧ ‖φ‖ = 1 ∧
+      schmidtRank (WithLp.ofLp φ) ≤ 1 ∧
+      0 < ‖⟪Γ, φ⟫_ℂ‖ ^ 2 ∧ ‖⟪Γ, φ⟫_ℂ‖ ^ 2 ≤ 1 ∧
+      ‖φ - ⟪Γ, φ⟫_ℂ • Γ‖ ^ 2 = 1 - ‖⟪Γ, φ⟫_ℂ‖ ^ 2 ∧
+      1 ≤ (D : ℝ) * (‖⟪Γ, φ⟫_ℂ‖ ^ 2 + δ * (1 - ‖⟪Γ, φ⟫_ℂ‖ ^ 2)) := by
   classical
   have hΓne : Γ ≠ 0 := by
     apply norm_ne_zero_iff.mp
@@ -377,6 +373,38 @@ theorem exists_unit_product_overlap_ge_of_operatorSchmidtRank
         _ ≤ (D : ℝ) * x * (x + δ * (1 - x)) := hbound
         _ = x * ((D : ℝ) * (x + δ * (1 - x))) := by ring
     exact le_of_mul_le_mul_left hscaled hx0
+  exact ⟨φ, hD, hφ, hφrank, hx0, hx1, hnormv, hbootstrap⟩
+
+open Classical in
+/-- A fixed unit vector preserved by a bipartite operator has a unit product
+vector of overlap at least 1/√(2D) under the stated rank and shrinking tradeoff.
+
+AKLV, arXiv:1301.1162v1, Definition 2.1 (`def:AGSP`), Lemma 2.2 (`lem:mu1`),
+and the unique-ground-state applications in Sections 4 and 6.1;
+`1dfrustrated34.tex`, lines 296–337, 534–537 and 879–883.
+The shrinking parameter may be any real number. -/
+theorem exists_unit_product_overlap_ge_of_operatorSchmidtRank
+    {m n : Type*} [Fintype m] [Fintype n]
+    (K : Matrix (m × n) (m × n) ℂ)
+    (Γ : EuclideanSpace ℂ (m × n))
+    (hΓ : ‖Γ‖ = 1)
+    (hfix : Matrix.toEuclideanLin K Γ = Γ)
+    {D : ℕ} {δ : ℝ}
+    (hperp : ∀ ψ : EuclideanSpace ℂ (m × n),
+      ‖ψ‖ = 1 → ⟪Γ, ψ⟫_ℂ = 0 →
+        ⟪Γ, Matrix.toEuclideanLin K ψ⟫_ℂ = 0 ∧
+          ‖Matrix.toEuclideanLin K ψ‖ ^ 2 ≤ δ)
+    (hrank : Matrix.operatorSchmidtRank K ≤ D)
+    (htradeoff : (D : ℝ) * δ ≤ 1 / 2) :
+    ∃ (u : m → ℂ) (v : n → ℂ),
+      let φ : EuclideanSpace ℂ (m × n) :=
+        WithLp.toLp 2 (fun p ↦ u p.1 * v p.2)
+      ‖φ‖ = 1 ∧
+        1 / Real.sqrt (2 * (D : ℝ)) ≤ ‖⟪Γ, φ⟫_ℂ‖ := by
+  classical
+  obtain ⟨φ, hD, hφ, hφrank, hx0, hx1, _, hbootstrap⟩ :=
+    exists_unit_rank_one_overlap_bootstrap K Γ hΓ hfix hperp hrank
+  let a : ℂ := ⟪Γ, φ⟫_ℂ
   have hxlower := (overlap_scalar_bootstrap hD htradeoff hx0 hx1 hbootstrap).2
   have hroot : 1 / Real.sqrt (2 * (D : ℝ)) ≤ ‖a‖ := by
     have hs : Real.sqrt (1 / (2 * (D : ℝ))) ≤ ‖a‖ := by
@@ -392,5 +420,42 @@ theorem exists_unit_product_overlap_ge_of_operatorSchmidtRank
   dsimp only
   rw [hproduct]
   exact ⟨hφ, hroot⟩
+
+open Classical in
+/-- A fixed unit vector is a product vector if an operator of operator-Schmidt rank
+at most one preserves its orthogonal complement and contracts squared norms there
+by a real factor strictly less than one. This is the rank-one endpoint of the
+maximizing-vector argument in AKLV, arXiv:1301.1162v1, Definition 2.1 (`def:AGSP`)
+and Lemma 2.2 (`lem:mu1`), `1dfrustrated34.tex`, lines 296–337.
+No nonnegativity premise on the shrinking factor is required. -/
+theorem schmidtRank_le_one_of_operatorSchmidtRank_le_one
+    {m n : Type*} [Fintype m] [Fintype n]
+    (K : Matrix (m × n) (m × n) ℂ)
+    (Γ : EuclideanSpace ℂ (m × n)) (hΓ : ‖Γ‖ = 1)
+    (hfix : Matrix.toEuclideanLin K Γ = Γ)
+    {δ : ℝ}
+    (hperp : ∀ ψ : EuclideanSpace ℂ (m × n),
+      ‖ψ‖ = 1 → ⟪Γ, ψ⟫_ℂ = 0 →
+        ⟪Γ, Matrix.toEuclideanLin K ψ⟫_ℂ = 0 ∧
+          ‖Matrix.toEuclideanLin K ψ‖ ^ 2 ≤ δ)
+    (hrank : Matrix.operatorSchmidtRank K ≤ 1) (hδ : δ < 1) :
+    schmidtRank (WithLp.ofLp Γ) ≤ 1 := by
+  classical
+  obtain ⟨φ, _, _, hφrank, hxpos, _, hnormv, hbootstrap⟩ :=
+    exists_unit_rank_one_overlap_bootstrap K Γ hΓ hfix hperp hrank
+  simp only [Nat.cast_one, one_mul] at hbootstrap
+  have hfactor : (1 - δ) * (1 - ‖⟪Γ, φ⟫_ℂ‖ ^ 2) ≤ (1 - δ) * 0 := by
+    nlinarith only [hbootstrap]
+  have hxge : 1 ≤ ‖⟪Γ, φ⟫_ℂ‖ ^ 2 :=
+    sub_nonpos.mp (le_of_mul_le_mul_left hfactor (sub_pos.mpr hδ))
+  have hres : ‖φ - ⟪Γ, φ⟫_ℂ • Γ‖ ^ 2 = 0 :=
+    le_antisymm (hnormv.trans_le (sub_nonpos.mpr hxge)) (sq_nonneg _)
+  have hscale : φ = ⟪Γ, φ⟫_ℂ • Γ :=
+    sub_eq_zero.mp (norm_eq_zero.mp (sq_eq_zero_iff.mp hres))
+  have ha : ⟪Γ, φ⟫_ℂ ≠ 0 := fun hz ↦ by simp [hz] at hxpos
+  have hscaled : schmidtRank (WithLp.ofLp (⟪Γ, φ⟫_ℂ • Γ)) ≤ 1 :=
+    (congrArg (fun ψ : EuclideanSpace ℂ (m × n) ↦
+      schmidtRank (WithLp.ofLp ψ)) hscale) ▸ hφrank
+  simpa only [WithLp.ofLp_smul, schmidtRank_smul_eq_of_ne_zero _ ha] using hscaled
 
 end Matrix
