@@ -7,6 +7,23 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Trace normalization of a bipartite unit vector — shared lemma (2026-10-23)
+
+- **Seen:** The orthogonal-decomposition quotient and geometric-tail theorem in
+  `Channel.AGSPGeometricTails`, and the rank-one endpoint and favorable entropy
+  theorem in `Channel.AGSPFavorableEntropy`; four callers across two files.
+- **Decision:** Use
+  `Matrix.trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one` for the complex
+  trace. For its real part, apply `congrArg Complex.re` and simplify
+  `Complex.one_re`.
+- **Reused:** `Matrix.normSq_toEuclid`, trace cyclicity and
+  `Matrix.IsHermitian.trace_eq_ofReal_re` identify the trace with the squared
+  norm of the original vector. No supplied density normalization is assumed.
+- **Callers:** `one_sub_kyFanNorm_le_of_orthogonal_decomposition`,
+  `sum_eigenvalues_geometric_tail_of_operatorSchmidtRank`,
+  `vonNeumannEntropy_reduced_eq_zero_of_operatorSchmidtRank_le_one`, and
+  `vonNeumannEntropy_reduced_le_four_log_of_operatorSchmidtRank`.
+
 ### Entropy comparison with a supplied uniform norm bound — shared private lemma (2026-10-18)
 
 - **Seen:** The polynomial and logarithmic buffered-discount theorems in

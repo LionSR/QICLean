@@ -8,6 +8,8 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel
 
+import QICLean.Channel.AGSPFavorableEntropy
+import QICLean.Channel.AGSPGeometricTails
 import QICLean.Channel.Basic
 import QICLean.Channel.BreuerHallIndecomposable
 import QICLean.Channel.BreuerHallMap
