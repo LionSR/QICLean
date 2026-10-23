@@ -119,6 +119,7 @@ import QICLean.Channel.PositiveFunctional
 import QICLean.Channel.PositiveMapDetection
 import QICLean.Channel.Primitive
 import QICLean.Channel.ProjectiveResolution
+import QICLean.Channel.PureMarginalRank
 import QICLean.Channel.QuantumSteering
 import QICLean.Channel.QuantumWielandt
 import QICLean.Channel.RadonNikodym
@@ -130,6 +131,7 @@ import QICLean.Channel.SchmidtNumber
 import QICLean.Channel.SchmidtNumberCompact
 import QICLean.Channel.SchmidtNumberFactors
 import QICLean.Channel.SchmidtRank
+import QICLean.Channel.SchmidtRankAction
 import QICLean.Channel.Schwarz
 import QICLean.Channel.SelfDual
 import QICLean.Channel.Semigroup

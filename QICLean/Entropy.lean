@@ -91,6 +91,7 @@ import QICLean.Entropy.PureTensorPower
 import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.RegionCovariance
 import QICLean.Entropy.RegionEntropy
+import QICLean.Entropy.RegionRank
 import QICLean.Entropy.RegionSplit
 import QICLean.Entropy.RegionTraceNorm
 import QICLean.Entropy.RegionUnion
@@ -103,6 +104,7 @@ import QICLean.Entropy.RestoringMarginal
 import QICLean.Entropy.RestoringNorm
 import QICLean.Entropy.RestoringOperators
 import QICLean.Entropy.RestoringVectors
+import QICLean.Entropy.RightLocalLift
 import QICLean.Entropy.SSAEqualityCharacterization
 import QICLean.Entropy.SchmidtPinning
 import QICLean.Entropy.SchmidtTilt

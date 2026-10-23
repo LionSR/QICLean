@@ -22,6 +22,20 @@ restricted to angles between zero and $\pi/4$.
     On the latter interval, $T(f)^2=4f(1-f)$.
 \end{definition}
 
+\begin{lemma}[Monotonicity of the optimized error]
+    \label{lem:optimized_pure_error_monotone}
+    \lean{Real.optimizedPureTraceError_antitoneOn}
+    \leanok
+    \uses{def:optimized_pure_trace_error}
+    If $0\le f\le g\le1$, then $T(g)\le T(f)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:optimized_pure_trace_error}
+    The function is constant on $[0,1/2]$. On $[1/2,1]$, the identity
+    $f(1-f)-g(1-g)=(g-f)(f+g-1)\ge0$ gives the result.
+    The two expressions agree at $1/2$.
+\end{proof}
+
 \begin{theorem}[Amplification below saturation]
     \label{thm:optimized_pure_error_power_small}
     \lean{Real.sqrt_mul_optimizedPureTraceError_le_pow_of_lt_one}
@@ -60,4 +74,68 @@ restricted to angles between zero and $\pi/4$.
     Otherwise $T(f^K)\ge1$, whereas the hypothesis gives
     $(\sqrt{K/8}\,T(f))^2\le1/4\le1$.
     Nonnegativity completes the proof.
+\end{proof}
+
+\begin{corollary}[Repeating a factor of maximal fidelity]
+    \label{cor:optimized_pure_error_max_factor}
+    \lean{Real.exists_optimizedPureTraceError_pow_le_prod}
+    \leanok
+    \uses{lem:optimized_pure_error_monotone}
+    Let $K\ge1$ and $f_1,\ldots,f_K\in[0,1]$. There is an index $i$ such that
+    $T(f_i^K)\le T(\prod_{j=1}^K f_j)$.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{lem:optimized_pure_error_monotone}
+    Choose $i$ with $f_i$ maximal. Then $\prod_j f_j\le f_i^K$,
+    and both quantities belong to $[0,1]$. Apply monotonicity.
+\end{proof}
+
+\section{Product replacement in subspaces}
+
+The following argument gives the Hilbert-space step in the product replacement
+proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
+
+\begin{theorem}[Product replacement in two subspaces]
+    \label{thm:product_overlap_subspaces}
+    \lean{TensorProduct.exists_unit_product_overlap_ge_of_subspaces}
+    \leanok
+    Let $E,F$ be complex inner product spaces and let $U\subseteq E$ and
+    $V\subseteq F$ admit orthogonal projections. Given a unit vector
+    $\Phi\in U\otimes V$ and arbitrary $a\in E$, $b\in F$, there are
+    unit vectors $u\in U$, $v\in V$ such that
+    $|\langle a\otimes b,\Phi\rangle|
+        \le |\langle a,u\rangle|\,|\langle b,v\rangle|$.
+\end{theorem}
+\begin{proof}\leanok
+    Let $p=P_Ua$ and $q=P_Vb$. Orthogonality and Cauchy--Schwarz give
+    $|\langle a\otimes b,\Phi\rangle|
+        =|\langle p\otimes q,\Phi\rangle|\le\|p\|\,\|q\|$.
+    When $p,q$ are nonzero, take $u=p/\|p\|$ and $v=q/\|q\|$.
+    If a projection vanishes, choose any unit vector in the corresponding
+    subspace. Such a vector exists because the unit vector $\Phi$ excludes
+    either subspace being zero. These choices attain the upper bound.
+\end{proof}
+
+\begin{theorem}[Product replacement in column and row spaces]
+    \label{thm:product_overlap_matrix_ranges}
+    \lean{Matrix.exists_unit_product_overlap_ge}
+    \leanok
+    \uses{thm:product_overlap_subspaces}
+    Let $C=(C_{ij})$ be a finite complex matrix with
+    $\sum_{i,j}|C_{ij}|^2=1$. For arbitrary vectors $a,b$ of the corresponding
+    dimensions, there are unit vectors $u\in\operatorname{range} C$ and
+    $v\in\operatorname{range} C^{\mathsf T}$ satisfying
+    \begin{align}
+        \label{eq:product_overlap_matrix_ranges}
+        \left|\sum_{i,j}\overline{a_i b_j}C_{ij}\right|
+        \le |\langle a,u\rangle|\,|\langle b,v\rangle|.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:product_overlap_subspaces}
+    Write $U=\operatorname{range} C$ and $V=\operatorname{range} C^{\mathsf T}$.
+    If $e_i$ are the coordinate vectors and $r_i=C^{\mathsf T}e_i$, then
+    $\sum_iP_Ue_i\otimes r_i$ has coefficient matrix $C$: its $j$th column
+    is $P_U(Ce_j)=Ce_j$. The canonical tensor coordinates preserve norms
+    and inner products. Apply Theorem~\ref{thm:product_overlap_subspaces}.
 \end{proof}
