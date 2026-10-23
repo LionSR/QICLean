@@ -1,0 +1,38 @@
+\section{Rényi lower bounds for approximation rank}
+\label{sec:renyi_rank_lower_bound}
+
+\begin{theorem}[Rényi lower bound for trace-norm approximation]
+  \label{thm:renyi_rank_lower_bound}
+  \lean{Matrix.PosSemidef.renyiEntropy_add_log_error_le_log_rank,
+    Matrix.PosSemidef.renyiEntropy_add_log_error_le_log_rank_of_rectangularTraceNorm}
+  \leanok
+  Let $\rho$ be a positive semidefinite matrix of trace one on a finite
+  Hilbert space, and let $\sigma$ be Hermitian with
+  $\operatorname{rank}\sigma\le D$. Suppose $\alpha>1$, $\delta<1$, and
+  $\lVert\rho-\sigma\rVert_1\le\delta$. Then
+  \begin{align}
+    S_\alpha(\rho)+\frac{\alpha}{\alpha-1}\log(1-\delta)
+      &\le\log D.
+  \end{align}
+  The approximating matrix need not be positive or normalized. Positivity
+  of $D$ follows from the hypotheses. This is the finite-dimensional
+  approximation estimate underlying the Rényi lower bound
+  of~\cite{Schuch2008EntropyScaling}, with the corrected sign of the error term; see
+  \cite{gap:swvc08_renyi_bond_dimension_sign}.
+\end{theorem}
+
+\begin{proof}\leanok
+  \uses{thm:spectral_tail_trace_norm,thm:renyi_mass_cardinality}
+  Write $p_1\ge\cdots\ge p_n\ge0$ for the eigenvalues of $\rho$.
+  The support-projection estimate gives
+  $\sum_{i>D}p_i\le\lVert\rho-\sigma\rVert_1\le\delta$.
+  Consequently, the first $D$ eigenvalues carry mass at least $1-\delta>0$,
+  and hence $D>0$. The finite-set Rényi mass inequality gives
+  \begin{align}
+    \frac{\log\sum_i p_i^\alpha}{1-\alpha}
+      +\frac{\alpha}{\alpha-1}\log(1-\delta)&\le\log D.
+  \end{align}
+  Spectral functional calculus identifies the first term with
+  $S_\alpha(\rho)$. A change of orthonormal coordinates preserves the
+  rank, trace, trace norm, and trace of every spectral function.
+\end{proof}
