@@ -71,7 +71,6 @@
     \lean{Matrix.PosSemidef.log_eigenvalue_tail_le,
         Matrix.PosSemidef.eigenvalue_tail_le_rpow}
     \leanok
-    \uses{thm:ordered_renyi_tail,thm:trace_power_ordered_spectrum}
     Let $\rho$ be a finite positive semidefinite matrix with decreasing
     eigenvalues $\lambda_i$. For a positive integer $D$ and
     $0<\alpha<1$, set
@@ -94,6 +93,7 @@
 \end{theorem}
 \begin{proof}
     \leanok
+    \uses{thm:ordered_renyi_tail,thm:trace_power_ordered_spectrum}
     Apply the ordered-weight theorem to the nonnegative eigenvalues and
     identify their power sum with $\operatorname{Tr}(\rho^\alpha)$.
 \end{proof}
