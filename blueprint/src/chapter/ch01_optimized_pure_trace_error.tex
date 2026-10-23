@@ -1,4 +1,4 @@
-\section{Scalar amplification of optimized pure-state error}
+\section{Optimized pure-state error and tensor powers}
 
 The scalar error below is the expression used in the discussion of optimized
 trace-norm error in \cite{Schuch2008Entropy}
@@ -138,4 +138,117 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     $\sum_iP_Ue_i\otimes r_i$ has coefficient matrix $C$: its $j$th column
     is $P_U(Ce_j)=Ce_j$. The canonical tensor coordinates preserve norms
     and inner products. Apply Theorem~\ref{thm:product_overlap_subspaces}.
+\end{proof}
+
+\begin{theorem}[Weighted pure-projection trace norm]
+    \label{thm:weighted_pure_trace_norm}
+    \lean{Matrix.re_trace_abs_vecMulVec_sub_smul_eq,
+        Matrix.rectangularTraceNorm_vecMulVec_sub_smul_eq}
+    \leanok
+    \uses{def:trace_norm}
+    Let $\psi,\phi$ be unit vectors in a finite-dimensional complex Hilbert
+    space, and put $P=\ketbra{\psi}{\psi}$,
+    $Q=\ketbra{\phi}{\phi}$ and $f=|\braket{\psi}{\phi}|^2$.
+    For every real $t\ge0$,
+    \begin{align*}
+        \lVert P-tQ\rVert_{\tr}
+        =\sqrt{(1-t)^2+4t(1-f)}.
+    \end{align*}
+    This is an auxiliary identity for the optimized pure-state error
+    in \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 139 and 160--173.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:trace_norm_abs}
+    Put $X=P-tQ$, $b=1-t$, $c=t(1-f)$,
+    $\Delta=b^2+4c$ and $N=2X^2-bX$.
+    The projection identities $P^2=P$, $Q^2=Q$, $PQP=fP$ and $QPQ=fQ$ give
+    \begin{align*}
+        X^3&=bX^2+cX,\\
+        N^2&=\Delta X^2.
+    \end{align*}
+    If $Y=(1+t)P-2tQ$, then
+    $(1+t)N=Y^2+t(1-t)^2Q\ge0$.
+    Thus $N\ge0$, since $Y$ is Hermitian, $Q\ge0$ and $1+t>0$.
+    Also
+    \begin{align*}
+        \tr(X^2)&=1+t^2-2tf,\\
+        \tr N&=\Delta.
+    \end{align*}
+    If $\Delta>0$, the positive square root of $X^2=X^\dagger X$ is
+    $N/\sqrt\Delta$. Theorem~\ref{thm:trace_norm_abs} therefore gives
+    $\lVert X\rVert_{\tr}=\tr N/\sqrt\Delta=\sqrt\Delta$.
+    If $\Delta=0$, the inequalities $0\le f\le1$ and $t\ge0$ give
+    $t=f=1$, hence $X^3=0$.
+    Hermiticity implies $(X^2)^\dagger X^2=X^4=0$, so $X^2=0$;
+    applying the same argument to $X^\dagger X$ gives $X=0$.
+    The asserted formula follows in both cases.
+\end{proof}
+
+\begin{theorem}[Attained optimized pure-state error]
+    \label{thm:optimized_pure_trace_minimum}
+    \lean{Matrix.isLeast_optimizedPureTraceError}
+    \leanok
+    \uses{def:trace_norm,def:optimized_pure_trace_error}
+    Let $\psi,\phi$ be nonzero vectors in a finite-dimensional complex
+    Hilbert space. Put $P=\ketbra{\psi}{\psi}$,
+    $Q=\ketbra{\phi}{\phi}$,
+    $a=\lVert\psi\rVert^2$, $b=\lVert\phi\rVert^2$ and
+    $f=|\braket{\psi}{\phi}|^2/(ab)$.
+    Then
+    \begin{align*}
+        \inf_{\alpha\in\C}
+        \frac{\lVert P-\alpha Q\rVert_{\tr}}{\lVert P\rVert_{\tr}}
+        =T(f)
+        &=\begin{cases}
+            2\sqrt{f(1-f)},&f\ge\tfrac12,\\
+            1,&f<\tfrac12.
+        \end{cases}
+    \end{align*}
+    The infimum is attained.
+    For $f=\cos^2\theta$ with $0\le\theta\le\pi/4$, this is the
+    optimized trace-norm error $\sin(2\theta)$ of
+    \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 139 and 160--173.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:weighted_pure_trace_norm,thm:source_branch_sum,
+        thm:random_trace_duality}
+    Since $a,b>0$, the vectors $u=\psi/\sqrt a$ and
+    $v=\phi/\sqrt b$ are unit vectors. Write $P_u=\ketbra{u}{u}$ and
+    $Q_v=\ketbra{v}{v}$. Then $P=aP_u$, $Q=bQ_v$,
+    $\lVert P\rVert_{\tr}=a$, and $f=|\braket{u}{v}|^2\in[0,1]$.
+    Homogeneity reduces the normalized error to
+    $\lVert P_u-\gamma Q_v\rVert_{\tr}$, where $\gamma=\alpha b/a$.
+    For a nonnegative real coefficient $t$, the weighted formula and
+    the identity
+    \begin{align*}
+        (1-t)^2+4t(1-f)
+        =(t-(2f-1))^2+4f(1-f)
+    \end{align*}
+    show that the minimum is $T(f)$ and is attained.
+    For $f\ge\tfrac12$, take $t=2f-1$; for $f<\tfrac12$, take $t=0$.
+    In particular, $T(f)\le1$, by testing $t=0$.
+
+    It remains to allow arbitrary complex $\gamma$.
+    Set $A=P_u-\gamma Q_v$ and $x=\re\gamma$.
+    The triangle inequality, homogeneity and invariance under adjoints give
+    \begin{align*}
+        \lVert P_u-xQ_v\rVert_{\tr}
+        =\left\lVert\frac{A+A^\dagger}{2}\right\rVert_{\tr}
+        \le\frac{\lVert A\rVert_{\tr}+\lVert A^\dagger\rVert_{\tr}}2
+        =\lVert A\rVert_{\tr}.
+    \end{align*}
+    If $x\ge0$, the real-coefficient minimum gives
+    $T(f)\le\lVert A\rVert_{\tr}$.
+    If $x<0$, trace-norm duality with the identity contraction gives
+    \begin{align*}
+        \lVert A\rVert_{\tr}
+        \ge|\tr A|\ge\re(\tr A)=1-x\ge1\ge T(f).
+    \end{align*}
+    Thus complex coefficients cannot lower the real-coefficient minimum.
+    Positive rescaling carries an attaining nonnegative real coefficient
+    to one for the original vectors. This is also an allowed complex
+    coefficient, so the stated infimum is attained.
+    Here $\alpha$ multiplies the density operator $Q$.
+    Rescaling the vector by $\phi\mapsto\lambda\phi$ instead produces
+    density coefficient $|\lambda|^2$. Zero is among the allowed coefficients.
 \end{proof}

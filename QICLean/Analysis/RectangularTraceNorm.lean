@@ -95,6 +95,13 @@ theorem rectangularTraceNorm_eq_sum_sqrt_eigenvalues (A : Matrix m n ℂ) :
   exact (Equiv.sum_comp (Fintype.equivOfCardEq (Fintype.card_fin (Fintype.card n))).symm
     fun j ↦ Real.sqrt (hH.isHermitian.eigenvalues₀ j)).symm
 
+/-- On any finite coordinate space, the nuclear norm of a square complex matrix
+is the real trace of its absolute value. Wolf, Chapter 8, Section 8.1. -/
+theorem rectangularTraceNorm_eq_re_trace_abs (A : Matrix n n ℂ) :
+    rectangularTraceNorm A = (CFC.abs A).trace.re := by
+  rw [rectangularTraceNorm_eq_sum_sqrt_eigenvalues, abs_eq_cfc_real_sqrt]
+  exact ((posSemidef_conjTranspose_mul_self A).isHermitian.trace_cfc_eq_sum_re Real.sqrt).symm
+
 omit [Fintype n] [DecidableEq n] in
 /-- A rectangular column pairing is an ordinary Euclidean inner product. -/
 lemma conjTranspose_mul_apply_self_eq_inner_rectangular
