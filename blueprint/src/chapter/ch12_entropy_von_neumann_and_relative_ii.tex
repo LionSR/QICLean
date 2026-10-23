@@ -360,6 +360,136 @@ the chapter boundary.
     same formula defines the rank of an arbitrary complex bipartite matrix.
 \end{definition}
 
+\begin{theorem}[Schmidt rank after application of an operator]
+    \label{thm:schmidt_rank_operator_action}
+    \lean{Matrix.schmidtRank_mulVec_le}
+    \leanok
+    \uses{def:schmidt_rank,def:bipartite_operator_schmidt_rank}
+    Let $I,J$ be finite sets, possibly empty, let
+    $K$ be a complex matrix on $\C^I\otimes\C^J$, and let
+    $\psi\in\C^I\otimes\C^J$. Then
+    \begin{align}
+        \SR(K\psi) & \le\operatorname{OSR}(K)\,\SR(\psi).
+        \label{eq:schmidt_rank_operator_action_rank_bound}
+    \end{align}
+    No normalization or positivity is assumed.
+    This is the rank-growth implication used with
+    \cite[Definition~2.1]{Arad2013AreaLaw} and the product-operator
+    decomposition in \cite[``Error Reduction'']{Landau2013PolynomialTime}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{def:schmidt_rank,def:bipartite_operator_schmidt_rank,
+        lem:matrix_rank_factorization_coordinate}
+    Put $r=\operatorname{OSR}(K)$ and $s=\SR(\psi)$.
+    Choose a product decomposition $K=\sum_{t=0}^{r-1}A_t\otimes B_t$.
+    The coefficient matrix $C_\psi$ has rank $s$, so
+    Lemma~\ref{lem:matrix_rank_factorization_coordinate} gives
+    $C_\psi=PQ$ with $P\in\C^{I\times s}$ and $Q\in\C^{s\times J}$.
+    The action of each product operator gives
+    \begin{align}
+        C_{K\psi}
+         & =\sum_{t=0}^{r-1}A_tC_\psi B_t^{\mathsf T}
+        =\sum_{t=0}^{r-1}(A_tP)(QB_t^{\mathsf T})=LR,
+        \label{eq:schmidt_rank_operator_action_rank_factorization}
+    \end{align}
+    where the inner index of $L$ and $R$ is the set of pairs
+    $(t,u)$ with $0\le t<r$ and $0\le u<s$, and
+    \begin{align}
+        L_{i,(t,u)} & =(A_tP)_{i,u},
+                    & R_{(t,u),j}    & =(QB_t^{\mathsf T})_{u,j}.
+        \label{eq:schmidt_rank_operator_action_factor_entries}
+    \end{align}
+    Consequently $\rank(C_{K\psi})=\rank(LR)\le\rank(L)\le rs$.
+    The same formulas apply when either rank is zero, since the set of
+    pairs is then empty.
+\end{proof}
+
+
+\begin{theorem}[Product overlap from an invariant unit vector]
+    \label{thm:product_overlap_fixed_invariant_vector}
+    \lean{Matrix.exists_unit_product_overlap_ge_of_operatorSchmidtRank}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $I,J$ be finite sets, let $\Gamma\in\C^I\otimes\C^J$ be a unit
+    vector, and let $K$ be a linear operator on this tensor product satisfying
+    $K\Gamma=\Gamma$. Let $D\in\N$ and $\delta\in\R$. Assume that
+    $\operatorname{OSR}(K)\le D$ and $D\delta\le 1/2$.
+    Suppose that every unit vector $\psi\perp\Gamma$ satisfies
+    \begin{align}
+        \langle\Gamma,K\psi\rangle & =0,
+                                   & \|K\psi\|^2 & \le\delta.
+        \label{eq:product_overlap_perp_shrink}
+    \end{align}
+    Then there are vectors $u\in\C^I$ and $v\in\C^J$ such that
+    $\phi=u\otimes v$ has norm one and
+    \begin{align}
+        |\langle\Gamma,\phi\rangle|
+         & \ge\frac{1}{\sqrt{2D}}.
+        \label{eq:product_overlap_lower_bound}
+    \end{align}
+    The parameter $\delta$ need not be nonnegative. In the unique-ground-state
+    setting, the invariance and shrinking conditions are those of an approximate
+    ground-space projector; compare
+    \cite[Lemma~2.2 and Sections~4 and~6.1]{Arad2013AreaLaw}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:schmidt_rank_operator_action,
+        thm:operator_schmidt_rank_pos,
+        thm:maximal_overlap_schmidt_rank,
+        thm:maximal_overlap_schmidt_rank_top,
+        lem:matrix_rank_factorization_coordinate}
+    Since $K\Gamma=\Gamma$ and $\|\Gamma\|=1$, the operator $K$ is
+    nonzero and $D\ge1$. The maximal-overlap principle gives a unit vector
+    $\phi$ of Schmidt rank at most one whose squared overlap with $\Gamma$
+    equals the largest eigenvalue of the reduced state of $\Gamma$. Write
+    $a=\langle\Gamma,\phi\rangle$ and $x=|a|^2$.
+    That eigenvalue is positive, so $0<x\le1$.
+    Set $w=\phi-a\Gamma$. Then $w\perp\Gamma$ and
+    $\|w\|^2=1-x$.
+
+    Rescaling nonzero perpendicular vectors extends
+    (\ref{eq:product_overlap_perp_shrink}) homogeneously; the zero vector
+    satisfies the same conclusion. Thus $Kw\perp\Gamma$ and
+    $\|Kw\|^2\le\delta(1-x)$. Consequently
+    \begin{align}
+        K\phi       & =a\Gamma+Kw,
+                    & |\langle\Gamma,K\phi\rangle|^2 & =x,
+        \label{eq:product_overlap_output}                  \\
+        \|K\phi\|^2 & =x+\|Kw\|^2
+        \le x+\delta(1-x).
+        \label{eq:product_overlap_output_norm}
+    \end{align}
+    The Schmidt rank of $K\phi$ is at most $D$ by
+    Theorem~\ref{thm:schmidt_rank_operator_action}.
+    The maximal-overlap principle bounds the squared overlap of any
+    unit vector of rank at most $D$ by the sum of the $D$ largest
+    reduced-state eigenvalues. Each eigenvalue is at most $x$, so
+    homogeneity gives
+    \begin{align}
+        x & \le Dx\,\|K\phi\|^2
+        \le Dx\bigl(x+\delta(1-x)\bigr).
+        \label{eq:product_overlap_bootstrap}
+    \end{align}
+    This estimate also includes a zero output. The maximal-overlap
+    principle at the full dimension covers the endpoint when $D$ is
+    at least the dimension of the first factor.
+    Dividing~(\ref{eq:product_overlap_bootstrap}) by $x>0$ and using
+    $0\le x\le1$ yields
+    \begin{align}
+        1 & \le Dx+D\delta(1-x)
+        \le Dx+\tfrac12(1-x)
+        \le Dx+\tfrac12.
+        \label{eq:product_overlap_scalar_bound}
+    \end{align}
+    Hence $x\ge1/(2D)$. The rank-one coefficient-matrix factorization
+    writes the actual maximizing vector as $u\otimes v$. Taking square
+    roots gives~(\ref{eq:product_overlap_lower_bound}).
+\end{proof}
+
 \begin{theorem}[Raw Petz factorization for a product reference]
     \label{thm:entropy_petz_product_tensor}
     \lean{Matrix.partialTraceRightPetzMap_productTensor_kronecker,
