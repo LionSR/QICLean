@@ -1216,3 +1216,14 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Uniform-weight Jensen bounds for entropy contributions (2026-10-23)
+
+- **Seen:** `Analysis.ProbabilityEntropy` and
+  `Analysis.ProbabilityEntropyConcentration` apply concavity of `negMulLog`
+  with reciprocal-cardinality weights, then multiply by the cardinality.
+- **Candidate:** `Entropy.sum_negMulLog_le_mass_log_card` now gives the
+  finite-mass estimate, including an empty set. A future consolidation can
+  put this lower-level estimate before the normalized support theorem and
+  derive the latter from it. There are two occurrences, below the promotion
+  threshold; no new tactic or simp set is introduced.
