@@ -270,6 +270,7 @@ import QICLean.Analysis.SurprisalProductMoment
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
+import QICLean.Analysis.TraceExponentialPerturbation
 import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceMulBound
 import QICLean.Analysis.TraceNormAbs
