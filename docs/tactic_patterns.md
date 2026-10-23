@@ -1249,3 +1249,15 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Equality decisions in finite coordinates — existing lemma (2026-10-23)
+
+- **Occurrences:** The one-dimensional and two-qubit applications in
+  `QICLeanTest/AGSPFavorableEntropyAxioms.lean`, and both configuration factors
+  in `QICLean/Entropy/AGSPRegionalEntropy.lean`.
+- **Reuse:** `Subsingleton.elim` identifies a classically chosen `DecidableEq`
+  value with the available value before applying a theorem whose matrix
+  expressions contain those decisions.
+- **Decision:** Rewrite only the decision values. The operators, vectors,
+  regions, ranks and shrinking hypotheses are unchanged. The existing lemma
+  suffices; no new theorem, tactic or simp set is required.
