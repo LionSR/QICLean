@@ -95,6 +95,7 @@ theorem rectangularTraceNorm_eq_sum_sqrt_eigenvalues (A : Matrix m n ℂ) :
   exact (Equiv.sum_comp (Fintype.equivOfCardEq (Fintype.card_fin (Fintype.card n))).symm
     fun j ↦ Real.sqrt (hH.isHermitian.eigenvalues₀ j)).symm
 
+open scoped MatrixOrder in
 /-- On any finite coordinate space, the nuclear norm of a square complex matrix
 is the real trace of its absolute value. Wolf, Chapter 8, Section 8.1. -/
 theorem rectangularTraceNorm_eq_re_trace_abs (A : Matrix n n ℂ) :
