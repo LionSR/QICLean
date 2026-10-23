@@ -360,6 +360,41 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     $|\braket{\phi}{\psi}|^2\le\|\phi\|^2\|\psi\|^2=1$.
 \end{proof}
 
+\begin{theorem}[Homogeneous Schmidt overlap bound]
+    \label{thm:homogeneous_schmidt_overlap_bound}
+    \lean{Matrix.normSq_inner_le_kyFanNorm}
+    \leanok
+    \uses{def:schmidt_rank, def:ky_fan_norm}
+    Let $\Psi,\Phi\in\mathbb C^m\otimes\mathbb C^n$, with
+    $\|\Phi\|=1$ and $\SR(\Phi)\le D$, where $D\ge0$ is an integer.
+    Set $\rho=\tr_2|\Psi\rangle\langle\Psi|$. Then
+    \begin{align}
+        |\langle\Psi,\Phi\rangle|^2 & \le\|\rho\|_{(D)}.
+        \label{eq:homogeneous_schmidt_overlap_bound}
+    \end{align}
+    No normalization of $\Psi$ is required. If $D\ge m$, the right-hand
+    side is $\tr\rho=\|\Psi\|^2$. This is the homogeneous upper bound
+    underlying \cite[Lemma~3.1]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:ky_fan_upper_bound}
+    Write $C$ and $B$ for the coefficient matrices of $\Psi$ and $\Phi$.
+    The support projection $P$ of $BB^\dagger$ has rank at most $D$.
+    Since $PB=B$ and $\tr(B^\dagger B)=1$, the Hilbert--Schmidt
+    Cauchy--Schwarz inequality gives
+    \begin{align}
+        |\tr(C^\dagger B)|^2 & \le\tr(PCC^\dagger).
+        \label{eq:homogeneous_schmidt_overlap_support}
+    \end{align}
+    For $D<m$, applying the Ky Fan variational bound to
+    (\ref{eq:homogeneous_schmidt_overlap_support}) proves
+    (\ref{eq:homogeneous_schmidt_overlap_bound}).
+    For $D\ge m$, ordinary Cauchy--Schwarz gives the bound
+    $\|\Psi\|^2=\tr\rho$.
+\end{proof}
+
 \begin{definition}[Reduced density of an eigenvector]
     \label{def:reduced_eig_density}
     \lean{Matrix.IsHermitian.reducedEigDensity}

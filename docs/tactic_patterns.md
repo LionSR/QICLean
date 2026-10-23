@@ -1216,3 +1216,38 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Weighted pure-state projection identities — shared lemma (2026-10-23)
+
+- **Seen:** The equal-weight pure-state trace distance and the optimized
+  pure-state trace-norm error use the same rank-one projection identities.
+- **Decision:** `Matrix.re_trace_abs_vecMulVec_sub_smul_eq` in
+  `Analysis.WeightedPureStateTraceNorm` contains the projection calculation
+  once. The old trace-distance theorem specializes its coefficient to one;
+  `Analysis.OptimizedPureStateTraceError` uses it after positive rescaling.
+- **Mechanism:** Existing `module` handles scalar polynomial identities
+  after distributivity; existing functional-calculus square-root uniqueness
+  identifies the absolute value. No new tactic is needed.
+- **Caveat:** The density coefficient is nonnegative in the weighted
+  identity. The final minimum separately treats all complex coefficients
+  by Hermitian-part contraction and trace duality.
+
+### Uniform-weight Jensen bounds for entropy contributions (2026-10-23)
+
+- **Seen:** `Analysis.ProbabilityEntropy` and
+  `Analysis.ProbabilityEntropyConcentration` apply concavity of `negMulLog`
+  with reciprocal-cardinality weights, then multiply by the cardinality.
+- **Candidate:** `Entropy.sum_negMulLog_le_mass_log_card` now gives the
+  finite-mass estimate, including an empty set. A future consolidation can
+  put this lower-level estimate before the normalized support theorem and
+  derive the latter from it. There are two occurrences, below the promotion
+  threshold; no new tactic or simp set is introduced.
+
+## Candidate: ordered eigenvalue tails as finite probability tails (2026-10-23)
+
+The conversion from a natural-number interval of descending eigenvalues to the
+complement of a filtered finite ordinal appears in
+`Analysis.VonNeumannEntropySpectralTail` and `Entropy.RenyiRankLowerBound`
+(the latter is developed separately). Both use `Fin.sum_univ_eq_sum_range`
+and the equality between a filtered range and an interval. A third independent
+use should promote this conversion to a shared eigenvalue-sum lemma.
