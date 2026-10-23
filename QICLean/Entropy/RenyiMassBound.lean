@@ -17,8 +17,7 @@ incorrect plus sign before the absolute logarithm; the preceding power-sum
 inequality gives the minus sign proved here.
 
 **Local fix (error-term sign):** the correction is documented in TNLean's
-`docs/paper-gaps/swvc08_renyi_bond_dimension_sign.tex`, introduced by
-https://github.com/LionSR/TNLean/pull/10006.
+[Rényi bond-dimension sign note](https://github.com/LionSR/TNLean/commit/ebf04b6495d29691ddefac5c85dd70ca6ba3bad6#diff-83cdf7e9f9eb1a229f1f7c212c73baa355968807efb4cef898c364519490b75a).
 -/
 
 open scoped BigOperators
