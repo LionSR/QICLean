@@ -5,6 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.Entropy.Renyi.Smooth
 
+/-! # Approximate minimizers and axioms for smooth Rényi entropy -/
+
 open scoped ComplexOrder
 open Matrix
 
@@ -16,6 +18,8 @@ example {ι : Type*} [Fintype ι] [DecidableEq ι] {ρ : Matrix ι ι ℂ}
       σ.trace = 1 ∧ rectangularTraceNorm (ρ - σ) ≤ ε ∧
         renyiEntropy σ hσ.isHermitian α < S + 1 :=
   exists_densityMatrix_renyiEntropy_lt hρ htr α hε (lt_of_le_of_lt hS (by linarith))
+
+set_option linter.hashCommand false
 
 /-- info: 'renyiEntropy_mem_smoothRenyiEntropyValues' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
