@@ -12,12 +12,13 @@ restricted to angles between zero and $\pi/4$.
         Real.half_le_of_optimizedPureTraceError_lt_one}
     \leanok
     For $f\in[0,1]$, define
-    \begin{align*}
-        T(f)=\begin{cases}
-                 2\sqrt{f(1-f)}, & f\ge\tfrac12, \\
-                 1,              & f<\tfrac12.
-             \end{cases}
-    \end{align*}
+    \begin{align}
+        T(f) & =\begin{cases}
+                    2\sqrt{f(1-f)}, & f\ge\tfrac12, \\
+                    1,              & f<\tfrac12.
+                \end{cases}
+        \label{eq:optimized_error_scalar}
+    \end{align}
     Thus $T(f)\ge0$, and $T(f)<1$ implies $f\ge\tfrac12$.
     On the latter interval, $T(f)^2=4f(1-f)$.
 \end{definition}
@@ -164,10 +165,11 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     space, and put $P=\ketbra{\psi}{\psi}$,
     $Q=\ketbra{\phi}{\phi}$ and $f=|\braket{\psi}{\phi}|^2$.
     For every real $t\ge0$,
-    \begin{align*}
+    \begin{align}
         \lVert P-tQ\rVert_{\tr}
-        =\sqrt{(1-t)^2+4t(1-f)}.
-    \end{align*}
+         & =\sqrt{(1-t)^2+4t(1-f)}.
+        \label{eq:optimized_error_weighted}
+    \end{align}
     This is an auxiliary identity for the optimized pure-state error
     in \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 139 and 160--173.
 \end{theorem}
@@ -176,23 +178,26 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     Put $X=P-tQ$, $b=1-t$, $c=t(1-f)$,
     $\Delta=b^2+4c$ and $N=2X^2-bX$.
     The projection identities $P^2=P$, $Q^2=Q$, $PQP=fP$ and $QPQ=fQ$ give
-    \begin{align*}
-        X^3 & =bX^2+cX,    \\
+    \begin{align}
+        X^3 & =bX^2+cX, \label{eq:optimized_error_cubic} \\
         N^2 & =\Delta X^2.
-    \end{align*}
+        \label{eq:optimized_error_square}
+    \end{align}
     If $Y=(1+t)P-2tQ$, then
     $(1+t)N=Y^2+t(1-t)^2Q\ge0$.
     Thus $N\ge0$, since $Y$ is Hermitian, $Q\ge0$ and $1+t>0$.
     Also
-    \begin{align*}
-        \tr(X^2) & =1+t^2-2tf, \\
+    \begin{align}
+        \tr(X^2) & =1+t^2-2tf, \notag \\
         \tr N    & =\Delta.
-    \end{align*}
-    If $\Delta>0$, the positive square root of $X^2=X^\dagger X$ is
-    $N/\sqrt\Delta$. Theorem~\ref{thm:trace_norm_abs} therefore gives
+        \label{eq:optimized_error_traces}
+    \end{align}
+    If $\Delta>0$, (\ref{eq:optimized_error_square}) and positivity show
+    that the positive square root of $X^2=X^\dagger X$ is $N/\sqrt\Delta$.
+    Theorem~\ref{thm:trace_norm_abs} and (\ref{eq:optimized_error_traces}) give
     $\lVert X\rVert_{\tr}=\tr N/\sqrt\Delta=\sqrt\Delta$.
     If $\Delta=0$, the inequalities $0\le f\le1$ and $t\ge0$ give
-    $t=f=1$, hence $X^3=0$.
+    $t=f=1$, and (\ref{eq:optimized_error_cubic}) gives $X^3=0$.
     Hermiticity implies $(X^2)^\dagger X^2=X^4=0$, so $X^2=0$;
     applying the same argument to $X^\dagger X$ gives $X=0$.
     The asserted formula follows in both cases.
@@ -209,7 +214,7 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     $a=\lVert\psi\rVert^2$, $b=\lVert\phi\rVert^2$ and
     $f=|\braket{\psi}{\phi}|^2/(ab)$.
     Then
-    \begin{align*}
+    \begin{align}
         \inf_{\alpha\in\C}
         \frac{\lVert P-\alpha Q\rVert_{\tr}}{\lVert P\rVert_{\tr}}
         =T(f)
@@ -217,7 +222,8 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
                 2\sqrt{f(1-f)}, & f\ge\tfrac12, \\
                 1,              & f<\tfrac12.
             \end{cases}
-    \end{align*}
+        \label{eq:optimized_error_minimum}
+    \end{align}
     The infimum is attained.
     For $f=\cos^2\theta$ with $0\le\theta\le\pi/4$, this is the
     optimized trace-norm error $\sin(2\theta)$ of
@@ -232,33 +238,38 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     $\lVert P\rVert_{\tr}=a$, and $f=|\braket{u}{v}|^2\in[0,1]$.
     Homogeneity reduces the normalized error to
     $\lVert P_u-\gamma Q_v\rVert_{\tr}$, where $\gamma=\alpha b/a$.
-    For a nonnegative real coefficient $t$, the weighted formula and
-    the identity
-    \begin{align*}
+    For a nonnegative real coefficient $t$, (\ref{eq:optimized_error_weighted})
+    and the identity
+    \begin{align}
         (1-t)^2+4t(1-f)
         =(t-(2f-1))^2+4f(1-f)
-    \end{align*}
+        \label{eq:optimized_error_completion}
+    \end{align}
     show that the minimum is $T(f)$ and is attained.
-    For $f\ge\tfrac12$, take $t=2f-1$; for $f<\tfrac12$, take $t=0$.
+    By (\ref{eq:optimized_error_completion}), take $t=2f-1$ when
+    $f\ge\tfrac12$, and $t=0$ when $f<\tfrac12$.
     In particular, $T(f)\le1$, by testing $t=0$.
 
     It remains to allow arbitrary complex $\gamma$.
     Set $A=P_u-\gamma Q_v$ and $x=\re\gamma$.
     The triangle inequality, homogeneity and invariance under adjoints give
-    \begin{align*}
+    \begin{align}
         \lVert P_u-xQ_v\rVert_{\tr}
         =\left\lVert\frac{A+A^\dagger}{2}\right\rVert_{\tr}
         \le\frac{\lVert A\rVert_{\tr}+\lVert A^\dagger\rVert_{\tr}}2
         =\lVert A\rVert_{\tr}.
-    \end{align*}
-    If $x\ge0$, the real-coefficient minimum gives
+        \label{eq:optimized_error_hermitian}
+    \end{align}
+    If $x\ge0$, (\ref{eq:optimized_error_hermitian}) and the real-coefficient minimum give
     $T(f)\le\lVert A\rVert_{\tr}$.
     If $x<0$, trace-norm duality with the identity contraction gives
-    \begin{align*}
+    \begin{align}
         \lVert A\rVert_{\tr}
         \ge|\tr A|\ge\re(\tr A)=1-x\ge1\ge T(f).
-    \end{align*}
-    Thus complex coefficients cannot lower the real-coefficient minimum.
+        \label{eq:optimized_error_trace}
+    \end{align}
+    By (\ref{eq:optimized_error_hermitian}) and (\ref{eq:optimized_error_trace}),
+    complex coefficients cannot lower the real-coefficient minimum.
     Positive rescaling carries an attaining nonnegative real coefficient
     to one for the original vectors. This is also an allowed complex
     coefficient, so the stated infimum is attained.
