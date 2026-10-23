@@ -215,7 +215,10 @@ private theorem norm_trace_le_rectangularTraceNorm [DecidableEq n] (A : Matrix n
   simpa only [mul_one, trace_conjTranspose, norm_star] using
     norm_trace_conjTranspose_mul_le_rectangularTraceNorm A 1 h1
 
-private theorem rectangularTraceNorm_euclideanOuterProduct_self [DecidableEq n]
+/-- The full trace norm of a pure density is the squared norm of its vector.
+Wolf, Chapter 8, Section 8.1; Schuch--Wolf--Verstraete--Cirac,
+arXiv:0705.0292v2, lines 139 and 169. -/
+theorem rectangularTraceNorm_euclideanOuterProduct_self [DecidableEq n]
     (ψ : EuclideanSpace ℂ n) :
     rectangularTraceNorm (euclideanOuterProduct ψ ψ) = ‖ψ‖ ^ 2 := by
   simp only [rectangularTraceNorm_eq_re_trace_abs, euclideanOuterProduct,

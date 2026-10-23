@@ -14,9 +14,9 @@ restricted to angles between zero and $\pi/4$.
     For $f\in[0,1]$, define
     \begin{align*}
         T(f)=\begin{cases}
-            2\sqrt{f(1-f)},&f\ge\tfrac12,\\
-            1,&f<\tfrac12.
-        \end{cases}
+                 2\sqrt{f(1-f)}, & f\ge\tfrac12, \\
+                 1,              & f<\tfrac12.
+             \end{cases}
     \end{align*}
     Thus $T(f)\ge0$, and $T(f)<1$ implies $f\ge\tfrac12$.
     On the latter interval, $T(f)^2=4f(1-f)$.
@@ -140,6 +140,20 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     and inner products. Apply Theorem~\ref{thm:product_overlap_subspaces}.
 \end{proof}
 
+\begin{theorem}[Trace norm of a pure density]
+    \label{thm:pure_density_trace_norm}
+    \lean{Matrix.rectangularTraceNorm_euclideanOuterProduct_self}
+    \leanok
+    \uses{def:trace_norm}
+    For every vector $\psi$ in a finite-dimensional complex Hilbert space,
+    $\lVert\ketbra{\psi}{\psi}\rVert_{\tr}=\lVert\psi\rVert^2$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:trace_norm_abs}
+    The pure density is positive semidefinite, so its absolute value is
+    itself. Its trace is $\langle\psi,\psi\rangle=\lVert\psi\rVert^2$.
+\end{proof}
+
 \begin{theorem}[Weighted pure-projection trace norm]
     \label{thm:weighted_pure_trace_norm}
     \lean{Matrix.re_trace_abs_vecMulVec_sub_smul_eq,
@@ -163,16 +177,16 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     $\Delta=b^2+4c$ and $N=2X^2-bX$.
     The projection identities $P^2=P$, $Q^2=Q$, $PQP=fP$ and $QPQ=fQ$ give
     \begin{align*}
-        X^3&=bX^2+cX,\\
-        N^2&=\Delta X^2.
+        X^3 & =bX^2+cX,    \\
+        N^2 & =\Delta X^2.
     \end{align*}
     If $Y=(1+t)P-2tQ$, then
     $(1+t)N=Y^2+t(1-t)^2Q\ge0$.
     Thus $N\ge0$, since $Y$ is Hermitian, $Q\ge0$ and $1+t>0$.
     Also
     \begin{align*}
-        \tr(X^2)&=1+t^2-2tf,\\
-        \tr N&=\Delta.
+        \tr(X^2) & =1+t^2-2tf, \\
+        \tr N    & =\Delta.
     \end{align*}
     If $\Delta>0$, the positive square root of $X^2=X^\dagger X$ is
     $N/\sqrt\Delta$. Theorem~\ref{thm:trace_norm_abs} therefore gives
@@ -199,10 +213,10 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
         \inf_{\alpha\in\C}
         \frac{\lVert P-\alpha Q\rVert_{\tr}}{\lVert P\rVert_{\tr}}
         =T(f)
-        &=\begin{cases}
-            2\sqrt{f(1-f)},&f\ge\tfrac12,\\
-            1,&f<\tfrac12.
-        \end{cases}
+         & =\begin{cases}
+                2\sqrt{f(1-f)}, & f\ge\tfrac12, \\
+                1,              & f<\tfrac12.
+            \end{cases}
     \end{align*}
     The infimum is attained.
     For $f=\cos^2\theta$ with $0\le\theta\le\pi/4$, this is the
@@ -210,7 +224,7 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
     \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 139 and 160--173.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:weighted_pure_trace_norm,thm:source_branch_sum,
+    \uses{thm:weighted_pure_trace_norm,thm:pure_density_trace_norm,thm:source_branch_sum,
         thm:random_trace_duality}
     Since $a,b>0$, the vectors $u=\psi/\sqrt a$ and
     $v=\phi/\sqrt b$ are unit vectors. Write $P_u=\ketbra{u}{u}$ and
