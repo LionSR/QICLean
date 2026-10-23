@@ -39,25 +39,14 @@ private theorem tail_le_one_sub_normSq_inner {m n : Type*}
         ≤ 1 - ‖⟪ψ, φ⟫_ℂ‖ ^ 2 := by
   classical
   let C := schmidtCoeffMatrix (WithLp.ofLp ψ)
-  let B := schmidtCoeffMatrix (WithLp.ofLp φ)
-  have hinner : (Cᴴ * B).trace = ⟪ψ, φ⟫_ℂ := by
-    rw [← star_dotProduct_eq_trace_conjTranspose_mul]
-    rw [EuclideanSpace.inner_eq_star_dotProduct]
-    exact dotProduct_comm _ _
-  have hnorm : (Bᴴ * B).trace = 1 := by
-    rw [← star_dotProduct_self_eq_trace_conjTranspose_mul]
-    rw [dotProduct_comm, ← EuclideanSpace.inner_eq_star_dotProduct,
-      inner_self_eq_norm_sq_to_K, hφ]
-    simp
+  have hb := normSq_inner_le_kyFanNorm ψ φ hφ D hrank
   have htrace : (C * Cᴴ).trace.re = 1 := by
     rw [trace_mul_comm, ← star_dotProduct_self_eq_trace_conjTranspose_mul]
     rw [dotProduct_comm, ← EuclideanSpace.inner_eq_star_dotProduct,
       inner_self_eq_norm_sq_to_K, hψ]
     simp
   by_cases hD : D < Fintype.card m
-  · have hb := normSq_trace_conjTranspose_mul_le_kyFanNorm C B hD hnorm hrank
-    rw [hinner] at hb
-    have hs := (posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm_card_eq_trace_re
+  · have hs := (posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm_card_eq_trace_re
     rw [htrace] at hs
     rw [Finset.sum_Ico_eq_sub _ hD.le]
     change (posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm (Fintype.card m) -
