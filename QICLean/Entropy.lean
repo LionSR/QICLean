@@ -93,6 +93,7 @@ import QICLean.Entropy.RegionCovariance
 import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionSplit
 import QICLean.Entropy.RegionUnion
+import QICLean.Entropy.Renyi
 import QICLean.Entropy.RenyiMassBound
 import QICLean.Entropy.RenyiTail
 import QICLean.Entropy.RestoringGroundComponent
