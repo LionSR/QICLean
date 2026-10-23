@@ -91,6 +91,7 @@ import QICLean.Entropy.PureTensorPower
 import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.RegionCovariance
 import QICLean.Entropy.RegionEntropy
+import QICLean.Entropy.RegionPureApproximationTail
 import QICLean.Entropy.RegionRank
 import QICLean.Entropy.RegionSplit
 import QICLean.Entropy.RegionTraceNorm
