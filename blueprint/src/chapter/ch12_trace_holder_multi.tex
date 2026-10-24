@@ -247,16 +247,7 @@ Hilbert space. Products of matrices are ordered by increasing index.
         \label{eq:trace_exp_alternating_sum_product}
     \end{align}
     For $S_j=\emptyset$ the factor $\rho_j$ is the thermal factor
-    $e^{-q_jY_j}$. With $q_j=1/n$, $Y_j=\beta H$ for a thermal factor, and
-    $Y_j=\beta(H-H_{C_j}-H_{B(C_j)})$, $h_{j,i}=\beta H_i$ for a cluster
-    part $\rho(\beta/n,C_j)$, this bounds each product of thermal factors and
-    cluster parts in the operator $\rho_m$ of~\cite{Hastings2006Solving},
-    arXiv:cond-mat/0508554v3, source lines 1334--1341. If moreover
-    $\|H_i\|\le J$ and $n_{C_j}+n_{B(C_j)}\le Sn_{C_j}$ for every cluster,
-    then Theorem~\ref{thm:trace_exp_add_le} turns the bound into
-    $\|O\|\prod_jy^{n_{C_j}}\operatorname{tr}e^{-\beta H}$ with
-    $y=[\exp(J\beta/n)-1]\exp(SJ\beta/n)$, the product running over the
-    cluster parts.
+    $e^{-q_jY_j}$.
 \end{theorem}
 \begin{proof}\leanok
     Take the disjoint union of the $S_j$ as the index set, give the index
@@ -266,6 +257,21 @@ Hilbert space. Products of matrices are ordered by increasing index.
     linear in each factor, so the alternating sum over the disjoint union is
     the ordered product of the alternating sums $\rho_j$.
 \end{proof}
+
+\begin{remark}
+    With $q_j=1/n$, $Y_j=\beta H$ for a thermal factor, and
+    $Y_j=\beta(H-H_{C_j}-H_{B(C_j)})$, $h_{j,i}=\beta H_i$ for a cluster
+    part $\rho(\beta/n,C_j)$,
+    Theorem~\ref{thm:trace_exp_alternating_sum_product} bounds each product
+    of thermal factors and cluster parts in the operator $\rho_m$
+    of~\cite{Hastings2006Solving}, arXiv:cond-mat/0508554v3, source lines
+    1334--1341. If moreover $\|H_i\|\le J$ and
+    $n_{C_j}+n_{B(C_j)}\le Sn_{C_j}$ for every cluster, then
+    Theorem~\ref{thm:trace_exp_add_le} turns the bound into
+    $\|O\|\prod_jy^{n_{C_j}}\operatorname{tr}e^{-\beta H}$ with
+    $y=[\exp(J\beta/n)-1]\exp(SJ\beta/n)$, the product running over the
+    cluster parts. This consequence is not stated as a separate result here.
+\end{remark}
 
 \begin{theorem}[Products of alternating sums, uniform form]
     \label{thm:trace_exp_alternating_sum_product_pow}
