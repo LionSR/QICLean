@@ -73,6 +73,7 @@ import QICLean.Algebra.NilpotentSubspaceTwo
 import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
+import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OrderedMatrixAction
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.OverlappingLiftAlgebra
