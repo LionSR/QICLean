@@ -2286,3 +2286,94 @@ algebra of a family of jointly invariant states.
     Theorem~\ref{thm:hayashi_ssa_equality_forward}; the reverse implication is
     Theorem~\ref{thm:hayashi_ssa_equality_reverse}.
 \end{proof}
+
+\begin{definition}[Partial trace over $B$]
+    \label{def:traceB_ABC}
+    \lean{Matrix.traceB_ABC}
+    \leanok
+    The partial trace of a tripartite matrix over the middle system is
+    \begin{align}
+        (\tr_B \rho_{ABC})_{(a_1, c_1)(a_2, c_2)}
+        &= \sum_{b=0}^{d_B - 1}
+        (\rho_{ABC})_{(a_1, b, c_1)(a_2, b, c_2)}.
+        \notag
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Outer marginal of a quantum Markov decomposition]
+    \label{lem:ssa_equality_outer_marginal}
+    \lean{Matrix.traceB_ABC_liftB_conj}
+    \lean{Entropy.traceB_ABC_eq_sum_of_quantumMarkovDecomposition}
+    \leanok
+    \uses{def:traceB_ABC, def:hayashi_markov_decomposition}
+    If $\rho_{ABC}$ admits a quantum Markov decomposition
+    $\bigoplus_j p_j\,\rho_{A b_j^L}\otimes\rho_{b_j^R C}$ on the middle
+    subsystem $B$, then
+    \begin{align}
+        \tr_B\rho_{ABC}
+        &=
+        \sum_j p_j\,
+        \tr_{b_j^L}(\rho_{A b_j^L})\otimes\tr_{b_j^R}(\rho_{b_j^R C}).
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    The partial trace over $B$ is invariant under conjugation by
+    $\mathbf 1_A\otimes U_B\otimes\mathbf 1_C$ for a unitary $U_B$, since
+    $\sum_b \overline{(U_B)_{b\beta'}}(U_B)_{b\beta}=\delta_{\beta'\beta}$.
+    After the basis change, the trace over $B$ becomes a sum over the blocks
+    $j$ and the coordinates of $b_j^L\otimes b_j^R$. Only diagonal blocks
+    contribute, and in block $j$ the sum factorizes into the partial trace of
+    $\rho_{A b_j^L}$ over $b_j^L$ times the partial trace of
+    $\rho_{b_j^R C}$ over $b_j^R$.
+\end{proof}
+
+\begin{theorem}[SSA equality and separability of the outer marginal]
+    \label{thm:ssa_equality_separable_marginal}
+    \lean{Entropy.isSeparable_traceB_ABC_of_ssaEquality}
+    \lean{Entropy.exists_ssaEquality_extension_of_isSeparable}
+    \lean{Entropy.isSeparable_iff_exists_ssaEquality_extension}
+    \leanok
+    \uses{def:ssa_equality, def:is_separable, def:traceB_ABC,
+        thm:hayashi_ssa_equality_characterization,
+        lem:ssa_equality_outer_marginal}
+    If a tripartite density matrix $\rho_{ABC}$ satisfies
+    \begin{align}
+        S(\rho_{AB})+S(\rho_{BC})-S(\rho_{ABC})-S(\rho_B)
+        &=0,
+        \notag
+    \end{align}
+    then the marginal $\rho_{AC}=\tr_B\rho_{ABC}$ is separable. Conversely,
+    every separable density matrix $\rho_{AC}$ has an extension $\rho_{ABC}$
+    with $\tr_B\rho_{ABC}=\rho_{AC}$ satisfying this equality
+    \cite[Corollary~7]{Hayden2004Structure}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:hayashi_ssa_equality_characterization,
+        thm:hayashi_ssa_equality_reverse,
+        lem:ssa_equality_outer_marginal}
+    For the first assertion, equality gives a quantum Markov decomposition by
+    Theorem~\ref{thm:hayashi_ssa_equality_characterization}. By
+    Lemma~\ref{lem:ssa_equality_outer_marginal}, $\rho_{AC}$ is then a finite
+    sum of Kronecker products of positive semidefinite matrices.
+
+    For the converse, write $\rho_{AC}=\sum_{i=1}^n A_i\otimes C_i$ with
+    $A_i,C_i\ge 0$ and set
+    \begin{align}
+        \rho_{ABC}
+        &=
+        \sum_{i=1}^n A_i\otimes\ket{i}\bra{i}\otimes C_i
+        \notag
+    \end{align}
+    on $A\otimes\mathbb C^n\otimes C$. It is positive semidefinite, and its
+    partial trace over the middle system is $\rho_{AC}$, so it has unit trace.
+    Decompose $\mathbb C^n$ into $n$ blocks with one-dimensional left and
+    right factors, and take $p_i=\tr A_i\,\tr C_i$. For $p_i\ne 0$ the block
+    states are $A_i/\tr A_i$ and $C_i/\tr C_i$. A positive semidefinite
+    matrix with zero trace vanishes, so a block with $p_i=0$ contributes
+    nothing and any density matrices serve as its block states. This is a
+    quantum Markov decomposition of $\rho_{ABC}$, and
+    Theorem~\ref{thm:hayashi_ssa_equality_reverse} gives equality.
+\end{proof}
