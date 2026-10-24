@@ -106,29 +106,34 @@ Hilbert space. Products of matrices are ordered by increasing index.
     $\operatorname{tr}(Oe^{-\beta H})$; this is the form used in (percb2).
 \end{theorem}
 \begin{proof}\leanok
-    Prove more generally, by induction on $S$, that for operators $B_j$,
-    Hermitian $Y_j$, weights $a_j\ge0$ with $\sum_ja_j=1$, and
-    $c_j\in\{0,1\}$ recording which factors carry the shift, the products
-    $T(s)=\prod_jB_je^{-a_j(Y_j+c_js)}$ satisfy
+    Prove more generally, by induction on $S$, the following. Let $B_j$ be
+    operators, $Y_j$ Hermitian, and $a_j\ge0$ weights with $\sum_ja_j=1$.
+    Give each factor $j$ a tag $t_j$ and each index $i\in S$ a tag $t(i)$.
+    For $E\subseteq S$ and a tag $t$ write
+    $h_E^{t}=\sum_{i\in E,\,t(i)=t}h_i$, and let
+    $T(E)=\prod_jB_je^{-a_j(Y_j+h_E^{t_j})}$, so that each factor carries
+    only the indices of its own tag. Then
     \begin{align}
-        \left|\operatorname{tr}\sum_{E\subseteq S}(-1)^{|S|-|E|}T(h_E)\right|
-         & \le \prod_{i\in S}\bigl(e^{w\|h_i\|}-1\bigr)
+        \left|\operatorname{tr}\sum_{E\subseteq S}(-1)^{|S|-|E|}T(E)\right|
+         & \le \prod_{i\in S}\bigl(e^{w_{t(i)}\|h_i\|}-1\bigr)
         \prod_j\|B_j\|\bigl(\operatorname{tr}e^{-Y_j}\bigr)^{a_j},
         \label{eq:trace_exp_alternating_general}
     \end{align}
-    where $w=\sum_jc_ja_j$ is the total weight of the shifted factors.
-    The case of one shifted factor with $B_0=O$, $Y_0=Y$, $a_0=1$
-    is~(\ref{eq:trace_exp_alternating_sum}). For $S=\emptyset$,
+    where $w_t=\sum_{j:\,t_j=t}a_j$ is the total weight of the factors with
+    tag $t$. The case of one factor with $B_0=O$, $Y_0=Y$, $a_0=1$ and one
+    tag is~(\ref{eq:trace_exp_alternating_sum}). For $S=\emptyset$,
     (\ref{eq:trace_exp_alternating_general}) is
     Theorem~\ref{thm:trace_holder_multi} with $K_j=-Y_j$.
 
     Adding an index $a\notin S$ with $V=h_a$ turns the alternating sum over
     subsets of $S\cup\{a\}$ into the alternating sum over subsets of $S$ of
-    $T(V+h_E)-T(h_E)$. Write $A_j=c_0a_0+\cdots+c_ja_j$ and change the shifted
-    factors one at a time; the factors with $c_j=0$ do not change. In the
-    $j$-th step the shifted factors before $j$ have generators $Y_k+V$,
+    the difference between $T(E)$ with $V$ added to the generators of the
+    factors of tag $t(a)$, and $T(E)$ itself. Let $A_j$ be the total weight
+    of the factors $0,\dots,j$ of tag $t(a)$, and change these factors one at
+    a time; the factors of other tags do not change. In the
+    $j$-th step the earlier factors of tag $t(a)$ have generators $Y_k+V$,
     the factors after $j$ have generators $Y_k$, and the $j$-th factor
-    changes from $e^{-a_j(Z+V)}$ to $e^{-a_jZ}$ with $Z=Y_j+h_E$. For
+    changes from $e^{-a_j(Z+V)}$ to $e^{-a_jZ}$ with $Z=Y_j+h_E^{t(a)}$. For
     $0\le u\le a_j$,
     \begin{align}
         \frac{d}{du}\Bigl(e^{-(a_j-u)(Z+V)}e^{-uZ}\Bigr)
@@ -136,17 +141,18 @@ Hilbert space. Products of matrices are ordered by increasing index.
         \label{eq:trace_exp_alternating_duhamel}
     \end{align}
     so the derivative of the $j$-th step is an alternating sum of products
-    with one more factor, shifted weights $a_j-u$ and $u$, the same total
-    shifted weight $w$, and $V$ inserted between them. By the induction
+    with one more factor, $V$ inserted between two factors of tag $t(a)$ with
+    weights $a_j-u$ and $u$, and therefore the same weight $w_t$ at every
+    tag. By the induction
     hypothesis and
     Theorem~\ref{thm:trace_exp_add_le}, applied as
     $\operatorname{tr}e^{-(Y_k+V)}\le e^{\|V\|}\operatorname{tr}e^{-Y_k}$
-    to the shifted factors, its trace is at most
+    to the factors of tag $t(a)$, its trace is at most
     $\|V\|e^{\|V\|(A_j-u)}$ times the right-hand side
     of~(\ref{eq:trace_exp_alternating_general}) for $S$. The mean value
     inequality bounds the $j$-th step by
     $e^{\|V\|A_j}-e^{\|V\|A_{j-1}}$ times the same quantity, and the sum over
-    $j$ telescopes to $e^{w\|V\|}-1$.
+    $j$ telescopes to $e^{w_{t(a)}\|V\|}-1$.
 \end{proof}
 
 \begin{theorem}[Alternating sums with uniformly bounded terms]
@@ -194,8 +200,8 @@ Hilbert space. Products of matrices are ordered by increasing index.
 \end{theorem}
 \begin{proof}\leanok
     Apply~(\ref{eq:trace_exp_alternating_general}) to the three factors
-    $Oe^{-pX}$, $e^{-q(Y+s)}$ and $e^{-rX}$, of which only the middle one
-    carries the shift, so that $w=q$. The identity operator has norm at most
+    $Oe^{-pX}$, $e^{-q(Y+s)}$ and $e^{-rX}$, where only the middle one
+    has the tag of the indices, so that this tag has weight $q$. The identity operator has norm at most
     one, and
     $\bigl(\operatorname{tr}e^{-X}\bigr)^{p}\bigl(\operatorname{tr}e^{-X}\bigr)^{r}
         =\bigl(\operatorname{tr}e^{-X}\bigr)^{p+r}$.
@@ -220,4 +226,66 @@ Hilbert space. Products of matrices are ordered by increasing index.
 \end{theorem}
 \begin{proof}\leanok
     Each factor satisfies $0\le e^{q\|h_i\|}-1\le e^{qJ}-1$.
+\end{proof}
+
+\begin{theorem}[Products of alternating sums]
+    \label{thm:trace_exp_alternating_sum_product}
+    \lean{Matrix.norm_trace_list_prod_mul_sum_powerset_exp_le}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum}
+    For $j=0,\dots,n-1$ let $B_j$ be operators, $Y_j$ Hermitian, $q_j\ge0$
+    weights with $\sum_jq_j=1$, and $h_{j,i}$, $i\in S_j$, Hermitian, and
+    write $h_{j,E}=\sum_{i\in E}h_{j,i}$ for $E\subseteq S_j$ and
+    \begin{align*}
+        \rho_j=\sum_{E\subseteq S_j}(-1)^{|S_j|-|E|}e^{-q_j(Y_j+h_{j,E})}.
+    \end{align*}
+    Then
+    \begin{align}
+        \bigl|\operatorname{tr}\bigl(B_0\rho_0B_1\rho_1\cdots B_{n-1}\rho_{n-1}\bigr)\bigr|
+         & \le\prod_j\|B_j\|\prod_{i\in S_j}\bigl(e^{q_j\|h_{j,i}\|}-1\bigr)
+        \bigl(\operatorname{tr}e^{-Y_j}\bigr)^{q_j}.
+        \label{eq:trace_exp_alternating_sum_product}
+    \end{align}
+    For $S_j=\emptyset$ the factor $\rho_j$ is the thermal factor
+    $e^{-q_jY_j}$.
+\end{theorem}
+\begin{proof}\leanok
+    Take the disjoint union of the $S_j$ as the index set, give the index
+    $(j,i)$ the tag $j$ and the factor $B_je^{-q_j(Y_j+\cdot)}$ the tag $j$,
+    so that the tag $j$ has weight $q_j$, and
+    apply~(\ref{eq:trace_exp_alternating_general}). The ordered product is
+    linear in each factor, so the alternating sum over the disjoint union is
+    the ordered product of the alternating sums $\rho_j$.
+\end{proof}
+
+\begin{remark}
+    With $q_j=1/n$, $Y_j=\beta H$ for a thermal factor, and
+    $Y_j=\beta(H-H_{C_j}-H_{B(C_j)})$, $h_{j,i}=\beta H_i$ for a cluster
+    part $\rho(\beta/n,C_j)$,
+    Theorem~\ref{thm:trace_exp_alternating_sum_product} bounds each product
+    of thermal factors and cluster parts in the operator $\rho_m$
+    of~\cite{Hastings2006Solving}, arXiv:cond-mat/0508554v3, source lines
+    1334--1341. If moreover $\|H_i\|\le J$ and
+    $n_{C_j}+n_{B(C_j)}\le Sn_{C_j}$ for every cluster, then
+    Theorem~\ref{thm:trace_exp_add_le} turns the bound into
+    $\|O\|\prod_jy^{n_{C_j}}\operatorname{tr}e^{-\beta H}$ with
+    $y=[\exp(J\beta/n)-1]\exp(SJ\beta/n)$, the product running over the
+    cluster parts. This consequence is not stated as a separate result here.
+\end{remark}
+
+\begin{theorem}[Products of alternating sums, uniform form]
+    \label{thm:trace_exp_alternating_sum_product_pow}
+    \lean{Matrix.norm_trace_list_prod_mul_sum_powerset_exp_le_pow}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum_product}
+    In the setting of Theorem~\ref{thm:trace_exp_alternating_sum_product},
+    assume moreover $\|h_{j,i}\|\le J$ for all $j$ and $i\in S_j$. Then
+    \begin{align}
+        \bigl|\operatorname{tr}\bigl(B_0\rho_0B_1\rho_1\cdots B_{n-1}\rho_{n-1}\bigr)\bigr|
+         & \le\prod_j\|B_j\|\bigl(e^{q_jJ}-1\bigr)^{|S_j|}
+        \bigl(\operatorname{tr}e^{-Y_j}\bigr)^{q_j}.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Each factor satisfies $0\le e^{q_j\|h_{j,i}\|}-1\le e^{q_jJ}-1$.
 \end{proof}

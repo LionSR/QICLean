@@ -15,7 +15,9 @@ run_cmd do
     ``Matrix.norm_trace_mul_sum_powerset_exp_le,
     ``Matrix.norm_trace_mul_sum_powerset_exp_le_pow,
     ``Matrix.norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le,
-    ``Matrix.norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le_pow]
+    ``Matrix.norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le_pow,
+    ``Matrix.norm_trace_list_prod_mul_sum_powerset_exp_le,
+    ``Matrix.norm_trace_list_prod_mul_sum_powerset_exp_le_pow]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
