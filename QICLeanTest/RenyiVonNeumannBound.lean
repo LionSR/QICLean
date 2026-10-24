@@ -9,9 +9,9 @@ import QICLean.Entropy.Renyi.VonNeumannBound
 
 set_option linter.hashCommand false
 
-/-- info: 'inv_one_sub_mul_log_sum_rpow_le_sum_negMulLog' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+/-- info: 'Entropy.inv_one_sub_mul_log_sum_rpow_le_probabilityEntropy' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
-#print axioms inv_one_sub_mul_log_sum_rpow_le_sum_negMulLog
+#print axioms Entropy.inv_one_sub_mul_log_sum_rpow_le_probabilityEntropy
 
 /-- info: 'renyiEntropy_le_vonNeumannEntropy_of_one_lt' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in

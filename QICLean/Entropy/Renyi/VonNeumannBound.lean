@@ -17,7 +17,7 @@ a density matrix, the Rényi entropy of order `α > 1` is at most the von Neuman
 
 ## Main results
 
-* `inv_one_sub_mul_log_sum_rpow_le_sum_negMulLog`: `(1 − α)⁻¹ ln ∑ pᵢ^α ≤ −∑ pᵢ ln pᵢ`.
+* `Entropy.inv_one_sub_mul_log_sum_rpow_le_probabilityEntropy`: `(1 − α)⁻¹ ln ∑ pᵢ^α ≤ H(p)`.
 * `renyiEntropy_le_vonNeumannEntropy_of_one_lt`: `S_α(ρ) ≤ S(ρ)` for `α > 1`, when the
   eigenvalues of `ρ` are nonnegative and sum to one.
 * `Matrix.PosSemidef.renyiEntropy_le_vonNeumannEntropy_of_one_lt`: the same for a positive
@@ -27,12 +27,15 @@ a density matrix, the Rényi entropy of order `α > 1` is at most the von Neuman
 open Matrix Finset
 open scoped ComplexOrder
 
+namespace Entropy
+
 /-- **Rényi entropy of order above one of a probability vector.** For nonnegative `p` with
-`∑ pᵢ = 1` and `α > 1`, `(1 − α)⁻¹ ln ∑ pᵢ^α ≤ ∑ negMulLog pᵢ = −∑ pᵢ ln pᵢ`. -/
-theorem inv_one_sub_mul_log_sum_rpow_le_sum_negMulLog {ι : Type*} [Fintype ι] (p : ι → ℝ)
-    (h0 : ∀ i, 0 ≤ p i) (h1 : ∑ i, p i = 1) {α : ℝ} (hα : 1 < α) :
-    (1 - α)⁻¹ * Real.log (∑ i, p i ^ α) ≤ ∑ i, Real.negMulLog (p i) := by
+`∑ pᵢ = 1` and `α > 1`, `(1 − α)⁻¹ ln ∑ pᵢ^α ≤ H(p) = −∑ pᵢ ln pᵢ`, the Shannon entropy. -/
+theorem inv_one_sub_mul_log_sum_rpow_le_probabilityEntropy {ι : Type*} [Fintype ι]
+    (p : ι → ℝ) (h0 : ∀ i, 0 ≤ p i) (h1 : ∑ i, p i = 1) {α : ℝ} (hα : 1 < α) :
+    (1 - α)⁻¹ * Real.log (∑ i, p i ^ α) ≤ probabilityEntropy p := by
   classical
+  rw [probabilityEntropy]
   set t := univ.filter (fun i ↦ 0 < p i)
   have hzero : ∀ i, i ∉ t → p i = 0 := fun i hi ↦ by
     simp only [t, mem_filter, mem_univ, true_and, not_lt] at hi
@@ -65,6 +68,8 @@ theorem inv_one_sub_mul_log_sum_rpow_le_sum_negMulLog {ι : Type*} [Fintype ι] 
         rw [show α - 1 = -(1 - α) by ring, neg_mul, mul_neg, ← mul_assoc,
           inv_mul_cancel₀ (by linarith : (1 - α) ≠ 0), one_mul]
 
+end Entropy
+
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
 /-- **Rényi entropy of order above one and the von Neumann entropy.** If the eigenvalues of the
@@ -76,7 +81,7 @@ theorem renyiEntropy_le_vonNeumannEntropy_of_one_lt {ρ : Matrix n n ℂ} (hρ :
   simp only [renyiEntropy, hα0, hα.ne', ↓reduceIte]
   change (1 - α)⁻¹ * Real.log (RCLike.re ((hρ.cfc (fun x => x ^ α)).trace)) ≤ _
   rw [hρ.trace_cfc_eq_sum_re, vonNeumannEntropy]
-  exact inv_one_sub_mul_log_sum_rpow_le_sum_negMulLog _ h0 h1 hα
+  exact Entropy.inv_one_sub_mul_log_sum_rpow_le_probabilityEntropy _ h0 h1 hα
 
 /-- **Rényi entropy of order above one of a density matrix.** For a positive semidefinite `ρ`
 of unit trace and every `α > 1`, `S_α(ρ) ≤ S(ρ)`. -/
