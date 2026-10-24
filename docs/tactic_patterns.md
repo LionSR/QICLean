@@ -7,6 +7,15 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Finite linear combinations in an operator-block span — existing Mathlib lemma (2026-10-22)
+
+- **Consumers:** Both cut-movement proofs in `Algebra/OperatorSchmidtCut.lean`
+  and the middle-block expansion in `Algebra/OperatorSchmidtTwoCuts.lean`.
+- **Lemma:** `Submodule.sum_smul_mem` handles the scalar-weighted finite sum;
+  each caller supplies membership of the actual family in its span.
+- **Refactor:** Replace the repeated sum-closure and scalar-closure steps by
+  this existing lemma. The cut statements and their hypotheses are unchanged.
+
 ### Operator Schmidt rank from a finite block span — promoted (2026-10-22)
 
 - **Consumers:** The product-decomposition bound in `Algebra/OperatorSchmidt.lean`
