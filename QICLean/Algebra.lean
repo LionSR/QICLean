@@ -91,6 +91,8 @@ import QICLean.Algebra.OverlappingLiftAlgebra
 import QICLean.Algebra.PartialTraceDomination
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.PiProductTrace
+import QICLean.Algebra.PolynomialLinearFactor
+import QICLean.Algebra.PolynomialTwoMarkerPower
 import QICLean.Algebra.PosSemidefSupport
 import QICLean.Algebra.PositiveSemidefiniteNormalization
 import QICLean.Algebra.PositiveSkolemNoether
@@ -126,6 +128,7 @@ import QICLean.Algebra.TraceFormDuality
 import QICLean.Algebra.TracePowerCharPoly
 import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
+import QICLean.Algebra.TwoMarkerWordCoefficients
 import QICLean.Algebra.UnitModulusPowerSum
 import QICLean.Algebra.WordCoefficientExpansion
 import QICLean.Algebra.WordMultiplicity
