@@ -673,7 +673,7 @@ with operator norms. With `X = β H`, `Y = β (H - H_C - H_{B(C)})`, `h_i = β H
 arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1322–1333, inserted between `ρ(kβ/n)` and
 `ρ((n - k - 1)β/n)`; together with `Matrix.IsHermitian.re_trace_exp_add_le`, which bounds
 `Tr e^{-Y}` by `e^{β ‖H_C + H_{B(C)}‖} Tr e^{-βH}`, this gives the bound by `‖O‖ y^{n_C}` stated
-there, with `‖O‖ Tr e^{-βH}` in place of `Tr(O e^{-βH})`. -/
+there. -/
 theorem norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le (S : Finset κ)
     {X Y : Matrix ι ι ℂ} (hX : X.IsHermitian) (hY : Y.IsHermitian) (h : κ → Matrix ι ι ℂ)
     (hh : ∀ i ∈ S, (h i).IsHermitian) {p q r : ℝ} (hp : 0 ≤ p) (hq : 0 ≤ q) (hr : 0 ≤ r)
