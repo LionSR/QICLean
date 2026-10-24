@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.ProbabilityEntropyRankTails
+import QICLean.Analysis.ProbabilityEntropyGeometricTails
 
 /-! Finite boundary applications of the same entropy theorem. -/
 
@@ -72,3 +72,21 @@ example {N : ℕ} (p : Fin N → ℝ)
 [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Entropy.probabilityEntropy_le_of_rankTailBounds
+
+namespace GeometricEntropyBoundary
+
+private theorem zero_tail_singleton :
+    Entropy.probabilityEntropy (fun _ : Fin 1 ↦ (1 : ℝ)) ≤
+      ((0 : ℕ) : ℝ) * Real.log ((1 : ℕ) : ℝ) +
+        (Real.log 2 + 0 * Real.log ((1 : ℕ) : ℝ)) / (1 - 0) := by
+  apply Entropy.probabilityEntropy_le_of_geometricRankTailBounds
+    (fun _ : Fin 1 ↦ (1 : ℝ)) 0 0 1 0
+  all_goals norm_num [Fin.sum_univ_one]
+
+end GeometricEntropyBoundary
+
+/-- info:
+'Entropy.probabilityEntropy_le_of_geometricRankTailBounds' depends on axioms:
+[propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Entropy.probabilityEntropy_le_of_geometricRankTailBounds

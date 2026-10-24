@@ -20,6 +20,8 @@ import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CfcLogListProduct
+import QICLean.Analysis.ChebyshevFilter
+import QICLean.Analysis.ChebyshevSpectralFilter
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
@@ -144,6 +146,7 @@ import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProbabilityEntropyConcentration
+import QICLean.Analysis.ProbabilityEntropyGeometricTails
 import QICLean.Analysis.ProbabilityEntropyRankTails
 import QICLean.Analysis.ProductOverlapReplacement
 import QICLean.Analysis.ProductReferenceDensityError
