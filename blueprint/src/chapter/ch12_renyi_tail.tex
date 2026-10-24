@@ -1,0 +1,118 @@
+\section{Rényi entropy and spectral tails}
+
+\begin{theorem}[Tail bound from a power sum]
+    \label{thm:ordered_renyi_tail}
+    \lean{Entropy.log_ordered_tail_le, Entropy.ordered_tail_le_rpow}
+    \leanok
+    Let $p_1\geq\cdots\geq p_n\geq0$, let $D$ be a positive integer,
+    and let $0<\alpha<1$. Put $\epsilon=\sum_{i>D}p_i$ and
+    $M_\alpha=\sum_i p_i^\alpha$. If $\epsilon>0$, then
+    \begin{align}
+        \log\epsilon
+         & \leq \frac{1-\alpha}{\alpha}
+        \left(\frac{\log M_\alpha}{1-\alpha}
+        -\log\frac{D}{1-\alpha}\right).
+        \label{eq:ordered_renyi_log_tail}
+    \end{align}
+    If $M_\alpha>0$, the equivalent power bound, valid also when
+    $\epsilon=0$, is
+    \begin{align}
+        \epsilon
+         & \leq\left(\frac{(1-\alpha)
+                         \exp(\log M_\alpha/(1-\alpha))}{D}\right)^{(1-\alpha)/\alpha}.
+        \label{eq:ordered_renyi_power_tail}
+    \end{align}
+    When all weights vanish, the tail is zero and the bound holds with
+    the convention $\log0=0$. No normalization of the weights is needed.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Suppose first that $\epsilon>0$. Then $D<n$ and $h=p_{D+1}>0$.
+    The first $D$ weights are at least $h$, and the remaining weights
+    are at most $h$. Thus
+    \begin{align}
+        M_\alpha
+         & \geq D h^\alpha+\epsilon h^{\alpha-1}                   \\
+         & \geq\left(\frac{D h^\alpha}{1-\alpha}\right)^{1-\alpha}
+        \left(\frac{\epsilon h^{\alpha-1}}{\alpha}\right)^\alpha
+        =\frac{D^{1-\alpha}\epsilon^\alpha}
+         {(1-\alpha)^{1-\alpha}\alpha^\alpha}.
+        \label{eq:ordered_renyi_amgm}
+    \end{align}
+    The second inequality is weighted arithmetic--geometric mean.
+    Taking logarithms and using $\log\alpha\leq0$ gives
+    (\ref{eq:ordered_renyi_log_tail}); exponentiation gives
+    (\ref{eq:ordered_renyi_power_tail}). The zero-tail case is immediate.
+    Solving (\ref{eq:ordered_renyi_amgm}) would retain an additional
+    factor $\alpha$ on the right of (\ref{eq:ordered_renyi_power_tail});
+    discarding it gives the constant stated in
+    \cite[Lemma~2]{VerstraeteCirac2006Faithfully}.
+    The direct estimate requires no assumption that an extremizing
+    distribution exists or has an integral number $\epsilon/h$ of equal
+    tail weights.
+\end{proof}
+
+\begin{theorem}[Trace in the ordered spectrum]
+    \label{thm:trace_power_ordered_spectrum}
+    \lean{Matrix.IsHermitian.trace_cfc_eq_sum_eigenvalues₀}
+    \leanok
+    For a finite Hermitian matrix $A$ with decreasingly ordered
+    eigenvalues $\lambda_i$ and a real function $f$ on its spectrum,
+    the real part of the trace of $f(A)$ equals $\sum_i f(\lambda_i)$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Diagonalize $A$ and sum the spectral function over its eigenvalues;
+    ordering the sum does not change it.
+\end{proof}
+
+\begin{theorem}[Rényi bound for a spectral tail]
+    \label{thm:matrix_renyi_tail}
+    \lean{Matrix.PosSemidef.log_eigenvalue_tail_le,
+        Matrix.PosSemidef.eigenvalue_tail_le_rpow}
+    \leanok
+    Let $\rho$ be a finite positive semidefinite matrix with decreasing
+    eigenvalues $\lambda_i$. For a positive integer $D$ and
+    $0<\alpha<1$, set
+    $\epsilon(D)=\sum_{i>D}\lambda_i$ and
+    $S_\alpha=(1-\alpha)^{-1}\log\operatorname{Tr}(\rho^\alpha)$.
+    For $\rho\neq0$ one has
+    \begin{align}
+        \epsilon(D)
+         & \leq\left(\frac{(1-\alpha)\exp S_\alpha}{D}
+        \right)^{(1-\alpha)/\alpha}.
+        \label{eq:matrix_renyi_tail}
+    \end{align}
+    If $\epsilon(D)>0$, equivalently
+    $\log\epsilon(D)\leq\frac{1-\alpha}{\alpha}
+        (S_\alpha-\log(D/(1-\alpha)))$.
+    The zero operator has zero tail and is included with $\log0=0$.
+    When $\operatorname{Tr}\rho=1$, $S_\alpha$ is the Rényi entropy
+    with natural logarithms, and this is
+    \cite[Lemma~2]{VerstraeteCirac2006Faithfully}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:ordered_renyi_tail,thm:trace_power_ordered_spectrum}
+    Apply the ordered-weight theorem to the nonnegative eigenvalues and
+    identify their power sum with $\operatorname{Tr}(\rho^\alpha)$.
+\end{proof}
+
+\begin{theorem}[Vanishing tail at the support size]
+    \label{thm:renyi_zero_rank_tail}
+    \lean{Entropy.ordered_tail_eq_zero_of_card_support_le,
+        Matrix.PosSemidef.eigenvalue_tail_eq_zero_of_rank_le}
+    \leanok
+    A decreasing nonnegative finite sequence with at most $D$ nonzero
+    entries has zero tail beyond $D$. In particular, for a positive
+    semidefinite matrix $\rho$, if $D\geq\operatorname{rank}\rho$,
+    then $\epsilon(D)=0$. Here $D=0$ is allowed.
+    For density matrices, where $S_0=\log\operatorname{rank}\rho$,
+    this treats order zero independently of the positive-order inequality.
+\end{theorem}
+\begin{proof}
+    \leanok
+    A positive entry after the first $D$ positions would force at least
+    $D+1$ positive entries by monotonicity. For a positive semidefinite
+    matrix the number of nonzero eigenvalues equals its rank.
+\end{proof}
