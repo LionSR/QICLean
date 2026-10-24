@@ -135,6 +135,7 @@ import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.OrthonormalMatrixNorm
 import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
+import QICLean.Analysis.PhysicalPowerFilter
 import QICLean.Analysis.PhysicalSingletonDensity
 import QICLean.Analysis.PhysicalSingletonEntropy
 import QICLean.Analysis.PoissonContractionDecay
