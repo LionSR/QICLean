@@ -97,6 +97,24 @@ in a regression file are not additional mathematical consumers.
 - **Caveat:** The equality itself needs no unitary assumption. Unitarity is
   used separately for norm bounds and invariance of expectations.
 
+### Conditional filtered Gram moments — promoted lemma (2026-10-17)
+
+- **Pattern:** Derive the lower trace-pairing bound, use its strict positivity
+  to prove positivity of the filtered Gram moment, and apply the entropy upper
+  bound at the optimizer weights. `optimizer_attains` identifies the last trace.
+- **Result:** `ConditionalMovement.ConditionalCollision.conditional_gramMoment_bounds`
+  in `Entropy/ConditionalMovement/Optimizer.lean`, after `density_spectrum_sum`.
+  It returns the lower bound, positivity and the entropy upper bound together.
+- **Consumers:** `conditional_optimizer_root_stability` in `Optimizer.lean` and
+  `conditional_optimizer_deficit` in `FilterSlack.lean` use the lower and upper
+  bounds. Their eigenvalue nonnegativity and spectral mass remain available for
+  the final optimizer estimates. `paired_entropy_boundary` in
+  `BoundaryEnergy.lean` uses positivity and the upper bound.
+- **Scope:** The marginal may be singular. The lemma retains normalization, a
+  nonempty first coordinate type, `0 < β ≤ 1/3`, and
+  `β / (1 - β) * log (card X) ≤ 1`. No consumer gains a hypothesis or import.
+  One mathematical lemma removes the repeated argument; no tactic is introduced.
+
 ### Reciprocal real powers — existing mathematical lemma (2026-10-16)
 
 - **Pattern:** Normalize or reconstruct a nonnegative eigenvalue by composing
@@ -228,6 +246,29 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   threshold. An ordinary helper theorem suffices; no tactic is introduced.
   The public homogeneous contraction lemma is available to the separate
   powered-vector argument. Regression applications are not counted as consumers.
+
+### Positivity of a filtered Gram moment — legacy candidate (2026-10-17)
+
+- **Pattern:** A positive power of a nonnegative Gram moment forces the moment
+  to be positive: otherwise it is zero, and its positive power vanishes.
+- **Seen:** `gramMoment_pos_of_filter_pos` and `optimizer_root_bound` in
+  `Entropy/ConditionalMovement/Optimizer.lean`, and `optimizer_deficit_bound` in
+  `Entropy/ConditionalMovement/FilterSlack.lean`.
+- **Decision:** These three preexisting contradiction arguments remain unchanged.
+  A later simplification should first check a suitable real-power positivity
+  lemma and reuse the weakest existing result; no additional analytic bound or
+  new tactic is needed. This candidate is separate from the shared conditional
+  lower/upper trace estimates above.
+
+### Scalar phase-power identities — legacy candidate (2026-10-17)
+
+- **Pattern:** After expanding a spectral phase product, move real coercions into
+  the complex exponent and close the scalar polynomial identity.
+- **Seen:** `phase_mul_power` and `power_mul_phase` in
+  `Entropy/ConditionalMovement/BoundaryEnergy.lean`.
+- **Decision:** These two preexisting cast-and-ring calculations remain unchanged.
+  Two occurrences in one file do not require a new abstraction. Reuse the
+  existing phase-power identities in later consumers instead of copying them.
 
 
 ### Normalized regional states — candidate (2026-10-15)
