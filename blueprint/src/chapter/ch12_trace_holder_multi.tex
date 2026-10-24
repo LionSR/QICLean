@@ -107,23 +107,26 @@ Hilbert space. Products of matrices are ordered by increasing index.
 \end{theorem}
 \begin{proof}\leanok
     Prove more generally, by induction on $S$, that for operators $B_j$,
-    Hermitian $Y_j$, and weights $a_j\ge0$ with $\sum_ja_j=1$, the products
-    $T(s)=\prod_jB_je^{-a_j(Y_j+s)}$ satisfy
+    Hermitian $Y_j$, weights $a_j\ge0$ with $\sum_ja_j=1$, and
+    $c_j\in\{0,1\}$ recording which factors carry the shift, the products
+    $T(s)=\prod_jB_je^{-a_j(Y_j+c_js)}$ satisfy
     \begin{align}
         \left|\operatorname{tr}\sum_{E\subseteq S}(-1)^{|S|-|E|}T(h_E)\right|
-         & \le \prod_{i\in S}\bigl(e^{\|h_i\|}-1\bigr)
-        \prod_j\|B_j\|\bigl(\operatorname{tr}e^{-Y_j}\bigr)^{a_j}.
+         & \le \prod_{i\in S}\bigl(e^{w\|h_i\|}-1\bigr)
+        \prod_j\|B_j\|\bigl(\operatorname{tr}e^{-Y_j}\bigr)^{a_j},
         \label{eq:trace_exp_alternating_general}
     \end{align}
-    The case of one factor with $B_0=O$, $Y_0=Y$, $a_0=1$
+    where $w=\sum_jc_ja_j$ is the total weight of the shifted factors.
+    The case of one shifted factor with $B_0=O$, $Y_0=Y$, $a_0=1$
     is~(\ref{eq:trace_exp_alternating_sum}). For $S=\emptyset$,
     (\ref{eq:trace_exp_alternating_general}) is
     Theorem~\ref{thm:trace_holder_multi} with $K_j=-Y_j$.
 
     Adding an index $a\notin S$ with $V=h_a$ turns the alternating sum over
     subsets of $S\cup\{a\}$ into the alternating sum over subsets of $S$ of
-    $T(V+h_E)-T(h_E)$. Write $A_j=a_0+\cdots+a_j$ and change the factors one at
-    a time: in the $j$-th step the factors before $j$ have generators $Y_k+V$,
+    $T(V+h_E)-T(h_E)$. Write $A_j=c_0a_0+\cdots+c_ja_j$ and change the shifted
+    factors one at a time; the factors with $c_j=0$ do not change. In the
+    $j$-th step the shifted factors before $j$ have generators $Y_k+V$,
     the factors after $j$ have generators $Y_k$, and the $j$-th factor
     changes from $e^{-a_j(Z+V)}$ to $e^{-a_jZ}$ with $Z=Y_j+h_E$. For
     $0\le u\le a_j$,
@@ -133,8 +136,9 @@ Hilbert space. Products of matrices are ordered by increasing index.
         \label{eq:trace_exp_alternating_duhamel}
     \end{align}
     so the derivative of the $j$-th step is an alternating sum of products
-    with one more factor, weights $a_j-u$ and $u$, and $V$ inserted between
-    them. By the induction hypothesis and
+    with one more factor, shifted weights $a_j-u$ and $u$, the same total
+    shifted weight $w$, and $V$ inserted between them. By the induction
+    hypothesis and
     Theorem~\ref{thm:trace_exp_add_le}, applied as
     $\operatorname{tr}e^{-(Y_k+V)}\le e^{\|V\|}\operatorname{tr}e^{-Y_k}$
     to the shifted factors, its trace is at most
@@ -142,7 +146,7 @@ Hilbert space. Products of matrices are ordered by increasing index.
     of~(\ref{eq:trace_exp_alternating_general}) for $S$. The mean value
     inequality bounds the $j$-th step by
     $e^{\|V\|A_j}-e^{\|V\|A_{j-1}}$ times the same quantity, and the sum over
-    $j$ telescopes to $e^{\|V\|}-1$.
+    $j$ telescopes to $e^{w\|V\|}-1$.
 \end{proof}
 
 \begin{theorem}[Alternating sums with uniformly bounded terms]
@@ -162,4 +166,58 @@ Hilbert space. Products of matrices are ordered by increasing index.
 \end{theorem}
 \begin{proof}\leanok
     Each factor satisfies $0\le e^{\|h_i\|}-1\le e^{J}-1$.
+\end{proof}
+
+\begin{theorem}[Alternating sums between thermal factors]
+    \label{thm:trace_exp_alternating_sum_between}
+    \lean{Matrix.norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum}
+    In the setting of Theorem~\ref{thm:trace_exp_alternating_sum}, let $X$ be
+    Hermitian and let $p,q,r\ge0$ with $p+q+r=1$. Then for every operator $O$,
+    \begin{align}
+        \left|\operatorname{tr}\Bigl(Oe^{-pX}\Bigl(\sum_{E\subseteq S}(-1)^{|S|-|E|}
+        e^{-q(Y+h_E)}\Bigr)e^{-rX}\Bigr)\right|
+         & \le \|O\|\prod_{i\in S}\bigl(e^{q\|h_i\|}-1\bigr)
+        \bigl(\operatorname{tr}e^{-X}\bigr)^{p+r}
+        \bigl(\operatorname{tr}e^{-Y}\bigr)^{q}.
+        \label{eq:trace_exp_alternating_sum_between}
+    \end{align}
+    With $X=\beta H$, $Y=\beta(H-H_C-H_{B(C)})$, $h_i=\beta H_i$, $q=1/n$,
+    $p=k/n$ and $r=(n-k-1)/n$, the middle factor is the operator
+    $\rho(\beta/n,C)$ placed between $\rho(k\beta/n)$ and
+    $\rho((n-k-1)\beta/n)$ in~\cite{Hastings2006Solving},
+    arXiv:cond-mat/0508554v3, source lines 1322--1333. Together with
+    Theorem~\ref{thm:trace_exp_add_le}, which gives
+    $\operatorname{tr}e^{-Y}\le e^{\beta\|H_C+H_{B(C)}\|}\operatorname{tr}e^{-\beta H}$,
+    this gives the bound by $\|O\|y^{n_C}$ stated there.
+\end{theorem}
+\begin{proof}\leanok
+    Apply~(\ref{eq:trace_exp_alternating_general}) to the three factors
+    $Oe^{-pX}$, $e^{-q(Y+s)}$ and $e^{-rX}$, of which only the middle one
+    carries the shift, so that $w=q$. The identity operator has norm at most
+    one, and
+    $\bigl(\operatorname{tr}e^{-X}\bigr)^{p}\bigl(\operatorname{tr}e^{-X}\bigr)^{r}
+        =\bigl(\operatorname{tr}e^{-X}\bigr)^{p+r}$.
+\end{proof}
+
+\begin{theorem}[Alternating sums between thermal factors, uniform form]
+    \label{thm:trace_exp_alternating_sum_between_pow}
+    \lean{Matrix.norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le_pow}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum_between}
+    In the setting of Theorem~\ref{thm:trace_exp_alternating_sum_between},
+    assume moreover $\|h_i\|\le J$ for all $i\in S$. Then
+    \begin{align}
+        \left|\operatorname{tr}\Bigl(Oe^{-pX}\Bigl(\sum_{E\subseteq S}(-1)^{|S|-|E|}
+        e^{-q(Y+h_E)}\Bigr)e^{-rX}\Bigr)\right|
+         & \le \|O\|\bigl(e^{qJ}-1\bigr)^{|S|}
+        \bigl(\operatorname{tr}e^{-X}\bigr)^{p+r}
+        \bigl(\operatorname{tr}e^{-Y}\bigr)^{q}.
+    \end{align}
+    For $h_i=\beta H_i$ with $\|H_i\|\le J$ and $q=1/n$ this is the factor
+    $[\exp(J\beta/n)-1]^{n_C}$ of~\cite{Hastings2006Solving}.
+\end{theorem}
+\begin{proof}\leanok
+    Each factor satisfies $0\le e^{q\|h_i\|}-1\le e^{qJ}-1$.
 \end{proof}
