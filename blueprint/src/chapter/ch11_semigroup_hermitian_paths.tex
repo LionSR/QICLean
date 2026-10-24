@@ -30,6 +30,22 @@
     $U_H(t)U_H(t)^\dagger=e^0=\Id$.
 \end{proof}
 
+\begin{theorem}[Comparison of two Hermitian exponential paths]
+    \label{thm:hermitian_exponential_path_difference}
+    \lean{Matrix.norm_hermitianUnitaryPath_sub_le}
+    \leanok
+    \uses{def:hermitian_exponential_path}
+    For Hermitian matrices $M$ and $H$ of the same size and every $t\in\R$,
+    $\lVert U_M(t)-U_H(t)\rVert\le\lVert M-H\rVert\,|t|$ in the operator norm.
+\end{theorem}
+\begin{proof}\leanok
+    Both paths solve $\dot U=iGU$ with $U(0)=\Id$, for the constant
+    generators $G=M$ and $G=H$. By the Duhamel identity,
+    $U_H(t)^\dagger U_M(t)-\Id=\int_0^tU_H(s)^\dagger\,i(M-H)\,U_M(s)\,ds$,
+    and the integrand has norm $\lVert M-H\rVert$ because the paths are
+    unitary.
+\end{proof}
+
 \begin{theorem}[Nonscalar exponentials near the identity]
     \label{thm:exponential_nonscalar_near_zero}
     \lean{Matrix.eventually_hermitianUnitaryPath_nonscalar}
