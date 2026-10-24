@@ -8,6 +8,7 @@ import Mathlib.Algebra.Order.Antidiag.Pi
 import Mathlib.LinearAlgebra.Span.Defs
 import Mathlib.Algebra.Ring.Basic
 import Mathlib.Data.Sym.Card
+import QICLean.Algebra.PolynomialLinearFactor
 
 /-!
 # The span of commuting-gap forms
@@ -91,9 +92,8 @@ private theorem gapCoeff_succ_succ {R : Type*} [Semiring R] (D T : R) (m k : ℕ
     ((Polynomial.C D + Polynomial.C T * Polynomial.X) ^ ((m + 1) + (k + 1))).coeff (k + 1) =
       D * ((Polynomial.C D + Polynomial.C T * Polynomial.X) ^ (m + (k + 1))).coeff (k + 1) +
       T * ((Polynomial.C D + Polynomial.C T * Polynomial.X) ^ ((m + 1) + k)).coeff k := by
-  rw [Nat.add_right_comm m 1 (k + 1), pow_succ', add_mul,
-    Polynomial.coeff_add, Polynomial.coeff_C_mul, mul_assoc, Polynomial.coeff_C_mul,
-    Polynomial.coeff_X_mul]
+  rw [Nat.add_right_comm m 1 (k + 1), pow_succ',
+    Polynomial.coeff_C_add_C_mul_X_mul_succ]
   simp only [Nat.add_assoc, Nat.add_comm 1 k]
 
 private theorem gapCoeff_zero_left {R : Type*} [Semiring R] (D T : R) (k : ℕ) :
