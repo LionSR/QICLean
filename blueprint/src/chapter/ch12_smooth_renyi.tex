@@ -41,6 +41,31 @@
     % At order zero the relevant argument uses lower semicontinuity of rank.
 \end{definition}
 
+\begin{theorem}[R\'enyi entropy of order above one]
+    \label{thm:renyi_le_von_neumann_of_one_lt}
+    \lean{inv_one_sub_mul_log_sum_rpow_le_sum_negMulLog,
+        renyiEntropy_le_vonNeumannEntropy_of_one_lt,
+        Matrix.PosSemidef.renyiEntropy_le_vonNeumannEntropy_of_one_lt}
+    \leanok
+    \uses{def:renyi_entropy}
+    For a density matrix $\rho$ and every order $\alpha>1$,
+    $S_\alpha(\rho)\le S(\rho)$. More generally, for a probability vector
+    $p$ and $\alpha>1$,
+    \begin{align}
+        \frac1{1-\alpha}\log\sum_ip_i^\alpha\le-\sum_ip_i\log p_i.
+        \label{eq:renyi_le_shannon_of_one_lt}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    By the concavity of the logarithm with weights $p_i$ on the support of
+    $p$,
+    $\log\sum_ip_i^\alpha=\log\sum_ip_i\,p_i^{\alpha-1}
+        \ge(\alpha-1)\sum_ip_i\log p_i$. Dividing by $1-\alpha<0$ gives
+    (\ref{eq:renyi_le_shannon_of_one_lt}); for a density matrix apply it to
+    the eigenvalues, which are nonnegative and sum to the trace.
+\end{proof}
+
 \begin{theorem}[The original density is an admissible smoothing witness]
     \label{thm:renyi_smoothing_self_witness}
     \lean{renyiEntropy_mem_smoothRenyiEntropyValues}
