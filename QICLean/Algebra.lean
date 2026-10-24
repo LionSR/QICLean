@@ -11,6 +11,8 @@ Authors: QICLean contributors
 import QICLean.Algebra.BlockPermutation
 import QICLean.Algebra.BurnsideTheorem
 import QICLean.Algebra.CommutingOverlappingDecomp
+import QICLean.Algebra.CommutingPolynomialGaps
+import QICLean.Algebra.CommutingPolynomialSchmidtRank
 import QICLean.Algebra.CompactSVD
 import QICLean.Algebra.ComplexPhasePositivity
 import QICLean.Algebra.ConstantPowerSums
@@ -23,6 +25,7 @@ import QICLean.Algebra.EqualRangeRightFactor
 import QICLean.Algebra.FinSum
 import QICLean.Algebra.FiniteCauchySchwarz
 import QICLean.Algebra.FiniteKroneckerOrder
+import QICLean.Algebra.FiniteMonomialInterpolation
 import QICLean.Algebra.FiniteSumPowers
 import QICLean.Algebra.FrameOperator
 import QICLean.Algebra.FrobeniusHilbert
@@ -37,6 +40,9 @@ import QICLean.Algebra.HermitianUnitaryConjugacy
 import QICLean.Algebra.KramersDegeneracy
 import QICLean.Algebra.KroneckerFactorPositivity
 import QICLean.Algebra.L2OpNormReindex
+import QICLean.Algebra.LocalPolynomialSchmidtRank
+import QICLean.Algebra.LowFrequencySelection
+import QICLean.Algebra.LowFrequencyWordPartition
 import QICLean.Algebra.MatrixAlgEquiv
 import QICLean.Algebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAux
@@ -67,6 +73,7 @@ import QICLean.Algebra.MatrixTracePowerContinuity
 import QICLean.Algebra.MatrixUnitConjugator
 import QICLean.Algebra.MatrixUnitaryBetween
 import QICLean.Algebra.MinkowskiCanonicalPair
+import QICLean.Algebra.MonomialEvaluationSchmidtRank
 import QICLean.Algebra.NewtonGirard
 import QICLean.Algebra.NilMatrixSubalgebra
 import QICLean.Algebra.NilpotentSubspaceThree
@@ -75,7 +82,10 @@ import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OperatorSchmidtBounds
+import QICLean.Algebra.OperatorSchmidtCut
+import QICLean.Algebra.OperatorSchmidtTwoCuts
 import QICLean.Algebra.OrderedMatrixAction
+import QICLean.Algebra.OrderedPolynomialGaps
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.OverlappingLiftAlgebra
 import QICLean.Algebra.PartialTraceDomination
@@ -117,5 +127,6 @@ import QICLean.Algebra.TracePowerCharPoly
 import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.UnitModulusPowerSum
+import QICLean.Algebra.WordCoefficientExpansion
 import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums

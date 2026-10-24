@@ -71,6 +71,214 @@
     contribute $h(0)=0$.
 \end{proof}
 
+\begin{theorem}[Entropy contribution of a finite set]
+    \label{thm:entropy_mass_card}
+    \lean{Entropy.sum_negMulLog_le_mass_log_card}
+    \leanok
+    Let $s$ be a finite set and let $p_z\ge0$ for $z\in s$.
+    Put $m=\sum_{z\in s}p_z$ and $h(t)=-t\log t$, with $h(0)=0$.
+    Then
+    \begin{align}
+        \label{eq:entropy_mass_card}
+        \sum_{z\in s}h(p_z) & \le m\log|s|+h(m).
+    \end{align}
+    Empty sets are included with the convention $\log0=0$.
+\end{theorem}
+\begin{proof}\leanok
+    If $s$ is empty, both sides vanish. Otherwise Jensen's inequality gives
+    $|s|^{-1}\sum_{z\in s}h(p_z)\le h(m/|s|)$.
+    Multiply by $|s|$ and use $|s|h(m/|s|)=m\log|s|+h(m)$.
+\end{proof}
+
+\begin{theorem}[Entropy bound from a binary partition]
+    \label{thm:entropy_binary_partition}
+    \lean{Entropy.probabilityEntropy_le_binary_partition}
+    \leanok
+    \uses{def:finite_classical_mutual_information}
+    Let $p$ be a probability distribution on a finite set $Z$, let $s\subseteq Z$,
+    and put $\tau=\sum_{z\notin s}p_z$.
+    Write $H_2(\tau)=h(\tau)+h(1-\tau)$ for binary entropy with natural logarithms.
+    Then
+    \begin{align}
+        \label{eq:entropy_binary_partition}
+        H(p) & \le(1-\tau)\log|s|+\tau\log|Z\setminus s|+H_2(\tau).
+    \end{align}
+    The convention $\log0=0$ includes empty parts.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:entropy_mass_card}
+    Apply (\ref{eq:entropy_mass_card}) to the two parts, whose masses are
+    $1-\tau$ and $\tau$, and add the resulting inequalities.
+\end{proof}
+
+\begin{theorem}[Entropy bound from concentration]
+    \label{thm:entropy_concentration}
+    \lean{Entropy.probabilityEntropy_le_log_card_add_tail}
+    \leanok
+    \uses{def:finite_classical_mutual_information}
+    Let $p$ be a probability distribution on a finite set $Z$ and let $s\subseteq Z$.
+    If $\sum_{z\notin s}p_z\le\varepsilon$, then
+    \begin{align}
+        \label{eq:entropy_concentration}
+        H(p) & \le\log|s|+\varepsilon\log|Z|+\log2.
+    \end{align}
+    The convention $\log0=0$ includes $s=\varnothing$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:entropy_binary_partition}
+    In (\ref{eq:entropy_binary_partition}), use $H_2(\tau)\le\log2$,
+    $(1-\tau)\log|s|\le\log|s|$, and
+    $\tau\log|Z\setminus s|\le\varepsilon\log|Z|$.
+    If $Z\setminus s$ is empty, its logarithm is zero under the stated convention.
+\end{proof}
+
+\begin{theorem}[Entropy from rank-tail bounds]
+    \label{thm:probability_entropy_rank_tails}
+    \lean{Entropy.probabilityEntropy_le_of_rankTailBounds}
+    \leanok
+    \uses{def:finite_classical_mutual_information}
+    Let $N,M\geq0$ be integers, and let $p=(p_a)_{0\leq a<N}$ be a
+    probability distribution. Let $1\leq R_0\leq\cdots\leq R_M$ be integers
+    with $N\leq R_M$. Let $t_0,\ldots,t_{M-1}$ be real numbers such that,
+    for every integer $i$ with $0\leq i<M$,
+    \begin{align}
+        \sum_{\substack{0\leq a<N \\R_i\leq a}}p_a
+         & \leq t_i.
+        \label{eq:probability_rank_tail_input}
+    \end{align}
+    Then
+    \begin{align}
+        H(p)
+         & \leq \log R_0
+        +\log2\left(1+\sum_{i=0}^{M-1}t_i\right)
+        +\sum_{i=0}^{M-1}t_i\log\frac{R_{i+1}}{R_i}.
+        \label{eq:probability_rank_tail_entropy}
+    \end{align}
+    The probabilities may appear in any order, and repeated ranks are
+    allowed. This is a finite probability estimate for the entropy sums in
+    \cite{Arad2013AreaLaw,Hastings2007AreaLaw,Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:finite_classical_mutual_information}
+    The normalization of $p$ gives $N>0$. For $0\leq a<N$, let $j(a)$ be
+    the least $j\leq M$ with $a<R_j$, and set
+    \begin{align}
+        w_a & =\frac{1}{2^{j(a)+1}R_{j(a)}},
+        \label{eq:probability_rank_tail_dyadic_weight} \\
+        Z   & =\sum_{a=0}^{N-1}w_a.
+        \notag
+    \end{align}
+    Each set $\{a:j(a)=j\}$ has at most $R_j$ elements. Consequently,
+    \begin{align}
+        0<Z
+         & =\sum_{j=0}^{M}
+        \frac{\lvert\{a:j(a)=j\}\rvert}{2^{j+1}R_j}
+        \leq\sum_{j=0}^{M}2^{-j-1}\leq1.
+        \notag
+    \end{align}
+    Apply Gibbs' inequality to the probability distribution $q_a=w_a/Z$:
+    \begin{align}
+        H(p)
+         & \leq-\sum_a p_a\log q_a
+        =\sum_a p_a(-\log w_a)+\log Z
+        \leq\sum_a p_a(-\log w_a).
+        \notag
+    \end{align}
+    Minimality gives $i<j(a)$ precisely when $R_i\leq a$, for $i<M$.
+    A single telescoping identity therefore gives
+    \begin{align}
+        -\log w_a
+         & =\log2+\log R_0
+        +\sum_{i=0}^{M-1}\mathbf1_{\{R_i\leq a\}}
+        \left(\log2+\log\frac{R_{i+1}}{R_i}\right).
+        \label{eq:probability_rank_tail_cost}
+    \end{align}
+    Multiply by $p_a$, sum over $a$, and interchange the two finite sums.
+    Each coefficient $\log2+\log(R_{i+1}/R_i)$ is nonnegative, so the
+    assumed tail inequalities imply~(\ref{eq:probability_rank_tail_entropy}).
+\end{proof}
+
+\begin{theorem}[Entropy from geometric rank tails]
+    \label{thm:probability_entropy_geometric_rank_tails}
+    \lean{Entropy.probabilityEntropy_le_of_geometricRankTailBounds}
+    \leanok
+    \uses{def:finite_classical_mutual_information}
+    Let $N,a,M\geq0$ and $D\geq1$ be integers, let $0\leq\theta<1$,
+    and let $p=(p_b)_{0\leq b<N}$ be a probability distribution:
+    $p_b\geq0$ and $\sum_{b=0}^{N-1}p_b=1$.
+    Suppose that $N\leq D^{a+M}$ and that, for every integer
+    $i$ with $0\leq i<M$,
+    \begin{align}
+        \sum_{\substack{0\leq b<N \\D^{a+i}\leq b}}p_b
+         & \leq\theta^{i+1}.
+        \label{eq:probability_geometric_tail_input}
+    \end{align}
+    With natural logarithms and the convention $0\log0=0$, the entropy
+    $H(p)=-\sum_{b=0}^{N-1}p_b\log p_b$ satisfies
+    \begin{align}
+        H(p)
+         & \leq a\log D+\frac{\log2+\theta\log D}{1-\theta}.
+        \label{eq:probability_geometric_tail_entropy}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:probability_entropy_rank_tails}
+    Apply Theorem~\ref{thm:probability_entropy_rank_tails} with
+    $R_i=D^{a+i}$ and $t_i=\theta^{i+1}$,
+    using~(\ref{eq:probability_geometric_tail_input}).
+    These ranks are positive and nondecreasing, and
+    $\log R_0=a\log D$ and $\log(R_{i+1}/R_i)=\log D$.
+    Put $s=\sum_{i=0}^{M-1}\theta^{i+1}$, with $s=0$ when $M=0$.
+    The finite geometric-sum identity gives
+    $(1-\theta)s=\theta(1-\theta^M)\leq\theta$,
+    hence $s\leq\theta/(1-\theta)$.
+    Since $\log2+\log D\geq0$,
+    \begin{align}
+        H(p)
+         & \leq a\log D+\log2+s(\log2+\log D) \notag \\
+         & \leq a\log D+\log2
+        +\frac{\theta}{1-\theta}(\log2+\log D)
+        =a\log D+\frac{\log2+\theta\log D}{1-\theta}.
+        \label{eq:probability_geometric_tail_sum}
+    \end{align}
+    Thus~(\ref{eq:probability_geometric_tail_sum}) proves~(\ref{eq:probability_geometric_tail_entropy}).
+\end{proof}
+
+\begin{lemma}[Leading weights of a distribution with bounded entropy]
+    \label{lem:leading_weights_of_bounded_entropy}
+    \lean{Entropy.one_half_le_sum_of_exp_two_mul_probabilityEntropy_le,
+        Matrix.one_half_le_sum_eigenvalues_of_exp_two_mul_vonNeumannEntropy_le}
+    \leanok
+    \uses{def:finite_classical_mutual_information}
+    Let $p=(p_z)_{z\in Z}$ be a probability distribution on a finite set $Z$
+    with entropy $H(p)=\sum_{z\in Z}h(p_z)$, and let $T\subseteq Z$ satisfy
+    $p_b\leq p_a$ for all $a\in T$ and $b\notin T$. If
+    $\exp(2H(p))/2\leq\lvert T\rvert$, then
+    \begin{align}
+        \sum_{z\in T}p_z\geq\frac{1}{2}.
+        \notag
+    \end{align}
+    The same holds for the eigenvalues of a density matrix $\rho$, with $H(p)$
+    replaced by the von Neumann entropy $S(\rho)$. Applied to the squared
+    Schmidt coefficients of a pure state, this is the bound in the section
+    on matrix product states of \cite{Hastings2007AreaLaw} on the number of
+    leading Schmidt coefficients that carry half of the norm.
+\end{lemma}
+\begin{proof}\leanok
+    Write $k=\lvert T\rvert$; since $H(p)\geq0$, the hypothesis gives
+    $k\geq1$. Suppose that $\sum_{z\in T}p_z<1/2$. For $b\notin T$, every
+    $p_a$ with $a\in T$ is at least $p_b$, so $kp_b\leq\sum_{z\in T}p_z<1/2$
+    and $p_b<1/(2k)$. Hence $h(p_b)\geq p_b\log(2k)$, and the weights outside
+    $T$, of total mass greater than $1/2$, give
+    \begin{align}
+        H(p)\geq\sum_{b\notin T}h(p_b)>\frac{1}{2}\log(2k).
+        \notag
+    \end{align}
+    Thus $\exp(2H(p))>2k$, contrary to the hypothesis. The eigenvalues of a
+    density matrix are nonnegative and sum to one, and $S(\rho)$ is the
+    entropy of this distribution.
+\end{proof}
+
 \begin{theorem}[Classical mutual information is bounded by ordinary rank]
     \label{thm:classical_mutual_information_le_log_rank}
     \lean{Entropy.classicalMutualInformation_le_log_rank}
@@ -206,6 +414,94 @@
     inequality.
 \end{proof}
 
+\begin{lemma}[A finite spanning bound for operator blocks]
+    \label{lem:operator_schmidt_block_span_bound}
+    \lean{Matrix.operatorSchmidtRank_le_card_of_blocks_mem_span}
+    \leanok
+    Let $\mathbb F$ be a field and let $X$ be a finite bipartite matrix over
+    $\mathbb F$. Define $\operatorname{OSR}_{\mathbb F}(X)$ to be the dimension
+    of the span of its operator blocks. If every block belongs to the span
+    of a finite family $(C_t)_{t\in I}$, then
+    \begin{align*}
+        \operatorname{OSR}_{\mathbb F}(X)\le |I|.
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    \leanok
+    The span of the blocks is contained in $\operatorname{span}\{C_t:t\in I\}$,
+    whose dimension is at most $|I|$.
+\end{proof}
+
+\begin{theorem}[Movement of an operator Schmidt cut]
+    \label{thm:operator_schmidt_cut_movement}
+    \lean{Matrix.operatorSchmidtRank_reindex_prodAssoc_le,
+        Matrix.operatorSchmidtRank_reindex_prodAssoc_symm_le}
+    \leanok
+    Let $X$ be an operator on three finite-dimensional complex spaces
+    $\mathcal H_A\otimes\mathcal H_B\otimes\mathcal H_C$, and put
+    $d_B=\dim\mathcal H_B$. With the canonical association of tensor factors,
+    \begin{align*}
+        \operatorname{OSR}_{AB\mid C}(X)
+            &\le d_B^2\operatorname{OSR}_{A\mid BC}(X), \\
+        \operatorname{OSR}_{A\mid BC}(X)
+            &\le d_B^2\operatorname{OSR}_{AB\mid C}(X).
+    \end{align*}
+    Zero-dimensional factors are included. These inequalities give the
+    linear-algebraic cut comparison used in
+    \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:operator_schmidt_block_span_bound, def:bipartite_operator_schmidt_rank}
+    Choose a shortest decomposition $X=\sum_{t=1}^{r}A_t\otimes B_t$ across
+    $A\mid BC$. For middle-factor indices $u,v$, let $(B_t)_{uv}$ be the
+    corresponding operator block on $\mathcal H_C$. Every block of $X$
+    across $AB\mid C$ is a linear combination of these $r d_B^2$ matrices.
+    The preceding lemma proves the first inequality.
+
+    For the reverse inequality choose a shortest decomposition across
+    $AB\mid C$. If $E_{uv}$ are the middle-factor matrix units, every block
+    across $A\mid BC$ lies in the span of the $r d_B^2$ matrices
+    $E_{uv}\otimes B_t$. Apply the same lemma.
+\end{proof}
+
+\begin{theorem}[Middle-versus-exterior operator Schmidt rank]
+    \label{thm:operator_schmidt_middle_rank}
+    \lean{Matrix.operatorSchmidtRank_middle_le_mul}
+    \leanok
+    Let $X$ act on finite-dimensional complex spaces
+    $\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$. Then
+    \begin{align*}
+        \operatorname{OSR}_{M\mid LR}(X)
+            \le \operatorname{OSR}_{L\mid MR}(X)
+                \operatorname{OSR}_{LM\mid R}(X).
+    \end{align*}
+    Zero-dimensional factors are included. This is the simultaneous-cut
+    algebra used in the proof of~\cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank,thm:operator_schmidt_coefficient_space,lem:operator_schmidt_block_span_bound}
+    Put $r_L=\operatorname{OSR}_{L\mid MR}(X)$ and
+    $r_R=\operatorname{OSR}_{LM\mid R}(X)$.
+    Choose a minimal decomposition $X=\sum_{a=1}^{r_L}L_a\otimes Y_a$.
+    Let $R_1,\ldots,R_{r_R}$ be a basis of the span of the right operator
+    blocks of $X$, and extend its coordinate functionals $\varphi_b$ linearly
+    to all operators on $\mathcal H_R$. For middle indices $i,j$, define
+    \begin{align*}
+        (M_{ab})_{ij}=\varphi_b\bigl((Y_a)_{ij}\bigr).
+    \end{align*}
+    Apply the coordinate functionals to the right blocks of $X$ and reconstruct
+    those blocks in the chosen basis. Linearity gives
+    \begin{align*}
+        X=\sum_{a=1}^{r_L}\sum_{b=1}^{r_R}L_a\otimes M_{ab}\otimes R_b.
+    \end{align*}
+    Across $M\mid LR$, the exterior blocks therefore lie in the span of the
+    $r_Lr_R$ operators $L_a\otimes R_b$. The finite spanning bound proves
+    the inequality. The extension of $\varphi_b$ permits its application to
+    every block of $Y_a$; basis reconstruction is used for the actual blocks of $X$.
+\end{proof}
+
 \begin{theorem}[Operator-Schmidt rank under local isometries]
     \label{thm:operator_schmidt_rank_local_isometry}
     \lean{Matrix.operatorSchmidtRank_local_mul_le,
@@ -254,6 +550,27 @@
     $\rho_{AB}(P_A\otimes P_B)=\rho_{AB}$. The support projection of
     $\rho_A\otimes\rho_B$ is $P_A\otimes P_B$. Therefore every vector
     annihilated by $\rho_A\otimes\rho_B$ is annihilated by $\rho_{AB}$.
+\end{proof}
+
+\begin{theorem}[Rank bound from the two marginals]
+    \label{thm:rank_product_marginals}
+    \lean{Matrix.PosSemidef.rank_le_rank_partialTraceRight_mul_rank_partialTraceLeft}
+    \leanok
+    Let $\rho_{AB}\succeq0$ be a finite-dimensional bipartite operator,
+    with marginals $\rho_A$ and $\rho_B$. Then
+    \begin{align}
+        \operatorname{rank}\rho_{AB}
+         & \le\operatorname{rank}\rho_A\,\operatorname{rank}\rho_B.
+    \end{align}
+    No trace normalization is required, and either factor may have dimension zero.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:product_marginals_kernel}
+    The kernel inclusion gives
+    $\dim\ker(\rho_A\otimes\rho_B)\le\dim\ker\rho_{AB}$.
+    By rank-nullity on the common ambient space,
+    $\operatorname{rank}\rho_{AB}\le\operatorname{rank}(\rho_A\otimes\rho_B)$.
+    The rank of a tensor product is the product of the ranks.
 \end{proof}
 
 \begin{theorem}[Compression to both marginal supports]

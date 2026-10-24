@@ -1,0 +1,39 @@
+\section{Ordered-word coefficient families}
+
+\begin{theorem}[Polynomial coefficients and word frequencies]
+    \label{thm:word_coefficient_expansion}
+    \lean{Polynomial.coeff_pow_sum_smul_add_C_mul_X_eq_sum_counts}
+    \leanok
+    Let $\mathcal A$ be a unital complex algebra, let $I$ be a finite alphabet,
+    and let $H_i,T\in\mathcal A$. Adjoin a distinguished letter $\ast$ to $I$,
+    with associated operator $V_\ast=T$ and $V_i=H_i$ for $i\in I$.
+    Fix integers $m,k\ge0$. For a word $w$ of length $m+k$, write $n_i(w)$
+    for the number of occurrences of $i$ and put
+    \begin{align*}
+        O(w)=V_{w(0)}V_{w(1)}\cdots V_{w(m+k-1)}.
+    \end{align*}
+    For each $a\in\mathbb N^I$ with $\sum_i a_i=m$, define
+    \begin{align*}
+        f_a=\sum_{\substack{w:\ n_\ast(w)=k\\n_i(w)=a_i\ (i\in I)}}O(w).
+    \end{align*}
+    If $X$ is a central indeterminate, then for every $z\in\mathbb C^I$,
+    \begin{align*}
+        [X^k]\left(\sum_{i\in I}z_iH_i+TX\right)^{m+k}
+            =\sum_{\substack{a\in\mathbb N^I\\\sum_i a_i=m}}
+                \left(\prod_{i\in I}z_i^{a_i}\right)f_a.
+    \end{align*}
+    The formula includes an empty alphabet and zero powers; the empty word
+    contributes the identity. This identifies the distinguished-letter family
+    in the proof of~\cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:finite_sum_power_ordered_words,def:poisson_word_count_vector}
+    Expand the power into ordered words. A word contributes
+    $X^{n_\ast(w)}$ times its unchanged ordered operator product, multiplied by
+    $\prod_i z_i^{n_i(w)}$. Taking the coefficient of $X^k$ retains precisely
+    the words with $n_\ast(w)=k$. Their ordinary-letter counts sum to $m$.
+    Partition this finite sum by those counts and factor out the common scalar
+    on each part. This gives the displayed identity, with every word retained
+    with its original multiplicity.
+\end{proof}

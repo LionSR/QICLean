@@ -29,6 +29,8 @@ the basic quantum entropy infrastructure needed for MPDO / RFP applications.
 
 ## Main results
 
+* `vonNeumannEntropy_eq_probabilityEntropy_eigenvalues₀`: entropy as a sum over the
+  eigenvalues in descending order
 * `vonNeumannEntropy_nonneg_of_posSemidef_trace_one`: `S(ρ) ≥ 0` for
   positive semidefinite matrices of trace `1`, over any finite index type
 * `vonNeumannEntropy_nonneg`: `S(ρ) ≥ 0` for density matrices
@@ -96,6 +98,18 @@ blueprint `def:von_neumann_entropy`. -/
 noncomputable def vonNeumannEntropy
     (ρ : Matrix n n ℂ) (hρ : ρ.IsHermitian) : ℝ :=
   ∑ i, negMulLog (hρ.eigenvalues i)
+
+/-- The von Neumann entropy is the entropy of the eigenvalues listed in descending order.
+This is the spectral definition of entropy in Wolf, Chapter 8, Section 8.2, Eq. (8.15),
+with the eigenvalues indexed by a finite ordinal rather than the matrix index type. -/
+theorem vonNeumannEntropy_eq_probabilityEntropy_eigenvalues₀ {ρ : Matrix n n ℂ}
+    (hρ : ρ.IsHermitian) :
+    vonNeumannEntropy ρ hρ =
+      Entropy.probabilityEntropy (fun a : Fin (Fintype.card n) ↦ hρ.eigenvalues₀ a) := by
+  rw [vonNeumannEntropy, Entropy.probabilityEntropy]
+  unfold Matrix.IsHermitian.eigenvalues
+  exact Equiv.sum_comp (Fintype.equivOfCardEq (Fintype.card_fin _)).symm
+    (fun a ↦ Real.negMulLog (hρ.eigenvalues₀ a))
 
 /-- Von Neumann entropy is congruent in the matrix argument. -/
 theorem vonNeumannEntropy_congr {ρ₁ ρ₂ : Matrix n n ℂ} (h : ρ₁ = ρ₂)

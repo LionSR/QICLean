@@ -354,6 +354,21 @@ depend on the common values there.
     $K^{-1}\rho_{\varphi,D}K=\rho_{\varphi,D}$.
 \end{proof}
 
+\begin{lemma}[Support on the complementary cut factor]
+    \label{lem:right_local_lift_support}
+    \lean{Entropy.isSupportedOn_rightCut}
+    \leanok
+    \uses{lem:local_lift}
+    For any region $D$ and any operator $R$ on the configurations of its
+    complement, the operator whose cut coordinates are $1\otimes R$ is
+    supported on $D^{\mathrm c}$. Local dimensions may be zero.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:local_lift}
+    Exchanging the two cut factors identifies this operator with the local
+    lift of $R$ from $D^{\mathrm c}$.
+\end{proof}
+
 \begin{theorem}[Regional states under bijections of tensor factors]
     \label{thm:region_state_relabel}
     \lean{Entropy.siteConfigurationEquiv, Entropy.regionConfigurationEquiv,
