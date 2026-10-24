@@ -36,7 +36,7 @@ and the resulting duality bound hold for square matrices over any finite index.
 * `Matrix.re_trace_sqrt_conjTranspose_mul_self_le_of_forall_norm_trace_mul_le` — the duality
   bound for any finite index: if $\lvert\operatorname{tr}(OA)\rvert \le \epsilon$ whenever
   $\|O\| \le 1$, then $\operatorname{Re}\operatorname{tr}\sqrt{A^\dagger A} \le \epsilon$.
-* `Matrix.l2_opNorm_le_one_of_mem_unitaryGroup` — a unitary matrix has operator norm at most
+* `Matrix.l2_opNorm_unitary_le_one` — a unitary matrix has operator norm at most
   one.
 * `Matrix.traceNorm_eq_re_trace_sqrt`,
   `Matrix.trace_sqrt_conjTranspose_mul_self_eq_traceNorm` — the trace norm as
@@ -177,13 +177,13 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 
 open scoped Matrix.Norms.L2Operator
 
-/-- A unitary matrix has operator norm at most one. The bound is an equality unless the index
-type is empty, where the only matrix is zero. -/
-theorem l2_opNorm_le_one_of_mem_unitaryGroup {U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ) :
-    ‖U‖ ≤ 1 := by
+/-- Unitary matrices have operator norm at most one, including the empty
+matrix algebra. -/
+lemma l2_opNorm_unitary_le_one {V : Matrix n n ℂ} (hV : V ∈ unitaryGroup n ℂ) :
+    ‖V‖ ≤ 1 := by
   rcases isEmpty_or_nonempty n with hn | hn
-  · simp [Subsingleton.elim U 0]
-  · exact (CStarRing.norm_of_mem_unitary hU).le
+  · simp [Subsingleton.elim V 0]
+  · exact (CStarRing.norm_of_mem_unitary hV).le
 
 /-- **Attainment in Wolf's Eq. (8.11)** for any finite index: some unitary $U$ realizes
 $\operatorname{tr}[A^\dagger U] = \operatorname{tr}\sqrt{A^\dagger A}$.
@@ -224,7 +224,7 @@ theorem re_trace_sqrt_conjTranspose_mul_self_le_of_forall_norm_trace_mul_le {A :
     rw [← Matrix.mul_assoc, hUU, Matrix.one_mul]
   calc (CFC.sqrt (Aᴴ * A)).trace.re ≤ ‖(CFC.sqrt (Aᴴ * A)).trace‖ := Complex.re_le_norm _
     _ = ‖(star (U : Matrix n n ℂ) * A).trace‖ := by rw [hO]
-    _ ≤ ε := h _ (l2_opNorm_le_one_of_mem_unitaryGroup (Unitary.star_mem U.2))
+    _ ≤ ε := h _ (l2_opNorm_unitary_le_one (Unitary.star_mem U.2))
 
 end AnyIndex
 
