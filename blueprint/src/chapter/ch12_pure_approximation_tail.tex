@@ -1,0 +1,56 @@
+\section{Half-error spectral tails for pure-state approximation}
+\label{sec:pure_approximation_tail}
+
+\begin{theorem}[Missing overlap at small trace error]
+  \label{thm:pure_error_missing_overlap}
+  \lean{Matrix.one_sub_normalized_overlap_le_half_pure_trace_error}
+  \leanok
+  Let $\psi$ be a unit vector and let $\phi$ be any vector on the same
+  finite-dimensional complex Hilbert space. Suppose that
+  $\|\lvert\psi\rangle\langle\psi\rvert-
+  \lvert\phi\rangle\langle\phi\rvert\|_1\le\delta<1$. Then
+  \begin{align}
+    \label{eq:pure_error_missing_overlap}
+    1-\frac{|\langle\psi,\phi\rangle|^2}{\|\phi\|^2}
+      &\le\frac{\delta}{2}.
+  \end{align}
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:optimized_pure_trace_minimum,thm:optimized_pure_error_mass}
+  The zero approximant has error one, so $\phi\ne0$. Taking coefficient one
+  in the optimized error formula bounds $T(f)$ by $\delta$, where
+  $f=|\langle\psi,\phi\rangle|^2/\|\phi\|^2\le1$ by Cauchy--Schwarz.
+  The missing-mass estimate gives $1-f\le\delta/2$.
+\end{proof}
+
+\begin{theorem}[Discarded marginal spectrum at small pure-state error]
+  \label{thm:pure_error_marginal_tail}
+  \lean{Matrix.sum_descEigenvalue_tail_le_half_pure_trace_error,
+    Entropy.sum_descEigenvalue_regionState_tail_le_half_pure_trace_error}
+  \leanok
+  Under the preceding assumptions, let $R$ be any subsystem and suppose
+  that the reduced matrix of $\phi$ on $R$ has rank at most $D$.
+  If $\lambda_0\ge\cdots\ge\lambda_{n-1}$ are the eigenvalues of the
+  reduced matrix of $\psi$ on $R$, then
+  \begin{align}
+    \label{eq:pure_error_marginal_tail}
+    \sum_{j=D}^{n-1}\lambda_j&\le\frac{\delta}{2}.
+  \end{align}
+  The approximant need not be normalized. The budget $D$ is unrestricted;
+  tails with $D\ge n$ are empty.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:pure_error_missing_overlap,thm:ky_fan_upper_bound}
+  Normalize $\phi$ within the proof. Its coefficient matrix has the same
+  rank as before normalization. The Ky Fan overlap bound gives
+  $|\langle\psi,\phi/\|\phi\|\rangle|^2\le\sum_{j<D}\lambda_j$.
+  Subtract from $\sum_j\lambda_j=1$ and apply the missing-overlap estimate.
+  If $D\ge n$, the assertion follows from nonnegativity of the error.
+  For an arbitrary region, reindex the configuration space into that region
+  and its complement; this preserves the global norm and trace error.
+\end{proof}
+
+These estimates combine the optimized pure-state formula and the spectral-tail
+argument in \cite{Schuch2008EntropyScaling}, lines 160--173 and 247--264
+of the source. They supply the half-error spectral mass directly, without
+applying a continuity inequality to an unnormalized reduced matrix.

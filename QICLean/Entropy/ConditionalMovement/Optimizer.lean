@@ -22,7 +22,12 @@ adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
 `lean/OAI/MathematicalPhysics/PEPSMove/Optimizer.lean`, all declarations of the file;
 modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
 `ConditionalMovement`, the imports are restricted to the needed modules, and operator
-spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+spacing and line breaks are normalized. The mathematical hypotheses and conclusions
+are retained. The common filtered Gram-moment calculation, including its lower
+trace-pairing bound, positivity,
+and entropy upper bound, is extracted into `conditional_gramMoment_bounds`.
+`conditional_optimizer_root_stability` applies this helper and omits the unused
+equality-decision instance for the purifier index.
 -/
 
 namespace ConditionalMovement
@@ -416,7 +421,16 @@ theorem density_spectrum_sum (W : Matrix P (X × F) ℂ) (r : P → ℝ)
   rw [Finset.sum_comm] at hh
   simpa only [← Finset.mul_sum, u, MatrixEntropy.unitary_col_normSq, mul_one] using hh
 
-theorem conditional_optimizer_root_stability [Nonempty X]
+omit [DecidableEq F] in
+/-- The lower trace-pairing bound, positivity, and entropy upper bound for the
+conditional filtered Gram moment.
+The marginal may be singular. The estimate is the common calculation used in the
+conditional optimizer, boundary energy, and filter deficit arguments.
+
+Source: area-law manuscript, `04-conditional.tex`, `eq:conditional-schatten`;
+this proof extracts the existing calculation in `conditional_optimizer_root_stability`.
+The normalisation and exponent restrictions are unchanged. -/
+lemma conditional_gramMoment_bounds [Nonempty X]
     (W : Matrix P (X × F) ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hW : W * W.conjTranspose = diagonal (fun p => (r p : ℂ))) (hsum : ∑ p, r p = 1)
     (β : ℝ) (hβ : 0 < β) (hβthird : β ≤ 1 / 3)
@@ -424,11 +438,15 @@ theorem conditional_optimizer_root_stability [Nonempty X]
     let hA := (density_pos W).isHermitian
     let A := power 1 (fun j : X × P => r j.2) ((-β / 2 : ℝ) : ℂ) *
       power hA.eigenvectorUnitary hA.eigenvalues ((1 / 2 : ℝ) : ℂ)
-    β * hsSquare
-      (power (posSemidef_self_mul_conjTranspose A).isHermitian.eigenvectorUnitary
-        (optimizerWeights A β) ((1 / 2 : ℝ) : ℂ) -
-        power hA.eigenvectorUnitary hA.eigenvalues ((1 / 2 : ℝ) : ℂ)) ≤
-      3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32) := by
+    Real.exp (β * -conditionalEntropy W r) ≤
+      (trace (power hA.eigenvectorUnitary hA.eigenvalues (β : ℂ) *
+        (A * A.conjTranspose))).re ∧
+      0 < gramMoment A (1 / (1 - β)) ∧
+      gramMoment A (1 / (1 - β)) ^ (1 - β) ≤
+        Real.exp (-β * conditionalEntropy W r +
+          3 * β ^ 2 / (1 - β) *
+            (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32)) := by
+  classical
   dsimp only
   let hA := (density_pos W).isHermitian
   let A := power 1 (fun j : X × P => r j.2) ((-β / 2 : ℝ) : ℂ) *
@@ -451,6 +469,29 @@ theorem conditional_optimizer_root_stability [Nonempty X]
   dsimp only at hu
   change (trace (power T q (β : ℂ) * (A * A.conjTranspose))).re ≤ _ at hu
   rw [optimizer_attains A β hβ1 hZ] at hu
+  exact ⟨hlow, hZ, hu⟩
+
+omit [DecidableEq F] in
+theorem conditional_optimizer_root_stability [Nonempty X]
+    (W : Matrix P (X × F) ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
+    (hW : W * W.conjTranspose = diagonal (fun p => (r p : ℂ))) (hsum : ∑ p, r p = 1)
+    (β : ℝ) (hβ : 0 < β) (hβthird : β ≤ 1 / 3)
+    (hsmall : (β / (1 - β)) * Real.log (Fintype.card X : ℝ) ≤ 1) :
+    let hA := (density_pos W).isHermitian
+    let A := power 1 (fun j : X × P => r j.2) ((-β / 2 : ℝ) : ℂ) *
+      power hA.eigenvectorUnitary hA.eigenvalues ((1 / 2 : ℝ) : ℂ)
+    β * hsSquare
+      (power (posSemidef_self_mul_conjTranspose A).isHermitian.eigenvectorUnitary
+        (optimizerWeights A β) ((1 / 2 : ℝ) : ℂ) -
+        power hA.eigenvectorUnitary hA.eigenvalues ((1 / 2 : ℝ) : ℂ)) ≤
+      3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32) := by
+  dsimp only
+  let hA := (density_pos W).isHermitian
+  let A := power 1 (fun j : X × P => r j.2) ((-β / 2 : ℝ) : ℂ) *
+      power hA.eigenvectorUnitary hA.eigenvalues ((1 / 2 : ℝ) : ℂ)
+  have hp := (density_pos W).eigenvalues_nonneg
+  have hmass := density_spectrum_sum W r hW hsum
+  obtain ⟨hlow, _, hu⟩ := conditional_gramMoment_bounds W r hr hW hsum β hβ hβthird hsmall
   apply optimizer_root_bound hA.eigenvectorUnitary hA.eigenvalues hp hmass A β
     (-conditionalEntropy W r)
     (3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32)) hβ
