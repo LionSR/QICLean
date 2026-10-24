@@ -41,6 +41,8 @@ import QICLean.Algebra.KramersDegeneracy
 import QICLean.Algebra.KroneckerFactorPositivity
 import QICLean.Algebra.L2OpNormReindex
 import QICLean.Algebra.LocalPolynomialSchmidtRank
+import QICLean.Algebra.LowFrequencySelection
+import QICLean.Algebra.LowFrequencyWordPartition
 import QICLean.Algebra.MatrixAlgEquiv
 import QICLean.Algebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAux
@@ -130,5 +132,6 @@ import QICLean.Algebra.TripartitePolynomialSchmidtRank
 import QICLean.Algebra.TwoMarkerWordCoefficients
 import QICLean.Algebra.UnitModulusPowerSum
 import QICLean.Algebra.WeightedFrequencySchmidtRank
+import QICLean.Algebra.WordCoefficientExpansion
 import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums
