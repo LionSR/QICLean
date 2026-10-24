@@ -144,6 +144,7 @@ import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProbabilityEntropyConcentration
+import QICLean.Analysis.ProbabilityEntropyGeometricTails
 import QICLean.Analysis.ProbabilityEntropyRankTails
 import QICLean.Analysis.ProductOverlapReplacement
 import QICLean.Analysis.ProductReferenceDensityError
