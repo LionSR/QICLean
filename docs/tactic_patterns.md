@@ -314,6 +314,21 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   Two occurrences in one file do not require a new abstraction. Reuse the
   existing phase-power identities in later consumers instead of copying them.
 
+### Product decompositions under tensor permutations and identity spectators — candidate (2026-10-22)
+
+- **Seen:** The factor-flip inequality and the left and reflected right
+  spectator inequalities in `Algebra/TripartitePolynomialSchmidtRank.lean`.
+- **Pattern:** Choose an actual shortest product decomposition, identify the
+  transformed tensor factors termwise, and apply the existing upper bound
+  for the length of a product decomposition.
+- **Decision:** The three tensor identities are in one module. Reuse
+  `Matrix.hasOperatorSchmidtDecomposition_operatorSchmidtRank` and
+  `Matrix.operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition`;
+  keep the distinct tensor identities explicit. No additional tactic is needed.
+- **Caveat:** An empty spectator may lower the rank. Only the displayed
+  decomposition length is preserved; no nonempty-factor premise or rank
+  cancellation is used. Boundary applications are not additional consumers.
+
 
 ### Finite scalar span followed by an operator-rank sum — candidate (2026-10-22)
 
