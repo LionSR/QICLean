@@ -1,0 +1,99 @@
+\subsection{Finite-order and infimal smoothed R\'enyi entropy}
+
+\begin{definition}[Finite-order R\'enyi entropy]
+    \label{def:renyi_entropy}
+    \lean{renyiEntropy}
+    \leanok
+    \uses{def:von_neumann_entropy}
+    For a density matrix $\rho$ and a finite order $\alpha\ge0$, define
+    \begin{align}
+        S_\alpha(\rho) & =
+        \begin{cases}
+            \log\operatorname{rank}\rho, & \alpha=0,     \\
+            S(\rho),                     & \alpha=1,     \\
+            \dfrac{\log\operatorname{tr}(\rho^\alpha)}{1-\alpha},
+                                         & \alpha\ne0,1.
+        \end{cases}\label{eq:renyi_entropy_definition}
+    \end{align}
+    Logarithms are natural. The endpoint conventions agree with
+    those in~\cite{SchuchWolfVerstraeteCirac2007}.
+\end{definition}
+
+\begin{definition}[Infimal smoothed R\'enyi entropy]
+    \label{def:infimal_smooth_renyi_entropy}
+    \lean{smoothRenyiEntropyValues,smoothRenyiEntropy}
+    \leanok
+    \uses{def:renyi_entropy}
+    For a density matrix $\rho$ and a radius $\varepsilon\ge0$, let
+    \begin{align}
+        \mathcal V_{\alpha,\varepsilon}(\rho)
+         & =\{S_\alpha(\sigma):\sigma\ge0,\,
+        \operatorname{tr}\sigma=1,\,
+        \|\rho-\sigma\|_1\le\varepsilon\}.\label{eq:smooth_renyi_admissible_values}   \\
+        S_\alpha^\varepsilon(\rho)
+         & =\inf\mathcal V_{\alpha,\varepsilon}(\rho).\label{eq:smooth_renyi_infimum}
+    \end{align}
+    Here $\|\cdot\|_1$ is the full trace norm. The source
+    \cite{SchuchWolfVerstraeteCirac2007} writes a minimum. Whenever the
+    infimum is attained, the two values agree. The witness theorem below
+    does not assume attainment.
+    % The source's minimum-attainment assertion is not formalized here.
+    % At order zero the relevant argument uses lower semicontinuity of rank.
+\end{definition}
+
+\begin{theorem}[R\'enyi entropy of order above one]
+    \label{thm:renyi_le_von_neumann_of_one_lt}
+    \lean{Entropy.inv_one_sub_mul_log_sum_rpow_le_probabilityEntropy,
+        renyiEntropy_le_vonNeumannEntropy_of_one_lt,
+        Matrix.PosSemidef.renyiEntropy_le_vonNeumannEntropy_of_one_lt}
+    \leanok
+    \uses{def:renyi_entropy}
+    For a density matrix $\rho$ and every order $\alpha>1$,
+    $S_\alpha(\rho)\le S(\rho)$. More generally, for a probability vector
+    $p$ and $\alpha>1$,
+    \begin{align}
+        \frac1{1-\alpha}\log\sum_ip_i^\alpha\le-\sum_ip_i\log p_i.
+        \label{eq:renyi_le_shannon_of_one_lt}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    By the concavity of the logarithm with weights $p_i$ on the support of
+    $p$,
+    $\log\sum_ip_i^\alpha=\log\sum_ip_i\,p_i^{\alpha-1}
+        \ge(\alpha-1)\sum_ip_i\log p_i$. Dividing by $1-\alpha<0$ gives
+    (\ref{eq:renyi_le_shannon_of_one_lt}); for a density matrix apply it to
+    the eigenvalues, which are nonnegative and sum to the trace.
+\end{proof}
+
+\begin{theorem}[The original density is an admissible smoothing witness]
+    \label{thm:renyi_smoothing_self_witness}
+    \lean{renyiEntropy_mem_smoothRenyiEntropyValues}
+    \leanok
+    \uses{def:infimal_smooth_renyi_entropy}
+    If $\rho$ is a density matrix and $\varepsilon\ge0$, then
+    $S_\alpha(\rho)\in\mathcal V_{\alpha,\varepsilon}(\rho)$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Take $\sigma=\rho$ and use $\|\rho-\rho\|_1=0\le\varepsilon$.
+\end{proof}
+
+\begin{theorem}[A witness below every strict upper bound]
+    \label{thm:renyi_smoothing_strict_upper_witness}
+    \lean{exists_densityMatrix_renyiEntropy_lt}
+    \leanok
+    \uses{def:infimal_smooth_renyi_entropy}
+    Let $\rho$ be a density matrix and $\varepsilon\ge0$.
+    If $S_\alpha^\varepsilon(\rho)<T$, there is a density matrix $\sigma$
+    with $\|\rho-\sigma\|_1\le\varepsilon$ and $S_\alpha(\sigma)<T$.
+    In particular, $T=S_\alpha^\varepsilon(\rho)+\eta$ is permitted for
+    every $\eta>0$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:renyi_smoothing_self_witness}
+    The set of admissible entropy values is nonempty. If none of its
+    elements were below $T$, then $T$ would be a lower bound, contradicting
+    $\inf\mathcal V_{\alpha,\varepsilon}(\rho)<T$.
+\end{proof}

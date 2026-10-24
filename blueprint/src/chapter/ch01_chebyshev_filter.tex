@@ -1,0 +1,121 @@
+\section{Chebyshev polynomials for spectral filters}
+
+\begin{theorem}[Exponential growth on the positive half-line]
+    \label{thm:chebyshev_half_exp_sqrt}
+    \lean{Polynomial.Chebyshev.half_exp_sqrt_le_eval_T}\leanok
+    For every natural number $n$ and every real $x\ge1$, the Chebyshev
+    polynomial of the first kind satisfies
+    \begin{align}
+        T_n(x) & \ge\frac12\exp\left(2n\sqrt{\frac{x-1}{x+1}}\right).
+        \label{eq:chebyshev_half_exp_sqrt}
+    \end{align}
+    This is the scalar estimate used in
+    \cite{Arad2013AreaLaw,Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    Put $r=\sqrt{(x-1)/(x+1)}$. Then $0\le r<1$ and
+    $\cosh(\log((1+r)/(1-r)))=x$. The logarithmic inequality
+    $r\le\tfrac12\log((1+r)/(1-r))$ gives $2r\le\operatorname{arcosh}x$.
+    Therefore
+    \begin{align}
+        T_n(x) & =\cosh(n\operatorname{arcosh}x)
+        \ge\tfrac12\exp(n\operatorname{arcosh}x)
+        \ge\tfrac12\exp(2nr).\notag
+    \end{align}
+    These identities also apply when $n=0$ or $x=1$.
+\end{proof}
+
+
+\begin{theorem}[Normalized polynomial on an isolated spectral interval]
+    \label{thm:chebyshev_interval_polynomial}
+    \lean{Polynomial.Chebyshev.exists_interval_shrinking_polynomial}\leanok
+    \uses{thm:chebyshev_half_exp_sqrt}
+    Let $a<b\le u$ be real numbers and let $n\in\mathbb N$.
+    There is a real polynomial $p$ of degree exactly $n$ with $p(a)=1$.
+    It satisfies $p(x)\ge1$ for every $x\le a$, and for every $x\in[b,u]$,
+    \begin{align}
+        |p(x)| & \le2\exp\left(-2n\sqrt{\frac{b-a}{u-a}}\right).
+        \label{eq:chebyshev_interval_polynomial}
+    \end{align}
+    This is the scalar polynomial construction in
+    \cite{Arad2013AreaLaw,Arad2016RigorousRG}, including degree zero and
+    a singleton upper interval.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:chebyshev_half_exp_sqrt}
+    First suppose $b<u$. Put
+    \begin{align}
+        f(x) & =\frac{u+b-2x}{u-b},\notag          \\
+        p(x) & =\frac{T_n(f(x))}{T_n(f(a))}.\notag
+    \end{align}
+    The affine map $f$ takes $[b,u]$ into $[-1,1]$, while $f(a)>1$.
+    Thus $|T_n(f(x))|\le1$ on $[b,u]$ and $T_n(f(a))\ge1$.
+    Theorem~\ref{thm:chebyshev_half_exp_sqrt} and
+    $(f(a)-1)/(f(a)+1)=(b-a)/(u-a)$ give
+    (\ref{eq:chebyshev_interval_polynomial}).
+    The denominator is positive, so the polynomial has degree $n$ and
+    takes value one at $a$. Monotonicity of $\cosh(n\operatorname{arcosh}y)$
+    for $y\ge1$, together with the decreasing affine map $f$, gives
+    $p(x)\ge1$ for $x\le a$.
+
+    If $b=u$, use $p(x)=((u-x)/(u-a))^n$.
+    It has degree $n$, takes value one at $a$ and is at least one to the left.
+    For $n>0$ it vanishes on the upper interval $\{u\}$; for $n=0$ it is
+    the constant one and the required upper bound is two.
+\end{proof}
+
+
+\begin{theorem}[Hermitian filtering of low and high spectral subspaces]
+    \label{thm:chebyshev_spectral_filter}
+    \lean{Matrix.IsHermitian.exists_polynomial_spectral_filter}\leanok
+    \uses{thm:chebyshev_interval_polynomial}
+    Let $H$ be a finite Hermitian matrix whose real spectrum is bounded above
+    by $u$. Let $a<b\le u$ and $n\in\mathbb N$, and put
+    $\delta=2\exp(-2n\sqrt{(b-a)/(u-a)})$.
+    There is one polynomial $p$ satisfying
+    Theorem~\ref{thm:chebyshev_interval_polynomial} such that $K=p(H)$
+    is Hermitian, commutes with $H$, and obeys
+    \begin{align}
+        P_-KP_-  & \ge P_-,\notag   \\
+        \|KP_+\| & \le\delta,\notag
+    \end{align}
+    where $P_-=\mathbf1_{(-\infty,a]}(H)$ and
+    $P_+=\mathbf1_{[b,\infty)}(H)$.
+    These are the spectral estimates used in
+    \cite{Arad2013AreaLaw,Arad2016RigorousRG}. The additional source
+    positivity clause is corrected in
+    \cite{gap:alvv16_chebyshev_filter_positivity}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:chebyshev_interval_polynomial}
+    Choose the scalar polynomial once. Functional calculus preserves its
+    Hermiticity and commutation with $H$.
+    The function $\mathbf1_{t\le a}p(t)\mathbf1_{t\le a}-\mathbf1_{t\le a}$
+    is nonnegative, giving the low-energy order inequality.
+    On the spectrum, $|p(t)\mathbf1_{b\le t}|\le\delta$, since retained
+    spectral values belong to $[b,u]$. Isometric functional calculus gives
+    the operator norm bound. Every function on the finite real spectrum
+    is continuous there, including these threshold functions.
+\end{proof}
+
+\begin{theorem}[Approximation of an isolated-energy projection]
+    \label{thm:chebyshev_isolated_energy_projection}
+    \lean{Matrix.IsHermitian.exists_polynomial_approximating_isolated_energy_projection}
+    \leanok
+    \uses{thm:chebyshev_spectral_filter}
+    Let $H$ be a finite Hermitian matrix with spectrum in $\{a\}\cup[b,u]$,
+    where $a<b\le u$, and let $n\in\mathbb N$.
+    There is a polynomial $p$ of degree exactly $n$, normalized by $p(a)=1$,
+    such that for $K=p(H)$ and the spectral projection $P$ at $a$,
+    \begin{align}
+        KP      & =P=PK,\notag                                          \\
+        \|K-P\| & \le2\exp\left(-2n\sqrt{\frac{b-a}{u-a}}\right).\notag
+    \end{align}
+    The multiplicity of $a$ is unrestricted; if $a$ is absent, $P=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:chebyshev_spectral_filter}
+    Use the same polynomial as in Theorem~\ref{thm:chebyshev_spectral_filter}.
+    The spectral assumption gives $P=1-P_+$, and normalization at $a$
+    gives $KP=P=PK$. Hence $K-P=KP_+$, whose norm has the required bound.
+\end{proof}
