@@ -121,6 +121,24 @@ in a regression file are not additional mathematical consumers.
 - **Caveat:** The equality itself needs no unitary assumption. Unitarity is
   used separately for norm bounds and invariance of expectations.
 
+### Conditional filtered Gram moments — promoted lemma (2026-10-17)
+
+- **Pattern:** Derive the lower trace-pairing bound, use its strict positivity
+  to prove positivity of the filtered Gram moment, and apply the entropy upper
+  bound at the optimizer weights. `optimizer_attains` identifies the last trace.
+- **Result:** `ConditionalMovement.ConditionalCollision.conditional_gramMoment_bounds`
+  in `Entropy/ConditionalMovement/Optimizer.lean`, after `density_spectrum_sum`.
+  It returns the lower bound, positivity and the entropy upper bound together.
+- **Consumers:** `conditional_optimizer_root_stability` in `Optimizer.lean` and
+  `conditional_optimizer_deficit` in `FilterSlack.lean` use the lower and upper
+  bounds. Their eigenvalue nonnegativity and spectral mass remain available for
+  the final optimizer estimates. `paired_entropy_boundary` in
+  `BoundaryEnergy.lean` uses positivity and the upper bound.
+- **Scope:** The marginal may be singular. The lemma retains normalization, a
+  nonempty first coordinate type, `0 < β ≤ 1/3`, and
+  `β / (1 - β) * log (card X) ≤ 1`. No consumer gains a hypothesis or import.
+  One mathematical lemma removes the repeated argument; no tactic is introduced.
+
 ### Reciprocal real powers — existing mathematical lemma (2026-10-16)
 
 - **Pattern:** Normalize or reconstruct a nonnegative eigenvalue by composing
@@ -237,6 +255,45 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   does not identify its inverse with a compressed inverse.
 
 ## Candidates
+
+### Sharp product-overlap inequality — shared private lemma (2026-10-23)
+
+- **Pattern:** Choose an actual unit Schmidt-rank-one maximizer, decompose it
+  into its component along the fixed vector and its perpendicular remainder,
+  and apply the rank-overlap estimate to the image of that same maximizer.
+- **Seen:** The quantitative product-overlap theorem and the rank-one endpoint
+  in `Channel/ProductOverlapBootstrap.lean`.
+- **Abstraction:** `exists_unit_rank_one_overlap_bootstrap` contains the common
+  argument once. The former theorem applies its numerical tradeoff afterward;
+  the endpoint instead uses strict contraction to make the remainder vanish.
+- **Notes:** These are two consumers in one file, below the tactic-promotion
+  threshold. An ordinary helper theorem suffices; no tactic is introduced.
+  The public homogeneous contraction lemma is available to the separate
+  powered-vector argument. Regression applications are not counted as consumers.
+
+### Positivity of a filtered Gram moment — legacy candidate (2026-10-17)
+
+- **Pattern:** A positive power of a nonnegative Gram moment forces the moment
+  to be positive: otherwise it is zero, and its positive power vanishes.
+- **Seen:** `gramMoment_pos_of_filter_pos` and `optimizer_root_bound` in
+  `Entropy/ConditionalMovement/Optimizer.lean`, and `optimizer_deficit_bound` in
+  `Entropy/ConditionalMovement/FilterSlack.lean`.
+- **Decision:** These three preexisting contradiction arguments remain unchanged.
+  A later simplification should first check a suitable real-power positivity
+  lemma and reuse the weakest existing result; no additional analytic bound or
+  new tactic is needed. This candidate is separate from the shared conditional
+  lower/upper trace estimates above.
+
+### Scalar phase-power identities — legacy candidate (2026-10-17)
+
+- **Pattern:** After expanding a spectral phase product, move real coercions into
+  the complex exponent and close the scalar polynomial identity.
+- **Seen:** `phase_mul_power` and `power_mul_phase` in
+  `Entropy/ConditionalMovement/BoundaryEnergy.lean`.
+- **Decision:** These two preexisting cast-and-ring calculations remain unchanged.
+  Two occurrences in one file do not require a new abstraction. Reuse the
+  existing phase-power identities in later consumers instead of copying them.
+
 
 ### Finite scalar span followed by an operator-rank sum — candidate (2026-10-22)
 
@@ -1252,6 +1309,51 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Weighted pure-state projection identities — shared lemma (2026-10-23)
+
+- **Seen:** The equal-weight pure-state trace distance and the optimized
+  pure-state trace-norm error use the same rank-one projection identities.
+- **Decision:** `Matrix.re_trace_abs_vecMulVec_sub_smul_eq` in
+  `Analysis.WeightedPureStateTraceNorm` contains the projection calculation
+  once. The old trace-distance theorem specializes its coefficient to one;
+  `Analysis.OptimizedPureStateTraceError` uses it after positive rescaling.
+- **Mechanism:** Existing `module` handles scalar polynomial identities
+  after distributivity; existing functional-calculus square-root uniqueness
+  identifies the absolute value. No new tactic is needed.
+- **Caveat:** The density coefficient is nonnegative in the weighted
+  identity. The final minimum separately treats all complex coefficients
+  by Hermitian-part contraction and trace duality.
+
+### Uniform-weight Jensen bounds for entropy contributions (2026-10-23)
+
+- **Seen:** `Analysis.ProbabilityEntropy` and
+  `Analysis.ProbabilityEntropyConcentration` apply concavity of `negMulLog`
+  with reciprocal-cardinality weights, then multiply by the cardinality.
+- **Candidate:** `Entropy.sum_negMulLog_le_mass_log_card` now gives the
+  finite-mass estimate, including an empty set. A future consolidation can
+  put this lower-level estimate before the normalized support theorem and
+  derive the latter from it. There are two occurrences, below the promotion
+  threshold; no new tactic or simp set is introduced.
+
+## Candidate: ordered eigenvalue tails as finite probability tails (2026-10-23)
+
+The conversion from a natural-number interval of descending eigenvalues to the
+complement of a filtered finite ordinal appears in
+`Analysis.VonNeumannEntropySpectralTail` and `Entropy.RenyiRankLowerBound`
+(the latter is developed separately). Both use `Fin.sum_univ_eq_sum_range`
+and the equality between a filtered range and an interval. A third independent
+use should promote this conversion to a shared eigenvalue-sum lemma.
+
+### Identity contractions in trace products — existing lemma (2026-10-23)
+
+- **Seen:** The imaginary-weight estimate and the empty product in
+  `Analysis.TraceHolderMulti` need the identity operator norm bound.
+- **Decision:** Reuse `Matrix.l2_opNorm_one_le` from
+  `Analysis.ContractionChain`, rather than repeating its private proof.
+- **Caveat:** The bound is at most one and includes an empty coordinate
+  space. Neither use introduces a nonempty-space assumption.
+- **Mechanism:** A direct mathematical lemma suffices; no tactic is added.
 
 ### Degree-one coefficient recurrence — candidate (2026-10-22)
 

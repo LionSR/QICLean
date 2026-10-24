@@ -414,4 +414,39 @@ theorem maximalSchmidtOverlap_eq_kyFanNorm_top (φ : m × n → ℂ)
       _ = 1 := by rw [hunit φ hφ, hunit ψ hψnorm, mul_one]
   nlinarith [hcs, norm_nonneg (star φ ⬝ᵥ ψ)]
 
+omit [DecidableEq n] in
+/-- The squared overlap with a unit vector of Schmidt rank at most `D` is bounded
+by the leading `D` eigenvalue mass of the target's marginal. The target need not
+be normalized, and `D` may be zero or exceed the marginal dimension. This is the
+homogeneous upper-bound form of Wolf, Chapter 3, Lemma 3.1. -/
+theorem normSq_inner_le_kyFanNorm (Ψ Φ : EuclideanSpace ℂ (m × n))
+    (hΦ : ‖Φ‖ = 1) (D : ℕ)
+    (hr : (schmidtCoeffMatrix (WithLp.ofLp Φ)).rank ≤ D) :
+    ‖inner ℂ Ψ Φ‖ ^ 2 ≤
+      (Matrix.posSemidef_self_mul_conjTranspose
+        (schmidtCoeffMatrix (WithLp.ofLp Ψ))).isHermitian.kyFanNorm D := by
+  classical
+  let C := schmidtCoeffMatrix (WithLp.ofLp Ψ)
+  let B := schmidtCoeffMatrix (WithLp.ofLp Φ)
+  have hC : Matrix.toEuclid C = Ψ := by ext ij; rfl
+  have hB : Matrix.toEuclid B = Φ := by ext ij; rfl
+  have hBnorm : (Bᴴ * B).trace = 1 := by
+    rw [← Matrix.inner_toEuclid, hB, inner_self_eq_norm_sq_to_K, hΦ]
+    norm_num
+  by_cases hD : D < Fintype.card m
+  · have h := Matrix.normSq_trace_conjTranspose_mul_le_kyFanNorm C B hD hBnorm hr
+    simpa only [← Matrix.inner_toEuclid, hC, hB] using h
+  · have hinner : ‖inner ℂ Ψ Φ‖ ≤ ‖Ψ‖ := by
+      simpa only [hΦ, mul_one] using norm_inner_le_norm Ψ Φ
+    calc
+      ‖inner ℂ Ψ Φ‖ ^ 2 ≤ ‖Ψ‖ ^ 2 :=
+        pow_le_pow_left₀ (norm_nonneg _) hinner 2
+      _ = (C * Cᴴ).trace.re := by
+        rw [Matrix.trace_mul_comm]
+        simpa only [hC] using Matrix.normSq_toEuclid C
+      _ = (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm
+          (Fintype.card m) := (Matrix.IsHermitian.kyFanNorm_card_eq_trace_re _).symm
+      _ ≤ (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm D :=
+        (Matrix.posSemidef_self_mul_conjTranspose C).kyFanNorm_mono (Nat.le_of_not_gt hD)
+
 end Matrix
