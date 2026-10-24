@@ -856,7 +856,6 @@ theorem norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le (S : Finset κ)
           (Real.one_le_exp (mul_nonneg hq (norm_nonneg _))))
     _ = _ := by ring
 
-
 /-- **Uniform form between thermal factors.** If moreover `‖h_i‖ ≤ J` for all `i ∈ S`, then
 `|Tr (O e^{-p X} (∑_{E ⊆ S} (-1)^{|S| - |E|} e^{-q (Y + h_E)}) e^{-r X})|
   ≤ ‖O‖ (e^{q J} - 1)^{|S|} (Tr e^{-X})^{p + r} (Tr e^{-Y})^q`. This is the factor
@@ -882,7 +881,6 @@ theorem norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le_pow (S : Finset κ)
   have h1 := Real.rpow_nonneg hX.neg.re_trace_exp_nonneg (p + r)
   have h2 := Real.rpow_nonneg hY.neg.re_trace_exp_nonneg q
   gcongr
-
 
 /-- **Products of alternating sums.** Let `B_j` be matrices, `Y_j` Hermitian matrices and
 `q_j ≥ 0` weights with `∑_j q_j = 1`, for `j < n`, and let `h_{j,i}`, `i ∈ S_j`, be Hermitian
