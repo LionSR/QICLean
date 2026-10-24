@@ -284,7 +284,7 @@ Theorem~\ref{thm:trace_norm_abs}.
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{lem:trace_norm_sqrt_matrix_eigenvalues}
+    \uses{lem:trace_norm_sqrt_matrix_eigenvalues, thm:unitary_polar_correction}
     For the upper bound, let $v_0,\ldots,v_{D-1}$ be an orthonormal
     eigenbasis of $A^\dagger A$ with eigenvalues $\lambda_i$, and let $U$ be
     unitary. Expanding the trace in this basis and applying the
@@ -300,28 +300,37 @@ Theorem~\ref{thm:trace_norm_abs}.
     since $\lVert Av_i\rVert^2=\langle v_i,\,A^\dagger A\,v_i\rangle
         =\lambda_i$ and $\lVert Uv_i\rVert=1$.
 
-    For attainment, the vectors $w_i=Av_i/\sqrt{\lambda_i}$, taken over the
-    indices with $\lambda_i\neq0$, satisfy
-    \begin{align}
-        \langle w_i,w_j\rangle
-         & =\frac{\langle v_i,\,A^\dagger A\,v_j\rangle}
-        {\sqrt{\lambda_i}\sqrt{\lambda_j}}
-        =\delta_{ij},
-        \notag
-    \end{align}
-    so they form an orthonormal family. Extend it to an orthonormal basis
-    $(w_i)_i$ of $\C^D$ and let $U$ be the unitary with $Uv_i=w_i$ for all
-    $i$. Then
-    \begin{align}
-        \tr[A^\dagger U]
-         & =\sum_i\langle Av_i,\,w_i\rangle
-        =\sum_{\lambda_i\neq0}\frac{\lVert Av_i\rVert^2}{\sqrt{\lambda_i}}
-        =\sum_i\sqrt{\lambda_i}
-        =\lVert A\rVert_{\tr},
-        \notag
-    \end{align}
-    where the indices with $\lambda_i=0$ contribute $0$ to both sides because
-    $\lVert Av_i\rVert^2=\lambda_i=0$ forces $Av_i=0$.
+    For attainment, the polar decomposition
+    (Theorem~\ref{thm:unitary_polar_correction}) writes
+    $A=U\sqrt{A^\dagger A}$ with $U$ unitary. Since $\sqrt{A^\dagger A}$ is
+    self-adjoint, $A^\dagger U=\sqrt{A^\dagger A}\,U^\dagger U
+        =\sqrt{A^\dagger A}$, and
+    $\tr\sqrt{A^\dagger A}=\sum_i\sqrt{\lambda_i}=\lVert A\rVert_{\tr}$.
+\end{proof}
+
+\begin{theorem}[Trace-norm duality over any finite index]
+    \label{thm:trace_norm_duality_any_index}
+    \lean{Matrix.exists_mem_unitaryGroup_trace_conjTranspose_mul_eq_trace_sqrt,
+        Matrix.re_trace_sqrt_conjTranspose_mul_self_le_of_forall_norm_trace_mul_le,
+        Matrix.l2_opNorm_unitary_le_one,
+        Matrix.traceNorm_eq_re_trace_sqrt,
+        Matrix.trace_sqrt_conjTranspose_mul_self_eq_traceNorm}
+    \leanok
+    \uses{def:trace_norm}
+    Let $A$ be a square complex matrix indexed by any finite set. Some unitary
+    $U$ satisfies $\tr[A^\dagger U]=\tr\sqrt{A^\dagger A}$. Consequently, if
+    $\bigl|\tr(OA)\bigr|\leq\epsilon$ for every matrix $O$ of operator
+    norm at most one, then $\tr\sqrt{A^\dagger A}\leq\epsilon$. For
+    $A\in\MN{D}$, $\tr\sqrt{A^\dagger A}=\lVert A\rVert_{\tr}$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:unitary_polar_correction}
+    Write $A=U\sqrt{A^\dagger A}$ with $U$ unitary
+    (Theorem~\ref{thm:unitary_polar_correction}). Then
+    $A^\dagger U=\sqrt{A^\dagger A}$ and $U^\dagger A=\sqrt{A^\dagger A}$.
+    A unitary matrix has operator norm at most one, so $O=U^\dagger$ gives
+    $\tr\sqrt{A^\dagger A}=\tr(U^\dagger A)\leq\epsilon$.
 \end{proof}
 
 \begin{theorem}[Trace-norm triangle inequality]
