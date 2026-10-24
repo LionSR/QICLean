@@ -131,6 +131,7 @@ import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.TripartitePolynomialSchmidtRank
 import QICLean.Algebra.TwoMarkerWordCoefficients
 import QICLean.Algebra.UnitModulusPowerSum
+import QICLean.Algebra.WeightedFrequencySchmidtRank
 import QICLean.Algebra.WordCoefficientExpansion
 import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums
