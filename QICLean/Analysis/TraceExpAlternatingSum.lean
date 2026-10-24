@@ -34,7 +34,9 @@ bound reads `‖O‖ (e^{βJ} - 1)^{n_C} Tr e^{-β(H - H_C - H_{B(C)})}`. Togeth
 `Matrix.IsHermitian.re_trace_exp_add_le`, which bounds the last trace by
 `e^{β ‖H_C + H_{B(C)}‖} Tr e^{-βH}`, this gives the inequality before equation `percb2` (lines
 1179–1184) with `‖O‖ Tr e^{-βH}` in place of the printed `Tr(O e^{-βH})`, which is the form that
-`percb2` uses.
+`percb2` uses. The printed form fails: applied to `±O` it would force `ρ(β, C)` to be a multiple
+of `e^{-βH}`. This is recorded in the TNLean paper-gap note
+`https://sirui-lu.com/TNLean/paper-gaps/hastings05_cluster_part_trace_pairing.pdf`.
 
 More generally, let `X` be Hermitian and let `p, q, r ≥ 0` with `p + q + r = 1`. Inserting the
 alternating sum of the `e^{-q (Y + h_E)}` between `e^{-p X}` and `e^{-r X}` gives
@@ -622,7 +624,8 @@ write `h_E = ∑_{i ∈ E} h_i`. Then for every matrix `O`,
 with operator norms. With `Y = β (H - H_C - H_{B(C)})` and `h_i = β H_i`, the alternating sum is
 the operator `ρ(β, C)` of Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1162–1195,
 and this bound gives the inequality before equation `percb2` with `‖O‖ Tr e^{-βH}` in place of the
-printed `Tr(O e^{-βH})`. -/
+printed `Tr(O e^{-βH})`, which fails (TNLean paper-gap note
+`https://sirui-lu.com/TNLean/paper-gaps/hastings05_cluster_part_trace_pairing.pdf`). -/
 theorem norm_trace_mul_sum_powerset_exp_le (S : Finset κ)
     {Y : Matrix ι ι ℂ} (hY : Y.IsHermitian) (h : κ → Matrix ι ι ℂ)
     (hh : ∀ i ∈ S, (h i).IsHermitian) (O : Matrix ι ι ℂ) :
