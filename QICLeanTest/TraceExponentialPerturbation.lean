@@ -30,6 +30,7 @@ run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   for decl in #[
     ``Matrix.IsHermitian.re_trace_exp_eq_sum,
+    ``Matrix.IsHermitian.re_trace_exp_nonneg,
     ``Matrix.IsHermitian.re_trace_exp_le,
     ``Matrix.exp_add_smul_one,
     ``Matrix.IsHermitian.re_trace_exp_add_le,

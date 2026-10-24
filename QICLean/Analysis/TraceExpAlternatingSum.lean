@@ -272,14 +272,8 @@ private theorem prodAt_add (L : List (ShiftFactor ι)) (V s : Matrix ι ι ℂ) 
     cases x with
     | mk B Y a sh => cases sh <;> simp [ShiftFactor.mat, ShiftFactor.shift, add_assoc]
 
-/-- The trace of the exponential of a Hermitian matrix has nonnegative real part. -/
-private theorem re_trace_exp_nonneg {A : Matrix ι ι ℂ} (hA : A.IsHermitian) :
-    0 ≤ (NormedSpace.exp A).trace.re := by
-  rw [hA.re_trace_exp_eq_sum]
-  exact Finset.sum_nonneg fun i _ ↦ (Real.exp_pos _).le
-
 private theorem ShiftFactor.bd_nonneg {x : ShiftFactor ι} (hx : x.Y.IsHermitian) : 0 ≤ x.bd :=
-  mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (re_trace_exp_nonneg hx.neg) _)
+  mul_nonneg (norm_nonneg _) (Real.rpow_nonneg hx.neg.re_trace_exp_nonneg _)
 
 private theorem listBound_nonneg {L : List (ShiftFactor ι)} (hL : Admissible L) : 0 ≤ listBound L :=
   List.prod_nonneg fun b hb ↦ by
@@ -294,8 +288,8 @@ private theorem ShiftFactor.bd_add_le {V : Matrix ι ι ℂ} (hV : V.IsHermitian
       Real.exp (‖V‖ * a) * (⟨B, Y, a, b⟩ : ShiftFactor ι).bd := by
   have htr := hY.neg.re_trace_exp_add_le hV.neg
   rw [norm_neg, ← neg_add] at htr
-  have h0 : 0 ≤ (NormedSpace.exp (-(Y + V))).trace.re := re_trace_exp_nonneg (hY.add hV).neg
-  have h1 : 0 ≤ (NormedSpace.exp (-Y)).trace.re := re_trace_exp_nonneg hY.neg
+  have h0 : 0 ≤ (NormedSpace.exp (-(Y + V))).trace.re := (hY.add hV).neg.re_trace_exp_nonneg
+  have h1 : 0 ≤ (NormedSpace.exp (-Y)).trace.re := hY.neg.re_trace_exp_nonneg
   calc ‖B‖ * (NormedSpace.exp (-(Y + V))).trace.re ^ a
       ≤ ‖B‖ * (Real.exp ‖V‖ * (NormedSpace.exp (-Y)).trace.re) ^ a :=
         mul_le_mul_of_nonneg_left (Real.rpow_le_rpow h0 htr ha) (norm_nonneg _)
@@ -464,7 +458,7 @@ private theorem norm_trace_altSum_step_le (hS : Claim S h) {V : Matrix ι ι ℂ
       simp only [Lu, P', shiftWeight_append, shiftWeight_cons, shiftWeight_map_shift,
         ShiftFactor.sa, hxs, ite_true]
       ring
-    have ht : 0 ≤ (NormedSpace.exp (-x.Y)).trace.re := re_trace_exp_nonneg hx.1.neg
+    have ht : 0 ≤ (NormedSpace.exp (-x.Y)).trace.re := hx.1.neg.re_trace_exp_nonneg
     have hb : listBound (Lu v) ≤
         ‖V‖ * Real.exp (‖V‖ * (shiftWeight P + x.a - v)) * listBound (P ++ x :: R) := by
       have h1 := listBound_map_shift_le hV hP
@@ -665,7 +659,7 @@ theorem norm_trace_mul_sum_powerset_exp_le_pow (S : Finset κ)
     exact Finset.prod_le_prod₀ (fun i _ ↦ sub_nonneg.2 (Real.one_le_exp (norm_nonneg _)))
       fun i hi ↦ by gcongr; exact hJ i hi
   gcongr
-  exact re_trace_exp_nonneg hY.neg
+  exact hY.neg.re_trace_exp_nonneg
 
 /-- **An alternating sum between thermal factors.** For Hermitian `X`, `Y` and `h_i`, `i ∈ S`,
 weights `p, q, r ≥ 0` with `p + q + r = 1`, and every matrix `O`,
@@ -701,8 +695,8 @@ theorem norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le (S : Finset κ)
   have e2 : shiftWeight [(⟨O, X, p, false⟩ : ShiftFactor ι), ⟨1, Y, q, true⟩,
       ⟨1, X, r, false⟩] = q := by
     simp [shiftWeight, ShiftFactor.sa]
-  have htX := re_trace_exp_nonneg hX.neg
-  have htY := re_trace_exp_nonneg hY.neg
+  have htX := hX.neg.re_trace_exp_nonneg
+  have htY := hY.neg.re_trace_exp_nonneg
   have e3 : listBound [(⟨O, X, p, false⟩ : ShiftFactor ι), ⟨1, Y, q, true⟩,
       ⟨1, X, r, false⟩] ≤
       ‖O‖ * (NormedSpace.exp (-X)).trace.re ^ (p + r) *
@@ -759,8 +753,8 @@ theorem norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le_pow (S : Finset κ)
     exact Finset.prod_le_prod₀
       (fun i _ ↦ sub_nonneg.2 (Real.one_le_exp (mul_nonneg hq (norm_nonneg _))))
       fun i hi ↦ by gcongr; exact hJ i hi
-  have h1 := Real.rpow_nonneg (re_trace_exp_nonneg hX.neg) (p + r)
-  have h2 := Real.rpow_nonneg (re_trace_exp_nonneg hY.neg) q
+  have h1 := Real.rpow_nonneg hX.neg.re_trace_exp_nonneg (p + r)
+  have h2 := Real.rpow_nonneg hY.neg.re_trace_exp_nonneg q
   gcongr
 
 end Matrix
