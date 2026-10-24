@@ -251,9 +251,12 @@ Hilbert space. Products of matrices are ordered by increasing index.
     $Y_j=\beta(H-H_{C_j}-H_{B(C_j)})$, $h_{j,i}=\beta H_i$ for a cluster
     part $\rho(\beta/n,C_j)$, this bounds each product of thermal factors and
     cluster parts in the operator $\rho_m$ of~\cite{Hastings2006Solving},
-    arXiv:cond-mat/0508554v3, source lines 1334--1341; together with
-    Theorem~\ref{thm:trace_exp_add_le} the bound is
-    $\|O\|\prod_jy^{n_{C_j}}\operatorname{tr}e^{-\beta H}$.
+    arXiv:cond-mat/0508554v3, source lines 1334--1341. If moreover
+    $\|H_i\|\le J$ and $n_{C_j}+n_{B(C_j)}\le Sn_{C_j}$ for every cluster,
+    then Theorem~\ref{thm:trace_exp_add_le} turns the bound into
+    $\|O\|\prod_jy^{n_{C_j}}\operatorname{tr}e^{-\beta H}$ with
+    $y=[\exp(J\beta/n)-1]\exp(SJ\beta/n)$, the product running over the
+    cluster parts.
 \end{theorem}
 \begin{proof}\leanok
     Take the disjoint union of the $S_j$ as the index set, give the index

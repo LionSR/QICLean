@@ -891,8 +891,10 @@ with operator norms. For `S_j = ∅` the factor `ρ_j` is the thermal factor `e^
 `q_j = 1/n`, `Y_j = β H` for a thermal factor and `Y_j = β (H - H_{C_j} - H_{B(C_j)})`,
 `h_{j,i} = β H_i` for a cluster part `ρ(β/n, C_j)`, this bounds the products of thermal factors
 and cluster parts that make up the operator `ρ_m` of Hastings, arXiv:cond-mat/0508554v3,
-`proj3new.tex`, lines 1334–1341, by `‖O‖ ∏_j y^{n_{C_j}} Tr e^{-βH}` after
-`Matrix.IsHermitian.re_trace_exp_add_le`. -/
+`proj3new.tex`, lines 1334–1341. If moreover `‖H_i‖ ≤ J` and `n_{C_j} + n_{B(C_j)} ≤ S n_{C_j}`
+for every cluster, `Matrix.IsHermitian.re_trace_exp_add_le` turns the bound into
+`‖O‖ ∏_j y^{n_{C_j}} Tr e^{-βH}` with `y = [exp(Jβ/n) - 1] exp(SJβ/n)`, the product running over
+the cluster parts. -/
 theorem norm_trace_list_prod_mul_sum_powerset_exp_le {n : ℕ} (B Y : Fin n → Matrix ι ι ℂ)
     (hY : ∀ j, (Y j).IsHermitian) (q : Fin n → ℝ) (hq : ∀ j, 0 ≤ q j) (hq1 : ∑ j, q j = 1)
     (S : Fin n → Finset κ) (h : Fin n → κ → Matrix ι ι ℂ)
