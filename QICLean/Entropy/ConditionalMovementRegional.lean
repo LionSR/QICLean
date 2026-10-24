@@ -25,7 +25,8 @@ The proofs are written independently; no Lean source was adapted.
 * `Entropy.FourPartition`, `Entropy.frameEquiv`.
 * `Entropy.reindex_localLift_union_PX`, `Entropy.reindex_localLift_union_XY`,
   `Entropy.reindex_localLift_P`, `Entropy.reindex_localLift_Y`.
-* `Entropy.regionalMovement_norm_le` — Lemma 5.1 for local lifts.
+* `Entropy.regionalMovement_norm_le` — Lemma 5.1 for local lifts, and
+  `Entropy.regionalMovement_norm_le_explicit` at the named constants.
 -/
 
 open Matrix
@@ -359,6 +360,48 @@ theorem reindex_regionalMoveOperator (h : FourPartition P x Y F)
   simp only [reindex_apply, cfc_submatrix_equiv hσ, cfc_submatrix_equiv hτ]
   rfl
 
+/-- **Lemma 5.1 for local lifts at the named constants** (`04-conditional.tex`,
+lines 118–135, in the form used in `05-replicas.tex`, lines 553–569): the bound of
+`Entropy.regionalMovement_norm_le` with `C = conditionalMovementConst` for
+`a log(e dim x) ≤ conditionalMovementThreshold`. -/
+theorem regionalMovement_norm_le_explicit :
+    ∀ {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {P x Y F : Finset V}
+      (h : FourPartition P x Y F) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+      ∀ (σ : Matrix (RegionConfig n (P ∪ x)) (RegionConfig n (P ∪ x)) ℂ)
+        (τ : Matrix (RegionConfig n (x ∪ Y)) (RegionConfig n (x ∪ Y)) ℂ),
+        σ.PosSemidef → σ.trace.re ≤ 1 → τ.PosSemidef → τ.trace.re ≤ 1 →
+        ∀ a : ℝ, 0 < a →
+          a * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤
+            conditionalMovementThreshold →
+          ‖(WithLp.toLp 2 (regionalMoveOperator h θ σ τ a *ᵥ θ.ofLp) :
+              EuclideanSpace ℂ (SiteConfig n))‖ ≤
+            Real.exp (-(a / 2) * movementEta (frameVector h θ) +
+              conditionalMovementConst * a ^ (5 / 4 : ℝ) *
+                Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2) := by
+  intro V _ _ n P x Y F h θ hθ σ τ hσ hσtr hτ hτtr a ha hsmall
+  set θ' : EuclideanSpace ℂ ((RegionConfig n x × RegionConfig n Y) ×
+    (RegionConfig n P × RegionConfig n F)) := WithLp.toLp 2 (frameVector h θ)
+  have hθ' : ‖θ'‖ = 1 := by
+    rw [← hθ]
+    exact norm_toLp_comp_equiv (frameEquiv h).symm θ.ofLp
+  have hσ' := (posSemidef_submatrix_equiv (unionEquivXP h).symm).mpr hσ
+  have hτ' := (posSemidef_submatrix_equiv (unionEquivXY h).symm).mpr hτ
+  have key := conditionalMovement_norm_le_explicit θ' hθ'
+    (reindex (unionEquivXP h) (unionEquivXP h) σ) (reindex (unionEquivXY h) (unionEquivXY h) τ)
+    hσ' (by rwa [reindex_apply, trace_submatrix_equiv]) hτ'
+    (by rwa [reindex_apply, trace_submatrix_equiv]) a ha hsmall
+  have hvec : movementOperator θ'.ofLp (reindex (unionEquivXP h) (unionEquivXP h) σ)
+      (reindex (unionEquivXY h) (unionEquivXY h) τ) a *ᵥ θ'.ofLp =
+      (regionalMoveOperator h θ σ τ a *ᵥ θ.ofLp) ∘ (frameEquiv h).symm := by
+    change movementOperator (frameVector h θ) _ _ a *ᵥ frameVector h θ = _
+    rw [← reindex_regionalMoveOperator h θ hσ.isHermitian hτ.isHermitian, reindex_apply,
+      frameVector, submatrix_mulVec_equiv, Equiv.symm_symm]
+    congr 2
+    funext v
+    simp
+  rw [hvec, norm_toLp_comp_equiv] at key
+  exact key
+
 /-- **Lemma 5.1 for local lifts** (`04-conditional.tex`, lines 118–135, in the form used in
 `05-replicas.tex`, lines 553–569). For four regions `P, x, Y, F` partitioning the sites, a unit
 vector `θ` on `V`, and positive semidefinite `σ` on `P ∪ x`, `τ` on `x ∪ Y` of trace at most one,
@@ -377,31 +420,9 @@ theorem regionalMovement_norm_le :
                 EuclideanSpace ℂ (SiteConfig n))‖ ≤
               Real.exp (-(a / 2) * movementEta (frameVector h θ) +
                 C * a ^ (5 / 4 : ℝ) *
-                  Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2) := by
-  obtain ⟨C, c, hC, hc, H⟩ := conditionalMovement_norm_le
-  refine ⟨C, c, hC, hc, ?_⟩
-  intro V _ _ n P x Y F h θ hθ σ τ hσ hσtr hτ hτtr a ha hsmall
-  set θ' : EuclideanSpace ℂ ((RegionConfig n x × RegionConfig n Y) ×
-    (RegionConfig n P × RegionConfig n F)) := WithLp.toLp 2 (frameVector h θ)
-  have hθ' : ‖θ'‖ = 1 := by
-    rw [← hθ]
-    exact norm_toLp_comp_equiv (frameEquiv h).symm θ.ofLp
-  have hσ' := (posSemidef_submatrix_equiv (unionEquivXP h).symm).mpr hσ
-  have hτ' := (posSemidef_submatrix_equiv (unionEquivXY h).symm).mpr hτ
-  have key := H θ' hθ' (reindex (unionEquivXP h) (unionEquivXP h) σ)
-    (reindex (unionEquivXY h) (unionEquivXY h) τ) hσ' (by rwa [reindex_apply,
-      trace_submatrix_equiv]) hτ' (by rwa [reindex_apply, trace_submatrix_equiv]) a ha hsmall
-  have hvec : movementOperator θ'.ofLp (reindex (unionEquivXP h) (unionEquivXP h) σ)
-      (reindex (unionEquivXY h) (unionEquivXY h) τ) a *ᵥ θ'.ofLp =
-      (regionalMoveOperator h θ σ τ a *ᵥ θ.ofLp) ∘ (frameEquiv h).symm := by
-    change movementOperator (frameVector h θ) _ _ a *ᵥ frameVector h θ = _
-    rw [← reindex_regionalMoveOperator h θ hσ.isHermitian hτ.isHermitian, reindex_apply,
-      frameVector, submatrix_mulVec_equiv, Equiv.symm_symm]
-    congr 2
-    funext v
-    simp
-  rw [hvec, norm_toLp_comp_equiv] at key
-  exact key
+                  Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2) :=
+  ⟨_, _, conditionalMovementConst_pos, conditionalMovementThreshold_pos,
+    regionalMovement_norm_le_explicit⟩
 
 end Entropy
 

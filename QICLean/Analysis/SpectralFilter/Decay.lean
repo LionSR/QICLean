@@ -188,11 +188,17 @@ theorem continuous_spectralKernel {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 <
   rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg (spectralCutoff_nonneg p δ ω)]
   exact mul_le_of_le_one_right (spectralCutoff_nonneg p δ ω) (Real.abs_cos_le_one _)
 
-/-- Super-polynomial decay: `(1 + |t|)^N |f(t)|` is bounded for every `N`. -/
-theorem one_add_abs_pow_mul_abs_spectralKernel_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ)
-    (N : ℕ) : ∃ A : ℝ, ∀ t : ℝ, (1 + |t|) ^ N * |spectralKernel p δ t| ≤ A := by
-  set M : ℕ → ℝ := fun n => δ / π * ((δ⁻¹) ^ (p * n) * derivConst p (p * n) n)
-  refine ⟨2 ^ N * (M 0 + M N), fun t => ?_⟩
+/-- The explicit bound `2^N (δ e / π + (δ / π) δ^{-p N} derivConst p (p N) N)` on
+`(1 + |t|)^N |f(t)|`: the moment bound at orders `0` and `p N`, combined through
+`(1 + |t|)^N ≤ 2^N (1 + |t|^{p N})`. -/
+noncomputable def kernelMomentBound (p : ℕ) (δ : ℝ) (N : ℕ) : ℝ :=
+  2 ^ N * (δ * Real.exp 1 / π + δ / π * ((δ⁻¹) ^ (p * N) * derivConst p (p * N) N))
+
+/-- Super-polynomial decay with the explicit constant:
+`(1 + |t|)^N |f(t)| ≤ kernelMomentBound p δ N` for every `t`. -/
+theorem one_add_abs_pow_mul_abs_spectralKernel_le_kernelMomentBound {p : ℕ} (hp : 1 ≤ p)
+    {δ : ℝ} (hδ : 0 < δ) (N : ℕ) (t : ℝ) :
+    (1 + |t|) ^ N * |spectralKernel p δ t| ≤ kernelMomentBound p δ N := by
   have h0 := pow_abs_mul_abs_spectralKernel_le hp hδ (le_refl (p * 0)) t
   have hN := pow_abs_mul_abs_spectralKernel_le hp hδ (le_refl (p * N)) t
   simp only [mul_zero, pow_zero, one_mul] at h0
@@ -212,9 +218,15 @@ theorem one_add_abs_pow_mul_abs_spectralKernel_le {p : ℕ} (hp : 1 ≤ p) {δ :
   calc (1 + |t|) ^ N * |spectralKernel p δ t|
       ≤ 2 ^ N * (1 + |t| ^ (p * N)) * |spectralKernel p δ t| := by gcongr
     _ = 2 ^ N * (|spectralKernel p δ t| + |t| ^ (p * N) * |spectralKernel p δ t|) := by ring
-    _ ≤ 2 ^ N * (M 0 + M N) := by
+    _ ≤ kernelMomentBound p δ N := by
+        rw [kernelMomentBound]
         gcongr 2 ^ N * ?_
-        exact add_le_add (by simpa [M, derivConst] using h0) hN
+        exact add_le_add (by simpa [derivConst, div_mul_eq_mul_div] using h0) hN
+
+/-- Super-polynomial decay: `(1 + |t|)^N |f(t)|` is bounded for every `N`. -/
+theorem one_add_abs_pow_mul_abs_spectralKernel_le {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ)
+    (N : ℕ) : ∃ A : ℝ, ∀ t : ℝ, (1 + |t|) ^ N * |spectralKernel p δ t| ≤ A :=
+  ⟨_, one_add_abs_pow_mul_abs_spectralKernel_le_kernelMomentBound hp hδ N⟩
 
 /-- **Polynomial moments of the kernel are integrable**: `t ↦ tⁿ f(t) ∈ L¹(ℝ)`. -/
 theorem integrable_pow_mul_spectralKernel {p : ℕ} (hp : 1 ≤ p) {δ : ℝ} (hδ : 0 < δ) (n : ℕ) :

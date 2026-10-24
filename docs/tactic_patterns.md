@@ -7,6 +7,96 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Entropy comparison with a supplied uniform norm bound — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic buffered-discount theorems in
+  `Entropy.BufferDiscount`; two energy envelopes in one file.
+- **Decision:** Share the positive single-filter bounds, trial/Schmidt
+  comparison, logarithm calculation and entropy rearrangement. Each
+  wrapper proves the uniform norm comparison for the same actual
+  zero-floor family using its own energy estimate.
+- **Caveat:** The callback is private. Neither public theorem assumes a
+  norm-comparison witness or clipping at floor zero. The energy budget
+  and local bounds remain independent of the raised positive floors.
+- **Scalar step:** A private scalar lemma derives crossing smallness
+  from the existing tail-radius admissibility. Its real parameter is
+  generic; no positivity of a marginal eigenvalue is required.
+- **Reused:** Existing `Function.ne_iff` and `WithLp.ofLp_eq_zero` supply
+  configuration witnesses without another coordinatewise contradiction.
+
+### Prefix comparison for the actual maximizing family — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic successor comparisons in
+  `Entropy.FilterPrefix`; two energy budgets in one file.
+- **Decision:** One private lemma selects an actual maximizing prefix and
+  applies the energy estimate to that same family and its normalized
+  output. The gap and existing overlap comparison finish the argument.
+- **Caveat:** The core requires no global upper-weight bound or sign on
+  the energy budget. Strict `E < Δ` enters only in the later floor-zero
+  division. Existing physical statements retain their original ranges.
+- **Iteration:** Reuse `pow_mul_le_prod_of_step` and
+  `norm_le_of_forall_floor`; no new telescoping or continuity machinery.
+
+### Configuration witnesses from nonzero vectors — existing Mathlib lemmas (2026-10-18)
+
+- **Seen:** The shared successor, its physical callers and the new
+  logarithmic floor-zero comparison in `FilterPrefix` and `FilterZeroFloor`.
+- **Decision:** Reuse `WithLp.ofLp_eq_zero` at exponent two and
+  `Function.ne_iff`. This replaces the repeated coordinatewise
+  contradiction proof with existing mathematical lemmas.
+- **Caveat:** The coordinate supplies only the existing configuration
+  witness. No nonempty-space premise or physical witness structure is
+  added, and no nonvanishing coordinate enters the energy statement.
+
+### Summing termwise conjugation bounds — shared private lemma (2026-10-18)
+
+- **Seen:** The polynomial and logarithmic stationary energy estimates in
+  `Entropy.FilterChainEnergy`; two numerical envelopes in one file.
+- **Decision:** One private mathematical lemma converts a conjugated
+  eigenvector equation and termwise bounds into an energy sum over the
+  actual crossing pairs. The caller supplies its envelope.
+- **Caveat:** Linearity and the crossing-index interchange require neither
+  positivity of the envelope nor additional spectral hypotheses.
+
+### Normalization of the actual maximizing output — shared private lemma (2026-10-18)
+
+- **Seen:** Coarse, sharp polynomial and logarithmic maximizer estimates in
+  `Entropy.FilterChainEnergy`; three consumers in one file.
+- **Decision:** Derive invertibility, unit normalization, common-basis
+  clipping and inverse-product cancellation once for the actual output.
+  Each energy theorem supplies its own numerical estimate.
+- **Caveat:** Positive floors and maximality give these conclusions; they
+  are not supplied output assumptions. No global weight upper bound is
+  needed for this common construction. Existing ranges are preserved.
+
+### Numerical bounds after stripping a nested filter product — shared private lemma (2026-10-18)
+
+- **Seen:** The sharp polynomial and logarithmic conjugation estimates in
+  `Entropy.FilterChainEnergy`; two numerical applications in one file.
+- **Decision:** Reuse one private mathematical reduction with an arbitrary
+  local expectation envelope. Containing filters preserve the expectation;
+  disjoint filters commute with the supported observable. At most one
+  splitting filter remains.
+- **Caveat:** Nonnegativity of the envelope is derived from its local
+  absolute-value bound. This introduces no sign assumption on the weights
+  of the existing sharp theorem and no smallness outside splitting regions.
+- **Mechanism:** The existing sharp and coarse public results keep their
+  statements; the coarse theorem uses the sharp one. No tactic or new
+  filter predicate is introduced.
+
+### Transport of a finite product decomposition — promoted lemma (2026-10-18)
+
+- **Seen:** `Entropy.hasProductDecomposition_conj` and both common-basis
+  conjugation estimates in `FilterEnergy.lean`: three finite-sum calculations
+  across two files.
+- **Lemma:** `Entropy.cutBasisChange_conj_sum_kronecker` transports the same
+  factors termwise. The existing one-term conjugation identity and
+  norm-contraction lemma supply the algebra and the bounds; no fresh
+  decomposition is chosen.
+- **Refactor:** All three finite-sum calculations invoke this direct equality.
+- **Caveat:** The equality itself needs no unitary assumption. Unitarity is
+  used separately for norm bounds and invariance of expectations.
+
 ### Conditional filtered Gram moments — promoted lemma (2026-10-17)
 
 - **Pattern:** Derive the lower trace-pairing bound, use its strict positivity
@@ -141,6 +231,21 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   does not identify its inverse with a compressed inverse.
 
 ## Candidates
+
+### Sharp product-overlap inequality — shared private lemma (2026-10-23)
+
+- **Pattern:** Choose an actual unit Schmidt-rank-one maximizer, decompose it
+  into its component along the fixed vector and its perpendicular remainder,
+  and apply the rank-overlap estimate to the image of that same maximizer.
+- **Seen:** The quantitative product-overlap theorem and the rank-one endpoint
+  in `Channel/ProductOverlapBootstrap.lean`.
+- **Abstraction:** `exists_unit_rank_one_overlap_bootstrap` contains the common
+  argument once. The former theorem applies its numerical tradeoff afterward;
+  the endpoint instead uses strict contraction to make the remainder vanish.
+- **Notes:** These are two consumers in one file, below the tactic-promotion
+  threshold. An ordinary helper theorem suffices; no tactic is introduced.
+  The public homogeneous contraction lemma is available to the separate
+  powered-vector argument. Regression applications are not counted as consumers.
 
 ### Positivity of a filtered Gram moment — legacy candidate (2026-10-17)
 
@@ -1168,3 +1273,48 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Weighted pure-state projection identities — shared lemma (2026-10-23)
+
+- **Seen:** The equal-weight pure-state trace distance and the optimized
+  pure-state trace-norm error use the same rank-one projection identities.
+- **Decision:** `Matrix.re_trace_abs_vecMulVec_sub_smul_eq` in
+  `Analysis.WeightedPureStateTraceNorm` contains the projection calculation
+  once. The old trace-distance theorem specializes its coefficient to one;
+  `Analysis.OptimizedPureStateTraceError` uses it after positive rescaling.
+- **Mechanism:** Existing `module` handles scalar polynomial identities
+  after distributivity; existing functional-calculus square-root uniqueness
+  identifies the absolute value. No new tactic is needed.
+- **Caveat:** The density coefficient is nonnegative in the weighted
+  identity. The final minimum separately treats all complex coefficients
+  by Hermitian-part contraction and trace duality.
+
+### Uniform-weight Jensen bounds for entropy contributions (2026-10-23)
+
+- **Seen:** `Analysis.ProbabilityEntropy` and
+  `Analysis.ProbabilityEntropyConcentration` apply concavity of `negMulLog`
+  with reciprocal-cardinality weights, then multiply by the cardinality.
+- **Candidate:** `Entropy.sum_negMulLog_le_mass_log_card` now gives the
+  finite-mass estimate, including an empty set. A future consolidation can
+  put this lower-level estimate before the normalized support theorem and
+  derive the latter from it. There are two occurrences, below the promotion
+  threshold; no new tactic or simp set is introduced.
+
+## Candidate: ordered eigenvalue tails as finite probability tails (2026-10-23)
+
+The conversion from a natural-number interval of descending eigenvalues to the
+complement of a filtered finite ordinal appears in
+`Analysis.VonNeumannEntropySpectralTail` and `Entropy.RenyiRankLowerBound`
+(the latter is developed separately). Both use `Fin.sum_univ_eq_sum_range`
+and the equality between a filtered range and an interval. A third independent
+use should promote this conversion to a shared eigenvalue-sum lemma.
+
+### Identity contractions in trace products — existing lemma (2026-10-23)
+
+- **Seen:** The imaginary-weight estimate and the empty product in
+  `Analysis.TraceHolderMulti` need the identity operator norm bound.
+- **Decision:** Reuse `Matrix.l2_opNorm_one_le` from
+  `Analysis.ContractionChain`, rather than repeating its private proof.
+- **Caveat:** The bound is at most one and includes an empty coordinate
+  space. Neither use introduces a nonempty-space assumption.
+- **Mechanism:** A direct mathematical lemma suffices; no tactic is added.

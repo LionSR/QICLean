@@ -30,10 +30,19 @@ observable written as a sum of `N` products with `‖c_a‖ ‖d_a‖ ≤ c₀` 
 `‖X‖ ≤ c₀` satisfies `|Re (f(x) - f(0))| ≤ 128 e c₀ ℓ² x²` whenever
 `log (2N) ≤ 2ℓ`, `ℓ ≥ 1` and `|x| ≤ 1/(8ℓ)`.
 
+The logarithmic weights may also be the eigenvalues `l` of a clipped filter,
+while the row orthogonality conditions continue to refer to the actual marginal `s`.
+If `|log l_j - log l_k| ≤ (a / 2) |log s_j - log s_k|` on its positive support,
+the same product-observable bound holds on `|Re z| a ≤ 1`, including `a = 0`.
+This is the wide-strip step in the TNLean one-dimensional note,
+`part1_arealaw.tex`, lines 721–724.
+
 ## Main results
 
 * `Entropy.modularExpectation_zero`, `Entropy.norm_modularExpectation_mul_I_le`,
   `Entropy.modularExpectation_neg`, `Entropy.norm_modularExpectation_kronecker_le`.
+* `Entropy.norm_modularExpectation_kronecker_le_of_log_clipping`: the wider strip for
+  logarithmically clipped filter weights, retaining the actual Schmidt marginal.
 * `Entropy.abs_re_modularExpectation_sub_le`: the quadratic local conjugation estimate.
 
 ## References
@@ -304,23 +313,28 @@ theorem schmidtPairing_kronecker (Θ : EuclideanSpace ℂ (α × β)) (c : Matri
   refine Finset.sum_congr rfl fun b' _ ↦ ?_
   ring
 
-/-- The scalar weight `e^{t (log a - log b)} √a √b` is at most `a + b` for `|t| ≤ 1/2`. -/
-private theorem exp_mul_sqrt_le {a b t : ℝ} (ha : 0 < a) (hb : 0 < b) (ht : |t| ≤ 1 / 2) :
-    Real.exp (t * (Real.log a - Real.log b)) * (Real.sqrt a * Real.sqrt b) ≤ a + b := by
-  have ht' := abs_le.mp ht
-  have hw := Real.geom_mean_le_arith_mean2_weighted (w₁ := 1 / 2 + t) (w₂ := 1 / 2 - t)
-    (p₁ := a) (p₂ := b) (by linarith) (by linarith) ha.le hb.le (by ring)
-  have hsa : Real.sqrt a = Real.exp (Real.log a / 2) := by
-    rw [Real.sqrt_eq_rpow, Real.rpow_def_of_pos ha]; ring_nf
-  have hsb : Real.sqrt b = Real.exp (Real.log b / 2) := by
-    rw [Real.sqrt_eq_rpow, Real.rpow_def_of_pos hb]; ring_nf
-  have heq : Real.exp (t * (Real.log a - Real.log b)) * (Real.sqrt a * Real.sqrt b) =
-      a ^ (1 / 2 + t) * b ^ (1 / 2 - t) := by
-    rw [hsa, hsb, Real.rpow_def_of_pos ha, Real.rpow_def_of_pos hb, ← Real.exp_add,
-      ← Real.exp_add, ← Real.exp_add]
-    ring_nf
-  rw [heq]
-  nlinarith
+/-- A logarithmic upper bound on an exponent controls its square-root weight.
+TNLean one-dimensional note, `part1_arealaw.tex`, lines 721–724. -/
+private theorem exp_mul_sqrt_le_of_log_bound {p q t : ℝ} (hp : 0 < p) (hq : 0 < q)
+    (ht : t ≤ |Real.log p - Real.log q| / 2) :
+    Real.exp t * (Real.sqrt p * Real.sqrt q) ≤ p + q := by
+  have hsqrt : Real.sqrt p * Real.sqrt q =
+      Real.exp ((Real.log p + Real.log q) / 2) := by
+    rw [show (Real.log p + Real.log q) / 2 = Real.log p / 2 + Real.log q / 2 by ring,
+      ← Real.log_sqrt hp.le, ← Real.log_sqrt hq.le, Real.exp_add,
+      Real.exp_log (Real.sqrt_pos.mpr hp), Real.exp_log (Real.sqrt_pos.mpr hq)]
+  rw [hsqrt, ← Real.exp_add]
+  rcases le_total (Real.log p) (Real.log q) with h | h
+  · rw [abs_of_nonpos (sub_nonpos.mpr h)] at ht
+    calc Real.exp (t + (Real.log p + Real.log q) / 2) ≤ Real.exp (Real.log q) :=
+        Real.exp_le_exp.mpr (by linarith)
+      _ = q := Real.exp_log hq
+      _ ≤ p + q := le_add_of_nonneg_left hp.le
+  · rw [abs_of_nonneg (sub_nonneg.mpr h)] at ht
+    calc Real.exp (t + (Real.log p + Real.log q) / 2) ≤ Real.exp (Real.log p) :=
+        Real.exp_le_exp.mpr (by linarith)
+      _ = p := Real.exp_log hp
+      _ ≤ p + q := le_add_of_nonneg_right hq.le
 
 /-- **Weighted row and column bound.** If the marginal of `Θ` is `diag s` with `∑ s = 1`,
 then `∑_{jk} (s_j + s_k) |c_{jk}| |⟨ω_j, d ω_k⟩| ≤ 2 ‖c‖ ‖d‖` for the normalized rows `ω`.
@@ -365,25 +379,27 @@ theorem sum_add_mul_norm_unitRow_le {Θ : EuclideanSpace ℂ (α × β)} {s : α
         · exact hcol k
     _ = 2 * (‖c‖ * ‖d‖) := by rw [← Finset.sum_mul, hsum]; ring
 
-/-- **Strip bound for a product observable.** If the marginal of `Θ` is `diag s` with
-`∑ s = 1`, then `|f(z)| ≤ 2 ‖c‖ ‖d‖` for `X = c ⊗ d` and `|Re z| ≤ 1/2`.
-Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 126–140. -/
-theorem norm_modularExpectation_kronecker_le {Θ : EuclideanSpace ℂ (α × β)} {s : α → ℝ}
+/-- A pointwise logarithmic coefficient bound controls each product observable.
+The row hypotheses refer to the actual marginal, independently of the logarithmic weights. -/
+private theorem norm_modularExpectation_kronecker_le_of_coefficient_bound
+    {Θ : EuclideanSpace ℂ (α × β)} {s l : α → ℝ}
     (hs : ∀ j, 0 ≤ s j) (hsum : ∑ j, s j = 1)
     (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0)
-    (c : Matrix α α ℂ) (d : Matrix β β ℂ) {z : ℂ} (hz : |z.re| ≤ 1 / 2) :
-    ‖modularExpectation Θ s (c ⊗ₖ d) z‖ ≤ 2 * (‖c‖ * ‖d‖) := by
+    (c : Matrix α α ℂ) (d : Matrix β β ℂ) {z : ℂ} (hcoef : ∀ j k, 0 < s j → 0 < s k →
+      |z.re * (Real.log (l j) - Real.log (l k))| ≤
+        |Real.log (s j) - Real.log (s k)| / 2) :
+    ‖modularExpectation Θ l (c ⊗ₖ d) z‖ ≤ 2 * (‖c‖ * ‖d‖) := by
   set ω := unitRow Θ s
   set D : α → α → ℂ := fun j k ↦ ⟪ω j, toEuclideanLin d (ω k)⟫_ℂ
   have hterm (j k : α) :
-      ‖exp (z * ((Real.log (s j) - Real.log (s k) : ℝ) : ℂ)) * schmidtPairing Θ (c ⊗ₖ d) j k‖ ≤
+      ‖exp (z * ((Real.log (l j) - Real.log (l k) : ℝ) : ℂ)) * schmidtPairing Θ (c ⊗ₖ d) j k‖ ≤
         (s j + s k) * (‖c j k‖ * ‖D j k‖) := by
     rw [schmidtPairing_kronecker, schmidtRow_eq_smul_unitRow hs hΘ j,
       schmidtRow_eq_smul_unitRow hs hΘ k, map_smul, inner_smul_left, inner_smul_right,
       conj_ofReal]
-    have hrw : ‖exp (z * ((Real.log (s j) - Real.log (s k) : ℝ) : ℂ)) *
+    have hrw : ‖exp (z * ((Real.log (l j) - Real.log (l k) : ℝ) : ℂ)) *
         (c j k * ((Real.sqrt (s j) : ℂ) * ((Real.sqrt (s k) : ℂ) * D j k)))‖ =
-        (Real.exp (z.re * (Real.log (s j) - Real.log (s k))) *
+        (Real.exp (z.re * (Real.log (l j) - Real.log (l k))) *
           (Real.sqrt (s j) * Real.sqrt (s k))) * (‖c j k‖ * ‖D j k‖) := by
       rw [norm_mul, norm_mul, norm_mul, norm_mul, Complex.norm_exp, norm_real, norm_real,
         Real.norm_of_nonneg (Real.sqrt_nonneg _), Real.norm_of_nonneg (Real.sqrt_nonneg _)]
@@ -395,12 +411,51 @@ theorem norm_modularExpectation_kronecker_le {Θ : EuclideanSpace ℂ (α × β)
     · rw [← hj]; simp; linarith [hs k]
     rcases (hs k).eq_or_lt with hk | hk
     · rw [← hk]; simp; linarith [hs j]
-    exact exp_mul_sqrt_le hj hk (by linarith [abs_le.mp hz])
-  calc ‖modularExpectation Θ s (c ⊗ₖ d) z‖
+    exact exp_mul_sqrt_le_of_log_bound hj hk
+      ((le_abs_self _).trans (hcoef j k hj hk))
+  calc ‖modularExpectation Θ l (c ⊗ₖ d) z‖
       ≤ ∑ j, ∑ k, (s j + s k) * (‖c j k‖ * ‖D j k‖) := by
         refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ ↦ ?_)
         exact (norm_sum_le _ _).trans (Finset.sum_le_sum fun k _ ↦ hterm j k)
     _ ≤ 2 * (‖c‖ * ‖d‖) := sum_add_mul_norm_unitRow_le hs hsum hΘ c d
+
+/-- **Strip bound for a product observable.** If the marginal of `Θ` is `diag s` with
+`∑ s = 1`, then `|f(z)| ≤ 2 ‖c‖ ‖d‖` for `X = c ⊗ d` and `|Re z| ≤ 1/2`.
+Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 126–140. -/
+theorem norm_modularExpectation_kronecker_le {Θ : EuclideanSpace ℂ (α × β)} {s : α → ℝ}
+    (hs : ∀ j, 0 ≤ s j) (hsum : ∑ j, s j = 1)
+    (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0)
+    (c : Matrix α α ℂ) (d : Matrix β β ℂ) {z : ℂ} (hz : |z.re| ≤ 1 / 2) :
+    ‖modularExpectation Θ s (c ⊗ₖ d) z‖ ≤ 2 * (‖c‖ * ‖d‖) := by
+  refine norm_modularExpectation_kronecker_le_of_coefficient_bound hs hsum hΘ c d ?_
+  intro j k _ _
+  rw [abs_mul]
+  exact (mul_le_mul_of_nonneg_right hz (abs_nonneg _)).trans_eq (by ring)
+
+/-- **Strip bound for logarithmically clipped weights.** The rows of `Θ` have actual
+marginal `diag s`. If the logarithmic differences of `l` are bounded by `a / 2` times
+those of `s` on its positive support, then the product-observable expectation is
+bounded by `2 ‖c‖ ‖d‖` whenever `|Re z| a ≤ 1`, including `a = 0`.
+TNLean one-dimensional note, `part1_arealaw.tex`, lines 721–724. -/
+theorem norm_modularExpectation_kronecker_le_of_log_clipping
+    {Θ : EuclideanSpace ℂ (α × β)} {s l : α → ℝ} {a : ℝ}
+    (hs : ∀ j, 0 ≤ s j) (hsum : ∑ j, s j = 1)
+    (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0)
+    (hclip : ∀ j k, 0 < s j → 0 < s k →
+      |Real.log (l j) - Real.log (l k)| ≤
+        a / 2 * |Real.log (s j) - Real.log (s k)|)
+    (c : Matrix α α ℂ) (d : Matrix β β ℂ) {z : ℂ} (hz : |z.re| * a ≤ 1) :
+    ‖modularExpectation Θ l (c ⊗ₖ d) z‖ ≤ 2 * (‖c‖ * ‖d‖) := by
+  refine norm_modularExpectation_kronecker_le_of_coefficient_bound hs hsum hΘ c d ?_
+  intro j k hj hk
+  rw [abs_mul]
+  calc |z.re| * |Real.log (l j) - Real.log (l k)|
+      ≤ |z.re| * (a / 2 * |Real.log (s j) - Real.log (s k)|) :=
+        mul_le_mul_of_nonneg_left (hclip j k hj hk) (abs_nonneg _)
+    _ = (|z.re| * a) * (|Real.log (s j) - Real.log (s k)| / 2) := by ring
+    _ ≤ 1 * (|Real.log (s j) - Real.log (s k)| / 2) :=
+      mul_le_mul_of_nonneg_right hz (by positivity)
+    _ = _ := one_mul _
 
 /-- **Quadratic local conjugation estimate.** Let `Θ` be a unit vector with marginal
 `diag s`, and let `X` be Hermitian with `‖X‖ ≤ c₀` and `X = ∑_{a < N} c_a ⊗ d_a`, where

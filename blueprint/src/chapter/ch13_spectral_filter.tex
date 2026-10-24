@@ -122,7 +122,7 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     \leanok
     \uses{def:spectral_kernel, thm:spectral_cutoff_smooth}
     The kernel is real and even, $f(t)=(2\pi)^{-1}\int\chi(\omega)
-    e^{-it\omega}\,d\omega$, and for $n\le pk$,
+        e^{-it\omega}\,d\omega$, and for $n\le pk$,
     \[
         |t|^n|f(t)|\le\frac{\delta}{\pi}\,\delta^{-n}\,n!\,e\,(12p)^n\,
         2^k\,k!.
@@ -384,12 +384,12 @@ $P_\Omega=|\Omega\rangle\langle\Omega|$.
     Put $G_i=(I-k_i)^{1/2}$, $K_i=k_i^{1/2}$ and
     $\mathcal E_i(B)=G_iBG_i+K_iBK_i$. Then, for every matrix $B$,
     \begin{align}
-        \mathcal E_i(B)\Omega&=G_iB\Omega.
+        \mathcal E_i(B)\Omega & =G_iB\Omega.
     \end{align}
     More generally, for every finite word $w=(i_1,\ldots,i_m)$,
     \begin{align}
         (\mathcal E_{i_m}\circ\cdots\circ\mathcal E_{i_1})(B)\Omega
-        &=G_{i_m}\cdots G_{i_1}B\Omega.
+         & =G_{i_m}\cdots G_{i_1}B\Omega.
     \end{align}
     No normalization of $\Omega$ is required. Repeated letters and the empty
     word are allowed, with both sides equal to $B\Omega$ for the empty word.
@@ -420,6 +420,7 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
 \begin{lemma}[Kernel tail]
     \label{lem:spectral_kernel_tail}
     \lean{SpectralFilter.abs_spectralKernel_le_tail,
+        SpectralFilter.abs_spectralKernel_le_kernelTailConst,
         SpectralFilter.integrable_inv_one_add_abs_sq}
     \leanok
     \uses{thm:spectral_kernel_decay}
@@ -435,7 +436,9 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
 \begin{theorem}[Localization of filtered operators]
     \label{thm:filter_localization}
     \lean{SpectralFilter.exists_norm_filterIntegral_sub_map_le',
-        SpectralFilter.exists_norm_filterIntegral_sub_map_le}
+        SpectralFilter.exists_norm_filterIntegral_sub_map_le,
+        SpectralFilter.norm_filterIntegral_sub_map_le,
+        SpectralFilter.norm_filterIntegral_sub_map_le_filterLocalityConst_mul}
     \leanok
     \uses{lem:spectral_kernel_tail, def:filter_integral}
     Let $C\ge0$ and $v,c>0$. There are $C',c'>0$, depending only on
@@ -453,7 +456,8 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
 \begin{theorem}[Tail of the positive constraints]
     \label{thm:positive_constraint_tail}
     \lean{SpectralFilter.norm_abs_sub_map_abs_le,
-        SpectralFilter.exists_norm_positiveConstraint_sub_map_le}
+        SpectralFilter.exists_norm_positiveConstraint_sub_map_le,
+        SpectralFilter.norm_positiveConstraint_sub_map_le}
     \leanok
     \uses{thm:filter_localization, thm:positive_replacement, lem:sqrt_holder}
     If $L$ is a contraction, $M$ and $LM$ are Hermitian, and $L$ fixes $|LM|$,
@@ -482,9 +486,10 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
     $(1-|\langle\psi,\phi\rangle|^2)^{1/2}$.
 \end{lemma}
 \begin{proof}\leanok
-    With $X=P-Q$ and $s=|\langle\psi,\phi\rangle|^2$ one has $PQP=sP$ and
-    $QPQ=sQ$, hence $X^3=(1-s)X$; so $|X|=X^2/(1-s)^{1/2}$ and
-    $\operatorname{tr}X^2=2(1-s)$.
+    \uses{thm:weighted_pure_trace_norm}
+    Theorem~\ref{thm:weighted_pure_trace_norm} with $t=1$ gives the full
+    trace norm $2\sqrt{1-|\langle\psi,\phi\rangle|^2}$.
+    Trace distance is half the full trace norm, which proves the formula.
 \end{proof}
 
 \begin{theorem}[Stability of a global gap]

@@ -17,6 +17,8 @@ series of ratio `M/λ < 1`. Monotonicity then gives `F r ≤ C' r^{log_M λ}` fo
 ## Main results
 
 * `Entropy.le_pow_of_scale_recurrence`: the bound at powers of `M`.
+* `Entropy.le_scaleRecurrenceConst_mul_rpow`: the power bound for all `r ≥ 1` at the named
+  constant `scaleRecurrenceConst` and exponent `scaleRecurrenceExponent`.
 * `Entropy.exists_le_mul_rpow_of_scale_recurrence`: the power bound for all `r ≥ 1`.
 * `Entropy.one_lt_log_div_log_lt_two`: the exponent lies in `(1, 2)`.
 
@@ -53,27 +55,42 @@ theorem le_pow_of_scale_recurrence (hM : 1 ≤ M) (hlam : (M : ℝ) < lam)
           field_simp
           ring
 
-/-- **Power bound from a scale recurrence.** If `F` is nondecreasing, `M ≥ 2`, `λ > M`,
-`K ≥ 0` and `F (M r) ≤ λ F r + K r` for every `r ≥ 1`, then there is a constant `C` with
-`F r ≤ C r^{log λ / log M}` for every `r ≥ 1`.
-Area-law manuscript, proof of Proposition 3.3, `02-initial.tex`, lines 648–664. -/
-theorem exists_le_mul_rpow_of_scale_recurrence (hF : Monotone F) (hM : 2 ≤ M)
+/-- The exponent `log_M λ = log λ / log M` of the power bound from a scale recurrence.
+In Proposition 3.3 of the area-law manuscript it is `1 + e₀`.
+Area-law manuscript, `02-initial.tex`, lines 660–663. -/
+noncomputable def scaleRecurrenceExponent (M : ℕ) (lam : ℝ) : ℝ :=
+  Real.log lam / Real.log M
+
+/-- The constant `C = (B + K / (λ - M)) M^{log_M λ}` of the power bound from a scale
+recurrence, for a bound `B ≥ |F 1|` at the initial scale. The factor `B + K / (λ - M)` bounds
+`F (M^j) / λ^j`: the inhomogeneous terms form a geometric series of ratio `M / λ`. The factor
+`M^{log_M λ} = λ` pays for rounding `r` up to the next power of `M`.
+Area-law manuscript, proof of Proposition 3.3, `02-initial.tex`, lines 657–667. -/
+noncomputable def scaleRecurrenceConst (B K lam : ℝ) (M : ℕ) : ℝ :=
+  (B + K / (lam - M)) * (M : ℝ) ^ scaleRecurrenceExponent M lam
+
+/-- **Power bound from a scale recurrence**, at the named constant. If `F` is nondecreasing,
+`M ≥ 2`, `λ > M`, `K ≥ 0`, `F (M r) ≤ λ F r + K r` for every `r ≥ 1` and `|F 1| ≤ B`, then
+`F r ≤ scaleRecurrenceConst B K λ M · r^{log_M λ}` for every `r ≥ 1`.
+Area-law manuscript, proof of Proposition 3.3, `02-initial.tex`, lines 648–667. -/
+theorem le_scaleRecurrenceConst_mul_rpow (hF : Monotone F) (hM : 2 ≤ M)
     (hlam : (M : ℝ) < lam) (hK : 0 ≤ K)
-    (hrec : ∀ r, 1 ≤ r → F (M * r) ≤ lam * F r + K * r) :
-    ∃ C, ∀ r, 1 ≤ r → F r ≤ C * (r : ℝ) ^ (Real.log lam / Real.log M) := by
+    (hrec : ∀ r, 1 ≤ r → F (M * r) ≤ lam * F r + K * r) {B : ℝ} (hB : |F 1| ≤ B) (r : ℕ)
+    (hr : 1 ≤ r) :
+    F r ≤ scaleRecurrenceConst B K lam M * (r : ℝ) ^ scaleRecurrenceExponent M lam := by
   have hM1 : (1 : ℝ) < M := by exact_mod_cast hM
   have hlM : 0 < lam - M := by linarith
   have hlam1 : 1 < lam := hM1.trans hlam
   have hlogM : 0 < Real.log M := Real.log_pos hM1
-  set e := Real.log lam / Real.log M
+  set e := scaleRecurrenceExponent M lam
   have he : 0 ≤ e := div_nonneg (Real.log_pos hlam1).le hlogM.le
-  set B := |F 1| + K / (lam - M)
-  have hB : 0 ≤ B := by positivity
+  have hB0 : 0 ≤ B := (abs_nonneg _).trans hB
+  set B' := B + K / (lam - M)
   -- the bound at powers
-  have hpow (j : ℕ) : F (M ^ j) ≤ B * lam ^ j := by
+  have hpow (j : ℕ) : F (M ^ j) ≤ B' * lam ^ j := by
     have h := le_pow_of_scale_recurrence (by omega) hlam hrec j
     have hMj : 0 ≤ K / (lam - M) * (M : ℝ) ^ j := by positivity
-    have hF1 := le_abs_self (F 1)
+    have hF1 := (le_abs_self (F 1)).trans hB
     have hlj : 0 ≤ lam ^ j := by positivity
     nlinarith
   -- `λ^j = (M^j)^e`
@@ -81,9 +98,8 @@ theorem exists_le_mul_rpow_of_scale_recurrence (hF : Monotone F) (hM : 2 ≤ M)
     rw [← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (by positivity),
       Real.rpow_def_of_pos (by positivity), Real.rpow_def_of_pos (by positivity)]
     congr 1
-    simp only [e]
+    simp only [e, scaleRecurrenceExponent]
     field_simp
-  refine ⟨B * (M : ℝ) ^ e, fun r hr ↦ ?_⟩
   set j := Nat.clog M r
   have hrj : r ≤ M ^ j := Nat.le_pow_clog (by omega) r
   have hjr : ((M : ℝ) ^ j) ≤ M * r := by
@@ -100,11 +116,22 @@ theorem exists_le_mul_rpow_of_scale_recurrence (hF : Monotone F) (hM : 2 ≤ M)
       simp [j]
       linarith
   calc F r ≤ F (M ^ j) := hF hrj
-    _ ≤ B * lam ^ j := hpow j
-    _ = B * ((M : ℝ) ^ j) ^ e := by rw [hrpow]
-    _ ≤ B * ((M : ℝ) * r) ^ e := by gcongr
-    _ = B * (M : ℝ) ^ e * (r : ℝ) ^ e := by
+    _ ≤ B' * lam ^ j := hpow j
+    _ = B' * ((M : ℝ) ^ j) ^ e := by rw [hrpow]
+    _ ≤ B' * ((M : ℝ) * r) ^ e := by gcongr
+    _ = B' * (M : ℝ) ^ e * (r : ℝ) ^ e := by
         rw [Real.mul_rpow (by positivity) (by positivity)]; ring
+
+/-- **Power bound from a scale recurrence.** If `F` is nondecreasing, `M ≥ 2`, `λ > M`,
+`K ≥ 0` and `F (M r) ≤ λ F r + K r` for every `r ≥ 1`, then there is a constant `C` with
+`F r ≤ C r^{log λ / log M}` for every `r ≥ 1`. The constant is
+`scaleRecurrenceConst |F 1| K λ M`.
+Area-law manuscript, proof of Proposition 3.3, `02-initial.tex`, lines 648–664. -/
+theorem exists_le_mul_rpow_of_scale_recurrence (hF : Monotone F) (hM : 2 ≤ M)
+    (hlam : (M : ℝ) < lam) (hK : 0 ≤ K)
+    (hrec : ∀ r, 1 ≤ r → F (M * r) ≤ lam * F r + K * r) :
+    ∃ C, ∀ r, 1 ≤ r → F r ≤ C * (r : ℝ) ^ (Real.log lam / Real.log M) :=
+  ⟨_, le_scaleRecurrenceConst_mul_rpow hF hM hlam hK hrec le_rfl⟩
 
 /-- If `M < λ < M²` with `M > 1`, the exponent `log_M λ` lies strictly between `1` and `2`,
 so `e₀ = log_M λ - 1 ∈ (0, 1)`.
