@@ -22,7 +22,13 @@ adc7f1241b42e322a6451854ab7e4b4c146bf78a, file
 `lean/OAI/MathematicalPhysics/PEPSMove/FilterSlack.lean`, all declarations of the file;
 modifications: the namespace prefix `OAI.PolynomialPEPS.PhysicalMove` is replaced by
 `ConditionalMovement`, the imports are restricted to the needed modules, and operator
-spacing and line breaks are normalized.  Statements and proofs are otherwise unchanged.
+spacing and line breaks are normalized. The mathematical statements are unchanged, with
+unnecessary decidable-equality assumptions omitted and classical instances supplied locally
+where needed. In `conditional_optimizer_deficit`, the repeated lower trace-pairing
+and entropy upper-bound
+arguments are replaced by one application of
+`ConditionalCollision.conditional_gramMoment_bounds`. Apart from these local instance changes,
+the remaining proof arguments are unchanged.
 -/
 
 namespace ConditionalMovement
@@ -156,6 +162,7 @@ open Matrix SupportedCurve SpectralCurve MatrixInterpolation
 variable {X P F : Type*} [Fintype X] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq P] [DecidableEq F]
 
+omit [DecidableEq F] in
 theorem conditional_optimizer_deficit [Nonempty X]
     (W : Matrix P (X × F) ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hW : W * W.conjTranspose = diagonal (fun p => (r p : ℂ))) (hsum : ∑ p, r p = 1)
@@ -172,24 +179,10 @@ theorem conditional_optimizer_deficit [Nonempty X]
   let hA := (density_pos W).isHermitian
   let A := power 1 (fun j : X × P => r j.2) ((-β / 2 : ℝ) : ℂ) *
       power hA.eigenvectorUnitary hA.eigenvalues ((1 / 2 : ℝ) : ℂ)
-  let T := (posSemidef_self_mul_conjTranspose A).isHermitian.eigenvectorUnitary
-  let q := optimizerWeights A β
   have hp := (density_pos W).eigenvalues_nonneg
   have hmass := density_spectrum_sum W r hW hsum
   have hβ1 : β < 1 := by linarith
-  have hlow := one_filter_self_lower hA.eigenvectorUnitary hA.eigenvalues
-    (fun j : X × P => r j.2) hp (fun j => hr j.2) hmass
-    (spectral_support W r hW) β hβ
-  dsimp only at hlow
-  rw [spectral_mean_eq_neg_entropy W r hW] at hlow
-  have hZ : 0 < gramMoment A (1 / (1 - β)) :=
-    gramMoment_pos_of_filter_pos hA.eigenvectorUnitary hA.eigenvalues hp hmass.le
-      A β hβ hβ1 ((Real.exp_pos _).trans_le hlow)
-  have hu := one_filter_entropy_bound W r hr hW hsum T q
-    (optimizerWeights_nonneg A β) (optimizerWeights_sum A β hZ).le β hβ hβthird hsmall
-  dsimp only at hu
-  change (trace (power T q (β : ℂ) * (A * A.conjTranspose))).re ≤ _ at hu
-  rw [optimizer_attains A β hβ1 hZ] at hu
+  obtain ⟨hlow, _, hu⟩ := conditional_gramMoment_bounds W r hr hW hsum β hβ hβthird hsmall
   apply optimizer_deficit_bound hA.eigenvectorUnitary hA.eigenvalues hp hmass A β
     (-conditionalEntropy W r)
     (3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32)) hβ hβ1 hlow
@@ -202,10 +195,11 @@ open Matrix SupportedCurve SpectralCurve MatrixInterpolation QuantumSSA
 variable {X Y P F : Type*} [Fintype X] [Fintype Y] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq Y] [DecidableEq P] [DecidableEq F]
 
-omit [DecidableEq F] in
+omit [DecidableEq X] [DecidableEq F] in
 theorem coefficient_energy (W : Matrix Y (X × F) ℂ) (r : Y → ℝ)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ))) (hsum : ∑ y, r y = 1) :
     hsEnergy (coefficient W) = 1 := by
+  classical
   rw [hsEnergy_trace]
   have hh := (density_pos W).isHermitian.spectral_theorem
   change density W = spectralHom _ _ at hh
@@ -216,6 +210,7 @@ theorem coefficient_energy (W : Matrix Y (X × F) ℂ) (r : Y → ℝ)
   simpa only [Complex.re_sum, Function.comp_def, RCLike.ofReal_eq_complex_ofReal,
       Complex.ofReal_re] using density_spectrum_sum W r hW hsum
 
+omit [DecidableEq F] in
 theorem conditional_modular_distance [Nonempty X]
     (W : Matrix Y (X × F) ℂ) (r : Y → ℝ) (hr : ∀ y, 0 ≤ r y)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ))) (hsum : ∑ y, r y = 1)
@@ -235,6 +230,7 @@ theorem conditional_modular_distance [Nonempty X]
       coefficient W - coefficient W) ≤
       (24 / β + 216 * (1 + |t| / β + t ^ 2 / β)) * ε + 216 * (1 + |t| / β + t ^ 2 / β) * d +
         2 * t ^ 2 * (2 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 8) := by
+  classical
   dsimp only
   let hA := (density_pos W).isHermitian
   let A := power 1 (fun j : X × Y => r j.2) ((-β / 2 : ℝ) : ℂ) *

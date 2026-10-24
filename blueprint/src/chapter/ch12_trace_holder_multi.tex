@@ -1,0 +1,291 @@
+\section{Trace bounds for ordered exponential products}
+
+All norms in this section are operator norms on a finite-dimensional complex
+Hilbert space. Products of matrices are ordered by increasing index.
+
+\begin{theorem}[Multi-factor trace inequality]
+    \label{thm:trace_holder_multi}
+    \lean{Matrix.norm_trace_list_prod_mul_exp_smul_le}
+    \leanok
+    Let $B_0,\ldots,B_{m-1}$ be arbitrary operators, let
+    $K_0,\ldots,K_{m-1}$ be Hermitian, and let $\theta_j\ge0$ satisfy
+    $\sum_{j=0}^{m-1}\theta_j=1$. Then
+    \begin{align}
+        \left|\operatorname{tr}\prod_{j=0}^{m-1} B_j e^{\theta_jK_j}\right|
+         & \le \prod_{j=0}^{m-1}\|B_j\|
+        \prod_{j=0}^{m-1}\bigl(\operatorname{tr}e^{K_j}\bigr)^{\theta_j}.
+        \label{eq:trace_holder_multi_bound}
+    \end{align}
+    A zero weight contributes an identity exponential. On the zero-dimensional
+    space the assertion reads $0\le0$, with $0^0=1$ in the scalar factors.
+\end{theorem}
+\begin{proof}\leanok
+    Prove the stronger statement with complex weights $w_j$, nonnegative real
+    parts summing to one, and the same right-hand side with exponents
+    $\operatorname{Re}w_j$. The imaginary exponential $e^{i\operatorname{Im}(w_j)K_j}$
+    is unitary and can be absorbed into $B_j$ without changing its norm.
+    Induct on the number of factors. If the remaining real weights sum to
+    zero, cyclicity of the trace reduces the estimate to
+    $|\operatorname{tr}(PC)|\le\operatorname{tr}(P)\|C\|$ for $P\succeq0$.
+
+    Otherwise put $S=1-\operatorname{Re}w_0>0$. In the strip
+    $0\le\operatorname{Re}z\le1$, replace the first weight and, for $1\le j<m$, the remaining weights by
+    \begin{align}
+        w_0(z) & =z+i\operatorname{Im}w_0,
+               & w_j(z)                    & =\frac{1-z}{S}\operatorname{Re}w_j+i\operatorname{Im}w_j
+        .
+        \label{eq:trace_holder_multi_interpolation}
+    \end{align}
+    On the boundary $\operatorname{Re}z=0$, the first exponential is unitary;
+    merge it with the next factor and apply induction. On the boundary
+    $\operatorname{Re}z=1$, use the preceding positive-matrix estimate.
+    The trace of the product is holomorphic. Its modulus is bounded on the
+    closed strip: remove the unitary factors and bound the remaining norms
+    continuously in $\operatorname{Re}z\in[0,1]$.
+    Hadamard's three-lines theorem at $z=\operatorname{Re}w_0$ now gives
+    (\ref{eq:trace_holder_multi_bound}), since the powers of each operator
+    norm add to one and the trace powers become $\operatorname{Re}w_j$.
+\end{proof}
+
+\begin{theorem}[Imaginary-time trace inequality]
+    \label{thm:trace_holder_imaginary_time}
+    \lean{Matrix.IsHermitian.norm_trace_list_prod_mul_exp_neg_smul_le}
+    \leanok
+    Let $H$ be Hermitian, let $B_0,\ldots,B_k$ be arbitrary operators,
+    and let $a_j\ge0$ with $\sum_{j=0}^k a_j=\beta$. Then
+    \begin{align}
+        \left|\operatorname{tr}\prod_{j=0}^k B_j e^{-a_jH}\right|
+         & \le \left(\prod_{j=0}^k\|B_j\|\right)
+        \operatorname{tr}e^{-\beta H}.
+        \label{eq:trace_holder_imaginary_time}
+    \end{align}
+    This is the unnormalized trace bound used
+    in~\cite{Hastings2006Solving}, arXiv:cond-mat/0508554v3,
+    source lines 1141--1151. For $k\ge1$ and ordered times
+    $0\le\tau_1\le\cdots\le\tau_k\le\beta$, take successive differences
+    $a_0=\tau_1$, $a_j=\tau_{j+1}-\tau_j$ for $1\le j<k$, and $a_k=\beta-\tau_k$.
+    On a nonzero-dimensional space, division by the positive partition
+    function gives the source's normalized inequality. No commutation of
+    the $B_j$ with $H$ is required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:trace_holder_multi}
+    Nonnegativity of the $a_j$ gives $\beta\ge0$. If $\beta>0$, apply
+    Theorem~\ref{thm:trace_holder_multi} with $K_j=-\beta H$ and
+    $\theta_j=a_j/\beta$. The trace powers combine to one.
+    If $\beta=0$, all $a_j$ vanish; apply the same theorem with $K_j=0$
+    and weight one on the first factor, zero on the others.
+\end{proof}
+
+\begin{theorem}[Alternating sums of shifted exponentials]
+    \label{thm:trace_exp_alternating_sum}
+    \lean{Matrix.norm_trace_mul_sum_powerset_exp_le}
+    \leanok
+    \uses{thm:trace_holder_multi, thm:trace_exp_add_le}
+    Let $S$ be a finite set, let $Y$ and $h_i$, $i\in S$, be Hermitian, and
+    write $h_E=\sum_{i\in E}h_i$ for $E\subseteq S$. Then for every operator $O$,
+    \begin{align}
+        \left|\operatorname{tr}\Bigl(O\sum_{E\subseteq S}(-1)^{|S|-|E|}
+        e^{-(Y+h_E)}\Bigr)\right|
+         & \le \|O\|\prod_{i\in S}\bigl(e^{\|h_i\|}-1\bigr)
+        \operatorname{tr}e^{-Y}.
+        \label{eq:trace_exp_alternating_sum}
+    \end{align}
+    Let $H=\sum_iH_i$ and let $C$ be a cluster with boundary $B(C)$. With
+    $Y=\beta(H-H_C-H_{B(C)})$ and $h_i=\beta H_i$ for $i\in C$, one has
+    $Y+h_E=\beta(H-H_{B(C)}-H_{C\setminus E})$, and by inclusion and exclusion
+    the alternating sum is the operator $\rho(\beta,C)$
+    of~\cite{Hastings2006Solving}, arXiv:cond-mat/0508554v3, source lines
+    1162--1195: the sum of the terms of the power series of $e^{-\beta H}$
+    containing every $H_i$ with $i\in C$ and no $H_j$ with $j\in B(C)$.
+    Theorem~\ref{thm:trace_exp_add_le} gives
+    $\operatorname{tr}e^{-Y}\le e^{\beta\|H_C+H_{B(C)}\|}\operatorname{tr}e^{-\beta H}$,
+    so~(\ref{eq:trace_exp_alternating_sum}) gives the bound stated there
+    before equation (percb2), lines 1179--1184, with
+    $\|O\|\operatorname{tr}e^{-\beta H}$ in place of the printed
+    $\operatorname{tr}(Oe^{-\beta H})$; this is the form used in (percb2).
+\end{theorem}
+\begin{proof}\leanok
+    Prove more generally, by induction on $S$, the following. Let $B_j$ be
+    operators, $Y_j$ Hermitian, and $a_j\ge0$ weights with $\sum_ja_j=1$.
+    Give each factor $j$ a tag $t_j$ and each index $i\in S$ a tag $t(i)$.
+    For $E\subseteq S$ and a tag $t$ write
+    $h_E^{t}=\sum_{i\in E,\,t(i)=t}h_i$, and let
+    $T(E)=\prod_jB_je^{-a_j(Y_j+h_E^{t_j})}$, so that each factor carries
+    only the indices of its own tag. Then
+    \begin{align}
+        \left|\operatorname{tr}\sum_{E\subseteq S}(-1)^{|S|-|E|}T(E)\right|
+         & \le \prod_{i\in S}\bigl(e^{w_{t(i)}\|h_i\|}-1\bigr)
+        \prod_j\|B_j\|\bigl(\operatorname{tr}e^{-Y_j}\bigr)^{a_j},
+        \label{eq:trace_exp_alternating_general}
+    \end{align}
+    where $w_t=\sum_{j:\,t_j=t}a_j$ is the total weight of the factors with
+    tag $t$. The case of one factor with $B_0=O$, $Y_0=Y$, $a_0=1$ and one
+    tag is~(\ref{eq:trace_exp_alternating_sum}). For $S=\emptyset$,
+    (\ref{eq:trace_exp_alternating_general}) is
+    Theorem~\ref{thm:trace_holder_multi} with $K_j=-Y_j$.
+
+    Adding an index $a\notin S$ with $V=h_a$ turns the alternating sum over
+    subsets of $S\cup\{a\}$ into the alternating sum over subsets of $S$ of
+    the difference between $T(E)$ with $V$ added to the generators of the
+    factors of tag $t(a)$, and $T(E)$ itself. Let $A_j$ be the total weight
+    of the factors $0,\dots,j$ of tag $t(a)$, and change these factors one at
+    a time; the factors of other tags do not change. In the
+    $j$-th step the earlier factors of tag $t(a)$ have generators $Y_k+V$,
+    the factors after $j$ have generators $Y_k$, and the $j$-th factor
+    changes from $e^{-a_j(Z+V)}$ to $e^{-a_jZ}$ with $Z=Y_j+h_E^{t(a)}$. For
+    $0\le u\le a_j$,
+    \begin{align}
+        \frac{d}{du}\Bigl(e^{-(a_j-u)(Z+V)}e^{-uZ}\Bigr)
+         & =e^{-(a_j-u)(Z+V)}\,V\,e^{-uZ},
+        \label{eq:trace_exp_alternating_duhamel}
+    \end{align}
+    so the derivative of the $j$-th step is an alternating sum of products
+    with one more factor, $V$ inserted between two factors of tag $t(a)$ with
+    weights $a_j-u$ and $u$, and therefore the same weight $w_t$ at every
+    tag. By the induction
+    hypothesis and
+    Theorem~\ref{thm:trace_exp_add_le}, applied as
+    $\operatorname{tr}e^{-(Y_k+V)}\le e^{\|V\|}\operatorname{tr}e^{-Y_k}$
+    to the factors of tag $t(a)$, its trace is at most
+    $\|V\|e^{\|V\|(A_j-u)}$ times the right-hand side
+    of~(\ref{eq:trace_exp_alternating_general}) for $S$. The mean value
+    inequality bounds the $j$-th step by
+    $e^{\|V\|A_j}-e^{\|V\|A_{j-1}}$ times the same quantity, and the sum over
+    $j$ telescopes to $e^{w_{t(a)}\|V\|}-1$.
+\end{proof}
+
+\begin{theorem}[Alternating sums with uniformly bounded terms]
+    \label{thm:trace_exp_alternating_sum_pow}
+    \lean{Matrix.norm_trace_mul_sum_powerset_exp_le_pow}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum}
+    In the setting of Theorem~\ref{thm:trace_exp_alternating_sum}, assume
+    moreover $\|h_i\|\le J$ for all $i\in S$. Then
+    \begin{align}
+        \left|\operatorname{tr}\Bigl(O\sum_{E\subseteq S}(-1)^{|S|-|E|}
+        e^{-(Y+h_E)}\Bigr)\right|
+         & \le \|O\|\bigl(e^{J}-1\bigr)^{|S|}\operatorname{tr}e^{-Y}.
+    \end{align}
+    For $h_i=\beta H_i$ with $\|H_i\|\le J$ this is the factor
+    $[\exp(J\beta)-1]^{n_C}$ of~\cite{Hastings2006Solving}.
+\end{theorem}
+\begin{proof}\leanok
+    Each factor satisfies $0\le e^{\|h_i\|}-1\le e^{J}-1$.
+\end{proof}
+
+\begin{theorem}[Alternating sums between thermal factors]
+    \label{thm:trace_exp_alternating_sum_between}
+    \lean{Matrix.norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum}
+    In the setting of Theorem~\ref{thm:trace_exp_alternating_sum}, let $X$ be
+    Hermitian and let $p,q,r\ge0$ with $p+q+r=1$. Then for every operator $O$,
+    \begin{align}
+        \left|\operatorname{tr}\Bigl(Oe^{-pX}\Bigl(\sum_{E\subseteq S}(-1)^{|S|-|E|}
+        e^{-q(Y+h_E)}\Bigr)e^{-rX}\Bigr)\right|
+         & \le \|O\|\prod_{i\in S}\bigl(e^{q\|h_i\|}-1\bigr)
+        \bigl(\operatorname{tr}e^{-X}\bigr)^{p+r}
+        \bigl(\operatorname{tr}e^{-Y}\bigr)^{q}.
+        \label{eq:trace_exp_alternating_sum_between}
+    \end{align}
+    With $X=\beta H$, $Y=\beta(H-H_C-H_{B(C)})$, $h_i=\beta H_i$, $q=1/n$,
+    $p=k/n$ and $r=(n-k-1)/n$, the middle factor is the operator
+    $\rho(\beta/n,C)$ placed between $\rho(k\beta/n)$ and
+    $\rho((n-k-1)\beta/n)$ in~\cite{Hastings2006Solving},
+    arXiv:cond-mat/0508554v3, source lines 1322--1333. Together with
+    Theorem~\ref{thm:trace_exp_add_le}, which gives
+    $\operatorname{tr}e^{-Y}\le e^{\beta\|H_C+H_{B(C)}\|}\operatorname{tr}e^{-\beta H}$,
+    this gives the bound by $\|O\|y^{n_C}$ stated there.
+\end{theorem}
+\begin{proof}\leanok
+    Apply~(\ref{eq:trace_exp_alternating_general}) to the three factors
+    $Oe^{-pX}$, $e^{-q(Y+s)}$ and $e^{-rX}$, where only the middle one
+    has the tag of the indices, so that this tag has weight $q$. The identity operator has norm at most
+    one, and
+    $\bigl(\operatorname{tr}e^{-X}\bigr)^{p}\bigl(\operatorname{tr}e^{-X}\bigr)^{r}
+        =\bigl(\operatorname{tr}e^{-X}\bigr)^{p+r}$.
+\end{proof}
+
+\begin{theorem}[Alternating sums between thermal factors, uniform form]
+    \label{thm:trace_exp_alternating_sum_between_pow}
+    \lean{Matrix.norm_trace_mul_exp_mul_sum_powerset_exp_mul_exp_le_pow}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum_between}
+    In the setting of Theorem~\ref{thm:trace_exp_alternating_sum_between},
+    assume moreover $\|h_i\|\le J$ for all $i\in S$. Then
+    \begin{align}
+        \left|\operatorname{tr}\Bigl(Oe^{-pX}\Bigl(\sum_{E\subseteq S}(-1)^{|S|-|E|}
+        e^{-q(Y+h_E)}\Bigr)e^{-rX}\Bigr)\right|
+         & \le \|O\|\bigl(e^{qJ}-1\bigr)^{|S|}
+        \bigl(\operatorname{tr}e^{-X}\bigr)^{p+r}
+        \bigl(\operatorname{tr}e^{-Y}\bigr)^{q}.
+    \end{align}
+    For $h_i=\beta H_i$ with $\|H_i\|\le J$ and $q=1/n$ this is the factor
+    $[\exp(J\beta/n)-1]^{n_C}$ of~\cite{Hastings2006Solving}.
+\end{theorem}
+\begin{proof}\leanok
+    Each factor satisfies $0\le e^{q\|h_i\|}-1\le e^{qJ}-1$.
+\end{proof}
+
+\begin{theorem}[Products of alternating sums]
+    \label{thm:trace_exp_alternating_sum_product}
+    \lean{Matrix.norm_trace_list_prod_mul_sum_powerset_exp_le}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum}
+    For $j=0,\dots,n-1$ let $B_j$ be operators, $Y_j$ Hermitian, $q_j\ge0$
+    weights with $\sum_jq_j=1$, and $h_{j,i}$, $i\in S_j$, Hermitian, and
+    write $h_{j,E}=\sum_{i\in E}h_{j,i}$ for $E\subseteq S_j$ and
+    \begin{align*}
+        \rho_j=\sum_{E\subseteq S_j}(-1)^{|S_j|-|E|}e^{-q_j(Y_j+h_{j,E})}.
+    \end{align*}
+    Then
+    \begin{align}
+        \bigl|\operatorname{tr}\bigl(B_0\rho_0B_1\rho_1\cdots B_{n-1}\rho_{n-1}\bigr)\bigr|
+         & \le\prod_j\|B_j\|\prod_{i\in S_j}\bigl(e^{q_j\|h_{j,i}\|}-1\bigr)
+        \bigl(\operatorname{tr}e^{-Y_j}\bigr)^{q_j}.
+        \label{eq:trace_exp_alternating_sum_product}
+    \end{align}
+    For $S_j=\emptyset$ the factor $\rho_j$ is the thermal factor
+    $e^{-q_jY_j}$.
+\end{theorem}
+\begin{proof}\leanok
+    Take the disjoint union of the $S_j$ as the index set, give the index
+    $(j,i)$ the tag $j$ and the factor $B_je^{-q_j(Y_j+\cdot)}$ the tag $j$,
+    so that the tag $j$ has weight $q_j$, and
+    apply~(\ref{eq:trace_exp_alternating_general}). The ordered product is
+    linear in each factor, so the alternating sum over the disjoint union is
+    the ordered product of the alternating sums $\rho_j$.
+\end{proof}
+
+\begin{remark}
+    With $q_j=1/n$, $Y_j=\beta H$ for a thermal factor, and
+    $Y_j=\beta(H-H_{C_j}-H_{B(C_j)})$, $h_{j,i}=\beta H_i$ for a cluster
+    part $\rho(\beta/n,C_j)$,
+    Theorem~\ref{thm:trace_exp_alternating_sum_product} bounds each product
+    of thermal factors and cluster parts in the operator $\rho_m$
+    of~\cite{Hastings2006Solving}, arXiv:cond-mat/0508554v3, source lines
+    1334--1341. If moreover $\|H_i\|\le J$ and
+    $n_{C_j}+n_{B(C_j)}\le Sn_{C_j}$ for every cluster, then
+    Theorem~\ref{thm:trace_exp_add_le} turns the bound into
+    $\|O\|\prod_jy^{n_{C_j}}\operatorname{tr}e^{-\beta H}$ with
+    $y=[\exp(J\beta/n)-1]\exp(SJ\beta/n)$, the product running over the
+    cluster parts. This consequence is not stated as a separate result here.
+\end{remark}
+
+\begin{theorem}[Products of alternating sums, uniform form]
+    \label{thm:trace_exp_alternating_sum_product_pow}
+    \lean{Matrix.norm_trace_list_prod_mul_sum_powerset_exp_le_pow}
+    \leanok
+    \uses{thm:trace_exp_alternating_sum_product}
+    In the setting of Theorem~\ref{thm:trace_exp_alternating_sum_product},
+    assume moreover $\|h_{j,i}\|\le J$ for all $j$ and $i\in S_j$. Then
+    \begin{align}
+        \bigl|\operatorname{tr}\bigl(B_0\rho_0B_1\rho_1\cdots B_{n-1}\rho_{n-1}\bigr)\bigr|
+         & \le\prod_j\|B_j\|\bigl(e^{q_jJ}-1\bigr)^{|S_j|}
+        \bigl(\operatorname{tr}e^{-Y_j}\bigr)^{q_j}.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Each factor satisfies $0\le e^{q_j\|h_{j,i}\|}-1\le e^{q_jJ}-1$.
+\end{proof}
