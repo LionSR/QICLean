@@ -10,3 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.Entropy.Renyi.Defs
 import QICLean.Entropy.Renyi.Smooth
+import QICLean.Entropy.Renyi.VonNeumannBound
