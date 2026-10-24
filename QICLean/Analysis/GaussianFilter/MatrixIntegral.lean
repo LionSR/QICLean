@@ -235,6 +235,19 @@ theorem gaussianIntertwinerTruncated_conjTranspose (h : ℝ≥0) (T : ℝ)
     gaussianIntertwiner h H' H 0 = 0 := by
   simp [gaussianIntertwiner]
 
+/-- The Gaussian intertwiner is unchanged when both generators are shifted by the same real
+scalar, since the phases `e^{itc}` and `e^{-itc}` cancel. -/
+theorem gaussianIntertwiner_add_smul_one (h : ℝ≥0) (H' H W : Matrix n n ℂ) (c : ℝ) :
+    gaussianIntertwiner h (H' + (c : ℂ) • 1) (H + (c : ℂ) • 1) W =
+      gaussianIntertwiner h H' H W := by
+  unfold gaussianIntertwiner
+  congr 1
+  funext t
+  rw [hermitianUnitaryPath_add_smul_one, hermitianUnitaryPath_add_smul_one, smul_mul_assoc,
+    smul_mul_assoc, mul_smul_comm, smul_smul, ← Complex.exp_add]
+  have : (t * Complex.I * c + (↑(-t) * Complex.I * c) : ℂ) = 0 := by push_cast; ring
+  rw [this, Complex.exp_zero, one_smul]
+
 /-- The two-generator version of `SpectralFilter.dotProduct_conj_mulVec`.
 The left eigenvector supplies the positive phase, even for non-real vectors. -/
 theorem dotProduct_intertwinerIntegrand_mulVec {H' H : Matrix n n ℂ}

@@ -39,6 +39,7 @@
     $\lVert U_M(t)-U_H(t)\rVert\le\lVert M-H\rVert\,|t|$ in the operator norm.
 \end{theorem}
 \begin{proof}\leanok
+    \uses{thm:unitary_evolution_error}
     Both paths solve $\dot U=iGU$ with $U(0)=\Id$, for the constant
     generators $G=M$ and $G=H$. By the Duhamel identity,
     $U_H(t)^\dagger U_M(t)-\Id=\int_0^tU_H(s)^\dagger\,i(M-H)\,U_M(s)\,ds$,
