@@ -95,6 +95,14 @@ theorem rectangularTraceNorm_eq_sum_sqrt_eigenvalues (A : Matrix m n ℂ) :
   exact (Equiv.sum_comp (Fintype.equivOfCardEq (Fintype.card_fin (Fintype.card n))).symm
     fun j ↦ Real.sqrt (hH.isHermitian.eigenvalues₀ j)).symm
 
+open scoped MatrixOrder in
+/-- On any finite coordinate space, the nuclear norm of a square complex matrix
+is the real trace of its absolute value. Wolf, Chapter 8, Section 8.1. -/
+theorem rectangularTraceNorm_eq_re_trace_abs (A : Matrix n n ℂ) :
+    rectangularTraceNorm A = (CFC.abs A).trace.re := by
+  rw [rectangularTraceNorm_eq_sum_sqrt_eigenvalues, abs_eq_cfc_real_sqrt]
+  exact ((posSemidef_conjTranspose_mul_self A).isHermitian.trace_cfc_eq_sum_re Real.sqrt).symm
+
 omit [Fintype n] [DecidableEq n] in
 /-- A rectangular column pairing is an ordinary Euclidean inner product. -/
 lemma conjTranspose_mul_apply_self_eq_inner_rectangular
@@ -128,16 +136,6 @@ lemma norm_trace_conjTranspose_mul_rectangular_le (P Q : Matrix m n ℂ) :
     _ ≤ _ := Finset.sum_le_sum fun i _ ↦ by
       rw [conjTranspose_mul_apply_self_eq_inner_rectangular]
       exact norm_inner_le_norm _ _
-
-/-- Unitary matrices have operator norm at most one, including the empty
-matrix algebra. -/
-lemma l2_opNorm_unitary_le_one {V : Matrix n n ℂ} (hV : V ∈ unitaryGroup n ℂ) :
-    ‖V‖ ≤ 1 := by
-  classical
-  rcases isEmpty_or_nonempty n with hn | hn
-  · have hzero : V = 0 := by ext i; exact isEmptyElim i
-    simp [hzero]
-  · exact le_of_eq (CStarRing.norm_of_mem_unitary hV)
 
 /-- Rectangular trace-norm duality, upper-bound half, for arbitrary contractions
 and without positivity of the tested matrix. Theorem 5.2,
