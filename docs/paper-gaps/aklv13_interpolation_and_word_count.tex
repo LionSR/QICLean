@@ -15,9 +15,9 @@ Lemma~4.2 of Arad, Kitaev, Landau and Vazirani,
 \href{https://arxiv.org/abs/1301.1162v1}{arXiv:1301.1162v1},
 label \texttt{l:agsp},
 \path{References/1301.1162/1dfrustrated34.tex}, lines~626--644.
-The corrected word count below is required by the remaining rank argument;
-that count and the resulting operator Schmidt rank theorem are not claimed
-formalized here.
+The corrected exponent-tuple count and a coefficient-rank bound for commuting
+gaps are formalized. The full Hamiltonian operator Schmidt-rank theorem remains
+a separate assertion.
 
 \section{Interpolation requires a spanning family}
 
@@ -83,6 +83,12 @@ There are $2k+2$ nonnegative exponents. Their number of possible tuples is
         &=\binom{\ell+k+1}{2k+1}.
     \label{eq:aklv13_word_count}
 \end{align}
+The corrected count is proved by
+\leanid{Finset.card_piAntidiag_univ_fin_prod_bool}. Combined with the commuting-gap
+span and the algebraic rank inequalities, it gives the coefficient-rank bound
+\leanid{Matrix.operatorSchmidtRank_coeff_pow_C_add_C_mul_X_le} when the two
+gap operators have ranks at most one.
+
 Different tuples may yield the same operator; the count is an upper bound
 on the number of collected operator expressions, not an independence claim.
 
