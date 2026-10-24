@@ -10,7 +10,8 @@ in a regression file are not additional mathematical consumers.
 ### Finite linear combinations in an operator-block span — existing Mathlib lemma (2026-10-22)
 
 - **Consumers:** Both cut-movement proofs in `Algebra/OperatorSchmidtCut.lean`
-  and the middle-block expansion in `Algebra/OperatorSchmidtTwoCuts.lean`.
+  the middle-block expansion in `Algebra/OperatorSchmidtTwoCuts.lean`, and
+  the extracted gap blocks in `Algebra/LocalPolynomialSchmidtRank.lean`.
 - **Lemma:** `Submodule.sum_smul_mem` handles the scalar-weighted finite sum;
   each caller supplies membership of the actual family in its span.
 - **Refactor:** Replace the repeated sum-closure and scalar-closure steps by
@@ -19,7 +20,8 @@ in a regression file are not additional mathematical consumers.
 ### Operator Schmidt rank from a finite block span — promoted (2026-10-22)
 
 - **Consumers:** The product-decomposition bound in `Algebra/OperatorSchmidt.lean`
-  and both cut-movement bounds in `Algebra/OperatorSchmidtCut.lean`.
+  both cut-movement bounds in `Algebra/OperatorSchmidtCut.lean`, and the
+  coefficient gap bound in `Algebra/LocalPolynomialSchmidtRank.lean`.
 - **Lemma:** `Matrix.operatorSchmidtRank_le_card_of_blocks_mem_span` combines
   inclusion of block spans with the dimension bound for a finite spanning family.
 - **Refactor:** Each consumer supplies its actual block expansion. The existing
@@ -292,6 +294,18 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   Two occurrences in one file do not require a new abstraction. Reuse the
   existing phase-power identities in later consumers instead of copying them.
 
+
+### Finite scalar span followed by an operator-rank sum — candidate (2026-10-22)
+
+- **Seen:** The final coefficients in `Algebra/CommutingPolynomialSchmidtRank.lean`
+  and `Algebra/LocalPolynomialSchmidtRank.lean`.
+- **Pattern:** Use `Submodule.mem_span_range_iff_exists_fun` to obtain the actual
+  complex scalar coefficients, then the scalar and finite-sum rank bounds.
+- **Decision:** Two occurrences; retain the direct arguments. A third consumer
+  would justify a rank bound for membership in a finite operator span.
+- **Caveat:** In the local-polynomial argument, coefficient extraction is first
+  justified by a fixed tensor-factor family; a pointwise rank hypothesis alone
+  does not justify that step.
 
 ### Normalized regional states — candidate (2026-10-15)
 
