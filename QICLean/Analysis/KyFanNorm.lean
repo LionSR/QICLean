@@ -51,6 +51,8 @@ maximum principle for `k < card n`.
 * `Matrix.IsHermitian.kyFanNorm_zero` -- the `0`-norm vanishes.
 * `Matrix.IsHermitian.kyFanNorm_card_eq_trace_re` -- summing over all
   eigenvalues recovers the real trace.
+* `Matrix.IsHermitian.sum_eigenvalues₀_filter_le` -- the remaining eigenvalue sum is the
+  real trace minus the sum of the largest eigenvalues.
 * `Matrix.PosSemidef.kyFanNorm_nonneg` -- the norm is nonnegative for positive
   semidefinite matrices.
 * `Matrix.PosSemidef.kyFanNorm_le_succ` -- monotonicity in `k`.
@@ -237,6 +239,21 @@ theorem kyFanNorm_eq_sum_fin (hA : A.IsHermitian) (k : ℕ) :
         refine Finset.sum_eq_zero fun x _ => ?_
         have hxm : (x : ℕ) ≠ m := fun hc => h (hc ▸ x.2)
         simp [hxm]
+
+/-- The eigenvalues beyond the first \(K\), in descending order, add up to the real trace
+minus the sum of the \(K\) largest signed eigenvalues. No positivity assumption is needed,
+and the identity also holds when \(K\) exceeds the dimension. -/
+theorem sum_eigenvalues₀_filter_le (hA : A.IsHermitian) (K : ℕ) :
+    ∑ a ∈ Finset.univ.filter (fun a : Fin (Fintype.card n) ↦ K ≤ a.val), hA.eigenvalues₀ a =
+      A.trace.re - hA.kyFanNorm K := by
+  have htot : ∑ a : Fin (Fintype.card n), hA.eigenvalues₀ a = A.trace.re := by
+    rw [← hA.kyFanNorm_card_eq_trace_re, hA.kyFanNorm_eq_sum_fin]
+    exact Finset.sum_congr rfl fun a _ ↦ by simp only [a.isLt, ↓reduceIte]
+  rw [Finset.sum_filter, hA.kyFanNorm_eq_sum_fin, ← htot, ← Finset.sum_sub_distrib]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  by_cases h : K ≤ a.val
+  · simp [h, show ¬ a.val < K by omega]
+  · simp [h, show a.val < K by omega]
 
 /-! ### The achievability half of the Ky-Fan maximum principle
 
