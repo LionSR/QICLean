@@ -97,7 +97,7 @@ rank-$k$ projection forms of the same condition.
     \begin{align}
         E^{(k)}(X)_{(i,p),(j,q)}
          & =E((X_{(a,p),(b,q)})_{a,b})_{i,j},
-         \qquad i,j<D_{\rm out},\quad a,b<D_{\rm in}.
+        \qquad i,j<D_{\rm out},\quad a,b<D_{\rm in}.
         \label{eq:schwarz_blockwise_ampliation}
     \end{align}
 \end{definition}
@@ -210,6 +210,28 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     concern $S_k(A)$ for arbitrary Hermitian $A$, so on the
     positive-semidefinite cone they are statements about the Ky-Fan norm.
 \end{definition}
+
+\begin{theorem}[Sum of the remaining eigenvalues]
+    \label{thm:ky_fan_eigenvalue_tail}
+    \lean{Matrix.IsHermitian.sum_eigenvalues₀_filter_le}
+    \leanok
+    \uses{def:ky_fan_norm}
+    Let $A\in\MN{D}$ be Hermitian, with eigenvalues
+    $\lambda_1\ge\cdots\ge\lambda_D$. For every nonnegative integer $k$,
+    \begin{align}
+        \sum_{k<i\le D}\lambda_i
+         & =\re\tr(A)-S_k(A).
+        \label{eq:ky_fan_eigenvalue_tail}
+    \end{align}
+    If $k\ge D$, the sum on the left is empty and both sides vanish.
+    No positivity assumption on $A$ is required.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:ky_fan_norm}
+    The sum of all eigenvalues is $\re\tr(A)$. Subtract the first $k$
+    eigenvalues, with the sum understood to stop at $D$.
+\end{proof}
 
 \begin{theorem}[Ky Fan's maximum principle]
     \label{thm:ky_fan_maximum_principle}
@@ -336,6 +358,41 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     $\psi=\phi$, whose Schmidt rank is at most $D$; for any normalized
     $\psi$, the Cauchy--Schwarz inequality gives
     $|\braket{\phi}{\psi}|^2\le\|\phi\|^2\|\psi\|^2=1$.
+\end{proof}
+
+\begin{theorem}[Homogeneous Schmidt overlap bound]
+    \label{thm:homogeneous_schmidt_overlap_bound}
+    \lean{Matrix.normSq_inner_le_kyFanNorm}
+    \leanok
+    \uses{def:schmidt_rank, def:ky_fan_norm}
+    Let $\Psi,\Phi\in\mathbb C^m\otimes\mathbb C^n$, with
+    $\|\Phi\|=1$ and $\SR(\Phi)\le D$, where $D\ge0$ is an integer.
+    Set $\rho=\tr_2|\Psi\rangle\langle\Psi|$. Then
+    \begin{align}
+        |\langle\Psi,\Phi\rangle|^2 & \le\|\rho\|_{(D)}.
+        \label{eq:homogeneous_schmidt_overlap_bound}
+    \end{align}
+    No normalization of $\Psi$ is required. If $D\ge m$, the right-hand
+    side is $\tr\rho=\|\Psi\|^2$. This is the homogeneous upper bound
+    underlying \cite[Lemma~3.1]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:ky_fan_upper_bound}
+    Write $C$ and $B$ for the coefficient matrices of $\Psi$ and $\Phi$.
+    The support projection $P$ of $BB^\dagger$ has rank at most $D$.
+    Since $PB=B$ and $\tr(B^\dagger B)=1$, the Hilbert--Schmidt
+    Cauchy--Schwarz inequality gives
+    \begin{align}
+        |\tr(C^\dagger B)|^2 & \le\tr(PCC^\dagger).
+        \label{eq:homogeneous_schmidt_overlap_support}
+    \end{align}
+    For $D<m$, applying the Ky Fan variational bound to
+    (\ref{eq:homogeneous_schmidt_overlap_support}) proves
+    (\ref{eq:homogeneous_schmidt_overlap_bound}).
+    For $D\ge m$, ordinary Cauchy--Schwarz gives the bound
+    $\|\Psi\|^2=\tr\rho$.
 \end{proof}
 
 \begin{definition}[Reduced density of an eigenvector]

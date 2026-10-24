@@ -1,0 +1,48 @@
+\section{Entropy from a spectral tail}
+\label{sec:von_neumann_spectral_tail}
+
+\begin{theorem}[Spectral concentration and von Neumann entropy]
+  \label{thm:von_neumann_spectral_tail}
+  \lean{Matrix.PosSemidef.vonNeumannEntropy_le_log_rank_add_tail}
+  \leanok
+  Let $\rho$ be a positive semidefinite matrix of trace one on a space of
+  dimension $n$, with eigenvalues $\lambda_0\ge\cdots\ge\lambda_{n-1}$.
+  For any integer $D\ge0$ and real $\varepsilon$ satisfying
+  $\sum_{j=D}^{n-1}\lambda_j\le\varepsilon$,
+  \begin{align}
+    \label{eq:von_neumann_spectral_tail}
+    S(\rho)&\le\log D+\varepsilon\log n+\log2.
+  \end{align}
+  Empty sums vanish, and $\log0=0$. In particular, no restriction
+  $0<D\le n$ is required.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:entropy_concentration}
+  Apply the finite probability entropy bound to the first $\min(n,D)$
+  eigenvalues. Their complement has mass at most $\varepsilon$.
+  The logarithm of the retained cardinality is at most $\log D$;
+  when that cardinality is zero, use $\log0=0\le\log D$.
+\end{proof}
+
+\begin{theorem}[Auxiliary entropy bound from low-rank approximation]
+  \label{thm:von_neumann_low_rank_error}
+  \lean{Matrix.PosSemidef.vonNeumannEntropy_le_log_rank_add_traceNorm}
+  \leanok
+  Let $\rho$ be positive semidefinite with trace one and let $\sigma$ be
+  Hermitian on the same $n$-dimensional space. If
+  $\operatorname{rank}\sigma\le D$ and $\|\rho-\sigma\|_1\le\delta$, then
+  \begin{align}
+    \label{eq:von_neumann_low_rank_error}
+    S(\rho)&\le\log D+\delta\log n+\log2.
+  \end{align}
+  Neither positivity nor normalization of $\sigma$ is required.
+\end{theorem}
+\begin{proof}\leanok
+  \uses{thm:von_neumann_spectral_tail,thm:spectral_tail_trace_norm}
+  The discarded spectral mass is at most $\|\rho-\sigma\|_1$ by the
+  support-projection and Ky Fan estimate. Apply the preceding theorem.
+\end{proof}
+
+This is an auxiliary bound for the entropy obstruction discussed in
+\cite{Schuch2008EntropyScaling}, lines 278--305 of the source.
+It does not assert the sharper coefficient $\delta/2$ claimed in that passage.

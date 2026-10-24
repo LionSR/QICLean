@@ -1,0 +1,39 @@
+\section{Finite monomial interpolation}
+
+\begin{theorem}[Evaluation recovery of monomial coefficients]
+    \label{thm:finite_monomial_interpolation}
+    \lean{MvPolynomial.exists_monomial_evaluation_recovery,
+        MvPolynomial.monomial_evaluation_recovery_smul}\leanok
+    Let $\sigma$ be a set of variables and let $S$ be a finite set of distinct
+    monomials. Write $t=|S|$ and $m_\alpha(z)=\prod_i z_i^{\alpha_i}$,
+    with only finitely many nonzero exponents for each $\alpha\in S$.
+    There exist points $z_0,\ldots,z_{t-1}\in\mathbb C^\sigma$ and complex
+    coefficients $c_{\alpha r}$, depending only on $S$, such that
+    \begin{align}
+        \sum_{r=0}^{t-1}c_{\alpha r}m_\beta(z_r)
+         & =\begin{cases}1,&\alpha=\beta,\\0,&\alpha\ne\beta.\end{cases}\notag
+    \end{align}
+    For every complex vector space $V$ and family $(f_\beta)_{\beta\in S}$ in $V$,
+    put $P_f(z)=\sum_{\beta\in S}m_\beta(z)f_\beta$. The same points and
+    coefficients satisfy
+    \begin{align}
+        f_\alpha & =\sum_{r=0}^{t-1}c_{\alpha r}P_f(z_r).\notag
+    \end{align}
+    Empty $S$ and dependent or zero coefficient vectors are allowed.
+    This is the interpolation step in \cite[Lemma~4.2]{Arad2013AreaLaw}.
+    The spanning-family interpretation and a separate correction to the
+    subsequent word count are recorded in
+    \cite{gap:aklv13_interpolation_and_word_count}.
+\end{theorem}
+\begin{proof}\leanok
+    Scalar polynomial evaluation is injective over the infinite field
+    $\mathbb C$. The monomial basis therefore gives linear independence of
+    the functions $z\mapsto m_\beta(z)$.
+    Consequently the evaluation vectors
+    $E_z=(m_\beta(z))_{\beta\in S}$ span $\mathbb C^S$.
+    Choose $t$ of them spanning this $t$-dimensional space.
+    Expressing each coordinate vector as a linear combination of those
+    evaluations gives the coefficients $c_{\alpha r}$.
+    For vector coefficients, distribute scalar multiplication and interchange
+    the two finite sums; the scalar recovery identity leaves precisely $f_\alpha$.
+\end{proof}
