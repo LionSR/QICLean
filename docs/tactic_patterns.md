@@ -1363,3 +1363,15 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   coefficient recurrence, with constant and leading-coefficient boundaries.
 - **Decision:** Reuse the polynomial coefficient lemmas. There are two consumers;
   a third use would justify one shared recurrence lemma.
+
+### Isolated ground projection as an indicator — candidate (2026-10-22)
+
+- **Pattern:** On a finite Hermitian spectrum contained in one isolated energy
+  and a higher interval, express the complement of the closed threshold
+  projection as the indicator of the isolated energy.
+- **Seen:** `Analysis/PowerSpectralFilter.lean`, local `hPg`; the corresponding
+  local `hPg` in `Analysis/ChebyshevSpectralFilter.lean` (proposed in QICLean
+  PR 860).
+- **Decision:** Two occurrences across the two spectral-filter developments.
+  Retain the short local calculations for now; consider a shared projection
+  lemma if a third consumer requires the same identification.
