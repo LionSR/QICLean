@@ -1,0 +1,37 @@
+\section{Rényi entropy and concentration on a finite set}
+
+\begin{theorem}[Cardinality required to carry a prescribed mass]
+    \label{thm:renyi_mass_cardinality}
+    \lean{Entropy.log_card_bound_of_renyi_mass,
+        Entropy.renyi_mass_sub_error_le_log_card}
+    \leanok
+    Let $(p_i)_{i\in I}$ be a finite nonnegative family, let $S\subseteq I$
+    have cardinality at most a positive integer $D$, and let $\alpha>1$.
+    Suppose that $\delta<1$ and $\sum_{i\in S}p_i\ge1-\delta$. Then
+    \begin{align}
+        \log D & \ge \frac{\log\sum_{i\in I}p_i^\alpha}{1-\alpha}
+        +\frac{\alpha}{\alpha-1}\log(1-\delta).
+    \end{align}
+    If also $\delta\ge0$, the final term equals
+    $-\frac{\alpha}{\alpha-1}|\log(1-\delta)|$.
+    No normalization of the full family is needed. For a probability
+    distribution, the first term on the right is its Rényi entropy.
+    This is the rearrangement of the power-sum inequality in
+    \cite{Schuch2008EntropyScaling}, source lines 333--345. The source's
+    final displayed lower bound has an incorrect plus sign before the
+    absolute logarithm; see the correction and counterexample
+    in~\cite{gap:swvc08_renyi_bond_dimension_sign}.
+\end{theorem}
+\begin{proof}\leanok
+    The finite power-sum inequality gives
+    \begin{align}
+        (1-\delta)^\alpha
+         & \le \left(\sum_{i\in S}p_i\right)^\alpha
+        \le |S|^{\alpha-1}\sum_{i\in S}p_i^\alpha
+        \le D^{\alpha-1}\sum_{i\in I}p_i^\alpha.
+    \end{align}
+    The left side is positive, so the full power sum is positive.
+    Taking logarithms and dividing by $\alpha-1>0$ yields the claim.
+    For $0\le\delta<1$, one has $\log(1-\delta)\le0$, which determines
+    the sign of the absolute-logarithm form.
+\end{proof}
