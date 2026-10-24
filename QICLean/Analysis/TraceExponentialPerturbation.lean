@@ -57,6 +57,12 @@ theorem IsHermitian.re_trace_exp_eq_sum {A : Matrix ι ι ℂ} (hA : A.IsHermiti
   rw [← CFC.real_exp_eq_normedSpace_exp hA.isSelfAdjoint, hA.cfc_eq]
   exact hA.trace_cfc_eq_sum_re Real.exp
 
+/-- The trace of the exponential of a Hermitian matrix has nonnegative real part. -/
+theorem IsHermitian.re_trace_exp_nonneg {A : Matrix ι ι ℂ} (hA : A.IsHermitian) :
+    0 ≤ (NormedSpace.exp A).trace.re := by
+  rw [hA.re_trace_exp_eq_sum]
+  exact Finset.sum_nonneg fun i _ ↦ (Real.exp_pos _).le
+
 /-- **Monotonicity of the trace of the exponential.** If `A ≤ B` are Hermitian, then
 `Tr e^A ≤ Tr e^B`. The ordered eigenvalues of `A` are bounded term by term by those of `B`. -/
 theorem IsHermitian.re_trace_exp_le {A B : Matrix ι ι ℂ} (hA : A.IsHermitian)
