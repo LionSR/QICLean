@@ -42,6 +42,7 @@ import QICLean.Algebra.KroneckerFactorPositivity
 import QICLean.Algebra.L2OpNormReindex
 import QICLean.Algebra.LocalPolynomialSchmidtRank
 import QICLean.Algebra.LowFrequencySelection
+import QICLean.Algebra.LowFrequencyWordPartition
 import QICLean.Algebra.MatrixAlgEquiv
 import QICLean.Algebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAux
