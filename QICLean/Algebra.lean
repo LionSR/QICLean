@@ -23,6 +23,7 @@ import QICLean.Algebra.EqualRangeRightFactor
 import QICLean.Algebra.FinSum
 import QICLean.Algebra.FiniteCauchySchwarz
 import QICLean.Algebra.FiniteKroneckerOrder
+import QICLean.Algebra.FiniteMonomialInterpolation
 import QICLean.Algebra.FiniteSumPowers
 import QICLean.Algebra.FrameOperator
 import QICLean.Algebra.FrobeniusHilbert
@@ -37,6 +38,7 @@ import QICLean.Algebra.HermitianUnitaryConjugacy
 import QICLean.Algebra.KramersDegeneracy
 import QICLean.Algebra.KroneckerFactorPositivity
 import QICLean.Algebra.L2OpNormReindex
+import QICLean.Algebra.LowFrequencySelection
 import QICLean.Algebra.MatrixAlgEquiv
 import QICLean.Algebra.MatrixAlgHomCentralizer
 import QICLean.Algebra.MatrixAux
@@ -76,6 +78,7 @@ import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OrderedMatrixAction
+import QICLean.Algebra.OrderedPolynomialGaps
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.OverlappingLiftAlgebra
 import QICLean.Algebra.PartialTraceDomination
