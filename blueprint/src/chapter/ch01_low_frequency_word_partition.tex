@@ -1,0 +1,56 @@
+\section{A common partition of ordered-word coefficients}
+
+\begin{theorem}[A simultaneous low-frequency partition]
+    \label{thm:two_window_word_coefficient_partition}
+    \lean{Fintype.exists_two_window_word_coefficient_partition}
+    \leanok
+    Let $I$ be a finite set, let $\mathcal R$ be a semiring, and let
+    $L,R\subseteq I$ be nonempty.
+    There are functions $p_L\colon\N^L\to L$ and $p_R\colon\N^R\to R$
+    with the following properties. For every $\nu\colon I\to\N$ and
+    $k\in\N$ with $\sum_{a\in I}\nu(a)\le k$,
+    \begin{align}
+        \nu\bigl(p_L(\nu|_L)\bigr)&\le\lfloor k/|L|\rfloor,
+        &\nu\bigl(p_R(\nu|_R)\bigr)&\le\lfloor k/|R|\rfloor.\notag
+    \end{align}
+    For any family $H_a\in\mathcal R$ and any $k\in\N$, let
+    \begin{align}
+        E_k&=\left\{\alpha\colon I\to\N:\sum_{a\in I}\alpha(a)=k\right\},
+        \notag\\
+        C_\alpha&=\sum_{\substack{w\colon\{0,\ldots,k-1\}\to I\\
+                            \#w^{-1}(a)=\alpha(a)\ \text{for all }a}}
+                    H_{w(0)}\cdots H_{w(k-1)},\notag\\
+        u_\alpha&=p_L(\alpha|_L),
+        &v_\alpha&=p_R(\alpha|_R),\notag\\
+        \lambda(\alpha)&=\bigl((u_\alpha,\alpha(u_\alpha)),
+                              (v_\alpha,\alpha(v_\alpha))\bigr),\notag\\
+        B_k&=\bigl(L\times\{0,\ldots,\lfloor k/|L|\rfloor\}\bigr)
+              \times\bigl(R\times\{0,\ldots,\lfloor k/|R|\rfloor\}\bigr).
+        \notag
+    \end{align}
+    Then
+    \begin{align}
+        \left(\sum_{a\in I}H_a\right)^k
+          &=\sum_{t\in B_k}
+                \sum_{\substack{\alpha\in E_k\\\lambda(\alpha)=t}}C_\alpha.
+        \notag
+    \end{align}
+    The products retain their displayed order. The windows may overlap,
+    and $k=0$ is allowed, with the empty product equal to $1$.
+    This is the finite partition used in the
+    frequency argument of \cite[Lemma~4.2]{Arad2013AreaLaw} and its
+    simultaneous version in \cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:two_window_low_frequency_selectors,thm:finite_sum_power_ordered_words}
+    Choose the two functions by the local-selection theorem.
+    Expand the power as the sum of its ordered words and group these
+    words by their full multiplicity function $\alpha$. Every word of
+    length $k$ has total multiplicity $k$, so this gives
+    $\sum_{\alpha\in E_k}C_\alpha$. For each $\alpha\in E_k$, the two
+    selected frequencies satisfy the displayed bounds; hence
+    $\lambda(\alpha)\in B_k$. Grouping once more by this single function
+    gives the asserted identity. Each multiplicity function belongs
+    to exactly one group, even when the windows overlap.
+\end{proof}
