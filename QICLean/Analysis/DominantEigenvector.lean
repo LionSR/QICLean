@@ -63,7 +63,8 @@ where `4e < Δ`. Then `σ` has a unit eigenvector `v` with eigenvalue larger tha
 `Re ⟨v, H v⟩ ≤ E₀ + 2e` and overlap `|⟨Ω, v⟩| ≥ 1 - 2e/Δ`.
 
 This is the eigenvector argument of the proof of Lemma `l:leading` of arXiv:1307.5143v1,
-`algo53.tex`, lines 497–502, there with `e = 7√c_ε` and threshold `E₀ + 14√c_ε`. -/
+`algo53.tex`, lines 497–502, where the threshold is twice the energy excess of the glued
+state. -/
 theorem PosSemidef.exists_eigenvector_of_re_trace_mul_le (hσ : σ.PosSemidef)
     (htr : σ.trace = 1)
     (hgap : (H - (E₀ : ℂ) • 1 -

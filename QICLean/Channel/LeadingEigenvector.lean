@@ -22,8 +22,10 @@ overlap `|⟨Γ, u'⟩| ≥ 1 - 2 (e + ‖K‖ τ)/Δ`.
 This is Lemma `l:leading` of Landau, Vazirani and Vidick. There, `x = ls(w)` is feasible for
 the size-trimming program, so its minimizer `σ` has left energy at most that of `x`; the net
 point is within `c_ε/(2n)` of `cont(w)` and the constraint keeps `σ` within `c_ε/(2n)` of it,
-so `τ = c_ε/n`; with `‖K‖ ≤ n` and `e = 6√c_ε`, the energy bound is
-`E₀ + 2(6√c_ε + c_ε) ≤ E₀ + 14√c_ε`.
+so `τ = c_ε/n`; with `‖K‖ ≤ n`, the bound is `E₀ + 2(e + c_ε)`, where `e` is the energy excess
+of the trimmed state of Lemma `l:within`. The printed excess `6√c_ε` is not established by the
+printed argument; the corrected excess, and a choice of `c_ε` with `2(e + c_ε) < ε/12`, are in
+`docs/paper-gaps/lvv13_trimming_energy.tex`.
 
 ## Main results
 
