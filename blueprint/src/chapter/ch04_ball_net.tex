@@ -20,22 +20,39 @@ Let $E$ be a real normed space of dimension $n$.
     at most $(1+\varepsilon/2)^n$.
 \end{proof}
 
-\begin{theorem}[Volume net]
-    \label{thm:ball_net}
-    \lean{Metric.exists_finset_net_of_subset_closedBall}
+\begin{theorem}[Packing bound]
+    \label{thm:ball_packing}
+    \lean{Metric.packingNumber_le_of_subset_closedBall}
     \leanok
     \uses{thm:ball_separated_card}
-    Every subset $A$ of the closed unit ball of $E$ contains a finite set $C$
-    of at most $(1+2/\varepsilon)^n$ points such that every point of $A$ lies
-    within distance $\varepsilon$ of a point of $C$. This is the volume
-    argument used in the proof of Lemma~l:rs
-    of~\cite[lines 541--546]{Arad2016RigorousRG}.
+    For $\varepsilon>0$, every set of points of a subset of the closed unit
+    ball of $E$ at pairwise distance more than $\varepsilon$ has at most
+    $(1+2/\varepsilon)^n$ elements.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    By the previous theorem, the subsets of $A$ whose distinct points are at
-    distance more than $\varepsilon$ have bounded size, so one of them, $C$,
-    has maximal size. A point of $A$ at distance more than $\varepsilon$
-    from every point of $C$ could be added to $C$, so there is none.
+    An infinite or larger such set would contain a finite subset with more
+    elements than the bound, contradicting the previous theorem.
+\end{proof}
+
+\begin{theorem}[Volume net]
+    \label{thm:ball_net}
+    \lean{Metric.exists_finset_net_of_subset_closedBall}
+    \leanok
+    \uses{thm:ball_packing}
+    Every subset $A$ of the closed unit ball of $E$ contains a finite set $C$
+    of at most $(1+2/\varepsilon)^n$ points such that every point of $A$ lies
+    within distance $\varepsilon$ of a point of $C$. This is the volume
+    argument used in the proof of Lemma~l:rs
+    of~\cite[lines 541--546]{Arad2016RigorousRG}; for a complex space of
+    dimension $r$, $n=2r$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Take a maximal subset $C$ of $A$ whose points are at pairwise distance
+    more than $\varepsilon$; it is finite with the stated size by the packing
+    bound. A point of $A$ at distance more than $\varepsilon$ from every point
+    of $C$ could be added to $C$, so there is none.
 \end{proof}

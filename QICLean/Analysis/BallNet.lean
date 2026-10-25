@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+import Mathlib.Topology.MetricSpace.CoveringNumbers
 
 /-!
 # Nets of subsets of the unit ball by a volume argument
@@ -11,8 +12,8 @@ import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 In a real normed space of dimension `n`, a set of points of the closed unit ball at pairwise
 distance at least `ε` has at most `(1 + 2/ε) ^ n` elements: the open balls of radius `ε/2` about
 the points are disjoint and lie in the ball of radius `1 + ε/2`, and Haar measure scales balls of
-radius `r` by `r ^ n`. A maximal `ε`-separated subset of a set `A` in the unit ball is therefore
-finite, and it is an `ε`-net of `A`.
+radius `r` by `r ^ n`. This bounds the packing number of every subset `A` of the unit ball, so
+Mathlib's maximal `ε`-separated subset of `A` is finite, and it is an `ε`-net of `A`.
 
 This is the volume argument cited by Arad, Landau, Vazirani and Vidick (arXiv:1602.08828v2,
 `local_alg_arxiv_v2.tex`, proof of Lemma `l:rs`, lines 541–546) from Vershynin, *Introduction to
@@ -22,11 +23,13 @@ itself, so a net of the unit sphere consists of unit vectors.
 ## Main statements
 
 * `Metric.card_le_of_le_dist_of_subset_closedBall`: the volume bound on separated sets.
+* `Metric.packingNumber_le_of_subset_closedBall`: the packing number bound.
 * `Metric.exists_finset_net_of_subset_closedBall`: an `ε`-net of `A ⊆ closedBall 0 1` inside `A`
   with at most `(1 + 2/ε) ^ n` points.
 -/
 
 open MeasureTheory Module
+open scoped NNReal ENNReal
 
 namespace Metric
 
@@ -76,48 +79,57 @@ theorem card_le_of_le_dist_of_subset_closedBall {ε : ℝ} (hε : 0 < ε) {C : F
       field_simp
       ring
 
+/-- **Packing bound.** For `ε > 0`, every subset `A` of the closed unit ball has packing number
+at most `⌊(1 + 2/ε) ^ n⌋₊`, `n = finrank ℝ E`. -/
+theorem packingNumber_le_of_subset_closedBall {ε : ℝ≥0} (hε : 0 < ε) {A : Set E}
+    (hA : A ⊆ closedBall 0 1) :
+    packingNumber ε A ≤ ⌊(1 + 2 / (ε : ℝ)) ^ finrank ℝ E⌋₊ := by
+  set N := ⌊(1 + 2 / (ε : ℝ)) ^ finrank ℝ E⌋₊
+  have hε' : (0 : ℝ) < ε := hε
+  refine iSup₂_le fun C hCA => iSup_le fun hsep => ?_
+  by_contra! hlt
+  obtain ⟨t, htC, ht⟩ := Set.exists_subset_encard_eq (Order.add_one_le_of_lt hlt)
+  have htfin : t.Finite := Set.finite_of_encard_eq_coe ht
+  have hcard : (htfin.toFinset.card : ℝ) ≤ (1 + 2 / (ε : ℝ)) ^ finrank ℝ E := by
+    refine card_le_of_le_dist_of_subset_closedBall hε' ?_ fun x hx y hy hxy => ?_
+    · simpa using (htC.trans hCA).trans hA
+    · rw [Set.Finite.mem_toFinset] at hx hy
+      have : (ε : ℝ≥0∞) < edist x y := hsep (htC hx) (htC hy) hxy
+      rw [edist_dist, ENNReal.coe_nnreal_eq, ENNReal.ofReal_lt_ofReal_iff_of_nonneg
+        ε.coe_nonneg] at this
+      exact this.le
+  have h1 : (htfin.toFinset.card : ℕ∞) = N + 1 := by
+    rw [← htfin.encard_eq_coe_toFinset_card, ht]
+  have h2 : htfin.toFinset.card = N + 1 := by exact_mod_cast h1
+  have h3 : htfin.toFinset.card ≤ N := Nat.le_floor hcard
+  omega
+
 /-- **Volume net.** Every subset `A` of the closed unit ball has an `ε`-net `C ⊆ A` with at most
 `(1 + 2/ε) ^ n` points, `n = finrank ℝ E`: every point of `A` lies within `ε` of a point of `C`.
-Vershynin, Lemma 5.2, as used in the proof of Lemma `l:rs` of arXiv:1602.08828v2
-(lines 541–546). -/
+The net is Mathlib's maximal separated set, finite by the packing bound. Vershynin, Lemma 5.2,
+as used in the proof of Lemma `l:rs` of arXiv:1602.08828v2 (lines 541–546). For a complex
+space of dimension `r`, `finrank ℝ E = 2 r`. -/
 theorem exists_finset_net_of_subset_closedBall {ε : ℝ} (hε : 0 < ε) {A : Set E}
     (hA : A ⊆ closedBall 0 1) :
     ∃ C : Finset E, (C : Set E) ⊆ A ∧ (C.card : ℝ) ≤ (1 + 2 / ε) ^ finrank ℝ E ∧
       ∀ x ∈ A, ∃ c ∈ C, dist x c ≤ ε := by
-  classical
-  set N := ⌊(1 + 2 / ε) ^ finrank ℝ E⌋₊
-  let P : ℕ → Prop := fun m => ∃ C : Finset E, (C : Set E) ⊆ A ∧
-    (∀ x ∈ C, ∀ y ∈ C, x ≠ y → ε < dist x y) ∧ C.card = m
-  have hcard : ∀ C : Finset E, (C : Set E) ⊆ A → (∀ x ∈ C, ∀ y ∈ C, x ≠ y → ε < dist x y) →
-      C.card ≤ N := fun C hCA hsep =>
-    Nat.le_floor (card_le_of_le_dist_of_subset_closedBall hε (hCA.trans hA)
-      fun x hx y hy hxy => (hsep x hx y hy hxy).le)
-  have hP0 : P 0 := ⟨∅, by simp, by simp, rfl⟩
-  obtain ⟨C, hCA, hsep, hCm⟩ := Nat.findGreatest_spec (Nat.zero_le N) hP0
-  refine ⟨C, hCA, ?_, fun x hx => ?_⟩
-  · calc (C.card : ℝ) ≤ N := by exact_mod_cast hcard C hCA hsep
+  set ε' : ℝ≥0 := ⟨ε, hε.le⟩
+  have hpack := packingNumber_le_of_subset_closedBall (ε := ε') hε hA
+  have htop : packingNumber ε' A ≠ ⊤ := ne_top_of_le_ne_top (by simp) hpack
+  have hfin : (maximalSeparatedSet ε' A).Finite := by
+    rw [← Set.encard_lt_top_iff, encard_maximalSeparatedSet htop]
+    exact htop.lt_top
+  refine ⟨hfin.toFinset, by simpa using maximalSeparatedSet_subset, ?_, fun x hx => ?_⟩
+  · have h1 : (hfin.toFinset.card : ℕ∞) ≤ ⌊(1 + 2 / ε) ^ finrank ℝ E⌋₊ := by
+      rw [← hfin.encard_eq_coe_toFinset_card, encard_maximalSeparatedSet htop]
+      exact hpack
+    have h2 : hfin.toFinset.card ≤ ⌊(1 + 2 / ε) ^ finrank ℝ E⌋₊ := by exact_mod_cast h1
+    calc (hfin.toFinset.card : ℝ) ≤ ⌊(1 + 2 / ε) ^ finrank ℝ E⌋₊ := by exact_mod_cast h2
       _ ≤ (1 + 2 / ε) ^ finrank ℝ E := Nat.floor_le (by positivity)
-  · by_contra! hfar
-    have hxC : x ∉ C := fun hxC => by
-      have := hfar x hxC
-      rw [dist_self] at this
-      linarith
-    have hsep' : ∀ y ∈ insert x C, ∀ z ∈ insert x C, y ≠ z → ε < dist y z := by
-      intro y hy z hz hyz
-      rw [Finset.mem_insert] at hy hz
-      rcases hy with rfl | hy <;> rcases hz with rfl | hz
-      · exact absurd rfl hyz
-      · exact hfar z hz
-      · rw [dist_comm]
-        exact hfar y hy
-      · exact hsep y hy z hz hyz
-    have hins : P (C.card + 1) :=
-      ⟨insert x C, by simp [Set.insert_subset_iff, hx, hCA], hsep',
-        Finset.card_insert_of_notMem hxC⟩
-    have hle : C.card + 1 ≤ N := by
-      rw [← Finset.card_insert_of_notMem hxC]
-      exact hcard _ (by simp [Set.insert_subset_iff, hx, hCA]) hsep'
-    have := Nat.le_findGreatest hle hins
-    omega
+  · obtain ⟨c, hc, hxc⟩ := isCover_maximalSeparatedSet htop hx
+    refine ⟨c, by simpa using hc, ?_⟩
+    have : edist x c ≤ ε' := hxc
+    rw [edist_dist, ENNReal.coe_nnreal_eq] at this
+    exact (ENNReal.ofReal_le_ofReal_iff hε.le).mp this
 
 end Metric
