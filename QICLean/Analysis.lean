@@ -279,6 +279,7 @@ import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.SurprisalProductMoment
+import QICLean.Analysis.TensorProductWeights
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
