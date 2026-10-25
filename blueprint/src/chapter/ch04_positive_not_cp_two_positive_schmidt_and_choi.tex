@@ -395,6 +395,91 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     $\|\Psi\|^2=\tr\rho$.
 \end{proof}
 
+\begin{definition}[Trimming projection]
+    \label{def:trimming_projection}
+    \lean{Matrix.IsTrimmingProjection, Matrix.leftApply}
+    \leanok
+    \uses{def:ky_fan_norm}
+    Let $\psi\in\mathbb C^m\otimes\mathbb C^n$ have coefficient matrix $C$
+    and reduced density $\rho=CC^\dagger$ on the first factor, and let
+    $D\ge0$ be an integer. A trimming projection of $\psi$ at $D$ is an
+    orthogonal projection $P$ on $\mathbb C^m$ of rank at most $D$ with
+    $\tr(P\rho)=\|\rho\|_{(D)}$. The trimmed vector is
+    $\operatorname{trim}_D\psi=(P\otimes I)\psi$, with coefficient matrix
+    $PC$; it keeps the Schmidt terms of the $D$ largest Schmidt
+    coefficients, following \cite{Landau2013PolynomialTime}. When a Schmidt
+    coefficient is degenerate, every choice of kept Schmidt vectors gives a
+    trimming projection, and a trimming projection exists for every $D$.
+\end{definition}
+
+\begin{theorem}[Eckart--Young theorem]
+    \label{thm:eckart_young_trimming}
+    \lean{Matrix.IsTrimmingProjection.norm_inner_le_re_inner_normalized,
+        Matrix.IsTrimmingProjection.inner_normalized_eq_sqrt}
+    \leanok
+    \uses{def:trimming_projection, thm:homogeneous_schmidt_overlap_bound}
+    Let $P$ be a trimming projection of $\psi$ at $D$, and put
+    $\psi'=\operatorname{trim}_D\psi/\|\operatorname{trim}_D\psi\|$, read as
+    $0$ when the trimmed vector vanishes. Then
+    \begin{align}
+        \langle\psi',\psi\rangle & =\|\rho\|_{(D)}^{1/2}\ge
+        |\langle w,\psi\rangle|
+        \label{eq:eckart_young_trimming}
+    \end{align}
+    for every unit vector $w$ of Schmidt rank at most $D$. No normalization
+    of $\psi$ is required. This is \cite[Lemma~lem:eckart]{Landau2013PolynomialTime}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The overlap $\langle\operatorname{trim}_D\psi,\psi\rangle$ and the
+    squared norm $\|\operatorname{trim}_D\psi\|^2$ both equal
+    $\tr(C^\dagger PC)=\tr(P\rho)=\|\rho\|_{(D)}$, which gives the equality
+    in (\ref{eq:eckart_young_trimming}). The inequality is
+    Theorem~\ref{thm:homogeneous_schmidt_overlap_bound}.
+\end{proof}
+
+\begin{theorem}[Trimming error against a vector of bounded Schmidt rank]
+    \label{thm:trimming_error_bounded_schmidt_rank}
+    \lean{Matrix.IsTrimmingProjection.norm_inner_sub_leftApply_le,
+        Matrix.IsTrimmingProjection.norm_inner_sub_le_norm_inner_leftApply}
+    \leanok
+    \uses{def:trimming_projection, def:schmidt_rank, thm:ky_fan_upper_bound}
+    Let $P$ be a trimming projection of $u$ at $k$, and let $v$ have
+    Schmidt rank at most $D$. Then
+    \begin{align}
+        \bigl|\langle u-\operatorname{trim}_k u,v\rangle\bigr|
+         & \le\|u\|\,\|v\|\sqrt{\frac{D}{k+1}},
+        \label{eq:trimming_error_bounded_schmidt_rank}
+    \end{align}
+    and consequently $|\langle\operatorname{trim}_k u,v\rangle|\ge
+    |\langle u,v\rangle|-\|u\|\|v\|\sqrt{D/(k+1)}$. For unit vectors,
+    trimming to $k+1\ge D/\varepsilon^2$ terms costs at most $\varepsilon$
+    in overlap. This corrects
+    \cite[Lemma~l:trim1]{Landau2013PolynomialTime}, whose printed radius
+    $D/\varepsilon$ does not suffice; the printed statement is not
+    formalized \cite{gap:lvv13_trimming_radius}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Write $C$ and $B$ for the coefficient matrices of $u$ and $v$, put
+    $\rho=CC^\dagger$, and let $T$ be the orthogonal projection onto the
+    range of $(I-P)B$. Then $T$ has rank at most $D$, $PT=0$, and the
+    Cauchy--Schwarz inequality gives
+    $|\langle u-\operatorname{trim}_k u,v\rangle|^2\le
+        \tr(T\rho)\,\|v\|^2$. Applying Theorem~\ref{thm:ky_fan_upper_bound}
+    to the projection $P+T$ of rank at most $k+D$, with eigenvalues
+    $\mu_1\ge\mu_2\ge\cdots$ of $\rho$, gives
+    \begin{align}
+        \tr(T\rho) & \le\sum_{i=k+1}^{k+D}\mu_i\le D\mu_{k+1}
+        \le\frac{D}{k+1}\tr\rho=\frac{D}{k+1}\|u\|^2.
+        \label{eq:trimming_error_ky_fan}
+    \end{align}
+    When $k+D$ reaches the dimension, the same bound follows from
+    $\tr((P+T)\rho)\le\tr\rho$.
+\end{proof}
+
 \begin{definition}[Reduced density of an eigenvector]
     \label{def:reduced_eig_density}
     \lean{Matrix.IsHermitian.reducedEigDensity}
