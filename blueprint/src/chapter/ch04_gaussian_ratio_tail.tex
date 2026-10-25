@@ -1,0 +1,63 @@
+\section{The lower tail of a complex Gaussian coordinate ratio}
+
+The random sampling lemma of Arad, Landau, Vazirani and
+Vidick~\cite[lines 531--547]{Arad2016RigorousRG} selects a random
+$s$-dimensional subspace of a $q$-dimensional space and needs that a fixed
+vector keeps at least half of its expected squared weight on it, except with
+probability $e^{-s/16}$. The source quotes this from the real Gaussian
+estimate of Dasgupta and Gupta~\cite[Theorem~2.1]{Dasgupta2003ElementaryJL}.
+For standard circular complex Gaussian coordinates the bound follows from a
+Chernoff estimate with one fixed parameter, as below. Throughout,
+$g_1,\dots,g_q$ are independent standard circular complex Gaussians, each the
+sum $(x+\mathrm{i}y)/\sqrt2$ of two independent standard real Gaussians, so
+that $\mathbb E\lvert g_i\rvert^2=1$.
+
+\begin{theorem}[Exponential moments of the squared moduli]
+    \label{thm:complex_gaussian_norm_sq_mgf}
+    \lean{QICLean.ComplexGaussian.integral_exp_sum_mul_norm_coordinate_sq,
+        QICLean.ComplexGaussian.integral_exp_mul_norm_coordinate_sq}
+    \leanok
+    For real weights $c_1,\dots,c_q<1$,
+    \[
+        \mathbb E\exp\Big(\sum_{i=1}^q c_i\lvert g_i\rvert^2\Big)
+        =\prod_{i=1}^q\frac1{1-c_i}.
+    \]
+    In particular $\mathbb E\exp(c\lvert g_i\rvert^2)=1/(1-c)$ for $c<1$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Write $\lvert g_i\rvert^2=(x_i^2+y_i^2)/2$. The exponential factors into
+    one factor for each of the $2q$ independent real coordinates, and for a
+    standard real Gaussian $t$ and $b<1/2$ the Gaussian integral gives
+    $\mathbb E e^{bt^2}=(1-2b)^{-1/2}$. With $b=c_i/2$ the two factors of the
+    $i$-th coordinate multiply to $1/(1-c_i)$.
+\end{proof}
+
+\begin{theorem}[Lower tail of the coordinate ratio]
+    \label{thm:complex_gaussian_ratio_lower_tail}
+    \lean{QICLean.ComplexGaussian.measureReal_sum_norm_coordinate_sq_le_le,
+        QICLean.ComplexGaussian.measure_sum_norm_coordinate_sq_le_le}
+    \leanok
+    \uses{thm:complex_gaussian_norm_sq_mgf}
+    Let $A\subseteq\{1,\dots,q\}$ have $s$ elements. Then
+    \[
+        \Pr\Big(\sum_{i\in A}\lvert g_i\rvert^2
+        \le\frac{s}{2q}\sum_{i=1}^q\lvert g_i\rvert^2\Big)\le e^{-s/16}.
+    \]
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Put $a=s/(2q)\le1/2$ and $w_i=1-a$ for $i\in A$, $w_i=-a$ otherwise. The
+    event is $Z\le0$ for $Z=\sum_iw_i\lvert g_i\rvert^2$, so Markov's
+    inequality for $e^{-Z/2}$ and the exponential moments above bound its
+    probability by $\prod_i(1+w_i/2)^{-1}$. Each factor $u$ satisfies
+    $u\le e^{u-1}$, so the probability is at most $e^E$ with
+    \[
+        E=-s\,\frac{2q-s}{6q-s}+(q-s)\frac{s}{4q-s}.
+    \]
+    For $0<s\le q$, the inequality $E\le-s/16$ is equivalent, after
+    multiplying by $16(6q-s)(4q-s)/s>0$, to $s^2-26qs-8q^2\le0$, which holds
+    since $s\le q$. For $s=0$ both sides of the claim are trivial.
+\end{proof}

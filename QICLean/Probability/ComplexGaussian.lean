@@ -15,6 +15,7 @@ import QICLean.Probability.ComplexGaussian.GlobalBranchLaw
 import QICLean.Probability.ComplexGaussian.IndependentSlots
 import QICLean.Probability.ComplexGaussian.ProductSource
 import QICLean.Probability.ComplexGaussian.ProductSourceTransport
+import QICLean.Probability.ComplexGaussian.RatioTail
 import QICLean.Probability.ComplexGaussian.SchmidtSource
 import QICLean.Probability.ComplexGaussian.SourceError
 import QICLean.Probability.ComplexGaussian.SourceTransportExpansion
