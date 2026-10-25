@@ -1,0 +1,116 @@
+\section{Random sampling of a viable subspace}
+
+Let $M$ and $F$ be finite-dimensional complex inner product spaces, where $F$
+stands for $\mathcal H_L\otimes\mathcal H_R$ and $M$ for $\mathcal H_M$ in
+the setting of~\cite[lines 532--547]{Arad2016RigorousRG}; viability is read
+up to the associator and the exchange of the first two factors.
+
+\begin{theorem}[Net step]
+    \label{thm:viable_random_sampling_net}
+    \lean{Submodule.isCloseTo_of_net}
+    \leanok
+    \uses{thm:subspace_close_iff}
+    Let $S$ and $T$ be subspaces of a finite-dimensional inner product space
+    and let $c\ge0$. If every unit vector $t\in T$ lies within distance
+    $\sqrt c$ of some $v\in T$ with $\lVert P_Sv\rVert^2\ge4c$, then
+    $\lVert P_St\rVert^2\ge c\lVert t\rVert^2$ for all $t\in T$, that is, $S$
+    is $(1-c)$-close to $T$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    For a unit vector $u\in T$ choose $v$ as in the hypothesis. Then
+    $\lVert P_Su\rVert\ge\lVert P_Sv\rVert-\lVert u-v\rVert
+        \ge2\sqrt c-\sqrt c=\sqrt c$. A general nonzero $t\in T$ is
+    $\lVert t\rVert$ times a unit vector of $T$.
+\end{proof}
+
+\begin{definition}[Random subspace]
+    \label{def:viable_random_subspace}
+    \lean{Submodule.randomSubspace, Submodule.finrank_randomSubspace}
+    \leanok
+    Let $W\subseteq M$ have an orthonormal basis indexed by a finite set
+    $\iota$, and let $A\subseteq\iota$ have $s$ elements. For a unitary $U$
+    on $\mathbb C^\iota$, the subspace $W'_U\subseteq W$ is the image under
+    the basis isometry $\mathbb C^\iota\to W$ of $U$ applied to the span of
+    the standard basis vectors indexed by $A$; it has dimension $s$. When $U$ is distributed by the
+    Haar measure, $W'_U$ is a uniformly random $s$-dimensional subspace of
+    $W$.
+\end{definition}
+
+\begin{theorem}[One vector]
+    \label{thm:viable_random_sampling_one_vector}
+    \lean{Submodule.unitaryHaar_norm_sq_starProjection_randomSubspace_le}
+    \leanok
+    \uses{def:viable_random_subspace, thm:haar_projection_law,
+        thm:complex_gaussian_ratio_lower_tail}
+    Let $q=\lvert\iota\rvert$. For every unit vector $f\in W$, the Haar
+    probability that $\lVert P_{W'_U}f\rVert^2\le s/(2q)$ is at most
+    $e^{-s/16}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The basis isometry carries projections onto subspaces of
+    $\mathbb C^\iota$ to projections onto their images, so the event is the
+    event that the projection of a unit vector of $\mathbb C^\iota$ onto
+    $U$ applied to the coordinate subspace of $A$ has squared norm at most
+    $s/(2q)$. Its probability is the probability that
+    $\sum_{i\in A}\lvert g_i\rvert^2\le\frac{s}{2q}\sum_i\lvert g_i\rvert^2$
+    for independent standard complex Gaussians $g_i$, which is at most
+    $e^{-s/16}$.
+\end{proof}
+
+\begin{theorem}[Random sampling]
+    \label{thm:viable_random_sampling}
+    \lean{Submodule.unitaryHaar_not_isViable_randomSubspace_le}
+    \leanok
+    \uses{thm:viable_random_sampling_net, thm:viable_random_sampling_one_vector,
+        thm:tensor_weights, thm:ball_net, def:subspace_viable}
+    Let $T\subseteq M\otimes F$ have dimension $r$, let $W\subseteq M$ be
+    $\delta$-viable for $T$ with $\delta<1$, and let $W'_U$ be as above with
+    $q=\dim W$. Put
+    \[
+        \delta'=\frac{(1-\delta)s}{8q},\qquad\nu=\sqrt{\delta'},\qquad
+        \eta=\Big(1+\frac2\nu\Big)^{2r}qe^{-s/16}.
+    \]
+    Then the Haar probability that $W'_U$ is not $(1-\delta')$-viable for
+    $T$ is at most $\eta$. This is Lemma~l:rs
+    of~\cite[lines 532--547]{Arad2016RigorousRG} with the failure
+    probability corrected: the printed value
+    $(1+4\sqrt{q/((1-\delta)s)})^rqe^{-s/16}$ undercounts the net of the
+    unit sphere of $T$, a real space of dimension
+    $2r$~\cite{gap:alvv16_random_sampling_net_count}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    If $\delta'=0$ every subspace is $1$-viable. Otherwise choose a
+    $\nu$-net $C$ of the unit sphere of $T$ with at most $(1+2/\nu)^{2r}$
+    points. For $v\in C$ let $w$ be the projection of $v$ onto $W\otimes F$,
+    so $\lVert w\rVert^2\ge1-\delta$ and
+    $P_{W'_U\otimes F}v=P_{W'_U\otimes F}w$. Write
+    $\lVert P_{W'_U\otimes F}w\rVert^2=\sum_k\mu_k\lVert P_{W'_U}f_k\rVert^2$
+    along the weights of $w$. Outside the union of the events
+    $\lVert P_{W'_U}f_k\rVert^2\le s/(2q)$, over $v\in C$ and the $q$ basis
+    vectors $f_k$, every net point satisfies
+    $\lVert P_{W'_U\otimes F}v\rVert^2\ge\frac{s}{2q}(1-\delta)=4\delta'$,
+    and the net step gives $(1-\delta')$-viability. The union has
+    probability at most $\lvert C\rvert qe^{-s/16}\le\eta$.
+\end{proof}
+
+\begin{theorem}[Existence of a viable sample]
+    \label{thm:viable_random_sampling_exists}
+    \lean{Submodule.exists_isViable_randomSubspace}
+    \leanok
+    \uses{thm:viable_random_sampling}
+    In the setting of the random sampling theorem, if $\eta<1$ then some
+    unitary $U$ makes $W'_U$ a $(1-\delta')$-viable subspace for $T$ of
+    dimension $s$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Otherwise the failure event is the whole unitary group, of probability
+    one, which exceeds $\eta$.
+\end{proof}
