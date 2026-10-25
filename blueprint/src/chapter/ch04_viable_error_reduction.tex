@@ -1,0 +1,56 @@
+\section{Error reduction of close subspaces}
+
+Arad, Landau, Vazirani and Vidick~\cite[Lemma~l:er]{Arad2016RigorousRG}
+improve a viable set by applying an approximate ground state projection.
+The operator step of their argument holds for any operator that preserves
+the target subspace and its orthogonal complement, does not shrink vectors
+of the target, and contracts its complement.
+
+\begin{theorem}[Monotonicity of closeness]
+    \label{thm:subspace_close_mono}
+    \lean{Submodule.IsCloseTo.mono}
+    \leanok
+    \uses{thm:subspace_close_iff}
+    If $U$ is $\delta$-close to $T$ and $U\subseteq U'$, then $U'$ is
+    $\delta$-close to $T$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Since $P_U=P_UP_{U'}$, we have
+    $\lVert P_Ut\rVert\le\lVert P_{U'}t\rVert$ for every $t$.
+\end{proof}
+
+\begin{theorem}[Error reduction by a contraction]
+    \label{thm:subspace_close_contract}
+    \lean{Submodule.IsCloseTo.map_of_contract}
+    \leanok
+    \uses{thm:subspace_close_iff, thm:subspace_close_preimage}
+    Let $K$ map $T$ and $T^\perp$ into themselves, with
+    $\lVert Kt\rVert\ge\lVert t\rVert$ for $t\in T$ and
+    $\lVert Kq\rVert^2\le\Delta\lVert q\rVert^2$ for $q\in T^\perp$, where
+    $\Delta\ge0$. If $U$ is $\delta$-close to $T$ with $\delta<1$, then $KU$
+    is $\Delta/(1-\delta)^2$-close to $T$. This is the operator step in the
+    proof of Lemma~l:er of~\cite[lines 606--622]{Arad2016RigorousRG}: for
+    $K=\sum_iL_i\otimes A_i\otimes R_i$ and
+    $U=\mathcal H_L\otimes S\otimes\mathcal H_R$, the image $KU$ lies in
+    $\mathcal H_L\otimes V\otimes\mathcal H_R$ with
+    $V=\operatorname{span}\{A_iS\}$. The tensor-product statement of
+    Lemma~l:er, with $T$ a spectral subspace of a Hamiltonian, is not
+    formalized here.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    For $t\in T$, the restriction of $K$ to $T$ is injective, hence
+    surjective, so $t=Kr$ with $r\in T$ and $\lVert r\rVert\le\lVert t\rVert$.
+    Take $u\in U$ with $P_Tu=r$ and
+    $\lVert u\rVert\le\lVert r\rVert/(1-\delta)$, and put $q=u-r\in T^\perp$.
+    Then $Ku=t+Kq$ with orthogonal summands, and
+    $y=\lVert Kq\rVert^2\le\Delta\lVert u\rVert^2
+    \le\Delta\lVert t\rVert^2/(1-\delta)^2$. Since $Ku\in KU$,
+    $\lVert t\rVert^2=\langle Ku,P_{KU}t\rangle
+    \le\lVert Ku\rVert\,\lVert P_{KU}t\rVert$, so with
+    $x=\lVert t\rVert^2$ we get
+    $\lVert P_{KU}t\rVert^2\ge x^2/(x+y)\ge x-y$.
+\end{proof}
