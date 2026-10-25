@@ -74,3 +74,70 @@ $v$ of Schmidt rank $B$.
     whose modulus is at most $\lVert K\rVert$ times the trace norm of the
     difference, which is the quantity of the second part.
 \end{proof}
+
+\begin{theorem}[A dominant low-energy eigenvector]
+    \label{thm:dominant_low_energy_eigenvector}
+    \lean{Matrix.IsHermitian.re_trace_mul_eq_sum_eigenvalues_mul,
+        Matrix.PosSemidef.exists_eigenvector_of_re_trace_mul_le}
+    \leanok
+    Let $H-E_0\ge\Delta(1-\lvert\Gamma\rangle\langle\Gamma\rvert)$ with
+    $\Delta>0$ and $\lVert\Gamma\rVert=1$, and let $\sigma$ be a density matrix
+    with $\operatorname{Re}\operatorname{tr}(\sigma H)\le E_0+e$, where
+    $4e<\Delta$. Then $\sigma$ has a unit eigenvector $v$ with eigenvalue larger
+    than $\tfrac12$, energy
+    $\operatorname{Re}\langle v,Hv\rangle\le E_0+2e$ and overlap
+    $\lvert\langle\Gamma,v\rangle\rvert\ge1-2e/\Delta$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Write $\sigma=\sum_k\lambda_k\lvert v_k\rangle\langle v_k\rvert$, so that
+    $\sum_k\lambda_k(\langle v_k,Hv_k\rangle-E_0)\le e$ with every term
+    nonnegative. The eigenvectors of energy above $E_0+2e$ therefore carry total
+    weight less than $\tfrac12$. Each eigenvector of energy at most $E_0+2e$ has
+    $\lvert\langle\Gamma,v_k\rangle\rvert^2\ge1-2e/\Delta>\tfrac12$, and since
+    $\sum_k\lvert\langle\Gamma,v_k\rangle\rvert^2=1$ there is at most one of
+    them; its eigenvalue exceeds $\tfrac12$, and the overlap is at least its
+    square.
+\end{proof}
+
+\begin{theorem}[The leading eigenvector of a near-optimal left state]
+    \label{thm:leading_eigenvector_gluing}
+    \lean{Matrix.trace_gluing_mul_kronecker_one,
+        Matrix.exists_leading_eigenvector_of_gluing}
+    \leanok
+    \uses{thm:boundary_gluing, thm:dominant_low_energy_eigenvector}
+    In the setting of Theorem~\ref{thm:boundary_gluing}, let
+    $H-E_0\ge\Delta(1-\lvert\Gamma\rangle\langle\Gamma\rvert)$ with
+    $\Delta>0$ and $\lVert\Gamma\rVert=1$, and let $v=(1\otimes W)x$ have
+    $\operatorname{Re}\langle v,Hv\rangle\le E_0+e$. Let $\sigma$ be a density
+    matrix on $(\mathcal A\otimes\mathcal S)\otimes\mathbb C^B$ with
+    $\operatorname{Re}\operatorname{tr}(\sigma(H_L\otimes1))\le
+        \operatorname{Re}\operatorname{tr}(\lvert x\rangle\langle x\rvert(H_L\otimes1))$
+    and
+    $\lVert\operatorname{tr}_{\mathcal A}\sigma
+        -\operatorname{tr}_{\mathcal A}\lvert x\rangle\langle x\rvert\rVert_1\le\tau$.
+    If $4(e+\lVert K\rVert\tau)<\Delta$, then $\sigma$ has a unit eigenvector
+    $u$ with eigenvalue larger than $\tfrac12$ such that $u'=(1\otimes W)u$ has
+    energy at most $E_0+2(e+\lVert K\rVert\tau)$ and
+    $\lvert\langle\Gamma,u'\rangle\rvert\ge1-2(e+\lVert K\rVert\tau)/\Delta$.
+
+    This is Lemma~l:leading of~\cite[lines 493--505]{Landau2013PolynomialTime},
+    for the solution $\sigma$ of the size-trimming program: its left state $x$ of
+    $v$ is feasible, so $\sigma$ has left energy at most that of $x$, and
+    $\tau=c_\varepsilon/n$. With $\lVert K\rVert\le n$ and
+    $e=6\sqrt{c_\varepsilon}$ the bound is $E_0+14\sqrt{c_\varepsilon}$; whether
+    this is below $E_0+\varepsilon/12$ depends on the choice of $c_\varepsilon$,
+    which is discussed in~\cite{gap:lvv13_trimming_energy}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    By Theorem~\ref{thm:boundary_gluing} and the left-energy bound,
+    $\sigma'=(1\otimes W)\sigma(1\otimes W)^\dagger$ has energy at most
+    $E_0+e+\lVert K\rVert\tau$, and it is a density matrix. Theorem~\ref{thm:dominant_low_energy_eigenvector}
+    gives an eigenvector $v'$ of $\sigma'$ with eigenvalue $\mu>\tfrac12$. Since
+    $\mu\ne0$, $v'=\mu^{-1}\sigma'v'$ lies in the range of $1\otimes W$, so
+    $u=(1\otimes W)^\dagger v'$ satisfies $(1\otimes W)u=v'$ and
+    $\sigma u=\mu u$.
+\end{proof}

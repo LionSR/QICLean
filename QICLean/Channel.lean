@@ -67,6 +67,7 @@ import QICLean.Channel.KrausRectangular
 import QICLean.Channel.KrausRepresentation
 import QICLean.Channel.KrausSupportAbsorption
 import QICLean.Channel.KrausUnitaryFreedom
+import QICLean.Channel.LeadingEigenvector
 import QICLean.Channel.LocalizedKrausCPTP
 import QICLean.Channel.LorentzNormalForm
 import QICLean.Channel.LorentzNormalForm.Basic
