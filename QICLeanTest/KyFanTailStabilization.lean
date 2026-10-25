@@ -1,5 +1,7 @@
 import QICLean.Analysis.SpectralTailTraceNorm
 
+/-! Boundary checks for Ky--Fan tail stabilization. -/
+
 open scoped Matrix ComplexOrder MatrixOrder
 
 -- Stabilization also covers the empty matrix type.
