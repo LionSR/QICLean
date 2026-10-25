@@ -22,7 +22,8 @@ and the excitation energy of the optimal prefix.
 * `Entropy.mul_norm_le_of_overlap`: one step of the comparison.
 * `Entropy.chainOptimum`: the optimal prefix norm `N_k`.
 * `Entropy.pow_mul_chainOptimum_le`: the telescoped comparison.
-* `Entropy.sq_norm_inner_ge_of_gap`: the overlap from the gap and the energy.
+* `Entropy.sq_norm_inner_ge_of_gap`, `Entropy.norm_inner_ge_of_gap`: the overlap from the gap
+  and the energy, squared and unsquared.
 * `Entropy.sqrt_mul_chainOptimum_succ_le`, `Entropy.pow_sqrt_mul_chainOptimum_le`: the
   comparison under a global gap.
 * `Entropy.sqrt_mul_chainOptimum_succ_le_logarithmic`,
@@ -35,6 +36,9 @@ and the excitation energy of the optimal prefix.
 
 * Two-dimensional area-law manuscript (September 24, 2026), proof of Lemma 3.2
   (`lem:initial-buffer`), `02-initial.tex`, lines 443–495.
+* Z. Landau, U. Vazirani, T. Vidick, *A polynomial-time algorithm for the ground state of
+  1D gapped local Hamiltonians*, arXiv:1307.5143v1, `algo53.tex`, Lemma
+  `claim:energy-overlap`, lines 297–305.
 
 The logarithmic energy budget follows the one-dimensional area-law note,
 `part1_arealaw.tex`, lines 711–734 (`rem:sharper`). The successor and product
@@ -200,6 +204,21 @@ theorem sq_norm_inner_ge_of_gap {m : Type*} [Fintype m] [DecidableEq m] {H : Mat
   have h2 : 1 - ‖⟪Ω, φ⟫_ℂ‖ ^ 2 ≤ E / Δ := by
     rw [le_div_iff₀ hΔ]; nlinarith
   linarith
+
+/-- **Overlap from the gap, unsquared.** If moreover `Ω` is a unit vector, then
+`|⟨Ω, φ⟩| ≥ 1 - E/Δ`, since `|⟨Ω, φ⟩| ≤ 1` gives `|⟨Ω, φ⟩| ≥ |⟨Ω, φ⟩|²`. This is Lemma
+`claim:energy-overlap` of Landau, Vazirani and Vidick, arXiv:1307.5143v1, `algo53.tex`,
+lines 297–305, with energy `E₀ + E` and gap `Δ`; their hypothesis `0 ≤ E ≤ Δ` is not
+needed. -/
+theorem norm_inner_ge_of_gap {m : Type*} [Fintype m] [DecidableEq m] {H : Matrix m m ℂ}
+    {E₀ Δ E : ℝ} {Ω φ : EuclideanSpace ℂ m} (hΔ : 0 < Δ)
+    (hgap : (H - (E₀ : ℂ) • 1 -
+      (Δ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
+    (hΩ : ‖Ω‖ = 1) (hφ : ‖φ‖ = 1) (hE : (⟪φ, toEuclideanLin H φ⟫_ℂ).re - E₀ ≤ E) :
+    1 - E / Δ ≤ ‖⟪Ω, φ⟫_ℂ‖ := by
+  have h := sq_norm_inner_ge_of_gap hΔ hgap hφ hE
+  have h1 : ‖⟪Ω, φ⟫_ℂ‖ ≤ 1 := (norm_inner_le_norm Ω φ).trans (by rw [hΩ, hφ, one_mul])
+  nlinarith [norm_nonneg ⟪Ω, φ⟫_ℂ]
 
 /-- Every feasible family has output norm at most the optimum. -/
 theorem norm_le_chainOptimum (D : ℕ → Finset V) (f a : ℕ → ℝ) (hf : ∀ j, 0 ≤ f j)
