@@ -43,6 +43,7 @@ import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
 import QICLean.Analysis.DominantEigenvector
 import QICLean.Analysis.DoubledSystemGap
+import QICLean.Analysis.EnergyTruncation
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.EntropyContinuity
 import QICLean.Analysis.EntropyDecomposition
