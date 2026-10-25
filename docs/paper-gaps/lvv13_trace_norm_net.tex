@@ -51,6 +51,16 @@ Four slips in the printed statement need reading:
           size is at most $(2\lceil(Bd)^2/\eta\rceil+1)^{2(Bd)^2}$, not the
           printed $(2\lceil Bd/\eta\rceil+1)^{2Bd}$.
 \end{enumerate}
+The matrices are $(Bd)\times(Bd)$, not $B\times d$: a boundary contraction
+is a density matrix on $\mathcal H_i\otimes\mathbb C^B$ (line~415), a space
+of dimension $dB$, and the proof bounds the trace norm by $(Bd)^2$ times the
+largest entry (line~459). Their real dimension is therefore $2(Bd)^2$. The
+printed size is then not only unproved but too small. The $\eta$-balls in
+trace norm around the points of a net are translates of $\eta$ times the unit
+ball, so covering the unit ball requires at least $\eta^{-2(Bd)^2}$ of them.
+The printed size is at most $(2Bd/\eta+3)^{2Bd}$, which is smaller than
+$\eta^{-2(Bd)^2}$ for small $\eta$ as soon as $Bd\ge2$.
+
 The distance estimate holds as printed. Rounding the real and imaginary part
 of each entry to the grid moves the entry by at most the step, and the trace
 norm is at most the sum of the moduli of the $(Bd)^2$ entries.
