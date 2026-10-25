@@ -537,6 +537,13 @@ jobs:
         if: env.TEX_CHANGED == 'true'
         run: leanblueprint pdf
 
+      # `leanblueprint pdf` copies print/print.bbl over src/web.bbl. The print
+      # build uses the `plain` style, whose `\bibitem{key}` carries no natbib
+      # optional label, and plasTeX would render every citation as "??".
+      - name: Regenerate the web bibliography
+        if: env.TEX_CHANGED == 'true'
+        run: texra-blueprint bbl
+
       - name: Run texra-blueprint web and check for errors
         if: env.TEX_CHANGED == 'true'
         working-directory: blueprint
