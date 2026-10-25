@@ -1,0 +1,65 @@
+\section{Error reduction by a spectral projector}
+
+Let $\mathcal H=\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$ and let
+$b_j$ be an orthonormal basis of common eigenvectors of a Hamiltonian $H$ and
+an operator $K$, with $Hb_j=h_jb_j$ and $Kb_j=k_jb_j$. The low-energy space is
+$T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
+
+\begin{definition}[Spectral projector]
+    \label{def:spectral_projector}
+    \lean{Submodule.IsSpectralProjector}
+    \leanok
+    The operator $K$ is a spectral projector for $(H,\eta_0,\eta_1)$ with
+    parameter $\Delta$ if $h_j\le\eta_0$ implies $k_j\ge1$ and $h_j\ge\eta_1$
+    implies $k_j^2\le\Delta$. This is Definition~def:spectral-AGSP
+    of~\cite[lines 570--581]{Arad2016RigorousRG} with closed spectral
+    conditions and without positivity of $K$; with the printed open
+    conditions the lemma below fails at the eigenvalue
+    $\eta_0$~\cite{gap:alvv16_spectral_projector_boundary}.
+\end{definition}
+
+\begin{theorem}[Spectral projectors contract the complement]
+    \label{thm:spectral_projector_contract}
+    \lean{Submodule.IsSpectralProjector.contract}
+    \leanok
+    \uses{def:spectral_projector}
+    If $K$ is a spectral projector and $H$ has no eigenvalue in
+    $(\eta_0,\eta_1)$, then $K$ maps $T$ and $T^\perp$ into themselves,
+    $\lVert Kt\rVert\ge\lVert t\rVert$ for $t\in T$, and
+    $\lVert Kq\rVert^2\le\Delta\lVert q\rVert^2$ for $q\in T^\perp$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    In the basis $b_j$, the vectors of $T$ have vanishing coefficients
+    outside $\{j:h_j\le\eta_0\}$ and those of $T^\perp$ inside it, and $K$
+    multiplies the $j$-th coefficient by $k_j$. Parseval's identity gives
+    the two norm bounds.
+\end{proof}
+
+\begin{theorem}[Error reduction]
+    \label{thm:viable_spectral_projector}
+    \lean{Submodule.IsViable.spectralProjector}
+    \leanok
+    \uses{thm:spectral_projector_contract, thm:subspace_close_contract, thm:subspace_close_mono, def:subspace_viable}
+    Let $K=\sum_{i=1}^{D^2}L_i\otimes A_i\otimes R_i$ be a spectral
+    projector for $(H,\eta_0,\eta_1)$ with parameter $\Delta\ge0$, let $H$
+    have no eigenvalue in $(\eta_0,\eta_1)$, and let $S\subseteq\mathcal H_M$
+    be $\delta$-viable for $T$ with $\delta<1$. Then
+    $V=\operatorname{span}\{A_iS\}$ has dimension at most $D^2\dim S$ and
+    is $\Delta/(1-\delta)^2$-viable for $T$. This is Lemma~l:er
+    of~\cite[lines 597--622]{Arad2016RigorousRG}, with the closed spectral
+    conditions and the hypothesis $\delta<1$ that its proof uses.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The dimension bound holds because $V$ is the sum of the $D^2$ images
+    $A_iS$. By the previous theorem, $K$ satisfies the hypotheses of the
+    error reduction by a contraction, so
+    $K(\mathcal H_L\otimes S\otimes\mathcal H_R)$ is
+    $\Delta/(1-\delta)^2$-close to $T$. Each
+    $K((l\otimes s)\otimes r)=\sum_i(L_il\otimes A_is)\otimes R_ir$ lies in
+    $\mathcal H_L\otimes V\otimes\mathcal H_R$, and closeness passes to the
+    larger subspace.
+\end{proof}
