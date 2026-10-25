@@ -136,6 +136,7 @@ import QICLean.Channel.SchmidtNumberCompact
 import QICLean.Channel.SchmidtNumberFactors
 import QICLean.Channel.SchmidtRank
 import QICLean.Channel.SchmidtRankAction
+import QICLean.Channel.SchmidtThreshold
 import QICLean.Channel.SchmidtTrimming
 import QICLean.Channel.Schwarz
 import QICLean.Channel.SelfDual
