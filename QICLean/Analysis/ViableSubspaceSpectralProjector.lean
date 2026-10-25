@@ -24,9 +24,10 @@ eigenvectors, with eigenvalues `h j` of `H` and `k j` of `K`. The low-energy spa
 below `η₀` give eigenvalues of `K` at least `1`, and eigenvalues above `η₁` give eigenvalues
 below `√Δ`. The lemma's target `T` contains the eigenvalue `η₀` itself, and its complement may
 contain `η₁`, so the proof needs the closed conditions `h j ≤ η₀ → 1 ≤ k j` and
-`η₁ ≤ h j → k j ^ 2 ≤ Δ`, which `IsSpectralProjector` states. The lemma also needs `δ < 1`,
-which the proof uses through Lemma `l:2` and the printed statement omits. Positivity of `K` is
-not used and not assumed. Documented, with counterexamples to the printed lemma, in
+`η₁ ≤ h j → k j ^ 2 ≤ Δ`, which `IsSpectralProjector` states. Definition `d:vs` allows
+`δ = 1`, where `Δ / (1 - δ) ^ 2` is undefined; the lemma assumes `δ < 1`, as the proof does
+through Lemma `l:2`. Positivity of `K` is not used and not assumed. Documented, with a
+counterexample to the printed lemma, in
 `docs/paper-gaps/alvv16_spectral_projector_boundary.tex`.
 
 ## Main statements

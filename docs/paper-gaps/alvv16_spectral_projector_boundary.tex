@@ -33,10 +33,10 @@ $\delta'$-viable for $T$ with
     \label{eq:alvv_er_delta}
 \end{align}
 
-\section{Two counterexamples}
+\section{A counterexample at the boundary}
 
-\emph{Boundary eigenvalue.} The definition places no condition on an
-eigenvalue of $H$ equal to $\eta_0$, but such an eigenvector lies in $T$.
+The definition places no condition on an eigenvalue of $H$ equal to
+$\eta_0$, but such an eigenvector lies in $T$.
 Take $\mathcal H_L=\mathcal H_R=\mathbb C$, $\mathcal H_M=\mathbb C^2$,
 $H=\operatorname{diag}(\eta_0,\eta_1+1)$, $D=1$ and $K=A_1=0$, with
 $\Delta=1/4$. Every condition of the definition holds, since neither
@@ -47,18 +47,17 @@ $V=\{0\}$ is not $\delta'$-viable for $T$ for any $\delta'<1$, whereas
 $\eta_1$: an eigenvector with eigenvalue exactly $\eta_1$ lies outside $T$
 and carries no bound on its $K$-eigenvalue.
 
-\emph{Large viability parameter.} The lemma does not assume $\delta<1$.
-For $\delta\ge1$ every subspace, including $S=\{0\}$, is $\delta$-viable;
-then $V=\{0\}$, while (\ref{eq:alvv_er_delta}) is smaller than one for
-$\delta=3$ and $\Delta=1/4$. At $\delta=1$ the formula is undefined. The
-proof uses $\delta<1$ through Lemma \texttt{l:2}.
+Definition \texttt{d:vs}, line 434, restricts viability to
+$0\le\delta\le1$. At $\delta=1$ the parameter (\ref{eq:alvv_er_delta}) is
+undefined, and the proof uses $\delta<1$ through Lemma \texttt{l:2}; this is
+a degenerate reading rather than an error, and the formal statement assumes
+$\delta<1$.
 
 \section{The corrected statement}
 
-Both counterexamples disappear when the spectral conditions are closed and
-$\delta<1$ is assumed: eigenvalues $h\le\eta_0$ of $H$ correspond to
-eigenvalues $k\ge1$ of $K$, eigenvalues $h\ge\eta_1$ correspond to
-eigenvalues with $k^2\le\Delta$, and $0\le\delta<1$. The proof of the source
+The counterexample disappears when the spectral conditions are closed:
+eigenvalues $h\le\eta_0$ of $H$ correspond to eigenvalues $k\ge1$ of $K$, eigenvalues $h\ge\eta_1$ correspond to
+eigenvalues with $k^2\le\Delta$. With $\delta<1$, the proof of the source
 then goes through. Positivity of $K$ is not used; dropping it matters
 because the unsquared Chebyshev filter that the source later identifies with
 such an operator is not positive semidefinite (see the companion note
