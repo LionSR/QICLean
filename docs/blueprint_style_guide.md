@@ -379,6 +379,10 @@ the proof sketch should name the regions or inserted tensors appearing in it.
 3. Copy `blueprint/src/print.bbl` → `blueprint/src/web.bbl`  ← **must do this every time bib changes**
 4. Run `leanblueprint web` (plasTeX reads `web.bbl`)
 5. Citation key format: e.g., `Cirac2021Matrix`, `PerezGarcia2007Matrix`
+6. Use `\bibliographystyle{plain}` (numeric labels) in `print.tex` and `web.tex`. The
+   `alpha` style disambiguates entries with the same author and year by the suffixes `a`–`z`, so a
+   27th cited paper-gap note by "QICLean contributors" in one year produces an invalid label and
+   the PDF build fails with `Paragraph ended before \@lbibitem was complete`.
 
 ## Stale/Corrupt Aux File Recovery
 If LaTeX reports `! File ended while scanning use of \@newl@bel` on startup:
