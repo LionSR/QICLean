@@ -82,6 +82,12 @@ jobs:
         working-directory: blueprint
         run: |
           leanblueprint pdf
+          # `leanblueprint pdf` finishes by copying print/print.bbl over
+          # src/web.bbl. The print build's bibtex run uses the `plain` style,
+          # whose `\bibitem{key}` carries no natbib optional label, and
+          # plasTeX then renders every citation as "??". Regenerate the
+          # natbib-style web bibliography that web.tex needs.
+          texra-blueprint --root .. bbl
           set -o pipefail
           tmp_output_file="$(mktemp)"
 
