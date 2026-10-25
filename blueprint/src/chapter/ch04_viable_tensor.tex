@@ -1,0 +1,54 @@
+\section{Viable subspaces of a tensor product}
+
+For subspaces $S\subseteq E$ and $S'\subseteq F$ of finite-dimensional
+inner product spaces, $S\otimes S'$ denotes the image of $S\otimes S'$ in
+$E\otimes F$ under the tensor product of the two inclusions.
+
+\begin{theorem}[Projection onto a tensor product of subspaces]
+    \label{thm:subspace_tensor_projection}
+    \lean{Submodule.starProjection_tensorProd}
+    \leanok
+    The orthogonal projection onto $S\otimes S'$ is $P_S\otimes P_{S'}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The operator $P_S\otimes P_{S'}$ is idempotent and self-adjoint, so it
+    is the orthogonal projection onto its range. Writing $P_S$ as the
+    inclusion of $S$ composed with the surjection $E\to S$, and likewise
+    for $S'$, the range is the image of $S\otimes S'$.
+\end{proof}
+
+\begin{definition}[Viable subspace]
+    \label{def:subspace_viable}
+    \lean{Submodule.IsViable}
+    \leanok
+    \uses{def:subspace_close}
+    A subspace $S\subseteq E$ is $\delta$-viable for $T\subseteq E\otimes F$
+    if $S\otimes F$ is $\delta$-close to $T$, that is,
+    $P_TP_{S\otimes F}P_T\ge(1-\delta)P_T$. This is Definition~d:vs
+    of~\cite[lines 433--440]{Arad2016RigorousRG}.
+\end{definition}
+
+\begin{theorem}[Tensoring]
+    \label{thm:viable_tensoring}
+    \lean{Submodule.IsViable.tensorProd}
+    \leanok
+    \uses{def:subspace_viable, thm:subspace_tensor_projection, thm:subspace_inf_projection, thm:subspace_close_inf}
+    Let $T\subseteq E\otimes F\otimes G$. If $S_1\otimes F$ is
+    $\delta_1$-viable and $E\otimes S_2$ is $\delta_2$-viable for $T$, then
+    $S_1\otimes S_2$ is $(\delta_1+\delta_2)$-viable for $T$. Equivalently,
+    viable sets $S_1\subseteq E$ and $S_2\subseteq F$ on disjoint
+    subsystems tensor to a $(\delta_1+\delta_2)$-viable set. This is
+    Lemma~l:t of~\cite[lines 500--523]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The projections onto $S_1\otimes F\otimes G$ and $E\otimes S_2\otimes G$
+    are $P_{S_1}\otimes1\otimes1$ and $1\otimes P_{S_2}\otimes1$. They
+    commute, and their product $P_{S_1}\otimes P_{S_2}\otimes1$ is the
+    projection onto $S_1\otimes S_2\otimes G$, which is therefore the
+    intersection of the two subspaces. The closeness of an intersection
+    gives the claim.
+\end{proof}

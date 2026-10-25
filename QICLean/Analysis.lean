@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Analysis.AdjointEigenvalues
 import QICLean.Analysis.AsymptoticStateConvergence
+import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
 import QICLean.Analysis.Birkhoff
@@ -307,6 +308,9 @@ import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.ViableSubspace
+import QICLean.Analysis.ViableSubspaceErrorReduction
+import QICLean.Analysis.ViableSubspaceSpectralProjector
+import QICLean.Analysis.ViableSubspaceTensor
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel

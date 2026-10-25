@@ -13,7 +13,8 @@ run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   let decls := #[``Submodule.IsCloseTo, ``Submodule.isCloseTo_iff,
     ``Submodule.IsCloseTo.exists_mem_starProjection_eq,
-    ``Submodule.IsCloseTo.trans]
+    ``Submodule.IsCloseTo.trans, ``Submodule.starProjection_inf_of_commute,
+    ``Submodule.IsCloseTo.inf_of_commute]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"

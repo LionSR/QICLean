@@ -33,6 +33,8 @@ argument is the one written out here.
 * `Submodule.IsCloseTo`, `Submodule.isCloseTo_iff`: closeness and its vector form.
 * `Submodule.IsCloseTo.exists_mem_starProjection_eq`: Lemma `l:2`.
 * `Submodule.IsCloseTo.trans`: Lemma `l:close`.
+* `Submodule.starProjection_inf_of_commute`, `Submodule.IsCloseTo.inf_of_commute`: the operator
+  step of Lemma `l:t`.
 -/
 
 open scoped InnerProductSpace
@@ -184,5 +186,61 @@ theorem IsCloseTo.trans {δ δ' : ℝ} {T T' T'' : Submodule 𝕜 E} (h : IsClos
   have hpy := norm_sq_eq_add_norm_sq_starProjection a T
   rw [starProjection_orthogonal_val] at hpy
   nlinarith
+
+/-- **The projection onto an intersection.** If the projections onto `U₁` and `U₂` commute, the
+projection onto `U₁ ⊓ U₂` is their product. -/
+theorem starProjection_inf_of_commute {U₁ U₂ : Submodule 𝕜 E}
+    (h : Commute U₁.starProjection U₂.starProjection) :
+    (U₁ ⊓ U₂).starProjection = U₁.starProjection * U₂.starProjection := by
+  ext x
+  have hcomm : U₁.starProjection (U₂.starProjection x) = U₂.starProjection (U₁.starProjection x) :=
+    congrArg (fun A : E →L[𝕜] E => A x) h.eq
+  refine (U₁ ⊓ U₂).eq_starProjection_of_mem_of_inner_eq_zero ⟨U₁.starProjection_apply_mem _, ?_⟩
+    fun w hw => ?_
+  · change U₁.starProjection (U₂.starProjection x) ∈ U₂
+    rw [hcomm]
+    exact U₂.starProjection_apply_mem _
+  · change ⟪x - U₁.starProjection (U₂.starProjection x), w⟫_𝕜 = 0
+    rw [inner_sub_left, U₁.inner_starProjection_left_eq_right,
+      U₁.starProjection_eq_self_iff.mpr hw.1, U₂.inner_starProjection_left_eq_right,
+      U₂.starProjection_eq_self_iff.mpr hw.2, sub_self]
+
+/-- **The operator step of Lemma `l:t` (tensoring).** If `U₁` is `δ₁`-close and `U₂` is
+`δ₂`-close to `T`, and the projections onto `U₁` and `U₂` commute, then `U₁ ⊓ U₂` is
+`(δ₁ + δ₂)`-close to `T`. For viable sets `S₁`, `S₂` on disjoint subsystems,
+`U_k = S_k ⊗ H_{rest}` have commuting projections and
+`U₁ ⊓ U₂ = (S₁ ⊗ S₂) ⊗ H_{rest}`, so `S₁ ⊗ S₂` is `(δ₁ + δ₂)`-viable. Arad, Landau, Vazirani
+and Vidick, arXiv:1602.08828v2, proof of Lemma `l:t` (lines 506–523); the tensor-product
+statement itself is not formalized here. -/
+theorem IsCloseTo.inf_of_commute {δ₁ δ₂ : ℝ} {U₁ U₂ T : Submodule 𝕜 E}
+    (h₁ : IsCloseTo δ₁ U₁ T) (h₂ : IsCloseTo δ₂ U₂ T)
+    (hc : Commute U₁.starProjection U₂.starProjection) :
+    IsCloseTo (δ₁ + δ₂) (U₁ ⊓ U₂) T := by
+  rw [isCloseTo_iff] at h₁ h₂ ⊢
+  intro t ht
+  rw [starProjection_inf_of_commute hc]
+  set P₁ := U₁.starProjection
+  set P₂ := U₂.starProjection
+  -- `P₁ t = P₁ P₂ t + P₁ (t - P₂ t)`, an orthogonal sum
+  have hsplit : P₁ t = P₁ (P₂ t) + P₁ (t - P₂ t) := by rw [← map_add, add_sub_cancel]
+  have horth : ⟪P₁ (P₂ t), P₁ (t - P₂ t)⟫_𝕜 = 0 := by
+    have hcomm : P₁ (P₂ t) = P₂ (P₁ t) := congrArg (fun A : E →L[𝕜] E => A t) hc.eq
+    rw [← U₁.inner_starProjection_left_eq_right,
+      U₁.starProjection_eq_self_iff.mpr (U₁.starProjection_apply_mem _), hcomm,
+      U₂.inner_starProjection_left_eq_right, map_sub,
+      U₂.starProjection_eq_self_iff.mpr (U₂.starProjection_apply_mem _), sub_self, inner_zero_right]
+  have hpy : ‖P₁ t‖ ^ 2 = ‖P₁ (P₂ t)‖ ^ 2 + ‖P₁ (t - P₂ t)‖ ^ 2 := by
+    rw [hsplit, sq, sq, sq]
+    exact norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ horth
+  have hc₁ : ‖P₁ (t - P₂ t)‖ ≤ ‖t - P₂ t‖ := U₁.norm_starProjection_apply_le _
+  have hc₂ : ‖t - P₂ t‖ ^ 2 = ‖t‖ ^ 2 - ‖P₂ t‖ ^ 2 := by
+    have := norm_sq_eq_add_norm_sq_starProjection t U₂
+    rw [starProjection_orthogonal_val] at this
+    linarith
+  have e1 := h₁ t ht
+  have e2 := h₂ t ht
+  have : ‖P₁ (t - P₂ t)‖ ^ 2 ≤ ‖t - P₂ t‖ ^ 2 := by gcongr
+  change _ ≤ ‖P₁ (P₂ t)‖ ^ 2
+  linarith
 
 end Submodule
