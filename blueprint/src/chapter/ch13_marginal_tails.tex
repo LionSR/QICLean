@@ -369,6 +369,25 @@ depend on the common values there.
     lift of $R$ from $D^{\mathrm c}$.
 \end{proof}
 
+\begin{theorem}[Operators in cut coordinates]
+    \label{thm:cut_coordinate_operators}
+    \lean{Entropy.commute_reindex_one_kronecker_of_isSupportedOn,
+        Entropy.toEuclideanCLM_reindex_cutEquiv_symm}
+    \leanok
+    \uses{lem:local_lift}
+    Let $D\subseteq B$ be regions and let $X$ be supported on $D$. Then $X$
+    commutes with every operator whose cut coordinates for $B\mid B^{\mathrm c}$
+    are $1\otimes K$. Moreover, for every operator $M$ on the cut coordinates
+    and every vector $\Omega$, the operator with cut coordinates $M$ acts on
+    $\Omega$ as $M$ acts on the cut vector of $\Omega$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:local_lift}
+    In the cut coordinates of $B$, an operator supported on $D\subseteq B$ is
+    $X_B\otimes1$, and $X_B\otimes1$ commutes with $1\otimes K$. The second
+    statement is the definition of the cut vector.
+\end{proof}
+
 \begin{theorem}[Regional states under bijections of tensor factors]
     \label{thm:region_state_relabel}
     \lean{Entropy.siteConfigurationEquiv, Entropy.regionConfigurationEquiv,
