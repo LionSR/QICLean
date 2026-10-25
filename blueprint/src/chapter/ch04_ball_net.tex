@@ -1,0 +1,41 @@
+\section{Nets of the unit ball by volume}
+
+Let $E$ be a real normed space of dimension $n$.
+
+\begin{theorem}[Volume bound on separated sets]
+    \label{thm:ball_separated_card}
+    \lean{Metric.card_le_of_le_dist_of_subset_closedBall}
+    \leanok
+    A finite subset of the closed unit ball of $E$ whose distinct points are
+    at distance at least $\varepsilon>0$ has at most $(1+2/\varepsilon)^n$
+    elements.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The open balls of radius $\varepsilon/2$ about the points are disjoint
+    and lie in the ball of radius $1+\varepsilon/2$ about the origin. Haar
+    measure multiplies the volume of a ball by $r^n$ when its radius is
+    multiplied by $r$, so the number of points times $(\varepsilon/2)^n$ is
+    at most $(1+\varepsilon/2)^n$.
+\end{proof}
+
+\begin{theorem}[Volume net]
+    \label{thm:ball_net}
+    \lean{Metric.exists_finset_net_of_subset_closedBall}
+    \leanok
+    \uses{thm:ball_separated_card}
+    Every subset $A$ of the closed unit ball of $E$ contains a finite set $C$
+    of at most $(1+2/\varepsilon)^n$ points such that every point of $A$ lies
+    within distance $\varepsilon$ of a point of $C$. This is the volume
+    argument used in the proof of Lemma~l:rs
+    of~\cite[lines 541--546]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    By the previous theorem, the subsets of $A$ whose distinct points are at
+    distance more than $\varepsilon$ have bounded size, so one of them, $C$,
+    has maximal size. A point of $A$ at distance more than $\varepsilon$
+    from every point of $C$ could be added to $C$, so there is none.
+\end{proof}
