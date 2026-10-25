@@ -11,7 +11,8 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let decls := #[``Matrix.partialTraceFirst, ``Matrix.conjTranspose_mulVec_gluing, ``Matrix.partialTraceRight_gluing,
+  let decls := #[``Matrix.partialTraceFirst, ``Matrix.conjTranspose_mulVec_gluing,
+    ``Matrix.partialTraceRight_gluing,
     ``Matrix.partialTraceFirst_gluing, ``Matrix.rectangularTraceNorm_partialTraceFirst_gluing_sub,
     ``Matrix.norm_trace_mul_le_l2_opNorm_mul_rectangularTraceNorm, ``Matrix.re_trace_gluing_le]
   for decl in decls do
