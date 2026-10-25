@@ -35,23 +35,31 @@ $\delta'$-viable for $T$ with
 
 \section{A counterexample at the boundary}
 
-The definition places no condition on an eigenvalue of $H$ equal to
-$\eta_0$, but such an eigenvector lies in $T$.
-Take $\mathcal H_L=\mathcal H_R=\mathbb C$, $\mathcal H_M=\mathbb C^2$,
-$H=\operatorname{diag}(\eta_0,\eta_1+1)$, $D=1$ and $K=A_1=0$, with
-$\Delta=1/4$. Every condition of the definition holds, since neither
-eigenvalue of $H$ is smaller than $\eta_0$ and $0<\sqrt\Delta$. The space
-$S=\mathbb C^2$ is $0$-viable for $T=\operatorname{span}\{e_0\}$, but
-$V=\{0\}$ is not $\delta'$-viable for $T$ for any $\delta'<1$, whereas
-(\ref{eq:alvv_er_delta}) gives $\delta'=1/4$. The same issue arises at
+The definition is stated with strict inequalities, while the target
+$T=H_{[\varepsilon_0,\eta_0]}$ is closed: an eigenvalue of $H$ equal to
+$\eta_0$ belongs to $T$ but is not covered by the condition on eigenvalues
+smaller than $\eta_0$. The printed lemma then fails, even for a positive
+definite $K$. Take $\mathcal H_L=\mathcal H_R=\mathbb C$,
+$\mathcal H_M=\mathbb C^2$, $D=1$, $\Delta=1/4$ and
+\begin{align}
+    H&=\operatorname{diag}(\eta_0,\eta_1+1),&
+    K=A_1&=\operatorname{diag}(1/10,2/5).\notag
+\end{align}
+Every condition of the definition holds: no eigenvalue of $H$ is smaller
+than $\eta_0$, and $2/5<\sqrt\Delta$. Here $T=\operatorname{span}\{e_0\}$.
+The line $S=\operatorname{span}\{e_0+e_1/2\}$ is $1/5$-viable for $T$, since
+the squared overlap of its unit vector with $e_0$ is $4/5$, so
+(\ref{eq:alvv_er_delta}) promises $\delta'=25/64$. But
+$V=\operatorname{span}\{e_0/10+e_1/5\}$ has squared overlap $1/5<39/64$
+with $e_0$, so it is not $25/64$-viable for $T$. The same mismatch arises at
 $\eta_1$: an eigenvector with eigenvalue exactly $\eta_1$ lies outside $T$
 and carries no bound on its $K$-eigenvalue.
 
 Definition \texttt{d:vs}, line 434, restricts viability to
 $0\le\delta\le1$. At $\delta=1$ the parameter (\ref{eq:alvv_er_delta}) is
-undefined, and the proof uses $\delta<1$ through Lemma \texttt{l:2}; this is
-a degenerate reading rather than an error, and the formal statement assumes
-$\delta<1$.
+undefined, and the proof uses $\delta<1$ through Lemma \texttt{l:2}. The
+formal statement takes $\delta<1$ as a convention; this is a degenerate
+reading, not an error of the source.
 
 \section{The corrected statement}
 
