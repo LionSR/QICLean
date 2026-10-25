@@ -38,6 +38,7 @@ coefficients and `v` the normalized sum of the `D` removed Schmidt terms: the ov
 
 * `Matrix.leftMarginal`: the left marginal `C Cᴴ` of a bipartite vector.
 * `Matrix.leftApply`: the vector `(P ⊗ 1) ψ`, with coefficient matrix `P C`.
+* `Matrix.rightApply`: the vector `(1 ⊗ Q) ψ`, with coefficient matrix `C Qᵀ`.
 * `Matrix.IsTrimmingProjection`: an orthogonal projection of rank at most `D` that
   captures the Ky Fan `D`-norm of the left marginal.
 
@@ -49,6 +50,15 @@ coefficients and `v` the normalized sum of the `D` removed Schmidt terms: the ov
   squared norm equal to the Ky Fan `D`-norm of the left marginal.
 * `Matrix.IsTrimmingProjection.hasSchmidtRankLE_leftApply`: the trimmed vector has
   Schmidt rank at most `D`.
+* `Matrix.IsTrimmingProjection.norm_leftApply_le`: the trimmed vector is no longer than
+  the original.
+* `Matrix.IsHermitian.commute_of_forall_trace_mul_re_le` and
+  `Matrix.IsTrimmingProjection.commute_leftMarginal`: a projection maximizing its trace
+  against a Hermitian matrix among projections of the same trace commutes with it; in
+  particular a trimming projection commutes with the left marginal.
+* `Matrix.IsTrimmingProjection.exists_mul_eq_mul_transpose` and
+  `Matrix.IsTrimmingProjection.exists_leftApply_eq_rightApply`: the trimmed vector is also
+  `(1 ⊗ Q) ψ` for an orthogonal projection `Q` of rank at most `D` on the second factor.
 * `Matrix.IsTrimmingProjection.norm_inner_le_re_inner_normalized`: the Eckart–Young
   theorem, Lemma `lem:eckart` of the source.
 * `Matrix.IsTrimmingProjection.norm_inner_sub_leftApply_le` and
@@ -59,7 +69,8 @@ coefficients and `v` the normalized sum of the `D` removed Schmidt terms: the ov
 
 * Z. Landau, U. Vazirani, T. Vidick, *A polynomial-time algorithm for the ground state of
   1D gapped local Hamiltonians*, arXiv:1307.5143v1, algo53.tex: trimming, lines 330–333;
-  Lemma `lem:eckart`, lines 335–339; Lemma `l:trim1`, lines 531–542.
+  Lemma `lem:eckart`, lines 335–339; Lemma `l:trim1`, lines 531–542; trimming as a
+  projection on the second factor, lines 544–553.
 -/
 
 open scoped Matrix ComplexOrder
@@ -158,6 +169,165 @@ theorem trace_mul_re_le_kyFanNorm_of_isHermitian_idem (hA : A.PosSemidef)
 
 end PosSemidef
 
+/-! ### Projections maximizing a trace commute with the matrix -/
+
+namespace IsHermitian
+
+variable {n : Type*} [Fintype n] {ρ P : Matrix n n ℂ}
+
+/-- **A trace-maximizing projection commutes with the matrix.**  Let `ρ` be Hermitian and
+`P` an orthogonal projection such that no orthogonal projection `R` of the same trace
+has a larger real trace `tr(R ρ)`.  Then `P` commutes with `ρ`.
+
+If `P ρ (1 - P)` were nonzero, it would map some vector to a nonzero `y`; with
+`z = (1 - P) v` and `y = P ρ z` one has `⟨y, ρ z⟩ = ‖y‖²`.  Replacing the line through
+`y` in the range of `P` by the line through `y + t z` gives a projection of the same
+trace, whose trace against `ρ` exceeds that of `P` by a positive multiple of
+`2 t ‖y‖⁴ + O(t²)`, which is positive for small `t > 0`. -/
+theorem commute_of_forall_trace_mul_re_le (hρ : ρ.IsHermitian) (hPh : P.IsHermitian)
+    (hPi : P * P = P)
+    (hmax : ∀ R : Matrix n n ℂ, R.IsHermitian → R * R = R → R.trace = P.trace →
+      (R * ρ).trace.re ≤ (P * ρ).trace.re) :
+    Commute P ρ := by
+  classical
+  have hPQ : P * (1 - P) = 0 := by rw [mul_sub, mul_one, hPi, sub_self]
+  have hX : P * ρ * (1 - P) = 0 := by
+    by_contra hX
+    obtain ⟨v, hv⟩ : ∃ v, (P * ρ * (1 - P)) *ᵥ v ≠ 0 := by
+      by_contra h
+      simp only [ne_eq, not_exists, not_not] at h
+      exact hX (ext_of_mulVec_single fun i => by rw [h, zero_mulVec])
+    set z := (1 - P) *ᵥ v with hz
+    set y := P *ᵥ (ρ *ᵥ z) with hy
+    have hy0 : y ≠ 0 := by rwa [hy, hz, mulVec_mulVec, mulVec_mulVec]
+    -- Bookkeeping for `y ∈ range P` and `z ∈ ker P`.
+    have hPy : P *ᵥ y = y := by rw [hy, mulVec_mulVec, hPi]
+    have hPz : P *ᵥ z = 0 := by rw [hz, mulVec_mulVec, hPQ, zero_mulVec]
+    have hyP : star y ᵥ* P = star y := by rw [← hPh.eq, ← star_mulVec, hPy]
+    have hzP : star z ᵥ* P = 0 := by rw [← hPh.eq, ← star_mulVec, hPz, star_zero]
+    have hyz : star y ⬝ᵥ z = 0 := by rw [← hyP, ← dotProduct_mulVec, hPz, dotProduct_zero]
+    have hzy : star z ⬝ᵥ y = 0 := by rw [← hPy, dotProduct_mulVec, hzP, zero_dotProduct]
+    have hyρz : star y ⬝ᵥ ρ *ᵥ z = star y ⬝ᵥ y := by
+      conv_lhs => rw [← hyP, ← dotProduct_mulVec]
+    -- The scalars of the computation are real.
+    have hreal : ∀ x : ℂ, x.im = 0 → x = (x.re : ℂ) := fun x hx => Complex.ext (by simp)
+      (by simp [hx])
+    set a := (star y ⬝ᵥ y).re with ha_def
+    set b := (star z ⬝ᵥ z).re with hb_def
+    set c := (star y ⬝ᵥ ρ *ᵥ y).re with hc_def
+    set e := (star z ⬝ᵥ ρ *ᵥ z).re with he_def
+    have ha : star y ⬝ᵥ y = a :=
+      hreal _ (Complex.nonneg_iff.mp (dotProduct_star_self_nonneg y)).2.symm
+    have hb : star z ⬝ᵥ z = b :=
+      hreal _ (Complex.nonneg_iff.mp (dotProduct_star_self_nonneg z)).2.symm
+    have hc : star y ⬝ᵥ ρ *ᵥ y = c := hreal _ (hρ.im_star_dotProduct_mulVec_self y)
+    have he : star z ⬝ᵥ ρ *ᵥ z = e := hreal _ (hρ.im_star_dotProduct_mulVec_self z)
+    have hzρy : star z ⬝ᵥ ρ *ᵥ y = a := by
+      rw [← hρ.star_dotProduct_mulVec_comm y z, hyρz, ha, Complex.star_def, Complex.conj_ofReal]
+    have ha0 : 0 < a := by
+      have h := (dotProduct_star_self_pos_iff (v := y)).mpr hy0
+      rw [ha] at h
+      exact_mod_cast h
+    have hb0 : 0 ≤ b := by
+      have h := dotProduct_star_self_nonneg z
+      rw [hb] at h
+      exact_mod_cast h
+    -- The rotation parameter.
+    set t : ℝ := a ^ 2 / (|a * e - c * b| + 1) with ht
+    have ht0 : 0 < t := by positivity
+    set w := y + (t : ℂ) • z with hw
+    set s : ℝ := a + t ^ 2 * b with hs
+    have hs0 : 0 < s := by positivity
+    have hstarw : star w = star y + (t : ℂ) • star z := by
+      rw [hw, star_add, star_smul, Complex.star_def, Complex.conj_ofReal]
+    have hPw : P *ᵥ w = y := by rw [hw, mulVec_add, mulVec_smul, hPy, hPz, smul_zero, add_zero]
+    have hwP : star w ᵥ* P = star y := by
+      rw [hstarw, add_vecMul, smul_vecMul, hyP, hzP, smul_zero, add_zero]
+    have hyw : star y ⬝ᵥ w = a := by
+      rw [hw, dotProduct_add, dotProduct_smul, hyz, smul_zero, add_zero, ha]
+    have hwy : star w ⬝ᵥ y = a := by
+      rw [hstarw, add_dotProduct, smul_dotProduct, hzy, smul_zero, add_zero, ha]
+    have hww : star w ⬝ᵥ w = s := by
+      rw [hstarw, hw]
+      simp only [add_dotProduct, dotProduct_add, smul_dotProduct, dotProduct_smul, hyz, hzy, ha,
+        hb, smul_eq_mul, hs]
+      push_cast
+      ring
+    have hwρw : star w ⬝ᵥ ρ *ᵥ w = c + 2 * t * a + t ^ 2 * e := by
+      rw [hstarw, hw]
+      simp only [mulVec_add, mulVec_smul, add_dotProduct, dotProduct_add, smul_dotProduct,
+        dotProduct_smul, hc, hyρz, ha, hzρy, he, smul_eq_mul]
+      ring
+    -- The rotated projection.
+    set R : Matrix n n ℂ := P - (a : ℂ)⁻¹ • vecMulVec y (star y) +
+      (s : ℂ)⁻¹ • vecMulVec w (star w) with hR
+    have hRh : R.IsHermitian := by
+      rw [IsHermitian, hR, conjTranspose_add, conjTranspose_sub, conjTranspose_smul,
+        conjTranspose_smul, conjTranspose_vecMulVec, conjTranspose_vecMulVec, star_star,
+        star_star, hPh.eq]
+      simp only [star_inv₀, Complex.star_def, Complex.conj_ofReal]
+    have ha' : (a : ℂ) ≠ 0 := by exact_mod_cast ha0.ne'
+    have hs' : (s : ℂ) ≠ 0 := by exact_mod_cast hs0.ne'
+    have hRi : R * R = R := by
+      rw [hR]
+      simp only [Matrix.add_mul, Matrix.mul_add, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul,
+        Matrix.mul_smul]
+      simp only [vecMulVec_mul_vecMulVec, hyw, hwy, ha, hww, vecMulVec_smul]
+      simp only [hPi, mul_vecMulVec, vecMulVec_mul, hPy, hPw, hyP, hwP]
+      match_scalars <;> field_simp <;> ring
+    have hRt : R.trace = P.trace := by
+      rw [hR, trace_add, trace_sub, trace_smul, trace_smul, trace_vecMulVec, trace_vecMulVec,
+        dotProduct_comm y, dotProduct_comm w, ha, hww, smul_eq_mul, smul_eq_mul,
+        inv_mul_cancel₀ ha', inv_mul_cancel₀ hs', sub_add_cancel]
+    have hRρ : (R * ρ).trace = (P * ρ).trace - (a : ℂ)⁻¹ * c +
+        (s : ℂ)⁻¹ * (c + 2 * t * a + t ^ 2 * e) := by
+      rw [hR, Matrix.add_mul, Matrix.sub_mul, Matrix.smul_mul, Matrix.smul_mul, vecMulVec_mul,
+        vecMulVec_mul, trace_add, trace_sub, trace_smul, trace_smul, trace_vecMulVec,
+        trace_vecMulVec, dotProduct_comm y, dotProduct_comm w, ← dotProduct_mulVec,
+        ← dotProduct_mulVec, hc, hwρw, smul_eq_mul, smul_eq_mul]
+    have hle := hmax R hRh hRi hRt
+    rw [hRρ] at hle
+    have hle' : -c / a + (c + 2 * t * a + t ^ 2 * e) / s ≤ 0 := by
+      have h : ((P * ρ).trace - (a : ℂ)⁻¹ * c + (s : ℂ)⁻¹ * (c + 2 * t * a + t ^ 2 * e)).re =
+          (P * ρ).trace.re + (-c / a + (c + 2 * t * a + t ^ 2 * e) / s) := by
+        rw [show (P * ρ).trace - (a : ℂ)⁻¹ * c + (s : ℂ)⁻¹ * (c + 2 * t * a + t ^ 2 * e) =
+          (P * ρ).trace + ((-c / a + (c + 2 * t * a + t ^ 2 * e) / s : ℝ) : ℂ) by
+            push_cast; ring]
+        rw [Complex.add_re, Complex.ofReal_re]
+      rw [h] at hle
+      linarith
+    -- Clearing denominators: `2 t a² + t² (a e - c b) ≤ 0`.
+    have hkey : 2 * a ^ 2 + t * (a * e - c * b) ≤ 0 := by
+      have hexp : -c / a + (c + 2 * t * a + t ^ 2 * e) / s =
+          t * (2 * a ^ 2 + t * (a * e - c * b)) / (a * s) := by
+        rw [hs]
+        field_simp
+        ring
+      rw [hexp, div_nonpos_iff] at hle'
+      rcases hle' with ⟨_, h⟩ | ⟨h, _⟩
+      · nlinarith [mul_pos ha0 hs0]
+      · by_contra hneg
+        rw [not_le] at hneg
+        nlinarith [mul_pos ht0 hneg]
+    have hsmall : t * |a * e - c * b| < a ^ 2 := by
+      rw [ht, div_mul_eq_mul_div, div_lt_iff₀ (by positivity)]
+      nlinarith [abs_nonneg (a * e - c * b), sq_pos_of_pos ha0]
+    have hlow : -(t * |a * e - c * b|) ≤ t * (a * e - c * b) := by
+      rw [← mul_neg]
+      exact mul_le_mul_of_nonneg_left (neg_abs_le _) ht0.le
+    nlinarith [sq_pos_of_pos ha0]
+  -- From `P ρ (1 - P) = 0`: `P ρ = P ρ P`, which is Hermitian, so `ρ P = P ρ`.
+  have hPρ : P * ρ = P * ρ * P := by
+    rw [mul_sub, mul_one, sub_eq_zero] at hX
+    exact hX
+  have hρP : ρ * P = P * ρ * P := by
+    have h : (P * ρ)ᴴ = (P * ρ * P)ᴴ := by rw [← hPρ]
+    rwa [conjTranspose_mul, conjTranspose_mul, conjTranspose_mul, hPh.eq, hρ.eq,
+      ← Matrix.mul_assoc] at h
+  exact hPρ.trans hρP.symm
+
+end IsHermitian
+
 /-! ### Trimming projections -/
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m]
@@ -185,6 +355,29 @@ theorem schmidtCoeffMatrix_ofLp_leftApply (P : Matrix m m ℂ)
     (ψ : EuclideanSpace ℂ (m × n)) :
     schmidtCoeffMatrix (WithLp.ofLp (leftApply P ψ)) =
       P * schmidtCoeffMatrix (WithLp.ofLp ψ) :=
+  rfl
+
+omit [DecidableEq m] in
+/-- The squared norm of a bipartite vector is the real trace of its left marginal. -/
+theorem sq_norm_eq_trace_leftMarginal_re (ψ : EuclideanSpace ℂ (m × n)) :
+    ‖ψ‖ ^ 2 = (leftMarginal ψ).trace.re := by
+  have hCψ : toEuclid (schmidtCoeffMatrix (WithLp.ofLp ψ)) = ψ := rfl
+  have h := normSq_toEuclid (schmidtCoeffMatrix (WithLp.ofLp ψ))
+  rw [hCψ, trace_mul_comm] at h
+  exact h
+
+/-- The vector `(1 ⊗ Q) ψ`: the operator `Q` acts on the second factor, so the
+coefficient matrix becomes `C Qᵀ`, since `((1 ⊗ Q) ψ)(i, k) = ∑ⱼ Q k j C i j`. -/
+noncomputable def rightApply (Q : Matrix n n ℂ) (ψ : EuclideanSpace ℂ (m × n)) :
+    EuclideanSpace ℂ (m × n) :=
+  toEuclid (schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ)
+
+omit [Fintype m] [DecidableEq m] in
+@[simp]
+theorem schmidtCoeffMatrix_ofLp_rightApply (Q : Matrix n n ℂ)
+    (ψ : EuclideanSpace ℂ (m × n)) :
+    schmidtCoeffMatrix (WithLp.ofLp (rightApply Q ψ)) =
+      schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ :=
   rfl
 
 omit [DecidableEq m] in
@@ -380,6 +573,82 @@ private theorem norm_inner_sub_leftApply_sq_le {u : EuclideanSpace ℂ (m × n)}
         mul_le_mul hTbound hYnorm (sq_nonneg _)
           (mul_nonneg (Nat.cast_nonneg _) (hρ.descEigenvalue_nonneg k))
 
+/-- The trimmed vector is no longer than `ψ`: its squared norm, the sum of the `D` largest
+squared Schmidt coefficients, is at most their total sum `‖ψ‖²`. -/
+theorem norm_leftApply_le (hP : IsTrimmingProjection ψ D P) : ‖leftApply P ψ‖ ≤ ‖ψ‖ := by
+  refine (pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp ?_
+  rw [hP.norm_leftApply_sq, sq_norm_eq_trace_leftMarginal_re]
+  exact (posSemidef_leftMarginal ψ).kyFanNorm_le_trace_re D
+
+/-- **A trimming projection commutes with the left marginal.**  Equality in Ky Fan's
+maximum principle forces `P ρ = ρ P`: a projection of the same trace never captures more
+of `ρ`, so `P` is a trace-maximizing projection and
+`Matrix.IsHermitian.commute_of_forall_trace_mul_re_le` applies. -/
+theorem commute_leftMarginal (hP : IsTrimmingProjection ψ D P) :
+    Commute P (leftMarginal ψ) := by
+  set hρ := posSemidef_leftMarginal ψ
+  refine hρ.isHermitian.commute_of_forall_trace_mul_re_le hP.isHermitian hP.mul_self
+    fun R hRh hRi hRt => ?_
+  have hRrank : R.rank ≤ D := by
+    have h : (R.rank : ℝ) = P.rank := by
+      rw [hRh.rank_eq_trace_re_of_idem hRi, hP.isHermitian.rank_eq_trace_re_of_idem hP.mul_self,
+        hRt]
+    exact (Nat.cast_injective h).le.trans hP.rank_le
+  rw [hP.trace_mul_leftMarginal]
+  exact hρ.trace_mul_re_le_kyFanNorm_of_isHermitian_idem hRh hRi hRrank
+
+/-- **The trimmed vector as a projection on the second factor**, coefficient form
+(arXiv:1307.5143v1, algo53.tex, lines 544–553).  For a trimming projection `P` of `ψ` with
+coefficient matrix `C`, there is an orthogonal projection `Q` on the second factor, of rank
+at most that of `P`, with `P C = C Qᵀ`; that is, `(P ⊗ 1) ψ = (1 ⊗ Q) ψ`.  The projection
+`Qᵀ` is the support projection of `Cᴴ P C`: it fixes the rows of `P C`, and it kills the
+rows of `(1 - P) C` because `(1 - P) C Cᴴ P = (1 - P) P C Cᴴ = 0` by
+`Matrix.IsTrimmingProjection.commute_leftMarginal`. -/
+theorem exists_mul_eq_mul_transpose (hP : IsTrimmingProjection ψ D P) :
+    ∃ Q : Matrix n n ℂ, Q.IsHermitian ∧ Q * Q = Q ∧ Q.rank ≤ P.rank ∧
+      P * schmidtCoeffMatrix (WithLp.ofLp ψ) = schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ := by
+  classical
+  set C := schmidtCoeffMatrix (WithLp.ofLp ψ) with hC
+  set B : Matrix n m ℂ := (P * C)ᴴ with hB
+  set hBB := isHermitian_mul_conjTranspose_self B
+  set Q₀ := hBB.supportProj with hQ₀
+  have hQh : Q₀.IsHermitian := hBB.supportProj_isHermitian
+  have hQi : Q₀ * Q₀ = Q₀ := hBB.supportProj_idem
+  have hQB : Q₀ * B = B := supportProj_mul_conjTranspose_mul_self B
+  have hPCQ : P * C * Q₀ = P * C := by
+    have h : (Q₀ * B)ᴴ = Bᴴ := by rw [hQB]
+    rwa [conjTranspose_mul, hQh.eq, hB, conjTranspose_conjTranspose] at h
+  have hcomm : P * (C * Cᴴ) = C * Cᴴ * P := hP.commute_leftMarginal.eq
+  obtain ⟨W, hW⟩ := hBB.exists_supportProj_eq_mul
+  have hQPC : (1 - P) * C * Q₀ = 0 := by
+    have h : (1 - P) * C * Q₀ = (1 - P) * (C * Cᴴ * P) * (P * C * W) := by
+      rw [hQ₀, hW, hB]
+      simp only [conjTranspose_mul, conjTranspose_conjTranspose, hP.isHermitian.eq,
+        Matrix.mul_assoc]
+    rw [h, ← hcomm, ← Matrix.mul_assoc (1 - P) P, Matrix.sub_mul, Matrix.one_mul, hP.mul_self,
+      sub_self, Matrix.zero_mul, Matrix.zero_mul]
+  have hCQ : C * Q₀ = P * C := by
+    have h : C * Q₀ = P * C * Q₀ + (1 - P) * C * Q₀ := by
+      rw [← Matrix.add_mul, ← Matrix.add_mul, add_sub_cancel, Matrix.one_mul]
+    rw [h, hPCQ, hQPC, add_zero]
+  refine ⟨Q₀ᵀ, hQh.transpose, by rw [← transpose_mul, hQi], ?_, by rw [transpose_transpose, hCQ]⟩
+  have h : (Q₀.rank : ℝ) = (P * C).rank := by
+    rw [hQh.rank_eq_trace_re_of_idem hQi, hQ₀, hBB.supportProj_trace,
+      rank_self_mul_conjTranspose, hB, rank_conjTranspose, Complex.natCast_re]
+  rw [rank_transpose, Nat.cast_injective h]
+  exact rank_mul_le_left _ _
+
+/-- **The trimmed vector as a projection on the second factor** (arXiv:1307.5143v1,
+algo53.tex, lines 544–553).  For a trimming projection `P` of `ψ` at `D`, there is an
+orthogonal projection `Q` of rank at most `D` on the second factor with
+`(P ⊗ 1) ψ = (1 ⊗ Q) ψ`.  This is the form `trim_D(ψ) = (Id ⊗ Σ_{k ≤ D} |β_k⟩⟨β_k|) ψ` used
+in the proof of Lemma `l:trim2` of the source. -/
+theorem exists_leftApply_eq_rightApply (hP : IsTrimmingProjection ψ D P) :
+    ∃ Q : Matrix n n ℂ, Q.IsHermitian ∧ Q * Q = Q ∧ Q.rank ≤ D ∧
+      leftApply P ψ = rightApply Q ψ := by
+  obtain ⟨Q, hQh, hQi, hQr, hPQ⟩ := hP.exists_mul_eq_mul_transpose
+  exact ⟨Q, hQh, hQi, hQr.trans hP.rank_le, by rw [leftApply, rightApply, hPQ]⟩
+
 /-- **Trimming error against a vector of bounded Schmidt rank** (corrected form of
 arXiv:1307.5143v1, algo53.tex, Lemma `l:trim1`, lines 531–542).  If `P` is a trimming
 projection of `u` at `k` and `v` has Schmidt rank at most `D`, then the discarded part
@@ -393,12 +662,8 @@ theorem norm_inner_sub_leftApply_le {u : EuclideanSpace ℂ (m × n)} {k : ℕ}
   set lam := hρ.isHermitian.descEigenvalue k
   have hsq := hP.norm_inner_sub_leftApply_sq_le v hv
   have hlam : ((k : ℝ) + 1) * lam ≤ ‖u‖ ^ 2 := by
-    have h := hρ.succ_mul_descEigenvalue_le_trace_re k
-    have hCu : toEuclid (schmidtCoeffMatrix (WithLp.ofLp u)) = u := rfl
-    have hu := normSq_toEuclid (schmidtCoeffMatrix (WithLp.ofLp u))
-    rw [hCu, ← trace_mul_comm] at hu
-    rw [hu]
-    exact h
+    rw [sq_norm_eq_trace_leftMarginal_re]
+    exact hρ.succ_mul_descEigenvalue_le_trace_re k
   have hk : (0 : ℝ) < k + 1 := by positivity
   have hD : (0 : ℝ) ≤ D := Nat.cast_nonneg _
   have hrhs : (‖u‖ * ‖v‖ * √((D : ℝ) / (k + 1))) ^ 2 = ‖u‖ ^ 2 * ‖v‖ ^ 2 * (D / (k + 1)) := by

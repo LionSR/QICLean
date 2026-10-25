@@ -480,6 +480,74 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     $\tr((P+T)\rho)\le\tr\rho$.
 \end{proof}
 
+\begin{theorem}[Trace-maximizing projections commute]
+    \label{thm:trace_maximizing_projection_commutes}
+    \lean{Matrix.IsHermitian.commute_of_forall_trace_mul_re_le}
+    \leanok
+    Let $\rho$ be Hermitian and $P$ an orthogonal projection such that
+    $\tr(R\rho)\le\tr(P\rho)$ for every orthogonal projection $R$ with
+    $\tr R=\tr P$. Then $P\rho=\rho P$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    It suffices that $P\rho(I-P)=0$: then $P\rho=P\rho P$ is Hermitian, so
+    $\rho P=(P\rho)^\dagger=P\rho$. Suppose $P\rho(I-P)v\ne0$, and put
+    $z=(I-P)v$ and $y=P\rho z\ne0$, so that $Py=y$, $Pz=0$ and
+    $\langle y,\rho z\rangle=\|y\|^2$. For real $t$ let $w=y+tz$, and let
+    $R$ be $P$ with the projection onto $y$ replaced by the projection
+    onto $w$. Since $w$ is orthogonal to the range of $P$ minus the line
+    through $y$, $R$ is an orthogonal projection with $\tr R=\tr P$, and
+    \begin{align}
+        \tr(R\rho)-\tr(P\rho) & =
+        \frac{t\bigl(2\|y\|^4+t(\|y\|^2\langle z,\rho z\rangle
+        -\|z\|^2\langle y,\rho y\rangle)\bigr)}
+        {\|y\|^2\,(\|y\|^2+t^2\|z\|^2)}.
+        \label{eq:trace_maximizing_projection_rotation}
+    \end{align}
+    This is positive for small $t>0$, a contradiction.
+\end{proof}
+
+\begin{theorem}[Trimming as a projection on the second factor]
+    \label{thm:trimming_second_factor}
+    \lean{Matrix.IsTrimmingProjection.norm_leftApply_le,
+        Matrix.IsTrimmingProjection.commute_leftMarginal,
+        Matrix.rightApply,
+        Matrix.IsTrimmingProjection.exists_mul_eq_mul_transpose,
+        Matrix.IsTrimmingProjection.exists_leftApply_eq_rightApply}
+    \leanok
+    \uses{def:trimming_projection, thm:ky_fan_upper_bound,
+        thm:trace_maximizing_projection_commutes}
+    Let $P$ be a trimming projection of $\psi$ at $D$, with coefficient
+    matrix $C$ and $\rho=CC^\dagger$. Then
+    $\|\operatorname{trim}_D\psi\|\le\|\psi\|$, the projection $P$ commutes
+    with $\rho$, and there is an orthogonal projection $Q$ on
+    $\mathbb C^n$ of rank at most $\operatorname{rank}P\le D$ with
+    $PC=CQ^{\mathsf T}$, that is
+    \begin{align}
+        \operatorname{trim}_D\psi & =(P\otimes I)\psi=(I\otimes Q)\psi.
+        \label{eq:trimming_second_factor}
+    \end{align}
+    This is the form of the trimmed vector used in the proof of
+    \cite[Lemma~l:trim2]{Landau2013PolynomialTime}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The squared norm of the trimmed vector is $\|\rho\|_{(D)}\le\tr\rho
+        =\|\psi\|^2$. Every orthogonal projection $R$ with $\tr R=\tr P$ has
+    rank $\operatorname{rank}P\le D$, so
+    $\tr(R\rho)\le\|\rho\|_{(D)}=\tr(P\rho)$ by
+    Theorem~\ref{thm:ky_fan_upper_bound}, and $P$ commutes with $\rho$ by
+    Theorem~\ref{thm:trace_maximizing_projection_commutes}. Let
+    $Q^{\mathsf T}$ be the support projection of $C^\dagger PC$, whose rank
+    is $\operatorname{rank}(PC)\le\operatorname{rank}P$. It fixes the rows
+    of $PC$, so $PCQ^{\mathsf T}=PC$. Its range lies in the range of
+    $C^\dagger P$, and $(I-P)CC^\dagger P=(I-P)P\rho=0$, so
+    $(I-P)CQ^{\mathsf T}=0$. Adding the two identities gives
+    $CQ^{\mathsf T}=PC$.
+\end{proof}
+
 \begin{definition}[Reduced density of an eigenvector]
     \label{def:reduced_eig_density}
     \lean{Matrix.IsHermitian.reducedEigDensity}

@@ -27,6 +27,36 @@ depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Matrix.IsTrimmingProjection.norm_inner_sub_le_norm_inner_leftApply
 
+/-- info:
+'Matrix.IsHermitian.commute_of_forall_trace_mul_re_le'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.IsHermitian.commute_of_forall_trace_mul_re_le
+
+/-- info:
+'Matrix.IsTrimmingProjection.norm_leftApply_le'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.IsTrimmingProjection.norm_leftApply_le
+
+/-- info:
+'Matrix.IsTrimmingProjection.commute_leftMarginal'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.IsTrimmingProjection.commute_leftMarginal
+
+/-- info:
+'Matrix.IsTrimmingProjection.exists_mul_eq_mul_transpose'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.IsTrimmingProjection.exists_mul_eq_mul_transpose
+
+/-- info:
+'Matrix.IsTrimmingProjection.exists_leftApply_eq_rightApply'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.IsTrimmingProjection.exists_leftApply_eq_rightApply
+
 section
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m]
