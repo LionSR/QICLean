@@ -49,13 +49,6 @@ lines 433–440). -/
 def IsCloseTo (δ : ℝ) (T T' : Submodule 𝕜 E) : Prop :=
   ((1 - δ : ℝ) : 𝕜) • T'.starProjection ≤ T'.starProjection * T.starProjection * T'.starProjection
 
-/-- The real part of `⟪P x, x⟫` is `‖P x‖²` for an orthogonal projection `P`. -/
-theorem re_inner_starProjection_self (K : Submodule 𝕜 E) (x : E) :
-    RCLike.re ⟪K.starProjection x, x⟫_𝕜 = ‖K.starProjection x‖ ^ 2 := by
-  have hP : K.starProjection (K.starProjection x) = K.starProjection x :=
-    K.starProjection_eq_self_iff.mpr (K.starProjection_apply_mem x)
-  rw [← hP, K.inner_starProjection_left_eq_right, hP, inner_self_eq_norm_sq]
-
 /-- **Closeness as a statement about vectors.** `T` is `δ`-close to `T'` exactly when every
 `t ∈ T'` satisfies `(1 - δ) ‖t‖² ≤ ‖P_T t‖²`. Arad, Landau, Vazirani and Vidick,
 arXiv:1602.08828v2, the reformulation at the start of the proof of Lemma `l:close` (line 488). -/
@@ -69,10 +62,12 @@ theorem isCloseTo_iff {δ : ℝ} {T T' : Submodule 𝕜 E} :
           (1 - δ) * ‖T'.starProjection x‖ ^ 2 := by
     have e1 : RCLike.re ⟪T'.starProjection (T.starProjection (T'.starProjection x)), x⟫_𝕜 =
         ‖T.starProjection (T'.starProjection x)‖ ^ 2 := by
-      rw [T'.inner_starProjection_left_eq_right, re_inner_starProjection_self]
+      rw [T'.inner_starProjection_left_eq_right, T.re_inner_starProjection_eq_normSq,
+        ← Submodule.norm_coe, ← T.starProjection_apply]
     have e2 : RCLike.re ⟪((1 - δ : ℝ) : 𝕜) • T'.starProjection x, x⟫_𝕜 =
         (1 - δ) * ‖T'.starProjection x‖ ^ 2 := by
-      rw [inner_smul_left, RCLike.conj_ofReal, RCLike.re_ofReal_mul, re_inner_starProjection_self]
+      rw [inner_smul_left, RCLike.conj_ofReal, RCLike.re_ofReal_mul,
+        T'.re_inner_starProjection_eq_normSq, ← Submodule.norm_coe, ← T'.starProjection_apply]
     have e3 : (T'.starProjection * T.starProjection * T'.starProjection -
         ((1 - δ : ℝ) : 𝕜) • T'.starProjection) x =
         T'.starProjection (T.starProjection (T'.starProjection x)) -
@@ -113,7 +108,7 @@ theorem IsCloseTo.exists_mem_starProjection_eq {δ : ℝ} {S T : Submodule 𝕜 
   have hform (r : T) : RCLike.re ⟪(f r : E), (r : E)⟫_𝕜 = ‖S.starProjection r‖ ^ 2 := by
     change RCLike.re ⟪T.starProjection (S.starProjection r), (r : E)⟫_𝕜 = _
     rw [T.inner_starProjection_left_eq_right, T.starProjection_eq_self_iff.mpr r.2,
-      re_inner_starProjection_self]
+      S.re_inner_starProjection_eq_normSq, ← Submodule.norm_coe, ← S.starProjection_apply]
   have hinj : Function.Injective f := by
     rw [← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']
     intro r hr
