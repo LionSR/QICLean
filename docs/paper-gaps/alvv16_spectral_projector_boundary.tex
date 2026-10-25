@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{Boundary eigenvalues in the error reduction by a spectral projector}
+\author{}
+\date{2026-10-25}
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{The printed statement}
+
+Let $\mathcal H=\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$ and let $H$
+be a Hamiltonian on $\mathcal H$ with ground energy $\varepsilon_0$ and no
+eigenvalue in the open interval $(\eta_0,\eta_1)$. Definition
+\texttt{def:spectral-AGSP} of Arad--Landau--Vazirani--Vidick,
+\href{https://arxiv.org/abs/1602.08828}{arXiv:1602.08828v2}, source lines
+570--581, calls a positive semidefinite operator
+$K=\sum_{i=1}^{D^2}L_i\otimes A_i\otimes R_i$ a $(D,\Delta)$-spectral
+projector for $(H,\eta_0,\eta_1)$ if $H$ and $K$ have the same eigenvectors,
+eigenvalues of $H$ smaller than $\eta_0$ correspond to eigenvalues of $K$ at
+least $1$, and eigenvalues of $H$ larger than $\eta_1$ correspond to
+eigenvalues of $K$ smaller than $\sqrt\Delta$. Lemma \texttt{l:er}, lines
+597--622, asserts that if $S\subseteq\mathcal H_M$ is $\delta$-viable for
+$T=H_{[\varepsilon_0,\eta_0]}$, then
+$V=\operatorname{span}\{A_iS\}$ has dimension at most $D^2\dim S$ and is
+$\delta'$-viable for $T$ with
+\begin{align}
+    \delta'&=\frac{\Delta}{(1-\delta)^2}.
+    \label{eq:alvv_er_delta}
+\end{align}
+
+\section{A counterexample at the boundary}
+
+The definition is stated with strict inequalities, while the target
+$T=H_{[\varepsilon_0,\eta_0]}$ is closed: an eigenvalue of $H$ equal to
+$\eta_0$ belongs to $T$ but is not covered by the condition on eigenvalues
+smaller than $\eta_0$. The printed lemma then fails, even for a positive
+definite $K$. Take $\mathcal H_L=\mathcal H_R=\mathbb C$,
+$\mathcal H_M=\mathbb C^2$, $D=1$, $\Delta=1/4$ and
+\begin{align}
+    H&=\operatorname{diag}(\eta_0,\eta_1+1),&
+    K=A_1&=\operatorname{diag}(1/10,2/5).\notag
+\end{align}
+Every condition of the definition holds: no eigenvalue of $H$ is smaller
+than $\eta_0$, and $2/5<\sqrt\Delta$. Here $T=\operatorname{span}\{e_0\}$.
+The line $S=\operatorname{span}\{e_0+e_1/2\}$ is $1/5$-viable for $T$, since
+the squared overlap of its unit vector with $e_0$ is $4/5$, so
+(\ref{eq:alvv_er_delta}) promises $\delta'=25/64$. But
+$V=\operatorname{span}\{e_0/10+e_1/5\}$ has squared overlap $1/5<39/64$
+with $e_0$, so it is not $25/64$-viable for $T$. The same mismatch arises at
+$\eta_1$: an eigenvector with eigenvalue exactly $\eta_1$ lies outside $T$
+and carries no bound on its $K$-eigenvalue.
+
+Definition \texttt{d:vs}, line 434, restricts viability to
+$0\le\delta\le1$. At $\delta=1$ the parameter (\ref{eq:alvv_er_delta}) is
+undefined, and the proof uses $\delta<1$ through Lemma \texttt{l:2}. The
+formal statement takes $\delta<1$ as a convention; this is a degenerate
+reading, not an error of the source.
+
+\section{The corrected statement}
+
+The counterexample disappears when the spectral conditions are closed:
+eigenvalues $h\le\eta_0$ of $H$ correspond to eigenvalues $k\ge1$ of $K$, eigenvalues $h\ge\eta_1$ correspond to
+eigenvalues with $k^2\le\Delta$. With $\delta<1$, the proof of the source
+then goes through. Positivity of $K$ is not used; dropping it matters
+because the unsquared Chebyshev filter that the source later identifies with
+such an operator is not positive semidefinite (see the companion note
+\path{alvv16_chebyshev_filter_positivity.tex}).
+
+The proof displays the bound
+$\alpha'^2/(\alpha'^2+(1-\alpha'^2)\Delta)$ for the overlap of $Ku/\|Ku\|$
+with $v$. Writing $u=\alpha v'+\sqrt{1-\alpha^2}\,v^\perp$, the squared norm
+of $Ku$ is at most $\alpha'^2+(1-\alpha^2)\Delta$, so the denominator should
+carry $1-\alpha^2$. The final bound $1-\Delta/(1-\delta)^2$ is unaffected.
+
+The formal statement uses a common orthonormal eigenbasis $b_j$ of $H$ and
+$K$, with eigenvalues $h_j$ and $k_j$, and takes
+$T=\operatorname{span}\{b_j:h_j\le\eta_0\}$. It separates the operator step:
+if $K$ maps $T$ and $T^\perp$ into themselves, $\|Kt\|\ge\|t\|$ on $T$ and
+$\|Kq\|^2\le\Delta\|q\|^2$ on $T^\perp$, then $K(S\otimes\text{rest})$ is
+$\delta'$-close to $T$. The corrected lemma is
+\leanid{Submodule.IsViable.spectralProjector}, with the definition
+\leanid{Submodule.IsSpectralProjector} and the operator step
+\leanid{Submodule.IsCloseTo.map_of_contract}.
+\end{document}

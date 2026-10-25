@@ -280,6 +280,7 @@ import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.SurprisalProductMoment
+import QICLean.Analysis.TensorProductWeights
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceDistance
@@ -309,6 +310,7 @@ import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceErrorReduction
+import QICLean.Analysis.ViableSubspaceSpectralProjector
 import QICLean.Analysis.ViableSubspaceTensor
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
