@@ -200,10 +200,11 @@ theorem unitaryHaar_norm_sq_starProjection_randomSubspace_le (b : OrthonormalBas
 
 /-- **Lemma `l:rs` (random sampling), with the corrected failure probability.** Let `W ⊆ M` have
 the orthonormal basis `b` indexed by `ι`, with `q = #ι`, let `A ⊆ ι` have `s` elements, and let
-`W ⊆ M` be `δ`-viable for `T ⊆ M ⊗ F` with `δ < 1` and `r = dim T`. Put
+`W ⊆ M` be `δ`-viable for `T ⊆ M ⊗ F` with `r = dim T`. Put
 `δ' = (1 - δ) s / (8 q)` and `ν = √δ'`. For a Haar-random unitary `U`, the random
 `s`-dimensional subspace `W' = randomSubspace b A U` of `W` fails to be `(1 - δ')`-viable for
-`T` with probability at most `η = (1 + 2/ν)^{2r} q e^{-s/16}`.
+`T` with probability at most `η = (1 + 2/ν)^{2r} q e^{-s/16}`. For `δ ≥ 1` the parameter `δ'` is
+at most `0`, every subspace is `(1 - δ')`-viable, and the bound holds trivially.
 
 Arad, Landau, Vazirani and Vidick, arXiv:1602.08828v2, Lemma `l:rs` (lines 532–547), with
 `H_L ⊗ H_R` grouped into `F` (Definition `d:vs` up to the associator and the swap of factors).
@@ -212,7 +213,7 @@ Arad, Landau, Vazirani and Vidick, arXiv:1602.08828v2, Lemma `l:rs` (lines 532�
 `η = (1 + 4 √(q / ((1 - δ) s)))^r q e^{-s/16}`, undercounting the net of the unit sphere of the
 real `2r`-dimensional space `T`; see `docs/paper-gaps/alvv16_random_sampling_net_count.tex`. -/
 theorem unitaryHaar_not_isViable_randomSubspace_le (b : OrthonormalBasis ι ℂ W) (A : Finset ι)
-    {δ : ℝ} (hδ : δ < 1) {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable δ W T) :
+    {δ : ℝ} {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable δ W T) :
     unitaryHaar ι {U | ¬ IsViable (1 - (1 - δ) * A.card / (8 * Fintype.card ι))
         (randomSubspace b A U) T} ≤
       ENNReal.ofReal ((1 + 2 / √((1 - δ) * A.card / (8 * Fintype.card ι))) ^
@@ -220,15 +221,16 @@ theorem unitaryHaar_not_isViable_randomSubspace_le (b : OrthonormalBasis ι ℂ 
   set s : ℝ := (A.card : ℝ)
   set q : ℝ := (Fintype.card ι : ℝ)
   set c : ℝ := (1 - δ) * s / (8 * q) with hc_def
-  have hc0 : 0 ≤ c := by positivity
-  rcases hc0.eq_or_lt with hc | hc
-  · -- `c = 0`: every subspace is `1`-viable
+  rcases le_or_gt c 0 with hc | hc
+  · -- `c ≤ 0`, that is `δ ≥ 1`: every subspace is `(1 - c)`-viable
     have hempty : {U | ¬ IsViable (1 - c) (randomSubspace b A U) T} = ∅ := by
       refine Set.eq_empty_of_forall_notMem fun U hU => hU ?_
-      rw [← hc, sub_zero]
-      exact isCloseTo_iff.mpr fun t _ => by simp
+      refine isCloseTo_iff.mpr fun t _ => ?_
+      rw [sub_sub_cancel]
+      exact (mul_nonpos_of_nonpos_of_nonneg hc (sq_nonneg _)).trans (sq_nonneg _)
     rw [hempty, measure_empty]
     exact bot_le
+  have hc0 : 0 ≤ c := hc.le
   -- the weights of the projection of a vector `v` onto `W ⊗ F`
   have hwmem (v : M ⊗[ℂ] F) :
       (W.tensorProd (⊤ : Submodule ℂ F)).starProjection v ∈ W.tensorProd ⊤ :=
@@ -296,7 +298,7 @@ theorem unitaryHaar_not_isViable_randomSubspace_le (b : OrthonormalBasis ι ℂ 
 `(1 - δ')`-viable for `T`, with `δ' = (1 - δ) s / (8 q)`. This is the form used by the area-law
 arguments of arXiv:1602.08828v2. -/
 theorem exists_isViable_randomSubspace (b : OrthonormalBasis ι ℂ W) (A : Finset ι) {δ : ℝ}
-    (hδ : δ < 1) {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable δ W T)
+    {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable δ W T)
     (hη : (1 + 2 / √((1 - δ) * A.card / (8 * Fintype.card ι))) ^ (2 * finrank ℂ T) *
       Fintype.card ι * rexp (-(A.card / 16)) < 1) :
     ∃ U : unitaryGroup ι ℂ,
@@ -304,7 +306,7 @@ theorem exists_isViable_randomSubspace (b : OrthonormalBasis ι ℂ W) (A : Fins
   by_contra h
   push Not at h
   have h1 := (measure_mono (μ := unitaryHaar ι) fun U (_ : U ∈ Set.univ) => h U).trans
-    (unitaryHaar_not_isViable_randomSubspace_le b A hδ hT)
+    (unitaryHaar_not_isViable_randomSubspace_le b A hT)
   rw [measure_univ] at h1
   exact lt_irrefl _ (h1.trans_lt (ENNReal.ofReal_lt_one.mpr hη))
 
