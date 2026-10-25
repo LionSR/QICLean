@@ -18,9 +18,11 @@ largest Schmidt terms and normalizing gives a unit vector `w` that
 * is `(1 ⊗ W) x` for an isometry `W : ℂ^k → ℂ^n`, `k ≤ D`, and a left state `x` on
   `m × Fin k`.
 
-This is Lemma `l:within` of Landau, Vazirani and Vidick, in the corrected form of the energy
-bound of `Matrix.IsTrimmingProjection.re_inner_normalized_le_of_norm_inner`. The printed
-energy `ε₀ + 6√c_ε` is not established by the printed argument. Documented in
+This is Lemma `l:within` of Landau, Vazirani and Vidick.
+
+**Local fix (energy after trimming):** the energy bound is the corrected form of
+`Matrix.IsTrimmingProjection.re_inner_normalized_le_of_norm_inner`; the printed energy
+`ε₀ + 6√c_ε` is not established by the printed argument. Documented in
 `docs/paper-gaps/lvv13_trimming_energy.tex`.
 
 ## Main results
