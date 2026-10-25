@@ -1,0 +1,68 @@
+\section{Polynomial coefficients as ordered gap sums}
+
+\begin{theorem}[Coefficient after multiplication by a linear polynomial]
+    \label{thm:polynomial_linear_factor_coefficient}
+    \lean{Polynomial.coeff_C_add_C_mul_X_mul_succ}
+    \leanok
+    Let $\mathcal R$ be a semiring, let $D,T\in\mathcal R$, and let
+    $P\in\mathcal R[X]$, where $X$ is central. For a natural number $n$,
+    \begin{align}
+        [X^{n+1}]\bigl((D+TX)P\bigr)
+            =D[X^{n+1}]P+T[X^n]P.\notag
+    \end{align}
+    No commutation of $D$, $T$ or the coefficients of $P$ is required.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Write $P=\sum_{a\ge0}p_aX^a$, with only finitely many nonzero terms.
+    Distributivity gives
+    \begin{align}
+        (D+TX)P=\sum_{a\ge0}(Dp_a)X^a+
+            \sum_{a\ge0}(Tp_a)X^{a+1}.\notag
+    \end{align}
+    Taking the coefficient of degree $n+1$ proves the identity and retains
+    the displayed order of each product.
+\end{proof}
+
+\begin{theorem}[Ordered gap expansion of a coefficient]
+    \label{thm:polynomial_ordered_gaps}
+    \lean{Polynomial.coeff_pow_C_add_C_mul_X_eq_sum_gaps}
+    \leanok
+    Let $\mathcal R$ be a semiring, let $D,T\in\mathcal R$, and let
+    $m,k\ge0$ be integers. Write $[X^k]P$ for the coefficient of degree $k$
+    in a polynomial $P\in\mathcal R[X]$, where $X$ is central. Then
+    \begin{align*}
+        [X^k](D+TX)^{m+k}
+        =\sum_{\substack{n_0,\ldots,n_k\ge0\\n_0+\cdots+n_k=m}}
+            D^{n_0}TD^{n_1}\cdots TD^{n_k}.
+    \end{align*}
+    The factors retain their displayed order. At $k=0$ the sum is $D^m$;
+    at $m=0$ it is $T^k$.
+    This identity gives the ordered collection step in the proof of
+    \cite[Lemma~4.2]{Arad2013AreaLaw}, before expanding the two commuting
+    contributions within each gap.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:polynomial_linear_factor_coefficient}
+    Let $F_{m,k}$ be the coefficient on the left and $G_{m,k}$ the gap sum
+    on the right. Theorem~\ref{thm:polynomial_linear_factor_coefficient},
+    applied after multiplying the polynomial power on the left by $D+TX$, gives
+    \begin{align*}
+        F_{m+1,k+1}=D F_{m,k+1}+T F_{m+1,k}.
+    \end{align*}
+    For the gap sum, removing one $D$ from a positive first gap gives the
+    first term, while removing the first $T$ when its preceding gap is zero
+    gives the second. Thus
+    \begin{align*}
+        G_{m+1,k+1}=D G_{m,k+1}+T G_{m+1,k}.
+    \end{align*}
+    The boundary identities are
+    \begin{align*}
+        F_{m,0}=G_{m,0}=D^m, \\
+        F_{0,k}=G_{0,k}=T^k.
+    \end{align*}
+    Induction on $m$, followed by induction on $k$, proves $F_{m,k}=G_{m,k}$.
+    The list of gap tuples has no repetitions, so its sum equals the sum
+    over the corresponding finite set of tuples.
+\end{proof}

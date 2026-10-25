@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Channel.AGSPFavorableEntropy
 import QICLean.Channel.AGSPGeometricTails
 import QICLean.Channel.Basic
+import QICLean.Channel.BoundaryGluing
 import QICLean.Channel.BreuerHallIndecomposable
 import QICLean.Channel.BreuerHallMap
 import QICLean.Channel.CPDecomposition
@@ -68,6 +69,7 @@ import QICLean.Channel.KrausRectangular
 import QICLean.Channel.KrausRepresentation
 import QICLean.Channel.KrausSupportAbsorption
 import QICLean.Channel.KrausUnitaryFreedom
+import QICLean.Channel.LeadingEigenvector
 import QICLean.Channel.LocalizedKrausCPTP
 import QICLean.Channel.LorentzNormalForm
 import QICLean.Channel.LorentzNormalForm.Basic
@@ -80,6 +82,7 @@ import QICLean.Channel.LorentzNormalForm.QubitNormalForm
 import QICLean.Channel.LorentzNormalForm.SpinorAction
 import QICLean.Channel.LorentzNormalForm.SpinorCover
 import QICLean.Channel.LorentzNormalForm.SpinorExponential
+import QICLean.Channel.MarginalRank
 import QICLean.Channel.MarginalSupportAbsorption
 import QICLean.Channel.MarginalSupportWhitenedChoi
 import QICLean.Channel.MaximalOverlap
@@ -121,6 +124,8 @@ import QICLean.Channel.PositiveMapDetection
 import QICLean.Channel.Primitive
 import QICLean.Channel.ProductOverlapBootstrap
 import QICLean.Channel.ProjectiveResolution
+import QICLean.Channel.PureApproximationSpectralTail
+import QICLean.Channel.PureMarginalRank
 import QICLean.Channel.QuantumSteering
 import QICLean.Channel.QuantumWielandt
 import QICLean.Channel.RadonNikodym
@@ -133,6 +138,7 @@ import QICLean.Channel.SchmidtNumberCompact
 import QICLean.Channel.SchmidtNumberFactors
 import QICLean.Channel.SchmidtRank
 import QICLean.Channel.SchmidtRankAction
+import QICLean.Channel.SchmidtTrimming
 import QICLean.Channel.Schwarz
 import QICLean.Channel.SelfDual
 import QICLean.Channel.Semigroup
@@ -147,6 +153,8 @@ import QICLean.Channel.SupportedMarginalChannel
 import QICLean.Channel.TensorMap
 import QICLean.Channel.TraceFactorGauge
 import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TrimmedWitness
+import QICLean.Channel.TrimmingEnergy
 import QICLean.Channel.TripartiteDecorrelation
 import QICLean.Channel.UhlmannIsometry
 import QICLean.Channel.WeightedHilbertSchmidt

@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.MatrixEvolution
 import Mathlib.Analysis.CStarAlgebra.Basic
 import Mathlib.Analysis.CStarAlgebra.Matrix
@@ -20,8 +21,9 @@ A differentiable matrix path satisfying `U' = (I • G) * U`, with a Hermitian
 generator and initial value `1`, is unitary. Two such paths satisfy the exact
 relative-evolution integral identity and the Duhamel operator-norm estimate.
 Every matrix commuting with all generators is conserved by conjugation and
-commutes with the evolution. The time parameter may be negative, and the
-matrix index type may be empty.
+commutes with the evolution. For the Hermitian exponential paths `e^{iMt}`,
+`e^{iHt}` the estimate reads `‖e^{iMt} - e^{iHt}‖ ≤ ‖M - H‖ |t|`. The time parameter may be
+negative, and the matrix index type may be empty.
 
 The intermediate laws apply to solutions of the differential equation. The
 final theorem constructs the unique global unitary solution from a bounded
@@ -225,3 +227,23 @@ theorem exists_unique_unitary_solution
   exact sub_eq_zero.mp (norm_eq_zero.mp hzero)
 
 end MatrixEvolution
+
+namespace Matrix
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- **Duhamel bound for Hermitian exponential paths.** For Hermitian `M` and `H` and every real
+`t`, `‖e^{iMt} - e^{iHt}‖ ≤ ‖M - H‖ |t|`. This is the elementary estimate behind the
+perturbation step of Hastings, arXiv:0705.2024v4, lines 849–864. -/
+theorem norm_hermitianUnitaryPath_sub_le {M H : Matrix n n ℂ} (hM : M.IsHermitian)
+    (hH : H.IsHermitian) (t : ℝ) :
+    ‖hermitianUnitaryPath M t - hermitianUnitaryPath H t‖ ≤ ‖M - H‖ * |t| := by
+  have hderiv (A : Matrix n n ℂ) (s : ℝ) :
+      HasDerivAt (hermitianUnitaryPath A) ((Complex.I • A) * hermitianUnitaryPath A s) s :=
+    hasDerivAt_exp_smul_const' (𝕂 := ℝ) (Complex.I • A) s
+  exact MatrixEvolution.norm_sub_le_of_generator_bound (G := fun _ => M) (H := fun _ => H)
+    continuous_const continuous_const (fun _ => hM) (fun _ => hH)
+    (hermitianUnitaryPath_zero M) (hermitianUnitaryPath_zero H) (hderiv M) (hderiv H) t _
+    (fun _ _ => le_rfl)
+
+end Matrix

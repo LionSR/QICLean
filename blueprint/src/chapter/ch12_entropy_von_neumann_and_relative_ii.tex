@@ -370,12 +370,12 @@ the chapter boundary.
     $\psi\in\C^I\otimes\C^J$. Then
     \begin{align}
         \SR(K\psi) & \le\operatorname{OSR}(K)\,\SR(\psi).
-        \notag
+        \label{eq:schmidt_rank_operator_action_rank_bound}
     \end{align}
     No normalization or positivity is assumed.
     This is the rank-growth implication used with
     \cite[Definition~2.1]{Arad2013AreaLaw} and the product-operator
-    decomposition in \cite[equation e:decomp]{Landau2013PolynomialTime}.
+    decomposition in \cite[``Error Reduction'']{Landau2013PolynomialTime}.
 \end{theorem}
 
 \begin{proof}
@@ -392,14 +392,14 @@ the chapter boundary.
         C_{K\psi}
          & =\sum_{t=0}^{r-1}A_tC_\psi B_t^{\mathsf T}
         =\sum_{t=0}^{r-1}(A_tP)(QB_t^{\mathsf T})=LR,
-        \notag
+        \label{eq:schmidt_rank_operator_action_rank_factorization}
     \end{align}
     where the inner index of $L$ and $R$ is the set of pairs
     $(t,u)$ with $0\le t<r$ and $0\le u<s$, and
     \begin{align}
         L_{i,(t,u)} & =(A_tP)_{i,u},
                     & R_{(t,u),j}    & =(QB_t^{\mathsf T})_{u,j}.
-        \notag
+        \label{eq:schmidt_rank_operator_action_factor_entries}
     \end{align}
     Consequently $\rank(C_{K\psi})=\rank(LR)\le\rank(L)\le rs$.
     The same formulas apply when either rank is zero, since the set of
@@ -444,21 +444,26 @@ the chapter boundary.
     satisfies $\langle\Gamma,A\psi\rangle=0$ and $\|A\psi\|^2\le\delta$.
     Then every vector $v$ orthogonal to $\Gamma$ satisfies
     \begin{align}
-        \langle\Gamma,Av\rangle & =0,               \\
+        \langle\Gamma,Av\rangle & =0, \notag        \\
         \|Av\|^2                & \le\delta\|v\|^2.
+        \label{eq:perpendicular_shrink_bounds}
     \end{align}
 \end{theorem}
 \begin{proof}
     \leanok
-    The assertions hold when $v=0$. Otherwise put $\psi=v/\|v\|$.
+    The assertions in~(\ref{eq:perpendicular_shrink_bounds}) hold when $v=0$.
+    Otherwise put $\psi=v/\|v\|$.
     Then $\|\psi\|=1$, $\langle\Gamma,\psi\rangle=0$, and linearity gives
     $Av=\|v\|A\psi$. Hence
     \begin{align}
         \langle\Gamma,Av\rangle
-         & =\|v\|\langle\Gamma,A\psi\rangle=0,  \\
+         & =\|v\|\langle\Gamma,A\psi\rangle=0, \notag \\
         \|Av\|^2
          & =\|v\|^2\|A\psi\|^2\le\delta\|v\|^2.
+        \label{eq:perpendicular_shrink_scaling}
     \end{align}
+    The estimates in~(\ref{eq:perpendicular_shrink_scaling})
+    give~(\ref{eq:perpendicular_shrink_bounds}).
 \end{proof}
 
 \begin{theorem}[Schmidt rank under nonzero scalar multiplication]

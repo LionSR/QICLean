@@ -1,0 +1,293 @@
+\section{Power approximations to a ground projection}
+\label{sec:spectral_power_projection}
+
+The power approximation of~\cite{Landau2013PolynomialTime} is a spectral
+construction. Locality enters the separate expansion and Schmidt-rank
+estimates.
+
+\begin{theorem}[Power approximation at an isolated ground energy]
+    \label{thm:spectral_power_ground_projection}
+    \lean{Matrix.IsHermitian.power_approximates_isolated_energy_projection}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    Let $H$ be a Hermitian matrix with
+    \begin{align}
+        \operatorname{spec}(H)\subseteq\{E_0\}\cup[E_1,M],
+        \qquad E_0<E_1\le M.
+    \end{align}
+    Let $P=1-\boldsymbol{1}_{[E_1,\infty)}(H)$ be the spectral projection
+    at $E_0$, which may be zero, and set
+    \begin{align}
+        B=\frac{M\,1-H}{M-E_0},\qquad
+        A_m=B^m,\qquad
+        \rho=\frac{M-E_1}{M-E_0}.
+    \end{align}
+    Then $0\le\rho<1$, $B\ge0$, and, for every integer $m\ge0$,
+    \begin{align}
+        A_m\ge0,\qquad A_mP=PA_m=P,\qquad
+        \|A_m-P\|\le\rho^m,\qquad \|A_m\|\le1.
+    \end{align}
+    If $P\ne0$, then $\|A_m\|=1$. These statements allow an empty
+    matrix index set and arbitrary multiplicity of the ground energy.
+    At $m=0$, the error bound is $\|1-P\|\le1$, including when $\rho=0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:closed_threshold_projection}
+    In a spectral representation of $H$, put
+    $f(t)=(M-t)/(M-E_0)$ and $g(t)=\boldsymbol{1}_{\{E_0\}}(t)$.
+    On the spectrum, $f(E_0)=1$ and $0\le f(t)\le\rho<1$ for
+    $E_1\le t\le M$. Thus $f\ge0$, $f^m\ge0$, $f^mg=g$,
+    $|f^m-g|\le\rho^m$, and $|f^m|\le1$ on the spectrum.
+    The spectral theorem gives the assertions for $B=f(H)$,
+    $A_m=f(H)^m$, and $P=g(H)$. If $P\ne0$, absorption and the
+    operator norm give
+    $0<\|P\|=\|A_mP\|\le\|A_m\|\|P\|$, so $\|A_m\|\ge1$.
+\end{proof}
+
+\begin{corollary}[A logarithmic power threshold]
+    \label{cor:spectral_power_log_threshold}
+    \lean{Matrix.IsHermitian.norm_power_sub_projection_le_of_log_threshold}
+    \leanok
+    \uses{thm:spectral_power_ground_projection}
+    With the hypotheses and notation of
+    Theorem~\ref{thm:spectral_power_ground_projection}, let $\eta>0$.
+    If the integer $m\ge0$ satisfies
+    \begin{align}
+        m\ge\frac{M-E_0}{E_1-E_0}\log\frac1\eta,
+    \end{align}
+    then $\|A_m-P\|\le\eta$.
+\end{corollary}
+
+\begin{proof}
+    \leanok
+    \uses{thm:spectral_power_ground_projection}
+    Put $a=M-E_0$ and $\delta=E_1-E_0$. Then $0<\delta\le a$.
+    Since $1-x\le e^{-x}$,
+    \begin{align}
+        \rho^m=\left(1-\frac\delta a\right)^m
+        \le\exp\left(-\frac{m\delta}{a}\right)\le\eta.
+    \end{align}
+    Apply Theorem~\ref{thm:spectral_power_ground_projection}.
+\end{proof}
+
+\begin{theorem}[Identification from a global gap]
+    \label{thm:global_gap_ground_projection}
+    \lean{Matrix.IsHermitian.complement_spectralProjectionGE_eq_rankOne}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    Let $H$ be Hermitian, let $\Omega$ be a unit vector with
+    $H\Omega=E_0\Omega$, and let $\Delta>0$. Suppose that
+    \begin{align}
+        H-E_0\,1\ge\Delta
+          \bigl(1-|\Omega\rangle\langle\Omega|\bigr).
+    \end{align}
+    Then
+    \begin{align}
+        1-\boldsymbol{1}_{[E_0+\Delta,\infty)}(H)
+        =|\Omega\rangle\langle\Omega|.
+    \end{align}
+    The identity also holds in one dimension for every positive $\Delta$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:gaussian_gap_dichotomy}
+    Compare the two operators on an orthonormal eigenbasis of $H$.
+    By Theorem~\ref{thm:gaussian_gap_dichotomy}, each basis vector either
+    has energy $E_0$ and lies on the line spanned by $\Omega$, or has
+    energy at least $E_0+\Delta$ and is orthogonal to $\Omega$.
+    Both operators fix the vectors in the first case and annihilate
+    the vectors in the second case.
+\end{proof}
+
+\begin{theorem}[The power estimate for positive contraction terms]
+    \label{thm:physical_power_filter}
+    \lean{Matrix.power_filter_spec_of_posSemidef_terms}
+    \leanok
+    Let $H=\sum_{i\in\mathcal I}h_i$, where $\mathcal I$ is finite and
+    $0\le h_i\le1$. Put $N=|\mathcal I|+1$.
+    Let $\Omega$ be a unit vector satisfying
+    \begin{align*}
+        H\Omega=E_0\Omega, \\
+        H-E_0\,1\ge\Delta(1-|\Omega\rangle\langle\Omega|),
+    \end{align*}
+    where $\Delta>0$ and $E_0+\Delta\in\operatorname{spec}(H)$.
+    For every integer $m\ge0$, define
+    \begin{align*}
+        A_m=\left(\frac{1-H/N}{1-E_0/N}\right)^m, \\
+        r=\frac{1-(E_0+\Delta)/N}{1-E_0/N}.
+    \end{align*}
+    Then
+    \begin{align*}
+        A_m\ge0, \\
+        \|A_m\|=1, \\
+        A_m\Omega=\Omega, \\
+        \|A_m-|\Omega\rangle\langle\Omega|\|\le r^m.
+    \end{align*}
+    Every unit vector $\psi$ orthogonal to $\Omega$ satisfies
+    \begin{align*}
+        \|A_m\psi\|\le r^m, \\
+        |\langle\psi,A_m\psi\rangle|\le r^m.
+    \end{align*}
+    This is the spectral estimate of~\cite{Landau2013PolynomialTime},
+    equation e:cutdown, with the actual first excited energy $E_0+\Delta$.
+    For its chain of $N$ sites, $\mathcal I$ indexes the $N-1$ physical
+    interactions. Spatial locality is unnecessary for this estimate.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:spectral_power_ground_projection,thm:global_gap_ground_projection,
+        thm:gaussian_gap_dichotomy}
+    Summing $h_i\le1$ gives $H\le(N-1)1$. Gap attainment therefore implies
+    $E_0<E_0+\Delta\le N-1<N$, so the normalizing denominator is positive.
+    The global gap dichotomy puts the spectrum in
+    $\{E_0\}\cup[E_0+\Delta,N]$.
+    Apply Theorem~\ref{thm:spectral_power_ground_projection} with $M=N$,
+    and identify its ground projection by
+    Theorem~\ref{thm:global_gap_ground_projection}.
+    The identities
+    \begin{align*}
+        \frac{1-H/N}{1-E_0/N}=\frac{N\,1-H}{N-E_0}, \\
+        r=\frac{N-(E_0+\Delta)}{N-E_0}
+    \end{align*}
+    identify the power and its rate. The ground projection fixes $\Omega$
+    and is nonzero, giving norm one and $A_m\Omega=\Omega$.
+    It annihilates an orthogonal vector $\psi$, so the operator-norm
+    estimate gives $\|A_m\psi\|\le r^m$. Cauchy--Schwarz gives the last bound.
+\end{proof}
+
+\begin{corollary}[Physical power approximation at a prescribed accuracy]
+    \label{cor:physical_power_filter_accuracy}
+    \lean{Matrix.norm_power_filter_sub_ground_le_of_log_threshold}
+    \leanok
+    \uses{thm:physical_power_filter}
+    Under the hypotheses and notation of Theorem~\ref{thm:physical_power_filter},
+    let $\eta>0$ and suppose that the integer $m\ge0$ satisfies
+    \begin{align*}
+        m\ge\frac{N-E_0}{\Delta}\log\frac1\eta.
+    \end{align*}
+    Then $\|A_m-|\Omega\rangle\langle\Omega|\|\le\eta$.
+    No upper restriction on $\eta$ is required; at $\eta=1$, $m=0$ is allowed.
+\end{corollary}
+\begin{proof}
+    \leanok
+    \uses{cor:spectral_power_log_threshold,thm:global_gap_ground_projection,
+        thm:gaussian_gap_dichotomy}
+    The local upper bounds and global gap put the spectrum in
+    $\{E_0\}\cup[E_0+\Delta,N]$.
+    Apply Corollary~\ref{cor:spectral_power_log_threshold} with
+    $M=N$ and $E_1=E_0+\Delta$, so $E_1-E_0=\Delta$.
+    The scalar normalization in the preceding proof identifies the actual
+    power, and Theorem~\ref{thm:global_gap_ground_projection} identifies
+    its ground projection with $|\Omega\rangle\langle\Omega|$.
+\end{proof}
+
+\begin{theorem}[The power estimate from a lower bound on the gap]
+    \label{thm:physical_power_filter_lower_gap}
+    \lean{Matrix.power_filter_exp_spec_of_posSemidef_terms}
+    \leanok
+    Let $H=\sum_{i\in\mathcal I}h_i$ on a finite-dimensional complex
+    Hilbert space, where $\mathcal I$ is finite and $0\le h_i\le1$.
+    Put $N=|\mathcal I|+1$. Let $\Omega$ be a unit vector, let
+    $E_0\in\mathbb R$, and let $\Delta>0$ satisfy
+    \begin{align}
+        H\Omega&=E_0\Omega, \label{eq:lower_gap_ground_vector}\\
+        H-E_0\,1&\ge\Delta(1-P),\qquad
+        P=|\Omega\rangle\langle\Omega|.
+        \label{eq:lower_gap_inequality}
+    \end{align}
+    Define $T=(1-H/N)/(1-E_0/N)$. For every integer $m\ge0$, put
+    $\varepsilon_m=\exp(-m\Delta/(N-E_0))$. Then
+    \begin{align}
+        T^m&\ge0, & \|T^m\|&=1, & T^m\Omega&=\Omega,
+        \label{eq:lower_gap_power_properties}\\
+        \|T^m-P\|&\le\varepsilon_m.
+        \label{eq:lower_gap_power_error}
+    \end{align}
+    Every unit vector $\psi$ orthogonal to $\Omega$ satisfies
+    \begin{align}
+        \|T^m\psi\|&\le\varepsilon_m, &
+        |\langle\psi,T^m\psi\rangle|&\le\varepsilon_m.
+    \end{align}
+    The normalization of $T$ is the one in
+    \cite{Landau2013PolynomialTime}, equation e:cutdown.
+    This auxiliary estimate requires only a lower bound on the gap:
+    $E_0+\Delta$ need not belong to the spectrum.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:spectral_power_ground_projection,thm:global_gap_ground_projection,
+        thm:gaussian_gap_dichotomy}
+    Summing the upper bounds and evaluating on $\Omega$ gives
+    $E_0\le N-1<N$, so $a=N-E_0>0$.
+    The global gap dichotomy places the spectrum in
+    $\{E_0\}\cup[E_0+\Delta,N]$. Put
+    $E_*=\min\{E_0+\Delta,N\}$; then $E_0<E_*\le N$.
+    The two threshold projections at $E_*$ and $E_0+\Delta$
+    agree on every eigenspace. By
+    Theorem~\ref{thm:global_gap_ground_projection}, their complements
+    both equal $P$.
+    Apply Theorem~\ref{thm:spectral_power_ground_projection} at
+    $E_1=E_*$ and $M=N$. Its base is $T=(N\,1-H)/a$ and its rate is
+    $q=(N-E_*)/a\ge0$. If $E_0+\Delta\le N$, then
+    $q=1-\Delta/a\le e^{-\Delta/a}$; otherwise $q=0$.
+    In both cases $q^m\le e^{-m\Delta/a}$, including $m=0$.
+    This proves~(\ref{eq:lower_gap_power_properties})
+    and~(\ref{eq:lower_gap_power_error}), since $P\Omega=\Omega$
+    and $P\ne0$.
+    For $\psi\perp\Omega$, $T^m\psi=(T^m-P)\psi$.
+    The operator norm bound and Cauchy--Schwarz give the last two estimates.
+\end{proof}
+
+\begin{theorem}[Lower-gap power approximation at a prescribed accuracy]
+    \label{thm:physical_power_filter_lower_gap_accuracy}
+    \lean{Matrix.norm_power_filter_sub_ground_le_of_lower_gap_log_threshold}
+    \leanok
+    \uses{thm:physical_power_filter_lower_gap}
+    Under the hypotheses and notation of
+    Theorem~\ref{thm:physical_power_filter_lower_gap}, let $\eta>0$.
+    If the integer $m\ge0$ satisfies
+    \begin{align}
+        m\ge\frac{N-E_0}{\Delta}\log\frac1\eta,
+        \label{eq:lower_gap_log_threshold}
+    \end{align}
+    then $\|T^m-P\|\le\eta$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:physical_power_filter_lower_gap}
+    The positive denominator $a=N-E_0$ and $\Delta>0$
+    turn~(\ref{eq:lower_gap_log_threshold}) into
+    $-m\Delta/a\le\log\eta$. Thus
+    $\exp(-m\Delta/a)\le\eta$, and
+    Theorem~\ref{thm:physical_power_filter_lower_gap} applies.
+\end{proof}
+
+\begin{theorem}[A natural power for every positive accuracy]
+    \label{thm:physical_power_filter_lower_gap_ceil}
+    \lean{Matrix.norm_power_filter_sub_ground_le_at_lower_gap_ceil}
+    \leanok
+    \uses{thm:physical_power_filter_lower_gap_accuracy}
+    Under the hypotheses and notation of
+    Theorem~\ref{thm:physical_power_filter_lower_gap}, let $\eta>0$ and put
+    \begin{align}
+        m=\left\lceil\frac{N-E_0}{\Delta}\log\frac1\eta
+          \right\rceil_{\mathbb N},
+    \end{align}
+    where $\lceil x\rceil_{\mathbb N}$ denotes the least nonnegative
+    integer greater than or equal to $x$. Then $\|T^m-P\|\le\eta$.
+    When $\eta\ge1$, this choice gives $m=0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:physical_power_filter_lower_gap_accuracy}
+    By definition of the natural ceiling,
+    $m\ge (N-E_0)\Delta^{-1}\log(1/\eta)$.
+    Apply Theorem~\ref{thm:physical_power_filter_lower_gap_accuracy}.
+\end{proof}

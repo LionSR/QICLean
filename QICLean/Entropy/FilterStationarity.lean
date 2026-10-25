@@ -31,6 +31,10 @@ Hermitian, and `L` commutes with `ρ`. No commutation between distinct filters i
 * `Entropy.commute_regionState_of_unitary_extr`: stationarity of one filter, with the
   maximum and minimum cases `commute_regionState_of_unitary_max` and
   `commute_regionState_of_unitary_min`.
+* `Entropy.commute_reindex_one_kronecker_of_isSupportedOn`: an operator supported inside `B`
+  commutes with every operator acting, in the cut coordinates of `B`, as `1 ⊗ K`.
+* `Entropy.toEuclideanCLM_reindex_cutEquiv_symm`: in cut coordinates, `reindex M` acts on `Ω` as
+  `M` acts on the cut vector of `Ω`.
 
 ## References
 
@@ -469,6 +473,40 @@ theorem commute_of_isSupportedOn_disjoint {D D' : Finset V}
     rw [hcut, hcut, hX', hY']
     exact kronecker_one_mul_one_kronecker_comm _ _
   exact (reindex (cutEquiv n D) (cutEquiv n D)).injective h
+
+open scoped Kronecker in
+/-- An operator supported inside `B` commutes with every operator that acts, in the cut
+coordinates of `B`, as the identity on `B` tensored with a matrix on the complement. -/
+theorem commute_reindex_one_kronecker_of_isSupportedOn
+    {X : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D B : Finset V}
+    (hX : IsSupportedOn X D) (hDB : D ⊆ B) (σ₀ : SiteConfig n)
+    (K : Matrix ((v : {v // v ∉ B}) → Fin (n v)) ((v : {v // v ∉ B}) → Fin (n v)) ℂ) :
+    Commute X (reindex (cutEquiv n B).symm (cutEquiv n B).symm
+      ((1 : Matrix _ _ ℂ) ⊗ₖ K)) := by
+  set e := cutEquiv n B
+  have hXe : X = reindex e.symm e.symm (cutOperator B X) := by
+    simp [cutOperator, e]
+  rw [hXe, hX.cutOperator_eq_kronecker_one hDB (e σ₀).2]
+  have hc (M : Matrix ((v : {v // v ∈ B}) → Fin (n v)) ((v : {v // v ∈ B}) → Fin (n v)) ℂ) :
+      Commute (M ⊗ₖ (1 : Matrix _ _ ℂ)) ((1 : Matrix _ _ ℂ) ⊗ₖ K) :=
+    kronecker_one_mul_one_kronecker_comm M K
+  exact (hc _).map (reindexAlgEquiv ℂ ℂ e.symm)
+
+/-- In cut coordinates, an operator `reindex M` acts on `Ω` as `M` acts on the cut vector. -/
+theorem toEuclideanCLM_reindex_cutEquiv_symm (B : Finset V)
+    (M : Matrix (((v : {v // v ∈ B}) → Fin (n v)) × ((v : {v // v ∉ B}) → Fin (n v)))
+      (((v : {v // v ∈ B}) → Fin (n v)) × ((v : {v // v ∉ B}) → Fin (n v))) ℂ)
+    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
+    toEuclideanCLM (𝕜 := ℂ) (reindex (cutEquiv n B).symm (cutEquiv n B).symm M)
+        Ω = WithLp.toLp 2 ((M *ᵥ WithLp.ofLp (cutVector B Ω)) ∘ cutEquiv n B) := by
+  set e := cutEquiv n B
+  have hΩ : WithLp.ofLp Ω = WithLp.ofLp (cutVector B Ω) ∘ e := by
+    ext σ
+    change WithLp.ofLp Ω σ = WithLp.ofLp Ω (e.symm (e σ))
+    rw [Equiv.symm_apply_apply]
+  ext σ
+  rw [ofLp_toEuclideanCLM, reindex_apply, Equiv.symm_symm, hΩ, submatrix_mulVec_equiv,
+    Function.comp_assoc, Equiv.self_comp_symm, Function.comp_id]
 
 end Entropy
 

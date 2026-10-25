@@ -1,0 +1,116 @@
+\section{Closeness and viability of subspaces}
+
+Arad, Landau, Vazirani and Vidick~\cite[Section~s:vs]{Arad2016RigorousRG}
+measure how well one subspace approximates another through orthogonal
+projections. For a subspace $S$ of one tensor factor, the extended subspace
+$S\otimes\mathcal H_B$ plays the role of $T$ below, and $\delta$-viability of
+$S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
+
+\begin{definition}[Closeness]
+    \label{def:subspace_close}
+    \lean{Submodule.IsCloseTo}
+    \leanok
+    A subspace $T$ is $\delta$-close to a subspace $T'$ if
+    $P_{T'}P_TP_{T'}\ge(1-\delta)P_{T'}$, where $P_T$ and $P_{T'}$ are the
+    orthogonal projections~\cite[lines 433--440 and 469--474]{Arad2016RigorousRG}.
+\end{definition}
+
+\begin{theorem}[Closeness in terms of vectors]
+    \label{thm:subspace_close_iff}
+    \lean{Submodule.isCloseTo_iff}
+    \leanok
+    \uses{def:subspace_close}
+    $T$ is $\delta$-close to $T'$ exactly when
+    $\lVert P_Tt\rVert^2\ge(1-\delta)\lVert t\rVert^2$ for every $t\in T'$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The quadratic form of $P_{T'}P_TP_{T'}-(1-\delta)P_{T'}$ at $x$ is
+    $\lVert P_TP_{T'}x\rVert^2-(1-\delta)\lVert P_{T'}x\rVert^2$, and
+    $P_{T'}x$ ranges over $T'$.
+\end{proof}
+
+\begin{theorem}[Preimages under the projection]
+    \label{thm:subspace_close_preimage}
+    \lean{Submodule.IsCloseTo.exists_mem_starProjection_eq}
+    \leanok
+    \uses{thm:subspace_close_iff}
+    If $S$ is $\delta$-close to $T$ with $\delta<1$, then every $t\in T$ is
+    $P_Ts$ for some $s\in S$ with
+    $\lVert s\rVert\le\lVert t\rVert/(1-\delta)$. This is Lemma~l:2
+    of~\cite[lines 449--465]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The map $r\mapsto P_TP_Sr$ of $T$ into itself satisfies
+    $\operatorname{Re}\langle P_TP_Sr,r\rangle=\lVert P_Sr\rVert^2
+    \ge(1-\delta)\lVert r\rVert^2$, so it is injective, hence surjective in
+    finite dimension. Take $r$ with $P_TP_Sr=t$ and $s=P_Sr$. Then
+    $(1-\delta)\lVert r\rVert^2\le\operatorname{Re}\langle t,r\rangle
+    \le\lVert t\rVert\,\lVert r\rVert$, and $\lVert s\rVert\le\lVert r\rVert$.
+\end{proof}
+
+\begin{theorem}[Robustness]
+    \label{thm:subspace_close_trans}
+    \lean{Submodule.IsCloseTo.trans}
+    \leanok
+    \uses{thm:subspace_close_iff}
+    If $T$ is $\delta$-close to $T'$ with $\delta\ge0$ and $T'$ is
+    $\delta'$-close to $T''$, then $T$ is $2(\delta+\delta')$-close to $T''$.
+    Taking $T=S\otimes\mathcal H_B$, a $\delta$-viable set for $T'$ is
+    $2(\delta+\delta')$-viable for $T''$. This is Lemma~l:close
+    of~\cite[lines 484--489]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    For $a\in T''$ let $b=P_{T'}a$ and $c=P_Tb$. By Pythagoras
+    $\lVert a-b\rVert^2\le\delta'\lVert a\rVert^2$ and
+    $\lVert b-c\rVert^2\le\delta\lVert b\rVert^2\le\delta\lVert a\rVert^2$, so
+    $\lVert a-c\rVert^2\le2(\delta+\delta')\lVert a\rVert^2$. Since $c\in T$,
+    $\lVert a-P_Ta\rVert\le\lVert a-c\rVert$, and Pythagoras for $P_T$ gives
+    the claim.
+\end{proof}
+
+\begin{theorem}[Projection onto an intersection]
+    \label{thm:subspace_inf_projection}
+    \lean{Submodule.starProjection_inf_of_commute}
+    \leanok
+    If the orthogonal projections onto $U_1$ and $U_2$ commute, the
+    projection onto $U_1\cap U_2$ is $P_{U_1}P_{U_2}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The vector $P_{U_1}P_{U_2}x=P_{U_2}P_{U_1}x$ lies in both subspaces, and
+    $x-P_{U_1}P_{U_2}x$ is orthogonal to every $w\in U_1\cap U_2$, since
+    $\langle P_{U_1}P_{U_2}x,w\rangle=\langle x,P_{U_2}P_{U_1}w\rangle
+    =\langle x,w\rangle$.
+\end{proof}
+
+\begin{theorem}[Closeness of an intersection]
+    \label{thm:subspace_close_inf}
+    \lean{Submodule.IsCloseTo.inf_of_commute}
+    \leanok
+    \uses{thm:subspace_close_iff, thm:subspace_inf_projection}
+    If $U_1$ is $\delta_1$-close and $U_2$ is $\delta_2$-close to $T$, and
+    the projections onto $U_1$ and $U_2$ commute, then $U_1\cap U_2$ is
+    $(\delta_1+\delta_2)$-close to $T$. This is the operator step in the
+    proof of Lemma~l:t of~\cite[lines 506--523]{Arad2016RigorousRG}: for
+    sets $S_1$, $S_2$ on disjoint subsystems, the extensions
+    $U_k=S_k^{(\mathrm{ext})}$ have commuting projections and
+    $U_1\cap U_2=(S_1\otimes S_2)^{(\mathrm{ext})}$. The tensor-product
+    statement of Lemma~l:t is not formalized here.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    For $t\in T$ write $P_1t=P_1P_2t+P_1(t-P_2t)$. The two summands are
+    orthogonal, so
+    $\lVert P_1P_2t\rVert^2=\lVert P_1t\rVert^2-\lVert P_1(t-P_2t)\rVert^2
+    \ge(1-\delta_1)\lVert t\rVert^2-\lVert t-P_2t\rVert^2$, and
+    $\lVert t-P_2t\rVert^2=\lVert t\rVert^2-\lVert P_2t\rVert^2
+    \le\delta_2\lVert t\rVert^2$.
+\end{proof}
