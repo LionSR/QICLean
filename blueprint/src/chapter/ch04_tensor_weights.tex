@@ -1,0 +1,31 @@
+\section{Weights of a vector of a tensor product}
+
+\begin{theorem}[Weights along an eigenbasis]
+    \label{thm:tensor_weights}
+    \lean{Submodule.exists_weights_norm_sq_starProjection_tensorProd}
+    \leanok
+    \uses{thm:subspace_tensor_projection}
+    Let $W$ be a subspace of a finite-dimensional inner product space $M$,
+    let $F$ be a finite-dimensional inner product space, and let
+    $w\in W\otimes F$. There are an orthonormal basis $f_1,\dots,f_q$ of $W$
+    and weights $\mu_k\ge0$ with $\sum_k\mu_k=\lVert w\rVert^2$ such that
+    \[
+        \lVert P_{W'\otimes F}w\rVert^2=\sum_k\mu_k\lVert P_{W'}f_k\rVert^2
+    \]
+    for every subspace $W'\subseteq W$. This is the decomposition used in
+    the proof of Lemma~l:rs of~\cite[lines 539--541]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Write $w=\sum_jx_j\otimes e_j$ along an orthonormal basis $e_j$ of $F$;
+    then $x_j\in W$ and $\lVert P_{W'\otimes F}w\rVert^2
+    =\sum_j\lVert P_{W'}x_j\rVert^2$. Let $f_k$ be an orthonormal eigenbasis
+    of $G=\sum_j\lvert x_j\rangle\langle x_j\rvert$ on $W$, with eigenvalues
+    $\mu_k\ge0$. Expanding $P_{W'}x_j$ in the basis $f_k$ and using that
+    $P_{W'}$ is self-adjoint gives
+    $\sum_j\lVert P_{W'}x_j\rVert^2=\sum_k\langle P_{W'}f_k,GP_{W'}f_k\rangle
+    =\sum_{k,l}\mu_l\lvert\langle f_l,P_{W'}f_k\rangle\rvert^2
+    =\sum_l\mu_l\lVert P_{W'}f_l\rVert^2$. Taking $W'=W$ gives the sum of
+    the weights.
+\end{proof}
