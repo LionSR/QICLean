@@ -62,6 +62,21 @@ depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Matrix.schmidtRank_rightApply_le
 
+/-- info:
+'Matrix.schmidtRank_leftApply_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.schmidtRank_leftApply_le
+
+/-- info:
+'Matrix.HasSchmidtRankLE.leftApply' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.HasSchmidtRankLE.leftApply
+
+/-- info:
+'Matrix.HasSchmidtRankLE.rightApply' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.HasSchmidtRankLE.rightApply
+
 section
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m]
