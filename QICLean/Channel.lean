@@ -150,6 +150,7 @@ import QICLean.Channel.SupportedMarginalChannel
 import QICLean.Channel.TensorMap
 import QICLean.Channel.TraceFactorGauge
 import QICLean.Channel.TransferMatrix
+import QICLean.Channel.TrimmingEnergy
 import QICLean.Channel.TripartiteDecorrelation
 import QICLean.Channel.UhlmannIsometry
 import QICLean.Channel.WeightedHilbertSchmidt
