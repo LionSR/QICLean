@@ -1,0 +1,76 @@
+\section{Gluing a left state through its boundary contraction}
+
+This section records the boundary contractions and the gluing lemma of Landau,
+Vazirani and Vidick~\cite[lines 409--447]{Landau2013PolynomialTime}. Fix a cut
+of $(\mathcal A\otimes\mathcal S)\otimes\mathcal R$, where $\mathcal S$ is one
+site, $\mathcal A$ the part strictly to its left and $\mathcal R$ the part to
+its right, and let $W:\mathbb C^B\to\mathcal R$ be an isometry. In the source,
+$W=U_v$ maps $\lvert j\rangle$ to the $j$-th right Schmidt vector of a vector
+$v$ of Schmidt rank $B$.
+
+\begin{definition}[Left state and boundary contraction]
+    \label{def:boundary_contraction}
+    \lean{Matrix.partialTraceFirst, Matrix.conjTranspose_mulVec_gluing}
+    \leanok
+    For a matrix $X$ on $(\mathcal A\otimes\mathcal S)\otimes\mathcal C$, write
+    $\operatorname{tr}_{\mathcal A}X$ for its partial trace over
+    $\mathcal A$, a matrix on $\mathcal S\otimes\mathcal C$. If
+    $v=(1\otimes W)x$, then $x=(1\otimes W)^\dagger v$ is the left state of
+    $v$, and $\operatorname{tr}_{\mathcal A}\lvert x\rangle\langle x\rvert$ is
+    its boundary contraction.
+\end{definition}
+
+\begin{theorem}[Gluing]
+    \label{thm:boundary_gluing}
+    \lean{Matrix.partialTraceRight_gluing, Matrix.partialTraceFirst_gluing,
+        Matrix.rectangularTraceNorm_partialTraceFirst_gluing_sub,
+        Matrix.norm_trace_mul_le_l2_opNorm_mul_rectangularTraceNorm,
+        Matrix.re_trace_gluing_le}
+    \leanok
+    \uses{def:boundary_contraction}
+    Let $W$ be an isometry, $\sigma$ a matrix on
+    $(\mathcal A\otimes\mathcal S)\otimes\mathbb C^B$,
+    $\sigma'=(1\otimes W)\sigma(1\otimes W)^\dagger$ and $v=(1\otimes W)x$.
+    Then
+    \begin{enumerate}
+        \item $\operatorname{tr}_{\mathcal R}\sigma'
+                  =\operatorname{tr}_{\mathbb C^B}\sigma$;
+        \item $\lVert\operatorname{tr}_{\mathcal A}\sigma'
+                  -\operatorname{tr}_{\mathcal A}\lvert v\rangle\langle v\rvert\rVert_1
+                  =\lVert\operatorname{tr}_{\mathcal A}\sigma
+                  -\operatorname{tr}_{\mathcal A}\lvert x\rangle\langle x\rvert\rVert_1$;
+        \item for $H=H_L\otimes1+1\otimes K$, with $H_L$ acting on
+              $\mathcal A\otimes\mathcal S$ and $K$ on
+              $\mathcal S\otimes\mathcal R$,
+              \begin{align*}
+                  \operatorname{Re}\operatorname{tr}(\sigma'H)
+                   & \le\operatorname{Re}\operatorname{tr}(\sigma(H_L\otimes1))
+                  +\operatorname{Re}\langle v,(1\otimes K)v\rangle
+                  +\lVert K\rVert\,\lVert\operatorname{tr}_{\mathcal A}\sigma
+                  -\operatorname{tr}_{\mathcal A}\lvert x\rangle\langle x\rvert\rVert_1.
+              \end{align*}
+    \end{enumerate}
+    This is Lemma~l:gluing of~\cite[lines 421--447]{Landau2013PolynomialTime},
+    for every isometry $W$ whose range contains the right Schmidt vectors of
+    $v$. The constant $n$ of the printed third part is replaced by $\lVert K\rVert$,
+    which is at most $n$ for the chain Hamiltonian of the source, where
+    $K=H_i+H_R$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The first part holds because $W^\dagger W=1$. For any matrix $X$,
+    $\operatorname{tr}_{\mathcal A}((1\otimes W)X(1\otimes W)^\dagger)
+        =(1\otimes W)(\operatorname{tr}_{\mathcal A}X)(1\otimes W)^\dagger$, and
+    $\lvert v\rangle\langle v\rvert
+        =(1\otimes W)\lvert x\rangle\langle x\rvert(1\otimes W)^\dagger$; the
+    second part follows since conjugation by an isometry preserves the trace
+    norm. For the third, $(1\otimes W)^\dagger(H_L\otimes1)(1\otimes W)
+        =H_L\otimes1$, and
+    $\operatorname{tr}(\sigma'(1\otimes K))
+        -\langle v,(1\otimes K)v\rangle
+        =\operatorname{tr}\bigl((\operatorname{tr}_{\mathcal A}\sigma'
+        -\operatorname{tr}_{\mathcal A}\lvert v\rangle\langle v\rvert)K\bigr)$,
+    whose modulus is at most $\lVert K\rVert$ times the trace norm of the
+    difference, which is the quantity of the second part.
+\end{proof}
