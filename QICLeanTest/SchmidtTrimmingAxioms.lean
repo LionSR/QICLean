@@ -57,6 +57,11 @@ depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms Matrix.IsTrimmingProjection.exists_leftApply_eq_rightApply
 
+/-- info:
+'Matrix.schmidtRank_rightApply_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Matrix.schmidtRank_rightApply_le
+
 section
 
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m]

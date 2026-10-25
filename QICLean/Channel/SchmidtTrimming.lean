@@ -45,6 +45,8 @@ coefficients and `v` the normalized sum of the `D` removed Schmidt terms: the ov
 ## Main results
 
 * `Matrix.exists_isTrimmingProjection`: a trimming projection exists for every `D`.
+* `Matrix.schmidtRank_leftApply_le`, `Matrix.schmidtRank_rightApply_le`: an operator on one
+  factor does not increase the Schmidt rank.
 * `Matrix.IsTrimmingProjection.inner_leftApply_self`,
   `Matrix.IsTrimmingProjection.norm_leftApply_sq`: the trimmed vector has overlap and
   squared norm equal to the Ky Fan `D`-norm of the left marginal.
@@ -379,6 +381,38 @@ theorem schmidtCoeffMatrix_ofLp_rightApply (Q : Matrix n n ℂ)
     schmidtCoeffMatrix (WithLp.ofLp (rightApply Q ψ)) =
       schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ :=
   rfl
+
+omit [DecidableEq m] in
+/-- An operator on the first factor does not increase the Schmidt rank: `(P ⊗ 1) ψ` has
+Schmidt rank at most that of `ψ`. -/
+theorem schmidtRank_leftApply_le (P : Matrix m m ℂ) (ψ : EuclideanSpace ℂ (m × n)) :
+    schmidtRank (WithLp.ofLp (leftApply P ψ)) ≤ schmidtRank (WithLp.ofLp ψ) := by
+  rw [schmidtRank, schmidtRank, schmidtCoeffMatrix_ofLp_leftApply]
+  exact rank_mul_le_right _ _
+
+omit [Fintype m] [DecidableEq m] in
+/-- An operator on the second factor does not increase the Schmidt rank: `(1 ⊗ Q) ψ` has
+Schmidt rank at most that of `ψ`. This is the step of the proof of Lemma `l:trim2` of
+Landau, Vazirani and Vidick (arXiv:1307.5143v1, algo53.tex, lines 544–553) for an operator
+acting on one side of a cut. -/
+theorem schmidtRank_rightApply_le (Q : Matrix n n ℂ) (ψ : EuclideanSpace ℂ (m × n)) :
+    schmidtRank (WithLp.ofLp (rightApply Q ψ)) ≤ schmidtRank (WithLp.ofLp ψ) := by
+  rw [schmidtRank, schmidtRank, schmidtCoeffMatrix_ofLp_rightApply]
+  exact rank_mul_le_left _ _
+
+omit [DecidableEq m] in
+/-- A Schmidt-rank bound survives an operator on the first factor. -/
+theorem HasSchmidtRankLE.leftApply {k : ℕ} {ψ : EuclideanSpace ℂ (m × n)}
+    (h : HasSchmidtRankLE k (WithLp.ofLp ψ)) (P : Matrix m m ℂ) :
+    HasSchmidtRankLE k (WithLp.ofLp (leftApply P ψ)) :=
+  (schmidtRank_leftApply_le P ψ).trans h
+
+omit [Fintype m] [DecidableEq m] in
+/-- A Schmidt-rank bound survives an operator on the second factor. -/
+theorem HasSchmidtRankLE.rightApply {k : ℕ} {ψ : EuclideanSpace ℂ (m × n)}
+    (h : HasSchmidtRankLE k (WithLp.ofLp ψ)) (Q : Matrix n n ℂ) :
+    HasSchmidtRankLE k (WithLp.ofLp (rightApply Q ψ)) :=
+  (schmidtRank_rightApply_le Q ψ).trans h
 
 omit [DecidableEq m] in
 /-- The inner product of bipartite vectors is the Frobenius pairing of their coefficient
