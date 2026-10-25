@@ -1,0 +1,62 @@
+\section{Overlaps with a gapped ground state and with a common vector}
+
+The following two facts about unit vectors are used repeatedly in the
+polynomial-time algorithm of Landau, Vazirani and
+Vidick~\cite[lines 297--317]{Landau2013PolynomialTime}.
+
+\begin{theorem}[Overlap from the energy]
+    \label{thm:overlap_from_energy}
+    \lean{Entropy.norm_inner_ge_of_gap}
+    \leanok
+    Let $\Omega$ and $\varphi$ be unit vectors and let $\Delta>0$ with
+    $H-E_0\ge\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$. If
+    $\operatorname{Re}\langle\varphi,H\varphi\rangle\le E_0+E$, then
+    $\lvert\langle\Omega,\varphi\rangle\rvert\ge1-E/\Delta$.
+    This is Lemma~claim:energy-overlap
+    of~\cite[lines 297--305]{Landau2013PolynomialTime}, without its assumption
+    $0\le E\le\Delta$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The gap gives
+    $\lvert\langle\Omega,\varphi\rangle\rvert^2\ge1-E/\Delta$. Since
+    $0\le\lvert\langle\Omega,\varphi\rangle\rvert\le1$, the overlap is at least
+    its square.
+\end{proof}
+
+\begin{theorem}[Overlap through a common vector]
+    \label{thm:overlap_through_common_vector}
+    \lean{norm_inner_ge_mul_sub_sqrt, one_sub_two_mul_add_le_norm_inner}
+    \leanok
+    Let $v$, $v'$ and $w$ be unit vectors in an inner product space. Then
+    \begin{align}
+        \lvert\langle v,v'\rangle\rvert
+         & \ge\lvert\langle v,w\rangle\rvert\,\lvert\langle v',w\rangle\rvert
+        -\sqrt{\bigl(1-\lvert\langle v,w\rangle\rvert^2\bigr)
+            \bigl(1-\lvert\langle v',w\rangle\rvert^2\bigr)}.
+        \label{eq:overlap_through_common_vector}
+    \end{align}
+    If moreover $0\le\delta,\delta'\le1$,
+    $\lvert\langle v,w\rangle\rvert\ge1-\delta$ and
+    $\lvert\langle v',w\rangle\rvert\ge1-\delta'$, then
+    $\lvert\langle v,v'\rangle\rvert\ge1-2(\delta+\delta')$. This is
+    Lemma~claim:overlap of~\cite[lines 307--317]{Landau2013PolynomialTime}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Write $v=\alpha w+u$ and $v'=\beta w+u'$ with
+    $\alpha=\langle w,v\rangle$, $\beta=\langle w,v'\rangle$ and $u,u'$
+    orthogonal to $w$. Then
+    $\langle v,v'\rangle=\bar\alpha\beta+\langle u,u'\rangle$,
+    $\lVert u\rVert^2=1-\lvert\alpha\rvert^2$ and
+    $\lVert u'\rVert^2=1-\lvert\beta\rvert^2$, and the Cauchy--Schwarz
+    inequality for $\langle u,u'\rangle$ gives
+    (\ref{eq:overlap_through_common_vector}). For the second statement,
+    $1-\lvert\langle v,w\rangle\rvert^2\le1-(1-\delta)^2\le2\delta$ and
+    likewise for $v'$, so the square root is at most
+    $2\sqrt{\delta\delta'}\le\delta+\delta'$, while the product of the overlaps
+    is at least $(1-\delta)(1-\delta')\ge1-\delta-\delta'$. The source's proof
+    writes $\Gamma$ for $w$.
+\end{proof}
