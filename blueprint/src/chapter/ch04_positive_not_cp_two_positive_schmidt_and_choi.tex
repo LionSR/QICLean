@@ -708,6 +708,41 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     increases with $t$ because $\delta\ge0$.
 \end{proof}
 
+\begin{theorem}[A trimmed low-energy witness on a subspace]
+    \label{thm:trimmed_witness}
+    \lean{Matrix.ofLp_rightApply, Matrix.leftApply_smul, Matrix.leftApply_rightApply,
+        Matrix.schmidtRank_leftApply_le_rank,
+        Matrix.IsTrimmingProjection.leftApply_leftApply_of_leftApply_eq,
+        Matrix.IsTrimmingProjection.exists_trimmed_witness}
+    \leanok
+    \uses{thm:trimming_energy_overlap, thm:trimming_isometric_factorization}
+    Under the hypotheses of Theorem~\ref{thm:trimming_energy_overlap}, let the
+    left factor of $\psi$ lie in a subspace $V$, that is
+    $(\Pi_V\otimes1)\psi=\psi$. Then there is a unit vector $w$ of Schmidt rank
+    at most $D$ with
+    $\operatorname{Re}\langle w,Hw\rangle\le E_0+(\delta+2\sqrt{2\eta})/(1-2\eta)$
+    and $(\Pi_V\otimes1)w=w$, together with an isometry
+    $W:\mathbb C^k\to\mathbb C^n$, $k\le D$, and a vector $x$ with
+    $(\Pi_V\otimes1)x=x$ and $w=(1\otimes W)x$. This is
+    Lemma~l:within of~\cite[lines 509--515]{Landau2013PolynomialTime}, with
+    the corrected energy bound; the energy $\varepsilon_0+6\sqrt{c_\varepsilon}$
+    printed there is not established by its argument
+    \cite{gap:lvv13_trimming_energy}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Let $w$ be the normalized trimming of $\psi$ to $D$ terms; it is nonzero
+    because the discarded part has squared norm at most $2\eta<1$. Its energy is
+    Theorem~\ref{thm:trimming_energy_overlap}. The trimmed vector is
+    $(1\otimes Q)\psi$ for a projection $Q$, which commutes with
+    $\Pi_V\otimes1$, so it stays in $V\otimes\mathbb C^n$.
+    Theorem~\ref{thm:trimming_isometric_factorization} writes it as
+    $(1\otimes W)(1\otimes W^\dagger)\psi$, and
+    $x=\lVert\cdot\rVert^{-1}(1\otimes W^\dagger)\psi$ is again in
+    $V\otimes\mathbb C^k$.
+\end{proof}
+
 \begin{definition}[Reduced density of an eigenvector]
     \label{def:reduced_eig_density}
     \lean{Matrix.IsHermitian.reducedEigDensity}
