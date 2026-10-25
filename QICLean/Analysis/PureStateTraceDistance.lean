@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.TraceDistance
-import Mathlib.Analysis.InnerProductSpace.PiL2
+import QICLean.Analysis.WeightedPureStateTraceNorm
 
 /-!
 # Trace distance of two pure states
@@ -79,80 +79,10 @@ theorem traceDistance_vecMulVec_eq {ψ φ : EuclideanSpace ℂ n} (hψ : ‖ψ�
     traceDistance (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)))
         (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))) =
       Real.sqrt (1 - ‖⟪ψ, φ⟫_ℂ‖ ^ 2) := by
-  set u := WithLp.ofLp ψ
-  set v := WithLp.ofLp φ
-  set P := vecMulVec u (star u)
-  set Q := vecMulVec v (star v)
-  set a : ℂ := star u ⬝ᵥ v with ha
-  have hunit : ∀ x : EuclideanSpace ℂ n, ‖x‖ = 1 →
-      star (WithLp.ofLp x) ⬝ᵥ WithLp.ofLp x = 1 := by
-    intro x hx
-    have h : ⟪x, x⟫_ℂ = 1 := by rw [inner_self_eq_norm_sq_to_K, hx]; simp
-    rwa [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm] at h
-  have huu := hunit ψ hψ
-  have hvv := hunit φ hφ
-  have hainner : ⟪ψ, φ⟫_ℂ = a := by
-    rw [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm]
-  have hvu : star v ⬝ᵥ u = star a := by
-    rw [ha, ← Matrix.star_dotProduct_star, star_star, dotProduct_comm]
-  have hvmv : ∀ (x y z w : n → ℂ),
-      vecMulVec x y * vecMulVec z w = (y ⬝ᵥ z) • vecMulVec x w := by
-    intro x y z w
-    rw [vecMulVec_mul_vecMulVec]
-    ext i j
-    simp [vecMulVec_apply, mul_left_comm]
-  have hP : P * P = P := by rw [hvmv, huu, one_smul]
-  have hQ : Q * Q = Q := by rw [hvmv, hvv, one_smul]
-  set s : ℂ := a * star a with hs
-  have hPQP : P * Q * P = s • P := by
-    rw [hvmv, smul_mul, hvmv, hvu, smul_smul, ← ha]
-  have hQPQ : Q * P * Q = s • Q := by
-    rw [hvmv, smul_mul, hvmv, ← ha, hvu, smul_smul, mul_comm]
-  have hsre : s = ((‖a‖ ^ 2 : ℝ) : ℂ) := by
-    rw [hs, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
-  set X := P - Q with hX
-  have hXh : X.IsHermitian := by
-    have hPh : P.IsHermitian := by
-      rw [IsHermitian, conjTranspose_vecMulVec, star_star]
-    have hQh : Q.IsHermitian := by
-      rw [IsHermitian, conjTranspose_vecMulVec, star_star]
-    exact hPh.sub hQh
-  have h3 := sub_mul_sub_mul_sub_of_idempotent hP hQ hPQP hQPQ
-  -- `tr X² = 2 (1 - |a|²)`.
-  have htr : (X * X).trace = 2 * (1 - s) := by
-    have : X * X = P * P - P * Q - Q * P + Q * Q := by
-      rw [hX]; noncomm_ring
-    rw [this, hP, hQ, trace_add, trace_sub, trace_sub, hvmv, hvmv, trace_smul, trace_smul,
-      trace_vecMulVec, trace_vecMulVec, trace_vecMulVec, trace_vecMulVec]
-    rw [dotProduct_comm u (star u), huu, dotProduct_comm v (star v), hvv,
-      dotProduct_comm u (star v), hvu, dotProduct_comm v (star u), ← ha, hs]
-    simp only [smul_eq_mul]
-    ring
-  have hle : ‖a‖ ^ 2 ≤ 1 := by
-    have := norm_inner_le_norm (𝕜 := ℂ) ψ φ
-    rw [hψ, hφ, hainner, one_mul] at this
-    nlinarith [norm_nonneg a]
-  rw [hainner]
-  set c : ℝ := 1 - ‖a‖ ^ 2 with hc
-  have hc0 : 0 ≤ c := by linarith
-  rcases hc0.lt_or_eq with hcpos | hczero
-  · have h3' : X * X * X = (c : ℂ) • X := by
-      rw [h3, hsre, hc]; push_cast; rfl
-    rw [traceDistance, abs_eq_inv_sqrt_smul_mul_self hXh hcpos h3', trace_smul, htr, hsre]
-    have : (2 : ℂ) * (1 - ((‖a‖ ^ 2 : ℝ) : ℂ)) = ((2 * c : ℝ) : ℂ) := by
-      rw [hc]; push_cast; ring
-    rw [this, Complex.real_smul, ← Complex.ofReal_mul, Complex.ofReal_re]
-    have hsq : Real.sqrt c * Real.sqrt c = c := Real.mul_self_sqrt hcpos.le
-    have hs0 : 0 < Real.sqrt c := Real.sqrt_pos.mpr hcpos
-    field_simp
-    linarith
-  · have hs1 : (1 : ℂ) - s = 0 := by
-      have h1 : ‖a‖ ^ 2 = 1 := by linarith
-      rw [hsre, h1]; simp
-    have hX0 : X = 0 := by
-      have htr0 : (Xᴴ * X).trace = 0 := by rw [hXh.eq, htr, hs1, mul_zero]
-      exact Matrix.trace_conjTranspose_mul_self_eq_zero_iff.mp htr0
-    rw [traceDistance, ← hX, hX0, CFC.abs_zero, ← hczero, Real.sqrt_zero]
-    simp
+  have h := re_trace_abs_vecMulVec_sub_smul_eq ψ φ hψ hφ 1 zero_le_one
+  simp only [one_smul, sub_self, zero_pow two_ne_zero, zero_add, one_mul] at h
+  rw [traceDistance, h, Real.sqrt_mul (by positivity : 0 ≤ (4 : ℝ)),
+    show (4 : ℝ) = (2 : ℝ) ^ 2 by norm_num, Real.sqrt_sq (by positivity)]
+  exact mul_div_cancel_left₀ _ (by positivity : (2 : ℝ) ≠ 0)
 
 end Matrix

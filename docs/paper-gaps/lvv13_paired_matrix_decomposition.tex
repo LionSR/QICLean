@@ -1,0 +1,101 @@
+\documentclass{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Paired Matrix Factors in the LVV Word-Rank Bound}
+\author{}
+\date{October 21, 2026}
+
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+Landau, Vazirani and Vidick~\cite{Landau2013PolynomialTime} bound the number
+of elementary tensors needed to express an ordered word of local operators
+across a chain cut. In the proof of Claim~\texttt{c:errorreduction}, the
+crossing two-site operator is assigned $d^2$ tensor terms. Its factors must
+be indexed by the same pair of indices.\footnote{Source version:
+\href{https://arxiv.org/abs/1307.5143v1}{arXiv:1307.5143v1},
+\path{algo53.tex}, line~584, immediately before Equation~\texttt{e:decomp}
+(lines~585--588). The definition $P_i=1-H_i$ occurs at line~606;
+the ordered words are defined in Equation~\texttt{eq:a-exp}, lines~607--609.}
+This corrects the indices without changing the stated $d^{2k}$ bound for a
+word containing $k$ crossing occurrences.
+
+\paragraph{The printed indices.}
+For $d\ge1$, let $E_1,\ldots,E_d$ and $F_1,\ldots,F_d$ be separately
+indexed operator families. The expression printed in the source factors as
+\begin{align}
+    \sum_{j,k=1}^{d}E_j\otimes F_k
+        &=\left(\sum_{j=1}^{d}E_j\right)
+            \otimes\left(\sum_{k=1}^{d}F_k\right).
+    \label{eq:lvv13_independent_indices}
+\end{align}
+It therefore has operator Schmidt rank at most one. Here operator Schmidt
+rank means the least number of elementary tensors in a sum representing the
+operator. A general two-site operator need not satisfy this restriction.
+
+For example, on $\C^2$ put $D_a=\ketbra{a}{a}$ for $a\in\{0,1\}$. The
+positive contraction
+\begin{align}
+    P&=D_0\otimes D_0+D_1\otimes D_1
+      =\ketbra{00}{00}+\ketbra{11}{11}
+    \label{eq:lvv13_projection_example}
+\end{align}
+has operator Schmidt rank exactly two. The two displayed terms give the
+upper bound. For the lower bound, its two diagonal blocks on the first site
+are $D_0$ and $D_1$, which are linearly independent. If $P=A\otimes B$,
+both blocks would be scalar multiples of $B$, a contradiction.
+
+This example occurs with the local positivity and gap conditions used in
+Ref.~\cite{Landau2013PolynomialTime}.\footnote{The local-Hamiltonian
+setting is stated in \path{algo53.tex}, lines~209 and~283.}
+Take three qubits, put $h_1=\Id-P$ on sites $1,2$ and
+$h_2=\Id-D_0\otimes D_0$ on sites $2,3$, and set
+$H=h_1\otimes\Id+\Id\otimes h_2$. The two local terms are commuting
+positive contractions. For $a,b,c\in\{0,1\}$, their sum acts by
+\begin{align}
+    H\ket{abc}
+      &=\bigl((1-\delta_{ab})+(1-\delta_{b0}\delta_{c0})\bigr)\ket{abc}.
+    \label{eq:lvv13_three_site_spectrum}
+\end{align}
+The energy vanishes only on $\ket{000}$, all other energies are at least
+one, and $\ket{001}$ has energy one. Thus the ground state is unique and
+the gap is one, while $P_1=\Id-h_1=P$ still has operator Schmidt rank two.
+
+\paragraph{The paired decomposition.}
+Fix an orthonormal basis $e_0,\ldots,e_{d-1}$ of the left site. For an arbitrary
+operator $T$ on $\C^d\otimes\C^d$, define
+\begin{align}
+    E_{ab}&=\ketbra{e_a}{e_b},\notag\\
+    B_{ab}&=(\bra{e_a}\otimes\Id)T(\ket{e_b}\otimes\Id),\notag\\
+    T&=\sum_{0\le a,b<d}E_{ab}\otimes B_{ab}.
+    \label{eq:lvv13_block_expansion}
+\end{align}
+The identity follows by comparing matrix entries. It has $d^2$ terms,
+with both factors depending on the same pair $(a,b)$; zero terms are
+allowed. No positivity or spectral hypothesis is needed.
+
+Consider now an ordered word $W$ of local operators across a fixed cut.
+Suppose $k$ occurrences cross the cut, each on one $d$-dimensional site
+on either side, and every other occurrence acts on only one side. Insert
+(\ref{eq:lvv13_block_expansion}) at each crossing occurrence.
+The ordered product then expands into at most $d^{2k}$ elementary tensors,
+since $(A\otimes B)(C\otimes D)=AC\otimes BD$. Consequently,
+\begin{align}
+    \operatorname{OSR}(W)&\le(d^2)^k=d^{2k}.
+    \label{eq:lvv13_word_rank}
+\end{align}
+This counts occurrences, including repetitions, and includes the empty
+word with $k=0$. It does not require different letters to commute.\footnote{The general
+support-weighted estimate is
+\leanid{Entropy.operatorSchmidtRank_cutOperator_list_prod_le}.}
+The correction establishes this algebraic step only. The sampled sum,
+its spectral approximation, and the algorithmic conclusions of
+Ref.~\cite{Landau2013PolynomialTime} are separate assertions.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

@@ -48,6 +48,33 @@ theorem hermitianUnitaryPath_add (H : Matrix n n ℂ) (s t : ℝ) :
   rw [add_smul]
   exact NormedSpace.exp_add_of_commute ((Commute.refl (Complex.I • H)).smul_left s |>.smul_right t)
 
+/-- The path of a real scalar generator is a scalar phase: `e^{itc 1} = e^{itc} 1`. -/
+theorem hermitianUnitaryPath_smul_one (c : ℝ) (t : ℝ) :
+    hermitianUnitaryPath ((c : ℂ) • (1 : Matrix n n ℂ)) t =
+      Complex.exp (t * Complex.I * c) • (1 : Matrix n n ℂ) := by
+  have h : t • (Complex.I • ((c : ℂ) • (1 : Matrix n n ℂ))) =
+      diagonal (fun _ : n ↦ (t * Complex.I * c : ℂ)) := by
+    ext i j
+    by_cases hij : i = j <;> simp [hij, diagonal, mul_comm, mul_left_comm]
+  unfold hermitianUnitaryPath
+  rw [h, exp_diagonal]
+  ext i j
+  by_cases hij : i = j <;> simp [hij, diagonal, ← Complex.exp_eq_exp_ℂ]
+
+/-- Shifting the generator by a real scalar multiplies the path by a phase:
+`e^{it(X + c)} = e^{itc} e^{itX}`. -/
+theorem hermitianUnitaryPath_add_smul_one (X : Matrix n n ℂ) (c t : ℝ) :
+    hermitianUnitaryPath (X + (c : ℂ) • 1) t =
+      Complex.exp (t * Complex.I * c) • hermitianUnitaryPath X t := by
+  have hc : Commute (t • (Complex.I • X)) (t • (Complex.I • ((c : ℂ) • (1 : Matrix n n ℂ)))) :=
+    ((Commute.one_right X).smul_right (c : ℂ)).smul_right Complex.I |>.smul_right t
+      |>.smul_left Complex.I |>.smul_left t
+  unfold hermitianUnitaryPath
+  rw [smul_add, smul_add, Matrix.exp_add_of_commute _ _ hc]
+  have := hermitianUnitaryPath_smul_one (n := n) c t
+  unfold hermitianUnitaryPath at this
+  rw [this, mul_smul_comm, mul_one]
+
 /-- Hermitian generators give unitary matrices. -/
 theorem hermitianUnitaryPath_mul_conjTranspose
     (H : Matrix n n ℂ) (hH : H.IsHermitian) (t : ℝ) :

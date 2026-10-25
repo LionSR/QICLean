@@ -375,10 +375,16 @@ the proof sketch should name the regions or inserted tensors appearing in it.
 
 ## Bibliography Workflow
 1. Edit `blueprint/src/references.bib` (standalone, AuthorYYYYKeyword keys)
-2. Run `cd blueprint/src && latexmk -lualatex -interaction=nonstopmode print.tex` (generates `print.bbl`)
-3. Copy `blueprint/src/print.bbl` → `blueprint/src/web.bbl`  ← **must do this every time bib changes**
+2. Run `cd blueprint && leanblueprint pdf` (builds the PDF; it also copies `print.bbl` over
+   `src/web.bbl`, which under `plain` lacks the natbib labels plasTeX needs)
+3. Run `texra-blueprint bbl` from the repository root to regenerate the natbib-style
+   `blueprint/src/web.bbl`  ← **must follow every PDF build**, or citations render as "??"
 4. Run `leanblueprint web` (plasTeX reads `web.bbl`)
 5. Citation key format: e.g., `Cirac2021Matrix`, `PerezGarcia2007Matrix`
+6. Use `\bibliographystyle{plain}` (numeric labels) in `print.tex` and `web.tex`. The
+   `alpha` style disambiguates entries with the same author and year by the suffixes `a`–`z`, so a
+   27th cited paper-gap note by "QICLean contributors" in one year produces an invalid label and
+   the PDF build fails with `Paragraph ended before \@lbibitem was complete`.
 
 ## Stale/Corrupt Aux File Recovery
 If LaTeX reports `! File ended while scanning use of \@newl@bel` on startup:

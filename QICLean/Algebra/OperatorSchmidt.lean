@@ -34,6 +34,8 @@ of the operator blocks.
   reshaped map is exactly the span of the operator blocks.
 * `Matrix.operatorSchmidtRank_eq_finrank_operatorBlockSpan`: the
   operator-Schmidt rank is the dimension of that span.
+* `Matrix.operatorSchmidtRank_le_card_of_blocks_mem_span`: a finite spanning family
+  for the operator blocks bounds their rank.
 * `Matrix.operatorSchmidtRank_pos_of_ne_zero`: every nonzero bipartite matrix
   has positive operator-Schmidt rank.
 * `Matrix.hasOperatorSchmidtDecomposition_operatorSchmidtRank`: a product
@@ -121,6 +123,25 @@ theorem operatorSchmidtRank_eq_finrank_operatorBlockSpan
     operatorSchmidtRank ρ = Module.finrank R (operatorBlockSpan ρ) := by
   rw [operatorSchmidtRank, range_operatorSchmidtMap_eq_operatorBlockSpan]
 
+/-- A finite spanning family for all operator blocks bounds the operator Schmidt rank. -/
+theorem operatorSchmidtRank_le_card_of_blocks_mem_span
+    {R l n ι : Type*} [Field R] [Fintype l] [Finite n] [Fintype ι]
+    (ρ : Matrix (l × n) (l × n) R) (C : ι → Matrix n n R)
+    (hC : ∀ i j, operatorBlock ρ i j ∈ Submodule.span R (Set.range C)) :
+    operatorSchmidtRank ρ ≤ Fintype.card ι := by
+  let := Fintype.ofFinite n
+  rw [operatorSchmidtRank_eq_finrank_operatorBlockSpan]
+  calc
+    Module.finrank R (operatorBlockSpan ρ) ≤
+        Module.finrank R (Submodule.span R (Set.range C)) := by
+      apply Submodule.finrank_mono
+      refine Submodule.span_le.mpr ?_
+      rintro _ ⟨ij, rfl⟩
+      exact hC ij.1 ij.2
+    _ ≤ Fintype.card ι := by
+      change (Set.range C).finrank R ≤ _
+      exact finrank_range_le_card (R := R) C
+
 end Field
 
 section Complex
@@ -145,24 +166,15 @@ theorem operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
   classical
   let := Fintype.ofFinite n
   obtain ⟨A, B, hρ⟩ := hρ
-  rw [operatorSchmidtRank_eq_finrank_operatorBlockSpan]
-  calc
-    Module.finrank ℂ (operatorBlockSpan ρ) ≤
-        Module.finrank ℂ (Submodule.span ℂ (Set.range B)) :=
-      Submodule.finrank_mono (by
-        rw [operatorBlockSpan]
-        apply Submodule.span_le.mpr
-        rintro _ ⟨⟨i, j⟩, rfl⟩
-        have hblock : operatorBlock ρ i j = ∑ t, A t i j • B t := by
-          ext k l
-          simp [hρ, operatorBlock, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
-        change operatorBlock ρ i j ∈ Submodule.span ℂ (Set.range B)
-        rw [hblock]
-        exact Submodule.sum_mem _ fun t _ ↦
-          Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩))
-    _ ≤ r := by
-      change (Set.range B).finrank ℂ ≤ r
-      simpa only [Fintype.card_fin] using finrank_range_le_card (R := ℂ) B
+  simpa only [Fintype.card_fin] using
+    (operatorSchmidtRank_le_card_of_blocks_mem_span ρ B (by
+      intro i j
+      have hblock : operatorBlock ρ i j = ∑ t, A t i j • B t := by
+        ext k l
+        simp [hρ, operatorBlock, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul]
+      rw [hblock]
+      exact Submodule.sum_mem _ fun t _ ↦
+        Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)))
 
 /-- Every bipartite complex matrix has a product decomposition whose number of
 summands is the dimension of its operator-block span. -/

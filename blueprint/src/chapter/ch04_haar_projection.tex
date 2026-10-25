@@ -1,0 +1,65 @@
+\section{Projection onto a Haar-random coordinate subspace}
+
+The random sampling lemma of Arad, Landau, Vazirani and
+Vidick~\cite[lines 532--547]{Arad2016RigorousRG} bounds the squared norm of the
+projection of a fixed unit vector onto a uniformly random subspace by a
+standard concentration argument. The identity below reduces that random
+projection to independent Gaussian coordinates.
+
+Let $\iota$ be a finite index set, let $A\subseteq\iota$, and let $W_0$ be the
+span of the standard basis vectors $e_i$ with $i\in A$. Let $U$ be distributed
+by the Haar probability measure on the unitary group of $\mathbb{C}^\iota$, and
+let $(g_i)_{i\in\iota}$ be independent standard circular complex Gaussians,
+$g_i=(a_i+\mathrm{i}\,b_i)/\sqrt2$ with $a_i,b_i$ independent standard real
+Gaussians.
+
+\begin{theorem}[Projection onto a rotated coordinate subspace]
+    \label{thm:haar_projection_coordinate_weight}
+    \lean{QICLean.HaarProjection.starProjection_coordinateSubspace,
+        QICLean.HaarProjection.norm_sq_starProjection_map_coordinateSubspace}
+    \leanok
+    For every unitary $U$ and every vector $x$,
+    $\lVert P_{UW_0}x\rVert^2=\sum_{i\in A}\lvert(U^\dagger x)_i\rvert^2$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The projection onto $W_0$ keeps the coordinates in $A$ and discards the
+    others, and $P_{UW_0}=U P_{W_0}U^\dagger$ with $U$ preserving norms.
+\end{proof}
+
+\begin{theorem}[Law of the projection onto a Haar-random subspace]
+    \label{thm:haar_projection_law}
+    \lean{QICLean.HaarProjection.unitaryHaar_sum_norm_sq_le,
+        QICLean.HaarProjection.unitaryHaar_norm_sq_starProjection_le}
+    \leanok
+    \uses{thm:haar_projection_coordinate_weight}
+    For every unit vector $x\in\mathbb{C}^\iota$ and every real $c$,
+    \[
+        \Pr_U\Bigl[\lVert P_{UW_0}x\rVert^2\le c\Bigr]
+        =\Pr_g\Bigl[\sum_{i\in A}\lvert g_i\rvert^2
+            \le c\sum_{i\in\iota}\lvert g_i\rvert^2\Bigr].
+    \]
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Let $K$ be the set of vectors $y$ with
+    $\sum_{i\in A}\lvert y_i\rvert^2\le c\sum_i\lvert y_i\rvert^2$; it is
+    closed and invariant under multiplication by nonzero complex scalars. By
+    the lemma, and since $\lVert U^\dagger x\rVert=1$, the left side is the
+    Haar probability of $U^\dagger x\in K$. The vector $g$ is $2^{-1/2}$ times
+    a standard Gaussian vector $y$ of $\mathbb{C}^\iota$ regarded as a real
+    space, so the right side is the probability of $y\in K$.
+
+    Integrate the indicator of $U^\dagger y\in K$ against the product of the
+    Haar measure and the law of $y$ in both orders. For fixed $U$, the law of
+    $y$ is invariant under the real isometry $U^\dagger$, so the inner integral
+    is the probability of $y\in K$. For fixed $y\neq0$, choose a unitary $V$
+    with $Vx=y/\lVert y\rVert$; then
+    $U^\dagger y=\lVert y\rVert\,(V^\dagger U)^\dagger x$, and invariance of
+    the Haar measure under left multiplication by $V^\dagger$ shows that the
+    inner integral is the Haar probability of $U^\dagger x\in K$. The origin is
+    a null set for the Gaussian, so both iterated integrals agree with the two
+    sides of the identity.
+\end{proof}

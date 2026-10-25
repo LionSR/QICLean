@@ -1,0 +1,174 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+
+\title{The Trimming Radius in the Bond-Trimming Lemma\\
+    of Landau, Vazirani and Vidick}
+\author{}
+\date{2026-10-25}
+
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The source statement}
+
+For a vector $u$ with Schmidt decomposition $u=\sum_j\lambda_j a_j\otimes b_j$
+across a cut, $\lambda_1\ge\lambda_2\ge\cdots$, the trimmed vector
+$\mathrm{trim}_D(u)=\sum_{j\le D}\lambda_j a_j\otimes b_j$ keeps the $D$
+largest Schmidt terms. The bond-trimming lemma of Landau, Vazirani and
+Vidick reads as follows.\footnote{The source is
+    \cite{Landau2013PolynomialTime}. Only version~1 of arXiv:1307.5143 is
+    listed, and its source file \path{algo53.tex} is the one checked here:
+    trimming is defined at lines~330--333, the Eckart--Young lemma
+    \path{lem:eckart} is at lines~335--339, and the lemma \path{l:trim1}
+    with its proof is at lines~531--542. The published versions (ITCS 2014,
+    doi 10.1145/2554797.2554825; Nature Physics 11, 566 (2015), doi
+    10.1038/nphys3345) could not be checked.}
+Given a vector $v$ with $D$ nonzero Schmidt coefficients across the cut, for
+every $u$,
+\begin{align}
+    \bigl|\langle\mathrm{trim}_{D/\varepsilon}(u),v\rangle\bigr|
+     & \ge|\langle u,v\rangle|-\varepsilon.
+    \label{eq:lvv13_trimming_radius_printed}
+\end{align}
+The vectors $u$ and $v$ are unit vectors in every application.
+
+The proof argues by contradiction. Put $w=u-\mathrm{trim}_{D/\varepsilon}(u)$
+and assume $|\langle w,v\rangle|>\varepsilon$. The Schmidt coefficients of $w$
+are $\lambda_{\lceil D/\varepsilon\rceil+1},\lambda_{\lceil
+D/\varepsilon\rceil+2},\dots$, so the Eckart--Young theorem bounds the overlap
+of $w$ with the unit vector $v$ of Schmidt rank $D$ by
+\begin{align}
+    |\langle w,v\rangle|
+     & \le\Bigl(\sum_{i=1}^{D}\lambda_{\lceil D/\varepsilon\rceil+i}^2\Bigr)^{1/2}.
+    \label{eq:lvv13_trimming_radius_eckart}
+\end{align}
+The assumption therefore gives a tail sum larger than $\varepsilon^2$. The
+source instead records it as larger than $\varepsilon$, and only that stronger
+claim makes the closing estimate
+\begin{align}
+    \sum_{j=1}^{\lceil D/\varepsilon\rceil}\lambda_j^2
+     & \ge\Bigl\lceil\frac1\varepsilon\Bigr\rceil
+    \sum_{i=1}^{D}\lambda_{\lceil D/\varepsilon\rceil+i}^2>1
+    \label{eq:lvv13_trimming_radius_closing}
+\end{align}
+contradict the normalization of $u$. With the correct tail bound
+$\varepsilon^2$, the right-hand side is only larger than $\varepsilon$, and
+no contradiction follows.
+
+\section{The counterexample}
+
+The statement (\ref{eq:lvv13_trimming_radius_printed}) itself fails, not
+only its proof. Take $\varepsilon=1/k$ with an integer $k\ge2$, so that
+$D/\varepsilon=kD$ is an integer, and let $u$ have $N=(k+1)D$ equal Schmidt
+coefficients,
+\begin{align}
+    u & =\frac{1}{\sqrt N}\sum_{j=1}^{N}a_j\otimes b_j,
+      & v & =\frac{1}{\sqrt D}\sum_{j=kD+1}^{(k+1)D}a_j\otimes b_j.
+    \label{eq:lvv13_trimming_radius_counterexample}
+\end{align}
+Both are unit vectors, and $v$ has exactly $D$ nonzero Schmidt coefficients.
+Trimming $u$ to $kD$ terms removes precisely the terms in $v$, so
+\begin{align}
+    \langle\mathrm{trim}_{kD}(u),v\rangle & =0,
+                                           &
+    \langle u,v\rangle                     & =\sqrt{\frac DN}
+    =\sqrt{\frac{\varepsilon}{1+\varepsilon}}.
+    \label{eq:lvv13_trimming_radius_overlaps}
+\end{align}
+The printed bound (\ref{eq:lvv13_trimming_radius_printed}) would force
+$\sqrt{\varepsilon/(1+\varepsilon)}\le\varepsilon$, that is
+$\varepsilon^2+\varepsilon\ge1$, which fails for every
+$\varepsilon<(\sqrt5-1)/2$, in particular for every $\varepsilon=1/k$ with
+$k\ge2$. The smallest instance is $D=1$, $\varepsilon=1/2$: the vector
+$u=(a_1\otimes b_1+a_2\otimes b_2+a_3\otimes b_3)/\sqrt3$ is trimmed to two
+terms, $v=a_3\otimes b_3$, the trimmed overlap is $0$, and
+$|\langle u,v\rangle|-\varepsilon=1/\sqrt3-1/2>0$.
+This is a genuine error in the source rather than a degenerate reading of
+it: the data are unit vectors with nonzero Schmidt coefficients, and the
+failure persists for every $D$.
+
+\section{The correction}
+
+Trimming to $k$ terms costs at most
+\begin{align}
+    \bigl|\langle u-\mathrm{trim}_k(u),v\rangle\bigr|
+     & \le\|u\|\,\|v\|\sqrt{\frac{D}{k+1}}
+    \label{eq:lvv13_trimming_radius_corrected}
+\end{align}
+for every $u$, every $v$ of Schmidt rank at most $D$, and every $k$; the
+vectors need not be normalized. Consequently,
+$|\langle\mathrm{trim}_k(u),v\rangle|\ge|\langle u,v\rangle|-
+\|u\|\|v\|\sqrt{D/(k+1)}$. For unit vectors, the radius
+$k+1\ge D/\varepsilon^2$ gives error at most $\varepsilon$. The
+counterexample (\ref{eq:lvv13_trimming_radius_counterexample}) shows that a
+radius linear in $1/\varepsilon$ does not suffice, since the loss there is
+$\sqrt{D/(k+D)}$ at radius $k$.
+
+The proof runs as follows. Let $\rho$ be the reduced density matrix of $u$ on
+the left factor, with eigenvalues $\mu_1\ge\mu_2\ge\cdots$, and let $P$ be the
+projection that performs the trimming, so that $\operatorname{tr}(P\rho)$ is
+the sum of the $k$ largest eigenvalues. Let $T$ be the projection onto the
+range of $(I-P)$ applied to the coefficient matrix of $v$; it has rank at
+most $D$ and is orthogonal to $P$. By the Cauchy--Schwarz inequality
+$|\langle u-\mathrm{trim}_k(u),v\rangle|^2\le\operatorname{tr}(T\rho)\,
+\|v\|^2$. Ky Fan's maximum principle applied to the projection $P+T$ of rank
+at most $k+D$ gives
+\begin{align}
+    \operatorname{tr}(T\rho)
+     & \le\sum_{i=k+1}^{k+D}\mu_i\le D\mu_{k+1}
+    \le\frac{D}{k+1}\operatorname{tr}\rho
+    =\frac{D}{k+1}\|u\|^2.
+    \label{eq:lvv13_trimming_radius_ky_fan}
+\end{align}
+The argument does not depend on which eigenvectors of a repeated eigenvalue
+the trimming keeps, consistent with the footnote at line~332 of the source.
+
+The later trimming lemma of the same authors with Arad has the quadratic
+scaling of (\ref{eq:lvv13_trimming_radius_corrected}).\footnote{See
+    \cite{Arad2016RigorousRG}, version~2, source file
+    \path{local_alg_arxiv_v2.tex}, Lemma \path{lem:trimming},
+    lines~660--697.}
+There, a threshold $\xi$ on the Schmidt coefficients gives Schmidt rank at
+most $s\xi^{-2}$ and error $\sqrt{\ell bs}\,\xi$, so the rank grows as the
+inverse square of the error.
+
+\section{Effect downstream}
+
+Claim \path{c:trim} of the source (lines~549--567) applies the lemma at each
+of the $n$ bonds with $D=r(n)$ and $\varepsilon=1/(48n)$, so with radius
+$p_2(n)=48n\,r(n)$, and sums the $n$ errors to $n/(48n)=1/48$. With the
+corrected radius $D/\varepsilon^2$ the same argument needs
+$p_2(n)=(48n)^2r(n)$. This is still a polynomial, so Claim \path{c:trim}
+and the polynomial running time of the algorithm survive with the larger
+$p_2$. The companion lemma \path{l:trim2} (lines~544--547), that trimming
+across one cut does not increase the Schmidt rank across any other cut, is
+unaffected.
+
+\section{Formalization}
+
+The trimming projection of a vector at $D$ is
+\leanid{Matrix.IsTrimmingProjection}: an orthogonal projection of rank at
+most $D$ on the left factor whose trace against the reduced density matrix
+is the sum of its $D$ largest eigenvalues. Every choice in a degenerate
+Schmidt coefficient is admitted, and \leanid{Matrix.exists_isTrimmingProjection}
+gives existence for every $D$. The trimmed vector is
+\leanid{Matrix.leftApply}. The Eckart--Young lemma is
+\leanid{Matrix.IsTrimmingProjection.norm_inner_le_re_inner_normalized},
+with the real overlap computed by
+\leanid{Matrix.IsTrimmingProjection.inner_normalized_eq_sqrt}. The corrected
+bound (\ref{eq:lvv13_trimming_radius_corrected}) is
+\leanid{Matrix.IsTrimmingProjection.norm_inner_sub_leftApply_le}, and its
+form as a lower bound on the trimmed overlap is
+\leanid{Matrix.IsTrimmingProjection.norm_inner_sub_le_norm_inner_leftApply}.
+The printed statement (\ref{eq:lvv13_trimming_radius_printed}) is not
+formalized.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

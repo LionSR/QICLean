@@ -24,6 +24,50 @@ in a regression file are not additional mathematical consumers.
   `vonNeumannEntropy_reduced_eq_zero_of_operatorSchmidtRank_le_one`, and
   `vonNeumannEntropy_reduced_le_four_log_of_operatorSchmidtRank`.
 
+### Coefficients after left multiplication by a linear polynomial — promoted (2026-10-22)
+
+- **Consumers:** The ordered-gap equality in `Algebra/OrderedPolynomialGaps.lean`,
+  the commuting-gap span in `Algebra/CommutingPolynomialGaps.lean`, and the
+  two-marker identity in `Algebra/PolynomialTwoMarkerPower.lean`.
+- **Lemma:** `Polynomial.coeff_C_add_C_mul_X_mul_succ` in
+  `Algebra/PolynomialLinearFactor.lean` gives the successor coefficient of
+  `(C D + C T * X) * P` over an arbitrary semiring. It combines the existing
+  constant and monomial coefficient identities without reordering products.
+- **Refactor:** Both gap recurrences invoke the shared lemma after expanding
+  the power on the left. The two-marker proof uses the same coefficient rule
+  over the polynomial semiring and over its coefficient semiring; its distinct
+  induction is retained.
+- **Accounting:** There are three production consumers across three files.
+  The two-marker boundary applications are fixtures, not additional consumers.
+  This entry consolidates the two previously overlapping candidate entries.
+- **Scope:** Only addition may be reordered. The existing constant and leading
+  coefficient arguments remain separate; no coefficient-commutativity premise,
+  custom tactic or additional polynomial framework is introduced.
+
+### Finite linear combinations in an operator-block span — existing Mathlib lemma (2026-10-22)
+
+- **Consumers:** Both cut-movement proofs in `Algebra/OperatorSchmidtCut.lean`
+  the middle-block expansion in `Algebra/OperatorSchmidtTwoCuts.lean`, and
+  the extracted gap blocks in `Algebra/LocalPolynomialSchmidtRank.lean`.
+- **Lemma:** `Submodule.sum_smul_mem` handles the scalar-weighted finite sum;
+  each caller supplies membership of the actual family in its span.
+- **Refactor:** Replace the repeated sum-closure and scalar-closure steps by
+  this existing lemma. The cut statements and their hypotheses are unchanged.
+
+### Operator Schmidt rank from a finite block span — promoted (2026-10-22)
+
+- **Consumers:** The product-decomposition bound in `Algebra/OperatorSchmidt.lean`
+  both cut-movement bounds in `Algebra/OperatorSchmidtCut.lean`, and the
+  coefficient gap bound in `Algebra/LocalPolynomialSchmidtRank.lean`.
+- **Lemma:** `Matrix.operatorSchmidtRank_le_card_of_blocks_mem_span` combines
+  inclusion of block spans with the dimension bound for a finite spanning family.
+- **Refactor:** Each consumer supplies its actual block expansion. The existing
+  product-decomposition theorem keeps its statement; the two cut bounds derive
+  their spanning families from a shortest decomposition.
+- **Scope:** The shared lemma holds over an arbitrary field, including empty
+  finite factors. No additional spanning assumption enters the cut bounds.
+
+
 ### Entropy comparison with a supplied uniform norm bound — shared private lemma (2026-10-18)
 
 - **Seen:** The polynomial and logarithmic buffered-discount theorems in
@@ -113,6 +157,24 @@ in a regression file are not additional mathematical consumers.
 - **Refactor:** All three finite-sum calculations invoke this direct equality.
 - **Caveat:** The equality itself needs no unitary assumption. Unitarity is
   used separately for norm bounds and invariance of expectations.
+
+### Conditional filtered Gram moments — promoted lemma (2026-10-17)
+
+- **Pattern:** Derive the lower trace-pairing bound, use its strict positivity
+  to prove positivity of the filtered Gram moment, and apply the entropy upper
+  bound at the optimizer weights. `optimizer_attains` identifies the last trace.
+- **Result:** `ConditionalMovement.ConditionalCollision.conditional_gramMoment_bounds`
+  in `Entropy/ConditionalMovement/Optimizer.lean`, after `density_spectrum_sum`.
+  It returns the lower bound, positivity and the entropy upper bound together.
+- **Consumers:** `conditional_optimizer_root_stability` in `Optimizer.lean` and
+  `conditional_optimizer_deficit` in `FilterSlack.lean` use the lower and upper
+  bounds. Their eigenvalue nonnegativity and spectral mass remain available for
+  the final optimizer estimates. `paired_entropy_boundary` in
+  `BoundaryEnergy.lean` uses positivity and the upper bound.
+- **Scope:** The marginal may be singular. The lemma retains normalization, a
+  nonempty first coordinate type, `0 < β ≤ 1/3`, and
+  `β / (1 - β) * log (card X) ≤ 1`. No consumer gains a hypothesis or import.
+  One mathematical lemma removes the repeated argument; no tactic is introduced.
 
 ### Reciprocal real powers — existing mathematical lemma (2026-10-16)
 
@@ -246,6 +308,56 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   The public homogeneous contraction lemma is available to the separate
   powered-vector argument. Regression applications are not counted as consumers.
 
+### Positivity of a filtered Gram moment — legacy candidate (2026-10-17)
+
+- **Pattern:** A positive power of a nonnegative Gram moment forces the moment
+  to be positive: otherwise it is zero, and its positive power vanishes.
+- **Seen:** `gramMoment_pos_of_filter_pos` and `optimizer_root_bound` in
+  `Entropy/ConditionalMovement/Optimizer.lean`, and `optimizer_deficit_bound` in
+  `Entropy/ConditionalMovement/FilterSlack.lean`.
+- **Decision:** These three preexisting contradiction arguments remain unchanged.
+  A later simplification should first check a suitable real-power positivity
+  lemma and reuse the weakest existing result; no additional analytic bound or
+  new tactic is needed. This candidate is separate from the shared conditional
+  lower/upper trace estimates above.
+
+### Scalar phase-power identities — legacy candidate (2026-10-17)
+
+- **Pattern:** After expanding a spectral phase product, move real coercions into
+  the complex exponent and close the scalar polynomial identity.
+- **Seen:** `phase_mul_power` and `power_mul_phase` in
+  `Entropy/ConditionalMovement/BoundaryEnergy.lean`.
+- **Decision:** These two preexisting cast-and-ring calculations remain unchanged.
+  Two occurrences in one file do not require a new abstraction. Reuse the
+  existing phase-power identities in later consumers instead of copying them.
+
+### Product decompositions under tensor permutations and identity spectators — candidate (2026-10-22)
+
+- **Seen:** The factor-flip inequality and the left and reflected right
+  spectator inequalities in `Algebra/TripartitePolynomialSchmidtRank.lean`.
+- **Pattern:** Choose an actual shortest product decomposition, identify the
+  transformed tensor factors termwise, and apply the existing upper bound
+  for the length of a product decomposition.
+- **Decision:** The three tensor identities are in one module. Reuse
+  `Matrix.hasOperatorSchmidtDecomposition_operatorSchmidtRank` and
+  `Matrix.operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition`;
+  keep the distinct tensor identities explicit. No additional tactic is needed.
+- **Caveat:** An empty spectator may lower the rank. Only the displayed
+  decomposition length is preserved; no nonempty-factor premise or rank
+  cancellation is used. Boundary applications are not additional consumers.
+
+
+### Finite scalar span followed by an operator-rank sum — candidate (2026-10-22)
+
+- **Seen:** The final coefficients in `Algebra/CommutingPolynomialSchmidtRank.lean`
+  and `Algebra/LocalPolynomialSchmidtRank.lean`.
+- **Pattern:** Use `Submodule.mem_span_range_iff_exists_fun` to obtain the actual
+  complex scalar coefficients, then the scalar and finite-sum rank bounds.
+- **Decision:** Two occurrences; retain the direct arguments. A third consumer
+  would justify a rank bound for membership in a finite operator span.
+- **Caveat:** In the local-polynomial argument, coefficient extraction is first
+  justified by a fixed tensor-factor family; a pointwise rank hypothesis alone
+  does not justify that step.
 
 ### Normalized regional states — candidate (2026-10-15)
 
@@ -1249,3 +1361,99 @@ No new tactic or duplicate tree induction is introduced.
 - Enumeration reuses the accepted compressed metric/prevector equalities and
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
+
+### Weighted monomial recovery at common evaluation points — candidate (2026-10-22)
+
+- **Consumers:** `operatorSchmidtRank_sum_le_of_monomial_evaluations` in
+  `Algebra/MonomialEvaluationSchmidtRank.lean` and the private
+  `rank_weighted_sum_of_injective_monomials` in
+  `Algebra/WeightedFrequencySchmidtRank.lean`.
+- **Pattern:** Apply the existing monomial recovery coefficients to the same
+  evaluated operator family, interchange the finite sums, and contract the
+  selected or scalar-weighted coefficients before applying the sum rank bound.
+- **Reuse:** Both arguments invoke
+  `MvPolynomial.monomial_evaluation_recovery_smul`; `Finset.sum_comm`,
+  `Finset.sum_smul` and `Finset.smul_sum` give the finite-sum calculation.
+- **Decision:** Two occurrences across two files. No new tactic or public
+  interpolation theorem is introduced. The weighted argument also transports
+  an injectively indexed finite support and retains one evaluation cardinality.
+
+### Weighted pure-state projection identities — shared lemma (2026-10-23)
+
+- **Seen:** The equal-weight pure-state trace distance and the optimized
+  pure-state trace-norm error use the same rank-one projection identities.
+- **Decision:** `Matrix.re_trace_abs_vecMulVec_sub_smul_eq` in
+  `Analysis.WeightedPureStateTraceNorm` contains the projection calculation
+  once. The old trace-distance theorem specializes its coefficient to one;
+  `Analysis.OptimizedPureStateTraceError` uses it after positive rescaling.
+- **Mechanism:** Existing `module` handles scalar polynomial identities
+  after distributivity; existing functional-calculus square-root uniqueness
+  identifies the absolute value. No new tactic is needed.
+- **Caveat:** The density coefficient is nonnegative in the weighted
+  identity. The final minimum separately treats all complex coefficients
+  by Hermitian-part contraction and trace duality.
+
+### Uniform-weight Jensen bounds for entropy contributions (2026-10-23)
+
+- **Seen:** `Analysis.ProbabilityEntropy` and
+  `Analysis.ProbabilityEntropyConcentration` apply concavity of `negMulLog`
+  with reciprocal-cardinality weights, then multiply by the cardinality.
+- **Candidate:** `Entropy.sum_negMulLog_le_mass_log_card` now gives the
+  finite-mass estimate, including an empty set. A future consolidation can
+  put this lower-level estimate before the normalized support theorem and
+  derive the latter from it. There are two occurrences, below the promotion
+  threshold; no new tactic or simp set is introduced.
+
+## Candidate: ordered eigenvalue tails as finite probability tails (2026-10-23)
+
+The conversion from a natural-number interval of descending eigenvalues to the
+complement of a filtered finite ordinal appears in
+`Analysis.VonNeumannEntropySpectralTail` and `Entropy.RenyiRankLowerBound`
+(the latter is developed separately). Both use `Fin.sum_univ_eq_sum_range`
+and the equality between a filtered range and an interval. A third independent
+use should promote this conversion to a shared eigenvalue-sum lemma.
+
+### Identity contractions in trace products — existing lemma (2026-10-23)
+
+- **Seen:** The imaginary-weight estimate and the empty product in
+  `Analysis.TraceHolderMulti` need the identity operator norm bound.
+- **Decision:** Reuse `Matrix.l2_opNorm_one_le` from
+  `Analysis.ContractionChain`, rather than repeating its private proof.
+- **Caveat:** The bound is at most one and includes an empty coordinate
+  space. Neither use introduces a nonempty-space assumption.
+- **Mechanism:** A direct mathematical lemma suffices; no tactic is added.
+
+### Degree-one coefficient recurrence — candidate (2026-10-22)
+
+- **Seen:** The private coefficient recurrences in `Algebra/OrderedPolynomialGaps.lean`
+  and `Algebra/CommutingPolynomialGaps.lean`.
+- **Pattern:** Left multiplication by `C D + C T * X` gives the same two-term
+  coefficient recurrence, with constant and leading-coefficient boundaries.
+- **Decision:** Reuse the polynomial coefficient lemmas. There are two consumers;
+  a third use would justify one shared recurrence lemma.
+
+### Isolated ground projection as an indicator — candidate (2026-10-22)
+
+- **Pattern:** On a finite Hermitian spectrum contained in one isolated energy
+  and a higher interval, express the complement of the closed threshold
+  projection as the indicator of the isolated energy.
+- **Seen:** `Analysis/PowerSpectralFilter.lean`, local `hPg`; the corresponding
+  local `hPg` in `Analysis/ChebyshevSpectralFilter.lean` (proposed in QICLean
+  PR 860).
+- **Decision:** Two occurrences across the two spectral-filter developments.
+  Retain the short local calculations for now; consider a shared projection
+  lemma if a third consumer requires the same identification.
+
+### Finite-sum upper bounds for positive contractions — existing lemmas (2026-10-22)
+
+- **Pattern:** Sum the bounds $h_i\le1$ and identify the constant sum with
+  the number of terms times the identity.
+- **Seen:** The spectral calculation in `Analysis/PhysicalPowerFilter.lean`
+  and both the exponential estimate and logarithmic threshold in
+  `Analysis/PhysicalPowerFilterLowerGap.lean`.
+- **Reuse:** `Finset.sum_le_sum`, `Finset.sum_const`, and
+  `Nat.cast_smul_eq_nsmul` already supply the general inequality and its
+  scalar normalization. These existing lemmas suffice; no new tactic or
+  additional finite-sum theorem is introduced. The new evaluation of an
+  operator upper bound on a unit eigenvector is shared by the two new
+  estimates as one private mathematical lemma.

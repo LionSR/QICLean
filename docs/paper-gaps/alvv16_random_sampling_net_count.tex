@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{The failure probability in the random sampling lemma}
+\author{}
+\date{2026-10-25}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+Arad--Landau--Vazirani--Vidick,
+\href{https://arxiv.org/abs/1602.08828}{arXiv:1602.08828v2}, Lemma
+\texttt{l:rs}, source lines 532--547, take an $r$-dimensional subspace $T$
+of $\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$ and a
+$q$-dimensional subspace $W\subseteq\mathcal H_M$ that is $\delta$-viable
+for $T$. They assert that a random $s$-dimensional subspace $W'$ of $W$ is
+$(1-\delta')$-viable for $T$ with probability at least $1-\eta$, where
+\begin{align}
+    \delta'&=\frac{(1-\delta)s}{8q},\notag\\
+    \eta&=\Big(1+4\sqrt{\frac{q}{(1-\delta)s}}\Big)^rqe^{-s/16}.
+    \label{eq:alvv_rs_printed_eta}
+\end{align}
+
+The proof applies a single-vector concentration bound, with failure
+probability $qe^{-s/16}$, to every point of a net of the unit sphere of $T$
+at scale $\nu=\sqrt{\delta'}=\sqrt{(1-\delta)s/(8q)}$, and closes with a
+union bound. The cited volume argument (Vershynin, Lemma~5.2) bounds the
+size of a $\nu$-net of the unit sphere of a real space of dimension $n$ by
+$(1+2/\nu)^n$. The space $T$ is a complex space of dimension $r$, hence a
+real space of dimension $2r$, and
+\begin{align}
+    \frac{2}{\nu}&=4\sqrt2\sqrt{\frac{q}{(1-\delta)s}}.\notag
+\end{align}
+The argument as written therefore gives
+\begin{align}
+    \eta&=\Big(1+\frac2\nu\Big)^{2r}qe^{-s/16}
+    =\Big(1+4\sqrt{\frac{2q}{(1-\delta)s}}\Big)^{2r}qe^{-s/16}.
+    \label{eq:alvv_rs_corrected_eta}
+\end{align}
+The printed value \eqref{eq:alvv_rs_printed_eta} undercounts the net twice:
+the exponent is the complex dimension $r$ instead of the real dimension $2r$,
+and the base omits the factor $\sqrt2$.
+
+The correction is local. The conclusion and the value of $\delta'$ are
+unchanged, and the proof gives \eqref{eq:alvv_rs_corrected_eta} without
+further changes. The area-law arguments use only that the failure
+probability is less than one, so that some $s$-dimensional subspace is
+viable; this holds for $s$ large compared with $r\log(2+q/((1-\delta)s))$ and
+$\log q$ under either formula, so they are unaffected. The formalization
+proves \eqref{eq:alvv_rs_corrected_eta}, with the random subspace given by
+a Haar-random unitary applied to a fixed $s$-dimensional coordinate
+subspace of $W$, and the existence of a viable $W'$ whenever the corrected
+$\eta$ is less than one.
+\end{document}

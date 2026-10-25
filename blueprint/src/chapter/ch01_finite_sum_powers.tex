@@ -1,0 +1,116 @@
+\section{Powers of finite sums}
+\label{sec:finite_sum_powers}
+
+The word expansion in the approximate ground-state projector of~\cite{Landau2013PolynomialTime} is valid without
+commutation of the local operators. The following algebraic statement
+preserves the order of every factor.
+
+\begin{theorem}[Ordered expansion of a finite-sum power]
+    \label{thm:finite_sum_power_ordered_words}
+    \lean{Fintype.sum_pow_eq_sum_ordered_words}
+    \leanok
+    Let $R$ be a semiring, let $I$ be a finite set, and let $P_i\in R$
+    for $i\in I$. For every integer $m\ge0$,
+    \begin{align}
+        \left(\sum_{i\in I}P_i\right)^m
+        =\sum_{w\in I^{\{0,\ldots,m-1\}}}
+            P_{w(0)}P_{w(1)}\cdots P_{w(m-1)}.
+    \end{align}
+    The factors on the right occur in the indicated order.
+    For $m=0$, the unique empty word contributes the multiplicative identity,
+    including when $I$ is empty. For $m>0$ and $I$ empty, both sides vanish.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Induct on $m$. At $m=0$, the empty product gives the assertion.
+    In the induction step, write
+    $(\sum_i P_i)^{m+1}=(\sum_i P_i)(\sum_i P_i)^m$.
+    Distribute multiplication over both sums. Every word of length $m+1$
+    is uniquely determined by its first letter and its remaining word of
+    length $m$, giving the required indexing of the sum.
+\end{proof}
+
+\begin{corollary}[Normalized complement expansion]
+    \label{cor:normalized_complement_ordered_words}
+    \lean{Fintype.smul_sub_average_pow_eq_sum_ordered_words}
+    \leanok
+    Let $R$ be a unital complex algebra, let $I$ be a nonempty finite set
+    of cardinality $N$, and let $h_i\in R$. For $c\in\mathbb C$ and every
+    integer $m\ge0$,
+    \begin{align}
+        \left[c\left(1-\frac1N\sum_{i\in I}h_i\right)\right]^m
+        =\left(\frac cN\right)^m
+          \sum_{w\in I^{\{0,\ldots,m-1\}}}
+            (1-h_{w(0)})\cdots(1-h_{w(m-1)}).
+    \end{align}
+    Complex scalars act through the algebra structure. The scalar $c$
+    may vanish, and the factors need not commute.
+\end{corollary}
+
+\begin{proof}
+    \leanok
+    \uses{thm:finite_sum_power_ordered_words}
+    Write $S=\sum_i h_i$. Since $N>0$,
+    \begin{align}
+        \frac1N\sum_i(1-h_i)=1-\frac1N S.
+    \end{align}
+    Take the $m$-th power, move the central scalar outside the power,
+    and apply Theorem~\ref{thm:finite_sum_power_ordered_words} to the
+    complements $1-h_i$.
+\end{proof}
+
+For the chain Hamiltonian of~\cite{Landau2013PolynomialTime}, there are
+$N-1$ local terms. Add the final term $h_N=0$, so that its complement is
+$1$, and choose $c=(1-E_0/N)^{-1}$. This gives the ordered expansion used
+there. Spectral bounds on this operator are separate assertions.
+
+\begin{theorem}[Two distinguished frequencies in an ordered expansion]
+    \label{thm:two_marker_full_word_counts}
+    \lean{Polynomial.coeff_coeff_pow_two_markers_eq_sum_full_counts}
+    \leanok
+    Let $R$ be a unital complex algebra, let $I$ be a finite set, and
+    let $H_a\in R$ for $a\in I$. Fix distinct $u,v\in I$, complex numbers
+    $z_a$ for $a\in I$, and integers $k,i,j\ge0$. Set
+    $O=I\setminus\{u,v\}$ and $E_k=\{\alpha:I\to\N:\sum_a\alpha(a)=k\}$.
+    For a word $w\in I^{\{0,\ldots,k-1\}}$, let
+    $n_w(a)=|\{t:w(t)=a\}|$. Define $D(z)=\sum_{a\in O}z_aH_a$
+    and, for $\alpha\in E_k$,
+    \begin{align}
+        C_\alpha
+         & =\sum_{\substack{w\in I^{\{0,\ldots,k-1\}}\\n_w=\alpha}}
+        H_{w(0)}\cdots H_{w(k-1)}.
+    \end{align}
+    For central commuting indeterminates $X,Y$, put
+    $F(X,Y)=D(z)+H_uX+H_vY$. Then
+    \begin{align}
+        [Y^j][X^i]F(X,Y)^k
+         & =\sum_{\substack{\alpha\in E_k\\\alpha(u)=i,\ \alpha(v)=j}}
+        \left(\prod_{a\in O}z_a^{\alpha(a)}\right)C_\alpha.
+        \label{eq:two_marker_full_counts}
+    \end{align}
+    All products in $C_\alpha$ retain the order of the original word.
+    The empty word contributes $1$, and an empty sum contributes $0$.
+    This identity supplies the coefficient collection in the arguments
+    of~\cite[Lemma~4.2]{Arad2013AreaLaw}
+    and~\cite[proof of Proposition~5.7]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:finite_sum_power_ordered_words}
+    Give each letter the scalar weight $\omega_a=z_a$ on $O$ and
+    $\omega_u=\omega_v=1$. Its polynomial is
+    $P_a=\omega_aH_aX^{\mathbf1_{a=u}}Y^{\mathbf1_{a=v}}$, so that
+    $\sum_aP_a=F$. By Theorem~\ref{thm:finite_sum_power_ordered_words},
+    $F^k$ is the sum of the ordered products of the $P_a$. For each word,
+    \begin{align}
+        P_{w(0)}\cdots P_{w(k-1)}
+         & =\left(\prod_{a\in O}z_a^{n_w(a)}\right)
+        H_{w(0)}\cdots H_{w(k-1)}X^{n_w(u)}Y^{n_w(v)}.
+    \end{align}
+    Extracting the two coefficients retains exactly the words with
+    $n_w(u)=i$ and $n_w(v)=j$. Since $\sum_a n_w(a)=k$, grouping these
+    words by the same full frequency function $\alpha=n_w$ gives
+    (\ref{eq:two_marker_full_counts}).
+\end{proof}
