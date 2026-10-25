@@ -13,8 +13,8 @@ Arad, Landau, Vazirani and Vidick (arXiv:1602.08828v2, `local_alg_arxiv_v2.tex`,
 `prop:albootstrap-dg`, lines 1062–1075) bound the minimal dimension of a `0.015`-viable subspace
 for the ground space `T` by alternating random sampling (Lemma `l:rs`) and error reduction
 (Lemma `l:er`). The operators `A_i` come from Theorem `t:ais`: there are `D²` operators on the
-middle factor and a subspace `T̃` mutually `0.005`-close to `T` such that applying the `A_i` to a
-`δ`-viable set for `T̃` gives a `Δ / (1 - δ) ^ 2`-viable set, with `D ^ 12 Δ ≤ 10⁻⁵`.
+middle factor and a subspace `T'` mutually `0.005`-close to `T` such that applying the `A_i` to a
+`δ`-viable set for `T'` gives a `Δ / (1 - δ) ^ 2`-viable set, with `D ^ 12 Δ ≤ 10⁻⁵`.
 
 Here the bootstrapping argument is proved for these data as hypotheses. If `W` is `0.015`-viable
 for `T` and has dimension `q ≥ 4 D²`, and the failure probability of Lemma `l:rs` for samples of
@@ -26,8 +26,8 @@ subspace of dimension below any threshold `q₁ ≥ 4 D²` above which the sampl
 sampling condition `eq:bootstrap-cond-dg` holds for `q = r e^{Õ(γ⁻¹ log³ d)}`.
 
 **Local fix (constants of the bootstrapping step):** the source applies Lemma `l:rs` with the
-target `T` where `T̃` is meant (line 1068) and with its printed failure probability; here
-the sample is drawn for `T̃` with the corrected failure probability of `l:rs`, and the
+target `T` where `T'` is meant (line 1068) and with its printed failure probability; here
+the sample is drawn for `T'` with the corrected failure probability of `l:rs`, and the
 condition is the requirement that this probability be below `1`. The chain of constants
 `(32 D²)² Δ + 0.005 ≤ 0.1 ≤ 0.15` (line 1074) does not close against the threshold `0.015`;
 since `l:close` doubles the error, the argument needs `Δ / δ'² ≤ 0.0025`, which follows from
