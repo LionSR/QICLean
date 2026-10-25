@@ -11,7 +11,8 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let decls := #[``Submodule.IsCloseTo, ``Submodule.isCloseTo_iff, ``Submodule.IsCloseTo.exists_mem_starProjection_eq,
+  let decls := #[``Submodule.IsCloseTo, ``Submodule.isCloseTo_iff,
+    ``Submodule.IsCloseTo.exists_mem_starProjection_eq,
     ``Submodule.IsCloseTo.trans]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do
