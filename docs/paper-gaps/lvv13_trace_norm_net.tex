@@ -1,0 +1,77 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+
+\title{The Trace-Norm Net in the Cardinality Reduction\\
+    of Landau, Vazirani and Vidick}
+\author{}
+\date{2026-10-25}
+
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The source statement}
+
+The cardinality reduction of Landau, Vazirani and Vidick discretizes the
+boundary contractions, matrices on $\mathbb C^B\otimes\mathbb C^d$, by a net
+in trace norm.\footnote{The source is \cite{Landau2013PolynomialTime},
+    version~1 of arXiv:1307.5143, source file \path{algo53.tex}, Lemma
+    \path{l:constantbondapprox} at lines~451--460.} The lemma sets
+\begin{align}
+    \mathcal I_\eta
+     & =\{-1,-1+\lfloor\eta/(Bd)^2\rfloor,\dots,1-\lfloor\eta/(Bd)^2\rfloor,1\},
+     &
+    \mathcal N_\eta
+     & =\mathcal I_\eta^{B}\times\mathcal I_\eta^{d},
+    \label{eq:lvv13_trace_norm_net_printed}
+\end{align}
+and states that $\mathcal N_\eta$ has at most
+$(2\lceil Bd/\eta\rceil+1)^{2Bd}$ elements and that every $Y$ of trace norm
+at most $1$ is within trace-norm distance $\eta$ of some $X\in\mathcal
+    N_\delta$. The proof notes that the entries of such a $Y$ have modulus at
+most $1$ and that $\|Y-X\|_1\le(Bd)^2\max_{i,j}|Y_{ij}-X_{ij}|$.
+
+\section{The point at issue}
+
+Four slips in the printed statement need reading:
+\begin{enumerate}
+    \item the step $\lfloor\eta/(Bd)^2\rfloor$ is $0$ for $\eta<(Bd)^2$, so
+          it is read as $\eta/(Bd)^2$;
+    \item the net is written $\mathcal N_\delta$ for $\mathcal N_\eta$;
+    \item the product $\mathcal I_\eta^B\times\mathcal I_\eta^d$ does not
+          describe a $(Bd)\times(Bd)$ complex matrix, which has $(Bd)^2$
+          complex entries; it is read as a grid for the real and imaginary
+          parts of every entry, $2(Bd)^2$ real coordinates in all;
+    \item with that grid, of step at most $\eta/(Bd)^2$ on $[-1,1]$, each
+          coordinate takes at most $2\lceil(Bd)^2/\eta\rceil+1$ values, so the
+          size is at most $(2\lceil(Bd)^2/\eta\rceil+1)^{2(Bd)^2}$, not the
+          printed $(2\lceil Bd/\eta\rceil+1)^{2Bd}$.
+\end{enumerate}
+The distance estimate holds as printed. Rounding the real and imaginary part
+of each entry to the grid moves the entry by at most the step, and the trace
+norm is at most the sum of the moduli of the $(Bd)^2$ entries.
+
+\section{Effect downstream}
+
+The corrected size is still polynomial in $1/\eta$ for fixed $B$ and $d$.
+At $\eta=c_\varepsilon/(2n)$ it is polynomial in $n$, so the cardinality
+bound $p_1(n)$ of Claim \path{c:2} (lines~518--519) remains a polynomial, with the
+exponent $2(B_{c_\varepsilon}d)^2$ in place of $2B_{c_\varepsilon}d$.
+
+\section{Formalization}
+
+The net is \leanid{Matrix.exists_finset_rectangularTraceNorm_net}, for
+square matrices over any finite index type of size $c$: for $\eta>0$ it
+gives at most $(2\lceil c^2/\eta\rceil+1)^{2c^2}$ matrices within trace-norm
+distance $\eta$ of every matrix of trace norm at most $1$. The two entry
+estimates are \leanid{Matrix.norm_apply_le_rectangularTraceNorm} and
+\leanid{Matrix.rectangularTraceNorm_le_sum_norm_apply}.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

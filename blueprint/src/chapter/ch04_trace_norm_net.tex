@@ -1,0 +1,48 @@
+\section{A finite net for the trace-norm unit ball}
+
+The cardinality reduction of Landau, Vazirani and
+Vidick~\cite[lines 451--460]{Landau2013PolynomialTime} discretizes boundary
+contractions by a finite net in trace norm.
+
+\begin{theorem}[Entries and trace norm]
+    \label{thm:trace_norm_entries}
+    \lean{Matrix.norm_apply_le_l2_opNorm, Matrix.norm_apply_le_rectangularTraceNorm,
+        Matrix.rectangularTraceNorm_single_one_le,
+        Matrix.rectangularTraceNorm_le_sum_norm_apply}
+    \leanok
+    For a complex square matrix $Y$, every entry satisfies
+    $\lvert Y_{ij}\rvert\le\lVert Y\rVert\le\lVert Y\rVert_1$, and
+    $\lVert Y\rVert_1\le\sum_{i,j}\lvert Y_{ij}\rvert$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    An entry is bounded by the norm of its column, which is at most the
+    operator norm. The entry $Y_{ij}$ is the trace pairing of $Y$ with a
+    matrix unit, which has operator norm one, so it is at most
+    $\lVert Y\rVert_1$. Writing $Y$ as the sum of its entries times matrix
+    units, each of trace norm at most one, gives the last bound.
+\end{proof}
+
+\begin{theorem}[A trace-norm net]
+    \label{thm:trace_norm_net}
+    \lean{Matrix.exists_finset_rectangularTraceNorm_net}
+    \leanok
+    \uses{thm:trace_norm_entries}
+    Let $c$ be the size of a square matrix and $\eta>0$. There is a set of at
+    most $(2\lceil c^2/\eta\rceil+1)^{2c^2}$ complex $c\times c$ matrices such
+    that every matrix of trace norm at most $1$ is within trace-norm distance
+    $\eta$ of one of them. This is Lemma~l:constantbondapprox
+    of~\cite[lines 451--460]{Landau2013PolynomialTime} for $c=Bd$, with the
+    printed grid step, net and size corrected as recorded
+    in~\cite{gap:lvv13_trace_norm_net}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Put $M=\lceil c^2/\eta\rceil$ and round the real and imaginary part of
+    every entry, which lies in $[-1,1]$, to the grid
+    $\{-1+k/M:0\le k\le2M\}$. Each entry moves by at most $1/M$, so the trace
+    norm of the difference is at most $c^2/M\le\eta$, and there are at most
+    $(2M+1)^{2c^2}$ rounded matrices.
+\end{proof}
