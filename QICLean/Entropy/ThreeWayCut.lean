@@ -21,7 +21,7 @@ Hamiltonian is supported inside `B` and the rest `H_i + H_R` outside `A`.
 ## Main definitions
 
 * `Entropy.threeCutEquiv`: the coordinates `((x, y), z)` of a configuration.
-* `Entropy.regionSplitEquiv`: the split of a configuration on `B` into its parts on `A` and
+* `Entropy.subsetSplitEquiv`: the split of a configuration on `B` into its parts on `A` and
   `B \ A`.
 
 ## Main results
@@ -92,7 +92,7 @@ theorem threeCutEquiv_symm_apply_of_not_mem {p} {v : V} (hv : v ∉ B) :
   simp [threeCutEquiv, hA, hv]
 
 /-- The split of a configuration on `B` into its parts on `A` and on `B \ A`, for `A ⊆ B`. -/
-def regionSplitEquiv (n : V → ℕ) {A B : Finset V} (hAB : A ⊆ B) :
+def subsetSplitEquiv (n : V → ℕ) {A B : Finset V} (hAB : A ⊆ B) :
     ((v : {v // v ∈ B}) → Fin (n v)) ≃
       ((v : {v // v ∈ A}) → Fin (n v)) × ((v : {v // v ∈ B \ A}) → Fin (n v)) where
   toFun c := (fun v ↦ c ⟨v, hAB v.2⟩, fun v ↦ c ⟨v, (Finset.mem_sdiff.1 v.2).1⟩)
@@ -113,7 +113,7 @@ omit [Fintype V] in
 `B` followed by the split of the part on `B` into its parts on `A` and `B \ A`. -/
 theorem threeCutEquiv_eq_trans :
     threeCutEquiv n hAB =
-      (cutEquiv n B).trans ((regionSplitEquiv n hAB).prodCongr (Equiv.refl _)) := by
+      (cutEquiv n B).trans ((subsetSplitEquiv n hAB).prodCongr (Equiv.refl _)) := by
   ext σ <;> rfl
 
 /-- **An operator supported inside `B`** is, in three-way cut coordinates, a matrix on the parts

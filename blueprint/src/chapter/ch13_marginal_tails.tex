@@ -390,11 +390,11 @@ depend on the common values there.
 
 \begin{theorem}[Three-way cut coordinates]
     \label{thm:three_way_cut_coordinates}
-    \lean{Entropy.threeCutEquiv, Entropy.regionSplitEquiv, Entropy.threeCutEquiv_eq_trans,
+    \lean{Entropy.threeCutEquiv, Entropy.subsetSplitEquiv, Entropy.threeCutEquiv_eq_trans,
         Entropy.IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one,
         Entropy.IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker}
     \leanok
-    \uses{thm:cut_coordinate_operators}
+    \uses{lem:supported_product_decomposition}
     Let $A\subseteq B$ be regions. A configuration has coordinates
     $((x,y),z)$, with $x$ its part on $A$, $y$ its part on $B\setminus A$ and
     $z$ its part on $B^{\mathrm c}$; these refine the cut coordinates for
@@ -403,7 +403,7 @@ depend on the common values there.
     supported outside $A$ is $1\otimes K$ for a matrix $K$ on the last two.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:cut_coordinate_operators}
+    \uses{lem:supported_product_decomposition}
     An operator supported on $D$ has matrix elements that depend only on the
     configurations on $D$ and vanish unless the two configurations agree off
     $D$. For $D\subseteq B$ this gives $M\otimes1$ with $M$ the slice at any

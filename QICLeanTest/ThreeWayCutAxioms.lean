@@ -11,7 +11,7 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let decls := #[``Entropy.threeCutEquiv, ``Entropy.regionSplitEquiv,
+  let decls := #[``Entropy.threeCutEquiv, ``Entropy.subsetSplitEquiv,
     ``Entropy.threeCutEquiv_eq_trans,
     ``Entropy.IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one,
     ``Entropy.IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker]
