@@ -38,7 +38,8 @@ coefficients and `v` the normalized sum of the `D` removed Schmidt terms: the ov
 
 * `Matrix.leftMarginal`: the left marginal `C Cᴴ` of a bipartite vector.
 * `Matrix.leftApply`: the vector `(P ⊗ 1) ψ`, with coefficient matrix `P C`.
-* `Matrix.rightApply`: the vector `(1 ⊗ Q) ψ`, with coefficient matrix `C Qᵀ`.
+* `Matrix.rightApply`: the vector `(1 ⊗ Q) ψ`, with coefficient matrix `C Qᵀ`, for a possibly
+  rectangular `Q`.
 * `Matrix.IsTrimmingProjection`: an orthogonal projection of rank at most `D` that
   captures the Ky Fan `D`-norm of the left marginal.
 
@@ -368,15 +369,15 @@ theorem sq_norm_eq_trace_leftMarginal_re (ψ : EuclideanSpace ℂ (m × n)) :
   rw [hCψ, trace_mul_comm] at h
   exact h
 
-/-- The vector `(1 ⊗ Q) ψ`: the operator `Q` acts on the second factor, so the
-coefficient matrix becomes `C Qᵀ`, since `((1 ⊗ Q) ψ)(i, k) = ∑ⱼ Q k j C i j`. -/
-noncomputable def rightApply (Q : Matrix n n ℂ) (ψ : EuclideanSpace ℂ (m × n)) :
-    EuclideanSpace ℂ (m × n) :=
+/-- The vector `(1 ⊗ Q) ψ`: the operator `Q`, possibly rectangular, acts on the second
+factor, so the coefficient matrix becomes `C Qᵀ`, since `((1 ⊗ Q) ψ)(i, k) = ∑ⱼ Q k j C i j`. -/
+noncomputable def rightApply {n' : Type*} [Fintype n'] (Q : Matrix n' n ℂ)
+    (ψ : EuclideanSpace ℂ (m × n)) : EuclideanSpace ℂ (m × n') :=
   toEuclid (schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ)
 
 omit [Fintype m] [DecidableEq m] in
 @[simp]
-theorem schmidtCoeffMatrix_ofLp_rightApply (Q : Matrix n n ℂ)
+theorem schmidtCoeffMatrix_ofLp_rightApply {n' : Type*} [Fintype n'] (Q : Matrix n' n ℂ)
     (ψ : EuclideanSpace ℂ (m × n)) :
     schmidtCoeffMatrix (WithLp.ofLp (rightApply Q ψ)) =
       schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ :=
@@ -395,7 +396,8 @@ omit [Fintype m] [DecidableEq m] in
 Schmidt rank at most that of `ψ`. This is the step of the proof of Lemma `l:trim2` of
 Landau, Vazirani and Vidick (arXiv:1307.5143v1, algo53.tex, lines 544–553) for an operator
 acting on one side of a cut. -/
-theorem schmidtRank_rightApply_le (Q : Matrix n n ℂ) (ψ : EuclideanSpace ℂ (m × n)) :
+theorem schmidtRank_rightApply_le {n' : Type*} [Fintype n'] (Q : Matrix n' n ℂ)
+    (ψ : EuclideanSpace ℂ (m × n)) :
     schmidtRank (WithLp.ofLp (rightApply Q ψ)) ≤ schmidtRank (WithLp.ofLp ψ) := by
   rw [schmidtRank, schmidtRank, schmidtCoeffMatrix_ofLp_rightApply]
   exact rank_mul_le_left _ _
@@ -410,7 +412,7 @@ theorem HasSchmidtRankLE.leftApply {k : ℕ} {ψ : EuclideanSpace ℂ (m × n)}
 omit [Fintype m] [DecidableEq m] in
 /-- A Schmidt-rank bound survives an operator on the second factor. -/
 theorem HasSchmidtRankLE.rightApply {k : ℕ} {ψ : EuclideanSpace ℂ (m × n)}
-    (h : HasSchmidtRankLE k (WithLp.ofLp ψ)) (Q : Matrix n n ℂ) :
+    (h : HasSchmidtRankLE k (WithLp.ofLp ψ)) {n' : Type*} [Fintype n'] (Q : Matrix n' n ℂ) :
     HasSchmidtRankLE k (WithLp.ofLp (rightApply Q ψ)) :=
   (schmidtRank_rightApply_le Q ψ).trans h
 

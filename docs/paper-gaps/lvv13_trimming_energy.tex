@@ -1,0 +1,233 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+
+\title{The Energy after Trimming in the Polynomial-Time Algorithm\\
+    of Landau, Vazirani and Vidick}
+\author{}
+\date{2026-10-25}
+
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The source statement}
+
+The Hamiltonian is $H=\sum_{i=1}^{n-1}H_i$ on a chain of $n$ qudits, where
+$H_i$ acts on the qudits $i,i+1$ and satisfies $0\le H_i\le I$; the ground
+energy is $\varepsilon_0$, the ground state is $\Gamma$, and the spectral gap
+is $\varepsilon$.\footnote{The source is \cite{Landau2013PolynomialTime},
+    version~1, source file \path{algo53.tex}: the Hamiltonian at line~283,
+    the constant $c_\varepsilon$ at lines~288--291, Lemma
+    \path{claim:energy-overlap} at lines~297--305, Lemma
+    \path{claim:overlap} at lines~307--317, Lemma \path{l:2} with its proof
+    at lines~347--359, and Lemma \path{l:leading} with its proof at
+    lines~493--508.}
+For a cut $(i,i+1)$, $\mathrm{trim}_B$ keeps the $B$ leading Schmidt terms
+across the cut, and $B_\delta$ is the bond dimension of
+Lemma~\path{constantbondapprox}: the normalized trimmed ground state
+$u=\mathrm{trim}_{B_\delta}\Gamma/\|\mathrm{trim}_{B_\delta}\Gamma\|$
+satisfies $|\langle\Gamma,u\rangle|\ge1-\delta$. Lemma~\path{l:2} reads as
+follows.
+
+\begin{quote}
+    Let $\delta>0$ be such that $\delta(1+1/\varepsilon)\le\frac12$ and $w$ a
+    vector with energy no larger than $\varepsilon_0+\delta$. Then
+    $v:=\mathrm{trim}_{B_\delta}w/\|\mathrm{trim}_{B_\delta}w\|$ has energy no
+    larger than $\varepsilon_0+6\sqrt\delta$.
+\end{quote}
+
+The proof (lines~350--358) runs as follows. Lemma
+\path{claim:energy-overlap} gives $|\langle\Gamma,w\rangle|\ge
+1-\delta/\varepsilon$, and Lemma \path{claim:overlap} is quoted as giving
+\begin{align}
+    |\langle w,u\rangle| & \ge1-\delta(1+1/\varepsilon)=1-\delta'.
+    \label{eq:lvv13_trimming_energy_printed_overlap}
+\end{align}
+The Eckart--Young theorem is quoted as giving
+$\|\mathrm{trim}_{B_\delta}w\|^2\ge1-\delta'$. With
+$w_0=\mathrm{trim}_{B_\delta}w$ and $w_1=w-w_0$, the proof writes
+\begin{align}
+    \langle w,Hw\rangle & =\langle w_0,(H-H_i)w_0\rangle
+    +\langle w_1,(H-H_i)w_1\rangle+\langle w,H_iw\rangle,
+    \label{eq:lvv13_trimming_energy_split}
+\end{align}
+bounds $|\langle w_0,H_iw_0\rangle-\langle w,H_iw\rangle|\le2\|w_1\|\le
+2\sqrt{\delta'}$ and $\langle w_1,(H-H_i)w_1\rangle\ge(\varepsilon_0-1)
+\|w_1\|^2\ge(\varepsilon_0-1)\delta'$, and concludes
+\begin{align}
+    \langle w_0,Hw_0\rangle & \le\varepsilon_0(1-\delta')+\delta+2\sqrt\delta,
+    \label{eq:lvv13_trimming_energy_printed_w0}                        \\
+    \langle v,Hv\rangle     & \le\varepsilon_0
+    +\frac{\delta+2\sqrt\delta}{1-\delta'}
+    \le\varepsilon_0+6\sqrt\delta\quad\text{if }\delta'\le\tfrac12.
+    \label{eq:lvv13_trimming_energy_printed}
+\end{align}
+
+\section{Three slips}
+
+\paragraph{The factor two of the overlap lemma.} Lemma \path{claim:overlap}
+states that $|\langle v,w\rangle|\ge1-\delta_1$ and $|\langle v',w\rangle|\ge
+1-\delta_2$ give $|\langle v,v'\rangle|\ge1-2(\delta_1+\delta_2)$. Applied
+with $\delta_1=\delta/\varepsilon$ and $\delta_2=\delta$ it gives
+\begin{align}
+    |\langle w,u\rangle| & \ge1-2\delta(1+1/\varepsilon)=1-\eta,
+     & \eta & =2\delta(1+1/\varepsilon),
+    \label{eq:lvv13_trimming_energy_overlap}
+\end{align}
+not (\ref{eq:lvv13_trimming_energy_printed_overlap}).
+
+\paragraph{The square in Eckart--Young.} Since $u$ is a unit vector of
+Schmidt rank at most $B_\delta$, the Eckart--Young theorem gives
+$\|\mathrm{trim}_{B_\delta}w\|\ge|\langle u,w\rangle|$, a bound on the norm
+and not on its square. With $t=\|w_1\|^2$ and
+$\|w_0\|^2+\|w_1\|^2=1$, the overlap (\ref{eq:lvv13_trimming_energy_overlap})
+gives
+\begin{align}
+    1-t=\|w_0\|^2 & \ge(1-\eta)^2\ge1-2\eta,
+     & \text{so }t & \le2\eta=4\delta(1+1/\varepsilon)
+    \label{eq:lvv13_trimming_energy_mass}
+\end{align}
+when $\eta\le1$; for $\eta>1$ the bound $t\le1<2\eta$ is trivial.
+
+\paragraph{The dropped term and the square root.} The lower bound
+$\langle w_1,(H-H_i)w_1\rangle\ge(\varepsilon_0-1)t$ inserted into
+(\ref{eq:lvv13_trimming_energy_split}) gives
+$\langle w_0,Hw_0\rangle\le\varepsilon_0(1-t)+\delta+t+2\sqrt t$. The
+display (\ref{eq:lvv13_trimming_energy_printed_w0}) drops the term $t$,
+replaces $(\varepsilon_0-1)t$ by $(\varepsilon_0-1)\delta'$ although only
+$t\le\delta'$ is available, which gives a lower bound only when
+$\varepsilon_0\le1$, and writes $2\sqrt\delta$ for the
+$2\sqrt{\delta'}$ of the line before. Since $\delta'\ge\delta$, the last
+change is not an upper bound either.
+
+\section{The corrected bound}
+
+Let $X=H-H_i$, the sum of the terms on the two sides of the cut. The
+trimming projection $P$ commutes with the reduced density matrix of $w$ on
+the left factor, so $X$ has no cross terms between $w_0=(P\otimes I)w$ and
+$w_1=((I-P)\otimes I)w$:
+\begin{align}
+    \langle w,Xw\rangle & =\langle w_0,Xw_0\rangle+\langle w_1,Xw_1\rangle.
+    \label{eq:lvv13_trimming_energy_no_cross}
+\end{align}
+This is the identity (\ref{eq:lvv13_trimming_energy_split}). Expanding
+$\langle w,H_iw\rangle$ along $w=w_0+w_1$ and keeping
+$\langle w_1,H_iw_1\rangle$ gives the exact identity
+\begin{align}
+    \langle w_0,Hw_0\rangle & =\langle w,Hw\rangle-\langle w_1,Hw_1\rangle
+    -2\operatorname{Re}\langle w_0,H_iw_1\rangle.
+    \label{eq:lvv13_trimming_energy_identity}
+\end{align}
+Now $\langle w_1,Hw_1\rangle\ge\varepsilon_0t$, and since $0\le H_i\le I$
+the Cauchy--Schwarz inequality for the form of $H_i$ gives
+$|\operatorname{Re}\langle w_0,H_iw_1\rangle|\le\|w_0\|\|w_1\|\le\sqrt t$.
+Hence
+\begin{align}
+    \langle w_0,Hw_0\rangle & \le\varepsilon_0(1-t)+\delta+2\sqrt t,
+     & \langle v,Hv\rangle & \le\varepsilon_0+\frac{\delta+2\sqrt t}{1-t}
+    \label{eq:lvv13_trimming_energy_corrected}
+\end{align}
+for $t<1$, and with (\ref{eq:lvv13_trimming_energy_mass}), if $2\eta<1$,
+\begin{align}
+    \langle v,Hv\rangle & \le\varepsilon_0
+    +\frac{\delta+2\sqrt{2\eta}}{1-2\eta}
+    =\varepsilon_0+\frac{\delta+4\sqrt{\delta(1+1/\varepsilon)}}
+    {1-4\delta(1+1/\varepsilon)}.
+    \label{eq:lvv13_trimming_energy_final}
+\end{align}
+Under $\delta(1+1/\varepsilon)\le\frac18$ this is at most
+$\varepsilon_0+2\delta+8\sqrt{\delta(1+1/\varepsilon)}$. The positivity
+$H_i\ge0$ is what removes the term $t$ of the printed argument; with only
+$\|H_i\|\le1$ the bound carries an extra $t/(1-t)$.
+
+\section{The printed bound}
+
+The bound (\ref{eq:lvv13_trimming_energy_final}) grows as
+$\sqrt{\delta/\varepsilon}$ for small $\varepsilon$, while the printed bound
+$\varepsilon_0+6\sqrt\delta$ is uniform in $\varepsilon$. The hypothesis
+$\delta(1+1/\varepsilon)\le\frac12$ of the lemma gives only $\eta\le1$, which
+does not even make $t\le\frac12$. The printed argument therefore does not
+establish $\varepsilon_0+6\sqrt\delta$. No counterexample is known to us,
+and this note does not claim that the printed bound fails; it records that
+the formalized statement is (\ref{eq:lvv13_trimming_energy_final}).
+
+\section{Effect downstream}
+
+The constant $c_\varepsilon=(\varepsilon/169)^2$ (line~290) is chosen so
+that $c_\varepsilon(1+1/\varepsilon)\le\frac12$,
+$14\sqrt{c_\varepsilon}/\varepsilon<\frac1{12}$ and
+$84c_\varepsilon/\varepsilon<\frac12$. Lemma \path{l:within} applies
+Lemma \path{l:2} with $\delta=c_\varepsilon$ to obtain a vector of bond
+dimension $B_{c_\varepsilon}$ with energy at most
+$\varepsilon_0+6\sqrt{c_\varepsilon}$, and Lemma \path{l:leading}
+(lines~493--508) uses this energy $\varepsilon_0+E$ in the form
+$\operatorname{tr}(\sigma'H)\le\varepsilon_0+E+c_\varepsilon$, then a
+Markov bound with threshold $2(E+c_\varepsilon)$, which must be smaller than
+$\varepsilon/12$; the source has $E+c_\varepsilon\le7\sqrt{c_\varepsilon}$
+and threshold $14\sqrt{c_\varepsilon}$.
+
+With the corrected bound and $\delta=c_\varepsilon$,
+$E\le2c_\varepsilon+8\sqrt{c_\varepsilon(1+1/\varepsilon)}$ once
+$c_\varepsilon(1+1/\varepsilon)\le\frac18$, and the requirement becomes
+\begin{align}
+    2\Bigl(3c_\varepsilon+8\sqrt{c_\varepsilon(1+1/\varepsilon)}\Bigr)
+     & <\frac{\varepsilon}{12}.
+    \label{eq:lvv13_trimming_energy_requirement}
+\end{align}
+For $\varepsilon\le1$ one has $1+1/\varepsilon\le2/\varepsilon$, and the
+choice $c_\varepsilon=\kappa\varepsilon^3$ turns
+(\ref{eq:lvv13_trimming_energy_requirement}) into
+$\varepsilon(6\kappa\varepsilon^2+16\sqrt{2\kappa})<\varepsilon/12$, which
+holds for $\kappa=10^{-5}$ since $6\cdot10^{-5}+16\sqrt{2\cdot10^{-5}}
+<0.0717<\frac1{12}$. For $\varepsilon>1$ the constant $10^{-5}$ works
+directly, since then $1+1/\varepsilon<2$ and the left side of
+(\ref{eq:lvv13_trimming_energy_requirement}) is below $0.072<1/12$. So
+\begin{align}
+    c_\varepsilon & =10^{-5}\min(\varepsilon,1)^3
+    \label{eq:lvv13_trimming_energy_new_constant}
+\end{align}
+satisfies (\ref{eq:lvv13_trimming_energy_requirement}),
+$c_\varepsilon(1+1/\varepsilon)\le\frac18$, $c_\varepsilon\le\varepsilon$ (needed
+in Lemma \path{claim:energy-overlap}) and $84c_\varepsilon/\varepsilon<\frac12$.
+The quadratic $c_\varepsilon=(\varepsilon/169)^2$ does not suffice for
+small $\varepsilon$: the left side of
+(\ref{eq:lvv13_trimming_energy_requirement}) is then of order
+$\sqrt\varepsilon$, not $\varepsilon$. The change from $\varepsilon^2$ to
+$\varepsilon^3$ enters the bond dimension $B_{c_\varepsilon}=
+\exp(O(\varepsilon^{-1}\log^3d\,\log(1/c_\varepsilon)))$ only through
+$\log(1/c_\varepsilon)$, which changes by a constant factor, so the
+polynomial running time of the algorithm is unaffected.
+
+\section{Formalization}
+
+The formalization works with one cut, a bipartite space whose factors
+carry the operators $A$ and $B$, and $H=A\otimes I+I\otimes B+K$ with
+$H\ge\varepsilon_0$ and $0\le K\le I$; the operator $K$ plays the role of
+$H_i$. The trimming projection is
+\leanid{Matrix.IsTrimmingProjection} and the trimmed vector is
+\leanid{Matrix.leftApply}. The orthogonality $\|w_0\|^2+\|w_1\|^2=\|w\|^2$
+is \leanid{Matrix.IsTrimmingProjection.norm_leftApply_sq_add_norm_sub_sq}, and
+(\ref{eq:lvv13_trimming_energy_no_cross}) is
+\leanid{Matrix.IsTrimmingProjection.inner_toEuclideanLin_eq_add}. The first
+bound of (\ref{eq:lvv13_trimming_energy_corrected}) is
+\leanid{Matrix.IsTrimmingProjection.re_inner_leftApply_le}, the second is
+\leanid{Matrix.IsTrimmingProjection.re_inner_normalized_le}, and its form for
+$t\le\frac12$ is
+\leanid{Matrix.IsTrimmingProjection.re_inner_normalized_le_of_le_half}. The
+mass bound (\ref{eq:lvv13_trimming_energy_mass}) is
+\leanid{Matrix.IsTrimmingProjection.norm_sub_leftApply_sq_le}, and
+(\ref{eq:lvv13_trimming_energy_final}), stated through an overlap
+$|\langle u,w\rangle|\ge1-\eta$ with a unit vector $u$ of Schmidt rank at
+most the trimming radius, is
+\leanid{Matrix.IsTrimmingProjection.re_inner_normalized_le_of_norm_inner}.
+The overlap lemma is \leanid{one_sub_two_mul_add_le_norm_inner}. The printed
+bound $\varepsilon_0+6\sqrt\delta$ is not formalized.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}
