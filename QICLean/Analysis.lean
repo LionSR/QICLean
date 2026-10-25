@@ -311,6 +311,7 @@ import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
+import QICLean.Analysis.ViableSubspaceSpectralProjector
 import QICLean.Analysis.ViableSubspaceTensor
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
