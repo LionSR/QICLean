@@ -40,6 +40,7 @@ import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
+import QICLean.Analysis.DominantEigenvector
 import QICLean.Analysis.DoubledSystemGap
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.EntropyContinuity
