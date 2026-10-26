@@ -12,6 +12,7 @@ import Lean.Util.CollectAxioms
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   for decl in #[``Matrix.isClosed_setOf_rectangularTraceNorm_le,
+    ``Matrix.exists_boundary_density_minimizer_of_nonempty,
     ``Matrix.exists_boundary_density_minimizer] do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
