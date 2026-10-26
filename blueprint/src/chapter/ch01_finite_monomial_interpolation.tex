@@ -42,6 +42,40 @@
 \end{proof}
 
 
+\begin{theorem}[Recovery of weighted coefficient sums]
+    \label{thm:weighted_monomial_recovery}
+    \lean{MvPolynomial.exists_weighted_monomial_evaluation_recovery}
+    \leanok
+    Let $V$ be a complex vector space, and retain the finite monomial set
+    $S$ and the notation $t=|S|$, $m_\alpha$, and $P_f$.
+    There exist points $z_0,\ldots,z_{t-1}\in\mathbb C^\sigma$ such that,
+    for every scalar family $(w_\alpha)_{\alpha\in S}$, there exist scalars
+    $\gamma_0,\ldots,\gamma_{t-1}$ satisfying
+    \begin{align*}
+        \sum_{\alpha\in S} w_\alpha f_\alpha
+        =\sum_{r=0}^{t-1}\gamma_r P_f(z_r)
+    \end{align*}
+    for every family $(f_\alpha)_{\alpha\in S}$ in $V$.
+    Thus the points are chosen before the scalar weights, and the recovery
+    coefficients before the vector family. Empty $S$ and dependent
+    coefficient vectors are allowed. This is a finite linear-combination
+    consequence of the interpolation argument in
+    \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_monomial_interpolation}
+    Choose the points and coefficients $c_{\alpha r}$ from
+    Theorem~\ref{thm:finite_monomial_interpolation} and put
+    $\gamma_r=\sum_{\alpha\in S}w_\alpha c_{\alpha r}$.
+    The recovery identity gives
+    \begin{align*}
+        \sum_{\alpha\in S}w_\alpha f_\alpha
+         & =\sum_{\alpha\in S}w_\alpha
+        \sum_{r=0}^{t-1}c_{\alpha r}P_f(z_r)
+        =\sum_{r=0}^{t-1}\gamma_r P_f(z_r).
+    \end{align*}
+\end{proof}
+
 \begin{theorem}[Rank of a selected coefficient sum]
     \label{thm:monomial_evaluation_selected_rank}
     \lean{Matrix.operatorSchmidtRank_sum_le_of_monomial_evaluations}
@@ -64,7 +98,7 @@
     formulas over $U$ gives
     \begin{align*}
         \sum_{\alpha\in U}f_\alpha
-            =\sum_{j=0}^{t-1}\left(\sum_{\alpha\in U}c_{\alpha j}\right)P_f(z_j).
+        =\sum_{j=0}^{t-1}\left(\sum_{\alpha\in U}c_{\alpha j}\right)P_f(z_j).
     \end{align*}
     Scalar multiplication does not increase operator Schmidt rank, and the
     rank of a sum is at most the sum of the ranks. The right side therefore
