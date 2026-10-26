@@ -48,16 +48,19 @@ def energyTruncation (A : Matrix n n ℂ) (τ : ℝ) : Matrix n n ℂ :=
 theorem IsHermitian.energyTruncation_eq (hA : A.IsHermitian) (τ : ℝ) :
     energyTruncation A τ =
       A * (1 - spectralProjectionGE A τ) + (τ : ℂ) • spectralProjectionGE A τ := by
+  have hc (f : ℝ → ℝ) : ContinuousOn f (spectrum ℝ A) := A.finite_real_spectrum.continuousOn f
   have hP : spectralProjectionGE A τ = cfc (fun t : ℝ ↦ if τ ≤ t then 1 else 0) A := rfl
   have h1 : (1 : Matrix n n ℂ) = cfc (fun _ : ℝ ↦ (1 : ℝ)) A := by
     rw [cfc_const (1 : ℝ) A hA.isSelfAdjoint, map_one]
-  have hid : A = cfc (id : ℝ → ℝ) A := (cfc_id ℝ A hA.isSelfAdjoint).symm
+  have hid : A = cfc (fun t : ℝ ↦ t) A := (cfc_id' ℝ A hA.isSelfAdjoint).symm
   have hτ : (τ : ℂ) • spectralProjectionGE A τ =
       cfc (fun t : ℝ ↦ τ * if τ ≤ t then 1 else 0) A := by
-    rw [cfc_const_mul τ _ A, hP, ← Complex.coe_smul]
+    rw [cfc_const_mul τ _ A (hc _), hP, ← Complex.coe_smul]
   rw [hτ, hP, h1]
   conv_rhs => lhs; lhs; rw [hid]
-  rw [← cfc_sub (fun _ : ℝ ↦ (1 : ℝ)), ← cfc_mul (id : ℝ → ℝ), ← cfc_add, energyTruncation]
+  rw [← cfc_sub (fun _ : ℝ ↦ (1 : ℝ)) _ A (hc _) (hc _), ← _root_.cfc_mul _ _ A (hc _) (hc _),
+    ← _root_.cfc_add (a := A) (fun t : ℝ ↦ t * (1 - if τ ≤ t then 1 else 0))
+      (fun t : ℝ ↦ τ * if τ ≤ t then 1 else 0) (hc _) (hc _), energyTruncation]
   congr 1
   funext t
   split_ifs with h
@@ -74,9 +77,10 @@ theorem isHermitian_energyTruncation (A : Matrix n n ℂ) (τ : ℝ) :
 theorem IsHermitian.commute_energyTruncation (hA : A.IsHermitian) (τ : ℝ) :
     Commute A (energyTruncation A τ) := by
   change A * energyTruncation A τ = energyTruncation A τ * A
-  conv_lhs => lhs; rw [← cfc_id ℝ A hA.isSelfAdjoint]
-  conv_rhs => rhs; rw [← cfc_id ℝ A hA.isSelfAdjoint]
-  rw [energyTruncation, ← cfc_mul, ← cfc_mul]
+  conv_lhs => lhs; rw [← cfc_id' ℝ A hA.isSelfAdjoint]
+  conv_rhs => rhs; rw [← cfc_id' ℝ A hA.isSelfAdjoint]
+  rw [energyTruncation, ← _root_.cfc_mul (fun t : ℝ ↦ t) (fun t ↦ min t τ) A,
+    ← _root_.cfc_mul (fun t ↦ min t τ) (fun t : ℝ ↦ t) A]
   congr 1
   funext t
   exact mul_comm _ _
@@ -84,7 +88,7 @@ theorem IsHermitian.commute_energyTruncation (hA : A.IsHermitian) (τ : ℝ) :
 /-- The truncation lies below `A`. -/
 theorem IsHermitian.energyTruncation_le (hA : A.IsHermitian) (τ : ℝ) :
     energyTruncation A τ ≤ A := by
-  conv_rhs => rw [← cfc_id ℝ A hA.isSelfAdjoint]
+  conv_rhs => rw [← cfc_id' ℝ A hA.isSelfAdjoint]
   exact cfc_mono fun t _ => min_le_left t τ
 
 /-- The truncation lies below `τ`. -/
