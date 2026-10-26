@@ -14,6 +14,8 @@ most the operator-Schmidt rank. The proof uses a minimal product decomposition
 of the operator and a rank factorization of the vector's coefficient matrix.
 Both tensor factors may be empty, and the zero vector is included. No
 normalization, positivity, spectral or independence assumption is required.
+Iterating an operator of operator-Schmidt rank at most `D` gives the bound
+`schmidtRank (K ^ r *ᵥ ψ) ≤ D ^ r * schmidtRank ψ`.
 
 This is the algebraic rank-growth implication used with AKLV,
 arXiv:1301.1162v1, Definition def:AGSP, lines 296–314, and LVV,
@@ -99,5 +101,21 @@ theorem schmidtRank_mulVec_le
   refine (Matrix.rank_mul_le_left L R).trans ?_
   simpa only [Fintype.card_prod, Fintype.card_fin] using
     Matrix.rank_le_card_width L
+
+open Classical in
+/-- Powers of one bipartite operator give multiplicative Schmidt-rank growth.
+AKLV, arXiv:1301.1162v1, Definition 2.1 (`def:AGSP`) and Corollary 2.4
+(`col:half`); the rank-tail entropy argument is at lines 1059–1075.
+Empty factors, zero powers and the zero input are included. -/
+theorem schmidtRank_pow_mulVec_le
+    {m n : Type*} [Fintype m] [Fintype n]
+    (K : Matrix (m × n) (m × n) ℂ) (ψ : m × n → ℂ)
+    {D : ℕ} (hD : operatorSchmidtRank K ≤ D) (r : ℕ) :
+    schmidtRank ((K ^ r) *ᵥ ψ) ≤ D ^ r * schmidtRank ψ := by
+  induction r with
+  | zero => simp
+  | succ r ih =>
+    simpa only [pow_succ', ← mulVec_mulVec, Nat.mul_assoc] using
+      (schmidtRank_mulVec_le K ((K ^ r) *ᵥ ψ)).trans (Nat.mul_le_mul hD ih)
 
 end Matrix

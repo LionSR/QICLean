@@ -34,6 +34,10 @@ bound.
 
 * `Matrix.normSq_trace_conjTranspose_mul_le_kyFanNorm_mul_trace` -- the
   homogeneous overlap bound without normalization of either matrix.
+* `Matrix.trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one` --
+  trace normalization of the reduced state of a unit bipartite vector.
+* `Matrix.normSq_inner_le_kyFanNorm_mul_normSq` -- the homogeneous
+  overlap bound for bipartite vectors in Euclidean coordinates.
 * `Matrix.PosSemidef.kyFanNorm_eq_sup_trace_rankLE` -- the positive-semidefinite
   form of Ky Fan's maximum principle over orthogonal projections of rank at most
   k.
@@ -466,5 +470,43 @@ theorem normSq_inner_le_kyFanNorm (Ψ Φ : EuclideanSpace ℂ (m × n))
           (Fintype.card m) := (Matrix.IsHermitian.kyFanNorm_card_eq_trace_re _).symm
       _ ≤ (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian.kyFanNorm D :=
         (Matrix.posSemidef_self_mul_conjTranspose C).kyFanNorm_mono (Nat.le_of_not_gt hD)
+
+end Matrix
+
+open scoped InnerProductSpace
+
+namespace Matrix
+
+open Classical in
+/-- The coefficient matrix of a unit bipartite vector gives a density matrix
+of trace one. This is the coefficient normalization in Wolf, Chapter 3,
+Lemma 3.1. No nonempty-factor assumption is required. -/
+theorem trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one
+    {m n : Type*} [Fintype m] [Fintype n]
+    (Γ : EuclideanSpace ℂ (m × n)) (hΓ : ‖Γ‖ = 1) :
+    let C := schmidtCoeffMatrix (WithLp.ofLp Γ)
+    (C * Cᴴ).trace = 1 := by
+  let C := schmidtCoeffMatrix (WithLp.ofLp Γ)
+  let hρ := posSemidef_self_mul_conjTranspose C
+  change (C * Cᴴ).trace = 1
+  rw [hρ.isHermitian.trace_eq_ofReal_re, trace_mul_comm, ← normSq_toEuclid]
+  norm_num [C, schmidtCoeffMatrix, toEuclid, hΓ]
+
+open Classical in
+/-- The homogeneous coefficient-matrix overlap bound in Euclidean coordinates.
+This is the upper-bound argument of Wolf, Chapter 3, Lemma 3.1. -/
+theorem normSq_inner_le_kyFanNorm_mul_normSq
+    {m n : Type*} [Fintype m] [Fintype n]
+    (Γ χ : EuclideanSpace ℂ (m × n)) {k : ℕ}
+    (hk : k < Fintype.card m)
+    (hrank : schmidtRank (WithLp.ofLp χ) ≤ k) :
+    ‖⟪Γ, χ⟫_ℂ‖ ^ 2 ≤
+      (posSemidef_self_mul_conjTranspose
+        (schmidtCoeffMatrix (WithLp.ofLp Γ))).isHermitian.kyFanNorm k * ‖χ‖ ^ 2 := by
+  classical
+  have h := normSq_trace_conjTranspose_mul_le_kyFanNorm_mul_trace
+    (schmidtCoeffMatrix (WithLp.ofLp Γ)) (schmidtCoeffMatrix (WithLp.ofLp χ)) hk hrank
+  rw [← normSq_toEuclid] at h
+  simpa [← inner_toEuclid, toEuclid, schmidtCoeffMatrix] using h
 
 end Matrix
