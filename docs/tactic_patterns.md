@@ -276,6 +276,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Orthogonal component along a unit eigenvector (2026-10-26)
+
+- **Seen:** The final decomposition in `Analysis/GapPerturbation.lean` and the
+  overlap-to-energy estimate in `Analysis/OverlapEnergy.lean` write
+  `v = ⟪Ω, v⟫ • Ω + w` and apply Pythagoras to obtain
+  `‖w‖² = ‖v‖² - ‖⟪Ω, v⟫‖²` for unit `Ω`.
+- **Reuse:** Both energy arguments use `re_inner_smul_add_eigenvector` for
+  the quadratic form. The elementary orthogonality and norm calculation
+  remains at its two sites; seek a Mathlib projection lemma before adding
+  another local calculation or a new helper.
+
 ### Sharp product-overlap inequality — shared private lemma (2026-10-23)
 
 - **Pattern:** Choose an actual unit Schmidt-rank-one maximizer, decompose it

@@ -138,6 +138,7 @@ import QICLean.Analysis.OptimizedPureTraceError
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.OrthonormalMatrixNorm
+import QICLean.Analysis.OverlapEnergy
 import QICLean.Analysis.OverlapTriangle
 import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
