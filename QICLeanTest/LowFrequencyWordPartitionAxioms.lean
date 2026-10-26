@@ -11,6 +11,12 @@ set_option autoImplicit false
 set_option linter.hashCommand false
 
 /-- info:
+'Fintype.exists_two_window_word_coefficient_partition_of_le'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms Fintype.exists_two_window_word_coefficient_partition_of_le
+
+/-- info:
 'Fintype.exists_two_window_word_coefficient_partition'
 depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
