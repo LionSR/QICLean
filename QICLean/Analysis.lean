@@ -38,12 +38,15 @@ import QICLean.Analysis.ContractionWordDecay
 import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
+import QICLean.Analysis.DensityMaxEigenvector
 import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
 import QICLean.Analysis.DominantEigenvector
+import QICLean.Analysis.DominantEigenvectorUniqueness
 import QICLean.Analysis.DoubledSystemGap
+import QICLean.Analysis.EnergyTruncation
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.EntropyContinuity
 import QICLean.Analysis.EntropyDecomposition
@@ -51,6 +54,7 @@ import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
+import QICLean.Analysis.EuclideanReindex
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
 import QICLean.Analysis.ExponentialPolynomialAbsorption
@@ -93,6 +97,7 @@ import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
 import QICLean.Analysis.KleinInequality
 import QICLean.Analysis.KroneckerExponential
+import QICLean.Analysis.KroneckerOperatorNorm
 import QICLean.Analysis.KyFanNorm
 import QICLean.Analysis.LiebConcavity
 import QICLean.Analysis.LiebIntegrandConcave
@@ -102,6 +107,7 @@ import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
 import QICLean.Analysis.LogClipping
 import QICLean.Analysis.LogarithmicEnvelope
+import QICLean.Analysis.LowEnergyPerturbation
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
@@ -136,6 +142,7 @@ import QICLean.Analysis.OptimizedPureTraceError
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.OrthonormalMatrixNorm
+import QICLean.Analysis.OverlapEnergy
 import QICLean.Analysis.OverlapTriangle
 import QICLean.Analysis.PatchRegulator
 import QICLean.Analysis.PhaseError
@@ -169,6 +176,7 @@ import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
+import QICLean.Analysis.RectangularTraceNormTopology
 import QICLean.Analysis.RectangularTraceNormTruncation
 import QICLean.Analysis.RegionalLowDefectLowerPin
 import QICLean.Analysis.RegionalLowDefectMass

@@ -1,0 +1,34 @@
+\section{Energy bound from overlap with an eigenvector}
+
+The proof of Lemma \texttt{l:within} in
+\cite[source lines 509--515]{Landau2013PolynomialTime} first bounds the energy
+of a viable-set witness from its overlap with the ground state. For an
+unsquared overlap tolerance, this inference has the following corrected
+factor of two; see \cite{gap:lvv13_witness_energy}.
+
+\begin{theorem}[Energy bound from overlap with an eigenvector]
+    \label{thm:energy_bound_from_eigenvector_overlap}
+    \lean{LinearMap.IsSymmetric.re_inner_sub_eigenvalue_le_of_norm_sub_le,
+        LinearMap.IsSymmetric.re_inner_sub_eigenvalue_le_of_overlap}
+    \leanok
+    Let $B$ be a bounded symmetric operator on a complex inner-product space,
+    and let $\Omega,v$ be unit vectors with $B\Omega=e\Omega$, where
+    $e\in\mathbb R$. Suppose $\|B-eI\|\le M$. Then
+    \begin{align}
+        \operatorname{Re}\langle v,Bv\rangle-e
+         & \le M\bigl(1-|\langle\Omega,v\rangle|^2\bigr).
+        \label{eq:energy_bound_from_eigenvector_overlap}
+    \end{align}
+    If $|\langle\Omega,v\rangle|\ge1-\delta$, the right-hand
+    side is at most $2M\delta$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Write $v=a\Omega+w$, with $a=\langle\Omega,v\rangle$ and $w\perp\Omega$.
+    Symmetry and the eigenvector equation give
+    $\operatorname{Re}\langle v,Bv\rangle-e
+        =\operatorname{Re}\langle w,(B-eI)w\rangle$.
+    By Pythagoras, $\|w\|^2=1-|a|^2$, so the operator norm proves
+    (\ref{eq:energy_bound_from_eigenvector_overlap}). Finally,
+    $0\le|a|\le1$ implies $1-|a|^2=(1-|a|)(1+|a|)\le2\delta$.
+\end{proof}

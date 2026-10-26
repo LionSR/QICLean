@@ -9,6 +9,8 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel
 
 import QICLean.Channel.Basic
+import QICLean.Channel.BoundaryDensityMinimizer
+import QICLean.Channel.BoundaryDensitySelection
 import QICLean.Channel.BoundaryGluing
 import QICLean.Channel.BreuerHallIndecomposable
 import QICLean.Channel.BreuerHallMap
@@ -69,6 +71,7 @@ import QICLean.Channel.KrausRepresentation
 import QICLean.Channel.KrausSupportAbsorption
 import QICLean.Channel.KrausUnitaryFreedom
 import QICLean.Channel.LeadingEigenvector
+import QICLean.Channel.LeadingEigenvectorBounds
 import QICLean.Channel.LocalizedKrausCPTP
 import QICLean.Channel.LorentzNormalForm
 import QICLean.Channel.LorentzNormalForm.Basic
@@ -137,6 +140,7 @@ import QICLean.Channel.SchmidtNumberCompact
 import QICLean.Channel.SchmidtNumberFactors
 import QICLean.Channel.SchmidtRank
 import QICLean.Channel.SchmidtRankAction
+import QICLean.Channel.SchmidtThreshold
 import QICLean.Channel.SchmidtTrimming
 import QICLean.Channel.Schwarz
 import QICLean.Channel.SelfDual

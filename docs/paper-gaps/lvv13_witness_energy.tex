@@ -1,0 +1,53 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+
+\title{Energy from the Overlap of a Viable-Set Witness}
+\author{}
+\date{2026-10-26}
+
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+The proof of Lemma \texttt{l:within} in
+\cite[source file \texttt{algo53.tex}, lines 509--515]{Landau2013PolynomialTime}
+uses the following inference. A unit witness $v$ has overlap at least
+$1-c_\varepsilon/n$ with the unit ground state $\Gamma$, and $\|H\|\le n$;
+the proof concludes that its energy is at most $\varepsilon_0+c_\varepsilon$.
+The viable-set definition uses unsquared overlap. The direct consequence is
+instead $\varepsilon_0+2c_\varepsilon$.
+
+Indeed, put $a=\langle\Gamma,v\rangle$ and write $v=a\Gamma+w$ with
+$w\perp\Gamma$. Since $H\Gamma=\varepsilon_0\Gamma$, symmetry gives
+\begin{align}
+    \langle v,Hv\rangle-\varepsilon_0
+     & =\langle w,(H-\varepsilon_0 I)w\rangle
+    \le \|H-\varepsilon_0 I\|(1-|a|^2).
+    \label{eq:lvv13_witness_energy_overlap}
+\end{align}
+For the source Hamiltonian, $0\le H\le nI$ and $\varepsilon_0$ is its
+ground energy, hence $\|H-\varepsilon_0 I\|\le n$. If
+$|a|\ge1-\delta$ and $\delta\ge0$, then
+$1-|a|^2=(1-|a|)(1+|a|)\le2\delta$. Applying
+(\ref{eq:lvv13_witness_energy_overlap}) with $\delta=c_\varepsilon/n$
+gives the corrected excess $2c_\varepsilon$.
+
+The factor cannot be removed from this overlap inference. For
+$H=\operatorname{diag}(0,M)$, $\Gamma=(1,0)$ and
+$v=(1-\delta,\sqrt{2\delta-\delta^2})$, where $M>0$ and $0<\delta<1$,
+the overlap is $1-\delta$ while the excess energy is
+$M(2\delta-\delta^2)>M\delta$.
+
+This note corrects only the first energy inference in the proof of
+Lemma \texttt{l:within}. The subsequent trimming estimate and the choice
+of $c_\varepsilon$ must also account for the corrections in
+\url{https://sirui-lu.com/QICLean/paper-gaps/lvv13_trimming_energy.pdf}.
+Neither the full lemma nor the viable-set
+induction follows from this auxiliary bound alone.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}
