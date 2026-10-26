@@ -7,6 +7,19 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Coordinate transport and identity factors — existing Mathlib structures (2026-10-26)
+
+- **Seen:** The matrix expectations and identity-factor norm comparison in
+  TNLean's chain gluing argument, now stated in `Analysis/EuclideanReindex.lean`
+  and `Analysis/KroneckerOperatorNorm.lean`.
+- **Reuse:** `LinearIsometryEquiv.piLpCongrLeft.inner_map_map` and
+  `Matrix.submatrix_mulVec_equiv` replace coordinatewise sums. Injectivity of
+  `Matrix.rightKroneckerEmbed` permits `NonUnitalStarAlgHom.norm_map` to replace
+  the corner-norm calculation.
+- **Decision:** These two matrix statements are shared. Inner-product transport
+  and the rank-one trace identity use existing Mathlib results directly in
+  later consumers; no additional wrappers or custom tactics are introduced.
+
 ### Coefficients after left multiplication by a linear polynomial — promoted (2026-10-22)
 
 - **Consumers:** The ordered-gap equality in `Algebra/OrderedPolynomialGaps.lean`,

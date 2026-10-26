@@ -52,6 +52,7 @@ import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
+import QICLean.Analysis.EuclideanReindex
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
 import QICLean.Analysis.ExponentialPolynomialAbsorption
@@ -94,6 +95,7 @@ import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
 import QICLean.Analysis.KleinInequality
 import QICLean.Analysis.KroneckerExponential
+import QICLean.Analysis.KroneckerOperatorNorm
 import QICLean.Analysis.KyFanNorm
 import QICLean.Analysis.LiebConcavity
 import QICLean.Analysis.LiebIntegrandConcave
