@@ -20,3 +20,41 @@
     Composition on either side with a surjective linear isometry preserves
     the operator norm, so $\|M\|_{2\to2}=\|VTU^{-1}\|=\|T\|$.
 \end{proof}
+
+\begin{theorem}[Expectations under a change of coordinates]
+    \label{thm:expectation_coordinate_change}
+    \lean{Matrix.inner_toEuclideanLin_reindex}
+    \leanok
+    Let $X$ and $Y$ be finite sets, $e:X\to Y$ a bijection,
+    $M\in\C^{X\times X}$ and $\psi\in\C^X$.
+    Define $U_e:\C^X\to\C^Y$ by $(U_e\psi)(y)=\psi(e^{-1}y)$, and define
+    $M_e\in\C^{Y\times Y}$ by
+    $(M_e)_{y,y'}=M_{e^{-1}y,e^{-1}y'}$.
+    Then $\langle U_e\psi,M_eU_e\psi\rangle=\langle\psi,M\psi\rangle$.
+    The index sets may be empty.
+\end{theorem}
+
+\begin{proof}\leanok
+    Relabelling preserves the inner product, and matrix multiplication
+    gives $M_eU_e\psi=U_e(M\psi)$. Applying the inner-product identity to
+    $\psi$ and $M\psi$ proves the assertion.
+\end{proof}
+
+\begin{theorem}[Operator norm after adjoining an identity factor]
+    \label{thm:operator_norm_identity_factor}
+    \lean{Matrix.l2_opNorm_one_kronecker}
+    \leanok
+    Let $X$ and $Y$ be finite sets with $X\ne\varnothing$, and let
+    $K\in\C^{Y\times Y}$.
+    For the Euclidean operator norm,
+    $\lVert I_X\otimes K\rVert=\lVert K\rVert$.
+    The set $Y$ may be empty.
+\end{theorem}
+
+\begin{proof}\leanok
+    The map $\Phi:K\mapsto I_X\otimes K$ is a complex star-algebra
+    homomorphism. Choose $x_0\in X$.
+    Since $\Phi(K)_{(x_0,i),(x_0,j)}=K_{ij}$, the map is injective.
+    An injective star-algebra homomorphism between complex C-star algebras
+    is isometric, giving the claimed equality.
+\end{proof}
