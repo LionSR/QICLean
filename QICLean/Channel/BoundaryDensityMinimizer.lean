@@ -14,7 +14,8 @@ import Mathlib.Topology.Order.Compact
 Fix a matrix `P` on the left sites, a boundary matrix `X` and a radius `η`. Density matrices
 `σ` fixed by left multiplication by `P ⊗ 1`, whose boundary marginal is within trace-norm
 distance `η` of `X`, form a compact set. If the pure state of a unit left vector `x` satisfies
-these constraints, the set is nonempty and its left energy attains a minimum. The minimum is
+these constraints, the set is nonempty. More generally, whenever the feasible density set is
+nonempty, its left energy attains a global minimum. In the pure-state case, this minimum is
 at most the left energy of `x`, and its boundary marginal is within `2η` of that of `x`.
 
 This is the existence and optimality part of the size-trimming optimization problem of
@@ -29,6 +30,48 @@ namespace Matrix
 
 variable {a s b : Type*} [Fintype a] [Fintype s] [Fintype b]
   [DecidableEq a] [DecidableEq s] [DecidableEq b]
+
+omit [DecidableEq a] in
+/-- A nonempty feasible density set for the size-trimming optimization problem of LVV13
+(`algo53.tex`, equation `eq:conv`, lines 472–476) has a global minimum of the left energy.
+Nonemptiness is an explicit hypothesis; feasibility is not asserted for arbitrary boundary
+matrices. No projection or self-adjointness condition on `P`, `HL` or `X` is needed. -/
+theorem exists_boundary_density_minimizer_of_nonempty
+    (P HL : Matrix (a × s) (a × s) ℂ) (X : Matrix (s × b) (s × b) ℂ) (η : ℝ)
+    (hne : Set.Nonempty {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ |
+      ρ.PosSemidef ∧ ρ.trace = 1 ∧ (P ⊗ₖ (1 : Matrix b b ℂ)) * ρ = ρ ∧
+      rectangularTraceNorm (partialTraceFirst ρ - X) ≤ η}) :
+    ∃ σ : Matrix ((a × s) × b) ((a × s) × b) ℂ,
+      σ.PosSemidef ∧ σ.trace = 1 ∧ (P ⊗ₖ (1 : Matrix b b ℂ)) * σ = σ ∧
+      rectangularTraceNorm (partialTraceFirst σ - X) ≤ η ∧
+      (∀ ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ,
+        ρ.PosSemidef → ρ.trace = 1 → (P ⊗ₖ (1 : Matrix b b ℂ)) * ρ = ρ →
+        rectangularTraceNorm (partialTraceFirst ρ - X) ≤ η →
+        (σ * (HL ⊗ₖ (1 : Matrix b b ℂ))).trace.re ≤
+          (ρ * (HL ⊗ₖ (1 : Matrix b b ℂ))).trace.re) := by
+  let Q := P ⊗ₖ (1 : Matrix b b ℂ)
+  let F := {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ |
+    ρ.PosSemidef ∧ ρ.trace = 1 ∧ Q * ρ = ρ ∧
+      rectangularTraceNorm (partialTraceFirst ρ - X) ≤ η}
+  have hsupport : IsClosed {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ | Q * ρ = ρ} :=
+    isClosed_eq (continuous_const.mul continuous_id) continuous_id
+  have hboundary : IsClosed {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ |
+      rectangularTraceNorm (partialTraceFirst ρ - X) ≤ η} := by
+    let e := (Equiv.prodAssoc a s b).trans (Equiv.prodComm a (s × b))
+    let T := (partialTraceRightLM (α := s × b) (β := a)).comp
+      (reindexLinearEquiv ℂ ℂ e e).toLinearMap
+    exact (isClosed_setOf_rectangularTraceNorm_le η).preimage
+      (T.continuous_of_finiteDimensional.sub continuous_const)
+  have hcompact : IsCompact F := by
+    simpa only [F, Set.ofPred_and, Set.inter_assoc] using
+      isCompact_setOf_posSemidef_trace_eq_one.inter_right (hsupport.inter hboundary)
+  have henergy : Continuous fun ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ ↦
+      (ρ * (HL ⊗ₖ (1 : Matrix b b ℂ))).trace.re :=
+    Complex.continuous_re.comp ((continuous_id.mul continuous_const).matrix_trace)
+  obtain ⟨σ, hσ, hmin⟩ := hcompact.exists_isMinOn hne henergy.continuousOn
+  refine ⟨σ, hσ.1, hσ.2.1, hσ.2.2.1, hσ.2.2.2, ?_⟩
+  intro ρ hρp hρt hρP hρX
+  exact hmin ⟨hρp, hρt, hρP, hρX⟩
 
 omit [DecidableEq a] in
 /-- A minimizing density matrix for the size-trimming optimization problem of LVV13
@@ -56,21 +99,6 @@ theorem exists_boundary_density_minimizer
         partialTraceFirst (vecMulVec (WithLp.ofLp x) (star (WithLp.ofLp x)))) ≤ 2 * η := by
   let Q := P ⊗ₖ (1 : Matrix b b ℂ)
   let ρx := vecMulVec (WithLp.ofLp x) (star (WithLp.ofLp x))
-  let F := {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ |
-    ρ.PosSemidef ∧ ρ.trace = 1 ∧ Q * ρ = ρ ∧
-      rectangularTraceNorm (partialTraceFirst ρ - X) ≤ η}
-  have hsupport : IsClosed {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ | Q * ρ = ρ} :=
-    isClosed_eq (continuous_const.mul continuous_id) continuous_id
-  have hboundary : IsClosed {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ |
-      rectangularTraceNorm (partialTraceFirst ρ - X) ≤ η} := by
-    let e := (Equiv.prodAssoc a s b).trans (Equiv.prodComm a (s × b))
-    let T := (partialTraceRightLM (α := s × b) (β := a)).comp
-      (reindexLinearEquiv ℂ ℂ e e).toLinearMap
-    exact (isClosed_setOf_rectangularTraceNorm_le η).preimage
-      (T.continuous_of_finiteDimensional.sub continuous_const)
-  have hcompact : IsCompact F := by
-    simpa only [F, Set.ofPred_and, Set.inter_assoc] using
-      isCompact_setOf_posSemidef_trace_eq_one.inter_right (hsupport.inter hboundary)
   have hρxp : ρx.PosSemidef := posSemidef_vecMulVec_self_star _
   have hρxt : ρx.trace = 1 := by
     change (vecMulVec (WithLp.ofLp x) (star (WithLp.ofLp x))).trace = 1
@@ -80,14 +108,9 @@ theorem exists_boundary_density_minimizer
   have hρxP : Q * ρx = ρx := by
     change Q * vecMulVec (WithLp.ofLp x) (star (WithLp.ofLp x)) = ρx
     rw [mul_vecMulVec, hPx]
-  have hρx : ρx ∈ F := ⟨hρxp, hρxt, hρxP, hX⟩
-  have henergy : Continuous fun ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ ↦
-      (ρ * (HL ⊗ₖ (1 : Matrix b b ℂ))).trace.re :=
-    Complex.continuous_re.comp ((continuous_id.mul continuous_const).matrix_trace)
-  obtain ⟨σ, hσ, hmin⟩ := hcompact.exists_isMinOn ⟨ρx, hρx⟩ henergy.continuousOn
-  refine ⟨σ, hσ.1, hσ.2.1, hσ.2.2.1, hσ.2.2.2, ?_, hmin hρx, ?_⟩
-  · intro ρ hρp hρt hρP hρX
-    exact hmin ⟨hρp, hρt, hρP, hρX⟩
+  obtain ⟨σ, hσ, htr, hσP, hσX, hmin⟩ :=
+    exists_boundary_density_minimizer_of_nonempty P HL X η ⟨ρx, hρxp, hρxt, hρxP, hX⟩
+  refine ⟨σ, hσ, htr, hσP, hσX, hmin, hmin ρx hρxp hρxt hρxP hX, ?_⟩
   · have hneg : rectangularTraceNorm (X - partialTraceFirst ρx) =
         rectangularTraceNorm (partialTraceFirst ρx - X) := by
       rw [show X - partialTraceFirst ρx = (-1 : ℂ) • (partialTraceFirst ρx - X) by
@@ -99,6 +122,6 @@ theorem exists_boundary_density_minimizer
             rw [sub_add_sub_cancel]
       _ ≤ rectangularTraceNorm (partialTraceFirst σ - X) +
           rectangularTraceNorm (X - partialTraceFirst ρx) := rectangularTraceNorm_add_le _ _
-      _ ≤ 2 * η := by rw [hneg]; linarith [hσ.2.2.2]
+      _ ≤ 2 * η := by rw [hneg]; linarith [hσX]
 
 end Matrix
