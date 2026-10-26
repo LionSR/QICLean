@@ -1451,3 +1451,14 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   additional finite-sum theorem is introduced. The new evaluation of an
   operator upper bound on a unit eigenvector is shared by the two new
   estimates as one private mathematical lemma.
+
+### Two nonnegative weights bounded by their sum — candidate (2026-10-26)
+
+- **Seen:** The local `hpair` arguments in `Analysis/DominantEigenvector.lean`
+  and `Analysis/DominantEigenvectorUniqueness.lean`.
+- **Pattern:** For distinct indices, identify the sum of two nonnegative
+  weights with the sum over their pair, then bound it by the total sum.
+- **Reuse:** `Finset.sum_pair` and
+  `Finset.sum_le_sum_of_subset_of_nonneg` give the two steps directly.
+  There are two occurrences across two files. Retain these existing lemmas;
+  a third occurrence would justify considering a combined inequality.
