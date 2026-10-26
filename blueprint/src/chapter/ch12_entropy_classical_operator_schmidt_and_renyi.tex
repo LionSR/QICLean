@@ -432,6 +432,35 @@
     whose dimension is at most $|I|$.
 \end{proof}
 
+\begin{theorem}[Separate changes of local coordinates]
+    \label{thm:operator_schmidt_local_reindex}
+    \lean{Matrix.operatorSchmidtRank_reindex_prodCongr}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $I,J,I',J'$ be finite sets, let $e:I\to I'$ and $f:J\to J'$ be
+    bijections, and let $\rho$ be a complex matrix on $I\times J$.
+    Define the matrix $\rho'$ on $I'\times J'$ by
+    \begin{align}
+        \rho'_{(i',j'),(k',l')}
+         & =\rho_{(e^{-1}(i'),f^{-1}(j')),(e^{-1}(k'),f^{-1}(l'))}.
+        \label{eq:operator_schmidt_local_coordinates}
+    \end{align}
+    Then $\operatorname{OSR}(\rho')=\operatorname{OSR}(\rho)$.
+    The finite sets may be empty.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Choose a product decomposition $\rho=\sum_{t<r}A_t\otimes B_t$ with
+    $r=\operatorname{OSR}(\rho)$. Put
+    $(A'_t)_{i'k'}=(A_t)_{e^{-1}(i'),e^{-1}(k')}$ and
+    $(B'_t)_{j'l'}=(B_t)_{f^{-1}(j'),f^{-1}(l')}$.
+    Substitution in~(\ref{eq:operator_schmidt_local_coordinates}) gives
+    $\rho'=\sum_{t<r}A'_t\otimes B'_t$, so
+    $\operatorname{OSR}(\rho')\le r$.
+    Applying this inequality to $\rho'$ with the inverse bijections gives
+    $\operatorname{OSR}(\rho)\le\operatorname{OSR}(\rho')$ and proves equality.
+\end{proof}
+
 \begin{theorem}[Movement of an operator Schmidt cut]
     \label{thm:operator_schmidt_cut_movement}
     \lean{Matrix.operatorSchmidtRank_reindex_prodAssoc_le,
