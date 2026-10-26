@@ -435,6 +435,7 @@
 \begin{theorem}[Operator Schmidt rank as matrix rank]
     \label{thm:operator_schmidt_realignment_rank}
     \lean{Matrix.operatorSchmidtRank_eq_rank_realignment}
+    \leanok
     Let $\mathbb F$ be a field and let $I,J$ be finite sets. For a matrix
     $M$ with row and column indices in $I\times J$, form the matrix $R(M)$
     by pairing the two indices of each tensor factor:
@@ -447,7 +448,7 @@
     product-decomposition length in
     \cite[(1)]{DeLasCuevas2019Separability}.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Sending each operator block $M_{i,i'}$ to its coordinate vector
     identifies its span with the row span of $R(M)$. The coordinate map
     is a linear isomorphism. Hence the dimension of the operator-block
@@ -460,6 +461,7 @@
     \label{thm:operator_schmidt_prescribed_factors}
     \lean{Matrix.exists_left_factors_of_operatorBlock_mem_span,
         Matrix.exists_right_factors_of_left_blocks_mem_span}
+    \leanok
     Let $I,J$ be arbitrary sets, let $T$ be a finite set, and let $M$ be
     a complex matrix with row and column indices in $I\times J$.
     Suppose that every block
@@ -479,7 +481,7 @@
     Neither linear independence of the prescribed family nor finiteness
     of $I,J$ is required. The prescribed factors themselves are retained.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     Write each block as $M_{i,i'}=\sum_{t\in T}c_{i,i',t}C_t$ and set
     $(A_t)_{i,i'}=c_{i,i',t}$. Evaluating the resulting finite sum at
     $((i,j),(i',j'))$ gives the first decomposition. For the second,
@@ -493,6 +495,7 @@
     \label{thm:operator_schmidt_local_coordinates}
     \lean{Matrix.operatorSchmidtRank_submatrix_prod_le,
         Matrix.operatorSchmidtRank_fix_outer_le}
+    \leanok
     Let $I,J,\widetilde I,\widetilde J$ be finite sets and let $M$ be a
     complex matrix indexed by $I\times J$. For arbitrary maps
     $r_L,c_L:\widetilde I\to I$ and $r_R,c_R:\widetilde J\to J$, put
@@ -515,7 +518,7 @@
         \le\operatorname{OSR}_{AB\mid CD}(M)$.
     Empty retained index sets are permitted.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{def:bipartite_operator_schmidt_rank}
     Choose a shortest product decomposition
     $M=\sum_{t<r}A_t\otimes B_t$. Restrict the row and column indices
