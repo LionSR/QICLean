@@ -83,6 +83,7 @@ import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OperatorSchmidtCut
+import QICLean.Algebra.OperatorSchmidtPartition
 import QICLean.Algebra.OperatorSchmidtReindex
 import QICLean.Algebra.OperatorSchmidtTwoCuts
 import QICLean.Algebra.OrderedMatrixAction
