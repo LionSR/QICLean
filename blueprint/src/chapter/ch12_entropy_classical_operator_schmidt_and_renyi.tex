@@ -432,6 +432,104 @@
     whose dimension is at most $|I|$.
 \end{proof}
 
+\begin{theorem}[Operator Schmidt rank as matrix rank]
+    \label{thm:operator_schmidt_realignment_rank}
+    \lean{Matrix.operatorSchmidtRank_eq_rank_realignment}
+    \leanok
+    Let $\mathbb F$ be a field and let $I,J$ be finite sets. For a matrix
+    $M$ with row and column indices in $I\times J$, form the matrix $R(M)$
+    by pairing the two indices of each tensor factor:
+    \begin{align}
+        R(M)_{(i,i'),(j,j')}
+         & =M_{(i,j),(i',j')}. \notag
+    \end{align}
+    Then $\operatorname{OSR}_{\mathbb F}(M)=\operatorname{rank}_{\mathbb F}R(M)$.
+    Over $\mathbb C$, this gives the matrix-rank characterization of the
+    product-decomposition length in
+    \cite[(1)]{DeLasCuevas2019Separability}.
+\end{theorem}
+\begin{proof}\leanok
+    Sending each operator block $M_{i,i'}$ to its coordinate vector
+    identifies its span with the row span of $R(M)$. The coordinate map
+    is a linear isomorphism. Hence the dimension of the operator-block
+    span, which is the rank of the coefficient map over $\mathbb F$,
+    equals the matrix rank. This coefficient-map rank is the operator
+    Schmidt rank over $\mathbb F$.
+\end{proof}
+
+\begin{theorem}[Product decompositions retaining prescribed factors]
+    \label{thm:operator_schmidt_prescribed_factors}
+    \lean{Matrix.exists_left_factors_of_operatorBlock_mem_span,
+        Matrix.exists_right_factors_of_left_blocks_mem_span}
+    \leanok
+    Let $I,J$ be arbitrary sets, let $T$ be a finite set, and let $M$ be
+    a complex matrix with row and column indices in $I\times J$.
+    Suppose that every block
+    $(M_{i,i'})_{j,j'}=M_{(i,j),(i',j')}$ belongs to the linear span of
+    a prescribed family $(C_t)_{t\in T}$ of matrices indexed by $J$.
+    Then there are matrices $(A_t)_{t\in T}$ indexed by $I$ such that
+    \begin{align}
+        M & =\sum_{t\in T}A_t\otimes C_t. \notag
+    \end{align}
+    Likewise, if every matrix
+    $(M^{j,j'})_{i,i'}=M_{(i,j),(i',j')}$ belongs to the span of a
+    prescribed family $(D_t)_{t\in T}$ indexed by $I$, then there are
+    matrices $(B_t)_{t\in T}$ indexed by $J$ such that
+    \begin{align}
+        M & =\sum_{t\in T}D_t\otimes B_t. \notag
+    \end{align}
+    Neither linear independence of the prescribed family nor finiteness
+    of $I,J$ is required. The prescribed factors themselves are retained.
+\end{theorem}
+\begin{proof}\leanok
+    Write each block as $M_{i,i'}=\sum_{t\in T}c_{i,i',t}C_t$ and set
+    $(A_t)_{i,i'}=c_{i,i',t}$. Evaluating the resulting finite sum at
+    $((i,j),(i',j'))$ gives the first decomposition. For the second,
+    choose coefficients in the same way for $M^{j,j'}$ and place them
+    in the entries of $B_t$. Commutativity of complex multiplication
+    gives the displayed tensor order. If $T$ is empty, the span
+    hypothesis forces every relevant block, and hence $M$, to vanish.
+\end{proof}
+
+\begin{theorem}[Local coordinate maps do not increase operator Schmidt rank]
+    \label{thm:operator_schmidt_local_coordinates}
+    \lean{Matrix.operatorSchmidtRank_submatrix_prod_le,
+        Matrix.operatorSchmidtRank_fix_outer_le}
+    \leanok
+    Let $I,J,\widetilde I,\widetilde J$ be finite sets and let $M$ be a
+    complex matrix indexed by $I\times J$. For arbitrary maps
+    $r_L,c_L:\widetilde I\to I$ and $r_R,c_R:\widetilde J\to J$, put
+    \begin{align}
+        N_{(u,v),(u',v')}
+         & =M_{(r_L(u),r_R(v)),(c_L(u'),c_R(v'))}. \notag
+    \end{align}
+    Then $\operatorname{OSR}(N)\le\operatorname{OSR}(M)$.
+    The maps need not be injective.
+
+    In particular, let $M$ be indexed by $(A\times B)\times(C\times D)$
+    for finite sets $A,B,C,D$. Fix $a_1,a_2\in A$ and $d_1,d_2\in D$.
+    The matrix on $B\times C$ defined by
+    \begin{align}
+        N_{(b,c),(b',c')}
+         & =M_{((a_1,b),(c,d_1)),((a_2,b'),(c',d_2))} \notag
+    \end{align}
+    satisfies
+    $\operatorname{OSR}_{B\mid C}(N)
+        \le\operatorname{OSR}_{AB\mid CD}(M)$.
+    Empty retained index sets are permitted.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Choose a shortest product decomposition
+    $M=\sum_{t<r}A_t\otimes B_t$. Restrict the row and column indices
+    of each $A_t$ along $r_L,c_L$, and those of each $B_t$ along
+    $r_R,c_R$. Their tensor products give a decomposition of $N$
+    with the same $r$ terms, so its operator Schmidt rank is at most
+    $r$. The particular case uses the four maps
+    $b\mapsto(a_1,b)$, $b'\mapsto(a_2,b')$,
+    $c\mapsto(c,d_1)$, and $c'\mapsto(c',d_2)$.
+\end{proof}
+
 \begin{theorem}[Separate changes of local coordinates]
     \label{thm:operator_schmidt_local_reindex}
     \lean{Matrix.operatorSchmidtRank_reindex_prodCongr}
