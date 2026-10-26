@@ -240,6 +240,15 @@ theorem kyFanNorm_eq_sum_fin (hA : A.IsHermitian) (k : ℕ) :
         have hxm : (x : ℕ) ≠ m := fun hc => h (hc ▸ x.2)
         simp [hxm]
 
+/-- **Ky-Fan norm beyond full rank.** Once the index reaches the dimension,
+the sum of the largest eigenvalues stabilizes at the real trace. -/
+theorem kyFanNorm_eq_trace_re_of_card_le (hA : A.IsHermitian) {k : ℕ}
+    (hk : Fintype.card n ≤ k) :
+    hA.kyFanNorm k = (A.trace).re := by
+  rw [← hA.kyFanNorm_card_eq_trace_re, hA.kyFanNorm_eq_sum_fin,
+    hA.kyFanNorm_eq_sum_fin]
+  exact Finset.sum_congr rfl fun i _ ↦ by simp [i.isLt, i.isLt.trans_le hk]
+
 /-- The eigenvalues beyond the first \(K\), in descending order, add up to the real trace
 minus the sum of the \(K\) largest signed eigenvalues. No positivity assumption is needed,
 and the identity also holds when \(K\) exceeds the dimension. -/

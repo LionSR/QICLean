@@ -1,0 +1,32 @@
+\section{Vanishing trace pairing with a unitary matrix}
+
+\begin{theorem}[Unitarity of permutation matrices]
+    \label{thm:permutation_matrix_unitary}
+    \lean{Equiv.Perm.permMatrix_mem_unitaryGroup}
+    \leanok
+    Every complex permutation matrix is unitary.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The adjoint of a permutation matrix is the matrix of its inverse permutation.
+    Their product is the identity matrix.
+\end{proof}
+
+\begin{theorem}[Vanishing trace pairing with a unitary matrix]
+    \label{thm:hermitian_unitary_trace_pairing_zero}
+    \lean{Matrix.IsHermitian.exists_unitary_trace_mul_eq_zero}
+    \leanok
+    Let $A$ be a complex Hermitian $d\times d$ matrix with $d\ge2$.
+    There exists a unitary matrix $U$ such that $\operatorname{tr}(AU)=0$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:permutation_matrix_unitary}
+    Write $A=VDV^*$, where $V$ is unitary and $D$ is diagonal.
+    Let $P$ be the permutation matrix of a cyclic permutation of the $d$
+    coordinates. Since $d\ge2$, this permutation has no fixed point, so every
+    diagonal entry of $P$ vanishes. The matrix $U=VPV^*$ is unitary, and
+    $\operatorname{tr}(AU)=\operatorname{tr}(DP)=0$.
+\end{proof}

@@ -59,6 +59,8 @@ coefficients and `v` the normalized sum of the `D` removed Schmidt terms: the ov
   `Matrix.IsTrimmingProjection.commute_leftMarginal`: a projection maximizing its trace
   against a Hermitian matrix among projections of the same trace commutes with it; in
   particular a trimming projection commutes with the left marginal.
+* `Matrix.exists_mul_eq_mul_transpose_of_commute`: an orthogonal projection commuting with the
+  left marginal acts on the second factor as well.
 * `Matrix.IsTrimmingProjection.exists_mul_eq_mul_transpose` and
   `Matrix.IsTrimmingProjection.exists_leftApply_eq_rightApply`: the trimmed vector is also
   `(1 ⊗ Q) ψ` for an orthogonal projection `Q` of rank at most `D` on the second factor.
@@ -451,6 +453,50 @@ theorem exists_isTrimmingProjection (ψ : EuclideanSpace ℂ (m × n)) (D : ℕ)
     exact_mod_cast min_le_left _ _
   exact_mod_cast h
 
+omit [DecidableEq m] in
+/-- **A projection commuting with the left marginal acts on the second factor.** If `P` is an
+orthogonal projection on the first factor commuting with the left marginal `C Cᴴ` of `ψ`, then
+there is an orthogonal projection `Q` on the second factor, of rank at most that of `P`, with
+`P C = C Qᵀ`; that is, `(P ⊗ 1) ψ = (1 ⊗ Q) ψ`.  The projection `Qᵀ` is the support projection
+of `Cᴴ P C`: it fixes the rows of `P C`, and it kills the rows of `(1 - P) C` because
+`(1 - P) C Cᴴ P = (1 - P) P C Cᴴ = 0`.  This is the step of the proof of Lemma `l:trim2` of
+Landau, Vazirani and Vidick (arXiv:1307.5143v1, algo53.tex, lines 544–553). -/
+theorem exists_mul_eq_mul_transpose_of_commute {ψ : EuclideanSpace ℂ (m × n)}
+    {P : Matrix m m ℂ} (hPh : P.IsHermitian) (hPi : P * P = P)
+    (hc : Commute P (leftMarginal ψ)) :
+    ∃ Q : Matrix n n ℂ, Q.IsHermitian ∧ Q * Q = Q ∧ Q.rank ≤ P.rank ∧
+      P * schmidtCoeffMatrix (WithLp.ofLp ψ) = schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ := by
+  classical
+  set C := schmidtCoeffMatrix (WithLp.ofLp ψ) with hC
+  set B : Matrix n m ℂ := (P * C)ᴴ with hB
+  set hBB := isHermitian_mul_conjTranspose_self B
+  set Q₀ := hBB.supportProj with hQ₀
+  have hQh : Q₀.IsHermitian := hBB.supportProj_isHermitian
+  have hQi : Q₀ * Q₀ = Q₀ := hBB.supportProj_idem
+  have hQB : Q₀ * B = B := supportProj_mul_conjTranspose_mul_self B
+  have hPCQ : P * C * Q₀ = P * C := by
+    have h : (Q₀ * B)ᴴ = Bᴴ := by rw [hQB]
+    rwa [conjTranspose_mul, hQh.eq, hB, conjTranspose_conjTranspose] at h
+  have hcomm : P * (C * Cᴴ) = C * Cᴴ * P := hc.eq
+  obtain ⟨W, hW⟩ := hBB.exists_supportProj_eq_mul
+  have hQPC : (1 - P) * C * Q₀ = 0 := by
+    have h : (1 - P) * C * Q₀ = (1 - P) * (C * Cᴴ * P) * (P * C * W) := by
+      rw [hQ₀, hW, hB]
+      simp only [conjTranspose_mul, conjTranspose_conjTranspose, hPh.eq,
+        Matrix.mul_assoc]
+    rw [h, ← hcomm, ← Matrix.mul_assoc (1 - P) P, Matrix.sub_mul, Matrix.one_mul, hPi,
+      sub_self, Matrix.zero_mul, Matrix.zero_mul]
+  have hCQ : C * Q₀ = P * C := by
+    have h : C * Q₀ = P * C * Q₀ + (1 - P) * C * Q₀ := by
+      rw [← Matrix.add_mul, ← Matrix.add_mul, add_sub_cancel, Matrix.one_mul]
+    rw [h, hPCQ, hQPC, add_zero]
+  refine ⟨Q₀ᵀ, hQh.transpose, by rw [← transpose_mul, hQi], ?_, by rw [transpose_transpose, hCQ]⟩
+  have h : (Q₀.rank : ℝ) = (P * C).rank := by
+    rw [hQh.rank_eq_trace_re_of_idem hQi, hQ₀, hBB.supportProj_trace,
+      rank_self_mul_conjTranspose, hB, rank_conjTranspose, Complex.natCast_re]
+  rw [rank_transpose, Nat.cast_injective h]
+  exact rank_mul_le_left _ _
+
 namespace IsTrimmingProjection
 
 variable {ψ : EuclideanSpace ℂ (m × n)} {D : ℕ} {P : Matrix m m ℂ}
@@ -636,43 +682,13 @@ theorem commute_leftMarginal (hP : IsTrimmingProjection ψ D P) :
 /-- **The trimmed vector as a projection on the second factor**, coefficient form
 (arXiv:1307.5143v1, algo53.tex, lines 544–553).  For a trimming projection `P` of `ψ` with
 coefficient matrix `C`, there is an orthogonal projection `Q` on the second factor, of rank
-at most that of `P`, with `P C = C Qᵀ`; that is, `(P ⊗ 1) ψ = (1 ⊗ Q) ψ`.  The projection
-`Qᵀ` is the support projection of `Cᴴ P C`: it fixes the rows of `P C`, and it kills the
-rows of `(1 - P) C` because `(1 - P) C Cᴴ P = (1 - P) P C Cᴴ = 0` by
+at most that of `P`, with `P C = C Qᵀ`; that is, `(P ⊗ 1) ψ = (1 ⊗ Q) ψ`.  This is
+`Matrix.exists_mul_eq_mul_transpose_of_commute` with
 `Matrix.IsTrimmingProjection.commute_leftMarginal`. -/
 theorem exists_mul_eq_mul_transpose (hP : IsTrimmingProjection ψ D P) :
     ∃ Q : Matrix n n ℂ, Q.IsHermitian ∧ Q * Q = Q ∧ Q.rank ≤ P.rank ∧
-      P * schmidtCoeffMatrix (WithLp.ofLp ψ) = schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ := by
-  classical
-  set C := schmidtCoeffMatrix (WithLp.ofLp ψ) with hC
-  set B : Matrix n m ℂ := (P * C)ᴴ with hB
-  set hBB := isHermitian_mul_conjTranspose_self B
-  set Q₀ := hBB.supportProj with hQ₀
-  have hQh : Q₀.IsHermitian := hBB.supportProj_isHermitian
-  have hQi : Q₀ * Q₀ = Q₀ := hBB.supportProj_idem
-  have hQB : Q₀ * B = B := supportProj_mul_conjTranspose_mul_self B
-  have hPCQ : P * C * Q₀ = P * C := by
-    have h : (Q₀ * B)ᴴ = Bᴴ := by rw [hQB]
-    rwa [conjTranspose_mul, hQh.eq, hB, conjTranspose_conjTranspose] at h
-  have hcomm : P * (C * Cᴴ) = C * Cᴴ * P := hP.commute_leftMarginal.eq
-  obtain ⟨W, hW⟩ := hBB.exists_supportProj_eq_mul
-  have hQPC : (1 - P) * C * Q₀ = 0 := by
-    have h : (1 - P) * C * Q₀ = (1 - P) * (C * Cᴴ * P) * (P * C * W) := by
-      rw [hQ₀, hW, hB]
-      simp only [conjTranspose_mul, conjTranspose_conjTranspose, hP.isHermitian.eq,
-        Matrix.mul_assoc]
-    rw [h, ← hcomm, ← Matrix.mul_assoc (1 - P) P, Matrix.sub_mul, Matrix.one_mul, hP.mul_self,
-      sub_self, Matrix.zero_mul, Matrix.zero_mul]
-  have hCQ : C * Q₀ = P * C := by
-    have h : C * Q₀ = P * C * Q₀ + (1 - P) * C * Q₀ := by
-      rw [← Matrix.add_mul, ← Matrix.add_mul, add_sub_cancel, Matrix.one_mul]
-    rw [h, hPCQ, hQPC, add_zero]
-  refine ⟨Q₀ᵀ, hQh.transpose, by rw [← transpose_mul, hQi], ?_, by rw [transpose_transpose, hCQ]⟩
-  have h : (Q₀.rank : ℝ) = (P * C).rank := by
-    rw [hQh.rank_eq_trace_re_of_idem hQi, hQ₀, hBB.supportProj_trace,
-      rank_self_mul_conjTranspose, hB, rank_conjTranspose, Complex.natCast_re]
-  rw [rank_transpose, Nat.cast_injective h]
-  exact rank_mul_le_left _ _
+      P * schmidtCoeffMatrix (WithLp.ofLp ψ) = schmidtCoeffMatrix (WithLp.ofLp ψ) * Qᵀ :=
+  exists_mul_eq_mul_transpose_of_commute hP.isHermitian hP.mul_self hP.commute_leftMarginal
 
 /-- **The trimmed vector as a projection on the second factor** (arXiv:1307.5143v1,
 algo53.tex, lines 544–553).  For a trimming projection `P` of `ψ` at `D`, there is an
