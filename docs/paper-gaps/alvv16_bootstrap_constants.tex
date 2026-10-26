@@ -1,0 +1,54 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{The constants of the bootstrapping step for degenerate ground spaces}
+\author{}
+\date{2026-10-26}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+Proposition \texttt{prop:albootstrap-dg} of Arad--Landau--Vazirani--Vidick,
+\href{https://arxiv.org/abs/1602.08828}{arXiv:1602.08828v2}, source lines
+1062--1075, bounds the minimal dimension $q$ of a $0.015$-viable subspace for
+the ground space $T$. Its proof takes $W$ of minimal dimension, observes that
+$W$ is $0.04$-viable for the subspace $\tilde T$ of Theorem \texttt{t:ais},
+samples a random $W'\subseteq W$ of dimension $s=q/(2D^2)$, applies the
+operators $A_1,\dots,A_{D^2}$, and contradicts minimality. Three details need
+adjustment; none changes the conclusion.
+
+\emph{The target of the sample.} Line 1068 applies Lemma \texttt{l:rs} to
+obtain a sample viable for $T$, but the next step applies the $A_i$, which
+improve viability for $\tilde T$. The sample must be viable for $\tilde T$,
+which holds because $W$ is $0.04$-viable for $\tilde T$.
+
+\emph{The sampling condition.} The condition
+\texttt{eq:bootstrap-cond-dg} (line 1070) is stated as
+$s=\Omega(\log q+r\log(q/s))$, which is meant to make the failure probability
+of Lemma \texttt{l:rs} smaller than one. The formal statement uses that
+requirement directly, with the failure probability
+$\eta(q)=(1+2/\nu)^{2r}q\,e^{-s/16}$, $\nu=\sqrt{0.96\,s/(8q)}$, of the
+corrected Lemma \texttt{l:rs} (note \path{alvv16_random_sampling_net_count}),
+and with $s=\lfloor q/(2D^2)\rfloor$.
+
+\emph{The constants.} Line 1074 states $(32D^2)^2\Delta+0.005\le0.1\le0.15$
+and concludes a contradiction with the threshold $0.015$. Robustness,
+Lemma \texttt{l:close}, doubles the error, so the span of the $A_iW'$ is
+$2(\Delta/\delta'^2+0.005)$-viable for $T$, where $\delta'=0.96\,s/(8q)$ is the
+overlap of the sample. The contradiction therefore needs
+$\Delta/\delta'^2\le0.0025$. For $q\ge4D^2$ we have $s\ge q/(4D^2)$ and
+$\delta'\ge0.03/D^2$, so $\Delta/\delta'^2\le D^4\Delta/0.0009$, and
+$D^{12}\Delta\le10^{-5}$ gives $D^4\Delta\le10^{-5}/D^8$. This is at most
+$0.0025\cdot0.0009$ for $D\ge2$, but not for $D=1$. Theorem \texttt{t:ais}
+has $D=e^{\tilde O(\gamma^{-1}\log^3d)}\ge2$, so the formal statement assumes
+$D\ge2$ and $q\ge4D^2$.
+
+The formal statements are
+\leanid{Submodule.exists_isViable_finrank_le_half} for one step and
+\leanid{Submodule.exists_isViable_finrank_lt_of_bootstrap} for the
+proposition, which replaces the minimality argument by repeated halving
+from the whole factor.
+\end{document}
