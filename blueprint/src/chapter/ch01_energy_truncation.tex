@@ -1,0 +1,41 @@
+\section{Truncating the high spectrum of a Hermitian matrix}
+\label{sec:energy_truncation}
+
+For a Hermitian matrix $A$ and an energy $\tau$, let $P_{\ge\tau}$ be the
+spectral projection of $A$ onto eigenvalues at least $\tau$.
+
+\begin{definition}[Energy truncation]
+    \label{def:energy_truncation}
+    \lean{Matrix.energyTruncation}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    The truncation of $A$ at $\tau$ is $\tilde A=\min(A,\tau)$ in the functional
+    calculus: every eigenvalue above $\tau$ is replaced by $\tau$. This is the
+    truncated Hamiltonian of Arad, Kuwahara and
+    Landau~\cite{Arad2014Connecting}, Definition~def:Ht, and the hard truncation
+    of~\cite[lines 873--886]{Arad2016RigorousRG}, Definition~def:hard-trunc,
+    with $A=H_J$ and $\tau=\varepsilon_J+t$.
+\end{definition}
+
+\begin{theorem}[Properties of the energy truncation]
+    \label{thm:energy_truncation}
+    \lean{Matrix.IsHermitian.energyTruncation_eq, Matrix.isHermitian_energyTruncation,
+        Matrix.IsHermitian.commute_energyTruncation, Matrix.IsHermitian.energyTruncation_le,
+        Matrix.IsHermitian.energyTruncation_le_smul_one,
+        Matrix.IsHermitian.smul_one_le_energyTruncation}
+    \leanok
+    \uses{def:energy_truncation}
+    The truncation equals $A(I-P_{\ge\tau})+\tau P_{\ge\tau}$, is Hermitian and
+    commutes with $A$, and satisfies $\tilde A\le A$ and $\tilde A\le\tau I$. If
+    every eigenvalue of $A$ is at least $\varepsilon$ and $\varepsilon\le\tau$,
+    then $\varepsilon I\le\tilde A$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    All four operators are functions of $A$. The first identity is the
+    pointwise identity $\min(t,\tau)=t\,\mathbf 1_{t<\tau}+\tau\,\mathbf
+    1_{t\ge\tau}$. The order bounds follow from $\min(t,\tau)\le t$,
+    $\min(t,\tau)\le\tau$ and $\varepsilon\le\min(t,\tau)$ on the spectrum, by
+    monotonicity of the functional calculus.
+\end{proof}

@@ -1,0 +1,52 @@
+\section{The bootstrapping step}
+
+Let $T,T'\subseteq M\otimes F$ be mutually $0.005$-close, let $D\ge2$, and let
+$A_1,\dots,A_{D^2}$ be operators on $M$ such that for every $\delta<1$ and
+every $\delta$-viable $S\subseteq M$ for $T'$ the span of $A_1S,\dots,A_{D^2}S$
+is $\Delta/(1-\delta)^2$-viable for $T'$, where $D^{12}\Delta\le10^{-5}$. These
+are the data of Theorem~t:ais of~\cite[lines 1010--1024]{Arad2016RigorousRG}.
+For a dimension $q$ write $s=\lfloor q/(2D^2)\rfloor$ and
+\[
+    \eta(q)=\Bigl(1+\frac{2}{\sqrt{0.96\,s/(8q)}}\Bigr)^{2\dim T'}q\,e^{-s/16}
+\]
+for the failure probability of random sampling.
+
+\begin{theorem}[One bootstrapping step]
+    \label{thm:viable_bootstrap_step}
+    \lean{Submodule.exists_isViable_finrank_le_half}
+    \leanok
+    \uses{thm:viable_random_sampling, thm:subspace_close_trans}
+    If $W\subseteq M$ is $0.015$-viable for $T$, has dimension $q\ge4D^2$, and
+    $\eta(q)<1$, then some $0.015$-viable subspace for $T$ has dimension at
+    most $q/2$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    By robustness, $W$ is $0.04$-viable for $T'$. Since $\eta(q)<1$, some
+    $s$-dimensional subspace $W'\subseteq W$ is $(1-\delta')$-viable for $T'$
+    with $\delta'=0.96\,s/(8q)$. The span $S$ of the $A_iW'$ has dimension at
+    most $D^2s\le q/2$ and is $\Delta/\delta'^2$-viable for $T'$. Since
+    $s\ge q/(4D^2)$, we have $\delta'\ge0.03/D^2$, and $D^{12}\Delta\le10^{-5}$
+    with $D\ge2$ gives $\Delta/\delta'^2\le0.0025$. Robustness again shows
+    that $S$ is $2(0.0025+0.005)=0.015$-viable for $T$.
+\end{proof}
+
+\begin{theorem}[Bootstrapping]
+    \label{thm:viable_bootstrap}
+    \lean{Submodule.exists_isViable_finrank_lt_of_bootstrap}
+    \leanok
+    \uses{thm:viable_bootstrap_step}
+    If $q_1\ge4D^2$ and $\eta(q)<1$ for every $q\ge q_1$, then some
+    $0.015$-viable subspace for $T$ has dimension less than $q_1$. This is
+    Proposition~prop:albootstrap-dg of~\cite[lines
+    1062--1075]{Arad2016RigorousRG} for the data of Theorem~t:ais, with the
+    constants corrected~\cite{gap:alvv16_bootstrap_constants}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The whole factor $M$ is $0.015$-viable. Starting from it, apply the
+    previous theorem as long as the dimension is at least $q_1$; each step
+    halves the dimension.
+\end{proof}
