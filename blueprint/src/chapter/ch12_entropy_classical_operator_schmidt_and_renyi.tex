@@ -588,6 +588,72 @@
     the statement. Multiplying the two bounds gives~(\ref{eq:operator_schmidt_inner_exchange}).
 \end{proof}
 
+\begin{theorem}[Comparison of two finite partitions]
+    \label{thm:operator_schmidt_partition_comparison}
+    \lean{Matrix.operatorSchmidtRank_reindex_piEquivPiSubtypeProd_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $V,A$ be finite sets and let $M$ be a complex matrix on $A^V$.
+    For $P\subseteq V$, write $\operatorname{OSR}_P(M)$ for the operator
+    Schmidt rank under the restriction identification
+    $A^V\simeq A^P\times A^{V\setminus P}$.
+    Then, for any $P,Q\subseteq V$,
+    \begin{align}
+        \operatorname{OSR}_Q(M)
+         & \le |A^{P\setminus Q}|^2|A^{Q\setminus P}|^2
+        \operatorname{OSR}_P(M).
+        \label{eq:operator_schmidt_partition_cost}
+    \end{align}
+    Both $V$ and $A$ may be empty. In particular, $A^\varnothing$ is a
+    singleton even when $A=\varnothing$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:operator_schmidt_local_reindex,thm:operator_schmidt_four_factor_movement}
+    Put $U=P\cap Q$, $X=P\setminus Q$, $Y=Q\setminus P$ and
+    $W=V\setminus(P\cup Q)$. Restriction of functions gives the four factors
+    $A^U,A^X,A^Y,A^W$. For the $P$ partition they are grouped as
+    $(A^U\times A^X)\mid(A^Y\times A^W)$; for the $Q$ partition they are
+    grouped as $(A^U\times A^Y)\mid(A^X\times A^W)$.
+    The two identifications agree on each restricted function.
+    Theorem~\ref{thm:operator_schmidt_local_reindex} preserves the rank under
+    the separate coordinate changes on either side of each partition.
+    Applying Theorem~\ref{thm:operator_schmidt_four_factor_movement} to the
+    four factors gives~(\ref{eq:operator_schmidt_partition_cost}).
+\end{proof}
+
+\begin{theorem}[Rank bound by the symmetric difference]
+    \label{thm:operator_schmidt_uniform_partition}
+    \lean{Matrix.operatorSchmidtRank_reindex_piEquivPiSubtypeProd_finset_le,
+        FiniteProduct.operatorSchmidtRank_splitEquiv_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $V$ be finite, let $q$ be a natural number, and let $M$ be a complex
+    matrix on $\{a\in\mathbb N:a<q\}^V$. For subsets $S,T\subseteq V$,
+    \begin{align}
+        \operatorname{OSR}_T(M)
+         & \le q^{2|S\mathbin{\triangle}T|}\operatorname{OSR}_S(M).
+        \label{eq:operator_schmidt_changed_sites}
+    \end{align}
+    Empty site sets and $q=0$ are included, with $0^0=1$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:operator_schmidt_partition_comparison,thm:operator_schmidt_coefficient_space,
+        thm:operator_schmidt_local_reindex}
+    The configuration spaces on $S\setminus T$ and $T\setminus S$ have
+    dimensions $q^{|S\setminus T|}$ and $q^{|T\setminus S|}$.
+    These two regions are disjoint and their union is
+    $S\mathbin{\triangle}T$. Hence the product of their squared dimensions
+    equals $q^{2|S\mathbin{\triangle}T|}$, including when $q=0$.
+    Substitution in~(\ref{eq:operator_schmidt_partition_cost}) gives
+    (\ref{eq:operator_schmidt_changed_sites}). The operator-block-span
+    characterization gives the same rank for either enumeration of the
+    finite bases.
+    The complement predicate and the complementary finite set are related
+    by a change of coordinates on the right of the partition.
+    Theorem~\ref{thm:operator_schmidt_local_reindex} preserves the rank
+    under this identification.
+\end{proof}
+
 \begin{theorem}[Movement of an operator Schmidt cut]
     \label{thm:operator_schmidt_cut_movement}
     \lean{Matrix.operatorSchmidtRank_reindex_prodAssoc_le,
