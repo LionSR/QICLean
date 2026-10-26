@@ -461,6 +461,35 @@
     $\operatorname{OSR}(\rho)\le\operatorname{OSR}(\rho')$ and proves equality.
 \end{proof}
 
+\begin{theorem}[Interchanging factors across an operator Schmidt cut]
+    \label{thm:operator_schmidt_four_factor_movement}
+    \lean{Matrix.operatorSchmidtRank_reindex_prodProdProdComm_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $\rho$ be an operator on four finite-dimensional complex spaces
+    $\mathcal H_A\otimes\mathcal H_B\otimes\mathcal H_C\otimes\mathcal H_D$,
+    and put $d_B=\dim\mathcal H_B$ and $d_C=\dim\mathcal H_C$.
+    With the canonical interchange
+    $(a\otimes b)\otimes(c\otimes d)\mapsto(a\otimes c)\otimes(b\otimes d)$,
+    \begin{align}
+        \operatorname{OSR}_{AC\mid BD}(\rho)
+         & \le d_B^2d_C^2\operatorname{OSR}_{AB\mid CD}(\rho).
+        \label{eq:operator_schmidt_inner_exchange}
+    \end{align}
+    Zero-dimensional factors are included.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:operator_schmidt_cut_movement,thm:operator_schmidt_local_reindex}
+    Move $B$ from the left side to the right side of the cut. Theorem~\ref{thm:operator_schmidt_cut_movement}
+    bounds the new rank by $d_B^2\operatorname{OSR}_{AB\mid CD}(\rho)$.
+    On the right side, identify $B\otimes(C\otimes D)$ with
+    $C\otimes(B\otimes D)$. Theorem~\ref{thm:operator_schmidt_local_reindex}
+    leaves the rank unchanged. Now move $C$ to the left side, using
+    Theorem~\ref{thm:operator_schmidt_cut_movement} again; this costs at most
+    $d_C^2$. The composite identification is precisely the interchange in
+    the statement. Multiplying the two bounds gives~(\ref{eq:operator_schmidt_inner_exchange}).
+\end{proof}
+
 \begin{theorem}[Movement of an operator Schmidt cut]
     \label{thm:operator_schmidt_cut_movement}
     \lean{Matrix.operatorSchmidtRank_reindex_prodAssoc_le,

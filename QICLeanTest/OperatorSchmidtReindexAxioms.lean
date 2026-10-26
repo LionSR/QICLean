@@ -14,3 +14,11 @@ import QICLean.Algebra.OperatorSchmidtReindex
 #guard_msgs (whitespace := lax) in
 set_option linter.hashCommand false in
 #print axioms Matrix.operatorSchmidtRank_reindex_prodCongr
+
+/-- info:
+'Matrix.operatorSchmidtRank_reindex_prodProdProdComm_le' depends on axioms:
+[propext, Classical.choice, Quot.sound]
+-/
+#guard_msgs (whitespace := lax) in
+set_option linter.hashCommand false in
+#print axioms Matrix.operatorSchmidtRank_reindex_prodProdProdComm_le

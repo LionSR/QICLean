@@ -36,3 +36,20 @@ example (ρ : Matrix (Fin 2 × Fin 0) (Fin 2 × Fin 0) ℂ) :
       Matrix.operatorSchmidtRank ρ := by
   exact Matrix.operatorSchmidtRank_reindex_prodCongr ρ
     (Equiv.swap (0 : Fin 2) 1) (Equiv.refl (Fin 0))
+
+/-- Unequal tensor-factor dimensions give the cost 3²5² = 225. -/
+example (ρ : Matrix ((Fin 2 × Fin 3) × (Fin 5 × Fin 7))
+    ((Fin 2 × Fin 3) × (Fin 5 × Fin 7)) ℂ) :
+    Matrix.operatorSchmidtRank
+        (ρ.reindex (Equiv.prodProdProdComm (Fin 2) (Fin 3) (Fin 5) (Fin 7))
+          (Equiv.prodProdProdComm (Fin 2) (Fin 3) (Fin 5) (Fin 7))) ≤
+      225 * Matrix.operatorSchmidtRank ρ := by
+  simpa using Matrix.operatorSchmidtRank_reindex_prodProdProdComm_le ρ
+
+/-- An exchanged factor may be empty, giving a zero dimension cost. -/
+example (ρ : Matrix ((Fin 2 × Fin 0) × (Fin 3 × Fin 5))
+    ((Fin 2 × Fin 0) × (Fin 3 × Fin 5)) ℂ) :
+    Matrix.operatorSchmidtRank
+        (ρ.reindex (Equiv.prodProdProdComm (Fin 2) (Fin 0) (Fin 3) (Fin 5))
+          (Equiv.prodProdProdComm (Fin 2) (Fin 0) (Fin 3) (Fin 5))) ≤ 0 := by
+  simpa using Matrix.operatorSchmidtRank_reindex_prodProdProdComm_le ρ
