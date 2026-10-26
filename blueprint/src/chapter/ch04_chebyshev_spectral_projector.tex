@@ -1,0 +1,55 @@
+\section{The Chebyshev filter as a spectral projector}
+
+Let $H$ be a self-adjoint operator on a finite-dimensional inner product space,
+with orthonormal eigenbasis $b_j$ and eigenvalues $h_j$.
+
+\begin{theorem}[Polynomials of an operator on its eigenvectors]
+    \label{thm:polynomial_on_eigenvector}
+    \lean{ContinuousLinearMap.aeval_map_apply_of_apply_eq_smul}
+    \leanok
+    If $Hv=\mu v$ with $\mu$ real and $p$ is a real polynomial, then
+    $p(H)v=p(\mu)v$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Both sides are additive in $p$, and $H^mv=\mu^mv$ by induction on $m$.
+\end{proof}
+
+\begin{theorem}[A polynomial filter as a spectral projector]
+    \label{thm:polynomial_spectral_projector}
+    \lean{Submodule.isSpectralProjector_aeval}
+    \leanok
+    \uses{thm:polynomial_on_eigenvector, def:spectral_projector}
+    If a real polynomial $p$ satisfies $p(t)\ge1$ for $t\le\eta_0$ and
+    $p(h_j)^2\le\Delta$ whenever $h_j\ge\eta_1$, then $p(H)$ is a spectral
+    projector for $(H,\eta_0,\eta_1)$ with parameter $\Delta$, with eigenvalues
+    $p(h_j)$ on the basis $b_j$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The previous theorem gives $p(H)b_j=p(h_j)b_j$, and the two conditions
+    are those of the definition.
+\end{proof}
+
+\begin{theorem}[The Chebyshev filter]
+    \label{thm:chebyshev_spectral_projector}
+    \lean{Submodule.exists_isSpectralProjector_chebyshev}
+    \leanok
+    \uses{thm:polynomial_spectral_projector, thm:chebyshev_interval_polynomial}
+    Let all eigenvalues of $H$ be at most $u$, and let $a<b\le u$. For every
+    $n$ there is a real polynomial $p$ of degree $n$ with $p(a)=1$ such that
+    $p(H)$ is a spectral projector for $(H,a,b)$ with parameter
+    $\bigl(2e^{-2n\sqrt{(b-a)/(u-a)}}\bigr)^2$. This is items 1--3 of
+    Theorem~thm:Cheby-AGSP of~\cite[lines 789--853]{Arad2016RigorousRG}, in
+    the form required by the error reduction; positivity of $p(H)$ is not
+    claimed~\cite{gap:alvv16_chebyshev_filter_positivity}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The normalized interval polynomial satisfies $p(t)\ge1$ for $t\le a$ and
+    $\lvert p(t)\rvert\le2e^{-2n\sqrt{(b-a)/(u-a)}}$ on $[b,u]$; apply the
+    previous theorem.
+\end{proof}
