@@ -306,3 +306,32 @@ $v$ of Schmidt rank $B$.
         \le2\eta. \notag
     \end{align}
 \end{proof}
+
+\begin{theorem}[A minimizing density matrix and a leading eigenvector]
+    \label{thm:boundary_density_selection}
+    \lean{Matrix.exists_boundary_density_minimizer_max_eigenvector}
+    \leanok
+    \uses{def:boundary_contraction}
+    Use the notation of Theorem~\ref{thm:boundary_density_minimizer_nonempty},
+    and suppose that $\mathcal F$ is nonempty.
+    There are $\sigma\in\mathcal F$, a unit vector
+    $u\in(\mathcal A\otimes\mathcal S)\otimes\mathcal B$ and a real number
+    $\mu>0$ such that $E(\sigma)\le E(\rho)$ for every $\rho\in\mathcal F$,
+    $\sigma u=\mu u$ and $Qu=u$.
+    For every real $\nu$ and nonzero vector $w$ with $\sigma w=\nu w$,
+    one has $\nu\le\mu$.
+    This is an auxiliary existence statement for the size-trimming program
+    and its leading eigenvector
+    in~\cite[lines 472--476 and Lemma~2.5, source lines 493--505]{Landau2013PolynomialTime}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:boundary_density_minimizer_nonempty,thm:density_max_eigenvector}
+    Choose a minimizing $\sigma\in\mathcal F$ by
+    Theorem~\ref{thm:boundary_density_minimizer_nonempty}, and choose $u$ and
+    its positive maximal eigenvalue $\mu$ by
+    Theorem~\ref{thm:density_max_eigenvector}.
+    The identities $Q\sigma=\sigma$ and $\sigma u=\mu u$ give
+    $\mu Qu=Q\sigma u=\sigma u=\mu u$.
+    Since $\mu\ne0$, cancellation gives $Qu=u$.
+\end{proof}
