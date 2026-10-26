@@ -43,6 +43,7 @@ import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
 import QICLean.Analysis.DominantEigenvector
+import QICLean.Analysis.DominantEigenvectorUniqueness
 import QICLean.Analysis.DoubledSystemGap
 import QICLean.Analysis.EnergyTruncation
 import QICLean.Analysis.Entropy
