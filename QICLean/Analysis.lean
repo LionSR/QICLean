@@ -23,6 +23,7 @@ import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CfcLogListProduct
 import QICLean.Analysis.ChebyshevFilter
 import QICLean.Analysis.ChebyshevSpectralFilter
+import QICLean.Analysis.ChebyshevSpectralProjector
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
@@ -310,6 +311,7 @@ import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.ViableSubspace
+import QICLean.Analysis.ViableSubspaceBootstrap
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
 import QICLean.Analysis.ViableSubspaceSpectralProjector
