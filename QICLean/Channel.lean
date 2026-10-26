@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel
 
 import QICLean.Channel.Basic
+import QICLean.Channel.BoundaryDensityMinimizer
 import QICLean.Channel.BoundaryGluing
 import QICLean.Channel.BreuerHallIndecomposable
 import QICLean.Channel.BreuerHallMap
