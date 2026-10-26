@@ -172,6 +172,7 @@ import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
+import QICLean.Analysis.RectangularTraceNormTopology
 import QICLean.Analysis.RectangularTraceNormTruncation
 import QICLean.Analysis.RegionalLowDefectLowerPin
 import QICLean.Analysis.RegionalLowDefectMass
