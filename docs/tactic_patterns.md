@@ -1493,6 +1493,18 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   operator upper bound on a unit eigenvector is shared by the two new
   estimates as one private mathematical lemma.
 
+### Equality decisions in finite coordinates — existing lemma (2026-10-23)
+
+- **Occurrences:** The one-dimensional and two-qubit applications in
+  `QICLeanTest/AGSPFavorableEntropyAxioms.lean`, and both configuration factors
+  in `QICLean/Entropy/AGSPRegionalEntropy.lean`.
+- **Reuse:** `Subsingleton.elim` identifies a classically chosen `DecidableEq`
+  value with the available value before applying a theorem whose matrix
+  expressions contain those decisions.
+- **Decision:** Rewrite only the decision values. The operators, vectors,
+  regions, ranks and shrinking hypotheses are unchanged. The existing lemma
+  suffices; no new theorem, tactic or simp set is required.
+
 ### Two nonnegative weights bounded by their sum — candidate (2026-10-26)
 
 - **Seen:** The local `hpair` arguments in `Analysis/DominantEigenvector.lean`

@@ -746,6 +746,78 @@ the chapter boundary.
     It follows that $S(\rho)\le4\log D$.
 \end{proof}
 
+\begin{theorem}[Intertwining in cut coordinates]
+    \label{thm:cut_coordinate_intertwining}
+    \lean{Entropy.cutVector_toEuclideanLin}
+    \leanok
+    Let $V$ be finite, let $n_v\in\N$, and let
+    $\mathcal H=\bigotimes_{v\in V}\C^{n_v}$.
+    For $A\subseteq V$, let $U_A$ be the unitary grouping the configuration
+    coordinates into those on $A$ and those on $V\setminus A$.
+    If $K$ is a linear operator on $\mathcal H$ and
+    $K_A=U_AKU_A^\dagger$, then every $\psi\in\mathcal H$ satisfies
+    $U_A(K\psi)=K_A(U_A\psi)$.
+\end{theorem}
+\begin{proof}\leanok
+    Write $e_A(c)=(c|_A,c|_{V\setminus A})$ for the configuration bijection.
+    In these coordinates,
+    \begin{align}
+        (K_A)_{(a,b),(a',b')}
+         & =K_{e_A^{-1}(a,b),e_A^{-1}(a',b')}.
+        \label{eq:cut_operator_entries}
+    \end{align}
+    Using~(\ref{eq:cut_operator_entries}), reindex the finite matrix--vector sum
+    by $e_A$ to obtain the assertion.
+\end{proof}
+
+\begin{theorem}[Regional entropy from a favorable shrinking tradeoff]
+    \label{thm:regional_favorable_tradeoff_entropy}
+    \lean{Entropy.regionEntropy_le_four_log_of_cutOperatorSchmidtRank}
+    \leanok
+    \uses{def:von_neumann_entropy,def:bipartite_operator_schmidt_rank,lem:local_lift}
+    Let $V$ be a finite set, let $n_v\in\N$ for each $v\in V$, and let
+    $\mathcal H=\bigotimes_{v\in V}\C^{n_v}$.
+    Fix a region $A\subseteq V$ and a unit vector $\Omega\in\mathcal H$.
+    Let $K$ be a linear operator on $\mathcal H$ satisfying $K\Omega=\Omega$.
+    Suppose that every unit vector $\psi\perp\Omega$ satisfies
+    $K\psi\perp\Omega$ and $\|K\psi\|^2\le\delta$, where $\delta\in\R$.
+    Let $D\in\N$ bound the operator-Schmidt rank of $K$ across
+    $A\mid V\setminus A$, and suppose $D\delta\le1/2$.
+    For the original regional state
+    $\rho_A=\tr_{V\setminus A}|\Omega\rangle\langle\Omega|$, one has
+    $S(\rho_A)\le4\log D$, with natural logarithms.
+    This is the finite-site form of the invariant-line consequence of
+    \cite[Corollary~2.4]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:fixed_vector_favorable_tradeoff_entropy,lem:local_lift,
+        thm:cut_coordinate_intertwining,lem:entropy_congr}
+    Let $U$ be the unitary grouping the configuration coordinates into
+    those on $A$ and those on $V\setminus A$, and put
+    $\Gamma=U\Omega$ and $K_A=UKU^\dagger$.
+    Theorem~\ref{thm:cut_coordinate_intertwining} gives
+    $K_A(Ux)=U(Kx)$ for every $x\in\mathcal H$.
+    Then $\|\Gamma\|=1$ and $K_A\Gamma=\Gamma$.
+    If $\eta$ is a unit vector perpendicular to $\Gamma$, then
+    $U^\dagger\eta$ is a unit vector perpendicular to $\Omega$.
+    The identity $K_A\eta=UK(U^\dagger\eta)$ therefore gives
+    $K_A\eta\perp\Gamma$ and $\|K_A\eta\|^2\le\delta$.
+    Theorem~\ref{thm:fixed_vector_favorable_tradeoff_entropy} applies
+    to $K_A$ and $\Gamma$.
+
+    Write $C_\Gamma(a,b)=\Gamma(a,b)$ for the coefficient matrix in these
+    coordinates. The partial trace of the original vector satisfies
+    \begin{align}
+        \rho_A(a,a')
+         & =\sum_b\Gamma(a,b)\overline{\Gamma(a',b)}
+        =(C_\Gamma C_\Gamma^\dagger)(a,a').
+        \label{eq:regional_state_coefficients}
+    \end{align}
+    By~(\ref{eq:regional_state_coefficients}), the reduced entropy bounded by
+    that theorem is exactly
+    $S(\rho_A)$.
+\end{proof}
+
 \begin{theorem}[Raw Petz factorization for a product reference]
     \label{thm:entropy_petz_product_tensor}
     \lean{Matrix.partialTraceRightPetzMap_productTensor_kronecker,
