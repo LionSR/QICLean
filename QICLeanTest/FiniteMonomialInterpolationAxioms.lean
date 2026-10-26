@@ -28,6 +28,12 @@ depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
 #print axioms MvPolynomial.exists_weighted_monomial_evaluation_recovery
 
+/-- info:
+'MvPolynomial.weighted_monomial_evaluation_recovery_smul'
+depends on axioms: [propext, Classical.choice, Quot.sound] -/
+#guard_msgs (whitespace := lax) in
+#print axioms MvPolynomial.weighted_monomial_evaluation_recovery_smul
+
 open scoped BigOperators
 
 -- The same scalar witnesses recover the selected coefficient for dependent
