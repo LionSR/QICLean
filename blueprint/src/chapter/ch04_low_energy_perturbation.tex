@@ -1,0 +1,81 @@
+\section{Closeness of low-energy subspaces under a perturbation}
+
+Let $H$ and $H'$ be self-adjoint operators with orthonormal eigenbases
+$(b_j)$ and $(b'_j)$ and eigenvalues $a_j$ and $a'_j$. For an energy $c$
+write $T(c)$ for the span of the $b_j$ with $a_j\le c$, and $T'(c)$ for the
+span of the $b'_j$ with $a'_j\le c$.
+
+\begin{definition}[Low-energy subspace]
+    \label{def:spectral_span_le}
+    \lean{Submodule.spectralSpanLE}
+    \leanok
+    The subspace $T(c)$ is the span of the eigenvectors $b_j$ with
+    eigenvalue $a_j\le c$.
+\end{definition}
+
+\begin{theorem}[Chebyshev's inequality]
+    \label{thm:spectral_span_chebyshev}
+    \lean{Submodule.mul_norm_starProjection_orthogonal_le}
+    \leanok
+    \uses{def:spectral_span_le}
+    If every eigenvalue $a_j>c$ satisfies $|a_j-\mu|\ge D\ge0$, then the
+    projection $P^\perp$ onto the orthogonal complement of $T(c)$ satisfies
+    $D\|P^\perp x\|\le\|(H-\mu)x\|$ for every $x$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Expand $x=\sum_jx_jb_j$. Then
+    $\|(H-\mu)x\|^2=\sum_j|a_j-\mu|^2|x_j|^2\ge D^2\sum_{a_j>c}|x_j|^2
+    =D^2\|P^\perp x\|^2$.
+\end{proof}
+
+\begin{theorem}[One window]
+    \label{thm:spectral_span_window}
+    \lean{Submodule.mul_norm_starProjection_orthogonal_le_of_window}
+    \leanok
+    \uses{thm:spectral_span_chebyshev}
+    Suppose $\|(H-H')\varphi\|\le\xi\|\varphi\|$ for every $\varphi\in T(c)$,
+    and $c+h\le c'$. If $\psi\in T(c)$ is supported on eigenvectors $b_j$
+    with $|a_j-\mu|\le h$, then the projection $P'^\perp$ onto the
+    orthogonal complement of $T'(c')$ satisfies
+    $(c'-c-h)\|P'^\perp\psi\|\le(\xi+h)\|\psi\|$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    We may assume $\psi\ne0$. Some $a_j\le c$ lies within $h$ of $\mu$, so
+    $\mu\le c+h$, and every eigenvalue $a'_k>c'$ satisfies
+    $|a'_k-\mu|\ge c'-c-h$. By the previous theorem,
+    $(c'-c-h)\|P'^\perp\psi\|\le\|(H'-\mu)\psi\|\le\|(H'-H)\psi\|
+    +\|(H-\mu)\psi\|\le(\xi+h)\|\psi\|$.
+\end{proof}
+
+\begin{theorem}[Closeness of the low-energy subspaces]
+    \label{thm:spectral_span_close_of_perturbation}
+    \lean{Submodule.isCloseTo_spectralSpanLE_of_perturbation}
+    \leanok
+    \uses{thm:spectral_span_window, def:subspace_close}
+    Suppose $\|(H-H')\varphi\|\le\xi\|\varphi\|$ for every $\varphi\in T(c)$,
+    every eigenvalue of $H$ is at least $m$, $h>0$ and $c+h<c'$. Let
+    $N=\lfloor(c-m)/(2h)\rfloor+1$. If $N(\xi+h)^2\le\delta(c'-c-h)^2$, then
+    $T'(c')$ is $\delta$-close to $T(c)$. This is the second item of Lemma
+    lem:hard-trunc of~\cite[lines 926--969]{Arad2016RigorousRG}, with the
+    number of windows and the gap in Markov's inequality
+    corrected~\cite{gap:alvv16_hard_truncation_windows}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Split $\varphi\in T(c)$ as $\varphi=\sum_{w<N}\psi_w$, where $\psi_w$
+    keeps the coefficients of the $b_j$ with
+    $\lfloor(a_j-m)/(2h)\rfloor=w$. Each $\psi_w$ lies in $T(c)$ and is
+    supported within $h$ of $m+(2w+1)h$. By the previous theorem and the
+    Cauchy--Schwarz inequality,
+    \[
+        (c'-c-h)\|P'^\perp\varphi\|\le(\xi+h)\sum_w\|\psi_w\|
+        \le(\xi+h)\sqrt{N}\,\|\varphi\|,
+    \]
+    so $\|P'^\perp\varphi\|^2\le\delta\|\varphi\|^2$ and
+    $\|P'\varphi\|^2\ge(1-\delta)\|\varphi\|^2$.
+\end{proof}
