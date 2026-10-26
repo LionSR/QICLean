@@ -324,6 +324,7 @@ import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
 import QICLean.Analysis.ViableSubspaceSpectralProjector
 import QICLean.Analysis.ViableSubspaceTensor
+import QICLean.Analysis.ViableSubspaceTrimming
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel

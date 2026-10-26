@@ -1,0 +1,86 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{The constant in the trimming lemma}
+\author{}
+\date{2026-10-26}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The printed statement}
+
+Arad--Landau--Vazirani--Vidick,
+\href{https://arxiv.org/abs/1602.08828}{arXiv:1602.08828v2}, trim a viable
+subspace cut by cut. Let $S\subseteq\mathcal H_A=\mathcal H_A^1\otimes\cdots
+\otimes\mathcal H_A^\ell$ have the orthonormal basis $u_1,\dots,u_s$ and put
+$\psi=\sum_iu_i\otimes|i\rangle$. For $j=1,\dots,\ell-1$ the projection
+$P^j_{\ge\xi}$ keeps the left Schmidt vectors, across the cut $(j:j+1)$, of
+the partially trimmed $\psi$ with Schmidt coefficient at least $\xi$, and
+$\operatorname{Trim}_\xi(S)$ is the span of the trimmed $u_i$ (Definition
+\texttt{def:trimming}, source lines 642--656). Lemma \texttt{lem:trimming}
+(lines 660--697) asserts: if $S$ is $\delta$-viable of dimension $s$ for
+$T\subseteq\mathcal H_A\otimes\mathcal H_B$, and every vector of $T$ has
+Schmidt rank at most $b$ across each cut $(j:j+1)$, then
+$\operatorname{Trim}_\xi(S)$ is $\delta'$-viable for $T$ with
+\begin{align}
+    \delta'&\le\delta+\sqrt{\ell bs}\,\xi .
+    \label{eq:alvv_trim_printed}
+\end{align}
+
+\section{What the argument gives}
+
+The proof fixes a unit $v\in T$ and a unit $u\in S\otimes\mathcal H_B$ with
+$|\langle u,v\rangle|^2\ge1-\delta$, and bounds the part of $u$ removed at
+each cut by pairing it with $v$. Writing $u=\sum_iu_i\otimes c_i$, the
+removed part at the cut $j$ pairs with $v$ as the discarded part of
+$\psi$, all of whose Schmidt coefficients are below $\xi$, pairs with
+$W=\sum_i\big((I\otimes\langle c_i|)w_j\big)\otimes|i\rangle$, where $w_j$
+is the piece of $v$ removed at that cut. The map $w\mapsto W$ acts on the
+right of the cut, so $W$ has Schmidt rank at most $b$, not $bs$; and
+$\|W\|\le\|u\|\,\|w_j\|$. Hence the removed part at the cut $j$ pairs with
+$v$ to at most $\xi\sqrt b\,\|u\|\,\|w_j\|$. The pieces $w_j$ are orthogonal,
+because the trimming projections are nested, so
+$\sum_j\|w_j\|\le\sqrt{\ell-1}\,\|v\|$ and the trimmed vector $u'$ satisfies
+\begin{align}
+    |\langle u',v\rangle|&\ge|\langle u,v\rangle|-\varepsilon,
+    \qquad\varepsilon=\xi\sqrt{(\ell-1)b}.
+    \notag
+\end{align}
+The source then states that the claimed bound follows. Squaring the
+overlap gives instead $(\sqrt{1-\delta}-\varepsilon)^2\ge1-\delta-2\varepsilon$,
+that is
+\begin{align}
+    \delta'&\le\delta+2\sqrt{(\ell-1)b}\,\xi .
+    \label{eq:alvv_trim_proved}
+\end{align}
+The printed bound (\ref{eq:alvv_trim_printed}) does not follow from the
+printed argument. The two bounds are not comparable in general: the factor
+$s$ disappears and a factor $2$ appears. Whether
+(\ref{eq:alvv_trim_printed}) holds is not settled here.
+
+\section{The formal statement}
+
+The formalization proves (\ref{eq:alvv_trim_proved}) for $\xi>0$, with
+$\mathcal H_A$ the configurations of a finite set of sites, any nested
+family of $m$ cuts in place of the $\ell-1$ cuts of a chain, and the
+environment $\mathcal H_B$ on the right of every
+cut.\footnote{\leanid{Entropy.isCloseTo_prodExt_trimSubspace} in
+    \doclink{QICLean/Analysis/ViableSubspaceTrimming}.} The threshold
+$\xi$ is positive in the source, which writes $s\xi^{-2}$. The second
+statement of the lemma, that each trimmed basis vector has Schmidt rank at
+most $s\xi^{-2}$ across every cut, holds as
+printed.\footnote{\leanid{Entropy.schmidtRank_cutVector_trimmed_le}.} Its
+running-time clause is not formalized.
+
+\section{Effect on the later arguments}
+
+The lemma is applied in the merge process and in the algorithms (lines 1636,
+1670, 1801, 1814 and 1839) with $\xi$ chosen polynomially small, so that the
+trimming error is below a fixed constant. A constant factor in the error is
+absorbed by rescaling $\xi$ by a constant, which changes the trimmed rank
+$s\xi^{-2}$ only by a constant factor, so these uses are unaffected.
+\end{document}
