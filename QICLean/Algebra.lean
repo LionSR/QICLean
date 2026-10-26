@@ -85,6 +85,7 @@ import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OperatorSchmidtCut
 import QICLean.Algebra.OperatorSchmidtPrescribedFactors
 import QICLean.Algebra.OperatorSchmidtRealignment
+import QICLean.Algebra.OperatorSchmidtReindex
 import QICLean.Algebra.OperatorSchmidtSubmatrix
 import QICLean.Algebra.OperatorSchmidtTwoCuts
 import QICLean.Algebra.OrderedMatrixAction
@@ -92,6 +93,7 @@ import QICLean.Algebra.OrderedPolynomialGaps
 import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.OverlappingLiftAlgebra
 import QICLean.Algebra.PartialTraceDomination
+import QICLean.Algebra.PermutationMatrixUnitary
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.PiProductTrace
 import QICLean.Algebra.PolynomialLinearFactor
@@ -134,6 +136,7 @@ import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.TripartitePolynomialSchmidtRank
 import QICLean.Algebra.TwoMarkerWordCoefficients
 import QICLean.Algebra.UnitModulusPowerSum
+import QICLean.Algebra.UnitaryTraceZero
 import QICLean.Algebra.WeightedFrequencySchmidtRank
 import QICLean.Algebra.WordCoefficientExpansion
 import QICLean.Algebra.WordMultiplicity

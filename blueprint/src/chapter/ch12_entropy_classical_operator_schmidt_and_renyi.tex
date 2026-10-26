@@ -530,6 +530,64 @@
     $c\mapsto(c,d_1)$, and $c'\mapsto(c',d_2)$.
 \end{proof}
 
+\begin{theorem}[Separate changes of local coordinates]
+    \label{thm:operator_schmidt_local_reindex}
+    \lean{Matrix.operatorSchmidtRank_reindex_prodCongr}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $I,J,I',J'$ be finite sets, let $e:I\to I'$ and $f:J\to J'$ be
+    bijections, and let $\rho$ be a complex matrix on $I\times J$.
+    Define the matrix $\rho'$ on $I'\times J'$ by
+    \begin{align}
+        \rho'_{(i',j'),(k',l')}
+         & =\rho_{(e^{-1}(i'),f^{-1}(j')),(e^{-1}(k'),f^{-1}(l'))}.
+        \label{eq:operator_schmidt_local_coordinates}
+    \end{align}
+    Then $\operatorname{OSR}(\rho')=\operatorname{OSR}(\rho)$.
+    The finite sets may be empty.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Choose a product decomposition $\rho=\sum_{t<r}A_t\otimes B_t$ with
+    $r=\operatorname{OSR}(\rho)$. Put
+    $(A'_t)_{i'k'}=(A_t)_{e^{-1}(i'),e^{-1}(k')}$ and
+    $(B'_t)_{j'l'}=(B_t)_{f^{-1}(j'),f^{-1}(l')}$.
+    Substitution in~(\ref{eq:operator_schmidt_local_coordinates}) gives
+    $\rho'=\sum_{t<r}A'_t\otimes B'_t$, so
+    $\operatorname{OSR}(\rho')\le r$.
+    Applying this inequality to $\rho'$ with the inverse bijections gives
+    $\operatorname{OSR}(\rho)\le\operatorname{OSR}(\rho')$ and proves equality.
+\end{proof}
+
+\begin{theorem}[Interchanging factors across an operator Schmidt cut]
+    \label{thm:operator_schmidt_four_factor_movement}
+    \lean{Matrix.operatorSchmidtRank_reindex_prodProdProdComm_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Let $\rho$ be an operator on four finite-dimensional complex spaces
+    $\mathcal H_A\otimes\mathcal H_B\otimes\mathcal H_C\otimes\mathcal H_D$,
+    and put $d_B=\dim\mathcal H_B$ and $d_C=\dim\mathcal H_C$.
+    With the canonical interchange
+    $(a\otimes b)\otimes(c\otimes d)\mapsto(a\otimes c)\otimes(b\otimes d)$,
+    \begin{align}
+        \operatorname{OSR}_{AC\mid BD}(\rho)
+         & \le d_B^2d_C^2\operatorname{OSR}_{AB\mid CD}(\rho).
+        \label{eq:operator_schmidt_inner_exchange}
+    \end{align}
+    Zero-dimensional factors are included.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:operator_schmidt_cut_movement,thm:operator_schmidt_local_reindex}
+    Move $B$ from the left side to the right side of the cut. Theorem~\ref{thm:operator_schmidt_cut_movement}
+    bounds the new rank by $d_B^2\operatorname{OSR}_{AB\mid CD}(\rho)$.
+    On the right side, identify $B\otimes(C\otimes D)$ with
+    $C\otimes(B\otimes D)$. Theorem~\ref{thm:operator_schmidt_local_reindex}
+    leaves the rank unchanged. Now move $C$ to the left side, using
+    Theorem~\ref{thm:operator_schmidt_cut_movement} again; this costs at most
+    $d_C^2$. The composite identification is precisely the interchange in
+    the statement. Multiplying the two bounds gives~(\ref{eq:operator_schmidt_inner_exchange}).
+\end{proof}
+
 \begin{theorem}[Movement of an operator Schmidt cut]
     \label{thm:operator_schmidt_cut_movement}
     \lean{Matrix.operatorSchmidtRank_reindex_prodAssoc_le,

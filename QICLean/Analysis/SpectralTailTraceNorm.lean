@@ -118,6 +118,23 @@ theorem IsHermitian.sum_descEigenvalue_tail_le_add_traceDistance
   · simpa [Finset.Ico_eq_empty_of_le (Nat.le_of_not_gt hk)] using
       traceDistance_nonneg ρ σ
 
+/-- The spectral mass omitted by a Ky-Fan sum is stable under trace distance,
+including indices at or beyond the dimension. -/
+theorem IsHermitian.trace_sub_kyFanNorm_le_add_traceDistance
+    {ι : Type*} [Fintype ι] [DecidableEq ι] {ρ σ : Matrix ι ι ℂ}
+    (hρ : ρ.IsHermitian) (hσ : σ.IsHermitian) (htrace : ρ.trace = σ.trace) (k : ℕ) :
+    ρ.trace.re - hρ.kyFanNorm k ≤
+      σ.trace.re - hσ.kyFanNorm k + traceDistance ρ σ := by
+  by_cases hk : k ≤ Fintype.card ι
+  · have h := hρ.sum_descEigenvalue_tail_le_add_traceDistance hσ htrace k
+    rw [Finset.sum_Ico_eq_sub _ hk, Finset.sum_Ico_eq_sub _ hk] at h
+    change hρ.kyFanNorm (Fintype.card ι) - hρ.kyFanNorm k ≤
+      hσ.kyFanNorm (Fintype.card ι) - hσ.kyFanNorm k + traceDistance ρ σ at h
+    simpa only [hρ.kyFanNorm_card_eq_trace_re, hσ.kyFanNorm_card_eq_trace_re] using h
+  · rw [hρ.kyFanNorm_eq_trace_re_of_card_le (by omega),
+      hσ.kyFanNorm_eq_trace_re_of_card_le (by omega)]
+    simpa using traceDistance_nonneg ρ σ
+
 /-- Ordered spectral tails are Lipschitz in the half-trace norm on Hermitian
 matrices of equal trace. For density matrices this supplies the spectral
 estimate needed for the smoothing argument in SWVC08, arXiv:0705.0292v2,
