@@ -101,6 +101,25 @@ $v$ of Schmidt rank $B$.
     square.
 \end{proof}
 
+\begin{theorem}[A unit eigenvector for the largest density eigenvalue]
+    \label{thm:density_max_eigenvector}
+    \lean{Matrix.PosSemidef.exists_unit_eigenvector_max_eigenvalue}
+    \leanok
+    Let $\sigma$ be a positive semidefinite matrix of trace one on a
+    finite-dimensional complex coordinate space. There are a unit vector
+    $u$ and a real number $\lambda>0$ such that $\sigma u=\lambda u$.
+    Every real eigenvalue $\mu$ of $\sigma$ satisfies $\mu\le\lambda$.
+    This is an auxiliary selection statement for the leading eigenvector
+    in~\cite[Lemma~2.5, source lines 493--505]{Landau2013PolynomialTime}.
+\end{theorem}
+\begin{proof}\leanok
+    Trace one excludes the zero-dimensional space. Order the eigenvalues
+    decreasingly, and take $u$ to be the first vector of the corresponding
+    orthonormal eigenbasis. Its eigenvalue $\lambda$ bounds every other
+    eigenvalue by the ordering. The eigenvalues are nonnegative and sum
+    to one, so at least one is positive and hence $\lambda>0$.
+\end{proof}
+
 \begin{theorem}[Uniqueness of an eigenvector above one half]
     \label{thm:dominant_eigenvector_phase_uniqueness}
     \lean{Matrix.PosSemidef.eigenvalue_eq_and_exists_unit_smul_of_gt_half}
