@@ -11,12 +11,12 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let decls := #[``Submodule.spectralSpanLE, ``Submodule.mem_spectralSpanLE_iff,
-    ``Submodule.norm_sq_repr_symm, ``Submodule.repr_apply_of_eigen,
-    ``Submodule.starProjection_orthogonal_spectralSpanLE,
+  let decls := #[``OrthonormalBasis.norm_sq_repr_symm, ``OrthonormalBasis.repr_apply_of_eigen,
+    ``OrthonormalBasis.sub_smul_eq_repr_symm_of_eigen, ``Submodule.spectralSpanLE,
+    ``Submodule.mem_spectralSpanLE_iff, ``Submodule.starProjection_orthogonal_spectralSpanLE,
     ``Submodule.norm_sq_starProjection_orthogonal_spectralSpanLE,
-    ``Submodule.mul_norm_starProjection_orthogonal_le,
-    ``Submodule.mul_norm_starProjection_orthogonal_le_of_window,
+    ``Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le,
+    ``Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le_of_window,
     ``Submodule.isCloseTo_spectralSpanLE_of_perturbation]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do

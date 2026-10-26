@@ -15,39 +15,51 @@ The second item of Lemma \texttt{lem:hard-trunc} of
 Arad--Landau--Vazirani--Vidick,
 \href{https://arxiv.org/abs/1602.08828}{arXiv:1602.08828v2}, source lines
 926--948, states that the low-energy subspace $\tilde T_{\eta'}$ of the
-truncated Hamiltonian is $\delta$-close to the low-energy subspace $T_\eta$ of
-$H$. Its proof (lines 951--969) splits a vector $\psi\in T_\eta$ into pieces
-supported on eigenvalues of $H$ in windows of width $2h$, bounds the mass of
-each piece above $\varepsilon_0+\eta'$ by Markov's inequality, and sums the
-bounds with the Cauchy--Schwarz inequality. Two constants need adjustment;
-neither changes the conclusion.
+truncated Hamiltonian $\tilde H_t$ is $\delta$-close to the low-energy
+subspace $T_\eta$ of $H$. Its proof (lines 953--969) bounds the mass above
+$\varepsilon_0+\eta'$ of a vector supported on eigenvalues of $H$ in a
+closed window $[\lambda-h,\lambda+h]$ with $\lambda\le\varepsilon_0+\eta$
+(lines 955--962), splits a vector $\psi\in T_\eta$ into such pieces, and sums
+the bounds with the Cauchy--Schwarz inequality. The argument is correct;
+four details of the write-up need adjustment.
 
 \emph{The number of windows.} Line 963 bounds the number of windows by
 $\lceil(\eta-\varepsilon_0)/(2h)\rceil$, which subtracts an energy from a
-width. The eigenvalues of $H$ in $T_\eta$ lie in the closed interval
-$[\varepsilon_0,\varepsilon_0+\eta]$. Windows $[\varepsilon_0+2hw,
-\varepsilon_0+2h(w+1))$ starting at the ground energy cover it with
-$N=\lfloor\eta/(2h)\rfloor+1$ windows. This exceeds $\lceil\eta/(2h)\rceil$
-by one when $\eta/(2h)$ is an integer, because the interval is closed.
+width. The intended count is $\lceil\eta/(2h)\rceil$: closed windows with
+centres $\varepsilon_0+\eta-h-2hk$, $0\le k<\lceil\eta/(2h)\rceil$, cover
+$[\varepsilon_0,\varepsilon_0+\eta]$, and every centre is at most
+$\varepsilon_0+\eta$, as line 955 requires. Line 967 then bounds the
+Cauchy--Schwarz factor by $\sqrt{\eta/(2h)}$, where the number of windows
+gives $\sqrt{\lceil\eta/(2h)\rceil}$.
 
-\emph{The gap in Markov's inequality.} The window bound at line 960 is
-stated for a centre $\lambda\le\varepsilon_0+\eta$, but the centre of the top
-window can lie up to $h$ above $\varepsilon_0+\eta$. For a centre
-$\lambda\le\varepsilon_0+\eta+h$ every eigenvalue of $\tilde H_t$ above
-$\varepsilon_0+\eta'$ is at distance more than $\eta'-\eta-h$ from
-$\lambda$, so the denominator at line 966 is $\eta'-\eta-h$ in place of
-$\eta'-\eta$.
+\emph{The ground energy of the truncation.} The proof bounds the mass above
+$\varepsilon_0+\eta'$, whereas $\tilde T_{\eta'}$ is defined from the ground
+energy $\tilde\varepsilon_0\le\varepsilon_0$ of $\tilde H_t$. Since larger
+subspaces are closer, it suffices to enlarge $\eta'$ by
+$\varepsilon_0-\tilde\varepsilon_0$, which the first item bounds by
+$Ce^{-c(t-\eta)}$.
 
-With these corrections the proof shows the following. If
-$\|(H-\tilde H_t)\varphi\|\le\xi\|\varphi\|$ for $\varphi\in T_\eta$, $h>0$
-and $\eta+h<\eta'$, then $\tilde T_{\eta'}$ is $\delta$-close to $T_\eta$
-whenever $N(\xi+h)^2\le\delta(\eta'-\eta-h)^2$. For $h=\xi=e^{-\Omega(t-\eta)}$
-this holds for $\eta'=\eta+\xi+2\xi\sqrt{N/\delta}$, which has the form
-$\eta'=\eta+\sqrt{\eta/\delta}\,e^{-\Omega(t-\eta)}$ of the lemma.
+\emph{Two meanings of $\delta$.} Line 962 uses $\delta$ for the distance in
+Markov's inequality, and the lemma uses it for the closeness parameter.
 
-The formal statement is
-\leanid{Submodule.isCloseTo_spectralSpanLE_of_perturbation}, stated for two
-self-adjoint operators diagonal in given orthonormal bases, with
-$\varepsilon_0$ replaced by any lower bound $m$ of the spectrum of $H$ and
-$\varepsilon_0+\eta$ by any energy $c$.
+\emph{The sign of $\xi$.} Equation \texttt{eq:def-xi} prints $\xi$ with a
+positive exponent in $t-\eta$; the intended quantity is
+$\xi=e^{-\Omega(t-\eta)}$, the bound of Theorem~2.6 of Arad--Kuwahara--Landau,
+\href{https://arxiv.org/abs/1406.3898}{arXiv:1406.3898}, Theorem
+\texttt{thm:lowspec}.
+
+The formal statement \leanid{Submodule.isCloseTo_spectralSpanLE_of_perturbation}
+is the closeness step. It is stated for two self-adjoint operators diagonal
+in given orthonormal bases, an energy $c$ in place of $\varepsilon_0+\eta$, a
+lower bound $m<c$ of the eigenvalues of $H$ below $c$ in place of
+$\varepsilon_0$, and a threshold $c'\ge c$. With
+$\|(H-\tilde H_t)\varphi\|\le\xi\|\varphi\|$ on $T(c)$ as a hypothesis, it
+concludes that $\tilde T(c')$ is $\delta$-close to $T(c)$ when
+$\lceil(c-m)/(2h)\rceil(\xi+h)^2\le\delta(c'-c+h)^2$. The extra $h$ comes from
+centring the top window at $c-h$. For $h=\xi$ this holds when
+$c'-c\ge2\xi\sqrt{\lceil(c-m)/(2\xi)\rceil/\delta}-\xi$, which is at most
+$\sqrt{2\xi(c-m)/\delta}+2\xi/\sqrt\delta$. Adding the shift
+$\varepsilon_0-\tilde\varepsilon_0$ gives a valid $\eta'$, which has the form
+$\eta+\sqrt{\eta/\delta}\,e^{-\Omega(t-\eta)}$ of the lemma for $\eta\ge1$ and
+$\delta\le1$.
 \end{document}

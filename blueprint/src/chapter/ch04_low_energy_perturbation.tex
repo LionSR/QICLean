@@ -13,9 +13,9 @@ span of the $b'_j$ with $a'_j\le c$.
     eigenvalue $a_j\le c$.
 \end{definition}
 
-\begin{theorem}[Chebyshev's inequality]
-    \label{thm:spectral_span_chebyshev}
-    \lean{Submodule.mul_norm_starProjection_orthogonal_le}
+\begin{theorem}[Markov's inequality]
+    \label{thm:spectral_span_markov}
+    \lean{Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le}
     \leanok
     \uses{def:spectral_span_le}
     If every eigenvalue $a_j>c$ satisfies $|a_j-\mu|\ge D\ge0$, then the
@@ -32,22 +32,21 @@ span of the $b'_j$ with $a'_j\le c$.
 
 \begin{theorem}[One window]
     \label{thm:spectral_span_window}
-    \lean{Submodule.mul_norm_starProjection_orthogonal_le_of_window}
+    \lean{Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le_of_window}
     \leanok
-    \uses{thm:spectral_span_chebyshev}
+    \uses{thm:spectral_span_markov}
     Suppose $\|(H-H')\varphi\|\le\xi\|\varphi\|$ for every $\varphi\in T(c)$,
-    and $c+h\le c'$. If $\psi\in T(c)$ is supported on eigenvectors $b_j$
-    with $|a_j-\mu|\le h$, then the projection $P'^\perp$ onto the
-    orthogonal complement of $T'(c')$ satisfies
-    $(c'-c-h)\|P'^\perp\psi\|\le(\xi+h)\|\psi\|$.
+    and let $h,D\ge0$ with $\mu+D\le c'$. If $\psi\in T(c)$ is supported on
+    eigenvectors $b_j$ with $|a_j-\mu|\le h$, then the projection $P'^\perp$
+    onto the orthogonal complement of $T'(c')$ satisfies
+    $D\|P'^\perp\psi\|\le(\xi+h)\|\psi\|$.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    We may assume $\psi\ne0$. Some $a_j\le c$ lies within $h$ of $\mu$, so
-    $\mu\le c+h$, and every eigenvalue $a'_k>c'$ satisfies
-    $|a'_k-\mu|\ge c'-c-h$. By the previous theorem,
-    $(c'-c-h)\|P'^\perp\psi\|\le\|(H'-\mu)\psi\|\le\|(H'-H)\psi\|
+    Every eigenvalue $a'_k>c'$ satisfies $|a'_k-\mu|\ge D$. By the previous
+    theorem,
+    $D\|P'^\perp\psi\|\le\|(H'-\mu)\psi\|\le\|(H'-H)\psi\|
     +\|(H-\mu)\psi\|\le(\xi+h)\|\psi\|$.
 \end{proof}
 
@@ -57,23 +56,25 @@ span of the $b'_j$ with $a'_j\le c$.
     \leanok
     \uses{thm:spectral_span_window, def:subspace_close}
     Suppose $\|(H-H')\varphi\|\le\xi\|\varphi\|$ for every $\varphi\in T(c)$,
-    every eigenvalue of $H$ is at least $m$, $h>0$ and $c+h<c'$. Let
-    $N=\lfloor(c-m)/(2h)\rfloor+1$. If $N(\xi+h)^2\le\delta(c'-c-h)^2$, then
-    $T'(c')$ is $\delta$-close to $T(c)$. This is the second item of Lemma
-    lem:hard-trunc of~\cite[lines 926--969]{Arad2016RigorousRG}, with the
-    number of windows and the gap in Markov's inequality
+    every eigenvalue $a_j\le c$ is at least $m$, $m<c\le c'$ and $h>0$. Let
+    $N=\lceil(c-m)/(2h)\rceil$. If $N(\xi+h)^2\le\delta(c'-c+h)^2$, then
+    $T'(c')$ is $\delta$-close to $T(c)$. This is the closeness step in the
+    proof of the second item of Lemma lem:hard-trunc
+    of~\cite[lines 953--969]{Arad2016RigorousRG}, with the number of windows
     corrected~\cite{gap:alvv16_hard_truncation_windows}.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    Split $\varphi\in T(c)$ as $\varphi=\sum_{w<N}\psi_w$, where $\psi_w$
-    keeps the coefficients of the $b_j$ with
-    $\lfloor(a_j-m)/(2h)\rfloor=w$. Each $\psi_w$ lies in $T(c)$ and is
-    supported within $h$ of $m+(2w+1)h$. By the previous theorem and the
-    Cauchy--Schwarz inequality,
+    Cover $[m,c]$ by the $N$ closed windows of width $2h$ centred at
+    $c-h-2hw$ for $w<N$. Split $\varphi\in T(c)$ as
+    $\varphi=\sum_{w<N}\psi_w$, where $\psi_w$ keeps the coefficients of the
+    $b_j$ with $\lceil(c-a_j)/(2h)\rceil-1=w$, counting $a_j=c$ in the top
+    window. Each $\psi_w$ lies in $T(c)$ and is supported within $h$ of its
+    centre, and every centre plus $c'-c+h$ is at most $c'$. By the previous
+    theorem and the Cauchy--Schwarz inequality,
     \[
-        (c'-c-h)\|P'^\perp\varphi\|\le(\xi+h)\sum_w\|\psi_w\|
+        (c'-c+h)\|P'^\perp\varphi\|\le(\xi+h)\sum_w\|\psi_w\|
         \le(\xi+h)\sqrt{N}\,\|\varphi\|,
     \]
     so $\|P'^\perp\varphi\|^2\le\delta\|\varphi\|^2$ and
