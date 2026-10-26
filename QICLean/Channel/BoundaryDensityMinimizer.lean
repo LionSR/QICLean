@@ -30,15 +30,6 @@ namespace Matrix
 variable {a s b : Type*} [Fintype a] [Fintype s] [Fintype b]
   [DecidableEq a] [DecidableEq s] [DecidableEq b]
 
-omit [Fintype s] [Fintype b] [DecidableEq a] [DecidableEq s] [DecidableEq b] in
-private theorem continuous_partialTraceFirst :
-    Continuous (partialTraceFirst : Matrix ((a × s) × b) ((a × s) × b) ℂ →
-      Matrix (s × b) (s × b) ℂ) := by
-  change Continuous (fun X : Matrix ((a × s) × b) ((a × s) × b) ℂ ↦
-    fun i j : s × b ↦ ∑ k : a, X ((k, i.1), i.2) ((k, j.1), j.2))
-  exact continuous_pi fun i ↦ continuous_pi fun j ↦ continuous_finsetSum _ fun k _ ↦
-    (continuous_apply ((k, j.1), j.2)).comp (continuous_apply ((k, i.1), i.2))
-
 omit [DecidableEq a] in
 /-- A minimizing density matrix for the size-trimming optimization problem of LVV13
 (`algo53.tex`, equation `eq:conv`, lines 472–476), given a feasible pure left state. The
@@ -71,9 +62,12 @@ theorem exists_boundary_density_minimizer
   have hsupport : IsClosed {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ | Q * ρ = ρ} :=
     isClosed_eq (continuous_const.mul continuous_id) continuous_id
   have hboundary : IsClosed {ρ : Matrix ((a × s) × b) ((a × s) × b) ℂ |
-      rectangularTraceNorm (partialTraceFirst ρ - X) ≤ η} :=
-    (isClosed_setOf_rectangularTraceNorm_le η).preimage
-      (continuous_partialTraceFirst.sub continuous_const)
+      rectangularTraceNorm (partialTraceFirst ρ - X) ≤ η} := by
+    let e := (Equiv.prodAssoc a s b).trans (Equiv.prodComm a (s × b))
+    let T := (partialTraceRightLM (α := s × b) (β := a)).comp
+      (reindexLinearEquiv ℂ ℂ e e).toLinearMap
+    exact (isClosed_setOf_rectangularTraceNorm_le η).preimage
+      (T.continuous_of_finiteDimensional.sub continuous_const)
   have hcompact : IsCompact F := by
     simpa only [F, Set.ofPred_and, Set.inter_assoc] using
       isCompact_setOf_posSemidef_trace_eq_one.inter_right (hsupport.inter hboundary)
