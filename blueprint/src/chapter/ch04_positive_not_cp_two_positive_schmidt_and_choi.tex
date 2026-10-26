@@ -244,7 +244,7 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     orthogonal projection $P$ of rank $k$:
     \begin{align}
         S_k(A)
-         & =\max_{\substack{P^2=P=P^\dagger\\ \tr(P)=k}}\re\tr(PA).
+         & =\max_{\substack{P^2=P=P^\dagger \\ \tr(P)=k}}\re\tr(PA).
         \label{eq:channel_ky_fan_maximum}
     \end{align}
     This is Ky Fan's maximum principle \cite{Fan1949Theorem}; see also
@@ -262,6 +262,36 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     exceeds it. Hence $S_k(A)$ is the maximum.
 \end{proof}
 
+\begin{lemma}[Homogeneous overlap bound]
+    \label{lem:homogeneous_overlap_ky_fan}
+    % The declaration association is activated after ordinary package verification.
+    \uses{def:ky_fan_norm}
+    Let $C,B\in\C^{d\times e}$ and $0\le k<d$ be an integer.
+    If $\rank B\le k$, then
+    \begin{align}
+        |\tr(C^\dagger B)|^2
+         & \le \|CC^\dagger\|_{(k)}\tr(B^\dagger B).
+        \notag
+    \end{align}
+    No normalization of either matrix is required.
+\end{lemma}
+\begin{proof}
+    \uses{thm:ky_fan_maximum_principle}
+    Let $P$ be the orthogonal projection onto the column space of $B$.
+    Then $PB=B$ and $\rank P=\rank B\le k$. Cauchy--Schwarz gives
+    \begin{align}
+        |\tr(C^\dagger B)|^2
+         & =|\tr((PC)^\dagger B)|^2                 \\
+         & \le\tr(PCC^\dagger)\tr(B^\dagger B)      \\
+         & \le\|CC^\dagger\|_{(k)}\tr(B^\dagger B).
+        \notag
+    \end{align}
+    The final inequality is the positive-semidefinite form of Ky Fan's
+    maximum principle: its largest-eigenvalue sums increase with the allowed
+    rank. This is the homogeneous form of the upper-bound argument for
+    \cite[Lemma~3.1]{Wolf2012Quantum}.
+\end{proof}
+
 \begin{theorem}[Maximal overlap with a fixed Schmidt rank]
     \label{thm:maximal_overlap_schmidt_rank}
     \lean{Matrix.maximalSchmidtOverlap_eq_kyFanNorm}
@@ -273,7 +303,7 @@ Section~\ref{sec:app_positive_not_cp_ky_fan}.
     by a normalized vector $\psi$ of Schmidt rank at most $n$ is the Ky-Fan
     $n$-norm of $\rho$:
     \begin{align}
-        \max_{\substack{\SR(\psi)\le n\\ \|\psi\|=1}}
+        \max_{\substack{\SR(\psi)\le n \\ \|\psi\|=1}}
         |\braket{\phi}{\psi}|^2
          & =\|\rho\|_{(n)}.
         \label{eq:schwarz_maximal_schmidt_overlap}

@@ -7,6 +7,17 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Support of an eigenvector with positive eigenvalue — existing scalar cancellation (2026-10-26)
+
+- **Seen:** The positive-eigenvalue range argument in `Channel/LeadingEigenvector.lean`
+  and the support constraint in `Channel/BoundaryDensitySelection.lean`.
+- **Reuse:** Apply `congrArg` to the matrix support equation, then use
+  `Matrix.mulVec_mulVec`, `Matrix.mulVec_smul` and `smul_right_injective`.
+- **Scope:** Cancellation concerns the nonzero eigenvalue. Neither invertibility
+  of the density matrix nor a projection hypothesis on the support matrix is needed.
+- **Decision:** Reuse scalar cancellation directly; no additional definition or
+  proof automation is introduced.
+
 ### Coordinate transport and identity factors — existing Mathlib structures (2026-10-26)
 
 - **Seen:** The matrix expectations and identity-factor norm comparison in
