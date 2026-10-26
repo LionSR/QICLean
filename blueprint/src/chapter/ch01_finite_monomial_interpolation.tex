@@ -64,9 +64,73 @@
     formulas over $U$ gives
     \begin{align*}
         \sum_{\alpha\in U}f_\alpha
-            =\sum_{j=0}^{t-1}\left(\sum_{\alpha\in U}c_{\alpha j}\right)P_f(z_j).
+        =\sum_{j=0}^{t-1}\left(\sum_{\alpha\in U}c_{\alpha j}\right)P_f(z_j).
     \end{align*}
     Scalar multiplication does not increase operator Schmidt rank, and the
     rank of a sum is at most the sum of the ranks. The right side therefore
     has rank at most $tr$.
+\end{proof}
+
+For a rectangular family of monomials, the evaluation points in
+Theorem~\ref{thm:finite_monomial_interpolation} may be prescribed on an integer
+product grid. This gives an explicit choice for the scalar interpolation in
+\cite[Lemma~4.2]{Arad2013AreaLaw} and
+\cite[Proposition~5.7]{Arad2016RigorousRG}.
+
+\begin{definition}[Integer interpolation matrices]
+    \label{def:integer_grid_matrices}
+    \lean{FiniteScalarInterpolation.integerNode,
+        FiniteScalarInterpolation.integerRecovery,
+        FiniteScalarInterpolation.integerEvaluationGrid,
+        FiniteScalarInterpolation.integerRecoveryGrid}\leanok
+    Let $O$ be a finite set, let $K\in\mathbb N$, and put
+    $S=\{0,\ldots,K\}$ and $G=S^O$. Set $x_r=r\in\mathbb C$ for $r\in S$.
+    Let $V^{(0)}=(x_r^j)_{r,j\in S}$ be the Vandermonde matrix and put
+    $C^{(0)}=(V^{(0)})^{-1}$. Define matrices indexed by $G$ by
+    \begin{align*}
+        V_{g\beta}   & =\prod_{a\in O}x_{g_a}^{\beta_a},      \\
+        C_{\alpha g} & =\prod_{a\in O}C^{(0)}_{\alpha_a,g_a}.
+    \end{align*}
+\end{definition}
+
+\begin{theorem}[Recovery on an integer product grid]
+    \label{thm:integer_grid_recovery}
+    \lean{FiniteScalarInterpolation.integerRecovery_sum,
+        FiniteScalarInterpolation.integerRecoveryGrid_mul_integerEvaluationGrid,
+        FiniteScalarInterpolation.integerRecoveryGrid_smul}\leanok
+    \uses{def:integer_grid_matrices}
+    With the notation of Definition~\ref{def:integer_grid_matrices},
+    \begin{align}
+        C^{(0)}V^{(0)} & =I_S,\notag                          \\
+        CV             & =I_G.\label{eq:integer_grid_inverse}
+    \end{align}
+    Let $M$ be a complex module and let $(f_\beta)_{\beta\in G}$ be any family
+    in $M$. Put $F(g)=\sum_{\beta\in G}V_{g\beta}f_\beta$.
+    For every $\alpha\in G$,
+    \begin{align*}
+        \sum_{g\in G}C_{\alpha g}F(g) & =f_\alpha.
+    \end{align*}
+    The points and recovery matrices depend only on $O$ and $K$.
+    These formulas include empty $O$ and $K=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:integer_grid_matrices}
+    Distinct integer nodes give a nonzero Vandermonde determinant, hence
+    $C^{(0)}V^{(0)}=I_S$. Distributing products over finite sums gives
+    \begin{align*}
+        (CV)_{\alpha\beta}
+         & =\sum_{g\in G}\prod_{a\in O}
+        C^{(0)}_{\alpha_a,g_a}x_{g_a}^{\beta_a}
+        =\prod_{a\in O}\sum_{r\in S}
+        C^{(0)}_{\alpha_a,r}x_r^{\beta_a}           \\
+         & =\prod_{a\in O}\delta_{\alpha_a,\beta_a}
+        =\delta_{\alpha,\beta}.
+    \end{align*}
+    By (\ref{eq:integer_grid_inverse}), distributivity and interchange of the
+    two finite sums yield
+    \begin{align*}
+        \sum_{g\in G}C_{\alpha g}F(g)
+         & =\sum_{\beta\in G}(CV)_{\alpha\beta}f_\beta
+        =f_\alpha.
+    \end{align*}
 \end{proof}
