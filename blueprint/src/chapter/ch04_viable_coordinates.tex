@@ -1,0 +1,65 @@
+\section{Viable subspaces in coordinates}
+
+When $\mathcal H_A=\mathbb C^\sigma$ is the space of configurations
+$\sigma$ of a finite set of sites and $\mathcal H_B=\mathbb C^\beta$, the
+viability of a subspace $S\subseteq\mathcal H_A$ for a target
+$T\subseteq\mathcal H_A\otimes\mathcal H_B$~\cite[lines
+    433--440]{Arad2016RigorousRG} can be stated in $\mathbb C^{\sigma\times\beta}$,
+and the cuts inside $\mathcal H_A$ used by the trimming of a viable
+subspace~\cite[lines 660--697]{Arad2016RigorousRG} keep $\mathcal H_B$ on the
+right.
+
+\begin{theorem}[Cut coordinates with an environment factor]
+    \label{thm:cut_environment_coordinates}
+    \lean{Entropy.cutEnvEquiv, Entropy.cutEnvVector,
+        Entropy.cutEnvVector_leftApply_of_cutOperator_eq_kronecker_one,
+        Entropy.cutEnvVector_leftApply_localLift,
+        Entropy.cutEnvVector_leftApply_of_cutOperator_eq_one_kronecker,
+        Entropy.IsSupportedOn.schmidtRank_cutEnvVector_leftApply_le,
+        Entropy.cutEnvVector_rightApply,
+        Entropy.schmidtRank_cutEnvVector_rightApply_le,
+        Entropy.schmidtRank_cutVector_slice_le}
+    \leanok
+    \uses{lem:supported_product_decomposition, def:schmidt_rank}
+    For a region $D$ of the sites, write a vector of
+    $\mathbb C^\sigma\otimes\mathbb C^\beta$ in the bipartite coordinates
+    $\mathbb C^{\sigma_D}\otimes(\mathbb C^{\sigma_{D^{\mathrm c}}}\otimes
+        \mathbb C^\beta)$; this is an isometry. An operator $K\otimes I$ on the
+    sites acts on the left factor, an operator supported outside $D$ or
+    acting on $\mathbb C^\beta$ acts on the right factor and does not
+    increase the Schmidt rank across $D$, and a slice $w(\cdot,b)$ has
+    Schmidt rank across $D$ at most that of $w$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Each statement is a computation of the coefficient matrix in the cut
+    coordinates, using the product form of an operator supported in or
+    outside $D$; an operator on the right factor multiplies the coefficient
+    matrix on the right, which does not increase its rank.
+\end{proof}
+
+\begin{theorem}[Viability in coordinates]
+    \label{thm:viable_coordinates}
+    \lean{Submodule.isCloseTo_map_iff, Submodule.prodExt,
+        Submodule.euclideanTensorEquiv, Submodule.map_prodExt_euclideanTensorEquiv,
+        Submodule.isCloseTo_prodExt_iff_isViable}
+    \leanok
+    \uses{def:subspace_close, thm:subspace_close_iff, def:subspace_viable}
+    Closeness of subspaces is invariant under linear isometries. Let
+    $S\otimes\mathbb C^\beta\subseteq\mathbb C^{\sigma\times\beta}$ be the
+    vectors whose slices $w(\cdot,b)$ lie in $S$. The isometry
+    $\mathbb C^{\sigma\times\beta}\cong\mathbb C^\sigma\otimes\mathbb C^\beta$
+    sending the coordinate vector of $(a,b)$ to $e_a\otimes e_b$ carries
+    $S\otimes\mathbb C^\beta$ onto $S\otimes\mathbb C^\beta$ in the tensor
+    product, so $S\otimes\mathbb C^\beta$ is $\delta$-close to $T$ exactly
+    when $S$ is $\delta$-viable for the image of $T$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Under an isometry $\Phi$, the projection onto $\Phi U$ is $\Phi P_U\Phi^{-1}$,
+    so the vector form of closeness transfers. A vector $w$ with slices in $S$
+    is $\sum_b w(\cdot,b)\otimes e_b$, and $x\otimes y$ with $x\in S$ has slices
+    $y_b\,x\in S$.
+\end{proof}
