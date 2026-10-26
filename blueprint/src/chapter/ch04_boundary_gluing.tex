@@ -171,6 +171,38 @@ $v$ of Schmidt rank $B$.
     $\sigma u=\mu u$.
 \end{proof}
 
+\begin{theorem}[Bounds for every dominant eigenvector of the left state]
+    \label{thm:leading_eigenvector_uniform_bounds}
+    \lean{Matrix.leading_eigenvector_bounds_of_gluing}
+    \leanok
+    \uses{thm:leading_eigenvector_gluing}
+    Under the hypotheses of Theorem~\ref{thm:leading_eigenvector_gluing},
+    let $u$ be any unit eigenvector of $\sigma$ with real eigenvalue
+    $\mu>1/2$. Its extension $u'=(I\otimes W)u$ satisfies
+    \begin{align}
+        \operatorname{Re}\langle u',Hu'\rangle
+         & \le E_0+2(e+\|K\|\tau),\notag     \\
+        |\langle\Gamma,u'\rangle|
+         & \ge1-2(e+\|K\|\tau)/\Delta.\notag
+    \end{align}
+    This is an auxiliary statement for the arbitrary choice of leading
+    eigenvector in~\cite[Lemma~2.5, source lines 493--505]{Landau2013PolynomialTime}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:leading_eigenvector_gluing,thm:dominant_eigenvector_phase_uniqueness}
+    Theorem~\ref{thm:leading_eigenvector_gluing} gives a unit eigenvector
+    $v$ of $\sigma$ with eigenvalue greater than one half and the stated
+    bounds for $v'=(I\otimes W)v$.
+    By Theorem~\ref{thm:dominant_eigenvector_phase_uniqueness}, $u=zv$ with
+    $|z|=1$, hence $u'=zv'$. Consequently
+    \begin{align}
+        \langle u',Hu'\rangle     & =|z|^2\langle v',Hv'\rangle
+        =\langle v',Hv'\rangle,\notag                               \\
+        |\langle\Gamma,u'\rangle| & =|z|\,|\langle\Gamma,v'\rangle|
+        =|\langle\Gamma,v'\rangle|.\notag
+    \end{align}
+\end{proof}
+
 \subsection{A minimum under boundary constraints}
 
 \begin{theorem}[Closed trace-norm sublevel sets]
