@@ -101,6 +101,33 @@ $v$ of Schmidt rank $B$.
     square.
 \end{proof}
 
+\begin{theorem}[Uniqueness of an eigenvector above one half]
+    \label{thm:dominant_eigenvector_phase_uniqueness}
+    \lean{Matrix.PosSemidef.eigenvalue_eq_and_exists_unit_smul_of_gt_half}
+    \leanok
+    Let $\sigma$ be a positive semidefinite matrix of trace one on a
+    finite-dimensional complex coordinate space. Suppose that $u,v$ are
+    unit vectors with $\sigma u=\mu u$ and $\sigma v=\nu v$, where
+    $\mu,\nu>1/2$. Then there is $z\in\mathbb C$ such that
+    \begin{align}
+        \mu & =\nu,\notag \\
+        v   & =zu,\notag  \\
+        |z| & =1.\notag
+    \end{align}
+    This is an auxiliary uniqueness statement for the leading eigenvector
+    in~\cite[Lemma~2.5, source lines 493--505]{Landau2013PolynomialTime}.
+\end{theorem}
+\begin{proof}\leanok
+    Choose an orthonormal eigenbasis $\{b_j\}$ with eigenvalues $\lambda_j$.
+    Positivity and trace one give $\lambda_j\ge0$ and
+    $\sum_j\lambda_j=1$, so at most one index has $\lambda_j>1/2$.
+    If $\sigma w=\alpha w$, then
+    $(\lambda_j-\alpha)\langle b_j,w\rangle=0$ for every $j$.
+    For a unit eigenvector with $\alpha>1/2$, some coefficient is nonzero,
+    and all other coefficients vanish. Both $u$ and $v$ therefore belong
+    to the same one-dimensional eigenspace. Their unit norms give $|z|=1$.
+\end{proof}
+
 \begin{theorem}[The leading eigenvector of a near-optimal left state]
     \label{thm:leading_eigenvector_gluing}
     \lean{Matrix.trace_gluing_mul_kronecker_one,
@@ -142,4 +169,121 @@ $v$ of Schmidt rank $B$.
     $\mu\ne0$, $v'=\mu^{-1}\sigma'v'$ lies in the range of $1\otimes W$, so
     $u=(1\otimes W)^\dagger v'$ satisfies $(1\otimes W)u=v'$ and
     $\sigma u=\mu u$.
+\end{proof}
+
+\begin{theorem}[Bounds for every dominant eigenvector of the left state]
+    \label{thm:leading_eigenvector_uniform_bounds}
+    \lean{Matrix.leading_eigenvector_bounds_of_gluing}
+    \leanok
+    \uses{thm:leading_eigenvector_gluing}
+    Under the hypotheses of Theorem~\ref{thm:leading_eigenvector_gluing},
+    let $u$ be any unit eigenvector of $\sigma$ with real eigenvalue
+    $\mu>1/2$. Its extension $u'=(I\otimes W)u$ satisfies
+    \begin{align}
+        \operatorname{Re}\langle u',Hu'\rangle
+         & \le E_0+2(e+\|K\|\tau),\notag     \\
+        |\langle\Gamma,u'\rangle|
+         & \ge1-2(e+\|K\|\tau)/\Delta.\notag
+    \end{align}
+    This is an auxiliary statement for the arbitrary choice of leading
+    eigenvector in~\cite[Lemma~2.5, source lines 493--505]{Landau2013PolynomialTime}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:leading_eigenvector_gluing,thm:dominant_eigenvector_phase_uniqueness}
+    Theorem~\ref{thm:leading_eigenvector_gluing} gives a unit eigenvector
+    $v$ of $\sigma$ with eigenvalue greater than one half and the stated
+    bounds for $v'=(I\otimes W)v$.
+    By Theorem~\ref{thm:dominant_eigenvector_phase_uniqueness}, $u=zv$ with
+    $|z|=1$, hence $u'=zv'$. Consequently
+    \begin{align}
+        \langle u',Hu'\rangle     & =|z|^2\langle v',Hv'\rangle
+        =\langle v',Hv'\rangle,\notag                               \\
+        |\langle\Gamma,u'\rangle| & =|z|\,|\langle\Gamma,v'\rangle|
+        =|\langle\Gamma,v'\rangle|.\notag
+    \end{align}
+\end{proof}
+
+\subsection{A minimum under boundary constraints}
+
+\begin{theorem}[Closed trace-norm sublevel sets]
+    \label{thm:trace_norm_sublevel_closed}
+    \lean{Matrix.isClosed_setOf_rectangularTraceNorm_le}
+    \leanok
+    For finite-dimensional complex coordinate spaces and any $c\in\mathbb R$,
+    the set of rectangular matrices $A$ satisfying $\lVert A\rVert_1\le c$
+    is closed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:random_trace_duality}
+    By Theorem~\ref{thm:random_trace_duality}, the inequality
+    $\lVert A\rVert_1\le c$ is equivalent to
+    $|\operatorname{tr}(A^\dagger U)|\le c$ for every contraction $U$.
+    Each trace pairing is continuous, so these inequalities define closed
+    sets. Their intersection is closed.
+\end{proof}
+
+\begin{theorem}[A minimum over feasible density matrices]
+    \label{thm:boundary_density_minimizer_nonempty}
+    \lean{Matrix.exists_boundary_density_minimizer_of_nonempty}
+    \leanok
+    \uses{def:boundary_contraction}
+    Let $P,H_L$ be matrices on $\mathcal A\otimes\mathcal S$, let $X$ be a
+    matrix on $\mathcal S\otimes\mathcal B$, and let $\eta\in\mathbb R$.
+    Put $Q=P\otimes1$ and suppose that
+    \begin{align}
+        \mathcal F=\bigl\{\rho:\rho\ge0,\ \operatorname{tr}\rho=1,\
+        Q\rho=\rho,\
+        \lVert\operatorname{tr}_{\mathcal A}\rho-X\rVert_1\le\eta\bigr\}
+        \notag
+    \end{align}
+    is nonempty. Then there is $\sigma\in\mathcal F$ such that
+    $E(\sigma)\le E(\rho)$ for every $\rho\in\mathcal F$, where
+    $E(\rho)=\operatorname{Re}\operatorname{tr}(\rho(H_L\otimes1))$.
+    This gives existence of a minimum for the size-trimming optimization
+    problem of~\cite[lines 472--476]{Landau2013PolynomialTime} whenever its
+    constraints are feasible.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:density_finite_index_compact,thm:trace_norm_sublevel_closed}
+    The constraints $Q\rho=\rho$ and
+    $\lVert\operatorname{tr}_{\mathcal A}\rho-X\rVert_1\le\eta$ are closed,
+    since matrix multiplication and the partial trace are continuous and
+    Theorem~\ref{thm:trace_norm_sublevel_closed} applies. Their intersection
+    with the compact set of density matrices is compact.
+    The continuous function $E$ therefore attains a minimum on
+    $\mathcal F$.
+\end{proof}
+
+\begin{theorem}[A minimizing left density matrix]
+    \label{thm:boundary_density_minimizer}
+    \lean{Matrix.exists_boundary_density_minimizer}
+    \leanok
+    \uses{def:boundary_contraction}
+    With the notation of Theorem~\ref{thm:boundary_density_minimizer_nonempty},
+    put $\rho_x=\lvert x\rangle\langle x\rvert$ for a unit vector
+    $x\in(\mathcal A\otimes\mathcal S)\otimes\mathcal B$. Suppose
+    $Qx=x$ and $\lVert\operatorname{tr}_{\mathcal A}\rho_x-X\rVert_1\le\eta$.
+    Then $E$ has a minimizer $\sigma\in\mathcal F$ satisfying
+    \begin{align}
+        E(\sigma)                                     & \le E(\rho_x), \notag \\
+        \lVert\operatorname{tr}_{\mathcal A}\sigma
+        -\operatorname{tr}_{\mathcal A}\rho_x\rVert_1 & \le2\eta. \notag
+    \end{align}
+    This gives existence and optimality for the size-trimming optimization
+    problem of~\cite[lines 472--476]{Landau2013PolynomialTime}, when the
+    chosen boundary matrix is close to that of the pure left state.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:boundary_density_minimizer_nonempty}
+    The matrix $\rho_x$ belongs to $\mathcal F$, so $\mathcal F$ is nonempty.
+    Theorem~\ref{thm:boundary_density_minimizer_nonempty} gives a minimizer
+    $\sigma$, and comparison with $\rho_x$ gives
+    $E(\sigma)\le E(\rho_x)$. The triangle inequality gives
+    \begin{align}
+        \lVert\operatorname{tr}_{\mathcal A}\sigma
+        -\operatorname{tr}_{\mathcal A}\rho_x\rVert_1
+         & \le\lVert\operatorname{tr}_{\mathcal A}\sigma-X\rVert_1
+        +\lVert X-\operatorname{tr}_{\mathcal A}\rho_x\rVert_1
+        \le2\eta. \notag
+    \end{align}
 \end{proof}
