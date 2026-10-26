@@ -1,0 +1,81 @@
+\section{Trimming at a threshold on the Schmidt coefficients}
+
+Arad, Landau, Vazirani and Vidick trim a viable subspace cut by cut, keeping
+at each cut the left Schmidt vectors whose Schmidt coefficient is at least
+$\xi$~\cite[lines 642--656]{Arad2016RigorousRG}. For a bipartite vector
+$\psi\in\mathbb C^m\otimes\mathbb C^n$ with coefficient matrix $C$ and left
+marginal $\rho=CC^\dagger$, the squared Schmidt coefficients are the
+eigenvalues of $\rho$, so the kept vectors span the range of the spectral
+projection $P$ of $\rho$ onto $[\xi^2,\infty)$. This section proves the facts
+about one such projection used in the proof of their trimming
+lemma~\cite[lines 660--697]{Arad2016RigorousRG}.
+
+\begin{theorem}[Pairing with small Schmidt coefficients]
+    \label{thm:schmidt_threshold_pairing}
+    \lean{Matrix.norm_inner_le_of_posSemidef_smul_one_sub_leftMarginal}
+    \leanok
+    \uses{def:schmidt_rank}
+    Let $c\ge0$, let $\varphi$ have left marginal at most $c$ in the Loewner
+    order, and let $\psi$ have Schmidt rank at most $k$. Then
+    $|\langle\varphi,\psi\rangle|\le\sqrt{ck}\,\|\psi\|$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Let $R$ be the support projection of the left marginal of $\psi$; it has
+    rank at most $k$ and $(R\otimes I)\psi=\psi$. Hence
+    $\langle\varphi,\psi\rangle=\langle(R\otimes I)\varphi,\psi\rangle$, and
+    $\|(R\otimes I)\varphi\|^2=\tr(R\rho_\varphi R)\le c\tr R\le ck$.
+\end{proof}
+
+\begin{theorem}[The discarded part]
+    \label{thm:schmidt_threshold_discarded}
+    \lean{Matrix.PosSemidef.posSemidef_smul_one_sub_one_sub_spectralProjectionGE_mul,
+        Matrix.posSemidef_smul_one_sub_leftMarginal_leftApply_one_sub,
+        Matrix.norm_inner_leftApply_one_sub_spectralProjectionGE_le}
+    \leanok
+    \uses{def:closed_threshold_projection, thm:closed_threshold_projection,
+        thm:schmidt_threshold_pairing}
+    Let $b\ge0$ and let $P$ be the spectral projection of the left marginal
+    $\rho$ of $\psi$ onto $[b,\infty)$. Then $(I-P)\rho\le b$, so the
+    discarded part $((I-P)\otimes I)\psi$ has left marginal at most $b$, and
+    for every $\varphi$ of Schmidt rank at most $k$,
+    \[
+        |\langle((I-P)\otimes I)\psi,\varphi\rangle|\le\sqrt{bk}\,\|\varphi\|.
+    \]
+    With $b=\xi^2$ this is the bound $\xi\sqrt k$ of
+    \cite[lines 666--680]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    On an eigenvalue $t\ge b$ of $\rho$ the function $(1-[t\ge b])\,t$
+    vanishes, and on $t<b$ it equals $t<b$. The left marginal of the
+    discarded part is $(I-P)\rho(I-P)=(I-P)\rho$, since $P$ commutes with
+    $\rho$. The pairing bound is
+    Theorem~\ref{thm:schmidt_threshold_pairing}.
+\end{proof}
+
+\begin{theorem}[The kept part]
+    \label{thm:schmidt_threshold_kept}
+    \lean{Matrix.mul_rank_spectralProjectionGE_leftMarginal_le,
+        Matrix.exists_mul_eq_mul_transpose_of_commute,
+        Matrix.exists_leftApply_spectralProjectionGE_eq_rightApply}
+    \leanok
+    \uses{def:closed_threshold_projection, thm:closed_threshold_projection,
+        thm:trimming_second_factor}
+    With $P$ as above, $b\operatorname{rank}P\le\|\psi\|^2$. Moreover, every
+    orthogonal projection $P$ commuting with $\rho$ satisfies $PC=CQ^{\mathsf T}$
+    for an orthogonal projection $Q$ of rank at most $\operatorname{rank}P$,
+    that is $(P\otimes I)\psi=(I\otimes Q)\psi$. In particular applying $P$
+    does not increase the Schmidt rank across a cut inside the second factor
+    \cite[lines 690--692]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Each eigenvalue of $\rho$ counted by $P$ is at least $b$, and their sum is
+    at most $\tr\rho=\|\psi\|^2$. The second statement is the argument of
+    Theorem~\ref{thm:trimming_second_factor}, which uses only that $P$ is an
+    orthogonal projection commuting with $\rho$.
+\end{proof}
