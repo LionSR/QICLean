@@ -41,7 +41,7 @@ need not be an eigenvector, which this form covers.
 * `ContinuousLinearMap.norm_sq_complementProd_le`: the form of the source.
 * `ContinuousLinearMap.norm_sq_sub_norm_sq_complementProd_le`: the union bound
   `‖ψ‖² - ‖φ‖² ≤ ⟨ψ|H|ψ⟩` for commuting projections.
-* `ContinuousLinearMap.one_sub_three_mul_le_norm_sq_complementProd_mul`: the converse.
+* `ContinuousLinearMap.one_sub_three_mul_le_norm_sq_complementProd_comp`: the converse.
 -/
 
 open scoped InnerProductSpace
@@ -70,34 +70,35 @@ section StarProjection
 
 variable {p : E →L[𝕜] E}
 
-theorem _root_.IsStarProjection.apply_apply_self (hp : IsStarProjection p) (x : E) :
+theorem IsStarProjection.apply_apply_self (hp : IsStarProjection p) (x : E) :
     p (p x) = p x :=
   congr($(hp.isIdempotentElem.eq) x)
 
-theorem _root_.IsStarProjection.inner_apply_left (hp : IsStarProjection p) (x y : E) :
+theorem IsStarProjection.inner_apply_left (hp : IsStarProjection p) (x y : E) :
     ⟪p x, y⟫_𝕜 = ⟪x, p y⟫_𝕜 := by
   rw [← adjoint_inner_right, ← star_eq_adjoint, hp.isSelfAdjoint.star_eq]
 
-theorem _root_.IsStarProjection.inner_apply_self (hp : IsStarProjection p) (x : E) :
+theorem IsStarProjection.inner_apply_self (hp : IsStarProjection p) (x : E) :
     ⟪x, p x⟫_𝕜 = ((‖p x‖ ^ 2 : ℝ) : 𝕜) := by
-  rw [← hp.apply_apply_self x, ← hp.inner_apply_left, hp.apply_apply_self,
-    inner_self_eq_norm_sq_to_K, RCLike.ofReal_pow]
+  rw [← IsStarProjection.apply_apply_self hp x, ← IsStarProjection.inner_apply_left hp,
+    IsStarProjection.apply_apply_self hp, inner_self_eq_norm_sq_to_K, RCLike.ofReal_pow]
 
-theorem _root_.IsStarProjection.re_inner_apply_self (hp : IsStarProjection p) (x : E) :
+theorem IsStarProjection.re_inner_apply_self (hp : IsStarProjection p) (x : E) :
     RCLike.re ⟪x, p x⟫_𝕜 = ‖p x‖ ^ 2 := by
-  rw [hp.inner_apply_self, RCLike.ofReal_re]
+  rw [(IsStarProjection.inner_apply_self hp), RCLike.ofReal_re]
 
 /-- Pythagoras for a projection: `‖x‖² = ‖p x‖² + ‖x - p x‖²`. -/
-theorem _root_.IsStarProjection.norm_sq_eq (hp : IsStarProjection p) (x : E) :
+theorem IsStarProjection.norm_sq_eq (hp : IsStarProjection p) (x : E) :
     ‖x‖ ^ 2 = ‖p x‖ ^ 2 + ‖x - p x‖ ^ 2 := by
   have h0 : ⟪p x, x - p x⟫_𝕜 = 0 := by
-    rw [hp.inner_apply_left, map_sub, hp.apply_apply_self, sub_self, inner_zero_right]
+    rw [IsStarProjection.inner_apply_left hp, map_sub, IsStarProjection.apply_apply_self hp,
+      sub_self, inner_zero_right]
   have := norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero (p x) (x - p x) h0
   simpa only [add_sub_cancel, sq] using this
 
-theorem _root_.IsStarProjection.norm_apply_le (hp : IsStarProjection p) (x : E) :
+theorem IsStarProjection.norm_apply_le (hp : IsStarProjection p) (x : E) :
     ‖p x‖ ≤ ‖x‖ := by
-  have h := hp.norm_sq_eq x
+  have h := IsStarProjection.norm_sq_eq hp x
   exact le_of_pow_le_pow_left₀ two_ne_zero (norm_nonneg x) (by nlinarith [sq_nonneg ‖x - p x‖])
 
 end StarProjection
@@ -108,14 +109,14 @@ variable {h : ℕ → E →L[𝕜] E}
 theorem norm_sq_complementProd_succ (hh : ∀ k, IsStarProjection (h k)) (x : E) (k : ℕ) :
     ‖complementProd h (k + 1) x‖ ^ 2 =
       ‖complementProd h k x‖ ^ 2 - ‖h k (complementProd h k x)‖ ^ 2 := by
-  rw [complementProd_succ_apply, (hh k).norm_sq_eq (complementProd h k x)]
+  rw [complementProd_succ_apply, IsStarProjection.norm_sq_eq (hh k) (complementProd h k x)]
   ring
 
 /-- For projections, `⟨y|∑ h_i|y⟩ = ∑ ‖h_i y‖²`. -/
 theorem re_inner_sum_apply_eq (hh : ∀ k, IsStarProjection (h k)) (s : Finset ℕ) (y : E) :
     RCLike.re ⟪y, (∑ i ∈ s, h i) y⟫_𝕜 = ∑ i ∈ s, ‖h i y‖ ^ 2 := by
   rw [sum_apply, inner_sum, map_sum]
-  exact Finset.sum_congr rfl fun i _ ↦ (hh i).re_inner_apply_self y
+  exact Finset.sum_congr rfl fun i _ ↦ IsStarProjection.re_inner_apply_self (hh i) y
 
 /-- The masses removed by the factors add up to `‖ψ‖² - ‖ψ_n‖²`. -/
 theorem sum_norm_sq_apply_complementProd (hh : ∀ k, IsStarProjection (h k)) (x : E) (n : ℕ) :
@@ -147,12 +148,14 @@ theorem norm_apply_complementProd_le (hh : ∀ k, IsStarProjection (h k)) (x : E
           rw [complementProd_succ]
           exact congr($(((Commute.one_right _).sub_right hc).eq) (complementProd h n x))
         rw [hQ]
-        exact ((hh n).one_sub.norm_apply_le _).trans (ih hin)
+        exact ((IsStarProjection.norm_apply_le (hh n).one_sub) _).trans (ih hin)
       · simp only [hin, hc, not_false_eq_true, and_self, ↓reduceIte]
         rw [Finset.sum_insert (by simp), complementProd_succ_apply, map_sub, add_comm]
-        exact (norm_sub_le _ _).trans (add_le_add (ih hin) ((hh i).norm_apply_le _))
+        exact (norm_sub_le _ _).trans
+          (add_le_add (ih hin) (IsStarProjection.norm_apply_le (hh i) _))
     · have h0 : h i (complementProd h (i + 1) x) = 0 := by
-        rw [complementProd_succ_apply, map_sub, (hh i).apply_apply_self, sub_self]
+        rw [complementProd_succ_apply, map_sub, IsStarProjection.apply_apply_self (hh i),
+          sub_self]
       rw [h0, norm_zero]
       exact Finset.sum_nonneg fun _ _ ↦ norm_nonneg _
 
@@ -283,19 +286,20 @@ theorem norm_sq_sub_norm_sq_complementProd_le (hh : ∀ k, IsStarProjection (h k
     exact congr($((commute_complementProd fun j _ ↦ hc k j).eq) x)
   rw [hcomm]
   exact pow_le_pow_left₀ (norm_nonneg _)
-    ((isStarProjection_complementProd hh hc k).norm_apply_le _) 2
+    ((IsStarProjection.norm_apply_le (isStarProjection_complementProd hh hc k)) _) 2
 
 /-- Two projections with small complementary masses at a unit vector `x`: their product keeps
 `‖P P' x‖² ≥ 1 - 3 (‖x - P x‖² + ‖x - P' x‖²)`. -/
-theorem _root_.IsStarProjection.one_sub_three_mul_le_norm_sq_mul_apply {P P' : E →L[𝕜] E}
+theorem IsStarProjection.one_sub_three_mul_le_norm_sq_apply_apply {P P' : E →L[𝕜] E}
     (hP : IsStarProjection P) (hP' : IsStarProjection P') {x : E} (hx : ‖x‖ = 1) :
     1 - 3 * (‖x - P x‖ ^ 2 + ‖x - P' x‖ ^ 2) ≤ ‖P (P' x)‖ ^ 2 := by
   have hinner : ⟪x, P (P' x)⟫_𝕜 = ⟪x - (x - P x), x - (x - P' x)⟫_𝕜 := by
-    rw [sub_sub_cancel, sub_sub_cancel, hP.inner_apply_left]
-  have hw : RCLike.re ⟪x, x - P' x⟫_𝕜 = ‖x - P' x‖ ^ 2 := hP'.one_sub.re_inner_apply_self x
+    rw [sub_sub_cancel, sub_sub_cancel, (IsStarProjection.inner_apply_left hP)]
+  have hw : RCLike.re ⟪x, x - P' x⟫_𝕜 = ‖x - P' x‖ ^ 2 :=
+    IsStarProjection.re_inner_apply_self hP'.one_sub x
   have hu : RCLike.re ⟪x - P x, x⟫_𝕜 = ‖x - P x‖ ^ 2 := by
     rw [← inner_conj_symm, RCLike.conj_re]
-    exact hP.one_sub.re_inner_apply_self x
+    exact (IsStarProjection.re_inner_apply_self hP.one_sub) x
   set u := x - P x
   set w := x - P' x
   clear_value u w
@@ -321,7 +325,7 @@ every unit vector and with the constant `3`). Let `h` and `h'` be two families o
 commuting projections, such as the even and the odd terms of a nearest-neighbour chain, and let
 `P` and `P'` be the products of the complements of their first `n` and `n'` terms. Then
 `‖P P' ψ‖² ≥ 1 - 3 ⟨ψ|H|ψ⟩` with `H` the sum of these terms. -/
-theorem one_sub_three_mul_le_norm_sq_complementProd_mul {h' : ℕ → E →L[𝕜] E}
+theorem one_sub_three_mul_le_norm_sq_complementProd_comp {h' : ℕ → E →L[𝕜] E}
     (hh : ∀ k, IsStarProjection (h k)) (hc : ∀ i j, Commute (h i) (h j))
     (hh' : ∀ k, IsStarProjection (h' k)) (hc' : ∀ i j, Commute (h' i) (h' j)) (n n' : ℕ)
     {x : E} (hx : ‖x‖ = 1) :
@@ -330,13 +334,13 @@ theorem one_sub_three_mul_le_norm_sq_complementProd_mul {h' : ℕ → E →L[�
   have hP := isStarProjection_complementProd hh hc n
   have hP' := isStarProjection_complementProd hh' hc' n'
   have ha : ‖x - complementProd h n x‖ ^ 2 ≤ RCLike.re ⟪x, (∑ k ∈ Finset.range n, h k) x⟫_𝕜 := by
-    have := hP.norm_sq_eq x
+    have := IsStarProjection.norm_sq_eq hP x
     linarith [norm_sq_sub_norm_sq_complementProd_le hh hc x n]
   have hb : ‖x - complementProd h' n' x‖ ^ 2 ≤
       RCLike.re ⟪x, (∑ k ∈ Finset.range n', h' k) x⟫_𝕜 := by
-    have := hP'.norm_sq_eq x
+    have := IsStarProjection.norm_sq_eq hP' x
     linarith [norm_sq_sub_norm_sq_complementProd_le hh' hc' x n']
   rw [add_apply, inner_add_right, map_add]
-  linarith [hP.one_sub_three_mul_le_norm_sq_mul_apply hP' hx]
+  linarith [IsStarProjection.one_sub_three_mul_le_norm_sq_apply_apply hP hP' hx]
 
 end ContinuousLinearMap

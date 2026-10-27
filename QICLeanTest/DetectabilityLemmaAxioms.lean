@@ -17,8 +17,8 @@ run_cmd do
     ``ContinuousLinearMap.norm_sq_complementProd_le,
     ``ContinuousLinearMap.isStarProjection_complementProd,
     ``ContinuousLinearMap.norm_sq_sub_norm_sq_complementProd_le,
-    ``IsStarProjection.one_sub_three_mul_le_norm_sq_mul_apply,
-    ``ContinuousLinearMap.one_sub_three_mul_le_norm_sq_complementProd_mul]
+    ``ContinuousLinearMap.IsStarProjection.one_sub_three_mul_le_norm_sq_apply_apply,
+    ``ContinuousLinearMap.one_sub_three_mul_le_norm_sq_complementProd_comp]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"

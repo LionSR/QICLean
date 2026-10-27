@@ -18,9 +18,12 @@ product $Q_{m-1}\cdots Q_0$ removes from $\psi$. It is Lemma~lem:dl of
 
 \begin{theorem}[Projection identities]
     \label{thm:star_projection_identities}
-    \lean{IsStarProjection.apply_apply_self, IsStarProjection.inner_apply_left,
-        IsStarProjection.inner_apply_self, IsStarProjection.re_inner_apply_self,
-        IsStarProjection.norm_sq_eq, IsStarProjection.norm_apply_le}
+    \lean{ContinuousLinearMap.IsStarProjection.apply_apply_self,
+        ContinuousLinearMap.IsStarProjection.inner_apply_left,
+        ContinuousLinearMap.IsStarProjection.inner_apply_self,
+        ContinuousLinearMap.IsStarProjection.re_inner_apply_self,
+        ContinuousLinearMap.IsStarProjection.norm_sq_eq,
+        ContinuousLinearMap.IsStarProjection.norm_apply_le}
     \leanok
     For an orthogonal projection $p$ and vectors $x,y$:
     $p(px)=px$, $\langle px,y\rangle=\langle x,py\rangle$,
@@ -101,7 +104,8 @@ product $Q_{m-1}\cdots Q_0$ removes from $\psi$. It is Lemma~lem:dl of
     \uses{thm:detectability_lemma}
     In the setting of the previous theorem, let $\|\psi\|=1$ and
     $\varepsilon_\varphi=\langle\varphi|H|\varphi\rangle/\|\varphi\|^2$.
-    Then $\|\varphi\|^2\le1/(\varepsilon_\varphi/g^2+1)$.
+    Then $\|\varphi\|^2\le1/(\varepsilon_\varphi/g^2+1)$, where a quotient
+    by zero is read as zero.
 \end{theorem}
 
 \begin{proof}
@@ -110,8 +114,7 @@ product $Q_{m-1}\cdots Q_0$ removes from $\psi$. It is Lemma~lem:dl of
     $\|\varphi\|^2(\varepsilon_\varphi/g^2+1)
         =\langle\varphi|H|\varphi\rangle/g^2+\|\varphi\|^2\le1$. If
     $\varphi=0$ there is nothing to prove, and if $g=0$ the right side is
-    $1\ge\|\varphi\|^2$, with the convention that division by zero gives
-    zero.
+    $1\ge\|\varphi\|^2$.
 \end{proof}
 
 \begin{theorem}[Commuting projections]
@@ -137,7 +140,7 @@ product $Q_{m-1}\cdots Q_0$ removes from $\psi$. It is Lemma~lem:dl of
 
 \begin{theorem}[Product of two projections]
     \label{thm:two_projection_product}
-    \lean{IsStarProjection.one_sub_three_mul_le_norm_sq_mul_apply}
+    \lean{ContinuousLinearMap.IsStarProjection.one_sub_three_mul_le_norm_sq_apply_apply}
     \leanok
     \uses{thm:star_projection_identities}
     For orthogonal projections $P,P'$ and a unit vector $x$,
@@ -156,12 +159,12 @@ product $Q_{m-1}\cdots Q_0$ removes from $\psi$. It is Lemma~lem:dl of
 
 \begin{theorem}[Converse of the detectability lemma]
     \label{thm:detectability_lemma_converse}
-    \lean{ContinuousLinearMap.one_sub_three_mul_le_norm_sq_complementProd_mul}
+    \lean{ContinuousLinearMap.one_sub_three_mul_le_norm_sq_complementProd_comp}
     \leanok
     \uses{thm:commuting_complement_product, thm:two_projection_product}
     Let $(h_k)$ and $(h'_k)$ be two families of pairwise commuting
-    orthogonal projections, $P=Q_{n-1}\cdots Q_0$ and
-    $P'=Q'_{n'-1}\cdots Q'_0$, and $H=\sum_{k<n}h_k+\sum_{k<n'}h'_k$. Then
+    orthogonal projections, $Q_k=1-h_k$, $Q'_k=1-h'_k$,
+    $P=Q_{n-1}\cdots Q_0$ and $P'=Q'_{n'-1}\cdots Q'_0$, and $H=\sum_{k<n}h_k+\sum_{k<n'}h'_k$. Then
     $\|PP'\psi\|^2\ge1-3\langle\psi|H|\psi\rangle$ for every unit vector
     $\psi$.
 \end{theorem}
