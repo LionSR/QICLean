@@ -118,6 +118,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
 \begin{theorem}[Dimension of an approximated subspace]
     \label{thm:subspace_close_dimension}
     \lean{Submodule.IsCloseTo.finrank_le}
+    \leanok
     \uses{def:subspace_close}
     Let $U$ and $T$ be subspaces of a finite-dimensional real or complex
     inner-product space. If $U$ is $\delta$-close to $T$ and $\delta<1$,
@@ -126,6 +127,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{thm:subspace_close_preimage}
     The orthogonal projection $P_T$ maps $U$ onto $T$, so the dimension
     inequality follows from surjectivity.
@@ -134,6 +136,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
 \begin{theorem}[Equality of nested approximating subspaces]
     \label{thm:subspace_close_nested_equal}
     \lean{Submodule.eq_and_isCloseTo_of_le}
+    \leanok
     \uses{def:subspace_close}
     Let $U\subseteq V$ and $G$ be subspaces of a finite-dimensional real
     or complex inner-product space. Suppose $U$ is $\delta$-close to $G$
@@ -145,6 +148,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{thm:subspace_close_dimension}
     The two approximation bounds and the inclusion give
     $\dim G\le\dim U\le\dim V\le\dim G$. Hence $U=V$, and any intermediate
