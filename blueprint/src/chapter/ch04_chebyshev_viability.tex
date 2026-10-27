@@ -116,6 +116,7 @@ of the unsquared filter is not required
 \begin{theorem}[An actual matrix cluster and a fixed polynomial family]
     \label{thm:actual_cluster_polynomial_viability}
     \lean{Matrix.chebyshev_viability_of_actual_cluster_polynomial_family}
+    \leanok
     \uses{def:subspace_viable}
     Let $B$ be Hermitian on $\C^\Sigma$, with a supplied orthonormal
     eigenbasis $v_i$ and eigenvalues $\lambda_i$. Write
@@ -139,7 +140,7 @@ of the unsquared filter is not required
     The same family is used for every $Q,S,\delta$. No separate
     nonnegativity assumption on $\delta$ is imposed.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:canonical_isometric_spectral_data,
         thm:matrix_family_chebyshev_viability_card_bound}
     Transfer the supplied low spectral spaces to an orthonormal spectral

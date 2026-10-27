@@ -65,6 +65,7 @@ space. The order is the positive-semidefinite order.
 \begin{theorem}[Centering the original spectral basis]
     \label{thm:original_basis_centered_gap}
     \lean{Matrix.IsHermitian.original_basis_centered_gap_data}
+    \leanok
     Let $H$ be Hermitian on a nonzero finite-dimensional complex coordinate
     space. Suppose $\mu\in\operatorname{spec}(H)$, $g>0$, and every spectral
     value is either $\mu$ or at least $\mu+g$. Let $s,E_0\in\R$, and suppose
@@ -76,7 +77,7 @@ space. The order is the positive-semidefinite order.
         \lambda_j-s & =E_0\quad\text{or}\quad E_0+g\le\lambda_j-s.
     \end{align}
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:normalized_eigenvector_energies}
     The supplied unit vector attains the lower bound of $H-s\Id$.
     A unit $\mu$-eigenvector attains the lower bound $\mu$ of $H$.
