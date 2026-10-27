@@ -155,6 +155,7 @@ span of the $b'_j$ with $a'_j\le c$.
     \label{thm:spectral_span_quadratic_form}
     \lean{OrthonormalBasis.re_inner_apply_eq_sum_of_eigen,
         Submodule.re_inner_apply_le_of_mem_spectralSpanLE}
+    \leanok
     \uses{def:spectral_span_le}
     Let $(b_j)$ be a finite orthonormal basis of a complex inner-product
     space, and let $H$ be a linear operator satisfying $Hb_j=a_jb_j$ with
@@ -168,6 +169,7 @@ span of the $b'_j$ with $a'_j\le c$.
     $\operatorname{Re}\langle x,Hx\rangle\le c\|x\|^2$.
 \end{theorem}
 \begin{proof}
+    \leanok
     Express $x$ and $Hx$ in the orthonormal basis to obtain
     (\ref{eq:spectral_span_energy_coordinates}). For $x\in T(c)$, all
     coordinates with $a_j>c$ vanish. Bound the remaining coefficients by
@@ -177,11 +179,13 @@ span of the $b'_j$ with $a'_j\le c$.
 \begin{theorem}[The low spectral projection commutes with the operator]
     \label{thm:spectral_span_projection_commutes}
     \lean{Submodule.commute_starProjection_spectralSpanLE}
+    \leanok
     \uses{def:spectral_span_le}
     Under the same eigenbasis assumptions, the orthogonal projection
     onto $T(c)$ commutes with $H$, for every real $c$.
 \end{theorem}
 \begin{proof}
+    \leanok
     In that basis the complementary projection retains precisely the
     coordinates with $a_j>c$, while $H$ multiplies each coordinate by $a_j$.
     These two operations commute, and so do $H$ and the low projection.

@@ -60,12 +60,14 @@ statement, which does not assume that the matrices are Hermitian.
 \begin{theorem}[Positivity and a common vector after partial clipping]
     \label{thm:partial_clipping_common_vector}
     \lean{Matrix.centered_partially_clipped_sum_posSemidef_and_mulVec_eq_zero}
+    \leanok
     \uses{def:energy_truncation}
     Let every $A_i$ be Hermitian, $A_i\ge e_i\Id$, and $t\ge0$.
     If $A_ix=e_ix$ for every $i$, then $X_T(t)\ge0$ and $X_T(t)x=0$.
     No normalization of $x$ or commutation between different $A_i$ is required.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:order_sandwich_eigenvector}
     Each clipped term lies between $e_i\Id$ and $A_i$, hence retains $x$ as
     an eigenvector with eigenvalue $e_i$. Every centered summand is positive
@@ -75,6 +77,7 @@ statement, which does not assume that the matrices are Hermitian.
 \begin{theorem}[Norm budget for partially clipped positive terms]
     \label{thm:partial_clipping_norm_budget}
     \lean{Matrix.centered_partially_clipped_sum_norm_le_budget}
+    \leanok
     \uses{def:energy_truncation}
     Suppose $0\le A_i\le c_i\Id$, $A_i\ge e_i\Id$, $c_i\in\N$, and for each
     $i$ there is a unit vector $x_i$ with $A_ix_i=e_ix_i$.
@@ -84,6 +87,7 @@ statement, which does not assume that the matrices are Hermitian.
     $\|X_T(t)+Y\|\le b_T(t)$. The vectors $x_i$ need not agree.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:energy_truncation, thm:normalized_eigenvector_energies}
     Each $e_i$ is nonnegative. A clipped centered term lies between zero
     and $t\Id$, while an unclipped centered term lies between zero and $c_i\Id$.
@@ -93,11 +97,13 @@ statement, which does not assume that the matrices are Hermitian.
 \begin{theorem}[Commutation of a partially clipped sum]
     \label{thm:partial_clipping_commutation}
     \lean{Matrix.commute_centered_partially_clipped_sum}
+    \leanok
     \uses{def:energy_truncation}
     If the matrices $A_i$ commute pairwise, then $X_T(t)$ commutes with
     every $A_j$, for arbitrary real $e_i,t$. Hermiticity is not assumed.
 \end{theorem}
 \begin{proof}
+    \leanok
     A matrix commuting with $A_i$ commutes with its functional calculus.
     It also commutes with scalar matrices. Apply these facts to each
     summand of~(\ref{eq:partial_clipping_sum}).
@@ -106,6 +112,7 @@ statement, which does not assume that the matrices are Hermitian.
 \begin{theorem}[A high-energy projection below the centered sum]
     \label{thm:partial_clipping_high_projection}
     \lean{Matrix.spectralProjectionGE_le_centered_partially_clipped_sum}
+    \leanok
     \uses{def:energy_truncation, def:closed_threshold_projection}
     Suppose every $A_i$ is Hermitian and $A_i\ge e_i\Id$. For $0\le u\le t$
     and any $j$,
@@ -116,6 +123,7 @@ statement, which does not assume that the matrices are Hermitian.
     No commutation between different terms is required.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{def:closed_threshold_projection}
     On the spectrum of $A_j$, both $r-e_j$ and $\min(r,e_j+t)-e_j$ are at
     least $u\mathbf1_{r\ge e_j+u}$. All other centered summands are positive.
@@ -124,6 +132,7 @@ statement, which does not assume that the matrices are Hermitian.
 \begin{theorem}[Restricted discrepancy of a partial replacement]
     \label{thm:partial_clipping_restricted_sum}
     \lean{Matrix.norm_centered_clipping_discrepancy_domRestrict_le_sum}
+    \leanok
     Let $A_i,F_i$ be arbitrary complex square matrices, $C_i\in\C$ and
     $G$ a subspace of their Euclidean space. For a subset $T$ of the finite
     index set, put
@@ -136,6 +145,7 @@ statement, which does not assume that the matrices are Hermitian.
     Then $\|(B-B_T)|_G\|\le\sum_{i\in T}\|(A_i-F_i)|_G\|$.
 \end{theorem}
 \begin{proof}
+    \leanok
     Subtracting the sums in~(\ref{eq:partial_replacement_sums}), the scalar
     shifts cancel, and the discrepancy is exactly
     $\sum_{i\in T}(A_i-F_i)$. Restrict this identity to $G$ and apply the

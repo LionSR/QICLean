@@ -9,6 +9,7 @@ in~\cite[lines 1102--1168]{Arad2014Connecting} and
     \label{thm:exponential_weight_projection}
     \lean{Matrix.IsHermitian.regionalWeight_relations,
         Matrix.IsHermitian.norm_exp_mul_sub_const_mul_lowProjection_le_one}
+    \leanok
     \uses{def:closed_threshold_projection}
     Let $A$ be Hermitian and $s,c\in\R$. Put
     $W=e^{s(A-c\Id)}$, $W_-=e^{-s(A-c\Id)}$ and $Q=\mathbf1_{\{x\ge c\}}(A)$.
@@ -16,6 +17,7 @@ in~\cite[lines 1102--1168]{Arad2014Connecting} and
     with $W$ and $Q$. If $s\ge0$, then $\|W(1-Q)\|\le1$.
 \end{theorem}
 \begin{proof}
+    \leanok
     All the stated weights and projections are functions of $A$.
     On its spectrum, their scalar products give the commutations and inverse.
     For $s\ge0$, the low part has scalar value $e^{s(r-c)}$ when $r<c$
@@ -26,6 +28,7 @@ in~\cite[lines 1102--1168]{Arad2014Connecting} and
     \label{thm:weighted_projection_norms}
     \lean{Matrix.norm_projection_conjugated_mul_projection_le,
         Matrix.norm_weighted_projection_forcing_le}
+    \leanok
     Let $Q$ be an orthogonal projection and $W,Y,W_-$ arbitrary square
     complex matrices. Then $\|QWYW_-Q\|\le\|WYW_-\|$.
     If $WQ=QW$ and $W_-W=\Id$, then also
@@ -35,6 +38,7 @@ in~\cite[lines 1102--1168]{Arad2014Connecting} and
     \end{align}
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:weighted_forcing_identity}
     Orthogonal projections are contractions. This gives the first estimate.
     For the second, use~(\ref{eq:weighted_forcing_factorization}) with $R=\Id$,
@@ -44,6 +48,7 @@ in~\cite[lines 1102--1168]{Arad2014Connecting} and
 \begin{theorem}[A linear factor under an exponential weight]
     \label{thm:linear_exponential_weight}
     \lean{Real.sub_mul_exp_weight_le, Real.posPart_sub_mul_exp_weight_le}
+    \leanok
     For $s>0$ and arbitrary $x,t,u\in\R$,
     \begin{align}
         (x-t)e^{-s(x-u)}\le\frac{e^{-s(t-u)-1}}s.
@@ -52,6 +57,7 @@ in~\cite[lines 1102--1168]{Arad2014Connecting} and
     The same estimate holds with $x-t$ replaced by $\max(x-t,0)$.
 \end{theorem}
 \begin{proof}
+    \leanok
     Apply $ye^{-y}\le e^{-1}$ to $y=s(x-t)$, multiply by
     $e^{-s(t-u)}$ and divide by $s$. The right side is positive, so taking
     the positive part of the left factor preserves the bound.
@@ -60,6 +66,7 @@ in~\cite[lines 1102--1168]{Arad2014Connecting} and
 \begin{theorem}[Truncation excess on an actual weighted restriction]
     \label{thm:excess_actual_weighted_restriction}
     \lean{Matrix.IsHermitian.norm_excess_domRestrict_le_actual_weighted_map}
+    \leanok
     \uses{def:energy_truncation, def:closed_threshold_projection}
     Let $A$ be Hermitian, $s>0$ and $u\le t$. Set
     $W=e^{s(A-u\Id)}$ and $Q=\mathbf1_{\{x\ge u\}}(A)$.
@@ -73,6 +80,7 @@ in~\cite[lines 1102--1168]{Arad2014Connecting} and
     In particular, no norm estimate for $Z$ is assumed in this assertion.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:linear_exponential_weight, thm:weighted_right_support_cancellation}
     Put $D=A-\min(A,t)$ and $W_-=e^{-s(A-u\Id)}$.
     Since $u\le t$, functional calculus gives $D(1-Q)=0$.

@@ -4,6 +4,7 @@
     \label{thm:separated_quadratic_sylvester}
     \lean{ContinuousLinearMap.mul_norm_le_norm_sylvester_of_quadratic_bounds,
         ContinuousLinearMap.norm_le_div_of_sylvester_perturbation}
+    \leanok
     Let $E,F$ be finite-dimensional complex inner-product spaces, and let
     $A:F\to F$, $B:E\to E$, $T:E\to F$ be linear maps. Suppose
     $u\|y\|^2\le\operatorname{Re}\langle y,Ay\rangle$ for every $y\in F$ and
@@ -20,6 +21,7 @@
     in~\cite[lines 1010--1024]{Arad2016RigorousRG}.
 \end{theorem}
 \begin{proof}
+    \leanok
     The result is immediate for $T=0$. Otherwise choose a unit vector $x$
     attaining $\|T\|$ with $T^*Tx=\|T\|^2x$, and put $y=Tx$.
     The quadratic bounds give
