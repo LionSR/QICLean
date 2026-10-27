@@ -1,0 +1,44 @@
+\section{Scalar soft truncation}
+
+For $t>0$, an integer $m\geq1$, and $x\geq0$, the scalar soft truncation of
+Arad--Landau--Vazirani--Vidick is the following finite logarithmic series
+~\cite[lines 1152--1173]{Arad2016RigorousRG}.
+
+\begin{definition}[Scalar soft truncation]
+    \label{def:scalar_soft_truncation}
+    \lean{Real.softTruncation}
+    \leanok
+    \begin{align}
+        h_{m,t}(x)
+            &=t\sum_{j=1}^{m}\frac{{(1-e^{-x/t})}^{j}}{j}.
+        \label{eq:scalar_soft_truncation_definition}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Scalar soft-truncation bounds]
+    \label{thm:scalar_soft_truncation_bounds}
+    \lean{Real.softTruncation_bounds}
+    \leanok
+    If $t>0$, $m\geq1$, and $x\geq0$, then
+    \begin{align}
+        0\leq h_{m,t}(x)&\leq x,
+        \label{eq:scalar_soft_truncation_order}\\
+        x-h_{m,t}(x)&\leq\frac{t}{m}{\left(\frac{x}{t}\right)}^{m},
+        \label{eq:scalar_soft_truncation_remainder}\\
+        h_{m,t}(x)&\leq t(1+\log m).
+        \label{eq:scalar_soft_truncation_log_bound}
+    \end{align}
+    The final estimate corrects the printed $t\log m$ bound, which fails at
+    $m=1$~\cite{gap:alvv16_soft_truncation_log_bound}.
+\end{theorem}
+\begin{proof}\leanok
+    Put $y=x/t$, $a(y)=1-e^{-y}$, and
+    $g_m(y)=\sum_{j=1}^{m}{a(y)}^{j}/j$. The finite geometric sum gives
+    $g_m'(y)=1-{a(y)}^{m}$. Since $0\leq a(y)\leq\min\{1,y\}$ for $y\geq0$,
+    the functions $y-g_m(y)$ and $g_m(y)-y+y^m/m$ are nondecreasing and
+    vanish at zero. This proves~(\ref{eq:scalar_soft_truncation_order}) and
+    (\ref{eq:scalar_soft_truncation_remainder}). Finally,
+    ${a(y)}^{j}\leq1$, so the harmonic estimate
+    $\sum_{j=1}^{m}1/j\leq1+\log m$ proves
+    (\ref{eq:scalar_soft_truncation_log_bound}).
+\end{proof}
