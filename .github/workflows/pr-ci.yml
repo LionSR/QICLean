@@ -267,6 +267,44 @@ jobs:
           fi
           python3 scripts/ci_lean_checks.py early --budget 1200 --log "$RUNNER_TEMP/lake-build.log"
 
+      # Keep the small RC-migration regressions independently observable before
+      # the full build reaches unrelated dependencies. This is additive: the
+      # root build and complete strict suite below remain mandatory.
+      - name: Check focused Mathlib migration regressions strictly
+        timeout-minutes: 30
+        run: |
+          set -eo pipefail
+          lake --fail-fast build \
+            QICLean.Algebra.MatrixUnitaryBetween \
+            QICLean.Analysis.SpectralRadiusPowerDecay \
+            QICLean.Channel.OrderedCP \
+            QICLean.Channel.Semigroup.Basic \
+            QICLean.Channel.Semigroup.LindbladForm.TraceBridge \
+            QICLean.Channel.Peripheral.RecurrentInverse \
+            QICLean.Entropy.ConditionalMovement.DoubleCurve
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0, "scripts")
+          from ci_lean_checks import run_batch
+          paths = [
+              "QICLean/Algebra/MatrixUnitaryBetween.lean",
+              "QICLean/Analysis/SpectralRadiusPowerDecay.lean",
+              "QICLean/Channel/OrderedCP.lean",
+              "QICLean/Channel/Semigroup/Basic.lean",
+              "QICLean/Channel/Semigroup/LindbladForm/TraceBridge.lean",
+              "QICLean/Channel/Peripheral/RecurrentInverse.lean",
+              "QICLean/Entropy/ConditionalMovement/DoubleCurve.lean",
+              "QICLeanTest/Mathlib436Replacement.lean",
+              "QICLeanTest/SemigroupNormable.lean",
+              "QICLeanTest/DoubleCurveInstances.lean",
+          ]
+          failed = run_batch(paths, None, jobs=3, timeout=240)
+          if failed:
+              print("Focused migration checks failed:", *failed, sep="\n  ")
+              sys.exit(1)
+          print("All focused migration checks passed.")
+          PY
+
       - name: Build Lean project and capture timings
         run: |
           set -eo pipefail

@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.Semigroup.Basic
+import QICLean.Channel.Semigroup.LindbladForm.TraceBridge
+import QICLean.Channel.Peripheral.RecurrentInverse
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
@@ -23,6 +25,11 @@ example (L : MatrixCLM (Fin 0)) (t : ℝ) :
       intervalIntegral (fun s : ℝ => expSemigroupCLM L s) 0 t MeasureTheory.volume * L :=
   expSemigroupCLM_sub_one_eq_intervalIntegral_mul L t
 
+example (L : Matrix (Fin 0) (Fin 0) ℂ →ₗ[ℂ] Matrix (Fin 0) (Fin 0) ℂ)
+    (hL : IsTraceAnnihilating L) (t : ℝ) :
+    IsTracePreservingMap (expSemigroup L t) :=
+  isTracePreservingMap_expSemigroup_of_isTraceAnnihilating L hL t
+
 -- These checks also cover the evaluation map and the semigroup reconstruction proof.
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
@@ -30,7 +37,12 @@ run_cmd do
     ``intervalIntegral_expSemigroupCLM_mul_generator_comm,
     ``expSemigroupCLM_sub_one_eq_intervalIntegral_mul,
     ``hasDerivAt_expSemigroup_apply,
-    ``continuousDynSemigroup_eq_exp] do
+    ``continuousDynSemigroup_eq_exp,
+    ``isTracePreservingMap_expSemigroup_of_isTraceAnnihilating,
+    ``isTraceAnnihilating_of_isTracePreservingMap_semigroup,
+    ``IsPositiveMap.peripheralProjection_isSchwarzMap,
+    ``IsPositiveMap.traceAdjointMap_peripheralProjection_isSchwarzMap,
+    ``IsPositiveMap.exists_peripheralRestrictedInverse] do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"
     let axioms ← Lean.collectAxioms decl
