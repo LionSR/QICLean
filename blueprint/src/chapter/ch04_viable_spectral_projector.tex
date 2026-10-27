@@ -3,6 +3,7 @@
 \begin{theorem}[Error reduction from a finite tensor decomposition]
     \label{thm:viable_tensor_decomposition}
     \lean{Submodule.IsViable.map_of_tensor_decomposition}
+    \leanok
     \uses{thm:subspace_close_contract, thm:subspace_close_mono, def:subspace_viable}
     Let $\mathcal H_M$ and $\mathcal H_R$ be finite-dimensional real or complex
     inner product spaces, let $I$ be finite, and let
@@ -18,7 +19,7 @@
     Lemma~2.9 of~\cite[lines 606--622]{Arad2016RigorousRG}.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Each image $A_iS$ has dimension at most $\dim S$, so their sum has
     dimension at most $|I|\dim S$. Error reduction by a contraction gives
     closeness of $K(S\otimes\mathcal H_R)$ to $T$ with parameter

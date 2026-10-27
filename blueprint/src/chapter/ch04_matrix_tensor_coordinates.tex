@@ -12,6 +12,7 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
 \begin{theorem}[The action of a Kronecker matrix]
     \label{thm:euclidean_kronecker_intertwining}
     \lean{Matrix.toEuclideanCLM_kronecker_intertwining}
+    \leanok
     If $A$ is a square matrix on $X$ and $B$ is a square matrix on $Y$,
     their Euclidean actions satisfy
     $\Phi\circ(A\otimes B)=(A\otimes_{\mathrm K}B)\circ\Phi$.
@@ -19,7 +20,7 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
     $\otimes_{\mathrm K}$ denotes the Kronecker matrix.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     In the tensor product of the two standard orthonormal bases, the
     matrix of the tensor product of two linear maps is their Kronecker
     product. Applying the coordinate representation gives the claimed
@@ -29,19 +30,21 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
 \begin{theorem}[Relabeling a matrix action]
     \label{thm:euclidean_submatrix_intertwining}
     \lean{Matrix.toEuclideanCLM_submatrix_intertwining}
+    \leanok
     Let $e:Z\longrightarrow V$ be a bijection between finite sets and let
     $P$ be a square matrix on $V$. Set $P^e_{zz'}=P_{e(z),e(z')}$ and
     $U:\ell^2(Z;\mathbb F)\longrightarrow\ell^2(V;\mathbb F)$ by
     $(Uf)(v)=f(e^{-1}(v))$. Then $U\circ P^e=P\circ U$.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Relabel the summation index in matrix-vector multiplication by $e$.
 \end{proof}
 
 \begin{theorem}[A relabeled finite tensor sum]
     \label{thm:euclidean_reindexed_tensor_sum}
     \lean{Matrix.toEuclideanCLM_reindexed_kronecker_sum_intertwining}
+    \leanok
     \uses{thm:euclidean_kronecker_intertwining, thm:euclidean_submatrix_intertwining}
     Let $I$ be finite, let $e:Z\longrightarrow X\times Y$ be a bijection,
     and let $A_i,B_i$ be square matrices on $X,Y$, respectively.
@@ -52,7 +55,7 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
     sets and $I$ may be empty.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Sum the Kronecker-action identity over $I$ and combine it with
     relabeling of the matrix action. Apply the injectivity of $\Phi$
     to obtain the equality through $T=\Phi^{-1}\circ U$.
@@ -61,6 +64,7 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
 \begin{theorem}[Exchanging factors in an intertwining decomposition]
     \label{thm:tensor_intertwining_exchange}
     \lean{TensorProduct.intertwining_sum_mapL_commIsometry}
+    \leanok
     Let $\mathcal E,\mathcal L,\mathcal R$ be real or complex inner product
     spaces, let $I$ be finite, and let
     $T:\mathcal E\longrightarrow\mathcal L\otimes\mathcal R$ be a unitary
@@ -75,7 +79,7 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
     No finite-dimensionality or completeness assumption is required.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     The tensor-factor exchange satisfies
     $S(A_i\otimes B_i)=(B_i\otimes A_i)S$ for every $i$.
     Sum this identity and apply the supplied intertwining relation.

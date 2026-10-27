@@ -19,6 +19,7 @@ of the unsquared filter is not required
 \begin{theorem}[Chebyshev improvement from a uniform polynomial reduction]
     \label{thm:chebyshev_viability_polynomial_reduction}
     \lean{Submodule.chebyshev_viability_of_polynomial_reduction}
+    \leanok
     \uses{thm:chebyshev_spectral_projector, thm:spectral_projector_contract}
     Fix a nonnegative integer $R$, a map $\Gamma$ on subspaces of
     $\mathcal H_M$, and an operator-valued map $\mathcal F$ on complex
@@ -43,7 +44,7 @@ of the unsquared filter is not required
     and the error-reduction argument of Lemma~2.9.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Choose the normalized real Chebyshev polynomial $p$ of degree $k$ and
     regard it as a complex polynomial. Its evaluation is a spectral
     projector with parameter~(\ref{eq:cheb_viable_error}). The closed spectral
@@ -54,6 +55,7 @@ of the unsquared filter is not required
 \begin{theorem}[A common matrix family gives Chebyshev improvement]
     \label{thm:matrix_family_chebyshev_viability}
     \lean{Matrix.chebyshev_viability_of_conjugated_polynomial_family}
+    \leanok
     \uses{thm:viable_tensor_decomposition, thm:chebyshev_viability_polynomial_reduction}
     Let $\Sigma,X,Y$ be finite sets, put $\mathcal H_M=\mathbb C^X$ and
     $\mathcal H_E=\mathbb C^Y$, and fix a unitary linear isometry
@@ -83,7 +85,7 @@ of the unsquared filter is not required
     and error-reduction steps of~\cite[Proposition 5.7 and Lemma 2.9]{Arad2016RigorousRG}.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Polynomial evaluation commutes with the matrix action on Euclidean
     space and with conjugation by $T$. Thus the filter is $Q(H)$.
     For each $Q$, apply error reduction from its tensor decomposition
@@ -94,6 +96,7 @@ of the unsquared filter is not required
 \begin{theorem}[A numerical bound for the image sum]
     \label{thm:matrix_family_chebyshev_viability_card_bound}
     \lean{Matrix.chebyshev_viability_of_conjugated_polynomial_family_of_card_le}
+    \leanok
     \uses{thm:matrix_family_chebyshev_viability}
     Under the hypotheses of the common matrix family theorem, let $C$ be a
     nonnegative integer with $N\le C$. The same fixed subspace
@@ -104,7 +107,7 @@ of the unsquared filter is not required
     endpoints and before $S$.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     The dimension estimate follows from
     $\dim\Gamma(S)\le N\dim S\le C\dim S$. The viable space and its error
     are unchanged.
