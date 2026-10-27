@@ -42,6 +42,39 @@
 \end{proof}
 
 
+\begin{theorem}[Weighted recovery from prescribed interpolation data]
+    \label{thm:fixed_weighted_monomial_recovery}
+    \lean{MvPolynomial.weighted_monomial_evaluation_recovery_smul}\leanok
+    \uses{thm:finite_monomial_interpolation}
+    With the monomial notation above, let the supplied points $z_r$
+    and scalars $c_{\alpha r}$ satisfy
+    \begin{align*}
+        \sum_{r=0}^{t-1}c_{\alpha r}m_\beta(z_r)=\delta_{\alpha\beta}.
+    \end{align*}
+    For arbitrary scalar weights $w_\alpha$, put
+    $\gamma_r=\sum_{\alpha\in S}w_\alpha c_{\alpha r}$.
+    For every family $(f_\alpha)_{\alpha\in S}$ in a complex vector space,
+    \begin{align*}
+        \sum_{\alpha\in S}w_\alpha f_\alpha
+        =\sum_{r=0}^{t-1}\gamma_r P_f(z_r).
+    \end{align*}
+    The coefficients $\gamma_r$ depend only on the prescribed interpolation
+    data and weights. Empty $S$ and dependent coefficient vectors
+    are included. This is the finite linear-combination step in
+    \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_monomial_interpolation}
+    Distribute scalar multiplication and interchange the finite sums:
+    \begin{align*}
+        \sum_{r=0}^{t-1}\gamma_r P_f(z_r)
+         & =\sum_{\alpha\in S}w_\alpha
+        \sum_{\beta\in S}\left(\sum_{r=0}^{t-1}
+        c_{\alpha r}m_\beta(z_r)\right)f_\beta
+        =\sum_{\alpha\in S}w_\alpha f_\alpha.
+    \end{align*}
+\end{proof}
+
 \begin{theorem}[Recovery of weighted coefficient sums]
     \label{thm:weighted_monomial_recovery}
     \lean{MvPolynomial.exists_weighted_monomial_evaluation_recovery}
