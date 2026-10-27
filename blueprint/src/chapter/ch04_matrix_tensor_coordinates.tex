@@ -89,6 +89,7 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
 \begin{theorem}[A conjugated tensor sum with the middle factor first]
     \label{thm:middle_first_conjugated_tensor_sum}
     \lean{Matrix.toEuclideanCLM_middleFirst_conjugation_of_kronecker_sum}
+    \leanok
     Let $Z,X,Y,I$ be finite sets and $e:Z\to X\times Y$ a bijection.
     Suppose a matrix $P$ on $Z$ satisfies
     \begin{align}
@@ -101,7 +102,7 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
     \end{align}
     Empty coordinate and summation sets are allowed.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:euclidean_reindexed_tensor_sum,thm:tensor_intertwining_exchange}
     First apply the reindexed tensor-sum identity with factor order $X,Y$.
     Compose its isometry with exchange of the two tensor factors and then
