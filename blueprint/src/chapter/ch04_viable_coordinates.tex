@@ -64,6 +64,58 @@ right.
     $y_b\,x\in S$.
 \end{proof}
 
+\begin{theorem}[Matrix units applied to a nonzero subspace]
+    \label{thm:basis_matrix_units_generate}
+    \lean{Submodule.iSup_map_basis_matrixUnits_eq_top}
+    \leanok
+    Let $E$ be a vector space over a field $k$, with basis $(b_i)$
+    and coordinate functionals $b_j^*$. For every nonzero subspace $S$,
+    \begin{align}
+        \sum_{i,j}(b_i b_j^*)S=E.
+    \end{align}
+    The basis need not be finite; the sum denotes the algebraic sum of subspaces.
+\end{theorem}
+\begin{proof}\leanok
+    Choose $x\in S\setminus\{0\}$ and $j$ with $b_j^*(x)\ne0$.
+    Each basis vector $b_i$ is a scalar multiple of $(b_i b_j^*)x$.
+    Thus the sum contains a basis and equals $E$.
+\end{proof}
+
+\begin{theorem}[A viable subspace for a nonzero target is nonzero]
+    \label{thm:viable_nonzero_target}
+    \lean{Submodule.isViable_ne_bot_of_target_ne_bot}
+    \leanok
+    \uses{def:subspace_viable}
+    Let $E,F$ be finite-dimensional complex inner-product spaces.
+    If $T\subseteq E\otimes F$ is nonzero and $S$ is $\delta$-viable for $T$
+    with $\delta<1$, then $S$ is nonzero.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:subspace_viable,thm:subspace_close_iff}
+    If $S=0$, the projection onto $S\otimes F$ vanishes. Its required lower
+    bound on a nonzero vector of $T$ contradicts $1-\delta>0$.
+\end{proof}
+
+\begin{theorem}[Extending a finite operator family by zero]
+    \label{thm:operator_family_zero_extension}
+    \lean{Submodule.exists_clm_family_extension_of_card_le}
+    \leanok
+    Let $E$ be a complex normed space and $(A_i)_{i\in I}$ a finite family
+    of continuous linear maps on $E$. If $|I|\le M$, there are an injection
+    $f:I\to\{0,\ldots,M-1\}$ and maps $B_j$ with $B_{f(i)}=A_i$ and
+    $B_j=0$ outside the image of $f$. For every subspace $S\subseteq E$,
+    \begin{align}
+        \sum_{j=0}^{M-1}B_jS=\sum_{i\in I}A_iS.
+    \end{align}
+    The family $B$ is chosen before $S$. Neither completeness nor finite
+    dimension of $E$ is required.
+\end{theorem}
+\begin{proof}\leanok
+    Enumerate $I$ inside the first $M$ integers, place $A_i$ at its image,
+    and put zero elsewhere. Every image subspace on either side is then
+    either an original image or the zero subspace.
+\end{proof}
+
 \begin{theorem}[Unit approximants of bounded Schmidt rank]
     \label{thm:viable_unit_schmidt_approximation}
     \lean{Submodule.IsViable.exists_unit_mem_prodExt_schmidtRank_le}

@@ -4,11 +4,14 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.MatrixAux
+import QICLean.Algebra.HermitianHelpers
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Tactic.Abel
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Linarith
+import Mathlib.Algebra.Order.Chebyshev
+import Mathlib.Analysis.Matrix.Spectrum
 
 /-!
 # Positive matrices and ground energies
@@ -146,4 +149,109 @@ theorem sum_posSemidef_and_le_card_of_positive_unit_terms
   rw [Nat.cast_smul_eq_nsmul ℝ]
   exact Finset.sum_le_card_nsmul s h 1 h1
 end Matrix
+end
+
+
+section
+
+section
+
+section
+
+open scoped ComplexOrder
+
+open scoped ComplexOrder MatrixOrder
+
+namespace Matrix
+
+/-- A genuine normalized minimum of a centered matrix identifies the original
+canonical minimum after adding back the scalar shift. Auxiliary to ALVV,
+arXiv:1602.08828v2, Corollary c:goodagsphardtrunc, lines 979–1005,
+and Theorem t:ais, lines 1010–1024.
+No simple ground space, spectral gap or prescribed canonical basis is assumed. -/
+private theorem IsHermitian.minEigenvalue_eq_add_of_centered_ground
+    {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
+    {H : Matrix n n ℂ} (hH : H.IsHermitian) (S E : ℝ) (x : n → ℂ)
+    (hunit : star x ⬝ᵥ x = 1)
+    (hx : (H - (S : ℂ) • 1) *ᵥ x = (E : ℂ) • x)
+    (hlow : ((H - (S : ℂ) • 1) - (E : ℂ) • 1).PosSemidef) :
+    minEigenvalue hH = E + S := by
+  obtain ⟨i, hi⟩ := minEigenvalue_achieved hH
+  let u : n → ℂ := ⇑(hH.eigenvectorBasis i)
+  have huunit : star u ⬝ᵥ u = 1 := by
+    have h := hH.eigenvectorBasis.inner_eq_one i
+    rw [EuclideanSpace.inner_eq_star_dotProduct] at h
+    simpa only [u, dotProduct_comm] using h
+  have hueigen : H *ᵥ u = (minEigenvalue hH : ℂ) • u := by
+    change H *ᵥ ⇑(hH.eigenvectorBasis i) =
+      (minEigenvalue hH : ℂ) • ⇑(hH.eigenvectorBasis i)
+    rw [hH.mulVec_eigenvectorBasis, hi, Complex.coe_smul]
+  have hxeigen : H *ᵥ x = ((E + S : ℝ) : ℂ) • x := by
+    have h := hx
+    rw [sub_mulVec, smul_mulVec, one_mulVec] at h
+    rw [Complex.ofReal_add, add_smul]
+    exact sub_eq_iff_eq_add.mp h
+  have hsplit : H - ((E + S : ℝ) : ℂ) • (1 : Matrix n n ℂ) =
+      (H - (S : ℂ) • 1) - (E : ℂ) • 1 := by
+    rw [Complex.ofReal_add, add_smul]
+    abel
+  have hlowH : (H - ((E + S : ℝ) : ℂ) • (1 : Matrix n n ℂ)).PosSemidef := by
+    rw [hsplit]
+    exact hlow
+  exact groundEnergy_eq_of_normalized_eigenvectors H (minEigenvalue hH) (E + S)
+    u x hueigen huunit hxeigen hunit (sub_minEigenvalue_smul_one_posSemidef hH) hlowH
+end Matrix
+
+open scoped ComplexOrder MatrixOrder Matrix.Norms.L2Operator
+
+namespace Matrix
+
+/-- The original canonical eigenbasis supplies the centered ground-space gap
+without any basis or eigenvalue classification supplied independently of the
+original spectrum. Auxiliary to ALVV, arXiv:1602.08828v2,
+Assumption (DG), lines 267–280, and Theorem t:ais, lines 1010–1024.
+The ground eigenspace may have arbitrary multiplicity. -/
+theorem IsHermitian.original_basis_centered_gap_data
+    {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
+    {H : Matrix n n ℂ} (hH : H.IsHermitian) (mu g S E0 : ℝ)
+    (hmu : mu ∈ spectrum ℝ H)
+    (hgap : ∀ lam ∈ spectrum ℝ H, lam = mu ∨ mu + g ≤ lam) (hg : 0 < g)
+    (z : n → ℂ) (hzunit : star z ⬝ᵥ z = 1)
+    (hzeigen : (H - (S : ℂ) • 1) *ᵥ z = (E0 : ℂ) • z)
+    (hlow : ((H - (S : ℂ) • 1) - (E0 : ℂ) • 1).PosSemidef) :
+    mu = E0 + S ∧
+      (∀ i, Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ) (H - (S : ℂ) • 1)
+        (hH.eigenvectorBasis i) = ((hH.eigenvalues i - S : ℝ) : ℂ) •
+          hH.eigenvectorBasis i) ∧
+      ∀ i, hH.eigenvalues i - S = E0 ∨ E0 + g ≤ hH.eigenvalues i - S := by
+  have hmurange : mu ∈ Set.range hH.eigenvalues := by
+    rw [← hH.spectrum_real_eq_range_eigenvalues]
+    exact hmu
+  obtain ⟨j, hj⟩ := hmurange
+  have hminle : minEigenvalue hH ≤ mu := by
+    simpa only [hj] using minEigenvalue_le hH j
+  obtain ⟨i, hi⟩ := minEigenvalue_achieved hH
+  have hminmu : minEigenvalue hH = mu := by
+    rcases hgap _ (hH.eigenvalues_mem_spectrum_real i) with heq | hle
+    · exact hi.symm.trans heq
+    · rw [hi] at hle
+      exfalso
+      linarith
+  have hmuE : mu = E0 + S := hminmu.symm.trans
+    (hH.minEigenvalue_eq_add_of_centered_ground S E0 z hzunit hzeigen hlow)
+  refine ⟨hmuE, ?_, ?_⟩
+  · intro i
+    apply (WithLp.ofLp_injective 2)
+    simp only [ofLp_toEuclideanCLM, WithLp.ofLp_sub, WithLp.ofLp_smul, sub_mulVec, smul_mulVec,
+      one_mulVec, hH.mulVec_eigenvectorBasis, Complex.ofReal_sub, sub_smul,
+      Complex.coe_smul]
+  · intro i
+    rcases hgap _ (hH.eigenvalues_mem_spectrum_real i) with heq | hle
+    · left
+      linarith
+    · right
+      linarith
+end Matrix
+end
+end
 end

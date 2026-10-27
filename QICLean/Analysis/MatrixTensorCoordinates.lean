@@ -174,3 +174,59 @@ theorem intertwining_sum_mapL_commIsometry
   simpa only [Tm.apply_symm_apply] using hy
 
 end TensorProduct
+
+
+section
+
+open Matrix
+
+open scoped BigOperators Kronecker
+
+section
+
+section
+
+open scoped BigOperators Kronecker TensorProduct
+
+namespace Matrix
+
+/-- A literal reindexed Kronecker sum becomes a middle-first conjugated
+continuous tensor sum in the standard product coordinates. This combines
+the existing coordinate and tensor-swap identities, independently of any
+physical operator. Supporting algebra for ALVV, arXiv:1602.08828v2,
+Proposition 5.7, lines 1324–1333. -/
+theorem toEuclideanCLM_middleFirst_conjugation_of_kronecker_sum
+    {Z X Y ι : Type*} [Fintype Z] [Fintype X] [Fintype Y] [Fintype ι]
+    [DecidableEq Z] [DecidableEq X] [DecidableEq Y]
+    (e : Z ≃ X × Y) (A : ι → Matrix X X ℂ) (B : ι → Matrix Y Y ℂ)
+    (P : Matrix Z Z ℂ) (hP : P = (∑ i, A i ⊗ₖ B i).submatrix e e) :
+    let U := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e
+    let Phi := ((EuclideanSpace.basisFun X ℂ).tensorProduct
+      (EuclideanSpace.basisFun Y ℂ)).repr
+    let T := U.trans Phi.symm
+    let Tm := T.trans (TensorProduct.commIsometry ℂ
+      (EuclideanSpace ℂ X) (EuclideanSpace ℂ Y))
+    Tm.toContinuousLinearEquiv.toContinuousLinearMap ∘L
+        toEuclideanCLM (𝕜 := ℂ) (n := Z) P ∘L
+        Tm.symm.toContinuousLinearEquiv.toContinuousLinearMap =
+      ∑ i, TensorProduct.mapL (toEuclideanCLM (𝕜 := ℂ) (n := Y) (B i))
+        (toEuclideanCLM (𝕜 := ℂ) (n := X) (A i)) := by
+  intro U Phi T Tm
+  have hT : T.toContinuousLinearEquiv.toContinuousLinearMap ∘L
+      toEuclideanCLM (𝕜 := ℂ) (n := Z) P =
+        (∑ i, TensorProduct.mapL (toEuclideanCLM (𝕜 := ℂ) (n := X) (A i))
+          (toEuclideanCLM (𝕜 := ℂ) (n := Y) (B i))) ∘L
+            T.toContinuousLinearEquiv.toContinuousLinearMap := by
+    rw [hP]
+    exact toEuclideanCLM_reindexed_kronecker_sum_intertwining
+      (𝕜 := ℂ) (Z := Z) (X := X) (Y := Y) (ι := ι) e A B
+  exact (TensorProduct.intertwining_sum_mapL_commIsometry
+    (𝕜 := ℂ) (E := EuclideanSpace ℂ Z)
+    (L := EuclideanSpace ℂ X) (R := EuclideanSpace ℂ Y) (ι := ι) T
+    (toEuclideanCLM (𝕜 := ℂ) (n := Z) P)
+    (fun i ↦ toEuclideanCLM (𝕜 := ℂ) (n := X) (A i))
+    (fun i ↦ toEuclideanCLM (𝕜 := ℂ) (n := Y) (B i)) hT).2
+end Matrix
+end
+end
+end

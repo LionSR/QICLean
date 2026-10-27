@@ -3,7 +3,7 @@
 Let $\mathbb F$ be $\mathbb R$ or $\mathbb C$. For a finite set $X$, write
 $\ell^2(X;\mathbb F)$ for its Euclidean space. For finite $X,Y$, let
 $\Phi:\ell^2(X;\mathbb F)\otimes\ell^2(Y;\mathbb F)
-\longrightarrow\ell^2(X\times Y;\mathbb F)$ be the unitary linear isometry
+    \longrightarrow\ell^2(X\times Y;\mathbb F)$ be the unitary linear isometry
 which sends the tensor product of the standard basis vectors at $x,y$ to
 the standard basis vector at $(x,y)$. These coordinate identities support
 finite tensor decompositions as used
@@ -73,8 +73,8 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
     $TK=(\sum_{i\in I}A_i\otimes B_i)T$.
     Let $S$ exchange the two tensor factors and put $T'=ST$. Then
     \begin{align}
-        T'K&=\Bigl(\sum_{i\in I}B_i\otimes A_i\Bigr)T',\\
-        T'K(T')^{-1}&=\sum_{i\in I}B_i\otimes A_i.
+        T'K          & =\Bigl(\sum_{i\in I}B_i\otimes A_i\Bigr)T', \\
+        T'K(T')^{-1} & =\sum_{i\in I}B_i\otimes A_i.
     \end{align}
     No finite-dimensionality or completeness assumption is required.
 \end{theorem}
@@ -84,4 +84,28 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
     $S(A_i\otimes B_i)=(B_i\otimes A_i)S$ for every $i$.
     Sum this identity and apply the supplied intertwining relation.
     Evaluation at $(T')^{-1}y$ gives the conjugated identity.
+\end{proof}
+
+\begin{theorem}[A conjugated tensor sum with the middle factor first]
+    \label{thm:middle_first_conjugated_tensor_sum}
+    \lean{Matrix.toEuclideanCLM_middleFirst_conjugation_of_kronecker_sum}
+    \leanok
+    Let $Z,X,Y,I$ be finite sets and $e:Z\to X\times Y$ a bijection.
+    Suppose a matrix $P$ on $Z$ satisfies
+    \begin{align}
+        P_{zz'}=\sum_{i\in I}A_i(e(z)_X,e(z')_X)B_i(e(z)_Y,e(z')_Y).
+    \end{align}
+    Let $T:\C^Z\to\C^Y\otimes\C^X$ send the standard vector at $z$ to
+    $e_{e(z)_Y}\otimes e_{e(z)_X}$. Then
+    \begin{align}
+        TPT^{-1}=\sum_{i\in I}B_i\otimes A_i.
+    \end{align}
+    Empty coordinate and summation sets are allowed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:euclidean_reindexed_tensor_sum,thm:tensor_intertwining_exchange}
+    First apply the reindexed tensor-sum identity with factor order $X,Y$.
+    Compose its isometry with exchange of the two tensor factors and then
+    with the inverse isometry on the right. No matrix factors commute in
+    this argument; only their tensor positions are exchanged.
 \end{proof}

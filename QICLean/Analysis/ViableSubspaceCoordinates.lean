@@ -4,6 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.ViableSubspaceSpectralProjector
+import Mathlib.Algebra.Module.LinearMap.End
+import Mathlib.Algebra.Module.Submodule.Map
+import Mathlib.Data.Fintype.EquivFin
+import Mathlib.LinearAlgebra.Basis.Basic
 
 /-!
 # Viable subspaces in coordinates
@@ -149,3 +153,99 @@ theorem isCloseTo_prodExt_iff_isViable {δ : ℝ} (S : Submodule ℂ (EuclideanS
   rw [IsViable, ← map_prodExt_euclideanTensorEquiv, isCloseTo_map_iff]
 
 end Submodule
+
+
+section
+
+section
+
+open scoped TensorProduct
+
+namespace Submodule
+
+/-- The images of a nonzero subspace under all matrix units of a basis span
+the whole space. No finiteness or nonempty-index hypothesis is required.
+For a finite configuration basis this is the short-middle alternative in
+ALVV, arXiv:1602.08828v2, Theorem `t:ais`, lines 1010–1024. -/
+theorem iSup_map_basis_matrixUnits_eq_top
+    {𝕜 E ι : Type*} [Field 𝕜] [AddCommGroup E] [Module 𝕜 E]
+    (b : Module.Basis ι 𝕜 E) (S : Submodule 𝕜 E) (hS : S ≠ ⊥) :
+    (⨆ i : ι, ⨆ j : ι, S.map ((b.coord j).smulRight (b i))) = ⊤ := by
+  classical
+  obtain ⟨v, hv, hv0⟩ := S.ne_bot_iff.mp hS
+  have hcoord : ¬∀ j, b.coord j v = 0 := fun h ↦
+    hv0 (b.forall_coord_eq_zero_iff.mp h)
+  obtain ⟨j, hj⟩ := not_forall.mp hcoord
+  apply (Submodule.eq_top_iff_forall_basis_mem b).mpr
+  intro i
+  refine mem_iSup_of_mem i (mem_iSup_of_mem j ?_)
+  refine mem_map.mpr ⟨(b.coord j v)⁻¹ • v, S.smul_mem _ hv, ?_⟩
+  simp only [LinearMap.smulRight_apply, map_smul, smul_smul,
+    inv_mul_cancel₀ hj, one_smul]
+end Submodule
+
+namespace Submodule
+
+/-- A viable subspace with error below one is nonzero when its target is
+nonzero. This uses the existing projection characterization of viability.
+Supporting ALVV, arXiv:1602.08828v2, Definition `d:vs`, lines 433–440,
+and the short-middle case of Theorem `t:ais`, lines 1010–1024. -/
+theorem isViable_ne_bot_of_target_ne_bot
+    {E F : Type*}
+    [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
+    [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
+    {δ : ℝ} {S : Submodule ℂ E} {T : Submodule ℂ (E ⊗[ℂ] F)}
+    (hviable : IsViable δ S T) (hδ : δ < 1) (hT : T ≠ ⊥) : S ≠ ⊥ := by
+  intro hS
+  obtain ⟨t, ht, ht0⟩ := T.ne_bot_iff.mp hT
+  unfold IsViable at hviable
+  have hbound := (isCloseTo_iff.mp hviable) t ht
+  rw [starProjection_tensorProd, hS, starProjection_bot,
+    TensorProduct.mapL_zero_left, zero_apply, norm_zero,
+    zero_pow (by decide : (2 : ℕ) ≠ 0)] at hbound
+  have hpos : 0 < (1 - δ) * ‖t‖ ^ 2 :=
+    mul_pos (sub_pos.mpr hδ) (sq_pos_of_pos (norm_pos_iff.mpr ht0))
+  exact (not_le.mpr hpos) hbound
+end Submodule
+end
+
+section
+
+namespace Submodule
+
+/-- Extending a finite operator family by zero preserves the span of its
+images of every subspace. The extension is chosen before the subspace.
+Auxiliary to the fixed collection of operators in ALVV,
+arXiv:1602.08828v2, Theorem `t:ais`, lines 1010–1024. Empty families and
+zero-dimensional spaces are included; no viability or spectral hypothesis
+is required for this algebraic identity. -/
+theorem exists_clm_family_extension_of_card_le
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
+    {ι : Type*} [Fintype ι] {M : ℕ}
+    (hNM : Fintype.card ι ≤ M) (A : ι → E →L[ℂ] E) :
+    ∃ (f : ι ↪ Fin M) (B : Fin M → E →L[ℂ] E),
+      (∀ i, B (f i) = A i) ∧ (∀ j, j ∉ Set.range f → B j = 0) ∧
+      ∀ S : Submodule ℂ E,
+        (⨆ j, S.map (B j : E →ₗ[ℂ] E)) = (⨆ i, S.map (A i : E →ₗ[ℂ] E)) := by
+  classical
+  obtain ⟨f⟩ : Nonempty (ι ↪ Fin M) :=
+    Function.Embedding.nonempty_of_card_le (by simpa only [Fintype.card_fin] using hNM)
+  let B : Fin M → E →L[ℂ] E := Function.extend f A 0
+  have hB (i : ι) : B (f i) = A i := f.injective.extend_apply _ _ i
+  have hBzero (j : Fin M) (hj : j ∉ Set.range f) : B j = 0 :=
+    Function.extend_apply' (f := f) A (0 : Fin M → E →L[ℂ] E) j
+      (by simpa only [Set.mem_range] using hj)
+  refine ⟨f, B, hB, hBzero, ?_⟩
+  intro S
+  refine le_antisymm (iSup_le fun j ↦ ?_) (iSup_le fun i ↦ ?_)
+  · by_cases hj : j ∈ Set.range f
+    · obtain ⟨i, rfl⟩ := hj
+      rw [hB i]
+      exact le_iSup (fun r ↦ S.map (A r : E →ₗ[ℂ] E)) i
+    · simp only [hBzero j hj, ContinuousLinearMap.toLinearMap_zero, Submodule.map_zero]
+      exact bot_le
+  · rw [← hB i]
+    exact le_iSup (fun r ↦ S.map (B r : E →ₗ[ℂ] E)) (f i)
+end Submodule
+end
+end
