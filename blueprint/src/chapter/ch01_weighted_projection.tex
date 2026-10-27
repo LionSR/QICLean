@@ -1,0 +1,103 @@
+\section{Weighted projections and actual range restrictions}
+
+The algebraic identities in this section hold in any unital ring. The
+subsequent restrictions are bounded linear maps on the stated normed spaces.
+They are supporting identities for the weighted truncation argument
+of~\cite[lines 1010--1024]{Arad2016RigorousRG}.
+
+\begin{theorem}[Cancellation on the retained range]
+    \label{thm:weighted_right_support_cancellation}
+    \lean{mul_inverse_weight_mul_eq_of_right_support}
+    If $W_-W=1$ and $D(1-Q)=0$, then $(DW_-)(WQ)=D$.
+\end{theorem}
+\begin{proof}
+    The support identity gives $DQ=D$. Associate the product to cancel
+    $W_-W$, leaving $DQ$.
+\end{proof}
+
+\begin{theorem}[Factorization of the weighted forcing term]
+    \label{thm:weighted_forcing_identity}
+    \lean{WeightedProjection.forcing_identity}
+    Suppose $WQ=QW$ and $W_-W=1$. For arbitrary $Y,R$,
+    \begin{align}
+        WQY(1-Q)R=(QWYW_-)(W(1-Q)R).
+        \label{eq:weighted_forcing_factorization}
+    \end{align}
+    The elements $Q,R$ need not be idempotent for this identity.
+\end{theorem}
+\begin{proof}
+    Cancel the adjacent factors $W_-W$ and commute $Q$ past $W$.
+\end{proof}
+
+\begin{theorem}[The Sylvester equation between projection ranges]
+    \label{thm:weighted_restricted_sylvester}
+    \lean{ContinuousLinearMap.exists_restricted_weighted_sylvester}
+    Let $E$ be a normed space over a nontrivially normed field, and let
+    $X,Y,W,W_-,Q,R$ be bounded endomorphisms of $E$. Suppose $Q^2=Q$,
+    $R^2=R$, $W_-W=\Id$, and
+    \begin{align}
+        WQ & =QW, & XW & =WX, & XQ & =QX, & R(X+Y) & =(X+Y)R.
+        \label{eq:weighted_range_commutations}
+    \end{align}
+    Put $U=\operatorname{ran}Q$, $G=\operatorname{ran}R$,
+    $J=QWYW_-Q$ and $L=WQY(1-Q)$. Denote the inclusions by $\iota_U,\iota_G$.
+    There are bounded maps $B:G\to G$, $X_U:U\to U$, $Z:G\to U$,
+    $V:U\to U$ and $F:G\to U$ satisfying
+    \begin{align}
+        \iota_G B & =(X+Y)|_G, & \iota_U X_U & =X|_U,\notag                            \\
+        \iota_U Z & =(WQ)|_G,  & \iota_U V   & =J|_U,       & \iota_U F & =L|_G,\notag \\
+        X_UZ-ZB   & =-VZ-F.
+        \label{eq:weighted_range_sylvester}
+    \end{align}
+    Orthogonality of $Q,R$ is not required.
+\end{theorem}
+\begin{proof}
+    The commutations in~(\ref{eq:weighted_range_commutations}) imply that
+    $X+Y$ preserves $G$ and $X$ preserves $U$. The ranges of $WQ$, $J$
+    and $L$ lie in $U$. Restrict these actual maps. Before restriction,
+    associativity, idempotence and the commutations give
+    \begin{align}
+        X(WQR)-(WQR)(X+Y)=-J(WQR)-LR.
+        \label{eq:weighted_ambient_sylvester}
+    \end{align}
+    Since $R$ fixes $G$, restricting~(\ref{eq:weighted_ambient_sylvester})
+    yields~(\ref{eq:weighted_range_sylvester}).
+\end{proof}
+
+\begin{theorem}[A lower quadratic bound on the projection range]
+    \label{thm:projection_range_quadratic_lower}
+    \lean{ContinuousLinearMap.exists_restrict_range_quadratic_lower}
+    Let $E$ be a complex inner-product space, and let $Q,X$ be bounded
+    endomorphisms with $Q^2=Q$, $XQ=QX$ and $uQ\le X$, where $u\in\R$.
+    There is a bounded map $X_U:U\to U$, with $U=\operatorname{ran}Q$,
+    such that $\iota_U X_U=X|_U$ and
+    $u\|y\|^2\le\operatorname{Re}\langle y,X_Uy\rangle$ for every $y\in U$.
+    The idempotent $Q$ need not be orthogonal.
+\end{theorem}
+\begin{proof}
+    Commutation makes $U$ invariant. For $y\in U$, idempotence gives
+    $Qy=y$, so positivity of $X-uQ$ gives the asserted bound.
+\end{proof}
+
+\begin{theorem}[Norm from the ambient realization]
+    \label{thm:restricted_map_ambient_norm}
+    \lean{ContinuousLinearMap.norm_le_of_subtypeL_comp_eq_domRestrict}
+    Let $G,U$ be subspaces of a normed space $E$ over a nontrivially
+    normed field. If bounded maps $f:G\to U$ and $A:E\to E$ satisfy
+    $\iota_Uf=A|_G$, then $\|f\|\le\|A\|$.
+\end{theorem}
+\begin{proof}
+    The inclusion $\iota_U$ is isometric, and restriction to $G$ cannot
+    increase the operator norm. This also covers zero-dimensional subspaces.
+\end{proof}
+
+\begin{theorem}[Order under the Euclidean matrix action]
+    \label{thm:matrix_euclidean_order}
+    \lean{Matrix.toEuclideanCLM_le_of_le}
+    If complex square matrices satisfy $A\le B$, their bounded actions on
+    the corresponding finite-dimensional Euclidean space satisfy the same order.
+    The index set may be empty.
+\end{theorem}
+\begin{proof}
+    The positive matrix $B-A$ defines a positive Euclidean operator.
+\end{proof}

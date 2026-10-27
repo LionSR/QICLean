@@ -27,7 +27,7 @@ span of the $b'_j$ with $a'_j\le c$.
     \leanok
     Expand $x=\sum_jx_jb_j$. Then
     $\|(H-\mu)x\|^2=\sum_j|a_j-\mu|^2|x_j|^2\ge D^2\sum_{a_j>c}|x_j|^2
-    =D^2\|P^\perp x\|^2$.
+        =D^2\|P^\perp x\|^2$.
 \end{proof}
 
 \begin{theorem}[One window]
@@ -47,7 +47,7 @@ span of the $b'_j$ with $a'_j\le c$.
     Every eigenvalue $a'_k>c'$ satisfies $|a'_k-\mu|\ge D$. By the previous
     theorem,
     $D\|P'^\perp\psi\|\le\|(H'-\mu)\psi\|\le\|(H'-H)\psi\|
-    +\|(H-\mu)\psi\|\le(\xi+h)\|\psi\|$.
+        +\|(H-\mu)\psi\|\le(\xi+h)\|\psi\|$.
 \end{proof}
 
 \begin{theorem}[Closeness of the low-energy subspaces]
@@ -118,7 +118,8 @@ span of the $b'_j$ with $a'_j\le c$.
 \begin{proof}
     \leanok
     \uses{thm:spectral_span_close_of_perturbation,
-        thm:subspace_close_nested_equal, thm:subspace_close_dimension}
+        thm:subspace_close_nested_equal, thm:subspace_close_dimension,
+        thm:spectral_span_quadratic_form}
     The original spectral dichotomy gives $H\ge eI$ and
     $T(e+\gamma/40)=T(e+39\gamma/40)=G$. By
     (\ref{eq:low_cluster_perturbed_residual}), a unit eigenvector $x$ of
@@ -147,4 +148,43 @@ span of the $b'_j$ with $a'_j\le c$.
     $e+\gamma/20<a'_j\le e+19\gamma/20$, its eigenvector belongs to
     $V=U$, whereas its own coordinate must vanish in $U$. This
     contradiction proves~(\ref{eq:low_cluster_eigenvalue_gap}).
+\end{proof}
+
+
+\begin{theorem}[Energy on a low spectral subspace]
+    \label{thm:spectral_span_quadratic_form}
+    \lean{OrthonormalBasis.re_inner_apply_eq_sum_of_eigen,
+        Submodule.re_inner_apply_le_of_mem_spectralSpanLE}
+    \uses{def:spectral_span_le}
+    Let $(b_j)$ be a finite orthonormal basis of a complex inner-product
+    space, and let $H$ be a linear operator satisfying $Hb_j=a_jb_j$ with
+    $a_j\in\R$. For every $x$,
+    \begin{align}
+        \operatorname{Re}\langle x,Hx\rangle
+         & =\sum_j a_j|\langle b_j,x\rangle|^2.
+        \label{eq:spectral_span_energy_coordinates}
+    \end{align}
+    In particular, if $x\in T(c)$, then
+    $\operatorname{Re}\langle x,Hx\rangle\le c\|x\|^2$.
+\end{theorem}
+\begin{proof}
+    Express $x$ and $Hx$ in the orthonormal basis to obtain
+    (\ref{eq:spectral_span_energy_coordinates}). For $x\in T(c)$, all
+    coordinates with $a_j>c$ vanish. Bound the remaining coefficients by
+    $c$ and apply Parseval's identity.
+\end{proof}
+
+\begin{theorem}[The low spectral projection commutes with the operator]
+    \label{thm:spectral_span_projection_commutes}
+    \lean{Submodule.commute_starProjection_spectralSpanLE}
+    \uses{def:spectral_span_le}
+    Under the same eigenbasis assumptions, the orthogonal projection
+    onto $T(c)$ commutes with $H$, for every real $c$.
+\end{theorem}
+\begin{proof}
+    In that basis the complementary projection retains precisely the
+    coordinates with $a_j>c$, while $H$ multiplies each coordinate by $a_j$.
+    These two operations commute, and so do $H$ and the low projection.
+    These are spectral consequences used
+    in~\cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG}.
 \end{proof}

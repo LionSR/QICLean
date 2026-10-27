@@ -54,36 +54,6 @@ private theorem real_eigenvalue_ge_of_unit_residual {E : Type*}
     simpa only [hx, one_pow, mul_one] using hlower
   linarith
 
-namespace OrthonormalBasis
-
-/-- The energy quadratic form is the sum of the real eigenvalues weighted
-by the squared expansion coefficients. Auxiliary to the low-energy bounds
-in ALVV, arXiv:1602.08828v2, `lem:hard-trunc`, lines 955–968,
-and Theorem `t:ais`, lines 1010–1024. -/
-private theorem re_inner_apply_eq_sum_of_eigen
-    {E n : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [Fintype n]
-    (b : OrthonormalBasis n ℂ E) (a : n → ℝ) (H : E →ₗ[ℂ] E)
-    (hH : ∀ j, H (b j) = (a j : ℂ) • b j) (x : E) :
-    (inner ℂ x (H x)).re = ∑ j, a j * ‖b.repr x j‖ ^ 2 := by
-  classical
-  rw [← b.repr.inner_map_map x (H x), PiLp.inner_apply]
-  change Complex.reCLM (∑ j, inner ℂ (b.repr x j) (b.repr (H x) j)) = _
-  rw [map_sum]
-  apply Finset.sum_congr rfl
-  intro j _
-  change (inner ℂ (b.repr x j) (b.repr (H x) j)).re = a j * ‖b.repr x j‖ ^ 2
-  rw [RCLike.inner_apply, b.repr_apply_of_eigen a hH x j, mul_assoc]
-  let z : ℂ := b.repr x j
-  change ((a j : ℂ) * (z * (starRingEnd ℂ) z)).re = a j * ‖z‖ ^ 2
-  have hscalar : ((a j : ℂ) * (z * (starRingEnd ℂ) z)).re =
-      a j * (z * (starRingEnd ℂ) z).re :=
-    Complex.re_ofReal_mul (a j) (z * (starRingEnd ℂ) z)
-  have hz : (z * (starRingEnd ℂ) z).re = ‖z‖ ^ 2 := by
-    change RCLike.re (inner ℂ z z) = ‖z‖ ^ 2
-    exact inner_self_eq_norm_sq (𝕜 := ℂ) z
-  exact hscalar.trans (congrArg (fun r : ℝ ↦ a j * r) hz)
-
-end OrthonormalBasis
 
 /-- One common window bound for the two directions of the low-energy
 comparison. The width is at most the original gap. Auxiliary to ALVV,

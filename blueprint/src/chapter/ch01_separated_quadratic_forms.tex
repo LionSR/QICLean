@@ -1,0 +1,35 @@
+\section{Separated quadratic forms and the Sylvester equation}
+
+\begin{theorem}[A dimension-independent Sylvester estimate]
+    \label{thm:separated_quadratic_sylvester}
+    \lean{ContinuousLinearMap.mul_norm_le_norm_sylvester_of_quadratic_bounds,
+        ContinuousLinearMap.norm_le_div_of_sylvester_perturbation}
+    Let $E,F$ be finite-dimensional complex inner-product spaces, and let
+    $A:F\to F$, $B:E\to E$, $T:E\to F$ be linear maps. Suppose
+    $u\|y\|^2\le\operatorname{Re}\langle y,Ay\rangle$ for every $y\in F$ and
+    $\operatorname{Re}\langle x,Bx\rangle\le e\|x\|^2$ for every $x\in E$.
+    Then $(u-e)\|T\|\le\|AT-TB\|$, without a sign condition on $u-e$.
+    If moreover
+    \begin{align}
+        AT-TB & =F_0-VT, & \|V\| & \le C, & \|F_0\| & \le D, & C & <u-e,
+        \label{eq:sylvester_perturbed_equation}
+    \end{align}
+    then $\|T\|\le D/(u-e-C)$.
+    No self-adjointness premise beyond the stated quadratic bounds is required.
+    This estimate supports the weighted comparison
+    in~\cite[lines 1010--1024]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    The result is immediate for $T=0$. Otherwise choose a unit vector $x$
+    attaining $\|T\|$ with $T^*Tx=\|T\|^2x$, and put $y=Tx$.
+    The quadratic bounds give
+    \begin{align}
+        (u-e)\|T\|^2
+         & \le\operatorname{Re}\langle y,(AT-TB)x\rangle
+        \le\|T\|\,\|AT-TB\|.
+        \label{eq:sylvester_quadratic_bound}
+    \end{align}
+    Divide by $\|T\|>0$. Under~(\ref{eq:sylvester_perturbed_equation}),
+    the right side of the resulting bound is at most $D+C\|T\|$.
+    Rearrange and divide by $u-e-C>0$.
+\end{proof}
