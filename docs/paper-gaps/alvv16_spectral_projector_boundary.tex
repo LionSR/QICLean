@@ -86,4 +86,21 @@ $\delta'$-close to $T$. The corrected lemma is
 \leanid{Submodule.IsViable.spectralProjector}, with the definition
 \leanid{Submodule.IsSpectralProjector} and the operator step
 \leanid{Submodule.IsCloseTo.map_of_contract}.
+
+\section{The ground-space cutoff in Theorem \texttt{t:ais}}
+
+The first item of Theorem \texttt{t:ais}, source line 1012, prints the
+spectral interval $[\varepsilon_0,\varepsilon_0+\eta_0]$. Its proof, line
+1020, sets $\eta_0=\varepsilon_0+\gamma/10$ and
+$\eta_1=\varepsilon_0+9\gamma/10$, and then explicitly identifies
+\begin{align}
+    T=H_{[\varepsilon_0,\eta_0]}
+      =H_{[\varepsilon_0,\eta_1]}.
+\end{align}
+Under the gap assumption these are the full ground eigenspace. Thus the
+first item should use $[\varepsilon_0,\eta_0]$, with no second addition of
+$\varepsilon_0$. Equivalently, its upper endpoint is
+$\varepsilon_0+\gamma/10$. The operator-family construction uses this
+original ground space as its target. This corrects the printed cutoff and
+adds no hypothesis; the ground space need not be one-dimensional.
 \end{document}
