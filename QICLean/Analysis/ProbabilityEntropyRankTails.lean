@@ -3,6 +3,12 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Tactic.Positivity
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.FieldSimp
+import Mathlib.Tactic.Ring
+import Lean.Elab.Tactic.Omega
 import Mathlib.Data.Nat.Find
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.KleinInequality
@@ -287,5 +293,129 @@ theorem probabilityEntropy_le_of_rankTailBounds
       simp_rw [mul_add]
       rw [Finset.sum_add_distrib, ← Finset.sum_mul]
       ring
+
+end Entropy
+
+open scoped BigOperators
+
+namespace Real
+
+/-- A quadratic potential telescopes the three finite dyadic moments at once.
+Auxiliary to the entropy summation in ALVV, arXiv:1602.08828v2,
+proof of `thm:al-dg`, lines 1085–1087. -/
+private theorem sum_quadratic_div_dyadic_le (a b c : ℝ)
+    (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c) (M : ℕ) :
+    (∑ i ∈ Finset.range M,
+      (a * (i : ℝ) ^ 2 + b * (i : ℝ) + c) / (2 : ℝ) ^ (i + 1)) ≤
+      3 * a + b + c := by
+  let Q : ℕ → ℝ := fun i ↦
+    (a * (i : ℝ) ^ 2 + (2 * a + b) * (i : ℝ) + (3 * a + b + c)) /
+      (2 : ℝ) ^ i
+  have hstep (i : ℕ) : Q i - Q (i + 1) =
+      (a * (i : ℝ) ^ 2 + b * (i : ℝ) + c) / (2 : ℝ) ^ (i + 1) := by
+    dsimp only [Q]
+    push_cast
+    simp only [show (2 : ℝ) ^ (i + 1) = (2 : ℝ) ^ i * 2 from pow_succ _ _]
+    have hpow : (2 : ℝ) ^ i ≠ 0 := pow_ne_zero _ (by norm_num)
+    field_simp
+    ring
+  have hQ : 0 ≤ Q M := by dsimp only [Q]; positivity
+  calc
+    _ = ∑ i ∈ Finset.range M, (Q i - Q (i + 1)) :=
+      Finset.sum_congr rfl fun i _ ↦ (hstep i).symm
+    _ = Q 0 - Q M := Finset.sum_range_sub' Q M
+    _ ≤ Q 0 := sub_le_self _ hQ
+    _ = 3 * a + b + c := by simp [Q]
+
+end Real
+
+namespace Entropy
+
+/-- A cubic logarithmic rank schedule and dyadic tail losses give a finite
+entropy bound with coefficient exactly one on the logarithm of the initial
+rank. The ranks need not lie below the size of the probability space.
+Auxiliary to ALVV, arXiv:1602.08828v2, proof of `thm:al-dg`, lines 1085–1087.
+This is a finite probability estimate; it does not assert the sharper
+error-dependent approximation ranks or an efficient physical construction. -/
+theorem probabilityEntropy_le_of_cubic_dyadic_rank_tail_bounds
+    {N : ℕ} (r B : ℕ) (hr : 1 ≤ r) (hB : 1 ≤ B) (p : Fin N → ℝ)
+    (hp : ∀ a, 0 ≤ p a) (hsum : ∑ a, p a = 1)
+    (htail : ∀ i < N,
+      (∑ a ∈ Finset.univ.filter (fun a : Fin N ↦
+        r * 2 ^ (B * (i + 1) ^ 3) ≤ a.val), p a) ≤
+          1 / (2 : ℝ) ^ (i + 1)) :
+    probabilityEntropy p ≤ Real.log (r : ℝ) +
+      26 * (B : ℝ) * Real.log 2 + 2 * Real.log 2 := by
+  let R : ℕ → ℕ := fun i ↦ r * 2 ^ (B * (i + 1) ^ 3)
+  have hr0 : 0 < r := by omega
+  have hRpos (i : ℕ) : 0 < R i := by dsimp only [R]; positivity
+  have hRreal (i : ℕ) : 0 < (R i : ℝ) := by exact_mod_cast hRpos i
+  have hmono (i : ℕ) : R i ≤ R (i + 1) := by
+    apply Nat.mul_le_mul_left r
+    apply Nat.pow_le_pow_right (by decide : 0 < 2)
+    exact Nat.mul_le_mul_left B (Nat.pow_le_pow_left (Nat.le_succ (i + 1)) 3)
+  have hexponent : N ≤ B * (N + 1) ^ 3 := by
+    calc
+      N ≤ N + 1 := Nat.le_succ N
+      _ = (N + 1) ^ 1 := (pow_one _).symm
+      _ ≤ (N + 1) ^ 3 := Nat.pow_le_pow_right (by omega) (by decide : 1 ≤ 3)
+      _ ≤ B * (N + 1) ^ 3 := by
+        simpa only [Nat.one_mul] using Nat.mul_le_mul_right ((N + 1) ^ 3) hB
+  have hcover : N ≤ R N := by
+    calc
+      N ≤ 2 ^ N := (show N < 2 ^ N from Nat.lt_two_pow_self).le
+      _ ≤ 2 ^ (B * (N + 1) ^ 3) :=
+        Nat.pow_le_pow_right (by decide : 0 < 2) hexponent
+      _ ≤ r * 2 ^ (B * (N + 1) ^ 3) := by
+        simpa only [Nat.one_mul] using Nat.mul_le_mul_right (2 ^ (B * (N + 1) ^ 3)) hr
+  have hlog (i : ℕ) : Real.log (R i : ℝ) = Real.log (r : ℝ) +
+      (B : ℝ) * ((i : ℝ) + 1) ^ 3 * Real.log 2 := by
+    dsimp only [R]
+    rw [Nat.cast_mul, Nat.cast_pow,
+      Real.log_mul (by positivity) (by positivity), Real.log_pow]
+    push_cast
+    ring
+  have hlog0 : Real.log (R 0 : ℝ) = Real.log (r : ℝ) + (B : ℝ) * Real.log 2 := by
+    simpa using hlog 0
+  have hinc (i : ℕ) : Real.log ((R (i + 1) : ℝ) / (R i : ℝ)) =
+      (B : ℝ) * Real.log 2 * (3 * (i : ℝ) ^ 2 + 9 * (i : ℝ) + 7) := by
+    rw [Real.log_div (hRreal (i + 1)).ne' (hRreal i).ne', hlog (i + 1), hlog i]
+    push_cast
+    ring
+  have hmass : (∑ i ∈ Finset.range N, 1 / (2 : ℝ) ^ (i + 1)) ≤ 1 := by
+    simpa using Real.sum_quadratic_div_dyadic_le 0 0 1
+      (by norm_num) (by norm_num) (by norm_num) N
+  have hmoment : (∑ i ∈ Finset.range N,
+      (3 * (i : ℝ) ^ 2 + 9 * (i : ℝ) + 7) / (2 : ℝ) ^ (i + 1)) ≤ 25 := by
+    simpa only [show (3 : ℝ) * 3 + 9 + 7 = 25 by norm_num] using
+      Real.sum_quadratic_div_dyadic_le 3 9 7
+        (by norm_num) (by norm_num) (by norm_num) N
+  have hlog2 : 0 ≤ Real.log 2 := Real.log_nonneg (by norm_num)
+  have hcost : (∑ i ∈ Finset.range N,
+      (1 / (2 : ℝ) ^ (i + 1)) * Real.log ((R (i + 1) : ℝ) / (R i : ℝ))) ≤
+      25 * (B : ℝ) * Real.log 2 := by
+    simp_rw [hinc]
+    calc
+      _ = ((B : ℝ) * Real.log 2) * (∑ i ∈ Finset.range N,
+          (3 * (i : ℝ) ^ 2 + 9 * (i : ℝ) + 7) / (2 : ℝ) ^ (i + 1)) := by
+        rw [Finset.mul_sum]
+        exact Finset.sum_congr rfl fun i _ ↦ by ring
+      _ ≤ ((B : ℝ) * Real.log 2) * 25 :=
+        mul_le_mul_of_nonneg_left hmoment (mul_nonneg (Nat.cast_nonneg B) hlog2)
+      _ = 25 * (B : ℝ) * Real.log 2 := by ring
+  have hraw := probabilityEntropy_le_of_rankTailBounds
+    (M := N) p R (fun i ↦ 1 / (2 : ℝ) ^ (i + 1)) hp hsum (hRpos 0)
+    (fun i _ ↦ hmono i) hcover htail
+  calc
+    probabilityEntropy p ≤ Real.log (R 0 : ℝ) +
+        Real.log 2 * (1 + ∑ i ∈ Finset.range N, 1 / (2 : ℝ) ^ (i + 1)) +
+        ∑ i ∈ Finset.range N,
+          (1 / (2 : ℝ) ^ (i + 1)) * Real.log ((R (i + 1) : ℝ) / (R i : ℝ)) := hraw
+    _ ≤ (Real.log (r : ℝ) + (B : ℝ) * Real.log 2) +
+        Real.log 2 * (1 + 1) + 25 * (B : ℝ) * Real.log 2 := by
+      rw [hlog0]
+      exact add_le_add (add_le_add_right
+        (mul_le_mul_of_nonneg_left (add_le_add_right hmass 1) hlog2) _) hcost
+    _ = Real.log (r : ℝ) + 26 * (B : ℝ) * Real.log 2 + 2 * Real.log 2 := by ring
 
 end Entropy
