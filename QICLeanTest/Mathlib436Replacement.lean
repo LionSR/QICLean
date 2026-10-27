@@ -9,6 +9,8 @@ import QICLean.Channel.OrderedCP
 
 /-! # Boundary cases and axiom checks for Mathlib 4.36 proof replacements -/
 
+open scoped Matrix NNReal ENNReal
+
 set_option autoImplicit false
 set_option linter.hashCommand false
 

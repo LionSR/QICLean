@@ -63,7 +63,7 @@ def CPDominates {d d' : ℕ}
   IsKrausCP (S - T)
 
 /-- Reflexivity of the CP order: `T - T = 0` has the empty Kraus family. -/
-theorem CPDominates.refl
+theorem CPDominates.refl {d d' : ℕ}
     (T : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ) :
     CPDominates T T := by
   refine ⟨0, (fun i : Fin 0 => i.elim0), ?_⟩
