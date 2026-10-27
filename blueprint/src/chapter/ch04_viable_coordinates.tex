@@ -68,6 +68,7 @@ right.
     \label{thm:viable_unit_schmidt_approximation}
     \lean{Submodule.IsViable.exists_unit_mem_prodExt_schmidtRank_le}
     \lean{Submodule.IsViable.exists_unit_schmidtRank_le_of_equiv}
+    \leanok
     \uses{def:subspace_viable, def:schmidt_rank, thm:viable_coordinates}
     Let $\sigma,\beta$ be finite sets, and let
     $\mathcal U:\C^{\sigma\times\beta}\to\C^\sigma\otimes\C^\beta$
@@ -99,6 +100,7 @@ right.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{thm:viable_coordinates, thm:subspace_close_iff}
     Let $\mathcal S$ be the subspace of arrays whose columns lie in $S$,
     and put $p=P_{\mathcal S}\psi$. Viability in coordinates gives
@@ -117,6 +119,7 @@ right.
 \begin{theorem}[Leading marginal mass from viability]
     \label{thm:viable_leading_marginal_mass}
     \lean{Submodule.IsViable.one_sub_le_kyFanNorm}
+    \leanok
     \uses{def:subspace_viable, def:ky_fan_norm, thm:viable_coordinates}
     In the coordinate formulation of
     Theorem~\ref{thm:viable_unit_schmidt_approximation}, let
@@ -127,6 +130,7 @@ right.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{thm:viable_unit_schmidt_approximation,
         thm:homogeneous_schmidt_overlap_bound}
     Choose the unit vector $\phi$ from the coordinate formulation of
