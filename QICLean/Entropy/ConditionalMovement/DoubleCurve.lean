@@ -227,8 +227,10 @@ theorem one_copy_interpolation_fullrank [Nonempty X] [Nonempty P]
   let Q := 100000 * Real.rpow β (5 / 4 : ℝ) * l ^ 2
   let G := fun z => flattenCLM (doubleCurve (coefficient W) p r S s V v β z)
   have hB : 0 ≤ Q / 4 := by
-    have := Real.rpow_nonneg hβ.le (5 / 4 : ℝ)
-    dsimp only [Q]; positivity
+    dsimp only [Q]
+    exact div_nonneg
+      (mul_nonneg (mul_nonneg (by norm_num) (Real.rpow_nonneg hβ.le _)) (sq_nonneg l))
+      (by norm_num)
   have hpair (z : ℂ) (hz : z.re = 0) :
       ‖G z‖ ^ 2 * ‖G (z + 1)‖ ^ 2 ≤ Real.exp ((-β * (conditionalEntropy W r + H) + 2 * ε + Q) +
           (Q / 4) * z.im ^ 2) := by

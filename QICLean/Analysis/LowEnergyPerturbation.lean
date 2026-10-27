@@ -78,7 +78,7 @@ end OrthonormalBasis
 namespace Submodule
 
 /-- The span of the basis vectors whose eigenvalue is at most `c`. -/
-def spectralSpanLE (b : OrthonormalBasis n 𝕜 E) (a : n → ℝ) (c : ℝ) : Submodule 𝕜 E :=
+noncomputable def spectralSpanLE (b : OrthonormalBasis n 𝕜 E) (a : n → ℝ) (c : ℝ) : Submodule 𝕜 E :=
   span 𝕜 (b '' {j | a j ≤ c})
 
 omit [FiniteDimensional 𝕜 E] in

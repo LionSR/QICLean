@@ -31,7 +31,7 @@ namespace QICLean.ComplexGaussian
 noncomputable section
 
 local instance {m n : Type*} [Fintype m] [Fintype n] : ContinuousENorm (Matrix m n ℂ) :=
-  SeminormedAddGroup.toContinuousENorm
+  SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
 
 private theorem column_isometry_of_orthonormal {L I : Type*} [Fintype L] [DecidableEq I]
     (v : I → EuclideanSpace ℂ L) (hv : Orthonormal ℂ v) :
