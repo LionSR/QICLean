@@ -24,6 +24,7 @@ import QICLean.Analysis.CfcLogListProduct
 import QICLean.Analysis.ChebyshevFilter
 import QICLean.Analysis.ChebyshevSpectralFilter
 import QICLean.Analysis.ChebyshevSpectralProjector
+import QICLean.Analysis.ChebyshevViability
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
@@ -116,6 +117,7 @@ import QICLean.Analysis.MatrixFramePerturbation
 import QICLean.Analysis.MatrixNonzeroTraceEigenvalue
 import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
+import QICLean.Analysis.MatrixTensorCoordinates
 import QICLean.Analysis.MatrixTraceInequalities
 import QICLean.Analysis.MeanErgodic
 import QICLean.Analysis.MeanTreeExponentialLowerNorm
