@@ -372,10 +372,7 @@ theorem stinespringW_mulVec_surjective_of_minimal
       _ = (ChoiRectangular.choiMatrix T).rank := congrArg Matrix.rank hGram
       _ = Channel.choiRank T := rfl
       _ = r := hmin.symm
-  change Function.Surjective (stinespringW V).mulVecLin
-  apply LinearMap.range_eq_top.mp
-  apply Submodule.eq_top_of_finrank_eq
-  change (stinespringW V).rank = Module.finrank ℂ (Fin r → ℂ)
+  apply Matrix.mulVec_surjective_iff_rank_eq_card.mpr
   simpa using hrank
 
 /-! ### Wolf Theorem 2.3 for supplied rectangular dilations -/

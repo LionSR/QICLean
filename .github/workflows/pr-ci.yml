@@ -173,6 +173,11 @@ jobs:
               - 'docs/CONTRIBUTING.md'
             blueprint:
               - '.github/workflows/pr-ci.yml'
+              # A toolchain/dependency upgrade must recheck compiled declarations and renders.
+              - 'lean-toolchain'
+              - 'lakefile.*'
+              - 'lake-manifest.json'
+              - 'docbuild/**'
               - 'blueprint/src/**'
               - '.github/workflows/blueprint.yml'
               - '.github/workflows/docgen.yml'
