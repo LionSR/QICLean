@@ -75,6 +75,7 @@ import QICLean.Analysis.GapPerturbation
 import QICLean.Analysis.GaussianFilter
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GlobalGap
+import QICLean.Analysis.GroundEnergyBounds
 import QICLean.Analysis.GroundProjection
 import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
@@ -254,6 +255,7 @@ import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
+import QICLean.Analysis.SeparatedQuadraticForms
 import QICLean.Analysis.SharpBellOverlapLogBound
 import QICLean.Analysis.ShiftedDensityClipping
 import QICLean.Analysis.ShiftedDensityCommutation
@@ -269,6 +271,7 @@ import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
 import QICLean.Analysis.SpectralExponentialDrop
+import QICLean.Analysis.SpectralExponentialWeights
 import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
@@ -332,6 +335,7 @@ import QICLean.Analysis.ViableSubspaceTrimming
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
+import QICLean.Analysis.WeightedProjection
 import QICLean.Analysis.WeightedPureStateTraceNorm
 import QICLean.Analysis.WeightedRectangular
 import QICLean.Analysis.WeightedSupertrace
