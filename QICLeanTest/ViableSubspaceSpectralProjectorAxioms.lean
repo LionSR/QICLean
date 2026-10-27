@@ -21,3 +21,14 @@ run_cmd do
     unless axioms.all (allowed.contains ·) do
       throwError "Unexpected axioms for {decl}: {axioms}"
     Lean.logInfo m!"{decl}: {axioms}"
+
+run_cmd do
+  let expected := #[``propext, ``Classical.choice, ``Quot.sound]
+  let decls := #[``Submodule.IsViable.map_of_tensor_decomposition]
+  for decl in decls do
+    unless (← Lean.getEnv).contains decl do
+      throwError "Missing declaration {decl}"
+    let axioms ← Lean.collectAxioms decl
+    unless axioms.size == expected.size && axioms.all (expected.contains ·) do
+      throwError "Unexpected axioms for {decl}: {axioms}"
+    Lean.logInfo m!"{decl}: {axioms}"
