@@ -108,6 +108,7 @@ import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
 import QICLean.Analysis.LogClipping
 import QICLean.Analysis.LogarithmicEnvelope
+import QICLean.Analysis.LowEnergyCluster
 import QICLean.Analysis.LowEnergyPerturbation
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixEvolution
@@ -322,6 +323,7 @@ import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceBootstrap
 import QICLean.Analysis.ViableSubspaceCoordinates
+import QICLean.Analysis.ViableSubspaceDimension
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
 import QICLean.Analysis.ViableSubspaceSpectralProjector

@@ -80,3 +80,69 @@ span of the $b'_j$ with $a'_j\le c$.
     so $\|P'^\perp\varphi\|^2\le\delta\|\varphi\|^2$ and
     $\|P'\varphi\|^2\ge(1-\delta)\|\varphi\|^2$.
 \end{proof}
+
+\begin{theorem}[A low-energy cluster from restricted residual estimates]
+    \label{thm:low_spectral_cluster_restricted_residuals}
+    \lean{Submodule.low_spectral_cluster_of_restricted_residuals}
+    \uses{def:spectral_span_le, def:subspace_close}
+    Let $H,H'$ act on a finite-dimensional complex inner-product space,
+    with complete orthonormal eigenbases and real eigenvalues $a_j,a'_j$.
+    Suppose $\gamma>0$, $0\le\xi\le\gamma/10^6$, and every $a_j$ equals
+    $e$ or is at least $e+\gamma$. Assume the two restricted operator
+    estimates
+    \begin{align}
+        \bigl\|(H-H')|_{T(e+\gamma/40)}\bigr\|    & \le\xi,
+        \label{eq:low_cluster_original_residual}            \\
+        \bigl\|(H-H')|_{T'(e+19\gamma/20)}\bigr\| & \le\xi.
+        \label{eq:low_cluster_perturbed_residual}
+    \end{align}
+    Put $G=T(e)$, $U=T'(e+\gamma/20)$ and $V=T'(e+19\gamma/20)$.
+    Then $U=V$ and $\dim U=\dim G$. Each of $U$ and $G$ is
+    $1/200$-close to the other. For every
+    $e+\gamma/20\le\tau\le e+19\gamma/20$, the space $T'(\tau)$ equals
+    $U$ and retains both approximation bounds. Every perturbed eigenvalue
+    satisfies
+    \begin{align}
+        a'_j\le e+\gamma/10
+        \quad\text{or}\quad e+9\gamma/10\le a'_j.
+        \label{eq:low_cluster_eigenvalue_gap}
+    \end{align}
+    The cutoffs are absolute energies relative to $e$; no comparison
+    with the perturbed minimum energy is asserted. This is a
+    finite-dimensional consequence of the estimates
+    in~\cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG}, using the
+    corrected window count~\cite{gap:alvv16_hard_truncation_windows}.
+\end{theorem}
+
+\begin{proof}
+    \uses{thm:spectral_span_close_of_perturbation,
+        thm:subspace_close_nested_equal, thm:subspace_close_dimension}
+    The original spectral dichotomy gives $H\ge eI$ and
+    $T(e+\gamma/40)=T(e+39\gamma/40)=G$. By
+    (\ref{eq:low_cluster_perturbed_residual}), a unit eigenvector $x$ of
+    $H'$ with eigenvalue $a'_j\le e+19\gamma/20$ satisfies
+    $e\le\operatorname{Re}\langle x,Hx\rangle\le a'_j+\xi$.
+    Thus these perturbed eigenvalues are at least $e-\xi$.
+
+    Apply the low-energy perturbation estimate with
+    $c=e+\gamma/40$, $c'=e+\gamma/20$, $m=e$ and then with the two
+    operators interchanged and
+    $c=e+19\gamma/20$, $c'=e+39\gamma/40$, $m=e-\xi$.
+    In each application take $h=\gamma/10^6$. The source width is at
+    most $\gamma$, the cutoff separation is $\gamma/40$, and the number
+    of windows is at most $500001$. Consequently
+    \begin{align}
+        N(\xi+h)^2
+         & \le 500001(2\gamma/10^6)^2
+        \le \frac1{200}(\gamma/40)^2
+        \le \frac1{200}(c'-c+h)^2.
+        \label{eq:low_cluster_window_bound}
+    \end{align}
+    The two applications show that $U$ is $1/200$-close to $G$ and $G$
+    is $1/200$-close to $V$. Since $U\subseteq V$, the nested-subspace
+    theorem gives $U=V$, equality of dimensions with $G$, and both
+    approximation bounds for every intermediate cutoff. If
+    $e+\gamma/20<a'_j\le e+19\gamma/20$, its eigenvector belongs to
+    $V=U$, whereas its own coordinate must vanish in $U$. This
+    contradiction proves~(\ref{eq:low_cluster_eigenvalue_gap}).
+\end{proof}
