@@ -196,6 +196,7 @@ span of the $b'_j$ with $a'_j\le c$.
 \begin{theorem}[A low cluster with a scaled projection error]
     \label{thm:scaled_restricted_residual_cluster}
     \lean{Submodule.low_spectral_cluster_of_scaled_restricted_residuals}
+    \leanok
     \uses{def:spectral_span_le,def:subspace_close}
     Let $H,H'$ have orthonormal eigenbases $(b_i),(b'_i)$ with real
     eigenvalues $(a_i),(a'_i)$ on a finite-dimensional complex inner-product
@@ -215,7 +216,7 @@ span of the $b'_j$ with $a'_j\le c$.
     $a'_i\le e+\gamma/10$ or $a'_i\ge e+9\gamma/10$ for every $i$.
     The value $e$ need not be attained, and $G$ may be zero.
 \end{theorem}
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:spectral_span_close_of_perturbation,
         thm:subspace_close_nested_equal,thm:subspace_close_dimension,
         thm:spectral_span_quadratic_form}
