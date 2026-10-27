@@ -329,6 +329,7 @@ import QICLean.Analysis.ViableSubspaceCoordinates
 import QICLean.Analysis.ViableSubspaceDimension
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
+import QICLean.Analysis.ViableSubspaceSchmidtRank
 import QICLean.Analysis.ViableSubspaceSpectralProjector
 import QICLean.Analysis.ViableSubspaceTensor
 import QICLean.Analysis.ViableSubspaceTrimming

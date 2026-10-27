@@ -63,3 +63,79 @@ right.
     is $\sum_b w(\cdot,b)\otimes e_b$, and $x\otimes y$ with $x\in S$ has slices
     $y_b\,x\in S$.
 \end{proof}
+
+\begin{theorem}[Unit approximants of bounded Schmidt rank]
+    \label{thm:viable_unit_schmidt_approximation}
+    \lean{Submodule.IsViable.exists_unit_mem_prodExt_schmidtRank_le}
+    \lean{Submodule.IsViable.exists_unit_schmidtRank_le_of_equiv}
+    \leanok
+    \uses{def:subspace_viable, def:schmidt_rank, thm:viable_coordinates}
+    Let $\sigma,\beta$ be finite sets, and let
+    $\mathcal U:\C^{\sigma\times\beta}\to\C^\sigma\otimes\C^\beta$
+    be the isometry sending $e_{(a,b)}$ to $e_a\otimes e_b$.
+    Suppose $S\subseteq\C^\sigma$ is $\delta$-viable for
+    $T\subseteq\C^\sigma\otimes\C^\beta$, where $\delta<1$.
+    Every unit vector $\psi\in\C^{\sigma\times\beta}$ with
+    $\mathcal U\psi\in T$ admits a unit vector
+    $\phi\in\C^{\sigma\times\beta}$ such that every column
+    $\phi(\cdot,b)$ lies in $S$ and
+    \begin{align}
+        |\langle\phi,\psi\rangle|^2 & \ge1-\delta, \\
+        \SR(\phi)                   & \le\dim S.
+        \label{eq:viable_unit_schmidt_bounds}
+    \end{align}
+    An equivalent formulation uses a complex inner-product space $E$
+    and a specified linear isometric isomorphism
+    $e:E\to\C^{\sigma\times\beta}$.
+    If $T_0\subseteq E$, $\delta<1$ and $S$ is $\delta$-viable for
+    $(\mathcal U\circ e)T_0$, then every unit vector $\psi_0\in T_0$
+    admits a unit vector $\phi_0\in E$ such that
+    $(e\phi_0)(\cdot,b)\in S$ for every $b\in\beta$,
+    $|\langle\phi_0,\psi_0\rangle|^2\ge1-\delta$ and
+    $\SR(e\phi_0)\le\dim S$.
+    The rank in this formulation is measured in the product coordinates
+    specified by $e$.
+    These are the unit-vector consequences of viability used
+    in~\cite[lines 1080--1094]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:viable_coordinates, thm:subspace_close_iff}
+    Let $\mathcal S$ be the subspace of arrays whose columns lie in $S$,
+    and put $p=P_{\mathcal S}\psi$. Viability in coordinates gives
+    $\|p\|^2\ge1-\delta>0$. The normalized projection
+    $\phi=p/\|p\|$ belongs to $\mathcal S$ and satisfies
+    $|\langle\phi,\psi\rangle|^2=\|p\|^2$.
+    The column space of its coefficient matrix is contained in $S$,
+    so its rank is at most $\dim S$.
+    For the formulation on $E$, apply the coordinate assertion to
+    $e\psi_0$, obtaining $\chi$, and set $\phi_0=e^{-1}\chi$.
+    Then $\|\phi_0\|=\|\chi\|=1$ and
+    $\langle\phi_0,\psi_0\rangle=\langle\chi,e\psi_0\rangle$.
+    The column and rank assertions follow from $e\phi_0=\chi$.
+\end{proof}
+
+\begin{theorem}[Leading marginal mass from viability]
+    \label{thm:viable_leading_marginal_mass}
+    \lean{Submodule.IsViable.one_sub_le_kyFanNorm}
+    \leanok
+    \uses{def:subspace_viable, def:ky_fan_norm, thm:viable_coordinates}
+    In the coordinate formulation of
+    Theorem~\ref{thm:viable_unit_schmidt_approximation}, let
+    $R=\dim S$, let $C_\psi(a,b)=\psi(a,b)$, and set
+    $\rho_\psi=C_\psi C_\psi^\dagger$.
+    The sum of the largest $R$ eigenvalues of $\rho_\psi$ satisfies
+    $\|\rho_\psi\|_{(R)}\ge1-\delta$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:viable_unit_schmidt_approximation,
+        thm:homogeneous_schmidt_overlap_bound}
+    Choose the unit vector $\phi$ from the coordinate formulation of
+    Theorem~\ref{thm:viable_unit_schmidt_approximation}.
+    The maximal-overlap bound gives
+    $1-\delta\le|\langle\psi,\phi\rangle|^2
+        \le\|\rho_\psi\|_{(R)}$.
+\end{proof}
