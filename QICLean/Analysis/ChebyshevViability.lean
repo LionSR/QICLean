@@ -9,6 +9,7 @@ import Mathlib.Algebra.Polynomial.Eval.Degree
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.TensorProduct
 import Mathlib.Analysis.Normed.Operator.ContinuousAlgEquiv
+import QICLean.Analysis.LowEnergyCoordinates
 
 /-!
 # Chebyshev improvement of viable subspaces from a common polynomial family
@@ -231,3 +232,85 @@ theorem chebyshev_viability_of_conjugated_polynomial_family_of_card_le
   exact ⟨hdim.trans (Nat.mul_le_mul_right (Module.finrank ℂ S) hN), hviable⟩
 
 end Matrix
+
+
+section
+
+open scoped Matrix.Norms.L2Operator
+
+open scoped BigOperators TensorProduct InnerProductSpace Matrix.Norms.L2Operator
+
+namespace Matrix
+
+/-- An actual Hermitian matrix with equal source low spans gives Chebyshev
+viability for their isometric image. Canonical symmetry, eigenvalue separation
+and the canonical spectral upper bound are derived from the actual matrix data.
+The polynomial family and its numerical cardinal bound remain explicit inputs.
+Auxiliary to ALVV, arXiv:1602.08828v2, Theorem `thm:Cheby-AGSP`, lines 789–853,
+Lemma `l:er`, lines 606–622, and Theorem `t:ais`, lines 1010–1024.
+
+The closed spectral convention and `δ < 1` are those of the companion notes
+https://sirui-lu.com/QICLean/paper-gaps/alvv16_spectral_projector_boundary.pdf
+and https://sirui-lu.com/QICLean/paper-gaps/alvv16_chebyshev_filter_positivity.pdf.
+This is an auxiliary composition, not the physical DG existence theorem. -/
+theorem chebyshev_viability_of_actual_cluster_polynomial_family
+    {σ ι m e : Type*}
+    [Fintype σ] [DecidableEq σ] [Fintype ι]
+    [Fintype m] [DecidableEq m] [Fintype e] [DecidableEq e]
+    {N k : ℕ}
+    (B : Matrix σ σ ℂ) (hB : B.IsHermitian)
+    (v : OrthonormalBasis ι ℂ (EuclideanSpace ℂ σ)) (lam : ι → ℝ)
+    (hv : ∀ i, B.toEuclideanLin (v i) = (lam i : ℂ) • v i)
+    (W : Fin N → Matrix m m ℂ)
+    (Tm : EuclideanSpace ℂ σ ≃ₗᵢ[ℂ]
+      (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e))
+    (hdecomp : ∀ Q : Polynomial ℂ, Q.natDegree ≤ k →
+      ∃ M : Fin N → Matrix e e ℂ,
+        Tm.toContinuousLinearEquiv.toContinuousLinearMap ∘L
+            Matrix.toEuclideanCLM (𝕜 := ℂ) (n := σ) (Polynomial.aeval B Q) ∘L
+            Tm.symm.toContinuousLinearEquiv.toContinuousLinearMap =
+          ∑ r, TensorProduct.mapL
+            (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := m) (W r))
+            (Matrix.toEuclideanCLM (𝕜 := ℂ) (n := e) (M r)))
+    (C : ℕ) (hN : N ≤ C)
+    (η₀ η₁ U : ℝ) (hsep : η₀ < η₁) (hupperEndpoint : η₁ ≤ U)
+    (hcluster : Submodule.spectralSpanLE v lam η₀ =
+      Submodule.spectralSpanLE v lam η₁)
+    (hnorm : ‖B‖ ≤ U) :
+    let A : Fin N → EuclideanSpace ℂ m →L[ℂ] EuclideanSpace ℂ m := fun r ↦
+      Matrix.toEuclideanCLM (𝕜 := ℂ) (n := m) (W r)
+    let grow : Submodule ℂ (EuclideanSpace ℂ m) → Submodule ℂ (EuclideanSpace ℂ m) :=
+      fun S ↦ ⨆ r : Fin N, S.map (A r : EuclideanSpace ℂ m →ₗ[ℂ] EuclideanSpace ℂ m)
+    let G : Submodule ℂ (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e) :=
+      (Submodule.spectralSpanLE v lam η₀).map
+        (Tm.toLinearEquiv : EuclideanSpace ℂ σ →ₗ[ℂ]
+          (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e))
+    let Δ : ℝ := (2 * Real.exp
+      (-2 * (k : ℝ) * Real.sqrt ((η₁ - η₀) / (U - η₀)))) ^ (2 : ℕ)
+    ∀ (S : Submodule ℂ (EuclideanSpace ℂ m)) (δ : ℝ),
+      Submodule.IsViable (𝕜 := ℂ) (E := EuclideanSpace ℂ m)
+        (F := EuclideanSpace ℂ e) δ S G → δ < 1 →
+      Module.finrank ℂ (grow S) ≤ C * Module.finrank ℂ S ∧
+        Submodule.IsViable (𝕜 := ℂ) (E := EuclideanSpace ℂ m)
+          (F := EuclideanSpace ℂ e) (Δ / (1 - δ) ^ (2 : ℕ)) (grow S) G := by
+  intro A grow G Δ
+  obtain ⟨hK, hgap, hupper, hmap⟩ :=
+    exists_canonical_isometric_spectral_data B hB v lam hv η₀ η₁ U hcluster hnorm Tm
+  let Hm : (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e) →L[ℂ]
+      (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e) :=
+    Tm.toContinuousLinearEquiv.toContinuousLinearMap ∘L
+      Matrix.toEuclideanCLM (𝕜 := ℂ) (n := σ) B ∘L
+      Tm.symm.toContinuousLinearEquiv.toContinuousLinearMap
+  have hHm : (Hm : (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e) →ₗ[ℂ]
+      (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e)).IsSymmetric := hK
+  let d := Module.finrank ℂ (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e)
+  have hG : G = Submodule.span ℂ
+      (hHm.eigenvectorBasis (rfl : Module.finrank ℂ
+        (EuclideanSpace ℂ m ⊗[ℂ] EuclideanSpace ℂ e) = d) ''
+        {j | hHm.eigenvalues rfl j ≤ η₀}) := hmap η₀
+  intro S δ hS hδ
+  rw [hG] at hS ⊢
+  exact chebyshev_viability_of_conjugated_polynomial_family_of_card_le
+    B W Tm hdecomp C hN hHm d rfl η₀ η₁ U hsep hupperEndpoint hupper hgap S δ hS hδ
+end Matrix
+end

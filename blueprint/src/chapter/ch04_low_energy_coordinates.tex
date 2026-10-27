@@ -1,0 +1,44 @@
+\section{Spectral subspaces under isometric coordinates}
+
+\begin{theorem}[Spectral data after an isometry]
+    \label{thm:canonical_isometric_spectral_data}
+    \lean{Matrix.exists_canonical_isometric_spectral_data}
+    Let $B$ be Hermitian on $\C^\Sigma$, with an orthonormal eigenbasis
+    $v_i$ and eigenvalues $\lambda_i$. Put
+    $G_c=\operatorname{span}\{v_i:\lambda_i\le c\}$.
+    Suppose $G_{\eta_0}=G_{\eta_1}$ and $\|B\|\le U$, where
+    $\eta_0,\eta_1,U\in\R$. Let $u:\C^\Sigma\to F$ be a unitary linear
+    isometry onto a finite-dimensional complex inner-product space.
+    The symmetric operator $K=uBu^{-1}$ has an orthonormal
+    eigenbasis $b_j$ and eigenvalues $\kappa_j$ satisfying
+    \begin{align}
+        \kappa_j & \le\eta_0\quad\text{or}\quad\eta_1\le\kappa_j,\notag \\
+        \kappa_j & \le U,\notag                                         \\
+        uG_c     & =\operatorname{span}\{b_j:\kappa_j\le c\}.
+    \end{align}
+    The last equality holds for every $c\in\R$. No order between the
+    endpoints or nonzero-dimension assumption is needed.
+\end{theorem}
+\begin{proof}
+    Any orthonormal eigenbasis spans the same closed low spectral subspace:
+    expand an eigenvector in another eigenbasis and compare eigenvalues.
+    An isometry carries each eigenspace to the eigenspace of the conjugate
+    operator. Apply these facts to an orthonormal spectral basis of $K$.
+    Equality of the two supplied low spaces excludes intermediate spectral
+    values. Finally $\kappa_j\le|\kappa_j|\le\|K\|=\|B\|\le U$.
+    These coordinate assertions support the spectral reduction in
+    \cite[Theorem 4.2 and Lemma 2.9]{Arad2016RigorousRG}.
+\end{proof}
+
+\begin{theorem}[Two spectral values force a nontrivial local dimension]
+    \label{thm:two_spectral_values_local_dimension}
+    \lean{Matrix.IsHermitian.two_le_local_dimension_of_two_spectral_values}
+    Let $H$ be Hermitian on $(\C^q)^{\otimes L}$. If its spectrum contains
+    distinct real values $\mu,\nu$, then $q\ge2$.
+\end{theorem}
+\begin{proof}
+    If $q\le1$, the configuration set has at most one element. Every
+    Hermitian matrix on this space has at most one real spectral value,
+    contrary to the two given values. This includes the empty configuration
+    set and the empty chain.
+\end{proof}

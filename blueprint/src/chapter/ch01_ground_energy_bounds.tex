@@ -61,3 +61,27 @@ space. The order is the positive-semidefinite order.
     \leanok
     Sum the lower and upper operator inequalities over $S$.
 \end{proof}
+
+\begin{theorem}[Centering the original spectral basis]
+    \label{thm:original_basis_centered_gap}
+    \lean{Matrix.IsHermitian.original_basis_centered_gap_data}
+    Let $H$ be Hermitian on a nonzero finite-dimensional complex coordinate
+    space. Suppose $\mu\in\operatorname{spec}(H)$, $g>0$, and every spectral
+    value is either $\mu$ or at least $\mu+g$. Let $s,E_0\in\R$, and suppose
+    a unit vector $z$ satisfies
+    $(H-s\Id)z=E_0z$ and $H-s\Id\ge E_0\Id$. Then $\mu=E_0+s$.
+    Every member $v_j$ of the original orthonormal eigenbasis of $H$ satisfies
+    \begin{align}
+        (H-s\Id)v_j & =(\lambda_j-s)v_j,\notag                     \\
+        \lambda_j-s & =E_0\quad\text{or}\quad E_0+g\le\lambda_j-s.
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \uses{thm:normalized_eigenvector_energies}
+    The supplied unit vector attains the lower bound of $H-s\Id$.
+    A unit $\mu$-eigenvector attains the lower bound $\mu$ of $H$.
+    Comparing their Rayleigh quotients in both directions gives
+    $\mu=E_0+s$. Subtract $s$ in each original eigenvector equation and in
+    its spectral alternative. This retains the original basis, as needed
+    for the comparison in~\cite[lines 909--960]{Arad2016RigorousRG}.
+\end{proof}

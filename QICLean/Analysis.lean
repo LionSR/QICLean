@@ -110,6 +110,7 @@ import QICLean.Analysis.LiebSubBoundary
 import QICLean.Analysis.LogClipping
 import QICLean.Analysis.LogarithmicEnvelope
 import QICLean.Analysis.LowEnergyCluster
+import QICLean.Analysis.LowEnergyCoordinates
 import QICLean.Analysis.LowEnergyPerturbation
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixEvolution
