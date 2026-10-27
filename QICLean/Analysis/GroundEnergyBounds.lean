@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.MatrixAux
+import QICLean.Algebra.HermitianHelpers
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Tactic.Abel
