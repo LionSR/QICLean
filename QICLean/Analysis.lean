@@ -41,6 +41,7 @@ import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DensityMaxEigenvector
 import QICLean.Analysis.DensitySimplex
+import QICLean.Analysis.DetectabilityLemma
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet

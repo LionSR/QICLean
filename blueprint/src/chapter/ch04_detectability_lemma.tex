@@ -1,0 +1,179 @@
+\section{The detectability lemma and its converse}
+
+Let $h_0,\dots,h_{m-1}$ be orthogonal projections on a complete inner
+product space, write $Q_j=1-h_j$, and for a vector $\psi$ put
+$\psi_k=Q_{k-1}\cdots Q_0\psi$. The detectability lemma bounds the energy
+of $\varphi=\psi_m$ with respect to $H=\sum_jh_j$ by the mass that the
+product $Q_{m-1}\cdots Q_0$ removes from $\psi$. It is Lemma~lem:dl of
+\cite[lines 1508--1519]{Arad2016RigorousRG}, proved in
+\cite{Anshu2016Simple}; its converse is Lemma~lem:dl-converse of
+\cite[lines 1528--1537]{Arad2016RigorousRG}.
+
+\begin{definition}[Product of complementary projections]
+    \label{def:complement_product}
+    \lean{ContinuousLinearMap.complementProd}
+    \leanok
+    The product $Q_{k-1}\cdots Q_0$, in which $Q_0=1-h_0$ acts first.
+\end{definition}
+
+\begin{theorem}[Projection identities]
+    \label{thm:star_projection_identities}
+    \lean{IsStarProjection.apply_apply_self, IsStarProjection.inner_apply_left,
+        IsStarProjection.inner_apply_self, IsStarProjection.re_inner_apply_self,
+        IsStarProjection.norm_sq_eq, IsStarProjection.norm_apply_le}
+    \leanok
+    For an orthogonal projection $p$ and vectors $x,y$:
+    $p(px)=px$, $\langle px,y\rangle=\langle x,py\rangle$,
+    $\langle x,px\rangle=\|px\|^2$, $\|x\|^2=\|px\|^2+\|x-px\|^2$ and
+    $\|px\|\le\|x\|$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The first two hold because $p$ is idempotent and self-adjoint, and they
+    give $\langle x,px\rangle=\langle px,px\rangle$ and
+    $\langle px,x-px\rangle=0$.
+\end{proof}
+
+\begin{theorem}[Removed mass]
+    \label{thm:complement_product_removed_mass}
+    \lean{ContinuousLinearMap.complementProd_succ_apply,
+        ContinuousLinearMap.norm_sq_complementProd_succ,
+        ContinuousLinearMap.re_inner_sum_apply_eq,
+        ContinuousLinearMap.sum_norm_sq_apply_complementProd}
+    \leanok
+    \uses{def:complement_product, thm:star_projection_identities}
+    For every $k$, $\psi_{k+1}=\psi_k-h_k\psi_k$ and
+    $\|\psi_{k+1}\|^2=\|\psi_k\|^2-\|h_k\psi_k\|^2$. Hence
+    $\sum_{k<n}\|h_k\psi_k\|^2=\|\psi\|^2-\|\psi_n\|^2$. Moreover
+    $\langle y,(\sum_{i\in s}h_i)y\rangle=\sum_{i\in s}\|h_iy\|^2$ for every
+    finite set $s$ and vector $y$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Apply Pythagoras to $\psi_k=h_k\psi_k+Q_k\psi_k$ and sum over $k$.
+\end{proof}
+
+\begin{theorem}[One term of the energy]
+    \label{thm:detectability_one_term}
+    \lean{ContinuousLinearMap.norm_apply_complementProd_le}
+    \leanok
+    \uses{thm:complement_product_removed_mass}
+    If $i<n$, then $\|h_i\psi_n\|\le\sum_k\|h_k\psi_k\|$, the sum over the
+    indices $i<k<n$ for which $h_k$ does not commute with $h_i$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    By induction on $n$. For $n=i+1$, $h_i\psi_{i+1}=h_iQ_i\psi_i=0$. If
+    $h_n$ commutes with $h_i$, then $h_i\psi_{n+1}=Q_nh_i\psi_n$, whose norm
+    is at most $\|h_i\psi_n\|$. Otherwise
+    $h_i\psi_{n+1}=h_i\psi_n-h_ih_n\psi_n$, whose norm is at most
+    $\|h_i\psi_n\|+\|h_n\psi_n\|$.
+\end{proof}
+
+\begin{theorem}[Detectability lemma]
+    \label{thm:detectability_lemma}
+    \lean{ContinuousLinearMap.re_inner_sum_complementProd_le}
+    \leanok
+    \uses{thm:detectability_one_term}
+    Suppose each $h_i$ fails to commute with at most $g$ of the other
+    $h_j$, $j<m$. Then
+    $\langle\varphi|H|\varphi\rangle\le g^2(\|\psi\|^2-\|\varphi\|^2)$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Let $A_i$ be the set of $k$ with $i<k<m$ for which $h_k$ does not
+    commute with $h_i$, and $a_k=\|h_k\psi_k\|$. By the previous theorem
+    and the Cauchy--Schwarz inequality,
+    $\|h_i\varphi\|^2\le|A_i|\sum_{k\in A_i}a_k^2\le g\sum_{k\in A_i}a_k^2$.
+    Each $k$ lies in $A_i$ for at most $g$ indices $i$, so
+    $\langle\varphi|H|\varphi\rangle=\sum_i\|h_i\varphi\|^2
+        \le g^2\sum_{k<m}a_k^2=g^2(\|\psi\|^2-\|\varphi\|^2)$.
+\end{proof}
+
+\begin{theorem}[Detectability lemma, normalized form]
+    \label{thm:detectability_lemma_normalized}
+    \lean{ContinuousLinearMap.norm_sq_complementProd_le}
+    \leanok
+    \uses{thm:detectability_lemma}
+    In the setting of the previous theorem, let $\|\psi\|=1$ and
+    $\varepsilon_\varphi=\langle\varphi|H|\varphi\rangle/\|\varphi\|^2$.
+    Then $\|\varphi\|^2\le1/(\varepsilon_\varphi/g^2+1)$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    If $\varphi\ne0$ and $g>0$, then
+    $\|\varphi\|^2(\varepsilon_\varphi/g^2+1)
+        =\langle\varphi|H|\varphi\rangle/g^2+\|\varphi\|^2\le1$. If
+    $\varphi=0$ there is nothing to prove, and if $g=0$ the right side is
+    $1\ge\|\varphi\|^2$, with the convention that division by zero gives
+    zero.
+\end{proof}
+
+\begin{theorem}[Commuting projections]
+    \label{thm:commuting_complement_product}
+    \lean{ContinuousLinearMap.commute_complementProd,
+        ContinuousLinearMap.isStarProjection_complementProd,
+        ContinuousLinearMap.norm_sq_sub_norm_sq_complementProd_le}
+    \leanok
+    \uses{thm:complement_product_removed_mass}
+    An operator that commutes with $h_0,\dots,h_{k-1}$ commutes with
+    $Q_{k-1}\cdots Q_0$. If the $h_j$ commute pairwise, then
+    $Q_{n-1}\cdots Q_0$ is an orthogonal projection and
+    $\|\psi\|^2-\|\psi_n\|^2\le\langle\psi|\sum_{k<n}h_k|\psi\rangle$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    A product of commuting orthogonal projections is an orthogonal
+    projection. For the inequality, $h_k\psi_k=Q_{k-1}\cdots Q_0h_k\psi$
+    has norm at most $\|h_k\psi\|$, and
+    $\|h_k\psi\|^2=\langle\psi|h_k|\psi\rangle$.
+\end{proof}
+
+\begin{theorem}[Product of two projections]
+    \label{thm:two_projection_product}
+    \lean{IsStarProjection.one_sub_three_mul_le_norm_sq_mul_apply}
+    \leanok
+    \uses{thm:star_projection_identities}
+    For orthogonal projections $P,P'$ and a unit vector $x$,
+    $\|PP'x\|^2\ge1-3(\|x-Px\|^2+\|x-P'x\|^2)$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Put $u=x-Px$ and $w=x-P'x$. Then
+    $\langle x,PP'x\rangle=\langle x-u,x-w\rangle$, whose real part is
+    $1-\|u\|^2-\|w\|^2+\operatorname{Re}\langle u,w\rangle
+        \ge1-\tfrac32(\|u\|^2+\|w\|^2)$. This real part is at most
+    $\|PP'x\|$, and squaring gives the claim when
+    $1-\tfrac32(\|u\|^2+\|w\|^2)\ge0$; otherwise the right side is negative.
+\end{proof}
+
+\begin{theorem}[Converse of the detectability lemma]
+    \label{thm:detectability_lemma_converse}
+    \lean{ContinuousLinearMap.one_sub_three_mul_le_norm_sq_complementProd_mul}
+    \leanok
+    \uses{thm:commuting_complement_product, thm:two_projection_product}
+    Let $(h_k)$ and $(h'_k)$ be two families of pairwise commuting
+    orthogonal projections, $P=Q_{n-1}\cdots Q_0$ and
+    $P'=Q'_{n'-1}\cdots Q'_0$, and $H=\sum_{k<n}h_k+\sum_{k<n'}h'_k$. Then
+    $\|PP'\psi\|^2\ge1-3\langle\psi|H|\psi\rangle$ for every unit vector
+    $\psi$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    By the previous two theorems with $\|\psi-P\psi\|^2=1-\|P\psi\|^2$.
+\end{proof}
+
+For a nearest-neighbour chain whose terms are projectors, the even and the
+odd terms form two such families, and $PP'$ is the operator $\mathrm{DL}(H)$ of
+\cite[Definition def:DLO]{Arad2016RigorousRG}. The converse above holds for
+every unit vector, not only for eigenvectors of $H$, and its bound
+$1-3\langle\psi|H|\psi\rangle$ implies the printed bound
+$1-4\langle\psi|H|\psi\rangle$.
