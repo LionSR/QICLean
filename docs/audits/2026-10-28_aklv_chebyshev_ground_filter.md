@@ -44,3 +44,16 @@ The check used the existing seeded environment and private temporary objects.
 Ordinary verification and compiled blueprint validation of this new module remain
 pending the combined companion integration. No Mathlib source was rebuilt, no shared
 cache or dependency pin was changed, and no duplicate full build was started.
+
+
+## Combined ordinary verification
+
+The common revision `b66600027b2e60ccafea43d041d563cdd00cf05b`
+passed the full library build, strict checks of the new module and its
+canonical import, an actual-import foundations inspection, blueprint
+synchronization and compiled declaration checking. The foundations are
+exactly `propext`, `Classical.choice`, and `Quot.sound`. The ordinary build
+used prebuilt Mathlib artifacts and reported no Mathlib source jobs.
+These checks extend the separately verified common foundations at
+`98ec7c9f4b75fea27b369b4edac8663b98568eea`; earlier unchanged proofs were
+not rewritten.
