@@ -1,0 +1,113 @@
+\section{Concavity of the trace exponential}
+
+This section proves Lieb's concavity theorem for the trace exponential
+\cite[Theorem~6]{Lieb1973Convex}, following the argument of
+\cite{Tropp2012Joint}, which derives it from the joint convexity of the
+relative entropy. Throughout, $D(X\Vert A)=\re\tr X(\log X-\log A)$ is the
+relative entropy of Definition~\ref{def:quantum_relative_entropy}, without
+trace normalization.
+
+\begin{theorem}[Scaling the reference matrix]
+    \label{thm:relative_entropy_scale_reference}
+    \lean{quantumRelativeEntropy_smul_right}
+    \leanok
+    \uses{def:quantum_relative_entropy}
+    Let $X,Y\in\MN{D}$ with $Y$ positive definite, and let $c>0$. Then
+    $D(X\Vert cY)=D(X\Vert Y)-(\log c)\re\tr X$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The spectral calculus gives $\log(cY)=(\log c)\Id+\log Y$; substitute this
+    into the trace.
+\end{proof}
+
+\begin{theorem}[Klein's inequality without trace normalization]
+    \label{thm:klein_inequality_unnormalized}
+    \lean{re_trace_sub_re_trace_le_quantumRelativeEntropy}
+    \leanok
+    \uses{thm:klein_inequality, thm:relative_entropy_scale_reference}
+    Let $X,Y\in\MN{D}$ be positive definite. Then
+    $\re\tr X-\re\tr Y\le D(X\Vert Y)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:klein_inequality, thm:relative_entropy_scale_reference}
+    On the zero-dimensional space both sides vanish. Otherwise $a=\tr X$ and
+    $b=\tr Y$ are positive, and $\rho=X/a$, $\sigma=Y/b$ are positive definite
+    density matrices. Since $Y=(b/a)\,a\sigma$,
+    Theorem~\ref{thm:relative_entropy_scale_reference} gives the first equality
+    below, and $\log(a\rho)-\log(a\sigma)=\log\rho-\log\sigma$ gives the
+    second:
+    \begin{align}
+        D(X\Vert Y)
+         & =D\bigl(a\rho\Vert a\sigma\bigr)-a\log\frac{b}{a}
+        =aD(\rho\Vert\sigma)-a\log\frac{b}{a}.
+        \notag
+    \end{align}
+    Klein's inequality (Theorem~\ref{thm:klein_inequality}) gives
+    $D(\rho\Vert\sigma)\ge0$, and $\log(b/a)\le b/a-1$ gives
+    $-a\log(b/a)\ge a-b$.
+\end{proof}
+
+\begin{theorem}[Variational formula for the trace exponential]
+    \label{thm:trace_exp_variational}
+    \lean{quantumRelativeEntropy_exp_add_log,
+        re_trace_mul_sub_quantumRelativeEntropy_add_re_trace_le,
+        re_trace_mul_sub_quantumRelativeEntropy_add_re_trace_exp_add_log,
+        isGreatest_re_trace_exp_add_log}
+    \leanok
+    \uses{thm:klein_inequality_unnormalized}
+    Let $H\in\MN{D}$ be Hermitian and $A\in\MN{D}$. For every positive definite
+    $X\in\MN{D}$,
+    \begin{align}
+        \re\tr XH-D(X\Vert A)+\re\tr X
+         & \le\re\tr e^{H+\log A},
+        \label{eq:trace_exp_variational}
+    \end{align}
+    with equality at the positive definite matrix $X=e^{H+\log A}$. Hence
+    $\re\tr e^{H+\log A}$ is the maximum of the left side of
+    \eqref{eq:trace_exp_variational} over positive definite $X$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:klein_inequality_unnormalized}
+    Put $M=H+\log A$, a Hermitian matrix, and $Y=e^M$, which is positive
+    definite with $\log Y=M$. Expanding the trace,
+    \begin{align}
+        D(X\Vert Y)
+         & =\re\tr X\log X-\re\tr XH-\re\tr X\log A
+        =D(X\Vert A)-\re\tr XH.
+        \notag
+    \end{align}
+    The inequality is therefore Theorem~\ref{thm:klein_inequality_unnormalized}
+    for the pair $(X,Y)$. At $X=Y$ the display reads
+    $0=D(Y\Vert A)-\re\tr YH$, which is the equality case.
+\end{proof}
+
+\begin{theorem}[Lieb's concavity theorem for the trace exponential]
+    \label{thm:lieb_trace_exp_concavity}
+    \lean{concaveOn_re_trace_exp_add_log}
+    \leanok
+    \uses{thm:trace_exp_variational, thm:relative_entropy_joint_convexity}
+    Let $H\in\MN{D}$ be Hermitian. The map $A\mapsto\re\tr e^{H+\log A}$ is
+    concave on the positive definite matrices in $\MN{D}$.
+    This is \cite[Theorem~6]{Lieb1973Convex}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:trace_exp_variational, thm:relative_entropy_joint_convexity}
+    Write $f(A)=\re\tr e^{H+\log A}$ and
+    $\varphi(X,A)=\re\tr XH-D(X\Vert A)+\re\tr X$. Let $A_1,A_2$ be positive
+    definite, $a,b\ge0$ with $a+b=1$, and $A=aA_1+bA_2$. Put
+    $X_i=e^{H+\log A_i}$ and $X=aX_1+bX_2$; these are positive definite. The
+    first and last terms of $\varphi$ are real-linear in $X$, and $D$ is jointly
+    convex (Theorem~\ref{thm:relative_entropy_joint_convexity}), so $\varphi$ is
+    jointly concave. By Theorem~\ref{thm:trace_exp_variational},
+    \begin{align}
+        f(A)
+         & \ge\varphi(X,A)
+        \ge a\varphi(X_1,A_1)+b\varphi(X_2,A_2)
+        =af(A_1)+bf(A_2).
+        \notag
+    \end{align}
+\end{proof}
