@@ -341,3 +341,59 @@
     Subadditivity now gives the bound $tR$, using only this one set of
     $t$ evaluation points.
 \end{proof}
+
+\begin{definition}[Ordered coefficients with one distinguished interaction]
+    \label{def:one_marker_word_coefficient}
+    \lean{WordMultiplicity.oneMarkerCoefficient,
+        WordMultiplicity.map_oneMarkerCoefficient}
+    \leanok
+    Let $I$ be finite and let $H_a,T$ belong to a semiring. For integers
+    $m,k\ge0$ and a frequency vector $\alpha:I\to\mathbb N$, define
+    \begin{align*}
+        C_\alpha
+        =\sum_{\substack{w\in(I\sqcup\{*\})^{\{0,\ldots,m+k-1\}}\\
+            n_w(*)=k,\ n_w|_I=\alpha}}
+            H_{w(0)}\cdots H_{w(m+k-1)},\qquad H_*=T.
+    \end{align*}
+    These coefficients commute with semiring homomorphisms.
+    They are the ordered-word coefficients in the one-distinguished-interaction
+    argument of \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{definition}
+
+\begin{theorem}[Weighted frequency sums at one distinguished cut]
+    \label{thm:one_marker_weighted_rank}
+    \lean{Matrix.operatorSchmidtRank_sum_smul_one_marker_counts_le}
+    \leanok
+    \uses{def:one_marker_word_coefficient}
+    Suppose that the operators $H_a$ act on a finite-dimensional complex
+    bipartite space and satisfy
+    $H_a=A_a\otimes\mathbb 1+\mathbb 1\otimes B_a$.
+    Suppose $\operatorname{OSR}(T)\le r$, and let
+    $E_m=\{\alpha:I\to\mathbb N:\sum_a\alpha(a)=m\}$.
+    Every scalar family $(\lambda_\alpha)_{\alpha\in E_m}$ satisfies
+    \begin{align*}
+        \operatorname{OSR}\!\left(\sum_{\alpha\in E_m}\lambda_\alpha C_\alpha\right)
+            \le |E_m|\binom{m+2k+1}{2k+1}r^k.
+    \end{align*}
+    This is the algebraic fixed-frequency estimate used in
+    \cite[Lemma~4.2]{Arad2013AreaLaw}, with the corrected count from
+    \cite{gap:aklv13_interpolation_and_word_count}.
+    No independence of the $C_\alpha$ is required.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:word_coefficient_expansion,thm:polynomial_commuting_gap_rank,
+        thm:monomial_evaluation_weighted_rank}
+    For $z\in\mathbb C^I$, put
+    $A(z)=(\sum_a z_aA_a)\otimes\mathbb 1$ and
+    $B(z)=\mathbb 1\otimes(\sum_a z_aB_a)$.
+    These operators commute and have rank at most one. Ordered-word expansion gives
+    \begin{align*}
+        [X^k](A(z)+B(z)+TX)^{m+k}
+          =\sum_{\alpha\in E_m}\left(\prod_a z_a^{\alpha(a)}\right)C_\alpha.
+    \end{align*}
+    The commuting-gap coefficient bound gives rank at most
+    $\binom{m+2k+1}{2k+1}r^k$ for every $z$.
+    Distinct frequency vectors give distinct monomials; weighted monomial recovery
+    therefore gives the stated factor $|E_m|$.
+\end{proof}

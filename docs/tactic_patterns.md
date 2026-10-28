@@ -1397,21 +1397,18 @@ No new tactic or duplicate tree induction is introduced.
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
 
-### Weighted monomial recovery at common evaluation points — candidate (2026-10-22)
+### Weighted monomial recovery at common evaluation points — shared theorem (2026-10-28)
 
-- **Consumers:** `operatorSchmidtRank_sum_le_of_monomial_evaluations` in
-  `Algebra/MonomialEvaluationSchmidtRank.lean` and the private
-  `rank_weighted_sum_of_injective_monomials` in
-  `Algebra/WeightedFrequencySchmidtRank.lean`.
-- **Pattern:** Apply the existing monomial recovery coefficients to the same
-  evaluated operator family, interchange the finite sums, and contract the
-  selected or scalar-weighted coefficients before applying the sum rank bound.
-- **Reuse:** Both arguments invoke
-  `MvPolynomial.monomial_evaluation_recovery_smul`; `Finset.sum_comm`,
-  `Finset.sum_smul` and `Finset.smul_sum` give the finite-sum calculation.
-- **Decision:** Two occurrences across two files. No new tactic or public
-  interpolation theorem is introduced. The weighted argument also transports
-  an injectively indexed finite support and retains one evaluation cardinality.
+- **Consumers:** The two-marker theorem in `Algebra/WeightedFrequencySchmidtRank.lean`
+  and the one-marker theorem in `Algebra/OneMarkerWeightedSchmidtRank.lean`.
+- **Pattern:** Apply monomial recovery to one injectively indexed finite support,
+  contract the arbitrary scalar weights at the same evaluation points, then use
+  the finite-sum operator-Schmidt-rank bound. Zero and dependent coefficients
+  require no separate argument.
+- **Decision:** Move the existing weighted argument to
+  `Matrix.operatorSchmidtRank_sum_smul_le_of_injective_monomial_evaluations`
+  in `Algebra/MonomialEvaluationSchmidtRank.lean`; both consumers reuse it.
+  No new tactic or duplicate interpolation calculation is introduced.
 
 ### Weighted pure-state projection identities — shared lemma (2026-10-23)
 
