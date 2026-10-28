@@ -109,6 +109,7 @@ import QICLean.Analysis.LiebOperatorConcave
 import QICLean.Analysis.LiebOperatorIntegral
 import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
+import QICLean.Analysis.LiebTraceExponential
 import QICLean.Analysis.LogClipping
 import QICLean.Analysis.LogarithmicEnvelope
 import QICLean.Analysis.LowEnergyCluster
