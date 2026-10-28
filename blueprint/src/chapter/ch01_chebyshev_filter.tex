@@ -119,3 +119,42 @@
     The spectral assumption gives $P=1-P_+$, and normalization at $a$
     gives $KP=P=PK$. Hence $K-P=KP_+$, whose norm has the required bound.
 \end{proof}
+
+\begin{theorem}[A ground-state Chebyshev filter from a global gap]
+    \label{thm:chebyshev_ground_filter}
+    \lean{Matrix.IsHermitian.exists_chebyshev_ground_filter}
+    \leanok
+    Let $H$ be a finite Hermitian matrix, and let $\Gamma$ be a unit vector
+    satisfying $H\Gamma=E_0\Gamma$ and
+    \begin{align*}
+        H-E_0\mathbb 1\ge\gamma(\mathbb 1-|\Gamma\rangle\langle\Gamma|),
+        \qquad \gamma>0.
+    \end{align*}
+    Suppose $E_0+\gamma\le u$ and every spectral value of $H$ is at most $u$.
+    For every $\ell\ge0$ there is a real polynomial $p$ of degree exactly $\ell$
+    with $p(E_0)=1$. Put
+    \begin{align*}
+        K=p(H),\qquad P_\Gamma=|\Gamma\rangle\langle\Gamma|,\qquad
+        A_\ell=2\exp\left(-2\ell\sqrt{\frac{\gamma}{u-E_0}}\right).
+    \end{align*}
+    Then $K\Gamma=\Gamma$ and $\|K-P_\Gamma\|\le A_\ell$.
+    Every unit vector $\psi\perp\Gamma$ satisfies
+    $K\psi\perp\Gamma$ and $\|K\psi\|^2\le A_\ell^2$.
+    These are the ground-state and shrinking conditions used in
+    \cite[Section~4, Lemma~4.1]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:chebyshev_isolated_energy_projection,thm:global_gap_ground_projection}
+    The global gap gives the spectral alternative
+    $E_0$ or $[E_0+\gamma,u]$.
+    Construct the normalized polynomial by the isolated-energy filter theorem.
+    Its canonical low-energy projection equals $P_\Gamma$ by the global gap,
+    and $KP_\Gamma=P_\Gamma K=P_\Gamma$.
+    Since $P_\Gamma\Gamma=\Gamma$, the filter fixes $\Gamma$.
+    If $\psi\perp\Gamma$, then $P_\Gamma\psi=0$ and
+    $P_\Gamma K\psi=0$, proving invariance of the orthogonal complement.
+    Finally,
+    $\|K\psi\|=\|(K-P_\Gamma)\psi\|\le\|K-P_\Gamma\|\|\psi\|\le A_\ell$;
+    squaring gives the shrinking coefficient.
+\end{proof}
