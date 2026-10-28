@@ -397,3 +397,57 @@
     Distinct frequency vectors give distinct monomials; weighted monomial recovery
     therefore gives the stated factor $|E_m|$.
 \end{proof}
+
+\begin{theorem}[A uniform bound on the frequency sum]
+    \label{thm:aklv_frequency_sum_bound}
+    \lean{Nat.aklv_frequency_sum_le}
+    \leanok
+    Let $q,\ell,s,r$ be natural numbers with $q\ge1$, $s\le\ell+1$, and
+    $r\le\ell$. Then
+    \begin{align*}
+        &\sum_{u=0}^{s-1}\sum_{k=0}^{\lfloor r/s\rfloor}
+          \binom{r-k+s}{s}\binom{r+k+1}{2k+1}
+          q^{2k+2|u+1-\lfloor s/2\rfloor|}\\
+        &\hspace{2em}\le\bigl(q(\ell+1)\bigr)^{3s+6\lfloor\ell/s\rfloor+4}.
+    \end{align*}
+    For $s=0$ the sum is empty and natural division by zero is taken to be zero.
+    These are the scalar bounds in \cite[Lemma~4.2]{Arad2013AreaLaw}, with the
+    corrected count from \cite{gap:aklv13_interpolation_and_word_count}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Put $B=q(\ell+1)$.
+    The inequalities $\binom{n+k}{k}\le(n+1)^k$ and
+    $\binom{n}{k}\le n^k$ give
+    \begin{align*}
+        \binom{r-k+s}{s}&\le B^s, &
+        \binom{r+k+1}{2k+1}&\le B^{4k+2}.
+    \end{align*}
+    Here $r+k+1\le(\ell+1)^2$. Since $|u+1-\lfloor s/2\rfloor|\le s$,
+    the remaining factor is at most $B^{2k+2s}$.
+    Each summand is therefore at most $B^{3s+6\lfloor\ell/s\rfloor+2}$.
+    There are $s(\lfloor r/s\rfloor+1)\le B^2$ summands.
+\end{proof}
+
+\begin{theorem}[The effective window exponent]
+    \label{thm:aklv_effective_width_bound}
+    \lean{Nat.aklv_effective_width_bounds}
+    \leanok
+    Let $\ell,s\ge1$ be integers and put
+    $w=\min\{s,2\lfloor\sqrt\ell\rfloor\}$. Then $1\le w\le\ell+1$ and
+    \begin{align*}
+        3w+6\lfloor\ell/w\rfloor+5
+        \le16\bigl(\lfloor\ell/s\rfloor+\lfloor\sqrt\ell\rfloor+1\bigr).
+    \end{align*}
+    This is the numerical shorter-window estimate in
+    \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Set $n=\lfloor\sqrt\ell\rfloor\ge1$.
+    The inequalities $n^2\le\ell\le n^2+2n$ imply $2n\le\ell+1$.
+    If $w=s\le2n$, substitute this width bound.
+    Otherwise $w=2n$ and
+    $\ell\le n^2+2n\le2n(n+1)$ gives
+    $\lfloor\ell/w\rfloor\le n+1$. Substitution gives the assertion.
+\end{proof}
