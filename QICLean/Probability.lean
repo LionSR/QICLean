@@ -15,6 +15,7 @@ import QICLean.Probability.FiniteMatrixSampling
 import QICLean.Probability.FiniteUniformConditioning
 import QICLean.Probability.HaarProjection
 import QICLean.Probability.IndependentCovariance
+import QICLean.Probability.JointWordSampling
 import QICLean.Probability.MatrixBernstein
 import QICLean.Probability.MatrixCumulantSubadditivity
 import QICLean.Probability.MatrixSecondMoment

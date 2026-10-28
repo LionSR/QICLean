@@ -1,0 +1,81 @@
+\section{Joint matrix approximation and word-frequency sampling}
+
+\begin{theorem}[Approximating an actual finite matrix mean]
+    \label{thm:finite_matrix_actual_mean_tail}
+    \lean{Matrix.finite_uniform_average_sub_mean_tail_bound}
+    \leanok
+    \uses{thm:finite_matrix_uniform_tail}
+    Let $S,B$ be finite nonempty sets, with $|B|=\ell$, and let $N\ge1$.
+    Suppose that $Y:S\to M_N(\mathbb C)$ satisfies $\|Y(s)\|\le R$ for all
+    $s\in S$. Put $\mu=|S|^{-1}\sum_sY(s)$. For every integer $p\ge1$
+    and $\eta>0$, uniform sampling from $S^B$ satisfies
+    \begin{align}
+        \Pr\left(\left\|\frac1\ell\sum_{b\in B}Y(\sigma(b))-\mu\right\|\ge\eta\right)
+        \le N\left(\frac{4p^2R^2}{\ell\eta^2}\right)^p.
+        \label{eq:finite_matrix_actual_mean_tail}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_matrix_uniform_tail}
+    The uniform mean is a convex combination, so $\|\mu\|\le R$.
+    Hence $Y(s)-\mu$ is centered and has norm at most $2R$.
+    Apply Theorem~\ref{thm:finite_matrix_uniform_tail} to this family.
+    Since $\ell>0$, the sample mean of $Y-\mu$ equals the sample mean
+    of $Y$ minus $\mu$. This gives~(\ref{eq:finite_matrix_actual_mean_tail}).
+\end{proof}
+
+\begin{theorem}[Joint failure bound on one sampled word family]
+    \label{thm:joint_uniform_word_sampling_tail}
+    \lean{Matrix.finite_uniform_word_sampling_failure_bound}
+    \leanok
+    \uses{thm:finite_matrix_actual_mean_tail,thm:uniform_word_frequency_tail}
+    Let $A$ be an alphabet of size $n\ge1$, let $m\ge0$, and put
+    $W=A^{\{0,\ldots,m-1\}}$. Let $B$ have size $\ell\ge1$ and let $N\ge1$.
+    Suppose that $Y:W\to M_N(\mathbb C)$ satisfies $\|Y(w)\|\le R$.
+    Write
+    \begin{align}
+        \mu      & =\frac1{|W|}\sum_{w\in W}Y(w),        \\
+        M_\sigma & =\frac1\ell\sum_{b\in B}Y(\sigma(b)).
+        \label{eq:joint_uniform_word_sampling_mean}
+    \end{align}
+    Choose $\sigma\in W^B$ uniformly. For integers $p\ge1$, $u\ge0$,
+    and $\eta>0$,
+    \begin{align}
+        \Pr\bigl(\|M_\sigma-\mu\|\ge\eta
+        \ \text{or}\ \exists b\in B,\ a\in A:\ C_a(\sigma(b))\ge u\bigr)
+        \le N\left(\frac{4p^2R^2}{\ell\eta^2}\right)^p
+        +n\ell e^{m/n-u\log2}.
+        \label{eq:joint_uniform_word_sampling_tail}
+    \end{align}
+    The matrices may be non-Hermitian.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_matrix_actual_mean_tail,thm:uniform_word_frequency_tail}
+    Both exceptional events are subsets of the same finite set $W^B$.
+    The cardinality of their union is at most the sum of their cardinalities.
+    Divide by $|W^B|$ and apply~(\ref{eq:finite_matrix_actual_mean_tail}) and
+    (\ref{eq:uniform_word_frequency_tail}).
+\end{proof}
+
+\begin{theorem}[A sample with matrix approximation and bounded word counts]
+    \label{thm:joint_uniform_word_sampling_exists}
+    \lean{Matrix.exists_average_sub_mean_norm_lt_and_word_counts_lt}
+    \leanok
+    \uses{thm:joint_uniform_word_sampling_tail}
+    Under the hypotheses of Theorem~\ref{thm:joint_uniform_word_sampling_tail},
+    suppose that
+    \begin{align}
+        N\left(\frac{4p^2R^2}{\ell\eta^2}\right)^p
+        +n\ell e^{m/n-u\log2}<1.
+        \label{eq:joint_uniform_word_sampling_small}
+    \end{align}
+    There is one family $\sigma\in W^B$ such that
+    $\|M_\sigma-\mu\|<\eta$ and $C_a(\sigma(b))<u$ for every $b\in B$ and $a\in A$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:joint_uniform_word_sampling_tail}
+    By~(\ref{eq:joint_uniform_word_sampling_tail}) and
+    (\ref{eq:joint_uniform_word_sampling_small}), the union of the two
+    exceptional sets has cardinality strictly less than $|W^B|$.
+    Choose a point in its complement. This same point satisfies both conclusions.
+\end{proof}

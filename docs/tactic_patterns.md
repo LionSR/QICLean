@@ -1542,3 +1542,19 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Decision:** These existing finite-sum results suffice. No separate general Markov
   theorem, independent-marginal hypothesis or probability-measure construction
   is introduced.
+
+
+### Bounding an actual uniform matrix mean — existing convexity lemma (2026-10-28)
+
+- **Consumers:** `Probability/FiniteMatrixSampling.lean` and
+  `Probability/JointWordSampling.lean` derive the norm bound after centering.
+- **Reuse:** The new joint-sampling argument uses `norm_sum_smul_le` with the
+  actual nonnegative uniform weights, rather than repeating the triangle
+  inequality for the full mean. `Complex.coe_smul` identifies real and complex
+  scalar actions.
+- **Finite complement:** `Finset.exists_mem_notMem_of_card_lt_card` extracts a
+  single point outside the actual union of exceptional sets. The two
+  conclusions use that same point.
+- **Decision:** Existing convexity and finite-set results suffice. The two
+  centering calculations remain below the three-occurrence threshold; no
+  new mean structure, probability hypothesis or proof automation is introduced.
