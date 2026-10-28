@@ -92,6 +92,44 @@ variable {𝕜 M R : Type*} [RCLike 𝕜]
   [NormedAddCommGroup M] [InnerProductSpace 𝕜 M] [FiniteDimensional 𝕜 M]
   [NormedAddCommGroup R] [InnerProductSpace 𝕜 R] [FiniteDimensional 𝕜 R]
 
+/-- A finite tensor decomposition improves viability from a larger target to a
+nested smaller target. This is the tensor-containment step in ALVV,
+arXiv:1602.08828v2, Theorem `t:aisgapless`, lines 1037–1041. No gap or
+contraction on the intermediate spectral band is assumed. -/
+theorem IsViable.map_of_nested_tensor_decomposition
+    {ι : Type*} [Fintype ι] {δ Δ : ℝ}
+    {S : Submodule 𝕜 M} {T Tplus : Submodule 𝕜 (M ⊗[𝕜] R)}
+    {K : M ⊗[𝕜] R →L[𝕜] M ⊗[𝕜] R}
+    (hT : T ≤ Tplus) (hS : IsViable δ S Tplus)
+    (A : ι → M →L[𝕜] M) (Rop : ι → R →L[𝕜] R)
+    (hdec : K = ∑ i, mapL (A i) (Rop i))
+    (hδ : δ < 1) (hΔ : 0 ≤ Δ)
+    (hKT : ∀ t ∈ T, K t ∈ T) (hKTo : ∀ q ∈ Tplusᗮ, K q ∈ Tplusᗮ)
+    (hlow : ∀ t ∈ T, ‖t‖ ≤ ‖K t‖)
+    (hhigh : ∀ q ∈ Tplusᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) :
+    finrank 𝕜 ↥(⨆ i, S.map (A i : M →ₗ[𝕜] M)) ≤
+        Fintype.card ι * finrank 𝕜 S ∧
+      IsViable (Δ / (1 - δ) ^ 2)
+        (⨆ i, S.map (A i : M →ₗ[𝕜] M)) T := by
+  classical
+  set V := ⨆ i, S.map (A i : M →ₗ[𝕜] M)
+  refine ⟨?_, ?_⟩
+  · refine (finrank_iSup_le_sum _).trans ?_
+    calc ∑ i, finrank 𝕜 ↥(S.map (A i : M →ₗ[𝕜] M)) ≤ ∑ _i : ι, finrank 𝕜 S :=
+          Finset.sum_le_sum fun i _ ↦ finrank_map_le _ _
+      _ = Fintype.card ι * finrank 𝕜 S := by simp
+  · have hclose := IsCloseTo.map_of_nested_contract K hT hS hδ hΔ hKT hKTo hlow hhigh
+    refine hclose.mono ?_
+    rw [map_le_iff_le_comap, tensorProd_le_iff]
+    intro x hx y _
+    change K (x ⊗ₜ[𝕜] y) ∈ V.tensorProd (⊤ : Submodule 𝕜 R)
+    rw [hdec, _root_.sum_apply]
+    refine sum_mem fun i _ ↦ ?_
+    rw [mapL_tmul]
+    exact tmul_mem_tensorProd
+      (mem_iSup_of_mem i (mem_map_of_mem hx)) mem_top
+
+
 /-- A two-factor form of the tensor-containment step in ALVV,
 arXiv:1602.08828v2, proof of Lemma `l:er`, lines 606–622. If a filter preserves
 a target space and its orthogonal complement, expands on the target and
@@ -114,23 +152,7 @@ theorem IsViable.map_of_tensor_decomposition
         Fintype.card ι * finrank 𝕜 S ∧
       IsViable (Δ / (1 - δ) ^ 2)
         (⨆ i, S.map (A i : M →ₗ[𝕜] M)) T := by
-  classical
-  set V := ⨆ i, S.map (A i : M →ₗ[𝕜] M)
-  refine ⟨?_, ?_⟩
-  · refine (finrank_iSup_le_sum _).trans ?_
-    calc ∑ i, finrank 𝕜 ↥(S.map (A i : M →ₗ[𝕜] M)) ≤ ∑ _i : ι, finrank 𝕜 S :=
-          Finset.sum_le_sum fun i _ ↦ finrank_map_le _ _
-      _ = Fintype.card ι * finrank 𝕜 S := by simp
-  · have hclose := IsCloseTo.map_of_contract K hS hδ hΔ hKT hKTo hlow hhigh
-    refine hclose.mono ?_
-    rw [map_le_iff_le_comap, tensorProd_le_iff]
-    intro x hx y _
-    change K (x ⊗ₜ[𝕜] y) ∈ V.tensorProd (⊤ : Submodule 𝕜 R)
-    rw [hdec, _root_.sum_apply]
-    refine sum_mem fun i _ ↦ ?_
-    rw [mapL_tmul]
-    exact tmul_mem_tensorProd
-      (mem_iSup_of_mem i (mem_map_of_mem hx)) mem_top
+  exact hS.map_of_nested_tensor_decomposition le_rfl A Rop hdec hδ hΔ hKT hKTo hlow hhigh
 
 end TensorDecomposition
 
@@ -155,15 +177,18 @@ structure IsSpectralProjector (K H : E →L[𝕜] E) (b : OrthonormalBasis n �
   sq_le : ∀ j, η₁ ≤ h j → k j ^ 2 ≤ Δ
 
 omit [FiniteDimensional 𝕜 E] in
-/-- On the low-energy space `T = span {b_j : h_j ≤ η₀}`, a spectral projector satisfies the
-hypotheses of `IsCloseTo.map_of_contract` when `H` has no eigenvalue in `(η₀, η₁)`. -/
-theorem IsSpectralProjector.contract {K H : E →L[𝕜] E} {b : OrthonormalBasis n 𝕜 E}
+/-- A spectral filter expands below its lower cutoff and contracts above any
+cutoff whose strict upper spectrum lies above the filter's upper endpoint.
+The cutoffs may differ; no spectral gap is required. This supports ALVV,
+arXiv:1602.08828v2, Theorem `t:aisgapless`, lines 1037–1041. -/
+theorem IsSpectralProjector.contract_between_cutoffs {K H : E →L[𝕜] E} {b : OrthonormalBasis n 𝕜 E}
     {h k : n → ℝ} {η₀ η₁ Δ : ℝ} (hK : IsSpectralProjector K H b h k η₀ η₁ Δ)
-    (hgap : ∀ j, h j ≤ η₀ ∨ η₁ ≤ h j) :
+    (c : ℝ) (hhigh : ∀ j, c < h j → η₁ ≤ h j) :
     let T := span 𝕜 (b '' {j | h j ≤ η₀})
-    (∀ t ∈ T, K t ∈ T) ∧ (∀ q ∈ Tᗮ, K q ∈ Tᗮ) ∧ (∀ t ∈ T, ‖t‖ ≤ ‖K t‖) ∧
-      (∀ q ∈ Tᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) := by
-  intro T
+    let Tplus := span 𝕜 (b '' {j | h j ≤ c})
+    (∀ t ∈ T, K t ∈ T) ∧ (∀ q ∈ Tplusᗮ, K q ∈ Tplusᗮ) ∧ (∀ t ∈ T, ‖t‖ ≤ ‖K t‖) ∧
+      (∀ q ∈ Tplusᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) := by
+  intro T Tplus
   have hrepr : ∀ x j, b.repr (K x) j = (k j : 𝕜) * b.repr x j := by
     intro x j
     conv_lhs => rw [← b.sum_repr x]
@@ -174,41 +199,43 @@ theorem IsSpectralProjector.contract {K H : E →L[𝕜] E} {b : OrthonormalBasi
     intro x
     simp_rw [b.repr_apply_apply]
     exact (b.sum_sq_norm_inner_right x).symm
-  have memT : ∀ x, x ∈ T ↔ ∀ j, ¬ h j ≤ η₀ → b.repr x j = 0 := by
-    intro x
-    have hT : T = span 𝕜 (b.toBasis '' {j | h j ≤ η₀}) := by
+  have memT : ∀ (z : ℝ) x, x ∈ span 𝕜 (b '' {j | h j ≤ z}) ↔
+      ∀ j, ¬ h j ≤ z → b.repr x j = 0 := by
+    intro z x
+    have hT : span 𝕜 (b '' {j | h j ≤ z}) =
+        span 𝕜 (b.toBasis '' {j | h j ≤ z}) := by
       rw [OrthonormalBasis.coe_toBasis]
     rw [hT, Basis.mem_span_image]
     simp only [Set.subset_def, Finset.mem_coe, Finsupp.mem_support_iff,
       OrthonormalBasis.coe_toBasis_repr_apply, Set.mem_ofPred_eq]
     exact ⟨fun h' j hj => by_contra fun hne => hj (h' j hne),
       fun h' j hne => by_contra fun hj => hne (h' j hj)⟩
-  have memTo : ∀ x, x ∈ Tᗮ ↔ ∀ j, h j ≤ η₀ → b.repr x j = 0 := by
+  have memTo : ∀ x, x ∈ Tplusᗮ ↔ ∀ j, h j ≤ c → b.repr x j = 0 := by
     intro x
     refine ⟨fun hx j hj => ?_, fun hx => ?_⟩
     · rw [b.repr_apply_apply]
       exact inner_right_of_mem_orthogonal
-        (subset_span (Set.mem_image_of_mem b (show j ∈ {j | h j ≤ η₀} from hj))) hx
+        (subset_span (Set.mem_image_of_mem b (show j ∈ {j | h j ≤ c} from hj))) hx
     · rw [mem_orthogonal]
       intro u hu
       rw [← b.sum_inner_mul_inner]
       refine Finset.sum_eq_zero fun j _ => ?_
-      by_cases hj : h j ≤ η₀
+      by_cases hj : h j ≤ c
       · rw [← b.repr_apply_apply, hx j hj, mul_zero]
-      · rw [← inner_conj_symm, ← b.repr_apply_apply, (memT u).mp hu j hj, map_zero, zero_mul]
+      · rw [← inner_conj_symm, ← b.repr_apply_apply, (memT c u).mp hu j hj, map_zero, zero_mul]
   have hnormK : ∀ x, ‖K x‖ ^ 2 = ∑ j, k j ^ 2 * ‖b.repr x j‖ ^ 2 := by
     intro x
     rw [hnorm]
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [hrepr, norm_mul, RCLike.norm_ofReal, mul_pow, sq_abs]
   refine ⟨fun t ht => ?_, fun q hq => ?_, fun t ht => ?_, fun q hq => ?_⟩
-  · rw [memT] at ht ⊢
+  · rw [memT η₀] at ht ⊢
     intro j hj
     rw [hrepr, ht j hj, mul_zero]
   · rw [memTo] at hq ⊢
     intro j hj
     rw [hrepr, hq j hj, mul_zero]
-  · rw [memT] at ht
+  · rw [memT η₀] at ht
     refine (pow_le_pow_iff_left₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).mp ?_
     rw [hnormK, hnorm]
     refine Finset.sum_le_sum fun j _ => ?_
@@ -221,11 +248,24 @@ theorem IsSpectralProjector.contract {K H : E →L[𝕜] E} {b : OrthonormalBasi
   · rw [memTo] at hq
     rw [hnormK, hnorm, Finset.mul_sum]
     refine Finset.sum_le_sum fun j _ => ?_
-    by_cases hj : h j ≤ η₀
+    by_cases hj : h j ≤ c
     · rw [hq j hj, norm_zero]
       simp
-    · have := hK.sq_le j ((hgap j).resolve_left hj)
+    · have := hK.sq_le j (hhigh j (lt_of_not_ge hj))
       exact mul_le_mul_of_nonneg_right this (sq_nonneg _)
+
+
+omit [FiniteDimensional 𝕜 E] in
+/-- On the low-energy space `T = span {b_j : h_j ≤ η₀}`, a spectral projector satisfies the
+hypotheses of `IsCloseTo.map_of_contract` when `H` has no eigenvalue in `(η₀, η₁)`. -/
+theorem IsSpectralProjector.contract {K H : E →L[𝕜] E} {b : OrthonormalBasis n 𝕜 E}
+    {h k : n → ℝ} {η₀ η₁ Δ : ℝ} (hK : IsSpectralProjector K H b h k η₀ η₁ Δ)
+    (hgap : ∀ j, h j ≤ η₀ ∨ η₁ ≤ h j) :
+    let T := span 𝕜 (b '' {j | h j ≤ η₀})
+    (∀ t ∈ T, K t ∈ T) ∧ (∀ q ∈ Tᗮ, K q ∈ Tᗮ) ∧ (∀ t ∈ T, ‖t‖ ≤ ‖K t‖) ∧
+      (∀ q ∈ Tᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) := by
+  exact hK.contract_between_cutoffs η₀ fun j hj ↦
+    (hgap j).resolve_left (not_le_of_gt hj)
 
 /-- **Lemma `l:er` (error reduction by a spectral projector).** Let `K` be a spectral approximate
 ground state projection for `(H, η₀, η₁)` with parameter `Δ`, decomposed as
@@ -274,5 +314,37 @@ theorem IsViable.spectralProjector {D : ℕ} {δ Δ η₀ η₁ : ℝ}
     intro x hx y _
     have := (mem_iInf _).mp (hslice hx) y
     simpa using this
+
+/-- A spectral filter improves viability for the upper low-energy space into
+viability for the lower one, without a gap assumption between the cutoffs.
+The finite tensor decomposition is supplied explicitly. This is the
+nested-space error-reduction step of ALVV, arXiv:1602.08828v2,
+Theorem `t:aisgapless`, lines 1027–1041. It does not assert the physical
+construction of the filter or of its tensor decomposition. -/
+theorem IsViable.spectralProjector_between_cutoffs
+    {ι : Type*} [Fintype ι] {δ Δ η₀ η₁ : ℝ}
+    {K H : M ⊗[𝕜] R →L[𝕜] M ⊗[𝕜] R}
+    {b : OrthonormalBasis n 𝕜 (M ⊗[𝕜] R)} {h k : n → ℝ}
+    (hK : IsSpectralProjector K H b h k η₀ η₁ Δ) (hsep : η₀ ≤ η₁)
+    (A : ι → M →L[𝕜] M) (Rop : ι → R →L[𝕜] R)
+    (hdec : K = ∑ i, mapL (A i) (Rop i))
+    {S : Submodule 𝕜 M}
+    (hS : IsViable δ S (span 𝕜 (b '' {j | h j ≤ η₁})))
+    (hδ : δ < 1) (hΔ : 0 ≤ Δ) :
+    finrank 𝕜 ↥(⨆ i, S.map (A i : M →ₗ[𝕜] M)) ≤
+        Fintype.card ι * finrank 𝕜 S ∧
+      IsViable (Δ / (1 - δ) ^ 2)
+        (⨆ i, S.map (A i : M →ₗ[𝕜] M))
+        (span 𝕜 (b '' {j | h j ≤ η₀})) := by
+  have hT : span 𝕜 (b '' {j | h j ≤ η₀}) ≤
+      span 𝕜 (b '' {j | h j ≤ η₁}) := by
+    apply span_mono
+    apply Set.image_mono
+    intro j hj
+    exact hj.trans hsep
+  obtain ⟨hKT, hKTo, hlow, hhigh⟩ :=
+    hK.contract_between_cutoffs η₁ (fun _ hj ↦ hj.le)
+  exact hS.map_of_nested_tensor_decomposition hT A Rop hdec hδ hΔ
+    hKT hKTo hlow hhigh
 
 end Submodule

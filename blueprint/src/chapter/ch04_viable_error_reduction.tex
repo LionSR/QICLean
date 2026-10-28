@@ -48,9 +48,33 @@ of the target, and contracts its complement.
     $\lVert u\rVert\le\lVert r\rVert/(1-\delta)$, and put $q=u-r\in T^\perp$.
     Then $Ku=t+Kq$ with orthogonal summands, and
     $y=\lVert Kq\rVert^2\le\Delta\lVert u\rVert^2
-    \le\Delta\lVert t\rVert^2/(1-\delta)^2$. Since $Ku\in KU$,
+        \le\Delta\lVert t\rVert^2/(1-\delta)^2$. Since $Ku\in KU$,
     $\lVert t\rVert^2=\langle Ku,P_{KU}t\rangle
-    \le\lVert Ku\rVert\,\lVert P_{KU}t\rVert$, so with
+        \le\lVert Ku\rVert\,\lVert P_{KU}t\rVert$, so with
     $x=\lVert t\rVert^2$ we get
     $\lVert P_{KU}t\rVert^2\ge x^2/(x+y)\ge x-y$.
+\end{proof}
+
+\begin{theorem}[Error reduction between nested targets]
+    \label{thm:subspace_close_nested_contract}
+    \lean{Submodule.IsCloseTo.map_of_nested_contract}
+    Let $T_-\subseteq T_+$ and let $U$ be $\delta$-close to $T_+$,
+    where $\delta<1$. Suppose $K$ preserves $T_-$ and $T_+^\perp$,
+    $\|Kt\|\ge\|t\|$ for $t\in T_-$, and
+    $\|Kz\|^2\le\Delta\|z\|^2$ for $z\in T_+^\perp$, with
+    $\Delta\ge0$. Then $KU$ is $\Delta/(1-\delta)^2$-close to $T_-$.
+    This is the operator argument in the proof of
+    \cite[Theorem~4.8, lines 1037--1041]{Arad2016RigorousRG}.
+    No condition is imposed on the action of $K$ on
+    $T_+\cap T_-^\perp$.
+\end{theorem}
+
+\begin{proof}
+    \uses{thm:subspace_close_preimage,thm:subspace_close_iff}
+    For $t\in T_-$, choose $r\in T_-$ with $Kr=t$ and
+    $\|r\|\le\|t\|$. Closeness to $T_+$ supplies $u\in U$ such that
+    $P_{T_+}u=r$ and $\|u\|\le\|r\|/(1-\delta)$.
+    Thus $z=u-r\in T_+^\perp$, and $Ku=t+Kz$ is an orthogonal sum.
+    The projection argument above applies with
+    $\|Kz\|^2\le\Delta\|t\|^2/(1-\delta)^2$.
 \end{proof}
