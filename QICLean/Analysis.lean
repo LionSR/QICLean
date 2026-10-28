@@ -80,6 +80,7 @@ import QICLean.Analysis.GroundEnergyBounds
 import QICLean.Analysis.GroundProjection
 import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
+import QICLean.Analysis.HermitianDilation
 import QICLean.Analysis.HermitianFactorRepair
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
@@ -114,6 +115,8 @@ import QICLean.Analysis.LowEnergyCluster
 import QICLean.Analysis.LowEnergyCoordinates
 import QICLean.Analysis.LowEnergyPerturbation
 import QICLean.Analysis.MarginalSupport
+import QICLean.Analysis.MatrixBernsteinInputs
+import QICLean.Analysis.MatrixBernsteinScalar
 import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFittingRange
