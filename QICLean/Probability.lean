@@ -20,6 +20,7 @@ import QICLean.Probability.MatrixBernstein
 import QICLean.Probability.MatrixCumulantSubadditivity
 import QICLean.Probability.MatrixSecondMoment
 import QICLean.Probability.MatrixTraceNormIntegrability
+import QICLean.Probability.PhysicalPowerSampling
 import QICLean.Probability.PoissonWord
 import QICLean.Probability.PoissonWordAppend
 import QICLean.Probability.PoissonWordCounts

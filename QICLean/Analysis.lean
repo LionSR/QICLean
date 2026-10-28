@@ -169,6 +169,7 @@ import QICLean.Analysis.PositiveFactorRepair
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
+import QICLean.Analysis.PowerSamplingNormalization
 import QICLean.Analysis.PowerSpectralFilter
 import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProbabilityEntropyConcentration

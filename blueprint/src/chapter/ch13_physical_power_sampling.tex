@@ -1,0 +1,137 @@
+\section{Sampling a normalized Hamiltonian power}
+
+\begin{theorem}[Normalization bounds retaining the ground energy]
+    \label{thm:power_sampling_normalization}
+    \lean{Real.power_sampling_normalization_bounds}
+    \leanok
+    Let $0\le E_0\le n-1$ and put $C=(1-E_0/n)^{-1}$. Then
+    \begin{align}
+        1      & \le C\le n,           \\
+        \log C & \le\frac{E_0}{n-E_0}.
+        \label{eq:power_sampling_normalization}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Put $a=n-E_0\ge1$. Then $C=n/a=1+E_0/a$, so $1\le C\le n$.
+    The inequality $\log C\le C-1$ gives the logarithmic bound.
+\end{proof}
+
+\begin{theorem}[The cost of a natural-ceiling power]
+    \label{thm:power_sampling_energy_exponent}
+    \lean{Real.power_sampling_normalization_pow_ceil_le}
+    \leanok
+    \uses{thm:power_sampling_normalization}
+    Under the preceding hypotheses, let $\Delta>0$, $Q\ge1$, and
+    $m=\lceil(n-E_0)\log Q/\Delta\rceil$. Then
+    \begin{align}
+        C^{2m}\le n^2\exp\left(\frac{2E_0\log Q}{\Delta}\right)
+        =n^2Q^{2E_0/\Delta}.
+        \label{eq:power_sampling_energy_exponent}
+    \end{align}
+    This retains the ground-energy dependence in the supplementary proof
+    of~\cite[Proposition~1, p.~6]{Landau2015Published}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:power_sampling_normalization}
+    The ceiling gives $m\le(n-E_0)\log Q/\Delta+1$.
+    Since $\log C\ge0$, (\ref{eq:power_sampling_normalization}) implies
+    $2m\log C\le2\log C+2E_0\log Q/\Delta$.
+    Exponentiate and use $C^2\le n^2$.
+\end{proof}
+
+Let $h_i$ be positive contractions on a complex Hilbert space of finite
+positive dimension $D$, let $H=\sum_{i\in I}h_i$, and put $n=|I|+1$.
+Adjoin a letter $\ast$ and define $P_\ast=1$, $P_i=1-h_i$.
+For each $m\ge0$, let $W=(I\sqcup\{\ast\})^{\{0,\ldots,m-1\}}$
+and write $P_w=P_{w(0)}\cdots P_{w(m-1)}$ for $w\in W$.
+
+\begin{theorem}[Sampled approximation of a complement power]
+    \label{thm:sampled_complement_power}
+    \lean{Matrix.exists_sampled_complement_power_approximation_and_word_counts}
+    \leanok
+    \uses{cor:normalized_complement_ordered_words,thm:joint_uniform_word_sampling_exists}
+    Let $c\ge0$, $\eta>0$, and let $B$ be a finite set of size $\ell\ge1$.
+    Let $p\ge1$, $m,u\ge0$ be integers. If
+    \begin{align}
+        D\left(\frac{4p^2c^{2m}}{\ell\eta^2}\right)^p
+        +n\ell e^{m/n-u\log2}<1,
+        \label{eq:sampled_complement_power_budget}
+    \end{align}
+    there is a word family $\sigma\in W^B$ whose operator
+    $K=c^m\ell^{-1}\sum_bP_{\sigma(b)}$ satisfies
+    $\|K-[c(1-H/n)]^m\|<\eta$ and $C_a(\sigma(b))<u$ for every $b,a$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{cor:normalized_complement_ordered_words,thm:joint_uniform_word_sampling_exists}
+    Each complement has norm at most one, hence $\|P_w\|\le1$.
+    Corollary~\ref{cor:normalized_complement_ordered_words} identifies the
+    actual uniform mean of $c^mP_w$ with $[c(1-H/n)]^m$.
+    Apply Theorem~\ref{thm:joint_uniform_word_sampling_exists} with the
+    derived norm bound $c^m$; its square is $c^{2m}$.
+\end{proof}
+
+Suppose now that $\Omega$ is a unit vector, $\Delta>0$,
+$H\Omega=E_0\Omega$, and $H-E_0\,1\ge\Delta(1-\Pi)$, where
+$\Pi=|\Omega\rangle\langle\Omega|$.
+Put $C=(1-E_0/n)^{-1}$, let $Q\ge1$ and $\eta>0$, and define
+\begin{align}
+    m & =\left\lceil\frac{n-E_0}{\Delta}\log Q\right\rceil, \\
+    A & =[C(1-H/n)]^m,                                      \\
+    S & =n^2Q^{2E_0/\Delta}.
+    \label{eq:physical_power_sampling_parameters}
+\end{align}
+
+\begin{theorem}[Ground approximation with an energy-dependent sampling budget]
+    \label{thm:physical_power_sampling_budget}
+    \lean{Matrix.exists_sampled_power_approximation_with_energy_dependent_budget}
+    \leanok
+    \uses{thm:sampled_complement_power,thm:power_sampling_energy_exponent,
+        thm:physical_power_filter_lower_gap_accuracy}
+    For a sample set of size $\ell\ge1$ and integers $p\ge1$, $u\ge0$,
+    suppose that
+    \begin{align}
+        D\left(\frac{4p^2S}{\ell\eta^2}\right)^p
+        +n\ell e^{m/n-u\log2}<1.
+        \label{eq:physical_power_sampling_budget}
+    \end{align}
+    One word family has an operator $K=C^m\ell^{-1}\sum_bP_{\sigma(b)}$ with
+    $\|K-A\|<\eta$, $\|K-\Pi\|<\eta+Q^{-1}$, and
+    $C_a(\sigma(b))<u$ for all $b,a$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:sampled_complement_power,thm:power_sampling_energy_exponent,
+        thm:physical_power_filter_lower_gap_accuracy}
+    Evaluating $0\le H\le(n-1)1$ on the actual unit eigenvector gives
+    $0\le E_0\le n-1$. By~(\ref{eq:power_sampling_energy_exponent}),
+    $C^{2m}\le S$, so Theorem~\ref{thm:sampled_complement_power} gives the
+    power approximation and counts on the same family.
+    The choice of $m$ and
+    Theorem~\ref{thm:physical_power_filter_lower_gap_accuracy} give
+    $\|A-\Pi\|\le Q^{-1}$. The triangle inequality completes the conclusion.
+\end{proof}
+
+\begin{theorem}[An explicit positive sample count]
+    \label{thm:physical_power_sampling_explicit_count}
+    \lean{Matrix.exists_sampled_power_approximation_with_explicit_count}
+    \leanok
+    \uses{thm:physical_power_sampling_budget}
+    With the same physical data, choose an integer $p\ge1$ with $2D<4^p$,
+    and set
+    \begin{align}
+        \ell & =\left\lceil\frac{16p^2S}{\eta^2}\right\rceil+1,        \\
+        u    & =\left\lceil\frac{m/n+\log(2n\ell)}{\log2}\right\rceil.
+        \label{eq:physical_power_sampling_explicit_count}
+    \end{align}
+    Then $\ell>0$, and one family satisfies all conclusions of
+    Theorem~\ref{thm:physical_power_sampling_budget}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:physical_power_sampling_budget}
+    The count gives $\ell\eta^2\ge16p^2S$, so the matrix failure bound is
+    at most $D4^{-p}<1/2$. The logarithmic threshold gives
+    $n\ell e^{m/n-u\log2}\le1/2$.
+    Their sum is strictly below one, so
+    Theorem~\ref{thm:physical_power_sampling_budget} applies.
+    The factor $S=n^2Q^{2E_0/\Delta}$ retains the published ground-energy
+    dependence of the sample count.
+\end{proof}

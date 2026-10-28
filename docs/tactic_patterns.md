@@ -1558,3 +1558,19 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Decision:** Existing convexity and finite-set results suffice. The two
   centering calculations remain below the three-occurrence threshold; no
   new mean structure, probability hypothesis or proof automation is introduced.
+
+
+### Actual word means and explicit finite sampling counts — existing lemmas (2026-10-29)
+
+- **Consumers:** `Analysis/PowerSamplingNormalization.lean` and
+  `Probability/PhysicalPowerSampling.lean` retain the exact ceiling costs.
+- **Reuse:** `Fintype.smul_sub_average_pow_eq_sum_ordered_words` proves the
+  actual complement-word mean, including its identity padding. The word norm
+  bound uses `List.nnnorm_prod_le` and `List.prod_le_pow_length`, as in the
+  existing finite moment argument. No new product expansion is introduced.
+- **Ceilings:** Use `Nat.le_ceil` for the lower sampling threshold and
+  `Nat.ceil_lt_add_one` for the upper normalization cost. Normalize
+  `Fintype.card_fin` before matching the explicit-count conclusion, so
+  unification does not unfold the finite enumeration at a symbolic ceiling.
+- **Scope:** The two product-norm uses are below the three-occurrence threshold.
+  Existing scalar, list and cardinality results suffice without new automation.
