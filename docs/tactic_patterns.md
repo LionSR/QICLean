@@ -1515,3 +1515,18 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   `Finset.sum_le_sum_of_subset_of_nonneg` give the two steps directly.
   There are two occurrences across two files. Retain these existing lemmas;
   a third occurrence would justify considering a combined inequality.
+
+
+### Ordered singleton cancellation and finite matrix sampling — existing lemmas (2026-10-28)
+
+- **Consumers:** `Algebra/SingletonWordCancellation.lean`,
+  `Probability/FiniteMatrixMoments.lean` and `Probability/FiniteMatrixSampling.lean`.
+- **Reuse:** `Equiv.funSplitAt` separates the unique sample coordinate;
+  `MultilinearMap.mkPiAlgebraFin`, `map_update_sum` and `map_update_zero`
+  preserve the ordered product. The moment expansion reuses
+  `MultilinearMap.map_sum`; its norm bound reuses `CFC.norm_pow`,
+  `Matrix.l2_opNorm_conjTranspose_mul_self` and
+  `Matrix.PosSemidef.l2_opNorm_le_trace_re`.
+- **Decision:** Keep these existing algebraic and spectral abstractions. The
+  Markov and sample-existence arguments call the proved finite moment bound;
+  no new ordered-product decomposition or proof automation is introduced.

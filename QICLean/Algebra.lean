@@ -79,6 +79,7 @@ import QICLean.Algebra.NewtonGirard
 import QICLean.Algebra.NilMatrixSubalgebra
 import QICLean.Algebra.NilpotentSubspaceThree
 import QICLean.Algebra.NilpotentSubspaceTwo
+import QICLean.Algebra.NoSingletonWords
 import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
@@ -111,6 +112,7 @@ import QICLean.Algebra.ScalarCommutant
 import QICLean.Algebra.ScalarPowerSumIdentity
 import QICLean.Algebra.ShiftedTracePowerSpectrum
 import QICLean.Algebra.ShiftedZeroTraceNilpotent
+import QICLean.Algebra.SingletonWordCancellation
 import QICLean.Algebra.SkewSymmetricMatrix
 import QICLean.Algebra.SkolemNoether
 import QICLean.Algebra.SkolemNoetherUnitary

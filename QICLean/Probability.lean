@@ -10,6 +10,8 @@ Authors: QICLean contributors
 
 import QICLean.Probability.ComplexGaussian
 import QICLean.Probability.CompressionSampling
+import QICLean.Probability.FiniteMatrixMoments
+import QICLean.Probability.FiniteMatrixSampling
 import QICLean.Probability.FiniteUniformConditioning
 import QICLean.Probability.HaarProjection
 import QICLean.Probability.IndependentCovariance
