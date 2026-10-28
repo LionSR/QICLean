@@ -33,3 +33,15 @@ The work is based on exact QICLean revision
 separately with the strict production options, against prebuilt dependencies
 and private outputs. Ordinary full-library and compiled blueprint verification
 remain separate requirements. No permanent theorem-test files are added.
+
+
+## Reconciliation with current main
+
+The combined companion revision is based on `acda92aa`, including the
+published matrix Bernstein theorem. The finite-family dimension estimate
+uses Mathlib's `finrank_iSup_le_sum` and `finrank_map_le` directly;
+the removed compatibility helper is not restored. The low-energy,
+coordinate, entropy and bootstrap additions were selected from their
+original commits, without historical test fixtures or reversions of
+subsequent source changes. The ordinary combined target build passed
+3,983 jobs using prebuilt Mathlib artifacts.

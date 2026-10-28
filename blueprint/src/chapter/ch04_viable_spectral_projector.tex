@@ -95,6 +95,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 \begin{theorem}[Tensor error reduction between nested targets]
     \label{thm:viable_nested_tensor_decomposition}
     \lean{Submodule.IsViable.map_of_nested_tensor_decomposition}
+    \leanok
     Let $K=\sum_{i\in I}A_i\otimes R_i$ and $T_-\subseteq T_+$ be
     subspaces of $\mathcal H_M\otimes\mathcal H_R$. Suppose $K$ preserves
     $T_-$ and $T_+^\perp$, expands norms on $T_-$ and contracts squared
@@ -107,6 +108,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{thm:subspace_close_nested_contract,thm:subspace_close_mono}
     The nested-target estimate applies to $S\otimes\mathcal H_R$.
     Its image under $K$ is contained in $V\otimes\mathcal H_R$.
@@ -116,6 +118,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 \begin{theorem}[Contraction at distinct spectral cutoffs]
     \label{thm:spectral_projector_distinct_cutoffs}
     \lean{Submodule.IsSpectralProjector.contract_between_cutoffs}
+    \leanok
     Let $K$ be a spectral filter for $(H,\eta_0,\eta_1)$ and let $c$
     satisfy $h_j>c\Longrightarrow h_j\ge\eta_1$ for every eigenvalue
     $h_j$. Then $K$ preserves and expands norms on
@@ -126,6 +129,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{def:spectral_projector}
     The common eigenbasis gives invariant spectral subspaces.
     Parseval's identity and the two scalar filter estimates give the norm
@@ -135,6 +139,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 \begin{theorem}[Viability reduction between spectral cutoffs]
     \label{thm:viable_spectral_distinct_cutoffs}
     \lean{Submodule.IsViable.spectralProjector_between_cutoffs}
+    \leanok
     Let $\eta_0\le\eta_1$ and let $K=\sum_{i\in I}A_i\otimes R_i$
     be a spectral filter for these endpoints, with $\Delta\ge0$.
     If $S$ is $\delta$-viable for
@@ -149,6 +154,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 \end{theorem}
 
 \begin{proof}
+    \leanok
     \uses{thm:viable_nested_tensor_decomposition,
         thm:spectral_projector_distinct_cutoffs}
     Use $c=\eta_1$ in the preceding contraction statement and apply the

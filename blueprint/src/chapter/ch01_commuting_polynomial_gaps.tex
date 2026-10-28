@@ -27,14 +27,14 @@
     $T$ inserts a first gap with both exponents zero. Consequently,
     \begin{align*}
         A\mathcal C_{m,k}+B\mathcal C_{m,k}
-            &\subseteq\mathcal C_{m+1,k}, \\
-        T\mathcal C_{m,k}&\subseteq\mathcal C_{m,k+1}.
+                          & \subseteq\mathcal C_{m+1,k}, \\
+        T\mathcal C_{m,k} & \subseteq\mathcal C_{m,k+1}.
     \end{align*}
     Write $F_{m,k}=[X^k](A+B+TX)^{m+k}$.
     Theorem~\ref{thm:polynomial_linear_factor_coefficient} gives
     \begin{align*}
-        F_{m+1,k+1}&=AF_{m,k+1}+BF_{m,k+1}+TF_{m+1,k}, \\
-        F_{m+1,0}&=AF_{m,0}+BF_{m,0},\qquad F_{0,k}=T^k.
+        F_{m+1,k+1} & =AF_{m,k+1}+BF_{m,k+1}+TF_{m+1,k},     \\
+        F_{m+1,0}   & =AF_{m,0}+BF_{m,0},\qquad F_{0,k}=T^k.
     \end{align*}
     Induction on $m$ and then on $k$ proves $F_{m,k}\in\mathcal C_{m,k}$.
     Every $\mathcal K$-submodule containing the generators contains this
@@ -74,7 +74,7 @@
     $\operatorname{OSR}(T)\le r$ for an integer $r\ge0$. For integers $m,k\ge0$,
     \begin{align*}
         \operatorname{OSR}\!\left([X^k](A+B+TX)^{m+k}\right)
-            \le\binom{m+2k+1}{2k+1}r^k.
+        \le\binom{m+2k+1}{2k+1}r^k.
     \end{align*}
     Zero-dimensional factors, zero exponents and $r=0$ are included, with
     the usual convention $0^0=1$.
@@ -102,13 +102,13 @@
     $\mathcal H_L\otimes\mathcal H_R$ with $\operatorname{OSR}(T)\le r$.
     In the iterated polynomial algebra with central variables $Y$ and then $X$, put
     \begin{align*}
-        F(X,Y)&=A\otimes\mathbb 1+\mathbb 1\otimes B(Y)+TX, \\
-        K_{m,j,s}&=[Y^s]\bigl([X^j]F(X,Y)^{m+j}\bigr).
+        F(X,Y)    & =A\otimes\mathbb 1+\mathbb 1\otimes B(Y)+TX, \\
+        K_{m,j,s} & =[Y^s]\bigl([X^j]F(X,Y)^{m+j}\bigr).
     \end{align*}
     For natural numbers $m,j,s,r$,
     \begin{align*}
         \operatorname{OSR}(K_{m,j,s})
-            \le\binom{m+2j+1}{2j+1}r^j.
+        \le\binom{m+2j+1}{2j+1}r^j.
     \end{align*}
     Zero-dimensional factors and zero exponents are included, with $0^0=1$.
     This is supporting algebra for the coefficient restrictions in
@@ -128,8 +128,8 @@
     Expanding only the $j$ occurrences of $T$ gives terms
     $L_{d,t}\otimes R_{d,t}(Y)$, where
     \begin{align*}
-        L_{d,t}&=\left(\prod_{u=0}^{j-1}A^{a_u}U_{t_{u+1}}\right)A^{a_j}, \\
-        R_{d,t}(Y)&=\left(\prod_{u=0}^{j-1}B(Y)^{b_u}V_{t_{u+1}}\right)B(Y)^{b_j}.
+        L_{d,t}    & =\left(\prod_{u=0}^{j-1}A^{a_u}U_{t_{u+1}}\right)A^{a_j},       \\
+        R_{d,t}(Y) & =\left(\prod_{u=0}^{j-1}B(Y)^{b_u}V_{t_{u+1}}\right)B(Y)^{b_j}.
     \end{align*}
     The products are taken in increasing order of $u$.
     The left factors are independent of $Y$, so taking the coefficient of
@@ -149,13 +149,13 @@
     Let $\mathcal R$ be a semiring and let $D,U,V\in\mathcal R$.
     With central polynomial variables, form
     \begin{align*}
-        F_X(X)&=D+VY+UX\in\mathcal R[Y][X], \\
-        F_Y(Y)&=D+UX+VY\in\mathcal R[X][Y].
+        F_X(X) & =D+VY+UX\in\mathcal R[Y][X], \\
+        F_Y(Y) & =D+UX+VY\in\mathcal R[X][Y].
     \end{align*}
     For natural numbers $k,i,j$,
     \begin{align*}
         [Y^j]\bigl([X^i]F_X(X)^k\bigr)
-            =[X^i]\bigl([Y^j]F_Y(Y)^k\bigr).
+        =[X^i]\bigl([Y^j]F_Y(Y)^k\bigr).
     \end{align*}
     The elements $D,U,V$ may coincide or satisfy algebraic relations.
     The identity compares the same marked counts in the two nesting orders;
@@ -172,7 +172,7 @@
     polynomial variable gives
     \begin{align*}
         c_{k+1,i,j}
-            =Dc_{k,i,j}+Uc_{k,i-1,j}+Vc_{k,i,j-1}.
+        =Dc_{k,i,j}+Uc_{k,i-1,j}+Vc_{k,i,j-1}.
     \end{align*}
     Both nesting orders satisfy this same recurrence and initial condition.
     Induction on $k$ proves the identity, including the cases $i=0$ or $j=0$.
@@ -191,23 +191,23 @@
     let $U$ act on $\mathcal H_L\otimes\mathcal H_M$ and $V$ on
     $\mathcal H_M\otimes\mathcal H_R$. On the three-factor space, put
     \begin{align*}
-        D&=A_L\otimes\mathbb 1_M\otimes\mathbb 1_R
-            +\mathbb 1_L\otimes A_M\otimes\mathbb 1_R
-            +\mathbb 1_L\otimes\mathbb 1_M\otimes A_R, \\
-        \widetilde U&=U\otimes\mathbb 1_R, \\
-        \widetilde V&=\mathbb 1_L\otimes V.
+        D            & =A_L\otimes\mathbb 1_M\otimes\mathbb 1_R
+        +\mathbb 1_L\otimes A_M\otimes\mathbb 1_R
+        +\mathbb 1_L\otimes\mathbb 1_M\otimes A_R,              \\
+        \widetilde U & =U\otimes\mathbb 1_R,                    \\
+        \widetilde V & =\mathbb 1_L\otimes V.
     \end{align*}
     With central variables $Y$ and then $X$, define
     \begin{align*}
-        F(X,Y)&=D+\widetilde VY+\widetilde UX, \\
-        K_{k,i,j}&=[Y^j]\bigl([X^i]F(X,Y)^k\bigr).
+        F(X,Y)    & =D+\widetilde VY+\widetilde UX,  \\
+        K_{k,i,j} & =[Y^j]\bigl([X^i]F(X,Y)^k\bigr).
     \end{align*}
     Let $r_U,r_V,k,i,j$ be natural numbers satisfying $i\le k$, $j\le k$,
     $\operatorname{OSR}_{L\mid M}(U)\le r_U$ and
     $\operatorname{OSR}_{M\mid R}(V)\le r_V$. Then
     \begin{align*}
         \operatorname{OSR}_{M\mid LR}(K_{k,i,j})
-            \le\binom{k+i+1}{2i+1}\binom{k+j+1}{2j+1}r_U^i r_V^j.
+        \le\binom{k+i+1}{2i+1}\binom{k+j+1}{2j+1}r_U^i r_V^j.
     \end{align*}
     The spaces may have dimension zero, with $0^0=1$.
     The binomial factors use the corrected exponent-tuple count in
@@ -234,7 +234,7 @@
     This gives
     \begin{align*}
         \operatorname{OSR}_{L\mid MR}(K_{k,i,j})
-            \le\binom{k+i+1}{2i+1}r_U^i.
+        \le\binom{k+i+1}{2i+1}r_U^i.
     \end{align*}
     At the reflected right boundary the ordinary opposite-factor polynomial
     is $B_R(X)=A_L\otimes\mathbb 1_M+\mathbb 1_L\otimes A_M+UX$.
@@ -245,7 +245,7 @@
     therefore gives
     \begin{align*}
         \operatorname{OSR}_{LM\mid R}(K_{k,i,j})
-            \le\binom{k+j+1}{2j+1}r_V^j.
+        \le\binom{k+j+1}{2j+1}r_V^j.
     \end{align*}
     Both inequalities concern the same operator. Their product bounds its
     middle-versus-exterior rank by
@@ -282,7 +282,7 @@
     For a word $w\in I^{\{0,\ldots,k-1\}}$, write
     $n_w(a)=|\{t:w(t)=a\}|$, and put
     \begin{align}
-        C_\alpha & =\sum_{\substack{w\in I^{\{0,\ldots,k-1\}}\\n_w=\alpha}}
+        C_\alpha & =\sum_{\substack{w\in I^{\{0,\ldots,k-1\}} \\n_w=\alpha}}
         H_{w(0)}\cdots H_{w(k-1)}.\notag
     \end{align}
     Every scalar family $(\lambda_\alpha)_{\alpha:I\to\N}$ satisfies
@@ -351,9 +351,9 @@
     $m,k\ge0$ and a frequency vector $\alpha:I\to\mathbb N$, define
     \begin{align*}
         C_\alpha
-        =\sum_{\substack{w\in(I\sqcup\{*\})^{\{0,\ldots,m+k-1\}}\\
-            n_w(*)=k,\ n_w|_I=\alpha}}
-            H_{w(0)}\cdots H_{w(m+k-1)},\qquad H_*=T.
+        =\sum_{\substack{w\in(I\sqcup\{*\})^{\{0,\ldots,m+k-1\}} \\
+                n_w(*)=k,\ n_w|_I=\alpha}}
+        H_{w(0)}\cdots H_{w(m+k-1)},\qquad H_*=T.
     \end{align*}
     These coefficients commute with semiring homomorphisms.
     They are the ordered-word coefficients in the one-distinguished-interaction
@@ -373,7 +373,7 @@
     Every scalar family $(\lambda_\alpha)_{\alpha\in E_m}$ satisfies
     \begin{align*}
         \operatorname{OSR}\!\left(\sum_{\alpha\in E_m}\lambda_\alpha C_\alpha\right)
-            \le |E_m|\binom{m+2k+1}{2k+1}r^k.
+        \le |E_m|\binom{m+2k+1}{2k+1}r^k.
     \end{align*}
     This is the algebraic fixed-frequency estimate used in
     \cite[Lemma~4.2]{Arad2013AreaLaw}, with the corrected count from
@@ -390,7 +390,7 @@
     These operators commute and have rank at most one. Ordered-word expansion gives
     \begin{align*}
         [X^k](A(z)+B(z)+TX)^{m+k}
-          =\sum_{\alpha\in E_m}\left(\prod_a z_a^{\alpha(a)}\right)C_\alpha.
+        =\sum_{\alpha\in E_m}\left(\prod_a z_a^{\alpha(a)}\right)C_\alpha.
     \end{align*}
     The commuting-gap coefficient bound gives rank at most
     $\binom{m+2k+1}{2k+1}r^k$ for every $z$.
@@ -405,10 +405,10 @@
     Let $q,\ell,s,r$ be natural numbers with $q\ge1$, $s\le\ell+1$, and
     $r\le\ell$. Then
     \begin{align*}
-        &\sum_{u=0}^{s-1}\sum_{k=0}^{\lfloor r/s\rfloor}
-          \binom{r-k+s}{s}\binom{r+k+1}{2k+1}
-          q^{2k+2|u+1-\lfloor s/2\rfloor|}\\
-        &\hspace{2em}\le\bigl(q(\ell+1)\bigr)^{3s+6\lfloor\ell/s\rfloor+4}.
+         & \sum_{u=0}^{s-1}\sum_{k=0}^{\lfloor r/s\rfloor}
+        \binom{r-k+s}{s}\binom{r+k+1}{2k+1}
+        q^{2k+2|u+1-\lfloor s/2\rfloor|}                                      \\
+         & \hspace{2em}\le\bigl(q(\ell+1)\bigr)^{3s+6\lfloor\ell/s\rfloor+4}.
     \end{align*}
     For $s=0$ the sum is empty and natural division by zero is taken to be zero.
     These are the scalar bounds in \cite[Lemma~4.2]{Arad2013AreaLaw}, with the
@@ -420,8 +420,8 @@
     The inequalities $\binom{n+k}{k}\le(n+1)^k$ and
     $\binom{n}{k}\le n^k$ give
     \begin{align*}
-        \binom{r-k+s}{s}&\le B^s, &
-        \binom{r+k+1}{2k+1}&\le B^{4k+2}.
+        \binom{r-k+s}{s}    & \le B^s,      &
+        \binom{r+k+1}{2k+1} & \le B^{4k+2}.
     \end{align*}
     Here $r+k+1\le(\ell+1)^2$. Since $|u+1-\lfloor s/2\rfloor|\le s$,
     the remaining factor is at most $B^{2k+2s}$.
