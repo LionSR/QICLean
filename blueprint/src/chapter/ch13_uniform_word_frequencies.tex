@@ -1,0 +1,79 @@
+\section{Simultaneous frequencies in uniform words}
+
+Let $A$ be an alphabet of size $n\ge1$, let $B$ be a finite set of size $\ell$,
+and let $m\ge0$. Choose a family $(w_b)_{b\in B}$ uniformly from
+$(A^{\{0,\ldots,m-1\}})^B$. Thus all letters at all positions of all words are
+independent and uniform. Write $C_a(w)$ for the number of occurrences of $a$ in $w$.
+
+\begin{theorem}[Exact exponential moment of a letter count]
+    \label{thm:uniform_word_exponential_moment}
+    \lean{WordMultiplicity.sum_two_pow_countsFinsupp,
+        WordMultiplicity.average_two_pow_countsFinsupp}
+    \leanok
+    \uses{def:poisson_word_count_vector}
+    For every letter $a\in A$,
+    \begin{align}
+        \sum_{w\in A^{\{0,\ldots,m-1\}}}2^{C_a(w)} & =(n+1)^m,   \\
+        \mathbb E\,2^{C_a(w)}                      & =(1+1/n)^m.
+        \label{eq:uniform_word_exponential_moment}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:poisson_word_count_vector}
+    Factor $2^{C_a(w)}$ as the product over word positions of $2$ when
+    $w(j)=a$ and $1$ otherwise. The sum over all letters at one position is
+    $2+(n-1)=n+1$. Distribute the product of these sums to obtain $(n+1)^m$.
+    Divide by the number $n^m$ of words to obtain the expectation.
+\end{proof}
+
+\begin{theorem}[Simultaneous word-frequency tail]
+    \label{thm:uniform_word_frequency_tail}
+    \lean{WordMultiplicity.uniform_word_family_frequency_tail_exact,
+        WordMultiplicity.uniform_word_family_frequency_tail}
+    \leanok
+    \uses{thm:uniform_word_exponential_moment}
+    For every integer $u\ge0$,
+    \begin{align}
+        \Pr\bigl(\exists b\in B,\ a\in A:\ C_a(w_b)\ge u\bigr)
+         & \le n\ell\frac{(1+1/n)^m}{2^u}       \\
+         & \le n\ell\exp\bigl(m/n-u\log2\bigr).
+        \label{eq:uniform_word_frequency_tail}
+    \end{align}
+    If $B$ is empty, the exceptional set is empty and both bounds are zero.
+    These estimates control simultaneous word multiplicities in the argument
+    in~\cite[Section~2.3.1, Corollary~2.14]{Landau2013PolynomialTime}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:uniform_word_exponential_moment}
+    For each fixed $b,a$, every exceptional assignment contributes at least
+    $2^u$ to the sum of $2^{C_a(w_b)}$. Separate the coordinate $b$ in the
+    full finite product; its normalized sum is the single-word expectation
+    in~(\ref{eq:uniform_word_exponential_moment}). Sum the resulting Markov
+    bound over the $n\ell$ pairs $(b,a)$. Finally use $1+1/n\le e^{1/n}$
+    and $2^u=e^{u\log2}$.
+\end{proof}
+
+\begin{theorem}[A logarithmic threshold for all letter counts]
+    \label{thm:uniform_word_frequency_quantile}
+    \lean{WordMultiplicity.uniform_word_family_frequency_tail_le,
+        WordMultiplicity.uniform_word_family_frequency_tail_ceil}
+    \leanok
+    \uses{thm:uniform_word_frequency_tail}
+    Let $\delta>0$. For $\ell\ge1$, every integer $u\ge0$ satisfying
+    $u\log2\ge m/n+\log(n\ell/\delta)$ gives an exceptional probability
+    at most $\delta$ in~(\ref{eq:uniform_word_frequency_tail}). In particular,
+    the threshold
+    \begin{align}
+        u=\max\left\{0,\left\lceil\frac{m/n+\log(n\ell/\delta)}{\log2}\right\rceil\right\}
+        \label{eq:uniform_word_frequency_quantile}
+    \end{align}
+    suffices.
+    For $\ell=0$, the exceptional probability is zero for every threshold.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:uniform_word_frequency_tail}
+    The threshold gives $m/n-u\log2\le\log(\delta/(n\ell))$.
+    Substitute this into~(\ref{eq:uniform_word_frequency_tail}) and exponentiate.
+    The ceiling in~(\ref{eq:uniform_word_frequency_quantile}) satisfies the
+    threshold inequality because $\log2>0$.
+\end{proof}

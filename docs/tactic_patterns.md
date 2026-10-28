@@ -1530,3 +1530,18 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Decision:** Keep these existing algebraic and spectral abstractions. The
   Markov and sample-existence arguments call the proved finite moment bound;
   no new ordered-product decomposition or proof automation is introduced.
+
+
+### Finite exponential Markov and a union of events — existing lemmas (2026-10-28)
+
+- **Consumers:** The matrix tail estimate in
+  `Probability/FiniteMatrixSampling.lean` and the letter-frequency estimate in
+  `Probability/UniformWordFrequency.lean`.
+- **Reuse:** The word-frequency argument applies `Finset.card_nsmul_le_sum`
+  directly to the exceptional set and then
+  `Finset.sum_le_sum_of_subset_of_nonneg`. The simultaneous bound uses
+  `Finset.card_biUnion_le`; `Equiv.funSplitAt` identifies each actual marginal
+  average in the full finite product.
+- **Decision:** These existing finite-sum results suffice. No separate general Markov
+  theorem, independent-marginal hypothesis or probability-measure construction
+  is introduced.
