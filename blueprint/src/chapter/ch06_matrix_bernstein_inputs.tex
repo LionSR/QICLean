@@ -1,0 +1,247 @@
+\section{Deterministic inputs of the matrix Bernstein inequality}
+\label{sec:matrix_bernstein_inputs}
+
+% Tropp, Found. Comput. Math. 12 (2012), Sections 2.4--2.6, Proposition 3.1,
+% Corollary 3.7, Lemma 6.7, Theorems 1.4 and 1.6; Tropp, An Introduction to
+% Matrix Concentration Inequalities (2015), Definition 2.1.5, Lemma 6.6.2 and
+% Section 6.6.4.
+
+The matrix Bernstein inequality of~\cite[Theorems~1.4 and~1.6]{Tropp2012User}
+bounds the largest eigenvalue of a sum of independent centred Hermitian random
+matrices $Y_k$ with $\lambda_{\max}(Y_k)\le R$, and the norm of a sum of
+independent centred rectangular random matrices. Its proof by the matrix Laplace
+transform method combines Lieb's concavity theorem with the scalar and matrix
+inequalities of this section. Throughout, $\|\cdot\|$ is the operator norm and
+$A\le B$ is the order of Hermitian matrices.
+
+\subsection{The scalar Bernstein function}
+
+\begin{definition}[Bernstein function]
+    \label{def:bernstein_function}
+    \lean{Real.bernsteinFactor}
+    \leanok
+    For $R>0$ and $\theta\in\mathbb{R}$, put
+    $g(\theta)=(e^{\theta R}-\theta R-1)/R^{2}$.
+\end{definition}
+
+\begin{theorem}[Scalar Bernstein bound]
+    \label{thm:scalar_bernstein_bound}
+    \lean{Real.exp_mul_le_one_add_add_bernsteinFactor_mul_sq}
+    \leanok
+    \uses{def:bernstein_function}
+    Let $R>0$, $\theta\ge0$ and $x\le R$. Then
+    $e^{\theta x}\le1+\theta x+g(\theta)x^{2}$.
+\end{theorem}
+\begin{proof}\leanok
+    This is the scalar inequality in the proof
+    of~\cite[Lemma~6.7]{Tropp2012User}. If $0\le x\le R$, write $x=sR$ with
+    $0\le s\le1$. The exponential series gives
+    $e^{\theta x}-1-\theta x=\sum_{q\ge2}s^{q}(\theta R)^{q}/q!
+        \le s^{2}\sum_{q\ge2}(\theta R)^{q}/q!=g(\theta)x^{2}$,
+    since $s^{q}\le s^{2}$ and $\theta R\ge0$. If $x<0$, then
+    $u=\theta x\le0$ and $e^{u}\le1+u+u^{2}/2$, because
+    $1+u+u^{2}/2-e^{u}$ has derivative $1+u-e^{u}\le0$ and vanishes at $u=0$.
+    Finally $\theta^{2}/2\le g(\theta)$, since
+    $e^{v}\ge1+v+v^{2}/2$ for $v=\theta R\ge0$.
+\end{proof}
+
+\begin{theorem}[Bernstein estimate of the function $g$]
+    \label{thm:bernstein_function_estimate}
+    \lean{Real.bernsteinFactor_le}
+    \leanok
+    \uses{def:bernstein_function}
+    Let $R>0$ and $0\le\theta<3/R$. Then
+    $g(\theta)\le\dfrac{\theta^{2}/2}{1-\theta R/3}$.
+\end{theorem}
+\begin{proof}\leanok
+    As in the proof of~\cite[Lemma~6.6.2]{Tropp2015Introduction}, with
+    $v=\theta R\in[0,3)$ and $q!\ge2\cdot3^{q-2}$ for $q\ge2$,
+    $e^{v}-v-1=\sum_{q\ge2}v^{q}/q!\le\frac{v^{2}}{2}\sum_{q\ge0}(v/3)^{q}
+        =\frac{v^{2}/2}{1-v/3}$.
+    Divide by $R^{2}$.
+\end{proof}
+
+\begin{theorem}[The Bernstein exponent]
+    \label{thm:bernstein_exponent}
+    \lean{Real.neg_mul_add_bernsteinFactor_mul_le,
+        Real.exists_neg_mul_add_bernsteinFactor_mul_le}
+    \leanok
+    \uses{def:bernstein_function}
+    Let $R>0$, $\sigma^{2}\ge0$ and $t\ge0$, and put
+    $\theta=t/(\sigma^{2}+Rt/3)$, with $\theta=0$ when $t=0$. Then $\theta\ge0$ and
+    \begin{align}
+        \label{eq:bernstein_exponent}
+        -\theta t+g(\theta)\sigma^{2}\le-\frac{t^{2}/2}{\sigma^{2}+Rt/3}.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bernstein_function_estimate}
+    This is the choice of parameter in the proof
+    of~\cite[Theorem~6.6.1]{Tropp2015Introduction}. If $t=0$ both sides vanish.
+    Let $t>0$ and $D=\sigma^{2}+Rt/3>0$. If $\sigma^{2}=0$, then
+    $\theta=3/R$ and the left side is $-3t/R\le-3t/(2R)$. If $\sigma^{2}>0$, then
+    $\theta R<3$ and $1-\theta R/3=\sigma^{2}/D$, so
+    Theorem~\ref{thm:bernstein_function_estimate} gives
+    $g(\theta)\sigma^{2}\le\theta^{2}D/2=t^{2}/(2D)$, and
+    $-\theta t+t^{2}/(2D)=-t^{2}/(2D)$.
+\end{proof}
+
+\subsection{Matrix inequalities}
+
+\begin{theorem}[Transfer of the Bernstein bound]
+    \label{thm:bernstein_transfer}
+    \lean{Matrix.IsHermitian.exp_smul_le_one_add_add_bernsteinFactor_smul_sq}
+    \leanok
+    \uses{def:bernstein_function}
+    Let $Y$ be a Hermitian matrix with $Y\le R\,\mathbb{1}$ for some $R>0$, and let
+    $\theta\ge0$. Then $e^{\theta Y}\le\mathbb{1}+\theta Y+g(\theta)Y^{2}$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:scalar_bernstein_bound}
+    Every eigenvalue of $Y$ is at most $R$. Both sides are functions of $Y$, so
+    Theorem~\ref{thm:scalar_bernstein_bound} applied to each eigenvalue gives the
+    claim by the functional calculus, as in the proof
+    of~\cite[Lemma~6.7]{Tropp2012User}.
+\end{proof}
+
+\begin{theorem}[Logarithm of a perturbed identity]
+    \label{thm:log_le_of_le_one_add}
+    \lean{Matrix.PosDef.log_le_of_le_one_add}
+    \leanok
+    Let $A$ be positive definite and $C$ positive semidefinite with
+    $A\le\mathbb{1}+C$. Then $\log A\le C$.
+\end{theorem}
+\begin{proof}\leanok
+    The logarithm is operator monotone~\cite[Equation~(2.8)]{Tropp2012User}, so
+    $\log A\le\log(\mathbb{1}+C)$. The eigenvalues $y$ of $\mathbb{1}+C$ satisfy
+    $y\ge1$ and $\log y\le y-1$, so $\log(\mathbb{1}+C)\le C$.
+\end{proof}
+
+\begin{theorem}[Dimension bound for the trace exponential]
+    \label{thm:trace_exp_dimension_bound}
+    \lean{Matrix.IsHermitian.re_trace_exp_le_card_mul_exp_of_le,
+        Matrix.IsHermitian.re_trace_exp_le_card_mul_exp_norm}
+    \leanok
+    \uses{thm:trace_exp_monotone}
+    Let $M$ be a Hermitian $d\times d$ matrix with $M\le c\,\mathbb{1}$. Then
+    $\operatorname{tr}e^{M}\le d\,e^{c}$. In particular
+    $\operatorname{tr}e^{M}\le d\,e^{\|M\|}$.
+\end{theorem}
+\begin{proof}\leanok
+    By Theorem~\ref{thm:trace_exp_monotone},
+    $\operatorname{tr}e^{M}\le\operatorname{tr}e^{c\mathbb{1}}=d\,e^{c}$; and
+    $M\le\|M\|\,\mathbb{1}$. This is the bound used in the proof
+    of~\cite[Corollary~3.7]{Tropp2012User}.
+\end{proof}
+
+\begin{theorem}[Rayleigh quotients and the trace exponential]
+    \label{thm:rayleigh_trace_exp}
+    \lean{Matrix.IsHermitian.exp_re_dotProduct_div_le_re_trace_exp,
+        Matrix.IsHermitian.exp_re_dotProduct_le_re_trace_exp}
+    \leanok
+    Let $S$ be a Hermitian matrix and $x\neq0$ a vector. Then
+    $\exp\bigl(\langle x,Sx\rangle/\langle x,x\rangle\bigr)\le\operatorname{tr}e^{S}$.
+\end{theorem}
+\begin{proof}\leanok
+    Write $S=U\operatorname{diag}(\lambda_i)U^{*}$ with $U$ unitary and
+    $c=U^{*}x$, and put $p_i=|c_i|^{2}/\langle x,x\rangle$. Then $p_i\ge0$,
+    $\sum_ip_i=1$ and $\langle x,Sx\rangle/\langle x,x\rangle=\sum_ip_i\lambda_i$.
+    Convexity of the exponential and $p_i\le1$ give
+    $e^{\sum_ip_i\lambda_i}\le\sum_ip_ie^{\lambda_i}\le\sum_ie^{\lambda_i}
+        =\operatorname{tr}e^{S}$.
+\end{proof}
+
+\begin{theorem}[Tail form of the trace exponential]
+    \label{thm:trace_exp_eigenvalue_tail}
+    \lean{Matrix.IsHermitian.re_trace_exp_smul_eq_sum,
+        Matrix.IsHermitian.exp_mul_le_re_trace_exp_smul,
+        Matrix.IsHermitian.exp_mul_le_re_trace_exp_smul_of_not_le}
+    \leanok
+    Let $S$ be a Hermitian matrix, $\theta\ge0$ and $t\in\mathbb{R}$. If some
+    eigenvalue of $S$ is at least $t$, in particular if $S\not\le t\,\mathbb{1}$,
+    then $e^{\theta t}\le\operatorname{tr}e^{\theta S}$.
+\end{theorem}
+\begin{proof}\leanok
+    With eigenvalues $\lambda_i$ of $S$,
+    $\operatorname{tr}e^{\theta S}=\sum_ie^{\theta\lambda_i}\ge e^{\theta\lambda_j}
+        \ge e^{\theta t}$ for an eigenvalue $\lambda_j\ge t$. This is the bound
+    $e^{\lambda_{\max}(\theta Y)}\le\operatorname{tr}e^{\theta Y}$ in the proof
+    of~\cite[Proposition~3.1]{Tropp2012User}.
+\end{proof}
+
+\subsection{The Hermitian dilation}
+
+\begin{definition}[Hermitian dilation]
+    \label{def:hermitian_dilation}
+    \lean{Matrix.hermitianDilation, Matrix.isHermitian_hermitianDilation,
+        Matrix.hermitianDilation_zero, Matrix.hermitianDilation_add,
+        Matrix.hermitianDilation_smul, Matrix.hermitianDilation_sum}
+    \leanok
+    The Hermitian dilation of a complex $d_1\times d_2$ matrix $Z$ is the
+    Hermitian $(d_1+d_2)\times(d_1+d_2)$ matrix
+    $\mathcal{D}(Z)=\begin{pmatrix}0&Z\\Z^{*}&0\end{pmatrix}$
+    \cite[Equation~(2.10)]{Tropp2012User}. The map $Z\mapsto\mathcal{D}(Z)$ is
+    real-linear.
+\end{definition}
+
+\begin{theorem}[Square of the Hermitian dilation]
+    \label{thm:hermitian_dilation_square}
+    \lean{Matrix.hermitianDilation_mul_self, Matrix.hermitianDilation_sq}
+    \leanok
+    \uses{def:hermitian_dilation}
+    $\mathcal{D}(Z)^{2}=\begin{pmatrix}ZZ^{*}&0\\0&Z^{*}Z\end{pmatrix}$
+    \cite[Equation~(2.11)]{Tropp2012User}.
+\end{theorem}
+\begin{proof}\leanok
+    Multiply the blocks.
+\end{proof}
+
+\begin{theorem}[Norm of a block-diagonal matrix]
+    \label{thm:block_diagonal_norm}
+    \lean{Matrix.l2_opNorm_fromBlocks_zero_zero}
+    \leanok
+    For matrices $P$ and $Q$,
+    $\left\|\begin{pmatrix}P&0\\0&Q\end{pmatrix}\right\|=\max(\|P\|,\|Q\|)$.
+\end{theorem}
+\begin{proof}\leanok
+    For $x=(x_1,x_2)$ the image is $(Px_1,Qx_2)$, and
+    $\|Px_1\|^{2}+\|Qx_2\|^{2}\le\max(\|P\|,\|Q\|)^{2}(\|x_1\|^{2}+\|x_2\|^{2})$.
+    Conversely, the vectors $(x_1,0)$ and $(0,x_2)$ show $\|P\|$ and $\|Q\|$
+    are at most the norm of the block matrix.
+\end{proof}
+
+\begin{theorem}[The dilation preserves the norm]
+    \label{thm:hermitian_dilation_norm}
+    \lean{Matrix.norm_hermitianDilation}
+    \leanok
+    \uses{def:hermitian_dilation}
+    $\|\mathcal{D}(Z)\|=\|Z\|$ \cite[Equation~(2.12)]{Tropp2012User}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hermitian_dilation_square, thm:block_diagonal_norm}
+    Since $\mathcal{D}(Z)$ is Hermitian,
+    $\|\mathcal{D}(Z)\|^{2}=\|\mathcal{D}(Z)^{2}\|=\max(\|ZZ^{*}\|,\|Z^{*}Z\|)
+        =\|Z\|^{2}$.
+\end{proof}
+
+\begin{theorem}[Tail form of the dilation]
+    \label{thm:hermitian_dilation_trace_exp}
+    \lean{Matrix.exp_mul_norm_le_re_trace_exp_smul_hermitianDilation}
+    \leanok
+    \uses{def:hermitian_dilation}
+    Let $Z$ be a complex $d_1\times d_2$ matrix with $d_1+d_2\ge1$ and let
+    $\theta\in\mathbb{R}$. Then
+    $e^{\theta\|Z\|}\le\operatorname{tr}e^{\theta\mathcal{D}(Z)}$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:rayleigh_trace_exp}
+    If $Z=0$ the right side is $d_1+d_2\ge1$. Otherwise $\|Z^{*}Z\|=\|Z\|^{2}$ is
+    an eigenvalue of the positive semidefinite matrix $Z^{*}Z$; let $v$ be a unit
+    eigenvector and $x=(Zv,\|Z\|v)$. Then
+    $\mathcal{D}(Z)x=(\|Z\|Zv,\|Z\|^{2}v)$, so
+    $\langle x,\theta\mathcal{D}(Z)x\rangle=2\theta\|Z\|^{3}$ and
+    $\langle x,x\rangle=2\|Z\|^{2}$. Theorem~\ref{thm:rayleigh_trace_exp} applied
+    to $\theta\mathcal{D}(Z)$ and $x$ gives the claim. With
+    Theorem~\ref{thm:trace_exp_eigenvalue_tail} this is the step from the
+    Hermitian to the rectangular case in~\cite[Theorem~1.6]{Tropp2012User}.
+\end{proof}
