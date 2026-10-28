@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.MatrixBernsteinScalar
+import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.TraceExponentialPerturbation
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Order
 
@@ -145,12 +146,6 @@ theorem IsHermitian.exp_mul_le_re_trace_exp_smul_of_not_le {S : Matrix n n ℂ}
   obtain ⟨_, ⟨i, rfl⟩, hi⟩ := hSt
   exact hS.exp_mul_le_re_trace_exp_smul hθ hi.le
 
-omit [DecidableEq n] in
-/-- The real part of `x* x` is the sum of the squared moduli of the entries of `x`. -/
-lemma re_star_dotProduct_self_eq_sum (x : n → ℂ) :
-    (star x ⬝ᵥ x).re = ∑ i, Complex.normSq (x i) := by
-  simp [dotProduct, Complex.re_sum, Complex.normSq_apply]
-
 /-- **Rayleigh quotients and the trace exponential.** For Hermitian `S` and a nonzero vector
 `x`, `exp(⟨x, Sx⟩ / ⟨x, x⟩) ≤ Tr e^S`. In the eigenbasis of `S` the Rayleigh quotient is
 a convex combination of eigenvalues, so convexity of the exponential bounds its exponential
@@ -162,38 +157,22 @@ theorem IsHermitian.exp_re_dotProduct_div_le_re_trace_exp {S : Matrix n n ℂ}
     (hS : S.IsHermitian) {x : n → ℂ} (hx : x ≠ 0) :
     Real.exp ((star x ⬝ᵥ (S *ᵥ x)).re / (star x ⬝ᵥ x).re) ≤
       (NormedSpace.exp S).trace.re := by
-  set U : Matrix n n ℂ := (hS.eigenvectorUnitary : Matrix n n ℂ) with hUdef
-  set c : n → ℂ := star U *ᵥ x with hc
-  have hUU : U * star U = 1 := by rw [hUdef]; exact Unitary.coe_mul_star_self _
-  have hstar : star x ᵥ* U = star c := by
-    rw [hc, star_mulVec, star_eq_conjTranspose, conjTranspose_conjTranspose]
-  have hquad : star x ⬝ᵥ (S *ᵥ x) = ∑ i, (hS.eigenvalues i : ℂ) * Complex.normSq (c i) := by
-    conv_lhs => rw [hS.spectral_form]
-    rw [← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, hstar, ← hc]
-    simp only [dotProduct, mulVec_diagonal, Pi.star_apply, Complex.normSq_eq_conj_mul_self]
-    refine Finset.sum_congr rfl fun i _ ↦ ?_
-    simp only [RCLike.star_def]; ring
-  have hnorm : star x ⬝ᵥ x = star c ⬝ᵥ c := by
-    rw [← hstar, ← dotProduct_mulVec, hc, mulVec_mulVec, hUU, one_mulVec]
   set N := (star x ⬝ᵥ x).re with hN
-  have hNsum : N = ∑ i, Complex.normSq (c i) := by
-    rw [hN, hnorm, re_star_dotProduct_self_eq_sum]
-  have hNpos : 0 < N := by
-    rw [hN, re_star_dotProduct_self_eq_sum]
-    obtain ⟨j, hj⟩ := Function.ne_iff.mp hx
-    exact lt_of_lt_of_le (Complex.normSq_pos.mpr hj)
-      (Finset.single_le_sum (f := fun i ↦ Complex.normSq (x i))
-        (fun i _ ↦ Complex.normSq_nonneg _) (Finset.mem_univ j))
-  set p : n → ℝ := fun i ↦ Complex.normSq (c i) / N with hp
-  have hp0 : ∀ i ∈ Finset.univ, 0 ≤ p i := fun i _ ↦ div_nonneg (Complex.normSq_nonneg _) hNpos.le
+  have hNsum : ∑ i, hS.spectralWeight x i = N := by
+    simpa [← hS.cfc_eq, cfc_const_one ℝ S] using
+      (hS.re_dotProduct_cfc_mulVec_eq_sum (fun _ ↦ 1) x).symm
+  have hNpos : 0 < N := (RCLike.pos_iff.mp (dotProduct_star_self_pos_iff.mpr hx)).1
+  set p : n → ℝ := fun i ↦ hS.spectralWeight x i / N with hp
+  have hp0 : ∀ i ∈ Finset.univ, 0 ≤ p i := fun i _ ↦
+    div_nonneg (hS.spectralWeight_nonneg x i) hNpos.le
   have hp1 : ∑ i, p i = 1 := by
-    rw [hp]; simp only; rw [← Finset.sum_div, ← hNsum, div_self hNpos.ne']
+    simp only [hp]; rw [← Finset.sum_div, hNsum, div_self hNpos.ne']
   have hp_le : ∀ i, p i ≤ 1 := fun i ↦ hp1 ▸
     Finset.single_le_sum (f := p) hp0 (Finset.mem_univ i)
   have hre : (star x ⬝ᵥ (S *ᵥ x)).re / N = ∑ i, p i • hS.eigenvalues i := by
-    rw [hquad, Complex.re_sum, Finset.sum_div]
+    rw [hS.re_dotProduct_mulVec_eq_sum, Finset.sum_div]
     refine Finset.sum_congr rfl fun i _ ↦ ?_
-    rw [← Complex.ofReal_mul, Complex.ofReal_re, hp, smul_eq_mul]; ring
+    rw [hp, smul_eq_mul]; ring
   rw [hre, hS.re_trace_exp_eq_sum]
   calc Real.exp (∑ i, p i • hS.eigenvalues i) ≤ ∑ i, p i • Real.exp (hS.eigenvalues i) :=
         convexOn_exp.map_sum_le hp0 hp1 fun i _ ↦ Set.mem_univ _

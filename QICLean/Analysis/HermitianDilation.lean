@@ -74,14 +74,12 @@ theorem l2_opNorm_fromBlocks_zero_zero (P : Matrix m m' 𝕜) (Q : Matrix n n' �
   · refine l2_opNorm_le_of_sum_norm_sq_le _ (le_max_of_le_left (norm_nonneg _)) fun x ↦ ?_
     have hP := sum_norm_sq_mulVec_le P (x ∘ Sum.inl)
     have hQ := sum_norm_sq_mulVec_le Q (x ∘ Sum.inr)
-    have hP' : ‖P‖ ^ 2 ≤ max ‖P‖ ‖Q‖ ^ 2 := pow_le_pow_left₀ (norm_nonneg _) (le_max_left _ _) 2
-    have hQ' : ‖Q‖ ^ 2 ≤ max ‖P‖ ‖Q‖ ^ 2 := pow_le_pow_left₀ (norm_nonneg _) (le_max_right _ _) 2
-    have h1 : 0 ≤ ∑ j, ‖(x ∘ Sum.inl) j‖ ^ 2 := by positivity
-    have h2 : 0 ≤ ∑ j, ‖(x ∘ Sum.inr) j‖ ^ 2 := by positivity
     simp only [fromBlocks_mulVec, zero_mulVec, add_zero, zero_add, Fintype.sum_sum_type,
-      Sum.elim_inl, Sum.elim_inr] at hP hQ ⊢
-    simp only [Function.comp_apply] at hP hQ h1 h2
-    nlinarith
+      Sum.elim_inl, Sum.elim_inr, Function.comp_apply] at hP hQ ⊢
+    rw [mul_add]
+    gcongr ?_ + ?_
+    · exact hP.trans (by gcongr; exact le_max_left _ _)
+    · exact hQ.trans (by gcongr; exact le_max_right _ _)
   · refine l2_opNorm_le_of_sum_norm_sq_le _ (norm_nonneg _) fun x ↦ ?_
     have h := sum_norm_sq_mulVec_le (fromBlocks P 0 0 Q) (Sum.elim x 0)
     simpa [fromBlocks_mulVec, Fintype.sum_sum_type] using h
@@ -154,18 +152,7 @@ theorem norm_hermitianDilation (Z : Matrix m n ℂ) : ‖hermitianDilation Z‖ 
     l2_opNorm_fromBlocks_zero_zero, l2_opNorm_conjTranspose_mul_self,
     show Z * Zᴴ = Zᴴᴴ * Zᴴ by rw [conjTranspose_conjTranspose],
     l2_opNorm_conjTranspose_mul_self, l2_opNorm_conjTranspose, max_self] at h
-  have := mul_self_eq_mul_self_iff.mp h
-  rcases this with h1 | h1
-  · exact h1.symm
-  · have : ‖Z‖ = 0 := by linarith [norm_nonneg Z, norm_nonneg (hermitianDilation Z)]
-    linarith [norm_nonneg (hermitianDilation Z)]
-
-
-omit [DecidableEq m] [DecidableEq n] in
-/-- The inner product of two vectors on a disjoint union splits into the two blocks. -/
-lemma star_sum_elim_dotProduct_sum_elim (u u' : m → ℂ) (v v' : n → ℂ) :
-    star (Sum.elim u v) ⬝ᵥ Sum.elim u' v' = star u ⬝ᵥ u' + star v ⬝ᵥ v' := by
-  simp [dotProduct, Fintype.sum_sum_type]
+  exact ((mul_self_inj (norm_nonneg _) (norm_nonneg _)).mp h).symm
 
 /-- **Tail form of the dilation.** For every real `θ`, `e^{θ‖Z‖} ≤ Tr e^{θ𝒟(Z)}`. With
 `λ_max(𝒟(Z)) = ‖Z‖` (Tropp 2012, equation (2.12); Tropp 2015, equation (2.1.28)) this is
@@ -181,16 +168,10 @@ theorem exp_mul_norm_le_re_trace_exp_smul_hermitianDilation [Nonempty (m ⊕ n)]
   · subst hZ
     simp only [norm_zero, mul_zero, Real.exp_zero, hermitianDilation_zero, smul_zero,
       NormedSpace.exp_zero, trace_one]
-    have h := Fintype.card_pos (α := m ⊕ n)
-    have : (1 : ℝ) ≤ (Fintype.card (m ⊕ n) : ℝ) := by exact_mod_cast h
-    simpa using this
-  set a := ‖Z‖ with ha_def
+    simpa using (Nat.one_le_cast (α := ℝ)).mpr (Fintype.card_pos (α := m ⊕ n))
+  set a := ‖Z‖
   have ha : 0 < a := norm_pos_iff.mpr hZ
-  obtain ⟨i₀, j₀, -⟩ : ∃ i j, Z i j ≠ 0 := by
-    by_contra h
-    push Not at h
-    exact hZ (Matrix.ext h)
-  have : Nonempty n := ⟨j₀⟩
+  have : Nonempty n := not_isEmpty_iff.mp fun _ ↦ hZ (Matrix.ext fun _ j ↦ isEmptyElim j)
   have H := isHermitian_conjTranspose_mul_self Z
   have hmem := CStarAlgebra.norm_mem_spectrum_of_nonneg (Zᴴ * Z)
     (posSemidef_conjTranspose_mul_self Z).nonneg
@@ -223,13 +204,14 @@ theorem exp_mul_norm_le_re_trace_exp_smul_hermitianDilation [Nonempty (m ⊕ n)]
       zero_add, add_zero]
     rw [mulVec_mulVec, hv]
   have hquad : star x ⬝ᵥ ((θ • hermitianDilation Z) *ᵥ x) = ((2 * θ * a ^ 3 : ℝ) : ℂ) := by
-    rw [smul_mulVec, dotProduct_smul, hDx, hx_def, star_sum_elim_dotProduct_sum_elim,
-      dotProduct_smul, hZv, hstar_av, smul_dotProduct, dotProduct_smul, hs]
+    rw [smul_mulVec, dotProduct_smul, hDx, hx_def, Function.star_sumElim,
+      sumElim_dotProduct_sumElim, dotProduct_smul, hZv, hstar_av, smul_dotProduct,
+      dotProduct_smul, hs]
     simp only [smul_eq_mul, Complex.real_smul]
     push_cast; ring
   have hnorm : star x ⬝ᵥ x = ((2 * a ^ 2 : ℝ) : ℂ) := by
-    rw [hx_def, star_sum_elim_dotProduct_sum_elim, hZv, hstar_av, smul_dotProduct,
-      dotProduct_smul, hs]
+    rw [hx_def, Function.star_sumElim, sumElim_dotProduct_sumElim, hZv, hstar_av,
+      smul_dotProduct, dotProduct_smul, hs]
     simp only [smul_eq_mul]
     push_cast; ring
   have key := ((isHermitian_hermitianDilation Z).smul

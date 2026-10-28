@@ -82,12 +82,7 @@ lemma exp_le_one_add_add_sq_div_two_of_nonpos {u : ℝ} (hu : u ≤ 0) :
 
 /-- The factorial bound `q! ≥ 2 · 3^{q-2}` for `q ≥ 2`, used in Tropp 2015, Lemma 6.6.2. -/
 lemma two_mul_three_pow_le_factorial_add_two (n : ℕ) : 2 * 3 ^ n ≤ (n + 2)! := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-    rw [show n + 1 + 2 = (n + 2) + 1 by ring, Nat.factorial_succ, pow_succ]
-    nlinarith
-
+  simpa [add_comm] using Nat.factorial_mul_pow_le_factorial (m := 2) (n := n)
 
 /-- For `v ≥ 0`, `v²/2 ≤ e^v - v - 1`. -/
 lemma sq_div_two_le_exp_sub_sub_one {v : ℝ} (hv : 0 ≤ v) : v ^ 2 / 2 ≤ Real.exp v - v - 1 := by
@@ -154,7 +149,6 @@ theorem bernsteinFactor_le {R θ : ℝ} (hR : 0 < R) (hθ : 0 ≤ θ) (hθR : θ
       _ ≤ v ^ 2 / 2 * (v ^ n / 3 ^ n) * (n + 2)! := by gcongr
   have key := hasSum_le hle (hasSum_exp_sub_one_sub v)
     ((hasSum_geometric_of_lt_one hr0 hr1).mul_left (v ^ 2 / 2))
-  have h3 : 0 < 1 - v / 3 := by linarith
   unfold bernsteinFactor
   rw [div_le_iff₀ (by positivity)]
   calc Real.exp v - v - 1 ≤ v ^ 2 / 2 * (1 - v / 3)⁻¹ := key
@@ -179,8 +173,7 @@ theorem neg_mul_add_bernsteinFactor_mul_le {R σsq t : ℝ} (hR : 0 < R) (hσ : 
   rcases hσ.eq_or_lt with hσ0 | hσpos
   · subst hσ0
     simp only [mul_zero, add_zero]
-    rw [hθ, hD]
-    rw [neg_le_neg_iff, zero_add]
+    rw [hθ, hD, neg_le_neg_iff, zero_add]
     field_simp
     nlinarith
   · have hθR : θ * R < 3 := by
