@@ -79,7 +79,13 @@ import QICLean.Algebra.NewtonGirard
 import QICLean.Algebra.NilMatrixSubalgebra
 import QICLean.Algebra.NilpotentSubspaceThree
 import QICLean.Algebra.NilpotentSubspaceTwo
+<<<<<<< HEAD
 import QICLean.Algebra.NoSingletonWords
+=======
+import QICLean.Algebra.OneMarkerFullCounts
+import QICLean.Algebra.OneMarkerWeightedSchmidtRank
+import QICLean.Algebra.OneWindowWordPartition
+>>>>>>> d6f5a53b (feat(Algebra): partition actual low-frequency word coefficients)
 import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
 import QICLean.Algebra.OperatorSchmidt
@@ -142,6 +148,7 @@ import QICLean.Algebra.TwoMarkerWordCoefficients
 import QICLean.Algebra.UnitModulusPowerSum
 import QICLean.Algebra.UnitaryTraceZero
 import QICLean.Algebra.WeightedFrequencySchmidtRank
+import QICLean.Algebra.WordCoefficient
 import QICLean.Algebra.WordCoefficientExpansion
 import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums
