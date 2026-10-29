@@ -114,3 +114,72 @@ up to the associator and the exchange of the first two factors.
     Otherwise the failure event is the whole unitary group, of probability
     one, which exceeds $\eta$.
 \end{proof}
+
+
+\begin{theorem}[Sampling or retaining the whole space]
+    \label{thm:viable_sample_or_full}
+    \lean{Submodule.randomSubspace_eq_of_card_eq,
+        Submodule.IsViable.randomSubspace_min_of_le,
+        Submodule.exists_isViable_randomSubspace_min,
+        Submodule.exists_measurable_randomSubspace_min_event}
+    \leanok
+    \uses{thm:viable_random_sampling}
+    Fix a $\delta$-viable space $W$ of dimension $Q$ and an orthonormal
+    basis, where $\delta\le1$. Sample $\min\{s,Q\}$ coordinate vectors
+    after a Haar unitary. There is a measurable event on which the
+    resulting space is $(1-c)$-viable, where
+    $c=(1-\delta)\min\{s,Q\}/(8Q)$.
+    Its complement has measure at most
+    \[
+      \eta=\begin{cases}
+        0,&Q\le s,\\
+        \bigl(1+2/\sqrt{(1-\delta)s/(8Q)}\bigr)^{2\dim T}
+          Qe^{-s/16},&s<Q.
+      \end{cases}
+    \]
+    The event has measure at least $1-\max\{\eta,0\}$.
+    For $Q\le s$ the sample is exactly $W$ for every unitary.
+    This assertion concerns a fixed input space; it does not assert
+    measurable dependence on a varying input.
+\end{theorem}
+\begin{proof}\leanok
+    A full coordinate sample has dimension $Q$ and is contained in $W$.
+    In the other case take the complement of a measurable hull of the
+    bad set in the corrected sampling estimate. The hull has the same
+    measure as the bad set, and its complement consists of successful
+    samples.
+\end{proof}
+
+\begin{theorem}[The actual sampled word image]
+    \label{thm:sampled_operator_word_image}
+    \lean{Submodule.sampledWordImage,
+        Submodule.finrank_sampledWordImage_le,
+        Submodule.exists_measurable_sampledWordImage_event}
+    \leanok
+    \uses{thm:viable_sample_or_full,thm:spectral_operator_word_powers}
+    Suppose a fixed family of $N$ operators has the following property:
+    every length-$a$ word image of a $\delta$-viable space for $T$ is
+    $\Delta^a/(1-\delta)^2$-viable for $T$, whenever $\delta<1$.
+    Apply the family to the actual sample above. On its measurable
+    success event the span of the actual length-$a$ images is
+    $\Delta^a/c^2$-viable for the same $T$ and has dimension at most
+    $N^a\min\{s,Q\}$, provided $a,s\ge1$, $W\ne0$ and $\delta<1$.
+    The operators and target precede the input and the Haar unitary.
+\end{theorem}
+\begin{proof}\leanok
+    Apply the assumed word-improvement property to each successful
+    sample. The dimension of each image is at most the sample dimension;
+    summing over the $N^a$ ordered words gives the count.
+\end{proof}
+
+\begin{lemma}[A uniform interval trimming radius]
+    \label{lem:viable_node_trimming_radius}
+    \lean{Real.viable_node_trimming_radius_budget}
+    \leanok
+    For integers $D\ge1$ and $0\le m\le L$, put
+    $\xi=(1000D\sqrt{L+1})^{-1}$. Then $\xi>0$ and
+    $4\xi\sqrt{mD^2}\le1/250$.
+\end{lemma}
+\begin{proof}\leanok
+    Use $\sqrt{m}\le\sqrt{L+1}$ and cancel the positive factors.
+\end{proof}

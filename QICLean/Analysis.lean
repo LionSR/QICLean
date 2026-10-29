@@ -266,6 +266,7 @@ import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RoughLowerCoefficient
 import QICLean.Analysis.RpowConvexity
+import QICLean.Analysis.SampledOperatorImage
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo
 import QICLean.Analysis.ScaleRecurrence
@@ -360,11 +361,14 @@ import QICLean.Analysis.ViableSubspaceDimension
 import QICLean.Analysis.ViableSubspaceEntropy
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
+import QICLean.Analysis.ViableSubspaceSampleOrFull
+import QICLean.Analysis.ViableSubspaceSamplingEvent
 import QICLean.Analysis.ViableSubspaceSchmidtRank
 import QICLean.Analysis.ViableSubspaceSpectralProjector
 import QICLean.Analysis.ViableSubspaceTensor
 import QICLean.Analysis.ViableSubspaceTensorTransport
 import QICLean.Analysis.ViableSubspaceTrimming
+import QICLean.Analysis.ViableTrimmingRadius
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel
