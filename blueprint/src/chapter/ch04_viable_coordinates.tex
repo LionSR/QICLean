@@ -211,3 +211,52 @@ right.
 \begin{proof}
     Evaluate both sides on $z=e_{(b,a)}$ and extend linearly.
 \end{proof}
+
+\begin{theorem}[A regional cut with the full exterior]
+    \label{thm:regional_cut_full_exterior}
+    \lean{Entropy.subregionCut, Entropy.mem_subregionCut,
+        Entropy.subregionCutSubtypeEquiv, Entropy.subregionRestSubtypeEquiv,
+        Entropy.regionConfigurationSplit,
+        Entropy.schmidtRank_cutEnvVector_regionConfigurationSplit}
+    \leanok
+    \uses{thm:cut_environment_coordinates}
+    Let $A\subseteq J\subseteq V$ be finite sets of sites with common
+    on-site dimension $q$. Write $F_J\psi$ for the configuration vector
+    of $\psi$ in $\mathcal H_J\otimes\mathcal H_{J^c}$. Splitting the
+    first factor at $A$ and retaining the entire exterior gives
+    \begin{align}
+        \SR_{A:(J\setminus A)\cup J^c}(F_J\psi)
+        =\operatorname{rank}\rho_A(\psi).
+        \label{eq:regional_cut_full_exterior}
+    \end{align}
+    No exterior factor is traced out before computing the Schmidt rank.
+\end{theorem}
+\begin{proof}\leanok
+    The two coefficient matrices differ only by the row identification of
+    $A$ and the column identification
+    $(J\setminus A)\sqcup J^c\cong A^c$. Reindexing preserves rank, and
+    the rank of a coefficient matrix equals that of its product with its
+    conjugate transpose.
+\end{proof}
+
+\begin{theorem}[Actual regional tensor coordinates]
+    \label{thm:regional_tensor_viability}
+    \lean{Entropy.regionTensorCoordinates,
+        Entropy.isCloseTo_prodExt_region_iff_isViable,
+        Entropy.regionTensorCoordinates_eq_exteriorFirst}
+    \leanok
+    \uses{thm:viable_coordinates,thm:regional_cut_full_exterior}
+    Let $G\subseteq\mathcal H_V$ and $S\subseteq\mathcal H_J$.
+    The coordinate extension $S\otimes\mathcal H_{J^c}$ is
+    $\delta$-close to $F_JG$ if and only if $S$ is $\delta$-viable for
+    the image of $G$ under the canonical tensor isometry
+    $\mathcal H_V\cong\mathcal H_J\otimes\mathcal H_{J^c}$.
+    Splitting the exterior first and then exchanging the tensor factors
+    gives the same isometry.
+\end{theorem}
+\begin{proof}\leanok
+    The Euclidean tensor isometry carries a coordinate extension onto the
+    tensor product subspace. Both orders of the configuration split evaluate
+    $\psi$ at the same global configuration, so they agree after exchanging
+    the tensor factors.
+\end{proof}
