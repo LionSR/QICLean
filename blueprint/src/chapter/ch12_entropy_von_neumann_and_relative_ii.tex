@@ -682,6 +682,150 @@ the chapter boundary.
     so~(\ref{eq:agsp_tail_estimate}) proves~(\ref{eq:agsp_schmidt_geometric_tail}).
 \end{proof}
 
+
+\begin{theorem}[Capped geometric mass]
+    \label{thm:agsp_capped_geometric_mass}
+    \lean{Real.sum_min_one_mul_pow_le}
+    \notready
+    Let $A\ge0$, $0<\delta<1$, and $M\ge0$ be an integer. Then
+    \begin{align}
+        \sum_{j=0}^{M-1}\min\{1,A\delta^j\}
+         & \le2+\frac{3\log(1+A)}{-\log\delta}.
+        \label{eq:agsp_capped_geometric_mass}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    Put $x=-\log\delta>0$. The logarithmic inequality
+    $\log(\delta^{-1})\le\delta^{-1}-1$ gives
+    $\delta/(1-\delta)\le1/x$.
+    If $A\le1$, use $A\le2\log(1+A)$ and sum the geometric series.
+    If $A>1$, split the sum at $a=\lceil\log A/x\rceil$.
+    The first $a$ terms contribute at most $a$, and the rest at most
+    $1/(1-\delta)$. Now $a\le1+\log A/x$ and
+    $\log A+1\le3\log(1+A)$ give
+    (\ref{eq:agsp_capped_geometric_mass}).
+\end{proof}
+
+\begin{theorem}[Orthogonal remainder under powers]
+    \label{thm:agsp_power_orthogonal_remainder}
+    \lean{LinearMap.inner_pow_eq_zero_and_norm_sq_le}
+    \notready
+    Let $T$ be a complex linear endomorphism of an inner product space,
+    let $\Gamma$ be a vector, and let $\theta\ge0$.
+    Suppose that every $v\perp\Gamma$ satisfies $Tv\perp\Gamma$ and
+    $\|Tv\|^2\le\theta\|v\|^2$.
+    For every integer $j\ge0$ and $v\perp\Gamma$, one has
+    $T^jv\perp\Gamma$ and $\|T^jv\|^2\le\theta^j\|v\|^2$.
+\end{theorem}
+\begin{proof}
+    Induct on $j$ and apply the assumed inequality to $T^jv$.
+\end{proof}
+
+\begin{theorem}[Schmidt tail from an orthogonal remainder]
+    \label{thm:agsp_orthogonal_remainder_tail}
+    \lean{Matrix.one_sub_kyFanNorm_le_of_orthogonal_decomposition}
+    \notready
+    \uses{def:schmidt_rank}
+    Let $\Gamma$ be a unit bipartite vector, and write
+    $\chi=a\Gamma+v$ with $a\ne0$ and $v\perp\Gamma$.
+    Suppose that $\SR(\chi)\le k<N$, where $N$ is the first-factor dimension.
+    If $F_k$ is the leading $k$-eigenvalue mass of the marginal of $\Gamma$,
+    then $1-F_k\le\|v\|^2/|a|^2$.
+\end{theorem}
+\begin{proof}
+    \uses{thm:homogeneous_overlap_ky_fan,thm:unit_schmidt_coefficient_trace}
+    The homogeneous overlap bound gives
+    $|a|^2\le F_k(|a|^2+\|v\|^2)$.
+    Since $F_k\le1$, rearrangement and division by $|a|^2$ give the claim.
+\end{proof}
+
+\begin{theorem}[Schmidt tails from a specified product overlap]
+    \label{thm:agsp_general_product_tails}
+    \lean{Matrix.sum_eigenvalues_tail_of_operatorSchmidtRank_of_product_overlap}
+    \notready
+    \uses{def:bipartite_operator_schmidt_rank,def:schmidt_rank}
+    Let $\Gamma,\phi$ be unit bipartite vectors with $\SR(\phi)\le1$,
+    and let $a=\langle\Gamma,\phi\rangle\ne0$.
+    Suppose that $K\Gamma=\Gamma$, $\operatorname{OSR}(K)\le D$,
+    and every unit $\psi\perp\Gamma$ satisfies
+    $K\psi\perp\Gamma$ and $\|K\psi\|^2\le\delta$, where $\delta\ge0$.
+    Write $\lambda_0\ge\cdots\ge\lambda_{N-1}$ for the marginal eigenvalues
+    of $\Gamma$. For every integer $j\ge0$,
+    \begin{align}
+        \sum_{D^j\le b<N}\lambda_b
+         & \le\min\left\{1,\frac{1-|a|^2}{|a|^2}\delta^j\right\}.
+        \label{eq:agsp_general_product_tail}
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \uses{thm:agsp_power_orthogonal_remainder,
+        thm:agsp_orthogonal_remainder_tail,thm:schmidt_rank_operator_powers,
+        thm:perpendicular_shrink_homogeneous}
+    Decompose $\phi=a\Gamma+v$. Then $v\perp\Gamma$ and
+    $\|v\|^2=1-|a|^2$.
+    The vector $K^j\phi=a\Gamma+K^jv$ has Schmidt rank at most $D^j$,
+    while $\|K^jv\|^2\le\delta^j(1-|a|^2)$.
+    Apply the orthogonal-remainder bound. The tail is also at most one;
+    a cutoff beyond $N$ has an empty tail.
+\end{proof}
+
+\begin{theorem}[Exact-projection entropy endpoint]
+    \label{thm:agsp_zero_shrinking_entropy}
+    \lean{Matrix.schmidtRank_le_of_zero_perpendicular_shrinking,
+        Matrix.vonNeumannEntropy_reduced_le_log_of_zero_perpendicular_shrinking}
+    \notready
+    \uses{def:bipartite_operator_schmidt_rank,def:von_neumann_entropy}
+    Let $\Gamma$ be a unit bipartite vector and let $\phi$ have Schmidt
+    rank at most one, with $\langle\Gamma,\phi\rangle\ne0$.
+    Suppose that $K\Gamma=\Gamma$, $\operatorname{OSR}(K)\le D$,
+    and $K$ annihilates $\Gamma^\perp$.
+    Then $\SR(\Gamma)\le D$ and its marginal entropy is at most $\log D$.
+\end{theorem}
+\begin{proof}
+    \uses{thm:schmidt_rank_operator_action,thm:entropy_le_log_rank,
+        thm:perpendicular_shrink_homogeneous,thm:schmidt_rank_nonzero_smul}
+    The image $K\phi$ equals
+    $\langle\Gamma,\phi\rangle\Gamma$ and has Schmidt rank at most $D$.
+    A nonzero scalar preserves Schmidt rank, and entropy is bounded by
+    the logarithm of the marginal rank.
+\end{proof}
+
+\begin{theorem}[General invariant-line entropy estimate with an initial rank cost]
+    \label{thm:agsp_corrected_general_entropy}
+    \lean{Matrix.vonNeumannEntropy_reduced_le_of_operatorSchmidtRank_of_product_overlap}
+    \notready
+    \uses{def:bipartite_operator_schmidt_rank,def:von_neumann_entropy}
+    Let $\Gamma,\phi$ be unit bipartite vectors with $\SR(\phi)\le1$ and
+    $|\langle\Gamma,\phi\rangle|\ge\mu>0$.
+    Suppose that $K\Gamma=\Gamma$, $\operatorname{OSR}(K)\le D$,
+    and every unit $\psi\perp\Gamma$ satisfies
+    $K\psi\perp\Gamma$ and $\|K\psi\|^2\le\delta$, where $0<\delta<1$.
+    The marginal entropy of the original vector satisfies
+    \begin{align}
+        S(\Gamma) & \le12\left(1+
+        \frac{\log\mu^{-1}}{\log\delta^{-1}}\right)\log D.
+        \label{eq:agsp_corrected_general_entropy}
+    \end{align}
+    The additive rank cost corrects the uniform parameter dependence in
+    \cite[Lemma~2.3]{Arad2013AreaLaw}; the counterexample to the printed
+    formula is recorded in \cite{gap:aklv13_entropy_small_shrinking}.
+\end{theorem}
+\begin{proof}
+    \uses{thm:agsp_general_product_tails,thm:agsp_capped_geometric_mass,
+        thm:probability_entropy_rank_tails,thm:product_rank_one_invariant,
+        thm:entropy_zero_of_rank_le_one,thm:operator_schmidt_rank_pos}
+    The fixed unit vector implies $D\ge1$. If $D=1$, the marginal entropy
+    is zero. Otherwise put $r=|\langle\Gamma,\phi\rangle|$ and
+    $A=(1-r^2)/r^2$. The rank-tail entropy inequality with ranks $D^j$ gives
+    $S\le\log2+(\log2+\log D)\sum_j\min\{1,A\delta^j\}$,
+    with a finite covering cutoff.
+    Since $\log(1+A)=2\log r^{-1}$, the capped geometric mass bound and
+    $\log2\le\log D$ give
+    $S\le(5+12\log r^{-1}/\log\delta^{-1})\log D$.
+    Use $r\ge\mu$ and enlarge the constant to obtain
+    (\ref{eq:agsp_corrected_general_entropy}).
+\end{proof}
+
 \begin{theorem}[Entropy from a favorable shrinking tradeoff]
     \label{thm:fixed_vector_favorable_tradeoff_entropy}
     \lean{Matrix.vonNeumannEntropy_reduced_le_four_log_of_operatorSchmidtRank}

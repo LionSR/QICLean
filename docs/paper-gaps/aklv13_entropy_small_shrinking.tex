@@ -89,13 +89,43 @@ ground state is unique.
 The printed parameter dependence therefore requires a correction before
 it can be used as a uniform entropy estimate. In particular, a bound
 with an additive term proportional to $\log D$ is compatible with this
-example, whereas the printed quotient alone is not. A corrected estimate
-with explicit constants remains to be derived from the Schmidt-weight
-tails of the successive approximations.\footnote{This step is tracked in
-    \href{https://github.com/LionSR/TNLean/issues/9836}{TNLean issue \#9836}.
-    The finite rank-tail entropy estimates are developed in QICLean.}
-This note establishes the counterexample, without claiming a corrected
-general entropy theorem. The source's subsequent area-law corollary has
+example, whereas the printed quotient alone is not. The following correction retains this additive contribution in the
+invariant-line setting. Let $\Gamma$ and $\phi$ be unit bipartite vectors,
+with $\phi$ a product vector and
+$|\langle\Gamma,\phi\rangle|\ge\mu>0$. Suppose that $K\Gamma=\Gamma$,
+$\operatorname{OSR}(K)\le D$, and $K$ preserves $\Gamma^\perp$ with
+squared-norm shrinking at most $0<\Delta<1$. Then
+\begin{align}
+    S(\Gamma) & \le12\left(1+
+    \frac{\log\mu^{-1}}{\log\Delta^{-1}}\right)\log D.
+    \label{eq:aklv13_entropy_corrected}
+\end{align}
+This is a replacement estimate, not the printed formula. The distinguished
+invariant subspace is the line $\mathbb C\Gamma$, as in the source's
+unique-ground-state applications; no arbitrary ground-space extension is made.
+
+For completeness, put $r=|\langle\Gamma,\phi\rangle|$ and
+$A=(1-r^2)/r^2$. Applying $K^j$ to the orthogonal decomposition of $\phi$
+gives the original marginal tail bound
+\begin{align}
+    \sum_{D^j\le b<N}\lambda_b
+     & \le\min\{1,A\Delta^j\}.
+    \label{eq:aklv13_entropy_corrected_tails}
+\end{align}
+Every finite sum of these tail majorants is at most
+$2+3\log(1+A)/\log\Delta^{-1}$: split the geometric series at
+$\lceil\log A/\log\Delta^{-1}\rceil$ when $A>1$, and use
+$A\le2\log(1+A)$ when $A\le1$.
+The finite rank-tail entropy inequality, with ranks $D^j$, now gives
+$S\le(5+12\log r^{-1}/\log\Delta^{-1})\log D$ for $D\ge2$,
+which implies~(\ref{eq:aklv13_entropy_corrected}).
+The case $D=1$ has Schmidt rank one and entropy zero, while $D=0$ is
+incompatible with a fixed unit vector.
+If $\Delta=0$, then $K\phi=\langle\Gamma,\phi\rangle\Gamma$
+has Schmidt rank at most $D$, giving instead $S\le\log D$.
+The counterexample above remains a counterexample to the printed formula.
+The replacement and its acceptance are tracked in
+\href{https://github.com/LionSR/TNLean/issues/9836}{TNLean issue \#9836}. The source's subsequent area-law corollary has
 a separate conclusion $S\le O(1)\log D$, which is consistent with the
 example.
 

@@ -9,6 +9,8 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Channel
 
 import QICLean.Channel.AGSPFavorableEntropy
+import QICLean.Channel.AGSPGeneralEntropy
+import QICLean.Channel.AGSPGeneralTails
 import QICLean.Channel.AGSPGeometricTails
 import QICLean.Channel.Basic
 import QICLean.Channel.BoundaryDensityMinimizer

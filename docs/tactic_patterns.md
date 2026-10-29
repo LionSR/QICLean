@@ -1542,3 +1542,17 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Compatibility:** finite-Kraus peripheral-unitary declarations now call
   the abstract results. Their historical adjoint-weight arguments are retained
   and explicitly acknowledged in the proof to preserve named-argument callers.
+
+### Capped geometric entropy tails — existing helpers (2026-10-29)
+
+- **Seen:** `Channel.AGSPGeometricTails` and `Channel.AGSPGeneralTails` iterate
+  the same homogeneous orthogonal contraction and compare the resulting
+  orthogonal remainder with a Ky Fan tail.
+- **Reuse:** Expose the existing
+  `LinearMap.inner_pow_eq_zero_and_norm_sq_le` and
+  `Matrix.one_sub_kyFanNorm_le_of_orthogonal_decomposition` with their proofs
+  unchanged. The favorable and general entropy estimates use the same finite
+  `Entropy.probabilityEntropy_le_of_rankTailBounds` summation.
+- **Scope:** The general estimate retains the actual initial overlap and
+  shrinking factor; no new approximate-projector predicate or supplied tail
+  replaces the actual operator argument.
