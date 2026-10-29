@@ -203,3 +203,23 @@ $1-4\langle\psi|H|\psi\rangle$.
     a vector precisely when every summand does. Each positive matrix and its
     range projection have the same kernel, proving the last identity.
 \end{proof}
+
+\begin{theorem}[The common kernel of complementary projection products]
+    \label{thm:complement_product_common_kernel}
+    \lean{ContinuousLinearMap.complementProd_apply_eq_self_iff}
+    \leanok
+    Let $(h_k)_{k\ge0}$ be orthogonal projections on a complete inner-product
+    space. For $n\ge0$, put $P_n=(I-h_{n-1})\cdots(I-h_0)$, with $P_0=I$.
+    Then $P_nx=x$ if and only if $h_kx=0$ for every $k<n$.
+    The projections need not commute.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:complement_product,thm:complement_product_removed_mass}
+    If $P_nx=x$, the removed-mass identity gives
+    $\sum_{k<n}\|h_kP_kx\|^2=0$. Every summand vanishes. Inductively
+    $P_kx=x$ for $k\le n$, so $h_kx=0$ for every $k<n$.
+    Conversely, if all these terms annihilate $x$, each complementary
+    factor fixes $x$, and induction gives $P_nx=x$.
+    This is the kernel identity used in the frustration-free truncation
+    of \cite{Arad2016RigorousRG}.
+\end{proof}
