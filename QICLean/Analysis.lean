@@ -57,6 +57,7 @@ import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
+import QICLean.Analysis.EuclideanEigenvectorBasis
 import QICLean.Analysis.EuclideanReindex
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
@@ -144,6 +145,7 @@ import QICLean.Analysis.MeanTreeUniformExpectation
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.MinimumEnvelope
 import QICLean.Analysis.NeumannInverse
+import QICLean.Analysis.NormSquaredTriangle
 import QICLean.Analysis.NormalizedInversePowerLogBound
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean

@@ -169,7 +169,7 @@ canonical minimum after adding back the scalar shift. Auxiliary to ALVV,
 arXiv:1602.08828v2, Corollary c:goodagsphardtrunc, lines 979–1005,
 and Theorem t:ais, lines 1010–1024.
 No simple ground space, spectral gap or prescribed canonical basis is assumed. -/
-private theorem IsHermitian.minEigenvalue_eq_add_of_centered_ground
+theorem IsHermitian.minEigenvalue_eq_add_of_centered_ground
     {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
     {H : Matrix n n ℂ} (hH : H.IsHermitian) (S E : ℝ) (x : n → ℂ)
     (hunit : star x ⬝ᵥ x = 1)
