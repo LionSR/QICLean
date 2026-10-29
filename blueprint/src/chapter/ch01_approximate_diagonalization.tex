@@ -1,0 +1,224 @@
+\section{Bases chosen for an almost commuting family}
+
+The finite-dimensional argument below constructs a basis from the operators
+rather than assuming separated eigenvalue labels. It follows the spectral
+refinement in \cite{Hastings2006Solving}, with both compression cross terms
+retained as explained in \cite{gap:hastings05_basis_refinement}.
+The statements here have no lattice or geometric growth assumption.
+
+\begin{lemma}[Eigenvector entries and off-diagonal parts]
+    \label{lem:qic_approx_diagonalization_entries}
+    \lean{ApproximateDiagonalization.abs_sub_mul_norm_inner_le_norm_commutator,
+    ApproximateDiagonalization.norm_inner_le_norm_commutator_div}
+    \leanok
+
+    \lean{ApproximateDiagonalization.offDiagonalPart,
+    ApproximateDiagonalization.offDiagonalPart_apply,
+    ApproximateDiagonalization.norm_offDiagonalPart_le,
+    ApproximateDiagonalization.norm_offDiagonalPart_le_norm_commutator_div,
+    ApproximateDiagonalization.sum_norm_offDiagonalPart_le,
+    ApproximateDiagonalization.norm_apply_sub_inner_smul_le_add_offDiagonalPart}
+    \leanok
+
+    \lean{ApproximateDiagonalization.shiftPart,
+    ApproximateDiagonalization.shiftPart_apply,
+    ApproximateDiagonalization.norm_shiftPart_le,
+    ApproximateDiagonalization.offDiagonalPartFamily,
+    ApproximateDiagonalization.norm_offDiagonalPartFamily_le,
+    ApproximateDiagonalization.norm_offDiagonalPartFamily_le_norm_commutator_div,
+    ApproximateDiagonalization.sum_norm_offDiagonalPartFamily_le,
+    ApproximateDiagonalization.offDiagonalPartFamily_apply_self,
+    ApproximateDiagonalization.norm_apply_sub_inner_smul_le_add_offDiagonalPartFamily}
+    \leanok
+
+    Let $A$ be self-adjoint, with $Av=rv$ and $Aw=sw$. Then
+    \[
+      |r-s|\,|\langle v,Bw\rangle|
+      \le \|[A,B]\|\,\|v\|\,\|w\|.
+    \]
+    In an orthonormal family $(v_a)_{a<n}$, the operator with the same
+    off-diagonal entries as $B$ and zero diagonal has norm at most
+    $(n-1)\max_{a\ne c}|\langle v_a,Bv_c\rangle|$.
+    A two-vector orthonormal family gives the bound by the larger of its
+    two off-diagonal entries. These bounds apply termwise to finite sums.
+\end{lemma}
+\begin{proof}\leanok
+    Take the inner product of the commutator with the two eigenvectors.
+    Decompose an off-diagonal matrix into its cyclic shifts. The images of
+    the basis vectors under each shift are orthogonal, so its norm is at
+    most its largest entry. Sum the $n-1$ shifts. Decomposing an image into
+    its projection onto the family and its orthogonal component gives the
+    corresponding approximation estimate.
+\end{proof}
+
+\begin{lemma}[Restriction and recombination]
+    \label{lem:qic_approx_diagonalization_refinement}
+    \lean{ApproximateDiagonalization.subspaceCompression,
+    ApproximateDiagonalization.subspaceExtension,
+    ApproximateDiagonalization.coe_subspaceCompression_apply,
+    ApproximateDiagonalization.subspaceExtension_coe_apply,
+    ApproximateDiagonalization.inner_subspaceCompression_right,
+    ApproximateDiagonalization.inner_subspaceCompression_left,
+    ApproximateDiagonalization.norm_subspaceCompression_le,
+    ApproximateDiagonalization.norm_subspaceExtension,
+    ApproximateDiagonalization.subspaceExtension_compression,
+    ApproximateDiagonalization.subspaceExtension_mul,
+    ApproximateDiagonalization.subspaceExtension_sub,
+    ApproximateDiagonalization.isSymmetric_subspaceCompression,
+    ApproximateDiagonalization.isSelfAdjoint_subspaceCompression,
+    ApproximateDiagonalization.norm_subspaceCompression_commutator,
+    ApproximateDiagonalization.exists_orthonormalBasis_orthogonal_sum,
+    ApproximateDiagonalization.exists_orthonormalBasis_orthogonal_sum_fin,
+    ApproximateDiagonalization.norm_inner_subspace_cross_le,
+    ApproximateDiagonalization.norm_inner_le_of_orthogonal_sum}
+    \leanok
+
+    For a subspace $K$ of a finite-dimensional Hilbert space, let $P_K$
+    be its orthogonal projection. Compression restricts $P_KAP_K$ to $K$;
+    extension by zero preserves the operator norm. Compressions of
+    self-adjoint operators are self-adjoint. Orthonormal bases of $K$ and
+    $K^\perp$ combine into an orthonormal basis of the original space,
+    retaining their vectors exactly. Entries between the two summands
+    are bounded by the norm of $P_K A(I-P_K)$ times the vector norms.
+\end{lemma}
+\begin{proof}\leanok
+    Compose the inclusion and orthogonal projection. Their norms are at
+    most one, and restriction gives the reverse inequality for extension
+    by zero. Transport the product of the two bases along the orthogonal
+    direct-sum isomorphism.
+\end{proof}
+
+\begin{lemma}[Compression cross terms]
+    \label{lem:qic_approx_diagonalization_compression}
+    \lean{ApproximateDiagonalization.commutator_compression_eq,
+    ApproximateDiagonalization.norm_compression_le,
+    ApproximateDiagonalization.norm_crossBlock_le_of_center,
+    ApproximateDiagonalization.norm_commutator_compression_le,
+    ApproximateDiagonalization.le_sqrt_mul_of_le_spread,
+    ApproximateDiagonalization.exp_dist_half_mul_le,
+    ApproximateDiagonalization.norm_commutator_compression_le_exp,
+    ApproximateDiagonalization.norm_commutator_compression_le_kernel}
+    \leanok
+
+    If $P^2=P$ and $Q=I-P$, then
+    \[
+       [PBP,PCP]=P[B,C]P-PBQCP+PCQBP.
+    \]
+    Suppose $0\le k\le1$ is symmetric and
+    $k(i,j)k(j,l)\le k(i,l)$. If $\|P\|\le1$, the original commutators
+    are at most $Ck(i,l)$ and both cross blocks are at most
+    $D\sqrt{k(i,j)}$, then the compressed commutators are at most
+    $(C+2D^2)\sqrt{k(i,l)}$.
+\end{lemma}
+\begin{proof}\leanok
+    Expand the identity and bound both cross products. Use the
+    multiplicative triangle inequality and $k\le\sqrt{k}$.
+\end{proof}
+
+\begin{lemma}[An actual spectral split]
+    \label{lem:qic_approx_diagonalization_spectral_split}
+    \lean{ApproximateDiagonalization.exists_spread_div_le_adjacent_gap,
+    ApproximateDiagonalization.exists_adjacent_gap_fin,
+    ApproximateDiagonalization.exists_antitone_spectral_split,
+    ApproximateDiagonalization.basisSplitProjection,
+    ApproximateDiagonalization.basisSplitProjection_eq_starProjection,
+    ApproximateDiagonalization.norm_basisSplitProjection_le,
+    ApproximateDiagonalization.isStarProjection_basisSplitProjection,
+    ApproximateDiagonalization.basisSplitProjection_compl,
+    ApproximateDiagonalization.basisSplitProjection_mul_mul_compl,
+    ApproximateDiagonalization.norm_basisSplitProjection_mul_mul_compl_le,
+    ApproximateDiagonalization.norm_basisSplitProjection_cross_le_commutator,
+    ApproximateDiagonalization.exists_selfAdjoint_spectral_split,
+    ApproximateDiagonalization.norm_le_of_diagonal_basis,
+    ApproximateDiagonalization.norm_sub_min_eigenvalue_le_spread,
+    ApproximateDiagonalization.exists_family_spectral_split}
+    \leanok
+
+    Let $(B_i)$ be a finite self-adjoint family on an $n$-dimensional
+    complex Hilbert space, $n>1$, with
+    $\|[B_i,B_j]\|\le C f(i,j)$, where $C,f\ge0$ and $f$ is symmetric.
+    Either every $B_i$ is scalar, or an original member $B_j$ determines
+    a proper nonzero orthogonal spectral projection $P$ such that both
+    cross blocks of every $B_i$ have norm at most
+    $\sqrt{n^3 C}\sqrt{f(i,j)}$.
+\end{lemma}
+\begin{proof}\leanok
+    Choose a member with maximal spectral spread $\rho$. Zero spread
+    gives the scalar alternative. Otherwise one adjacent gap is at least
+    $\rho/(n-1)$. Split its eigenbasis there. Centering every member at
+    its least eigenvalue bounds each cross block by $\rho$; the
+    commutator gives a bound proportional to $Cf/\rho$. Combining the
+    two estimates removes the inverse spread.
+\end{proof}
+
+\begin{definition}[Successive square-root kernels]
+    \label{def:qic_approx_diagonalization_kernel}
+    \lean{ApproximateDiagonalization.sqrtKernel,
+    ApproximateDiagonalization.sqrtKernel_zero,
+    ApproximateDiagonalization.sqrtKernel_succ,
+    ApproximateDiagonalization.sqrtKernel_nonneg,
+    ApproximateDiagonalization.sqrtKernel_le_one,
+    ApproximateDiagonalization.sqrtKernel_symm,
+    ApproximateDiagonalization.sqrtKernel_succ_sq,
+    ApproximateDiagonalization.sqrtKernel_mono,
+    ApproximateDiagonalization.sqrtKernel_mul_le,
+    ApproximateDiagonalization.listKernelSum,
+    ApproximateDiagonalization.listKernelSum_nil,
+    ApproximateDiagonalization.listKernelSum_cons,
+    ApproximateDiagonalization.listKernelSum_append,
+    ApproximateDiagonalization.listKernelSum_nonneg,
+    ApproximateDiagonalization.sqrtKernel_comp}
+    \leanok
+
+    Put $k_0=k$ and $k_{r+1}(i,j)=\sqrt{k_r(i,j)}$.
+    Positivity, the bound by one, symmetry, and the multiplicative
+    triangle inequality persist. The finite list sum is
+    $\sum_{j\in\mathcal S} k_r(i,j)$, counting repetitions. Restricting
+    a kernel along any map commutes with these operations.
+\end{definition}
+\begin{proof}\leanok
+    Induct on $r$, using monotonicity and multiplicativity of the square
+    root on nonnegative real numbers. List sums obey concatenation.
+\end{proof}
+
+\begin{theorem}[A constructed basis with weighted kernel bounds]
+    \label{thm:qic_approx_diagonalization_uniform_basis}
+    \lean{ApproximateDiagonalization.recursiveCommutatorCoeff,
+    ApproximateDiagonalization.recursiveBasisCoeff,
+    ApproximateDiagonalization.recursiveCommutatorCoeff_nonneg,
+    ApproximateDiagonalization.recursiveBasisCoeff_nonneg,
+    ApproximateDiagonalization.sqrt_recursiveCommutatorCoeff_le,
+    ApproximateDiagonalization.recursiveCommutatorCoeff_step,
+    ApproximateDiagonalization.exists_orthonormalBasis_uniform_kernel_aux,
+    ApproximateDiagonalization.exists_orthonormalBasis_uniform_kernel}
+    \leanok
+
+    \lean{ApproximateDiagonalization.smul_inv_smul_eq_of_norm_le,
+    ApproximateDiagonalization.norm_commutator_inv_smul_le,
+    ApproximateDiagonalization.exists_orthonormalBasis_uniform_weighted_kernel}
+    \leanok
+
+    Let $E$ have complex dimension $n$, and let $(B_i)$ be a finite
+    self-adjoint family. Suppose $\|B_i\|\le w_i$, $w_i\ge0$,
+    $0\le k\le1$, $k$ is symmetric with the multiplicative triangle
+    inequality, and $\|[B_i,B_j]\|\le Cw_iw_jk(i,j)$, $C\ge0$.
+    There are an orthonormal basis $(v_a)_{a<n}$ and a list
+    $\mathcal S$ of at most $n-1$ original indices such that
+    \[
+       |\langle v_a,B_i v_c\rangle|
+       \le A_n(C)w_i\sum_{j\in\mathcal S}k_n(i,j),\qquad a\ne c,
+       \quad A_n(C)=\sqrt{n^3C(1+2n^3)^n}.
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    Divide by the norm envelopes; a zero envelope gives a zero operator.
+    Induct on the dimension, applying the actual spectral split and
+    Lemmas~\ref{lem:qic_approx_diagonalization_refinement}
+    and~\ref{lem:qic_approx_diagonalization_compression}.
+    Scalar subspaces are terminal irrespective of dimension.
+    Both nontrivial children have smaller dimension. The invariant
+    $t+\dim E\le n$ controls the depth, while
+    $C_t=C(1+2n^3)^t$ controls both retained cross terms.
+    Join the two lists with the new selected index and restore the
+    envelopes. No inverse-spacing or conditioning bound is assumed.
+\end{proof}
