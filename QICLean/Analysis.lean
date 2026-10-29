@@ -190,6 +190,7 @@ import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.ProjectionIntertwiningNorm
 import QICLean.Analysis.ProjectionQuadraticBound
+import QICLean.Analysis.ProjectionResidual
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm

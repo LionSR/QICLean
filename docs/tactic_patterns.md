@@ -1699,3 +1699,14 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   The actual changing-target step uses it for both target comparisons.
 - **Mechanism:** One mathematical lemma; no tactic or additional phase
   convention is introduced.
+
+### Orthogonal splitting of a projection residual — helper theorem (2026-10-29)
+
+- **Pattern:** Decompose `x - P y` as the orthogonal sum of `x - P x` and
+  `P (x - y)`, then apply the projection contraction estimate.
+- **Abstraction:** `ContinuousLinearMap.IsStarProjection.norm_sub_apply_sq_le`
+  in `Analysis/ProjectionResidual.lean` reuses Mathlib's orthogonal-sum
+  norm identity and the existing projection identities.
+- **Scope:** The second vector is arbitrary; no commutation, normalization
+  or second projection is needed. The actual regional parity-product
+  energy comparison is the intended physical consumer.
