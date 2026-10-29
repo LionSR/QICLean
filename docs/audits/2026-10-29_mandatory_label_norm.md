@@ -99,3 +99,18 @@ declaration check remain integration checks.
 No temporary audit command or per-theorem fixture is included in the
 source patch. The earlier checked helper artifact and both comparison
 patches remain separately preserved.
+
+## Completed integration checks
+
+Mathematical revision `a81cad04c854c6816788abdd3c4bdaab414501fa` passed
+the full 10,355-job library build, strict checks of the two changed source
+and aggregator files, and an imported inspection of the public theorem.
+Only propext, Classical.choice and Quot.sound occur. Source synchronization,
+compiled blueprint declaration checks, prose, proof-integrity and timing
+checks also passed. No job reached the 25-second warning threshold.
+The new leaf module affects no existing regression according to the
+repository's dependency selection. The preceding shared-source revision
+15a60 separately passed all 181 affected regressions; those sources are
+unchanged here. Mathlib was not rebuilt and no modified-worktree cache
+artifacts were copied. The complete local record is
+`/tmp/qiclean-mandatory-norm-gates.json`.
