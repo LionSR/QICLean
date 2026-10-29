@@ -1736,3 +1736,18 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Scope:** Low eigenvalues need only be at least one. No exact identity
   action on the target is introduced; the same target is used at every
   power and before every input subspace.
+
+
+### Exchanging supported operator cuts — candidate (2026-10-29)
+
+- **Pattern:** Identify a complementary cut with exchange of the two tensor
+  factors and separate coordinate equivalences, then obtain a right-side
+  support bound from the existing left-side theorem.
+- **Seen:** `Algebra/OperatorSchmidtRealignment.lean` and
+  `Entropy/SupportedOperatorSchmidtRank.lean`.
+- **Reuse:** Matrix transposition preserves rank; separate reindexings preserve
+  operator Schmidt rank. The public factor-exchange and complementary-cut
+  identities centralize these facts. The minimum of the two support-square
+  estimates gives the uniform support-cardinality bound.
+- **Decision:** Keep the shared mathematical identities, which also support
+  tensor-network cut estimates in TNLean. No custom tactic is needed.

@@ -40,4 +40,16 @@ theorem operatorSchmidtRank_eq_rank_realignment
   rw [Matrix.rank_eq_finrank_span_row, ← hspan]
   exact (e.finrank_map_eq (operatorBlockSpan M)).symm
 
+/-- Exchanging the two finite tensor factors preserves operator Schmidt rank: the realignment
+matrix is transposed. This is the symmetry of the product decomposition in arXiv:1903.05373,
+equation (1), used for the two-sided support bound in ALVV, arXiv:1602.08828v2,
+`eq:rho-expansion`, lines 1971–2013. Empty factors are included. -/
+theorem operatorSchmidtRank_reindex_prodComm
+    {R m n : Type*} [Field R] [Fintype m] [Fintype n]
+    (M : Matrix (m × n) (m × n) R) :
+    operatorSchmidtRank (M.reindex (Equiv.prodComm m n) (Equiv.prodComm m n)) =
+      operatorSchmidtRank M := by
+  rw [operatorSchmidtRank_eq_rank_realignment, operatorSchmidtRank_eq_rank_realignment]
+  exact Matrix.rank_transpose _
+
 end Matrix
