@@ -152,3 +152,96 @@ of the unsquared filter is not required
     the boundary convention is recorded in
     \cite{gap:alvv16_spectral_projector_boundary}.
 \end{proof}
+
+\begin{theorem}[Actual powers and ordered tensor words]
+    \label{thm:spectral_operator_word_powers}
+    \lean{Submodule.IsSpectralProjector.pow,
+        TensorProduct.prod_mapL_ofFn,
+        TensorProduct.pow_sum_mapL_eq_sum_words,
+        Submodule.IsSpectralProjector.viability_word_power}
+    \leanok
+    \uses{thm:spectral_projector_contract,thm:viable_tensor_decomposition}
+    Let $H,K$ have a common orthonormal eigenbasis, with real eigenvalues
+    $h_j,k_j$. Suppose every $h_j$ is at most $\eta_0$ or at least
+    $\eta_1$, that $k_j\ge1$ when $h_j\le\eta_0$, and that
+    $k_j^2\le\Delta$ when $h_j\ge\eta_1$, where $\Delta\ge0$.
+    Put $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$. Let
+    $K=\sum_{i\in I}A_i\otimes B_i$ be its actual finite tensor decomposition. For every integer $a\ge0$, put
+    $A_w=A_{w_1}\cdots A_{w_a}$ and $B_w=B_{w_1}\cdots B_{w_a}$.
+    Then $K^a=\sum_{w\in I^a}A_w\otimes B_w$, with the order of factors
+    preserved. The same $T$ is invariant under $K^a$, low spectral
+    eigenvalues are still at least one, and squared suppression is
+    $\Delta^a$. For every $\delta$-viable $S$ for $T$ with $\delta<1$,
+    $V_a=\sum_{w\in I^a}A_wS$ satisfies
+    \begin{align}
+        \dim V_a &\le |I|^a\dim S, &
+        V_a&\text{ is }\frac{\Delta^a}{(1-\delta)^2}\text{-viable for }T.
+        \label{eq:operator_word_power_improvement}
+    \end{align}
+    Neither the factors nor their summands need commute. The empty word
+    and empty alphabet are included. No identity action of $K$ on $T$
+    is required.
+\end{theorem}
+\begin{proof}\leanok
+    In the common eigenbasis the eigenvalues of $K^a$ are the corresponding
+    powers. Expand the noncommutative power of the finite sum into its
+    ordered words and multiply the two tensor factors in the same order.
+    Apply error reduction once to this actual powered decomposition.
+\end{proof}
+
+\begin{theorem}[One polynomial family for every filter power]
+    \label{thm:actual_cluster_chebyshev_word_powers}
+    \lean{Matrix.chebyshev_word_power_viability_of_actual_cluster_polynomial_family}
+    \leanok
+    \uses{thm:actual_cluster_polynomial_viability,thm:spectral_operator_word_powers}
+    Under the hypotheses of Theorem~\ref{thm:actual_cluster_polynomial_viability},
+    define $W_w=W_{w_1}\cdots W_{w_a}$ for $w\in\{1,\ldots,N\}^a$.
+    The same target $TG_{\eta_0}$ is used for every $a\ge0$ and every
+    viable input $S$. The actual image sum $V_a=\sum_w W_wS$ has
+    dimension at most $C^a\dim S$ and is
+    $\Delta^a/(1-\delta)^2$-viable for $TG_{\eta_0}$ whenever $S$ is
+    $\delta$-viable and $\delta<1$.
+    The Chebyshev polynomial and its complementary tensor factors are
+    chosen before $a,S,\delta$.
+\end{theorem}
+\begin{proof}\leanok
+    Derive the canonical spectral data from the actual Hermitian matrix.
+    Choose its Chebyshev polynomial once, obtain the actual complementary
+    factors from the common polynomial decomposition, and use
+    (\ref{eq:operator_word_power_improvement}). The actual number of
+    words is $N^a\le C^a$.
+\end{proof}
+
+\begin{theorem}[A polynomial dimension scale for a powered step]
+    \label{thm:viable_node_power_parameters}
+    \lean{Nat.viable_node_power_bounds, Nat.viable_node_sample_ratio,
+        Real.viable_node_power_tradeoff_lt,
+        Real.viable_node_sample_overlap_lower,
+        Real.viable_node_power_error_bound}
+    \leanok
+    Let $D\ge2$ and $s\ge1$ be integers, and set
+    $a=\lceil\log_D(D^2s)\rceil$, interpreted as the upper integer logarithm.
+    Then $a\ge2$, $D^2s\le D^a\le D^3s$ and
+    $(D^a)^2s\le D^6s^3$.
+    If $\Delta\ge0$, $0<b<1$ and $D^{12}\Delta\le b$, then
+    $(D^a)^{12}\Delta^a<b$.
+    Moreover, suppose $1\le Q\le D^{12}s^6$ and $\delta\le1/4$. Put
+    $c=(1-\delta)\min(s,Q)/(8Q)$. Then
+    \begin{align}
+        c&\ge\frac{3}{32D^{12}s^5}>0, &
+        \frac{\Delta^a}{c^2}&\le\frac{1024}{9}\frac{b}{s^2}.
+        \label{eq:viable_node_power_error}
+    \end{align}
+    These are scalar estimates; no sampling event or recursive family is
+    part of the hypotheses or conclusion.
+\end{theorem}
+\begin{proof}\leanok
+    The defining inequalities for the upper integer logarithm give the
+    two bounds on $D^a$ and the cubic dimension bound. The tradeoff is
+    $(D^{12}\Delta)^a\le b^a<b$.
+    In both cases $Q\le s$ and $s<Q$ one has
+    $Q\le D^{12}s^5\min(s,Q)$, yielding the lower bound on $c$.
+    Also $D^a\ge D^2s$, so
+    $\Delta^a\le b/(D^{24}s^{12})$. Divide by the squared overlap bound
+    to obtain (\ref{eq:viable_node_power_error}).
+\end{proof}

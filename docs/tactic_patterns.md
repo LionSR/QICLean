@@ -1724,3 +1724,15 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Scope:** Neither the global target nor its vectors are assumed to
   factor. The complement of the union is retained in both diagrams. The
   two three-factor inductions occur in one file; no new tactic is needed.
+
+### Actual tensor powers from ordered words — candidate (2026-10-29)
+
+- **Seen:** `Analysis/TensorOperatorPower.lean` and the actual Chebyshev
+  composition in `Analysis/ChebyshevWordPower.lean`.
+- **Reuse:** `Fintype.sum_pow_eq_sum_ordered_words` supplies the existing
+  noncommutative finite-sum expansion. `TensorProduct.prod_mapL_ofFn`
+  proves the simultaneous factor product once. The spectral eigenvector
+  power uses Mathlib's `Module.End.HasEigenvector.pow_apply`.
+- **Scope:** Low eigenvalues need only be at least one. No exact identity
+  action on the target is introduced; the same target is used at every
+  power and before every input subspace.

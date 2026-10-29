@@ -26,6 +26,7 @@ import QICLean.Analysis.ChebyshevGroundFilter
 import QICLean.Analysis.ChebyshevSpectralFilter
 import QICLean.Analysis.ChebyshevSpectralProjector
 import QICLean.Analysis.ChebyshevViability
+import QICLean.Analysis.ChebyshevWordPower
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
@@ -297,6 +298,7 @@ import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
 import QICLean.Analysis.SpectralProjectionIntertwiner
+import QICLean.Analysis.SpectralProjectorPower
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
@@ -320,6 +322,7 @@ import QICLean.Analysis.SupportProjectionOrder
 import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.SurprisalProductMoment
+import QICLean.Analysis.TensorOperatorPower
 import QICLean.Analysis.TensorProductWeights
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
@@ -348,6 +351,7 @@ import QICLean.Analysis.UnitaryEvolution
 import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
+import QICLean.Analysis.ViableNodeParameters
 import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceBootstrap
 import QICLean.Analysis.ViableSubspaceCoordinates
