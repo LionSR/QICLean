@@ -67,6 +67,7 @@ import QICLean.Entropy.IidSurprisalExponential
 import QICLean.Entropy.IidSurprisalMomentExponential
 import QICLean.Entropy.LeadingWeights
 import QICLean.Entropy.LocalLift
+import QICLean.Entropy.LocalProjectionTensorCoordinates
 import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison
 import QICLean.Entropy.MarginalPhaseFaithful
@@ -122,6 +123,7 @@ import QICLean.Entropy.SubregionCut
 import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.SupportedOperatorSchmidtRank
 import QICLean.Entropy.SupportedOperatorSchmidtWords
+import QICLean.Entropy.SupportedProjectionCoordinates
 import QICLean.Entropy.ThreeWayCut
 import QICLean.Entropy.TripartiteTrace
 import QICLean.Entropy.TwoFamilies

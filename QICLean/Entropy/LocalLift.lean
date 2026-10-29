@@ -83,6 +83,16 @@ theorem localLift_conjTranspose (K : Matrix (RegionConfig n D) (RegionConfig n D
     localLift D Kᴴ = (localLift D K)ᴴ := by
   simp [localLift, conjTranspose_kronecker, conjTranspose_submatrix]
 
+/-- The local lift is injective when some global configuration exists. -/
+theorem localLift_injective (D : Finset V) (σ₀ : SiteConfig n) :
+    Function.Injective (localLift (n := n) D) := by
+  intro K K' h
+  have h' := congrArg (cutOperator D) h
+  rw [cutOperator_localLift, cutOperator_localLift] at h'
+  ext x x'
+  have := congrFun (congrFun h' (x, (cutEquiv n D σ₀).2)) (x', (cutEquiv n D σ₀).2)
+  simpa [kroneckerMap_apply] using this
+
 theorem localLift_add (K K' : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
     localLift D (K + K') = localLift D K + localLift D K' := by
   simp [localLift, add_kronecker, submatrix_add]

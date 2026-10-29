@@ -143,16 +143,6 @@ section Chain
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- The local lift is injective when some global configuration exists. -/
-theorem localLift_injective (D : Finset V) (σ₀ : SiteConfig n) :
-    Function.Injective (localLift (n := n) D) := by
-  intro K K' h
-  have h' := congrArg (cutOperator D) h
-  rw [cutOperator_localLift, cutOperator_localLift] at h'
-  ext x x'
-  have := congrFun (congrFun h' (x, (cutEquiv n D σ₀).2)) (x', (cutEquiv n D σ₀).2)
-  simpa [kroneckerMap_apply] using this
-
 /-- The local lift as a continuous linear map. -/
 noncomputable def localLiftCLM (D : Finset V) :
     Matrix (RegionConfig n D) (RegionConfig n D) ℂ →L[ℂ]

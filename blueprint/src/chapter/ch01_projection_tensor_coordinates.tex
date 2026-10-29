@@ -66,3 +66,126 @@ The product bound compares the chosen retained dimensions. A polynomial
 bound in the physical chain length would require additional information;
 intermediate dimension bounds are explicitly left open in
 \cite[lines 104--109]{Hastings2006Solving}.
+
+
+\subsection{Removing the exterior identity}
+
+For a finite set of physical sites $V$, let each site $v$ have a finite
+configuration set of cardinality $n_v$. Fix one global configuration.
+For a region $D\subseteq V$, write $\iota_D(Q)$ for the operator acting as
+$Q$ on $D$ and as the identity on its complement.
+
+\begin{lemma}[Local projection]
+    \label{lem:supported_projection_local_coordinates}
+    \lean{Entropy.IsSupportedOn.exists_projection_localLift}
+    \leanok
+    If an orthogonal projection $P$ is supported on $D$, there is an
+    orthogonal projection $Q$ on the configurations of $D$ such that
+    $P=\iota_D(Q)$.
+\end{lemma}
+\begin{proof}\leanok
+    The support condition gives $P=\iota_D(Q)$ for a local matrix $Q$.
+    The map $\iota_D$ preserves products and adjoints and is injective:
+    one may fix the exterior coordinates of the chosen global configuration.
+    Therefore $P^2=P=P^*$ implies $Q^2=Q=Q^*$.
+\end{proof}
+
+\begin{theorem}[Actual local range coordinates]
+    \label{thm:supported_projection_local_range}
+    \lean{Entropy.IsSupportedOn.exists_local_range_isometry}
+    \leanok
+    \uses{lem:supported_projection_local_coordinates,thm:projection_range_isometry}
+    Under the hypotheses of the preceding lemma, there is an isometry
+    $U:\mathbb C^r\longrightarrow\mathbb C^{\mathcal C_D}$ such that
+    \begin{align}
+        P&=\iota_D(UU^*),&
+        r&=\operatorname{rank}(UU^*),&
+        r&\le |\mathcal C_D|.
+        \label{eq:supported_projection_local_range}
+    \end{align}
+    Here $\mathcal C_D$ denotes the configurations of $D$.
+\end{theorem}
+\begin{proof}\leanok
+    Choose an orthonormal basis for the range of the local projection $Q$.
+    Its inclusion matrix $U$ satisfies $U^*U=I$ and $UU^*=Q$.
+    The rank and dimension statements follow from the orthonormality
+    of its columns. Empty regions and zero retained ranges are included.
+\end{proof}
+
+
+\subsection{Coefficients in fixed local frames}
+
+The next identities permit the local range frames at every vertex to be chosen
+once. The parent coefficients are then determined by those fixed choices.
+
+\begin{theorem}[Coordinates of contained local ranges]
+    \label{thm:local_projection_range_coordinates}
+    \lean{Entropy.localLift_range_coordinates}
+    \leanok
+    \uses{thm:projection_coordinate_factorization}
+    Let $U:\mathbb C^I\to\mathbb C^{\mathcal C_D}$ be an isometry and
+    let $A:\mathbb C^J\to\mathbb C^{\mathcal C_D}$ be a matrix, where
+    $I$ and $J$ are finite sets. Suppose
+    \begin{align}
+        \iota_D(AA^*)\,\iota_D(UU^*)&=\iota_D(UU^*).
+        \label{eq:local_projection_range_containment}
+    \end{align}
+    Then $C=A^*U$ is an isometry and $U=AC$.
+\end{theorem}
+\begin{proof}\leanok
+    Injectivity and multiplicativity of the lift give
+    $AA^*UU^*=UU^*$. Multiplying on the right by $U$ gives
+    $AA^*U=U$, since $U^*U=I$.
+    Apply Theorem~\ref{thm:projection_coordinate_factorization}.
+\end{proof}
+
+\begin{lemma}[Range operators on disjoint regions]
+    \label{lem:local_tensor_column_ranges}
+    \lean{Entropy.localLift_tensor_columns}
+    \leanok
+    Let $X$ and $Y$ be disjoint physical regions. For matrices
+    $V:\mathbb C^b\to\mathbb C^{\mathcal C_X}$ and
+    $W:\mathbb C^c\to\mathbb C^{\mathcal C_Y}$, let
+    $A=V\otimes W$, with its rows indexed by configurations of $X\cup Y$.
+    Then
+    \begin{align}
+        \iota_{X\cup Y}(AA^*)&=\iota_X(VV^*)\,\iota_Y(WW^*).
+        \label{eq:local_tensor_column_ranges}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    The identity $AA^*=(VV^*)\otimes(WW^*)$ follows from multiplication
+    of Kronecker products. Lifting an operator on a disjoint union
+    gives the product of its two separate lifts.
+\end{proof}
+
+\begin{theorem}[Parent coefficients in fixed physical frames]
+    \label{thm:local_projection_tensor_coordinates}
+    \lean{Entropy.localLift_tensor_range_coordinates}
+    \leanok
+    \uses{thm:local_projection_range_coordinates,lem:local_tensor_column_ranges}
+    With $X,Y,V,W,A$ as above, let
+    $U:\mathbb C^a\to\mathbb C^{\mathcal C_{X\cup Y}}$ be an isometry.
+    Suppose
+    \begin{align}
+        \iota_X(VV^*)\,\iota_Y(WW^*)\,\iota_{X\cup Y}(UU^*)
+        &=\iota_{X\cup Y}(UU^*).
+        \label{eq:local_tensor_parent_containment}
+    \end{align}
+    Then $C=A^*U$ is an isometry, $U=AC$, and $a\le bc$.
+    For every physical configuration $\sigma$ and every parent index $j$,
+    \begin{align}
+        U_{\sigma|_{X\cup Y},j}
+        &=\sum_{u=1}^b\sum_{v=1}^c
+          V_{\sigma|_X,u}\,W_{\sigma|_Y,v}\,C_{(u,v),j}.
+        \label{eq:local_tensor_parent_amplitude}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    The preceding lemma turns the displayed containment into
+    \eqref{eq:local_projection_range_containment}.
+    Theorem~\ref{thm:local_projection_range_coordinates} gives the
+    isometry and factorization. An isometry into $\mathbb C^{b\times c}$
+    has at most $bc$ orthonormal columns. Matrix multiplication gives
+    the entry formula. Empty retained ranges are included.
+\end{proof}
