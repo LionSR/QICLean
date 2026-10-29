@@ -48,5 +48,18 @@ The foundation inspection verified that its private objects were unchanged.
 These elaborations wrote only temporary outputs; no provider source, package
 pin or ordinary build cache was changed. Mathlib was not rebuilt, no altered
 cache artifacts were copied, and no permanent test fixture was added.
-Canonical combined-library and compiled-blueprint checks remain for common
-integration.
+The companion combined-library and compiled-blueprint checks have now passed,
+as recorded below. The TNLean physical consumer remains for common integration.
+
+## Completed companion checks
+
+Revision `15a60a1bebe726ee6536ae75570e8243b9f310c4` passed the full
+10,354-job library build, strict checks of four changed source and aggregator
+files, and all 181 affected existing regressions. An imported inspection of
+all 29 public declarations in the three changed mathematical modules reports
+only propext, Classical.choice and Quot.sound. Source synchronization, compiled
+blueprint declaration checks, prose, proof-integrity and timing checks passed.
+No changed source reached the 25-second warning threshold. Some unchanged
+dependent modules reached 25–45 seconds; no job reached the 50-second limit.
+Mathlib was not rebuilt, and no modified-worktree cache artifacts were copied.
+The complete local record is `/tmp/qiclean-range-projection-gates.json`.

@@ -587,7 +587,9 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   finite-spectrum continuity helper, to transfer the scalar comparison
   and its upper bound. The hard-cutoff translation in
   `Analysis/ShiftedSoftHardTruncation.lean` reuses `cfc_comp` and the scalar
-  identity `min_sub_sub_right`, without a new spectral calculation.
+  identity `min_sub_sub_right`, without a new spectral calculation. The
+  semigroup estimate in `Analysis/MandatoryExponentialNorm.lean` uses
+  `cfc_comp` and `norm_cfc_le` for the corresponding scalar norm reduction.
   Their scalar conclusions differ.
 - **Abstraction:** Continue using the existing `Matrix.IsHermitian.cfc_mul`
   and `cfc_congr` results for identities, and the generic `cfc_le_iff`

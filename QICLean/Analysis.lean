@@ -118,6 +118,7 @@ import QICLean.Analysis.LogarithmicEnvelope
 import QICLean.Analysis.LowEnergyCluster
 import QICLean.Analysis.LowEnergyCoordinates
 import QICLean.Analysis.LowEnergyPerturbation
+import QICLean.Analysis.MandatoryExponentialNorm
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixBernsteinInputs
 import QICLean.Analysis.MatrixBernsteinScalar
