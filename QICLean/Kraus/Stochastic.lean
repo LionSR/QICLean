@@ -98,7 +98,8 @@ theorem stochasticFamily_isTP (a : Matrix (Fin D) (Fin D) ℝ)
         ∑ j : Fin D, Matrix.single j j (∑ i : Fin D, (a i j : ℂ)) := by
       apply Finset.sum_congr rfl
       intro j _
-      exact ((Matrix.singleAddMonoidHom j j).map_sum _ _).symm
+      exact (map_sum (Matrix.singleAddMonoidHom (α := ℂ) j j)
+        (fun i : Fin D ↦ (a i j : ℂ)) Finset.univ).symm
     _ = ∑ j : Fin D, Matrix.single j j (1 : ℂ) := by
       apply Finset.sum_congr rfl
       intro j _
@@ -125,7 +126,8 @@ theorem stochasticFamily_mapLM (a : Matrix (Fin D) (Fin D) ℝ)
   rw [← Matrix.sum_single_eq_diagonal]
   apply Finset.sum_congr rfl
   intro i _
-  exact ((Matrix.singleAddMonoidHom i i).map_sum _ _).symm
+  exact (map_sum (Matrix.singleAddMonoidHom (α := ℂ) i i)
+    (fun j : Fin D ↦ (a i j : ℂ) * X j j) Finset.univ).symm
 
 /-- Classical probability vectors evolve by `p ↦ a p` inside the actual
 quantum channel. The identity holds for every real vector, without requiring
@@ -137,7 +139,7 @@ theorem stochasticFamily_mapLM_diagonal (a : Matrix (Fin D) (Fin D) ℝ)
   rw [stochasticFamily_mapLM a ha]
   congr 1
   funext i
-  simp [Matrix.mulVec, Matrix.dotProduct]
+  simp [Matrix.mulVec, dotProduct]
 
 /-- Every positive channel iterate acts on a classical diagonal by the same
 classical matrix power. This is the iterate identity underlying Proposition 2
