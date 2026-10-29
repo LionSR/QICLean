@@ -65,6 +65,7 @@ import QICLean.Analysis.EuclideanEigenvectorBasis
 import QICLean.Analysis.EuclideanReindex
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
+import QICLean.Analysis.ExponentialGeometricTailOrder
 import QICLean.Analysis.ExponentialPolynomialAbsorption
 import QICLean.Analysis.ExponentialWeightRestriction
 import QICLean.Analysis.FiniteCoordinateNowosad
@@ -291,7 +292,10 @@ import QICLean.Analysis.SoftHardTruncation
 import QICLean.Analysis.SoftTruncation
 import QICLean.Analysis.SoftTruncationAccuracy
 import QICLean.Analysis.SoftTruncationCoercivity
+import QICLean.Analysis.SoftTruncationHeatExpansion
 import QICLean.Analysis.SoftTruncationRemainder
+import QICLean.Analysis.SoftTruncationScaledAccuracy
+import QICLean.Analysis.SoftTruncationScaling
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass

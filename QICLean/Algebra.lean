@@ -91,6 +91,7 @@ import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OperatorSchmidtCut
 import QICLean.Algebra.OperatorSchmidtPartition
 import QICLean.Algebra.OperatorSchmidtPrescribedFactors
+import QICLean.Algebra.OperatorSchmidtProducts
 import QICLean.Algebra.OperatorSchmidtRealignment
 import QICLean.Algebra.OperatorSchmidtReindex
 import QICLean.Algebra.OperatorSchmidtSubmatrix
