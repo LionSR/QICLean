@@ -1574,3 +1574,13 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   unification does not unfold the finite enumeration at a symbolic ceiling.
 - **Scope:** The two product-norm uses are below the three-occurrence threshold.
   Existing scalar, list and cardinality results suffice without new automation.
+
+### Euclidean action on a Hermitian eigenbasis — promoted (2026-10-29)
+
+- **Pattern:** Transport `mulVec_eigenvectorBasis` through `WithLp.ofLp`
+  and convert real scalar multiplication to the ambient scalar field.
+- **Abstraction:** `Matrix.IsHermitian.toEuclideanCLM_eigenvectorBasis` in
+  `Analysis/EuclideanEigenvectorBasis.lean`.
+- **Use:** The statement applies to any `RCLike` scalar field and finite
+  index type, with no nonempty-index or gap hypothesis. It reuses Mathlib's
+  spectral theorem and also applies to the underlying Euclidean linear map.

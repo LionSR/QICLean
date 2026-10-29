@@ -57,6 +57,7 @@ import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
+import QICLean.Analysis.EuclideanEigenvectorBasis
 import QICLean.Analysis.EuclideanReindex
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
