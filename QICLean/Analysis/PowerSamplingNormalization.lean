@@ -94,4 +94,71 @@ theorem power_sampling_normalization_pow_ceil_le {N E0 Δ Q : ℝ}
     _ ≤ _ := mul_le_mul_of_nonneg_right
       (pow_le_pow_left₀ hCpos.le hCN 2) (Real.exp_nonneg _)
 
+
+/-- A width-one energy bracket determines the power budget before the actual energy.
+For `0 ≤ a ≤ N - 1`, let `Emax = min (a + 1) (N - 1)` and use the length
+`⌈(N - a) / Δ * log Q⌉₊`. The interval has width one, while `N - Emax ≥ 1`,
+so its normalization cost is at most `N² * Q^(4(a+1)/Δ)`.
+This is the bracket-uniform version of the normalization in LVV, published
+Methods, Proposition 1, author PDF p. 6; it is not a trial-energy algorithm. -/
+theorem power_sampling_interval_normalization_pow_ceil_le {N a Δ Q : ℝ}
+    (ha : 0 ≤ a) (haN : a ≤ N - 1) (hΔ : 0 < Δ) (hQ : 1 ≤ Q) :
+    let Emax := min (a + 1) (N - 1)
+    let C := (1 - Emax / N)⁻¹
+    let m := ⌈(N - a) / Δ * Real.log Q⌉₊
+    1 ≤ C ∧ C ≤ N ∧ C ^ (2 * m) ≤
+      N ^ 2 * Real.exp (4 * (a + 1) * Real.log Q / Δ) := by
+  intro Emax C m
+  have hEmax : 0 ≤ Emax := le_min (by linarith) (by linarith)
+  have hEN : Emax ≤ N - 1 := min_le_right _ _
+  have hEa : Emax ≤ a + 1 := min_le_left _ _
+  have hmargin : N - a ≤ 2 * (N - Emax) := by linarith
+  have hden : 0 < N - Emax := by linarith
+  obtain ⟨hC1, hCN, hlog⟩ := power_sampling_normalization_bounds hEmax hEN
+  change 1 ≤ C at hC1
+  change C ≤ N at hCN
+  change Real.log C ≤ Emax / (N - Emax) at hlog
+  have hCpos : 0 < C := lt_of_lt_of_le zero_lt_one hC1
+  have hlog0 : 0 ≤ Real.log C := Real.log_nonneg hC1
+  have hlogQ : 0 ≤ Real.log Q := Real.log_nonneg hQ
+  have hx : 0 ≤ (N - a) / Δ * Real.log Q :=
+    mul_nonneg (div_nonneg (by linarith) hΔ.le) (Real.log_nonneg hQ)
+  have hm : (m : ℝ) ≤ (N - a) / Δ * Real.log Q + 1 := (Nat.ceil_lt_add_one hx).le
+  have hscale : ((N - a) / Δ * Real.log Q) * Real.log C ≤
+      2 * (a + 1) * Real.log Q / Δ := by
+    calc
+      _ ≤ ((N - a) / Δ * Real.log Q) * (Emax / (N - Emax)) :=
+        mul_le_mul_of_nonneg_left hlog hx
+      _ ≤ (2 * (N - Emax) / Δ * Real.log Q) * (Emax / (N - Emax)) :=
+        mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_right (div_le_div_of_nonneg_right hmargin hΔ.le) hlogQ)
+          (div_nonneg hEmax hden.le)
+      _ = 2 * Emax * Real.log Q / Δ := by field_simp
+      _ ≤ _ := div_le_div_of_nonneg_right
+        (mul_le_mul_of_nonneg_right
+          (mul_le_mul_of_nonneg_left hEa (by norm_num)) hlogQ) hΔ.le
+  have h1 := mul_le_mul_of_nonneg_right hm hlog0
+  have hmain : ((2 * m : ℕ) : ℝ) * Real.log C ≤
+      2 * Real.log C + 4 * (a + 1) * Real.log Q / Δ := by
+    calc
+      _ = 2 * ((m : ℝ) * Real.log C) := by push_cast; ring
+      _ ≤ 2 * (((N - a) / Δ * Real.log Q + 1) * Real.log C) :=
+        mul_le_mul_of_nonneg_left h1 (by norm_num)
+      _ = 2 * ((N - a) / Δ * Real.log Q * Real.log C + Real.log C) := by ring
+      _ ≤ 2 * (2 * (a + 1) * Real.log Q / Δ + Real.log C) :=
+        mul_le_mul_of_nonneg_left (add_le_add hscale (le_refl _)) (by norm_num)
+      _ = _ := by ring
+  refine ⟨hC1, hCN, ?_⟩
+  calc
+    _ = Real.exp (((2 * m : ℕ) : ℝ) * Real.log C) := by
+      rw [Real.exp_nat_mul, Real.exp_log hCpos]
+    _ ≤ Real.exp (2 * Real.log C + 4 * (a + 1) * Real.log Q / Δ) :=
+      Real.exp_le_exp.mpr hmain
+    _ = C ^ 2 * Real.exp (4 * (a + 1) * Real.log Q / Δ) := by
+      have htwo : Real.exp (2 * Real.log C) = C ^ 2 := by
+        simpa only [Nat.cast_ofNat, Real.exp_log hCpos] using Real.exp_nat_mul (Real.log C) 2
+      rw [Real.exp_add, htwo]
+    _ ≤ _ := mul_le_mul_of_nonneg_right
+      (pow_le_pow_left₀ hCpos.le hCN 2) (Real.exp_nonneg _)
+
 end Real

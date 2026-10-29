@@ -135,3 +135,32 @@ Put $C=(1-E_0/n)^{-1}$, let $Q\ge1$ and $\eta>0$, and define
     The factor $S=n^2Q^{2E_0/\Delta}$ retains the published ground-energy
     dependence of the sample count.
 \end{proof}
+
+\begin{theorem}[A power budget from a width-one energy bracket]
+    \label{thm:power_sampling_interval_normalization}
+    \lean{Real.power_sampling_interval_normalization_pow_ceil_le}
+    \leanok
+    \uses{thm:power_sampling_normalization}
+    Let $0\le a\le n-1$, $\Delta>0$, and $Q\ge1$. Set
+    \begin{align}
+        E_{\max}&=\min(a+1,n-1),\\
+        C_{\max}&=(1-E_{\max}/n)^{-1},\\
+        m&=\left\lceil\frac{n-a}{\Delta}\log Q\right\rceil.
+        \label{eq:power_sampling_interval_parameters}
+    \end{align}
+    Then $1\le C_{\max}\le n$ and
+    \begin{align}
+        C_{\max}^{2m}\le n^2\exp\left(\frac{4(a+1)\log Q}{\Delta}\right)
+        =n^2Q^{4(a+1)/\Delta}.
+        \label{eq:power_sampling_interval_normalization}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:power_sampling_normalization}
+    Since $n-E_{\max}\ge1$ and $E_{\max}-a\le1$,
+    $n-a\le2(n-E_{\max})$. Also
+    $\log C_{\max}\le E_{\max}/(n-E_{\max})$.
+    The ceiling therefore gives
+    $2m\log C_{\max}\le2\log C_{\max}+4(a+1)\log Q/\Delta$.
+    Exponentiate and use $C_{\max}^2\le n^2$.
+\end{proof}
