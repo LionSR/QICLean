@@ -7,6 +7,23 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Spectral support as an indicator — promoted (2026-10-29)
+
+- **Pattern:** Expand the eigenvector-unitary definition of the support
+  projection and identify its diagonal with the indicator of nonzero
+  eigenvalues in the real continuous functional calculus.
+- **Abstraction:** `Matrix.IsHermitian.supportProj_eq_cfc` in QICLean
+  `Analysis/SupportProjectionOrder.lean`.
+- **Refactored occurrences:** The transpose identity in
+  `Analysis/CfcConjugation.lean` and the logarithmic scaling identity in
+  `Analysis/RelativeEntropySupportIntegral.lean`. The new physical support
+  proof in TNLean and the range-projection order comparison use the same
+  shared identity.
+- **Scouting:** The existing support projection is retained. Mathlib's
+  finite Hermitian functional calculus supplies the diagonal formula;
+  no equivalent public identity for QICLean's support projection was present.
+
+
 ### Trace normalization of a bipartite unit vector — shared lemma (2026-10-23)
 
 - **Seen:** The orthogonal-decomposition quotient and geometric-tail theorem in

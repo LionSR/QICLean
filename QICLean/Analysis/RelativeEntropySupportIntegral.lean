@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.PosSemidefSupport
+import QICLean.Analysis.SupportProjectionOrder
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 
 /-!
@@ -125,13 +125,8 @@ private theorem log_smul_posSemidef {A : Matrix n n ℂ}
   have hlogScaled :
       ContinuousOn Real.log ((c • ·) '' spectrum ℝ A) :=
     (A.finite_real_spectrum.image (c • ·)).continuousOn Real.log
-  have hsupport : cfc p A = hA.isHermitian.supportProj := by
-    rw [hA.isHermitian.cfc_eq, Matrix.IsHermitian.cfc,
-      Unitary.conjStarAlgAut_apply]
-    simp only [Matrix.IsHermitian.supportProj, p, Function.comp_def]
-    congr 2
-    ext i j
-    simp [Matrix.diagonal_apply]
+  have hsupport : cfc p A = hA.isHermitian.supportProj :=
+    hA.isHermitian.supportProj_eq_cfc.symm
   rw [CFC.log, CFC.log, ← cfc_comp_smul (p := IsSelfAdjoint) c Real.log A
     hlogScaled hA.isHermitian.isSelfAdjoint, ← hsupport,
     ← cfc_smul (p := IsSelfAdjoint) (Real.log c) p A hp,
