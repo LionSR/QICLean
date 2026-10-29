@@ -42,3 +42,31 @@ checked with read-only existing objects and private outputs; no cache was copied
 from a modified worktree. The completed source checks do not establish the
 TNLean spatial-rank or viable-set applications, which are verified separately
 in the consuming library.
+
+## Shared scalar identity and corrected source references
+
+At 90bcce8529f176388357d560035176976790aca2, the existing
+Matrix.vecMulVec_ofLp_smul_self is public with its original statement and proof.
+The mathematical identity needs no finite-index assumption. Its ordinary full
+build completed 10,348 jobs; strict checking, an imported audit of the four public
+declarations in the affected module, source synchronization and compiled blueprint
+checks passed. Only the three standard axioms occur. No Mathlib source was built.
+
+The later cc9e79084d26336c95e843c13928a3963a9debb2 corrects source references
+in the sampling modules from the separate supplement to the accessible published
+Methods, Proposition 1, author PDF page 6. The normalization bounds are derived
+in the formalization; their energy dependence agrees with that statement.
+The unknown overall scalar can be omitted after output normalization. Selecting
+word lengths and relative-error budgets without exact energy remains separate.
+The published main theorem carries energy in its complexity exponent; a bounded
+energy hypothesis must not be added to that theorem as though it were printed.
+The source check did not obtain the separate Supplemental Material, and no
+unverified passage from that separate file is used as the corrected citation.
+
+At cc9e79084d26336c95e843c13928a3963a9debb2, the ordinary full build again
+completed 10,348 jobs. Strict source checks, the imported audit of the five public
+sampling declarations, source synchronization and compiled blueprint checks all
+passed, with standard axioms only and zero Mathlib source jobs. The proof bodies
+are unchanged by the citation correction. Local records are
+/tmp/qiclean-rank-one-scalar-gates.json and
+/tmp/qiclean-source-citations-gates.json.
