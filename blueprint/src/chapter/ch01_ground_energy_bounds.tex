@@ -86,3 +86,17 @@ space. The order is the positive-semidefinite order.
     its spectral alternative. This retains the original basis, as needed
     for the comparison in~\cite[lines 909--960]{Arad2016RigorousRG}.
 \end{proof}
+
+\begin{lemma}[An attained minimum identifies the canonical least energy]
+    \label{lem:attained_canonical_ground_energy}
+    \lean{Matrix.IsHermitian.minEigenvalue_eq_add_of_centered_ground}
+    \leanok
+    Let $H$ be Hermitian on a nonzero finite-dimensional space. Suppose a
+    unit vector $x$ satisfies $(H-SI)x=Ex$ and $H-(S+E)I\ge0$.
+    Then the least eigenvalue of $H$ is $E+S$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:normalized_eigenvector_energies}
+    A canonical unit eigenvector attains the least eigenvalue. The two
+    attained positive lower bounds for the same matrix have equal energies.
+\end{proof}

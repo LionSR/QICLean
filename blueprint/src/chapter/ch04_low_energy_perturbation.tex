@@ -238,3 +238,27 @@ span of the $b'_j$ with $a'_j\le c$.
     replacing either residual by a full operator-norm hypothesis. The window
     count uses the correction in~\cite{gap:alvv16_hard_truncation_windows}.
 \end{proof}
+
+\begin{lemma}[A common scalar spectral-window count]
+    \label{lem:spectral_window_count_budget}
+    \lean{Real.spectral_window_count_bound,
+        Real.spectral_window_budget_bound}
+    \leanok
+    For $\eta\ge0$ and $0<\xi\le1$, one has
+    \begin{align*}
+        \left\lceil\frac\eta{2\xi}\right\rceil(2\xi)^2
+          \le2(\eta+2)\xi.
+    \end{align*}
+    Consequently, if $0\le E\le4$, $w,\delta\ge0$, and
+    $2(6+\eta)\xi\le\delta w^2$, then
+    \begin{align*}
+        \left\lceil\frac{E+\eta}{2\xi}\right\rceil(2\xi)^2
+          \le\delta(w+\xi)^2.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    The ceiling is at most its argument plus one. Expanding the first
+    product gives at most $2\eta\xi+4\xi^2$, and $\xi^2\le\xi$ proves
+    the first assertion. Apply it to $E+\eta$, use $E\le4$, and then
+    apply the prescribed budget and $w^2\le(w+\xi)^2$.
+\end{proof}

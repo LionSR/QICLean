@@ -172,3 +172,78 @@ complementary Hamiltonian; they are not subtracted from this threshold.
     $B_m=d_m(A)e^{-A/8}$ by $\|B_m\|\le16e^{-m/16}$.
     Since $d_m(A)=B_me^{A/8}$, restriction and multiplication give the claim.
 \end{proof}
+
+\section{Spectral windows relative to their own ground energies}
+
+\begin{theorem}[A ground-energy bound from a spectral residual]
+    \label{thm:spectral_residual_ground_energy}
+    \lean{Matrix.IsHermitian.minEigenvalue_sub_le_of_spectralSpanLE_residual}
+    \leanok
+    Let $A,B$ be finite Hermitian matrices with least energies $a,b$.
+    Let $\eta\ge0$ and $G_B=\mathbf1_{(-\infty,b+\eta]}(B)\mathcal H$.
+    If $\|(A-B)|_{G_B}\|\le\xi$, then $a-b\le\xi$.
+    No spectral gap or order relation between the two matrices is required.
+\end{theorem}
+\begin{proof}\leanok
+    A unit ground eigenvector $v$ of $B$ belongs to $G_B$. Positivity of
+    $A-aI$ and Cauchy--Schwarz give
+    \begin{align*}
+        a\le\langle v,Av\rangle
+          =b+\langle v,(A-B)v\rangle\le b+\xi.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}[Both directed windows from two residuals]
+    \label{thm:spectral_residual_directed_windows}
+    \lean{Matrix.isCloseTo_spectralSpanLE_pair_of_residuals}
+    \leanok
+    Let $A,B$ have least energies $a,b$, and suppose $\eta>0$,
+    $0<\xi\le1$, $w\ge0$, $\xi\le w/2$ and $\delta\ge0$. Suppose the
+    restrictions of $A-B$ to the actual windows below $a+\eta$ and
+    $b+\eta$, respectively, both have norm at most $\xi$. If
+    \begin{align*}
+        2(\eta+2)\xi\le\delta w^2,
+    \end{align*}
+    then $|a-b|\le\xi$, the window of $B$ below $b+\eta+w$ is
+    $\delta$-close to the window of $A$ below $a+\eta$, and the window
+    of $A$ below $a+\eta+w$ is $\delta$-close to the window of $B$
+    below $b+\eta$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:spectral_residual_ground_energy,
+        thm:spectral_span_close_of_perturbation, lem:spectral_window_count_budget}
+    Applying the ground-energy bound in both directions gives
+    $|a-b|\le\xi$. The number of windows of width $2\xi$ needed for
+    the bandwidth $\eta$ is $N=\lceil\eta/(2\xi)\rceil$, with
+    \begin{align*}
+        N(2\xi)^2\le2\eta\xi+4\xi^2\le2(\eta+2)\xi.
+    \end{align*}
+    Apply the finite-window perturbation estimate in both directions.
+    Its two denominators are $w-(a-b)+\xi$ and $w+(a-b)+\xi$, both at
+    least $w$. The source cutoffs do not exceed their target cutoffs
+    because $|a-b|\le\xi\le w/2$. The stated budget therefore proves
+    both comparisons relative to the respective true ground energies.
+\end{proof}
+
+\begin{theorem}[An explicit order for the corrected soft residual]
+    \label{thm:soft_truncation_residual_order}
+    \lean{Real.exists_softTruncation_order_of_residual_budget}
+    \leanok
+    Let $\eta\ge0$ and $0<\rho\le1$. Set
+    \begin{align*}
+        m=\left\lceil35+2\eta+16\log(80/\rho)\right\rceil,
+        \qquad\alpha=(m/2)2^{-m}.
+    \end{align*}
+    Then $m\ge1$, $m/2\ge10$, $0\le\alpha\le1/4$, and
+    \begin{align*}
+        m/2&\ge17+\eta+\alpha,&
+        80\exp\left(\frac{17+\eta+\alpha}{8}-\frac m{16}\right)&\le\rho.
+    \end{align*}
+    This order depends only on the bandwidth and requested residual budget.
+\end{theorem}
+\begin{proof}\leanok
+    For $m=k+1$, the elementary inequality $k+1\le2^k$ gives
+    $\alpha\le1/4$. Since $\rho\le1$, the logarithm is nonnegative,
+    so the ceiling gives $m\ge35$. Substitution yields the cutoff
+    inequality and an exponent at most $-\log(80/\rho)$.
+\end{proof}

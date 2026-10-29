@@ -283,6 +283,7 @@ import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SoftHardTruncation
 import QICLean.Analysis.SoftTruncation
+import QICLean.Analysis.SoftTruncationAccuracy
 import QICLean.Analysis.SoftTruncationCoercivity
 import QICLean.Analysis.SoftTruncationRemainder
 import QICLean.Analysis.SourceContraction
@@ -297,7 +298,10 @@ import QICLean.Analysis.SpectralProjectionIntertwiner
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
+import QICLean.Analysis.SpectralResidualComparison
+import QICLean.Analysis.SpectralResidualGroundEnergy
 import QICLean.Analysis.SpectralTailTraceNorm
+import QICLean.Analysis.SpectralWindowCount
 import QICLean.Analysis.SqrtHolder
 import QICLean.Analysis.StretchedBallKernel
 import QICLean.Analysis.StretchedExponentialSummability

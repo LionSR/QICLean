@@ -1662,3 +1662,17 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   uses the same identity with different factor dimensions and energies.
 - **Notes:** `Matrix.PosSemidef.gap_mono` handles the capped lower bound;
   neither it nor the tensor-sum result assumes an attained excited energy.
+
+
+### Scalar counts for spectral-window perturbations — promoted (2026-10-29)
+
+- **Pattern:** Bound the natural ceiling of the bandwidth divided by twice
+  a positive residual, multiply by its squared window width, and use the
+  residual's upper bound by one.
+- **Shared estimates:** `Real.spectral_window_count_bound` and
+  `Real.spectral_window_budget_bound` in
+  `Analysis/SpectralWindowCount.lean` use Mathlib's ceiling bound once.
+- **Refactored occurrences:** The two former private scalar copies in
+  TNLean's `PhysicalLowEnergyCloseness.lean` and
+  `PhysicalLowEnergyFamily.lean` are removed. They and the new relative-ground
+  comparison reuse the companion estimates. No tactic is introduced.
