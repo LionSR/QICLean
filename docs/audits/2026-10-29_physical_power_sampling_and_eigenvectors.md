@@ -11,7 +11,7 @@ m = ceil((n-E0) log(Q)/Delta), and explicit positive sample count retain the fac
 exp(2 E0 log(Q)/Delta). The energy bounds 0 <= E0 <= n-1 follow from the unit
 ground vector and the original positive-contraction bounds. The proved count is
 not polynomial with a degree independent of the ground energy. The published
-supplement to LVV Proposition 1 is distinguished from the earlier arXiv version.
+Methods statement of LVV Proposition 1 is distinguished from the earlier arXiv version.
 
 The source commit was integrated as 5ff133a695f8f7e9255a33a1d276722897dd28d9.
 Its ordinary full library build completed 10,347 jobs. Strict checks of the

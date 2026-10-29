@@ -32,7 +32,7 @@ ground vector; the sample index set is explicitly nonempty or constructed so.
 
 These are the norm and frequency estimates in the sampled-power construction
 of LVV, arXiv:1307.5143v1, Section 2.3.1, with the ground-energy dependence
-retained in the published Methods theorem and supplement, Proposition 1, p. 6:
+retained in the published Methods theorem and Proposition 1, author PDF p. 6:
 https://people.eecs.berkeley.edu/~vazirani/pubs/1dalg.pdf.
 The spatial operator-Schmidt-rank estimate uses further locality information.
 -/
@@ -159,7 +159,7 @@ open Classical in
 budget gives one operator approximating both that power and the canonical ground
 projection, with simultaneous word-frequency control. The ground-energy range,
 normalization bound, mean identity and matrix norm estimate are derived.
-Supporting the norm estimates of LVV, published supplement, Proposition 1, p. 6. -/
+Supporting the norm estimates of LVV, published Methods, Proposition 1, p. 6. -/
 theorem exists_sampled_power_approximation_with_energy_dependent_budget
     {ι κ β : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     [Fintype β] [Nonempty β]
@@ -244,7 +244,7 @@ open Classical in
 physical normalized-power sampler. For `2 * dim < 4^p`, choose the displayed
 natural-ceiling count. The joint failure budget is then strictly below one.
 The sample count contains `exp (2 * E0 * log Q / Δ)`, as in the published LVV
-supplement, Proposition 1, p. 6. -/
+Methods, Proposition 1, p. 6. -/
 theorem exists_sampled_power_approximation_with_explicit_count
     {ι κ : Type*} [Fintype ι] [DecidableEq ι] [Fintype κ]
     (h : κ → Matrix ι ι ℂ) (hpos : ∀ i, (h i).PosSemidef) (hu : ∀ i, h i ≤ 1)

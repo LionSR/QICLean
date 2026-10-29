@@ -16,8 +16,8 @@ For `0 ≤ E0 ≤ N - 1`, put `C = (1 - E0 / N)⁻¹`. Then `1 ≤ C ≤ N` and
 `C^(2m) ≤ N² * exp (2 * E0 * log Q / Δ)`.
 
 The ceiling costs the factor `C² ≤ N²`. The exponent retains the ground
-energy. This is the normalization estimate in the published LVV supplementary
-proof of Proposition 1, page 6, following its Methods theorem:
+energy. This makes explicit the normalization dependence in the published LVV
+Methods, Proposition 1, author PDF page 6:
 https://people.eecs.berkeley.edu/~vazirani/pubs/1dalg.pdf,
 DOI 10.1038/nphys3345. It supplies the energy-dependent sampling bound.
 -/
@@ -25,7 +25,7 @@ DOI 10.1038/nphys3345. It supplies the energy-dependent sampling bound.
 namespace Real
 
 /-- Positive-contraction normalization has an explicit logarithmic bound.
-The local spectral ceiling gives `E0 ≤ N - 1`; LVV, published supplement, p. 6. -/
+The local spectral ceiling gives `E0 ≤ N - 1`; LVV, published Methods, Proposition 1, p. 6. -/
 theorem power_sampling_normalization_bounds {N E0 : ℝ}
     (hE0 : 0 ≤ E0) (hEN : E0 ≤ N - 1) :
     let C := (1 - E0 / N)⁻¹
@@ -49,7 +49,7 @@ theorem power_sampling_normalization_bounds {N E0 : ℝ}
       _ = E0 / (N - E0) := by rw [hC]; field_simp; ring
 
 /-- The normalized power retains the published ground-energy exponent.
-LVV, published supplement to Proposition 1, p. 6. The natural ceiling costs
+LVV, published Methods, Proposition 1, p. 6. The natural ceiling costs
 `C²`, bounded here by `N²`. -/
 theorem power_sampling_normalization_pow_ceil_le {N E0 Δ Q : ℝ}
     (hE0 : 0 ≤ E0) (hEN : E0 ≤ N - 1) (hΔ : 0 < Δ) (hQ : 1 ≤ Q) :
