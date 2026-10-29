@@ -1,0 +1,76 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\input{command}
+\title{Positive Iterates and Algebraic Multiplicity in Primitive Maps}
+\author{}
+\date{2026-10-29}
+\begin{document}
+\maketitle
+\gapnote{clarification}{resolved}
+
+\section{Source and domain}
+
+Theorem~6.7 of Ref.~\cite{Wolf2012Quantum}, in
+\path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex}, lines~835--890,
+concerns positive trace-preserving maps on $M_D(\mathbb C)$, $D\geq1$.
+Complete positivity and the Schwarz inequality are not hypotheses. The
+following Theorem~6.8, starting at line~904, is a different result for
+completely positive maps.
+
+\section{The iterate convention}
+
+The second condition quantifies over $T^k$, $k\in\mathbb N$. Here this means
+$k\geq1$. If $k=0$ were included, every map on $M_2(\mathbb C)$ would fail
+that condition: the identity preserves every corner. In particular, the
+trace-replacement map $X\mapsto\tr(X)I/2$ satisfies the other three
+conditions but its zeroth power is reducible. The first condition may allow
+$n=0$: on $M_1(\mathbb C)$ every density matrix is already positive definite.
+The zero-dimensional algebra is excluded, since its density set is empty.
+
+\section{Multiplicity and uniformity}
+
+The set of peripheral eigenvalues alone does not express the fourth
+condition. The identity on $M_2(\mathbb C)$ has peripheral set $\{1\}$,
+but its characteristic polynomial is $(z-1)^4$. The fourth condition requires
+one peripheral eigenvalue counting algebraic multiplicity. Equivalently,
+the sum of its maximal generalized peripheral eigenspaces is a line spanned
+by a faithful stationary density $\sigma$.
+
+Pointwise convergence on density matrices is insufficient by itself to
+justify choosing a single positivity exponent. Trace normalization extends
+it to positive semidefinite inputs, and decomposition into four positive
+semidefinite parts extends it to all matrices. Finite dimension then gives
+operator-norm convergence to $P(X)=\tr(X)\sigma$. Compactness of the density
+matrices yields $C>0$ such that
+\begin{align}
+    \sup_{\rho\in\mathcal D_D}\|T^n\rho-\sigma\|
+        &\leq C\|T^n-P\|\longrightarrow0.
+    \label{eq:wolf67_uniform_density_limit}
+\end{align}
+The determinant remains nonzero in a neighborhood of $\sigma$, so
+(\ref{eq:wolf67_uniform_density_limit}) gives a common exponent for all
+inputs. Positivity upgrades invertibility to positive definiteness.
+
+The converse passage to the recurrent projection also uses compactness:
+$T^n(\mathcal D_D)$ is compact and closed. If $T_\phi\rho=\rho$, the tail
+of a recurrent subsequence $T^{s_j}\rho\to\rho$ lies in this image. Hence
+$\rho=T^n\tau$ for a density matrix $\tau$, and strict positivity passes to
+this fixed density without treating strict positivity as a closed property.
+
+\section{Formal resolution}
+
+\leanid{WolfTheorem67.wolf_theorem_6_7_tfae} proves the four-way equivalence
+with exactly positivity and trace preservation on a nonzero full matrix
+algebra. \leanid{WolfTheorem67.simpleFaithfulPeripheralSpectrum_iff}
+identifies the generalized peripheral line with peripheral set $\{1\}$,
+root multiplicity one at $1$, and a faithful stationary density.
+\leanid{WolfTheorem67.strictlyPositivePower_iff_uniform_eventual} proves
+that the same threshold works at every later iterate. The earlier restriction
+to stronger channel or finite Kraus assumptions is therefore removed for
+this theorem. No restriction to complete positivity or Schwarz maps remains.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}
