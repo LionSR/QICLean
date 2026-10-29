@@ -41,6 +41,7 @@ import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
 import QICLean.Analysis.DensityMaxEigenvector
 import QICLean.Analysis.DensitySimplex
+import QICLean.Analysis.DetectabilityLemma
 import QICLean.Analysis.DeterminantTraceBound
 import QICLean.Analysis.DifferentiableInnerAction
 import QICLean.Analysis.Dirichlet
@@ -79,6 +80,7 @@ import QICLean.Analysis.GroundEnergyBounds
 import QICLean.Analysis.GroundProjection
 import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
+import QICLean.Analysis.HermitianDilation
 import QICLean.Analysis.HermitianFactorRepair
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
@@ -107,12 +109,15 @@ import QICLean.Analysis.LiebOperatorConcave
 import QICLean.Analysis.LiebOperatorIntegral
 import QICLean.Analysis.LiebScalarIntegral
 import QICLean.Analysis.LiebSubBoundary
+import QICLean.Analysis.LiebTraceExponential
 import QICLean.Analysis.LogClipping
 import QICLean.Analysis.LogarithmicEnvelope
 import QICLean.Analysis.LowEnergyCluster
 import QICLean.Analysis.LowEnergyCoordinates
 import QICLean.Analysis.LowEnergyPerturbation
 import QICLean.Analysis.MarginalSupport
+import QICLean.Analysis.MatrixBernsteinInputs
+import QICLean.Analysis.MatrixBernsteinScalar
 import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFittingRange
@@ -330,6 +335,7 @@ import QICLean.Analysis.ViableSubspaceCoordinates
 import QICLean.Analysis.ViableSubspaceDimension
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
+import QICLean.Analysis.ViableSubspaceSchmidtRank
 import QICLean.Analysis.ViableSubspaceSpectralProjector
 import QICLean.Analysis.ViableSubspaceTensor
 import QICLean.Analysis.ViableSubspaceTrimming

@@ -1,0 +1,199 @@
+\section{The matrix Bernstein inequality}
+\label{sec:matrix_bernstein}
+
+% Tropp, Found. Comput. Math. 12 (2012), Corollary 3.3, Lemma 3.4,
+% Corollary 3.7, Lemma 6.7, Theorems 1.4, 1.6 and 6.1; Landau, Vazirani,
+% Vidick, arXiv:1307.5143v1, Theorem t:mcb (algo53.tex, lines 616--624).
+
+Let $(\Omega,\mathbb{P})$ be a probability space. A random matrix is a
+measurable map from $\Omega$ to the complex matrices, and $\mathbb{E}$ is the
+integral of a matrix-valued function. Throughout, $\|\cdot\|$ is the operator
+norm, $A\le B$ is the order of Hermitian matrices, $\log$ is the logarithm of a
+positive definite matrix, and $g(\theta)=(e^{\theta R}-\theta R-1)/R^{2}$ is the
+Bernstein function of Definition~\ref{def:bernstein_function}. The summands are
+almost surely bounded in norm, so every expectation below is finite.
+
+\subsection{Subadditivity of matrix cumulant generating functions}
+
+\begin{theorem}[Jensen's inequality for the trace exponential]
+    \label{thm:matrix_cgf_jensen}
+    \lean{Matrix.integral_re_trace_exp_add_le}
+    \leanok
+    \uses{thm:lieb_trace_exp_concavity}
+    Let $H$ be a Hermitian matrix and $Y$ a random matrix that is almost surely
+    Hermitian with $\|Y\|\le R$. Then
+    $\mathbb{E}\operatorname{tr}e^{H+Y}\le\operatorname{tr}\exp\bigl(H+\log\mathbb{E}\,e^{Y}\bigr)$.
+    This is~\cite[Corollary~3.3]{Tropp2012User} for almost surely bounded $Y$;
+    the restriction is recorded in~\cite{gap:tropp12_bounded_summands_scope}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:lieb_trace_exp_concavity}
+    Almost surely $H+Y=H+\log e^{Y}$
+    and $e^{-R}\mathbb{1}\le e^{Y}\le e^{R}\mathbb{1}$. On the closed convex set
+    $K=\{A:e^{-R}\mathbb{1}\le A\le e^{R}\mathbb{1}\}$ of positive definite
+    matrices the function $f(A)=\operatorname{tr}e^{H+\log A}$ is concave by
+    Theorem~\ref{thm:lieb_trace_exp_concavity}, and continuous because $\log$ is
+    continuous on $[e^{-R},e^{R}]$. Jensen's inequality for $f$ on $K$ gives
+    $\mathbb{E}f(e^{Y})\le f(\mathbb{E}\,e^{Y})$.
+\end{proof}
+
+\begin{theorem}[Subadditivity of matrix cumulant generating functions]
+    \label{thm:matrix_cgf_subadditivity}
+    \lean{Matrix.integral_re_trace_exp_add_sum_le}
+    \leanok
+    \uses{thm:matrix_cgf_jensen}
+    Let $Y_1,\dots,Y_N$ be independent random matrices, almost surely Hermitian
+    with $\|Y_k\|\le R$, and let $H$ be Hermitian. Then
+    \begin{align}
+        \label{eq:matrix_cgf_subadditivity}
+        \mathbb{E}\operatorname{tr}\exp\Bigl(H+\sum_kY_k\Bigr)
+        \le\operatorname{tr}\exp\Bigl(H+\sum_k\log\mathbb{E}\,e^{Y_k}\Bigr).
+    \end{align}
+    For $H=0$ and the summands $\theta Y_k$ this is~\cite[Lemma~3.4]{Tropp2012User}
+    for almost surely bounded summands; the restriction is recorded
+    in~\cite{gap:tropp12_bounded_summands_scope}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:matrix_cgf_jensen}
+    Induction on $N$, following~\cite[Lemma~3.4]{Tropp2012User}. Put
+    $S=\sum_{k<N}Y_k$ and $L=\log\mathbb{E}\,e^{Y_N}$. Since $S$ and $Y_N$ are
+    independent, Fubini's theorem writes the left side as an integral over the
+    law of $S$ of $\mathbb{E}\operatorname{tr}e^{(H+S)+Y_N}$ with $S$ fixed, and
+    Theorem~\ref{thm:matrix_cgf_jensen} bounds this by
+    $\operatorname{tr}e^{(H+L)+S}$. The induction hypothesis for the Hermitian
+    matrix $H+L$ concludes.
+\end{proof}
+
+\subsection{The Bernstein inequality}
+
+\begin{theorem}[Trace moment generating function of a sum of bounded matrices]
+    \label{thm:bernstein_trace_mgf}
+    \lean{Matrix.integral_re_trace_exp_smul_sum_le}
+    \leanok
+    \uses{thm:matrix_cgf_subadditivity, thm:bernstein_transfer,
+        thm:log_le_of_le_one_add, thm:trace_exp_monotone,
+        thm:trace_exp_dimension_bound}
+    Let $Y_1,\dots,Y_N$ be independent random $d\times d$ matrices, almost surely
+    Hermitian with $\|Y_k\|\le R$ for some $R>0$, and centred, $\mathbb{E}\,Y_k=0$.
+    Put $\sigma^{2}=\bigl\|\sum_k\mathbb{E}\,Y_k^{2}\bigr\|$. For $\theta\ge0$,
+    $\mathbb{E}\operatorname{tr}e^{\theta\sum_kY_k}\le d\,e^{g(\theta)\sigma^{2}}$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:matrix_cgf_subadditivity, thm:bernstein_transfer,
+        thm:log_le_of_le_one_add, thm:trace_exp_monotone,
+        thm:trace_exp_dimension_bound}
+    By Theorem~\ref{thm:bernstein_transfer},
+    $e^{\theta Y_k}\le\mathbb{1}+\theta Y_k+g(\theta)Y_k^{2}$ almost surely;
+    integrating and using $\mathbb{E}\,Y_k=0$ gives
+    $\mathbb{E}\,e^{\theta Y_k}\le\mathbb{1}+g(\theta)\mathbb{E}\,Y_k^{2}$, so
+    $\log\mathbb{E}\,e^{\theta Y_k}\le g(\theta)\mathbb{E}\,Y_k^{2}$ by
+    Theorem~\ref{thm:log_le_of_le_one_add}, as in~\cite[Lemma~6.7]{Tropp2012User}.
+    By~\eqref{eq:matrix_cgf_subadditivity} with $H=0$ and
+    Theorem~\ref{thm:trace_exp_monotone},
+    $\mathbb{E}\operatorname{tr}e^{\theta\sum_kY_k}
+        \le\operatorname{tr}\exp\bigl(g(\theta)\sum_k\mathbb{E}\,Y_k^{2}\bigr)$,
+    and Theorem~\ref{thm:trace_exp_dimension_bound} bounds the right side by
+    $d\,e^{g(\theta)\sigma^{2}}$.
+\end{proof}
+
+\begin{theorem}[Hermitian matrix Bernstein inequality for summands bounded in norm]
+    \label{thm:hermitian_bernstein_bounded}
+    \lean{Matrix.measureReal_exists_le_mem_spectrum_sum_le}
+    \leanok
+    \uses{thm:bernstein_trace_mgf, thm:trace_exp_eigenvalue_tail,
+        thm:bernstein_exponent}
+    Let $Y_1,\dots,Y_N$ be independent random $d\times d$ matrices, almost surely
+    Hermitian with $\|Y_k\|\le R$, and centred. Put
+    $\sigma^{2}=\bigl\|\sum_k\mathbb{E}\,Y_k^{2}\bigr\|$. For $t\ge0$,
+    \begin{align}
+        \label{eq:hermitian_bernstein_bounded}
+        \mathbb{P}\Bigl\{\lambda_{\max}\Bigl(\sum_kY_k\Bigr)\ge t\Bigr\}
+        \le d\exp\Bigl(\frac{-t^{2}/2}{\sigma^{2}+Rt/3}\Bigr).
+    \end{align}
+    The matrix Bernstein inequality~\cite[Theorems~1.4 and~6.1]{Tropp2012User}
+    assumes only $\lambda_{\max}(Y_k)\le R$; the two-sided bound used here is
+    recorded in~\cite{gap:tropp12_bounded_summands_scope}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bernstein_trace_mgf, thm:trace_exp_eigenvalue_tail,
+        thm:bernstein_exponent}
+    If $t=0$ the right side is $d$, which is at least $1$ unless $d=0$, in which
+    case there are no eigenvalues. If $R\le0$, then $\sum_kY_k=0$ almost surely
+    and the event is null for $t>0$. Otherwise choose $\theta\ge0$ by
+    Theorem~\ref{thm:bernstein_exponent}. On the event,
+    $e^{\theta t}\le\operatorname{tr}e^{\theta\sum_kY_k}$ by
+    Theorem~\ref{thm:trace_exp_eigenvalue_tail}; Markov's inequality and
+    Theorem~\ref{thm:bernstein_trace_mgf} bound its probability by
+    $d\,e^{-\theta t+g(\theta)\sigma^{2}}$, which is at most the right side
+    of~\eqref{eq:hermitian_bernstein_bounded} by~\eqref{eq:bernstein_exponent}.
+\end{proof}
+
+\begin{theorem}[Rectangular matrix Bernstein inequality]
+    \label{thm:rectangular_bernstein}
+    \lean{Matrix.measureReal_le_norm_sum_le}
+    \leanok
+    \uses{thm:bernstein_trace_mgf, def:hermitian_dilation,
+        thm:hermitian_dilation_square, thm:block_diagonal_norm,
+        thm:hermitian_dilation_norm, thm:hermitian_dilation_trace_exp,
+        thm:bernstein_exponent}
+    Let $Z_1,\dots,Z_N$ be independent random complex $d_1\times d_2$ matrices with
+    $d_1+d_2\ge1$, $\mathbb{E}\,Z_k=0$ and $\|Z_k\|\le R$ almost surely. Put
+    $\sigma^{2}=\max\bigl(\bigl\|\sum_k\mathbb{E}\,Z_kZ_k^{*}\bigr\|,
+        \bigl\|\sum_k\mathbb{E}\,Z_k^{*}Z_k\bigr\|\bigr)$. For $t\ge0$,
+    \begin{align}
+        \label{eq:rectangular_bernstein}
+        \mathbb{P}\Bigl\{\Bigl\|\sum_kZ_k\Bigr\|\ge t\Bigr\}
+        \le(d_1+d_2)\exp\Bigl(\frac{-t^{2}/2}{\sigma^{2}+Rt/3}\Bigr).
+    \end{align}
+    This is~\cite[Theorem~1.6]{Tropp2012User}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bernstein_trace_mgf, def:hermitian_dilation,
+        thm:hermitian_dilation_square, thm:block_diagonal_norm,
+        thm:hermitian_dilation_norm, thm:hermitian_dilation_trace_exp,
+        thm:bernstein_exponent}
+    The cases $t=0$ and $R\le0$ are as in
+    Theorem~\ref{thm:hermitian_bernstein_bounded}. Otherwise, as
+    in~\cite[Theorem~1.6]{Tropp2012User}, the dilations $\mathcal{D}(Z_k)$ are
+    independent, Hermitian, centred because $\mathcal{D}$ is real-linear, and
+    $\|\mathcal{D}(Z_k)\|=\|Z_k\|\le R$. Their squares are
+    $\operatorname{diag}(Z_kZ_k^{*},Z_k^{*}Z_k)$, so
+    $\bigl\|\sum_k\mathbb{E}\,\mathcal{D}(Z_k)^{2}\bigr\|=\sigma^{2}$ by
+    Theorem~\ref{thm:block_diagonal_norm}. On the event,
+    $e^{\theta t}\le e^{\theta\|\sum_kZ_k\|}
+        \le\operatorname{tr}e^{\theta\mathcal{D}(\sum_kZ_k)}$ by
+    Theorem~\ref{thm:hermitian_dilation_trace_exp}, and
+    $\mathcal{D}(\sum_kZ_k)=\sum_k\mathcal{D}(Z_k)$. Markov's inequality,
+    Theorem~\ref{thm:bernstein_trace_mgf} in dimension $d_1+d_2$, and the choice
+    of $\theta$ in Theorem~\ref{thm:bernstein_exponent} conclude.
+\end{proof}
+
+\begin{theorem}[Matrix Bernstein inequality for averages]
+    \label{thm:bernstein_average}
+    \lean{Matrix.measureReal_le_norm_average_sub_le}
+    \leanok
+    \uses{thm:rectangular_bernstein}
+    Let $X_1,\dots,X_\ell$, $\ell\ge1$, be independent identically distributed
+    random complex $d\times d$ matrices with $d\ge1$, $\mathbb{E}\,X_i=X$ and
+    $\|X_i-X\|\le R$ almost surely. Put
+    $\sigma^{2}=\max\bigl(\|\mathbb{E}\,(X_1-X)(X_1-X)^{*}\|,
+        \|\mathbb{E}\,(X_1-X)^{*}(X_1-X)\|\bigr)$. For $t\ge0$,
+    \begin{align}
+        \label{eq:bernstein_average}
+        \mathbb{P}\Bigl\{\Bigl\|\frac1\ell\sum_{i=1}^{\ell}X_i-X\Bigr\|\ge t\Bigr\}
+        \le2d\exp\Bigl(-\frac{\ell t^{2}}{2\sigma^{2}+2Rt/3}\Bigr).
+    \end{align}
+    This is~\cite[Theorem~t:mcb]{Landau2013PolynomialTime}, with the operator
+    norms in $\sigma^{2}$ that the printed statement omits;
+    see~\cite{gap:lvv13_matrix_bernstein_variance_norm}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:rectangular_bernstein}
+    The summands $Z_i=(X_i-X)/\ell$ are independent and centred, with
+    $\|Z_i\|\le R/\ell$ and
+    $\sum_i\mathbb{E}\,Z_iZ_i^{*}=\ell^{-1}\mathbb{E}\,(X_1-X)(X_1-X)^{*}$ by
+    identical distribution, and similarly for $Z_i^{*}Z_i$. Since
+    $\sum_iZ_i=\frac1\ell\sum_iX_i-X$ and
+    $\frac{t^{2}/2}{\sigma^{2}/\ell+Rt/(3\ell)}=\frac{\ell t^{2}}{2\sigma^{2}+2Rt/3}$,
+    \eqref{eq:rectangular_bernstein} with $d_1=d_2=d$ is~\eqref{eq:bernstein_average}.
+\end{proof}

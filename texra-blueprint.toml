@@ -36,3 +36,4 @@ oai26   = "OpenAI mathematical-physics preprints of September 24, 2026 (two-dime
 aklv13 = "Arad, Kitaev, Landau and Vazirani, arXiv:1301.1162v1 (2013)"
 alvv16 = "Arad, Landau, Vazirani and Vidick, arXiv:1602.08828v2 (2016)"
 lvv13   = "arXiv:1307.5143 (Landau, Vazirani and Vidick, one-dimensional gapped ground states)"
+tropp12 = "Tropp, User-friendly tail bounds for sums of random matrices, Found. Comput. Math. 12 (2012), arXiv:1004.4389"

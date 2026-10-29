@@ -1,10 +1,10 @@
 %% =========================================================
 %% Expected trace error of corrected sources.
 %% Source: September 24, 2026 polynomial-PEPS preprint, Theorem 5.2.
-%% This chapter does not assert the circuit expansion or network conclusion.
+%% This section does not assert the circuit expansion or network conclusion.
 %% =========================================================
 
-\chapter{Expected Trace Error of Corrected Sources}\label{ch:source_error}
+\section{Expected trace error of corrected sources}\label{ch:source_error}
 
 The Gaussian replacement of a Schmidt source is unbiased. Its centered
 entries have diagonal covariance, and fresh independent slots preserve
@@ -16,7 +16,7 @@ required trace-norm estimates.
 These are the source calculations in
 \cite[Theorem~5.2]{OpenAI2026PolynomialPEPS}.
 
-\section{An unbiased product-operator source}
+\subsection{An unbiased product-operator source}
 
 \begin{definition}[Sampled Schmidt-source operators]\label{def:source_product}
     \lean{QICLean.ComplexGaussian.schmidtVector}
@@ -112,7 +112,7 @@ These are the source calculations in
     entrywise expectations to be combined into the matrix identities.
 \end{proof}
 
-\section{Finite branch sums and physical matrix entries}
+\subsection{Finite branch sums and physical matrix entries}
 
 \begin{theorem}[Complex coefficients in finite trace-norm sums]
     \label{thm:source_branch_sum}
@@ -201,7 +201,7 @@ These are the source calculations in
     to obtain (\ref{eq:source_physical_reinsertion}).
 \end{proof}
 
-\section{Covariance and weighted block errors}
+\subsection{Covariance and weighted block errors}
 
 \begin{theorem}[Expected trace error from diagonal covariance]
     \label{thm:source_covariance_error}
