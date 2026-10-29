@@ -1584,3 +1584,14 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Use:** The statement applies to any `RCLike` scalar field and finite
   index type, with no nonempty-index or gap hypothesis. It reuses Mathlib's
   spectral theorem and also applies to the underlying Euclidean linear map.
+
+### Scalar multiplication of a rank-one density — promoted (2026-10-29)
+
+- **Pattern:** Move a complex scalar through the two factors of a rank-one
+  matrix and identify its product with its conjugate as the squared norm.
+- **Abstraction:** The existing `Matrix.vecMulVec_ofLp_smul_self` in
+  `Analysis/OptimizedPureStateTraceError.lean` is now public; its statement
+  and proof are unchanged.
+- **Use:** Pure-state normalization and equality of the projections of two
+  unit vectors in the same line. This avoids private copies in the TNLean
+  clipped-filter and sampled-ground-line arguments.
