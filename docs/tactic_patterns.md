@@ -1710,3 +1710,17 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Scope:** The second vector is arbitrary; no commutation, normalization
   or second projection is needed. The actual regional parity-product
   energy comparison is the intended physical consumer.
+
+### Three-factor configuration diagrams — candidate (2026-10-29)
+
+- **Seen:** The two actual regional tensor diagrams in
+  `Entropy/RegionTensorSplitting.lean`.
+- **Pattern:** Compare the inverse isometries on pure tensors, use the
+  actual finite-product restrictions, and extend linearly. The scalar
+  reindexing calculation is shared by
+  `Submodule.euclideanTensorEquiv_reindex_symm_tmul` in
+  `Analysis/ViableSubspaceTensorTransport.lean`; all three region-specific
+  product formulas use this one proof.
+- **Scope:** Neither the global target nor its vectors are assumed to
+  factor. The complement of the union is retained in both diagrams. The
+  two three-factor inductions occur in one file; no new tactic is needed.

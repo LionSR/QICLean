@@ -97,8 +97,10 @@ import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionPureApproximationTail
 import QICLean.Entropy.RegionRank
 import QICLean.Entropy.RegionSplit
+import QICLean.Entropy.RegionTensorSplitting
 import QICLean.Entropy.RegionTraceNorm
 import QICLean.Entropy.RegionUnion
+import QICLean.Entropy.RegionalTensorMerge
 import QICLean.Entropy.RegionalViability
 import QICLean.Entropy.Renyi
 import QICLean.Entropy.RenyiMassBound
