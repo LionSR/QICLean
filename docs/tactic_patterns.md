@@ -1648,3 +1648,17 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Use:** Pure-state normalization and equality of the projections of two
   unit vectors in the same line. This avoids private copies in the TNLean
   clipped-filter and sampled-ground-line arguments.
+
+
+### The two-factor projector-gap defect — promoted (2026-10-29)
+
+- **Pattern:** Expand the projector-gap defect of a tensor sum as the sum of
+  the two factor defects and the tensor product of the two orthogonal
+  complements.
+- **Defined in:** `Analysis/DoubledSystemGap.lean`, `Matrix.tensorSum_gap_eq`
+  and `Matrix.PosSemidef.tensorSum_gap`.
+- **Refactored occurrences:** The original doubled-Hamiltonian identity and
+  gap theorem are now direct specializations. The product-ancilla application
+  uses the same identity with different factor dimensions and energies.
+- **Notes:** `Matrix.PosSemidef.gap_mono` handles the capped lower bound;
+  neither it nor the tensor-sum result assumes an attained excited energy.

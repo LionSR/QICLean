@@ -56,6 +56,52 @@ residual into positive semidefinite terms.
     \end{align}
 \end{proof}
 
+\begin{theorem}[Weakening a projector-gap lower bound]
+    \label{thm:projector_gap_mono}
+    \lean{Matrix.PosSemidef.gap_mono}
+    \leanok
+    Let $u$ be a unit vector, $H$ a complex matrix, and $E,\delta,\delta'$
+    real numbers. If $\delta'\le\delta$ and
+    $H-EI\ge\delta(I-|u\rangle\langle u|)$, then
+    $H-EI\ge\delta'(I-|u\rangle\langle u|)$.
+    Neither gap parameter is assumed positive.
+\end{theorem}
+\begin{proof}\leanok
+    The difference of the two defects is
+    $(\delta-\delta')(I-|u\rangle\langle u|)\ge0$.
+\end{proof}
+
+\begin{theorem}[Projector-gap lower bounds for a tensor sum]
+    \label{thm:tensor_sum_lower_gap}
+    \lean{Matrix.tensorSum_gap_eq, Matrix.PosSemidef.tensorSum_gap}
+    \leanok
+    Let $A,B$ be complex square matrices on arbitrary finite-dimensional
+    spaces, $u,v$ vectors in those spaces, and $E,F,\delta$ real numbers.
+    Put $P_u=|u\rangle\langle u|$, $P_v=|v\rangle\langle v|$,
+    $Q_u=I-P_u$, $Q_v=I-P_v$, and
+    $R_A=A-EI-\delta Q_u$, $R_B=B-FI-\delta Q_v$.
+    One has the algebraic identity
+    \begin{align*}
+        A\otimes I+I\otimes B-(E+F)I
+            -\delta(I-P_u\otimes P_v)
+        =R_A\otimes I+I\otimes R_B+\delta Q_u\otimes Q_v.
+    \end{align*}
+    If $R_A,R_B\ge0$, $\|u\|=\|v\|=1$, and $\delta\ge0$, then
+    \begin{align*}
+        A\otimes I+I\otimes B-(E+F)I
+            \ge\delta(I-|u\otimes v\rangle\langle u\otimes v|).
+    \end{align*}
+    No eigenvector hypothesis or equality of the actual spectral gaps is
+    asserted. This tensor-sum inequality is used in product-state ancillary
+    extensions of successive viable-set constructions.
+\end{theorem}
+\begin{proof}\leanok
+    Expand the identity in matrix coordinates, using
+    $|u\otimes v\rangle\langle u\otimes v|=P_u\otimes P_v$.
+    Normalization gives $Q_u,Q_v\ge0$. Tensor products and sums preserve
+    positive semidefiniteness, so every term on the right is positive.
+\end{proof}
+
 \begin{theorem}[Preservation of the nonnegative lower gap]
     \label{thm:doubled_lower_gap}
     \lean{Matrix.doubledHamiltonian_gap_eq, Matrix.PosSemidef.doubled_gap}
@@ -76,15 +122,9 @@ residual into positive semidefinite terms.
     No eigenvector assumption is needed for this inequality.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:doubled_vector_properties}
-    Substitute $\ketbra{\Psi}{\Psi}=P\otimes P$ and expand both sides
-    of~(\ref{eq:doubled_gap_decomposition}). Normalization gives $Q\ge0$:
-    for every $v\in\mathcal H$,
-    $\langle v,Qv\rangle=\|v\|^2-|\langle\Omega,v\rangle|^2\ge0$.
-    Tensor products and sums of positive semidefinite operators are
-    positive semidefinite. Thus each term on the right of
-    (\ref{eq:doubled_gap_decomposition}) is positive semidefinite when
-    $R\ge0$ and $\Delta\ge0$, proving~(\ref{eq:doubled_gap_bound}).
+    \uses{thm:tensor_sum_lower_gap}
+    Specialize Theorem~\ref{thm:tensor_sum_lower_gap} to
+    $A=B=H$, $u=v=\Omega$ and $E=F=E_0$.
 \end{proof}
 
 \begin{theorem}[Unitary transport of a lower gap]
