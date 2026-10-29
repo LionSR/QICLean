@@ -1,11 +1,11 @@
 %% =========================================================
-%% Birkhoff's theorem --- doubly-stochastic half
+%% Birkhoff's theorem
 %% =========================================================
 
 \section{Birkhoff's theorem}
 
 Birkhoff's theorem characterizes the convex geometry of doubly
-stochastic matrices.
+stochastic and doubly substochastic matrices.
 
 \begin{theorem}[Birkhoff (doubly-stochastic part)]
     \label{thm:birkhoff_doubly_stochastic}
@@ -16,12 +16,7 @@ stochastic matrices.
     hull of the $d\times d$ permutation matrices, and its extreme
     points are exactly the permutation matrices.
     See \cite[Chapter~8, Theorem~8.6]{Wolf2012Quantum}.
-    This statement concerns only doubly stochastic matrices; the
-    corresponding assertion of Theorem~8.6 for doubly substochastic
-    matrices is not included here.
 \end{theorem}
-% The doubly-substochastic half of Birkhoff's theorem (extreme
-% points of the substochastic matrices) is not formalized; #3959.
 
 \begin{proof}\leanok
     Let $\mathcal{DS}_d \subset M_d(\mathbb{R})$ be the set of $d \times d$
@@ -48,5 +43,97 @@ stochastic matrices.
     Conversely, a non-permutation matrix has a Birkhoff decomposition
     involving at least two distinct permutation matrices and is therefore
     not extreme, which proves the second identity.
+\end{proof}
+
+\begin{definition}[Doubly substochastic matrices and partial permutations]
+    \label{def:doubly_substochastic}
+    \lean{TNLean.doublySubstochastic, TNLean.IsPartialPermutation}
+    \leanok
+    A matrix $M\in M_d(\R)$ is doubly substochastic if its entries are
+    nonnegative and every row and column sums to at most one. A partial
+    permutation matrix has entries in $\{0,1\}$, with at most one entry
+    equal to one in each row and column.
+\end{definition}
+
+\begin{lemma}[Convexity and entry bounds]
+    \label{lem:doubly_substochastic_bounds}
+    \lean{TNLean.convex_doublySubstochastic, TNLean.doublySubstochastic_entry_le_one}
+    \leanok
+    The doubly substochastic matrices form a convex set, and every entry
+    of such a matrix belongs to $[0,1]$.
+\end{lemma}
+\begin{proof}\leanok
+    Nonnegativity and each row and column sum inequality are preserved
+    by convex combinations. Each entry is bounded by its row sum.
+\end{proof}
+
+\begin{lemma}[Partial permutation matrices]
+    \label{lem:partial_permutation_matrices}
+    \lean{TNLean.isPartialPermutation_iff, TNLean.IsPartialPermutation.mem_doublySubstochastic,
+        TNLean.finite_isPartialPermutation}
+    \leanok
+    A matrix is a partial permutation matrix if and only if it is doubly
+    substochastic and has entries in $\{0,1\}$. There are finitely many
+    partial permutation matrices in each dimension.
+\end{lemma}
+\begin{proof}\leanok
+    Each row and column of a partial permutation matrix sums to zero or
+    one. Conversely, two entries equal to one in one row or column would
+    force its sum to be at least two. Finiteness follows because each of
+    the $d^2$ entries has only two possible values.
+\end{proof}
+
+\begin{theorem}[Doubly stochastic completion]
+    \label{thm:doubly_substochastic_completion}
+    \lean{TNLean.exists_doublyStochastic_completion}
+    \leanok
+    Every doubly substochastic matrix in $M_d(\R)$ is the upper-left block
+    of a doubly stochastic matrix in $M_{2d}(\R)$.
+\end{theorem}
+\begin{proof}\leanok
+    Write $u_i=\sum_jM_{ij}$, $v_j=\sum_iM_{ij}$ and
+    $s=\sum_i u_i=\sum_jv_j$. For $s>0$, set $B_{ji}=v_ju_i/s$.
+    Its row sums are $v_j$ and its column sums are $u_i$. For $s=0$,
+    nonnegativity forces $u=v=0$, so $B=0$ has the same row and column
+    sums. In both cases the nonnegative block matrix
+    \begin{align}
+        \widetilde M
+        &=\begin{pmatrix}
+            M&\operatorname{diag}(1-u)\\
+            \operatorname{diag}(1-v)&B
+          \end{pmatrix}
+    \end{align}
+    has all row and column sums equal to one.
+\end{proof}
+
+\begin{theorem}[Birkhoff for doubly substochastic matrices]
+    \label{thm:birkhoff_doubly_substochastic}
+    \lean{TNLean.wolf_birkhoff_doublySubstochastic_convexHull,
+        TNLean.wolf_birkhoff_extremePoints_doublySubstochastic,
+        TNLean.doublySubstochastic_eq_convexHull_isPartialPermutation,
+        TNLean.extremePoints_doublySubstochastic, TNLean.doublySubstochastic_isPolytope}
+    \leanok
+    The doubly substochastic matrices in $M_d(\R)$ form the convex hull
+    of the partial permutation matrices. This is a convex polytope, and
+    its extreme points are exactly the partial permutation matrices.
+    Together with Theorem~\ref{thm:birkhoff_doubly_stochastic}, this is
+    \cite[Chapter~8, Theorem~8.6]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:doubly_substochastic_bounds, lem:partial_permutation_matrices,
+        thm:doubly_substochastic_completion, thm:birkhoff_doubly_stochastic}
+    Complete $M$ to $\widetilde M$ and decompose $\widetilde M$ as a convex
+    combination of permutation matrices. Restricting each summand to its
+    upper-left block gives a partial permutation matrix. Conversely,
+    partial permutation matrices belong to the convex set of doubly
+    substochastic matrices. This proves the convex-hull equality, and
+    finiteness of the partial permutations gives the polytope assertion.
+
+    Every extreme point of this convex hull belongs to its generating
+    set. For the converse, let $P=tA+(1-t)C$ be a partial permutation
+    matrix, where $0<t<1$ and $A,C$ are doubly substochastic. Every entry
+    of $A$ and $C$ is in $[0,1]$. If $P_{ij}=0$, then
+    $A_{ij}=C_{ij}=0$; if $P_{ij}=1$, then $A_{ij}=C_{ij}=1$.
+    Thus $A=C=P$, proving that $P$ is extreme.
 \end{proof}
 \endinput
