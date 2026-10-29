@@ -22,11 +22,12 @@ variable {𝕜 E F : Type*} [RCLike 𝕜]
 example (S : Submodule 𝕜 E) [FiniteDimensional 𝕜 S]
     (A : Fin 0 → E →ₗ[𝕜] F) :
     Module.finrank 𝕜 (↥((⨆ i, S.map (A i)) : Submodule 𝕜 F)) ≤ 0 := by
-  simpa using finrank_iSup_map_le_card_mul S A
+  simpa only [Fintype.card_fin, Nat.zero_mul] using finrank_iSup_map_le_card_mul S A
 
 example (A : Fin 2 → E →ₗ[𝕜] F) :
     Module.finrank 𝕜 (↥((⨆ i, (⊥ : Submodule 𝕜 E).map (A i)) : Submodule 𝕜 F)) ≤ 0 := by
-  simpa using finrank_iSup_map_le_card_mul (⊥ : Submodule 𝕜 E) A
+  simpa only [finrank_bot, Nat.mul_zero] using
+    finrank_iSup_map_le_card_mul (⊥ : Submodule 𝕜 E) A
 
 example (S : Submodule 𝕜 E) [FiniteDimensional 𝕜 S] (D : ℕ)
     (A : Fin (D ^ 2) → E →L[𝕜] F) :

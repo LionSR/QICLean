@@ -5,6 +5,8 @@ import QICLean.Analysis.ViableSubspaceEntropy
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
+/-! Public declarations and standard foundations for the viable-subspace entropy bounds. -/
+
 run_cmd do
   let env ← Lean.getEnv
   let expected := #[``propext, ``Classical.choice, ``Quot.sound]
