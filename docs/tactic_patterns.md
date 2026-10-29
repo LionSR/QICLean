@@ -1686,3 +1686,16 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   existing results instead of introducing a second product definition.
 - **Scope:** Physical parity regrouping is the next consumer; no new
   automation is needed.
+
+### Squared triangle inequality — helper theorem (2026-10-29)
+
+- **Pattern:** Square the norm triangle inequality and apply `add_sq_le`
+  when comparing an approximation with a changing reference vector.
+- **Abstraction:** `norm_sub_sq_le_two_mul_add` in
+  `QICLean/Analysis/NormSquaredTriangle.lean` proves the result for a general
+  seminormed additive commutative group from existing Mathlib inequalities.
+- **Consumers:** The three prior AKLV calculations in the downstream
+  initialization and variable-window refinement are replaced by this helper.
+  The actual changing-target step uses it for both target comparisons.
+- **Mechanism:** One mathematical lemma; no tactic or additional phase
+  convention is introduced.
