@@ -19,7 +19,9 @@ arXiv:1602.08828v2, `lem:exp-approx`, lines 1195–1255. They do not establish
 the printed uniform energy estimate.
 -/
 
-private theorem soft_order_error_le_one_fourth (m : ℕ) (hm : 0 < m) :
+/-- The equal-scale scalar correction is bounded uniformly by one quarter. Supporting the
+corrected soft/hard comparison for ALVV, arXiv:1602.08828v2, `def:soft-trunc`, lines 1178–1185. -/
+theorem Real.softTruncation_order_error_le_one_fourth (m : ℕ) (hm : 0 < m) :
     (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m ≤ 1 / 4 := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hm.ne'
   have hk : (k + 1 : ℝ) ≤ (2 : ℝ) ^ k := by
@@ -52,7 +54,7 @@ theorem exists_softTruncation_order_of_residual_budget
   have hm : 0 < m := by
     have hp : (0 : ℝ) < m := by linarith only [hmcast, heta, hlog]
     exact_mod_cast hp
-  have ha := soft_order_error_le_one_fourth m hm
+  have ha := softTruncation_order_error_le_one_fourth m hm
   refine ⟨m, rfl, hm, by linarith only [hmcast, heta, hlog], ?_⟩
   intro alpha
   refine ⟨by dsimp only [alpha]; positivity, ha, ?_, ?_⟩

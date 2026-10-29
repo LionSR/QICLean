@@ -152,3 +152,126 @@ requires a bound on that physical exponential moment.
     (\ref{eq:scalar_soft_hard_truncation}) at each spectral value and use
     order preservation of the functional calculus for this fixed matrix.
 \end{proof}
+
+
+\section{Independent scale and finite heat expansion}
+
+\begin{theorem}[Exact change of scale and exponential remainder]
+    \label{thm:soft_truncation_independent_scale}
+    \lean{Real.softTruncation_scale,
+        Real.softTruncation_remainder_le_exp_of_scale_le}
+    \leanok
+    For $s,t>0$ and real $x$,
+    \begin{align*}
+        h_{m,t}(x)=\frac ts h_{m,s}\left(\frac stx\right).
+    \end{align*}
+    If $m\geq1$, $0<t\leq4m$ and $x\geq0$, then
+    \begin{align*}
+        x-h_{m,t}(x)\leq16e^{x/8-t/16}.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:scalar_soft_truncation_exp_weight}
+    Substitute in the defining finite sum. For the remainder take
+    $s=m$ and apply the equal-scale weighted bound at
+    $\theta=t/(8m)\leq1/2$. The prefactor becomes $16$, and the
+    exponent becomes $x/8-t/16$.
+\end{proof}
+
+\begin{definition}[Finite heat coefficients]
+    \label{def:soft_truncation_heat_coefficients}
+    \lean{Real.softTruncationHeatCoefficient}
+    \leanok
+    Define, for $0\leq a\leq m$,
+    \begin{align*}
+        c_a(t,m)=t(-1)^a\sum_{j=1}^{m}\frac{\binom ja}{j}.
+    \end{align*}
+    Binomial coefficients with $a>j$ are zero. The constant
+    coefficient is retained.
+\end{definition}
+
+\begin{theorem}[The exact scalar and matrix heat expansion]
+    \label{thm:soft_truncation_heat_expansion}
+    \lean{Real.softTruncation_eq_sum_heat,
+        Matrix.IsHermitian.cfc_softTruncation_eq_sum_heat}
+    \leanok
+    \uses{def:soft_truncation_heat_coefficients}
+    For $t>0$ and every real $x$,
+    \begin{align*}
+        h_{m,t}(x)=\sum_{a=0}^m c_a(t,m)e^{-ax/t}.
+    \end{align*}
+    For every finite Hermitian matrix $U$, the same identity gives
+    \begin{align*}
+        h_{m,t}(U)=\sum_{a=0}^m c_a(t,m)e^{-aU/t}.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:soft_truncation_heat_coefficients}
+    Expand each $(1-e^{-x/t})^j$ by the binomial theorem, include
+    the zero binomial terms to give all inner sums the same upper
+    limit, and interchange the two finite sums. The identity
+    $(e^{-x/t})^a=e^{-ax/t}$ identifies the heat times.
+    Continuous functional calculus preserves these finite sums
+    and scalar multiples.
+\end{proof}
+
+\begin{theorem}[Absolute coefficient budget]
+    \label{thm:soft_truncation_heat_coefficient_budget}
+    \lean{Real.sum_abs_softTruncationHeatCoefficient_le}
+    \leanok
+    \uses{def:soft_truncation_heat_coefficients}
+    For $t\geq0$,
+    \begin{align*}
+        \sum_{a=0}^m|c_a(t,m)|\leq t2^{m+1}.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    The unsigned binomial sum at degree $j$ is $2^j$.
+    Hence the left side equals $t\sum_{j=1}^m2^j/j$, which is at
+    most $t\sum_{j=1}^m2^j\leq t2^{m+1}$. This retains the
+    factor $t$ in the coefficient budget.
+\end{proof}
+
+\begin{theorem}[A logarithmic order for an exponential geometric tail]
+    \label{thm:exponential_geometric_tail_order}
+    \lean{Real.exponential_geometric_tail_order}
+    \leanok
+    Let $W,\xi>0$, $0<b<1$, and $N\in\mathbb R$. Put
+    \begin{align*}
+        \ell=\max\left\{1,
+           \left\lceil\frac{\log\max\{1,N^2\}
+                -\log\log(1+\xi/W)}{-\log b}\right\rceil\right\}.
+    \end{align*}
+    Then $\ell\geq1$ and $W(e^{N^2b^\ell}-1)\leq\xi$.
+\end{theorem}
+\begin{proof}\leanok
+    The ceiling gives
+    $\log\max\{1,N^2\}+\ell\log b\leq\log\log(1+\xi/W)$.
+    Exponentiating gives $N^2b^\ell\leq\log(1+\xi/W)$.
+    Exponentiate again and multiply by $W$.
+\end{proof}
+
+\begin{theorem}[A residual order compatible with short heat times]
+    \label{thm:soft_truncation_scaled_residual_order}
+    \lean{Real.softTruncation_order_error_le_one_fourth,
+        Real.exists_softTruncation_scaled_order_of_residual_budget}
+    \leanok
+    Let $\eta\geq0$ and $0<\rho\leq1$. Set
+    \begin{align*}
+        m&=\left\lceil12+\frac23\eta+
+                       \frac{16}{3}\log(80/\rho)\right\rceil,&
+        t&=3m,&\alpha&=\frac{3m}{2}2^{-m}.
+    \end{align*}
+    Then $m\geq1$, $t/2\geq10$, $0\leq\alpha\leq3/4$, and
+    \begin{align*}
+        17+\eta+\alpha&\leq t/2,&
+        80e^{(17+\eta+\alpha)/8-t/16}&\leq\rho.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    The equal-scale correction satisfies $(m/2)2^{-m}\leq1/4$,
+    since for $m=k+1$ one has $k+1\leq2^k$. Multiply this
+    bound by three. The logarithm is nonnegative, and the stated
+    ceiling gives both the cutoff inequality and an exponent at
+    most $-\log(80/\rho)$.
+\end{proof}

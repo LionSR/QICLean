@@ -247,3 +247,52 @@ complementary Hamiltonian; they are not subtracted from this threshold.
     so the ceiling gives $m\ge35$. Substitution yields the cutoff
     inequality and an exponent at most $-\log(80/\rho)$.
 \end{proof}
+
+
+\section{Independent-scale weighted remainders}
+
+\begin{theorem}[The same-matrix weighted remainder]
+    \label{thm:soft_truncation_scaled_matrix_remainder}
+    \lean{Matrix.IsHermitian.weighted_softTruncation_remainder_mul_exp,
+        Matrix.norm_softTruncation_remainder_domRestrict_le_exp_weight_of_scale_le}
+    \leanok
+    \uses{thm:soft_truncation_independent_scale}
+    For a finite Hermitian matrix $U$, real $t$ and integer $m$,
+    \begin{align*}
+        \bigl(U-h_{m,t}(U)\bigr)e^{-U/8}e^{U/8}
+          =U-h_{m,t}(U).
+    \end{align*}
+    If $U\geq0$, $m\geq1$, $0<t\leq4m$, and $G$ is any subspace,
+    then
+    \begin{align*}
+        \|(U-h_{m,t}(U))|_G\|
+            \leq16e^{-t/16}\|e^{U/8}|_G\|.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:soft_truncation_independent_scale}
+    Functional calculus gives the exact factorization and bounds
+    $\|(U-h_{m,t}(U))e^{-U/8}\|\leq16e^{-t/16}$.
+    Multiply by $e^{U/8}$ and restrict the product to $G$.
+    No physical exponential moment is assumed in this matrix lemma.
+\end{proof}
+
+\begin{theorem}[The reverse cutoff at independent scale]
+    \label{thm:soft_truncation_scaled_reverse_cutoff}
+    \lean{Real.softTruncation_reverse_cutoff_bounds_of_scale}
+    \leanok
+    Put $\alpha=(t/2)2^{-m}$. Suppose $-\alpha\leq E\leq2$,
+    $\eta\geq0$, $0\leq C\leq4$, and $17+\eta+\alpha\leq t/2$.
+    Then $u=E+\alpha+\eta+C+1$ satisfies
+    \begin{align*}
+        0\leq u\leq t/2-10,\qquad
+        u\leq7+\eta+\alpha,\qquad
+        u-(E+\alpha+\eta)-C=1.
+    \end{align*}
+    In particular the last difference is positive.
+\end{theorem}
+\begin{proof}\leanok
+    Substitute the definition of $u$. The upper bound on $E$ and
+    $C$ gives $u\leq7+\eta+\alpha$, and the scale condition then
+    gives $u\leq t/2-10$. The other assertions follow directly.
+\end{proof}

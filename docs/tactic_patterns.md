@@ -1764,3 +1764,25 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Refactoring:** The one-marker consumer imports this leaf and the private
   duplicate is removed. `OperatorSchmidtBounds.lean` remains unchanged.
   The second factor needs `Finite`, rather than a supplied `Fintype`.
+
+
+### Rescaling a weighted soft remainder — promoted (2026-10-29)
+
+- **Pattern:** Change the soft scale exactly, choose the exponential weight
+  so its physical exponent remains one eighth, and factor through the
+  exponential of the same positive matrix.
+- **Abstraction:** `Real.softTruncation_scale`,
+  `Real.softTruncation_remainder_le_exp_of_scale_le`, and
+  `Matrix.IsHermitian.weighted_softTruncation_remainder_mul_exp` carry the
+  scalar and matrix equalities. The old equal-scale public norm estimate
+  now calls the independent-scale estimate.
+- **Refactored occurrences:** The original/soft physical window arguments
+  in TNLean use this one matrix result. The original reverse cutoff is a
+  specialization of its independent-scale form. The scale-three accuracy
+  theorem reuses the existing scalar correction bound, now public.
+- **Finite expansion:** The ordinary binomial theorem, finite sum interchange
+  and continuous functional calculus prove the heat identity. No new soft
+  truncation definition or expansion of a product of approximate matrices is
+  introduced.
+- **Decision:** Keep these shared mathematical equalities and parameter
+  choices; no new tactic is needed.

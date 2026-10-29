@@ -92,14 +92,14 @@ comparator cutoff when the scale condition is retained. The bounds on the
 actual centered soft ground energy and the boundary constant are inputs to
 this scalar auxiliary; they must be derived from the physical Hamiltonian.
 Supporting ALVV, arXiv:1602.08828v2, `lem:exp-approx`, lines 1195–1255. -/
-theorem softTruncation_reverse_cutoff_bounds
-    (m : ℕ) (E eta C : ℝ)
-    (hElow : -((m : ℝ) / 2 * (1 / 2 : ℝ) ^ m) ≤ E) (hEhigh : E ≤ 2)
+theorem softTruncation_reverse_cutoff_bounds_of_scale
+    (m : ℕ) (t E eta C : ℝ)
+    (hElow : -(t / 2 * (1 / 2 : ℝ) ^ m) ≤ E) (hEhigh : E ≤ 2)
     (heta : 0 ≤ eta) (hC0 : 0 ≤ C) (hC4 : C ≤ 4)
-    (hscale : 17 + eta + (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m ≤ (m : ℝ) / 2) :
-    let alpha := (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m
+    (hscale : 17 + eta + t / 2 * (1 / 2 : ℝ) ^ m ≤ t / 2) :
+    let alpha := t / 2 * (1 / 2 : ℝ) ^ m
     let u := E + alpha + eta + C + 1
-    0 ≤ u ∧ u ≤ (m : ℝ) / 2 - 10 ∧ u ≤ 7 + eta + alpha ∧
+    0 ≤ u ∧ u ≤ t / 2 - 10 ∧ u ≤ 7 + eta + alpha ∧
       C < u - (E + alpha + eta) ∧ u - (E + alpha + eta) - C = 1 := by
   intro alpha u
   have hu : u ≤ 7 + eta + alpha := by
@@ -114,5 +114,22 @@ theorem softTruncation_reverse_cutoff_bounds
     linarith
   · dsimp only [u]
     ring
+
+/-- The explicit cutoff for a reverse soft-window weight lies below the hard
+comparator cutoff when the scale condition is retained. The bounds on the
+actual centered soft ground energy and the boundary constant are inputs to
+this scalar auxiliary; they must be derived from the physical Hamiltonian.
+Supporting ALVV, arXiv:1602.08828v2, `lem:exp-approx`, lines 1195–1255. -/
+theorem softTruncation_reverse_cutoff_bounds
+    (m : ℕ) (E eta C : ℝ)
+    (hElow : -((m : ℝ) / 2 * (1 / 2 : ℝ) ^ m) ≤ E) (hEhigh : E ≤ 2)
+    (heta : 0 ≤ eta) (hC0 : 0 ≤ C) (hC4 : C ≤ 4)
+    (hscale : 17 + eta + (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m ≤ (m : ℝ) / 2) :
+    let alpha := (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m
+    let u := E + alpha + eta + C + 1
+    0 ≤ u ∧ u ≤ (m : ℝ) / 2 - 10 ∧ u ≤ 7 + eta + alpha ∧
+      C < u - (E + alpha + eta) ∧ u - (E + alpha + eta) - C = 1 := by
+  exact softTruncation_reverse_cutoff_bounds_of_scale m (m : ℝ) E eta C
+    hElow hEhigh heta hC0 hC4 hscale
 
 end Real
