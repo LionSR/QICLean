@@ -114,3 +114,43 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     $\lVert t-P_2t\rVert^2=\lVert t\rVert^2-\lVert P_2t\rVert^2
     \le\delta_2\lVert t\rVert^2$.
 \end{proof}
+
+\begin{theorem}[Dimension of an approximated subspace]
+    \label{thm:subspace_close_dimension}
+    \lean{Submodule.IsCloseTo.finrank_le}
+    \leanok
+    \uses{def:subspace_close}
+    Let $U$ and $T$ be subspaces of a finite-dimensional real or complex
+    inner-product space. If $U$ is $\delta$-close to $T$ and $\delta<1$,
+    then $\dim T\le\dim U$. This follows from the projection preimage
+    estimate of~\cite[lines 449--465]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:subspace_close_preimage}
+    The orthogonal projection $P_T$ maps $U$ onto $T$, so the dimension
+    inequality follows from surjectivity.
+\end{proof}
+
+\begin{theorem}[Equality of nested approximating subspaces]
+    \label{thm:subspace_close_nested_equal}
+    \lean{Submodule.eq_and_isCloseTo_of_le}
+    \leanok
+    \uses{def:subspace_close}
+    Let $U\subseteq V$ and $G$ be subspaces of a finite-dimensional real
+    or complex inner-product space. Suppose $U$ is $\delta$-close to $G$
+    and $G$ is $\delta'$-close to $V$, where $\delta,\delta'<1$.
+    Then $U=V$. Every subspace $W$ with $U\subseteq W\subseteq V$ equals
+    $U$, is $\delta$-close to $G$, and is approximated by $G$ with error
+    $\delta'$. This is the dimension comparison used
+    in~\cite[lines 1010--1024]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:subspace_close_dimension}
+    The two approximation bounds and the inclusion give
+    $\dim G\le\dim U\le\dim V\le\dim G$. Hence $U=V$, and any intermediate
+    subspace is the same space and retains both approximation bounds.
+\end{proof}

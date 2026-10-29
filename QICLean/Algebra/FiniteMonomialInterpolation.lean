@@ -17,7 +17,8 @@ Evaluation at finitely many complex points recovers the coefficients of any
 polynomial with a prescribed finite monomial support. The points and scalar
 recovery coefficients depend only on that support. The same witnesses therefore
 recover coefficients in any complex vector space, including dependent families
-of operators.
+of operators. One set of evaluation points also recovers every scalar-weighted
+coefficient sum, with recovery coefficients chosen before the vector family.
 
 **Local fix (interpolation):** The evaluated operator families in the source
 need only span the coefficient-operator space. They need not form a basis when
@@ -99,5 +100,63 @@ theorem monomial_evaluation_recovery_smul
   rw [Finset.sum_comm]
   simp_rw [← Finset.sum_smul, h]
   simp [ite_smul]
+
+open Classical in
+/-- Fixed monomial-recovery witnesses recover any scalar-weighted sum of
+module-valued coefficients. The weights on the evaluations are the finite
+contractions of the mask with the given recovery matrix. This is the
+finite linear-combination step in AKLV, arXiv:1301.1162v1,
+Lemma l:agsp, lines 626–644, without a coefficient-independence assumption. -/
+theorem weighted_monomial_evaluation_recovery_smul
+    {σ M : Type*} [AddCommGroup M] [Module ℂ M]
+    (S : Finset (σ →₀ ℕ))
+    (z : Fin S.card → (σ → ℂ)) (c : S → Fin S.card → ℂ)
+    (h : ∀ α β : S,
+      (∑ r : Fin S.card,
+        c α r * eval (z r) (monomial (β : σ →₀ ℕ) (1 : ℂ))) =
+        if α = β then 1 else 0)
+    (mask : S → ℂ) (f : S → M) :
+    (∑ α : S, mask α • f α) =
+      ∑ r : Fin S.card, (∑ α : S, mask α * c α r) •
+        (∑ β : S, eval (z r) (monomial (β : σ →₀ ℕ) (1 : ℂ)) • f β) := by
+  classical
+  let E : Fin S.card → M := fun r ↦
+    ∑ β : S, eval (z r) (monomial (β : σ →₀ ℕ) (1 : ℂ)) • f β
+  change (∑ α : S, mask α • f α) =
+    ∑ r : Fin S.card, (∑ α : S, mask α * c α r) • E r
+  have hrec (α : S) : (∑ r : Fin S.card, c α r • E r) = f α :=
+    monomial_evaluation_recovery_smul S z c h f α
+  calc
+    (∑ α : S, mask α • f α) =
+        ∑ α : S, mask α • (∑ r : Fin S.card, c α r • E r) := by
+      apply Finset.sum_congr rfl
+      intro α _
+      rw [hrec α]
+    _ = ∑ r : Fin S.card, (∑ α : S, mask α * c α r) • E r := by
+      simp_rw [Finset.smul_sum, smul_smul]
+      rw [Finset.sum_comm]
+      simp_rw [Finset.sum_smul]
+
+
+/-- A single finite family of evaluations recovers every scalar-weighted sum
+of module-valued coefficients. The evaluation points are chosen before the
+scalar weights, and the recovery coefficients before the module-valued family.
+This is the finite linear-combination consequence of AKLV, arXiv:1301.1162v1,
+Lemma l:agsp, lines 626–644, without a coefficient-independence assumption. -/
+theorem exists_weighted_monomial_evaluation_recovery
+    {σ M : Type*} [AddCommGroup M] [Module ℂ M] (S : Finset (σ →₀ ℕ)) :
+    ∃ z : Fin S.card → (σ → ℂ),
+      ∀ mask : S → ℂ, ∃ gamma : Fin S.card → ℂ,
+        ∀ f : S → M,
+          (∑ α : S, mask α • f α) =
+            ∑ r : Fin S.card, gamma r •
+              (∑ β : S, eval (z r) (monomial (β : σ →₀ ℕ) (1 : ℂ)) • f β) := by
+  classical
+  obtain ⟨z, c, hc⟩ := exists_monomial_evaluation_recovery S
+  refine ⟨z, ?_⟩
+  intro mask
+  refine ⟨fun r ↦ ∑ α : S, mask α * c α r, ?_⟩
+  intro f
+  exact weighted_monomial_evaluation_recovery_smul S z c hc mask f
 
 end MvPolynomial

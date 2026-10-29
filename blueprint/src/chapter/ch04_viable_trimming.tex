@@ -1,0 +1,88 @@
+\section{Trimming a viable subspace}
+
+Arad, Landau, Vazirani and Vidick reduce the Schmidt rank of a viable
+subspace by trimming it collectively, cut by cut~\cite[lines
+    642--697]{Arad2016RigorousRG}. Here $\mathcal H_A=\mathbb C^\sigma$ is the
+space of configurations of a finite set of sites, the cuts are nested regions
+$D_0\subseteq D_1\subseteq\cdots$, the cut $j$ putting the sites of $D_j$ on
+the left, and the environment $\mathcal H_B=\mathbb C^\beta$ lies on the right
+of every cut. For a chain
+$\mathcal H_A=\mathcal H_A^1\otimes\cdots\otimes\mathcal H_A^\ell$ the region
+$D_j$ consists of the first $j+1$ factors, and there are $\ell-1$ cuts.
+
+\begin{definition}[Trimming]
+    \label{def:viable_trimming}
+    \lean{Entropy.stackVector, Entropy.trimProj, Entropy.trimStep,
+        Entropy.trimSubspace}
+    \leanok
+    \uses{def:closed_threshold_projection, thm:cut_environment_coordinates}
+    Let $u_1,\dots,u_s$ be an orthonormal basis of $S\subseteq\mathcal H_A$ and
+    $\psi=\sum_iu_i\otimes|i\rangle$. Put $Q_0=I$ and, for $j\ge0$, let
+    $P^{j+1}$ be the spectral projection onto $[\xi^2,\infty)$ of the left
+    marginal, across the cut $D_j$, of $(Q_j\otimes I)\psi$, and
+    $Q_{j+1}=Q_j(P^{j+1}\otimes I)$. The trimmed subspace after $m$ cuts is
+    $\operatorname{Trim}_\xi(S)=\operatorname{span}\{Q_mu_i\}$. This is
+    Definition~def:trimming of~\cite[lines 642--656]{Arad2016RigorousRG}.
+\end{definition}
+
+\begin{theorem}[Nesting of the trimming projections]
+    \label{thm:viable_trimming_nested}
+    \lean{Matrix.mul_spectralProjectionGE_leftMarginal_of_leftApply_eq,
+        Entropy.trimProj_props, Entropy.trimProj_mul_trimProj_of_le,
+        Entropy.trimDiff, Entropy.trimDiff_eq,
+        Entropy.sum_norm_leftApply_trimDiff_sq_le}
+    \leanok
+    \uses{def:viable_trimming}
+    For $\xi>0$ each $Q_j$ is an orthogonal projection supported in $D_j$,
+    $Q_{j+1}=P^{j+1}\otimes I$, and $Q_kQ_j=Q_jQ_k=Q_j$ for $k\le j$. The
+    differences $Q_j-Q_{j+1}$ are mutually orthogonal projections, so
+    $\sum_{j<m}\|((Q_j-Q_{j+1})\otimes I)t\|^2\le\|t\|^2$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    If $(M\otimes I)\varphi=\varphi$ then $M$ fixes the left marginal $\rho$ of
+    $\varphi$, and the spectral projection onto $[b,\infty)$ with $b>0$ is
+    $\rho\,g(\rho)$ with $g(t)=t^{-1}$ there, so $M$ fixes it as well. Apply
+    this to $M$ the lift of $Q_j$ across the cut $D_j$, which fixes
+    $(Q_j\otimes I)\psi$. The orthogonality is then a telescoping Pythagoras
+    identity.
+\end{proof}
+
+\begin{theorem}[Trimming]
+    \label{thm:viable_trimming}
+    \lean{Matrix.inner_leftApply_left, Matrix.inner_rightApply_left,
+        Matrix.norm_rightApply_sq_le, Entropy.eq_rightApply_stackVector,
+        Entropy.sum_norm_inner_sq_eq, Entropy.norm_inner_leftApply_trimDiff_le,
+        Entropy.leftApply_trimProj_mem_prodExt,
+        Entropy.isCloseTo_prodExt_trimSubspace,
+        Entropy.schmidtRank_cutVector_trimmed_le}
+    \leanok
+    \uses{thm:viable_trimming_nested, thm:schmidt_threshold_discarded,
+        thm:schmidt_threshold_kept, thm:viable_coordinates, thm:subspace_close_iff}
+    Let $S\otimes\mathbb C^\beta$ be $\delta$-close to $T$, let every vector of
+    $T$ have Schmidt rank at most $b$ across each of the cuts
+    $D_0,\dots,D_{m-1}$, and let $\xi>0$. Then
+    $\operatorname{Trim}_\xi(S)\otimes\mathbb C^\beta$ is
+    $(\delta+2\xi\sqrt{mb})$-close to $T$, and each $Q_mu_i$ has Schmidt rank
+    at most $s\xi^{-2}$ across each cut. This is
+    Lemma~lem:trimming of~\cite[lines 660--697]{Arad2016RigorousRG}, with the
+    bound on $\delta'$ that its argument gives; the printed
+    $\delta+\sqrt{\ell bs}\,\xi$ does not follow from that
+    argument~\cite{gap:alvv16_trimming_constant}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    For $t\in T$ let $w=\sum_iu_i\otimes c_i$ be its projection onto
+    $S\otimes\mathbb C^\beta$. The part of $w$ removed at the cut $j$ pairs with
+    $t$ as the discarded part of $\psi$ at that cut pairs with
+    $W=(I\otimes C^\dagger)w_j$, where $w_j$ is the piece of $t$ removed at the
+    cut and $C=(c_i(b))$. The vector $W$ has Schmidt rank at most $b$ and norm
+    at most $\|w\|\,\|w_j\|$, so the pairing is at most
+    $\xi\sqrt b\,\|w\|\,\|w_j\|$. Summing over the cuts with
+    $\sum_j\|w_j\|\le\sqrt m\,\|t\|$ gives
+    $\|P\,t\|\ge\|w\|-\xi\sqrt{mb}\,\|t\|$ for the projection $P$ onto the
+    trimmed extension, and squaring gives the bound. For the ranks, $Q_m$ lies
+    below $P^{k+1}\otimes I$, whose rank is at most $\|\psi\|^2\xi^{-2}=s\xi^{-2}$.
+\end{proof}

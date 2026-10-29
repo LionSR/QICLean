@@ -1,0 +1,154 @@
+\section{Chebyshev improvement from a common polynomial family}
+
+Let $\mathcal H_M$ and $\mathcal H_E$ be finite-dimensional complex inner
+product spaces, and let $H$ be self-adjoint on
+$\mathcal H=\mathcal H_M\otimes\mathcal H_E$. Choose an orthonormal eigenbasis
+$b_j$ with eigenvalues $h_j$. Suppose that $\eta_0<\eta_1\le u$, that
+$h_j\le u$, and that each $h_j$ lies in $(-\infty,\eta_0]\cup[\eta_1,\infty)$.
+For a nonnegative integer $k$, set
+\begin{align}
+    G      & =\operatorname{span}\{b_j:h_j\le\eta_0\},
+    \label{eq:cheb_viable_low_space}                                   \\
+    \Delta & =\bigl(2e^{-2k\sqrt{(\eta_1-\eta_0)/(u-\eta_0)}}\bigr)^2.
+    \label{eq:cheb_viable_error}
+\end{align}
+These are the closed spectral conditions used in error reduction; positivity
+of the unsquared filter is not required
+\cite{gap:alvv16_spectral_projector_boundary,gap:alvv16_chebyshev_filter_positivity}.
+
+\begin{theorem}[Chebyshev improvement from a uniform polynomial reduction]
+    \label{thm:chebyshev_viability_polynomial_reduction}
+    \lean{Submodule.chebyshev_viability_of_polynomial_reduction}
+    \leanok
+    \uses{thm:chebyshev_spectral_projector, thm:spectral_projector_contract}
+    Fix a nonnegative integer $R$, a map $\Gamma$ on subspaces of
+    $\mathcal H_M$, and an operator-valued map $\mathcal F$ on complex
+    polynomials such that $\mathcal F(Q)=Q(H)$ for every $Q$.
+    Suppose the following reduction holds for every $Q$ of degree at most
+    $k$: whenever $S$ is $\delta$-viable for a subspace $T$ of $\mathcal H$,
+    $\delta<1$, and $d\ge0$, and $\mathcal F(Q)$ preserves $T$ and $T^\perp$
+    and satisfies, for every $t\in T$ and $z\in T^\perp$,
+    \begin{align}
+        \|\mathcal F(Q)t\|   & \ge\|t\|,     \\
+        \|\mathcal F(Q)z\|^2 & \le d\|z\|^2,
+    \end{align}
+    the subspace $\Gamma(S)$ has dimension at most $R\dim S$ and is
+    $d/(1-\delta)^2$-viable for $T$.
+    Then, under the spectral assumptions above, for every $\delta$-viable
+    subspace $S$ for $G$ with $\delta<1$, the subspace $\Gamma(S)$
+    has dimension at most $R\dim S$ and is
+    $\Delta/(1-\delta)^2$-viable for $G$.
+    Here $\Gamma$ and $\mathcal F$ are fixed before the spectral endpoints
+    and before $S$. This conditional composition uses
+    Theorem~4.2 of~\cite[lines 789--853]{Arad2016RigorousRG}
+    and the error-reduction argument of Lemma~2.9.
+\end{theorem}
+
+\begin{proof}\leanok
+    Choose the normalized real Chebyshev polynomial $p$ of degree $k$ and
+    regard it as a complex polynomial. Its evaluation is a spectral
+    projector with parameter~(\ref{eq:cheb_viable_error}). The closed spectral
+    gap gives invariance, expansion on $G$, and contraction on $G^\perp$.
+    Apply the supplied reduction to this polynomial and these bounds.
+\end{proof}
+
+\begin{theorem}[A common matrix family gives Chebyshev improvement]
+    \label{thm:matrix_family_chebyshev_viability}
+    \lean{Matrix.chebyshev_viability_of_conjugated_polynomial_family}
+    \leanok
+    \uses{thm:viable_tensor_decomposition, thm:chebyshev_viability_polynomial_reduction}
+    Let $\Sigma,X,Y$ be finite sets, put $\mathcal H_M=\mathbb C^X$ and
+    $\mathcal H_E=\mathbb C^Y$, and fix a unitary linear isometry
+    $T:\mathbb C^\Sigma\longrightarrow\mathcal H_M\otimes\mathcal H_E$.
+    Fix a matrix $H_0$ on $\mathbb C^\Sigma$ and matrices
+    $W_1,\ldots,W_N$ on $\mathbb C^X$. Suppose that for every complex
+    polynomial $Q$ of degree at most $k$ there are matrices
+    $M_1(Q),\ldots,M_N(Q)$ on $\mathbb C^Y$ such that
+    \begin{align}
+        TQ(H_0)T^{-1} & =\sum_{r=1}^N W_r\otimes M_r(Q).
+        \label{eq:cheb_viable_family}
+    \end{align}
+    Set $H=TH_0T^{-1}$ and $\Gamma(S)=\sum_{r=1}^N W_rS$.
+    If $H$ satisfies the self-adjointness and spectral assumptions stated
+    above, then every $\delta$-viable $S$ for
+    $G$ of~(\ref{eq:cheb_viable_low_space}), with $\delta<1$, satisfies
+    \begin{align}
+        \dim\Gamma(S) & \le N\dim S,
+        \label{eq:cheb_viable_dimension}                                    \\
+        \Gamma(S)     & \text{ is }\Delta/(1-\delta)^2\text{-viable for }G.
+        \label{eq:cheb_viable_conclusion}
+    \end{align}
+    The family $(W_r)$ is fixed before the spectral data and before $S$;
+    only the complementary matrices $M_r(Q)$ depend on $Q$.
+    The supplied polynomial identity is an explicit hypothesis. This is a
+    finite-dimensional consequence supporting the polynomial decomposition
+    and error-reduction steps of~\cite[Proposition 5.7 and Lemma 2.9]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}\leanok
+    Polynomial evaluation commutes with the matrix action on Euclidean
+    space and with conjugation by $T$. Thus the filter is $Q(H)$.
+    For each $Q$, apply error reduction from its tensor decomposition
+    in~(\ref{eq:cheb_viable_family}). The uniform polynomial reduction
+    then gives~(\ref{eq:cheb_viable_dimension}) and~(\ref{eq:cheb_viable_conclusion}).
+\end{proof}
+
+\begin{theorem}[A numerical bound for the image sum]
+    \label{thm:matrix_family_chebyshev_viability_card_bound}
+    \lean{Matrix.chebyshev_viability_of_conjugated_polynomial_family_of_card_le}
+    \leanok
+    \uses{thm:matrix_family_chebyshev_viability}
+    Under the hypotheses of the common matrix family theorem, let $C$ be a
+    nonnegative integer with $N\le C$. The same fixed subspace
+    $\Gamma(S)$ then satisfies $\dim\Gamma(S)\le C\dim S$ and is
+    $\Delta/(1-\delta)^2$-viable for $G$, for every $\delta$-viable $S$
+    with $\delta<1$.
+    The numerical bound $C$ is fixed with the family before the spectral
+    endpoints and before $S$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The dimension estimate follows from
+    $\dim\Gamma(S)\le N\dim S\le C\dim S$. The viable space and its error
+    are unchanged.
+\end{proof}
+
+\begin{theorem}[An actual matrix cluster and a fixed polynomial family]
+    \label{thm:actual_cluster_polynomial_viability}
+    \lean{Matrix.chebyshev_viability_of_actual_cluster_polynomial_family}
+    \leanok
+    \uses{def:subspace_viable}
+    Let $B$ be Hermitian on $\C^\Sigma$, with a supplied orthonormal
+    eigenbasis $v_i$ and eigenvalues $\lambda_i$. Write
+    $G_c=\operatorname{span}\{v_i:\lambda_i\le c\}$.
+    Fix a unitary linear isometry $T:\C^\Sigma\to\C^M\otimes\C^E$ and
+    matrices $W_1,\ldots,W_N$ on $\C^M$, where $N\le C$ and $k,C\in\N$.
+    Suppose that for every complex polynomial $Q$ of degree at most $k$
+    there are matrices $V_r(Q)$ on $\C^E$ such that
+    \begin{align}
+        TQ(B)T^{-1}=\sum_{r=1}^N W_r\otimes V_r(Q).
+    \end{align}
+    Assume $\eta_0<\eta_1\le U$, $G_{\eta_0}=G_{\eta_1}$ and $\|B\|\le U$.
+    Set
+    \begin{align}
+        \Delta    & =\bigl(2e^{-2k\sqrt{(\eta_1-\eta_0)/(U-\eta_0)}}\bigr)^2,\notag \\
+        \Gamma(S) & =\sum_{r=1}^N W_rS.
+    \end{align}
+    For every $\delta$-viable $S$ for $TG_{\eta_0}$ with $\delta<1$,
+    $\dim\Gamma(S)\le C\dim S$ and $\Gamma(S)$ is
+    $\Delta/(1-\delta)^2$-viable for $TG_{\eta_0}$.
+    The same family is used for every $Q,S,\delta$. No separate
+    nonnegativity assumption on $\delta$ is imposed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:canonical_isometric_spectral_data,
+        thm:matrix_family_chebyshev_viability_card_bound}
+    Transfer the supplied low spectral spaces to an orthonormal spectral
+    basis of $TBT^{-1}$. The endpoint equality gives the closed spectral gap, and
+    the norm bound gives the upper spectral endpoint. Apply the common-family
+    Chebyshev estimate and transfer its target back to $TG_{\eta_0}$.
+    This is the finite-dimensional composition of the spectral filter and
+    error-reduction steps of~\cite[Theorem 4.2 and Lemma 2.9]{Arad2016RigorousRG};
+    the boundary convention is recorded in
+    \cite{gap:alvv16_spectral_projector_boundary}.
+\end{proof}

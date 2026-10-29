@@ -1,5 +1,33 @@
 \section{Error reduction by a spectral projector}
 
+\begin{theorem}[Error reduction from a finite tensor decomposition]
+    \label{thm:viable_tensor_decomposition}
+    \lean{Submodule.IsViable.map_of_tensor_decomposition}
+    \leanok
+    \uses{thm:subspace_close_contract, thm:subspace_close_mono, def:subspace_viable}
+    Let $\mathcal H_M$ and $\mathcal H_R$ be finite-dimensional real or complex
+    inner product spaces, let $I$ be finite, and let
+    $K=\sum_{i\in I}A_i\otimes R_i$ act on
+    $\mathcal H_M\otimes\mathcal H_R$. Let $T$ be a subspace of this tensor
+    product. Suppose that $K$ preserves $T$ and $T^\perp$, that $\Delta\ge0$,
+    and that $\|Kt\|\ge\|t\|$ for $t\in T$ and
+    $\|Kz\|^2\le\Delta\|z\|^2$ for $z\in T^\perp$.
+    If $S\subseteq\mathcal H_M$ is $\delta$-viable for $T$ and $\delta<1$,
+    then $V=\sum_{i\in I}A_iS$ has dimension at most $|I|\dim S$ and is
+    $\Delta/(1-\delta)^2$-viable for $T$.
+    This is the two-factor tensor-containment argument supporting
+    Lemma~2.9 of~\cite[lines 606--622]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}\leanok
+    Each image $A_iS$ has dimension at most $\dim S$, so their sum has
+    dimension at most $|I|\dim S$. Error reduction by a contraction gives
+    closeness of $K(S\otimes\mathcal H_R)$ to $T$ with parameter
+    $\Delta/(1-\delta)^2$. For $s\in S$ and $r\in\mathcal H_R$,
+    $K(s\otimes r)=\sum_{i\in I}A_is\otimes R_ir$ belongs to
+    $V\otimes\mathcal H_R$. Closeness passes to this larger subspace.
+\end{proof}
+
 Let $\mathcal H=\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$ and let
 $b_j$ be an orthonormal basis of common eigenvectors of a Hamiltonian $H$ and
 an operator $K$, with $Hb_j=h_jb_j$ and $Kb_j=k_jb_j$. The low-energy space is

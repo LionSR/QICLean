@@ -1,0 +1,194 @@
+\section{Closeness of low-energy subspaces under a perturbation}
+
+Let $H$ and $H'$ be self-adjoint operators with orthonormal eigenbases
+$(b_j)$ and $(b'_j)$ and eigenvalues $a_j$ and $a'_j$. For an energy $c$
+write $T(c)$ for the span of the $b_j$ with $a_j\le c$, and $T'(c)$ for the
+span of the $b'_j$ with $a'_j\le c$.
+
+\begin{definition}[Low-energy subspace]
+    \label{def:spectral_span_le}
+    \lean{Submodule.spectralSpanLE}
+    \leanok
+    The subspace $T(c)$ is the span of the eigenvectors $b_j$ with
+    eigenvalue $a_j\le c$.
+\end{definition}
+
+\begin{theorem}[Markov's inequality]
+    \label{thm:spectral_span_markov}
+    \lean{Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le}
+    \leanok
+    \uses{def:spectral_span_le}
+    If every eigenvalue $a_j>c$ satisfies $|a_j-\mu|\ge D\ge0$, then the
+    projection $P^\perp$ onto the orthogonal complement of $T(c)$ satisfies
+    $D\|P^\perp x\|\le\|(H-\mu)x\|$ for every $x$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Expand $x=\sum_jx_jb_j$. Then
+    $\|(H-\mu)x\|^2=\sum_j|a_j-\mu|^2|x_j|^2\ge D^2\sum_{a_j>c}|x_j|^2
+        =D^2\|P^\perp x\|^2$.
+\end{proof}
+
+\begin{theorem}[One window]
+    \label{thm:spectral_span_window}
+    \lean{Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le_of_window}
+    \leanok
+    \uses{thm:spectral_span_markov}
+    Suppose $\|(H-H')\varphi\|\le\xi\|\varphi\|$ for every $\varphi\in T(c)$,
+    and let $h,D\ge0$ with $\mu+D\le c'$. If $\psi\in T(c)$ is supported on
+    eigenvectors $b_j$ with $|a_j-\mu|\le h$, then the projection $P'^\perp$
+    onto the orthogonal complement of $T'(c')$ satisfies
+    $D\|P'^\perp\psi\|\le(\xi+h)\|\psi\|$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Every eigenvalue $a'_k>c'$ satisfies $|a'_k-\mu|\ge D$. By the previous
+    theorem,
+    $D\|P'^\perp\psi\|\le\|(H'-\mu)\psi\|\le\|(H'-H)\psi\|
+        +\|(H-\mu)\psi\|\le(\xi+h)\|\psi\|$.
+\end{proof}
+
+\begin{theorem}[Closeness of the low-energy subspaces]
+    \label{thm:spectral_span_close_of_perturbation}
+    \lean{Submodule.isCloseTo_spectralSpanLE_of_perturbation}
+    \leanok
+    \uses{thm:spectral_span_window, def:subspace_close}
+    Suppose $\|(H-H')\varphi\|\le\xi\|\varphi\|$ for every $\varphi\in T(c)$,
+    every eigenvalue $a_j\le c$ is at least $m$, $m<c\le c'$ and $h>0$. Let
+    $N=\lceil(c-m)/(2h)\rceil$. If $N(\xi+h)^2\le\delta(c'-c+h)^2$, then
+    $T'(c')$ is $\delta$-close to $T(c)$. This is the closeness step in the
+    proof of the second item of Lemma lem:hard-trunc
+    of~\cite[lines 953--969]{Arad2016RigorousRG}, with the number of windows
+    corrected~\cite{gap:alvv16_hard_truncation_windows}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Cover $[m,c]$ by the $N$ closed windows of width $2h$ centred at
+    $c-h-2hw$ for $w<N$. Split $\varphi\in T(c)$ as
+    $\varphi=\sum_{w<N}\psi_w$, where $\psi_w$ keeps the coefficients of the
+    $b_j$ with $\lceil(c-a_j)/(2h)\rceil-1=w$, counting $a_j=c$ in the top
+    window. Each $\psi_w$ lies in $T(c)$ and is supported within $h$ of its
+    centre, and every centre plus $c'-c+h$ is at most $c'$. By the previous
+    theorem and the Cauchy--Schwarz inequality,
+    \[
+        (c'-c+h)\|P'^\perp\varphi\|\le(\xi+h)\sum_w\|\psi_w\|
+        \le(\xi+h)\sqrt{N}\,\|\varphi\|,
+    \]
+    so $\|P'^\perp\varphi\|^2\le\delta\|\varphi\|^2$ and
+    $\|P'\varphi\|^2\ge(1-\delta)\|\varphi\|^2$.
+\end{proof}
+
+\begin{theorem}[A low-energy cluster from restricted residual estimates]
+    \label{thm:low_spectral_cluster_restricted_residuals}
+    \lean{Submodule.low_spectral_cluster_of_restricted_residuals}
+    \leanok
+    \uses{def:spectral_span_le, def:subspace_close}
+    Let $H,H'$ act on a finite-dimensional complex inner-product space,
+    with complete orthonormal eigenbases and real eigenvalues $a_j,a'_j$.
+    Suppose $\gamma>0$, $0\le\xi\le\gamma/10^6$, and every $a_j$ equals
+    $e$ or is at least $e+\gamma$. Assume the two restricted operator
+    estimates
+    \begin{align}
+        \bigl\|(H-H')|_{T(e+\gamma/40)}\bigr\|    & \le\xi,
+        \label{eq:low_cluster_original_residual}            \\
+        \bigl\|(H-H')|_{T'(e+19\gamma/20)}\bigr\| & \le\xi.
+        \label{eq:low_cluster_perturbed_residual}
+    \end{align}
+    Put $G=T(e)$, $U=T'(e+\gamma/20)$ and $V=T'(e+19\gamma/20)$.
+    Then $U=V$ and $\dim U=\dim G$. Each of $U$ and $G$ is
+    $1/200$-close to the other. For every
+    $e+\gamma/20\le\tau\le e+19\gamma/20$, the space $T'(\tau)$ equals
+    $U$ and retains both approximation bounds. Every perturbed eigenvalue
+    satisfies
+    \begin{align}
+        a'_j\le e+\gamma/10
+        \quad\text{or}\quad e+9\gamma/10\le a'_j.
+        \label{eq:low_cluster_eigenvalue_gap}
+    \end{align}
+    The cutoffs are absolute energies relative to $e$; no comparison
+    with the perturbed minimum energy is asserted. This is a
+    finite-dimensional consequence of the estimates
+    in~\cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG}, using the
+    corrected window count~\cite{gap:alvv16_hard_truncation_windows}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:spectral_span_close_of_perturbation,
+        thm:subspace_close_nested_equal, thm:subspace_close_dimension,
+        thm:spectral_span_quadratic_form}
+    The original spectral dichotomy gives $H\ge eI$ and
+    $T(e+\gamma/40)=T(e+39\gamma/40)=G$. By
+    (\ref{eq:low_cluster_perturbed_residual}), a unit eigenvector $x$ of
+    $H'$ with eigenvalue $a'_j\le e+19\gamma/20$ satisfies
+    $e\le\operatorname{Re}\langle x,Hx\rangle\le a'_j+\xi$.
+    Thus these perturbed eigenvalues are at least $e-\xi$.
+
+    Apply the low-energy perturbation estimate with
+    $c=e+\gamma/40$, $c'=e+\gamma/20$, $m=e$ and then with the two
+    operators interchanged and
+    $c=e+19\gamma/20$, $c'=e+39\gamma/40$, $m=e-\xi$.
+    In each application take $h=\gamma/10^6$. The source width is at
+    most $\gamma$, the cutoff separation is $\gamma/40$, and the number
+    of windows is at most $500001$. Consequently
+    \begin{align}
+        N(\xi+h)^2
+         & \le 500001(2\gamma/10^6)^2
+        \le \frac1{200}(\gamma/40)^2
+        \le \frac1{200}(c'-c+h)^2.
+        \label{eq:low_cluster_window_bound}
+    \end{align}
+    The two applications show that $U$ is $1/200$-close to $G$ and $G$
+    is $1/200$-close to $V$. Since $U\subseteq V$, the nested-subspace
+    theorem gives $U=V$, equality of dimensions with $G$, and both
+    approximation bounds for every intermediate cutoff. If
+    $e+\gamma/20<a'_j\le e+19\gamma/20$, its eigenvector belongs to
+    $V=U$, whereas its own coordinate must vanish in $U$. This
+    contradiction proves~(\ref{eq:low_cluster_eigenvalue_gap}).
+\end{proof}
+
+
+\begin{theorem}[Energy on a low spectral subspace]
+    \label{thm:spectral_span_quadratic_form}
+    \lean{OrthonormalBasis.re_inner_apply_eq_sum_of_eigen,
+        Submodule.re_inner_apply_le_of_mem_spectralSpanLE}
+    \leanok
+    \uses{def:spectral_span_le}
+    Let $(b_j)$ be a finite orthonormal basis of a complex inner-product
+    space, and let $H$ be a linear operator satisfying $Hb_j=a_jb_j$ with
+    $a_j\in\R$. For every $x$,
+    \begin{align}
+        \operatorname{Re}\langle x,Hx\rangle
+         & =\sum_j a_j|\langle b_j,x\rangle|^2.
+        \label{eq:spectral_span_energy_coordinates}
+    \end{align}
+    In particular, if $x\in T(c)$, then
+    $\operatorname{Re}\langle x,Hx\rangle\le c\|x\|^2$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Express $x$ and $Hx$ in the orthonormal basis to obtain
+    (\ref{eq:spectral_span_energy_coordinates}). For $x\in T(c)$, all
+    coordinates with $a_j>c$ vanish. Bound the remaining coefficients by
+    $c$ and apply Parseval's identity.
+\end{proof}
+
+\begin{theorem}[The low spectral projection commutes with the operator]
+    \label{thm:spectral_span_projection_commutes}
+    \lean{Submodule.commute_starProjection_spectralSpanLE}
+    \leanok
+    \uses{def:spectral_span_le}
+    Under the same eigenbasis assumptions, the orthogonal projection
+    onto $T(c)$ commutes with $H$, for every real $c$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    In that basis the complementary projection retains precisely the
+    coordinates with $a_j>c$, while $H$ multiplies each coordinate by $a_j$.
+    These two operations commute, and so do $H$ and the low projection.
+    These are spectral consequences used
+    in~\cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG}.
+\end{proof}

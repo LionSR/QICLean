@@ -8,7 +8,11 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel
 
+import QICLean.Channel.AGSPFavorableEntropy
+import QICLean.Channel.AGSPGeometricTails
 import QICLean.Channel.Basic
+import QICLean.Channel.BoundaryDensityMinimizer
+import QICLean.Channel.BoundaryDensitySelection
 import QICLean.Channel.BoundaryGluing
 import QICLean.Channel.BreuerHallIndecomposable
 import QICLean.Channel.BreuerHallMap
@@ -51,6 +55,7 @@ import QICLean.Channel.EnvironmentEmbedding
 import QICLean.Channel.EnvironmentInducedInstrument
 import QICLean.Channel.FaithfulMarginalWhitenedChoi
 import QICLean.Channel.FiniteProduct
+import QICLean.Channel.FiniteProductOperatorSchmidt
 import QICLean.Channel.FixedPoint
 import QICLean.Channel.GaugeConjugation
 import QICLean.Channel.InformationallyCompleteEffects
@@ -68,6 +73,7 @@ import QICLean.Channel.KrausRepresentation
 import QICLean.Channel.KrausSupportAbsorption
 import QICLean.Channel.KrausUnitaryFreedom
 import QICLean.Channel.LeadingEigenvector
+import QICLean.Channel.LeadingEigenvectorBounds
 import QICLean.Channel.LocalizedKrausCPTP
 import QICLean.Channel.LorentzNormalForm
 import QICLean.Channel.LorentzNormalForm.Basic
@@ -136,6 +142,7 @@ import QICLean.Channel.SchmidtNumberCompact
 import QICLean.Channel.SchmidtNumberFactors
 import QICLean.Channel.SchmidtRank
 import QICLean.Channel.SchmidtRankAction
+import QICLean.Channel.SchmidtThreshold
 import QICLean.Channel.SchmidtTrimming
 import QICLean.Channel.Schwarz
 import QICLean.Channel.SelfDual

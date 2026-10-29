@@ -86,6 +86,54 @@ theorem finrank_iSup_le_sum {ι : Type*} [Fintype ι] (f : ι → Submodule 𝕜
 
 end General
 
+section TensorDecomposition
+
+variable {𝕜 M R : Type*} [RCLike 𝕜]
+  [NormedAddCommGroup M] [InnerProductSpace 𝕜 M] [FiniteDimensional 𝕜 M]
+  [NormedAddCommGroup R] [InnerProductSpace 𝕜 R] [FiniteDimensional 𝕜 R]
+
+/-- A two-factor form of the tensor-containment step in ALVV,
+arXiv:1602.08828v2, proof of Lemma `l:er`, lines 606–622. If a filter preserves
+a target space and its orthogonal complement, expands on the target and
+contracts on its complement, then a finite product decomposition improves
+viability by the same scalar estimate. The dimension grows by at most the
+number of product terms. The second factor may comprise a disconnected
+physical complement; no product decomposition inside it is required. -/
+theorem IsViable.map_of_tensor_decomposition
+    {ι : Type*} [Fintype ι] {δ Δ : ℝ}
+    {S : Submodule 𝕜 M} {T : Submodule 𝕜 (M ⊗[𝕜] R)}
+    {K : M ⊗[𝕜] R →L[𝕜] M ⊗[𝕜] R}
+    (hS : IsViable δ S T)
+    (A : ι → M →L[𝕜] M) (Rop : ι → R →L[𝕜] R)
+    (hdec : K = ∑ i, mapL (A i) (Rop i))
+    (hδ : δ < 1) (hΔ : 0 ≤ Δ)
+    (hKT : ∀ t ∈ T, K t ∈ T) (hKTo : ∀ q ∈ Tᗮ, K q ∈ Tᗮ)
+    (hlow : ∀ t ∈ T, ‖t‖ ≤ ‖K t‖)
+    (hhigh : ∀ q ∈ Tᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) :
+    finrank 𝕜 ↥(⨆ i, S.map (A i : M →ₗ[𝕜] M)) ≤
+        Fintype.card ι * finrank 𝕜 S ∧
+      IsViable (Δ / (1 - δ) ^ 2)
+        (⨆ i, S.map (A i : M →ₗ[𝕜] M)) T := by
+  classical
+  set V := ⨆ i, S.map (A i : M →ₗ[𝕜] M)
+  refine ⟨?_, ?_⟩
+  · refine (finrank_iSup_le_sum _).trans ?_
+    calc ∑ i, finrank 𝕜 ↥(S.map (A i : M →ₗ[𝕜] M)) ≤ ∑ _i : ι, finrank 𝕜 S :=
+          Finset.sum_le_sum fun i _ ↦ finrank_map_le _ _
+      _ = Fintype.card ι * finrank 𝕜 S := by simp
+  · have hclose := IsCloseTo.map_of_contract K hS hδ hΔ hKT hKTo hlow hhigh
+    refine hclose.mono ?_
+    rw [map_le_iff_le_comap, tensorProd_le_iff]
+    intro x hx y _
+    change K (x ⊗ₜ[𝕜] y) ∈ V.tensorProd (⊤ : Submodule 𝕜 R)
+    rw [hdec, _root_.sum_apply]
+    refine sum_mem fun i _ ↦ ?_
+    rw [mapL_tmul]
+    exact tmul_mem_tensorProd
+      (mem_iSup_of_mem i (mem_map_of_mem hx)) mem_top
+
+end TensorDecomposition
+
 variable {𝕜 E L M R : Type*} [RCLike 𝕜]
   [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] [FiniteDimensional 𝕜 E]
   [NormedAddCommGroup L] [InnerProductSpace 𝕜 L] [FiniteDimensional 𝕜 L]

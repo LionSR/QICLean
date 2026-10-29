@@ -7,6 +7,47 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Trace normalization of a bipartite unit vector — shared lemma (2026-10-23)
+
+- **Seen:** The orthogonal-decomposition quotient and geometric-tail theorem in
+  `Channel.AGSPGeometricTails`, and the rank-one endpoint and favorable entropy
+  theorem in `Channel.AGSPFavorableEntropy`; four callers across two files.
+- **Decision:** Use
+  `Matrix.trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one` for the complex
+  trace. For its real part, apply `congrArg Complex.re` and simplify
+  `Complex.one_re`.
+- **Reused:** `Matrix.normSq_toEuclid`, trace cyclicity and
+  `Matrix.IsHermitian.trace_eq_ofReal_re` identify the trace with the squared
+  norm of the original vector. No supplied density normalization is assumed.
+- **Callers:** `one_sub_kyFanNorm_le_of_orthogonal_decomposition`,
+  `sum_eigenvalues_geometric_tail_of_operatorSchmidtRank`,
+  `vonNeumannEntropy_reduced_eq_zero_of_operatorSchmidtRank_le_one`, and
+  `vonNeumannEntropy_reduced_le_four_log_of_operatorSchmidtRank`.
+
+### Support of an eigenvector with positive eigenvalue — existing scalar cancellation (2026-10-26)
+
+- **Seen:** The positive-eigenvalue range argument in `Channel/LeadingEigenvector.lean`
+  and the support constraint in `Channel/BoundaryDensitySelection.lean`.
+- **Reuse:** Apply `congrArg` to the matrix support equation, then use
+  `Matrix.mulVec_mulVec`, `Matrix.mulVec_smul` and `smul_right_injective`.
+- **Scope:** Cancellation concerns the nonzero eigenvalue. Neither invertibility
+  of the density matrix nor a projection hypothesis on the support matrix is needed.
+- **Decision:** Reuse scalar cancellation directly; no additional definition or
+  proof automation is introduced.
+
+### Coordinate transport and identity factors — existing Mathlib structures (2026-10-26)
+
+- **Seen:** The matrix expectations and identity-factor norm comparison in
+  TNLean's chain gluing argument, now stated in `Analysis/EuclideanReindex.lean`
+  and `Analysis/KroneckerOperatorNorm.lean`.
+- **Reuse:** `LinearIsometryEquiv.piLpCongrLeft.inner_map_map` and
+  `Matrix.submatrix_mulVec_equiv` replace coordinatewise sums. Injectivity of
+  `Matrix.rightKroneckerEmbed` permits `NonUnitalStarAlgHom.norm_map` to replace
+  the corner-norm calculation.
+- **Decision:** These two matrix statements are shared. Inner-product transport
+  and the rank-one trace identity use existing Mathlib results directly in
+  later consumers; no additional wrappers or custom tactics are introduced.
+
 ### Coefficients after left multiplication by a linear polynomial — promoted (2026-10-22)
 
 - **Consumers:** The ordered-gap equality in `Algebra/OrderedPolynomialGaps.lean`,
@@ -275,6 +316,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   does not identify its inverse with a compressed inverse.
 
 ## Candidates
+
+### Orthogonal component along a unit eigenvector (2026-10-26)
+
+- **Seen:** The final decomposition in `Analysis/GapPerturbation.lean` and the
+  overlap-to-energy estimate in `Analysis/OverlapEnergy.lean` write
+  `v = ⟪Ω, v⟫ • Ω + w` and apply Pythagoras to obtain
+  `‖w‖² = ‖v‖² - ‖⟪Ω, v⟫‖²` for unit `Ω`.
+- **Reuse:** Both energy arguments use `re_inner_smul_add_eigenvector` for
+  the quadratic form. The elementary orthogonality and norm calculation
+  remains at its two sites; seek a Mathlib projection lemma before adding
+  another local calculation or a new helper.
 
 ### Sharp product-overlap inequality — shared private lemma (2026-10-23)
 
@@ -1440,3 +1492,26 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   additional finite-sum theorem is introduced. The new evaluation of an
   operator upper bound on a unit eigenvector is shared by the two new
   estimates as one private mathematical lemma.
+
+### Equality decisions in finite coordinates — existing lemma (2026-10-23)
+
+- **Occurrences:** The one-dimensional and two-qubit applications in
+  `QICLeanTest/AGSPFavorableEntropyAxioms.lean`, and both configuration factors
+  in `QICLean/Entropy/AGSPRegionalEntropy.lean`.
+- **Reuse:** `Subsingleton.elim` identifies a classically chosen `DecidableEq`
+  value with the available value before applying a theorem whose matrix
+  expressions contain those decisions.
+- **Decision:** Rewrite only the decision values. The operators, vectors,
+  regions, ranks and shrinking hypotheses are unchanged. The existing lemma
+  suffices; no new theorem, tactic or simp set is required.
+
+### Two nonnegative weights bounded by their sum — candidate (2026-10-26)
+
+- **Seen:** The local `hpair` arguments in `Analysis/DominantEigenvector.lean`
+  and `Analysis/DominantEigenvectorUniqueness.lean`.
+- **Pattern:** For distinct indices, identify the sum of two nonnegative
+  weights with the sum over their pair, then bound it by the total sum.
+- **Reuse:** `Finset.sum_pair` and
+  `Finset.sum_le_sum_of_subset_of_nonneg` give the two steps directly.
+  There are two occurrences across two files. Retain these existing lemmas;
+  a third occurrence would justify considering a combined inequality.

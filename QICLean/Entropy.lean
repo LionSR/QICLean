@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Entropy
 
+import QICLean.Entropy.AGSPRegionalEntropy
 import QICLean.Entropy.AuxiliaryPairEntropy
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.BufferDiscount
@@ -32,6 +33,7 @@ import QICLean.Entropy.ConditionalSkewSetup
 import QICLean.Entropy.ConditionalSkewStrip
 import QICLean.Entropy.ConditionalTwoFamilies
 import QICLean.Entropy.ControlledContinuity
+import QICLean.Entropy.CutEnvironment
 import QICLean.Entropy.EffectMutualInformation
 import QICLean.Entropy.EffectRelativeEntropy
 import QICLean.Entropy.FilterChain

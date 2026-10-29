@@ -1,0 +1,154 @@
+\section{Truncating the high spectrum of a Hermitian matrix}
+\label{sec:energy_truncation}
+
+For a Hermitian matrix $A$ and an energy $\tau$, let $P_{\ge\tau}$ be the
+spectral projection of $A$ onto eigenvalues at least $\tau$.
+
+\begin{definition}[Energy truncation]
+    \label{def:energy_truncation}
+    \lean{Matrix.energyTruncation}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    The truncation of $A$ at $\tau$ is $\tilde A=\min(A,\tau)$ in the functional
+    calculus: every eigenvalue above $\tau$ is replaced by $\tau$. This is the
+    truncated Hamiltonian of Arad, Kuwahara and
+    Landau~\cite{Arad2014Connecting}, Definition~def:Ht, and the hard truncation
+    of~\cite[lines 873--886]{Arad2016RigorousRG}, Definition~def:hard-trunc,
+    with $A=H_J$ and $\tau=\varepsilon_J+t$.
+\end{definition}
+
+\begin{theorem}[Properties of the energy truncation]
+    \label{thm:energy_truncation}
+    \lean{Matrix.IsHermitian.energyTruncation_eq, Matrix.isHermitian_energyTruncation,
+        Matrix.IsHermitian.commute_energyTruncation, Matrix.IsHermitian.energyTruncation_le,
+        Matrix.IsHermitian.energyTruncation_le_smul_one,
+        Matrix.IsHermitian.smul_one_le_energyTruncation}
+    \leanok
+    \uses{def:energy_truncation}
+    The truncation equals $A(I-P_{\ge\tau})+\tau P_{\ge\tau}$, is Hermitian and
+    commutes with $A$, and satisfies $\tilde A\le A$ and $\tilde A\le\tau I$. If
+    every eigenvalue of $A$ is at least $\varepsilon$ and $\varepsilon\le\tau$,
+    then $\varepsilon I\le\tilde A$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    All four operators are functions of $A$. The first identity is the
+    pointwise identity $\min(t,\tau)=t\,\mathbf 1_{t<\tau}+\tau\,\mathbf
+        1_{t\ge\tau}$. The order bounds follow from $\min(t,\tau)\le t$,
+    $\min(t,\tau)\le\tau$ and $\varepsilon\le\min(t,\tau)$ on the spectrum, by
+    monotonicity of the functional calculus.
+\end{proof}
+
+
+\subsection{Centered partial clipping of a finite family}
+
+For finite families of matrices $(A_i)$ and real numbers $(e_i)$, a subset
+$T$ of the index set and
+$t\in\R$, write
+\begin{align}
+    F_i(T,t) & =
+    \begin{cases}\min(A_i,e_i+t),&i\in T,\\A_i,&i\notin T,\end{cases}
+    \label{eq:partial_clipping_terms}              \\
+    X_T(t)   & =\sum_i\bigl(F_i(T,t)-e_i\Id\bigr).
+    \label{eq:partial_clipping_sum}
+\end{align}
+Here the real self-adjoint functional calculus is extended by zero at a
+non-Hermitian matrix. This convention is needed only for the commutation
+statement, which does not assume that the matrices are Hermitian.
+
+\begin{theorem}[Positivity and a common vector after partial clipping]
+    \label{thm:partial_clipping_common_vector}
+    \lean{Matrix.centered_partially_clipped_sum_posSemidef_and_mulVec_eq_zero}
+    \leanok
+    \uses{def:energy_truncation}
+    Let every $A_i$ be Hermitian, $A_i\ge e_i\Id$, and $t\ge0$.
+    If $A_ix=e_ix$ for every $i$, then $X_T(t)\ge0$ and $X_T(t)x=0$.
+    No normalization of $x$ or commutation between different $A_i$ is required.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:order_sandwich_eigenvector}
+    Each clipped term lies between $e_i\Id$ and $A_i$, hence retains $x$ as
+    an eigenvector with eigenvalue $e_i$. Every centered summand is positive
+    and annihilates $x$. Sum these assertions.
+\end{proof}
+
+\begin{theorem}[Norm budget for partially clipped positive terms]
+    \label{thm:partial_clipping_norm_budget}
+    \lean{Matrix.centered_partially_clipped_sum_norm_le_budget}
+    \leanok
+    \uses{def:energy_truncation}
+    Suppose $0\le A_i\le c_i\Id$, $A_i\ge e_i\Id$, $c_i\in\N$, and for each
+    $i$ there is a unit vector $x_i$ with $A_ix_i=e_ix_i$.
+    Let $t\ge0$ and $0\le Y\le C\Id$, where $C\in\N$. Set
+    $b_T(t)=\sum_{i\in T}t+\sum_{i\notin T}c_i+C$.
+    Then $X_T(t)+Y\ge0$, $X_T(t)+Y\le b_T(t)\Id$, and
+    $\|X_T(t)+Y\|\le b_T(t)$. The vectors $x_i$ need not agree.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:energy_truncation, thm:normalized_eigenvector_energies}
+    Each $e_i$ is nonnegative. A clipped centered term lies between zero
+    and $t\Id$, while an unclipped centered term lies between zero and $c_i\Id$.
+    Add these bounds and the bound for $Y$; positivity then gives the norm estimate.
+\end{proof}
+
+\begin{theorem}[Commutation of a partially clipped sum]
+    \label{thm:partial_clipping_commutation}
+    \lean{Matrix.commute_centered_partially_clipped_sum}
+    \leanok
+    \uses{def:energy_truncation}
+    If the matrices $A_i$ commute pairwise, then $X_T(t)$ commutes with
+    every $A_j$, for arbitrary real $e_i,t$. Hermiticity is not assumed.
+\end{theorem}
+\begin{proof}
+    \leanok
+    A matrix commuting with $A_i$ commutes with its functional calculus.
+    It also commutes with scalar matrices. Apply these facts to each
+    summand of~(\ref{eq:partial_clipping_sum}).
+\end{proof}
+
+\begin{theorem}[A high-energy projection below the centered sum]
+    \label{thm:partial_clipping_high_projection}
+    \lean{Matrix.spectralProjectionGE_le_centered_partially_clipped_sum}
+    \leanok
+    \uses{def:energy_truncation, def:closed_threshold_projection}
+    Suppose every $A_i$ is Hermitian and $A_i\ge e_i\Id$. For $0\le u\le t$
+    and any $j$,
+    \begin{align}
+        u\,\mathbf1_{\{x\ge e_j+u\}}(A_j)\le X_T(t).
+        \label{eq:partial_clipping_high_bound}
+    \end{align}
+    No commutation between different terms is required.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:closed_threshold_projection}
+    On the spectrum of $A_j$, both $r-e_j$ and $\min(r,e_j+t)-e_j$ are at
+    least $u\mathbf1_{r\ge e_j+u}$. All other centered summands are positive.
+\end{proof}
+
+\begin{theorem}[Restricted discrepancy of a partial replacement]
+    \label{thm:partial_clipping_restricted_sum}
+    \lean{Matrix.norm_centered_clipping_discrepancy_domRestrict_le_sum}
+    \leanok
+    Let $A_i,F_i$ be arbitrary complex square matrices, $C_i\in\C$ and
+    $G$ a subspace of their Euclidean space. For a subset $T$ of the finite
+    index set, put
+    \begin{align}
+        B   & =\sum_i(A_i-C_i\Id),\notag \\
+        B_T & =\sum_i\left(
+        \begin{cases}F_i,&i\in T,\\A_i,&i\notin T\end{cases}-C_i\Id\right).
+        \label{eq:partial_replacement_sums}
+    \end{align}
+    Then $\|(B-B_T)|_G\|\le\sum_{i\in T}\|(A_i-F_i)|_G\|$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Subtracting the sums in~(\ref{eq:partial_replacement_sums}), the scalar
+    shifts cancel, and the discrepancy is exactly
+    $\sum_{i\in T}(A_i-F_i)$. Restrict this identity to $G$ and apply the
+    triangle inequality. This is the finite-sum step
+    in~\cite[lines 979--1005]{Arad2016RigorousRG}.
+\end{proof}
