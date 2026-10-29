@@ -47,12 +47,13 @@ run_cmd do
     | some i => "QICLean".isPrefixOf (env.header.moduleNames[i.toNat]!).toString
   unless repoOpaque.isEmpty do
     throwError "Repository opaque declarations in actual closure: {repoOpaque}"
-  logInfo m!"Actual combined type/body closure: {seen.size} constants; axioms {axioms}; {opaqueDecls.size} upstream opaques with their actual bodies inspected; zero repository opaques"
+  logInfo m!"Actual combined type/body closure: {seen.size} constants; axioms {axioms}; \
+    {opaqueDecls.size} upstream opaques with their actual bodies inspected; zero repository opaques"
   for n in opaqueDecls do
     let some ci := env.find? n | throwError "Missing opaque {n}"
     unless (ci.value? (allowOpaque := true)).isSome do
       throwError "Opaque body unavailable: {n}"
-
+  -- Also check the saved per-theorem axiom metadata.
   for n in roots do
     let some (.thmInfo _) := env.find? n | throwError "Not a theorem: {n}"
     let axs ← collectAxioms n
