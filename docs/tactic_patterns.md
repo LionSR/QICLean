@@ -1529,3 +1529,19 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   convergence in operator norm.
 - **Decision:** No new tactic. The convergence helper stays private until
   another production consumer needs the same limit statement.
+
+### Peripheral phases and finite cyclicity — existing structures (2026-10-29)
+
+- **Seen:** `Peripheral/AbstractEigenvectors.lean` and
+  `Peripheral/IrreducibleSchwarz.lean` use the same unit-modulus cancellation
+  in the weighted Schwarz equality, peripheral products, and normalization.
+- **Reuse:** `Complex.conj_mul'` handles conjugate-phase cancellation;
+  `SchwarzMap.mem_rightMultiplicativeDomain_iff` and its full-domain version
+  handle product preservation. No separate phase tactic is introduced.
+- **Shared mathematics:** `peripheralEigenvalues_eq_range_exp_of_mul_mem`
+  factors the finite-set cyclicity argument out of `CyclicGroupKraus`.
+  `Module.End.eigenvectors_linearIndependent'` and
+  `LinearIndependent.fintype_card_le_finrank` give the order bound.
+- **Compatibility:** finite-Kraus peripheral-unitary declarations now call
+  the abstract results. Their historical adjoint-weight arguments are retained
+  and explicitly acknowledged in the proof to preserve named-argument callers.
