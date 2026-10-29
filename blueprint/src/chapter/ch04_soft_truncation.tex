@@ -91,3 +91,64 @@ For a probability spectral measure with exponential moment at most $M$,
 integration gives a mean remainder at most
 $2M\theta^{-1}e^{-\theta m/2}$. Application to a regional Hamiltonian
 requires a bound on that physical exponential moment.
+
+
+\begin{theorem}[Monotonicity of soft truncation]
+    \label{thm:scalar_soft_truncation_monotone}
+    \lean{Real.monotoneOn_softTruncation}
+    \leanok
+    If $t>0$ and $m\geq0$ is an integer, then $h_{m,t}$ is nondecreasing
+    on $[0,\infty)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:scalar_soft_truncation}
+    The function $x\mapsto 1-e^{-x/t}$ is nonnegative and nondecreasing on
+    $[0,\infty)$. Its positive integer powers, and hence every summand
+    in~(\ref{eq:scalar_soft_truncation_definition}), are nondecreasing.
+\end{proof}
+
+\begin{theorem}[Comparison with a scalar hard cap]
+    \label{thm:scalar_soft_hard_truncation}
+    \lean{Real.softTruncation_hard_bounds}
+    \leanok
+    If $t>0$, $m\geq1$ is an integer, and $x\geq0$, then
+    \begin{align}
+        \min\{x,t/2\}-\frac{t}{2}\,2^{-m}
+        \leq h_{m,t}(x)\leq x.
+        \label{eq:scalar_soft_hard_truncation}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:scalar_soft_truncation_bounds,
+        lem:scalar_soft_truncation_geometric,
+        thm:scalar_soft_truncation_monotone}
+    For $0\leq x\leq t/2$, one has
+    $0\leq1-e^{-x/t}\leq x/t\leq1/2$, and therefore
+    \begin{align}
+        x-h_{m,t}(x)
+        \leq x(1-e^{-x/t})^m\leq\frac{t}{2}\,2^{-m}.
+    \end{align}
+    For $x\geq t/2$, apply this estimate at $t/2$ and use monotonicity.
+    The upper bound is~(\ref{eq:scalar_soft_truncation_order}).
+\end{proof}
+
+\begin{theorem}[Comparison of spectral truncations]
+    \label{thm:matrix_soft_hard_truncation}
+    \lean{Matrix.PosSemidef.softTruncation_hard_bounds}
+    \leanok
+    Let $A$ be a positive semidefinite complex matrix, $t>0$, and $m\geq1$
+    an integer. Functional calculus gives
+    \begin{align}
+        \min(A,(t/2)I)-\frac{t}{2}\,2^{-m}I
+        \leq h_{m,t}(A)\leq A.
+        \label{eq:matrix_soft_hard_truncation}
+    \end{align}
+    Here $\min(A,(t/2)I)$ denotes the function $x\mapsto\min\{x,t/2\}$
+    applied to $A$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:scalar_soft_hard_truncation}
+    The spectrum of $A$ is nonnegative. Apply
+    (\ref{eq:scalar_soft_hard_truncation}) at each spectral value and use
+    order preservation of the functional calculus for this fixed matrix.
+\end{proof}

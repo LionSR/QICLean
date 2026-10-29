@@ -212,3 +212,25 @@ Both eigenspaces in~(\ref{eq:doubled_unique_ground_lines}) have dimension
 one. Strict positivity is necessary: on $\C^2$, the Hamiltonian $H=E_0I$
 satisfies the lower-gap inequality for $\Delta=0$, while its eigenspace
 at $E_0$ has dimension two.
+
+\begin{lemma}[Quadratic lower bound off the kernel]
+    \label{lem:quadratic_gap_off_kernel}
+    \lean{Matrix.IsHermitian.mul_norm_sq_le_re_inner_of_spectral_gap}
+    \leanok
+    Let $A$ be Hermitian and $\gamma\in\mathbb R$. Suppose every nonzero
+    eigenvalue of $A$ is at least $\gamma$. Every $x\perp\ker A$ satisfies
+    \begin{align}
+        \gamma\|x\|^2\leq\operatorname{Re}\langle x,Ax\rangle.
+        \label{eq:quadratic_gap_off_kernel}
+    \end{align}
+    No restriction on $\dim\ker A$ is required.
+\end{lemma}
+\begin{proof}\leanok
+    Choose an orthonormal eigenbasis $Ae_j=a_j e_j$ and write $x=\sum_j c_j e_j$.
+    Orthogonality to the kernel gives $c_j=0$ when $a_j=0$. Therefore
+    \begin{align}
+        \operatorname{Re}\langle x,Ax\rangle
+          =\sum_j a_j|c_j|^2
+          \geq\gamma\sum_j|c_j|^2=\gamma\|x\|^2.
+    \end{align}
+\end{proof}

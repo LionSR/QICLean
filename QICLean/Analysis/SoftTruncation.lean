@@ -243,4 +243,49 @@ theorem softTruncation_remainder_le_exp (m : ℕ) (hm : 0 < m)
       (div_nonneg (by norm_num) htheta.le)
     nlinarith [mul_le_mul_of_nonneg_left (lt_of_not_ge hxm).le htheta.le]
 
+/-- Soft truncation is increasing on the nonnegative half-line. This follows
+term by term from the finite series in ALVV, arXiv:1602.08828v2,
+lines 1152–1173. -/
+theorem monotoneOn_softTruncation (t : ℝ) (m : ℕ) (ht : 0 < t) :
+    MonotoneOn (softTruncation t m) (Set.Ici 0) := by
+  intro x hx y _hy hxy
+  unfold softTruncation
+  apply mul_le_mul_of_nonneg_left _ ht.le
+  apply Finset.sum_le_sum
+  intro j _hj
+  apply div_le_div_of_nonneg_right _ (by positivity)
+  exact pow_le_pow_left₀
+    (one_sub_exp_neg_bounds (div_nonneg hx ht.le)).1
+    (sub_le_sub_left (Real.exp_le_exp.mpr (neg_le_neg (div_le_div_of_nonneg_right hxy ht.le))) 1) _
+
+/-- Below half the scale, the geometric remainder is uniformly small.
+Auxiliary to ALVV, arXiv:1602.08828v2, lines 1152–1173. -/
+private theorem softTruncation_remainder_le_half (t : ℝ) (m : ℕ) (x : ℝ)
+    (ht : 0 < t) (hx : 0 ≤ x) (hxc : x ≤ t / 2) :
+    x - softTruncation t m x ≤ (t / 2) * (1 / 2 : ℝ) ^ m := by
+  refine (softTruncation_remainder_le_geometric t m x ht hx).trans ?_
+  apply mul_le_mul hxc ?_
+    (pow_nonneg (one_sub_exp_neg_bounds (div_nonneg hx ht.le)).1 _) (by positivity)
+  apply pow_le_pow_left₀
+    (one_sub_exp_neg_bounds (div_nonneg hx ht.le)).1
+  have hdiv : x / t ≤ 1 / 2 := (div_le_iff₀ ht).mpr (by linarith)
+  exact (one_sub_exp_neg_bounds (div_nonneg hx ht.le)).2.2.trans hdiv
+
+/-- Soft truncation lies above hard truncation at half its scale, up to an
+exponentially small scalar error. This is an auxiliary corrected estimate for
+ALVV, arXiv:1602.08828v2, lines 1152–1173; it does not assert the printed
+uniform energy estimate in equation `eq:exp-approx-0`. -/
+theorem softTruncation_hard_bounds (t : ℝ) (m : ℕ) (x : ℝ)
+    (ht : 0 < t) (hm : 1 ≤ m) (hx : 0 ≤ x) :
+    min x (t / 2) - (t / 2) * (1 / 2 : ℝ) ^ m ≤ softTruncation t m x ∧
+      softTruncation t m x ≤ x := by
+  refine ⟨?_, (softTruncation_bounds t m x ht hm hx).2.1⟩
+  by_cases hxc : x ≤ t / 2
+  · simpa only [min_eq_left hxc] using
+      (sub_le_comm.mp (softTruncation_remainder_le_half t m x ht hx hxc))
+  · simpa only [min_eq_right (le_of_not_ge hxc)] using
+      (sub_le_comm.mp (softTruncation_remainder_le_half t m (t / 2) ht
+        (half_pos ht).le le_rfl)).trans
+        (monotoneOn_softTruncation t m ht (half_pos ht).le hx (le_of_not_ge hxc))
+
 end Real

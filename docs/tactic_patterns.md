@@ -565,7 +565,13 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   occurrences. In `QICLean/Analysis/SpectralCutoffMass.lean`,
   `PosSemidef.smul_one_sub_spectralCutoff_le` uses the corresponding
   pointwise order reduction; `PosSemidef.spectralCutoff_mass_ge` then takes
-  its quadratic form. Their scalar conclusions differ.
+  its quadratic form. `PosSemidef.softTruncation_hard_bounds` in
+  `Analysis/SoftHardTruncation.lean` uses `cfc_mono` twice, with a local
+  finite-spectrum continuity helper, to transfer the scalar comparison
+  and its upper bound. The hard-cutoff translation in
+  `Analysis/ShiftedSoftHardTruncation.lean` reuses `cfc_comp` and the scalar
+  identity `min_sub_sub_right`, without a new spectral calculation.
+  Their scalar conclusions differ.
 - **Abstraction:** Continue using the existing `Matrix.IsHermitian.cfc_mul`
   and `cfc_congr` results for identities, and the generic `cfc_le_iff`
   result for order. The local `hcont` in the cutoff proof supplies

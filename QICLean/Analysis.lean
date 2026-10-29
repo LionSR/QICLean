@@ -101,6 +101,7 @@ import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
+import QICLean.Analysis.KernelSpectralGap
 import QICLean.Analysis.KleinInequality
 import QICLean.Analysis.KroneckerExponential
 import QICLean.Analysis.KroneckerOperatorNorm
@@ -272,10 +273,12 @@ import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.ShiftedDensityTruncation
 import QICLean.Analysis.ShiftedFilterClipping
 import QICLean.Analysis.ShiftedPowerDerivative
+import QICLean.Analysis.ShiftedSoftHardTruncation
 import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SkewFromPhases
+import QICLean.Analysis.SoftHardTruncation
 import QICLean.Analysis.SoftTruncation
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError

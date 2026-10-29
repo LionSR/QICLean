@@ -1,0 +1,63 @@
+\section{Soft truncation with an approximate energy origin}
+
+For a Hermitian matrix $A$, write $T_s(A)=\min(A,sI)$ for its hard
+truncation at the energy $s$, defined by functional calculus.
+
+\begin{theorem}[Monotonicity in the hard cutoff]
+    \label{thm:hard_truncation_cutoff_monotone}
+    \lean{Matrix.monotone_energyTruncation}
+    \leanok
+    If $s\leq t$, then $T_s(A)\leq T_t(A)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:energy_truncation}
+    The scalar inequality $\min\{x,s\}\leq\min\{x,t\}$ holds at every
+    spectral value of $A$. Apply order preservation of the functional
+    calculus for this fixed matrix.
+\end{proof}
+
+\begin{theorem}[Translation of the hard cutoff]
+    \label{thm:hard_truncation_energy_shift}
+    \lean{Matrix.IsHermitian.energyTruncation_sub_smul_one}
+    \leanok
+    For all real $r,t$, one has
+    \begin{align}
+        T_t(A-rI)=T_{r+t}(A)-rI.
+        \label{eq:hard_truncation_energy_shift}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:energy_truncation}
+    Composition of the functional calculus reduces the assertion to
+    $\min\{x-r,t\}=\min\{x,r+t\}-r$.
+\end{proof}
+
+\begin{theorem}[Soft truncation with an approximate energy origin]
+    \label{thm:soft_hard_truncation_energy_shift}
+    \lean{Matrix.IsHermitian.softTruncation_shifted_hard_bounds}
+    \leanok
+    Let $r,r'$ be real numbers such that $A-r'I\geq0$ and $r-10\leq r'$.
+    For $t>0$ and an integer $m\geq1$, put $\varepsilon=(t/2)2^{-m}$.
+    Then
+    \begin{align}
+        T_{r+t/2-10}(A)-\varepsilon I
+        \leq r'I+h_{m,t}(A-r'I)\leq A.
+        \label{eq:soft_hard_truncation_energy_shift}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:matrix_soft_hard_truncation,
+        thm:hard_truncation_energy_shift,
+        thm:hard_truncation_cutoff_monotone}
+    Apply~(\ref{eq:matrix_soft_hard_truncation}) to $A-r'I$ and add $r'I$.
+    By~(\ref{eq:hard_truncation_energy_shift}), the hard comparator is
+    $T_{r'+t/2}(A)$. Since $r+t/2-10\leq r'+t/2$, monotonicity of the
+    hard cutoff gives~(\ref{eq:soft_hard_truncation_energy_shift}).
+\end{proof}
+
+In the regional soft truncation of
+Arad--Landau--Vazirani--Vidick~\cite[lines 1178--1185]{Arad2016RigorousRG},
+$r$ is the regional ground energy and $r-10\leq r'\leq r$. Thus
+$A-r'I\geq0$. Taking $t=m$ gives the hard threshold $m/2-10$ above the true
+regional ground energy. The crossing interactions belong to the unchanged
+complementary Hamiltonian; they are not subtracted from this threshold.
