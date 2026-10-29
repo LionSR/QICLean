@@ -102,4 +102,67 @@ results assume an improving operator family for the specified tensor
 factor. Their quantitative corrections above are resolved. A physical
 interval theorem must retain its stated region restriction; it does not
 formalize the printed arbitrary-subset proposition.
+
+\section{A strict decrease between the low-density targets}
+
+The proof of Proposition \texttt{prop:albootstrap-ld}, source lines
+1112--1128, defines $q(\mu)$ as the smallest dimension of a
+$0.015$-viable subspace for the original target $T_\mu$. The displayed
+sample size at line 1115 is $s=q(\mu_0)/D^2$. After improvement, line 1125
+only bounds the resulting dimension by $q(\mu_0)$. This does not by itself
+contradict either the integer minimum or the first threshold index.
+A strict decrease is needed. This observation concerns the displayed proof
+step; it does not refute the low-density area-law theorem.
+
+Here is a corrected conditional step. Let $G_+,G_-$ be the original
+targets and $T_+,T_-$ the improving targets. Assume $G_+$ is
+$1/200$-close to $T_+$ and $T_-$ is $1/200$-close to $G_-$.
+A fixed family $A_i$, $1\le i\le D^2$, improves every
+$\delta$-viable space for $T_+$ to a
+$\Delta/(1-\delta)^2$-viable image span for $T_-$.
+Let $W$ be $3/200$-viable for $G_+$, and put $Q=\dim W$.
+For $D\ge2$, $\Delta\ge0$, and $4D^2\le p\le Q$, set
+\[
+ s=\left\lfloor\frac{p}{2D^2}\right\rfloor,
+ \qquad \alpha=\frac{(1-1/25)s}{8Q}.
+\]
+Then $s\ge1$ and $\alpha>0$. Suppose explicitly that
+\[
+ (1+2/\sqrt\alpha)^{2\dim T_+}Qe^{-s/16}<1,
+ \qquad \Delta/\alpha^2\le1/400.
+\]
+First transfer $W$ to $T_+$, giving error
+$2(3/200+1/200)=1/25$. The corrected Haar sampling estimate gives an
+actual $s$-dimensional sample $W'\subseteq W$ with viability error
+$1-\alpha$ for $T_+$. Its actual image span satisfies
+\[
+ V=\sum_i A_iW',\qquad
+ \dim V\le D^2s\le\lfloor p/2\rfloor.
+\]
+Improve toward $T_-$ before applying the lower comparison. The final
+error for $G_-$ is exactly
+\[
+ 2\left(\Delta/\alpha^2+1/200\right)\le3/200.
+\]
+Sampling for the original upper target and then transferring with the
+coarse robustness bound would not preserve the small sampled overlap.
+The order above avoids that loss.
+
+The branch $p<4D^2$ remains a separate dimension-threshold branch of a
+physical bootstrap. It must not be handled by a zero-dimensional sample.
+The probability and error inequalities displayed above are premises of
+this auxiliary, not conclusions about a physical filter. The dyadic
+bootstrap still requires an actual coupled count and suppression
+calibration. In particular, enlarging a native count $D$ to an upper
+bound $\widehat D$ does not establish
+$\widehat D^{12}\Delta\le10^{-5}$ from $D^{12}\Delta\le10^{-5}$.
+
+The same source passage also writes $0.15$ for the chosen $W$ where its
+preceding definition supplies $0.015$, and uses inconsistent powers of
+the logarithm in its comparison function $r(\mu)$. A physical dyadic
+proof must retain one positive regularized logarithmic expression, the
+same exponent throughout, and explicit constants. These local numerical
+repairs do not remove the physical interval restriction or establish the
+full low-density bootstrap.
+
 \end{document}

@@ -239,3 +239,46 @@ up to the associator and the exchange of the first two factors.
     For the rank estimate, square the positive radius and multiply the
     weighted inequality by its reciprocal.
 \end{proof}
+
+
+\begin{lemma}[A sampled strict decrease between two targets]
+    \label{lem:alvv_nested_sample_half_dimension}
+    \lean{Submodule.exists_isViable_nested_randomSubspace_finrank_le_half}
+    \leanok
+    Let $M,F$ be finite-dimensional complex Hilbert spaces and
+    $G_+,G_-,T_+,T_-\subseteq M\otimes F$.
+    Suppose $G_+$ is $1/200$-close to $T_+$ and $T_-$ is
+    $1/200$-close to $G_-$.
+    A fixed family $A_i$ on $M$, $1\le i\le D^2$, is assumed to improve
+    every $\delta$-viable space for $T_+$ with $\delta<1$ to a
+    $\Delta/(1-\delta)^2$-viable image span for $T_-$.
+    Let $D\ge2$ be an integer, $\Delta\ge0$, and let $W$ be
+    $3/200$-viable for $G_+$. For an integer $4D^2\le p\le Q=\dim W$, put
+    \[
+      s=\lfloor p/(2D^2)\rfloor,\qquad
+      \alpha=(1-1/25)s/(8Q).
+    \]
+    Assume explicitly that
+    \[
+      (1+2/\sqrt\alpha)^{2\dim T_+}Qe^{-s/16}<1,
+      \qquad \Delta/\alpha^2\le1/400.
+    \]
+    There is an actual Haar-coordinate sample $W'$ of $W$, obtained
+    from a unitary and its first $s$ coordinates, with
+    $W'\subseteq W$, $\dim W'=s\ge1$ and $\alpha>0$.
+    It is $(1-\alpha)$-viable for $T_+$, and its actual image span
+    $V=\sum_i A_iW'$ has dimension at most $\lfloor p/2\rfloor$.
+    It is $2(\Delta/\alpha^2+1/200)$-viable, hence $3/200$-viable, for
+    $G_-$. This is a conditional auxiliary to the low-density argument
+    of~\cite[lines 1112--1128]{Arad2016RigorousRG}, with the strict-decrease
+    correction in~\cite{gap:alvv16_bootstrap_constants}.
+\end{lemma}
+\begin{proof}\leanok
+    Robustness first transfers $W$ to $T_+$ with error $1/25$.
+    The corrected complex Haar estimate chooses the same successful
+    sample that is subsequently improved. The positive integer quotient
+    gives $s\ge1$, and $2D^2s\le p$ gives the strict dimension decrease.
+    Improve the sample toward $T_-$, then transfer to $G_-$.
+    The final error bound follows from
+    $2(1/400+1/200)=3/200$.
+\end{proof}

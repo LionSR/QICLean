@@ -367,6 +367,7 @@ import QICLean.Analysis.ViableSubspaceCoordinates
 import QICLean.Analysis.ViableSubspaceDimension
 import QICLean.Analysis.ViableSubspaceEntropy
 import QICLean.Analysis.ViableSubspaceErrorReduction
+import QICLean.Analysis.ViableSubspaceNestedSampling
 import QICLean.Analysis.ViableSubspaceRandomSampling
 import QICLean.Analysis.ViableSubspaceSampleOrFull
 import QICLean.Analysis.ViableSubspaceSamplingEvent

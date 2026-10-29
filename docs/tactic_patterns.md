@@ -1802,3 +1802,20 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Scope:** The construction includes zero ranks and empty coordinate
   types. It supplies coefficients and a dimension inequality; no new tactic
   or positivity hypothesis is introduced.
+
+### Haar sampling between nearby improving targets — candidate (2026-10-29)
+
+- **Pattern:** Transfer the input to the upper improving target, choose the
+  actual coordinate Haar sample using its exact cardinality, improve that
+  same sample, then transfer to the original lower target.
+- **Seen:** The fixed-target bootstrap in `Analysis/ViableSubspaceBootstrap.lean`
+  and `Analysis/ViableSubspaceNestedSampling.lean`.
+- **Shared APIs:** `IsCloseTo.trans`, `exists_isViable_randomSubspace`,
+  `finrank_randomSubspace`, `finrank_map_le`, and `finrank_iSup_le_sum`
+  already provide the individual steps. The new conditional theorem
+  `exists_isViable_nested_randomSubspace_finrank_le_half` retains the
+  whole actual sample/image for future low-density callers.
+- **Notes:** No sampling definition, dimension-bound oracle, or new tactic
+  is introduced. Reuse the conditional theorem rather than copying this
+  composition into the physical dyadic bootstrap. The native-to-envelope
+  count/suppression calibration remains separate.
