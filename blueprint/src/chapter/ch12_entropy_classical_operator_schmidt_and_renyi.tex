@@ -1805,3 +1805,56 @@ logarithmic divergence, or a comparison with relative entropy.
     Substitution in the rank-tail entropy estimate proves
     (\ref{eq:cubic_dyadic_tail_entropy}).
 \end{proof}
+
+
+\subsection{Right contractions and nested cuts}
+
+\begin{definition}[Right contraction]
+    \label{def:operator_right_contraction}
+    \lean{Matrix.operatorRightContraction}
+    \leanok
+    For finite-dimensional spaces $U,W$, an operator $K$ on $U\otimes W$, and a
+    linear functional $\varphi$ on the operators on $W$, set
+    $C_\varphi(K)=(\operatorname{id}\otimes\varphi)(K)$.
+\end{definition}
+
+\begin{theorem}[A minimal decomposition by contractions]
+    \label{thm:operator_right_contraction_decomposition}
+    \lean{Matrix.exists_operatorRightContraction_decomposition}
+    \leanok
+    If $K$ has operator Schmidt rank $r$, there are operators $B_1,\ldots,B_r$
+    and linear functionals $\varphi_1,\ldots,\varphi_r$ such that
+    $K=\sum_{j=1}^r C_{\varphi_j}(K)\otimes B_j$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:operator_right_contraction}
+    Choose a basis of the span of the right matrix blocks of $K$.
+    Extend its coordinate functionals to all operators on the right space.
+    Expanding each block in this basis gives the asserted identity.
+\end{proof}
+
+\begin{theorem}[Contractions preserve earlier cut bounds]
+    \label{thm:operator_right_contraction_rank}
+    \lean{Matrix.operatorSchmidtRank_operatorRightContraction_le,
+        Entropy.operatorSchmidtRank_rightContraction_subset_le}
+    \leanok
+    Let $K$ act on $U\otimes V\otimes W$ and let $\varphi$ be a linear
+    functional on the operators on $W$. Then
+    \begin{align*}
+        \operatorname{SR}_{U:V}\bigl(C_\varphi(K)\bigr)
+        \leq \operatorname{SR}_{U:VW}(K).
+    \end{align*}
+    In particular, if $A\subseteq B$ are regions of a finite system,
+    contracting the exterior of $B$ cannot increase the operator Schmidt
+    rank across $A$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:operator_right_contraction}
+    Write $K=\sum_{j=1}^r X_j\otimes Y_j$ across $U:VW$.
+    Contraction gives $C_\varphi(K)=\sum_{j=1}^r
+        X_j\otimes C_\varphi(Y_j)$, with at most $r$ terms.
+    For nested regions use the three factors $A$, $B\setminus A$, and
+    the exterior of $B$.
+\end{proof}

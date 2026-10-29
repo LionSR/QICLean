@@ -1,0 +1,35 @@
+\begin{theorem}[Identity extension of the replica mean]
+    \label{thm:replica_mean_identity_extension}
+    \lean{TensorPower.siteOp_kronecker_one,
+        TensorPower.replicaMean_kronecker_one,TensorPower.siteOp_eq_finKronecker}
+    \leanok
+    \uses{def:replica_operators}
+    Let $A$ and $B$ be finite sets, let $\mathcal H=\mathbb C^A$ and
+    $\mathcal K=\mathbb C^B$, and let $H$ be
+    an arbitrary operator on $\mathcal H$. For $k\ge0$, let $U_k$ be the
+    unitary induced by the coordinate regrouping
+    $(A\times B)^k\simeq A^k\times B^k$.
+    For each $0\le i<k$, the operator $(H\otimes I_{\mathcal K})^{(i)}$
+    is the pullback under $U_k$ of $H^{(i)}\otimes I_{\mathcal K^{\otimes k}}$.
+    The operator $H^{(i)}$ equals the iterated tensor product with $H$ in
+    position $i$ and identities elsewhere. Consequently,
+    \begin{align}
+        k^{-1}\sum_{i=0}^{k-1}(H\otimes I_{\mathcal K})^{(i)}
+         & =U_k^*\bigl(\overline H\otimes I_{\mathcal K^{\otimes k}}\bigr)U_k.
+        \label{eq:replica_mean_identity_extension}
+    \end{align}
+    For $k=0$, set $\overline H=0$; both normalized sums are zero.
+    This is the identity extension used in
+    \cite[Sections~6 and~7]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The auxiliary identity in the active copy and the equality constraints on
+    all inactive copies together require agreement of every auxiliary
+    coordinate. The remaining matrix entry is exactly that of $H^{(i)}$.
+    For the iterated tensor product, isolate the factor in position $i$;
+    the product of the remaining identity entries is one precisely when all
+    inactive physical coordinates agree, and zero otherwise.
+    Summing over $i$ and multiplying by $k^{-1}$ proves
+    (\ref{eq:replica_mean_identity_extension}).
+\end{proof}
