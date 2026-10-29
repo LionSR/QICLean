@@ -104,6 +104,7 @@ import QICLean.Analysis.KroneckerExponential
 import QICLean.Analysis.KroneckerOperatorNorm
 import QICLean.Analysis.KyFanNorm
 import QICLean.Analysis.LiebConcavity
+import QICLean.Analysis.LiebConvexity
 import QICLean.Analysis.LiebIntegrandConcave
 import QICLean.Analysis.LiebOperatorConcave
 import QICLean.Analysis.LiebOperatorIntegral
