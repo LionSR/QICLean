@@ -87,3 +87,19 @@ The existing entropy chapter contains the new mathematical entry, so no chapter
 registration change is needed. The generated import aggregators are left to
 integration. Further private elaboration is paused for the coordinated provider
 advance.
+
+## Ordinary verification
+
+At mathematical revision `1aa1011b4f5518d59de4ef462b71d84ad4ec33ea`, the full 10,350-job library build,
+strict checks of all four changed production files, and an imported audit of
+all six public declarations in the two new modules passed. The audit uses
+only propext, Classical.choice and Quot.sound. Source synchronization,
+compiled blueprint declaration checks, added-prose and compilation-time
+checks also passed. No job reached the 25-second warning threshold, and no
+Mathlib source was compiled. Existing prebuilt artifacts were used under
+the repository lock. No permanent Lean test fixture was added.
+
+The complete local record is
+`/tmp/qiclean-filter-normalization-soft-gates.json`, with the separate
+added-prose log `/tmp/qiclean-filter-normalization-soft-prose.log`.
+This completion record changes documentation only.

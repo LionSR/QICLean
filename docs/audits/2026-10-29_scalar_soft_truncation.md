@@ -30,3 +30,19 @@ unchanged before and after the final check; no Mathlib source was compiled.
 The private record is `/tmp/tnlean-soft-truncation-20261029/manifest.json`.
 Ordinary combined-library and blueprint checks remain pending at this
 source preparation stage.
+
+## Ordinary verification
+
+At mathematical revision `1aa1011b4f5518d59de4ef462b71d84ad4ec33ea`, the full 10,350-job library build,
+strict checks of all four changed production files, and an imported audit of
+all six public declarations in the two new modules passed. The audit uses
+only propext, Classical.choice and Quot.sound. Source synchronization,
+compiled blueprint declaration checks, added-prose and compilation-time
+checks also passed. No job reached the 25-second warning threshold, and no
+Mathlib source was compiled. Existing prebuilt artifacts were used under
+the repository lock. No permanent Lean test fixture was added.
+
+The complete local record is
+`/tmp/qiclean-filter-normalization-soft-gates.json`, with the separate
+added-prose log `/tmp/qiclean-filter-normalization-soft-prose.log`.
+This completion record changes documentation only.
