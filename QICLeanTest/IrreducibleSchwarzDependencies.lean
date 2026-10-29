@@ -45,5 +45,5 @@ run_cmd do
     todo := todo ++ info.type.getUsedConstants
     if let some value := info.value? (allowOpaque := true) then
       todo := todo ++ value.getUsedConstants
-  logInfo m!"DEPENDENCY AUDIT: {seen.size} kernel declarations; axioms {axioms.toArray}; "
-    ++ m!"{opaqueDecls.size} opaque definitions with checked values"
+  logInfo m!"DEPENDENCY AUDIT: {seen.size} kernel declarations; axioms {axioms.toArray}"
+  logInfo m!"Opaque definitions with checked values: {opaqueDecls.size}"
