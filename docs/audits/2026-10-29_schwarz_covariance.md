@@ -6,13 +6,13 @@ Issue: LionSR/QICLean #478. Source:
 `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 803–817,
 including Equation (6.38). The preceding Theorem 6.6 is at lines 756–801.
 
-This change is stacked on PR994, branch `codex/issue477-abstract-schwarz`,
-verified at `57cf28551248b0f7dd275359fca20f156b8b29c0`. PR994 supplies the
-abstract spectrum theorem. Its `AbstractEigenvectors.lean` and
-`IrreducibleSchwarz.lean` are unchanged, as are all dependency pins.
-The draft targets that dependency branch so that its diff contains only
-Proposition 6.7. Integrate PR994 first, then retarget or rebase this change
-and repeat the relevant checks.
+The prerequisite abstract spectrum theorem from PR994 is merged into main
+at `a2f54b6f3375b7072d4284163cfe5d9b2609cf4a`. This change targets main and
+contains only Proposition 6.7 and its supporting tests and documentation.
+The dependency's `AbstractEigenvectors.lean` and `IrreducibleSchwarz.lean`
+are unchanged, as are all dependency pins. Main was integrated with a normal
+merge; the original reviewed proof, tests, and Blueprint statements are
+preserved exactly.
 
 ## Theorem boundary
 
