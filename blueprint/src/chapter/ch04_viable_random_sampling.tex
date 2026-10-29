@@ -183,3 +183,38 @@ up to the associator and the exchange of the first two factors.
 \begin{proof}\leanok
     Use $\sqrt{m}\le\sqrt{L+1}$ and cancel the positive factors.
 \end{proof}
+
+
+\begin{theorem}[A common sampling size at the cubic dimension scale]
+    \label{thm:viable_node_uniform_sampling_size}
+    \lean{Real.viable_node_sample_size_log_bound,
+        Real.viable_node_sampling_failure_le_exp,
+        Real.viable_node_uniform_sampling_size}
+    \leanok
+    \uses{thm:viable_sample_or_full}
+    Let $D\ge2$ and $r\ge1$ be integers and let $0<\beta\le1$. Put
+    \[
+      A=1+\log r+\log D+\log(1/\beta),\qquad
+      s=\lceil4096rA\rceil.
+    \]
+    Then $1\le s\le4097rA$. For every $Q\le D^{12}s^6$, the
+    corrected failure bound for a $1/4$-viable input of dimension $Q$
+    and a target of dimension $r$ satisfies
+    \[
+      \eta_Q\le e^{-s/64}\le\beta.
+    \]
+    Thus the same size is chosen before every parent space.
+    This is an auxiliary choice for the powered cubic profile, rather
+    than an identification with the source's printed tree parameters.
+\end{theorem}
+\begin{proof}\leanok
+    The ceiling estimate gives $\log s\le13A$.
+    When $Q>s$, the net factor is at most $16\sqrt Q$, so
+    \[
+      \log\eta_Q
+      \le32r\log D+12r\log s-s/16
+      \le188rA-s/16\le-s/64.
+    \]
+    Also $s/64\ge\log(1/\beta)$. For $Q\le s$ the failure bound is
+    zero because the whole input is retained.
+\end{proof}
