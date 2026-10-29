@@ -144,7 +144,16 @@ No ready-for-review transition, review approval, merge, account/security change,
 or paid evaluation is part of this contribution. Keep the pull request in draft;
 the parent coordinator handles integration and readiness.
 
-Publication validation refresh: the matching pinned Mathlib cache was reverified,
-and a targeted `QICLean.Analysis` export build was started to fill the missing
-QICLean prerequisites. Its result and hosted CI are pending; no full validation
-success is claimed by this note.
+Publication validation refresh: the matching pinned Mathlib cache was reverified.
+The targeted `QICLean.Analysis` export build completed successfully (9,608 jobs),
+clearing the initial missing-artifact blocker. The complete strict selector then
+passed the generated Analysis export, the new production module and both retained
+regressions with standard linters and warnings as errors. The kernel audit again
+reported 37,113 declarations, 35,135 bodies and 31 opaque bodies, using only the
+three standard foundations. No Mathlib Lean source module was rebuilt.
+
+Refreshed main `4a4ba880ae0f20cdfbe7723e3ac2cfc26073a2d5` includes two unrelated merges after the publication
+base. A three-way merge-tree check against that main completed without conflicts;
+no integration or mathematical source edits were needed. Hosted CI and the broader
+checks listed above remain pending; the successful local export check does not
+assert full-library or hosted success.
