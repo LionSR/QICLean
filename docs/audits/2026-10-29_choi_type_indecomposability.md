@@ -95,12 +95,26 @@ This is an automated mathematical audit, not a human or GitHub approval.
 - Oversized-file and numbered-module policies, proof-integrity scan, and
   `git diff --check` passed.
 
-## Not validated
+## Hosted validation and integration follow-up
 
-No full library/root build, global compiled `leanblueprint checkdecls`, full
-Blueprint PDF/web generation or visual inspection, downstream TNLean build,
-or hosted CI was run. Local TeX lacks `dsfont.sty`, needed by paper-gap PDFs.
-The declared theorem names were compiled through direct applications and
-axiom guards, but this does not substitute for global declaration checking.
-No mathematical blocker remains. Hosted integration checks must complete
-before any readiness transition or merge.
+The first hosted run for PR #999 at
+`a10490aeab9d715dd4fbd8b7e2d53e8f5928ca2f` passed the full library build,
+strict affected-source and regression checks, compilation-time gates, text
+style, compiled global Blueprint declaration checking, and module policies.
+Paper-gap PDFs also passed. The Blueprint job then stopped at bibliography
+generation because the new entry used the absent key `Wolf2012QChannels`.
+The correction uses the registered key `Wolf2012Quantum`; the ordinary
+`texra-blueprint bbl` check passes locally. No check was weakened or skipped
+to accommodate the failure.
+
+Main `4a4ba880ae0f20cdfbe7723e3ac2cfc26073a2d5` was integrated with a normal
+merge, preserving the other authors' peripheral-spectrum and block-injectivity
+changes. The proof, dedicated regressions, foundational witness modules, and
+dependency pins are unchanged. Narrow strict, generated-export, Blueprint
+source synchronization, and prose checks were rerun after integration.
+
+Evidence: [initial hosted run](https://github.com/LionSR/QICLean/actions/runs/40917177135).
+Full Blueprint PDF/web and browser checks require a successful subsequent
+hosted run. No downstream TNLean build or local Blueprint visual inspection
+was performed. No mathematical blocker remains; final hosted integration
+results must be checked before any readiness transition or merge.
