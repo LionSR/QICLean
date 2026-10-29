@@ -115,6 +115,20 @@ residual into positive semidefinite terms.
     $(UHU^\dagger)(U\Omega)=UH\Omega=E_0(U\Omega)$.
 \end{proof}
 
+\begin{lemma}[A real eigenvalue belongs to the real spectrum]
+    \label{lem:real_eigenvalue_mem_spectrum}
+    \lean{Matrix.mem_spectrum_real_of_mulVec_eq_smul}
+    \leanok
+    Let $H$ be a complex square matrix and let $E\in\R$.
+    If $H\psi=E\psi$ for a nonzero vector $\psi$, then
+    $E\in\operatorname{spec}_{\R}(H)$.
+    Neither Hermiticity nor a gap assumption is required.
+\end{lemma}
+\begin{proof}\leanok
+    If $H-EI$ were invertible, applying its inverse to
+    $(H-EI)\psi=0$ would give $\psi=0$, a contradiction.
+\end{proof}
+
 \begin{theorem}[Uniqueness from a strictly positive lower gap]
     \label{thm:positive_gap_uniqueness}
     \lean{Matrix.PosSemidef.eq_inner_smul_of_gap,
