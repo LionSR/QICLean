@@ -1,0 +1,93 @@
+\section{Scalar soft truncation}
+
+For $t>0$, an integer $m\geq0$, and $x\geq0$, the scalar soft truncation of
+Arad--Landau--Vazirani--Vidick is the following finite logarithmic series
+~\cite[lines 1152--1173]{Arad2016RigorousRG}.
+
+\begin{definition}[Scalar soft truncation]
+    \label{def:scalar_soft_truncation}
+    \lean{Real.softTruncation}
+    \leanok
+    \begin{align}
+        h_{m,t}(x)
+            &=t\sum_{j=1}^{m}\frac{{(1-e^{-x/t})}^{j}}{j}.
+        \label{eq:scalar_soft_truncation_definition}
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Scalar soft-truncation bounds]
+    \label{thm:scalar_soft_truncation_bounds}
+    \lean{Real.softTruncation_bounds}
+    \leanok
+    If $t>0$, $m\geq1$, and $x\geq0$, then
+    \begin{align}
+        0\leq h_{m,t}(x)&\leq x,
+        \label{eq:scalar_soft_truncation_order}\\
+        x-h_{m,t}(x)&\leq\frac{t}{m}{\left(\frac{x}{t}\right)}^{m},
+        \label{eq:scalar_soft_truncation_remainder}\\
+        h_{m,t}(x)&\leq t(1+\log m).
+        \label{eq:scalar_soft_truncation_log_bound}
+    \end{align}
+    The final estimate corrects the printed $t\log m$ bound, which fails at
+    $m=1$~\cite{gap:alvv16_soft_truncation_log_bound}.
+\end{theorem}
+\begin{proof}\leanok
+    Put $y=x/t$, $a(y)=1-e^{-y}$, and
+    $g_m(y)=\sum_{j=1}^{m}{a(y)}^{j}/j$. The finite geometric sum gives
+    $g_m'(y)=1-{a(y)}^{m}$. Since $0\leq a(y)\leq\min\{1,y\}$ for $y\geq0$,
+    the functions $y-g_m(y)$ and $g_m(y)-y+y^m/m$ are nondecreasing and
+    vanish at zero. This proves~(\ref{eq:scalar_soft_truncation_order}) and
+    (\ref{eq:scalar_soft_truncation_remainder}). Finally,
+    ${a(y)}^{j}\leq1$, so the harmonic estimate
+    $\sum_{j=1}^{m}1/j\leq1+\log m$ proves
+    (\ref{eq:scalar_soft_truncation_log_bound}).
+\end{proof}
+
+
+\begin{lemma}[Geometric remainder]
+    \label{lem:scalar_soft_truncation_geometric}
+    \lean{Real.softTruncation_remainder_le_geometric}
+    \leanok
+    If $t>0$, $m\geq0$ is an integer, and $x\geq0$, then
+    \begin{align}
+        x-h_{m,t}(x)\leq x(1-e^{-x/t})^m.
+        \label{eq:scalar_soft_truncation_geometric}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    The derivative of the remainder at $u\geq0$ is $(1-e^{-u/t})^m$.
+    On $[0,x]$ it is bounded above by $(1-e^{-x/t})^m$, and the
+    remainder vanishes at zero. The mean value inequality gives the result.
+\end{proof}
+
+\begin{theorem}[Exponential weight for the remainder]
+    \label{thm:scalar_soft_truncation_exp_weight}
+    \lean{Real.softTruncation_remainder_le_exp}
+    \leanok
+    If $m\geq1$ is an integer, $0<\theta\leq1/2$, and $x\geq0$, then
+    \begin{align}
+        x-h_{m,m}(x)
+        \leq\frac2\theta\exp\!\left(\theta x-\frac{\theta m}{2}\right).
+        \label{eq:scalar_soft_truncation_exp_weight}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    The inequality $z\leq e^{sz}/s$ holds for $s>0$. If $x\leq m$,
+    then
+    \begin{align}
+        1-e^{-x/m}\leq1-e^{-1}\leq\frac34\leq e^{-\theta/2}.
+    \end{align}
+    Applying~(\ref{eq:scalar_soft_truncation_geometric}) gives
+    $x-h_{m,m}(x)\leq\theta^{-1}e^{\theta x-\theta m/2}$.
+    If $x\geq m$, the nonnegativity of the truncation instead gives
+    \begin{align}
+        x-h_{m,m}(x)\leq x
+        \leq\frac2\theta e^{\theta x/2}
+        \leq\frac2\theta e^{\theta x-\theta m/2}.
+    \end{align}
+\end{proof}
+
+For a probability spectral measure with exponential moment at most $M$,
+integration gives a mean remainder at most
+$2M\theta^{-1}e^{-\theta m/2}$. Application to a regional Hamiltonian
+requires a bound on that physical exponential moment.
