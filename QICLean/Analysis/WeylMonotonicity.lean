@@ -3,11 +3,14 @@ Copyright (c) 2026 Sirui Lu and QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
+import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.Matrix.Spectrum
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.Order.Interval.Finset.Fin
+import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Restrict
+import QICLean.Analysis.LowEnergyPerturbation
 
 /-!
 # Weyl monotonicity for finite Hermitian matrices
@@ -32,6 +35,9 @@ from below and above, while positivity of `B - A` compares the two forms.
   `Fin (Fintype.card n)` indexing.
 * `Matrix.IsHermitian.eigenvalues_mono` gives the corresponding statement for
   Mathlib's matrix-indexed eigenvalue family.
+* `Matrix.IsHermitian.eigenvalues₀_le_add_of_norm_domRestrict_low_le` compares
+  the low ordered eigenvalues from an operator error on the actual closed
+  low-energy spectral span.
 
 ## References
 
@@ -203,5 +209,92 @@ theorem eigenvalues_mono
     (hAB : A ≤ B) (i : n) : hA.eigenvalues i ≤ hB.eigenvalues i := by
   exact hA.eigenvalues₀_mono hB hAB
     ((Fintype.equivOfCardEq (Fintype.card_fin (Fintype.card n))).symm i)
+
+/-- A residual bound on the actual closed low-energy span of `F` compares every
+ordered eigenvalue of `H` whose corresponding eigenvalue of `F` is in that span.
+The canonical eigenbasis is derived from `F`, and repeated eigenvalues and an
+arbitrary real cutoff are allowed. This is the finite-dimensional min--max step
+used with the restricted perturbation estimate in ALVV, arXiv:1602.08828v2,
+`lem:hard-trunc`, source lines 955–968. -/
+theorem eigenvalues₀_le_add_of_norm_domRestrict_low_le
+    {n : Type*} [Fintype n] [DecidableEq n]
+    {H F : Matrix n n ℂ} (hH : H.IsHermitian) (hF : F.IsHermitian)
+    (c ξ : ℝ)
+    (hres :
+      let bF := (isSymmetric_toEuclideanLin_iff.mpr hF).eigenvectorBasis
+        finrank_euclideanSpace
+      let G := Submodule.spectralSpanLE bF hF.eigenvalues₀ c
+      ‖(toEuclideanCLM H - toEuclideanCLM F).domRestrict G‖ ≤ ξ)
+    (i : Fin (Fintype.card n)) (hic : hF.eigenvalues₀ i ≤ c) :
+    hH.eigenvalues₀ i ≤ hF.eigenvalues₀ i + ξ := by
+  classical
+  let S := toEuclideanLin H
+  let T := toEuclideanLin F
+  let hS : S.IsSymmetric := isSymmetric_toEuclideanLin_iff.mpr hH
+  let hT : T.IsSymmetric := isSymmetric_toEuclideanLin_iff.mpr hF
+  let bS := hS.eigenvectorBasis finrank_euclideanSpace
+  let bT := hT.eigenvectorBasis finrank_euclideanSpace
+  let G := Submodule.spectralSpanLE bT hF.eigenvalues₀ c
+  obtain ⟨x, hx, hxS, hxT⟩ := exists_nonzero_mem_span_Iic_inter_span_Ici
+    bS.toBasis bT.toBasis finrank_euclideanSpace i
+  have hsuppS : ↑(bS.toBasis.repr x).support ⊆ Set.Iic i :=
+    bS.toBasis.repr_support_subset_of_mem_span (Set.Iic i) hxS
+  have hsuppT : ↑(bT.toBasis.repr x).support ⊆ Set.Ici i :=
+    bT.toBasis.repr_support_subset_of_mem_span (Set.Ici i) hxT
+  have hzeroS (j : Fin (Fintype.card n)) (hj : ¬ j ≤ i) : bS.repr x j = 0 := by
+    by_contra hne
+    have hjmem : j ∈ (bS.toBasis.repr x).support := by
+      rw [Finsupp.mem_support_iff, bS.coe_toBasis_repr_apply]
+      exact hne
+    exact hj (hsuppS hjmem)
+  have hzeroT (j : Fin (Fintype.card n)) (hj : ¬ i ≤ j) : bT.repr x j = 0 := by
+    by_contra hne
+    have hjmem : j ∈ (bT.toBasis.repr x).support := by
+      rw [Finsupp.mem_support_iff, bT.coe_toBasis_repr_apply]
+      exact hne
+    exact hj (hsuppT hjmem)
+  have hnormS : ∑ j : Fin (Fintype.card n), ‖bS.repr x j‖ ^ 2 = ‖x‖ ^ 2 := by
+    simpa [bS.repr_apply_apply] using bS.sum_sq_norm_inner_right x
+  have hnormT : ∑ j : Fin (Fintype.card n), ‖bT.repr x j‖ ^ 2 = ‖x‖ ^ 2 := by
+    simpa [bT.repr_apply_apply] using bT.sum_sq_norm_inner_right x
+  have hSlower : hH.eigenvalues₀ i * ‖x‖ ^ 2 ≤ (inner ℂ (S x) x).re := by
+    change hS.eigenvalues finrank_euclideanSpace i * ‖x‖ ^ 2 ≤ _
+    rw [symmetric_quadraticForm_eq_sum_eigenvalues_mul_norm_sq hS finrank_euclideanSpace,
+      ← hnormS, Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro j _
+    by_cases hj : j ≤ i
+    · exact mul_le_mul_of_nonneg_right
+        (hS.eigenvalues_antitone finrank_euclideanSpace hj) (sq_nonneg _)
+    · rw [hzeroS j hj, norm_zero, zero_pow (by omega), mul_zero, mul_zero]
+  have hTupper : (inner ℂ (T x) x).re ≤ hF.eigenvalues₀ i * ‖x‖ ^ 2 := by
+    change _ ≤ hT.eigenvalues finrank_euclideanSpace i * ‖x‖ ^ 2
+    rw [symmetric_quadraticForm_eq_sum_eigenvalues_mul_norm_sq hT finrank_euclideanSpace,
+      ← hnormT, Finset.mul_sum]
+    apply Finset.sum_le_sum
+    intro j _
+    by_cases hj : i ≤ j
+    · exact mul_le_mul_of_nonneg_right
+        (hT.eigenvalues_antitone finrank_euclideanSpace hj) (sq_nonneg _)
+    · rw [hzeroT j hj, norm_zero, zero_pow (by omega), mul_zero, mul_zero]
+  have hxG : x ∈ G := by
+    apply (show Submodule.span ℂ (bT.toBasis '' Set.Ici i) ≤ G from ?_) hxT
+    apply Submodule.span_le.mpr
+    rintro _ ⟨j, hj, rfl⟩
+    exact Submodule.subset_span ⟨j, (hF.eigenvalues₀_antitone hj).trans hic, rfl⟩
+  have hnorm : ‖(toEuclideanCLM H - toEuclideanCLM F) x‖ ≤ ξ * ‖x‖ := by
+    have h := ((toEuclideanCLM H - toEuclideanCLM F).domRestrict G).le_opNorm ⟨x, hxG⟩
+    exact h.trans (mul_le_mul_of_nonneg_right hres (norm_nonneg x))
+  have hmiddle : (inner ℂ (S x) x).re - (inner ℂ (T x) x).re ≤ ξ * ‖x‖ ^ 2 := by
+    calc
+      _ = (inner ℂ ((toEuclideanCLM H - toEuclideanCLM F) x) x).re := by
+        simp only [ContinuousLinearMap.sub_apply, inner_sub_left, Complex.sub_re]
+      _ ≤ ‖(toEuclideanCLM H - toEuclideanCLM F) x‖ * ‖x‖ :=
+        re_inner_le_norm _ _
+      _ ≤ (ξ * ‖x‖) * ‖x‖ := mul_le_mul_of_nonneg_right hnorm (norm_nonneg x)
+      _ = ξ * ‖x‖ ^ 2 := by ring
+  have hprod : hH.eigenvalues₀ i * ‖x‖ ^ 2 ≤ (hF.eigenvalues₀ i + ξ) * ‖x‖ ^ 2 := by
+    nlinarith only [hSlower, hTupper, hmiddle]
+  exact le_of_mul_le_mul_right hprod (sq_pos_of_pos (norm_pos_iff.mpr hx))
 
 end Matrix.IsHermitian
