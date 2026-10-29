@@ -111,9 +111,10 @@ wrappers for downstream notation.
 `blueprint/` holds the reader-facing mathematical account, extracted from
 TNLean's blueprint (see `docs/extraction/interface_edges.md` for the
 severed cross-boundary edges left by that extraction). `blueprint/src/content.tex`
-orders chapters to match M. Wolf's *Quantum Channels & Operations: A Guided
-Tour* as closely as possible; see the mapping comment at the top of that
-file. See `blueprint/README.md` for layout and build commands.
+arranges the chapters in six parts, ordered by dependency as far as
+possible; the first three parts follow M. Wolf's *Quantum Channels &
+Operations: A Guided Tour*, Chapters 1--7. The comment at the top of that file
+lists every part and chapter. See `blueprint/README.md` for layout and build commands.
 
 ## Conventions & Style Guides
 

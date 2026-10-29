@@ -161,7 +161,13 @@ enforced by the dedicated `Blueprint Sync & Prose Review` CI workflow.
 
 ## Blueprint Structure
 - `content.tex` is a router: `\input{chapter/ch01_intro}` etc.
-- Each chapter is a separate file in `chapter/`
+- The volume is divided into parts. Each part opens with a file
+  `chapter/part_N_<topic>.tex` containing `\part{...}`, a `part:` label and a
+  short opening paragraph.
+- Each chapter is a separate file in `chapter/`, either a wrapper that
+  `\input`s its sections (new wrappers are named `*_chapter.tex`) or a file
+  with its own `\chapter` heading. Every chapter starts with a short
+  paragraph saying what it proves.
 - The `chNN_` prefix is a stable subject identifier, not the chapter's displayed
   position.  The order of the `\input` commands in the relevant content router
   determines the order in the book; do not renumber existing chapter files when
