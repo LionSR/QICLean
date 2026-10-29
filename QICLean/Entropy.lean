@@ -99,6 +99,7 @@ import QICLean.Entropy.RegionRank
 import QICLean.Entropy.RegionSplit
 import QICLean.Entropy.RegionTraceNorm
 import QICLean.Entropy.RegionUnion
+import QICLean.Entropy.RegionalRightContraction
 import QICLean.Entropy.Renyi
 import QICLean.Entropy.RenyiMassBound
 import QICLean.Entropy.RenyiRankLowerBound
