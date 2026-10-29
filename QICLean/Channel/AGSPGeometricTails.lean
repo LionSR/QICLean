@@ -40,7 +40,7 @@ namespace LinearMap
 /-- Powers preserve an invariant orthogonal subspace and iterate its squared-norm
 bound. This is the elementary iteration for the fixed-vector hypotheses of AKLV,
 arXiv:1301.1162v1, Definition 2.1 (`def:AGSP`) and Corollary 2.4 (`col:half`). -/
-private theorem inner_pow_eq_zero_and_norm_sq_le
+theorem inner_pow_eq_zero_and_norm_sq_le
     {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     (A : Module.End ℂ E) (Γ : E) {θ : ℝ} (hθ : 0 ≤ θ)
     (hperp : ∀ v : E, ⟪Γ, v⟫_ℂ = 0 →
@@ -64,7 +64,7 @@ open Classical in
 /-- A rank-bounded approximation with a nonzero component along a unit vector
 bounds the uncaptured Schmidt probability. This is the variational step in the
 rank-tail entropy argument of AKLV, arXiv:1301.1162v1, lines 1059–1075. -/
-private theorem one_sub_kyFanNorm_le_of_orthogonal_decomposition
+theorem one_sub_kyFanNorm_le_of_orthogonal_decomposition
     {m n : Type*} [Fintype m] [Fintype n]
     (Γ χ v : EuclideanSpace ℂ (m × n)) (a : ℂ)
     (hΓ : ‖Γ‖ = 1) (ha : a ≠ 0) (hv : ⟪Γ, v⟫_ℂ = 0)
