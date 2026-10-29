@@ -2249,6 +2249,32 @@ proof prerequisite does not make the containing lemma, proposition, or theorem
 exact when its other clauses, hypotheses, or conclusions remain absent. The
 entries below therefore state both levels explicitly.
 
+### Theorem 8.6, “Birkhoff” — EXACT FORMALIZED
+
+The doubly stochastic half is packaged by
+`TNLean.wolf_birkhoff_doublyStochastic_convexHull` and
+`TNLean.wolf_birkhoff_extremePoints_doublyStochastic` in
+`QICLean.Analysis.Birkhoff`.
+
+The doubly substochastic half is proved in
+`QICLean.Analysis.DoublySubstochastic`:
+
+* `TNLean.wolf_birkhoff_doublySubstochastic_convexHull` identifies the
+  nonnegative matrices with row and column sums at most one as the convex
+  hull of the zero-one partial permutation matrices.
+* `TNLean.wolf_birkhoff_extremePoints_doublySubstochastic` identifies their
+  extreme points exactly.
+* `TNLean.doublySubstochastic_isPolytope` explicitly witnesses the finite
+  vertex set and its convex hull.
+
+The completion uses the row and column deficit diagonal blocks and the
+nonnegative outer product of the actual column and row sums divided by
+their common total. Zero total is handled separately; no positive-dimension
+or strict-positivity assumption is imposed. The containing source theorem
+is complete. The other environments tracked by issue #47 remain outside
+this result's scope. The historical scope note
+`docs/paper-gaps/wolf_ch8_birkhoff_doubly_substochastic_gap.tex` is resolved.
+
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
 * `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)
