@@ -2267,6 +2267,29 @@ assumed. Clause 3 (orthostochastic matrices) remains open, as recorded in
 The separate submajorization theorem and the remainder of issue #47 are
 not completed by these equivalences.
 
+### Theorem 8.7 (Majorization between density matrices) — FORMALIZED
+
+In `QICLean.Analysis.DensityMatrixMajorization`,
+`Matrix.IsHermitian.Majorizes` compares the actual decreasing eigenvalue
+vectors, retaining multiplicities. `majorizes_iff_trace_convex` identifies
+this relation with comparison of the real traces of the actual functional
+calculus for every convex function on the entire real line.
+`majorizes_iff_randomUnitaryImage` identifies it with a genuinely constructed
+finite probability mixture of unitary conjugations, Equation (8.21).
+
+The proof applies to all Hermitian matrices, so it includes arbitrary
+density matrices without requiring invertibility or commutativity.
+The forward construction combines the vector-majorization witness,
+Birkhoff coefficients and both eigenbases. The reverse construction uses
+weighted squared entries of the actual conjugated unitaries.
+`Matrix.dimension_pos_of_trace_one` makes the impossibility of a
+zero-dimensional density matrix explicit; the Hermitian equivalences
+themselves have no positive-dimension premise.
+
+This completes the containing Theorem 8.7 only. Theorem 8.4 clause 3,
+submajorization, Theorem 8.8's rectangular ambiguity and issue #47's
+remaining scope are unchanged.
+
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
 * `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)

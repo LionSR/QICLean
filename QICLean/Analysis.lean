@@ -39,6 +39,7 @@ import QICLean.Analysis.ContractionWordDecay
 import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
+import QICLean.Analysis.DensityMatrixMajorization
 import QICLean.Analysis.DensityMaxEigenvector
 import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DetectabilityLemma
