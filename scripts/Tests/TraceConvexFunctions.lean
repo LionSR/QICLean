@@ -81,3 +81,32 @@ run_cmd do
     unless axioms.all (allowed.contains ·) do
       throwError "Unexpected axioms for {decl}: {axioms}"
     Lean.logInfo m!"{decl}: {axioms}"
+  -- Inspect actual kernel types and bodies, including upstream opaque implementation bodies.
+  let env := (← Lean.getEnv).setExporting false
+  let mut pending := declarations
+  let mut seen : Lean.NameSet := {}
+  let mut foundations : Lean.NameSet := {}
+  let mut bodies : Nat := 0
+  let mut opaqueBodies : Nat := 0
+  while !pending.isEmpty do
+    let name := pending.back!
+    pending := pending.pop
+    if seen.contains name then continue
+    seen := seen.insert name
+    let some info := env.checked.get.find? name
+      | throwError "Missing kernel declaration: {name}"
+    if info.isUnsafe then throwError "Unsafe declaration: {name}"
+    if info.isPartial then throwError "Partial declaration: {name}"
+    pending := pending ++ info.type.getUsedConstants
+    if let some body := info.value? (allowOpaque := true) then
+      bodies := bodies + 1
+      pending := pending ++ body.getUsedConstants
+    match info with
+    | .axiomInfo _ => foundations := foundations.insert name
+    | .opaqueInfo _ => opaqueBodies := opaqueBodies + 1
+    | .inductInfo v => pending := pending ++ v.ctors.toArray
+    | _ => pure ()
+  unless foundations.toArray.all (allowed.contains ·) do
+    throwError "Unexpected axioms in type/body closure: {foundations.toArray}"
+  Lean.logInfo m!"Kernel audit: {seen.toArray.size} declarations, {bodies} bodies, \
+    {opaqueBodies} opaque bodies; zero missing/unsafe/partial; {foundations.toArray}"
