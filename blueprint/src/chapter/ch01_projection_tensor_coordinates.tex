@@ -1,0 +1,68 @@
+\section{Tensor coordinates for a contained projection}
+\label{sec:projection_tensor_coordinates}
+
+The following finite-dimensional coordinate construction gives the coefficients
+of a retained parent basis in two child bases, as used in
+\cite[Section~III, lines 630--685]{Hastings2006Solving}. It requires no lower
+bound on the ranks of the three projections.
+
+\begin{theorem}[Coordinates of an orthonormal column family]
+    \label{thm:projection_coordinate_factorization}
+    \lean{Matrix.IsIsometry.conjTranspose_mul_of_range_eq}
+    \leanok
+    Let $I,J$ be finite sets, let $K$ be an index set, and let
+    $U\in\mathbb C^{I\times K}$ have orthonormal columns. Suppose
+    $A\in\mathbb C^{I\times J}$ satisfies $AA^*U=U$. Then $C=A^*U$
+    has orthonormal columns and $U=AC$.
+\end{theorem}
+\begin{proof}\leanok
+    Matrix associativity gives
+    \begin{align}
+        AC&=AA^*U=U,&
+        C^*C&=U^*AA^*U=U^*U=I.
+        \label{eq:projection_tensor_coefficients}
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Isometric parent coefficients]
+    \label{thm:projection_tensor_coordinates}
+    \lean{IsStarProjection.exists_tensor_range_isometries}
+    \leanok
+    \uses{thm:projection_range_isometry,thm:projection_coordinate_factorization}
+    Let $P$ be an orthogonal projection on $\mathbb C^{\alpha\times\beta}$,
+    and let $Q$ and $R$ be orthogonal projections on $\mathbb C^\alpha$
+    and $\mathbb C^\beta$. Suppose $(Q\otimes R)P=P$.
+
+    There are integers $r_P,r_Q,r_R\ge0$ and
+    rectangular isometries $U,V,W$ with source dimensions $r_P,r_Q,r_R$
+    such that
+    \begin{align}
+        UU^*&=P,& VV^*&=Q,& WW^*&=R,
+        \label{eq:projection_tensor_ranges}\\
+        r_P&=\operatorname{rank}P,&
+        r_Q&=\operatorname{rank}Q,&
+        r_R&=\operatorname{rank}R.
+        \label{eq:projection_tensor_dimensions}
+    \end{align}
+    For $A=V\otimes W$ and $C=A^*U$, the coefficient matrix $C$ is an
+    isometry, $U=AC$, and $r_P\le r_Qr_R$.
+\end{theorem}
+\begin{proof}\leanok
+    Choose isometric coordinates for the ranges of the three projections.
+    Their range identities give $AA^*=Q\otimes R$. Since $PU=U$, the
+    containment hypothesis gives $AA^*U=U$.
+    Theorem~\ref{thm:projection_coordinate_factorization} proves that
+    $C=A^*U$ is an isometry and $U=AC$.
+
+    An isometry has full column rank. Thus
+    $\operatorname{rank}P=\operatorname{rank}(UU^*)=
+    \operatorname{rank}U=r_P$, and the other rank identities follow
+    identically. Applying the dimension inequality for the isometry $C$
+    gives $r_P\le r_Qr_R$. All the identities also hold for empty
+    coordinate spaces.
+\end{proof}
+
+The product bound compares the chosen retained dimensions. A polynomial
+bound in the physical chain length would require additional information;
+intermediate dimension bounds are explicitly left open in
+\cite[lines 104--109]{Hastings2006Solving}.

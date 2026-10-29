@@ -1786,3 +1786,19 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   introduced.
 - **Decision:** Keep these shared mathematical equalities and parameter
   choices; no new tactic is needed.
+
+
+### Isometric coordinates inside a tensor range — existing lemmas (2026-10-29)
+
+- **Pattern:** Choose range coordinates U,V,W for a parent projection P and
+  two child projections Q,R, use (Q⊗R)P=P, and define C=(V⊗W)ᴴU.
+- **Reuse:** `IsStarProjection.exists_matrix_range_isometry` chooses the
+  coordinates. Mathlib's rectangular `Matrix.mul_assoc` and Kronecker
+  identities give CᴴC=I and U=(V⊗W)C. The shared
+  `Matrix.IsIsometry.conjTranspose_mul_of_range_eq` exposes the same
+  calculation for coordinates fixed in advance. The existing
+  `Matrix.IsIsometry.rank_eq_card`, `Matrix.IsIsometry.card_le`, and
+  `Matrix.rank_self_mul_conjTranspose` identify and compare the dimensions.
+- **Scope:** The construction includes zero ranks and empty coordinate
+  types. It supplies coefficients and a dimension inequality; no new tactic
+  or positivity hypothesis is introduced.

@@ -110,6 +110,7 @@ import QICLean.Algebra.PosSemidefSupport
 import QICLean.Algebra.PositiveSemidefiniteNormalization
 import QICLean.Algebra.PositiveSkolemNoether
 import QICLean.Algebra.ProjectionRangeIsometry
+import QICLean.Algebra.ProjectionTensorCoordinates
 import QICLean.Algebra.RankOneSandwich
 import QICLean.Algebra.RectangularChoi
 import QICLean.Algebra.SICPOVMBound
