@@ -334,6 +334,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### A family of subsets counted by chosen elements — candidate (2026-10-29)
+
+- **Pattern:** Restrict a family to members contained in a fixed finite set.
+  An injective choice of an element in each member bounds the restricted
+  family's cardinality. Count admissible subfamilies by its powerset.
+- **Seen:** `Finset.norm_sum_powerset_biUnion_sign_le_two_pow` in
+  `Algebra/UnionCoefficientBound.lean`; one occurrence.
+- **Reuse:** `Finset.card_le_card_of_injective`, `Finset.card_le_card`,
+  and `Finset.card_powerset` provide the whole counting argument.
+  The choice function is defined on the actual finite family, preserving
+  the empty-family case without a nonempty ambient-type assumption.
+- **Decision:** No new tactic or general counting structure is introduced.
+
+
 ### Orthogonal component along a unit eigenvector (2026-10-26)
 
 - **Seen:** The final decomposition in `Analysis/GapPerturbation.lean` and the
