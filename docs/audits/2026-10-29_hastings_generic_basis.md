@@ -20,7 +20,7 @@ No TNLean import or physical geometric hypothesis occurs in the companion.
 
 All nine actual named modules passed private strict checks with the package's
 implicit-variable settings, Mathlib standard linters and warnings as errors.
-All 84 public definitions and theorems were imported and inspected: only
+All 85 public definitions and theorems were imported and inspected: only
 `propext`, `Classical.choice` and `Quot.sound` occur; some require fewer.
 The Mathlib artifacts were read in place. New outputs exist only under /tmp;
 no cache was copied, initialized or mutated and no Mathlib source was built.
@@ -40,7 +40,7 @@ Logs: `/tmp/tnlean-hastings-basis-private-checks.log`,
 `/tmp/tnlean-hastings-basis-refinement-checks.log`,
 `/tmp/tnlean-hastings-basis-recursive-checks.log`,
 `/tmp/tnlean-hastings-basis-final-generic-checks.log`, and
-`/tmp/tnlean-hastings-basis-generic-foundation-audit.log`.
+`/tmp/tnlean-hastings-basis-generic-foundation-audit-85.log`.
 Earlier failed extraction checks used an incorrect Mathlib import path or lacked
 the local derived completeness instance; both were corrected before the final
 module checks. There are no proof holes or extra mathematical hypotheses.
@@ -56,3 +56,7 @@ module checks. There are no proof holes or extra mathematical hypotheses.
 - `QICLean/Analysis/ApproximateDiagonalization/Refinement.lean`: `36607ec66613d54e4b81ff6b985d3d1c33ac1aa02f22220d8b1e38df9482d35b`
 - `QICLean/Analysis/ApproximateDiagonalization/SpectralSplit.lean`: `51e4d3c8060e13bc28b06ec3659e92e012b82aae8caa9d45e396ec199c604bd4`
 - `QICLean/Analysis/ApproximateDiagonalization/WeightedKernel.lean`: `8d47c37b7e3efb1cb7c35fe55c5757556639ea40f1bb698eb8522d27e01911fa`
+
+The complete 85-declaration inspection includes the same-line `@[simp]` theorem
+`basisSplitProjection_apply_basis`; the earlier 84-name enumeration had omitted it.
+No mathematical source changed in this documentation follow-up.
