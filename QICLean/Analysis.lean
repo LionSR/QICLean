@@ -200,6 +200,7 @@ import QICLean.Analysis.RegionalSharpLowerNorm
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
+import QICLean.Analysis.RelativeLowEnergyCloseness
 import QICLean.Analysis.ReplicaBadCopyExponential
 import QICLean.Analysis.ReplicaComponentInverseGoodExpectation
 import QICLean.Analysis.ReplicaComponentInverseRough

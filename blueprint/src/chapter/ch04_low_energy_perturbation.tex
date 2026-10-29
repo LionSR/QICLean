@@ -219,3 +219,55 @@ span of the $b'_j$ with $a'_j\le c$.
     These are spectral consequences used
     in~\cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG}.
 \end{proof}
+
+\begin{theorem}[Relative low-energy spaces above the actual ground energies]
+    \label{thm:relative_low_energy_spaces_close}
+    \lean{Matrix.IsHermitian.groundEnergy_compare_and_isCloseTo_spectralSpanLE_of_norm_domRestrict_le}
+    \notready
+    \uses{def:spectral_span_le,def:subspace_close}
+    Let $H,F$ be Hermitian matrices on a nonzero finite-dimensional space,
+    with $F\le H$. Let $E$ and $E'$ be their respective least eigenvalues,
+    and write $T_H(c)$ and $T_F(c)$ for their closed spectral subspaces
+    at the absolute energy $c$.
+    Suppose $\eta,\xi,\delta>0$ and
+    \begin{align}
+        \|(H-F)|_{T_H(E+\eta)}\| & \le\xi, &
+        \|(H-F)|_{T_F(E+\eta)}\| & \le\xi.
+        \label{eq:relative_low_energy_residuals}
+    \end{align}
+    Put $N=\lceil\eta/(2\xi)\rceil$ and
+    $\eta'=\eta+\xi+2\xi\sqrt{N/\delta}$.
+    Then $E'\le E\le E'+\xi$,
+    $T_F(E'+\eta')$ is $\delta$-close to $T_H(E+\eta)$, and
+    $T_H(E+\eta')$ is $\delta$-close to $T_F(E'+\eta)$.
+    Both relative cutoffs use the actual respective ground energy.
+    This is the finite-dimensional relative-energy consequence of
+    \cite[lines 955--968]{Arad2016RigorousRG}, with the window count and
+    ground-energy shift corrected in
+    \cite{gap:alvv16_hard_truncation_windows}.
+\end{theorem}
+\begin{proof}
+    \notready
+    \uses{thm:low_spectral_eigenvalue_comparison,
+        thm:spectral_span_close_of_perturbation}
+    Weyl monotonicity gives $E'\le E$. Since the lowest eigenvalue of
+    $F$ lies below $E+\eta$, the restricted eigenvalue comparison gives
+    $E\le E'+\xi$.
+    Apply the window estimate with width $h=\xi$ to the spaces of $H$
+    between $E$ and $E+\eta$. For the enlarged target cutoff, the
+    denominator satisfies
+    \begin{align}
+        (E'+\eta')-(E+\eta)+\xi
+         & \ge\xi+2\xi\sqrt{N/\delta}
+        \ge2\xi\sqrt{N/\delta}.
+        \notag
+    \end{align}
+    Its squared value times $\delta$ is at least $N(2\xi)^2$, so the
+    finite-window budget holds. The target cutoff is at least the source
+    cutoff by the same ground-energy comparison.
+    For the reverse direction, $E'\le E$ gives
+    $T_F(E'+\eta)\subseteq T_F(E+\eta)$, so the second residual estimate
+    remains valid on the smaller space. Its spectral width is again
+    $\eta$, and the reverse target denominator is larger still.
+    Apply the same window argument with $H,F$ interchanged.
+\end{proof}
