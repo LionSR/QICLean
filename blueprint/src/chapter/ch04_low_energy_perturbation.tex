@@ -30,6 +30,33 @@ span of the $b'_j$ with $a'_j\le c$.
         =D^2\|P^\perp x\|^2$.
 \end{proof}
 
+\begin{theorem}[Eigenvalue comparison from a low-energy residual]
+    \label{thm:low_spectral_eigenvalue_comparison}
+    \lean{Matrix.IsHermitian.eigenvalues₀_le_add_of_norm_domRestrict_low_le}
+    \notready
+    \uses{def:spectral_span_le}
+    Let $H,F\in\MN{d}$ be Hermitian, with eigenvalues listed in decreasing
+    order, and let $G$ be the closed spectral subspace of $F$ at energy $c$.
+    Suppose $\|(H-F)|_G\|\le\xi$. For every $0\le i<d$ with
+    $\lambda_i(F)\le c$, one has $\lambda_i(H)\le\lambda_i(F)+\xi$.
+    This is a variational estimate for use with the restricted perturbation
+    bounds in~\cite[lines 955--968]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \notready
+    The first $i+1$ eigenvectors of $H$ and the last $d-i$ eigenvectors of
+    $F$ span subspaces with a common nonzero vector $x$. The latter subspace
+    is contained in $G$. Spectral expansion and the residual estimate give
+    \begin{align}
+        \lambda_i(H)\|x\|^2
+         & \le \operatorname{Re}\langle Hx,x\rangle
+        \le \operatorname{Re}\langle Fx,x\rangle+\xi\|x\|^2
+        \le (\lambda_i(F)+\xi)\|x\|^2.
+        \notag
+    \end{align}
+    Divide by $\|x\|^2>0$.
+\end{proof}
+
 \begin{theorem}[One window]
     \label{thm:spectral_span_window}
     \lean{Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le_of_window}

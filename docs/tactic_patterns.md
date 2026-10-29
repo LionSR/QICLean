@@ -7,6 +7,7 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+
 ### Trace normalization of a bipartite unit vector — shared lemma (2026-10-23)
 
 - **Seen:** The orthogonal-decomposition quotient and geometric-tail theorem in
@@ -1542,3 +1543,14 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Compatibility:** finite-Kraus peripheral-unitary declarations now call
   the abstract results. Their historical adjoint-weight arguments are retained
   and explicitly acknowledged in the proof to preserve named-argument callers.
+
+## Candidate: quadratic bounds on ordered spectral spans (2026-10-29)
+
+- **Seen:** The two matrix comparisons in `Analysis/WeylMonotonicity.lean`
+  bound quadratic forms on the first or last eigenvectors using support of
+  the coordinate representation, antitonicity, and Parseval's identity.
+- **Reused:** Both comparisons use the existing private finite-dimensional
+  intersection theorem and quadratic spectral expansion.
+- **Decision:** Two occurrences in one file do not meet the rule of three;
+  retain the bounded proofs and consider a span-bound lemma at a third
+  mathematical consumer.
