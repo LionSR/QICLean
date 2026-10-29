@@ -1751,3 +1751,16 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   estimates gives the uniform support-cardinality bound.
 - **Decision:** Keep the shared mathematical identities, which also support
   tensor-network cut estimates in TNLean. No custom tactic is needed.
+
+### Elementary operator Schmidt products — promoted (2026-10-29)
+
+- **Pattern:** An elementary Kronecker product has a one-term decomposition;
+  the identity is its specialization.
+- **Abstraction:** The existing private proof in
+  `OneMarkerWeightedSchmidtRank.lean` is relocated unchanged to the small
+  `OperatorSchmidtProducts.lean` leaf as
+  `Matrix.operatorSchmidtRank_kronecker_le_one`, with
+  `Matrix.operatorSchmidtRank_one_le` as the identity specialization.
+- **Refactoring:** The one-marker consumer imports this leaf and the private
+  duplicate is removed. `OperatorSchmidtBounds.lean` remains unchanged.
+  The second factor needs `Finite`, rather than a supplied `Fintype`.

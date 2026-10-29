@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Algebra.MonomialEvaluationSchmidtRank
 import QICLean.Algebra.CommutingPolynomialSchmidtRank
 import QICLean.Algebra.WordCoefficientExpansion
+import QICLean.Algebra.OperatorSchmidtProducts
 
 /-!
 # One-marker weighted frequency sums
@@ -61,11 +62,6 @@ end WordMultiplicity
 
 namespace Matrix
 
-private theorem rank_kronecker_le_one {l n : Type*} [Fintype l] [Finite n]
-    (A : Matrix l l ℂ) (B : Matrix n n ℂ) : operatorSchmidtRank (A ⊗ₖ B) ≤ 1 := by
-  exact operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
-    ⟨fun _ : Fin 1 ↦ A, fun _ : Fin 1 ↦ B, by simp⟩
-
 open Classical in
 /-- A weighted sum of the actual one-marker frequency coefficients has one interpolation
 cardinality factor and the corrected commuting-gap bound. AKLV, arXiv:1301.1162v1,
@@ -115,7 +111,7 @@ theorem operatorSchmidtRank_sum_smul_one_marker_counts_le
     simp only [← mul_kronecker_mul, mul_one, one_mul]
   have hgenerate := Polynomial.coeff_pow_sum_smul_add_C_mul_X_eq_sum_counts H T z m k
   have hrank := operatorSchmidtRank_coeff_pow_C_add_C_mul_X_le A B T hAB
-    (rank_kronecker_le_one _ _) (rank_kronecker_le_one _ _) hT m k
+    (operatorSchmidtRank_kronecker_le_one _ _) (operatorSchmidtRank_kronecker_le_one _ _) hT m k
   change ((Polynomial.C (∑ a, z a • H a) + Polynomial.C T * Polynomial.X) ^
     (m + k)).coeff k = ∑ α : E, (∏ a, z a ^ α.val a) • coefficient α at hgenerate
   simp only [hmonomial]
