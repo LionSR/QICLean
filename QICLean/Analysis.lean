@@ -48,6 +48,7 @@ import QICLean.Analysis.Dirichlet
 import QICLean.Analysis.DominantEigenvector
 import QICLean.Analysis.DominantEigenvectorUniqueness
 import QICLean.Analysis.DoubledSystemGap
+import QICLean.Analysis.DoublySubstochastic
 import QICLean.Analysis.EnergyTruncation
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.EntropyContinuity
