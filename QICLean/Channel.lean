@@ -129,6 +129,7 @@ import QICLean.Channel.Primitive
 import QICLean.Channel.ProductOverlapBootstrap
 import QICLean.Channel.ProjectiveResolution
 import QICLean.Channel.PureApproximationSpectralTail
+import QICLean.Channel.PureMarginalApproximation
 import QICLean.Channel.PureMarginalRank
 import QICLean.Channel.QuantumSteering
 import QICLean.Channel.QuantumWielandt
