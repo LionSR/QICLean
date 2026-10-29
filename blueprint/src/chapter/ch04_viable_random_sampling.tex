@@ -218,3 +218,24 @@ up to the associator and the exchange of the first two factors.
     Also $s/64\ge\log(1/\beta)$. For $Q\le s$ the failure bound is
     zero because the whole input is retained.
 \end{proof}
+
+
+\begin{lemma}[Counts and ranks at the common node scales]
+    \label{lem:sampled_node_count_rank}
+    \lean{Submodule.finrank_sampledWordImage_le_cubic,
+        Real.viable_node_trimming_rank_bound}
+    \leanok
+    \uses{thm:sampled_operator_word_image,lem:viable_node_trimming_radius}
+    Suppose $D\ge2$, $s\ge1$ and a fixed family has at most $D^2$
+    operators. At $a=\lceil\log_D(D^2s)\rceil$, the literal sampled-word
+    image has dimension at most $D^6s^3$, for every unitary, before imposing
+    a success event. Moreover, if $D_{\rm ref}\ge1$ and
+    $\xi=(1000D_{\rm ref}\sqrt{L+1})^{-1}$, then
+    $\xi^2R\le M$ implies the integer bound
+    $R\le10^6D_{\rm ref}^2(L+1)M$.
+\end{lemma}
+\begin{proof}\leanok
+    The image dimension is at most $(D^a)^2s\le D^6s^3$.
+    For the rank estimate, square the positive radius and multiply the
+    weighted inequality by its reciprocal.
+\end{proof}
