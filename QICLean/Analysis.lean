@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Analysis
 
 import QICLean.Analysis.AdjointEigenvalues
+import QICLean.Analysis.ApproximateDiagonalization
 import QICLean.Analysis.AsymptoticStateConvergence
 import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound

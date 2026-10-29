@@ -1,0 +1,58 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Cross Terms in Successive Spectral Refinement}
+\author{}
+\date{October 29, 2026}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+Hastings, \emph{Solving gapped Hamiltonians locally},
+\href{https://arxiv.org/abs/cond-mat/0508554v3}{arXiv:cond-mat/0508554v3},
+source \path{proj3new.tex}, lines 1695--1708, sketches successive
+spectral refinements of compressed observables. The construction below retains
+both cross terms introduced by every compression. It provides a corrected
+auxiliary estimate, rather than the printed quantitative constant.
+
+\section{The compression identity}
+For an orthogonal projection $P$, put $Q=I-P$. Then
+\[
+ [PBP,PCP]=P[B,C]P-PBQCP+PCQBP.
+\]
+If the original commutator is bounded by $Ck(i,l)$ and the two cross
+directions are bounded by $D\sqrt{k(i,j)}$, the multiplicative triangle
+inequality $k(i,j)k(j,l)\le k(i,l)$ gives
+\[
+ \|[PB_iP,PB_lP]\|\le(C+2D^2)\sqrt{k(i,l)},\qquad 0\le k\le1.
+\]
+The two cross terms cannot be dropped.
+
+\section{An actual basis without inverse spectral gaps}
+For a finite self-adjoint family on an $n$-dimensional complex Hilbert space,
+choose a member of maximal spectral spread $\rho$. If $\rho=0$, every member
+is scalar and any orthonormal basis is terminal, even when $n>1$.
+Otherwise an adjacent spectral gap is at least $\rho/(n-1)$ and gives a
+proper nonzero orthogonal projection. The elementary bound by $\rho$,
+combined with the commutator bound divided by $\rho$, controls cross blocks
+by $\sqrt{n^3C}\sqrt{k(i,j)}$. Both child dimensions are smaller.
+
+With total dimension $N$, the coefficient $C_t=C(1+2N^3)^t$ controls depth $t$.
+At most $N-1$ original members are selected, counted with multiplicity along
+the two subtrees. Put $A_N(C)=\sqrt{N^3C(1+2N^3)^N}$,
+$k_0=k$ and $k_{r+1}=\sqrt{k_r}$. The constructed orthonormal basis satisfies
+\[
+ |\langle v_a,B_iv_c\rangle|
+ \le A_N(C)w_i\sum_{j\in\mathcal S}k_N(i,j),\qquad a\ne c,
+\]
+provided $\|B_i\|\le w_i$, $w_i\ge0$, and
+$\|[B_i,B_j]\|\le Cw_iw_jk(i,j)$. Zero weights give zero operators.
+For exponential distance decay the rate becomes $\gamma/2^N$.
+
+This estimate is uniform over the family for fixed $N,C$ and kernel. It
+assumes no bound on an inverse spectral spacing or inverse commutator-map
+condition number. Physical summation and its geometric growth requirement
+are separate; no tree counterexample theorem is asserted here.
+\end{document}
