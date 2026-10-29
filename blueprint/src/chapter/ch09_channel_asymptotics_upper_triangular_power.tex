@@ -132,7 +132,7 @@
 
 \begin{proof}
     \leanok
-    \uses{thm:jordan_block_power_norm}
+    \uses{lem:jordan_block_power}
     The binomial expansion gives an entry formula depending only on the
     row and column numbers, not the ambient dimension. A coordinate
     inclusion $V$ satisfies $V^\dagger V=I$ and has norm at most one;
@@ -180,7 +180,8 @@
 
 \begin{proof}
     \leanok
-    \uses{thm:wolf_single_jordan_block_polynomial_scaling, thm:jordan_block_power_norm}
+    \uses{thm:wolf_single_jordan_block_polynomial_scaling, thm:jordan_block_power_norm,
+      thm:wolf_finite_jordan_sum_nilpotence}
     For $0<|a|\le1$, reuse the single-block upper estimate. For $|a|\ge1$,
     Equation~(8.104) bounds the norm by $D|a|^n n^{D-1}$ once $n\ge D-1$.
     In either case $n^{D-1}|a|^n=o(|b|^n)$, whereas Equation~(8.104)
@@ -245,7 +246,7 @@
 
 \begin{proof}
     \leanok
-    \uses{def:wolf_finite_jordan_sum}
+    \uses{def:wolf_finite_jordan_sum, lem:jordan_block_power}
     Each block is a nilpotent shift. Its power vanishes once the exponent
     reaches its dimension, and block diagonals preserve powers.
 \end{proof}
