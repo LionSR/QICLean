@@ -61,3 +61,58 @@ $r$ is the regional ground energy and $r-10\leq r'\leq r$. Thus
 $A-r'I\geq0$. Taking $t=m$ gives the hard threshold $m/2-10$ above the true
 regional ground energy. The crossing interactions belong to the unchanged
 complementary Hamiltonian; they are not subtracted from this threshold.
+
+\begin{theorem}[Coercivity after one centered soft replacement]
+    \label{thm:soft_truncation_centered_coercivity}
+    \lean{Matrix.softTruncation_centered_coercivity}
+    \leanok
+    Let $(A_i)$ be a finite family of Hermitian matrices with $A_i\ge e_iI$,
+    and fix an index $j$. Suppose $e_j-10\le r'\le e_j$, $t>0$, and $m\ge1$.
+    Put
+    \begin{align*}
+        F&=r'I+h_{m,t}(A_j-r'I),&
+        \alpha&=(t/2)2^{-m},& \tau&=t/2-10,\\
+        X&=\sum_{i\ne j}(A_i-e_iI)+(F-e_jI).
+    \end{align*}
+    For $0\le u\le\tau$, one has
+    \begin{align}
+        X+\alpha I&\ge0,&
+        u\,\mathbf1_{[e_j+u,\infty)}(A_j)&\le X+\alpha I.
+        \label{eq:soft_truncation_centered_coercivity}
+    \end{align}
+    Neither commutativity of the family nor attainment of the lower bounds
+    is required for these order inequalities.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:soft_hard_truncation_energy_shift,
+        thm:partial_clipping_high_projection}
+    The shifted comparison gives $T_{e_j+\tau}(A_j)-\alpha I\le F$.
+    Adding the unchanged centered terms shows that the actual centered hard
+    sum is at most $X+\alpha I$. The hard high-projection bound applies at
+    $u$ and at zero. These give both assertions in
+    (\ref{eq:soft_truncation_centered_coercivity}).
+\end{proof}
+
+\begin{theorem}[A cutoff satisfying the reverse-weight inequalities]
+    \label{thm:soft_truncation_reverse_cutoff}
+    \lean{Real.softTruncation_reverse_cutoff_bounds}
+    \leanok
+    For an integer $m\ge0$, put $\alpha=(m/2)2^{-m}$. Let
+    $-\alpha\le E\le2$, $\eta\ge0$, and $0\le C\le4$. Suppose
+    \begin{align}
+        m/2\ge17+\eta+\alpha,
+        \label{eq:soft_truncation_reverse_scale}
+    \end{align}
+    and set $u=E+\alpha+\eta+C+1$. Then
+    \begin{align*}
+        0\le u&\le m/2-10,& u&\le7+\eta+\alpha,\\
+        C&<u-(E+\alpha+\eta),&
+        u-(E+\alpha+\eta)-C&=1.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    The lower bounds on $E+\alpha$, $\eta$ and $C$ give $u\ge0$.
+    The upper bounds on $E$ and $C$ give $u\le7+\eta+\alpha$;
+    (\ref{eq:soft_truncation_reverse_scale}) then gives $u\le m/2-10$.
+    Cancellation gives the last identity and hence the strict inequality.
+\end{proof}

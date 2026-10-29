@@ -281,6 +281,7 @@ import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SoftHardTruncation
 import QICLean.Analysis.SoftTruncation
+import QICLean.Analysis.SoftTruncationCoercivity
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
