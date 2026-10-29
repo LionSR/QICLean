@@ -82,6 +82,7 @@ import QICLean.Algebra.NilpotentSubspaceThree
 import QICLean.Algebra.NilpotentSubspaceTwo
 import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
+import QICLean.Algebra.OperatorRightContraction
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OperatorSchmidtCut
