@@ -1515,3 +1515,11 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   `Finset.sum_le_sum_of_subset_of_nonneg` give the two steps directly.
   There are two occurrences across two files. Retain these existing lemmas;
   a third occurrence would justify considering a combined inequality.
+
+### Finite matrix-unit sums — candidate (2026-10-29)
+
+- **Seen:** The normalization and channel formula in `Kraus/Stochastic.lean`
+  reindex a finite pair alphabet by `finProdFinEquiv.sum_comp`, then combine
+  scalar coefficients with `Matrix.singleAddMonoidHom.map_sum`.
+- **Reuse:** Keep the existing equivalence and additive homomorphism lemmas.
+  These are two occurrences in one file; no new tactic is warranted.
