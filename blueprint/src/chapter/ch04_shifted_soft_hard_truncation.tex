@@ -116,3 +116,59 @@ complementary Hamiltonian; they are not subtracted from this threshold.
     (\ref{eq:soft_truncation_reverse_scale}) then gives $u\le m/2-10$.
     Cancellation gives the last identity and hence the strict inequality.
 \end{proof}
+
+\begin{lemma}[Exponential weights from their high-energy restriction]
+    \label{lem:exponential_weight_high_restriction}
+    \lean{Matrix.norm_exp_domRestrict_le_of_high_restriction}
+    \leanok
+    Let $A$ be Hermitian, let $s\ge0$, and put
+    $Q=\mathbf1_{[r+u,\infty)}(A)$ and $W=e^{s(A-(r+u)I)}$.
+    Let $G$ be a subspace. If $WQ|_G$, viewed as a map into the range of
+    $Q$, has norm at most $C$, then
+    \begin{align*}
+        \|W|_G\|\le1+C.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    On the complementary spectral space, $W(I-Q)$ has norm at most one.
+    Decompose $W=WQ+W(I-Q)$ and use the triangle inequality.
+\end{proof}
+
+\begin{lemma}[Changing the origin of an exponential weight]
+    \label{lem:shifted_exponential_weight_restriction}
+    \lean{Matrix.norm_shifted_exp_domRestrict_le}
+    \leanok
+    For a finite complex matrix $A$, real numbers $r,u,\varepsilon,s$,
+    and a subspace $G$, a bound
+    $\|e^{s(A-(r+u)I)}|_G\|\le M$ implies
+    \begin{align*}
+        \|e^{s(A-\varepsilon I)}|_G\|
+          \le e^{s(r+u-\varepsilon)}M.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    The scalar matrix commutes with $A$, so the two exponentials differ by
+    the positive scalar factor $e^{s(r+u-\varepsilon)}$.
+\end{proof}
+
+\begin{theorem}[A soft remainder restricted to an arbitrary subspace]
+    \label{thm:soft_truncation_exponential_remainder_restriction}
+    \lean{Matrix.norm_softTruncation_remainder_domRestrict_le_exp_weight}
+    \leanok
+    Let $A\ge0$ be a finite complex matrix, let $m\ge1$ be an integer,
+    and let $G$ be any subspace. Set $d_m(x)=x-h_{m,m}(x)$. Then
+    \begin{align*}
+        \|d_m(A)|_G\|
+          \le16e^{-m/16}\|e^{A/8}|_G\|.
+    \end{align*}
+    This matrix estimate does not assume or establish a physical
+    exponential-moment bound.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:scalar_soft_truncation_exp_weight}
+    The scalar exponential remainder estimate gives
+    $0\le d_m(x)e^{-x/8}\le16e^{-m/16}$ for $x\ge0$.
+    Functional calculus therefore bounds
+    $B_m=d_m(A)e^{-A/8}$ by $\|B_m\|\le16e^{-m/16}$.
+    Since $d_m(A)=B_me^{A/8}$, restriction and multiplication give the claim.
+\end{proof}

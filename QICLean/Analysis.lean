@@ -62,6 +62,7 @@ import QICLean.Analysis.EuclideanReindex
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
 import QICLean.Analysis.ExponentialPolynomialAbsorption
+import QICLean.Analysis.ExponentialWeightRestriction
 import QICLean.Analysis.FiniteCoordinateNowosad
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
@@ -282,6 +283,7 @@ import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SoftHardTruncation
 import QICLean.Analysis.SoftTruncation
 import QICLean.Analysis.SoftTruncationCoercivity
+import QICLean.Analysis.SoftTruncationRemainder
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
