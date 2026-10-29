@@ -223,3 +223,24 @@ $1-4\langle\psi|H|\psi\rangle$.
     This is the kernel identity used in the frustration-free truncation
     of \cite{Arad2016RigorousRG}.
 \end{proof}
+
+\begin{theorem}[Partition of a commuting complementary product]
+    \label{thm:complement_product_partition}
+    \lean{ContinuousLinearMap.complementProd_partition}
+    \leanok
+    Let $(h_k)_{k\ge0}$ be pairwise commuting bounded operators on an
+    inner-product space over $\mathbb R$ or $\mathbb C$, and let $S\subseteq\mathbb N$.
+    Set $u_k=h_k$ and $v_k=0$ for $k\in S$, and $u_k=0$ and $v_k=h_k$ otherwise.
+    Write $P_n(h)=(I-h_{n-1})\cdots(I-h_0)$, with $P_0(h)=I$.
+    Then $P_n(h)=P_n(u)P_n(v)$ for every $n\ge0$.
+    No projection or completeness hypothesis is required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:complement_product}
+    Induct on $n$. The new complementary factor belongs to exactly one
+    of the two products. If it belongs to the second product, commute it
+    past the factors of the first one. Every such commutation follows
+    from the assumed commutativity of the original family.
+    This is the parity regrouping used in the regional frustration-free
+    construction of \cite[Section 6.1]{Arad2016RigorousRG}.
+\end{proof}

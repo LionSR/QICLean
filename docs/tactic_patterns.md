@@ -1676,3 +1676,13 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   TNLean's `PhysicalLowEnergyCloseness.lean` and
   `PhysicalLowEnergyFamily.lean` are removed. They and the new relative-ground
   comparison reuse the companion estimates. No tactic is introduced.
+### A commuting factor and a selected partial product — candidate (2026-10-29)
+
+- **Pattern:** Commute a new operator past a complementary product after
+  selecting some factors by a predicate and replacing the others by zero.
+- **Reuse:** The existing `ContinuousLinearMap.commute_complementProd`
+  reduces this to individual factors; `Commute.sub_left` then handles the
+  complementary factor. The new `complementProd_partition` uses both
+  existing results instead of introducing a second product definition.
+- **Scope:** Physical parity regrouping is the next consumer; no new
+  automation is needed.

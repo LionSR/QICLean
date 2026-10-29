@@ -32,6 +32,7 @@ import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingExponentialOrder
 import QICLean.Analysis.CommutingHermitian
 import QICLean.Analysis.ComplementProdKernel
+import QICLean.Analysis.ComplementProdPartition
 import QICLean.Analysis.CompressedInverseFloor
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
