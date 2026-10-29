@@ -32,7 +32,7 @@ private theorem hasDerivAt_softTruncationUnit (m : ℕ) (y : ℝ) :
   have ha : HasDerivAt (fun z : ℝ ↦ 1 - exp (-z)) (exp (-y)) y := by
     convert (hasDerivAt_const y 1).sub
       ((Real.hasDerivAt_exp (-y)).comp y (hasDerivAt_neg y)) using 1 <;>
-      simp [Function.comp_def]
+      simp only [Function.comp_def, mul_neg, mul_one, sub_neg_eq_add, zero_add]
     ext z
     rfl
   convert HasDerivAt.fun_sum (u := Finset.range m) (A := fun j z ↦
