@@ -664,9 +664,9 @@
     $d_B=\dim\mathcal H_B$. With the canonical association of tensor factors,
     \begin{align*}
         \operatorname{OSR}_{AB\mid C}(X)
-            &\le d_B^2\operatorname{OSR}_{A\mid BC}(X), \\
+         & \le d_B^2\operatorname{OSR}_{A\mid BC}(X), \\
         \operatorname{OSR}_{A\mid BC}(X)
-            &\le d_B^2\operatorname{OSR}_{AB\mid C}(X).
+         & \le d_B^2\operatorname{OSR}_{AB\mid C}(X).
     \end{align*}
     Zero-dimensional factors are included. These inequalities give the
     linear-algebraic cut comparison used in
@@ -695,8 +695,8 @@
     $\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$. Then
     \begin{align*}
         \operatorname{OSR}_{M\mid LR}(X)
-            \le \operatorname{OSR}_{L\mid MR}(X)
-                \operatorname{OSR}_{LM\mid R}(X).
+        \le \operatorname{OSR}_{L\mid MR}(X)
+        \operatorname{OSR}_{LM\mid R}(X).
     \end{align*}
     Zero-dimensional factors are included. This is the simultaneous-cut
     algebra used in the proof of~\cite[Proposition~5.7]{Arad2016RigorousRG}.
@@ -1178,8 +1178,8 @@
     \begin{align}
         Q_2(\rho,\omega)
          & =\re\tr\left[
-            \left(\omega^{-1/4}\rho\,\omega^{-1/4}\right)^2
-            \right].
+                      \left(\omega^{-1/4}\rho\,\omega^{-1/4}\right)^2
+                      \right].
         \label{eq:mpdo_sandwiched_two_trace}
     \end{align}
     The negative power is defined by functional calculus and vanishes on the
@@ -1391,9 +1391,9 @@
     $\Phi_\rho$, set
     \begin{align}
         L(X) & =\tau^{-1/4}
-        \Phi_\rho(\sigma^{1/4}X\sigma^{1/4})\tau^{-1/4}, \\
+        \Phi_\rho(\sigma^{1/4}X\sigma^{1/4})\tau^{-1/4},                  \\
         W    & =(\sigma^T\otimes\tau)^{-1/4}\rho_{AB}
-        (\sigma^T\otimes\tau)^{-1/4}.
+                                            (\sigma^T\otimes\tau)^{-1/4}.
         \notag
     \end{align}
     Then
@@ -1435,7 +1435,7 @@
     the matrix
     \begin{align}
         W=(\sigma^T\otimes\tau)^{-1/4}\rho_{AB}
-        (\sigma^T\otimes\tau)^{-1/4}
+                                      (\sigma^T\otimes\tau)^{-1/4}
         \notag
     \end{align}
     is positive semidefinite, and
@@ -1647,9 +1647,9 @@ logarithmic divergence, or a comparison with relative entropy.
     \begin{align}
         \widetilde Q_\alpha(\rho\Vert\omega)
          & =\re\tr\!\left[
-            \left(\omega^{(1-\alpha)/(2\alpha)}
-            \rho\,\omega^{(1-\alpha)/(2\alpha)}\right)^\alpha
-            \right].
+                        \left(\omega^{(1-\alpha)/(2\alpha)}
+                        \rho\,\omega^{(1-\alpha)/(2\alpha)}\right)^\alpha
+                        \right].
         \label{eq:sandwiched_renyi_trace}
     \end{align}
     Real powers are defined by continuous functional calculus, with negative
@@ -1762,4 +1762,57 @@ logarithmic divergence, or a comparison with relative entropy.
     $\log0=0$ gives $I(A:B)_\rho\leq0\leq\log\operatorname{OSR}(\rho_{AB})$.
     If $q>0$, monotonicity of the logarithm gives
     $\log q\leq\log\operatorname{OSR}(\rho_{AB})$.
+\end{proof}
+
+
+\subsection{Right contractions and nested cuts}
+
+\begin{definition}[Right contraction]
+    \label{def:operator_right_contraction}
+    \lean{Matrix.operatorRightContraction}
+    \leanok
+    For finite-dimensional spaces $U,W$, an operator $K$ on $U\otimes W$, and a
+    linear functional $\varphi$ on the operators on $W$, set
+    $C_\varphi(K)=(\operatorname{id}\otimes\varphi)(K)$.
+\end{definition}
+
+\begin{theorem}[A minimal decomposition by contractions]
+    \label{thm:operator_right_contraction_decomposition}
+    \lean{Matrix.exists_operatorRightContraction_decomposition}
+    \leanok
+    If $K$ has operator Schmidt rank $r$, there are operators $B_1,\ldots,B_r$
+    and linear functionals $\varphi_1,\ldots,\varphi_r$ such that
+    $K=\sum_{j=1}^r C_{\varphi_j}(K)\otimes B_j$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:operator_right_contraction}
+    Choose a basis of the span of the right matrix blocks of $K$.
+    Extend its coordinate functionals to all operators on the right space.
+    Expanding each block in this basis gives the asserted identity.
+\end{proof}
+
+\begin{theorem}[Contractions preserve earlier cut bounds]
+    \label{thm:operator_right_contraction_rank}
+    \lean{Matrix.operatorSchmidtRank_operatorRightContraction_le,
+        Entropy.operatorSchmidtRank_rightContraction_subset_le}
+    \leanok
+    Let $K$ act on $U\otimes V\otimes W$ and let $\varphi$ be a linear
+    functional on the operators on $W$. Then
+    \begin{align*}
+        \operatorname{SR}_{U:V}\bigl(C_\varphi(K)\bigr)
+        \leq \operatorname{SR}_{U:VW}(K).
+    \end{align*}
+    In particular, if $A\subseteq B$ are regions of a finite system,
+    contracting the exterior of $B$ cannot increase the operator Schmidt
+    rank across $A$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:operator_right_contraction}
+    Write $K=\sum_{j=1}^r X_j\otimes Y_j$ across $U:VW$.
+    Contraction gives $C_\varphi(K)=\sum_{j=1}^r
+        X_j\otimes C_\varphi(Y_j)$, with at most $r$ terms.
+    For nested regions use the three factors $A$, $B\setminus A$, and
+    the exterior of $B$.
 \end{proof}
