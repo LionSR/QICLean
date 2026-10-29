@@ -2249,6 +2249,24 @@ proof prerequisite does not make the containing lemma, proposition, or theorem
 exact when its other clauses, hypotheses, or conclusions remain absent. The
 entries below therefore state both levels explicitly.
 
+### Theorem 8.4 (Majorization) — CLAUSES 1, 2 AND 4 FORMALIZED
+
+In `QICLean.Analysis.VectorMajorization`, `TNLean.VectorMajorized` is
+Equation (8.16): decreasing-sorted prefix inequalities and equal total sums.
+The sorting is a coordinate permutation and preserves repeated entries.
+`TNLean.vectorMajorized_iff_exists_doublyStochastic` proves equivalence with
+an actual nonnegative matrix whose row and column sums all equal one;
+`TNLean.vectorMajorized_iff_sum_convex_le` proves equivalence with comparison
+for every convex function on the entire real line. The statements allow
+arbitrary real entries and dimensions zero and one.
+
+The reverse stochastic implication is proved by separation of the convex
+hull of permutations and Birkhoff's theorem. No stochastic witness is
+assumed. Clause 3 (orthostochastic matrices) remains open, as recorded in
+`docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
+The separate submajorization theorem and the remainder of issue #47 are
+not completed by these equivalences.
+
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
 * `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)

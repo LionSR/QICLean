@@ -329,6 +329,7 @@ import QICLean.Analysis.UnitaryEvolution
 import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
+import QICLean.Analysis.VectorMajorization
 import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceBootstrap
 import QICLean.Analysis.ViableSubspaceCoordinates
