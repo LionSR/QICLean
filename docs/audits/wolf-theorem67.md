@@ -74,3 +74,43 @@ shared `docs/paper-gaps/command.tex`; no PDF was produced. This is a pending
 document-rendering dependency, not a denied operation or an unresolved
 mathematical implication. No replacement package or altered rendering macros
 were used to hide the missing dependency.
+
+## Independent semantic audit
+
+A separate native subagent reviewed commit
+`b6e6ff0ea92aec8de1cced7683cfb52d1aa03345` against the primary TeX source and
+the actual declarations and proof bodies. Its verdict was **PASS: no
+mathematical defect found**. This is an independent automated audit, not a
+human review or a GitHub review approval. No production repair was needed.
+
+The reviewer checked the full four-way statement, algebraic rather than
+geometric multiplicity, positive iterate indices, faithfulness, both compactness
+arguments, and the normalization, fixed-point, spectral-projection, recurrence,
+decay, and finite-dimensional convergence dependencies. In particular:
+
+- The recurrent argument uses the closed compact image of the density set;
+  it never passes a positive-definite conclusion through a bare limit.
+- The convergence argument first proves convergence on every matrix, then
+  invokes finite-dimensional operator-norm convergence, and finally bounds
+  every density input by the same compact-set norm bound.
+- The headline explicitly assumes only positivity and trace preservation;
+  neither a Kraus representation nor any intermediate conclusion is assumed.
+- All seven theorem guards were independently rerun and transitively use
+  exactly the three standard foundations. No unresolved implication, new
+  axiom, `sorryAx`, or extra opaque assumption was found.
+
+The reviewer independently constructed the concrete map on `M_2(ℂ)`
+`T(X) = Xᵀ/2 + tr(X)I/4`, proving positivity, trace preservation, and strict
+positivity after one step before applying the headline to convergence and
+uniform eventual positivity. The integrating agent independently proved its
+normalized Choi matrix is `F/4 + I/8`, where `F` is the flip. The antisymmetric
+vector has expectation `−1/4`, so this primitive map is not completely
+positive. The reviewer inspected and independently compiled this witness.
+
+The combined regression is preserved in `QICLeanTest/WolfTheorem67Scope.lean`.
+It also imports and applies the unchanged Wolf Theorem 6.8 alongside Theorem
+6.7, and checks that the zero-dimensional domain would make strict positivity
+vacuous while admitting no faithful limit state. The scope fixture passes the
+same strict compiler and standard-linter settings as the original checks.
+The existing `QICLean.Channel.WolfTheorem68` target also built successfully
+with its unchanged statements; no Mathlib Lean source module was rebuilt.
