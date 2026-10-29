@@ -317,6 +317,17 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Convexity from a quadratic variational formula (2026-10-29)
+
+- **Seen:** The trace-exponential variational argument in
+  `Analysis/LiebTraceExponential.lean` and the Ando--Lieb power functional in
+  `Analysis/LiebConvexity.lean` evaluate a variational bound at the optimizer
+  of a convex combination, then apply a known convexity or concavity inequality.
+- **Reuse:** Trace cyclicity, `Matrix.trace_conjTranspose`, and positivity of
+  the trace product give the completed-square bound for the power functional.
+- **Decision:** These are two mathematically distinct variational formulas.
+  Keep their optimizers explicit; no tactic or additional abstraction is needed.
+
 ### Orthogonal component along a unit eigenvector (2026-10-26)
 
 - **Seen:** The final decomposition in `Analysis/GapPerturbation.lean` and the

@@ -919,6 +919,24 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
   counterexample to the uncorrected condition. The correction is documented in
   `docs/paper-gaps/wolf_schur_complement_tfae.tex`.
 
+### Theorem 5.15, Equation 5.47 (Ando--Lieb) — CONCAVE REGION AND CONVEX INVERTIBLE DOMAIN FORMALIZED
+
+- `lieb_concavity_subboundary` proves the concave region on positive
+  semidefinite pairs for nonnegative exponents whose sum is at most one.
+- `lieb_convexity_posSemidef_posDef` proves the convex region for
+  $x\in[1,2]$, $y\in[1-x,0]$, arbitrary complex $K$, positive semidefinite
+  $A$, and positive definite $B$, including all exponent and mixing endpoints.
+- `lieb_convexity_posDef` specializes to positive definite pairs;
+  `convexOn_re_trace_conj_rpow_mul_rpow` packages convexity on their product.
+- `lieb_convexity_variational_le` proves the completed-square bound used to
+  transfer the concave region at exponents $2-x$ and $-y$ to the convex region.
+- The domain clarification and the scalar counterexample to extending a
+  zero-valued inverse to singular $B$ are recorded in
+  `docs/paper-gaps/wolf_ch5_lieb_convexity_domain.tex`. No finite-valued
+  singular negative-power extension is claimed. The containing trace-function
+  package remains open; the aggregate named-environment counts above have
+  not been reclassified by this equation-level milestone.
+
 ### Consequence of Equation 5.56 and Proposition 5.3, Equation 5.57 — FORMALIZED WITH THE ORDER-HYPOTHESIS CORRECTION
 
 - `LinearMap.IsSymmetric.eigenvalues_le_of_sub_isPositive` proves the
