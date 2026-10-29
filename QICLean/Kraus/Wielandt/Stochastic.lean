@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Kraus.Stochastic
 import QICLean.Channel.KrausIterateChoi
+import QICLean.Channel.ChoiJamiolkowski
 import QICLean.Kraus.Wielandt.Primitivity.VectorSpreadPositivity
 
 /-!
