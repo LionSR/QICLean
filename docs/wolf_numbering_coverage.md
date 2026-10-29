@@ -1431,12 +1431,19 @@ The scope restriction is resolved in
 `U^m = 1` is explicit; eigenspace simplicity means ordinary geometric
 nondegeneracy, without an unsupported inference about algebraic multiplicity.
 
-#### Wolf Proposition 6.7 (Covariance and eigensystem) — OPEN
+#### Wolf Proposition 6.7 (Covariance and eigensystem) — FORMALIZED
 
-The multiplicative-domain and peripheral-unitary API supplies ingredients used
-inside the finite-Kraus development, but there is no public source declaration
-for either the covariance identity or the two eigenvector-shift formulas under
-Wolf's abstract positive unital Schwarz hypotheses.
+* `SchwarzMap.wolf_proposition_6_7` —
+  `QICLean/Channel/Peripheral/SchwarzCovariance.lean`.
+
+The source-shaped statement derives the canonical phase `γ = exp(2πi/m)`,
+`1 ≤ m ≤ D²`, and a normalized peripheral unitary from Theorem 6.6. It proves
+`T(U† X U) = U† T(X) U` and both Equation (6.38) shifts for arbitrary
+eigenvalues `μ`. Its hypotheses are exactly positivity, unitality,
+irreducibility, and the Schwarz inequality for a complex-linear map; no CP,
+Kraus, TP, or supplied faithful state is assumed. Lower-level multiplication,
+covariance, and nonzero eigenvector transport results do not need irreducibility.
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 803–817.
 
 ---
 

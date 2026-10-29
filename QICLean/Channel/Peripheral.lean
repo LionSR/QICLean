@@ -42,6 +42,7 @@ import QICLean.Channel.Peripheral.PureStateFace
 import QICLean.Channel.Peripheral.RankOnePositiveProjection
 import QICLean.Channel.Peripheral.RecurrentInverse
 import QICLean.Channel.Peripheral.SchurAsymptoticConvergence
+import QICLean.Channel.Peripheral.SchwarzCovariance
 import QICLean.Channel.Peripheral.SpectralProjection
 import QICLean.Channel.Peripheral.SpectralRadius
 import QICLean.Channel.Peripheral.Spectrum
