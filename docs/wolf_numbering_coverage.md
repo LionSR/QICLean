@@ -2249,6 +2249,23 @@ proof prerequisite does not make the containing lemma, proposition, or theorem
 exact when its other clauses, hypotheses, or conclusions remain absent. The
 entries below therefore state both levels explicitly.
 
+### Corollary “Entropy increasing maps” (Equation 8.22) — FORMALIZED
+
+`IsPositiveMap.unital_iff_trace_strictConcave_increasing` in
+`QICLean.Channel.EntropyIncreasingMaps` proves the full same-dimensional
+source statement for globally strictly concave `h : ℝ → ℝ`, positive
+trace-preserving complex linear maps, and every density matrix. The theorem
+assumes neither complete positivity nor invertibility. It includes empty
+index types by a separate zero-dimensional argument.
+
+The forward implication constructs the actual doubly stochastic coefficients
+in the input and output eigenbases and applies scalar Jensen. The reverse
+uses positive uniform weights and strict Jensen rigidity at `I/d`.
+`IsPositiveMap.trace_concave_le` supplies the concave forward implication
+without trace normalization; the module also proves the uniform upper bound
+and rigidity. This completes this corollary only: the other open clauses of
+issue #47 and the rectangular convention in Theorem 8.8 remain unchanged.
+
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
 * `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)
