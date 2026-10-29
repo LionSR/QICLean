@@ -303,7 +303,7 @@ namespace Real
 /-- A quadratic potential telescopes the three finite dyadic moments at once.
 Auxiliary to the entropy summation in ALVV, arXiv:1602.08828v2,
 proof of `thm:al-dg`, lines 1085–1087. -/
-private theorem sum_quadratic_div_dyadic_le (a b c : ℝ)
+theorem sum_quadratic_div_dyadic_le (a b c : ℝ)
     (ha : 0 ≤ a) (hb : 0 ≤ b) (hc : 0 ≤ c) (M : ℕ) :
     (∑ i ∈ Finset.range M,
       (a * (i : ℝ) ^ 2 + b * (i : ℝ) + c) / (2 : ℝ) ^ (i + 1)) ≤

@@ -1,0 +1,20 @@
+\section{Finite quadratic moments with dyadic weights}
+
+\begin{theorem}[Quadratic dyadic moments]
+    \label{thm:quadratic_dyadic_moments}
+    \lean{Real.sum_quadratic_div_dyadic_le}
+    \leanok
+    For $a,b,c\ge0$ and a natural number $M$,
+    \begin{align*}
+        \sum_{i=0}^{M-1}\frac{ai^2+bi+c}{2^{i+1}}\le3a+b+c.
+    \end{align*}
+    This finite estimate is used in the rank-tail entropy summations of
+    \cite{Arad2013AreaLaw} and \cite{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Put $Q_i=[ai^2+(2a+b)i+(3a+b+c)]/2^i$.
+    Direct subtraction gives
+    $Q_i-Q_{i+1}=(ai^2+bi+c)/2^{i+1}$.
+    The sum is $Q_0-Q_M\le Q_0=3a+b+c$.
+\end{proof}
