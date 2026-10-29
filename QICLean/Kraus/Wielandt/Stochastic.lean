@@ -68,11 +68,8 @@ theorem stochasticFamily_choiMatrix_pow_succ (a : Matrix (Fin D) (Fin D) ℝ)
     stochasticFamily_mapLM_pow_succ a ha]
   by_cases hik : i = k <;> by_cases hjl : j = l
   all_goals
-    simp [Matrix.single_apply, ite_and, hik, hjl,
+    simp [Matrix.single_apply, ite_and, hik, hjl, eq_comm,
       Prod.mk.injEq, div_eq_mul_inv, mul_comm]
-  all_goals
-    intro hlj
-    exact (hjl hlj.symm).elim
 
 /-- At every positive length, full exact-word span is equivalent to strict
 positivity of the corresponding classical matrix power. Source:
