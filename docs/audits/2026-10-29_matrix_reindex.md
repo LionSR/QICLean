@@ -61,5 +61,21 @@ and CFC consumers, and none of the retired unused wrappers is reintroduced.
   called the same Mathlib linter directly, with its default style options and
   the repository exceptions, and passed.
 
-No full-library build, whole-blueprint compiled declaration check, PDF rendering,
-TNLean rebuild, push, or pull-request publication was performed.
+The local validation did not include a full-library build, whole-blueprint
+compiled declaration check, PDF rendering, or TNLean rebuild.
+
+## Independent review
+
+A separate native subagent reviewed commit
+`d035187edd439976fe1816e456d31e4de1f85a60` read-only and returned **PASS**,
+with no semantic or regression defects. Its independent strict Lean fixture
+checked non-involutive order-three/order-four relabellings on `Fin 3 × Fin 4`,
+literal inverse indices and whole-matrix identities for both coefficient
+orientations, multiplicativity, adjoints, and TNLean's actual
+`finProdFinEquiv` compatibility call. It also reran the committed nine-name
+axiom fixture successfully.
+
+The reviewer checked the actual Schumacher--Werner source in TNLean's
+`Papers/quant-ph_0405174/qca.tex`, lines 1137–1169 and 1218–1226; the
+coefficient convention agrees. The GNVW source was not directly checked.
+Hosted CI and draft-publication status are recorded on the pull request.
