@@ -69,7 +69,7 @@ private theorem stochasticLetter_adj_mul (a : Matrix (Fin D) (Fin D) ℝ)
     (ha : ∀ i j, 0 ≤ a i j) (i j : Fin D) :
     (stochasticLetter a i j)ᴴ * stochasticLetter a i j =
       Matrix.single j j (a i j : ℂ) := by
-  rw [stochasticLetter, Matrix.conjTranspose_single, Complex.star_def, Complex.conj_ofReal,
+  simp only [stochasticLetter, Matrix.conjTranspose_single, Complex.star_def, Complex.conj_ofReal,
     Matrix.single_mul_single_same]
   congr 1
   rw [← Complex.ofReal_mul, Real.mul_self_sqrt (ha i j)]
@@ -78,7 +78,7 @@ private theorem stochasticLetter_sandwich (a : Matrix (Fin D) (Fin D) ℝ)
     (ha : ∀ i j, 0 ≤ a i j) (X : Matrix (Fin D) (Fin D) ℂ) (i j : Fin D) :
     stochasticLetter a i j * X * (stochasticLetter a i j)ᴴ =
       Matrix.single i i ((a i j : ℂ) * X j j) := by
-  rw [stochasticLetter, Matrix.conjTranspose_single, Complex.star_def, Complex.conj_ofReal,
+  simp only [stochasticLetter, Matrix.conjTranspose_single, Complex.star_def, Complex.conj_ofReal,
     Matrix.single_mul_mul_single]
   congr 1
   rw [mul_right_comm, ← Complex.ofReal_mul, Real.mul_self_sqrt (ha i j)]
