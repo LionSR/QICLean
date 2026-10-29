@@ -5,6 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Algebra.BlockPermutation
 import QICLean.Algebra.MatrixGramUnitary
+import QICLean.Algebra.MatrixReindex
 import QICLean.Algebra.SkolemNoether
 
 import Mathlib.Algebra.Central.Matrix
@@ -201,15 +202,11 @@ noncomputable def blockComponentStarAlgEquiv
   exact StarAlgEquiv.ofBijective phi
     (blockComponentMap_bijective T.toRingEquiv sigma hsigma i)
 
-/-- Reindexing both matrix indices along the same equivalence is a
-star-algebra equivalence. -/
-noncomputable def matrixReindexStarAlgEquiv
+/-- The established name for `reindexStarAlgEquiv`, retained for downstream users. -/
+noncomputable abbrev matrixReindexStarAlgEquiv
     {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (p : m ≃ n) : Matrix m m ℂ ≃⋆ₐ[ℂ] Matrix n n ℂ :=
-  StarAlgEquiv.ofAlgEquiv (Matrix.reindexAlgEquiv ℂ ℂ p) fun M ↦ by
-    change Matrix.reindex p p (star M) = star (Matrix.reindex p p M)
-    rw [Matrix.star_eq_conjTranspose, Matrix.star_eq_conjTranspose,
-      Matrix.conjTranspose_reindex]
+  reindexStarAlgEquiv p
 
 /-- The restriction of a product star-algebra equivalence to each supplied
 pair of equally sized simple matrix summands is implemented by a unitary.
@@ -239,7 +236,7 @@ theorem exists_unitary_block_implementers_of_starAlgEquiv_pi_matrix
             (U : Matrix (Fin (e (sigma i))) (Fin (e (sigma i))) ℂ) *
               Matrix.reindexAlgEquiv ℂ ℂ (finCongr (hDim i)) M *
                 (U : Matrix (Fin (e (sigma i))) (Fin (e (sigma i))) ℂ)ᴴ := by
-    let reindexEquiv := matrixReindexStarAlgEquiv (finCongr (hDim i))
+    let reindexEquiv := reindexStarAlgEquiv (finCongr (hDim i))
     let componentEquiv := blockComponentStarAlgEquiv T sigma hsigma i
     let automorphism := reindexEquiv.symm.trans componentEquiv
     obtain ⟨U, hU⟩ := exists_unitary_conj_of_starAlgEquiv_matrix automorphism
