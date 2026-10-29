@@ -85,3 +85,20 @@ references and no overfull boxes, and the comparison statements were
 visually inspected. Ordinary common-library compilation and the compiled
 blueprint declaration check remain integration checks. No persistent
 per-theorem audit fixture is included in the patch.
+
+## Ordinary verification
+
+At mathematical revision `d41577c2965094ee0f1067fce107aa59088d653e`, the full 10,353-job library build,
+strict checks of all five changed production files, and the imported audit
+of all eleven public declarations in the four changed mathematical modules
+passed. The only foundations used are propext, Classical.choice and
+Quot.sound. Source synchronization, compiled blueprint declaration checks,
+added-prose and compilation-time checks also passed. No job reached the
+25-second warning threshold, and no Mathlib source was compiled. Existing
+prebuilt artifacts and the repository lock were used; no permanent Lean
+fixture was added.
+
+The complete local record is `/tmp/qiclean-soft-hard-kernel-gates.json`,
+with the additional prose log `/tmp/qiclean-soft-hard-kernel-prose.log`.
+This completion record changes documentation only. The physical soft
+spectral/subspace comparison remains separate.
