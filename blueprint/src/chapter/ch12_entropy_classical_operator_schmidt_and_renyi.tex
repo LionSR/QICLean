@@ -1764,6 +1764,21 @@ logarithmic divergence, or a comparison with relative entropy.
     $\log q\leq\log\operatorname{OSR}(\rho_{AB})$.
 \end{proof}
 
+\begin{lemma}[A finite quadratic dyadic moment]
+    \label{lem:quadratic_dyadic_moment}
+    \lean{Real.sum_quadratic_div_dyadic_le}
+    \leanok
+    For nonnegative real numbers $a,b,c$ and every integer $M\ge0$,
+    \begin{align*}
+        \sum_{i=0}^{M-1}\frac{ai^2+bi+c}{2^{i+1}}\le3a+b+c.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    Put $Q_i=(ai^2+(2a+b)i+3a+b+c)/2^i$. Then
+    $Q_i-Q_{i+1}=(ai^2+bi+c)/2^{i+1}$. The sum is therefore
+    $Q_0-Q_M\le Q_0=3a+b+c$.
+\end{proof}
+
 \begin{theorem}[Entropy from cubic dyadic rank tails]
     \label{thm:probability_entropy_cubic_dyadic_tails}
     \lean{Entropy.probabilityEntropy_le_of_cubic_dyadic_rank_tail_bounds}
