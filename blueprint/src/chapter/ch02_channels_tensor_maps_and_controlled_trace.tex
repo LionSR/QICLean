@@ -1,5 +1,41 @@
 \section{Tensor-factor maps and controlled partial traces}
 
+\begin{definition}[Reindexing a complex matrix algebra]
+    \label{def:matrix_reindex_star_equiv}
+    \lean{Matrix.reindexStarAlgEquiv, Matrix.reindexStarAlgEquiv_apply,
+        Matrix.symm_reindexStarAlgEquiv,
+        Matrix.reindexStarAlgEquiv_trans_reindexStarAlgEquiv}
+    \leanok
+    For a bijection $e:A\simeq A'$, let
+    $R_e(X)_{a',b'}=X_{e^{-1}(a'),e^{-1}(b')}$.
+    For finite $A$ and $A'$, this is a complex star-algebra isomorphism,
+    with inverse $R_{e^{-1}}$,
+    and $R_f\circ R_e=R_{f\circ e}$.
+\end{definition}
+
+\begin{theorem}[Bipartite coefficients under product reindexing]
+    \label{thm:bipartite_coefficients_reindex}
+    \lean{Matrix.bipartiteSlice_reindex_prod, Matrix.operatorBlock_reindex_prod}
+    \leanok
+    Let $X$ be a complex matrix indexed by $A\times B$, and let
+    $e:A\simeq A'$ and $f:B\simeq B'$ be bijections. Define matrices on the
+    first factor by $S_{ij}(X)_{ab}=X_{(a,i),(b,j)}$, and matrices on the
+    second factor by $T_{ab}(X)_{ij}=X_{(a,i),(b,j)}$. Then
+    \begin{align}
+        S_{ij}(R_{e\times f}(X))
+         & =R_e(S_{f^{-1}(i),f^{-1}(j)}(X)), \notag \\
+        T_{ab}(R_{e\times f}(X))
+         & =R_f(T_{e^{-1}(a),e^{-1}(b)}(X)). \notag
+    \end{align}
+    Neither identity requires finite index sets. The second identity holds
+    for matrices with entries in any type.
+\end{theorem}
+
+\begin{proof}\leanok
+    Both identities follow by evaluating the two free indices: simultaneous
+    reindexing replaces each coordinate by its inverse image.
+\end{proof}
+
 \begin{definition}[Map on the second tensor factor]
     \label{def:id_tensor_map}
     \lean{Matrix.idTensorMap}
