@@ -24,6 +24,7 @@ import QICLean.Channel.Schwarz.OperatorConvexity
 import QICLean.Channel.Schwarz.OperatorJensenAux
 import QICLean.Channel.Schwarz.OperatorJensenIntegrands
 import QICLean.Channel.Schwarz.PetzEqualityPrerequisites
+import QICLean.Channel.Schwarz.PetzOverlapDataProcessing
 import QICLean.Channel.Schwarz.PetzRecoverySupport
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import QICLean.Channel.Schwarz.PositiveOnAbelian

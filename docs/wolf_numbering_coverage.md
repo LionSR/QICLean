@@ -2323,6 +2323,24 @@ proof prerequisite does not make the containing lemma, proposition, or theorem
 exact when its other clauses, hypotheses, or conclusions remain absent. The
 entries below therefore state both levels explicitly.
 
+### Equation 8.35, ordinary Petz overlap for exponents in [0,1] — FORMALIZED SLICE
+
+`Matrix.petzOverlap_data_processing` in
+`QICLean.Channel.Schwarz.PetzOverlapDataProcessing` proves the displayed
+ordinary-overlap inequality for density matrices and rectangular CPTP maps.
+`Matrix.petzOverlap_le_map` permits arbitrary PSD inputs in positive input
+dimension; `Matrix.petzOverlap_le_partialTraceRight` permits an empty retained
+system. Singular inputs and arbitrary singular density ancillas are included.
+The powers follow spectral calculus with zeroth power equal to the identity;
+endpoint density overlaps equal one. The proof instantiates negative overlap
+in the generic convex-functional theorem, using Lieb concavity and proved
+unitary, coordinate and density-ancilla invariance.
+
+This is partial progress on #46. The reverse inequality for exponents in
+[-1,0], whose inverse and support conventions need a separate audit, and the
+other quasi-relative-entropy and hypothesis-testing results remain open.
+The historical named-environment tally above is unchanged.
+
 ### Corollary “Entropy increasing maps” (Equation 8.22) — FORMALIZED
 
 `IsPositiveMap.unital_iff_trace_strictConcave_increasing` in
