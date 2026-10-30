@@ -309,7 +309,8 @@ of $A^s B^{1-s}$.
         &\le F_{x,y}(A_t,B_t).
         \notag
     \end{align}
-    This is Wolf's Theorem~5.15 in the finite-dimensional matrix setting.
+    This is the concave region of Wolf's Theorem~5.15 in the
+    finite-dimensional matrix setting.
 \end{theorem}
 
 \begin{proof}\leanok
@@ -331,6 +332,63 @@ of $A^s B^{1-s}$.
     powered inputs, and monotonicity of
     $(P,Q)\mapsto\Re\tr(K^\dagger P^s K Q^{1-s})$ on positive-semidefinite
     arguments transports the result to the powered convex combinations.
+\end{proof}
+
+\begin{theorem}[Variational bound for the Ando--Lieb functional]
+    \label{thm:lieb_convexity_variational_le}
+    \lean{lieb_convexity_variational_le}
+    \leanok
+    Let $A\geq0$, $B>0$, $1\leq x\leq2$, and $y\in\R$. For any
+    complex matrices $K,X$ of the same size,
+    \begin{align}
+        2\Re\tr(X^\dagger AK)
+        -\Re\tr(X^\dagger A^{2-x}XB^{-y})
+        &\leq \Re\tr(K^\dagger A^xKB^y).
+        \label{eq:opconv_lieb_variational}
+    \end{align}
+    Equality holds for $X=A^{x-1}KB^y$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Set $C=A^{2-x}$, $E=B^{-y}$, and $H=A^{x-1}KB^y$.
+    The exponent identities give $CHE=AK$ and
+    $\tr(H^\dagger CHE)=\tr(K^\dagger A^xKB^y)$.
+    Expand the nonnegative quantity
+    $\Re\tr((X-H)^\dagger C(X-H)E)$. The two mixed terms have
+    the same real part, giving (\ref{eq:opconv_lieb_variational}).
+    At $X=H$ the squared term vanishes.
+\end{proof}
+
+\begin{theorem}[Ando--Lieb joint convexity]
+    \label{thm:lieb_convexity_posDef}
+    \lean{lieb_convexity_posSemidef_posDef, lieb_convexity_posDef,
+        convexOn_re_trace_conj_rpow_mul_rpow}
+    \leanok
+    Fix a complex matrix $K$, $x\in[1,2]$, and $y\in[1-x,0]$.
+    The map $F_{x,y}(A,B)=\Re\tr(K^\dagger A^xKB^y)$ is jointly
+    convex on $A\geq0$, $B>0$. In particular it is convex on the
+    product of the positive definite cones. For $t\in[0,1]$,
+    $A_t=tA_1+(1-t)A_2$, and $B_t=tB_1+(1-t)B_2$,
+    \begin{align}
+        F_{x,y}(A_t,B_t)
+        &\leq tF_{x,y}(A_1,B_1)+(1-t)F_{x,y}(A_2,B_2).
+        \label{eq:opconv_lieb_joint_convexity}
+    \end{align}
+    This is the convex region of \cite[Theorem~5.15, Equation~(5.47)]{Wolf2012Quantum}
+    on the domain where the second argument is invertible; see
+    \cite{gap:wolf_ch5_lieb_convexity_domain} for the singular-domain distinction.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:lieb_concavity_subboundary, thm:lieb_convexity_variational_le}
+    Set $p=2-x$ and $q=-y$. Then $p,q\geq0$ and $p+q\leq1$.
+    For fixed $X$, Theorem~\ref{thm:lieb_concavity_subboundary} makes
+    $\Re\tr(X^\dagger A^pXB^q)$ jointly concave. Therefore
+    $2\Re\tr(X^\dagger AK)-\Re\tr(X^\dagger A^pXB^q)$ is jointly convex.
+    Evaluate at $X=A_t^{x-1}KB_t^y$, which attains equality in
+    (\ref{eq:opconv_lieb_variational}) at the mixed pair, and apply that bound
+    at each original pair. This proves (\ref{eq:opconv_lieb_joint_convexity}).
+    The argument includes the exponent and mixing endpoints.
 \end{proof}
 
 \begin{theorem}[Map form of Lieb concavity]\label{thm:lieb_concavity}

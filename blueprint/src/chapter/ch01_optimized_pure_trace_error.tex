@@ -205,7 +205,8 @@ proof of \cite{Schuch2008Entropy}, arXiv:0705.0292v2, lines 436--470.
 
 \begin{theorem}[Attained optimized pure-state error]
     \label{thm:optimized_pure_trace_minimum}
-    \lean{Matrix.isLeast_optimizedPureTraceError}
+    \lean{Matrix.isLeast_optimizedPureTraceError,
+        Matrix.vecMulVec_ofLp_smul_self}
     \leanok
     \uses{def:trace_norm,def:optimized_pure_trace_error}
     Let $\psi,\phi$ be nonzero vectors in a finite-dimensional complex

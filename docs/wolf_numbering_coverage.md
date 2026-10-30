@@ -710,7 +710,7 @@ so that the cited formal statements are available from the main project import.
   formalized; see
   `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
 
-#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — POSITIVITY FORMALIZED; INDECOMPOSABILITY IN PROGRESS
+#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — FORMALIZED
 
 - `Matrix.choiTypeMap` and `Matrix.choiTypeMap_vecMulVec` formalize the map
   and its rank-one reduction on the cyclic index set `ZMod d` ✓
@@ -825,11 +825,20 @@ so that the cited formal statements are available from the main project import.
 - `Matrix.choiTypeMap_isPositiveMap` combines the bottom endpoint, the middle
   range, and the top endpoint to prove positivity for every `d ≥ 3` and
   `1 ≤ n ≤ d - 2` ✓
-- The former positivity scope restriction is resolved and recorded in
-  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. The final
-  theorem combining positivity with the negative witness to conclude
-  indecomposability remains open in issue #18; its completed witness algebra
-  is recorded in `docs/paper-gaps/ha98_choi_type_witness_scope.tex`.
+- `Matrix.choiTypeMapFin_not_isDecomposablePositiveMap` applies Ha's
+  factor-swapped PPT witness at `γ = 1/2` and the negative normalized-Ω
+  quadratic form, retaining the factor `d` ✓
+- `Matrix.choiTypeMap_not_isDecomposablePositiveMap` transports the detector
+  back to `ZMod d` by reindexing a hypothetical CP plus completely
+  copositive decomposition ✓
+- `Matrix.choiTypeMap_isIndecomposable` combines positivity and
+  nondecomposability for the exact full range `d ≥ 3`, `1 ≤ n ≤ d - 2`,
+  completing the mathematical goal of issue #18 ✓
+- The resolved positivity restriction is recorded in
+  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`; the witness
+  conventions and completed indecomposability argument are recorded in
+  `docs/paper-gaps/ha98_choi_type_witness_scope.tex`. Ha's stronger atomicity
+  conclusion is not asserted.
 
 ### Section 3.3 Transposition and time reversal
 
@@ -906,6 +915,26 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
 
 ## Wolf Lecture Notes — Chapter 5: Schwarz Inequalities
 
+### Corollary 5.1 (entropic operator inequality), Equation 5.33 — FORMALIZED
+
+- `IsPositiveMap.entropic_jensen` in
+  `QICLean/Channel/Schwarz/EntropicJensen.lean` proves the exact source statement:
+  for a positive unital map `T : M_d → M_d'` and every PSD `ρ`,
+  `T ρ * CFC.log (T ρ) ≤ T (ρ * CFC.log ρ)`.
+- `IsPositiveMap.entropic_jensen_subunital` proves the same conclusion under
+  the weaker condition `T 1 ≤ 1`. Both declarations allow arbitrary finite
+  source and target index types, including empty ones; neither requires CP,
+  TP, trace normalization, or invertibility of the input or its image.
+- The proof takes the right derivative at exponent one in the proved power
+  Jensen inequality. A zero eigenvalue gives an identically zero difference
+  quotient; finite spectra give norm convergence. Extension between
+  complementary matrix blocks proves the rectangular case.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines
+  699–705. This completes Corollary 5.1 only. The general-function theorems,
+  integral criteria, projection equivalences, and finite-family corollary
+  tracked by #28 remain open. The dated audit tally above predates this
+  bounded completion.
+
 ### Theorem 5.2 (block Schur complement) — CORRECTED FORM FORMALIZED
 
 - `SchurComplement.blockMatrix_posSemidef_iff` proves the equivalence between
@@ -918,6 +947,24 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
 - `SchurComplement.wolf_condition_three_not_sufficient` records the scalar
   counterexample to the uncorrected condition. The correction is documented in
   `docs/paper-gaps/wolf_schur_complement_tfae.tex`.
+
+### Theorem 5.15, Equation 5.47 (Ando--Lieb) — CONCAVE REGION AND CONVEX INVERTIBLE DOMAIN FORMALIZED
+
+- `lieb_concavity_subboundary` proves the concave region on positive
+  semidefinite pairs for nonnegative exponents whose sum is at most one.
+- `lieb_convexity_posSemidef_posDef` proves the convex region for
+  $x\in[1,2]$, $y\in[1-x,0]$, arbitrary complex $K$, positive semidefinite
+  $A$, and positive definite $B$, including all exponent and mixing endpoints.
+- `lieb_convexity_posDef` specializes to positive definite pairs;
+  `convexOn_re_trace_conj_rpow_mul_rpow` packages convexity on their product.
+- `lieb_convexity_variational_le` proves the completed-square bound used to
+  transfer the concave region at exponents $2-x$ and $-y$ to the convex region.
+- The domain clarification and the scalar counterexample to extending a
+  zero-valued inverse to singular $B$ are recorded in
+  `docs/paper-gaps/wolf_ch5_lieb_convexity_domain.tex`. No finite-valued
+  singular negative-power extension is claimed. The containing trace-function
+  package remains open; the aggregate named-environment counts above have
+  not been reclassified by this equation-level milestone.
 
 ### Consequence of Equation 5.56 and Proposition 5.3, Equation 5.57 — FORMALIZED WITH THE ORDER-HYPOTHESIS CORRECTION
 
@@ -1413,25 +1460,49 @@ The scope restriction is resolved in
 `U^m = 1` is explicit; eigenspace simplicity means ordinary geometric
 nondegeneracy, without an unsupported inference about algebraic multiplicity.
 
-#### Wolf Proposition 6.7 (Covariance and eigensystem) — OPEN
+#### Wolf Proposition 6.7 (Covariance and eigensystem) — FORMALIZED
 
-The multiplicative-domain and peripheral-unitary API supplies ingredients used
-inside the finite-Kraus development, but there is no public source declaration
-for either the covariance identity or the two eigenvector-shift formulas under
-Wolf's abstract positive unital Schwarz hypotheses.
+* `SchwarzMap.wolf_proposition_6_7` —
+  `QICLean/Channel/Peripheral/SchwarzCovariance.lean`.
+
+The source-shaped statement derives the canonical phase `γ = exp(2πi/m)`,
+`1 ≤ m ≤ D²`, and a normalized peripheral unitary from Theorem 6.6. It proves
+`T(U† X U) = U† T(X) U` and both Equation (6.38) shifts for arbitrary
+eigenvalues `μ`. Its hypotheses are exactly positivity, unitality,
+irreducibility, and the Schwarz inequality for a complex-linear map; no CP,
+Kraus, TP, or supplied faithful state is assumed. Lower-level multiplication,
+covariance, and nonzero eigenvector transport results do not need irreducibility.
+Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 803–817.
 
 ---
 
 ### Section 6.3 Primitive maps
 
-#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — PARTIAL-SCOPE
+#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — FORMALIZED
 
-**Item 4** (trivial peripheral spectrum, PD eigenvector):
-* `IsPrimitive` — `QICLean.Channel.Peripheral.Spectrum`
-* `isPrimitive_of_compl_eigenvalues_lt_one` / `compl_eigenvalue_norm_lt_one_of_primitive`
+`WolfTheorem67.wolf_theorem_6_7_tfae` in
+`QICLean.Channel.WolfTheorem67` proves all four source conditions for an
+arbitrary positive trace-preserving map on `M_D(ℂ)`, `D ≥ 1`:
 
-Other items: PARTIALLY via the transfer-operator gap formalization on the
-tensor-network side; see `TNLean.Wielandt.WolfChapter6TNIndex`.
+* one power is strictly positive on every density matrix;
+* every positive iterate and the recurrent peripheral projection are irreducible;
+* every density matrix converges to one faithful density;
+* the peripheral set is `{1}`, the characteristic-polynomial root `1` has
+  multiplicity one, and a faithful stationary density exists.
+
+`simpleFaithfulPeripheralSpectrum_iff` explicitly identifies the last clause
+with a faithful line of **maximal generalized** peripheral eigenspaces.
+`strictlyPositivePower_iff_uniform_eventual` supplies a single threshold valid
+for every later iterate and every density matrix. The proof uses compactness
+of density matrices and finite-dimensional operator-norm convergence; it does
+not interchange pointwise and uniform quantifiers without proof.
+
+The iterate index in clause 2 is `k > 0`. Including `k = 0` would make the
+identity on `M_2(ℂ)` a counterexample to the source equivalence. The source
+convention and the resolved stronger-channel restriction are recorded in
+`docs/paper-gaps/wolf_theorem67_positive_iterates.tex`. Theorem 6.8 remains the
+separate CP/Kraus theorem below. Targeted compilation, boundary checks, and all
+seven public standard-axiom guards pass; full repository CI is not claimed.
 
 #### Wolf Theorem 6.8 (CP primitive maps, Kraus span characterizations)
 
@@ -2293,6 +2364,41 @@ This completes the containing Theorem 8.7 only. Theorem 8.4 clause 3,
 submajorization, Theorem 8.8's rectangular ambiguity and issue #47's
 remaining scope are unchanged.
 
+### Equation 8.35, ordinary Petz overlap for exponents in [0,1] — FORMALIZED SLICE
+
+`Matrix.petzOverlap_data_processing` in
+`QICLean.Channel.Schwarz.PetzOverlapDataProcessing` proves the displayed
+ordinary-overlap inequality for density matrices and rectangular CPTP maps.
+`Matrix.petzOverlap_le_map` permits arbitrary PSD inputs in positive input
+dimension; `Matrix.petzOverlap_le_partialTraceRight` permits an empty retained
+system. Singular inputs and arbitrary singular density ancillas are included.
+The powers follow spectral calculus with zeroth power equal to the identity;
+endpoint density overlaps equal one. The proof instantiates negative overlap
+in the generic convex-functional theorem, using Lieb concavity and proved
+unitary, coordinate and density-ancilla invariance.
+
+This is partial progress on #46. The reverse inequality for exponents in
+[-1,0], whose inverse and support conventions need a separate audit, and the
+other quasi-relative-entropy and hypothesis-testing results remain open.
+The historical named-environment tally above is unchanged.
+
+### Corollary “Entropy increasing maps” (Equation 8.22) — FORMALIZED
+
+`IsPositiveMap.unital_iff_trace_strictConcave_increasing` in
+`QICLean.Channel.EntropyIncreasingMaps` proves the full same-dimensional
+source statement for globally strictly concave `h : ℝ → ℝ`, positive
+trace-preserving complex linear maps, and every density matrix. The theorem
+assumes neither complete positivity nor invertibility. It includes empty
+index types by a separate zero-dimensional argument.
+
+The forward implication constructs the actual doubly stochastic coefficients
+in the input and output eigenbases and applies scalar Jensen. The reverse
+uses positive uniform weights and strict Jensen rigidity at `I/d`.
+`IsPositiveMap.trace_concave_le` supplies the concave forward implication
+without trace normalization; the module also proves the uniform upper bound
+and rigidity. This completes this corollary only: the other open clauses of
+issue #47 and the rectangular convention in Theorem 8.8 remain unchanged.
+
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
 * `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)
@@ -2326,10 +2432,25 @@ source-shaped prerequisites are available:
   `μ^n n^(d_μ-1)` scaling for one supplied positive-modulus block in the
   source range `d_μ - 1 ≤ n`.
 
+* `Matrix.l2_opNNNorm_blockDiagonal'` in
+  `QICLean.Analysis.BlockDiagonalNorm` proves the exact finite maximum of
+  dependent block norms, with zero for an empty family and attainment for a
+  nonempty family.
+* `QICLean.Analysis.JordanBlockComparison` proves phase invariance,
+  equal-modulus dimension monotonicity, and eventual strict dominance of
+  every smaller modulus, including a zero smaller eigenvalue.
+* `Matrix.eventually_l2_opNorm_jordanBlockDirectSum_pow_eq` in
+  `QICLean.Analysis.JordanBlockDirectSum` proves the eventual equality for
+  the selected maximal-modulus, maximal-dimension genuine block. The same
+  module constructs such a selection from finite nonempty block data,
+  transfers the explicit positive-modulus two-sided bounds, extends the
+  upper bound to every positive exponent by rescaling its constant, and
+  treats zero maximal modulus from the largest block dimension onward.
+
 The remaining obligations for the norm of
-`T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, largest-block
-data, the direct-sum eventual-maximum argument, the `μ = 0`/positive-exponent
-qualification, and a justified passage to Wolf's `κ_T` infimum. These are
+`T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, identification
+of the channel's largest-block data and nilpotence range, the explicit
+positive-exponent assembly, and a justified passage to Wolf's `κ_T` infimum. These are
 recorded in
 `docs/paper-gaps/wolf_thm823_jordan_scaling_qualifications.tex`; issue #297
 therefore remains open.

@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.GlobalGap
+import Mathlib.Analysis.Matrix.Spectrum
 
 /-!
 # Uniqueness from a strictly positive global gap
@@ -43,6 +44,23 @@ open scoped InnerProductSpace ComplexOrder
 namespace Matrix
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- A real eigenvalue with a nonzero Euclidean eigenvector belongs to the real
+spectrum of the matrix. This is Mathlib's eigenvector-to-spectrum implication
+transported through the matrix's Euclidean linear map. No Hermiticity,
+normalization, or gap hypothesis is required. -/
+theorem mem_spectrum_real_of_mulVec_eq_smul {H : Matrix n n ℂ} {E : ℝ}
+    {Ω : EuclideanSpace ℂ n} (hΩ : Ω ≠ 0)
+    (heigen : H *ᵥ WithLp.ofLp Ω = (E : ℂ) • WithLp.ofLp Ω) :
+    E ∈ spectrum ℝ H := by
+  have hlin : toEuclideanLin H Ω = (E : ℂ) • Ω := by
+    apply WithLp.ofLp_injective 2
+    simpa only [toLpLin_apply, WithLp.ofLp_toLp, WithLp.ofLp_smul] using heigen
+  apply spectrum.of_algebraMap_mem ℂ
+  rw [← Matrix.spectrum_toLpLin 2]
+  exact (Module.End.hasEigenvalue_of_hasEigenvector
+    ⟨Module.End.mem_eigenspace_iff.mpr hlin, hΩ⟩).mem_spectrum
+
 
 /-- A strictly positive global gap forces every vector at energy `E₀` to equal its
 projection onto the unit vector `Ω`. The vector `ψ` may be zero or unnormalized, and

@@ -149,4 +149,81 @@ stochastic matrices.
     \end{align*}
     The case $k=d$ follows from equality of the total sums.
 \end{proof}
+
+\section{Entropy increasing maps}
+
+\begin{theorem}[Concave traces under unital positive maps]
+    \label{thm:concave_trace_positive_map}
+    \lean{IsPositiveMap.trace_concave_le}
+    \leanok
+    Let $T:M_d(\mathbb C)\to M_d(\mathbb C)$ be positive, unital, and
+    trace preserving, and let $h:\mathbb R\to\mathbb R$ be concave.
+    Every positive semidefinite matrix $A$ satisfies
+    $\operatorname{tr}h(A)\le\operatorname{tr}h(T(A))$.
+    This is the forward implication of \cite[Equation~(8.22)]{Wolf2012Quantum},
+    without trace normalization or strict concavity.
+\end{theorem}
+\begin{proof}\leanok
+    Choose unitary matrices $U,V$ diagonalizing $A,T(A)$, with eigenvalues
+    $\lambda_j,\mu_i$, and set
+    $S(X)=V^*T(UXU^*)V$ and $M_{ij}=(S(E_{jj}))_{ii}$.
+    Positivity gives $M_{ij}\ge0$, unitality gives $\sum_jM_{ij}=1$,
+    and trace preservation gives $\sum_iM_{ij}=1$.
+    Moreover, $\mu_i=\sum_jM_{ij}\lambda_j$.
+    Scalar Jensen and the column sums yield
+    $\sum_jh(\lambda_j)\le\sum_ih(\mu_i)$.
+    The spectral formula for the functional calculus identifies these sums
+    with the two traces.
+\end{proof}
+
+\begin{theorem}[Uniform bound for concave traces]
+    \label{thm:concave_trace_uniform}
+    \lean{Matrix.IsHermitian.trace_concave_le_uniform}
+    \leanok
+    For $d>0$, a Hermitian matrix $A\in M_d(\mathbb C)$ with trace one,
+    and a concave function $h:\mathbb R\to\mathbb R$,
+    $\operatorname{tr}h(A)\le d\,h(1/d)$.
+\end{theorem}
+\begin{proof}\leanok
+    The eigenvalues sum to one. Apply scalar Jensen with the positive
+    uniform weights $1/d$, and multiply by $d$.
+\end{proof}
+
+\begin{theorem}[Strict concavity and the uniform maximizer]
+    \label{thm:strict_concave_trace_uniform}
+    \lean{Matrix.IsHermitian.eq_smul_one_of_trace_strictConcave_ge}
+    \leanok
+    For $d>0$, let $A\in M_d(\mathbb C)$ be Hermitian with trace one,
+    and let $h:\mathbb R\to\mathbb R$ be strictly concave.
+    If $d\,h(1/d)\le\operatorname{tr}h(A)$, then $A=I/d$.
+\end{theorem}
+\begin{proof}\leanok
+    The assumed inequality reverses uniform Jensen. Its strict equality
+    criterion makes all eigenvalues equal. Their sum is one, so each is
+    $1/d$. The spectral decomposition then gives $A=I/d$.
+\end{proof}
+
+\begin{theorem}[Entropy increasing maps]
+    \label{thm:entropy_increasing_maps}
+    \lean{IsPositiveMap.unital_iff_trace_strictConcave_increasing}
+    \leanok
+    Let $T:M_d(\mathbb C)\to M_d(\mathbb C)$ be positive and trace
+    preserving, and let $h:\mathbb R\to\mathbb R$ be strictly concave.
+    Then $T(I)=I$ if and only if
+    $\operatorname{tr}h(\rho)\le\operatorname{tr}h(T(\rho))$
+    for every density matrix $\rho$.
+    This is \cite[Equation~(8.22), Corollary ``Entropy increasing maps'']{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:concave_trace_positive_map,thm:strict_concave_trace_uniform}
+    The forward implication follows from
+    Theorem~\ref{thm:concave_trace_positive_map}.
+    For the converse, suppose $d>0$ and take $\rho=I/d$.
+    Its image is positive semidefinite with trace one, and the assumed
+    entropy increase gives
+    $d\,h(1/d)\le\operatorname{tr}h(T(I/d))$.
+    Theorem~\ref{thm:strict_concave_trace_uniform} gives $T(I/d)=I/d$;
+    linearity implies $T(I)=I$.
+    When $d=0$, all matrices are equal and unitality is automatic.
+\end{proof}
 \endinput

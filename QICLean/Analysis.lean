@@ -14,6 +14,7 @@ import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
 import QICLean.Analysis.Birkhoff
+import QICLean.Analysis.BlockDiagonalNorm
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
 import QICLean.Analysis.CfcComplex
@@ -22,6 +23,7 @@ import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CfcLogListProduct
 import QICLean.Analysis.ChebyshevFilter
+import QICLean.Analysis.ChebyshevGroundFilter
 import QICLean.Analysis.ChebyshevSpectralFilter
 import QICLean.Analysis.ChebyshevSpectralProjector
 import QICLean.Analysis.ChebyshevViability
@@ -57,6 +59,7 @@ import QICLean.Analysis.EntropyMarkovForward
 import QICLean.Analysis.EntropyMarkovReverse
 import QICLean.Analysis.EntropyReindex
 import QICLean.Analysis.EntropySubadditivity
+import QICLean.Analysis.EuclideanEigenvectorBasis
 import QICLean.Analysis.EuclideanReindex
 import QICLean.Analysis.ExcitationSubsetCounts
 import QICLean.Analysis.ExponentialDistanceProfile
@@ -97,6 +100,8 @@ import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.IsometricIntertwiningCommute
 import QICLean.Analysis.IsometricLowerPin
 import QICLean.Analysis.JordanBlockAsymptotics
+import QICLean.Analysis.JordanBlockComparison
+import QICLean.Analysis.JordanBlockDirectSum
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
@@ -105,6 +110,7 @@ import QICLean.Analysis.KroneckerExponential
 import QICLean.Analysis.KroneckerOperatorNorm
 import QICLean.Analysis.KyFanNorm
 import QICLean.Analysis.LiebConcavity
+import QICLean.Analysis.LiebConvexity
 import QICLean.Analysis.LiebIntegrandConcave
 import QICLean.Analysis.LiebOperatorConcave
 import QICLean.Analysis.LiebOperatorIntegral
@@ -143,6 +149,7 @@ import QICLean.Analysis.MeanTreeUniformExpectation
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.MinimumEnvelope
 import QICLean.Analysis.NeumannInverse
+import QICLean.Analysis.NormSquaredTriangle
 import QICLean.Analysis.NormalizedInversePowerLogBound
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
@@ -274,6 +281,7 @@ import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SkewFromPhases
+import QICLean.Analysis.SoftTruncation
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass
@@ -299,6 +307,7 @@ import QICLean.Analysis.SupportCompression
 import QICLean.Analysis.SupportInverseSandwich
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
+import QICLean.Analysis.SupportProjectionOrder
 import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.SurprisalProductMoment
@@ -335,6 +344,7 @@ import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceBootstrap
 import QICLean.Analysis.ViableSubspaceCoordinates
 import QICLean.Analysis.ViableSubspaceDimension
+import QICLean.Analysis.ViableSubspaceEntropy
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
 import QICLean.Analysis.ViableSubspaceSchmidtRank

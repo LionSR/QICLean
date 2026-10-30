@@ -485,6 +485,46 @@ the chapter boundary.
     the same rank. This also applies when $\varphi=0$ or $J$ is empty.
 \end{proof}
 
+\begin{theorem}[Phase-aligned normalization of a filtered vector]
+    \label{thm:phase_normalized_filter_output}
+    \lean{Matrix.exists_phase_normalized_filter_output,
+        Matrix.exists_phase_normalized_filter_output_of_operatorSchmidtRank}
+    \leanok
+    \uses{thm:perpendicular_shrink_homogeneous,
+        thm:schmidt_rank_operator_action,thm:schmidt_rank_nonzero_smul}
+    Let $K$ act on a finite-dimensional complex Hilbert space, let $\Gamma$
+    be a unit vector, and suppose $K\Gamma=\Gamma$.
+    Suppose that every unit $v\perp\Gamma$ satisfies $Kv\perp\Gamma$ and
+    $\|Kv\|^2\le\delta$, where $\delta\in\R$.
+    For every $x$ with $a=\langle\Gamma,x\rangle\ne0$, one has $Kx\ne0$,
+    and there is $c\in\C$, $|c|=1$, such that
+    \begin{align*}
+        \psi&=c\,\frac{Kx}{\|Kx\|},& \|\psi\|&=1,\\
+        \|\psi-\Gamma\|^2
+            &\le\frac{2\delta\|x-a\Gamma\|^2}{|a|^2}.
+    \end{align*}
+    If the space is bipartite, the same normalized vector satisfies
+    \begin{align*}
+        \operatorname{SR}(\psi)
+            \le\operatorname{OSR}(K)\operatorname{SR}(x).
+    \end{align*}
+    Neither normalization of $x$ nor nonnegativity of $\delta$ is assumed.
+    This is the normalization step used in
+    \cite[proof of Lemma~6.3]{Arad2013AreaLaw}; constructing the physical
+    filter and the sequence of targets remains separate.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:perpendicular_shrink_homogeneous,
+        thm:schmidt_rank_operator_action,thm:schmidt_rank_nonzero_smul}
+    Write $v=x-a\Gamma$ and $w=Kv$. Then $w\perp\Gamma$,
+    $Kx=a\Gamma+w$, and $\|w\|^2\le\delta\|v\|^2$.
+    In particular, $\|Kx\|^2=|a|^2+\|w\|^2>0$.
+    The phase-minimized squared distance of $Kx/\|Kx\|$ from $\Gamma$
+    is at most $2\|w\|^2/\|Kx\|^2$, which is at most the displayed bound.
+    Multiplication by the nonzero normalization and phase scalars preserves
+    Schmidt rank; application of $K$ gives the stated rank growth.
+\end{proof}
+
 \begin{theorem}[Product overlap from an invariant unit vector]
     \label{thm:product_overlap_fixed_invariant_vector}
     \lean{Matrix.exists_unit_product_overlap_ge_of_operatorSchmidtRank}
