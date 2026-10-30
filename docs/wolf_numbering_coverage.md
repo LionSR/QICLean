@@ -710,7 +710,7 @@ so that the cited formal statements are available from the main project import.
   formalized; see
   `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
 
-#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — POSITIVITY FORMALIZED; INDECOMPOSABILITY IN PROGRESS
+#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — FORMALIZED
 
 - `Matrix.choiTypeMap` and `Matrix.choiTypeMap_vecMulVec` formalize the map
   and its rank-one reduction on the cyclic index set `ZMod d` ✓
@@ -825,11 +825,20 @@ so that the cited formal statements are available from the main project import.
 - `Matrix.choiTypeMap_isPositiveMap` combines the bottom endpoint, the middle
   range, and the top endpoint to prove positivity for every `d ≥ 3` and
   `1 ≤ n ≤ d - 2` ✓
-- The former positivity scope restriction is resolved and recorded in
-  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. The final
-  theorem combining positivity with the negative witness to conclude
-  indecomposability remains open in issue #18; its completed witness algebra
-  is recorded in `docs/paper-gaps/ha98_choi_type_witness_scope.tex`.
+- `Matrix.choiTypeMapFin_not_isDecomposablePositiveMap` applies Ha's
+  factor-swapped PPT witness at `γ = 1/2` and the negative normalized-Ω
+  quadratic form, retaining the factor `d` ✓
+- `Matrix.choiTypeMap_not_isDecomposablePositiveMap` transports the detector
+  back to `ZMod d` by reindexing a hypothetical CP plus completely
+  copositive decomposition ✓
+- `Matrix.choiTypeMap_isIndecomposable` combines positivity and
+  nondecomposability for the exact full range `d ≥ 3`, `1 ≤ n ≤ d - 2`,
+  completing the mathematical goal of issue #18 ✓
+- The resolved positivity restriction is recorded in
+  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`; the witness
+  conventions and completed indecomposability argument are recorded in
+  `docs/paper-gaps/ha98_choi_type_witness_scope.tex`. Ha's stronger atomicity
+  conclusion is not asserted.
 
 ### Section 3.3 Transposition and time reversal
 
