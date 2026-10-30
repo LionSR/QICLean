@@ -41,6 +41,7 @@ import QICLean.Analysis.ContractionWordDecay
 import QICLean.Analysis.ContractionWordDecaySpectator
 import QICLean.Analysis.ConvexHullCompact
 import QICLean.Analysis.CyclicReciprocal
+import QICLean.Analysis.DensityMatrixMajorization
 import QICLean.Analysis.DensityMaxEigenvector
 import QICLean.Analysis.DensitySimplex
 import QICLean.Analysis.DetectabilityLemma
@@ -339,6 +340,7 @@ import QICLean.Analysis.UnitaryEvolution
 import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
+import QICLean.Analysis.VectorMajorization
 import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceBootstrap
 import QICLean.Analysis.ViableSubspaceCoordinates

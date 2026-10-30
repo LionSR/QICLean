@@ -2336,6 +2336,47 @@ proof prerequisite does not make the containing lemma, proposition, or theorem
 exact when its other clauses, hypotheses, or conclusions remain absent. The
 entries below therefore state both levels explicitly.
 
+### Theorem 8.4 (Majorization) — CLAUSES 1, 2 AND 4 FORMALIZED
+
+In `QICLean.Analysis.VectorMajorization`, `TNLean.VectorMajorized` is
+Equation (8.16): decreasing-sorted prefix inequalities and equal total sums.
+The sorting is a coordinate permutation and preserves repeated entries.
+`TNLean.vectorMajorized_iff_exists_doublyStochastic` proves equivalence with
+an actual nonnegative matrix whose row and column sums all equal one;
+`TNLean.vectorMajorized_iff_sum_convex_le` proves equivalence with comparison
+for every convex function on the entire real line. The statements allow
+arbitrary real entries and dimensions zero and one.
+
+The reverse stochastic implication is proved by separation of the convex
+hull of permutations and Birkhoff's theorem. No stochastic witness is
+assumed. Clause 3 (orthostochastic matrices) remains open, as recorded in
+`docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
+The separate submajorization theorem and the remainder of issue #47 are
+not completed by these equivalences.
+
+### Theorem 8.7 (Majorization between density matrices) — FORMALIZED
+
+In `QICLean.Analysis.DensityMatrixMajorization`,
+`Matrix.IsHermitian.Majorizes` compares the actual decreasing eigenvalue
+vectors, retaining multiplicities. `majorizes_iff_trace_convex` identifies
+this relation with comparison of the real traces of the actual functional
+calculus for every convex function on the entire real line.
+`majorizes_iff_randomUnitaryImage` identifies it with a genuinely constructed
+finite probability mixture of unitary conjugations, Equation (8.21).
+
+The proof applies to all Hermitian matrices, so it includes arbitrary
+density matrices without requiring invertibility or commutativity.
+The forward construction combines the vector-majorization witness,
+Birkhoff coefficients and both eigenbases. The reverse construction uses
+weighted squared entries of the actual conjugated unitaries.
+`Matrix.dimension_pos_of_trace_one` makes the impossibility of a
+zero-dimensional density matrix explicit; the Hermitian equivalences
+themselves have no positive-dimension premise.
+
+This completes the containing Theorem 8.7 only. Theorem 8.4 clause 3,
+submajorization, Theorem 8.8's rectangular ambiguity and issue #47's
+remaining scope are unchanged.
+
 ### Equation 8.35, ordinary Petz overlap for exponents in [0,1] — FORMALIZED SLICE
 
 `Matrix.petzOverlap_data_processing` in
