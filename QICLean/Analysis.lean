@@ -313,6 +313,7 @@ import QICLean.Analysis.SurprisalProductMoment
 import QICLean.Analysis.TensorProductWeights
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
+import QICLean.Analysis.TraceConvexFunctions
 import QICLean.Analysis.TraceDistance
 import QICLean.Analysis.TraceExpAlternatingSum
 import QICLean.Analysis.TraceExponentialPerturbation

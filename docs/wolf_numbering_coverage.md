@@ -935,6 +935,19 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
   tracked by #28 remain open. The dated audit tally above predates this
   bounded completion.
 
+### Convex trace-functions corollary following Theorem 5.17 — FORMALIZED
+
+Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines 1081–1088.
+`Matrix.convexOn_trace_cfc` proves convexity on the full set of Hermitian
+matrices with spectrum in an arbitrary real interval. The domain's convexity
+is proved by `Matrix.convex_hermitianSpectralDomain`; the binary inequality
+is `Matrix.IsHermitian.trace_cfc_convex_le`. `Matrix.trace_cfc_sum_le` includes
+spectral-domain membership and the trace bound for finite probability mixtures.
+Only scalar convexity is assumed, with no positivity, commutation, continuity,
+or zero-in-interval condition. Empty matrix dimensions are included.
+Theorem 5.17 and its weighted Equation (5.51) remain outside this corollary.
+The complete-environment tally above records the historical August audit.
+
 ### Theorem 5.2 (block Schur complement) — CORRECTED FORM FORMALIZED
 
 - `SchurComplement.blockMatrix_posSemidef_iff` proves the equivalence between

@@ -1,0 +1,114 @@
+\section{Convex trace functions on intervals}
+
+\begin{definition}[Hermitian spectral domain]\label{def:hermitian_spectral_domain}
+    \lean{Matrix.hermitianSpectralDomain}
+    \leanok
+    For a real set $I$, let $\mathcal H_I$ be the set of Hermitian matrices
+    $A\in\MN{d}$ whose spectra are contained in $I$.
+\end{definition}
+
+\begin{theorem}[Expectations remain in the spectral interval]%
+    \label{thm:expectation_spectral_interval}
+    \lean{Matrix.IsHermitian.re_dotProduct_mem_of_spectrum_subset}
+    \leanok
+    Let $I\subseteq\R$ be convex, let $A\in\mathcal H_I$, and let $v$ be a
+    unit vector. Then $\re\langle v,Av\rangle\in I$.
+\end{theorem}
+
+\begin{proof}\leanok
+    In a spectral decomposition $A=U\diag(\lambda)U^\dagger$, put
+    $p_i=|(U^\dagger v)_i|^2$. These weights are nonnegative and sum to one.
+    Since $\re\langle v,Av\rangle=\sum_i p_i\lambda_i$ and each
+    $\lambda_i\in I$, convexity of $I$ gives the assertion.
+\end{proof}
+
+\begin{theorem}[Scalar Jensen on a spectral interval]%
+    \label{thm:diagonal_jensen_interval}
+    \lean{Matrix.IsHermitian.diagonal_jensen_of_spectrum_subset}
+    \leanok
+    Let $f:\R\to\R$ be convex on $I$, let $A\in\mathcal H_I$, and let
+    $v$ be a unit vector. Then
+    $f(\re\langle v,Av\rangle)\le\re\langle v,f(A)v\rangle$.
+\end{theorem}
+
+\begin{proof}\leanok
+    With the spectral weights from the proof of
+    Theorem~\ref{thm:expectation_spectral_interval}, scalar Jensen gives
+    $f(\sum_i p_i\lambda_i)\le\sum_i p_i f(\lambda_i)$.
+    The right side is $\re\langle v,f(A)v\rangle$.
+    Only the values of $f$ on the finite spectrum occur.
+\end{proof}
+
+\begin{theorem}[Convexity of the Hermitian spectral domain]%
+    \label{thm:convex_hermitian_spectral_domain}
+    \lean{Matrix.convex_hermitianSpectralDomain}
+    \leanok
+    \uses{def:hermitian_spectral_domain}
+    If $I\subseteq\R$ is convex, then $\mathcal H_I$ is convex.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:expectation_spectral_interval}
+    Let $M=aA+bB$, where $A,B\in\mathcal H_I$, $a,b\ge0$ and $a+b=1$.
+    The matrix $M$ is Hermitian. For a unit eigenvector $\psi_j$ of $M$,
+    its eigenvalue is
+    $\mu_j=a\re\langle\psi_j,A\psi_j\rangle+
+    b\re\langle\psi_j,B\psi_j\rangle$.
+    Both expectations lie in $I$ by
+    Theorem~\ref{thm:expectation_spectral_interval}, so $\mu_j\in I$.
+\end{proof}
+
+\begin{theorem}[Convex trace functions]\label{thm:trace_convex_functions_interval}
+    \lean{Matrix.IsHermitian.trace_cfc_convex_le, Matrix.convexOn_trace_cfc}
+    \leanok
+    \uses{def:hermitian_spectral_domain}
+    If $f:\R\to\R$ is convex on an interval $I$, then
+    $A\mapsto\re\tr f(A)$ is convex on $\mathcal H_I$. Explicitly, for
+    $A,B\in\mathcal H_I$ and $t\in[0,1]$,
+    \begin{align}
+        \re\tr f(tA+(1-t)B)
+        &\le t\re\tr f(A)+(1-t)\re\tr f(B).
+        \notag
+    \end{align}
+    This is the convex trace-functions corollary following
+    \cite[Theorem~5.17]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:convex_hermitian_spectral_domain, thm:expectation_spectral_interval,
+        thm:diagonal_jensen_interval}
+    Put $M=tA+(1-t)B$. Its spectrum lies in $I$ by
+    Theorem~\ref{thm:convex_hermitian_spectral_domain}.
+    Choose an orthonormal eigenbasis $\{\psi_j\}$ of $M$, with eigenvalues
+    $\mu_j$. Set $a_j=\re\langle\psi_j,A\psi_j\rangle$ and
+    $b_j=\re\langle\psi_j,B\psi_j\rangle$. Both lie in $I$, and
+    $\mu_j=ta_j+(1-t)b_j$. Scalar convexity and
+    Theorem~\ref{thm:diagonal_jensen_interval} give
+    \begin{align}
+        f(\mu_j)
+        &\le t f(a_j)+(1-t)f(b_j) \notag\\
+        &\le t\re\langle\psi_j,f(A)\psi_j\rangle
+          +(1-t)\re\langle\psi_j,f(B)\psi_j\rangle.
+        \notag
+    \end{align}
+    Sum over $j$, using $\tr f(M)=\sum_j f(\mu_j)$ and the basis invariance
+    of trace. The same argument applies when the dimension is zero, with
+    empty spectrum and zero trace.
+\end{proof}
+
+\begin{theorem}[Finite mixtures of convex trace functions]%
+    \label{thm:trace_convex_functions_finite}
+    \lean{Matrix.trace_cfc_sum_le}
+    \leanok
+    Let $f$ be convex on $I$, let $\{A_i\}_{i\in S}$ be a finite family in
+    $\mathcal H_I$, and let $w_i\ge0$ satisfy $\sum_{i\in S}w_i=1$.
+    Then $\sum_{i\in S}w_iA_i\in\mathcal H_I$ and
+    $\re\tr f(\sum_{i\in S}w_iA_i)\le\sum_{i\in S}w_i\re\tr f(A_i)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:convex_hermitian_spectral_domain, thm:trace_convex_functions_interval}
+    Apply finite convex-combination closure to $\mathcal H_I$ and finite
+    scalar Jensen to the convex real-valued trace function of
+    Theorem~\ref{thm:trace_convex_functions_interval}.
+\end{proof}
