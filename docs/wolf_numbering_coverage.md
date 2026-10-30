@@ -2356,10 +2356,25 @@ source-shaped prerequisites are available:
   `μ^n n^(d_μ-1)` scaling for one supplied positive-modulus block in the
   source range `d_μ - 1 ≤ n`.
 
+* `Matrix.l2_opNNNorm_blockDiagonal'` in
+  `QICLean.Analysis.BlockDiagonalNorm` proves the exact finite maximum of
+  dependent block norms, with zero for an empty family and attainment for a
+  nonempty family.
+* `QICLean.Analysis.JordanBlockComparison` proves phase invariance,
+  equal-modulus dimension monotonicity, and eventual strict dominance of
+  every smaller modulus, including a zero smaller eigenvalue.
+* `Matrix.eventually_l2_opNorm_jordanBlockDirectSum_pow_eq` in
+  `QICLean.Analysis.JordanBlockDirectSum` proves the eventual equality for
+  the selected maximal-modulus, maximal-dimension genuine block. The same
+  module constructs such a selection from finite nonempty block data,
+  transfers the explicit positive-modulus two-sided bounds, extends the
+  upper bound to every positive exponent by rescaling its constant, and
+  treats zero maximal modulus from the largest block dimension onward.
+
 The remaining obligations for the norm of
-`T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, largest-block
-data, the direct-sum eventual-maximum argument, the `μ = 0`/positive-exponent
-qualification, and a justified passage to Wolf's `κ_T` infimum. These are
+`T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, identification
+of the channel's largest-block data and nilpotence range, the explicit
+positive-exponent assembly, and a justified passage to Wolf's `κ_T` infimum. These are
 recorded in
 `docs/paper-gaps/wolf_thm823_jordan_scaling_qualifications.tex`; issue #297
 therefore remains open.
