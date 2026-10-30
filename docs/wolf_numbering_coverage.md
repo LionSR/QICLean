@@ -915,6 +915,26 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
 
 ## Wolf Lecture Notes — Chapter 5: Schwarz Inequalities
 
+### Corollary 5.1 (entropic operator inequality), Equation 5.33 — FORMALIZED
+
+- `IsPositiveMap.entropic_jensen` in
+  `QICLean/Channel/Schwarz/EntropicJensen.lean` proves the exact source statement:
+  for a positive unital map `T : M_d → M_d'` and every PSD `ρ`,
+  `T ρ * CFC.log (T ρ) ≤ T (ρ * CFC.log ρ)`.
+- `IsPositiveMap.entropic_jensen_subunital` proves the same conclusion under
+  the weaker condition `T 1 ≤ 1`. Both declarations allow arbitrary finite
+  source and target index types, including empty ones; neither requires CP,
+  TP, trace normalization, or invertibility of the input or its image.
+- The proof takes the right derivative at exponent one in the proved power
+  Jensen inequality. A zero eigenvalue gives an identically zero difference
+  quotient; finite spectra give norm convergence. Extension between
+  complementary matrix blocks proves the rectangular case.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines
+  699–705. This completes Corollary 5.1 only. The general-function theorems,
+  integral criteria, projection equivalences, and finite-family corollary
+  tracked by #28 remain open. The dated audit tally above predates this
+  bounded completion.
+
 ### Theorem 5.2 (block Schur complement) — CORRECTED FORM FORMALIZED
 
 - `SchurComplement.blockMatrix_posSemidef_iff` proves the equivalence between
