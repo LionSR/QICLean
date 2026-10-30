@@ -97,6 +97,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 \begin{theorem}[Dimension of a finite sum of linear images]
     \label{thm:finite_image_span_dimension}
     \lean{Submodule.finrank_iSup_map_le_card_mul}
+    \leanok
     Let $\mathbb K$ be $\R$ or $\C$, let $E,F$ be inner product spaces over
     $\mathbb K$, and let $S\subseteq E$ be a finite-dimensional subspace.
     For a finite set $I$ and linear maps $A_i:E\to F$, set
@@ -109,6 +110,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
     \cite[Lemma~2.9 and Proposition~4.10]{Arad2016RigorousRG}.
 \end{theorem}
 \begin{proof}
+    \leanok
     Each restriction $A_i|_S$ has image of dimension at most
     $\dim_{\mathbb K}S$. The dimension of a finite sum of subspaces is at most
     the sum of their dimensions, so

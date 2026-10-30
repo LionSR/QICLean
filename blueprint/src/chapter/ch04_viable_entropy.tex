@@ -3,6 +3,7 @@
 \begin{theorem}[One spectral distribution for all viable approximations]
     \label{thm:unit_cut_spectral_probability}
     \lean{Submodule.unit_cut_spectral_probability}
+    \leanok
     \uses{def:subspace_viable, def:von_neumann_entropy, thm:viable_coordinates}
     Let $\sigma,\beta$ be finite sets, let $\mathcal H$ be a complex
     inner-product space, and fix a linear isometry
@@ -25,6 +26,7 @@
     \cite[proof of Theorem~4.9]{Arad2016RigorousRG}.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:viable_leading_marginal_mass, thm:entropy_ordered_eigenvalues}
     Positivity of $CC^\dagger$ gives $p_a\ge0$, while
     $\tr(CC^\dagger)=\|\psi\|^2=1$ gives normalization.
@@ -36,6 +38,7 @@
 \begin{theorem}[The actual regional marginal in tensor coordinates]
     \label{thm:actual_region_split_entropy}
     \lean{Submodule.actualRegionSplit_marginal_and_entropy}
+    \leanok
     \uses{def:finite_product_regional_entropy, thm:viable_coordinates}
     Let $V$ be a finite set of sites, with local dimensions $n_v\ge0$,
     and let $J\subseteq V$.
@@ -57,6 +60,7 @@
     Neither normalization nor a nonempty region is assumed.
 \end{theorem}
 \begin{proof}
+    \leanok
     \uses{thm:tensor_exchange_product_coordinates, thm:complementary_reduced_ranks}
     Tensor exchange gives $C_{ab}=\psi(a\cup b)$.
     Thus $(CC^\dagger)_{aa'}=\sum_b\psi(a\cup b)\overline{\psi(a'\cup b)}$,
