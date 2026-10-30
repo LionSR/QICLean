@@ -1422,21 +1422,18 @@ No new tactic or duplicate tree induction is introduced.
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
 
-### Weighted monomial recovery at common evaluation points — candidate (2026-10-22)
+### Weighted monomial recovery at common evaluation points — shared theorem (2026-10-28)
 
-- **Consumers:** `operatorSchmidtRank_sum_le_of_monomial_evaluations` in
-  `Algebra/MonomialEvaluationSchmidtRank.lean` and the private
-  `rank_weighted_sum_of_injective_monomials` in
-  `Algebra/WeightedFrequencySchmidtRank.lean`.
-- **Pattern:** Apply the existing monomial recovery coefficients to the same
-  evaluated operator family, interchange the finite sums, and contract the
-  selected or scalar-weighted coefficients before applying the sum rank bound.
-- **Reuse:** Both arguments invoke
-  `MvPolynomial.monomial_evaluation_recovery_smul`; `Finset.sum_comm`,
-  `Finset.sum_smul` and `Finset.smul_sum` give the finite-sum calculation.
-- **Decision:** Two occurrences across two files. No new tactic or public
-  interpolation theorem is introduced. The weighted argument also transports
-  an injectively indexed finite support and retains one evaluation cardinality.
+- **Consumers:** The two-marker theorem in `Algebra/WeightedFrequencySchmidtRank.lean`
+  and the one-marker theorem in `Algebra/OneMarkerWeightedSchmidtRank.lean`.
+- **Pattern:** Apply monomial recovery to one injectively indexed finite support,
+  contract the arbitrary scalar weights at the same evaluation points, then use
+  the finite-sum operator-Schmidt-rank bound. Zero and dependent coefficients
+  require no separate argument.
+- **Decision:** Move the existing weighted argument to
+  `Matrix.operatorSchmidtRank_sum_smul_le_of_injective_monomial_evaluations`
+  in `Algebra/MonomialEvaluationSchmidtRank.lean`; both consumers reuse it.
+  No new tactic or duplicate interpolation calculation is introduced.
 
 ### Weighted pure-state projection identities — shared lemma (2026-10-23)
 
@@ -1583,3 +1580,16 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   uses the same identity with different factor dimensions and energies.
 - **Notes:** `Matrix.PosSemidef.gap_mono` handles the capped lower bound;
   neither it nor the tensor-sum result assumes an attained excited energy.
+
+### Elementary operator Schmidt products — promoted (2026-10-29)
+
+- **Pattern:** An elementary Kronecker product has a one-term decomposition;
+  the identity is its specialization.
+- **Abstraction:** The existing private proof in
+  `OneMarkerWeightedSchmidtRank.lean` is relocated unchanged to the small
+  `OperatorSchmidtProducts.lean` leaf as
+  `Matrix.operatorSchmidtRank_kronecker_le_one`, with
+  `Matrix.operatorSchmidtRank_one_le` as the identity specialization.
+- **Refactoring:** The one-marker consumer imports this leaf and the private
+  duplicate is removed. `OperatorSchmidtBounds.lean` remains unchanged.
+  The second factor needs `Finite`, rather than a supplied `Fintype`.

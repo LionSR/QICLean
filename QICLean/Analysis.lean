@@ -23,6 +23,7 @@ import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CfcLogListProduct
 import QICLean.Analysis.ChebyshevFilter
+import QICLean.Analysis.ChebyshevGroundFilter
 import QICLean.Analysis.ChebyshevSpectralFilter
 import QICLean.Analysis.ChebyshevSpectralProjector
 import QICLean.Analysis.ChebyshevViability
