@@ -14,6 +14,7 @@ import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
 import QICLean.Analysis.Birkhoff
+import QICLean.Analysis.BlockDiagonalNorm
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
 import QICLean.Analysis.CfcComplex
@@ -22,6 +23,7 @@ import QICLean.Analysis.CfcKronecker
 import QICLean.Analysis.CfcLogAdditive
 import QICLean.Analysis.CfcLogListProduct
 import QICLean.Analysis.ChebyshevFilter
+import QICLean.Analysis.ChebyshevGroundFilter
 import QICLean.Analysis.ChebyshevSpectralFilter
 import QICLean.Analysis.ChebyshevSpectralProjector
 import QICLean.Analysis.ChebyshevViability
@@ -97,6 +99,8 @@ import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.IsometricIntertwiningCommute
 import QICLean.Analysis.IsometricLowerPin
 import QICLean.Analysis.JordanBlockAsymptotics
+import QICLean.Analysis.JordanBlockComparison
+import QICLean.Analysis.JordanBlockDirectSum
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
@@ -276,6 +280,7 @@ import QICLean.Analysis.SinhRatioDensity
 import QICLean.Analysis.SinhRatioFourier
 import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SkewFromPhases
+import QICLean.Analysis.SoftTruncation
 import QICLean.Analysis.SourceContraction
 import QICLean.Analysis.SourceOnlyDensityError
 import QICLean.Analysis.SpectralCutoffMass

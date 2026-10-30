@@ -710,7 +710,7 @@ so that the cited formal statements are available from the main project import.
   formalized; see
   `docs/paper-gaps/wolf_prop3_5_reverse_implication.tex`.
 
-#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — POSITIVITY FORMALIZED; INDECOMPOSABILITY IN PROGRESS
+#### Wolf Example 3.1, Equation (3.20) (Choi-type maps) — FORMALIZED
 
 - `Matrix.choiTypeMap` and `Matrix.choiTypeMap_vecMulVec` formalize the map
   and its rank-one reduction on the cyclic index set `ZMod d` ✓
@@ -825,11 +825,20 @@ so that the cited formal statements are available from the main project import.
 - `Matrix.choiTypeMap_isPositiveMap` combines the bottom endpoint, the middle
   range, and the top endpoint to prove positivity for every `d ≥ 3` and
   `1 ≤ n ≤ d - 2` ✓
-- The former positivity scope restriction is resolved and recorded in
-  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`. The final
-  theorem combining positivity with the negative witness to conclude
-  indecomposability remains open in issue #18; its completed witness algebra
-  is recorded in `docs/paper-gaps/ha98_choi_type_witness_scope.tex`.
+- `Matrix.choiTypeMapFin_not_isDecomposablePositiveMap` applies Ha's
+  factor-swapped PPT witness at `γ = 1/2` and the negative normalized-Ω
+  quadratic form, retaining the factor `d` ✓
+- `Matrix.choiTypeMap_not_isDecomposablePositiveMap` transports the detector
+  back to `ZMod d` by reindexing a hypothetical CP plus completely
+  copositive decomposition ✓
+- `Matrix.choiTypeMap_isIndecomposable` combines positivity and
+  nondecomposability for the exact full range `d ≥ 3`, `1 ≤ n ≤ d - 2`,
+  completing the mathematical goal of issue #18 ✓
+- The resolved positivity restriction is recorded in
+  `docs/paper-gaps/wolf_ex3_1_choi_positivity_subcase_scope.tex`; the witness
+  conventions and completed indecomposability argument are recorded in
+  `docs/paper-gaps/ha98_choi_type_witness_scope.tex`. Ha's stronger atomicity
+  conclusion is not asserted.
 
 ### Section 3.3 Transposition and time reversal
 
@@ -905,6 +914,26 @@ The surrounding complexity prose at source lines 80–83 is not formalized.
 ---
 
 ## Wolf Lecture Notes — Chapter 5: Schwarz Inequalities
+
+### Corollary 5.1 (entropic operator inequality), Equation 5.33 — FORMALIZED
+
+- `IsPositiveMap.entropic_jensen` in
+  `QICLean/Channel/Schwarz/EntropicJensen.lean` proves the exact source statement:
+  for a positive unital map `T : M_d → M_d'` and every PSD `ρ`,
+  `T ρ * CFC.log (T ρ) ≤ T (ρ * CFC.log ρ)`.
+- `IsPositiveMap.entropic_jensen_subunital` proves the same conclusion under
+  the weaker condition `T 1 ≤ 1`. Both declarations allow arbitrary finite
+  source and target index types, including empty ones; neither requires CP,
+  TP, trace normalization, or invertibility of the input or its image.
+- The proof takes the right derivative at exponent one in the proved power
+  Jensen inequality. A zero eigenvalue gives an identically zero difference
+  quotient; finite spectra give norm convergence. Extension between
+  complementary matrix blocks proves the rectangular case.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines
+  699–705. This completes Corollary 5.1 only. The general-function theorems,
+  integral criteria, projection equivalences, and finite-family corollary
+  tracked by #28 remain open. The dated audit tally above predates this
+  bounded completion.
 
 ### Theorem 5.2 (block Schur complement) — CORRECTED FORM FORMALIZED
 
@@ -1449,14 +1478,31 @@ Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 803–817.
 
 ### Section 6.3 Primitive maps
 
-#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — PARTIAL-SCOPE
+#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — FORMALIZED
 
-**Item 4** (trivial peripheral spectrum, PD eigenvector):
-* `IsPrimitive` — `QICLean.Channel.Peripheral.Spectrum`
-* `isPrimitive_of_compl_eigenvalues_lt_one` / `compl_eigenvalue_norm_lt_one_of_primitive`
+`WolfTheorem67.wolf_theorem_6_7_tfae` in
+`QICLean.Channel.WolfTheorem67` proves all four source conditions for an
+arbitrary positive trace-preserving map on `M_D(ℂ)`, `D ≥ 1`:
 
-Other items: PARTIALLY via the transfer-operator gap formalization on the
-tensor-network side; see `TNLean.Wielandt.WolfChapter6TNIndex`.
+* one power is strictly positive on every density matrix;
+* every positive iterate and the recurrent peripheral projection are irreducible;
+* every density matrix converges to one faithful density;
+* the peripheral set is `{1}`, the characteristic-polynomial root `1` has
+  multiplicity one, and a faithful stationary density exists.
+
+`simpleFaithfulPeripheralSpectrum_iff` explicitly identifies the last clause
+with a faithful line of **maximal generalized** peripheral eigenspaces.
+`strictlyPositivePower_iff_uniform_eventual` supplies a single threshold valid
+for every later iterate and every density matrix. The proof uses compactness
+of density matrices and finite-dimensional operator-norm convergence; it does
+not interchange pointwise and uniform quantifiers without proof.
+
+The iterate index in clause 2 is `k > 0`. Including `k = 0` would make the
+identity on `M_2(ℂ)` a counterexample to the source equivalence. The source
+convention and the resolved stronger-channel restriction are recorded in
+`docs/paper-gaps/wolf_theorem67_positive_iterates.tex`. Theorem 6.8 remains the
+separate CP/Kraus theorem below. Targeted compilation, boundary checks, and all
+seven public standard-axiom guards pass; full repository CI is not claimed.
 
 #### Wolf Theorem 6.8 (CP primitive maps, Kraus span characterizations)
 
@@ -2277,6 +2323,23 @@ proof prerequisite does not make the containing lemma, proposition, or theorem
 exact when its other clauses, hypotheses, or conclusions remain absent. The
 entries below therefore state both levels explicitly.
 
+### Corollary “Entropy increasing maps” (Equation 8.22) — FORMALIZED
+
+`IsPositiveMap.unital_iff_trace_strictConcave_increasing` in
+`QICLean.Channel.EntropyIncreasingMaps` proves the full same-dimensional
+source statement for globally strictly concave `h : ℝ → ℝ`, positive
+trace-preserving complex linear maps, and every density matrix. The theorem
+assumes neither complete positivity nor invertibility. It includes empty
+index types by a separate zero-dimensional argument.
+
+The forward implication constructs the actual doubly stochastic coefficients
+in the input and output eigenbases and applies scalar Jensen. The reverse
+uses positive uniform weights and strict Jensen rigidity at `I/d`.
+`IsPositiveMap.trace_concave_le` supplies the concave forward implication
+without trace normalization; the module also proves the uniform upper bound
+and rigidity. This completes this corollary only: the other open clauses of
+issue #47 and the rectangular convention in Theorem 8.8 remain unchanged.
+
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
 * `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)
@@ -2310,10 +2373,25 @@ source-shaped prerequisites are available:
   `μ^n n^(d_μ-1)` scaling for one supplied positive-modulus block in the
   source range `d_μ - 1 ≤ n`.
 
+* `Matrix.l2_opNNNorm_blockDiagonal'` in
+  `QICLean.Analysis.BlockDiagonalNorm` proves the exact finite maximum of
+  dependent block norms, with zero for an empty family and attainment for a
+  nonempty family.
+* `QICLean.Analysis.JordanBlockComparison` proves phase invariance,
+  equal-modulus dimension monotonicity, and eventual strict dominance of
+  every smaller modulus, including a zero smaller eigenvalue.
+* `Matrix.eventually_l2_opNorm_jordanBlockDirectSum_pow_eq` in
+  `QICLean.Analysis.JordanBlockDirectSum` proves the eventual equality for
+  the selected maximal-modulus, maximal-dimension genuine block. The same
+  module constructs such a selection from finite nonempty block data,
+  transfers the explicit positive-modulus two-sided bounds, extends the
+  upper bound to every positive exponent by rescaling its constant, and
+  treats zero maximal modulus from the largest block dimension onward.
+
 The remaining obligations for the norm of
-`T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, largest-block
-data, the direct-sum eventual-maximum argument, the `μ = 0`/positive-exponent
-qualification, and a justified passage to Wolf's `κ_T` infimum. These are
+`T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, identification
+of the channel's largest-block data and nilpotence range, the explicit
+positive-exponent assembly, and a justified passage to Wolf's `κ_T` infimum. These are
 recorded in
 `docs/paper-gaps/wolf_thm823_jordan_scaling_qualifications.tex`; issue #297
 therefore remains open.
