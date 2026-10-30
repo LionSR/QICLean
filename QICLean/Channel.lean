@@ -31,6 +31,7 @@ import QICLean.Channel.ChoiTypeMap.Positivity
 import QICLean.Channel.ChoiTypeMap.YamagamiPositivity
 import QICLean.Channel.ComplementaryWeylTwirl
 import QICLean.Channel.CompletelyPositiveBridge
+import QICLean.Channel.ConvexFunctionalMonotonicity
 import QICLean.Channel.DecomposablePPT
 import QICLean.Channel.DecomposableWitness
 import QICLean.Channel.DeferredEnvironmentTrace

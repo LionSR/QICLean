@@ -1,0 +1,133 @@
+\section{Convex functionals under completely positive maps}
+\label{sec:convex_functional_monotonicity}
+
+\begin{definition}[Invariant convex matrix functionals]
+    \label{def:convex_matrix_functional}
+    \lean{Matrix.MatrixTuple, Matrix.MatrixTupleDomains,
+        Matrix.MatrixTupleFunctional, Matrix.ConvexMatrixFunctional}
+    \leanok
+    Fix a tuple index set $I$. In every finite dimension let
+    $D_d\subseteq\MN{d}^{I}$ and $F_d:D_d\to\R$.
+    Assume $D_d$ is convex and $F_d$ is jointly convex. The domains are
+    closed under simultaneous unitary conjugation and tensoring every
+    component with the same density matrix, and
+    \begin{align}
+        F_d\bigl((UA_iU^\dagger)_{i\in I}\bigr)
+            &=F_d\bigl((A_i)_{i\in I}\bigr),
+        \label{eq:convex_functional_unitary}\\
+        F_{dm}\bigl((A_i\otimes\tau)_{i\in I}\bigr)
+            &=F_d\bigl((A_i)_{i\in I}\bigr).
+        \label{eq:convex_functional_ancilla}
+    \end{align}
+    The domains and values are independent of the choice of basis.
+    These are the hypotheses of \cite[Theorem~5.16]{Wolf2012Quantum};
+    finite $I$ gives the source's finite tuples.
+\end{definition}
+
+\begin{lemma}[Finite complementary Weyl average]
+    \label{lem:convex_functional_weyl_average}
+    \lean{Matrix.ConvexMatrixFunctional.weyl_average_eq_partialTraceRight}
+    \leanok
+    Let $C$ be a finite coordinate space of dimension $m\ge1$ and choose
+    a primitive $m$th root of unity. Relabel the corresponding Weyl
+    operators as matrices $W_{ab}$ on $C$. For every matrix $X$ on $S\otimes C$,
+    \begin{align}
+        \frac1{m^2}\sum_{a,b}
+            (\Id_S\otimes W_{ab})X(\Id_S\otimes W_{ab})^\dagger
+            &=(\tr_C X)\otimes\frac{\Id_C}{m}.
+        \label{eq:convex_functional_twirl}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:twirl_partial_trace}
+    Apply Lemma~\ref{lem:twirl_partial_trace} in the chosen basis of $C$,
+    then identify the real coefficient $m^{-2}$ with its complex scalar action.
+\end{proof}
+
+\begin{theorem}[Partial-trace monotonicity]
+    \label{thm:convex_functional_partial_trace}
+    \lean{Matrix.ConvexMatrixFunctional.partialTraceRight_le}
+    \leanok
+    \uses{def:convex_matrix_functional}
+    Let $F$ satisfy Definition~\ref{def:convex_matrix_functional}, and let
+    $\dim C=m\ge1$. If $A\in D_{\dim(S\otimes C)}$ and
+    $(\tr_C A_i)_{i\in I}\in D_{\dim S}$, then
+    $F_{\dim S}((\tr_C A_i)_i)\le F_{\dim(S\otimes C)}(A)$.
+    The retained space $S$ may have dimension zero.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:convex_functional_weyl_average, def:convex_matrix_functional}
+    Apply joint convexity to the uniform simultaneous Weyl conjugations in
+    (\ref{eq:convex_functional_twirl}), component by component. Unitary
+    invariance makes every summand's value $F(A)$. The matrix $\Id_C/m$ is
+    positive semidefinite with trace one, so
+    (\ref{eq:convex_functional_ancilla}) identifies the value at the average
+    with the value at the marginal tuple.
+\end{proof}
+
+\begin{theorem}[Rectangular unitary dilation with specified factor order]
+    \label{thm:convex_functional_rectangular_dilation}
+    \lean{Matrix.exists_rectangular_unitary_dilation}
+    \leanok
+    Let $T:\MN{d}\to\MN{d'}$ be completely positive and trace preserving,
+    with $d\ge1$. There are an integer $r\ge1$, a density state
+    $\tau$ on $C=\C^{d'}\otimes\C^r$, and a unitary $U$ on
+    $C\otimes\C^d$ such that
+    \begin{align}
+        T(X)&=\tr_{\C^r\otimes\C^d}
+            \bigl[R U S(X\otimes\tau)S^\dagger U^\dagger R^\dagger\bigr].
+        \label{eq:convex_functional_rectangular_dilation}
+    \end{align}
+    Here $S:\C^d\otimes C\to C\otimes\C^d$ swaps factors and
+    $R:(\C^{d'}\otimes\C^r)\otimes\C^d
+       \to\C^{d'}\otimes(\C^r\otimes\C^d)$ reassociates them.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:stinespring_schrodinger_representation,
+        lem:exists_unitary_mul_eq_of_gram_eq}
+    A Kraus representation gives an isometry $V:\C^d\to C$ with
+    $T(X)=\tr_{\C^r}(VXV^\dagger)$. The space $C$ is nonzero because
+    $V^\dagger V=\Id_d$. Choose basis vectors $c_0\in C$ and $a_0\in\C^d$.
+    The maps $Jx=c_0\otimes x$ and $EVx=Vx\otimes a_0$ have the same
+    Gram matrix $\Id_d$. Their unitary extension gives $EV=UJ$.
+    Set $\tau=\ketbra{c_0}{c_0}$. Then
+    $JXJ^\dagger=S(X\otimes\tau)S^\dagger$ and
+    $EVXV^\dagger E^\dagger=VXV^\dagger\otimes\ketbra{a_0}{a_0}$.
+    Reassociate and trace the last two factors to obtain
+    (\ref{eq:convex_functional_rectangular_dilation}).
+\end{proof}
+
+\begin{theorem}[Monotonicity under completely positive maps]
+    \label{thm:convex_functional_monotonicity}
+    \lean{Matrix.ConvexMatrixFunctional.map_le,
+        Matrix.ConvexMatrixFunctional.map_le_univ}
+    \leanok
+    \uses{def:convex_matrix_functional}
+    Let $F$ satisfy Definition~\ref{def:convex_matrix_functional}, let
+    $d\ge1$, and let $T:\MN{d}\to\MN{d'}$ be completely positive and trace
+    preserving. Whenever $A\in D_d$ and $(T(A_i))_{i\in I}\in D_{d'}$,
+    \begin{align}
+        F_{d'}\bigl((T(A_i))_{i\in I}\bigr)&\le F_d(A).
+        \label{eq:convex_functional_monotonicity}
+    \end{align}
+    In particular this holds for every tuple when $D_d=\MN{d}^{I}$ in
+    every dimension. This is \cite[Theorem~5.16, Equation~(5.49)]{Wolf2012Quantum},
+    with the displayed evaluations required to belong to their domains.
+    No positivity condition is imposed on the components of $A$.
+    % Source well-definedness and zero-dimension convention:
+    % docs/paper-gaps/wolf_ch5_monotonicity_domains.tex.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:convex_functional_rectangular_dilation,
+        thm:convex_functional_partial_trace, def:convex_matrix_functional}
+    Use the dilation in
+    (\ref{eq:convex_functional_rectangular_dilation}). Tensor closure,
+    coordinate independence and unitary closure place the enlarged tuple
+    in its domain and preserve its value. Apply
+    Theorem~\ref{thm:convex_functional_partial_trace} to the environment
+    $\C^r\otimes\C^d$. Its marginal is exactly $(T(A_i))_i$.
+\end{proof}
