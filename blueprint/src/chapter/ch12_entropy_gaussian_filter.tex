@@ -289,6 +289,46 @@ the actual mass of $I_T^c$ under $\mu_0=\delta_0$ is zero.
     (\ref{eq:gaussian_multiplier}).
 \end{proof}
 
+\begin{definition}[Commutator operator]
+    \label{def:gaussian_commutator_operator}
+    \lean{GaussianFilter.commutatorCLM, GaussianFilter.commutatorCLM_apply}
+    \leanok
+    For a matrix $H$, let $\operatorname{ad}_H(A)=HA-AH$.
+\end{definition}
+
+\begin{theorem}[Gaussian commutator expansion]
+    \label{thm:gaussian_commutator_series}
+    \lean{GaussianFilter.gaussianIntertwiner_eq_exp_commutator,
+        GaussianFilter.hasSum_gaussianIntertwiner_commutator}
+    \leanok
+    \uses{def:gaussian_filter_integrals, def:gaussian_commutator_operator}
+    Let $H$ be a finite-dimensional Hermitian matrix and let $h\ge0$.
+    For every matrix $A$, Gaussian averaging with the same generator on
+    both sides satisfies
+    \begin{align}
+        M_h(A)
+        &=\exp\!\left(-\frac h2\operatorname{ad}_H^2\right)(A)
+          =\sum_{r=0}^{\infty}\frac{(-h/2)^r}{r!}
+            \operatorname{ad}_H^{2r}(A).
+        \label{eq:gaussian_commutator_series}
+    \end{align}
+    The series converges in operator norm. For $h=q/\Delta E^2$ this is
+    the expansion in \cite{Hastings2006Solving}, source lines 1005--1009,
+    with variance power $r$ at commutator order $2r$
+    \cite{gap:hastings05_gaussian_series_coefficients}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_filter_multiplier, def:gaussian_commutator_operator}
+    Choose an orthonormal eigenbasis $He_j=E_je_j$.
+    The $(i,j)$ matrix coefficient of $\operatorname{ad}_H(A)$ is
+    $(E_i-E_j)\langle e_i,Ae_j\rangle$. The exponential in
+    (\ref{eq:gaussian_commutator_series}) therefore multiplies this
+    coefficient by $e^{-h(E_i-E_j)^2/2}$, as does the Gaussian average.
+    Equality of all coefficients proves the first equality. Apply the
+    norm-convergent exponential series to the continuous linear operator
+    $-(h/2)\operatorname{ad}_H^2$, and evaluate it at $A$.
+\end{proof}
+
 \subsection{Spectral gaps and ground-vector estimates}
 
 \begin{theorem}[Ground and excited eigenvectors]

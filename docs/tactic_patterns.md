@@ -317,6 +317,31 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Matrix coefficients as continuous linear functionals (2026-10-28)
+
+- **Seen:** `Analysis/GaussianFilter/MatrixIntegral.lean`,
+  `Analysis/SpectralFilter/MatrixFilter.lean`, and
+  `Analysis/Transport/NormDerivative.lean` each construct the linear functional
+  `A ↦ star v ⬝ᵥ (A *ᵥ w)` by supplying linearity proofs.
+- **Replacement:** Compose Mathlib's `dotProductBilin` with the partial
+  evaluation `(Matrix.mulVecBilin ℂ ℂ).flip w`, then apply
+  `LinearMap.toContinuousLinearMap` in finite dimension.
+- **Decision:** `Analysis/GaussianFilter/CommutatorSeries.lean` uses this
+  composition. No fourth handwritten linearity proof or new public
+  abstraction is introduced. The three existing constructions can be
+  simplified separately after checking their imports and scalar conventions.
+
+### Convexity from a quadratic variational formula (2026-10-29)
+
+- **Seen:** The trace-exponential variational argument in
+  `Analysis/LiebTraceExponential.lean` and the Ando--Lieb power functional in
+  `Analysis/LiebConvexity.lean` evaluate a variational bound at the optimizer
+  of a convex combination, then apply a known convexity or concavity inequality.
+- **Reuse:** Trace cyclicity, `Matrix.trace_conjTranspose`, and positivity of
+  the trace product give the completed-square bound for the power functional.
+- **Decision:** These are two mathematically distinct variational formulas.
+  Keep their optimizers explicit; no tactic or additional abstraction is needed.
+
 ### Orthogonal component along a unit eigenvector (2026-10-26)
 
 - **Seen:** The final decomposition in `Analysis/GapPerturbation.lean` and the
