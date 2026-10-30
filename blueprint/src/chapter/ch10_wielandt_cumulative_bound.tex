@@ -34,11 +34,10 @@ Section~\ref{sec:app_wielandt_cumulative_support}.
 
 \subsection{Classical stochastic embedding}
 
-% Source-written declarations; compilation and declaration checking remain pending.
 \begin{definition}[Matrix-unit stochastic embedding]
     \label{def:stochastic_kraus_embedding}
     \lean{Kraus.stochasticLetter, Kraus.stochasticFamily}
-    \notready
+    \leanok
     For an entrywise nonnegative real $D\times D$ matrix $a$, set
     $K^{ij}=\sqrt{a_{ij}}\ketbra{i}{j}$, retaining all ordered pairs
     $(i,j)$ as labels. This is the embedding preceding
@@ -52,7 +51,7 @@ Section~\ref{sec:app_wielandt_cumulative_support}.
         Kraus.stochasticFamily_mapLM_diagonal,
         Kraus.stochasticFamily_mapLM_pow_succ_diagonal,
         Kraus.stochasticFamily_mapLM_pow_succ}
-    \notready
+    \leanok
     \uses{def:stochastic_kraus_embedding, def:kraus_map}
     For every entrywise nonnegative $a$, every $n\ge1$, and every $X$,
     $\E_K^n(X)=\operatorname{diag}(a^n\operatorname{diag}X)$.
@@ -61,7 +60,7 @@ Section~\ref{sec:app_wielandt_cumulative_support}.
     $\sum_{ij}(K^{ij})^\dagger K^{ij}=I$ and $\E_K$ is a quantum channel.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     Since $K^{ij}X(K^{ij})^\dagger=a_{ij}X_{jj}\ketbra{i}{i}$,
     summing gives the one-step formula. Induction gives the iterate formula.
     Moreover, $(K^{ij})^\dagger K^{ij}=a_{ij}\ketbra{j}{j}$,
@@ -71,7 +70,7 @@ Section~\ref{sec:app_wielandt_cumulative_support}.
 \begin{definition}[Classical index of primitivity]
     \label{def:classical_positive_power_index}
     \lean{Matrix.positivePowerIndex}
-    \notready
+    \leanok
     For a real square matrix $a$, let
     $p(a)=\inf\{n\ge1:(a^n)_{ij}>0\text{ for every }i,j\}$,
     with value zero when the set is empty.
@@ -84,7 +83,7 @@ Section~\ref{sec:app_wielandt_cumulative_support}.
     \lean{Kraus.stochasticFamily_choiMatrix_pow_succ,
         Kraus.stochasticFamily_wordSpan_succ_eq_top_iff,
         Kraus.stochasticFamily_vectorSpreadSpan_succ_iff}
-    \notready
+    \leanok
     \uses{def:stochastic_kraus_embedding, def:kraus_exact_word_span,
         def:vector_spread_span}
     Let $D>0$, let $a$ be entrywise nonnegative, and let $n\ge1$.
@@ -94,7 +93,7 @@ Section~\ref{sec:app_wielandt_cumulative_support}.
     $H_n(K,\varphi)=\C^D$ for every nonzero $\varphi$.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}\leanok
     \uses{thm:stochastic_kraus_iterates, thm:kraus_iterate_rank_one_sum}
     Apply the iterate formula to $\ketbra{j}{l}/D$ to obtain the Choi
     matrix. Positive definiteness of that matrix is equivalent to full
