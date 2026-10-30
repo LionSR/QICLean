@@ -317,6 +317,20 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Matrix coefficients as continuous linear functionals (2026-10-28)
+
+- **Seen:** `Analysis/GaussianFilter/MatrixIntegral.lean`,
+  `Analysis/SpectralFilter/MatrixFilter.lean`, and
+  `Analysis/Transport/NormDerivative.lean` each construct the linear functional
+  `A ↦ star v ⬝ᵥ (A *ᵥ w)` by supplying linearity proofs.
+- **Replacement:** Compose Mathlib's `dotProductBilin` with the partial
+  evaluation `(Matrix.mulVecBilin ℂ ℂ).flip w`, then apply
+  `LinearMap.toContinuousLinearMap` in finite dimension.
+- **Decision:** `Analysis/GaussianFilter/CommutatorSeries.lean` uses this
+  composition. No fourth handwritten linearity proof or new public
+  abstraction is introduced. The three existing constructions can be
+  simplified separately after checking their imports and scalar conventions.
+
 ### Convexity from a quadratic variational formula (2026-10-29)
 
 - **Seen:** The trace-exponential variational argument in
@@ -1524,6 +1538,20 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   There are two occurrences across two files. Retain these existing lemmas;
   a third occurrence would justify considering a combined inequality.
 
+### Extending density-state convergence to all matrix inputs — existing decomposition (2026-10-29)
+
+- **Seen:** The primitivity proof in `Channel/WolfTheorem67.lean` extends
+  convergence from density matrices to all matrices; the bounded-orbit proof
+  in `Channel/FixedPoint/MeanErgodicProjection.lean` uses the same positive-part
+  reduction for boundedness.
+- **Reuse:** Total trace normalization handles zero-trace inputs. Apply the
+  existing four-positive-semidefinite-parts decomposition to the identity
+  map, then combine convergence by subtraction and scalar multiplication.
+  `ContinuousLinearMap.tendsto_of_tendsto_apply_of_finiteDimensional` supplies
+  convergence in operator norm.
+- **Decision:** No new tactic. The convergence helper stays private until
+  another production consumer needs the same limit statement.
+
 ### Peripheral phases and finite cyclicity — existing structures (2026-10-29)
 
 - **Seen:** `Peripheral/AbstractEigenvectors.lean` and
@@ -1539,6 +1567,19 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Compatibility:** finite-Kraus peripheral-unitary declarations now call
   the abstract results. Their historical adjoint-weight arguments are retained
   and explicitly acknowledged in the proof to preserve named-argument callers.
+
+### The two-factor projector-gap defect — promoted (2026-10-29)
+
+- **Pattern:** Expand the projector-gap defect of a tensor sum as the sum of
+  the two factor defects and the tensor product of the two orthogonal
+  complements.
+- **Defined in:** `Analysis/DoubledSystemGap.lean`, `Matrix.tensorSum_gap_eq`
+  and `Matrix.PosSemidef.tensorSum_gap`.
+- **Refactored occurrences:** The original doubled-Hamiltonian identity and
+  gap theorem are now direct specializations. The product-ancilla application
+  uses the same identity with different factor dimensions and energies.
+- **Notes:** `Matrix.PosSemidef.gap_mono` handles the capped lower bound;
+  neither it nor the tensor-sum result assumes an attained excited energy.
 
 ### Elementary operator Schmidt products — promoted (2026-10-29)
 

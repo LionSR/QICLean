@@ -14,6 +14,7 @@ import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
 import QICLean.Analysis.Birkhoff
+import QICLean.Analysis.BlockDiagonalNorm
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
 import QICLean.Analysis.CfcComplex
@@ -97,6 +98,8 @@ import QICLean.Analysis.IsometricDomainExtension
 import QICLean.Analysis.IsometricIntertwiningCommute
 import QICLean.Analysis.IsometricLowerPin
 import QICLean.Analysis.JordanBlockAsymptotics
+import QICLean.Analysis.JordanBlockComparison
+import QICLean.Analysis.JordanBlockDirectSum
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
