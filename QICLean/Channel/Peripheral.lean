@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.Peripheral
 
+import QICLean.Channel.Peripheral.AbstractEigenvectors
 import QICLean.Channel.Peripheral.AdjointSpectrum
 import QICLean.Channel.Peripheral.AntilinearConjugation
 import QICLean.Channel.Peripheral.AsymptoticImage
@@ -22,6 +23,7 @@ import QICLean.Channel.Peripheral.CyclicDecomposition.Decomposition
 import QICLean.Channel.Peripheral.CyclicDecomposition.LetterShift
 import QICLean.Channel.Peripheral.CyclicDecomposition.PeripheralUnitary
 import QICLean.Channel.Peripheral.CyclicDecomposition.Primitivity
+import QICLean.Channel.Peripheral.CyclicGroup
 import QICLean.Channel.Peripheral.CyclicGroupKraus
 import QICLean.Channel.Peripheral.DensityBlockCoordinates
 import QICLean.Channel.Peripheral.DensityBlockDynamics
@@ -30,6 +32,7 @@ import QICLean.Channel.Peripheral.DensityBlockSchwarz
 import QICLean.Channel.Peripheral.DirectSumFacePermutation
 import QICLean.Channel.Peripheral.GroupStructure
 import QICLean.Channel.Peripheral.IrreducibleChannel
+import QICLean.Channel.Peripheral.IrreducibleSchwarz
 import QICLean.Channel.Peripheral.JordanBlocks
 import QICLean.Channel.Peripheral.MatchedBlockEndomorphism
 import QICLean.Channel.Peripheral.MultiCycleDecomposition
@@ -39,6 +42,7 @@ import QICLean.Channel.Peripheral.PureStateFace
 import QICLean.Channel.Peripheral.RankOnePositiveProjection
 import QICLean.Channel.Peripheral.RecurrentInverse
 import QICLean.Channel.Peripheral.SchurAsymptoticConvergence
+import QICLean.Channel.Peripheral.SchwarzCovariance
 import QICLean.Channel.Peripheral.SpectralProjection
 import QICLean.Channel.Peripheral.SpectralRadius
 import QICLean.Channel.Peripheral.Spectrum

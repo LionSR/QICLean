@@ -65,6 +65,7 @@ import QICLean.Algebra.MatrixProductIntertwine
 import QICLean.Algebra.MatrixRankBaseChange
 import QICLean.Algebra.MatrixRankClosed
 import QICLean.Algebra.MatrixRankKronecker
+import QICLean.Algebra.MatrixReindex
 import QICLean.Algebra.MatrixReindexUnitary
 import QICLean.Algebra.MatrixSandwichIntertwine
 import QICLean.Algebra.MatrixSpectralDecomp
@@ -81,6 +82,7 @@ import QICLean.Algebra.NilpotentSubspaceThree
 import QICLean.Algebra.NilpotentSubspaceTwo
 import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
+import QICLean.Algebra.OperatorRightContraction
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OperatorSchmidtCut

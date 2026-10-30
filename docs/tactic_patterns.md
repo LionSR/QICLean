@@ -331,6 +331,16 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   abstraction is introduced. The three existing constructions can be
   simplified separately after checking their imports and scalar conventions.
 
+### Convexity from a quadratic variational formula (2026-10-29)
+
+- **Seen:** The trace-exponential variational argument in
+  `Analysis/LiebTraceExponential.lean` and the Ando--Lieb power functional in
+  `Analysis/LiebConvexity.lean` evaluate a variational bound at the optimizer
+  of a convex combination, then apply a known convexity or concavity inequality.
+- **Reuse:** Trace cyclicity, `Matrix.trace_conjTranspose`, and positivity of
+  the trace product give the completed-square bound for the power functional.
+- **Decision:** These are two mathematically distinct variational formulas.
+  Keep their optimizers explicit; no tactic or additional abstraction is needed.
 
 ### Orthogonal component along a unit eigenvector (2026-10-26)
 
@@ -1530,3 +1540,19 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   `Finset.sum_le_sum_of_subset_of_nonneg` give the two steps directly.
   There are two occurrences across two files. Retain these existing lemmas;
   a third occurrence would justify considering a combined inequality.
+
+### Peripheral phases and finite cyclicity — existing structures (2026-10-29)
+
+- **Seen:** `Peripheral/AbstractEigenvectors.lean` and
+  `Peripheral/IrreducibleSchwarz.lean` use the same unit-modulus cancellation
+  in the weighted Schwarz equality, peripheral products, and normalization.
+- **Reuse:** `Complex.conj_mul'` handles conjugate-phase cancellation;
+  `SchwarzMap.mem_rightMultiplicativeDomain_iff` and its full-domain version
+  handle product preservation. No separate phase tactic is introduced.
+- **Shared mathematics:** `peripheralEigenvalues_eq_range_exp_of_mul_mem`
+  factors the finite-set cyclicity argument out of `CyclicGroupKraus`.
+  `Module.End.eigenvectors_linearIndependent'` and
+  `LinearIndependent.fintype_card_le_finrank` give the order bound.
+- **Compatibility:** finite-Kraus peripheral-unitary declarations now call
+  the abstract results. Their historical adjoint-weight arguments are retained
+  and explicitly acknowledged in the proof to preserve named-argument callers.
