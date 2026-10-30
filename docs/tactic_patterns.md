@@ -1541,6 +1541,20 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   There are two occurrences across two files. Retain these existing lemmas;
   a third occurrence would justify considering a combined inequality.
 
+### Extending density-state convergence to all matrix inputs — existing decomposition (2026-10-29)
+
+- **Seen:** The primitivity proof in `Channel/WolfTheorem67.lean` extends
+  convergence from density matrices to all matrices; the bounded-orbit proof
+  in `Channel/FixedPoint/MeanErgodicProjection.lean` uses the same positive-part
+  reduction for boundedness.
+- **Reuse:** Total trace normalization handles zero-trace inputs. Apply the
+  existing four-positive-semidefinite-parts decomposition to the identity
+  map, then combine convergence by subtraction and scalar multiplication.
+  `ContinuousLinearMap.tendsto_of_tendsto_apply_of_finiteDimensional` supplies
+  convergence in operator norm.
+- **Decision:** No new tactic. The convergence helper stays private until
+  another production consumer needs the same limit statement.
+
 ### Peripheral phases and finite cyclicity — existing structures (2026-10-29)
 
 - **Seen:** `Peripheral/AbstractEigenvectors.lean` and

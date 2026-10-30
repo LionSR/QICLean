@@ -170,4 +170,5 @@ import QICLean.Channel.WielandtLowDim
 import QICLean.Channel.Wigner
 import QICLean.Channel.WindowMinorization
 import QICLean.Channel.WolfProps
+import QICLean.Channel.WolfTheorem67
 import QICLean.Channel.WolfTheorem68

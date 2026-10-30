@@ -1478,14 +1478,31 @@ Source: `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 803–817.
 
 ### Section 6.3 Primitive maps
 
-#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — PARTIAL-SCOPE
+#### Wolf Theorem 6.7 (Primitive maps, 4 equivalent conditions) — FORMALIZED
 
-**Item 4** (trivial peripheral spectrum, PD eigenvector):
-* `IsPrimitive` — `QICLean.Channel.Peripheral.Spectrum`
-* `isPrimitive_of_compl_eigenvalues_lt_one` / `compl_eigenvalue_norm_lt_one_of_primitive`
+`WolfTheorem67.wolf_theorem_6_7_tfae` in
+`QICLean.Channel.WolfTheorem67` proves all four source conditions for an
+arbitrary positive trace-preserving map on `M_D(ℂ)`, `D ≥ 1`:
 
-Other items: PARTIALLY via the transfer-operator gap formalization on the
-tensor-network side; see `TNLean.Wielandt.WolfChapter6TNIndex`.
+* one power is strictly positive on every density matrix;
+* every positive iterate and the recurrent peripheral projection are irreducible;
+* every density matrix converges to one faithful density;
+* the peripheral set is `{1}`, the characteristic-polynomial root `1` has
+  multiplicity one, and a faithful stationary density exists.
+
+`simpleFaithfulPeripheralSpectrum_iff` explicitly identifies the last clause
+with a faithful line of **maximal generalized** peripheral eigenspaces.
+`strictlyPositivePower_iff_uniform_eventual` supplies a single threshold valid
+for every later iterate and every density matrix. The proof uses compactness
+of density matrices and finite-dimensional operator-norm convergence; it does
+not interchange pointwise and uniform quantifiers without proof.
+
+The iterate index in clause 2 is `k > 0`. Including `k = 0` would make the
+identity on `M_2(ℂ)` a counterexample to the source equivalence. The source
+convention and the resolved stronger-channel restriction are recorded in
+`docs/paper-gaps/wolf_theorem67_positive_iterates.tex`. Theorem 6.8 remains the
+separate CP/Kraus theorem below. Targeted compilation, boundary checks, and all
+seven public standard-axiom guards pass; full repository CI is not claimed.
 
 #### Wolf Theorem 6.8 (CP primitive maps, Kraus span characterizations)
 
