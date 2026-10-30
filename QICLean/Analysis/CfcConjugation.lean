@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Algebra.MatrixReindex
-import QICLean.Algebra.PosSemidefSupport
+import QICLean.Analysis.SupportProjectionOrder
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.HermitianFunctionalCalculus
@@ -137,18 +137,7 @@ theorem PosSemidef.sqrt_transpose {A : Matrix n n ℂ} (hA : A.PosSemidef) :
 theorem IsHermitian.supportProj_transpose {A : Matrix n n ℂ} (hA : A.IsHermitian) :
     hA.transpose.supportProj = hA.supportProjᵀ := by
   let f : ℝ → ℝ := fun x ↦ if x ≠ 0 then 1 else 0
-  have hsupport (B : Matrix n n ℂ) (hB : B.IsHermitian) :
-      hB.supportProj = cfc f B := by
-    rw [hB.cfc_eq]
-    unfold Matrix.IsHermitian.supportProj Matrix.IsHermitian.cfc
-    rw [Unitary.conjStarAlgAut_apply]
-    congr 2
-    ext i j
-    by_cases hij : i = j
-    · subst j
-      by_cases hi : hB.eigenvalues i = 0 <;> simp [f, hi]
-    · simp [Matrix.diagonal_apply_ne _ hij]
-  rw [hsupport Aᵀ hA.transpose, hsupport A hA]
+  rw [hA.transpose.supportProj_eq_cfc, hA.supportProj_eq_cfc]
   exact (cfc_transpose hA f).symm
 
 -- All four consequences include the singular zero matrix.

@@ -1593,6 +1593,16 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
   the abstract results. Their historical adjoint-weight arguments are retained
   and explicitly acknowledged in the proof to preserve named-argument callers.
 
+### Spectral support and complementary cuts — shared lemmas (2026-10-29)
+
+- `Matrix.IsHermitian.supportProj_eq_cfc` expresses the range projection
+  through functional calculus; its transpose identity now reuses this lemma.
+- `Matrix.operatorSchmidtRank_reindex_prodComm` and
+  `Entropy.operatorSchmidtRank_cutOperator_compl_eq` express invariance under
+  exchange of tensor factors and complementary regions. The two-sided support
+  estimate combines the existing one-sided bounds through these identities.
+- No additional tactic or parallel definition of a support projection is used.
+
 ### The two-factor projector-gap defect — promoted (2026-10-29)
 
 - **Pattern:** Expand the projector-gap defect of a tensor sum as the sum of

@@ -1860,3 +1860,17 @@ logarithmic divergence, or a comparison with relative entropy.
     For nested regions use the three factors $A$, $B\setminus A$, and
     the exterior of $B$.
 \end{proof}
+
+\begin{theorem}[Exchanging the two tensor factors]
+    \label{thm:operator_schmidt_factor_exchange}
+    \lean{Matrix.operatorSchmidtRank_reindex_prodComm}
+    \leanok
+    \uses{thm:operator_schmidt_realignment_rank}
+    Exchanging two finite tensor factors preserves operator Schmidt
+    rank over any field. The factors may be empty.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:operator_schmidt_realignment_rank}
+    Exchanging the two factors transposes the realigned matrix,
+    and matrix rank is invariant under transposition.
+\end{proof}

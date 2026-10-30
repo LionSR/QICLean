@@ -54,7 +54,11 @@ private theorem sqrt_weighted_error_minimum {f : ℝ} (hf0 : 0 ≤ f) (hf1 : f �
     nlinarith only [sq_nonneg t, mul_nonneg ht (show 0 ≤ 1 - 2 * f by linarith)]
 
 omit [Fintype n] in
-private theorem vecMulVec_ofLp_smul_self (ψ : EuclideanSpace ℂ n) (c : ℂ) :
+/-- Multiplying a vector by `c` scales its rank-one matrix by `‖c‖²`.
+In particular, a scalar of norm one leaves that matrix unchanged.
+Auxiliary to the pure-state normalizations in Schuch--Wolf--Verstraete--Cirac,
+arXiv:0705.0292v2, lines 139 and 160--173. -/
+theorem vecMulVec_ofLp_smul_self (ψ : EuclideanSpace ℂ n) (c : ℂ) :
     vecMulVec (WithLp.ofLp (c • ψ)) (star (WithLp.ofLp (c • ψ))) =
       (‖c‖ ^ 2 : ℝ) • vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)) := by
   have hcoeff : star c * c = ((‖c‖ ^ 2 : ℝ) : ℂ) := by
