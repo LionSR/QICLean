@@ -13,7 +13,7 @@ open scoped BigOperators ComplexConjugate Matrix.Norms.Elementwise
 noncomputable section
 
 local instance {m n : Type*} [Fintype m] [Fintype n] : ContinuousENorm (Matrix m n ℂ) :=
-  SeminormedAddGroup.toContinuousENorm
+  SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
 
 private abbrev KetSupport := Fin (min (Fintype.card Bool) (Fintype.card (Fin 3)))
 private abbrev BraSupport := Fin (min (Fintype.card Unit) (Fintype.card Bool))

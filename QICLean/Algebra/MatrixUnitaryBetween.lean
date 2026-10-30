@@ -143,17 +143,9 @@ No equivalence between the index types is selected. -/
 theorem isUnitaryBetween_of_card_eq (A : Matrix m n ℂ) (hA : A.IsIsometry)
     (hcard : Fintype.card m = Fintype.card n) : A.IsUnitaryBetween := by
   have hAeq : Aᴴ * A = 1 := hA
-  have hinjective : Function.Injective A.mulVec := by
-    intro x y hxy
-    have h := congrArg (fun z ↦ Aᴴ *ᵥ z) hxy
-    rw [mulVec_mulVec, hAeq, one_mulVec, mulVec_mulVec, hAeq, one_mulVec] at h
-    exact h
-  have hfinrank : Module.finrank ℂ (n → ℂ) = Module.finrank ℂ (m → ℂ) := by
-    simpa [Module.finrank_pi] using hcard.symm
-  have hinjectiveLin : Function.Injective A.mulVecLin := hinjective
   have hsurjective : Function.Surjective A.mulVec :=
-    (LinearMap.injective_iff_surjective_of_finrank_eq_finrank hfinrank
-      (f := A.mulVecLin)).mp hinjectiveLin
+    Matrix.mulVec_surjective_iff_rank_eq_card.mpr
+      ((hA.rank_eq_card A).trans hcard.symm)
   obtain ⟨B, hB⟩ := mulVec_surjective_iff_exists_right_inverse.mp hsurjective
   have hBA : B = Aᴴ := by
     calc

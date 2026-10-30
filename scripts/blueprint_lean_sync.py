@@ -3,7 +3,8 @@ r"""
 Blueprint ↔ Lean code synchronisation checker.
 
 Parses the blueprint .tex files for \lean{DeclName} and \leanok annotations,
-then greps the Lean source tree for matching declarations.  Reports:
+then scans QICLean and, for external names, exact-pinned Mathlib sources.
+Source scanning complements, but does not replace, compiled checkdecls. Reports:
 
   1. Blueprint references whose Lean declaration cannot be found.
   2. \leanok tags on items whose declaration is missing from the Lean source.
@@ -23,6 +24,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -33,7 +35,7 @@ from pathlib import Path
 
 _LEAN_DECL_RE = re.compile(
     r"^\s*(?:@\[.*?\]\s*)?"
-    r"(?:(?:noncomputable|protected|private)\s+)*"
+    r"(?:(?:noncomputable|protected|private|public)\s+)*"
     r"(def|theorem|lemma|abbrev|instance|class|structure|inductive|axiom|opaque|alias)\s+"
     r"((?![\d.])[\w']+(?:\.(?![\d.])[\w']+)*)",
     re.MULTILINE,
@@ -43,7 +45,7 @@ _LEAN_DECL_RE = re.compile(
 # name appears on the following line.
 _LEAN_DECL_KEYWORD_ONLY_RE = re.compile(
     r"^\s*(?:@\[.*?\]\s*)?"
-    r"(?:(?:noncomputable|protected|private)\s+)*"
+    r"(?:(?:noncomputable|protected|private|public)\s+)*"
     r"(def|theorem|lemma|abbrev|instance|class|structure|inductive|axiom|opaque|alias)\s*$"
 )
 _TRACKED_REVERSE_DECL_KINDS = {"def", "theorem", "lemma"}
@@ -55,7 +57,7 @@ _DIFF_HUNK_RE = re.compile(r"^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@")
 # scaffolding and do not require a blueprint anchor.
 _LEAN_PRIVATE_RE = re.compile(
     r"^\s*(?:@\[.*?\]\s*)?"
-    r"(?:(?:noncomputable|protected)\s+)*"
+    r"(?:(?:noncomputable|protected|public)\s+)*"
     r"private\s+",
 )
 
@@ -228,6 +230,128 @@ def collect_lean_decls(lean_root: Path) -> dict[str, LeanDecl]:
                 decls[decl.short_name] = decl
 
     return decls
+
+
+def _fetch_mathlib_sources(package_dir: Path, url: str, rev: str) -> None:
+    """Fetch source only, atomically, without modifying an existing checkout.
+
+    Like TNLean's blueprint source setup, this needs neither Lake nor artifacts.
+    Unlike a tag fallback, fetching and checking out the manifest SHA cannot
+    silently select a moved input ref. Network access is explicitly opted into
+    by the caller, never enabled merely because this is a GitHub Actions job.
+    """
+    package_dir.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(
+        prefix=".blueprint-mathlib-", dir=package_dir.parent
+    ) as temporary_directory:
+        checkout = Path(temporary_directory) / "checkout"
+        checkout.mkdir()
+        for args in (
+            ("init", "-q"),
+            ("remote", "add", "origin", url),
+            ("fetch", "-q", "--depth", "1", "origin", rev),
+            ("checkout", "-q", "--detach", rev),
+        ):
+            subprocess.run(
+                ["git", *args], cwd=checkout, check=True,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+            )
+        actual = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=checkout, text=True
+        ).strip()
+        if actual != rev:
+            raise ValueError(f"fetched Mathlib HEAD {actual} does not match {rev}")
+        # Do not overwrite a checkout created while the fetch was running.
+        if package_dir.exists():
+            raise ValueError(f"Mathlib checkout appeared during fetch: {package_dir}")
+        checkout.rename(package_dir)
+
+
+def _resolve_mathlib_lean_root(root: Path) -> Path | None:
+    """Resolve only Mathlib's source library at the exact Lake manifest commit.
+
+    An unavailable or mismatched source tree never resolves an external name:
+    the normal missing-declaration report (and --ci failure) remains in force.
+    Local-only blueprints need no dependency checkout or network access.
+    """
+    try:
+        manifest = json.loads((root / "lake-manifest.json").read_text())
+        packages = manifest["packages"]
+        if not isinstance(packages, list) or any(not isinstance(p, dict) for p in packages):
+            raise ValueError("lake-manifest.json packages must be a list of package objects")
+        entries = [p for p in packages if p.get("name") == "mathlib"]
+        if len(entries) != 1:
+            raise ValueError("expected exactly one Mathlib package in lake-manifest.json")
+        entry = entries[0]
+        rev = entry.get("rev", "")
+        if entry.get("type") != "git" or not re.fullmatch(r"[0-9a-f]{40}", rev):
+            raise ValueError("Mathlib must have an exact 40-character git revision")
+        if entry.get("subDir"):
+            raise ValueError("Mathlib subdirectory checkouts are not supported")
+        packages_dir = Path(manifest.get("packagesDir", ".lake/packages"))
+        if packages_dir.is_absolute() or ".." in packages_dir.parts:
+            raise ValueError("packagesDir must be a relative path inside the repository")
+        package_dir = root / packages_dir / "mathlib"
+        if not package_dir.exists():
+            if os.getenv("BLUEPRINT_SYNC_FETCH_DEPS") != "1":
+                raise ValueError(
+                    "Mathlib sources are unavailable; resolve the pinned dependency "
+                    "or opt into source-only fetching with BLUEPRINT_SYNC_FETCH_DEPS=1"
+                )
+            url = entry.get("url")
+            if not isinstance(url, str) or not url:
+                raise ValueError("Mathlib has no git source URL in lake-manifest.json")
+            _fetch_mathlib_sources(package_dir, url, rev)
+        checkout_root = subprocess.check_output(
+            ["git", "rev-parse", "--show-toplevel"], cwd=package_dir,
+            stderr=subprocess.PIPE, text=True,
+        ).strip()
+        if Path(checkout_root).resolve() != package_dir.resolve():
+            raise ValueError("Mathlib sources are not a separate git checkout")
+        actual = subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=package_dir,
+            stderr=subprocess.PIPE, text=True,
+        ).strip()
+        if actual != rev:
+            raise ValueError(f"Mathlib HEAD {actual} does not match manifest revision {rev}")
+        lean_root = package_dir / "Mathlib"
+        if not lean_root.is_dir():
+            raise ValueError(f"Mathlib library directory is missing: {lean_root}")
+        changes = subprocess.check_output(
+            ["git", "status", "--porcelain", "--untracked-files=all", "--", "Mathlib"],
+            cwd=package_dir, stderr=subprocess.PIPE, text=True,
+        )
+        if changes.strip():
+            raise ValueError("Mathlib sources differ from the manifest-pinned checkout")
+        return lean_root
+    except (OSError, ValueError, KeyError, TypeError, subprocess.CalledProcessError) as error:
+        print(f"  (Mathlib source lookup unavailable: {error})")
+        return None
+
+
+def collect_mathlib_decls(root: Path, names: set[str]) -> dict[str, LeanDecl]:
+    """Resolve exact external names, never namespace or short-name allowlists."""
+    if not names:
+        return {}
+    lean_root = _resolve_mathlib_lean_root(root)
+    if lean_root is None:
+        return {}
+    found: dict[str, LeanDecl] = {}
+    # Only tracked files belong to the verified revision; in particular, an
+    # ignored scratch Lean file must not manufacture a successful citation.
+    tracked = subprocess.check_output(
+        ["git", "ls-files", "-z", "--", "Mathlib"],
+        cwd=lean_root.parent, text=True,
+    )
+    for relative in sorted(tracked.split("\0")):
+        lean_file = lean_root.parent / relative
+        if lean_file.suffix != ".lean":
+            continue
+        for decl in collect_file_lean_decls(lean_file, lean_root):
+            if decl.fqn in names and not decl.is_private:
+                found[decl.fqn] = decl
+    print(f"  Resolved {len(found)} external names in manifest-pinned Mathlib sources")
+    return found
 
 
 # ---------------------------------------------------------------------------
@@ -542,6 +666,12 @@ def run_sync(
     report.blueprint_entries = collect_blueprint_entries(blueprint_src)
     print(f"  Found {len(all_blueprint_decl_names)} unique \\lean{{}} references in blueprint")
     print(f"  Found {len(report.blueprint_entries)} theorem-like blueprint entries")
+
+    # Resolve only names absent from QICLean, preserving local-source precedence.
+    # Mathlib declarations are genuine source matches, not exempted missing tags.
+    report.lean_decls.update(collect_mathlib_decls(
+        root, all_blueprint_decl_names - report.lean_decls.keys()
+    ))
 
     # 3. Cross-reference all raw \\lean{} tags against Lean.  Only theorem-like
     # entries contribute to formalization statistics and \\leanok accounting, but

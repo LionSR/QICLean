@@ -16,7 +16,7 @@ open MeasureTheory QICLean.ComplexGaussian
 open scoped BigOperators Matrix.Norms.Elementwise
 
 local instance : ContinuousENorm (Matrix (Fin 2) (Fin 3) ℂ) :=
-  SeminormedAddGroup.toContinuousENorm
+  SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
 
 -- An empty set of positions leaves the arbitrary rectangular coefficient unchanged,
 -- even when the algebraic source definition has zero samples.
