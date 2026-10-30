@@ -249,3 +249,32 @@ theorem exists_clm_family_extension_of_card_le
 end Submodule
 end
 end
+
+open scoped TensorProduct Matrix ComplexOrder
+
+namespace Submodule
+
+/-- Exchanging tensor factors exchanges their finite product coordinates. -/
+theorem euclideanTensorEquiv_symm_comm
+    {σ β : Type*} [Fintype σ] [Fintype β] [DecidableEq σ] [DecidableEq β]
+    (z : EuclideanSpace ℂ (β × σ)) :
+    (euclideanTensorEquiv σ β).symm
+        (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ β) (EuclideanSpace ℂ σ)
+          (euclideanTensorEquiv β σ z)) =
+      WithLp.toLp 2 (fun p : σ × β ↦ z (p.2, p.1)) := by
+  have hcomm (w : EuclideanSpace ℂ β ⊗[ℂ] EuclideanSpace ℂ σ) (p : σ × β) :
+      (euclideanTensorEquiv σ β).symm
+          (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ β) (EuclideanSpace ℂ σ) w) p =
+        (euclideanTensorEquiv β σ).symm w (p.2, p.1) := by
+    rcases p with ⟨a, b⟩
+    induction w using TensorProduct.inductionOn with
+    | tmul x y =>
+      simp only [TensorProduct.commIsometry_apply, TensorProduct.comm_tmul,
+        euclideanTensorEquiv_symm_tmul, mul_comm]
+    | add w₁ w₂ hw₁ hw₂ =>
+      simp only [map_add, PiLp.add_apply, hw₁, hw₂]
+  ext p
+  simpa only [LinearIsometryEquiv.symm_apply_apply] using
+    hcomm (euclideanTensorEquiv β σ z) p
+
+end Submodule

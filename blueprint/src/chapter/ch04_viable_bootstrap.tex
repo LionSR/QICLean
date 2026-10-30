@@ -22,6 +22,7 @@ for the failure probability of random sampling.
 \end{theorem}
 
 \begin{proof}
+    \uses{thm:finite_image_span_dimension}
     \leanok
     By robustness, $W$ is $0.04$-viable for $T'$. Since $\eta(q)<1$, some
     $s$-dimensional subspace $W'\subseteq W$ is $(1-\delta')$-viable for $T'$
@@ -99,4 +100,42 @@ for the failure probability of random sampling.
         \label{eq:bootstrap_quantitative_failure}
     \end{align}
     Apply Theorem~\ref{thm:viable_bootstrap} with threshold $rD^{24}$.
+\end{proof}
+
+\begin{theorem}[Enlargement at a prescribed accuracy]
+    \label{thm:viable_enlargement_inverse_scale}
+    \lean{Submodule.viable_enlargement_of_close_improving_target}
+    \leanok
+    \uses{def:subspace_viable, def:subspace_close}
+    Let $\mathcal H,\mathcal M,\mathcal E$ be finite-dimensional complex
+    inner-product spaces, and fix an isometry
+    $u:\mathcal H\to\mathcal M\otimes\mathcal E$ onto the tensor product.
+    Let $G,T\subseteq\mathcal H$, let $1\le m\le D$ and $b\ge0$ be integers,
+    and suppose that $G,T$ are mutually $1/(200m)$-close.
+    Let $W_0\subseteq\mathcal M$ be $0.015$-viable for $uG$, with $\dim W_0\le b$.
+    Suppose that $A_0,\ldots,A_{D^2-1}$ act on $\mathcal M$ and that
+    $D^{12}\Delta\le10^{-5}$. Assume that, for every real $\delta<1$ and
+    every $\delta$-viable subspace $S$ for $uT$, the space
+    $\sum_j A_jS$ is $\Delta/(1-\delta)^2$-viable for $uT$.
+    Then $V=\sum_j A_jW_0$ satisfies
+    \begin{align}
+        \dim V&\le bD^2, & V&\text{ is }\frac1{2m}\text{-viable for }uG.
+        \label{eq:viable_inverse_scale}
+    \end{align}
+    This is a quantitative consequence of the closeness transfers in
+    \cite[Lemma~l:close and proof of Theorem~4.9]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:subspace_close_trans, thm:viable_coordinates, thm:finite_image_span_dimension}
+    Since $1/(200m)\le0.005$, the first closeness transfer makes $W_0$
+    $0.04$-viable for $uT$. The improving estimate and $m\le D^{12}$ give
+    \begin{align*}
+        \frac{\Delta}{(1-0.04)^2}&\le\frac1{8m}, &
+        2\left(\frac1{8m}+\frac1{200m}\right)&=\frac{13}{50m}\le\frac1{2m}.
+    \end{align*}
+    For $\Delta\le0$ the first inequality is immediate; for $\Delta>0$
+    it follows from $m\Delta\le10^{-5}$.
+    Transfer back to $uG$. Finally,
+    $\dim\sum_j A_jW_0\le\sum_j\dim A_jW_0\le D^2\dim W_0$.
 \end{proof}

@@ -7,6 +7,23 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Dimension of a finite span of images — shared lemma (2026-10-27)
+
+- **Pattern:** For a finite family of linear maps, bound the dimension of
+  the sum of the images of a finite-dimensional subspace by the number of
+  maps times the dimension of that subspace.
+- **Reuse:** `Submodule.finrank_iSup_map_le_card_mul` in
+  `Analysis/ViableSubspaceSpectralProjector.lean` combines
+  `Submodule.finrank_iSup_le_sum` and `Submodule.finrank_map_le`.
+  Neither ambient inner product space must be finite-dimensional; the
+  index set may be empty.
+- **Callers:** `Submodule.IsViable.map_of_tensor_decomposition`,
+  `Submodule.IsViable.spectralProjector`,
+  `Submodule.exists_isViable_finrank_le_half`, and
+  `Submodule.viable_enlargement_of_close_improving_target`.
+- **Decision:** Use the common lemma for the image-span dimension estimate,
+  then apply any separate bound on the dimension of the initial subspace.
+
 ### Trace normalization of a bipartite unit vector — shared lemma (2026-10-23)
 
 - **Seen:** The orthogonal-decomposition quotient and geometric-tail theorem in
