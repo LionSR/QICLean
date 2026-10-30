@@ -31,6 +31,7 @@ import QICLean.Channel.ChoiTypeMap.Positivity
 import QICLean.Channel.ChoiTypeMap.YamagamiPositivity
 import QICLean.Channel.ComplementaryWeylTwirl
 import QICLean.Channel.CompletelyPositiveBridge
+import QICLean.Channel.ConvexFunctionalMonotonicity
 import QICLean.Channel.DecomposablePPT
 import QICLean.Channel.DecomposableWitness
 import QICLean.Channel.DeferredEnvironmentTrace
@@ -50,10 +51,12 @@ import QICLean.Channel.Determinant.UnitaryCharacterization
 import QICLean.Channel.DirectSumConditionalExpectation
 import QICLean.Channel.EnsembleEquivalence
 import QICLean.Channel.EntanglementWitness
+import QICLean.Channel.EntropyIncreasingMaps
 import QICLean.Channel.EnvironmentDilation
 import QICLean.Channel.EnvironmentEmbedding
 import QICLean.Channel.EnvironmentInducedInstrument
 import QICLean.Channel.FaithfulMarginalWhitenedChoi
+import QICLean.Channel.FilterNormalization
 import QICLean.Channel.FiniteProduct
 import QICLean.Channel.FiniteProductOperatorSchmidt
 import QICLean.Channel.FixedPoint
@@ -169,4 +172,5 @@ import QICLean.Channel.WielandtLowDim
 import QICLean.Channel.Wigner
 import QICLean.Channel.WindowMinorization
 import QICLean.Channel.WolfProps
+import QICLean.Channel.WolfTheorem67
 import QICLean.Channel.WolfTheorem68

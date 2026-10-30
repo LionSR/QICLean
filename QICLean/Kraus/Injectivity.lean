@@ -13,12 +13,18 @@ For a finite matrix family $K = (K_i)_i$, this file defines algebraic
 injectivity, block injectivity, and normality, together with their elementary
 consequences. All declarations are stated in `namespace Kraus`.
 
+The adjoint block-injectivity proof is adapted from
+`TNLean/MPS/Core/Blocking.lean` at commit
+`3af48c1843059427e4ab3eb84caf9539ac4efa91` (Apache-2.0), with an added
+biconditional obtained by applying conjugate transposition twice.
+
 ## Main declarations
 
 * `Kraus.wordSpan`: the span of all Kraus words of a fixed length
 * `Kraus.HasEventuallyFullWordSpan`: all sufficiently long word spans are full
 * `Kraus.IsInjective`: the matrices of a Kraus family span the full matrix algebra
 * `Kraus.IsNBlkInjective`: injectivity after blocking `N` letters into words
+* `Kraus.isNBlkInjective_conjTranspose_iff`: block injectivity is invariant under adjoints
 * `Kraus.IsNormal`: eventual block injectivity at some positive blocking length
 -/
 
@@ -96,6 +102,43 @@ theorem IsNBlkInjective.span_eq_top {A : Fin d → Matrix (Fin D) (Fin D) ℂ} {
     (hA : IsNBlkInjective A N) :
     Submodule.span ℂ (Set.range fun σ : Fin N → Fin d => Kraus.evalWord A (List.ofFn σ)) = ⊤ := by
   simpa only [IsNBlkInjective, Kraus.wordSpan] using hA
+
+/-- Block injectivity of the adjoint family implies block injectivity of the original
+family at the same length. Conjugate transposition reverses words and conjugates scalars. -/
+theorem isNBlkInjective_of_isNBlkInjective_conjTranspose
+    {K : Fin d → Matrix (Fin D) (Fin D) ℂ} {L : ℕ}
+    (hK : IsNBlkInjective (fun i ↦ (K i)ᴴ) L) : IsNBlkInjective K L := by
+  unfold IsNBlkInjective wordSpan at hK ⊢
+  refine eq_top_iff.mpr fun X _ ↦ ?_
+  have key : ∀ Y ∈ Submodule.span ℂ
+      (Set.range fun σ : Fin L → Fin d ↦ evalWord (fun i ↦ (K i)ᴴ) (List.ofFn σ)),
+      Yᴴ ∈ Submodule.span ℂ
+        (Set.range fun σ : Fin L → Fin d ↦ evalWord K (List.ofFn σ)) := by
+    intro Y hY
+    induction hY using Submodule.span_induction with
+    | mem x hx =>
+      obtain ⟨σ, rfl⟩ := hx
+      refine Submodule.subset_span ⟨σ ∘ Fin.rev, ?_⟩
+      simp only [evalWord_conjTranspose, Matrix.conjTranspose_conjTranspose, List.ofFn_reverse]
+    | zero => simp
+    | add x y _ _ hx hy =>
+      rw [Matrix.conjTranspose_add]
+      exact Submodule.add_mem _ hx hy
+    | smul a x _ hx =>
+      rw [Matrix.conjTranspose_smul]
+      exact Submodule.smul_mem _ _ hx
+  simpa using key Xᴴ (by rw [hK]; exact Submodule.mem_top)
+
+/-- Taking the adjoint of every matrix preserves block injectivity at every length,
+including length zero and empty physical or matrix indices. -/
+theorem isNBlkInjective_conjTranspose_iff
+    (K : Fin d → Matrix (Fin D) (Fin D) ℂ) (L : ℕ) :
+    IsNBlkInjective (fun i ↦ (K i)ᴴ) L ↔ IsNBlkInjective K L := by
+  constructor
+  · exact isNBlkInjective_of_isNBlkInjective_conjTranspose
+  · intro hK
+    apply isNBlkInjective_of_isNBlkInjective_conjTranspose
+    simpa using hK
 
 /-- A finite Kraus family is not `N`-block injective as soon as some linear
 functional annihilates every length-`N` word while not annihilating some matrix. -/
