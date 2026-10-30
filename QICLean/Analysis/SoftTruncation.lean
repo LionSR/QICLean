@@ -137,8 +137,9 @@ This is the finite series from ALVV, arXiv:1602.08828v2, lines 1152–1173,
 written as a function of the nonnegative scalar being truncated.
 
 **Local fix (logarithmic upper bound):** the printed bound `t * log m` is
-false for `m = 1` and positive input. The corrected bound is
-`t * (1 + log m)`; see
+false for every order `m ≥ 1`: as `x → ∞` the truncation tends to `t * H_m`,
+and the harmonic number satisfies `H_m > log m`. The corrected bound
+`t * (1 + log m)` is what is proved; see
 `docs/paper-gaps/alvv16_soft_truncation_log_bound.tex`. -/
 noncomputable def softTruncation (t : ℝ) (m : ℕ) (x : ℝ) : ℝ :=
   t * ∑ j ∈ Finset.range m,
@@ -148,7 +149,8 @@ noncomputable def softTruncation (t : ℝ) (m : ℕ) (x : ℝ) : ℝ :=
 polynomial remainder, and is bounded by the corrected harmonic estimate.
 
 ALVV, arXiv:1602.08828v2, lines 1152–1173. The paper prints the final upper
-bound as `t * log m`, which is false for `m = 1`; the source-faithful local
+bound as `t * log m`, which is false for every order `m ≥ 1` (the limit as
+`x → ∞` is `t * H_m > t * log m`); the source-faithful local
 repair `t * (1 + log m)` is documented in
 `docs/paper-gaps/alvv16_soft_truncation_log_bound.tex`. -/
 theorem softTruncation_bounds (t : ℝ) (m : ℕ) (x : ℝ)

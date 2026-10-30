@@ -22,12 +22,18 @@ Arad--Landau--Vazirani--Vidick, source lines 1152--1173
 ~\cite{Arad2016RigorousRG}. The lemma prints the upper bound
 $h_{m,t}(x)\leq t\log m$.
 
-That bound fails at the first admissible order. When $m=1$ and $x>0$,
+That bound fails at every order $m\geq1$. Since $1-e^{-x/t}\to1$ as
+$x\to\infty$,
 \begin{align}
-    h_{1,t}(x)
-        &=t(1-e^{-x/t})>0=t\log 1.
+    \lim_{x\to\infty}h_{m,t}(x)
+        &=t\sum_{j=1}^{m}\frac1j
+         =tH_m
+         >t\log m,
     \label{eq:alvv_soft_truncation_counterexample}
 \end{align}
+because $H_m\geq\log(m+1)>\log m$. Hence $h_{m,t}(x)>t\log m$ for all
+sufficiently large $x$. For $m=1$ the failure is visible at every $x>0$,
+since $h_{1,t}(x)=t(1-e^{-x/t})>0=t\log1$.
 The proof in the source bounds each summand by $1/j$. It therefore gives the
 harmonic estimate
 \begin{align}
@@ -36,7 +42,7 @@ harmonic estimate
          \leq t(1+\log m),
     \label{eq:alvv_soft_truncation_harmonic_bound}
 \end{align}
-which is valid also for $m=1$. The remaining conclusions of the scalar lemma
+which is the bound that is proved. The remaining conclusions of the scalar lemma
 are unchanged:
 \begin{align}
     0\leq h_{m,t}(x)&\leq x,
