@@ -147,6 +147,7 @@ import QICLean.Analysis.MeanTreeUniformExpectation
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.MinimumEnvelope
 import QICLean.Analysis.NeumannInverse
+import QICLean.Analysis.NormSquaredTriangle
 import QICLean.Analysis.NormalizedInversePowerLogBound
 import QICLean.Analysis.OperatorConvexity
 import QICLean.Analysis.OperatorMean
