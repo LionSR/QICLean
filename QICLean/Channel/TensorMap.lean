@@ -63,6 +63,13 @@ theorem bipartiteSlice_apply
     (i₂ j₂ : δ) (i₁ j₁ : α) :
     bipartiteSlice X i₂ j₂ i₁ j₁ = X (i₁, i₂) (j₁, j₂) := rfl
 
+/-- Reindexing both tensor factors transports coefficient slices on the first factor. -/
+@[simp]
+theorem bipartiteSlice_reindex_prod (em : α ≃ β) (en : δ ≃ γ)
+    (X : Matrix (α × δ) (α × δ) ℂ) (i j : γ) :
+    bipartiteSlice (reindex (em.prodCongr en) (em.prodCongr en) X) i j =
+      reindex em em (bipartiteSlice X (en.symm i) (en.symm j)) := rfl
+
 @[simp]
 theorem bipartiteSlice_add
     (X Y : Matrix (α × δ) (α × δ) ℂ) (i₂ j₂ : δ) :

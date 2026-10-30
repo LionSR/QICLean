@@ -317,6 +317,31 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 
 ## Candidates
 
+### Matrix coefficients as continuous linear functionals (2026-10-28)
+
+- **Seen:** `Analysis/GaussianFilter/MatrixIntegral.lean`,
+  `Analysis/SpectralFilter/MatrixFilter.lean`, and
+  `Analysis/Transport/NormDerivative.lean` each construct the linear functional
+  `A ↦ star v ⬝ᵥ (A *ᵥ w)` by supplying linearity proofs.
+- **Replacement:** Compose Mathlib's `dotProductBilin` with the partial
+  evaluation `(Matrix.mulVecBilin ℂ ℂ).flip w`, then apply
+  `LinearMap.toContinuousLinearMap` in finite dimension.
+- **Decision:** `Analysis/GaussianFilter/CommutatorSeries.lean` uses this
+  composition. No fourth handwritten linearity proof or new public
+  abstraction is introduced. The three existing constructions can be
+  simplified separately after checking their imports and scalar conventions.
+
+### Convexity from a quadratic variational formula (2026-10-29)
+
+- **Seen:** The trace-exponential variational argument in
+  `Analysis/LiebTraceExponential.lean` and the Ando--Lieb power functional in
+  `Analysis/LiebConvexity.lean` evaluate a variational bound at the optimizer
+  of a convex combination, then apply a known convexity or concavity inequality.
+- **Reuse:** Trace cyclicity, `Matrix.trace_conjTranspose`, and positivity of
+  the trace product give the completed-square bound for the power functional.
+- **Decision:** These are two mathematically distinct variational formulas.
+  Keep their optimizers explicit; no tactic or additional abstraction is needed.
+
 ### Orthogonal component along a unit eigenvector (2026-10-26)
 
 - **Seen:** The final decomposition in `Analysis/GapPerturbation.lean` and the
@@ -1397,21 +1422,18 @@ No new tactic or duplicate tree induction is introduced.
   equivariant symmetric-projection theorem. This is the second actual rate
   consumer after the rough upper bound; no new coordinate tactic is introduced.
 
-### Weighted monomial recovery at common evaluation points — candidate (2026-10-22)
+### Weighted monomial recovery at common evaluation points — shared theorem (2026-10-28)
 
-- **Consumers:** `operatorSchmidtRank_sum_le_of_monomial_evaluations` in
-  `Algebra/MonomialEvaluationSchmidtRank.lean` and the private
-  `rank_weighted_sum_of_injective_monomials` in
-  `Algebra/WeightedFrequencySchmidtRank.lean`.
-- **Pattern:** Apply the existing monomial recovery coefficients to the same
-  evaluated operator family, interchange the finite sums, and contract the
-  selected or scalar-weighted coefficients before applying the sum rank bound.
-- **Reuse:** Both arguments invoke
-  `MvPolynomial.monomial_evaluation_recovery_smul`; `Finset.sum_comm`,
-  `Finset.sum_smul` and `Finset.smul_sum` give the finite-sum calculation.
-- **Decision:** Two occurrences across two files. No new tactic or public
-  interpolation theorem is introduced. The weighted argument also transports
-  an injectively indexed finite support and retains one evaluation cardinality.
+- **Consumers:** The two-marker theorem in `Algebra/WeightedFrequencySchmidtRank.lean`
+  and the one-marker theorem in `Algebra/OneMarkerWeightedSchmidtRank.lean`.
+- **Pattern:** Apply monomial recovery to one injectively indexed finite support,
+  contract the arbitrary scalar weights at the same evaluation points, then use
+  the finite-sum operator-Schmidt-rank bound. Zero and dependent coefficients
+  require no separate argument.
+- **Decision:** Move the existing weighted argument to
+  `Matrix.operatorSchmidtRank_sum_smul_le_of_injective_monomial_evaluations`
+  in `Algebra/MonomialEvaluationSchmidtRank.lean`; both consumers reuse it.
+  No new tactic or duplicate interpolation calculation is introduced.
 
 ### Weighted pure-state projection identities — shared lemma (2026-10-23)
 
@@ -1524,6 +1546,20 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Reuse:** Keep the existing equivalence and additive homomorphism lemmas.
   These are two occurrences in one file; no new tactic is warranted.
 
+### Extending density-state convergence to all matrix inputs — existing decomposition (2026-10-29)
+
+- **Seen:** The primitivity proof in `Channel/WolfTheorem67.lean` extends
+  convergence from density matrices to all matrices; the bounded-orbit proof
+  in `Channel/FixedPoint/MeanErgodicProjection.lean` uses the same positive-part
+  reduction for boundedness.
+- **Reuse:** Total trace normalization handles zero-trace inputs. Apply the
+  existing four-positive-semidefinite-parts decomposition to the identity
+  map, then combine convergence by subtraction and scalar multiplication.
+  `ContinuousLinearMap.tendsto_of_tendsto_apply_of_finiteDimensional` supplies
+  convergence in operator norm.
+- **Decision:** No new tactic. The convergence helper stays private until
+  another production consumer needs the same limit statement.
+
 ### Peripheral phases and finite cyclicity — existing structures (2026-10-29)
 
 - **Seen:** `Peripheral/AbstractEigenvectors.lean` and
@@ -1539,3 +1575,29 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Compatibility:** finite-Kraus peripheral-unitary declarations now call
   the abstract results. Their historical adjoint-weight arguments are retained
   and explicitly acknowledged in the proof to preserve named-argument callers.
+
+### The two-factor projector-gap defect — promoted (2026-10-29)
+
+- **Pattern:** Expand the projector-gap defect of a tensor sum as the sum of
+  the two factor defects and the tensor product of the two orthogonal
+  complements.
+- **Defined in:** `Analysis/DoubledSystemGap.lean`, `Matrix.tensorSum_gap_eq`
+  and `Matrix.PosSemidef.tensorSum_gap`.
+- **Refactored occurrences:** The original doubled-Hamiltonian identity and
+  gap theorem are now direct specializations. The product-ancilla application
+  uses the same identity with different factor dimensions and energies.
+- **Notes:** `Matrix.PosSemidef.gap_mono` handles the capped lower bound;
+  neither it nor the tensor-sum result assumes an attained excited energy.
+
+### Elementary operator Schmidt products — promoted (2026-10-29)
+
+- **Pattern:** An elementary Kronecker product has a one-term decomposition;
+  the identity is its specialization.
+- **Abstraction:** The existing private proof in
+  `OneMarkerWeightedSchmidtRank.lean` is relocated unchanged to the small
+  `OperatorSchmidtProducts.lean` leaf as
+  `Matrix.operatorSchmidtRank_kronecker_le_one`, with
+  `Matrix.operatorSchmidtRank_one_le` as the identity specialization.
+- **Refactoring:** The one-marker consumer imports this leaf and the private
+  duplicate is removed. `OperatorSchmidtBounds.lean` remains unchanged.
+  The second factor needs `Finite`, rather than a supplied `Fintype`.
