@@ -50,6 +50,7 @@ import QICLean.Channel.Determinant.UnitaryCharacterization
 import QICLean.Channel.DirectSumConditionalExpectation
 import QICLean.Channel.EnsembleEquivalence
 import QICLean.Channel.EntanglementWitness
+import QICLean.Channel.EntropyIncreasingMaps
 import QICLean.Channel.EnvironmentDilation
 import QICLean.Channel.EnvironmentEmbedding
 import QICLean.Channel.EnvironmentInducedInstrument
