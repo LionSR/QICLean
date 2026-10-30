@@ -1570,3 +1570,16 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Compatibility:** finite-Kraus peripheral-unitary declarations now call
   the abstract results. Their historical adjoint-weight arguments are retained
   and explicitly acknowledged in the proof to preserve named-argument callers.
+
+### The two-factor projector-gap defect — promoted (2026-10-29)
+
+- **Pattern:** Expand the projector-gap defect of a tensor sum as the sum of
+  the two factor defects and the tensor product of the two orthogonal
+  complements.
+- **Defined in:** `Analysis/DoubledSystemGap.lean`, `Matrix.tensorSum_gap_eq`
+  and `Matrix.PosSemidef.tensorSum_gap`.
+- **Refactored occurrences:** The original doubled-Hamiltonian identity and
+  gap theorem are now direct specializations. The product-ancilla application
+  uses the same identity with different factor dimensions and energies.
+- **Notes:** `Matrix.PosSemidef.gap_mono` handles the capped lower bound;
+  neither it nor the tensor-sum result assumes an attained excited energy.
