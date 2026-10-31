@@ -291,7 +291,7 @@ theorem eigenvalues₀_le_add_of_norm_domRestrict_low_le
   have hmiddle : (inner ℂ (S x) x).re - (inner ℂ (T x) x).re ≤ ξ * ‖x‖ ^ 2 := by
     calc
       _ = (inner ℂ (D x) x).re := by
-        simp only [D, ContinuousLinearMap.sub_apply, inner_sub_left, Complex.sub_re]
+        simp only [D, _root_.sub_apply, inner_sub_left, Complex.sub_re]
         rfl
       _ ≤ ‖D x‖ * ‖x‖ := by
         rw [← RCLike.re_to_complex]
