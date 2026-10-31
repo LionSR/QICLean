@@ -42,7 +42,8 @@ private theorem relative_low_energy_window_budget (E E' η ξ δ : ℝ)
   have hid : δ * (2 * ξ * Real.sqrt ((N : ℝ) / δ)) ^ 2 =
       (N : ℝ) * (ξ + ξ) ^ 2 := by
     rw [mul_pow, Real.sq_sqrt hratio]
-    field_simp [hδ.ne'] <;> ring
+    field_simp [hδ.ne']
+    ring
   exact ⟨hsep, hid.symm.trans_le (mul_le_mul_of_nonneg_left hsquare hδ.le)⟩
 
 namespace Matrix.IsHermitian
@@ -68,9 +69,11 @@ theorem groundEnergy_compare_and_isCloseTo_spectralSpanLE_of_norm_domRestrict_le
     let E := hH.eigenvalues₀ jmin
     let E' := hF.eigenvalues₀ jmin
     let η' := η + ξ + 2 * ξ * Real.sqrt ((⌈η / (2 * ξ)⌉₊ : ℝ) / δ)
-    ‖(toEuclideanCLM H - toEuclideanCLM F).domRestrict
+    ‖((toEuclideanCLM (n := n) (𝕜 := ℂ)) H -
+        (toEuclideanCLM (n := n) (𝕜 := ℂ)) F).domRestrict
       (Submodule.spectralSpanLE bH hH.eigenvalues₀ (E + η))‖ ≤ ξ →
-    ‖(toEuclideanCLM H - toEuclideanCLM F).domRestrict
+    ‖((toEuclideanCLM (n := n) (𝕜 := ℂ)) H -
+        (toEuclideanCLM (n := n) (𝕜 := ℂ)) F).domRestrict
       (Submodule.spectralSpanLE bF hF.eigenvalues₀ (E + η))‖ ≤ ξ →
     E' ≤ E ∧ E ≤ E' + ξ ∧
       Submodule.IsCloseTo δ
@@ -81,6 +84,8 @@ theorem groundEnergy_compare_and_isCloseTo_spectralSpanLE_of_norm_domRestrict_le
         (Submodule.spectralSpanLE bF hF.eigenvalues₀ (E' + η)) := by
   intro jmin bH bF E E' η' hresH hresF
   classical
+  let D : EuclideanSpace ℂ n →L[ℂ] EuclideanSpace ℂ n :=
+    (toEuclideanCLM (n := n) (𝕜 := ℂ)) H - (toEuclideanCLM (n := n) (𝕜 := ℂ)) F
   have hj (j : Fin (Fintype.card n)) : j ≤ jmin := by
     change j.val ≤ Fintype.card n - 1
     omega
@@ -103,7 +108,7 @@ theorem groundEnergy_compare_and_isCloseTo_spectralSpanLE_of_norm_domRestrict_le
   have hpertH (v : EuclideanSpace ℂ n)
       (hv : v ∈ Submodule.spectralSpanLE bH hH.eigenvalues₀ (E + η)) :
       ‖toEuclideanLin H v - toEuclideanLin F v‖ ≤ ξ * ‖v‖ := by
-    have h := ((toEuclideanCLM H - toEuclideanCLM F).domRestrict
+    have h := (D.domRestrict
       (Submodule.spectralSpanLE bH hH.eigenvalues₀ (E + η))).le_opNorm ⟨v, hv⟩
     exact h.trans (mul_le_mul_of_nonneg_right hresH (norm_nonneg v))
   have hpertF (v : EuclideanSpace ℂ n)
@@ -113,8 +118,9 @@ theorem groundEnergy_compare_and_isCloseTo_spectralSpanLE_of_norm_domRestrict_le
         Submodule.spectralSpanLE bF hF.eigenvalues₀ (E + η) := by
       apply Submodule.span_mono
       rintro _ ⟨j, hj', rfl⟩
-      exact ⟨j, hj'.trans (add_le_add_right hgroundLower η), rfl⟩
-    have h := ((toEuclideanCLM H - toEuclideanCLM F).domRestrict
+      exact ⟨j, le_trans (show hF.eigenvalues₀ j ≤ E' + η from hj')
+        (by linarith : E' + η ≤ E + η), rfl⟩
+    have h := (D.domRestrict
       (Submodule.spectralSpanLE bF hF.eigenvalues₀ (E + η))).le_opNorm
         ⟨v, hsubset hv⟩
     rw [norm_sub_rev]
