@@ -102,22 +102,6 @@ theorem PosSemidef.spectralProjectionGE_exp_entropy_bounds
           div_le_div_of_nonneg_right hS (mul_pos hc hM).le
       _ = 1 / c := by field_simp
 
-/-- Any fixed effect has expectation difference at most the half-trace-norm
- distance for equal-trace Hermitian matrices. No commutation is assumed. -/
-theorem re_trace_mul_sub_le_traceDistance {Q : Matrix n n ℂ}
-    (hρ : ρ.IsHermitian) (hσ : σ.IsHermitian) (ht : ρ.trace = σ.trace)
-    (hQ0 : 0 ≤ Q) (hQ1 : Q ≤ 1) :
-    (Q * ρ).trace.re - (Q * σ).trace.re ≤ traceDistance ρ σ := by
-  have hp : ((ρ - σ)⁺).PosSemidef := nonneg_iff_posSemidef.mp (CFC.posPart_nonneg _)
-  have hn : ((ρ - σ)⁻).PosSemidef := nonneg_iff_posSemidef.mp (CFC.negPart_nonneg _)
-  have hpos := hp.re_trace_mul_le_of_le_one hQ1
-  have hneg := (nonneg_iff_posSemidef.mp hQ0).re_trace_mul_nonneg hn
-  have hparts := (re_trace_posPart_eq_traceDistance hρ hσ ht).1
-  have hdecomp := CFC.posPart_sub_negPart (ρ - σ) (hρ.sub hσ)
-  have heq := congrArg (fun A : Matrix n n ℂ ↦ (Q * A).trace.re) hdecomp
-  simp only [mul_sub, trace_sub, Complex.sub_re] at heq
-  linarith
-
 /-- Transfer the canonical spectral tail while keeping the original state's
 projection fixed. The distance convention is half the full trace norm. -/
 theorem PosSemidef.trace_complement_spectralProjectionGE_le_entropy_add_distance
