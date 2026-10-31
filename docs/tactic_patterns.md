@@ -1640,3 +1640,15 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Decision:** Two occurrences in one file do not meet the rule of three;
   retain the bounded proofs and consider a span-bound lemma at a third
   mathematical consumer.
+
+### Actual relative spectral cutoffs — existing perturbation lemma (2026-10-29)
+
+- **Consumer:** `Analysis/RelativeLowEnergyCloseness.lean` applies the existing
+  finite-window perturbation estimate in both directions to actual canonical
+  low-energy spaces. The original and perturbed minima are derived from their
+  last ordered eigenvalues and the actual restricted residual.
+- **Reuse:** A single private numerical helper proves both window budgets;
+  `ContinuousLinearMap.le_opNorm` on the actual spectral subtype derives the
+  vector residual. The reverse cutoff inclusion is ordinary span monotonicity.
+- **Decision:** No new low-energy predicate, supplied basis, projection map,
+  or ground-energy comparison is introduced. No new tactic is needed.
