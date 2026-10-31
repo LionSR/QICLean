@@ -17,6 +17,7 @@ import QICLean.Analysis.Birkhoff
 import QICLean.Analysis.BlockDiagonalNorm
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
+import QICLean.Analysis.CappedGeometricSum
 import QICLean.Analysis.CfcComplex
 import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
