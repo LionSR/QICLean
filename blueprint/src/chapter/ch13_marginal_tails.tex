@@ -2055,3 +2055,33 @@ edges are separate steps in the patch argument.
     Lemma~\ref{lem:filter_zero_floor_nonzero} proves nonvanishing,
     after which division by the squared norm gives the normalized bound.
 \end{proof}
+
+\begin{theorem}[Two-sided operator Schmidt bounds from support]
+    \label{thm:supported_operator_schmidt_two_sides}
+    \lean{Entropy.operatorSchmidtRank_cutOperator_compl_eq,
+        Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_min,
+        Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_pow_card}
+    \leanok
+    \uses{thm:supported_operator_schmidt_rank, thm:operator_schmidt_factor_exchange}
+    Let $V$ be finite, let the local dimensions $n_v$ be nonnegative
+    integers, and let $T$ be supported on $X\subseteq V$. Exchanging
+    a region $A$ with its complement preserves the operator Schmidt
+    rank. Consequently,
+    \begin{align}
+        \operatorname{OSR}_A(T)\leq
+        \min\left\{\left(\prod_{v\in X\cap A}n_v\right)^2,
+                    \left(\prod_{v\in X\setminus A}n_v\right)^2\right\}.\notag
+    \end{align}
+    In particular, if all local dimensions equal an integer $q\geq1$,
+    then $\operatorname{OSR}_A(T)\leq q^{|X|}$. No Hermiticity,
+    positivity, state, or gap hypothesis is needed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:supported_operator_schmidt_rank, thm:operator_schmidt_factor_exchange}
+    Complementary cut coordinates differ by exchange of the two
+    tensor factors followed by separate changes of coordinates
+    within them. Both operations preserve operator Schmidt rank.
+    Apply the existing support bound to $A$ and $A^c$. In uniform
+    dimension, the two exponents are $2|X\cap A|$ and
+    $2|X\setminus A|$; their minimum is at most $|X|$.
+\end{proof}

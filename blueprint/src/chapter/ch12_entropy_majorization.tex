@@ -49,4 +49,181 @@ stochastic matrices.
     involving at least two distinct permutation matrices and is therefore
     not extreme, which proves the second identity.
 \end{proof}
+\section{Majorization of real vectors}
+
+\begin{definition}[Decreasing rearrangement and majorization]
+    \label{def:vector_majorization}
+    \lean{TNLean.decreasingPerm, TNLean.decreasingSort,
+        TNLean.antitone_decreasingSort, TNLean.decreasingSort_eq_self,
+        TNLean.decreasingSort_comp_perm, TNLean.sum_decreasingSort,
+        TNLean.vectorPrefix, TNLean.vectorPrefix_zero, TNLean.vectorPrefix_dim,
+        TNLean.VectorMajorized}
+    \leanok
+    Let $d\geq 0$ and $x\in\R^d$. Its decreasing rearrangement
+    $x^\downarrow$ lists all coordinates in decreasing order, retaining
+    their multiplicities. Write $S_k(x)=\sum_{i=1}^k x_i$, with $S_0(x)=0$.
+    For $x,y\in\R^d$, we say that $x$ is majorized by $y$, and write
+    $x\prec y$, when
+    \begin{align}
+        S_k(x^\downarrow)&\leq S_k(y^\downarrow) \quad (0\leq k\leq d),
+        \label{eq:vector_majorization_prefix}\\
+        \sum_{i=1}^d x_i&=\sum_{i=1}^d y_i.
+        \label{eq:vector_majorization_total}
+    \end{align}
+    This is the convention of \cite[Equation~(8.16)]{Wolf2012Quantum}.
+    Reordering coordinates leaves the decreasing rearrangement unchanged.
+\end{definition}
+
+\begin{lemma}[Permutation invariance]
+    \label{lem:vector_majorization_permutations}
+    \lean{TNLean.vectorMajorized_comp_perm_iff}
+    \leanok
+    For permutations $\sigma,\tau$ of the coordinates,
+    $x\circ\sigma\prec y\circ\tau$ if and only if $x\prec y$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:vector_majorization}
+    Reordering preserves the decreasing rearrangement and the total sum.
+\end{proof}
+
+\begin{lemma}[Convex hull of permutations]
+    \label{lem:vector_majorization_convex_hull}
+    \lean{TNLean.VectorMajorized.mem_convexHull_permutations}
+    \leanok
+    If $x\prec y$, then $x$ belongs to the convex hull of the
+    coordinate permutations of $y$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:vector_majorization}
+    For $d=0$ all scalar products vanish. For $d>0$, let $a\in\R^d$.
+    Subtracting the last coordinate of $a^\downarrow$ gives nonnegative
+    decreasing weights. Abel's inequality applied to
+    (\ref{eq:vector_majorization_prefix}), followed by cancellation using
+    (\ref{eq:vector_majorization_total}), gives
+    $a^\downarrow\cdot x^\downarrow\leq
+    a^\downarrow\cdot y^\downarrow$.
+    The rearrangement inequality therefore gives a coordinate permutation
+    $y\circ\sigma$ with $a\cdot x\leq a\cdot(y\circ\sigma)$.
+    The convex hull of the finitely many coordinate permutations of $y$
+    is closed. If $x$ lay outside it, strict separation by a linear
+    functional would contradict this scalar-product inequality.
+\end{proof}
+
+\begin{theorem}[Stochastic and convex characterizations of majorization]
+    \label{thm:vector_majorization_equivalences}
+    \lean{TNLean.VectorMajorized.exists_doublyStochastic,
+        TNLean.sum_convex_le_of_doublyStochastic,
+        TNLean.vectorMajorized_of_sum_convex_le,
+        TNLean.vectorMajorized_iff_exists_doublyStochastic,
+        TNLean.vectorMajorized_iff_sum_convex_le}
+    \leanok
+    Let $d\geq 0$ and $x,y\in\R^d$. The following are equivalent:
+    \begin{enumerate}
+        \item $x\prec y$;
+        \item $x=My$ for a matrix $M\in M_d(\R)$ with nonnegative
+            entries and every row sum and every column sum equal to $1$;
+        \item $\sum_{i=1}^d f(x_i)\leq\sum_{i=1}^d f(y_i)$ for every
+            convex function $f:\R\to\R$.
+    \end{enumerate}
+    These are clauses 1, 2 and 4 of
+    \cite[Theorem~8.4]{Wolf2012Quantum}.
+\end{theorem}
+% Clause 3 (the orthostochastic characterization) remains outside this statement.
+% See docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex.
+\begin{proof}\leanok
+    \uses{def:vector_majorization, lem:vector_majorization_convex_hull,
+        thm:birkhoff_doubly_stochastic}
+    The convex hull characterization and Birkhoff's theorem give a
+    doubly stochastic matrix $M$ with $x=My$. Conversely, Jensen's
+    inequality in each row gives $f(x_i)\leq\sum_j M_{ij}f(y_j)$.
+    Summing over $i$ and using the column sums proves the convex inequalities.
+
+    To recover majorization, apply the convex inequalities to $f(t)=t$
+    and $f(t)=-t$, obtaining (\ref{eq:vector_majorization_total}).
+    For $0\leq k<d$, set $a=y^\downarrow_{k+1}$ and use
+    $f(t)=\max(t-a,0)$. Decreasing order gives
+    \begin{align*}
+        S_k(x^\downarrow)
+        &\leq ka+\sum_i\max(x_i-a,0)\\
+        &\leq ka+\sum_i\max(y_i-a,0)=S_k(y^\downarrow).
+    \end{align*}
+    The case $k=d$ follows from equality of the total sums.
+\end{proof}
+
+\section{Entropy increasing maps}
+
+\begin{theorem}[Concave traces under unital positive maps]
+    \label{thm:concave_trace_positive_map}
+    \lean{IsPositiveMap.trace_concave_le}
+    \leanok
+    Let $T:M_d(\mathbb C)\to M_d(\mathbb C)$ be positive, unital, and
+    trace preserving, and let $h:\mathbb R\to\mathbb R$ be concave.
+    Every positive semidefinite matrix $A$ satisfies
+    $\operatorname{tr}h(A)\le\operatorname{tr}h(T(A))$.
+    This is the forward implication of \cite[Equation~(8.22)]{Wolf2012Quantum},
+    without trace normalization or strict concavity.
+\end{theorem}
+\begin{proof}\leanok
+    Choose unitary matrices $U,V$ diagonalizing $A,T(A)$, with eigenvalues
+    $\lambda_j,\mu_i$, and set
+    $S(X)=V^*T(UXU^*)V$ and $M_{ij}=(S(E_{jj}))_{ii}$.
+    Positivity gives $M_{ij}\ge0$, unitality gives $\sum_jM_{ij}=1$,
+    and trace preservation gives $\sum_iM_{ij}=1$.
+    Moreover, $\mu_i=\sum_jM_{ij}\lambda_j$.
+    Scalar Jensen and the column sums yield
+    $\sum_jh(\lambda_j)\le\sum_ih(\mu_i)$.
+    The spectral formula for the functional calculus identifies these sums
+    with the two traces.
+\end{proof}
+
+\begin{theorem}[Uniform bound for concave traces]
+    \label{thm:concave_trace_uniform}
+    \lean{Matrix.IsHermitian.trace_concave_le_uniform}
+    \leanok
+    For $d>0$, a Hermitian matrix $A\in M_d(\mathbb C)$ with trace one,
+    and a concave function $h:\mathbb R\to\mathbb R$,
+    $\operatorname{tr}h(A)\le d\,h(1/d)$.
+\end{theorem}
+\begin{proof}\leanok
+    The eigenvalues sum to one. Apply scalar Jensen with the positive
+    uniform weights $1/d$, and multiply by $d$.
+\end{proof}
+
+\begin{theorem}[Strict concavity and the uniform maximizer]
+    \label{thm:strict_concave_trace_uniform}
+    \lean{Matrix.IsHermitian.eq_smul_one_of_trace_strictConcave_ge}
+    \leanok
+    For $d>0$, let $A\in M_d(\mathbb C)$ be Hermitian with trace one,
+    and let $h:\mathbb R\to\mathbb R$ be strictly concave.
+    If $d\,h(1/d)\le\operatorname{tr}h(A)$, then $A=I/d$.
+\end{theorem}
+\begin{proof}\leanok
+    The assumed inequality reverses uniform Jensen. Its strict equality
+    criterion makes all eigenvalues equal. Their sum is one, so each is
+    $1/d$. The spectral decomposition then gives $A=I/d$.
+\end{proof}
+
+\begin{theorem}[Entropy increasing maps]
+    \label{thm:entropy_increasing_maps}
+    \lean{IsPositiveMap.unital_iff_trace_strictConcave_increasing}
+    \leanok
+    Let $T:M_d(\mathbb C)\to M_d(\mathbb C)$ be positive and trace
+    preserving, and let $h:\mathbb R\to\mathbb R$ be strictly concave.
+    Then $T(I)=I$ if and only if
+    $\operatorname{tr}h(\rho)\le\operatorname{tr}h(T(\rho))$
+    for every density matrix $\rho$.
+    This is \cite[Equation~(8.22), Corollary ``Entropy increasing maps'']{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:concave_trace_positive_map,thm:strict_concave_trace_uniform}
+    The forward implication follows from
+    Theorem~\ref{thm:concave_trace_positive_map}.
+    For the converse, suppose $d>0$ and take $\rho=I/d$.
+    Its image is positive semidefinite with trace one, and the assumed
+    entropy increase gives
+    $d\,h(1/d)\le\operatorname{tr}h(T(I/d))$.
+    Theorem~\ref{thm:strict_concave_trace_uniform} gives $T(I/d)=I/d$;
+    linearity implies $T(I)=I$.
+    When $d=0$, all matrices are equal and unitality is automatic.
+\end{proof}
 \endinput

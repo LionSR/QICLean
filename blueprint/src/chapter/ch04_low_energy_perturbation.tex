@@ -219,3 +219,50 @@ span of the $b'_j$ with $a'_j\le c$.
     These are spectral consequences used
     in~\cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG}.
 \end{proof}
+
+\begin{theorem}[A low cluster with a scaled projection error]
+    \label{thm:scaled_restricted_residual_cluster}
+    \lean{Submodule.low_spectral_cluster_of_scaled_restricted_residuals}
+    \leanok
+    \uses{def:spectral_span_le,def:subspace_close}
+    Let $H,H'$ have orthonormal eigenbases $(b_i),(b'_i)$ with real
+    eigenvalues $(a_i),(a'_i)$ on a finite-dimensional complex inner-product
+    space. Write $T(c)=\operatorname{span}\{b_i:a_i\le c\}$ and
+    $T'(c)=\operatorname{span}\{b'_i:a'_i\le c\}$.
+    Suppose $\gamma>0$, $0<\tau\le1$, $0\le\xi\le\tau\gamma/10^6$, and
+    every $a_i$ equals $e$ or is at least $e+\gamma$. Assume the two actual
+    restricted residual bounds
+    \begin{align}
+        \bigl\|(H-H')|_{T(e+\gamma/40)}\bigr\|    & \le\xi,\notag \\
+        \bigl\|(H-H')|_{T'(e+19\gamma/20)}\bigr\| & \le\xi.
+    \end{align}
+    Put $G=T(e)$, $U=T'(e+\gamma/20)$ and $V=T'(e+19\gamma/20)$.
+    Then $U=V$, $\dim U=\dim G$, and $U,G$ are mutually $\tau/200$-close.
+    Every closed cutoff $c\in[e+\gamma/20,e+19\gamma/20]$ gives
+    $T'(c)=U$ and the same two closeness bounds. In addition,
+    $a'_i\le e+\gamma/10$ or $a'_i\ge e+9\gamma/10$ for every $i$.
+    The value $e$ need not be attained, and $G$ may be zero.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:spectral_span_close_of_perturbation,
+        thm:subspace_close_nested_equal,thm:subspace_close_dimension,
+        thm:spectral_span_quadratic_form}
+    The original dichotomy gives the quadratic lower bound $e$.
+    On the perturbed low space, the second residual bound then gives the
+    lower spectral bound $e-\xi$. Apply the low-energy perturbation estimate
+    in both directions with window width $h=\tau\gamma/10^6$ and cutoff
+    separation $\gamma/40$. Each window count is at most $500001/\tau$, and
+    \begin{align}
+        N(\xi+h)^2
+        \le\frac{500001}{\tau}\left(\frac{2\tau\gamma}{10^6}\right)^2
+        \le\frac{\tau}{200}\left(\frac{\gamma}{40}\right)^2.
+    \end{align}
+    Thus $U$ is $\tau/200$-close to $G$, and $G$ is $\tau/200$-close to $V$.
+    Since $U\subseteq V$, the nested-space theorem gives equality and the
+    intermediate-cutoff assertions. An eigenvector with eigenvalue strictly
+    between the two outer cutoffs would belong to $V$ but not $U$;
+    their equality excludes it. This scales the spectral comparison in
+    \cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG} without
+    replacing either residual by a full operator-norm hypothesis. The window
+    count uses the correction in~\cite{gap:alvv16_hard_truncation_windows}.
+\end{proof}

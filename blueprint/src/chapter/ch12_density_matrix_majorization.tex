@@ -1,0 +1,103 @@
+\section{Majorization between density matrices}
+
+\begin{definition}[Majorization of Hermitian matrices]
+    \label{def:density_matrix_majorization}
+    \lean{Matrix.IsHermitian.Majorizes}
+    \leanok
+    \uses{def:vector_majorization}
+    Let $\rho,\sigma\in M_d(\C)$ be Hermitian. Write $\rho\succ\sigma$
+    when the eigenvalue vector of $\sigma$ is majorized by the eigenvalue
+    vector of $\rho$. Eigenvalues are counted with their multiplicities;
+    majorization compares their decreasing rearrangements.
+\end{definition}
+
+\begin{definition}[Mixture of unitary conjugations]
+    \label{def:density_unitary_mixture}
+    \lean{TNLean.IsRandomUnitaryImage}
+    \leanok
+    A matrix $\sigma$ is a finite probability mixture of unitary
+    conjugations of $\rho$ if there are finitely many unitary matrices
+    $U_i\in M_d(\C)$ and real numbers $p_i\geq0$ with $\sum_i p_i=1$ such that
+    \begin{align}
+        \sigma&=\sum_i p_i U_i\rho U_i^\dagger.
+        \label{eq:density_unitary_mixture}
+    \end{align}
+    Zero coefficients and repeated unitaries are allowed.
+\end{definition}
+
+\begin{lemma}[Squared entries of a unitary matrix]
+    \label{lem:density_unitary_stochastic}
+    \lean{TNLean.unitary_normSq_mem_doublyStochastic}
+    \leanok
+    If $U\in M_d(\C)$ is unitary, the matrix with entries $|U_{kl}|^2$
+    is doubly stochastic.
+\end{lemma}
+\begin{proof}\leanok
+    Its entries are nonnegative. The diagonal entries of $UU^\dagger=I$
+    and $U^\dagger U=I$ give its row and column sums, respectively.
+\end{proof}
+
+\begin{theorem}[Majorization and mixtures of unitary conjugations]
+    \label{thm:density_matrix_majorization}
+    \lean{Matrix.IsHermitian.majorizes_iff_trace_convex,
+        Matrix.IsHermitian.Majorizes.isRandomUnitaryImage,
+        Matrix.IsHermitian.majorizes_of_randomUnitaryImage,
+        Matrix.IsHermitian.majorizes_iff_randomUnitaryImage}
+    \leanok
+    Let $\rho,\sigma\in M_d(\C)$ be Hermitian. The following are equivalent:
+    \begin{enumerate}
+        \item $\rho\succ\sigma$;
+        \item $\operatorname{Re}\tr f(\sigma)\leq\operatorname{Re}\tr f(\rho)$
+            for every convex function $f:\R\to\R$;
+        \item $\sigma$ is a finite probability mixture of unitary
+            conjugations of $\rho$.
+    \end{enumerate}
+    Here $f(\rho)$ and $f(\sigma)$ are defined by spectral functional calculus.
+    In particular the equivalence holds for every pair of density matrices,
+    as in \cite[Theorem~8.7 and Equation~(8.21)]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:density_matrix_majorization, def:density_unitary_mixture,
+        lem:density_unitary_stochastic, thm:vector_majorization_equivalences,
+        thm:birkhoff_doubly_stochastic}
+    Choose spectral decompositions
+    $\rho=V_\rho\operatorname{diag}(\lambda^\rho)V_\rho^\dagger$ and
+    $\sigma=V_\sigma\operatorname{diag}(\lambda^\sigma)V_\sigma^\dagger$.
+    Every function on the finite spectra admits functional calculus, and
+    $\operatorname{Re}\tr f(\rho)=\sum_j f(\lambda^\rho_j)$, with the
+    analogous identity for $\sigma$. The convex trace characterization
+    therefore follows from vector majorization.
+
+    If $\rho\succ\sigma$, vector majorization gives a doubly stochastic
+    matrix $M$ with $\lambda^\sigma=M\lambda^\rho$.
+    Write $M=\sum_\tau p_\tau P_\tau$ by Birkhoff's theorem, with
+    $p_\tau\geq0$ and $\sum_\tau p_\tau=1$.
+    Conjugating the resulting diagonal-matrix identity gives
+    (\ref{eq:density_unitary_mixture}) with
+    $U_\tau=V_\sigma P_\tau V_\rho^\dagger$.
+    These are unitary matrices, so this constructs the required mixture.
+
+    Conversely, suppose (\ref{eq:density_unitary_mixture}) holds and set
+    $W_i=V_\sigma^\dagger U_iV_\rho$.
+    Conjugating the mixture by $V_\sigma^\dagger$ and comparing diagonal
+    entries gives
+    \begin{align}
+        \lambda^\sigma_k&=\sum_l M_{kl}\lambda^\rho_l,
+        &M_{kl}&=\sum_i p_i |(W_i)_{kl}|^2.
+        \label{eq:density_mixture_stochastic}
+    \end{align}
+    Each squared-entry matrix is doubly stochastic, and their probability
+    mixture $M$ is doubly stochastic. Vector majorization completes the proof.
+\end{proof}
+
+\begin{lemma}[Positive dimension of a density matrix]
+    \label{lem:density_dimension_positive}
+    \lean{Matrix.dimension_pos_of_trace_one}
+    \leanok
+    A matrix of trace $1$ has positive dimension. In particular there are
+    no density matrices in dimension zero.
+\end{lemma}
+\begin{proof}\leanok
+    The trace of the empty matrix is $0$.
+\end{proof}
+\endinput
