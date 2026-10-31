@@ -37,3 +37,60 @@
     on each part. This gives the displayed identity, with every word retained
     with its original multiplicity.
 \end{proof}
+
+\begin{definition}[Full-frequency word coefficients]
+    \label{def:full_word_coefficient}
+    \lean{WordMultiplicity.wordCoefficient,WordMultiplicity.countsFinsupp_equiv}
+    \leanok
+    Let $I$ be finite and let $H_a$ belong to a semiring. For $d\ge0$ and
+    $\beta:I\to\mathbb N$, define
+    \begin{align*}
+        C_{d,\beta}=\sum_{\substack{w\in I^{\{0,\ldots,d-1\}} \\n_w=\beta}}
+        H_{w(0)}\cdots H_{w(d-1)}.
+    \end{align*}
+    A bijection $e:I\to J$ preserves letter counts:
+    $n_{e\circ w}(e(a))=n_w(a)$.
+    These are the coefficients in \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{definition}
+
+\begin{definition}[Insertion of a distinguished frequency]
+    \label{def:insert_marker_frequency}
+    \lean{WordMultiplicity.insertMarkerFrequency,WordMultiplicity.sum_insertMarkerFrequency}
+    \leanok
+    Fix $u\in I$, put $O=I\setminus\{u\}$, and let $k\ge0$.
+    For $\alpha:O\to\mathbb N$, define $\iota_{u,k}(\alpha):I\to\mathbb N$
+    by its value $k$ at $u$ and its restriction $\alpha$ to $O$.
+    Its total frequency is $k+\sum_{a\in O}\alpha(a)$.
+\end{definition}
+
+\begin{theorem}[A full-frequency slice in the residual alphabet]
+    \label{thm:one_marker_full_frequency_identity}
+    \lean{WordMultiplicity.wordCoefficient_insertMarkerFrequency,
+        WordMultiplicity.sum_smul_wordCoefficient_marker_eq}
+    \leanok
+    \uses{def:full_word_coefficient,def:insert_marker_frequency,def:one_marker_word_coefficient}
+    Let the operators $H_a$ belong to a unital complex algebra and let $m,k\ge0$.
+    Put $E_m^O=\{\alpha:O\to\mathbb N:\sum_a\alpha(a)=m\}$, and let
+    $D_{m,k,\alpha}$ be the ordered-word coefficient on the ordinary alphabet
+    $O$, with $H_u$ occurring $k$ times.
+    Then $C_{m+k,\iota_{u,k}(\alpha)}=D_{m,k,\alpha}$, and every complex weight
+    function on the full frequency vectors satisfies
+    \begin{align*}
+        \sum_{\substack{\beta:I\to\mathbb N \\\sum_a\beta(a)=m+k,\ \beta(u)=k}}
+        \lambda_\beta C_{m+k,\beta}
+        =\sum_{\alpha\in E_m^O}
+        \lambda_{\iota_{u,k}(\alpha)}D_{m,k,\alpha}.
+    \end{align*}
+    This identifies the actual coefficient family used in
+    \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:full_word_coefficient,def:insert_marker_frequency}
+    The bijection $O\sqcup\{*\}\to I$ sends $*$ to $u$ and fixes every
+    ordinary letter. It gives a bijection of the words in the two coefficient
+    sums, preserving their ordered products and all occurrence counts.
+    Insertion of the distinguished count is a bijection from $E_m^O$ to the
+    full-frequency slice. Summing the coefficient identity along this bijection
+    gives the weighted identity.
+\end{proof}
