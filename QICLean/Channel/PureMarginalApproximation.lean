@@ -75,6 +75,7 @@ private theorem norm_sq_environment_row_eq
         rw [trace_mul_comm, mul_vecMulVec, trace_vecMulVec, dotProduct_comm]
   rw [@norm_sq_eq_re_inner ℂ, EuclideanSpace.inner_toLp_toLp,
     dotProduct_comm, h, partialTraceRight_vecMulVec_eq]
+  rfl
 
 private theorem one_sub_environment_mass_le
     (Ω : EuclideanSpace ℂ (S × E)) (φ : EuclideanSpace ℂ S)
@@ -89,6 +90,7 @@ private theorem one_sub_environment_mass_le
   have hρ : ρ.PosSemidef := (posSemidef_vecMulVec_self_star _).partialTraceRight
   have hP : P.PosSemidef := posSemidef_vecMulVec_self_star _
   have hρtr : ρ.trace = 1 := by
+    change (partialTraceRight (vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).trace = 1
     rw [partialTraceRight_vecMulVec_eq]
     exact trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one Ω hΩ
   have hPtr : P.trace = 1 := by
@@ -162,9 +164,8 @@ theorem exists_unit_product_approx_of_pure_marginal
     have hη : ‖η‖ = 1 := norm_smul_inv_norm (𝕜 := ℂ) ha
     have hinner : inner ℂ a η = (‖a‖ : ℂ) := by
       rw [inner_smul_right, inner_self_eq_norm_sq_to_K]
-      change ((‖a‖⁻¹ : ℝ) : ℂ) * (‖a‖ : ℂ) ^ 2 = (‖a‖ : ℂ)
-      rw [Complex.ofReal_inv]
-      field_simp [Complex.ofReal_ne_zero.mpr (norm_ne_zero_iff.mpr ha)] <;> ring
+      field_simp [Complex.ofReal_ne_zero.mpr (norm_ne_zero_iff.mpr ha)]
+      rfl
     have hle : ‖a‖ ≤ 1 := by
       have h := norm_inner_le_norm (𝕜 := ℂ) Ω
         (WithLp.toLp 2 (fun p : S × E ↦ φ p.1 * η p.2))
@@ -172,7 +173,8 @@ theorem exists_unit_product_approx_of_pure_marginal
       simpa only [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (norm_nonneg a),
         one_mul] using h
     refine ⟨η, hη, Real.le_sqrt_of_sq_le ?_⟩
-    rw [@norm_sub_sq ℂ, hΩ, hprod η hη, hoverlap, hinner, Complex.ofReal_re]
+    rw [@norm_sub_sq ℂ, hΩ, hprod η hη, hoverlap, hinner, RCLike.re_to_complex,
+      Complex.ofReal_re]
     nlinarith [mul_nonneg (norm_nonneg a) (sub_nonneg.mpr hle)]
 
 end Matrix
