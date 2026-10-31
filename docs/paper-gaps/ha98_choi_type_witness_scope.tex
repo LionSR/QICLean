@@ -221,8 +221,18 @@ This proves the source algebra of the witness. Positivity throughout the source
 range is also formalized, and the former middle-range gap is resolved in
 \ghissue{19}.\footnote{Formal declaration:
 \leanid{Matrix.choiTypeMap\_isPositiveMap}.}
-A theorem combining positivity with the negative witness to conclude
-indecomposability remains to be stated; \ghissue{18} tracks this final step.
+Taking $\gamma=1/2$ gives a positive semidefinite witness with positive
+first partial transpose and a strictly negative ampliation quadratic form.
+Decomposable maps preserve positivity on such matrices, so $T_C$ is not
+decomposable. Reindexing Kraus operators and commuting the reindexing with
+transposition transports this conclusion from the standard basis to the
+cyclic basis. Combined with full-range positivity, this proves that $T_C$
+is an indecomposable positive map for every source parameter, completing
+the mathematical goal of \ghissue{18}.\footnote{Formal declarations:
+\leanid{Matrix.choiTypeMapFin\_not\_isDecomposablePositiveMap},
+\leanid{Matrix.choiTypeMap\_not\_isDecomposablePositiveMap}, and
+\leanid{Matrix.choiTypeMap\_isIndecomposable} in
+\doclink{QICLean/Channel/ChoiTypeMap/Indecomposable}.}
 The present formalization does not assert atomicity.
 
 \section{Classification}
@@ -232,7 +242,8 @@ construction, its entry formula, both $V_2$ decompositions on pp.~594--595 of
 Ref.~\cite{Ha1998AtomicPositiveMaps}, their tensor-factor transport, the
 Eom--Kye orientation, the normalization factor $d$, and the value
 $\gamma^2-1$ for every $d\geq3$ and $1\leq n\leq d-2$. It also proves
-positivity in this range. The final indecomposability theorem remains open.
+positivity and indecomposability throughout this range, exactly as asserted
+in Wolf's Example~3.1, Equation~(3.20).
 No atomicity conclusion or alternative Choi-matrix or partial-transpose ansatz
 is asserted.
 

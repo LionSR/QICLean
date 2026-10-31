@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Domains and Zero Dimension in Convex Functional Monotonicity}
+\author{}
+\date{2026-10-29}
+\begin{document}
+\maketitle
+\gapnote{clarification}{resolved}
+
+\section{The source convention}
+
+Wolf's Theorem~5.16 considers jointly convex real functionals
+$F_d:D_d\subseteq\MN{d}^n\to\mathbb R$ in every dimension, invariant under
+simultaneous unitary conjugation and tensoring with a common density matrix.
+It concludes $F_{d'}((T(A_i))_i)\le F_d(A)$ for every completely positive
+trace-preserving $T:\MN{d}\to\MN{d'}$.\footnote{Source:
+\cite[Theorem~5.16, Equations~(5.49)--(5.50)]{Wolf2012Quantum}; local source
+\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex}, lines~993--1035.
+Tracked in \ghissue{27}.}
+The displayed evaluations implicitly require domain membership.
+
+Convexity of $D_d$, closure under unitary conjugation, and closure under
+tensoring with a density state justify the enlarged tuples in the proof.
+These closures do not by themselves imply that a marginal belongs to the
+lower-dimensional domain. The precise domain theorem therefore requires
+$(T(A_i))_i\in D_{d'}$ explicitly. Its partial-trace form similarly requires
+$(\tr_C A_i)_i\in D_{\dim S}$. These assumptions express well-definedness
+and contain no inequality involving $F$. The full-domain specialization has
+no membership assumptions. Coordinate independence identifies different
+bases of a matrix space of the same dimension.
+
+\section{Positive input dimension}
+
+The conclusion needs $d\ge1$ if zero-dimensional matrix spaces are allowed.
+On full domains, set $F_0=0$ and $F_d=1$ for $d\ge1$. These constant
+functions are jointly convex and unitarily invariant. Tensoring with a
+density state has positive ancilla dimension and preserves whether the
+input dimension is zero, so tensor invariance holds as well.
+The unique zero linear map $T:M_0\to M_1$ is completely positive and trace
+preserving, but the claimed inequality is $1\le0$.
+
+The theorem is thus stated for positive input dimension, consistent with
+the density-state interpretation of the source. Output dimension is unrestricted:
+a trace-preserving map from positive input dimension cannot have zero output
+dimension. The partial-trace theorem permits a zero-dimensional retained
+space and requires only a positive-dimensional discarded space. No density
+state exists on a zero-dimensional space.
+
+\section{Proof and verification}
+
+The proof uses the actual Weyl average in Equation~(5.50) and joint convexity.
+For rectangular maps, a Kraus isometry is extended to a unitary after
+adjoining pure states on a common enlarged space. The input factors are
+swapped and the output factors reassociated before discarding the Kraus and
+input factors. All identities hold for arbitrary complex matrices; no
+positive-semidefinite or invertibility assumption on the tuple components
+is added. Singular density ancillas are allowed.
+
+The formal results are
+\leanid{Matrix.ConvexMatrixFunctional.partialTraceRight_le},
+\leanid{Matrix.ConvexMatrixFunctional.map_le}, and
+\leanid{Matrix.ConvexMatrixFunctional.map_le_univ}.
+The regressions include the constant zero-dimension counterexample and a
+three-component trace functional on arbitrary complex tuples.
+
+\bibliographystyle{plain}
+\bibliography{../../blueprint/src/references}
+\end{document}
