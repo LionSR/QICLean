@@ -25,6 +25,18 @@ in a regression file are not additional mathematical consumers.
   then apply any separate bound on the dimension of the initial subspace.
 
 
+### Fixed-effect transfer under trace-norm error — existing lemma (2026-10-29)
+
+- **Seen:** `Entropy/SpectralTail.lean` and
+  `Channel/PureMarginalApproximation.lean`.
+- **Reuse:** `Matrix.re_trace_mul_sub_le_traceDistance` bounds the change of an
+  actual effect's expectation for equal-trace Hermitian matrices. Positivity
+  and the upper bound by the identity replace any commutation requirement.
+- **Owner:** The unchanged theorem moves to `Analysis/TraceDistance.lean`,
+  already imported by the spectral-tail module. The channel argument reuses
+  its proof rather than repeating a Jordan-part expansion or importing entropy.
+
+
 ### Trace normalization of a bipartite unit vector — shared lemma (2026-10-23)
 
 - **Seen:** The orthogonal-decomposition quotient and geometric-tail theorem in
