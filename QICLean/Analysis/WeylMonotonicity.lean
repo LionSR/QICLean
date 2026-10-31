@@ -292,9 +292,10 @@ theorem eigenvalues₀_le_add_of_norm_domRestrict_low_le
     calc
       _ = (inner ℂ (D x) x).re := by
         simp only [D, ContinuousLinearMap.sub_apply, inner_sub_left, Complex.sub_re]
-        try rfl
-      _ ≤ ‖D x‖ * ‖x‖ :=
-        re_inner_le_norm _ _
+        rfl
+      _ ≤ ‖D x‖ * ‖x‖ := by
+        rw [← RCLike.re_to_complex]
+        exact re_inner_le_norm _ _
       _ ≤ (ξ * ‖x‖) * ‖x‖ := mul_le_mul_of_nonneg_right hnorm (norm_nonneg x)
       _ = ξ * ‖x‖ ^ 2 := by ring
   have hprod : hH.eigenvalues₀ i * ‖x‖ ^ 2 ≤ (hF.eigenvalues₀ i + ξ) * ‖x‖ ^ 2 := by
