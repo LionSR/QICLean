@@ -41,7 +41,7 @@ private theorem inv_one_sub_le_log {δ : ℝ} (hδ0 : 0 < δ) (hδ1 : δ < 1) :
   have hratio : δ ≤ (1 - δ) / (-log δ) := (le_div_iff₀ hx).2 hh
   calc
     1 = (1 - δ) + δ := by ring
-    _ ≤ (1 - δ) + (1 - δ) / (-log δ) := add_le_add_left hratio _
+    _ ≤ (1 - δ) + (1 - δ) / (-log δ) := add_le_add le_rfl hratio
     _ = (1 + 1 / (-log δ)) * (1 - δ) := by ring
 
 /-- Finite capped geometric mass has logarithmic dependence on its amplitude.
@@ -74,6 +74,7 @@ theorem sum_min_one_mul_pow_le (A δ : ℝ) (hA : 0 ≤ A)
         add_le_add hA1 (div_le_div_of_nonneg_right hsmall hx.le)
       _ ≤ 2 + 3 * log (1 + A) / (-log δ) := by
         have hratio : 0 ≤ log (1 + A) / (-log δ) := div_nonneg hB hx.le
+        rw [mul_div_assoc, mul_div_assoc]
         linarith
   · have hApos : 0 < A := by linarith
     have hlogA : 0 ≤ log A := log_nonneg (by linarith)
@@ -124,7 +125,7 @@ theorem sum_min_one_mul_pow_le (A δ : ℝ) (hA : 0 ≤ A)
         add_le_add halt hden
       _ = 2 + (log A + 1) / (-log δ) := by ring
       _ ≤ 2 + 3 * log (1 + A) / (-log δ) := by
-        apply add_le_add_left
+        refine add_le_add le_rfl ?_
         exact div_le_div_of_nonneg_right (by linarith) hx.le
 
 end Real
