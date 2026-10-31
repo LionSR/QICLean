@@ -86,6 +86,34 @@ theorem finrank_iSup_le_sum {ι : Type*} [Fintype ι] (f : ι → Submodule 𝕜
 
 end General
 
+open scoped BigOperators
+
+section ImageDimension
+
+variable {𝕜 E F ι : Type*} [RCLike 𝕜] [Fintype ι]
+  [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+  [NormedAddCommGroup F] [InnerProductSpace 𝕜 F]
+
+/-- The span of finitely many linear images of one finite-dimensional
+subspace has dimension at most the number of maps times its dimension.
+This is the common dimension estimate in ALVV, arXiv:1602.08828v2,
+Lemma `l:er`, lines 597–622, and the bootstrap argument, lines 1067–1075. -/
+theorem finrank_iSup_map_le_card_mul
+    (S : Submodule 𝕜 E) [FiniteDimensional 𝕜 S] (A : ι → E →ₗ[𝕜] F) :
+    Module.finrank 𝕜
+        (↥((⨆ i, S.map (A i)) : Submodule 𝕜 F)) ≤
+      Fintype.card ι * Module.finrank 𝕜 S := by
+  classical
+  calc
+    Module.finrank 𝕜
+        (↥((⨆ i, S.map (A i)) : Submodule 𝕜 F)) ≤
+        ∑ i, Module.finrank 𝕜 (S.map (A i)) := finrank_iSup_le_sum _
+    _ ≤ ∑ _i : ι, Module.finrank 𝕜 S :=
+      Finset.sum_le_sum fun i _ ↦ finrank_map_le _ _
+    _ = Fintype.card ι * Module.finrank 𝕜 S := by simp
+
+end ImageDimension
+
 section TensorDecomposition
 
 variable {𝕜 M R : Type*} [RCLike 𝕜]
@@ -117,10 +145,7 @@ theorem IsViable.map_of_tensor_decomposition
   classical
   set V := ⨆ i, S.map (A i : M →ₗ[𝕜] M)
   refine ⟨?_, ?_⟩
-  · refine (finrank_iSup_le_sum _).trans ?_
-    calc ∑ i, finrank 𝕜 ↥(S.map (A i : M →ₗ[𝕜] M)) ≤ ∑ _i : ι, finrank 𝕜 S :=
-          Finset.sum_le_sum fun i _ ↦ finrank_map_le _ _
-      _ = Fintype.card ι * finrank 𝕜 S := by simp
+  · exact finrank_iSup_map_le_card_mul S (fun i ↦ (A i).toLinearMap)
   · have hclose := IsCloseTo.map_of_contract K hS hδ hΔ hKT hKTo hlow hhigh
     refine hclose.mono ?_
     rw [map_le_iff_le_comap, tensorProd_le_iff]
@@ -249,10 +274,8 @@ theorem IsViable.spectralProjector {D : ℕ} {δ Δ η₀ η₁ : ℝ}
         (span 𝕜 (b '' {j | h j ≤ η₀})) := by
   set V := ⨆ i, S.map (A i : M →ₗ[𝕜] M)
   refine ⟨?_, ?_⟩
-  · refine (finrank_iSup_le_sum _).trans ?_
-    calc ∑ i, finrank 𝕜 ↥(S.map (A i : M →ₗ[𝕜] M)) ≤ ∑ _i : Fin (D ^ 2), finrank 𝕜 S :=
-          Finset.sum_le_sum fun i _ => finrank_map_le _ _
-      _ = D ^ 2 * finrank 𝕜 S := by simp
+  · simpa only [Fintype.card_fin] using
+      (finrank_iSup_map_le_card_mul S (fun i ↦ (A i).toLinearMap))
   · obtain ⟨hKT, hKTo, hlow, hhigh⟩ := hK.contract hgap
     have hclose := IsCloseTo.map_of_contract K hS hδ hΔ hKT hKTo hlow hhigh
     refine hclose.mono ?_

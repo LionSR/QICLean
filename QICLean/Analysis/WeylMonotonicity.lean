@@ -224,7 +224,8 @@ theorem eigenvalues₀_le_add_of_norm_domRestrict_low_le
       let bF := (isSymmetric_toEuclideanLin_iff.mpr hF).eigenvectorBasis
         finrank_euclideanSpace
       let G := Submodule.spectralSpanLE bF hF.eigenvalues₀ c
-      ‖(toEuclideanCLM H - toEuclideanCLM F).domRestrict G‖ ≤ ξ)
+      ‖((toEuclideanCLM (n := n) (𝕜 := ℂ)) H -
+          (toEuclideanCLM (n := n) (𝕜 := ℂ)) F).domRestrict G‖ ≤ ξ)
     (i : Fin (Fintype.card n)) (hic : hF.eigenvalues₀ i ≤ c) :
     hH.eigenvalues₀ i ≤ hF.eigenvalues₀ i + ξ := by
   classical
@@ -235,6 +236,8 @@ theorem eigenvalues₀_le_add_of_norm_domRestrict_low_le
   let bS := hS.eigenvectorBasis finrank_euclideanSpace
   let bT := hT.eigenvectorBasis finrank_euclideanSpace
   let G := Submodule.spectralSpanLE bT hF.eigenvalues₀ c
+  let D : EuclideanSpace ℂ n →L[ℂ] EuclideanSpace ℂ n :=
+    (toEuclideanCLM (n := n) (𝕜 := ℂ)) H - (toEuclideanCLM (n := n) (𝕜 := ℂ)) F
   obtain ⟨x, hx, hxS, hxT⟩ := exists_nonzero_mem_span_Iic_inter_span_Ici
     bS.toBasis bT.toBasis finrank_euclideanSpace i
   have hsuppS : ↑(bS.toBasis.repr x).support ⊆ Set.Iic i :=
@@ -282,15 +285,17 @@ theorem eigenvalues₀_le_add_of_norm_domRestrict_low_le
     apply Submodule.span_le.mpr
     rintro _ ⟨j, hj, rfl⟩
     exact Submodule.subset_span ⟨j, (hF.eigenvalues₀_antitone hj).trans hic, rfl⟩
-  have hnorm : ‖(toEuclideanCLM H - toEuclideanCLM F) x‖ ≤ ξ * ‖x‖ := by
-    have h := ((toEuclideanCLM H - toEuclideanCLM F).domRestrict G).le_opNorm ⟨x, hxG⟩
+  have hnorm : ‖D x‖ ≤ ξ * ‖x‖ := by
+    have h := (D.domRestrict G).le_opNorm ⟨x, hxG⟩
     exact h.trans (mul_le_mul_of_nonneg_right hres (norm_nonneg x))
   have hmiddle : (inner ℂ (S x) x).re - (inner ℂ (T x) x).re ≤ ξ * ‖x‖ ^ 2 := by
     calc
-      _ = (inner ℂ ((toEuclideanCLM H - toEuclideanCLM F) x) x).re := by
-        simp only [ContinuousLinearMap.sub_apply, inner_sub_left, Complex.sub_re]
-      _ ≤ ‖(toEuclideanCLM H - toEuclideanCLM F) x‖ * ‖x‖ :=
-        re_inner_le_norm _ _
+      _ = (inner ℂ (D x) x).re := by
+        simp only [D, _root_.sub_apply, inner_sub_left, Complex.sub_re]
+        rfl
+      _ ≤ ‖D x‖ * ‖x‖ := by
+        rw [← RCLike.re_to_complex]
+        exact re_inner_le_norm _ _
       _ ≤ (ξ * ‖x‖) * ‖x‖ := mul_le_mul_of_nonneg_right hnorm (norm_nonneg x)
       _ = ξ * ‖x‖ ^ 2 := by ring
   have hprod : hH.eigenvalues₀ i * ‖x‖ ^ 2 ≤ (hF.eigenvalues₀ i + ξ) * ‖x‖ ^ 2 := by

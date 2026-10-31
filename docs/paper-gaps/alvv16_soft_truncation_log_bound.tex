@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{The logarithmic bound for scalar soft truncation}
+\author{}
+\date{2026-10-26}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+For $t>0$, an integer $m\geq1$, and $x\geq0$, define
+\begin{align}
+    h_{m,t}(x)
+        &=t\sum_{j=1}^{m}\frac{{(1-e^{-x/t})}^{j}}{j}.
+    \label{eq:alvv_soft_truncation_definition}
+\end{align}
+This is the scalar function used in Lemma~\texttt{lem:ft} of
+Arad--Landau--Vazirani--Vidick, source lines 1152--1173
+~\cite{Arad2016RigorousRG}. The lemma prints the upper bound
+$h_{m,t}(x)\leq t\log m$.
+
+That bound fails at every order $m\geq1$. Since $1-e^{-x/t}\to1$ as
+$x\to\infty$,
+\begin{align}
+    \lim_{x\to\infty}h_{m,t}(x)
+        &=t\sum_{j=1}^{m}\frac1j
+         =tH_m
+         >t\log m,
+    \label{eq:alvv_soft_truncation_counterexample}
+\end{align}
+because $H_m\geq\log(m+1)>\log m$. Hence $h_{m,t}(x)>t\log m$ for all
+sufficiently large $x$. For $m=1$ the failure is visible at every $x>0$,
+since $h_{1,t}(x)=t(1-e^{-x/t})>0=t\log1$.
+The proof in the source bounds each summand by $1/j$. It therefore gives the
+harmonic estimate
+\begin{align}
+    h_{m,t}(x)
+        &\leq t\sum_{j=1}^{m}\frac1j
+         \leq t(1+\log m),
+    \label{eq:alvv_soft_truncation_harmonic_bound}
+\end{align}
+which is the bound that is proved. The remaining conclusions of the scalar lemma
+are unchanged:
+\begin{align}
+    0\leq h_{m,t}(x)&\leq x,
+    \label{eq:alvv_soft_truncation_order}\\
+    x-h_{m,t}(x)&\leq \frac{t}{m}{\left(\frac{x}{t}\right)}^{m}.
+    \label{eq:alvv_soft_truncation_remainder}
+\end{align}
+Indeed, with $y=x/t$, $a(y)=1-e^{-y}$, and
+$g_m(y)=h_{m,t}(x)/t$, differentiation gives
+\begin{align}
+    g_m'(y)&=1-{a(y)}^{m}.
+    \label{eq:alvv_soft_truncation_derivative}
+\end{align}
+For $y\geq0$, one has $0\leq a(y)\leq\min\{1,y\}$. Thus
+$y-g_m(y)$ is nondecreasing, while
+$g_m(y)-y+y^m/m$ is nondecreasing because
+${a(y)}^{m}\leq y^{m-1}$. Both functions vanish at zero, proving
+(\ref{eq:alvv_soft_truncation_order}) and
+(\ref{eq:alvv_soft_truncation_remainder}). The formal theorem uses precisely
+the corrected harmonic bound~(\ref{eq:alvv_soft_truncation_harmonic_bound}).\footnote{Formal definition and theorem:
+\leanid{Real.softTruncation} and \leanid{Real.softTruncation_bounds} in
+\doclink{QICLean/Analysis/SoftTruncation}.}
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}
