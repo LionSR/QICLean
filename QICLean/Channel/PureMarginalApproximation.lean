@@ -36,6 +36,7 @@ namespace Matrix
 
 variable {S E : Type*} [Fintype S] [DecidableEq S] [Fintype E] [DecidableEq E]
 
+omit [DecidableEq S] [DecidableEq E] in
 private theorem norm_sq_product_vector (φ : EuclideanSpace ℂ S)
     (η : EuclideanSpace ℂ E) :
     ‖(WithLp.toLp 2 (fun p : S × E ↦ φ p.1 * η p.2) :
@@ -43,6 +44,7 @@ private theorem norm_sq_product_vector (φ : EuclideanSpace ℂ S)
   simp only [EuclideanSpace.norm_sq_eq, Fintype.sum_prod_type, norm_mul, mul_pow]
   exact (Finset.sum_mul_sum _ _ _ _).symm
 
+omit [DecidableEq S] [DecidableEq E] in
 private theorem inner_product_vector_eq
     (Ω : EuclideanSpace ℂ (S × E)) (φ : EuclideanSpace ℂ S)
     (η : EuclideanSpace ℂ E) :
@@ -56,6 +58,7 @@ private theorem inner_product_vector_eq
   rw [mul_vecMulVec, trace_vecMulVec, star_vecMul, star_star]
   exact dotProduct_comm _ _
 
+omit [DecidableEq S] [DecidableEq E] in
 private theorem norm_sq_environment_row_eq
     (Ω : EuclideanSpace ℂ (S × E)) (φ : EuclideanSpace ℂ S) :
     ‖(WithLp.toLp 2 (star (WithLp.ofLp φ) ᵥ*
@@ -77,6 +80,7 @@ private theorem norm_sq_environment_row_eq
     dotProduct_comm, h, partialTraceRight_vecMulVec_eq]
   rfl
 
+omit [DecidableEq E] in
 private theorem one_sub_environment_mass_le
     (Ω : EuclideanSpace ℂ (S × E)) (φ : EuclideanSpace ℂ S)
     (hΩ : ‖Ω‖ = 1) (hφ : ‖φ‖ = 1) {ε : ℝ}
@@ -118,6 +122,7 @@ private theorem one_sub_environment_mass_le
   have hnn := rectangularTraceNorm_nonneg (ρ - P)
   linarith
 
+omit [DecidableEq E] in
 /-- If the actual first marginal of a unit vector is within full trace-norm
 error `ε` of a prescribed normalized pure state, then the actual vector is
 within Euclidean distance `√(2 * ε)` of that prescribed vector tensored with
@@ -152,7 +157,7 @@ theorem exists_unit_product_approx_of_pure_marginal
       by_contra hE
       let : IsEmpty E := not_nonempty_iff.mp hE
       have hzero : Ω = 0 := by ext ⟨s, e⟩; exact isEmptyElim e
-      simpa [hzero] using hΩ
+      simp [hzero] at hΩ
     let η : EuclideanSpace ℂ E := EuclideanSpace.single (Classical.choice hE) 1
     have hη : ‖η‖ = 1 := by simp [η]
     refine ⟨η, hη, Real.le_sqrt_of_sq_le ?_⟩
