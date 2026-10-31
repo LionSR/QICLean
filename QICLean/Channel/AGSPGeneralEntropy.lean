@@ -31,7 +31,7 @@ namespace Matrix
 operator Schmidt rank. This corrects the zero-shrinking endpoint of AKLV,
 arXiv:1301.1162v1, `lem:S`, lines 339–348. -/
 theorem vonNeumannEntropy_reduced_le_log_of_zero_perpendicular_shrinking
-    {m n : Type*} [Fintype m] [Fintype n]
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (K : Matrix (m × n) (m × n) ℂ)
     (Γ φ : EuclideanSpace ℂ (m × n)) (hΓ : ‖Γ‖ = 1)
     (hφrank : schmidtRank (WithLp.ofLp φ) ≤ 1)
@@ -55,12 +55,12 @@ theorem vonNeumannEntropy_reduced_le_log_of_zero_perpendicular_shrinking
     exact schmidtRank_le_of_zero_perpendicular_shrinking K Γ φ hΓ hφrank hfix hperp hrank ha
   exact (vonNeumannEntropy_le_log_rank hρ htr).trans
     (Real.log_le_log (by exact_mod_cast hρ.rank_pos_of_trace_one htr)
-      (by exact_mod_cast hr))
+      (by exact_mod_cast hr : ((C * Cᴴ).rank : ℝ) ≤ D))
 
 /-- The entropy estimate for rank bounds at least two. The product overlap in
 this intermediate statement is the actual overlap, rather than a lower bound. -/
 private theorem entropy_le_of_actual_product_overlap
-    {m n : Type*} [Fintype m] [Fintype n]
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (K : Matrix (m × n) (m × n) ℂ)
     (Γ φ : EuclideanSpace ℂ (m × n)) (hΓ : ‖Γ‖ = 1) (hφ : ‖φ‖ = 1)
     (hφrank : schmidtRank (WithLp.ofLp φ) ≤ 1)
@@ -83,7 +83,8 @@ private theorem entropy_le_of_actual_product_overlap
   have hA : 0 ≤ A := div_nonneg (by nlinarith) (sq_nonneg μ)
   have hAeq : 1 + A = 1 / μ ^ 2 := by
     dsimp only [A]
-    field_simp [hμ0.ne'] <;> ring
+    field_simp [hμ0.ne']
+    ring
   have hlogA : Real.log (1 + A) = 2 * Real.log μ⁻¹ := by
     rw [hAeq, one_div, Real.log_inv, Real.log_pow, Real.log_inv]
     ring
@@ -107,7 +108,7 @@ private theorem entropy_le_of_actual_product_overlap
     sum_eigenvalues_tail_of_operatorSchmidtRank_of_product_overlap
       K Γ φ hΓ hφ hφrank hfix hδ0.le hperp hrank ha j
   have hcover : Fintype.card m ≤ D ^ Fintype.card m :=
-    ((Nat.lt_two_pow_self (Fintype.card m)).le).trans
+    ((@Nat.lt_two_pow_self (Fintype.card m)).le).trans
       (Nat.pow_le_pow_left (by omega : 2 ≤ D) _)
   have hraw := Entropy.probabilityEntropy_le_of_rankTailBounds
     (M := Fintype.card m) p (fun i ↦ D ^ i) (fun i ↦ min 1 (A * δ ^ i)) hp hsum
@@ -125,7 +126,9 @@ private theorem entropy_le_of_actual_product_overlap
   have hmass := Real.sum_min_one_mul_pow_le A δ hA hδ0 hδ1 (Fintype.card m)
   rw [hlogA] at hmass
   have hmass' : (∑ i ∈ Finset.range (Fintype.card m), min 1 (A * δ ^ i)) ≤ 2 + 6 * q := by
-    convert hmass using 1 <;> dsimp only [q] <;> ring
+    convert hmass using 1
+    dsimp only [q]
+    ring
   have hlog2 : Real.log 2 ≤ Real.log (D : ℝ) :=
     Real.log_le_log (by norm_num) (by exact_mod_cast hD)
   have hlogD : 0 ≤ Real.log (D : ℝ) := Real.log_nonneg (by exact_mod_cast (by omega : 1 ≤ D))
@@ -146,7 +149,7 @@ is zero; rank zero is ruled out by the fixed unit vector.
 Source: AKLV, arXiv:1301.1162v1, `lem:S`, lines 339–348; this is the corrected
 estimate described in the module's paper-gap record, not the printed formula. -/
 theorem vonNeumannEntropy_reduced_le_of_operatorSchmidtRank_of_product_overlap
-    {m n : Type*} [Fintype m] [Fintype n]
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (K : Matrix (m × n) (m × n) ℂ)
     (Γ φ : EuclideanSpace ℂ (m × n)) (hΓ : ‖Γ‖ = 1) (hφ : ‖φ‖ = 1)
     (hφrank : schmidtRank (WithLp.ofLp φ) ≤ 1)
@@ -166,7 +169,7 @@ theorem vonNeumannEntropy_reduced_le_of_operatorSchmidtRank_of_product_overlap
   have hKne : K ≠ 0 := by
     intro hz
     have hzero : Γ = 0 := by simpa only [hz, map_zero, LinearMap.zero_apply] using hfix.symm
-    simpa [hzero] using hΓ
+    simp [hzero] at hΓ
   have hD : 1 ≤ D := Nat.succ_le_of_lt ((operatorSchmidtRank_pos_of_ne_zero K hKne).trans_le hrank)
   have hlogD : 0 ≤ Real.log (D : ℝ) := Real.log_nonneg (by exact_mod_cast hD)
   by_cases hD2 : 2 ≤ D
@@ -174,7 +177,7 @@ theorem vonNeumannEntropy_reduced_le_of_operatorSchmidtRank_of_product_overlap
       hD2 hδ0 hδ1 hperp hrank hane).trans ?_
     apply mul_le_mul_of_nonneg_right _ hlogD
     apply mul_le_mul_of_nonneg_left _ (by norm_num : (0 : ℝ) ≤ 12)
-    apply add_le_add_left
+    refine add_le_add le_rfl ?_
     apply div_le_div_of_nonneg_right _ (neg_pos.mpr (Real.log_neg hδ0 hδ1)).le
     rw [Real.log_inv, Real.log_inv]
     exact neg_le_neg (Real.log_le_log hμ hoverlap)
@@ -183,7 +186,7 @@ theorem vonNeumannEntropy_reduced_le_of_operatorSchmidtRank_of_product_overlap
     have hzero := vonNeumannEntropy_eq_zero_of_rank_le_one
       (posSemidef_self_mul_conjTranspose (schmidtCoeffMatrix (WithLp.ofLp Γ)))
       (trace_schmidtCoeffMatrix_mul_conjTranspose_of_norm_one Γ hΓ)
-      (by simpa only [rank_self_mul_conjTranspose] using hC)
+      (by rw [rank_self_mul_conjTranspose]; exact hC)
     simpa only [Nat.cast_one, Real.log_one, mul_zero, hzero] using (le_refl (0 : ℝ))
 
 end Matrix

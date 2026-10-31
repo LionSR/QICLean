@@ -29,7 +29,7 @@ The rank-one condition means that the specified vector is a product vector;
 no approximant or tail is supplied. Supporting AKLV, arXiv:1301.1162v1,
 Lemma 2.3 (`lem:S`), lines 339–348, and entropy summation, lines 1059–1075. -/
 theorem sum_eigenvalues_tail_of_operatorSchmidtRank_of_product_overlap
-    {m n : Type*} [Fintype m] [Fintype n]
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (K : Matrix (m × n) (m × n) ℂ)
     (Γ φ : EuclideanSpace ℂ (m × n)) (hΓ : ‖Γ‖ = 1) (hφ : ‖φ‖ = 1)
     (hφrank : schmidtRank (WithLp.ofLp φ) ≤ 1)
@@ -46,7 +46,6 @@ theorem sum_eigenvalues_tail_of_operatorSchmidtRank_of_product_overlap
     (∑ b ∈ Finset.univ.filter
       (fun b : Fin (Fintype.card m) ↦ D ^ j ≤ b.val), hρ.isHermitian.eigenvalues₀ b) ≤
       min 1 (((1 - ‖⟪Γ, φ⟫_ℂ‖ ^ 2) / ‖⟪Γ, φ⟫_ℂ‖ ^ 2) * δ ^ j) := by
-  classical
   let a : ℂ := ⟪Γ, φ⟫_ℂ
   let v := φ - a • Γ
   have hv : ⟪Γ, v⟫_ℂ = 0 := by
@@ -76,9 +75,11 @@ theorem sum_eigenvalues_tail_of_operatorSchmidtRank_of_product_overlap
       (fun A : Module.End ℂ (EuclideanSpace ℂ (m × n)) ↦ A φ)
       (toLpLin_pow 2 K j)
     rw [← hpow]
-    simpa only [toLpLin_apply, WithLp.ofLp_toLp, Nat.mul_one] using
-      (schmidtRank_pow_mulVec_le K (WithLp.ofLp φ) hrank j).trans
-        (Nat.mul_le_mul_left (D ^ j) hφrank)
+    simp only [toLpLin_apply, WithLp.ofLp_toLp]
+    convert (schmidtRank_pow_mulVec_le K (WithLp.ofLp φ) hrank j).trans
+      (Nat.mul_le_mul_left (D ^ j) hφrank) using 1
+    · congr!
+    · rw [Nat.mul_one]
   let C := schmidtCoeffMatrix (WithLp.ofLp Γ)
   let hρ := posSemidef_self_mul_conjTranspose C
   have htr : ((C * Cᴴ).trace).re = 1 := by
@@ -110,7 +111,7 @@ theorem sum_eigenvalues_tail_of_operatorSchmidtRank_of_product_overlap
 of the fixed vector, so its Schmidt rank is at most the operator rank.
 This is the exact-projection endpoint of the corrected AKLV `lem:S` estimate. -/
 theorem schmidtRank_le_of_zero_perpendicular_shrinking
-    {m n : Type*} [Fintype m] [Fintype n]
+    {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (K : Matrix (m × n) (m × n) ℂ)
     (Γ φ : EuclideanSpace ℂ (m × n)) (hΓ : ‖Γ‖ = 1)
     (hφrank : schmidtRank (WithLp.ofLp φ) ≤ 1)
