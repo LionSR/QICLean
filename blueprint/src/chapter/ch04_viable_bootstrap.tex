@@ -22,6 +22,7 @@ for the failure probability of random sampling.
 \end{theorem}
 
 \begin{proof}
+    \uses{thm:finite_image_span_dimension}
     \leanok
     By robustness, $W$ is $0.04$-viable for $T'$. Since $\eta(q)<1$, some
     $s$-dimensional subspace $W'\subseteq W$ is $(1-\delta')$-viable for $T'$
@@ -38,10 +39,13 @@ for the failure probability of random sampling.
     \leanok
     \uses{thm:viable_bootstrap_step}
     If $q_1\ge4D^2$ and $\eta(q)<1$ for every $q\ge q_1$, then some
-    $0.015$-viable subspace for $T$ has dimension less than $q_1$. This is
+    $0.015$-viable subspace for $T$ has dimension less than $q_1$.
+    This is the abstract argument used in the proof of
     Proposition~prop:albootstrap-dg of~\cite[lines
-    1062--1075]{Arad2016RigorousRG} for the data of Theorem~t:ais, with the
-    constants corrected~\cite{gap:alvv16_bootstrap_constants}.
+        1062--1075]{Arad2016RigorousRG}, once the improving family and the
+    sampling bound have been supplied. The spatial scope of the physical
+    application and the corrected constants are recorded
+    in~\cite{gap:alvv16_bootstrap_constants}.
 \end{theorem}
 
 \begin{proof}
@@ -49,4 +53,89 @@ for the failure probability of random sampling.
     The whole factor $M$ is $0.015$-viable. Starting from it, apply the
     previous theorem as long as the dimension is at least $q_1$; each step
     halves the dimension.
+\end{proof}
+
+\begin{theorem}[A quantitative bootstrap bound]
+    \label{thm:viable_bootstrap_quantitative_dimension}
+    \lean{Submodule.exists_isViable_finrank_lt_rank_mul_pow}
+    \leanok
+    \uses{def:subspace_close, def:subspace_viable}
+    Let $M,F$ be finite-dimensional complex inner-product spaces, and let
+    $T,T'\subseteq M\otimes F$ be mutually $0.005$-close. Put
+    $r=\dim T'$, and assume $r\ge1$. Let $D\ge2$ be an integer and
+    $\Delta\in\R$ satisfy $D^{12}\Delta\le10^{-5}$. Suppose a fixed family
+    $A_1,\ldots,A_{D^2}$ of linear operators on $M$ has the following property:
+    for every real $\delta<1$ and every $\delta$-viable subspace
+    $S\subseteq M$ for $T'$, the space $\operatorname{span}_i A_iS$ is
+    $\Delta/(1-\delta)^2$-viable for $T'$.
+    Then there is a $0.015$-viable subspace $W\subseteq M$ for $T$ with
+    $\dim W<rD^{24}$.
+
+    This is a conditional form of the quantitative argument
+    in~\cite[lines 1062--1075]{Arad2016RigorousRG}. Applying it to a spin
+    chain requires an improving family for the chosen interval, whose role
+    is explained in~\cite{gap:alvv16_bootstrap_constants}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:viable_bootstrap}
+    Let $q\ge rD^{24}$ and $s=\lfloor q/(2D^2)\rfloor$.
+    Since $r\ge1$ and $D\ge2$, we have $q\ge4D^2$. The integer quotient
+    and the covering-net factor satisfy
+    \begin{align}
+        s                               & \ge\frac{q}{4D^2}, &
+        1+\frac{2}{\sqrt{0.96\,s/(8q)}} & \le21D.
+        \label{eq:bootstrap_quantitative_sample}
+    \end{align}
+    The bound $q\ge rD^{24}$ also gives
+    \begin{align}
+        \bigl(2r\log(21D)+\log q\bigr)256D^2\le2q.
+        \label{eq:bootstrap_quantitative_log_budget}
+    \end{align}
+    Substituting~(\ref{eq:bootstrap_quantitative_sample})
+    and~(\ref{eq:bootstrap_quantitative_log_budget}) into the sampling
+    failure probability yields
+    \begin{align}
+        \eta(q) & \le\exp\bigl(2r\log(21D)+\log q-s/16\bigr)
+        \le\exp\bigl(-q/(128D^2)\bigr)<1.
+        \label{eq:bootstrap_quantitative_failure}
+    \end{align}
+    Apply Theorem~\ref{thm:viable_bootstrap} with threshold $rD^{24}$.
+\end{proof}
+
+\begin{theorem}[Enlargement at a prescribed accuracy]
+    \label{thm:viable_enlargement_inverse_scale}
+    \lean{Submodule.viable_enlargement_of_close_improving_target}
+    \leanok
+    \uses{def:subspace_viable, def:subspace_close}
+    Let $\mathcal H,\mathcal M,\mathcal E$ be finite-dimensional complex
+    inner-product spaces, and fix an isometry
+    $u:\mathcal H\to\mathcal M\otimes\mathcal E$ onto the tensor product.
+    Let $G,T\subseteq\mathcal H$, let $1\le m\le D$ and $b\ge0$ be integers,
+    and suppose that $G,T$ are mutually $1/(200m)$-close.
+    Let $W_0\subseteq\mathcal M$ be $0.015$-viable for $uG$, with $\dim W_0\le b$.
+    Suppose that $A_0,\ldots,A_{D^2-1}$ act on $\mathcal M$ and that
+    $D^{12}\Delta\le10^{-5}$. Assume that, for every real $\delta<1$ and
+    every $\delta$-viable subspace $S$ for $uT$, the space
+    $\sum_j A_jS$ is $\Delta/(1-\delta)^2$-viable for $uT$.
+    Then $V=\sum_j A_jW_0$ satisfies
+    \begin{align}
+        \dim V&\le bD^2, & V&\text{ is }\frac1{2m}\text{-viable for }uG.
+        \label{eq:viable_inverse_scale}
+    \end{align}
+    This is a quantitative consequence of the closeness transfers in
+    \cite[Lemma~l:close and proof of Theorem~4.9]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:subspace_close_trans, thm:viable_coordinates, thm:finite_image_span_dimension}
+    Since $1/(200m)\le0.005$, the first closeness transfer makes $W_0$
+    $0.04$-viable for $uT$. The improving estimate and $m\le D^{12}$ give
+    \begin{align*}
+        \frac{\Delta}{(1-0.04)^2}&\le\frac1{8m}, &
+        2\left(\frac1{8m}+\frac1{200m}\right)&=\frac{13}{50m}\le\frac1{2m}.
+    \end{align*}
+    For $\Delta\le0$ the first inequality is immediate; for $\Delta>0$
+    it follows from $m\Delta\le10^{-5}$.
+    Transfer back to $uG$. Finally,
+    $\dim\sum_j A_jW_0\le\sum_j\dim A_jW_0\le D^2\dim W_0$.
 \end{proof}

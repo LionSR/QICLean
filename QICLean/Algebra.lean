@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Algebra
 
+import QICLean.Algebra.AKLVFrequencyBounds
 import QICLean.Algebra.BlockPermutation
 import QICLean.Algebra.BurnsideTheorem
 import QICLean.Algebra.CommutingOverlappingDecomp
@@ -65,6 +66,7 @@ import QICLean.Algebra.MatrixProductIntertwine
 import QICLean.Algebra.MatrixRankBaseChange
 import QICLean.Algebra.MatrixRankClosed
 import QICLean.Algebra.MatrixRankKronecker
+import QICLean.Algebra.MatrixReindex
 import QICLean.Algebra.MatrixReindexUnitary
 import QICLean.Algebra.MatrixSandwichIntertwine
 import QICLean.Algebra.MatrixSpectralDecomp
@@ -79,13 +81,18 @@ import QICLean.Algebra.NewtonGirard
 import QICLean.Algebra.NilMatrixSubalgebra
 import QICLean.Algebra.NilpotentSubspaceThree
 import QICLean.Algebra.NilpotentSubspaceTwo
+import QICLean.Algebra.OneMarkerFullCounts
+import QICLean.Algebra.OneMarkerWeightedSchmidtRank
+import QICLean.Algebra.OneWindowWordPartition
 import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
+import QICLean.Algebra.OperatorRightContraction
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OperatorSchmidtCut
 import QICLean.Algebra.OperatorSchmidtPartition
 import QICLean.Algebra.OperatorSchmidtPrescribedFactors
+import QICLean.Algebra.OperatorSchmidtProducts
 import QICLean.Algebra.OperatorSchmidtRealignment
 import QICLean.Algebra.OperatorSchmidtReindex
 import QICLean.Algebra.OperatorSchmidtSubmatrix
@@ -140,6 +147,7 @@ import QICLean.Algebra.TwoMarkerWordCoefficients
 import QICLean.Algebra.UnitModulusPowerSum
 import QICLean.Algebra.UnitaryTraceZero
 import QICLean.Algebra.WeightedFrequencySchmidtRank
+import QICLean.Algebra.WordCoefficient
 import QICLean.Algebra.WordCoefficientExpansion
 import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums

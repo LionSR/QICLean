@@ -1,0 +1,102 @@
+\section{Positive matrices and attained lower energies}
+
+All matrices in this section act on a finite-dimensional complex Euclidean
+space. The order is the positive-semidefinite order.
+
+\begin{theorem}[Energies of normalized eigenvectors]
+    \label{thm:normalized_eigenvector_energies}
+    \lean{Matrix.PosSemidef.nonneg_of_normalized_eigenvector,
+        Matrix.groundEnergy_eq_of_normalized_eigenvectors}
+    \leanok
+    Let $Ax=ex$, where $e\in\R$ and $\|x\|=1$. If $A\ge0$, then $e\ge0$.
+    If also $Ay=e'y$ with $e'\in\R$, $\|y\|=1$, and $A\ge e\Id$, $A\ge e'\Id$, then $e=e'$.
+    The latter assertion does not require $A\ge0$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Positivity gives $e=\langle x,Ax\rangle\ge0$. In the second assertion,
+    apply this observation to $(A-e\Id)y=(e'-e)y$ and
+    $(A-e'\Id)x=(e-e')x$ to obtain both inequalities.
+\end{proof}
+
+\begin{theorem}[A common extremal vector in an order sandwich]
+    \label{thm:order_sandwich_eigenvector}
+    \lean{Matrix.mulVec_eq_smul_of_order_sandwich}
+    \leanok
+    Suppose $e\Id\le F\le A$ and $Ax=ex$, where $e\in\R$.
+    Then $Fx=ex$; the vector need not be normalized or nonzero.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The positive matrices $F-e\Id$ and $A-F$ have a sum annihilating $x$.
+    The sum of their nonnegative quadratic forms at $x$ is zero, so each
+    annihilates $x$.
+\end{proof}
+
+\begin{theorem}[Ground energy above a positive connecting interaction]
+    \label{thm:positive_boundary_ground_energy}
+    \lean{Matrix.groundEnergy_bounds_of_positive_boundary_and_zero_test}
+    \leanok
+    Let $X,Y\ge0$, $Y\le C\Id$, and let $x,z$ be unit vectors. Suppose
+    $Xx=0$, $(X+Y)z=ez$, and $X+Y\ge e\Id$, where $C,e\in\R$.
+    Then $0\le e\le C$. These are the energy bounds used
+    in~\cite[lines 873--886 and 1010--1024]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:normalized_eigenvector_energies}
+    Positivity at $z$ gives $e\ge0$. The lower bound at $x$ gives
+    $e\le\langle x,(X+Y)x\rangle=\langle x,Yx\rangle\le C$.
+\end{proof}
+
+\begin{theorem}[A finite sum of positive contractions]
+    \label{thm:positive_unit_sum_budget}
+    \lean{Matrix.sum_posSemidef_and_le_card_of_positive_unit_terms}
+    \leanok
+    For a finite set $S$ and matrices satisfying $0\le h_i\le\Id$ for
+    $i\in S$, the matrix $\sum_{i\in S}h_i$ is positive and at most $|S|\Id$.
+    The matrix index set and $S$ may be empty.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Sum the lower and upper operator inequalities over $S$.
+\end{proof}
+
+\begin{theorem}[Centering the original spectral basis]
+    \label{thm:original_basis_centered_gap}
+    \lean{Matrix.IsHermitian.original_basis_centered_gap_data}
+    \leanok
+    Let $H$ be Hermitian on a nonzero finite-dimensional complex coordinate
+    space. Suppose $\mu\in\operatorname{spec}(H)$, $g>0$, and every spectral
+    value is either $\mu$ or at least $\mu+g$. Let $s,E_0\in\R$, and suppose
+    a unit vector $z$ satisfies
+    $(H-s\Id)z=E_0z$ and $H-s\Id\ge E_0\Id$. Then $\mu=E_0+s$.
+    Every member $v_j$ of the original orthonormal eigenbasis of $H$ satisfies
+    \begin{align}
+        (H-s\Id)v_j & =(\lambda_j-s)v_j,\notag                     \\
+        \lambda_j-s & =E_0\quad\text{or}\quad E_0+g\le\lambda_j-s.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:normalized_eigenvector_energies}
+    The supplied unit vector attains the lower bound of $H-s\Id$.
+    A unit $\mu$-eigenvector attains the lower bound $\mu$ of $H$.
+    Comparing their Rayleigh quotients in both directions gives
+    $\mu=E_0+s$. Subtract $s$ in each original eigenvector equation and in
+    its spectral alternative. This retains the original basis, as needed
+    for the comparison in~\cite[lines 909--960]{Arad2016RigorousRG}.
+\end{proof}
+
+\begin{lemma}[An attained minimum identifies the canonical least energy]
+    \label{lem:attained_canonical_ground_energy}
+    \lean{Matrix.IsHermitian.minEigenvalue_eq_add_of_centered_ground}
+    \leanok
+    Let $H$ be Hermitian on a nonzero finite-dimensional space. Suppose a
+    unit vector $x$ satisfies $(H-SI)x=Ex$ and $H-(S+E)I\ge0$.
+    Then the least eigenvalue of $H$ is $E+S$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:normalized_eigenvector_energies}
+    A canonical unit eigenvector attains the least eigenvalue. The two
+    attained positive lower bounds for the same matrix have equal energies.
+\end{proof}

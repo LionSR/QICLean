@@ -27,7 +27,34 @@ span of the $b'_j$ with $a'_j\le c$.
     \leanok
     Expand $x=\sum_jx_jb_j$. Then
     $\|(H-\mu)x\|^2=\sum_j|a_j-\mu|^2|x_j|^2\ge D^2\sum_{a_j>c}|x_j|^2
-    =D^2\|P^\perp x\|^2$.
+        =D^2\|P^\perp x\|^2$.
+\end{proof}
+
+\begin{theorem}[Eigenvalue comparison from a low-energy residual]
+    \label{thm:low_spectral_eigenvalue_comparison}
+    \lean{Matrix.IsHermitian.eigenvalues₀_le_add_of_norm_domRestrict_low_le}
+    \notready
+    \uses{def:spectral_span_le}
+    Let $H,F\in\MN{d}$ be Hermitian, with eigenvalues listed in decreasing
+    order, and let $G$ be the closed spectral subspace of $F$ at energy $c$.
+    Suppose $\|(H-F)|_G\|\le\xi$. For every $0\le i<d$ with
+    $\lambda_i(F)\le c$, one has $\lambda_i(H)\le\lambda_i(F)+\xi$.
+    This is a variational estimate for use with the restricted perturbation
+    bounds in~\cite[lines 955--968]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \notready
+    The first $i+1$ eigenvectors of $H$ and the last $d-i$ eigenvectors of
+    $F$ span subspaces with a common nonzero vector $x$. The latter subspace
+    is contained in $G$. Spectral expansion and the residual estimate give
+    \begin{align}
+        \lambda_i(H)\|x\|^2
+         & \le \operatorname{Re}\langle Hx,x\rangle
+        \le \operatorname{Re}\langle Fx,x\rangle+\xi\|x\|^2
+        \le (\lambda_i(F)+\xi)\|x\|^2.
+        \notag
+    \end{align}
+    Divide by $\|x\|^2>0$.
 \end{proof}
 
 \begin{theorem}[One window]
@@ -47,7 +74,7 @@ span of the $b'_j$ with $a'_j\le c$.
     Every eigenvalue $a'_k>c'$ satisfies $|a'_k-\mu|\ge D$. By the previous
     theorem,
     $D\|P'^\perp\psi\|\le\|(H'-\mu)\psi\|\le\|(H'-H)\psi\|
-    +\|(H-\mu)\psi\|\le(\xi+h)\|\psi\|$.
+        +\|(H-\mu)\psi\|\le(\xi+h)\|\psi\|$.
 \end{proof}
 
 \begin{theorem}[Closeness of the low-energy subspaces]
@@ -118,7 +145,8 @@ span of the $b'_j$ with $a'_j\le c$.
 \begin{proof}
     \leanok
     \uses{thm:spectral_span_close_of_perturbation,
-        thm:subspace_close_nested_equal, thm:subspace_close_dimension}
+        thm:subspace_close_nested_equal, thm:subspace_close_dimension,
+        thm:spectral_span_quadratic_form}
     The original spectral dichotomy gives $H\ge eI$ and
     $T(e+\gamma/40)=T(e+39\gamma/40)=G$. By
     (\ref{eq:low_cluster_perturbed_residual}), a unit eigenvector $x$ of
@@ -147,4 +175,146 @@ span of the $b'_j$ with $a'_j\le c$.
     $e+\gamma/20<a'_j\le e+19\gamma/20$, its eigenvector belongs to
     $V=U$, whereas its own coordinate must vanish in $U$. This
     contradiction proves~(\ref{eq:low_cluster_eigenvalue_gap}).
+\end{proof}
+
+
+\begin{theorem}[Energy on a low spectral subspace]
+    \label{thm:spectral_span_quadratic_form}
+    \lean{OrthonormalBasis.re_inner_apply_eq_sum_of_eigen,
+        Submodule.re_inner_apply_le_of_mem_spectralSpanLE}
+    \leanok
+    \uses{def:spectral_span_le}
+    Let $(b_j)$ be a finite orthonormal basis of a complex inner-product
+    space, and let $H$ be a linear operator satisfying $Hb_j=a_jb_j$ with
+    $a_j\in\R$. For every $x$,
+    \begin{align}
+        \operatorname{Re}\langle x,Hx\rangle
+         & =\sum_j a_j|\langle b_j,x\rangle|^2.
+        \label{eq:spectral_span_energy_coordinates}
+    \end{align}
+    In particular, if $x\in T(c)$, then
+    $\operatorname{Re}\langle x,Hx\rangle\le c\|x\|^2$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Express $x$ and $Hx$ in the orthonormal basis to obtain
+    (\ref{eq:spectral_span_energy_coordinates}). For $x\in T(c)$, all
+    coordinates with $a_j>c$ vanish. Bound the remaining coefficients by
+    $c$ and apply Parseval's identity.
+\end{proof}
+
+\begin{theorem}[The low spectral projection commutes with the operator]
+    \label{thm:spectral_span_projection_commutes}
+    \lean{Submodule.commute_starProjection_spectralSpanLE}
+    \leanok
+    \uses{def:spectral_span_le}
+    Under the same eigenbasis assumptions, the orthogonal projection
+    onto $T(c)$ commutes with $H$, for every real $c$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    In that basis the complementary projection retains precisely the
+    coordinates with $a_j>c$, while $H$ multiplies each coordinate by $a_j$.
+    These two operations commute, and so do $H$ and the low projection.
+    These are spectral consequences used
+    in~\cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG}.
+\end{proof}
+
+\begin{theorem}[A low cluster with a scaled projection error]
+    \label{thm:scaled_restricted_residual_cluster}
+    \lean{Submodule.low_spectral_cluster_of_scaled_restricted_residuals}
+    \leanok
+    \uses{def:spectral_span_le,def:subspace_close}
+    Let $H,H'$ have orthonormal eigenbases $(b_i),(b'_i)$ with real
+    eigenvalues $(a_i),(a'_i)$ on a finite-dimensional complex inner-product
+    space. Write $T(c)=\operatorname{span}\{b_i:a_i\le c\}$ and
+    $T'(c)=\operatorname{span}\{b'_i:a'_i\le c\}$.
+    Suppose $\gamma>0$, $0<\tau\le1$, $0\le\xi\le\tau\gamma/10^6$, and
+    every $a_i$ equals $e$ or is at least $e+\gamma$. Assume the two actual
+    restricted residual bounds
+    \begin{align}
+        \bigl\|(H-H')|_{T(e+\gamma/40)}\bigr\|    & \le\xi,\notag \\
+        \bigl\|(H-H')|_{T'(e+19\gamma/20)}\bigr\| & \le\xi.
+    \end{align}
+    Put $G=T(e)$, $U=T'(e+\gamma/20)$ and $V=T'(e+19\gamma/20)$.
+    Then $U=V$, $\dim U=\dim G$, and $U,G$ are mutually $\tau/200$-close.
+    Every closed cutoff $c\in[e+\gamma/20,e+19\gamma/20]$ gives
+    $T'(c)=U$ and the same two closeness bounds. In addition,
+    $a'_i\le e+\gamma/10$ or $a'_i\ge e+9\gamma/10$ for every $i$.
+    The value $e$ need not be attained, and $G$ may be zero.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:spectral_span_close_of_perturbation,
+        thm:subspace_close_nested_equal,thm:subspace_close_dimension,
+        thm:spectral_span_quadratic_form}
+    The original dichotomy gives the quadratic lower bound $e$.
+    On the perturbed low space, the second residual bound then gives the
+    lower spectral bound $e-\xi$. Apply the low-energy perturbation estimate
+    in both directions with window width $h=\tau\gamma/10^6$ and cutoff
+    separation $\gamma/40$. Each window count is at most $500001/\tau$, and
+    \begin{align}
+        N(\xi+h)^2
+        \le\frac{500001}{\tau}\left(\frac{2\tau\gamma}{10^6}\right)^2
+        \le\frac{\tau}{200}\left(\frac{\gamma}{40}\right)^2.
+    \end{align}
+    Thus $U$ is $\tau/200$-close to $G$, and $G$ is $\tau/200$-close to $V$.
+    Since $U\subseteq V$, the nested-space theorem gives equality and the
+    intermediate-cutoff assertions. An eigenvector with eigenvalue strictly
+    between the two outer cutoffs would belong to $V$ but not $U$;
+    their equality excludes it. This scales the spectral comparison in
+    \cite[lines 955--968 and 1010--1024]{Arad2016RigorousRG} without
+    replacing either residual by a full operator-norm hypothesis. The window
+    count uses the correction in~\cite{gap:alvv16_hard_truncation_windows}.
+\end{proof}
+
+\begin{theorem}[Relative low-energy spaces above the actual ground energies]
+    \label{thm:relative_low_energy_spaces_close}
+    \lean{Matrix.IsHermitian.groundEnergy_compare_and_isCloseTo_spectralSpanLE_of_norm_domRestrict_le}
+    \notready
+    \uses{def:spectral_span_le,def:subspace_close}
+    Let $H,F$ be Hermitian matrices on a nonzero finite-dimensional space,
+    with $F\le H$. Let $E$ and $E'$ be their respective least eigenvalues,
+    and write $T_H(c)$ and $T_F(c)$ for their closed spectral subspaces
+    at the absolute energy $c$.
+    Suppose $\eta,\xi,\delta>0$ and
+    \begin{align}
+        \|(H-F)|_{T_H(E+\eta)}\| & \le\xi, &
+        \|(H-F)|_{T_F(E+\eta)}\| & \le\xi.
+        \label{eq:relative_low_energy_residuals}
+    \end{align}
+    Put $N=\lceil\eta/(2\xi)\rceil$ and
+    $\eta'=\eta+\xi+2\xi\sqrt{N/\delta}$.
+    Then $E'\le E\le E'+\xi$,
+    $T_F(E'+\eta')$ is $\delta$-close to $T_H(E+\eta)$, and
+    $T_H(E+\eta')$ is $\delta$-close to $T_F(E'+\eta)$.
+    Both relative cutoffs use the actual respective ground energy.
+    This is the finite-dimensional relative-energy consequence of
+    \cite[lines 955--968]{Arad2016RigorousRG}, with the window count and
+    ground-energy shift corrected in
+    \cite{gap:alvv16_hard_truncation_windows}.
+\end{theorem}
+\begin{proof}
+    \notready
+    \uses{thm:low_spectral_eigenvalue_comparison,
+        thm:spectral_span_close_of_perturbation}
+    Weyl monotonicity gives $E'\le E$. Since the lowest eigenvalue of
+    $F$ lies below $E+\eta$, the restricted eigenvalue comparison gives
+    $E\le E'+\xi$.
+    Apply the window estimate with width $h=\xi$ to the spaces of $H$
+    between $E$ and $E+\eta$. For the enlarged target cutoff, the
+    denominator satisfies
+    \begin{align}
+        (E'+\eta')-(E+\eta)+\xi
+         & \ge\xi+2\xi\sqrt{N/\delta}
+        \ge2\xi\sqrt{N/\delta}.
+        \notag
+    \end{align}
+    Its squared value times $\delta$ is at least $N(2\xi)^2$, so the
+    finite-window budget holds. The target cutoff is at least the source
+    cutoff by the same ground-energy comparison.
+    For the reverse direction, $E'\le E$ gives
+    $T_F(E'+\eta)\subseteq T_F(E+\eta)$, so the second residual estimate
+    remains valid on the smaller space. Its spectral width is again
+    $\eta$, and the reverse target denominator is larger still.
+    Apply the same window argument with $H,F$ interchanged.
 \end{proof}

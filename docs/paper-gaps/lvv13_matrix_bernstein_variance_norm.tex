@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{The Variance Parameter in the Matrix Bernstein Bound\\
+    of Landau, Vazirani and Vidick}
+\author{}
+\date{2026-10-28}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The printed statement}
+
+Landau, Vazirani and Vidick quote the following form of the matrix Bernstein
+inequality.\footnote{The source is \cite{Landau2013PolynomialTime}, version~1,
+    source file \path{algo53.tex}, Theorem \path{t:mcb} at lines~616--624.}
+Let $X_1,\dots,X_\ell$ be independent identically distributed random
+$d\times d$ matrices with $\mathbb E\,X_i=X$ and $\|X_i-X\|\le R$, and put
+\begin{align}
+    \sigma^2 & :=\max\bigl\{\mathbb E\,(X_i-X)(X_i-X)^{*},\;
+    \mathbb E\,(X_i-X)^{*}(X_i-X)\bigr\}.
+    \label{eq:lvv13_variance_printed}
+\end{align}
+Then for every $\ell$ and every $t\ge0$,
+\begin{align}
+    \mathbb P\Bigl(\Bigl\|\frac1\ell\sum_{i=1}^\ell X_i-X\Bigr\|\ge t\Bigr)
+     & \le2d\exp\Bigl(-\frac{\ell t^2}{2\sigma^2+2Rt/3}\Bigr).
+    \label{eq:lvv13_variance_bound}
+\end{align}
+The two expectations in (\ref{eq:lvv13_variance_printed}) are positive
+semidefinite matrices, and the maximum of two matrices is not defined in the
+Loewner order; nor can a matrix stand in the scalar exponent of
+(\ref{eq:lvv13_variance_bound}).
+
+\section{The correction}
+
+The source derives (\ref{eq:lvv13_variance_bound}) from Tropp's rectangular
+matrix Bernstein inequality~\cite[Theorem~1.6]{Tropp2012User}, whose variance
+parameter is the maximum of the operator norms of the two summed second moments.
+The intended reading of (\ref{eq:lvv13_variance_printed}) is therefore
+\begin{align}
+    \sigma^2 & :=\max\bigl\{\bigl\|\mathbb E\,(X_i-X)(X_i-X)^{*}\bigr\|,\;
+    \bigl\|\mathbb E\,(X_i-X)^{*}(X_i-X)\bigr\|\bigr\},
+    \label{eq:lvv13_variance_corrected}
+\end{align}
+which does not depend on $i$ by identical distribution. With this reading
+(\ref{eq:lvv13_variance_bound}) follows from Tropp's theorem applied to the
+centred summands $Z_i=(X_i-X)/\ell$: they satisfy $\|Z_i\|\le R/\ell$, their
+variance parameter is $\ell\sigma^2/\ell^2=\sigma^2/\ell$, and
+\begin{align}
+    \frac{t^2/2}{\sigma^2/\ell+Rt/(3\ell)} & =\frac{\ell t^2}{2\sigma^2+2Rt/3}.
+    \notag
+\end{align}
+The dimension factor of Tropp's theorem is $d+d=2d$. The statement is otherwise
+unchanged: the bound $\|X_i-X\|\le R$ is read almost surely, and the number of
+samples $\ell$ is positive, as the average $\frac1\ell\sum_iX_i$ requires.
+
+\section{Formalization}
+
+The bound (\ref{eq:lvv13_variance_bound}) with the variance parameter
+(\ref{eq:lvv13_variance_corrected}) is
+\leanid{Matrix.measureReal_le_norm_average_sub_le} in
+\doclink{QICLean/Probability/MatrixBernstein}, derived from the rectangular
+inequality \leanid{Matrix.measureReal_le_norm_sum_le}.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

@@ -15,6 +15,7 @@ import QICLean.Channel.Schwarz.ChoiCompression
 import QICLean.Channel.Schwarz.Closure
 import QICLean.Channel.Schwarz.DiagonalJensen
 import QICLean.Channel.Schwarz.Douglas
+import QICLean.Channel.Schwarz.EntropicJensen
 import QICLean.Channel.Schwarz.KadisonSchwarz
 import QICLean.Channel.Schwarz.MultiplicativeDomain
 import QICLean.Channel.Schwarz.MultiplicativeDomainFull
@@ -23,6 +24,7 @@ import QICLean.Channel.Schwarz.OperatorConvexity
 import QICLean.Channel.Schwarz.OperatorJensenAux
 import QICLean.Channel.Schwarz.OperatorJensenIntegrands
 import QICLean.Channel.Schwarz.PetzEqualityPrerequisites
+import QICLean.Channel.Schwarz.PetzOverlapDataProcessing
 import QICLean.Channel.Schwarz.PetzRecoverySupport
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import QICLean.Channel.Schwarz.PositiveOnAbelian

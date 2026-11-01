@@ -94,3 +94,35 @@
     Thus $\lambda(\alpha)\in B_k$, and summing by the fibers of
     $\lambda$ proves the formula. The factors in each word retain their order.
 \end{proof}
+
+\begin{theorem}[One-window partition with a common cutoff]
+    \label{thm:one_window_word_coefficient_partition}
+    \lean{Fintype.exists_one_window_word_coefficient_partition_of_le}
+    \leanok
+    Let $I$ be finite, let $S\subseteq I$ be nonempty, and let $\mathcal R$
+    be a semiring. There exists $p:\mathbb N^S\to S$, chosen before the
+    operator family and degree cutoff, such that
+    $\nu(p(\nu|_S))\le\lfloor\ell/|S|\rfloor$ whenever
+    $\sum_a\nu(a)\le\ell$.
+    For every $H_a\in\mathcal R$ and $0\le d\le\ell$, define
+    $u_\beta=p(\beta|_S)$ and let $C_{d,\beta}$ be the full-frequency
+    word coefficient. Then
+    \begin{align*}
+        \left(\sum_aH_a\right)^d
+        =\sum_{u\in S}\sum_{k=0}^{\lfloor\ell/|S|\rfloor}
+        \sum_{\substack{\beta:I\to\mathbb N \\\sum_a\beta(a)=d\\
+                u_\beta=u,\ \beta(u)=k}} C_{d,\beta}.
+    \end{align*}
+    Zero degrees and cancellations between coefficient operators are allowed.
+    This is the one-window partition in \cite[Lemma~4.2]{Arad2013AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:two_window_low_frequency_selectors,thm:finite_sum_power_ordered_words,
+        def:full_word_coefficient}
+    Use the first of the two local selectors with both windows equal to $S$.
+    Group the ordered words by their full occurrence vector. Each resulting
+    vector has total $d\le\ell$, so its selected count lies in the displayed
+    range. Group these same coefficients once more by the selected index and
+    its count. Every coefficient appears in exactly one part.
+\end{proof}

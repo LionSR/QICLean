@@ -1,197 +1,113 @@
-% QICLean chapter router. Order follows M. Wolf, "Quantum Channels &
-% Operations: A Guided Tour" (Notes/WolfNoteTexSource/ in the source
-% repository this content was extracted from). Chapter files are numbered
-% sequentially in the order they appear below (chNN_ = this volume's own
-% chapter NN, not TNLean's).
+% QICLean chapter router.
 %
-% Every chapter file lives directly under chapter/: there is no separate
-% "Appendices" part and no ft_mps/full_only split. TNLean organizes its own
-% blueprint into a shared Fundamental-Theorem-of-MPS volume ("ft_mps") and a
-% remaining-results volume ("full_only"), each with its own front matter and
-% appendix numbering; that split is a paper-volume artifact of TNLean's
-% build, not a property of the mathematics. Content that TNLean filed as a
-% "Supporting Results" appendix to one of its chapters is filed here as a
-% same-chapter continuation instead -- a same-named chNN_..._supporting_
-% results.tex file \input immediately after that chapter's main content, so
-% it appears as further sections of the one chapter Wolf's own numbering
-% gives the material, with no separate appendix part or numbering track.
+% The blueprint has six parts. Each part opens with a part file
+% chapter/part_N_*.tex. Chapters are ordered by dependency as far as the
+% order of Wolf's chapters allows; most remaining references to a later
+% chapter start in Part I or in the Perron--Frobenius chapter. Parts I-III
+% follow the order of M. Wolf, "Quantum Channels & Operations: A Guided
+% Tour", Chapters 1-7; Part IV starts with Wolf's Chapter 8 on distances and
+% entropies; Parts V and VI collect the tools for ground states of gapped
+% local Hamiltonians, the one-dimensional area law, the two-dimensional area
+% law and the PEPS approximation.
 %
-% Wolf chapter -> file mapping (see the extraction report for the full
-% per-file classification and the 61-file move list):
-%   Ch.1  Deconstructing Quantum       -> ch01_{states,positive_maps,
-%                                          spectrum_and_wigner} (input via
-%                                          ch01_deconstructing_quantum, the
-%                                          volume's opening chapter)
-%   Ch.2  Representations              -> ch02_channels_{positive_map_and_
-%                                          channel_foundations,
-%                                          rectangular_kraus_maps},
-%                                          ch03_channel_representations_*
-%                                          (including the former auxiliary
-%                                          chapter's Choi foundations and
-%                                          no-information-without-disturbance
-%                                          sections, folded in as this
-%                                          chapter's opening material)
-%   Ch.3  Positive, but not completely -> ch04_positive_not_cp_*
-%   Ch.4  Convex Structure             -> ch04_convex_structure
-%   Ch.5  Operator Inequalities        -> ch05_schwarz_* (including the
-%                                          former auxiliary chapter's
-%                                          abstract-domains-and-order
-%                                          section), ch06_operator_convexity_*
-%   Ch.6  Spectral properties          -> ch02_channels_{peripheral_spectrum_
-%                                          and_primitivity,transfer_map_
-%                                          foundations}, ch07_qpf* (including
-%                                          the former auxiliary chapter's
-%                                          exponential-positivity and
-%                                          ergodicity section),
-%                                          ch08_spectral_ft_peripheral_cyclic,
-%                                          ch08_spectral_supporting_results,
-%                                          ch09_channel_asymptotics_*
-%   Ch.7  Continuous one-parameter
-%         semigroups                   -> ch11_semigroup_*
-%   Ch.8  Measures for distances and
-%         mixedness                    -> ch12_entropy_*,
-%                                          ch09_channel_asymptotics_
-%                                          {jordan_block_power,
-%                                          upper_triangular_power}
+% The chNN_ prefix of a file name records where the file sat in the earlier
+% Wolf-ordered layout; it is not the chapter number. Files and labels keep
+% their names because docs/ and TNLean refer to them. A chapter is either a
+% wrapper file that \input's its sections (the *_chapter.tex files and the
+% older wrappers such as ch02_channels) or a file that carries its own
+% \chapter heading, followed below by the files that continue it (for
+% example the supporting-results sections at the end of a Wolf chapter).
 %
-% No Wolf Ch.9-11 (Symmetries, Special channels, Quantum spin chains) content
-% moved: none of TNLean's blueprint chapters attached to those source chapters
-% cleared the >=0.5 qic-item-count threshold used for this extraction. Wolf
-% Ch.4 was added directly in QICLean after extraction.
+%   I   States, positive maps and quantum channels
+%        1 States, the Schmidt decomposition and Wigner's theorem
+%        2 Positive maps, Kraus maps and partial traces
+%        3 Choi matrices, Kraus representations and normal forms
+%        4 Positive maps that are not completely positive, and
+%          entanglement criteria
+%        5 Duality for conic and semidefinite programs
+%   II  Operator inequalities
+%        6 Schwarz inequalities and multiplicative domains
+%        7 Operator convexity, Jensen's inequality and Lieb concavity
+%   III Spectra and long-time behaviour of channels
+%        8 Fixed points and the Perron--Frobenius theorem
+%        9 Peripheral spectrum, primitivity and spectral gaps
+%       10 Fixed-point algebras and the asymptotic decomposition of channels
+%       11 The quantum Wielandt bound (Sanz, Perez-Garcia, Wolf, Cirac 2010)
+%       12 Dynamical semigroups and the GKSL theorem
+%   IV  Entropy and probability
+%       13 Trace distance, majorization and pinching
+%       14 Von Neumann entropy and relative entropy
+%       15 Strong subadditivity, mutual information and conditional entropy
+%       16 Renyi entropies and truncated spectra
+%       17 Trace exponentials and the matrix Bernstein inequality
+%       18 Schur--Weyl duality and the labels of tensor powers
+%       19 Random words with Poisson letter counts
+%   V   Ground states of gapped local Hamiltonians
+%       20 Polynomial filters for the ground projection
+%       21 Gaussian and compactly supported spectral filters
+%       22 Viable subspaces, nets and the detectability lemma
+%   VI  Tools for the two-dimensional area law and PEPS approximation
+%       23 Gaussian replacement of Schmidt sources
+%       24 Projections, compressions and matrix means
+%       25 Surprisal concentration and typical states
+%       26 Conditional movement, phase and skew estimates
+%       27 Replica components, restoring operators and good-copy densities
+%       28 Common cutoffs for the labels of replicas
+%       29 Replica entropy metrics and their upper bounds
+%       30 Lower bounds and floors for replica metrics
+%       31 Entropy and energy transport on symmetric replicas
 %
-% TNLean's catch-all "Auxiliary Quantum-Channel Theory" chapter did not
-% survive the move to a volume-native numbering: its four sections were
-% mathematically at home in earlier chapters and are folded into them.
-% The Choi-Jamiolkowski foundations and the no-information-without-
-% disturbance theorem open ch03_channel_representations (the chapter that
-% already used them); the abstract Schwarz-map and multiplicative-domain
-% material joins ch05_schwarz; the exponential-positivity and ergodicity
-% results join ch07_qpf. No content or label was dropped in the move.
+% Chapter 22 keeps the viable-subspace, low-energy and trimming files of the
+% former Chapter 4 together and in their former order.
 
+\input{chapter/part_1_states_and_channels}
 \input{chapter/ch01_deconstructing_quantum}
-\input{chapter/ch01_positive_projection_compression}
-\input{chapter/ch01_projection_intertwining_norm}
-\input{chapter/ch01_projection_range_isometry}
-\input{chapter/ch01_contained_projection_compression}
-\input{chapter/ch01_isometric_intertwining_commute}
-\input{chapter/ch01_state_weighted_trace_bounds}
-\input{chapter/ch01_overlap_lemmas}
-\input{chapter/ch01_overlap_energy}
-\input{chapter/ch01_unitary_trace_pairing}
-
 \input{chapter/ch02_channels}
 \input{chapter/ch03_channel_representations}
-
 \input{chapter/ch04_positive_not_cp}
 \input{chapter/ch04_positive_not_cp_supporting_results}
-\input{chapter/ch04_trace_norm_net}
-\input{chapter/ch04_ball_net}
-\input{chapter/ch04_haar_projection}
-\input{chapter/ch04_viable_subspaces}
-\input{chapter/ch04_gaussian_ratio_tail}
-\input{chapter/ch04_viable_error_reduction}
-\input{chapter/ch04_viable_tensor}
-\input{chapter/ch04_viable_coordinates}
-\input{chapter/ch04_matrix_tensor_coordinates}
-\input{chapter/ch04_tensor_weights}
-\input{chapter/ch04_viable_random_sampling}
-\input{chapter/ch04_viable_bootstrap}
-\input{chapter/ch04_viable_spectral_projector}
-\input{chapter/ch04_chebyshev_spectral_projector}
-\input{chapter/ch04_chebyshev_viability}
-\input{chapter/ch04_low_energy_perturbation}
-\input{chapter/ch04_schmidt_threshold}
-\input{chapter/ch04_viable_trimming}
 \input{chapter/ch04_convex_structure}
 
+\input{chapter/part_2_operator_inequalities}
 \input{chapter/ch05_schwarz}
 \input{chapter/ch05_schwarz_supporting_results}
 \input{chapter/ch06_operator_convexity}
-\input{chapter/ch06_trace_exponential_perturbation}
-\input{chapter/ch06_projection_calculus}
-\input{chapter/ch06_floor_pin}
 
+\input{chapter/part_3_spectra}
 \input{chapter/ch07_qpf}
 \input{chapter/ch07_qpf_supporting_results}
 \input{chapter/ch08_spectral}
 \input{chapter/ch09_channel_asymptotics}
 \input{chapter/ch09_channel_asymptotics_supporting_results}
-
-% Not a Wolf chapter: the quantum Wielandt bound (Sanz, Perez-Garcia, Wolf,
-% Cirac 2010) is a separate paper's result, placed here for its close
-% relation to Wolf Ch.6's spectral/primitivity theory. Corrected into the
-% move set during Phase 2 against the real Lean-tree dry run's mover set
-% (docs/movers.txt on branch dryrun-2026-08-20) — the monorepo's
-% check_import_direction.py mover_files() boundary used for the initial
-% Phase-1 pass did not yet include the surviving Wielandt/ files. See the
-% packaging report.
 \input{chapter/ch10_wielandt}
 \input{chapter/ch10_wielandt_supporting_results}
-
 \input{chapter/ch11_semigroup}
 
+\input{chapter/part_4_entropy_and_probability}
+\input{chapter/ch12_trace_distance_chapter}
 \input{chapter/ch12_entropy}
-\input{chapter/ch12_entropy_corollaries}
-\input{chapter/ch12_trace_holder_multi}
-
-% Finite random sources and sampling are independent of Wolf's chapter order.
-\input{chapter/ch13_random_sources}
-\input{chapter/ch13_source_error}
-\input{chapter/ch13_physical_trace_coordinates}
-\input{chapter/ch13_source_reduction}
-\input{chapter/ch13_source_bridges}
-
-% Not a Wolf chapter: scalar estimates for the buffered-rectangle filters of the
-% OpenAI area-law preprint (September 24, 2026, Lemma 3.2, Proposition 3.3).
-\input{chapter/ch13_buffered_filters}
-
-% Not a Wolf chapter: analytic input for quasi-local spectral filtering of
-% gapped Hamiltonians (OpenAI, September 24, 2026 area-law preprint, Lemma 4.2).
-\input{chapter/ch13_spectral_filter}
-
-% Not a Wolf chapter: marginal surprisal moments under a global gap (OpenAI,
-% September 24, 2026 area-law preprint, Lemma 3.1).
-\input{chapter/ch13_marginal_tails}
-% Not a Wolf chapter: label calculus for symmetric replicas (same preprint, Lemma 6.1).
+\input{chapter/ch12_strong_subadditivity_chapter}
+\input{chapter/ch12_renyi_chapter}
+\input{chapter/ch12_matrix_bernstein_chapter}
 \input{chapter/ch13_schur_labels}
-\input{chapter/ch13_symmetric_label_identities}
-\input{fragment/replica_symmetric_support}
-\input{chapter/ch13_compressed_typical_common_cutoffs}
-\input{chapter/ch13_physical_matched_cutoffs}
-\input{chapter/ch13_compressed_typical_label_sequence}
-\input{chapter/ch13_schmidt_bell_common_cutoffs}
-\input{chapter/ch13_schmidt_bell_site_pin}
-\input{chapter/ch13_schmidt_bell_supplied_overlap}
-\input{chapter/ch13_schmidt_bell_physical_witness}
-\input{fragment/grouped_label_entropy}
-\input{fragment/bad_copy_label_dimension}
-\input{fragment/good_auxiliary_label_entropy}
-\input{fragment/good_auxiliary_label_compression}
-\input{fragment/replica_good_auxiliary_label_bound}
-\input{chapter/ch12_joint_auxiliary_exponential}
-\input{chapter/ch12_component_inverse_good}
-\input{chapter/ch12_component_inverse_rough}
-\input{chapter/ch12_component_inverse_sharp}
-\input{chapter/ch12_inverse_sharp_compression}
-\input{chapter/ch12_inverse_rough_compression}
-\input{chapter/ch01_contained_projection_compression}
-\input{chapter/ch13_symmetric_projection_coordinates}
-\input{chapter/ch12_low_defect_rough_lower_bound}
-\input{chapter/ch12_low_defect_sharp_lower_bound}
-\input{chapter/ch12_regional_low_defect_lower_bound}
-\input{chapter/ch12_regional_sharp_lower_bound}
-\input{chapter/ch12_regional_sharp_lower_norm}
-\input{chapter/ch12_regional_rough_lower_norm}
-\input{chapter/ch13_rough_lower_coefficient}
-\input{chapter/ch13_regional_rough_lower_three}
+\input{chapter/ch11_poisson_words_chapter}
 
-% Not a Wolf chapter: the common label function of the replica metrics and its
-% marked ratios (same preprint, Lemma 6.2).
+\input{chapter/part_5_gapped_ground_states}
+\input{chapter/ch01_polynomial_filters_chapter}
+\input{chapter/ch12_gaussian_filters_chapter}
+\input{chapter/ch04_viable_subspaces_chapter}
+
+\input{chapter/part_6_area_law_tools}
+\input{chapter/ch13_gaussian_sources_chapter}
+\input{chapter/ch06_projections_and_means_chapter}
+\input{chapter/ch13_surprisal_concentration_chapter}
+\input{chapter/ch13_conditional_estimates_chapter}
+\input{chapter/ch12_replica_components_chapter}
+\input{chapter/ch13_label_cutoffs_chapter}
 \input{chapter/ch13_replica_metrics}
 \input{chapter/ch13_grouped_label_symmetric_support}
 \input{chapter/ch13_replica_bad_copy_exponential}
 \input{chapter/ch13_replica_laminar_band_metrics}
-\input{chapter/ch13_replica_pinned_upper_estimates}
 \input{chapter/ch13_replica_symmetric_band_commute}
 \input{chapter/ch13_replica_symmetric_mean_tree_product}
 \input{chapter/ch13_replica_symmetric_band_label_preservation}
@@ -200,76 +116,22 @@
 \input{chapter/ch13_bell_insertion_coordinates}
 \input{chapter/ch13_bell_insertion_register_coordinates}
 \input{chapter/ch13_bell_pinned_metric}
-\input{chapter/ch13_bell_pinned_product_action}
-\input{chapter/ch13_bell_pinned_compressed_powers}
-\input{chapter/ch13_bell_compressed_inverse_norm}
-\input{chapter/ch13_bell_physical_rough_upper}
 \input{chapter/ch13_schmidt_bell_witness}
+\input{chapter/ch13_schmidt_bell_physical_witness}
 \input{chapter/ch13_schmidt_bell_enumerated_prevector}
 \input{chapter/ch13_schmidt_bell_enumerated_compression}
-\input{chapter/ch13_replica_prevector_rough_upper}
 \input{chapter/ch13_regional_replica_metric}
 \input{chapter/ch13_regional_replica_metric_regions}
 \input{chapter/ch13_regional_auxiliary_labels}
-\input{chapter/ch13_symmetric_projection_coordinates}
-\input{chapter/ch06_replica_low_defect_coordinate_covariance}
-\input{chapter/ch06_regional_low_defect_projection}
-\input{chapter/ch06_regional_low_defect_mass}
-\input{chapter/ch06_regional_low_defect_product_mass}
-\input{chapter/ch13_grouped_inverse}
-\input{chapter/ch13_symmetric_metric_floor}
-\input{fragment/spectral_exponential_drop}
-\input{fragment/matrix_lower_comparison_for_replica_floor}
-\input{fragment/replica_symmetric_floor}
-
-% Not a Wolf chapter: the conditional movement estimate (OpenAI, September 24,
-% 2026 area-law preprint, Lemma 5.1).
-\input{chapter/ch13_conditional_movement}
-
-% Not a Wolf chapter: the marginal-phase comparison (OpenAI, September 24, 2026
-% area-law preprint, Lemma 5.2).
-\input{chapter/ch13_marginal_phase}
-
-% Not a Wolf chapter: the conditional skew estimate (OpenAI, September 24, 2026
-% area-law preprint, Lemma 5.3).
-\input{chapter/ch13_conditional_skew}
-
-% Not a Wolf chapter: entropy and energy transport on symmetric replicas (OpenAI,
-% September 24, 2026 area-law preprint, Proposition 7.4).
+\input{chapter/ch01_bell_overlap_log_bound}
+\input{chapter/ch13_bell_pinned_product_action}
+\input{chapter/ch13_bell_pinned_compressed_powers}
+\input{chapter/ch13_replica_pinned_upper_estimates}
+\input{chapter/ch13_bell_compressed_inverse_norm}
+\input{chapter/ch13_bell_physical_rough_upper}
+\input{chapter/ch13_replica_prevector_rough_upper}
+\input{chapter/ch13_replica_lower_bounds_chapter}
 \input{chapter/ch13_replica_transport}
 \input{chapter/ch13_replica_transport_root_compression}
 \input{fragment/replica_symmetric_band_floor}
 \input{chapter/ch13_replica_product_metric_floor}
-
-% Concrete finite-word probability and the excited-state decay estimate.
-\input{chapter/ch11_poisson_word}
-\input{chapter/ch11_poisson_word_append}
-\input{chapter/ch11_poisson_word_semigroup}
-\input{chapter/ch11_poisson_word_marked}
-\input{chapter/ch11_poisson_word_insertion_weight}
-\input{chapter/ch11_poisson_word_insertion}
-\input{chapter/ch11_poisson_word_counts}
-\input{chapter/ch11_poisson_independent_counts}
-\input{chapter/ch11_finite_uniform_conditioning}
-\input{chapter/ch11_poisson_uniform_order}
-\input{chapter/ch01_finite_sum_powers}
-\input{chapter/ch01_word_coefficient_expansion}
-\input{chapter/ch01_tagged_interleavings}
-\input{chapter/ch11_poisson_word_thinning}
-\input{chapter/ch11_poisson_word_relabel}
-\input{chapter/ch11_poisson_word_partition}
-\input{chapter/ch11_poisson_word_occupation}
-\input{chapter/ch11_poisson_word_real_occupation}
-\input{chapter/ch11_poisson_word_jump}
-\input{chapter/ch11_poisson_word_weighted_growth}
-\input{chapter/ch11_exponential_distance_profile}
-\input{chapter/ch11_poisson_word_spatial_growth}
-\input{chapter/ch11_stretched_exponential_summability}
-\input{chapter/ch11_metric_ball_kernel}
-\input{chapter/ch11_stretched_ball_kernel}
-\input{chapter/ch11_poisson_word_shell_growth}
-\input{chapter/ch13_contraction_word_decay}
-\input{chapter/ch11_contraction_word_append}
-\input{chapter/ch13_contraction_word_decay_spectator}
-\input{chapter/ch13_poisson_contraction_decay}
-\input{chapter/ch01_bell_overlap_log_bound}

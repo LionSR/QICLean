@@ -306,3 +306,123 @@ theorem isCloseTo_spectralSpanLE_of_perturbation (b b' : OrthonormalBasis n 𝕜
   linarith
 
 end Submodule
+
+section
+
+open scoped InnerProductSpace
+
+open Module
+
+variable {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+  [FiniteDimensional 𝕜 E] {n : Type*} [Fintype n]
+
+namespace OrthonormalBasis
+
+/-- The energy quadratic form is the sum of the real eigenvalues weighted
+by the squared expansion coefficients. Auxiliary to the low-energy bounds
+in ALVV, arXiv:1602.08828v2, `lem:hard-trunc`, lines 955–968,
+and Theorem `t:ais`, lines 1010–1024. -/
+theorem re_inner_apply_eq_sum_of_eigen
+    {E n : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [Fintype n]
+    (b : OrthonormalBasis n ℂ E) (a : n → ℝ) (H : E →ₗ[ℂ] E)
+    (hH : ∀ j, H (b j) = (a j : ℂ) • b j) (x : E) :
+    (inner ℂ x (H x)).re = ∑ j, a j * ‖b.repr x j‖ ^ 2 := by
+  classical
+  rw [← b.repr.inner_map_map x (H x), PiLp.inner_apply]
+  change Complex.reCLM (∑ j, inner ℂ (b.repr x j) (b.repr (H x) j)) = _
+  rw [map_sum]
+  apply Finset.sum_congr rfl
+  intro j _
+  change (inner ℂ (b.repr x j) (b.repr (H x) j)).re = a j * ‖b.repr x j‖ ^ 2
+  rw [RCLike.inner_apply, b.repr_apply_of_eigen a hH x j, mul_assoc]
+  let z : ℂ := b.repr x j
+  change ((a j : ℂ) * (z * (starRingEnd ℂ) z)).re = a j * ‖z‖ ^ 2
+  have hscalar : ((a j : ℂ) * (z * (starRingEnd ℂ) z)).re =
+      a j * (z * (starRingEnd ℂ) z).re :=
+    Complex.re_ofReal_mul (a j) (z * (starRingEnd ℂ) z)
+  have hz : (z * (starRingEnd ℂ) z).re = ‖z‖ ^ 2 := by
+    change RCLike.re (inner ℂ z z) = ‖z‖ ^ 2
+    exact inner_self_eq_norm_sq (𝕜 := ℂ) z
+  exact hscalar.trans (congrArg (fun r : ℝ ↦ a j * r) hz)
+end OrthonormalBasis
+
+namespace Submodule
+
+/-- The quadratic form of the actual Hamiltonian is bounded above by the
+cutoff on its closed low-energy spectral span. Auxiliary to ALVV,
+arXiv:1602.08828v2, `lem:hard-trunc`, lines 955–968, and Theorem `t:ais`,
+lines 1010–1024. No gap or nondegeneracy condition is required. -/
+theorem re_inner_apply_le_of_mem_spectralSpanLE
+    {E n : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [Fintype n]
+    (b : OrthonormalBasis n ℂ E) (a : n → ℝ) (H : E →ₗ[ℂ] E)
+    (hH : ∀ j, H (b j) = (a j : ℂ) • b j) (e : ℝ)
+    {x : E} (hx : x ∈ spectralSpanLE b a e) :
+    (inner ℂ x (H x)).re ≤ e * ‖x‖ ^ 2 := by
+  classical
+  have hcoeff := (mem_spectralSpanLE_iff b a e x).mp hx
+  have hnorm : ‖x‖ ^ 2 = ∑ j, ‖b.repr x j‖ ^ 2 := by
+    rw [← b.repr.norm_map x, EuclideanSpace.norm_sq_eq]
+  rw [b.re_inner_apply_eq_sum_of_eigen a H hH x, hnorm]
+  calc
+    ∑ j, a j * ‖b.repr x j‖ ^ 2 ≤ ∑ j, e * ‖b.repr x j‖ ^ 2 := by
+      apply Finset.sum_le_sum
+      intro j _
+      by_cases hj : a j ≤ e
+      · exact mul_le_mul_of_nonneg_right hj (sq_nonneg _)
+      · have hz := hcoeff j (not_le.mp hj)
+        simp only [hz, norm_zero, zero_pow (by decide : (2 : ℕ) ≠ 0), mul_zero]
+        exact le_rfl
+    _ = e * ∑ j, ‖b.repr x j‖ ^ 2 := by rw [Finset.mul_sum]
+end Submodule
+
+section
+
+variable {E n : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
+  [FiniteDimensional ℂ E] [Fintype n]
+
+local instance : CompleteSpace E := FiniteDimensional.complete ℂ E
+
+namespace Submodule
+
+/-- The actual closed low-energy projection commutes with the operator
+specified by its complete eigenbasis. Auxiliary to ALVV,
+arXiv:1602.08828v2, `lem:hard-trunc`, source lines 955–968, and
+Theorem `t:ais`, lines 1010–1024. No invariance or gap is assumed. -/
+theorem commute_starProjection_spectralSpanLE
+    (b : OrthonormalBasis n ℂ E) (a : n → ℝ) (H : E →L[ℂ] E)
+    (hH : ∀ j, H (b j) = (a j : ℂ) • b j) (e : ℝ) :
+    Commute (spectralSpanLE b a e).starProjection H := by
+  classical
+  let G := spectralSpanLE b a e
+  let P := Gᗮ.starProjection
+  have hcoord (x : E) (j : n) :
+      b.repr (P x) j = if e < a j then b.repr x j else 0 := by
+    dsimp only [P, G]
+    rw [starProjection_orthogonal_spectralSpanLE b a e x]
+    simp only [LinearIsometryEquiv.apply_symm_apply]
+  have hP : Commute P H := by
+    change P * H = H * P
+    apply ContinuousLinearMap.ext
+    intro x
+    apply b.repr.injective
+    ext j
+    change b.repr (P (H x)) j = b.repr (H (P x)) j
+    rw [hcoord]
+    change (if e < a j then b.repr ((H : E →ₗ[ℂ] E) x) j else 0) =
+      b.repr ((H : E →ₗ[ℂ] E) (P x)) j
+    rw [b.repr_apply_of_eigen a hH x j,
+      b.repr_apply_of_eigen a hH (P x) j, hcoord]
+    by_cases hj : e < a j
+    · simp only [ite_eq_left hj]
+    · simp only [ite_eq_right hj, mul_zero]
+  have hR : G.starProjection = 1 - P := by
+    apply ContinuousLinearMap.ext
+    intro x
+    change G.starProjection x = x - Gᗮ.starProjection x
+    rw [starProjection_orthogonal_val, sub_sub_cancel]
+  change Commute G.starProjection H
+  rw [hR]
+  exact (Commute.one_left H).sub_left hP
+end Submodule
+end
+end

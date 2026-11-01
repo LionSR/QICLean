@@ -1,146 +1,16 @@
 %% =========================================================
-%% Chapter: Quantum Entropy
-%% Von Neumann entropy, strong subadditivity, and mutual information.
+%% Chapter: Von Neumann entropy and relative entropy
 %% =========================================================
 
-\chapter{Quantum Entropy}\label{ch:entropy}
+\chapter{Von Neumann entropy and relative entropy}\label{ch:entropy}
 
-This chapter develops trace distance, von Neumann entropy, and their basic
-properties for finite-dimensional quantum systems.
+This chapter defines the von Neumann entropy of a density matrix and the
+relative entropy of two density matrices, following
+\cite[Chapter~8]{Wolf2012Quantum}, and proves their basic properties: bounds
+by the logarithm of the rank, the calculus of inverse square roots on the
+support used for relative entropies, the Petz recovery formula for a partial
+trace, and data processing under local channels.
 
-\input{chapter/ch12_entropy_trace_norm}
-\input{chapter/ch12_polar_unitary_correction}
-\input{chapter/ch12_rectangular_windows}
-\input{chapter/ch12_entropy_majorization}
 \input{chapter/ch12_entropy_von_neumann_and_relative_i}
 \input{chapter/ch12_entropy_von_neumann_and_relative_ii}
-\input{chapter/ch12_entropy_tripartite_and_ssa_i}
-\input{chapter/ch12_entropy_tripartite_and_ssa_ii}
-\input{chapter/ch12_entropy_mutual_information}
-\input{chapter/ch12_entropy_root_fidelity}
 \input{chapter/ch12_entropy_data_processing}
-\input{chapter/ch12_entropy_conditional_continuity}
-\input{chapter/ch12_finite_product_continuity}
-\input{chapter/ch12_entropy_classical_operator_schmidt_and_renyi}
-\input{chapter/ch12_entropy_finite_product}
-\input{chapter/ch12_entropy_conditional_two_families}
-\input{chapter/ch12_spectral_tail}
-\input{chapter/ch12_pure_approximation_tail}
-\input{chapter/ch12_renyi_rank_lower_bound}
-\input{chapter/ch12_von_neumann_spectral_tail}
-\input{chapter/ch12_regional_rank}
-\input{chapter/ch12_entropy_typical_spectrum}
-\input{chapter/ch12_entropy_typical_density}
-\input{chapter/ch12_entropy_typical_pure_state}
-\input{chapter/ch12_entropy_typical_tail}
-\input{chapter/ch12_typical_tail_scales}
-\input{fragment/typical_pure_compression}
-\input{fragment/typical_bell_pin}
-\input{fragment/typical_bell_pin_powers}
-\input{chapter/ch12_entropy_regional_typical_state}
-\input{chapter/ch12_density_simplex}
-
-\input{chapter/ch12_entropy_physical_buffer_overlap}
-\input{chapter/ch12_entropy_doubled_system_gap}
-\input{chapter/ch12_entropy_gaussian_filter}
-\input{chapter/ch12_entropy_gaussian_reindex}
-\input{chapter/ch12_entropy_gaussian_parameters}
-\input{chapter/ch12_entropy_localization_parameters}
-\input{chapter/ch12_entropy_gaussian_uniform_ground}
-\input{chapter/ch12_entropy_gaussian_physical_uniform}
-
-\input{fragment/iid_surprisal}
-\input{chapter/ch12_surprisal_product_moment}
-\input{chapter/ch12_iid_surprisal_exponential}
-\input{chapter/ch12_iid_schur_signed_moments}
-\input{chapter/ch12_iid_schur_exponential_moments}
-\input{chapter/ch12_replica_good_configuration_signed_moments}
-
-\input{fragment/iid_tail_threshold}
-\input{fragment/pure_tensor_power}
-\input{chapter/ch12_entropy_unitary_evolution}
-
-\input{chapter/ch12_support_inverse_sandwich}
-\input{chapter/ch12_entropy_restoring_operators}
-\input{chapter/ch12_entropy_restoring_norm}
-\input{chapter/ch12_entropy_restoring_vectors}
-\input{chapter/restoring_coefficient_bound}
-\input{chapter/ch12_entropy_restoring_ground_component}
-\input{chapter/ch12_shifted_density_commutation}
-\input{fragment/spectral_cutoff_mass}
-\input{fragment/replica_defect}
-
-\begin{theorem}[Identity extension of the replica mean]
-    \label{thm:replica_mean_identity_extension}
-    \lean{TensorPower.siteOp_kronecker_one,
-        TensorPower.replicaMean_kronecker_one,TensorPower.siteOp_eq_finKronecker}
-    \leanok
-    \uses{def:replica_operators}
-    Let $A$ and $B$ be finite sets, let $\mathcal H=\mathbb C^A$ and
-    $\mathcal K=\mathbb C^B$, and let $H$ be
-    an arbitrary operator on $\mathcal H$. For $k\ge0$, let $U_k$ be the
-    unitary induced by the coordinate regrouping
-    $(A\times B)^k\simeq A^k\times B^k$.
-    For each $0\le i<k$, the operator $(H\otimes I_{\mathcal K})^{(i)}$
-    is the pullback under $U_k$ of $H^{(i)}\otimes I_{\mathcal K^{\otimes k}}$.
-    The operator $H^{(i)}$ equals the iterated tensor product with $H$ in
-    position $i$ and identities elsewhere. Consequently,
-    \begin{align}
-        k^{-1}\sum_{i=0}^{k-1}(H\otimes I_{\mathcal K})^{(i)}
-         & =U_k^*\bigl(\overline H\otimes I_{\mathcal K^{\otimes k}}\bigr)U_k.
-        \label{eq:replica_mean_identity_extension}
-    \end{align}
-    For $k=0$, set $\overline H=0$; both normalized sums are zero.
-    This is the identity extension used in
-    \cite[Sections~6 and~7]{OpenAI2026AreaLaw}.
-\end{theorem}
-\begin{proof}
-    \leanok
-    The auxiliary identity in the active copy and the equality constraints on
-    all inactive copies together require agreement of every auxiliary
-    coordinate. The remaining matrix entry is exactly that of $H^{(i)}$.
-    For the iterated tensor product, isolate the factor in position $i$;
-    the product of the remaining identity entries is one precisely when all
-    inactive physical coordinates agree, and zero otherwise.
-    Summing over $i$ and multiplying by $k^{-1}$ proves
-    (\ref{eq:replica_mean_identity_extension}).
-\end{proof}
-
-\input{fragment/replica_excitation_decomposition}
-\input{fragment/replica_excitation_compression}
-\input{fragment/replica_excitation_symmetry}
-\input{chapter/ch12_replica_component_scalar}
-\input{fragment/replica_marginal_symmetry}
-\input{fragment/replica_good_auxiliary_marginal}
-\input{fragment/replica_permutation_covariance}
-\input{fragment/replica_low_defect_projection}
-
-\input{fragment/schur_sector_mass}
-\input{fragment/replica_good_copy_factorization}
-\input{fragment/replica_good_copy_density}
-\input{fragment/replica_regional_density}
-\input{fragment/replica_joint_density}
-\input{fragment/replica_good_pair_marginal}
-\input{fragment/replica_good_physical_support}
-\input{fragment/replica_good_configuration_density}
-\input{chapter/ch06_replica_good_configuration_expectation}
-\input{chapter/ch06_tensor_power_partial_trace}
-\input{chapter/ch06_replica_good_configuration_pair_marginal}
-\input{chapter/ch06_replica_good_configuration_merge_transport}
-\input{chapter/ch06_replica_good_configuration_merge_moment}
-\input{chapter/ch06_replica_good_physical_exponential}
-\input{chapter/ch06_replica_individual_pair_merge_moments}
-\input{chapter/ch06_replica_good_configuration_individual_merge_moment}
-\input{chapter/ch06_replica_good_configuration_product}
-\input{chapter/ch06_replica_good_configuration_regional_moment}
-\input{chapter/ch06_replica_good_configuration_singleton_moment}
-\input{chapter/ch12_physical_singleton_entropy}
-\input{chapter/ch12_regional_physical_marginals}
-\input{fragment/high_label_window}
-\input{fragment/replica_prevector}
-\input{fragment/schmidt_bell_prevector}
-\input{chapter/ch12_selected_schmidt_entropy}
-
-\input{chapter/ch12_renyi_mass_bound}
-\input{chapter/ch12_smooth_renyi}
-\input{chapter/ch12_renyi_tail}
