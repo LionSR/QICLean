@@ -60,7 +60,7 @@ theorem wigner_rigidity_fin
 
 /-- Normalized pure-state matrices, represented intrinsically as the range of
 the projective pure-state realization. -/
-def PureStateMatrix (d : ℕ) :=
+noncomputable def PureStateMatrix (d : ℕ) :=
   Set.range
     (pureStateMatrix : ℙ ℂ (Fin d → ℂ) → Matrix (Fin d) (Fin d) ℂ)
 

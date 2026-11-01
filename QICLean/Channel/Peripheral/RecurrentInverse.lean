@@ -51,6 +51,11 @@ open scoped Topology TNOperatorSpace Matrix ComplexOrder MatrixOrder
 
 noncomputable section
 
+-- Supply the native normability witness for the already chosen matrix operator topology.
+local instance {D : ℕ} : IsNormableSpace ℂ (Matrix (Fin D) (Fin D) ℂ) :=
+  ⟨⟨normSeminorm ℂ (Matrix (Fin D) (Fin D) ℂ),
+    norm_withSeminorms ℂ (Matrix (Fin D) (Fin D) ℂ)⟩⟩
+
 /-! ## Wolf's recurrent predecessor-power limit -/
 
 namespace IsPositiveMap

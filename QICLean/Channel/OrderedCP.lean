@@ -63,7 +63,7 @@ def CPDominates {d d' : ℕ}
   IsKrausCP (S - T)
 
 /-- Reflexivity of the CP order: `T - T = 0` has the empty Kraus family. -/
-theorem CPDominates.refl
+theorem CPDominates.refl {d d' : ℕ}
     (T : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ) :
     CPDominates T T := by
   refine ⟨0, (fun i : Fin 0 => i.elim0), ?_⟩
@@ -372,10 +372,7 @@ theorem stinespringW_mulVec_surjective_of_minimal
       _ = (ChoiRectangular.choiMatrix T).rank := congrArg Matrix.rank hGram
       _ = Channel.choiRank T := rfl
       _ = r := hmin.symm
-  change Function.Surjective (stinespringW V).mulVecLin
-  apply LinearMap.range_eq_top.mp
-  apply Submodule.eq_top_of_finrank_eq
-  change (stinespringW V).rank = Module.finrank ℂ (Fin r → ℂ)
+  apply Matrix.mulVec_surjective_iff_rank_eq_card.mpr
   simpa using hrank
 
 /-! ### Wolf Theorem 2.3 for supplied rectangular dilations -/
