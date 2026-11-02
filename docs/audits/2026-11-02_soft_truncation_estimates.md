@@ -72,8 +72,12 @@ Unrelated older definitions and proofs are not restored.
 
 ## Verification
 
-Compilation and the compiled declaration and axiom checks are pending.
-The blueprint source check passes. The new estimates are supporting lemmas;
+The hosted Lean build and module-policy checks passed at revision
+`b8a65f02` in [run 41484812574](https://github.com/LionSR/QICLean/actions/runs/41484812574).
+Local compilation and compiled declaration and axiom checks are pending.
+The blueprint source check passes. The first hosted blueprint run found a
+missing author in the added bibliography entry; that entry is corrected, and
+local bibliography generation now succeeds. The new estimates are supporting lemmas;
 no source-labelled false claim is marked proved.
 
 All 32 newly public declarations have active blueprint references. The active
