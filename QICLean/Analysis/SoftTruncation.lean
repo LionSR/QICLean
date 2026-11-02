@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Algebra.Ring.GeomSum
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.NumberTheory.Harmonic.Bounds
 
@@ -179,5 +180,114 @@ theorem softTruncation_bounds (t : ℝ) (m : ℕ) (x : ℝ)
     convert hmul using 1 <;>
       field_simp [ht.ne', Nat.cast_ne_zero.mpr (Nat.ne_of_gt hm)]
   · exact mul_le_mul_of_nonneg_left hlog ht.le
+
+private theorem softTruncationUnit_remainder_le_geometric (m : ℕ) {y : ℝ} (hy : 0 ≤ y) :
+    y - softTruncationUnit m y ≤ y * (1 - exp (-y)) ^ m := by
+  let r : ℝ → ℝ := fun z ↦ z - softTruncationUnit m z
+  have hderiv (z : ℝ) : HasDerivAt r ((1 - exp (-z)) ^ m) z := by
+    simpa only [r, id_eq, sub_sub_cancel] using
+      (hasDerivAt_id z).fun_sub (hasDerivAt_softTruncationUnit m z)
+  have hle (z : ℝ) (hz : z ∈ Set.Icc 0 y) :
+      deriv r z ≤ (1 - exp (-y)) ^ m := by
+    rw [(hderiv z).deriv]
+    exact pow_le_pow_left₀ (one_sub_exp_neg_bounds hz.1).1
+      (sub_le_sub_left (Real.exp_le_exp.mpr (neg_le_neg hz.2)) 1) m
+  have hb := (convex_Icc (0 : ℝ) y).image_sub_le_mul_sub_of_deriv_le
+    (fun z _ ↦ (hderiv z).continuousAt.continuousWithinAt)
+    (fun z _ ↦ (hderiv z).differentiableAt.differentiableWithinAt)
+    (fun z hz ↦ hle z (interior_subset hz)) 0 ⟨le_rfl, hy⟩ y ⟨hy, le_rfl⟩ hy
+  simpa [r, softTruncationUnit, mul_comm] using hb
+
+/-- A geometric remainder bound for the scalar soft truncation. This is an
+auxiliary consequence of the defining series in ALVV, arXiv:1602.08828v2,
+lines 1152–1173. -/
+theorem softTruncation_remainder_le_geometric (t : ℝ) (m : ℕ) (x : ℝ)
+    (ht : 0 < t) (hx : 0 ≤ x) :
+    x - softTruncation t m x ≤ x * (1 - exp (-(x / t))) ^ m := by
+  have hb := mul_le_mul_of_nonneg_left
+    (softTruncationUnit_remainder_le_geometric m (div_nonneg hx ht.le)) ht.le
+  change x - t * softTruncationUnit m (x / t) ≤ x * (1 - exp (-(x / t))) ^ m
+  simpa only [mul_sub, ← mul_assoc, mul_div_cancel₀ _ ht.ne'] using hb
+
+/-- An exponential weight controls the soft-truncation error when its order
+and scale agree. This bound is independent of the input scalar; it can be
+integrated against a spectral measure with a controlled exponential moment.
+It is an auxiliary estimate for the soft truncation defined in ALVV,
+arXiv:1602.08828v2, lines 1152–1173. -/
+theorem softTruncation_remainder_le_exp (m : ℕ) (hm : 0 < m)
+    (theta x : ℝ) (htheta : 0 < theta) (hthetaHalf : theta ≤ 1 / 2)
+    (hx : 0 ≤ x) :
+    x - softTruncation (m : ℝ) m x ≤
+      (2 / theta) * exp (theta * x - theta * m / 2) := by
+  have hmR : 0 < (m : ℝ) := Nat.cast_pos.mpr hm
+  have hw (s : ℝ) (hs : 0 < s) (z : ℝ) : z ≤ (1 / s) * exp (s * z) := by
+    rw [one_div_mul_eq_div, le_div_iff₀ hs]
+    nlinarith [Real.add_one_le_exp (s * z)]
+  by_cases hxm : x ≤ (m : ℝ)
+  · have hr : 1 - exp (-(x / (m : ℝ))) ≤ exp (-theta / 2) := by
+      have hs := Real.exp_le_exp.mpr (neg_le_neg ((div_le_one hmR).mpr hxm))
+      linarith [Real.exp_neg_one_gt_d9, Real.add_one_le_exp (-theta / 2)]
+    have hp := pow_le_pow_left₀ (one_sub_exp_neg_bounds (div_nonneg hx hmR.le)).1 hr m
+    rw [← Real.exp_nat_mul] at hp
+    refine (softTruncation_remainder_le_geometric (m : ℝ) m x hmR hx).trans ?_
+    refine (mul_le_mul_of_nonneg_left hp hx).trans ?_
+    refine (mul_le_mul_of_nonneg_right (hw theta htheta x)
+      (Real.exp_pos ((m : ℝ) * (-theta / 2))).le).trans ?_
+    rw [mul_assoc, ← Real.exp_add,
+      show theta * x + (m : ℝ) * (-theta / 2) = theta * x - theta * m / 2 by ring]
+    exact mul_le_mul_of_nonneg_right
+      (div_le_div_of_nonneg_right (by norm_num) htheta.le)
+      (Real.exp_pos _).le
+  · refine (sub_le_self x (softTruncation_bounds (m : ℝ) m x hmR hm hx).1).trans ?_
+    refine (hw (theta / 2) (half_pos htheta) x).trans ?_
+    rw [div_div_eq_mul_div, one_mul]
+    apply mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr ?_)
+      (div_nonneg (by norm_num) htheta.le)
+    nlinarith [mul_le_mul_of_nonneg_left (lt_of_not_ge hxm).le htheta.le]
+
+/-- Soft truncation is increasing on the nonnegative half-line. This follows
+term by term from the finite series in ALVV, arXiv:1602.08828v2,
+lines 1152–1173. -/
+theorem monotoneOn_softTruncation (t : ℝ) (m : ℕ) (ht : 0 < t) :
+    MonotoneOn (softTruncation t m) (Set.Ici 0) := by
+  intro x hx y _hy hxy
+  unfold softTruncation
+  apply mul_le_mul_of_nonneg_left _ ht.le
+  apply Finset.sum_le_sum
+  intro j _hj
+  apply div_le_div_of_nonneg_right _ (by positivity)
+  exact pow_le_pow_left₀
+    (one_sub_exp_neg_bounds (div_nonneg hx ht.le)).1
+    (sub_le_sub_left (Real.exp_le_exp.mpr (neg_le_neg (div_le_div_of_nonneg_right hxy ht.le))) 1) _
+
+/-- Below half the scale, the geometric remainder is uniformly small.
+Auxiliary to ALVV, arXiv:1602.08828v2, lines 1152–1173. -/
+private theorem softTruncation_remainder_le_half (t : ℝ) (m : ℕ) (x : ℝ)
+    (ht : 0 < t) (hx : 0 ≤ x) (hxc : x ≤ t / 2) :
+    x - softTruncation t m x ≤ (t / 2) * (1 / 2 : ℝ) ^ m := by
+  refine (softTruncation_remainder_le_geometric t m x ht hx).trans ?_
+  apply mul_le_mul hxc ?_
+    (pow_nonneg (one_sub_exp_neg_bounds (div_nonneg hx ht.le)).1 _) (by positivity)
+  apply pow_le_pow_left₀
+    (one_sub_exp_neg_bounds (div_nonneg hx ht.le)).1
+  have hdiv : x / t ≤ 1 / 2 := (div_le_iff₀ ht).mpr (by linarith)
+  exact (one_sub_exp_neg_bounds (div_nonneg hx ht.le)).2.2.trans hdiv
+
+/-- Soft truncation lies above hard truncation at half its scale, up to an
+exponentially small scalar error. This is an auxiliary corrected estimate for
+ALVV, arXiv:1602.08828v2, lines 1152–1173; it does not assert the printed
+uniform energy estimate in equation `eq:exp-approx-0`. -/
+theorem softTruncation_hard_bounds (t : ℝ) (m : ℕ) (x : ℝ)
+    (ht : 0 < t) (hm : 1 ≤ m) (hx : 0 ≤ x) :
+    min x (t / 2) - (t / 2) * (1 / 2 : ℝ) ^ m ≤ softTruncation t m x ∧
+      softTruncation t m x ≤ x := by
+  refine ⟨?_, (softTruncation_bounds t m x ht hm hx).2.1⟩
+  by_cases hxc : x ≤ t / 2
+  · simpa only [min_eq_left hxc] using
+      (sub_le_comm.mp (softTruncation_remainder_le_half t m x ht hx hxc))
+  · simpa only [min_eq_right (le_of_not_ge hxc)] using
+      (sub_le_comm.mp (softTruncation_remainder_le_half t m (t / 2) ht
+        (half_pos ht).le le_rfl)).trans
+        (monotoneOn_softTruncation t m ht (half_pos ht).le hx (le_of_not_ge hxc))
 
 end Real

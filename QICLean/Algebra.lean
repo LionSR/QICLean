@@ -144,6 +144,7 @@ import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.TripartitePolynomialSchmidtRank
 import QICLean.Algebra.TwoMarkerWordCoefficients
+import QICLean.Algebra.UnionCoefficientBound
 import QICLean.Algebra.UnitModulusPowerSum
 import QICLean.Algebra.UnitaryTraceZero
 import QICLean.Algebra.WeightedFrequencySchmidtRank
