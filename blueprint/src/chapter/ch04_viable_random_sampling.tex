@@ -155,7 +155,7 @@ up to the associator and the exchange of the first two factors.
         Submodule.finrank_sampledWordImage_le,
         Submodule.exists_measurable_sampledWordImage_event}
     \leanok
-    \uses{thm:viable_sample_or_full,thm:spectral_operator_word_powers}
+    \uses{thm:viable_sample_or_full}
     Suppose a fixed family of $N$ operators has the following property:
     the span of all length-$a$ word images of a $\delta$-viable space
     for $T$ is $\Delta^a/(1-\delta)^2$-viable for $T$, whenever
@@ -167,9 +167,17 @@ up to the associator and the exchange of the first two factors.
     The operators and target precede the input and the Haar unitary.
 \end{lemma}
 \begin{proof}\leanok
-    Apply the assumed word-improvement property to each successful
-    sample. The dimension of each image is at most the sample dimension;
-    summing over the $N^a$ ordered words gives the count.
+    Write $F_1,\dots,F_N$ for the operators and
+    $F_w=F_{w_1}\cdots F_{w_a}$ for a word $w$ of length $a$. On the
+    success event the sample $S$ is $(1-c)$-viable with $1-c<1$, so the
+    assumed improvement hypothesis, applied with $\delta$ replaced by
+    $1-c$, shows that $V_a=\sum_wF_wS$ is
+    $\Delta^a/(1-(1-c))^2=\Delta^a/c^2$-viable. For the dimension,
+    \[
+        \dim(F_wS)\le\dim S=\min\{s,Q\},\qquad
+        \dim V_a\le\sum_w\dim(F_wS)\le N^a\min\{s,Q\},
+    \]
+    since there are $N^a$ ordered words of length $a$.
 \end{proof}
 
 \begin{lemma}[A uniform interval trimming radius]

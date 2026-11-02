@@ -29,6 +29,16 @@ variable {M F : Type*}
   [NormedAddCommGroup M] [InnerProductSpace ℂ M] [FiniteDimensional ℂ M]
   [NormedAddCommGroup F] [InnerProductSpace ℂ F] [FiniteDimensional ℂ F]
 
+/-- The first `min s q` coordinate indices of `Fin q`: the coordinates retained
+when a prescribed sample size `s` is truncated to the input dimension `q`.
+Supporting ALVV, arXiv:1602.08828v2, Lemma `l:rs`, lines 530–558. -/
+def sampleIndices (s q : ℕ) : Finset (Fin q) :=
+  Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s q))
+
+@[simp]
+lemma card_sampleIndices (s q : ℕ) : (sampleIndices s q).card = min s q := by
+  simp [sampleIndices]
+
 /-- A full-dimensional coordinate sample is the actual input subspace.
 Supporting ALVV, arXiv:1602.08828v2, Lemma `l:rs`, lines 530–558. -/
 lemma randomSubspace_eq_of_card_eq {W : Submodule ℂ M} {q : ℕ}
@@ -45,7 +55,7 @@ lemma IsViable.randomSubspace_min_of_le {W : Submodule ℂ M} {q : ℕ}
     (b : OrthonormalBasis (Fin q) ℂ W) (s : ℕ) {delta : ℝ}
     {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable delta W T) (hdelta : delta ≤ 1)
     (hfull : q ≤ s) (U : Matrix.unitaryGroup (Fin q) ℂ) :
-    let A := Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s q))
+    let A := sampleIndices s q
     IsViable (1 - (1 - delta) * (min s q : ℕ) / (8 * q)) (randomSubspace b A U) T := by
   intro A
   have hA : A.card = q := by simp [A, Nat.min_eq_right hfull]
@@ -68,7 +78,7 @@ lemma exists_isViable_randomSubspace_min {W : Submodule ℂ M} {q : ℕ}
     (hfailure : s < q →
       (1 + 2 / Real.sqrt ((1 - delta) * (s : ℝ) / (8 * q))) ^
         (2 * Module.finrank ℂ T) * q * Real.exp (-(s / 16 : ℝ)) < 1) :
-    let A := Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s q))
+    let A := sampleIndices s q
     ∃ U : Matrix.unitaryGroup (Fin q) ℂ,
       IsViable (1 - (1 - delta) * (min s q : ℕ) / (8 * q))
         (randomSubspace b A U) T := by

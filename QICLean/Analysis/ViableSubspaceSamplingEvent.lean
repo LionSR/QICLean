@@ -39,7 +39,7 @@ Lemma `l:rs`, lines 530–558. This is not an adaptive measurability assertion. 
 lemma exists_measurable_randomSubspace_min_event {W : Submodule ℂ M} {q : ℕ}
     (b : OrthonormalBasis (Fin q) ℂ W) (s : ℕ) {delta : ℝ}
     {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable delta W T) (hdelta : delta ≤ 1) :
-    let A := Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s q))
+    let A := sampleIndices s q
     let eta : ℝ := if q ≤ s then 0 else
       (1 + 2 / Real.sqrt ((1 - delta) * (s : ℝ) / (8 * q))) ^
         (2 * Module.finrank ℂ T) * q * Real.exp (-(s / 16 : ℝ))

@@ -36,7 +36,7 @@ and the modified merge, lines 1662–1677. -/
 noncomputable def sampledWordImage (F : iota → M →L[ℂ] M) (power s : ℕ)
     (W : Submodule ℂ M) (U : Matrix.unitaryGroup (Fin (Module.finrank ℂ W)) ℂ) :
     Submodule ℂ M :=
-  let A := Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s (Module.finrank ℂ W)))
+  let A := sampleIndices s (Module.finrank ℂ W)
   let sample := randomSubspace (stdOrthonormalBasis ℂ W) A U
   ⨆ w : Fin power → iota, sample.map (List.ofFn (fun j ↦ F (w j))).prod.toLinearMap
 
@@ -52,12 +52,11 @@ lemma finrank_sampledWordImage_le (F : iota → M →L[ℂ] M) (power s : ℕ)
   calc
     _ ≤ ∑ _w : Fin power → iota,
         Module.finrank ℂ
-          (randomSubspace (stdOrthonormalBasis ℂ W)
-            (Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s (Module.finrank ℂ W)))) U) :=
+          (randomSubspace (stdOrthonormalBasis ℂ W) (sampleIndices s (Module.finrank ℂ W)) U) :=
       Finset.sum_le_sum fun _ _ ↦ finrank_map_le _ _
     _ = _ := by
       rw [finrank_randomSubspace]
-      simp only [Finset.card_map, Finset.card_univ, Fintype.card_fin, Finset.sum_const,
+      simp only [card_sampleIndices, Finset.card_univ, Fintype.card_fin, Finset.sum_const,
         Fintype.card_fun, smul_eq_mul]
 
 variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]

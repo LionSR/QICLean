@@ -248,7 +248,8 @@ right.
         Entropy.isCloseTo_prodExt_region_iff_isViable,
         Entropy.regionTensorCoordinates_eq_exteriorFirst}
     \leanok
-    \uses{thm:viable_coordinates,thm:regional_cut_full_exterior}
+    \uses{thm:viable_coordinates,thm:regional_cut_full_exterior,
+        thm:tensor_exchange_product_coordinates}
     Let $G\subseteq\mathcal H_V$ and $S\subseteq\mathcal H_J$.
     The coordinate extension $S\otimes\mathcal H_{J^c}$ is
     $\delta$-close to $F_JG$ if and only if $S$ is $\delta$-viable for
@@ -259,9 +260,17 @@ right.
 \end{lemma}
 \begin{proof}\leanok
     The Euclidean tensor isometry carries a coordinate extension onto the
-    tensor product subspace. Both orders of the configuration split evaluate
-    $\psi$ at the same global configuration, so they agree after exchanging
-    the tensor factors.
+    tensor product subspace. Let $F_J'$ first split a configuration into
+    its exterior and retained parts, apply $E_{J^c,J}$, and then exchange
+    the factors by $\Sigma$. By (\ref{eq:tensor_exchange_coordinates}),
+    for $x\in\mathcal H_J$, $y\in\mathcal H_{J^c}$ and every configuration
+    $c$ of $V$,
+    \[
+        \bigl(F_J^{-1}(x\otimes y)\bigr)(c)=x(c|_J)\,y(c|_{J^c})
+        =\bigl({F_J'}^{-1}(x\otimes y)\bigr)(c).
+    \]
+    Product vectors span $\mathcal H_J\otimes\mathcal H_{J^c}$, so
+    $F_J=F_J'$.
 \end{proof}
 
 \begin{lemma}[Tensor factor changes for viable spaces]
