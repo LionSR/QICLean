@@ -74,7 +74,9 @@ Unrelated older definitions and proofs are not restored.
 
 The hosted Lean build and module-policy checks passed at revision
 `b8a65f02` in [run 41484812574](https://github.com/LionSR/QICLean/actions/runs/41484812574).
-Local compilation and compiled declaration and axiom checks are pending.
+The same run passed strict checks of the changed Lean modules and the compiled
+blueprint declaration check. Local compilation and the declaration-specific
+axiom audit remain pending.
 The blueprint source check passes. The first hosted blueprint run found a
 missing author in the added bibliography entry; that entry is corrected, and
 local bibliography generation now succeeds. The new estimates are supporting lemmas;
@@ -84,3 +86,8 @@ All 32 newly public declarations have active blueprint references. The active
 blueprint has no duplicate labels, and every reference in the changed sections
 resolves. The new sources contain no forbidden proof tokens. The changed
 sections pass the pinned formatter and individual-file LaTeX lint checks.
+
+The added mathematical sections were rendered and inspected in a standalone
+PDF excerpt. The two overfull proof paragraphs in the new material were
+replaced by displayed inequalities. References to omitted chapters in this
+excerpt are checked against the complete blueprint sources.

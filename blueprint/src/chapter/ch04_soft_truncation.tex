@@ -227,9 +227,13 @@ requires a bound on that physical exponential moment.
 \end{lemma}
 \begin{proof}\leanok
     The unsigned binomial sum at degree $j$ is $2^j$.
-    Hence the left side equals $t\sum_{j=1}^m2^j/j$, which is at
-    most $t\sum_{j=1}^m2^j\leq t2^{m+1}$. This retains the
-    factor $t$ in the coefficient budget.
+    Summing over $j$ gives
+    \begin{align*}
+        \sum_{a=0}^m|c_a(t,m)|
+        =t\sum_{j=1}^m\frac{2^j}{j}
+        \leq t\sum_{j=1}^m2^j\leq t2^{m+1}.
+    \end{align*}
+    The coefficient bound retains the factor $t$.
 \end{proof}
 
 \begin{lemma}[A logarithmic order for an exponential geometric tail]

@@ -271,8 +271,10 @@ complementary Hamiltonian; they are not subtracted from this threshold.
 \end{lemma}
 \begin{proof}\leanok
     \uses{thm:soft_truncation_independent_scale}
-    Functional calculus gives the exact factorization and bounds
-    $\|(U-h_{m,t}(U))e^{-U/8}\|\leq16e^{-t/16}$.
+    Functional calculus gives the exact factorization and the bound
+    \begin{align*}
+        \|(U-h_{m,t}(U))e^{-U/8}\|\leq16e^{-t/16}.
+    \end{align*}
     Multiply by $e^{U/8}$ and restrict the product to $G$.
     No physical exponential moment is assumed in this matrix lemma.
 \end{proof}
