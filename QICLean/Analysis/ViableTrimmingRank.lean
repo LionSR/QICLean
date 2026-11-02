@@ -20,7 +20,7 @@ namespace Real
 /-- Convert the weighted trimming estimate at the chosen common radius
 into an explicit integer rank bound. Supporting ALVV,
 arXiv:1602.08828v2, collective trimming, lines 662–663 and 690–692. -/
-theorem viable_node_trimming_rank_bound {L D count rank : ℕ} (hD : 1 ≤ D)
+lemma viable_node_trimming_rank_bound {L D count rank : ℕ} (hD : 1 ≤ D)
     (hbound : (1 / (1000 * (D : ℝ) * sqrt ((L : ℝ) + 1))) ^ 2 * rank ≤ count) :
     rank ≤ 1000000 * D ^ 2 * (L + 1) * count := by
   have hD0 : (0 : ℝ) < D := by exact_mod_cast (by omega : 0 < D)

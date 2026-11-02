@@ -33,7 +33,7 @@ noncomputable def regionTensorCoordinates (q : ℕ) (J : Finset V) :
 
 /-- Regional coordinate extension is viability in the actual tensor split.
 Supporting ALVV, arXiv:1602.08828v2, Definition `d:vs`, lines 433–440. -/
-theorem isCloseTo_prodExt_region_iff_isViable {q : ℕ} {delta : ℝ}
+lemma isCloseTo_prodExt_region_iff_isViable {q : ℕ} {delta : ℝ}
     (J : Finset V) (S : Submodule ℂ (EuclideanSpace ℂ (J → Fin q)))
     (G : Submodule ℂ (EuclideanSpace ℂ (V → Fin q))) :
     Submodule.IsCloseTo delta (Submodule.prodExt S (↥(Jᶜ) → Fin q))
@@ -45,7 +45,7 @@ theorem isCloseTo_prodExt_region_iff_isViable {q : ℕ} {delta : ℝ}
 /-- The exterior-first construction used by physical improving families is
 exactly the retained-region-first canonical tensor split. Supporting ALVV,
 arXiv:1602.08828v2, Theorem `t:ais`, lines 1010–1024. -/
-theorem regionTensorCoordinates_eq_exteriorFirst (q : ℕ) (J : Finset V) :
+lemma regionTensorCoordinates_eq_exteriorFirst (q : ℕ) (J : Finset V) :
     regionTensorCoordinates q J =
       ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
         ((FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) J).trans (Equiv.prodComm _ _))).trans

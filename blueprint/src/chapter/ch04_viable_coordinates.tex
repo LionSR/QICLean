@@ -236,9 +236,10 @@ right.
 \begin{proof}\leanok
     The two coefficient matrices differ only by the row identification of
     $A$ and the column identification
-    $(J\setminus A)\sqcup J^c\cong A^c$. Reindexing preserves rank, and
-    the rank of a coefficient matrix equals that of its product with its
-    conjugate transpose.
+    $(J\setminus A)\sqcup J^c\cong A^c$. Reindexing preserves rank.
+    For the coefficient matrix $C$ one has $\rho_A=CC^\dagger$ and
+    $\operatorname{rank}C=\operatorname{rank}(CC^\dagger)$, which gives
+    (\ref{eq:regional_cut_full_exterior}).
 \end{proof}
 
 \begin{lemma}[Actual regional tensor coordinates]

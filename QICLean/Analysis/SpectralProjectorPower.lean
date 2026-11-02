@@ -30,7 +30,7 @@ variable {𝕜 E n : Type*} [RCLike 𝕜]
 raises the squared suppression to that power. Low eigenvalues need only be
 at least one. Supporting ALVV, arXiv:1602.08828v2,
 `def:spectral-AGSP`, lines 570–581, and `l:er`, lines 597–622. -/
-theorem IsSpectralProjector.pow {K H : E →L[𝕜] E} {b : OrthonormalBasis n 𝕜 E}
+lemma IsSpectralProjector.pow {K H : E →L[𝕜] E} {b : OrthonormalBasis n 𝕜 E}
     {h k : n → ℝ} {eta0 eta1 Delta : ℝ}
     (hK : IsSpectralProjector K H b h k eta0 eta1 Delta) (r : ℕ) :
     IsSpectralProjector (K ^ r) H b h (fun j ↦ k j ^ r) eta0 eta1 (Delta ^ r) := by

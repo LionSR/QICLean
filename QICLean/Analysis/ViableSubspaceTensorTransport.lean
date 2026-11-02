@@ -25,7 +25,7 @@ variable {𝕜 E F E' F' : Type*} [RCLike 𝕜]
 
 /-- Tensor product subspaces are transported by the actual factor isometries.
 Supporting ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem map_tensorProd_congrIsometry (f : E ≃ₗᵢ[𝕜] E') (g : F ≃ₗᵢ[𝕜] F')
+lemma map_tensorProd_congrIsometry (f : E ≃ₗᵢ[𝕜] E') (g : F ≃ₗᵢ[𝕜] F')
     (S : Submodule 𝕜 E) (T : Submodule 𝕜 F) :
     (S.tensorProd T).map (TensorProduct.congrIsometry f g).toLinearEquiv.toLinearMap =
       (S.map f.toLinearEquiv.toLinearMap).tensorProd
@@ -42,7 +42,7 @@ theorem map_tensorProd_congrIsometry (f : E ≃ₗᵢ[𝕜] E') (g : F ≃ₗᵢ
 
 /-- Exchanging the actual tensor factors exchanges the tensor product subspaces.
 Supporting ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem map_tensorProd_commIsometry (S : Submodule 𝕜 E) (T : Submodule 𝕜 F) :
+lemma map_tensorProd_commIsometry (S : Submodule 𝕜 E) (T : Submodule 𝕜 F) :
     (S.tensorProd T).map (TensorProduct.commIsometry 𝕜 E F).toLinearEquiv.toLinearMap =
       T.tensorProd S := by
   apply le_antisymm
@@ -56,7 +56,7 @@ theorem map_tensorProd_commIsometry (S : Submodule 𝕜 E) (T : Submodule 𝕜 F
 /-- The tensor product of the two whole spaces is the whole tensor product.
 Supporting ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
 @[simp]
-theorem tensorProd_top_top :
+lemma tensorProd_top_top :
     (⊤ : Submodule 𝕜 E).tensorProd (⊤ : Submodule 𝕜 F) = ⊤ :=
   LinearMap.range_eq_top.mpr (TensorProduct.map_surjective
     (fun x ↦ ⟨⟨x, trivial⟩, rfl⟩) (fun x ↦ ⟨⟨x, trivial⟩, rfl⟩))
@@ -65,7 +65,7 @@ variable {G : Type*} [NormedAddCommGroup G] [InnerProductSpace 𝕜 G]
 
 /-- Associating the actual tensor product subspaces changes no vectors.
 Supporting ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem map_tensorProd_assocIsometry (S : Submodule 𝕜 E) (T : Submodule 𝕜 F)
+lemma map_tensorProd_assocIsometry (S : Submodule 𝕜 E) (T : Submodule 𝕜 F)
     (U : Submodule 𝕜 G) :
     ((S.tensorProd T).tensorProd U).map
       (TensorProduct.assocIsometry 𝕜 E F G).toLinearEquiv.toLinearMap =
@@ -99,7 +99,7 @@ variable [FiniteDimensional 𝕜 E] [FiniteDimensional 𝕜 F]
 /-- The actual tensor product subspace has dimension at most the product
 of the input dimensions. Supporting ALVV, arXiv:1602.08828v2,
 Lemma `l:t`, lines 500–523. -/
-theorem finrank_tensorProd_le (S : Submodule 𝕜 E) (T : Submodule 𝕜 F) :
+lemma finrank_tensorProd_le (S : Submodule 𝕜 E) (T : Submodule 𝕜 F) :
     Module.finrank 𝕜 (S.tensorProd T) ≤ Module.finrank 𝕜 S * Module.finrank 𝕜 T := by
   calc
     _ ≤ Module.finrank 𝕜 (S ⊗[𝕜] T) :=
@@ -108,7 +108,7 @@ theorem finrank_tensorProd_le (S : Submodule 𝕜 E) (T : Submodule 𝕜 F) :
 
 /-- Viability is invariant under actual isometries of both tensor factors.
 Supporting ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem isViable_map_congrIsometry_iff (f : E ≃ₗᵢ[𝕜] E') (g : F ≃ₗᵢ[𝕜] F')
+lemma isViable_map_congrIsometry_iff (f : E ≃ₗᵢ[𝕜] E') (g : F ≃ₗᵢ[𝕜] F')
     {delta : ℝ} (S : Submodule 𝕜 E) (T : Submodule 𝕜 (E ⊗[𝕜] F)) :
     IsViable delta (S.map f.toLinearEquiv.toLinearMap)
       (T.map (TensorProduct.congrIsometry f g).toLinearEquiv.toLinearMap) ↔
@@ -123,7 +123,7 @@ variable [FiniteDimensional 𝕜 G]
 /-- Viability on the first factor equals viability of its extension to the
 first two factors before reassociation. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem isViable_map_assocIsometry_iff {delta : ℝ} (S : Submodule 𝕜 E)
+lemma isViable_map_assocIsometry_iff {delta : ℝ} (S : Submodule 𝕜 E)
     (T : Submodule 𝕜 ((E ⊗[𝕜] F) ⊗[𝕜] G)) :
     IsViable delta S
       (T.map (TensorProduct.assocIsometry 𝕜 E F G).toLinearEquiv.toLinearMap) ↔
@@ -136,7 +136,7 @@ theorem isViable_map_assocIsometry_iff {delta : ℝ} (S : Submodule 𝕜 E)
 /-- Tensoring viability for one common three-factor target, expressed in
 the actual first-factor and second-factor tensor splits. This is ALVV,
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523, after reassociation. -/
-theorem IsViable.tensorProd_of_factor_splits {delta1 delta2 : ℝ}
+lemma IsViable.tensorProd_of_factor_splits {delta1 delta2 : ℝ}
     (S1 : Submodule 𝕜 E) (S2 : Submodule 𝕜 F)
     (T : Submodule 𝕜 ((E ⊗[𝕜] F) ⊗[𝕜] G))
     (h1 : IsViable delta1 S1
@@ -162,7 +162,7 @@ variable {sigma beta kappa : Type*} [Fintype sigma] [Fintype beta] [Fintype kapp
 /-- Reindexing configurations before the Euclidean tensor split gives the
 actual product of the two factor coordinates. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem euclideanTensorEquiv_reindex_symm_tmul (e : kappa ≃ sigma × beta)
+lemma euclideanTensorEquiv_reindex_symm_tmul (e : kappa ≃ sigma × beta)
     (x : EuclideanSpace ℂ sigma) (y : EuclideanSpace ℂ beta) (c : kappa) :
     ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).trans
       (euclideanTensorEquiv sigma beta)).symm (x ⊗ₜ[ℂ] y) c =

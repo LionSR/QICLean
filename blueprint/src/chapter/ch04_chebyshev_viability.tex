@@ -183,17 +183,22 @@ of the unsquared filter is not required
     is required.
 \end{lemma}
 \begin{proof}\leanok
-    In the common eigenbasis the eigenvalues of $K^a$ are the corresponding
-    powers. Expand the noncommutative power of the finite sum into its
-    ordered words and multiply the two tensor factors in the same order.
-    Apply error reduction once to this actual powered decomposition.
+    In a common eigenbasis $Kb_j=k_jb_j$, one has $K^ab_j=k_j^ab_j$.
+    Distributing the noncommutative product gives
+    \begin{align}
+        K^a=\left(\sum_{i\in I}A_i\otimes B_i\right)^a
+        =\sum_{w\in I^a}A_w\otimes B_w.
+        \label{eq:operator_word_power_expansion}
+    \end{align}
+    The two tensor factors retain the same order. Applying error reduction
+    to (\ref{eq:operator_word_power_expansion}) gives
+    (\ref{eq:operator_word_power_improvement}).
 \end{proof}
 
 \begin{lemma}[One polynomial family for every filter power]
     \label{thm:actual_cluster_chebyshev_word_powers}
     \lean{Matrix.chebyshev_word_power_viability_of_actual_cluster_polynomial_family}
     \leanok
-    \uses{thm:actual_cluster_polynomial_viability,thm:spectral_operator_word_powers}
     Under the hypotheses of Theorem~\ref{thm:actual_cluster_polynomial_viability},
     define $W_w=W_{w_1}\cdots W_{w_a}$ for $w\in\{1,\ldots,N\}^a$.
     The same target $TG_{\eta_0}$ is used for every $a\ge0$ and every
@@ -205,6 +210,8 @@ of the unsquared filter is not required
     chosen before $a,S,\delta$.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{thm:canonical_isometric_spectral_data,thm:chebyshev_spectral_projector,
+        thm:spectral_operator_word_powers}
     Derive the canonical spectral data from the actual Hermitian matrix.
     Choose its Chebyshev polynomial once, obtain the actual complementary
     factors from the common polynomial decomposition, and use

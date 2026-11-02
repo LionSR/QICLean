@@ -89,4 +89,11 @@ The new mathematical sections were rendered and inspected in a PDF excerpt.
 The shared helper in `EnergyTruncation.lean` proves Hermiticity of a
 centered, partially clipped sum and replaces three repeated downstream
 proofs. It is included in both the hosted verification and the axiom audit.
-The subsequent verification-record commit changes only this document.
+Subsequent presentation changes correct the direct proof dependencies and
+write out the ordered tensor-word expansion and the coefficient-matrix
+rank identity. Supporting declarations use `lemma` to match QICLean's
+blueprint convention. Removing comments and normalizing `theorem`/`lemma`
+leaves every changed statement and proof identical to the tested revision.
+All 17 changed Lean modules pass strict elaboration with warnings treated
+as errors against the compiled mathematical revision. Source synchronization
+and LaTeX lint pass; the corrected sections were rendered again.

@@ -23,7 +23,7 @@ namespace Nat
 applying the squared powered family to an input of dimension at most `s`.
 Supporting ALVV, arXiv:1602.08828v2, `l:er`, lines 597–622, and the
 merge analysis, lines 1777–1817. -/
-theorem viable_node_power_bounds {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s) :
+lemma viable_node_power_bounds {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s) :
     let k := clog D (D ^ 2 * s)
     2 ≤ k ∧ D ^ 2 * s ≤ D ^ k ∧ D ^ k ≤ D ^ 3 * s ∧
       (D ^ k) ^ 2 * s ≤ D ^ 6 * s ^ 3 := by
@@ -50,7 +50,7 @@ theorem viable_node_power_bounds {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s) :
 /-- The truncated sample retains the ratio required by a polynomial bound
 on the actual merged dimension. Supporting ALVV, arXiv:1602.08828v2,
 Lemma `l:rs`, lines 530–558, and the merge analysis, lines 1777–1817. -/
-theorem viable_node_sample_ratio {D s Q : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
+lemma viable_node_sample_ratio {D s Q : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
     (hQ : Q ≤ D ^ 12 * s ^ 6) :
     Q ≤ D ^ 12 * s ^ 5 * min s Q := by
   by_cases hfull : Q ≤ s
@@ -73,7 +73,7 @@ base tradeoff is at most a number strictly between zero and one. The upper
 integer logarithm forces at least two powers. Supporting ALVV,
 arXiv:1602.08828v2, `l:er`, lines 597–622, and the merge analysis,
 lines 1777–1817. -/
-theorem viable_node_power_tradeoff_lt {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
+lemma viable_node_power_tradeoff_lt {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
     {Delta budget : ℝ} (hDelta : 0 ≤ Delta) (hbudget : 0 < budget)
     (hbudget1 : budget < 1) (hbase : (D : ℝ) ^ 12 * Delta ≤ budget) :
     let k := Nat.clog D (D ^ 2 * s)
@@ -90,7 +90,7 @@ theorem viable_node_power_tradeoff_lt {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
 /-- The actual sample-or-full overlap has a uniform polynomial lower bound.
 Supporting ALVV, arXiv:1602.08828v2, Lemma `l:rs`, lines 530–558,
 and the merge analysis, lines 1777–1817. -/
-theorem viable_node_sample_overlap_lower {D s Q : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
+lemma viable_node_sample_overlap_lower {D s Q : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
     (hQ0 : 0 < Q) (hQ : Q ≤ D ^ 12 * s ^ 6) {delta : ℝ} (hdelta : delta ≤ 1 / 4) :
     3 / (32 * ((D : ℝ) ^ 12 * (s : ℝ) ^ 5)) ≤
       (1 - delta) * (min s Q : ℕ) / (8 * Q) := by
@@ -112,7 +112,7 @@ theorem viable_node_sample_overlap_lower {D s Q : ℕ} (hD : 2 ≤ D) (hs : 1 �
 at the stable polynomial dimension scale. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:er`, lines 597–622, and the merge analysis,
 lines 1777–1817. No sampling event or recursively selected family is assumed. -/
-theorem viable_node_power_error_bound {D s Q : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
+lemma viable_node_power_error_bound {D s Q : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
     (hQ0 : 0 < Q) (hQ : Q ≤ D ^ 12 * s ^ 6) {delta Delta budget : ℝ}
     (hdelta : delta ≤ 1 / 4) (hDelta : 0 ≤ Delta) (hbudget : 0 < budget)
     (hbudget1 : budget < 1) (hbase : (D : ℝ) ^ 12 * Delta ≤ budget) :

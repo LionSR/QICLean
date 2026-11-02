@@ -54,7 +54,7 @@ noncomputable def rightExteriorTensorCoordinates (q : ℕ) (A B : Finset V)
 
 /-- Product coordinates in the exterior of the second region. Supporting
 ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem rightExteriorTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
+lemma rightExteriorTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) (x : EuclideanSpace ℂ (A → Fin q))
     (z : EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q)) (c : ↥(Bᶜ) → Fin q) :
     let e := (FiniteProduct.complementUnionEquiv (fun _ : V ↦ Fin q) B A h.symm).trans
@@ -68,7 +68,7 @@ theorem rightExteriorTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V
 /-- The original vector in the actual region/exterior split is the product
 of its two factors in configuration coordinates. Supporting ALVV,
 arXiv:1602.08828v2, Definition `d:vs`, lines 433–440. -/
-theorem regionTensorCoordinates_symm_tmul_apply (q : ℕ) (A : Finset V)
+lemma regionTensorCoordinates_symm_tmul_apply (q : ℕ) (A : Finset V)
     (x : EuclideanSpace ℂ (A → Fin q)) (y : EuclideanSpace ℂ (↥(Aᶜ) → Fin q))
     (c : V → Fin q) :
     (regionTensorCoordinates q A).symm (x ⊗ₜ[ℂ] y) c =
@@ -79,7 +79,7 @@ theorem regionTensorCoordinates_symm_tmul_apply (q : ℕ) (A : Finset V)
 omit [Fintype V] in
 /-- Product coordinates in the actual union split. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem unionTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
+lemma unionTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) (x : EuclideanSpace ℂ (A → Fin q))
     (y : EuclideanSpace ℂ (B → Fin q)) (c : ↥(A ∪ B) → Fin q) :
     (unionTensorCoordinates q A B h).symm (x ⊗ₜ[ℂ] y) c =
@@ -89,7 +89,7 @@ theorem unionTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
 
 /-- Product coordinates in the actual split complement. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem exteriorTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
+lemma exteriorTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) (y : EuclideanSpace ℂ (B → Fin q))
     (z : EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q)) (c : ↥(Aᶜ) → Fin q) :
     (exteriorTensorCoordinates q A B h).symm (y ⊗ₜ[ℂ] z) c =
@@ -111,7 +111,7 @@ noncomputable def threeRegionTensorCoordinates (q : ℕ) (A B : Finset V)
 /-- Splitting the union, or first splitting the first region and then its
 complement, gives exactly the same three tensor factors. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem threeRegionTensorCoordinates_assoc (q : ℕ) (A B : Finset V) (h : Disjoint A B) :
+lemma threeRegionTensorCoordinates_assoc (q : ℕ) (A B : Finset V) (h : Disjoint A B) :
     (threeRegionTensorCoordinates q A B h).trans
       (TensorProduct.assocIsometry ℂ (EuclideanSpace ℂ (A → Fin q))
         (EuclideanSpace ℂ (B → Fin q)) (EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q))) =
@@ -144,7 +144,7 @@ theorem threeRegionTensorCoordinates_assoc (q : ℕ) (A B : Finset V) (h : Disjo
 /-- The second-region split gives the same actual three-factor coordinates,
 after exchanging the two retained factors. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem threeRegionTensorCoordinates_comm_assoc (q : ℕ) (A B : Finset V)
+lemma threeRegionTensorCoordinates_comm_assoc (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) :
     ((threeRegionTensorCoordinates q A B h).trans
       (TensorProduct.congrIsometry

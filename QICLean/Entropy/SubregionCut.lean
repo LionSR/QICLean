@@ -32,7 +32,7 @@ def subregionCut (J A : Finset V) : Finset J :=
 
 omit [Fintype V] in
 @[simp]
-theorem mem_subregionCut {J A : Finset V} {v : J} :
+lemma mem_subregionCut {J A : Finset V} {v : J} :
     v ∈ subregionCut J A ↔ v.1 ∈ A := by
   simp [subregionCut]
 
@@ -75,7 +75,7 @@ noncomputable def regionConfigurationSplit (q : ℕ) (J : Finset V) :
 /-- A cut inside a retained region, with its full exterior kept as an
 environment, has exactly the original global regional rank. Auxiliary to
 ALVV, arXiv:1602.08828v2, `lem:trimming`, lines 660–697. -/
-theorem schmidtRank_cutEnvVector_regionConfigurationSplit
+lemma schmidtRank_cutEnvVector_regionConfigurationSplit
     {J A : Finset V} (hAJ : A ⊆ J) (psi : EuclideanSpace ℂ (V → Fin q)) :
     Matrix.schmidtRank (WithLp.ofLp
       (cutEnvVector (n := fun _ : J ↦ q) (subregionCut J A)

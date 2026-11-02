@@ -21,7 +21,7 @@ namespace Real
 interval, including an interval with no internal cuts. The squared reference
 bond is retained explicitly. Supporting ALVV, arXiv:1602.08828v2,
 `lem:trimming`, lines 660–697, and the merge analysis, lines 1801–1805. -/
-theorem viable_node_trimming_radius_budget {L cuts D : ℕ} (hcuts : cuts ≤ L) (hD : 1 ≤ D) :
+lemma viable_node_trimming_radius_budget {L cuts D : ℕ} (hcuts : cuts ≤ L) (hD : 1 ≤ D) :
     let xi := 1 / (1000 * (D : ℝ) * Real.sqrt ((L : ℝ) + 1))
     0 < xi ∧ 4 * xi * Real.sqrt ((cuts : ℝ) * (D : ℝ) ^ 2) ≤ 1 / 250 := by
   intro xi

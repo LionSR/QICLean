@@ -24,7 +24,7 @@ variable {M iota : Type*} [Fintype iota]
 logarithm, gives the cubic count for every literal sampled-word image.
 Supporting ALVV, arXiv:1602.08828v2, error reduction, lines 597–622,
 and merge analysis, lines 1777–1817. -/
-theorem finrank_sampledWordImage_le_cubic {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
+lemma finrank_sampledWordImage_le_cubic {D s : ℕ} (hD : 2 ≤ D) (hs : 1 ≤ s)
     (F : iota → M →L[ℂ] M) (hF : Fintype.card iota ≤ D ^ 2)
     (W : Submodule ℂ M) (U : Matrix.unitaryGroup (Fin (Module.finrank ℂ W)) ℂ) :
     Module.finrank ℂ (sampledWordImage F (Nat.clog D (D ^ 2 * s)) s W U) ≤ D ^ 6 * s ^ 3 := by

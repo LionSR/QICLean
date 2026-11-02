@@ -28,7 +28,7 @@ namespace Real
 all subsequently chosen parent spaces. This is an auxiliary estimate for
 ALVV, arXiv:1602.08828v2, merge analysis, lines 1777–1817; its numerical
 constant is not the printed parameter prescription. -/
-theorem viable_node_sample_size_log_bound {r : ℕ} {A : ℝ}
+lemma viable_node_sample_size_log_bound {r : ℕ} {A : ℝ}
     (hr : 1 ≤ r) (hA : 1 ≤ A) (hlogr : log (r : ℝ) ≤ A - 1) :
     let s := Nat.ceil (4096 * (r : ℝ) * A)
     1 ≤ s ∧ 4096 * (r : ℝ) * A ≤ s ∧ (s : ℝ) ≤ 4097 * (r : ℝ) * A ∧
@@ -59,7 +59,7 @@ theorem viable_node_sample_size_log_bound {r : ℕ} {A : ℝ}
 majorant at the cubic dimension scale. Supporting ALVV,
 arXiv:1602.08828v2, merge analysis, lines 1777–1817, with the corrected
 complex-sphere count rather than the printed exponent. -/
-theorem viable_node_sampling_failure_le_exp {D r s Q : ℕ}
+lemma viable_node_sampling_failure_le_exp {D r s Q : ℕ}
     (hD : 2 ≤ D) (hr : 1 ≤ r) (hs : 1 ≤ s) (hQ : 1 ≤ Q)
     (hdim : Q ≤ D ^ 12 * s ^ 6) :
     (1 + 2 / sqrt ((1 - (1 / 4 : ℝ)) * (s : ℝ) / (8 * Q))) ^ (2 * r) * Q *
@@ -133,7 +133,7 @@ theorem viable_node_sampling_failure_le_exp {D r s Q : ℕ}
 for every parent dimension at the cubic profile. The size precedes that
 dimension. Supporting ALVV, arXiv:1602.08828v2, merge analysis,
 lines 1777–1817. This is a fixed-input bound, not an adaptive-tree theorem. -/
-theorem viable_node_uniform_sampling_size {D r : ℕ} (hD : 2 ≤ D) (hr : 1 ≤ r)
+lemma viable_node_uniform_sampling_size {D r : ℕ} (hD : 2 ≤ D) (hr : 1 ≤ r)
     {beta : ℝ} (hbeta : 0 < beta) (hbeta1 : beta ≤ 1) :
     let A := 1 + log (r : ℝ) + log (D : ℝ) + log (1 / beta)
     let s := Nat.ceil (4096 * (r : ℝ) * A)

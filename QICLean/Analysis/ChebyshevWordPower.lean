@@ -30,7 +30,7 @@ for every power, with one fixed transported low target. The actual matrix
 cluster determines the symmetry, eigenbasis and filter. Supporting ALVV,
 arXiv:1602.08828v2, `thm:Cheby-AGSP`, lines 789–853, and `l:er`, lines 597–622.
 The polynomial decomposition is an input here; physical applications derive it. -/
-theorem chebyshev_word_power_viability_of_actual_cluster_polynomial_family
+lemma chebyshev_word_power_viability_of_actual_cluster_polynomial_family
     {sigma iota m e : Type*}
     [Fintype sigma] [DecidableEq sigma] [Fintype iota]
     [Fintype m] [DecidableEq m] [Fintype e] [DecidableEq e] {N degree : ℕ}

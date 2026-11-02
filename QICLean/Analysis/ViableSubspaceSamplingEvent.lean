@@ -36,7 +36,7 @@ sample-or-full construction at a fixed input. Its failure measure obeys
 the corrected sampling estimate, and every unitary in the event produces
 the stated viable space. Supporting ALVV, arXiv:1602.08828v2,
 Lemma `l:rs`, lines 530–558. This is not an adaptive measurability assertion. -/
-theorem exists_measurable_randomSubspace_min_event {W : Submodule ℂ M} {q : ℕ}
+lemma exists_measurable_randomSubspace_min_event {W : Submodule ℂ M} {q : ℕ}
     (b : OrthonormalBasis (Fin q) ℂ W) (s : ℕ) {delta : ℝ}
     {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable delta W T) (hdelta : delta ≤ 1) :
     let A := Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s q))

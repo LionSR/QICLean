@@ -28,7 +28,7 @@ variable {𝕜 M R : Type*} [RCLike 𝕜]
 /-- Ordered simultaneous products of the two factors give the actual
 product of tensor operators. Supporting ALVV, arXiv:1602.08828v2,
 `def:spectral-AGSP`, lines 570–581. -/
-theorem prod_mapL_ofFn {ι : Type*} (A : ι → M →L[𝕜] M) (B : ι → R →L[𝕜] R)
+lemma prod_mapL_ofFn {ι : Type*} (A : ι → M →L[𝕜] M) (B : ι → R →L[𝕜] R)
     (r : ℕ) (w : Fin r → ι) :
     (List.ofFn (fun j ↦ mapL (A (w j)) (B (w j)))).prod =
       mapL (List.ofFn (fun j ↦ A (w j))).prod (List.ofFn (fun j ↦ B (w j))).prod := by
@@ -41,7 +41,7 @@ theorem prod_mapL_ofFn {ι : Type*} (A : ι → M →L[𝕜] M) (B : ι → R �
 operator words. Empty alphabets and exponent zero are included. Supporting
 ALVV, arXiv:1602.08828v2, `def:spectral-AGSP`, lines 570–581,
 and `l:er`, lines 597–622. -/
-theorem pow_sum_mapL_eq_sum_words {ι : Type*} [Fintype ι]
+lemma pow_sum_mapL_eq_sum_words {ι : Type*} [Fintype ι]
     (A : ι → M →L[𝕜] M) (B : ι → R →L[𝕜] R) (r : ℕ) :
     (∑ i, mapL (A i) (B i)) ^ r =
       ∑ w : Fin r → ι,
@@ -62,7 +62,7 @@ variable {𝕜 M R ι n : Type*} [RCLike 𝕜]
 fixed low spectral target, with cardinality raised to the power and squared
 suppression `Delta ^ r`. Supporting ALVV, arXiv:1602.08828v2,
 `def:spectral-AGSP`, lines 570–581, and `l:er`, lines 597–622. -/
-theorem IsSpectralProjector.viability_word_power
+lemma IsSpectralProjector.viability_word_power
     {K H : M ⊗[𝕜] R →L[𝕜] M ⊗[𝕜] R}
     {b : OrthonormalBasis n 𝕜 (M ⊗[𝕜] R)} {h k : n → ℝ}
     {eta0 eta1 Delta : ℝ}

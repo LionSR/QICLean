@@ -32,7 +32,7 @@ noncomputable def regionTensorMerge (q : ℕ) (A B : Finset V) (h : Disjoint A B
 /-- Actual regional viable spaces merge for the same global target.
 No product structure of the target is required. This is ALVV,
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523, in configuration coordinates. -/
-theorem isViable_regionTensorMerge {q : ℕ} {delta1 delta2 : ℝ}
+lemma isViable_regionTensorMerge {q : ℕ} {delta1 delta2 : ℝ}
     (A B : Finset V) (h : Disjoint A B)
     (G : Submodule ℂ (EuclideanSpace ℂ (V → Fin q)))
     (S1 : Submodule ℂ (EuclideanSpace ℂ (A → Fin q)))
@@ -102,7 +102,7 @@ theorem isViable_regionTensorMerge {q : ℕ} {delta1 delta2 : ℝ}
 omit [Fintype V] in
 /-- The actual merged candidate has dimension at most the product of the
 child dimensions. Supporting ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
-theorem finrank_regionTensorMerge_le (q : ℕ) (A B : Finset V) (h : Disjoint A B)
+lemma finrank_regionTensorMerge_le (q : ℕ) (A B : Finset V) (h : Disjoint A B)
     (S1 : Submodule ℂ (EuclideanSpace ℂ (A → Fin q)))
     (S2 : Submodule ℂ (EuclideanSpace ℂ (B → Fin q))) :
     Module.finrank ℂ (regionTensorMerge q A B h S1 S2) ≤
@@ -112,7 +112,7 @@ theorem finrank_regionTensorMerge_le (q : ℕ) (A B : Finset V) (h : Disjoint A 
 /-- Equal regions identify their actual viable subspaces by the canonical
 configuration equivalence. Supporting ALVV, arXiv:1602.08828v2,
 Definition `d:vs`, lines 433–440. -/
-theorem isViable_region_congr {q : ℕ} {delta : ℝ} {J K : Finset V}
+lemma isViable_region_congr {q : ℕ} {delta : ℝ} {J K : Finset V}
     (hJK : J = K) (G : Submodule ℂ (EuclideanSpace ℂ (V → Fin q)))
     (S : Submodule ℂ (EuclideanSpace ℂ (J → Fin q)))
     (hS : Submodule.IsViable delta S

@@ -446,7 +446,7 @@ theorem norm_centered_clipping_discrepancy_domRestrict_le_sum
 /-- A sum of partially truncated Hermitian terms remains Hermitian after real
 energy shifts and addition of a Hermitian remainder. This is an auxiliary to
 ALVV, arXiv:1602.08828v2, `def:hard-trunc`, lines 873–886. -/
-theorem isHermitian_sum_centered_partial_energyTruncation
+lemma isHermitian_sum_centered_partial_energyTruncation
     {ι n : Type*} [Fintype ι] [DecidableEq ι] [Fintype n] [DecidableEq n]
     (A : ι → Matrix n n ℂ) (hA : ∀ i, (A i).IsHermitian)
     (K : Finset ι) (e tau : ι → ℝ) (C : Matrix n n ℂ) (hC : C.IsHermitian) :

@@ -43,7 +43,7 @@ noncomputable def sampledWordImage (F : iota → M →L[ℂ] M) (power s : ℕ)
 /-- The actual word-image dimension is bounded by the number of words times
 the actual sample dimension. Supporting ALVV, arXiv:1602.08828v2,
 `l:er`, lines 597–622, and Lemma `l:rs`, lines 530–558. -/
-theorem finrank_sampledWordImage_le (F : iota → M →L[ℂ] M) (power s : ℕ)
+lemma finrank_sampledWordImage_le (F : iota → M →L[ℂ] M) (power s : ℕ)
     (W : Submodule ℂ M) (U : Matrix.unitaryGroup (Fin (Module.finrank ℂ W)) ℂ) :
     Module.finrank ℂ (sampledWordImage F power s W U) ≤
       Fintype.card iota ^ power * min s (Module.finrank ℂ W) := by
@@ -68,7 +68,7 @@ subspace. The finite family and its error-reduction implication precede the
 power and input space. This composition supports ALVV,
 arXiv:1602.08828v2, `l:er`, lines 597–622, and the merge, lines 1662–1677.
 No adaptive measurability or physical existence of the family is asserted. -/
-theorem exists_measurable_sampledWordImage_event
+lemma exists_measurable_sampledWordImage_event
     (F : iota → M →L[ℂ] M) (T : Submodule ℂ (M ⊗[ℂ] E)) (Delta : ℝ)
     (himprove : ∀ (a : ℕ) (S : Submodule ℂ M) (delta : ℝ), IsViable delta S T → delta < 1 →
       IsViable (Delta ^ a / (1 - delta) ^ 2)

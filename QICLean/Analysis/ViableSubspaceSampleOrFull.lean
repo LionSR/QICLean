@@ -31,7 +31,7 @@ variable {M F : Type*}
 
 /-- A full-dimensional coordinate sample is the actual input subspace.
 Supporting ALVV, arXiv:1602.08828v2, Lemma `l:rs`, lines 530–558. -/
-theorem randomSubspace_eq_of_card_eq {W : Submodule ℂ M} {q : ℕ}
+lemma randomSubspace_eq_of_card_eq {W : Submodule ℂ M} {q : ℕ}
     (b : OrthonormalBasis (Fin q) ℂ W) (A : Finset (Fin q))
     (hA : A.card = q) (U : Matrix.unitaryGroup (Fin q) ℂ) :
     randomSubspace b A U = W := by
@@ -41,7 +41,7 @@ theorem randomSubspace_eq_of_card_eq {W : Submodule ℂ M} {q : ℕ}
 /-- Retaining the whole actual input satisfies the weakened sampling
 viability bound for every unitary. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:rs`, lines 530–558. -/
-theorem IsViable.randomSubspace_min_of_le {W : Submodule ℂ M} {q : ℕ}
+lemma IsViable.randomSubspace_min_of_le {W : Submodule ℂ M} {q : ℕ}
     (b : OrthonormalBasis (Fin q) ℂ W) (s : ℕ) {delta : ℝ}
     {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable delta W T) (hdelta : delta ≤ 1)
     (hfull : q ≤ s) (U : Matrix.unitaryGroup (Fin q) ℂ) :
@@ -62,7 +62,7 @@ theorem IsViable.randomSubspace_min_of_le {W : Submodule ℂ M} {q : ℕ}
 The full-dimensional branch retains the original space and does not assume
 an unnecessary failure-probability estimate. The other branch is the actual
 Haar sample of ALVV, arXiv:1602.08828v2, Lemma `l:rs`, lines 530–558. -/
-theorem exists_isViable_randomSubspace_min {W : Submodule ℂ M} {q : ℕ}
+lemma exists_isViable_randomSubspace_min {W : Submodule ℂ M} {q : ℕ}
     (b : OrthonormalBasis (Fin q) ℂ W) (s : ℕ) {delta : ℝ}
     {T : Submodule ℂ (M ⊗[ℂ] F)} (hT : IsViable delta W T) (hdelta : delta ≤ 1)
     (hfailure : s < q →
