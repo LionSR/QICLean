@@ -152,3 +152,18 @@ statement, which does not assume that the matrices are Hermitian.
     triangle inequality. This is the finite-sum step
     in~\cite[lines 979--1005]{Arad2016RigorousRG}.
 \end{proof}
+
+\begin{lemma}[Hermiticity of centered partial truncations]
+    \label{lem:centered_partial_truncation_hermitian}
+    \lean{Matrix.isHermitian_sum_centered_partial_energyTruncation}
+    \leanok
+    Let $A_i$ and $C$ be Hermitian matrices, let $K$ be a subset of the
+    finite index set, and let $e_i,\tau_i$ be real. Replace $A_i$ by
+    $\min(A_i,\tau_i I)$ for $i\in K$, using its spectral functional
+    calculus, and leave the other terms unchanged. The sum of these
+    terms, minus $\sum_i e_i I$, plus $C$, is Hermitian.
+\end{lemma}
+\begin{proof}\leanok
+    Each spectral truncation is Hermitian. Real scalar shifts,
+    finite sums and addition preserve Hermiticity.
+\end{proof}

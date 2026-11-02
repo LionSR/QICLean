@@ -443,5 +443,21 @@ theorem norm_centered_clipping_discrepancy_domRestrict_le_sum
   simpa only [map_sum, ContinuousLinearMap.domRestrict,
     ContinuousLinearMap.finsetSum_comp] using
       (norm_sum_le T (fun i ↦ (φ (A i - F i)).domRestrict G))
+/-- A sum of partially truncated Hermitian terms remains Hermitian after real
+energy shifts and addition of a Hermitian remainder. This is an auxiliary to
+ALVV, arXiv:1602.08828v2, `def:hard-trunc`, lines 873–886. -/
+theorem isHermitian_sum_centered_partial_energyTruncation
+    {ι n : Type*} [Fintype ι] [DecidableEq ι] [Fintype n] [DecidableEq n]
+    (A : ι → Matrix n n ℂ) (hA : ∀ i, (A i).IsHermitian)
+    (K : Finset ι) (e tau : ι → ℝ) (C : Matrix n n ℂ) (hC : C.IsHermitian) :
+    ((∑ i, ((if i ∈ K then energyTruncation (A i) (tau i) else A i) -
+      (e i : ℂ) • (1 : Matrix n n ℂ))) + C).IsHermitian := by
+  refine ((isSelfAdjoint_sum Finset.univ fun i _ ↦ ?_).add hC.isSelfAdjoint).isHermitian
+  apply IsSelfAdjoint.sub
+  · split_ifs
+    · exact IsSelfAdjoint.cfc
+    · exact (hA i).isSelfAdjoint
+  · exact IsSelfAdjoint.smul (by simp [IsSelfAdjoint]) (by simp [IsSelfAdjoint])
+
 end Matrix
 end

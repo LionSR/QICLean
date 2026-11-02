@@ -70,11 +70,21 @@ trimming (`lem:trimming`, 660–697), and the merge analysis (1662–1677 and
 Sixteen modules are extracted from local revision
 `e51354163d2dd9cf2a15d65722c544c6b4736182` onto main
 `ba01733099b5a18bed5c9bfb62f95f175b4c9b57`. Existing main definitions and
-proofs are retained. All 55 new public declarations have active blueprint
+proofs are retained. All 56 new public declarations have active blueprint
 references. The blueprint/source check passes, active labels are unique,
 and all references in the changed sections resolve. The sections pass the
 pinned formatter and individual-file LaTeX lint. No forbidden proof token
 is introduced.
 
-Compilation, strict Lean checks, the compiled declaration check, the axiom
-audit, and rendered blueprint inspection are pending for this extraction.
+The initial extraction at `1bc2a904` passed all hosted checks in
+[run 41488838914](https://github.com/LionSR/QICLean/actions/runs/41488838914),
+including the Lean build and blueprint. The new mathematical sections were
+rendered and inspected in a PDF excerpt. A declaration-specific axiom audit
+remains pending.
+
+A subsequent helper in `EnergyTruncation.lean` proves Hermiticity of a
+centered, partially clipped sum. It replaces three repeated downstream
+proofs. The complete modified module elaborates without errors using
+`lake env lean -DrelaxedAutoImplicit=false --stdin` against the existing
+warm dependency tree; the hosted build and strict checks of this addition
+are pending. This fast check is not a linter-bearing Lake build.
