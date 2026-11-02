@@ -38,7 +38,7 @@ variable {A C : Type*} [Fintype A] [Fintype C] [DecidableEq A] [DecidableEq C]
 
 -- Specify the continuous enorm directly: the package limits pending synthesis depth to three.
 local instance : ContinuousENorm (Matrix (A × A) (C × C) ℂ) :=
-  SeminormedAddGroup.toContinuousENorm
+  SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
 
 /-- A Schmidt vector in its paired basis, with amplitudes `sqrt(lam a)`.
 Source: `04-compression.tex:281–289`. -/

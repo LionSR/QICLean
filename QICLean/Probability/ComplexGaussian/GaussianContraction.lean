@@ -153,7 +153,8 @@ private theorem integrable_factored_corrected_entry (k : ℕ) (σ : (p : P) → 
 
 variable [Fintype m] [Fintype n]
 
-local instance : ContinuousENorm (Matrix m n ℂ) := SeminormedAddGroup.toContinuousENorm
+local instance : ContinuousENorm (Matrix m n ℂ) :=
+  SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
 
 private theorem integrable_matrix_entries {Ω : Type*} [MeasurableSpace Ω]
     (ν : Measure Ω) (f : Ω → Matrix m n ℂ)

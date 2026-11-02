@@ -36,6 +36,16 @@ in a regression file are not additional mathematical consumers.
   already imported by the spectral-tail module. The channel argument reuses
   its proof rather than repeating a Jordan-part expansion or importing entropy.
 
+### Full row rank gives surjectivity — existing Mathlib lemma (2026-10-27)
+
+- **Seen:** The equal-dimensional isometry argument in
+  `Algebra/MatrixUnitaryBetween.lean` and the minimal Stinespring argument in
+  `Channel/OrderedCP.lean`.
+- **Reuse:** `Matrix.mulVec_surjective_iff_rank_eq_card` applies directly to
+  their existing full-row-rank equalities. It replaces a manual injectivity
+  and dimension comparison, and a manual range-dimension argument.
+- **Decision:** Reuse Mathlib's theorem; no local wrapper or tactic is added.
+  Empty finite index types are still admitted.
 
 ### Trace normalization of a bipartite unit vector — shared lemma (2026-10-23)
 

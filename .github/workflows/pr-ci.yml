@@ -48,6 +48,7 @@ on:
       - 'blueprint/.chktexrc'
       - 'blueprint/latexindent.yaml'
       - 'scripts/blueprint_lean_sync.py'
+      - 'scripts/test_blueprint_lean_sync.py'
       - 'scripts/test_blueprint_web_render.py'
       - 'scripts/check_reader_facing_prose.py'
       - 'docs/paper-gaps/**'
@@ -100,6 +101,7 @@ on:
       - 'blueprint/.chktexrc'
       - 'blueprint/latexindent.yaml'
       - 'scripts/blueprint_lean_sync.py'
+      - 'scripts/test_blueprint_lean_sync.py'
       - 'scripts/test_blueprint_web_render.py'
       - 'scripts/check_reader_facing_prose.py'
       - 'LICENSE'
@@ -173,6 +175,11 @@ jobs:
               - 'docs/CONTRIBUTING.md'
             blueprint:
               - '.github/workflows/pr-ci.yml'
+              # A toolchain/dependency upgrade must recheck compiled declarations and renders.
+              - 'lean-toolchain'
+              - 'lakefile.*'
+              - 'lake-manifest.json'
+              - 'docbuild/**'
               - 'blueprint/src/**'
               - '.github/workflows/blueprint.yml'
               - '.github/workflows/docgen.yml'
@@ -185,6 +192,8 @@ jobs:
               - 'blueprint/.chktexrc'
               - 'blueprint/latexindent.yaml'
               - 'scripts/check_reader_facing_prose.py'
+              - 'scripts/blueprint_lean_sync.py'
+              - 'scripts/test_blueprint_lean_sync.py'
               - 'scripts/test_blueprint_web_render.py'
             # PDF compilation is narrower than reference checking: ordinary
             # Lean and Markdown edits must not install the TeX stack.
@@ -241,6 +250,67 @@ jobs:
       # check against (it is the leaf), so this step is a no-op placeholder
       # documenting the invariant this repository must keep true for TNLean;
       # TNLean's own pr-ci.yml carries the real comparison step.
+
+      # Keep the small RC-migration regressions independently observable before
+      # the full build reaches unrelated dependencies. This is additive: the
+      # root build and complete strict suite below remain mandatory.
+      - name: Check focused Mathlib migration regressions strictly
+        timeout-minutes: 30
+        run: |
+          set -eo pipefail
+          lake --fail-fast build \
+            QICLean.Algebra.MatrixUnitaryBetween \
+            QICLean.Analysis.ConicProgram \
+            QICLean.Analysis.FiniteCoordinateNowosad.Recursion \
+            QICLean.Analysis.HermitianMatrixCone \
+            QICLean.Analysis.LowEnergyPerturbation \
+            QICLean.Analysis.SpectralRadiusPowerDecay \
+            QICLean.Channel.OrderedCP \
+            QICLean.Channel.Peripheral.RecurrentInverse \
+            QICLean.Channel.Semigroup.Basic \
+            QICLean.Channel.Semigroup.LindbladForm.TraceBridge \
+            QICLean.Channel.Wigner.Rigidity \
+            QICLean.Entropy.ConditionalMovement.DoubleCurve \
+            QICLean.Probability.ComplexGaussian.GaussianContraction \
+            QICLean.Probability.ComplexGaussian.ProductSource \
+            QICLean.Probability.ComplexGaussian.ProductSourceTransport \
+            QICLean.Probability.ComplexGaussian.SchmidtSource \
+            QICLean.Representation.ReplicaTransport.CoherentMeasure
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0, "scripts")
+          from ci_lean_checks import run_batch
+          paths = [
+              "QICLean/Algebra/MatrixUnitaryBetween.lean",
+              "QICLean/Analysis/ConicProgram.lean",
+              "QICLean/Analysis/FiniteCoordinateNowosad/Recursion.lean",
+              "QICLean/Analysis/HermitianMatrixCone.lean",
+              "QICLean/Analysis/LowEnergyPerturbation.lean",
+              "QICLean/Analysis/SpectralRadiusPowerDecay.lean",
+              "QICLean/Channel/OrderedCP.lean",
+              "QICLean/Channel/Peripheral/RecurrentInverse.lean",
+              "QICLean/Channel/Semigroup/Basic.lean",
+              "QICLean/Channel/Semigroup/LindbladForm/TraceBridge.lean",
+              "QICLean/Channel/Wigner/Rigidity.lean",
+              "QICLean/Entropy/ConditionalMovement/DoubleCurve.lean",
+              "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
+              "QICLean/Probability/ComplexGaussian/ProductSource.lean",
+              "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
+              "QICLean/Probability/ComplexGaussian/SchmidtSource.lean",
+              "QICLean/Representation/ReplicaTransport/CoherentMeasure.lean",
+              "QICLeanTest/DoubleCurveInstances.lean",
+              "QICLeanTest/GaussianContraction.lean",
+              "QICLeanTest/GaussianProductSourceTransport.lean",
+              "QICLeanTest/Mathlib436Replacement.lean",
+              "QICLeanTest/SchmidtSource.lean",
+              "QICLeanTest/SemigroupNormable.lean",
+          ]
+          failed = run_batch(paths, None, jobs=3, timeout=240)
+          if failed:
+              print("Focused migration checks failed:", *failed, sep="\n  ")
+              sys.exit(1)
+          print("All focused migration checks passed.")
+          PY
 
       # Build the changed production modules before the full library so a
       # failure surfaces early. The build is a shortcut: past its budget it
@@ -580,8 +650,16 @@ jobs:
           python3 -m playwright install --with-deps chromium
           python3 scripts/test_blueprint_web_render.py --web-root blueprint/web
 
+      - name: Test Blueprint declaration scanner
+        run: python3 scripts/test_blueprint_lean_sync.py
+
+      # This TeX-only job has no Mathlib artifacts. Fetch only sources at the
+      # manifest SHA when an external citation needs them; the scanner verifies
+      # HEAD and source cleanliness. Compiled checkdecls stays in the Lean job.
       - name: Generate lean_decls from blueprint .tex files
         id: lean-decls
+        env:
+          BLUEPRINT_SYNC_FETCH_DEPS: '1'
         run: python3 scripts/blueprint_lean_sync.py --root . --update-lean-decls
 
       - name: Check blueprint and Lean source stay in sync
