@@ -72,22 +72,27 @@ Unrelated older definitions and proofs are not restored.
 
 ## Verification
 
-The hosted Lean build and module-policy checks passed at revision
-`b8a65f02` in [run 41484812574](https://github.com/LionSR/QICLean/actions/runs/41484812574).
-The same run passed strict checks of the changed Lean modules and the compiled
-blueprint declaration check. Local compilation and the declaration-specific
-axiom audit remain pending.
-The blueprint source check passes. The first hosted blueprint run found a
-missing author in the added bibliography entry; that entry is corrected, and
-local bibliography generation now succeeds. The new estimates are supporting lemmas;
-no source-labelled false claim is marked proved.
+All hosted checks passed for revision `5594a69a` in
+[run 41487288546](https://github.com/LionSR/QICLean/actions/runs/41487288546).
+These include the Lean build, strict checks of the changed modules, compiled
+blueprint declarations, module policies and blueprint compilation. The
+initial missing bibliography author was corrected before this successful run.
 
-All 32 newly public declarations have active blueprint references. The active
-blueprint has no duplicate labels, and every reference in the changed sections
-resolves. The new sources contain no forbidden proof tokens. The changed
-sections pass the pinned formatter and individual-file LaTeX lint checks.
+The complete local Lake build also passed at that revision, using the
+prebuilt Mathlib artifacts and the shared macOS repository lock. A kernel
+`#print axioms` audit of all 32 new public declarations found only
+`propext`, `Classical.choice` and `Quot.sound`. The commands were supplied
+through standard input; no Lean test fixture was added.
+
+All 32 declarations have active blueprint references. Active labels are
+unique and every reference in the changed sections resolves. The new
+sources contain no forbidden proof tokens. The changed sections pass the
+pinned formatter, individual-file LaTeX lint and prose checks.
 
 The added mathematical sections were rendered and inspected in a standalone
 PDF excerpt. The two overfull proof paragraphs in the new material were
-replaced by displayed inequalities. References to omitted chapters in this
-excerpt are checked against the complete blueprint sources.
+replaced by displayed inequalities. References to chapters omitted from
+this excerpt were checked against the complete blueprint sources.
+
+This verification record is a documentation-only update to the tested
+mathematical revision.
