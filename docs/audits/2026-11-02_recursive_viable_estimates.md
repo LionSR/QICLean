@@ -76,15 +76,17 @@ and all references in the changed sections resolve. The sections pass the
 pinned formatter and individual-file LaTeX lint. No forbidden proof token
 is introduced.
 
-The initial extraction at `1bc2a904` passed all hosted checks in
-[run 41488838914](https://github.com/LionSR/QICLean/actions/runs/41488838914),
-including the Lean build and blueprint. The new mathematical sections were
-rendered and inspected in a PDF excerpt. A declaration-specific axiom audit
-remains pending.
+The mathematical revision `000d65159e3f737730a3f6c718584300456b3440`
+passed all hosted checks in
+[run 41491122088](https://github.com/LionSR/QICLean/actions/runs/41491122088),
+including the full Lean build, strict changed-module checks, compiled
+blueprint declarations, policy checks and blueprint compilation.
+All 56 new public declarations were also audited locally against the
+compiled exact revision used by TNLean. Each depends only on the standard
+kernel axioms `propext`, `Classical.choice` and `Quot.sound`.
+The new mathematical sections were rendered and inspected in a PDF excerpt.
 
-A subsequent helper in `EnergyTruncation.lean` proves Hermiticity of a
-centered, partially clipped sum. It replaces three repeated downstream
-proofs. The complete modified module elaborates without errors using
-`lake env lean -DrelaxedAutoImplicit=false --stdin` against the existing
-warm dependency tree; the hosted build and strict checks of this addition
-are pending. This fast check is not a linter-bearing Lake build.
+The shared helper in `EnergyTruncation.lean` proves Hermiticity of a
+centered, partially clipped sum and replaces three repeated downstream
+proofs. It is included in both the hosted verification and the axiom audit.
+The subsequent verification-record commit changes only this document.
