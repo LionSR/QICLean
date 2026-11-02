@@ -315,7 +315,12 @@ theorem semigroup_preserves_compression_of_generator
   have hexp_sum : HasSum (fun n : ℕ => ((Nat.factorial n : ℂ)⁻¹) • ((t : ℂ) • E) ^ n)
       (NormedSpace.exp ((t : ℂ) • E)) :=
     NormedSpace.exp_series_hasSum_exp' ((t : ℂ) • E)
-  let ev_Y : (Mat →L[ℂ] Mat) →L[ℂ] Mat := ContinuousLinearMap.apply ℂ Mat Y
+  -- Evaluation at `Y`, built from the finite-dimensional linear map rather than
+  -- `ContinuousLinearMap.apply`, which needs an `IsNormableSpace` instance for `Mat`.
+  let ev_Y : (Mat →L[ℂ] Mat) →L[ℂ] Mat := LinearMap.toContinuousLinearMap
+    { toFun := fun f => f Y
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl }
   have heval_sum : HasSum (fun n : ℕ => (((Nat.factorial n : ℂ)⁻¹) • ((t : ℂ) • E) ^ n) Y)
       (expSemigroup L t Y) := by
     have h := ev_Y.hasSum hexp_sum
