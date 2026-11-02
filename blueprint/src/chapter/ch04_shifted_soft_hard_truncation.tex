@@ -165,12 +165,9 @@ complementary Hamiltonian; they are not subtracted from this threshold.
     exponential-moment bound.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{thm:scalar_soft_truncation_exp_weight}
-    The scalar exponential remainder estimate gives
-    $0\le d_m(x)e^{-x/8}\le16e^{-m/16}$ for $x\ge0$.
-    Functional calculus therefore bounds
-    $B_m=d_m(A)e^{-A/8}$ by $\|B_m\|\le16e^{-m/16}$.
-    Since $d_m(A)=B_me^{A/8}$, restriction and multiplication give the claim.
+    \uses{thm:soft_truncation_scaled_matrix_remainder}
+    Specialize the scaled matrix remainder bound to $t=m$, which satisfies
+    $0<t\le4m$.
 \end{proof}
 
 \section{Spectral windows relative to their own ground energies}

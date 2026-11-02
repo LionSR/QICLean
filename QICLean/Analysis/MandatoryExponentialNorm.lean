@@ -255,7 +255,7 @@ corrected auxiliary mandatory-label bound for ALVV, arXiv:1602.08828v2,
 assert the false printed spatial approximation estimate, whose obstructions
 are documented at
 https://sirui-lu.com/TNLean/paper-gaps/alvv16_cluster_approximation.pdf. -/
-theorem norm_sum_powerset_exp_sub_le_of_lower_bound
+lemma norm_sum_powerset_exp_sub_le_of_lower_bound
     (H : Matrix n n ℂ) (h : κ → Matrix n n ℂ) (S : Finset κ)
     (hH : H.IsHermitian) (hh : ∀ i ∈ S, (h i).IsHermitian)
     (hnorm : ∀ i ∈ S, ‖h i‖ ≤ 1) (lambda t : ℝ)

@@ -22,7 +22,7 @@ namespace Matrix
 /-- Increasing the cutoff increases the hard truncation of a fixed matrix.
 Auxiliary to ALVV, arXiv:1602.08828v2, Definition `def:hard-trunc`,
 lines 873–886. -/
-theorem monotone_energyTruncation
+lemma monotone_energyTruncation
     {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ) :
     Monotone (energyTruncation A) := by
   intro s t hst
@@ -31,7 +31,7 @@ theorem monotone_energyTruncation
 /-- Shifting the energy origin translates the hard cutoff by the same amount.
 Auxiliary to ALVV, arXiv:1602.08828v2, Definitions `def:hard-trunc` and
 `def:soft-trunc`, lines 873–886 and 1178–1185. -/
-theorem IsHermitian.energyTruncation_sub_smul_one
+lemma IsHermitian.energyTruncation_sub_smul_one
     {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
     (hA : A.IsHermitian) (r t : ℝ) :
     energyTruncation (A - (r : ℂ) • 1) t =
@@ -56,7 +56,7 @@ dominates the hard cap at `r + t / 2 - 10`, up to the same exponentially
 small scalar error. Auxiliary to ALVV, arXiv:1602.08828v2,
 Definition `def:soft-trunc`, lines 1178–1185. Positivity of the shifted
 matrix is explicit; no spectral-subspace comparison is concluded. -/
-theorem IsHermitian.softTruncation_shifted_hard_bounds
+lemma IsHermitian.softTruncation_shifted_hard_bounds
     {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
     (hA : A.IsHermitian) (r r' t : ℝ) (m : ℕ)
     (hpos : (A - (r' : ℂ) • 1).PosSemidef) (hrr' : r - 10 ≤ r')

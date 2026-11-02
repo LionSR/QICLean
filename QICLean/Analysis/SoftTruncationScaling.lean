@@ -19,7 +19,7 @@ namespace Real
 
 /-- Changing the soft-truncation scale rescales its input and output exactly. Supporting ALVV,
 arXiv:1602.08828v2, `def:ft`, lines 1152–1157. -/
-theorem softTruncation_scale (t s : ℝ) (m : ℕ) (x : ℝ) (hs : s ≠ 0) :
+lemma softTruncation_scale (t s : ℝ) (m : ℕ) (x : ℝ) (hs : s ≠ 0) :
     softTruncation t m x = (t / s) * softTruncation s m ((s / t) * x) := by
   have he : ((s / t) * x) / s = x / t := by field_simp
   simp only [softTruncation, he]
@@ -28,7 +28,7 @@ theorem softTruncation_scale (t s : ℝ) (m : ℕ) (x : ℝ) (hs : s ≠ 0) :
 /-- For an independent positive scale at most four times the order, the same exponential
 weight controls the soft remainder. Supporting a compatible heat-time regime for ALVV,
 arXiv:1602.08828v2, `def:ft` and `lem:exp-approx-eff`, lines 1152–1173 and 1262–1268. -/
-theorem softTruncation_remainder_le_exp_of_scale_le (m : ℕ) (hm : 0 < m)
+lemma softTruncation_remainder_le_exp_of_scale_le (m : ℕ) (hm : 0 < m)
     (t x : ℝ) (ht : 0 < t) (htm : t ≤ 4 * m) (hx : 0 ≤ x) :
     x - softTruncation t m x ≤ 16 * exp (x / 8 - t / 16) := by
   have hmR : 0 < (m : ℝ) := Nat.cast_pos.mpr hm

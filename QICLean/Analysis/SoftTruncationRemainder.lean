@@ -54,7 +54,7 @@ private theorem norm_cfc_weighted_soft_remainder_le
 /-- The weighted remainder times its inverse scalar exponential is the defining soft
 remainder of the same matrix. The scale and order are independent. Supporting ALVV,
 arXiv:1602.08828v2, `def:ft`, lines 1152–1157. -/
-theorem IsHermitian.weighted_softTruncation_remainder_mul_exp
+lemma IsHermitian.weighted_softTruncation_remainder_mul_exp
     {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
     (hA : A.IsHermitian) (t : ℝ) (m : ℕ) :
     cfc (fun x : ℝ ↦ (x - Real.softTruncation t m x) * Real.exp (-x / 8)) A *
@@ -79,7 +79,7 @@ factors through the exponential of the same positive matrix. Supporting ALVV,
 arXiv:1602.08828v2, `def:soft-trunc` and
 `lem:exp-approx`, lines 1178–1255. This is a matrix-analysis estimate, not
 a physical moment or spectral comparison. -/
-theorem norm_softTruncation_remainder_domRestrict_le_exp_weight_of_scale_le
+lemma norm_softTruncation_remainder_domRestrict_le_exp_weight_of_scale_le
     {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ)
     (hA : A.PosSemidef) (m : ℕ) (hm : 0 < m) (t : ℝ)
     (ht : 0 < t) (htm : t ≤ 4 * m)
@@ -108,7 +108,7 @@ theorem norm_softTruncation_remainder_domRestrict_le_exp_weight_of_scale_le
 positive matrix. Supporting ALVV, arXiv:1602.08828v2, `def:soft-trunc` and
 `lem:exp-approx`, lines 1178–1255. This is a matrix-analysis estimate, not
 a physical moment or spectral comparison. -/
-theorem norm_softTruncation_remainder_domRestrict_le_exp_weight
+lemma norm_softTruncation_remainder_domRestrict_le_exp_weight
     {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ)
     (hA : A.PosSemidef) (m : ℕ) (hm : 0 < m)
     (G : Submodule ℂ (EuclideanSpace ℂ n)) :

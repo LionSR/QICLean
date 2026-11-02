@@ -27,7 +27,7 @@ namespace Matrix
 truncation at half its scale up to the scalar error `(t / 2) * (1 / 2)^m`,
 and lies below the original matrix. Auxiliary to ALVV, arXiv:1602.08828v2,
 Definitions `def:hard-trunc` and `def:soft-trunc`, lines 873–886 and 1178–1185. -/
-theorem PosSemidef.softTruncation_hard_bounds
+lemma PosSemidef.softTruncation_hard_bounds
     {n : Type*} [Fintype n] [DecidableEq n] {A : Matrix n n ℂ}
     (hA : A.PosSemidef) (t : ℝ) (m : ℕ) (ht : 0 < t) (hm : 1 ≤ m) :
     energyTruncation A (t / 2) - (((t / 2) * (1 / 2 : ℝ) ^ m : ℝ) : ℂ) • 1 ≤

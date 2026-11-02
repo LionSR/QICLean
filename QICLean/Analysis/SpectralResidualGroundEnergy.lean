@@ -27,7 +27,7 @@ namespace Matrix
 /-- The residual on the actual low-energy space of the second matrix bounds
 how far its least energy lies below that of the first. Auxiliary to ALVV,
 arXiv:1602.08828v2, `lem:exp-approx`, lines 1195–1255. -/
-theorem IsHermitian.minEigenvalue_sub_le_of_spectralSpanLE_residual
+lemma IsHermitian.minEigenvalue_sub_le_of_spectralSpanLE_residual
     {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
     (A B : Matrix n n ℂ) (hA : A.IsHermitian) (hB : B.IsHermitian)
     (eta xi : ℝ) (heta : 0 ≤ eta)

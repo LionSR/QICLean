@@ -29,7 +29,7 @@ projection after adding its scalar order error. Positivity is obtained from
 the same hard comparison. No commutativity or attained-minimum hypothesis
 is needed for this order assertion. Auxiliary to ALVV,
 arXiv:1602.08828v2, `def:soft-trunc`, lines 1178–1185. -/
-theorem softTruncation_centered_coercivity
+lemma softTruncation_centered_coercivity
     {ι n : Type*} [Fintype ι] [DecidableEq ι] [Fintype n] [DecidableEq n]
     (A : ι → Matrix n n ℂ) (e : ι → ℝ) (j : ι) (eps t u : ℝ) (m : ℕ)
     (hA : ∀ i, (A i).IsHermitian)
@@ -92,7 +92,7 @@ comparator cutoff when the scale condition is retained. The bounds on the
 actual centered soft ground energy and the boundary constant are inputs to
 this scalar auxiliary; they must be derived from the physical Hamiltonian.
 Supporting ALVV, arXiv:1602.08828v2, `lem:exp-approx`, lines 1195–1255. -/
-theorem softTruncation_reverse_cutoff_bounds_of_scale
+lemma softTruncation_reverse_cutoff_bounds_of_scale
     (m : ℕ) (t E eta C : ℝ)
     (hElow : -(t / 2 * (1 / 2 : ℝ) ^ m) ≤ E) (hEhigh : E ≤ 2)
     (heta : 0 ≤ eta) (hC0 : 0 ≤ C) (hC4 : C ≤ 4)
@@ -120,7 +120,7 @@ comparator cutoff when the scale condition is retained. The bounds on the
 actual centered soft ground energy and the boundary constant are inputs to
 this scalar auxiliary; they must be derived from the physical Hamiltonian.
 Supporting ALVV, arXiv:1602.08828v2, `lem:exp-approx`, lines 1195–1255. -/
-theorem softTruncation_reverse_cutoff_bounds
+lemma softTruncation_reverse_cutoff_bounds
     (m : ℕ) (E eta C : ℝ)
     (hElow : -((m : ℝ) / 2 * (1 / 2 : ℝ) ^ m) ≤ E) (hEhigh : E ≤ 2)
     (heta : 0 ≤ eta) (hC0 : 0 ≤ C) (hC4 : C ≤ 4)

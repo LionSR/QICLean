@@ -18,7 +18,7 @@ namespace Real
 /-- One explicit order controls the correction, the reverse cutoff and the requested residual
 when scale is three times order. Supporting the corrected moment route to ALVV,
 arXiv:1602.08828v2, `lem:exp-approx` and `lem:exp-approx-eff`, lines 1195–1268. -/
-theorem exists_softTruncation_scaled_order_of_residual_budget
+lemma exists_softTruncation_scaled_order_of_residual_budget
     (eta rho : ℝ) (heta : 0 ≤ eta) (hrho : 0 < rho) (hrho1 : rho ≤ 1) :
     ∃ m : ℕ, m = ⌈12 + (2 / 3 : ℝ) * eta + (16 / 3 : ℝ) * log (80 / rho)⌉₊ ∧
       0 < m ∧ 10 ≤ (3 * (m : ℝ)) / 2 ∧

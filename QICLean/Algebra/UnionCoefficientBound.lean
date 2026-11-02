@@ -25,7 +25,7 @@ by the number of subsets of that union, when each member of the original
 family has a distinct chosen element belonging to it. This is an auxiliary
 coefficient bound for a corrected interaction-label expansion in ALVV,
 arXiv:1602.08828v2, `thm:cluster-approx`, source lines 1935–1968. -/
-theorem norm_sum_powerset_biUnion_sign_le_two_pow
+lemma norm_sum_powerset_biUnion_sign_le_two_pow
     {κ : Type*} [DecidableEq κ] (W : Finset (Finset κ)) (marker : W → κ)
     (hmarker : ∀ I : W, marker I ∈ (I : Finset κ)) (hinj : Function.Injective marker)
     (U : Finset κ) :

@@ -201,7 +201,7 @@ private theorem softTruncationUnit_remainder_le_geometric (m : ℕ) {y : ℝ} (h
 /-- A geometric remainder bound for the scalar soft truncation. This is an
 auxiliary consequence of the defining series in ALVV, arXiv:1602.08828v2,
 lines 1152–1173. -/
-theorem softTruncation_remainder_le_geometric (t : ℝ) (m : ℕ) (x : ℝ)
+lemma softTruncation_remainder_le_geometric (t : ℝ) (m : ℕ) (x : ℝ)
     (ht : 0 < t) (hx : 0 ≤ x) :
     x - softTruncation t m x ≤ x * (1 - exp (-(x / t))) ^ m := by
   have hb := mul_le_mul_of_nonneg_left
@@ -214,7 +214,7 @@ and scale agree. This bound is independent of the input scalar; it can be
 integrated against a spectral measure with a controlled exponential moment.
 It is an auxiliary estimate for the soft truncation defined in ALVV,
 arXiv:1602.08828v2, lines 1152–1173. -/
-theorem softTruncation_remainder_le_exp (m : ℕ) (hm : 0 < m)
+lemma softTruncation_remainder_le_exp (m : ℕ) (hm : 0 < m)
     (theta x : ℝ) (htheta : 0 < theta) (hthetaHalf : theta ≤ 1 / 2)
     (hx : 0 ≤ x) :
     x - softTruncation (m : ℝ) m x ≤
@@ -248,7 +248,7 @@ theorem softTruncation_remainder_le_exp (m : ℕ) (hm : 0 < m)
 /-- Soft truncation is increasing on the nonnegative half-line. This follows
 term by term from the finite series in ALVV, arXiv:1602.08828v2,
 lines 1152–1173. -/
-theorem monotoneOn_softTruncation (t : ℝ) (m : ℕ) (ht : 0 < t) :
+lemma monotoneOn_softTruncation (t : ℝ) (m : ℕ) (ht : 0 < t) :
     MonotoneOn (softTruncation t m) (Set.Ici 0) := by
   intro x hx y _hy hxy
   unfold softTruncation
@@ -277,7 +277,7 @@ private theorem softTruncation_remainder_le_half (t : ℝ) (m : ℕ) (x : ℝ)
 exponentially small scalar error. This is an auxiliary corrected estimate for
 ALVV, arXiv:1602.08828v2, lines 1152–1173; it does not assert the printed
 uniform energy estimate in equation `eq:exp-approx-0`. -/
-theorem softTruncation_hard_bounds (t : ℝ) (m : ℕ) (x : ℝ)
+lemma softTruncation_hard_bounds (t : ℝ) (m : ℕ) (x : ℝ)
     (ht : 0 < t) (hm : 1 ≤ m) (hx : 0 ≤ x) :
     min x (t / 2) - (t / 2) * (1 / 2 : ℝ) ^ m ≤ softTruncation t m x ∧
       softTruncation t m x ≤ x := by

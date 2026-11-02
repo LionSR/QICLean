@@ -35,8 +35,14 @@ private theorem norm_domRestrict_le {n : Type*} [Fintype n]
 
 /-- A high-energy weighted restriction and the contractive low-energy part
 control the full exponential weight. Supporting ALVV, arXiv:1602.08828v2,
-`lem:exp-approx`, lines 1195–1255. -/
-theorem norm_exp_domRestrict_le_of_high_restriction
+`lem:exp-approx`, lines 1195–1255.
+
+The map into the high spectral range is retained because the weighted Sylvester
+estimate constructs that map together with its norm bound. TNLean's
+`RegionalExponentialMoment` and `PhysicalScaledSoftTruncationReverse` apply this
+result directly to `exists_nearestNeighbour_weighted_low_restriction`.
+The isometric inclusion transfers its norm to the ambient restriction. -/
+lemma norm_exp_domRestrict_le_of_high_restriction
     {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ)
     (hA : A.IsHermitian) (r u s C : ℝ) (hs : 0 ≤ s)
     (G : Submodule ℂ (EuclideanSpace ℂ n)) :
@@ -68,7 +74,7 @@ theorem norm_exp_domRestrict_le_of_high_restriction
 /-- Changing the scalar origin of a matrix exponential multiplies its
 restriction bound by the corresponding scalar exponential. Supporting ALVV,
 arXiv:1602.08828v2, `def:soft-trunc`, lines 1178–1185. -/
-theorem norm_shifted_exp_domRestrict_le
+lemma norm_shifted_exp_domRestrict_le
     {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ)
     (r u eps s M : ℝ) (G : Submodule ℂ (EuclideanSpace ℂ n))
     (hM : ‖(Matrix.toEuclideanCLM (𝕜 := ℂ) (n := n)

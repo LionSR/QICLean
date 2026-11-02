@@ -44,7 +44,7 @@ private theorem one_sub_pow_eq_sum (z : ℝ) {j m : ℕ} (hj : j ≤ m) :
 
 /-- Soft truncation is an exact finite linear combination of heat functions, including the
 constant heat function. ALVV, arXiv:1602.08828v2, `lem:exp-approx-eff`, lines 1262–1268. -/
-theorem softTruncation_eq_sum_heat (t : ℝ) (m : ℕ) (x : ℝ) :
+lemma softTruncation_eq_sum_heat (t : ℝ) (m : ℕ) (x : ℝ) :
     softTruncation t m x = ∑ a ∈ range (m + 1),
       softTruncationHeatCoefficient t m a * exp (-((a : ℝ) * x / t)) := by
   have he (j : ℕ) (hj : j ∈ range m) :
@@ -82,7 +82,7 @@ private theorem sum_choose_eq_two_pow {j m : ℕ} (hj : j ≤ m) :
 
 /-- The total absolute coefficient budget retains the scale factor. This finite bound supports
 ALVV, arXiv:1602.08828v2, `lem:exp-approx-eff`, lines 1262–1268. -/
-theorem sum_abs_softTruncationHeatCoefficient_le (t : ℝ) (m : ℕ) (ht : 0 ≤ t) :
+lemma sum_abs_softTruncationHeatCoefficient_le (t : ℝ) (m : ℕ) (ht : 0 ≤ t) :
     ∑ a ∈ range (m + 1), |softTruncationHeatCoefficient t m a| ≤
       t * (2 : ℝ) ^ (m + 1) := by
   have hn (a : ℕ) : 0 ≤ ∑ j ∈ range m, ((j + 1).choose a : ℝ) / (j + 1 : ℝ) :=
@@ -119,7 +119,7 @@ open scoped Matrix.Norms.L2Operator
 
 /-- Functional calculus transfers the exact scalar heat expansion to the same Hermitian
 matrix. ALVV, arXiv:1602.08828v2, `lem:exp-approx-eff`, lines 1262–1268. -/
-theorem IsHermitian.cfc_softTruncation_eq_sum_heat
+lemma IsHermitian.cfc_softTruncation_eq_sum_heat
     {n : Type*} [Fintype n] [DecidableEq n] {U : Matrix n n ℂ} (hU : U.IsHermitian)
     (t : ℝ) (m : ℕ) :
     cfc (Real.softTruncation t m) U = ∑ a ∈ Finset.range (m + 1),

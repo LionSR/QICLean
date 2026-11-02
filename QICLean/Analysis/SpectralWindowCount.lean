@@ -27,7 +27,7 @@ namespace Real
 /-- The number of windows of width twice the residual has the stated
 quadratic budget. Auxiliary to ALVV, arXiv:1602.08828v2, `lem:hard-trunc`,
 lines 955–968. -/
-theorem spectral_window_count_bound (eta xi : ℝ) (heta : 0 ≤ eta)
+lemma spectral_window_count_bound (eta xi : ℝ) (heta : 0 ≤ eta)
     (hxi : 0 < xi) (hxi1 : xi ≤ 1) :
     (⌈eta / (2 * xi)⌉₊ : ℝ) * (xi + xi) ^ 2 ≤ 2 * (eta + 2) * xi := by
   have hc := (Nat.ceil_lt_add_one (div_nonneg heta (by positivity : 0 ≤ 2 * xi))).le
@@ -41,7 +41,7 @@ theorem spectral_window_count_bound (eta xi : ℝ) (heta : 0 ≤ eta)
 /-- The common scalar counting budget for a centered lower energy at most
 four. Auxiliary to ALVV, arXiv:1602.08828v2, `lem:hard-trunc`,
 lines 955–968. -/
-theorem spectral_window_budget_bound
+lemma spectral_window_budget_bound
     (E0 eta xi w delta : ℝ) (hE0 : 0 ≤ E0) (hE04 : E0 ≤ 4)
     (heta : 0 ≤ eta) (hxi : 0 < xi) (hxi1 : xi ≤ 1)
     (hw : 0 ≤ w) (hdelta : 0 ≤ delta)

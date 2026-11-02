@@ -19,7 +19,7 @@ namespace Real
 /-- An explicit positive order makes a weighted exponential geometric tail smaller than the
 prescribed error. This is an auxiliary parameter choice for ALVV, arXiv:1602.08828v2,
 `lem:exp-approx-eff`, lines 1262–1268, with the corrected cluster estimate. -/
-theorem exponential_geometric_tail_order (N W b xi : ℝ) (hW : 0 < W)
+lemma exponential_geometric_tail_order (N W b xi : ℝ) (hW : 0 < W)
     (hb0 : 0 < b) (hb1 : b < 1) (hxi : 0 < xi) :
     let r := max 1 ⌈(log (max 1 (N ^ 2)) - log (log (1 + xi / W))) / (-log b)⌉₊
     0 < r ∧ W * (exp (N ^ 2 * b ^ r) - 1) ≤ xi := by

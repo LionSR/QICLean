@@ -94,5 +94,19 @@ PDF excerpt. The two overfull proof paragraphs in the new material were
 replaced by displayed inequalities. References to chapters omitted from
 this excerpt were checked against the complete blueprint sources.
 
-This verification record is a documentation-only update to the tested
-mathematical revision.
+Subsequent presentation changes correct the direct dependency of the
+restricted remainder proof and explain why the weighted restriction is
+supplied as a map into its spectral range. Supporting declarations use
+`lemma` to match QICLean's blueprint convention. Removing comments and
+normalizing `theorem`/`lemma` leaves every changed statement and proof
+identical to the tested revision. All 16 changed Lean modules pass strict
+elaboration with warnings treated as errors against the compiled mathematical
+revision. The corrected blueprint sections pass source synchronization and
+LaTeX lint and were rendered again.
+
+The finite-set coefficient bound remains in `Finset`: it applies to an
+arbitrary finite family with distinct representatives, without geometric or
+Hamiltonian hypotheses. The two explicit ceiling formulas for scales equal
+to one and three times the order are kept separately; the scalar correction
+bounds are respectively one quarter and three quarters. No theorem for an
+arbitrary scale multiplier is asserted.

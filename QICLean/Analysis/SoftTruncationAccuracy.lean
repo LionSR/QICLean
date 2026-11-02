@@ -21,7 +21,7 @@ the printed uniform energy estimate.
 
 /-- The equal-scale scalar correction is bounded uniformly by one quarter. Supporting the
 corrected soft/hard comparison for ALVV, arXiv:1602.08828v2, `def:soft-trunc`, lines 1178–1185. -/
-theorem Real.softTruncation_order_error_le_one_fourth (m : ℕ) (hm : 0 < m) :
+lemma Real.softTruncation_order_error_le_one_fourth (m : ℕ) (hm : 0 < m) :
     (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m ≤ 1 / 4 := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hm.ne'
   have hk : (k + 1 : ℝ) ≤ (2 : ℝ) ^ k := by
@@ -41,7 +41,7 @@ namespace Real
 reverse cutoff condition and makes its exponential residual at most the
 prescribed budget. Supporting ALVV, arXiv:1602.08828v2, `lem:exp-approx`,
 lines 1195–1255, through the corrected exponential-moment argument. -/
-theorem exists_softTruncation_order_of_residual_budget
+lemma exists_softTruncation_order_of_residual_budget
     (eta rho : ℝ) (heta : 0 ≤ eta) (hrho : 0 < rho) (hrho1 : rho ≤ 1) :
     ∃ m : ℕ, m = ⌈35 + 2 * eta + 16 * log (80 / rho)⌉₊ ∧
       0 < m ∧ 10 ≤ (m : ℝ) / 2 ∧

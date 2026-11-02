@@ -29,7 +29,7 @@ at cutoffs relative to the respective canonical ground energies. The scalar
 margin and counting budget are explicit. Supporting ALVV,
 arXiv:1602.08828v2, `lem:hard-trunc`, lines 955–968, and the corrected
 soft comparison following `lem:exp-approx`, lines 1195–1255. -/
-theorem isCloseTo_spectralSpanLE_pair_of_residuals
+lemma isCloseTo_spectralSpanLE_pair_of_residuals
     {n : Type*} [Fintype n] [DecidableEq n] [Nonempty n]
     (A B : Matrix n n ℂ) (hA : A.IsHermitian) (hB : B.IsHermitian)
     (eta xi w delta : ℝ) (heta : 0 < eta) (hxi : 0 < xi) (hxi1 : xi ≤ 1)
