@@ -28,6 +28,7 @@ import QICLean.Analysis.ChebyshevGroundFilter
 import QICLean.Analysis.ChebyshevSpectralFilter
 import QICLean.Analysis.ChebyshevSpectralProjector
 import QICLean.Analysis.ChebyshevViability
+import QICLean.Analysis.ChebyshevWordPower
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
@@ -268,6 +269,8 @@ import QICLean.Analysis.RootFidelity
 import QICLean.Analysis.RootFidelityRelativeEntropy
 import QICLean.Analysis.RoughLowerCoefficient
 import QICLean.Analysis.RpowConvexity
+import QICLean.Analysis.SampledOperatorImage
+import QICLean.Analysis.SampledWordImageBounds
 import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo
 import QICLean.Analysis.ScaleRecurrence
@@ -304,6 +307,7 @@ import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
 import QICLean.Analysis.SpectralProjectionIntertwiner
+import QICLean.Analysis.SpectralProjectorPower
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
 import QICLean.Analysis.SpectralRadiusPowerDecay
@@ -327,6 +331,7 @@ import QICLean.Analysis.SupportProjectionOrder
 import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.SurprisalProductMoment
+import QICLean.Analysis.TensorOperatorPower
 import QICLean.Analysis.TensorProductWeights
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
@@ -357,6 +362,8 @@ import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.VectorMajorization
+import QICLean.Analysis.ViableNodeParameters
+import QICLean.Analysis.ViableNodeSamplingParameters
 import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceBootstrap
 import QICLean.Analysis.ViableSubspaceCoordinates
@@ -364,10 +371,15 @@ import QICLean.Analysis.ViableSubspaceDimension
 import QICLean.Analysis.ViableSubspaceEntropy
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceRandomSampling
+import QICLean.Analysis.ViableSubspaceSampleOrFull
+import QICLean.Analysis.ViableSubspaceSamplingEvent
 import QICLean.Analysis.ViableSubspaceSchmidtRank
 import QICLean.Analysis.ViableSubspaceSpectralProjector
 import QICLean.Analysis.ViableSubspaceTensor
+import QICLean.Analysis.ViableSubspaceTensorTransport
 import QICLean.Analysis.ViableSubspaceTrimming
+import QICLean.Analysis.ViableTrimmingRadius
+import QICLean.Analysis.ViableTrimmingRank
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel

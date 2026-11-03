@@ -199,17 +199,172 @@ right.
     \uses{thm:viable_coordinates}
     Let $\sigma,\beta$ be finite sets. Write
     $E_{\sigma,\beta}:\C^{\sigma\times\beta}\to
-    \C^\sigma\otimes\C^\beta$ for the isometry sending
+        \C^\sigma\otimes\C^\beta$ for the isometry sending
     $e_{(a,b)}$ to $e_a\otimes e_b$, and let
     $\Sigma(x\otimes y)=y\otimes x$.
     For every $z\in\C^{\beta\times\sigma}$,
     \begin{align}
         \bigl(E_{\sigma,\beta}^{-1}\Sigma E_{\beta,\sigma}z\bigr)(a,b)
-        &=z(b,a).
+         & =z(b,a).
         \label{eq:tensor_exchange_coordinates}
     \end{align}
 \end{theorem}
 \begin{proof}
     \leanok
     Evaluate both sides on $z=e_{(b,a)}$ and extend linearly.
+\end{proof}
+
+\begin{lemma}[A regional cut with the full exterior]
+    \label{thm:regional_cut_full_exterior}
+    \lean{Entropy.subregionCut, Entropy.mem_subregionCut,
+        Entropy.subregionCutSubtypeEquiv, Entropy.subregionRestSubtypeEquiv,
+        Entropy.regionConfigurationSplit,
+        Entropy.schmidtRank_cutEnvVector_regionConfigurationSplit}
+    \leanok
+    \uses{thm:cut_environment_coordinates}
+    Let $A\subseteq J\subseteq V$ be finite sets of sites with common
+    on-site dimension $q$. Write $F_J\psi$ for the configuration vector
+    of $\psi$ in $\mathcal H_J\otimes\mathcal H_{J^c}$. Splitting the
+    first factor at $A$ and retaining the entire exterior gives
+    \begin{align}
+        \SR_{A:(J\setminus A)\cup J^c}(F_J\psi)
+        =\operatorname{rank}\rho_A(\psi).
+        \label{eq:regional_cut_full_exterior}
+    \end{align}
+    No exterior factor is traced out before computing the Schmidt rank.
+\end{lemma}
+\begin{proof}\leanok
+    The two coefficient matrices differ only by the row identification of
+    $A$ and the column identification
+    $(J\setminus A)\sqcup J^c\cong A^c$. Reindexing preserves rank.
+    For the coefficient matrix $C$ one has $\rho_A=CC^\dagger$ and
+    $\operatorname{rank}C=\operatorname{rank}(CC^\dagger)$, which gives
+    (\ref{eq:regional_cut_full_exterior}).
+\end{proof}
+
+\begin{lemma}[Actual regional tensor coordinates]
+    \label{thm:regional_tensor_viability}
+    \lean{Entropy.regionTensorCoordinates,
+        Entropy.isCloseTo_prodExt_region_iff_isViable,
+        Entropy.regionTensorCoordinates_eq_exteriorFirst}
+    \leanok
+    \uses{thm:viable_coordinates,thm:regional_cut_full_exterior,
+        thm:tensor_exchange_product_coordinates}
+    Let $G\subseteq\mathcal H_V$ and $S\subseteq\mathcal H_J$.
+    The coordinate extension $S\otimes\mathcal H_{J^c}$ is
+    $\delta$-close to $F_JG$ if and only if $S$ is $\delta$-viable for
+    the image of $G$ under the canonical tensor isometry
+    $\mathcal H_V\cong\mathcal H_J\otimes\mathcal H_{J^c}$.
+    Splitting the exterior first and then exchanging the tensor factors
+    gives the same isometry.
+\end{lemma}
+\begin{proof}\leanok
+    The Euclidean tensor isometry carries a coordinate extension onto the
+    tensor product subspace. Let $F_J'$ first split a configuration into
+    its exterior and retained parts, apply $E_{J^c,J}$, and then exchange
+    the factors by $\Sigma$. By (\ref{eq:tensor_exchange_coordinates}),
+    for $x\in\mathcal H_J$, $y\in\mathcal H_{J^c}$ and every configuration
+    $c$ of $V$,
+    \[
+        \bigl(F_J^{-1}(x\otimes y)\bigr)(c)=x(c|_J)\,y(c|_{J^c})
+        =\bigl({F_J'}^{-1}(x\otimes y)\bigr)(c).
+    \]
+    Product vectors span $\mathcal H_J\otimes\mathcal H_{J^c}$, so
+    $F_J=F_J'$.
+\end{proof}
+
+\begin{lemma}[Tensor factor changes for viable spaces]
+    \label{thm:viable_tensor_factor_changes}
+    \lean{Submodule.map_tensorProd_congrIsometry,
+        Submodule.map_tensorProd_commIsometry, Submodule.tensorProd_top_top,
+        Submodule.map_tensorProd_assocIsometry, Submodule.finrank_tensorProd_le,
+        Submodule.isViable_map_congrIsometry_iff,
+        Submodule.isViable_map_assocIsometry_iff,
+        Submodule.IsViable.tensorProd_of_factor_splits,
+        Submodule.euclideanTensorEquiv_reindex_symm_tmul}
+    \leanok
+    \uses{def:subspace_viable,thm:viable_tensoring,thm:viable_coordinates}
+    Let $E,F,R$ be finite-dimensional real or complex inner-product spaces.
+    Tensor product subspaces are carried to tensor product subspaces by
+    isometries of their factors, by exchange of factors, and by reassociation.
+    Their dimension is at most the product of the input dimensions.
+    Viability is invariant under isometries of the retained factor and the
+    environment. For one fixed target $T\subseteq(E\otimes F)\otimes R$,
+    if $S_E$ is $\delta_E$-viable in its first-factor split and $S_F$ is
+    $\delta_F$-viable in its second-factor split, then $S_E\otimes S_F$
+    is $(\delta_E+\delta_F)$-viable for $T$.
+    Under a finite coordinate reindexing $e:\kappa\cong\sigma\times\beta$,
+    the inverse tensor isometry sends $x\otimes y$ to
+    $c\mapsto x(e(c)_1)y(e(c)_2)$.
+\end{lemma}
+\begin{proof}\leanok
+    Tensor product subspaces are generated by their pure tensors.
+    Transport each generator and extend linearly. The tensor product of
+    the two inclusions has range $S_E\otimes S_F$, so
+    \[
+        \dim(S_E\otimes S_F)\le\dim S_E\cdot\dim S_F.
+    \]
+    Transport the two viability inequalities to the same three-factor
+    space and apply tensoring there. The coordinate formula is the
+    product formula for pure tensors after the specified reindexing.
+\end{proof}
+
+\begin{lemma}[The two regional tensor diagrams]
+    \label{thm:regional_tensor_diagrams}
+    \lean{Entropy.unionTensorCoordinates, Entropy.exteriorTensorCoordinates,
+        Entropy.rightExteriorTensorCoordinates,
+        Entropy.rightExteriorTensorCoordinates_symm_tmul_apply,
+        Entropy.regionTensorCoordinates_symm_tmul_apply,
+        Entropy.unionTensorCoordinates_symm_tmul_apply,
+        Entropy.exteriorTensorCoordinates_symm_tmul_apply,
+        Entropy.threeRegionTensorCoordinates,
+        Entropy.threeRegionTensorCoordinates_assoc,
+        Entropy.threeRegionTensorCoordinates_comm_assoc}
+    \leanok
+    \uses{thm:regional_tensor_viability,thm:viable_tensor_factor_changes}
+    Let $A,B\subseteq V$ be disjoint and write $R=(A\cup B)^c$.
+    The actual configuration restrictions define isometries
+    $\mathcal U:\mathcal H_{A\cup B}\to\mathcal H_A\otimes\mathcal H_B$,
+    $\mathcal H_{A^c}\to\mathcal H_B\otimes\mathcal H_R$ and
+    $\mathcal H_{B^c}\to\mathcal H_A\otimes\mathcal H_R$.
+    Let $\mathcal C:\mathcal H_V\to
+        (\mathcal H_A\otimes\mathcal H_B)\otimes\mathcal H_R$
+    first split the union from $R$ and then apply $\mathcal U$.
+    Reassociating $\mathcal C$ equals the actual split at $A$ followed by
+    the indicated split of $A^c$. Exchanging $A,B$ and reassociating equals
+    the actual split at $B$ followed by the indicated split of $B^c$.
+\end{lemma}
+\begin{proof}\leanok
+    Compare the inverse maps on $x\otimes(y\otimes z)$.
+    In each case the value at a global configuration $c$ is the product
+    $x(c|_A)y(c|_B)z(c|_R)$, in the appropriate order. Associativity and
+    commutativity of scalars give equality. Extend linearly from pure
+    tensors; the whole exterior $R$ is retained.
+\end{proof}
+
+\begin{lemma}[Merging the actual regional viable spaces]
+    \label{thm:actual_regional_viability_merge}
+    \lean{Entropy.regionTensorMerge, Entropy.isViable_regionTensorMerge,
+        Entropy.finrank_regionTensorMerge_le, Entropy.isViable_region_congr}
+    \leanok
+    \uses{thm:regional_tensor_diagrams,thm:viable_tensor_factor_changes}
+    Let $A,B\subseteq V$ be disjoint, and fix one arbitrary global target
+    $G\subseteq\mathcal H_V$. Suppose $S_A\subseteq\mathcal H_A$ is
+    $\delta_A$-viable for $G$ in the actual $A:A^c$ split and
+    $S_B\subseteq\mathcal H_B$ is $\delta_B$-viable in the actual
+    $B:B^c$ split. Then
+    $S_{A\cup B}=\mathcal U^{-1}(S_A\otimes S_B)$ is
+    $(\delta_A+\delta_B)$-viable for the same $G$ in the actual
+    $(A\cup B):(A\cup B)^c$ split, and
+    $\dim S_{A\cup B}\le(\dim S_A)(\dim S_B)$.
+    The target may be entangled across all three factors.
+    Equal regions identify these viable spaces by their canonical
+    configuration equivalence.
+\end{lemma}
+\begin{proof}\leanok
+    The two proved tensor diagrams carry both hypotheses to the one
+    target $\mathcal CG$. Tensor there and transport the actual candidate
+    back through $\mathcal U$. The dimension bound is preserved by this
+    isometry. For equal regions, the canonical configuration equivalence
+    is the identity after identifying the regions.
 \end{proof}

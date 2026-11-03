@@ -97,9 +97,12 @@ import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionPureApproximationTail
 import QICLean.Entropy.RegionRank
 import QICLean.Entropy.RegionSplit
+import QICLean.Entropy.RegionTensorSplitting
 import QICLean.Entropy.RegionTraceNorm
 import QICLean.Entropy.RegionUnion
 import QICLean.Entropy.RegionalRightContraction
+import QICLean.Entropy.RegionalTensorMerge
+import QICLean.Entropy.RegionalViability
 import QICLean.Entropy.Renyi
 import QICLean.Entropy.RenyiMassBound
 import QICLean.Entropy.RenyiRankLowerBound
@@ -116,6 +119,7 @@ import QICLean.Entropy.SchmidtTilt
 import QICLean.Entropy.SelectedSchmidtEntropy
 import QICLean.Entropy.SpectralTail
 import QICLean.Entropy.StrongSubadditivity
+import QICLean.Entropy.SubregionCut
 import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.SupportedOperatorSchmidtRank
 import QICLean.Entropy.SupportedOperatorSchmidtWords
