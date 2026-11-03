@@ -34,6 +34,8 @@ import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingExponentialOrder
 import QICLean.Analysis.CommutingHermitian
+import QICLean.Analysis.ComplementProdKernel
+import QICLean.Analysis.ComplementProdPartition
 import QICLean.Analysis.CompressedInverseFloor
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.ConicProgram
@@ -109,6 +111,7 @@ import QICLean.Analysis.JordanBlockDirectSum
 import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
+import QICLean.Analysis.KernelSpectralGap
 import QICLean.Analysis.KleinInequality
 import QICLean.Analysis.KroneckerExponential
 import QICLean.Analysis.KroneckerOperatorNorm
@@ -195,6 +198,7 @@ import QICLean.Analysis.ProjectionCompressionCfc
 import QICLean.Analysis.ProjectionGeometry
 import QICLean.Analysis.ProjectionIntertwiningNorm
 import QICLean.Analysis.ProjectionQuadraticBound
+import QICLean.Analysis.ProjectionResidual
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
