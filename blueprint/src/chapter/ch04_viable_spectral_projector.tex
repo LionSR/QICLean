@@ -4,7 +4,6 @@
     \label{thm:viable_tensor_decomposition}
     \lean{Submodule.IsViable.map_of_tensor_decomposition}
     \leanok
-    \uses{thm:subspace_close_contract, thm:subspace_close_mono, def:subspace_viable}
     Let $\mathcal H_M$ and $\mathcal H_R$ be finite-dimensional real or complex
     inner product spaces, let $I$ be finite, and let
     $K=\sum_{i\in I}A_i\otimes R_i$ act on
@@ -20,13 +19,9 @@
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{thm:finite_image_span_dimension}
-    Each image $A_iS$ has dimension at most $\dim S$, so their sum has
-    dimension at most $|I|\dim S$. Error reduction by a contraction gives
-    closeness of $K(S\otimes\mathcal H_R)$ to $T$ with parameter
-    $\Delta/(1-\delta)^2$. For $s\in S$ and $r\in\mathcal H_R$,
-    $K(s\otimes r)=\sum_{i\in I}A_is\otimes R_ir$ belongs to
-    $V\otimes\mathcal H_R$. Closeness passes to this larger subspace.
+    \uses{thm:viable_nested_tensor_decomposition}
+    Apply Theorem~\ref{thm:viable_nested_tensor_decomposition} with
+    $T_-=T_+=T$.
 \end{proof}
 
 Let $\mathcal H=\mathcal H_L\otimes\mathcal H_M\otimes\mathcal H_R$ and let
@@ -60,10 +55,10 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 
 \begin{proof}
     \leanok
-    In the basis $b_j$, the vectors of $T$ have vanishing coefficients
-    outside $\{j:h_j\le\eta_0\}$ and those of $T^\perp$ inside it, and $K$
-    multiplies the $j$-th coefficient by $k_j$. Parseval's identity gives
-    the two norm bounds.
+    \uses{thm:spectral_projector_distinct_cutoffs}
+    Apply Theorem~\ref{thm:spectral_projector_distinct_cutoffs} with
+    $c=\eta_0$. The spectral gap implies that every eigenvalue greater
+    than $c$ is at least $\eta_1$.
 \end{proof}
 
 \begin{theorem}[Error reduction]
@@ -119,4 +114,92 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
         \le\sum_{i\in I}\dim_{\mathbb K}(A_iS)
         \le |I|\dim_{\mathbb K}S.\notag
     \end{align}
+\end{proof}
+
+\begin{theorem}[Tensor error reduction between nested targets]
+    \label{thm:viable_nested_tensor_decomposition}
+    \lean{Submodule.IsViable.map_of_nested_tensor_decomposition}
+    \leanok
+    \uses{def:subspace_viable}
+    Let $K=\sum_{i\in I}A_i\otimes R_i$ and $T_-\subseteq T_+$ be
+    subspaces of $\mathcal H_M\otimes\mathcal H_R$. Suppose $K$ preserves
+    $T_-$ and $T_+^\perp$, expands norms on $T_-$ and contracts squared
+    norms by $\Delta\ge0$ on $T_+^\perp$.
+    If $S\subseteq\mathcal H_M$ is $\delta$-viable for $T_+$ with
+    $\delta<1$, then $V=\sum_{i\in I}A_iS$ has dimension at most
+    $|I|\dim S$ and is $\Delta/(1-\delta)^2$-viable for $T_-$.
+    This is the tensor argument in
+    \cite[Theorem~4.8, lines 1037--1041]{Arad2016RigorousRG}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:subspace_close_nested_contract,thm:subspace_close_mono,
+        thm:finite_image_span_dimension}
+    The nested-target estimate applies to $S\otimes\mathcal H_R$.
+    For $s\in S$ and $r\in\mathcal H_R$,
+    $K(s\otimes r)=\sum_{i\in I}A_is\otimes R_ir\in V\otimes\mathcal H_R$.
+    Each $A_iS$ has dimension at most $\dim S$.
+\end{proof}
+
+\begin{theorem}[Contraction at distinct spectral cutoffs]
+    \label{thm:spectral_projector_distinct_cutoffs}
+    \lean{Submodule.IsSpectralProjector.contract_between_cutoffs}
+    \leanok
+    \uses{def:spectral_projector}
+    Let $K$ be a spectral projector as in
+    Definition~\ref{def:spectral_projector} for $(H,\eta_0,\eta_1)$, and let $c$
+    satisfy $h_j>c\Longrightarrow h_j\ge\eta_1$ for every eigenvalue
+    $h_j$. Then $K$ preserves and expands norms on
+    $T_-=\operatorname{span}\{b_j:h_j\le\eta_0\}$, and preserves
+    and contracts squared norms by $\Delta$ on
+    $T_+^\perp$, where $T_+=\operatorname{span}\{b_j:h_j\le c\}$.
+    In particular, $c=\eta_1$ is admissible without a spectral gap.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{def:spectral_projector}
+    Write $\hat x_j=\langle b_j,x\rangle$. Since $Kb_j=k_jb_j$ with $k_j$
+    real, Parseval's identity gives
+    \begin{align}
+        \widehat{(Kx)}_j=k_j\hat x_j,\qquad
+        \lVert x\rVert^2=\sum_j\lvert\hat x_j\rvert^2,\qquad
+        \lVert Kx\rVert^2=\sum_jk_j^2\lvert\hat x_j\rvert^2.\notag
+    \end{align}
+    A vector $x$ lies in $T_-$ exactly when $\hat x_j=0$ whenever
+    $h_j>\eta_0$, and in $T_+^\perp$ exactly when $\hat x_j=0$ whenever
+    $h_j\le c$. Multiplication by $k_j$ preserves both vanishing conditions,
+    so $K$ preserves $T_-$ and $T_+^\perp$. For $t\in T_-$, every nonzero
+    coefficient has $h_j\le\eta_0$, hence $k_j^2\ge1$ and
+    $\lVert Kt\rVert^2\ge\lVert t\rVert^2$. For $q\in T_+^\perp$, every
+    nonzero coefficient has $h_j>c$, hence $h_j\ge\eta_1$, $k_j^2\le\Delta$
+    and $\lVert Kq\rVert^2\le\Delta\lVert q\rVert^2$.
+\end{proof}
+
+\begin{theorem}[Viability reduction between spectral cutoffs]
+    \label{thm:viable_spectral_distinct_cutoffs}
+    \lean{Submodule.IsViable.spectralProjector_between_cutoffs}
+    \leanok
+    \uses{def:subspace_viable}
+    Let $\eta_0\le\eta_1$ and let $K=\sum_{i\in I}A_i\otimes R_i$
+    be a spectral projector as in
+    Definition~\ref{def:spectral_projector} for these endpoints, with $\Delta\ge0$.
+    If $S$ is $\delta$-viable for
+    $T_+=\operatorname{span}\{b_j:h_j\le\eta_1\}$ and $\delta<1$,
+    then $V=\sum_{i\in I}A_iS$ has dimension at most $|I|\dim S$ and
+    is $\Delta/(1-\delta)^2$-viable for
+    $T_-=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
+    No absence of spectrum in $(\eta_0,\eta_1)$ is assumed.
+    This gives the error-reduction step of
+    \cite[Theorem~4.8, lines 1027--1041]{Arad2016RigorousRG}
+    for a supplied finite tensor decomposition.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:viable_nested_tensor_decomposition,
+        thm:spectral_projector_distinct_cutoffs}
+    Use $c=\eta_1$ in the preceding contraction statement and apply the
+    nested-target tensor estimate.
 \end{proof}
