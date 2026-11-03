@@ -1,0 +1,205 @@
+\section{The complete native parent after stopped resampling}
+
+The construction below retains the actual stopped iteration and its
+terminal full-family image and collective trim. Its deterministic and Borel
+properties do not supply a loop success event. The correction to the
+sample-once Figure of~\cite[lines 1664--1673]{Arad2016RigorousRG} is
+recorded in~\cite{gap:alvv16_bootstrap_constants}.
+
+\begin{definition}[The native terminal family map]
+    \label{def:native_family_image_trim}
+    \lean{Entropy.nativeFamilyMatrix, Entropy.nativeFamilyTrimSpace}\leanok
+    Fix a coordinate isometry $I_e:\C^d\to\mathcal H_J$, native operators
+    $(A_i)_{i\in I}$, a cut list, a threshold $\xi$, and a cut count $k$.
+    Let $F_i$ be the actual rectangular matrix of $A_iI_e$. For every matrix
+    $Q$ on $\C^d$, put
+    \[
+       W_Q=I_e\operatorname{ran}Q,\qquad
+       Y_Q=\operatorname{span}_{i\in I}A_iW_Q.
+    \]
+    The native terminal map $V_Q$ is the existing canonical collective trim
+    of the range of the joint column support of the matrices $F_iQ$.
+\end{definition}
+
+\begin{lemma}[The same standard-basis collective trim]
+    \label{lem:native_family_terminal_trim_identity}
+    \lean{Entropy.nativeFamilyTrimSpace_eq_trimSubspace}\leanok
+    \uses{def:native_family_image_trim, thm:family_image_prescribed_coordinates,
+        thm:trimming_basis_invariance}
+    The terminal map $V_Q$ is exactly the existing collective trim of the
+    standard orthonormal basis of $Y_Q$. No projection hypothesis on $Q$
+    is required, and zero ranges are included.
+\end{lemma}
+\begin{proof}\leanok
+    The range of the same joint column support is $Y_Q$. Apply basis
+    independence to that actual range.
+\end{proof}
+
+\begin{lemma}[Borel terminal output projection]
+    \label{lem:borel_native_family_terminal_trim}
+    \lean{Entropy.measurable_projectionMatrix_nativeFamilyTrimSpace}\leanok
+    \uses{def:native_family_image_trim}
+    The actual orthogonal projection onto $V_Q$ is Borel in the arbitrary
+    input matrix $Q$. No varying arbitrary basis is assumed measurable.
+\end{lemma}
+\begin{proof}\leanok
+    Compose the fixed rectangular-family support map with the existing
+    canonical range-trimming map.
+\end{proof}
+
+\begin{definition}[The complete native parent]
+    \label{def:canonical_half_sampling_parent}
+    \lean{Entropy.canonicalHalfSamplingParent}\leanok
+    \uses{def:native_family_image_trim, def:canonical_stopped_half_sample_iteration}
+    With $F_i=\operatorname{Mat}(A_iI_e)$, let $Q_R(P,\omega)$ be the literal
+    stopped sampling-and-trimming iterate after $R$ rounds. All cuts,
+    family and threshold data precede $P$ and the seed sequence $\omega$.
+    Define the complete native parent by
+    \[
+       \mathcal P(P,\omega)=V_{Q_R(P,\omega)}.
+    \]
+    Thus the same family is used throughout the iteration and the terminal
+    full-image step, without another sample or another trim construction.
+\end{definition}
+
+\begin{lemma}[Borel parent projection and true viability event]
+    \label{lem:borel_canonical_half_sampling_parent}
+    \lean{Entropy.measurable_projectionMatrix_canonicalHalfSamplingParent,
+        Entropy.measurableSet_isCloseTo_prodExt_canonicalHalfSamplingParent}\leanok
+    \uses{def:canonical_half_sampling_parent, lem:borel_native_family_terminal_trim,
+        lem:canonical_stopped_half_sample_iteration_borel,
+        lem:borel_true_regional_viability_event}
+    The actual orthogonal projection of $\mathcal P(P,\omega)$ is jointly
+    Borel in $P$ and the entire seed sequence. For every fixed real $\delta$
+    and every fixed target $G$ with its full exterior factor, the event that
+    $\mathcal P(P,\omega)$ is $\delta$-viable for $G$ is Borel.
+\end{lemma}
+\begin{proof}\leanok
+    Compose the actual stopped-iterate map and terminal projection map,
+    then apply the true tensor viability criterion.
+\end{proof}
+
+\begin{lemma}[Unconditional native image and trim dimensions]
+    \label{lem:native_family_terminal_dimensions}
+    \lean{Entropy.finrank_nativeFamily_image_trim_le}\leanok
+    \uses{lem:native_family_terminal_trim_identity, lem:terminal_family_trim_dimension}
+    For every $Q$, independently of any target or viability,
+    \[
+       \dim Y_Q,\ \dim V_Q\le |I|\operatorname{rank}Q.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The transported range has dimension $\operatorname{rank}Q$. Use the
+    full-family image and trim dimension bound on this same space.
+\end{proof}
+
+\begin{lemma}[All-seed initial and stopping ceilings]
+    \label{lem:canonical_half_sampling_parent_dimensions}
+    \lean{Entropy.finrank_canonicalHalfSamplingParent_le_threshold,
+        Entropy.finrank_canonicalHalfSamplingParent_le_initial}\leanok
+    \uses{lem:native_family_terminal_dimensions,
+        lem:canonical_half_sampling_initial_rank_ceiling,
+        lem:canonical_half_sampling_rank_stops}
+    Suppose $|I|\le D^2$. On every seed sequence, both the last untrimmed
+    image and the complete parent have dimension at most
+    $|I|\operatorname{rank}P$.
+    If the stopping threshold is $h\ge2$ and
+    $\operatorname{rank}P\le2^R$, then
+    $\operatorname{rank}Q_R<h$, and both dimensions are also at most $|I|h$.
+    These assertions have no viability or sampling-success premise.
+\end{lemma}
+\begin{proof}\leanok
+    Apply the unconditional initial-rank and stopped-halving estimates to
+    the literal iterate, followed by the native terminal dimension bound.
+\end{proof}
+
+\begin{theorem}[Terminal improvement for the same native output]
+    \label{thm:native_family_terminal_improvement}
+    \lean{Entropy.isCloseTo_nativeFamilyTrimSpace}\leanok
+    \uses{lem:native_family_terminal_trim_identity,
+        thm:terminal_family_original_reference_trim}
+    Fix an original target $G$ and a nonempty family $(T_x)$, each mutually
+    $1/200$-close to $G$. The same native family, of size at most
+    $D^2$, improves every input error $\delta<1$ to
+    $\Delta/(1-\delta)^2$ for every $T_x$. Assume $D\ge2$ and
+    $D^{12}\Delta\le10^{-5}$, with no sign condition on $\Delta$.
+    Fix an original-target reference of two-sided error
+    $0\le\varepsilon_R\le10^{-5}$, whose vectors have Schmidt rank at most
+    $b$ at each of the increasing $k$ cuts. Choose $\xi>0$ and require the
+    exact budget $\xi\sqrt{kb}\le10^{-3}$.
+
+    For any $Q$ such that $W_Q$ is $0.04$-viable for $G$, its same last
+    untrimmed image $Y_Q$ is $\Delta/(91/100)^2$-viable for every $T_x$
+    and $27/2500$-viable for $G$. Its actual terminal output $V_Q$ is
+    $3/200$-viable for $G$. In particular the conclusion applies to the
+    same complete parent when the actual terminal iterate has the stated
+    $0.04$-viability; preservation of that condition along the random loop
+    is a separate probability theorem.
+\end{theorem}
+\begin{proof}\leanok
+    Apply the deterministic terminal full-family theorem to $W_Q$. The
+    actual range identity and basis independence identify its image and
+    trim with the same $Y_Q$ and $V_Q$.
+\end{proof}
+
+\begin{theorem}[True probability for the same complete native parent]
+    \label{thm:canonical_half_sampling_parent_probability}
+    \lean{Entropy.canonicalHalfSamplingParent_joint_probability_of_threshold}\leanok
+    \uses{thm:stopped_half_sampling_fixed_threshold,
+        thm:native_family_terminal_improvement,
+        lem:borel_canonical_half_sampling_parent,
+        lem:native_family_terminal_dimensions}
+    Fix $D\ge2$, $a\in\mathbb N$, $\eta>0$ and $K\ge1$ such that, for
+    all $r,N,q\in\mathbb N$,
+    \[
+       K(r+1)(N+2)^2\le q
+       \quad\Longrightarrow\quad
+       q\ge4D^2,\qquad f_D(q,r)\le\frac{\eta}{(N+2)^a}.
+    \]
+    This numerical coefficient can be chosen before the chain-dependent
+    spaces by Theorem~\ref{thm:bootstrap_failure_polynomial_threshold}.
+
+    Take the common family and original-target reference hypotheses of
+    Theorem~\ref{thm:native_family_terminal_improvement}, with the stronger
+    original-to-improving-target error
+    \[
+       \varepsilon\le(0.03/D^2)^2/100.
+    \]
+    Suppose $\dim G\le r$, $d\le2^R$, and the native transported initial
+    range $W_P$ is $0.04$-viable for $G$. Set
+    $h=K(r+1)(N+2)^2$ and drive the same actual iteration by $R$ independent
+    prescribed rank-unitary Haar coordinates, with their finite product
+    law $\nu_R$. Extend these coordinates by the identity after round $R$.
+
+    Let $E$ be the same true original-target event of the stopped run:
+    every actual state is $0.04$-viable and every active next state is
+    $3/200$-viable. Then $E$ is Borel and
+    \[
+       \nu_R(E^{\mathrm c})\le\frac{R\eta}{(N+2)^a}.
+    \]
+    The true event that the same complete native parent is $3/200$-viable
+    for $G$ is Borel and its complement obeys the same bound.
+    On $E$, the same last untrimmed image $Y_{Q_R}$ is
+    $\Delta/(91/100)^2$-viable for every $T_x$ and $27/2500$-viable for $G$;
+    its same terminal trim is $3/200$-viable for $G$.
+
+    For every seed, independently of $E$, all state ranks are at most
+    $\operatorname{rank}P$, the terminal rank is less than $h$, and
+    \[
+       \dim Y_{Q_R},\quad\dim\mathcal P(P,\omega)
+          \le |I|\operatorname{rank}Q_R.
+    \]
+    No intersection of events over the improving-target parameters is
+    asserted Borel. The result concerns one actual parent; a joint statement
+    for a recursively assembled tree and any running-time estimate are
+    separate conclusions.
+\end{theorem}
+\begin{proof}\leanok
+    Apply the fixed-coefficient stopped-loop theorem once. Its same event
+    supplies $0.04$-viability at round $R$. The deterministic terminal
+    theorem applies to that exact state. The true complete-parent failure
+    set is contained in $E^{\mathrm c}$. Its Borel property follows by
+    pulling back the actual parent projection along the actual finite-seed
+    extension. The unconditional dimension estimate applies to the same
+    terminal matrix.
+\end{proof}

@@ -1,0 +1,101 @@
+\section{Unconditional stopping of the canonical resampling iteration}
+
+The following dimension statements hold on every sampling history. They
+support the repeated resampling interpretation of
+\cite[lines 749--755]{Arad2016RigorousRG}; they do not identify this
+operation with the sample-once Figure~\texttt{fig:merge-prime} or assert
+that viability is preserved. See~\cite{gap:alvv16_soft_family_calibration}.
+
+\begin{lemma}[Dimension of the canonical range trim]
+    \label{lem:canonical_range_trim_dimension}
+    \lean{Entropy.finrank_trimMatrixRange_le_rank}\leanok
+    Let $P$ be any matrix on the regional Hilbert space. The collective
+    trim of its canonical orthonormal range frame, with any real threshold
+    and any prescribed cuts, has dimension at most $\operatorname{rank}P$.
+\end{lemma}
+\begin{proof}\leanok
+    Basis independence identifies the same trim with the trim of any
+    orthonormal basis of the range. The trimmed space is a linear image
+    of that range, whose dimension cannot increase.
+\end{proof}
+
+\begin{lemma}[Rank of one actual stopped round]
+    \label{lem:canonical_half_sampling_rank_step}
+    \lean{Entropy.rank_canonicalHalfSampleTrimMatrix_le}\leanok
+    \uses{lem:canonical_range_trim_dimension, def:canonical_stopped_half_sample_trim}
+    Fix $D\ge0$ and a family of at most $D^2$ rectangular matrices,
+    from the fixed input coordinates to the native regional coordinates.
+    In an active round, sample
+    $s=\lfloor\operatorname{rank}P/(2D^2)\rfloor$ canonical range vectors,
+    take their actual family image, collectively trim, and return the
+    orthogonal projection in the fixed input coordinates. Below a fixed
+    threshold $h$, retain $P$. For every input matrix and every unitary seed,
+    \[
+      \operatorname{rank}P_{\mathrm{next}}\le
+      \begin{cases}
+        \lfloor\operatorname{rank}P/2\rfloor,&h\le\operatorname{rank}P,\\
+        \operatorname{rank}P,&\operatorname{rank}P<h.
+      \end{cases}
+    \]
+    This includes $D=0$, with the natural quotient interpreted as zero,
+    and zero-rank inputs. There is no target or viability premise.
+\end{lemma}
+\begin{proof}\leanok
+    The sample has dimension $s$, the family image has dimension at most
+    $D^2s\le\operatorname{rank}P/2$, and the trim cannot increase dimension.
+    Orthogonal projection and relabeling preserve this dimension.
+\end{proof}
+
+\begin{lemma}[The same native output range]
+    \label{lem:canonical_half_sampling_active_range}
+    \lean{Entropy.map_range_canonicalHalfSampleTrimMatrix_of_active}\leanok
+    \uses{def:canonical_stopped_half_sample_trim}
+    In an active round the actual range of $P_{\mathrm{next}}$, transported
+    back to the native regional coordinates, is exactly the collective
+    trim used in that round. The input need not be an orthogonal projection.
+\end{lemma}
+\begin{proof}\leanok
+    Relabel the range and use the fact that the range of the orthogonal
+    projection onto a subspace is that subspace.
+\end{proof}
+
+\begin{lemma}[A prescribed stopping count]
+    \label{lem:canonical_half_sampling_rank_stops}
+    \lean{Entropy.rank_canonicalHalfSampleTrimIterate_lt}\leanok
+    \uses{lem:canonical_half_sampling_rank_step, lem:stopped_halving_rounds,
+        def:canonical_stopped_half_sample_iteration}
+    If $h\ge2$ and the initial rank is at most $2^R$, then the literal
+    stopped iteration has rank less than $h$ after $R$ rounds, for every
+    entire seed sequence.
+\end{lemma}
+\begin{proof}\leanok
+    Apply the stopped integer-halving estimate to the actual ranks.
+\end{proof}
+
+\begin{lemma}[Stopping from a chain dimension bound]
+    \label{lem:canonical_half_sampling_chain_rank_stops}
+    \lean{Entropy.rank_canonicalHalfSampleTrimIterate_chain_lt}\leanok
+    \uses{lem:canonical_half_sampling_rank_step, lem:stopped_halving_chain}
+    If $h\ge2$ and the initial rank is at most $q^L$, then $qL$ prescribed
+    rounds suffice to give rank less than $h$, for every seed sequence.
+    This counts rounds only; it does not bound their computational cost.
+\end{lemma}
+\begin{proof}\leanok
+    Use $q^L\le2^{qL}$ and the preceding halving rule.
+\end{proof}
+
+\begin{lemma}[The initial-rank ceiling]
+    \label{lem:canonical_half_sampling_initial_rank_ceiling}
+    \lean{Entropy.rank_canonicalHalfSampleTrimIterate_le}\leanok
+    \uses{lem:canonical_half_sampling_rank_step}
+    For the same actual stopped iteration, every intermediate rank is at
+    most the initial rank, for every seed sequence. Only the bound
+    $|I|\le D^2$ on the fixed family is required; there is no viability,
+    success, positive-rank or stopping-threshold hypothesis. Thus a bound
+    on the initial rank supplies a common ceiling independently of the
+    ambient dimension.
+\end{lemma}
+\begin{proof}\leanok
+    Induct on the round count. Each step either halves rank or retains the
+    preceding matrix, so it cannot increase the preceding rank.
+\end{proof}

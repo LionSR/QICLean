@@ -18,9 +18,14 @@ import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
 import QICLean.Analysis.Birkhoff
 import QICLean.Analysis.BlockDiagonalNorm
+import QICLean.Analysis.BootstrapFailureParameters
 import QICLean.Analysis.BufferedSpectralNormPerturbation
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
+import QICLean.Analysis.CanonicalHalfSamplingDimension
+import QICLean.Analysis.CanonicalHalfSamplingParent
+import QICLean.Analysis.CanonicalHalfSamplingParentProbability
+import QICLean.Analysis.CanonicalHalfSamplingParentProperties
 import QICLean.Analysis.CanonicalSampleProjectionMeasurable
 import QICLean.Analysis.CanonicalSamplingTrimmingMeasurable
 import QICLean.Analysis.CanonicalSamplingViabilityMeasurable
@@ -130,6 +135,7 @@ import QICLean.Analysis.InterleavedPolynomialDegree
 import QICLean.Analysis.InterleavedStoppingParameters
 import QICLean.Analysis.InterleavedTrimmingIteration
 import QICLean.Analysis.InterleavedTrimmingParameters
+import QICLean.Analysis.IntervalSamplingSchedule
 import QICLean.Analysis.InvariantExponentialComparison
 import QICLean.Analysis.InvariantOperatorBounds
 import QICLean.Analysis.InvariantTensorWordPower
@@ -394,6 +400,11 @@ import QICLean.Analysis.SpectralTailTraceNorm
 import QICLean.Analysis.SpectralWindowCount
 import QICLean.Analysis.SpectralWindowPrecision
 import QICLean.Analysis.SqrtHolder
+import QICLean.Analysis.StoppedHalfSamplingEvents
+import QICLean.Analysis.StoppedHalfSamplingIteration
+import QICLean.Analysis.StoppedHalfSamplingProbability
+import QICLean.Analysis.StoppedHalfSamplingRank
+import QICLean.Analysis.StoppedHalfSamplingSeed
 import QICLean.Analysis.StretchedBallKernel
 import QICLean.Analysis.StretchedExponentialSummability
 import QICLean.Analysis.StripQuadratic
@@ -412,6 +423,7 @@ import QICLean.Analysis.SurprisalProductMoment
 import QICLean.Analysis.TensorFamilyImage
 import QICLean.Analysis.TensorOperatorPower
 import QICLean.Analysis.TensorProductWeights
+import QICLean.Analysis.TerminalFamilyReferenceTrimming
 import QICLean.Analysis.TraceCFC
 import QICLean.Analysis.TraceCompression
 import QICLean.Analysis.TraceConvexFunctions
@@ -445,6 +457,9 @@ import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.VariableRankSampleProjection
 import QICLean.Analysis.VectorMajorization
 import QICLean.Analysis.ViableFilterTrimmingIteration
+import QICLean.Analysis.ViableHalfSampling
+import QICLean.Analysis.ViableHalfSamplingParameters
+import QICLean.Analysis.ViableHalfSamplingTrimming
 import QICLean.Analysis.ViableNodeLeafCount
 import QICLean.Analysis.ViableNodeParameters
 import QICLean.Analysis.ViableNodeSamplingParameters

@@ -1,0 +1,158 @@
+\section{A half-dimensional sample with a common improving family}
+
+The following statements retain the sample, its common operator image, and
+its collective trim. They concern one fixed input space, rather than an
+adaptive sequence. Their role in the resampling description of
+\cite[lines 749--755]{Arad2016RigorousRG}, and the distinction from the
+sample-once Figure~\texttt{fig:merge-prime}, are explained
+in~\cite{gap:alvv16_bootstrap_constants}.
+
+\begin{lemma}[Numerical margins for sampling and trimming]
+    \label{lem:half_sampling_margins}
+    \lean{Real.half_sampling_filter_error_le, Real.half_sampling_transfer_error_le, Real.half_sampling_trim_error_le}
+    \leanok
+    If $d\ge2$, $d^{12}\Delta\le10^{-5}$, and
+    $\alpha\ge0.03/d^2$, then $\Delta/\alpha^2\le10^{-4}$.
+    If $\alpha>0$ and $\varepsilon\le\alpha^2/100$, then
+    \[
+      (1+\alpha/4)(1-\alpha)+(1+4/\alpha)\varepsilon
+        \le1-\alpha/2.
+    \]
+    Finally, if $\delta\le27/2500$, $\varepsilon\le10^{-5}$, and
+    $z\le10^{-3}$, then
+    \[
+      (1+1/20)\bigl((1+1/20)\delta+21\varepsilon+2z\bigr)
+        +21\varepsilon\le3/200.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The first inequality follows from $d^8\ge256$ and the lower bound on
+    $\alpha$. The other two follow by expansion.
+\end{proof}
+
+\begin{lemma}[Unconditional dimension decrease]
+    \label{lem:half_sampling_image_dimension}
+    \lean{Submodule.finrank_half_sample_image_le}
+    \leanok
+    Let $W\subseteq M$ have dimension $q$, fix an orthonormal basis of $W$,
+    and let $(A_i)_{i\in I}$ be operators on $M$ with $|I|\le D^2$.
+    Put $s=\lfloor q/(2D^2)\rfloor$, with $s=0$ when $D=0$.
+    Every unitary rotation of the first $s$ basis vectors spans a space
+    $S\subseteq W$ of dimension $s$, and
+    $\dim\operatorname{span}_{i\in I}A_iS\le q/2$.
+    No target or viability assumption is required.
+\end{lemma}
+\begin{proof}\leanok
+    The image dimension is at most $|I|s\le D^2s\le q/2$.
+\end{proof}
+
+\begin{theorem}[One original-target event for every improving target]
+    \label{thm:half_sampling_uniform_image_event}
+    \lean{Submodule.exists_measurable_half_sample_uniform_image_event}
+    \leanok
+    \uses{lem:half_sampling_margins, lem:half_sampling_image_dimension}
+    Let $T_0,T_x\subseteq M\otimes F$, where the parameter set is nonempty,
+    and let $D\ge2$. Suppose $T_0$ is $\varepsilon$-close to every $T_x$,
+    every $T_x$ is $1/200$-close to $T_0$, and
+    $\varepsilon\le(0.03/D^2)^2/100$. A single family $(A_i)_{i\in I}$,
+    $|I|\le D^2$, improves every $\delta$-viable space for every $T_x$ to
+    error $\Delta/(1-\delta)^2$, for all $\delta<1$.
+    Assume $D^{12}\Delta\le10^{-5}$.
+
+    Let $W$ be $0.04$-viable for $T_0$, with dimension $q\ge4D^2$ and a
+    specified orthonormal basis. Put
+    $s=\lfloor q/(2D^2)\rfloor$ and $\alpha=0.96s/(8q)$.
+    Write $S_U$ for the literal Haar sample and
+    $Y_U=\operatorname{span}_{i\in I}A_iS_U$.
+    There is a Borel event $E$ whose complement has Haar measure at most
+    \[
+       \eta=(1+2/\sqrt\alpha)^{2\dim T_0}q\,e^{-s/16},
+    \]
+    and whose measure is at least $1-\eta$, such that for every $U\in E$,
+    $S_U$ is $(1-\alpha)$-viable for $T_0$ and
+    $(1-\alpha/2)$-viable for every $T_x$; the same $Y_U$ is
+    $4\Delta/\alpha^2$-viable for every $T_x$ and $27/2500$-viable for $T_0$.
+    For every $U$, including those outside $E$, $\dim Y_U\le q/2$.
+    The outer measure of failure of the last original-target conclusion
+    is also at most $\eta$.
+\end{theorem}
+\begin{proof}\leanok
+    Sample against the fixed target $T_0$. Weighted composition with
+    parameter $\alpha/4$ transfers this same sample to all $T_x$.
+    Apply the common family, then transfer back through one fixed $T_x$.
+    The numerical margins and the unconditional dimension estimate give
+    the assertions. No measurability of an intersection over the parameters
+    is asserted or needed.
+\end{proof}
+
+\begin{theorem}[Reference trimming of the same sampled image]
+    \label{thm:half_sampling_original_reference_trim}
+    \lean{Entropy.exists_measurable_half_sample_reference_trim_event}
+    \leanok
+    \uses{thm:half_sampling_uniform_image_event, lem:half_sampling_margins}
+    In the preceding setting, use coordinate tensor factors and an increasing
+    list of $m$ cuts. Suppose a reference space $R$ is mutually
+    $\varepsilon_R$-close to $T_0$, with $0\le\varepsilon_R\le10^{-5}$,
+    and every reference vector has Schmidt rank at most $b$ at each cut.
+    Choose $\xi>0$ with $\xi\sqrt{mb}\le10^{-3}$.
+    Collectively trim the specified orthonormal basis of the same $Y_U$
+    at threshold $\xi$ to obtain $V_U$.
+    On the same event $E$, $V_U$ is $3/200$-viable for $T_0$.
+    For every $U$, $\dim V_U\le\dim Y_U\le q/2$.
+    The outer measure of original-target failure is at most $\eta$.
+    All preceding conclusions about $Y_U$ remain in force.
+\end{theorem}
+\begin{proof}\leanok
+    Apply weighted reference trimming with parameter $1/20$ and then
+    Lemma~\ref{lem:half_sampling_margins}. Trimming is a linear image of
+    the space being trimmed, so its dimension cannot increase.
+\end{proof}
+
+\begin{theorem}[The canonical sampling step under product Haar measure]
+    \label{thm:rank_product_half_sample_reference_trim}
+    \lean{Entropy.exists_measurable_randomRangeSubspace_half_trim_event}
+    \leanok
+    \uses{def:rank_unitary_product_haar,thm:half_sampling_original_reference_trim}
+    Retain the targets, common family, cuts and reference hypotheses of
+    Theorem~\ref{thm:half_sampling_original_reference_trim}. Let
+    $I:\mathbb C^d\to M$ be induced by a finite coordinate equivalence.
+    For any matrix $P\in M_d(\mathbb C)$, put
+    $q=\operatorname{rank}P$ and $W=I(\operatorname{range}P)$.
+    Assume $q\ge4D^2$ and that $W$ is $0.04$-viable for $T_0$.
+
+    For $U\in\Omega_d$, use the coordinate $U_q$ at the actual rank to sample
+    $s=\lfloor q/(2D^2)\rfloor$ columns in the canonical orthonormal range
+    basis of $P$, and transport this literal sample by $I$. Denote it by
+    $S_U$, put $Y_U=\operatorname{span}_iA_iS_U$, and let $V_U$ be the
+    same collective reference trim of $Y_U$. Set
+    \begin{align}
+        \alpha&=\frac{0.96s}{8q},&
+        \eta&=(1+2/\sqrt\alpha)^{2\dim T_0}q\,e^{-s/16}.
+    \end{align}
+    Then $s\ge1$ and $0<\alpha\le1$. Every seed satisfies
+    $S_U\subseteq W$ and $\dim S_U=s$. Both $Y_U$ and $V_U$ have
+    dimension at most $q/2$.
+
+    There is a Borel event $E\subseteq\Omega_d$ with
+    $\mu_d(E^c)\le\eta$ and $\mu_d(E)\ge1-\eta$ such that, on $E$,
+    $Y_U$ is $4\Delta/\alpha^2$-viable for every $T_x$ and
+    $27/2500$-viable for $T_0$, while $V_U$ is $3/200$-viable for $T_0$.
+    The outer measure of failure of this last conclusion is at most $\eta$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:half_sampling_original_reference_trim,thm:rank_unitary_haar_marginal}
+    Map the canonical range basis through the restriction of $I$ from
+    $\operatorname{range}P$ onto $W$. Sampling in this mapped basis is
+    exactly the image under $I$ of the original canonical sample.
+    Apply Theorem~\ref{thm:half_sampling_original_reference_trim} once
+    with this basis, and take the inverse image of its one Borel event
+    under $U\mapsto U_q$. The coordinate Haar marginal preserves the
+    measures of both the event and its complement. The sample, common
+    image and trim agree pointwise with the stated operations, so all
+    dimension and viability conclusions transfer unchanged. The true
+    output-failure set is contained in $E^c$.
+\end{proof}
+
+The law $\mu_d$ is fixed before $P$. The event is obtained at that fixed
+input; no measurable choice of the events as $P$ varies, or joint
+probability estimate for an adaptive sequence, is asserted.

@@ -139,3 +139,234 @@ for the failure probability of random sampling.
     Transfer back to $uG$. Finally,
     $\dim\sum_j A_jW_0\le\sum_j\dim A_jW_0\le D^2\dim W_0$.
 \end{proof}
+
+\section{Finite dyadic estimates for polynomial-filter counts}
+
+These scalar estimates support the low-density dyadic argument of
+\cite{Arad2016RigorousRG}. They concern the actual natural
+ceiling used to choose a polynomial degree; the physical count and
+suppression estimates are separate assertions.
+
+\begin{lemma}[The ceiling scale]
+    \label{lem:ceil_quadratic_scale}
+    \lean{Real.ceil_quadratic_scale_bounds}
+    \leanok
+    If $A,v\ge1$ and $0<g\le1$, then
+    \begin{align*}
+      Av^2/g\le\lceil Av^2/g\rceil
+      \le(A+1)v^2/g,
+      \qquad A\le\lceil Av^2/g\rceil.
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    \leanok
+    The ceiling lies between $Av^2/g$ and $Av^2/g+1$.
+    Use $v^2/g\ge1$ to absorb the additive term.
+\end{proof}
+
+\begin{lemma}[One dyadic change of ceiling]
+    \label{lem:ceil_quadratic_scale_half_step}
+    \lean{Real.ceil_quadratic_scale_half_step}
+    \leanok
+    Suppose $A,u\ge100$, $v\ge1$, $v\le u+1$, and
+    $0<g,h\le1$ with $g\le2h$. Put
+    $\ell=\lceil Au^2/g\rceil$ and $\ell'=\lceil Av^2/h\rceil$.
+    Then $A\le\ell,\ell'$ and $\ell'\le(21/10)\ell$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:ceil_quadratic_scale}
+    Use $A+1\le(101/100)A$, $v\le(101/100)u$ and $1/h\le2/g$.
+    The resulting factor $2(101/100)^3$ is smaller than $21/10$.
+\end{proof}
+
+\begin{theorem}[One dyadic change of count]
+    \label{thm:log_polynomial_filter_count_half_step}
+    \lean{Real.log_polynomial_filter_count_half_step}
+    \leanok
+    Fix an integer $m$ with $\log m\ge100$ and a real $A\ge100$.
+    For $0<g\le1$, define
+    \begin{align*}
+      u_g&=1+\log m+\log(1/g),&
+      \ell_g&=\lceil Au_g^2/g\rceil,&
+      D_g&=(m\ell_g^2)^{22\ell_g}.
+    \end{align*}
+    If $0<h\le1$ and $g\le2h$, then
+    \begin{align*}
+      100\le\log D_g,
+      \qquad\log D_h\le\frac{13}{6}\log D_g.
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:ceil_quadratic_scale_half_step}
+    Since $\log2\le1$, one has $u_h\le u_g+1$ and therefore
+    $\ell_h\le(21/10)\ell_g$. Set $B_g=\log m+2\log\ell_g$.
+    The inequality $\log(21/10)\le11/10$ gives
+    $B_h\le B_g+11/5\le(511/500)B_g$, using $B_g\ge100$.
+    Finally $\log D_g=22\ell_gB_g$ and
+    $(21/10)(511/500)<13/6$.
+\end{proof}
+
+
+\begin{lemma}[The improving error at an inverse numerical scale]
+    \label{lem:improving_error_inverse_scale}
+    \lean{Submodule.improving_error_le_inverse_scale}
+    \leanok
+    If $1\le m\le D$ and $D^{12}\Delta\le10^{-5}$, then
+    $\Delta/(1-0.04)^2\le1/(8m)$.
+\end{lemma}
+\begin{proof}\leanok
+    One has $m\le D^{12}$. If $\Delta\le0$, the conclusion is immediate.
+    Otherwise $m\Delta\le D^{12}\Delta\le10^{-5}$, which implies the
+    stated inequality after multiplying by the positive denominators.
+\end{proof}
+
+
+\begin{lemma}[An image family between two buffered targets]
+    \label{lem:viable_nested_image_enlargement}
+    \lean{Submodule.viable_enlargement_of_close_nested_targets}
+    \leanok
+    Fix a tensor identification $H\simeq M\otimes F$ and subspaces
+    $G_{\rm in}\subseteq G_-$, $G_+$, $T_-$ and $T_+$ of $H$.
+    Let $W_0\subseteq M$ be $3/200$-viable for $G_+$, and let
+    $0<\delta\le1$. Suppose $G_+$ is $\delta/100$-close to $T_+$
+    and $T_-$ is $\delta/100$-close to $G_-$.
+    Let $A_1,\ldots,A_N$ be a fixed family on $M$ such that, for
+    every $\epsilon<1$ and every $\epsilon$-viable $S$ for $T_+$,
+    the actual image $\sum_j A_jS$ has dimension at most $N\dim S$
+    and is $\Delta/(1-\epsilon)^2$-viable for $T_-$.
+    If $\Delta\le\delta/8$, then $V=\sum_j A_jW_0$ has
+    $\dim V\le N\dim W_0$ and is $\delta/2$-viable for
+    $G_{\rm in}$.
+    The family and its improving property are hypotheses of this
+    conditional implication; it does not construct a physical filter.
+\end{lemma}
+\begin{proof}\leanok
+    The upper comparison gives input error
+    $2(3/200+\delta/100)\le1/20$. Applying the actual family gives
+    error at most $(\delta/8)/(19/20)^2\le\delta/5$ on $T_-$.
+    The lower comparison gives
+    $2(\delta/5+\delta/100)=21\delta/50\le\delta/2$ on $G_-$.
+    Restrict to its subspace $G_{\rm in}$.
+\end{proof}
+
+
+\begin{lemma}[A fixed number of stopped halving rounds]
+    \label{lem:stopped_halving_rounds}
+    \lean{Nat.lt_threshold_of_stopped_halving}\leanok
+    Let $a_0,a_1,\ldots$ be nonnegative integers, and let $h\ge2$ and
+    $R\ge0$ be integers. Suppose that $a_0\le2^R$ and, for $i<R$,
+    \[
+       a_{i+1}\le
+       \begin{cases}
+          \lfloor a_i/2\rfloor,&a_i\ge h,\\
+          a_i,&a_i<h.
+       \end{cases}
+    \]
+    Then $a_R<h$. Thus the number of rounds can be prescribed before
+    the intermediate dimensions are known. This is a numerical auxiliary
+    for repeated amplification in
+    \cite{Arad2016RigorousRG};
+    no probability or viability assertion is part of the lemma.
+\end{lemma}
+\begin{proof}\leanok
+    Induction gives, for every $i\le R$, either $a_i<h$ or
+    $2^i a_i\le a_0$. Below $h$ the first alternative persists.
+    Otherwise a halving step preserves the second alternative.
+    At $i=R$, if $a_R\ge h\ge2$, the second alternative contradicts
+    $a_0\le2^R$.
+\end{proof}
+
+\begin{lemma}[The ambient dimension of a chain]
+    \label{lem:stopped_halving_chain}
+    \lean{Nat.lt_threshold_of_stopped_halving_chain}\leanok
+    \uses{lem:stopped_halving_rounds}
+    Let $q,L\ge0$ be integers, let $h\ge2$, and suppose that
+    $a_0\le q^L$. If the preceding stopped halving rule holds for
+    $qL$ rounds, then $a_{qL}<h$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:stopped_halving_rounds}
+    Since $q\le2^q$, one has $q^L\le2^{qL}$.
+    Apply Lemma~\ref{lem:stopped_halving_rounds}.
+\end{proof}
+
+\subsection{A uniform threshold for polynomially small sampling failure}
+
+For $D\ge2$, $Q\ge4D^2$ and $r\in\mathbb N$, write
+\begin{align}
+    s_Q&=\left\lfloor\frac{Q}{2D^2}\right\rfloor,\\
+    f_D(Q,r)&=\left(1+\frac{2}{\sqrt{0.96s_Q/(8Q)}}\right)^{2r}
+       Qe^{-s_Q/16}.
+\end{align}
+This is the corrected complex-sphere failure expression used in the
+bootstrap step. The sample dimension is the actual natural quotient,
+not a separately chosen real number.
+
+\begin{theorem}[Exponential decay above a sufficient dimension threshold]
+    \label{thm:bootstrap_failure_exponential}
+    \lean{Submodule.bootstrapFailure_le_exp_neg_of_ge_mul_pow}
+    \leanok
+    Let $D,r,Q\in\mathbb N$ with $D\ge2$. If
+    $Q\ge\max\{1,r\}D^{24}$, then
+    \begin{align}
+        f_D(Q,r)\le e^{-Q/(128D^2)}.
+    \end{align}
+    In particular, a target of dimension zero is included.
+\end{theorem}
+\begin{proof}\leanok
+    The threshold implies $Q\ge4D^2$ and $s_Q\ge Q/(4D^2)$.
+    Hence the covering-net base is at most $21D$. Put
+    $R=\max\{1,r\}$. The existing logarithmic estimate at
+    $Q\ge RD^{24}$ gives
+    \begin{align}
+        \bigl(2R\log(21D)+\log Q\bigr)256D^2\le2Q.
+    \end{align}
+    Since $\log(21D)\ge0$, replace $R$ by $r$ in the left side.
+    Therefore
+    \begin{align}
+        2r\log(21D)+\log Q-\frac{s_Q}{16}
+        \le\frac{Q}{128D^2}-\frac{Q}{64D^2}
+        =-\frac{Q}{128D^2}.
+    \end{align}
+    Exponentiating proves the bound. The earlier strict failure
+    bound follows as a corollary, with its original threshold
+    $Q\ge rD^{24}$ when $r\ge1$.
+\end{proof}
+
+\begin{theorem}[One threshold for every target dimension and length]
+    \label{thm:bootstrap_failure_polynomial_threshold}
+    \lean{Submodule.exists_bootstrapFailure_polynomial_threshold}
+    \leanok
+    Let $D,a\in\mathbb N$, $D\ge2$, and $\eta>0$. There is a natural
+    $K\ge1$, chosen before $r,N,Q\in\mathbb N$, such that
+    \begin{align}
+        Q\ge K(r+1)(N+2)^2
+        \quad\Longrightarrow\quad
+        Q\ge4D^2\quad\hbox{and}\quad
+        f_D(Q,r)\le\frac{\eta}{(N+2)^a}.
+    \end{align}
+    Both $r=0$ and $N=0$ are included, and $\eta$ need not be at most one.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bootstrap_failure_exponential}
+    Take
+    \begin{align}
+        K=\max\left\{D^{24},
+          \left\lceil128D^2\bigl(a+|\log\eta|+1\bigr)\right\rceil\right\}.
+    \end{align}
+    The threshold implies $Q\ge\max\{1,r\}D^{24}$ and $Q\ge4D^2$.
+    With $X=N+2\ge2$, one has $\log X\le X^2$ and $1\le X^2$, so
+    \begin{align}
+        a\log X+|\log\eta|
+        &\le(a+|\log\eta|+1)X^2
+         \le\frac{Q}{128D^2}.
+    \end{align}
+    The exponential bound is consequently at most
+    $e^{\log\eta-a\log X}=\eta/X^a$.
+\end{proof}
+
+This is a sufficient polynomial threshold for the existing corrected
+failure estimate. It makes no claim about a logarithmically optimal
+threshold or the success probability of an adaptive randomized procedure.
