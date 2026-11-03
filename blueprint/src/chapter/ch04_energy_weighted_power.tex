@@ -1,0 +1,71 @@
+\section{Energy-weighted decay of a contraction power}
+\label{sec:energy_weighted_power}
+
+The final power step in the algorithm of Arad, Landau, Vazirani and
+Vidick~\cite[lines 1811--1815]{Arad2016RigorousRG} requires control of
+excitation energy as well as overlap. The following scalar estimates
+retain the power threshold and a lower excitation energy. They do not
+assert the repeated trimming argument or the final compressed spectral
+extraction.
+
+\begin{lemma}[A geometric-sum bound]
+    \label{lem:unit_energy_weighted_power}
+    \lean{Real.mul_one_sub_pow_le_inv_add_one}
+    \leanok
+    Let $0\leq x\leq1$ and let $\tau$ be a nonnegative integer. Then
+    \begin{align}
+        x(1-x)^\tau\leq\frac1{\tau+1}.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Every term of $\sum_{j=0}^\tau(1-x)^j$ is at least $(1-x)^\tau$.
+    Multiplication by $x$ and the geometric-sum identity give
+    \begin{align}
+        (\tau+1)x(1-x)^\tau
+          &\leq x\sum_{j=0}^\tau(1-x)^j
+           =1-(1-x)^{\tau+1}\leq1.
+    \end{align}
+\end{proof}
+
+\begin{lemma}[Excitation energy under a squared power]
+    \label{lem:gap_energy_weighted_power}
+    \lean{Real.energy_mul_one_sub_div_pow_le}
+    \leanok
+    \uses{lem:unit_energy_weighted_power}
+    Let $A>0$ and $0<\gamma\leq s\leq A$. If
+    $(\tau+1)\gamma\geq A$, where $\tau$ is a nonnegative integer, then
+    \begin{align}
+        s(1-s/A)^{2\tau}\leq\gamma(1-\gamma/A)^\tau.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Apply the preceding estimate at $x=s/A$. Its first power gives
+    $s(1-s/A)^\tau\leq A/(\tau+1)\leq\gamma$.
+    The other power is bounded by $(1-\gamma/A)^\tau$, since
+    $0\leq1-s/A\leq1-\gamma/A$. Multiplying these two nonnegative
+    inequalities proves the result.
+\end{proof}
+
+\begin{lemma}[An energy-weighted matrix order estimate]
+    \label{lem:matrix_gap_energy_weighted_power}
+    \lean{Matrix.IsHermitian.energy_weighted_power_bounds}
+    \leanok
+    \uses{lem:gap_energy_weighted_power}
+    Let $H$ be a Hermitian complex matrix on a finite index set, and
+    let $0\leq H\leq AI$, where $A>0$. Suppose $0<\gamma\leq A$ and
+    every spectral value of $H$ is either zero or at least $\gamma$.
+    If $A\leq(\tau+1)\gamma$, then
+    \begin{align}
+        0\leq H(I-H/A)^{2\tau}
+          \leq\gamma(1-\gamma/A)^\tau I.
+    \end{align}
+    Empty matrix index sets and $\tau=0$ are permitted.
+\end{lemma}
+\begin{proof}\leanok
+    Put $g(s)=1-s/A$ and $f(s)=sg(s)^{2\tau}$. The order bounds
+    on $H$ put its spectrum in $[0,A]$. The preceding scalar estimate
+    bounds $f$ at every nonzero spectral value, and the same inequality
+    holds at zero. Continuous functional calculus gives
+    $f(H)=H(I-H/A)^{2\tau}$ and transports both nonnegative scalar
+    inequalities to the asserted matrix inequalities.
+\end{proof}

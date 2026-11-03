@@ -3,7 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.LowEnergyPerturbation
+import QICLean.Analysis.LowEnergyOrder
+import QICLean.Analysis.GroundEnergyResidual
 import QICLean.Analysis.ViableSubspaceDimension
 import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.Restrict
 import Mathlib.Tactic.Linarith
@@ -35,27 +36,6 @@ printed count involving an absolute ground energy.
 
 open scoped InnerProductSpace
 
-/-- A lower quadratic-form bound and a residual at one unit eigenvector
-give a lower bound for its real eigenvalue. Auxiliary to ALVV,
-arXiv:1602.08828v2, lines 955–968 and 1010–1024. -/
-private theorem real_eigenvalue_ge_of_unit_residual {E : Type*}
-    [NormedAddCommGroup E] [InnerProductSpace ℂ E]
-    (A B : E → E) (x : E) (e lam ξ : ℝ) (hx : ‖x‖ = 1)
-    (hBx : B x = (lam : ℂ) • x)
-    (hlower : e * ‖x‖ ^ 2 ≤ (⟪x, A x⟫_ℂ).re)
-    (hres : ‖A x - B x‖ ≤ ξ) : e - ξ ≤ lam := by
-  have hlam : (⟪x, B x⟫_ℂ).re = lam := by
-    rw [hBx, inner_smul_right, inner_self_eq_norm_sq_to_K, hx]
-    simp
-  have hdiff : (⟪x, A x⟫_ℂ).re - lam ≤ ξ := by
-    calc
-      (⟪x, A x⟫_ℂ).re - lam = (⟪x, A x - B x⟫_ℂ).re := by
-        rw [inner_sub_right, Complex.sub_re, hlam]
-      _ ≤ ‖x‖ * ‖A x - B x‖ := re_inner_le_norm (𝕜 := ℂ) x (A x - B x)
-      _ ≤ ξ := by simpa only [hx, one_mul] using hres
-  have he : e ≤ (⟪x, A x⟫_ℂ).re := by
-    simpa only [hx, one_pow, mul_one] using hlower
-  linarith
 
 
 /-- One common window bound for the two directions of the low-energy
@@ -89,16 +69,6 @@ private theorem low_cluster_window_bound {γ ξ w v : ℝ}
     _ ≤ (1 / 200 : ℝ) * (v + γ / 1000000) ^ 2 := by gcongr
 
 namespace Submodule
-
-/-- Monotonicity of a closed low-energy span, used in the finite cutoff
-comparison in ALVV, arXiv:1602.08828v2, lines 955–968 and 1020. -/
-private theorem spectralSpanLE_mono_cutoff
-    {F ι : Type*} [NormedAddCommGroup F] [InnerProductSpace ℂ F] [Fintype ι]
-    (b : OrthonormalBasis ι ℂ F) (a : ι → ℝ) {c d : ℝ} (hcd : c ≤ d) :
-    spectralSpanLE b a c ≤ spectralSpanLE b a d := by
-  apply span_mono
-  rintro _ ⟨j, hj, rfl⟩
-  exact ⟨j, hj.trans hcd, rfl⟩
 
 /-- A recorded eigenvector belongs to every closed spectral span whose
 cutoff is at least its eigenvalue. Auxiliary to ALVV, arXiv:1602.08828v2,

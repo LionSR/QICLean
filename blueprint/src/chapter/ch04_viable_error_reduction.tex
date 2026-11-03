@@ -21,6 +21,34 @@ of the target, and contracts its complement.
     $\lVert P_Ut\rVert\le\lVert P_{U'}t\rVert$ for every $t$.
 \end{proof}
 
+\begin{theorem}[Monotonicity in the error parameter]
+    \label{thm:subspace_close_parameter_order}
+    \lean{Submodule.IsCloseTo.of_le}
+    \leanok
+    If $U$ is $\delta$-close to $T$ and $\delta\le\delta'$, then $U$ is
+    $\delta'$-close to $T$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:subspace_close_iff}
+    For $t\in T$, one has
+    $(1-\delta')\|t\|^2\le(1-\delta)\|t\|^2\le\|P_Ut\|^2$.
+\end{proof}
+
+\begin{theorem}[Closeness from inclusion]
+    \label{thm:subspace_close_of_inclusion}
+    \lean{Submodule.isCloseTo_of_le}
+    \leanok
+    Let $T\subseteq U$ be subspaces of a finite-dimensional real or
+    complex inner product space, and let $\delta\ge0$.
+    Then $U$ is $\delta$-close to $T$. In particular every subspace is
+    $\delta$-close to itself.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:subspace_close_iff}
+    For $t\in T$, inclusion gives $P_Ut=t$, so
+    $(1-\delta)\|t\|^2\le\|P_Ut\|^2$.
+\end{proof}
+
 \begin{theorem}[Error reduction by a contraction]
     \label{thm:subspace_close_contract}
     \lean{Submodule.IsCloseTo.map_of_contract}
@@ -34,9 +62,8 @@ of the target, and contracts its complement.
     $K=\sum_iL_i\otimes A_i\otimes R_i$ and
     $U=\mathcal H_L\otimes S\otimes\mathcal H_R$, the image $KU$ lies in
     $\mathcal H_L\otimes V\otimes\mathcal H_R$ with
-    $V=\operatorname{span}\{A_iS\}$. The tensor-product statement of
-    Lemma~l:er, with $T$ a spectral subspace of a Hamiltonian, is not
-    formalized here.
+    $V=\operatorname{span}\{A_iS\}$. The tensor-product consequence is stated in
+    Theorem~\ref{thm:viable_tensor_decomposition}.
 \end{theorem}
 
 \begin{proof}
@@ -74,4 +101,357 @@ of the target, and contracts its complement.
     $a=|\langle Ku,P_{KU}t\rangle|\le\|Ku\|\,\|P_{KU}t\|$ gives
     $\|P_{KU}t\|^2\ge a^2/(a+b)\ge a-b$.
     Substituting the bound on $b$ proves the claimed closeness.
+\end{proof}
+
+
+\begin{theorem}[Error reduction between nested targets]
+    \label{thm:subspace_close_nested_contract}
+    \lean{Submodule.IsCloseTo.map_of_nested_contract}
+    \leanok
+    \uses{thm:subspace_close_iff, thm:subspace_close_preimage}
+    Let $T\subseteq T_+$ be subspaces of a finite-dimensional real or
+    complex inner product space. Suppose that $U$ is $\delta$-close to
+    $T_+$, where $\delta<1$, and that $\Delta\ge0$. Let $K$ satisfy
+    $KT\subseteq T$, $K(T_+^\perp)\subseteq T^\perp$,
+    $\|Kt\|\ge\|t\|$ for $t\in T$, and
+    $\|Kz\|^2\le\Delta\|z\|^2$ for $z\in T_+^\perp$.
+    Then $KU$ is $\Delta/(1-\delta)^2$-close to $T$.
+    This is the operator argument for the distinct low-energy cutoffs in
+    \cite[Theorem~t:aisgapless, lines 1037--1041]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    The restriction of $K$ to $T$ is injective and hence surjective.
+    For $t\in T$, choose $r\in T$ with $Kr=t$ and $\|r\|\le\|t\|$.
+    There is $u\in U$ with $P_{T_+}u=r$ and
+    $\|u\|\le\|r\|/(1-\delta)$. Thus $q=u-r\in T_+^\perp$ and
+    $Ku=t+Kq$, with $Kq\perp T$ and
+    $\|Kq\|^2\le\Delta\|t\|^2/(1-\delta)^2$.
+    Writing $x=\|t\|^2$ and $y=\|Kq\|^2$, Cauchy--Schwarz gives
+    $\|P_{KU}t\|^2\ge x^2/(x+y)\ge x-y$ when $t\ne0$;
+    the zero vector satisfies the same estimate.
+\end{proof}
+
+\begin{lemma}[Normalized error reduction between nested targets]
+    \label{lem:subspace_nested_error_reduction_sharp}
+    \lean{Submodule.IsCloseTo.map_of_nested_contract_sharp}
+    \leanok
+    \uses{lem:subspace_close_preimage_squared, thm:subspace_close_iff}
+    Let $T\subseteq T_+$ be finite-dimensional subspaces and let $K$ be a
+    linear operator with $KT\subseteq T$, $K(T_+^\perp)\subseteq T^\perp$,
+    $\lVert Kt\rVert\ge\lVert t\rVert$ on $T$, and
+    $\lVert Kq\rVert^2\le\Delta\lVert q\rVert^2$ on $T_+^\perp$, where
+    $\Delta\ge0$. If $U$ is $\delta$-close to $T_+$ and $0\le\delta<1$,
+    then $KU$ is
+    \[
+        \frac{\Delta\delta}{1-\delta+\Delta\delta}\text{-close to }T.
+    \]
+    This refines the projection argument in
+    \cite[Lemma~l:er, lines 597--622; Theorem~t:aisgapless, lines 1037--1041]
+    {Arad2016RigorousRG}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Given $t\in T$, take $r\in T$ with $Kr=t$, and $u\in U$ with
+    $P_{T_+}u=r$ and $\lVert u\rVert^2\le\lVert r\rVert^2/(1-\delta)$.
+    Write $u=r+q$, with $q\perp T_+$. Pythagoras gives
+    $\lVert q\rVert^2\le\delta\lVert r\rVert^2/(1-\delta)$, and hence
+    $\lVert Kq\rVert^2\le\Delta\delta\lVert t\rVert^2/(1-\delta)$.
+    Since $Ku=t+Kq$ has orthogonal summands and belongs to $KU$,
+    Cauchy--Schwarz yields
+    \[
+        \lVert t\rVert^4
+        \le \bigl(\lVert t\rVert^2+\lVert Kq\rVert^2\bigr)
+            \lVert P_{KU}t\rVert^2.
+    \]
+    The conclusion follows by substitution; the zero vector is immediate.
+\end{proof}
+
+\begin{lemma}[Normalized error reduction for one target]
+    \label{lem:subspace_error_reduction_sharp}
+    \lean{Submodule.IsCloseTo.map_of_contract_sharp}
+    \leanok
+    \uses{lem:subspace_nested_error_reduction_sharp}
+    Under the preceding hypotheses with $T_+=T$, the same error bound holds.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Apply the preceding lemma with coincident target spaces.
+\end{proof}
+
+\begin{lemma}[Normalized contraction below one half]
+    \label{lem:normalized_filter_error_le}
+    \lean{Real.normalized_filter_error_le}
+    \leanok
+    \uses{lem:subspace_error_reduction_sharp}
+    If $0<c\le1$ and $0\le\delta\le1/2$, then
+    \[
+        \frac{(1-c)\delta}{1-\delta+(1-c)\delta}
+        \le(1-c/2)\delta.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Clear the positive denominator. The difference of the two sides,
+    multiplied by that denominator, is
+    $c\delta(1-2\delta+c\delta)/2\ge0$.
+\end{proof}
+
+\begin{lemma}[A trimming error budget]
+    \label{lem:filter_trim_error_le}
+    \lean{Real.filter_trim_error_le}
+    \leanok
+    \uses{lem:normalized_filter_error_le}
+    Let $0<c\le1$, $0\le\delta\le1/2$, $\eta\ge0$, and
+    $\varepsilon\le c^2\eta/40$. Then
+    \[
+       (1+c/4)\frac{(1-c)\delta}{1-\delta+(1-c)\delta}
+       +(1+4/c)\varepsilon
+       \le(1-c/4)\delta+c\eta/8.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Apply the preceding lemma and use
+    $(1+c/4)(1-c/2)\le1-c/4$ and
+    $(1+4/c)c^2\eta/40\le c\eta/8$.
+\end{proof}
+
+\begin{lemma}[A stable error recurrence]
+    \label{lem:filter_trim_iterate_le}
+    \lean{Real.filter_trim_iterate_le}
+    \leanok
+    Let $0<c\le1$, $0\le\eta\le1$, and let $(u_j)_{j\ge0}$ be a real
+    sequence with $u_0\le1/2$. Suppose that whenever $u_j\le1/2$,
+    \[
+        u_{j+1}\le(1-c/4)u_j+c\eta/8.
+    \]
+    Then $u_j\le1/2$ and
+    $u_j\le(1-c/4)^j u_0+\eta/2$ for every $j\ge0$.
+\end{lemma}
+\begin{proof}\leanok
+    Induction proves the first inequality. A second induction proves
+    the geometric estimate, using
+    $(1-c/4)\eta/2+c\eta/8=\eta/2$.
+\end{proof}
+
+\begin{lemma}[Finite convergence of the recurrence]
+    \label{lem:exists_filter_trim_iteration}
+    \lean{Real.exists_filter_trim_iteration}
+    \leanok
+    \uses{lem:filter_trim_iterate_le}
+    Under the preceding hypotheses with $\eta>0$, some $j$ satisfies
+    $u_j\le\eta$.
+\end{lemma}
+\begin{proof}\leanok
+    Choose $j$ with $(1-c/4)^j<\eta/2$ and use $u_0\le1$.
+\end{proof}
+
+\begin{lemma}[A logarithmic number of refinement steps]
+    \label{lem:filter_trim_logarithmic_count}
+    \lean{Real.filter_trim_contraction_pow_le_exp,
+        Real.filter_trim_iterate_le_of_log_bound,
+        Real.filter_trim_iterate_ceil_log_le}
+    \leanok
+    \uses{lem:filter_trim_iterate_le}
+    Let $0<c\le1$, $0<\eta\le1$, and let $(u_j)_{j\ge0}$ satisfy the
+    hypotheses of Lemma~\ref{lem:filter_trim_iterate_le}. For every
+    nonnegative integer $j$,
+    \[
+       (1-c/4)^j\le \exp(-cj/4).
+    \]
+    Consequently $u_j\le\eta$ whenever $j\ge(4/c)\log(1/\eta)$.
+    In particular, the positive integer
+    \[
+       j=\left\lceil(4/c)\log(1/\eta)\right\rceil+1
+    \]
+    suffices. This is a numerical estimate for the refinement in
+    \cite[Algorithm~1]{Arad2016RigorousRG}; a bound in terms of its requested
+    energy accuracy requires a separate spectral estimate.
+\end{lemma}
+\begin{proof}\leanok
+    The inequality $1-c/4\le\exp(-c/4)$ follows from $1+x\le e^x$.
+    Raising to the $j$th power gives the exponential estimate. The assumed
+    lower bound on $j$ makes the latter at most $\eta$. Since $u_0\le1/2$,
+    the geometric estimate yields $u_j\le\eta/2+\eta/2=\eta$.
+\end{proof}
+
+\begin{lemma}[An explicit reference and trimming budget]
+    \label{lem:reference_filter_trim_error_le}
+    \lean{Real.reference_filter_trim_error_le}
+    \leanok
+    \uses{lem:normalized_filter_error_le}
+    Suppose $0<c\le1$, $0\le\delta\le1/2$, $\varepsilon,\zeta\ge0$,
+    $\varepsilon\le c^2\eta/1024$, and $\zeta\le c\eta/48$. Put
+    \[
+       F=\frac{(1-c)\delta}{1-\delta+(1-c)\delta}.
+    \]
+    Then
+    \begin{multline*}
+       (1+c/16)\bigl((1+c/16)F+(1+16/c)\varepsilon+2\zeta\bigr)
+       +(1+16/c)\varepsilon\\
+       \le(1-c/4)\delta+c\eta/8.
+    \end{multline*}
+\end{lemma}
+\begin{proof}\leanok
+    The preceding contraction estimate gives $F\le(1-c/2)\delta$.
+    Use $(1+c/16)^2(1-c/2)\le1-c/4$,
+    $(2+c/16)(1+16/c)\le64/c$, and $2(1+c/16)\le3$.
+    The reference and trimming contributions are each at most $c\eta/16$.
+\end{proof}
+
+\begin{lemma}[The centered ground-energy operator]
+    \label{lem:centered_ground_operator}
+    \lean{Matrix.IsHermitian.norm_sub_ground_smul_one_le,
+        Matrix.IsHermitian.sub_ground_smul_one_eq_zero_on_spectralSpanLE}
+    \leanok
+    Let $H$ be a Hermitian operator on a finite-dimensional complex Hilbert
+    space. Suppose every spectral value of $H$ is at least $\mu$ and
+    $\mu\le\|H\|$. Put $C=H-\mu I$, and let $G$ be the span of the
+    eigenvectors with eigenvalue at most $\mu$. Then
+    \[
+        C\ge0,\qquad \|C\|\le\|H\|-\mu,\qquad C|_G=0.
+    \]
+    This is an auxiliary spectral estimate for the final extraction in
+    \cite[Algorithm~1]{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    Spectral order gives $\mu I\le H\le\|H\|I$, hence
+    $0\le C\le(\|H\|-\mu)I$. For a positive operator the latter inequality
+    implies the norm bound. Each eigenvalue defining $G$ is both at least
+    and at most $\mu$, so its eigenvector belongs to the kernel of $C$.
+    The same holds for their span.
+\end{proof}
+
+\begin{theorem}[Ritz extraction from a close candidate space]
+    \label{thm:ritz_ground_space_of_closeness}
+    \lean{Matrix.IsHermitian.ritzSubspace_isCloseTo_ground_of_isCloseTo}
+    \leanok
+    \uses{lem:centered_ground_operator}
+    Let $H$ be a finite-dimensional Hermitian operator with spectral value
+    $\mu$, and suppose every other spectral value is at least
+    $\mu+\gamma$, where $\gamma>0$. Let $G$ be its full ground space,
+    $r=\dim G$, and let $W$ be $\rho$-close to $G$, with $0\le\rho<1$.
+    Define $R$ to be the span, in the original Hilbert space, of the lowest
+    $r$ eigenvectors of the orthogonal compression of $H$ to $W$.
+    Then $R\subseteq W$, $\dim R=r$, and $G$ and $R$ are mutually
+    $\varepsilon$-close, where
+    \[
+       \varepsilon=
+       \frac{(\|H\|-\mu)\rho}{(1-\rho)\gamma}.
+    \]
+    This is an auxiliary estimate for the final spectral extraction in
+    \cite[Algorithm~1]{Arad2016RigorousRG}. It holds for arbitrary ground-space
+    multiplicity.
+\end{theorem}
+\begin{proof}\leanok
+    Project $G$ orthogonally into $W$. Since $\rho<1$, this projection is
+    injective on $G$ and its image $V$ has dimension $r$.
+    For $C=H-\mu I$, Lemma~\ref{lem:centered_ground_operator} gives
+    $C|_G=0$ and $\|C\|\le\|H\|-\mu$. The projected trial-space estimate
+    therefore bounds the energy of every vector of $V$ by
+    \[
+        \langle Hx,x\rangle\le
+        \left(\mu+\frac{(\|H\|-\mu)\rho}{1-\rho}\right)\|x\|^2.
+    \]
+    The variational principle gives the same bound throughout $R$.
+    The original spectral gap bounds the squared projection loss from $R$
+    to $G$ by $\varepsilon$. Equal dimensions give the reverse bound.
+\end{proof}
+
+\begin{lemma}[Trimming budgets at small target overlap]
+    \label{lem:interleaved_reference_trim_budget}
+    \lean{Real.weighted_reference_trim_error_le_filter_add}
+    \leanok
+    Let $0<a\le1$, $0\le f\le1$, $0\le\varepsilon\le a^2/16384$,
+    and $0\le\tau\le a/256$. Put $\theta=a/64$. Then
+    \begin{align}
+        (1+\theta)\bigl((1+\theta)f+(1+\theta^{-1})\varepsilon+2\tau\bigr)
+        +(1+\theta^{-1})\varepsilon\le f+a/16.
+        \label{eq:interleaved_trim_budget}
+    \end{align}
+    The reference accuracy is quadratic and the threshold error linear
+    in the guaranteed overlap parameter $a$.
+\end{lemma}
+\begin{proof}\leanok
+    Use $a^2\le a$ and $\theta\le1/64$. The filtered term is at most
+    $f+129a/4096$, the two reference terms total at most
+    $a/128+a/4096$, and the threshold term is at most $65a/8192$.
+    Their increments sum to less than $a/16$.
+\end{proof}
+
+\begin{lemma}[Absorbing a logarithm into a positive power]
+    \label{lem:log_rpow_absorption}
+    \lean{Real.exists_log_rpow_absorption, Real.exists_log_cube_absorption_constant}
+    \leanok
+    Given real $a,M$, $b\ge0$, $c>0$ and $p>0$, there is $A\ge\max(1,M)$
+    such that $a+b\log(A+1)\le cA^p$. Consequently, for $a,b\ge0$ and
+    $K>0$ one can choose $A\ge\max(1,M)$ with
+    $K(a+b\log(A+1))^3\le A$.
+\end{lemma}
+\begin{proof}\leanok
+    The logarithm and every constant are little-o of $x^p$ at infinity.
+    Use $\log(A+1)\le\log2+\log A$ for $A\ge1$. For the cubic claim
+    take $p=1/3$ and $c=K^{-1/3}$, then cube the nonnegative inequality.
+\end{proof}
+
+
+\begin{lemma}[Geometric success growth with an additive trimming loss]
+    \label{lem:interleaved_trim_stopping_envelope}
+    \lean{Real.interleaved_trim_step_bounds,
+        Real.interleaved_trim_sequence_bounds,
+        Real.interleaved_trim_sequence_stops}
+    \leanok
+    Let $0<a\le1/100$, $R\ge1$, $\Delta\ge0$ and $\beta\ge0$ satisfy
+    $\beta^2=\Delta$, $4R\beta\le1$ and $\beta+a/16\le1/200$.
+    Define $u_0=1-a$ and
+    \begin{align}
+        u_{j+1}=\frac{\Delta u_j}{1-u_j+\Delta u_j}+a/16.
+        \label{eq:interleaved_trim_scalar_recurrence}
+    \end{align}
+    For any $0\le z\le1-a$, the same one-step expression lies in
+    $[0,1-a]$. If $1-z\le\beta$, its success is at least $R(1-z)$;
+    if $1-z\ge\beta$, its error is at most $1/200$.
+    Consequently $0\le u_j\le1-a$ and either $u_j\le1/200$ or
+    $1-u_j\ge R^ja$. If $n\ge1$ and $\beta\le R^{n-1}a$, then
+    $u_n\le1/200$. Every $u_j$ lies in $[0,1)$.
+\end{lemma}
+\begin{proof}\leanok
+    Put $b=1-z\ge a$ and $d=b+\Delta z>0$. The next success is
+    $b/d-a/16$. If $b\le\beta$, then $d\le2\beta$ and $2Rd\le1$.
+    Since $Rb+a/16\le2Rb$, multiplication by $d$ proves the growth bound.
+    If $b\ge\beta$, then $\Delta z\le\beta^2\le\beta d$, proving
+    the exit bound. Small error persists, since $1-z\ge199/200\ge\beta$.
+    Induction gives the disjunction. At round $n-1$, either error is
+    already small or success is at least $\beta$; the final round exits.
+\end{proof}
+
+\begin{lemma}[An integer number of interleaved rounds]
+    \label{lem:interleaved_actual_stopping_parameters}
+    \lean{Real.interleaved_stopping_parameter_bounds,
+        Real.interleaved_trim_power_sequence_stops}
+    \leanok
+    Let $D\ge2$ and $s\ge1$ be integers. Put
+    \begin{align}
+        R&=D^6,& a&=\frac{3}{32D^{12}s^5},&
+        \Delta&=\frac{1}{200000D^{12}},& \beta&=\sqrt\Delta,\notag\\
+        k&=\left\lceil\log_D(D^2s)\right\rceil,
+        \label{eq:interleaved_actual_stopping_count}
+    \end{align}
+    where $k$ denotes the upper integer logarithm. These quantities
+    satisfy the hypotheses of Lemma~\ref{lem:interleaved_trim_stopping_envelope},
+    $k\ge2$, $\beta\le1/(100R)$ and $\beta\le R^{k-1}a$.
+    The literal recurrence (\ref{eq:interleaved_trim_scalar_recurrence})
+    therefore reaches $u_k\le1/200$, while $0\le u_j<1$ at every round.
+    This larger integer count does not assert the printed half-logarithmic
+    number of rounds or its running-time bound.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:interleaved_trim_stopping_envelope,thm:viable_node_power_parameters}
+    Since $R\ge64$, comparison of squares gives
+    $\beta\le1/(100R)\le1/6400$; also $a\le1/100$.
+    These estimates pay the additive exit loss $a/16$.
+    From $D^k\ge D^2s$ one obtains
+    $R^ka\ge3s/32$, hence
+    $R^{k-1}a\ge3s/(32R)>\beta$.
+    Apply the preceding lemma, reserving one final exit round.
 \end{proof}

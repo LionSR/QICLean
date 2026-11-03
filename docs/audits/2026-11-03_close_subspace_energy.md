@@ -1,0 +1,9 @@
+# Positive regional energy on a nearby soft target
+
+A positive operator with norm at most `A` and energy at most `E0` per unit squared norm on `G` has energy at most `(1+1/r)E0+(1+r)A delta` on a `delta`-close target `T`, for every positive weight `r`. The proof uses the actual vector `P_G t`; it assumes no separate comparison vector and does not require the regional operator to annihilate `G`. This is the quantitative link from the original full ground space to the nearby soft spectral target in ALVV, arXiv:1602.08828v2, lines 1360–1371 and 1807.
+
+The third higher-level energy consumer promotes two common estimates: closeness bounds `||x-P_Gx||^2`, and an operator-norm bound controls the real quadratic form. The original projected trial-space and projected positive-energy modules now use those shared estimates. All five of their public signatures are byte-identical to the previous checked source; no compatibility aliases are introduced.
+
+Strict actual-name checks pass at default options: shared estimates 4.147 seconds, projected positive energy 4.934 seconds, projected trial energy 4.846 seconds, and the new transfer 4.233 seconds. Fresh direct-consumer checks pass for the existing Ritz closeness theorem in 5.839 seconds and the actual regional-energy theorem in 6.827 seconds. All eight relevant public declarations pass imported foundation inspection in 4.021 seconds with only `propext`, `Classical.choice` and `Quot.sound`. The temporary inspection source is deleted.
+
+The physical soft operator, its centered norm and the quantitative target comparison remain genuine physical inputs to this auxiliary. The actual powered candidate, its nonzero vector and compressed minimum, the recursive energy estimates and running time are not concluded here. Combined adoption checks remain required.

@@ -30,6 +30,7 @@ import QICLean.Analysis.CanonicalSampleProjectionMeasurable
 import QICLean.Analysis.CanonicalSamplingTrimmingMeasurable
 import QICLean.Analysis.CanonicalSamplingViabilityMeasurable
 import QICLean.Analysis.CappedGeometricSum
+import QICLean.Analysis.CenteredGroundOperator
 import QICLean.Analysis.CfcComplex
 import QICLean.Analysis.CfcConjugation
 import QICLean.Analysis.CfcKronecker
@@ -45,6 +46,7 @@ import QICLean.Analysis.ChebyshevViability
 import QICLean.Analysis.ChebyshevWordPower
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
+import QICLean.Analysis.CloseSubspaceEnergyTransfer
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommutingExponentialOrder
 import QICLean.Analysis.CommutingHermitian
@@ -52,6 +54,8 @@ import QICLean.Analysis.ComplementProdKernel
 import QICLean.Analysis.ComplementProdPartition
 import QICLean.Analysis.CompressedInverseFloor
 import QICLean.Analysis.CompressedPartialSwap
+import QICLean.Analysis.CompressionEnergyBounds
+import QICLean.Analysis.CompressionEnergyInterval
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ContractionChain
 import QICLean.Analysis.ContractionWordAppend
@@ -70,6 +74,9 @@ import QICLean.Analysis.DominantEigenvector
 import QICLean.Analysis.DominantEigenvectorUniqueness
 import QICLean.Analysis.DoubledSystemGap
 import QICLean.Analysis.EnergyTruncation
+import QICLean.Analysis.EnergyTruncationShift
+import QICLean.Analysis.EnergyWeightedPowerDecay
+import QICLean.Analysis.EnergyWeightedPowerOrder
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.EntropyContinuity
 import QICLean.Analysis.EntropyDecomposition
@@ -115,6 +122,7 @@ import QICLean.Analysis.GroundEnergyResidual
 import QICLean.Analysis.GroundProjection
 import QICLean.Analysis.GroundShiftSpectralComparison
 import QICLean.Analysis.GroundSpaceAffineFilter
+import QICLean.Analysis.GroundSpectrumMinimum
 import QICLean.Analysis.HarmonicWeights
 import QICLean.Analysis.HayashiMarkovStructure
 import QICLean.Analysis.HermitianDilation
@@ -253,6 +261,8 @@ import QICLean.Analysis.ProbabilityEntropyRankTails
 import QICLean.Analysis.ProductOverlapReplacement
 import QICLean.Analysis.ProductReferenceDensityError
 import QICLean.Analysis.ProjectedEvolution
+import QICLean.Analysis.ProjectedPositiveEnergy
+import QICLean.Analysis.ProjectedTrialSpaceEnergy
 import QICLean.Analysis.ProjectionCalculus
 import QICLean.Analysis.ProjectionCfcUpperBound
 import QICLean.Analysis.ProjectionCompressionCfc
@@ -274,6 +284,7 @@ import QICLean.Analysis.RectangularTraceNormTopology
 import QICLean.Analysis.RectangularTraceNormTruncation
 import QICLean.Analysis.ReferencePolynomialBound
 import QICLean.Analysis.RefinementOutputPolynomialBound
+import QICLean.Analysis.RegionalEnergyCalibration
 import QICLean.Analysis.RegionalLowDefectLowerPin
 import QICLean.Analysis.RegionalLowDefectMass
 import QICLean.Analysis.RegionalLowDefectProductMass
@@ -337,6 +348,10 @@ import QICLean.Analysis.ResolventMellin
 import QICLean.Analysis.ResolventPhaseBound
 import QICLean.Analysis.ResolventPhaseGap
 import QICLean.Analysis.RestoringCoefficientBound
+import QICLean.Analysis.RitzCompression
+import QICLean.Analysis.RitzGroundSpace
+import QICLean.Analysis.RitzGroundSpaceCloseness
+import QICLean.Analysis.RitzSubspace
 import QICLean.Analysis.RootChannel
 import QICLean.Analysis.RootChannelWord
 import QICLean.Analysis.RootFidelity
@@ -358,6 +373,7 @@ import QICLean.Analysis.ShiftedDensityCommutation
 import QICLean.Analysis.ShiftedDensityPowers
 import QICLean.Analysis.ShiftedDensityTruncation
 import QICLean.Analysis.ShiftedFilterClipping
+import QICLean.Analysis.ShiftedLowEnergyCoordinates
 import QICLean.Analysis.ShiftedPowerDerivative
 import QICLean.Analysis.ShiftedSoftHardTruncation
 import QICLean.Analysis.SinhRatioDensity
@@ -367,6 +383,8 @@ import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SoftClusterParameters
 import QICLean.Analysis.SoftFamilyCalibration
 import QICLean.Analysis.SoftHardTruncation
+import QICLean.Analysis.SoftRegionalEnergyParameters
+import QICLean.Analysis.SoftTerminalEnergyParameters
 import QICLean.Analysis.SoftTruncation
 import QICLean.Analysis.SoftTruncationAccuracy
 import QICLean.Analysis.SoftTruncationCoercivity
@@ -420,6 +438,7 @@ import QICLean.Analysis.SupportProjectionOrder
 import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.SurprisalProductMoment
+import QICLean.Analysis.TensorEnergyMinimum
 import QICLean.Analysis.TensorFamilyImage
 import QICLean.Analysis.TensorOperatorPower
 import QICLean.Analysis.TensorProductWeights

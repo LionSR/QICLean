@@ -100,3 +100,18 @@ space. The order is the positive-semidefinite order.
     A canonical unit eigenvector attains the least eigenvalue. The two
     attained positive lower bounds for the same matrix have equal energies.
 \end{proof}
+
+
+\begin{lemma}[An attained spectral lower bound]
+    \label{lem:ground_spectrum_minimum}
+    \lean{Matrix.IsHermitian.minEigenvalue_eq_of_mem_spectrum_of_le}
+    \leanok
+    Let $H$ be Hermitian on a nonzero finite-dimensional space. If
+    $\mu\in\operatorname{spec}(H)$ and $\mu\le z$ for every
+    $z\in\operatorname{spec}(H)$, then $\lambda_{\min}(H)=\mu$.
+\end{lemma}
+\begin{proof}\leanok
+    Since $\mu$ is an eigenvalue, $\lambda_{\min}(H)\le\mu$.
+    The least eigenvalue belongs to the spectrum, so the reverse inequality
+    follows from the assumed spectral lower bound.
+\end{proof}

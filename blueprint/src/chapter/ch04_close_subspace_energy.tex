@@ -1,0 +1,114 @@
+\section{Regional energy on a nearby target}
+
+The soft spectral target is close to the original ground space. Its
+regional energy follows from a positive quadratic-form bound on that
+original space and the actual orthogonal projection.
+
+\begin{lemma}[Projection error and a quadratic-form norm bound]
+    \label{lem:projection_quadratic_bounds}
+    \lean{ContinuousLinearMap.re_inner_apply_le_mul_norm_sq,
+        Submodule.IsCloseTo.norm_sub_starProjection_sq_le}
+    \leanok
+    Let $C$ be a bounded operator on an inner-product space, with
+    $\|C\|\le A$. Then
+    $\operatorname{Re}\langle Cx,x\rangle\le A\|x\|^2$.
+    In finite dimension, if $G$ is $\delta$-close to a subspace $T$, then
+    \[
+       \|t-P_Gt\|^2\le\delta\|t\|^2\qquad(t\in T).
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The first assertion is Cauchy--Schwarz and the operator-norm bound.
+    For the second, subtract
+    $\|P_Gt\|^2\ge(1-\delta)\|t\|^2$ from the Pythagorean identity.
+\end{proof}
+
+\begin{lemma}[Positive energy transfers to a close target]
+    \label{lem:close_subspace_positive_energy}
+    \lean{Submodule.IsCloseTo.positive_energy_le}
+    \leanok
+    Let $C\ge0$ on a finite-dimensional real or complex inner-product
+    space, with $\|C\|\le A$. Suppose that $E_0\ge0$ and
+    \[
+       \operatorname{Re}\langle Cg,g\rangle\le E_0\|g\|^2\qquad(g\in G).
+    \]
+    If $G$ is $\delta$-close to $T$, then for every $a>0$ and every $t\in T$,
+    \[
+       \operatorname{Re}\langle Ct,t\rangle
+       \le\bigl((1+a^{-1})E_0+(1+a)A\delta\bigr)\|t\|^2.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:projection_quadratic_bounds,lem:projected_positive_energy}
+    Decompose $t=P_Gt+(t-P_Gt)$ and apply the weighted positive-form
+    inequality. The first term has energy at most $E_0\|t\|^2$,
+    since $P_G$ is a contraction. The second has energy at most
+    $A\delta\|t\|^2$ by the projection-error bound. Multiplication by
+    the two positive weights gives the assertion.
+\end{proof}
+
+These are auxiliaries for the soft target in
+\cite[Theorem \texttt{t:aisefficient}, lines 1360--1371, and line 1807]
+{Arad2016RigorousRG}. The actual soft operator, its norm, the comparison
+loss and its minimum-energy shift must be supplied by the physical
+construction before applying them to the untrimmed energy candidate.
+
+
+\begin{lemma}[Two quantitative regional-energy losses]
+    \label{lem:regional_energy_calibration}
+    \lean{Real.close_target_positive_energy_le_nine_quarters,
+        Real.projected_nine_quarters_energy_le_three,
+        Submodule.IsCloseTo.map_starProjection_energy_le_three_of_close_target}
+    \leanok
+    Let $C\ge0$ on a finite-dimensional real or complex inner-product
+    space, with $\|C\|\le A$. Suppose that $0\le\rho\le1/16$ and
+    \[
+       \operatorname{Re}\langle Cg,g\rangle\le(2+\rho)\|g\|^2
+       \qquad(g\in G).
+    \]
+    Suppose that $G$ is $\tau$-close to $T$ and $U$ is $\delta$-close
+    to $T$, where
+    \[
+       0\le\tau\le\frac1{1024(A+1)},\qquad
+       0\le\delta\le\frac1{100(A+1)}.
+    \]
+    Then every $x\in P_U T$ satisfies
+    $\operatorname{Re}\langle Cx,x\rangle\le3\|x\|^2$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:close_subspace_positive_energy,lem:projected_positive_energy}
+    Use weight $16$ in the preceding transfer. The resulting coefficient
+    is at most
+    $(17/16)(2+\rho)+17A\tau\le9/4$.
+    Projecting into $U$ with weight $8$ bounds the coefficient by
+    $(81/32+9A\delta)/(1-\delta)\le3$.
+\end{proof}
+
+The norm, residual and losses in this auxiliary remain hypotheses.
+Their verification for the same chosen physical family is a separate
+step in the energy-estimation argument of
+\cite[proof of Theorem \texttt{t:alg1}, line 1807]{Arad2016RigorousRG}.
+
+
+\begin{lemma}[Real scalar shifts of regional quadratic forms]
+    \label{lem:real_scalar_quadratic_shift}
+    \lean{ContinuousLinearMap.re_inner_sub_real_smul_one,
+        ContinuousLinearMap.re_inner_add_real_smul_one,
+        Matrix.re_inner_toEuclideanCLM_sub_real_smul_one,
+        Matrix.re_inner_toEuclideanCLM_add_real_smul_one,
+        Matrix.re_inner_toEuclideanCLM_sub_ofReal_smul_one}
+    \leanok
+    For a bounded operator $C$ on a real or complex inner-product space,
+    a real $a$ and a vector $x$,
+    \[
+       \operatorname{Re}\langle(C-aI)x,x\rangle
+       =\operatorname{Re}\langle Cx,x\rangle-a\|x\|^2.
+    \]
+    Replacing $a$ by $-a$ gives the addition identity. The same identities
+    hold for the Euclidean action of a finite matrix. No symmetry or
+    nonzero-vector assumption is required.
+\end{lemma}
+\begin{proof}\leanok
+    Expand the quadratic form and use that conjugation fixes the real
+    scalar $a$. The diagonal inner product is $\|x\|^2$.
+\end{proof}
