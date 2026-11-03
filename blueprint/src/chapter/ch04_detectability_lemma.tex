@@ -203,3 +203,71 @@ $1-4\langle\psi|H|\psi\rangle$.
     a vector precisely when every summand does. Each positive matrix and its
     range projection have the same kernel, proving the last identity.
 \end{proof}
+
+\begin{theorem}[The common kernel of complementary projection products]
+    \label{thm:complement_product_common_kernel}
+    \lean{ContinuousLinearMap.complementProd_apply_eq_self_iff}
+    \leanok
+    Let $(h_k)_{k\ge0}$ be orthogonal projections on a complete inner-product
+    space. For $n\ge0$, put $P_n=(I-h_{n-1})\cdots(I-h_0)$, with $P_0=I$.
+    Then $P_nx=x$ if and only if $h_kx=0$ for every $k<n$.
+    The projections need not commute.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:complement_product,thm:complement_product_removed_mass}
+    If $P_nx=x$, the removed-mass identity gives
+    $\sum_{k<n}\|h_kP_kx\|^2=0$. Every summand vanishes. Inductively
+    $P_kx=x$ for $k\le n$, so $h_kx=0$ for every $k<n$.
+    Conversely, if all these terms annihilate $x$, each complementary
+    factor fixes $x$, and induction gives $P_nx=x$.
+    This is the kernel identity used in the frustration-free truncation
+    of \cite{Arad2016RigorousRG}.
+\end{proof}
+
+\begin{theorem}[Partition of a commuting complementary product]
+    \label{thm:complement_product_partition}
+    \lean{ContinuousLinearMap.complementProd_partition}
+    \leanok
+    Let $(h_k)_{k\ge0}$ be pairwise commuting bounded operators on an
+    inner-product space over $\mathbb R$ or $\mathbb C$, and let $S\subseteq\mathbb N$.
+    Set $u_k=h_k$ and $v_k=0$ for $k\in S$, and $u_k=0$ and $v_k=h_k$ otherwise.
+    Write $P_n(h)=(I-h_{n-1})\cdots(I-h_0)$, with $P_0(h)=I$.
+    Then $P_n(h)=P_n(u)P_n(v)$ for every $n\ge0$.
+    No projection or completeness hypothesis is required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:complement_product,thm:commuting_complement_product}
+    Induct on $n$, starting from $P_0(h)=P_0(u)P_0(v)=I$.
+    If $n\in S$, then $u_n=h_n$ and $v_n=0$, so
+    \begin{align*}
+        P_{n+1}(h) & =(I-h_n)P_n(u)P_n(v)
+        =P_{n+1}(u)P_{n+1}(v).
+    \end{align*}
+    If $n\notin S$, then $u_n=0$ and $v_n=h_n$.
+    Every factor of $P_n(u)$ commutes with $h_n$, and hence
+    \begin{align*}
+        P_{n+1}(h) & =(I-h_n)P_n(u)P_n(v)
+        =P_n(u)(I-h_n)P_n(v)                \\
+                   & =P_{n+1}(u)P_{n+1}(v).
+    \end{align*}
+    This is the parity regrouping used in the regional frustration-free
+    construction of \cite[Section 6.1]{Arad2016RigorousRG}.
+\end{proof}
+
+\begin{theorem}[A projection residual with a perturbed input]
+    \label{thm:projection_perturbed_input_residual}
+    \lean{ContinuousLinearMap.IsStarProjection.norm_sub_apply_sq_le}
+    \leanok
+    Let $P$ be an orthogonal projection on a real or complex Hilbert space.
+    For arbitrary $x,y$,
+    \begin{align*}
+        \|x-Py\|^2\le\|x-Px\|^2+\|x-y\|^2.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:star_projection_identities}
+    The decomposition $x-Py=(x-Px)+P(x-y)$ is orthogonal.
+    Pythagoras and $\|P(x-y)\|\le\|x-y\|$ give the estimate.
+    This is the residual comparison used in the regional frustration-free
+    argument of \cite[Section 6.1]{Arad2016RigorousRG}.
+\end{proof}
