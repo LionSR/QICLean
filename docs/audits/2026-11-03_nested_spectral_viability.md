@@ -29,4 +29,11 @@ prove the complete low-density area law. The previously documented closed
 cutoff and absolute-value filter conventions are retained.
 
 The four new statements and their proofs have mathematical blueprint
-entries. Compilation and compiled declaration checks are pending.
+entries. Mathematical revision `88035ae1` passes the hosted full build,
+strict checks and compiled declaration checks on Mathlib 4.36. Strict
+read-only elaboration of the exact source on Mathlib 4.35 also passes; all
+four new declarations use only `propext`, `Classical.choice` and
+`Quot.sound`. The new mathematical statements compile as a PDF excerpt
+without overfull boxes and have been inspected visually. Source
+synchronization, prose, whitespace and LaTeX lint checks pass. Hosted
+blueprint validation is recorded in the pull request checks.
