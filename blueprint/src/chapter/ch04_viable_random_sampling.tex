@@ -117,7 +117,8 @@ up to the associator and the exchange of the first two factors.
 
 \begin{lemma}[Sampling or retaining the whole space]
     \label{thm:viable_sample_or_full}
-    \lean{Submodule.randomSubspace_eq_of_card_eq,
+    \lean{Submodule.sampleIndices, Submodule.card_sampleIndices,
+        Submodule.randomSubspace_eq_of_card_eq,
         Submodule.IsViable.randomSubspace_min_of_le,
         Submodule.exists_isViable_randomSubspace_min,
         Submodule.exists_measurable_randomSubspace_min_event}
@@ -237,7 +238,7 @@ up to the associator and the exchange of the first two factors.
     Suppose $D\ge2$, $s\ge1$ and a fixed family has at most $D^2$
     operators. At $a=\lceil\log_D(D^2s)\rceil$, the literal sampled-word
     image has dimension at most $D^6s^3$, for every unitary, before imposing
-    a success event. Moreover, if $D_{\rm ref}\ge1$ and
+    a success event. If $D_{\rm ref}\ge1$ and
     $\xi=(1000D_{\rm ref}\sqrt{L+1})^{-1}$, then
     $\xi^2R\le M$ implies the integer bound
     $R\le10^6D_{\rm ref}^2(L+1)M$.
