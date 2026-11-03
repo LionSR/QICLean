@@ -1,0 +1,133 @@
+% Fresh strict and imported foundation checks passed; ordinary full checks are pending.
+\section{A finite heat expansion of soft truncation}
+\label{sec:soft_heat_expansion}
+
+The finite logarithmic series is a finite linear combination of heat operators.
+The coefficient budget and a logarithmic truncation order provide the scalar
+estimates used in the corrected one-interval operator construction associated
+with~\cite[lines 1262--1268]{Arad2016RigorousRG}.
+
+\begin{definition}[Finite heat coefficients]
+    \label{def:soft_truncation_heat_coefficients}
+    \lean{Real.softTruncationHeatCoefficient}
+    \leanok
+
+    Define, for $0\leq a\leq m$,
+    \begin{align}
+        c_a(t,m)=t(-1)^a\sum_{j=1}^{m}\frac{\binom ja}{j}.
+        \label{eq:soft_heat_coefficients}
+    \end{align}
+    Binomial coefficients with $a>j$ are zero. The constant
+    coefficient is retained.
+\end{definition}
+
+\begin{theorem}[The exact scalar and matrix heat expansion]
+    \label{thm:soft_truncation_heat_expansion}
+    \lean{Real.softTruncation_eq_sum_heat,
+        Matrix.IsHermitian.cfc_softTruncation_eq_sum_heat}
+    \leanok
+
+    \uses{def:soft_truncation_heat_coefficients}
+    For $t>0$ and every real $x$,
+    \begin{align}
+        h_{m,t}(x)=\sum_{a=0}^m c_a(t,m)e^{-ax/t}.
+        \label{eq:soft_heat_scalar}
+    \end{align}
+    For every finite Hermitian matrix $U$, the same identity gives
+    \begin{align}
+        h_{m,t}(U)=\sum_{a=0}^m c_a(t,m)e^{-aU/t}.
+        \label{eq:soft_heat_matrix}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:soft_truncation_heat_coefficients}
+    Expand each $(1-e^{-x/t})^j$ by the binomial theorem, include
+    the zero binomial terms to give all inner sums the same upper
+    limit, and interchange the two finite sums. The identity
+    $(e^{-x/t})^a=e^{-ax/t}$ identifies the heat times.
+    Continuous functional calculus preserves these finite sums
+    and scalar multiples.
+\end{proof}
+
+\begin{lemma}[Absolute coefficient budget]
+    \label{lem:soft_truncation_heat_coefficient_budget}
+    \lean{Real.sum_abs_softTruncationHeatCoefficient_le}
+    \leanok
+
+    \uses{def:soft_truncation_heat_coefficients}
+    For $t\geq0$,
+    \begin{align}
+        \sum_{a=0}^m|c_a(t,m)|\leq t2^{m+1}.
+        \label{eq:soft_heat_budget}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    The unsigned binomial sum at degree $j$ is $2^j$.
+    Hence the left side equals $t\sum_{j=1}^m2^j/j$, which is at
+    most $t\sum_{j=1}^m2^j\leq t2^{m+1}$. This retains the
+    factor $t$ in the coefficient budget.
+\end{proof}
+
+\begin{lemma}[A logarithmic order for an exponential geometric tail]
+    \label{lem:exponential_geometric_tail_order}
+    \lean{Real.exponential_geometric_tail_order}
+    \leanok
+
+    Let $W,\xi>0$, $0<b<1$, and $N\in\mathbb R$. Put
+    \begin{align}
+        \ell=\max\left\{1,
+           \left\lceil\frac{\log\max\{1,N^2\}
+                -\log\log(1+\xi/W)}{-\log b}\right\rceil\right\}.
+        \label{eq:soft_heat_order}
+    \end{align}
+    Then $\ell\geq1$ and $W(e^{N^2b^\ell}-1)\leq\xi$.
+\end{lemma}
+\begin{proof}\leanok
+    The ceiling gives
+    $\log\max\{1,N^2\}+\ell\log b\leq\log\log(1+\xi/W)$.
+    Exponentiating gives $N^2b^\ell\leq\log(1+\xi/W)$.
+    Exponentiate again and multiply by $W$.
+\end{proof}
+
+\begin{theorem}[A polynomial bond bound at fixed filter degree]
+    \label{thm:geometric_order_polynomial_bound}
+    \lean{Real.exists_geometric_order_polynomial_bound}
+    \leanok
+    Fix $0<b<1$, $W,\xi>0$, and $q,s,k\in\mathbb N$ with $q\ge1$.
+    There exist $C,p\in\mathbb N$, with $C\ge1$, such that every
+    $N\in\mathbb N$ satisfies
+    \begin{align}
+        (2s r_N^2 q^{r_N})^{2k}&\le C(N+1)^p,\\
+        r_N&=\max\left\{1,
+          \left\lceil\frac{\log\max\{1,N^2\}
+             -\log\log(1+\xi/W)}{-\log b}\right\rceil\right\}.
+    \end{align}
+    The coefficient and degree are chosen before $N$; zero length
+    and $s=0$ or $k=0$ are included.
+\end{theorem}
+\begin{proof}\leanok
+    Put $d=-\log b>0$, $L=\log\log(1+\xi/W)$,
+    $a_0=2+|L|/d$ and $a_1=2/d$. With $X=N+1\ge1$, the ceiling
+    estimate gives
+    \begin{align}
+        r_N\le a_0+a_1\log X\le(a_0+a_1)X.
+    \end{align}
+    For a negative argument the natural ceiling is zero; for a
+    nonnegative argument it is at most the argument plus one.
+    Also $\log\max\{1,N^2\}\le2\log X$.
+    Put $p_0=\lceil a_1\log q\rceil$. Since $q\ge1$,
+    \begin{align}
+        q^{r_N}
+          &\le e^{a_0\log q}X^{a_1\log q}
+           \le e^{a_0\log q}X^{p_0},\\
+        2s r_N^2q^{r_N}
+          &\le KX^{p_0+2},\qquad
+          K=2s(a_0+a_1)^2e^{a_0\log q}.
+    \end{align}
+    Take $C=\max\{1,\lceil K^{2k}\rceil\}$ and $p=(p_0+2)2k$.
+    Raising the last inequality to the natural power $2k$ proves the claim.
+\end{proof}
+
+This numerical consequence applies to a fixed filter degree and fixed
+approximation budgets. It gives no assertion for a filter degree that
+grows with the length and no running-time estimate.

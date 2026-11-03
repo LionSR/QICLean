@@ -61,6 +61,9 @@ import QICLean.Algebra.MatrixKernelRigidity
 import QICLean.Algebra.MatrixKroneckerEmbed
 import QICLean.Algebra.MatrixMulRange
 import QICLean.Algebra.MatrixOperatorSpace
+import QICLean.Algebra.MatrixPolynomialDegree
+import QICLean.Algebra.MatrixPolynomialInterpolation
+import QICLean.Algebra.MatrixPolynomialParameter
 import QICLean.Algebra.MatrixPosDefTransport
 import QICLean.Algebra.MatrixProductIntertwine
 import QICLean.Algebra.MatrixRankBaseChange

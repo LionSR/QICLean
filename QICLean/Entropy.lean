@@ -87,6 +87,7 @@ import QICLean.Entropy.OrderedEntropyAlgebra
 import QICLean.Entropy.PatchNormalizedFirstVariation
 import QICLean.Entropy.PatchStationarity
 import QICLean.Entropy.PhysicalBufferOverlap
+import QICLean.Entropy.PositiveLocalLift
 import QICLean.Entropy.PositiveOverlappingProduct
 import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.ProductOverlapPurity
@@ -100,6 +101,7 @@ import QICLean.Entropy.RegionSplit
 import QICLean.Entropy.RegionTensorSplitting
 import QICLean.Entropy.RegionTraceNorm
 import QICLean.Entropy.RegionUnion
+import QICLean.Entropy.RegionalOperatorCoordinates
 import QICLean.Entropy.RegionalRightContraction
 import QICLean.Entropy.RegionalTensorMerge
 import QICLean.Entropy.RegionalViability

@@ -10,7 +10,7 @@ Arad--Landau--Vazirani--Vidick is the following finite logarithmic series
     \leanok
     \begin{align}
         h_{m,t}(x)
-         & =t\sum_{j=1}^{m}\frac{{(1-e^{-x/t})}^{j}}{j}.
+            &=t\sum_{j=1}^{m}\frac{{(1-e^{-x/t})}^{j}}{j}.
         \label{eq:scalar_soft_truncation_definition}
     \end{align}
 \end{definition}
@@ -21,11 +21,11 @@ Arad--Landau--Vazirani--Vidick is the following finite logarithmic series
     \leanok
     If $t>0$, $m\geq1$, and $x\geq0$, then
     \begin{align}
-        0\leq h_{m,t}(x) & \leq x,
-        \label{eq:scalar_soft_truncation_order}                           \\
-        x-h_{m,t}(x)     & \leq\frac{t}{m}{\left(\frac{x}{t}\right)}^{m},
-        \label{eq:scalar_soft_truncation_remainder}                       \\
-        h_{m,t}(x)       & \leq t(1+\log m).
+        0\leq h_{m,t}(x)&\leq x,
+        \label{eq:scalar_soft_truncation_order}\\
+        x-h_{m,t}(x)&\leq\frac{t}{m}{\left(\frac{x}{t}\right)}^{m},
+        \label{eq:scalar_soft_truncation_remainder}\\
+        h_{m,t}(x)&\leq t(1+\log m).
         \label{eq:scalar_soft_truncation_log_bound}
     \end{align}
     The final estimate corrects the printed $t\log m$ bound, which fails for
@@ -44,238 +44,15 @@ Arad--Landau--Vazirani--Vidick is the following finite logarithmic series
     (\ref{eq:scalar_soft_truncation_log_bound}).
 \end{proof}
 
-\begin{lemma}[Geometric remainder]
-    \label{lem:scalar_soft_truncation_geometric}
-    \lean{Real.softTruncation_remainder_le_geometric}
+\begin{lemma}[A matrix bound for soft truncation]
+    \label{lem:soft_truncation_operator_cap}
+    \lean{Matrix.PosSemidef.cfc_softTruncation_le_scalar}
     \leanok
-    If $t>0$, $m\geq0$ is an integer, and $x\geq0$, then
-    \begin{align}
-        x-h_{m,t}(x)\leq x(1-e^{-x/t})^m.
-        \label{eq:scalar_soft_truncation_geometric}
-    \end{align}
+    \uses{thm:scalar_soft_truncation_bounds}
+    If $A\ge0$, $t>0$ and $m\ge1$, then
+    $h_{m,t}(A)\le t(1+\log m)I$.
 \end{lemma}
 \begin{proof}\leanok
-    The derivative of the remainder at $u\geq0$ is $(1-e^{-u/t})^m$.
-    On $[0,x]$ it is bounded above by $(1-e^{-x/t})^m$, and the
-    remainder vanishes at zero. The mean value inequality gives the result.
-\end{proof}
-
-\begin{lemma}[Exponential weight for the remainder]
-    \label{thm:scalar_soft_truncation_exp_weight}
-    \lean{Real.softTruncation_remainder_le_exp}
-    \leanok
-    If $m\geq1$ is an integer, $0<\theta\leq1/2$, and $x\geq0$, then
-    \begin{align}
-        x-h_{m,m}(x)
-        \leq\frac2\theta\exp\!\left(\theta x-\frac{\theta m}{2}\right).
-        \label{eq:scalar_soft_truncation_exp_weight}
-    \end{align}
-\end{lemma}
-\begin{proof}\leanok
-    The inequality $z\leq e^{sz}/s$ holds for $s>0$. If $x\leq m$,
-    then
-    \begin{align}
-        1-e^{-x/m}\leq1-e^{-1}\leq\frac34\leq e^{-\theta/2}.
-    \end{align}
-    Applying~(\ref{eq:scalar_soft_truncation_geometric}) gives
-    $x-h_{m,m}(x)\leq\theta^{-1}e^{\theta x-\theta m/2}$.
-    If $x\geq m$, the nonnegativity of the truncation instead gives
-    \begin{align}
-        x-h_{m,m}(x)\leq x
-        \leq\frac2\theta e^{\theta x/2}
-        \leq\frac2\theta e^{\theta x-\theta m/2}.
-    \end{align}
-\end{proof}
-
-For a probability spectral measure with exponential moment at most $M$,
-integration gives a mean remainder at most
-$2M\theta^{-1}e^{-\theta m/2}$. Application to a regional Hamiltonian
-requires a bound on that physical exponential moment.
-
-
-\begin{lemma}[Monotonicity of soft truncation]
-    \label{thm:scalar_soft_truncation_monotone}
-    \lean{Real.monotoneOn_softTruncation}
-    \leanok
-    If $t>0$ and $m\geq0$ is an integer, then $h_{m,t}$ is nondecreasing
-    on $[0,\infty)$.
-\end{lemma}
-\begin{proof}\leanok
-    \uses{def:scalar_soft_truncation}
-    The function $x\mapsto 1-e^{-x/t}$ is nonnegative and nondecreasing on
-    $[0,\infty)$. Its positive integer powers, and hence every summand
-    in~(\ref{eq:scalar_soft_truncation_definition}), are nondecreasing.
-\end{proof}
-
-\begin{lemma}[Comparison with a scalar hard cap]
-    \label{thm:scalar_soft_hard_truncation}
-    \lean{Real.softTruncation_hard_bounds}
-    \leanok
-    If $t>0$, $m\geq1$ is an integer, and $x\geq0$, then
-    \begin{align}
-        \min\{x,t/2\}-\frac{t}{2}\,2^{-m}
-        \leq h_{m,t}(x)\leq x.
-        \label{eq:scalar_soft_hard_truncation}
-    \end{align}
-\end{lemma}
-\begin{proof}\leanok
-    \uses{thm:scalar_soft_truncation_bounds,
-        lem:scalar_soft_truncation_geometric,
-        thm:scalar_soft_truncation_monotone}
-    For $0\leq x\leq t/2$, one has
-    $0\leq1-e^{-x/t}\leq x/t\leq1/2$, and therefore
-    \begin{align}
-        x-h_{m,t}(x)
-        \leq x(1-e^{-x/t})^m\leq\frac{t}{2}\,2^{-m}.
-    \end{align}
-    For $x\geq t/2$, apply this estimate at $t/2$ and use monotonicity.
-    The upper bound is~(\ref{eq:scalar_soft_truncation_order}).
-\end{proof}
-
-\begin{lemma}[Comparison of spectral truncations]
-    \label{thm:matrix_soft_hard_truncation}
-    \lean{Matrix.PosSemidef.softTruncation_hard_bounds}
-    \leanok
-    Let $A$ be a positive semidefinite complex matrix, $t>0$, and $m\geq1$
-    an integer. Functional calculus gives
-    \begin{align}
-        \min(A,(t/2)I)-\frac{t}{2}\,2^{-m}I
-        \leq h_{m,t}(A)\leq A.
-        \label{eq:matrix_soft_hard_truncation}
-    \end{align}
-    Here $\min(A,(t/2)I)$ denotes the function $x\mapsto\min\{x,t/2\}$
-    applied to $A$.
-\end{lemma}
-\begin{proof}\leanok
-    \uses{thm:scalar_soft_hard_truncation}
-    The spectrum of $A$ is nonnegative. Apply
-    (\ref{eq:scalar_soft_hard_truncation}) at each spectral value and use
-    order preservation of the functional calculus for this fixed matrix.
-\end{proof}
-
-
-\section{Independent scale and finite heat expansion}
-
-\begin{lemma}[Exact change of scale and exponential remainder]
-    \label{thm:soft_truncation_independent_scale}
-    \lean{Real.softTruncation_scale,
-        Real.softTruncation_remainder_le_exp_of_scale_le}
-    \leanok
-    For $s,t>0$ and real $x$,
-    \begin{align*}
-        h_{m,t}(x)=\frac ts h_{m,s}\left(\frac stx\right).
-    \end{align*}
-    If $m\geq1$, $0<t\leq4m$ and $x\geq0$, then
-    \begin{align*}
-        x-h_{m,t}(x)\leq16e^{x/8-t/16}.
-    \end{align*}
-\end{lemma}
-\begin{proof}\leanok
-    \uses{thm:scalar_soft_truncation_exp_weight}
-    Substitute in the defining finite sum. For the remainder take
-    $s=m$ and apply the equal-scale weighted bound at
-    $\theta=t/(8m)\leq1/2$. The prefactor becomes $16$, and the
-    exponent becomes $x/8-t/16$.
-\end{proof}
-
-\begin{definition}[Finite heat coefficients]
-    \label{def:soft_truncation_heat_coefficients}
-    \lean{Real.softTruncationHeatCoefficient}
-    \leanok
-    Define, for $0\leq a\leq m$,
-    \begin{align*}
-        c_a(t,m)=t(-1)^a\sum_{j=1}^{m}\frac{\binom ja}{j}.
-    \end{align*}
-    Binomial coefficients with $a>j$ are zero. The constant
-    coefficient is retained.
-\end{definition}
-
-\begin{lemma}[The exact scalar and matrix heat expansion]
-    \label{thm:soft_truncation_heat_expansion}
-    \lean{Real.softTruncation_eq_sum_heat,
-        Matrix.IsHermitian.cfc_softTruncation_eq_sum_heat}
-    \leanok
-    \uses{def:soft_truncation_heat_coefficients}
-    For $t>0$ and every real $x$,
-    \begin{align*}
-        h_{m,t}(x)=\sum_{a=0}^m c_a(t,m)e^{-ax/t}.
-    \end{align*}
-    For every finite Hermitian matrix $U$, the same identity gives
-    \begin{align*}
-        h_{m,t}(U)=\sum_{a=0}^m c_a(t,m)e^{-aU/t}.
-    \end{align*}
-\end{lemma}
-\begin{proof}\leanok
-    \uses{def:soft_truncation_heat_coefficients}
-    Expand each $(1-e^{-x/t})^j$ by the binomial theorem, include
-    the zero binomial terms to give all inner sums the same upper
-    limit, and interchange the two finite sums. The identity
-    $(e^{-x/t})^a=e^{-ax/t}$ identifies the heat times.
-    Continuous functional calculus preserves these finite sums
-    and scalar multiples.
-\end{proof}
-
-\begin{lemma}[Absolute coefficient budget]
-    \label{thm:soft_truncation_heat_coefficient_budget}
-    \lean{Real.sum_abs_softTruncationHeatCoefficient_le}
-    \leanok
-    \uses{def:soft_truncation_heat_coefficients}
-    For $t\geq0$,
-    \begin{align*}
-        \sum_{a=0}^m|c_a(t,m)|\leq t2^{m+1}.
-    \end{align*}
-\end{lemma}
-\begin{proof}\leanok
-    The unsigned binomial sum at degree $j$ is $2^j$.
-    Summing over $j$ gives
-    \begin{align*}
-        \sum_{a=0}^m|c_a(t,m)|
-        =t\sum_{j=1}^m\frac{2^j}{j}
-        \leq t\sum_{j=1}^m2^j\leq t2^{m+1}.
-    \end{align*}
-    The coefficient bound retains the factor $t$.
-\end{proof}
-
-\begin{lemma}[A logarithmic order for an exponential geometric tail]
-    \label{thm:exponential_geometric_tail_order}
-    \lean{Real.exponential_geometric_tail_order}
-    \leanok
-    Let $W,\xi>0$, $0<b<1$, and $N\in\mathbb R$. Put
-    \begin{align*}
-        \ell=\max\left\{1,
-        \left\lceil\frac{\log\max\{1,N^2\}
-            -\log\log(1+\xi/W)}{-\log b}\right\rceil\right\}.
-    \end{align*}
-    Then $\ell\geq1$ and $W(e^{N^2b^\ell}-1)\leq\xi$.
-\end{lemma}
-\begin{proof}\leanok
-    The ceiling gives
-    $\log\max\{1,N^2\}+\ell\log b\leq\log\log(1+\xi/W)$.
-    Exponentiating gives $N^2b^\ell\leq\log(1+\xi/W)$.
-    Exponentiate again and multiply by $W$.
-\end{proof}
-
-\begin{lemma}[A residual order compatible with short heat times]
-    \label{thm:soft_truncation_scaled_residual_order}
-    \lean{Real.softTruncation_order_error_le_one_fourth,
-        Real.exists_softTruncation_scaled_order_of_residual_budget}
-    \leanok
-    Let $\eta\geq0$ and $0<\rho\leq1$. Set
-    \begin{align*}
-        m                                      & =\left\lceil12+\frac23\eta+
-        \frac{16}{3}\log(80/\rho)\right\rceil, &
-        t                                      & =3m,                        & \alpha & =\frac{3m}{2}2^{-m}.
-    \end{align*}
-    Then $m\geq1$, $t/2\geq10$, $0\leq\alpha\leq3/4$, and
-    \begin{align*}
-        17+\eta+\alpha                & \leq t/2, &
-        80e^{(17+\eta+\alpha)/8-t/16} & \leq\rho.
-    \end{align*}
-\end{lemma}
-\begin{proof}\leanok
-    The equal-scale correction satisfies $(m/2)2^{-m}\leq1/4$,
-    since for $m=k+1$ one has $k+1\leq2^k$. Multiply this
-    bound by three. The logarithm is nonnegative, and the stated
-    ceiling gives both the cutoff inequality and an exponent at
-    most $-\log(80/\rho)$.
+    Every spectral value of $A$ is nonnegative. Apply the scalar bound
+    at each spectral value and use the order-preserving functional calculus.
 \end{proof}

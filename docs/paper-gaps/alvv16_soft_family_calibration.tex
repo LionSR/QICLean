@@ -1,0 +1,106 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+% Deferred to a later review branch: \input{command}
+\title{Simultaneous parameters for a soft improving family}
+\author{}
+\date{2026-11-03}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+The efficient-family argument of Arad--Landau--Vazirani--Vidick uses a
+fourth-order soft truncation and specifies the window and filter scales
+in terms of the gap; see \cite[lines 1373--1420]{Arad2016RigorousRG}.
+The result below is a different sufficient scalar calibration. It
+makes no assertion about the printed gap dependence or running time.
+
+\section{A simultaneous choice}
+
+Fix a local dimension $q\ge2$, a positive gap $g$, and natural exponents
+$a,b,c$. For an integer $u\ge2$, put
+\begin{align}
+    \ell&=u^8,\quad m=u^{10},\quad t=3m,\quad k=u^{16},\quad T=u^9,\\
+    D&=(mk+1)(qk)^{36\ell+4\lfloor k/\ell\rfloor},\\
+    M&=3t(1+\log m)+4\ell+34,\\
+    \tau&=D^{-a}M^{-b},\qquad
+    \xi=\min\left\{1,\frac{\tau g^2}{20000(M+g+8)}\right\}.
+\end{align}
+The count and precision are evaluated at the same $u$. In particular,
+one does not first choose a residual tolerance and then allow the
+resulting family count to change that tolerance.
+
+There is a sufficiently large natural $u$, depending only on
+$q,g,a,b,c$, for which $t,T\ge156+2g$, $T\ge g/40+24$, and
+\begin{align}
+    3\left[32e^{-(T-g/40-24)/8}
+       +\frac tm\left(\frac Tt\right)^m\right]
+       &\le\frac{\tau g}{10^6},\\
+    3\left[32e^{-(T-156-2g)/8}
+       +\frac tm\left(\frac Tt\right)^m\right]
+       &\le\frac{\tau g}{10^6},\\
+    \left[2e^{-2k\sqrt{(g/2)/(M+\xi+4+g)}}\right]^2
+       &\le D^{-12}M^{-c}.
+\end{align}
+Both $\tau$ and $\xi$ lie in $(0,1]$. This is a proved numerical
+statement.\footnote{Formal theorem:
+\leanid{Real.exists_soft_family_calibration} in
+\doclink{QICLean/Analysis/SoftFamilyCalibration}.}
+
+Indeed, $k/\ell=u^8$, and the exact expressions satisfy
+\begin{align}
+    \log D&\le u^8(\log2+40\log q+666\log u),\\
+    M+R&\le u^{10}(47+R+90\log u)\qquad(R\ge0).
+\end{align}
+Since $\log u=o(u^p)$ for every $p>0$, eventually
+$M+5+g\le u^{12}$ and
+\begin{align}
+    (a+12)\log D+(b+c)\log M
+      +200+g+\left|\log\frac{g}{2000000}\right|
+      \le\frac{u^9}{64}.
+\end{align}
+These inequalities control the two exponential residuals and the
+Taylor remainder $9(3u)^{-m}$. They also control the squared filter
+error, because, once $gu^2\ge1$,
+\begin{align}
+    u^9\le4u^{16}\sqrt{\frac{g/2}{M+\xi+4+g}}.
+\end{align}
+
+\section{The algorithmic distinction}
+
+This calibration permits a precision depending on the family count,
+with all choices made before the chain length or target dimension.
+It does not complete a particular randomized construction. One possible
+use is a procedure that repeatedly samples half the current dimension,
+applies an improving family, transfers viability to the original
+physical target, and then trims against that target. This differs from
+the sample-once iteration of Figure~\texttt{fig:merge-prime}
+in \cite[lines 1664--1673]{Arad2016RigorousRG}; its actual sampling law,
+success probability, dimension decrease and trimming estimates must be
+proved separately. No conclusion about that iteration follows solely
+from the numerical existence theorem.
+
+For a supplied common improving family and a reference satisfying the
+proved fixed-input sampling and collective-trimming estimates, the actual
+stopped half-resampling iteration now has a finite-product original-target
+probability bound. One coefficient $K$, chosen before the length $N$,
+target dimension bound $r$ and ambient dimension, gives stopping threshold
+$K(r+1)(N+2)^2$. After $R$ prescribed rounds, the true event that every
+actual state is $0.04$-viable, and each active next state is
+$3/200$-viable, has failure probability at most $R\eta/(N+2)^a$.
+The initial matrix need not be an orthogonal projection. The proof uses
+actual guarded failures, the preceding-seed dependence of the recursion,
+and fixed-input Haar estimates; no measurable selection of auxiliary
+success events is assumed.\footnote{Formal theorem:
+\leanid{Entropy.exists_canonicalHalfSampleTrimIterate_joint_probability} in
+\doclink{QICLean/Analysis/StoppedHalfSamplingProbability}.}
+This establishes a mathematical probability statement for the corrected
+repeated-resampling operation under its stated family and reference
+hypotheses. It does not identify that operation with the printed
+sample-once procedure or establish running time.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

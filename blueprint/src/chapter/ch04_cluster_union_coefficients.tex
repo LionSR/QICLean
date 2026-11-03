@@ -1,3 +1,4 @@
+% Fresh strict and imported foundation checks passed; ordinary full checks are pending.
 \section{Coefficients of unions of finite sets}
 
 Grouping finite inclusion--exclusion by the union of the selected windows
@@ -11,14 +12,15 @@ in~\cite{gap:alvv16_cluster_approximation}.
     \label{thm:cluster_union_coefficient_bound}
     \lean{Finset.norm_sum_powerset_biUnion_sign_le_two_pow}
     \leanok
+
     Let $W$ be a finite family of finite subsets of a set $X$. Suppose
     there is an injective map $\mu:W\to X$ such that $\mu(I)\in I$ for
     every $I\in W$. For a finite subset $U\subseteq X$, put
     \begin{align}
         c_U
-         & =\sum_{\substack{\varnothing\ne\mathcal F\subseteq W \\
-                \bigcup\mathcal F=U}}
-        (-1)^{|\mathcal F|+1}.
+        &=\sum_{\substack{\varnothing\ne\mathcal F\subseteq W\\
+              \bigcup\mathcal F=U}}
+          (-1)^{|\mathcal F|+1}.
         \label{eq:cluster_union_coefficient}
     \end{align}
     Then $|c_U|\leq2^{|U|}$.

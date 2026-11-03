@@ -7,6 +7,78 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Dimension of a half-sample image — unconditional helper (2026-11-03)
+
+- **Pattern:** Bound the image of the actual sample of size `q / (2 * D^2)`
+  by half the input dimension, independently of sampling success.
+- **Reuse:** `Submodule.finrank_half_sample_image_le` combines the existing
+  random-subspace dimension formula, finite-image dimension theorem and
+  `Nat.div_mul_le_self`. The uniform sampling theorem delegates to it;
+  reference trimming uses `finrank_map_le` after the existing exact span-map identity.
+- **Decision:** No viability, positive-rank or positive-count assumptions are
+  added to the dimension statement. The case of zero dimension or zero count
+  uses the same proof. No new tactic is needed.
+
+### Dimensions of the actual stopped sampling step — existing rank identities (2026-11-03)
+
+- **Pattern:** Bound the canonical sample, common-family image, collective
+  trim and returned projection without a successful-sampling hypothesis.
+- **Reuse:** `Matrix.finrank_randomRangeSubspace` supplies the exact sample
+  count. The family estimate uses `Matrix.rank_mul_le_right` and the existing
+  Euclidean finite-sup dimension bound. The trim is identified with a linear
+  image of its actual range before applying `finrank_map_le`.
+- **Decision:** Use Euclidean coordinates for the inner-product-space
+  dimension estimate. Ordinary function coordinates do not carry its
+  required inner product; attempting that coercion is avoided. No new
+  tactic or resource option is introduced.
+
+### Polynomial monomials with a defined size variable — shared algebra (2026-11-03)
+
+- **Pattern:** Normalize products of monomial bounds and mixed powers when the
+  size variable is itself a product involving length and inverse accuracy.
+- **Reuse:** Private generalized monomial identities in
+  `Analysis/InterleavedOutputPolynomialBound.lean` keep the base arbitrary.
+  Reference products and the count/refinement costs call these identities.
+- **Decision:** Reuse `pow_add`, `pow_mul` and generic ring identities instead
+  of expanding the defined size expression. This keeps the original default
+  heartbeat budget; no tactic or budget increase is introduced.
+
+### From an inverse-accuracy cost to a reference bond — existing lemmas (2026-11-03)
+
+- **Pattern:** First bound the accuracy logarithm by `b0 + log X`, then use
+  monotonicity of the reference expression and exponentiate its linear bound.
+- **Reuse:** Expose the existing private proofs as
+  `Real.reference_accuracy_log_profile_bounds` and
+  `Real.reference_profile_polynomial_bound` in
+  `Analysis/RefinementOutputPolynomialBound.lean`, with proof bodies unchanged.
+- **Consumers:** The existing complete refinement estimate continues to call
+  both lemmas. The independent-scale interleaved estimate can set `X = Z^Q`
+  instead of repeating the logarithmic argument.
+- **Decision:** Mathematical lemmas suffice; no tactic or alias is added.
+
+### A unit residual bounds an attained energy — shared mathematical lemma (2026-11-02)
+
+- **Pattern:** Bound the change of a unit vector's real energy expectation by its residual.
+- **Reuse:** Move the existing `real_eigenvalue_ge_of_unit_residual` unchanged from the
+  private low-cluster proof to `Analysis/GroundEnergyResidual.lean`. Both original cluster
+  estimates and the restricted-residual consequence use it.
+- **Decision:** The new consequence first proves actual eigenvector membership in the low
+  spectral span, then applies the restriction norm. The matrix form derives the lower
+  quadratic form from positive semidefiniteness. No repeated expectation calculation or
+  new tactic is introduced.
+
+### Natural half-size sampling — shared existing lemma (2026-11-02)
+
+- **Pattern:** Convert the actual quotient `p / (2 * D^2)` to the real lower
+  bound `p / (4 * D^2)` once `p >= 4 * D^2`.
+- **Reuse:** Expose the existing
+  `Submodule.bootstrap_sample_floor_lower_bound` with its proof unchanged.
+  Its two previous consumers and the new natural nested-sampling estimate
+  now use the same theorem across two files.
+- **Decision:** No repeated natural-division proof, second sample-size
+  definition or new tactic is introduced.
+
+
 ### Dimension of a finite span of images — shared lemma (2026-10-27)
 
 - **Pattern:** For a finite family of linear maps, bound the dimension of
@@ -1688,3 +1760,596 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 - **Scope:** The general estimate retains the actual initial overlap and
   shrinking factor; no new approximate-projector predicate or supplied tail
   replaces the actual operator argument.
+
+### Squared dimension ratios in sampling estimates — candidate (2026-11-02)
+
+- **Seen:** The new count-comparison and sampling-fraction lemmas in
+  `Analysis/NestedSamplingParameters.lean` replace fractional powers by
+  squared dimension inequalities and then compare positive squares.
+- **Reuse:** Mathlib's logarithm monotonicity, natural-power monotonicity,
+  and ordinary division inequalities suffice. No new tactic is introduced.
+- **Decision:** These occurrences are confined to one module. Retain the
+  explicit mathematical inequalities; reconsider a shared lemma when another
+  mathematical argument needs the same comparison.
+
+### Actual filter ceilings — shared lemma (2026-11-02)
+
+- **Pattern:** Control the natural ceiling of `A*u²/g`, including the
+  rounding term, before comparing two polynomial-filter counts.
+- **Reuse:** `Real.ceil_quadratic_scale_bounds` in
+  `Analysis/PolynomialFilterCeil.lean` is the existing two-sided proof
+  from TNLean's private scalar estimate. The dyadic ceiling comparison
+  applies that one shared proof twice.
+- **Consumer follow-up:** After the companion pin is updated, the single
+  existing TNLean `PolynomialFilterParameters` call will import this
+  theorem and its private copy will be removed. No public scalar
+  statement changes and no new tactic is introduced.
+
+### Nested spectral targets — one contraction proof (2026-11-02)
+
+- **Seen:** The single-target contraction and tensor-containment arguments
+  also apply to distinct lower and upper spectral cutoffs.
+- **Reuse:** Generalize the existing proofs to a lower target contained in
+  the upper target, requiring only that the upper orthogonal complement
+  maps into the lower orthogonal complement. The existing single-target
+  declarations retain their signatures and specialize the shared proofs.
+- **Decision:** No separate approximate-projector predicate or proof tactic
+  is introduced. The Chebyshev composition uses these same nested-target
+  results and the existing canonical spectral-coordinate theorem.
+
+### A projection preimage with two compatible norm bounds (2026-11-02)
+
+- **Pattern:** Invert the positive compression of an orthogonal projection,
+  then use its quadratic form to bound the norm of the same preimage.
+- **Reuse:** `IsCloseTo.exists_mem_starProjection_eq_and_norm_sq_le` proves
+  both norm bounds together. The original preimage theorem selects its
+  first bound; normalized error reduction uses the sharper squared bound.
+- **Decision:** Keep one compression-inverse proof. Weighted composition
+  likewise contains the projection argument once, with factor-two
+  composition obtained by setting the weight to one.
+
+### Weighted transfer through a Schmidt-rank reference (2026-11-02)
+
+- **Pattern:** Transfer viability to a nearby reference, trim using its
+  uniform Schmidt-rank bound, and transfer back.
+- **Reuse:** `IsCloseTo.trans_weighted` gives each transfer with a free
+  positive parameter. `isCloseTo_prodExt_trimSubspace` supplies the actual
+  collective trim; its proof is unchanged.
+- **Decision:** Compose these existing statements, retaining both reference
+  directions and the corrected error constant explicitly. No new tactic.
+
+### Equal centered presentations — apply scalar-shift coordinates (2026-11-02)
+
+- **Seen:** A physically constructed centered matrix is equal to a raw
+  Hamiltonian minus a scalar identity, but its canonical eigenbasis is
+  attached to its original matrix expression.
+- **Reuse:** Eliminate the matrix equality in a generic statement and
+  apply the existing centered-ground scalar-shift identity. The original
+  scalar-shift proof and public signatures remain unchanged.
+- **Decision:** No further eigenbasis expansion or spectral predicate is
+  introduced. The same minimum identity supplies all real cutoffs.
+
+### Energy of a projected trial space (2026-11-02)
+
+- **Pattern:** Restrict an orthogonal projection to a close target; use
+  injectivity for dimension and Pythagoras for displacement.
+- **Reuse:** `LinearMap.finrank_range_of_inj` and `LinearMap.range_comp`
+  identify the dimension of the actual image. Symmetry and a zero-energy
+  target remove cross terms, then the operator norm bounds the form.
+- **Decision:** Keep the entire-span statement in one lemma; do not replace
+  it by separate energy bounds on selected basis vectors.
+
+### Projection loss from inclusion — shared subspace order (2026-11-02)
+
+- **Seen:** The two short-interval branches in TNLean's physical gapped
+  family prove self-closeness from the same projection calculation. The
+  low-energy interval construction also needs closeness from inclusion.
+- **Promotion:** `Submodule.isCloseTo_of_le` proves the general inclusion
+  statement; the two existing gapped branches use its equality case.
+  `IsCloseTo.of_le` is moved, with statement and proof unchanged, from
+  the bootstrap module into the same thin order module.
+- **Decision:** Consumers needing only the order properties import the
+  order module, without importing the sampling/bootstrap development.
+  No duplicate monotonicity proof or new viability predicate is retained.
+
+The normalized filter-and-trim theorem also uses `IsCloseTo.of_le` from
+the thin order module to pass its numerical error bound to closeness.
+This removes the repeated vectorwise monotonicity calculation.
+
+
+### Scalar normalization of the same affine filter — promoted (2026-11-02)
+
+- **Pattern:** Rewrite the reciprocal ground-eigenvalue normalization of
+  `1 - H/M` as `(M-mu)^(-1) (M I-H)`.
+- **Abstraction:** `Matrix.normalized_affine_filter_eq_smul_raw` in
+  `Analysis/GroundSpaceAffineFilter.lean`, extracted from the existing
+  physical spectral-power proof.
+- **Consumers:** The attained-gap and lower-gap physical power theorems
+  now call the same identity. The full-interval final refinement uses it
+  before Mathlib `Submodule.map_smul` to identify the literal image spaces.
+- **Scope:** The scalar algebra needs only `M != 0`; the original physical
+  statements and their proof of positive denominators are preserved.
+
+### Increasing spectral cutoffs — shared order lemma (2026-11-02)
+
+- **Seen:** The cluster comparison uses the same private cutoff-order
+  lemma seven times. The physical low-density minimum argument also
+  needs this implication for target inclusion and rank comparisons.
+- **Promotion:** Move `Submodule.spectralSpanLE_mono_cutoff`, with its
+  statement and proof unchanged, from `LowEnergyCluster` into the thin
+  `LowEnergyOrder` module and make it public. The existing cluster
+  consumers import that module; their proofs retain the same calls.
+- **Decision:** Consumers needing only spectral order import the thin
+  module. Do not import cluster comparison merely to obtain a span
+  inclusion, and do not duplicate its proof in the physical library.
+
+### Actual ceiling and logarithmic count — shared scalar proof (2026-11-02)
+
+- **Seen:** The physical scalar parameter theorem contains private ceiling
+  and logarithmic base estimates. The low-density logarithmic corollary
+  needs the same estimates for its actual initial natural count.
+- **Promotion:** Reuse `ceil_quadratic_scale_bounds`, move the base proof
+  unchanged to `log_polynomial_filter_base_le`, and retain the degree and
+  cubic bounds together in `polynomial_filter_count_bounds`. The physical
+  scalar theorem delegates to these companion results; its private copies
+  are removed, and all six public signatures remain unchanged.
+- **Decision:** The scalar statements require no physical Hamiltonian.
+  The final physical corollary derives the bound from the actual chosen
+  count, rather than assuming a numerical envelope or enlarging it after
+  the filter has been chosen.
+
+### Containment for a finite tensor family (2026-11-02)
+
+- **Pattern:** A finite tensor decomposition maps a retained subspace times
+  its whole environment into the sum of the retained-factor images times
+  the same environment.
+- **Reuse:** `Submodule.map_tensorProd_top_le_iSup_map` in
+  `Analysis/TensorFamilyImage.lean` contains the existing elementary-tensor
+  proof. The unchanged elementary-tensor membership and containment
+  criteria move with it, keeping their mathematical statements and proofs.
+- **Callers:** The existing coarse nested error-reduction theorem and the
+  normalized nested error-reduction theorem use the same containment lemma;
+  their single-target cases are active corollaries.
+- **Decision:** No repeated image-containment proof and no new tactic.
+
+
+### Regularized logarithmic sums — candidate (2026-11-02)
+
+- **Seen:** `Analysis/LowDensityCountParameters.lean` and `Analysis/LowDensityEntropyParameters.lean`.
+- **Pattern:** From nonnegative logarithms and `F ≥ 1`, bound `F+a+b` by `F(1+a+b)` using the nonnegative product `(F−1)(a+b)`.
+- **Decision:** There are two uses in two files. A general ordered-ring inequality is preferable to a tactic if this recurs.
+
+
+### Projection loss and quadratic-form bounds — promoted (2026-11-03)
+
+- **Seen:** `Analysis/ProjectedTrialSpaceEnergy.lean`, `Analysis/ProjectedPositiveEnergy.lean` and `Analysis/CloseSubspaceEnergyTransfer.lean`.
+- **Pattern:** Pythagoras converts the lower projection norm into a squared error bound. Cauchy--Schwarz and the operator norm control the quadratic form on that error.
+- **Abstraction:** `Submodule.IsCloseTo.norm_sub_starProjection_sq_le` and `ContinuousLinearMap.re_inner_apply_le_mul_norm_sq` in `Analysis/ProjectionQuadraticBounds.lean`.
+- **Decision:** All three higher-level energy arguments use the common estimates. The zero-energy and positive-energy quadratic decompositions retain their distinct mathematical content. No custom tactic is needed.
+
+### Real eigenvalues from positive scalar shifts — candidate (2026-11-03)
+
+- **Seen:** The local comparison in `Analysis/GroundEnergyBounds.lean` and
+  the comparison and compression results in `Analysis/CompressionEnergyBounds.lean`.
+- **Reuse:** `Matrix.le_eigenvalue_of_posSemidef_shift` evaluates the shifted
+  quadratic form on the normalized eigenvector; it is used for both
+  directions of the attained-energy comparison.
+- **Decision:** Keep the matrix argument in QICLean. No custom tactic is needed.
+### Nested approximation targets — share the actual-image error composition (2026-11-03)
+
+- **Seen:** Buffered low-energy approximation has distinct original upper and
+  lower targets. Repeating the scalar error calculation in a concrete physical
+  tensor statement causes unnecessary elaboration of spectral and CFC terms.
+- **Reuse:** A conditional composition on abstract Hilbert spaces retains the
+  actual image of the fixed source. Upper comparison gives input error 1/20,
+  polynomial improvement gives delta/5, and the final comparison gives delta/2.
+- **Decision:** The physical theorem constructs the family and discharges every
+  premise. No new viability predicate, spectral gap or raw-band invariance is
+  introduced. Existing normalization-distance and logarithmic-rounding proofs
+  are moved unchanged from TN rather than copied into another physical proof.
+### Explicit accuracy counts from exponential decay — candidate (2026-11-03)
+
+- **Seen:** `Analysis/QuantitativeFilterIteration.lean` and `Analysis/UntrimmedTensorFamilyPowers.lean`.
+- **Pattern:** A natural logarithmic ceiling bounds a decaying power by the requested accuracy after an exponential comparison.
+- **Decision:** Reuse the existing contraction-power-to-exponential lemma. The new word-family statement reuses the existing exact operator-word construction and dimension bound; it does not repeat their proofs.
+
+### Logarithmic powers in a size parameter — candidate (2026-11-03)
+
+- **Seen:** `Analysis/ReferencePolynomialBound.lean` and `Analysis/InterleavedCountPolynomialBound.lean`.
+- **Pattern:** Bound a logarithm by a small positive real power, combine real powers, and use exponent monotonicity above one.
+- **Decision:** Reuse Mathlib's `log_le_rpow_div`, `rpow_mul_natCast` and `rpow_le_rpow_of_exponent_le`. The distinct exponents in the reference and interleaved count bounds remain explicit; no new tactic is introduced.
+
+### Approximate basis images — use the summed squared errors (2026-11-03)
+
+- **Reuse:** Construct the actual map with the existing basis linear-map
+  equivalence. Finite Cauchy--Schwarz and Parseval bound its error from
+  inclusion. The error below one proves injectivity, rather than assuming
+  independence of the approximating vectors.
+- **Decision:** Projection minimality gives forward subspace closeness, and
+  the existing equal-dimension symmetry theorem gives the reverse direction.
+  No polar decomposition, Gram conditioning premise or second projection
+  comparison is needed. Empty bases are handled by the same finite sums.
+
+## Candidate: rational precision from a count lower bound (2026-11-03)
+
+- **Seen:** `Analysis/SoftRegionalEnergyParameters.lean`.
+- **Pattern:** Bound a prescribed reciprocal monomial by replacing its
+  denominator with the same actual count, then clear positive denominators.
+- **Decision:** Reuse `le_self_pow₀`, `one_le_pow₀`,
+  `div_le_div_of_nonneg_left` and `pow_le_pow_left₀`. No new automation
+  or general-purpose lemma is warranted by this single module.
+
+### Nonzero projection from closeness — promoted (2026-11-03)
+
+- **Helper:** `Submodule.IsCloseTo.starProjection_ne_zero` in `Analysis/ViableProjectionNonzero.lean`.
+- **Uses:** The projected trial-space injectivity proof and the actual regional trial vector in TNLean use one geometric implication. The untrimmed energy candidate can use the same assertion.
+- **Decision:** The norm lower bound is used once in the shared helper. Its hypotheses require a loss below one and a nonzero target vector; no separate nonnegative-loss assumption is needed.
+
+### Real scalar shifts of quadratic forms — promoted (2026-11-03)
+
+- **Helpers:** `ContinuousLinearMap.re_inner_sub_real_smul_one` and its addition version; the two `Matrix.re_inner_toEuclideanCLM_*_real_smul_one` specializations in `Analysis/QuadraticScalarShift.lean`.
+- **Pattern:** Replace repeated expansion of a centered regional operator by one exact real quadratic-form identity.
+- **Decision:** The generic subtraction identity is proved once, addition follows by negating the scalar, and the native matrix identities use the existing star algebra equivalence. No Hermitian or nonzero-vector hypothesis is introduced.
+
+## Promoted: the marginal after a left action (2026-11-03)
+
+- **Pattern:** The coefficient-matrix calculation identifies the left
+  marginal after a physical operator as `A * rho * Aᴴ`.
+- **Reuse:** `Matrix.leftMarginal_leftApply` in the thin
+  `Channel/SchmidtMarginalAction.lean` leaf. The two existing calculations
+  in `Channel/SchmidtThreshold.lean` and the collective-trimming
+  invariance proof now use it.
+- **Decision:** One mathematical identity removes the third copy. All
+  old threshold theorem signatures are retained; selected importers
+  are freshly checked against the shared identity.
+
+## Candidate: Borel recursion through a spectral cutoff (2026-11-03)
+
+- **Seen:** `Analysis/ViableSubspaceTrimmingMeasurable.lean`.
+- **Pattern:** Keep a continuous Gram operator separate from the Borel
+  spectral threshold; prove the literal finite recursion by induction.
+- **Reuse:** The existing marginal-conjugation identity and the Borel
+  closed cutoff avoid any measurable eigenbasis selection.
+- **Decision:** Use `Measurable.fun_mul` when the conclusion is an explicit
+  pointwise product; `Measurable.mul` retains function multiplication
+  notation and need not simplify through a recursive definition. No
+  new tactic is introduced for this single occurrence.
+
+## Candidate: closeness as a closed projection condition (2026-11-03)
+
+- **Seen:** `Analysis/ViableSubspaceMeasurable.lean`.
+- **Pattern:** Transport the existing operator inequality through
+  `Matrix.toEuclideanCLM`, then use the closed matrix positive cone.
+- **Reuse:** Mathlib's `posSemidef_is_closed`,
+  `isPositive_toEuclideanLin_iff` and
+  `isStarProjection_iff_eq_starProjection_range` suffice.
+- **Decision:** No duplicate positive-cone proof, independent success
+  predicate, or measurable eigenbasis choice is introduced.
+
+## Candidate: integrate a failure bound over earlier success (2026-11-03)
+
+- **Seen:** `Analysis/AdaptiveSamplingProbability.lean`.
+- **Pattern:** Restrict an actual measurable failure relation to successful histories, use Tonelli and dominate its section measure by a constant times the history indicator.
+- **Reuse:** Mathlib `Measure.prod_apply`, `lintegral_mono` and `lintegral_indicator_const` prove the estimate directly. A union decomposition then adds earlier failures without choosing parameter-dependent measurable hulls.
+- **Decision:** These two standard measure-theoretic operations need no new automation or probability structure.
+
+## Promoted: a projection matrix represents its actual range (2026-11-03)
+
+- **Pattern:** Identify a matrix orthogonal projection with the projection
+  onto the range of its Euclidean-space action.
+- **Reuse:** Move the existing private
+  `Submodule.projectionMatrix_range_of_isStarProjection` proof unchanged
+  to `Matrix.projectionMatrix_range_of_isStarProjection` in the thin
+  `Analysis/ProjectionMatrixRange.lean` leaf.
+- **Consumers:** The original true-closeness event and the actual
+  finite-span support identification now share this proof.
+- **Decision:** No copied projection/range proof or compatibility alias
+  remains. The rectangular range-coordinate identity uses the existing
+  `WithLp.linearEquiv`; no second projector definition is introduced.
+
+## Candidate: a fixed coordinate law bounds a true sampling section (2026-11-03)
+
+- **Seen:** `Probability/RankUnitaryProductHaar.lean`.
+- **Pattern:** A literal sample uses one coordinate of a fixed probability
+  product; its true failure section is the coordinate preimage of the old
+  arbitrary-basis failure event.
+- **Reuse:** `measurePreserving_eval` and
+  `MeasurePreserving.measure_preimage_le` transport the old bound without
+  assuming measurability of that old failure event.
+- **Decision:** No new hull predicate, probability oracle or ad hoc
+  product-measure calculation is needed. Keep actual rank and clamped
+  sample size in the numerical bound.
+
+## Candidate: a common overlap from an actual dimension bound (2026-11-03)
+
+- **Seen:** `Probability/RankUnitaryUniformSampling.lean`.
+- **Pattern:** Separate the deterministic full sample from the proper sample;
+  compare true failure sets by monotonicity of closeness, then compare the
+  corrected net exponent with the target dimension bound.
+- **Reuse:** `Real.viable_node_sample_overlap_lower`,
+  `Real.viable_node_uniform_sampling_size` and the existing product-Haar
+  failure theorem supply all quantitative estimates.
+- **Decision:** No duplicate logarithmic ceiling estimate or new sampling
+  success predicate is introduced. The common overlap is retained in the
+  actual viability conclusion.
+
+## Candidate: actual projection coordinates before sampling (2026-11-03)
+
+- **Seen:** `Probability/NativeRankUnitarySampling.lean`.
+- **Pattern:** Relabel the actual projection, identify its range, and
+  transport the full tensor target by a fixed isometry before applying
+  the existing probability estimate.
+- **Reuse:** The projection relabeling identity, `range_starProjection`,
+  dimension preservation under a linear equivalence, and
+  `Submodule.isViable_map_congrIsometry_iff` give the exact statement.
+- **Decision:** Keep the existing literal sample and its seed unchanged;
+  do not introduce a second sampler or a law comparison between basis choices.
+
+## Candidate: finite update sections by measure-preserving enumeration (2026-11-03)
+
+- **Seen:** `Analysis/FiniteProductUpdateProbability.lean`.
+- **Pattern:** Convert a bound stated for updates of whole dependent tuples
+  to the existing coordinate-section bound after enumerating a finite index.
+- **Reuse:** `measurePreserving_piCongrLeft`, `Fin.update_insertNth` and
+  `Measure.pi_le_of_coordinate_sections` give the exact reduction.
+- **Decision:** Keep the finite-ordinal theorem as an active dependency;
+  derive a needed coordinate value from its probability law. No duplicate
+  product measure or added nonemptiness hypothesis is introduced.
+
+## Candidate: a listed union of coordinate failures (2026-11-03)
+
+- **Seen:** `Analysis/FiniteProductUnionProbability.lean`.
+- **Pattern:** Apply the existing update-section theorem to each listed
+  event, and use binary union subadditivity in a list induction.
+- **Reuse:** `Measure.pi_le_of_update_sections`, `measure_union_le`, and
+  `Set.iUnion_iUnion_eq_or_left` suffice.
+- **Decision:** Retain list length, so duplicate labels require no separate
+  reduction and no decidable-equality assumption on the label type.
+
+### Uniform finite spectral-window precision — shared scalar estimates (2026-11-03)
+
+- **Pattern:** Bound both norm-perturbation window counts from one known norm
+  ceiling and cutoff ceiling, before the actual matrix or cutoff is chosen.
+- **Reuse:** `Real.finite_window_loss_le_envelope` and
+  `Real.finite_window_envelope_le` in `Analysis/SpectralWindowPrecision.lean`
+  use Mathlib's `Nat.ceil_mono` and `Nat.ceil_lt_add_one`. The positive
+  minimum and soft-scale specialization reuse the same precision estimate.
+- **Decision:** Keep one numerical proof for the two directed physical
+  comparisons. No parallel window-loss definition, matrix predicate or new
+  tactic is introduced.
+
+
+## Candidate: a common cutoff before a geometric Taylor order (2026-11-03)
+
+- **Pattern:** First make an exponential remainder small by choosing a real
+  cutoff; then increase a natural Taylor order so that a power remainder is
+  bounded by a fixed geometric sequence.
+- **Use:** `Analysis/SoftClusterParameters.lean` uses Mathlib's
+  `exists_pow_lt_of_lt_one`, `exists_nat_ge` and
+  `pow_le_pow_of_le_one`. The two physical residual offsets are covered by
+  one quantified ceiling rather than two copies of the scalar argument.
+- **Decision:** One general scalar theorem suffices; no new tactic or
+  separate convergence argument is needed.
+
+### Matrix interpolation from the scalar Lagrange identity (2026-11-03)
+
+- **Seen:** `Algebra/MatrixPolynomialInterpolation.lean`.
+- **Pattern:** Prove a matrix identity entrywise, apply the existing scalar
+  interpolation theorem, and evaluate before normalizing scalar multiplication.
+- **Reuse:** Mathlib's `Lagrange.eq_interpolate`, the natural-degree to degree
+  comparison, and entrywise matrix sum and scalar-multiplication identities.
+- **Decision:** No new interpolation weights, coefficient structure or matrix
+  representation is defined. This is one thin matrix consequence of Mathlib's
+  existing interpolation theorem; the earlier integer-grid recovery remains
+  available for coefficient recovery.
+
+## Candidate: entrywise degree ceilings for matrix polynomials (2026-11-03)
+
+- **Seen:** `Algebra/MatrixPolynomialDegree.lean`.
+- **Pattern:** Expand one matrix entry as a finite sum, bound each product
+  with the existing polynomial degree inequality, and pass the common
+  ceiling through the sum. Power induction and the actual scalar-polynomial
+  expansion then give the corresponding power and evaluation estimates.
+- **Reuse:** Mathlib's `Polynomial.natDegree_sum_le_of_forall_le`,
+  `Polynomial.natDegree_mul_le`, `Polynomial.natDegree_smul_le`, and
+  `Polynomial.aeval_eq_sum_range` supply the algebraic steps.
+- **Decision:** The three mathematical degree lemmas are the reusable
+  abstraction. No polynomial-word expansion, commutation premise on matrix
+  coefficients, or custom tactic is introduced.
+
+### Polynomial evaluation after entrywise matrix evaluation (2026-11-03)
+
+- **Seen:** `Algebra/MatrixPolynomialParameter.lean`.
+- **Pattern:** Construct polynomial entries with `Matrix.of`; derive their
+  degrees; then evaluate the matrix polynomial using the induced algebra
+  homomorphism. A raw nested function can prevent matrix rewrite lemmas
+  from recognizing the expression after unfolding.
+- **Reuse:** `AlgHom.mapMatrix`, `Polynomial.aeval_algHom_apply`,
+  `Polynomial.coe_aeval_eq_eval`, and the existing matrix degree and
+  Lagrange theorems.
+- **Decision:** The evaluation transport is a private local fact in the
+  consuming theorem. No forwarding public lemma or second interpolation
+  representation is introduced.
+
+### One natural scale for count and residual budgets (2026-11-03)
+
+- **Pattern:** A count depends on the Taylor order, while the required residual
+  precision depends on that same count. Choosing the two in succession need not
+  preserve the desired inequality.
+- **Reuse:** In `Analysis/SoftFamilyCalibration.lean`, the existing
+  `Real.isLittleO_log_rpow_atTop` and natural coercion convergence give a private
+  affine-logarithm bound. It is used for both the norm ceiling and the combined
+  count/precision logarithm, before choosing one natural scale.
+- **Decision:** Keep the count and precision at that single scale; a separate
+  squared comparison handles the square root in the Chebyshev exponent.
+  No new tactic or additional elaboration allowance is needed.
+
+### A logarithmic ceiling gives a natural polynomial bound (2026-11-03)
+
+- **Pattern:** A geometric-tail truncation order is a maximum with a natural
+  ceiling of an affine logarithm. Polynomial factors in the order and an
+  exponential factor in that order must be bounded together before the length.
+- **Reuse:** In `Analysis/GeometricOrderPolynomialBound.lean`, the existing
+  natural ceiling estimates treat nonpositive and nonnegative arguments;
+  `Real.exp_nat_mul`, `Real.rpow_def_of_pos` and
+  `Real.rpow_le_rpow_of_exponent_le` convert the exponential factor to a power.
+- **Decision:** Keep one private affine-logarithmic order estimate and choose
+  the final natural coefficient and degree once. No new approximation
+  definition, tactic or extra elaboration allowance is introduced.
+### Stopping a dimension-halving sequence at a fixed round (2026-11-03)
+
+- **Pattern:** An integer sequence halves above a threshold and does not
+  increase below it. Induction keeps the alternative that it is already
+  below the threshold or its dimension times a power of two is bounded
+  by its initial dimension.
+- **Reuse:** In Algebra/StoppedHalving.lean, the existing natural quotient
+  comparison gives the one-step product inequality. The chain consequence
+  reuses that theorem and the elementary bound q < 2^q.
+- **Decision:** The numerical theorem is the shared argument; no recursive
+  sampling definition or additional proof automation is introduced.
+
+### Exponential decay from an existing bootstrap logarithmic budget (2026-11-03)
+
+- **Pattern:** A proof that a sampling failure is below one already establishes
+  an explicit negative exponent. Repeating the net and integer-floor estimates
+  would obscure the stronger quantitative consequence.
+- **Reuse:** Strengthen the existing argument in
+  `Analysis/ViableSubspaceBootstrap.lean` to
+  `Submodule.bootstrapFailure_le_exp_neg_of_ge_mul_pow`; the older strict
+  failure lemma is now its active corollary, with unchanged signature.
+- **Decision:** Use the existing logarithmic budget at rank `max 1 r`, including
+  the zero-rank case. The separate threshold leaf then uses `log X <= X^2`
+  and one natural ceiling; no second probability expression or new tactic is
+  introduced.
+
+### Requested sample size on rank strata (2026-11-03)
+
+- **Pattern:** A canonical range sampler already uses one unitary coordinate
+  for each possible rank. Its requested size may also depend on that rank.
+- **Reuse:** In Analysis/VariableRankSampleProjection.lean, reuse the existing
+  fixed-rank proof and replace the requested size by its value on the stratum.
+  The existing fixed-size theorems are constant-function corollaries.
+  The actual image, collective trim and true viability event use the same
+  previously proved composition results.
+- **Decision:** No new sampler, coordinate law, measurable basis assumption
+  or extra proof-resource allowance is introduced.
+
+### Transporting subspace dimensions through literal equality (2026-11-03)
+
+- **Pattern:** Two sampled spaces are literally equal, but rewriting that
+  equality inside a finite-rank expression also changes dependent inner-product
+  and module instances. A direct simplification need not transport the rank.
+- **Reuse:** In `Probability/RankUnitaryHalfSampling.lean`, apply `congrArg` to
+  the ordinary natural-valued function taking a subspace to its finite rank.
+  Transport the resulting numerical equalities without rewriting basis types.
+- **Decision:** Keep the sample, common image and trim equalities separate from
+  their dimension consequences. The event itself is pulled back with the
+  existing measure-preserving coordinate evaluation; no new probability
+  measure or measurable hull is defined.
+
+### An explicit input map in measurable recursion (2026-11-03)
+
+- **Pattern:** In a finite recursion, the next measurable matrix is a known
+  measurable operation composed with the previous matrix and the next seed.
+- **Reuse:** In Analysis/StoppedHalfSamplingIteration.lean, name that input
+  pair and give it explicitly to Measurable.comp. This prevents implicit
+  inference from expanding the full recursive matrix expression.
+- **Decision:** Keep the actual recursion unchanged and reuse ordinary
+  measurable composition. No new predicate, tactic or resource limit is
+  introduced. Equality for matching earlier seeds uses congrArg₂.
+
+## Candidate: the fixed original-reference trimming margin (2026-11-03)
+
+- **Pattern:** Apply weighted reference trimming at weight `1/20` to an
+  original-target image error `27/2500`, with reference error at most
+  `1/100000` and threshold budget at most `1/1000`.
+- **Occurrences:** `ViableHalfSamplingTrimming.lean` and
+  `TerminalFamilyReferenceTrimming.lean` apply the same existing general
+  trimming theorem and shared scalar `Real.half_sampling_trim_error_le`.
+- **Decision:** The numerical proof is already shared. Two callers currently
+  suffice with direct applications; if a third caller appears, consider a
+  target-relative specialization of the general trimming theorem before
+  adding another repeated application. No tactic is introduced.
+
+
+## Finite-family image coordinates and actual range tests (2026-11-03)
+
+- **Pattern:** Identify a rectangular family product with the common operator image of an arbitrary matrix range.
+- **Reuse:** `Matrix.range_familySupportProj_comp_linearIsometryEquiv` combines the existing support-range identity, `toLpLin_mul_same`, `LinearMap.range_comp` and `Submodule.map_comp`. Both the stopped-round probability and the terminal native-parent trim use this one identity.
+- **Decision:** No projection premise or separate image-space definition is introduced. True range viability is Borel by the singleton family support and the existing tensor viability event theorem. No additional tactic is needed.
+
+
+## True guarded failures for stopped resampling (2026-11-03)
+
+- **Pattern:** Vary the next coordinate while retaining the input determined by the preceding coordinates.
+- **Reuse:** The existing seed-prefix theorem gives `canonicalHalfSampleTrimIterate_update_input`; the literal recursion then gives `canonicalHalfSampleTrimIterate_update_next`. The joint proof applies `Measure.pi_biUnion_list_le_of_update_sections` to these actual guarded Borel failures.
+- **Decision:** The measurable event uses finitely many true original-target tests, not a measurable selection of fixed-input success hulls. Standard basis trimming is transported through a single subspace equality using `congrArg`, rather than rewriting inside dependent basis types. No new tactic or increased resource setting is used.
+
+
+## A numerical choice before dependent carrier types (2026-11-03)
+
+- **Pattern:** A scalar existence proof supplies a threshold, while a later theorem introduces chain-dependent spaces and operators.
+- **Reuse:** The fixed-K stopped probability core accepts the explicit scalar bootstrap-failure inequality. The old existential theorem actively chooses K from the numerical factory and calls that core.
+- **Decision:** The physical caller can choose the same K before L and every carrier type. No joint universal type-valued proposition or success-event callback is introduced.
+## Candidate: identify a range before choosing its standard basis (2026-11-03)
+
+- **Pattern:** A known equality of subspaces does not always rewrite directly
+  through `stdOrthonormalBasis`, whose finite-dimensional instances depend
+  on the subspace.
+- **Occurrence:** `nativeFamilyTrimSpace_eq_trimSubspace` first states the
+  trimming identity for an arbitrary orthonormal basis of an abstract subspace,
+  substitutes the range equality there, and only then inserts the standard basis.
+- **Reuse:** The argument uses existing basis-independent trimming and the
+  shared `Matrix.range_familySupportProj_comp_linearIsometryEquiv`; no
+  duplicate family-range proof or new basis construction is introduced.
+- **Decision:** One current occurrence does not justify a new tactic or general
+  wrapper. Prefer this dependent-equality proof arrangement when it arises.
+
+## Reuse: the actual input of a finite-seed pullback (2026-11-03)
+
+- **Pattern:** Pull back the true viability event of the complete native
+  parent along the actual pair `(P, halfSamplingSeedSequence U)`.
+- **Reuse:** The promoted explicit-input-map arrangement for measurable
+  recursion also applies to `MeasurableSet.preimage`: name the actual pair
+  map and give `(f := input)` explicitly. The proof then reuses the existing
+  joint parent event instead of unfolding the entire stopped iterate.
+- **Decision:** No arbitrary-predicate wrapper or resource option is added.
+  The failed default-limit diagnostics remain in the private check record.
+
+## Invariant operator bounds without a new spectral filter (2026-11-03)
+
+- **Pattern:** Preserve target minimum gain and complementary squared contraction while changing coordinates or taking powers.
+- **Reuse:** `ContinuousLinearMap.invariant_subspace_bounds_pow` proves the four actual operator bounds by induction. `invariant_subspace_bounds_conj` uses the existing `Submodule.map_orthogonal_equiv` and norm preservation. The ordered-word consequence reuses `TensorProduct.pow_sum_mapL_eq_sum_words` and `IsViable.map_of_tensor_decomposition`.
+- **Decision:** No new projector predicate, common spectral basis or separately selected filter is introduced. Explicit `change` statements identify the existing linear-equivalence coercions before rewriting.
+
+### Recovering a whole operator without reducing coordinate formulas
+
+The inverse tensor-coordinate identity in `Analysis/MatrixTensorDecomposition`
+uses the injectivity of the Euclidean matrix action and of unitary
+conjugation. For subspace equalities, transport the precise proposition by
+`congrArg` and `Eq.mp`; do not rewrite through the surrounding spectral data.
+This reuses `invariant_subspace_bounds_conj` rather than repeating the four
+unitary norm arguments.
+
+### Uniform interval sampling schedules — reuse (2026-11-03)
+
+- **Pattern:** Select the bootstrap threshold before length and multiplicity,
+  then combine the count of intervals and stopping rounds in one failure bound.
+- **Reuse:** `Submodule.exists_bootstrapFailure_polynomial_threshold` is invoked
+  once at exponent four and coefficient `1/q`. The elementary power comparison
+  uses Mathlib's `Nat.lt_two_pow_self` and `Nat.pow_le_pow_left`.
+- **Decision:** The real failure estimate is shared with its extended-real
+  consequence and the final schedule. No new recursive construction or tactic
+  is introduced; no successful-sampling premise enters the numerical theorem.
+
+## Actual input maps for joint stopped-history sections (2026-11-03)
+
+- **Pattern:** Pull the joint actual stopped-history event back to a fixed
+  initial matrix, or compose the literal iterate with a finite-sequence map.
+- **Reuse:** The explicit actual-input-map pattern is used with
+  Measurable.comp and MeasurableSet.preimage, specifying the input function
+  explicitly. One public joint history lemma replaces the old private
+  finite-intersection argument for a fixed matrix.
+- **Decision:** The event definition and old public probability proofs remain
+  unchanged. No arbitrary event wrapper or measurable-basis assumption is
+  introduced; subsequent changing-candidate sections use this same lemma.

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.SchmidtTrimming
+import QICLean.Channel.SchmidtMarginalAction
 import QICLean.Analysis.ShiftedDensityTruncation
 
 /-!
@@ -83,9 +83,7 @@ theorem norm_inner_le_of_posSemidef_smul_one_sub_leftMarginal {c : ℝ} (hc : 0 
   -- `‖(R ⊗ 1) φ‖² = tr (R ρ_φ R) ≤ c tr R = c rank C ≤ c k`
   have hsq : ‖leftApply R φ‖ ^ 2 ≤ c * k := by
     rw [sq_norm_eq_trace_leftMarginal_re]
-    have hlm : leftMarginal (leftApply R φ) = R * leftMarginal φ * Rᴴ := by
-      simp only [leftMarginal, schmidtCoeffMatrix_ofLp_leftApply, conjTranspose_mul,
-        Matrix.mul_assoc]
+    have hlm := leftMarginal_leftApply R φ
     have htr := (hφ.mul_mul_conjTranspose_same R).trace_nonneg
     have hcR : R * ((c : ℂ) • 1) * Rᴴ = (c : ℂ) • R := by
       rw [Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hRh.eq, hRi]
@@ -154,8 +152,7 @@ theorem posSemidef_smul_one_sub_leftMarginal_leftApply_one_sub
     have h3 : ρ * (1 - P) = (1 - P) * ρ := by
       rw [Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Matrix.one_mul, hc]
     calc leftMarginal (leftApply (1 - P) ψ) = (1 - P) * ρ * (1 - P)ᴴ := by
-          simp only [ρ, leftMarginal, schmidtCoeffMatrix_ofLp_leftApply, conjTranspose_mul,
-            Matrix.mul_assoc]
+          simpa only [ρ] using leftMarginal_leftApply (1 - P) ψ
       _ = (1 - P) * ρ := by rw [h1, Matrix.mul_assoc, h3, ← Matrix.mul_assoc, h2]
   rw [hlm]
   exact hρ.posSemidef_smul_one_sub_one_sub_spectralProjectionGE_mul hb

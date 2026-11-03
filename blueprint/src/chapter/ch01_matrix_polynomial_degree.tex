@@ -1,0 +1,65 @@
+\section{Degree bounds for matrices with polynomial entries}
+\label{sec:matrix_polynomial_degree}
+
+For the degree bounds in this section, write $\deg_+0=0$ and
+$\deg_+P=\deg P$ for a nonzero polynomial $P$. These elementary estimates
+support the parameter interpolation in
+\cite[Proposition~5.7 and Theorem~5.8]{Arad2016RigorousRG}.
+
+\begin{lemma}[Degree under matrix multiplication]
+    \label{lem:matrix_polynomial_degree_mul}
+    \lean{Matrix.polynomial_natDegree_mul_apply_le}
+    \leanok
+    Let $R$ be a semiring, let $I$ be finite, and let
+    $A\in M_{J,I}(R[X])$, $B\in M_{I,K}(R[X])$.
+    If every entry of $A$ has degree at most $a$, and every entry of $B$
+    has degree at most $b$, then
+    \[
+        \deg_+ (AB)_{jk}\leq a+b.
+    \]
+    No commutativity of $R$ is required.
+\end{lemma}
+\begin{proof}\leanok
+    Each entry is the finite sum $\sum_{i\in I}A_{ji}B_{ik}$.
+    The degree of a sum is at most the largest degree of its terms,
+    and the degree of a product is at most the sum of the degrees.
+\end{proof}
+
+\begin{lemma}[Degree under matrix powers]
+    \label{lem:matrix_polynomial_degree_pow}
+    \lean{Matrix.polynomial_natDegree_pow_apply_le}
+    \leanok
+    Let $A$ be a square matrix over $R[X]$, with a finite index set,
+    where $R$ is a semiring. If every entry has degree at most $d$, then
+    for every integer $r\geq0$,
+    \[
+        \deg_+ (A^r)_{ij}\leq rd.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:matrix_polynomial_degree_mul}
+    The identity matrix has constant entries. Induction on $r$, using
+    $A^{r+1}=A^rA$ and Lemma~\ref{lem:matrix_polynomial_degree_mul},
+    gives the assertion. Empty index sets are included.
+\end{proof}
+
+\begin{lemma}[Degree after evaluation of a scalar polynomial]
+    \label{lem:matrix_polynomial_degree_aeval}
+    \lean{Matrix.polynomial_natDegree_aeval_apply_le}
+    \leanok
+    Let $R$ be a commutative semiring, let $A$ be a square matrix over
+    $R[X]$ with a finite index set, and suppose every entry of $A$ has
+    degree at most $d$. For every scalar polynomial $P\in R[X]$,
+    \[
+        \deg_+\bigl(P(A)_{ij}\bigr)\leq (\deg_+P)d.
+    \]
+    The coefficient matrices of $A$ need not commute.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:matrix_polynomial_degree_pow}
+    Expand $P(A)=\sum_{r=0}^{\deg_+P}p_rA^r$.
+    Multiplication by the scalar coefficient $p_r$ does not increase
+    degree. Each summand has degree at most $rd\leq(\deg_+P)d$ by
+    Lemma~\ref{lem:matrix_polynomial_degree_pow}; the same bound holds
+    for their sum.
+\end{proof}

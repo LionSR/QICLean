@@ -3,7 +3,7 @@
 \usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
 \setlength{\emergencystretch}{2em}
-\input{command}
+% Deferred to a later review branch: \input{command}
 \title{The constants of the bootstrapping step for degenerate ground spaces}
 \author{}
 \date{2026-10-26}
@@ -102,4 +102,63 @@ results assume an improving operator family for the specified tensor
 factor. Their quantitative corrections above are resolved. A physical
 interval theorem must retain its stated region restriction; it does not
 formalize the printed arbitrary-subset proposition.
+
+\section{One common event for resampling and reference trimming}
+
+The informal modified merge at source lines 749--755 describes repeated
+amplification followed by trimming. The sampling step of amplification can
+be retained literally at each such round. This is a different operation
+from Figure \texttt{fig:merge-prime}, lines 1664--1673, which samples once
+before its loop. The following conditional one-step estimate does not
+identify these two procedures or establish an adaptive joint law.
+
+Let $T_0$ be the original target and $(T_x)$ a nonempty family of improving
+targets. Suppose $T_0$ is $\varepsilon$-close to every $T_x$, every $T_x$ is
+$1/200$-close to $T_0$, and the same family of at most $D^2$ operators
+improves viability for every $T_x$. Assume $D\ge2$,
+$D^{12}\Delta\le10^{-5}$, and $\varepsilon\le(0.03/D^2)^2/100$.
+For a $0.04$-viable current space of dimension $q\ge4D^2$, put
+$s=\lfloor q/(2D^2)\rfloor$ and $\alpha=0.96s/(8q)$.
+One Borel sampling-success event for the fixed target $T_0$ has complement
+measure at most $(1+2/\sqrt\alpha)^{2\dim T_0}q e^{-s/16}$.
+On this event, weighted composition with parameter $\alpha/4$ makes the
+same sample $(1-\alpha/2)$-viable for every $T_x$. Its single common-family
+image therefore has error $4\Delta/\alpha^2$ for every $T_x$, and error
+at most $27/2500=0.0108$ for $T_0$.
+
+A reference to $T_0$, rather than to the improving targets, suffices for
+the subsequent trim. If its two directed errors are at most $10^{-5}$,
+its vectors have Schmidt rank at most $b$ at the $m$ cuts, and
+$\xi\sqrt{mb}\le10^{-3}$, weighted reference trimming with parameter
+$1/20$ bounds the final error by
+\[
+\begin{aligned}
+ &(21/20)^2(27/2500)+(21/20)21\cdot10^{-5}\\
+ &\qquad{}+21\cdot10^{-5}+(21/10)10^{-3}
+   =0.0144375<0.015.
+\end{aligned}
+\]
+Both the common-family image and its literal collective trim have
+dimension at most $q/2$ for every unitary, including unsuccessful samples.
+The event is chosen for a fixed target; no assertion that an uncountable
+intersection over centers is Borel is required. Repeated resampling,
+its joint probability, and the physical construction of these uniform
+target and reference estimates remain separate obligations.
+
+
+\paragraph{The terminal deterministic step.}
+A stopped resampling process may take no active round. Its retained
+$0.04$-viability therefore needs one final amplification and trim before
+claiming $0.015$-viability. If the original target and every improving target
+are mutually $1/200$-close, the current space is $9/100$-viable for every
+improving target. Apply the same full family once, without another sample.
+Its same image has exact error $\Delta/(91/100)^2$ for every improving
+target. Under $D\ge2$ and $D^{12}\Delta\le10^{-5}$ this is at most $10^{-4}$;
+no nonnegative-error premise is needed. Transfer back and the preceding
+original-reference trimming budgets give final error at most $3/200$.
+Unconditionally, both the full image and its literal trim have dimension
+at most $|I|\dim W\le D^2\dim W$. This is a terminal auxiliary for the
+corrected repeated-resampling construction, not a proof that it coincides
+with the printed sample-once process or an assertion about running time.
+
 \end{document}

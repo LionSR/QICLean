@@ -1,0 +1,105 @@
+\documentclass{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,xurl}
+\usepackage[hidelinks]{hyperref}
+% Deferred to a later review branch: \input{command}
+\title{Strict dimension decrease in the low-density bootstrap}
+\author{}
+\date{2026-11-02}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The minimal dimension is a natural number}
+
+Arad, Landau, Vazirani and Vidick,
+\emph{Rigorous RG algorithms and area laws for low energy eigenstates in 1D},
+\href{https://arxiv.org/abs/1602.08828}{arXiv:1602.08828v2},
+Proposition \texttt{prop:albootstrap-ld}, source lines 1112--1128,
+uses the minimal dimension of a $0.015$-viable subspace for each nested
+low-energy target. These are minima over natural dimensions, with the
+whole regional space supplying a competitor.
+
+Write $p$ for the minimum at the lower target and $Q$ for the minimum
+at the next upper target. The proof at lines 1115 and 1125 uses a sample
+of size $p/D^2$; applying $D^2$ operators then bounds the image dimension
+by $p$. This bound alone does not contradict minimality.
+Use instead
+\[
+    s=\left\lfloor\frac{p}{2D^2}\right\rfloor.
+\]
+The actual image of an $s$-dimensional sample under $D^2$ operators has
+\[
+    \dim\operatorname{span}_i A_iS\le D^2s\le\lfloor p/2\rfloor<p
+\]
+when $p>0$. In the nontrivial sampling branch $p\ge4D^2$, the quotient
+is nonzero and satisfies $s\ge p/(4D^2)$. The small-dimension branch
+must be settled before sampling.
+
+\section{Transfer between the two targets}
+
+Here $U$ is $\varepsilon$-close to $T$ when every $t\in T$ satisfies
+$\|P_Ut\|^2\ge(1-\varepsilon)\|t\|^2$. This fixes the direction of the
+following two transfers.
+
+
+Let $G_+,G_-$ be the original upper and lower targets, and let
+$T_{\rm hi},T_{\rm lo}$ be the targets for the improving family.
+Suppose $G_+$ is $1/200$-close to $T_{\rm hi}$ and $T_{\rm lo}$ is
+$1/200$-close to $G_-$. A $3/200$-viable upper input is then
+$1/25$-viable for $T_{\rm hi}$. A successful sample has overlap parameter
+\[
+    \alpha=\frac{(1-1/25)s}{8Q}=\frac{3s}{25Q}.
+\]
+If the same family improves its sample error to $\Delta/\alpha^2$,
+transfer to the lower original target gives error
+\[
+    2\left(\frac{\Delta}{\alpha^2}+\frac1{200}\right).
+\]
+Thus $\Delta/\alpha^2\le1/400$ gives the required $3/200$-viability.
+The sample is chosen toward $T_{\rm hi}$, where the improving-family
+hypothesis applies, before the final transfer to $G_-$.
+
+\section{One finite numerical calibration}
+
+A sufficient scalar calibration is
+\[
+ \log D\ge100,\quad r\ge1,\quad
+ \log D'\le\frac{13}{6}\log D,\quad
+ rD^3<p\le Q\le r(D')^3,\quad D^{12}\Delta\le10^{-5}.
+\]
+It implies $D\ge8$ and $p\ge4D^2$. With the actual natural quotient above,
+\[
+ \left(1+\frac2{\sqrt\alpha}\right)^{2t}Qe^{-s/16}<1,
+ \qquad \frac{\Delta}{\alpha^2}\le\frac1{400}
+ \quad\text{for every integer }t\le r.
+\]
+The exponent $2t$ is the corrected complex-sphere exponent, recorded in
+\path{alvv16_random_sampling_net_count.tex}.
+The count comparison gives $Q^2\le p^2D^7$, hence
+$\alpha^2\ge9/(10000D^{11})$. Also $s>rD/4$ and
+$1+2/\sqrt\alpha\le13D^3$. Writing $x=\log D\ge100$, the logarithm
+of the failure expression is at most $13rx-rD/64<0$, since
+$D=e^x\ge x^3/6>832x$.
+
+The count and suppression conditions must be proved together for the same
+physical family. Increasing a count bound after proving its suppression
+tradeoff does not establish these conditions. The physical spectral-window
+comparisons and the complete low-density induction are separate from this
+finite sampling repair.
+\section{A consistent positive logarithm}
+
+Source line 1112 uses a power $\log^c(\log n/\mu)$, whereas the
+comparison function in line 1113 displays only one logarithm. The same
+power must be retained throughout the comparison. At finite scales,
+use a positive regularized expression instead of a logarithm that can
+vanish or be negative. For a fixed bandwidth $\eta>0$ and deficit
+$v=\mu/\log n$, the actual count admits the explicit bound
+\begin{align*}
+ \log(D_0^3)\le \frac{K_\eta}{v}
+     \bigl(1+\log d+\log(1+1/v)\bigr)^3.
+\end{align*}
+The coefficient is chosen before the physical length, local dimension
+and deficit. This records the finite logarithmic convention used with
+the source's soft-O notation, not a claim that its area-law theorem fails.
+\end{document}

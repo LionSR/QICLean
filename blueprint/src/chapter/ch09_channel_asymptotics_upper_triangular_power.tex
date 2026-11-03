@@ -122,17 +122,15 @@
 \begin{theorem}[Principal Jordan powers and compression]
     \label{thm:wolf_jordan_principal_power_compression}
     \lean{Matrix.jordanBlock_pow_apply,
-      Matrix.jordanBlock_pow_submatrix_castLE,
-      Matrix.l2_opNorm_principal_submatrix_le}
+      Matrix.jordanBlock_pow_submatrix_castLE}
     \leanok
     The leading $D\times D$ principal submatrix of $J_E(a)^n$ is
-    $J_D(a)^n$ whenever $D\le E$. Restriction to any injectively indexed
-    principal submatrix cannot increase the Hilbert-space operator norm.
+    $J_D(a)^n$ whenever $D\le E$.
 \end{theorem}
 
 \begin{proof}
     \leanok
-    \uses{lem:jordan_block_power}
+    \uses{lem:jordan_block_power,lem:principal_submatrix_norm}
     The binomial expansion gives an entry formula depending only on the
     row and column numbers, not the ambient dimension. A coordinate
     inclusion $V$ satisfies $V^\dagger V=I$ and has norm at most one;

@@ -1,0 +1,54 @@
+\section{Spectral comparison with a derived ground-energy shift}
+\label{sec:ground_shift_comparison}
+
+The same restricted residuals give an attained energy comparison and
+both directed comparisons of low spectral spaces. The count depends
+on a width above a proved lower energy, including a positive window
+margin when that width is zero.
+
+\begin{lemma}[Two buffered low-energy comparisons]
+    \label{lem:ground_shift_spectral_pair}
+    \lean{Matrix.ground_shift_and_isCloseTo_pair_of_restricted_residuals}
+    \leanok
+    \uses{lem:ground_energy_restricted_residual,thm:spectral_span_close_of_perturbation}
+    Let $A,B$ be finite complex matrices, with complete orthonormal
+    eigenbases and real eigenvalues. Suppose
+    $A-eI\geq0$, $B-\mu I\geq0$, $\mu\leq e$, and a unit vector
+    $x$ satisfies $Bx=\mu x$. Let $\eta\geq0$ and $h,w>0$, and assume
+    \begin{align}
+        \|(A-B)|_{T_A(e+\eta)}\|\leq\xi_A,\qquad
+        \|(A-B)|_{T_B(\mu+\eta)}\|\leq\xi_B.
+    \end{align}
+    Put $k=\lceil(\eta+h)/(2h)\rceil$ and
+    $\delta_A=k(\xi_A+h)^2/(w+h)^2$,
+    $\delta_B=k(\xi_B+h)^2/(w+h)^2$.
+    Then $0\leq e-\mu\leq\xi_B$. The space
+    $T_A(e+\eta)$ is $\delta_A$-close to
+    $T_B(\mu+\eta+\xi_B+w)$, and $T_B(\mu+\eta)$ is
+    $\delta_B$-close to $T_A(e+\eta+w)$.
+    Neither matrix is required to have a spectral gap.
+\end{lemma}
+\begin{proof}\leanok
+    The unit vector $x$ belongs to $T_B(\mu+\eta)$.
+    Lemma~\ref{lem:ground_energy_restricted_residual} gives
+    $e-\mu\leq\xi_B$; the other inequality is an assumption.
+    The lower matrix bounds imply that every eigenvalue of $A$ is
+    at least $e$, and every eigenvalue of $B$ is at least $\mu$.
+
+    Apply Theorem~\ref{thm:spectral_span_close_of_perturbation} to
+    the first restriction, using lower endpoint $e-h$ and source
+    cutoff $e+\eta$. The count is exactly
+    $\lceil((e+\eta)-(e-h))/(2h)\rceil=k$.
+    The target cutoff exceeds the source cutoff by at least $w$,
+    because $e-\mu\leq\xi_B$. The squared denominator in the
+    window estimate is therefore at least $(w+h)^2$.
+    Reverse the two matrices for the second comparison, using lower
+    endpoint $\mu-h$. Its target cutoff exceeds its source cutoff
+    by at least $w$, because $\mu\leq e$.
+    The same count and denominator bound give $\delta_B$.
+\end{proof}
+
+This is a corrected auxiliary to
+\cite[lines 1195--1255 and 1373--1392]{Arad2016RigorousRG}.
+The losses are explicit; no numerical smallness, energy-shift bound or
+successful spectral comparison is supplied as an additional hypothesis.

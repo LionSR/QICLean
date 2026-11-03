@@ -94,13 +94,15 @@ theorem isCloseTo_iff {δ : ℝ} {T T' : Submodule 𝕜 E} :
     · rw [ContinuousLinearMap.reApplyInnerSelf_apply, hquad]
       linarith [h _ (T'.starProjection_apply_mem x)]
 
-/-- **Lemma `l:2`.** If `S` is `δ`-close to `T` with `δ < 1`, then every `t ∈ T` is the
-projection `P_T s` of some `s ∈ S` with `‖s‖ ≤ ‖t‖ / (1 - δ)`. For `S ⊗ H_B` in place of `S`
-this is Lemma `l:2` of Arad, Landau, Vazirani and Vidick, arXiv:1602.08828v2 (lines 449–465):
-every unit `t` of `T` is `P_T s` with `s ∈ S ⊗ H_B` and `‖s‖ ≤ 1 / (1 - δ)`. -/
-theorem IsCloseTo.exists_mem_starProjection_eq {δ : ℝ} {S T : Submodule 𝕜 E}
-    (h : IsCloseTo δ S T) (hδ : δ < 1) {t : E} (ht : t ∈ T) :
-    ∃ s ∈ S, T.starProjection s = t ∧ ‖s‖ ≤ ‖t‖ / (1 - δ) := by
+/-- A projection preimage with both the source norm bound and the sharper squared-norm
+bound. The compression inverse used in ALVV, arXiv:1602.08828v2, Lemma `l:2`,
+lines 449–465, also gives the second estimate by its quadratic form. This auxiliary
+retains the same witness in both inequalities. -/
+theorem IsCloseTo.exists_mem_starProjection_eq_and_norm_sq_le
+    {δ : ℝ} {S T : Submodule 𝕜 E} (h : IsCloseTo δ S T) (hδ : δ < 1)
+    {t : E} (ht : t ∈ T) :
+    ∃ s ∈ S, T.starProjection s = t ∧ ‖s‖ ≤ ‖t‖ / (1 - δ) ∧
+      ‖s‖ ^ 2 ≤ ‖t‖ ^ 2 / (1 - δ) := by
   have hv := isCloseTo_iff.mp h
   have hc : 0 < 1 - δ := by linarith
   -- the compression `r ↦ P_T P_S r` of `T` into itself
@@ -121,7 +123,6 @@ theorem IsCloseTo.exists_mem_starProjection_eq {δ : ℝ} {S T : Submodule 𝕜 
     exact Subtype.ext (by simpa using this)
   obtain ⟨r, hr⟩ := (LinearMap.injective_iff_surjective.mp hinj) ⟨t, ht⟩
   have hrt : T.starProjection (S.starProjection r) = t := congrArg Subtype.val hr
-  refine ⟨S.starProjection r, S.starProjection_apply_mem _, hrt, ?_⟩
   -- `(1 - δ) ‖r‖² ≤ ‖P_S r‖² = re ⟪t, r⟫ ≤ ‖t‖ ‖r‖`
   have h1 := hv r r.2
   have h2 : ‖S.starProjection r‖ ^ 2 ≤ ‖t‖ * ‖(r : E)‖ := by
@@ -129,27 +130,37 @@ theorem IsCloseTo.exists_mem_starProjection_eq {δ : ℝ} {S T : Submodule 𝕜 
     refine (RCLike.re_le_norm _).trans ?_
     rw [show (f r : E) = t from hrt]
     exact norm_inner_le_norm _ _
-  have hsr : ‖S.starProjection r‖ ≤ ‖(r : E)‖ := S.norm_starProjection_apply_le _
-  rw [le_div_iff₀ hc]
-  rcases eq_or_lt_of_le (norm_nonneg (r : E)) with h0 | hpos
-  · rw [← h0] at hsr
-    have : ‖S.starProjection r‖ = 0 := le_antisymm hsr (norm_nonneg _)
-    rw [this, zero_mul]
-    exact norm_nonneg _
-  · have : (1 - δ) * ‖(r : E)‖ ≤ ‖t‖ := by
-      have : (1 - δ) * ‖(r : E)‖ ^ 2 ≤ ‖t‖ * ‖(r : E)‖ := h1.trans h2
+  have hr_bound : ‖(r : E)‖ ≤ ‖t‖ / (1 - δ) := by
+    rw [le_div_iff₀ hc]
+    rcases eq_or_lt_of_le (norm_nonneg (r : E)) with hzero | hpos
+    · rw [← hzero, zero_mul]
+      exact norm_nonneg _
+    · have hb : (1 - δ) * ‖(r : E)‖ ^ 2 ≤ ‖t‖ * ‖(r : E)‖ := h1.trans h2
       nlinarith
-    calc ‖S.starProjection r‖ * (1 - δ) ≤ ‖(r : E)‖ * (1 - δ) := by gcongr
-      _ = (1 - δ) * ‖(r : E)‖ := mul_comm _ _
-      _ ≤ ‖t‖ := this
+  refine ⟨S.starProjection r, S.starProjection_apply_mem _, hrt,
+    (S.norm_starProjection_apply_le _).trans hr_bound, ?_⟩
+  calc
+    ‖S.starProjection r‖ ^ 2 ≤ ‖t‖ * ‖(r : E)‖ := h2
+    _ ≤ ‖t‖ * (‖t‖ / (1 - δ)) :=
+      mul_le_mul_of_nonneg_left hr_bound (norm_nonneg _)
+    _ = ‖t‖ ^ 2 / (1 - δ) := by ring
 
-/-- **Lemma `l:close`.** If `T` is `δ`-close to `T'` and `T'` is `δ'`-close to `T''`, with
-`δ ≥ 0`, then `T` is `2 (δ + δ')`-close to `T''`. With `T = S ⊗ H_B` this is also the
-second statement: a `δ`-viable `S` for `T'` is `2 (δ + δ')`-viable for `T''`. Arad, Landau,
-Vazirani and Vidick, arXiv:1602.08828v2, lines 484–489. -/
-theorem IsCloseTo.trans {δ δ' : ℝ} {T T' T'' : Submodule 𝕜 E} (h : IsCloseTo δ T T')
-    (h' : IsCloseTo δ' T' T'') (hδ : 0 ≤ δ) :
-    IsCloseTo (2 * (δ + δ')) T T'' := by
+/-- **Lemma `l:2`.** If `S` is `δ`-close to `T` with `δ < 1`, then every `t ∈ T` is the
+projection `P_T s` of some `s ∈ S` with `‖s‖ ≤ ‖t‖ / (1 - δ)`. For `S ⊗ H_B` in place of `S`
+this is Lemma `l:2` of Arad, Landau, Vazirani and Vidick, arXiv:1602.08828v2 (lines 449–465):
+every unit `t` of `T` is `P_T s` with `s ∈ S ⊗ H_B` and `‖s‖ ≤ 1 / (1 - δ)`. -/
+theorem IsCloseTo.exists_mem_starProjection_eq {δ : ℝ} {S T : Submodule 𝕜 E}
+    (h : IsCloseTo δ S T) (hδ : δ < 1) {t : E} (ht : t ∈ T) :
+    ∃ s ∈ S, T.starProjection s = t ∧ ‖s‖ ≤ ‖t‖ / (1 - δ) := by
+  obtain ⟨u, hu, hproj, hnorm, _⟩ := h.exists_mem_starProjection_eq_and_norm_sq_le hδ ht
+  exact ⟨u, hu, hproj, hnorm⟩
+
+/-- Weighted composition of closeness. The free positive parameter keeps the coefficient
+of the first error arbitrarily close to one. This refines the projection argument in
+ALVV, arXiv:1602.08828v2, Lemma `l:close`, lines 484–489. -/
+theorem IsCloseTo.trans_weighted {δ δ' θ : ℝ} {T T' T'' : Submodule 𝕜 E} (h : IsCloseTo δ T T')
+    (h' : IsCloseTo δ' T' T'') (hδ : 0 ≤ δ) (hθ : 0 < θ) :
+    IsCloseTo ((1 + θ) * δ + (1 + 1 / θ) * δ') T T'' := by
   rw [isCloseTo_iff] at h h' ⊢
   intro a ha
   set b := T'.starProjection a
@@ -177,15 +188,33 @@ theorem IsCloseTo.trans {δ δ' : ℝ} {T T' T'' : Submodule 𝕜 E} (h : IsClos
     have := norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ horth
     rw [← hsplit] at this
     nlinarith [sq_nonneg ‖T.starProjection a - c‖]
-  have hac : ‖a - c‖ ^ 2 ≤ 2 * (δ + δ') * ‖a‖ ^ 2 := by
+  have hac : ‖a - c‖ ^ 2 ≤ ((1 + θ) * δ + (1 + 1 / θ) * δ') * ‖a‖ ^ 2 := by
     have htri : ‖a - c‖ ≤ ‖a - b‖ + ‖b - c‖ := norm_sub_le_norm_sub_add_norm_sub a b c
-    have : ‖a - c‖ ^ 2 ≤ 2 * (‖a - b‖ ^ 2 + ‖b - c‖ ^ 2) := by
-      nlinarith [norm_nonneg (a - c), norm_nonneg (a - b), norm_nonneg (b - c),
-        sq_nonneg (‖a - b‖ - ‖b - c‖)]
-    linarith
+    have hyoung : 2 * ‖a - b‖ * ‖b - c‖ ≤
+        θ * ‖b - c‖ ^ 2 + ‖a - b‖ ^ 2 / θ := by
+      apply (mul_le_mul_iff_right₀ hθ).mp
+      field_simp
+      nlinarith [sq_nonneg (θ * ‖b - c‖ - ‖a - b‖)]
+    have hsq : ‖a - c‖ ^ 2 ≤
+        (1 + θ) * ‖b - c‖ ^ 2 + (1 + 1 / θ) * ‖a - b‖ ^ 2 := by
+      simp only [div_eq_mul_inv] at hyoung ⊢
+      nlinarith [norm_nonneg (a - c), norm_nonneg (a - b), norm_nonneg (b - c)]
+    calc
+      ‖a - c‖ ^ 2 ≤ _ := hsq
+      _ ≤ (1 + θ) * (δ * ‖a‖ ^ 2) + (1 + 1 / θ) * (δ' * ‖a‖ ^ 2) := by
+        gcongr
+      _ = _ := by ring
   have hpy := norm_sq_eq_add_norm_sq_starProjection a T
   rw [starProjection_orthogonal_val] at hpy
   nlinarith
+
+/-- **Composition of closeness.** This is the factor-two specialization of weighted
+composition used in ALVV, arXiv:1602.08828v2, Lemma `l:close`, lines 484–489. -/
+theorem IsCloseTo.trans {δ δ' : ℝ} {T T' T'' : Submodule 𝕜 E} (h : IsCloseTo δ T T')
+    (h' : IsCloseTo δ' T' T'') (hδ : 0 ≤ δ) :
+    IsCloseTo (2 * (δ + δ')) T T'' := by
+  simpa only [div_one, one_add_one_eq_two, mul_add] using
+    h.trans_weighted h' hδ (show (0 : ℝ) < 1 by norm_num)
 
 /-- **The projection onto an intersection.** If the projections onto `U₁` and `U₂` commute, the
 projection onto `U₁ ⊓ U₂` is their product. -/

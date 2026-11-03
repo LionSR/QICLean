@@ -1,0 +1,68 @@
+\section{Closed success sets for subspace closeness}
+
+Fix a target subspace $T$ of a finite-dimensional complex coordinate space.
+The condition that a candidate subspace is close to $T$ is a closed
+condition on its orthogonal projection. This uses the original closeness
+condition of \cite[Definition \texttt{d:close}, lines 469--474]
+{Arad2016RigorousRG}.
+
+\begin{theorem}[A closed compressed-matrix inequality]
+    \label{thm:closed_compressed_positivity}
+    \lean{Matrix.isClosed_setOf_compressed_posSemidef}
+    \leanok
+    Fix a square complex matrix $Q$ and a real number $\delta$. Then
+    \begin{align}
+        \bigl\{P:QPQ-(1-\delta)Q\ge0\bigr\}
+    \end{align}
+    is closed in the space of square matrices. No symmetry or projection
+    assumption on the fixed matrix $Q$ is needed for this assertion.
+\end{theorem}
+\begin{proof}\leanok
+    The cone of positive-semidefinite matrices is closed. Take its
+    inverse image under the continuous affine map
+    $P\mapsto QPQ-(1-\delta)Q$.
+\end{proof}
+
+\begin{theorem}[Exact matrix form of subspace closeness]
+    \label{thm:closeness_compressed_matrix}
+    \lean{Submodule.isCloseTo_iff_compressed_posSemidef}
+    \leanok
+    \uses{def:subspace_close}
+    Let $P$ and $Q$ be the actual orthogonal projection matrices onto
+    subspaces $U$ and $T$, respectively. Then $U$ is $\delta$-close to $T$
+    if and only if $QPQ-(1-\delta)Q$ is positive semidefinite.
+\end{theorem}
+\begin{proof}\leanok
+    The standard matrix representation preserves multiplication,
+    subtraction, scalar multiplication and positivity of operators.
+    Thus the inequality is exactly the defining condition
+    $(1-\delta)P_T\le P_TP_UP_T$.
+\end{proof}
+
+\begin{theorem}[The actual success set and its complement]
+    \label{thm:closed_closeness_success}
+    \lean{Submodule.isClosed_setOf_isCloseTo_projectionRange}
+    \leanok
+    Let $\mathcal P$ be the space of all orthogonal projection matrices,
+    with its inherited matrix topology. For every real $\delta$ and
+    every fixed target subspace $T$, the set
+    \begin{align}
+        \bigl\{P\in\mathcal P:
+          \operatorname{range}P\text{ is }\delta\text{-close to }T\bigr\}
+    \end{align}
+    is closed. Hence this success set and its true failure complement
+    are Borel measurable. Zero-rank candidates and the zero target are
+    included.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:closed_compressed_positivity,thm:closeness_compressed_matrix,
+        thm:projection_matrix_range}
+    An orthogonal projection is exactly the orthogonal projection onto
+    its actual range. The matrix criterion therefore applies with the
+    candidate matrix $P$ itself. Restricting the closed matrix set to
+    $\mathcal P$ gives the result.
+\end{proof}
+
+No measurable choice of a comparison subspace is used. To apply the result
+to an actual random output, one must separately prove that its orthogonal
+projection is a measurable function of the sampling variables.

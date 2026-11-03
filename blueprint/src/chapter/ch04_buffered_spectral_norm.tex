@@ -1,0 +1,155 @@
+\section{Buffered low-energy spaces under norm perturbations}
+\label{sec:buffered_spectral_norm}
+
+A global operator-norm estimate gives both directed spectral comparisons,
+provided that the target cutoff is enlarged. No restriction is imposed on
+the spectrum between these cutoffs. The following auxiliary uses the
+spectral-window argument of Arad, Landau, Vazirani and
+Vidick~\cite[lines 955--968 and 1412--1420]{Arad2016RigorousRG}.
+It retains the corrected finite window count recorded in
+\cite{gap:alvv16_hard_truncation_windows}.
+
+\begin{lemma}[Two directed buffered comparisons]
+    \label{lem:buffered_spectral_norm_pair}
+    \lean{Matrix.IsHermitian.isCloseTo_spectralSpanLE_pair_of_norm_sub_le}
+    \leanok
+    Let $H$ and $B$ be Hermitian matrices on a finite-dimensional complex
+    Hilbert space. Suppose $\|H-B\|\leq\xi$ with $\xi>0$.
+    For $c\in\mathbb R$ and $w>0$, put
+    \begin{align}
+        U&=\|H\|+\xi,&a&=\min\{c-1,-U\},\\
+        n&=\left\lceil\frac{c-a}{2\xi}\right\rceil,&
+        \delta&=\frac{n(2\xi)^2}{(w+\xi)^2}.
+    \end{align}
+    Write $E_A(c)$ for the spectral subspace of $A$ on $(-\infty,c]$.
+    Then $E_B(c+w)$ is $\delta$-close to $E_H(c)$, and
+    $E_H(c+w)$ is $\delta$-close to $E_B(c)$.
+    Thus every vector $v\in E_H(c)$ satisfies
+    \begin{align}
+        \|P_{E_B(c+w)}v\|^2\geq(1-\delta)\|v\|^2,
+    \end{align}
+    and the corresponding assertion holds with $H$ and $B$ exchanged.
+    The statement also allows the zero-dimensional Hilbert space.
+\end{lemma}
+\begin{proof}\leanok
+    Both matrices have norm at most $U$, so all their eigenvalues are at
+    least $-U\geq a$, while $a<c$. On every vector the perturbation has
+    norm at most $\xi$ times the vector norm. Apply the finite-window
+    comparison with window half-width $\xi$, lower endpoint $a$ and
+    target cutoff $c+w$. Its numerical condition is exactly
+    $n(2\xi)^2=\delta(w+\xi)^2$. Apply it a second time with the two
+    matrices exchanged. The lower endpoint and loss are unchanged.
+\end{proof}
+
+The loss is selected from the original matrix and the error budget,
+independently of the approximating matrix. If $0<\xi\leq1$, then
+$n<\max\{1,c+U\}/(2\xi)+1$; in particular, fixed positive buffer and
+polynomially bounded energy range require only inverse-polynomial norm
+accuracy to make the loss inverse-polynomial. This auxiliary does not
+assert a comparison at an unchanged cutoff or construct an efficient
+filter.
+
+\begin{lemma}[Stability of a separated low spectral cluster]
+    \label{lem:spectral_cluster_norm_perturbation}
+    \lean{Matrix.IsHermitian.spectral_cluster_of_norm_sub_le}
+    \leanok
+    Let $A,B$ be Hermitian matrices, let $a<b\le c<d$, and suppose
+    $E_A(a)=E_A(d)$. Assume $\|A-B\|\le\xi$ with $\xi>0$.
+    Put $U=\|A\|+\xi$ and
+    \begin{align}
+        n_-&=\left\lceil\frac{a-\min\{a-1,-U\}}{2\xi}\right\rceil,
+        &\delta_-&=\frac{n_-(2\xi)^2}{(b-a+\xi)^2},\\
+        n_+&=\left\lceil\frac{c-\min\{c-1,-U\}}{2\xi}\right\rceil,
+        &\delta_+&=\frac{n_+(2\xi)^2}{(d-c+\xi)^2}.
+    \end{align}
+    If $\delta_-,\delta_+<1$, then
+    \begin{align}
+        E_B(b)&=E_B(c),&\dim E_B(b)&=\dim E_A(a).
+    \end{align}
+    The space $E_B(b)$ is $\delta_-$-close to $E_A(a)$, and
+    $E_A(a)$ is $\delta_+$-close to $E_B(b)$. Every cutoff between
+    $b$ and $c$ gives that same space and retains both directed estimates.
+    Repeated eigenvalues, negative spectra and zero-dimensional spaces
+    are allowed. This is an auxiliary for the approximating Hamiltonian
+    in \cite[lines 1412--1420]{Arad2016RigorousRG}; the physical soft
+    residuals and matrix approximation are separate constructions.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:buffered_spectral_norm_pair,thm:subspace_close_nested_equal,
+        thm:subspace_close_dimension}
+    Apply the buffered comparison with source cutoff $a$ and buffer
+    $b-a$, obtaining that $E_B(b)$ approximates $E_A(a)$ with loss
+    $\delta_-$. Apply the reverse comparison with source cutoff $c$
+    and buffer $d-c$, obtaining that $E_A(d)=E_A(a)$ approximates
+    $E_B(c)$ with loss $\delta_+$. The two losses below one imply
+    opposite dimension inequalities. Since $E_B(b)\subseteq E_B(c)$,
+    the two spaces coincide and have the asserted dimension. Monotonicity
+    gives equality and both estimates at every intermediate cutoff.
+\end{proof}
+
+\begin{lemma}[A uniform bound for the finite-window loss]
+    \label{lem:spectral_window_uniform_envelope}
+    \lean{Real.finite_window_loss_le_envelope,
+        Real.finite_window_envelope_le,
+        Real.finite_window_envelope_le_half_of_precision}
+    \leanok
+    Let $0\le A\le M$, $0\le c\le R$, and $\xi,w>0$. Put
+    \begin{align}
+        a&=\min\{c-1,-(A+\xi)\},&
+        n&=\left\lceil\frac{c-a}{2\xi}\right\rceil,\notag\\
+        n_*&=\left\lceil\frac{R+M+\xi+1}{2\xi}\right\rceil,&
+        \Lambda&=\frac{n_*(2\xi)^2}{(w+\xi)^2}.
+    \end{align}
+    Then $n(2\xi)^2/(w+\xi)^2\le\Lambda$. If $\xi\le1$, then
+    \begin{align}
+        \Lambda\le\frac{2\xi(R+M+4)}{w^2}.
+        \label{eq:spectral_window_linear_precision}
+    \end{align}
+    Consequently, $\xi\le\beta w^2/[4(R+M+4)]$ implies
+    $\Lambda\le\beta/2$.
+\end{lemma}
+\begin{proof}\leanok
+    The lower endpoint gives
+    $c-a=\max\{1,c+A+\xi\}\le R+M+\xi+1$, so $n\le n_*$.
+    The ceiling bound $n_*\le(R+M+\xi+1)/(2\xi)+1$ and
+    $\xi^2\le\xi$ yield
+    \begin{align}
+        n_*(2\xi)^2
+          &\le2\xi(R+M+1)+6\xi^2
+           \le2\xi(R+M+4).
+    \end{align}
+    Dividing by $(w+\xi)^2\ge w^2>0$ proves
+    (\ref{eq:spectral_window_linear_precision}). Substitute the final
+    precision inequality to obtain $\beta/2$.
+\end{proof}
+
+\begin{corollary}[A positive common precision]
+    \label{cor:spectral_window_precision_choice}
+    \lean{Real.finite_window_precision_parameters,
+        Real.soft_cluster_window_precision_parameters}
+    \leanok
+    Let $M,R\ge0$ and $w,\beta>0$. The choice
+    \begin{align}
+        \xi=\min\left\{1,\frac{\beta w^2}{4(R+M+4)}\right\}>0
+    \end{align}
+    satisfies both precision inequalities of
+    Lemma~\ref{lem:spectral_window_uniform_envelope}. Thus its uniform
+    loss is at most $\beta/2$, before $A$ and $c$ are specified.
+    In particular, for $M\ge0$ and $g,\tau>0$, the values
+    $R=4+g$, $w=g/5$, and $\beta=\tau/200$ give
+    \begin{align}
+        \xi=\min\left\{1,
+          \frac{\tau g^2}{20000(M+g+8)}\right\},
+        \qquad\Lambda\le\frac{\tau}{400}.
+    \end{align}
+    The same precision therefore controls every cutoff $0\le c\le4+g$
+    and every norm bound $0\le A\le M$.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{lem:spectral_window_uniform_envelope}
+    Both arguments of the minimum are positive. The minimum is at most
+    one and at most the displayed quotient, so the lemma applies.
+    The specialization follows from
+    $(\tau/200)(g/5)^2/[4(4+g+M+4)]
+      =\tau g^2/[20000(M+g+8)]$.
+\end{proof}

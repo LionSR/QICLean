@@ -1,0 +1,90 @@
+\section{Estimated energy centers and a common commuting interior}
+\label{sec:soft_commuting_family}
+
+The ten-unit interval of estimated regional energies in
+Arad, Landau, Vazirani and Vidick~\cite[lines 1178--1185]{Arad2016RigorousRG}
+permits a soft replacement to have negative spectrum. A scalar correction
+restores positivity. The same correction can be summed over a selected
+family without requiring the resulting soft operators to be nearest-neighbour
+sums. This is an order construction for the three regional replacements
+in \cite[lines 1373--1392]{Arad2016RigorousRG}.
+
+\begin{lemma}[One actual estimated-center replacement]
+    \label{lem:soft_estimated_center_order}
+    \lean{Matrix.IsHermitian.softTruncation_estimated_center_bounds}
+    \leanok
+    Let $A=A^*\geq eI$, $e-10\leq p\leq e$, $t>0$ and $m\geq1$.
+    Put
+    \begin{align}
+        F=pI+h_{m,t}(A-pI)-eI.
+    \end{align}
+    Then
+    \begin{align}
+        F+10I\geq0,\qquad F\leq A-eI.
+    \end{align}
+    Every matrix commuting with $A$ also commutes with $F$.
+    For every $U\geq0$,
+    \begin{align}
+        \left(U-\frac{t}{m}\left(\frac Ut\right)^m\right)
+        \mathbf1_{[p+U,\infty)}(A)\leq F+10I.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    The matrix $X=A-pI$ is positive. Its soft function is positive and
+    lies below $X$. Moreover,
+    \begin{align}
+        F+10I=h_{m,t}(X)+(p-e+10)I,
+    \end{align}
+    whose scalar correction is nonnegative. This proves positivity
+    and transfers the actual high-energy floor from $h_{m,t}(X)$.
+    The upper bound follows from $h_{m,t}(X)\leq X$.
+    Scalar translation in the functional calculus expresses the soft
+    term as a function of $A$, which proves commutant preservation.
+\end{proof}
+
+\begin{lemma}[Simultaneous estimated-center replacements]
+    \label{lem:soft_commuting_family_order}
+    \lean{Matrix.softTruncation_commuting_family_bounds}
+    \leanok
+    Let $(A_i)_{i\in\mathcal I}$ be a finite pairwise commuting
+    Hermitian family, with $A_i\geq e_iI$, and let
+    $S\subseteq\mathcal I$. For $i\in S$ suppose
+    $e_i-10\leq p_i\leq e_i$. For $t>0$ and $m\geq1$, construct
+    \begin{align}
+        F_i&=
+        \begin{cases}
+            p_iI+h_{m,t}(A_i-p_iI)-e_iI,&i\in S,\\
+            A_i-e_iI,&i\notin S,
+        \end{cases}\\
+        B&=\sum_i F_i,\qquad D=10|S|.
+    \end{align}
+    Then
+    \begin{align}
+        B+DI&\geq0,& B&\leq\sum_i(A_i-e_iI),
+    \end{align}
+    and $B$ commutes with every original $A_j$. For each selected
+    $j\in S$ and every $U\geq0$,
+    \begin{align}
+        \left(U-\frac{t}{m}\left(\frac Ut\right)^m\right)
+        \mathbf1_{[p_j+U,\infty)}(A_j)\leq B+DI.
+    \end{align}
+    The family and the selected set may be empty, and the matrix space
+    may have dimension zero.
+\end{lemma}
+\begin{proof}\leanok
+    Put $K_i=F_i+10I$ for $i\in S$ and $K_i=F_i$ otherwise.
+    Lemma~\ref{lem:soft_estimated_center_order} and the lower regional
+    bounds give $K_i\geq0$. Their literal sum is $B+DI$.
+    Sum the individual upper bounds to obtain the upper order estimate.
+    Commutant preservation gives simultaneous commutation with every
+    original regional matrix. For the selected projection estimate,
+    use its derived floor below $K_j$, followed by
+    $K_j\leq\sum_iK_i$.
+\end{proof}
+
+These statements construct the common interior matrix after several
+soft replacements. A physical application must still derive the
+regional lower energies and pairwise commutation, and construct the
+actual boundary forcing and ground-energy bounds. No reverse residual,
+spectral gap, matrix product representation or complete efficient-filter
+theorem is supplied by these generic order results.
