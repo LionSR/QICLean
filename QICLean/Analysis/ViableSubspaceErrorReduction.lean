@@ -25,6 +25,7 @@ with `T` the spectral subspace of a Hamiltonian, is not formalized here.
 
 * `Submodule.IsCloseTo.mono`: a larger subspace stays close.
 * `Submodule.IsCloseTo.map_of_contract`: the operator step of Lemma `l:er`.
+* `Submodule.IsCloseTo.map_of_nested_contract`: the low-energy nested-target step.
 -/
 
 open scoped InnerProductSpace
@@ -47,15 +48,16 @@ theorem IsCloseTo.mono {δ : ℝ} {U U' T : Submodule 𝕜 E} (h : IsCloseTo δ 
     exact U.norm_starProjection_apply_le _
   gcongr
 
-/-- **The operator step of Lemma `l:er` (error reduction).** Let `K` map `T` and `Tᗮ` into
-themselves, with `‖t‖ ≤ ‖K t‖` on `T` and `‖K q‖ ^ 2 ≤ Δ ‖q‖ ^ 2` on `Tᗮ`. If `U` is `δ`-close
-to `T` with `δ < 1`, then `K U` is `Δ / (1 - δ) ^ 2`-close to `T`. Arad, Landau, Vazirani and
-Vidick, arXiv:1602.08828v2, proof of Lemma `l:er` (lines 606–622); the tensor-product statement
-itself is not formalized here. -/
-theorem IsCloseTo.map_of_contract {δ Δ : ℝ} {U T : Submodule 𝕜 E} (K : E →L[𝕜] E)
-    (h : IsCloseTo δ U T) (hδ : δ < 1) (hΔ : 0 ≤ Δ) (hKT : ∀ t ∈ T, K t ∈ T)
-    (hKTo : ∀ q ∈ Tᗮ, K q ∈ Tᗮ) (hlow : ∀ t ∈ T, ‖t‖ ≤ ‖K t‖)
-    (hhigh : ∀ q ∈ Tᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) :
+/-- Error reduction between nested targets. If `U` is close to `Tplus`, an operator
+that expands on `T ⊆ Tplus` and contracts on `Tplusᗮ` improves closeness to `T`.
+No spectral gap between the two spaces is assumed. This is the operator step in
+ALVV, arXiv:1602.08828v2, Theorem `t:aisgapless`, lines 1037–1041. -/
+theorem IsCloseTo.map_of_nested_contract {δ Δ : ℝ} {U T Tplus : Submodule 𝕜 E}
+    (K : E →L[𝕜] E) (hT : T ≤ Tplus)
+    (h : IsCloseTo δ U Tplus) (hδ : δ < 1) (hΔ : 0 ≤ Δ)
+    (hKT : ∀ t ∈ T, K t ∈ T) (hKTo : ∀ q ∈ Tplusᗮ, K q ∈ Tplusᗮ)
+    (hlow : ∀ t ∈ T, ‖t‖ ≤ ‖K t‖)
+    (hhigh : ∀ q ∈ Tplusᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) :
     IsCloseTo (Δ / (1 - δ) ^ 2) (U.map K.toLinearMap) T := by
   have : CompleteSpace E := FiniteDimensional.complete 𝕜 E
   rw [isCloseTo_iff]
@@ -73,16 +75,16 @@ theorem IsCloseTo.map_of_contract {δ Δ : ℝ} {U T : Submodule 𝕜 E} (K : E 
     obtain ⟨x, hx⟩ := LinearMap.injective_iff_surjective.mp hinj ⟨t, ht⟩
     exact ⟨x, x.2, congrArg Subtype.val hx⟩
   have hr : ‖r‖ ≤ ‖t‖ := hKr ▸ hlow r hrT
-  obtain ⟨u, hu, hPu, hun⟩ := h.exists_mem_starProjection_eq hδ hrT
+  obtain ⟨u, hu, hPu, hun⟩ := h.exists_mem_starProjection_eq hδ (hT hrT)
   have h1δ : 0 < 1 - δ := by linarith
   have hut : ‖u‖ ≤ ‖t‖ / (1 - δ) := hun.trans (div_le_div_of_nonneg_right hr h1δ.le)
-  -- The component `q = u - r` of `u` orthogonal to `T`.
+  -- The component `q = u - r` of `u` orthogonal to `Tplus`.
   set q := u - r with hq_def
-  have hq : q ∈ Tᗮ := by
+  have hq : q ∈ Tplusᗮ := by
     rw [hq_def, ← hPu]
-    exact T.sub_starProjection_mem_orthogonal u
+    exact Tplus.sub_starProjection_mem_orthogonal u
   have hqu : ‖q‖ ^ 2 ≤ ‖u‖ ^ 2 := by
-    have := norm_sq_eq_add_norm_sq_starProjection u T
+    have := norm_sq_eq_add_norm_sq_starProjection u Tplus
     rw [starProjection_orthogonal_val, hPu] at this
     nlinarith [sq_nonneg ‖r‖]
   have hy : ‖K q‖ ^ 2 ≤ Δ / (1 - δ) ^ 2 * ‖t‖ ^ 2 := by
@@ -93,7 +95,7 @@ theorem IsCloseTo.map_of_contract {δ Δ : ℝ} {U T : Submodule 𝕜 E} (K : E 
   -- `K u = t + K q` with orthogonal summands.
   have hKu : K u = t + K q := by
     rw [hq_def, map_sub, hKr, add_sub_cancel]
-  have horth : ⟪t, K q⟫_𝕜 = 0 := inner_right_of_mem_orthogonal ht (hKTo q hq)
+  have horth : ⟪t, K q⟫_𝕜 = 0 := inner_right_of_mem_orthogonal (hT ht) (hKTo q hq)
   have hnKu : ‖K u‖ ^ 2 = ‖t‖ ^ 2 + ‖K q‖ ^ 2 := by
     rw [hKu, sq, sq, sq]
     exact norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ horth
@@ -103,7 +105,7 @@ theorem IsCloseTo.map_of_contract {δ Δ : ℝ} {U T : Submodule 𝕜 E} (K : E 
   have hinner : ⟪K u, P t⟫_𝕜 = (‖t‖ ^ 2 : 𝕜) := by
     rw [← (U.map K.toLinearMap).inner_starProjection_left_eq_right,
       (U.map K.toLinearMap).starProjection_eq_self_iff.mpr hmem, hKu, inner_add_left,
-      inner_left_of_mem_orthogonal ht (hKTo q hq), add_zero, inner_self_eq_norm_sq_to_K]
+      inner_left_of_mem_orthogonal (hT ht) (hKTo q hq), add_zero, inner_self_eq_norm_sq_to_K]
   have hov : ‖t‖ ^ 2 ≤ ‖K u‖ * ‖P t‖ := by
     have := norm_inner_le_norm (𝕜 := 𝕜) (K u) (P t)
     rw [hinner, ← RCLike.ofReal_pow, RCLike.norm_ofReal, abs_of_nonneg (by positivity)] at this
@@ -126,5 +128,18 @@ theorem IsCloseTo.map_of_contract {δ Δ : ℝ} {U T : Submodule 𝕜 E} (K : E 
   · rw [← hx0] at hcon
     linarith
   · nlinarith [mul_lt_mul_of_pos_left hpxy (by linarith : 0 < x + y)]
+
+
+/-- **The operator step of Lemma `l:er` (error reduction).** Let `K` map `T` and `Tᗮ` into
+themselves, with `‖t‖ ≤ ‖K t‖` on `T` and `‖K q‖ ^ 2 ≤ Δ ‖q‖ ^ 2` on `Tᗮ`. If `U` is `δ`-close
+to `T` with `δ < 1`, then `K U` is `Δ / (1 - δ) ^ 2`-close to `T`. Arad, Landau, Vazirani and
+Vidick, arXiv:1602.08828v2, proof of Lemma `l:er` (lines 606–622); the tensor-product statement
+itself is not formalized here. -/
+theorem IsCloseTo.map_of_contract {δ Δ : ℝ} {U T : Submodule 𝕜 E} (K : E →L[𝕜] E)
+    (h : IsCloseTo δ U T) (hδ : δ < 1) (hΔ : 0 ≤ Δ) (hKT : ∀ t ∈ T, K t ∈ T)
+    (hKTo : ∀ q ∈ Tᗮ, K q ∈ Tᗮ) (hlow : ∀ t ∈ T, ‖t‖ ≤ ‖K t‖)
+    (hhigh : ∀ q ∈ Tᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) :
+    IsCloseTo (Δ / (1 - δ) ^ 2) (U.map K.toLinearMap) T := by
+  exact h.map_of_nested_contract K le_rfl hδ hΔ hKT hKTo hlow hhigh
 
 end Submodule
