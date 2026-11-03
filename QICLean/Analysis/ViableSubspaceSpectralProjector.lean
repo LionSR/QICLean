@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.ViableSubspaceErrorReduction
 import QICLean.Analysis.ViableSubspaceTensor
+import QICLean.Analysis.TensorFamilyImage
 
 /-!
 # Error reduction of a viable subspace by a spectral projector
@@ -34,12 +35,6 @@ proof does through Lemma `l:2`. Positivity of `K` is not used and not assumed. D
 
 * `Submodule.IsSpectralProjector`: Definition `def:spectral-AGSP` with closed conditions.
 * `Submodule.IsViable.spectralProjector`: Lemma `l:er`.
-* `Submodule.IsViable.map_of_nested_tensor_decomposition`: the tensor-containment step between
-  nested targets.
-* `Submodule.IsSpectralProjector.contract_between_cutoffs`: expansion and contraction at distinct
-  spectral cutoffs.
-* `Submodule.IsViable.spectralProjector_between_cutoffs`: the nested-space error-reduction step of
-  Theorem `t:aisgapless`, without a spectral gap.
 -/
 
 open scoped TensorProduct InnerProductSpace
@@ -52,26 +47,6 @@ section General
 variable {𝕜 E F : Type*} [RCLike 𝕜]
   [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] [FiniteDimensional 𝕜 E]
   [NormedAddCommGroup F] [InnerProductSpace 𝕜 F] [FiniteDimensional 𝕜 F]
-
-omit [FiniteDimensional 𝕜 E] [FiniteDimensional 𝕜 F] in
-theorem tmul_mem_tensorProd {S : Submodule 𝕜 E} {S' : Submodule 𝕜 F} {x : E} {y : F}
-    (hx : x ∈ S) (hy : y ∈ S') : x ⊗ₜ[𝕜] y ∈ S.tensorProd S' :=
-  ⟨⟨x, hx⟩ ⊗ₜ ⟨y, hy⟩, TensorProduct.map_tmul _ _ _ _⟩
-
-omit [FiniteDimensional 𝕜 E] [FiniteDimensional 𝕜 F] in
-/-- `S ⊗ S'` lies in `N` exactly when every `x ⊗ y` with `x ∈ S` and `y ∈ S'` does. -/
-theorem tensorProd_le_iff {S : Submodule 𝕜 E} {S' : Submodule 𝕜 F}
-    {N : Submodule 𝕜 (E ⊗[𝕜] F)} :
-    S.tensorProd S' ≤ N ↔ ∀ x ∈ S, ∀ y ∈ S', x ⊗ₜ[𝕜] y ∈ N := by
-  refine ⟨fun h x hx y hy => h (tmul_mem_tensorProd hx hy), fun h => ?_⟩
-  rintro _ ⟨z, rfl⟩
-  induction z with
-  | tmul x y =>
-    rw [TensorProduct.map_tmul]
-    exact h x x.2 y y.2
-  | add z z' hz hz' =>
-    rw [map_add]
-    exact N.add_mem hz hz'
 
 omit [FiniteDimensional 𝕜 E] in
 /-- The dimension of a finite supremum of subspaces is at most the sum of the dimensions. -/
@@ -138,7 +113,7 @@ theorem IsViable.map_of_nested_tensor_decomposition
     (A : ι → M →L[𝕜] M) (Rop : ι → R →L[𝕜] R)
     (hdec : K = ∑ i, mapL (A i) (Rop i))
     (hδ : δ < 1) (hΔ : 0 ≤ Δ)
-    (hKT : ∀ t ∈ T, K t ∈ T) (hKTo : ∀ q ∈ Tplusᗮ, K q ∈ Tplusᗮ)
+    (hKT : ∀ t ∈ T, K t ∈ T) (hKTo : ∀ q ∈ Tplusᗮ, K q ∈ Tᗮ)
     (hlow : ∀ t ∈ T, ‖t‖ ≤ ‖K t‖)
     (hhigh : ∀ q ∈ Tplusᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) :
     finrank 𝕜 ↥(⨆ i, S.map (A i : M →ₗ[𝕜] M)) ≤
@@ -150,15 +125,7 @@ theorem IsViable.map_of_nested_tensor_decomposition
   refine ⟨?_, ?_⟩
   · exact finrank_iSup_map_le_card_mul S (fun i ↦ (A i).toLinearMap)
   · have hclose := IsCloseTo.map_of_nested_contract K hT hS hδ hΔ hKT hKTo hlow hhigh
-    refine hclose.mono ?_
-    rw [map_le_iff_le_comap, tensorProd_le_iff]
-    intro x hx y _
-    change K (x ⊗ₜ[𝕜] y) ∈ V.tensorProd (⊤ : Submodule 𝕜 R)
-    rw [hdec, _root_.sum_apply]
-    refine sum_mem fun i _ ↦ ?_
-    rw [mapL_tmul]
-    exact tmul_mem_tensorProd
-      (mem_iSup_of_mem i (mem_map_of_mem hx)) mem_top
+    exact hclose.mono (map_tensorProd_top_le_iSup_map S A Rop hdec)
 
 /-- A two-factor form of the tensor-containment step in ALVV,
 arXiv:1602.08828v2, proof of Lemma `l:er`, lines 606–622. If a filter preserves
@@ -207,8 +174,8 @@ structure IsSpectralProjector (K H : E →L[𝕜] E) (b : OrthonormalBasis n �
   sq_le : ∀ j, η₁ ≤ h j → k j ^ 2 ≤ Δ
 
 omit [FiniteDimensional 𝕜 E] in
-/-- A spectral projector expands below its lower cutoff and contracts above any
-cutoff whose strict upper spectrum lies at or above the projector's upper cutoff `η₁`.
+/-- A spectral filter expands below its lower cutoff and contracts above any
+cutoff whose strict upper spectrum lies above the filter's upper endpoint.
 The cutoffs may differ; no spectral gap is required. This supports ALVV,
 arXiv:1602.08828v2, Theorem `t:aisgapless`, lines 1037–1041. -/
 theorem IsSpectralProjector.contract_between_cutoffs {K H : E →L[𝕜] E} {b : OrthonormalBasis n 𝕜 E}
@@ -342,12 +309,12 @@ theorem IsViable.spectralProjector {D : ℕ} {δ Δ η₀ η₁ : ℝ}
     have := (mem_iInf _).mp (hslice hx) y
     simpa using this
 
-/-- A spectral projector improves viability for the upper low-energy space into
+/-- A spectral filter improves viability for the upper low-energy space into
 viability for the lower one, without a gap assumption between the cutoffs.
 The finite tensor decomposition is supplied explicitly. This is the
 nested-space error-reduction step of ALVV, arXiv:1602.08828v2,
 Theorem `t:aisgapless`, lines 1027–1041. It does not assert the physical
-construction of the spectral projector or of its tensor decomposition. -/
+construction of the filter or of its tensor decomposition. -/
 theorem IsViable.spectralProjector_between_cutoffs
     {ι : Type*} [Fintype ι] {δ Δ η₀ η₁ : ℝ}
     {K H : M ⊗[𝕜] R →L[𝕜] M ⊗[𝕜] R}
@@ -371,7 +338,12 @@ theorem IsViable.spectralProjector_between_cutoffs
     exact hj.trans hsep
   obtain ⟨hKT, hKTo, hlow, hhigh⟩ :=
     hK.contract_between_cutoffs η₁ (fun _ hj ↦ hj.le)
+  have hKToLower (q) (hq : q ∈ (span 𝕜 (b '' {j | h j ≤ η₁}))ᗮ) :
+      K q ∈ (span 𝕜 (b '' {j | h j ≤ η₀}))ᗮ := by
+    rw [mem_orthogonal]
+    intro t ht
+    exact inner_right_of_mem_orthogonal (hT ht) (hKTo q hq)
   exact hS.map_of_nested_tensor_decomposition hT A Rop hdec hδ hΔ
-    hKT hKTo hlow hhigh
+    hKT hKToLower hlow hhigh
 
 end Submodule

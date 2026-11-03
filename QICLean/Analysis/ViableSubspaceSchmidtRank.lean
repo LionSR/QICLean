@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.ViableSubspaceCoordinates
+import QICLean.Analysis.ViableSubspaceUnitApproximation
 import QICLean.Channel.MaximalOverlap
 
 /-!
@@ -35,41 +36,6 @@ the isometry can be the configuration splitting at a chain cut.
 open scoped BigOperators TensorProduct InnerProductSpace ComplexOrder
 
 namespace Submodule
-
-/-- Every unit vector in a subspace approximated with squared error `δ < 1`
-has a unit approximant in the approximating subspace with squared overlap at
-least `1 - δ`. The approximant is its normalized orthogonal projection.
-This is the vector interpretation of ALVV, arXiv:1602.08828v2,
-Definition `d:close`, lines 469–474, and Definition `d:vs`, lines 433–440. -/
-private theorem IsCloseTo.exists_unit_mem_norm_inner_sq_ge
-    {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
-    [FiniteDimensional ℂ E] {δ : ℝ} {S T : Submodule ℂ E}
-    (h : IsCloseTo δ S T) (hδ : δ < 1) {ψ : E} (hψT : ψ ∈ T) (hψ : ‖ψ‖ = 1) :
-    ∃ φ : E, φ ∈ S ∧ ‖φ‖ = 1 ∧ 1 - δ ≤ ‖⟪φ, ψ⟫_ℂ‖ ^ 2 := by
-  let p := S.starProjection ψ
-  have hproj : 1 - δ ≤ ‖p‖ ^ 2 := by
-    simpa only [hψ, one_pow, mul_one] using isCloseTo_iff.mp h ψ hψT
-  have hp : 0 < ‖p‖ := by nlinarith [norm_nonneg p]
-  refine ⟨((‖p‖⁻¹ : ℝ) : ℂ) • p,
-    S.smul_mem _ (S.starProjection_apply_mem ψ), ?_, ?_⟩
-  · rw [norm_smul, Complex.norm_real, Real.norm_eq_abs, abs_inv, abs_of_pos hp,
-      inv_mul_cancel₀ hp.ne']
-  · have hpp : ⟪p, ψ⟫_ℂ = ((‖p‖ ^ 2 : ℝ) : ℂ) := by
-      have he : S.starProjection p = p :=
-        S.starProjection_eq_self_iff.mpr (S.starProjection_apply_mem ψ)
-      have hinner : ⟪p, ψ⟫_ℂ = ⟪p, p⟫_ℂ := by
-        calc
-          ⟪p, ψ⟫_ℂ = ⟪S.starProjection p, ψ⟫_ℂ := by rw [he]
-          _ = ⟪p, S.starProjection ψ⟫_ℂ := S.inner_starProjection_left_eq_right _ _
-      rw [hinner, inner_self_eq_norm_sq_to_K]
-      push_cast
-      rfl
-    have hoverlap : ‖⟪((‖p‖⁻¹ : ℝ) : ℂ) • p, ψ⟫_ℂ‖ = ‖p‖ := by
-      rw [inner_smul_left, hpp, Complex.conj_ofReal, ← Complex.ofReal_mul,
-        Complex.norm_real, Real.norm_eq_abs,
-        abs_of_nonneg (mul_nonneg (inv_nonneg.mpr (norm_nonneg p)) (sq_nonneg ‖p‖))]
-      rw [pow_two, ← mul_assoc, inv_mul_cancel₀ hp.ne', one_mul]
-    simpa only [hoverlap] using hproj
 
 /-- A vector whose coefficient columns lie in a finite-dimensional subspace
 has Schmidt rank at most the dimension of that subspace. This is the
@@ -111,7 +77,7 @@ private theorem IsCloseTo.exists_unit_mem_prodExt_schmidtRank_le
     ∃ φ : EuclideanSpace ℂ (σ × β), φ ∈ prodExt S β ∧ ‖φ‖ = 1 ∧
       1 - δ ≤ ‖⟪φ, ψ⟫_ℂ‖ ^ 2 ∧
       Matrix.schmidtRank (WithLp.ofLp φ) ≤ Module.finrank ℂ S := by
-  obtain ⟨φ, hφS, hφ, hoverlap⟩ :=
+  obtain ⟨φ, hφS, hφ, hoverlap, _hphase, _hdistance, _hprojection⟩ :=
     h.exists_unit_mem_norm_inner_sq_ge hδ hψT hψ
   exact ⟨φ, hφS, hφ, hoverlap, schmidtRank_le_finrank_of_mem_prodExt S hφS⟩
 

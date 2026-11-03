@@ -1,4 +1,4 @@
-\section{The squared triangle inequality}
+\section{Squared distances and normalization}
 
 \begin{lemma}[Squared triangle inequality]
     \label{thm:norm_sub_squared_triangle}
@@ -13,4 +13,18 @@
     \leanok
     Square $\|x-z\|\le\|x-y\|+\|y-z\|$ and use
     $(a+b)^2\le2(a^2+b^2)$ for nonnegative real $a,b$.
+\end{proof}
+
+
+\begin{lemma}[Distance after normalization]
+    \label{lem:unit_normalization_distance}
+    \lean{norm_inv_norm_smul_sub_le_two_mul}
+    \leanok
+    In a complex normed space, let $\|\psi\|=1$ and $\Phi\ne0$.
+    Set $\widehat\Phi=\|\Phi\|^{-1}\Phi$. Then
+    $\|\widehat\Phi-\psi\|\le2\|\Phi-\psi\|$.
+\end{lemma}
+\begin{proof}\leanok
+    The normalization changes $\Phi$ by exactly $|1-\|\Phi\||$,
+    which is at most $\|\Phi-\psi\|$. Apply the triangle inequality.
 \end{proof}

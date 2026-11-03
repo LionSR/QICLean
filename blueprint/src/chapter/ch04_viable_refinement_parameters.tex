@@ -1,0 +1,174 @@
+\section{A common threshold for final refinement}
+\label{sec:viable_refinement_parameters}
+
+The following explicit parameters support the common-threshold choice and
+final refinement of the degenerate-ground-space algorithm
+in~\cite{Arad2016RigorousRG}.
+They do not supply the physical reference subspaces or identify the
+iteration count printed in the source.
+
+\begin{lemma}[Internal accuracy and projected trial energy]
+    \label{lem:viable_refinement_error_parameters}
+    \lean{Real.viable_refinement_error_parameters}
+    \leanok
+    Let $0<\gamma\le A$ and $\eta>0$. Put
+    \[
+        c=\frac\gamma A,\qquad
+        \rho=\frac{\eta\gamma}{2A+\eta\gamma},\qquad
+        \varepsilon=\frac{c^2\rho}{32768}.
+    \]
+    Then $0<c\le1$, $0<\rho<1$, $\rho\le\eta/2$ and
+    $c\rho\le\eta/2$. The reference error satisfies
+    \[
+        0<\varepsilon\le10^{-4},\qquad
+        \varepsilon\le\frac{c^2\rho}{1024},\qquad
+        \frac{A\rho}{1-\rho}=\frac{\eta\gamma}{2}.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The first assertions follow from $0<\gamma\le A$.
+    Since $c^2\rho\le1$, the stated reference bounds follow.
+    Finally $1-\rho=2A/(2A+\eta\gamma)$, which gives the energy identity.
+\end{proof}
+
+\begin{lemma}[A positive common threshold with the printed strict bound]
+    \label{lem:viable_refinement_radius_parameters}
+    \lean{Real.viable_refinement_radius_parameters}
+    \leanok
+    Let $L,r,b,D_{\rm tree},D_{\rm filter}$ be nonnegative integers with
+    $1\le r\le b$, $D_{\rm tree}\ge1$ and $D_{\rm filter}\ge1$.
+    Suppose $0<p\le\eta/2$. Set
+    \[
+        D_{\rm common}=\max\{D_{\rm tree},b\},\qquad
+        N=\left\lceil\frac{100D_{\rm filter}^{12}}p\right\rceil,
+        \qquad
+        \xi=\frac1{1000D_{\rm common}N\sqrt{L+1}}.
+    \]
+    Then $N\ge1$, $D_{\rm common}N\ge1$, $\xi>0$, and
+    \begin{align*}
+        \xi&\le\frac1{1000D_{\rm tree}\sqrt{L+1}},\\
+        \xi\sqrt{\max\{L-1,0\}b^2}&\le\frac p{48},\\
+        \sqrt{Lrb}\,\xi&<10^{-4}\eta D_{\rm filter}^{-12}.
+    \end{align*}
+    The last assertion retains the comparison $r\le b$ between the
+    dimension and the all-vector bond of the same reference subspace.
+\end{lemma}
+\begin{proof}\leanok
+    Both square roots in the displayed estimates are at most
+    $b\sqrt{L+1}$. Hence their product with $\xi$ is at most $1/(1000N)$.
+    The ceiling choice gives
+    \[
+        \frac1{1000N}\le\frac p{100000D_{\rm filter}^{12}}
+        \le\frac\eta{200000D_{\rm filter}^{12}}
+        <\frac\eta{10000D_{\rm filter}^{12}}.
+    \]
+    This also fits the budget $p/48$. The common denominator dominates
+    the tree denominator, giving the first threshold bound.
+\end{proof}
+
+\begin{lemma}[A linear bound for the reference logarithm]
+    \label{lem:reference_log_bound_le_linear}
+    \lean{Real.rpow_three_quarters_mul_one_add_log_le,
+        Real.reference_log_bound_le_linear}
+    \leanok
+    Let $b\ge1$ and $a_0,a_1\ge0$. Then
+    \[
+       b^{3/4}(1+\log b)\le5b,
+       \qquad
+       (a_0+a_1b^{3/4})(1+\log b)\le(a_0+5a_1)b.
+    \]
+    These inequalities apply to the reference bond bounds used in
+    \cite[Algorithm~1]{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    The standard inequality $\log b\le4b^{1/4}$ and $b^{3/4}\le b$
+    imply the first estimate. For the second, expand the left-hand side,
+    use $1+\log b\le b$ on its first term and the first estimate on its
+    second term.
+\end{proof}
+
+\begin{lemma}[Exponentiating a linear logarithmic bound]
+    \label{lem:le_exp_mul_rpow_of_log_le}
+    \lean{Real.le_exp_mul_rpow_of_log_le}
+    \leanok
+    Let $B,X>0$ and $p,b_0\in\mathbb R$. If
+    $\log B\le p(b_0+\log X)$, then
+    \[
+        B\le e^{pb_0}X^p.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Exponentiate the assumed inequality and use
+    $e^{p(b_0+\log X)}=e^{pb_0}X^p$.
+\end{proof}
+
+\begin{lemma}[Inverse accuracies in the final refinement]
+    \label{lem:refinement_cost_polynomial_bounds}
+    \lean{Real.viable_refinement_inverse_parameters,
+        Real.refinement_cost_polynomial_bounds}
+    \leanok
+    Let $A,\gamma,\eta>0$, and put
+    \[
+       c=\gamma/A,\qquad \rho=\frac{\eta\gamma}{2A+\eta\gamma},
+       \qquad \varepsilon=c^2\rho/32768,
+       \qquad x=A/\gamma,\quad y=1/\eta.
+    \]
+    Then
+    \begin{align*}
+       \frac1{c\rho}&=2x^2y+x
+          \le3(1+x)^2(1+y),\\
+       \frac1{\varepsilon}&=65536x^3y+32768x^2
+          \le98304(1+x)^3(1+y).
+    \end{align*}
+    Thus both inverse accuracies have polynomial bounds in the
+    norm-to-gap ratio and inverse requested error.
+\end{lemma}
+\begin{proof}\leanok
+    Substitution gives the identities. After expansion, each difference
+    between the stated upper bound and its left-hand side is a polynomial
+    in $x,y$ with nonnegative coefficients.
+\end{proof}
+
+
+\begin{lemma}[An integer power bound for the reference]
+    \label{lem:reference_bound_le_nat_power}
+    \lean{Real.reference_bound_le_nat_power}
+    \leanok
+    Let $K,a_0,a_1\ge0$, $b_0,X\ge1$ and $B>0$. Set
+    $p=K(a_0+5a_1)$. If
+    \[
+       \log B\le K\bigl(a_0+a_1(b_0+\log X)^{3/4}\bigr)
+          \bigl(1+\log(b_0+\log X)\bigr),
+    \]
+    then $B\le e^{pb_0}X^{\lceil p\rceil}$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:reference_log_bound_le_linear,lem:le_exp_mul_rpow_of_log_le}
+    The reference logarithm is at most $p(b_0+\log X)$.
+    Exponentiation and $X\ge1$ give the claim.
+\end{proof}
+
+\begin{lemma}[Common polynomial bounds for inverse accuracies]
+    \label{lem:viable_refinement_costs_le_polynomial}
+    \lean{Real.viable_refinement_costs_le_polynomial}
+    \leanok
+    Let $A,\gamma,\eta>0$ and $Z\ge1$, with $A\le Z$ and
+    $\eta^{-1}\le Z$. For
+    \[
+       c=\frac\gamma A,\qquad
+       \rho=\frac{\eta\gamma}{2A+\eta\gamma},\qquad
+       \varepsilon=\frac{c^2\rho}{32768},
+    \]
+    one has
+    \[
+       (c\rho)^{-1}\le6(1+\gamma^{-1})^2 Z^3,
+       \qquad
+       \varepsilon^{-1}\le196608(1+\gamma^{-1})^3 Z^4.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:refinement_cost_polynomial_bounds}
+    The assumptions give $1+A/\gamma\le(1+\gamma^{-1})Z$
+    and $1+\eta^{-1}\le2Z$. Substitute these estimates into the
+    bounds for the inverse accuracies.
+\end{proof}

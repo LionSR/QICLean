@@ -1,0 +1,147 @@
+\section{The logarithm of the low-density count}
+
+These scalar estimates give an explicit positive logarithmic expression
+for the count in~\cite[Proposition~prop:albootstrap-ld,
+lines 1107--1128]{Arad2016RigorousRG}. The bandwidth is fixed as in
+Assumption (LD), lines 281--284. No physical operator is an input.
+
+\begin{theorem}[The logarithm of the count base]
+    \label{thm:polynomial_filter_log_base}
+    \lean{Real.log_polynomial_filter_base_le}
+    \leanok
+    Let $A\ge1$, $d\ge2$, $0<g\le1$ and
+    $u=1+\log d+\log(1/g)$. If $1\le e\le(A+1)u^2/g$, then
+    $\log(de^2)\le(6+2\log(A+1))u$.
+\end{theorem}
+\begin{proof}\leanok
+    Taking logarithms bounds $\log e$ by
+    $\log(A+1)+2\log u+\log(1/g)$.
+    Use $\log u\le u$, $\log d+2\log(1/g)\le2u$, and $u\ge1$.
+\end{proof}
+
+\begin{theorem}[Bounds for the actual natural count]
+    \label{thm:polynomial_filter_log_count}
+    \lean{Real.polynomial_filter_count_bounds}
+    \leanok
+    Let $A\ge1$, $d\ge2$ be an integer, and $0<g\le1$. Put
+    $u=1+\log d+\log(1/g)$, $\ell=\lceil Au^2/g\rceil$,
+    $D=(d\ell^2)^{22\ell}$ and $c_A=6+2\log(A+1)$.
+    Then $D>0$,
+    $Au^2/g\le\ell\le(A+1)u^2/g$, $A\le\ell$, and
+    \begin{align*}
+      \log D\le22\ell c_Au
+      \le\frac{22(A+1)c_A}{g}u^3.
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:ceil_quadratic_scale,thm:polynomial_filter_log_base}
+    Apply the ceiling bounds and the base estimate, then use
+    $\log D=22\ell\log(d\ell^2)$.
+\end{proof}
+
+\begin{theorem}[A fixed numerical multiplier]
+    \label{thm:regularized_filter_count_base}
+    \lean{Real.regularized_filter_count_base_bounds}
+    \leanok
+    For an integer $q\ge2$, put $M=\lceil e^{100}\rceil$ and $m=qM$.
+    Then $m\ge q$, $m\ge2$ and
+    $100\le\log m\le\log q+101$.
+\end{theorem}
+\begin{proof}\leanok
+    The ceiling gives $e^{100}\le M\le e^{100}+1\le2e^{100}$.
+    Hence $100\le\log M\le100+\log2\le101$.
+    Use $\log m=\log q+\log M$.
+\end{proof}
+
+\begin{theorem}[The capped initial width]
+    \label{thm:capped_initial_filter_width}
+    \lean{Real.capped_initial_filter_width_bounds}
+    \leanok
+    Let $\eta>0$ and $0<v\le\eta$. Put
+    $\bar v=\min\{v,\eta/2\}$, $g=\min\{\bar v/6,1\}$ and
+    $B=\max\{12,\eta\}$. Then $\bar v>0$, $v/2\le\bar v$,
+    $0<g\le1$, and
+    \begin{align*}
+      \frac1g\le\frac Bv,
+      \qquad\log(1/g)\le\log B+\log(1+1/v).
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    If $g=\bar v/6$, use $\bar v\ge v/2$ and $B\ge12$.
+    If $g=1$, use $v\le\eta\le B$.
+    Taking logarithms and increasing $1/v$ to $1+1/v$ gives the second bound.
+\end{proof}
+
+\begin{theorem}[The initial low-density count]
+    \label{thm:initial_low_density_log_count}
+    \lean{Real.log_initial_low_density_count_le}
+    \leanok
+    Fix $C\ge1$ and $\eta>0$. Put
+    \begin{align*}
+      B&=\max\{12,\eta\},& F&=102+\log B,&
+      K&=66(C+1)(6+2\log(C+1))BF^3.
+    \end{align*}
+    For $q\ge2$ and $0<v\le\eta$, choose $m=q\lceil e^{100}\rceil$,
+    $\bar v=\min\{v,\eta/2\}$, $g=\min\{\bar v/6,1\}$,
+    $u=1+\log m+\log(1/g)$, $\ell=\lceil Cu^2/g\rceil$ and
+    $D=(m\ell^2)^{22\ell}$. Then $K>0$, $m\ge q$,
+    $\log m\ge100$, $D>0$, and
+    \begin{align*}
+      \log(D^3)\le\frac Kv
+        \bigl(1+\log q+\log(1+1/v)\bigr)^3.
+    \end{align*}
+    The coefficient $K$ precedes both $q$ and $v$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:polynomial_filter_log_count,
+      thm:regularized_filter_count_base,thm:capped_initial_filter_width}
+    Write $U=1+\log q+\log(1+1/v)$. The base and width estimates give
+    $u\le F+\log q+\log(1+1/v)\le FU$, since $F\ge1$ and both
+    logarithms are nonnegative. Substitute $1/g\le B/v$ and $u^3\le F^3U^3$
+    into the count estimate, and multiply by three.
+\end{proof}
+
+\begin{lemma}[Geometric decay at dyadic counting bases]
+    \label{lem:low_density_dyadic_residual}
+    \lean{Real.low_density_dyadic_scale_growth,
+        Real.low_density_dyadic_residual_le}
+    \leanok
+    Let $C\ge100$, $u\ge1$ and $0<g\le1$. For each nonnegative integer $i$,
+    set
+    \[
+       \ell_i=\left\lceil C(u+i\log2)^2/g\right\rceil.
+    \]
+    Then $\ell_i\ge\ell_0+64i$. Consequently, for every real $\eta$,
+    \[
+       e^{-(\ell_i-\eta)/8}
+       \le 2^{-4i}e^{-(\ell_0-\eta)/8}.
+    \]
+    These estimates concern the accuracy refinement in the proof of the
+    low-density area law of \cite{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    Since $\log2\ge1/2$ and $u\ge1$,
+    $(u+i\log2)^2-u^2\ge i$. As $C/g\ge100$, the unrounded scales differ
+    by at least $64i$. The ceiling is monotone and commutes with addition
+    of the integer $64i$, which proves the first assertion. For the second,
+    multiply by $2^{4i}$ and use $\log2\le1$ and the first assertion
+    in the exponent.
+\end{proof}
+
+
+\begin{lemma}[Rounding a logarithmic natural-number bound]
+    \label{lem:logarithmic_rank_rounding}
+    \lean{Nat.le_mul_ceil_exp_of_log_le,Real.log_ceil_exp_le_add_one}
+    \leanok
+    Let $r,s$ be natural numbers with $r\ge1$, and let $E\in\R$.
+    If $\log s\le\log r+E$, then $s\le r\lceil e^E\rceil$.
+    If $E\ge0$, then $\lceil e^E\rceil\ge1$ and
+    $\log\lceil e^E\rceil\le E+1$.
+\end{lemma}
+\begin{proof}\leanok
+    For $s>0$, exponentiate the logarithmic inequality and use
+    $e^E\le\lceil e^E\rceil$; the case $s=0$ is immediate.
+    If $E\ge0$, then $1\le e^E$ and
+    $\lceil e^E\rceil<e^E+1\le2e^E$. Take logarithms and use
+    $\log2\le1$.
+\end{proof}

@@ -18,14 +18,14 @@ For a spectral approximate ground state projection `K = ∑ i, L_i ⊗ A_i ⊗ R
 `U = H_L ⊗ S ⊗ H_R`, the image `K U` lies in `H_L ⊗ V ⊗ H_R` with `V = span {A_i S}`, so `V` is
 `Δ / (1 - δ) ^ 2`-viable by monotonicity of closeness.
 
-The hypotheses are stated on `T` and `Tᗮ` directly. The tensor-product statement of Lemma `l:er`,
-with `T` the spectral subspace of a Hamiltonian, is not formalized here.
+The nested-target version allows arbitrary spectrum between the lower and upper cutoffs.
+The tensor-product consequences are proved in `ViableSubspaceSpectralProjector.lean`.
 
 ## Main statements
 
 * `Submodule.IsCloseTo.mono`: a larger subspace stays close.
 * `Submodule.IsCloseTo.map_of_contract`: the operator step of Lemma `l:er`.
-* `Submodule.IsCloseTo.map_of_nested_contract`: the low-energy nested-target step.
+* `Submodule.IsCloseTo.map_of_nested_contract`: error reduction between nested targets.
 -/
 
 open scoped InnerProductSpace
@@ -49,13 +49,13 @@ theorem IsCloseTo.mono {δ : ℝ} {U U' T : Submodule 𝕜 E} (h : IsCloseTo δ 
   gcongr
 
 /-- Error reduction between nested targets. If `U` is close to `Tplus`, an operator
-that expands on `T ⊆ Tplus` and contracts on `Tplusᗮ` improves closeness to `T`.
+that expands on `T ⊆ Tplus` and contracts `Tplusᗮ` into `Tᗮ` improves closeness to `T`.
 No spectral gap between the two spaces is assumed. This is the operator step in
 ALVV, arXiv:1602.08828v2, Theorem `t:aisgapless`, lines 1037–1041. -/
 theorem IsCloseTo.map_of_nested_contract {δ Δ : ℝ} {U T Tplus : Submodule 𝕜 E}
     (K : E →L[𝕜] E) (hT : T ≤ Tplus)
     (h : IsCloseTo δ U Tplus) (hδ : δ < 1) (hΔ : 0 ≤ Δ)
-    (hKT : ∀ t ∈ T, K t ∈ T) (hKTo : ∀ q ∈ Tplusᗮ, K q ∈ Tplusᗮ)
+    (hKT : ∀ t ∈ T, K t ∈ T) (hKTo : ∀ q ∈ Tplusᗮ, K q ∈ Tᗮ)
     (hlow : ∀ t ∈ T, ‖t‖ ≤ ‖K t‖)
     (hhigh : ∀ q ∈ Tplusᗮ, ‖K q‖ ^ 2 ≤ Δ * ‖q‖ ^ 2) :
     IsCloseTo (Δ / (1 - δ) ^ 2) (U.map K.toLinearMap) T := by
@@ -95,7 +95,7 @@ theorem IsCloseTo.map_of_nested_contract {δ Δ : ℝ} {U T Tplus : Submodule �
   -- `K u = t + K q` with orthogonal summands.
   have hKu : K u = t + K q := by
     rw [hq_def, map_sub, hKr, add_sub_cancel]
-  have horth : ⟪t, K q⟫_𝕜 = 0 := inner_right_of_mem_orthogonal (hT ht) (hKTo q hq)
+  have horth : ⟪t, K q⟫_𝕜 = 0 := inner_right_of_mem_orthogonal ht (hKTo q hq)
   have hnKu : ‖K u‖ ^ 2 = ‖t‖ ^ 2 + ‖K q‖ ^ 2 := by
     rw [hKu, sq, sq, sq]
     exact norm_add_sq_eq_norm_sq_add_norm_sq_of_inner_eq_zero _ _ horth
@@ -105,7 +105,7 @@ theorem IsCloseTo.map_of_nested_contract {δ Δ : ℝ} {U T Tplus : Submodule �
   have hinner : ⟪K u, P t⟫_𝕜 = (‖t‖ ^ 2 : 𝕜) := by
     rw [← (U.map K.toLinearMap).inner_starProjection_left_eq_right,
       (U.map K.toLinearMap).starProjection_eq_self_iff.mpr hmem, hKu, inner_add_left,
-      inner_left_of_mem_orthogonal (hT ht) (hKTo q hq), add_zero, inner_self_eq_norm_sq_to_K]
+      inner_left_of_mem_orthogonal ht (hKTo q hq), add_zero, inner_self_eq_norm_sq_to_K]
   have hov : ‖t‖ ^ 2 ≤ ‖K u‖ * ‖P t‖ := by
     have := norm_inner_le_norm (𝕜 := 𝕜) (K u) (P t)
     rw [hinner, ← RCLike.ofReal_pow, RCLike.norm_ofReal, abs_of_nonneg (by positivity)] at this
@@ -132,8 +132,7 @@ theorem IsCloseTo.map_of_nested_contract {δ Δ : ℝ} {U T Tplus : Submodule �
 /-- **The operator step of Lemma `l:er` (error reduction).** Let `K` map `T` and `Tᗮ` into
 themselves, with `‖t‖ ≤ ‖K t‖` on `T` and `‖K q‖ ^ 2 ≤ Δ ‖q‖ ^ 2` on `Tᗮ`. If `U` is `δ`-close
 to `T` with `δ < 1`, then `K U` is `Δ / (1 - δ) ^ 2`-close to `T`. Arad, Landau, Vazirani and
-Vidick, arXiv:1602.08828v2, proof of Lemma `l:er` (lines 606–622); the tensor-product statement
-itself is not formalized here. -/
+Vidick, arXiv:1602.08828v2, proof of Lemma `l:er` (lines 606–622). -/
 theorem IsCloseTo.map_of_contract {δ Δ : ℝ} {U T : Submodule 𝕜 E} (K : E →L[𝕜] E)
     (h : IsCloseTo δ U T) (hδ : δ < 1) (hΔ : 0 ≤ Δ) (hKT : ∀ t ∈ T, K t ∈ T)
     (hKTo : ∀ q ∈ Tᗮ, K q ∈ Tᗮ) (hlow : ∀ t ∈ T, ‖t‖ ≤ ‖K t‖)

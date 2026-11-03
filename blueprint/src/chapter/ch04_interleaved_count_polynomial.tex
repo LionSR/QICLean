@@ -1,0 +1,238 @@
+\section{Polynomial control of the interleaved count}
+
+The calibrated interleaved count depends on a logarithmic size scale.
+A small power bound for its iterated logarithm makes the resulting
+coefficient uniform before the length and ground-space rank are chosen.
+
+\begin{lemma}[Two logarithmic powers are at most linear]
+    \label{lem:interleaved_count_logarithmic_powers}
+    \lean{Real.log_linear_scale_le_sixteenth_power,
+        Real.interleaved_log_powers_le_linear}
+    \leanok
+    Let $U\ge1$, $w\ge1$, and $v=U+\log(1+w)$. Then
+    \[
+       v\le(U+17)w^{1/16},\qquad
+       v^7\le(U+17)^7w,\qquad
+       \sqrt w\,v^4\le(U+17)^4w.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Since $1+w\le2w$, one has
+    $\log(1+w)\le1+16w^{1/16}$. Also $w^{1/16}\ge1$, so the first
+    inequality follows. Raise it to the seventh power and use
+    $w^{7/16}\le w$. For the last inequality, raise it to the fourth
+    power and multiply by $\sqrt w$; the resulting power is
+    $w^{1/2+4/16}=w^{3/4}\le w$.
+\end{proof}
+
+
+\begin{lemma}[Linear logarithmic count and polynomial sampling bounds]
+    \label{lem:interleaved_count_sample_polynomial}
+    \lean{Real.interleaved_log_bound_le_linear,
+        Real.interleaved_size_log_bounds,
+        Real.interleaved_count_sample_polynomial_bounds}
+    \leanok
+    If $U,w\ge1$, $A\ge0$ and $g>0$, then
+    $x\le A(v^7/g+\sqrt w\,v^4/\sqrt g)$, with $v=U+\log(1+w)$, implies
+    $x\le Kw$, where $K=A((U+17)^7/g+(U+17)^4/\sqrt g)$.
+
+    Let $r,l\ge1$, $rl\le Z$, and set $w=1+\log r+2\log l$.
+    Then $Z\ge1$, $r,l\le Z$, and
+    $1\le w\le1+2\log Z\le2Z$.
+    Suppose $K\ge0$ and integers $D\ge1$, $s\ge0$ satisfy
+    $\log D\le Kw$ and $s\le4097r(\log D+w)$. With
+    $p=\lceil2K\rceil$, $C_D=e^K$ and $C_s=8194(K+1)$,
+    \begin{align}
+        D\le C_DZ^p,\qquad s\le C_sZ^2.
+        \label{eq:interleaved_count_sample_polynomial}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:interleaved_count_logarithmic_powers}
+    Divide the two power estimates by the positive denominators and add.
+    For the size scale, take logarithms of $rl\le Z$ and use $\log r\ge0$.
+    The count bound is $\log D\le K+2K\log Z$; exponentiate and round the
+    exponent upward. The sample bound follows from
+    $\log D+w\le(K+1)w\le2(K+1)Z$ and $r\le Z$.
+\end{proof}
+
+\begin{lemma}[Polynomial clipping and common-radius costs]
+    \label{lem:interleaved_inverse_polynomial_costs}
+    \lean{Real.interleaved_inverse_accuracy_identities,
+        Real.interleaved_inverse_cost_polynomial_bounds}
+    \leanok
+    For $D,s>0$, put $a=3/(32D^{12}s^5)$ and $\tau=a^2/2^{20}$. Then
+    \begin{align}
+        a^{-1}&=\tfrac{32}{3}D^{12}s^5,&
+        \tau^{-1}&=\tfrac{2^{30}}9D^{24}s^{10}.
+        \label{eq:interleaved_inverse_identities}
+    \end{align}
+    If $D,s\ge1$ are integers, $C_D,C_s,Z\ge1$ and
+    $D\le C_DZ^p$, $s\le C_sZ^2$, then $0<a,\tau\le1$ and
+    \begin{align}
+        \tau^{-1}&\le(1+2^{30}C_D^{24}C_s^{10})Z^{24p+20},\notag\\
+        \lceil a^{-1}\rceil&\le(1+32C_D^{12}C_s^5)Z^{12p+10}.
+        \label{eq:interleaved_inverse_polynomial_costs}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Substitute the definitions to obtain
+    (\ref{eq:interleaved_inverse_identities}). Raise the two polynomial
+    bounds to the indicated powers and multiply. Finally
+    $\lceil a^{-1}\rceil\le a^{-1}+1$ and $1\le Z^{12p+10}$.
+\end{proof}
+
+\begin{lemma}[A complete polynomial bond with a variable count]
+    \label{lem:interleaved_output_polynomial}
+    \lean{Real.exists_interleaved_output_polynomial_bound,
+        Real.exists_interleaved_output_polynomial_bound_with_degree,
+        Real.exists_interleaved_output_polynomial_bound_with_constants}
+    \leanok
+    Fix $\gamma>0$, $0<g\le1$ and $u,K_{\rm t},K_{\rm f},K_D\ge0$.
+    There are $C>0$ and $k\in\N$, preceding all the following variables.
+    Let integers $L\ge0$, $r,D,s\ge1$ and reals $\eta>0$,
+    $\gamma\le A\le L+1$ be given. Set $w=1+\log r+2\log(L+1)$ and suppose
+    $\log D\le K_Dw$ and $s\le4097r(\log D+w)$.
+    Retain $a,\tau$ from (\ref{eq:interleaved_inverse_identities}) and put
+    \begin{align}
+        c&=\gamma/A,&\rho&=\frac{\eta\gamma}{2A+\eta\gamma},&
+        \varepsilon&=c^2\rho/32768,\notag\\
+        b_{\rm t}&=16+\log(1/g)+\log\frac{32r(L+1)}\tau,&
+        b_{\rm f}&=16+\log(1/g)+\log\frac{32r(L+1)}\varepsilon,\notag\\
+        F(b)&=(u^3/g+g^{-1/4}b^{3/4}u)(1+\log b).
+        \label{eq:interleaved_output_profiles}
+    \end{align}
+    Suppose integers $B_{\rm t},B_{\rm f}\ge1$ obey
+    $\log B_{\rm t}\le K_{\rm t}F(b_{\rm t})$ and
+    $\log B_{\rm f}\le K_{\rm f}F(b_{\rm f})$. Define
+    \begin{align}
+        E&=\max\{r^2B_{\rm t}\lceil a^{-1}\rceil,r^2B_{\rm f}\},&
+        N&=\left\lceil\frac{100D^{12}}{c\rho}\right\rceil,& M&=D^6s^3.
+        \label{eq:interleaved_output_common_costs}
+    \end{align}
+    Then $10^6(EN)^2(L+1)M^2\le CZ^k$, with
+    $Z=(L+1)(r+1)(1+\eta^{-1})$. The count $D$ may depend on length and
+    multiplicity; the coefficient and degree do not. More precisely, with
+    $K=\max\{K_{\rm t},K_{\rm f}\}$, the degree is
+    \begin{align}
+        p&=\lceil2K_D\rceil,&
+        p_0&=\left\lceil K(u^3/g+5g^{-1/4}u)\right\rceil,\notag\\
+        k&=10(24p+21)p_0+60p+43.
+        \label{eq:interleaved_output_exact_degree}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:interleaved_count_sample_polynomial,lem:interleaved_inverse_polynomial_costs,
+        lem:reference_accuracy_log_profile,lem:reference_profile_polynomial,
+        lem:viable_refinement_costs_le_polynomial,lem:viable_refinement_error_parameters}
+    The count and sample bounds give $D\le C_DZ^p$, $s\le C_sZ^2$.
+    The inverse clipping cost has degree $24p+20$, and
+    $\varepsilon^{-1}$ has degree four. Put $Q=24p+21$ and apply the
+    shared logarithmic-profile estimate at $Y=Z^Q$. Both references then
+    satisfy $B_{\rm t},B_{\rm f}\le C_BZ^{P_B}$, where the constants and
+    $P_B$ depend only on the fixed data.
+
+    The common-radius ceiling has degree $12p+10$, hence $E$ has degree
+    $P_B+12p+12$. The final ceiling has degree $12p+3$ and $M$ has degree
+    $6p+6$. Multiply these bounds to obtain degree $2P_B+60p+43$.
+\end{proof}
+
+These are numerical consequences of the reference bounds in
+\cite[lines 1797--1817]{Arad2016RigorousRG}. They neither identify the printed
+sharp physical profile nor construct a physical output or a running time.
+
+
+\begin{definition}[The exact output degree]
+    \label{def:interleaved_output_degree}
+    \lean{Real.interleavedOutputPolynomialDegree}
+    \leanok
+    The output degree is the natural number $k$ in
+    (\ref{eq:interleaved_output_exact_degree}).
+\end{definition}
+
+\begin{lemma}[Dependence of the output degree on the capped gap]
+    \label{lem:interleaved_output_degree_gap_bound}
+    \lean{Real.interleaved_count_coefficient_le,
+        Real.interleaved_output_polynomial_degree_le}
+    \leanok
+    Let $U\ge1$, $0\le u\le U$, $0<g\le1$ and $K,K_D,C_D\ge0$.
+    Suppose $K_D\le C_DU^7/g$. The exact degree in
+    (\ref{eq:interleaved_output_exact_degree}) satisfies
+    \begin{align}
+        k&\le C_*U^{10}/g^2,\notag\\
+        C_*&=10(24(2C_D+1)+21)(6K+1)+60(2C_D+1)+43.
+        \label{eq:interleaved_output_degree_gap_bound}
+    \end{align}
+    In particular, for $A\ge0$ the actual count coefficient obeys
+    \[
+        A\left(\frac{(U+17)^7}{g}+\frac{(U+17)^4}{\sqrt g}\right)
+        \le A(18^7+18^4)U^7/g.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:interleaved_output_degree}
+    Since $g\le\sqrt g$, $U+17\le18U$ and $U^4\le U^7$, the count
+    coefficient has the displayed bound. The ceiling inequalities and
+    $g^{-1/4}\le g^{-1}$ give
+    $p\le(2C_D+1)U^7/g$ and $p_0\le(6K+1)U^3/g$.
+    Both scale factors are at least one. Substitute these estimates in
+    (\ref{eq:interleaved_output_exact_degree}) and collect terms.
+    This bounds the degree alone; no estimate for the polynomial
+    coefficient or the running time is asserted.
+\end{proof}
+
+
+\begin{definition}[The selected polynomial coefficient]
+    \label{def:interleaved_output_coefficient}
+    \lean{Real.interleavedOutputPolynomialCoefficient}
+    \leanok
+    Retain the parameters of Lemma~\ref{lem:interleaved_output_polynomial}
+    and put $K=\max\{K_{\rm t},K_{\rm f}\}$. Define
+    \begin{align}
+        C_D&=e^{K_D},& C_s&=8194(K_D+1),& J&=1+\gamma^{-1},\notag\\
+        C_t&=1+2^{30}C_D^{24}C_s^{10},&
+        C_{\rm t}&=1+32C_D^{12}C_s^5,&
+        K_{\rm cost}&=\max\{C_t,196608J^3\},\notag\\
+        b_0&=16+\log(1/g)+\log(32K_{\rm cost}),&
+        C_B&=\exp\bigl(K(u^3/g+5g^{-1/4}u)b_0\bigr),\notag\\
+        C_N&=1+600C_D^{12}J^2,& C_M&=C_D^6C_s^3.\notag
+    \end{align}
+    The selected coefficient in that lemma is
+    \begin{align}
+        C=1+10^6(C_BC_{\rm t}C_N)^2C_M^2.
+        \label{eq:interleaved_output_selected_coefficient}
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Logarithm of the selected coefficient]
+    \label{lem:interleaved_output_coefficient_gap_bound}
+    \lean{Real.log_interleavedOutputPolynomialCoefficient_le,
+        Real.interleaved_log_coefficient_bound_le}
+    \leanok
+    For $\gamma>0$, $0<g\le1$ and $u,K,K_D\ge0$, the actual selected
+    coefficient satisfies
+    \begin{align}
+        \log\max\{C,1\}\le{}&10^7(K+1)(u^3/g+5g^{-1/4}u+1)\notag\\
+          &\quad\cdot(1+K_D+\log(1/g)+\log(1+\gamma^{-1})).
+        \label{eq:interleaved_output_factored_log_coefficient}
+    \end{align}
+    If also $U\ge1$, $0\le u\le U$, $g\le\gamma$,
+    $\log(1/g)\le U$ and $K_D\le C_D' U^7/g$ with $C_D'\ge0$, then
+    \begin{align}
+        \log\max\{C,1\}\le 7\cdot10^7(K+1)(C_D'+4)U^{10}/g^2.
+        \label{eq:interleaved_output_log_coefficient_gap_bound}
+    \end{align}
+    These estimates concern the coefficient in the same numerical bound;
+    they assert no running time.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:interleaved_output_coefficient}
+    Apply $\log(1+x)\le1+\log x$ for $x\ge1$ to the four sums in the
+    coefficient. Use $\log(K_D+1)\le K_D$ and
+    $\log\max\{C_t,196608J^3\}\le\log C_t+\log(196608J^3)$.
+    These give the factored bound, with the displayed coarse constant.
+    Finally $\log J\le1+\log(1/g)\le1+U$,
+    $u^3/g+5g^{-1/4}u+1\le7U^3/g$ and
+    $1+K_D+\log(1/g)+\log J\le(C_D'+4)U^7/g$.
+    Multiply the last two inequalities.
+\end{proof}

@@ -86,3 +86,62 @@ $D_j$ consists of the first $j+1$ factors, and there are $\ell-1$ cuts.
     trimmed extension, and squaring gives the bound. For the ranks, $Q_m$ lies
     below $P^{k+1}\otimes I$, whose rank is at most $\|\psi\|^2\xi^{-2}=s\xi^{-2}$.
 \end{proof}
+
+\begin{lemma}[Weighted trimming relative to an approximating space]
+    \label{lem:reference_trimming_weighted}
+    \lean{Entropy.isCloseTo_prodExt_trimSubspace_of_reference_weighted}
+    \leanok
+    \uses{lem:subspace_close_trans_weighted}
+    Let $D_0\subseteq D_1\subseteq\cdots$ be cuts of the retained sites,
+    let $\xi>0$, and let $S$ have a recorded orthonormal basis.
+    Suppose $S\otimes\mathcal H_B$ is $\delta$-close to $T$, with
+    $\delta\ge0$, and $T$ and $R$ are $\varepsilon$-close in both
+    directions, with $\varepsilon\ge0$. Suppose every vector of $R$ has
+    Schmidt rank at most $b$ across each of the first $m$ cuts.
+    For every $\theta>0$, collective trimming of $S$ with threshold $\xi$
+    gives a space whose extension is $E$-close to $T$, where
+    \[
+       E=(1+\theta)\bigl((1+\theta)\delta
+          +(1+\theta^{-1})\varepsilon+2\xi\sqrt{mb}\bigr)
+          +(1+\theta^{-1})\varepsilon.
+    \]
+    The corrected trimming constant is retained as in
+    \cite{gap:alvv16_trimming_constant}.
+\end{lemma}
+\begin{proof}\leanok
+    Weighted robustness first transfers viability from $T$ to $R$.
+    Apply collective trimming relative to $R$, then weighted robustness
+    transfers the result back to $T$. This is the reference-space argument
+    of~\cite[proof of Theorem~t:alg1, lines 1801--1813]{Arad2016RigorousRG}
+    with the two robustness coefficients left explicit.
+\end{proof}
+
+\begin{lemma}[A stable step of filtering and collective trimming]
+    \label{lem:reference_filter_trim_step}
+    \lean{Entropy.isCloseTo_prodExt_trimSubspace_after_filter}
+    \leanok
+    \uses{lem:reference_trimming_weighted, lem:reference_filter_trim_error_le,
+        lem:subspace_error_reduction_sharp}
+    Let $0<c\le1$, and let $K$ preserve $T$ and $T^\perp$, expand norms on
+    $T$, and contract squared norms on $T^\perp$ by $1-c$.
+    Suppose $U\otimes\mathcal H_B$ is $\delta$-close to $T$, where
+    $0\le\delta\le1/2$, and
+    $K(U\otimes\mathcal H_B)\subseteq S\otimes\mathcal H_B$.
+    Let $S$ have a recorded orthonormal basis, and let $R$ be
+    $\varepsilon$-close to $T$ in both directions, with $\varepsilon\ge0$.
+    Suppose every vector of $R$ has Schmidt rank at most $b$ across each
+    of $m$ increasing cuts. If
+    \[
+        \varepsilon\le c^2\eta/1024,\qquad
+        \xi>0,\qquad \xi\sqrt{mb}\le c\eta/48,
+    \]
+    then the actual collective trim of $S$, extended by $\mathcal H_B$,
+    is $((1-c/4)\delta+c\eta/8)$-close to $T$.
+\end{lemma}
+\begin{proof}\leanok
+    Normalized error reduction and the image inclusion give
+    $F$-closeness of $S\otimes\mathcal H_B$ to $T$, with $F$ as in
+    Lemma~\ref{lem:reference_filter_trim_error_le}. Apply weighted
+    reference-space trimming with $\theta=c/16$, followed by that lemma
+    with $\zeta=\xi\sqrt{mb}$.
+\end{proof}
