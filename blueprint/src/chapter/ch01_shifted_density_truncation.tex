@@ -243,3 +243,217 @@ which explains why truncating the power preserves the projection's rank.
 If $I$ is empty, the matrices, ranges, and ranks are zero, and the stated
 identities and estimates remain valid. A trace-one matrix cannot occur in
 that case. The exponent $r=0$ gives $F=\Id$, $H=\Pi$, and $T=\Id-\Pi$.
+
+
+\subsection{Borel dependence of the spectral cutoffs}
+
+The hard cutoff is not generally continuous when an eigenvalue crosses the
+threshold. Borel measurability nevertheless holds without excluding that
+crossing or fixing the rank.
+
+\begin{definition}[Continuous closed-threshold approximants]
+    \label{def:closed_threshold_ramp}
+    \lean{Real.closedThresholdRamp}
+    \leanok
+    For $a\in\R$ and $k\in\N$, set
+    \[
+        f_{a,k}(x)=\max\{0,\min\{1,1+k(x-a)\}\}.
+    \]
+    In particular $f_{a,k}(a)=1$.
+\end{definition}
+
+\begin{lemma}[Finite-spectral stabilization]
+    \label{lem:closed_threshold_finite_stabilization}
+    \lean{Real.continuous_closedThresholdRamp,
+        Real.eventually_closedThresholdRamp_eq,
+        Matrix.IsHermitian.eventually_cfc_closedThresholdRamp_eq_spectralProjectionGE,
+        Matrix.continuous_cfc_closedThresholdRamp}
+    \leanok
+    Each $f_{a,k}$ is continuous. At every fixed $x$, it eventually equals
+    $\mathbf1_{[a,\infty)}(x)$. For each finite Hermitian matrix $A$,
+    $f_{a,k}(A)$ therefore eventually equals
+    $\mathbf1_{[a,\infty)}(A)$ exactly. For fixed $a,k$, the map
+    $A\mapsto f_{a,k}(A)$ is continuous on the Hermitian matrices.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:closed_threshold_ramp,def:closed_threshold_projection}
+    If $x\ge a$, the approximant is one for every $k$. If $x<a$, take
+    $k\ge\lceil1/(a-x)\rceil$; then $1+k(x-a)\le0$, so it is zero.
+    There are only finitely many spectral values, hence a common threshold
+    for all of them. Functional calculus gives the exact matrix identity.
+    The last assertion is continuity of functional calculus for the
+    continuous scalar function $f_{a,k}$.
+\end{proof}
+
+\begin{lemma}[Borel closed spectral cutoff]
+    \label{lem:borel_closed_spectral_cutoff}
+    \lean{Matrix.measurable_spectralProjectionGE_hermitian,
+        Matrix.measurable_spectralProjectionGE}
+    \leanok
+    For every fixed $a\in\R$, the map
+    $A\mapsto\mathbf1_{[a,\infty)}(A)$ is Borel on finite Hermitian matrices.
+    Its extension by zero to non-Hermitian matrices is also Borel; this is
+    the convention of the matrix functional calculus used here.
+    No spectral separation, fixed rank or nonempty index set is required.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:closed_threshold_finite_stabilization}
+    The continuous matrix approximants converge pointwise, indeed they
+    stabilize at each input. Pointwise sequential limits of maps into a
+    finite-dimensional matrix space are Borel. The Hermitian matrices
+    form a closed set, so extension by zero preserves Borel measurability.
+\end{proof}
+
+\begin{lemma}[Borel orthogonal range projection]
+    \label{lem:borel_hermitian_range_projection}
+    \lean{Matrix.IsHermitian.supportProj_eq_one_sub_spectralProjectionGE_mul,
+        Matrix.measurable_supportProj_hermitian}
+    \leanok
+    For Hermitian $A$, write $P_{\operatorname{ran}A}$ for its orthogonal
+    range projection. Then
+    \[
+        P_{\operatorname{ran}A}
+        =\Id-\mathbf1_{[0,\infty)}(A)\mathbf1_{[0,\infty)}(-A).
+    \]
+    Consequently $A\mapsto P_{\operatorname{ran}A}$ is Borel on the finite
+    Hermitian matrices. Zero eigenvalues of arbitrary multiplicity are
+    permitted, as are the zero matrix and empty index set.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_closed_spectral_cutoff}
+    The product on the right is the projection onto the zero eigenspace:
+    its scalar multiplier is one precisely when both $x\ge0$ and $-x\ge0$.
+    Functional calculus proves the identity. Matrix multiplication,
+    subtraction and negation preserve Borel measurability.
+\end{proof}
+
+These are matrix-analysis prerequisites for measurable collective trimming
+in \cite[lines 646--655]{Arad2016RigorousRG}. They do not
+construct a varying measurable orthonormal basis, a joint adaptive sampling
+law or a complete randomized algorithm.
+
+
+\subsection{Borel joint column supports and operator images}
+
+\begin{definition}[Joint column support of a finite family]
+    \label{def:finite_family_column_support}
+    \lean{Matrix.familyColumns,Matrix.familyColumnGram,Matrix.familySupportProj}
+    \leanok
+    For a finite family $A_i:\C^n\to\C^m$, let $C_A$ have the columns of
+    all $A_i$, indexed by pairs $(i,j)$. Put $G_A=C_AC_A^*$ and let
+    $Q_A$ be its existing orthogonal support projection.
+    Empty families and zero-dimensional spaces are allowed.
+\end{definition}
+
+\begin{lemma}[Borel joint column support]
+    \label{lem:borel_family_column_support}
+    \lean{Matrix.continuous_familyColumnGram,
+        Matrix.familySupportProj_eq_one_sub_spectralProjectionGE_mul,
+        Matrix.measurable_familySupportProj}
+    \leanok
+    The map $A\mapsto G_A$ is continuous and
+    \[
+        Q_A=\Id-\mathbf1_{[0,\infty)}(G_A)
+                    \mathbf1_{[0,\infty)}(-G_A).
+    \]
+    Consequently $A\mapsto Q_A$ is Borel on all finite matrix families,
+    including at rank changes. No nonzero-family hypothesis is needed.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:finite_family_column_support,lem:borel_closed_spectral_cutoff,
+        lem:borel_hermitian_range_projection}
+    The Gram map is a finite matrix polynomial in entries and their
+    conjugates. Its value is positive semidefinite, so the Hermitian
+    support identity applies to the actual Gram matrix. The closed cutoffs
+    are Borel on the whole matrix space, and multiplication and subtraction
+    preserve measurability.
+\end{proof}
+
+\begin{lemma}[The actual represented sum of ranges]
+    \label{lem:family_column_support_range}
+    \lean{Matrix.range_familySupportProj_eq_range_familyColumns,
+        Matrix.range_familyColumns_eq_iSup_range,
+        Matrix.range_familySupportProj_eq_iSup_range}
+    \leanok
+    The existing joint support represents exactly the sum of the actual
+    family ranges:
+    \[
+        \operatorname{ran}Q_A=\operatorname{ran}C_A
+             =\sum_i\operatorname{ran}A_i.
+    \]
+    This includes empty and zero families.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:finite_family_column_support}
+    Absorption $Q_AC_A=C_A$ proves one inclusion. The existing support
+    factorization gives $Q_A=G_AT=C_A(C_A^*T)$, proving the other.
+    The columns of $C_A$ are precisely the union of the columns of the
+    $A_i$, whose span is the sum of their ranges.
+\end{proof}
+
+\begin{lemma}[A Borel projector for a finite sum of operator images]
+    \label{lem:borel_finite_operator_image_support}
+    \lean{Matrix.measurable_familySupportProj_mul,
+        Matrix.range_familySupportProj_mul_eq_iSup_map_range}
+    \leanok
+    Fix a finite family $F_i:\C^n\to\C^m$. The existing joint column
+    support of the family $(F_iP)_i$ is Borel in every matrix
+    $P:\C^n\to\C^n$, and its range is
+    \[
+        \sum_i F_i(\operatorname{ran}P).
+    \]
+    In particular, when $P$ is the orthogonal projection onto $S$, this
+    is the actual orthogonal projector onto $\sum_iF_iS$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_family_column_support,lem:family_column_support_range}
+    The family $(F_iP)_i$ depends continuously on $P$. Apply the preceding
+    two lemmas and use $\operatorname{ran}(F_iP)=F_i(\operatorname{ran}P)$.
+\end{proof}
+
+These statements provide the intrinsic image-space projector for the
+improving family in \cite[lines 597--622]{Arad2016RigorousRG}.
+They require no choice of an orthonormal basis and assert no adaptive
+sampling law or running time.
+
+\begin{lemma}[The actual finite-family image projection]
+    \label{lem:actual_finite_family_image_projection}
+    \lean{Matrix.range_toEuclideanLin_familySupportProj,
+        Matrix.projectionMatrix_iSup_map_eq_familySupportProj,
+        Matrix.measurable_projectionMatrix_iSup_map}
+    \leanok
+    The joint support of a finite matrix family has exactly the sum of
+    its Euclidean ranges. In particular, if $F_i$ are fixed operators
+    and $P_S$ is the actual orthogonal projection onto $S$, then the
+    actual projection onto $\sum_iF_iS$ is the existing joint support of
+    $(F_iP_S)_i$. If $P_{S(x)}$ is Borel in $x$, so is the actual
+    orthogonal projection onto $\sum_iF_iS(x)$. Empty families and zero
+    spaces are included.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:family_column_support_range,lem:borel_finite_operator_image_support}
+    The ordinary and Euclidean coordinate equivalence carries each
+    actual matrix range to the corresponding Euclidean range and
+    preserves sums of subspaces. The range of $F_iP_S$ is $F_iS$.
+    Since the existing joint support is an orthogonal projection, it is
+    the actual projection onto this sum of ranges. Apply its Borel
+    dependence to the measured input projection.
+\end{proof}
+
+
+\begin{theorem}[Finite operator images in prescribed coordinates]
+    \label{thm:family_image_prescribed_coordinates}
+    \lean{Matrix.range_familySupportProj_comp_linearIsometryEquiv}
+    \leanok
+    Let $I:\C^d\to\C^n$ be a unitary coordinate identification, let
+    $(A_i)$ be a finite operator family on $\C^n$, and put $F_i=A_iI$.
+    For every matrix $P$ on $\C^d$, the joint column support of $(F_iP)_i$
+    has range $\sum_i A_i(I(\operatorname{ran}P))$.
+    No projection assumption on $P$ is required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:actual_finite_family_image_projection}
+    Each product has range
+    $\operatorname{ran}(F_iP)=A_i(I(\operatorname{ran}P))$.
+    Take the sum of these ranges and apply the joint-support identity.
+\end{proof}

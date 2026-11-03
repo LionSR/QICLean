@@ -115,6 +115,7 @@ up to the associator and the exchange of the first two factors.
     one, which exceeds $\eta$.
 \end{proof}
 
+
 \begin{lemma}[Sampling or retaining the whole space]
     \label{thm:viable_sample_or_full}
     \lean{Submodule.sampleIndices, Submodule.card_sampleIndices,
@@ -130,13 +131,13 @@ up to the associator and the exchange of the first two factors.
     resulting space is $(1-c)$-viable, where
     $c=(1-\delta)\min\{s,Q\}/(8Q)$.
     Its complement has measure at most
-    \[
-        \eta=\begin{cases}
-            0,          & Q\le s, \\
-            \bigl(1+2/\sqrt{(1-\delta)s/(8Q)}\bigr)^{2\dim T}
-            Qe^{-s/16}, & s<Q.
-        \end{cases}
-    \]
+    \begin{align}
+      \eta&=\begin{cases}
+        0,&Q\le s,\\
+        \bigl(1+2/\sqrt{(1-\delta)s/(8Q)}\bigr)^{2\dim T}
+          Qe^{-s/16},&s<Q.
+      \end{cases}\notag
+    \end{align}
     The event has measure at least $1-\max\{\eta,0\}$.
     For $Q\le s$ the sample is exactly $W$ for every unitary.
     This assertion concerns a fixed input space; it does not assert
@@ -150,17 +151,17 @@ up to the associator and the exchange of the first two factors.
     samples.
 \end{proof}
 
+
 \begin{lemma}[The actual sampled word image]
     \label{thm:sampled_operator_word_image}
     \lean{Submodule.sampledWordImage,
         Submodule.finrank_sampledWordImage_le,
         Submodule.exists_measurable_sampledWordImage_event}
     \leanok
-    \uses{thm:viable_sample_or_full}
+    \uses{thm:viable_sample_or_full,thm:spectral_operator_word_powers}
     Suppose a fixed family of $N$ operators has the following property:
-    the span of all length-$a$ word images of a $\delta$-viable space
-    for $T$ is $\Delta^a/(1-\delta)^2$-viable for $T$, whenever
-    $\delta<1$.
+    the sum of all length-$a$ word images of a $\delta$-viable space for $T$ is
+    $\Delta^a/(1-\delta)^2$-viable for $T$, whenever $\delta<1$.
     Apply the family to the actual sample above. On its measurable
     success event the span of the actual length-$a$ images is
     $\Delta^a/c^2$-viable for the same $T$ and has dimension at most
@@ -168,18 +169,11 @@ up to the associator and the exchange of the first two factors.
     The operators and target precede the input and the Haar unitary.
 \end{lemma}
 \begin{proof}\leanok
-    Write $F_1,\dots,F_N$ for the operators and
-    $F_w=F_{w_1}\cdots F_{w_a}$ for a word $w$ of length $a$. On the
-    success event the sample $S$ is $(1-c)$-viable with $1-c<1$, so the
-    assumed improvement hypothesis, applied with $\delta$ replaced by
-    $1-c$, shows that $V_a=\sum_wF_wS$ is
-    $\Delta^a/(1-(1-c))^2=\Delta^a/c^2$-viable. For the dimension,
-    \[
-        \dim(F_wS)\le\dim S=\min\{s,Q\},\qquad
-        \dim V_a\le\sum_w\dim(F_wS)\le N^a\min\{s,Q\},
-    \]
-    since there are $N^a$ ordered words of length $a$.
+    Apply the assumed word-improvement property to each successful
+    sample. The dimension of each image is at most the sample dimension;
+    summing over the $N^a$ ordered words gives the count.
 \end{proof}
+
 
 \begin{lemma}[A uniform interval trimming radius]
     \label{lem:viable_node_trimming_radius}
@@ -202,16 +196,16 @@ up to the associator and the exchange of the first two factors.
     \leanok
     \uses{thm:viable_sample_or_full}
     Let $D\ge2$ and $r\ge1$ be integers and let $0<\beta\le1$. Put
-    \[
-        A=1+\log r+\log D+\log(1/\beta),\qquad
-        s=\lceil4096rA\rceil.
-    \]
+    \begin{align}
+      A&=1+\log r+\log D+\log(1/\beta), &
+      s&=\lceil4096rA\rceil.\notag
+    \end{align}
     Then $1\le s\le4097rA$. For every $Q\le D^{12}s^6$, the
     corrected failure bound for a $1/4$-viable input of dimension $Q$
     and a target of dimension $r$ satisfies
-    \[
-        \eta_Q\le e^{-s/64}\le\beta.
-    \]
+    \begin{align}
+      \eta_Q&\le e^{-s/64}\le\beta.\notag
+    \end{align}
     Thus the same size is chosen before every parent space.
     This is an auxiliary choice for the powered cubic profile, rather
     than an identification with the source's printed tree parameters.
@@ -219,11 +213,11 @@ up to the associator and the exchange of the first two factors.
 \begin{proof}\leanok
     The ceiling estimate gives $\log s\le13A$.
     When $Q>s$, the net factor is at most $16\sqrt Q$, so
-    \[
-        \log\eta_Q
-        \le32r\log D+12r\log s-s/16
-        \le188rA-s/16\le-s/64.
-    \]
+    \begin{align}
+      \log\eta_Q
+      &\le32r\log D+12r\log s-s/16
+      \le188rA-s/16\le-s/64.\notag
+    \end{align}
     Also $s/64\ge\log(1/\beta)$. For $Q\le s$ the failure bound is
     zero because the whole input is retained.
 \end{proof}
@@ -238,9 +232,9 @@ up to the associator and the exchange of the first two factors.
     Suppose $D\ge2$, $s\ge1$ and a fixed family has at most $D^2$
     operators. At $a=\lceil\log_D(D^2s)\rceil$, the literal sampled-word
     image has dimension at most $D^6s^3$, for every unitary, before imposing
-    a success event. If $D_{\rm ref}\ge1$ and
-    $\xi=(1000D_{\rm ref}\sqrt{L+1})^{-1}$, then
-    $\xi^2R\le M$ implies the integer bound
+    a success event. Moreover, if $D_{\rm ref}\ge1$ and
+    $\xi=(1000D_{\rm ref}\sqrt{L+1})^{-1}$, then for nonnegative integers $R,M$,
+    $\xi^2R\le M$ implies the bound
     $R\le10^6D_{\rm ref}^2(L+1)M$.
 \end{lemma}
 \begin{proof}\leanok
@@ -248,3 +242,467 @@ up to the associator and the exchange of the first two factors.
     For the rank estimate, square the positive radius and multiply the
     weighted inequality by its reciprocal.
 \end{proof}
+
+
+\begin{lemma}[Borel Gram--Schmidt transformations]
+    \label{lem:borel_gram_schmidt}
+    \lean{InnerProductSpace.measurable_gramSchmidt,
+        InnerProductSpace.measurable_gramSchmidtNormed}
+    \leanok
+    Let $E$ be a separable real or complex inner product space. For every
+    finite family $x=(x_0,\ldots,x_{n-1})$, the Gram--Schmidt transformation
+    $x\mapsto(y_0,\ldots,y_{n-1})$ is Borel. So is its normalized version
+    $x\mapsto(\|y_i\|^{-1}y_i)_{i<n}$, with the convention $0^{-1}=0$.
+    Linear independence is not required: zero vectors are retained, and
+    the empty family is permitted.
+\end{lemma}
+\begin{proof}\leanok
+    Induct over the finite ordered indices in
+    \[
+        y_i=x_i-\sum_{j<i}
+          \frac{\langle y_j,x_i\rangle}{\|y_j\|^2}y_j.
+    \]
+    Each term is Borel because scalar products, finite sums and scalar
+    multiplication are continuous, while reciprocation extended by zero
+    is Borel. Norms and the same reciprocal convention give the normalized
+    statement. This is a prerequisite for measurable varying frames; it
+    does not itself select a frame or establish an adaptive sampling law.
+\end{proof}
+
+
+\begin{definition}[Ordered orthonormal frames from finite generators]
+    \label{def:finite_ordered_orthonormal_frame}
+    \lean{InnerProductSpace.finiteOrthonormalFrame,
+        Matrix.rangeOrthonormalFrame}
+    \leanok
+    For a finite ordered family $f$ whose span has dimension $r$, apply
+    normalized Gram--Schmidt, remove its zero vectors and retain the original
+    order. Denote the resulting $r$-vector frame by $\mathcal F_r(f)$.
+    For a rank-$r$ matrix $A$ on $\C^d$, apply this construction to the
+    ordered columns $Ae_0,\ldots,Ae_{d-1}$, obtaining
+    $\mathcal R_r(A)$. Rank zero and empty families are permitted.
+\end{definition}
+
+\begin{lemma}[Borel frame on finite-family rank strata]
+    \label{lem:borel_finite_ordered_frame}
+    \lean{InnerProductSpace.orthonormal_finiteOrthonormalFrame,
+        InnerProductSpace.span_finiteOrthonormalFrame,
+        InnerProductSpace.measurable_finiteOrthonormalFrame}
+    \leanok
+    On finite generating families in a separable real or complex inner
+    product space, $\mathcal F_r(f)$ is orthonormal and spans the same
+    space as $f$. The map $f\mapsto\mathcal F_r(f)$ is Borel on the
+    stratum where the span has dimension $r$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:finite_ordered_orthonormal_frame,lem:borel_gram_schmidt}
+    The nonzero normalized Gram--Schmidt vectors form an orthonormal family
+    with the original span, so their number is $r$. Their increasing
+    enumeration gives the claimed frame. For measurability, partition the
+    domain according to the subset of indices at which these vectors are
+    nonzero. Each of the finitely many pieces is Borel. On a fixed piece
+    the frame is a fixed coordinate restriction of the Borel normalized
+    Gram--Schmidt map. These restrictions agree with the defined ordered
+    frame, and hence assemble to a Borel map. No arbitrary choice of an
+    orthonormal basis is used.
+\end{proof}
+
+\begin{lemma}[Borel orthonormal matrix-range frame]
+    \label{lem:borel_matrix_range_frame}
+    \lean{Matrix.orthonormal_rangeOrthonormalFrame,
+        Matrix.span_rangeOrthonormalFrame,
+        Matrix.measurable_rangeOrthonormalFrame}
+    \leanok
+    On the finite complex matrices of rank $r$, the frame
+    $\mathcal R_r(A)$ is orthonormal, spans exactly $\operatorname{ran}A$,
+    and depends in a Borel manner on $A$. In particular this holds on
+    each rank-$r$ stratum of orthogonal projections, including $r=0$ and
+    the empty ambient index set.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_finite_ordered_frame}
+    Matrix columns depend continuously on the matrix. Their span is its
+    actual range and has dimension equal to the matrix rank. Apply the
+    preceding lemma to that family. No global continuity or running-time
+    assertion is made, and an adaptive joint sampling law remains separate.
+\end{proof}
+
+
+\begin{definition}[Actual range basis and rotated columns]
+    \label{def:canonical_range_sampling_basis}
+    \lean{Matrix.rangeOrthonormalBasis,Matrix.rotatedRangeFrame}
+    \leanok
+    For a rank-$r$ matrix $P$ on $\C^d$, let $W_P=\operatorname{ran}P$.
+    Restrict the ordered frame $C(P)=\mathcal R_r(P)$ to $W_P$, obtaining
+    its actual orthonormal basis $b_P$. For $U\in\mathrm U(r)$ put
+    \[
+        z_j(P,U)=\sum_{i<r}U_{ij}C(P)_i.
+    \]
+    The basis object is used pointwise; no measurable structure on a
+    varying space of basis objects is assumed.
+\end{definition}
+
+\begin{lemma}[Projection of the existing sampled subspace]
+    \label{lem:existing_sampler_rank_one_projection}
+    \lean{Submodule.basisEmbedding_apply_eq_sum,
+        Submodule.randomSubspace_eq_span_rotated_basis,
+        Submodule.starProjection_randomSubspace_eq_sum_rankOne}
+    \leanok
+    Let $b=(b_i)_{i\in\iota}$ be an orthonormal basis of $W\subseteq M$,
+    with $\iota$ finite, and write $E_bx=\sum_i x_i b_i$ for its ambient
+    isometric embedding. For $I\subseteq\iota$ and a unitary $U$, the
+    existing sampler of Definition~\ref{def:viable_random_subspace} satisfies
+    \[
+        W'_{b,I,U}=\operatorname{span}\{E_bUe_j:j\in I\},\qquad
+        P_{W'_{b,I,U}}=\sum_{j\in I}|E_bUe_j\rangle\langle E_bUe_j|.
+    \]
+    Empty retained sets are allowed.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:viable_random_subspace}
+    The two linear images in the existing sampler take its coordinate
+    span to the displayed span. The rotated and embedded full family is
+    orthonormal. Its retained subfamily is an orthonormal basis of that
+    span, so its rank-one sum is the actual ambient orthogonal projection.
+\end{proof}
+
+\begin{lemma}[The canonical basis gives the actual sampled projector]
+    \label{lem:canonical_sampler_projector_formula}
+    \lean{Matrix.coe_rangeOrthonormalBasis,
+        Matrix.basisEmbedding_rangeOrthonormalBasis_unitaryAction_eq,
+        Matrix.randomSubspace_rangeOrthonormalBasis_projection_eq_sum}
+    \leanok
+    The ambient coordinates of $b_{P,i}$ are exactly $C(P)_i$, and
+    $E_{b_P}Ue_j=z_j(P,U)$. Consequently the ambient matrix of the
+    projection of the existing sampler $W'_{b_P,I,U}$ is
+    \[
+        \sum_{j\in I}z_j(P,U)z_j(P,U)^*.
+    \]
+    No different sampler is introduced.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:canonical_range_sampling_basis,lem:existing_sampler_rank_one_projection}
+    Restricting the frame to its exact range preserves each ambient
+    coordinate. Expand $Ue_j$ in the coordinate basis and apply the
+    finite basis expansion for $E_{b_P}$. The preceding projector identity
+    gives the stated matrix Gram sum.
+\end{proof}
+
+\begin{lemma}[A joint Borel projector for the canonical-frame sampler]
+    \label{lem:joint_borel_canonical_sample_projector}
+    \lean{Matrix.measurable_rotatedRangeFrame,
+        Matrix.measurable_randomSubspace_rangeOrthonormalBasis_projection}
+    \leanok
+    Fix $d,r$ and a retained coordinate set $I\subseteq\{0,\ldots,r-1\}$.
+    On the product of the rank-$r$ matrix stratum and $\mathrm U(r)$,
+    both $(P,U)\mapsto(z_j(P,U))_{j<r}$ and the actual ambient projector
+    $(P,U)\mapsto P_{W'_{b_P,I,U}}$ are Borel.
+    In particular $I$ may be the first $\min\{s,r\}$ coordinates.
+    Rank zero, $s=0$, empty retained sets and empty ambient dimension
+    are included.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_matrix_range_frame,lem:canonical_sampler_projector_formula}
+    The frame coordinates are Borel and the unitary entries are continuous.
+    Their finite linear combinations are therefore jointly Borel. Each
+    entry of the projector Gram sum is a finite sum of products of a
+    coordinate and a conjugate coordinate, and hence is Borel.
+\end{proof}
+
+This is a statement about one fixed-rank sampling step. It neither asserts
+measurability of the old arbitrary varying basis choice, proves a comparison
+of Haar laws under basis changes, nor constructs an adaptive tree law or a
+running-time estimate.
+
+\subsection{A common finite unitary space for varying ranks}
+
+\begin{lemma}[Borel gluing along matrix-rank strata]
+    \label{lem:borel_matrix_rank_gluing}
+    \lean{Matrix.measurable_rank,measurable_of_matrix_rank_strata}
+    \leanok
+    Matrix rank is Borel on finite complex matrices. If $P:X\to M_{m,n}(\C)$
+    is Borel and $f:X\to Y$ is Borel on each set
+    $\{x:\operatorname{rank}P(x)=r\}$, then $f$ is Borel on $X$.
+\end{lemma}
+\begin{proof}\leanok
+    Matrix rank is lower semicontinuous. Its level sets are therefore
+    Borel and form a countable partition. The inverse image of each
+    measurable subset of $Y$ is the union of its inverse images in the
+    rank strata.
+\end{proof}
+
+\begin{definition}[The canonical sample on a common unitary space]
+    \label{def:canonical_variable_rank_sample}
+    \lean{Matrix.rankUnitaryProduct,Matrix.randomRangeSubspace}
+    \leanok
+    Put $\Omega_d=\prod_{r=0}^d U(r)$. For $P\in M_d(\C)$ of rank $r$,
+    let $b(P)$ be the canonical orthonormal basis of $\operatorname{ran}P$.
+    For $\omega\in\Omega_d$, let $S_s(P,\omega)$ be the existing sample
+    formed from the first $\min(s,r)$ columns of $b(P)\omega_r$.
+    Rank zero and $s=0$ are included.
+\end{definition}
+
+\begin{lemma}[A Borel sample projection across rank changes]
+    \label{lem:borel_variable_rank_sample_projection}
+    \lean{Matrix.randomRangeSubspace_eq_on_rank,
+        Matrix.measurable_randomRangeSubspace_projection}
+    \leanok
+    The orthogonal projection onto $S_s(P,\omega)$ is jointly Borel in
+    $(P,\omega)\in M_d(\C)\times\Omega_d$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:canonical_variable_rank_sample,lem:borel_matrix_rank_gluing,
+        lem:joint_borel_canonical_sample_projector}
+    On the rank-$r$ stratum the sample is exactly the preceding
+    fixed-rank canonical sample, evaluated at the $r$th unitary coordinate.
+    Each coordinate evaluation is continuous. Apply Borel gluing.
+\end{proof}
+
+\begin{lemma}[Borel improving-family images of the canonical sample]
+    \label{lem:borel_variable_rank_sample_family_image}
+    \lean{Matrix.measurable_familySupportProj_randomRangeSubspace}
+    \leanok
+    Fix a finite family $F_i:\C^d\to\C^m$. The orthogonal projection onto
+    $\sum_iF_iS_s(P,\omega)$ is jointly Borel in $(P,\omega)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_variable_rank_sample_projection,
+        lem:borel_finite_operator_image_support}
+    Apply the existing joint column support to the family
+    $(F_iP_{S_s(P,\omega)})_i$.
+\end{proof}
+
+These statements concern the actual sampler in
+\cite[lines 530--558]{Arad2016RigorousRG}. They do not assert an adaptive
+joint success probability or a running-time estimate.
+
+\subsection{Borel composition with the actual collective trim}
+
+\begin{lemma}[Canonical range frames in prescribed coordinates]
+    \label{lem:borel_range_frame_prescribed_coordinates}
+    \lean{Matrix.map_range_toEuclideanLin_submatrix,
+        Matrix.rangeOrthonormalFrameInCoordinates,
+        Matrix.orthonormal_rangeOrthonormalFrameInCoordinates,
+        Matrix.span_rangeOrthonormalFrameInCoordinates,
+        Matrix.measurable_rangeOrthonormalFrameInCoordinates}
+    \leanok
+    Fix an equivalence between a finite coordinate set and
+    $\{1,\ldots,d\}$. Transporting the canonical matrix-range frame by
+    the corresponding coordinate isometry gives an orthonormal frame
+    spanning the actual matrix range in the prescribed coordinates.
+    Its vectors depend Borel measurably on the matrix on each rank stratum.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_matrix_range_frame}
+    Coordinate relabeling intertwines the matrix actions and is an
+    isometric isomorphism. It therefore transports their ranges exactly,
+    preserves orthonormality and commutes with taking spans. Its continuous
+    action on each frame vector preserves Borel measurability.
+\end{proof}
+
+\begin{definition}[The actual collective trim of a matrix range]
+    \label{def:canonical_collective_trim_matrix_range}
+    \lean{Entropy.trimMatrixRange}
+    \leanok
+    For fixed cuts, threshold and number of cuts, collectively trim the
+    canonical orthonormal frame of the actual matrix range, expressed in
+    the prescribed physical configuration coordinates. Denote the resulting
+    subspace by $\mathcal T(P)$.
+\end{definition}
+
+\begin{lemma}[Borel collective trimming across rank changes]
+    \label{lem:borel_canonical_collective_trim_matrix_range}
+    \lean{Entropy.trimMatrixRange_eq_on_rank,
+        Entropy.trimMatrixRange_eq_of_orthonormalBasis,
+        Entropy.measurable_projectionMatrix_trimMatrixRange}
+    \leanok
+    The subspace $\mathcal T(P)$ is the original collective trim obtained
+    from any orthonormal basis of $\operatorname{ran}P$. Its actual
+    orthogonal projection is Borel in $P$, including at rank changes.
+    Zero rank, arbitrary cuts and arbitrary real thresholds are permitted.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:canonical_collective_trim_matrix_range,
+        lem:borel_range_frame_prescribed_coordinates,lem:borel_matrix_rank_gluing}
+    On each rank stratum the frame is Borel and its collective trim has
+    a Borel orthogonal projection. Glue these maps along the rank strata.
+    Restrict the frame to its span to obtain an orthonormal basis, then
+    apply the basis invariance of the original collective trim.
+\end{proof}
+
+\begin{lemma}[The actual sample, family image and trim are jointly Borel]
+    \label{lem:borel_canonical_sample_family_trim}
+    \lean{Entropy.measurable_projectionMatrix_trim_family_image,
+        Entropy.measurable_projectionMatrix_trim_sample_family_image}
+    \leanok
+    Fix the operator family and collective-trimming parameters before the
+    candidate matrix and unitary variables. Applying the operator family
+    to the candidate range and then collectively trimming has a Borel
+    orthogonal projection. The same holds jointly for the canonical sample,
+    its operator-family image and its actual collective trim.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_canonical_collective_trim_matrix_range,
+        lem:borel_finite_operator_image_support,
+        lem:borel_variable_rank_sample_family_image}
+    Compose the Borel actual image projection with the preceding trim map.
+\end{proof}
+
+\begin{lemma}[The true closeness event is Borel]
+    \label{lem:borel_actual_sample_family_trim_closeness}
+    \lean{Submodule.measurableSet_isCloseTo_of_measurable_projectionMatrix,
+        Entropy.measurableSet_isCloseTo_trim_sample_family_image}
+    \leanok
+    A constructed subspace with a Borel actual orthogonal projection has
+    a Borel closeness event for every fixed target and error. In particular
+    the actual sampled, improved and collectively trimmed subspace above
+    has this property. Its failure event is Borel as well.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_canonical_sample_family_trim}
+    The original closeness predicate is closed in the candidate orthogonal
+    projection. Pull back that closed test by the actual projection map.
+    The range of this projection is exactly the constructed subspace.
+\end{proof}
+
+These results concern the original operations in
+\cite[lines 648--655 and 1668--1670]{Arad2016RigorousRG}.
+They do not assert a joint success probability for an adaptive binary tree.
+
+\subsection{The true regional viability event}
+
+\begin{lemma}[Actual projections in relabeled tensor coordinates]
+    \label{lem:borel_actual_tensor_projection_coordinates}
+    \lean{Submodule.projectionMatrix_map_piLpCongrLeft,
+        Submodule.measurable_projectionMatrix_map_piLpCongrLeft,
+        Submodule.projectionMatrix_tensorProd_coordinates,
+        Submodule.measurable_projectionMatrix_tensorProd_coordinates}
+    \leanok
+    Relabeling finite coordinates relabels both indices of the actual
+    orthogonal projection by the same equivalence. In the fixed product
+    coordinates, the projection onto $S\otimes R$ is exactly
+    $P_S\otimes P_R$. Consequently Borel actual factor projections give
+    a Borel actual tensor-product projection. Empty coordinate sets and
+    zero subspaces are included.
+\end{lemma}
+\begin{proof}\leanok
+    Orthogonal projections commute with fixed coordinate isometries.
+    The tensor-product projection is the tensor product of the factor
+    projections, and the fixed product orthonormal basis represents this
+    operator by the Kronecker matrix. Coordinate relabeling and the
+    Kronecker map are continuous on finite matrix spaces.
+\end{proof}
+
+\begin{lemma}[Borel true viability with the full exterior]
+    \label{lem:borel_true_regional_viability_event}
+    \lean{Submodule.measurableSet_isViable_of_measurable_projectionMatrix,
+        Entropy.measurableSet_isViable_trim_sample_family_image}
+    \leanok
+    Suppose that the actual projection onto $S(x)\subseteq\C^\sigma$ is
+    Borel in $x$. For every fixed target
+    $T\subseteq\C^\sigma\otimes\C^\beta$ and every real $\delta$, the
+    event that $S(x)$ is $\delta$-viable for $T$ is Borel. In particular,
+    this holds for the exact sampled, improved and collectively trimmed
+    subspace above, with the entire exterior factor retained. The true
+    failure event is Borel as its complement.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_actual_tensor_projection_coordinates,
+        lem:borel_actual_sample_family_trim_closeness}
+    The projection onto $S(x)\otimes\C^\beta$ is represented by
+    $P_{S(x)}\otimes\Id$. Carry the fixed target back through the fixed
+    tensor-coordinate isometry and apply the true closeness test. This
+    is exactly the original viability predicate; the target is unchanged
+    throughout and need not be a product subspace.
+\end{proof}
+
+\begin{lemma}[Borel projection of the actual regional tensor merge]
+    \label{lem:borel_actual_regional_tensor_merge}
+    \lean{Entropy.measurable_projectionMatrix_regionTensorMerge}
+    \leanok
+    Fix disjoint finite physical regions $A,B$. If the actual projections
+    of their constructed child spaces are Borel, then the actual
+    projection of their original tensor merge on $A\cup B$ is Borel.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:borel_actual_tensor_projection_coordinates}
+    The prescribed union-configuration equivalence carries the tensor
+    product projection back to the actual union configuration space.
+    Apply the fixed-coordinate relabeling result.
+\end{proof}
+
+These are auxiliaries for the original viability and tensoring statements
+of \cite[lines 433--440 and 500--523]{Arad2016RigorousRG}. They assert no
+adaptive success probability or running-time bound.
+
+\begin{lemma}[Exact dimension of the canonical range sample]
+    \label{lem:canonical_range_sample_dimension}
+    \lean{Matrix.finrank_randomRangeSubspace,
+        Matrix.finrank_map_randomRangeSubspace_le}
+    \leanok
+    For every seed, the actual canonical sample of a matrix $P$ has
+    dimension exactly $\min(s,\operatorname{rank}P)$. Every linear image
+    of that sample has dimension at most $s$. No viability or nonzero-rank
+    hypothesis is needed.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:canonical_variable_rank_sample}
+    The retained rotated coordinates are orthonormal, so their actual
+    span has precisely the retained coordinate count. Linear maps do
+    not increase the dimension of a subspace.
+\end{proof}
+
+\begin{lemma}[The full short-block dimension fits the common node count]
+    \label{lem:viable_tree_full_leaf_count}
+    \lean{Nat.viable_tree_leaf_count_le}
+    \leanok
+    Let $q\le m$, $m\ge2$, $\ell\ge1$ and $s\ge1$ be integers, and set
+    $D=(m\ell^2)^{22\ell}$. Then $q^{4\ell}\le D^6s^3$.
+\end{lemma}
+\begin{proof}\leanok
+    Since $\ell^2\ge1$, the base $m\ell^2$ is at least both $q$ and $2$.
+    Hence $q^{4\ell}\le(m\ell^2)^{132\ell}=D^6\le D^6s^3$.
+\end{proof}
+
+
+\begin{lemma}[Sampling at a size determined by the input rank]
+    \label{lem:borel_rank_size_sample_family_trim}
+    \lean{Matrix.measurable_randomRangeSubspace_projection_rank_size,
+        Matrix.measurable_familySupportProj_randomRangeSubspace_rank_size,
+        Entropy.measurable_projectionMatrix_trim_sample_family_image_rank_size,
+        Entropy.measurableSet_isViable_trim_sample_family_image_rank_size}
+    \leanok
+    Fix a function $s:\mathbb N\to\mathbb N$, a finite operator family
+    $F_i:\mathbb C^a\to\mathcal H$, and the collective-trimming cuts,
+    threshold and number of cuts on the finite physical space
+    $\mathcal H$. Let $P$ be a matrix on $\mathbb C^a$ and put
+    $Q=\operatorname{rank}P$. From the $Q$th coordinate of the fixed
+    product $\Omega_a=\prod_{j=0}^a\mathrm U(j)$, take the canonical
+    range sample $W(P,U)$ of dimension $\min\{s(Q),Q\}$. Set
+    \[
+       V(P,U)=\sum_i F_iW(P,U),\qquad
+       S(P,U)=\operatorname{Trim}_\xi V(P,U).
+    \]
+    The actual orthogonal projections onto $W(P,U)$, $V(P,U)$ and
+    $S(P,U)$ are Borel in $(P,U)$. For every fixed target
+    $T\subseteq\mathcal H\otimes\mathcal E$ and every real $\delta$,
+    the true event that $S(P,U)$ is $\delta$-viable for $T$ is Borel.
+    The entire finite-dimensional exterior $\mathcal E$ is retained.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:canonical_variable_rank_sample,
+        lem:borel_matrix_rank_gluing,
+        lem:borel_canonical_collective_trim_matrix_range,
+        lem:borel_true_regional_viability_event}
+    On the stratum $\operatorname{rank}P=Q$, the requested size is the
+    fixed integer $s(Q)$. The existing canonical sample therefore has
+    a Borel projection there. Joining the rank strata gives the first
+    assertion. Apply the fixed operator family and the actual collective
+    trim, then the true viability test for the fixed target.
+\end{proof}
+
+This permits, for example, the actual quotient
+$s(Q)=\lfloor Q/(2D^2)\rfloor$ in repeated amplification associated with
+\cite{Arad2016RigorousRG}. It gives measurability of these operations;
+a bound for the probability of an entire adaptive construction requires
+a separate argument.

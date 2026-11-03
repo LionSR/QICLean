@@ -1,0 +1,115 @@
+\section{A common sampling bound for polynomially bounded ranges}
+
+Let $\mu_d$ be the product Haar law on
+$\Omega_d=\prod_{j=0}^d\mathrm U(j)$ from
+Definition~\ref{def:rank_unitary_product_haar}. For a matrix $P$ on
+$\mathbb C^d$, write $W=\operatorname{range}P$ and
+$Q=\operatorname{rank}P$. The sample $W_s(U)$ uses the $Q$th
+coordinate of $U$, with $\min(s,Q)$ columns of the prescribed
+orthonormal basis of $W$.
+
+\begin{theorem}[A common sampled overlap]
+    \label{thm:polynomial_rank_sampling_failure}
+    \lean{Matrix.rankUnitaryHaar_not_isViable_randomRangeSubspace_polynomial_le}
+    \leanok
+    Let $D\ge2$ and $s\ge1$ be integers. Suppose that $W$ is
+    $1/4$-viable for $T\subseteq\mathbb C^d\otimes F$, where $F$ is
+    any finite-dimensional complex Hilbert space,
+    $\dim T\le r$, and $Q\le D^{12}s^6$. Put
+    $a=3/(32D^{12}s^5)$. Then
+    \begin{align}
+        \mu_d\{U:W_s(U)\text{ is not }(1-a)\text{-viable for }T\}
+        \le
+        \begin{cases}
+            0,&Q\le s,\\
+            \left(1+\dfrac2{\sqrt{3s/(32Q)}}\right)^{2r}
+                Qe^{-s/16},&Q>s.
+        \end{cases}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:rank_product_sampling_failure,thm:rank_product_full_sample}
+    If $Q\le s$, the sample equals $W$ for every $U$.
+    Since $D^{12}s^5\ge1$, one has $a\le3/4$, so the claimed
+    viability follows from that of $W$. This also covers $Q=0$.
+    Otherwise the sampling theorem gives overlap $c=3s/(32Q)$,
+    and the dimension bound gives $c\ge a$.
+    Thus failure at overlap $a$ implies failure at overlap $c$.
+    The corrected net estimate gives the asserted measure bound;
+    replacing its exponent $2\dim T$ by $2r$ enlarges the bound.
+\end{proof}
+
+\begin{theorem}[One sample size before every input range]
+    \label{thm:uniform_rank_sampling_failure}
+    \lean{Matrix.rankUnitaryHaar_not_isViable_randomRangeSubspace_uniform_le}
+    \leanok
+    Let $D\ge2$ and $r\ge1$ be integers, and let $0<\beta\le1$.
+    Choose
+    \begin{align}
+        A=1+\log r+\log D+\log(1/\beta),
+        \qquad s=\lceil4096rA\rceil.
+    \end{align}
+    Then $1\le s\le4097rA$. For every subsequent choice of $d$, $P$,
+    and $T$ satisfying the hypotheses of
+    Theorem~\ref{thm:polynomial_rank_sampling_failure},
+    the probability of failure at overlap $3/(32D^{12}s^5)$ is at
+    most $\beta$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:polynomial_rank_sampling_failure,
+        thm:viable_node_uniform_sampling_size}
+    The scalar sampling estimate bounds the two cases in
+    Theorem~\ref{thm:polynomial_rank_sampling_failure} by
+    $e^{-s/64}\le\beta$, uniformly over all
+    $Q\le D^{12}s^6$. Neither $s$ nor the product Haar law depends on
+    the subsequently chosen input matrix or target.
+\end{proof}
+
+These estimates support the merge analysis of
+\cite[lines 1777--1817]{Arad2016RigorousRG}; their explicit numerical
+constant is an auxiliary choice. The exponent $2r$ retains the corrected
+complex sphere-net count~\cite{gap:alvv16_random_sampling_net_count}.
+The theorems concern every fixed input separately and make no assertion
+about the probability of an entire recursively sampled construction.
+
+\subsection{The same estimate in physical configuration coordinates}
+
+\begin{theorem}[Uniform sampling in prescribed finite coordinates]
+    \label{thm:native_uniform_rank_sampling_failure}
+    \lean{Submodule.rankUnitaryHaar_not_isViable_native_randomRangeSubspace_uniform_le}
+    \leanok
+    Let $C$ be a finite coordinate set, fix a bijection
+    $e:\{0,\ldots,d-1\}\to C$, and let
+    $I_e:\mathbb C^d\to\mathbb C^C$ be its coordinate isometry.
+    Choose $D,r,\beta,s,a$ as in
+    Theorem~\ref{thm:uniform_rank_sampling_failure}.
+    For every $W\subseteq\mathbb C^C$ and
+    $T\subseteq\mathbb C^C\otimes F$ with
+    $\dim W\le D^{12}s^6$, $\dim T\le r$, and $W$ quarter-viable
+    for $T$, let $P_e$ be the matrix of the actual orthogonal
+    projection onto $W$, relabeled by $e$ in both indices.
+    Sample its canonical range with the same product seed, obtaining
+    $W_{e,s}(U)\subseteq\mathbb C^d$. Then
+    \begin{align}
+        \mu_d\{U:I_eW_{e,s}(U)
+            \text{ is not }(1-a)\text{-viable for }T\}\le\beta.
+    \end{align}
+    The sample size is chosen before $W$ and $T$.
+    Empty coordinate sets and zero-dimensional ranges are included.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:uniform_rank_sampling_failure,thm:viable_tensor_factor_changes,
+        lem:borel_actual_tensor_projection_coordinates}
+    Relabeling the projection gives the actual orthogonal projection
+    onto $I_e^{-1}W$. Consequently
+    $\operatorname{range}P_e=I_e^{-1}W$ and
+    $\operatorname{rank}P_e=\dim W$.
+    The tensor isometry $I_e^{-1}\otimes1_F$ carries $T$ to a target
+    $T_e$ of the same dimension and preserves viability. Apply
+    Theorem~\ref{thm:uniform_rank_sampling_failure} to $P_e,T_e$.
+    For every individual seed $U$, transporting the sample back by
+    $I_e$ preserves its viability for the transported target.
+    Hence the native true failure set is contained in the already
+    bounded coordinate failure set. No change of seed or comparison
+    of randomly chosen bases is required.
+\end{proof}

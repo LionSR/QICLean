@@ -8,7 +8,10 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis
 
+import QICLean.Analysis.AdaptiveBinaryProbability
+import QICLean.Analysis.AdaptiveSamplingProbability
 import QICLean.Analysis.AdjointEigenvalues
+import QICLean.Analysis.ApproximateBasisImage
 import QICLean.Analysis.AsymptoticStateConvergence
 import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound
@@ -18,6 +21,9 @@ import QICLean.Analysis.BlockDiagonalNorm
 import QICLean.Analysis.BufferedSpectralNormPerturbation
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
+import QICLean.Analysis.CanonicalSampleProjectionMeasurable
+import QICLean.Analysis.CanonicalSamplingTrimmingMeasurable
+import QICLean.Analysis.CanonicalSamplingViabilityMeasurable
 import QICLean.Analysis.CappedGeometricSum
 import QICLean.Analysis.CfcComplex
 import QICLean.Analysis.CfcConjugation
@@ -77,8 +83,16 @@ import QICLean.Analysis.FiniteCoordinateNowosad
 import QICLean.Analysis.FiniteCoordinateNowosad.Recursion
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami
 import QICLean.Analysis.FiniteCoordinateNowosad.Yamagami.TwoMaxima
+import QICLean.Analysis.FiniteCoordinateRangeFrame
 import QICLean.Analysis.FiniteExponentialRetainedMass
+import QICLean.Analysis.FiniteFamilyImageCoordinates
+import QICLean.Analysis.FiniteFamilyImageProjection
+import QICLean.Analysis.FiniteFrameMeasurable
+import QICLean.Analysis.FiniteProductSectionProbability
+import QICLean.Analysis.FiniteProductUnionProbability
+import QICLean.Analysis.FiniteProductUpdateProbability
 import QICLean.Analysis.FiniteRangeKnabe
+import QICLean.Analysis.FiniteSpanProjectionMeasurable
 import QICLean.Analysis.FittingDecomposition
 import QICLean.Analysis.FiveFactorAuxiliaryCoordinates
 import QICLean.Analysis.FiveMomentExponentialBound
@@ -90,6 +104,7 @@ import QICLean.Analysis.GaussianFilter
 import QICLean.Analysis.GeometricDecay
 import QICLean.Analysis.GeometricOrderPolynomialBound
 import QICLean.Analysis.GlobalGap
+import QICLean.Analysis.GramSchmidtMeasurable
 import QICLean.Analysis.GroundEnergyBounds
 import QICLean.Analysis.GroundEnergyResidual
 import QICLean.Analysis.GroundProjection
@@ -160,9 +175,14 @@ import QICLean.Analysis.MatrixBernsteinInputs
 import QICLean.Analysis.MatrixBernsteinScalar
 import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
+import QICLean.Analysis.MatrixFamilySupportMeasurable
 import QICLean.Analysis.MatrixFittingRange
 import QICLean.Analysis.MatrixFramePerturbation
 import QICLean.Analysis.MatrixNonzeroTraceEigenvalue
+import QICLean.Analysis.MatrixRangeFrameMeasurable
+import QICLean.Analysis.MatrixRangeOrthonormalBasis
+import QICLean.Analysis.MatrixRangeProjectionMeasurable
+import QICLean.Analysis.MatrixRankMeasurable
 import QICLean.Analysis.MatrixReducedProjection
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Analysis.MatrixTensorCoordinates
@@ -182,6 +202,7 @@ import QICLean.Analysis.MeanTreeSublinearRemainder
 import QICLean.Analysis.MeanTreeUniformExpectation
 import QICLean.Analysis.MetricBallKernel
 import QICLean.Analysis.MinimumEnvelope
+import QICLean.Analysis.NativeFamilyImageCoordinates
 import QICLean.Analysis.NestedChebyshevViability
 import QICLean.Analysis.NestedSamplingNaturalParameters
 import QICLean.Analysis.NestedSamplingParameters
@@ -238,6 +259,8 @@ import QICLean.Analysis.ProjectionResidual
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.QuadraticScalarShift
 import QICLean.Analysis.QuantitativeFilterIteration
+import QICLean.Analysis.RandomRangeSubspaceDimension
+import QICLean.Analysis.RandomSubspaceProjection
 import QICLean.Analysis.RectangleSimplePoles
 import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
@@ -253,6 +276,7 @@ import QICLean.Analysis.RegionalPhysicalMarginals
 import QICLean.Analysis.RegionalRoughLowerNorm
 import QICLean.Analysis.RegionalRoughLowerThree
 import QICLean.Analysis.RegionalSharpLowerNorm
+import QICLean.Analysis.RegionalTensorMergeMeasurable
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
@@ -359,6 +383,7 @@ import QICLean.Analysis.SpectralFilter
 import QICLean.Analysis.SpectralFunUnique
 import QICLean.Analysis.SpectralKronecker
 import QICLean.Analysis.SpectralProjectionIntertwiner
+import QICLean.Analysis.SpectralProjectionMeasurable
 import QICLean.Analysis.SpectralProjectorPower
 import QICLean.Analysis.SpectralQuadraticForm
 import QICLean.Analysis.SpectralRadius
@@ -417,11 +442,13 @@ import QICLean.Analysis.UnitaryHaar
 import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UntrimmedTensorFamilyPowers
 import QICLean.Analysis.UpperTriangularBound
+import QICLean.Analysis.VariableRankSampleProjection
 import QICLean.Analysis.VectorMajorization
 import QICLean.Analysis.ViableFilterTrimmingIteration
 import QICLean.Analysis.ViableNodeLeafCount
 import QICLean.Analysis.ViableNodeParameters
 import QICLean.Analysis.ViableNodeSamplingParameters
+import QICLean.Analysis.ViableProjectionNonzero
 import QICLean.Analysis.ViableRefinementParameters
 import QICLean.Analysis.ViableSubspace
 import QICLean.Analysis.ViableSubspaceBootstrap
@@ -448,8 +475,12 @@ import QICLean.Analysis.ViableSubspaceSharpTensorReduction
 import QICLean.Analysis.ViableSubspaceSpectralProjector
 import QICLean.Analysis.ViableSubspaceSymmetry
 import QICLean.Analysis.ViableSubspaceTensor
+import QICLean.Analysis.ViableSubspaceTensorProjectionMeasurable
 import QICLean.Analysis.ViableSubspaceTensorTransport
 import QICLean.Analysis.ViableSubspaceTrimming
+import QICLean.Analysis.ViableSubspaceTrimmingInvariance
+import QICLean.Analysis.ViableSubspaceTrimmingMeasurable
+import QICLean.Analysis.ViableSubspaceTrimmingProjectionMeasurable
 import QICLean.Analysis.ViableSubspaceUnitApproximation
 import QICLean.Analysis.ViableTrimmingRadius
 import QICLean.Analysis.ViableTrimmingRank

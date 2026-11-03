@@ -1,0 +1,85 @@
+\section{One Haar product law for all possible ranks}
+
+\begin{definition}[The fixed product measure]
+    \label{def:rank_unitary_product_haar}
+    \lean{Matrix.rankUnitaryHaar,Matrix.instIsProbabilityMeasureRankUnitaryHaar}
+    \leanok
+    For a fixed ambient dimension $d$, let
+    $\Omega_d=\prod_{r=0}^d\mathrm U(r)$ and equip it with the product
+    $\mu_d=\bigotimes_{r=0}^d h_r$ of the Haar probability measures $h_r$.
+    This is a probability measure chosen before the input matrix.
+    The factor $\mathrm U(0)$ is included.
+\end{definition}
+\begin{proof}\leanok
+    Each normalized Haar measure is a probability measure, so their
+    finite product has total mass one.
+\end{proof}
+
+\begin{theorem}[The exact coordinate Haar marginal]
+    \label{thm:rank_unitary_haar_marginal}
+    \lean{Matrix.measurePreserving_rankUnitary_eval}
+    \leanok
+    \uses{def:rank_unitary_product_haar}
+    For each $0\le r\le d$, evaluation $U\mapsto U_r$ preserves measure
+    from $(\Omega_d,\mu_d)$ to $(\mathrm U(r),h_r)$.
+\end{theorem}
+\begin{proof}\leanok
+    This is the coordinate marginal identity for a finite product of
+    probability measures.
+\end{proof}
+
+\begin{theorem}[The corrected failure bound at each fixed input]
+    \label{thm:rank_product_sampling_failure}
+    \lean{Submodule.rankUnitaryHaar_not_isViable_randomSubspace_le,
+        Matrix.rankUnitaryHaar_not_isViable_randomRangeSubspace_le}
+    \leanok
+    Let $W\subseteq M$ have a prescribed orthonormal basis of size
+    $q\le d$, and suppose that $W$ is $\delta$-viable for
+    $T\subseteq M\otimes F$. For a fixed set of $a$ coordinate vectors,
+    apply the random-subspace sampler using $U_q$.
+    Put $c=(1-\delta)a/(8q)$. In the nontrivial case $c>0$, the
+    $\mu_d$ probability that the actual sample is not $(1-c)$-viable is
+    at most
+    \begin{align}
+        \eta(q,a,\delta,T)
+        =\left(1+\frac2{\sqrt c}\right)^{2\dim T}
+          q\exp(-a/16).
+    \end{align}
+    For the actual rank-dependent canonical sampler at a fixed matrix
+    $P$, the same estimate holds with $q=\operatorname{rank}P$ and
+    $a=\min(s,q)$, where $s$ is the requested sample size.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:rank_unitary_haar_marginal,thm:viable_random_sampling,
+        def:canonical_variable_rank_sample}
+    The actual failure set is the inverse image of the fixed-rank
+    failure set under coordinate evaluation. For every set $B$, a
+    measure-preserving map $f$ satisfies
+    $\mu_d(f^{-1}B)\le h_q(B)$; measurability of $B$ is not needed for
+    this outer-measure inequality. Apply the corrected sampling
+    bound. At a fixed matrix, the canonical sampler is literally this
+    sampler at its actual rank, with exactly $\min(s,q)$ columns.
+\end{proof}
+
+The quantitative bound retains the corrected real sphere-net exponent
+$2\dim T$ from Theorem~\ref{thm:viable_random_sampling}; the printed
+source exponent undercounts that net~\cite{gap:alvv16_random_sampling_net_count}.
+No uniform bound over unrelated ranks is inferred. The construction and
+its estimates are auxiliaries to
+\cite[Lemma \texttt{l:rs}, lines 530--558]{Arad2016RigorousRG}.
+
+\begin{theorem}[A full requested sample returns the original range]
+    \label{thm:rank_product_full_sample}
+    \lean{Matrix.randomRangeSubspace_eq_range_of_rank_le}
+    \leanok
+    If $\operatorname{rank}P\le s$, then the actual sample equals
+    $\operatorname{range}P$ for every $U\in\Omega_d$.
+    This includes rank zero.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:canonical_variable_rank_sample,def:viable_random_subspace}
+    The sample is contained in the original range. Its dimension is
+    the number of selected columns, namely
+    $\min(s,\operatorname{rank}P)=\operatorname{rank}P$.
+    Equality follows from inclusion and equality of dimensions.
+\end{proof}

@@ -1,0 +1,90 @@
+\section{Independence of the basis in collective trimming}
+
+The definition of collective trimming starts from an orthonormal basis of
+its input subspace. The resulting projections and trimmed subspace are
+independent of that basis, as follows from the reduced Gram operators.
+This concerns the literal successive construction in
+\cite[Definition \texttt{def:trimming}, lines 648--655]{Arad2016RigorousRG}.
+
+\begin{theorem}[The reduced Gram operator after a physical action]
+    \label{thm:trimming_reduced_gram}
+    \lean{Matrix.leftMarginal_leftApply,
+        Entropy.leftMarginal_cutEnvVector,
+        Entropy.leftMarginal_cutEnvVector_leftApply}
+    \leanok
+    Let $w\in\mathcal H_A\otimes\mathcal H_B$, and let
+    $\rho=\operatorname{Tr}_B|w\rangle\langle w|$.
+    For an arbitrary operator $P$ on $\mathcal H_A$, its physical reduced
+    operator after the action is $P\rho P^*$. At a region $D$ of the physical
+    sites, the left marginal of $(P\otimes I)w$ is
+    \begin{align}
+        \operatorname{Tr}_{D^c}
+            \bigl(U_D P\rho P^*U_D^*\bigr),
+    \end{align}
+    where $U_D:\mathcal H_A\to\mathcal H_D\otimes\mathcal H_{D^c}$ is the
+    isometry that separates configurations on $D$ and $D^c$. No support assumption on $P$ is needed.
+\end{theorem}
+\begin{proof}\leanok
+    The coefficient matrix $C$ of $w$ satisfies $\rho=CC^*$.
+    The physical action replaces $C$ by $PC$, giving $PCC^*P^*$.
+    At the regional cut, summing over the remaining physical configuration
+    and the environment is precisely the indicated partial trace.
+\end{proof}
+
+\begin{theorem}[Equal Gram operators give equal trimming projections]
+    \label{thm:trimming_gram_invariance}
+    \lean{Entropy.leftMarginal_stackVector,
+        Entropy.trimProj_eq_of_leftMarginal_stackVector_eq}
+    \leanok
+    \uses{def:viable_trimming}
+    For a finite family $(u_i)$, the stacked vector
+    $\psi_u=\sum_i u_i\otimes|i\rangle$ has physical reduced operator
+    $\rho_u=\sum_i|u_i\rangle\langle u_i|$.
+    If two finite families have the same $\rho_u$, their literal successive
+    trimming products $Q_j$ coincide at every step. This holds for every
+    real threshold $\xi$ and every sequence of cuts, without requiring
+    orthonormality of either family or monotonicity of the cuts.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:trimming_reduced_gram}
+    The formula for $\rho_u$ follows by tracing the label factor.
+    Induct on the number of steps. Initially both products equal $I$.
+    If the products agree at step $j$, Theorem~\ref{thm:trimming_reduced_gram} gives equal
+    reduced operators at the next cut. Their closed spectral projections
+    are therefore equal, and multiplying by the common $Q_j$ gives the
+    same next product.
+\end{proof}
+
+\begin{theorem}[The original Gram operator is the subspace projection]
+    \label{thm:trimming_basis_gram}
+    \lean{Entropy.toEuclideanLin_leftMarginal_stackVector_orthonormalBasis}
+    \leanok
+    If $(u_i)$ is an orthonormal basis of a subspace $S$, then
+    $\rho_u=P_S$, the orthogonal projection onto $S$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:trimming_gram_invariance}
+    The orthonormal-basis expansion of the projection is
+    $P_S=\sum_i|u_i\rangle\langle u_i|$, which is exactly the reduced
+    operator of the stacked family.
+\end{proof}
+
+\begin{theorem}[The actual trimmed subspace is independent of the basis]
+    \label{thm:trimming_basis_invariance}
+    \lean{Entropy.trimProj_eq_of_orthonormalBasis,
+        Entropy.trimSubspace_eq_map_of_orthonormalBasis,
+        Entropy.trimSubspace_eq_of_orthonormalBasis}
+    \leanok
+    \uses{def:viable_trimming}
+    Let $(u_i)$ and $(v_i)$ be two finite orthonormal bases of the same
+    subspace $S$. Their actual trimming products coincide at every step,
+    and their actual trimmed spans are both $Q_jS$. In particular the
+    trimmed subspace is independent of the chosen orthonormal basis.
+    The zero subspace is included.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:trimming_gram_invariance,thm:trimming_basis_gram}
+    Both original Gram operators equal $P_S$, so all the literal products
+    agree. Since each basis spans $S$, the span of its images under the
+    common product is exactly $Q_jS$.
+\end{proof}

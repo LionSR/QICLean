@@ -1,0 +1,156 @@
+\section{Integrating a conditional sampling error}
+
+Let $A$ denote the earlier successful histories and $E$ the actual
+failure relation between a history and a fresh sampling variable.
+A measurable relation can be integrated directly; a measurable choice
+of auxiliary success sets for varying histories is unnecessary.
+
+\begin{lemma}[Uniform section bounds]
+    \label{lem:guarded_sampling_sections}
+    \lean{MeasureTheory.Measure.prod_inter_fst_preimage_le_of_sections,
+        MeasureTheory.Measure.prod_union_fst_compl_le_of_sections,
+        MeasureTheory.Measure.prod_union_fst_compl_le_add_of_sections}
+    \leanok
+    Let $\mu$ be a measure on $X$ and $\nu$ an s-finite measure on $Y$.
+    Let $A\subseteq X$ and $E\subseteq X\times Y$ be measurable.
+    Write $E_x=\{y:(x,y)\in E\}$ and suppose that
+    $\nu(E_x)\le\varepsilon$ for every $x\in A$, where
+    $\varepsilon\in[0,\infty]$. Then
+    \[
+      (\mu\otimes\nu)(E\cap\pi_X^{-1}(A))
+         \le\varepsilon\mu(A).
+    \]
+    If $\nu$ is a probability measure, then
+    \[
+      (\mu\otimes\nu)(\pi_X^{-1}(A^{\mathrm c})\cup E)
+         \le\mu(A^{\mathrm c})+\varepsilon\mu(A).
+    \]
+    If $\mu$ is also a probability measure, the right side is at most
+    $\mu(A^{\mathrm c})+\varepsilon$.
+\end{lemma}
+\begin{proof}\leanok
+    By Tonelli's theorem, the first measure is the integral of the
+    measures of its sections. Its integrand is bounded by
+    $\varepsilon\mathbf1_A$. For the second assertion, split the
+    failure set into the earlier-failure cylinder and the new failure
+    over $A$. The cylinder has measure $\mu(A^{\mathrm c})$ and the
+    first assertion bounds the remaining part. Finally $\mu(A)\le1$
+    for a probability measure.
+\end{proof}
+
+These inequalities apply to the fixed-input estimates of
+\cite[Lemma \texttt{l:rs}, lines 530--558, and merge analysis,
+lines 1777--1817]{Arad2016RigorousRG}. Application to a complete
+randomized interval tree additionally requires the measurable actual
+parent operation and its uniform section estimate on earlier
+successful histories.
+
+
+\begin{lemma}[Combining the errors at a binary merge]
+    \label{lem:binary_sampling_sections}
+    \lean{MeasureTheory.Measure.prod_compl_prod_le,
+        MeasureTheory.Measure.prod_binary_failure_le_of_sections}
+    \leanok
+    Let $\mu$, $\nu$ and $\rho$ be probability measures on measurable
+    spaces $X$, $Y$ and $Z$, respectively. Let $A\subseteq X$ and
+    $B\subseteq Y$ be the measurable successful child histories, and let
+    $E\subseteq(X\times Y)\times Z$ be the measurable parent failure
+    relation. Suppose that $\rho(E_{(x,y)})\le\varepsilon$ whenever
+    $(x,y)\in A\times B$. Then
+    \begin{align}
+      ((\mu\otimes\nu)\otimes\rho)
+       \bigl(\pi_{X\times Y}^{-1}((A\times B)^{\mathrm c})\cup E\bigr)
+      \le \mu(A^{\mathrm c})+\nu(B^{\mathrm c})+\varepsilon.
+    \end{align}
+    Without any measurability assumption on $A$ and $B$, their outer
+    measures satisfy
+    \begin{align}
+      (\mu\otimes\nu)((A\times B)^{\mathrm c})
+        \le\mu(A^{\mathrm c})+\nu(B^{\mathrm c}).
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:guarded_sampling_sections}
+    The complement of $A\times B$ is the union of
+    $A^{\mathrm c}\times Y$ and $X\times B^{\mathrm c}$.
+    Subadditivity gives the second assertion. Apply the uniform section
+    bound to the successful set $A\times B$ to obtain the first.
+\end{proof}
+
+
+\begin{lemma}[A uniform section bound in a finite product]
+    \label{lem:finite_product_sampling_sections}
+    \lean{MeasureTheory.Measure.pi_le_of_coordinate_sections}
+    \leanok
+    Let $\mu_j$ be probability measures on measurable spaces $X_j$ for
+    $0\le j\le n$, and let $E\subseteq\prod_{j=0}^n X_j$ be measurable.
+    Fix a coordinate $i$. For $x_{-i}\in\prod_{j\ne i}X_j$, let
+    $E_{x_{-i}}$ be the set of values of the $i$th coordinate that complete
+    $x_{-i}$ to an element of $E$. If
+    $\mu_i(E_{x_{-i}})\le\varepsilon$ for every $x_{-i}$, then
+    $(\bigotimes_{j=0}^n\mu_j)(E)\le\varepsilon$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:guarded_sampling_sections}
+    Separate the $i$th coordinate from the remaining product. The
+    canonical rearrangement preserves the product probability law.
+    Apply the uniform section bound with all remaining-coordinate
+    histories as the successful set, whose measure is one.
+\end{proof}
+
+\begin{theorem}[Uniform sections at any finite coordinate]
+    \label{thm:finite_product_update_sections}
+    \lean{MeasureTheory.Measure.pi_le_of_update_sections}
+    \leanok
+    Let $I$ be a finite index set and let $\mu_j$ be a probability
+    measure on a measurable space $X_j$ for each $j\in I$.
+    Fix $i\in I$ and a measurable set
+    $E\subseteq\prod_{j\in I}X_j$. For a whole tuple $\omega$, write
+    $\omega[i\leftarrow u]$ for the tuple obtained by replacing its
+    $i$th coordinate by $u$. If every whole tuple satisfies
+    \begin{align}
+        \mu_i\{u:\omega[i\leftarrow u]\in E\}\le\varepsilon,
+    \end{align}
+    then $(\bigotimes_{j\in I}\mu_j)(E)\le\varepsilon$.
+    No nonemptiness assumption on the $X_j$ is needed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:finite_product_sampling_sections}
+    Since $i\in I$, enumerate $I$ by $\{0,\ldots,n\}$ for some $n$.
+    This coordinate rearrangement preserves the product law. Every
+    coordinate space is nonempty because it carries a probability
+    measure. Thus a tuple of the remaining coordinates can be filled
+    at coordinate $i$ to give a whole tuple $\omega$. Replacing that
+    entry by $u$ gives precisely the section in the hypothesis.
+    Apply Lemma~\ref{lem:finite_product_sampling_sections} and transport
+    the resulting measure bound back through the enumeration.
+\end{proof}
+
+\begin{theorem}[A finite list of coordinate failures]
+    \label{thm:finite_list_update_failures}
+    \lean{MeasureTheory.Measure.pi_biUnion_list_le_of_update_sections}
+    \leanok
+    Let $\mu_j$ be probability measures on measurable spaces $X_j$,
+    indexed by a finite set $I$. Let $l$ be a finite list of labels
+    from an arbitrary set $K$, assign a coordinate $c(a)\in I$ to
+    each label, and let $E_a\subseteq\prod_{j\in I}X_j$ be measurable
+    for each label occurring in $l$. Suppose that each listed label
+    and every whole tuple $\omega$ satisfy
+    \begin{align}
+        \mu_{c(a)}\{u:\omega[c(a)\leftarrow u]\in E_a\}\le\beta.
+    \end{align}
+    Then
+    \begin{align}
+        \left(\bigotimes_{j\in I}\mu_j\right)
+          \left(\bigcup_{a\in l}E_a\right)\le |l|\beta.
+    \end{align}
+    Repeated labels are permitted and are counted in the list length
+    $|l|$. The empty list is included.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_product_update_sections}
+    Theorem~\ref{thm:finite_product_update_sections} bounds each listed
+    event by $\beta$. Induction on the list and the inequality
+    $\mu(A\cup B)\le\mu(A)+\mu(B)$ give the bound, counting every
+    occurrence whether or not its event appeared earlier.
+\end{proof}
