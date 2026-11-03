@@ -25,7 +25,6 @@ of the target, and contracts its complement.
     \label{thm:subspace_close_contract}
     \lean{Submodule.IsCloseTo.map_of_contract}
     \leanok
-    \uses{thm:subspace_close_iff, thm:subspace_close_preimage}
     Let $K$ map $T$ and $T^\perp$ into themselves, with
     $\lVert Kt\rVert\ge\lVert t\rVert$ for $t\in T$ and
     $\lVert Kq\rVert^2\le\Delta\lVert q\rVert^2$ for $q\in T^\perp$, where
@@ -42,17 +41,9 @@ of the target, and contracts its complement.
 
 \begin{proof}
     \leanok
-    For $t\in T$, the restriction of $K$ to $T$ is injective, hence
-    surjective, so $t=Kr$ with $r\in T$ and $\lVert r\rVert\le\lVert t\rVert$.
-    Take $u\in U$ with $P_Tu=r$ and
-    $\lVert u\rVert\le\lVert r\rVert/(1-\delta)$, and put $q=u-r\in T^\perp$.
-    Then $Ku=t+Kq$ with orthogonal summands, and
-    $y=\lVert Kq\rVert^2\le\Delta\lVert u\rVert^2
-    \le\Delta\lVert t\rVert^2/(1-\delta)^2$. Since $Ku\in KU$,
-    $\lVert t\rVert^2=\langle Ku,P_{KU}t\rangle
-    \le\lVert Ku\rVert\,\lVert P_{KU}t\rVert$, so with
-    $x=\lVert t\rVert^2$ we get
-    $\lVert P_{KU}t\rVert^2\ge x^2/(x+y)\ge x-y$.
+    \uses{thm:subspace_close_nested_contract}
+    Apply Theorem~\ref{thm:subspace_close_nested_contract} with
+    $T_-=T_+=T$.
 \end{proof}
 
 \begin{theorem}[Error reduction between nested targets]
@@ -77,6 +68,10 @@ of the target, and contracts its complement.
     $\|r\|\le\|t\|$. Closeness to $T_+$ supplies $u\in U$ such that
     $P_{T_+}u=r$ and $\|u\|\le\|r\|/(1-\delta)$.
     Thus $z=u-r\in T_+^\perp$, and $Ku=t+Kz$ is an orthogonal sum.
-    The projection argument above applies with
-    $\|Kz\|^2\le\Delta\|t\|^2/(1-\delta)^2$.
+    Put $a=\|t\|^2$ and $b=\|Kz\|^2$, so
+    $b\le\Delta a/(1-\delta)^2$ and $\|Ku\|^2=a+b$.
+    The case $t=0$ is immediate. Otherwise $a>0$, and
+    $a=|\langle Ku,P_{KU}t\rangle|\le\|Ku\|\,\|P_{KU}t\|$ gives
+    $\|P_{KU}t\|^2\ge a^2/(a+b)\ge a-b$.
+    Substituting the bound on $b$ proves the claimed closeness.
 \end{proof}

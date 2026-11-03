@@ -154,7 +154,6 @@ theorem IsViable.map_of_nested_tensor_decomposition
     exact tmul_mem_tensorProd
       (mem_iSup_of_mem i (mem_map_of_mem hx)) mem_top
 
-
 /-- A two-factor form of the tensor-containment step in ALVV,
 arXiv:1602.08828v2, proof of Lemma `l:er`, lines 606–622. If a filter preserves
 a target space and its orthogonal complement, expands on the target and
@@ -202,7 +201,7 @@ structure IsSpectralProjector (K H : E →L[𝕜] E) (b : OrthonormalBasis n �
   sq_le : ∀ j, η₁ ≤ h j → k j ^ 2 ≤ Δ
 
 omit [FiniteDimensional 𝕜 E] in
-/-- A spectral filter expands below its lower cutoff and contracts above any
+/-- A spectral projector expands below its lower cutoff and contracts above any
 cutoff whose strict upper spectrum lies above the filter's upper endpoint.
 The cutoffs may differ; no spectral gap is required. This supports ALVV,
 arXiv:1602.08828v2, Theorem `t:aisgapless`, lines 1037–1041. -/
@@ -279,7 +278,6 @@ theorem IsSpectralProjector.contract_between_cutoffs {K H : E →L[𝕜] E} {b :
     · have := hK.sq_le j (hhigh j (lt_of_not_ge hj))
       exact mul_le_mul_of_nonneg_right this (sq_nonneg _)
 
-
 omit [FiniteDimensional 𝕜 E] in
 /-- On the low-energy space `T = span {b_j : h_j ≤ η₀}`, a spectral projector satisfies the
 hypotheses of `IsCloseTo.map_of_contract` when `H` has no eigenvalue in `(η₀, η₁)`. -/
@@ -338,7 +336,7 @@ theorem IsViable.spectralProjector {D : ℕ} {δ Δ η₀ η₁ : ℝ}
     have := (mem_iInf _).mp (hslice hx) y
     simpa using this
 
-/-- A spectral filter improves viability for the upper low-energy space into
+/-- A spectral projector improves viability for the upper low-energy space into
 viability for the lower one, without a gap assumption between the cutoffs.
 The finite tensor decomposition is supplied explicitly. This is the
 nested-space error-reduction step of ALVV, arXiv:1602.08828v2,

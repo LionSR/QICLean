@@ -129,7 +129,6 @@ theorem IsCloseTo.map_of_nested_contract {δ Δ : ℝ} {U T Tplus : Submodule �
     linarith
   · nlinarith [mul_lt_mul_of_pos_left hpxy (by linarith : 0 < x + y)]
 
-
 /-- **The operator step of Lemma `l:er` (error reduction).** Let `K` map `T` and `Tᗮ` into
 themselves, with `‖t‖ ≤ ‖K t‖` on `T` and `‖K q‖ ^ 2 ≤ Δ ‖q‖ ^ 2` on `Tᗮ`. If `U` is `δ`-close
 to `T` with `δ < 1`, then `K U` is `Δ / (1 - δ) ^ 2`-close to `T`. Arad, Landau, Vazirani and
