@@ -33,4 +33,11 @@ blueprint statements are included. The arguments reuse existing projection,
 eigenbasis and complementary-product lemmas and introduce no repeated
 proof pattern requiring a separate abstraction.
 
-Compilation and compiled declaration checks on Mathlib 4.36 remain pending.
+Mathematical revision `6730782c` passes the hosted full build, strict checks
+and compiled blueprint declaration checks on Mathlib 4.36. The four exact
+source proofs also pass strict read-only elaboration on Mathlib 4.35; each
+of the four new declarations uses only `propext`, `Classical.choice` and
+`Quot.sound`. The new mathematical statements compile as a PDF excerpt,
+and their rendering has been inspected. Source synchronization, imports,
+prose, whitespace and LaTeX lint checks pass. Hosted blueprint validation
+is recorded in the pull request checks.
