@@ -252,6 +252,8 @@ at $E_0$ has dimension two.
     No restriction on $\dim\ker A$ is required.
 \end{theorem}
 \begin{proof}\leanok
+    \uses{thm:euclidean_hermitian_eigenvector,
+        thm:spectral_span_quadratic_form}
     Choose an orthonormal eigenbasis $Ae_j=a_j e_j$ and write $x=\sum_j c_j e_j$.
     Orthogonality to the kernel gives $c_j=0$ when $a_j=0$. Therefore
     \begin{align}
