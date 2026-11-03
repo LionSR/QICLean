@@ -34,6 +34,12 @@ proof does through Lemma `l:2`. Positivity of `K` is not used and not assumed. D
 
 * `Submodule.IsSpectralProjector`: Definition `def:spectral-AGSP` with closed conditions.
 * `Submodule.IsViable.spectralProjector`: Lemma `l:er`.
+* `Submodule.IsViable.map_of_nested_tensor_decomposition`: the tensor-containment step between
+  nested targets.
+* `Submodule.IsSpectralProjector.contract_between_cutoffs`: expansion and contraction at distinct
+  spectral cutoffs.
+* `Submodule.IsViable.spectralProjector_between_cutoffs`: the nested-space error-reduction step of
+  Theorem `t:aisgapless`, without a spectral gap.
 -/
 
 open scoped TensorProduct InnerProductSpace
@@ -202,7 +208,7 @@ structure IsSpectralProjector (K H : E →L[𝕜] E) (b : OrthonormalBasis n �
 
 omit [FiniteDimensional 𝕜 E] in
 /-- A spectral projector expands below its lower cutoff and contracts above any
-cutoff whose strict upper spectrum lies above the filter's upper endpoint.
+cutoff whose strict upper spectrum lies at or above the projector's upper cutoff `η₁`.
 The cutoffs may differ; no spectral gap is required. This supports ALVV,
 arXiv:1602.08828v2, Theorem `t:aisgapless`, lines 1037–1041. -/
 theorem IsSpectralProjector.contract_between_cutoffs {K H : E →L[𝕜] E} {b : OrthonormalBasis n 𝕜 E}
@@ -341,7 +347,7 @@ viability for the lower one, without a gap assumption between the cutoffs.
 The finite tensor decomposition is supplied explicitly. This is the
 nested-space error-reduction step of ALVV, arXiv:1602.08828v2,
 Theorem `t:aisgapless`, lines 1027–1041. It does not assert the physical
-construction of the filter or of its tensor decomposition. -/
+construction of the spectral projector or of its tensor decomposition. -/
 theorem IsViable.spectralProjector_between_cutoffs
     {ι : Type*} [Fintype ι] {δ Δ η₀ η₁ : ℝ}
     {K H : M ⊗[𝕜] R →L[𝕜] M ⊗[𝕜] R}

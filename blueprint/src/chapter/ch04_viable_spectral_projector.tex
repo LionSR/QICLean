@@ -146,6 +146,7 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
     \label{thm:spectral_projector_distinct_cutoffs}
     \lean{Submodule.IsSpectralProjector.contract_between_cutoffs}
     \leanok
+    \uses{def:spectral_projector}
     Let $K$ be a spectral projector as in
     Definition~\ref{def:spectral_projector} for $(H,\eta_0,\eta_1)$, and let $c$
     satisfy $h_j>c\Longrightarrow h_j\ge\eta_1$ for every eigenvalue
@@ -159,9 +160,21 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
 \begin{proof}
     \leanok
     \uses{def:spectral_projector}
-    The common eigenbasis gives invariant spectral subspaces.
-    Parseval's identity and the two scalar filter estimates give the norm
-    bounds on the indicated, possibly different, spectral spaces.
+    Write $\hat x_j=\langle b_j,x\rangle$. Since $Kb_j=k_jb_j$ with $k_j$
+    real, Parseval's identity gives
+    \begin{align}
+        \widehat{(Kx)}_j=k_j\hat x_j,\qquad
+        \lVert x\rVert^2=\sum_j\lvert\hat x_j\rvert^2,\qquad
+        \lVert Kx\rVert^2=\sum_jk_j^2\lvert\hat x_j\rvert^2.\notag
+    \end{align}
+    A vector $x$ lies in $T_-$ exactly when $\hat x_j=0$ whenever
+    $h_j>\eta_0$, and in $T_+^\perp$ exactly when $\hat x_j=0$ whenever
+    $h_j\le c$. Multiplication by $k_j$ preserves both vanishing conditions,
+    so $K$ preserves $T_-$ and $T_+^\perp$. For $t\in T_-$, every nonzero
+    coefficient has $h_j\le\eta_0$, hence $k_j^2\ge1$ and
+    $\lVert Kt\rVert^2\ge\lVert t\rVert^2$. For $q\in T_+^\perp$, every
+    nonzero coefficient has $h_j>c$, hence $h_j\ge\eta_1$, $k_j^2\le\Delta$
+    and $\lVert Kq\rVert^2\le\Delta\lVert q\rVert^2$.
 \end{proof}
 
 \begin{theorem}[Viability reduction between spectral cutoffs]
