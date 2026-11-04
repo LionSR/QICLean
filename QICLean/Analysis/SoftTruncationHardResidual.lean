@@ -20,21 +20,6 @@ spectral comparison, or the final efficient-filter theorem.
 
 namespace Real
 
-/-- Soft truncation is increasing on nonnegative inputs, term by term in its finite series.
-ALVV, arXiv:1602.08828v2, `def:soft-trunc`, lines 1178–1185. -/
-theorem monotoneOn_softTruncation (t : ℝ) (m : ℕ) (ht : 0 < t) :
-    MonotoneOn (softTruncation t m) (Set.Ici 0) := by
-  intro x hx y _hy hxy
-  unfold softTruncation
-  apply mul_le_mul_of_nonneg_left _ ht.le
-  apply Finset.sum_le_sum
-  intro j _hj
-  apply div_le_div_of_nonneg_right _ (by positivity)
-  exact pow_le_pow_left₀
-    (sub_nonneg.mpr (Real.exp_le_one_iff.mpr (neg_nonpos.mpr (div_nonneg hx ht.le))))
-    (sub_le_sub_left (Real.exp_le_exp.mpr
-      (neg_le_neg (div_le_div_of_nonneg_right hxy ht.le))) 1) _
-
 /-- The soft residual is bounded by a hard residual and the existing polynomial remainder
 at the hard cutoff. The order and independent scale remain explicit. Auxiliary to ALVV,
 arXiv:1602.08828v2, `lem:exp-approx`, lines 1195–1255. -/

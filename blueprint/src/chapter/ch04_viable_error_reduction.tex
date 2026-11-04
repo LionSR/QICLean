@@ -51,8 +51,8 @@ of the target, and contracts its complement.
     \lean{Submodule.IsCloseTo.map_of_nested_contract}
     \leanok
     Let $T_-\subseteq T_+$ and let $U$ be $\delta$-close to $T_+$,
-    where $\delta<1$. Suppose $K$ preserves $T_-$ and $T_+^\perp$,
-    $\|Kt\|\ge\|t\|$ for $t\in T_-$, and
+    where $\delta<1$. Suppose $K$ preserves $T_-$, maps $T_+^\perp$ into
+    $T_-^\perp$, satisfies $\|Kt\|\ge\|t\|$ for $t\in T_-$, and
     $\|Kz\|^2\le\Delta\|z\|^2$ for $z\in T_+^\perp$, with
     $\Delta\ge0$. Then $KU$ is $\Delta/(1-\delta)^2$-close to $T_-$.
     This is the operator argument in the proof of
@@ -74,4 +74,94 @@ of the target, and contracts its complement.
     $a=|\langle Ku,P_{KU}t\rangle|\le\|Ku\|\,\|P_{KU}t\|$ gives
     $\|P_{KU}t\|^2\ge a^2/(a+b)\ge a-b$.
     Substituting the bound on $b$ proves the claimed closeness.
+\end{proof}
+
+\begin{lemma}[Normalized error reduction between nested targets]
+    \label{lem:subspace_nested_error_reduction_sharp}
+    \lean{Submodule.IsCloseTo.map_of_nested_contract_sharp}
+    \leanok
+    \uses{lem:subspace_close_preimage_squared, thm:subspace_close_iff}
+    Let $T\subseteq T_+$ be finite-dimensional subspaces and let $K$ be a
+    linear operator with $KT\subseteq T$, $K(T_+^\perp)\subseteq T^\perp$,
+    $\lVert Kt\rVert\ge\lVert t\rVert$ on $T$, and
+    $\lVert Kq\rVert^2\le\Delta\lVert q\rVert^2$ on $T_+^\perp$, where
+    $\Delta\ge0$. If $U$ is $\delta$-close to $T_+$ and $0\le\delta<1$,
+    then $KU$ is
+    \[
+        \frac{\Delta\delta}{1-\delta+\Delta\delta}\text{-close to }T.
+    \]
+    This refines the projection argument in
+    \cite[Lemma~l:er, lines 597--622; Theorem~t:aisgapless, lines 1037--1041]
+    {Arad2016RigorousRG}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Given $t\in T$, take $r\in T$ with $Kr=t$, and $u\in U$ with
+    $P_{T_+}u=r$ and $\lVert u\rVert^2\le\lVert r\rVert^2/(1-\delta)$.
+    Write $u=r+q$, with $q\perp T_+$. Pythagoras gives
+    $\lVert q\rVert^2\le\delta\lVert r\rVert^2/(1-\delta)$, and hence
+    $\lVert Kq\rVert^2\le\Delta\delta\lVert t\rVert^2/(1-\delta)$.
+    Since $Ku=t+Kq$ has orthogonal summands and belongs to $KU$,
+    Cauchy--Schwarz yields
+    \[
+        \lVert t\rVert^4
+        \le \bigl(\lVert t\rVert^2+\lVert Kq\rVert^2\bigr)
+            \lVert P_{KU}t\rVert^2.
+    \]
+    The conclusion follows by substitution; the zero vector is immediate.
+\end{proof}
+
+\begin{lemma}[Normalized error reduction for one target]
+    \label{lem:subspace_error_reduction_sharp}
+    \lean{Submodule.IsCloseTo.map_of_contract_sharp}
+    \leanok
+    \uses{lem:subspace_nested_error_reduction_sharp}
+    Under the preceding hypotheses with $T_+=T$, the same error bound holds.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Apply the preceding lemma with coincident target spaces.
+\end{proof}
+
+\begin{lemma}[Normalized contraction below one half]
+    \label{lem:normalized_filter_error_le}
+    \lean{Real.normalized_filter_error_le}
+    \leanok
+    \uses{lem:subspace_error_reduction_sharp}
+    If $0<c\le1$ and $0\le\delta\le1/2$, then
+    \[
+        \frac{(1-c)\delta}{1-\delta+(1-c)\delta}
+        \le(1-c/2)\delta.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Clear the positive denominator. The difference of the two sides,
+    multiplied by that denominator, is
+    $c\delta(1-2\delta+c\delta)/2\ge0$.
+\end{proof}
+
+\begin{lemma}[An explicit reference and trimming budget]
+    \label{lem:reference_filter_trim_error_le}
+    \lean{Real.reference_filter_trim_error_le}
+    \leanok
+    \uses{lem:normalized_filter_error_le}
+    Suppose $0<c\le1$, $0\le\delta\le1/2$, $\varepsilon,\zeta\ge0$,
+    $\varepsilon\le c^2\eta/1024$, and $\zeta\le c\eta/48$. Put
+    \[
+       F=\frac{(1-c)\delta}{1-\delta+(1-c)\delta}.
+    \]
+    Then
+    \begin{multline*}
+       (1+c/16)\bigl((1+c/16)F+(1+16/c)\varepsilon+2\zeta\bigr)
+       +(1+16/c)\varepsilon\\
+       \le(1-c/4)\delta+c\eta/8.
+    \end{multline*}
+\end{lemma}
+\begin{proof}\leanok
+    The preceding contraction estimate gives $F\le(1-c/2)\delta$.
+    Use $(1+c/16)^2(1-c/2)\le1-c/4$,
+    $(2+c/16)(1+16/c)\le64/c$, and $2(1+c/16)\le3$.
+    The reference and trimming contributions are each at most $c\eta/16$.
 \end{proof}

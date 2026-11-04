@@ -12,41 +12,41 @@ integer exponent precede length, multiplicity and requested accuracy.
     \uses{lem:reference_accuracy_log_profile,lem:reference_profile_polynomial,
         lem:viable_refinement_costs_le_polynomial,lem:viable_refinement_error_parameters}
     Fix $\gamma>0$, $0<g\leq1$, $u,K_{
-m tree},K_{
-m ref}\geq0$
+                m tree},K_{
+                m ref}\geq0$
     and an integer $D\geq1$. There are $C>0$ and $k\in\mathbb N$,
     depending only on these fixed data, with the following property.
     Let $L\geq0$, $r\geq1$ be integers, $\eta>0$ and
     $\gamma\leq A\leq L+1$. Put
     \begin{align}
-        c&=\gamma/A,&
-        \rho&=\frac{\eta\gamma}{2A+\eta\gamma},&
-        \varepsilon&=c^2\rho/32768,\\
+        c               & =\gamma/A,                                          &
+        \rho            & =\frac{\eta\gamma}{2A+\eta\gamma},                  &
+        \varepsilon     & =c^2\rho/32768,                                       \\
         b_{
-m tree}&=16+\log(1/g)+\log\bigl(320000r(L+1)\bigr),\\
+                m tree} & =16+\log(1/g)+\log\bigl(320000r(L+1)\bigr),           \\
         b_{
-m ref}&=16+\log(1/g)+\log\bigl(32r(L+1)/\varepsilon\bigr),\\
-        F(b)&=\bigl(u^3/g+g^{-1/4}b^{3/4}u\bigr)(1+\log b).
+                m ref}  & =16+\log(1/g)+\log\bigl(32r(L+1)/\varepsilon\bigr),   \\
+        F(b)            & =\bigl(u^3/g+g^{-1/4}b^{3/4}u\bigr)(1+\log b).
     \end{align}
     Let integers $B_{
-m tree},B_{
-m ref}\geq1$ satisfy
+                m tree},B_{
+                m ref}\geq1$ satisfy
     $\log B_{
-m tree}\leq K_{
-m tree}F(b_{
-m tree})$ and
+                m tree}\leq K_{
+                m tree}F(b_{
+                m tree})$ and
     $\log B_{
-m ref}\leq K_{
-m ref}F(b_{
-m ref})$.
+                m ref}\leq K_{
+                m ref}F(b_{
+                m ref})$.
     If the integer $s$ obeys
     $s\leq4097r(1+\log r+\log D+\log2)$, define
     \begin{align}
-        B_*&=\max\{r^2B_{
-m tree},r^2B_{
-m ref}\},&
-        N&=\left\lceil\frac{100D^{12}}{c\rho}\right\rceil,&
-        M&=D^6s^3.
+        B_* & =\max\{r^2B_{
+                               m tree},r^2B_{
+                                                 m ref}\},                       &
+        N   & =\left\lceil\frac{100D^{12}}{c\rho}\right\rceil, &
+        M   & =D^6s^3.
     \end{align}
     Then, with $Z=(L+1)(r+1)(1+\eta^{-1})$,
     \begin{align}
@@ -64,16 +64,16 @@ m ref}\},&
     $b_0=16+\log(1/g)+\log(32K_\varepsilon)$.
 
     Set $K=\max\{K_{
-m tree},K_{
-m ref}\}$,
+                m tree},K_{
+                m ref}\}$,
     $a_0=u^3/g$, $a_1=g^{-1/4}u$,
     $p_0=\lceil K(a_0+5a_1)\rceil$ and
     $C_b=e^{K(a_0+5a_1)b_0}$.
     Monotonicity of the profiles and
     Lemma~\ref{lem:reference_bound_le_nat_power}, applied at $X=Z^5$,
     give $B_{
-m tree},B_{
-m ref}\leq C_bZ^{5p_0}$.
+                m tree},B_{
+                m ref}\leq C_bZ^{5p_0}$.
     Thus $B_*\leq C_bZ^{5p_0+2}$.
 
     For $C_s=4097(1+\log D+\log2)$,
@@ -99,8 +99,8 @@ a physical subspace or establish the computational cost of a procedure.
     Let $0<g\le1$, $K,Z,r,l\ge1$, $rl\le Z$ and
     $0<\varepsilon\le1$. Suppose $\varepsilon^{-1}\le KZ^4$ and put
     \begin{align}
-        b&=16+\log(1/g)+\log(32rl/\varepsilon),&
-        b_0&=16+\log(1/g)+\log(32K).
+        b   & =16+\log(1/g)+\log(32rl/\varepsilon), &
+        b_0 & =16+\log(1/g)+\log(32K).
         \label{eq:reference_accuracy_profile}
     \end{align}
     Then $1\le b\le b_0+\log(Z^5)$.
@@ -119,7 +119,7 @@ a physical subspace or establish the computational cost of a procedure.
     $\log B\le K_0(a_0+a_1b^{3/4})(1+\log b)$. Then
     \begin{align}
         B\le e^{K(a_0+5a_1)b_0}
-          X^{\lceil K(a_0+5a_1)\rceil}.
+        X^{\lceil K(a_0+5a_1)\rceil}.
         \label{eq:reference_profile_polynomial}
     \end{align}
 \end{lemma}

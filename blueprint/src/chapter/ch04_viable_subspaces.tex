@@ -52,6 +52,48 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     \le\lVert t\rVert\,\lVert r\rVert$, and $\lVert s\rVert\le\lVert r\rVert$.
 \end{proof}
 
+\begin{lemma}[Squared norm of a projection preimage]
+    \label{lem:subspace_close_preimage_squared}
+    \lean{Submodule.IsCloseTo.exists_mem_starProjection_eq_and_norm_sq_le}
+    \leanok
+    \uses{thm:subspace_close_preimage}
+    Under the hypotheses of the preceding theorem, the same vector $s$ may be
+    chosen to satisfy
+    \[
+        \lVert s\rVert^2\le \frac{\lVert t\rVert^2}{1-\delta}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For the vectors $r,s$ in the preceding proof,
+    $\lVert s\rVert^2=\operatorname{Re}\langle t,r\rangle
+    \le\lVert t\rVert\,\lVert r\rVert
+    \le\lVert t\rVert^2/(1-\delta)$.
+\end{proof}
+
+\begin{lemma}[Weighted robustness]
+    \label{lem:subspace_close_trans_weighted}
+    \lean{Submodule.IsCloseTo.trans_weighted}
+    \leanok
+    \uses{thm:subspace_close_iff}
+    Suppose $T$ is $\delta$-close to $T'$ with $\delta\ge0$, and $T'$ is
+    $\delta'$-close to $T''$. For every $\theta>0$, the space $T$ is
+    $((1+\theta)\delta+(1+\theta^{-1})\delta')$-close to $T''$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For $a\in T''$, put $b=P_{T'}a$ and $c=P_Tb$. Pythagoras gives
+    $\lVert a-b\rVert^2\le\delta'\lVert a\rVert^2$ and
+    $\lVert b-c\rVert^2\le\delta\lVert a\rVert^2$. Apply
+    \[
+        (x+y)^2\le(1+\theta)x^2+(1+\theta^{-1})y^2
+    \]
+    with $x=\lVert b-c\rVert$ and $y=\lVert a-b\rVert$, then use the
+    distance-minimizing property of $P_Ta$.
+\end{proof}
+
 \begin{theorem}[Robustness]
     \label{thm:subspace_close_trans}
     \lean{Submodule.IsCloseTo.trans}

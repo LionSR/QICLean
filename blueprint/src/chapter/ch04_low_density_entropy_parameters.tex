@@ -10,22 +10,22 @@ bandwidth is fixed, and the physical local dimension is unchanged.
     \leanok
     Fix $\eta,K_b>0$ and $C_f\ge100$. Put
     \[
-       B=\max\{12,\eta\},\qquad F=102+\log B,\qquad
-       P=14872(C_f+1)(6+2\log(C_f+1)),
+        B=\max\{12,\eta\},\qquad F=102+\log B,\qquad
+        P=14872(C_f+1)(6+2\log(C_f+1)),
     \]
     and $K_\eta=108K_b+PBF^3+54\eta$. For an integer $q\ge2$
     and $0<v\le\eta$, set
     \[
-       b=\min\{v,\eta/2\},\quad g=\min\{b/6,1\},\quad
-       m=q\lceil e^{100}\rceil,\quad
-       U=1+\log q+\log(1+v^{-1}).
+        b=\min\{v,\eta/2\},\quad g=\min\{b/6,1\},\quad
+        m=q\lceil e^{100}\rceil,\quad
+        U=1+\log q+\log(1+v^{-1}).
     \]
     Then $K_\eta>0$ and
     \begin{align*}
-       &\frac{K_b}{b/2}\bigl(1+\log q+\log(1+(b/2)^{-1})\bigr)^3\\
-       &\quad+\frac P g\bigl(1+\log m+\log(g^{-1})\bigr)^3
-          +54\log2
-       \le\frac{K_\eta}{v}U^3.
+         & \frac{K_b}{b/2}\bigl(1+\log q+\log(1+(b/2)^{-1})\bigr)^3 \\
+         & \quad+\frac P g\bigl(1+\log m+\log(g^{-1})\bigr)^3
+        +54\log2
+        \le\frac{K_\eta}{v}U^3.
     \end{align*}
     In particular, $K_\eta$ is independent of the dimension of the
     low-energy space. This preserves coefficient one on its separate
@@ -35,7 +35,7 @@ bandwidth is fixed, and the physical local dimension is unchanged.
     \uses{thm:regularized_filter_count_base,thm:capped_initial_filter_width}
     The capped-width bounds give $(b/2)^{-1}\le4/v$, so
     \[
-       1+\log q+\log(1+(b/2)^{-1})\le3U.
+        1+\log q+\log(1+(b/2)^{-1})\le3U.
     \]
     The count-base and capped-width logarithmic bounds give
     $1+\log m+\log(g^{-1})\le FU$ and $g^{-1}\le B/v$.
