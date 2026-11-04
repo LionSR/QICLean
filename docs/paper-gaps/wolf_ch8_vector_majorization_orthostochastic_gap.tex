@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Wolf's Majorization Theorem: the Orthostochastic Characterization}
+\author{}
+\date{2026-10-29}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+\section{Source and completed equivalences}
+Wolf's Theorem~8.4 concerns arbitrary vectors $x,y\in\mathbb R^d$.
+The local source is
+\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex}, lines~220--251,
+including Equation~(8.16) \cite{Wolf2012Quantum}.
+The declarations in \doclink{QICLean/Analysis/VectorMajorization} prove the
+equivalence of decreasing-prefix majorization with equal total sums,
+the existence of a doubly stochastic matrix $M$ satisfying $x=My$,
+and comparison of the sums of every convex function
+$f:\mathbb R\to\mathbb R$. These are clauses~1, 2 and~4.
+There is no positivity, probability normalization, or positive-dimension
+assumption on these equivalences.
+
+\section{Remaining characterization}
+Clause~3 requires a real orthogonal matrix $O$ such that
+$x_i=\sum_j O_{ij}^2y_j$.
+It is not supplied by the doubly stochastic characterization: a
+particular doubly stochastic matrix need not be orthostochastic.
+A proof must construct such an orthogonal matrix for the given vectors,
+for example through the real Schur--Horn theorem or successive plane rotations.
+This component remains open under \ghissue{47}.
+The separate submajorization theorem is also outside the equivalences above.
+The containing four-clause theorem and issue are not complete.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

@@ -6,93 +6,80 @@
 
 \input{./command.tex}
 
-\title{Complete-Positivity Scope of the Peripheral Cyclicity Theorem}
+\title{Abstract Schwarz Scope of the Peripheral Spectrum Theorem}
 \author{}
-\date{2026-08-09}
+\date{2026-10-29}
 
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{open}
+\gapnote{scope-restriction}{resolved}
 
-\section{The source theorem}
+\section{Source contract}
 
-Let $D\geq 1$, and let $T:\MN{D}\to\MN{D}$ be an irreducible positive unital
-linear map satisfying the Schwarz inequality. Theorem~6.6 of
-Ref.~\cite{Wolf2012Quantum}, stated at lines~244--252 of
-\path{Notes/WolfNotePDF/wolf_ch6_sections.txt}, describes the peripheral
-spectrum of $T$. Item~(1) states that this spectrum is a finite cyclic group
-whose order $m$ satisfies
-\begin{align}
-    m
-        &\leq D^2.
-    \label{eq:wolf_thm6_6_kraus_scope_order_bound}
-\end{align}
-Items~(2)--(4) establish nondegeneracy, the existence of a peripheral unitary,
-and a family of cyclic spectral projections, respectively
-\cite[Theorem~6.6]{Wolf2012Quantum}. Neither complete positivity nor a Kraus
-representation is a hypothesis of the source theorem.
+Let $D\geq1$ and let $T:\MN{D}\to\MN{D}$ be a positive unital irreducible
+complex-linear map satisfying the Schwarz inequality. Theorem~6.6 of
+Ref.~\cite{Wolf2012Quantum}, at lines~756--769 of
+\path{Notes/WolfNoteTexSource/ch06_spectral_properties.tex}, asserts four
+conclusions. The peripheral spectrum is a cyclic group of order
+$1\leq m\leq D^2$, all its eigenspaces are one-dimensional, a unitary $U$
+satisfies $T(U^k)=\gamma^kU^k$ for all $k\in\mathbb{N}$, and its spectral
+projections satisfy $T(P_{k+1})=P_k$, where $\gamma=\exp(2\pi i/m)$.
+Neither complete positivity nor trace preservation is assumed.
 
-\section{The formal restriction}
+\section{Elimination of the earlier restrictions}
 
-Let $I$ be a finite index set, let $K_i\in\MN{D}$ for each $i\in I$, and
-define the Kraus map
-\begin{align}
-    E(X)
-        &= \sum_{i\in I} K_i X K_i^\dagger.
-    \label{eq:wolf_thm6_6_kraus_scope_kraus_map}
-\end{align}
-The available formal theorem is stated for this finite matrix family. It
-assumes that $E$ is unital and irreducible and that the adjoint $E^\dagger$
-has a positive-definite fixed point.\footnote{Formal declaration:
-\leanid{Kraus.peripheralEigenvalues_eq_range_primitiveRoot} in
-\path{QICLean/Channel/Peripheral/CyclicGroupKraus.lean}.}
+The earlier cyclicity theorem assumed a finite Kraus representation and a
+supplied positive-definite fixed point of the adjoint. Those remain valid
+specializations, with their established theorem signatures retained. The
+abstract theorem now proves all four clauses without either assumption or
+trace preservation of $T$.\footnote{Formal declaration:
+\leanid{SchwarzMap.wolf_theorem_6_6} in
+\path{QICLean/Channel/Peripheral/IrreducibleSchwarz.lean}.}
 
-The finite Kraus representation in
-(\ref{eq:wolf_thm6_6_kraus_scope_kraus_map}) makes $E$ completely positive.
-Complete positivity is stronger than the positive Schwarz hypothesis in
-Theorem~6.6 of Ref.~\cite{Wolf2012Quantum}. The positive-definite fixed point
-of $E^\dagger$ is also additional signature-level data; the source theorem
-does not assume such a fixed point. In the finite-dimensional Kraus setting,
-this datum should instead be derived in two steps. Unitality of $E$ makes
-$E^\dagger$ trace preserving, which yields a positive-semidefinite fixed
-point, and irreducibility then makes that fixed point positive definite.
+Since $T(\Id)=\Id$, the abstract left Perron theorem at eigenvalue one gives
+$\rho>0$ with $T^*(\rho)=\rho$. Division by its positive trace yields a
+stationary density matrix. Thus the faithful invariant state is derived
+from the source hypotheses. Invariance under the bilinear trace adjoint,
+not trace preservation of $T$, is used to annihilate the positive Schwarz
+defect at a peripheral eigenvector.
 
-The formal theorem proves the completely positive specialization of the
-cyclicity conclusion in Theorem~6.6(1) of Ref.~\cite{Wolf2012Quantum}. It does
-not prove the order bound in
-(\ref{eq:wolf_thm6_6_kraus_scope_order_bound}), and it does not state
-items~(2)--(4). Separate finite-Kraus companion declarations establish
-nondegeneracy, peripheral unitaries, and cyclic projections under corresponding
-Kraus hypotheses. These declarations do not provide the abstract positive
-unital Schwarz-map formulation of the source theorem. The corresponding
-Blueprint entry therefore uses a specialization title.
+For a peripheral eigenvector $X$, equality in Schwarz gives
+$T(X^\dagger X)=X^\dagger X$. The ordinary Perron eigenspace is spanned by
+$\Id$, so $X^\dagger X=c\Id$ with $c>0$. Rescaling gives a unitary
+peripheral eigenvector. The abstract multiplicative-domain identities imply
+product closure of the peripheral spectrum and one-dimensionality of every
+peripheral eigenspace.
 
-\section{Elimination plan}
+Let $S$ denote that spectrum and set $m=|S|$. Multiplication by any
+$\mu\in S$ permutes the finite set $S$. Comparing the products of all
+its elements gives $\mu^m=1$. Cardinality comparison with the $m$-th roots
+of unity proves $S=\{\gamma^k:0\leq k<m\}$. Choosing one nonzero eigenvector
+for each distinct eigenvalue gives a linearly independent family, hence
+$m\leq\dim_{\C}\MN{D}=D^2$.
 
-The first step is to remove the explicit fixed-point assumption from the
-finite-Kraus theorem. One must derive a positive-semidefinite fixed point of
-$E^\dagger$ from trace preservation and then use irreducibility to prove that
-the fixed point is positive definite.
+\section{Phase normalization and cyclic projections}
 
-The second step is to formulate peripheral eigenvectors and their
-multiplicative-domain relations for an abstract positive unital Schwarz map.
-The proof must establish the invertibility of peripheral eigenvectors and the
-closure of peripheral eigenvalues under multiplication without selecting
-Kraus operators. The finite-group argument used by the present cyclicity
-theorem then applies without change. After this abstract result is available,
-the finite-Kraus theorem should remain as a specialization rather than serve as
-the source-facing form of Theorem~6.6 of Ref.~\cite{Wolf2012Quantum}.
+The power identity gives $T(U^m)=U^m$, whence $U^m=\alpha\Id$ for some
+$|\alpha|=1$. The source proof at lines~791--793 passes directly from a
+scalar fixed point to $U^m=\Id$. The formal proof makes the needed phase
+choice explicit: select $\beta$ with $\beta^m=\alpha^{-1}$ and replace $U$
+by $\beta U$. Then $|\beta|=1$, the peripheral eigenvalue is unchanged,
+and $U^m=\Id$.
+
+The existing abstract Fourier projection construction gives
+$P_k=m^{-1}\sum_{j=0}^{m-1}\overline{\gamma}^{kj}U^j$. These are orthogonal
+projections resolving $\Id$, with $U=\sum_k\gamma^kP_k$ and
+$T(P_{k+1})=P_k$. Their pairwise orthogonality is also explicit in the
+assembled statement.
 
 \section{Verdict}
 
-\textbf{Verdict: scope restriction.} The cyclicity declaration proves
-Theorem~6.6(1) of Ref.~\cite{Wolf2012Quantum} under the stronger
-complete-positivity hypothesis supplied by a finite Kraus representation. It
-also takes a positive-definite adjoint fixed point as explicit input and omits
-the bound in (\ref{eq:wolf_thm6_6_kraus_scope_order_bound}). Finite-Kraus
-companion specializations cover conclusions corresponding to items~(2)--(4),
-but the abstract Schwarz-map formulation of all four items and the order bound
-in item~(1) remain open at the source-facing interface.
+\textbf{Verdict: resolved scope restriction.} The source-general theorem
+contains all four conclusions, the canonical phase, and the bound
+$m\leq D^2$. The finite-Kraus cyclicity and peripheral-unitary declarations
+now specialize the abstract development. The theorem states ordinary
+one-dimensional eigenspaces, as requested; no assertion about algebraic
+multiplicity is inferred merely from geometric simplicity.
 
 \bibliographystyle{alpha}
 \bibliography{references}

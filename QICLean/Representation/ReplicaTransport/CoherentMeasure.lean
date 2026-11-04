@@ -40,6 +40,7 @@ abbrev CoherentSphere (Ω : Type*) [Fintype Ω] :=
 variable {Ω : Type*} [Fintype Ω]
 
 instance : CompactSpace (CoherentSphere Ω) := by
+  change CompactSpace ↥({θ : EuclideanSpace ℂ Ω | ‖θ‖ = 1} : Set _)
   apply isCompact_iff_compactSpace.mp
   have htop :
       (inferInstance : PseudoMetricSpace (EuclideanSpace ℂ Ω)).toUniformSpace.toTopologicalSpace =

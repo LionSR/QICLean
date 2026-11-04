@@ -7,7 +7,8 @@ import QICLean.Analysis.SpectralRadiusPowerDecay
 import QICLean.Algebra.HermitianHelpers
 import QICLean.Algebra.MatrixOperatorSpace
 import QICLean.Algebra.TraceFormDuality
-import QICLean.Channel.Semigroup.Primitivity.IrreducibleAnalysis
+import QICLean.Channel.Irreducible.Ergodicity
+import QICLean.Channel.Peripheral.IrreducibleChannel
 import QICLean.Kraus.Injectivity
 import QICLean.Kraus.TracePairing
 import Mathlib.Analysis.Complex.Basic
@@ -487,7 +488,7 @@ theorem hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive [NeZero D]
   have hcompl_lt : ∀ ν : ℂ, Module.End.HasEigenvalue N ν → ‖ν‖ < 1 := by
     intro ν hν
     exact compl_eigenvalue_norm_lt_one_of_primitive_of_irreducible_channel
-      E hE hIrrE ρ hρ_fix (ne_zero_of_mem_densityMatrices' hρ_mem) htr_ne hPrim ν hν
+      E hE hIrrE ρ hρ_fix (fun hρ_zero => htr_ne (by simp [hρ_zero])) htr_ne hPrim ν hν
   have hsr_lt : spectralRadius ℂ Ê < 1 :=
     spectralRadius_lt_one_of_eigenvalues_lt_one N hcompl_lt
   have hÊ_tendsto : Tendsto (fun n : ℕ => Ê ^ n) atTop (nhds 0) :=

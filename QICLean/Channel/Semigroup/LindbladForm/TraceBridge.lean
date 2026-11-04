@@ -27,6 +27,11 @@ noncomputable section
 
 variable {D : ℕ}
 
+-- Supply the native normability witness for the already chosen matrix operator topology.
+local instance : IsNormableSpace ℂ (Matrix (Fin D) (Fin D) ℂ) :=
+  ⟨⟨normSeminorm ℂ (Matrix (Fin D) (Fin D) ℂ),
+    norm_withSeminorms ℂ (Matrix (Fin D) (Fin D) ℂ)⟩⟩
+
 section LindbladForms
 
 /-! ## Equivalence: trace-annihilating ↔ trace-preserving semigroup -/

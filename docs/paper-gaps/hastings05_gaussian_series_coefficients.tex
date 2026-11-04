@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage[margin=28mm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\providecommand{\gapnote}[2]{\par\noindent\textbf{Verdict:} #1 (#2).\par}
+\title{Gaussian Moments in Hastings' Commutator Expansion}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The printed coefficients}
+Hastings, \emph{Solving gapped Hamiltonians locally}~\cite{Hastings2006Solving},
+\href{https://arxiv.org/abs/cond-mat/0508554v3}{arXiv:cond-mat/0508554v3},
+source \path{proj3new.tex}, lines 1005--1009, expands a Gaussian-filtered
+local term in iterated commutators. For even $k$ the printed coefficient
+contains $(q/\Delta E^2)^k$. The normalized Gaussian in the defining
+integral (source lines 194--207) has variance $q/\Delta E^2$, so the required
+power is $k/2$.
+
+\section{The expansion}
+Let $q>0$, $\Delta E>0$, and $H$ be a finite-dimensional Hermitian operator.
+Put $\sigma^2=q/\Delta E^2$ and $\operatorname{ad}_H(A)=HA-AH$. If $t$ has
+mean-zero Gaussian distribution of variance $\sigma^2$, then
+\begin{align}
+ \mathbb E(t^{2r})&=(2r-1)!!\,\sigma^{2r}, &
+ \mathbb E(t^{2r+1})&=0.
+ \label{eq:hastings05_gaussian_moments}
+\end{align}
+Expanding $e^{itH}Ae^{-itH}$ and using
+(\ref{eq:hastings05_gaussian_moments}) gives
+\begin{align}
+ \widetilde A
+ &=\sum_{r=0}^{\infty}\frac{(-1)^r}{2^r r!}
+       \left(\frac q{\Delta E^2}\right)^r
+       \operatorname{ad}_H^{2r}(A).
+ \label{eq:hastings05_gaussian_commutator_expansion}
+\end{align}
+For the norm convergence, diagonalize $H$. In an orthonormal eigenbasis,
+$\operatorname{ad}_H$ multiplies the $(i,j)$ coefficient by $E_i-E_j$.
+The Gaussian filter multiplies that coefficient by
+$e^{-\sigma^2(E_i-E_j)^2/2}$, so it is precisely
+$\exp[-(\sigma^2/2)\operatorname{ad}_H^2]$. The norm-convergent
+exponential series gives (\ref{eq:hastings05_gaussian_commutator_expansion})
+without interchanging an integral and a series. Thus, in the convention
+$\widetilde A=A+\sum_{k\ge1}a_k i^k\operatorname{ad}_H^k(A)$, the coefficients
+are $a_k=0$ for odd $k$. For even $k\ge2$, they are
+\begin{align}
+ a_k&=\frac{(k-1)!!}{k!}\left(\frac q{\Delta E^2}\right)^{k/2}.
+ \label{eq:hastings05_gaussian_series_coefficients}
+\end{align}
+In (\ref{eq:hastings05_gaussian_series_coefficients}), the sign
+$(-1)^{k/2}$ is already supplied by $i^k$. In a convention without
+this factor it belongs in the coefficient instead.
+
+\section{Scope}
+The variational lower bound holds for every finite real choice of the
+commutator coefficients and is unaffected by this correction. The corrected infinite
+Gaussian expansion is formalized in QICLean independently of the
+finite-polynomial variational theorem. The variance parameter may be zero;
+no spectral-gap hypothesis is required.
+\bibliographystyle{unsrt}
+\bibliography{references}
+\end{document}

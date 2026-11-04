@@ -53,9 +53,12 @@ def matrixMulCLM : Matrix ι κ ℂ →L[ℂ] Matrix κ ζ ℂ →L[ℂ] Matrix 
     change ‖A * B‖ ≤ 1 * ‖A‖ * ‖B‖
     simpa only [one_mul] using Matrix.l2_opNorm_mul A B)
 
-omit [DecidableEq ι] in
-theorem matrixMul_differentiable :
+omit [Fintype ι] [Fintype ζ] [DecidableEq ι] [DecidableEq κ] [DecidableEq ζ] in
+theorem matrixMul_differentiable [Finite ι] [Finite ζ] :
     Differentiable ℂ (fun D : Matrix ι κ ℂ × Matrix κ ζ ℂ => D.1 * D.2) := by
+  classical
+  let : Fintype ι := Fintype.ofFinite ι
+  let : Fintype ζ := Fintype.ofFinite ζ
   apply IsBoundedBilinearMap.differentiable
   exact {
     add_left := Matrix.add_mul
@@ -89,10 +92,12 @@ def doubleCurve (C : Matrix (X × Y) (P × F) ℂ) (p : P → ℝ) (r : Y → �
   stripProduct S 1 s (fun j : X × P => p j.2) (β / 2) (-β / 2) z *
     reshuffle (stripProduct V 1 v (fun j : X × Y => r j.2) (β / 2) (-β / 2) (1 - z) * C)
 
+omit [DecidableEq F] in
 theorem doubleCurve_differentiable (C : Matrix (X × Y) (P × F) ℂ) (p : P → ℝ) (r : Y → ℝ)
     (S : unitary (Matrix (X × P) (X × P) ℂ)) (s : (X × P) → ℝ)
     (V : unitary (Matrix (X × Y) (X × Y) ℂ)) (v : (X × Y) → ℝ) (β : ℝ) :
     Differentiable ℂ (fun z => flattenCLM (doubleCurve C p r S s V v β z)) := by
+  classical
   have hL := differentiable_stripProduct S 1 s (fun j : X × P => p j.2) (β / 2) (-β / 2)
   have hR := differentiable_stripProduct V 1 v (fun j : X × Y => r j.2) (β / 2) (-β / 2)
   have hRi := hR.comp (differentiable_const (1 : ℂ) |>.sub differentiable_id)
@@ -109,11 +114,13 @@ theorem doubleCurve_differentiable (C : Matrix (X × Y) (P × F) ℂ) (p : P →
         (hL.prodMk hRR) using 1
   exact flattenCLM.differentiable.comp hM
 
+omit [DecidableEq F] in
 theorem doubleCurve_bounded (C : Matrix (X × Y) (P × F) ℂ) (p : P → ℝ) (r : Y → ℝ)
     (S : unitary (Matrix (X × P) (X × P) ℂ)) (s : (X × P) → ℝ)
     (V : unitary (Matrix (X × Y) (X × Y) ℂ)) (v : (X × Y) → ℝ) (β : ℝ) :
     ∃ K : ℝ, ∀ z : ℂ, 0 ≤ z.re → z.re ≤ 1 →
       ‖flattenCLM (doubleCurve C p r S s V v β z)‖ ≤ K := by
+  classical
   obtain ⟨K₁, h₁⟩ := stripProduct_bounded S 1 s (fun j : X × P => p j.2) (β / 2) (-β / 2)
   obtain ⟨K₂, h₂⟩ := stripProduct_bounded V 1 v (fun j : X × Y => r j.2) (β / 2) (-β / 2)
   have hK₁ : 0 ≤ K₁ := (norm_nonneg _).trans (h₁ 0 (by simp) (by simp))
@@ -198,6 +205,7 @@ theorem doubleCurve_right (C : Matrix (X × Y) (P × F) ℂ) (p : P → ℝ) (r 
     push_cast; ring
   simp only [doubleCurve, stripProduct, h₁, h₂, h₃, h₄]
 
+omit [DecidableEq F] in
 theorem one_copy_interpolation_fullrank [Nonempty X] [Nonempty P]
     (W : Matrix Y (X × (P × F)) ℂ) (r : Y → ℝ) (hr : ∀ i, 0 ≤ r i)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ))) (hrsum : ∑ i, r i = 1)
@@ -220,6 +228,7 @@ theorem one_copy_interpolation_fullrank [Nonempty X] [Nonempty P]
         power 1 (fun j : X × Y => r j.2) ((-β / 4 : ℝ) : ℂ) * coefficient W))‖ ≤
       Real.exp (-β * (conditionalEntropy W r + H) / 4 + ε / 2 +
         (17 / 64 : ℝ) * 100000 * Real.rpow β (5 / 4 : ℝ) * l ^ 2) := by
+  classical
   dsimp only
   let ε := 3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32)
   let H := QuantumSSA.conditionalEntropy (reshuffle (coefficient W) * (reshuffle
@@ -227,8 +236,10 @@ theorem one_copy_interpolation_fullrank [Nonempty X] [Nonempty P]
   let Q := 100000 * Real.rpow β (5 / 4 : ℝ) * l ^ 2
   let G := fun z => flattenCLM (doubleCurve (coefficient W) p r S s V v β z)
   have hB : 0 ≤ Q / 4 := by
-    have := Real.rpow_nonneg hβ.le (5 / 4 : ℝ)
-    dsimp only [Q]; positivity
+    dsimp only [Q]
+    exact div_nonneg
+      (mul_nonneg (mul_nonneg (by norm_num) (Real.rpow_nonneg hβ.le _)) (sq_nonneg l))
+      (by norm_num)
   have hpair (z : ℂ) (hz : z.re = 0) :
       ‖G z‖ ^ 2 * ‖G (z + 1)‖ ^ 2 ≤ Real.exp ((-β * (conditionalEntropy W r + H) + 2 * ε + Q) +
           (Q / 4) * z.im ^ 2) := by

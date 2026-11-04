@@ -1,0 +1,297 @@
+\section{Soft truncation with an approximate energy origin}
+
+For a Hermitian matrix $A$, write $T_s(A)=\min(A,sI)$ for its hard
+truncation at the energy $s$, defined by functional calculus.
+
+\begin{lemma}[Monotonicity in the hard cutoff]
+    \label{thm:hard_truncation_cutoff_monotone}
+    \lean{Matrix.monotone_energyTruncation}
+    \leanok
+    If $s\leq t$, then $T_s(A)\leq T_t(A)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:energy_truncation}
+    The scalar inequality $\min\{x,s\}\leq\min\{x,t\}$ holds at every
+    spectral value of $A$. Apply order preservation of the functional
+    calculus for this fixed matrix.
+\end{proof}
+
+\begin{lemma}[Translation of the hard cutoff]
+    \label{thm:hard_truncation_energy_shift}
+    \lean{Matrix.IsHermitian.energyTruncation_sub_smul_one}
+    \leanok
+    For all real $r,t$, one has
+    \begin{align}
+        T_t(A-rI)=T_{r+t}(A)-rI.
+        \label{eq:hard_truncation_energy_shift}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:energy_truncation}
+    Composition of the functional calculus reduces the assertion to
+    $\min\{x-r,t\}=\min\{x,r+t\}-r$.
+\end{proof}
+
+\begin{lemma}[Soft truncation with an approximate energy origin]
+    \label{thm:soft_hard_truncation_energy_shift}
+    \lean{Matrix.IsHermitian.softTruncation_shifted_hard_bounds}
+    \leanok
+    Let $r,r'$ be real numbers such that $A-r'I\geq0$ and $r-10\leq r'$.
+    For $t>0$ and an integer $m\geq1$, put $\varepsilon=(t/2)2^{-m}$.
+    Then
+    \begin{align}
+        T_{r+t/2-10}(A)-\varepsilon I
+        \leq r'I+h_{m,t}(A-r'I)\leq A.
+        \label{eq:soft_hard_truncation_energy_shift}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:matrix_soft_hard_truncation,
+        thm:hard_truncation_energy_shift,
+        thm:hard_truncation_cutoff_monotone}
+    Apply~(\ref{eq:matrix_soft_hard_truncation}) to $A-r'I$ and add $r'I$.
+    By~(\ref{eq:hard_truncation_energy_shift}), the hard comparator is
+    $T_{r'+t/2}(A)$. Since $r+t/2-10\leq r'+t/2$, monotonicity of the
+    hard cutoff gives~(\ref{eq:soft_hard_truncation_energy_shift}).
+\end{proof}
+
+In the regional soft truncation of
+Arad--Landau--Vazirani--Vidick~\cite[lines 1178--1185]{Arad2016RigorousRG},
+$r$ is the regional ground energy and $r-10\leq r'\leq r$. Thus
+$A-r'I\geq0$. Taking $t=m$ gives the hard threshold $m/2-10$ above the true
+regional ground energy. The crossing interactions belong to the unchanged
+complementary Hamiltonian; they are not subtracted from this threshold.
+
+\begin{lemma}[Coercivity after one centered soft replacement]
+    \label{thm:soft_truncation_centered_coercivity}
+    \lean{Matrix.softTruncation_centered_coercivity}
+    \leanok
+    Let $(A_i)$ be a finite family of Hermitian matrices with $A_i\ge e_iI$,
+    and fix an index $j$. Suppose $e_j-10\le r'\le e_j$, $t>0$, and $m\ge1$.
+    Put
+    \begin{align*}
+        F      & =r'I+h_{m,t}(A_j-r'I),             &
+        \alpha & =(t/2)2^{-m},                      & \tau & =t/2-10, \\
+        X      & =\sum_{i\ne j}(A_i-e_iI)+(F-e_jI).
+    \end{align*}
+    For $0\le u\le\tau$, one has
+    \begin{align}
+        X+\alpha I                        & \ge0,           &
+        u\,\mathbf1_{[e_j+u,\infty)}(A_j) & \le X+\alpha I.
+        \label{eq:soft_truncation_centered_coercivity}
+    \end{align}
+    Neither commutativity of the family nor attainment of the lower bounds
+    is required for these order inequalities.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:soft_hard_truncation_energy_shift,
+        thm:partial_clipping_high_projection}
+    The shifted comparison gives $T_{e_j+\tau}(A_j)-\alpha I\le F$.
+    Adding the unchanged centered terms shows that the actual centered hard
+    sum is at most $X+\alpha I$. The hard high-projection bound applies at
+    $u$ and at zero. These give both assertions in
+    (\ref{eq:soft_truncation_centered_coercivity}).
+\end{proof}
+
+\begin{lemma}[A cutoff satisfying the reverse-weight inequalities]
+    \label{thm:soft_truncation_reverse_cutoff}
+    \lean{Real.softTruncation_reverse_cutoff_bounds}
+    \leanok
+    For an integer $m\ge0$, put $\alpha=(m/2)2^{-m}$. Let
+    $-\alpha\le E\le2$, $\eta\ge0$, and $0\le C\le4$. Suppose
+    \begin{align}
+        m/2\ge17+\eta+\alpha,
+        \label{eq:soft_truncation_reverse_scale}
+    \end{align}
+    and set $u=E+\alpha+\eta+C+1$. Then
+    \begin{align*}
+        0\le u              & \le m/2-10,         & u & \le7+\eta+\alpha, \\
+        C                   & <u-(E+\alpha+\eta), &
+        u-(E+\alpha+\eta)-C & =1.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    The lower bounds on $E+\alpha$, $\eta$ and $C$ give $u\ge0$.
+    The upper bounds on $E$ and $C$ give $u\le7+\eta+\alpha$;
+    (\ref{eq:soft_truncation_reverse_scale}) then gives $u\le m/2-10$.
+    Cancellation gives the last identity and hence the strict inequality.
+\end{proof}
+
+\begin{lemma}[Exponential weights from their high-energy restriction]
+    \label{lem:exponential_weight_high_restriction}
+    \lean{Matrix.norm_exp_domRestrict_le_of_high_restriction}
+    \leanok
+    Let $A$ be Hermitian, let $s\ge0$, and put
+    $Q=\mathbf1_{[r+u,\infty)}(A)$ and $W=e^{s(A-(r+u)I)}$.
+    Let $G$ be a subspace. If $WQ|_G$, viewed as a map into the range of
+    $Q$, has norm at most $C$, then
+    \begin{align*}
+        \|W|_G\|\le1+C.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    On the complementary spectral space, $W(I-Q)$ has norm at most one.
+    Decompose $W=WQ+W(I-Q)$ and use the triangle inequality.
+\end{proof}
+
+\begin{lemma}[Changing the origin of an exponential weight]
+    \label{lem:shifted_exponential_weight_restriction}
+    \lean{Matrix.norm_shifted_exp_domRestrict_le}
+    \leanok
+    For a finite complex matrix $A$, real numbers $r,u,\varepsilon,s$,
+    and a subspace $G$, a bound
+    $\|e^{s(A-(r+u)I)}|_G\|\le M$ implies
+    \begin{align*}
+        \|e^{s(A-\varepsilon I)}|_G\|
+        \le e^{s(r+u-\varepsilon)}M.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    The scalar matrix commutes with $A$, so the two exponentials differ by
+    the positive scalar factor $e^{s(r+u-\varepsilon)}$.
+\end{proof}
+
+\begin{lemma}[A soft remainder restricted to an arbitrary subspace]
+    \label{thm:soft_truncation_exponential_remainder_restriction}
+    \lean{Matrix.norm_softTruncation_remainder_domRestrict_le_exp_weight}
+    \leanok
+    Let $A\ge0$ be a finite complex matrix, let $m\ge1$ be an integer,
+    and let $G$ be any subspace. Set $d_m(x)=x-h_{m,m}(x)$. Then
+    \begin{align*}
+        \|d_m(A)|_G\|
+        \le16e^{-m/16}\|e^{A/8}|_G\|.
+    \end{align*}
+    This matrix estimate does not assume or establish a physical
+    exponential-moment bound.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:soft_truncation_scaled_matrix_remainder}
+    Specialize the scaled matrix remainder bound to $t=m$, which satisfies
+    $0<t\le4m$.
+\end{proof}
+
+\section{Spectral windows relative to their own ground energies}
+
+\begin{lemma}[A ground-energy bound from a spectral residual]
+    \label{thm:spectral_residual_ground_energy}
+    \lean{Matrix.IsHermitian.minEigenvalue_sub_le_of_spectralSpanLE_residual}
+    \leanok
+    Let $A,B$ be finite Hermitian matrices with least energies $a,b$.
+    Let $\eta\ge0$ and $G_B=\mathbf1_{(-\infty,b+\eta]}(B)\mathcal H$.
+    If $\|(A-B)|_{G_B}\|\le\xi$, then $a-b\le\xi$.
+    No spectral gap or order relation between the two matrices is required.
+\end{lemma}
+\begin{proof}\leanok
+    A unit ground eigenvector $v$ of $B$ belongs to $G_B$. Positivity of
+    $A-aI$ and Cauchy--Schwarz give
+    \begin{align*}
+        a\le\langle v,Av\rangle
+        =b+\langle v,(A-B)v\rangle\le b+\xi.
+    \end{align*}
+\end{proof}
+
+\begin{lemma}[Both directed windows from two residuals]
+    \label{thm:spectral_residual_directed_windows}
+    \lean{Matrix.isCloseTo_spectralSpanLE_pair_of_residuals}
+    \leanok
+    Let $A,B$ have least energies $a,b$, and suppose $\eta>0$,
+    $0<\xi\le1$, $w\ge0$, $\xi\le w/2$ and $\delta\ge0$. Suppose the
+    restrictions of $A-B$ to the actual windows below $a+\eta$ and
+    $b+\eta$, respectively, both have norm at most $\xi$. If
+    \begin{align*}
+        2(\eta+2)\xi\le\delta w^2,
+    \end{align*}
+    then $|a-b|\le\xi$, the window of $B$ below $b+\eta+w$ is
+    $\delta$-close to the window of $A$ below $a+\eta$, and the window
+    of $A$ below $a+\eta+w$ is $\delta$-close to the window of $B$
+    below $b+\eta$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:spectral_residual_ground_energy,
+        thm:spectral_span_close_of_perturbation, lem:spectral_window_count_budget}
+    Applying the ground-energy bound in both directions gives
+    $|a-b|\le\xi$. The number of windows of width $2\xi$ needed for
+    the bandwidth $\eta$ is $N=\lceil\eta/(2\xi)\rceil$, with
+    \begin{align*}
+        N(2\xi)^2\le2\eta\xi+4\xi^2\le2(\eta+2)\xi.
+    \end{align*}
+    Apply the finite-window perturbation estimate in both directions.
+    Its two denominators are $w-(a-b)+\xi$ and $w+(a-b)+\xi$, both at
+    least $w$. The source cutoffs do not exceed their target cutoffs
+    because $|a-b|\le\xi\le w/2$. The stated budget therefore proves
+    both comparisons relative to the respective true ground energies.
+\end{proof}
+
+\begin{lemma}[An explicit order for the corrected soft residual]
+    \label{thm:soft_truncation_residual_order}
+    \lean{Real.exists_softTruncation_order_of_residual_budget}
+    \leanok
+    Let $\eta\ge0$ and $0<\rho\le1$. Set
+    \begin{align*}
+        m=\left\lceil35+2\eta+16\log(80/\rho)\right\rceil,
+        \qquad\alpha=(m/2)2^{-m}.
+    \end{align*}
+    Then $m\ge1$, $m/2\ge10$, $0\le\alpha\le1/4$, and
+    \begin{align*}
+        m/2                                                     & \ge17+\eta+\alpha, &
+        80\exp\left(\frac{17+\eta+\alpha}{8}-\frac m{16}\right) & \le\rho.
+    \end{align*}
+    This order depends only on the bandwidth and requested residual budget.
+\end{lemma}
+\begin{proof}\leanok
+    For $m=k+1$, the elementary inequality $k+1\le2^k$ gives
+    $\alpha\le1/4$. Since $\rho\le1$, the logarithm is nonnegative,
+    so the ceiling gives $m\ge35$. Substitution yields the cutoff
+    inequality and an exponent at most $-\log(80/\rho)$.
+\end{proof}
+
+
+\section{Independent-scale weighted remainders}
+
+\begin{lemma}[The same-matrix weighted remainder]
+    \label{thm:soft_truncation_scaled_matrix_remainder}
+    \lean{Matrix.IsHermitian.weighted_softTruncation_remainder_mul_exp,
+        Matrix.norm_softTruncation_remainder_domRestrict_le_exp_weight_of_scale_le}
+    \leanok
+    \uses{thm:soft_truncation_independent_scale}
+    For a finite Hermitian matrix $U$, real $t$ and integer $m$,
+    \begin{align*}
+        \bigl(U-h_{m,t}(U)\bigr)e^{-U/8}e^{U/8}
+        =U-h_{m,t}(U).
+    \end{align*}
+    If $U\geq0$, $m\geq1$, $0<t\leq4m$, and $G$ is any subspace,
+    then
+    \begin{align*}
+        \|(U-h_{m,t}(U))|_G\|
+        \leq16e^{-t/16}\|e^{U/8}|_G\|.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:soft_truncation_independent_scale}
+    Functional calculus gives the exact factorization and the bound
+    \begin{align*}
+        \|(U-h_{m,t}(U))e^{-U/8}\|\leq16e^{-t/16}.
+    \end{align*}
+    Multiply by $e^{U/8}$ and restrict the product to $G$.
+    No physical exponential moment is assumed in this matrix lemma.
+\end{proof}
+
+\begin{lemma}[The reverse cutoff at independent scale]
+    \label{thm:soft_truncation_scaled_reverse_cutoff}
+    \lean{Real.softTruncation_reverse_cutoff_bounds_of_scale}
+    \leanok
+    Put $\alpha=(t/2)2^{-m}$. Suppose $-\alpha\leq E\leq2$,
+    $\eta\geq0$, $0\leq C\leq4$, and $17+\eta+\alpha\leq t/2$.
+    Then $u=E+\alpha+\eta+C+1$ satisfies
+    \begin{align*}
+        0\leq u\leq t/2-10,\qquad
+        u\leq7+\eta+\alpha,\qquad
+        u-(E+\alpha+\eta)-C=1.
+    \end{align*}
+    In particular the last difference is positive.
+\end{lemma}
+\begin{proof}\leanok
+    Substitute the definition of $u$. The upper bound on $E$ and
+    $C$ gives $u\leq7+\eta+\alpha$, and the scale condition then
+    gives $u\leq t/2-10$. The other assertions follow directly.
+\end{proof}

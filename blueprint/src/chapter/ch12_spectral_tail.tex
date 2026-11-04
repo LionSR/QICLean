@@ -163,3 +163,37 @@ estimate with the same $Q$ and rank exponent $16C$.
   decomposition and equality of traces imply
   $\tr\bigl(Q(\rho-\sigma)\bigr)\le\frac12\lVert\rho-\sigma\rVert_1$.
 \end{proof}
+
+\subsection{Pure marginal approximation}
+
+\begin{theorem}[A nearly pure marginal gives a product approximation]
+    \label{thm:pure_marginal_product_approximation}
+    \lean{Matrix.exists_unit_product_approx_of_pure_marginal}
+    \notready
+    \uses{def:trace_norm}
+    Let $S,E$ be finite-dimensional coordinate spaces, let
+    $\Omega\in S\otimes E$ and $\phi\in S$ be unit vectors, and set
+    $\rho=\operatorname{tr}_E\ketbra{\Omega}{\Omega}$.
+    If $\|\rho-\ketbra{\phi}{\phi}\|_1\le\varepsilon$, there is a unit
+    vector $\eta\in E$ with
+    \begin{align}
+        \|\Omega-\phi\otimes\eta\|_2 & \le\sqrt{2\varepsilon}.
+        \label{eq:pure_marginal_product_approximation}
+    \end{align}
+    The environment space is unchanged, and no strict upper bound on
+    $\varepsilon$ is required.
+\end{theorem}
+\begin{proof}
+    \notready
+    \uses{thm:entropy_spectral_tail_transfer}
+    Write $C$ for the coefficient matrix of $\Omega$ and set
+    $a=\phi^\dagger C$. Its squared norm is
+    $p=\operatorname{tr}(\ketbra{\phi}{\phi}\rho)$.
+    The fixed-projection trace estimate gives $1-p\le\varepsilon$.
+    If $a\ne0$, choose $\eta=a/\|a\|_2$; the product overlap is
+    $\langle\Omega,\phi\otimes\eta\rangle=\sqrt p$ and lies in $[0,1]$.
+    Hence the squared distance is $2-2\sqrt p\le2(1-p)\le2\varepsilon$.
+    If $a=0$, then $\varepsilon\ge1$ and any unit coordinate vector in
+    $E$ has zero product overlap and squared distance two. Such a coordinate
+    exists because $\Omega$ is a unit vector.
+\end{proof}

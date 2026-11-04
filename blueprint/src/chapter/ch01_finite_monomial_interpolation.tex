@@ -138,6 +138,36 @@
     has rank at most $tr$.
 \end{proof}
 
+\begin{theorem}[Rank of a weighted coefficient sum]
+    \label{thm:monomial_evaluation_weighted_rank}
+    \lean{Matrix.operatorSchmidtRank_sum_smul_le_of_injective_monomial_evaluations}
+    \leanok
+    Let $T$ be finite, let $\rho:T\to\mathbb N^{(\sigma)}$ be injective, and let
+    $C_\alpha$ be operators on a finite-dimensional complex bipartite space.
+    Write $m_\alpha(z)=\prod_{a\in\sigma}z_a^{\rho(\alpha)(a)}$ and
+    $P(z)=\sum_{\alpha\in T}m_\alpha(z)C_\alpha$.
+    If $\operatorname{OSR}(P(z))\le r$ for every $z$, then every scalar family
+    $(\lambda_\alpha)_{\alpha\in T}$ satisfies
+    \begin{align*}
+        \operatorname{OSR}\!\left(\sum_{\alpha\in T}\lambda_\alpha C_\alpha\right)
+        \le |T|r.
+    \end{align*}
+    Zero and linearly dependent coefficient operators are allowed.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:finite_monomial_interpolation,thm:operator_schmidt_rank_algebra}
+    Apply monomial recovery on the image of $\rho$. Injectivity identifies its
+    cardinality with $|T|$. For the resulting common points $z_j$ and recovery
+    coefficients $c_{\alpha j}$,
+    \begin{align*}
+        \sum_{\alpha\in T}\lambda_\alpha C_\alpha
+        =\sum_{j=0}^{|T|-1}\left(\sum_{\alpha\in T}
+        \lambda_\alpha c_{\alpha j}\right)P(z_j).
+    \end{align*}
+    The scalar and finite-sum rank inequalities give the assertion.
+\end{proof}
+
 For a rectangular family of monomials, the evaluation points in
 Theorem~\ref{thm:finite_monomial_interpolation} may be prescribed on an integer
 product grid. This gives an explicit choice for the scalar interpolation in

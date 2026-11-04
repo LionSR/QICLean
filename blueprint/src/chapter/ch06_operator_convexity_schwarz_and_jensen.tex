@@ -623,6 +623,60 @@ matrix-order tools used independently of the Fundamental Theorem.
     Direct application of Theorem~\ref{thm:posMap_log_concave_jensen}.
 \end{proof}
 
+\subsection{The entropic operator inequality}
+
+\begin{theorem}[Entropic Jensen inequality for positive subunital maps]
+    \label{thm:entropic_jensen_subunital}
+    \lean{IsPositiveMap.entropic_jensen_subunital}
+    \leanok
+    Let $T\colon\MN{d}\to\MN{d'}$ be a positive linear map with
+    $T(\Id)\le\Id$, and let $\rho\ge0$. Then
+    \begin{align}
+        T(\rho)\log T(\rho)&\le T(\rho\log\rho).
+        \label{eq:entropic_jensen}
+    \end{align}
+    The product $x\log x$ takes its continuous value zero at $x=0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:posMap_rpow_convex_jensen}
+    First suppose $d=d'$. For $1<p<2$, subtract $T(\rho)$ from the
+    convex power inequality of Theorem~\ref{thm:posMap_rpow_convex_jensen}
+    and divide by $p-1$:
+    \begin{align}
+        \frac{(T(\rho))^p-T(\rho)}{p-1}
+        &\le T\left(\frac{\rho^p-\rho}{p-1}\right).
+        \label{eq:entropic_power_quotient}
+    \end{align}
+    For each $x>0$, $(x^p-x)/(p-1)\to x\log x$ as $p\to1^+$.
+    For $x=0$ the quotient is identically zero. Each spectrum is finite,
+    so the spectral theorem gives convergence in operator norm.
+    Continuity of $T$ and closedness of the Loewner order pass
+    (\ref{eq:entropic_power_quotient}) to the limit.
+
+    For arbitrary $d,d'$, define a positive map on $\MN{d+d'}$ by
+    $S(B)=0\oplus T(B_{11})$, where $B_{11}$ is the first principal
+    block. It satisfies $S(\Id)=0\oplus T(\Id)\le\Id$.
+    Apply the square case to $B=\rho\oplus0$. Functional calculus acts
+    on each diagonal block, so the second principal block of the resulting
+    inequality is (\ref{eq:entropic_jensen}).
+\end{proof}
+
+\begin{theorem}[Entropic operator inequality]
+    \label{thm:entropic_jensen}
+    \lean{IsPositiveMap.entropic_jensen}
+    \leanok
+    Let $T\colon\MN{d}\to\MN{d'}$ be positive and unital.
+    For every $\rho\ge0$, $T(\rho)\log T(\rho)\le T(\rho\log\rho)$,
+    with $0\log0=0$. This is \cite[Corollary~5.1, Equation~(5.33)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:entropic_jensen_subunital}
+    Unitality implies subunitality, so apply
+    Theorem~\ref{thm:entropic_jensen_subunital}.
+\end{proof}
+
 \subsection{Special functions and the general inequalities}
 
 The power and logarithm inequalities above are special cases of the

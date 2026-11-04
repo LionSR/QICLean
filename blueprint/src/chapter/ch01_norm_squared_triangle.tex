@@ -1,0 +1,16 @@
+\section{The squared triangle inequality}
+
+\begin{lemma}[Squared triangle inequality]
+    \label{thm:norm_sub_squared_triangle}
+    \lean{norm_sub_sq_le_two_mul_add}
+    \leanok
+    Let $x,y,z$ belong to a seminormed additive commutative group. Then
+    \begin{align*}
+        \|x-z\|^2\le2\bigl(\|x-y\|^2+\|y-z\|^2\bigr).
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    \leanok
+    Square $\|x-z\|\le\|x-y\|+\|y-z\|$ and use
+    $(a+b)^2\le2(a^2+b^2)$ for nonnegative real $a,b$.
+\end{proof}

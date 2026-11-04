@@ -296,7 +296,8 @@ private theorem exists_dual_of_strictlyFeasible_of_isGLB
       exact mul_nonneg ht hs
     · exact (slaterLift A d).map_smul t (x, s)
   have hfD_closure : ∀ z ∈ closure D, f z ≤ f q := by
-    exact closure_minimal hfD (isClosed_Iic.preimage f.continuous)
+    have hD_le : D ⊆ {z | f z ≤ f q} := fun z hz ↦ hfD z hz
+    exact closure_minimal hD_le (isClosed_Iic.preimage f.continuous)
   have htwo_q : (2 : ℝ) • q ∈ closure D := by
     exact map_mem_closure (continuous_const_smul (2 : ℝ)) hq_closure
       (fun _ hz ↦ hD_smul (by norm_num) hz)

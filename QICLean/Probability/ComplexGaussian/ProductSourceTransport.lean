@@ -32,7 +32,7 @@ variable {A C W X Y Z : Type*} [Fintype A] [Fintype C]
 
 -- Matrix's norm is inherited from finite function spaces; expose its continuous enorm directly.
 local instance {m n : Type*} [Fintype m] [Fintype n] : ContinuousENorm (Matrix m n ℂ) :=
-  SeminormedAddGroup.toContinuousENorm
+  SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
 
 /-- The ambient Schmidt vector in explicit local bases.
 Source: `04-compression.tex:281–289`. -/

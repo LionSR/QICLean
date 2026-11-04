@@ -3,14 +3,14 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.PosSemidefSupport
+import QICLean.Algebra.MatrixReindex
+import QICLean.Analysis.SupportProjectionOrder
 import Mathlib.Analysis.CStarAlgebra.Classes
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.HermitianFunctionalCalculus
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.ExpLog.Basic
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic
-import Mathlib.LinearAlgebra.Matrix.Reindex
 
 /-!
 # Covariance of the matrix continuous functional calculus
@@ -26,8 +26,6 @@ quantum relative-entropy stack.
 
 ## Main results
 
-* `Matrix.reindexStarAlgHom` — reindexing by an equivalence as a star-algebra
-  homomorphism.
 * `Matrix.cfc_submatrix_equiv` — covariance of the continuous functional
   calculus under reindexing.
 * `Matrix.cfc_transpose` — covariance of the continuous functional calculus
@@ -50,26 +48,6 @@ section Reindex
 
 variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
 
-/-- Reindexing the rows and columns by an equivalence, as a star-algebra
-homomorphism of complex matrix algebras. -/
-noncomputable def reindexStarAlgHom (e : m ≃ n) :
-    Matrix m m ℂ →⋆ₐ[ℂ] Matrix n n ℂ where
-  toFun M := M.submatrix e.symm e.symm
-  map_one' := by simp [Matrix.submatrix_one_equiv]
-  map_mul' A B := by rw [← Matrix.submatrix_mul_equiv A B e.symm e.symm e.symm]
-  map_zero' := by simp
-  map_add' A B := by simp [Matrix.submatrix_add]
-  commutes' r := by
-    rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one,
-      show (r • (1 : Matrix m m ℂ)).submatrix e.symm e.symm =
-          r • ((1 : Matrix m m ℂ).submatrix e.symm e.symm) from rfl,
-      Matrix.submatrix_one_equiv]
-  map_star' A := by
-    rw [star_eq_conjTranspose, star_eq_conjTranspose, Matrix.conjTranspose_submatrix]
-
-@[simp] theorem reindexStarAlgHom_apply (e : m ≃ n) (M : Matrix m m ℂ) :
-    reindexStarAlgHom e M = M.submatrix e.symm e.symm := rfl
-
 /-- **Functional calculus through a reindexing.** For a Hermitian matrix $A$, a
 real function $f$, and an equivalence $e$ of the index set,
 $f(A_{e^{-1},\,e^{-1}}) = (f(A))_{e^{-1},\,e^{-1}}$. -/
@@ -77,16 +55,12 @@ theorem cfc_submatrix_equiv {A : Matrix m m ℂ} (hA : A.IsHermitian) (f : ℝ �
     (e : m ≃ n) :
     cfc f (A.submatrix e.symm e.symm) = (cfc f A).submatrix e.symm e.symm := by
   have hcont : ContinuousOn f (spectrum ℝ A) := A.finite_real_spectrum.continuousOn f
-  have hcontφ : Continuous (reindexStarAlgHom (m := m) (n := n) e) :=
-    LinearMap.continuous_of_finiteDimensional
-      ((reindexStarAlgHom (m := m) (n := n) e : Matrix m m ℂ →ₗ[ℂ] Matrix n n ℂ))
+  let φ := (reindexStarAlgEquiv e).toStarAlgHom
+  have hcontφ : Continuous φ := φ.toLinearMap.continuous_of_finiteDimensional
   have hsa : IsSelfAdjoint A := hA
-  have hsa' : IsSelfAdjoint (reindexStarAlgHom e A) := by
-    change (A.submatrix e.symm e.symm).IsHermitian
-    exact hA.submatrix e.symm
-  simpa only [reindexStarAlgHom_apply] using
-    (StarAlgHomClass.map_cfc (reindexStarAlgHom (m := m) (n := n) e) f A
-      hcont hcontφ hsa hsa').symm
+  have hsa' : IsSelfAdjoint (φ A) := hsa.map φ
+  change cfc f (φ A) = φ (cfc f A)
+  exact (StarAlgHomClass.map_cfc φ f A hcont hcontφ hsa hsa').symm
 
 end Reindex
 
@@ -163,18 +137,7 @@ theorem PosSemidef.sqrt_transpose {A : Matrix n n ℂ} (hA : A.PosSemidef) :
 theorem IsHermitian.supportProj_transpose {A : Matrix n n ℂ} (hA : A.IsHermitian) :
     hA.transpose.supportProj = hA.supportProjᵀ := by
   let f : ℝ → ℝ := fun x ↦ if x ≠ 0 then 1 else 0
-  have hsupport (B : Matrix n n ℂ) (hB : B.IsHermitian) :
-      hB.supportProj = cfc f B := by
-    rw [hB.cfc_eq]
-    unfold Matrix.IsHermitian.supportProj Matrix.IsHermitian.cfc
-    rw [Unitary.conjStarAlgAut_apply]
-    congr 2
-    ext i j
-    by_cases hij : i = j
-    · subst j
-      by_cases hi : hB.eigenvalues i = 0 <;> simp [f, hi]
-    · simp [Matrix.diagonal_apply_ne _ hij]
-  rw [hsupport Aᵀ hA.transpose, hsupport A hA]
+  rw [hA.transpose.supportProj_eq_cfc, hA.supportProj_eq_cfc]
   exact (cfc_transpose hA f).symm
 
 -- All four consequences include the singular zero matrix.

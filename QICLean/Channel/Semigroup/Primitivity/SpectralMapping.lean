@@ -81,8 +81,13 @@ theorem intervalIntegral_expSemigroupCLM_apply_of_generator_apply_eq_zero
     (L : Mat →ₗ[ℂ] Mat) (t : ℝ) {Y : Mat} (hLY : L Y = 0) :
     intervalIntegral (fun s : ℝ => expSemigroupCLM (endEquiv L) s)
         0 t MeasureTheory.volume Y = (t : ℂ) • Y := by
+  -- Evaluation at `Y`, built from the finite-dimensional linear map rather than
+  -- `ContinuousLinearMap.apply`, which needs an `IsNormableSpace` instance for `Mat`.
   let evalY : MatrixCLM (Fin D) →L[ℝ] Mat :=
-    (ContinuousLinearMap.apply ℂ Mat Y).restrictScalars ℝ
+    (LinearMap.toContinuousLinearMap
+      ({ toFun := fun f => f Y
+         map_add' := fun _ _ => rfl
+         map_smul' := fun _ _ => rfl } : MatrixCLM (Fin D) →ₗ[ℂ] Mat)).restrictScalars ℝ
   have hInt : IntervalIntegrable
       (fun s : ℝ => expSemigroupCLM (endEquiv L) s)
       MeasureTheory.volume 0 t :=

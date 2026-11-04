@@ -24,6 +24,7 @@ require_verdict = true
 # review; qiclean marks internal theorem-surface audits with no single
 # external source. Enforced by `texra-blueprint paper-gaps check`.
 [paper_gaps.sources]
+hastings05 = "Hastings, Solving gapped Hamiltonians locally, Phys. Rev. B 73 (2006) 085115, arXiv:cond-mat/0508554"
 qiclean = "internal theorem-surface audit, no single external source"
 wolf    = "Wolf, Quantum Channels & Operations (2012 lecture notes)"
 ha98    = "Ha, Atomic Positive Linear Maps in Matrix Algebras (1998)"
