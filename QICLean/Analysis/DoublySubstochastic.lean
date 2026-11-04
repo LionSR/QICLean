@@ -208,7 +208,7 @@ omit [DecidableEq n] in
 theorem doublySubstochastic_eq_convexHull_isPartialPermutation :
     doublySubstochastic n = convexHull ℝ {M : Matrix n n ℝ | IsPartialPermutation M} := by
   classical
-  refine (convexHull_min (fun _ hM => hM.mem_doublySubstochastic)
+  refine (convexHull_min (fun _ hM => IsPartialPermutation.mem_doublySubstochastic hM)
     convex_doublySubstochastic).antisymm' ?_
   intro M hM
   obtain ⟨N, hN, hNM⟩ := exists_doublyStochastic_completion hM
