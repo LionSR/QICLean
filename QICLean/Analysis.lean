@@ -32,6 +32,7 @@ import QICLean.Analysis.ChebyshevWordPower
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CoisometricCompression
+import QICLean.Analysis.CommonCompressionEnergy
 import QICLean.Analysis.CommutingExponentialOrder
 import QICLean.Analysis.CommutingHermitian
 import QICLean.Analysis.ComplementProdKernel

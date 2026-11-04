@@ -1,0 +1,69 @@
+\section{Energy estimates on a common compression}
+
+\begin{theorem}[High-sector mass from an energy floor]
+    \label{thm:common_compression_high_mass}
+    \lean{Submodule.mul_norm_sq_orthogonal_starProjection_le_energy}
+    \leanok
+    Let $U$ be a subspace of a finite-dimensional complex Hilbert space,
+    let $P$ be its orthogonal projection, and let $Q=I-P$.
+    If a bounded operator $B$ satisfies $tQ\le B$, then every vector $v$ satisfies
+    \begin{align*}
+        t\|Qv\|^2\le\operatorname{Re}\langle v,Bv\rangle.
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    \leanok
+    Evaluate the positive operator $B-tQ$ on $v$ and use
+    $\langle v,Qv\rangle=\|Qv\|^2$.
+\end{proof}
+
+\begin{theorem}[Projected energy with a bounded connecting operator]
+    \label{thm:common_compression_projected_energy}
+    \lean{Submodule.projected_energy_le_of_common_compression}
+    \leanok
+    Let $P$ project orthogonally onto $U$, and let $Q=I-P$.
+    Suppose $B\ge0$, the operators $H,B$ agree on $U$, and
+    $[P,B-A]=0$. Then every vector $v$ satisfies
+    \begin{align*}
+        \operatorname{Re}\langle Pv,HPv\rangle
+        \le\operatorname{Re}\langle v,Bv\rangle
+            +2\|A\|\|v\|\|Qv\|.
+    \end{align*}
+    No upper bound on $\|H\|$ or $\|B\|$ is assumed.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Write $p=Pv$ and $q=Qv$.
+    Commutation gives $\langle p,(B-A)q\rangle=0$, so
+    \begin{align*}
+        \operatorname{Re}\langle v,Bv\rangle
+        =\langle p,Bp\rangle+\langle q,Bq\rangle
+            +2\operatorname{Re}\langle p,Aq\rangle.
+    \end{align*}
+    Positivity gives $\langle q,Bq\rangle\ge0$.
+    Cauchy--Schwarz and $\|Pv\|\le\|v\|$ bound the cross term from below by
+    $-\|A\|\|v\|\|q\|$. Finally $Hp=Bp$.
+\end{proof}
+
+\begin{theorem}[A common-compression energy bound for a unit vector]
+    \label{thm:common_compression_energy_bound}
+    \lean{Submodule.norm_high_and_projected_energy_le}
+    \leanok
+    \uses{thm:common_compression_high_mass,thm:common_compression_projected_energy}
+    Retain the hypotheses of Theorem~\ref{thm:common_compression_projected_energy}.
+    Suppose $t>0$, $e\ge0$, $tQ\le B$, and $v$ is a unit vector with
+    $\operatorname{Re}\langle v,Bv\rangle\le e$. Then
+    \begin{align*}
+        \|Qv\|&\le\sqrt{e/t}, &
+        \operatorname{Re}\langle Pv,HPv\rangle&\le e+2\|A\|\sqrt{e/t}.
+    \end{align*}
+    These are abstract estimates for the common-compression argument of
+    \cite[Lemma~6.5]{Arad2013AreaLaw}. A block-truncation application must
+    derive the displayed compression identities and energy floor from its operators.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:common_compression_high_mass,thm:common_compression_projected_energy}
+    The first theorem gives $\|Qv\|^2\le e/t$.
+    Taking square roots and substituting into the second theorem proves both estimates.
+\end{proof}
