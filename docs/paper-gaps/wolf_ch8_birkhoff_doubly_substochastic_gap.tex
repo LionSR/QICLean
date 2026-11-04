@@ -9,11 +9,11 @@
 
 \title{Wolf Theorem~8.6 --- the Doubly-Substochastic Half of Birkhoff}
 \author{}
-\date{2026-08-09}
+\date{2026-10-29}
 
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{open}
+\gapnote{scope-restriction}{resolved}
 
 \section{The source statement}
 
@@ -55,33 +55,19 @@ Both declarations are in
 \leanid{doublyStochastic_eq_convexHull_permMatrix} and
 \leanid{extremePoints_doublyStochastic}.
 
-\section{Missing component}
+\section{Resolution}
 
-The doubly-substochastic part \textbf{Sub} of Theorem~8.6
-\cite{Wolf2012Quantum} is not formalized. A complete treatment requires the
-following definitions and results.
-\begin{enumerate}
-    \item Define the predicate ``doubly substochastic'' for a nonnegative
-        square matrix whose row and column sums are bounded by $1$.
+The doubly-substochastic part \textbf{Sub} is proved in
+\doclink{QICLean/Analysis/DoublySubstochastic}. The declarations
+\leanid{TNLean.wolf_birkhoff_doublySubstochastic_convexHull} and
+\leanid{TNLean.wolf_birkhoff_extremePoints_doublySubstochastic} give the two
+exact characterizations. The definitions express nonnegative entries and
+row and column sums bounded by one, and zero-one entries with at most one
+one in each row and column, respectively. The finite vertex set is recorded
+by \leanid{TNLean.doublySubstochastic_isPolytope}. No positive-dimension or
+strict-positivity assumption is imposed.
 
-    \item Define partial permutation matrices as square
-        $\{0,1\}$-matrices with at most one $1$ in each row and each column.
-
-    \item Prove that the doubly substochastic matrices form the convex hull
-        of the partial permutation matrices and that their extreme points are
-        exactly the partial permutation matrices.
-\end{enumerate}
-
-The substochastic polytope contains the stochastic polytope as a face, but its
-support may omit rows or columns. Its extreme-point proof must therefore
-replace permutation matrices by partial permutation matrices.
-
-\section{Elimination plan}
-
-First, adapt Mathlib's \leanid{doublyStochastic} predicate to a predicate
-\leanid{doublySubstochastic}, replacing the row-sum and column-sum equalities
-by upper bounds. Then define partial permutation matrices over
-$\operatorname{Fin}d$ and prove that they are doubly substochastic.
+\section{Completion argument}
 
 For the convex-hull statement, let $M$ be a $d\times d$ doubly
 substochastic matrix and define
@@ -150,19 +136,17 @@ formalized doubly-stochastic Birkhoff theorem to $\widetilde M$ and restricting
 each permutation matrix to the original $d\times d$ block yields a convex
 decomposition of $M$ into partial permutation matrices.
 
-The final step is to adapt the stochastic extreme-point argument and prove
-that the extreme points of the doubly substochastic set are precisely the
-partial permutation matrices.
+Every extreme point of the resulting convex hull belongs to the generating
+set. Conversely, if a partial permutation matrix is a strict convex
+combination of two doubly substochastic matrices, then every zero entry
+forces both corresponding entries to be zero. Every one entry forces both
+corresponding entries to be one, because all entries belong to $[0,1]$.
+Thus the two matrices coincide with the partial permutation matrix.
 
-\section{Conclusion}
-
-This note records a scope restriction. The doubly-stochastic part of Wolf's
-Theorem~8.6 \cite{Wolf2012Quantum}, including both the convex-hull and
-extreme-point characterizations, is fully formalized. The definition and
-polytope theory of doubly substochastic matrices, including the
-partial-permutation extreme-point characterization, remain unformalized.
-Tracking:
-\href{https://github.com/LionSR/TNLean/issues/3959}{TNLean issue \#3959}.
+The doubly-stochastic and doubly-substochastic components of Wolf's
+Theorem~8.6 \cite{Wolf2012Quantum} are therefore both formalized.
+Tracking: \href{https://github.com/LionSR/QICLean/issues/47}{QICLean issue \#47}.
+The other statements tracked by that issue are outside this note's scope.
 
 \bibliographystyle{alpha}
 \bibliography{references}

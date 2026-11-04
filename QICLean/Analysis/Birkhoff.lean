@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import Mathlib.Analysis.Convex.Birkhoff
+import QICLean.Analysis.DoublySubstochastic
 
 /-!
 # Birkhoff's theorem for doubly stochastic matrices (Wolf Chapter 8)
@@ -15,10 +15,8 @@ permutation matrices.
 
 Source: `Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 263–266.
 
-**Scope restriction (Wolf Theorem 8.6):** only the doubly-stochastic half is
-formalized; the doubly-substochastic half (definition, polytope structure,
-extreme partial-permutation-matrix characterization) is missing.
-See `docs/paper-gaps/wolf_ch8_birkhoff_doubly_substochastic_gap.tex`.
+The doubly-substochastic half, with partial permutation matrices as its extreme points,
+is proved in `QICLean/Analysis/DoublySubstochastic.lean`.
 -/
 
 namespace TNLean
@@ -29,9 +27,8 @@ namespace TNLean
 The set of `d × d` doubly stochastic matrices over `ℝ` equals the convex
 hull of the `d × d` permutation matrices.
 
-**Scope restriction (Wolf Theorem 8.6):** only the doubly-stochastic half is
-formalized; the doubly-substochastic half is missing.
-See `docs/paper-gaps/wolf_ch8_birkhoff_doubly_substochastic_gap.tex`.
+The doubly-substochastic counterpart is
+`wolf_birkhoff_doublySubstochastic_convexHull`.
 -/
 theorem wolf_birkhoff_doublyStochastic_convexHull {d : ℕ} :
     (doublyStochastic ℝ (Fin d) : Set (Matrix (Fin d) (Fin d) ℝ)) =
@@ -44,9 +41,8 @@ theorem wolf_birkhoff_doublyStochastic_convexHull {d : ℕ} :
 The extreme points of the set of `d × d` doubly stochastic matrices over
 `ℝ` are exactly the `d × d` permutation matrices.
 
-**Scope restriction (Wolf Theorem 8.6):** only the doubly-stochastic half is
-formalized; the doubly-substochastic half is missing.
-See `docs/paper-gaps/wolf_ch8_birkhoff_doubly_substochastic_gap.tex`.
+The doubly-substochastic counterpart is
+`wolf_birkhoff_extremePoints_doublySubstochastic`.
 -/
 theorem wolf_birkhoff_extremePoints_doublyStochastic {d : ℕ} :
     Set.extremePoints ℝ ((doublyStochastic ℝ (Fin d) : Set (Matrix (Fin d) (Fin d) ℝ))) =
