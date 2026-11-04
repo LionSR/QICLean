@@ -31,6 +31,9 @@ require it.
 * `Submodule.isSpectralProjector_aeval`: a real polynomial with the scalar filter properties
   gives a spectral projector.
 * `Submodule.exists_isSpectralProjector_chebyshev`: the Chebyshev filter of degree `n`.
+* `Submodule.exists_isSpectralProjector_chebyshev_one_sub_le`: the same filter, with the lower
+  bound `p(λ) ≥ 1 - n |λ - a| / √((b - a) (u - a))` for the eigenvalues `λ ≤ b` (item 2 near
+  `η₀`, in the corrected form of `docs/paper-gaps/alvv16_chebyshev_near_ground_slope.tex`).
 -/
 
 open Polynomial Module
@@ -83,6 +86,38 @@ theorem isSpectralProjector_aeval {m : ℕ} (H : E →L[𝕜] E)
   one_le _ hj := hlow _ hj
   sq_le j hj := hhigh j hj
 
+/-- **The Chebyshev filter near the normalization point** (arXiv:1602.08828v2, Theorem
+`thm:Cheby-AGSP`, items 1–3, lines 809–853). Let `H` be self-adjoint with all eigenvalues at most
+`u`, and let `a < b ≤ u`. For every degree `n` there is a real polynomial `p` of degree `n` with
+`p(a) = 1` such that `p(H)` is a spectral projector for `(H, a, b)` with parameter
+`(2 exp (-2 n √((b - a)/(u - a))))²`, and every eigenvalue `λ ≤ b` of `H` gives an eigenvalue
+`p(λ) ≥ 1 - n |λ - a| / √((b - a) (u - a))` of `p(H)`.
+
+With `a = η₀`, `b = η₁` and `u = ‖H‖`, the last clause is item 2 for eigenvalues near `η₀`, on
+the whole range `λ ≤ η₁`, which contains the printed range `λ ≤ η₀ + γ / k`.
+
+**Local fix (slope of item 2):** the printed decrease `O(k |λ - η₀| √Δ / (γ ‖H‖))` is replaced
+by `k |λ - η₀| / √(γ (‖H‖ - η₀))`; the printed form fails for large `k`
+(`Polynomial.Chebyshev.eval_T_div_eval_T_le_two_mul_exp`). Documented in
+`docs/paper-gaps/alvv16_chebyshev_near_ground_slope.tex`. -/
+theorem exists_isSpectralProjector_chebyshev_one_sub_le {m : ℕ} (H : E →L[𝕜] E)
+    (hH : (H : E →ₗ[𝕜] E).IsSymmetric) (hn : finrank 𝕜 E = m) (n : ℕ) {a b u : ℝ}
+    (hab : a < b) (hbu : b ≤ u) (hupper : ∀ j, hH.eigenvalues hn j ≤ u) :
+    ∃ p : ℝ[X], p.natDegree = n ∧ p.eval a = 1 ∧
+      IsSpectralProjector (aeval H (p.map (algebraMap ℝ 𝕜))) H (hH.eigenvectorBasis hn)
+        (hH.eigenvalues hn) (fun j => p.eval (hH.eigenvalues hn j)) a b
+        ((2 * Real.exp (-2 * (n : ℝ) * Real.sqrt ((b - a) / (u - a)))) ^ 2) ∧
+      ∀ j, hH.eigenvalues hn j ≤ b →
+        1 - n * |hH.eigenvalues hn j - a| / √((b - a) * (u - a)) ≤
+          p.eval (hH.eigenvalues hn j) := by
+  obtain ⟨p, hdeg, hpa, hleft, hnear, hbound⟩ :=
+    Polynomial.Chebyshev.exists_interval_shrinking_polynomial_one_sub_le n hab hbu
+  refine ⟨p, hdeg, hpa, isSpectralProjector_aeval H hH hn p hleft fun j hj => ?_,
+    fun j hj => hnear _ hj⟩
+  have h := hbound _ ⟨hj, hupper j⟩
+  rw [← sq_abs]
+  exact pow_le_pow_left₀ (abs_nonneg _) h 2
+
 /-- **The Chebyshev filter as a spectral projector** (arXiv:1602.08828v2, Theorem
 `thm:Cheby-AGSP`, items 1–3, lines 789–853). Let `H` be self-adjoint with all eigenvalues at most
 `u`, and let `a < b ≤ u`. For every degree `n` there is a real polynomial `p` of degree `n` with
@@ -95,11 +130,8 @@ theorem exists_isSpectralProjector_chebyshev {m : ℕ} (H : E →L[𝕜] E)
       IsSpectralProjector (aeval H (p.map (algebraMap ℝ 𝕜))) H (hH.eigenvectorBasis hn)
         (hH.eigenvalues hn) (fun j => p.eval (hH.eigenvalues hn j)) a b
         ((2 * Real.exp (-2 * (n : ℝ) * Real.sqrt ((b - a) / (u - a)))) ^ 2) := by
-  obtain ⟨p, hdeg, hpa, hleft, hbound⟩ :=
-    Polynomial.Chebyshev.exists_interval_shrinking_polynomial n hab hbu
-  refine ⟨p, hdeg, hpa, isSpectralProjector_aeval H hH hn p hleft fun j hj => ?_⟩
-  have h := hbound _ ⟨hj, hupper j⟩
-  rw [← sq_abs]
-  exact pow_le_pow_left₀ (abs_nonneg _) h 2
+  obtain ⟨p, hdeg, hpa, hK, -⟩ :=
+    exists_isSpectralProjector_chebyshev_one_sub_le H hH hn n hab hbu hupper
+  exact ⟨p, hdeg, hpa, hK⟩
 
 end Submodule

@@ -53,3 +53,32 @@ with orthonormal eigenbasis $b_j$ and eigenvalues $h_j$.
     $\lvert p(t)\rvert\le2e^{-2n\sqrt{(b-a)/(u-a)}}$ on $[b,u]$; apply the
     previous theorem.
 \end{proof}
+
+\begin{theorem}[The Chebyshev filter near the normalization point]
+    \label{thm:chebyshev_spectral_projector_near}
+    \lean{Submodule.exists_isSpectralProjector_chebyshev_one_sub_le}
+    \leanok
+    \uses{thm:chebyshev_spectral_projector, thm:chebyshev_interval_polynomial_near}
+    In the setting of Theorem~\ref{thm:chebyshev_spectral_projector}, the
+    polynomial $p$ can be chosen so that, in addition, every eigenvalue
+    $h_j\le b$ of $H$ gives an eigenvalue of $p(H)$ with
+    \begin{align}
+        p(h_j) & \ge1-\frac{n\lvert h_j-a\rvert}{\sqrt{(b-a)(u-a)}}.
+        \label{eq:chebyshev_spectral_projector_near}
+    \end{align}
+    This is item~2 of Theorem~thm:Cheby-AGSP
+    of~\cite[lines 822--824]{Arad2016RigorousRG} for eigenvalues near
+    $\eta_0=a$, in the corrected form of
+    Theorem~\ref{thm:chebyshev_interval_polynomial_near}, on the range
+    $h_j\le\eta_1$, which contains the printed range
+    $h_j\le\eta_0+\gamma/n$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Use the polynomial of
+    Theorem~\ref{thm:chebyshev_interval_polynomial_near}. The previous
+    argument gives the spectral projector, and $p(H)b_j=p(h_j)b_j$ with
+    (\ref{eq:chebyshev_interval_polynomial_near}) at $x=h_j$ gives
+    (\ref{eq:chebyshev_spectral_projector_near}).
+\end{proof}
