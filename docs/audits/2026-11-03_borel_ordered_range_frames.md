@@ -39,21 +39,3 @@ lines 530–558. No global continuity, jointly measurable adaptive tree,
 finite-precision implementation or running time is asserted. The matrix
 range frame is a Borel realization; its existence alone is not an efficiency
 statement about operations on MPS representations.
-
-## Verification
-
-The source-only branch is based on frozen QIC
-e449d8f2a2a701c176afd7e9c3a7741c2da92362. Private strict checks used the
-immutable TN e2706cbe715c49745d4399d37dabe3d2559cc494 and its own QIC
-de8a9d1286709f39d8c37d4d52d6e336925863e5, with fresh explicit overrides
-for the new Gram–Schmidt and finite-frame objects. The finite-frame module
-passed in 4.066 seconds with one protected source/object pair. The actual
-matrix-range specialization passed in 4.352 seconds with two protected pairs.
-The eight-declaration imported foundation inspection passed in 4.329 seconds
-with three protected pairs, reporting only propext, Classical.choice and
-Quot.sound. The temporary inspection source was removed.
-
-Source blueprint synchronization, generated imports, reader-facing prose,
-whitespace and proof-token checks pass. Ordinary compiled-library and
-blueprint gates remain separate integration checks. No provider source,
-provider object, dependency cache or Mathlib source was changed.

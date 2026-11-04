@@ -17,10 +17,12 @@ event are Borel; no success event is supplied as a measurability premise.
 
 This supports ALVV, arXiv:1602.08828v2, the resampling description at
 lines 749–755 and the reference argument at lines 1801–1813.
-**Local fix (repeated sampling and terminal amplification):** The operation
-uses fresh samples at active rounds and a deterministic terminal image and
-trim. It is not identified with the sample-once Figure `fig:merge-prime`,
-lines 1664–1673. See `docs/paper-gaps/alvv16_bootstrap_constants.tex`.
+This module treats a repeated-resampling variant of the merge procedure
+sketched at arXiv:1602.08828v2, lines 711–755; Figure `fig:merge-prime` and
+Theorem `t:alg1` are not formalized here. See
+`docs/paper-gaps/alvv16_bootstrap_constants.tex`.
+The operation uses fresh samples at active rounds and a deterministic
+terminal image and trim.
 No running-time conclusion is asserted.
 -/
 

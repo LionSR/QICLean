@@ -6,8 +6,6 @@ sampling carrier. It uses the already proved bootstrap threshold at exponent
 four and error coefficient eta = 1/q. The source context is ALVV,
 arXiv:1602.08828v2, the informal repeated amplification and trimming procedure
 at lines 749–755, and the joint merge estimate in `t:alg1`, lines 1777–1817.
-The inspected local source is `/tmp/alvv-low-density-source-20261102.tex`,
-SHA256 `19d37facb8bf8da6ea5555cd7185c054d251ad4a06c2f44fcb92593235ad6b92`.
 
 ## Constants and bounds
 
@@ -61,21 +59,3 @@ at fixed q,D,w; no polynomial dependence in varying w, inverse-gap sharpness,
 printed logarithmic threshold, or running-time estimate is claimed.
 The existing net-count correction remains recorded in
 `docs/paper-gaps/alvv16_random_sampling_net_count.tex`.
-
-## Verification
-
-The mathematical source passed an actual-name strict check with default
-resource limits in 15.449 seconds, guarding 16 selected QIC source/object
-pairs, against immutable TN 107e2726 / own QIC 68481832. The imported audit
-of all three public declarations passed in 4.732 seconds with 17 guarded
-pairs and only `propext`, `Classical.choice`, and `Quot.sound`.
-Temporary audit commands have been deleted. There are no proof holes,
-resource-option changes, permanent fixtures, provider writes or cache copies.
-No Mathlib source was compiled.
-
-The source-only QIC worktree has no `.lake`. The new chapter gives one entry
-for the real/ENNReal budget and one for the uniform schedule. New declaration
-correspondence, reader-facing prose, generated imports and source integrity
-are checked locally, and a standalone mathematical reader is rendered and
-visually inspected. An ordinary full build and compiled complete-book checks
-remain required in the coordinated integration.

@@ -25,24 +25,3 @@ only to the separately constructed regional energy operator. No efficient
 algorithm or running time is concluded. The physical composition must
 retain the actual untrimmed ordered-word image returned by its improving
 family; these scalar estimates alone construct no subspace.
-
-## Verification
-
-Private actual-name checking used the immutable, fully built TNLean
-provider `e2706cbe715c49745d4399d37dabe3d2559cc494` and its own QICLean
-package `de8a9d1286709f39d8c37d4d52d6e336925863e5`. The selected module has
-only Mathlib imports. Guarded strict checking passed in 4.339 seconds
-with the default proof budgets and all package linters. The imported
-three-declaration foundation inspection passed in 4.062 seconds; each
-declaration uses only `propext`, `Classical.choice`, and `Quot.sound`.
-The temporary inspection source was then deleted. No Mathlib source,
-ordinary library build or shared cache mutation was invoked.
-
-The chapter is registered immediately after the regional-energy
-comparison chapter. Source declaration synchronization, generated imports,
-reader prose and whitespace checks pass. Its one-page mathematical reader
-was rendered and visually inspected. Canonical ordinary compilation and
-compiled blueprint declaration checking remain for coordinated integration.
-
-The machine-readable manifest and immutable private outputs are recorded
-outside the repository under `/tmp/qiclean-soft-regional-energy-parameters-20261103`.

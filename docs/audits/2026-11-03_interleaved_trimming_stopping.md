@@ -22,22 +22,6 @@ supporting ALVV, arXiv:1602.08828v2, lines 1797–1805, rather than the possibly
 nonintegral printed half-logarithmic count. There is no probability or
 running-time assertion.
 
-The two modules were checked under exact immutable TNLean provider
-478e8a08f8d97cec4064070a29170a0953362d3e and its own QICLean dependency
-9578336a5123a76001a1218e271132091c828de2, after its full ordinary build.
-The private actual-name checks use the package options and guard selected
-source/object pairs, root inputs and the unchanged Mathlib artifact.
-No source, object or cache in the provider was modified or copied.
-
-- InterleavedTrimmingIteration: strict 5.639 seconds, Mathlib-only imports.
-- InterleavedStoppingParameters: strict 5.395 seconds, two protected QIC pairs.
-- Imported inspection of all five public declarations: 4.852 seconds,
-  three protected pairs; only propext, Classical.choice and Quot.sound.
-
-The temporary inspection source was deleted. Blueprint/source coverage,
-reader-facing prose, generated imports, whitespace and forbidden-token checks
-passed. The tactic scan found no new repeated proof pattern requiring a
-promotion. Ordinary combined builds and compiled blueprint checking remain
-integration gates. The stopping theorem concerns the scalar recurrence;
+The stopping theorem concerns the scalar recurrence;
 physical family iteration, successful sampling and the recursive tree are
 separate applications.

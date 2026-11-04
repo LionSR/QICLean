@@ -16,10 +16,11 @@ quantitative error for every improving target on that one event.
 
 Supporting ALVV, arXiv:1602.08828v2, the resampling description at
 lines 749–755 and reference trimming at lines 1801–1813.
-**Local fix (repeated sampling and terminal amplification):** The operation
-is the corrected repeated-resampling parent, not the sample-once Figure
-`fig:merge-prime`, lines 1664–1673; see
-`docs/paper-gaps/alvv16_bootstrap_constants.tex`. No runtime estimate is
+This module treats a repeated-resampling variant of the merge procedure
+sketched at arXiv:1602.08828v2, lines 711–755; Figure `fig:merge-prime` and
+Theorem `t:alg1` are not formalized here. See
+`docs/paper-gaps/alvv16_bootstrap_constants.tex`.
+No runtime estimate is
 asserted. The stopping coefficient is supplied with its explicit numerical
 threshold bound; the scalar choice can therefore precede chain-carrier types.
 -/
@@ -37,8 +38,8 @@ variable {V ι β : Type*} [Fintype V] [DecidableEq V] [Fintype ι]
 bound. One fixed original-target event also certifies every improving target
 for its same last untrimmed image. The numerical threshold premise is
 independent of the carrier and supplied by the scalar sampling theorem;
-there is no section or successful-sampling premise. This is a corrected
-resampling auxiliary for ALVV, arXiv:1602.08828v2, lines 749–755. -/
+there is no section or successful-sampling premise. This is a repeated-resampling
+auxiliary for ALVV, arXiv:1602.08828v2, lines 749–755. -/
 theorem canonicalHalfSamplingParent_joint_probability_of_threshold
     {X : Type*} (D a K : ℕ) (hD : 2 ≤ D) (eta : ℝ) (hK : 1 ≤ K)
     (hThreshold : ∀ r N Q : ℕ, K * (r + 1) * (N + 2) ^ 2 ≤ Q →

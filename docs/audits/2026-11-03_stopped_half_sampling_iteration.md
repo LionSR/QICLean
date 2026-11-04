@@ -16,35 +16,7 @@ successful sample or a supplied measurable basis.
 The construction uses repeated sampling, in distinction to the displayed
 sample-once procedure in ALVV, arXiv:1602.08828v2, Figure fig:merge-prime,
 lines 1664–1673. The merge process, lines 711–736, motivates the repeated
-amplification. The distinction is recorded in the existing soft-family
-calibration note. No running-time or joint probability conclusion is
-asserted here; the all-seed dimension bound and actual probability
-argument are separate results.
-
-## Verification
-
-The production module passes strict elaboration in 5.850 seconds against
-the fully built TNLean 8f85b0be / QICLean cc2569b6 pair, with fresh
-rank-dependent sampling and trimming dependencies. Standard linters,
-warnings as errors and default proof-resource limits are retained.
-The five public declarations pass an imported foundation inspection in
-4.748 seconds and use only propext, Classical.choice and Quot.sound.
-The temporary inspection source is deleted.
-
-Initial proofs using implicit measurable composition exceeded the ordinary
-200,000-heartbeat elaboration limit. Naming the actual input pair and
-supplying that map explicitly resolves the reduction cost. The recursion
-and its mathematical statements are unchanged; no limit is increased.
-Those failed attempts are retained as diagnostics, rather than passing
-checks.
-
-Complete source/blueprint synchronization and reverse coverage, generated
-imports, reader-facing prose, forbidden-token and whitespace checks pass.
-Two definitions and one supporting lemma cover the five declarations.
-Their one-page mathematical excerpt was rendered and inspected with no
-overfull boxes. The tactic-pattern ledger records explicit measurable
-composition and the ordinary equality transport used for earlier seeds.
-
-Ordinary combined build and compiled blueprint verification remain pending.
-Private objects remain separate from the ordinary cache. No held provider,
-ordinary build artifact or Mathlib source cache was changed.
+amplification. The distinction is recorded in
+docs/paper-gaps/alvv16_bootstrap_constants.tex. No running-time or joint
+probability conclusion is asserted here; the all-seed dimension bound and
+actual probability argument are separate results.

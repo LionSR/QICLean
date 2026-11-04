@@ -27,7 +27,7 @@ variable {V ι β : Type*} [Fintype V] [DecidableEq V] [Fintype ι]
 
 /-- The true fixed-original-target event for a finite stopped run: every
 state is viable with error .04, and every active next state
-has error .015. This supports corrected repeated resampling for ALVV,
+has error .015. This supports the repeated-resampling variant for ALVV,
 arXiv:1602.08828v2, lines 749–755; it is not an uncountable intersection
 over improving spectral targets. -/
 def canonicalHalfSamplingRawGood

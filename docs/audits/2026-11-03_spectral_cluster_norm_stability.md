@@ -16,23 +16,3 @@ subspaces. It does not infer exact invariance of the original target
 under an approximate operator. This is a finite-dimensional auxiliary for
 ALVV, arXiv:1602.08828v2, t:aisefficient, lines 1412-1420; physical soft
 residuals and the Hermitian middle-MPO construction remain separate.
-
-The final actual-name strict private check passed in 7.708 seconds with
-six selected source/object pairs, and the imported one-public foundation
-inspection passed in 8.512 seconds with seven pairs. Its only axioms are
-propext, Classical.choice and Quot.sound. The temporary inspection source
-was deleted. Each proof step was checked before the next was written.
-Earlier incomplete checks reached only the expected unfinished goal;
-the first two took 42.531 and 43.540 seconds, above the 25-second warning
-threshold but below 50 seconds. Later required logical checks took
-25.552, 19.295, 23.794 and 18.474 seconds. These observations are retained;
-no timing-only rerun or proof-budget increase was used.
-
-Checks used immutable TN 88ab31ce57 and its own QIC e817ea0a, with exact
-source/object, root-input, transitive importer and verified prebuilt
-Mathlib guards. The source-only branch starts at exact QIC e817ea0a and
-has no .lake. No provider or cache was changed, no compiled artifact was
-copied and no Mathlib source was built. Generated imports, source
-blueprint synchronization, reader-facing prose, tactic-pattern scanning,
-proof integrity and whitespace checks passed. Canonical ordinary and
-compiled blueprint checks remain part of the coordinated integration.

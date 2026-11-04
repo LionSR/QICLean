@@ -22,16 +22,3 @@ The resulting principal matrix is positive, and the restricted order bound
 X<=MI gives K<=MI and its norm bound. The support identity proves the
 exact identity extension. When no full configuration exists, K=0 suffices.
 No positive local dimensions or preselected regional matrix are assumed.
-
-Both actual production modules passed private strict checking at default
-budgets (4.783 and 4.575 seconds). The imported foundation audit includes
-both public declarations and reports only propext, Classical.choice and
-Quot.sound. The checked provider is TNLean
-20cad76ebfa6e770263c4a5d5333917c5b226ed9 with its own QICLean
-98ba564e3c9603dc93d2173e3dc87a85ce750456; selected sources, objects, root
-inputs and the prebuilt Mathlib object were guarded. The source-only QICLean
-worktree belongs to the primary QICLean repository, not a dependency checkout.
-All new proof objects and temporary audit commands are under /tmp. No
-provider source or shared cache changed, and no Mathlib source was built.
-The manifest records exact hashes and evidence. Ordinary combined and
-compiled blueprint checks remain required after adoption.

@@ -21,15 +21,5 @@ and output dimensions retain their bounds by family cardinality times the
 actual terminal rank. The exact reference budget uses the number of cuts,
 not a substituted image-dimension ceiling.
 
-The final module passed strict separate checking in 6.359 seconds against
-immutable TNLean `8048ec790ad627488585367823e3be409015fd13` and its own
-QICLean `8d0f7d15b5151325dee7f885428074c6ecafb0b9`, with explicit fresh
-objects for the frozen prerequisites. An imported foundation inspection
-passed in 5.130 seconds using only `propext`, `Classical.choice` and
-`Quot.sound`; its temporary source was removed. A default-limit inference
-failure in the finite-seed pullback was resolved by passing the actual
-input map explicitly, without an option increase or an arbitrary-predicate
-wrapper. No provider or cache was written and no Mathlib source compiled.
-Combined ordinary-library and compiled-book verification remains part of
-integration. The theorem is for one corrected repeated-resampling parent;
+The theorem is for one repeated-resampling parent;
 recursive-tree probability and running time are separate obligations.

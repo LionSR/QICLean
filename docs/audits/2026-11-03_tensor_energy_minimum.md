@@ -42,21 +42,3 @@ The proof uses the existing tensor slices and norm decomposition from
 nonzero scalar multiplication, and the actual compression and variational
 bound from `RitzCompression` and `RitzSubspace`. No independent spectral
 basis or local low-energy witness is assumed.
-
-## Verification
-
-The exact module passed a private strict elaboration in 4.512 seconds,
-against the immutable checked TNLean provider
-`cd17d76b290c83200b59b48bc816e4856e3c9c1a` and its own QICLean dependency
-`0c26d87e4efdd19c85aaa402b4c0b153d3f65657`. Source, imported objects,
-build inputs and the prebuilt Mathlib object were guarded before and
-after checking. All new objects were written under `/tmp`; no shared
-cache or provider source was changed and no Mathlib source was built.
-The imported two-theorem foundation audit passed in 4.290 seconds; both
-theorems depend only on propext, Classical.choice and Quot.sound.
-Source–blueprint synchronization, generated-import consistency,
-reader-facing prose and whitespace checks passed. The tactic-pattern
-scan found no repeated block requiring abstraction in this contribution.
-Exact source and check records are recorded in the accompanying private
-manifest. Ordinary combined-library and compiled-blueprint verification
-remain integration checks.

@@ -32,32 +32,3 @@ this auxiliary, and no adaptive joint law or running-time bound is claimed.
 The index set of improving targets need not be finite: the one original-
 target event gives all the target conclusions by deterministic transfer,
 without a measurable intersection over that index set.
-
-## Verification
-
-The entire actual-name module passes strict checking at the default limits
-in 6.801 seconds, against immutable TNLean
-8f85b0be007c009ca208e82cbec4873dff2427e6 and its own QICLean package
-cc2569b660d020e2946cdc979488d639add36d9f. Its selected closure contains
-78 guarded QICLean source/object pairs. The three new fixed-rank supporting
-modules use the complete immutable map from the separately frozen
-QICLean 7a6e4887f438293742a0cd20df12b9f8edcb5b27; their checked source
-bytes match the source-only dependency adoption in this worktree.
-All existing selected dependencies use the verified provider.
-
-The source uses only the old public canonical sampler and product-law
-signatures. The separately developed requested-rank-size extension is not
-mixed into this private check. Its combined ordinary importer verification
-remains part of the next parent integration. Initial missing explicit
-submodule types and dependent finite-rank transport diagnostics are retained;
-no elaboration budget is increased. A private geometric identity first
-checks that mapping a basis maps the actual existing random subspace.
-
-The imported public foundation inspection passes in 4.763 seconds and
-uses only propext, Classical.choice and Quot.sound; its temporary command
-source is deleted subsequently. Generated imports, complete source/blueprint synchronization
-and reverse public coverage, reader prose, proof integrity, whitespace and
-the repeated-pattern scan pass. The new theorem and proof are rendered
-for reader inspection. Ordinary combined compilation and complete compiled
-blueprint declarations remain integration checks. No provider, cache,
-dependency pin or Mathlib source is modified or rebuilt.

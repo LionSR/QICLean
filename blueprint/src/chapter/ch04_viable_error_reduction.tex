@@ -134,7 +134,7 @@ of the target, and contracts its complement.
     \[
         \lVert t\rVert^4
         \le \bigl(\lVert t\rVert^2+\lVert Kq\rVert^2\bigr)
-            \lVert P_{KU}t\rVert^2.
+        \lVert P_{KU}t\rVert^2.
     \]
     The conclusion follows by substitution; the zero vector is immediate.
 \end{proof}
@@ -177,9 +177,9 @@ of the target, and contracts its complement.
     Let $0<c\le1$, $0\le\delta\le1/2$, $\eta\ge0$, and
     $\varepsilon\le c^2\eta/40$. Then
     \[
-       (1+c/4)\frac{(1-c)\delta}{1-\delta+(1-c)\delta}
-       +(1+4/c)\varepsilon
-       \le(1-c/4)\delta+c\eta/8.
+        (1+c/4)\frac{(1-c)\delta}{1-\delta+(1-c)\delta}
+        +(1+4/c)\varepsilon
+        \le(1-c/4)\delta+c\eta/8.
     \]
 \end{lemma}
 \begin{proof}\leanok
@@ -229,15 +229,16 @@ of the target, and contracts its complement.
     hypotheses of Lemma~\ref{lem:filter_trim_iterate_le}. For every
     nonnegative integer $j$,
     \[
-       (1-c/4)^j\le \exp(-cj/4).
+        (1-c/4)^j\le \exp(-cj/4).
     \]
     Consequently $u_j\le\eta$ whenever $j\ge(4/c)\log(1/\eta)$.
     In particular, the positive integer
     \[
-       j=\left\lceil(4/c)\log(1/\eta)\right\rceil+1
+        j=\left\lceil(4/c)\log(1/\eta)\right\rceil+1
     \]
     suffices. This is a numerical estimate for the refinement in
-    \cite[Algorithm~1]{Arad2016RigorousRG}; a bound in terms of its requested
+    \cite[Figure~\texttt{fig:algo1}, lines 1633--1640]{Arad2016RigorousRG};
+    a bound in terms of its requested
     energy accuracy requires a separate spectral estimate.
 \end{lemma}
 \begin{proof}\leanok
@@ -255,13 +256,13 @@ of the target, and contracts its complement.
     Suppose $0<c\le1$, $0\le\delta\le1/2$, $\varepsilon,\zeta\ge0$,
     $\varepsilon\le c^2\eta/1024$, and $\zeta\le c\eta/48$. Put
     \[
-       F=\frac{(1-c)\delta}{1-\delta+(1-c)\delta}.
+        F=\frac{(1-c)\delta}{1-\delta+(1-c)\delta}.
     \]
     Then
     \begin{multline*}
-       (1+c/16)\bigl((1+c/16)F+(1+16/c)\varepsilon+2\zeta\bigr)
-       +(1+16/c)\varepsilon\\
-       \le(1-c/4)\delta+c\eta/8.
+        (1+c/16)\bigl((1+c/16)F+(1+16/c)\varepsilon+2\zeta\bigr)
+        +(1+16/c)\varepsilon\\
+        \le(1-c/4)\delta+c\eta/8.
     \end{multline*}
 \end{lemma}
 \begin{proof}\leanok
@@ -284,7 +285,7 @@ of the target, and contracts its complement.
         C\ge0,\qquad \|C\|\le\|H\|-\mu,\qquad C|_G=0.
     \]
     This is an auxiliary spectral estimate for the final extraction in
-    \cite[Algorithm~1]{Arad2016RigorousRG}.
+    \cite[Figure~\texttt{fig:algo1}, lines 1633--1640]{Arad2016RigorousRG}.
 \end{lemma}
 \begin{proof}\leanok
     Spectral order gives $\mu I\le H\le\|H\|I$, hence
@@ -308,11 +309,12 @@ of the target, and contracts its complement.
     Then $R\subseteq W$, $\dim R=r$, and $G$ and $R$ are mutually
     $\varepsilon$-close, where
     \[
-       \varepsilon=
-       \frac{(\|H\|-\mu)\rho}{(1-\rho)\gamma}.
+        \varepsilon=
+        \frac{(\|H\|-\mu)\rho}{(1-\rho)\gamma}.
     \]
     This is an auxiliary estimate for the final spectral extraction in
-    \cite[Algorithm~1]{Arad2016RigorousRG}. It holds for arbitrary ground-space
+    \cite[Figure~\texttt{fig:algo1}, lines 1633--1640]{Arad2016RigorousRG}.
+    It holds for arbitrary ground-space
     multiplicity.
 \end{theorem}
 \begin{proof}\leanok
@@ -403,9 +405,9 @@ of the target, and contracts its complement.
     \leanok
     Let $D\ge2$ and $s\ge1$ be integers. Put
     \begin{align}
-        R&=D^6,& a&=\frac{3}{32D^{12}s^5},&
-        \Delta&=\frac{1}{200000D^{12}},& \beta&=\sqrt\Delta,\notag\\
-        k&=\left\lceil\log_D(D^2s)\right\rceil,
+        R      & =D^6,                                 & a     & =\frac{3}{32D^{12}s^5}, &
+        \Delta & =\frac{1}{200000D^{12}},              & \beta & =\sqrt\Delta,\notag       \\
+        k      & =\left\lceil\log_D(D^2s)\right\rceil,
         \label{eq:interleaved_actual_stopping_count}
     \end{align}
     where $k$ denotes the upper integer logarithm. These quantities

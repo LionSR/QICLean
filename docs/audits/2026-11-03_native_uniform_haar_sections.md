@@ -26,19 +26,3 @@ Lemma `l:rs`, lines 530–558, and the merge analysis, lines 1777–1817.
 It retains the corrected sphere-net exponent documented in
 `docs/paper-gaps/alvv16_random_sampling_net_count.tex`. It is a fixed-input
 section bound, not a probability theorem for an adaptive construction.
-
-## Verification
-
-The actual module passed strict checking in 5.997 seconds against the
-immutable TNLean `435cbe7fe53e5d3a04c1b8eb2382753749f21a64` provider and its
-own QICLean `b2ea12a0139820758e161514968ed9ead661c5a7` package, with the
-previously checked uniform-sampling module as an explicit source/object
-override. The checker guarded 47 selected source/object pairs and the build
-inputs. Default elaboration options were retained. The imported foundation inspection passed in 4.709 seconds and uses only
-`propext`, `Classical.choice`, and `Quot.sound`; its temporary source was
-deleted. Source/blueprint synchronization, reader prose, generated imports,
-proof integrity, whitespace checks, and the pattern scan passed. The reader
-section was rendered and inspected. Exact hashes and check records are in
-the companion verification manifest. No provider source, artifact, cache, or pin was changed;
-no Mathlib source was built. Ordinary combined compilation and the compiled
-blueprint declaration check remain integration checks.

@@ -37,23 +37,5 @@ These are auxiliary results for ALVV, arXiv:1602.08828v2, Definition
  def:trimming, lines 648–655, and the interleaved merge at lines 1668–1670.
 The Borel parent map, regional target/exterior tensor comparison, conditional
 failure bound and finite adaptive-tree probability induction remain separate
-steps. No joint probability or running-time conclusion follows from this
-checkpoint alone.
-
-The source-only branch starts from frozen c4b9bbe9 (variable-rank sampler)
-and uses the immutable a9ad4839 actual-trim companion stack. Exact-name
-private checks used held TN9ff185339e / own QIC6878435c, with explicit
-new-source/object overrides, transitive changed-importer checks and all
-selected source/object/root-input/prebuilt-Mathlib hash guards.
-
-Final strict checks passed: FiniteCoordinateRangeFrame in 4.523 seconds
-(four protected source/object pairs), ViableSubspaceProjectionEvent in
-5.410 seconds (three pairs), and CanonicalSamplingTrimmingMeasurable in
-5.338 seconds (77 pairs). The thirteen-name imported foundation inspection
-passed in 4.656 seconds (78 pairs), using only propext, Classical.choice
-and Quot.sound. The temporary inspection was deleted. Proof budgets were
-unchanged. Source import registration, blueprint synchronization, reader
-prose, proof-integrity and whitespace checks passed. The source-only
-worktree has no .lake. No provider or cache was modified, no compiled
-artifact was copied, and no Mathlib source was built. Ordinary canonical
-and compiled-book gates belong to the coordinated integration.
+steps. No joint probability or running-time conclusion follows from these
+results alone.

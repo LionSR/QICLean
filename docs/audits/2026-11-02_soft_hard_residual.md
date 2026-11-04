@@ -33,18 +33,3 @@ lines 873–886, 1178–1185 and 1195–1255. They do not establish the printed
 uniform energy estimate, the printed cluster estimate, or the final GEN
 or running-time conclusions. Existing source-error records and their
 counterexamples remain unchanged.
-
-The strict actual-name checks passed in 4.586 seconds for the generic
-comparison and 18.269 seconds for the soft residual module. The imported
-four-declaration audit passed in 9.391 seconds, reporting only `propext`,
-`Classical.choice` and `Quot.sound` for every declaration. Checks used
-immutable, fully warmed TNLean `5fc343a57d70eefd2902780107851ab9b0753a82`
-and its own QICLean `ba01733099b5a18bed5c9bfb62f95f175b4c9b57`. Selected
-sources, objects, build inputs and the prebuilt Mathlib record were guarded;
-all new outputs remain under `/tmp`. The isolated worktree has no `.lake`.
-No provider, dependency cache or Mathlib source was changed.
-
-Mathematical book entries accompany all four public declarations. Ordinary
-integrated full-library and compiled-book checks remain pending. Foundation
-commands are confined to the temporary audit; no permanent test fixture is
-introduced.

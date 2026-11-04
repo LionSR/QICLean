@@ -15,10 +15,11 @@ stopping threshold the current matrix is retained.
 
 This construction supports repeated amplification associated with ALVV,
 arXiv:1602.08828v2, the merge process, lines 711–736.
-**Local fix (repeated sampling):** a fresh sample is taken at each active
-round, in contrast to the sample-once procedure of Figure fig:merge-prime,
-lines 1664–1673. The distinction is recorded in
-docs/paper-gaps/alvv16_soft_family_calibration.tex.
+This module treats a repeated-resampling variant of the merge procedure
+sketched at arXiv:1602.08828v2, lines 711–755; Figure `fig:merge-prime` and
+Theorem `t:alg1` are not formalized here. See
+`docs/paper-gaps/alvv16_bootstrap_constants.tex`.
+A fresh sample is taken at each active round.
 -/
 
 open MeasureTheory

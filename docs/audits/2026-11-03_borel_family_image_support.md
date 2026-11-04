@@ -17,14 +17,6 @@ avoids unfolding the arbitrary spectral-coordinate construction in a
 higher-order definitional equality. No desired measurability premise is
 supplied.
 
-An earlier direct composition exhausted the unchanged 200,000-heartbeat
-normalization budget. Its source and diagnostic were preserved in the
-private diagnostics directory, and the original untracked handoff source
-was left unchanged in its worktree. The pointwise cutoff proof succeeds
-with the default options. Only local decidable equalities for the family
-and column indices are used where needed for the measurable topology;
-the ambient-row decidable equality is not overridden. No budget was raised.
-
 ## Actual represented ranges
 
 Absorption gives Q C=C for the actual support Q and stacked columns C.
@@ -46,20 +38,3 @@ or output spaces. No rank, nonzero or spectral-separation hypothesis is
 added. These are mathematical prerequisites for the improving-family image
 in ALVV arXiv:1602.08828v2, l:er, lines 597–622. They assert neither an
 adaptive tree probability nor a running time.
-
-## Verification
-
-The isolated source-only worktree is based on frozen QIC
-fd3a102b883f494ad70bf787bc51436cb197aab0. Private verification used immutable
-TN e2706cbe715c49745d4399d37dabe3d2559cc494 and its own QIC
-de8a9d1286709f39d8c37d4d52d6e336925863e5, with the exact checked cutoff
-source/object override. The complete module passed strict checking in
-4.422 seconds with thirteen protected source/object pairs. All eight public
-declarations passed an imported foundation inspection in 4.293 seconds with
-fourteen protected pairs; only propext, Classical.choice and Quot.sound were
-reported. The temporary inspection source was removed.
-
-Source blueprint synchronization, generated imports, reader-facing prose,
-proof-token and whitespace checks pass. The existing mathematical source,
-provider objects, dependency cache and Mathlib source were unchanged.
-Ordinary compiled-library and blueprint checks remain integration gates.

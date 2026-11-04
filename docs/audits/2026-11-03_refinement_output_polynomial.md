@@ -19,23 +19,3 @@ This is an auxiliary to ALVV, arXiv:1602.08828v2, `t:alg1`, lines 1777–1817.
 The physical same-output application is owned by TNLean. This scalar theorem does not
 identify the modified tree with the printed algorithm or supply a success probability,
 source energy-estimation invariant, gap-sharp bound or computational running time.
-
-## Verification and compilation time
-
-The strict actual-module check used immutable warmed TNLean
-cd17d76b290c83200b59b48bc816e4856e3c9c1a and its own QICLean package
-0c26d87e4efdd19c85aaa402b4c0b153d3f65657. It passed in 27.674 seconds with the default
-heartbeat budget and strict package options. This is recorded as a compilation-time
-warning; no timing-only retry or increased limit was used. A failed earlier local ring
-normalization was replaced by an abstract algebraic identity and structural power rewrites,
-without changing the mathematical bound. Later factoring may reduce elaboration time.
-
-The imported audit checks this theorem and its actual dependent physical corollary.
-It passed in 8.089 seconds, with only propext, Classical.choice and Quot.sound.
-Temporary audit commands and output objects remain under /tmp. Selected source/object,
-configuration, warmed Mathlib and changed-importer guards were checked; no provider,
-production cache or Mathlib source was modified. No fixtures are committed.
-
-Generated imports, complete source-to-blueprint synchronization, added-prose and whitespace
-checks pass; the new contribution has no repeated tactic pattern at the scan thresholds.
-The physical blueprint role check also passes. Ordinary combined builds and compiled blueprint checks remain required after adoption.

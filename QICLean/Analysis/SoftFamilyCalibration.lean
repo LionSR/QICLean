@@ -26,10 +26,14 @@ half-dimension resampling followed by original-target trimming. It does
 not establish the sample-once iteration, the printed fourth-order
 parameter choice or a running-time bound.
 
-**Scope restriction (algorithmic consequence):** This is a new sufficient
-scalar calibration. The half-dimension resampling and original-target
-trimming procedure, and its probabilistic analysis, remain separate.
-See `docs/paper-gaps/alvv16_soft_family_calibration.tex`.
+This is a new sufficient scalar calibration; it replaces no step of the
+source. The source specifies the window and filter scales of its
+fourth-order soft truncation in terms of the gap, lines 1373–1420. Here one
+natural scale `u` fixes `ℓ = u^8`, `m = u^10`, `t = 3m`, `k = u^16` and
+`T = u^9`, and the family count and the precision are evaluated at that same
+`u`, so no tolerance is chosen before a count that would change it. The
+repeated-resampling variant in which such a calibration can be used is
+described in `docs/paper-gaps/alvv16_bootstrap_constants.tex`.
 -/
 
 open Filter Topology

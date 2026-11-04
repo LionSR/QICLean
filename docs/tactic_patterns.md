@@ -2037,10 +2037,8 @@ This removes the repeated vectorwise monotonicity calculation.
 
 - **Pattern:** Identify a matrix orthogonal projection with the projection
   onto the range of its Euclidean-space action.
-- **Reuse:** Move the existing private
-  `Submodule.projectionMatrix_range_of_isStarProjection` proof unchanged
-  to `Matrix.projectionMatrix_range_of_isStarProjection` in the thin
-  `Analysis/ProjectionMatrixRange.lean` leaf.
+- **Reuse:** `Matrix.projectionMatrix_range_of_isStarProjection` in the
+  thin `Analysis/ProjectionMatrixRange.lean` leaf.
 - **Consumers:** The original true-closeness event and the actual
   finite-span support identification now share this proof.
 - **Decision:** No copied projection/range proof or compatibility alias

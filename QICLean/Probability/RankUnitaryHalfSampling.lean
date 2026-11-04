@@ -24,11 +24,12 @@ argument at lines 1801–1813.
 errors retain the corrected constants documented in
 `docs/paper-gaps/alvv16_random_sampling_net_count.tex` and
 `docs/paper-gaps/alvv16_trimming_constant.tex`.
-**Scope restriction (one fixed input):** This is a half-dimensional
-resampling step, not an identification with the sample-once loop or an
-adaptive joint law; see `docs/paper-gaps/alvv16_bootstrap_constants.tex`.
-The event is chosen at one fixed input matrix; no measurable choice of
-these events as that matrix varies is asserted.
+**Scope restriction (one fixed-input sampling step):** one
+half-dimensional sample is drawn from a fixed input space and the success
+event is chosen for that input, as in the proof of `prop:albootstrap-dg`,
+lines 1065–1074; see `docs/paper-gaps/alvv16_bootstrap_constants.tex`.
+No measurable choice of these events as the input matrix varies is
+asserted.
 -/
 
 open MeasureTheory Module

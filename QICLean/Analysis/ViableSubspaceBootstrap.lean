@@ -38,7 +38,6 @@ is `e^{Õ(γ⁻¹ log³ d)} ≥ 2`. Documented in `docs/paper-gaps/alvv16_bootst
 
 ## Main statements
 
-* `Submodule.IsCloseTo.of_le`: closeness is monotone in the parameter.
 * `Submodule.exists_isViable_finrank_le_half`: one bootstrapping step.
 * `Submodule.exists_isViable_finrank_lt_of_bootstrap`: Proposition `prop:albootstrap-dg`.
 -/
@@ -50,7 +49,6 @@ namespace Submodule
 
 variable {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
   [FiniteDimensional 𝕜 E]
-
 
 section Bootstrap
 
@@ -450,11 +448,7 @@ assuming a random-sampling inequality. The threshold is linear in the target
 dimension and polynomial in the family parameter. Auxiliary to ALVV,
 arXiv:1602.08828v2, Proposition `prop:albootstrap-dg`, lines 1062–1075.
 The improving family and the two nearby target spaces are explicit inputs;
-the physical construction discharges these inputs separately.
-
-**Local fix (bootstrapping constants):** The canonical sampling and error
-constants are documented in the companion note
-https://sirui-lu.com/QICLean/paper-gaps/alvv16_bootstrap_constants.pdf. -/
+the physical construction discharges these inputs separately. -/
 theorem exists_isViable_finrank_lt_rank_mul_pow
     {M F : Type*}
     [NormedAddCommGroup M] [InnerProductSpace ℂ M] [FiniteDimensional ℂ M]

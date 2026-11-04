@@ -29,21 +29,3 @@ is twice the complex target dimension; see
 estimate, not a probability theorem for an entire adaptive construction.
 Transport to a native regional sampler requires its actual coordinate identity;
 no equality with an arbitrary changing orthonormal-basis choice is assumed.
-
-## Verification
-
-The actual module passed strict checking in 5.474 seconds against the fully
-verified, immutable provider TNLean `435cbe7fe53e5d3a04c1b8eb2382753749f21a64`
-and its own QICLean `b2ea12a0139820758e161514968ed9ead661c5a7` package. The
-checker guarded 36 selected source/object pairs and all build inputs. An
-imported inspection of both public declarations passed in 5.059 seconds;
-both use only `propext`, `Classical.choice`, and `Quot.sound`. The temporary
-inspection source was deleted. Default elaboration options were retained.
-
-Source/blueprint synchronization, reader-facing prose, generated imports,
-proof-integrity and whitespace checks passed. A one-page standalone rendering
-of the mathematical section was inspected. Its external references and
-citations are supplied by the complete blueprint. An ordinary combined build
-and compiled declaration check remain integration checks. No provider source,
-provider artifact, Lake cache, or dependency pin was changed, and no Mathlib
-source was built.

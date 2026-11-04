@@ -35,24 +35,3 @@ rank zero. This follows from actual inclusion and equality of dimensions.
 Source: ALVV, arXiv:1602.08828v2, Lemma `l:rs`, lines 530–558. The inherited
 correction to the printed sphere-net cardinality is recorded in
 `docs/paper-gaps/alvv16_random_sampling_net_count.tex`.
-
-## Verification
-
-Private checks used immutable TNLean
-`9ff185339e7556649699446504eda0c3e15bedf6` and its own QICLean package
-`6878435c2a2483ba929687579b2575dd393d71bb`, with explicit immutable
-current-source overrides for the frozen variable-rank sampler checkpoint
-`c4b9bbe98835227f0c59114c10ffa05faf5338c6`.
-Strict actual-name checking passed in 5.680 seconds with default options
-and 32 selected QIC source/object pairs. Six imported foundation
-inspections passed in 4.862 seconds; all use only `propext`,
-`Classical.choice`, and `Quot.sound`. The temporary inspection source
-was then deleted. Sources, objects and build inputs were hash-guarded.
-No ordinary build, shared cache mutation or Mathlib source compilation
-was performed.
-
-The mathematical reader was registered, rendered and visually inspected.
-Source synchronization, generated imports, prose, patterns, proof
-integrity and whitespace checks are recorded in the external manifest.
-Canonical ordinary compilation and compiled blueprint checking remain
-for coordinated integration.

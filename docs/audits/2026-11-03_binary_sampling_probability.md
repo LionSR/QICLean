@@ -5,5 +5,3 @@ Two independent child histories, with probability laws mu and nu, succeed on mea
 The proof combines the existing uniform section inequality with the union bound for the complement of a product. The latter outer-measure inequality does not require measurability of A or B. No new probability structure or measurable choice of auxiliary success hulls is introduced.
 
 This is the binary measure step needed in the interval recursion of Arad, Landau, Vazirani and Vidick, arXiv:1602.08828v2, Figure fig:algo1 and lines 1777–1817. The actual measurable parent map, its fixed-input estimate and the finite physical hierarchy must still be supplied. The result alone is not a probability theorem for the complete algorithm.
-
-Strict checking passes at the default options in 4.237 seconds. Imported inspection of both public declarations passes in 3.484 seconds, with only propext, Classical.choice and Quot.sound. The temporary inspection source is deleted. Combined ordinary-build and compiled declaration checks remain pending.

@@ -19,11 +19,12 @@ are fixed before the current input space; no further sample is selected.
 
 This supports ALVV, arXiv:1602.08828v2, the resampling description at
 lines 749–755 and the reference argument at lines 1801–1813.
-**Local fix (terminal amplification and repeated sampling):** This is a
-terminal step for the corrected repeated-resampling process, not an
-identification with the sample-once Figure `fig:merge-prime`, lines 1664–1673.
-See `docs/paper-gaps/alvv16_bootstrap_constants.tex`. The corrected trimming
-increment is retained from `docs/paper-gaps/alvv16_trimming_constant.tex`.
+This module treats a repeated-resampling variant of the merge procedure
+sketched at arXiv:1602.08828v2, lines 711–755; Figure `fig:merge-prime` and
+Theorem `t:alg1` are not formalized here. See
+`docs/paper-gaps/alvv16_bootstrap_constants.tex`.
+**Local fix (trimming constant):** The estimate retains the corrected
+increment recorded in `docs/paper-gaps/alvv16_trimming_constant.tex`.
 -/
 
 open Module

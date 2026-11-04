@@ -25,17 +25,3 @@ These are explicitly stated auxiliaries supporting ALVV,
 arXiv:1602.08828v2, Figure `fig:algo1`, lines 1631-1632 and the
 correctness argument at lines 1793-1807. They make no assertion about
 constructing physical candidates or about an energy-estimation algorithm.
-They were separated from the physical TNLean proof so that the generic
-matrix statements remain in QICLean.
-
-## Verification
-
-The exact source passed a private actual-name strict check in 4.954
-seconds against TNLean 478e8a08f8d97cec4064070a29170a0953362d3e and
-its immutable QICLean dependency 9578336a5123a76001a1218e271132091c828de2.
-An imported audit of all three public statements passed in 4.088
-seconds, with only propext, Classical.choice and Quot.sound.
-Selected source and object files, build inputs and the prebuilt Mathlib
-object were guarded. New objects were written only under /tmp; no
-provider or shared cache was changed and no Mathlib source was built.
-Ordinary combined and compiled-book verification remain integration checks.

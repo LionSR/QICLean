@@ -17,18 +17,3 @@ eigenvalue hypotheses inside the proof.
 This is a corrected auxiliary to ALVV, arXiv:1602.08828v2, `lem:exp-approx` and
 `t:aisefficient`, lines 1195–1255 and 1373–1392. It does not complete the physical GEN
 construction, its source-sharp parameter choices or a running-time theorem.
-
-## Verification
-
-Strict private checking used fully warmed immutable TNLean 5e19c052124518e40871bb67a1ce5398dd3b6416
-and its own QICLean package 518e8d2053793d108d1ad52638a89f22028bafca. Selected source/object
-hashes, package configurations, warmed Mathlib and changed-importer closures were guarded.
-The module passed in 5.223 seconds. An imported audit in the actual dependent physical
-module checks this headline together with both new TNLean physical results; it passed
-in 4.940 seconds, with only propext, Classical.choice and Quot.sound for all three.
-Temporary commands and output objects remain under /tmp. No provider, production cache
-or Mathlib source was changed. No fixtures are committed.
-
-Generated imports, complete source-to-blueprint synchronization, added-prose and whitespace
-checks pass. The new contribution has no repeated tactic pattern at the current scan
-thresholds. Ordinary combined builds and compiled blueprint checks remain required after adoption.

@@ -20,10 +20,10 @@ lines 749–755, the bootstrap at lines 1065–1074, and the reference argument
 at lines 1801–1813.
 **Local fix (trimming constant):** The estimate retains the corrected
 increment recorded in `docs/paper-gaps/alvv16_trimming_constant.tex`.
-**Scope restriction (one fixed-input resampling step):** The result does not
-identify repeated half-dimensional resampling with the sample-once Figure
-`fig:merge-prime`, lines 1664–1673, or assert an adaptive joint law; see
-`docs/paper-gaps/alvv16_bootstrap_constants.tex`.
+**Scope restriction (one fixed-input sampling step):** one
+half-dimensional sample is drawn from a fixed input space and the success
+event is chosen for that input, as in the proof of `prop:albootstrap-dg`,
+lines 1065–1074; see `docs/paper-gaps/alvv16_bootstrap_constants.tex`.
 -/
 
 open MeasureTheory Module

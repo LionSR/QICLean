@@ -59,10 +59,10 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     \leanok
     The map $r\mapsto P_TP_Sr$ of $T$ into itself satisfies
     $\operatorname{Re}\langle P_TP_Sr,r\rangle=\lVert P_Sr\rVert^2
-    \ge(1-\delta)\lVert r\rVert^2$, so it is injective, hence surjective in
+        \ge(1-\delta)\lVert r\rVert^2$, so it is injective, hence surjective in
     finite dimension. Take $r$ with $P_TP_Sr=t$ and $s=P_Sr$. Then
     $(1-\delta)\lVert r\rVert^2\le\operatorname{Re}\langle t,r\rangle
-    \le\lVert t\rVert\,\lVert r\rVert$, and $\lVert s\rVert\le\lVert r\rVert$.
+        \le\lVert t\rVert\,\lVert r\rVert$, and $\lVert s\rVert\le\lVert r\rVert$.
 \end{proof}
 
 \begin{lemma}[Squared norm of a projection preimage]
@@ -81,8 +81,8 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     \leanok
     For the vectors $r,s$ in the preceding proof,
     $\lVert s\rVert^2=\operatorname{Re}\langle t,r\rangle
-    \le\lVert t\rVert\,\lVert r\rVert
-    \le\lVert t\rVert^2/(1-\delta)$.
+        \le\lVert t\rVert\,\lVert r\rVert
+        \le\lVert t\rVert^2/(1-\delta)$.
 \end{proof}
 
 \begin{lemma}[Weighted robustness]
@@ -142,7 +142,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     The vector $P_{U_1}P_{U_2}x=P_{U_2}P_{U_1}x$ lies in both subspaces, and
     $x-P_{U_1}P_{U_2}x$ is orthogonal to every $w\in U_1\cap U_2$, since
     $\langle P_{U_1}P_{U_2}x,w\rangle=\langle x,P_{U_2}P_{U_1}w\rangle
-    =\langle x,w\rangle$.
+        =\langle x,w\rangle$.
 \end{proof}
 
 \begin{theorem}[Closeness of an intersection]
@@ -165,9 +165,9 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     For $t\in T$ write $P_1t=P_1P_2t+P_1(t-P_2t)$. The two summands are
     orthogonal, so
     $\lVert P_1P_2t\rVert^2=\lVert P_1t\rVert^2-\lVert P_1(t-P_2t)\rVert^2
-    \ge(1-\delta_1)\lVert t\rVert^2-\lVert t-P_2t\rVert^2$, and
+        \ge(1-\delta_1)\lVert t\rVert^2-\lVert t-P_2t\rVert^2$, and
     $\lVert t-P_2t\rVert^2=\lVert t\rVert^2-\lVert P_2t\rVert^2
-    \le\delta_2\lVert t\rVert^2$.
+        \le\delta_2\lVert t\rVert^2$.
 \end{proof}
 
 \begin{theorem}[Dimension of an approximated subspace]
@@ -228,9 +228,9 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     injective by the projection lower bound and hence bijective.
     Given $u\in U$, choose $t\in T$ with $P_Ut=u$. Then
     \begin{align}
-        (1-\delta)\|t\|^2&\le\|u\|^2,\notag\\
+        (1-\delta)\|t\|^2 & \le\|u\|^2,\notag                         \\
         \|u\|^2=|\langle t,u\rangle|
-            &=|\langle t,P_Tu\rangle|\le\|t\|\|P_Tu\|.
+                          & =|\langle t,P_Tu\rangle|\le\|t\|\|P_Tu\|.
     \end{align}
     Squaring and combining the inequalities gives
     $(1-\delta)\|u\|^2\le\|P_Tu\|^2$; the zero vector is immediate.
@@ -249,10 +249,10 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     \[
         R\subseteq U,\qquad \dim R=\dim G,\qquad
         \operatorname{Re}\langle Hx,x\rangle
-          \le\frac{A\delta}{1-\delta}\lVert x\rVert^2\quad(x\in R).
+        \le\frac{A\delta}{1-\delta}\lVert x\rVert^2\quad(x\in R).
     \]
     This supplies a variational trial space for the final compression in
-    \cite[Algorithm~t:alg1, lines 1634--1640]{Arad2016RigorousRG}.
+    \cite[the proof of Theorem~\texttt{t:alg1}, lines 1811--1815]{Arad2016RigorousRG}.
 \end{lemma}
 \begin{proof}\leanok
     The map $P_U|_G$ is injective, since
@@ -260,7 +260,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     Thus its image has dimension $\dim G$. For $x=P_Ug$, Pythagoras gives
     \[
         \lVert x-g\rVert^2\le\delta\lVert g\rVert^2
-          \le\frac{\delta}{1-\delta}\lVert x\rVert^2.
+        \le\frac{\delta}{1-\delta}\lVert x\rVert^2.
     \]
     Symmetry and $Hg=0$ imply
     $\langle Hx,x\rangle=\langle H(x-g),x-g\rangle$.
@@ -271,7 +271,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
 \begin{lemma}[Positive energy after projection]
     \label{lem:projected_positive_energy}
     \lean{ContinuousLinearMap.IsPositive.re_inner_add_le_weighted,
-      Submodule.IsCloseTo.map_starProjection_positive_energy_le}
+        Submodule.IsCloseTo.map_starProjection_positive_energy_le}
     \leanok
     Let $H$ be a positive operator on a finite-dimensional real or complex
     inner-product space, with $\|H\|\le A$. Let $E_0\ge0$ and suppose
@@ -279,8 +279,8 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     If $U$ is $\delta$-close to $G$, where $0\le\delta<1$, then every
     $x\in P_U G$ and every $t>0$ satisfy
     \[
-       \operatorname{Re}\langle Hx,x\rangle\le
-       \frac{(1+t^{-1})E_0+(1+t)A\delta}{1-\delta}\,\|x\|^2.
+        \operatorname{Re}\langle Hx,x\rangle\le
+        \frac{(1+t^{-1})E_0+(1+t)A\delta}{1-\delta}\,\|x\|^2.
     \]
     The operator $H$ need not vanish on $G$. This estimate supports
     the regional energy-estimation step of~\cite{Arad2016RigorousRG}.
@@ -289,9 +289,9 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     \uses{thm:subspace_close_iff}
     Positivity at $u-tv$ gives the weighted inequality
     \[
-       \operatorname{Re}\langle H(u+v),u+v\rangle
-       \le(1+t^{-1})\operatorname{Re}\langle Hu,u\rangle
-         +(1+t)\operatorname{Re}\langle Hv,v\rangle.
+        \operatorname{Re}\langle H(u+v),u+v\rangle
+        \le(1+t^{-1})\operatorname{Re}\langle Hu,u\rangle
+        +(1+t)\operatorname{Re}\langle Hv,v\rangle.
     \]
     Write $x=P_Ug=g+(P_Ug-g)$. Pythagoras and closeness give
     $\|P_Ug-g\|^2\le\delta\|g\|^2$ and
@@ -303,7 +303,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
 \begin{lemma}[A constant regional energy bound]
     \label{lem:projected_positive_energy_three}
     \lean{Real.projected_positive_energy_le_three,
-      Submodule.IsCloseTo.map_starProjection_energy_le_three}
+        Submodule.IsCloseTo.map_starProjection_energy_le_three}
     \leanok
     Under the preceding assumptions, suppose $E_0=2$ and
     $\delta\le[100(A+1)]^{-1}$. Then every $x\in P_U G$ satisfies

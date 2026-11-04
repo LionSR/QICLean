@@ -116,7 +116,6 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
     \end{align}
 \end{proof}
 
-
 \section{Distinct lower and upper targets}
 
 \begin{theorem}[Tensor error reduction between nested targets]
@@ -131,10 +130,12 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
     $\Delta\ge0$. If $S$ is $\delta$-viable for $T_+$ and $\delta<1$,
     then $V=\sum_i A_iS$ has dimension at most $|I|\dim S$ and is
     $\Delta/(1-\delta)^2$-viable for $T$.
+    This is the tensor argument in
+    \cite[Theorem~4.8, lines 1037--1041]{Arad2016RigorousRG}.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:subspace_close_nested_contract, thm:subspace_close_mono,
-        thm:finite_image_span_dimension}
+        thm:finite_image_span_dimension, lem:tensor_family_image_containment}
     Apply nested-target error reduction to $S\otimes\mathcal H_R$.
     The identity $K(s\otimes r)=\sum_i A_is\otimes R_ir$ places its
     image in $V\otimes\mathcal H_R$. Closeness passes to this larger

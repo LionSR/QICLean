@@ -24,21 +24,3 @@ physical low-density dimension bound, its strict sampling contradiction,
 an entropy theorem, an MPS approximation or a running-time bound. Those
 require the actual improving family, the calibrated sample, and their
 physical hypotheses to be assembled separately.
-
-## Verification
-
-The final production modules passed actual-name private checks with all
-package strict options against the fully built immutable TNLean provider
-`994a1963ab36a234e1b02689a13bf1da965573b2` and its own QICLean package
-`67a788fdb9660c16c70c97bf36be5da6bbbaa348`. Source, selected dependency
-objects, build inputs and the prebuilt Mathlib sentinel were guarded.
-The scalar module took 4.607 seconds; the minimum module took 5.390
-seconds. An imported inspection of all four public declarations took
-5.540 seconds and reported only `propext`, `Classical.choice` and
-`Quot.sound`. The temporary diagnostic source was removed.
-
-Source-to-blueprint synchronization, reverse coverage, reader-facing
-prose and whitespace checks passed. The repository contains no new
-proof placeholder or permanent foundation fixture. These are private
-checks using the verified provider; an ordinary build and compiled
-blueprint check of the combined contribution remain integration checks.

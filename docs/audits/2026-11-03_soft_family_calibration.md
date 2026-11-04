@@ -40,32 +40,7 @@ and a count which would change that tolerance.
 
 This is a new sufficient numerical auxiliary, not the printed fourth-order
 choice of ALVV or a quantitative gap or running-time estimate. The separate
-scope note docs/paper-gaps/alvv16_soft_family_calibration.tex distinguishes
+scope note docs/paper-gaps/alvv16_bootstrap_constants.tex distinguishes
 a prospective half-dimension resampling and original-target trimming
 procedure from the paper's sample-once iteration. Neither procedure's
-probability analysis follows from this scalar theorem alone. The blueprint
-states exactly this numerical theorem under its own label.
-
-## Verification
-
-The final production source passes actual-name strict checking at the
-standard default limits in 4.930 seconds. The held provider is TNLean
-6dcb693b498041f9f0e2efb8df37a5474aac2b17 with its own QICLean package
-79fb1403dd2ec8ca448204f89ccef73c1a77f509. This source-only worktree begins
-at that exact QICLean revision, with all three toolchain/build inputs
-byte-identical. The new module imports only Mathlib. Its selected closure
-therefore contains no QICLean or TNLean declaration or artifact override.
-
-An imported inspection of the public theorem passes in 3.468 seconds and
-reports only propext, Classical.choice and Quot.sound. An earlier temporary
-inspection printed the same foundations but was rejected for a missing
-module docstring; it is not counted as a successful strict audit. Temporary
-command sources are deleted after the inspection. All incomplete-proof
-diagnostics are retained under /tmp; no elaboration limit was increased.
-
-Generated imports, source/blueprint synchronization and reverse declaration
-coverage, reader prose, proof integrity, whitespace and the repeated-pattern
-scan pass. The theorem and its proof, and the complete separate scope note,
-were rendered for reader inspection. Ordinary combined compilation and
-complete compiled blueprint declarations remain parent integration checks.
-No provider, build cache, pin or Mathlib source was modified or built.
+probability analysis follows from this scalar theorem alone.

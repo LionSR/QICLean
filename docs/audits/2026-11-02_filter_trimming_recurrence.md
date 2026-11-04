@@ -14,8 +14,8 @@ error at most η.
 
 These four numerical results support the final repeated filtering in
 ALVV, arXiv:1602.08828v2, Algorithm t:alg1, lines 1634–1640.
-They use only Mathlib. They do not assume or prove that collective
-trimming approximates every vector in the entire filtered subspace.
+They do not assume or prove that collective trimming approximates every
+vector in the entire filtered subspace.
 The source argument instead uses a reference space of low Schmidt rank;
 its target-relative trimming estimate, choice of reference accuracy,
 actual sequence of retained subspaces, quantitative round count and

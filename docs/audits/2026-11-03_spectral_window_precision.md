@@ -21,29 +21,3 @@ The general half-error estimate does not need a separate beta-positive
 hypothesis: its assumed positive precision budget already forces that
 sign. The explicit minimum theorem assumes beta > 0 to prove positivity
 of the constructed precision.
-
-## Verification
-
-The new Mathlib-only leaf passes actual-name strict checking at default
-limits in 9.084 seconds, using the immutable TNLean provider
-88ab31ce57bdbc4bcb65be00055d1db50df4f259 and its own QICLean package
-e817ea0a8a46440eddc361d41cc46b9e61ba10f4. It imports no QICLean or TNLean
-declaration. Its source-only branch starts at QICLean
-45d42c80d5cd20632225a74607e97dae5b9af89c; the toolchain and dependency/build
-inputs match the verified package. This checks the new leaf, rather than
-claiming an ordinary full build of that source branch.
-
-All five public declarations pass an imported foundation inspection in
-18.037 seconds with only propext, Classical.choice and Quot.sound. The
-inspection selects the new checked object explicitly; its temporary
-command source is deleted. The initial check's deprecated import,
-missing order lemma and tactic-layout linter were repaired and are not
-counted as successful verification.
-
-Generated imports, complete source/blueprint synchronization, reverse
-coverage of all five public declarations, reader prose, proof integrity,
-whitespace and the tactic-pattern scan pass. The mathematical lemma and
-corollary were rendered together and their one-page layout was inspected.
-Ordinary combined compilation and complete compiled blueprint declarations
-remain integration checks. No provider, cache, dependency pin or Mathlib
-source was changed or built.

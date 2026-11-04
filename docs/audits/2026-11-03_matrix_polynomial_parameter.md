@@ -22,21 +22,3 @@ of the same native operator chain. In particular, an exterior scalar term
 may depend on the final estimated center only after the identity has been
 proved for every fixed exterior matrix. No logarithm of the interpolation
 parameter is treated as a polynomial.
-
-## Verification
-
-The exact production module passes strict elaboration in 3.656 seconds,
-with both new polynomial dependencies supplied as immutable checked objects
-against the fully built TNLean 6dcb693b / QICLean 79fb1403 pair. It retains
-default proof-resource limits, standard linters and warnings as errors.
-The imported foundation inspection passes in 4.204 seconds and uses only
-`propext`, `Classical.choice` and `Quot.sound`; its temporary source is deleted.
-
-Complete source/blueprint synchronization, generated imports, reader-facing
-prose, forbidden-token and whitespace checks pass. The mathematical entry
-is an auxiliary lemma. Its one-page mathematical excerpt was rendered and
-visually inspected without overfull boxes. The tactic ledger records direct reuse of Mathlib's
-matrix algebra homomorphism and the need for an explicit matrix constructor.
-Ordinary combined build and compiled blueprint checks remain required after
-integration. No provider, ordinary build object or Mathlib cache was changed
-by these private checks.

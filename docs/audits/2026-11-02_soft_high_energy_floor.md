@@ -10,8 +10,7 @@ only that A is Hermitian and A>=eI. No commutativity, projection comparison,
 reverse residual or spectral gap is supplied.
 
 A shared functional-calculus translation theorem handles arbitrary functions
-on the finite translated spectrum. The preceding hard-clipping shift identity
-now reuses it; that declaration's mathematical signature is unchanged.
+on the finite translated spectrum.
 
 The quantitative margin is chosen for fixed order and growing energy width.
 For eta>=0, m>=2 and t>=U=2(eta+8), the actual polynomial error at U is at
@@ -37,20 +36,4 @@ and cluster estimates are not asserted or restored.
 
 The results support ALVV, arXiv:1602.08828v2, Definitions `def:hard-trunc`,
 `def:soft-trunc` and `lem:exp-approx`, lines 873–886, 1178–1185 and
-1195–1255. They have their own auxiliary mathematical book statements.
-
-Strict actual-name checks passed in 4.224 seconds for scalar translation,
-4.707 seconds for the high-energy floor/projection module, and 4.380 seconds
-for the refactored hard-clipping shift theorem. The imported audit of the
-four new public declarations and the unchanged public shift statement
-passed in 4.337 seconds. Every declaration uses only `propext`,
-`Classical.choice` and `Quot.sound`.
-
-Checks used immutable fully built TNLean
-`1f0087d553cec4bf20448b0358489716cec64caf` and its own QICLean package
-`099049ed6805334c6517c66b4b9858480bc7e9c7`, with explicit frozen new-source
-overrides. Selected sources, objects, build inputs and the prebuilt Mathlib
-record were guarded. All new objects and temporary foundation commands
-remain under `/tmp`; the source worktree has no `.lake`. No provider,
-dependency cache or Mathlib source was changed. Ordinary integrated and
-compiled-book checks remain pending. No permanent Lean fixture is added.
+1195–1255.

@@ -24,15 +24,3 @@ the physical estimated-center residual, the common five-region boundary and
 ground-energy bounds, the printed spectral enlargement or the full GEN
 construction. The physical exact-center scope note remains open until those
 physical substitutions are proved.
-
-The final strict actual-name module check passed in 5.494 seconds. The imported
-two-declaration foundation audit passed in 5.238 seconds; each declaration
-reports only propext, Classical.choice and Quot.sound. The checks used immutable
-fully built TNLean 71db89efb903199a223ce22a9704d5e5ba3698f4 and its own
-QICLean 602972abe8a0463ee04c586e029cd73d8ebc894b. Selected sources, objects,
-build inputs and the prebuilt Mathlib record were guarded. All new outputs
-and foundation commands remain under /tmp; the source worktree has no .lake.
-No provider, dependency cache or Mathlib source was changed.
-
-The mathematical book contains both statements. Ordinary integrated full-library
-and compiled-book checks remain pending. No permanent test fixture is added.

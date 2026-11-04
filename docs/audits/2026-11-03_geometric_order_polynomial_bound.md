@@ -26,27 +26,3 @@ exp(a0 log q)(N+1)^p0, where p0=ceil(a1 log q). It then takes
 All these choices precede N. The result is a scalar auxiliary for the
 soft heat approximation; it does not prove a physical family theorem,
 a bound for degrees growing with length, or a running-time estimate.
-No source theorem is marked complete on the strength of this numerical
-lemma. The blueprint states the auxiliary with exactly its hypotheses.
-
-## Verification
-
-The final Mathlib-only module passes actual-name strict checking at the
-standard default limits in 4.283 seconds. The first complete draft also
-passed, in 4.285 seconds; the subsequent check removes an unused import
-and an unused local fact. Neither check changes an elaboration limit.
-The immutable provider is TNLean 8f85b0be007c009ca208e82cbec4873dff2427e6
-with its own QICLean package cc2569b660d020e2946cdc979488d639add36d9f.
-The source-only worktree starts at eb79d840b8c9be27c0420b941a88093f316e3cc6;
-its toolchain and two build/dependency inputs match the provider byte for
-byte. The selected production module imports only Mathlib, so it needs
-no old QICLean declaration or artifact override.
-
-An imported foundation inspection passes in 3.865 seconds and reports only
-propext, Classical.choice and Quot.sound. Temporary command sources are deleted afterwards.
-Generated imports, complete source/blueprint synchronization and reverse
-coverage, reader prose, proof integrity, whitespace and the repeated-pattern
-scan pass. The theorem and proof were rendered for reader inspection.
-Ordinary combined compilation and the complete compiled blueprint remain
-parent integration checks. No provider, cache, pin or Mathlib source was
-changed or rebuilt.

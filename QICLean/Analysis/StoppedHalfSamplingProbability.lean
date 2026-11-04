@@ -16,8 +16,8 @@ import QICLean.Analysis.ViableSubspaceOrder
 
 A finite product of the actual rank-unitary Haar laws supplies fresh seeds
 for the existing stopped iteration. Guarded true failures depend on the
-original target alone. This supports the corrected repeated resampling
-argument associated with ALVV, arXiv:1602.08828v2, lines 749–755.
+original target alone. This supports the repeated-resampling variant
+associated with ALVV, arXiv:1602.08828v2, lines 749–755.
 No measurable choice of auxiliary success events is used.
 -/
 
@@ -179,8 +179,8 @@ private theorem active_native_half_trim_eq
 /-- The actual stopped-run probability for a fixed coefficient satisfying
 only the explicit scalar sampling threshold. Consequently a physical caller
 may choose this coefficient before its chain-dependent carrier types.
-There is no one-step success or section-bound premise. Supporting corrected
-repeated resampling for ALVV, arXiv:1602.08828v2, lines 749–755. -/
+There is no one-step success or section-bound premise. Supporting the
+repeated-resampling variant for ALVV, arXiv:1602.08828v2, lines 749–755. -/
 theorem canonicalHalfSampleTrimIterate_joint_probability_of_threshold
     {X : Type*} (D a K : ℕ) (hD : 2 ≤ D) (eta : ℝ) (hK : 1 ≤ K)
     (hThreshold : ∀ r N Q : ℕ, K * (r + 1) * (N + 2) ^ 2 ≤ Q →
@@ -268,7 +268,7 @@ theorem canonicalHalfSampleTrimIterate_joint_probability_of_threshold
 rank and ambient dimension, controls the true original-target failures of
 the actual stopped half-resampling run. The family and reference hypotheses
 are those of the proved fixed-input sampling theorem; no success or
-section estimate is assumed. This is a corrected repeated-resampling
+section estimate is assumed. This is a repeated-resampling
 auxiliary for ALVV, arXiv:1602.08828v2, lines 749–755, not the printed
 sample-once loop or a running-time assertion. -/
 theorem exists_canonicalHalfSampleTrimIterate_joint_probability

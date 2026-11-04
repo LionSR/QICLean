@@ -23,13 +23,3 @@ actual `xi * sqrt(k*bRef)` budget for the number `k` of cuts. Image dimension
 ceilings do not replace that cut count. Preservation of terminal viability
 and the final probability estimate remain a separate loop-event application;
 no complete-parent success or running-time assertion is assumed here.
-
-All three modules were checked separately with default limits against immutable
-TNLean `8048ec790ad627488585367823e3be409015fd13` and its own QICLean
-`8d0f7d15b5151325dee7f885428074c6ecafb0b9`, using explicit fresh prerequisite
-objects. The final geometry, refreshed parent and properties checks passed
-in 5.456, 5.208 and 5.485 seconds. An imported inspection of all eleven public
-statements passed in 4.910 seconds, with only `propext`, `Classical.choice`
-and `Quot.sound`; the temporary inspection source was removed. No provider,
-cache, or Mathlib source was modified. Full ordinary-library and compiled-book
-verification is reserved for the combined integration.

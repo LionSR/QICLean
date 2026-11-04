@@ -42,7 +42,6 @@ Here $U$ is $\varepsilon$-close to $T$ when every $t\in T$ satisfies
 $\|P_Ut\|^2\ge(1-\varepsilon)\|t\|^2$. This fixes the direction of the
 following two transfers.
 
-
 Let $G_+,G_-$ be the original upper and lower targets, and let
 $T_{\rm hi},T_{\rm lo}$ be the targets for the improving family.
 Suppose $G_+$ is $1/200$-close to $T_{\rm hi}$ and $T_{\rm lo}$ is
@@ -80,13 +79,17 @@ The count comparison gives $Q^2\le p^2D^7$, hence
 $\alpha^2\ge9/(10000D^{11})$. Also $s>rD/4$ and
 $1+2/\sqrt\alpha\le13D^3$. Writing $x=\log D\ge100$, the logarithm
 of the failure expression is at most $13rx-rD/64<0$, since
-$D=e^x\ge x^3/6>832x$.
+$D=e^x\ge x^3/6>832x$. The resulting sampling step between two nested
+targets is \leanid{Submodule.exists_isViable_nested_sample_of_count_comparison},
+and the induction over nested improving families that selects the natural
+minima is \leanid{Submodule.exists_isViable_finrank_le_of_dyadic_families}.
 
 The count and suppression conditions must be proved together for the same
 physical family. Increasing a count bound after proving its suppression
 tradeoff does not establish these conditions. The physical spectral-window
 comparisons and the complete low-density induction are separate from this
 finite sampling repair.
+
 \section{A consistent positive logarithm}
 
 Source line 1112 uses a power $\log^c(\log n/\mu)$, whereas the

@@ -20,15 +20,3 @@ positive-threshold hypothesis. The terminal theorem retains the resulting
 the case where a stopped resampling process takes no active round; it does
 not identify the process with the printed sample-once Figure, prove joint
 probability, or assert a running-time bound.
-
-The actual module passed strict separate checking in 5.649 seconds against
-the immutable TNLean provider `8048ec790ad627488585367823e3be409015fd13`
-and its own QICLean revision `8d0f7d15b5151325dee7f885428074c6ecafb0b9`,
-with no old dependency overrides. An imported inspection of both public
-statements passed in 4.511 seconds, using only `propext`, `Classical.choice`
-and `Quot.sound`; its temporary source was removed. Blueprint coverage,
-import aggregation, reader-facing prose, integrity and whitespace checks
-passed. The amended bootstrap note rendered in three pages, all visually
-inspected, with no overfull boxes. No provider or cache was written and no
-Mathlib source was compiled. Ordinary combined-library and compiled-blueprint
-checks remain part of integration.

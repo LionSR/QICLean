@@ -32,32 +32,3 @@ parent/exterior coordinates.
 These are auxiliaries to ALVV, arXiv:1602.08828v2, Definition d:vs,
 lines 433–440, and Lemma l:t, lines 500–523. They are not an adaptive
 probability bound, a completed randomized algorithm, or a runtime claim.
-
-The source-only worktree starts from QIC473d9766 and therefore also needs
-c4b9bbe9 and a9ad4839. Private actual-name checks read immutable
-TN9ff185339e / own QIC6878435c, using exact selected source/object,
-root-input and prebuilt-Mathlib hashes and changed-importer guards.
-Final strict checks passed: ViableSubspaceTensorProjectionMeasurable
-8.204 seconds, ten protected pairs; RegionalTensorMergeMeasurable
-5.520 seconds, 51 pairs; CanonicalSamplingViabilityMeasurable
-5.304 seconds, 79 pairs. The latter was re-elaborated after the tensor
-module's final change. The TN physical companion passed in 5.116 seconds,
-55 pairs. The combined nine-public imported foundation inspection passed
-in 4.899 seconds, 91 pairs, using only propext, Classical.choice and
-Quot.sound. Its temporary source was deleted.
-
-One rejected direct-change proof reached the default 200000-heartbeat
-limit in 13.504 seconds. The final proof instead rewrites the existing
-isometry-to-operator coercion explicitly before simplifying. No proof
-budget was increased; the captured diagnostic remains under the private
-diagnostics directory. Other diagnostics concerned coercion normalization,
-a nonexistent map_map name, and removable unused instances.
-
-Generated imports, reader-facing prose, source blueprint synchronization,
-proof integrity and whitespace checks passed. No new repeated proof
-pattern required an abstraction: the coordinate projection and tensor
-projection lemmas are shared by the regional and physical consumers.
-The source-only worktree has no .lake. No provider or cache was modified,
-no compiled artifact was copied and no Mathlib source was built. The
-ordinary canonical build and compiled blueprint gates remain part of the
-coordinated integration.

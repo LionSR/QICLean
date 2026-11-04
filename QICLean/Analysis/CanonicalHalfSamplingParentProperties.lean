@@ -18,10 +18,9 @@ later probability application.
 
 This supports ALVV, arXiv:1602.08828v2, the resampling description at
 lines 749–755 and the reference argument at lines 1801–1813.
-**Local fix (repeated sampling and terminal amplification):** The operation
-is the corrected stopped-resampling process with a deterministic terminal
-image and trim, not an identification with the sample-once Figure
-`fig:merge-prime`, lines 1664–1673; see
+This module treats a repeated-resampling variant of the merge procedure
+sketched at arXiv:1602.08828v2, lines 711–755; Figure `fig:merge-prime` and
+Theorem `t:alg1` are not formalized here. See
 `docs/paper-gaps/alvv16_bootstrap_constants.tex`.
 -/
 

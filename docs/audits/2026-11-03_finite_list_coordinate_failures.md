@@ -14,17 +14,3 @@ frozen update and finite-ordinal section theorems remain unchanged active
 dependencies. This auxiliary supports ALVV, arXiv:1602.08828v2,
 Figure `fig:algo1` and lines 1777–1817; it does not assume or construct an
 adaptive process.
-
-The actual-name strict check passed in 3.585 seconds against immutable
-TNLean `435cbe7fe53e5d3a04c1b8eb2382753749f21a64` and its own
-QICLean `b2ea12a0139820758e161514968ed9ead661c5a7` package, with the frozen
-section theorems as explicit source/object overrides. Three selected QIC
-dependency pairs and all build inputs were guarded. Default elaboration
-options were retained. The imported foundation inspection uses only `propext`,
-`Classical.choice`, and `Quot.sound`; its temporary source was deleted.
-Source/blueprint synchronization, reader prose, generated imports, proof
-integrity, whitespace and pattern checks passed. The new mathematical entry
-was rendered and inspected. Exact hashes, timing and check records are in
-the verification manifest. No provider, cache, dependency pin,
-or Mathlib source was changed or built. Ordinary combined compilation and
-compiled blueprint declarations remain integration checks.

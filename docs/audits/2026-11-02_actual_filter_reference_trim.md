@@ -11,11 +11,10 @@ Reference error ε≤c²η/1024 and threshold ξ>0 satisfying ξ√(mb)≤cη/48
 
     δ_next ≤ (1−c/4)δ+cη/8,      0≤δ≤1/2.
 
-A new Mathlib-only numerical lemma bounds these exact constants. The result
-uses the corrected collective-trimming increment 2ξ√(mb) documented in
-`docs/paper-gaps/alvv16_trimming_constant.tex`. It implements the local
-reference argument of ALVV, arXiv:1602.08828v2, proof of Theorem t:alg1,
-lines 1801–1813. It places no requirement that the entire filtered image
+The result uses the corrected collective-trimming increment 2ξ√(mb)
+documented in `docs/paper-gaps/alvv16_trimming_constant.tex`. It implements
+the local reference argument of ALVV, arXiv:1602.08828v2, proof of Theorem
+t:alg1, lines 1801–1813. It places no requirement that the entire filtered image
 remain close to the entire untrimmed space after trimming.
 
 The physical reference with this chosen accuracy, the repeated actual
