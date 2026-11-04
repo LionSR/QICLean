@@ -74,6 +74,7 @@ import QICLean.Channel.KrausIterateChoi
 import QICLean.Channel.KrausMap
 import QICLean.Channel.KrausRank
 import QICLean.Channel.KrausRectangular
+import QICLean.Channel.KrausRectangularComposition
 import QICLean.Channel.KrausRepresentation
 import QICLean.Channel.KrausSupportAbsorption
 import QICLean.Channel.KrausUnitaryFreedom
