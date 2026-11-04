@@ -342,8 +342,8 @@ theorem exists_interval_shrinking_polynomial (n : ℕ) {a b u : ℝ}
 
 /-- **The printed near-ground slope fails** (ALVV, arXiv:1602.08828v2, Theorem `thm:Cheby-AGSP`,
 item 2, lines 822–824 and Definition `def:Cheby-AGSP`, lines 795–801). Let
-`P̃_k(x) = T_k(2 (x - η₁)/(u - η₁) - 1)` with `η₀ < η₁ < u`, and `γ = η₁ - η₀`. For every
-`k ≥ 1`, the normalized polynomial `P_k = P̃_k / P̃_k(η₀)` satisfies
+`Q_k(x) = T_k(2 (x - η₁)/(u - η₁) - 1)` with `η₀ < η₁ < u`, and `γ = η₁ - η₀`. For every
+`k ≥ 1`, the normalized polynomial `P_k = Q_k / Q_k(η₀)` satisfies
 `P_k(η₀ + γ / k) ≤ 2 exp (-√(γ / (u - η₀)))`.
 
 The right side does not depend on `k`, and it is below one once `γ / (u - η₀) > (log 2)²`.
