@@ -31,8 +31,9 @@ This supports ALVV, arXiv:1602.08828v2, t:alg1, lines 1777–1817, for the expli
 modified construction. The capped gap, block leaves, fixed nominal failure
 target and enlarged integer counts remain. No adaptive joint probability,
 source energy-estimation invariant or running time is asserted. The relevant
-notes remain docs/paper-gaps/alvv16_approximation_parameters.tex and
-docs/paper-gaps/alvv16_final_filter_gain.tex in TNLean.
+TNLean paper-gap notes remain `alvv16_approximation_parameters` and
+`alvv16_final_filter_gain`; the second is introduced by the TNLean
+continuation drafts.
 
 ## Verification
 

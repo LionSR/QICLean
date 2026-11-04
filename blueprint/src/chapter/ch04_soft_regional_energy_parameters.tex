@@ -36,14 +36,14 @@ regional operator used to measure this energy is chosen separately.
     \leanok
     Let $D,s\in\N$, with $D\ge2$ and $s\ge1$, and set
     \begin{align}
-        a&=\frac3{32D^{12}s^5},&
-        \tau&=\frac{a^2}{2^{20}},&
-        \Delta&=\frac1{200000D^{12}}.
+        a      & =\frac3{32D^{12}s^5},  &
+        \tau   & =\frac{a^2}{2^{20}},   &
+        \Delta & =\frac1{200000D^{12}}.
     \end{align}
     Both $\tau$ and $\Delta/(1-1/4)^2$ are positive, and
     \begin{align}
-        \tau&\le\frac1{1024(D+1)},&
-        \frac{\Delta}{(1-1/4)^2}&\le\frac1{100(D+1)}.
+        \tau                     & \le\frac1{1024(D+1)}, &
+        \frac{\Delta}{(1-1/4)^2} & \le\frac1{100(D+1)}.
     \end{align}
 \end{theorem}
 \begin{proof}\leanok
@@ -60,7 +60,7 @@ for the same count, using one application of the improving family to
 an input of viability error at most $1/4$.
 
 The soft definition allows $t\ge m\ge2$, as satisfied here;
-see \cite[Definition \texttt{def:soft-trunc}, lines 1178--1185]
+see the definition of soft truncation in \cite[lines 1178--1185]
 {Arad2016RigorousRG}. The literal soft-generation procedure instead
 forms its polynomial from the soft Hamiltonian and uses $m=4$;
 see \cite[Figure \texttt{fig:generate} and lines 1377--1404]
@@ -75,9 +75,9 @@ hard polynomial family with that procedure or assert its running time.
     $0\le\Delta\le(D^{12}M^{10})^{-1}$. Set
     $\tau=(D^{24}M^{10})^{-1}$. Then
     \begin{align}
-      \tau M\le\frac1{64},\qquad
-      \frac{3\tau}{200}\le\frac1{1024(A+1)},\qquad
-      \frac{\Delta}{(91/100)^2}\le\frac1{100(A+1)}.
+        \tau M\le\frac1{64},\qquad
+        \frac{3\tau}{200}\le\frac1{1024(A+1)},\qquad
+        \frac{\Delta}{(91/100)^2}\le\frac1{100(A+1)}.
     \end{align}
     These scalar bounds support the regional-energy estimate in
     \cite[line 1807]{Arad2016RigorousRG}.
@@ -96,7 +96,7 @@ hard polynomial family with that procedure or assert its running time.
     Let $g,M,\tau,t,T$ be real and $m$ a nonnegative integer.
     Suppose $0\le g\le M$, $\tau\ge0$, $\tau M\le1$, and
     \begin{align}
-      3\left(32e^{-(T-156-2g)/8}
+        3\left(32e^{-(T-156-2g)/8}
         +\frac tm\left(\frac Tt\right)^m\right)
         \le\frac{\tau g}{10^6}.
     \end{align}
