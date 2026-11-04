@@ -31,11 +31,11 @@ that viability is preserved. See~\cite{gap:alvv16_soft_family_calibration}.
     orthogonal projection in the fixed input coordinates. Below a fixed
     threshold $h$, retain $P$. For every input matrix and every unitary seed,
     \[
-      \operatorname{rank}P_{\mathrm{next}}\le
-      \begin{cases}
-        \lfloor\operatorname{rank}P/2\rfloor,&h\le\operatorname{rank}P,\\
-        \operatorname{rank}P,&\operatorname{rank}P<h.
-      \end{cases}
+        \operatorname{rank}P_{\mathrm{next}}\le
+        \begin{cases}
+            \lfloor\operatorname{rank}P/2\rfloor, & h\le\operatorname{rank}P, \\
+            \operatorname{rank}P,                 & \operatorname{rank}P<h.
+        \end{cases}
     \]
     This includes $D=0$, with the natural quotient interpreted as zero,
     and zero-rank inputs. There is no target or viability premise.
