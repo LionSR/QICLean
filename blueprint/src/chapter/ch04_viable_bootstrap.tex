@@ -139,3 +139,64 @@ for the failure probability of random sampling.
     Transfer back to $uG$. Finally,
     $\dim\sum_j A_jW_0\le\sum_j\dim A_jW_0\le D^2\dim W_0$.
 \end{proof}
+
+\begin{lemma}[The ceiling scale]
+    \label{lem:ceil_quadratic_scale}
+    \lean{Real.ceil_quadratic_scale_bounds}
+    \leanok
+    If $A,v\ge1$ and $0<g\le1$, then
+    \begin{align*}
+      Av^2/g\le\lceil Av^2/g\rceil
+      \le(A+1)v^2/g,
+      \qquad A\le\lceil Av^2/g\rceil.
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    \leanok
+    The ceiling lies between $Av^2/g$ and $Av^2/g+1$.
+    Use $v^2/g\ge1$ to absorb the additive term.
+\end{proof}
+
+\begin{lemma}[One dyadic change of ceiling]
+    \label{lem:ceil_quadratic_scale_half_step}
+    \lean{Real.ceil_quadratic_scale_half_step}
+    \leanok
+    Suppose $A,u\ge100$, $v\ge1$, $v\le u+1$, and
+    $0<g,h\le1$ with $g\le2h$. Put
+    $\ell=\lceil Au^2/g\rceil$ and $\ell'=\lceil Av^2/h\rceil$.
+    Then $A\le\ell,\ell'$ and $\ell'\le(21/10)\ell$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:ceil_quadratic_scale}
+    Use $A+1\le(101/100)A$, $v\le(101/100)u$ and $1/h\le2/g$.
+    The resulting factor $2(101/100)^3$ is smaller than $21/10$.
+\end{proof}
+
+\begin{theorem}[One dyadic change of count]
+    \label{thm:log_polynomial_filter_count_half_step}
+    \lean{Real.log_polynomial_filter_count_half_step}
+    \leanok
+    Fix an integer $m$ with $\log m\ge100$ and a real $A\ge100$.
+    For $0<g\le1$, define
+    \begin{align*}
+      u_g&=1+\log m+\log(1/g),&
+      \ell_g&=\lceil Au_g^2/g\rceil,&
+      D_g&=(m\ell_g^2)^{22\ell_g}.
+    \end{align*}
+    If $0<h\le1$ and $g\le2h$, then
+    \begin{align*}
+      100\le\log D_g,
+      \qquad\log D_h\le\frac{13}{6}\log D_g.
+    \end{align*}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:ceil_quadratic_scale_half_step}
+    Since $\log2\le1$, one has $u_h\le u_g+1$ and therefore
+    $\ell_h\le(21/10)\ell_g$. Set $B_g=\log m+2\log\ell_g$.
+    The inequality $\log(21/10)\le11/10$ gives
+    $B_h\le B_g+11/5\le(511/500)B_g$, using $B_g\ge100$.
+    Finally $\log D_g=22\ell_gB_g$ and
+    $(21/10)(511/500)<13/6$.
+\end{proof}
