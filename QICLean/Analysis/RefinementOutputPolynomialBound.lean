@@ -88,6 +88,88 @@ private theorem final_cost_identity (Cb CN Ccount Z : ℝ) (P : ℕ) :
   ring
 
 
+/-- The final cost comparison of `exists_refinement_output_polynomial_bound`, stated
+without the surrounding local definitions so that it elaborates in a small context. -/
+private theorem refinement_cost_tail
+    (Z c rho Kc Cb Cs CN Ccount Cpoly : ℝ) (P D L r s Btree B : ℕ)
+    (hZ : 1 ≤ Z) (hLZ : (L : ℝ) + 1 ≤ Z) (hrZ : (r : ℝ) ≤ Z) (hrR : (1 : ℝ) ≤ r)
+    (hD : 1 ≤ D) (hCb : 0 < Cb) (hc : 0 < c) (hrho : 0 < rho)
+    (hcrho : 1 / (c * rho) ≤ Kc * Z ^ 3)
+    (hBt : (Btree : ℝ) ≤ Cb * Z ^ P) (hBr : (B : ℝ) ≤ Cb * Z ^ P)
+    (hs : (s : ℝ) ≤ 4097 * (r : ℝ) * (1 + log (r : ℝ) + log (D : ℝ) + log 2))
+    (hCs : Cs = 4097 * (1 + log (D : ℝ) + log 2))
+    (hCN : CN = 100 * (D : ℝ) ^ 12 * Kc + 1)
+    (hCcount : Ccount = (D : ℝ) ^ 6 * Cs ^ 3)
+    (hCpoly : Cpoly = 1 + 1000000 * (Cb * CN) ^ 2 * Ccount ^ 2) :
+    ((1000000 * (max (r ^ 2 * Btree) (r ^ 2 * B) *
+        Nat.ceil (100 * (D : ℝ) ^ 12 / (c * rho))) ^ 2 * (L + 1) *
+        (D ^ 6 * s ^ 3) ^ 2 : ℕ) : ℝ) ≤
+      Cpoly * Z ^ ((P + 2 + 3) * 2 + (1 + 6 * 2)) := by
+  subst hCpoly hCcount hCN hCs
+  have hbound (B' : ℕ) (hB' : (B' : ℝ) ≤ Cb * Z ^ P) :
+      ((r ^ 2 * B' : ℕ) : ℝ) ≤ Cb * Z ^ (P + 2) := by
+    push_cast
+    calc
+      _ ≤ Z ^ 2 * (Cb * Z ^ P) :=
+        mul_le_mul (pow_le_pow_left₀ (by positivity) hrZ 2) hB' (by positivity) (by positivity)
+      _ = _ := by rw [pow_add]; ring
+  have hcommon : ((max (r ^ 2 * Btree) (r ^ 2 * B) : ℕ) : ℝ) ≤ Cb * Z ^ (P + 2) := by
+    rw [Nat.cast_max]
+    exact max_le (hbound Btree hBt) (hbound B hBr)
+  have hNceil : ((Nat.ceil (100 * (D : ℝ) ^ 12 / (c * rho)) : ℕ) : ℝ) ≤
+      100 * (D : ℝ) ^ 12 / (c * rho) + 1 :=
+    (Nat.ceil_lt_add_one (by positivity : 0 ≤ 100 * (D : ℝ) ^ 12 / (c * rho))).le
+  have hNcost : 100 * (D : ℝ) ^ 12 / (c * rho) ≤
+      100 * (D : ℝ) ^ 12 * Kc * Z ^ 3 := by
+    calc
+      _ = 100 * (D : ℝ) ^ 12 * (1 / (c * rho)) := by ring
+      _ ≤ 100 * (D : ℝ) ^ 12 * (Kc * Z ^ 3) :=
+        mul_le_mul_of_nonneg_left hcrho (by positivity)
+      _ = _ := by ring
+  have hN : ((Nat.ceil (100 * (D : ℝ) ^ 12 / (c * rho)) : ℕ) : ℝ) ≤
+      (100 * (D : ℝ) ^ 12 * Kc + 1) * Z ^ 3 := by
+    calc
+      _ ≤ 100 * (D : ℝ) ^ 12 / (c * rho) + 1 := hNceil
+      _ ≤ 100 * (D : ℝ) ^ 12 * Kc * Z ^ 3 + 1 :=
+        _root_.add_le_add hNcost (le_refl 1)
+      _ ≤ 100 * (D : ℝ) ^ 12 * Kc * Z ^ 3 + Z ^ 3 :=
+        _root_.add_le_add (le_refl _) (one_le_pow₀ hZ)
+      _ = _ := by ring
+  have hDreal : (1 : ℝ) ≤ D := by exact_mod_cast hD
+  have hlogD : 0 ≤ log (D : ℝ) := log_nonneg hDreal
+  have hlog2 : 0 ≤ log (2 : ℝ) := log_nonneg (by norm_num)
+  have hsample : 1 + log (r : ℝ) + log (D : ℝ) + log 2 ≤
+      (1 + log (D : ℝ) + log 2) * (r : ℝ) := by
+    have hlogr := log_le_sub_one_of_pos (by linarith only [hrR] : (0 : ℝ) < r)
+    have hfix := mul_le_mul_of_nonneg_left hrR (add_nonneg hlogD hlog2)
+    nlinarith only [hlogr, hfix]
+  have hCs : 0 ≤ 4097 * (1 + log (D : ℝ) + log 2) := by positivity
+  have hs2 : (s : ℝ) ≤ 4097 * (1 + log (D : ℝ) + log 2) * (r : ℝ) ^ 2 := by
+    calc
+      _ ≤ 4097 * (r : ℝ) * (1 + log (r : ℝ) + log (D : ℝ) + log 2) := hs
+      _ ≤ 4097 * (r : ℝ) * ((1 + log (D : ℝ) + log 2) * (r : ℝ)) :=
+        mul_le_mul_of_nonneg_left hsample (by positivity)
+      _ = _ := by ring
+  have hsZ : (s : ℝ) ≤ 4097 * (1 + log (D : ℝ) + log 2) * Z ^ 2 :=
+    hs2.trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hrZ 2) hCs)
+  have hcount : ((D ^ 6 * s ^ 3 : ℕ) : ℝ) ≤
+      (D : ℝ) ^ 6 * (4097 * (1 + log (D : ℝ) + log 2)) ^ 3 * Z ^ 6 := by
+    push_cast
+    calc
+      _ ≤ (D : ℝ) ^ 6 * (4097 * (1 + log (D : ℝ) + log 2) * Z ^ 2) ^ 3 :=
+        mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hsZ 3) (by positivity)
+      _ = _ := by rw [mul_pow, ← pow_mul, mul_assoc]
+  push_cast
+  calc
+    _ ≤ 1000000 * ((Cb * Z ^ (P + 2)) * ((100 * (D : ℝ) ^ 12 * Kc + 1) * Z ^ 3)) ^ 2 * Z *
+        ((D : ℝ) ^ 6 * (4097 * (1 + log (D : ℝ) + log 2)) ^ 3 * Z ^ 6) ^ 2 := by
+      push_cast at hcommon hN hcount
+      gcongr
+    _ = (1000000 * (Cb * (100 * (D : ℝ) ^ 12 * Kc + 1)) ^ 2 *
+          ((D : ℝ) ^ 6 * (4097 * (1 + log (D : ℝ) + log 2)) ^ 3) ^ 2) *
+        Z ^ ((P + 2 + 3) * 2 + (1 + 6 * 2)) := final_cost_identity _ _ _ Z P
+    _ ≤ _ := mul_le_mul_of_nonneg_right (le_add_of_nonneg_left zero_le_one) (by positivity)
+
 /-- Fixed scalar reference and gap parameters give a uniform polynomial bound for the
 complete recorded refinement cost. Length, multiplicity and inverse requested accuracy are
 not used when choosing the coefficient or natural exponent. Numerical auxiliary to ALVV,
@@ -207,73 +289,7 @@ theorem exists_refinement_output_polynomial_bound
   have hBr' : (B : ℝ) ≤ Cb * Z ^ P := by simpa only [← pow_mul] using hBr
   have hrZ : (r : ℝ) ≤ Z :=
     (le_mul_of_one_le_right (by positivity) hL1).trans hrlZ
-  have hbound (B' : ℕ) (hB' : (B' : ℝ) ≤ Cb * Z ^ P) :
-      ((r ^ 2 * B' : ℕ) : ℝ) ≤ Cb * Z ^ (P + 2) := by
-    push_cast
-    calc
-      _ ≤ Z ^ 2 * (Cb * Z ^ P) :=
-        mul_le_mul (pow_le_pow_left₀ (by positivity) hrZ 2) hB' (by positivity) (by positivity)
-      _ = _ := by rw [pow_add]; ring
-  have hcommon : (common : ℝ) ≤ Cb * Z ^ (P + 2) := by
-    dsimp only [common]
-    rw [Nat.cast_max]
-    exact max_le (hbound Btree hBt') (hbound B hBr')
-  have hc : 0 < c := _hc
-  have hrho : 0 < rho := _hrho
-  have hNceil : (N : ℝ) ≤ 100 * (D : ℝ) ^ 12 / (c * rho) + 1 :=
-    (Nat.ceil_lt_add_one (by positivity : 0 ≤ 100 * (D : ℝ) ^ 12 / (c * rho))).le
-  have hcrho' : 1 / (c * rho) ≤ Kc * Z ^ 3 := hcrho
-  have hNcost : 100 * (D : ℝ) ^ 12 / (c * rho) ≤
-      100 * (D : ℝ) ^ 12 * Kc * Z ^ 3 := by
-    calc
-      _ = 100 * (D : ℝ) ^ 12 * (1 / (c * rho)) := by ring
-      _ ≤ 100 * (D : ℝ) ^ 12 * (Kc * Z ^ 3) :=
-        mul_le_mul_of_nonneg_left hcrho' (by positivity)
-      _ = _ := by ring
-  have hN : (N : ℝ) ≤ CN * Z ^ 3 := by
-    calc
-      _ ≤ 100 * (D : ℝ) ^ 12 / (c * rho) + 1 := hNceil
-      _ ≤ 100 * (D : ℝ) ^ 12 * Kc * Z ^ 3 + 1 :=
-        _root_.add_le_add hNcost (le_refl 1)
-      _ ≤ 100 * (D : ℝ) ^ 12 * Kc * Z ^ 3 + Z ^ 3 :=
-        _root_.add_le_add (le_refl _) (one_le_pow₀ hZ)
-      _ = _ := by dsimp only [CN]; ring
-  have hDreal : (1 : ℝ) ≤ D := by exact_mod_cast hD
-  have hlogD : 0 ≤ log (D : ℝ) := log_nonneg hDreal
-  have hlog2 : 0 ≤ log (2 : ℝ) := log_nonneg (by norm_num)
-  have hsample : 1 + log (r : ℝ) + log (D : ℝ) + log 2 ≤
-      (1 + log (D : ℝ) + log 2) * (r : ℝ) := by
-    have hlogr := log_le_sub_one_of_pos (by linarith only [hrR] : (0 : ℝ) < r)
-    have hfix := mul_le_mul_of_nonneg_left hrR (add_nonneg hlogD hlog2)
-    nlinarith only [hlogr, hfix]
-  have hCs : 0 ≤ Cs := by dsimp only [Cs]; positivity
-  have hs2 : (s : ℝ) ≤ Cs * (r : ℝ) ^ 2 := by
-    calc
-      _ ≤ 4097 * (r : ℝ) * (1 + log (r : ℝ) + log (D : ℝ) + log 2) := hs
-      _ ≤ 4097 * (r : ℝ) * ((1 + log (D : ℝ) + log 2) * (r : ℝ)) :=
-        mul_le_mul_of_nonneg_left hsample (by positivity)
-      _ = _ := by dsimp only [Cs]; ring
-  have hsZ : (s : ℝ) ≤ Cs * Z ^ 2 :=
-    hs2.trans (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hrZ 2) hCs)
-  have hcount : (count : ℝ) ≤ Ccount * Z ^ 6 := by
-    change ((D ^ 6 * s ^ 3 : ℕ) : ℝ) ≤ _
-    push_cast
-    calc
-      _ ≤ (D : ℝ) ^ 6 * (Cs * Z ^ 2) ^ 3 :=
-        mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hsZ 3) (by positivity)
-      _ = _ := by
-        dsimp only [Ccount]
-        rw [mul_pow, ← pow_mul, mul_assoc]
-  push_cast
-  change (1000000 : ℝ) * ((common : ℝ) * (N : ℝ)) ^ 2 * ((L : ℝ) + 1) *
-      (count : ℝ) ^ 2 ≤ Cpoly * Z ^ ((P + 2 + 3) * 2 + (1 + 6 * 2))
-  calc
-    _ ≤ 1000000 * ((Cb * Z ^ (P + 2)) * (CN * Z ^ 3)) ^ 2 * Z *
-        (Ccount * Z ^ 6) ^ 2 := by gcongr
-    _ = (1000000 * (Cb * CN) ^ 2 * Ccount ^ 2) *
-        Z ^ ((P + 2 + 3) * 2 + (1 + 6 * 2)) := final_cost_identity Cb CN Ccount Z P
-    _ ≤ _ := mul_le_mul_of_nonneg_right
-      (show 1000000 * (Cb * CN) ^ 2 * Ccount ^ 2 ≤ Cpoly from
-        le_add_of_nonneg_left zero_le_one) (by positivity)
+  exact refinement_cost_tail Z c rho Kc Cb Cs CN Ccount Cpoly P D L r s Btree B hZ hLZ hrZ
+    hrR hD (exp_pos _) _hc _hrho hcrho hBt' hBr' hs rfl rfl rfl rfl
 
 end Real
