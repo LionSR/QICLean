@@ -131,13 +131,13 @@ up to the associator and the exchange of the first two factors.
     resulting space is $(1-c)$-viable, where
     $c=(1-\delta)\min\{s,Q\}/(8Q)$.
     Its complement has measure at most
-    \begin{align}
-      \eta&=\begin{cases}
-        0,&Q\le s,\\
-        \bigl(1+2/\sqrt{(1-\delta)s/(8Q)}\bigr)^{2\dim T}
-          Qe^{-s/16},&s<Q.
-      \end{cases}\notag
-    \end{align}
+    \[
+        \eta=\begin{cases}
+            0,          & Q\le s, \\
+            \bigl(1+2/\sqrt{(1-\delta)s/(8Q)}\bigr)^{2\dim T}
+            Qe^{-s/16}, & s<Q.
+        \end{cases}
+    \]
     The event has measure at least $1-\max\{\eta,0\}$.
     For $Q\le s$ the sample is exactly $W$ for every unitary.
     This assertion concerns a fixed input space; it does not assert
@@ -158,10 +158,11 @@ up to the associator and the exchange of the first two factors.
         Submodule.finrank_sampledWordImage_le,
         Submodule.exists_measurable_sampledWordImage_event}
     \leanok
-    \uses{thm:viable_sample_or_full,thm:spectral_operator_word_powers}
+    \uses{thm:viable_sample_or_full}
     Suppose a fixed family of $N$ operators has the following property:
-    the sum of all length-$a$ word images of a $\delta$-viable space for $T$ is
-    $\Delta^a/(1-\delta)^2$-viable for $T$, whenever $\delta<1$.
+    the span of all length-$a$ word images of a $\delta$-viable space
+    for $T$ is $\Delta^a/(1-\delta)^2$-viable for $T$, whenever
+    $\delta<1$.
     Apply the family to the actual sample above. On its measurable
     success event the span of the actual length-$a$ images is
     $\Delta^a/c^2$-viable for the same $T$ and has dimension at most
@@ -169,9 +170,17 @@ up to the associator and the exchange of the first two factors.
     The operators and target precede the input and the Haar unitary.
 \end{lemma}
 \begin{proof}\leanok
-    Apply the assumed word-improvement property to each successful
-    sample. The dimension of each image is at most the sample dimension;
-    summing over the $N^a$ ordered words gives the count.
+    Write $F_1,\dots,F_N$ for the operators and
+    $F_w=F_{w_1}\cdots F_{w_a}$ for a word $w$ of length $a$. On the
+    success event the sample $S$ is $(1-c)$-viable with $1-c<1$, so the
+    assumed improvement hypothesis, applied with $\delta$ replaced by
+    $1-c$, shows that $V_a=\sum_wF_wS$ is
+    $\Delta^a/(1-(1-c))^2=\Delta^a/c^2$-viable. For the dimension,
+    \[
+        \dim(F_wS)\le\dim S=\min\{s,Q\},\qquad
+        \dim V_a\le\sum_w\dim(F_wS)\le N^a\min\{s,Q\},
+    \]
+    since there are $N^a$ ordered words of length $a$.
 \end{proof}
 
 
@@ -196,16 +205,16 @@ up to the associator and the exchange of the first two factors.
     \leanok
     \uses{thm:viable_sample_or_full}
     Let $D\ge2$ and $r\ge1$ be integers and let $0<\beta\le1$. Put
-    \begin{align}
-      A&=1+\log r+\log D+\log(1/\beta), &
-      s&=\lceil4096rA\rceil.\notag
-    \end{align}
+    \[
+        A=1+\log r+\log D+\log(1/\beta),\qquad
+        s=\lceil4096rA\rceil.
+    \]
     Then $1\le s\le4097rA$. For every $Q\le D^{12}s^6$, the
     corrected failure bound for a $1/4$-viable input of dimension $Q$
     and a target of dimension $r$ satisfies
-    \begin{align}
-      \eta_Q&\le e^{-s/64}\le\beta.\notag
-    \end{align}
+    \[
+        \eta_Q\le e^{-s/64}\le\beta.
+    \]
     Thus the same size is chosen before every parent space.
     This is an auxiliary choice for the powered cubic profile, rather
     than an identification with the source's printed tree parameters.
@@ -213,11 +222,11 @@ up to the associator and the exchange of the first two factors.
 \begin{proof}\leanok
     The ceiling estimate gives $\log s\le13A$.
     When $Q>s$, the net factor is at most $16\sqrt Q$, so
-    \begin{align}
-      \log\eta_Q
-      &\le32r\log D+12r\log s-s/16
-      \le188rA-s/16\le-s/64.\notag
-    \end{align}
+    \[
+        \log\eta_Q
+        \le32r\log D+12r\log s-s/16
+        \le188rA-s/16\le-s/64.
+    \]
     Also $s/64\ge\log(1/\beta)$. For $Q\le s$ the failure bound is
     zero because the whole input is retained.
 \end{proof}
@@ -232,9 +241,9 @@ up to the associator and the exchange of the first two factors.
     Suppose $D\ge2$, $s\ge1$ and a fixed family has at most $D^2$
     operators. At $a=\lceil\log_D(D^2s)\rceil$, the literal sampled-word
     image has dimension at most $D^6s^3$, for every unitary, before imposing
-    a success event. Moreover, if $D_{\rm ref}\ge1$ and
-    $\xi=(1000D_{\rm ref}\sqrt{L+1})^{-1}$, then for nonnegative integers $R,M$,
-    $\xi^2R\le M$ implies the bound
+    a success event. If $D_{\rm ref}\ge1$ and
+    $\xi=(1000D_{\rm ref}\sqrt{L+1})^{-1}$, then
+    $\xi^2R\le M$ implies the integer bound
     $R\le10^6D_{\rm ref}^2(L+1)M$.
 \end{lemma}
 \begin{proof}\leanok

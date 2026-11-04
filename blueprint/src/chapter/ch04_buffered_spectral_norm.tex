@@ -17,9 +17,9 @@ It retains the corrected finite window count recorded in
     Hilbert space. Suppose $\|H-B\|\leq\xi$ with $\xi>0$.
     For $c\in\mathbb R$ and $w>0$, put
     \begin{align}
-        U&=\|H\|+\xi,&a&=\min\{c-1,-U\},\\
-        n&=\left\lceil\frac{c-a}{2\xi}\right\rceil,&
-        \delta&=\frac{n(2\xi)^2}{(w+\xi)^2}.
+        U      & =\|H\|+\xi,                               & a & =\min\{c-1,-U\}, \\
+        n      & =\left\lceil\frac{c-a}{2\xi}\right\rceil, &
+        \delta & =\frac{n(2\xi)^2}{(w+\xi)^2}.
     \end{align}
     Write $E_A(c)$ for the spectral subspace of $A$ on $(-\infty,c]$.
     Then $E_B(c+w)$ is $\delta$-close to $E_H(c)$, and
@@ -57,14 +57,14 @@ filter.
     $E_A(a)=E_A(d)$. Assume $\|A-B\|\le\xi$ with $\xi>0$.
     Put $U=\|A\|+\xi$ and
     \begin{align}
-        n_-&=\left\lceil\frac{a-\min\{a-1,-U\}}{2\xi}\right\rceil,
-        &\delta_-&=\frac{n_-(2\xi)^2}{(b-a+\xi)^2},\\
-        n_+&=\left\lceil\frac{c-\min\{c-1,-U\}}{2\xi}\right\rceil,
-        &\delta_+&=\frac{n_+(2\xi)^2}{(d-c+\xi)^2}.
+        n_- & =\left\lceil\frac{a-\min\{a-1,-U\}}{2\xi}\right\rceil,
+            & \delta_-                                               & =\frac{n_-(2\xi)^2}{(b-a+\xi)^2}, \\
+        n_+ & =\left\lceil\frac{c-\min\{c-1,-U\}}{2\xi}\right\rceil,
+            & \delta_+                                               & =\frac{n_+(2\xi)^2}{(d-c+\xi)^2}.
     \end{align}
     If $\delta_-,\delta_+<1$, then
     \begin{align}
-        E_B(b)&=E_B(c),&\dim E_B(b)&=\dim E_A(a).
+        E_B(b) & =E_B(c), & \dim E_B(b) & =\dim E_A(a).
     \end{align}
     The space $E_B(b)$ is $\delta_-$-close to $E_A(a)$, and
     $E_A(a)$ is $\delta_+$-close to $E_B(b)$. Every cutoff between
@@ -95,10 +95,10 @@ filter.
     \leanok
     Let $0\le A\le M$, $0\le c\le R$, and $\xi,w>0$. Put
     \begin{align}
-        a&=\min\{c-1,-(A+\xi)\},&
-        n&=\left\lceil\frac{c-a}{2\xi}\right\rceil,\notag\\
-        n_*&=\left\lceil\frac{R+M+\xi+1}{2\xi}\right\rceil,&
-        \Lambda&=\frac{n_*(2\xi)^2}{(w+\xi)^2}.
+        a       & =\min\{c-1,-(A+\xi)\},                          &
+        n       & =\left\lceil\frac{c-a}{2\xi}\right\rceil,\notag   \\
+        n_*     & =\left\lceil\frac{R+M+\xi+1}{2\xi}\right\rceil, &
+        \Lambda & =\frac{n_*(2\xi)^2}{(w+\xi)^2}.
     \end{align}
     Then $n(2\xi)^2/(w+\xi)^2\le\Lambda$. If $\xi\le1$, then
     \begin{align}
@@ -115,8 +115,8 @@ filter.
     $\xi^2\le\xi$ yield
     \begin{align}
         n_*(2\xi)^2
-          &\le2\xi(R+M+1)+6\xi^2
-           \le2\xi(R+M+4).
+         & \le2\xi(R+M+1)+6\xi^2
+        \le2\xi(R+M+4).
     \end{align}
     Dividing by $(w+\xi)^2\ge w^2>0$ proves
     (\ref{eq:spectral_window_linear_precision}). Substitute the final
@@ -139,7 +139,7 @@ filter.
     $R=4+g$, $w=g/5$, and $\beta=\tau/200$ give
     \begin{align}
         \xi=\min\left\{1,
-          \frac{\tau g^2}{20000(M+g+8)}\right\},
+        \frac{\tau g^2}{20000(M+g+8)}\right\},
         \qquad\Lambda\le\frac{\tau}{400}.
     \end{align}
     The same precision therefore controls every cutoff $0\le c\le4+g$
@@ -151,5 +151,5 @@ filter.
     one and at most the displayed quotient, so the lemma applies.
     The specialization follows from
     $(\tau/200)(g/5)^2/[4(4+g+M+4)]
-      =\tau g^2/[20000(M+g+8)]$.
+        =\tau g^2/[20000(M+g+8)]$.
 \end{proof}

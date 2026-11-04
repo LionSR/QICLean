@@ -19,15 +19,15 @@ sample-once procedure is recorded in
     $W(P,U)$ of $\operatorname{range}P$ with requested size
     $\lfloor Q/(2D^2)\rfloor$, and set
     \[
-       S(P,U)=\operatorname{Trim}_\xi\left(\sum_iF_iW(P,U)\right).
+        S(P,U)=\operatorname{Trim}_\xi\left(\sum_iF_iW(P,U)\right).
     \]
     Define the stopped output matrix by
     \[
-       B(P,U)=
-       \begin{cases}
-          I^{-1}\Pi_{S(P,U)}I,&h\le Q,\\
-          P,&Q<h.
-       \end{cases}
+        B(P,U)=
+        \begin{cases}
+            I^{-1}\Pi_{S(P,U)}I, & h\le Q, \\
+            P,                   & Q<h.
+        \end{cases}
     \]
     The quotient is the natural-number quotient, including the
     zero-denominator convention. No nonzero-rank assumption is imposed.
@@ -175,7 +175,7 @@ decrease and the probability of viability are separate assertions.
     and rectangular family $F_i=A_iI$. Then $\mathcal G$ is Borel and
     \begin{align}
         \mu_d^{\otimes R}(\mathcal G^c)
-        &\le R\frac{\eta}{(N+2)^a}.
+         & \le R\frac{\eta}{(N+2)^a}.
     \end{align}
     Every seed and every round satisfy
     $\operatorname{rank}P_j\le\operatorname{rank}P_0$, and every seed
