@@ -2,7 +2,7 @@
 
 These scalar estimates give an explicit positive logarithmic expression
 for the count in~\cite[Proposition~prop:albootstrap-ld,
-lines 1107--1128]{Arad2016RigorousRG}. The bandwidth is fixed as in
+    lines 1107--1128]{Arad2016RigorousRG}. The bandwidth is fixed as in
 Assumption (LD), lines 281--284. No physical operator is an input.
 
 \begin{theorem}[The logarithm of the count base]
@@ -29,8 +29,8 @@ Assumption (LD), lines 281--284. No physical operator is an input.
     Then $D>0$,
     $Au^2/g\le\ell\le(A+1)u^2/g$, $A\le\ell$, and
     \begin{align*}
-      \log D\le22\ell c_Au
-      \le\frac{22(A+1)c_A}{g}u^3.
+        \log D\le22\ell c_Au
+        \le\frac{22(A+1)c_A}{g}u^3.
     \end{align*}
 \end{theorem}
 \begin{proof}\leanok
@@ -62,8 +62,8 @@ Assumption (LD), lines 281--284. No physical operator is an input.
     $B=\max\{12,\eta\}$. Then $\bar v>0$, $v/2\le\bar v$,
     $0<g\le1$, and
     \begin{align*}
-      \frac1g\le\frac Bv,
-      \qquad\log(1/g)\le\log B+\log(1+1/v).
+        \frac1g\le\frac Bv,
+        \qquad\log(1/g)\le\log B+\log(1+1/v).
     \end{align*}
 \end{theorem}
 \begin{proof}\leanok
@@ -78,8 +78,8 @@ Assumption (LD), lines 281--284. No physical operator is an input.
     \leanok
     Fix $C\ge1$ and $\eta>0$. Put
     \begin{align*}
-      B&=\max\{12,\eta\},& F&=102+\log B,&
-      K&=66(C+1)(6+2\log(C+1))BF^3.
+        B & =\max\{12,\eta\},           & F & =102+\log B, &
+        K & =66(C+1)(6+2\log(C+1))BF^3.
     \end{align*}
     For $q\ge2$ and $0<v\le\eta$, choose $m=q\lceil e^{100}\rceil$,
     $\bar v=\min\{v,\eta/2\}$, $g=\min\{\bar v/6,1\}$,
@@ -87,14 +87,14 @@ Assumption (LD), lines 281--284. No physical operator is an input.
     $D=(m\ell^2)^{22\ell}$. Then $K>0$, $m\ge q$,
     $\log m\ge100$, $D>0$, and
     \begin{align*}
-      \log(D^3)\le\frac Kv
+        \log(D^3)\le\frac Kv
         \bigl(1+\log q+\log(1+1/v)\bigr)^3.
     \end{align*}
     The coefficient $K$ precedes both $q$ and $v$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:polynomial_filter_log_count,
-      thm:regularized_filter_count_base,thm:capped_initial_filter_width}
+        thm:regularized_filter_count_base,thm:capped_initial_filter_width}
     Write $U=1+\log q+\log(1+1/v)$. The base and width estimates give
     $u\le F+\log q+\log(1+1/v)\le FU$, since $F\ge1$ and both
     logarithms are nonnegative. Substitute $1/g\le B/v$ and $u^3\le F^3U^3$
@@ -109,12 +109,12 @@ Assumption (LD), lines 281--284. No physical operator is an input.
     Let $C\ge100$, $u\ge1$ and $0<g\le1$. For each nonnegative integer $i$,
     set
     \[
-       \ell_i=\left\lceil C(u+i\log2)^2/g\right\rceil.
+        \ell_i=\left\lceil C(u+i\log2)^2/g\right\rceil.
     \]
     Then $\ell_i\ge\ell_0+64i$. Consequently, for every real $\eta$,
     \[
-       e^{-(\ell_i-\eta)/8}
-       \le 2^{-4i}e^{-(\ell_0-\eta)/8}.
+        e^{-(\ell_i-\eta)/8}
+        \le 2^{-4i}e^{-(\ell_0-\eta)/8}.
     \]
     These estimates concern the accuracy refinement in the proof of the
     low-density area law of \cite{Arad2016RigorousRG}.

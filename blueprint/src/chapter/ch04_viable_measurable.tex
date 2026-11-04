@@ -39,6 +39,24 @@ condition of \cite[Definition \texttt{d:close}, lines 469--474]
     $(1-\delta)P_T\le P_TP_UP_T$.
 \end{proof}
 
+\begin{theorem}[Projection matrices and actual ranges]
+    \label{thm:projection_matrix_range}
+    \lean{Matrix.range_toEuclideanLin_eq_map_range_mulVecLin,
+        Matrix.projectionMatrix_range_of_isStarProjection}
+    \leanok
+    Let $A:\C^n\to\C^m$ be a rectangular matrix. The standard coordinate
+    identification carries its ordinary column range exactly to the range
+    of its Euclidean-space action. If $P$ is an orthogonal projection
+    matrix, then the matrix of the orthogonal projection onto its actual
+    range is $P$ itself.
+\end{theorem}
+\begin{proof}\leanok
+    The standard coordinate equivalences intertwine both actions of $A$,
+    and are surjective, giving equality of the ranges. An orthogonal
+    projection is the orthogonal projection onto its range. Transport this
+    equality through the same standard matrix representation.
+\end{proof}
+
 \begin{theorem}[The actual success set and its complement]
     \label{thm:closed_closeness_success}
     \lean{Submodule.isClosed_setOf_isCloseTo_projectionRange}
@@ -48,7 +66,7 @@ condition of \cite[Definition \texttt{d:close}, lines 469--474]
     every fixed target subspace $T$, the set
     \begin{align}
         \bigl\{P\in\mathcal P:
-          \operatorname{range}P\text{ is }\delta\text{-close to }T\bigr\}
+        \operatorname{range}P\text{ is }\delta\text{-close to }T\bigr\}
     \end{align}
     is closed. Hence this success set and its true failure complement
     are Borel measurable. Zero-rank candidates and the zero target are

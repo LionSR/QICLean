@@ -46,9 +46,9 @@ iteration count printed in the source.
     \]
     Then $N\ge1$, $D_{\rm common}N\ge1$, $\xi>0$, and
     \begin{align*}
-        \xi&\le\frac1{1000D_{\rm tree}\sqrt{L+1}},\\
-        \xi\sqrt{\max\{L-1,0\}b^2}&\le\frac p{48},\\
-        \sqrt{Lrb}\,\xi&<10^{-4}\eta D_{\rm filter}^{-12}.
+        \xi                        & \le\frac1{1000D_{\rm tree}\sqrt{L+1}}, \\
+        \xi\sqrt{\max\{L-1,0\}b^2} & \le\frac p{48},                        \\
+        \sqrt{Lrb}\,\xi            & <10^{-4}\eta D_{\rm filter}^{-12}.
     \end{align*}
     The last assertion retains the comparison $r\le b$ between the
     dimension and the all-vector bond of the same reference subspace.
@@ -73,9 +73,9 @@ iteration count printed in the source.
     \leanok
     Let $b\ge1$ and $a_0,a_1\ge0$. Then
     \[
-       b^{3/4}(1+\log b)\le5b,
-       \qquad
-       (a_0+a_1b^{3/4})(1+\log b)\le(a_0+5a_1)b.
+        b^{3/4}(1+\log b)\le5b,
+        \qquad
+        (a_0+a_1b^{3/4})(1+\log b)\le(a_0+5a_1)b.
     \]
     These inequalities apply to the reference bond bounds used in
     \cite[Algorithm~1]{Arad2016RigorousRG}.
@@ -109,16 +109,16 @@ iteration count printed in the source.
     \leanok
     Let $A,\gamma,\eta>0$, and put
     \[
-       c=\gamma/A,\qquad \rho=\frac{\eta\gamma}{2A+\eta\gamma},
-       \qquad \varepsilon=c^2\rho/32768,
-       \qquad x=A/\gamma,\quad y=1/\eta.
+        c=\gamma/A,\qquad \rho=\frac{\eta\gamma}{2A+\eta\gamma},
+        \qquad \varepsilon=c^2\rho/32768,
+        \qquad x=A/\gamma,\quad y=1/\eta.
     \]
     Then
     \begin{align*}
-       \frac1{c\rho}&=2x^2y+x
-          \le3(1+x)^2(1+y),\\
-       \frac1{\varepsilon}&=65536x^3y+32768x^2
-          \le98304(1+x)^3(1+y).
+        \frac1{c\rho}       & =2x^2y+x
+        \le3(1+x)^2(1+y),                         \\
+        \frac1{\varepsilon} & =65536x^3y+32768x^2
+        \le98304(1+x)^3(1+y).
     \end{align*}
     Thus both inverse accuracies have polynomial bounds in the
     norm-to-gap ratio and inverse requested error.
@@ -137,8 +137,8 @@ iteration count printed in the source.
     Let $K,a_0,a_1\ge0$, $b_0,X\ge1$ and $B>0$. Set
     $p=K(a_0+5a_1)$. If
     \[
-       \log B\le K\bigl(a_0+a_1(b_0+\log X)^{3/4}\bigr)
-          \bigl(1+\log(b_0+\log X)\bigr),
+        \log B\le K\bigl(a_0+a_1(b_0+\log X)^{3/4}\bigr)
+        \bigl(1+\log(b_0+\log X)\bigr),
     \]
     then $B\le e^{pb_0}X^{\lceil p\rceil}$.
 \end{lemma}
@@ -155,15 +155,15 @@ iteration count printed in the source.
     Let $A,\gamma,\eta>0$ and $Z\ge1$, with $A\le Z$ and
     $\eta^{-1}\le Z$. For
     \[
-       c=\frac\gamma A,\qquad
-       \rho=\frac{\eta\gamma}{2A+\eta\gamma},\qquad
-       \varepsilon=\frac{c^2\rho}{32768},
+        c=\frac\gamma A,\qquad
+        \rho=\frac{\eta\gamma}{2A+\eta\gamma},\qquad
+        \varepsilon=\frac{c^2\rho}{32768},
     \]
     one has
     \[
-       (c\rho)^{-1}\le6(1+\gamma^{-1})^2 Z^3,
-       \qquad
-       \varepsilon^{-1}\le196608(1+\gamma^{-1})^3 Z^4.
+        (c\rho)^{-1}\le6(1+\gamma^{-1})^2 Z^3,
+        \qquad
+        \varepsilon^{-1}\le196608(1+\gamma^{-1})^3 Z^4.
     \]
 \end{lemma}
 \begin{proof}\leanok
