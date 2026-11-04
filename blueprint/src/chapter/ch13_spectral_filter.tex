@@ -1,23 +1,23 @@
 %% =========================================================
-%% Chapter: A compactly supported spectral filter
+%% Section: A compactly supported spectral filter
 %% Source: OpenAI, "A two-dimensional area law from a global spectral gap"
 %%         (September 24, 2026), Lemma 4.2, 03-quasilocal.tex lines 135-205
 %% =========================================================
 
-\chapter{A Compactly Supported Spectral Filter}
+\section{A compactly supported spectral filter}
 \label{ch:spectral_filter}
 
 Quasi-local spectral filters remove the matrix elements of an operator
 between the ground space and the excited states of a gapped Hamiltonian
 exactly, while their time kernel decays fast enough to be combined with
-Lieb--Robinson bounds. This chapter constructs the filter
+Lieb--Robinson bounds. This section constructs the filter
 of~\cite[Lemma~4.2]{OpenAI2026AreaLaw}: a smooth cutoff with compact
 frequency support whose inverse Fourier transform decays as a stretched
 exponential with exponent $p/(p+1)$, for every integer $p\ge1$.
 
 Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
 
-\section{The profile and its Cauchy estimate}
+\subsection{The profile and its Cauchy estimate}
 \label{sec:spectral_filter_profile}
 
 \begin{lemma}[Real part on a small disk]
@@ -63,7 +63,7 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     $s^ke^{-s/2}\le 2^k k!$, which follows from the exponential series.
 \end{proof}
 
-\section{The cutoff}
+\subsection{The cutoff}
 \label{sec:spectral_filter_cutoff}
 
 \begin{definition}[Spectral cutoff]
@@ -103,7 +103,7 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     of~\cite[Lemma~4.2]{OpenAI2026AreaLaw}, written with integer exponents.
 \end{proof}
 
-\section{The time kernel}
+\subsection{The time kernel}
 \label{sec:spectral_filter_kernel}
 
 \begin{definition}[Time kernel]
@@ -187,7 +187,7 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     gives $\int f=\chi(0)=1$.
 \end{proof}
 
-\section{Spectral filtering of a finite matrix}
+\subsection{Spectral filtering of a finite matrix}
 \label{sec:spectral_filter_matrix}
 
 \begin{definition}[Filtered operator]
@@ -250,7 +250,7 @@ Throughout, $p\ge1$ is an integer, $\alpha=p/(p+1)$, and $\delta>0$.
     otherwise.
 \end{proof}
 
-\section{Positive replacement of a gapped Hamiltonian}
+\subsection{Positive replacement of a gapped Hamiltonian}
 \label{sec:positive_replacement}
 
 Throughout, $H=\sum_i h_i$ is a finite sum of Hermitian matrices with
@@ -334,7 +334,7 @@ $P_\Omega=|\Omega\rangle\langle\Omega|$.
     $|M_i|$, so $k_i\Omega=0$. Finally $M_i\le|M_i|$ and $\sum_iM_i=H-E_0I$.
 \end{proof}
 
-\section{Square-root channels}
+\subsection{Square-root channels}
 \label{sec:root_channels}
 
 \begin{theorem}[Square roots and root channels]
@@ -410,7 +410,7 @@ For lifted constraints $k_i\otimes I$, take $\Omega\otimes\xi$ with arbitrary
 auxiliary vector $\xi$; the same identity applies on the enlarged Hilbert space.
 The identity supplies no estimate for spatial localization or omitted channels.
 
-\section{Locality of the positive constraints}
+\subsection{Locality of the positive constraints}
 \label{sec:positive_locality}
 
 Let $L$ be a linear map on matrices, playing the role of a conditional
@@ -473,7 +473,7 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ and $\alpha=p/(p+1)$.
     Lemma~\ref{lem:sqrt_holder}. Unitality gives $M-LM=\mathcal F_H(h)-L\mathcal F_H(h)$.
 \end{proof}
 
-\section{Stability of a global gap}
+\subsection{Stability of a global gap}
 \label{sec:gap_perturbation}
 
 \begin{lemma}[Trace distance of pure states]

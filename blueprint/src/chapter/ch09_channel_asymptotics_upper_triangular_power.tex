@@ -87,9 +87,201 @@
 
 % This theorem is only the single-block prerequisite.  A formalization of
 % the channel statement with \widehat T^n-\widehat T_\varphi^n still needs a
-% Jordan-form existence theorem, the direct-sum eventual-maximum argument,
-% and a justified passage from a chosen similarity to Wolf's infimum
+% Jordan-form existence theorem and a justified passage from a chosen
+% similarity to Wolf's infimum
 % \kappa_T; see the associated paper-gap note.
+\end{proof}
+
+\begin{theorem}[Finite block-diagonal norm maximum]
+    \label{thm:wolf_finite_block_diagonal_norm_maximum}
+    \lean{Matrix.blockDiagonal'StarAlgHom,
+      Matrix.l2_opNorm_blockDiagonal', Matrix.l2_opNNNorm_blockDiagonal',
+      Matrix.l2_opNorm_block_le_blockDiagonal',
+      Matrix.l2_opNorm_blockDiagonal'_eq_of_max,
+      Matrix.exists_l2_opNorm_blockDiagonal'_eq,
+      Matrix.l2_opNorm_blockDiagonal'_of_isEmpty}
+    \leanok
+    For a finite family of square complex matrices $B_i$, with arbitrary
+    finite coordinate dimensions,
+    \begin{align}
+      \left\lVert\bigoplus_i B_i\right\rVert_\infty
+        &=\max_i\lVert B_i\rVert_\infty.
+    \end{align}
+    The empty maximum is zero. Every block norm is bounded above by the
+    direct-sum norm. For a nonempty family the maximum is attained.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The dependent block-diagonal inclusion is an injective nonunital star
+    algebra homomorphism of complex C-star algebras, hence isometric for
+    the finite product norm. That product norm is the finite maximum of
+    the individual operator norms, including zero for an empty family.
+\end{proof}
+
+\begin{theorem}[Principal Jordan powers and compression]
+    \label{thm:wolf_jordan_principal_power_compression}
+    \lean{Matrix.jordanBlock_pow_apply,
+      Matrix.jordanBlock_pow_submatrix_castLE,
+      Matrix.l2_opNorm_principal_submatrix_le}
+    \leanok
+    The leading $D\times D$ principal submatrix of $J_E(a)^n$ is
+    $J_D(a)^n$ whenever $D\le E$. Restriction to any injectively indexed
+    principal submatrix cannot increase the Hilbert-space operator norm.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{lem:jordan_block_power}
+    The binomial expansion gives an entry formula depending only on the
+    row and column numbers, not the ambient dimension. A coordinate
+    inclusion $V$ satisfies $V^\dagger V=I$ and has norm at most one;
+    submultiplicativity bounds the compression $V^\dagger A V$ by $\lVert A\rVert_\infty$.
+\end{proof}
+
+\begin{theorem}[Phase invariance and dimension monotonicity]
+    \label{thm:wolf_jordan_phase_dimension_comparison}
+    \lean{Matrix.l2_opNorm_jordanBlock_pow_phase,
+      Matrix.l2_opNorm_jordanBlock_pow_norm,
+      Matrix.l2_opNorm_jordanBlock_pow_mono_dim,
+      Matrix.l2_opNorm_jordanBlock_pow_le_of_norm_eq}
+    \leanok
+    If $|u|=1$, then $\lVert J_D(ua)^n\rVert_\infty=
+    \lVert J_D(a)^n\rVert_\infty$. If $D\le E$ and $|a|=|b|$, then
+    \begin{align}
+      \lVert J_D(a)^n\rVert_\infty
+        &\le\lVert J_E(b)^n\rVert_\infty.
+    \end{align}
+    These statements include zero eigenvalues, zero coordinate dimensions,
+    and the zeroth power.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_jordan_principal_power_compression}
+    The diagonal unitary with entries $u^i$ intertwines $J_D(ua)$ with
+    $uJ_D(a)$, so all power norms agree. Normalize each nonzero eigenvalue
+    to its modulus; at zero the claim is immediate. Finally compress the
+    larger Jordan power to its leading principal block.
+\end{proof}
+
+\begin{theorem}[Eventual strict comparison of Jordan blocks]
+    \label{thm:wolf_jordan_eventual_strict_comparison}
+    \lean{Matrix.eventually_l2_opNorm_jordanBlock_pow_lt_of_norm_lt}
+    \leanok
+    For $D,E\ge1$ and $|a|<|b|$, there is $n_0$ such that for every
+    $n\ge n_0$,
+    \begin{align}
+      \lVert J_D(a)^n\rVert_\infty
+        &<\lVert J_E(b)^n\rVert_\infty.
+    \end{align}
+    No unit-disc restriction is needed for this comparison.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_single_jordan_block_polynomial_scaling, thm:jordan_block_power_norm,
+      thm:wolf_finite_jordan_sum_nilpotence}
+    For $0<|a|\le1$, reuse the single-block upper estimate. For $|a|\ge1$,
+    Equation~(8.104) bounds the norm by $D|a|^n n^{D-1}$ once $n\ge D-1$.
+    In either case $n^{D-1}|a|^n=o(|b|^n)$, whereas Equation~(8.104)
+    bounds $\lVert J_E(b)^n\rVert_\infty$ below by $|b|^n>0$.
+    If $a=0$, its block instead vanishes from exponent $D$ onward.
+\end{proof}
+
+\begin{definition}[Finite genuine Jordan sum]
+    \label{def:wolf_finite_jordan_sum}
+    \lean{Matrix.jordanBlockDirectSum, Matrix.exists_jordanBlock_maximal,
+      Matrix.l2_opNNNorm_jordanBlockDirectSum_pow}
+    \leanok
+    For finite data $(D_i,a_i)$ let $J=\bigoplus_i J_{D_i}(a_i)$.
+    The norm of each power is the maximum of the individual power norms.
+    If the family is nonempty, a block $k$ can be chosen with maximal
+    modulus and then maximal dimension among equal moduli.
+\end{definition}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_finite_block_diagonal_norm_maximum}
+    Dependent block diagonals preserve powers. Select a maximum modulus
+    in the finite family and then a maximum dimension in its nonempty
+    equal-modulus fiber.
+\end{proof}
+
+\begin{theorem}[Eventual equality with the selected Jordan block]
+    \label{thm:wolf_finite_jordan_sum_eventual_maximum}
+    \lean{Matrix.eventually_l2_opNorm_jordanBlockDirectSum_pow_eq}
+    \leanok
+    Let all $D_i\ge1$ and choose $k$ as in
+    Definition~\ref{def:wolf_finite_jordan_sum}. Then for all sufficiently
+    large $n$,
+    \begin{align}
+      \lVert J^n\rVert_\infty&=\lVert J_{D_k}(a_k)^n\rVert_\infty.
+    \end{align}
+    In particular, this proves the direct-sum step in Wolf's Chapter~8,
+    lines~1255--1263, including ties and zero eigenvalues.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{def:wolf_finite_jordan_sum, thm:wolf_jordan_eventual_strict_comparison,
+      thm:wolf_jordan_phase_dimension_comparison, thm:wolf_finite_block_diagonal_norm_maximum}
+    Each block of smaller modulus is eventually strictly smaller. Every
+    block tied in modulus is bounded by the selected block at every
+    exponent by dimension monotonicity. Intersect the finitely many
+    eventual ranges and apply the exact norm maximum.
+\end{proof}
+
+\begin{theorem}[Zero-modulus finite Jordan sum]
+    \label{thm:wolf_finite_jordan_sum_nilpotence}
+    \lean{Matrix.jordanBlock_zero_pow_eq_zero,
+      Matrix.jordanBlockDirectSum_zero_pow_eq_zero,
+      Matrix.jordanBlockDirectSum_pow_eq_zero_of_maximal_zero}
+    \leanok
+    A zero-eigenvalue Jordan block vanishes for $n\ge D$. A finite sum of
+    such positive-dimensional blocks vanishes for $n\ge\max_i D_i$,
+    including the empty family with maximum zero. If the selected maximal
+    modulus is zero, this threshold is $D_k$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{def:wolf_finite_jordan_sum, lem:jordan_block_power}
+    Each block is a nilpotent shift. Its power vanishes once the exponent
+    reaches its dimension, and block diagonals preserve powers.
+\end{proof}
+
+\begin{theorem}[Finite Jordan-sum polynomial scaling]
+    \label{thm:wolf_finite_jordan_sum_polynomial_scaling}
+    \lean{Matrix.le_l2_opNorm_jordanBlockDirectSum_pow_polynomial,
+      Matrix.eventually_l2_opNorm_jordanBlockDirectSum_pow_polynomial_bounds,
+      Matrix.exists_pos_eventually_jordanBlockDirectSum_pow_bounds,
+      Matrix.exists_pos_jordanBlockDirectSum_pow_le_polynomial}
+    \leanok
+    Choose $k$ as above and write $\mu=|a_k|$ and $d=D_k$.
+    If $0<\mu\le1$, then eventually
+    \begin{align}
+      (\mu(d-1))^{-(d-1)}\mu^n n^{d-1}
+        &\le\lVert J^n\rVert_\infty
+        \le d\mu^{-(d-1)}\mu^n n^{d-1}.
+    \end{align}
+    Both constants are positive; the first is one when $d=1$.
+    The lower estimate holds already for $n\ge d-1$. There is a positive
+    upper constant valid for every positive exponent $n$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_single_jordan_block_polynomial_scaling,
+      thm:wolf_finite_jordan_sum_eventual_maximum, thm:wolf_finite_block_diagonal_norm_maximum}
+    Apply the existing single-block bounds to the eventual equality.
+    For the lower estimate every block norm is bounded by the direct sum,
+    so no waiting is needed. For the upper estimate enlarge the constant
+    to cover the finitely many initial positive powers; their scale
+    $\mu^n n^{d-1}$ is strictly positive.
+% This entry covers the finite genuine Jordan sum only. Constructing a
+% Jordan decomposition for the channel and passing to Wolf's condition-number
+% infimum remain separate obligations.
 \end{proof}
 
 \begin{theorem}[Noncommutative upper-triangular word bound]

@@ -4,12 +4,14 @@
 \usepackage[hidelinks]{hyperref}
 \setlength{\emergencystretch}{2em}
 \input{command}
-\title{The windows in the closeness argument for the hard truncation}
+\title{Spectral windows and the cutoff in hard truncation}
 \author{}
-\date{2026-10-26}
+\date{2026-10-29}
 \begin{document}
 \maketitle
-\gapnote{local-correction}{resolved}
+\gapnote{false-source}{wip}
+
+\section{The conditional spectral-window comparison}
 
 The second item of Lemma \texttt{lem:hard-trunc} of
 Arad--Landau--Vazirani--Vidick,
@@ -20,8 +22,10 @@ subspace $T_\eta$ of $H$. Its proof (lines 953--969) bounds the mass above
 $\varepsilon_0+\eta'$ of a vector supported on eigenvalues of $H$ in a
 closed window $[\lambda-h,\lambda+h]$ with $\lambda\le\varepsilon_0+\eta$
 (lines 955--962), splits a vector $\psi\in T_\eta$ into such pieces, and sums
-the bounds with the Cauchy--Schwarz inequality. The argument is correct;
-four details of the write-up need adjustment.
+the bounds with the Cauchy--Schwarz inequality. Given valid restricted
+perturbation estimates, this spectral-window argument can be completed with
+the corrections below. The unrestricted physical truncated-side estimate
+also needs a cutoff qualification, as shown in the next section.
 
 \emph{The number of windows.} Line 963 bounds the number of windows by
 $\lceil(\eta-\varepsilon_0)/(2h)\rceil$, which subtracts an energy from a
@@ -62,4 +66,69 @@ $\sqrt{2\xi(c-m)/\delta}+2\xi/\sqrt\delta$. Adding the shift
 $\varepsilon_0-\tilde\varepsilon_0$ gives a valid $\eta'$, which has the form
 $\eta+\sqrt{\eta/\delta}\,e^{-\Omega(t-\eta)}$ of the lemma for $\eta\ge1$ and
 $\delta\le1$.
+
+\section{A flat sector inside the requested low-energy space}
+
+The sign of $\xi$ is not the only qualification needed for the physical
+estimate. Proposition~4.4(1) of
+\href{https://arxiv.org/pdf/1602.08828v2}{ALVV, arXiv:1602.08828v2},
+printed page~15, bounds
+\begin{align*}
+    \|(H-\widetilde H_t)\widetilde\Pi_{\le\varepsilon_0+\eta}\|
+     & \le\xi.
+\end{align*}
+The preceding paragraph of Section~4.2 says that $t$ is chosen sufficiently
+large relative to $\eta$, but the proposition gives no numerical cutoff
+condition and Lemma~4.5 explicitly states $t>\eta$.
+Definition~2.5 and Theorem~2.6 of
+\href{https://arxiv.org/pdf/1406.3898}{AKL, arXiv:1406.3898v3},
+printed pages~8--9, likewise have no explicit condition keeping the
+requested spectral space below the clipped flat sector.
+
+Here is an actual nearest-neighbour chain for which $t>\eta$ alone is
+insufficient. Let $K\ge2$, take qubits on sites $0,\ldots,K+1$, and write
+$P_b(i)$ for the on-site projection onto label $b$.
+For $1\le i<K$, set $h_i=P_1(i)$. The remaining bonds are
+\begin{align*}
+    h_0 & =(I-P_1(0)/4)P_0(1),        &
+    h_K & =\tfrac12(P_1(K)+P_1(K+1)).
+\end{align*}
+There is exactly one positive contraction on each bond $\{i,i+1\}$.
+Both the crossing term $h_0$ and the last internal term depend on both
+of their sites. For $J=\{1,\ldots,K+1\}$, put
+\begin{align*}
+    A            & =H_J=\sum_{i=1}^K h_i,   &
+    H            & =A+h_0,                  &
+    \widetilde H & =\min(A,\tfrac32 I)+h_0.
+\end{align*}
+The ground energy of $A$ is zero. The vector
+$\Omega=|1,0,\ldots,0\rangle$ attains ground energy $3/4$ for both
+$H$ and $\widetilde H$. Indeed, a configuration with label zero at
+site~$1$ has boundary energy at least $3/4$; a configuration with label
+one there has internal energy at least one, both before and after clipping.
+
+For the unit vector $\psi=|1,\ldots,1\rangle$,
+\begin{align*}
+    H\psi                      & =K\psi,        &
+    \widetilde H\psi           & =\tfrac32\psi, &
+    \widetilde\Pi_{\le7/4}\psi & =\psi.
+\end{align*}
+Thus, with the fixed parameters $t=3/2>\eta=1$,
+\begin{align*}
+    \|(H-\widetilde H)\widetilde\Pi_{\le\varepsilon_0+\eta}\|
+     & \ge K-\tfrac32.
+\end{align*}
+Every length-independent constant is exceeded by an Archimedean choice
+of $K$. This applies to both the printed growing expression for $\xi$ and
+the intended decaying expression, since their values are fixed here.
+Only the truncated-side bound is refuted by this example; the
+original-side projection is not used.
+
+The corresponding actual-chain proofs are source-written in TNLean's
+\path{TNLean/MPS/Examples/HardTruncationCutoff.lean}, with hosted acceptance
+pending. The physical application with a sufficiently large explicit cutoff
+remains a separate result. The generic conditional spectral-window theorem
+above is unchanged and does not assert the physical estimate without its
+restricted perturbation premise. This boundary is tracked in
+\href{https://github.com/LionSR/TNLean/issues/9844}{TNLean issue 9844}.
 \end{document}

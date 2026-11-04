@@ -13,3 +13,4 @@ import QICLean.Kraus.Wielandt.Primitivity
 import QICLean.Kraus.Wielandt.RankOne
 import QICLean.Kraus.Wielandt.RectangularSpan
 import QICLean.Kraus.Wielandt.SpanGrowth
+import QICLean.Kraus.Wielandt.Stochastic

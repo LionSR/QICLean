@@ -96,6 +96,12 @@ theorem norm_exp_sub_one_sub_self_le
 
 variable {D : ℕ}
 
+-- The normable-space composition and evaluation APIs use the existing operator norm.
+-- Keep this witness local: it neither changes the norm nor adds a public matrix instance.
+local instance : IsNormableSpace ℂ (Matrix (Fin D) (Fin D) ℂ) :=
+  ⟨⟨normSeminorm ℂ (Matrix (Fin D) (Fin D) ℂ),
+    norm_withSeminorms ℂ (Matrix (Fin D) (Fin D) ℂ)⟩⟩
+
 /-! ## Abbreviations -/
 
 /-- The algebra equivalence between linear and continuous linear endomorphisms.

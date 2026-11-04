@@ -9,7 +9,7 @@
 
 \title{Wolf Theorem ``Asymptotic Convergence I'' --- Jordan-Scaling Qualifications}
 \author{}
-\date{2026-08-23}
+\date{2026-10-29}
 
 \begin{document}
 \maketitle
@@ -150,6 +150,53 @@ sufficiently large $n$. Only that argument yields the eventual equality
     \label{eq:wolf_thm823_jordan_scaling_qualifications_eventual_block_equality}
 \end{align}
 
+The finite direct-sum argument is now formalized for explicit genuine
+Jordan blocks. The operator norm is exactly the finite maximum of the block
+norms, with value zero for the empty family and an attained maximum for every
+nonempty family.\footnote{Formal declarations:
+\leanid{Matrix.l2_opNNNorm_blockDiagonal'},
+\leanid{Matrix.exists_l2_opNorm_blockDiagonal'_eq}, and
+\leanid{Matrix.l2_opNorm_blockDiagonal'_of_isEmpty} in
+\doclink{QICLean/Analysis/BlockDiagonalNorm.lean}.}
+The comparison uses phase invariance, compression to leading principal
+submatrices, and eventual strict dominance of smaller moduli. These
+comparisons allow zero eigenvalues; strict comparison requires both block
+dimensions to be positive, and holds even outside the unit disc.\footnote{Formal
+declarations:
+\leanid{Matrix.l2_opNorm_jordanBlock_pow_phase},
+\leanid{Matrix.l2_opNorm_jordanBlock_pow_le_of_norm_eq}, and
+\leanid{Matrix.eventually_l2_opNorm_jordanBlock_pow_lt_of_norm_lt} in
+\doclink{QICLean/Analysis/JordanBlockComparison.lean}.}
+
+For nonempty finite block data, a maximal-modulus, maximal-dimension block
+is obtained by two finite maximum selections. The finite intersection of
+the blockwise eventual bounds proves the equality in
+(\ref{eq:wolf_thm823_jordan_scaling_qualifications_eventual_block_equality}),
+including equal-modulus ties.\footnote{Formal declarations:
+\leanid{Matrix.exists_jordanBlock_maximal} and
+\leanid{Matrix.eventually_l2_opNorm_jordanBlockDirectSum_pow_eq} in
+\doclink{QICLean/Analysis/JordanBlockDirectSum.lean}.}
+For positive maximal modulus at most one, the existing fixed-block theorem
+then gives explicit positive two-sided constants. The lower estimate holds
+from exponent $d-1$ onward; enlarging the upper constant covers all positive
+exponents.\footnote{Formal declarations:
+\leanid{Matrix.le_l2_opNorm_jordanBlockDirectSum_pow_polynomial},
+\leanid{Matrix.eventually_l2_opNorm_jordanBlockDirectSum_pow_polynomial_bounds},
+\leanid{Matrix.exists_pos_eventually_jordanBlockDirectSum_pow_bounds}, and
+\leanid{Matrix.exists_pos_jordanBlockDirectSum_pow_le_polynomial} in
+\doclink{QICLean/Analysis/JordanBlockDirectSum.lean}.}
+
+If the maximal modulus is zero, the explicit finite sum is instead zero
+from the largest block dimension onward. No assertion is made that its
+smaller positive powers vanish.\footnote{Formal declarations:
+\leanid{Matrix.jordanBlockDirectSum_zero_pow_eq_zero} and
+\leanid{Matrix.jordanBlockDirectSum_pow_eq_zero_of_maximal_zero} in
+\doclink{QICLean/Analysis/JordanBlockDirectSum.lean}.}
+These results concern an actual sum of the defined Jordan blocks; they do
+not assume an arbitrary matrix has already been brought into that form.
+Constructing a Jordan decomposition of the channel and identifying its
+subperipheral block data remain open.
+
 \section{The Jordan condition infimum}
 
 Let $L$ be a matrix similar to a Jordan matrix $J$, and choose an invertible
@@ -228,11 +275,13 @@ infrastructure.} The shared modulus, the basis-level similarity inequalities
 in
 (\ref{eq:wolf_thm823_jordan_scaling_qualifications_similarity_lower}) and
 (\ref{eq:wolf_thm823_jordan_scaling_qualifications_similarity_upper}), and the
-positive-modulus single-block scaling are proved. The full statement for
+positive-modulus single-block scaling are proved. The finite genuine
+Jordan-sum maximum, eventual dominance, polynomial scaling, and zero-modulus
+nilpotence range are also proved. The full statement for
 $\widehat T^n-\widehat T_\varphi^n$ still requires a constructive Jordan
-decomposition, largest-block data $d_\mu$, the direct-sum norm maximum,
-eventual dominance, the zero-modulus and positive-exponent qualifications, and
-a justified passage to $\kappa_T$. Until these dependencies are supplied,
+decomposition, identification of the channel's largest-block data $d_\mu$
+and nilpotence range, assembly over explicit positive exponents, and a
+justified passage to $\kappa_T$. Until these dependencies are supplied,
 Equations~(8.106)--(8.109) of Ref.~\cite{Wolf2012Quantum} should not be marked
 formalized. The remaining work is tracked in
 \href{https://github.com/LionSR/QICLean/issues/297}{QICLean issue \#297}.

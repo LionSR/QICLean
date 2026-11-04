@@ -1,4 +1,4 @@
-\section{Wielandt Bound}
+\section{Supporting results for the Wielandt bound}
 \label{ch:wielandt_supporting_results}
 This section collects exact-word, cumulative-span, augmentation, blocking,
 complementary-gap, and one-step padding results used by the main
@@ -6,6 +6,30 @@ quantitative argument earlier in this chapter.
 
 \section{Exact-word and block-injectivity support}
 \label{sec:app_wielandt_exact_word_support}
+
+\begin{theorem}[Adjoint block injectivity]
+    \label{thm:kraus_adjoint_block_injectivity}
+    \lean{Kraus.isNBlkInjective_conjTranspose_iff,
+        Kraus.isNBlkInjective_of_isNBlkInjective_conjTranspose}
+    \leanok
+    Let $K=(K_i)_{i=0}^{d-1}$ be a family in $\MN{D}$ and let $L\geq0$.
+    The length-$L$ products of the adjoint family $(K_i^\dagger)_i$ span
+    $\MN{D}$ if and only if the length-$L$ products of $K$ span $\MN{D}$.
+    This includes $L=0$, $d=0$, and $D=0$.
+\end{theorem}
+
+\begin{proof}\leanok
+    For $w=(i_1,\ldots,i_L)$, conjugate transposition gives
+    $(K_{i_1}^\dagger\cdots K_{i_L}^\dagger)^\dagger
+    =K_{i_L}\cdots K_{i_1}$.
+    Reversal permutes the length-$L$ words. Induction on linear combinations,
+    using $(aX)^\dagger=\overline aX^\dagger$ and
+    $(X+Y)^\dagger=X^\dagger+Y^\dagger$, therefore sends the span for the
+    adjoint family into the span for $K$.
+    If the former is full, apply this inclusion to $X^\dagger$ to obtain
+    every $X\in\MN{D}$ in the latter. Applying the same argument to the
+    adjoint family proves the converse because $(K_i^\dagger)^\dagger=K_i$.
+\end{proof}
 
 \begin{lemma}[Two-sided span from one nonzero matrix]
     \label{lem:two_sided_nonzero_matrix_span}

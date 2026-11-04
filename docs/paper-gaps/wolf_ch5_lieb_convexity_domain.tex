@@ -1,0 +1,76 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+
+\title{The Domain of the Convex Ando--Lieb Functional}
+\author{}
+\date{2026-10-29}
+
+\begin{document}
+\maketitle
+\gapnote{clarification}{resolved}
+
+\section{The source and its domain}
+
+Wolf's Theorem~5.15, Equation~(5.47), states joint convexity of
+$F_{x,y}(A,B)=\Re\tr(K^\dagger A^xKB^y)$ for $x\in[1,2]$ and
+$y\in[1-x,0]$ \cite{Wolf2012Quantum}. The local source is
+\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex}, lines 967--989.
+The proof invokes the power perspective of Theorem~5.14, whose denominator
+is required to be invertible. Thus the ordinary finite-valued assertion with
+negative $y$ is understood on $A\geq0$, $B>0$.
+
+The declarations \leanid{lieb_convexity_posSemidef_posDef} and
+\leanid{lieb_convexity_posDef} prove this assertion, respectively on
+$A\geq0$, $B>0$ and on positive definite pairs. The declaration
+\leanid{convexOn_re_trace_conj_rpow_mul_rpow} gives convexity on the product
+of the positive definite cones. Every exponent and mixing endpoint is included.
+No commutation or positivity assumption on $K$ is imposed.
+
+\section{A variational proof}
+
+For $A\geq0$, $B>0$, $1\leq x\leq2$, and real $y$,
+\begin{align}
+ F_{x,y}(A,B)
+ &=\max_X\left\{2\Re\tr(X^\dagger AK)
+       -\Re\tr(X^\dagger A^{2-x}XB^{-y})\right\}.
+ \label{eq:lieb_convexity_variational}
+\end{align}
+Indeed, put $C=A^{2-x}$, $E=B^{-y}$, and $H=A^{x-1}KB^y$.
+The exponent laws give $CHE=AK$; cyclicity of the trace gives
+$\tr(H^\dagger CHE)=\tr(K^\dagger A^xKB^y)$.
+Expanding $\Re\tr((X-H)^\dagger C(X-H)E)\geq0$ proves the upper bound
+in (\ref{eq:lieb_convexity_variational}), with equality at $X=H$.
+The bound is formalized by \leanid{lieb_convexity_variational_le}.
+
+For $y\in[1-x,0]$, the exponents $2-x$ and $-y$ are nonnegative and sum
+to at most one. The already proved concave Ando--Lieb region therefore makes
+the expression in braces convex in $(A,B)$ for each fixed $X$.
+Using the optimizer of the mixed pair proves joint convexity.
+Only powers of $B$ are cancelled against negative powers; the powers of $A$
+are multiplied using their nonnegative exponents. Thus singular $A$ is allowed.
+
+This direct trace proof is an alternative to the tensor-expectation proof in
+the source. It introduces no tensor vectorization or transpose convention.
+
+\section{Why a finite zero-valued inverse is insufficient}
+
+If negative powers at zero are assigned the value zero, the corresponding
+functional is not convex on all positive semidefinite pairs. In dimension one,
+take $x=2$, $y=-1$, $K=A_1=A_2=B_2=1$, $B_1=0$, and $t=1/2$.
+The mixed value is $F(1,1/2)=2$, while the weighted endpoint values sum to
+$\tfrac12F(1,0)+\tfrac12F(1,1)=\tfrac12$. Thus the proposed inequality
+would require $2\leq\tfrac12$.
+
+For $y=0$, invertibility of $B$ is unnecessary since $B^0=\Id$.
+For $y<0$, a singular extension requires an extended-real value and a support
+condition, or another explicitly specified domain. No such extension is
+asserted by these declarations. The other results grouped with Theorem~5.15
+in the Chapter~5 trace-function package remain separate obligations.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

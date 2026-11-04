@@ -154,8 +154,13 @@ private theorem exp_apply_terms_summable
     Summable (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • ((Φ ^ n : TNLean.MatrixCLM (Fin D)) A)) := by
   have hseries_ops : Summable (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • (Φ ^ n)) :=
     NormedSpace.expSeries_summable' (𝕂 := ℂ) Φ
+  -- Evaluation at `A`, built from the finite-dimensional linear map rather than
+  -- `ContinuousLinearMap.apply`, which needs an `IsNormableSpace` instance.
   let evA : TNLean.MatrixCLM (Fin D) →L[ℂ] Matrix (Fin D) (Fin D) ℂ :=
-    (ContinuousLinearMap.apply ℂ (Matrix (Fin D) (Fin D) ℂ)) A
+    LinearMap.toContinuousLinearMap
+      { toFun := fun f => f A
+        map_add' := fun _ _ => rfl
+        map_smul' := fun _ _ => rfl }
   have h := evA.summable hseries_ops
   change Summable (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • evA (Φ ^ n))
   exact h
@@ -167,8 +172,13 @@ private theorem exp_apply_eq_tsum_terms
       ∑' n : ℕ, ((n.factorial : ℂ)⁻¹) • ((Φ ^ n : TNLean.MatrixCLM (Fin D)) A) := by
   have hseries_ops : Summable (fun n : ℕ => ((n.factorial : ℂ)⁻¹) • (Φ ^ n)) :=
     NormedSpace.expSeries_summable' (𝕂 := ℂ) Φ
+  -- Evaluation at `A`, built from the finite-dimensional linear map rather than
+  -- `ContinuousLinearMap.apply`, which needs an `IsNormableSpace` instance.
   let evA : TNLean.MatrixCLM (Fin D) →L[ℂ] Matrix (Fin D) (Fin D) ℂ :=
-    (ContinuousLinearMap.apply ℂ (Matrix (Fin D) (Fin D) ℂ)) A
+    LinearMap.toContinuousLinearMap
+      { toFun := fun f => f A
+        map_add' := fun _ _ => rfl
+        map_smul' := fun _ _ => rfl }
   have hExp :
       NormedSpace.exp Φ = ∑' n : ℕ, ((n.factorial : ℂ)⁻¹) • (Φ ^ n) := by
     simpa only using congrArg (fun f => f Φ) (NormedSpace.exp_eq_tsum (𝕂 := ℂ))

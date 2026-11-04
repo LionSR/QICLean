@@ -66,6 +66,7 @@ import QICLean.Algebra.MatrixProductIntertwine
 import QICLean.Algebra.MatrixRankBaseChange
 import QICLean.Algebra.MatrixRankClosed
 import QICLean.Algebra.MatrixRankKronecker
+import QICLean.Algebra.MatrixReindex
 import QICLean.Algebra.MatrixReindexUnitary
 import QICLean.Algebra.MatrixSandwichIntertwine
 import QICLean.Algebra.MatrixSpectralDecomp
@@ -85,11 +86,13 @@ import QICLean.Algebra.OneMarkerWeightedSchmidtRank
 import QICLean.Algebra.OneWindowWordPartition
 import QICLean.Algebra.OperatorBlock
 import QICLean.Algebra.OperatorNormFrobenius
+import QICLean.Algebra.OperatorRightContraction
 import QICLean.Algebra.OperatorSchmidt
 import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Algebra.OperatorSchmidtCut
 import QICLean.Algebra.OperatorSchmidtPartition
 import QICLean.Algebra.OperatorSchmidtPrescribedFactors
+import QICLean.Algebra.OperatorSchmidtProducts
 import QICLean.Algebra.OperatorSchmidtRealignment
 import QICLean.Algebra.OperatorSchmidtReindex
 import QICLean.Algebra.OperatorSchmidtSubmatrix
@@ -119,6 +122,7 @@ import QICLean.Algebra.SkewSymmetricMatrix
 import QICLean.Algebra.SkolemNoether
 import QICLean.Algebra.SkolemNoetherUnitary
 import QICLean.Algebra.SpinCover
+import QICLean.Algebra.StabilizedWeightedTrace
 import QICLean.Algebra.StarSubalgebraBlockDiagonal
 import QICLean.Algebra.StarSubalgebraBlockForm
 import QICLean.Algebra.StarSubalgebraFactor
@@ -141,6 +145,7 @@ import QICLean.Algebra.TracePurity
 import QICLean.Algebra.TraceReindex
 import QICLean.Algebra.TripartitePolynomialSchmidtRank
 import QICLean.Algebra.TwoMarkerWordCoefficients
+import QICLean.Algebra.UnionCoefficientBound
 import QICLean.Algebra.UnitModulusPowerSum
 import QICLean.Algebra.UnitaryTraceZero
 import QICLean.Algebra.WeightedFrequencySchmidtRank

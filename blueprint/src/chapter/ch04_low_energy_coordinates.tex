@@ -44,3 +44,20 @@
     contrary to the two given values. This includes the empty configuration
     set and the empty chain.
 \end{proof}
+
+\begin{theorem}[A spectral value gives a nonzero closed low space]
+    \label{thm:spectral_value_nonzero_low_space}
+    \lean{Matrix.IsHermitian.spectralSpanLE_ne_bot_of_mem_spectrum}
+    \leanok
+    \uses{def:spectral_span_le}
+    Let $H$ be Hermitian on a finite complex coordinate space, with an
+    orthonormal spectral basis $b_i$ and eigenvalues $a_i$. If
+    $\mu\in\operatorname{spec}(H)$ and $\mu\le c$, then
+    $\operatorname{span}\{b_i:a_i\le c\}$ is nonzero.
+    No separate dimension or simplicity hypothesis is needed.
+\end{theorem}
+\begin{proof}\leanok
+    Choose a nonzero $\mu$-eigenvector. Since $\mu\le c$, this vector belongs
+    to the closed low spectral space. This supplies the nonzero ground
+    space used in~\cite[Proposition 4.10, lines 1062--1075]{Arad2016RigorousRG}.
+\end{proof}

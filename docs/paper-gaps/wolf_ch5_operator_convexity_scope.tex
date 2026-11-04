@@ -148,6 +148,20 @@ Formal declarations:
 \leanid{posMap_log_concave_jensen} in
 \doclink{QICLean/Analysis/LiebConcavity}.}
 
+The entropic inequality
+\ref{eq:wolf_ch5_operator_convexity_scope_source_entropy_inequality} is also
+proved for arbitrary positive unital maps between finite matrix algebras and
+all positive semidefinite $\rho$. In fact, subunitality suffices. For square
+maps, take the right derivative at $p=1$ in the power inequality
+\ref{eq:wolf_ch5_operator_convexity_scope_power_convexity}. At a zero
+eigenvalue, $(0^p-0)/(p-1)=0$ for $p>1$; the finite spectral theorem therefore
+gives norm convergence without invertibility. Extending a rectangular map
+between complementary diagonal blocks reduces it to the square case.\footnote{
+Formal declarations:
+\leanid{IsPositiveMap.entropic_jensen} and
+\leanid{IsPositiveMap.entropic_jensen_subunital} in
+\doclink{QICLean/Channel/Schwarz/EntropicJensen}.}
+
 Equations~\ref{eq:wolf_ch5_operator_convexity_scope_power_concavity},
 \ref{eq:wolf_ch5_operator_convexity_scope_power_convexity},
 and~\ref{eq:wolf_ch5_operator_convexity_scope_logarithm_concavity} are
@@ -158,10 +172,10 @@ inequalities, or the finite-family corollary.
 
 \section{Verdict}
 
-The proved power and logarithm inequalities form a proper special-function
+The proved power, logarithm, and entropic inequalities form a proper special-function
 restriction of the results in Section~5.4 of Ref.~\cite{Wolf2012Quantum}. The
 general operator-convexity and operator-monotonicity assertions remain an open
-scope gap. No theorem for an arbitrary function $f$ follows from the three
+scope gap. No theorem for an arbitrary function $f$ follows from these
 special cases alone. The gap is resolved only by proving the general source
 assertions themselves or source-faithful theorems that imply them.
 

@@ -1,21 +1,190 @@
-\section{Peripheral eigenvalue group structure}
+\section{Peripheral eigenvalues of Schwarz maps}
 
-This section proves a finite-Kraus specialization of the cyclicity conclusion
-in~\cite[Theorem~6.6(1)]{Wolf2012Quantum}: the peripheral eigenvalues form a
-finite cyclic group. It does not establish the bound on the group order in
-item~(1), nor the conclusions in items~(2)--(4). Wolf's theorem assumes an
-irreducible positive unital Schwarz map, whereas the statement below assumes a
-Kraus representation and hence complete positivity. The remaining abstract
-Schwarz-map case is not included. The trace-preserving refinement that the order divides the bond
-dimension is proved in Theorem~\ref{thm:peripheral_cyclic_group}. The
-invertibility of peripheral eigenvectors and the product closure of the
-peripheral eigenvalues used below are proved in
-Section~\ref{sec:app_spectral_periodicity}.
+Maps in this section are complex linear. We use the trace adjoint $T^*$, so
+$\tr(T^*(\rho)X)=\tr(\rho T(X))$.
 
-% Scope restriction (complete positivity): the cyclicity conclusion in Wolf
-% Theorem 6.6(1) assumes only positivity, unitality, and the Schwarz inequality.
-% The order bound and items (2)--(4) are not part of this entry. See
-% docs/paper-gaps/wolf_thm6_6_kraus_scope.tex.
+\begin{theorem}[Faithful adjoint stationary state]
+    \label{thm:schwarz_faithful_adjoint_state}
+    \lean{SchwarzMap.exists_posDef_traceAdjoint_fixedPoint,
+        SchwarzMap.exists_posDef_traceAdjoint_stationaryState}
+    \leanok
+    Let $T$ be positive, unital, and irreducible on $\MN{D}$, with $D\geq1$.
+    There is a positive-definite matrix $\rho$ with
+    $T^*(\rho)=\rho$ and $\tr(\rho)=1$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Since $T(\Id)=\Id$, the left Perron theorem at eigenvalue one gives a
+    positive-definite fixed point of $T^*$. Its trace is positive, so division
+    by its trace gives the required stationary state.
+\end{proof}
+
+\begin{theorem}[Scalar fixed points of irreducible unital positive maps]
+    \label{thm:schwarz_scalar_fixed_points}
+    \lean{SchwarzMap.fixed_eq_scalar_of_irreducible_unital}
+    \leanok
+    If $T$ is positive, unital, and irreducible, every fixed point is $c\Id$
+    for some $c\in\C$.
+\end{theorem}
+
+\begin{proof}\leanok
+    The ordinary Perron eigenspace at eigenvalue one is spanned by the
+    positive-definite eigenvector $\Id$.
+\end{proof}
+
+\begin{theorem}[Peripheral Schwarz equality and multiplicative identities]
+    \label{thm:schwarz_peripheral_domain}
+    \lean{SchwarzMap.schwarz_equality_of_peripheral_eigenvector,
+        SchwarzMap.mem_multiplicativeDomain_of_peripheral_eigenvector}
+    \leanok
+    Let $T$ be a positive Schwarz map and let $\rho>0$ satisfy
+    $T^*(\rho)=\rho$. If $T(X)=\gamma X$ and $|\gamma|=1$, then
+    $T(X^\dagger X)=T(X^\dagger)T(X)=X^\dagger X$, and for every $Y$,
+    $T(YX)=T(Y)T(X)$ and $T(XY)=T(X)T(Y)$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:abstract_md_characterization}
+    The Schwarz defect is positive semidefinite and its trace against
+    $\rho$ vanishes by invariance and $|\gamma|=1$. Faithfulness makes the
+    defect zero. Apply the same argument to $X^\dagger$, then use the
+    multiplicative-domain characterization.
+\end{proof}
+
+\begin{theorem}[Peripheral unitaries and phase normalization]
+    \label{thm:schwarz_peripheral_unitary}
+    \lean{SchwarzMap.exists_peripheral_unitary,
+        SchwarzMap.exists_normalized_peripheral_unitary}
+    \leanok
+    Let $T$ be positive, unital, irreducible, and Schwarz. Every peripheral
+    eigenvalue $\gamma$ has a unitary eigenvector $U$. If $\gamma$ is a
+    primitive $m$-th root of unity, with $m>0$, the eigenvector can be chosen
+    to satisfy $U^m=\Id$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:schwarz_faithful_adjoint_state,
+        thm:schwarz_scalar_fixed_points, thm:schwarz_peripheral_domain,
+        thm:schwarz_unitary_powers}
+    For a nonzero $\gamma$-eigenvector $X$, the Schwarz equality makes
+    $X^\dagger X=c\Id$ with $c>0$. Thus $c^{-1/2}X$ is unitary. Its $m$-th
+    power is fixed, hence equals $\alpha\Id$ with $|\alpha|=1$. Choose an
+    $m$-th root $\beta$ of $\alpha^{-1}$. Then $|\beta|=1$ and
+    $(\beta U)^m=\Id$.
+\end{proof}
+
+\begin{theorem}[Powers of peripheral unitaries]
+    \label{thm:schwarz_unitary_powers}
+    \lean{SchwarzMap.map_powers_of_peripheral_unitary}
+    \leanok
+    Let $T$ be a positive unital Schwarz map. If $U$ is unitary,
+    $T(U)=\gamma U$, and $|\gamma|=1$, then
+    $T(U^k)=\gamma^kU^k$ for every $k\in\N$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:abstract_md_characterization}
+    Unitality and unitarity give equality in the Schwarz inequality at $U$.
+    Right multiplication by $U$ is therefore preserved. Induction on $k$
+    proves the identity, starting from $T(\Id)=\Id$.
+\end{proof}
+
+\begin{theorem}[Peripheral product closure]
+    \label{thm:schwarz_peripheral_products}
+    \lean{SchwarzMap.peripheralEigenvalues_mul_mem}
+    \leanok
+    The peripheral eigenvalues of a positive unital irreducible Schwarz map
+    are closed under multiplication.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:schwarz_faithful_adjoint_state,
+        thm:schwarz_peripheral_unitary, thm:schwarz_peripheral_domain}
+    Choose unitary eigenvectors $U,V$ for $\mu,\nu$. The multiplicative
+    identity gives $T(UV)=\mu\nu UV$. The unitary $UV$ is nonzero and
+    $|\mu\nu|=1$.
+\end{proof}
+
+\begin{theorem}[Simple peripheral eigenspaces]
+    \label{thm:schwarz_peripheral_simple}
+    \lean{SchwarzMap.peripheral_eigenspace_finrank_eq_one}
+    \leanok
+    Every peripheral eigenspace of a positive unital irreducible Schwarz map
+    has complex dimension one.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:schwarz_faithful_adjoint_state,
+        thm:schwarz_peripheral_unitary, thm:schwarz_peripheral_domain,
+        thm:schwarz_scalar_fixed_points}
+    Choose a unitary $\gamma$-eigenvector $U$. Every other
+    $\gamma$-eigenvector $X$ satisfies $T(XU^\dagger)=XU^\dagger$, hence
+    $XU^\dagger=c\Id$ and $X=cU$.
+\end{proof}
+
+\begin{theorem}[Cyclicity from finite peripheral product closure]
+    \label{thm:peripheral_finite_product_cyclicity}
+    \lean{peripheralEigenvalues_card_le_finrank,
+        peripheralEigenvalues_eq_range_exp_of_mul_mem}
+    \leanok
+    Let $T$ act on a finite-dimensional complex vector space $V$, and let
+    $S$ be its eigenvalues of modulus one. Then $|S|\leq\dim_{\C}V$.
+    If $1\in S$ and $S$ is closed under products, put $m=|S|$ and
+    $\gamma=\exp(2\pi i/m)$. Then $m>0$, $\gamma$ is a primitive $m$-th
+    root, and $S=\{\gamma^j:0\leq j<m\}$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:peripheral_finite}
+    Choose a nonzero eigenvector for each element of $S$. Distinct
+    eigenvalues give linearly independent vectors, proving the bound.
+    For $\mu\in S$, multiplication by $\mu$ injects the finite set $S$ into
+    itself, hence permutes it. Comparing products gives
+    $\prod_{\nu\in S}\nu=\mu^m\prod_{\nu\in S}\nu$, so $\mu^m=1$.
+    Thus $S$ is contained in the $m$-th roots of unity. Both sets have
+    cardinality $m$, so they coincide.
+\end{proof}
+
+\begin{theorem}[Peripheral spectrum of irreducible Schwarz maps]
+    \label{thm:wolf_irreducible_schwarz_peripheral}
+    \lean{SchwarzMap.wolf_theorem_6_6}
+    \leanok
+    Let $T:\MN{D}\to\MN{D}$ be positive, unital, irreducible, and Schwarz,
+    with $D\geq1$. Write $S=\operatorname{spec}(T)\cap\{z:|z|=1\}$.
+    There is an integer $1\leq m\leq D^2$ such that, for
+    $\gamma=\exp(2\pi i/m)$:
+    \begin{enumerate}
+        \item $S=\{\gamma^k:k\in\Z_m\}$.
+        \item Every eigenspace at an eigenvalue in $S$ is one-dimensional.
+        \item A unitary $U$ satisfies $T(U^k)=\gamma^kU^k$ for every
+              $k\in\N$, and $U^m=\Id$.
+        \item There are mutually orthogonal projections $(P_k)_{k\in\Z_m}$
+              resolving $\Id$. They satisfy $U=\sum_k\gamma^kP_k$ and
+              $T(P_{k+1})=P_k$.
+    \end{enumerate}
+    This is \cite[Theorem~6.6]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:schwarz_peripheral_products,
+        thm:peripheral_finite_product_cyclicity,
+        thm:schwarz_peripheral_simple, thm:schwarz_peripheral_unitary,
+        thm:schwarz_unitary_powers,
+        lem:cyclic_projections_from_peripheral_unitary,
+        lem:orthogonal_projection_mul_eq_zero_of_sum_eq_one}
+    The identity is a nonzero fixed point, so $1\in S$. Product closure
+    and finite cyclicity give the canonical generator and
+    $m\leq\dim_{\C}\MN{D}=D^2$. Choose its normalized unitary eigenvector.
+    Its power identities give the Fourier spectral projections, whose
+    cyclic action is $T(P_{k+1})=P_k$. Orthogonal projections resolving the
+    identity are pairwise orthogonal. Simplicity follows from the
+    one-dimensional eigenspace theorem.
+\end{proof}
+
+\input{chapter/ch08_spectral_schwarz_covariance}
+
+\section{Peripheral cyclicity for finite Kraus maps}
+
 \begin{theorem}[Peripheral eigenvalues: cyclic structure for Kraus maps]%
     \label{thm:peripheral_cyclic_structure}
     \lean{Kraus.peripheralEigenvalues_eq_range_primitiveRoot}
@@ -30,28 +199,11 @@ Section~\ref{sec:app_spectral_periodicity}.
     $\{1,\gamma,\gamma^2,\ldots,\gamma^{m-1}\}$.
 \end{theorem}
 
-\begin{proof}
-    \leanok
-    \uses{thm:peripheral_finite, lem:peripheral_mul_closure,
-        lem:peripheral_closed_powers_irred_fp, thm:peripheral_roots_irred_fp}
-    Let $S$ be the set of peripheral eigenvalues and let $m=|S|$.
-    Finiteness of $S$ and $1\in S$ give $m>0$. Every element of $S$ is a root
-    of unity, while $S$ is closed under products and powers. Hence $\mu^{-1}$
-    belongs to $S$ whenever $\mu\in S$. Multiplication by such a $\mu$
-    therefore permutes $S$. Since no element of $S$ vanishes,
-    \begin{align}
-        \prod_{\nu\in S}\nu
-         & =\prod_{\nu\in S}(\mu\nu)
-          =\mu^m\prod_{\nu\in S}\nu.
-        \notag
-    \end{align}
-    Cancelling the nonzero product gives $\mu^m=1$.
-
-    Let $\gamma=\exp(2\pi i/m)$, a primitive $m$-th root of unity. The set
-    $S$ is contained in the set of all $m$-th roots of unity, and both sets
-    have cardinality $m$. Thus they are equal. Consequently every element of
-    $S$ is $\gamma^j$ for some $0\leq j<m$, and power closure gives the reverse
-    inclusion.
+\begin{proof}\leanok
+    \uses{thm:peripheral_finite_product_cyclicity,
+        lem:peripheral_mul_closure}
+    The identity supplies the eigenvalue one. Apply finite cyclicity to
+    the peripheral set and its product closure.
 \end{proof}
 
 \section{Peripheral spectral refinements}%

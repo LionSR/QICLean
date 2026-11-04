@@ -1,11 +1,11 @@
 %% =========================================================
-%% Chapter: Random sources and sampling
+%% Section: Random sources and sampling
 %% Source: September 24, 2026 polynomial-PEPS preprint, Theorem 5.2.
 %% These are generic probability results, not the distributed compression theorem.
 %% Gaussian source calculations are documented separately after their integration.
 %% =========================================================
 
-\chapter{Random Sources and Sampling}\label{ch:random_sources}
+\section{Random sources and sampling}\label{ch:random_sources}
 
 Finite product measures determine the second moments of independent source
 slots. Diagonal coefficient moments then determine the second moments of
@@ -20,7 +20,7 @@ $0^{-1}=0$. For a complex rectangular matrix
 $A$, write $\lVert A\rVert_2^2=\sum_{r,c}|A_{rc}|^2$ for its
 Hilbert--Schmidt square.
 
-\section{Independent source slots}
+\subsection{Independent source slots}
 
 \begin{definition}[Products of slot coefficients]\label{def:random_tensor_coefficients}
     \lean{IndependentCovariance.tensorCoefficient}
@@ -173,7 +173,7 @@ Hilbert--Schmidt square.
     mean for nonempty $S$, and finite distributivity gives normalization.
 \end{proof}
 
-\section{Rectangular trace-norm comparisons}
+\subsection{Rectangular trace-norm comparisons}
 
 \begin{theorem}[Attained duality for the rectangular trace norm]
     \label{thm:random_trace_duality}
@@ -331,7 +331,7 @@ Hilbert--Schmidt square.
     separate multiplication and partial-trace bounds.
 \end{proof}
 
-\section{Rectangular matrix second moments}
+\subsection{Rectangular matrix second moments}
 
 \begin{theorem}[Second moments from diagonal coefficient moments]
     \label{thm:random_matrix_moments}
@@ -379,7 +379,7 @@ Hilbert--Schmidt square.
     (\ref{eq:random_mean_norm}).
 \end{proof}
 
-\section{Correction sums and deterministic realizations}
+\subsection{Correction sums and deterministic realizations}
 
 \begin{theorem}[Binomial correction cost]\label{thm:random_binomial_cost}
     \lean{CompressionSampling.sum_nonempty_subsets_pow}

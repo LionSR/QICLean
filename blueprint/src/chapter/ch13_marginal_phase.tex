@@ -1,20 +1,20 @@
 %% =========================================================
-%% Chapter: Comparing marginal phases
+%% Section: Comparing marginal phases
 %% Source: OpenAI, "A two-dimensional area law from a global spectral gap"
 %%         (September 24, 2026), Lemma 5.2, 04-conditional.tex lines 310-479
 %% =========================================================
 
-\chapter{Comparing Marginal Phases}
+\section{Comparing marginal phases}
 \label{ch:marginal_phase}
 
-This chapter formalizes the resolvent argument behind the marginal-phase
+This section formalizes the resolvent argument behind the marginal-phase
 comparison of~\cite[Lemma~5.2]{OpenAI2026AreaLaw}: a change in products of
 marginal imaginary powers is controlled by a conditional mutual information,
 with constants depending only on the dimension of the moved system. The
 faithful case is proved first and singular states are reached by a faithful
 approximation.
 
-\section{The resolvent defect of a compression}
+\subsection{The resolvent defect of a compression}
 
 Let $A$ and $B$ be positive definite operators with orthonormal eigenbases,
 $V$ an isometry with $V^*AV=B$, $b_0$ a vector and $a_0=Vb_0$. For $v>0$ put
@@ -94,7 +94,7 @@ $\delta_v=(A+v)^{-1}a_0-V(B+v)^{-1}b_0$.
     and the middle by the arithmetic--geometric mean inequality.
 \end{proof}
 
-\section{The faithful case}
+\subsection{The faithful case}
 
 \begin{lemma}[Domination by the marginal]
     \label{lem:marginal_domination}
@@ -134,7 +134,7 @@ $\delta_v=(A+v)^{-1}a_0-V(B+v)^{-1}b_0$.
     vector up to a unimodular scalar.
 \end{proof}
 
-\section{The general case}
+\subsection{The general case}
 
 For a Hermitian matrix $\rho$ write $\widehat\rho^{\,iu}$ for the
 kernel-completed phase, equal to $\rho^{iu}$ on the support of $\rho$ and to

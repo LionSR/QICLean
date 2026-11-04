@@ -50,8 +50,13 @@ theorem primitive_channel_pow_tendsto_zero_of_trace_zero [NeZero D]
       Filter.atTop (nhds 0) :=
     pow_tendsto_zero_of_spectralRadius_lt_one _ hsr_lt
   have hNpow0 : Filter.Tendsto (fun n : ℕ => ((E - P) ^ n) X) Filter.atTop (nhds 0) := by
+    -- Evaluation at `X` is continuous as a linear map on a finite-dimensional space;
+    -- `ContinuousLinearMap.apply` would need an `IsNormableSpace` instance for `Mat`.
     have hEval : Continuous (fun A : Mat →L[ℂ] Mat => A X) :=
-      (ContinuousLinearMap.apply ℂ Mat X).continuous
+      (LinearMap.toContinuousLinearMap
+        ({ toFun := fun A => A X
+           map_add' := fun _ _ => rfl
+           map_smul' := fun _ _ => rfl } : (Mat →L[ℂ] Mat) →ₗ[ℂ] Mat)).continuous
     have hEvalT : Filter.Tendsto
         (fun n : ℕ => (((Module.End.toContinuousLinearMap Mat) (E - P)) ^ n) X)
         Filter.atTop (nhds 0) :=

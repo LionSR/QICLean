@@ -13,7 +13,7 @@ open scoped BigOperators ComplexConjugate Kronecker Matrix.Norms.Elementwise
 noncomputable section
 
 local instance {m n : Type*} [Fintype m] [Fintype n] : ContinuousENorm (Matrix m n ℂ) :=
-  SeminormedAddGroup.toContinuousENorm
+  SeminormedAddGroup.toESeminormedAddMonoid.toContinuousENorm
 
 private def ketL : Matrix (Fin 2) (Fin 1) ℂ := Matrix.single 1 0 Complex.I
 private def ketR : Matrix (Fin 3) (Fin 1) ℂ := Matrix.single 2 0 1

@@ -1,0 +1,73 @@
+\section{An energy-normalized bound for mandatory labels}
+
+Finite alternating sums collect the terms containing specified interaction
+labels in a cluster expansion. The estimate below retains a supplied lower
+energy in the normalization. It is an auxiliary bound for the argument
+of Arad--Landau--Vazirani--Vidick~\cite[lines 1270--1291 and
+    1935--1968]{Arad2016RigorousRG}. The obstructions to the printed spatial
+approximation estimate are recorded separately
+in~\cite{gap:alvv16_cluster_approximation}.
+
+\begin{lemma}[Normalized norm of a mandatory-label sum]
+    \label{thm:mandatory_label_exp_norm}
+    \lean{Matrix.norm_sum_powerset_exp_sub_le_of_lower_bound}
+    \leanok
+    Let $S$ be a finite set, and let $H$ and $h_i$, $i\in S$, be Hermitian
+    complex matrices of the same size. Suppose $\|h_i\|\leq1$ and
+    $H\geq\lambda I$, where $\lambda$ is real. For $t\geq0$, write
+    \begin{align}
+        R_S^H(t)
+         & =\sum_{T\subseteq S}(-1)^{|T|}
+        \exp\!\left[-t\left(H-\sum_{i\in T}h_i\right)\right].
+        \label{eq:mandatory_label_exp_sum}
+    \end{align}
+    Then
+    \begin{align}
+        e^{t\lambda}\|R_S^H(t)\|\leq(e^t-1)^{|S|}.
+        \label{eq:mandatory_label_exp_norm}
+    \end{align}
+    The norm is the Hilbert-space operator norm. The matrix $H$ need not
+    equal the sum of the selected terms.
+\end{lemma}
+\begin{proof}\leanok
+    For $u\geq0$, the scalar spectral lower bound gives
+    $\|e^{-uH}\|\leq e^{-u\lambda}$. If $S$ is empty, this is exactly
+    (\ref{eq:mandatory_label_exp_norm}).
+
+    Suppose $S$ is nonempty and put $k=|S|$. Differentiating the finite sum
+    (\ref{eq:mandatory_label_exp_sum}) and collecting the subsets that
+    contain each label gives
+    \begin{align}
+        \frac{d}{ds}R_S^H(s)
+         & =-H R_S^H(s)
+        -\sum_{i\in S}h_iR_{S\setminus\{i\}}^{H-h_i}(s).
+        \label{eq:mandatory_label_exp_recursion}
+    \end{align}
+    Also $R_S^H(0)=0$. For fixed $t$, differentiate
+    $e^{-(t-s)H}R_S^H(s)$ and integrate. The $H$ terms cancel in the
+    product rule, giving
+    \begin{align}
+        R_S^H(t)
+         & =-\int_0^t e^{-(t-s)H}
+        \sum_{i\in S}h_iR_{S\setminus\{i\}}^{H-h_i}(s)\,ds.
+        \label{eq:mandatory_label_exp_integral}
+    \end{align}
+    The integrand is continuous. Since $h_i\leq I$, one has
+    $H-h_i\geq(\lambda-1)I$. Induction on the finite set $S$, followed by
+    submultiplicativity and the triangle inequality in
+    (\ref{eq:mandatory_label_exp_integral}), yields
+    \begin{align}
+        \|R_S^H(t)\|
+         & \leq e^{-t\lambda}k\int_0^t e^s(e^s-1)^{k-1}\,ds
+        =e^{-t\lambda}(e^t-1)^k.
+    \end{align}
+    The final equality follows by differentiating $(e^s-1)^k$.
+    Multiplication by $e^{t\lambda}$ proves the claim.
+\end{proof}
+
+When $H$ is the sum of a full family of interactions, finite
+inclusion--exclusion identifies~(\ref{eq:mandatory_label_exp_sum}) with the
+words containing every selected label. The bound requires no assumption
+on the overlap of the interactions. A spatial truncation estimate also
+requires a choice of interaction graph and a separate finite counting
+argument.

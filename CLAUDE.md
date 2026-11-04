@@ -8,7 +8,7 @@ QICLean is a Lean 4 formalization of finite-dimensional **quantum-channel
 theory** (following Wolf's *Quantum Channels & Operations*), **quantum
 Wielandt theory**, and the **spectral / quantum Perron-Frobenius (QPF)
 theory** that channel irreducibility and primitivity rest on. Built on
-Mathlib v4.35.0-rc3.
+Mathlib v4.36.0-rc1.
 
 QICLean was extracted from TNLean (the tensor-network / matrix-product-state
 library), which formalizes the fundamental theorem of matrix product states
@@ -62,8 +62,9 @@ and the invariants a CI guard checks on both sides.
 
 ## Lean Toolchain & Dependencies
 
-- **Lean**: v4.35.0-rc3 (pinned in `lean-toolchain`, identical to TNLean's)
-- **Mathlib**: v4.35.0-rc3
+- **Lean**: v4.36.0-rc1 (pinned in `lean-toolchain`; TNLean follows the released
+  upgrade according to `docs/UPGRADE_RUNBOOK.md`)
+- **Mathlib**: v4.36.0-rc1
 - **checkdecls**: Blueprint declaration checker (PatrickMassot/checkdecls)
 - **Gametheory**: Custom Brouwer fixed-point theorem library (LionSR/Brouwer) — moved here from
   TNLean, since the quantum Perron-Frobenius existence argument is the only consumer
@@ -111,9 +112,10 @@ wrappers for downstream notation.
 `blueprint/` holds the reader-facing mathematical account, extracted from
 TNLean's blueprint (see `docs/extraction/interface_edges.md` for the
 severed cross-boundary edges left by that extraction). `blueprint/src/content.tex`
-orders chapters to match M. Wolf's *Quantum Channels & Operations: A Guided
-Tour* as closely as possible; see the mapping comment at the top of that
-file. See `blueprint/README.md` for layout and build commands.
+arranges the chapters in six parts, ordered by dependency as far as
+possible; the first three parts follow M. Wolf's *Quantum Channels &
+Operations: A Guided Tour*, Chapters 1--7. The comment at the top of that file
+lists every part and chapter. See `blueprint/README.md` for layout and build commands.
 
 ## Conventions & Style Guides
 

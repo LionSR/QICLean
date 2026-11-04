@@ -1,0 +1,84 @@
+\section{Ordinary Petz overlap under quantum channels}
+\label{sec:petz_overlap}
+
+\begin{definition}[Ordinary Petz overlap]
+    \label{def:petz_overlap}
+    \lean{Matrix.petzOverlap}
+    \leanok
+    For positive semidefinite matrices $\rho,\sigma$ on the same finite
+    coordinate space and $\alpha\in[0,1]$, set
+    \begin{align}
+        Q_\alpha(\rho,\sigma)
+            &=\operatorname{Re}\tr(\rho^\alpha\sigma^{1-\alpha}).
+        \label{eq:petz_overlap_definition}
+    \end{align}
+    Powers are defined by spectral calculus, with $x^0=1$ also at $x=0$.
+    In particular, the zeroth power of a singular matrix is the identity.
+\end{definition}
+
+\begin{lemma}[Endpoint values and invariance]
+    \label{lem:petz_overlap_invariance}
+    \lean{Matrix.petzOverlap_zero, Matrix.petzOverlap_one,
+        Matrix.petzOverlap_conj_unitary, Matrix.petzOverlap_reindex,
+        Matrix.petzOverlap_tensor_density}
+    \leanok
+    \uses{def:petz_overlap}
+    For positive semidefinite $\rho,\sigma$, the endpoint values are
+    $Q_0(\rho,\sigma)=\operatorname{Re}\tr\sigma$ and
+    $Q_1(\rho,\sigma)=\operatorname{Re}\tr\rho$.
+    Simultaneous unitary conjugation and changes of finite coordinates
+    preserve $Q_\alpha$. If $\tau$ is any density matrix, then
+    \begin{align}
+        Q_\alpha(\rho\otimes\tau,\sigma\otimes\tau)
+            &=Q_\alpha(\rho,\sigma).
+        \label{eq:petz_overlap_ancilla}
+    \end{align}
+    Singular states and singular ancillas are permitted.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Spectral calculus gives the endpoint identities and commutes with
+    unitary conjugation and changes of coordinates. Cyclicity of the trace
+    then proves the corresponding invariances. Powers factor across tensor
+    products of positive semidefinite matrices. Since $\alpha$ and $1-\alpha$
+    are nonnegative, the scalar identity
+    $x^\alpha x^{1-\alpha}=x$ holds for $x\ge0$, including $x=0$.
+    Therefore $\tau^\alpha\tau^{1-\alpha}=\tau$, and the tensor trace
+    factors with multiplier $\tr\tau=1$.
+\end{proof}
+
+\begin{theorem}[Data processing for the ordinary Petz overlap]
+    \label{thm:petz_overlap_data_processing}
+    \lean{Matrix.petzOverlap_le_map, Matrix.petzOverlap_data_processing,
+        Matrix.petzOverlap_le_partialTraceRight}
+    \leanok
+    \uses{def:petz_overlap}
+    Let $T:\MN d\to\MN{d'}$ be completely positive and trace preserving,
+    let $\rho,\sigma$ be density matrices, and let $\alpha\in[0,1]$. Then
+    \begin{align}
+        Q_\alpha(\rho,\sigma)
+            &\le Q_\alpha(T(\rho),T(\sigma)).
+        \label{eq:petz_overlap_data_processing}
+    \end{align}
+    This is \cite[Equation~(8.35)]{Wolf2012Quantum} on the stated exponent
+    interval. More generally the same inequality holds for arbitrary positive
+    semidefinite $\rho,\sigma$ when $d\ge1$, without trace normalization.
+    In particular, discarding a nonzero right tensor factor increases the
+    overlap; the retained coordinate space may have dimension zero.
+    The reverse inequality for negative exponents is a separate assertion.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:lieb_concavity_psd, lem:petz_overlap_invariance,
+        thm:convex_functional_monotonicity, thm:convex_functional_partial_trace}
+    Lieb's theorem with the auxiliary matrix equal to the identity makes
+    $-Q_\alpha$ jointly convex on pairs of positive semidefinite matrices.
+    The domain is convex and closed under simultaneous unitary conjugation,
+    tensoring with a density matrix, and changes of coordinates.
+    Lemma~\ref{lem:petz_overlap_invariance} proves invariance of the value.
+    A completely positive map preserves positivity, so the image pair belongs
+    to the output domain. Theorem~\ref{thm:convex_functional_monotonicity}
+    applied to $-Q_\alpha$ proves the inequality. A trace-one input supplies
+    $d\ge1$. The partial-trace assertion follows from
+    Theorem~\ref{thm:convex_functional_partial_trace} on the same domain.
+\end{proof}

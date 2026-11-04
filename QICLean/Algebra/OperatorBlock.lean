@@ -37,4 +37,11 @@ theorem operatorBlock_apply (ρ : Matrix (m × n) (m × n) R)
     (i j : m) (k l : n) :
     operatorBlock ρ i j k l = ρ (i, k) (j, l) := rfl
 
+/-- Reindexing both tensor factors transports operator blocks on the second factor. -/
+@[simp]
+theorem operatorBlock_reindex_prod {m' n' : Type*} (em : m ≃ m') (en : n ≃ n')
+    (X : Matrix (m × n) (m × n) R) (i j : m') :
+    operatorBlock (reindex (em.prodCongr en) (em.prodCongr en) X) i j =
+      reindex en en (operatorBlock X (em.symm i) (em.symm j)) := rfl
+
 end Matrix

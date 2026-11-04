@@ -17,12 +17,19 @@ corresponding content stayed in TNLean.
 ## Layout
 
 - `src/` contains the LaTeX source.
-- `src/chapter/` contains one file per chapter.
-- `src/content.tex` is the chapter router, ordered to follow M. Wolf's
-  *Quantum Channels & Operations: A Guided Tour* as closely as possible; see
-  the mapping comment at the top of that file. The `chNN_` prefix on each
-  file name is this volume's own sequential chapter number, matching the
-  router order.
+- `src/chapter/` contains the chapter files, the files they `\input`, and
+  one opening file per part (`part_N_*.tex`).
+- `src/content.tex` is the router. It arranges the volume in six parts:
+  states, positive maps and quantum channels; operator inequalities; spectra
+  and long-time behaviour of channels; entropy and probability; ground states
+  of gapped local Hamiltonians; and tools for the two-dimensional area law
+  and PEPS approximation. Chapters are ordered by dependency as far as
+  possible, and the first three parts follow M. Wolf's *Quantum
+  Channels & Operations: A Guided Tour*, Chapters 1--7. The comment at the top
+  of that file lists every chapter. The `chNN_` prefix of a file name records
+  where the file sat in the earlier Wolf-ordered layout; it is a stable
+  identifier, not the chapter number, and files are not renamed when the
+  order changes.
 - `src/appendix/` contains the supporting-results appendices carried over
   from TNLean's `ft_mps/` and `full_only/` appendix trees.
 - `src/macros/` contains blueprint-specific macros.

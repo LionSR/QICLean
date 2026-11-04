@@ -317,7 +317,8 @@ private theorem interior_psdCone_eq_posDef_of_nonempty [Nonempty n] :
     interior (psdCone n : Set (HermitianMatrix n)) =
       {A | (toMatrix n A).PosDef} := by
   ext A
-  rw [Set.mem_ofPred_eq, posDef_iff_forall_inner_pos]
+  change A ∈ interior (psdCone n : Set (HermitianMatrix n)) ↔ (toMatrix n A).PosDef
+  rw [posDef_iff_forall_inner_pos]
   exact ⟨forall_inner_pos_of_mem_interior n, mem_interior_of_forall_inner_pos n⟩
 
 private theorem interior_psdCone_eq_posDef_of_isEmpty [IsEmpty n] :

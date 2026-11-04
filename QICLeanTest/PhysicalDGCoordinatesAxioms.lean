@@ -8,6 +8,7 @@ import QICLean.Analysis.GroundEnergyBounds
 import QICLean.Analysis.LowEnergyCoordinates
 import QICLean.Analysis.MatrixTensorCoordinates
 import QICLean.Analysis.ViableSubspaceCoordinates
+import QICLean.Analysis.LowEnergyCluster
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
@@ -23,7 +24,9 @@ run_cmd do
     ``Matrix.IsHermitian.two_le_local_dimension_of_two_spectral_values,
     ``Submodule.iSup_map_basis_matrixUnits_eq_top,
     ``Submodule.isViable_ne_bot_of_target_ne_bot,
-    ``Submodule.exists_clm_family_extension_of_card_le]
+    ``Submodule.exists_clm_family_extension_of_card_le,
+    ``Submodule.low_spectral_cluster_of_scaled_restricted_residuals,
+    ``Matrix.IsHermitian.spectralSpanLE_ne_bot_of_mem_spectrum]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"

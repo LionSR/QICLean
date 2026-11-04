@@ -8,7 +8,7 @@ import QICLean.Analysis.CompressedPartialSwap
 import Mathlib.Analysis.Matrix.Order
 
 /-!
-# A full-system gap on two replicas
+# Projector-gap bounds on tensor products
 
 The tensor sum of two copies of a Hamiltonian preserves its nonnegative lower-gap bound.
 For `P = |Ω⟩⟨Ω|`, `Q = I - P`, and `R = H - E₀ I - Δ Q`, its gap defect is
@@ -16,6 +16,12 @@ For `P = |Ω⟩⟨Ω|`, `Q = I - P`, and `R = H - E₀ I - Δ Q`, its gap defect
 The eigenvector hypothesis is used only to identify the doubled ground energy `2 E₀`.
 Unitary conjugation, including the physical partial swap, preserves these conclusions.
 All vectors and operators remain on the original doubled physical space.
+
+The two-factor identity is also proved for arbitrary finite factor dimensions,
+with possibly different operators, vectors and reference energies. A common
+nonnegative projector-gap lower bound passes to their tensor sum. Weakening
+such a lower bound requires only normalization, without an eigenvector
+hypothesis. These extensions support product-state ancillary padding.
 
 Here a gap is a lower bound; no equality of spectral gaps or uniqueness at `Δ = 0`
 is asserted. There is no subsystem-gap hypothesis or claim about interaction support.
@@ -91,6 +97,64 @@ theorem doubledHamiltonian_mulVec {H : Matrix n n ℂ} {Ω : n → ℂ} {E₀ : 
   push_cast
   ring
 
+/-- Weakening a projector-gap lower bound preserves its positive defect.
+Auxiliary to the capped gap in product-state ancilla padding of LVV13's
+successive construction, arXiv:1307.5143v1, final induction, lines 652--678. -/
+theorem PosSemidef.gap_mono {H : Matrix n n ℂ} {u : n → ℂ} {E delta delta' : ℝ}
+    (hgap : (H - (E : ℂ) • 1 - (delta : ℂ) •
+      (1 - vecMulVec u (star u))).PosSemidef)
+    (hu : ∑ i, ‖u i‖ ^ 2 = 1) (hle : delta' ≤ delta) :
+    (H - (E : ℂ) • 1 - (delta' : ℂ) • (1 - vecMulVec u (star u))).PosSemidef := by
+  have hQ := one_sub_vecMulVec_posSemidef_of_sum_normSq_le_one u hu.le
+  have h := hgap.add (hQ.smul (Complex.zero_le_real.mpr (sub_nonneg.mpr hle)))
+  convert h using 1
+  push_cast
+  module
+
+omit [Fintype n] in
+/-- The projector-gap defect of a tensor sum splits into three positive-factor
+terms. Auxiliary to product-state ancilla padding in the successive construction
+of LVV13, arXiv:1307.5143v1, final induction, lines 652--678. No eigenvector or
+normalization hypothesis is required for this algebraic identity. -/
+theorem tensorSum_gap_eq {m : Type*} [DecidableEq m]
+    (A : Matrix m m ℂ) (B : Matrix n n ℂ) (u : m → ℂ) (v : n → ℂ)
+    (E F delta : ℝ) :
+    A ⊗ₖ 1 + 1 ⊗ₖ B - ((E + F : ℝ) : ℂ) • 1 -
+        (delta : ℂ) • (1 - vecMulVec (fun p : m × n ↦ u p.1 * v p.2)
+          (star (fun p : m × n ↦ u p.1 * v p.2))) =
+      (A - (E : ℂ) • 1 - (delta : ℂ) • (1 - vecMulVec u (star u))) ⊗ₖ 1 +
+        1 ⊗ₖ (B - (F : ℂ) • 1 - (delta : ℂ) • (1 - vecMulVec v (star v))) +
+        (delta : ℂ) • ((1 - vecMulVec u (star u)) ⊗ₖ
+          (1 - vecMulVec v (star v))) := by
+  ext ⟨i, j⟩ ⟨k, l⟩
+  simp only [sub_apply, add_apply, smul_apply, smul_eq_mul, kroneckerMap_apply,
+    vecMulVec_apply, Pi.star_apply, star_mul, one_apply, Prod.mk.injEq]
+  push_cast
+  by_cases hik : i = k <;> by_cases hjl : j = l <;>
+    simp only [hik, hjl, and_self, and_false, false_and, ite_true, ite_false] <;> ring
+
+/-- A common projector-gap lower bound passes to the tensor sum of arbitrary
+finite factors. This asserts a lower bound, not equality of the spectral gap.
+Auxiliary to product-state ancilla padding of LVV13's successive construction,
+arXiv:1307.5143v1, final induction, lines 652--678. -/
+theorem PosSemidef.tensorSum_gap {m : Type*} [Fintype m] [DecidableEq m]
+    {A : Matrix m m ℂ} {B : Matrix n n ℂ} {u : m → ℂ} {v : n → ℂ}
+    {E F delta : ℝ}
+    (hA : (A - (E : ℂ) • 1 - (delta : ℂ) •
+      (1 - vecMulVec u (star u))).PosSemidef)
+    (hB : (B - (F : ℂ) • 1 - (delta : ℂ) •
+      (1 - vecMulVec v (star v))).PosSemidef)
+    (hu : ∑ i, ‖u i‖ ^ 2 = 1) (hv : ∑ j, ‖v j‖ ^ 2 = 1)
+    (hdelta : 0 ≤ delta) :
+    (A ⊗ₖ 1 + 1 ⊗ₖ B - ((E + F : ℝ) : ℂ) • 1 -
+      (delta : ℂ) • (1 - vecMulVec (fun p : m × n ↦ u p.1 * v p.2)
+        (star (fun p : m × n ↦ u p.1 * v p.2)))).PosSemidef := by
+  rw [tensorSum_gap_eq]
+  have hQu := one_sub_vecMulVec_posSemidef_of_sum_normSq_le_one u hu.le
+  have hQv := one_sub_vecMulVec_posSemidef_of_sum_normSq_le_one v hv.le
+  exact ((hA.kronecker PosSemidef.one).add (PosSemidef.one.kronecker hB)).add
+    ((hQu.kronecker hQv).smul (Complex.zero_le_real.mpr hdelta))
+
 omit [Fintype n] in
 /-- The doubled gap defect splits into three positive terms when `Δ ≥ 0`.
 This algebraic identity needs neither normalization nor an eigenvector hypothesis. -/
@@ -100,13 +164,10 @@ theorem doubledHamiltonian_gap_eq (H : Matrix n n ℂ) (Ω : n → ℂ) (E₀ Δ
       (H - (E₀ : ℂ) • 1 - (Δ : ℂ) • (1 - vecMulVec Ω (star Ω))) ⊗ₖ 1 +
         1 ⊗ₖ (H - (E₀ : ℂ) • 1 - (Δ : ℂ) • (1 - vecMulVec Ω (star Ω))) +
         (Δ : ℂ) • ((1 - vecMulVec Ω (star Ω)) ⊗ₖ (1 - vecMulVec Ω (star Ω))) := by
-  rw [vecMulVec_doubledVector]
-  ext ⟨i, j⟩ ⟨k, l⟩
-  simp only [doubledHamiltonian, sub_apply, add_apply, smul_apply, smul_eq_mul,
-    kroneckerMap_apply, one_apply, Prod.mk.injEq]
-  push_cast
-  by_cases hik : i = k <;> by_cases hjl : j = l <;> simp only [hik, hjl, and_self,
-    and_false, false_and, ite_true, ite_false] <;> ring
+  change H ⊗ₖ 1 + 1 ⊗ₖ H - ((2 * E₀ : ℝ) : ℂ) • 1 -
+    (Δ : ℂ) • (1 - vecMulVec (fun p : n × n ↦ Ω p.1 * Ω p.2)
+      (star (fun p : n × n ↦ Ω p.1 * Ω p.2))) = _
+  simpa only [two_mul] using tensorSum_gap_eq H H Ω Ω E₀ E₀ Δ
 
 /-- A full-system lower-gap bound passes to two replicas with the same `Δ ≥ 0`.
 This is the gap assertion after `eq:info-reset-overlap`, lines 415–425.
@@ -117,10 +178,10 @@ theorem PosSemidef.doubled_gap {H : Matrix n n ℂ} {Ω : n → ℂ} {E₀ Δ : 
     (hΩ : ∑ i, ‖Ω i‖ ^ 2 = 1) (hΔ : 0 ≤ Δ) :
     (doubledHamiltonian H - ((2 * E₀ : ℝ) : ℂ) • 1 -
       (Δ : ℂ) • (1 - vecMulVec (doubledVector Ω) (star (doubledVector Ω)))).PosSemidef := by
-  rw [doubledHamiltonian_gap_eq]
-  have hQ := one_sub_vecMulVec_posSemidef_of_sum_normSq_le_one Ω hΩ.le
-  exact ((hgap.kronecker PosSemidef.one).add (PosSemidef.one.kronecker hgap)).add
-    ((hQ.kronecker hQ).smul (Complex.zero_le_real.mpr hΔ))
+  change (H ⊗ₖ 1 + 1 ⊗ₖ H - ((2 * E₀ : ℝ) : ℂ) • 1 -
+    (Δ : ℂ) • (1 - vecMulVec (fun p : n × n ↦ Ω p.1 * Ω p.2)
+      (star (fun p : n × n ↦ Ω p.1 * Ω p.2)))).PosSemidef
+  simpa only [two_mul] using hgap.tensorSum_gap hgap hΩ hΩ hΔ
 
 /-- Unitary matrices preserve the Euclidean norm on the original physical space. -/
 theorem norm_toLp_mulVec_of_unitary {U : Matrix n n ℂ}

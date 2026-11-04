@@ -1,0 +1,69 @@
+\section{Spectral probabilities from viable subspaces}
+
+\begin{theorem}[One spectral distribution for all viable approximations]
+    \label{thm:unit_cut_spectral_probability}
+    \lean{Submodule.unit_cut_spectral_probability}
+    \leanok
+    \uses{def:subspace_viable, def:von_neumann_entropy, thm:viable_coordinates}
+    Let $\sigma,\beta$ be finite sets, let $\mathcal H$ be a complex
+    inner-product space, and fix a linear isometry
+    $U:\mathcal H\to\C^\sigma\otimes\C^\beta$ onto the tensor product.
+    Let $G\subseteq\mathcal H$ and let $\psi\in G$ be a unit vector.
+    Write $U\psi=\sum_{a,b}C_{ab}e_a\otimes e_b$ and $\rho=CC^\dagger$.
+    Its eigenvalues $p_0\ge\cdots\ge p_{|\sigma|-1}$ satisfy
+    \begin{align*}
+        p_a&\ge0, & \sum_a p_a&=1, & S(\rho)&=H(p).
+    \end{align*}
+    This single distribution has the following property for every real
+    $\delta<1$, every subspace $S\subseteq\C^\sigma$, and every integer $R\ge0$:
+    if $\dim S\le R$ and $S$ is $\delta$-viable for $UG$, then
+    \begin{align}
+        \sum_{\substack{0\le a<|\sigma|\\R\le a}}p_a&\le\delta.
+        \label{eq:unit_cut_spectral_tail}
+    \end{align}
+    The distribution is determined before the choices of $\delta,S,R$.
+    This is the finite-dimensional spectral step in
+    \cite[proof of Theorem~4.9]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:viable_leading_marginal_mass, thm:entropy_ordered_eigenvalues}
+    Positivity of $CC^\dagger$ gives $p_a\ge0$, while
+    $\tr(CC^\dagger)=\|\psi\|^2=1$ gives normalization.
+    The spectral entropy identity gives $S(\rho)=H(p)$.
+    The leading-marginal-mass estimate and monotonicity of the Ky Fan sums give
+    $\sum_{a<R}p_a\ge1-\delta$; subtract this inequality from the total mass.
+\end{proof}
+
+\begin{theorem}[The actual regional marginal in tensor coordinates]
+    \label{thm:actual_region_split_entropy}
+    \lean{Submodule.actualRegionSplit_marginal_and_entropy}
+    \leanok
+    \uses{def:finite_product_regional_entropy, thm:viable_coordinates}
+    Let $V$ be a finite set of sites, with local dimensions $n_v\ge0$,
+    and let $J\subseteq V$.
+    Put $\sigma=\prod_{v\in J}\{0,\ldots,n_v-1\}$ and
+    $\beta=\prod_{v\notin J}\{0,\ldots,n_v-1\}$.
+    Identify the full configuration space first with
+    $\C^\beta\otimes\C^\sigma$ by separating the exterior coordinates,
+    and then with $\C^\sigma\otimes\C^\beta$ by exchanging tensor factors.
+    For an arbitrary vector $\psi$, let $C$ be its coefficient matrix in
+    these coordinates. Then
+    \begin{align}
+        C_{ab}&=\psi(a\cup b), &
+        CC^\dagger&=\tr_{J^c}\ketbra{\psi}{\psi}, &
+        S(CC^\dagger)&=S(\rho_J).
+        \label{eq:actual_region_split_entropy}
+    \end{align}
+    Here $a\cup b$ is the full configuration with restrictions $a,b$, and
+    $\rho_J=\tr_{J^c}\ketbra{\psi}{\psi}$.
+    Neither normalization nor a nonempty region is assumed.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:tensor_exchange_product_coordinates, thm:complementary_reduced_ranks}
+    Tensor exchange gives $C_{ab}=\psi(a\cup b)$.
+    Thus $(CC^\dagger)_{aa'}=\sum_b\psi(a\cup b)\overline{\psi(a'\cup b)}$,
+    which is precisely the partial trace. Equality of the matrices gives
+    equality of their entropies.
+\end{proof}

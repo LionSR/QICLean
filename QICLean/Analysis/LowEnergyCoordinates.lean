@@ -198,3 +198,33 @@ theorem two_le_local_dimension_of_two_spectral_values
     ((congrArg hH.eigenvalues (Subsingleton.elim i j)).trans hj))
 end Matrix.IsHermitian
 end
+
+
+section
+
+section
+
+namespace Matrix.IsHermitian
+
+/-- A closed low spectral span is nonzero when its cutoff contains a
+spectral value. Auxiliary to the nonempty ground and truncated low spaces
+in ALVV, arXiv:1602.08828v2, Assumption (DG), lines 267–280, and
+Theorem `t:ais`, lines 1010–1024. No simple eigenvalue or nonempty matrix
+index type is assumed; nonemptiness follows from the spectral value. -/
+theorem spectralSpanLE_ne_bot_of_mem_spectrum
+    {σ : Type*} [Fintype σ] [DecidableEq σ]
+    {H : Matrix σ σ ℂ} (hH : H.IsHermitian) {mu c : ℝ}
+    (hmu : mu ∈ spectrum ℝ H) (hcut : mu ≤ c) :
+    Submodule.spectralSpanLE hH.eigenvectorBasis hH.eigenvalues c ≠ ⊥ := by
+  obtain ⟨j, hj⟩ := hH.spectrum_real_eq_range_eigenvalues ▸ hmu
+  have hmem : hH.eigenvectorBasis j ∈
+      Submodule.spectralSpanLE hH.eigenvectorBasis hH.eigenvalues c :=
+    Submodule.subset_span ⟨j,
+      (show hH.eigenvalues j ≤ c by simpa only [hj] using hcut), rfl⟩
+  intro hzero
+  rw [hzero] at hmem
+  exact hH.eigenvectorBasis.toBasis.ne_zero j (by
+    simpa only [Submodule.mem_bot, OrthonormalBasis.coe_toBasis] using hmem)
+end Matrix.IsHermitian
+end
+end

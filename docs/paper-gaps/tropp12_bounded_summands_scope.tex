@@ -1,0 +1,97 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{Bounded Summands in the Hermitian Matrix Bernstein Inequality}
+\author{}
+\date{2026-10-28}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+\section{The source statements}
+
+Let $Y_1,\dots,Y_N$ be independent random Hermitian $d\times d$ matrices. The
+matrix Bernstein inequality of Tropp~\cite[Theorems~1.4 and~6.1]{Tropp2012User}
+assumes $\mathbb E\,Y_k=0$ and the one-sided bound
+\begin{align}
+    \lambda_{\max}(Y_k) & \le R\quad\text{almost surely},
+    \label{eq:tropp12_scope_one_sided}
+\end{align}
+and concludes, with $\sigma^2=\bigl\|\sum_k\mathbb E\,Y_k^2\bigr\|$, that for
+$t\ge0$
+\begin{align}
+    \mathbb P\Bigl\{\lambda_{\max}\Bigl(\sum_kY_k\Bigr)\ge t\Bigr\}
+     & \le d\exp\Bigl(\frac{-t^2/2}{\sigma^2+Rt/3}\Bigr).
+    \label{eq:tropp12_scope_bernstein}
+\end{align}
+Its proof rests on the subadditivity of matrix cumulant generating
+functions~\cite[Lemma~3.4]{Tropp2012User},
+\begin{align}
+    \mathbb E\operatorname{tr}\exp\Bigl(\sum_k\theta Y_k\Bigr)
+     & \le\operatorname{tr}\exp\Bigl(\sum_k\log\mathbb E\,e^{\theta Y_k}\Bigr),
+    \label{eq:tropp12_scope_subadditivity}
+\end{align}
+which is stated for independent random Hermitian matrices whose matrix moment
+generating functions exist. Its one-summand case is Jensen's inequality for
+Lieb's concave function~\cite[Corollary~3.3]{Tropp2012User}: for a fixed
+Hermitian matrix $H$ and a random Hermitian matrix $Y$,
+$\mathbb E\operatorname{tr}e^{H+Y}\le\operatorname{tr}\exp(H+\log\mathbb E\,e^{Y})$.
+
+\section{The formal statements}
+
+The formalization proves the corollary and (\ref{eq:tropp12_scope_subadditivity}), with an
+additional fixed Hermitian matrix $H$ in the exponent on both sides, for
+summands that are almost surely bounded in operator norm, $\|Y_k\|\le R$. It
+proves (\ref{eq:tropp12_scope_bernstein}) under the two-sided bound
+\begin{align}
+    \|Y_k\| & \le R\quad\text{almost surely}
+    \label{eq:tropp12_scope_two_sided}
+\end{align}
+in place of (\ref{eq:tropp12_scope_one_sided}).\footnote{The declarations are
+    \leanid{Matrix.integral_re_trace_exp_add_le} and
+    \leanid{Matrix.integral_re_trace_exp_add_sum_le} in
+    \doclink{QICLean/Probability/MatrixCumulantSubadditivity}, and
+    \leanid{Matrix.integral_re_trace_exp_smul_sum_le} and
+    \leanid{Matrix.measureReal_exists_le_mem_spectrum_sum_le} in
+    \doclink{QICLean/Probability/MatrixBernstein}.} The bound
+(\ref{eq:tropp12_scope_two_sided}) implies
+(\ref{eq:tropp12_scope_one_sided}), so these are restricted theorems relative
+to the source.
+
+The restriction serves one purpose. Under (\ref{eq:tropp12_scope_two_sided})
+the random matrix $e^{\theta Y_k}$ takes values in the Loewner interval
+$[e^{-\theta R}\Id,e^{\theta R}\Id]$, a compact convex set of positive definite
+matrices on which $A\mapsto\operatorname{tr}\exp(H+\log A)$ is continuous.
+Jensen's inequality for this concave function, the step from Lieb's theorem to
+(\ref{eq:tropp12_scope_subadditivity}), is then the standard inequality for
+continuous concave functions on closed convex sets, and every expectation in the
+argument is finite. Under (\ref{eq:tropp12_scope_one_sided}) alone the values of
+$e^{\theta Y_k}$ may approach singular matrices, where $\log$ is unbounded, and
+the integrability of $Y_k$ and $Y_k^2$, implicit in the source, must be assumed
+separately.
+
+\section{Effect downstream}
+
+The rectangular matrix Bernstein inequality~\cite[Theorem~1.6]{Tropp2012User}
+assumes $\|Z_k\|\le R$ for its rectangular summands $Z_k$, and its proof applies
+the Hermitian inequality to the Hermitian dilations of the $Z_k$, which satisfy
+(\ref{eq:tropp12_scope_two_sided}). The formal rectangular theorem therefore
+carries exactly the hypotheses of the source, and so does the average form
+derived from it. Only the Hermitian inequality is restricted.
+
+\section{Elimination}
+
+A faithful formal version of (\ref{eq:tropp12_scope_bernstein}) needs Jensen's
+inequality for the concave map $A\mapsto\operatorname{tr}\exp(H+\log A)$ on the
+open cone of positive definite matrices, for random matrices bounded above but
+not away from singularity. One route truncates $Y_k$ from below at $-c$ and lets
+$c\to\infty$ by dominated convergence; another proves Jensen's inequality on the
+open cone through a supporting hyperplane at the mean.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

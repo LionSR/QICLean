@@ -32,6 +32,9 @@ NUMBERED_DEBT_ALLOWLIST: frozenset[str] = frozenset()
 # in which a proof was split.  Each exception is exact and reviewable.
 #
 SEMANTIC_EXCEPTIONS: dict[str, str] = {
+    "QICLean/Channel/WolfTheorem67.lean": (
+        "Wolf Theorem 6.7 is the source label for primitive positive maps."
+    ),
     "QICLean/Channel/WolfTheorem68.lean": (
         "Named for Wolf Theorem 6.8, the result the module proves."
     ),

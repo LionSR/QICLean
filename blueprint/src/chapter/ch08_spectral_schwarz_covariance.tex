@@ -1,0 +1,66 @@
+\section{Covariance and eigenvector shifts}
+
+\begin{lemma}[Multiplication by a peripheral unitary]
+    \label{lem:schwarz_peripheral_unitary_multiplication}
+    \lean{SchwarzMap.mem_multiplicativeDomain_of_peripheral_unitary,
+        SchwarzMap.map_mul_peripheral_unitary,
+        SchwarzMap.map_peripheral_unitary_conjTranspose_mul,
+        SchwarzMap.map_conj_peripheral_unitary,
+        SchwarzMap.eigenvector_shifts_of_peripheral_unitary,
+        SchwarzMap.hasEigenvector_shifts_of_peripheral_unitary}
+    \leanok
+    Let $T:\MN{D}\to\MN{D}$ be complex linear, positive, unital, and
+    Schwarz. Suppose $U$ is unitary, $|\gamma|=1$, and $T(U)=\gamma U$.
+    Then $U$ belongs to the multiplicative domain of $T$. For every
+    $X\in\MN{D}$,
+    \[
+        T(U^\dagger X)=\overline\gamma\,U^\dagger T(X),
+        \qquad T(XU)=\gamma T(X)U,
+        \qquad T(U^\dagger XU)=U^\dagger T(X)U.
+    \]
+    If $X\ne0$ and $T(X)=\mu X$, then $U^\dagger X$ and $XU$ are nonzero
+    eigenvectors at $\overline\gamma\mu$ and $\gamma\mu$, respectively.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:abstract_md_characterization}
+    Unitality and $U^\dagger U=UU^\dagger=\Id$ give equality in both
+    Schwarz inequalities at $U$, because $|\gamma|=1$. The
+    multiplicative-domain characterization gives the right multiplication
+    identity. Taking adjoints gives the left identity. Composing the two
+    cancels the scalar factors, giving covariance. Substituting
+    $T(X)=\mu X$ gives the eigenvector identities; multiplication by a
+    unitary is invertible and therefore preserves nonzero vectors.
+\end{proof}
+
+\begin{proposition}[Covariance and eigensystem of irreducible maps]
+    \label{prop:wolf_schwarz_covariance}
+    \lean{SchwarzMap.wolf_proposition_6_7}
+    \leanok
+    Let $T:\MN{D}\to\MN{D}$ be complex linear, positive, unital,
+    irreducible, and Schwarz, with $D\geq1$. Choose $1\leq m\leq D^2$,
+    $\gamma=\exp(2\pi i/m)$, and the normalized unitary $U$ from
+    Theorem~\ref{thm:wolf_irreducible_schwarz_peripheral}. Thus the
+    peripheral spectrum is $\{\gamma^k:k\in\Z_m\}$, $T(U)=\gamma U$,
+    and $U^m=\Id$. For every $X\in\MN{D}$,
+    \[
+        T(U^\dagger XU)=U^\dagger T(X)U.
+    \]
+    If $T(X)=\mu X$, then
+    \begin{equation}
+        T(U^\dagger X)=\overline\gamma\mu\,U^\dagger X,
+        \qquad T(XU)=\gamma\mu\,XU.
+        \label{eq:wolf_schwarz_eigenvector_shifts}
+    \end{equation}
+    This is \cite[Proposition~6.7 and Equation~(6.38)]{Wolf2012Quantum}.
+    % Source: ch06_spectral_properties.tex, lines 803--817.
+\end{proposition}
+
+\begin{proof}\leanok
+    \uses{thm:wolf_irreducible_schwarz_peripheral,
+        lem:schwarz_peripheral_unitary_multiplication}
+    Theorem~\ref{thm:wolf_irreducible_schwarz_peripheral} supplies the
+    canonical generator and normalized unitary. Apply
+    Lemma~\ref{lem:schwarz_peripheral_unitary_multiplication} to this
+    unitary to obtain covariance and both eigenvector shifts.
+\end{proof}

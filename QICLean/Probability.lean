@@ -13,6 +13,8 @@ import QICLean.Probability.CompressionSampling
 import QICLean.Probability.FiniteUniformConditioning
 import QICLean.Probability.HaarProjection
 import QICLean.Probability.IndependentCovariance
+import QICLean.Probability.MatrixBernstein
+import QICLean.Probability.MatrixCumulantSubadditivity
 import QICLean.Probability.MatrixSecondMoment
 import QICLean.Probability.MatrixTraceNormIntegrability
 import QICLean.Probability.PoissonWord

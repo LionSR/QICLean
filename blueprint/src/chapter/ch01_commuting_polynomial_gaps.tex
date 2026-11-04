@@ -351,9 +351,9 @@
     $m,k\ge0$ and a frequency vector $\alpha:I\to\mathbb N$, define
     \begin{align*}
         C_\alpha
-        =\sum_{\substack{w\in(I\sqcup\{*\})^{\{0,\ldots,m+k-1\}}\\
-            n_w(*)=k,\ n_w|_I=\alpha}}
-            H_{w(0)}\cdots H_{w(m+k-1)},\qquad H_*=T.
+        =\sum_{\substack{w\in(I\sqcup\{*\})^{\{0,\ldots,m+k-1\}} \\
+                n_w(*)=k,\ n_w|_I=\alpha}}
+        H_{w(0)}\cdots H_{w(m+k-1)},\qquad H_*=T.
     \end{align*}
     These coefficients commute with semiring homomorphisms.
     They are the ordered-word coefficients in the one-distinguished-interaction
@@ -373,7 +373,7 @@
     Every scalar family $(\lambda_\alpha)_{\alpha\in E_m}$ satisfies
     \begin{align*}
         \operatorname{OSR}\!\left(\sum_{\alpha\in E_m}\lambda_\alpha C_\alpha\right)
-            \le |E_m|\binom{m+2k+1}{2k+1}r^k.
+        \le |E_m|\binom{m+2k+1}{2k+1}r^k.
     \end{align*}
     This is the algebraic fixed-frequency estimate used in
     \cite[Lemma~4.2]{Arad2013AreaLaw}, with the corrected count from
@@ -390,7 +390,7 @@
     These operators commute and have rank at most one. Ordered-word expansion gives
     \begin{align*}
         [X^k](A(z)+B(z)+TX)^{m+k}
-          =\sum_{\alpha\in E_m}\left(\prod_a z_a^{\alpha(a)}\right)C_\alpha.
+        =\sum_{\alpha\in E_m}\left(\prod_a z_a^{\alpha(a)}\right)C_\alpha.
     \end{align*}
     The commuting-gap coefficient bound gives rank at most
     $\binom{m+2k+1}{2k+1}r^k$ for every $z$.
@@ -405,10 +405,10 @@
     Let $q,\ell,s,r$ be natural numbers with $q\ge1$, $s\le\ell+1$, and
     $r\le\ell$. Then
     \begin{align*}
-        &\sum_{u=0}^{s-1}\sum_{k=0}^{\lfloor r/s\rfloor}
-          \binom{r-k+s}{s}\binom{r+k+1}{2k+1}
-          q^{2k+2|u+1-\lfloor s/2\rfloor|}\\
-        &\hspace{2em}\le\bigl(q(\ell+1)\bigr)^{3s+6\lfloor\ell/s\rfloor+4}.
+         & \sum_{u=0}^{s-1}\sum_{k=0}^{\lfloor r/s\rfloor}
+        \binom{r-k+s}{s}\binom{r+k+1}{2k+1}
+        q^{2k+2|u+1-\lfloor s/2\rfloor|}                                      \\
+         & \hspace{2em}\le\bigl(q(\ell+1)\bigr)^{3s+6\lfloor\ell/s\rfloor+4}.
     \end{align*}
     For $s=0$ the sum is empty and natural division by zero is taken to be zero.
     These are the scalar bounds in \cite[Lemma~4.2]{Arad2013AreaLaw}, with the
@@ -420,8 +420,8 @@
     The inequalities $\binom{n+k}{k}\le(n+1)^k$ and
     $\binom{n}{k}\le n^k$ give
     \begin{align*}
-        \binom{r-k+s}{s}&\le B^s, &
-        \binom{r+k+1}{2k+1}&\le B^{4k+2}.
+        \binom{r-k+s}{s}    & \le B^s,      &
+        \binom{r+k+1}{2k+1} & \le B^{4k+2}.
     \end{align*}
     Here $r+k+1\le(\ell+1)^2$. Since $|u+1-\lfloor s/2\rfloor|\le s$,
     the remaining factor is at most $B^{2k+2s}$.
