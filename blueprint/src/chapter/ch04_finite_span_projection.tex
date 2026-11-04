@@ -1,23 +1,5 @@
 \section{The ambient projection onto a finite span}
 
-\begin{theorem}[Projection matrices and actual ranges]
-    \label{thm:projection_matrix_range}
-    \lean{Matrix.range_toEuclideanLin_eq_map_range_mulVecLin,
-        Matrix.projectionMatrix_range_of_isStarProjection}
-    \leanok
-    Let $A:\C^n\to\C^m$ be a rectangular matrix. The standard coordinate
-    identification carries its ordinary column range exactly to the range
-    of its Euclidean-space action. If $P$ is an orthogonal projection
-    matrix, then the matrix of the orthogonal projection onto its actual
-    range is $P$ itself.
-\end{theorem}
-\begin{proof}\leanok
-    The standard coordinate equivalences intertwine both actions of $A$,
-    and are surjective, giving equality of the ranges. An orthogonal
-    projection is the orthogonal projection onto its range. Transport this
-    equality through the same standard matrix representation.
-\end{proof}
-
 \begin{theorem}[The existing support of vector columns]
     \label{thm:finite_span_support_projection}
     \lean{Matrix.projectionMatrix_span_range_eq_familySupportProj}
