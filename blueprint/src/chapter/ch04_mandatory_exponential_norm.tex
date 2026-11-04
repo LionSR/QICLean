@@ -1,11 +1,10 @@
-% Fresh strict and imported foundation checks passed; ordinary full checks are pending.
 \section{An energy-normalized bound for mandatory labels}
 
 Finite alternating sums collect the terms containing specified interaction
 labels in a cluster expansion. The estimate below retains a supplied lower
 energy in the normalization. It is an auxiliary bound for the argument
 of Arad--Landau--Vazirani--Vidick~\cite[lines 1270--1291 and
-1935--1968]{Arad2016RigorousRG}. The obstructions to the printed spatial
+    1935--1968]{Arad2016RigorousRG}. The obstructions to the printed spatial
 approximation estimate are recorded separately
 in~\cite{gap:alvv16_cluster_approximation}.
 
@@ -13,14 +12,13 @@ in~\cite{gap:alvv16_cluster_approximation}.
     \label{thm:mandatory_label_exp_norm}
     \lean{Matrix.norm_sum_powerset_exp_sub_le_of_lower_bound}
     \leanok
-
     Let $S$ be a finite set, and let $H$ and $h_i$, $i\in S$, be Hermitian
     complex matrices of the same size. Suppose $\|h_i\|\leq1$ and
     $H\geq\lambda I$, where $\lambda$ is real. For $t\geq0$, write
     \begin{align}
         R_S^H(t)
-        &=\sum_{T\subseteq S}(-1)^{|T|}
-          \exp\!\left[-t\left(H-\sum_{i\in T}h_i\right)\right].
+         & =\sum_{T\subseteq S}(-1)^{|T|}
+        \exp\!\left[-t\left(H-\sum_{i\in T}h_i\right)\right].
         \label{eq:mandatory_label_exp_sum}
     \end{align}
     Then
@@ -41,8 +39,8 @@ in~\cite{gap:alvv16_cluster_approximation}.
     contain each label gives
     \begin{align}
         \frac{d}{ds}R_S^H(s)
-        &=-H R_S^H(s)
-          -\sum_{i\in S}h_iR_{S\setminus\{i\}}^{H-h_i}(s).
+         & =-H R_S^H(s)
+        -\sum_{i\in S}h_iR_{S\setminus\{i\}}^{H-h_i}(s).
         \label{eq:mandatory_label_exp_recursion}
     \end{align}
     Also $R_S^H(0)=0$. For fixed $t$, differentiate
@@ -50,8 +48,8 @@ in~\cite{gap:alvv16_cluster_approximation}.
     product rule, giving
     \begin{align}
         R_S^H(t)
-        &=-\int_0^t e^{-(t-s)H}
-          \sum_{i\in S}h_iR_{S\setminus\{i\}}^{H-h_i}(s)\,ds.
+         & =-\int_0^t e^{-(t-s)H}
+        \sum_{i\in S}h_iR_{S\setminus\{i\}}^{H-h_i}(s)\,ds.
         \label{eq:mandatory_label_exp_integral}
     \end{align}
     The integrand is continuous. Since $h_i\leq I$, one has
@@ -60,8 +58,8 @@ in~\cite{gap:alvv16_cluster_approximation}.
     (\ref{eq:mandatory_label_exp_integral}), yields
     \begin{align}
         \|R_S^H(t)\|
-        &\leq e^{-t\lambda}k\int_0^t e^s(e^s-1)^{k-1}\,ds
-         =e^{-t\lambda}(e^t-1)^k.
+         & \leq e^{-t\lambda}k\int_0^t e^s(e^s-1)^{k-1}\,ds
+        =e^{-t\lambda}(e^t-1)^k.
     \end{align}
     The final equality follows by differentiating $(e^s-1)^k$.
     Multiplication by $e^{t\lambda}$ proves the claim.

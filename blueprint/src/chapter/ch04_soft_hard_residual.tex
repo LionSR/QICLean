@@ -195,7 +195,7 @@ be unnecessarily stronger when the width grows.
     every $b\le B$ satisfies
     \begin{align}
         3\left[32e^{-(T-b)/8}
-          +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
+             +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
         \le\varepsilon.
         \label{eq:soft_residual_common_parameters}
     \end{align}
@@ -224,11 +224,11 @@ be unnecessarily stronger when the width grows.
     such that $t,T\ge156+2g$, $T\ge g/40+24$, and
     \begin{align}
         3\left[32e^{-(T-g/40-24)/8}
-          +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
-          &\le\frac{\tau g}{10^6},\\
+             +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
+         & \le\frac{\tau g}{10^6}, \\
         3\left[32e^{-(T-156-2g)/8}
-          +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
-          &\le\frac{\tau g}{10^6}.
+             +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
+         & \le\frac{\tau g}{10^6}.
     \end{align}
     Both truncation residuals can therefore use the same cutoff.
 \end{corollary}
@@ -255,39 +255,39 @@ Its algorithmic scope is discussed in
     $a,b,c\in\mathbb N$. There is $u\in\mathbb N$, $u\ge2$, such that
     the choices
     \begin{align}
-        \ell&=u^8,\quad m=u^{10},\quad t=3m,\quad k=u^{16},\quad T=u^9,\\
-        D&=(mk+1)(qk)^{36\ell+4\lfloor k/\ell\rfloor},\\
-        M&=3t(1+\log m)+4\ell+34,\\
-        \tau&=D^{-a}M^{-b},\qquad
+        \ell & =u^8,\quad m=u^{10},\quad t=3m,\quad k=u^{16},\quad T=u^9, \\
+        D    & =(mk+1)(qk)^{36\ell+4\lfloor k/\ell\rfloor},               \\
+        M    & =3t(1+\log m)+4\ell+34,                                    \\
+        \tau & =D^{-a}M^{-b},\qquad
         \xi=\min\left\{1,\frac{\tau g^2}{20000(M+g+8)}\right\}
     \end{align}
     satisfy $\ell,k,D\ge1$, $m\ge2$, $M\ge1$, $0<\tau,\xi\le1$,
     $t,T\ge156+2g$, $T\ge g/40+24$, and
     \begin{align}
         3\left[32e^{-(T-g/40-24)/8}
-          +\frac tm\left(\frac Tt\right)^m\right]
-          &\le\frac{\tau g}{10^6},\\
+             +\frac tm\left(\frac Tt\right)^m\right]
+         & \le\frac{\tau g}{10^6}, \\
         3\left[32e^{-(T-156-2g)/8}
-          +\frac tm\left(\frac Tt\right)^m\right]
-          &\le\frac{\tau g}{10^6},\\
+             +\frac tm\left(\frac Tt\right)^m\right]
+         & \le\frac{\tau g}{10^6}, \\
         \left[2e^{-2k\sqrt{(g/2)/(M+\xi+4+g)}}\right]^2
-          &\le D^{-12}M^{-c}.
+         & \le D^{-12}M^{-c}.
     \end{align}
     The scale $u$ is chosen before any volume or target dimension.
 \end{theorem}
 \begin{proof}\leanok
     Since $k/\ell=u^8$, direct logarithmic estimates give
     \begin{align}
-        \log D&\le u^8(\log2+40\log q+666\log u),\\
-        M+R&\le u^{10}(47+R+90\log u)\qquad(R\ge0).
+        \log D & \le u^8(\log2+40\log q+666\log u),      \\
+        M+R    & \le u^{10}(47+R+90\log u)\qquad(R\ge0).
     \end{align}
     The relation $\log u=o(u^p)$ for each $p>0$ now gives, for all
     sufficiently large natural $u$,
     \begin{align}
-        M+5+g&\le u^{12},\\
+        M+5+g & \le u^{12},        \\
         (a+12)\log D+(b+c)\log M
-          +200+g+\left|\log\frac{g}{2000000}\right|
-          &\le\frac{u^9}{64}.
+        +200+g+\left|\log\frac{g}{2000000}\right|
+              & \le\frac{u^9}{64}.
     \end{align}
     Increase $u$ further to satisfy the displayed threshold conditions,
     $gu^2\ge1$ and $\log u\ge1$. Exponentiating the second inequality
