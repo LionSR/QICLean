@@ -153,7 +153,6 @@ of the unsquared filter is not required
     \cite{gap:alvv16_spectral_projector_boundary}.
 \end{proof}
 
-
 \begin{lemma}[Actual powers and ordered tensor words]
     \label{thm:spectral_operator_word_powers}
     \lean{Submodule.IsSpectralProjector.pow,
@@ -175,8 +174,8 @@ of the unsquared filter is not required
     $\Delta^a$. For every $\delta$-viable $S$ for $T$ with $\delta<1$,
     $V_a=\sum_{w\in I^a}A_wS$ satisfies
     \begin{align}
-        \dim V_a &\le |I|^a\dim S, &
-        V_a&\text{ is }\frac{\Delta^a}{(1-\delta)^2}\text{-viable for }T.
+        \dim V_a & \le |I|^a\dim S,                                              &
+        V_a      & \text{ is }\frac{\Delta^a}{(1-\delta)^2}\text{-viable for }T.
         \label{eq:operator_word_power_improvement}
     \end{align}
     Neither the factors nor their summands need commute. The empty word
@@ -184,21 +183,25 @@ of the unsquared filter is not required
     is required.
 \end{lemma}
 \begin{proof}\leanok
-    In the common eigenbasis the eigenvalues of $K^a$ are the corresponding
-    powers. Expand the noncommutative power of the finite sum into its
-    ordered words and multiply the two tensor factors in the same order.
-    Apply error reduction once to this actual powered decomposition.
+    In a common eigenbasis $Kb_j=k_jb_j$, one has $K^ab_j=k_j^ab_j$.
+    Distributing the noncommutative product gives
+    \begin{align}
+        K^a=\left(\sum_{i\in I}A_i\otimes B_i\right)^a
+        =\sum_{w\in I^a}A_w\otimes B_w.
+        \label{eq:operator_word_power_expansion}
+    \end{align}
+    The two tensor factors retain the same order. Applying error reduction
+    to (\ref{eq:operator_word_power_expansion}) gives
+    (\ref{eq:operator_word_power_improvement}).
 \end{proof}
-
 
 \begin{lemma}[One polynomial family for every filter power]
     \label{thm:actual_cluster_chebyshev_word_powers}
     \lean{Matrix.exists_chebyshev_tensor_family_of_actual_cluster,
         Matrix.chebyshev_word_power_viability_of_actual_cluster_polynomial_family}
     \leanok
-    \uses{thm:actual_cluster_polynomial_viability,thm:spectral_operator_word_powers}
     Under the hypotheses of Theorem~\ref{thm:actual_cluster_polynomial_viability},
-    define $W_w=W_{w_1}\cdots W_{w_a}$ for $w\in\{0,\ldots,N-1\}^a$.
+    define $W_w=W_{w_1}\cdots W_{w_a}$ for $w\in\{1,\ldots,N\}^a$.
     The same target $TG_{\eta_0}$ is used for every $a\ge0$ and every
     viable input $S$. The actual image sum $V_a=\sum_w W_wS$ has
     dimension at most $C^a\dim S$ and is
@@ -213,13 +216,14 @@ of the unsquared filter is not required
     be the identity or scalar on the low-energy band.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{thm:canonical_isometric_spectral_data,thm:chebyshev_spectral_projector,
+        thm:spectral_operator_word_powers}
     Derive the canonical spectral data from the actual Hermitian matrix.
     Choose its Chebyshev polynomial once, obtain the actual complementary
     factors from the common polynomial decomposition, and use
     (\ref{eq:operator_word_power_improvement}). The actual number of
     words is $N^a\le C^a$.
 \end{proof}
-
 
 \begin{lemma}[A polynomial dimension scale for a powered step]
     \label{thm:viable_node_power_parameters}
@@ -234,11 +238,11 @@ of the unsquared filter is not required
     $(D^a)^2s\le D^6s^3$.
     If $\Delta\ge0$, $0<b<1$ and $D^{12}\Delta\le b$, then
     $(D^a)^{12}\Delta^a<b$.
-    Moreover, suppose $1\le Q\le D^{12}s^6$ and $\delta\le1/4$. Put
+    Suppose further that $1\le Q\le D^{12}s^6$ and $\delta\le1/4$. Put
     $c=(1-\delta)\min(s,Q)/(8Q)$. Then
     \begin{align}
-        c&\ge\frac{3}{32D^{12}s^5}>0, &
-        \frac{\Delta^a}{c^2}&\le\frac{1024}{9}\frac{b}{s^2}.
+        c                    & \ge\frac{3}{32D^{12}s^5}>0,     &
+        \frac{\Delta^a}{c^2} & \le\frac{1024}{9}\frac{b}{s^2}.
         \label{eq:viable_node_power_error}
     \end{align}
     These are scalar estimates; no sampling event or recursive family is
@@ -254,7 +258,6 @@ of the unsquared filter is not required
     $\Delta^a\le b/(D^{24}s^{12})$. Divide by the squared overlap bound
     to obtain (\ref{eq:viable_node_power_error}).
 \end{proof}
-
 
 \begin{lemma}[Powers of bounds on invariant subspaces]
     \label{lem:invariant_operator_bounds_pow}
