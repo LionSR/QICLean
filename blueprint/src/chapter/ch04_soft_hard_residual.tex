@@ -83,22 +83,6 @@ of actual regional matrices and their physical hard-tail estimates is
 a separate step. No reverse soft-to-original comparison, uniform energy
 estimate or complete efficient-filter theorem is asserted here.
 
-
-\begin{lemma}[Energy shifts and hard clipping]
-    \label{lem:energy_truncation_scalar_shift}
-    \lean{Matrix.IsHermitian.energyTruncation_sub_smul_one}
-    \leanok
-    For every finite Hermitian matrix $A$ and every $e,T\in\mathbb R$,
-    \begin{align}
-        \min\{A-eI,T\}=\min\{A,(e+T)I\}-eI.
-    \end{align}
-\end{lemma}
-\begin{proof}\leanok
-    Apply composition in the continuous functional calculus to
-    $x\mapsto x-e$ and $x\mapsto\min\{x,T\}$, and use
-    $\min\{x-e,T\}=\min\{x,e+T\}-e$.
-\end{proof}
-
 \begin{lemma}[Residuals restricted to an arbitrary subspace]
     \label{lem:soft_hard_restricted_residual}
     \lean{Matrix.PosSemidef.norm_softTruncation_residual_domRestrict_le}
