@@ -122,6 +122,7 @@ import QICLean.Algebra.SkewSymmetricMatrix
 import QICLean.Algebra.SkolemNoether
 import QICLean.Algebra.SkolemNoetherUnitary
 import QICLean.Algebra.SpinCover
+import QICLean.Algebra.StabilizedWeightedTrace
 import QICLean.Algebra.StarSubalgebraBlockDiagonal
 import QICLean.Algebra.StarSubalgebraBlockForm
 import QICLean.Algebra.StarSubalgebraFactor
