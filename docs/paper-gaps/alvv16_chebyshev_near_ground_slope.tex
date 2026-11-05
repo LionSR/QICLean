@@ -1,0 +1,133 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{The Chebyshev filter near the normalization point}
+\author{}
+\date{2026-11-04}
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{The printed slope}
+
+Let $\eta_0<\eta_1<u$, put $\gamma=\eta_1-\eta_0$, and let $T_k$ be the
+Chebyshev polynomial of the first kind of degree $k\ge1$.
+Definition \texttt{def:Cheby-AGSP} of
+Arad--Landau--Vazirani--Vidick~\cite{Arad2016RigorousRG}, source lines
+795--801, uses $u=\|H\|$ and
+\begin{align}
+    \tilde P_k(x) & =T_k\left(\frac{2(x-\eta_1)}{u-\eta_1}-1\right),
+    \label{eq:alvv_slope_unnormalized}\\
+    P_k(x)        & =\frac{\tilde P_k(x)}{\tilde P_k(\eta_0)}.
+    \label{eq:alvv_slope_normalized}
+\end{align}
+Item~2 of Theorem \texttt{thm:Cheby-AGSP} of~\cite{Arad2016RigorousRG},
+source lines 822--824, asserts that for $\lambda\le\eta_0+\gamma/k$,
+\begin{align}
+    P_k(\lambda) & \ge1-O\left(\frac{k|\lambda-\eta_0|}{\gamma u}
+    \sqrt\Delta\right),
+    \qquad
+    \sqrt\Delta=2\exp\left(-2k\sqrt{\frac{\gamma}{u-\eta_0}}\right).
+    \label{eq:alvv_slope_printed}
+\end{align}
+The proof, source lines 844--846, bounds $|T_k(x+\delta)-T_k(x)|$ by
+$O(k\delta)$ times a quantity independent of $k$. This omits the growth of
+$T_k'$ on $[1,\infty)$, which is exponential in $k$, and the factor $\sqrt\Delta$
+in (\ref{eq:alvv_slope_printed}) comes from that omission.
+
+\section{The printed slope fails}
+
+Put $f(x)=(u+\eta_1-2x)/(u-\eta_1)$. For $x\le\eta_1$ the argument in
+(\ref{eq:alvv_slope_unnormalized}) is $-f(x)\le-1$, and the parity
+$T_k(-y)=(-1)^kT_k(y)$ gives $P_k(x)=T_k(f(x))/T_k(f(\eta_0))$.
+Write $f(x)=\cosh s$ and $f(\eta_0)=\cosh s_0$ with $0\le s\le s_0$.
+Since $T_k(\cosh t)=\cosh(kt)$,
+\begin{align}
+    P_k(x) & =\frac{\cosh(ks)}{\cosh(ks_0)}\le2e^{-k(s_0-s)}.
+    \label{eq:alvv_slope_cosh_ratio}
+\end{align}
+Convexity of $\cosh$ gives $\cosh s_0-\cosh s\le\sinh s_0\,(s_0-s)$. At
+$x=\eta_0+\gamma/k$,
+\begin{align}
+    \cosh s_0-\cosh s & =\frac{2\gamma}{k(u-\eta_1)},
+    \label{eq:alvv_slope_gap}\\
+    \sinh s_0         & =\sqrt{f(\eta_0)^2-1}
+    =\frac{2\sqrt{\gamma(u-\eta_0)}}{u-\eta_1}.
+    \label{eq:alvv_slope_sinh}
+\end{align}
+Hence $k(s_0-s)\ge\sqrt{\gamma/(u-\eta_0)}$, and
+(\ref{eq:alvv_slope_cosh_ratio}) yields
+\begin{align}
+    P_k\left(\eta_0+\frac\gamma k\right)
+     & \le2\exp\left(-\sqrt{\frac{\gamma}{u-\eta_0}}\right).
+    \label{eq:alvv_slope_upper}
+\end{align}
+The right side of (\ref{eq:alvv_slope_upper}) does not depend on $k$.
+For $\eta_0=0$, $\eta_1=1$ and $u=2$ it equals $2e^{-1/\sqrt2}<0.99$. At
+$\lambda=\eta_0+\gamma/k$ the right side of (\ref{eq:alvv_slope_printed}) is
+$1-O(e^{-\sqrt2\,k})$, which exceeds $0.99$ for all large $k$, whatever the
+implied constant. The printed bound therefore fails. Numerically,
+$P_{20}(1/20)=0.486\ldots$ for these parameters.\footnote{Formal declaration:
+    \leanid{Polynomial.Chebyshev.eval_T_div_eval_T_le_two_mul_exp}, which
+    proves (\ref{eq:alvv_slope_upper}) for the explicit polynomial
+    (\ref{eq:alvv_slope_normalized}).}
+
+\section{The corrected slope}
+
+For $1\le y\le y_0$, write $y=\cosh s$, $y_0=\cosh t$ with $0\le s\le t$.
+The ratio $\sinh(ks)/\sinh s$ is nondecreasing in $s>0$, by induction on $k$
+from $\sinh((k+1)s)=\sinh(ks)\cosh s+\cosh(ks)\sinh s$. Therefore
+$x\mapsto k\sinh(kt)\cosh x-\sinh t\cosh(kx)$ is nondecreasing on $[0,t]$,
+and evaluating it at $s$ and $t$ gives
+\begin{align}
+    \sqrt{y_0^2-1}\,\bigl(T_k(y_0)-T_k(y)\bigr)
+     & \le k(y_0-y)\,T_k(y_0).
+    \label{eq:alvv_slope_tangent}
+\end{align}
+Here $\sinh(kt)\le\cosh(kt)=T_k(y_0)$ was used. Apply
+(\ref{eq:alvv_slope_tangent}) with $y=f(\lambda)$ and $y_0=f(\eta_0)$ for
+$\eta_0\le\lambda\le\eta_1$. Then $y_0-y=2(\lambda-\eta_0)/(u-\eta_1)$ and
+(\ref{eq:alvv_slope_sinh}) give, for every $\lambda\le\eta_1$,
+\begin{align}
+    P_k(\lambda) & \ge1-\frac{k|\lambda-\eta_0|}{\sqrt{\gamma(u-\eta_0)}}.
+    \label{eq:alvv_slope_corrected}
+\end{align}
+For $\lambda\le\eta_0$ this is weaker than $P_k(\lambda)\ge1$. The bound
+(\ref{eq:alvv_slope_corrected}) holds on all of $\lambda\le\eta_1$, which
+contains the printed range $\lambda\le\eta_0+\gamma/k$; there the loss is at
+most $\sqrt{\gamma/(u-\eta_0)}$. It replaces (\ref{eq:alvv_slope_printed}):
+the factor $\sqrt\Delta$ is removed and $\gamma u$ is replaced by
+$\sqrt{\gamma(u-\eta_0)}$. Its order in $k$ and $|\lambda-\eta_0|$ is sharp:
+the derivative of $P_k$ at $\eta_0$ is
+$-k\tanh(ks_0)/\sqrt{\gamma(u-\eta_0)}$.\footnote{Formal declarations:
+    \leanid{Polynomial.Chebyshev.sqrt_mul_eval_T_sub_le} for
+    (\ref{eq:alvv_slope_tangent}),
+    \leanid{Polynomial.Chebyshev.exists_interval_shrinking_polynomial_one_sub_le}
+    for (\ref{eq:alvv_slope_corrected}), and
+    \leanid{Submodule.exists_isSpectralProjector_chebyshev_one_sub_le} for
+    the operator form.}
+
+\section{The rank base in item 4}
+
+Item~4 of the same theorem, source lines 825--826, bounds the Schmidt rank
+of $K=P_k(H)$ at a cut inside the middle region by $\tilde B^{O(k)}$, where
+$\tilde B$ bounds the Schmidt rank of the middle term $H_M$. At such a cut,
+$H=A\otimes1+H_M+1\otimes C$, where $A$ collects the terms left of the cut
+and $C$ those to its right. Hence $H$ has Schmidt rank at most $\tilde B+2$,
+and $K$, a combination of the powers $H^j$ with $j\le k$, has Schmidt rank at
+most
+\begin{align}
+    \sum_{j=0}^k(\tilde B+2)^j & \le(\tilde B+2)^{k+1}.
+    \label{eq:alvv_slope_rank}
+\end{align}
+For $\tilde B\ge2$ this is at most $\tilde B^{2k+2}$, in the printed form.
+For $\tilde B\le1$ the base $\tilde B$ cannot absorb the two boundary
+terms. If $H_M=0$, $A=\operatorname{diag}(\alpha_i)$ and
+$C=\operatorname{diag}(\beta_j)$ with distinct entries, then the Schmidt rank
+of $K$ is the rank of the matrix $\bigl(P_k(\alpha_i+\beta_j)\bigr)_{ij}$,
+which is $k+1$ for suitable entries, not $1$. The bound
+(\ref{eq:alvv_slope_rank}) is the one formalized.
+\end{document}

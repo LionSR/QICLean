@@ -65,6 +65,101 @@
 \end{proof}
 
 
+\begin{theorem}[A tangent bound for Chebyshev polynomials]
+    \label{thm:chebyshev_tangent_bound}
+    \lean{Polynomial.Chebyshev.sqrt_mul_eval_T_sub_le}\leanok
+    For every natural number $n$ and all real $1\le y\le y_0$,
+    \begin{align}
+        \sqrt{y_0^2-1}\,\bigl(T_n(y_0)-T_n(y)\bigr)
+         & \le n(y_0-y)\,T_n(y_0).
+        \label{eq:chebyshev_tangent_bound}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Write $y=\cosh s$ and $y_0=\cosh t$ with $0\le s\le t$. By induction on
+    $n$, using $\sinh((n+1)s)=\sinh(ns)\cosh s+\cosh(ns)\sinh s$, one has
+    $\sinh(ns)\sinh t\le\sinh(nt)\sinh s$. Hence the function
+    $x\mapsto n\sinh(nt)\cosh x-\sinh t\cosh(nx)$ has nonnegative derivative
+    on $[0,t]$, and comparing its values at $s$ and $t$ gives
+    \begin{align}
+        \sinh t\,\bigl(\cosh(nt)-\cosh(ns)\bigr)
+         & \le n\sinh(nt)\,(\cosh t-\cosh s).\notag
+    \end{align}
+    Since $\sinh t=\sqrt{y_0^2-1}$, $T_n(\cosh x)=\cosh(nx)$ and
+    $\sinh(nt)\le\cosh(nt)$, this is (\ref{eq:chebyshev_tangent_bound}).
+\end{proof}
+
+\begin{theorem}[The interval polynomial near the normalization point]
+    \label{thm:chebyshev_interval_polynomial_near}
+    \lean{Polynomial.Chebyshev.exists_interval_shrinking_polynomial_one_sub_le}\leanok
+    \uses{thm:chebyshev_interval_polynomial, thm:chebyshev_tangent_bound}
+    Let $a<b\le u$ and $n\in\mathbb N$. The polynomial $p$ of
+    Theorem~\ref{thm:chebyshev_interval_polynomial} can be chosen to satisfy in
+    addition, for every $x\le b$,
+    \begin{align}
+        p(x) & \ge1-\frac{n\lvert x-a\rvert}{\sqrt{(b-a)(u-a)}}.
+        \label{eq:chebyshev_interval_polynomial_near}
+    \end{align}
+    With $a=\eta_0$, $b=\eta_1$ and $u=\|H\|$, this is item~2 of
+    Theorem~thm:Cheby-AGSP of~\cite[lines 822--824]{Arad2016RigorousRG} for
+    eigenvalues near $\eta_0$, on the whole range $x\le\eta_1$. The printed
+    loss carries an additional factor $\sqrt\Delta$, exponentially small in
+    $n$, and $\gamma\|H\|$ in place of $\sqrt{\gamma(\|H\|-\eta_0)}$;
+    Theorem~\ref{thm:chebyshev_printed_slope_fails} shows that the printed
+    form fails.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:chebyshev_interval_polynomial, thm:chebyshev_tangent_bound}
+    For $x\le a$ the right side of
+    (\ref{eq:chebyshev_interval_polynomial_near}) is at most one, and
+    $p(x)\ge1$. Let $a\le x\le b$. If $b<u$, then $p(x)=T_n(f(x))/T_n(f(a))$
+    with $f(x)=(u+b-2x)/(u-b)$, so $1\le f(x)\le f(a)$. Moreover
+    \begin{align}
+        f(a)-f(x)       & =\frac{2(x-a)}{u-b},\notag             \\
+        \sqrt{f(a)^2-1} & =\frac{2\sqrt{(b-a)(u-a)}}{u-b},\notag
+    \end{align}
+    and Theorem~\ref{thm:chebyshev_tangent_bound} with $y=f(x)$, $y_0=f(a)$
+    gives (\ref{eq:chebyshev_interval_polynomial_near}) after division by
+    $T_n(f(a))>0$. If $b=u$, then $p(x)=(1-t)^n$ with
+    $t=(x-a)/(u-a)\in[0,1]$, and Bernoulli's inequality
+    $(1-t)^n\ge1-nt$ is (\ref{eq:chebyshev_interval_polynomial_near}).
+\end{proof}
+
+\begin{theorem}[The printed near-ground slope fails]
+    \label{thm:chebyshev_printed_slope_fails}
+    \lean{Polynomial.Chebyshev.eval_T_div_eval_T_le_two_mul_exp}\leanok
+    Let $\eta_0<\eta_1<u$, $\gamma=\eta_1-\eta_0$ and $k\ge1$, and put
+    \begin{align}
+        P_k(x) & =\frac{T_k\bigl(2(x-\eta_1)/(u-\eta_1)-1\bigr)}
+                  {T_k\bigl(2(\eta_0-\eta_1)/(u-\eta_1)-1\bigr)},
+        \label{eq:chebyshev_source_polynomial}
+    \end{align}
+    the polynomial of Definition~def:Cheby-AGSP
+    of~\cite[lines 795--801]{Arad2016RigorousRG} with $u=\|H\|$. Then
+    \begin{align}
+        P_k\left(\eta_0+\frac\gamma k\right)
+         & \le2\exp\left(-\sqrt{\frac{\gamma}{u-\eta_0}}\right).
+        \label{eq:chebyshev_printed_slope_fails}
+    \end{align}
+    The right side does not depend on $k$ and is below one when
+    $\gamma/(u-\eta_0)>(\log2)^2$, for instance for $\eta_0=0$, $\eta_1=1$,
+    $u=2$. The printed lower bound
+    $1-O\bigl(k\lvert\lambda-\eta_0\rvert\sqrt\Delta/(\gamma\|H\|)\bigr)$ at
+    $\lambda=\eta_0+\gamma/k$, with
+    $\sqrt\Delta=2\exp(-2k\sqrt{\gamma/(u-\eta_0)})$, tends to one as
+    $k\to\infty$, so it fails for every implied constant.
+\end{theorem}
+\begin{proof}\leanok
+    For $x\le\eta_1$, parity of $T_k$ gives $P_k(x)=T_k(f(x))/T_k(f(\eta_0))$
+    with $f(x)=(u+\eta_1-2x)/(u-\eta_1)$. Write $f(x)=\cosh s$ and
+    $f(\eta_0)=\cosh s_0$ with $0\le s\le s_0$. Then
+    $P_k(x)=\cosh(ks)/\cosh(ks_0)\le2e^{-k(s_0-s)}$. Convexity of $\cosh$
+    gives $\cosh s_0-\cosh s\le\sinh s_0\,(s_0-s)$. At $x=\eta_0+\gamma/k$
+    one has $\cosh s_0-\cosh s=2\gamma/(k(u-\eta_1))$ and
+    $\sinh s_0=2\sqrt{\gamma(u-\eta_0)}/(u-\eta_1)$, so
+    $k(s_0-s)\ge\sqrt{\gamma/(u-\eta_0)}$.
+\end{proof}
+
 \begin{theorem}[Hermitian filtering of low and high spectral subspaces]
     \label{thm:chebyshev_spectral_filter}
     \lean{Matrix.IsHermitian.exists_polynomial_spectral_filter}\leanok
