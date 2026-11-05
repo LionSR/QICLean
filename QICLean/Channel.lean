@@ -144,6 +144,7 @@ import QICLean.Channel.RectangularTraceNormContraction
 import QICLean.Channel.ReductionCriterion
 import QICLean.Channel.RightFactorConditionalExpectation
 import QICLean.Channel.SchmidtDecomposition
+import QICLean.Channel.SchmidtMarginalAction
 import QICLean.Channel.SchmidtNumber
 import QICLean.Channel.SchmidtNumberCompact
 import QICLean.Channel.SchmidtNumberFactors

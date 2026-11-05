@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.GaussianFilter.SpectralGap
+import QICLean.Analysis.HermitianEigenbasisFunctionalCalculus
 import QICLean.Analysis.ShiftedDensityTruncation
 
 
@@ -26,16 +27,6 @@ lines 44–47, and the polynomial-PEPS manuscript, equation eq:global-gap.
 open scoped InnerProductSpace ComplexOrder
 open Matrix
 
-private theorem cfc_basis_action
-    {n : Type*} [Fintype n] [DecidableEq n]
-    {H : Matrix n n ℂ} (hH : H.IsHermitian) (f : ℝ → ℝ) (k : n) :
-    cfc f H *ᵥ WithLp.ofLp (hH.eigenvectorBasis k) =
-      (f (hH.eigenvalues k) : ℂ) • WithLp.ofLp (hH.eigenvectorBasis k) := by
-  rw [hH.cfc_eq, hH.cfc_form]
-  rw [← mulVec_mulVec, hH.star_eigenvectorUnitary_mulVec, ← mulVec_mulVec,
-    diagonal_mulVec_single, mul_one, mulVec_single]
-  simp
-
 /-- The canonical ground projection from the original global gap. Supporting spectral
 identity for LVV, arXiv:1307.5143v1, `algo53.tex`, lines 599–603 (`e:cutdown`),
 and the OpenAI area-law global gap, `thm:area`, `00-introduction.tex`, lines 44–47. -/
@@ -55,7 +46,7 @@ theorem Matrix.IsHermitian.complement_spectralProjectionGE_eq_rankOne
   apply (WithLp.ofLp_injective 2)
   change (1 - spectralProjectionGE H (E₀ + Δ)) *ᵥ WithLp.ofLp (hH.eigenvectorBasis k) =
     ⟪Ω, hH.eigenvectorBasis k⟫_ℂ • WithLp.ofLp Ω
-  rw [sub_mulVec, one_mulVec, spectralProjectionGE, cfc_basis_action]
+  rw [sub_mulVec, one_mulVec, spectralProjectionGE, hH.cfc_mulVec_eigenvectorBasis]
   rcases GaussianFilter.eigenvector_ground_or_gap hH hΩ hHΩ hgap hΔ k with
     ⟨hlam, hground⟩ | ⟨henergy, horth⟩
   · simpa [hlam, show ¬ E₀ + Δ ≤ E₀ by linarith] using congrArg WithLp.ofLp hground

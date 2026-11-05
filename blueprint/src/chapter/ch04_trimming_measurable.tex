@@ -1,0 +1,55 @@
+\section{Borel dependence of the collective trimming projections}
+
+The input family is allowed to vary over all finite families of physical
+vectors. No orthonormality or nonvanishing restriction is imposed. The
+threshold and the sequence of cuts are fixed.
+
+\begin{theorem}[Continuity of the original Gram operator]
+    \label{thm:continuous_trimming_gram}
+    \lean{Entropy.continuous_leftMarginal_stackVector}
+    \leanok
+    For a fixed number of vectors, the map
+    $(u_i)\mapsto\rho_u=\sum_i|u_i\rangle\langle u_i|$ is continuous.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:trimming_gram_invariance}
+    Each matrix entry is a finite sum of products
+    $u_i(x)\overline{u_i(y)}$, hence is continuous in the vectors.
+\end{proof}
+
+\begin{theorem}[Borel measurability of the actual trimming projections]
+    \label{thm:measurable_collective_trimming}
+    \lean{Entropy.measurable_trimProj,Entropy.measurable_trimStep}
+    \leanok
+    \uses{def:viable_trimming}
+    Fix any real threshold $\xi$, any sequence of regions $(D_j)$, and
+    any nonnegative integer $k$. As functions of the entire finite input
+    family $(u_i)$, both the literal product $Q_k$ of the first $k$
+    collective-trimming projections and the next cut projection $P^{k+1}$
+    are Borel measurable. The empty family, zero vectors, and repeated
+    or linearly dependent vectors are included.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:continuous_trimming_gram,thm:trimming_reduced_gram,
+        lem:borel_closed_spectral_cutoff}
+    Induct on $k$. The initial product is the constant identity.
+    If $Q_j$ is Borel measurable, then so is the next cut marginal
+    \begin{align}
+        \rho_{j,D_j}
+        =\operatorname{Tr}_{D_j^c}
+        \bigl(U_{D_j}Q_j\rho_u Q_j^*U_{D_j}^*\bigr).
+    \end{align}
+    Indeed multiplication, adjoint, reindexing and partial trace are
+    continuous, and the original Gram operator is continuous in the family.
+    The closed spectral cutoff at $\xi^2$ is Borel measurable, so
+    $P^{j+1}=1_{[\xi^2,\infty)}(\rho_{j,D_j})$ is measurable.
+    Its lift is continuous in the regional matrix. Multiplication by
+    $Q_j$ gives the next product and completes the induction.
+\end{proof}
+
+These assertions concern the actual successive products in
+the definition of collective trimming in
+\cite[lines 648--655]{Arad2016RigorousRG}.
+They do not require monotone cuts or positive thresholds. A measurable
+sampling construction, its conditional probability law, and measurability
+of the final subspace projection require further arguments.

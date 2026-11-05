@@ -1,0 +1,43 @@
+\section{An explicit power for the energy-estimation space}
+
+The energy-estimation space in~\cite[Figure \texttt{fig:algo1}, line 1631]
+{Arad2016RigorousRG} is a separate untrimmed operator-word image. Its
+accuracy can be chosen without adding collective trims to that image.
+
+\begin{lemma}[A logarithmic power of the same factor family]
+    \label{lem:untrimmed_tensor_family_ceil_log}
+    \lean{Real.word_filter_error_ceil_log_le,
+        Submodule.IsSpectralProjector.viability_word_power_ceil_log}
+    \leanok
+    Retain the spectral filter, low target $T$, cutoff separation and finite
+    tensor decomposition $K=\sum_{i\in I} A_i\otimes B_i$ from
+    Lemma~\ref{thm:spectral_operator_word_powers}. Suppose
+    $0\le\Delta\le1/4$. Let $S$ be $\delta$-viable for $T$, with
+    $\delta\le1/2$. For any $\eta>0$, put
+    \[
+        p=\max\left\{0,\left\lceil4\log(4/\eta)\right\rceil\right\}+1,\qquad
+        V=\operatorname{span}\{A_{i_1}\cdots A_{i_p}s:
+        i_1,\ldots,i_p\in I,\ s\in S\}.
+    \]
+    Then $V$ is $\eta$-viable for the same target and
+    \[
+        \dim V\le |I|^p\dim S.
+    \]
+    The target, filter and factors are fixed before the accuracy and
+    power are chosen.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:spectral_operator_word_powers}
+    The existing word-power estimate gives error
+    $\Delta^p/(1-\delta)^2$ on this exact image and the stated dimension.
+    Since $\Delta\le1/4\le3/4$, one has
+    \[
+        \Delta^p\le(3/4)^p\le e^{-p/4}\le\eta/4,
+        \qquad (1-\delta)^2\ge1/4.
+    \]
+    Division gives the required accuracy.
+\end{proof}
+
+This is an explicit sufficient power. The source's printed power,
+the generated local soft Hamiltonian, its compression and the energy
+comparison remain separate conclusions.

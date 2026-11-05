@@ -1,0 +1,81 @@
+\section{Least viable dimensions and a finite dyadic index}
+
+The low-density argument of~\cite[Proposition~prop:albootstrap-ld,
+    lines 1112--1128]{Arad2016RigorousRG} uses the least dimension of a
+viable subspace for each spectral target. The following results concern
+these natural minima and the scalar count used in the argument.
+
+\begin{theorem}[Restriction of a viable target]
+    \label{thm:viable_target_restriction}
+    \lean{Submodule.IsViable.of_target_le}
+    \leanok
+    Let $M,F$ be finite-dimensional complex inner-product spaces.
+    If $S\subseteq M$ is $\delta$-viable for $T_+$ and
+    $T_-\subseteq T_+\subseteq M\otimes F$, then $S$ is
+    $\delta$-viable for $T_-$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:subspace_viable,thm:subspace_close_iff}
+    The inequality
+    $\|P_{S\otimes F}x\|^2\ge(1-\delta)\|x\|^2$ for $x\in T_+$
+    remains valid after restricting $x$ to $T_-$.
+\end{proof}
+
+\begin{theorem}[An attained least viable dimension]
+    \label{thm:viable_minimum}
+    \lean{Submodule.exists_isViable_minimal_finrank}
+    \leanok
+    Let $\delta\ge0$ and $T\subseteq M\otimes F$.
+    There are a natural number $p\le\dim M$ and a subspace
+    $W\subseteq M$ of dimension $p$ that is $\delta$-viable for $T$,
+    such that $p\le\dim S$ for every $\delta$-viable subspace $S$ for $T$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The set of dimensions of viable subspaces is a nonempty subset of
+    the natural numbers: it contains $\dim M$, since $M$ is viable.
+    Its least member is the dimension of an actual viable subspace.
+\end{proof}
+
+\begin{theorem}[Increasing minima for increasing targets]
+    \label{thm:viable_minimum_sequence}
+    \lean{Submodule.exists_isViable_minimal_sequence}
+    \leanok
+    Let $\delta\ge0$ and $T_j\subseteq T_{j+1}\subseteq M\otimes F$.
+    One can choose, for every $j\ge0$, a $\delta$-viable subspace
+    $W_j$ for $T_j$ whose dimension $p_j$ is least among all such
+    subspaces. These choices satisfy $p_j\le\dim M$ and
+    $p_j\le p_{j+1}$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:viable_minimum,thm:viable_target_restriction}
+    Choose an attained minimum for each target. The space $W_{j+1}$
+    is also viable for $T_j$, so the minimum property gives
+    $p_j\le\dim W_{j+1}=p_{j+1}$.
+\end{proof}
+
+\begin{theorem}[A finite index exceeding a prescribed dimension]
+    \label{thm:dyadic_filter_count_finite_index}
+    \lean{Real.exists_dyadic_polynomial_filter_count_ge}
+    \leanok
+    Fix $C\ge1$, $v>0$ and an integer $m\ge2$. For $j\ge0$, put
+    \begin{align*}
+        g_j    & =\min\{v/(6\cdot2^j),1\}, &
+        u_j    & =1+\log m+\log(1/g_j),      \\
+        \ell_j & =\lceil Cu_j^2/g_j\rceil, &
+        D_j    & =(m\ell_j^2)^{22\ell_j}.
+    \end{align*}
+    For every natural number $N$ there is a finite index $j$ such that
+    $N\le\ell_j$ and $N\le D_j$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:ceil_quadratic_scale}
+    Take $j=\lceil Nv/(6C)\rceil$. Since $j\le2^j$, one has
+    $Nv/(6\cdot2^j)\le C$. Hence
+    $N\le C/g_j\le Cu_j^2/g_j\le\ell_j$.
+    Finally $\ell_j\ge1$ and
+    $\ell_j\le\ell_j^2\le m\ell_j^2\le D_j$.
+\end{proof}

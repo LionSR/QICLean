@@ -1,0 +1,56 @@
+\section{The image of an approximately preserved orthonormal basis}
+
+The following elementary estimates turn approximations to individual basis
+vectors into a subspace comparison. The linear map and its range are
+constructed from the prescribed vectors; their independence is a conclusion.
+This is useful for the mathematical basis consequence described in
+\cite[line 288 and Theorem~thm:al-ld, lines 1096--1105]{Arad2016RigorousRG}.
+It does not construct a Hamiltonian filter or an efficient algorithm.
+
+\begin{lemma}[The error of the actual basis-defined map]
+    \label{lem:approximate_basis_map_error}
+    \lean{OrthonormalBasis.norm_constr_sub_sq_le_sum}
+    \leanok
+    Let $T$ be a finite-dimensional subspace of an inner product space,
+    with a finite orthonormal basis $(b_i)$, and let $(\phi_i)$ be
+    prescribed ambient vectors. Define $F:T\to E$ by $Fb_i=\phi_i$.
+    Then, for every $x\in T$,
+    \[
+        \|Fx-x\|^2\le
+        \left(\sum_i\|\phi_i-b_i\|^2\right)\|x\|^2.
+    \]
+    The ambient space need not be finite dimensional for this estimate.
+\end{lemma}
+\begin{proof}\leanok
+    Expand $x$ in the orthonormal basis. The error is
+    $\sum_i c_i(\phi_i-b_i)$, whose norm is at most
+    $\sum_i|c_i|\|\phi_i-b_i\|$. Square, apply finite
+    Cauchy--Schwarz, and use $\sum_i|c_i|^2=\|x\|^2$.
+\end{proof}
+
+\begin{lemma}[The actual image subspace]
+    \label{lem:approximate_basis_image_close}
+    \lean{OrthonormalBasis.range_constr_isCloseTo_of_sum_norm_sq_le}
+    \leanok
+    Suppose the ambient inner product space is finite dimensional and
+    $\sum_i\|\phi_i-b_i\|^2\le\delta<1$.
+    Then the same map $F$ is injective, and its actual range $V$ satisfies
+    \[
+        V=\operatorname{span}\{\phi_i\},\qquad
+        \dim V=\dim T.
+    \]
+    Moreover, $V$ is $\delta$-close to $T$ and $T$ is
+    $\delta$-close to $V$, in the squared projection-loss sense.
+    The zero-dimensional target is included.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:approximate_basis_map_error}
+    The error estimate shows that $Fx=0$ implies
+    $(1-\delta)\|x\|^2\le0$, hence $x=0$.
+    The basis-defined map has range exactly the span of its recorded
+    basis images, and injectivity gives the dimension equality.
+    Orthogonal projection onto $V$ is a best approximation, so
+    $\|x-P_Vx\|^2\le\|x-Fx\|^2\le\delta\|x\|^2$ for $x\in T$.
+    Pythagoras gives the first closeness assertion. Equal-dimensional
+    subspace symmetry gives the reverse assertion with the same error.
+\end{proof}

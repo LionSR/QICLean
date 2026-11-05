@@ -44,6 +44,19 @@ Arad--Landau--Vazirani--Vidick is the following finite logarithmic series
     (\ref{eq:scalar_soft_truncation_log_bound}).
 \end{proof}
 
+\begin{lemma}[A matrix bound for soft truncation]
+    \label{lem:soft_truncation_operator_cap}
+    \lean{Matrix.PosSemidef.cfc_softTruncation_le_scalar}
+    \leanok
+    \uses{thm:scalar_soft_truncation_bounds}
+    If $A\ge0$, $t>0$ and $m\ge1$, then
+    $h_{m,t}(A)\le t(1+\log m)I$.
+\end{lemma}
+\begin{proof}\leanok
+    Every spectral value of $A$ is nonnegative. Apply the scalar bound
+    at each spectral value and use the order-preserving functional calculus.
+\end{proof}
+
 \begin{lemma}[Geometric remainder]
     \label{lem:scalar_soft_truncation_geometric}
     \lean{Real.softTruncation_remainder_le_geometric}

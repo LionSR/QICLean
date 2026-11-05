@@ -1,0 +1,59 @@
+\section{A deterministic terminal image and reference trim}
+
+A stopped resampling process can start below its dimension threshold.
+Its retained $0.04$-viability alone does not give the desired $3/200$ error.
+The following terminal step uses the same full improving family and the same
+original-target reference, without a further sample. Its relation to the
+resampling description of~\cite[lines 749--755]{Arad2016RigorousRG} is
+qualified in~\cite{gap:alvv16_bootstrap_constants}.
+
+\begin{lemma}[Unconditional dimensions of a full image and trim]
+    \label{lem:terminal_family_trim_dimension}
+    \lean{Entropy.finrank_family_image_trim_le}\leanok
+    For any finite family $(A_i)_{i\in I}$ and any subspace $W$ of the
+    regional Hilbert space, put $Y=\operatorname{span}_{i\in I}A_iW$.
+    Let $V$ be the literal collective trim of the specified orthonormal
+    basis of $Y$ at arbitrary cuts and a real threshold. Then
+    \[
+        \dim Y\le|I|\dim W,\qquad \dim V\le|I|\dim W.
+    \]
+    No target, viability, increasing-cut or positive-threshold hypothesis
+    is required.
+\end{lemma}
+\begin{proof}\leanok
+    The dimension of the finite sum of images is at most the sum of their
+    dimensions. The trimmed space is a linear image of $Y$.
+\end{proof}
+
+\begin{theorem}[Terminal improvement relative to the original reference]
+    \label{thm:terminal_family_original_reference_trim}
+    \lean{Entropy.isCloseTo_terminal_family_reference_trim}\leanok
+    \uses{lem:terminal_family_trim_dimension, lem:half_sampling_margins}
+    Fix an original target $T_0$ and a nonempty family of targets $(T_x)$
+    in the regional Hilbert space tensored with its full exterior.
+    Suppose $T_0$ and every $T_x$ are mutually $1/200$-close. Let $D\ge2$
+    and let a single family $(A_i)_{i\in I}$, $|I|\le D^2$, improve every
+    $\delta$-viable space for every $T_x$ to error
+    $\Delta/(1-\delta)^2$, for all $\delta<1$.
+    Assume $D^{12}\Delta\le10^{-5}$, without a sign condition on $\Delta$.
+
+    Fix a reference $R$ mutually $\varepsilon_R$-close to $T_0$, where
+    $0\le\varepsilon_R\le10^{-5}$. Every reference vector has Schmidt rank
+    at most $b$ at each of an increasing list of $m$ cuts. Fix $\xi>0$
+    with $\xi\sqrt{mb}\le10^{-3}$. All these data precede the current space.
+
+    For every $0.04$-viable current space $W$ for $T_0$, take the same full
+    image $Y=\operatorname{span}_{i\in I}A_iW$ and collectively trim its
+    specified orthonormal basis to $V$. Then $Y$ is
+    $\Delta/(91/100)^2$-viable for every $T_x$, and $27/2500$-viable for
+    $T_0$; the same $V$ is $3/200$-viable for $T_0$. Moreover
+    $\dim Y,\dim V\le D^2\dim W$.
+\end{theorem}
+\begin{proof}\leanok
+    Composition makes $W$ $9/100$-viable for every $T_x$. The common family
+    therefore gives the exact stated target error, which the numerical
+    margin bounds by $10^{-4}$. Transfer back through one distinguished
+    $T_x$ and apply original-reference weighted trimming with parameter
+    $1/20$. The dimension bounds hold independently of viability by
+    Lemma~\ref{lem:terminal_family_trim_dimension}.
+\end{proof}

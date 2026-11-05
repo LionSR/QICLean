@@ -1,0 +1,305 @@
+\section{Controlling a soft residual by a hard residual}
+\label{sec:soft_hard_residual}
+
+The residual estimate below concerns two functions of the same positive
+matrix. It requires no small global norm of the truncation error. It is
+an auxiliary to the soft-truncation argument of Arad, Landau, Vazirani
+and Vidick~\cite[lines 1178--1185 and 1195--1255]{Arad2016RigorousRG}.
+The scale and Taylor order remain independent.
+
+\begin{lemma}[Norm domination for positive spectral functions]
+    \label{lem:positive_cfc_vector_norm_domination}
+    \lean{Matrix.norm_cfc_apply_le_of_nonneg_le}
+    \leanok
+    Let $A$ be a finite Hermitian matrix and let $f,g$ be real functions
+    satisfying $0\leq f(x)\leq g(x)$ on its spectrum. Then every vector
+    $v$ satisfies
+    \begin{align}
+        \|f(A)v\|\leq\|g(A)v\|.
+    \end{align}
+    Neither function is required to be operator monotone.
+\end{lemma}
+\begin{proof}\leanok
+    On the spectrum put $r(x)=f(x)/g(x)$, with $r(x)=0$ when $g(x)=0$.
+    The hypotheses give $0\leq r(x)\leq1$ and $f(x)=r(x)g(x)$.
+    Functional calculus therefore gives $f(A)=r(A)g(A)$ and
+    $\|r(A)\|\leq1$, which proves the assertion. All functions on the
+    finite spectrum are continuous.
+\end{proof}
+
+\begin{lemma}[Scalar residual comparison at an arbitrary hard cutoff]
+    \label{lem:soft_hard_scalar_residual}
+    \lean{Real.monotoneOn_softTruncation,
+        Real.softTruncation_remainder_le_hard_remainder}
+    \leanok
+    Let $t>0$ and $m\geq1$. The function $h_{m,t}$ is increasing on
+    $[0,\infty)$. For $T,x\geq0$, set
+    \begin{align}
+        E_{m,t}(T)=\frac{t}{m}\left(\frac{T}{t}\right)^m.
+    \end{align}
+    Then
+    \begin{align}
+        0\leq x-h_{m,t}(x)
+        \leq x-\min\{x,T\}+E_{m,t}(T).
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Every term of the finite defining series is increasing for $x\geq0$.
+    The soft truncation lies below its input. If $x\leq T$, its existing
+    polynomial remainder bound is at most $E_{m,t}(T)$. If $x\geq T$,
+    monotonicity gives
+    \begin{align}
+        x-h_{m,t}(x)\leq x-T+T-h_{m,t}(T)
+        \leq x-T+E_{m,t}(T).
+    \end{align}
+    This uses the actual remainder bound below $T$, rather than inferring
+    monotonicity of the remainder from monotonicity of the soft function.
+\end{proof}
+
+\begin{lemma}[Vector-norm comparison of the residuals]
+    \label{lem:soft_hard_vector_residual}
+    \lean{Matrix.PosSemidef.norm_softTruncation_residual_apply_le}
+    \leanok
+    Let $A\geq0$ be a finite positive semidefinite matrix. For every
+    $t>0$, $m\geq1$, $T\geq0$ and every vector $v$,
+    \begin{align}
+        \|(A-h_{m,t}(A))v\|
+        \leq\|(A-\min\{A,T\})v\|+E_{m,t}(T)\|v\|.
+    \end{align}
+    The assertion includes $T=0$ and the zero-dimensional space.
+\end{lemma}
+\begin{proof}\leanok
+    Apply Lemma~\ref{lem:positive_cfc_vector_norm_domination} with
+    $f(x)=x-h_{m,t}(x)$ and $g(x)=x-\min\{x,T\}+E_{m,t}(T)$.
+    The scalar comparison proves its hypotheses on the nonnegative
+    spectrum of $A$. Separate the constant term by functional calculus
+    and apply the triangle inequality.
+\end{proof}
+
+Thus a hard residual of at most $\rho\|v\|$ on a subspace gives a soft
+residual of at most $(\rho+E_{m,t}(T))\|v\|$ there. In particular,
+$E_{4,t}(T)=T^4/(4t^3)$, with no substitution $t=m$. The substitution
+of actual regional matrices and their physical hard-tail estimates is
+a separate step. No reverse soft-to-original comparison, uniform energy
+estimate or complete efficient-filter theorem is asserted here.
+
+\begin{lemma}[Residuals restricted to an arbitrary subspace]
+    \label{lem:soft_hard_restricted_residual}
+    \lean{Matrix.PosSemidef.norm_softTruncation_residual_domRestrict_le}
+    \leanok
+    Under the hypotheses of Lemma~\ref{lem:soft_hard_vector_residual},
+    every subspace $V$ satisfies
+    \begin{align}
+        \|(A-h_{m,t}(A))|_V\|
+        \leq\|(A-\min\{A,T\})|_V\|+E_{m,t}(T).
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    For $v\in V$, bound the hard residual by its restricted operator
+    norm times $\|v\|$ in Lemma~\ref{lem:soft_hard_vector_residual}.
+    Taking the supremum over unit vectors of $V$ gives the assertion.
+\end{proof}
+
+
+\subsection{A quantitative high-energy floor}
+
+\begin{lemma}[Functional calculus and scalar translation]
+    \label{lem:cfc_scalar_translation}
+    \lean{Matrix.IsHermitian.cfc_sub_smul_one}
+    \leanok
+    Let $A$ be a finite Hermitian matrix, $e\in\mathbb R$, and
+    $g:\mathbb R\to\mathbb R$ any function. Then
+    \begin{align}
+        g(A-eI)=(x\mapsto g(x-e))(A).
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    The functional calculus of $x\mapsto x-e$ is $A-eI$.
+    Apply composition in the continuous functional calculus; every
+    function on the finite spectrum and its translated image is
+    continuous there.
+\end{proof}
+
+\begin{lemma}[The soft function above a high-energy threshold]
+    \label{lem:soft_truncation_high_energy_floor}
+    \lean{Real.softTruncation_high_energy_floor,
+        Matrix.IsHermitian.smul_spectralProjectionGE_le_softTruncation}
+    \leanok
+    Let $t>0$, $m\geq1$ and $R\geq0$. Put
+    \begin{align}
+        b(R)=R-E_{m,t}(R).
+    \end{align}
+    Every $x\geq R$ satisfies $h_{m,t}(x)\geq b(R)$.
+    Consequently, if $A=A^*\geq eI$, then
+    \begin{align}
+        b(R)\,\mathbf1_{[e+R,\infty)}(A)
+        \leq h_{m,t}(A-eI).
+    \end{align}
+    The floor $b(R)$ need not be positive for this order comparison.
+\end{lemma}
+\begin{proof}\leanok
+    The polynomial remainder at $R$ gives $h_{m,t}(R)\geq b(R)$.
+    Monotonicity gives the same lower bound above $R$.
+    On the spectrum of $A$, apply the scalar comparison to $x-e$ when
+    $x\geq e+R$, and use $h_{m,t}(x-e)\geq0$ otherwise.
+    Functional calculus and Lemma~\ref{lem:cfc_scalar_translation}
+    give the projection order.
+\end{proof}
+
+\begin{lemma}[A positive denominator for a reverse comparison]
+    \label{lem:soft_reverse_barrier_margin}
+    \lean{Real.softTruncation_reverse_barrier_margin}
+    \leanok
+    Let $\eta\geq0$, $m\geq2$, $t\geq2(\eta+8)$,
+    $\mu\leq2$ and $c\in\mathbb N$ with $c\leq2$. Put
+    \begin{align}
+        U=2(\eta+8),\qquad b=U-E_{m,t}(U).
+    \end{align}
+    Then $U\geq0$, $b\geq\eta+8$, and every $x\geq U$ satisfies
+    $h_{m,t}(x)\geq b$. Moreover,
+    \begin{align}
+        b-(\mu+\eta)-2c\geq2.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Since $0\leq U/t\leq1$ and $m\geq2$,
+    \begin{align}
+        E_{m,t}(U)
+        \leq\frac{t}{m}\frac Ut
+        =\frac Um\leq\frac U2.
+    \end{align}
+    Hence $b\geq U/2=\eta+8$. The high-energy assertion follows
+    from Lemma~\ref{lem:soft_truncation_high_energy_floor}.
+    Subtracting $\mu+\eta\leq2+\eta$ and $2c\leq4$ leaves at least
+    two.
+\end{proof}
+
+The last lemma is a scalar parameter estimate. A physical reverse
+comparison must construct the soft Hamiltonian, derive the bound on
+its actual ground energy and the cardinality of its actual boundary,
+and only then substitute them for $\mu$ and $c$. No reverse residual
+or spectral gap is assumed or concluded here. Requiring only a
+relative half-threshold error allows fixed Taylor order and scale
+linear in the energy width; an absolute unit-error requirement would
+be unnecessarily stronger when the width grows.
+
+
+\subsection{Parameters for arbitrarily small residuals}
+
+\begin{theorem}[A common cutoff and Taylor order]
+    \label{thm:soft_residual_parameter_existence}
+    \lean{Real.exists_soft_truncation_residual_parameters}
+    \leanok
+    Let $B\ge0$ and $\varepsilon>0$. There are an integer $m\ge2$,
+    a scale $t=3m$ and a cutoff $T\ge B$, with $t\ge B$, such that
+    every $b\le B$ satisfies
+    \begin{align}
+        3\left[32e^{-(T-b)/8}
+             +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
+        \le\varepsilon.
+        \label{eq:soft_residual_common_parameters}
+    \end{align}
+    This is a scalar auxiliary for the soft-truncation estimates in
+    \cite[lines 1195--1255 and 1373--1420]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    Put $X=\max\{1,192/\varepsilon\}$ and $T=B+8\log X$.
+    Then $32e^{-(T-b)/8}\le32/X\le\varepsilon/6$ whenever $b\le B$.
+    Choose an integer $k$ with $2^{-k}<\varepsilon/18$, and then take
+    $m\ge\max\{2,k,2T/3\}$. Thus $T/(3m)\le1/2$ and
+    \begin{align}
+        \frac{t}{m}\left(\frac{T}{t}\right)^m
+        =3\left(\frac{T}{3m}\right)^m
+        \le3\cdot2^{-m}\le\frac{\varepsilon}{6}.
+    \end{align}
+    Adding these estimates proves
+    (\ref{eq:soft_residual_common_parameters}).
+\end{proof}
+
+\begin{corollary}[Both five-region residual budgets]
+    \label{cor:soft_cluster_parameter_existence}
+    \lean{Real.exists_soft_cluster_parameters}
+    \leanok
+    Let $g,\tau>0$. There are $m\ge2$, $t=3m$ and a common cutoff $T$
+    such that $t,T\ge156+2g$, $T\ge g/40+24$, and
+    \begin{align}
+        3\left[32e^{-(T-g/40-24)/8}
+             +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
+         & \le\frac{\tau g}{10^6}, \\
+        3\left[32e^{-(T-156-2g)/8}
+             +\frac{t}{m}\left(\frac{T}{t}\right)^m\right]
+         & \le\frac{\tau g}{10^6}.
+    \end{align}
+    Both truncation residuals can therefore use the same cutoff.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{thm:soft_residual_parameter_existence}
+    Apply the theorem with $B=156+2g$ and
+    $\varepsilon=\tau g/10^6$. The two offsets are at most $B$.
+\end{proof}
+
+\subsection{A simultaneous count and residual calibration}
+
+The preceding choice of $m$ depends on a prescribed residual tolerance.
+It cannot by itself be substituted when that tolerance is later defined
+from a count depending on $m$. The next theorem makes all choices from
+one natural parameter and verifies the resulting inequalities together.
+It is a sufficient calibration, not the printed fourth-order choice of
+\cite[lines 1373--1420]{Arad2016RigorousRG}.
+
+\begin{theorem}[A common natural scale]
+    \label{thm:soft_family_calibration}
+    \lean{Real.exists_soft_family_calibration}
+    \leanok
+    Fix $q\in\mathbb N$ with $q\ge2$, $g>0$, and
+    $a,b,c\in\mathbb N$. There is $u\in\mathbb N$, $u\ge2$, such that
+    the choices
+    \begin{align}
+        \ell & =u^8,\quad m=u^{10},\quad t=3m,\quad k=u^{16},\quad T=u^9, \\
+        D    & =(mk+1)(qk)^{36\ell+4\lfloor k/\ell\rfloor},               \\
+        M    & =3t(1+\log m)+4\ell+34,                                    \\
+        \tau & =D^{-a}M^{-b},\qquad
+        \xi=\min\left\{1,\frac{\tau g^2}{20000(M+g+8)}\right\}
+    \end{align}
+    satisfy $\ell,k,D\ge1$, $m\ge2$, $M\ge1$, $0<\tau,\xi\le1$,
+    $t,T\ge156+2g$, $T\ge g/40+24$, and
+    \begin{align}
+        3\left[32e^{-(T-g/40-24)/8}
+             +\frac tm\left(\frac Tt\right)^m\right]
+         & \le\frac{\tau g}{10^6}, \\
+        3\left[32e^{-(T-156-2g)/8}
+             +\frac tm\left(\frac Tt\right)^m\right]
+         & \le\frac{\tau g}{10^6}, \\
+        \left[2e^{-2k\sqrt{(g/2)/(M+\xi+4+g)}}\right]^2
+         & \le D^{-12}M^{-c}.
+    \end{align}
+    The scale $u$ is chosen before any volume or target dimension.
+\end{theorem}
+\begin{proof}\leanok
+    Since $k/\ell=u^8$, direct logarithmic estimates give
+    \begin{align}
+        \log D & \le u^8(\log2+40\log q+666\log u),      \\
+        M+R    & \le u^{10}(47+R+90\log u)\qquad(R\ge0).
+    \end{align}
+    The relation $\log u=o(u^p)$ for each $p>0$ now gives, for all
+    sufficiently large natural $u$,
+    \begin{align}
+        M+5+g & \le u^{12},        \\
+        (a+12)\log D+(b+c)\log M
+        +200+g+\left|\log\frac{g}{2000000}\right|
+              & \le\frac{u^9}{64}.
+    \end{align}
+    Increase $u$ further to satisfy the displayed threshold conditions,
+    $gu^2\ge1$ and $\log u\ge1$. Exponentiating the second inequality
+    bounds the exponential residuals and $9(3u)^{-m}$. The first
+    inequality and $gu^2\ge1$ imply
+    \begin{align}
+        u^9\le4u^{16}\sqrt{\frac{g/2}{M+\xi+4+g}},
+    \end{align}
+    which proves the squared shrinking bound at the same count.
+\end{proof}
+
+This is a new sufficient scalar choice for the soft estimates of
+\cite[lines 1262--1268 and 1373--1420]{Arad2016RigorousRG}.
+It does not assert the printed fourth-order choice, a quantitative gap
+exponent, or a running-time bound.

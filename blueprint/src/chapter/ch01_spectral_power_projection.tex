@@ -291,3 +291,74 @@ estimates.
     $m\ge (N-E_0)\Delta^{-1}\log(1/\eta)$.
     Apply Theorem~\ref{thm:physical_power_filter_lower_gap_accuracy}.
 \end{proof}
+
+
+\begin{lemma}[Functional calculus on the actual eigenbasis]
+    \label{lem:hermitian_cfc_eigenbasis_action}
+    \lean{Matrix.IsHermitian.cfc_mulVec_eigenvectorBasis}
+    \leanok
+    If $H$ is Hermitian, $v_j$ is its canonical orthonormal eigenbasis
+    with eigenvalues $\lambda_j$, and $f:\mathbb R\to\mathbb R$ is any
+    function, then $f(H)v_j=f(\lambda_j)v_j$.
+\end{lemma}
+\begin{proof}\leanok
+    In the unitary spectral representation, the diagonal functional
+    calculus multiplies the $j$th coordinate by $f(\lambda_j)$.
+\end{proof}
+
+\begin{lemma}[The full isolated ground projection]
+    \label{lem:full_isolated_ground_projection}
+    \lean{Matrix.IsHermitian.complement_spectralProjectionGE_eq_spectralSpanLE_starProjection}
+    \leanok
+    Let $H$ be Hermitian, let $\mu<E_1$, and suppose
+    $\operatorname{spec}(H)\subseteq\{\mu\}\cup[E_1,M]$.
+    The canonical spectral projection
+    $P=1-\boldsymbol1_{[E_1,\infty)}(H)$ is the orthogonal projection
+    onto the span $G$ of all eigenvectors with eigenvalue at most $\mu$.
+    The space $G$ may have arbitrary dimension, including zero.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:hermitian_cfc_eigenbasis_action}
+    Both projections agree on the actual orthonormal eigenbasis.
+    They fix its vectors at energy $\mu$ and annihilate every vector
+    at energy at least $E_1$.
+\end{proof}
+
+\begin{lemma}[The normalized affine filter on the full ground space]
+    \label{lem:full_ground_normalized_affine_filter}
+    \lean{Matrix.IsHermitian.normalized_affine_ground_filter_spec}
+    \leanok
+    In the setting of Lemma~\ref{lem:full_isolated_ground_projection},
+    assume also $E_1\le M$ and put
+    \[
+        B=\frac{M1-H}{M-\mu},\qquad c=\frac{E_1-\mu}{M-\mu}.
+    \]
+    Then $0<c\le1$, $B$ fixes every vector of $G$, and $B$ preserves
+    $G^\perp$. For every $x\in G^\perp$,
+    \[
+        \|Bx\|^2\le(1-c)\|x\|^2.
+    \]
+    No simplicity assumption on the ground energy is imposed.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:spectral_power_ground_projection,lem:full_isolated_ground_projection}
+    The actual spectral power estimate at exponent one gives
+    $BP=PB=P$ and $\|B-P\|\le1-c$. These identities give the two
+    invariant spaces. On $G^\perp$ one has $Px=0$, so
+    $\|Bx\|\le(1-c)\|x\|$. Since $0\le1-c\le1$, squaring gives
+    the stated bound.
+\end{proof}
+
+
+\begin{lemma}[Normalization of the affine filter]
+    \label{lem:affine_filter_normalization}
+    \lean{Matrix.normalized_affine_filter_eq_smul_raw}
+    \leanok
+    For a complex matrix $H$ and real numbers $M\ne0$, $\mu\ne M$,
+    \[
+        (1-\mu/M)^{-1}(1-H/M)=(M-\mu)^{-1}(M1-H).
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Substitute $1-\mu/M=(M-\mu)/M$ and distribute the scalar action.
+\end{proof}

@@ -2085,3 +2085,21 @@ edges are separate steps in the patch argument.
     dimension, the two exponents are $2|X\cap A|$ and
     $2|X\setminus A|$; their minimum is at most $|X|$.
 \end{proof}
+
+\begin{lemma}[A positive regional matrix for a supported operator]
+    \label{lem:positive_regional_matrix_norm_cap}
+    \lean{Entropy.IsSupportedOn.exists_posSemidef_localLift_norm_le}
+    \leanok
+    Let $X\ge0$ be a matrix on a finite product of local Hilbert spaces,
+    supported on a region $D$, and suppose $\|X\|\le M$.
+    There is an actual matrix $K\ge0$ on the Hilbert space of $D$ such
+    that $X=K\otimes I$ and $\|K\|\le M$. Empty configuration spaces
+    are included.
+\end{lemma}
+\begin{proof}\leanok
+    If a full configuration exists, fix its complementary coordinates
+    and restrict $X$ to the corresponding principal slice. This gives
+    $K\ge0$; restricting $X\le MI$ gives $K\le MI$ and hence its norm
+    bound. Designated support identifies its identity extension with
+    $X$. If there is no full configuration, take $K=0$.
+\end{proof}

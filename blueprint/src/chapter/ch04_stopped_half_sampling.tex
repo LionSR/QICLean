@@ -1,0 +1,213 @@
+\section{A stopped iteration of sampling and trimming}
+
+The following construction takes a fresh sample at each active round.
+It is an auxiliary for a repeated-resampling variant of the amplification
+described in \cite{Arad2016RigorousRG}. Its distinction from the displayed
+sample-once procedure is recorded in
+\cite{gap:alvv16_bootstrap_constants}.
+
+\begin{definition}[One stopped sampling and trimming round]
+    \label{def:canonical_stopped_half_sample_trim}
+    \lean{Entropy.canonicalHalfSampleTrimMatrix}\leanok
+    Fix a finite physical space $\mathcal H$, a coordinate isometry
+    $I:\mathbb C^d\to\mathcal H$, a finite family
+    $F_i:\mathbb C^d\to\mathcal H$, collective-trimming parameters,
+    and integers $D,h\ge0$. Write
+    $\Omega_d=\prod_{j=0}^d\mathrm U(j)$.
+    For a matrix $P$ on $\mathbb C^d$, put $Q=\operatorname{rank}P$.
+    For $U\in\Omega_d$, take the existing canonical sample
+    $W(P,U)$ of $\operatorname{range}P$ with requested size
+    $\lfloor Q/(2D^2)\rfloor$, and set
+    \[
+        S(P,U)=\operatorname{Trim}_\xi\left(\sum_iF_iW(P,U)\right).
+    \]
+    Define the stopped output matrix by
+    \[
+        B(P,U)=
+        \begin{cases}
+            I^{-1}\Pi_{S(P,U)}I, & h\le Q, \\
+            P,                   & Q<h.
+        \end{cases}
+    \]
+    The quotient is the natural-number quotient, including the
+    zero-denominator convention. No nonzero-rank assumption is imposed.
+\end{definition}
+
+\begin{definition}[The actual stopped iteration]
+    \label{def:canonical_stopped_half_sample_iteration}
+    \lean{Entropy.canonicalHalfSampleTrimIterate}\leanok
+    \uses{def:canonical_stopped_half_sample_trim}
+    For an initial matrix $P_0$ and a prescribed sequence
+    $U_0,U_1,\ldots\in\Omega_d$, define
+    \[
+        P_{r+1}=B(P_r,U_r).
+    \]
+    Every round uses the same operator family, cuts, threshold and
+    coordinate isometry.
+\end{definition}
+
+\begin{lemma}[Measurability and dependence on earlier samples]
+    \label{lem:canonical_stopped_half_sample_iteration_borel}
+    \lean{Entropy.measurable_canonicalHalfSampleTrimMatrix,
+        Entropy.measurable_canonicalHalfSampleTrimIterate,
+        Entropy.canonicalHalfSampleTrimIterate_eq_of_seed_prefix}\leanok
+    The matrix $B(P,U)$ is Borel in $(P,U)$. At every predetermined
+    round $r$, the actual iterated matrix $P_r$ is Borel in $P_0$
+    and the unitary sequence. If two unitary sequences agree for all
+    $i<r$, they give the same $P_r$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:canonical_stopped_half_sample_iteration,
+        lem:borel_rank_size_sample_family_trim}
+    The active output is the coordinate matrix of the actual
+    collectively trimmed projection. It is Borel by the preceding
+    rank-dependent sampling result. The condition
+    $h\le\operatorname{rank}P$ is Borel, so joining the two branches
+    preserves measurability. Induct on $r$ to compose these Borel maps.
+    A second induction shows that the next matrix uses only the
+    preceding matrix and $U_r$.
+\end{proof}
+
+These statements do not assume successful sampling. Bounds on dimension
+decrease and the probability of viability are separate assertions.
+
+
+\begin{definition}[A finite prescribed seed sequence]
+    \label{def:finite_half_sampling_seed}
+    \lean{Entropy.halfSamplingSeedSequence}\leanok
+    For $U=(U_i)_{i<R}\in\Omega_d^{\{0,\ldots,R-1\}}$, extend the
+    sequence by $U_j=1$ for $j\ge R$, and use this sequence in the actual
+    stopped iteration. The probability law is the finite product
+    $\mu_d^{\otimes R}$, where $\mu_d$ is the rank-unitary product Haar law.
+\end{definition}
+
+\begin{theorem}[Borel finite seeds and replacement of the next seed]
+    \label{thm:finite_half_sampling_seed_update}
+    \lean{Entropy.measurable_halfSamplingSeedSequence,
+        Entropy.halfSamplingSeedSequence_update_of_lt,
+        Entropy.halfSamplingSeedSequence_update_self,
+        Entropy.measurable_canonicalHalfSampleTrimIterate_finite_seed,
+        Entropy.canonicalHalfSampleTrimIterate_update_input,
+        Entropy.canonicalHalfSampleTrimIterate_update_next}\leanok
+    Every predetermined actual state $P_j(U)$ is Borel in the finite seed.
+    If $i<R$ and only $U_i$ is replaced by $u$, then $P_i$ is unchanged
+    and $P_{i+1}$ becomes exactly $B(P_i,u)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:finite_half_sampling_seed,
+        lem:canonical_stopped_half_sample_iteration_borel}
+    Each coordinate of the extension is an evaluation or a constant.
+    Replacing $U_i$ leaves all coordinates $j<i$ unchanged and makes its
+    own coordinate $u$. Apply dependence on the preceding seeds and the
+    defining recursion for the next state.
+\end{proof}
+
+\begin{definition}[The true original-target event of a stopped run]
+    \label{def:half_sampling_raw_good}
+    \lean{Entropy.canonicalHalfSamplingRawGood}\leanok
+    Fix the original target $T_0$. Let $\mathcal G$ be the event that
+    every actual native range $I(\operatorname{range}P_j)$, $0\le j\le R$,
+    is $0.04$-viable for $T_0$, and every active round $i<R$ has next
+    native range $3/200$-viable for $T_0$. These conditions involve only
+    the one original target and finitely many actual states.
+\end{definition}
+
+\begin{lemma}[Measurability of the actual history with a varying input]
+    \label{lem:stopped_half_sampling_raw_joint_measurable}
+    \lean{Entropy.measurableSet_canonicalHalfSamplingRawGood}\leanok
+    Fix the finite coordinates, cuts, scalar parameters, rectangular family
+    and original target in Definition~\ref{def:half_sampling_raw_good}.
+    The set of pairs $(P,\omega)$ for which the actual finite stopped run
+    from $P$ satisfies that definition is measurable in the initial matrix
+    and the entire finite sequence. No initial viability, projection,
+    positivity or sampling-success condition is required.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:half_sampling_raw_good,thm:borel_viability_matrix_range}
+    Extend the finite sequence by identity coordinates. The actual matrix
+    at each prescribed round is jointly measurable in $P$ and $\omega$.
+    Apply the measurable actual-range viability test with errors $0.04$
+    and $3/200$; activity is the measurable rank inequality
+    $h\le\operatorname{rank}P_j$. The event is the intersection of the
+    finitely many first tests and implications from activity to the next
+    tests. A fixed initial matrix gives the corresponding measurable
+    section.
+\end{proof}
+
+\begin{theorem}[A prescribed numerical threshold coefficient]
+    \label{thm:stopped_half_sampling_fixed_threshold}
+    \lean{Entropy.canonicalHalfSampleTrimIterate_joint_probability_of_threshold}\leanok
+    Fix $D\ge2$, $a\in\mathbb N$, $\eta\in\mathbb R$ and $K\ge1$.
+    Suppose that, for every $r,N,Q\in\mathbb N$, the inequality
+    $K(r+1)(N+2)^2\le Q$ implies $4D^2\le Q$ and
+    \begin{align}
+        f_D(Q,r)\le\frac{\eta}{(N+2)^a}.
+    \end{align}
+    Then this same $K$ gives all the conclusions of
+    Theorem~\ref{thm:stopped_half_sampling_joint_probability} for every
+    subsequent choice of the physical and exterior spaces, common family,
+    reference, length and initial matrix satisfying that theorem's
+    hypotheses. In particular, a coefficient selected by the numerical
+    threshold theorem may be chosen before the chain-dependent spaces.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:rank_product_half_sample_reference_trim,
+        thm:finite_half_sampling_seed_update,
+        thm:borel_viability_matrix_range,
+        lem:stopped_half_sampling_raw_joint_measurable}
+    The numerical implication supplies the actual fixed-input failure
+    estimate whenever a round is active. The guarded section proof uses
+    this coefficient unchanged at every round. No estimate for a
+    one-step success event or an adaptive section is an additional
+    hypothesis.
+\end{proof}
+
+\begin{theorem}[Joint probability of the actual stopped run]
+    \label{thm:stopped_half_sampling_joint_probability}
+    \lean{Entropy.exists_canonicalHalfSampleTrimIterate_joint_probability}\leanok
+    Fix $D\ge2$, $a\in\mathbb N$ and $\eta>0$. There is an integer
+    $K\ge1$, chosen before $N,r,d,R$, with the following property.
+    Retain the common family, targets, reference and trimming hypotheses
+    of Theorem~\ref{thm:rank_product_half_sample_reference_trim}.
+    Suppose $\dim T_0\le r$ and $d\le2^R$. Let $P_0$ be any matrix whose
+    native range is $0.04$-viable for $T_0$. Put
+    $h=K(r+1)(N+2)^2$ and take the actual stopped run with threshold $h$
+    and rectangular family $F_i=A_iI$. Then $\mathcal G$ is Borel and
+    \begin{align}
+        \mu_d^{\otimes R}(\mathcal G^c)
+         & \le R\frac{\eta}{(N+2)^a}.
+    \end{align}
+    Every seed and every round satisfy
+    $\operatorname{rank}P_j\le\operatorname{rank}P_0$, and every seed
+    satisfies $\operatorname{rank}P_R<h$. Neither a projection condition
+    on $P_0$ nor a success estimate for the adaptive run is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bootstrap_failure_polynomial_threshold,
+        thm:rank_product_half_sample_reference_trim,
+        thm:finite_half_sampling_seed_update,
+        thm:borel_viability_matrix_range,
+        thm:family_image_prescribed_coordinates,
+        def:half_sampling_raw_good,
+        lem:stopped_half_sampling_raw_joint_measurable}
+    Choose $K$ from the uniform polynomial sampling threshold. At any
+    active input, the sampling estimate at its actual rank bounds true
+    original-target output failure by $\beta=\eta/(N+2)^a$.
+    The rectangular family identity and basis independence of collective
+    trimming identify that output with the literal stopped step.
+
+    For each $i<R$, guard failure of the next $3/200$-viability condition
+    by current $0.04$-viability and activity. This is a Borel event.
+    Replacing only the $i$th seed fixes its input. Its section is empty
+    if either guard is false; otherwise the fixed-input estimate bounds
+    its measure by $\beta$. The finite product section bound and union
+    subadditivity give at most $R\beta$ for their union. Outside this
+    union, induction preserves $0.04$-viability: active outputs have
+    error $3/200<0.04$, while inactive steps retain their input.
+
+    Independently of viability, active steps halve rank and inactive
+    steps retain it. Thus rank never increases. Starting from
+    $\operatorname{rank}P_0\le d\le2^R$ gives stopping by round $R$.
+    No intersection over the possibly uncountable family of improving
+    targets is used, and no running-time estimate is asserted.
+\end{proof}

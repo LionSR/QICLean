@@ -61,6 +61,9 @@ import QICLean.Algebra.MatrixKernelRigidity
 import QICLean.Algebra.MatrixKroneckerEmbed
 import QICLean.Algebra.MatrixMulRange
 import QICLean.Algebra.MatrixOperatorSpace
+import QICLean.Algebra.MatrixPolynomialDegree
+import QICLean.Algebra.MatrixPolynomialInterpolation
+import QICLean.Algebra.MatrixPolynomialParameter
 import QICLean.Algebra.MatrixPosDefTransport
 import QICLean.Algebra.MatrixProductIntertwine
 import QICLean.Algebra.MatrixRankBaseChange
@@ -136,6 +139,7 @@ import QICLean.Algebra.StarSubalgebraSemisimple
 import QICLean.Algebra.StarSubalgebraSimpleModule
 import QICLean.Algebra.StarSubalgebraSpatial
 import QICLean.Algebra.StarSubalgebraUnitaryIntertwiner
+import QICLean.Algebra.StoppedHalving
 import QICLean.Algebra.SwapTrace
 import QICLean.Algebra.TaggedInterleavings
 import QICLean.Algebra.TensorPowerPartialTrace

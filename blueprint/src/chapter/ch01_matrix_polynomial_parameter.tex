@@ -1,0 +1,36 @@
+\section{A polynomial of a polynomial matrix parameter}
+
+\begin{lemma}[Common nodes for polynomial matrix substitution]
+    \label{lem:matrix_polynomial_parameter}
+    \lean{Matrix.aeval_polynomial_parameter_eq_sum_lagrange}\leanok
+    Let $K$ be a field of characteristic zero, let $m,k$ be nonnegative
+    integers, let $n$ be a finite index set, and let $C,B_0,\ldots,B_m\in\mathrm{Mat}_n(K)$. Put
+    \[
+        B(z)=C+\sum_{a=0}^m z^a B_a.
+    \]
+    For a scalar polynomial $P\in K[X]$ of degree at most $k$, put
+    $d=mk$ and
+    \[
+        \lambda_r(z)=\prod_{\substack{0\le s\le d\\s\ne r}}
+        \frac{z-s}{r-s}\qquad(0\le r\le d).
+    \]
+    Then
+    \[
+        P(B(z))=\sum_{r=0}^d\lambda_r(z)P(B(r))
+        \qquad(z\in K).
+    \]
+    The same nodes and weights work for every choice of the coefficient
+    matrices and every polynomial through degree $k$. No commutation of
+    the coefficient matrices is required. This is supporting algebra for
+    the common families in \cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:matrix_polynomial_degree_aeval,lem:matrix_polynomial_lagrange}
+    Form the matrix $\mathcal B(X)$ with polynomial entries
+    $C_{ij}+\sum_a X^a(B_a)_{ij}$. Each entry has degree at most $m$,
+    so every entry of $P(\mathcal B(X))$ has degree at most $mk$.
+    Apply the fixed-node matrix interpolation identity to this latter
+    matrix. Entrywise evaluation is an algebra homomorphism on matrices;
+    it therefore sends $P(\mathcal B(X))$ to $P(B(z))$ at each parameter
+    value $z$. This yields the stated identity.
+\end{proof}

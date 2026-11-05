@@ -1,0 +1,28 @@
+\section{Hermitian approximations in operator norm}
+\label{sec:hermitian_part_norm}
+
+The Hermitian part of a matrix $B$ is $(B+B^*)/2$. Its use preserves an
+operator-norm approximation to a Hermitian target. This elementary estimate
+supports the approximating Hamiltonian in the efficient-filter construction
+of Arad, Landau, Vazirani and Vidick~\cite[lines 1262--1268 and 1412--1420]{Arad2016RigorousRG}.
+
+\begin{lemma}[Contractivity of the Hermitian part]
+    \label{lem:hermitian_part_norm}
+    \lean{Matrix.norm_selfAdjointPart_le,
+        Matrix.IsHermitian.norm_sub_selfAdjointPart_le}
+    \leanok
+    For every finite square complex matrix $B$,
+    \begin{align}
+        \|(B+B^*)/2\|\leq\|B\|.
+    \end{align}
+    If $H=H^*$, then
+    \begin{align}
+        \|H-(B+B^*)/2\|\leq\|H-B\|.
+    \end{align}
+    These norms are the Hilbert-space operator norms.
+\end{lemma}
+\begin{proof}\leanok
+    The triangle inequality and $\|B^*\|=\|B\|$ prove the first estimate.
+    The Hermitian-part map is real-linear and fixes $H$. Apply its
+    contractivity to $H-B$ to obtain the second estimate.
+\end{proof}

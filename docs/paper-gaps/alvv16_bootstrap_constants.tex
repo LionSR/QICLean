@@ -102,4 +102,101 @@ results assume an improving operator family for the specified tensor
 factor. Their quantitative corrections above are resolved. A physical
 interval theorem must retain its stated region restriction; it does not
 formalize the printed arbitrary-subset proposition.
+
+\section{One common event for resampling and reference trimming}
+
+The informal merge at source lines 711--755 describes repeated
+amplification followed by trimming. The formal development treats a
+repeated-resampling variant of it: the sampling step of amplification is
+retained literally at each round. This is a different operation from
+Figure \texttt{fig:merge-prime}, lines 1664--1673, which samples once
+before its loop. Figure \texttt{fig:merge-prime} and Theorem
+\texttt{t:alg1} are not formalized, and nothing below identifies the two
+procedures.
+
+Let $T_0$ be the original target and $(T_x)$ a nonempty family of improving
+targets. Suppose $T_0$ is $\varepsilon$-close to every $T_x$, every $T_x$ is
+$1/200$-close to $T_0$, and the same family of at most $D^2$ operators
+improves viability for every $T_x$. Assume $D\ge2$,
+$D^{12}\Delta\le10^{-5}$, and $\varepsilon\le(0.03/D^2)^2/100$.
+For a $0.04$-viable current space of dimension $q\ge4D^2$, put
+$s=\lfloor q/(2D^2)\rfloor$ and $\alpha=0.96s/(8q)$.
+One Borel sampling-success event for the fixed target $T_0$ has complement
+measure at most $(1+2/\sqrt\alpha)^{2\dim T_0}q e^{-s/16}$.
+On this event, weighted composition with parameter $\alpha/4$ makes the
+same sample $(1-\alpha/2)$-viable for every $T_x$. Its single common-family
+image therefore has error $4\Delta/\alpha^2$ for every $T_x$, and error
+at most $27/2500=0.0108$ for $T_0$.\footnote{Formal theorem:
+\leanid{Submodule.exists_measurable_half_sample_uniform_image_event}.}
+
+A reference to $T_0$, rather than to the improving targets, suffices for
+the subsequent trim. If its two directed errors are at most $10^{-5}$,
+its vectors have Schmidt rank at most $b$ at the $m$ cuts, and
+$\xi\sqrt{mb}\le10^{-3}$, weighted reference trimming with parameter
+$1/20$ bounds the final error by
+\[
+\begin{aligned}
+ &(21/20)^2(27/2500)+(21/20)21\cdot10^{-5}\\
+ &\qquad{}+21\cdot10^{-5}+(21/10)10^{-3}
+   =0.0144375<0.015.
+\end{aligned}
+\]
+Both the common-family image and its literal collective trim have
+dimension at most $q/2$ for every unitary, including unsuccessful samples.
+The event is chosen for a fixed target; no assertion that an uncountable
+intersection over centers is Borel is required.\footnote{Formal theorem:
+\leanid{Entropy.exists_measurable_half_sample_reference_trim_event}.}
+
+\paragraph{The terminal deterministic step.}
+A stopped resampling process may take no active round. Its retained
+$0.04$-viability therefore needs one final amplification and trim before
+claiming $0.015$-viability. If the original target and every improving target
+are mutually $1/200$-close, the current space is $9/100$-viable for every
+improving target. Apply the same full family once, without another sample.
+Its same image has exact error $\Delta/(91/100)^2$ for every improving
+target. Under $D\ge2$ and $D^{12}\Delta\le10^{-5}$ this is at most $10^{-4}$;
+no nonnegative-error premise is needed. Transfer back and the preceding
+original-reference trimming budgets give final error at most
+$3/200$.\footnote{Formal theorem:
+\leanid{Entropy.isCloseTo_terminal_family_reference_trim}.}
+Unconditionally, both the full image and its literal trim have dimension
+at most $|I|\dim W\le D^2\dim W$.\footnote{Formal theorem:
+\leanid{Entropy.finrank_family_image_trim_le}.}
+
+\paragraph{The stopped resampling process.}
+Under the hypotheses of the one-step event above, together with the
+reference hypotheses, the stopped process takes a fresh sample whenever the
+current rank is at least a threshold and otherwise keeps the current space.
+There is one coefficient $K\ge1$, depending only on $D$, the exponent $a$
+and $\eta>0$, and chosen before the length $N$, the target dimension bound
+$r\ge\dim T_0$ and the ambient dimension $d$, with the following property.
+For the threshold $K(r+1)(N+2)^2$ and any number $R$ of rounds with
+$d\le2^R$, the event that every state is $0.04$-viable for $T_0$ and every
+active next state is $3/200$-viable for $T_0$ is Borel for the product of
+the Haar laws and has failure probability at most $R\eta/(N+2)^a$. On every
+history the ranks do not increase and the final rank is below the
+threshold. The initial matrix need not be an orthogonal
+projection.\footnote{Formal theorem:
+\leanid{Entropy.exists_canonicalHalfSampleTrimIterate_joint_probability}.}
+Appending the terminal deterministic step gives a final space that is
+$3/200$-viable for $T_0$ except on an event of probability at most
+$R\eta/(N+2)^a$; on the same event its untrimmed image has error
+$\Delta/(91/100)^2$ for every improving target, and its dimension is at most
+$D^2$ times the final rank.\footnote{Formal theorem:
+\leanid{Entropy.canonicalHalfSamplingParent_joint_probability_of_threshold},
+for any coefficient satisfying the scalar threshold of
+\leanid{Submodule.exists_bootstrapFailure_polynomial_threshold}.}
+The proofs use only fixed-input Haar estimates and the dependence of each
+round on the preceding seeds; no measurable selection of success events is
+assumed.
+
+\paragraph{What remains open.}
+The statements above are proved for the repeated-resampling variant under
+their stated family and reference hypotheses. The following are not
+established by them: the sample-once procedure of Figure
+\texttt{fig:merge-prime} and its analysis in Theorem \texttt{t:alg1}; the
+construction, in the physical interval setting, of a common improving
+family and a reference satisfying the uniform target and reference
+hypotheses; and any running-time bound.
+
 \end{document}

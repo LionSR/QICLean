@@ -1,0 +1,51 @@
+\section{A polynomial bound for the logarithmic truncation order}
+\label{sec:soft_heat_expansion}
+
+The logarithmic truncation order of
+Lemma~\ref{thm:exponential_geometric_tail_order} grows only polynomially
+in the length after it is placed in an exponent. This scalar estimate is
+used in the corrected one-interval operator construction associated
+with~\cite[lines 1262--1268]{Arad2016RigorousRG}.
+
+\begin{theorem}[A polynomial bond bound at fixed filter degree]
+    \label{thm:geometric_order_polynomial_bound}
+    \lean{Real.exists_geometric_order_polynomial_bound}
+    \leanok
+    Fix $0<b<1$, $W,\xi>0$, and $q,s,k\in\mathbb N$ with $q\ge1$.
+    There exist $C,p\in\mathbb N$, with $C\ge1$, such that every
+    $N\in\mathbb N$ satisfies
+    \begin{align}
+        (2s r_N^2 q^{r_N})^{2k} & \le C(N+1)^p,  \\
+        r_N                     & =\max\left\{1,
+        \left\lceil\frac{\log\max\{1,N^2\}
+                       -\log\log(1+\xi/W)}{-\log b}\right\rceil\right\}.
+    \end{align}
+    The coefficient and degree are chosen before $N$; zero length
+    and $s=0$ or $k=0$ are included.
+\end{theorem}
+\begin{proof}\leanok
+    Put $d=-\log b>0$, $L=\log\log(1+\xi/W)$,
+    $a_0=2+|L|/d$ and $a_1=2/d$. With $X=N+1\ge1$, the ceiling
+    estimate gives
+    \begin{align}
+        r_N\le a_0+a_1\log X\le(a_0+a_1)X.
+    \end{align}
+    For a negative argument the natural ceiling is zero; for a
+    nonnegative argument it is at most the argument plus one.
+    Also $\log\max\{1,N^2\}\le2\log X$.
+    Put $p_0=\lceil a_1\log q\rceil$. Since $q\ge1$,
+    \begin{align}
+        q^{r_N}
+         & \le e^{a_0\log q}X^{a_1\log q}
+        \le e^{a_0\log q}X^{p_0},         \\
+        2s r_N^2q^{r_N}
+         & \le KX^{p_0+2},\qquad
+        K=2s(a_0+a_1)^2e^{a_0\log q}.
+    \end{align}
+    Take $C=\max\{1,\lceil K^{2k}\rceil\}$ and $p=(p_0+2)2k$.
+    Raising the last inequality to the natural power $2k$ proves the claim.
+\end{proof}
+
+This numerical consequence applies to a fixed filter degree and fixed
+approximation budgets. It gives no assertion for a filter degree that
+grows with the length and no running-time estimate.

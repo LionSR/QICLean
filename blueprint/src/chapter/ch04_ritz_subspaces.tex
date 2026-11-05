@@ -1,0 +1,221 @@
+\section{Variational spectral extraction}
+
+The final spectral selection of
+\cite[Figure~\texttt{fig:algo1} and the proof of \texttt{t:alg1},
+    lines 1620--1643 and 1811--1817]{Arad2016RigorousRG}
+uses the original Hamiltonian compressed to the candidate space.
+The following finite-dimensional results construct that selection and
+control its entire span. The trial-space energy estimate remains explicit;
+its derivation by physical filtering and collective trimming is separate.
+
+\begin{lemma}[A trial space bounds the ordered low spectrum]
+    \label{lem:ritz_trial_low_spectrum}
+    \lean{LinearMap.IsSymmetric.eigenvalue_le_of_trial_subspace,
+        LinearMap.IsSymmetric.ritzSubspace,
+        LinearMap.IsSymmetric.finrank_ritzSubspace,
+        LinearMap.IsSymmetric.re_inner_apply_le_of_mem_ritzSubspace}
+    \leanok
+    Let $H$ be a symmetric operator on a complex Hilbert space of
+    dimension $d$, with ordered eigenvalues
+    $\lambda_0\ge\cdots\ge\lambda_{d-1}$ and its actual orthonormal
+    eigenvectors $b_0,\ldots,b_{d-1}$. Let $V$ be a trial subspace
+    satisfying $\langle x,Hx\rangle\le e\|x\|^2$ for every $x\in V$.
+    If $d-i\le\dim V$, then $\lambda_i\le e$.
+    For $0\le r\le d$, the span $R_r$ of the actual last $r$
+    eigenvectors has dimension $r$. When $r=\dim V$, every $x\in R_r$
+    satisfies $\langle x,Hx\rangle\le e\|x\|^2$.
+    The case $r=0$ and repeated eigenvalues are included.
+\end{lemma}
+\begin{proof}\leanok
+    The first $i+1$ eigenvectors span a space whose dimension, added to
+    that of $V$, exceeds $d$. Their intersection therefore contains a
+    nonzero vector $x$. Its spectral expansion gives
+    $\lambda_i\|x\|^2\le\langle x,Hx\rangle\le e\|x\|^2$.
+    Cancel its positive squared norm. The last $r$ eigenvectors are
+    independent, and their eigenvalues are all at most the threshold
+    just obtained. The spectral expansion gives the bound on their whole span.
+\end{proof}
+
+\begin{lemma}[The actual compression and its Ritz space]
+    \label{lem:ritz_actual_compression}
+    \lean{Submodule.orthogonalCompression,
+        Submodule.inner_orthogonalCompression,
+        Submodule.orthogonalCompression_isSymmetric,
+        Submodule.ritzSubspace,
+        Submodule.ritzSubspace_le,
+        Submodule.finrank_ritzSubspace,
+        Submodule.re_inner_apply_le_of_mem_ritzSubspace}
+    \leanok
+    \uses{lem:ritz_trial_low_spectrum}
+    Let $W$ be a subspace of a finite-dimensional complex Hilbert space
+    and $H$ a symmetric operator. Define $H_W=P_WH|_W$ using the actual
+    orthogonal projection. Then $H_W$ is symmetric and
+    $\langle x,H_Wy\rangle=\langle x,Hy\rangle$ for $x,y\in W$.
+    Mapping the actual lowest $r$ eigenvectors of $H_W$ into the original
+    space gives $R_r\subseteq W$ with dimension $r$ whenever $r\le\dim W$.
+    If $V\subseteq W$ has dimension $r$ and
+    $\langle x,Hx\rangle\le e\|x\|^2$ throughout $V$, then this bound
+    holds throughout the same selected space $R_r$.
+    The operator and selected space are constructed from $H,W,r$.
+\end{lemma}
+\begin{proof}\leanok
+    Orthogonality of $H y-P_WH y$ to $W$ gives the mixed-form identity,
+    and symmetry follows from that of $H$. Apply the preceding lemma
+    to this actual compression. The inclusion of $W$ into the original
+    Hilbert space preserves dimension, norm and energy quadratic form.
+\end{proof}
+
+\begin{lemma}[Ground-space accuracy of the actual Ritz extraction]
+    \label{lem:ritz_ground_space_accuracy}
+    \lean{Matrix.IsHermitian.ritzSubspace_isCloseTo_ground_of_trial_energy}
+    \leanok
+    \uses{lem:ritz_actual_compression,lem:subspace_close_equal_dimension_symmetry}
+    Let $H$ be a Hermitian matrix with ground energy $\mu$, ground
+    eigenspace $G$ of dimension $r$, and spectrum in
+    $\{\mu\}\cup[\mu+\gamma,\infty)$, where $\gamma>0$.
+    Let $W$ be a candidate space and let $R_r$ be the actual space of
+    its $r$ lowest compressed eigenvectors, chosen before the trial
+    space below. Suppose $V\subseteq W$ has dimension $r$ and
+    \begin{align}
+        \langle x,Hx\rangle\le(\mu+\varepsilon)\|x\|^2
+        \qquad(x\in V).
+    \end{align}
+    Then $R_r\subseteq W$, $\dim R_r=r$, and $R_r,G$ are mutually
+    $\varepsilon/\gamma$-close. This controls their entire spans.
+    The ground vector is not an input to the selection.
+\end{lemma}
+\begin{proof}\leanok
+    The actual compressed selection has the displayed uniform energy bound.
+    The original spectral gap gives
+    \begin{align}
+        \gamma\|P_{G^\perp}x\|^2
+        \le\langle x,Hx\rangle-\mu\|x\|^2
+        \le\varepsilon\|x\|^2 \qquad(x\in R_r).
+    \end{align}
+    Pythagoras gives closeness to $G$ with squared loss
+    $\varepsilon/\gamma$. The two spaces have dimension $r$, so the
+    equal-dimension symmetry lemma gives exactly the same error in the
+    reverse direction. No uniqueness of the ground state is used.
+\end{proof}
+
+
+\begin{lemma}[A local energy bound from a tensor vector]
+    \label{lem:tensor_local_energy_witness}
+    \lean{Submodule.exists_unit_re_inner_le_of_tensor_energy}
+    \leanok
+    Let $E$ be a complex inner product space, $F$ a finite-dimensional
+    complex inner product space, $S\subseteq E$ a subspace, and $A$ a
+    continuous linear operator on $E$. Suppose $0\ne w\in S\otimes F$
+    and $c\in\mathbb R$ satisfy
+    \[
+        \operatorname{Re}\langle(A\otimes I_F)w,w\rangle
+        \le c\|w\|^2.
+    \]
+    There is a unit vector $u\in S$ such that
+    $\operatorname{Re}\langle Au,u\rangle\le c$.
+    Symmetry of $A$ is not required.
+\end{lemma}
+\begin{proof}\leanok
+    Expand $w=\sum_jx_j\otimes e_j$ in an orthonormal basis of $F$.
+    Each $x_j$ lies in $S$, and
+    \[
+        \|w\|^2=\sum_j\|x_j\|^2,\qquad
+        \operatorname{Re}\langle(A\otimes I_F)w,w\rangle
+        =\sum_j\operatorname{Re}\langle Ax_j,x_j\rangle.
+    \]
+    Some $x_j$ is nonzero. If each nonzero $x_j$ had Rayleigh quotient
+    strictly greater than $c$, summing would contradict the hypothesis.
+    Normalize a nonzero slice whose Rayleigh quotient is at most $c$.
+\end{proof}
+
+\begin{lemma}[The local compressed minimum]
+    \label{lem:tensor_local_compressed_minimum}
+    \lean{Submodule.exists_compression_min_eigenvalue_le_of_tensor_energy}
+    \leanok
+    \uses{lem:tensor_local_energy_witness,lem:ritz_trial_low_spectrum,
+        lem:ritz_actual_compression}
+    Under the preceding hypotheses, suppose also that $E$ is
+    finite-dimensional and $A$ is symmetric. Then $S$ has positive
+    dimension, and the least eigenvalue of its actual orthogonal
+    compression $P_SA|_S$ is at most $c$.
+    This variational consequence supports the regional energy
+    estimation in \cite[Figure~\texttt{fig:algo1}, line 1631, and
+        lines 1793--1807]{Arad2016RigorousRG}; it does not supply the
+    filtering or an algorithm for constructing the trial space.
+\end{lemma}
+\begin{proof}\leanok
+    Use the unit vector obtained above as a one-dimensional trial space
+    for the actual compression. Its quadratic form agrees with that
+    of $A$ on $S$. The variational bound for the least eigenvalue gives
+    the result. The existence of this unit vector also proves
+    $\dim S\ge1$.
+\end{proof}
+
+
+\begin{lemma}[Positive scalar shifts bound attained eigenvalues]
+    \label{lem:positive_shift_eigenvalue_lower}
+    \lean{Matrix.le_eigenvalue_of_posSemidef_shift}
+    \leanok
+    Let $B$ be a finite complex matrix, let $B-aI\ge0$, and suppose
+    $By=by$ for a unit vector $y$ and real numbers $a,b$. Then $a\le b$.
+\end{lemma}
+\begin{proof}\leanok
+    Evaluate the positive quadratic form of $B-aI$ at $y$. It equals
+    $b-a$, which is therefore nonnegative.
+\end{proof}
+
+\begin{lemma}[Identifying an attained energy with a matrix minimum]
+    \label{lem:attained_energy_native_minimum}
+    \lean{Matrix.minEigenvalue_eq_of_attained_lower_bounds}
+    \leanok
+    \uses{lem:positive_shift_eigenvalue_lower}
+    Let $A,K$ be finite complex matrices, possibly on different spaces,
+    and suppose $K$ is Hermitian on a nonzero space. Let $e$ be real,
+    and suppose $Ax=ex$ for a unit vector $x$. If
+    \[
+        K-eI\ge0,\qquad A-\lambda_{\min}(K)I\ge0,
+    \]
+    then $e=\lambda_{\min}(K)$.
+\end{lemma}
+\begin{proof}\leanok
+    The first order inequality gives $e\le\lambda_{\min}(K)$ by
+    evaluation at an actual minimum eigenvector of $K$. The second,
+    evaluated at $x$, gives the opposite inequality.
+\end{proof}
+
+\begin{lemma}[Scalar lower bounds for the actual compression]
+    \label{lem:compression_eigenvalues_scalar_lower}
+    \lean{Matrix.IsHermitian.orthogonalCompression_eigenvalue_ge}
+    \leanok
+    \uses{lem:ritz_actual_compression}
+    Let $K$ be a finite Hermitian matrix and suppose $K-eI\ge0$ for
+    a real number $e$. For every subspace $S$, each eigenvalue of the
+    actual orthogonal compression $P_SK|_S$ is at least $e$.
+    No invariance of $S$ under $K$ is required.
+\end{lemma}
+\begin{proof}\leanok
+    Take an actual unit eigenvector of the compression. Its energy for
+    $K$ agrees with its compressed energy. Positivity of $K-eI$ then
+    gives the asserted lower bound.
+\end{proof}
+
+
+\begin{theorem}[An interval for the actual compressed minimum]
+    \label{thm:compression_minimum_tensor_interval}
+    \lean{Matrix.IsHermitian.exists_compression_min_between_of_tensor_energy}
+    \leanok
+    \uses{lem:tensor_local_compressed_minimum,lem:compression_eigenvalues_scalar_lower}
+    Let $K$ be a finite Hermitian matrix, let $S$ be a subspace of its
+    Euclidean space, and let $F$ be a finite-dimensional complex Hilbert
+    space. Suppose $K-aI\ge0$ and there is a nonzero $w\in S\otimes F$
+    with $\operatorname{Re}\langle(K\otimes I_F)w,w\rangle\le b\|w\|^2$.
+    Then $\dim S\ge1$, and the least eigenvalue of the actual compression
+    $P_SK|_S$ belongs to $[a,b]$.
+    This variational auxiliary supports the energy estimate in
+    \cite[lines 1793--1807]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    The tensor energy bound gives a unit vector in $S$ of energy at most
+    $b$, so the compressed minimum is at most $b$. Positivity of $K-aI$
+    bounds every eigenvalue of the compression below by $a$.
+\end{proof}

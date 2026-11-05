@@ -17,6 +17,22 @@ by absolute overlaps.
     including a zero-dimensional domain.
 \end{proof}
 
+\begin{lemma}[Norm of a principal submatrix]
+    \label{lem:principal_submatrix_norm}
+    \lean{Matrix.l2_opNorm_principal_submatrix_le}
+    \leanok
+    Let $A:\C^n\to\C^n$ and let $e:I\hookrightarrow\{1,\ldots,n\}$
+    be an injective coordinate map. The corresponding principal matrix
+    satisfies $\|A_{e,e}\|\leq\|A\|$. No positivity or symmetry is required;
+    the index sets may be empty.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:frame_isometry_norm}
+    The coordinate inclusion $V:\C^I\to\C^n$ obeys $V^\dagger V=I$ and
+    $A_{e,e}=V^\dagger AV$. Hence
+    $\|A_{e,e}\|\leq\|V^\dagger\|\|A\|\|V\|\leq\|A\|$.
+\end{proof}
+
 \begin{theorem}[Phase-sensitive frame perturbation]
     \label{thm:frame_gram_cross_bound}
     \lean{Matrix.norm_sub_isometry_sq_le}

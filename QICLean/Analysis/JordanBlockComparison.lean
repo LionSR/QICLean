@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.JordanBlockAsymptotics
-import QICLean.Analysis.MatrixFramePerturbation
+import QICLean.Analysis.PrincipalSubmatrixNorm
 import Mathlib.Analysis.SpecificLimits.Normed
 
 /-!
@@ -47,34 +47,6 @@ theorem jordanBlock_pow_submatrix_castLE {D E : ℕ} (h : D ≤ E) (a : ℂ) (n 
       jordanBlock D a ^ n := by
   ext i j
   simp [jordanBlock_pow_apply]
-
-/-- Restriction to an injectively indexed principal submatrix is contractive. -/
-theorem l2_opNorm_principal_submatrix_le {m n : Type*}
-    [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
-    (A : Matrix n n ℂ) (e : m → n) (he : Function.Injective e) :
-    ‖A.submatrix e e‖ ≤ ‖A‖ := by
-  let V : Matrix n m ℂ := (1 : Matrix n n ℂ).submatrix id e
-  have hV : Vᴴ * V = 1 := by
-    calc
-      Vᴴ * V = V.submatrix e id := by
-        simpa [V, conjTranspose_submatrix] using one_submatrix_mul e (Equiv.refl n) V
-      _ = 1 := by simpa [V, submatrix_submatrix] using submatrix_one (α := ℂ) e he
-  have hn : ‖V‖ ≤ 1 := l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one hV
-  have hcompress : Vᴴ * A * V = A.submatrix e e := by
-    calc
-      Vᴴ * A * V = A.submatrix e id * V := by
-        congr 1
-        simpa [V, conjTranspose_submatrix] using one_submatrix_mul e (Equiv.refl n) A
-      _ = A.submatrix e e := by
-        simpa [V, submatrix_submatrix] using
-          mul_submatrix_one (Equiv.refl n) e (A.submatrix e id)
-  rw [← hcompress]
-  calc
-    ‖Vᴴ * A * V‖ ≤ ‖Vᴴ‖ * ‖A‖ * ‖V‖ :=
-      (l2_opNorm_mul _ _).trans
-        (mul_le_mul_of_nonneg_right (l2_opNorm_mul _ _) (norm_nonneg _))
-    _ ≤ 1 * ‖A‖ * 1 := by rw [l2_opNorm_conjTranspose]; gcongr
-    _ = ‖A‖ := by ring
 
 /-- Increasing the dimension of a Jordan block cannot decrease a power norm. -/
 theorem l2_opNorm_jordanBlock_pow_mono_dim {D E : ℕ} (h : D ≤ E)

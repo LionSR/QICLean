@@ -1,0 +1,45 @@
+\section{The regularized low-density entropy coefficient}
+
+The following estimate combines the initial-space and filter-count terms
+in the low-energy entropy argument of \cite{Arad2016RigorousRG}. The
+bandwidth is fixed, and the physical local dimension is unchanged.
+
+\begin{lemma}[Absorbing the explicit entropy costs]
+    \label{lem:low_density_entropy_cost}
+    \lean{Real.low_density_entropy_cost_le}
+    \leanok
+    Fix $\eta,K_b>0$ and $C_f\ge100$. Put
+    \[
+        B=\max\{12,\eta\},\qquad F=102+\log B,\qquad
+        P=14872(C_f+1)(6+2\log(C_f+1)),
+    \]
+    and $K_\eta=108K_b+PBF^3+54\eta$. For an integer $q\ge2$
+    and $0<v\le\eta$, set
+    \[
+        b=\min\{v,\eta/2\},\quad g=\min\{b/6,1\},\quad
+        m=q\lceil e^{100}\rceil,\quad
+        U=1+\log q+\log(1+v^{-1}).
+    \]
+    Then $K_\eta>0$ and
+    \begin{align*}
+         & \frac{K_b}{b/2}\bigl(1+\log q+\log(1+(b/2)^{-1})\bigr)^3 \\
+         & \quad+\frac P g\bigl(1+\log m+\log(g^{-1})\bigr)^3
+        +54\log2
+        \le\frac{K_\eta}{v}U^3.
+    \end{align*}
+    In particular, $K_\eta$ is independent of the dimension of the
+    low-energy space. This preserves coefficient one on its separate
+    logarithmic dimension term.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:regularized_filter_count_base,thm:capped_initial_filter_width}
+    The capped-width bounds give $(b/2)^{-1}\le4/v$, so
+    \[
+        1+\log q+\log(1+(b/2)^{-1})\le3U.
+    \]
+    The count-base and capped-width logarithmic bounds give
+    $1+\log m+\log(g^{-1})\le FU$ and $g^{-1}\le B/v$.
+    Thus the first two costs are at most $108K_bU^3/v$ and
+    $PBF^3U^3/v$. Finally, $\log2\le1\le\eta U^3/v$.
+    Add these three estimates.
+\end{proof}

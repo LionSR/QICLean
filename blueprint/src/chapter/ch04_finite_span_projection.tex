@@ -1,0 +1,72 @@
+\section{The ambient projection onto a finite span}
+
+\begin{theorem}[The existing support of vector columns]
+    \label{thm:finite_span_support_projection}
+    \lean{Matrix.projectionMatrix_span_range_eq_familySupportProj}
+    \leanok
+    Let $(u_i)$ be a finite family in $\C^m$, and regard each $u_i$ as a
+    one-column matrix $C_i:\C\to\C^m$. The existing joint column support
+    of $(C_i)$ is exactly the orthogonal projection onto
+    $\operatorname{span}\{u_i\}$. No independence or nonzero-vector
+    condition is required.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:projection_matrix_range,lem:family_column_support_range}
+    The range of the joint support is the range of the matrix whose
+    columns are all the $u_i$, hence is their actual span. The joint support
+    is an orthogonal projection, so it is the orthogonal projection onto
+    this span. The coordinate identification gives the stated equality
+    of ambient matrices.
+\end{proof}
+
+\begin{theorem}[Borel dependence of the actual span projection]
+    \label{thm:borel_finite_span_projection}
+    \lean{Matrix.measurable_projectionMatrix_span_range}
+    \leanok
+    For every finite index set, the map taking a family $(u_i)$ to the
+    matrix of the orthogonal projection onto its actual span is Borel
+    measurable. This includes rank changes, empty families and zero vectors.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_span_support_projection,lem:borel_family_column_support}
+    The one-column matrices depend continuously on the vectors. Apply
+    the Borel joint-column-support map and the exact identification of
+    Theorem~\ref{thm:finite_span_support_projection}.
+\end{proof}
+
+
+\begin{theorem}[Borel projection onto an arbitrary matrix range]
+    \label{thm:borel_arbitrary_matrix_range_projection}
+    \lean{Matrix.projectionMatrix_range_eq_familySupportProj_singleton,
+        Matrix.measurable_projectionMatrix_range}
+    \leanok
+    The orthogonal projection onto the range of a rectangular matrix is
+    the joint column support of the singleton family consisting of that
+    matrix. Consequently this projection is Borel measurable in the matrix,
+    including at rank changes and at the zero matrix.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:projection_matrix_range,lem:family_column_support_range,
+        lem:borel_family_column_support}
+    Both orthogonal projections have the same range. The singleton family
+    depends continuously on its matrix, so its existing joint-support
+    projection is Borel measurable.
+\end{proof}
+
+\begin{theorem}[The true viability event of a matrix range]
+    \label{thm:borel_viability_matrix_range}
+    \lean{Submodule.measurableSet_isCloseTo_prodExt_map_range}
+    \leanok
+    Let $P(x)$ be a Borel family of square matrices, let $I$ be a fixed
+    unitary coordinate identification, and fix a target subspace $T$ of
+    the tensor product with a finite exterior space. For every real
+    $\delta$, the event that $I(\operatorname{ran}P(x))$ is
+    $\delta$-viable for $T$ is Borel measurable. No projection, rank or
+    nonzero assumption is imposed on $P(x)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:borel_arbitrary_matrix_range_projection}
+    Transport the actual range projection by $I$ and tensor it with the
+    exterior identity. Viability is the closed positive-semidefinite
+    inequality for the compression to the fixed target projection.
+\end{proof}

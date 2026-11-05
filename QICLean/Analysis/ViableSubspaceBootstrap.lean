@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.ViableSubspaceCoordinates
+import QICLean.Analysis.ViableSubspaceOrder
 import QICLean.Analysis.ViableSubspaceRandomSampling
 import QICLean.Analysis.ViableSubspaceSpectralProjector
 
@@ -37,7 +38,6 @@ is `e^{Õ(γ⁻¹ log³ d)} ≥ 2`. Documented in `docs/paper-gaps/alvv16_bootst
 
 ## Main statements
 
-* `Submodule.IsCloseTo.of_le`: closeness is monotone in the parameter.
 * `Submodule.exists_isViable_finrank_le_half`: one bootstrapping step.
 * `Submodule.exists_isViable_finrank_lt_of_bootstrap`: Proposition `prop:albootstrap-dg`.
 -/
@@ -49,14 +49,6 @@ namespace Submodule
 
 variable {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
   [FiniteDimensional 𝕜 E]
-
-/-- Closeness is monotone in the parameter: a `δ`-close subspace is `δ'`-close for `δ ≤ δ'`. -/
-theorem IsCloseTo.of_le {δ δ' : ℝ} {U T : Submodule 𝕜 E} (h : IsCloseTo δ U T) (hδ : δ ≤ δ') :
-    IsCloseTo δ' U T := by
-  rw [isCloseTo_iff] at h ⊢
-  intro t ht
-  refine le_trans ?_ (h t ht)
-  nlinarith [sq_nonneg ‖t‖]
 
 section Bootstrap
 
@@ -219,7 +211,7 @@ has dimension at least four times the square of the operator-family parameter.
 This is an auxiliary estimate for ALVV, arXiv:1602.08828v2,
 Proposition `prop:albootstrap-dg`, condition `eq:bootstrap-cond-dg`,
 lines 1065–1074 of the checked source. -/
-private theorem bootstrap_sample_floor_lower_bound (D q : ℕ)
+theorem bootstrap_sample_floor_lower_bound (D q : ℕ)
     (hD : 2 ≤ D) (hq : 4 * D ^ 2 ≤ q) :
     (q : ℝ) / (4 * (D : ℝ) ^ 2) ≤ ((q / (2 * D ^ 2) : ℕ) : ℝ) := by
   let s : ℕ := q / (2 * D ^ 2)
@@ -354,14 +346,16 @@ private theorem bootstrap_logarithmic_budget_mul (d r q : ℝ)
       _ ≤ q := hpolynomial
   nlinarith only [hlogq, hlognet]
 
-/-- The explicit sampling dimension `r * D^24` satisfies the random-sampling
-condition in ALVV, arXiv:1602.08828v2, Proposition `prop:albootstrap-dg`,
-condition `eq:bootstrap-cond-dg`, lines 1065–1074.
-This is a sufficient numerical threshold, with no optimality assertion. -/
-private theorem bootstrapFailure_lt_one_of_ge_mul_pow (D r q : ℕ)
-    (hD : 2 ≤ D) (hr : 1 ≤ r) (hq : r * D ^ 24 ≤ q) :
-    bootstrapFailure D q r < 1 := by
+/-- Above a sufficient polynomial dimension threshold, the corrected bootstrap
+failure decays exponentially in the dimension. The estimate includes a
+zero-dimensional target. Auxiliary to ALVV, arXiv:1602.08828v2,
+condition `eq:bootstrap-cond-dg`, lines 1065–1074, with the corrected
+complex-sphere count and the actual natural half-size quotient. -/
+theorem bootstrapFailure_le_exp_neg_of_ge_mul_pow (D r q : ℕ)
+    (hD : 2 ≤ D) (hq : max 1 r * D ^ 24 ≤ q) :
+    bootstrapFailure D q r ≤ Real.exp (-(q : ℝ) / (128 * (D : ℝ) ^ 2)) := by
   have hD0 : 0 < D := by omega
+  have hr : 1 ≤ max 1 r := le_max_left _ _
   have h22 : 4 ≤ D ^ 22 := by
     calc
       4 ≤ (2 : ℕ) ^ 22 := by decide
@@ -370,7 +364,7 @@ private theorem bootstrapFailure_lt_one_of_ge_mul_pow (D r q : ℕ)
     calc
       4 * D ^ 2 ≤ D ^ 22 * D ^ 2 := Nat.mul_le_mul_right _ h22
       _ = D ^ 24 := by ring
-      _ ≤ r * D ^ 24 := by
+      _ ≤ max 1 r * D ^ 24 := by
         simpa only [one_mul] using Nat.mul_le_mul_right (D ^ 24) hr
       _ ≤ q := hq
   have hqn : 0 < q :=
@@ -387,17 +381,33 @@ private theorem bootstrapFailure_lt_one_of_ge_mul_pow (D r q : ℕ)
       (bootstrap_sample_floor_lower_bound D q hD hq4)
     change (q : ℝ) ≤ s * (4 * (D : ℝ) ^ 2) at h
     nlinarith only [h]
-  have hqcast : (r : ℝ) * (D : ℝ) ^ 24 ≤ (q : ℝ) := by
-    have h : ((r * D ^ 24 : ℕ) : ℝ) ≤ (q : ℝ) := Nat.cast_le.mpr hq
+  have hqcast : ((max 1 r : ℕ) : ℝ) * (D : ℝ) ^ 24 ≤ (q : ℝ) := by
+    have h : ((max 1 r * D ^ 24 : ℕ) : ℝ) ≤ (q : ℝ) := Nat.cast_le.mpr hq
     norm_num only [Nat.cast_mul, Nat.cast_pow] at h
     exact h
-  have hbudget := bootstrap_logarithmic_budget_mul (D : ℝ) (r : ℝ) (q : ℝ)
+  have hbudget := bootstrap_logarithmic_budget_mul (D : ℝ) ((max 1 r : ℕ) : ℝ) (q : ℝ)
     (Nat.ofNat_le_cast.mpr hD) (Nat.one_le_cast.mpr hr) hqcast
+  have hD2R : (2 : ℝ) ≤ D := Nat.ofNat_le_cast.mpr hD
+  have hlogbase : 0 ≤ Real.log (21 * (D : ℝ)) :=
+    Real.log_nonneg (by nlinarith only [hD2R])
+  have hrle : (r : ℝ) ≤ ((max 1 r : ℕ) : ℝ) :=
+    Nat.cast_le.mpr (le_max_right _ _)
+  have hcost : 2 * (r : ℝ) * Real.log (21 * (D : ℝ)) + Real.log (q : ℝ) ≤
+      2 * ((max 1 r : ℕ) : ℝ) * Real.log (21 * (D : ℝ)) + Real.log (q : ℝ) := by
+    nlinarith only [mul_le_mul_of_nonneg_right hrle hlogbase]
+  have hbudget' : (2 * (r : ℝ) * Real.log (21 * (D : ℝ)) + Real.log (q : ℝ)) *
+      (256 * (D : ℝ) ^ 2) ≤ 2 * q :=
+    (mul_le_mul_of_nonneg_right hcost hden.le).trans hbudget
   have hnegative : ((2 * r : ℕ) : ℝ) * Real.log (21 * (D : ℝ)) +
-      Real.log (q : ℝ) - s / 16 < 0 := by
+      Real.log (q : ℝ) - s / 16 ≤ -(q : ℝ) / (128 * (D : ℝ) ^ 2) := by
     norm_num only [Nat.cast_mul, Nat.cast_ofNat]
-    apply (mul_lt_mul_iff_of_pos_right hden).mp
-    nlinarith only [hbudget, hsample, hqR]
+    apply (mul_le_mul_iff_of_pos_right hden).mp
+    have hcancel : (-(q : ℝ) / (128 * (D : ℝ) ^ 2)) * (256 * (D : ℝ) ^ 2) =
+        -2 * q := by
+      field_simp [hDR.ne']
+      ring
+    rw [hcancel]
+    nlinarith only [hbudget', hsample]
   have hnet : net ≤ 21 * (D : ℝ) := bootstrap_net_base_le D q hD hq4
   have hnet0 : 0 ≤ net :=
     add_nonneg zero_le_one (div_nonneg (by norm_num) (Real.sqrt_nonneg _))
@@ -407,7 +417,7 @@ private theorem bootstrapFailure_lt_one_of_ge_mul_pow (D r q : ℕ)
         Real.log (q : ℝ) - s / 16) := by
     rw [sub_eq_add_neg, Real.exp_add, Real.exp_add, Real.exp_nat_mul,
       Real.exp_log (mul_pos (by norm_num : (0 : ℝ) < 21) hDR), Real.exp_log hqR]
-  change net ^ (2 * r) * (q : ℝ) * Real.exp (-(s / 16)) < 1
+  change net ^ (2 * r) * (q : ℝ) * Real.exp (-(s / 16)) ≤ _
   calc
     net ^ (2 * r) * (q : ℝ) * Real.exp (-(s / 16)) ≤
         (21 * (D : ℝ)) ^ (2 * r) * (q : ℝ) * Real.exp (-(s / 16)) :=
@@ -415,18 +425,30 @@ private theorem bootstrapFailure_lt_one_of_ge_mul_pow (D r q : ℕ)
         (Real.exp_pos _).le
     _ = Real.exp (((2 * r : ℕ) : ℝ) * Real.log (21 * (D : ℝ)) +
         Real.log (q : ℝ) - s / 16) := hexp
-    _ < 1 := Real.exp_lt_one_iff.mpr hnegative
+    _ ≤ Real.exp (-(q : ℝ) / (128 * (D : ℝ) ^ 2)) := Real.exp_le_exp.mpr hnegative
+
+/-- The explicit sampling dimension `r * D^24` satisfies the random-sampling
+condition in ALVV, arXiv:1602.08828v2, Proposition `prop:albootstrap-dg`,
+condition `eq:bootstrap-cond-dg`, lines 1065–1074.
+This is a sufficient numerical threshold, with no optimality assertion. -/
+private theorem bootstrapFailure_lt_one_of_ge_mul_pow (D r q : ℕ)
+    (hD : 2 ≤ D) (hr : 1 ≤ r) (hq : r * D ^ 24 ≤ q) :
+    bootstrapFailure D q r < 1 := by
+  have hD0 : 0 < D := by omega
+  have hq0 : 0 < q := (Nat.mul_pos (by omega : 0 < r) (pow_pos hD0 _)).trans_le hq
+  have hbound := bootstrapFailure_le_exp_neg_of_ge_mul_pow D r q hD
+    (by simpa only [max_eq_right hr] using hq)
+  refine hbound.trans_lt (Real.exp_lt_one_iff.mpr ?_)
+  have hqR : 0 < (q : ℝ) := Nat.cast_pos.mpr hq0
+  have hDR : 0 < (D : ℝ) := Nat.cast_pos.mpr hD0
+  exact div_neg_of_neg_of_pos (neg_lt_zero.mpr hqR) (by positivity)
 
 /-- A common improving family gives a quantitative viable subspace without
 assuming a random-sampling inequality. The threshold is linear in the target
 dimension and polynomial in the family parameter. Auxiliary to ALVV,
 arXiv:1602.08828v2, Proposition `prop:albootstrap-dg`, lines 1062–1075.
 The improving family and the two nearby target spaces are explicit inputs;
-the physical construction discharges these inputs separately.
-
-**Local fix (bootstrapping constants):** The canonical sampling and error
-constants are documented in the companion note
-https://sirui-lu.com/QICLean/paper-gaps/alvv16_bootstrap_constants.pdf. -/
+the physical construction discharges these inputs separately. -/
 theorem exists_isViable_finrank_lt_rank_mul_pow
     {M F : Type*}
     [NormedAddCommGroup M] [InnerProductSpace ℂ M] [FiniteDimensional ℂ M]
@@ -464,7 +486,7 @@ namespace Submodule
 closeness transfer. Auxiliary scalar estimate for ALVV,
 arXiv:1602.08828v2, Lemma `l:close`, lines 484–489, and the argument for
 Theorem `thm:al-dg`, lines 1079–1093. -/
-private theorem improving_error_le_inverse_scale (m D : ℕ) (Delta : ℝ)
+theorem improving_error_le_inverse_scale (m D : ℕ) (Delta : ℝ)
     (hm : 1 ≤ m) (hmD : m ≤ D)
     (hbudget : (D : ℝ) ^ 12 * Delta ≤ 0.00001) :
     Delta / (1 - (0.04 : ℝ)) ^ 2 ≤ 1 / (8 * (m : ℝ)) := by

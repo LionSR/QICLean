@@ -110,6 +110,58 @@ in~\cite[Proposition 5.7, lines 1311--1333]{Arad2016RigorousRG}.
     this argument; only their tensor positions are exchanged.
 \end{proof}
 
+\begin{lemma}[Recovering a whole matrix from a tensor sum]
+    \label{lem:middle_first_tensor_sum_iff}
+    \lean{Matrix.toEuclideanCLM_middleFirst_conjugation_eq_sum_iff}
+    \leanok
+    With the finite sets, bijection and canonical unitary $T$ of the
+    preceding theorem, the identities
+    \begin{align}
+        TPT^{-1}=\sum_{i\in I}B_i\otimes A_i,
+        \qquad
+        P_{zz'}=\sum_{i\in I}A_i(e(z)_X,e(z')_X)B_i(e(z)_Y,e(z')_Y)
+    \end{align}
+    are equivalent. Empty coordinate and summation sets are allowed.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:middle_first_conjugated_tensor_sum}
+    One implication is the preceding conjugation identity. For the
+    converse, conjugate by $T^{-1}$ and use the injectivity of the
+    Euclidean matrix action.
+\end{proof}
+
+\begin{lemma}[The same global filter and target]
+    \label{lem:global_filter_from_middle_first_decomposition}
+    \lean{Matrix.global_filter_of_middleFirst_tensor_decomposition}
+    \leanok
+    Let $Z,X,Y,I$ be finite sets, let $e:Z\to X\times Y$ be a
+    bijection, and let $T:\C^Z\to\C^Y\otimes\C^X$ be its canonical
+    middle-first unitary. Supply matrices $W_i$ on $Y$, operators
+    $R_i$ on $\C^X$, a subspace $G\subseteq\C^Z$, and a real number
+    $\Delta$. Suppose
+    \begin{align}
+        K_0=\sum_{i\in I}W_i\otimes R_i
+    \end{align}
+    preserves $TG$ and $(TG)^\perp$, and satisfies
+    \begin{align}
+        \|v\|&\le\|K_0v\| &&(v\in TG),\notag\\
+        \|K_0v\|^2&\le\Delta\|v\|^2 &&(v\in(TG)^\perp).
+    \end{align}
+    Define $K=T^{-1}K_0T$, let $M_i$ be the matrix of $R_i$, and let
+    $P$ be the matrix of $K$. Then
+    \begin{align}
+        P_{zz'}=\sum_{i\in I}M_i(e(z)_X,e(z')_X)W_i(e(z)_Y,e(z')_Y).
+    \end{align}
+    Moreover $K$ preserves $G,G^\perp$ and satisfies the corresponding
+    two inequalities on those subspaces. No second filter is chosen.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:middle_first_tensor_sum_iff}
+    The preceding equivalence gives the matrix identity. Unitary
+    conjugation carries $TG$ back to $G$, carries its orthogonal
+    complement back to $G^\perp$, and preserves all norms.
+\end{proof}
+
 \begin{theorem}[A Hermitian matrix on its orthonormal eigenbasis]
     \label{thm:euclidean_hermitian_eigenvector}
     \lean{Matrix.IsHermitian.toEuclideanCLM_eigenvectorBasis}

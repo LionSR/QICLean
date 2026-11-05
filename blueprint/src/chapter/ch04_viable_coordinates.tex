@@ -116,6 +116,29 @@ right.
     either an original image or the zero subspace.
 \end{proof}
 
+\begin{lemma}[Normalized projections from close subspaces]
+    \label{lem:close_normalized_projection}
+    \lean{Submodule.IsCloseTo.exists_unit_mem_norm_inner_sq_ge}
+    \leanok
+    \uses{thm:subspace_close_iff}
+    Let $S,T$ be subspaces of a finite-dimensional complex Hilbert space.
+    Suppose $S$ is $\delta$-close to $T$, where $\delta<1$.
+    For every unit vector $\psi\in T$, put $p=P_S\psi$.
+    Then $p\ne0$, and $\phi=p/\|p\|$ belongs to $S$, has norm one, and satisfies
+    \begin{align}
+        \langle\phi,\psi\rangle&=\|p\|, &
+        |\langle\phi,\psi\rangle|^2&\ge1-\delta, &
+        \|\phi-\psi\|^2&\le2\delta.
+    \end{align}
+    In particular, the phase of $\phi$ is aligned with $\psi$.
+\end{lemma}
+\begin{proof}\leanok
+    Closeness gives $1-\delta\le\|p\|^2$, so $p\ne0$.
+    Orthogonality gives $\langle p,\psi\rangle=\|p\|^2$.
+    Since $\|p\|\le1$, one has $\|p\|^2\le\|p\|$ and hence
+    $\|\phi-\psi\|^2=2-2\|p\|\le2\delta$.
+\end{proof}
+
 \begin{theorem}[Unit approximants of bounded Schmidt rank]
     \label{thm:viable_unit_schmidt_approximation}
     \lean{Submodule.IsViable.exists_unit_mem_prodExt_schmidtRank_le}
@@ -153,7 +176,7 @@ right.
 
 \begin{proof}
     \leanok
-    \uses{thm:viable_coordinates, thm:subspace_close_iff}
+    \uses{thm:viable_coordinates, lem:close_normalized_projection}
     Let $\mathcal S$ be the subspace of arrays whose columns lie in $S$,
     and put $p=P_{\mathcal S}\psi$. Viability in coordinates gives
     $\|p\|^2\ge1-\delta>0$. The normalized projection
@@ -214,6 +237,89 @@ right.
     Evaluate both sides on $z=e_{(b,a)}$ and extend linearly.
 \end{proof}
 
+\section{Canonical low-energy spaces under scalar shifts}
+
+The following identities identify the original low-energy spaces used in
+the low-density construction of \cite{Arad2016RigorousRG}. All scalar
+normalizations of one Hermitian matrix lead to the same original windows.
+
+\begin{lemma}[Independence of the complete eigenbasis]
+    \label{lem:closed_spectral_basis_independence}
+    \lean{Submodule.spectralSpanLE_eq_of_eigenbases}
+    \leanok
+    Let $H$ be a linear operator on a real or complex inner-product space.
+    Suppose $b$ and $b'$ are complete finite orthonormal eigenbases of $H$,
+    with real eigenvalues $a_i$ and $a'_j$. For every real $c$,
+    \begin{align*}
+      \operatorname{span}\{b_i:a_i\le c\}
+       =\operatorname{span}\{b'_j:a'_j\le c\}.
+    \end{align*}
+    Repeated eigenvalues and the zero-dimensional space are included.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Expand $b_i$ in the second basis. A coefficient at $b'_j$ is zero
+    whenever $a_i\ne a'_j$, by applying $H$ to the expansion. Thus an
+    eigenvector with $a_i\le c$ has zero coefficients at every $a'_j>c$.
+    The reverse inclusion follows by exchanging the bases.
+\end{proof}
+
+\begin{lemma}[A scalar shift of a spectral cutoff]
+    \label{lem:closed_spectral_scalar_shift}
+    \lean{Submodule.spectralSpanLE_sub}
+    \leanok
+    For a complete finite orthonormal basis $b$, real numbers $a_i$, and
+    real $s,c$, one has
+    \begin{align*}
+      \operatorname{span}\{b_i:a_i-s\le c-s\}
+        =\operatorname{span}\{b_i:a_i\le c\}.
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    \leanok
+    The two inequalities select precisely the same indices.
+\end{proof}
+
+\begin{theorem}[The canonical spectral space after a scalar shift]
+    \label{thm:canonical_spectral_scalar_shift}
+    \lean{Matrix.IsHermitian.spectralSpanLE_sub_smul_one}
+    \leanok
+    Let $H$ be a finite Hermitian matrix and $s,c\in\mathbb R$.
+    The canonical spectral space of $H-s\Id$ below $c-s$ equals the
+    canonical spectral space of $H$ below $c$. No relation between
+    independently selected eigenbases is assumed.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:closed_spectral_basis_independence,lem:closed_spectral_scalar_shift}
+    Every eigenvector of $H$ with eigenvalue $a_i$ is an eigenvector of
+    $H-s\Id$ with eigenvalue $a_i-s$. Apply independence of the complete
+    eigenbasis, followed by the scalar-cutoff identity.
+\end{proof}
+
+\begin{corollary}[Original windows from actual centered ground data]
+    \label{cor:canonical_centered_ground_window}
+    \lean{Matrix.IsHermitian.spectralSpanLE_centered_ground}
+    \lean{Matrix.IsHermitian.spectralSpanLE_centered_ground_of_eq}
+    \leanok
+    Let $H$ be a Hermitian matrix on a nonzero finite-dimensional space.
+    Suppose $\|z\|=1$, $(H-s\Id)z=E_0z$ and
+    $H-(s+E_0)\Id\ge0$. Then
+    $\min\operatorname{spec}H=E_0+s$. For every $\eta\in\mathbb R$,
+    the canonical spectral space of $H-s\Id$ below $E_0+\eta$ equals
+    the canonical spectral space of $H$ below
+    $\min\operatorname{spec}H+\eta$. The same conclusion holds for
+    the canonical spectral space of any Hermitian presentation $B=H-s\Id$.
+\end{corollary}
+\begin{proof}
+    \leanok
+    \uses{thm:canonical_spectral_scalar_shift}
+    The normalized eigenvector attains the lower bound $E_0+s$, so that
+    number is the original minimum eigenvalue. Apply the preceding theorem
+    with cutoff $\min\operatorname{spec}H+\eta$.
+\end{proof}
+
+
 \begin{lemma}[A regional cut with the full exterior]
     \label{thm:regional_cut_full_exterior}
     \lean{Entropy.subregionCut, Entropy.mem_subregionCut,
@@ -241,6 +347,7 @@ right.
     $\operatorname{rank}C=\operatorname{rank}(CC^\dagger)$, which gives
     (\ref{eq:regional_cut_full_exterior}).
 \end{proof}
+
 
 \begin{lemma}[Actual regional tensor coordinates]
     \label{thm:regional_tensor_viability}
@@ -272,6 +379,7 @@ right.
     Product vectors span $\mathcal H_J\otimes\mathcal H_{J^c}$, so
     $F_J=F_J'$.
 \end{proof}
+
 
 \begin{lemma}[Tensor factor changes for viable spaces]
     \label{thm:viable_tensor_factor_changes}
@@ -309,6 +417,7 @@ right.
     product formula for pure tensors after the specified reindexing.
 \end{proof}
 
+
 \begin{lemma}[The two regional tensor diagrams]
     \label{thm:regional_tensor_diagrams}
     \lean{Entropy.unionTensorCoordinates, Entropy.exteriorTensorCoordinates,
@@ -342,6 +451,7 @@ right.
     tensors; the whole exterior $R$ is retained.
 \end{proof}
 
+
 \begin{lemma}[Merging the actual regional viable spaces]
     \label{thm:actual_regional_viability_merge}
     \lean{Entropy.regionTensorMerge, Entropy.isViable_regionTensorMerge,
@@ -367,4 +477,32 @@ right.
     back through $\mathcal U$. The dimension bound is preserved by this
     isometry. For equal regions, the canonical configuration equivalence
     is the identity after identifying the regions.
+\end{proof}
+
+\begin{lemma}[A regional operator in its actual tensor coordinates]
+    \label{lem:regional_operator_tensor_coordinates}
+    \lean{Entropy.localLift_middleFirst_conjugation,
+        Entropy.regionTensorCoordinates_conjugation_localLift}
+    \leanok
+    \uses{thm:regional_tensor_viability,thm:middle_first_conjugated_tensor_sum}
+    Let $V$ be a finite set of sites, $q\ge0$ and $J\subseteq V$.
+    For any matrix $K$ on $\mathbb C^{J\to\{1,\ldots,q\}}$, let
+    $\widehat K$ be its identity extension to the full configuration space.
+    The canonical regional tensor isometry $T_J$ satisfies
+    \begin{align}
+       T_J\widehat K T_J^{-1}=K\otimes I_{J^c}.
+    \end{align}
+    The explicit coordinate map obtained by placing the exterior first
+    and then exchanging the tensor factors gives the same identity.
+    Empty regions and zero local dimensions are included; positivity
+    is not required.
+\end{lemma}
+\begin{proof}\leanok
+    In the exterior-first configuration split, the entries of
+    $\widehat K$ are those of $I_{J^c}\otimes K$: they vanish when
+    the two exterior configurations differ, and otherwise equal the
+    corresponding entry of $K$. Apply the conjugated tensor-sum identity
+    to this singleton sum. Exchange of the two tensor factors gives
+    $K\otimes I_{J^c}$, and the two standard coordinate constructions
+    are the same isometry.
 \end{proof}

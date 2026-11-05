@@ -1,0 +1,252 @@
+\section{Numerical estimates for nested targets}
+\label{sec:nested_sampling_parameters}
+
+The low-density argument compares two different low-energy targets.
+The following numerical lemmas concern the sampling expression alone.
+They are numerical estimates used in the low-density bootstrapping
+argument of~\cite[lines 1112--1128]{Arad2016RigorousRG}; the construction of the
+physical targets and the minimal-dimension argument are separate.
+The exponent below is twice the complex target dimension, in accordance
+with~\cite{gap:alvv16_random_sampling_net_count}.
+
+\begin{lemma}[Strict sampling failure bound]
+    \label{lem:nested_sampling_failure}
+    \lean{Real.nested_sampling_failure_lt_one}
+    \leanok
+    Let $D,r,s,Q,\alpha$ be real numbers and $t$ a nonnegative integer.
+    Suppose
+    \[
+        D\ge1,\qquad \log D\ge100,\qquad r\ge1,\qquad t\le r,
+        \qquad Q>0,
+    \]
+    and
+    \[
+        \log Q\le\log r+\frac{13}{2}\log D,\qquad
+        s>\frac{rD}{4},\qquad
+        \alpha\ge\frac{1}{36D^6}.
+    \]
+    Then
+    \[
+        \left(1+\frac{2}{\sqrt\alpha}\right)^{2t}
+        Q e^{-s/16}<1.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Put $x=\log D$. The square-root bound gives
+    $1+2/\sqrt\alpha\le13D^3$. Thus the logarithm of the expression
+    is at most
+    \[
+        2r\log13+6rx+\log r+\frac{13}{2}x-\frac{s}{16}
+        \le13rx-\frac{s}{16}.
+    \]
+    Here $\log13\le12$, $\log r\le r$, $r\ge1$ and $x\ge100$.
+    The exponential series gives
+    $D=e^x\ge x^3/6>832x$.
+    Since $s>rD/4$, the last displayed expression is negative.
+\end{proof}
+
+\begin{lemma}[Sampling error bound]
+    \label{lem:nested_sampling_error}
+    \lean{Real.nested_sampling_error_le}
+    \leanok
+    Let $D,\Delta,\alpha$ be real numbers such that
+    \[
+        D\ge8,\qquad D^{12}\Delta\le10^{-5},\qquad
+        \alpha^2\ge\frac{9}{10000D^{11}}.
+    \]
+    Then $\Delta/\alpha^2\le1/400$.
+\end{lemma}
+\begin{proof}\leanok
+    The denominator is positive, and
+    \[
+        \Delta\le\frac{1}{100000D^{12}}
+        \le\frac{1}{400}\frac{9}{10000D^{11}}
+        \le\frac{\alpha^2}{400}.
+    \]
+    Dividing by $\alpha^2$ gives the assertion.
+\end{proof}
+
+\begin{lemma}[From count growth to a dimension ratio]
+    \label{lem:nested_sampling_count_comparison}
+    \lean{Real.nested_sampling_count_comparison}
+    \leanok
+    Let $D,D',r,Q>0$, and suppose
+    \[
+        \log D'\le\frac{13}{6}\log D,\qquad
+        rD^3<p,\qquad Q\le r(D')^3.
+    \]
+    Then
+    \[
+        \log Q\le\log r+\frac{13}{2}\log D,
+        \qquad Q^2\le p^2D^7.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The logarithmic comparison gives $(D')^6\le D^{13}$.
+    Consequently
+    \[
+        Q^2\le r^2(D')^6\le r^2D^{13}
+        =(rD^3)^2D^7\le p^2D^7.
+    \]
+    Taking the logarithm of the bound on $Q$ proves the other assertion.
+\end{proof}
+
+\begin{lemma}[Sampling fractions from the dimension ratio]
+    \label{lem:nested_sampling_fraction_bounds}
+    \lean{Real.nested_sampling_fraction_bounds}
+    \leanok
+    Let $D\ge1$, $p,Q,s>0$, and suppose
+    \[
+        p\le4D^2s,\qquad Q^2\le p^2D^7.
+    \]
+    For $\alpha=3s/(25Q)$ one has
+    \[
+        \alpha\ge\frac{1}{36D^6},\qquad
+        \alpha^2\ge\frac{9}{10000D^{11}}.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Squaring the first hypothesis and using the second gives
+    $Q^2\le16D^{11}s^2$, which proves the squared assertion.
+    Since $D^7\le D^8$, the second hypothesis also gives
+    $Q\le pD^4\le4D^6s$. Substitution in $\alpha$ yields
+    $\alpha\ge3/(100D^6)\ge1/(36D^6)$.
+\end{proof}
+
+\begin{lemma}[The two numerical sampling conditions]
+    \label{lem:nested_sampling_conditions}
+    \lean{Real.nested_sampling_conditions}
+    \leanok
+    Let $D\ge8$, $D'>0$, $r\ge1$, $Q,s>0$, and let $t$ be a nonnegative
+    integer with $t\le r$. Suppose
+    \[
+        \log D\ge100,\qquad
+        \log D'\le\frac{13}{6}\log D,\qquad
+        rD^3<p\le4D^2s,\qquad Q\le r(D')^3,
+    \]
+    and $D^{12}\Delta\le10^{-5}$.
+    Put $\alpha=3s/(25Q)$. Then
+    \[
+        \left(1+\frac{2}{\sqrt\alpha}\right)^{2t}
+        Qe^{-s/16}<1,\qquad
+        \frac{\Delta}{\alpha^2}\le\frac1{400}.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The count comparison and the fraction bounds give the two lower bounds
+    on $\alpha$ and the logarithmic upper bound on $Q$.
+    Moreover, $rD^3<p\le4D^2s$ implies $s>rD/4$.
+    The failure and error lemmas therefore apply.
+\end{proof}
+
+\subsection{The natural quotient and the actual sample}
+
+The integer sample used in the low-density argument is
+$s=\lfloor p/(2D^2)\rfloor$. This gives strict dimension decrease after
+applying a family of $D^2$ operators; the proof correction is recorded
+in~\cite{gap:alvv16_low_density_sampling}.
+
+\begin{lemma}[The integer sample lower bound]
+    \label{lem:nested_integer_sample_floor}
+    \lean{Submodule.bootstrap_sample_floor_lower_bound}
+    \leanok
+    For natural numbers $D\ge2$ and $p\ge4D^2$,
+    \[
+        \left\lfloor\frac{p}{2D^2}\right\rfloor\ge\frac{p}{4D^2}.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Write $s=\lfloor p/(2D^2)\rfloor\ge1$.
+    Natural division gives $p<2D^2(s+1)\le4D^2s$.
+\end{proof}
+
+\begin{lemma}[The numerical conditions for the natural sample]
+    \label{lem:nested_sampling_natural_conditions}
+    \lean{Real.nested_sampling_natural_conditions}
+    \leanok
+    \uses{lem:nested_sampling_conditions, lem:nested_integer_sample_floor}
+    Let $D,D',r,p,Q,t$ be natural numbers, with $r\ge1$ and $t\le r$.
+    Suppose
+    \[
+        \log D\ge100,\qquad \log D'\le\frac{13}{6}\log D,
+        \qquad rD^3<p\le Q\le r(D')^3,
+    \]
+    and $D^{12}\Delta\le10^{-5}$. Put
+    \[
+        s=\left\lfloor\frac{p}{2D^2}\right\rfloor,
+        \qquad \alpha=\frac{(1-1/25)s}{8Q}.
+    \]
+    Then $D\ge8$, $p\ge4D^2$, $s\ge1$, $\alpha>0$, and
+    \[
+        \left(1+\frac2{\sqrt\alpha}\right)^{2t}Qe^{-s/16}<1,
+        \qquad \Delta/\alpha^2\le1/400.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The inequality $\log D\le D-1$ gives $D\ge8$.
+    Hence $p>rD^3\ge4D^2$, so the natural quotient is positive and has
+    the required real lower bound. The preceding numerical conditions apply.
+\end{proof}
+
+We use the convention that $U$ is $\varepsilon$-close to $T$ when
+$\|P_Ut\|^2\ge(1-\varepsilon)\|t\|^2$ for every $t\in T$.
+
+Let $M,F$ be finite-dimensional complex inner-product spaces and let
+$G_+,G_-,T_{\rm hi},T_{\rm lo}\subseteq M\otimes F$.
+Suppose $G_+$ is $1/200$-close to $T_{\rm hi}$ and $T_{\rm lo}$ is
+$1/200$-close to $G_-$. Fix $\Delta\ge0$ and a family
+$A_1,\ldots,A_{D^2}$ on $M$ such that, for every $\delta<1$ and every
+$\delta$-viable $S$ for $T_{\rm hi}$, the span of the $A_iS$ is
+$\Delta/(1-\delta)^2$-viable for $T_{\rm lo}$.
+Let $W\subseteq M$ be $3/200$-viable for $G_+$, put $Q=\dim W$, and let
+$p\le Q$. For $s=\lfloor p/(2D^2)\rfloor$ and
+$\alpha=(1-1/25)s/(8Q)$, sample the first $s$ columns of a Haar unitary
+in the chosen orthonormal coordinates of $W$.
+
+\begin{lemma}[One sample between the two targets]
+    \label{lem:nested_actual_sample}
+    \lean{Submodule.exists_isViable_nested_randomSubspace_finrank_le_half}
+    \leanok
+    \uses{thm:viable_random_sampling, thm:subspace_close_trans}
+    Suppose $D\ge2$, $p\ge4D^2$,
+    \[
+        \left(1+\frac2{\sqrt\alpha}\right)^{2\dim T_{\rm hi}}Qe^{-s/16}<1,
+        \qquad \Delta/\alpha^2\le1/400.
+    \]
+    There is a unitary whose actual sample $S\subseteq W$ has dimension
+    exactly $s$ and is $(1-\alpha)$-viable for $T_{\rm hi}$.
+    Its actual image $V=\operatorname{span}_i A_iS$ satisfies
+    \[
+        \dim V\le\lfloor p/2\rfloor,
+        \qquad V\text{ is }2(\Delta/\alpha^2+1/200)\text{-viable for }G_-.
+    \]
+    In particular, $V$ is $3/200$-viable for $G_-$.
+\end{lemma}
+\begin{proof}\leanok
+    The input $W$ is $1/25$-viable for $T_{\rm hi}$ by closeness.
+    The strict failure bound supplies a successful unitary.
+    Apply the improving family to that actual sample, transfer its image
+    to $G_-$, and use $D^2s\le\lfloor p/2\rfloor$.
+\end{proof}
+
+\begin{lemma}[Strict decrease from the count comparison]
+    \label{lem:nested_actual_sample_from_counts}
+    \lean{Submodule.exists_isViable_nested_sample_of_count_comparison}
+    \leanok
+    \uses{lem:nested_actual_sample, lem:nested_sampling_natural_conditions}
+    With the same four targets, improving family and upper input $W$,
+    suppose natural numbers $r\ge1$ and $D'$ satisfy
+    \[
+        \dim T_{\rm hi}\le r,\quad
+        \log D\ge100,\quad \log D'\le\frac{13}{6}\log D,
+        \quad rD^3<p\le Q\le r(D')^3,
+    \]
+    and $D^{12}\Delta\le10^{-5}$.
+    One actual sample and its image have all the conclusions of the
+    preceding lemma and, moreover, $\dim V<p$.
+\end{lemma}
+\begin{proof}\leanok
+    The natural sample theorem establishes both numerical premises.
+    The same unitary and image therefore work. Since $p>0$,
+    $\dim V\le\lfloor p/2\rfloor<p$.
+\end{proof}

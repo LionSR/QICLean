@@ -56,7 +56,7 @@ orthonormal basis of a fixed operator. Repeated eigenvalues, different finite
 index types, and zero-dimensional spaces are included. No symmetry, simple
 spectrum, or nonempty-index premise is needed. Auxiliary to ALVV,
 arXiv:1602.08828v2, `lem:hard-trunc`, lines 955–968, and `t:ais`, lines 1010–1024. -/
-private theorem spectralSpanLE_eq_of_eigenbases
+theorem spectralSpanLE_eq_of_eigenbases
     (b : OrthonormalBasis n 𝕜 E) (b' : OrthonormalBasis m 𝕜 E)
     (a : n → ℝ) (a' : m → ℝ) {H : E →ₗ[𝕜] E}
     (hH : ∀ i, H (b i) = (a i : 𝕜) • b i)

@@ -1,0 +1,62 @@
+\section{Attained energies from restricted residuals}
+\label{sec:ground_energy_residual}
+
+A normalized eigenvector of the perturbed operator belongs to its actual
+low-energy span. The restricted residual therefore bounds its energy
+below a lower energy of the original operator, without a gap assumption.
+
+\begin{lemma}[An eigenvector below the cutoff]
+    \label{lem:eigenvector_mem_low_span}
+    \lean{Submodule.mem_spectralSpanLE_of_eigenvector}
+    \leanok
+    \uses{def:spectral_span_le}
+    Let $b_j$ be a finite complete orthonormal eigenbasis of a linear
+    operator $B$, with real eigenvalues $a_j$. If $Bx=\mu x$ and
+    $\mu\leq c$, then $x\in T_B(c)$.
+\end{lemma}
+\begin{proof}\leanok
+    Taking the $j$th coefficient in $Bx=\mu x$ gives
+    $(\mu-a_j)\langle b_j,x\rangle=0$.
+    Every coefficient with $a_j>c$ therefore vanishes.
+\end{proof}
+
+\begin{lemma}[A lower energy and an attained eigenvalue]
+    \label{lem:ground_energy_restricted_residual}
+    \lean{real_eigenvalue_ge_of_unit_residual,
+        ContinuousLinearMap.energy_sub_eigenvalue_le_norm_domRestrict,
+        Matrix.energy_sub_eigenvalue_le_norm_spectral_residual}
+    \leanok
+    \uses{lem:eigenvector_mem_low_span}
+    Let $A,B$ be maps on a complex inner-product space, $\|x\|=1$,
+    $Bx=\mu x$ and
+    $e\|x\|^2\leq\operatorname{Re}\langle x,Ax\rangle$.
+    If $\|Ax-Bx\|\leq\xi$, then $e-\xi\leq\mu$.
+
+    Suppose moreover that $A,B$ are continuous linear maps and $B$
+    has a finite complete orthonormal eigenbasis with real eigenvalues.
+    For every $c\geq\mu$,
+    \begin{align}
+        e-\mu\leq\|(A-B)|_{T_B(c)}\|.
+    \end{align}
+    For finite complex matrices, the same assertion follows from
+    $A-eI\geq0$ in place of the quadratic-form lower bound.
+\end{lemma}
+\begin{proof}\leanok
+    Since $\operatorname{Re}\langle x,Bx\rangle=\mu$,
+    \begin{align}
+        e-\mu
+        \leq\operatorname{Re}\langle x,Ax-Bx\rangle
+        \leq\|x\|\,\|Ax-Bx\|\leq\xi.
+    \end{align}
+    For the restricted assertion,
+    Lemma~\ref{lem:eigenvector_mem_low_span} gives $x\in T_B(c)$.
+    The operator norm of the restriction bounds its value at this
+    unit vector. Finally, positivity of $A-eI$ gives the required
+    quadratic-form inequality in the matrix case.
+\end{proof}
+
+These are auxiliary estimates for the soft-truncation spectral
+comparison in
+\cite[lines 1195--1255 and 1373--1392]{Arad2016RigorousRG}.
+No residual bound or spectral gap is inferred without the corresponding
+hypotheses or physical construction.

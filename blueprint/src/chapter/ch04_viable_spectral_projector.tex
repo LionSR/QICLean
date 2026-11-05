@@ -116,30 +116,30 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
     \end{align}
 \end{proof}
 
+\section{Distinct lower and upper targets}
+
 \begin{theorem}[Tensor error reduction between nested targets]
     \label{thm:viable_nested_tensor_decomposition}
     \lean{Submodule.IsViable.map_of_nested_tensor_decomposition}
     \leanok
     \uses{def:subspace_viable}
-    Let $K=\sum_{i\in I}A_i\otimes R_i$ and $T_-\subseteq T_+$ be
-    subspaces of $\mathcal H_M\otimes\mathcal H_R$. Suppose $K$ preserves
-    $T_-$ and $T_+^\perp$, expands norms on $T_-$ and contracts squared
-    norms by $\Delta\ge0$ on $T_+^\perp$.
-    If $S\subseteq\mathcal H_M$ is $\delta$-viable for $T_+$ with
-    $\delta<1$, then $V=\sum_{i\in I}A_iS$ has dimension at most
-    $|I|\dim S$ and is $\Delta/(1-\delta)^2$-viable for $T_-$.
+    Let $T\subseteq T_+\subseteq\mathcal H_M\otimes\mathcal H_R$,
+    and let $K=\sum_{i\in I}A_i\otimes R_i$, with $I$ finite.
+    Suppose that $K$ satisfies the hypotheses of
+    Theorem~\ref{thm:subspace_close_nested_contract} for $T,T_+$ and
+    $\Delta\ge0$. If $S$ is $\delta$-viable for $T_+$ and $\delta<1$,
+    then $V=\sum_i A_iS$ has dimension at most $|I|\dim S$ and is
+    $\Delta/(1-\delta)^2$-viable for $T$.
     This is the tensor argument in
     \cite[Theorem~4.8, lines 1037--1041]{Arad2016RigorousRG}.
 \end{theorem}
-
-\begin{proof}
-    \leanok
-    \uses{thm:subspace_close_nested_contract,thm:subspace_close_mono,
-        thm:finite_image_span_dimension}
-    The nested-target estimate applies to $S\otimes\mathcal H_R$.
-    For $s\in S$ and $r\in\mathcal H_R$,
-    $K(s\otimes r)=\sum_{i\in I}A_is\otimes R_ir\in V\otimes\mathcal H_R$.
-    Each $A_iS$ has dimension at most $\dim S$.
+\begin{proof}\leanok
+    \uses{thm:subspace_close_nested_contract, thm:subspace_close_mono,
+        thm:finite_image_span_dimension, lem:tensor_family_image_containment}
+    Apply nested-target error reduction to $S\otimes\mathcal H_R$.
+    The identity $K(s\otimes r)=\sum_i A_is\otimes R_ir$ places its
+    image in $V\otimes\mathcal H_R$. Closeness passes to this larger
+    space, and the dimension bound follows by summing the image dimensions.
 \end{proof}
 
 \begin{theorem}[Contraction at distinct spectral cutoffs]
@@ -202,4 +202,80 @@ $T=\operatorname{span}\{b_j:h_j\le\eta_0\}$.
         thm:spectral_projector_distinct_cutoffs}
     Use $c=\eta_1$ in the preceding contraction statement and apply the
     nested-target tensor estimate.
+\end{proof}
+
+\begin{theorem}[A Chebyshev filter from a common polynomial family]
+    \label{thm:chebyshev_nested_polynomial_family}
+    \lean{Matrix.exists_chebyshev_nested_viability_of_polynomial_family}
+    \leanok
+    \uses{def:subspace_viable}
+    Let $B$ be a finite Hermitian matrix with a complete orthonormal
+    eigenbasis, let $a<b\le u$, and suppose that $\|B\|\le u$.
+    Let $\mathcal T$ identify its vector space isometrically with
+    $\mathcal H_M\otimes\mathcal H_R$. Suppose there are fixed matrices
+    $W_1,\ldots,W_N$ such that every complex polynomial $Q$ of degree
+    at most $n$ admits a decomposition
+    $\mathcal TQ(B)\mathcal T^{-1}=\sum_{i=1}^N W_i\otimes M_i(Q)$.
+    There is a real polynomial $p$ of degree exactly $n$, with $p(a)=1$,
+    and such a decomposition of $p(B)$, chosen before every subspace $S$,
+    with the following property. Write $T_c$ for the image under
+    $\mathcal T$ of the spectral space of $B$ below the closed cutoff $c$,
+    and set $V=\sum_i W_iS$. If $S$ is $\delta$-viable for $T_b$ and
+    $\delta<1$, then $\dim V\le N\dim S$ and $V$ is
+    $\Delta/(1-\delta)^2$-viable for $T_a$, where
+    $\Delta=4\exp(-4n\sqrt{(b-a)/(u-a)})$.
+    The polynomial decompositions are explicit assumptions of this
+    auxiliary statement; no spectral gap between $a$ and $b$ is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:chebyshev_spectral_projector, thm:viable_spectral_distinct_cutoffs}
+    Conjugation by $\mathcal T$ preserves self-adjointness and identifies
+    all closed spectral spaces. The Chebyshev filter expands below $a$
+    and contracts squared norms above $b$ by $\Delta$.
+    Apply the assumed decomposition to this one polynomial and then
+    spectral error reduction between the two cutoffs.
+\end{proof}
+
+\begin{lemma}[The image of a finite tensor family]
+    \label{lem:tensor_family_image_containment}
+    \lean{Submodule.tmul_mem_tensorProd, Submodule.tensorProd_le_iff,
+        Submodule.map_tensorProd_top_le_iSup_map}
+    \leanok
+    Let $I$ be finite and let $K=\sum_{i\in I}A_i\otimes B_i$ act on
+    $E\otimes F$. For any subspace $S\subseteq E$, put
+    $V=\sum_{i\in I}A_iS$. Then
+    $K(S\otimes F)\subseteq V\otimes F$.
+    This is the containment argument of
+    \cite[Lemma~l:er, lines 606--622]{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    A tensor product of subspaces lies in a subspace precisely when all
+    its elementary tensors do. For $s\in S$ and $f\in F$,
+    $K(s\otimes f)=\sum_i A_is\otimes B_if$, and every summand belongs
+    to $V\otimes F$.
+\end{proof}
+
+\begin{lemma}[Normalized reduction by a finite tensor family]
+    \label{lem:viable_tensor_decomposition_sharp}
+    \lean{Submodule.IsViable.map_of_nested_tensor_decomposition_sharp,
+        Submodule.IsViable.map_of_tensor_decomposition_sharp}
+    \leanok
+    Let $T\subseteq T_+\subseteq E\otimes F$ and let
+    $K=\sum_{i\in I}A_i\otimes B_i$, with $I$ finite. Suppose
+    $KT\subseteq T$, $K(T_+^\perp)\subseteq T^\perp$,
+    $\|Kt\|\ge\|t\|$ for $t\in T$, and
+    $\|Kz\|^2\le\Delta\|z\|^2$ for $z\in T_+^\perp$, where
+    $\Delta\ge0$. If $S\subseteq E$ is $\delta$-viable for $T_+$ and
+    $0\le\delta<1$, then $V=\sum_iA_iS$ has dimension at most
+    $|I|\dim S$ and is $\Delta\delta/(1-\delta+\Delta\delta)$-viable
+    for $T$. In particular this holds with $T_+=T$.
+    The low-band operator need not be the identity or have a constant
+    eigenvalue on $T$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:subspace_nested_error_reduction_sharp,
+        lem:tensor_family_image_containment,thm:finite_image_span_dimension}
+    Apply normalized error reduction to $S\otimes F$ and use
+    $K(S\otimes F)\subseteq V\otimes F$. Closeness passes to the larger
+    space. The sum of the image dimensions is at most $|I|\dim S$.
 \end{proof}

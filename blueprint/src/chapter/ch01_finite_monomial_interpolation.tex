@@ -231,3 +231,29 @@ product grid. This gives an explicit choice for the scalar interpolation in
         =f_\alpha.
     \end{align*}
 \end{proof}
+
+\begin{lemma}[Fixed-node interpolation of a matrix polynomial]
+    \label{lem:matrix_polynomial_lagrange}
+    \lean{Matrix.map_polynomial_eval_eq_sum_lagrange}\leanok
+    Let $K$ be a field of characteristic zero, let $I,J$ be sets, and
+    let $A=(A_{ij})_{i\in I,j\in J}$ have entries in $K[X]$ of degree at
+    most $d$. Write $A(z)=(A_{ij}(z))_{ij}$. For $0\le r\le d$, set
+    \[
+        \lambda_r(z)=\prod_{\substack{0\le s\le d\\s\ne r}}
+              \frac{z-s}{r-s}.
+    \]
+    Then, for every $z\in K$,
+    \[
+        A(z)=\sum_{r=0}^d\lambda_r(z)A(r).
+    \]
+    The nodes and scalar weights are common to every entry and every
+    matrix satisfying the degree bound. No independence of its coefficient
+    matrices is required. This is an algebraic auxiliary for the common
+    polynomial families in \cite[Proposition~5.7]{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    Characteristic zero makes the $d+1$ integer nodes distinct.
+    Apply Lagrange interpolation to each entry, whose degree is less
+    than the number of nodes, and evaluate at $z$. The resulting scalar
+    identities are precisely the entries of the displayed matrix identity.
+\end{proof}

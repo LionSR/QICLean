@@ -31,6 +31,19 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     $P_{T'}x$ ranges over $T'$.
 \end{proof}
 
+\begin{lemma}[Nonzero vectors remain nonzero under projection]
+    \label{lem:close_target_projection_ne_zero}
+    \lean{Submodule.IsCloseTo.starProjection_ne_zero}
+    \leanok
+    If $U$ is $\delta$-close to $T$, $\delta<1$ and $0\ne t\in T$,
+    then $P_Ut\ne0$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:subspace_close_iff}
+    The squared norm of $P_Ut$ is at least
+    $(1-\delta)\|t\|^2>0$.
+\end{proof}
+
 \begin{theorem}[Preimages under the projection]
     \label{thm:subspace_close_preimage}
     \lean{Submodule.IsCloseTo.exists_mem_starProjection_eq}
@@ -46,10 +59,52 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     \leanok
     The map $r\mapsto P_TP_Sr$ of $T$ into itself satisfies
     $\operatorname{Re}\langle P_TP_Sr,r\rangle=\lVert P_Sr\rVert^2
-    \ge(1-\delta)\lVert r\rVert^2$, so it is injective, hence surjective in
+        \ge(1-\delta)\lVert r\rVert^2$, so it is injective, hence surjective in
     finite dimension. Take $r$ with $P_TP_Sr=t$ and $s=P_Sr$. Then
     $(1-\delta)\lVert r\rVert^2\le\operatorname{Re}\langle t,r\rangle
-    \le\lVert t\rVert\,\lVert r\rVert$, and $\lVert s\rVert\le\lVert r\rVert$.
+        \le\lVert t\rVert\,\lVert r\rVert$, and $\lVert s\rVert\le\lVert r\rVert$.
+\end{proof}
+
+\begin{lemma}[Squared norm of a projection preimage]
+    \label{lem:subspace_close_preimage_squared}
+    \lean{Submodule.IsCloseTo.exists_mem_starProjection_eq_and_norm_sq_le}
+    \leanok
+    \uses{thm:subspace_close_preimage}
+    Under the hypotheses of the preceding theorem, the same vector $s$ may be
+    chosen to satisfy
+    \[
+        \lVert s\rVert^2\le \frac{\lVert t\rVert^2}{1-\delta}.
+    \]
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For the vectors $r,s$ in the preceding proof,
+    $\lVert s\rVert^2=\operatorname{Re}\langle t,r\rangle
+        \le\lVert t\rVert\,\lVert r\rVert
+        \le\lVert t\rVert^2/(1-\delta)$.
+\end{proof}
+
+\begin{lemma}[Weighted robustness]
+    \label{lem:subspace_close_trans_weighted}
+    \lean{Submodule.IsCloseTo.trans_weighted}
+    \leanok
+    \uses{thm:subspace_close_iff}
+    Suppose $T$ is $\delta$-close to $T'$ with $\delta\ge0$, and $T'$ is
+    $\delta'$-close to $T''$. For every $\theta>0$, the space $T$ is
+    $((1+\theta)\delta+(1+\theta^{-1})\delta')$-close to $T''$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    For $a\in T''$, put $b=P_{T'}a$ and $c=P_Tb$. Pythagoras gives
+    $\lVert a-b\rVert^2\le\delta'\lVert a\rVert^2$ and
+    $\lVert b-c\rVert^2\le\delta\lVert a\rVert^2$. Apply
+    \[
+        (x+y)^2\le(1+\theta)x^2+(1+\theta^{-1})y^2
+    \]
+    with $x=\lVert b-c\rVert$ and $y=\lVert a-b\rVert$, then use the
+    distance-minimizing property of $P_Ta$.
 \end{proof}
 
 \begin{theorem}[Robustness]
@@ -87,7 +142,7 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     The vector $P_{U_1}P_{U_2}x=P_{U_2}P_{U_1}x$ lies in both subspaces, and
     $x-P_{U_1}P_{U_2}x$ is orthogonal to every $w\in U_1\cap U_2$, since
     $\langle P_{U_1}P_{U_2}x,w\rangle=\langle x,P_{U_2}P_{U_1}w\rangle
-    =\langle x,w\rangle$.
+        =\langle x,w\rangle$.
 \end{proof}
 
 \begin{theorem}[Closeness of an intersection]
@@ -110,9 +165,9 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     For $t\in T$ write $P_1t=P_1P_2t+P_1(t-P_2t)$. The two summands are
     orthogonal, so
     $\lVert P_1P_2t\rVert^2=\lVert P_1t\rVert^2-\lVert P_1(t-P_2t)\rVert^2
-    \ge(1-\delta_1)\lVert t\rVert^2-\lVert t-P_2t\rVert^2$, and
+        \ge(1-\delta_1)\lVert t\rVert^2-\lVert t-P_2t\rVert^2$, and
     $\lVert t-P_2t\rVert^2=\lVert t\rVert^2-\lVert P_2t\rVert^2
-    \le\delta_2\lVert t\rVert^2$.
+        \le\delta_2\lVert t\rVert^2$.
 \end{proof}
 
 \begin{theorem}[Dimension of an approximated subspace]
@@ -153,4 +208,110 @@ $S$ for $T'$ is $\delta$-closeness of $S\otimes\mathcal H_B$ to $T'$.
     The two approximation bounds and the inclusion give
     $\dim G\le\dim U\le\dim V\le\dim G$. Hence $U=V$, and any intermediate
     subspace is the same space and retains both approximation bounds.
+\end{proof}
+
+
+\begin{lemma}[Symmetry of closeness in equal dimension]
+    \label{lem:subspace_close_equal_dimension_symmetry}
+    \lean{Submodule.IsCloseTo.symm_of_finrank_eq}
+    \leanok
+    \uses{def:subspace_close}
+    Let $U,T$ be subspaces of a finite-dimensional real or complex
+    inner-product space, with $\dim U=\dim T$. If $U$ is $\delta$-close
+    to $T$, then $T$ is $\delta$-close to $U$, with the same squared
+    projection loss. Zero-dimensional spaces and arbitrary real $\delta$
+    are included. This is the equal-dimension comparison associated with
+    \cite[Definition of closeness, lines 469--474]{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    The case $\delta\ge1$ is immediate. Otherwise $P_U:T\to U$ is
+    injective by the projection lower bound and hence bijective.
+    Given $u\in U$, choose $t\in T$ with $P_Ut=u$. Then
+    \begin{align}
+        (1-\delta)\|t\|^2 & \le\|u\|^2,\notag                         \\
+        \|u\|^2=|\langle t,u\rangle|
+                          & =|\langle t,P_Tu\rangle|\le\|t\|\|P_Tu\|.
+    \end{align}
+    Squaring and combining the inequalities gives
+    $(1-\delta)\|u\|^2\le\|P_Tu\|^2$; the zero vector is immediate.
+    Thus the reverse closeness has exactly the same error.
+\end{proof}
+
+\begin{lemma}[The projected trial space]
+    \label{lem:projected_trial_space_energy}
+    \lean{Submodule.IsCloseTo.map_starProjection_energy_le}
+    \leanok
+    \uses{thm:subspace_close_iff}
+    Let $U,G$ be subspaces of a finite-dimensional real or complex inner-product
+    space, and suppose $U$ is $\delta$-close to $G$, with $0\le\delta<1$.
+    Let $H$ be symmetric, with $Hg=0$ for every $g\in G$ and $\lVert H\rVert\le A$.
+    The actual projected subspace $R=P_U G$ satisfies
+    \[
+        R\subseteq U,\qquad \dim R=\dim G,\qquad
+        \operatorname{Re}\langle Hx,x\rangle
+        \le\frac{A\delta}{1-\delta}\lVert x\rVert^2\quad(x\in R).
+    \]
+    This supplies a variational trial space for the final compression in
+    \cite[the proof of Theorem~\texttt{t:alg1}, lines 1811--1815]{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    The map $P_U|_G$ is injective, since
+    $\lVert P_Ug\rVert^2\ge(1-\delta)\lVert g\rVert^2$.
+    Thus its image has dimension $\dim G$. For $x=P_Ug$, Pythagoras gives
+    \[
+        \lVert x-g\rVert^2\le\delta\lVert g\rVert^2
+        \le\frac{\delta}{1-\delta}\lVert x\rVert^2.
+    \]
+    Symmetry and $Hg=0$ imply
+    $\langle Hx,x\rangle=\langle H(x-g),x-g\rangle$.
+    Apply the operator-norm bound to this last quadratic form.
+\end{proof}
+
+
+\begin{lemma}[Positive energy after projection]
+    \label{lem:projected_positive_energy}
+    \lean{ContinuousLinearMap.IsPositive.re_inner_add_le_weighted,
+        Submodule.IsCloseTo.map_starProjection_positive_energy_le}
+    \leanok
+    Let $H$ be a positive operator on a finite-dimensional real or complex
+    inner-product space, with $\|H\|\le A$. Let $E_0\ge0$ and suppose
+    $\operatorname{Re}\langle Hg,g\rangle\le E_0\|g\|^2$ on a subspace $G$.
+    If $U$ is $\delta$-close to $G$, where $0\le\delta<1$, then every
+    $x\in P_U G$ and every $t>0$ satisfy
+    \[
+        \operatorname{Re}\langle Hx,x\rangle\le
+        \frac{(1+t^{-1})E_0+(1+t)A\delta}{1-\delta}\,\|x\|^2.
+    \]
+    The operator $H$ need not vanish on $G$. This estimate supports
+    the regional energy-estimation step of~\cite{Arad2016RigorousRG}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:subspace_close_iff}
+    Positivity at $u-tv$ gives the weighted inequality
+    \[
+        \operatorname{Re}\langle H(u+v),u+v\rangle
+        \le(1+t^{-1})\operatorname{Re}\langle Hu,u\rangle
+        +(1+t)\operatorname{Re}\langle Hv,v\rangle.
+    \]
+    Write $x=P_Ug=g+(P_Ug-g)$. Pythagoras and closeness give
+    $\|P_Ug-g\|^2\le\delta\|g\|^2$ and
+    $(1-\delta)\|g\|^2\le\|P_Ug\|^2$.
+    Apply the weighted inequality and then the operator-norm bound to
+    the error term, and divide by the lower bound for the projected norm.
+\end{proof}
+
+\begin{lemma}[A constant regional energy bound]
+    \label{lem:projected_positive_energy_three}
+    \lean{Real.projected_positive_energy_le_three,
+        Submodule.IsCloseTo.map_starProjection_energy_le_three}
+    \leanok
+    Under the preceding assumptions, suppose $E_0=2$ and
+    $\delta\le[100(A+1)]^{-1}$. Then every $x\in P_U G$ satisfies
+    $\operatorname{Re}\langle Hx,x\rangle\le3\|x\|^2$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:projected_positive_energy}
+    Choose $t=8$. The coefficient is
+    $(9/4+9A\delta)/(1-\delta)$, which is at most three by
+    $100(A+1)\delta\le1$. This bound also ensures $\delta<1$.
 \end{proof}

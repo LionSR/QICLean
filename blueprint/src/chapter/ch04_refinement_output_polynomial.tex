@@ -1,0 +1,131 @@
+\section{A polynomial bound for the complete refinement cost}
+\label{sec:refinement_output_polynomial}
+
+The following numerical estimate combines both reference profiles, the
+sample size and the final refinement ceiling. Its coefficient and
+integer exponent precede length, multiplicity and requested accuracy.
+
+\begin{lemma}[A common monomial for the recorded refinement cost]
+    \label{lem:refinement_output_polynomial}
+    \lean{Real.exists_refinement_output_polynomial_bound}
+    \leanok
+    \uses{lem:reference_accuracy_log_profile,lem:reference_profile_polynomial,
+        lem:viable_refinement_costs_le_polynomial,lem:viable_refinement_error_parameters}
+    Fix $\gamma>0$, $0<g\leq1$, $u,K_{
+                m tree},K_{
+                m ref}\geq0$
+    and an integer $D\geq1$. There are $C>0$ and $k\in\mathbb N$,
+    depending only on these fixed data, with the following property.
+    Let $L\geq0$, $r\geq1$ be integers, $\eta>0$ and
+    $\gamma\leq A\leq L+1$. Put
+    \begin{align}
+        c               & =\gamma/A,                                          &
+        \rho            & =\frac{\eta\gamma}{2A+\eta\gamma},                  &
+        \varepsilon     & =c^2\rho/32768,                                       \\
+        b_{
+                m tree} & =16+\log(1/g)+\log\bigl(320000r(L+1)\bigr),           \\
+        b_{
+                m ref}  & =16+\log(1/g)+\log\bigl(32r(L+1)/\varepsilon\bigr),   \\
+        F(b)            & =\bigl(u^3/g+g^{-1/4}b^{3/4}u\bigr)(1+\log b).
+    \end{align}
+    Let integers $B_{
+                m tree},B_{
+                m ref}\geq1$ satisfy
+    $\log B_{
+                m tree}\leq K_{
+                m tree}F(b_{
+                m tree})$ and
+    $\log B_{
+                m ref}\leq K_{
+                m ref}F(b_{
+                m ref})$.
+    If the integer $s$ obeys
+    $s\leq4097r(1+\log r+\log D+\log2)$, define
+    \begin{align}
+        B_* & =\max\{r^2B_{
+                               m tree},r^2B_{
+                                                 m ref}\},                       &
+        N   & =\left\lceil\frac{100D^{12}}{c\rho}\right\rceil, &
+        M   & =D^6s^3.
+    \end{align}
+    Then, with $Z=(L+1)(r+1)(1+\eta^{-1})$,
+    \begin{align}
+        10^6(B_*N)^2(L+1)M^2\leq CZ^k.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Put $J=1+\gamma^{-1}$, $K_c=6J^2$ and
+    $K_\varepsilon=196608J^3$. Since $A,\eta^{-1}\leq Z$ and $Z\geq1$,
+    Lemma~\ref{lem:viable_refinement_costs_le_polynomial} gives
+    $(c\rho)^{-1}\leq K_cZ^3$ and
+    $\varepsilon^{-1}\leq K_\varepsilon Z^4$.
+    Also $r(L+1)\leq Z$, so both accuracy logarithms lie between one
+    and $b_0+\log(Z^5)$, where
+    $b_0=16+\log(1/g)+\log(32K_\varepsilon)$.
+
+    Set $K=\max\{K_{
+                m tree},K_{
+                m ref}\}$,
+    $a_0=u^3/g$, $a_1=g^{-1/4}u$,
+    $p_0=\lceil K(a_0+5a_1)\rceil$ and
+    $C_b=e^{K(a_0+5a_1)b_0}$.
+    Monotonicity of the profiles and
+    Lemma~\ref{lem:reference_bound_le_nat_power}, applied at $X=Z^5$,
+    give $B_{
+                m tree},B_{
+                m ref}\leq C_bZ^{5p_0}$.
+    Thus $B_*\leq C_bZ^{5p_0+2}$.
+
+    For $C_s=4097(1+\log D+\log2)$,
+    the inequality $\log r\leq r-1$ gives $s\leq C_sr^2$.
+    Consequently $M\leq C_MZ^6$, where $C_M=D^6C_s^3$.
+    The ceiling estimate gives $N\leq C_NZ^3$, where
+    $C_N=100D^{12}K_c+1$.
+    Hence the recorded cost is at most
+    $10^6(C_bC_N)^2C_M^2Z^{10p_0+23}$.
+    One may take $k=10p_0+23$ and
+    $C=1+10^6(C_bC_N)^2C_M^2$.
+\end{proof}
+
+This is a numerical consequence of the reference bounds used in
+\cite[lines 1777--1817]{Arad2016RigorousRG}. It does not itself construct
+a physical subspace or establish the computational cost of a procedure.
+
+
+\begin{lemma}[The logarithmic profile of a polynomial accuracy budget]
+    \label{lem:reference_accuracy_log_profile}
+    \lean{Real.reference_accuracy_log_profile_bounds}
+    \leanok
+    Let $0<g\le1$, $K,Z,r,l\ge1$, $rl\le Z$ and
+    $0<\varepsilon\le1$. Suppose $\varepsilon^{-1}\le KZ^4$ and put
+    \begin{align}
+        b   & =16+\log(1/g)+\log(32rl/\varepsilon), &
+        b_0 & =16+\log(1/g)+\log(32K).
+        \label{eq:reference_accuracy_profile}
+    \end{align}
+    Then $1\le b\le b_0+\log(Z^5)$.
+\end{lemma}
+\begin{proof}\leanok
+    The logarithm arguments are at least one. Moreover
+    $32rl/\varepsilon\le32KZ^5$; take logarithms and split the product.
+\end{proof}
+
+\begin{lemma}[A monotone reference profile gives a natural-power bound]
+    \label{lem:reference_profile_polynomial}
+    \lean{Real.reference_profile_polynomial_bound}
+    \leanok
+    Let $0\le K_0\le K$, $a_0,a_1\ge0$, $b,b_0,X\ge1$ and $B>0$.
+    Suppose $b\le b_0+\log X$ and
+    $\log B\le K_0(a_0+a_1b^{3/4})(1+\log b)$. Then
+    \begin{align}
+        B\le e^{K(a_0+5a_1)b_0}
+        X^{\lceil K(a_0+5a_1)\rceil}.
+        \label{eq:reference_profile_polynomial}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:reference_bound_le_nat_power}
+    The powers and logarithms are monotone on the positive half-line.
+    Replace $b$ by $b_0+\log X$ and $K_0$ by $K$, then apply the
+    natural-power reference bound.
+\end{proof}

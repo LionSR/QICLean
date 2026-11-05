@@ -405,7 +405,7 @@ sum and its partially replaced sum. The discrepancy is precisely the sum
 of excesses on the replaced indices. Auxiliary to ALVV,
 arXiv:1602.08828v2, Corollary c:goodagsphardtrunc, lines 979–1005;
 this is an additive identity, not a norm or truncation estimate. -/
-private theorem sum_centered_sub_partially_replaced_eq
+theorem sum_centered_sub_partially_replaced_eq
     {ι M : Type*} [Fintype ι] [DecidableEq ι] [AddCommGroup M]
     (A F C : ι → M) (T : Finset ι) :
     (∑ i, (A i - C i)) - (∑ i, ((if i ∈ T then F i else A i) - C i)) =

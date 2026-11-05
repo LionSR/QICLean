@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.GroundSpaceAffineFilter
 import QICLean.Analysis.PhysicalPowerFilter
 import Mathlib.Algebra.Order.Floor.Semiring
 
@@ -160,12 +161,7 @@ theorem power_filter_exp_spec_of_posSemidef_terms
         ring
   have herrExp : ‖K - P‖ ≤ Real.exp (-(m : ℝ) * Δ / (N - E0)) :=
     herror.trans hrate
-  have hden : 1 - E0 / N = (N - E0) / N := by
-    rw [sub_div, div_self hN.ne']
-  have hbase : (1 - E0 / N)⁻¹ • (1 - N⁻¹ • H) =
-      (N - E0)⁻¹ • (N • (1 : Matrix ι ι ℂ) - H) := by
-    rw [hden, inv_div]
-    simp [smul_sub, smul_smul, div_eq_mul_inv, mul_comm, hN.ne']
+  have hbase := normalized_affine_filter_eq_smul_raw H E0 N hN.ne'
   have hPΩ : toEuclideanLin P Ω = Ω := by
     simp [P, toEuclideanLin_vecMulVec_star_self_apply,
       inner_self_eq_norm_sq_to_K, hΩ]

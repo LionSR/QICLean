@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.GroundSpaceAffineFilter
 import QICLean.Analysis.PowerSpectralFilter
 import QICLean.Analysis.GroundProjection
 
@@ -77,12 +78,7 @@ private theorem physical_power_filter_spectral_data
   let P : Matrix ι ι ℂ := vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))
   have hcanonical : 1 - spectralProjectionGE H (E0 + Δ) = P :=
     hH.complement_spectralProjectionGE_eq_rankOne hΩ hHΩ hgap hΔ
-  have hden : 1 - E0 / N = (N - E0) / N := by
-    field_simp
-  have hbase : (1 - E0 / N)⁻¹ • (1 - N⁻¹ • H) =
-      (N - E0)⁻¹ • (N • (1 : Matrix ι ι ℂ) - H) := by
-    rw [hden, inv_div]
-    simp [smul_sub, smul_smul, div_eq_mul_inv, mul_comm, hN.ne']
+  have hbase := normalized_affine_filter_eq_smul_raw H E0 N hN.ne'
   have hratio : (1 - (E0 + Δ) / N) / (1 - E0 / N) =
       (N - (E0 + Δ)) / (N - E0) := by
     field_simp

@@ -1,0 +1,27 @@
+\section{The ambient projection of the actual trimmed span}
+
+\begin{theorem}[Borel projection onto the actual trimmed subspace]
+    \label{thm:borel_trim_subspace_projection}
+    \lean{Entropy.measurable_projectionMatrix_trimSubspace}
+    \leanok
+    \uses{def:viable_trimming}
+    Fix any sequence of cuts $(D_j)$, real threshold $\xi$, number of
+    steps $k$, and number of input vectors. The map taking the entire
+    input family $(u_i)$ to the ambient orthogonal projection onto the
+    actual trimmed subspace is Borel measurable. No orthonormality,
+    independence, fixed-rank or nonzero-vector hypothesis is imposed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:measurable_collective_trimming,thm:borel_finite_span_projection}
+    The retained vectors are the actual vectors $v_i=Q_k(u)u_i$, where
+    $Q_k(u)$ is the literal successive trimming product. The product is
+    Borel measurable, and matrix action is continuous, so the retained
+    finite family is measurable. Its actual span is exactly the defined
+    trimmed subspace. Apply the Borel projection onto that span.
+\end{proof}
+
+For orthonormal input bases, the trimmed subspace is independent of the
+basis by Theorem~\ref{thm:trimming_basis_invariance}. The result above
+concerns the actual vector-family construction in
+\cite[collective-trimming definition, lines 648--655]{Arad2016RigorousRG};
+it does not assume that an arbitrary chosen basis varies measurably.

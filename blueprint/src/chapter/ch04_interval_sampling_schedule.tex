@@ -1,0 +1,70 @@
+\section{Uniform thresholds, stopping rounds, and total failure}
+
+The following numerical bounds choose all scalar constants before the chain
+length and target multiplicity. They support finite repeated sampling in
+\cite[lines 749--755 and 1777--1817]{Arad2016RigorousRG}; no sampling-success
+or running-time assertion is made. The failure function retains the complex
+sphere correction in~\cite{gap:alvv16_random_sampling_net_count}.
+
+\begin{theorem}[The total inverse-square failure budget]
+    \label{thm:interval_sampling_failure_budget}
+    \lean{Real.interval_sampling_failure_budget,
+        ENNReal.interval_sampling_failure_budget}\leanok
+    Let $q\ge1$ and $N\ge0$ be integers. Put $R=qN$ and $\eta=1/q$.
+    Then
+    \begin{align}
+        \max\{N-1,0\}\,R\,\frac{\eta}{(N+2)^4}
+        \le\frac{1}{(N+1)^2}.
+        \label{eq:interval_sampling_failure_budget}
+    \end{align}
+    The same inequality holds in the extended nonnegative reals, with
+    the finite real factors embedded there. The cases $N=0,1$ are included.
+\end{theorem}
+\begin{proof}\leanok
+    Cancel $q$ and use $\max\{N-1,0\}\le N$. The left side of
+    (\ref{eq:interval_sampling_failure_budget}) is at most
+    $N^2/(N+2)^4$. Since $N^2(N+1)^2\le(N+2)^4$, this is at most
+    $(N+1)^{-2}$. The extended nonnegative assertion follows by the
+    monotonicity and multiplicativity of the embedding on nonnegative reals.
+\end{proof}
+
+\begin{theorem}[One scalar schedule before length and multiplicity]
+    \label{thm:uniform_interval_sampling_schedule}
+    \lean{Submodule.exists_uniform_interval_sampling_schedule}\leanok
+    Fix integers $q,D\ge2$ and $w\ge0$. There are natural numbers
+    $K,C\ge1$, before every $N,r\ge0$, such that
+    $C=q^w+4D^2K$ and the following hold. Set
+    \begin{align}
+        \theta & =K(r+1)(N+2)^2,         & R & =qN,\notag   \\
+        M      & =\max\{q^w,D^2\theta\}, & Z & =(N+1)(r+1).
+        \label{eq:uniform_interval_sampling_schedule}
+    \end{align}
+    One has $\theta\ge4D^2\ge2$, and for every $Q\ge\theta$ the
+    corrected bootstrap failure satisfies
+    \begin{align}
+        f_D(Q,r)\le\frac{1/q}{(N+2)^4}.
+        \label{eq:uniform_interval_sampling_threshold}
+    \end{align}
+    For every integer $0\le s\le N$, the configuration count obeys
+    $q^s\le2^R$. The common size ceiling satisfies $M\le CZ^2$, and
+    \begin{align}
+        \max\{N-1,0\}\,R\,\frac{1/q}{(N+2)^4}
+        \le\frac{1}{(N+1)^2}
+        \label{eq:uniform_interval_sampling_total_failure}
+    \end{align}
+    also holds in the extended nonnegative reals. No sampling carrier,
+    retained subspace, or successful event is an input to these choices.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:bootstrap_failure_polynomial_threshold,
+        thm:interval_sampling_failure_budget}
+    Apply the uniform bootstrap threshold with exponent $4$ and error
+    coefficient $1/q$. This chooses $K$ before $N,r,Q$ and gives
+    (\ref{eq:uniform_interval_sampling_threshold}).
+    Choose $C$ as in (\ref{eq:uniform_interval_sampling_schedule}).
+    Since $q\le2^q$, one has $q^s\le q^N\le2^{qN}$.
+    The inequalities $N+2\le2(N+1)$ and $r+1\le(r+1)^2$ give
+    $D^2\theta\le4D^2KZ^2$. Also $q^w\le q^wZ^2$, proving
+    $M\le CZ^2$. Apply Theorem~\ref{thm:interval_sampling_failure_budget}
+    to obtain (\ref{eq:uniform_interval_sampling_total_failure}).
+\end{proof}

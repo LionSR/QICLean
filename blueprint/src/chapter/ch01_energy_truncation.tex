@@ -129,6 +129,24 @@ statement, which does not assume that the matrices are Hermitian.
     least $u\mathbf1_{r\ge e_j+u}$. All other centered summands are positive.
 \end{proof}
 
+\begin{lemma}[The discrepancy of a partial replacement]
+    \label{lem:partial_replacement_difference}
+    \lean{sum_centered_sub_partially_replaced_eq}
+    \leanok
+    Let $M$ be an abelian group, let $A_i,F_i,C_i\in M$ be finite
+    families, and let $T$ be a subset of the index set. Then
+    \begin{align}
+        \sum_i(A_i-C_i)
+        -\sum_i\left(
+          \begin{cases}F_i,&i\in T,\\A_i,&i\notin T\end{cases}-C_i\right)
+        =\sum_{i\in T}(A_i-F_i).
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Subtract inside the finite sum. The common shifts cancel, the
+    summand is zero outside $T$, and it equals $A_i-F_i$ on $T$.
+\end{proof}
+
 \begin{theorem}[Restricted discrepancy of a partial replacement]
     \label{thm:partial_clipping_restricted_sum}
     \lean{Matrix.norm_centered_clipping_discrepancy_domRestrict_le_sum}
@@ -146,6 +164,7 @@ statement, which does not assume that the matrices are Hermitian.
 \end{theorem}
 \begin{proof}
     \leanok
+    \uses{lem:partial_replacement_difference}
     Subtracting the sums in~(\ref{eq:partial_replacement_sums}), the scalar
     shifts cancel, and the discrepancy is exactly
     $\sum_{i\in T}(A_i-F_i)$. Restrict this identity to $G$ and apply the

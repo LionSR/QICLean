@@ -13,6 +13,19 @@ span of the $b'_j$ with $a'_j\le c$.
     eigenvalue $a_j\le c$.
 \end{definition}
 
+\begin{theorem}[Increasing the energy cutoff]
+    \label{thm:spectral_span_cutoff_order}
+    \lean{Submodule.spectralSpanLE_mono_cutoff}
+    \leanok
+    If $c\le d$, then $T(c)\subseteq T(d)$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:spectral_span_le}
+    Every eigenvector with eigenvalue at most $c$ has eigenvalue at
+    most $d$. Taking spans preserves inclusion.
+\end{proof}
+
 \begin{theorem}[Markov's inequality]
     \label{thm:spectral_span_markov}
     \lean{Submodule.mul_norm_starProjection_orthogonal_spectralSpanLE_le}
@@ -144,7 +157,8 @@ span of the $b'_j$ with $a'_j\le c$.
 
 \begin{proof}
     \leanok
-    \uses{thm:spectral_span_close_of_perturbation,
+    \uses{lem:ground_energy_restricted_residual,
+        thm:spectral_span_close_of_perturbation,
         thm:subspace_close_nested_equal, thm:subspace_close_dimension,
         thm:spectral_span_quadratic_form}
     The original spectral dichotomy gives $H\ge eI$ and
@@ -244,7 +258,8 @@ span of the $b'_j$ with $a'_j\le c$.
     The value $e$ need not be attained, and $G$ may be zero.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:spectral_span_close_of_perturbation,
+    \uses{lem:ground_energy_restricted_residual,
+        thm:spectral_span_close_of_perturbation,
         thm:subspace_close_nested_equal,thm:subspace_close_dimension,
         thm:spectral_span_quadratic_form}
     The original dichotomy gives the quadratic lower bound $e$.

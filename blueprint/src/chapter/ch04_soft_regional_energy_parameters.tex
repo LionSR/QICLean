@@ -1,0 +1,122 @@
+\section{Explicit regional-energy parameters}
+
+The following numerical choices control the energy of an untrimmed
+candidate obtained from the corrected hard polynomial family. The soft
+regional operator used to measure this energy is chosen separately.
+
+\begin{theorem}[A fixed soft residual]
+    \label{thm:soft_regional_fixed_residual}
+    \lean{Real.soft_regional_fixed_residual_lt}
+    \leanok
+    Set $t=768$, $m=12$ and $T=384$. Then the residual
+    $\rho=32e^{-(T-48)/8}+(t/m)(T/t)^m$ satisfies $0\le\rho<1/16$.
+\end{theorem}
+\begin{proof}\leanok
+    The expression equals $32e^{-42}+1/64$. Since $e^{14}\ge15$,
+    $e^{42}\ge3375$, and hence
+    $\rho\le32/3375+1/64<1/16$.
+\end{proof}
+
+\begin{theorem}[The count dominates the regional norm]
+    \label{thm:soft_regional_fixed_norm}
+    \lean{Real.soft_regional_fixed_norm_bound}
+    \leanok
+    Let $\ell,D\in\N$, with $\ell\ge21$ and $D\ge50\ell^2$.
+    Set $A=768(1+\log12)+4\ell+14$. Then $0\le A$ and $A+1\le D$.
+\end{theorem}
+\begin{proof}\leanok
+    The inequality $\log12\le11$ gives
+    $A+1\le9231+4\ell\le50\ell^2\le D$.
+    Nonnegativity follows from $\log12\ge0$.
+\end{proof}
+
+\begin{theorem}[Precision at the same family count]
+    \label{thm:soft_regional_filter_precision}
+    \lean{Real.soft_regional_filter_precision_bounds}
+    \leanok
+    Let $D,s\in\N$, with $D\ge2$ and $s\ge1$, and set
+    \begin{align}
+        a      & =\frac3{32D^{12}s^5},  &
+        \tau   & =\frac{a^2}{2^{20}},   &
+        \Delta & =\frac1{200000D^{12}}.
+    \end{align}
+    Both $\tau$ and $\Delta/(1-1/4)^2$ are positive, and
+    \begin{align}
+        \tau                     & \le\frac1{1024(D+1)}, &
+        \frac{\Delta}{(1-1/4)^2} & \le\frac1{100(D+1)}.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Since $D^{12}s^5\ge D$, one has $a\le3/(32D)$ and
+    $\tau\le9/(2^{30}D^2)$. Also $D^{12}\ge D$.
+    Multiply the desired inequalities by their positive denominators
+    and use $D\ge2$.
+\end{proof}
+
+If the actual family count is $D=(b\ell^2)^{22\ell}$ with $b\ge50$
+and $\ell\ge21$, then $D\ge50\ell^2$. These estimates therefore verify
+both precision hypotheses of Lemma~\ref{lem:regional_energy_calibration}
+for the same count, using one application of the improving family to
+an input of viability error at most $1/4$.
+
+The soft definition allows $t\ge m\ge2$, as satisfied here;
+see the definition of soft truncation in \cite[lines 1178--1185]
+{Arad2016RigorousRG}. The literal soft-generation procedure instead
+forms its polynomial from the soft Hamiltonian and uses $m=4$;
+see \cite[Figure \texttt{fig:generate} and lines 1377--1404]
+{Arad2016RigorousRG}. The estimates above do not identify the corrected
+hard polynomial family with that procedure or assert its running time.
+
+\begin{theorem}[Calibrated precision for a terminal image]
+    \label{thm:soft_terminal_energy_precision}
+    \lean{Real.soft_terminal_energy_precision_bounds}
+    \leanok
+    Let $D\ge2$, $M\ge34$, $0\le A\le M$, and
+    $0\le\Delta\le(D^{12}M^{10})^{-1}$. Set
+    $\tau=(D^{24}M^{10})^{-1}$. Then
+    \begin{align}
+        \tau M\le\frac1{64},\qquad
+        \frac{3\tau}{200}\le\frac1{1024(A+1)},\qquad
+        \frac{\Delta}{(91/100)^2}\le\frac1{100(A+1)}.
+    \end{align}
+    These scalar bounds support the regional-energy estimate in
+    \cite[line 1807]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    Since $M^{10}\ge M$, the two denominators are at least $64M$
+    and $256M$, respectively. Also $A+1\le2M$. Thus
+    $\tau M\le1/64$ and $\Delta M\le1/256$, which give all three
+    estimates after multiplication by the positive denominators.
+\end{proof}
+
+\begin{theorem}[The reverse tail bounds the regional residual]
+    \label{thm:soft_terminal_regional_residual}
+    \lean{Real.soft_terminal_regional_residual_le}
+    \leanok
+    Let $g,M,\tau,t,T$ be real and $m$ a nonnegative integer.
+    Suppose $0\le g\le M$, $\tau\ge0$, $\tau M\le1$, and
+    \begin{align}
+        3\left(32e^{-(T-156-2g)/8}
+        +\frac tm\left(\frac Tt\right)^m\right)
+        \le\frac{\tau g}{10^6}.
+    \end{align}
+    Then $32e^{-(T-48)/8}+(t/m)(T/t)^m\le1/16$.
+    Division is understood with its usual total-field extension at zero.
+\end{theorem}
+\begin{proof}\leanok
+    The exponential with shift $48$ is at most the one with shift
+    $156+2g$, and $\tau g\le\tau M\le1$. The stated bound follows.
+\end{proof}
+
+\begin{theorem}[Comparing the two soft norm scales]
+    \label{thm:soft_terminal_regional_norm}
+    \lean{Real.soft_terminal_regional_norm_bounds}
+    \leanok
+    Let $t,\ell\ge0$ and $m\ge1$. Put
+    $A=t(1+\log m)+4\ell+14$ and
+    $M=3t(1+\log m)+4\ell+34$. Then
+    $0\le A\le M$, $3t\le M$ and $34\le M$.
+\end{theorem}
+\begin{proof}\leanok
+    Use $\log m\ge0$ and $t\log m\ge0$ in the two defining formulas.
+\end{proof}
