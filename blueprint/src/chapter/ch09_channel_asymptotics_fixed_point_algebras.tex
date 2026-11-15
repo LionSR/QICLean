@@ -84,6 +84,45 @@
     subalgebra axioms.
 \end{proof}
 
+\begin{theorem}[Structure of fixed points for unital Schwarz maps]
+    \label{thm:fixedPointsStarSubalgebra_fullRank}
+    \lean{SchwarzMap.exists_posDef_traceAdjoint_fixedPoint_of_isUnit,
+        SchwarzMap.fixedPointsStarSubalgebraOfIsUnit,
+        SchwarzMap.exists_unitary_conj_blockDiagonal_iff_fixedPoint_of_isUnit}
+    \leanok
+    \uses{thm:fixedPointsStarSubalgebra, thm:maximalSupport_fixedPoint,
+        lem:positive_map_traceAdjointMap,
+        thm:starSubalgebra_unitary_block_diagonal_iff}
+    Let $E:\MN{D}\to\MN{D}$ be a positive unital map satisfying the Schwarz
+    inequality (\ref{eq:channel_fixed_point_schwarz}), and suppose that its
+    trace-pairing adjoint $E^*$ has a full-rank fixed point. Then $E^*$ has a
+    positive definite fixed point, and $\Fix(E)$ is a $*$-subalgebra of
+    $\MN{D}$. Consequently there are a unitary $U$, dimensions $d_k\ge1$ and
+    multiplicities $m_k\ge1$ such that $E(X)=X$ exactly when
+    \begin{align*}
+        U^\dagger XU=\bigoplus_k\Id_{m_k}\otimes B_k
+    \end{align*}
+    for some $B_k\in\MN{d_k}$. This is \cite[Theorem~6.12]{Wolf2012Quantum},
+    with the block form of \cite[Equation~(1.39)]{Wolf2012Quantum} without the
+    zero block.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:fixedPointsStarSubalgebra, thm:maximalSupport_fixedPoint,
+        lem:positive_map_traceAdjointMap,
+        thm:starSubalgebra_unitary_block_diagonal_iff}
+    The trace adjoint $T=E^*$ is positive, and it is trace preserving since
+    its own trace adjoint $E$ is unital. By
+    Theorem~\ref{thm:maximalSupport_fixedPoint}, $T$ has a positive
+    semidefinite fixed point $\rho_0$ whose support projection $Q$ satisfies
+    $QXQ=X$ for every fixed point $X$ of $T$. For the full-rank fixed point
+    $\rho$ this gives $\det Q\det(\rho Q)=\det\rho\ne0$, so the idempotent $Q$ is
+    invertible and $Q=\Id$. Hence $\rho_0>0$, and
+    Theorem~\ref{thm:fixedPointsStarSubalgebra} applies. The block form is
+    Theorem~\ref{thm:starSubalgebra_unitary_block_diagonal_iff} for this
+    $*$-subalgebra.
+\end{proof}
+
 \begin{remark}[Kraus specialization]
     \lean{Kraus.fixedPointsStarSubalgebra}\leanok
     For a unital Kraus map whose adjoint has a positive definite fixed point,

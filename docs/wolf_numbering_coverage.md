@@ -1611,21 +1611,29 @@ In `QICLean.Channel.FixedPoint.StationarySupport`:
   stationary support. This is a channel-specific consequence, not an alternate
   formulation of Wolf Propositions 6.9--6.11.
 
-#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — PARTIAL-SCOPE
+#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — FORMALIZED
+
+In `QICLean.Channel.FixedPoint.FullRankFixedPointAlgebra`:
+
+* `SchwarzMap.exists_posDef_traceAdjoint_fixedPoint_of_isUnit` — the source
+  reduction: if the trace adjoint of a positive unital map has a full-rank
+  (invertible) fixed point, it has a positive definite one, the fixed point of
+  maximal support from Proposition 6.9.
+* `SchwarzMap.fixedPointsStarSubalgebraOfIsUnit` — Theorem 6.12 with its
+  source hypotheses: for a positive unital Schwarz map whose trace adjoint has
+  a full-rank fixed point, the fixed points form a `StarSubalgebra`.
+* `SchwarzMap.exists_unitary_conj_blockDiagonal_iff_fixedPoint_of_isUnit` —
+  the block realization of Equation (1.39), without the zero block.
 
 In `QICLean.Channel.FixedPoint.AbstractAlgebra`:
 
-* `SchwarzMap.fixedPointsStarSubalgebra` — for a positive unital Schwarz map
-  whose trace adjoint has an explicitly chosen positive definite fixed point,
-  the fixed points form a `StarSubalgebra`.
+* `SchwarzMap.fixedPointsStarSubalgebra` — the algebra step after the
+  faithful invariant weight has been chosen: for a positive unital Schwarz map
+  whose trace adjoint has a positive definite fixed point, the fixed points
+  form a `StarSubalgebra`.
 
-This is the algebra step after the faithful invariant weight has been chosen.
-The source theorem begins with an arbitrary full-rank fixed point and invokes
-its proposition on positive fixed points to obtain that weight.  The
-full-rank-to-positive-definite reduction theorem remains open.  The explicit
-trace-adjoint block realization from Equation (1.39) also remains open at this
-level of generality.  The downstream Schrödinger-picture density-block
-classification and its complementary zero summand are completed in
+The downstream Schrödinger-picture density-block classification and its
+complementary zero summand are completed in
 `QICLean.Channel.FixedPoint.WolfTheorem614`.
 
 In `QICLean.Channel.FixedPoint.Algebra`:
