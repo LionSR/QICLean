@@ -17,6 +17,7 @@ import QICLean.Channel.Schwarz.DiagonalJensen
 import QICLean.Channel.Schwarz.Douglas
 import QICLean.Channel.Schwarz.EntropicJensen
 import QICLean.Channel.Schwarz.KadisonSchwarz
+import QICLean.Channel.Schwarz.MonotoneTraceFunctions
 import QICLean.Channel.Schwarz.MultiplicativeDomain
 import QICLean.Channel.Schwarz.MultiplicativeDomainFull
 import QICLean.Channel.Schwarz.MultiplicativeDomainPowers
@@ -49,6 +50,7 @@ import QICLean.Channel.Schwarz.SupportRelativeEntropyGap
 import QICLean.Channel.Schwarz.SupportRelativeModular
 import QICLean.Channel.Schwarz.SupportResolvent
 import QICLean.Channel.Schwarz.SupportSourceDefect
+import QICLean.Channel.Schwarz.TraceJensen
 import QICLean.Channel.Schwarz.TracePreserving
 import QICLean.Channel.Schwarz.TwoPositive
 import QICLean.Channel.Schwarz.TwoVariable
