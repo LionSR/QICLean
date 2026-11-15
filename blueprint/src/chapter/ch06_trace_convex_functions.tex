@@ -128,8 +128,13 @@
 \begin{proof}\leanok
     \uses{thm:wolf_unitary_comparison}
     Theorem~\ref{thm:wolf_unitary_comparison} gives a unitary $U$ with
-    $f(A)\le Uf(B)U^\dagger$. The trace of a positive semidefinite matrix is
-    nonnegative, so $\tr f(A)\le\tr Uf(B)U^\dagger=\tr f(B)$.
+    $f(A)\le Uf(B)U^\dagger$. The trace of the positive semidefinite matrix
+    $Uf(B)U^\dagger-f(A)$ is nonnegative, and $U^\dagger U=\Id$, so
+    \begin{align}
+        \tr f(A)&\le\tr\bigl(Uf(B)U^\dagger\bigr)
+            =\tr\bigl(U^\dagger Uf(B)\bigr)=\tr f(B).
+        \notag
+    \end{align}
 \end{proof}
 
 \begin{lemma}[Jensen with unnormalized weights]%
@@ -169,7 +174,7 @@
 \end{theorem}
 
 \begin{proof}\leanok
-    \uses{lem:unnormalized_jensen}
+    \uses{lem:unnormalized_jensen, lem:hermitian_cfc_eigenbasis_action}
     Write $C=S^2$ with $S=C^{1/2}$; then $S$ commutes with $Y$ and with
     $f(Y)$. For an orthonormal eigenbasis $Ye_k=y_ke_k$ put $v_k=Se_k$, so
     $Yv_k=y_kv_k$ and $f(Y)v_k=f(y_k)v_k$. Since $\tr[CM]=\tr[SMS]$ for
