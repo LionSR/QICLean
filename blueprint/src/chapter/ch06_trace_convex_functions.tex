@@ -112,3 +112,111 @@
     scalar Jensen to the convex real-valued trace function of
     Theorem~\ref{thm:trace_convex_functions_interval}.
 \end{proof}
+
+\begin{theorem}[Monotone trace functions]%
+    \label{thm:monotone_trace_functions}
+    \lean{Matrix.IsHermitian.trace_cfc_le_trace_cfc_of_le,
+        Matrix.IsHermitian.re_trace_cfc_le_re_trace_cfc_of_le}
+    \leanok
+    Let $A\le B$ be Hermitian, and let $f:\R\to\R$ be non-decreasing on an
+    interval $I$ containing the spectra of $A$ and $B$. Then
+    $\tr f(A)\le\tr f(B)$. This contains
+    \cite[Proposition~5.2, Equation~(5.55)]{Wolf2012Quantum}, which assumes in
+    addition that $I$ is open and that $f$ is continuously differentiable.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{thm:wolf_unitary_comparison}
+    Theorem~\ref{thm:wolf_unitary_comparison} gives a unitary $U$ with
+    $f(A)\le Uf(B)U^\dagger$. The trace of the positive semidefinite matrix
+    $Uf(B)U^\dagger-f(A)$ is nonnegative, and $U^\dagger U=\Id$, so
+    \begin{align}
+        \tr f(A)&\le\tr\bigl(Uf(B)U^\dagger\bigr)
+            =\tr\bigl(U^\dagger Uf(B)\bigr)=\tr f(B).
+        \notag
+    \end{align}
+\end{proof}
+
+\begin{lemma}[Jensen with unnormalized weights]%
+    \label{lem:unnormalized_jensen}
+    \lean{ConvexOn.mul_map_le_sum_of_sum_eq, ConvexOn.mul_map_le_sum_of_sum_le}
+    \leanok
+    Let $f$ be convex on $I$, let $q_k\ge0$ and $\mu_k\in I$ for finitely many
+    $k$, and let $c,y\in\R$ satisfy $\sum_kq_k\mu_k=cy$. If $\sum_kq_k=c$,
+    or if $\sum_kq_k\le c$, $0\in I$ and $f(0)\le0$, then
+    $cf(y)\le\sum_kq_kf(\mu_k)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    If $c=0$, all weights vanish. Otherwise divide by $c$ and apply finite
+    Jensen. In the second case, first add the point $0$ with weight
+    $c-\sum_kq_k\ge0$; its contribution $(c-\sum_kq_k)f(0)$ is nonpositive.
+\end{proof}
+
+\begin{theorem}[Convex functions and positive maps under the trace]%
+    \label{thm:trace_jensen_positive_maps}
+    \lean{Matrix.re_trace_mul_cfc_sum_map_le_of_commute}
+    \leanok
+    \uses{def:positive_map}
+    Let $T_1,\ldots,T_r:\MN{d}\to\MN{d'}$ be positive maps, let $f$ be convex
+    on an interval $I$, and let $X_1,\ldots,X_r$ be Hermitian with spectra in
+    $I$. Put $Y=\sum_iT_i(X_i)$. Let $C\ge0$ commute with $Y$. If either
+    $\sum_iT_i(\Id)=\Id$, or $\sum_iT_i(\Id)\le\Id$, $0\in I$ and
+    $f(0)\le0$, then
+    \begin{align}
+        \re\tr[Cf(Y)]&\le\sum_i\re\tr[C\,T_i(f(X_i))].
+        \notag
+    \end{align}
+    This is \cite[Theorem~5.17, Equation~(5.51)]{Wolf2012Quantum} with a
+    corrected hypothesis: the source asks only that $C$ commute with $f(Y)$,
+    which is insufficient by Theorem~\ref{thm:trace_jensen_commutation_counterexample}.
+    The two conditions agree when $f$ is injective on $I$.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:unnormalized_jensen, lem:hermitian_cfc_eigenbasis_action}
+    Write $C=S^2$ with $S=C^{1/2}$; then $S$ commutes with $Y$ and with
+    $f(Y)$. For an orthonormal eigenbasis $Ye_k=y_ke_k$ put $v_k=Se_k$, so
+    $Yv_k=y_kv_k$ and $f(Y)v_k=f(y_k)v_k$. Since $\tr[CM]=\tr[SMS]$ for
+    every $M$,
+    \begin{align}
+        \re\tr[Cf(Y)]&=\sum_k\re\langle v_k,f(Y)v_k\rangle
+            =\sum_k\lVert v_k\rVert^2f(y_k),
+        \notag\\
+        \sum_i\re\tr[C\,T_i(f(X_i))]
+            &=\sum_k\sum_i\re\langle v_k,T_i(f(X_i))v_k\rangle.
+        \notag
+    \end{align}
+    Decompose each $X_i$ into rank-one spectral
+    projections $Q_{x,i}$ with eigenvalues $\mu_{x,i}$ and set
+    $q_{x,i}=\langle v_k,T_i(Q_{x,i})v_k\rangle\ge0$. Then
+    $\sum_{x,i}q_{x,i}\mu_{x,i}=\lVert v_k\rVert^2y_k$, and
+    $\sum_{x,i}q_{x,i}=\langle v_k,\sum_iT_i(\Id)v_k\rangle$ equals or is at
+    most $\lVert v_k\rVert^2$. Lemma~\ref{lem:unnormalized_jensen} gives
+    $\lVert v_k\rVert^2f(y_k)\le\sum_{x,i}q_{x,i}f(\mu_{x,i})
+    =\sum_i\langle v_k,T_i(f(X_i))v_k\rangle$; sum over $k$.
+\end{proof}
+
+\begin{theorem}[Commutation with the image is insufficient]%
+    \label{thm:trace_jensen_commutation_counterexample}
+    \lean{Matrix.trace_jensen_commute_cfc_counterexample}
+    \leanok
+    \uses{def:positive_map}
+    There are positive maps $T_1,T_2,T_3:\MN{1}\to\MN{2}$ with
+    $\sum_iT_i(\Id)=\Id$, scalars $X_i$ in $[-2,2]$, and $C\ge0$ commuting
+    with $f(\sum_iT_i(X_i))$ for $f(x)=|x|$, such that
+    $\sum_i\re\tr[C\,T_i(f(X_i))]<\re\tr[Cf(\sum_iT_i(X_i))]$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Take $T_i(x)=xP_i$ with
+    $16P_1=\left(\begin{smallmatrix}9&2\\2&1\end{smallmatrix}\right)$,
+    $16P_2=\left(\begin{smallmatrix}1&2\\2&9\end{smallmatrix}\right)$,
+    $16P_3=\left(\begin{smallmatrix}6&-4\\-4&6\end{smallmatrix}\right)$,
+    and $X=(2,-2,0)$. Then $\sum_iT_i(X_i)=\operatorname{diag}(1,-1)$, so
+    $f(\sum_iT_i(X_i))=\Id$ commutes with
+    $C=\left(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\right)$. The right
+    side is $\tr Cf(\sum_iT_i(X_i))=\tr C=2$, while
+    $\sum_iT_i(f(X_i))=\frac1{16}\left(\begin{smallmatrix}20&8\\8&20\end{smallmatrix}\right)$
+    gives the left side $\sum_i\tr[C\,T_i(f(X_i))]=\frac32$.
+\end{proof}
