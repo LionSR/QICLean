@@ -40,8 +40,8 @@ which bounds `N B = N (diag s(B))` by `N (diag z)`.
 
 * M. Wolf, *Quantum Channels & Operations: Guided Tour*, Section 8.1, local source
   `Notes/WolfNoteTexSource/ch08_distance_measures.tex`: unitarily invariant norms,
-  lines 53--61; Ky Fan norms, lines 68--72; Theorem "Unitarily invariant norms", item 5
-  (Ky Fan dominance), lines 135--136.
+  lines 54--61; Ky Fan norms, lines 70--74; Theorem "Unitarily invariant norms", item 5
+  (Ky Fan dominance), lines 133--134.
 -/
 
 open Finset
@@ -53,7 +53,7 @@ variable {d : ℕ}
 
 /-- A **unitarily invariant norm** on `M_d(ℂ)`: a norm (triangle inequality, absolute
 homogeneity, definiteness) with `N (U A V) = N A` for all unitaries `U, V`.
-Wolf §8.1, `ch08_distance_measures.tex` lines 45--55. Sub-multiplicativity is not required. -/
+Wolf §8.1, `ch08_distance_measures.tex` lines 46--56. Sub-multiplicativity is not required. -/
 structure IsUnitarilyInvariantNorm (N : Matrix (Fin d) (Fin d) ℂ → ℝ) : Prop where
   add_le : ∀ A B, N (A + B) ≤ N A + N B
   smul : ∀ (c : ℂ) A, N (c • A) = ‖c‖ * N A
@@ -71,7 +71,7 @@ theorem singularValues_nonneg (A : Matrix (Fin d) (Fin d) ℂ) (i : Fin d) :
   Real.sqrt_nonneg _
 
 /-- The **Ky Fan `k`-norm** `‖A‖_(k)`: the sum of the `k` largest singular values of `A`,
-counted with multiplicity. Wolf §8.1, `ch08_distance_measures.tex` lines 68--72. -/
+counted with multiplicity. Wolf §8.1, `ch08_distance_measures.tex` lines 70--74. -/
 noncomputable def kyFanNorm (A : Matrix (Fin d) (Fin d) ℂ) (k : ℕ) : ℝ :=
   TNLean.vectorPrefix (TNLean.decreasingSort (singularValues A)) k
 
@@ -104,7 +104,7 @@ theorem nonneg (A : Matrix (Fin d) (Fin d) ℂ) : 0 ≤ N A := by
   linarith
 
 /-- A unitarily invariant norm depends only on the singular values.
-Wolf §8.1, `ch08_distance_measures.tex` lines 55--57. -/
+Wolf §8.1, `ch08_distance_measures.tex` lines 56--61. -/
 theorem apply_eq_diagonal_singularValues (A : Matrix (Fin d) (Fin d) ℂ) :
     N A = N (diagonal fun i ↦ (singularValues A i : ℂ)) := by
   obtain ⟨U, hU, V, hV, hA⟩ := exists_unitary_mul_diagonal_singularValues_mul A
@@ -232,7 +232,7 @@ theorem diagonal_le_of_vectorSubmajorized {x y : Fin d → ℝ} (hx : ∀ i, 0 �
 
 /-- **Ky Fan dominance**, Wolf Theorem 8.2(5): if `‖A‖_(k) ≥ ‖B‖_(k)` for all Ky Fan norms,
 `k = 1, …, d`, then `‖A‖ ≥ ‖B‖` for every unitarily invariant norm.
-Wolf, `ch08_distance_measures.tex` lines 135--136. -/
+Wolf, `ch08_distance_measures.tex` lines 133--134. -/
 theorem le_of_kyFanNorm_le {A B : Matrix (Fin d) (Fin d) ℂ}
     (h : ∀ k, 1 ≤ k → k ≤ d → kyFanNorm B k ≤ kyFanNorm A k) : N B ≤ N A := by
   rw [hN.apply_eq_diagonal_singularValues A, hN.apply_eq_diagonal_singularValues B]

@@ -35,8 +35,8 @@ For `d = 1` and `P = t ≥ 0` the supremum of `tx − x^q/q` over `x ≥ 0` is `
 ## References
 
 * M. Wolf, *Quantum Channels & Operations: Guided Tour*, Section 8.1, local source
-  `Notes/WolfNoteTexSource/ch08_distance_measures.tex`: Schatten norms, lines 64--67;
-  Equation (8.6), lines 142--145; Theorem "Variational ways to `p`-norms", lines 176--202.
+  `Notes/WolfNoteTexSource/ch08_distance_measures.tex`: Schatten norms, lines 65--69;
+  Equation (8.6), lines 144--148; Theorem "Variational ways to `p`-norms", lines 178--194.
 -/
 
 open scoped Matrix.Norms.L2Operator MatrixOrder ComplexOrder InnerProductSpace
@@ -52,7 +52,7 @@ theorem abs_posSemidef (A : Matrix n n ℂ) : (CFC.abs A).PosSemidef :=
 
 /-- The **Schatten `p`-norm** `‖A‖_p = (tr |A|^p)^{1/p}`, `|A| = √(A†A)`, computed by the
 functional calculus; this is `(∑ᵢ sᵢ(A)^p)^{1/p}` over the singular values.
-Wolf §8.1, `ch08_distance_measures.tex` lines 64--67. -/
+Wolf §8.1, `ch08_distance_measures.tex` lines 65--69. -/
 noncomputable def schattenNorm (A : Matrix n n ℂ) (p : ℝ) : ℝ :=
   (cfc (fun x : ℝ ↦ x ^ p) (CFC.abs A)).trace.re ^ p⁻¹
 
@@ -130,7 +130,7 @@ theorem norm_trace_conjTranspose_mul_le_schattenWeight (A B : Matrix n n ℂ) {�
     _ = _ := one_mul _
 
 /-- **Hölder's inequality, Wolf Eq. (8.6).** `|tr[A†B]| ≤ ‖A‖_p ‖B‖_q` for Hölder conjugate
-`p, q`. Wolf, `ch08_distance_measures.tex` lines 142--145. -/
+`p, q`. Wolf, `ch08_distance_measures.tex` lines 144--148. -/
 theorem norm_trace_conjTranspose_mul_le_schattenNorm (A B : Matrix n n ℂ) {p q : ℝ}
     (hpq : p.HolderConjugate q) :
     ‖(Aᴴ * B).trace‖ ≤ schattenNorm A p * schattenNorm B q := by
@@ -295,7 +295,7 @@ theorem isGreatest_norm_trace_conjTranspose_mul_schattenNorm [Nonempty n] (A : M
 
 /-- **Wolf's Eq. (8.10)**, `p > 1`: `‖A‖_p = sup {|tr[A†B]| : ‖B‖_q = 1}` for Hölder conjugate
 `p, q`. Wolf, Theorem "Variational ways to `p`-norms", `ch08_distance_measures.tex`
-lines 176--190. -/
+lines 178--194. -/
 theorem schattenNorm_eq_sSup_norm_trace_conjTranspose_mul (A : Matrix n n ℂ) {p q : ℝ}
     (hpq : p.HolderConjugate q) :
     schattenNorm A p = sSup {r | ∃ B, schattenNorm B q = 1 ∧ r = ‖(Aᴴ * B).trace‖} := by
@@ -317,7 +317,7 @@ theorem isGreatest_norm_trace_conjTranspose_mul_opNorm [Nonempty n] (A : Matrix 
     simpa [hB] using norm_trace_conjTranspose_mul_le_schattenNorm_one A B
 
 /-- **Wolf's Eq. (8.10)**, `p = 1`, `q = ∞`: `‖A‖_1 = sup {|tr[A†B]| : ‖B‖_∞ = 1}` with the
-operator norm `‖B‖_∞`. Wolf, `ch08_distance_measures.tex` lines 176--190. -/
+operator norm `‖B‖_∞`. Wolf, `ch08_distance_measures.tex` lines 178--194. -/
 theorem schattenNorm_one_eq_sSup_norm_trace_conjTranspose_mul (A : Matrix n n ℂ) :
     schattenNorm A 1 = sSup {r | ∃ B : Matrix n n ℂ, ‖B‖ = 1 ∧ r = ‖(Aᴴ * B).trace‖} := by
   rcases isEmpty_or_nonempty n with hn | hn
@@ -328,8 +328,8 @@ theorem schattenNorm_one_eq_sSup_norm_trace_conjTranspose_mul (A : Matrix n n �
   · exact (isGreatest_norm_trace_conjTranspose_mul_opNorm A).csSup_eq.symm
 
 /-- **Wolf's Eq. (8.12).** The operator norm is
-`‖A‖_∞ = sup {|⟨ψ|A|φ⟩| : ‖ψ‖ = ‖φ‖ = 1}`. Wolf, `ch08_distance_measures.tex` lines 86--89
-and 176--190. -/
+`‖A‖_∞ = sup {|⟨ψ|A|φ⟩| : ‖ψ‖ = ‖φ‖ = 1}`. Wolf, `ch08_distance_measures.tex` lines 86--90
+and 178--194. -/
 theorem l2_opNorm_eq_sSup_norm_inner (A : Matrix n n ℂ) :
     ‖A‖ = sSup {r | ∃ ψ φ : EuclideanSpace ℂ n, ‖ψ‖ = 1 ∧ ‖φ‖ = 1 ∧
       r = ‖⟪ψ, toEuclideanLin A φ⟫_ℂ‖} := by
@@ -395,7 +395,7 @@ theorem l2_opNorm_eq_sSup_norm_inner (A : Matrix n n ℂ) :
 **Local fix (constant):** Wolf prints `‖P‖_p^p = (1/p) sup_{X ≥ 0}[tr[PX] − ‖X‖_q^q / q]`;
 the factor `1/p` belongs to the left-hand side, as the case `d = 1` shows. Documented in
 `docs/paper-gaps/wolf_ch8_variational_pnorm_constant.tex`. Wolf, `ch08_distance_measures.tex`
-lines 176--190. -/
+lines 178--194. -/
 theorem isGreatest_re_trace_mul_sub_schattenNorm_rpow {P : Matrix n n ℂ} (hP : P.PosSemidef)
     {p q : ℝ} (hpq : p.HolderConjugate q) :
     IsGreatest {r | ∃ X : Matrix n n ℂ, X.PosSemidef ∧
