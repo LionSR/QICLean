@@ -19,7 +19,7 @@
     \label{def:ky_fan_norm}
     \lean{Matrix.singularValues, Matrix.kyFanNorm}
     \leanok
-    The singular values $s_1(A),\ldots,s_d(A)\ge0$ of $A\in M_d(\C)$ are the
+    The singular values $s_0(A),\ldots,s_{d-1}(A)\ge0$ of $A\in M_d(\C)$ are the
     square roots of the eigenvalues of $A^\dagger A$, with multiplicity. For
     $k\le d$ the Ky Fan $k$-norm $\|A\|_{(k)}$ is the sum of the $k$ largest
     singular values. See \cite[Section~8.1]{Wolf2012Quantum}.
@@ -31,7 +31,7 @@
         Matrix.IsUnitarilyInvariantNorm.apply_eq_diagonal_singularValues}
     \leanok
     \uses{def:unitarily_invariant_norm, def:ky_fan_norm, thm:unitary_polar_correction}
-    Every $A\in M_d(\C)$ is $A=U\operatorname{diag}(s_1(A),\ldots,s_d(A))V$
+    Every $A\in M_d(\C)$ is $A=U\operatorname{diag}(s_0(A),\ldots,s_{d-1}(A))V$
     with unitaries $U,V$. Hence a unitarily invariant norm satisfies
     $\|A\|=\|\operatorname{diag}(s(A))\|$.
 \end{lemma}

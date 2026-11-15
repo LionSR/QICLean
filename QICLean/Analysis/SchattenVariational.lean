@@ -47,6 +47,7 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 
 -- The matrix functional calculus behind `CFC.abs` needs `DecidableEq n`.
 set_option linter.unusedDecidableInType false in
+/-- The absolute value `|A| = √(A†A)` is positive semidefinite. -/
 theorem abs_posSemidef (A : Matrix n n ℂ) : (CFC.abs A).PosSemidef :=
   nonneg_iff_posSemidef.mp (CFC.abs_nonneg A)
 
@@ -69,11 +70,14 @@ theorem schattenNorm_eq_sum (A : Matrix n n ℂ) (p : ℝ) :
       (∑ i, (abs_posSemidef A).isHermitian.eigenvalues i ^ p) ^ p⁻¹ := by
   rw [schattenNorm, (abs_posSemidef A).isHermitian.re_trace_cfc]
 
+/-- Schatten norms are nonnegative. -/
 theorem schattenNorm_nonneg (A : Matrix n n ℂ) (p : ℝ) : 0 ≤ schattenNorm A p := by
   rw [schattenNorm_eq_sum]
   exact Real.rpow_nonneg (Finset.sum_nonneg fun i _ ↦
     Real.rpow_nonneg ((abs_posSemidef A).eigenvalues_nonneg i) _) _
 
+/-- For `p ≠ 0`, `‖A‖_p` is the Schatten weight `‖|A|‖_{1/θ}` with `θ = 1/p` used by the
+multi-factor trace Hölder inequality. -/
 theorem schattenNorm_eq_schattenWeight (A : Matrix n n ℂ) {p : ℝ} (hp : p ≠ 0) :
     schattenNorm A p = schattenWeight (CFC.abs A) p⁻¹ := by
   rw [schattenWeight_of_ne_zero _ (inv_ne_zero hp), schattenNorm, one_div, inv_inv]
