@@ -34,6 +34,13 @@ finite-dimensional space is of the form `T_t = exp(tL)` for some generator `L`
 * `continuousDynSemigroup_exists_real_complex_extension` — **Proposition 7.1**:
   the exponential representation extends to real and complex parameter groups.
 
+## Implementation notes
+
+The injectivity, commutation and power lemmas were adapted from
+`LionSR/TNLean`, `TNLean/MPS/Periodic/Symmetry/RefinementFromProjectedSemigroup.lean`,
+commit `3e1e483cb5be7c10c74bed88b6c22e19790e28bd`. They are public here;
+the commutation lemma is named `Commute.expSemigroup_right`.
+
 ## References
 
 * [M. Wolf, *Quantum Channels & Operations: Guided Tour*, Section 7.1,
@@ -453,6 +460,51 @@ theorem expSemigroup_zero
     expSemigroup L 0 = LinearMap.id := by
   change endEquiv.symm _ = endEquiv.symm 1
   rw [expSemigroupCLM_zero]
+
+/-- Every real-time exponential is injective, with inverse at negative time.
+This is a consequence of Wolf Proposition 7.1's exponential group law. -/
+theorem expSemigroup_injective {D : ℕ}
+    (L : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)) (t : ℝ) :
+    Function.Injective (expSemigroup L t) := by
+  have hleft : expSemigroup L (-t) * expSemigroup L t = 1 := by
+    change (expSemigroup L (-t)).comp (expSemigroup L t) = LinearMap.id
+    rw [← expSemigroup_comp, neg_add_cancel, expSemigroup_zero]
+  have hInv : Function.LeftInverse (expSemigroup L (-t)) (expSemigroup L t) := by
+    intro X
+    simpa only [Module.End.mul_apply, Module.End.one_apply] using
+      congrArg (fun T : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ) => T X) hleft
+  exact hInv.injective
+
+/-- An endomorphism commuting with the generator commutes with every
+real-time exponential, as used with Wolf Proposition 7.1. -/
+theorem Commute.expSemigroup_right {D : ℕ}
+    {P L : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
+    (hComm : Commute P L) (t : ℝ) : Commute P (expSemigroup L t) := by
+  have hCLM : Commute (endEquiv P) (endEquiv L) := by
+    change endEquiv P * endEquiv L = endEquiv L * endEquiv P
+    simpa only [map_mul] using congrArg endEquiv hComm.eq
+  change P * expSemigroup L t = expSemigroup L t * P
+  apply endEquiv.injective
+  simp only [map_mul, expSemigroup_toCLM]
+  exact (hCLM.smul_right (t : ℂ)).exp_right.eq
+
+/-- Natural powers of a real-time exponential multiply the time parameter.
+This is Wolf Proposition 7.1's exponential group law iterated finitely. -/
+theorem expSemigroup_pow {D : ℕ}
+    (L : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)) (t : ℝ) (n : ℕ) :
+    expSemigroup L t ^ n = expSemigroup L ((n : ℝ) * t) := by
+  induction n with
+  | zero =>
+    simp only [pow_zero, Nat.cast_zero, zero_mul, expSemigroup_zero]
+    rfl
+  | succ n ih =>
+    rw [pow_succ, ih]
+    change (expSemigroup L ((n : ℝ) * t)).comp (expSemigroup L t) = _
+    rw [← expSemigroup_comp]
+    congr 1
+    push_cast
+    ring
+
 
 theorem expSemigroup_isDynSemigroup
     (L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :

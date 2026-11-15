@@ -156,6 +156,23 @@
     Theorem~\ref{thm:expSemigroup_toCLM_ch12}.
 \end{proof}
 
+\begin{theorem}[Injectivity, commutation and powers of exponentials]
+    \label{thm:semigroup_exp_algebra}
+    \lean{expSemigroup_injective, Commute.expSemigroup_right, expSemigroup_pow}
+    \leanok
+    Let $L,P\in\End_{\C}(\MN{D})$ and $t\in\R$.
+    The map $e^{tL}$ is injective. If $PL=LP$, then $Pe^{tL}=e^{tL}P$.
+    For every $n\in\N$, one has $(e^{tL})^n=e^{ntL}$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:expSemigroupCLM_add_ch12, thm:expSemigroup_zero_ch12}
+    The identity $e^{-tL}e^{tL}=I$ gives a left inverse.
+    Commutation with $L$ implies commutation with the exponential series.
+    Induction on $n$ and the semigroup law give the power identity.
+\end{proof}
+
 \begin{theorem}[Exponential semigroup as a dynamical semigroup]
     \label{thm:expSemigroup_isDynSemigroup_ch12}
     \lean{expSemigroup_isDynSemigroup}\leanok
