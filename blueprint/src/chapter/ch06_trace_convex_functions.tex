@@ -118,7 +118,6 @@
     \lean{Matrix.IsHermitian.trace_cfc_le_trace_cfc_of_le,
         Matrix.IsHermitian.re_trace_cfc_le_re_trace_cfc_of_le}
     \leanok
-    \uses{thm:wolf_unitary_comparison}
     Let $A\le B$ be Hermitian, and let $f:\R\to\R$ be non-decreasing on an
     interval $I$ containing the spectra of $A$ and $B$. Then
     $\tr f(A)\le\tr f(B)$. This contains
@@ -153,7 +152,7 @@
     \label{thm:trace_jensen_positive_maps}
     \lean{Matrix.re_trace_mul_cfc_sum_map_le_of_commute}
     \leanok
-    \uses{def:positive_map, lem:unnormalized_jensen}
+    \uses{def:positive_map}
     Let $T_1,\ldots,T_r:\MN{d}\to\MN{d'}$ be positive maps, let $f$ be convex
     on an interval $I$, and let $X_1,\ldots,X_r$ be Hermitian with spectra in
     $I$. Put $Y=\sum_iT_i(X_i)$. Let $C\ge0$ commute with $Y$. If either
