@@ -42,12 +42,17 @@ by one measurement, and bounds the trace distance below by the overlap.
     Conjugating by the two eigenvector unitaries reduces the trace to a
     product of two diagonal matrices and the overlap matrix
     $W_{ij}=\braket{x_i}{y_j}$, which gives
-    (\ref{eq:trace_function_double_sum}). For the support statement apply
-    (\ref{eq:trace_function_double_sum}) with $f(x)=x$ and $g$ the indicator
-    of $\{0\}$. The trace equals the sum of the quadratic forms of $\rho$ on
-    the eigenvectors of $\sigma$ with eigenvalue zero, which vanish by the
-    kernel condition. All terms of the double sum are nonnegative, so each
-    vanishes.
+    (\ref{eq:trace_function_double_sum}). For the support statement take
+    $f(x)=x$ and $g=\mathbf 1_{\{0\}}$ in
+    (\ref{eq:trace_function_double_sum}):
+    \begin{align}
+        \sum_{i}\sum_{j:\,\mu_j=0}\lambda_iP_{ij}
+            &=\operatorname{Re}\tr\bigl[\rho\,\mathbf 1_{\{0\}}(\sigma)\bigr]
+             =\sum_{j:\,\mu_j=0}\braket{y_j}{\rho\,y_j}=0,
+        \label{eq:trace_function_kernel_weight}
+    \end{align}
+    since $\rho y_j=0$ whenever $\sigma y_j=0$. Every term $\lambda_iP_{ij}$ is
+    nonnegative, so each vanishes.
 \end{proof}
 
 \begin{theorem}[Relation among relative entropies]
