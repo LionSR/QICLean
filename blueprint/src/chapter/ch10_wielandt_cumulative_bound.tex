@@ -737,3 +737,45 @@ rank, and $q$ is the least integer such that $K_m=\MN{d}$ for every $m\geq q$.
     a nonzero eigenvalue, and part~(3) of
     Theorem~\ref{thm:wolf_6_9_quantum_wielandt} gives $q\leq d^2$.
 \end{proof}
+
+\begin{definition}[One zero-error bit in a single use]
+    \label{def:one_shot_zero_error_bit}
+    \lean{HasOneShotZeroErrorBit}
+    \leanok
+    A linear map $E$ on $\MN{D}$ transmits one bit with zero error in a
+    single use if there are density matrices $\rho_0,\rho_1$ with
+    $\tr(E(\rho_0)E(\rho_1))=0$. This is $C_0(E)\geq1$ for the one-shot
+    zero-error classical capacity, and its negation is $C_0(E)=0$.
+\end{definition}
+
+\begin{theorem}[The zero-error dichotomy]
+    \label{thm:zero_error_dichotomy}
+    \lean{Kraus.exists_orthogonal_fixed_densities,
+        Kraus.exists_posSemidef_fixed_not_smul,
+        Kraus.zeroError_dichotomy}
+    \leanok
+    \uses{def:one_shot_zero_error_bit, thm:wolf_6_9_quantum_wielandt}
+    Let $E$ be a quantum channel on $\MN{D}$ with a full-rank fixed point,
+    and let $q$ be its quantum Wielandt index. Then either $E^n$ transmits one
+    bit with zero error in a single use for every $n$, or $E^q$ does not.
+    This is~\cite[Theorem~2]{Sanz2010Quantum} in the one-shot form allowed
+    by its footnote.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{def:one_shot_zero_error_bit}
+    The full-rank fixed point may be taken positive definite, $\rho>0$. If a
+    positive fixed point $\sigma$ is not a multiple of $\rho$, the positive
+    and negative parts of the traceless Hermitian fixed point
+    $\sigma-(\tr\sigma/\tr\rho)\rho$ are nonzero, orthogonal and fixed, so
+    their normalizations have orthogonal outputs under every power.
+    Otherwise $E$ is irreducible. If it is not primitive, some peripheral
+    eigenvalue $\mu\neq1$ satisfies $\mu^p=1$; its eigenvector is a fixed
+    point of $E^p$ that is not a multiple of $\rho$, and the four positive
+    fixed parts give a positive fixed point of $E^p$ with the same property.
+    The first case for $E^p$ yields orthogonal states $\sigma_0,\sigma_1$
+    fixed by $E^p$, and for every $n$ the inputs $E^m(\sigma_i)$ with
+    $n+m\equiv0\pmod p$ have the outputs $\sigma_i$. If $E$ is primitive, the
+    word span at length $q$ is full, so $E^q$ maps every nonzero positive
+    matrix to a positive definite one, and no two outputs are orthogonal.
+\end{proof}
