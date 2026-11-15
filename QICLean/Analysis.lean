@@ -165,6 +165,7 @@ import QICLean.Analysis.KernelSpectralGap
 import QICLean.Analysis.KleinInequality
 import QICLean.Analysis.KroneckerExponential
 import QICLean.Analysis.KroneckerOperatorNorm
+import QICLean.Analysis.KyFanDominance
 import QICLean.Analysis.KyFanNorm
 import QICLean.Analysis.LiebConcavity
 import QICLean.Analysis.LiebConvexity
@@ -366,6 +367,7 @@ import QICLean.Analysis.SandwichedRenyi
 import QICLean.Analysis.SandwichedRenyiTwo
 import QICLean.Analysis.ScaleRecurrence
 import QICLean.Analysis.SchattenNorm
+import QICLean.Analysis.SchattenVariational
 import QICLean.Analysis.SemidefiniteDuality
 import QICLean.Analysis.SemidefiniteProgram
 import QICLean.Analysis.SeparatedQuadraticForms

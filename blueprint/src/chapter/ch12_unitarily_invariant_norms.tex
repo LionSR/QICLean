@@ -1,0 +1,177 @@
+%% =========================================================
+%% Unitarily invariant norms and variational formulas
+%% Source: Wolf (2012), Section 8.1,
+%% Notes/WolfNoteTexSource/ch08_distance_measures.tex lines 45--202
+%% =========================================================
+
+\section{Unitarily invariant norms}
+
+\begin{definition}[Unitarily invariant norm]
+    \label{def:unitarily_invariant_norm}
+    \lean{Matrix.IsUnitarilyInvariantNorm}
+    \leanok
+    A norm $\|\cdot\|$ on $M_d(\C)$ is unitarily invariant if
+    $\|UAV\|=\|A\|$ for all $A\in M_d(\C)$ and all unitaries $U,V$.
+    See \cite[Section~8.1]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{definition}[Singular values and Ky Fan norms]
+    \label{def:ky_fan_norm}
+    \lean{Matrix.singularValues, Matrix.kyFanNorm}
+    \leanok
+    The singular values $s_1(A),\ldots,s_d(A)\ge0$ of $A\in M_d(\C)$ are the
+    square roots of the eigenvalues of $A^\dagger A$, with multiplicity. For
+    $k\le d$ the Ky Fan $k$-norm $\|A\|_{(k)}$ is the sum of the $k$ largest
+    singular values. See \cite[Section~8.1]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{lemma}[Singular value decomposition]
+    \label{lem:singular_value_decomposition_diagonal}
+    \lean{Matrix.exists_unitary_mul_diagonal_singularValues_mul,
+        Matrix.IsUnitarilyInvariantNorm.apply_eq_diagonal_singularValues}
+    \leanok
+    \uses{def:unitarily_invariant_norm, def:ky_fan_norm, thm:unitary_polar_correction}
+    Every $A\in M_d(\C)$ is $A=U\operatorname{diag}(s_1(A),\ldots,s_d(A))V$
+    with unitaries $U,V$. Hence a unitarily invariant norm satisfies
+    $\|A\|=\|\operatorname{diag}(s(A))\|$.
+\end{lemma}
+\begin{proof}\leanok
+    Write $A=W\sqrt{A^\dagger A}$ with $W$ unitary and diagonalize
+    $\sqrt{A^\dagger A}=E\operatorname{diag}(s(A))E^\dagger$.
+\end{proof}
+
+\begin{lemma}[Diagonal monotonicity]
+    \label{lem:unitarily_invariant_norm_diagonal_monotone}
+    \lean{Matrix.IsUnitarilyInvariantNorm.diagonal_comp_perm,
+        Matrix.IsUnitarilyInvariantNorm.diagonal_mul_sign,
+        Matrix.IsUnitarilyInvariantNorm.convexOn_diagonal,
+        Matrix.IsUnitarilyInvariantNorm.diagonal_update_le,
+        Matrix.IsUnitarilyInvariantNorm.diagonal_le_of_abs_le}
+    \leanok
+    \uses{def:unitarily_invariant_norm}
+    Let $\|\cdot\|$ be unitarily invariant and $f(x)=\|\operatorname{diag}(x)\|$
+    for $x\in\R^d$. Then $f$ is convex and invariant under permutations and sign
+    changes of the coordinates, and $|x_i|\le|z_i|$ for all $i$ implies
+    $f(x)\le f(z)$.
+\end{lemma}
+\begin{proof}\leanok
+    Permutation and diagonal sign matrices are unitary. Convexity follows from
+    the triangle inequality and homogeneity. For monotonicity change one
+    coordinate at a time: if $|a|\le|z_j|$ with $z_j\neq0$, the vector with
+    $z_j$ replaced by $a$ is the convex combination with weights
+    $\frac12(1\pm a/z_j)$ of $z$ and of $z$ with the sign of $z_j$ flipped.
+\end{proof}
+
+\begin{theorem}[Ky Fan dominance]
+    \label{thm:ky_fan_dominance}
+    \lean{Matrix.IsUnitarilyInvariantNorm.le_of_kyFanNorm_le,
+        Matrix.IsUnitarilyInvariantNorm.diagonal_le_of_vectorSubmajorized}
+    \leanok
+    \uses{lem:singular_value_decomposition_diagonal,
+        lem:unitarily_invariant_norm_diagonal_monotone,
+        thm:vector_submajorization, lem:vector_majorization_convex_hull}
+    Let $A,B\in M_d(\C)$. If $\|A\|_{(k)}\ge\|B\|_{(k)}$ for $k=1,\ldots,d$, then
+    $\|A\|\ge\|B\|$ for every unitarily invariant norm.
+    This is \cite[Theorem~8.2(5)]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    The hypothesis says $s(B)\prec_ws(A)$. By submajorization some $z\prec s(A)$
+    satisfies $s(B)\le z$ entrywise, and $z$ lies in the convex hull of the
+    permutations of $s(A)$. With $f$ as in
+    Lemma~\ref{lem:unitarily_invariant_norm_diagonal_monotone}, convexity and
+    permutation invariance give $f(z)\le f(s(A))=\|A\|$, and monotonicity with
+    $0\le s(B)\le z$ gives $\|B\|=f(s(B))\le f(z)$.
+\end{proof}
+
+\section{Variational formulas for Schatten norms}
+
+\begin{definition}[Schatten norm]
+    \label{def:schatten_norm}
+    \lean{Matrix.schattenNorm}
+    \leanok
+    For $A\in M_d(\C)$ and $p\ge1$, $\|A\|_p=(\tr|A|^p)^{1/p}=(\sum_is_i(A)^p)^{1/p}$
+    with $|A|=\sqrt{A^\dagger A}$; $\|A\|_\infty$ is the operator norm.
+    See \cite[Section~8.1]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{theorem}[Hölder inequality for Schatten norms]
+    \label{thm:schatten_holder}
+    \lean{Matrix.norm_trace_conjTranspose_mul_le_schattenWeight,
+        Matrix.norm_trace_conjTranspose_mul_le_schattenNorm,
+        Matrix.norm_trace_conjTranspose_mul_le_schattenNorm_one}
+    \leanok
+    \uses{def:schatten_norm, thm:trace_holder_schatten, thm:unitary_polar_correction}
+    For $A,B\in M_d(\C)$ and $p,q\in[1,\infty]$ with $p^{-1}+q^{-1}=1$,
+    \begin{align*}
+        \bigl|\tr[A^\dagger B]\bigr|\le\|A\|_p\,\|B\|_q.
+    \end{align*}
+    This is \cite[Eq.~(8.6)]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    With polar decompositions $A=U|A|$, $B=W|B|$ one has
+    $\tr[A^\dagger B]=\tr[|A|\,U^\dagger W\,|B|]$. Apply
+    Theorem~\ref{thm:trace_holder_schatten} with weights $1/p$ and $1/q$ and
+    $\|U^\dagger W\|\le1$.
+\end{proof}
+
+\begin{theorem}[Variational formula for Schatten norms]
+    \label{thm:schatten_variational}
+    \lean{Matrix.exists_schattenNorm_eq_one_trace_eq,
+        Matrix.isGreatest_norm_trace_conjTranspose_mul_schattenNorm,
+        Matrix.schattenNorm_eq_sSup_norm_trace_conjTranspose_mul,
+        Matrix.exists_norm_eq_one_trace_eq_schattenNorm_one,
+        Matrix.isGreatest_norm_trace_conjTranspose_mul_opNorm,
+        Matrix.schattenNorm_one_eq_sSup_norm_trace_conjTranspose_mul}
+    \leanok
+    \uses{thm:schatten_holder}
+    For $A\in M_d(\C)$, $p\ge1$ and $p^{-1}+q^{-1}=1$,
+    \begin{align*}
+        \|A\|_p=\sup\left\{\bigl|\tr[A^\dagger B]\bigr|\ \middle|\ \|B\|_q=1\right\},
+    \end{align*}
+    and for $d\ge1$ the supremum is attained. This is
+    \cite[Eq.~(8.10)]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    The bound is Theorem~\ref{thm:schatten_holder}. Write $A=UP$ with
+    $P=|A|$ and $S=\tr P^p$. For $p=1$ take $B=U$. For $p>1$ and $S>0$ take
+    $B=S^{-1/q}UP^{p-1}$: then $|B|=S^{-1/q}P^{p-1}$, so $\|B\|_q^q=S^{-1}\tr
+    P^{(p-1)q}=1$, and $\tr[A^\dagger B]=S^{-1/q}\tr P^p=S^{1/p}$. For $S=0$
+    take $B=d^{-1/q}U$.
+\end{proof}
+
+\begin{theorem}[Variational formula for the operator norm]
+    \label{thm:operator_norm_variational}
+    \lean{Matrix.l2_opNorm_eq_sSup_norm_inner}
+    \leanok
+    For $A\in M_d(\C)$,
+    \begin{align*}
+        \|A\|_\infty=\sup\left\{\bigl|\langle\psi|A|\phi\rangle\bigr|\ \middle|\
+        \|\psi\|=\|\phi\|=1\right\}.
+    \end{align*}
+    This is \cite[Eq.~(8.12)]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    The Cauchy--Schwarz inequality gives the bound. For $r<\|A\|_\infty$ pick
+    $\phi$ with $\|\phi\|=1$ and $\|A\phi\|>r$, and put $\psi=A\phi/\|A\phi\|$.
+\end{proof}
+
+\begin{theorem}[Positive variational formula for Schatten norms]
+    \label{thm:positive_schatten_variational}
+    \lean{Matrix.isGreatest_re_trace_mul_sub_schattenNorm_rpow,
+        Matrix.schattenNorm_rpow_eq_mul_sSup}
+    \leanok
+    \uses{thm:schatten_holder}
+    For $P\in M_d(\C)$ with $P\ge0$ and $p>1$, $p^{-1}+q^{-1}=1$,
+    \begin{align*}
+        \frac1p\|P\|_p^p=\max_{X\ge0}\Bigl[\tr[PX]-\frac1q\|X\|_q^q\Bigr],
+    \end{align*}
+    attained at $X=P^{p-1}$. Wolf \cite[Eq.~(8.13)]{Wolf2012Quantum} prints the
+    factor $\frac1p$ on the right-hand side; the corrected constant is recorded
+    in~\cite{gap:wolf_ch8_variational_pnorm_constant}.
+\end{theorem}
+\begin{proof}\leanok
+    By Theorem~\ref{thm:schatten_holder} and Young's inequality,
+    $\tr[PX]\le\|P\|_p\|X\|_q\le\frac1p\|P\|_p^p+\frac1q\|X\|_q^q$. For
+    $X=P^{p-1}$ both $\tr[PX]$ and $\|X\|_q^q$ equal $\tr P^p$, since
+    $(p-1)q=p$.
+\end{proof}
