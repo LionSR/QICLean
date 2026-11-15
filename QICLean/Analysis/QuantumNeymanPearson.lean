@@ -25,9 +25,9 @@ Wolf states that equality holds iff `P` is the projection onto the positive
 part of `A = pρ - (1 - p)σ`. That fails when `A` has a nonzero kernel: the
 action of `P` there does not change the error. For `p = 1/2` and `ρ = σ`
 every effect is optimal (`Matrix.hypothesisTestError_half_self`). The proof
-in the source, Equation (8.42), gives the correct condition `P A₊ = A₊` and
-`P A₋ = 0`, which is `Matrix.hypothesisTestError_eq_iff`. The printed clause
-holds when `A` is invertible
+in the source (lines 562–563, after Equation (8.42)) gives the correct
+condition `P A₊ = A₊` and `P A₋ = 0`, which is
+`Matrix.hypothesisTestError_eq_iff`. The printed clause holds when `A` is invertible
 (`Matrix.hypothesisTestError_eq_iff_eq_posPartSupportProj`). See
 `docs/paper-gaps/wolf_ch8_neyman_pearson_kernel.tex`.
 
@@ -64,34 +64,21 @@ Wolf, Equation (8.40), `ch08_distance_measures.tex`, lines 543–546. -/
 def hypothesisTestError (p : ℝ) (ρ σ P : Matrix n n ℂ) : ℝ :=
   p * (ρ * (1 - P)).trace.re + (1 - p) * (σ * P).trace.re
 
-/-- The negative part of a Hermitian matrix expressed through the Hermitian
-functional calculus. -/
-lemma IsHermitian.negPart_eq_cfc {A : Matrix n n ℂ} (hA : A.IsHermitian) :
-    A⁻ = hA.cfc (·⁻) := by
-  rw [CFC.negPart_def, cfcₙ_eq_cfc, hA.cfc_eq]
-
 /-- The support projection of the positive part fixes the positive part. -/
 lemma IsHermitian.posPartSupportProj_mul_posPart {A : Matrix n n ℂ}
     (hA : A.IsHermitian) : hA.posPartSupportProj * A⁺ = A⁺ := by
-  rw [hA.posPartSupportProj_def, hA.posPart_eq_cfc, ← hA.cfc_mul]
-  congr 1
-  funext x
-  by_cases hx : 0 < x
-  · simp [hx]
-  · simp [hx, posPart_eq_zero.mpr (not_lt.mp hx)]
+  rw [← hA.posPartSupportProj_mul_self, ← Matrix.mul_assoc,
+    hA.posPartSupportProj_mul_posPartSupportProj]
 
 /-- The support projection of the positive part annihilates the negative
 part. -/
 lemma IsHermitian.posPartSupportProj_mul_negPart {A : Matrix n n ℂ}
     (hA : A.IsHermitian) : hA.posPartSupportProj * A⁻ = 0 := by
-  rw [hA.posPartSupportProj_def, hA.negPart_eq_cfc, ← hA.cfc_mul]
-  have h : (fun x : ℝ ↦ (if 0 < x then (1 : ℝ) else 0) * x⁻) = fun _ ↦ 0 := by
-    funext x
-    by_cases hx : 0 < x
-    · simp [hx, negPart_eq_zero.mpr hx.le]
-    · simp [hx]
-  rw [h, ← hA.cfc_eq]
-  simp
+  have h := congrArg (hA.posPartSupportProj * ·)
+    (CFC.posPart_sub_negPart A (isSelfAdjoint_iff.mpr hA))
+  simp only [Matrix.mul_sub, hA.posPartSupportProj_mul_self,
+    hA.posPartSupportProj_mul_posPart] at h
+  exact sub_eq_self.mp h
 
 omit [DecidableEq n] in
 private lemma re_trace_smul (r : ℝ) (X : Matrix n n ℂ) :
@@ -102,8 +89,9 @@ private lemma re_trace_smul (r : ℝ) (X : Matrix n n ℂ) :
 prior `p`, and every matrix `P`, with `A = pρ - (1 - p)σ`,
 `e(P) - (1 - ‖A‖₁)/2 = tr[(1 - P) A₊] + tr[P A₋]`.
 
-This is the computation behind Wolf, Equation (8.42),
-`ch08_distance_measures.tex`, lines 558–565. -/
+This is the computation in Wolf's proof of Theorem "Quantum Neyman–Pearson",
+Equation (8.42) and the following lines, `ch08_distance_measures.tex`,
+lines 557–564. -/
 theorem hypothesisTestError_sub_eq {ρ σ : Matrix n n ℂ} (hρ : ρ.IsHermitian)
     (hσ : σ.IsHermitian) (hρ1 : ρ.trace = 1) (hσ1 : σ.trace = 1) (p : ℝ)
     (P : Matrix n n ℂ) :
@@ -137,7 +125,7 @@ real prior `p`, and an effect `0 ≤ P ≤ 1`,
 `e(P) ≥ (1 - ‖pρ - (1 - p)σ‖₁) / 2`.
 
 Wolf, Theorem "Quantum Neyman–Pearson", Equation (8.41),
-`ch08_distance_measures.tex`, lines 548–553. -/
+`ch08_distance_measures.tex`, lines 548–555. -/
 theorem hypothesisTestError_ge {ρ σ P : Matrix n n ℂ} (hρ : ρ.IsHermitian)
     (hσ : σ.IsHermitian) (hρ1 : ρ.trace = 1) (hσ1 : σ.trace = 1) (p : ℝ)
     (hP0 : 0 ≤ P) (hP1 : P ≤ 1) :
@@ -165,10 +153,11 @@ private lemma PosSemidef.mul_eq_zero_of_re_trace_mul_eq_zero {X Y : Matrix n n �
 `P A₋ = 0`, where `A = pρ - (1 - p)σ`. The action of `P` on the kernel of `A`
 is unconstrained.
 
-Wolf, proof of Theorem "Quantum Neyman–Pearson", Equation (8.42),
-`ch08_distance_measures.tex`, lines 556–566. **Local fix:** the printed
-statement (line 553) asserts that `P` must be the projection onto the
-positive part; see `docs/paper-gaps/wolf_ch8_neyman_pearson_kernel.tex`. -/
+Wolf, proof of Theorem "Quantum Neyman–Pearson",
+`ch08_distance_measures.tex`, lines 562–563. **Local fix (kernel freedom in
+the equality clause):** the printed statement (line 554) asserts that `P`
+must be the projection onto the positive part; see
+`docs/paper-gaps/wolf_ch8_neyman_pearson_kernel.tex`. -/
 theorem hypothesisTestError_eq_iff {ρ σ P : Matrix n n ℂ} (hρ : ρ.IsHermitian)
     (hσ : σ.IsHermitian) (hρ1 : ρ.trace = 1) (hσ1 : σ.trace = 1) (p : ℝ)
     (hP0 : 0 ≤ P) (hP1 : P ≤ 1) :
@@ -202,7 +191,7 @@ theorem hypothesisTestError_eq_iff {ρ σ P : Matrix n n ℂ} (hρ : ρ.IsHermit
 the bound of Equation (8.41).
 
 Wolf, Theorem "Quantum Neyman–Pearson", `ch08_distance_measures.tex`,
-lines 553 and 562–565. -/
+lines 554 and 562–563. -/
 theorem hypothesisTestError_posPartSupportProj {ρ σ : Matrix n n ℂ}
     (hρ : ρ.IsHermitian) (hσ : σ.IsHermitian) (hρ1 : ρ.trace = 1)
     (hσ1 : σ.trace = 1) (p : ℝ)
@@ -237,7 +226,7 @@ theorem isLeast_hypothesisTestError {ρ σ : Matrix n n ℂ} (hρ : ρ.IsHermiti
 Equation (8.41) iff it is the projection onto the positive part of `A`.
 
 Wolf, Theorem "Quantum Neyman–Pearson", `ch08_distance_measures.tex`,
-line 553. **Scope restriction (invertible difference):** without
+line 554. **Scope restriction (invertible difference):** without
 invertibility the clause fails; see
 `docs/paper-gaps/wolf_ch8_neyman_pearson_kernel.tex` and
 `Matrix.hypothesisTestError_half_self`. -/
@@ -266,7 +255,7 @@ hypotheses every effect attains the bound of Equation (8.41), although the
 projection onto the positive part of `pρ - (1 - p)σ = 0` is zero.
 
 This is the counterexample to the printed equality clause of Wolf, Theorem
-"Quantum Neyman–Pearson", `ch08_distance_measures.tex`, line 553; see
+"Quantum Neyman–Pearson", `ch08_distance_measures.tex`, line 554; see
 `docs/paper-gaps/wolf_ch8_neyman_pearson_kernel.tex`. -/
 theorem hypothesisTestError_half_self {ρ : Matrix n n ℂ} (hρ1 : ρ.trace = 1)
     (P : Matrix n n ℂ) :
@@ -281,7 +270,7 @@ theorem hypothesisTestError_half_self {ρ : Matrix n n ℂ} (hρ1 : ρ.trace = 1
 /-- Equation (8.41) with the trace norm `Matrix.traceNorm` on `Fin D`.
 
 Wolf, Theorem "Quantum Neyman–Pearson", Equation (8.41),
-`ch08_distance_measures.tex`, lines 548–553. -/
+`ch08_distance_measures.tex`, lines 548–555. -/
 theorem hypothesisTestError_ge_traceNorm {D : ℕ} {ρ σ P : Matrix (Fin D) (Fin D) ℂ}
     (hρ : ρ.IsHermitian) (hσ : σ.IsHermitian) (hρ1 : ρ.trace = 1)
     (hσ1 : σ.trace = 1) (p : ℝ) (hP0 : 0 ≤ P) (hP1 : P ≤ 1) :

@@ -2451,7 +2451,8 @@ Hermitian unit-trace `ρ, σ`, every real prior and every effect
 `0 ≤ P ≤ 1`, with `‖A‖₁ = Re tr |A|`;
 `Matrix.hypothesisTestError_ge_traceNorm` restates it with
 `Matrix.traceNorm` on `Fin D`. `Matrix.hypothesisTestError_sub_eq` is the
-exact excess `tr[(1 - P)A₊] + tr[P A₋]` behind Equation (8.42).
+exact excess `tr[(1 - P)A₊] + tr[P A₋]` behind Equation (8.42) and the
+equality condition stated after it (lines 562–563).
 `Matrix.hypothesisTestError_eq_iff` proves the corrected equality clause
 `P A₊ = A₊ ∧ P A₋ = 0`, `Matrix.hypothesisTestError_posPartSupportProj` and
 `Matrix.isLeast_hypothesisTestError` give attainment and minimality, and
