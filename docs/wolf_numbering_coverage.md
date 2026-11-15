@@ -2389,8 +2389,15 @@ assumed. Clause 3 (orthostochastic matrices) is
 `QICLean.Analysis.VectorMajorizationOrthostochastic`, proved through Horn's
 theorem with one plane rotation per induction step; see
 `docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
-The separate submajorization theorem and the remainder of issue #47 are
-not completed by these equivalences.
+
+### Theorem “Submajorization” — FORMALIZED WITH LOCAL FIX
+
+In `QICLean.Analysis.VectorSubmajorization`, `TNLean.VectorSubmajorized` is
+weak submajorization by decreasing prefixes. `TNLean.vectorSubmajorized_tfae`
+proves clauses 1, 3 and 4 equivalent for all real vectors, and
+`TNLean.vectorSubmajorized_iff_exists_doublySubstochastic` proves clause 2 for
+nonnegative vectors. The printed clause 2 fails for negative entries; see
+`docs/paper-gaps/wolf_ch8_submajorization_nonnegative.tex`.
 
 ### Theorem 8.7 (Majorization between density matrices) — FORMALIZED
 
@@ -2411,9 +2418,8 @@ weighted squared entries of the actual conjugated unitaries.
 zero-dimensional density matrix explicit; the Hermitian equivalences
 themselves have no positive-dimension premise.
 
-This completes the containing Theorem 8.7 only. Theorem 8.4 clause 3,
-submajorization, Theorem 8.8's rectangular ambiguity and issue #47's
-remaining scope are unchanged.
+This completes the containing Theorem 8.7 only. Theorem 8.8's rectangular
+ambiguity and issue #47's remaining scope are unchanged.
 
 ### Equation 8.35, ordinary Petz overlap for exponents in [0,1] — FORMALIZED SLICE
 

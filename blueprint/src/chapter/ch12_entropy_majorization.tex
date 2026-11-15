@@ -267,6 +267,39 @@ stochastic and doubly substochastic matrices.
     The induction hypothesis on the remaining block completes the construction.
 \end{proof}
 
+\begin{theorem}[Submajorization]
+    \label{thm:vector_submajorization}
+    \lean{TNLean.VectorSubmajorized,
+        TNLean.IsDoublySubstochastic,
+        TNLean.VectorSubmajorized.exists_majorized_ge,
+        TNLean.sum_le_of_le_of_vectorMajorized,
+        TNLean.vectorSubmajorized_of_sum_monotone_convex_le,
+        TNLean.vectorSubmajorized_tfae,
+        TNLean.vectorSubmajorized_iff_exists_doublySubstochastic}
+    \leanok
+    \uses{def:vector_majorization, thm:vector_majorization_equivalences}
+    For $x,y\in\R^d$ the following are equivalent: $x\prec_wy$; $x\le z$
+    entrywise for some $z\prec y$; and $\sum_if(x_i)\le\sum_if(y_i)$ for every
+    monotonically increasing convex $f$. For nonnegative $x,y$ they are also
+    equivalent to $x=My$ for a doubly substochastic $M$. This is Wolf's
+    Theorem ``Submajorization'' \cite{Wolf2012Quantum}, with the doubly
+    substochastic clause restricted to nonnegative vectors as recorded
+    in~\cite{gap:wolf_ch8_submajorization_nonnegative}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:vector_majorization_equivalences}
+    For sorted $x$, choose $\theta$ with $\sum_i\max(x_i,\theta)=\sum_iy_i$ by
+    the intermediate value theorem, and put $z=\max(x,\theta)$. Prefix sums of
+    $z$ are bounded by those of $y$ by induction: where $x_k\ge\theta$ they are
+    those of $x$; where $\theta\le y_k$ the new terms compare; and otherwise
+    every later entry of $z$ exceeds that of $y$, so the complementary sums
+    compare. Monotone convex functions then pass from $x$ to $z$ and from $z$
+    to $y$. The hinge functions $\max(t-a,0)$ recover the prefix sums. For the
+    substochastic clause, rescale the rows of a doubly stochastic $D$ with
+    $z=Dy$, and conversely use Jensen's inequality with the remaining row weight
+    on $0$.
+\end{proof}
+
 \section{Entropy increasing maps}
 
 \begin{theorem}[Concave traces under unital positive maps]

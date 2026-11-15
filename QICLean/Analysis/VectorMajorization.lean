@@ -143,7 +143,8 @@ private theorem sum_mul_le_of_prefix {x y w : Fin d → ℝ}
     rw [hz x, hz y] at h
     simpa only [mul_sub, sum_sub_distrib, ← sum_mul, ht, sub_le_sub_iff_right] using h
 
-private theorem prefix_le_hinge (x : Fin d → ℝ) (k : ℕ) (t : ℝ) :
+/-- A prefix sum is bounded by the constant prefix plus the total hinge `∑ max (xᵢ - t) 0`. -/
+theorem prefix_le_hinge (x : Fin d → ℝ) (k : ℕ) (t : ℝ) :
     vectorPrefix x k ≤ vectorPrefix (fun _ : Fin d => t) k +
       ∑ i, max (x i - t) 0 := by
   classical
@@ -157,7 +158,8 @@ private theorem prefix_le_hinge (x : Fin d → ℝ) (k : ℕ) (t : ℝ) :
     · simp
   linarith
 
-private theorem hinge_eq_prefix {y : Fin d → ℝ} (hy : Antitone y)
+/-- For an antitone vector, the hinge at its `k`-th entry recovers the prefix sum. -/
+theorem hinge_eq_prefix {y : Fin d → ℝ} (hy : Antitone y)
     {k : ℕ} (hk : k < d) :
     ∑ i, max (y i - y ⟨k, hk⟩) 0 =
       vectorPrefix y k - vectorPrefix (fun _ : Fin d => y ⟨k, hk⟩) k := by

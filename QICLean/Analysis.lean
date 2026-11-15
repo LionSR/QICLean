@@ -479,6 +479,7 @@ import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.VariableRankSampleProjection
 import QICLean.Analysis.VectorMajorization
 import QICLean.Analysis.VectorMajorizationOrthostochastic
+import QICLean.Analysis.VectorSubmajorization
 import QICLean.Analysis.ViableFilterTrimmingIteration
 import QICLean.Analysis.ViableHalfSampling
 import QICLean.Analysis.ViableHalfSamplingParameters
