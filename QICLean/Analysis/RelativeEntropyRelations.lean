@@ -10,7 +10,7 @@ import QICLean.Analysis.KleinInequality
 
 Wolf, *Quantum Channels & Operations*, Section 8.4, Theorem "Relation among
 relative entropies", Equations (8.36)–(8.39),
-`Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 490–521.
+`Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 491–519.
 
 For positive-semidefinite `ρ, σ` Wolf sets
 `S⁽ᵅ⁾(ρ|σ) = tr[ρ - ρᵅ σ¹⁻ᵅ] / (1 - α)` and proves, for `α ≤ 1 ≤ β`,
@@ -37,7 +37,7 @@ support and vanish on the kernel, and `X ^ (0 : ℝ) = 1`. The relative entropy 
 `quantumRelativeEntropy`, which uses the totalized logarithm `log 0 = 0`.
 
 **Scope restriction (finite relative entropy):** the theorems assume
-`ker σ ⊆ ker ρ`. Wolf's footnote (line 474) sets the entropies to `+∞`
+`ker σ ⊆ ker ρ`. Wolf's footnote (lines 473–475) sets the entropies to `+∞`
 otherwise; then the right-hand inequality reads `∞ ≤ ∞` and the left one
 `S⁽ᵅ⁾ ≤ ∞`, and the totalized trace-log expression no longer represents `S`.
 The endpoints `α = 1` and `β = 1` are excluded: there `S⁽¹⁾` is defined only
@@ -70,7 +70,7 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 functional calculus.
 
 Wolf, Theorem "Relation among relative entropies",
-`ch08_distance_measures.tex`, lines 501–504. -/
+`ch08_distance_measures.tex`, lines 503–504. -/
 def tsallisRelativeEntropy (α : ℝ) (ρ σ : Matrix n n ℂ) : ℝ :=
   (ρ - ρ ^ α * σ ^ (1 - α)).trace.re / (1 - α)
 
@@ -78,7 +78,7 @@ def tsallisRelativeEntropy (α : ℝ) (ρ σ : Matrix n n ℂ) : ℝ :=
 `f, g`, `Re tr[f(ρ) g(σ)] = ∑ᵢⱼ f(λᵢ) g(μⱼ) |⟨xᵢ|yⱼ⟩|²`, where `λ, x` and
 `μ, y` are the eigenvalues and eigenvectors of `ρ` and `σ`.
 
-Wolf, `ch08_distance_measures.tex`, lines 487–496. -/
+Wolf, `ch08_distance_measures.tex`, lines 491–498. -/
 theorem re_trace_cfc_mul_cfc_eq_double_sum {ρ σ : Matrix n n ℂ}
     (hρ : ρ.IsHermitian) (hσ : σ.IsHermitian) (f g : ℝ → ℝ) :
     (hρ.cfc f * hσ.cfc g).trace.re =
@@ -143,7 +143,7 @@ theorem eigenvalues_mul_normSq_eq_zero_of_ker_le {ρ σ : Matrix n n ℂ}
 and every real `a`, `λ - λᵃ μ¹⁻ᵃ ≤ (1 - a)(λ log λ - λ log μ)`.
 
 Wolf, proof of Theorem "Relation among relative entropies",
-`ch08_distance_measures.tex`, lines 509–520. -/
+`ch08_distance_measures.tex`, lines 510–519. -/
 theorem sub_rpow_mul_rpow_le_mul_log {l m : ℝ} (hl : 0 ≤ l) (hm : 0 ≤ m)
     (hlm : m = 0 → l = 0) (a : ℝ) :
     l - l ^ a * m ^ (1 - a) ≤ (1 - a) * (l * Real.log l - l * Real.log m) := by
@@ -170,7 +170,7 @@ theorem sub_rpow_mul_rpow_le_mul_log {l m : ℝ} (hl : 0 ≤ l) (hm : 0 ≤ m)
 `tr ρ - tr[ρᵃ σ¹⁻ᵃ] ≤ (1 - a) S(ρ|σ)`.
 
 Wolf, proof of Theorem "Relation among relative entropies",
-`ch08_distance_measures.tex`, lines 509–520. -/
+`ch08_distance_measures.tex`, lines 510–519. -/
 theorem re_trace_sub_le_mul_quantumRelativeEntropy {ρ σ : Matrix n n ℂ}
     (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef)
     (hsupp : ∀ v : n → ℂ, σ *ᵥ v = 0 → ρ *ᵥ v = 0) (a : ℝ) :
@@ -221,7 +221,7 @@ theorem re_trace_sub_le_mul_quantumRelativeEntropy {ρ σ : Matrix n n ℂ}
 `ker σ ⊆ ker ρ` and `α < 1`, `S⁽ᵅ⁾(ρ|σ) ≤ S(ρ|σ)`.
 
 Wolf, Theorem "Relation among relative entropies", Equation (8.38),
-`ch08_distance_measures.tex`, lines 500–506. **Scope restriction (finite
+`ch08_distance_measures.tex`, lines 502–508. **Scope restriction (finite
 relative entropy, `α ≠ 1`):** see
 `docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex`. -/
 theorem tsallisRelativeEntropy_le_quantumRelativeEntropy {ρ σ : Matrix n n ℂ}
@@ -235,7 +235,7 @@ theorem tsallisRelativeEntropy_le_quantumRelativeEntropy {ρ σ : Matrix n n ℂ
 `ker σ ⊆ ker ρ` and `β > 1`, `S(ρ|σ) ≤ S⁽ᵝ⁾(ρ|σ)`.
 
 Wolf, Theorem "Relation among relative entropies", Equation (8.38),
-`ch08_distance_measures.tex`, lines 500–506. **Scope restriction (finite
+`ch08_distance_measures.tex`, lines 502–508. **Scope restriction (finite
 relative entropy, `β ≠ 1`):** see
 `docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex`. -/
 theorem quantumRelativeEntropy_le_tsallisRelativeEntropy {ρ σ : Matrix n n ℂ}

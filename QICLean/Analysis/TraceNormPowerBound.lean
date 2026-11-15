@@ -11,7 +11,7 @@ import QICLean.Analysis.TraceNormContractivity
 
 Wolf, *Quantum Channels & Operations*, Section 8.5, the lemma containing
 Equations (8.54)–(8.55), `Notes/WolfNoteTexSource/ch08_distance_measures.tex`,
-lines 658–669. For positive-semidefinite `A, B` and `s ∈ [0, 1]`,
+lines 660–670. For positive-semidefinite `A, B` and `s ∈ [0, 1]`,
 Equation (8.54) reads
 `‖A - B‖₁ ≥ tr[A + B] - 2 tr[Aˢ B¹⁻ˢ]`.
 
@@ -90,7 +90,7 @@ private lemma re_trace_mul_le_mul_right {Z X Y : Matrix n n ℂ} (hZ : Z.PosSemi
 `tr A - tr[Aˢ B¹⁻ˢ] ≤ tr (A - B)₊`.
 
 This is the form of Wolf, Equation (8.54), `ch08_distance_measures.tex`,
-lines 662–665, that the operator monotonicity argument proves. -/
+lines 663–665, that the operator monotonicity argument proves. -/
 theorem re_trace_sub_re_trace_rpow_mul_rpow_le_posPart {A B : Matrix n n ℂ}
     (hA : A.PosSemidef) (hB : B.PosSemidef) {s : ℝ} (hs : s ∈ Set.Icc (0 : ℝ) 1) :
     A.trace.re - (A ^ s * B ^ (1 - s)).trace.re ≤ ((A - B)⁺).trace.re := by
@@ -139,7 +139,7 @@ theorem re_trace_sub_re_trace_rpow_mul_rpow_le_posPart {A B : Matrix n n ℂ}
 `‖A - B‖₁ ≥ tr[A + B] - 2 tr[Aˢ B¹⁻ˢ]`, with `‖X‖₁ = Re tr |X|`.
 
 Wolf, Lemma in Section 8.5, Equation (8.54), `ch08_distance_measures.tex`,
-lines 658–665. -/
+lines 660–665. -/
 theorem re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le {A B : Matrix n n ℂ}
     (hA : A.PosSemidef) (hB : B.PosSemidef) {s : ℝ} (hs : s ∈ Set.Icc (0 : ℝ) 1) :
     (A + B).trace.re - 2 * (A ^ s * B ^ (1 - s)).trace.re ≤
@@ -157,7 +157,7 @@ theorem re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le {A B : Matrix n n ℂ
 /-- **Wolf, Equation (8.54)** with the trace norm `Matrix.traceNorm` on `Fin D`.
 
 Wolf, Lemma in Section 8.5, Equation (8.54), `ch08_distance_measures.tex`,
-lines 658–665. -/
+lines 660–665. -/
 theorem re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le_traceNorm {D : ℕ}
     {A B : Matrix (Fin D) (Fin D) ℂ} (hA : A.PosSemidef) (hB : B.PosSemidef) {s : ℝ}
     (hs : s ∈ Set.Icc (0 : ℝ) 1) :
