@@ -216,8 +216,6 @@ stochastic and doubly substochastic matrices.
     These are clauses 1, 2 and 4 of
     \cite[Theorem~8.4]{Wolf2012Quantum}.
 \end{theorem}
-% Clause 3 (the orthostochastic characterization) remains outside this statement.
-% See docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex.
 \begin{proof}\leanok
     \uses{def:vector_majorization, lem:vector_majorization_convex_hull,
         thm:birkhoff_doubly_stochastic}
@@ -236,6 +234,37 @@ stochastic and doubly substochastic matrices.
         &\leq ka+\sum_i\max(y_i-a,0)=S_k(y^\downarrow).
     \end{align*}
     The case $k=d$ follows from equality of the total sums.
+\end{proof}
+
+\begin{theorem}[The orthostochastic characterization of majorization]
+    \label{thm:vector_majorization_orthostochastic}
+    \lean{TNLean.sum_le_vectorPrefix_decreasingSort,
+        TNLean.planeRotation_mem_orthogonalGroup,
+        TNLean.planeRotation_conj_diagonal,
+        TNLean.VectorMajorized.exists_orthostochastic,
+        TNLean.vectorMajorized_iff_exists_orthostochastic}
+    \leanok
+    \uses{def:vector_majorization, thm:vector_majorization_equivalences}
+    For $x,y\in\R^d$, $x\prec y$ holds exactly when there is a real
+    orthogonal matrix $O$ with $x_i=\sum_jO_{ij}^2y_j$ for every $i$. This is
+    clause 3 of \cite[Theorem~8.4]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:vector_majorization_equivalences}
+    The matrix $(O_{ij}^2)$ is doubly stochastic, which gives one direction.
+    For the other, we prove Horn's statement that $\operatorname{diag}(Oy\,O^{\mathsf T})$
+    can equal $x$, by induction on $d$. Permutation matrices reduce to
+    decreasingly sorted $x$ and $y$. Then $y_d\le x_1\le y_1$; let $j$ be the
+    first index with $y_j\le x_1$, replaced by $2$ if $j=1$. A rotation in
+    the plane of the coordinates $1$ and $j$ with $\cos^2\theta=c$, where
+    $cy_1+(1-c)y_j=x_1$, turns $\operatorname{diag}(y)$ into a matrix with
+    first diagonal entry $x_1$ whose remaining block is $\operatorname{diag}(z')$,
+    where $z'$ is $y_2,\ldots,y_d$ with $y_j$ replaced by $y_1+y_j-x_1$.
+    For the first $t$ coordinates of $z'$ the sum is at least
+    $x_2+\cdots+x_{t+1}$: termwise when $t+1<j$, since $y_i>x_1\ge x_i$, and
+    otherwise because it equals $y_1+\cdots+y_{t+1}-x_1$. Since the sum of any
+    $t$ coordinates is at most the sum of the $t$ largest, $(x_2,\ldots,x_d)\prec z'$.
+    The induction hypothesis on the remaining block completes the construction.
 \end{proof}
 
 \section{Entropy increasing maps}

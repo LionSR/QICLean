@@ -2371,7 +2371,7 @@ or strict-positivity assumption is imposed. The containing source theorem
 is complete. The other environments tracked by issue #47 remain outside
 this result's scope. The historical scope note
 `docs/paper-gaps/wolf_ch8_birkhoff_doubly_substochastic_gap.tex` is resolved.
-### Theorem 8.4 (Majorization) — CLAUSES 1, 2 AND 4 FORMALIZED
+### Theorem 8.4 (Majorization) — FORMALIZED
 
 In `QICLean.Analysis.VectorMajorization`, `TNLean.VectorMajorized` is
 Equation (8.16): decreasing-sorted prefix inequalities and equal total sums.
@@ -2384,7 +2384,10 @@ arbitrary real entries and dimensions zero and one.
 
 The reverse stochastic implication is proved by separation of the convex
 hull of permutations and Birkhoff's theorem. No stochastic witness is
-assumed. Clause 3 (orthostochastic matrices) remains open, as recorded in
+assumed. Clause 3 (orthostochastic matrices) is
+`TNLean.vectorMajorized_iff_exists_orthostochastic` in
+`QICLean.Analysis.VectorMajorizationOrthostochastic`, proved through Horn's
+theorem with one plane rotation per induction step; see
 `docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
 The separate submajorization theorem and the remainder of issue #47 are
 not completed by these equivalences.

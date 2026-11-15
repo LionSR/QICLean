@@ -17,9 +17,8 @@ Wolf, Chapter 8, Eq. (8.16) and Theorem 8.4, clauses 1, 2 and 4
 (`Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 220–251).
 Vectors have arbitrary real entries. Sorting preserves multiplicities.
 
-**Scope restriction (Wolf Theorem 8.4):** the orthostochastic characterization
-in clause 3 is not included. See
-`docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
+The orthostochastic characterization in clause 3 is in
+`QICLean.Analysis.VectorMajorizationOrthostochastic`.
 -/
 
 open Finset Matrix
