@@ -140,6 +140,22 @@ theorem subperipheralModulus_le_of_smul_one_le_choiMatrix
   have : NeZero D := ⟨hDpos.ne'⟩
   obtain ⟨hq, hcontr⟩ := traceNorm_map_le_of_smul_one_le_choiMatrix htr hc
   set q : ℝ := 1 - (D : ℝ) ^ 2 * c with hq_def
+  -- Powers of `T` preserve Hermiticity and tracelessness.
+  have hherm_pow : ∀ (n : ℕ) (H : Matrix (Fin D) (Fin D) ℂ), H.IsHermitian →
+      ((T ^ n) H).IsHermitian := by
+    intro n H hH
+    induction n with
+    | zero => simpa using hH
+    | succ m ihm =>
+      rw [pow_succ', Module.End.mul_apply]
+      unfold Matrix.IsHermitian
+      rw [← isKrausCP_map_conjTranspose hCP, ihm.eq]
+  have htr_pow : ∀ (n : ℕ) (H : Matrix (Fin D) (Fin D) ℂ), H.trace = 0 →
+      ((T ^ n) H).trace = 0 := by
+    intro n H hH0
+    induction n with
+    | zero => simpa using hH0
+    | succ m ihm => rw [pow_succ', Module.End.mul_apply, htr, ihm]
   -- Powers of `T` contract traceless Hermitian matrices by `q ^ n`.
   have hpow : ∀ (n : ℕ) (H : Matrix (Fin D) (Fin D) ℂ), H.IsHermitian → H.trace = 0 →
       traceNorm ((T ^ n) H) ≤ q ^ n * traceNorm H := by
@@ -148,21 +164,9 @@ theorem subperipheralModulus_le_of_smul_one_le_choiMatrix
     | zero => intro H _ _; simp
     | succ n ih =>
       intro H hH hH0
-      have hHn : ((T ^ n) H).IsHermitian := by
-        clear ih
-        induction n with
-        | zero => simpa using hH
-        | succ m ihm =>
-          rw [pow_succ', Module.End.mul_apply]
-          unfold Matrix.IsHermitian
-          rw [← isKrausCP_map_conjTranspose hCP, ihm.eq]
-      have hHn0 : ((T ^ n) H).trace = 0 := by
-        clear ih hHn
-        induction n with
-        | zero => simpa using hH0
-        | succ m ihm => rw [pow_succ', Module.End.mul_apply, htr, ihm]
       rw [pow_succ', Module.End.mul_apply]
-      calc traceNorm (T ((T ^ n) H)) ≤ q * traceNorm ((T ^ n) H) := hcontr _ hHn hHn0
+      calc traceNorm (T ((T ^ n) H))
+          ≤ q * traceNorm ((T ^ n) H) := hcontr _ (hherm_pow n H hH) (htr_pow n H hH0)
         _ ≤ q * (q ^ n * traceNorm H) := mul_le_mul_of_nonneg_left (ih H hH hH0) hq
         _ = q ^ (n + 1) * traceNorm H := by ring
   -- Every subperipheral eigenvalue has modulus at most `q`.

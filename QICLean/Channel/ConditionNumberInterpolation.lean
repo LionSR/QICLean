@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.ProjectionQuadraticBound
 import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Channel.SupportCompletion
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
@@ -70,12 +71,6 @@ def conditionNumber {n : Type*} [Fintype n] [DecidableEq n] (X : Matrix n n ℂ)
 variable {d d' : ℕ}
 
 /-! ### Quadratic forms -/
-
-/-- The Loewner order is monotone in every quadratic form. -/
-lemma dotProduct_mulVec_le_of_le {X Y : Matrix (Fin d) (Fin d) ℂ} (h : X ≤ Y)
-    (ψ : Fin d → ℂ) : star ψ ⬝ᵥ (X *ᵥ ψ) ≤ star ψ ⬝ᵥ (Y *ᵥ ψ) := by
-  have := (Matrix.le_iff.mp h).dotProduct_mulVec_nonneg ψ
-  rwa [sub_mulVec, dotProduct_sub, sub_nonneg] at this
 
 /-- The quadratic form of a unit eigenvector is its eigenvalue. -/
 lemma dotProduct_mulVec_of_mulVec_eq {X : Matrix (Fin d) (Fin d) ℂ} {ψ : Fin d → ℂ}
@@ -199,12 +194,15 @@ def measurePrepareMap (ψ : Fin d → ℂ) (Q : Matrix (Fin d') (Fin d') ℂ) :
     Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ :=
   (tracePrepareMap Q).comp (singleKrausMap (pureStateProj ψ))
 
+/-- The measure-and-prepare map has the formula `X ↦ ⟨ψ|X|ψ⟩ Q` for a unit vector `ψ`. -/
 lemma measurePrepareMap_apply {ψ : Fin d → ℂ} (hψ : IsUnitVector ψ)
     (Q : Matrix (Fin d') (Fin d') ℂ) (X : Matrix (Fin d) (Fin d) ℂ) :
     measurePrepareMap ψ Q X = (star ψ ⬝ᵥ (X *ᵥ ψ)) • Q := by
   rw [measurePrepareMap, LinearMap.comp_apply, tracePrepareMap_apply,
     trace_singleKrausMap_pureStateProj hψ]
 
+/-- Measure-and-prepare is completely positive when the prepared matrix is
+positive semidefinite. -/
 lemma measurePrepareMap_isKrausCP (ψ : Fin d → ℂ) {Q : Matrix (Fin d') (Fin d') ℂ}
     (hQ : Q.PosSemidef) : IsKrausCP (measurePrepareMap ψ Q) :=
   isKrausCP_comp (singleKrausMap_isKrausCP _) (tracePrepareMap_isKrausCP Q hQ)
@@ -400,7 +398,6 @@ theorem exists_isKrausCP_unital_map_smul_iff_conditionNumber_le
       le_antisymm hPM (heq ▸ hmP)
     have hM'm' : M' ≤ m' := by
       rw [heq] at hκ
-      have := hκ
       nlinarith
     have hP'eq : P' = M' • (1 : Matrix (Fin d') (Fin d') ℂ) :=
       le_antisymm hP'M' ((le_antisymm hm'M' hM'm') ▸ hm'P')
