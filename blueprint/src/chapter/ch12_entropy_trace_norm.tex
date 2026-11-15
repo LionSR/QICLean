@@ -895,8 +895,8 @@ Theorem~\ref{thm:trace_norm_abs}.
     yields the asserted bound.
 \end{proof}
 
-\begin{lemma}[Scalar Choi lower bound and traceless contraction]
-    \label{lem:scalar_choi_traceless_contraction}
+\begin{theorem}[Scalar Choi lower bound and traceless contraction]
+    \label{thm:scalar_choi_traceless_contraction}
     \lean{Matrix.traceNorm_map_le_of_smul_one_le_choiMatrix}
     \leanok
     \uses{def:trace_norm, def:choi_matrix_rect}
@@ -906,10 +906,11 @@ Theorem~\ref{thm:trace_norm_abs}.
     \begin{align}
         \lVert T(H)\rVert_{\tr}\le(1-D^2c)\,\lVert H\rVert_{\tr}.
     \end{align}
-\end{lemma}
+\end{theorem}
 
 \begin{proof}\leanok
-    \uses{lem:choi_matrix_trace_prepare, thm:choi_rect_cp}
+    \uses{lem:choi_matrix_trace_prepare, thm:choi_rect_cp,
+        thm:scaled_trace_norm_contractivity}
     Take $Y=cD\,\Id$ in the trace-prepare map. Its Choi matrix is
     $D^{-1}(Y\otimes\Id)=c\,\Id$, so $S=T-T'_Y$ has Choi matrix
     $\tau-c\,\Id\ge0$ and is completely positive. It scales traces by
@@ -924,7 +925,7 @@ Theorem~\ref{thm:trace_norm_abs}.
         Matrix.subperipheralModulus_le_one_sub_sq_mul_min_eigenvalue}
     \leanok
     \uses{def:wolf_subperipheral_modulus, def:choi_matrix_rect,
-        lem:is_kraus_cp_basic}
+        def:is_kraus_cp}
     Let $T:\MN{d}\to\MN{d}$ be completely positive and trace-preserving
     with Jamio{\l}kowski state $\tau$. Let $\mu$ be the largest modulus of
     an eigenvalue of $T$ strictly inside the unit disc, with $\mu=0$ when
@@ -934,11 +935,11 @@ Theorem~\ref{thm:trace_norm_abs}.
         \mu\le1-d^2\lambda_{\min}(\tau).
     \end{align}
     More generally $\mu\le1-d^2c$ whenever $c\,\Id\le\tau$.
-    This is \cite[Chapter~8, Eq.~(8.87)]{Wolf2012Quantum}.
+    This is \cite[Chapter~8, Equation~(8.87)]{Wolf2012Quantum}.
 \end{corollary}
 
 \begin{proof}\leanok
-    \uses{lem:scalar_choi_traceless_contraction}
+    \uses{thm:scalar_choi_traceless_contraction}
     For $d=0$ there is no eigenvector and $\mu=0\le1$. Otherwise write
     $q=1-d^2c\ge0$. Powers of $T$ preserve traceless Hermitian matrices,
     so $\lVert T^n(H)\rVert_{\tr}\le q^n\lVert H\rVert_{\tr}$ for each such
@@ -992,13 +993,12 @@ Theorem~\ref{thm:trace_norm_abs}.
     lower bound.
 \end{proof}
 
-\begin{lemma}[Completely positive interpolation and the condition number]
-    \label{lem:cp_unital_interpolation_condition_number}
+\begin{theorem}[Completely positive interpolation and the condition number]
+    \label{thm:cp_unital_interpolation_condition_number}
     \lean{Matrix.exists_isKrausCP_unital_map_smul_iff_conditionNumber_le,
         Matrix.conditionNumber_le_of_positive_unital_map_smul}
     \leanok
-    \uses{def:condition_number, lem:is_kraus_cp_basic,
-        def:trace_prepare_map}
+    \uses{def:condition_number, def:is_kraus_cp}
     Let $P\in\MN{d}$ and $P'\in\MN{d'}$ be positive definite. There is a
     completely positive unital linear map $T:\MN{d}\to\MN{d'}$ with
     $T(P)=\lambda P'$ for some $\lambda>0$ if and only if
@@ -1006,11 +1006,12 @@ Theorem~\ref{thm:trace_norm_abs}.
         \kappa(P)\ge\kappa(P').
     \end{align}
     The necessity of the inequality holds for every positive unital $T$.
-    This is \cite[Chapter~8, Eqs.~(8.93)--(8.95)]{Wolf2012Quantum}.
-\end{lemma}
+    This is \cite[Chapter~8, Equations~(8.93)--(8.95)]{Wolf2012Quantum}.
+\end{theorem}
 
 \begin{proof}\leanok
-    \uses{lem:pos_def_extremal_eigenvalues}
+    \uses{lem:pos_def_extremal_eigenvalues, lem:is_kraus_cp_basic,
+        def:trace_prepare_map}
     Write $M=\lVert P\rVert$, $m=\lVert P^{-1}\rVert^{-1}$, and similarly
     $M',m'$ for $P'$, so that $\kappa(P)=M/m$ and $\kappa(P')=M'/m'$.
     Empty dimensions are checked directly: for $d'=0$ the zero map works,
