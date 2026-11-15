@@ -276,6 +276,7 @@ import QICLean.Analysis.ProjectionResidual
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.QuadraticScalarShift
 import QICLean.Analysis.QuantitativeFilterIteration
+import QICLean.Analysis.QuantumNeymanPearson
 import QICLean.Analysis.RandomRangeSubspaceDimension
 import QICLean.Analysis.RandomSubspaceProjection
 import QICLean.Analysis.RectangleSimplePoles
@@ -295,6 +296,7 @@ import QICLean.Analysis.RegionalRoughLowerNorm
 import QICLean.Analysis.RegionalRoughLowerThree
 import QICLean.Analysis.RegionalSharpLowerNorm
 import QICLean.Analysis.RegionalTensorMergeMeasurable
+import QICLean.Analysis.RelativeEntropyRelations
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
@@ -458,6 +460,7 @@ import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity
 import QICLean.Analysis.TraceNormFrobenius
 import QICLean.Analysis.TraceNormNet
+import QICLean.Analysis.TraceNormPowerBound
 import QICLean.Analysis.TraceNormVariational
 import QICLean.Analysis.Transport
 import QICLean.Analysis.TwoProjectionAngleBlock

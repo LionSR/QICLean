@@ -1,0 +1,87 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Quantum Neyman--Pearson: Freedom on the Kernel of the Optimal Test}
+\author{}
+\date{2026-11-15}
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{Source statement}
+Let $\rho,\sigma$ be density matrices, let $p$ be the prior probability of
+$\rho$, and let $0\le P\le\mathbb 1$ be the effect on which $\rho$ is guessed.
+Wolf's Theorem ``Quantum Neyman--Pearson'' \cite{Wolf2012Quantum}%
+\footnote{\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex},
+lines~543--566, Equations~(8.40)--(8.42).}
+bounds the average error
+\begin{align}
+    e(P) &= p\tr[\rho(\mathbb 1-P)]+(1-p)\tr[\sigma P]
+    \label{eq:np_kernel_error}
+\end{align}
+by
+\begin{align}
+    e(P) &\ge \tfrac12\bigl(1-\lVert A\rVert_1\bigr),
+    \qquad A=p\rho-(1-p)\sigma,
+    \label{eq:np_kernel_bound}
+\end{align}
+and asserts that equality holds if and only if $P$ is the projection onto
+the positive part of $A$.
+
+\section{The equality clause}
+Write $A=A_+-A_-$ with $A_\pm\ge0$ and $A_+A_-=0$. For every matrix $P$,
+using $\tr\rho=\tr\sigma=1$,
+\begin{align}
+    e(P)-\tfrac12\bigl(1-\lVert A\rVert_1\bigr)
+        &= \tr[(\mathbb 1-P)A_+]+\tr[PA_-].
+    \label{eq:np_kernel_excess}
+\end{align}
+For an effect both traces are nonnegative, which gives
+(\ref{eq:np_kernel_bound}). A trace of a product of two positive
+semidefinite matrices vanishes only if the product vanishes. Hence equality
+holds if and only if
+\begin{align}
+    PA_+ &= A_+, & PA_- &= 0.
+    \label{eq:np_kernel_condition}
+\end{align}
+This is the condition stated in Wolf's proof. It fixes $P$ on the range of
+$A_+$ and on the range of $A_-$, but imposes nothing on the kernel of $A$.
+
+\paragraph{Counterexample to the printed clause.}
+Take $p=\tfrac12$ and $\rho=\sigma$. Then $A=0$, the projection onto the
+positive part of $A$ is $0$, and every effect satisfies
+\begin{align}
+    e(P) &= \tfrac12\tr[\rho(\mathbb 1-P)]+\tfrac12\tr[\rho P]
+          = \tfrac12
+          = \tfrac12\bigl(1-\lVert A\rVert_1\bigr).
+    \label{eq:np_kernel_counterexample}
+\end{align}
+So $P=\mathbb 1$ is optimal but is not the projection onto the positive part.
+
+\paragraph{Invertible difference.}
+If $A$ is invertible, (\ref{eq:np_kernel_condition}) gives
+$PA=A_+=\Pi_+A$, where $\Pi_+$ is the projection onto the range of $A_+$.
+Cancelling $A$ yields $P=\Pi_+$. Thus the printed clause holds exactly when
+the kernel of $A$ is trivial.
+
+\section{Formalization}
+\doclink{QICLean/Analysis/QuantumNeymanPearson} proves
+(\ref{eq:np_kernel_excess}), the bound (\ref{eq:np_kernel_bound}), the
+corrected equivalence with (\ref{eq:np_kernel_condition}), attainment by
+$\Pi_+$, the printed clause for invertible $A$, and the counterexample
+(\ref{eq:np_kernel_counterexample}). The states need only be Hermitian of
+unit trace and $p$ may be any real number, which contains the source
+hypotheses. The theorem for invertible $A$ carries a scope marker; the other
+results are faithful to the source with the corrected equality clause. This
+resolves the Neyman--Pearson part of \ghissue{46}.
+
+\section{Verdict}
+The equality clause is false as printed whenever the kernel of
+$p\rho-(1-p)\sigma$ is nonzero. The correct clause is
+(\ref{eq:np_kernel_condition}), which the source proof already derives.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
