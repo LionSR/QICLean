@@ -38,6 +38,19 @@ def hermitianSpectralDomain (n : Type*) [Fintype n] [DecidableEq n] (I : Set ℝ
     Set (Matrix n n ℂ) :=
   {A | A.IsHermitian ∧ spectrum ℝ A ⊆ I}
 
+omit [DecidableEq n] in
+/-- The real part of a vector quadratic form is additive over finite sums of matrices. -/
+theorem re_dotProduct_sum_mulVec {ι : Type*} (s : Finset ι) (M : ι → Matrix n n ℂ)
+    (v : n → ℂ) :
+    (star v ⬝ᵥ ((∑ i ∈ s, M i) *ᵥ v)).re = ∑ i ∈ s, (star v ⬝ᵥ (M i *ᵥ v)).re := by
+  rw [Matrix.sum_mulVec, dotProduct_sum, Complex.re_sum]
+
+omit [DecidableEq n] in
+/-- The real part of a vector quadratic form is homogeneous under real scalars. -/
+theorem re_dotProduct_smul_mulVec (a : ℝ) (M : Matrix n n ℂ) (v : n → ℂ) :
+    (star v ⬝ᵥ ((a • M) *ᵥ v)).re = a * (star v ⬝ᵥ (M *ᵥ v)).re := by
+  rw [smul_mulVec, dotProduct_smul, Complex.real_smul, Complex.re_ofReal_mul]
+
 namespace IsHermitian
 
 variable {I : Set ℝ} {A B : Matrix n n ℂ}
@@ -73,8 +86,8 @@ omit [DecidableEq n] in
 private lemma re_quad_smul_add (a b : ℝ) (A B : Matrix n n ℂ) (v : n → ℂ) :
     (star v ⬝ᵥ ((a • A + b • B) *ᵥ v)).re =
       a * (star v ⬝ᵥ (A *ᵥ v)).re + b * (star v ⬝ᵥ (B *ᵥ v)).re := by
-  simp [add_mulVec, smul_mulVec, dotProduct_add, dotProduct_smul,
-    Complex.real_smul, Complex.mul_re]
+  rw [add_mulVec, dotProduct_add, Complex.add_re, re_dotProduct_smul_mulVec,
+    re_dotProduct_smul_mulVec]
 
 end IsHermitian
 

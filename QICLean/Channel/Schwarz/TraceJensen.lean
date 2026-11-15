@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
 import QICLean.Analysis.TraceConvexFunctions
+import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.HermitianEigenbasisFunctionalCalculus
 import QICLean.Analysis.CfcConjugation
 import QICLean.Channel.Basic
@@ -116,53 +117,17 @@ namespace Matrix
 
 variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
 
-namespace IsHermitian
+/-- The eigenspace projections of a Hermitian matrix are positive semidefinite. -/
+private lemma spectralProj_posSemidef {A : Matrix m m ℂ} (hA : A.IsHermitian) (u : ℝ) :
+    (hA.spectralProj u).PosSemidef := by
+  rw [IsHermitian.spectralProj, ← hA.cfc_eq, ← Matrix.nonneg_iff_posSemidef]
+  exact cfc_nonneg fun x _ => by split_ifs <;> norm_num
 
-/-- The rank-one spectral projection of a Hermitian matrix onto its `x`th eigenvector. -/
-private def eigenProj {A : Matrix m m ℂ} (hA : A.IsHermitian) (x : m) : Matrix m m ℂ :=
-  (hA.eigenvectorUnitary : Matrix m m ℂ) * single x x 1 *
-    star (hA.eigenvectorUnitary : Matrix m m ℂ)
-
-private lemma eigenProj_posSemidef {A : Matrix m m ℂ} (hA : A.IsHermitian) (x : m) :
-    (hA.eigenProj x).PosSemidef := by
-  have hs : (single x x (1 : ℂ)).PosSemidef := by
-    rw [← diagonal_single, posSemidef_diagonal_iff]
-    intro j
-    by_cases hj : j = x
-    · subst hj; simp
-    · simp [hj]
-  simpa only [eigenProj, star_eq_conjTranspose] using
-    hs.mul_mul_conjTranspose_same (hA.eigenvectorUnitary : Matrix m m ℂ)
-
-/-- The functional calculus of a Hermitian matrix as a sum of rank-one spectral
-projections, `f(A) = ∑ₓ f(μₓ) Pₓ`. -/
-private lemma cfc_eq_sum_eigenProj {A : Matrix m m ℂ} (hA : A.IsHermitian) (f : ℝ → ℝ) :
-    cfc f A = ∑ x, ((f (hA.eigenvalues x) : ℝ) : ℂ) • hA.eigenProj x := by
-  rw [hA.cfc_eq, hA.cfc_form]
-  have hd : diagonal (fun i => ((f (hA.eigenvalues i) : ℝ) : ℂ)) =
-      ∑ x, ((f (hA.eigenvalues x) : ℝ) : ℂ) • single x x (1 : ℂ) := by
-    ext i j
-    by_cases hij : i = j
-    · subst hij
-      simp [Matrix.sum_apply, single_apply]
-    · simp only [diagonal_apply_ne _ hij, Matrix.sum_apply, Matrix.smul_apply, single_apply]
-      refine (Finset.sum_eq_zero fun c _ => ?_).symm
-      rw [ite_eq_right_iff.mpr (fun h' => absurd h' (fun h => hij (h.1.symm.trans h.2))), smul_zero]
-  rw [hd, Finset.mul_sum, Finset.sum_mul]
-  refine Finset.sum_congr rfl fun x _ => ?_
-  simp only [eigenProj, Matrix.mul_smul, Matrix.smul_mul]
-
-end IsHermitian
-
-omit [DecidableEq n] in
-private lemma re_quad_sum {ι : Type*} (s : Finset ι) (M : ι → Matrix n n ℂ) (v : n → ℂ) :
-    (star v ⬝ᵥ ((∑ i ∈ s, M i) *ᵥ v)).re = ∑ i ∈ s, (star v ⬝ᵥ (M i *ᵥ v)).re := by
-  rw [Matrix.sum_mulVec, dotProduct_sum, Complex.re_sum]
-
-omit [DecidableEq n] in
-private lemma re_quad_real_smul (a : ℝ) (M : Matrix n n ℂ) (v : n → ℂ) :
-    (star v ⬝ᵥ (((a : ℂ) • M) *ᵥ v)).re = a * (star v ⬝ᵥ (M *ᵥ v)).re := by
-  rw [smul_mulVec, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul]
+/-- Every element of the eigenvalue set lies in the spectrum. -/
+private lemma mem_spectrum_of_mem_eigenvalueSet {A : Matrix m m ℂ} (hA : A.IsHermitian)
+    {u : ℝ} (hu : u ∈ hA.eigenvalueSet) : u ∈ spectrum ℝ A := by
+  obtain ⟨i, -, rfl⟩ := Finset.mem_image.mp hu
+  exact hA.eigenvalues_mem_spectrum_real i
 
 omit [DecidableEq n] in
 private lemma re_quad_nonneg {M : Matrix n n ℂ} (hM : M.PosSemidef) (v : n → ℂ) :
@@ -212,8 +177,7 @@ theorem re_trace_mul_cfc_sum_map_le_of_commute {ι : Type*} [Fintype ι]
   -- The square root of `C` commutes with `Y` and with `f(Y)`.
   set S := CFC.sqrt C with hSdef
   have hC0 : 0 ≤ C := hC.nonneg
-  have hSsa : IsSelfAdjoint S := (CFC.sqrt_nonneg C).isSelfAdjoint
-  have hS : S.IsHermitian := hSsa.isHermitian
+  have hS : S.IsHermitian := (CFC.sqrt_nonneg C).isSelfAdjoint.isHermitian
   have hSS : S * S = C := CFC.sqrt_mul_sqrt_self C hC0
   have hYS : Commute Y S := by
     rw [hSdef, CFC.sqrt_eq_real_sqrt C hC0, cfcₙ_eq_cfc]
@@ -242,20 +206,22 @@ theorem re_trace_mul_cfc_sum_map_le_of_commute {ι : Type*} [Fintype ι]
   have hmeanY : (star v ⬝ᵥ (Y *ᵥ v)).re = t * y := by
     rw [hYv, dotProduct_smul, smul_eq_mul, Complex.re_ofReal_mul, mul_comm]
   -- Spectral weights of `v` with respect to the family `Tᵢ` and the eigenprojections of `Xᵢ`.
-  let q : ι × m → ℝ := fun p => (star v ⬝ᵥ (T p.1 ((hX p.1).eigenProj p.2) *ᵥ v)).re
-  let μ : ι × m → ℝ := fun p => (hX p.1).eigenvalues p.2
+  let κ := Σ i : ι, (hX i).eigenvalueSet
+  let q : κ → ℝ := fun p => (star v ⬝ᵥ (T p.1 ((hX p.1).spectralProj p.2) *ᵥ v)).re
+  let μ : κ → ℝ := fun p => p.2
   have hquad : ∀ g : ℝ → ℝ,
       (star v ⬝ᵥ ((∑ i, T i (cfc g (X i))) *ᵥ v)).re = ∑ p, q p * g (μ p) := by
     intro g
-    rw [re_quad_sum, Fintype.sum_prod_type]
+    rw [re_dotProduct_sum_mulVec, Fintype.sum_sigma]
     refine Finset.sum_congr rfl fun i _ => ?_
-    rw [(hX i).cfc_eq_sum_eigenProj g, map_sum, re_quad_sum]
-    refine Finset.sum_congr rfl fun x _ => ?_
-    rw [map_smul, re_quad_real_smul, mul_comm]
-  have hq : ∀ p ∈ (Finset.univ : Finset (ι × m)), 0 ≤ q p := fun p _ =>
-    re_quad_nonneg ((hT p.1) _ ((hX p.1).eigenProj_posSemidef p.2)) v
-  have hμ : ∀ p ∈ (Finset.univ : Finset (ι × m)), μ p ∈ I := fun p _ =>
-    hXI p.1 ((hX p.1).eigenvalues_mem_spectrum_real p.2)
+    rw [(hX i).cfc_eq, (hX i).cfc_eq_sum_smul_spectralProj g, map_sum,
+      re_dotProduct_sum_mulVec]
+    refine Finset.sum_congr rfl fun u _ => ?_
+    rw [map_smul, Complex.coe_smul, re_dotProduct_smul_mulVec, mul_comm]
+  have hq : ∀ p ∈ (Finset.univ : Finset κ), 0 ≤ q p := fun p _ =>
+    re_quad_nonneg ((hT p.1) _ (spectralProj_posSemidef (hX p.1) p.2)) v
+  have hμ : ∀ p ∈ (Finset.univ : Finset κ), μ p ∈ I := fun p _ =>
+    hXI p.1 (mem_spectrum_of_mem_eigenvalueSet (hX p.1) p.2.2)
   have hsumq : ∑ p, q p = (star v ⬝ᵥ ((∑ i, T i 1) *ᵥ v)).re := by
     have h := hquad (fun _ => 1)
     simp only [mul_one] at h
@@ -296,13 +262,7 @@ private def traceJensenCexWeight : Fin 3 → Matrix (Fin 2) (Fin 2) ℂ
 private lemma traceJensenCexWeight_posSemidef (i : Fin 3) :
     (traceJensenCexWeight i).PosSemidef := by
   have h16 : (0 : ℝ) ≤ 1 / 16 := by norm_num
-  fin_cases i
-  · exact ((posSemidef_vecMulVec_self_star _).add
-      (by simp)).smul h16
-  · exact ((posSemidef_vecMulVec_self_star _).add
-      (by simp)).smul h16
-  · exact ((posSemidef_vecMulVec_self_star _).add
-      (by simp)).smul h16
+  fin_cases i <;> exact ((posSemidef_vecMulVec_self_star _).add (by simp)).smul h16
 
 /-- The positive map `M₁ → M₂`, `x ↦ x Pᵢ`, used in
 `Matrix.trace_jensen_commute_cfc_counterexample`. -/
