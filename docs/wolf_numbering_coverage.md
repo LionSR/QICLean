@@ -2559,12 +2559,17 @@ source qualification is recorded in
 `docs/paper-gaps/wolf_ch8_eq_8_103_negative_exponent.tex`. With this explicit
 qualification, the containing Theorem 8.24 has a corrected-source disposition.
 
-### Proposition 8.6, “Convergence towards asymptotic states” — PARTIAL-PACKAGING
+### Proposition 8.6, “Convergence towards asymptotic states” — FORMALIZED
 
 `Matrix.traceNormAsymptoticDistance`,
 `Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm`, and
 `Matrix.traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm` prove the
 upper bound in Equation (8.112) and its transfer-matrix estimates for positive
-powers. The converse supremum lower bound in Equation (8.113), including the
-four-positive-parts argument of Equation (8.117), remains absent. Thus the
-proved upper bound does not complete the containing proposition.
+powers. In `QICLean.Analysis.AsymptoticStateConverse`,
+`Matrix.exists_four_posSemidef_frobenius_norm_le` and
+`Matrix.hilbertSchmidtOperatorNorm_le_four_mul_of_posSemidef` prove the
+four-positive-parts estimate of Equation (8.117), and
+`Matrix.hilbertSchmidtOperatorNorm_pow_sub_le_sSup_traceNormAsymptoticDistance`
+and `Matrix.transferMatrix_l2_opNorm_pow_sub_le_sSup_traceNormAsymptoticDistance`
+prove the converse supremum lower bound in Equation (8.113) for every `n`, for
+positive dimension.

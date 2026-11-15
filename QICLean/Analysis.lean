@@ -13,6 +13,7 @@ import QICLean.Analysis.AdaptiveSamplingProbability
 import QICLean.Analysis.AdjointEigenvalues
 import QICLean.Analysis.ApproximateBasisImage
 import QICLean.Analysis.AsymptoticStateConvergence
+import QICLean.Analysis.AsymptoticStateConverse
 import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
