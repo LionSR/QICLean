@@ -883,6 +883,44 @@ theorem proves
 Eq.~\ref{eq:wolf_lecture_notes_errata_log_corrected_unital_clause} rather than
 the false subunital target.
 
+\section{The commutation hypothesis in Theorem~5.17}
+\label{sec:thm517-commutation}
+
+\paragraph{Formalization trigger.}
+The corrected trace Jensen inequality is
+\leanid{Matrix.re\_trace\_mul\_cfc\_sum\_map\_le\_of\_commute}, and the
+counterexample to the printed hypothesis is
+\leanid{Matrix.trace\_jensen\_commute\_cfc\_counterexample}, both in
+\doclink{QICLean/Channel/Schwarz/TraceJensen}. The discrepancy is documented
+in \path{docs/paper-gaps/wolf_ch5_trace_jensen_commutation.tex}.
+
+\paragraph{Printed assertion and correction.}
+Chapter~5, Theorem~5.17 asks that the positive semidefinite weight $C$
+commute with $f(\sum_iT_i(X_i))$ \cite[Theorem~5.17]{Wolf2012Quantum}. Its
+proof evaluates $f$ at an eigenvalue of $\sum_iT_i(X_i)$ along an eigenvector
+of $f(\sum_iT_i(X_i))$, which is valid only for eigenvectors of
+$\sum_iT_i(X_i)$ itself. For the positive maps $T_i(x)=xP_i$ from $\MN{1}$ to
+$\MN{2}$ with
+\begin{align}
+    16P_1&=\begin{pmatrix}9&2\\2&1\end{pmatrix},
+    &
+    16P_2&=\begin{pmatrix}1&2\\2&9\end{pmatrix},
+    &
+    16P_3&=\begin{pmatrix}6&-4\\-4&6\end{pmatrix},
+    \label{eq:wolf_lecture_notes_errata_thm517_weights}
+\end{align}
+the scalars $X_1=2$, $X_2=-2$, $X_3=0$, the function $f(x)=|x|$ on $[-2,2]$,
+and $C=\left(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\right)$, one has
+$\sum_iT_i(\Id)=\Id$ and $f(\sum_iT_i(X_i))=\Id$, but the right-hand side
+$3/2$ of Equation~(5.51) is smaller than the left-hand side $2$. The corrected
+theorem requires $C$ to commute with $\sum_iT_i(X_i)$, and, in the subunital
+alternative, makes explicit that $0\in I$.
+
+\paragraph{Classification.}
+This is a source error in the hypothesis of Theorem~5.17. The source proof is
+valid under the corrected hypothesis, which agrees with the printed one when
+$f$ is injective on $I$.
+
 \section{Formalization gaps that are not source corrections}
 
 The following Wolf-specific notes record formalization scope or dependency
@@ -910,8 +948,8 @@ boundaries rather than source errata:
 The formalization-derived record identifies source errors in
 Sections~\ref{sec:lorentz}, \ref{sec:kramers-ii},
 \ref{sec:pauli-block-truncation}, \ref{sec:spinor-rotation-sign},
-\ref{sec:theorem-6-3}, \ref{sec:unitary-comparison}, and
-\ref{sec:cor52-log}. It also identifies one normalization typo in
+\ref{sec:theorem-6-3}, \ref{sec:unitary-comparison},
+\ref{sec:cor52-log}, and \ref{sec:thm517-commutation}. It also identifies one normalization typo in
 Section~\ref{sec:ordered-cp-inverse}, one explicit boundary convention in
 Section~\ref{sec:radon-nikodym}, and one local correction to a spectrum
 shorthand in Section~\ref{sec:two-pure-state-spectrum}. These are the

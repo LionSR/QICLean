@@ -948,6 +948,42 @@ or zero-in-interval condition. Empty matrix dimensions are included.
 Theorem 5.17 and its weighted Equation (5.51) remain outside this corollary.
 The complete-environment tally above records the historical August audit.
 
+### Theorem 5.17 (convex functions and positive maps under the trace), Equation 5.51 — CORRECTED FORM FORMALIZED
+
+- `Matrix.re_trace_mul_cfc_sum_map_le_of_commute` in
+  `QICLean/Channel/Schwarz/TraceJensen.lean` proves Equation 5.51 for a finite
+  family of positive maps `Tᵢ : M_d → M_d'`, a function convex on an arbitrary
+  real interval `I`, Hermitian `Xᵢ` with spectra in `I`, and positive
+  semidefinite `C` commuting with `∑ᵢ Tᵢ(Xᵢ)`, under either `∑ᵢ Tᵢ(1) = 1` or
+  `∑ᵢ Tᵢ(1) ≤ 1`, `0 ∈ I`, `f(0) ≤ 0`. No complete positivity or continuity
+  is assumed ✓
+- The printed hypothesis, that `C` commute only with `f(∑ᵢ Tᵢ(Xᵢ))`, is
+  insufficient: `Matrix.trace_jensen_commute_cfc_counterexample` gives three
+  positive maps `M₁ → M₂` with `∑ᵢ Tᵢ(1) = 1`, `f = |·|` on `[-2, 2]`, and
+  `∑ᵢ Tᵢ(Xᵢ) = diag(1, -1)`, so `f(∑ᵢ Tᵢ(Xᵢ)) = 1`, for which the inequality
+  fails. The proof's Equation 5.52 uses an eigenvector of `∑ᵢ Tᵢ(Xᵢ)`. The two
+  conditions agree when `f` is injective on `I`; `0 ∈ I` makes the source's
+  `f(0)` meaningful. Resolved false-source note:
+  `docs/paper-gaps/wolf_ch5_trace_jensen_commutation.tex`.
+- The scalar steps of Equation 5.53 are `ConvexOn.mul_map_le_sum_of_sum_eq`
+  and `ConvexOn.mul_map_le_sum_of_sum_le`.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`,
+  lines 1039–1078.
+
+### Proposition 5.2 (monotone trace functions), Equation 5.55 — FORMALIZED
+
+- `Matrix.IsHermitian.trace_cfc_le_trace_cfc_of_le` and
+  `Matrix.IsHermitian.re_trace_cfc_le_re_trace_cfc_of_le` in
+  `QICLean/Channel/Schwarz/MonotoneTraceFunctions.lean` prove
+  `tr f(A) ≤ tr f(B)` for Hermitian `A ≤ B` and `f` non-decreasing on an
+  order-connected set containing both spectra ✓
+- Wolf additionally assumes that `I` is open and `f` is continuously
+  differentiable; the proof does not use these hypotheses, so the formal
+  theorem contains the source proposition. It is deduced from the corrected
+  Proposition 5.3 below rather than from the derivative formula (5.54).
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`,
+  lines 1103–1117.
+
 ### Theorem 5.2 (block Schur complement) — CORRECTED FORM FORMALIZED
 
 - `SchurComplement.blockMatrix_posSemidef_iff` proves the equivalence between

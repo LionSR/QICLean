@@ -102,7 +102,8 @@ namespace IsHermitian
 
 variable {A B : Matrix n n ℂ}
 
-private lemma sum_re_quad_eq_trace (hM : A.IsHermitian) (C : Matrix n n ℂ) :
+/-- The real trace as the sum of quadratic forms over a Hermitian eigenbasis. -/
+theorem sum_re_quad_eq_trace (hM : A.IsHermitian) (C : Matrix n n ℂ) :
     ∑ j, (star (⇑(hM.eigenvectorBasis j)) ⬝ᵥ
       (C *ᵥ ⇑(hM.eigenvectorBasis j))).re = C.trace.re := by
   have h := LinearMap.trace_eq_sum_inner C.toEuclideanLin hM.eigenvectorBasis
