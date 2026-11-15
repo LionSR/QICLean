@@ -196,6 +196,7 @@
     \label{thm:trace_jensen_commutation_counterexample}
     \lean{Matrix.trace_jensen_commute_cfc_counterexample}
     \leanok
+    \uses{def:positive_map}
     There are positive maps $T_1,T_2,T_3:\MN{1}\to\MN{2}$ with
     $\sum_iT_i(\Id)=\Id$, scalars $X_i$ in $[-2,2]$, and $C\ge0$ commuting
     with $f(\sum_iT_i(X_i))$ for $f(x)=|x|$, such that
@@ -209,8 +210,8 @@
     $16P_3=\left(\begin{smallmatrix}6&-4\\-4&6\end{smallmatrix}\right)$,
     and $X=(2,-2,0)$. Then $\sum_iT_i(X_i)=\operatorname{diag}(1,-1)$, so
     $f(\sum_iT_i(X_i))=\Id$ commutes with
-    $C=\left(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\right)$. The left
-    side is $\tr C=2$, while
+    $C=\left(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\right)$. The right
+    side is $\tr Cf(\sum_iT_i(X_i))=\tr C=2$, while
     $\sum_iT_i(f(X_i))=\frac1{16}\left(\begin{smallmatrix}20&8\\8&20\end{smallmatrix}\right)$
-    gives $\frac32$.
+    gives the left side $\sum_i\tr[C\,T_i(f(X_i))]=\frac32$.
 \end{proof}
