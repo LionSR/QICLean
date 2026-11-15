@@ -678,3 +678,62 @@ rank, and $q$ is the least integer such that $K_m=\MN{d}$ for every $m\geq q$.
     $q\leq nd^2\leq(d^2-k+1)d^2$. Part~(3) is the same blocked argument with
     $n=1$.
 \end{proof}
+
+\begin{lemma}[Nilpotent spaces of $3\times3$ matrices without a common kernel]
+    \label{lem:nilpotent_space_three_grading}
+    \lean{QICLean.trace_mul_eq_zero_of_isNilpotent,
+        QICLean.exists_conj_shiftJ,
+        QICLean.exists_normalizing_of_trace,
+        QICLean.mul_gradeE_eq_gradeF_mul_of_trace,
+        QICLean.exists_grading_of_isNilpotent_submodule_fin_three}
+    \leanok
+    Let $\mathcal N\subseteq\MN{3}$ be a linear space of nilpotent matrices
+    without a common nonzero kernel vector. Then there are $P_0,P_1\in\MN{3}$
+    with $P_0+P_1=\Id$, $P_0\neq P_1$ and $MP_0=P_1M$ for every
+    $M\in\mathcal N$. In suitable coordinates $\mathcal N$ lies in the span of
+    $J=E_{12}+E_{23}$ and $B_0=E_{32}-E_{21}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Polarizing $\operatorname{tr}((X\pm C)^k)=0$ for $k=2,3$ gives
+    $\operatorname{tr}(XC)=\operatorname{tr}(X^2C)=0$ on $\mathcal N$.
+    Without a common kernel, $\mathcal N$ contains $A$ with $A^2\neq0$, and
+    $A$ is similar to $J$ through the basis $(A^2v,Av,v)$. Some $B\in\mathcal N$
+    moves the kernel line of $J$; its trace identities against $J$ determine
+    $B$, and conjugation by a unitriangular matrix commuting with $J$ takes a
+    multiple of $B$ to $B_0$. The trace identities of an arbitrary member
+    against $J$, $B_0$ and $J+B_0$, with $\operatorname{tr}C=\operatorname{tr}C^2=0$,
+    place it in $\operatorname{span}\{J,B_0\}$, whose members exchange
+    $\operatorname{span}\{e_2\}$ and $\operatorname{span}\{e_1,e_3\}$.
+\end{proof}
+
+\begin{corollary}[The low-dimensional quantum Wielandt bound]
+    \label{cor:wolf_low_dimensional_wielandt}
+    \lean{Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two,
+        Kraus.not_isPrimitive_of_isTP_of_forall_isNilpotent_fin_three,
+        Kraus.exists_not_isNilpotent_mem_wordSpan_one_fin_three,
+        Kraus.exists_nonzero_eigenvector_of_not_isNilpotent,
+        Kraus.wielandtIndex_le_four_fin_two,
+        Kraus.wielandtIndex_le_nine_fin_three}
+    \leanok
+    \uses{thm:wolf_6_9_quantum_wielandt, lem:nilpotent_space_three_grading}
+    Let $T$ be a primitive quantum channel on $\MN{d}$ with $d=2,3$. Then
+    $K_1$ contains an element with a nonzero eigenvalue, and thus
+    $q\leq d^2$. This is the corollary after the quantum Wielandt inequality
+    in~\cite[Chapter~6]{Wolf2012Quantum}, with the nilpotent-space
+    classification it invokes supplied in
+    \cite{gap:wolf_ch6_lowdim_wielandt_classification}.
+\end{corollary}
+
+\begin{proof}\leanok
+    \uses{thm:wolf_6_9_quantum_wielandt, lem:nilpotent_space_three_grading}
+    For $d=2$ a nilpotent space has dimension at most one and a common kernel,
+    which trace preservation excludes. For $d=3$, if $K_1$ were nilpotent,
+    trace preservation excludes a common kernel, so
+    Lemma~\ref{lem:nilpotent_space_three_grading} gives $P_0,P_1$ with
+    $K_iP_0=P_1K_i$; then
+    $\sum_iK_i^\dagger(P_0-P_1)K_i=-(P_0-P_1)$, and $-1$ is a peripheral
+    eigenvalue, contradicting primitivity. A non-nilpotent complex matrix has
+    a nonzero eigenvalue, and part~(3) of
+    Theorem~\ref{thm:wolf_6_9_quantum_wielandt} gives $q\leq d^2$.
+\end{proof}

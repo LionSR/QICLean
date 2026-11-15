@@ -1564,14 +1564,16 @@ trace preservation, irreducibility, and the project's peripheral-spectrum
 `IsPrimitive` predicate; the finite Kraus presentation supplies complete
 positivity.
 
-The following low-dimensional corollary is a separate open problem tracked by
-#65. QICLean contains the dimension-two nilpotent-space classification and the
-resulting one-step nonzero-eigenvalue conclusion in
-`Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two`. In dimension three,
-`QICLean.exists_common_ker_of_forall_sq_eq_zero` and
-`Kraus.exists_mem_wordSpan_one_sq_ne_zero_fin_three` cover and exclude the
-square-zero branch. The nilpotency-index-three classification and its
-exceptional primitive-channel obstruction remain open; see
+The low-dimensional corollary after Theorem 6.9 is formalized. In dimension
+two, `Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two` gives a
+nonzero-eigenvalue element of the one-step span. In dimension three,
+`QICLean.exists_grading_of_isNilpotent_submodule_fin_three` grades a nilpotent
+space without a common kernel by the exceptional two-dimensional type,
+`Kraus.not_isPrimitive_of_isTP_of_forall_isNilpotent_fin_three` shows that such
+a one-step span gives the peripheral eigenvalue `-1`, and
+`Kraus.exists_not_isNilpotent_mem_wordSpan_one_fin_three` concludes. The bounds
+`q ≤ d²` are `Kraus.wielandtIndex_le_four_fin_two` and
+`Kraus.wielandtIndex_le_nine_fin_three`, for irreducible primitive channels; see
 `docs/paper-gaps/wolf_ch6_lowdim_wielandt_classification.tex`.
 
 ---

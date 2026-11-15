@@ -12,7 +12,7 @@
 
 \begin{document}
 \maketitle
-\gapnote{open-gap}{wip}
+\gapnote{open-gap}{resolved}
 
 \section{The assertion}
 
@@ -70,43 +70,51 @@ nilpotency-index-three branch is not formalized. It includes both the
 exceptional similarity type and the proof that this type obstructs
 primitivity.
 
-\section{Remaining gap}
+\section{The dimension-three classification}
 
-The general quantum Wielandt package, including all three bounds in
-Theorem~6.9, is formalized in QICLean; that work is recorded by
-\ghissue{332}. A source-faithful proof of the separate low-dimensional
-corollary still requires the following ingredients.
-\begin{enumerate}
-    \item Prove the remaining $3\times3$ classification: a nilpotent linear
-        space containing an element of nilpotency index three either has a
-        common kernel or is similar to the exceptional two-dimensional
-        space. Then prove that the exceptional Kraus pattern is incompatible
-        with Wolf's primitivity condition.
+Let $\mathcal N\subseteq\MN{3}$ be a linear space of nilpotent matrices without
+a common nonzero kernel vector. By the square-zero branch it contains an
+element $A$ with $A^2\neq0$, and $A$ is similar to the cyclic shift
+$J=E_{12}+E_{23}$ through the basis $(A^2v,Av,v)$. Polarizing
+$\operatorname{tr}((X\pm C)^k)=0$ for $k=2,3$ gives
+\begin{align*}
+    \operatorname{tr}(XC)=0,\qquad\operatorname{tr}(X^2C)=0
+    \qquad(X,C\in\mathcal N).
+\end{align*}
+Since $\ker J=\operatorname{span}\{e_1\}$, some $B\in\mathcal N$ has
+$Be_1\neq0$. The trace identities against $J$ force $c=B_{32}\neq0$ and
+determine $B$ from $(c,B_{11},B_{23})$; conjugation by the unitriangular
+matrix $S=1+\alpha J+\beta J^2$ with $\alpha=-B_{11}/c$ and
+$\beta=(cB_{23}+2B_{11}^2)/c^2$, which commutes with $J$, takes $c^{-1}B$
+to $B_0=E_{32}-E_{21}$. In these coordinates the trace identities of an
+arbitrary member $C$ against $J$, $B_0$ and $J+B_0$, together with
+$\operatorname{tr}C=\operatorname{tr}C^2=0$, give $C\in\operatorname{span}\{J,B_0\}$.
+This is Wolf's exceptional two-dimensional type. Every member maps
+$\operatorname{span}\{e_2\}$ into $\operatorname{span}\{e_1,e_3\}$ and back,
+so with $P_0$ and $P_1=1-P_0$ the corresponding (conjugated) coordinate
+projections, every member satisfies $MP_0=P_1M$.
 
-    \item Combine the remaining $3\times3$ classification with the conditional
-        quantum Wielandt bound already proved in QICLean. The implication from
-        a nonzero eigenvalue in the one-step span to full word span at length
-        $d^2$ is
-        \leanid{Kraus.wordSpan\_eq\_top\_of\_mem\_wordSpan\_one\_of\_nonzero\_eigenvalue},
-        and the corresponding minimal-index inequality is
-        \leanid{Kraus.wielandtIndex\_le\_of\_mem\_wordSpan\_one\_of\_nonzero\_eigenvalue}.
-        No additional proof of this conditional step is required for the
-        low-dimensional corollary.
-\end{enumerate}
+For a trace-preserving Kraus family with this one-step span,
+$\sum_iK_i^\dagger(P_0-P_1)K_i=(\sum_iK_i^\dagger K_i)(P_1-P_0)=-(P_0-P_1)$,
+so $-1$ is an eigenvalue of the trace adjoint and hence of the channel. The
+channel is therefore not primitive. This proves Wolf's assertion that the
+exceptional type only leads to channels with a degenerate peripheral
+spectrum, without the general classification of nilpotent spaces.
 
-Until the remaining classification and its exceptional primitivity
-obstruction are present, the source corollary must not carry a
-\texttt{\textbackslash leanok} marker in the QICLean blueprint. This separate
-work remains tracked by \ghissue{65}.
+\section{Formalization}
 
-\section{Conclusion}
-
-The $d=2$ nilpotent-space argument, the square-zero branch for $d=3$, and the
-conditional $d^2$ word-span bound are formalized. The nilpotency-index-three
-classification and its exceptional primitivity obstruction remain open.
-Consequently, the low-dimensional corollary of
-Ref.~\cite{Wolf2012Quantum} remains an open gap while elimination is in
-progress.
+The dimension-three statements are
+\leanid{QICLean.exists_grading_of_isNilpotent_submodule_fin_three},
+\leanid{Kraus.not_isPrimitive_of_isTP_of_forall_isNilpotent_fin_three} and
+\leanid{Kraus.exists_not_isNilpotent_mem_wordSpan_one_fin_three}. A
+non-nilpotent complex matrix has a nonzero eigenvalue,
+\leanid{Kraus.exists_nonzero_eigenvector_of_not_isNilpotent}. Combined with
+\leanid{Kraus.wielandtIndex_le_of_mem_wordSpan_one_of_nonzero_eigenvalue}
+this gives \leanid{Kraus.wielandtIndex_le_four_fin_two} and
+\leanid{Kraus.wielandtIndex_le_nine_fin_three}, the bound $q\le d^2$ for
+irreducible primitive channels in dimensions two and three. The
+classification of nilpotent spaces with a common kernel is not needed and is
+not formalized.
 
 \bibliographystyle{plain}
 \bibliography{references}
