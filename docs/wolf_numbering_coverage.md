@@ -2439,6 +2439,67 @@ This is partial progress on #46. The reverse inequality for exponents in
 other quasi-relative-entropy and hypothesis-testing results remain open.
 The historical named-environment tally above is unchanged.
 
+### Theorem “Relation among relative entropies” (Equations 8.36–8.39) — PARTIAL-SCOPE
+
+In `QICLean.Analysis.RelativeEntropyRelations`,
+`Matrix.re_trace_cfc_mul_cfc_eq_double_sum` is the double eigenbasis
+expansion of Equations (8.36)–(8.37) for arbitrary real functions of two
+Hermitian matrices. `Matrix.tsallisRelativeEntropy` is Wolf's
+`S⁽ᵅ⁾(ρ|σ) = tr[ρ - ρᵅσ¹⁻ᵅ]/(1 - α)`.
+`Matrix.re_trace_sub_le_mul_quantumRelativeEntropy` proves
+`tr[ρ - ρᵃσ¹⁻ᵃ] ≤ (1 - a) S(ρ|σ)` for every real `a`, and
+`Matrix.tsallisRelativeEntropy_le_quantumRelativeEntropy` and
+`Matrix.quantumRelativeEntropy_le_tsallisRelativeEntropy` give both halves of
+Equation (8.38) for `α < 1 < β`. The matrices are arbitrary positive
+semidefinite, with no trace normalization; negative powers invert on the
+support.
+
+The theorems assume `ker σ ⊆ ker ρ`, the case of finite relative entropy, and
+exclude the limit endpoints `α = 1`, `β = 1`. Wolf's footnote assigns `+∞`
+for `α < 0` when `ker ρ ⊄ ker σ`, which makes the left inequality false; the
+formal statement uses the support-inverse convention instead. See
+`docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex` and
+`docs/paper-gaps/wolf_ch8_tsallis_negative_exponent_footnote.tex`. The historical
+named-environment tally above is unchanged.
+
+### Theorem “Quantum Neyman–Pearson” (Equations 8.40–8.42) — CORRECTED FORM FORMALIZED
+
+In `QICLean.Analysis.QuantumNeymanPearson`, `Matrix.hypothesisTestError` is
+Equation (8.40). `Matrix.hypothesisTestError_ge` proves Equation (8.41) for
+Hermitian unit-trace `ρ, σ`, every real prior and every effect
+`0 ≤ P ≤ 1`, with `‖A‖₁ = Re tr |A|`;
+`Matrix.hypothesisTestError_ge_traceNorm` restates it with
+`Matrix.traceNorm` on `Fin D`. `Matrix.hypothesisTestError_sub_eq` is the
+exact excess `tr[(1 - P)A₊] + tr[P A₋]` behind Equation (8.42) and the
+equality condition stated after it (lines 562–563).
+`Matrix.hypothesisTestError_eq_iff` proves the corrected equality clause
+`P A₊ = A₊ ∧ P A₋ = 0`, `Matrix.hypothesisTestError_posPartSupportProj` and
+`Matrix.isLeast_hypothesisTestError` give attainment and minimality, and
+`Matrix.hypothesisTestError_eq_iff_eq_posPartSupportProj` recovers the printed
+clause for invertible `A`. The printed clause fails on a nonzero kernel;
+`Matrix.hypothesisTestError_half_self` is the counterexample `p = 1/2`,
+`ρ = σ`. See `docs/paper-gaps/wolf_ch8_neyman_pearson_kernel.tex`. The
+historical named-environment tally above is unchanged.
+
+### Lemma with Equations 8.54–8.55 — PARTIAL (Equation 8.54 FORMALIZED)
+
+`Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le` in
+`QICLean.Analysis.TraceNormPowerBound` proves Equation (8.54),
+`‖A - B‖₁ ≥ tr[A + B] - 2 tr[AˢB¹⁻ˢ]`, for all positive-semidefinite `A, B`
+and `s ∈ [0, 1]`, including singular matrices and both endpoints;
+`Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le_traceNorm` is the
+`Fin D` trace-norm form. Wolf gives no argument for Equation (8.54); the proof
+uses operator monotonicity of `X ↦ Xᵗ` through the intermediate bound
+`tr A - tr[AˢB¹⁻ˢ] ≤ tr (A - B)₊`
+(`Matrix.re_trace_sub_re_trace_rpow_mul_rpow_le_posPart`).
+
+Equation (8.55) remains open. Its source proof uses the reverse
+quasi-relative-entropy monotonicity of Equation (8.35) for negative exponents,
+and its right side `tr[A¹⁺ˢB⁻ˢ]` needs the support convention `ker B ⊆ ker A`
+(it is `+∞` otherwise). Equation (8.35) for `α ∈ [-1,0]`, the Chernoff bound
+(8.44), Hiai–Petz (8.46)–(8.48) and the Stein lemma (8.50) also remain open
+under #46.
+
 ### Corollary “Entropy increasing maps” (Equation 8.22) — FORMALIZED
 
 `IsPositiveMap.unital_iff_trace_strictConcave_increasing` in

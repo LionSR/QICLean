@@ -1,0 +1,224 @@
+\section{Relative entropies and binary hypothesis testing}
+\label{sec:hypothesis_testing}
+
+This section compares the relative entropy with the quotients built from the
+ordinary overlap, determines the optimal error for discriminating two states
+by one measurement, and bounds the trace distance below by the overlap.
+
+\begin{definition}[Tsallis relative entropy]
+    \label{def:tsallis_relative_entropy}
+    \lean{Matrix.tsallisRelativeEntropy}
+    \leanok
+    For positive semidefinite $\rho,\sigma\in\MN d$ and real $\alpha\ne1$, set
+    \begin{align}
+        S^{(\alpha)}(\rho|\sigma)
+            &=\frac{\operatorname{Re}\tr[\rho-\rho^\alpha\sigma^{1-\alpha}]}{1-\alpha}.
+        \label{eq:tsallis_relative_entropy}
+    \end{align}
+    Powers are defined by spectral calculus; a negative power inverts on the
+    support and vanishes on the kernel, and $X^0=\Id$.
+\end{definition}
+
+\begin{lemma}[Spectral double sums]
+    \label{lem:trace_function_double_sum}
+    \lean{Matrix.re_trace_cfc_mul_cfc_eq_double_sum,
+        Matrix.eigenvalues_mul_normSq_eq_zero_of_ker_le}
+    \leanok
+    Let $\rho=\sum_i\lambda_i\ketbra{x_i}{x_i}$ and
+    $\sigma=\sum_j\mu_j\ketbra{y_j}{y_j}$ be Hermitian, with orthonormal
+    eigenbases, and put $P_{ij}=\lvert\braket{x_i}{y_j}\rvert^2$. For real
+    functions $f,g$,
+    \begin{align}
+        \operatorname{Re}\tr[f(\rho)g(\sigma)]
+            &=\sum_{i,j}f(\lambda_i)\,g(\mu_j)\,P_{ij}.
+        \label{eq:trace_function_double_sum}
+    \end{align}
+    If $\rho\ge0$ and $\ker\sigma\subseteq\ker\rho$, then $\lambda_iP_{ij}=0$
+    whenever $\mu_j=0$.
+    This is \cite[Equations~(8.36)--(8.37)]{Wolf2012Quantum}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Conjugating by the two eigenvector unitaries reduces the trace to a
+    product of two diagonal matrices and the overlap matrix
+    $W_{ij}=\braket{x_i}{y_j}$, which gives
+    (\ref{eq:trace_function_double_sum}). For the support statement take
+    $f(x)=x$ and $g=\mathbf 1_{\{0\}}$ in
+    (\ref{eq:trace_function_double_sum}):
+    \begin{align}
+        \sum_{i}\sum_{j:\,\mu_j=0}\lambda_iP_{ij}
+            &=\operatorname{Re}\tr\bigl[\rho\,\mathbf 1_{\{0\}}(\sigma)\bigr]
+             =\sum_{j:\,\mu_j=0}\braket{y_j}{\rho\,y_j}=0,
+        \label{eq:trace_function_kernel_weight}
+    \end{align}
+    since $\rho y_j=0$ whenever $\sigma y_j=0$. Every term $\lambda_iP_{ij}$ is
+    nonnegative, so each vanishes.
+\end{proof}
+
+\begin{theorem}[Relation among relative entropies]
+    \label{thm:relative_entropy_relations}
+    \lean{Matrix.sub_rpow_mul_rpow_le_mul_log,
+        Matrix.re_trace_sub_le_mul_quantumRelativeEntropy,
+        Matrix.tsallisRelativeEntropy_le_quantumRelativeEntropy,
+        Matrix.quantumRelativeEntropy_le_tsallisRelativeEntropy}
+    \leanok
+    \uses{def:tsallis_relative_entropy, def:quantum_relative_entropy}
+    Let $\rho,\sigma\in\MN d$ be positive semidefinite with
+    $\ker\sigma\subseteq\ker\rho$. For every real $a$,
+    \begin{align}
+        \operatorname{Re}\tr[\rho-\rho^a\sigma^{1-a}]
+            &\le(1-a)\,D(\rho\Vert\sigma).
+        \label{eq:relative_entropy_relations_common}
+    \end{align}
+    Consequently, for $\alpha<1<\beta$,
+    \begin{align}
+        S^{(\alpha)}(\rho|\sigma)\le D(\rho\Vert\sigma)\le S^{(\beta)}(\rho|\sigma).
+        \label{eq:relative_entropy_relations}
+    \end{align}
+    This is \cite[Equation~(8.38)]{Wolf2012Quantum} restricted to finite
+    relative entropy and to exponents different from one. When the kernel
+    condition fails the relative entropy is infinite; with the source's
+    assignment of infinite values for $\alpha<0$ the left inequality fails.
+    The comparison is recorded in the paper-gap notes
+    \path{docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex} and
+    \path{docs/paper-gaps/wolf_ch8_tsallis_negative_exponent_footnote.tex}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:trace_function_double_sum}
+    By Lemma~\ref{lem:trace_function_double_sum} every trace in
+    (\ref{eq:relative_entropy_relations_common}) is a double sum against
+    $P_{ij}$, and the terms with $\lambda_i>0$, $\mu_j=0$ have $P_{ij}=0$.
+    For $\lambda,\mu>0$ the inequality $\log x\le x-1$ at
+    $x=(\mu/\lambda)^{1-a}$ gives
+    \begin{align}
+        \lambda-\lambda^a\mu^{1-a}
+            &\le(1-a)\,\lambda(\log\lambda-\log\mu),
+        \label{eq:relative_entropy_relations_scalar}
+    \end{align}
+    which is \cite[Equation~(8.39)]{Wolf2012Quantum} with $s=1-a$ or
+    $s=a-1$. For $\lambda=0$ the left side is $-0^a\mu^{1-a}\le0$ and the
+    right side vanishes. Summing gives
+    (\ref{eq:relative_entropy_relations_common}); dividing by $1-\alpha>0$ and by
+    $1-\beta<0$ gives the two halves of (\ref{eq:relative_entropy_relations}).
+\end{proof}
+
+\begin{definition}[Error of a binary test]
+    \label{def:hypothesis_test_error}
+    \lean{Matrix.hypothesisTestError}
+    \leanok
+    For matrices $\rho,\sigma,P\in\MN d$ and a prior $p\in\mathbb R$, the
+    average error of guessing $\rho$ on the effect $P$ and $\sigma$ on
+    $\Id-P$ is
+    \begin{align}
+        e(P)&=p\operatorname{Re}\tr[\rho(\Id-P)]
+            +(1-p)\operatorname{Re}\tr[\sigma P].
+        \label{eq:hypothesis_test_error}
+    \end{align}
+    This is \cite[Equation~(8.40)]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{theorem}[Quantum Neyman--Pearson]
+    \label{thm:quantum_neyman_pearson}
+    \lean{Matrix.hypothesisTestError_sub_eq, Matrix.hypothesisTestError_ge,
+        Matrix.hypothesisTestError_ge_traceNorm,
+        Matrix.hypothesisTestError_eq_iff,
+        Matrix.hypothesisTestError_posPartSupportProj,
+        Matrix.isLeast_hypothesisTestError}
+    \leanok
+    \uses{def:hypothesis_test_error, def:trace_norm}
+    Let $\rho,\sigma\in\MN d$ be Hermitian with unit trace, let $p\in\mathbb R$,
+    and let $A=p\rho-(1-p)\sigma=A_+-A_-$ be the decomposition into positive
+    and negative parts. For every effect $0\le P\le\Id$,
+    \begin{align}
+        e(P)&\ge\tfrac12\bigl(1-\lVert A\rVert_1\bigr).
+        \label{eq:quantum_neyman_pearson}
+    \end{align}
+    Equality holds if and only if $PA_+=A_+$ and $PA_-=0$. The projection onto
+    the range of $A_+$ attains equality, so the right side of
+    (\ref{eq:quantum_neyman_pearson}) is the least error over all effects.
+    This is \cite[Equation~(8.41)]{Wolf2012Quantum}, for all density matrices
+    and priors, with the equality clause corrected as in
+    \path{docs/paper-gaps/wolf_ch8_neyman_pearson_kernel.tex}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    With $\tr\rho=\tr\sigma=1$, a direct computation gives
+    \begin{align}
+        e(P)-\tfrac12\bigl(1-\lVert A\rVert_1\bigr)
+            &=\operatorname{Re}\tr[(\Id-P)A_+]+\operatorname{Re}\tr[PA_-],
+        \label{eq:quantum_neyman_pearson_excess}
+    \end{align}
+    using $\lVert A\rVert_1=\tr A_++\tr A_-$ and $\tr A=2p-1=\tr A_+-\tr A_-$.
+    For an effect both terms are traces of products of positive semidefinite
+    matrices, hence nonnegative. Such a trace vanishes only if the product
+    vanishes, which gives the equality condition. Writing $\Pi_+$ for the
+    projection onto the range of $A_+$,
+    \begin{align}
+        \Pi_+A_+&=A_+, & \Pi_+A_-&=0,
+        \label{eq:quantum_neyman_pearson_attainment}
+    \end{align}
+    so both terms of (\ref{eq:quantum_neyman_pearson_excess}) vanish at
+    $P=\Pi_+$.
+\end{proof}
+
+\begin{corollary}[Equality clause and the kernel of the difference]
+    \label{cor:quantum_neyman_pearson_kernel}
+    \lean{Matrix.hypothesisTestError_eq_iff_eq_posPartSupportProj,
+        Matrix.hypothesisTestError_half_self}
+    \leanok
+    \uses{thm:quantum_neyman_pearson}
+    In the setting of Theorem~\ref{thm:quantum_neyman_pearson}, if $A$ is
+    invertible then an effect attains equality in
+    (\ref{eq:quantum_neyman_pearson}) if and only if it is the projection onto
+    the range of $A_+$. Without invertibility this fails: for $p=\tfrac12$ and
+    $\rho=\sigma$ every effect attains equality.
+\end{corollary}
+\begin{proof}
+    \leanok
+    If $PA_+=A_+$ and $PA_-=0$, then $PA=A_+$, which is also the product of
+    the projection onto the range of $A_+$ with $A$; cancel $A$. For $p=\tfrac12$
+    and $\rho=\sigma$, $A=0$ and $e(P)=\tfrac12$ for every $P$.
+\end{proof}
+
+\begin{lemma}[Trace distance and the overlap]
+    \label{lem:trace_norm_overlap_bound}
+    \lean{Matrix.re_trace_sub_re_trace_rpow_mul_rpow_le_posPart,
+        Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le,
+        Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le_traceNorm}
+    \leanok
+    \uses{def:trace_norm}
+    Let $A,B\in\MN d$ be positive semidefinite and $s\in[0,1]$. Then
+    \begin{align}
+        \operatorname{Re}\tr A-\operatorname{Re}\tr[A^sB^{1-s}]
+            &\le\tr(A-B)_+,
+        \label{eq:trace_norm_overlap_posPart}\\
+        \lVert A-B\rVert_1
+            &\ge\operatorname{Re}\tr[A+B]-2\operatorname{Re}\tr[A^sB^{1-s}].
+        \label{eq:trace_norm_overlap_bound}
+    \end{align}
+    The second inequality is \cite[Equation~(8.54)]{Wolf2012Quantum}. Singular
+    matrices and the endpoints $s=0,1$ are included.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Put $C=(A-B)_+$ and $M=B+C$. Then $A\le M$ and $B\le M$, so operator
+    monotonicity of $X\mapsto X^t$ for $t\in[0,1]$ gives $A^t\le M^t$ and
+    $B^t\le M^t$. Since $\tr[XY]\ge0$ for positive semidefinite $X,Y$,
+    \begin{align}
+        \tr A=\tr[A^sA^{1-s}]&\le\tr[A^sM^{1-s}],
+        \label{eq:trace_norm_overlap_first}\\
+        \tr[A^s(M^{1-s}-B^{1-s})]&\le\tr[M^s(M^{1-s}-B^{1-s})]
+            =\tr M-\tr[M^sB^{1-s}],
+        \label{eq:trace_norm_overlap_second}\\
+        \tr B=\tr[B^sB^{1-s}]&\le\tr[M^sB^{1-s}].
+        \label{eq:trace_norm_overlap_third}
+    \end{align}
+    Adding these gives (\ref{eq:trace_norm_overlap_posPart}), because
+    $\tr M-\tr B=\tr C$. Finally
+    $\lVert A-B\rVert_1=\tr(A-B)_++\tr(A-B)_-$ and
+    $\tr(A-B)=\tr(A-B)_+-\tr(A-B)_-$ give
+    $\tr[A+B]-\lVert A-B\rVert_1=2\tr A-2\tr(A-B)_+$, so
+    (\ref{eq:trace_norm_overlap_posPart}) implies
+    (\ref{eq:trace_norm_overlap_bound}).
+\end{proof}
