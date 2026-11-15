@@ -77,6 +77,38 @@ Hilbert space. Products of matrices are ordered by increasing index.
     and weight one on the first factor, zero on the others.
 \end{proof}
 
+\begin{theorem}[Hölder inequality with positive semidefinite factors]
+    \label{thm:trace_holder_schatten}
+    \lean{Matrix.schattenWeight,
+        Matrix.norm_trace_list_prod_mul_le_of_posDef,
+        Matrix.norm_trace_list_prod_mul_le_of_posSemidef}
+    \leanok
+    \uses{thm:trace_holder_multi}
+    Let $X_0,\ldots,X_{m-1}$ be positive semidefinite, let
+    $B_0,\ldots,B_{m-1}$ be arbitrary operators, and let $\theta_j\ge0$
+    with $\sum_j\theta_j=1$. Put $\|X\|_{1/\theta}=(\operatorname{tr}X^{1/\theta})^{\theta}$
+    for $\theta>0$ and $\|X\|_{\infty}=\|X\|$. Then
+    \begin{align*}
+        \bigl|\operatorname{tr}(B_0X_0B_1X_1\cdots B_{m-1}X_{m-1})\bigr|
+        \le\prod_j\|B_j\|\prod_j\|X_j\|_{1/\theta_j}.
+    \end{align*}
+    With $p_j=1/\theta_j\in[1,\infty]$ this is the Hölder inequality for
+    Schatten norms with $\sum_j1/p_j=1$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:trace_holder_multi}
+    First let every $X_j$ be positive definite. If $\theta_j=0$, replace
+    $B_j$ by $B_jX_j$, of norm at most $\|B_j\|\|X_j\|$, and $X_j$ by
+    $e^{0}=\Id$. If $\theta_j>0$, put $K_j=\theta_j^{-1}\log X_j$, so that
+    $e^{\theta_jK_j}=X_j$ and $e^{K_j}=X_j^{1/\theta_j}$.
+    Theorem~\ref{thm:trace_holder_multi} gives the bound.
+    For positive semidefinite $X_j$ apply this to $X_j+\varepsilon\Id$,
+    $\varepsilon>0$. Both sides are continuous in $\varepsilon$: the right
+    side through $\operatorname{tr}(X_j+\varepsilon\Id)^{1/\theta_j}
+    =\sum_i(\lambda_i(X_j)+\varepsilon)^{1/\theta_j}$. Let
+    $\varepsilon\to0$.
+\end{proof}
+
 \begin{theorem}[Alternating sums of shifted exponentials]
     \label{thm:trace_exp_alternating_sum}
     \lean{Matrix.norm_trace_mul_sum_powerset_exp_le}
