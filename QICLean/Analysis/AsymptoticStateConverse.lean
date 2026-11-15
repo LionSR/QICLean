@@ -339,8 +339,10 @@ theorem transferMatrix_l2_opNorm_pow_sub_le_sSup_traceNormAsymptoticDistance
       simp [hilbertSchmidtOperatorNorm, frobeniusEuclideanMap]
     simp only [pow_zero, sub_self] at h ⊢
     rw [h0, mul_zero] at h
+    let iN : NormedAddCommGroup (Matrix (Fin D × Fin D) (Fin D × Fin D) ℂ) :=
+      Matrix.instL2OpNormedAddCommGroup
     have hz : ‖(0 : Matrix (Fin D × Fin D) (Fin D × Fin D) ℂ)‖ = 0 :=
-      @norm_zero _ (Matrix.instL2OpNormedAddCommGroup (𝕜 := ℂ)).toNormedAddGroup.toSeminormedAddGroup
+      @norm_zero _ iN.toNormedAddGroup.toSeminormedAddGroup
     rw [hz, mul_zero]
     exact h
   · rwa [transferMatrix_pow_sub_peripheralWeightedProjection_pow T hn,
