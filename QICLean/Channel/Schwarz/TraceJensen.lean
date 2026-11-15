@@ -81,47 +81,47 @@ theorem ConvexOn.mul_map_le_sum_of_sum_eq {κ : Type*} {I : Set ℝ} {f : ℝ �
 
 /-- Scalar Jensen inequality with unnormalized weights of total mass at most `c`, the
 inequality in Wolf's Equation (5.53) for `∑ᵢ Tᵢ(1) ≤ 1` and `f(0) ≤ 0`: the missing mass is
-placed at the point `0 ∈ I`. -/
+placed at the point `0 ∈ I`, via Mathlib's `ConvexOn.map_add_sum_le`. -/
 theorem ConvexOn.mul_map_le_sum_of_sum_le {κ : Type*} {I : Set ℝ} {f : ℝ → ℝ}
     (hf : ConvexOn ℝ I f) (h0I : (0 : ℝ) ∈ I) (hf0 : f 0 ≤ 0) (t : Finset κ) {q μ : κ → ℝ}
     (hq : ∀ k ∈ t, 0 ≤ q k) (hμ : ∀ k ∈ t, μ k ∈ I) {c y : ℝ} (hsum : ∑ k ∈ t, q k ≤ c)
     (hmean : ∑ k ∈ t, q k * μ k = c * y) :
     c * f y ≤ ∑ k ∈ t, q k * f (μ k) := by
-  classical
-  let q' : Option κ → ℝ := fun o => o.elim (c - ∑ k ∈ t, q k) q
-  let μ' : Option κ → ℝ := fun o => o.elim 0 μ
-  have hq' : ∀ o ∈ t.insertNone, 0 ≤ q' o := by
-    intro o ho
-    cases o with
-    | none => exact sub_nonneg.mpr hsum
-    | some k => exact hq k (Finset.some_mem_insertNone.mp ho)
-  have hμ' : ∀ o ∈ t.insertNone, μ' o ∈ I := by
-    intro o ho
-    cases o with
-    | none => exact h0I
-    | some k => exact hμ k (Finset.some_mem_insertNone.mp ho)
-  have hsum' : ∑ o ∈ t.insertNone, q' o = c := by
-    rw [Finset.sum_insertNone]
-    simp [q']
-  have hmean' : ∑ o ∈ t.insertNone, q' o * μ' o = c * y := by
-    rw [Finset.sum_insertNone]
-    simpa [q', μ'] using hmean
-  have h := hf.mul_map_le_sum_of_sum_eq t.insertNone hq' hμ' hsum' hmean'
-  rw [Finset.sum_insertNone] at h
-  have hnone : q' none * f (μ' none) ≤ 0 :=
-    mul_nonpos_of_nonneg_of_nonpos (sub_nonneg.mpr hsum) hf0
-  simp only [q', μ', Option.elim] at h hnone
-  linarith
+  have hc : 0 ≤ c := (Finset.sum_nonneg hq).trans hsum
+  rcases hc.eq_or_lt with hc0 | hcpos
+  · have hz : ∀ k ∈ t, q k = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg hq).mp
+        (le_antisymm (hsum.trans hc0.symm.le) (Finset.sum_nonneg hq))
+    rw [← hc0, zero_mul, Finset.sum_eq_zero fun k hk => by rw [hz k hk, zero_mul]]
+  · have hw0 : ∀ k ∈ t, 0 ≤ q k / c := fun k hk => div_nonneg (hq k hk) hcpos.le
+    have hwsum : ∑ k ∈ t, q k / c ≤ 1 := by
+      rw [← Finset.sum_div, div_le_one hcpos]
+      exact hsum
+    have hj := hf.map_add_sum_le hw0 (sub_add_cancel 1 (∑ k ∈ t, q k / c)) hμ
+      (sub_nonneg.mpr hwsum) h0I
+    simp only [smul_eq_mul, mul_zero, zero_add] at hj
+    have hy : ∑ k ∈ t, q k / c * μ k = y := by
+      simp_rw [div_mul_eq_mul_div]
+      rw [← Finset.sum_div, hmean, mul_div_cancel_left₀ _ hcpos.ne']
+    have hfy : ∑ k ∈ t, q k / c * f (μ k) = (∑ k ∈ t, q k * f (μ k)) / c := by
+      simp_rw [div_mul_eq_mul_div]
+      rw [Finset.sum_div]
+    have hv : (1 - ∑ k ∈ t, q k / c) * f 0 ≤ 0 :=
+      mul_nonpos_of_nonneg_of_nonpos (sub_nonneg.mpr hwsum) hf0
+    rw [hy, hfy] at hj
+    have hle : f y ≤ (∑ k ∈ t, q k * f (μ k)) / c := by linarith
+    rw [le_div_iff₀ hcpos] at hle
+    linarith
 
 namespace Matrix
 
 variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
 
 /-- The eigenspace projections of a Hermitian matrix are positive semidefinite. -/
-private lemma spectralProj_posSemidef {A : Matrix m m ℂ} (hA : A.IsHermitian) (u : ℝ) :
-    (hA.spectralProj u).PosSemidef := by
-  rw [IsHermitian.spectralProj, ← hA.cfc_eq, ← Matrix.nonneg_iff_posSemidef]
-  exact cfc_nonneg fun x _ => by split_ifs <;> norm_num
+private lemma spectralProj_posSemidef {A : Matrix m m ℂ} (hA : A.IsHermitian)
+    (u : hA.eigenvalueSet) : (hA.spectralProj u).PosSemidef :=
+  (hA.isHermitian_spectralProj u).posSemidef_of_mul_self
+    (hA.isOrthogonalResolution_spectralProj.mul_self u)
 
 /-- Every element of the eigenvalue set lies in the spectrum. -/
 private lemma mem_spectrum_of_mem_eigenvalueSet {A : Matrix m m ℂ} (hA : A.IsHermitian)
