@@ -1,0 +1,148 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{The Commutation Hypothesis in Wolf's Trace Jensen Inequality}
+\author{}
+\date{2026-11-15}
+
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{The assertion}
+
+Let $T_1,\ldots,T_r:\MN{d}\to\MN{d'}$ be positive linear maps, let
+$f:I\to\mathbb R$ be convex on an interval $I\subseteq\mathbb R$, and let
+$X_1,\ldots,X_r\in\MN{d}$ be Hermitian with spectra in $I$. Write
+\begin{align}
+    Y&=\sum_{i=1}^rT_i(X_i).
+    \label{eq:wolf_ch5_trace_jensen_commutation_argument}
+\end{align}
+Wolf's Theorem~5.17 asserts
+\begin{align}
+    \tr\bigl[C f(Y)\bigr]
+        &\leq\sum_{i=1}^r\tr\bigl[C\,T_i(f(X_i))\bigr]
+    \label{eq:wolf_ch5_trace_jensen_commutation_printed_inequality}
+\end{align}
+for every positive semidefinite $C\in\MN{d'}$ which commutes with $f(Y)$,
+provided either $\sum_iT_i(\Id)=\Id$, or $\sum_iT_i(\Id)\leq\Id$ and
+$f(0)\leq0$. This is Equation~(5.51) of Ref.~\cite{Wolf2012Quantum}.\footnote{Source:
+    \cite[Theorem~5.17 and Equations~(5.51)--(5.53)]{Wolf2012Quantum}; local
+    source \path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex},
+    lines~1039--1078. Tracked in \ghissue{27}.}
+
+\section{The point at issue}
+
+The proof reduces to $C=\ketbra{\psi}{\psi}$ for a unit eigenvector $\psi$ of
+$f(Y)$ and then uses
+\begin{align}
+    \bra{\psi}f(Y)\ket{\psi}
+        &=f\bigl(\bra{\psi}Y\ket{\psi}\bigr).
+    \label{eq:wolf_ch5_trace_jensen_commutation_eigenvector_step}
+\end{align}
+This is Equation~(5.52) of Ref.~\cite{Wolf2012Quantum}. It holds when $\psi$
+is an eigenvector of $Y$. An eigenvector of $f(Y)$ need not be one when $f$
+takes the same value at two eigenvalues of $Y$, and then the printed
+inequality fails.
+
+Take $d=1$, $d'=2$, $r=3$, $I=[-2,2]$, $f(x)=|x|$, and the scalars
+$X_1=2$, $X_2=-2$, $X_3=0$. Define $T_i(x)=xP_i$, where
+\begin{align}
+    P_1&=\frac1{16}\begin{pmatrix}9&2\\2&1\end{pmatrix},
+    &
+    P_2&=\frac1{16}\begin{pmatrix}1&2\\2&9\end{pmatrix},
+    &
+    P_3&=\frac1{16}\begin{pmatrix}6&-4\\-4&6\end{pmatrix}.
+    \label{eq:wolf_ch5_trace_jensen_commutation_weights}
+\end{align}
+Each $P_i$ is positive semidefinite, so each $T_i$ is positive, and
+$\sum_iT_i(1)=P_1+P_2+P_3=\Id$. Moreover
+\begin{align}
+    Y&=2P_1-2P_2=\begin{pmatrix}1&0\\0&-1\end{pmatrix},
+    &
+    f(Y)&=\Id.
+    \label{eq:wolf_ch5_trace_jensen_commutation_identity_image}
+\end{align}
+Hence every matrix commutes with $f(Y)$. For the positive semidefinite
+matrix
+\begin{align}
+    C&=\begin{pmatrix}1&-1\\-1&1\end{pmatrix}
+    \label{eq:wolf_ch5_trace_jensen_commutation_test_matrix}
+\end{align}
+we obtain
+\begin{align}
+    \sum_{i=1}^3\tr\bigl[C\,T_i(f(X_i))\bigr]
+        &=\tr\Bigl[C\,\frac1{16}\begin{pmatrix}20&8\\8&20\end{pmatrix}\Bigr]
+        =\frac32
+        <2=\tr\bigl[Cf(Y)\bigr].
+    \label{eq:wolf_ch5_trace_jensen_commutation_violation}
+\end{align}
+All hypotheses of the unital alternative hold, but
+(\ref{eq:wolf_ch5_trace_jensen_commutation_printed_inequality}) fails.
+
+\section{The corrected statement and source proof}
+
+The source argument proves
+(\ref{eq:wolf_ch5_trace_jensen_commutation_printed_inequality}) for every
+positive semidefinite $C$ commuting with $Y$ itself. Such a $C$ commutes with
+$f(Y)$, and the two conditions agree when $f$ is injective on $I$. In the
+subunital alternative the source evaluates $f(0)$, so $0\in I$ is part of
+that alternative.
+
+Write $C=S^2$ with $S=C^{1/2}$. Then $S$ commutes with $Y$ and with $f(Y)$.
+Let $e_1,\ldots,e_{d'}$ be an orthonormal eigenbasis of $Y$ with
+$Ye_k=y_ke_k$, and set $v_k=Se_k$. Then $Yv_k=y_kv_k$ and
+$f(Y)v_k=f(y_k)v_k$, so
+\begin{align}
+    \tr\bigl[Cf(Y)\bigr]
+        &=\sum_k\bra{v_k}f(Y)\ket{v_k}
+        =\sum_k\lVert v_k\rVert^2f(y_k),
+    \label{eq:wolf_ch5_trace_jensen_commutation_left_side}\\
+    \sum_i\tr\bigl[C\,T_i(f(X_i))\bigr]
+        &=\sum_k\sum_i\bra{v_k}T_i(f(X_i))\ket{v_k}.
+    \label{eq:wolf_ch5_trace_jensen_commutation_right_side}
+\end{align}
+Write $X_i=\sum_x\mu_{x,i}Q_{x,i}$ with rank-one spectral projections and set
+$p_{x,i}=\bra{v_k}T_i(Q_{x,i})\ket{v_k}\geq0$. Then
+$\sum_{x,i}p_{x,i}\mu_{x,i}=\lVert v_k\rVert^2y_k$ and
+$\sum_{x,i}p_{x,i}=\bra{v_k}\sum_iT_i(\Id)\ket{v_k}$, which equals
+$\lVert v_k\rVert^2$ or is at most $\lVert v_k\rVert^2$ in the two
+alternatives. Scalar Jensen, with the missing mass placed at $0\in I$ in the
+subunital case, gives
+\begin{align}
+    \lVert v_k\rVert^2f(y_k)
+        &\leq\sum_{x,i}p_{x,i}f(\mu_{x,i})
+        =\sum_i\bra{v_k}T_i(f(X_i))\ket{v_k}.
+    \label{eq:wolf_ch5_trace_jensen_commutation_pointwise}
+\end{align}
+Summing over $k$ proves the corrected inequality.
+
+\section{Formalization}
+
+The corrected theorem is
+\leanid{Matrix.re\_trace\_mul\_cfc\_sum\_map\_le\_of\_commute}, and the
+counterexample is
+\leanid{Matrix.trace\_jensen\_commute\_cfc\_counterexample}.\footnote{Formal
+    module: \doclink{QICLean/Channel/Schwarz/TraceJensen}.}
+The scalar steps are \leanid{ConvexOn.mul\_map\_le\_sum\_of\_sum\_eq} and
+\leanid{ConvexOn.mul\_map\_le\_sum\_of\_sum\_le}. The finite family of maps is
+indexed by a finite type, the traces are compared through their real parts,
+and no further hypothesis is added.
+
+\section{Conclusion}
+
+Wolf's Theorem~5.17 is false as printed: commutation of $C$ with $f(Y)$ does
+not suffice. Requiring that $C$ commute with $Y$, which is what
+Equation~(5.52) uses, makes the source proof valid, and this corrected
+theorem is formalized.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+
+\end{document}

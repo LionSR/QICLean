@@ -83,6 +83,7 @@ import QICLean.Algebra.MonomialEvaluationSchmidtRank
 import QICLean.Algebra.NewtonGirard
 import QICLean.Algebra.NilMatrixSubalgebra
 import QICLean.Algebra.NilpotentSubspaceThree
+import QICLean.Algebra.NilpotentSubspaceThreeGrading
 import QICLean.Algebra.NilpotentSubspaceTwo
 import QICLean.Algebra.OneMarkerFullCounts
 import QICLean.Algebra.OneMarkerWeightedSchmidtRank

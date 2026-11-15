@@ -1,0 +1,94 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{Relations among Relative Entropies: Support and Infinite Values}
+\author{}
+\date{2026-11-15}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+\section{Source statement}
+For positive semidefinite $\rho,\sigma\in M_d(\mathbb C)$ Wolf
+\cite{Wolf2012Quantum}%
+\footnote{\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex},
+lines~466--519, Equations~(8.33)--(8.39) and the footnote on line~474.}
+sets
+\begin{align}
+    S^{(\alpha)}(\rho|\sigma)
+        &= \frac{\tr[\rho-\rho^\alpha\sigma^{1-\alpha}]}{1-\alpha},
+    &
+    S(\rho|\sigma) &= \tr[\rho(\log\rho-\log\sigma)],
+    \label{eq:rer_definitions}
+\end{align}
+and states that for all $\alpha\le1$ and $\beta\ge1$
+\begin{align}
+    S^{(\alpha)}(\rho|\sigma) &\le S(\rho|\sigma)\le S^{(\beta)}(\rho|\sigma).
+    \label{eq:rer_source}
+\end{align}
+Outside $[0,1]$ the footnote takes inverses on the support and sets the
+quantity to $+\infty$ when the kernel of the inverted operator is not
+contained in the kernel of the other operator; $S(\rho|\sigma)=+\infty$
+unless $\ker\sigma\subseteq\ker\rho$. At $\alpha=1$ and $\beta=1$ the
+quantities are defined by their limits.
+
+\section{Formal statement}
+Powers are taken by spectral calculus with $x^\gamma=0$ at $x=0$ for
+$\gamma\ne0$ and $X^0=\mathbb 1$; the logarithm is totalized by $\log0=0$.
+Assume
+\begin{align}
+    \ker\sigma &\subseteq \ker\rho .
+    \label{eq:rer_support}
+\end{align}
+With eigen-decompositions $\rho=\sum_i\lambda_i\lvert x_i\rangle\langle x_i\rvert$,
+$\sigma=\sum_j\mu_j\lvert y_j\rangle\langle y_j\rvert$ and
+$P_{ij}=\lvert\langle x_i|y_j\rangle\rvert^2$, every trace of the form
+$\tr[f(\rho)g(\sigma)]$ equals $\sum_{ij}f(\lambda_i)g(\mu_j)P_{ij}$.
+Condition (\ref{eq:rer_support}) gives $\lambda_iP_{ij}=0$ whenever
+$\mu_j=0$. For $\lambda,\mu>0$ and every real $a$, the inequality
+$\log x\le x-1$ at $x=(\mu/\lambda)^{1-a}$ gives
+\begin{align}
+    \lambda-\lambda^a\mu^{1-a}
+        &\le (1-a)\,\lambda(\log\lambda-\log\mu),
+    \label{eq:rer_scalar}
+\end{align}
+and the same inequality holds trivially when $\lambda=0$. Summing against
+$P_{ij}$ yields
+\begin{align}
+    \tr[\rho-\rho^a\sigma^{1-a}] &\le (1-a)\,S(\rho|\sigma)
+    \qquad (a\in\mathbb R).
+    \label{eq:rer_common}
+\end{align}
+Division by $1-a$ gives (\ref{eq:rer_source}) for $\alpha<1<\beta$.
+
+\section{Comparison with the source}
+\begin{enumerate}
+\item If (\ref{eq:rer_support}) fails, $S(\rho|\sigma)=+\infty$, and the
+    right inequality reads $+\infty\le+\infty$ because $\sigma$ is then the
+    inverted operator in $S^{(\beta)}$. The totalized trace-log expression is
+    finite and does not represent $S$, so this case is excluded. It is a
+    statement about extended real values that is not yet formalized.
+\item The endpoints $\alpha=1$ and $\beta=1$ are excluded, since the quotient
+    in (\ref{eq:rer_definitions}) is defined there only as a limit.
+\item For $\alpha<0$ the powers of $\rho$ are taken with the
+    support-inverse convention, without the footnote's assignment of
+    $+\infty$. Under that assignment the left inequality is false as printed;
+    this separate gap is recorded in
+    \path{docs/paper-gaps/wolf_ch8_tsallis_negative_exponent_footnote.tex}.
+\end{enumerate}
+\doclink{QICLean/Analysis/RelativeEntropyRelations} proves
+(\ref{eq:rer_common}) and both halves of (\ref{eq:rer_source}) under
+(\ref{eq:rer_support}) for $\alpha<1<\beta$, without trace normalization.
+
+\section{Verdict}
+Scope restriction to finite relative entropy and to $\alpha\ne1\ne\beta$.
+Elimination: state (\ref{eq:rer_source}) with extended-real values,
+including the infinite cases and the limit endpoints; tracked in
+\ghissue{46}.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

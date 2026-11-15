@@ -948,6 +948,42 @@ or zero-in-interval condition. Empty matrix dimensions are included.
 Theorem 5.17 and its weighted Equation (5.51) remain outside this corollary.
 The complete-environment tally above records the historical August audit.
 
+### Theorem 5.17 (convex functions and positive maps under the trace), Equation 5.51 — CORRECTED FORM FORMALIZED
+
+- `Matrix.re_trace_mul_cfc_sum_map_le_of_commute` in
+  `QICLean/Channel/Schwarz/TraceJensen.lean` proves Equation 5.51 for a finite
+  family of positive maps `Tᵢ : M_d → M_d'`, a function convex on an arbitrary
+  real interval `I`, Hermitian `Xᵢ` with spectra in `I`, and positive
+  semidefinite `C` commuting with `∑ᵢ Tᵢ(Xᵢ)`, under either `∑ᵢ Tᵢ(1) = 1` or
+  `∑ᵢ Tᵢ(1) ≤ 1`, `0 ∈ I`, `f(0) ≤ 0`. No complete positivity or continuity
+  is assumed ✓
+- The printed hypothesis, that `C` commute only with `f(∑ᵢ Tᵢ(Xᵢ))`, is
+  insufficient: `Matrix.trace_jensen_commute_cfc_counterexample` gives three
+  positive maps `M₁ → M₂` with `∑ᵢ Tᵢ(1) = 1`, `f = |·|` on `[-2, 2]`, and
+  `∑ᵢ Tᵢ(Xᵢ) = diag(1, -1)`, so `f(∑ᵢ Tᵢ(Xᵢ)) = 1`, for which the inequality
+  fails. The proof's Equation 5.52 uses an eigenvector of `∑ᵢ Tᵢ(Xᵢ)`. The two
+  conditions agree when `f` is injective on `I`; `0 ∈ I` makes the source's
+  `f(0)` meaningful. Resolved false-source note:
+  `docs/paper-gaps/wolf_ch5_trace_jensen_commutation.tex`.
+- The scalar steps of Equation 5.53 are `ConvexOn.mul_map_le_sum_of_sum_eq`
+  and `ConvexOn.mul_map_le_sum_of_sum_le`.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`,
+  lines 1039–1078.
+
+### Proposition 5.2 (monotone trace functions), Equation 5.55 — FORMALIZED
+
+- `Matrix.IsHermitian.trace_cfc_le_trace_cfc_of_le` and
+  `Matrix.IsHermitian.re_trace_cfc_le_re_trace_cfc_of_le` in
+  `QICLean/Channel/Schwarz/MonotoneTraceFunctions.lean` prove
+  `tr f(A) ≤ tr f(B)` for Hermitian `A ≤ B` and `f` non-decreasing on an
+  order-connected set containing both spectra ✓
+- Wolf additionally assumes that `I` is open and `f` is continuously
+  differentiable; the proof does not use these hypotheses, so the formal
+  theorem contains the source proposition. It is deduced from the corrected
+  Proposition 5.3 below rather than from the derivative formula (5.54).
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`,
+  lines 1103–1117.
+
 ### Theorem 5.2 (block Schur complement) — CORRECTED FORM FORMALIZED
 
 - `SchurComplement.blockMatrix_posSemidef_iff` proves the equivalence between
@@ -1564,14 +1600,16 @@ trace preservation, irreducibility, and the project's peripheral-spectrum
 `IsPrimitive` predicate; the finite Kraus presentation supplies complete
 positivity.
 
-The following low-dimensional corollary is a separate open problem tracked by
-#65. QICLean contains the dimension-two nilpotent-space classification and the
-resulting one-step nonzero-eigenvalue conclusion in
-`Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two`. In dimension three,
-`QICLean.exists_common_ker_of_forall_sq_eq_zero` and
-`Kraus.exists_mem_wordSpan_one_sq_ne_zero_fin_three` cover and exclude the
-square-zero branch. The nilpotency-index-three classification and its
-exceptional primitive-channel obstruction remain open; see
+The low-dimensional corollary after Theorem 6.9 is formalized. In dimension
+two, `Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two` gives a
+nonzero-eigenvalue element of the one-step span. In dimension three,
+`QICLean.exists_grading_of_isNilpotent_submodule_fin_three` grades a nilpotent
+space without a common kernel by the exceptional two-dimensional type,
+`Kraus.not_isPrimitive_of_isTP_of_forall_isNilpotent_fin_three` shows that such
+a one-step span gives the peripheral eigenvalue `-1`, and
+`Kraus.exists_not_isNilpotent_mem_wordSpan_one_fin_three` concludes. The bounds
+`q ≤ d²` are `Kraus.wielandtIndex_le_four_fin_two` and
+`Kraus.wielandtIndex_le_nine_fin_three`, for irreducible primitive channels; see
 `docs/paper-gaps/wolf_ch6_lowdim_wielandt_classification.tex`.
 
 ---
@@ -1611,21 +1649,29 @@ In `QICLean.Channel.FixedPoint.StationarySupport`:
   stationary support. This is a channel-specific consequence, not an alternate
   formulation of Wolf Propositions 6.9--6.11.
 
-#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — PARTIAL-SCOPE
+#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — FORMALIZED
+
+In `QICLean.Channel.FixedPoint.FullRankFixedPointAlgebra`:
+
+* `SchwarzMap.exists_posDef_traceAdjoint_fixedPoint_of_isUnit` — the source
+  reduction: if the trace adjoint of a positive unital map has a full-rank
+  (invertible) fixed point, it has a positive definite one, the fixed point of
+  maximal support from Proposition 6.9.
+* `SchwarzMap.fixedPointsStarSubalgebraOfIsUnit` — Theorem 6.12 with its
+  source hypotheses: for a positive unital Schwarz map whose trace adjoint has
+  a full-rank fixed point, the fixed points form a `StarSubalgebra`.
+* `SchwarzMap.exists_unitary_conj_blockDiagonal_iff_fixedPoint_of_isUnit` —
+  the block realization of Equation (1.39), without the zero block.
 
 In `QICLean.Channel.FixedPoint.AbstractAlgebra`:
 
-* `SchwarzMap.fixedPointsStarSubalgebra` — for a positive unital Schwarz map
-  whose trace adjoint has an explicitly chosen positive definite fixed point,
-  the fixed points form a `StarSubalgebra`.
+* `SchwarzMap.fixedPointsStarSubalgebra` — the algebra step after the
+  faithful invariant weight has been chosen: for a positive unital Schwarz map
+  whose trace adjoint has a positive definite fixed point, the fixed points
+  form a `StarSubalgebra`.
 
-This is the algebra step after the faithful invariant weight has been chosen.
-The source theorem begins with an arbitrary full-rank fixed point and invokes
-its proposition on positive fixed points to obtain that weight.  The
-full-rank-to-positive-definite reduction theorem remains open.  The explicit
-trace-adjoint block realization from Equation (1.39) also remains open at this
-level of generality.  The downstream Schrödinger-picture density-block
-classification and its complementary zero summand are completed in
+The downstream Schrödinger-picture density-block classification and its
+complementary zero summand are completed in
 `QICLean.Channel.FixedPoint.WolfTheorem614`.
 
 In `QICLean.Channel.FixedPoint.Algebra`:
@@ -2361,7 +2407,7 @@ or strict-positivity assumption is imposed. The containing source theorem
 is complete. The other environments tracked by issue #47 remain outside
 this result's scope. The historical scope note
 `docs/paper-gaps/wolf_ch8_birkhoff_doubly_substochastic_gap.tex` is resolved.
-### Theorem 8.4 (Majorization) — CLAUSES 1, 2 AND 4 FORMALIZED
+### Theorem 8.4 (Majorization) — FORMALIZED
 
 In `QICLean.Analysis.VectorMajorization`, `TNLean.VectorMajorized` is
 Equation (8.16): decreasing-sorted prefix inequalities and equal total sums.
@@ -2374,10 +2420,20 @@ arbitrary real entries and dimensions zero and one.
 
 The reverse stochastic implication is proved by separation of the convex
 hull of permutations and Birkhoff's theorem. No stochastic witness is
-assumed. Clause 3 (orthostochastic matrices) remains open, as recorded in
+assumed. Clause 3 (orthostochastic matrices) is
+`TNLean.vectorMajorized_iff_exists_orthostochastic` in
+`QICLean.Analysis.VectorMajorizationOrthostochastic`, proved through Horn's
+theorem with one plane rotation per induction step; see
 `docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
-The separate submajorization theorem and the remainder of issue #47 are
-not completed by these equivalences.
+
+### Theorem “Submajorization” — FORMALIZED WITH LOCAL FIX
+
+In `QICLean.Analysis.VectorSubmajorization`, `TNLean.VectorSubmajorized` is
+weak submajorization by decreasing prefixes. `TNLean.vectorSubmajorized_tfae`
+proves clauses 1, 3 and 4 equivalent for all real vectors, and
+`TNLean.vectorSubmajorized_iff_exists_doublySubstochastic` proves clause 2 for
+nonnegative vectors. The printed clause 2 fails for negative entries; see
+`docs/paper-gaps/wolf_ch8_submajorization_nonnegative.tex`.
 
 ### Theorem 8.7 (Majorization between density matrices) — FORMALIZED
 
@@ -2398,9 +2454,8 @@ weighted squared entries of the actual conjugated unitaries.
 zero-dimensional density matrix explicit; the Hermitian equivalences
 themselves have no positive-dimension premise.
 
-This completes the containing Theorem 8.7 only. Theorem 8.4 clause 3,
-submajorization, Theorem 8.8's rectangular ambiguity and issue #47's
-remaining scope are unchanged.
+This completes the containing Theorem 8.7 only. Theorem 8.8's rectangular
+ambiguity and issue #47's remaining scope are unchanged.
 
 ### Equation 8.35, ordinary Petz overlap for exponents in [0,1] — FORMALIZED SLICE
 
@@ -2420,6 +2475,67 @@ This is partial progress on #46. The reverse inequality for exponents in
 other quasi-relative-entropy and hypothesis-testing results remain open.
 The historical named-environment tally above is unchanged.
 
+### Theorem “Relation among relative entropies” (Equations 8.36–8.39) — PARTIAL-SCOPE
+
+In `QICLean.Analysis.RelativeEntropyRelations`,
+`Matrix.re_trace_cfc_mul_cfc_eq_double_sum` is the double eigenbasis
+expansion of Equations (8.36)–(8.37) for arbitrary real functions of two
+Hermitian matrices. `Matrix.tsallisRelativeEntropy` is Wolf's
+`S⁽ᵅ⁾(ρ|σ) = tr[ρ - ρᵅσ¹⁻ᵅ]/(1 - α)`.
+`Matrix.re_trace_sub_le_mul_quantumRelativeEntropy` proves
+`tr[ρ - ρᵃσ¹⁻ᵃ] ≤ (1 - a) S(ρ|σ)` for every real `a`, and
+`Matrix.tsallisRelativeEntropy_le_quantumRelativeEntropy` and
+`Matrix.quantumRelativeEntropy_le_tsallisRelativeEntropy` give both halves of
+Equation (8.38) for `α < 1 < β`. The matrices are arbitrary positive
+semidefinite, with no trace normalization; negative powers invert on the
+support.
+
+The theorems assume `ker σ ⊆ ker ρ`, the case of finite relative entropy, and
+exclude the limit endpoints `α = 1`, `β = 1`. Wolf's footnote assigns `+∞`
+for `α < 0` when `ker ρ ⊄ ker σ`, which makes the left inequality false; the
+formal statement uses the support-inverse convention instead. See
+`docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex` and
+`docs/paper-gaps/wolf_ch8_tsallis_negative_exponent_footnote.tex`. The historical
+named-environment tally above is unchanged.
+
+### Theorem “Quantum Neyman–Pearson” (Equations 8.40–8.42) — CORRECTED FORM FORMALIZED
+
+In `QICLean.Analysis.QuantumNeymanPearson`, `Matrix.hypothesisTestError` is
+Equation (8.40). `Matrix.hypothesisTestError_ge` proves Equation (8.41) for
+Hermitian unit-trace `ρ, σ`, every real prior and every effect
+`0 ≤ P ≤ 1`, with `‖A‖₁ = Re tr |A|`;
+`Matrix.hypothesisTestError_ge_traceNorm` restates it with
+`Matrix.traceNorm` on `Fin D`. `Matrix.hypothesisTestError_sub_eq` is the
+exact excess `tr[(1 - P)A₊] + tr[P A₋]` behind Equation (8.42) and the
+equality condition stated after it (lines 562–563).
+`Matrix.hypothesisTestError_eq_iff` proves the corrected equality clause
+`P A₊ = A₊ ∧ P A₋ = 0`, `Matrix.hypothesisTestError_posPartSupportProj` and
+`Matrix.isLeast_hypothesisTestError` give attainment and minimality, and
+`Matrix.hypothesisTestError_eq_iff_eq_posPartSupportProj` recovers the printed
+clause for invertible `A`. The printed clause fails on a nonzero kernel;
+`Matrix.hypothesisTestError_half_self` is the counterexample `p = 1/2`,
+`ρ = σ`. See `docs/paper-gaps/wolf_ch8_neyman_pearson_kernel.tex`. The
+historical named-environment tally above is unchanged.
+
+### Lemma with Equations 8.54–8.55 — PARTIAL (Equation 8.54 FORMALIZED)
+
+`Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le` in
+`QICLean.Analysis.TraceNormPowerBound` proves Equation (8.54),
+`‖A - B‖₁ ≥ tr[A + B] - 2 tr[AˢB¹⁻ˢ]`, for all positive-semidefinite `A, B`
+and `s ∈ [0, 1]`, including singular matrices and both endpoints;
+`Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le_traceNorm` is the
+`Fin D` trace-norm form. Wolf gives no argument for Equation (8.54); the proof
+uses operator monotonicity of `X ↦ Xᵗ` through the intermediate bound
+`tr A - tr[AˢB¹⁻ˢ] ≤ tr (A - B)₊`
+(`Matrix.re_trace_sub_re_trace_rpow_mul_rpow_le_posPart`).
+
+Equation (8.55) remains open. Its source proof uses the reverse
+quasi-relative-entropy monotonicity of Equation (8.35) for negative exponents,
+and its right side `tr[A¹⁺ˢB⁻ˢ]` needs the support convention `ker B ⊆ ker A`
+(it is `+∞` otherwise). Equation (8.35) for `α ∈ [-1,0]`, the Chernoff bound
+(8.44), Hiai–Petz (8.46)–(8.48) and the Stein lemma (8.50) also remain open
+under #46.
+
 ### Corollary “Entropy increasing maps” (Equation 8.22) — FORMALIZED
 
 `IsPositiveMap.unital_iff_trace_strictConcave_increasing` in
@@ -2436,6 +2552,14 @@ uses positive uniform weights and strict Jensen rigidity at `I/d`.
 without trace normalization; the module also proves the uniform upper bound
 and rigidity. This completes this corollary only: the other open clauses of
 issue #47 and the rectangular convention in Theorem 8.8 remain unchanged.
+
+### Theorem 8.9 “Measurements and convex functions” (Equation 8.23) — FORMALIZED
+
+`Matrix.sum_convex_measurement_le` in `QICLean.Channel.MeasurementConvexity`
+proves Equation (8.23) for every positive semidefinite `ρ`, every POVM with
+`m ≥ d` and `tr Pᵢ = d/m`, and every convex `f` with `f(0) ≤ 0`, or `m = d`.
+The proof works in an eigenbasis of `ρ` with a doubly substochastic Jensen
+argument instead of the source's embedding into `M_m(ℂ)` and Theorem 8.8.
 
 ### Corollary “Channel spectrum vs. Jamiolkowski spectrum” (Equation 8.87) — FORMALIZED
 
@@ -2585,12 +2709,17 @@ source qualification is recorded in
 `docs/paper-gaps/wolf_ch8_eq_8_103_negative_exponent.tex`. With this explicit
 qualification, the containing Theorem 8.24 has a corrected-source disposition.
 
-### Proposition 8.6, “Convergence towards asymptotic states” — PARTIAL-PACKAGING
+### Proposition 8.6, “Convergence towards asymptotic states” — FORMALIZED
 
 `Matrix.traceNormAsymptoticDistance`,
 `Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm`, and
 `Matrix.traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm` prove the
 upper bound in Equation (8.112) and its transfer-matrix estimates for positive
-powers. The converse supremum lower bound in Equation (8.113), including the
-four-positive-parts argument of Equation (8.117), remains absent. Thus the
-proved upper bound does not complete the containing proposition.
+powers. In `QICLean.Analysis.AsymptoticStateConverse`,
+`Matrix.exists_four_posSemidef_frobenius_norm_le` and
+`Matrix.hilbertSchmidtOperatorNorm_le_four_mul_of_posSemidef` prove the
+four-positive-parts estimate of Equation (8.117), and
+`Matrix.hilbertSchmidtOperatorNorm_pow_sub_le_sSup_traceNormAsymptoticDistance`
+and `Matrix.transferMatrix_l2_opNorm_pow_sub_le_sSup_traceNormAsymptoticDistance`
+prove the converse supremum lower bound in Equation (8.113) for every `n`, for
+positive dimension.

@@ -222,6 +222,30 @@ complementary Hamiltonian; they are not subtracted from this threshold.
     both comparisons relative to the respective true ground energies.
 \end{proof}
 
+\begin{lemma}[Residual orders at a scaled truncation]
+    \label{thm:soft_truncation_scaled_order_bounds}
+    \lean{Real.softTruncation_scaled_order_bounds_of_le}
+    \leanok
+    Let $c>0$, $\eta\ge0$ and $0<\rho\le1$, and let $m$ be a natural
+    number with
+    \begin{align*}
+        cm\ge34+\frac c2+2\eta+16\log(80/\rho).
+    \end{align*}
+    Put $t=cm$ and $\alpha=(t/2)2^{-m}$. Then $m\ge1$, $t/2\ge10$,
+    $0\le\alpha\le c/4$, and
+    \begin{align*}
+        t/2                                                     & \ge17+\eta+\alpha, &
+        80\exp\left(\frac{17+\eta+\alpha}{8}-\frac t{16}\right) & \le\rho.
+    \end{align*}
+\end{lemma}
+\begin{proof}\leanok
+    Since $\rho\le1$, the logarithm is nonnegative, so $cm\ge34$ and
+    $m\ge1$. For $m=k+1$, the elementary inequality $k+1\le2^k$ gives
+    $(m/2)2^{-m}\le1/4$; multiplying by $c$ gives $\alpha\le c/4$.
+    Substituting this bound into the hypothesis yields the cutoff
+    inequality and an exponent at most $-\log(80/\rho)$.
+\end{proof}
+
 \begin{lemma}[An explicit order for the corrected soft residual]
     \label{thm:soft_truncation_residual_order}
     \lean{Real.exists_softTruncation_order_of_residual_budget}
@@ -239,10 +263,9 @@ complementary Hamiltonian; they are not subtracted from this threshold.
     This order depends only on the bandwidth and requested residual budget.
 \end{lemma}
 \begin{proof}\leanok
-    For $m=k+1$, the elementary inequality $k+1\le2^k$ gives
-    $\alpha\le1/4$. Since $\rho\le1$, the logarithm is nonnegative,
-    so the ceiling gives $m\ge35$. Substitution yields the cutoff
-    inequality and an exponent at most $-\log(80/\rho)$.
+    \uses{thm:soft_truncation_scaled_order_bounds}
+    Apply Lemma~\ref{thm:soft_truncation_scaled_order_bounds} with $c=1$;
+    the ceiling exceeds $34+1/2+2\eta+16\log(80/\rho)$.
 \end{proof}
 
 

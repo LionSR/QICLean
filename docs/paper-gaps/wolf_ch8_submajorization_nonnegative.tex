@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Wolf's Submajorization Theorem: the Doubly Substochastic Clause}
+\author{}
+\date{2026-11-15}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The printed statement}
+Wolf's Theorem ``Submajorization'' \cite{Wolf2012Quantum}, local source
+\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex}, lines~252--261,
+asserts for arbitrary $x,y\in\mathbb R^d$ the equivalence of
+\begin{enumerate}
+    \item $x\prec_wy$;
+    \item $x=My$ for a doubly substochastic matrix $M$;
+    \item $x\le z$ entrywise for some $z\prec y$;
+    \item $\sum_if(x_i)\le\sum_if(y_i)$ for every monotonically increasing convex
+        $f:\mathbb R\to\mathbb R$.
+\end{enumerate}
+
+\section{The second clause needs nonnegative vectors}
+For $d=1$, $x=-2$ and $y=-1$ satisfy $x\prec_wy$, since $x\le y$. A doubly
+substochastic $1\times1$ matrix is a number $m\in[0,1]$, and $x=my$ forces
+$m=2$. Hence clause~2 is not equivalent to the others for real vectors with
+negative entries. It is the standard statement for $x,y\in\mathbb R^d_{\ge0}$.
+
+\section{Formalization}
+Clauses 1, 3 and 4 are proved equivalent for all real vectors. Clause~3 is
+obtained with $z=\max(x,\theta)$, where $\theta$ is chosen by the intermediate
+value theorem so that $\sum_iz_i=\sum_iy_i$. Clause~2 is proved equivalent to
+clause~1 for nonnegative $x$ and $y$: from $x\le z=Dy$ with $D$ doubly
+stochastic, scale the rows of $D$ by $x_i/z_i\le1$; conversely, Jensen's
+inequality in each row with the remaining weight on $0$, together with
+$f(0)\le f(y_j)$, gives clause~4. The declarations are in
+\doclink{QICLean/Analysis/VectorSubmajorization}.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

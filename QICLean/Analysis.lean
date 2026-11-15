@@ -13,6 +13,7 @@ import QICLean.Analysis.AdaptiveSamplingProbability
 import QICLean.Analysis.AdjointEigenvalues
 import QICLean.Analysis.ApproximateBasisImage
 import QICLean.Analysis.AsymptoticStateConvergence
+import QICLean.Analysis.AsymptoticStateConverse
 import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
@@ -276,6 +277,7 @@ import QICLean.Analysis.ProjectionResidual
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.QuadraticScalarShift
 import QICLean.Analysis.QuantitativeFilterIteration
+import QICLean.Analysis.QuantumNeymanPearson
 import QICLean.Analysis.RandomRangeSubspaceDimension
 import QICLean.Analysis.RandomSubspaceProjection
 import QICLean.Analysis.RectangleSimplePoles
@@ -295,6 +297,7 @@ import QICLean.Analysis.RegionalRoughLowerNorm
 import QICLean.Analysis.RegionalRoughLowerThree
 import QICLean.Analysis.RegionalSharpLowerNorm
 import QICLean.Analysis.RegionalTensorMergeMeasurable
+import QICLean.Analysis.RelativeEntropyRelations
 import QICLean.Analysis.RelativeEntropyResolventIntegral
 import QICLean.Analysis.RelativeEntropySupportIntegral
 import QICLean.Analysis.RelativeEntropySupportLeftRightQuadratic
@@ -452,12 +455,14 @@ import QICLean.Analysis.TraceExpAlternatingSum
 import QICLean.Analysis.TraceExponentialPerturbation
 import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceHolderMulti
+import QICLean.Analysis.TraceHolderSchatten
 import QICLean.Analysis.TraceMulBound
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
 import QICLean.Analysis.TraceNormContractivity
 import QICLean.Analysis.TraceNormFrobenius
 import QICLean.Analysis.TraceNormNet
+import QICLean.Analysis.TraceNormPowerBound
 import QICLean.Analysis.TraceNormVariational
 import QICLean.Analysis.Transport
 import QICLean.Analysis.TwoProjectionAngleBlock
@@ -476,6 +481,8 @@ import QICLean.Analysis.UntrimmedTensorFamilyPowers
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.VariableRankSampleProjection
 import QICLean.Analysis.VectorMajorization
+import QICLean.Analysis.VectorMajorizationOrthostochastic
+import QICLean.Analysis.VectorSubmajorization
 import QICLean.Analysis.ViableFilterTrimmingIteration
 import QICLean.Analysis.ViableHalfSampling
 import QICLean.Analysis.ViableHalfSamplingParameters
