@@ -895,6 +895,70 @@ Theorem~\ref{thm:trace_norm_abs}.
     yields the asserted bound.
 \end{proof}
 
+\begin{lemma}[Scalar Choi lower bound and traceless contraction]
+    \label{lem:scalar_choi_traceless_contraction}
+    \lean{Matrix.traceNorm_map_le_of_smul_one_le_choiMatrix}
+    \leanok
+    \uses{def:trace_norm, def:choi_matrix_rect}
+    Let $D>0$ and let $T:\MN{D}\to\MN{D}$ be trace-preserving with Choi
+    matrix $\tau$. If $c\,\Id\le\tau$ for a real $c$, then
+    $0\le1-D^2c$ and every traceless Hermitian $H\in\MN{D}$ satisfies
+    \begin{align}
+        \lVert T(H)\rVert_{\tr}\le(1-D^2c)\,\lVert H\rVert_{\tr}.
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:choi_matrix_trace_prepare, thm:choi_rect_cp}
+    Take $Y=cD\,\Id$ in the trace-prepare map. Its Choi matrix is
+    $D^{-1}(Y\otimes\Id)=c\,\Id$, so $S=T-T'_Y$ has Choi matrix
+    $\tau-c\,\Id\ge0$ and is completely positive. It scales traces by
+    $1-D^2c$, which is nonnegative because $S(\Id)\ge0$. On a traceless $H$
+    the maps $S$ and $T$ agree, and a positive map with trace scale
+    $1-D^2c$ contracts the trace norm of Hermitian matrices by that factor.
+\end{proof}
+
+\begin{corollary}[Channel spectrum versus Jamio{\l}kowski spectrum]
+    \label{cor:channel_spectrum_jamiolkowski}
+    \lean{Matrix.subperipheralModulus_le_of_smul_one_le_choiMatrix,
+        Matrix.subperipheralModulus_le_one_sub_sq_mul_min_eigenvalue}
+    \leanok
+    \uses{def:wolf_subperipheral_modulus, def:choi_matrix_rect,
+        lem:is_kraus_cp_basic}
+    Let $T:\MN{d}\to\MN{d}$ be completely positive and trace-preserving
+    with Jamio{\l}kowski state $\tau$. Let $\mu$ be the largest modulus of
+    an eigenvalue of $T$ strictly inside the unit disc, with $\mu=0$ when
+    there is none, and let $\lambda_{\min}(\tau)$ be the smallest eigenvalue
+    of $\tau$. Then
+    \begin{align}
+        \mu\le1-d^2\lambda_{\min}(\tau).
+    \end{align}
+    More generally $\mu\le1-d^2c$ whenever $c\,\Id\le\tau$.
+    This is \cite[Chapter~8, Eq.~(8.87)]{Wolf2012Quantum}.
+\end{corollary}
+
+\begin{proof}\leanok
+    \uses{lem:scalar_choi_traceless_contraction}
+    For $d=0$ there is no eigenvector and $\mu=0\le1$. Otherwise write
+    $q=1-d^2c\ge0$. Powers of $T$ preserve traceless Hermitian matrices,
+    so $\lVert T^n(H)\rVert_{\tr}\le q^n\lVert H\rVert_{\tr}$ for each such
+    $H$ by the preceding lemma. Let $T(X)=zX$ with $X\ne0$ and $|z|<1$.
+    Trace preservation gives $z\tr X=\tr X$, hence $\tr X=0$. Complete
+    positivity gives $T(X^\dagger)=T(X)^\dagger$, so the matrices
+    $H=\tfrac12(X+X^\dagger)$ and $K=-\tfrac{i}{2}(X-X^\dagger)$ are traceless
+    Hermitian with $X=H+iK$. Therefore
+    \begin{align}
+        |z|^n\lVert X\rVert_{\tr}=\lVert T^n(X)\rVert_{\tr}
+        \le q^n\bigl(\lVert H\rVert_{\tr}+\lVert K\rVert_{\tr}\bigr)
+    \end{align}
+    for all $n$. If $|z|>q$, dividing by $|z|^n$ and letting $n\to\infty$
+    would give $\lVert X\rVert_{\tr}=0$. Hence $|z|\le q$ for every
+    eigenvalue in the open unit disc, and $\mu\le q$. Finally
+    $\lambda_{\min}(\tau)\,\Id\le\tau$. Wolf instead appeals to the asymptotic
+    lower bound on $\lVert T^n(\rho_1-\rho_2)\rVert_{\tr}$; the eigenvector
+    argument reaches the same conclusion directly.
+\end{proof}
+
 \section{Projective pinching}
 
 \begin{theorem}[Projective pinching inequality]

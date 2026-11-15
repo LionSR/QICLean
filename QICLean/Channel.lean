@@ -65,6 +65,7 @@ import QICLean.Channel.FixedPoint
 import QICLean.Channel.GaugeConjugation
 import QICLean.Channel.InformationallyCompleteEffects
 import QICLean.Channel.Irreducible
+import QICLean.Channel.JamiolkowskiSpectrum
 import QICLean.Channel.KoashiImoto
 import QICLean.Channel.KrausCPTP
 import QICLean.Channel.KrausCornerCompression
