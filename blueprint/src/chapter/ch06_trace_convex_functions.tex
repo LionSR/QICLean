@@ -173,8 +173,17 @@
     \uses{lem:unnormalized_jensen}
     Write $C=S^2$ with $S=C^{1/2}$; then $S$ commutes with $Y$ and with
     $f(Y)$. For an orthonormal eigenbasis $Ye_k=y_ke_k$ put $v_k=Se_k$, so
-    $Yv_k=y_kv_k$ and $f(Y)v_k=f(y_k)v_k$. Both traces are sums over $k$ of
-    the quadratic forms at $v_k$. Decompose each $X_i$ into rank-one spectral
+    $Yv_k=y_kv_k$ and $f(Y)v_k=f(y_k)v_k$. Since $\tr[CM]=\tr[SMS]$ for
+    every $M$,
+    \begin{align}
+        \re\tr[Cf(Y)]&=\sum_k\re\langle v_k,f(Y)v_k\rangle
+            =\sum_k\lVert v_k\rVert^2f(y_k),
+        \notag\\
+        \sum_i\re\tr[C\,T_i(f(X_i))]
+            &=\sum_k\sum_i\re\langle v_k,T_i(f(X_i))v_k\rangle.
+        \notag
+    \end{align}
+    Decompose each $X_i$ into rank-one spectral
     projections $Q_{x,i}$ with eigenvalues $\mu_{x,i}$ and set
     $q_{x,i}=\langle v_k,T_i(Q_{x,i})v_k\rangle\ge0$. Then
     $\sum_{x,i}q_{x,i}\mu_{x,i}=\lVert v_k\rVert^2y_k$, and
