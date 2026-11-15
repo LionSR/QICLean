@@ -37,6 +37,7 @@ treated here.
 
 ## Main results
 
+* `Matrix.PosSemidef.rpow_mul_rpow_one_sub`: `τˢ τ¹⁻ˢ = τ` for `s ∈ [0, 1]`.
 * `Matrix.re_trace_sub_re_trace_rpow_mul_rpow_le_posPart`.
 * `Matrix.re_trace_add_sub_two_mul_re_trace_rpow_mul_rpow_le`: Equation (8.54)
   with `Re tr |A - B|`.
@@ -53,8 +54,9 @@ namespace Matrix
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
 /-- Complementary nonnegative powers of a positive-semidefinite matrix
-multiply to the matrix, including when it is singular. -/
-private lemma rpow_mul_rpow_one_sub {τ : Matrix n n ℂ} (hτ : τ.PosSemidef)
+multiply to the matrix, including when it is singular:
+`τ ^ s * τ ^ (1 - s) = τ` for `s ∈ [0, 1]`. -/
+theorem PosSemidef.rpow_mul_rpow_one_sub {τ : Matrix n n ℂ} (hτ : τ.PosSemidef)
     {s : ℝ} (hs : s ∈ Set.Icc (0 : ℝ) 1) : τ ^ s * τ ^ (1 - s) = τ := by
   rw [CFC.rpow_eq_cfc_real hτ.nonneg, CFC.rpow_eq_cfc_real hτ.nonneg,
     ← cfc_mul _ _ τ (τ.finite_real_spectrum.continuousOn _)
@@ -122,14 +124,14 @@ theorem re_trace_sub_re_trace_rpow_mul_rpow_le_posPart {A B : Matrix n n ℂ}
   -- `tr A ≤ tr[Aˢ M¹⁻ˢ]`.
   have h₁ : A.trace.re ≤ (A ^ s * M ^ (1 - s)).trace.re := by
     have h := re_trace_mul_le_mul_left hApow hA1s
-    rwa [rpow_mul_rpow_one_sub hA hs] at h
+    rwa [hA.rpow_mul_rpow_one_sub hs] at h
   -- `tr[Aˢ (M¹⁻ˢ - B¹⁻ˢ)] ≤ tr[Mˢ (M¹⁻ˢ - B¹⁻ˢ)]`.
   have h₂ := re_trace_mul_le_mul_right (Matrix.le_iff.mp hB1s) hAs
   rw [Matrix.mul_sub, Matrix.mul_sub, trace_sub, trace_sub, Complex.sub_re,
-    Complex.sub_re, rpow_mul_rpow_one_sub hMpsd hs] at h₂
+    Complex.sub_re, hMpsd.rpow_mul_rpow_one_sub hs] at h₂
   -- `tr B ≤ tr[Mˢ B¹⁻ˢ]`.
   have h₃ := re_trace_mul_le_mul_right hBpow hBs
-  rw [rpow_mul_rpow_one_sub hB hs] at h₃
+  rw [hB.rpow_mul_rpow_one_sub hs] at h₃
   have hMtr : M.trace.re = B.trace.re + C.trace.re := by
     rw [hM, trace_add, Complex.add_re]
   linarith
