@@ -2439,7 +2439,8 @@ The theorems assume `ker σ ⊆ ker ρ`, the case of finite relative entropy, an
 exclude the limit endpoints `α = 1`, `β = 1`. Wolf's footnote assigns `+∞`
 for `α < 0` when `ker ρ ⊄ ker σ`, which makes the left inequality false; the
 formal statement uses the support-inverse convention instead. See
-`docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex`. The historical
+`docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex` and
+`docs/paper-gaps/wolf_ch8_tsallis_negative_exponent_footnote.tex`. The historical
 named-environment tally above is unchanged.
 
 ### Theorem “Quantum Neyman–Pearson” (Equations 8.40–8.42) — CORRECTED FORM FORMALIZED

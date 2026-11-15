@@ -43,7 +43,8 @@ otherwise; then the right-hand inequality reads `∞ ≤ ∞` and the left one
 The endpoints `α = 1` and `β = 1` are excluded: there `S⁽¹⁾` is defined only
 as a limit. For `α < 0` the statement uses the support-inverse convention without
 Wolf's assignment `S⁽ᵅ⁾ = ∞` when `ker ρ ⊄ ker σ`; under that assignment the left
-inequality is false. See `docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex`.
+inequality is false. See `docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex`
+and `docs/paper-gaps/wolf_ch8_tsallis_negative_exponent_footnote.tex`.
 
 ## Main results
 

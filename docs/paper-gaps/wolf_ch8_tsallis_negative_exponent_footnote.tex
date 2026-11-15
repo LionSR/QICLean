@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{Relations among Relative Entropies: the Infinite Convention for Negative Exponents}
+\author{}
+\date{2026-11-15}
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{Source statement}
+For positive semidefinite $\rho,\sigma\in M_d(\mathbb C)$ Wolf
+\cite{Wolf2012Quantum}%
+\footnote{\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex},
+lines~466--506, Equation~(8.38) and the footnote on lines~473--475.}
+sets
+\begin{align}
+    S^{(\alpha)}(\rho|\sigma)
+        &= \frac{\tr[\rho-\rho^\alpha\sigma^{1-\alpha}]}{1-\alpha},
+    &
+    S(\rho|\sigma) &= \tr[\rho(\log\rho-\log\sigma)],
+    \label{eq:tnef_definitions}
+\end{align}
+and states $S^{(\alpha)}(\rho|\sigma)\le S(\rho|\sigma)$ for all $\alpha\le1$.
+For exponents outside $[0,1]$ the footnote takes inverses on the support and
+sets the quantity to $+\infty$ when the kernel of the inverted operator is
+not contained in the kernel of the other operator.
+
+\section{Counterexample}
+Let $\alpha<0$, $\rho=\lvert0\rangle\langle0\rvert$ and $\sigma=\mathbb 1/2$ in
+$M_2(\mathbb C)$. The power $\rho^\alpha$ inverts $\rho$, and
+$\ker\rho\not\subseteq\ker\sigma=\{0\}$, so the footnote gives
+$S^{(\alpha)}(\rho|\sigma)=+\infty$. On the other hand $\ker\sigma\subseteq\ker\rho$
+and
+\begin{align}
+    S(\rho|\sigma) &= \tr\bigl[\rho\log\rho\bigr]-\tr\bigl[\rho\log(\mathbb 1/2)\bigr]
+        = 0+\log2=\log2 .
+    \label{eq:tnef_counterexample}
+\end{align}
+The printed inequality would assert $+\infty\le\log2$.
+
+\section{Correction}
+With the support-inverse convention alone, so that $\rho^\alpha$ is the
+inverse power on the support of $\rho$ and vanishes on its kernel, the left
+inequality holds for every $\alpha<1$ whenever $\ker\sigma\subseteq\ker\rho$:
+each term of the spectral double sum satisfies
+\begin{align}
+    \lambda-\lambda^\alpha\mu^{1-\alpha}
+        &\le(1-\alpha)\,\lambda(\log\lambda-\log\mu),
+    \label{eq:tnef_scalar}
+\end{align}
+and the terms with $\lambda=0$ contribute $-0^\alpha\mu^{1-\alpha}=0\le0$.
+In the counterexample this gives $S^{(\alpha)}(\rho|\sigma)=\tfrac{1}{1-\alpha}
+(1-2^{\alpha-1})\le\log2$. The formal statement in
+\doclink{QICLean/Analysis/RelativeEntropyRelations} uses this convention.
+
+\section{Verdict}
+False as printed for $\alpha<0$ under the footnote's infinite assignment;
+resolved by using the support-inverse convention without that assignment.
+The remaining scope restrictions of the theorem are recorded in
+\path{docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex}.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

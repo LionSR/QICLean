@@ -2,6 +2,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
 \input{command}
 \title{Relations among Relative Entropies: Support and Infinite Values}
 \author{}
@@ -72,16 +73,11 @@ Division by $1-a$ gives (\ref{eq:rer_source}) for $\alpha<1<\beta$.
     statement about extended real values that is not yet formalized.
 \item The endpoints $\alpha=1$ and $\beta=1$ are excluded, since the quotient
     in (\ref{eq:rer_definitions}) is defined there only as a limit.
-\item For $\alpha<0$ the footnote's assignment of $+\infty$ makes the left
-    inequality false. For $\rho=\lvert0\rangle\langle0\rvert$ and
-    $\sigma=\mathbb 1/2$ in $M_2(\mathbb C)$, $\ker\rho\not\subseteq\ker\sigma$,
-    so $S^{(\alpha)}(\rho|\sigma)=+\infty$, while
-    \begin{align}
-        S(\rho|\sigma) &= \log2 .
-        \label{eq:rer_counterexample}
-    \end{align}
-    With the support-inverse convention and no infinite assignment, the
-    left inequality holds for all $\alpha<1$, which is what is formalized.
+\item For $\alpha<0$ the powers of $\rho$ are taken with the
+    support-inverse convention, without the footnote's assignment of
+    $+\infty$. Under that assignment the left inequality is false as printed;
+    this separate gap is recorded in
+    \path{docs/paper-gaps/wolf_ch8_tsallis_negative_exponent_footnote.tex}.
 \end{enumerate}
 \doclink{QICLean/Analysis/RelativeEntropyRelations} proves
 (\ref{eq:rer_common}) and both halves of (\ref{eq:rer_source}) under
@@ -90,9 +86,8 @@ Division by $1-a$ gives (\ref{eq:rer_source}) for $\alpha<1<\beta$.
 \section{Verdict}
 Scope restriction to finite relative entropy and to $\alpha\ne1\ne\beta$.
 Elimination: state (\ref{eq:rer_source}) with extended-real values,
-including the infinite cases and the limit endpoints. The footnote convention
-for $\alpha<0$ must be replaced by the support-inverse convention without the
-infinite assignment; tracked in \ghissue{46}.
+including the infinite cases and the limit endpoints; tracked in
+\ghissue{46}.
 
 \bibliographystyle{plain}
 \bibliography{references}

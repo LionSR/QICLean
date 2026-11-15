@@ -52,7 +52,8 @@ by one measurement, and bounds the trace distance below by the overlap.
 
 \begin{theorem}[Relation among relative entropies]
     \label{thm:relative_entropy_relations}
-    \lean{Matrix.re_trace_sub_le_mul_quantumRelativeEntropy,
+    \lean{Matrix.sub_rpow_mul_rpow_le_mul_log,
+        Matrix.re_trace_sub_le_mul_quantumRelativeEntropy,
         Matrix.tsallisRelativeEntropy_le_quantumRelativeEntropy,
         Matrix.quantumRelativeEntropy_le_tsallisRelativeEntropy}
     \leanok
@@ -73,8 +74,9 @@ by one measurement, and bounds the trace distance below by the overlap.
     relative entropy and to exponents different from one. When the kernel
     condition fails the relative entropy is infinite; with the source's
     assignment of infinite values for $\alpha<0$ the left inequality fails.
-    The comparison is recorded in the paper-gap note
-    \path{docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex}.
+    The comparison is recorded in the paper-gap notes
+    \path{docs/paper-gaps/wolf_ch8_relative_entropy_relations.tex} and
+    \path{docs/paper-gaps/wolf_ch8_tsallis_negative_exponent_footnote.tex}.
 \end{theorem}
 \begin{proof}
     \leanok
@@ -145,8 +147,14 @@ by one measurement, and bounds the trace distance below by the overlap.
     using $\lVert A\rVert_1=\tr A_++\tr A_-$ and $\tr A=2p-1=\tr A_+-\tr A_-$.
     For an effect both terms are traces of products of positive semidefinite
     matrices, hence nonnegative. Such a trace vanishes only if the product
-    vanishes, which gives the equality condition. The projection onto the
-    range of $A_+$ fixes $A_+$ and annihilates $A_-$.
+    vanishes, which gives the equality condition. Writing $\Pi_+$ for the
+    projection onto the range of $A_+$,
+    \begin{align}
+        \Pi_+A_+&=A_+, & \Pi_+A_-&=0,
+        \label{eq:quantum_neyman_pearson_attainment}
+    \end{align}
+    so both terms of (\ref{eq:quantum_neyman_pearson_excess}) vanish at
+    $P=\Pi_+$.
 \end{proof}
 
 \begin{corollary}[Equality clause and the kernel of the difference]
