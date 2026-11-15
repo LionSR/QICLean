@@ -17,9 +17,8 @@ Wolf, Chapter 8, Eq. (8.16) and Theorem 8.4, clauses 1, 2 and 4
 (`Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 220–251).
 Vectors have arbitrary real entries. Sorting preserves multiplicities.
 
-**Scope restriction (Wolf Theorem 8.4):** the orthostochastic characterization
-in clause 3 is not included. See
-`docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
+The orthostochastic characterization in clause 3 is in
+`QICLean.Analysis.VectorMajorizationOrthostochastic`.
 -/
 
 open Finset Matrix
@@ -144,7 +143,8 @@ private theorem sum_mul_le_of_prefix {x y w : Fin d → ℝ}
     rw [hz x, hz y] at h
     simpa only [mul_sub, sum_sub_distrib, ← sum_mul, ht, sub_le_sub_iff_right] using h
 
-private theorem prefix_le_hinge (x : Fin d → ℝ) (k : ℕ) (t : ℝ) :
+/-- A prefix sum is bounded by the constant prefix plus the total hinge `∑ max (xᵢ - t) 0`. -/
+theorem prefix_le_hinge (x : Fin d → ℝ) (k : ℕ) (t : ℝ) :
     vectorPrefix x k ≤ vectorPrefix (fun _ : Fin d => t) k +
       ∑ i, max (x i - t) 0 := by
   classical
@@ -158,7 +158,8 @@ private theorem prefix_le_hinge (x : Fin d → ℝ) (k : ℕ) (t : ℝ) :
     · simp
   linarith
 
-private theorem hinge_eq_prefix {y : Fin d → ℝ} (hy : Antitone y)
+/-- For an antitone vector, the hinge at its `k`-th entry recovers the prefix sum. -/
+theorem hinge_eq_prefix {y : Fin d → ℝ} (hy : Antitone y)
     {k : ℕ} (hk : k < d) :
     ∑ i, max (y i - y ⟨k, hk⟩) 0 =
       vectorPrefix y k - vectorPrefix (fun _ : Fin d => y ⟨k, hk⟩) k := by

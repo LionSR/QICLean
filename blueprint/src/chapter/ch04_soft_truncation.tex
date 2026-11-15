@@ -286,9 +286,7 @@ requires a bound on that physical exponential moment.
     \end{align*}
 \end{lemma}
 \begin{proof}\leanok
-    The equal-scale correction satisfies $(m/2)2^{-m}\leq1/4$,
-    since for $m=k+1$ one has $k+1\leq2^k$. Multiply this
-    bound by three. The logarithm is nonnegative, and the stated
-    ceiling gives both the cutoff inequality and an exponent at
-    most $-\log(80/\rho)$.
+    \uses{thm:soft_truncation_scaled_order_bounds}
+    Apply Lemma~\ref{thm:soft_truncation_scaled_order_bounds} with $c=3$:
+    three times the ceiling exceeds $34+3/2+2\eta+16\log(80/\rho)$.
 \end{proof}

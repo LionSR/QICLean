@@ -37,10 +37,51 @@ lemma Real.softTruncation_order_error_le_one_fourth (m : ℕ) (hm : 0 < m) :
 
 namespace Real
 
+/-- For scale `c * m` with `0 < c`, every order `m` above one affine logarithmic bound
+satisfies the corrected reverse cutoff condition, bounds the scalar correction by `c / 4`
+and makes the exponential residual at most the prescribed budget. Supporting ALVV,
+arXiv:1602.08828v2, `lem:exp-approx` and `lem:exp-approx-eff`, lines 1195–1268, through
+the corrected exponential-moment argument. -/
+lemma softTruncation_scaled_order_bounds_of_le (c eta rho : ℝ) (m : ℕ) (hc : 0 < c)
+    (heta : 0 ≤ eta) (hrho : 0 < rho) (hrho1 : rho ≤ 1)
+    (hmc : 34 + c / 2 + 2 * eta + 16 * log (80 / rho) ≤ c * m) :
+    0 < m ∧ 10 ≤ c * (m : ℝ) / 2 ∧
+      let alpha := c * (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m
+      0 ≤ alpha ∧ alpha ≤ c / 4 ∧ 17 + eta + alpha ≤ c * (m : ℝ) / 2 ∧
+      80 * exp ((17 + eta + alpha) / 8 - c * (m : ℝ) / 16) ≤ rho := by
+  have hlog : 0 ≤ log (80 / rho) := log_nonneg ((one_le_div hrho).mpr (by linarith only [hrho1]))
+  have hm : 0 < m := by
+    rcases Nat.eq_zero_or_pos m with h | h
+    · subst h
+      simp only [Nat.cast_zero, mul_zero] at hmc
+      linarith only [hmc, hc, heta, hlog]
+    · exact h
+  have ha := softTruncation_order_error_le_one_fourth m hm
+  have hac : c * (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m ≤ c / 4 := by
+    have hmul := mul_le_mul_of_nonneg_left ha hc.le
+    calc
+      _ = c * ((m : ℝ) / 2 * (1 / 2 : ℝ) ^ m) := by ring
+      _ ≤ c * (1 / 4) := hmul
+      _ = c / 4 := by ring
+  refine ⟨hm, by linarith only [hmc, hc, heta, hlog], ?_⟩
+  intro alpha
+  refine ⟨by dsimp only [alpha]; positivity, hac, ?_, ?_⟩
+  · change 17 + eta + c * (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m ≤ _
+    linarith only [hmc, hlog, hac]
+  · calc
+      _ ≤ 80 * exp (-log (80 / rho)) := by
+        apply mul_le_mul_of_nonneg_left (exp_le_exp.mpr ?_) (by norm_num)
+        change (17 + eta + c * (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m) / 8 - c * (m : ℝ) / 16 ≤ _
+        linarith only [hmc, hac]
+      _ = rho := by
+        rw [exp_neg, exp_log (div_pos (by norm_num) hrho)]
+        field_simp
+
 /-- An explicit order, uniform in all physical data, satisfies the corrected
 reverse cutoff condition and makes its exponential residual at most the
-prescribed budget. Supporting ALVV, arXiv:1602.08828v2, `lem:exp-approx`,
-lines 1195–1255, through the corrected exponential-moment argument. -/
+prescribed budget. This is the case `c = 1` of
+`Real.softTruncation_scaled_order_bounds_of_le`. Supporting ALVV, arXiv:1602.08828v2,
+`lem:exp-approx`, lines 1195–1255, through the corrected exponential-moment argument. -/
 lemma exists_softTruncation_order_of_residual_budget
     (eta rho : ℝ) (heta : 0 ≤ eta) (hrho : 0 < rho) (hrho1 : rho ≤ 1) :
     ∃ m : ℕ, m = ⌈35 + 2 * eta + 16 * log (80 / rho)⌉₊ ∧
@@ -48,25 +89,12 @@ lemma exists_softTruncation_order_of_residual_budget
       let alpha := (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m
       0 ≤ alpha ∧ alpha ≤ 1 / 4 ∧ 17 + eta + alpha ≤ (m : ℝ) / 2 ∧
       80 * exp ((17 + eta + alpha) / 8 - (m : ℝ) / 16) ≤ rho := by
-  let m := ⌈35 + 2 * eta + 16 * log (80 / rho)⌉₊
-  have hlog : 0 ≤ log (80 / rho) := log_nonneg ((one_le_div hrho).mpr (by linarith only [hrho1]))
-  have hmcast : 35 + 2 * eta + 16 * log (80 / rho) ≤ (m : ℝ) := Nat.le_ceil _
-  have hm : 0 < m := by
-    have hp : (0 : ℝ) < m := by linarith only [hmcast, heta, hlog]
-    exact_mod_cast hp
-  have ha := softTruncation_order_error_le_one_fourth m hm
-  refine ⟨m, rfl, hm, by linarith only [hmcast, heta, hlog], ?_⟩
-  intro alpha
-  refine ⟨by dsimp only [alpha]; positivity, ha, ?_, ?_⟩
-  · change 17 + eta + (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m ≤ _
-    linarith only [hmcast, hlog, ha]
-  · calc
-      _ ≤ 80 * exp (-log (80 / rho)) := by
-        apply mul_le_mul_of_nonneg_left (exp_le_exp.mpr ?_) (by norm_num)
-        change (17 + eta + (m : ℝ) / 2 * (1 / 2 : ℝ) ^ m) / 8 - (m : ℝ) / 16 ≤ _
-        linarith only [hmcast, ha]
-      _ = rho := by
-        rw [exp_neg, exp_log (div_pos (by norm_num) hrho)]
-        field_simp
+  have hmcast : 35 + 2 * eta + 16 * log (80 / rho) ≤
+      (⌈35 + 2 * eta + 16 * log (80 / rho)⌉₊ : ℝ) := Nat.le_ceil _
+  have h := softTruncation_scaled_order_bounds_of_le 1 eta rho
+    ⌈35 + 2 * eta + 16 * log (80 / rho)⌉₊ one_pos heta hrho hrho1
+    (by rw [one_mul]; linarith only [hmcast])
+  simp only [one_mul] at h
+  exact ⟨_, rfl, h⟩
 
 end Real

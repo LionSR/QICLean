@@ -1564,14 +1564,16 @@ trace preservation, irreducibility, and the project's peripheral-spectrum
 `IsPrimitive` predicate; the finite Kraus presentation supplies complete
 positivity.
 
-The following low-dimensional corollary is a separate open problem tracked by
-#65. QICLean contains the dimension-two nilpotent-space classification and the
-resulting one-step nonzero-eigenvalue conclusion in
-`Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two`. In dimension three,
-`QICLean.exists_common_ker_of_forall_sq_eq_zero` and
-`Kraus.exists_mem_wordSpan_one_sq_ne_zero_fin_three` cover and exclude the
-square-zero branch. The nilpotency-index-three classification and its
-exceptional primitive-channel obstruction remain open; see
+The low-dimensional corollary after Theorem 6.9 is formalized. In dimension
+two, `Kraus.exists_nonzero_eigenvector_mem_wordSpan_one_fin_two` gives a
+nonzero-eigenvalue element of the one-step span. In dimension three,
+`QICLean.exists_grading_of_isNilpotent_submodule_fin_three` grades a nilpotent
+space without a common kernel by the exceptional two-dimensional type,
+`Kraus.not_isPrimitive_of_isTP_of_forall_isNilpotent_fin_three` shows that such
+a one-step span gives the peripheral eigenvalue `-1`, and
+`Kraus.exists_not_isNilpotent_mem_wordSpan_one_fin_three` concludes. The bounds
+`q ≤ d²` are `Kraus.wielandtIndex_le_four_fin_two` and
+`Kraus.wielandtIndex_le_nine_fin_three`, for irreducible primitive channels; see
 `docs/paper-gaps/wolf_ch6_lowdim_wielandt_classification.tex`.
 
 ---
@@ -1611,21 +1613,29 @@ In `QICLean.Channel.FixedPoint.StationarySupport`:
   stationary support. This is a channel-specific consequence, not an alternate
   formulation of Wolf Propositions 6.9--6.11.
 
-#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — PARTIAL-SCOPE
+#### Wolf Theorem 6.12 (Fixed points form a *-algebra) — FORMALIZED
+
+In `QICLean.Channel.FixedPoint.FullRankFixedPointAlgebra`:
+
+* `SchwarzMap.exists_posDef_traceAdjoint_fixedPoint_of_isUnit` — the source
+  reduction: if the trace adjoint of a positive unital map has a full-rank
+  (invertible) fixed point, it has a positive definite one, the fixed point of
+  maximal support from Proposition 6.9.
+* `SchwarzMap.fixedPointsStarSubalgebraOfIsUnit` — Theorem 6.12 with its
+  source hypotheses: for a positive unital Schwarz map whose trace adjoint has
+  a full-rank fixed point, the fixed points form a `StarSubalgebra`.
+* `SchwarzMap.exists_unitary_conj_blockDiagonal_iff_fixedPoint_of_isUnit` —
+  the block realization of Equation (1.39), without the zero block.
 
 In `QICLean.Channel.FixedPoint.AbstractAlgebra`:
 
-* `SchwarzMap.fixedPointsStarSubalgebra` — for a positive unital Schwarz map
-  whose trace adjoint has an explicitly chosen positive definite fixed point,
-  the fixed points form a `StarSubalgebra`.
+* `SchwarzMap.fixedPointsStarSubalgebra` — the algebra step after the
+  faithful invariant weight has been chosen: for a positive unital Schwarz map
+  whose trace adjoint has a positive definite fixed point, the fixed points
+  form a `StarSubalgebra`.
 
-This is the algebra step after the faithful invariant weight has been chosen.
-The source theorem begins with an arbitrary full-rank fixed point and invokes
-its proposition on positive fixed points to obtain that weight.  The
-full-rank-to-positive-definite reduction theorem remains open.  The explicit
-trace-adjoint block realization from Equation (1.39) also remains open at this
-level of generality.  The downstream Schrödinger-picture density-block
-classification and its complementary zero summand are completed in
+The downstream Schrödinger-picture density-block classification and its
+complementary zero summand are completed in
 `QICLean.Channel.FixedPoint.WolfTheorem614`.
 
 In `QICLean.Channel.FixedPoint.Algebra`:
@@ -2361,7 +2371,7 @@ or strict-positivity assumption is imposed. The containing source theorem
 is complete. The other environments tracked by issue #47 remain outside
 this result's scope. The historical scope note
 `docs/paper-gaps/wolf_ch8_birkhoff_doubly_substochastic_gap.tex` is resolved.
-### Theorem 8.4 (Majorization) — CLAUSES 1, 2 AND 4 FORMALIZED
+### Theorem 8.4 (Majorization) — FORMALIZED
 
 In `QICLean.Analysis.VectorMajorization`, `TNLean.VectorMajorized` is
 Equation (8.16): decreasing-sorted prefix inequalities and equal total sums.
@@ -2374,10 +2384,20 @@ arbitrary real entries and dimensions zero and one.
 
 The reverse stochastic implication is proved by separation of the convex
 hull of permutations and Birkhoff's theorem. No stochastic witness is
-assumed. Clause 3 (orthostochastic matrices) remains open, as recorded in
+assumed. Clause 3 (orthostochastic matrices) is
+`TNLean.vectorMajorized_iff_exists_orthostochastic` in
+`QICLean.Analysis.VectorMajorizationOrthostochastic`, proved through Horn's
+theorem with one plane rotation per induction step; see
 `docs/paper-gaps/wolf_ch8_vector_majorization_orthostochastic_gap.tex`.
-The separate submajorization theorem and the remainder of issue #47 are
-not completed by these equivalences.
+
+### Theorem “Submajorization” — FORMALIZED WITH LOCAL FIX
+
+In `QICLean.Analysis.VectorSubmajorization`, `TNLean.VectorSubmajorized` is
+weak submajorization by decreasing prefixes. `TNLean.vectorSubmajorized_tfae`
+proves clauses 1, 3 and 4 equivalent for all real vectors, and
+`TNLean.vectorSubmajorized_iff_exists_doublySubstochastic` proves clause 2 for
+nonnegative vectors. The printed clause 2 fails for negative entries; see
+`docs/paper-gaps/wolf_ch8_submajorization_nonnegative.tex`.
 
 ### Theorem 8.7 (Majorization between density matrices) — FORMALIZED
 
@@ -2398,9 +2418,8 @@ weighted squared entries of the actual conjugated unitaries.
 zero-dimensional density matrix explicit; the Hermitian equivalences
 themselves have no positive-dimension premise.
 
-This completes the containing Theorem 8.7 only. Theorem 8.4 clause 3,
-submajorization, Theorem 8.8's rectangular ambiguity and issue #47's
-remaining scope are unchanged.
+This completes the containing Theorem 8.7 only. Theorem 8.8's rectangular
+ambiguity and issue #47's remaining scope are unchanged.
 
 ### Equation 8.35, ordinary Petz overlap for exponents in [0,1] — FORMALIZED SLICE
 
@@ -2436,6 +2455,14 @@ uses positive uniform weights and strict Jensen rigidity at `I/d`.
 without trace normalization; the module also proves the uniform upper bound
 and rigidity. This completes this corollary only: the other open clauses of
 issue #47 and the rectangular convention in Theorem 8.8 remain unchanged.
+
+### Theorem 8.9 “Measurements and convex functions” (Equation 8.23) — FORMALIZED
+
+`Matrix.sum_convex_measurement_le` in `QICLean.Channel.MeasurementConvexity`
+proves Equation (8.23) for every positive semidefinite `ρ`, every POVM with
+`m ≥ d` and `tr Pᵢ = d/m`, and every convex `f` with `f(0) ≤ 0`, or `m = d`.
+The proof works in an eigenbasis of `ρ` with a doubly substochastic Jensen
+argument instead of the source's embedding into `M_m(ℂ)` and Theorem 8.8.
 
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
@@ -2551,12 +2578,17 @@ source qualification is recorded in
 `docs/paper-gaps/wolf_ch8_eq_8_103_negative_exponent.tex`. With this explicit
 qualification, the containing Theorem 8.24 has a corrected-source disposition.
 
-### Proposition 8.6, “Convergence towards asymptotic states” — PARTIAL-PACKAGING
+### Proposition 8.6, “Convergence towards asymptotic states” — FORMALIZED
 
 `Matrix.traceNormAsymptoticDistance`,
 `Matrix.traceNormAsymptoticDistance_pow_le_hilbertSchmidtOperatorNorm`, and
 `Matrix.traceNormAsymptoticDistance_pow_le_transferMatrix_l2_opNorm` prove the
 upper bound in Equation (8.112) and its transfer-matrix estimates for positive
-powers. The converse supremum lower bound in Equation (8.113), including the
-four-positive-parts argument of Equation (8.117), remains absent. Thus the
-proved upper bound does not complete the containing proposition.
+powers. In `QICLean.Analysis.AsymptoticStateConverse`,
+`Matrix.exists_four_posSemidef_frobenius_norm_le` and
+`Matrix.hilbertSchmidtOperatorNorm_le_four_mul_of_posSemidef` prove the
+four-positive-parts estimate of Equation (8.117), and
+`Matrix.hilbertSchmidtOperatorNorm_pow_sub_le_sSup_traceNormAsymptoticDistance`
+and `Matrix.transferMatrix_l2_opNorm_pow_sub_le_sSup_traceNormAsymptoticDistance`
+prove the converse supremum lower bound in Equation (8.113) for every `n`, for
+positive dimension.

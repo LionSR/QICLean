@@ -13,6 +13,7 @@ import QICLean.Analysis.AdaptiveSamplingProbability
 import QICLean.Analysis.AdjointEigenvalues
 import QICLean.Analysis.ApproximateBasisImage
 import QICLean.Analysis.AsymptoticStateConvergence
+import QICLean.Analysis.AsymptoticStateConverse
 import QICLean.Analysis.BallNet
 import QICLean.Analysis.BellOverlapLogBound
 import QICLean.Analysis.BetaHalfLine
@@ -452,6 +453,7 @@ import QICLean.Analysis.TraceExpAlternatingSum
 import QICLean.Analysis.TraceExponentialPerturbation
 import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceHolderMulti
+import QICLean.Analysis.TraceHolderSchatten
 import QICLean.Analysis.TraceMulBound
 import QICLean.Analysis.TraceNormAbs
 import QICLean.Analysis.TraceNormContractionCoefficient
@@ -476,6 +478,8 @@ import QICLean.Analysis.UntrimmedTensorFamilyPowers
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.VariableRankSampleProjection
 import QICLean.Analysis.VectorMajorization
+import QICLean.Analysis.VectorMajorizationOrthostochastic
+import QICLean.Analysis.VectorSubmajorization
 import QICLean.Analysis.ViableFilterTrimmingIteration
 import QICLean.Analysis.ViableHalfSampling
 import QICLean.Analysis.ViableHalfSamplingParameters

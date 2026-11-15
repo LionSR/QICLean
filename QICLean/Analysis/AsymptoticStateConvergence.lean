@@ -17,8 +17,8 @@ This file formalizes the upper half of Wolf's comparison between trace-norm
 convergence of states and Hilbert--Schmidt operator-norm convergence of a
 positive trace-preserving map. It proves the exact algebraic identities used in
 Equation (8.114), the norm estimates in Equations (8.115)--(8.116), and the
-upper bound in Equation (8.112). The converse bound in Equation (8.113) remains
-separate.
+upper bound in Equation (8.112). The converse bound in Equation (8.113) is in
+`QICLean.Analysis.AsymptoticStateConverse`.
 
 ## References
 

@@ -133,14 +133,12 @@ in the formal library.  Source: Wolf Theorem 6.12 and Equation (6.60), local sou
 `Notes/WolfNoteTexSource/ch06_spectral_properties.tex`, lines 1395--1417.  The explicit
 block realization from Wolf Equation (1.39) is not asserted here.
 
-**Scope restriction (positive-definite witness):** Wolf Theorem 6.12 assumes an
-arbitrary full-rank fixed point and invokes the proposition on positive fixed
-points to choose a positive-definite one (local source lines 1161--1192 and
-1404--1405).  This declaration takes the positive-definite witness explicitly.
-Documented in `docs/paper-gaps/wolf_thm6_12_abstract_schwarz_fixed_points.tex`.
-Elimination: formalize that source reduction for abstract positive
-trace-preserving maps and use it to wrap this lemma with the literal theorem
-hypothesis. -/
+This is the post-reduction step of Wolf Theorem 6.12, which assumes an arbitrary full-rank
+fixed point and invokes the proposition on positive fixed points to choose a positive-definite
+one (local source lines 1161--1192 and 1404--1405). The theorem with the source hypothesis is
+`SchwarzMap.fixedPointsStarSubalgebraOfIsUnit` in
+`QICLean.Channel.FixedPoint.FullRankFixedPointAlgebra`; see
+`docs/paper-gaps/wolf_thm6_12_abstract_schwarz_fixed_points.tex`. -/
 noncomputable def fixedPointsStarSubalgebra
     (E : Mat →ₗ[ℂ] Mat) (hEpos : IsPositiveMap E) (hE_one : E 1 = 1)
     (hE : IsSchwarzMap E) {ρ : Mat} (hρ : ρ.PosDef)

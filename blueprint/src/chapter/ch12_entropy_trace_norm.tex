@@ -749,6 +749,74 @@ Theorem~\ref{thm:trace_norm_abs}.
     $\lVert T^n-T_\varphi^n\rVert_{2\to2}$.
 \end{proof}
 
+\begin{lemma}[Four positive parts with Hilbert--Schmidt control]
+    \label{lem:four_posSemidef_frobenius}
+    \lean{Matrix.exists_four_posSemidef_frobenius_norm_le,
+        Matrix.hilbertSchmidtOperatorNorm_le_of_forall}
+    \leanok
+    Every $X\in\MN{D}$ can be written $X=P_0-P_1+iP_2-iP_3$ with
+    $P_j\succeq0$ and $\lVert P_j\rVert_2\leq\lVert X\rVert_2$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The Hermitian part $H=(X+X^\dagger)/2$ and the skew part
+    $K=(X-X^\dagger)/(2i)$ have Hilbert--Schmidt norm at most
+    $\lVert X\rVert_2$, and $X=H+iK$. For a Hermitian matrix with eigenvalues
+    $\lambda_i$, the positive and negative parts are $f_\pm(H)$ with
+    $f_+(x)=\max(x,0)$ and $f_-(x)=\max(-x,0)$; their squared
+    Hilbert--Schmidt norms are $\sum_if_\pm(\lambda_i)^2\leq\sum_i\lambda_i^2$.
+\end{proof}
+
+\begin{theorem}[Convergence towards asymptotic states: lower bound]
+    \label{thm:trace_norm_asymptotic_distance_lower}
+    \lean{Matrix.hilbertSchmidtOperatorNorm_le_four_mul_of_posSemidef,
+        Matrix.hilbertSchmidtOperatorNorm_pow_sub_le_of_forall_traceNormAsymptoticDistance_le,
+        Matrix.hilbertSchmidtOperatorNorm_pow_sub_le_sSup_traceNormAsymptoticDistance,
+        Matrix.transferMatrix_l2_opNorm_pow_sub_le_sSup_traceNormAsymptoticDistance}
+    \leanok
+    \uses{def:trace_norm_asymptotic_distance,
+        def:peripheral_spectral_projections,
+        def:mpu_transfer_matrix,
+        lem:four_posSemidef_frobenius,
+        thm:trace_norm_asymptotic_distance_upper}
+    Let $S$ be a linear map on $\MN{D}$. If $\lVert S(P)\rVert_{\tr}\leq c$
+    for every $P\succeq0$ with $\lVert P\rVert_2\leq1$, then
+    \begin{align}
+        \tfrac14\lVert S\rVert_{2\to2}\leq c.
+        \tag{8.117}
+    \end{align}
+    Now let $T:\MN{D}\to\MN{D}$ be positive and trace preserving, let $D>0$,
+    and let $n\in\N$. Then
+    \begin{align}
+        \sup_\rho\Delta_T(T^n(\rho))
+        \geq\frac1{4\sqrt D}
+        \left\lVert \widehat T^{\,n}-\widehat T_\varphi^{\,n}\right\rVert_\infty,
+        \tag{8.113}
+    \end{align}
+    the supremum being over density operators. This is the converse assertion
+    of~\cite[Chapter~8, Proposition ``Convergence towards asymptotic states'',
+        Eqs.~(8.113), (8.117)]{Wolf2012Quantum}. The bound needs no positivity
+    of $T$ once $c$ bounds every $\Delta_T(T^n(\rho))$; positivity and trace
+    preservation make the supremum finite, by (8.112).
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:four_posSemidef_frobenius,
+        thm:trace_norm_asymptotic_distance_upper,
+        thm:transfer_matrix_hilbert_schmidt_operator_norm,
+        lem:wolf_positive_power_nonperipheral_identity}
+    For (8.117), decompose $X$ by Lemma~\ref{lem:four_posSemidef_frobenius}
+    and use $\lVert\cdot\rVert_2\leq\lVert\cdot\rVert_{\tr}$ on each of the
+    four terms. For (8.113) with $n>0$, take $S=T^n-T_\varphi^n$. Since
+    $T_\varphi^n=T^nT_\phi$, one has $S(\rho)=T^n(\rho-T_\phi(\rho))$ and
+    $\lVert S(\rho)\rVert_{\tr}=\Delta_T(T^n(\rho))$. A nonzero $P\succeq0$
+    with $\lVert P\rVert_2\leq1$ has $\tr P\leq\sqrt D$, and $P/\tr P$ is a
+    density operator, so $\lVert S(P)\rVert_{\tr}\leq\sqrt D\,c$ for every
+    upper bound $c$ of the distances. For $n=0$ the superoperator difference
+    vanishes. Finally, the transfer-matrix norm equals
+    $\lVert T^n-T_\varphi^n\rVert_{2\to2}$.
+\end{proof}
+
 \begin{lemma}[Scaled positive-part trace estimate]
     \label{lem:scaled_posPart_trace_estimate}
     \lean{Matrix.re_trace_posPart_map_le_of_scaledTrace}

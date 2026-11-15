@@ -30,6 +30,7 @@ import QICLean.Channel.FixedPoint.DirectSumInverseKraus
 import QICLean.Channel.FixedPoint.DirectSumKraus
 import QICLean.Channel.FixedPoint.DirectSumTraceAdjoint
 import QICLean.Channel.FixedPoint.ExtremeDensityStates
+import QICLean.Channel.FixedPoint.FullRankFixedPointAlgebra
 import QICLean.Channel.FixedPoint.FullSupportBlockRetraction
 import QICLean.Channel.FixedPoint.LimitingGramMetric
 import QICLean.Channel.FixedPoint.MaximalRank

@@ -13,7 +13,7 @@
 
 \begin{document}
 \maketitle
-\gapnote{scope-restriction}{open}
+\gapnote{scope-restriction}{resolved}
 
 \section{Source statement}
 
@@ -129,20 +129,26 @@ formalization of the source theorem.
 \section{Verdict}
 
 The earlier Kraus-only attribution was a \emph{scope restriction}, and the
-abstract lemma removes that restriction. A second scope restriction remains.
-The formal signature assumes the positive-definite invariant weight in
-(\ref{eq:wolf_thm6_12_abstract_schwarz_fixed_points_invariant_weight}), whereas
-Theorem~6.12 assumes only a full-rank fixed point and derives a faithful
-positive witness through Proposition~6.9
-\cite[Theorem~6.12 and Proposition~6.9]{Wolf2012Quantum}. The current theorem
-is therefore the source-faithful post-reduction algebra lemma, not yet a
-literal formalization of Theorem~6.12.
-
-Eliminating the remaining restriction requires formalizing the proposition on
-positive fixed parts for the abstract positive trace-preserving trace adjoint,
-deriving a positive-definite fixed point from the full-rank witness, and then
-applying the present lemma. The explicit trace-adjoint realization from source
-Equation~(1.39) of Ref.~\cite{Wolf2012Quantum} also remains open at this level of generality. The downstream
+abstract lemma removes that restriction. The second restriction, the
+positive-definite invariant weight in
+(\ref{eq:wolf_thm6_12_abstract_schwarz_fixed_points_invariant_weight}), is now
+removed as well. The trace adjoint $T=E^*$ of a positive unital map is
+positive and trace preserving, so by the maximal-support form of
+Proposition~6.9 \cite{Wolf2012Quantum} it has a positive semidefinite fixed
+point $\rho_0$ whose support projection $Q$ satisfies $QXQ=X$ for every fixed
+point $X$ of $T$. For a full-rank fixed point $\rho$ this forces $\det Q\ne0$;
+an invertible idempotent is the identity, so $\rho_0>0$. The post-reduction
+lemma then gives the $*$-algebra conclusion
+(\ref{eq:wolf_thm6_12_abstract_schwarz_fixed_points_source_algebra_conclusion}),
+and the unitary block form of a $*$-subalgebra of $\MN{D}$ gives the
+realization of source Equation~(1.39) without the zero block.\footnote{Formal
+declarations:
+\leanid{SchwarzMap.exists_posDef_traceAdjoint_fixedPoint_of_isUnit},
+\leanid{SchwarzMap.fixedPointsStarSubalgebraOfIsUnit}, and
+\leanid{SchwarzMap.exists_unitary_conj_blockDiagonal_iff_fixedPoint_of_isUnit}
+in \doclink{QICLean/Channel/FixedPoint/FullRankFixedPointAlgebra}.} Full rank
+is stated as invertibility of the fixed point. Theorem~6.12 is therefore
+formalized with its source hypotheses. The downstream
 Schr{\"o}dinger-picture density-block classification, support reduction, and
 zero-block assembly required for Theorem~6.14 are complete; see
 \path{docs/paper-gaps/wolf_theorem6_14_fixed_point_projection_gap.tex}.
