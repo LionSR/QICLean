@@ -2456,6 +2456,14 @@ without trace normalization; the module also proves the uniform upper bound
 and rigidity. This completes this corollary only: the other open clauses of
 issue #47 and the rectangular convention in Theorem 8.8 remain unchanged.
 
+### Theorem 8.9 “Measurements and convex functions” (Equation 8.23) — FORMALIZED
+
+`Matrix.sum_convex_measurement_le` in `QICLean.Channel.MeasurementConvexity`
+proves Equation (8.23) for every positive semidefinite `ρ`, every POVM with
+`m ≥ d` and `tr Pᵢ = d/m`, and every convex `f` with `f(0) ≤ 0`, or `m = d`.
+The proof works in an eigenbasis of `ρ` with a doubly substochastic Jensen
+argument instead of the source's embedding into `M_m(ℂ)` and Theorem 8.8.
+
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
 * `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)

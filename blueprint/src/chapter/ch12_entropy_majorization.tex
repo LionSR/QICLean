@@ -377,3 +377,27 @@ stochastic and doubly substochastic matrices.
     When $d=0$, all matrices are equal and unitality is automatic.
 \end{proof}
 \endinput
+
+\begin{theorem}[Measurements and convex functions]
+    \label{thm:measurement_convexity}
+    \lean{Matrix.sum_convex_measurement_le}
+    \leanok
+    Let $\{P_i\}_{i=1}^m$ be a POVM on $M_d(\mathbb C)$ with $m\geq d$ and
+    $\operatorname{tr}P_i=d/m$, let $\rho\geq0$, and put
+    $p_i=\operatorname{tr}(P_i\rho)$. For every convex $f:\R\to\R$ with
+    $f(0)\leq0$,
+    \begin{align*}
+        \operatorname{tr}f(\rho)\geq\sum_{i=1}^mf(p_i),
+    \end{align*}
+    and for $m=d$ the condition $f(0)\le0$ is not needed. This is
+    \cite[Theorem~8.9, Equation~(8.23)]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}\leanok
+    In an eigenbasis $(v_k)$ of $\rho$ with eigenvalues $\lambda_k$, put
+    $a_{ik}=\langle v_k,P_iv_k\rangle\geq0$. Then $p_i=\sum_ka_{ik}\lambda_k$,
+    $\sum_ia_{ik}=1$ and $\sum_ka_{ik}=\operatorname{tr}P_i=d/m\leq1$.
+    Jensen's inequality with the remaining weight $1-d/m$ on $0$ gives
+    $f(p_i)\leq\sum_ka_{ik}f(\lambda_k)+(1-d/m)f(0)$. Summing over $i$ yields
+    $\sum_if(p_i)\leq\sum_kf(\lambda_k)+(m-d)f(0)\leq\operatorname{tr}f(\rho)$.
+\end{proof}
+
