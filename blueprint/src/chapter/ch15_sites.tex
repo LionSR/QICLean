@@ -33,8 +33,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{definition}[Operators supported on a region]
     \label{def:sites_supported}
-    \lean{ManyBody.supportedOperators, ManyBody.IsSupportedOn,
-        ManyBody.mem_supportedOperators_iff,
+    \lean{ManyBody.IsSupportedOn, ManyBody.mem_supportedOperators_iff,
         ManyBody.apply_eq_zero_of_mem_supportedOperators,
         ManyBody.apply_eq_of_mem_supportedOperators}
     \leanok
@@ -42,12 +41,20 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     An operator $A$ on $\mathcal H_X$ is supported on a region $D$ when its
     matrix element $A_{\sigma\tau}$ vanishes whenever $\sigma_v\neq\tau_v$ for
     some $v\notin D$, and otherwise depends only on $\sigma|_D$ and $\tau|_D$.
-    The operators supported on $D$ form a unital $*$-subalgebra $\mathcal A_D$
-    of the matrix algebra of $\mathcal H_X$. Consequently
-    $A_{\sigma\tau}=A_{\sigma'\tau'}$ whenever $\sigma|_D=\sigma'|_D$,
-    $\tau|_D=\tau'|_D$ and, at every $v\notin D$, $\sigma_v=\tau_v$ if and
-    only if $\sigma'_v=\tau'_v$.
+    Let $\mathcal A_D$ be the set of operators supported on $D$. Then
+    $A_{\sigma\tau}=A_{\sigma'\tau'}$ for $A\in\mathcal A_D$ whenever
+    $\sigma|_D=\sigma'|_D$, $\tau|_D=\tau'|_D$ and, at every $v\notin D$,
+    $\sigma_v=\tau_v$ if and only if $\sigma'_v=\tau'_v$.
 \end{definition}
+
+\begin{theorem}[Supported operators form a unital $*$-subalgebra]
+    \label{thm:sites_supported_subalgebra}
+    \lean{ManyBody.supportedOperators}
+    \leanok
+    \uses{def:sites_supported}
+    The set $\mathcal A_D$ is a unital $*$-subalgebra of the matrix algebra of
+    $\mathcal H_X$.
+\end{theorem}
 \begin{proof}\leanok
     Sums, scalar multiples and adjoints preserve both conditions entrywise,
     and the identity satisfies them. For a product,
@@ -60,7 +67,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \label{lem:sites_supported_mono}
     \lean{ManyBody.supportedOperators_mono, ManyBody.supportedOperators_univ}
     \leanok
-    \uses{def:sites_supported}
+    \uses{def:sites_supported, thm:sites_supported_subalgebra}
     If $D\subseteq D'$, then $\mathcal A_D\subseteq\mathcal A_{D'}$, and
     $\mathcal A_V$ is the whole matrix algebra.
 \end{lemma}
@@ -75,7 +82,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \lean{ManyBody.commute_of_mem_supportedOperators_of_disjoint,
         ManyBody.mul_apply_of_mem_supportedOperators_of_disjoint}
     \leanok
-    \uses{lem:sites_supported_mono}
+    \uses{def:sites_supported, thm:sites_supported_subalgebra, lem:sites_supported_mono}
     Let $D\cap D'=\emptyset$, $A\in\mathcal A_D$ and $B\in\mathcal A_{D'}$.
     Then $(AB)_{\sigma\tau}=A_{\sigma\rho}B_{\rho\tau}$, where $\rho$ equals
     $\tau$ on $D$ and $\sigma$ elsewhere, and $AB=BA$.
@@ -118,8 +125,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \uses{def:sites_place}
     The map $K\mapsto K\otimes1$ is linear, unital, multiplicative and
     compatible with adjoints. If $K$ is invertible, then $K^{-1}\otimes1$ is
-    the inverse of $K\otimes1$. Moreover
-    $\Tr(K\otimes1)=|X_{V\setminus D}|\Tr K$.
+    the inverse of $K\otimes1$, and $\Tr(K\otimes1)=|X_{V\setminus D}|\Tr K$.
 \end{lemma}
 \begin{proof}\leanok
     The cut is a bijection of index sets, so reindexing along it is a
@@ -134,7 +140,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.mem_supportedOperators_iff_exists_eq_place,
         ManyBody.range_placeHom}
     \leanok
-    \uses{def:sites_supported, lem:sites_place_hom}
+    \uses{def:sites_supported, thm:sites_supported_subalgebra, def:sites_place,
+        lem:sites_place_hom}
     An operator on $\mathcal H_X$ is supported on $D$ if and only if it is
     $K\otimes1$ for a matrix $K$ on $\C^{X_D}$. Hence $\mathcal A_D$ is the
     image of the placement.
