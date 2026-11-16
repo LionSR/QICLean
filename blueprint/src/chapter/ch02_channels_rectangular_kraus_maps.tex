@@ -163,29 +163,63 @@
 
 \begin{proof}
     \leanok
-    Choose a unitary $V$ and a real diagonal matrix $D$ with
+    Choose a unitary $V$ and a real diagonal matrix $D$ such that
     \begin{align}
-        \rho &= VDV^\dagger,\\
-        Y(X) &= V^\dagger XV.
+        \rho=VDV^\dagger,\qquad
+        Y(X)=V^\dagger XV,\qquad Y(\rho)=D.
         \label{eq:hermitian_pair_spectral_coordinates}
     \end{align}
-    For distinct coordinates $i,j$, define
+    Choose distinct coordinates $p,q$ and define
     \begin{align}
-        f(X) &= Y(X)_{ij}+Y(X)_{ji},\\
-        g(X) &= i\bigl(Y(X)_{ij}-Y(X)_{ji}\bigr).
+        f(X)=Y(X)_{pq}+Y(X)_{qp},\qquad
+        g(X)=i\bigl(Y(X)_{pq}-Y(X)_{qp}\bigr).
         \label{eq:hermitian_pair_off_diagonal_functionals}
     \end{align}
-    These functionals are independent, real on Hermitian inputs, and
-    satisfy $f(\rho)=g(\rho)=0$.
-    If $f(u)=0$, take $\phi=f$; otherwise take
-    $\phi=g(u)f-f(u)g$. Independence gives $\phi\ne0$ and
-    $\phi(\rho)=\phi(u)=0$.
-    Set $H(X)=\phi(X)u$. Then
-    $H^2(X)=\phi(X)\phi(u)u=0$ and $\tr H(X)=\phi(X)\tr u=0$.
-    Hermiticity follows because $\phi(X)$ is real for Hermitian $X$.
-    Since $\phi\ne0$, choose $X_0$ with $\phi(X_0)\ne0$. Then
+    Since $D$ is diagonal, $f(\rho)=g(\rho)=0$.
+    For Hermitian $X$, one has $Y(X)^\dagger=Y(X)$, and hence
     \begin{align}
-        QH(X_0) &= \phi(X_0)Q(u)\ne0.
+        \overline{f(X)}=Y(X)_{qp}+Y(X)_{pq}=f(X),\notag\\
+        \overline{g(X)}=-i\bigl(Y(X)_{qp}-Y(X)_{pq}\bigr)=g(X).
+        \label{eq:hermitian_pair_real_functionals}
+    \end{align}
+    Write $E_{pq}$ for a matrix unit and set
+    $X_1=VE_{pq}V^\dagger$,
+    $Z=(-i/2)(E_{pq}-E_{qp})$ and $X_2=VZV^\dagger$.
+    Unitary conjugation gives
+    \begin{align}
+        Y(X_1)=E_{pq},\qquad Y(X_2)=Z,\qquad
+        f(X_1)=1,\quad f(X_2)=0,\quad g(X_2)=1.
+        \label{eq:hermitian_pair_functional_witnesses}
+    \end{align}
+    Take $\phi=f$ if $f(u)=0$; otherwise take
+    $\phi=g(u)f-f(u)g$. Its nonvanishing is witnessed by
+    \begin{align}
+        \phi(X_1)=1\quad\text{if }f(u)=0,\notag\\
+        \phi(X_2)=g(u)f(X_2)-f(u)g(X_2)=-f(u)\ne0
+        \quad\text{if }f(u)\ne0.
+        \label{eq:hermitian_pair_phi_nonzero}
+    \end{align}
+    In both cases $\phi(\rho)=\phi(u)=0$. Since $u$ is Hermitian,
+    the coefficients $f(u),g(u)$ are real, so $\phi(X)$ is real
+    for every Hermitian $X$.
+
+    Under the additional hypotheses on $\tr u$ and $Q$, set
+    $H(X)=\phi(X)u$. Then
+    \begin{align}
+        H(\rho)=\phi(\rho)u=0,\qquad
+        H^2(X)=\phi(X)\phi(u)u=0,\qquad
+        \tr H(X)=\phi(X)\tr u=0.
+        \label{eq:hermitian_pair_nilpotent_identities}
+    \end{align}
+    For Hermitian $X$,
+    \begin{align}
+        H(X)^\dagger=\overline{\phi(X)}u^\dagger
+        =\phi(X)u=H(X).
+        \label{eq:hermitian_pair_hermitian_output}
+    \end{align}
+    Choose $X_0$ with $\phi(X_0)\ne0$. Complex linearity gives
+    \begin{align}
+        QH(X_0)=Q(\phi(X_0)u)=\phi(X_0)Q(u)\ne0.
         \label{eq:hermitian_pair_nonzero_composition}
     \end{align}
 \end{proof}
@@ -214,8 +248,14 @@
         &= Q(Y-\tr(Y)\rho)=0.
         \label{eq:trace_preparation_hermitian_reduction}
     \end{align}
-    Writing an arbitrary matrix as $X=Y+iZ$ with $Y,Z$ Hermitian would give
-    $Q(X)=\tr(X)Q(\rho)$ by complex linearity, a contradiction.
+    Write $X=Y+iZ$ with $Y,Z$ Hermitian. Complex linearity yields
+    \begin{align}
+        Q(X)=Q(Y)+iQ(Z)
+        =\bigl(\tr Y+i\tr Z\bigr)Q(\rho)
+        =\tr(X)Q(\rho),
+        \label{eq:trace_preparation_complexification}
+    \end{align}
+    contradicting the hypothesis on $Q$.
     Apply Lemma~\ref{thm:hermitian_pair_annihilator} to this $u$.
     Complete positivity and Choi support are still separate conditions.
 \end{proof}
