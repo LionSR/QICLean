@@ -187,7 +187,7 @@ theorem exists_traceless_hermitian_image_of_not_trace_preparation {b c : ℕ}
       u.IsHermitian ∧ u.trace = 0 ∧ Q u ≠ 0 := by
   classical
   by_contra h
-  push_neg at h
+  push Not at h
   have hHerm (Y : Matrix (Fin b) (Fin b) ℂ) (hY : Y.IsHermitian) :
       Q Y = Y.trace • Q ρ := by
     have hTraceSelf : IsSelfAdjoint Y.trace := by
