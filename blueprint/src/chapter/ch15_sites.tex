@@ -188,3 +188,66 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     configurations $(a,y)$, $a\in X_D$, is $K$, which gives injectivity and
     the converse for positivity.
 \end{proof}
+
+\section{The expectation onto a region}
+\label{sec:sites_region_expectation}
+
+\begin{definition}[Region expectation]
+    \label{def:sites_region_expectation}
+    \lean{ManyBody.regionExpectation, ManyBody.regionExpectation_apply,
+        ManyBody.regionExpectation_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_place}
+    For a region $D$ put $c=|X_{V\setminus D}|$. The region expectation of an
+    operator $A$ on $\mathcal H_X$ is
+    \begin{align}
+        E_D(A)=c^{-1}\,\Tr_{V\setminus D}(A)\otimes1,
+        \label{eq:sites_region_expectation}
+    \end{align}
+    the normalized partial trace over the sites outside $D$, placed on $D$. Its
+    matrix element at $(\sigma,\tau)$ is $0$ unless $\sigma$ and $\tau$ agree
+    outside $D$, and is then $c^{-1}\sum_{y}A_{(\sigma|_D,y),(\tau|_D,y)}$, the
+    sum running over the configurations $y$ of $V\setminus D$. Its values are
+    supported on $D$. This is the expectation onto the operators supported on a
+    ball in the quasi-local approximation of the two-dimensional area law, there
+    for one local dimension.
+\end{definition}
+
+\begin{theorem}[The region expectation is a conditional expectation]
+    \label{thm:sites_region_expectation}
+    \lean{ManyBody.regionExpectation_mul_mul, ManyBody.regionExpectation_one,
+        ManyBody.regionExpectation_of_mem_supportedOperators,
+        ManyBody.regionExpectation_regionExpectation,
+        ManyBody.trace_regionExpectation, ManyBody.regionExpectation_conjTranspose,
+        ManyBody.posSemidef_regionExpectation, ManyBody.regionExpectation_mono,
+        ManyBody.norm_regionExpectation_le, ManyBody.regionExpectation_zero,
+        ManyBody.regionExpectation_add, ManyBody.regionExpectation_smul,
+        ManyBody.regionExpectation_sub}
+    \leanok
+    \uses{def:sites_region_expectation, thm:sites_place_range}
+    The map $E_D$ is linear and compatible with adjoints. It satisfies
+    $E_D(BAC)=B\,E_D(A)\,C$ for all $B,C\in\mathcal A_D$ and $E_D(1)=1$, so it
+    fixes $\mathcal A_D$ and $E_D\circ E_D=E_D$. It preserves the trace, maps
+    positive semidefinite operators to positive semidefinite operators, is
+    monotone, and satisfies $\lVert E_D(A)\rVert\leq\lVert A\rVert$.
+\end{theorem}
+\begin{proof}\leanok
+    In the coordinates of the cut along $D$, write $W_{yy'}=c^{-1/2}\,
+    (1\otimes\ket{y}\!\bra{y'})$ for configurations $y,y'$ of $V\setminus D$.
+    Entrywise,
+    \begin{align}
+        \sum_{y,y'}(1\otimes\ket{y'}\!\bra{y})\,M\,(1\otimes\ket{y}\!\bra{y'})
+            =\Tr_{V\setminus D}(M)\otimes1,
+        \label{eq:sites_region_conjugation}
+    \end{align}
+    so $E_D(A)=\sum_{y,y'}W_{yy'}^*AW_{yy'}$. Each $W_{yy'}$ and its adjoint act
+    as the identity on $D$, hence commute with every $K\otimes1$, that is, by
+    Theorem~\ref{thm:sites_place_range}, with every element of $\mathcal A_D$;
+    this gives $E_D(BAC)=B\,E_D(A)\,C$. From
+    Definition~\ref{def:sites_region_expectation},
+    $\Tr_{V\setminus D}(1)=c\cdot1$, so $E_D(1)=1$ when $c\neq0$; when $c=0$
+    the space $\mathcal H_X$ is zero. Hence $\sum_{y,y'}W_{yy'}^*W_{yy'}=1$, and
+    a sum $\sum_pW_p^*AW_p$ with $\sum_pW_p^*W_p=1$ preserves positivity and does
+    not increase the operator norm. The trace of the right side
+    of~(\ref{eq:sites_region_expectation}) is $c^{-1}\cdot c\Tr A$.
+\end{proof}
