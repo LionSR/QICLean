@@ -201,10 +201,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{definition}[Region expectation]
     \label{def:sites_region_expectation}
-    \lean{ManyBody.regionExpectation, ManyBody.regionExpectation_apply,
-        ManyBody.regionExpectation_mem_supportedOperators}
+    \lean{ManyBody.regionExpectation, ManyBody.regionExpectation_apply}
     \leanok
-    \uses{def:sites_place, thm:sites_place_range}
+    \uses{def:sites_place}
     For a region $D$ put $c=|X_{V\setminus D}|$. The region expectation of an
     operator $A$ on $\mathcal H_X$ is
     \begin{align}
@@ -214,15 +213,15 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     the normalized partial trace over the sites outside $D$, placed on $D$. Its
     matrix element at $(\sigma,\tau)$ is $0$ unless $\sigma$ and $\tau$ agree
     outside $D$, and is then $c^{-1}\sum_{y}A_{(\sigma|_D,y),(\tau|_D,y)}$, the
-    sum running over the configurations $y$ of $V\setminus D$. Its values are
-    supported on $D$. This is the expectation onto the operators supported on a
+    sum running over the configurations $y$ of $V\setminus D$. This is the expectation onto the operators supported on a
     ball in the quasi-local approximation of the two-dimensional area law, there
     for one local dimension.
 \end{definition}
 
 \begin{theorem}[The region expectation is a conditional expectation]
     \label{thm:sites_region_expectation}
-    \lean{ManyBody.regionExpectation_mul_mul, ManyBody.regionExpectation_one,
+    \lean{ManyBody.regionExpectation_mem_supportedOperators,
+        ManyBody.regionExpectation_mul_mul, ManyBody.regionExpectation_one,
         ManyBody.regionExpectation_of_mem_supportedOperators,
         ManyBody.regionExpectation_regionExpectation,
         ManyBody.trace_regionExpectation, ManyBody.regionExpectation_conjTranspose,
@@ -233,13 +232,16 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \leanok
     \uses{def:sites_region_expectation, thm:sites_place_range, lem:sites_place_hom,
         thm:root_channel}
-    The map $E_D$ is linear and compatible with adjoints. It satisfies
+    The values of $E_D$ lie in $\mathcal A_D$. The map $E_D$ is linear and
+    compatible with adjoints. It satisfies
     $E_D(BAC)=B\,E_D(A)\,C$ for all $B,C\in\mathcal A_D$ and $E_D(1)=1$, so it
     fixes $\mathcal A_D$ and $E_D\circ E_D=E_D$. It preserves the trace, maps
     positive semidefinite operators to positive semidefinite operators, is
     monotone, and satisfies $\lVert E_D(A)\rVert\leq\lVert A\rVert$.
 \end{theorem}
 \begin{proof}\leanok
+    By~(\ref{eq:sites_region_expectation}), $E_D(A)$ is a multiple of a placed
+    matrix, so it lies in $\mathcal A_D$ by Theorem~\ref{thm:sites_place_range}.
     In the coordinates of the cut along $D$, write $W_{yy'}=c^{-1/2}\,
     (1\otimes\ket{y}\!\bra{y'})$ for configurations $y,y'$ of $V\setminus D$.
     Entrywise,
