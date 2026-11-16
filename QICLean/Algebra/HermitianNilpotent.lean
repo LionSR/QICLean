@@ -62,7 +62,7 @@ theorem exists_hermitian_functional_killing_pair {b : ℕ} (hb : 2 ≤ b)
   let C : Module.End ℂ (Matrix (Fin b) (Fin b) ℂ) :=
     { toFun := fun X => Vmᴴ * X * Vm
       map_add' := by intros; rw [Matrix.mul_add, Matrix.add_mul]
-      map_smul' := by intros; rw [Matrix.mul_smul, Matrix.smul_mul] }
+      map_smul' := by intros; rw [Matrix.mul_smul, Matrix.smul_mul]; rfl }
   have hC (X : Matrix (Fin b) (Fin b) ℂ) : C X = Vmᴴ * X * Vm := rfl
   have hRecover (X : Matrix (Fin b) (Fin b) ℂ) : C (Vm * X * Vmᴴ) = X :=
     recover_isometric_congruence Vm hV X
