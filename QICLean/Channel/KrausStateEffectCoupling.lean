@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.KrausCPTP
 import QICLean.Algebra.MatrixSpectralDecomp
 import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic.FieldSimp
 
 /-!
 # Kraus coupling without a faithful input
@@ -36,69 +36,6 @@ factorization in place of individual unit-vector identities.
 open scoped Matrix BigOperators ComplexOrder
 
 namespace Matrix
-
-private theorem exists_compact_spectral_isometry {n : Type*} [Fintype n]
-    {A : Matrix n n ℂ} (hA : A.PosSemidef) :
-    ∃ (a : Fin A.rank → ℝ) (U : Matrix n (Fin A.rank) ℂ),
-      (∀ i, 0 < a i) ∧ Uᴴ * U = 1 ∧
-      A = U * Matrix.diagonal (fun i => (a i : ℂ)) * Uᴴ := by
-  classical
-  let I := {j : n // hA.isHermitian.eigenvalues j ≠ 0}
-  let V := hA.isHermitian.eigenvectorUnitary
-  let term : n → Matrix n n ℂ := fun j =>
-    (hA.isHermitian.eigenvalues j : ℂ) •
-      vecMulVec (fun p => V p j) (fun p => star (V p j))
-  have hAll : A = ∑ j : n, term j := hA.eq_sum_eigenvalue_smul_eigenprojector
-  have hSplit := Fintype.sum_subtype_add_sum_subtype
-    (p := fun j : n => hA.isHermitian.eigenvalues j ≠ 0) term
-  have hZero : ∑ j : {j : n // ¬ hA.isHermitian.eigenvalues j ≠ 0}, term j = 0 := by
-    apply Finset.sum_eq_zero
-    intro j _
-    have hj : hA.isHermitian.eigenvalues j = 0 := by simpa using j.property
-    simp [term, hj]
-  have hTrim : A = ∑ j : I, term j :=
-    hAll.trans (by simpa only [hZero, add_zero] using hSplit.symm)
-  have hCard : Fintype.card I = A.rank := hA.isHermitian.rank_eq_card_non_zero_eigs.symm
-  let e : Fin A.rank ≃ I := Fintype.equivOfCardEq (by simpa using hCard.symm)
-  let a : Fin A.rank → ℝ := fun i => hA.isHermitian.eigenvalues (e i)
-  let U : Matrix n (Fin A.rank) ℂ := fun p i => V p (e i)
-  have he : Function.Injective (fun i : Fin A.rank => (e i).val) :=
-    Subtype.val_injective.comp e.injective
-  have hU : Uᴴ * U = 1 := by
-    ext i j : 2
-    have h := congrArg (fun M : Matrix n n ℂ => M (e i) (e j))
-      (Unitary.coe_star_mul_self V)
-    change (∑ k, star (V k (e i)) * V k (e j)) = if i = j then 1 else 0
-    simpa only [Matrix.star_eq_conjTranspose, Matrix.mul_apply,
-      Matrix.conjTranspose_apply, Matrix.one_apply, he.eq_iff] using h
-  refine ⟨a, U, fun i => (hA.eigenvalues_nonneg (e i)).lt_of_ne (e i).property.symm,
-    hU, ?_⟩
-  have hSum : A = ∑ i : Fin A.rank,
-      (a i : ℂ) • vecMulVec (fun p => U p i) (fun p => star (U p i)) := by
-    calc
-      A = ∑ j : I, term j := hTrim
-      _ = ∑ i : Fin A.rank, term (e i) :=
-        (Fintype.sum_equiv e _ _ (fun i => rfl)).symm
-  calc
-    A = ∑ i : Fin A.rank,
-        (a i : ℂ) • vecMulVec (fun p => U p i) (fun p => star (U p i)) := hSum
-    _ = U * Matrix.diagonal (fun i => (a i : ℂ)) * Uᴴ := by
-      ext p q : 2
-      simp only [Matrix.sum_apply, Matrix.smul_apply, Matrix.vecMulVec_apply,
-        smul_eq_mul]
-      rw [Matrix.mul_apply]
-      simp only [Matrix.mul_diagonal, Matrix.conjTranspose_apply]
-      apply Finset.sum_congr rfl
-      intro i _
-      ring
-
-private theorem trace_eq_sum_spectral_weights {n : Type*} [Fintype n]
-    {r : ℕ} (U : Matrix n (Fin r) ℂ) (hU : Uᴴ * U = 1)
-    (a : Fin r → ℝ) :
-    (U * Matrix.diagonal (fun i => (a i : ℂ)) * Uᴴ).trace =
-      ((∑ i, a i : ℝ) : ℂ) := by
-  rw [Matrix.trace_mul_cycle, hU, Matrix.one_mul, Matrix.trace_diagonal]
-  simp only [Complex.ofReal_sum]
 
 /-- Injective labels in a finite additive group group the weighted matrix
 units into one Kraus operator per group element. Their effect is scalar,
@@ -197,8 +134,8 @@ theorem exists_kraus_state_effect_coupling_max_rank {m n : Type*}
     ∃ K : Fin (max A.rank B.rank) → Matrix n m ℂ,
       (∑ k, K k * ρ * (K k)ᴴ) = A ∧ (∑ k, (K k)ᴴ * K k) = B := by
   classical
-  obtain ⟨a, U, ha, hU, hAeq⟩ := exists_compact_spectral_isometry hA
-  obtain ⟨b, Z, hb, _hZ, hBeq⟩ := exists_compact_spectral_isometry hB
+  obtain ⟨a, U, ha, hU, hAeq⟩ := hA.exists_compact_spectral_isometry
+  obtain ⟨b, Z, hb, _hZ, hBeq⟩ := hB.exists_compact_spectral_isometry
   let T : ℝ := ∑ i, a i
   have hATrace : A.trace = (T : ℂ) :=
     (congrArg Matrix.trace hAeq).trans (trace_eq_sum_spectral_weights U hU a)

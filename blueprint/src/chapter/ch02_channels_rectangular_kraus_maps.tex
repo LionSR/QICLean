@@ -529,6 +529,32 @@ the input factor is written $\tr_B$.
     isometry after zero-padding.
 \end{proof}
 
+\begin{lemma}[Compact spectral factorization]
+    \label{lem:compact_spectral_isometry}
+    \lean{Matrix.PosSemidef.exists_compact_spectral_isometry,
+        Matrix.trace_eq_sum_spectral_weights}
+    \leanok
+    If $A\in M_n(\C)$ is positive semidefinite and $r=\rank A$, then
+    $A=U\operatorname{diag}(\alpha_i)U^\dagger$ for an $n$ by $r$
+    matrix $U$ with $U^\dagger U=\Id_r$ and $\alpha_i>0$.
+    For any such isometry $U$ and real weights $\alpha_i$,
+    $\tr(U\operatorname{diag}(\alpha_i)U^\dagger)=\sum_i\alpha_i$.
+    The empty factorization is allowed when $r=0$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Retain the orthonormal eigenvectors of $A$ with nonzero eigenvalues.
+    Positivity makes these eigenvalues strictly positive, and their
+    number is $\rank A$. The trace identity follows from
+    \begin{align}
+        \tr(U\operatorname{diag}(\alpha_i)U^\dagger)
+        &= \tr(U^\dagger U\operatorname{diag}(\alpha_i))
+        = \sum_i\alpha_i.
+        \label{eq:compact_spectral_trace}
+    \end{align}
+\end{proof}
+
 \begin{theorem}[Coupling a prepared matrix and a trace effect]
     \label{thm:kraus_state_effect_coupling_max}
     \lean{Matrix.exists_kraus_state_effect_coupling_max_rank}
@@ -544,6 +570,7 @@ the input factor is written $\tr_B$.
 
 \begin{proof}
     \leanok
+    \uses{lem:compact_spectral_isometry}
     Factor $B=SS^\dagger$ with $b$ columns. Diagonalize the Hermitian
     matrix $S^\dagger\rho S$ as $V\operatorname{diag}(\lambda_j)V^\dagger$,
     where $V$ is unitary and $\sum_j\lambda_j=T$.
