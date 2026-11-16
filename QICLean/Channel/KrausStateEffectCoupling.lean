@@ -276,7 +276,7 @@ theorem exists_kraus_state_effect_coupling_max_rank {m n : Type*}
   let N := max A.rank B.rank
   have hNA : Nonempty (Fin A.rank) := by
     by_contra h
-    have : IsEmpty (Fin A.rank) := not_nonempty_iff.mp h
+    letI : IsEmpty (Fin A.rank) := not_nonempty_iff.mp h
     have hZero : T = 0 := by simp [T]
     exact hT.ne' hZero
   obtain ⟨i₀⟩ := hNA
