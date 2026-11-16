@@ -204,7 +204,7 @@ theorem exists_traceless_hermitian_image_of_not_trace_preparation {b c : ℕ}
   intro X
   obtain ⟨H₁, H₂, hH₁, hH₂, hX⟩ := exists_isHermitian_eq_add_smul_I X
   rw [hX, map_add, map_smul, hHerm H₁ hH₁, hHerm H₂ hH₂,
-    Matrix.trace_add, Matrix.trace_smul, add_smul, smul_smul]
+    Matrix.trace_add, Matrix.trace_smul, add_smul, smul_smul, smul_eq_mul]
 
 /-- A complex-linear map that is not trace preparation admits a
 trace-zero Hermitian-preserving nilpotent direction which it does not
