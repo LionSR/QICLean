@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Wolf's Positive Variational Formula for Schatten Norms: the Constant}
+\author{}
+\date{2026-11-15}
+\begin{document}
+\maketitle
+\gapnote{local-correction}{resolved}
+
+\section{The printed statement}
+Wolf's Theorem ``Variational ways to $p$-norms'' \cite{Wolf2012Quantum},
+local source \path{Notes/WolfNoteTexSource/ch08_distance_measures.tex},
+lines~178--187, states for $P\ge0$, $p\ge1$ and $p^{-1}+q^{-1}=1$
+\begin{equation}\tag{8.13}
+    \|P\|_p^p=\frac1p\sup_{X\ge0}\Bigl(\operatorname{tr}[PX]-\frac1q\|X\|_q^q\Bigr).
+\end{equation}
+
+\section{The factor belongs to the left-hand side}
+Take $d=1$ and $P=t\ge0$. For $x\ge0$ Young's inequality gives
+$tx\le t^p/p+x^q/q$, with equality at $x=t^{p-1}$, so the supremum equals
+$t^p/p$. The printed right-hand side is therefore $t^p/p^2$, which differs from
+$t^p$ unless $t=0$ or $p=1$. The correct identity is
+\begin{equation*}
+    \frac1p\|P\|_p^p=\sup_{X\ge0}\Bigl(\operatorname{tr}[PX]-\frac1q\|X\|_q^q\Bigr),
+\end{equation*}
+equivalently $\|P\|_p^p=p\sup_{X\ge0}[\cdots]$. In general the upper bound is
+Hölder's inequality (8.6) followed by Young's inequality, and $X=P^{p-1}$
+attains it since $(p-1)q=p$.
+
+The formula also needs $p>1$: for $p=1$ the conjugate exponent is $q=\infty$,
+and $\frac1q\|X\|_q^q$ has no meaning. The formalization takes $p,q$ real Hölder
+conjugates, which forces $1<p,q<\infty$.
+
+\section{Formalization}
+The corrected identity is proved for every positive semidefinite $P$ on a
+finite index type, as an attained supremum, in
+\doclink{QICLean/Analysis/SchattenVariational}. No other hypothesis is added.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

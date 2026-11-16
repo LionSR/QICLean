@@ -2561,6 +2561,46 @@ proves Equation (8.23) for every positive semidefinite `ρ`, every POVM with
 The proof works in an eigenbasis of `ρ` with a doubly substochastic Jensen
 argument instead of the source's embedding into `M_m(ℂ)` and Theorem 8.8.
 
+### Theorem 8.2 “Unitarily invariant norms”, item 5 (Ky Fan dominance) — CLAUSE FORMALIZED
+
+In `QICLean.Analysis.KyFanDominance`, `Matrix.IsUnitarilyInvariantNorm` is a
+norm on `M_d(ℂ)` (triangle inequality, absolute homogeneity, definiteness)
+with `N (U A V) = N A` for all unitaries; sub-multiplicativity is not assumed.
+`Matrix.kyFanNorm A k` is the sum of the `k` largest singular values
+`√λᵢ(A†A)`, with multiplicity. `Matrix.IsUnitarilyInvariantNorm.le_of_kyFanNorm_le`
+proves item 5 with exactly the source hypotheses (`k = 1, …, d`). The proof
+uses the submajorization theorem, the permutation convex hull of Theorem 8.4,
+and monotonicity of `x ↦ N (diag x)` from sign-change invariance.
+
+Items 1–4 and 6 of Theorem 8.2 (Hölder for general unitarily invariant norms,
+Lidskii, normal products, concave functions, Araki–Lieb–Thirring) remain
+open, so the containing theorem is partial-packaging. The Schatten-norm case of
+item 1 with `p⁻¹ + q⁻¹ = 1` in trace form is Equation (8.6), below.
+
+### Theorem 8.3 “Variational ways to p-norms” (Equations 8.10–8.13) — FORMALIZED WITH LOCAL FIX
+
+In `QICLean.Analysis.SchattenVariational`, `Matrix.schattenNorm A p` is
+`(tr |A|^p)^{1/p}`, `|A| = √(A†A)`.
+
+* Equation (8.6): `Matrix.norm_trace_conjTranspose_mul_le_schattenNorm` for
+  real Hölder conjugates and `Matrix.norm_trace_conjTranspose_mul_le_schattenNorm_one`
+  for `p = 1`, `q = ∞` (operator norm), from the multi-factor trace Hölder
+  inequality and polar decompositions.
+* Equation (8.10): `Matrix.schattenNorm_eq_sSup_norm_trace_conjTranspose_mul`
+  (`p > 1`) and `Matrix.schattenNorm_one_eq_sSup_norm_trace_conjTranspose_mul`
+  (`p = 1`) as suprema with no further hypothesis; the `isGreatest_*` forms
+  give attainment for nonempty index types, by Wolf's maximizer
+  `U P^{p-1} / tr[P^p]^{1/q}`.
+* Equation (8.11): already `Matrix.traceNorm_eq_sSup_norm_trace_conjTranspose_mul_unitary`
+  in `QICLean.Analysis.TraceNormVariational`.
+* Equation (8.12): `Matrix.l2_opNorm_eq_sSup_norm_inner`.
+* Equation (8.13): `Matrix.isGreatest_re_trace_mul_sub_schattenNorm_rpow` and
+  `Matrix.schattenNorm_rpow_eq_mul_sSup`. **Local fix:** the printed factor
+  `1/p` belongs to the left-hand side (`‖P‖_p^p / p = sup …`), and the equation
+  needs `p > 1`; see `docs/paper-gaps/wolf_ch8_variational_pnorm_constant.tex`.
+
+The historical named-environment tally above is unchanged.
+
 ### Corollary “Channel spectrum vs. Jamiolkowski spectrum” (Equation 8.87) — FORMALIZED
 
 `Matrix.subperipheralModulus_le_one_sub_sq_mul_min_eigenvalue` in
