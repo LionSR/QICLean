@@ -40,7 +40,8 @@ check was introduced.  A new pass-through fails, and so does an entry that is
 no longer one: remove it in the change that deletes the declaration.  With
 ``--base-ref`` the set is also compared with its value at the merge base, and
 an added entry fails, so a new pass-through cannot be admitted by recording
-it.
+it. CI uses ``--base-revision`` to compare against the exact event base, including
+the previous tip after a force-push.
 """
 
 # Adapted from LionSR/TNLean scripts/check_pass_through_declarations.py at
@@ -54,7 +55,9 @@ import re
 from collections.abc import Iterator, Mapping
 from pathlib import Path
 
-from check_import_layers import ratchet_errors, records_at_merge_base, tracked_sources
+from check_import_layers import (
+    ratchet_errors, records_at_merge_base, records_at_revision, tracked_sources,
+)
 from lean_import_syntax import strip_lean_comments
 
 CHECKER_PATH = "scripts/check_pass_through_declarations.py"
@@ -200,9 +203,9 @@ def variable_names(blocks: list[str]) -> set[str]:
 
 def pass_throughs_of_source(source: str) -> Iterator[str]:
     """Yield the full names of the pass-through declarations of one module."""
-    uncommented, error = strip_lean_comments(source)
+    uncommented, error = strip_lean_comments(source, mask_strings=True)
     if error is not None:
-        return
+        raise ValueError(error)
     blocks = commands(uncommented)
     variables = variable_names(blocks)
     scopes: list[str | None] = []
@@ -249,8 +252,22 @@ def pass_throughs(sources: Mapping[str, str]) -> dict[str, str]:
     """Return each pass-through declaration with the module that states it."""
     found: dict[str, str] = {}
     for module in sorted(sources):
-        for name in pass_throughs_of_source(sources[module]):
-            found.setdefault(name, module)
+        try:
+            names = list(pass_throughs_of_source(sources[module]))
+        except ValueError as error:
+            raise ValueError(f"{module}: {error}") from error
+        for name in names:
+            if name in found:
+                # Private declarations can share a lexical name across modules.
+                # Do not let one recorded alias hide an additional forwarding copy.
+                occurrence = 2
+                key = f"{name} [{module}:{occurrence}]"
+                while key in found:
+                    occurrence += 1
+                    key = f"{name} [{module}:{occurrence}]"
+                found[key] = module
+            else:
+                found[name] = module
     return found
 
 
@@ -357,7 +374,9 @@ def main() -> int:
         description="Reject new declarations that only rename another declaration."
     )
     parser.add_argument("--root", type=Path, default=Path("."))
-    parser.add_argument(
+    base_options = parser.add_mutually_exclusive_group()
+    base_options.add_argument("--base-revision", help="exact revision fixing the recorded entries (CI)")
+    base_options.add_argument(
         "--base-ref",
         help="ref whose merge base with HEAD fixes the entries that may remain",
     )
@@ -374,9 +393,11 @@ def main() -> int:
         return 0
 
     base: frozenset[str] | None = None
-    if args.base_ref is not None:
+    if args.base_ref is not None or args.base_revision is not None:
         try:
-            base = records_at_merge_base(root, args.base_ref, CHECKER_PATH, ("PASS_THROUGH",))[
+            read_base = records_at_revision if args.base_revision else records_at_merge_base
+            revision = args.base_revision or args.base_ref
+            base = read_base(root, revision, CHECKER_PATH, ("PASS_THROUGH",))[
                 "PASS_THROUGH"
             ]
         except (SyntaxError, ValueError) as error:
@@ -398,4 +419,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except ValueError as error:
+        print(f"::error title=Pass-through check failed::{error}")
+        raise SystemExit(1)

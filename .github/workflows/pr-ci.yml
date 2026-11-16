@@ -482,13 +482,24 @@ jobs:
       - name: Enforce architecture ratchets
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
           args=()
-          # Dispatch has no base. On PRs/pushes an unavailable base must fail,
-          # rather than silently turning off the no-growth comparison.
-          if [ -n "$BASE_SHA" ] && [[ ! "$BASE_SHA" =~ ^0+$ ]]; then
-            git cat-file -e "$BASE_SHA^{commit}" || git fetch --no-tags origin "$BASE_SHA"
-            args=(--base-ref "$BASE_SHA")
+          # Only dispatch and a new-branch push may omit historical comparison.
+          if [ "$EVENT_NAME" != workflow_dispatch ]; then
+            if [[ ! "$BASE_SHA" =~ ^[0-9a-fA-F]{40}$ ]]; then
+              echo "::error::Missing or invalid architecture ratchet base SHA"
+              exit 1
+            fi
+            if [[ "$BASE_SHA" =~ ^0+$ ]]; then
+              if [ "$EVENT_NAME" != push ]; then
+                echo "::error::A pull request must have a nonzero base SHA"
+                exit 1
+              fi
+            else
+              git cat-file -e "$BASE_SHA^{commit}" || git fetch --no-tags origin "$BASE_SHA"
+              args=(--base-revision "$BASE_SHA")
+            fi
           fi
           python3 scripts/check_import_layers.py "${args[@]}"
           python3 scripts/check_pass_through_declarations.py "${args[@]}"

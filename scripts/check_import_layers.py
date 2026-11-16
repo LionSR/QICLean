@@ -4,7 +4,7 @@
 Ported from TNLean; see docs/import_structure.md for ownership, allowed imports,
 source revision, scope and commands. Comments are removed before parsing imports;
 import-only aggregators are expanded recursively. New and stale recorded entries
-fail, and --base-ref rejects additions to the record at the merge base.
+fail; --base-ref compares with the merge base, --base-revision with an exact commit.
 """
 
 # Adapted from LionSR/TNLean scripts/check_import_layers.py at
@@ -21,16 +21,20 @@ import subprocess
 from collections.abc import Callable, Iterable, Mapping
 from pathlib import Path
 
-from lean_import_syntax import MODULE_NAME, strip_lean_comments
+from lean_import_syntax import strip_lean_comments
 
 PRODUCTION_ROOT = "QICLean/"
 ARCHIVE_ROOT = "QICLean/Archive/"
 CHECKER_PATH = "scripts/check_import_layers.py"
 # An import command with the modifiers Lean accepts: ``import M``,
 # ``public import M``, ``meta import M``, ``public meta import M``, ``import all M``.
+# Lean identifiers also permit Unicode and guillemet-escaped components.
+MODULE_SEGMENT = r"(?:[^\W\d][\w']*|«[^»\n]+»)"
+MODULE_NAME = rf"{MODULE_SEGMENT}(?:\.{MODULE_SEGMENT})*"
 IMPORT_COMMAND_RE = re.compile(
-    rf"(?:public\s+)?(?:meta\s+)?import\s+(?:all\s+)?({MODULE_NAME}(?:\s+{MODULE_NAME})*)"
+    rf"(?:public\s+)?(?:meta\s+)?import\s+(?:all\s+)?({MODULE_NAME})(?![\w'.«])"
 )
+
 
 # First matching prefix owns a module; specific circuit layers precede Circuit.
 LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
@@ -83,25 +87,26 @@ def layer_of(module: str) -> str | None:
 def parse_module(source: str) -> tuple[tuple[str, ...], bool]:
     """Return the imported modules of a source and whether it is import-only.
 
-    Comments are removed first.  A source whose comments cannot be removed is
-    treated as having no imports and as not import-only; Lean rejects it anyway.
+    Comments and literal contents are removed first. Lexical errors fail closed
+    rather than silently turning off enforcement for the affected module.
     The result is cached, since each check of this script reads every module.
     """
-    uncommented, error = strip_lean_comments(source)
+    uncommented, error = strip_lean_comments(source, mask_strings=True)
     if error is not None:
-        return (), False
+        raise ValueError(error)
+    # Imports are header commands, not lines. Lean permits line breaks inside
+    # an import and multiple import commands on one line. Never scan commands
+    # or string contents after the header for apparent imports.
+    remaining = uncommented.lstrip()
+    for keyword in ("module", "prelude"):
+        match = re.match(rf"{keyword}\b", remaining)
+        if match:
+            remaining = remaining[match.end():].lstrip()
     imports: list[str] = []
-    import_only = True
-    for line in uncommented.splitlines():
-        command = line.strip()
-        if not command:
-            continue
-        match = IMPORT_COMMAND_RE.fullmatch(command)
-        if match is None:
-            import_only = False
-        else:
-            imports.extend(match.group(1).split())
-    return tuple(imports), import_only and bool(imports)
+    while match := IMPORT_COMMAND_RE.match(remaining):
+        imports.append(match.group(1).replace("«", "").replace("»", ""))
+        remaining = remaining[match.end():].lstrip()
+    return tuple(imports), bool(imports) and not remaining
 
 
 def resolved_imports(sources: Mapping[str, str]) -> dict[str, set[str]]:
@@ -111,7 +116,12 @@ def resolved_imports(sources: Mapping[str, str]) -> dict[str, set[str]]:
     aggregator is replaced by the modules it re-exports, through nested
     aggregators.
     """
-    parsed = {module: parse_module(source) for module, source in sources.items()}
+    parsed = {}
+    for module, source in sources.items():
+        try:
+            parsed[module] = parse_module(source)
+        except ValueError as error:
+            raise ValueError(f"{module}: {error}") from error
 
     def reexports(module: str, seen: frozenset[str]) -> set[str]:
         imports, import_only = parsed.get(module, ((), False))
@@ -281,6 +291,21 @@ def records_at_merge_base(
     if merge_base.returncode != 0:
         raise ValueError(f"cannot find merge base with {base_ref}: {merge_base.stderr.strip()}")
     base_commit = merge_base.stdout.strip()
+    return records_at_revision(root, base_commit, checker_path, names)
+
+
+def records_at_revision(
+    root: Path, revision: str, checker_path: str, names: Iterable[str]
+) -> dict[str, frozenset[str] | None]:
+    """Read the exact CI base, including the previous tip of a force-pushed branch."""
+    names = tuple(names)
+    commit = subprocess.run(
+        ["git", "-C", str(root), "rev-parse", "--verify", f"{revision}^{{commit}}"],
+        capture_output=True, text=True,
+    )
+    if commit.returncode:
+        raise ValueError(f"cannot resolve base revision {revision}: {commit.stderr.strip()}")
+    base_commit = commit.stdout.strip()
     result = subprocess.run(
         ["git", "-C", str(root), "show", f"{base_commit}:{checker_path}"],
         check=False,
@@ -292,7 +317,7 @@ def records_at_merge_base(
         if "does not exist in" in result.stderr or "exists on disk, but not in" in result.stderr:
             return dict.fromkeys(names)
         raise ValueError(
-            f"cannot read checker at merge base {base_commit}: {result.stderr.strip()}"
+            f"cannot read checker at base revision {base_commit}: {result.stderr.strip()}"
         )
     return {name: record_from_source(result.stdout, name) for name in names}
 
@@ -387,7 +412,9 @@ def main() -> int:
         "and new imports of worked examples by library modules."
     )
     parser.add_argument("--root", type=Path, default=Path("."))
-    parser.add_argument(
+    base_options = parser.add_mutually_exclusive_group()
+    base_options.add_argument("--base-revision", help="exact revision fixing the recorded entries (CI)")
+    base_options.add_argument(
         "--base-ref",
         help="ref whose merge base with HEAD fixes the recorded entries that may remain",
     )
@@ -421,9 +448,11 @@ def main() -> int:
         return 0
 
     base: dict[str, frozenset[str] | None] = dict.fromkeys(RECORDS)
-    if args.base_ref is not None:
+    if args.base_ref is not None or args.base_revision is not None:
         try:
-            base = records_at_merge_base(root, args.base_ref, CHECKER_PATH, RECORDS)
+            read_base = records_at_revision if args.base_revision else records_at_merge_base
+            revision = args.base_revision or args.base_ref
+            base = read_base(root, revision, CHECKER_PATH, RECORDS)
         except (SyntaxError, ValueError) as error:
             print(f"::error title=Import layer check failed::{error}")
             return 1
@@ -451,4 +480,8 @@ def main() -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    try:
+        raise SystemExit(main())
+    except ValueError as error:
+        print(f"::error title=Import layer check failed::{error}")
+        raise SystemExit(1)

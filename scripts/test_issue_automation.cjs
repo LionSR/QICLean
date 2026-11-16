@@ -65,3 +65,63 @@ for (const options of [{ noParent: true }, { lookupError: true }]) {
     assert.deepEqual(calls, [['graphql', 1050]]);
   });
 }
+
+// Execute the CI base-selection shell with local stand-ins for git and Python.
+// A malformed event must fail before either checker can silently bootstrap.
+const { mkdtempSync, writeFileSync, rmSync } = require('node:fs');
+const { tmpdir } = require('node:os');
+const { join } = require('node:path');
+const { spawnSync } = require('node:child_process');
+const ci = readFileSync(`${__dirname}/../.github/workflows/pr-ci.yml`, 'utf8');
+const baseStep = ci.split('      - name: Enforce architecture ratchets\n')[1]
+  .split('\n      - name:')[0].split('        run: |\n')[1]
+  .split('\n').map(line => line.slice(10)).join('\n');
+const sha = 'a'.repeat(40);
+function runBaseStep(event, base, fetchFails = false) {
+  const dir = mkdtempSync(join(tmpdir(), 'qic-ci-base-'));
+  try {
+    const log = join(dir, 'calls');
+    writeFileSync(log, '');
+    for (const command of ['git', 'python3']) {
+      writeFileSync(join(dir, command), `#!/bin/bash\necho '${command}' "$@" >> "$CALL_LOG"\n` +
+        (command === 'git' && fetchFails ? 'exit 1\n' : 'exit 0\n'), { mode: 0o755 });
+    }
+    const result = spawnSync('bash', ['-e', '-o', 'pipefail', '-c', baseStep], {
+      env: { ...process.env, PATH: `${dir}:${process.env.PATH}`, EVENT_NAME: event,
+        BASE_SHA: base, CALL_LOG: log }, encoding: 'utf8',
+    });
+    return { status: result.status, calls: readFileSync(log, 'utf8') };
+  } finally { rmSync(dir, { recursive: true }); }
+}
+for (const event of ['pull_request', 'push']) {
+  test(`${event}: exact base passed to both ratchets`, () => {
+    const result = runBaseStep(event, sha);
+    assert.equal(result.status, 0);
+    assert.equal(result.calls.split(`--base-revision ${sha}`).length - 1, 2);
+  });
+  for (const base of ['', 'invalid']) {
+    test(`${event}: missing or malformed base fails closed (${base})`, () => {
+      const result = runBaseStep(event, base);
+      assert.notEqual(result.status, 0);
+      assert.equal(result.calls, '');
+    });
+  }
+  test(`${event}: inaccessible base fails before checkers run`, () => {
+    const result = runBaseStep(event, sha, true);
+    assert.notEqual(result.status, 0);
+    assert.ok(!result.calls.includes('python3'));
+  });
+}
+test('PR cannot bootstrap with the zero SHA', () => {
+  const result = runBaseStep('pull_request', '0'.repeat(40));
+  assert.notEqual(result.status, 0);
+  assert.equal(result.calls, '');
+});
+for (const [event, base] of [['push', '0'.repeat(40)], ['workflow_dispatch', '']]) {
+  test(`${event}: intentional bootstrap still runs both checks`, () => {
+    const result = runBaseStep(event, base);
+    assert.equal(result.status, 0);
+    assert.equal(result.calls.split('python3').length - 1, 2);
+    assert.ok(!result.calls.includes('--base-'));
+  });
+}

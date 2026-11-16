@@ -70,9 +70,36 @@ class ImportLayerPolicyTests(unittest.TestCase):
 
     def test_comments_separate_tokens_and_multiple_imports_are_checked(self):
         sources = {"QICLean.Circuit.Gate.A":
-                   "import/- nested /- comment -/ -/QICLean.Algebra.A QICLean.Entropy.B\ndef a := 0\n"}
+                   "import/- nested /- comment -/ -/QICLean.Algebra.A import QICLean.Entropy.B\ndef a := 0\n"}
         self.assertEqual(layers.violations(sources),
                          {"QICLean.Circuit.Gate.A -> QICLean.Entropy.B"})
+
+    def test_lexical_errors_fail_closed(self):
+        for source in ['import QICLean.Entropy.B\n/-', 'def text := "unfinished']:
+            with self.subTest(source=source):
+                with self.assertRaises(ValueError):
+                    layers.parse_module(source)
+                with self.assertRaises(ValueError):
+                    list(forwarding.pass_throughs_of_source(source))
+
+    def test_header_whitespace_module_and_escaped_names(self):
+        source = "module\npublic\n import\nQICLean.«Entropy».B\nimport QICLean.Algebra.A\n"
+        self.assertEqual(layers.parse_module(source),
+                         (("QICLean.Entropy.B", "QICLean.Algebra.A"), True))
+        self.assertEqual(layers.violations({"QICLean.Circuit.Gate.A": source + "def a := 0"}),
+                         {"QICLean.Circuit.Gate.A -> QICLean.Entropy.B"})
+
+    def test_literals_cannot_hide_imports_or_manufacture_commands(self):
+        for literal in ['"/-"', '"--"', r"'\"'", 'r#"quote \" /-"#']:
+            with self.subTest(literal=literal):
+                source = 'import QICLean.Entropy.B\ndef text := ' + literal + '\n'
+                self.assertEqual(layers.violations({'QICLean.Circuit.Gate.A': source}),
+                                 {'QICLean.Circuit.Gate.A -> QICLean.Entropy.B'})
+        source = 'def text := "\nimport QICLean.Entropy.B\ntheorem fake (x : T) : P x := Original.fact x\n"\n'
+        self.assertEqual(layers.parse_module(source), ((), False))
+        self.assertEqual(list(forwarding.pass_throughs_of_source(source)), [])
+        self.assertEqual(list(forwarding.pass_throughs_of_source(
+            'def text := "/-"\ntheorem real (x : T) : P x := Original.fact x\n')), ['real'])
 
     def test_import_modifiers_are_recognized(self) -> None:
         sources = {
@@ -255,6 +282,14 @@ class PassThroughPolicyTests(unittest.TestCase):
         )
         self.assertEqual(self.found(source), [])
 
+    def test_duplicate_private_names_cannot_share_one_debt_entry(self):
+        source = "private theorem f (x : T) : P x := Original.fact x\n"
+        sources = {"QICLean.Analysis.A": source, "QICLean.Circuit.Gate.B": source}
+        current = forwarding.pass_throughs(sources)
+        self.assertEqual(len(current), 2)
+        self.assertTrue(forwarding.check_pass_throughs(sources, frozenset({"f"}), frozenset({"f"})))
+        self.assertEqual(len(forwarding.pass_throughs({"QICLean.Analysis.A": source + source})), 2)
+
     def test_archive_is_out_of_scope(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -357,6 +392,23 @@ class RepositoryRatchetTests(unittest.TestCase):
             errors = layers.ratchet_errors(frozenset({'old', 'new'}), frozenset({'old', 'new'}),
                                            record, new='new', stale='stale', added='added')
             self.assertEqual(errors, ['added: new'])
+            # Debt retired on the old tip must not reappear after a force-push
+            # that diverges before that retirement. A merge base would allow it.
+            git('checkout', '-q', base)
+            checker.write_text('DEBT = frozenset({})\n')
+            commit()
+            old_tip = git('rev-parse', 'HEAD')
+            git('checkout', '-q', base)
+            (root / 'other').write_text('divergent branch')
+            commit()
+            self.assertEqual(layers.records_at_merge_base(root, old_tip, 'scripts/check.py', ['DEBT'])['DEBT'],
+                             frozenset({'old'}))
+            exact = layers.records_at_revision(root, old_tip, 'scripts/check.py', ['DEBT'])['DEBT']
+            self.assertEqual(exact, frozenset())
+            self.assertEqual(layers.ratchet_errors(frozenset({'old'}), frozenset({'old'}), exact,
+                                                  new='new', stale='stale', added='added'), ['added: old'])
+            with self.assertRaises(ValueError):
+                layers.records_at_revision(root, 'missing-ref', 'scripts/check.py', ['DEBT'])
             with self.assertRaises(ValueError):
                 layers.records_at_merge_base(root, 'missing-ref', 'scripts/check.py', ['DEBT'])
 
