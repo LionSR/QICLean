@@ -1,0 +1,25 @@
+{
+  "base": "e9cc1cc6cd52c6dfc27d7b3aab4b1ba39ea7ed19",
+  "lean_toolchain": "leanprover/lean4:v4.36.0-rc1",
+  "checks": {
+    "focused_lake_build": "passed (5011 jobs; unchanged predecessor module-system warnings)",
+    "new_module_strict_lean": "passed (no diagnostics)",
+    "axiom_audit": "passed: propext, Classical.choice, Quot.sound only; all 9 theorems",
+    "blueprint_source_sync": "passed",
+    "changed_declaration_blueprint_coverage": "passed (9 declarations)",
+    "generated_import_aggregators": "passed",
+    "reader_facing_prose": "passed",
+    "numbered_file_policy": "passed",
+    "paper_gap_references": "passed (92 referenced slugs)",
+    "paper_gap_pdf": "passed (4 pages, two passes)",
+    "blueprint_pdf": "passed (949 pages); new main theorem visually inspected on PDF page 92",
+    "algebra_compiled_aggregate": "blocked: missing unrelated QICLean.Algebra.AKLVFrequencyBounds.olean",
+    "root_compiled_aggregate": "blocked: missing QICLean.Algebra.olean",
+    "global_compiled_checkdecls": "not run: root library artifacts absent",
+    "blueprint_web": "passed (78 HTML pages; no reported unknown commands or missing-file errors)",
+    "generated_html_source": "passed (all 78 pages)",
+    "affected_chapter_browser": "passed (1 page, 2298 typeset expressions; mobile/desktop layout and reader-text checks); test browser used ignore_https_errors=True because this environment rejects the jsDelivr CDN certificate"
+  },
+  "source_gate": "unresolved: exact GLR 1983 Theorem 5.3 clause not accessible",
+  "publication": "no push, PR, or merge"
+}

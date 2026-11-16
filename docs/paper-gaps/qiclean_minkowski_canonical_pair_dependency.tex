@@ -59,8 +59,9 @@ $M^2=I$ imply
         &=MC^{\mathsf T}.
     \label{eq:qiclean_minkowski_canonical_pair_dependency_transpose_selfadjoint}
 \end{align}
-The cited theorem then gives an invertible real matrix $S$, a real Jordan
-matrix $J$, and a canonical signed metric $P_{\varepsilon,J}$ such that
+The convention translation below is conditional on an invertible real matrix
+$S$, a real Jordan matrix $J$, and a canonical signed metric
+$P_{\varepsilon,J}$ satisfying
 \begin{align}
     C^{\mathsf T}
         &=S^{-1}JS,
@@ -174,6 +175,47 @@ declarations in
 \leanid{Matrix.complexPairSipMatrix_mul_realConjugatePairJordanBlock},
 \leanid{Matrix.minkowskiMetric}, \leanid{Matrix.IsMinkowskiSelfAdjoint}, and
 \leanid{Matrix.GLRFourDimensionalPattern}.}
+
+\section{Conditional change of basis and invertible Gram recovery}
+
+The algebraic translation is now proved for a supplied pair: from
+$C^{\mathsf T}=S^{-1}JS$ and $H=S^{\mathsf T}PS$, it derives
+$C=S^{\mathsf T}J^{\mathsf T}S^{-\mathsf T}$ and
+$S^{-\mathsf T}HS^{-1}=P$. Given also $W^2=I$,
+$WJ^{\mathsf T}W=J$, and $WPW^{\mathsf T}=P$, it constructs
+$X=WS^{-\mathsf T}$ and proves both required identities. These are
+implications between explicitly assumed equations, not a declaration of the
+unverified existence clause.
+
+There is also a complete conditional decomposition for real square matrices
+of any finite size. Assume $H^2=I$, invertible $X$ and $\Sigma$, and
+\begin{align}
+    HRHR^{\mathsf T}&=X^{-1}JX, &XHX^{\mathsf T}&=N,\\
+    O^{\mathsf T}O&=I, &ONO^{\mathsf T}&=H,\\
+    H(OJO^{\mathsf T})&=\Sigma H\Sigma^{\mathsf T}.
+\end{align}
+Then $L_1=(OX)^{\mathsf T}$ preserves $H$, and
+$RHR^{\mathsf T}=(L_1\Sigma)H(L_1\Sigma)^{\mathsf T}$.
+For an invertible factor $B=L_1\Sigma$, take
+$L_2=(B^{-1}R)^{\mathsf T}$. This proves
+$R=L_1\Sigma L_2^{\mathsf T}$ and $L_iHL_i^{\mathsf T}=H$.
+The corresponding declarations are
+\leanid{Matrix.reverse_transpose_canonical_pair} and
+\leanid{Matrix.exists_decomposition_of_canonical_pair_of_isUnit} in
+\doclink{QICLean/Algebra/MinkowskiReduction.lean}.
+
+This result supplies neither the canonical data nor their normalization nor
+$\Sigma$. It assumes the invertibility of $\Sigma$, so it does not treat
+singular normal forms or the rank-drop alternatives. For $H=M$ it gives
+factors in $O(1,3)$ only: determinant $+1$ and time orientation still require
+proof. In particular it does not close issues 426, 378, 379, or 1.
+
+The source gate was rechecked on 2026-11-16. The Internet Archive record
+\url{https://archive.org/details/matricesindefini0000gohb} identifies the
+1983 edition, but its PDF and OCR text are restricted. The accessible VDDM
+text identifies the dependency; it does not discharge the requirement to
+inspect the exact GLR clause. A legible authorized copy of Theorem~5.3,
+including its preceding block conventions, remains necessary.
 
 \section{The remaining obstruction}
 
