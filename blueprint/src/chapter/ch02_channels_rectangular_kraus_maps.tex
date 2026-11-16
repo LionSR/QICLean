@@ -528,3 +528,32 @@ the input factor is written $\tr_B$.
     are related by a unitary, whose rectangular submatrix is the claimed
     isometry after zero-padding.
 \end{proof}
+
+\begin{theorem}[Coupling a prepared matrix and a trace effect]
+    \label{thm:kraus_state_effect_coupling_max}
+    \lean{Matrix.exists_kraus_state_effect_coupling_max_rank}
+    \leanok
+    Let $\rho\in M_m(\C)$ be Hermitian and let $A\in M_n(\C)$ and
+    $B\in M_m(\C)$ be positive semidefinite. Suppose
+    $T=\tr A=\tr(B\rho)>0$. Put $a=\rank A$, $b=\rank B$, and
+    $N=\max(a,b)$. There are $N$ rectangular Kraus operators $K_k$
+    satisfying $\sum_k K_k\rho K_k^\dagger=A$ and
+    $\sum_k K_k^\dagger K_k=B$. The prepared matrix need not be
+    positive, normalized, or faithful.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Factor $B=SS^\dagger$ with $b$ columns. Diagonalize the Hermitian
+    matrix $S^\dagger\rho S$ as $V\operatorname{diag}(\lambda_j)V^\dagger$,
+    where $V$ is unitary and $\sum_j\lambda_j=T$.
+    Write $A=U\operatorname{diag}(\alpha_i)U^\dagger$, with
+    $U^\dagger U=I_a$, $\alpha_i>0$, and $\sum_i\alpha_i=T$.
+    For $0\le k<N$, let $(R_k)_{ij}=\sqrt{\alpha_i/T}$ when
+    $i-j=k$ modulo $N$, and zero otherwise. Each matching has at most
+    one nonzero entry in each row and column. Each pair $(i,j)$ occurs
+    once, so $\sum_k R_k^\dagger R_k=I_b$ and
+    $\sum_k R_k\operatorname{diag}(\lambda_j)R_k^\dagger
+      =\operatorname{diag}(\alpha_i)$.
+    Set $K_k=UR_kV^\dagger S^\dagger$ and use these two identities.
+\end{proof}
