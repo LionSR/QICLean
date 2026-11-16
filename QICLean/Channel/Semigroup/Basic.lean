@@ -495,10 +495,9 @@ theorem expSemigroup_pow
     expSemigroup L t ^ n = expSemigroup L ((n : ℝ) * t) := by
   apply endEquiv.injective
   simp only [map_pow, expSemigroup_toCLM, expSemigroupCLM]
-  rw [← NormedSpace.exp_nsmul]
-  congr 1
-  simp only [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, Complex.ofReal_mul,
-    Complex.ofReal_natCast]
+  simpa only [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, Complex.ofReal_mul,
+    Complex.ofReal_natCast] using
+    (NormedSpace.exp_nsmul n ((t : ℂ) • endEquiv L)).symm
 
 theorem expSemigroup_isDynSemigroup
     (L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
