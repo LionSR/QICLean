@@ -1147,3 +1147,85 @@ Theorem~\ref{thm:trace_norm_abs}.
     \end{align}
     Thus $kT(\rho)-\rho$ is positive semidefinite.
 \end{proof}
+
+\section{Cone ratios and norm comparisons}
+
+\begin{definition}[Lower cone ratio]
+    \label{def:lower_cone_ratio}
+    \lean{ProperCone.lowerRatio, ProperCone.NormMonotone}
+    \leanok
+    Let $C$ be a closed convex cone in a real normed space, and suppose
+    $\|x\|\le\|x+y\|$ for $x,y\in C$. For $a,b\in C$ with $b\ne0$, put
+    $r(a,b)=\sup\{t\ge0:a-tb\in C\}$.
+    This is the order description of the lower ratio in
+    \cite[Chapter~8, Equation~(8.61)]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{lemma}[Attainment and bounds for cone ratios]
+    \label{lem:lower_cone_ratio_bounds}
+    \lean{ProperCone.lowerRatio_bddAbove, ProperCone.lowerRatio_mem,
+        ProperCone.le_lowerRatio, ProperCone.lowerRatio_le_norm_div,
+        ProperCone.lowerRatio_mul_le_one}
+    \leanok
+    \uses{def:lower_cone_ratio}
+    For nonzero $a,b\in C$, the admissible scales form a closed set containing
+    zero, bounded above by $\|a\|/\|b\|$. Its supremum is attained, and
+    $0\le r(a,b)\le\|a\|/\|b\|$, so $r(a,b)r(b,a)\le1$.
+\end{lemma}
+\begin{proof}\leanok
+    Monotonicity gives $t\|b\|\le\|a\|$ for each admissible $t$.
+    Closedness gives attainment. Multiplying the two norm bounds gives the
+    product bound.
+\end{proof}
+
+\begin{theorem}[Norm comparison from cone ratios]
+    \label{thm:cone_ratio_norm_bound}
+    \lean{ProperCone.norm_sub_le_lowerRatio, ProperCone.norm_sub_le_of_scales,
+        ProperCone.norm_sub_le_lowerRatio_average, ProperCone.norm_sub_le_lowerRatio_sqrt,
+        ProperCone.norm_sub_le_lowerRatio_log}
+    \leanok
+    \uses{lem:lower_cone_ratio_bounds}
+    For nonzero $a,b\in C$, write $\nu=r(b,a)$ and $\mu=r(a,b)$. Then
+    \begin{align}
+        \|a-b\|\le |1-\nu|\|a\|+|1-\mu|\|b\|
+            +\min\{|1-\nu|\|a\|,|1-\mu|\|b\|\}.
+    \end{align}
+    If $\mu,\nu\le1$, then
+    \begin{align}
+        \|a-b\|&\le\frac32(\|a\|+\|b\|-\nu\|a\|-\mu\|b\|)\\
+        &\le3\left(\frac{\|a\|+\|b\|}{2}
+             -\sqrt{\nu\|a\|\mu\|b\|}\right).
+    \end{align}
+    If also $\mu\nu>0$, the square-root term equals
+    $\sqrt{\|a\|\|b\|}\exp(\log(\mu\nu)/2)$.
+    These are \cite[Chapter~8, Equations~(8.63), (8.67)--(8.69)]{Wolf2012Quantum},
+    with the last expression written directly in terms of the lower ratios.
+\end{theorem}
+\begin{proof}\leanok
+    Put $p=b-\nu a$ and $q=a-\mu b$. Both belong to $C$, and
+    $p+q=(1-\nu)a+(1-\mu)b$. The triangle inequality and norm monotonicity give
+    $\|a-b\|\le2|1-\nu|\|a\|+|1-\mu|\|b\|$.
+    Interchanging $a,b$ and taking the minimum gives the first bound.
+    Taking the average and applying the arithmetic-geometric mean inequality
+    gives the remaining bounds.
+\end{proof}
+
+\begin{theorem}[Cone ratios under positive maps]
+    \label{thm:cone_ratio_positive_map}
+    \lean{ProperCone.lowerRatio_le_map, ProperCone.neg_log_lowerRatio_map_le}
+    \leanok
+    \uses{lem:lower_cone_ratio_bounds}
+    Let $K$ be a closed convex cone in another real normed space whose norm
+    is monotone on $K$, and let $T$ be linear with $T(C)\subseteq K$.
+    For nonzero $a,b\in C$ with nonzero images,
+    $r(a,b)\le r(Ta,Tb)$. If both input ratios are positive, then
+    \begin{align}
+        -\log\bigl(r(Ta,Tb)r(Tb,Ta)\bigr)
+          \le -\log\bigl(r(a,b)r(b,a)\bigr).
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Apply $T$ to $a-r(a,b)b\in C$ and use the supremum property in $K$.
+    Multiply the inequalities in both directions and use monotonicity of
+    the logarithm.
+\end{proof}
