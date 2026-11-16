@@ -38,8 +38,8 @@ theorem localLift_splitEquiv_apply (Q : Finset V)
     (a b : RegionConfig n Q) (c c' : (v : {v // v ∉ Q}) → Fin (n v)) :
     localLift Q M ((cutEquiv n Q).symm (a, c)) ((cutEquiv n Q).symm (b, c')) =
       M a b * if c = c' then 1 else 0 := by
-  simp only [localLift, reindex_apply, submatrix_apply, Equiv.symm_symm, Equiv.apply_symm_apply,
-    kroneckerMap_apply, one_apply]
+  simp only [localLift, ManyBody.place, reindex_apply, submatrix_apply, Equiv.symm_symm,
+    Equiv.apply_symm_apply, kroneckerMap_apply, one_apply]
 
 omit [Fintype V] in
 theorem splitEquiv_symm_apply_eq (k : ℕ) (Q : Finset V)

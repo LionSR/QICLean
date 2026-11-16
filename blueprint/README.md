@@ -19,11 +19,12 @@ corresponding content stayed in TNLean.
 - `src/` contains the LaTeX source.
 - `src/chapter/` contains the chapter files, the files they `\input`, and
   one opening file per part (`part_N_*.tex`).
-- `src/content.tex` is the router. It arranges the volume in seven parts:
+- `src/content.tex` is the router. It arranges the volume in eight parts:
   states, positive maps and quantum channels; operator inequalities; spectra
   and long-time behaviour of channels; entropy and probability; ground states
   of gapped local Hamiltonians; tools for the two-dimensional area law
-  and PEPS approximation; and unitary gates on a finite basis. Chapters are ordered by dependency as far as
+  and PEPS approximation; unitary gates on a finite basis; and systems of
+  sites, with their supported operators and placement. Chapters are ordered by dependency as far as
   possible, and the first three parts follow M. Wolf's *Quantum
   Channels & Operations: A Guided Tour*, Chapters 1--7. The comment at the top
   of that file lists every chapter. The `chNN_` prefix of a file name records

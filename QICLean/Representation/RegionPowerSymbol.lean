@@ -70,11 +70,11 @@ theorem commute_localLift_of_isSupportedOn {Q D : Finset V} (hQD : Disjoint Q D)
   obtain ⟨K', rfl⟩ := hc.exists_localLift σ₀
   exact commute_localLift_of_disjoint hQD K K'
 
+/-- **Temporary** restatement of `ManyBody.place_pow` over `Entropy.localLift`;
+deleted in step 4.0 of the many-body plan. -/
 theorem localLift_pow {D : Finset V} (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
-    (m : ℕ) : localLift D (K ^ m) = localLift D K ^ m := by
-  induction m with
-  | zero => simp [localLift_one]
-  | succ m ih => rw [pow_succ, localLift_mul, ih, pow_succ]
+    (m : ℕ) : localLift D (K ^ m) = localLift D K ^ m :=
+  ManyBody.place_pow (X := fun v ↦ Fin (n v)) K m
 
 /-- Real polynomials commute with lifts. -/
 theorem aeval_localLift {D : Finset V} (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
@@ -275,9 +275,12 @@ theorem norm_localLift_cfc_mulVec_sq_le (Q : Finset V) (θ : SiteConfig n → �
         have := hB i; rw [sq] at this; exact this
     _ = B * Fintype.card (RegionConfig n Q) := by
         rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]
+
+/-- **Temporary** restatement of `ManyBody.place_sub` over `Entropy.localLift`;
+deleted in step 4.0 of the many-body plan. -/
 theorem localLift_sub {D : Finset V} (K K' : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
-    localLift D (K - K') = localLift D K - localLift D K' := by
-  rw [eq_sub_iff_add_eq, ← localLift_add, sub_add_cancel]
+    localLift D (K - K') = localLift D K - localLift D K' :=
+  ManyBody.place_sub (X := fun v ↦ Fin (n v)) K K'
 
 /-- Unit vectors have Euclidean norm one. -/
 theorem norm_eq_one_of_mem_unitSphere {X : Type*} [Fintype X] {θ : X → ℂ}

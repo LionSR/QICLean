@@ -52,7 +52,7 @@ theorem regionUnit_apply (Q : Finset V) (a b : RegionConfig n Q) (σ τ : SiteCo
     regionUnit Q a b σ τ =
       if (fun v : {v // v ∈ Q} => σ v) = a ∧ (fun v : {v // v ∈ Q} => τ v) = b ∧
         ∀ v ∉ Q, σ v = τ v then 1 else 0 := by
-  simp only [regionUnit, localLift, reindex_apply, submatrix_apply, Equiv.symm_symm,
+  simp only [regionUnit, localLift, ManyBody.place, reindex_apply, submatrix_apply, Equiv.symm_symm,
     kroneckerMap_apply, Matrix.single_apply, one_apply]
   have h2 : ((cutEquiv n Q) σ).2 = ((cutEquiv n Q) τ).2 ↔ ∀ v ∉ Q, σ v = τ v :=
     ⟨fun h v hv => congrFun h ⟨v, hv⟩, fun h => funext fun v => h v v.2⟩
@@ -162,14 +162,12 @@ noncomputable def margLift (Q : Finset V) (θ : SiteConfig n → ℂ) :
     Matrix (SiteConfig n) (SiteConfig n) ℂ :=
   localLift Q (regionState Q (WithLp.toLp 2 θ))
 
+/-- **Temporary** restatement of `ManyBody.place_sum` over `Entropy.localLift`;
+deleted in step 4.0 of the many-body plan. -/
 theorem localLift_sum {ι : Type*} (s : Finset ι) (Q : Finset V)
     (K : ι → Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) :
-    localLift Q (∑ i ∈ s, K i) = ∑ i ∈ s, localLift Q (K i) := by
-  classical
-  induction s using Finset.induction_on with
-  | empty =>
-    simpa using localLift_smul (D := Q) (0 : ℂ) (0 : Matrix (RegionConfig n Q) _ ℂ)
-  | insert i s hi ih => rw [Finset.sum_insert hi, Finset.sum_insert hi, localLift_add, ih]
+    localLift Q (∑ i ∈ s, K i) = ∑ i ∈ s, localLift Q (K i) :=
+  ManyBody.place_sum (X := fun v ↦ Fin (n v)) s K
 
 /-- **Contracting a donor** (`05-replicas.tex`, lines 790–795): `∑_{a,b} ⟨θ, E_{ab} θ⟩ E_{ba}`
 is the marginal `ρ_Q(θ)` lifted to one copy. -/

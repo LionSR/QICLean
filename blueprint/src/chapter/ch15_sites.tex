@@ -1,0 +1,197 @@
+\chapter{Supported operators and placement}
+\label{ch:sites}
+
+Throughout this chapter $V$ is a finite set of sites and $X=(X_v)_{v\in V}$ is
+a family of finite sets. The system with basis sets $X$ is the Hilbert space
+$\mathcal H_X=\bigotimes_{v\in V}\C^{X_v}$, whose standard basis is indexed by
+the configurations $\sigma\in\prod_{v\in V}X_v$. A region is a subset
+$D\subseteq V$; its configurations are the elements of $X_D=\prod_{v\in D}X_v$.
+One local dimension $d$ is the case $X_v=\{0,\dots,d-1\}$ for every $v$, and
+site-dependent dimensions $n_v$ are the case $X_v=\{0,\dots,n_v-1\}$. No basis
+set is required to be nonempty unless stated: if some $X_v$ is empty, then
+$\mathcal H_X=0$ and the statements below hold trivially.
+
+\section{Configurations and cuts}
+\label{sec:sites_config}
+
+\begin{definition}[Configurations and the cut along a region]
+    \label{def:sites_config}
+    \lean{ManyBody.Config, ManyBody.RegionConfig, ManyBody.ComplConfig,
+        ManyBody.cutEquiv, ManyBody.cutEquiv_symm_apply_mem,
+        ManyBody.cutEquiv_symm_apply_not_mem, ManyBody.cutEquiv_fst_eq_iff,
+        ManyBody.cutEquiv_snd_eq_iff}
+    \leanok
+    A configuration of the system is $\sigma\in X_V=\prod_{v\in V}X_v$. For a
+    region $D$, the cut along $D$ is the bijection
+    $X_V\to X_D\times X_{V\setminus D}$, $\sigma\mapsto(\sigma|_D,
+    \sigma|_{V\setminus D})$. Two configurations have the same part on $D$
+    exactly when they agree at every site of $D$, and likewise outside $D$.
+\end{definition}
+
+\section{Operators supported on a region}
+\label{sec:sites_support}
+
+\begin{definition}[Operators supported on a region]
+    \label{def:sites_supported}
+    \lean{ManyBody.IsSupportedOn, ManyBody.mem_supportedOperators_iff,
+        ManyBody.apply_eq_zero_of_mem_supportedOperators,
+        ManyBody.apply_eq_of_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_config}
+    An operator $A$ on $\mathcal H_X$ is supported on a region $D$ when its
+    matrix element $A_{\sigma\tau}$ vanishes whenever $\sigma_v\neq\tau_v$ for
+    some $v\notin D$, and otherwise depends only on $\sigma|_D$ and $\tau|_D$.
+    Let $\mathcal A_D$ be the set of operators supported on $D$. Then
+    $A_{\sigma\tau}=A_{\sigma'\tau'}$ for $A\in\mathcal A_D$ whenever
+    $\sigma|_D=\sigma'|_D$, $\tau|_D=\tau'|_D$ and, at every $v\notin D$,
+    $\sigma_v=\tau_v$ if and only if $\sigma'_v=\tau'_v$.
+\end{definition}
+
+\begin{theorem}[Supported operators form a unital $*$-subalgebra]
+    \label{thm:sites_supported_subalgebra}
+    \lean{ManyBody.supportedOperators}
+    \leanok
+    \uses{def:sites_supported}
+    The set $\mathcal A_D$ is a unital $*$-subalgebra of the matrix algebra of
+    $\mathcal H_X$.
+\end{theorem}
+\begin{proof}\leanok
+    Sums, scalar multiples and adjoints preserve both conditions entrywise,
+    and the identity satisfies them. For a product,
+    $(AB)_{\sigma\tau}=\sum_\rho A_{\sigma\rho}B_{\rho\tau}$; only the $\rho$
+    that agree with $\sigma$ outside $D$ contribute, so the sum runs over
+    $\rho|_D\in X_D$, and each term depends only on the parts on $D$.
+\end{proof}
+
+\begin{lemma}[Monotonicity and the full region]
+    \label{lem:sites_supported_mono}
+    \lean{ManyBody.supportedOperators_mono, ManyBody.supportedOperators_univ}
+    \leanok
+    \uses{def:sites_supported, thm:sites_supported_subalgebra}
+    If $D\subseteq D'$, then $\mathcal A_D\subseteq\mathcal A_{D'}$, and
+    $\mathcal A_V$ is the whole matrix algebra.
+\end{lemma}
+\begin{proof}\leanok
+    A difference outside $D'$ is a difference outside $D$, and two pairs with
+    the same pattern of coincidences outside $D'$ that agree on $D'$ have the
+    same pattern outside $D$.
+\end{proof}
+
+\begin{lemma}[Operators on disjoint regions commute]
+    \label{lem:sites_supported_commute}
+    \lean{ManyBody.commute_of_mem_supportedOperators_of_disjoint,
+        ManyBody.mul_apply_of_mem_supportedOperators_of_disjoint}
+    \leanok
+    \uses{def:sites_supported, thm:sites_supported_subalgebra, lem:sites_supported_mono}
+    Let $D\cap D'=\emptyset$, $A\in\mathcal A_D$ and $B\in\mathcal A_{D'}$.
+    Then $(AB)_{\sigma\tau}=A_{\sigma\rho}B_{\rho\tau}$, where $\rho$ equals
+    $\tau$ on $D$ and $\sigma$ elsewhere, and $AB=BA$.
+\end{lemma}
+\begin{proof}\leanok
+    In $(AB)_{\sigma\tau}=\sum_{\rho}A_{\sigma\rho}B_{\rho\tau}$ the factor
+    $A_{\sigma\rho}$ vanishes unless $\rho=\sigma$ outside $D$, and
+    $B_{\rho\tau}$ vanishes unless $\rho=\tau$ on $D$. If $\sigma$ and $\tau$
+    differ outside $D\cup D'$, both products lie in $\mathcal A_{D\cup D'}$ and
+    their entries vanish. Otherwise the single terms of $(AB)_{\sigma\tau}$ and
+    $(BA)_{\sigma\tau}$ are products of equal entries by
+    Definition~\ref{def:sites_supported}.
+\end{proof}
+
+\section{Placement of a regional matrix}
+\label{sec:sites_place}
+
+\begin{definition}[Placement]
+    \label{def:sites_place}
+    \lean{ManyBody.place, ManyBody.place_apply, ManyBody.reindex_cutEquiv_place,
+        ManyBody.place_apply_cutEquiv_symm}
+    \leanok
+    \uses{def:sites_config}
+    The placement of a matrix $K$ on $\C^{X_D}$ is the operator $K\otimes1$ on
+    $\mathcal H_X=\C^{X_D}\otimes\C^{X_{V\setminus D}}$, read in the
+    coordinates of $\mathcal H_X$ through the cut along $D$. Its matrix element
+    $(K\otimes1)_{\sigma\tau}$ is $K_{\sigma|_D,\tau|_D}$ if $\sigma$ and $\tau$
+    agree outside $D$, and $0$ otherwise.
+\end{definition}
+
+\begin{lemma}[Placement is a unital $*$-homomorphism]
+    \label{lem:sites_place_hom}
+    \lean{ManyBody.placeHom, ManyBody.placeHom_apply, ManyBody.place_zero,
+        ManyBody.place_add, ManyBody.place_smul, ManyBody.place_neg,
+        ManyBody.place_sub, ManyBody.place_sum, ManyBody.place_conjTranspose,
+        ManyBody.isHermitian_place, ManyBody.place_one, ManyBody.place_mul,
+        ManyBody.place_pow, ManyBody.place_mul_place_inv,
+        ManyBody.place_inv_mul_place, ManyBody.trace_place}
+    \leanok
+    \uses{def:sites_place}
+    The map $K\mapsto K\otimes1$ is linear, unital, multiplicative and
+    compatible with adjoints. If $K$ is invertible, then $K^{-1}\otimes1$ is
+    the inverse of $K\otimes1$, and $\Tr(K\otimes1)=|X_{V\setminus D}|\Tr K$.
+\end{lemma}
+\begin{proof}\leanok
+    The cut is a bijection of index sets, so reindexing along it is a
+    $*$-isomorphism of matrix algebras that preserves the trace; the
+    statements hold for $K\otimes1$ on $\C^{X_D}\otimes\C^{X_{V\setminus D}}$.
+\end{proof}
+
+\begin{theorem}[Supported operators are the placed matrices]
+    \label{thm:sites_place_range}
+    \lean{ManyBody.place_mem_supportedOperators,
+        ManyBody.exists_eq_place_of_mem_supportedOperators,
+        ManyBody.mem_supportedOperators_iff_exists_eq_place,
+        ManyBody.range_placeHom}
+    \leanok
+    \uses{def:sites_config, def:sites_supported, thm:sites_supported_subalgebra,
+        def:sites_place, lem:sites_place_hom}
+    An operator on $\mathcal H_X$ is supported on $D$ if and only if it is
+    $K\otimes1$ for a matrix $K$ on $\C^{X_D}$. Hence $\mathcal A_D$ is the
+    image of the placement.
+\end{theorem}
+\begin{proof}\leanok
+    The matrix elements of $K\otimes1$ given in
+    Definition~\ref{def:sites_place} satisfy both conditions of
+    Definition~\ref{def:sites_supported}. Conversely, if $\mathcal H_X\neq0$, fix a
+    configuration $\sigma_0$ and put $K_{ab}=A_{(a,\sigma_0|_{V\setminus D}),
+    (b,\sigma_0|_{V\setminus D})}$; the support conditions give
+    $A=K\otimes1$ entrywise. If $\mathcal H_X=0$, then $A=0=0\otimes1$.
+\end{proof}
+
+\begin{theorem}[Supported operators are spanned by product operators]
+    \label{thm:sites_product_span}
+    \lean{ManyBody.supportedOperators_toSubmodule_eq_span,
+        ManyBody.prod_mem_supportedOperators, ManyBody.place_single}
+    \leanok
+    \uses{thm:sites_place_range, lem:sites_place_hom}
+    The algebra $\mathcal A_D$ is the linear span of the product operators
+    $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$.
+\end{theorem}
+\begin{proof}\leanok
+    The matrix element of $\bigotimes_vm_v$ at $(\sigma,\tau)$ is
+    $\prod_v(m_v)_{\sigma_v\tau_v}$, and the factors at $v\notin D$ are
+    $\delta_{\sigma_v\tau_v}$, so these operators are supported on $D$.
+    Conversely, by Theorem~\ref{thm:sites_place_range} every supported operator
+    is $K\otimes1=\sum_{a,b\in X_D}K_{ab}\,(E_{ab}\otimes1)$, and the placed
+    matrix unit $E_{ab}\otimes1$ is the product operator with
+    $m_v=E_{a_vb_v}$ for $v\in D$ and $m_v=1$ for $v\notin D$.
+\end{proof}
+
+\begin{lemma}[Norm and order under placement]
+    \label{lem:sites_place_norm_order}
+    \lean{ManyBody.norm_place_le, ManyBody.posSemidef_place,
+        ManyBody.place_le_place, ManyBody.place_injective, ManyBody.place_inj,
+        ManyBody.norm_place, ManyBody.posSemidef_place_iff,
+        ManyBody.place_le_place_iff}
+    \leanok
+    \uses{def:sites_place, lem:sites_place_hom}
+    The placement does not increase the operator norm and preserves positive
+    semidefiniteness and the order. If every $X_v$ is nonempty, then the
+    placement is injective, $\lVert K\otimes1\rVert=\lVert K\rVert$, and
+    $K\otimes1\geq0$ if and only if $K\geq0$, and likewise for the order.
+\end{lemma}
+\begin{proof}\leanok
+    A $*$-homomorphism of finite-dimensional C*-algebras is contractive, and an
+    injective one is isometric. The tensor product of positive semidefinite
+    matrices is positive semidefinite. If every $X_v$ is nonempty, fix a
+    configuration $y$ of $V\setminus D$: the compression of $K\otimes1$ to the
+    configurations $(a,y)$, $a\in X_D$, is $K$, which gives injectivity and
+    the converse for positivity.
+\end{proof}
