@@ -10,4 +10,5 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.Support
