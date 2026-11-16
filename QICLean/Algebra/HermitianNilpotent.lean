@@ -13,12 +13,16 @@ import Mathlib.Tactic.Ring
 
 Two Hermitian matrices in dimension at least two have a common nonzero
 complex-linear annihilating functional that is real on Hermitian inputs.
-This constructs a Hermitian-preserving, trace-zero nilpotent map whose
+This constructs a Hermiticity-preserving, trace-zero nilpotent map whose
 composition with a supplied linear map remains nonzero.
 
-These are algebraic ingredients for the coupled-corner root-selection
-argument associated with arXiv:1708.00029, Theorem 4.1. They do not assert
-complete positivity or support inside a prescribed Choi face.
+A map of the form `X ↦ X.trace • σ`, for one fixed output matrix `σ`,
+is called a trace-preparation map.
+
+Motivation: the channel-root question associated with arXiv:1708.00029,
+Theorem 4.1. The conclusions are algebraic identities; complete positivity
+of a map obtained by adding the constructed endomorphism to another map
+requires separate hypotheses.
 -/
 
 namespace Matrix
@@ -26,8 +30,8 @@ namespace Matrix
 /-- Two Hermitian matrices in dimension at least two admit a common
 nonzero complex-linear annihilating functional, real on Hermitian inputs.
 Diagonalize the first matrix and combine two independent off-diagonal
-Hermitian functionals to kill the second. This is the functional step in
-the written coupled-corner construction for arXiv:1708.00029, Theorem 4.1. -/
+Hermitian functionals to kill the second.
+Motivation: arXiv:1708.00029, Theorem 4.1. -/
 theorem exists_hermitian_functional_killing_pair {b : ℕ} (hb : 2 ≤ b)
     (ρ u : Matrix (Fin b) (Fin b) ℂ) (hρ : ρ.IsHermitian) (hu : u.IsHermitian) :
     ∃ φ : Matrix (Fin b) (Fin b) ℂ →ₗ[ℂ] ℂ,
@@ -132,10 +136,9 @@ theorem exists_hermitian_functional_killing_pair {b : ℕ} (hb : 2 ≤ b)
       ring
 
 /-- A nonzero image of a traceless Hermitian direction gives a rank-one
-Hermitian-preserving nilpotent endomorphism with zero output trace that
+Hermiticity-preserving nilpotent endomorphism with zero output trace that
 kills a prescribed Hermitian matrix. The supplied linear map does not
-annihilate this endomorphism. This is an algebraic construction; it makes
-no complete-positivity or Choi-support assertion. -/
+annihilate this endomorphism. This is an algebraic construction. -/
 theorem exists_trace_zero_nilpotent_of_traceless_hermitian_image {b c : ℕ}
     (hb : 2 ≤ b) (ρ u : Matrix (Fin b) (Fin b) ℂ)
     (hρ : ρ.IsHermitian) (hu : u.IsHermitian) (hTr : u.trace = 0)
@@ -168,10 +171,9 @@ theorem exists_trace_zero_nilpotent_of_traceless_hermitian_image {b c : ℕ}
     rw [map_smul] at h
     exact (smul_eq_zero.mp h).resolve_right hQu
 
-/-- If a complex-linear map is not trace preparation from a fixed
-trace-one Hermitian matrix, it does not annihilate every traceless
-Hermitian matrix. This uses complex linearity, without positivity of
-either the reference matrix or the map. -/
+/-- If `Q X = X.trace • Q ρ` fails for some matrix `X`, where `ρ` is
+Hermitian of trace one, then `Q` does not annihilate every traceless
+Hermitian matrix. The map `Q` need not be positive. -/
 theorem exists_traceless_hermitian_image_of_not_trace_preparation {b c : ℕ}
     (ρ : Matrix (Fin b) (Fin b) ℂ) (hρ : ρ.IsHermitian) (hTrρ : ρ.trace = 1)
     (Q : Matrix (Fin b) (Fin b) ℂ →ₗ[ℂ] Matrix (Fin c) (Fin c) ℂ)
@@ -199,10 +201,10 @@ theorem exists_traceless_hermitian_image_of_not_trace_preparation {b c : ℕ}
   rw [hX, map_add, map_smul, hHerm H₁ hH₁, hHerm H₂ hH₂,
     Matrix.trace_add, Matrix.trace_smul, add_smul, smul_smul, smul_eq_mul]
 
-/-- A complex-linear map that is not trace preparation admits a
-trace-zero Hermitian-preserving nilpotent direction which it does not
+/-- If `Q X = X.trace • Q ρ` fails for some matrix `X`, a trace-zero
+Hermiticity-preserving nilpotent direction exists which `Q` does not
 annihilate. The direction kills the supplied trace-one Hermitian
-matrix. Complete positivity and Choi support remain separate conditions. -/
+matrix. -/
 theorem exists_trace_zero_nilpotent_of_not_trace_preparation {b c : ℕ}
     (hb : 2 ≤ b) (ρ : Matrix (Fin b) (Fin b) ℂ)
     (hρ : ρ.IsHermitian) (hTrρ : ρ.trace = 1)
