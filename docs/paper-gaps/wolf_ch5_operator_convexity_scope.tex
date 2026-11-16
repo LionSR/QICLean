@@ -112,6 +112,42 @@ For operator-monotone $f$, it gives
 This is Equation~(5.37) of Ref.~\cite{Wolf2012Quantum}; the operator-convex
 case gives the reverse inequality.
 
+\section{A finite-measure obstruction in Theorem 5.8}
+
+The source PDF, \path{Notes/WolfNotePDF/ch05_operator_inequalities.pdf},
+page numbered 79, contains both the displayed kernel and the words
+``positive finite measure. Thus this is not a transcription defect.
+The finite-measure condition in Equation~(5.18), with its displayed kernel,
+cannot characterize all operator-convex functions on the closed positive
+half-line. Indeed, put $M=\mu((0,\infty))<\infty$. For $x>0$ and $y>0$,
+\[
+  0\leq \frac{yx^2}{y+x}\leq x^2.
+\]
+Consequently every function with the displayed representation satisfies
+\[
+  0\leq f(x)-a-bx\leq (c+M)x^2.
+\]
+In particular $f(0)=a$, its right derivative at zero exists and equals $b$,
+and its remainder after subtracting that tangent is bounded by a constant
+times $x^2$ near zero.
+
+Take $f(x)=x^{3/2}$. This function is operator convex on $[0,\infty)$
+(the power-convexity result already covers this exponent), but it cannot
+have the displayed finite-measure representation. Evaluation at zero gives
+$a=0$. Dividing the bound by $x$ and letting $x\downarrow0$ gives $b=0$.
+The bound would then give $x^{-1/2}\leq c+M$ for every $x>0$, a
+contradiction. This obstruction concerns the representation itself, not
+merely the proof of the Jensen consequences.
+
+A corrected characterization must change the measure condition or the
+kernel and normalization, and must specify the endpoint regularity. Merely
+dropping finiteness without specifying convergence is not a replacement
+theorem. The general integral characterization remains open pending that
+precise replacement. Its necessity direction must not be used as a
+prerequisite for arbitrary-function Jensen in its present form. The
+sufficiency direction with a finite positive measure is not contradicted
+by this example.
+
 \section{The special-function restriction}
 
 The formal development proves Jensen inequalities only for the functions
@@ -169,6 +205,33 @@ instances of Wolf's general Jensen inequalities. They do not imply the
 integral characterization of every operator-convex function, L\"owner's
 theorem, the projection equivalences, the arbitrary-function Jensen
 inequalities, or the finite-family corollary.
+
+\section{Integral assembly prerequisite}
+
+For arbitrary positive measures, an integrable family of matrix inequalities
+$G(t)\leq T(F(t))$ yields $\int G\leq T(\int F)$, including when the input
+and output matrix dimensions differ. Consequently Jensen inequalities for
+functional-calculus kernels pass to their integral representations, provided
+the two matrix-valued integrals exist. For the resolvent kernels used in the
+power representation, positivity and subunitality establish the pointwise
+inequality. This proves Jensen for any function represented by such an
+integrable mixture, without assuming that the measure is finite.\footnote{
+Formal declarations: \leanid{Matrix.integral_le_map_integral},
+\leanid{Matrix.cfc_jensen_of_integral_representation}, and
+\leanid{Matrix.cfc_jensen_of_resolvent_representation} in
+\doclink{QICLean/Channel/Schwarz/IntegralJensen}.}
+
+Scalar functional calculus also commutes with integration when each scalar
+kernel is integrable at every eigenvalue of the Hermitian matrix. This needs
+neither continuity of the kernels nor a finite measure: the spectral theorem
+reduces the assertion to a continuous linear map on a finite product of real
+lines.\footnote{Formal declarations:
+\leanid{Matrix.IsHermitian.integrable_cfc_of_eigenvalues} and
+\leanid{Matrix.IsHermitian.cfc_integral_of_eigenvalues} in
+\doclink{QICLean/Analysis/MatrixCFCIntegral};
+\leanid{Matrix.cfc_jensen_of_scalar_integral} combines this with Jensen assembly.}
+Constructing representing measures and proving that every operator-convex
+function has such a representation remain open.
 
 \section{Verdict}
 

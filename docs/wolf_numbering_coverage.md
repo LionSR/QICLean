@@ -2763,3 +2763,9 @@ four-positive-parts estimate of Equation (8.117), and
 and `Matrix.transferMatrix_l2_opNorm_pow_sub_le_sSup_traceNormAsymptoticDistance`
 prove the converse supremum lower bound in Equation (8.113) for every `n`, for
 positive dimension.
+
+Theorem 5.8 source boundary: the displayed kernel with a finite positive measure forces a quadratic tangent remainder at zero, excluding the operator-convex function `x^(3/2)`. See `docs/paper-gaps/wolf_ch5_operator_convexity_scope.tex`. The general integral characterization remains open; this is not a formal proof of its replacement.
+
+Theorem 5.12 prerequisite: `Matrix.cfc_jensen_of_resolvent_representation` proves subunital Jensen for integrable resolvent mixtures. `Matrix.cfc_jensen_of_integral_representation` provides general kernel assembly, including unequal matrix dimensions. Neither constructs a representing measure nor proves arbitrary operator-convex Jensen.
+
+Scalar-to-operator interchange is proved in `Matrix.IsHermitian.cfc_integral_of_eigenvalues`, with integrability only at each eigenvalue. `Matrix.cfc_jensen_of_scalar_integral` combines it with kernel Jensen. Representing-measure existence remains open.

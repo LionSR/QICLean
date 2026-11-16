@@ -190,6 +190,7 @@ import QICLean.Analysis.MandatoryExponentialNorm
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixBernsteinInputs
 import QICLean.Analysis.MatrixBernsteinScalar
+import QICLean.Analysis.MatrixCFCIntegral
 import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFamilySupportMeasurable

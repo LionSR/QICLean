@@ -692,6 +692,40 @@ logarithm.  The distinction is recorded in
 \cite{gap:wolf_ch5_operator_convexity_scope}; the correction to the logarithmic
 clause is recorded separately in \cite{gap:wolf_ch5_operator_jensen_lieb}.
 
+The finite-measure representation in Theorem~5.8 requires a further
+correction: its kernel is bounded above by $x^2$, so it forces a quadratic
+remainder after subtracting the tangent at zero. The operator-convex
+function $x^{3/2}$ violates this bound; see
+\cite{gap:wolf_ch5_operator_convexity_scope}.
+
+\begin{lemma}[Integral assembly of Jensen inequalities]
+\label{lem:integral-jensen-assembly}
+\lean{Matrix.cfc_jensen_of_integral_representation}
+\leanok
+Let $T$ be a linear map between finite matrix algebras. Suppose
+$f(A)=\int k_t(A)\,d\mu(t)$ and $f(T(A))=\int k_t(T(A))\,d\mu(t)$,
+with both integrands integrable. If $k_t(T(A))\leq T(k_t(A))$ almost
+everywhere, then $f(T(A))\leq T(f(A))$.
+\end{lemma}
+\begin{proof}
+Integrate the pointwise inequality and commute the continuous linear map
+with the integral.
+\end{proof}
+
+\begin{lemma}[Integration on a finite spectrum]
+\label{lem:finite-spectrum-integral}
+\lean{Matrix.IsHermitian.integrable_cfc_of_eigenvalues, Matrix.IsHermitian.cfc_integral_of_eigenvalues, Matrix.cfc_jensen_of_scalar_integral}
+\leanok
+Let $A$ be Hermitian and let $k_t$ be real functions such that
+$t\mapsto k_t(\lambda)$ is integrable at every eigenvalue $\lambda$ of $A$.
+Then $t\mapsto k_t(A)$ is integrable and
+$(\int k_t\,d\mu)(A)=\int k_t(A)\,d\mu$.
+\end{lemma}
+\begin{proof}
+Apply the spectral decomposition and commute its continuous linear map from
+the finite vector of eigenvalue values with integration.
+\end{proof}
+
 \section{Source boundary for Wolf's unitary comparison}
 
 Wolf's Proposition~5.3 claims that, for arbitrary Hermitian $A,B$, there is
