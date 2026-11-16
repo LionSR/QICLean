@@ -41,13 +41,8 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 theorem trace_regionState_submatrix_mul {D : Finset V} {κ : Type*} [Fintype κ]
     (f : RegionConfig n D ≃ κ) (Ω : EuclideanSpace ℂ (SiteConfig n)) (K : Matrix κ κ ℂ) :
     ((regionState D Ω).submatrix f.symm f.symm * K).trace =
-      ⟪Ω, toEuclideanLin (localLift D (K.submatrix f f)) Ω⟫_ℂ := by
-  rw [inner_localLift]
-  have : (regionState D Ω).submatrix f.symm f.symm * K =
-      (regionState D Ω * K.submatrix f f).submatrix f.symm f.symm := by
-    rw [← submatrix_mul_equiv _ _ _ f.symm, submatrix_submatrix]
-    simp
-  rw [this, trace_submatrix_equiv]
+      ⟪Ω, toEuclideanLin (localLift D (K.submatrix f f)) Ω⟫_ℂ :=
+  ManyBody.trace_regionState_submatrix_mul (X := fun v ↦ Fin (n v)) f Ω K
 
 section Triple
 
@@ -111,7 +106,7 @@ theorem localLift_tripleEquiv_kronecker_one
 
 theorem regionState_posSemidef (D : Finset V) (Ω : EuclideanSpace ℂ (SiteConfig n)) :
     (regionState D Ω).PosSemidef :=
-  (posSemidef_vecMulVec_self_star _).partialTraceRight
+  ManyBody.regionState_posSemidef D Ω
 
 /-- The regional state of `A ∪ (B ∪ C)` as a tripartite matrix. -/
 noncomputable def tripleState (Ω : EuclideanSpace ℂ (SiteConfig n)) :
@@ -142,15 +137,8 @@ theorem partialTraceLeft_tripleState (Ω : EuclideanSpace ℂ (SiteConfig n)) :
 theorem partialTraceRight_regionState_union (hBC : Disjoint B C)
     (Ω : EuclideanSpace ℂ (SiteConfig n)) :
     partialTraceRight ((regionState (B ∪ C) Ω).submatrix (regionUnionEquiv hBC).symm
-      (regionUnionEquiv hBC).symm) = regionState B Ω := by
-  refine eq_of_forall_trace_mul_eq fun N ↦ ?_
-  rw [trace_partialTraceRight_mul, trace_regionState_submatrix_mul, ← inner_localLift]
-  have h : (N ⊗ₖ (1 : Matrix (RegionConfig n C) (RegionConfig n C) ℂ)).submatrix
-      (regionUnionEquiv hBC) (regionUnionEquiv hBC) =
-      reindex (regionUnionEquiv hBC).symm (regionUnionEquiv hBC).symm
-        (N ⊗ₖ (1 : Matrix (RegionConfig n C) (RegionConfig n C) ℂ)) := by
-    rw [reindex_apply, Equiv.symm_symm]
-  rw [h, localLift_union_kronecker, localLift_one, Matrix.mul_one]
+      (regionUnionEquiv hBC).symm) = regionState B Ω :=
+  ManyBody.partialTraceRight_regionState_union (X := fun v ↦ Fin (n v)) hBC Ω
 
 /-- The `A ∪ B` marginal of the tripartite state. -/
 theorem partialTraceRight_reassoc_tripleState (Ω : EuclideanSpace ℂ (SiteConfig n)) :

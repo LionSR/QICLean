@@ -74,12 +74,8 @@ theorem sum_pinProj {U : Matrix m m ℂ} (hU' : U * Uᴴ = 1) : ∑ i, pinProj U
 omit [DecidableEq m] in
 /-- Matrices with the same trace pairing against every matrix are equal. -/
 theorem eq_of_forall_trace_mul_eq {M N : Matrix m m ℂ}
-    (h : ∀ A : Matrix m m ℂ, (M * A).trace = (N * A).trace) : M = N := by
-  classical
-  ext i j
-  have hM : ∀ Y : Matrix m m ℂ, (Y * single j i (1 : ℂ)).trace = Y i j := fun Y ↦ by
-    simp [trace, mul_apply, single_apply, ite_and, Finset.sum_ite_eq]
-  rw [← hM M, ← hM N, h]
+    (h : ∀ A : Matrix m m ℂ, (M * A).trace = (N * A).trace) : M = N :=
+  Matrix.eq_of_forall_trace_mul_eq h
 
 /-- `‖Y φ‖² = Re ⟨φ, Y* Y φ⟩`. -/
 theorem norm_toEuclideanLin_sq (Y : Matrix m m ℂ) (φ : EuclideanSpace ℂ m) :
