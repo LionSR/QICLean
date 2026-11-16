@@ -18,7 +18,9 @@ their overlaps. No invertibility, common eigenbasis, or support condition is req
 
 This is the direct finite-copy estimate towards Wolf, Equation (8.44), derived
 from Equations (8.41) and (8.54), `Notes/WolfNoteTexSource/ch08_distance_measures.tex`,
-lines 548–590 and 660–665. It does not prove the asymptotic equality in (8.44):
+lines 548–590 and 660–665.
+
+**Scope restriction (direct bound only):** this does not prove the asymptotic equality in (8.44):
 the converse bound on the exponent remains open. See
 `docs/paper-gaps/wolf_ch8_chernoff_asymptotics.tex`.
 -/
@@ -168,7 +170,10 @@ theorem optimalHypothesisTestError_finKronecker_le {N : ℕ} {I : Fin N → Type
   rwa [petzOverlap_finKronecker ρ σ hρ hσ] at h
 
 /-- The optimal error on `N` identical copies is bounded by a power of the one-copy
-overlap. This proves the finite-copy direct bound towards Wolf (8.44), not its converse. -/
+overlap.
+
+**Scope restriction (direct bound only):** this proves the finite-copy direct bound towards
+Wolf (8.44), not its converse; see `docs/paper-gaps/wolf_ch8_chernoff_asymptotics.tex`. -/
 theorem optimalHypothesisTestError_iid_le {ρ σ : Matrix m m ℂ}
     (hρ : ρ.PosSemidef) (hσ : σ.PosSemidef) (hρ1 : ρ.trace = 1)
     (hσ1 : σ.trace = 1) {p s : ℝ} (hp : p ∈ Set.Icc (0 : ℝ) 1)
