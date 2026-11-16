@@ -1,0 +1,146 @@
+\section{Quadratic perspectives}
+
+\begin{lemma}[Finite quadratic-perspective inequality]
+    \label{lem:finite_quadratic_perspective}
+    \lean{Matrix.sum_conjTranspose_inv_mul_le,
+        Matrix.conjTranspose_inv_mul_le_of_concave}
+    \leanok
+    Let $R_i>0$ and $S>0$ be square matrices, let $L_i$ be rectangular
+    matrices of compatible sizes, and let $w_i\geq0$ be finitely many weights.
+    If $\sum_i w_iR_i\leq S$, then
+    \[
+        \left(\sum_i w_iL_i\right)^\dagger S^{-1}
+        \left(\sum_i w_iL_i\right)
+        \leq \sum_i w_iL_i^\dagger R_i^{-1}L_i.
+    \]
+    There is no normalization condition on the weights.
+\end{lemma}
+
+\begin{proof}\leanok
+    The Schur complement shows that each matrix
+    \[
+        \begin{pmatrix}L_i^\dagger R_i^{-1}L_i&L_i^\dagger\\L_i&R_i\end{pmatrix}
+    \]
+    is positive semidefinite. Take their weighted sum and add the positive
+    block diagonal matrix with diagonal blocks $0$ and $S-\sum_iw_iR_i$.
+    The lower-right block is now $S$. Its Schur complement gives the result.
+\end{proof}
+
+\begin{theorem}[Quadratic perspective with a concave denominator]
+    \label{thm:quadratic_perspective_concave_denominator}
+    \lean{Matrix.convexOn_quadraticPerspective, Matrix.convexOn_affine_quadraticPerspective}
+    \leanok
+    Let $D$ be a convex subset of a real vector space, and let $g$ be
+    operator concave on $D$ with $g(R)>0$ for every $R\in D$.
+    Then $(L,R)\mapsto L^\dagger g(R)^{-1}L$ is jointly operator convex
+    on the product of the rectangular matrix space and $D$.
+    More generally, if $h$ is an affine rectangular-matrix-valued map on $D$,
+    then $R\mapsto h(R)^\dagger g(R)^{-1}h(R)$ is operator convex.
+    For Hermitian $L$ this is the quadratic case of the perspective in
+    \cite[Theorem~5.14]{Wolf2012Quantum}. The assertion here concerns this
+    quadratic case; the theorem for a general operator convex function is
+    a separate result.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:finite_quadratic_perspective}
+    For $a,b\geq0$ with $a+b=1$, concavity gives
+    $ag(R_1)+bg(R_2)\leq g(aR_1+bR_2)$. Apply
+    Lemma~\ref{lem:finite_quadratic_perspective} with these two weights.
+    An affine numerator preserves the convex combination used in this argument.
+    For Hermitian $L$, cancellation of the square roots in
+    $g(R)^{1/2}(g(R)^{-1/2}Lg(R)^{-1/2})^2g(R)^{1/2}$ gives
+    $Lg(R)^{-1}L$.
+\end{proof}
+
+\begin{corollary}[Inverse-power quadratic perspectives]
+    \label{cor:inverse_power_quadratic_perspective}
+    \lean{Matrix.conjTranspose_rpow_neg_mul_convex,
+        Matrix.convexOn_conjTranspose_rpow_neg_mul,
+        Matrix.sum_conjTranspose_rpow_neg_mul_le}
+    \leanok
+    For $0\leq\alpha\leq1$, the map
+    $(L,R)\mapsto L^\dagger R^{-\alpha}L$ is jointly operator convex
+    for arbitrary rectangular $L$ and positive definite $R$.
+    In particular, for finite probability weights $w_i$,
+    \[
+        \left(\sum_iw_iL_i\right)^\dagger
+        \left(\sum_iw_iR_i\right)^{-\alpha}
+        \left(\sum_iw_iL_i\right)
+        \leq\sum_iw_iL_i^\dagger R_i^{-\alpha}L_i.
+    \]
+    For positive $L$ this is the corrected-domain form of
+    \cite[Corollary~5.4(1)]{Wolf2012Quantum}. The printed Hermitian-denominator
+    condition is insufficient; positivity and invertibility restore the
+    preceding perspective theorem
+    \cite{gap:wolf_ch5_quadratic_perspective_domain}.
+    Singular denominators with negative powers are not included.
+\end{corollary}
+
+\begin{proof}\leanok
+    \uses{thm:quadratic_perspective_concave_denominator}
+    The power $R\mapsto R^\alpha$ is operator concave on positive matrices
+    for $0\leq\alpha\leq1$, and is positive definite when $R$ is.
+    Moreover $(R^\alpha)^{-1}=R^{-\alpha}$. Apply
+    Theorem~\ref{thm:quadratic_perspective_concave_denominator}.
+    Finite convex combinations give the displayed inequality.
+\end{proof}
+
+\section{Two-factor tensor powers}
+
+\begin{lemma}[Tensor quadratic forms and traces]
+    \label{lem:vec_transpose_kronecker_quadratic}
+    \lean{Matrix.vec_transpose_kronecker_quadratic}
+    \leanok
+    For complex square matrices $A,B,K$ of the same size, put
+    $v_K=\sum_{i,j}K_{ij}\lvert i\rangle\otimes\lvert j\rangle$. Then
+    \[
+        \langle v_K,(A\otimes B)v_K\rangle
+        =\tr(K^\dagger A K B^T).
+    \]
+    This is \cite[Equation~(5.48)]{Wolf2012Quantum}. No positivity assumption
+    is needed for the identity.
+\end{lemma}
+
+\begin{proof}\leanok
+    Expand the quadratic form in the product basis. Its summands are
+    $\overline{K_{ij}}A_{ik}B_{jl}K_{kl}$, which also give the trace on the right.
+\end{proof}
+
+\begin{theorem}[Joint concavity of two tensor powers]
+    \label{thm:rpow_kronecker_rpow_concave}
+    \lean{Matrix.rpow_kronecker_rpow_concave}
+    \leanok
+    For $x,y\geq0$ with $x+y\leq1$, the map
+    $(A,B)\mapsto A^x\otimes B^y$ is jointly operator concave on pairs of
+    positive semidefinite matrices of the same size. This is
+    \cite[Corollary~5.5(1)]{Wolf2012Quantum}.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:vec_transpose_kronecker_quadratic, thm:lieb_concavity_subboundary}
+    Every vector of the tensor product is $v_K$ for some $K$.
+    The preceding identity identifies its quadratic form with
+    $\tr(K^\dagger A^xK(B^T)^y)$, since real powers commute with transpose.
+    The concave Ando--Lieb inequality proves the desired inequality for every
+    quadratic form, hence in the operator order.
+\end{proof}
+
+\begin{theorem}[Joint convexity of two tensor powers]
+    \label{thm:rpow_kronecker_rpow_convex}
+    \lean{Matrix.rpow_kronecker_rpow_convex}
+    \leanok
+    For $1\leq x\leq2$ and $1-x\leq y\leq0$, the map
+    $(A,B)\mapsto A^x\otimes B^y$ is jointly operator convex for $A\geq0$
+    and $B>0$, of the same size. Taking $x=1+\alpha$ and
+    $y=-\alpha\beta$ gives \cite[Corollary~5.5(3)]{Wolf2012Quantum}
+    for $\alpha,\beta\in[0,1]$, on this invertible domain.
+\end{theorem}
+
+\begin{proof}\leanok
+    \uses{lem:vec_transpose_kronecker_quadratic, thm:lieb_convexity_posDef}
+    Apply the convex Ando--Lieb inequality with the second input transposed.
+    The vectorization identity tests the resulting operator inequality on
+    every vector. Transpose preserves positive definiteness, so all inverse
+    powers are defined on the required domain.
+\end{proof}

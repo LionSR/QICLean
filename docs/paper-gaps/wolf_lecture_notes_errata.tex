@@ -921,6 +921,23 @@ This is a source error in the hypothesis of Theorem~5.17. The source proof is
 valid under the corrected hypothesis, which agrees with the printed one when
 $f$ is injective on $I$.
 
+\section{The denominator in Corollary~5.4(1)}
+
+The printed PDF, page~86, states joint convexity of $LR^{-\alpha}L$ on
+positive $L$ and Hermitian $R$, for $\alpha\in[0,1]$.
+At $\alpha=1$, the scalar inputs $L_1=L_2=1$, $R_1=-1$, $R_2=-2$ give
+mixed value $-2/3$ and average endpoint value $-3/4$, contradicting convexity.
+The proof through Theorem~5.14 requires a positive invertible denominator.
+For $R>0$, the corrected statement holds even for arbitrary rectangular $L$
+when the left factor is $L^\dagger$. The local TeX transcription already says
+positive $R$; this differs from the PDF.
+
+The corrected result and the more general concave-denominator quadratic
+perspective are proved in \doclink{QICLean/Analysis/QuadraticPerspective}.
+The source discrepancy, inverse-domain convention, and distinction from the
+still-open general-function perspective theorem are recorded in
+\path{docs/paper-gaps/wolf_ch5_quadratic_perspective_domain.tex}.
+
 \section{Formalization gaps that are not source corrections}
 
 The following Wolf-specific notes record formalization scope or dependency
