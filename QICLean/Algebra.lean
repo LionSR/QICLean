@@ -32,6 +32,7 @@ import QICLean.Algebra.FrameOperator
 import QICLean.Algebra.FrobeniusHilbert
 import QICLean.Algebra.GramMatrixLI
 import QICLean.Algebra.HermitianHelpers
+import QICLean.Algebra.HermitianNilpotent
 import QICLean.Algebra.HermitianPartSum
 import QICLean.Algebra.HermitianSpectrumMultiplicity
 import QICLean.Algebra.HermitianSpectrumPerturbation
