@@ -7,6 +7,21 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Loewner order and complex quadratic forms — shared lemma (2026-11-15)
+
+- **Pattern:** From `A ≤ B`, apply `dotProduct_mulVec_nonneg` to `B - A`
+  and rewrite with `sub_mulVec`, `dotProduct_sub`, `sub_nonneg` to compare
+  `star v ⬝ᵥ (A *ᵥ v)` with `star v ⬝ᵥ (B *ᵥ v)`.
+- **Reuse:** `Matrix.dotProduct_mulVec_le_of_le` in
+  `Analysis/ProjectionQuadraticBound.lean`, stated for an arbitrary finite
+  index type. The real-part sibling `Matrix.re_dotProduct_mulVec_le_of_le`
+  now delegates to it, and `Channel/ConditionNumberInterpolation.lean` uses it.
+- **Remaining inline copies:** `Channel/OrderedCP.lean:164`,
+  `Entropy/ConditionalSkewPhase.lean:177`, `Entropy/ConditionalSkewStrip.lean:64`
+  and `Entropy/ConditionalSkewSetup.lean:352–353`. These can switch to the
+  shared lemma in a later cleanup.
+- **Decision:** A lemma suffices; no tactic is needed.
+
 ### Dimension of a half-sample image — unconditional helper (2026-11-03)
 
 - **Pattern:** Bound the image of the actual sample of size `q / (2 * D^2)`

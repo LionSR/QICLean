@@ -274,7 +274,7 @@ theorem exists_kraus_state_effect_coupling_max_rank {m n : Type*}
     by_cases hij : i = j
     · subst j
       simp only [Matrix.smul_apply, Matrix.diagonal_apply, ite_true, smul_eq_mul, hw']
-      have hr : T * (a i / T) = a i := by field_simp [hT.ne'] <;> ring
+      have hr : T * (a i / T) = a i := by field_simp [hT.ne']
       exact_mod_cast hr
     · simp [hij]
   let N := max A.rank B.rank

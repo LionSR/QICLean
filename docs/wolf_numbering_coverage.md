@@ -2601,6 +2601,40 @@ In `QICLean.Analysis.SchattenVariational`, `Matrix.schattenNorm A p` is
 
 The historical named-environment tally above is unchanged.
 
+### Corollary “Channel spectrum vs. Jamiolkowski spectrum” (Equation 8.87) — FORMALIZED
+
+`Matrix.subperipheralModulus_le_one_sub_sq_mul_min_eigenvalue` in
+`QICLean.Channel.JamiolkowskiSpectrum` proves `μ ≤ 1 - d² λ_min(τ)` for every
+completely positive trace-preserving `T : M_d(ℂ) → M_d(ℂ)`, with `τ` the
+normalized Choi (Jamiołkowski) matrix and `μ` the shared
+`Module.End.subperipheralModulus`. No further hypothesis is imposed; `d = 0`
+is included (empty infimum `0`, statement `μ ≤ 1`).
+`Matrix.subperipheralModulus_le_of_smul_one_le_choiMatrix` gives the same bound
+for every scalar lower bound `c 𝟙 ≤ τ`, and
+`Matrix.traceNorm_map_le_of_smul_one_le_choiMatrix` is the one-step Doeblin
+contraction (Eq. (8.86) with `Y = 𝟙/d`) on traceless Hermitian inputs.
+
+Wolf finishes by citing the asymptotic lower bound of Prop. 8.6 and
+Thm. 8.23. The formal proof instead applies the `n`-fold contraction to the
+traceless Hermitian and anti-Hermitian parts of an eigenvector of a
+subperipheral eigenvalue. This is a different route to the same statement,
+not a deviation in hypotheses or conclusion. Partial progress on issue #45.
+
+### Lemma “completely positive interpolation” (Equations 8.93–8.95) — FORMALIZED
+
+`Matrix.exists_isKrausCP_unital_map_smul_iff_conditionNumber_le` in
+`QICLean.Channel.ConditionNumberInterpolation` proves the full equivalence for
+positive definite `P ∈ M_d(ℂ)`, `P' ∈ M_{d'}(ℂ)`: a completely positive unital
+`T` with `T(P) = λ P'`, `λ > 0`, exists iff `κ(P) ≥ κ(P')`, where
+`Matrix.conditionNumber X = ‖X‖ ‖X⁻¹‖` uses the operator norm, as in the
+source. No hypothesis is added; the empty dimensions `d = 0` and `d' = 0` are
+included. `Matrix.conditionNumber_le_of_positive_unital_map_smul` records that
+the necessity direction needs only a positive unital map, as in Wolf's proof.
+The sufficiency direction builds Wolf's map (8.95) as a sum of two rank-one
+measure-and-prepare maps, with the coefficients
+`E_i(λP') / ⟨ψ_i|E_i(P)|ψ_i⟩` written out as `(M𝟙 - λP')/(M - m)` and
+`(λP' - m𝟙)/(M - m)`. Partial progress on issue #45.
+
 ### Lemma 8.5 (Equations 8.103--8.104) — CORRECTED FORM FORMALIZED
 
 * `Matrix.wolf_eq_103` and `Matrix.wolf_eq_103_refined` prove Equation (8.103)

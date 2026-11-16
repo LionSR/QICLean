@@ -33,6 +33,7 @@ import QICLean.Channel.ChoiTypeMap.Positivity
 import QICLean.Channel.ChoiTypeMap.YamagamiPositivity
 import QICLean.Channel.ComplementaryWeylTwirl
 import QICLean.Channel.CompletelyPositiveBridge
+import QICLean.Channel.ConditionNumberInterpolation
 import QICLean.Channel.ConvexFunctionalMonotonicity
 import QICLean.Channel.DecomposablePPT
 import QICLean.Channel.DecomposableWitness
@@ -65,6 +66,7 @@ import QICLean.Channel.FixedPoint
 import QICLean.Channel.GaugeConjugation
 import QICLean.Channel.InformationallyCompleteEffects
 import QICLean.Channel.Irreducible
+import QICLean.Channel.JamiolkowskiSpectrum
 import QICLean.Channel.KoashiImoto
 import QICLean.Channel.KrausCPTP
 import QICLean.Channel.KrausCornerCompression
