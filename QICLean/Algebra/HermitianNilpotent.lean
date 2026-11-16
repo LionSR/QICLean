@@ -23,14 +23,6 @@ complete positivity or support inside a prescribed Choi face.
 
 namespace Matrix
 
-private theorem recover_isometric_congruence {b : ℕ}
-    (V : Matrix (Fin b) (Fin b) ℂ) (hV : Vᴴ * V = 1)
-    (X : Matrix (Fin b) (Fin b) ℂ) : Vᴴ * (V * X * Vᴴ) * V = X := by
-  calc
-    Vᴴ * (V * X * Vᴴ) * V = (Vᴴ * V) * X * (Vᴴ * V) := by
-      simp only [Matrix.mul_assoc]
-    _ = X := by rw [hV, Matrix.one_mul, Matrix.mul_one]
-
 /-- Two Hermitian matrices in dimension at least two admit a common
 nonzero complex-linear annihilating functional, real on Hermitian inputs.
 Diagonalize the first matrix and combine two independent off-diagonal
@@ -50,23 +42,24 @@ theorem exists_hermitian_functional_killing_pair {b : ℕ} (hb : 2 ≤ b)
     norm_num [i, j] at h'
   let V := hρ.eigenvectorUnitary
   let Vm : Matrix (Fin b) (Fin b) ℂ := V
-  have hV : Vmᴴ * Vm = 1 := by
-    simpa only [Vm, Matrix.star_eq_conjTranspose] using Unitary.coe_star_mul_self V
   let Dg : Matrix (Fin b) (Fin b) ℂ :=
     Matrix.diagonal (RCLike.ofReal ∘ hρ.eigenvalues)
   have hρeq : ρ = Vm * Dg * Vmᴴ := by
     simpa only [Vm, V, Dg, Unitary.conjStarAlgAut_apply,
       Matrix.star_eq_conjTranspose, Function.comp_def] using hρ.spectral_theorem
-  have hCompρ : Vmᴴ * ρ * Vm = Dg := by
-    rw [hρeq]
-    exact recover_isometric_congruence Vm hV Dg
   let C : Module.End ℂ (Matrix (Fin b) (Fin b) ℂ) :=
     { toFun := fun X => Vmᴴ * X * Vm
       map_add' := by intros; rw [Matrix.mul_add, Matrix.add_mul]
       map_smul' := by intros; rw [Matrix.mul_smul, Matrix.smul_mul]; rfl }
   have hC (X : Matrix (Fin b) (Fin b) ℂ) : C X = Vmᴴ * X * Vm := rfl
-  have hRecover (X : Matrix (Fin b) (Fin b) ℂ) : C (Vm * X * Vmᴴ) = X :=
-    recover_isometric_congruence Vm hV X
+  let E := Unitary.conjStarAlgAut ℂ (Matrix (Fin b) (Fin b) ℂ) V
+  have hRecover (X : Matrix (Fin b) (Fin b) ℂ) : C (Vm * X * Vmᴴ) = X := by
+    change Vmᴴ * (Vm * X * Vmᴴ) * Vm = X
+    simpa only [E, Unitary.conjStarAlgAut_symm_apply, Unitary.conjStarAlgAut_apply,
+      Unitary.coe_star, Matrix.star_eq_conjTranspose, Vm] using E.symm_apply_apply X
+  have hCompρ : Vmᴴ * ρ * Vm = Dg := by
+    rw [hρeq]
+    exact hRecover Dg
   let e (k l : Fin b) : Matrix (Fin b) (Fin b) ℂ →ₗ[ℂ] ℂ :=
     { toFun := fun X => X k l
       map_add' := by intros; rfl
