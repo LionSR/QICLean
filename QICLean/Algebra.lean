@@ -16,6 +16,7 @@ import QICLean.Algebra.CommutingPolynomialGaps
 import QICLean.Algebra.CommutingPolynomialSchmidtRank
 import QICLean.Algebra.CompactSVD
 import QICLean.Algebra.ComplexPhasePositivity
+import QICLean.Algebra.ComplexSqrt
 import QICLean.Algebra.ConstantPowerSums
 import QICLean.Algebra.CornerCompression
 import QICLean.Algebra.CornerSkolemNoether

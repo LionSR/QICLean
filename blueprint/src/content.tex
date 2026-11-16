@@ -1,6 +1,6 @@
 % QICLean chapter router.
 %
-% The blueprint has six parts. Each part opens with a part file
+% The blueprint has seven parts. Each part opens with a part file
 % chapter/part_N_*.tex. Chapters are ordered by dependency as far as the
 % order of Wolf's chapters allows; most remaining references to a later
 % chapter start in Part I or in the Perron--Frobenius chapter. Parts I-III
@@ -8,7 +8,8 @@
 % Tour", Chapters 1-7; Part IV starts with Wolf's Chapter 8 on distances and
 % entropies; Parts V and VI collect the tools for ground states of gapped
 % local Hamiltonians, the one-dimensional area law, the two-dimensional area
-% law and the PEPS approximation.
+% law and the PEPS approximation; Part VII treats unitary matrices on a finite
+% basis, with no tensor-product structure.
 %
 % The chNN_ prefix of a file name records where the file sat in the earlier
 % Wolf-ordered layout; it is not the chapter number. Files and labels keep
@@ -56,6 +57,8 @@
 %       29 Replica entropy metrics and their upper bounds
 %       30 Lower bounds and floors for replica metrics
 %       31 Entropy and energy transport on symmetric replicas
+%   VII Unitary gates
+%       32 Two-level words, dilations and exact amplification
 %
 % Chapter 22 keeps the viable-subspace, low-energy and trimming files of the
 % former Chapter 4 together and in their former order.
@@ -135,3 +138,6 @@
 \input{chapter/ch13_replica_transport_root_compression}
 \input{fragment/replica_symmetric_band_floor}
 \input{chapter/ch13_replica_product_metric_floor}
+
+\input{chapter/part_7_unitary_gates}
+\input{chapter/ch14_unitary_gates}

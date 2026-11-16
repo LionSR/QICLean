@@ -109,9 +109,10 @@ leanblueprint checkdecls
 leanblueprint web   # or: leanblueprint pdf
 ```
 
-`blueprint/src/content.tex` arranges the chapters in six parts, from states
+`blueprint/src/content.tex` arranges the chapters in seven parts, from states
 and channels through entropy to the tools for gapped ground states and the
-area laws; the first three parts follow Wolf's lecture notes. The `chNN_`
+area laws, followed by unitary gates on a finite basis; the first three parts
+follow Wolf's lecture notes. The `chNN_`
 prefix on each chapter file is a stable identifier and does not track that
 order (see
 [`blueprint/README.md`](../blueprint/README.md) and
