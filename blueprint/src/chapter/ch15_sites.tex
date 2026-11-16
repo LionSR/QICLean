@@ -140,8 +140,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.mem_supportedOperators_iff_exists_eq_place,
         ManyBody.range_placeHom}
     \leanok
-    \uses{def:sites_supported, thm:sites_supported_subalgebra, def:sites_place,
-        lem:sites_place_hom}
+    \uses{def:sites_config, def:sites_supported, thm:sites_supported_subalgebra,
+        def:sites_place, lem:sites_place_hom}
     An operator on $\mathcal H_X$ is supported on $D$ if and only if it is
     $K\otimes1$ for a matrix $K$ on $\C^{X_D}$. Hence $\mathcal A_D$ is the
     image of the placement.
@@ -160,7 +160,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \lean{ManyBody.supportedOperators_toSubmodule_eq_span,
         ManyBody.prod_mem_supportedOperators, ManyBody.place_single}
     \leanok
-    \uses{thm:sites_place_range}
+    \uses{thm:sites_place_range, lem:sites_place_hom}
     The algebra $\mathcal A_D$ is the linear span of the product operators
     $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$.
 \end{theorem}
@@ -181,7 +181,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.norm_place, ManyBody.posSemidef_place_iff,
         ManyBody.place_le_place_iff}
     \leanok
-    \uses{lem:sites_place_hom}
+    \uses{def:sites_place, lem:sites_place_hom}
     The placement does not increase the operator norm and preserves positive
     semidefiniteness and the order. If every $X_v$ is nonempty, then the
     placement is injective, $\lVert K\otimes1\rVert=\lVert K\rVert$, and
