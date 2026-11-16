@@ -4,6 +4,7 @@ Assisted-by: OpenAI Codex (GPT-6).
 The proofs in this file are new. The imported real Gaussian foundation contains
 modified openai/math proof material documented in Basic.lean.
 -/
+import QICLean.Algebra.ComplexSqrt
 import QICLean.Probability.ComplexGaussian.Basic
 
 /-!
@@ -35,10 +36,6 @@ omit [Fintype ι] in
 omit [Fintype ι] in
 theorem delta_comm (a b : ι) : delta a b = delta b a := by
   simp only [delta, eq_comm]
-
-private theorem sqrt_two_complex_sq : (Real.sqrt 2 : ℂ) ^ 2 = 2 := by
-  norm_cast
-  exact Real.sq_sqrt (by norm_num)
 
 private theorem sqrt_two_complex_ne_zero : (Real.sqrt 2 : ℂ) ≠ 0 := by
   exact_mod_cast Real.sqrt_ne_zero'.mpr (by norm_num : (0 : ℝ) < 2)
@@ -72,7 +69,7 @@ private theorem pairing_coordinate_conj (a b : ι) :
     simp [pairing, Fin.sum_univ_two, inner_coordinateVectors,
       coordinateCoefficients, delta]
     field_simp [sqrt_two_complex_ne_zero]
-    norm_num [Complex.I_sq, sqrt_two_complex_sq]
+    norm_num [Complex.I_sq, Complex.ofReal_sqrt_sq 2 (by norm_num)]
   · simp [pairing, inner_coordinateVectors,
       coordinateCoefficients, delta, h]
 
@@ -84,7 +81,7 @@ private theorem pairing_conj_coordinate (a b : ι) :
     simp [pairing, Fin.sum_univ_two, inner_coordinateVectors,
       coordinateCoefficients, delta]
     field_simp [sqrt_two_complex_ne_zero]
-    norm_num [Complex.I_sq, sqrt_two_complex_sq]
+    norm_num [Complex.I_sq, Complex.ofReal_sqrt_sq 2 (by norm_num)]
   · simp [pairing, inner_coordinateVectors,
       coordinateCoefficients, delta, h]
 

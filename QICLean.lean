@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Algebra
 import QICLean.Analysis
 import QICLean.Channel
+import QICLean.Circuit
 import QICLean.Entropy
 import QICLean.Kraus
 import QICLean.Probability

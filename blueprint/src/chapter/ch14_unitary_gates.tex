@@ -1,0 +1,780 @@
+\chapter{Two-level words, dilations and exact amplification}
+\label{ch:unitary_gates}
+
+Throughout this chapter $I$ is a finite set and matrices in $\C^{I\times I}$
+act on $\C^I$ with basis $\{\ket{x}\}_{x\in I}$. The chapter proves that every
+unitary of determinant one on $\C^I$ is a product of at most $3|I|^2$
+two-level rotations and phases, the commutator identity that removes one
+factor from the control of a controlled element of a ring, the unitary
+dilation of a partial isometry on two copies of its space, and the exact
+amplification of a uniform success probability by two reflections. The first
+two results are the matrix steps in the decomposition of a gate of constant
+size into elementary gates in~\cite[caption of Fig.~1 and paragraph ``The
+sequential-RG circuit'']{Malz2024Preparation}.
+
+\section{Real square roots in the complex numbers}
+\label{sec:gate_complex_sqrt}
+
+\begin{theorem}[Complex square of a real square root]
+    \label{thm:gate_ofreal_sqrt_sq}
+    \lean{Complex.ofReal_sqrt_sq, Complex.ofReal_sqrt_inv_mul_self}
+    \leanok
+    Let $x\geq0$ be real and regard $\sqrt x$ as a complex number. Then
+    $(\sqrt x)^2=x$ and $(\sqrt x)^{-1}(\sqrt x)^{-1}=x^{-1}$.
+\end{theorem}
+\begin{proof}\leanok
+    The inclusion $\R\to\C$ is multiplicative and $\sqrt x\,\sqrt x=x$ in
+    $\R$; the second identity is the inverse of the first.
+\end{proof}
+
+\begin{definition}[The number $1/\sqrt2$]
+    \label{def:gate_inv_sqrt_two}
+    \lean{Complex.invSqrtTwo}
+    \leanok
+    Put $c=(\sqrt2)^{-1}\in\C$.
+\end{definition}
+
+\begin{theorem}[Identities for $1/\sqrt2$]
+    \label{thm:gate_inv_sqrt_two}
+    \lean{Complex.invSqrtTwo_ne_zero, Complex.invSqrtTwo_mul_self,
+        Complex.invSqrtTwo_sq, Complex.invSqrtTwo_pow_mul_self,
+        Complex.invSqrtTwo_mul_sqrtTwo, Complex.sqrtTwo_mul_invSqrtTwo,
+        Complex.conj_invSqrtTwo, Complex.star_invSqrtTwo}
+    \leanok
+    \uses{def:gate_inv_sqrt_two}
+    The number $c=1/\sqrt2$ satisfies $c\neq0$, $c\cdot c=c^2=\tfrac12$,
+    $c\sqrt2=\sqrt2\,c=1$ and $\overline c=c$, and $c^n c^n 2^n=1$ for every
+    integer $n\geq0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_ofreal_sqrt_sq}
+    Since $\sqrt2>0$, its inverse is nonzero and
+    $c\sqrt2=\sqrt2\,c=1$. Theorem~\ref{thm:gate_ofreal_sqrt_sq} at $x=2$
+    gives $c\cdot c=\tfrac12$, hence $c^nc^n2^n=(c\cdot c\cdot2)^n=1$. The
+    number $c$ is real, so conjugation fixes it.
+\end{proof}
+
+\section{Two-level operators}
+\label{sec:gate_two_level}
+
+\begin{definition}[Two-level operator]
+    \label{def:gate_two_level}
+    \lean{QuantumCircuit.twoLevelIdx, QuantumCircuit.twoLevel}
+    \leanok
+    Let $a,b\in I$ and $g\in\C^{2\times2}$, with rows and columns of $g$
+    indexed by $\{0,1\}$. For $x\in I$ put $\iota_a(x)=0$ if $x=a$ and
+    $\iota_a(x)=1$ otherwise. The \emph{two-level operator}
+    $G_{ab}(g)\in\C^{I\times I}$ has the entries
+    \begin{align}
+        G_{ab}(g)_{xy}=
+        \begin{cases}
+            g_{\iota_a(x)\,\iota_a(y)} & \text{if } x,y\in\{a,b\}, \\
+            \delta_{xy}                & \text{otherwise.}
+        \end{cases}
+        \label{eq:gate_two_level}
+    \end{align}
+    For $a\neq b$ it acts as $g$ on $\spn\{\ket a,\ket b\}$, in
+    this order of the two vectors, and as the identity on the other basis
+    vectors.
+\end{definition}
+
+\begin{theorem}[Entries of a two-level operator]
+    \label{thm:gate_two_level_entries}
+    \lean{QuantumCircuit.twoLevel_apply_of_not_mem_left,
+        QuantumCircuit.twoLevel_apply_of_not_mem_right,
+        QuantumCircuit.twoLevelIdx_self, QuantumCircuit.twoLevelIdx_of_ne}
+    \leanok
+    \uses{def:gate_two_level}
+    If $x\notin\{a,b\}$ or $y\notin\{a,b\}$, then
+    $G_{ab}(g)_{xy}=\delta_{xy}$. Moreover $\iota_a(a)=0$, and
+    $\iota_a(b)=1$ when $a\neq b$.
+\end{theorem}
+\begin{proof}\leanok
+    Both statements are read off from~(\ref{eq:gate_two_level}) and the
+    definition of $\iota_a$.
+\end{proof}
+
+\begin{theorem}[Products, adjoints and unitarity of two-level operators]
+    \label{thm:gate_two_level_algebra}
+    \lean{QuantumCircuit.twoLevel_mul, QuantumCircuit.twoLevel_one,
+        QuantumCircuit.twoLevel_conjTranspose,
+        QuantumCircuit.twoLevel_mem_unitary,
+        QuantumCircuit.twoLevel_list_prod}
+    \leanok
+    \uses{def:gate_two_level}
+    For all $a,b\in I$ and $g\in\C^{2\times2}$,
+    $G_{ab}(1)=1$ and $G_{ab}(g)^\dagger=G_{ab}(g^\dagger)$. If $a\neq b$,
+    then $G_{ab}(g)G_{ab}(h)=G_{ab}(gh)$ for all $g,h\in\C^{2\times2}$, hence
+    $G_{ab}(g_1\cdots g_k)=G_{ab}(g_1)\cdots G_{ab}(g_k)$ for every finite
+    list $g_1,\ldots,g_k$, and $G_{ab}(g)$ is unitary whenever $g$ is.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_two_level_entries}
+    For the product, fix $x,y$. If $x,y\in\{a,b\}$, the sum
+    $\sum_zG_{ab}(g)_{xz}G_{ab}(h)_{zy}$ has only the terms $z=a$ and $z=b$,
+    by Theorem~\ref{thm:gate_two_level_entries}, and these give
+    $(gh)_{\iota_a(x)\,\iota_a(y)}$. If $x\notin\{a,b\}$ or
+    $y\notin\{a,b\}$, one of the two factors has the entries of the identity
+    and the sum collapses to $\delta_{xy}$. The identities for $1$ and for
+    the adjoint are entrywise, the formula for a list follows by induction on
+    its length, and unitarity follows from
+    $G_{ab}(g)^\dagger G_{ab}(g)=G_{ab}(g^\dagger g)=1$ and the same
+    computation in the other order.
+\end{proof}
+
+\begin{theorem}[Action of a two-level operator]
+    \label{thm:gate_two_level_action}
+    \lean{QuantumCircuit.twoLevel_mulVec_apply,
+        QuantumCircuit.twoLevel_mul_apply}
+    \leanok
+    \uses{def:gate_two_level}
+    Let $a\neq b$. For $v\in\C^I$ the vector $G_{ab}(g)v$ has the
+    coordinates $g_{00}v_a+g_{01}v_b$ at $a$, $g_{10}v_a+g_{11}v_b$ at $b$,
+    and $v_x$ at every $x\notin\{a,b\}$. Consequently, for
+    $Y\in\C^{I\times I}$ the rows of $G_{ab}(g)Y$ at $a$ and $b$ are
+    $g_{00}Y_{a\,\cdot}+g_{01}Y_{b\,\cdot}$ and
+    $g_{10}Y_{a\,\cdot}+g_{11}Y_{b\,\cdot}$, and the other rows are those of
+    $Y$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_two_level_entries}
+    In $\sum_zG_{ab}(g)_{xz}v_z$ only $z\in\{a,b\}$ contribute when
+    $x\in\{a,b\}$, and only $z=x$ otherwise, by
+    Theorem~\ref{thm:gate_two_level_entries}. The statement for $Y$ is the
+    statement for each of its columns.
+\end{proof}
+
+\begin{theorem}[Determinant of a two-level operator]
+    \label{thm:gate_two_level_det}
+    \lean{QuantumCircuit.det_twoLevel}
+    \leanok
+    \uses{def:gate_two_level}
+    If $a\neq b$, then $\det G_{ab}(g)=\det g$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_two_level_entries}
+    Order the basis so that $a,b$ come first. By
+    Theorem~\ref{thm:gate_two_level_entries} the matrix of $G_{ab}(g)$ is then
+    block diagonal with blocks $g$ and $1$, and the determinant does not
+    depend on the order of the basis.
+\end{proof}
+
+\begin{definition}[Rotations and phases]
+    \label{def:gate_rot_diag}
+    \lean{QuantumCircuit.rotTwo, QuantumCircuit.diagTwo,
+        QuantumCircuit.phaseTwo, QuantumCircuit.quarterTwo}
+    \leanok
+    For $z,\nu\in\C$ put
+    \begin{align}
+        R(z)=\begin{pmatrix}\operatorname{Re}z&-\operatorname{Im}z\\
+                 \operatorname{Im}z&\operatorname{Re}z\end{pmatrix},
+        \qquad
+        D(\nu)=\begin{pmatrix}\nu&0\\0&\overline\nu\end{pmatrix},
+        \qquad
+        J=\begin{pmatrix}i&0\\0&-i\end{pmatrix},
+        \qquad
+        Q=\begin{pmatrix}0&1\\-1&0\end{pmatrix}.
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Rotations and phases are unitary]
+    \label{thm:gate_rot_diag_unitary}
+    \lean{QuantumCircuit.rotTwo_mul, QuantumCircuit.rotTwo_one,
+        QuantumCircuit.rotTwo_conjTranspose,
+        QuantumCircuit.diagTwo_conjTranspose,
+        QuantumCircuit.quarterTwo_eq_rotTwo,
+        QuantumCircuit.rotTwo_mem_unitary, QuantumCircuit.diagTwo_mem_unitary,
+        QuantumCircuit.phaseTwo_mem_unitary,
+        QuantumCircuit.quarterTwo_mem_unitary}
+    \leanok
+    \uses{def:gate_rot_diag}
+    For all $z,w,\nu\in\C$,
+    $R(z)R(w)=R(zw)$, $R(1)=1$, $R(z)^\dagger=R(\overline z)$,
+    $D(\nu)^\dagger=D(\overline\nu)$ and $Q=R(-i)$. The matrices $J$ and $Q$
+    are unitary, and $R(z)$ and $D(\nu)$ are unitary when $|z|=1$ and
+    $|\nu|=1$.
+\end{theorem}
+\begin{proof}\leanok
+    The identities are verified entry by entry; the product formula is the
+    formula for the real and imaginary parts of $zw$. For $|z|=1$,
+    $R(z)^\dagger R(z)=R(\overline zz)=R(1)=1$, and likewise in the other
+    order. For $D(\nu)$, $J$ and $Q$ the two products with the adjoint are
+    computed entry by entry, using $\overline\nu\nu=1$ for $D(\nu)$.
+\end{proof}
+
+\begin{theorem}[Squares as commutators]
+    \label{thm:gate_sq_commutator}
+    \lean{QuantumCircuit.rotTwo_sq_eq_commutator,
+        QuantumCircuit.diagTwo_sq_eq_commutator}
+    \leanok
+    \uses{def:gate_rot_diag}
+    For every $w\in\C$,
+    \begin{align}
+        R(w^2)=R(w)\,J\,R(\overline w)\,J^\dagger,
+        \qquad
+        D(w^2)=D(w)\,Q\,D(\overline w)\,Q^\dagger.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_rot_diag_unitary}
+    An entrywise computation gives $JR(\overline w)J^\dagger=R(w)$, so the
+    first right-hand side is $R(w)R(w)=R(w^2)$ by
+    Theorem~\ref{thm:gate_rot_diag_unitary}. The second identity is verified
+    entry by entry: $QD(\overline w)Q^\dagger=D(w)$.
+\end{proof}
+
+\begin{definition}[Rotations and phases of unit modulus]
+    \label{def:gate_special_two}
+    \lean{QuantumCircuit.IsSpecialTwo}
+    \leanok
+    \uses{def:gate_rot_diag}
+    A matrix $g\in\C^{2\times2}$ is a \emph{rotation or phase of unit
+    modulus} if $g=R(z)$ for some $z$ with $|z|=1$, or $g=D(\nu)$ for some
+    $\nu$ with $|\nu|=1$.
+\end{definition}
+
+\begin{theorem}[Rotations and phases of unit modulus are special unitary]
+    \label{thm:gate_special_two}
+    \lean{QuantumCircuit.IsSpecialTwo.mem_unitary,
+        QuantumCircuit.IsSpecialTwo.conjTranspose,
+        QuantumCircuit.IsSpecialTwo.det_eq_one}
+    \leanok
+    \uses{def:gate_special_two}
+    If $g$ is a rotation or phase of unit modulus, then $g$ is unitary,
+    $\det g=1$, and $g^\dagger$ is again a rotation or phase of unit modulus.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_rot_diag_unitary}
+    Unitarity and the form of the adjoint are
+    Theorem~\ref{thm:gate_rot_diag_unitary}. The determinants are
+    $\det R(z)=(\operatorname{Re}z)^2+(\operatorname{Im}z)^2=|z|^2$ and
+    $\det D(\nu)=\nu\overline\nu=|\nu|^2$.
+\end{proof}
+
+\begin{theorem}[Square roots on the unit circle]
+    \label{thm:gate_unit_sqrt}
+    \lean{QuantumCircuit.exists_sq_eq_of_norm_eq_one}
+    \leanok
+    Every $z\in\C$ with $|z|=1$ has a square root $w$ with $|w|=1$.
+\end{theorem}
+\begin{proof}\leanok
+    The field $\C$ is algebraically closed, so $w^2=z$ has a solution, and
+    $|w|^2=|z|=1$ gives $|w|=1$.
+\end{proof}
+
+\begin{theorem}[Rotations and phases of unit modulus are commutators]
+    \label{thm:gate_special_two_commutator}
+    \lean{QuantumCircuit.IsSpecialTwo.exists_commutator}
+    \leanok
+    \uses{def:gate_special_two}
+    Every rotation or phase $g$ of unit modulus has the form
+    $g=g_1g_2g_1^\dagger g_2^\dagger$ with $g_1$ a rotation or phase of unit
+    modulus and $g_2\in\C^{2\times2}$ unitary.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_unit_sqrt, thm:gate_sq_commutator,
+        thm:gate_rot_diag_unitary}
+    If $g=R(z)$, choose $w$ with $|w|=1$ and $w^2=z$ by
+    Theorem~\ref{thm:gate_unit_sqrt}; Theorem~\ref{thm:gate_sq_commutator}
+    and $R(w)^\dagger=R(\overline w)$ give $g=R(w)JR(w)^\dagger J^\dagger$.
+    If $g=D(\nu)$, the same argument with $w^2=\nu$ gives
+    $g=D(w)QD(w)^\dagger Q^\dagger$.
+\end{proof}
+
+\section{The Givens decomposition}
+\label{sec:gate_givens}
+
+\begin{definition}[Two-level word]
+    \label{def:gate_two_level_word}
+    \lean{QuantumCircuit.IsTwoLevelWord}
+    \leanok
+    \uses{def:gate_two_level, def:gate_special_two}
+    For an integer $K\geq0$, a matrix $X\in\C^{I\times I}$ is a
+    \emph{two-level word of length at most $K$} if
+    $X=G_{a_1b_1}(g_1)\cdots G_{a_kb_k}(g_k)$ with $k\leq K$, $a_j\neq b_j$
+    and every $g_j$ a rotation or phase of unit modulus.
+\end{definition}
+
+\begin{theorem}[Operations on two-level words]
+    \label{thm:gate_two_level_word_closure}
+    \lean{QuantumCircuit.IsTwoLevelWord.one, QuantumCircuit.IsTwoLevelWord.mono,
+        QuantumCircuit.IsTwoLevelWord.mul, QuantumCircuit.IsTwoLevelWord.single,
+        QuantumCircuit.IsTwoLevelWord.conjTranspose,
+        QuantumCircuit.IsTwoLevelWord.mem_unitary,
+        QuantumCircuit.IsTwoLevelWord.det_eq_one,
+        QuantumCircuit.isTwoLevelWord_twoLevel_list_prod}
+    \leanok
+    \uses{def:gate_two_level_word}
+    \begin{enumerate}
+        \item The identity is a two-level word of length at most $K$ for
+              every $K\geq0$, and a two-level word of length at most $K$ has
+              length at most $K'$ for every $K'\geq K$.
+        \item If $X$ and $Y$ are two-level words of lengths at most $K$ and
+              $K'$, then $XY$ is one of length at most $K+K'$.
+        \item If $a\neq b$ and $g$ is a rotation or phase of unit modulus,
+              then $G_{ab}(g)$ is a two-level word of length at most $1$; if
+              $g_1,\ldots,g_k$ are rotations or phases of unit modulus, then
+              $G_{ab}(g_1\cdots g_k)$ is one of length at most $k$.
+        \item If $X$ is a two-level word of length at most $K$, then so is
+              $X^\dagger$, and $X$ is unitary with $\det X=1$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_two_level_algebra, thm:gate_special_two,
+        thm:gate_two_level_det}
+    Items (1)--(3) concatenate lists of factors; the last part of (3) uses
+    the product formula for a list in
+    Theorem~\ref{thm:gate_two_level_algebra}. For (4), the adjoint of a
+    product is the product of the adjoints in the reverse order, with
+    $G_{ab}(g)^\dagger=G_{ab}(g^\dagger)$ and $g^\dagger$ again a rotation or
+    phase of unit modulus (Theorems~\ref{thm:gate_two_level_algebra}
+    and~\ref{thm:gate_special_two}). Each factor is unitary, and has
+    determinant $\det g_j=1$ by Theorems~\ref{thm:gate_two_level_det}
+    and~\ref{thm:gate_special_two}.
+\end{proof}
+
+\begin{definition}[Operators fixing the basis vectors outside a set]
+    \label{def:gate_fixes_outside}
+    \lean{QuantumCircuit.FixesOutside}
+    \leanok
+    For $T\subseteq I$, a matrix $X\in\C^{I\times I}$ \emph{fixes the basis
+    vectors outside $T$} if $X_{xy}=\delta_{xy}$ whenever $x\notin T$ or
+    $y\notin T$.
+\end{definition}
+
+\begin{theorem}[Operators fixing the basis vectors outside a set]
+    \label{thm:gate_fixes_outside}
+    \lean{QuantumCircuit.FixesOutside.mono, QuantumCircuit.FixesOutside.mul,
+        QuantumCircuit.fixesOutside_twoLevel,
+        QuantumCircuit.fixesOutside_empty}
+    \leanok
+    \uses{def:gate_fixes_outside, def:gate_two_level}
+    If $X$ fixes the basis vectors outside $T$ and $T\subseteq T'$, it fixes
+    those outside $T'$. If $X$ and $Y$ fix the basis vectors outside $T$, so
+    does $XY$. The operator $G_{ab}(g)$ fixes the basis vectors outside
+    $\{a,b\}$, and a matrix fixing the basis vectors outside $\emptyset$ is
+    the identity.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_two_level_entries}
+    For the product, if $x\notin T$ then $X_{xz}=\delta_{xz}$ for all $z$, so
+    $(XY)_{xy}=Y_{xy}=\delta_{xy}$; the case $y\notin T$ is symmetric. The
+    statement for $G_{ab}(g)$ is Theorem~\ref{thm:gate_two_level_entries}.
+    The other two statements are immediate from the definition.
+\end{proof}
+
+\begin{theorem}[Eliminating one coordinate of a pair]
+    \label{thm:gate_two_level_elim}
+    \lean{QuantumCircuit.exists_twoLevel_elim}
+    \leanok
+    \uses{def:gate_special_two}
+    For all $x,y\in\C$ there are $k\leq2$ and rotations or phases
+    $g_1,\ldots,g_k$ of unit modulus such that $g=g_1\cdots g_k$ satisfies
+    $g_{10}x+g_{11}y=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_unit_sqrt, thm:gate_rot_diag_unitary}
+    If $y=0$ take $k=0$. If $y\neq0$ and $x=0$ take $g=Q=R(-i)$
+    (Theorem~\ref{thm:gate_rot_diag_unitary}). Otherwise write $x=|x|p$ and
+    $y=|y|q$ with $|p|=|q|=1$, choose $\nu$ with $|\nu|=1$ and
+    $\nu^2=\overline pq$ by Theorem~\ref{thm:gate_unit_sqrt}, so that
+    $\overline\nu q=\nu p$, and put $r=\sqrt{|x|^2+|y|^2}$ and
+    $z=(|x|-i|y|)/r$, so that $|z|=1$. Then $g=R(z)D(\nu)$ has
+    $g_{10}=-|y|\nu/r$ and $g_{11}=|x|\overline\nu/r$, and
+    $g_{10}x+g_{11}y=\bigl(-|x||y|\nu p+|x||y|\overline\nu q\bigr)/r=0$.
+\end{proof}
+
+\begin{theorem}[Eliminating a column below its diagonal entry]
+    \label{thm:gate_column_elim}
+    \lean{QuantumCircuit.exists_isTwoLevelWord_elim}
+    \leanok
+    \uses{def:gate_two_level_word, def:gate_fixes_outside}
+    Let $a\in I$, $X\in\C^{I\times I}$ and $R\subseteq I$ with $a\notin R$.
+    There is a two-level word $W$ of length at most $2|R|$ that fixes the
+    basis vectors outside $R\cup\{a\}$ and satisfies $(WX)_{ca}=0$ for every
+    $c\in R$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_two_level_elim, thm:gate_two_level_word_closure,
+        thm:gate_fixes_outside, thm:gate_two_level_action}
+    By induction on $R$. For $R=\emptyset$ take $W=1$. For $R\cup\{b\}$ with
+    $b\notin R$ and $b\neq a$, let $W$ be the word for $R$ and choose
+    $g=g_1\cdots g_k$, $k\leq2$, by Theorem~\ref{thm:gate_two_level_elim}
+    with $g_{10}(WX)_{aa}+g_{11}(WX)_{ba}=0$. Put $W'=G_{ab}(g)W$. It is a
+    two-level word of length at most $2+2|R|$
+    (Theorem~\ref{thm:gate_two_level_word_closure}) and fixes the basis
+    vectors outside $R\cup\{a,b\}$ (Theorem~\ref{thm:gate_fixes_outside}).
+    By Theorem~\ref{thm:gate_two_level_action}, the row of $W'X$ at $b$ is
+    $g_{10}(WX)_{a\,\cdot}+g_{11}(WX)_{b\,\cdot}$, which vanishes in the
+    column $a$, and the rows at $c\in R$ are those of $WX$.
+\end{proof}
+
+\begin{theorem}[Givens decomposition]
+    \label{thm:gate_givens}
+    \lean{QuantumCircuit.isTwoLevelWord_of_fixesOutside,
+        QuantumCircuit.isTwoLevelWord_of_det_eq_one}
+    \leanok
+    \uses{def:gate_two_level_word, def:gate_fixes_outside}
+    Let $X\in\C^{I\times I}$ be unitary with $\det X=1$. If $X$ fixes the
+    basis vectors outside $T\subseteq I$, then $X$ is a two-level word of
+    length at most $3|T|^2$. In particular every unitary $X$ with
+    $\det X=1$ is a two-level word of length at most $3|I|^2$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_column_elim, thm:gate_two_level_word_closure,
+        thm:gate_fixes_outside, thm:gate_two_level_action,
+        thm:gate_two_level_det, thm:gate_two_level_algebra,
+        thm:gate_special_two}
+    By induction on $T$. If $T=\emptyset$, then $X=1$
+    (Theorem~\ref{thm:gate_fixes_outside}). For $T\cup\{a\}$ with
+    $a\notin T$, Theorem~\ref{thm:gate_column_elim} gives a two-level word
+    $W$ of length at most $2|T|$, fixing the basis vectors outside
+    $T\cup\{a\}$, such that $Y=WX$ has $Y_{ca}=0$ for all $c\neq a$. The
+    matrix $Y$ is unitary with $\det Y=1$ and fixes the basis vectors
+    outside $T\cup\{a\}$. Put $\lambda=Y_{aa}$. The column of $Y$ at $a$ is
+    $\lambda\ket a$, so $|\lambda|=1$, and orthogonality of the columns gives
+    $Y_{ac}=0$ for $c\neq a$.
+
+    If $T=\emptyset$, then $Y$ is diagonal with the entry $\lambda$ at $a$
+    and $1$ elsewhere, so $\lambda=\det Y=1$, $Y=1$ and
+    $X=W^\dagger$. Otherwise choose $b\in T$ and put
+    $Z=G_{ab}(D(\overline\lambda))Y$. By
+    Theorem~\ref{thm:gate_two_level_action}, $Z$ fixes the basis vectors
+    outside $T$; it is unitary with $\det Z=1$
+    (Theorems~\ref{thm:gate_two_level_det} and~\ref{thm:gate_special_two}).
+    By the induction hypothesis $Z$ is a two-level word of length at most
+    $3|T|^2$, and
+    \begin{align}
+        X=W^\dagger\,G_{ab}(D(\lambda))\,Z
+    \end{align}
+    is a two-level word of length at most
+    $2|T|+1+3|T|^2\leq3(|T|+1)^2$ by
+    Theorem~\ref{thm:gate_two_level_word_closure}. The last statement is the
+    case $T=I$.
+\end{proof}
+
+\section{Controlled elements of a ring}
+\label{sec:gate_controlled}
+
+\begin{definition}[Controlled element]
+    \label{def:gate_ctrl_elem}
+    \lean{QuantumCircuit.ctrlElem}
+    \leanok
+    For elements $p,x$ of a ring put $C(p,x)=px+(1-p)$.
+\end{definition}
+
+\begin{theorem}[Algebra of controlled elements]
+    \label{thm:gate_ctrl_elem_algebra}
+    \lean{QuantumCircuit.ctrlElem_one, QuantumCircuit.ctrlElem_ctrlElem,
+        QuantumCircuit.ctrlElem_mul, QuantumCircuit.conj_ctrlElem,
+        QuantumCircuit.commute_ctrlElem}
+    \leanok
+    \uses{def:gate_ctrl_elem}
+    Let $p,q,p_1,p_2,x,y,v,v',w$ be elements of a ring.
+    \begin{enumerate}
+        \item $C(p,1)=1$ and $C(p_1,C(p_2,w))=C(p_1p_2,w)$.
+        \item If $p^2=p$ and $px=xp$, then $C(p,x)C(p,y)=C(p,xy)$.
+        \item If $pv=vp$ and $vv'=1$, then $vC(p,w)v'=C(p,vwv')$.
+        \item If $p$ commutes with $q$ and with $x$, then $p$ commutes with
+              $C(q,x)$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}\leanok
+    Item (1) is an expansion. For (2), expand the product into four terms:
+    $px\,py=p(xy)$, $px(1-p)=0$, $(1-p)py=0$ and $(1-p)^2=1-p$. For (3),
+    $vC(p,w)v'=vpwv'+vv'-vpv'=p\,vwv'+1-p$. Item (4) holds because $C(q,x)$
+    is built from $q$, $x$ and $1$ by sums and products.
+\end{proof}
+
+\begin{theorem}[Controlled commutators]
+    \label{thm:gate_ctrl_elem_commutator}
+    \lean{QuantumCircuit.ctrlElem_commutator}
+    \leanok
+    \uses{def:gate_ctrl_elem}
+    Let $p_1,p_2$ be commuting idempotents of a ring and let $v,v',w,w'$
+    satisfy $vv'=1$ and $ww'=1$. Suppose that $p_1$ commutes with $v$ and
+    $w$, and that $p_2$ commutes with $v$, $v'$ and $w$. Then
+    \begin{align}
+        C(p_1,v)\,C(p_2,w)\,C(p_1,v')\,C(p_2,w')=C(p_1p_2,\,vwv'w').
+        \label{eq:gate_ctrl_commutator}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_ctrl_elem_algebra}
+    Put $A=C(p_1,v)$ and $A'=C(p_1,v')$. By
+    Theorem~\ref{thm:gate_ctrl_elem_algebra}, $AA'=C(p_1,vv')=1$, and $p_2$
+    commutes with $A$ and $A'$. Expanding and using that $p_1$ is an
+    idempotent commuting with $v$ and $w$ gives
+    $AwA'=p_1\,vwv'+(1-p_1)w$, hence $AwA'w'=C(p_1,vwv'w')$. Therefore, by
+    items (3), (2) and (1) of Theorem~\ref{thm:gate_ctrl_elem_algebra},
+    \begin{align}
+        A\,C(p_2,w)\,A'\,C(p_2,w')
+        =C(p_2,AwA')\,C(p_2,w')
+        =C(p_2,C(p_1,vwv'w'))
+        =C(p_2p_1,vwv'w'),
+    \end{align}
+    and $p_2p_1=p_1p_2$.
+\end{proof}
+
+\section{The unitary dilation of a partial isometry}
+\label{sec:gate_dilation}
+
+\begin{definition}[A two-copy dilation]
+    \label{def:gate_partial_isometry_dilation}
+    \lean{Matrix.partialIsometryDilation}
+    \leanok
+    For $A\in\C^{I\times I}$ define the matrix on $\C^I\oplus\C^I$
+    \begin{align}
+        \mathcal D_A=
+        \begin{pmatrix}
+            A             & 1-AA^\dagger \\
+            1-A^\dagger A & -A^\dagger
+        \end{pmatrix}.
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Dilation of a partial isometry]
+    \label{thm:gate_partial_isometry_dilation}
+    \lean{Matrix.partialIsometryDilation_mem_unitaryGroup,
+        Matrix.partialIsometryDilation_mul_fromRows,
+        Matrix.partialIsometryDilation_initial_gram,
+        Matrix.partialIsometryDilation_success_gram}
+    \leanok
+    \uses{def:gate_partial_isometry_dilation}
+    If $AA^\dagger A=A$, then $\mathcal D_A$ is unitary. For every matrix $V$
+    with rows indexed by $I$,
+    \begin{align}
+        \mathcal D_A\binom V0=\binom{AV}{(1-A^\dagger A)V}.
+        \label{eq:gate_dilation_action}
+    \end{align}
+    If $AA^\dagger A=A$, the Gram matrix of the left-hand side
+    of~(\ref{eq:gate_dilation_action}) is $V^\dagger V$. For arbitrary $A$,
+    the Gram matrix of its first block is $(AV)^\dagger AV$.
+\end{theorem}
+\begin{proof}\leanok
+    If $AA^\dagger A=A$, both $A^\dagger A$ and $AA^\dagger$ are idempotent,
+    and block multiplication gives $\mathcal D_A^\dagger\mathcal D_A=1$.
+    Block multiplication also gives~(\ref{eq:gate_dilation_action}) and the
+    Gram matrix of its first block; the total Gram matrix follows from
+    unitarity.
+\end{proof}
+
+\section{Exact amplification of a uniform success probability}
+\label{sec:gate_amplification}
+
+In this section $I$ and $M$ are finite sets, maps $\C^M\to\C^I$ are matrices
+in $\C^{I\times M}$, and $P\in\C^{I\times I}$.
+
+\begin{definition}[Two-reflection subspace amplification]
+    \label{def:gate_subspace_amplification}
+    \lean{Matrix.subspaceReflection, Matrix.amplificationPlane,
+        Matrix.subspaceAmplificationStep}
+    \leanok
+    For $P\in\C^{I\times I}$ put $R_P=1-2P$. For $G,H\in\C^{I\times M}$ and
+    real $\theta$ put
+    \begin{align}
+        V_\theta=\sin\theta\,G+\cos\theta\,H,
+        \qquad Q_\theta=-R_{V_\theta V_\theta^\dagger}R_P.
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Unitary reflections and isometric planes]
+    \label{thm:gate_amplification_reflections}
+    \lean{Matrix.subspaceReflection_mem_unitaryGroup,
+        Matrix.amplificationPlane_conjTranspose_mul_self,
+        Matrix.isStarProjection_mul_conjTranspose_of_isometry,
+        Matrix.subspaceAmplificationStep_mem_unitaryGroup}
+    \leanok
+    \uses{def:gate_subspace_amplification}
+    If $P$ is an orthogonal projection, $R_P$ is unitary. If
+    $V^\dagger V=1$, then $VV^\dagger$ is an orthogonal projection. If
+    $G^\dagger G=H^\dagger H=1$ and $G^\dagger H=0$, then
+    $V_\theta^\dagger V_\theta=1$ for every real $\theta$; if moreover $P$ is
+    an orthogonal projection, $Q_\theta$ is unitary.
+\end{theorem}
+\begin{proof}\leanok
+    For an orthogonal projection $P$, $R_P$ is self-adjoint with
+    $R_P^2=1-4P+4P^2=1$. If $V^\dagger V=1$, then
+    $(VV^\dagger)^2=V(V^\dagger V)V^\dagger=VV^\dagger$. The Gram matrix of
+    $V_\theta$ is $(\sin^2\theta+\cos^2\theta)\,1$ because the mixed terms
+    vanish. Finally $Q_\theta$ is minus a product of two unitary
+    reflections.
+\end{proof}
+
+\begin{theorem}[Exact rotation of an isometric subspace]
+    \label{thm:gate_subspace_amplification}
+    \lean{Matrix.subspaceAmplificationStep_mul_plane,
+        Matrix.subspaceAmplificationStep_pow_mul_plane,
+        Matrix.subspaceAmplificationStep_pow_eq_good}
+    \leanok
+    \uses{def:gate_subspace_amplification}
+    Suppose $G^\dagger G=H^\dagger H=1$, $G^\dagger H=0$, $PG=G$ and $PH=0$.
+    For all real $\theta,\phi$ and integers $k\geq0$,
+    \begin{align}
+        Q_\theta V_\phi=V_{\phi+2\theta},
+        \qquad Q_\theta^k V_\phi=V_{\phi+2k\theta}.
+    \end{align}
+    In particular, for every integer $\ell\geq0$ and
+    $\theta=\pi/(4\ell+2)$, $Q_\theta^\ell V_\theta=G$.
+\end{theorem}
+\begin{proof}\leanok
+    Expanding the two reflections on $G$ and $H$ with the Gram identities
+    and $PG=G$, $PH=0$, and using the addition formulas for $\sin$ and
+    $\cos$, gives the one-step rotation. Induction on $k$ gives the second
+    identity, and the final angle is
+    $(2\ell+1)\pi/(4\ell+2)=\pi/2$, where $V_{\pi/2}=G$.
+\end{proof}
+
+\begin{definition}[Uniform success and failure maps]
+    \label{def:gate_uniform_postselection}
+    \lean{Matrix.postselectionSuccess, Matrix.postselectionFailure,
+        Matrix.postselectionAmplificationStep}
+    \leanok
+    \uses{def:gate_subspace_amplification}
+    For $V\in\C^{I\times M}$, $P\in\C^{I\times I}$ and real $p$ put
+    \begin{align}
+        G=p^{-1}PV,\qquad H=\bigl(\sqrt{1-p^2}\bigr)^{-1}(1-P)V,
+        \qquad Q=-R_{VV^\dagger}R_P.
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Decomposition from a uniform success probability]
+    \label{thm:gate_uniform_postselection_decomposition}
+    \lean{Matrix.uniformPostselection_decomposition}
+    \leanok
+    \uses{def:gate_uniform_postselection}
+    Suppose $V^\dagger V=1$, $P$ is an orthogonal projection, $0<p<1$ and
+    $V^\dagger PV=p^2\,1$. The maps $G,H$ of
+    Definition~\ref{def:gate_uniform_postselection} satisfy
+    \begin{align}
+        G^\dagger G=H^\dagger H=1,\qquad G^\dagger H=0,
+        \qquad PG=G,\quad PH=0,
+        \qquad pG+\sqrt{1-p^2}\,H=V.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_ofreal_sqrt_sq}
+    Since $P$ is an orthogonal projection, $(PV)^\dagger PV=V^\dagger PV=p^2$
+    and $((1-P)V)^\dagger(1-P)V=V^\dagger V-V^\dagger PV=1-p^2$, and the
+    mixed Gram matrix $(PV)^\dagger(1-P)V$ vanishes. Dividing by $p$ and by
+    $\sqrt{1-p^2}$, whose square is $1-p^2$ by
+    Theorem~\ref{thm:gate_ofreal_sqrt_sq}, gives the Gram identities. The
+    identities $PG=G$ and $PH=0$ follow from $P^2=P$, and
+    $pG+\sqrt{1-p^2}\,H=PV+(1-P)V=V$.
+\end{proof}
+
+\begin{theorem}[Exact amplification from the initial isometry]
+    \label{thm:gate_uniform_postselection_amplification}
+    \lean{Matrix.postselectionAmplificationStep_mem_unitaryGroup,
+        Matrix.amplificationPlane_postselection_eq_self,
+        Matrix.postselectionAmplificationStep_pow_mul,
+        Matrix.postselectionAmplificationStep_pow_eq_success,
+        Matrix.projection_mul_eq_self_of_uniform_probability_one}
+    \leanok
+    \uses{def:gate_uniform_postselection, def:gate_subspace_amplification}
+    Suppose $V^\dagger V=1$ and $P$ is an orthogonal projection. Then $Q$ is
+    unitary. If $V^\dagger PV=\sin^2\theta\,1$ with $0<\theta<\pi/2$, then the
+    maps $G,H$ of Definition~\ref{def:gate_uniform_postselection} at
+    $p=\sin\theta$ satisfy, for every integer $k\geq0$,
+    \begin{align}
+        V=V_\theta,\qquad Q^kV=V_{\theta+2k\theta}.
+    \end{align}
+    For an integer $\ell\geq1$ and $\theta=\pi/(4\ell+2)$,
+    $Q^\ell V=(\sin\theta)^{-1}PV$. If instead $V^\dagger PV=1$, then
+    $PV=V$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_amplification_reflections,
+        thm:gate_subspace_amplification,
+        thm:gate_uniform_postselection_decomposition}
+    Unitarity of $Q$ is Theorem~\ref{thm:gate_amplification_reflections}.
+    For $0<\theta<\pi/2$ one has $0<\sin\theta<1$ and
+    $\sqrt{1-\sin^2\theta}=\cos\theta$, so
+    Theorem~\ref{thm:gate_uniform_postselection_decomposition} gives
+    $V=V_\theta$ together with the hypotheses of
+    Theorem~\ref{thm:gate_subspace_amplification}; since $Q=Q_\theta$, that
+    theorem gives the rotation identity and the value at
+    $\theta=\pi/(4\ell+2)$, which lies in $(0,\pi/2)$ for $\ell\geq1$. If
+    $V^\dagger PV=1$, the Gram matrix of $(1-P)V$ is
+    $V^\dagger V-V^\dagger PV=0$, so $(1-P)V=0$.
+\end{proof}
+
+\begin{definition}[Attenuation by one binary flag]
+    \label{def:gate_uniform_success_attenuation}
+    \lean{Matrix.attenuationRotation, Matrix.attenuatedIsometry,
+        Matrix.attenuatedSuccessProjection}
+    \leanok
+    For real $t$ put $s=\sqrt{1-t^2}$, and for $V\in\C^{I\times M}$ and
+    $P\in\C^{I\times I}$ define
+    \begin{align}
+        R_t=\begin{pmatrix}t&-s\\s&t\end{pmatrix},
+        \qquad V_t=\begin{pmatrix}tV\\sV\end{pmatrix},
+        \qquad P_t=\begin{pmatrix}P&0\\0&0\end{pmatrix}.
+    \end{align}
+    The two row blocks of $V_t$ and $P_t$ are the two values of a binary
+    flag.
+\end{definition}
+
+\begin{theorem}[Exact attenuation of a uniform success probability]
+    \label{thm:gate_uniform_success_attenuation}
+    \lean{Matrix.attenuationRotation_mem_unitaryGroup,
+        Matrix.attenuatedIsometry_conjTranspose_mul_self,
+        Matrix.attenuatedSuccessProjection_isStarProjection,
+        Matrix.attenuatedIsometry_success_gram}
+    \leanok
+    \uses{def:gate_uniform_success_attenuation}
+    If $t^2\leq1$, then $R_t$ is unitary, and $V^\dagger V=1$ implies
+    $V_t^\dagger V_t=1$. If $P$ is an orthogonal projection, so is $P_t$.
+    For all real $t,p$, if $V^\dagger PV=p^2\,1$, then
+    \begin{align}
+        V_t^\dagger P_tV_t=(tp)^2\,1.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gate_rot_diag_unitary, thm:gate_ofreal_sqrt_sq}
+    For $t^2\leq1$ the complex number $z=t+is$ has $|z|^2=t^2+s^2=1$, and
+    $R_t=R(z)$ is unitary by Theorem~\ref{thm:gate_rot_diag_unitary}. Block
+    multiplication gives $V_t^\dagger V_t=(t^2+s^2)V^\dagger V$, with
+    $s^2=1-t^2$ by Theorem~\ref{thm:gate_ofreal_sqrt_sq}, and
+    $V_t^\dagger P_tV_t=t^2\,V^\dagger PV$. The matrix $P_t$ is
+    self-adjoint and idempotent when $P$ is.
+\end{proof}
+
+\begin{definition}[The number of amplification rounds]
+    \label{def:gate_amplification_budget}
+    \lean{QuantumCircuit.amplificationRounds,
+        QuantumCircuit.amplificationAngle}
+    \leanok
+    For an integer $r\geq0$ define
+    \begin{align}
+        \ell(r)=\lceil\pi r/4\rceil,
+        \qquad \theta(r)=\frac{\pi}{4\ell(r)+2}.
+    \end{align}
+\end{definition}
+
+\begin{theorem}[Bounds for the number of rounds and the angle]
+    \label{thm:gate_amplification_budget}
+    \lean{QuantumCircuit.amplificationRounds_pos,
+        QuantumCircuit.amplificationRounds_le,
+        QuantumCircuit.amplificationAngle_pos,
+        QuantumCircuit.amplificationAngle_lt_pi_div_two,
+        QuantumCircuit.amplificationAngle_le_inv,
+        QuantumCircuit.amplificationAngle_sin_pos_le_inv}
+    \leanok
+    \uses{def:gate_amplification_budget}
+    For every integer $r\geq0$, $\ell(r)\leq r$ and $\theta(r)>0$. For
+    $r\geq1$,
+    \begin{align}
+        1\leq\ell(r),\qquad
+        \theta(r)<\pi/2,\qquad
+        \theta(r)\leq r^{-1},\qquad
+        0<\sin\theta(r)\leq r^{-1}.
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Since $\pi\leq4$, $\pi r/4\leq r$ and its ceiling is at most $r$; for
+    $r\geq1$ it is positive. The angle is positive, and for $\ell(r)\geq1$
+    it is below $\pi/2$. From $\ell(r)\geq\pi r/4$ follows
+    $4\ell(r)+2\geq\pi r+2$, so $\theta(r)\leq1/r$. Finally
+    $0<\sin\theta\leq\theta$ on $(0,\pi/2)$.
+\end{proof}

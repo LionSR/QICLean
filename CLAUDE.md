@@ -88,6 +88,7 @@ TNLean's layer numbering below the tensor-network boundary (see
 | **2b-2c** | `Channel/Schwarz/`, `Channel/FixedPoint/`, `Channel/Irreducible/`, `Channel/Peripheral/`, `Channel/Semigroup/`, `Channel/KoashiImoto/`, `QPF/`, `Spectral/` | Kadison-Schwarz, Perron-Frobenius, spectral theory, peripheral spectrum, GKSL semigroups (Wolf Ch. 5-7); common invariant algebra of jointly invariant states (HJPW appendix) |
 | **3** | `Kraus/`, `Entropy/` | The word-evaluation layer (finite Kraus families, word products, cumulative spans, `IsNBlkInjective`/`IsNormal`); classical/quantum entropy and recovery theory |
 | **6** | `Wielandt/` | Span-growth, rank-one extraction, rectangular span, Wielandt bound, primitivity equivalences |
+| **Gates** | `Circuit/Gate/` | Unitaries on an arbitrary finite basis, with no sites: two-level and Givens words, controlled elements of a ring, the dilation of a partial isometry, exact amplification. Imports matrix modules only; nothing here mentions sites, layers, depth or supported operators (plan: `docs/many_body_circuit_architecture.md` in TNLean) |
 
 TNLean's tensor-network layers (`MPS/`, `PEPS/`, `PiAlgebra/`, `QCA/`) are
 **downstream** of this library, never upstream. TNLean consumes the generic
@@ -112,7 +113,7 @@ wrappers for downstream notation.
 `blueprint/` holds the reader-facing mathematical account, extracted from
 TNLean's blueprint (see `docs/extraction/interface_edges.md` for the
 severed cross-boundary edges left by that extraction). `blueprint/src/content.tex`
-arranges the chapters in six parts, ordered by dependency as far as
+arranges the chapters in seven parts, ordered by dependency as far as
 possible; the first three parts follow M. Wolf's *Quantum Channels &
 Operations: A Guided Tour*, Chapters 1--7. The comment at the top of that file
 lists every part and chapter. See `blueprint/README.md` for layout and build commands.
