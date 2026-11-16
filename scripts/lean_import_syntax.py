@@ -28,6 +28,8 @@ def strip_lean_comments(source: str) -> tuple[str, str | None]:
                     output.append("\n")
                 index += 1
         elif pair == "/-":
+            # A comment separates tokens even when it has no surrounding spaces.
+            output.append(" ")
             block_depth = 1
             index += 2
         elif pair == "--":

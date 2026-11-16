@@ -25,6 +25,11 @@ on:
       - 'scripts/check_oversized_lean_files.py'
       - 'scripts/lean_import_syntax.py'
       - 'scripts/test_lean_file_policies.py'
+      - 'scripts/check_import_layers.py'
+      - 'scripts/check_pass_through_declarations.py'
+      - 'scripts/test_architecture_policies.py'
+      - 'scripts/test_issue_automation.cjs'
+      - '.github/workflows/issue-automation.yml'
       - 'scripts/lake_build_hotspots.py'
       - 'scripts/test_lake_build_hotspots.py'
       - 'scripts/seed_lake_build.sh'
@@ -78,6 +83,11 @@ on:
       - 'scripts/check_oversized_lean_files.py'
       - 'scripts/lean_import_syntax.py'
       - 'scripts/test_lean_file_policies.py'
+      - 'scripts/check_import_layers.py'
+      - 'scripts/check_pass_through_declarations.py'
+      - 'scripts/test_architecture_policies.py'
+      - 'scripts/test_issue_automation.cjs'
+      - '.github/workflows/issue-automation.yml'
       - 'scripts/lake_build_hotspots.py'
       - 'scripts/test_lake_build_hotspots.py'
       - 'scripts/seed_lake_build.sh'
@@ -159,10 +169,16 @@ jobs:
               - 'scripts/nolints-style.txt'
               - 'scripts/ci_lean_checks.py'
             module_policy:
+              - 'docs/import_structure.md'
               - 'scripts/check_numbered_lean_files.py'
               - 'scripts/check_oversized_lean_files.py'
               - 'scripts/lean_import_syntax.py'
               - 'scripts/test_lean_file_policies.py'
+              - 'scripts/check_import_layers.py'
+              - 'scripts/check_pass_through_declarations.py'
+              - 'scripts/test_architecture_policies.py'
+              - 'scripts/test_issue_automation.cjs'
+              - '.github/workflows/issue-automation.yml'
               - 'scripts/lake_build_hotspots.py'
               - 'scripts/test_lake_build_hotspots.py'
               - 'scripts/seed_lake_build.sh'
@@ -451,6 +467,31 @@ jobs:
 
       - name: Test Lean module-policy checkers
         run: PYTHONPATH=scripts python3 scripts/test_lean_file_policies.py -v
+
+      - name: Test architecture ratchets
+        run: PYTHONPATH=scripts python3 scripts/test_architecture_policies.py -v
+
+      - name: Set up Node for tracking automation regression tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Test tracking automation without network access
+        run: node --test scripts/test_issue_automation.cjs
+
+      - name: Enforce architecture ratchets
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          args=()
+          # Dispatch has no base. On PRs/pushes an unavailable base must fail,
+          # rather than silently turning off the no-growth comparison.
+          if [ -n "$BASE_SHA" ] && [[ ! "$BASE_SHA" =~ ^0+$ ]]; then
+            git cat-file -e "$BASE_SHA^{commit}" || git fetch --no-tags origin "$BASE_SHA"
+            args=(--base-ref "$BASE_SHA")
+          fi
+          python3 scripts/check_import_layers.py "${args[@]}"
+          python3 scripts/check_pass_through_declarations.py "${args[@]}"
 
       - name: Test Lean compilation-time checker
         run: python3 scripts/test_lake_build_hotspots.py
