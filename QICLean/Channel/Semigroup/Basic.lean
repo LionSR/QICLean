@@ -6,6 +6,7 @@ Authors: TNLean contributors
 import QICLean.Algebra.MatrixOperatorSpace
 import QICLean.Channel.Basic
 import Mathlib.Analysis.ODE.ExistUnique
+import Mathlib.Tactic.Module
 
 /-!
 # Quantum Dynamical Semigroups — Definitions and Proposition 7.1
@@ -495,9 +496,12 @@ theorem expSemigroup_pow
     expSemigroup L t ^ n = expSemigroup L ((n : ℝ) * t) := by
   apply endEquiv.injective
   simp only [map_pow, expSemigroup_toCLM, expSemigroupCLM]
-  simpa only [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, nsmul_eq_mul, Complex.ofReal_mul,
-    Complex.ofReal_natCast] using
-    (NormedSpace.exp_nsmul n ((t : ℂ) • endEquiv L)).symm
+  have hScale : n • ((t : ℂ) • endEquiv L) =
+      (((n : ℝ) * t : ℝ) : ℂ) • endEquiv L := by
+    push_cast
+    module
+  exact (NormedSpace.exp_nsmul n ((t : ℂ) • endEquiv L)).symm.trans
+    (congrArg NormedSpace.exp hScale)
 
 theorem expSemigroup_isDynSemigroup
     (L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
