@@ -15,19 +15,21 @@ import QICLean.Kraus.Wielandt.Primitivity.VectorSpreadPositivity
 
 A channel `E` can transmit one bit with zero error in a single use if two input states have
 orthogonal outputs. For a channel with a full-rank fixed point, either every power `Eⁿ` can
-transmit a bit with zero error, or the power `E^q` at the quantum Wielandt index `q` cannot.
+transmit a bit with zero error, or every power `E^n`
+with `n ≥ q`, the quantum Wielandt index, cannot.
 
 If the fixed points are not all multiples of the full-rank one, the positive and negative parts
 of a traceless Hermitian fixed point give two orthogonal fixed states. Otherwise the channel is
 irreducible. If it is not primitive, a peripheral eigenvalue `μ ≠ 1` is a root of unity of some
 order `p`, so `E^p` has two orthogonal fixed states `σ₀, σ₁`; for every `n` the inputs
-`E^m σᵢ` with `n + m ≡ 0 (mod p)` have the orthogonal outputs `σᵢ`. If it is primitive, `E^q`
+`E^m σᵢ` with `n + m ≡ 0 (mod p)` have the orthogonal outputs `σᵢ`.
+If it is primitive, every `E^n` with `n ≥ q`
 maps every nonzero positive input to a full-rank output, so no two outputs are orthogonal.
 
 ## Main results
 
 * `HasOneShotZeroErrorBit`: two input states with orthogonal outputs.
-* `Kraus.zeroError_dichotomy`: Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347,
+* `Kraus.zeroError_dichotomy_eventually`: Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347,
   Theorem `thm:zero`, in its one-shot form.
 
 ## References
@@ -35,8 +37,7 @@ maps every nonzero positive input to a full-rank output, so no two outputs are o
 * M. Sanz, D. Pérez-García, M. M. Wolf, J. I. Cirac, *A quantum version of Wielandt's
   inequality*, arXiv:0909.5347, Theorem 2 (`thm:zero`), lines 736--771 of `main.tex`. The
   footnote to the theorem allows the one-shot zero-error capacity, which is the version proved
-  here; the asymptotic statement for `n ≥ q` additionally invokes Cubitt et al. and is not
-  formalized.
+  here for every `n ≥ q`. Regularized capacity over tensor powers is not formalized.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder BigOperators
@@ -51,6 +52,25 @@ orthogonal outputs, `tr(E(ρ₀) E(ρ₁)) = 0`. This is the statement `C₀(E) 
 zero-error classical capacity; its negation is `C₀(E) = 0`. -/
 def HasOneShotZeroErrorBit (E : Mat →ₗ[ℂ] Mat) : Prop :=
   ∃ ρ₀ ∈ densityMatrices D, ∃ ρ₁ ∈ densityMatrices D, (E ρ₀ * E ρ₁).trace = 0
+
+/-- Full-rank outputs cannot contain two orthogonal density matrices. This is the
+one-shot full-rank-output criterion; it makes no assertion about tensor powers.
+Sanz et al., arXiv:0909.5347, Theorem 2 cites Cubitt, Chen and Harrow,
+arXiv:0906.2547v2 for the regularized version. See
+`docs/paper-gaps/zero-error-capacity.tex` for this scope restriction. -/
+theorem not_hasOneShotZeroErrorBit_of_posDef_outputs [NeZero D]
+    (E : Mat →ₗ[ℂ] Mat) (hE : ∀ τ ∈ densityMatrices D, (E τ).PosDef) :
+    ¬ HasOneShotZeroErrorBit E := by
+  rintro ⟨ρ₀, hρ₀, ρ₁, hρ₁, horth⟩
+  have h₀ := hE ρ₀ hρ₀
+  have h₁ := hE ρ₁ hρ₁
+  have hne : E ρ₁ ≠ 0 := fun h ↦ by
+    have := h₁.trace_pos
+    rw [h, trace_zero] at this
+    exact lt_irrefl _ this
+  have hpos := h₀.trace_mul_pos_of_posSemidef_of_ne_zero h₁.posSemidef hne
+  rw [horth] at hpos
+  exact lt_irrefl _ hpos
 
 namespace Kraus
 
@@ -145,14 +165,14 @@ theorem pow_apply_of_apply_eq (E : Mat →ₗ[ℂ] Mat) {X : Mat} (hX : E X = X)
 open Classical in
 /-- **The zero-error dichotomy.** Let `K` be a trace-preserving Kraus family on `M_D(ℂ)` whose
 channel has a full-rank fixed point. Then either every power of the channel transmits one bit
-with zero error in a single use, or the power at the quantum Wielandt index does not.
+with zero error in a single use, or every power at or above the quantum Wielandt index does not.
 
 Source: Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347, Theorem 2 (`thm:zero`), lines
 736--771, in the one-shot form allowed by its footnote. -/
-theorem zeroError_dichotomy [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP K)
+theorem zeroError_dichotomy_eventually [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP K)
     {ρ : Mat} (hρ : IsUnit ρ) (hρfix : mapLM K ρ = ρ) :
     (∀ n : ℕ, HasOneShotZeroErrorBit ((mapLM K) ^ n)) ∨
-      ¬ HasOneShotZeroErrorBit ((mapLM K) ^ wielandtIndex K) := by
+      ∀ n ≥ wielandtIndex K, ¬ HasOneShotZeroErrorBit ((mapLM K) ^ n) := by
   let E := mapLM K
   have hCh : IsChannel E := isChannel_mapLM K hTP
   have hPos : IsPositiveMap E := hCh.pos
@@ -208,20 +228,18 @@ theorem zeroError_dichotomy [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP
   by_cases hPrim : IsPrimitive E
   · -- The primitive case: the power at the Wielandt index is positivity improving.
     right
-    rintro ⟨ρ₀, hρ₀, ρ₁, hρ₁, horth⟩
+    intro n hn
+    apply not_hasOneShotZeroErrorBit_of_posDef_outputs
+    intro τ hτ
     have hFull := hasEventuallyFullWordSpan_of_isIrreducibleMap_of_isPrimitive K hTP hIrr hPrim
-    have hq := hasFullWordSpanFrom_wielandtIndex K hFull (wielandtIndex K) le_rfl
-    have hspread : ∀ φ : Fin D → ℂ, φ ≠ 0 → vectorSpreadSpan K φ (wielandtIndex K) = ⊤ :=
+    have hq := hasFullWordSpanFrom_wielandtIndex K hFull n hn
+    have hspread : ∀ φ : Fin D → ℂ, φ ≠ 0 → vectorSpreadSpan K φ n = ⊤ :=
       fun φ hφ ↦ vectorSpreadSpan_eq_top_of_wordSpan_eq_top K hq φ hφ
-    have hne : ∀ {τ : Mat}, τ ∈ densityMatrices D → τ ≠ 0 := fun hτ h ↦ by
-      have := hτ.2; rw [h, trace_zero] at this; exact zero_ne_one this
-    have h₀ := mapLM_pow_positivityImproving_of_vectorSpreadSpan_eq_top K hspread hρ₀.1 (hne hρ₀)
-    have h₁ := mapLM_pow_positivityImproving_of_vectorSpreadSpan_eq_top K hspread hρ₁.1 (hne hρ₁)
-    have hpdne : ∀ {A : Mat}, A.PosDef → A ≠ 0 := fun hA h ↦ by
-      have := hA.trace_pos; rw [h, trace_zero] at this; exact lt_irrefl _ this
-    have hpos := h₀.trace_mul_pos_of_posSemidef_of_ne_zero h₁.posSemidef (hpdne h₁)
-    rw [horth] at hpos
-    exact lt_irrefl _ hpos
+    have hne : τ ≠ 0 := fun h ↦ by
+      have := hτ.2
+      rw [h, trace_zero] at this
+      exact zero_ne_one this
+    exact mapLM_pow_positivityImproving_of_vectorSpreadSpan_eq_top K hspread hτ.1 hne
   · -- A peripheral root of unity other than one.
     left
     have hper : ∃ μ ∈ peripheralEigenvalues E, μ ≠ 1 := by
@@ -262,5 +280,12 @@ theorem zeroError_dichotomy [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP
     obtain ⟨τ₀, hτ₀, τ₁, hτ₁, f₀, f₁, horth⟩ :=
       exists_orthogonal_fixed_densities (E ^ p) hChp.pos hChp.tp hρ'pd hρ'p hσ hσfix hne
     exact hshift p hp τ₀ hτ₀ τ₁ hτ₁ f₀ f₁ horth
+
+/-- The single-index consequence of `zeroError_dichotomy_eventually`. -/
+theorem zeroError_dichotomy [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP K)
+    {ρ : Mat} (hρ : IsUnit ρ) (hρfix : mapLM K ρ = ρ) :
+    (∀ n : ℕ, HasOneShotZeroErrorBit ((mapLM K) ^ n)) ∨
+      ¬ HasOneShotZeroErrorBit ((mapLM K) ^ wielandtIndex K) := by
+  exact (zeroError_dichotomy_eventually K hTP hρ hρfix).imp_right (fun h ↦ h _ le_rfl)
 
 end Kraus
