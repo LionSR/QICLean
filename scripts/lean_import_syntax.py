@@ -7,6 +7,8 @@ import re
 NAME_SEGMENT = r"[A-Za-z_][A-Za-z0-9_']*"
 MODULE_NAME = rf"{NAME_SEGMENT}(?:\.{NAME_SEGMENT})*"
 IMPORT_COMMAND_RE = re.compile(rf"import\s+({MODULE_NAME})")
+RAW_STRING_START_RE = re.compile(r'r(#+)?"')
+CHAR_LITERAL_RE = re.compile(r"'(?:\\[^'\n]+|[^'\\\n])'")
 
 
 def strip_lean_comments(source: str, *, mask_strings: bool = False) -> tuple[str, str | None]:
@@ -39,12 +41,12 @@ def strip_lean_comments(source: str, *, mask_strings: bool = False) -> tuple[str
             index = end + 1
         elif (source[index] == "'" and
               (index == 0 or not (source[index - 1].isalnum() or source[index - 1] in "_'")) and
-              (char := re.match(r"'(?:\\[^'\n]+|[^'\\\n])'", source[index:]))):
+              (char := CHAR_LITERAL_RE.match(source, index))):
             output.append("' '" if mask_strings else char.group())
-            index += char.end()
-        elif source[index] == "r" and (raw := re.match(r'r(#+)?"', source[index:])):
+            index = char.end()
+        elif source[index] == "r" and (raw := RAW_STRING_START_RE.match(source, index)):
             delimiter = '"' + (raw.group(1) or "")
-            end = source.find(delimiter, index + raw.end())
+            end = source.find(delimiter, raw.end())
             if end == -1:
                 return "".join(output), "unterminated raw string literal"
             end += len(delimiter)
