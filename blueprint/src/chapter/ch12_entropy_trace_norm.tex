@@ -994,24 +994,24 @@ Theorem~\ref{thm:trace_norm_abs}.
     \leanok
     \uses{def:wolf_subperipheral_modulus, def:choi_matrix_rect,
         def:is_kraus_cp}
-    Let $T:\MN{d}\to\MN{d}$ be completely positive and trace-preserving
+    Let $T:\MN{D}\to\MN{D}$ be completely positive and trace-preserving
     with Jamio{\l}kowski state $\tau$. Let $\mu$ be the largest modulus of
     an eigenvalue of $T$ strictly inside the unit disc, with $\mu=0$ when
     there is none, and let $\lambda_{\min}(\tau)$ be the smallest eigenvalue
     of $\tau$. Then
     \begin{align}
-        \mu\le1-d^2\lambda_{\min}(\tau).
+        \mu\le1-D^2\lambda_{\min}(\tau).
     \end{align}
-    More generally $\mu\le1-d^2c$ whenever $c\,\Id\le\tau$.
+    More generally $\mu\le1-D^2c$ whenever $c\,\Id\le\tau$.
     This is \cite[Chapter~8, Equation~(8.87)]{Wolf2012Quantum}.
 \end{corollary}
 
 \begin{proof}\leanok
     \uses{thm:scalar_choi_traceless_contraction}
-    For $d=0$ there is no eigenvector and $\mu=0\le1$. Otherwise write
-    $q=1-d^2c\ge0$. Powers of $T$ preserve traceless Hermitian matrices,
+    For $D=0$ there is no eigenvector and $\mu=0\le1$. Otherwise write
+    $q=1-D^2c\ge0$. Powers of $T$ preserve traceless Hermitian matrices,
     so $\lVert T^n(H)\rVert_{\tr}\le q^n\lVert H\rVert_{\tr}$ for each such
-    $H$ by the preceding lemma. Let $T(X)=zX$ with $X\ne0$ and $|z|<1$.
+    $H$ by the preceding theorem. Let $T(X)=zX$ with $X\ne0$ and $|z|<1$.
     Trace preservation gives $z\tr X=\tr X$, hence $\tr X=0$. Complete
     positivity gives $T(X^\dagger)=T(X)^\dagger$, so the matrices
     $H=\tfrac12(X+X^\dagger)$ and $K=-\tfrac{i}{2}(X-X^\dagger)$ are traceless
