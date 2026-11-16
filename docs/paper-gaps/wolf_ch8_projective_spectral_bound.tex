@@ -1,0 +1,52 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{A Boundary Fixed Point in Wolf's Projective Spectral Bound}
+\author{}
+\date{2026-11-16}
+\begin{document}
+\maketitle
+\gapnote{counterexample}{open}
+
+\section{The printed hypotheses}
+Wolf's spectral bound on projective diameter
+\cite[Equation (8.91)]{Wolf2012Quantum}, local source
+\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex}, lines 1021--1032,
+assumes a positive linear map on a proper cone and a nonzero fixed vector
+$c$ in the cone. It asserts $|\lambda|\le\tanh(\Delta(T)/4)$ for an eigenvector
+not proportional to $c$. The bracketed note explicitly asks whether the
+conditions $c\in C^\circ$ and $\Delta(T)<\infty$ can both be dropped.
+
+\section{Counterexample}
+Take $C=\mathbb R_+^2$ and $T(x,y)=(x,2y)$. This cone is closed, convex,
+pointed, and generating, with nonempty interior. The map preserves $C$,
+fixes $c=(1,0)\ne0$, and has the eigenvector $a=(0,1)$ with eigenvalue $2$.
+The vectors $a$ and $c$ are not proportional.
+
+For $t\ge1$, the two interior inputs $(1,t/2)$ and $(1,1/2)$ have images
+$(1,t)$ and $(1,1)$. Their lower cone ratios are respectively $1$ and $1/t$,
+so the Hilbert distance between the images is $\log t$. Consequently the
+projective diameter is infinite. With the usual limiting convention
+$\tanh(+\infty)=1$, the claimed bound would read $2\le1$.
+If the infinite-diameter expression is left undefined instead, the printed
+statement lacks a hypothesis needed even to interpret its conclusion.
+Thus the proposed removal of both conditions is invalid.
+
+\section{Formal verification and remaining scope}
+\doclink{QICLean/Analysis/ProjectiveDiameterCounterexample} verifies positivity,
+the nonzero fixed vector, the eigenvector, their nonproportionality, and the
+failure of every spectral coefficient at most one. It also calculates the
+two lower ratios and proves that output logarithmic distances on strictly
+positive inputs exceed every real bound. This uses the order description
+of cone ratios; an extended-valued projective-diameter definition is not
+introduced. No corrected spectral-diameter theorem is claimed.
+
+The example does not challenge Birkhoff's contraction theorem or the
+trace-preserving matrix-channel bound (8.92): $T$ here does not preserve
+$x+y$, and a boundary fixed point need not normalize the spectral radius.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

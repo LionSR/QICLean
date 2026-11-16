@@ -1229,3 +1229,39 @@ Theorem~\ref{thm:trace_norm_abs}.
     Multiply the inequalities in both directions and use monotonicity of
     the logarithm.
 \end{proof}
+
+\begin{definition}[Expanding diagonal map on the quadrant]
+    \label{def:expanding_quadrant_map}
+    \lean{ProjectiveDiameterCounterexample.quadrant,
+        ProjectiveDiameterCounterexample.diagonalMap,
+        ProjectiveDiameterCounterexample.mem_quadrant}
+    \leanok
+    Let $C=\mathbb R_+^2$ and $T(x,y)=(x,2y)$.
+\end{definition}
+
+\begin{theorem}[Boundary fixed point and an expanding eigenvector]
+    \label{thm:boundary_fixed_point_expansion}
+    \lean{ProjectiveDiameterCounterexample.boundary_fixed_point_counterexample,
+        ProjectiveDiameterCounterexample.diagonalMap_positive,
+        ProjectiveDiameterCounterexample.eigenvalue_gt_tanh,
+        ProjectiveDiameterCounterexample.lowerRatio_first,
+        ProjectiveDiameterCounterexample.lowerRatio_second,
+        ProjectiveDiameterCounterexample.output_log_distance_unbounded}
+    \leanok
+    \uses{def:expanding_quadrant_map, def:lower_cone_ratio}
+    The positive map $T$ fixes the nonzero boundary vector $(1,0)$ and has
+    eigenvalue $2$ on $(0,1)$, which is not proportional to the fixed vector.
+    The eigenvalue exceeds every coefficient at most one, including every
+    $\tanh(D/4)$ for real $D$. Moreover, the logarithmic distances between
+    images of interior vectors are unbounded.
+    Thus the boundary-fixed-point hypotheses printed in
+    \cite[Chapter~8, Equation~(8.91)]{Wolf2012Quantum} do not imply its
+    conclusion, even with the limiting convention $\tanh(+\infty)=1$.
+\end{theorem}
+\begin{proof}\leanok
+    Positivity and the two eigenvector identities follow by coordinates.
+    For $t\ge1$, the images of $(1,t/2)$ and $(1,1/2)$ are $(1,t)$ and $(1,1)$.
+    Their lower cone ratios are $1$ and $1/t$. Hence their logarithmic
+    distance is $\log t$, which exceeds $R$ when
+    $t=\exp(\max\{R,0\}+1)$.
+\end{proof}

@@ -276,6 +276,7 @@ import QICLean.Analysis.ProjectionMatrixRange
 import QICLean.Analysis.ProjectionQuadraticBound
 import QICLean.Analysis.ProjectionQuadraticBounds
 import QICLean.Analysis.ProjectionResidual
+import QICLean.Analysis.ProjectiveDiameterCounterexample
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.QuadraticScalarShift
 import QICLean.Analysis.QuantitativeFilterIteration

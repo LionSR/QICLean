@@ -2786,3 +2786,19 @@ The diameter bounds, uniqueness, trace comparisons, pseudoinverse formula,
 chi-squared corollary, and equal-support two-state interpolation remain open.
 In particular, no strict-positivity replacement for the equal-support theorem
 is claimed. The already-landed Eqs. (8.87), (8.93)–(8.95) are unchanged.
+
+### Spectral bound on projective diameter (Equation 8.91) — PRINTED STATEMENT FALSE
+
+`QICLean.Analysis.ProjectiveDiameterCounterexample` gives the positive map
+`T(x,y)=(x,2y)` on the closed positive quadrant. It fixes `(1,0)` but has
+an independent eigenvector `(0,1)` of eigenvalue `2`, exceeding every
+coefficient at most `1`. Its output logarithmic distances on strictly
+positive inputs are unbounded: the lower ratios for images `(1,t)`, `(1,1)`
+are `1` and `1/t`, giving distance `log t`.
+
+Thus allowing both a boundary fixed point and infinite diameter invalidates
+the claimed estimate, even with `tanh(∞)=1`. See
+`docs/paper-gaps/wolf_ch8_projective_spectral_bound.tex`. No corrected theorem
+is marked complete. The formal counterexample uses lower-ratio logarithms;
+the extended-valued metric/diameter API remains absent. The example does not
+contradict Eq. (8.92), since the map is not trace preserving.
