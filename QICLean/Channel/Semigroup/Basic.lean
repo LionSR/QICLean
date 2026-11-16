@@ -495,7 +495,7 @@ theorem expSemigroup_pow
     expSemigroup L t ^ n = expSemigroup L ((n : ℝ) * t) := by
   apply endEquiv.injective
   simp only [map_pow, expSemigroup_toCLM, expSemigroupCLM]
-  simpa only [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, Complex.ofReal_mul,
+  simpa only [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, nsmul_eq_mul, Complex.ofReal_mul,
     Complex.ofReal_natCast] using
     (NormedSpace.exp_nsmul n ((t : ℂ) • endEquiv L)).symm
 
