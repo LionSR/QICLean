@@ -83,11 +83,11 @@ private theorem exists_compact_spectral_isometry {n : Type*} [Fintype n]
     A = ∑ i : Fin A.rank,
         (a i : ℂ) • vecMulVec (fun p => U p i) (fun p => star (U p i)) := hSum
     _ = U * Matrix.diagonal (fun i => (a i : ℂ)) * Uᴴ := by
-      rw [Matrix.mul_diagonal]
       ext p q : 2
       simp only [Matrix.sum_apply, Matrix.smul_apply, Matrix.vecMulVec_apply,
-        smul_eq_mul, Matrix.mul_apply, Matrix.of_apply,
-        Matrix.conjTranspose_apply]
+        smul_eq_mul]
+      rw [Matrix.mul_apply]
+      simp only [Matrix.mul_diagonal, Matrix.conjTranspose_apply]
       apply Finset.sum_congr rfl
       intro i _
       ring
@@ -136,7 +136,7 @@ private theorem exists_matching_kraus_diagonal_identities
       rw [Finset.sum_comm]
       apply Finset.sum_congr rfl
       intro i _
-      simp [K, mul_ite, ite_mul]
+      simp [K, mul_ite]
     · have hZero : (∑ k, ∑ i, star (K k i j) * K k i l) = 0 := by
         apply Finset.sum_eq_zero
         intro k _
@@ -165,7 +165,7 @@ private theorem exists_matching_kraus_diagonal_identities
       calc
         (∑ k, (K k i j * d j) * star (K k i j)) =
             (w i * d j) * star (w i) := by
-          simp [K, mul_ite, ite_mul]
+          simp [K, ite_mul]
         _ = d j * (w i * star (w i)) := by ring
     · have hZero : (∑ k, ∑ j, (K k i j * d j) * star (K k l j)) = 0 := by
         apply Finset.sum_eq_zero
@@ -222,29 +222,31 @@ theorem exists_kraus_state_effect_coupling_max_rank {m n : Type*}
   let σ := Sᴴ * ρ * S
   have hσ : σ.IsHermitian := Matrix.isHermitian_conjTranspose_mul_mul S hρ
   let V := hσ.eigenvectorUnitary
+  let Vm : Matrix (Fin B.rank) (Fin B.rank) ℂ := V
   let eigen : Fin B.rank → ℂ := fun j => (hσ.eigenvalues j : ℂ)
-  have hVL : (V : Matrix (Fin B.rank) (Fin B.rank) ℂ)ᴴ * V = 1 := by
-    simpa only [Matrix.star_eq_conjTranspose] using Unitary.coe_star_mul_self V
-  have hVR : (V : Matrix (Fin B.rank) (Fin B.rank) ℂ) * Vᴴ = 1 := by
-    simpa only [Matrix.star_eq_conjTranspose] using Unitary.coe_mul_star_self V
-  have hσeq : σ = (V : Matrix (Fin B.rank) (Fin B.rank) ℂ) * Matrix.diagonal eigen * Vᴴ := by
-    simpa only [Unitary.conjStarAlgAut_apply, Matrix.star_eq_conjTranspose,
-      Function.comp_def] using hσ.spectral_theorem
-  let W : Matrix m (Fin B.rank) ℂ := S * V
+  have hVL : Vmᴴ * Vm = 1 := by
+    simpa only [Vm, Matrix.star_eq_conjTranspose] using Unitary.coe_star_mul_self V
+  have hVR : Vm * Vmᴴ = 1 := by
+    simpa only [Vm, Unitary.coe_star, Matrix.star_eq_conjTranspose] using
+      Unitary.coe_mul_star_self V
+  have hσeq : σ = Vm * Matrix.diagonal eigen * Vmᴴ := by
+    simpa only [Vm, V, eigen, Unitary.conjStarAlgAut_apply,
+      Matrix.star_eq_conjTranspose, Function.comp_def] using hσ.spectral_theorem
+  let W : Matrix m (Fin B.rank) ℂ := S * Vm
   have hWW : W * Wᴴ = B := by
     calc
-      W * Wᴴ = S * ((V : Matrix (Fin B.rank) (Fin B.rank) ℂ) * Vᴴ) * Sᴴ := by
+      W * Wᴴ = S * (Vm * Vmᴴ) * Sᴴ := by
         simp only [W, Matrix.conjTranspose_mul, Matrix.mul_assoc]
       _ = B := by rw [hVR, Matrix.mul_one, hSS]
   have hPrepared : Wᴴ * ρ * W = Matrix.diagonal eigen := by
     calc
-      Wᴴ * ρ * W = (V : Matrix (Fin B.rank) (Fin B.rank) ℂ)ᴴ * σ * V := by
+      Wᴴ * ρ * W = Vmᴴ * σ * Vm := by
         simp only [W, σ, Matrix.conjTranspose_mul, Matrix.mul_assoc]
       _ = Matrix.diagonal eigen := by
         rw [hσeq]
         calc
-          _ = (V : Matrix (Fin B.rank) (Fin B.rank) ℂ)ᴴ * V *
-              Matrix.diagonal eigen * (Vᴴ * V) := by simp only [Matrix.mul_assoc]
+          _ = Vmᴴ * Vm * Matrix.diagonal eigen * (Vmᴴ * Vm) := by
+            simp only [Matrix.mul_assoc]
           _ = Matrix.diagonal eigen := by rw [hVL, Matrix.one_mul, Matrix.mul_one]
   have hMass : ∑ j, eigen j = (T : ℂ) := by
     have h := congrArg Matrix.trace hPrepared
@@ -271,31 +273,31 @@ theorem exists_kraus_state_effect_coupling_max_rank {m n : Type*}
     ext i j : 2
     by_cases hij : i = j
     · subst j
-      simp only [Matrix.smul_apply, Matrix.diagonal_apply, if_pos rfl, smul_eq_mul, hw']
+      simp only [Matrix.smul_apply, Matrix.diagonal_apply, ite_true, smul_eq_mul, hw']
       have hr : T * (a i / T) = a i := by field_simp [hT.ne'] <;> ring
       exact_mod_cast hr
-    · simp [Matrix.diagonal_apply, hij]
+    · simp [hij]
   let N := max A.rank B.rank
   have hNA : Nonempty (Fin A.rank) := by
     by_contra h
-    letI : IsEmpty (Fin A.rank) := not_nonempty_iff.mp h
+    let : IsEmpty (Fin A.rank) := not_nonempty_iff.mp h
     have hZero : T = 0 := by simp [T]
     exact hT.ne' hZero
   obtain ⟨i₀⟩ := hNA
   have hN : 0 < N :=
     (lt_of_le_of_lt (Nat.zero_le i₀.val) i₀.isLt).trans_le (Nat.le_max_left _ _)
-  letI : NeZero N := ⟨hN.ne'⟩
+  let : NeZero N := ⟨hN.ne'⟩
   let e := (ZMod.finEquiv N).toEquiv
   let row : Fin A.rank → ZMod N := fun i => e (Fin.castLE (Nat.le_max_left _ _) i)
   let col : Fin B.rank → ZMod N := fun j => e (Fin.castLE (Nat.le_max_right _ _) j)
   have hrow : Function.Injective row := by
     intro i j h
     apply Fin.ext
-    exact congrArg Fin.val (e.injective h)
+    exact congrArg (fun k : Fin N => k.val) (e.injective h)
   have hcol : Function.Injective col := by
     intro i j h
     apply Fin.ext
-    exact congrArg Fin.val (e.injective h)
+    exact congrArg (fun k : Fin N => k.val) (e.injective h)
   obtain ⟨R, _, hEffect, hState⟩ :=
     exists_matching_kraus_diagonal_identities row col hrow hcol w
   let K : ZMod N → Matrix n m ℂ := fun k => U * R k * Wᴴ
