@@ -23,7 +23,8 @@ supported on `D`, and `∑_p W_pᴴ W_p = 1`.
 
 No statement requires a basis type to be nonempty. If some basis type is empty, then the
 system has no configurations, every matrix on it is zero, and the statements hold
-trivially; this case is handled once, in `ManyBody.regionExpectation_one`.
+trivially; this case is reduced once, by `IsEmpty (ComplConfig X D) → IsEmpty (Config X)`,
+in the proofs of `ManyBody.regionExpectation_one` and `ManyBody.trace_regionExpectation`.
 
 ## Main definitions
 
@@ -47,8 +48,9 @@ trivially; this case is handled once, in `ManyBody.regionExpectation_one`.
 
 * The normalized partial trace onto a region is the expectation
   `E_K(B) = q^{-|Λ∖K|} Tr_{Λ∖K}(B) ⊗ 1_{Λ∖K}` of the quasi-local approximation in the
-  two-dimensional area-law manuscript (`03-quasilocal.tex`, lines 19–29, `eq:quasilocal-ce`),
-  there for one local dimension `q`.
+  two-dimensional area-law manuscript (`03-quasilocal.tex`, lines 19–25, `eq:quasilocal-ce`),
+  there for one local dimension `q`; its properties as a conditional expectation are stated
+  in lines 27–29.
 -/
 
 open Matrix
@@ -172,6 +174,13 @@ end Conjugation
 
 /-! ### Conditional-expectation properties -/
 
+omit [Fintype V] [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+/-- If there is no configuration outside `D`, there is no configuration at all. -/
+private theorem isEmpty_config_of_isEmpty_complConfig [IsEmpty (ComplConfig X D)] :
+    IsEmpty (Config X) := by
+  classical
+  exact (cutEquiv X D).isEmpty_congr.mpr inferInstance
+
 theorem regionExpectation_zero :
     regionExpectation D (0 : Matrix (Config X) (Config X) ℂ) = 0 := by
   simp [regionExpectation_eq_sum_conj]
@@ -216,7 +225,7 @@ theorem regionExpectation_one :
     regionExpectation D (1 : Matrix (Config X) (Config X) ℂ) = 1 := by
   cases isEmpty_or_nonempty (ComplConfig X D) with
   | inl h =>
-    have : IsEmpty (Config X) := (cutEquiv X D).isEmpty_congr.mpr inferInstance
+    have := isEmpty_config_of_isEmpty_complConfig (X := X) (D := D)
     exact Subsingleton.elim _ _
   | inr h =>
     have hc : (Fintype.card (ComplConfig X D) : ℂ) ≠ 0 := by
@@ -247,7 +256,7 @@ theorem trace_regionExpectation (A : Matrix (Config X) (Config X) ℂ) :
     (regionExpectation D A).trace = A.trace := by
   cases isEmpty_or_nonempty (ComplConfig X D) with
   | inl h =>
-    have : IsEmpty (Config X) := (cutEquiv X D).isEmpty_congr.mpr inferInstance
+    have := isEmpty_config_of_isEmpty_complConfig (X := X) (D := D)
     simp [Matrix.trace]
   | inr h =>
     have hc : (Fintype.card (ComplConfig X D) : ℂ) ≠ 0 := by
