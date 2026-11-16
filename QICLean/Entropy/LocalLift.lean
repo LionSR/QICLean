@@ -30,7 +30,7 @@ The placement itself, with its algebraic, support, norm and order lemmas, is
 `Entropy.RegionConfig` are temporary abbreviations of it, and the lemmas about them that
 restate a lemma about `ManyBody.place` are temporary forwarding lemmas, kept because `rw`
 does not see through an abbreviation. They are deleted in step 4.0 of the many-body plan,
-when their callers use the Sites names (issue #1051).
+when their callers use the Sites names.
 * `Entropy.inner_localLift`: `⟨φ, lift K φ⟩ = Tr (ρ_{φ,D} K)`.
 * `Entropy.inner_localLift_conj_eq`: the trace argument for commuting filters.
 
@@ -53,13 +53,13 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 /-- Configurations of a region `D`: `ManyBody.RegionConfig (fun v ↦ Fin (n v)) D`.
 
-**Temporary abbreviation** of `ManyBody.RegionConfig` (issue #1051), written with the body
+**Temporary abbreviation** of `ManyBody.RegionConfig`, written with the body
 that it reduces to; deleted in step 4.0. -/
 abbrev RegionConfig (n : V → ℕ) (D : Finset V) := (v : {v // v ∈ D}) → Fin (n v)
 
 /-- The local lift `K ↦ K ⊗ 1` of a matrix on the configurations of `D`.
 
-**Temporary abbreviation** of `ManyBody.place` (issue #1051); deleted in step 4.0. Its
+**Temporary abbreviation** of `ManyBody.place`; deleted in step 4.0. Its
 equation lemma is `Entropy.localLift_eq_reindex`, so that `rw [localLift]` and
 `unfold localLift` reach the cut coordinates as before. -/
 noncomputable abbrev localLift (D : Finset V)
@@ -147,7 +147,7 @@ omit [Fintype V] [DecidableEq V] in
 /-- Support is monotone in the region.
 
 **Temporary**: the case of `ManyBody.supportedOperators_mono` for sites with no finiteness
-assumption, which some callers of the entropy layer use (issue #1051); deleted in step 4.0. -/
+assumption, which some callers of the entropy layer use; deleted in step 4.0. -/
 theorem IsSupportedOn.mono {X : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D D' : Finset V}
     (hX : IsSupportedOn X D) (hDD : D ⊆ D') : IsSupportedOn X D' := by
   refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ hX.1 σ τ ⟨v, fun h ↦ hv (hDD h), hne⟩, ?_⟩

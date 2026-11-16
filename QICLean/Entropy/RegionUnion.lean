@@ -37,8 +37,8 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 /-- Matrix elements of a local lift: `(K ⊗ 1)_{στ}` is `K_{σ|D, τ|D}` when `σ` and `τ` agree
 off `D`, and zero otherwise.
 
-**Temporary** restatement of `ManyBody.place_apply` over `Entropy.localLift` (issue #1051);
-deleted in step 4.0. -/
+**Temporary** restatement of `ManyBody.place_apply` over `Entropy.localLift`;
+deleted in step 4.0 of the many-body plan. -/
 theorem localLift_apply (D : Finset V) (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
     (σ τ : SiteConfig n) :
     localLift D K σ τ =

@@ -162,8 +162,8 @@ noncomputable def margLift (Q : Finset V) (θ : SiteConfig n → ℂ) :
     Matrix (SiteConfig n) (SiteConfig n) ℂ :=
   localLift Q (regionState Q (WithLp.toLp 2 θ))
 
-/-- **Temporary** restatement of `ManyBody.place_sum` over `Entropy.localLift`
-(issue #1051); deleted in step 4.0. -/
+/-- **Temporary** restatement of `ManyBody.place_sum` over `Entropy.localLift`;
+deleted in step 4.0 of the many-body plan. -/
 theorem localLift_sum {ι : Type*} (s : Finset ι) (Q : Finset V)
     (K : ι → Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) :
     localLift Q (∑ i ∈ s, K i) = ∑ i ∈ s, localLift Q (K i) :=

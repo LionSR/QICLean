@@ -113,8 +113,8 @@ namespace Entropy
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {D : Finset V}
 
-/-- **Temporary** restatement of `ManyBody.place_sub` over `Entropy.localLift` (issue #1051);
-deleted in step 4.0. -/
+/-- **Temporary** restatement of `ManyBody.place_sub` over `Entropy.localLift`;
+deleted in step 4.0 of the many-body plan. -/
 theorem localLift_sub (K K' : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
     localLift D (K - K') = localLift D K - localLift D K' :=
   ManyBody.place_sub (X := fun v ↦ Fin (n v)) K K'

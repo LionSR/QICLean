@@ -46,7 +46,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 /-- Configurations of a finite tensor product `⊗_v ℂ^{n_v}`: the configurations
 `ManyBody.Config fun v ↦ Fin (n v)` of the system of sites with basis types `Fin (n v)`.
 
-**Temporary abbreviation** of `ManyBody.Config` (issue #1051), written with the body
+**Temporary abbreviation** of `ManyBody.Config`, written with the body
 `(v : V) → Fin (n v)` that `ManyBody.Config fun v ↦ Fin (n v)` reduces to, so that the
 values of a configuration have the type `Fin (n v)`; its uses are swept onto the Sites
 names and it is deleted in step 4.0 of the many-body plan. -/
@@ -58,7 +58,7 @@ depend on the common values outside `D`.
 Area-law manuscript, Lemma 3.1, `02-initial.tex`, line 39: designated supports.
 
 **Temporary abbreviation** of the condition on matrix entries that defines membership in
-`ManyBody.supportedOperators` (issue #1051); deleted in step 4.0. -/
+`ManyBody.supportedOperators`; deleted in step 4.0. -/
 abbrev IsSupportedOn (X : Matrix (SiteConfig n) (SiteConfig n) ℂ) (D : Finset V) : Prop :=
   ManyBody.IsSupportedOn X D
 
@@ -67,7 +67,7 @@ omit [Fintype V] [DecidableEq V] in
 the support and have the same coincidence pattern outside it.
 
 **Temporary**: the case of `ManyBody.apply_eq_of_mem_supportedOperators` for sites with no
-finiteness assumption, which some callers of the entropy layer use (issue #1051); deleted
+finiteness assumption, which some callers of the entropy layer use; deleted
 in step 4.0. -/
 theorem IsSupportedOn.apply_eq {X : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D : Finset V}
     (hX : IsSupportedOn X D) {σ τ σ' τ' : SiteConfig n} (h1 : ∀ v ∈ D, σ v = σ' v)
@@ -102,8 +102,8 @@ section OneSided
 variable {B : Finset V}
 
 omit [Fintype V] in
-/-- **Temporary** restatement of `ManyBody.cutEquiv_symm_apply_mem` over `Entropy.cutEquiv`
-(issue #1051); deleted in step 4.0. -/
+/-- **Temporary** restatement of `ManyBody.cutEquiv_symm_apply_mem` over `Entropy.cutEquiv`;
+deleted in step 4.0 of the many-body plan. -/
 theorem cutEquiv_symm_apply_mem (x : (v : {v // v ∈ B}) → Fin (n v))
     (y : (v : {v // v ∉ B}) → Fin (n v)) {v : V} (hv : v ∈ B) :
     (cutEquiv n B).symm (x, y) v = x ⟨v, hv⟩ :=
@@ -111,7 +111,7 @@ theorem cutEquiv_symm_apply_mem (x : (v : {v // v ∈ B}) → Fin (n v))
 
 omit [Fintype V] in
 /-- **Temporary** restatement of `ManyBody.cutEquiv_symm_apply_not_mem` over
-`Entropy.cutEquiv` (issue #1051); deleted in step 4.0. -/
+`Entropy.cutEquiv`; deleted in step 4.0. -/
 theorem cutEquiv_symm_apply_not_mem (x : (v : {v // v ∈ B}) → Fin (n v))
     (y : (v : {v // v ∉ B}) → Fin (n v)) {v : V} (hv : v ∉ B) :
     (cutEquiv n B).symm (x, y) v = y ⟨v, hv⟩ :=

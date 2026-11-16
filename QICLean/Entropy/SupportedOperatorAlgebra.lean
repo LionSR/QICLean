@@ -18,7 +18,7 @@ configuration.
 This file keeps the names `Entropy.supportedOperators`, `Entropy.isSupportedOn_one` and
 `Entropy.commute_of_isSupportedOn_disjoint` as temporary abbreviations and forwarding lemmas
 for the callers of the entropy layer. They are deleted in step 4.0 of the many-body plan
-(issue #1051).
+.
 
 ## Main results
 
@@ -34,7 +34,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {D : Finset V}
 /-- The operators supported on the region `D`, as a unital `*`-subalgebra of the matrix
 algebra on all the sites.
 
-**Temporary abbreviation** of `ManyBody.supportedOperators` (issue #1051); deleted in
+**Temporary abbreviation** of `ManyBody.supportedOperators`; deleted in
 step 4.0. -/
 abbrev supportedOperators (n : V → ℕ) (D : Finset V) :
     StarSubalgebra ℂ (Matrix (SiteConfig n) (SiteConfig n) ℂ) :=

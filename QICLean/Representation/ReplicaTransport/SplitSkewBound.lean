@@ -129,8 +129,8 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 /-- A positive semidefinite local lift `K ⊗ 1` has a positive semidefinite factor `K`.
 
-**Temporary** restatement of `ManyBody.posSemidef_place_iff` over `Entropy.localLift`
-(issue #1051); deleted in step 4.0. -/
+**Temporary** restatement of `ManyBody.posSemidef_place_iff` over `Entropy.localLift`;
+deleted in step 4.0 of the many-body plan. -/
 theorem posSemidef_of_localLift [∀ v, NeZero (n v)] {Q : Finset V}
     {K : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ} (h : (localLift Q K).PosSemidef) :
     K.PosSemidef :=
