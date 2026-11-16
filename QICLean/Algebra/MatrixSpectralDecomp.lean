@@ -28,6 +28,13 @@ matrix to outer-product sums over its spectral data.
   eigenvalues and eigenvectors.
 * `Matrix.PosSemidef.eq_sum_eigenvalue_smul_eigenprojector` — the weighted
   spectral decomposition into unit rank-one eigenprojectors.
+
+## Implementation notes
+
+The compact rank indexing is adapted from `LionSR/TNLean`,
+`TNLean/Algebra/KrausMarginalCoupling.lean`, commit
+`6c340a425319a5438853fca437da18cd0a22450a`, with an isometric matrix
+factorization in place of individual unit-vector identities.
 -/
 
 open scoped Matrix ComplexOrder
