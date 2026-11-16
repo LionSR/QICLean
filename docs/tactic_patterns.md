@@ -2366,3 +2366,15 @@ unitary norm arguments.
 - **Decision:** The event definition and old public probability proofs remain
   unchanged. No arbitrary event wrapper or measurable-basis assumption is
   introduced; subsequent changing-candidate sections use this same lemma.
+
+## Reuse: inverse unitary conjugation (2026-11-16)
+
+- **Pattern:** Recover X from V†(V X V†)V for a unitary V.
+- **Reuse:** `HermitianNilpotent.lean` now uses the existing
+  `Unitary.conjStarAlgAut` inverse law and `conjStarAlgAut_symm_apply`;
+  its private recovery calculation is removed.
+- **Remaining candidates:** Direct matrix calculations occur in
+  `QICLean/Algebra/CornerCompression.lean` (`hcollapse`) and
+  `QICLean/Channel/KrausStateEffectCoupling.lean` (`hPrepared`).
+  These two legacy calculations stay below the promotion threshold.
+  Prefer the existing automorphism API for another unitary caller.

@@ -145,6 +145,118 @@
     $\mathcal S(X)\geq0$.
 \end{lemma}
 
+\begin{lemma}[Hermitian annihilating functionals and nilpotent directions]
+    \label{thm:hermitian_pair_annihilator}
+    \lean{Matrix.exists_hermitian_functional_killing_pair,
+        Matrix.exists_trace_zero_nilpotent_of_traceless_hermitian_image}
+    \leanok
+    Let $b\ge2$ and let $\rho,u\in \MN{b}$ be Hermitian.
+    There is a nonzero complex-linear functional $\phi:\MN{b}\to\C$,
+    real on Hermitian inputs, with $\phi(\rho)=\phi(u)=0$.
+    If also $\tr u=0$ and a complex-linear $Q:\MN{b}\to \MN{c}$
+    satisfies $Q(u)\ne0$, there is a Hermiticity-preserving complex-linear
+    $H:\MN{b}\to \MN{b}$ with $H(\rho)=0$, $H^2=0$,
+    $\tr H(X)=0$ for every $X$, and $QH\ne0$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Choose a unitary $V$ and a real diagonal matrix $D$ such that
+    \begin{align}
+        \rho=VDV^\dagger,\qquad
+        Y(X)=V^\dagger XV,\qquad Y(\rho)=D.
+        \label{eq:hermitian_pair_spectral_coordinates}
+    \end{align}
+    Choose distinct coordinates $p,q$ and define
+    \begin{align}
+        f(X)=Y(X)_{pq}+Y(X)_{qp},\qquad
+        g(X)=\mathrm{i}\bigl(Y(X)_{pq}-Y(X)_{qp}\bigr).
+        \label{eq:hermitian_pair_off_diagonal_functionals}
+    \end{align}
+    Since $D$ is diagonal, $f(\rho)=g(\rho)=0$.
+    For Hermitian $X$, one has $Y(X)^\dagger=Y(X)$, and hence
+    \begin{align}
+        \overline{f(X)}=Y(X)_{qp}+Y(X)_{pq}=f(X),\notag\\
+        \overline{g(X)}=-\mathrm{i}\bigl(Y(X)_{qp}-Y(X)_{pq}\bigr)=g(X).
+        \label{eq:hermitian_pair_real_functionals}
+    \end{align}
+    Write $E_{pq}$ for a matrix unit and set
+    $X_1=VE_{pq}V^\dagger$,
+    $Z=(-\mathrm{i}/2)(E_{pq}-E_{qp})$ and $X_2=VZV^\dagger$.
+    Unitary conjugation gives
+    \begin{align}
+        Y(X_1)=E_{pq},\qquad Y(X_2)=Z,\qquad
+        f(X_1)=1,\quad f(X_2)=0,\quad g(X_2)=1.
+        \label{eq:hermitian_pair_functional_witnesses}
+    \end{align}
+    Take $\phi=f$ if $f(u)=0$; otherwise take
+    $\phi=g(u)f-f(u)g$. Its nonvanishing is witnessed by
+    \begin{align}
+        \phi(X_1)=1\quad\text{if }f(u)=0,\notag\\
+        \phi(X_2)=g(u)f(X_2)-f(u)g(X_2)=-f(u)\ne0
+        \quad\text{if }f(u)\ne0.
+        \label{eq:hermitian_pair_phi_nonzero}
+    \end{align}
+    In both cases $\phi(\rho)=\phi(u)=0$. Since $u$ is Hermitian,
+    the coefficients $f(u),g(u)$ are real, so $\phi(X)$ is real
+    for every Hermitian $X$.
+
+    Under the additional hypotheses on $\tr u$ and $Q$, set
+    $H(X)=\phi(X)u$. Then
+    \begin{align}
+        H(\rho)=\phi(\rho)u=0,\qquad
+        H^2(X)=\phi(X)\phi(u)u=0,\qquad
+        \tr H(X)=\phi(X)\tr u=0.
+        \label{eq:hermitian_pair_nilpotent_identities}
+    \end{align}
+    For Hermitian $X$,
+    \begin{align}
+        H(X)^\dagger=\overline{\phi(X)}u^\dagger
+        =\phi(X)u=H(X).
+        \label{eq:hermitian_pair_hermitian_output}
+    \end{align}
+    Choose $X_0$ with $\phi(X_0)\ne0$. Complex linearity gives
+    \begin{align}
+        QH(X_0)=Q(\phi(X_0)u)=\phi(X_0)Q(u)\ne0.
+        \label{eq:hermitian_pair_nonzero_composition}
+    \end{align}
+\end{proof}
+
+\begin{lemma}[Nilpotent directions for a complex-linear map]
+    \label{lem:nilpotent_non_trace_preparation}
+    \lean{Matrix.exists_traceless_hermitian_image_of_not_trace_preparation,
+        Matrix.exists_trace_zero_nilpotent_of_not_trace_preparation}
+    \leanok
+    Let $\rho\in \MN{b}$ be Hermitian with $\tr\rho=1$, and let
+    $Q:\MN{b}\to \MN{c}$ be complex linear. Suppose there is a matrix $X$ with
+    $Q(X)\ne\tr(X)Q(\rho)$.
+    There is a traceless Hermitian $u$ with $Q(u)\ne0$.
+    If $b\ge2$, there is also a Hermiticity-preserving complex-linear $H$
+    with $H(\rho)=0$, $H^2=0$, $\tr H(X)=0$ for every $X$,
+    and $QH\ne0$. No positivity of $\rho$ or $Q$ is required.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:hermitian_pair_annihilator}
+    If $Q$ killed every traceless Hermitian matrix, then every Hermitian
+    $Y$ would satisfy
+    \begin{align}
+        Q(Y)-\tr(Y)Q(\rho)
+        &= Q(Y-\tr(Y)\rho)=0.
+        \label{eq:trace_preparation_hermitian_reduction}
+    \end{align}
+    Write $X=Y+\mathrm{i}Z$ with $Y,Z$ Hermitian. Complex linearity yields
+    \begin{align}
+        Q(X)=Q(Y)+\mathrm{i}Q(Z)
+        =\bigl(\tr Y+\mathrm{i}\tr Z\bigr)Q(\rho)
+        =\tr(X)Q(\rho),
+        \label{eq:trace_preparation_complexification}
+    \end{align}
+    contradicting the hypothesis on $Q$.
+    Apply Lemma~\ref{thm:hermitian_pair_annihilator} to this $u$.
+\end{proof}
+
 \section{The Choi--Jamiolkowski representation of maps between matrix algebras}
 
 Fix $d,d'\geq 1$. For a linear map $T:\MN{d}\to\MN{d'}$ between matrix
