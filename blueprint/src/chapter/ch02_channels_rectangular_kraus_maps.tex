@@ -534,7 +534,7 @@ the input factor is written $\tr_B$.
     \lean{Matrix.PosSemidef.exists_compact_spectral_isometry,
         Matrix.trace_eq_sum_spectral_weights}
     \leanok
-    If $A\in M_n(\C)$ is positive semidefinite and $r=\rank A$, then
+    If $A\in \MN{n}$ is positive semidefinite and $r=\rank A$, then
     $A=U\operatorname{diag}(\alpha_i)U^\dagger$ for an $n$ by $r$
     matrix $U$ with $U^\dagger U=\Id_r$ and $\alpha_i>0$.
     For any such isometry $U$ and real weights $\alpha_i$,
@@ -559,8 +559,8 @@ the input factor is written $\tr_B$.
     \label{thm:kraus_state_effect_coupling_max}
     \lean{Matrix.exists_kraus_state_effect_coupling_max_rank}
     \leanok
-    Let $\rho\in M_m(\C)$ be Hermitian and let $A\in M_n(\C)$ and
-    $B\in M_m(\C)$ be positive semidefinite. Suppose
+    Let $\rho\in \MN{m}$ be Hermitian and let $A\in \MN{n}$ and
+    $B\in \MN{m}$ be positive semidefinite. Suppose
     $T=\tr A=\tr(B\rho)>0$. Put $a=\rank A$, $b=\rank B$, and
     $N=\max(a,b)$. There are $N$ rectangular Kraus operators $K_k$
     satisfying $\sum_k K_k\rho K_k^\dagger=A$ and
@@ -575,11 +575,11 @@ the input factor is written $\tr_B$.
     matrix $S^\dagger\rho S$ as $V\operatorname{diag}(\lambda_j)V^\dagger$,
     where $V$ is unitary and $\sum_j\lambda_j=T$.
     Write $A=U\operatorname{diag}(\alpha_i)U^\dagger$, with
-    $U^\dagger U=I_a$, $\alpha_i>0$, and $\sum_i\alpha_i=T$.
+    $U^\dagger U=\Id_a$, $\alpha_i>0$, and $\sum_i\alpha_i=T$.
     For $0\le k<N$, let $(R_k)_{ij}=\sqrt{\alpha_i/T}$ when
     $i-j=k$ modulo $N$, and zero otherwise. Each matching has at most
     one nonzero entry in each row and column. Each pair $(i,j)$ occurs
-    once, so $\sum_k R_k^\dagger R_k=I_b$ and
+    once, so $\sum_k R_k^\dagger R_k=\Id_b$ and
     $\sum_k R_k\operatorname{diag}(\lambda_j)R_k^\dagger
       =\operatorname{diag}(\alpha_i)$.
     Set $K_k=UR_kV^\dagger S^\dagger$ and use these two identities.

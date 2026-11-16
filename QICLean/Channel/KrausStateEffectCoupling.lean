@@ -37,7 +37,7 @@ open scoped Matrix BigOperators ComplexOrder
 
 namespace Matrix
 
-/-- Injective labels in a finite additive group group the weighted matrix
+/-- Injective labels in a finite additive group combine the weighted matrix
 units into one Kraus operator per group element. Their effect is scalar,
 and on diagonal inputs their sum is trace preparation. The weights need
 not be normalized. This is the algebraic matching construction for the
