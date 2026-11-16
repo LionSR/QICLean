@@ -23,14 +23,22 @@ open scoped Matrix ComplexOrder MatrixOrder
 
 namespace Matrix
 
+/-- Matrix order implies order of the complex quadratic forms on every vector.
+
+Used for Wolf's Lemma (8.93), `Notes/WolfNoteTexSource/ch08_distance_measures.tex`,
+lines 1045–1072. -/
+theorem dotProduct_mulVec_le_of_le
+    {n : Type*} [Fintype n] {A B : Matrix n n ℂ} (hAB : A ≤ B) (v : n → ℂ) :
+    star v ⬝ᵥ (A *ᵥ v) ≤ star v ⬝ᵥ (B *ᵥ v) := by
+  have := (Matrix.le_iff.mp hAB).dotProduct_mulVec_nonneg v
+  rwa [sub_mulVec, dotProduct_sub, sub_nonneg] at this
+
 /-- Matrix order implies order of the real quadratic forms on every vector.
 Source: `07-comparators.tex`, lines 454–493. -/
 theorem re_dotProduct_mulVec_le_of_le
     {n : Type*} [Fintype n] {A B : Matrix n n ℂ} (hAB : A ≤ B) (v : n → ℂ) :
     (star v ⬝ᵥ (A *ᵥ v)).re ≤ (star v ⬝ᵥ (B *ᵥ v)).re := by
-  have h := (Complex.nonneg_iff.mp
-    ((Matrix.le_iff.mp hAB).dotProduct_mulVec_nonneg v)).1
-  simpa only [sub_mulVec, dotProduct_sub, Complex.sub_re, sub_nonneg] using h
+  exact (Complex.le_def.mp (dotProduct_mulVec_le_of_le hAB v)).1
 
 /-- A compressed operator bound gives a quadratic-form bound on every
 fixed vector. Source: `07-comparators.tex`, lines 481–493,
