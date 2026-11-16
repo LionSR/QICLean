@@ -27,8 +27,8 @@ Kraus-span characterization of primitive channels is formalized here.
 The August 29, 2026 audit covers all 153 literal lemma, proposition, theorem,
 and corollary environments in the transcribed Wolf chapters. Definitions and
 examples are outside this named-result count. After the positive-map
-formalizations of Theorems 6.2 and 6.5 and Corollary 6.3, the dispositions
-including the November 16 detailed-balance infimum assembly, are:
+formalizations of Theorems 6.2 and 6.5 and Corollary 6.3 and the November 16
+detailed-balance infimum assembly, the dispositions are:
 85 exact, 15 corrected or otherwise dispositioned, 3 partial-packaging, 6
 partial-scope, 2 obstructed, and 42 open. Fourteen of the 15
 corrected/dispositioned entries have an implemented corrected theorem; the

@@ -11,8 +11,9 @@ import QICLean.Channel.SelfDual
 /-!
 # Detailed balance and transfer matrices
 
-This file records the matrix identities at the start of Wolf's proof that
-detailed balance controls the Jordan condition number.
+This file proves Wolf's detailed-balance bounds on the infimum-defined
+Jordan condition number, through square-root conjugation and unitary
+diagonalization. It also verifies the sandwich representation and fixed point.
 
 ## Main results
 
@@ -27,6 +28,11 @@ detailed balance controls the Jordan condition number.
 * `Matrix.PosDef.exists_sqrt_mul_unitary_diagonalization_of_detailedBalance`:
   Wolf's resulting diagonalizing similarity is `S¹/² U`, and its condition
   factor is `sqrt (‖S‖ ‖S⁻¹‖)`.
+
+* `jordanConditionNumber_transferMatrix_le_of_detailedBalance`: the actual
+  Jordan-condition infimum is at most `sqrt (‖Σ̂‖ ‖Σ̂⁻¹‖)`.
+* `jordanConditionNumber_transferMatrix_le_of_sigmaSandwich`: for the
+  square-root sandwich it is at most `sqrt (‖sigma‖ ‖sigma⁻¹‖)`.
 
 ## References
 
