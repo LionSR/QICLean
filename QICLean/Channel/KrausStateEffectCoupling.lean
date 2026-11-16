@@ -223,7 +223,7 @@ theorem exists_kraus_state_effect_coupling_max_rank {m n : Type*}
   have hσ : σ.IsHermitian := Matrix.isHermitian_conjTranspose_mul_mul S hρ
   let V := hσ.eigenvectorUnitary
   let Vm : Matrix (Fin B.rank) (Fin B.rank) ℂ := V
-  let eigen : Fin B.rank → ℂ := fun j => (hσ.eigenvalues j : ℂ)
+  let eigen : Fin B.rank → ℂ := RCLike.ofReal ∘ hσ.eigenvalues
   have hVL : Vmᴴ * Vm = 1 := by
     simpa only [Vm, Matrix.star_eq_conjTranspose] using Unitary.coe_star_mul_self V
   have hVR : Vm * Vmᴴ = 1 := by
