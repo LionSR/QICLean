@@ -175,6 +175,37 @@
     Nonvanishing of $\phi$ and $Q(u)$ gives $QH\ne0$.
 \end{proof}
 
+\begin{lemma}[Nilpotent directions for maps other than trace preparation]
+    \label{lem:nilpotent_non_trace_preparation}
+    \lean{Matrix.exists_traceless_hermitian_image_of_not_trace_preparation,
+        Matrix.exists_trace_zero_nilpotent_of_not_trace_preparation}
+    \leanok
+    \uses{thm:hermitian_pair_annihilator}
+    Let $\rho\in M_b(\C)$ be Hermitian with $\tr\rho=1$, and let
+    $Q:M_b(\C)\to M_c(\C)$ be complex linear. Suppose that
+    $Q(X)=\tr(X)Q(\rho)$ does not hold for every $X$.
+    There is a traceless Hermitian $u$ with $Q(u)\ne0$.
+    If $b\ge2$, there is also a Hermitian-preserving complex-linear $H$
+    with $H(\rho)=0$, $H^2=0$, $\tr H(X)=0$ for every $X$,
+    and $QH\ne0$. No positivity of $\rho$ or $Q$ is required.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:hermitian_pair_annihilator}
+    If $Q$ killed every traceless Hermitian matrix, then every Hermitian
+    $Y$ would satisfy
+    \begin{align}
+        Q(Y)-\tr(Y)Q(\rho)
+        &= Q(Y-\tr(Y)\rho)=0.
+        \label{eq:trace_preparation_hermitian_reduction}
+    \end{align}
+    Writing an arbitrary matrix as $X=Y+iZ$ with $Y,Z$ Hermitian would give
+    $Q(X)=\tr(X)Q(\rho)$ by complex linearity, a contradiction.
+    Apply Lemma~\ref{thm:hermitian_pair_annihilator} to this $u$.
+    Complete positivity and Choi support are still separate conditions.
+\end{proof}
+
 \section{The Choi--Jamiolkowski representation of maps between matrix algebras}
 
 Fix $d,d'\geq 1$. For a linear map $T:\MN{d}\to\MN{d'}$ between matrix

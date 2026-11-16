@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.MatrixSpectralDecomp
+import QICLean.Algebra.HermitianHelpers
 import Mathlib.Tactic.NormNum
 import Mathlib.Tactic.Ring
 
@@ -173,5 +174,52 @@ theorem exists_trace_zero_nilpotent_of_traceless_hermitian_image {b c : ℕ}
     change Q (φ X • u) = 0 at h
     rw [map_smul] at h
     exact (smul_eq_zero.mp h).resolve_right hQu
+
+/-- If a complex-linear map is not trace preparation from a fixed
+trace-one Hermitian matrix, it does not annihilate every traceless
+Hermitian matrix. This uses complex linearity, without positivity of
+either the reference matrix or the map. -/
+theorem exists_traceless_hermitian_image_of_not_trace_preparation {b c : ℕ}
+    (ρ : Matrix (Fin b) (Fin b) ℂ) (hρ : ρ.IsHermitian) (hTrρ : ρ.trace = 1)
+    (Q : Matrix (Fin b) (Fin b) ℂ →ₗ[ℂ] Matrix (Fin c) (Fin c) ℂ)
+    (hQ : ¬ ∀ X, Q X = X.trace • Q ρ) :
+    ∃ u : Matrix (Fin b) (Fin b) ℂ,
+      u.IsHermitian ∧ u.trace = 0 ∧ Q u ≠ 0 := by
+  classical
+  by_contra h
+  push_neg at h
+  have hHerm (Y : Matrix (Fin b) (Fin b) ℂ) (hY : Y.IsHermitian) :
+      Q Y = Y.trace • Q ρ := by
+    have hTraceSelf : IsSelfAdjoint Y.trace := by
+      change star Y.trace = Y.trace
+      rw [← Matrix.trace_conjTranspose, hY.eq]
+    have hZero : Q (Y - Y.trace • ρ) = 0 := by
+      apply h
+      · exact hY.sub (hρ.smul hTraceSelf)
+      · rw [Matrix.trace_sub, Matrix.trace_smul, hTrρ, smul_eq_mul,
+          mul_one, sub_self]
+    rw [map_sub, map_smul] at hZero
+    exact sub_eq_zero.mp hZero
+  apply hQ
+  intro X
+  obtain ⟨H₁, H₂, hH₁, hH₂, hX⟩ := exists_isHermitian_eq_add_smul_I X
+  rw [hX, map_add, map_smul, hHerm H₁ hH₁, hHerm H₂ hH₂,
+    Matrix.trace_add, Matrix.trace_smul, add_smul, smul_smul]
+
+/-- A complex-linear map that is not trace preparation admits a
+trace-zero Hermitian-preserving nilpotent direction which it does not
+annihilate. The direction kills the supplied trace-one Hermitian
+matrix. Complete positivity and Choi support remain separate conditions. -/
+theorem exists_trace_zero_nilpotent_of_not_trace_preparation {b c : ℕ}
+    (hb : 2 ≤ b) (ρ : Matrix (Fin b) (Fin b) ℂ)
+    (hρ : ρ.IsHermitian) (hTrρ : ρ.trace = 1)
+    (Q : Matrix (Fin b) (Fin b) ℂ →ₗ[ℂ] Matrix (Fin c) (Fin c) ℂ)
+    (hQ : ¬ ∀ X, Q X = X.trace • Q ρ) :
+    ∃ H : Module.End ℂ (Matrix (Fin b) (Fin b) ℂ),
+      H ρ = 0 ∧ H * H = 0 ∧ (∀ X, (H X).trace = 0) ∧
+      (∀ X, X.IsHermitian → (H X).IsHermitian) ∧ Q ∘ₗ H ≠ 0 := by
+  obtain ⟨u, hu, hTr, hQu⟩ :=
+    exists_traceless_hermitian_image_of_not_trace_preparation ρ hρ hTrρ Q hQ
+  exact exists_trace_zero_nilpotent_of_traceless_hermitian_image hb ρ u hρ hu hTr Q hQu
 
 end Matrix
