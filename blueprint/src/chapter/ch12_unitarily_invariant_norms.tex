@@ -16,7 +16,7 @@
 \end{definition}
 
 \begin{definition}[Singular values and Ky Fan norms]
-    \label{def:ky_fan_norm}
+    \label{def:singular_value_ky_fan_norm}
     \lean{Matrix.singularValues, Matrix.kyFanNorm}
     \leanok
     The singular values $s_0(A),\ldots,s_{d-1}(A)\ge0$ of $A\in M_d(\C)$ are the
@@ -30,7 +30,8 @@
     \lean{Matrix.exists_unitary_mul_diagonal_singularValues_mul,
         Matrix.IsUnitarilyInvariantNorm.apply_eq_diagonal_singularValues}
     \leanok
-    \uses{def:unitarily_invariant_norm, def:ky_fan_norm, thm:unitary_polar_correction}
+    \uses{def:unitarily_invariant_norm, def:singular_value_ky_fan_norm,
+        thm:unitary_polar_correction}
     Every $A\in M_d(\C)$ is $A=U\operatorname{diag}(s_0(A),\ldots,s_{d-1}(A))V$
     with unitaries $U,V$. Hence a unitarily invariant norm satisfies
     $\|A\|=\|\operatorname{diag}(s(A))\|$.
