@@ -183,7 +183,11 @@
     Set $H(X)=\phi(X)u$. Then
     $H^2(X)=\phi(X)\phi(u)u=0$ and $\tr H(X)=\phi(X)\tr u=0$.
     Hermiticity follows because $\phi(X)$ is real for Hermitian $X$.
-    Nonvanishing of $\phi$ and $Q(u)$ gives $QH\ne0$.
+    Since $\phi\ne0$, choose $X_0$ with $\phi(X_0)\ne0$. Then
+    \begin{align}
+        QH(X_0) &= \phi(X_0)Q(u)\ne0.
+        \label{eq:hermitian_pair_nonzero_composition}
+    \end{align}
 \end{proof}
 
 \begin{lemma}[Nilpotent directions for maps other than trace preparation]
@@ -598,4 +602,60 @@ the input factor is written $\tr_B$.
     for the vectorized Kraus operators $(K_j)_{ab}$; equal Gram matrices
     are related by a unitary, whose rectangular submatrix is the claimed
     isometry after zero-padding.
+\end{proof}
+
+\begin{lemma}[Compact spectral factorization]
+    \label{lem:compact_spectral_isometry}
+    \lean{Matrix.PosSemidef.exists_compact_spectral_isometry,
+        Matrix.trace_eq_sum_spectral_weights}
+    \leanok
+    If $A\in \MN{n}$ is positive semidefinite and $r=\rank A$, then
+    $A=U\operatorname{diag}(\alpha_i)U^\dagger$ for an $n$ by $r$
+    matrix $U$ with $U^\dagger U=\Id_r$ and $\alpha_i>0$.
+    For any such isometry $U$ and real weights $\alpha_i$,
+    $\tr(U\operatorname{diag}(\alpha_i)U^\dagger)=\sum_i\alpha_i$.
+    The empty factorization is allowed when $r=0$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Retain the orthonormal eigenvectors of $A$ with nonzero eigenvalues.
+    Positivity makes these eigenvalues strictly positive, and their
+    number is $\rank A$. The trace identity follows from
+    \begin{align}
+        \tr(U\operatorname{diag}(\alpha_i)U^\dagger)
+        &= \tr(U^\dagger U\operatorname{diag}(\alpha_i))
+        = \sum_i\alpha_i.
+        \label{eq:compact_spectral_trace}
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Coupling a prepared matrix and a trace effect]
+    \label{thm:kraus_state_effect_coupling_max}
+    \lean{Matrix.exists_kraus_state_effect_coupling_max_rank}
+    \leanok
+    Let $\rho\in \MN{m}$ be Hermitian and let $A\in \MN{n}$ and
+    $B\in \MN{m}$ be positive semidefinite. Suppose
+    $T=\tr A=\tr(B\rho)>0$. Put $a=\rank A$, $b=\rank B$, and
+    $N=\max(a,b)$. There are $N$ rectangular Kraus operators $K_k$
+    satisfying $\sum_k K_k\rho K_k^\dagger=A$ and
+    $\sum_k K_k^\dagger K_k=B$. The prepared matrix need not be
+    positive, normalized, or faithful.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{lem:compact_spectral_isometry}
+    Factor $B=SS^\dagger$ with $b$ columns. Diagonalize the Hermitian
+    matrix $S^\dagger\rho S$ as $V\operatorname{diag}(\lambda_j)V^\dagger$,
+    where $V$ is unitary and $\sum_j\lambda_j=T$.
+    Write $A=U\operatorname{diag}(\alpha_i)U^\dagger$, with
+    $U^\dagger U=\Id_a$, $\alpha_i>0$, and $\sum_i\alpha_i=T$.
+    For $0\le k<N$, let $(R_k)_{ij}=\sqrt{\alpha_i/T}$ when
+    $i-j=k$ modulo $N$, and zero otherwise. Each matching has at most
+    one nonzero entry in each row and column. Each pair $(i,j)$ occurs
+    once, so $\sum_k R_k^\dagger R_k=\Id_b$ and
+    $\sum_k R_k\operatorname{diag}(\lambda_j)R_k^\dagger
+      =\operatorname{diag}(\alpha_i)$.
+    Set $K_k=UR_kV^\dagger S^\dagger$ and use these two identities.
 \end{proof}
