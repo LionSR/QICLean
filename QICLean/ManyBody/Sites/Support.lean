@@ -53,7 +53,8 @@ variable {V : Type*} {X : V → Type*}
 `A` vanish between configurations that differ outside `D`, and otherwise do not depend on the
 common values outside `D`.
 
-This is the carrier of the subalgebra; statements use `A ∈ supportedOperators X D`. -/
+This is the carrier of the subalgebra; statements use `A ∈ supportedOperators X D`.
+Area-law manuscript, Lemma 3.1, `02-initial.tex`, line 39: designated supports. -/
 def IsSupportedOn (A : Matrix (Config X) (Config X) ℂ) (D : Finset V) : Prop :=
   (∀ σ τ : Config X, (∃ v ∉ D, σ v ≠ τ v) → A σ τ = 0) ∧
     ∀ σ τ σ' τ' : Config X, (∀ v ∈ D, σ v = σ' v) → (∀ v ∈ D, τ v = τ' v) →
