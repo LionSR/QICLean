@@ -86,8 +86,8 @@ sequential-RG circuit'']{Malz2024Preparation}.
     \leanok
     \uses{def:gate_two_level}
     If $x\notin\{a,b\}$ or $y\notin\{a,b\}$, then
-    $G_{ab}(g)_{xy}=\delta_{xy}$. Moreover $\iota_a(a)=0$, and
-    $\iota_a(b)=1$ when $a\neq b$.
+    $G_{ab}(g)_{xy}=\delta_{xy}$. The index map satisfies
+    $\iota_a(a)=0$, and $\iota_a(b)=1$ when $a\neq b$.
 \end{theorem}
 \begin{proof}\leanok
     Both statements are read off from~(\ref{eq:gate_two_level}) and the
@@ -589,8 +589,8 @@ in $\C^{I\times M}$, and $P\in\C^{I\times I}$.
     If $P$ is an orthogonal projection, $R_P$ is unitary. If
     $V^\dagger V=1$, then $VV^\dagger$ is an orthogonal projection. If
     $G^\dagger G=H^\dagger H=1$ and $G^\dagger H=0$, then
-    $V_\theta^\dagger V_\theta=1$ for every real $\theta$; if moreover $P$ is
-    an orthogonal projection, $Q_\theta$ is unitary.
+    $V_\theta^\dagger V_\theta=1$ for every real $\theta$; if, in addition, $P$
+    is an orthogonal projection, $Q_\theta$ is unitary.
 \end{theorem}
 \begin{proof}\leanok
     For an orthogonal projection $P$, $R_P$ is self-adjoint with
@@ -618,10 +618,24 @@ in $\C^{I\times M}$, and $P\in\C^{I\times I}$.
     $\theta=\pi/(4\ell+2)$, $Q_\theta^\ell V_\theta=G$.
 \end{theorem}
 \begin{proof}\leanok
-    Expanding the two reflections on $G$ and $H$ with the Gram identities
-    and $PG=G$, $PH=0$, and using the addition formulas for $\sin$ and
-    $\cos$, gives the one-step rotation. Induction on $k$ gives the second
-    identity, and the final angle is
+    Since $PG=G$ and $PH=0$, $R_PV_\phi=-\sin\phi\,G+\cos\phi\,H$, and the
+    Gram identities give
+    $V_\theta^\dagger R_PV_\phi
+    =(\cos\theta\cos\phi-\sin\theta\sin\phi)\,1=\cos(\theta+\phi)\,1$.
+    Hence
+    \begin{align}
+        Q_\theta V_\phi
+         & =-R_PV_\phi+2V_\theta V_\theta^\dagger R_PV_\phi \notag                \\
+         & =\bigl(\sin\phi+2\sin\theta\cos(\theta+\phi)\bigr)G
+        +\bigl(2\cos\theta\cos(\theta+\phi)-\cos\phi\bigr)H \notag             \\
+         & =\sin(\phi+2\theta)\,G+\cos(\phi+2\theta)\,H=V_{\phi+2\theta},
+    \end{align}
+    where the last line uses
+    $\sin(\phi+2\theta)=\sin\phi\cos2\theta+\cos\phi\sin2\theta$ and
+    $\cos(\phi+2\theta)=\cos\phi\cos2\theta-\sin\phi\sin2\theta$ with
+    $\sin2\theta=2\sin\theta\cos\theta$ and
+    $\cos2\theta=1-2\sin^2\theta=2\cos^2\theta-1$. Induction on $k$ gives
+    the second identity, and the final angle is
     $(2\ell+1)\pi/(4\ell+2)=\pi/2$, where $V_{\pi/2}=G$.
 \end{proof}
 
