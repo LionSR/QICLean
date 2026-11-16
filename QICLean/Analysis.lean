@@ -159,6 +159,7 @@ import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockComparison
 import QICLean.Analysis.JordanBlockDirectSum
 import QICLean.Analysis.JordanBlockPower
+import QICLean.Analysis.JordanConditionNumber
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
 import QICLean.Analysis.KernelSpectralGap
