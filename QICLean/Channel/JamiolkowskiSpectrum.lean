@@ -139,7 +139,7 @@ theorem subperipheralModulus_le_of_smul_one_le_choiMatrix
     simpa using Module.End.subperipheralModulus_le_one T
   have : NeZero D := ⟨hDpos.ne'⟩
   obtain ⟨hq, hcontr⟩ := traceNorm_map_le_of_smul_one_le_choiMatrix htr hc
-  set q : ℝ := 1 - (D : ℝ) ^ 2 * c with hq_def
+  set q : ℝ := 1 - (D : ℝ) ^ 2 * c
   -- Powers of `T` preserve Hermiticity and tracelessness.
   have hherm_pow : ∀ (n : ℕ) (H : Matrix (Fin D) (Fin D) ℂ), H.IsHermitian →
       ((T ^ n) H).IsHermitian := by

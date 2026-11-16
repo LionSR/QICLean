@@ -130,7 +130,7 @@ lemma PosDef.inv_norm_inv_spec [NeZero d] {A : Matrix (Fin d) (Fin d) ℂ} (hA :
   have hAAinv : A * A⁻¹ = 1 := Matrix.mul_nonsing_inv A hdet
   have hAinvA : A⁻¹ * A = 1 := Matrix.nonsing_inv_mul A hdet
   obtain ⟨w, hw, hAw⟩ := hA.inv.posSemidef.exists_isUnitVector_mulVec_eq_norm_smul
-  set N : ℝ := ‖A⁻¹‖ with hN
+  set N : ℝ := ‖A⁻¹‖
   -- `N` is positive: it is the quadratic form of the positive definite `A⁻¹` at `w`.
   have hNpos : 0 < N := by
     have hw0 : w ≠ 0 := by
