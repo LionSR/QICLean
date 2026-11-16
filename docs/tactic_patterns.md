@@ -2366,3 +2366,14 @@ unitary norm arguments.
 - **Decision:** The event definition and old public probability proofs remain
   unchanged. No arbitrary event wrapper or measurable-basis assumption is
   introduced; subsequent changing-candidate sections use this same lemma.
+
+## Candidate: recovering an isometric congruence (2026-11-16)
+
+- **Pattern:** For an isometry V, reassociate V†(V X V†)V and use V†V = I
+  twice to recover X.
+- **Occurrences:** The private `recover_isometric_congruence` in
+  `QICLean/Algebra/HermitianNilpotent.lean` and the `hcollapse` calculation
+  in `QICLean/Algebra/CornerCompression.lean`.
+- **Decision:** Two occurrences across two files are below the promotion
+  threshold. Keep the local proofs; a third occurrence should use a shared
+  matrix lemma before adding another copy. No tactic is introduced.

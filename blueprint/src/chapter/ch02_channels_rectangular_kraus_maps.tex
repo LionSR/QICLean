@@ -150,12 +150,12 @@
     \lean{Matrix.exists_hermitian_functional_killing_pair,
         Matrix.exists_trace_zero_nilpotent_of_traceless_hermitian_image}
     \leanok
-    Let $b\ge2$ and let $\rho,u\in M_b(\C)$ be Hermitian.
-    There is a nonzero complex-linear functional $\phi:M_b(\C)\to\C$,
+    Let $b\ge2$ and let $\rho,u\in \MN{b}$ be Hermitian.
+    There is a nonzero complex-linear functional $\phi:\MN{b}\to\C$,
     real on Hermitian inputs, with $\phi(\rho)=\phi(u)=0$.
-    If also $\tr u=0$ and a complex-linear $Q:M_b(\C)\to M_c(\C)$
+    If also $\tr u=0$ and a complex-linear $Q:\MN{b}\to \MN{c}$
     satisfies $Q(u)\ne0$, there is a Hermitian-preserving complex-linear
-    $H:M_b(\C)\to M_b(\C)$ with $H(\rho)=0$, $H^2=0$,
+    $H:\MN{b}\to \MN{b}$ with $H(\rho)=0$, $H^2=0$,
     $\tr H(X)=0$ for every $X$, and $QH\ne0$.
     Complete positivity and support in a prescribed Choi face
     are not asserted.
@@ -163,12 +163,23 @@
 
 \begin{proof}
     \leanok
-    Diagonalize $\rho$. On two distinct coordinates, the functionals
-    $f(X)=X_{ij}+X_{ji}$ and $g(X)=i(X_{ij}-X_{ji})$ are independent,
-    real on Hermitian inputs and zero on $\rho$.
+    Choose a unitary $V$ and a real diagonal matrix $D$ with
+    \begin{align}
+        \rho &= VDV^\dagger,\\
+        Y(X) &= V^\dagger XV.
+        \label{eq:hermitian_pair_spectral_coordinates}
+    \end{align}
+    For distinct coordinates $i,j$, define
+    \begin{align}
+        f(X) &= Y(X)_{ij}+Y(X)_{ji},\\
+        g(X) &= i\bigl(Y(X)_{ij}-Y(X)_{ji}\bigr).
+        \label{eq:hermitian_pair_off_diagonal_functionals}
+    \end{align}
+    These functionals are independent, real on Hermitian inputs, and
+    satisfy $f(\rho)=g(\rho)=0$.
     If $f(u)=0$, take $\phi=f$; otherwise take
     $\phi=g(u)f-f(u)g$. Independence gives $\phi\ne0$ and
-    $\phi(\rho)=\phi(u)=0$. Conjugate back to the original basis.
+    $\phi(\rho)=\phi(u)=0$.
     Set $H(X)=\phi(X)u$. Then
     $H^2(X)=\phi(X)\phi(u)u=0$ and $\tr H(X)=\phi(X)\tr u=0$.
     Hermiticity follows because $\phi(X)$ is real for Hermitian $X$.
@@ -180,9 +191,8 @@
     \lean{Matrix.exists_traceless_hermitian_image_of_not_trace_preparation,
         Matrix.exists_trace_zero_nilpotent_of_not_trace_preparation}
     \leanok
-    \uses{thm:hermitian_pair_annihilator}
-    Let $\rho\in M_b(\C)$ be Hermitian with $\tr\rho=1$, and let
-    $Q:M_b(\C)\to M_c(\C)$ be complex linear. Suppose that
+    Let $\rho\in \MN{b}$ be Hermitian with $\tr\rho=1$, and let
+    $Q:\MN{b}\to \MN{c}$ be complex linear. Suppose that
     $Q(X)=\tr(X)Q(\rho)$ does not hold for every $X$.
     There is a traceless Hermitian $u$ with $Q(u)\ne0$.
     If $b\ge2$, there is also a Hermitian-preserving complex-linear $H$
