@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.LocalLift
+import QICLean.Entropy.SupportedOperatorAlgebra
 import Mathlib.Analysis.SpecialFunctions.Exponential
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Analysis.InnerProductSpace.Calculus
@@ -288,12 +288,6 @@ theorem liftProdInv_mul_liftProd {φ : EuclideanSpace ℂ (SiteConfig n)} :
     rw [liftProdInv_cons, liftProd_cons, Matrix.mul_assoc, ← Matrix.mul_assoc (localLift p.1 _),
       localLift_inv_mul_localLift hu, Matrix.one_mul, liftProdInv_mul_liftProd hl]
 
-omit [DecidableEq V] in
-theorem isSupportedOn_one (D : Finset V) :
-    IsSupportedOn (1 : Matrix (SiteConfig n) (SiteConfig n) ℂ) D := by
-  classical
-  rw [← localLift_one (D := D)]; exact isSupportedOn_localLift _
-
 theorem isSupportedOn_liftProd (σ₀ : SiteConfig n) {D : Finset V} :
     ∀ {l : List (RegionFilter n)}, (∀ q ∈ l, q.1 ⊆ D) → IsSupportedOn (liftProd l) D
   | [], _ => by simpa using isSupportedOn_one D
@@ -451,28 +445,6 @@ theorem commute_regionState_of_unitary_min {D : Finset V}
     K * regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) =
       regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) * K :=
   commute_regionState_of_unitary_extr hK C w σ₀ (Or.inr hmin) hchain hsub
-
-omit [Fintype V] [DecidableEq V] in
-/-- `A ⊗ 1` and `1 ⊗ B` commute. -/
-theorem kronecker_one_mul_one_kronecker_comm {a b : Type*} [Fintype a] [Fintype b]
-    [DecidableEq a] [DecidableEq b] (KA : Matrix a a ℂ) (KB : Matrix b b ℂ) :
-    KA.kroneckerMap (· * ·) (1 : Matrix b b ℂ) * (1 : Matrix a a ℂ).kroneckerMap (· * ·) KB =
-      (1 : Matrix a a ℂ).kroneckerMap (· * ·) KB * KA.kroneckerMap (· * ·) (1 : Matrix b b ℂ) := by
-  rw [← mul_kronecker_mul, ← mul_kronecker_mul]; simp
-
-/-- Operators supported on disjoint regions commute. -/
-theorem commute_of_isSupportedOn_disjoint {D D' : Finset V}
-    {X Y : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hX : IsSupportedOn X D)
-    (hY : IsSupportedOn Y D') (hDD : Disjoint D' D) (σ₀ : SiteConfig n) : X * Y = Y * X := by
-  have hcut : ∀ Z W : Matrix (SiteConfig n) (SiteConfig n) ℂ,
-      cutOperator D (Z * W) = cutOperator D Z * cutOperator D W := fun Z W ↦ by
-    simp [cutOperator, reindex_apply, submatrix_mul_equiv]
-  have hX' := hX.cutOperator_eq_kronecker_one (B := D) subset_rfl ((cutEquiv n D) σ₀).2
-  have hY' := hY.cutOperator_eq_one_kronecker hDD ((cutEquiv n D) σ₀).1
-  have h : cutOperator D (X * Y) = cutOperator D (Y * X) := by
-    rw [hcut, hcut, hX', hY']
-    exact kronecker_one_mul_one_kronecker_comm _ _
-  exact (reindex (cutEquiv n D) (cutEquiv n D)).injective h
 
 open scoped Kronecker in
 /-- An operator supported inside `B` commutes with every operator that acts, in the cut
