@@ -35,24 +35,15 @@ namespace Entropy
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 /-- Matrix elements of a local lift: `(K ⊗ 1)_{στ}` is `K_{σ|D, τ|D}` when `σ` and `τ` agree
-off `D`, and zero otherwise. -/
+off `D`, and zero otherwise.
+
+**Temporary** restatement of `ManyBody.place_apply` over `Entropy.localLift` (issue #1051);
+deleted in step 4.0. -/
 theorem localLift_apply (D : Finset V) (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
     (σ τ : SiteConfig n) :
     localLift D K σ τ =
-      if ∀ v ∉ D, σ v = τ v then K (fun v ↦ σ v) (fun v ↦ τ v) else 0 := by
-  simp only [localLift, reindex_apply, submatrix_apply, Equiv.symm_symm, kroneckerMap_apply,
-    one_apply]
-  by_cases h : ∀ v ∉ D, σ v = τ v
-  · have h' : (cutEquiv n D σ).2 = (cutEquiv n D τ).2 := by
-      funext v; exact h v.1 v.2
-    rw [ite_eq_left h', ite_eq_left h, mul_one]
-    rfl
-  · have h' : (cutEquiv n D σ).2 ≠ (cutEquiv n D τ).2 := by
-      intro he
-      apply h
-      intro v hv
-      exact congrFun he ⟨v, hv⟩
-    rw [ite_eq_right h', ite_eq_right h, mul_zero]
+      if ∀ v ∉ D, σ v = τ v then K (fun v ↦ σ v) (fun v ↦ τ v) else 0 :=
+  ManyBody.place_apply (X := fun v ↦ Fin (n v)) D K σ τ
 
 /-- Configurations of a disjoint union of regions are pairs of configurations. -/
 def regionUnionEquiv {X T : Finset V} (hXT : Disjoint X T) :

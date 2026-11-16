@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Entropy.MarginalTails
 import QICLean.Algebra.L2OpNormReindex
+import QICLean.ManyBody.Sites.Support
 
 /-!
 # Marginal tails for interactions with designated supports
@@ -42,21 +43,32 @@ namespace Entropy
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- Configurations of a finite tensor product `⊗_v ℂ^{n_v}`. -/
+/-- Configurations of a finite tensor product `⊗_v ℂ^{n_v}`: the configurations
+`ManyBody.Config fun v ↦ Fin (n v)` of the system of sites with basis types `Fin (n v)`.
+
+**Temporary abbreviation** of `ManyBody.Config` (issue #1051), written with the body
+`(v : V) → Fin (n v)` that `ManyBody.Config fun v ↦ Fin (n v)` reduces to, so that the
+values of a configuration have the type `Fin (n v)`; its uses are swept onto the Sites
+names and it is deleted in step 4.0 of the many-body plan. -/
 abbrev SiteConfig (n : V → ℕ) := (v : V) → Fin (n v)
 
 /-- An operator is supported on `D` when it acts as the identity outside `D`: its matrix
 elements vanish between configurations that differ outside `D`, and otherwise do not
 depend on the common values outside `D`.
-Area-law manuscript, Lemma 3.1, `02-initial.tex`, line 39: designated supports. -/
-def IsSupportedOn (X : Matrix (SiteConfig n) (SiteConfig n) ℂ) (D : Finset V) : Prop :=
-  (∀ σ τ : SiteConfig n, (∃ v ∉ D, σ v ≠ τ v) → X σ τ = 0) ∧
-    ∀ σ τ σ' τ' : SiteConfig n, (∀ v ∈ D, σ v = σ' v) → (∀ v ∈ D, τ v = τ' v) →
-      (∀ v ∉ D, σ v = τ v) → (∀ v ∉ D, σ' v = τ' v) → X σ τ = X σ' τ'
+Area-law manuscript, Lemma 3.1, `02-initial.tex`, line 39: designated supports.
+
+**Temporary abbreviation** of the condition on matrix entries that defines membership in
+`ManyBody.supportedOperators` (issue #1051); deleted in step 4.0. -/
+abbrev IsSupportedOn (X : Matrix (SiteConfig n) (SiteConfig n) ℂ) (D : Finset V) : Prop :=
+  ManyBody.IsSupportedOn X D
 
 omit [Fintype V] [DecidableEq V] in
 /-- Matrix elements of a supported operator agree whenever the configurations agree on
-the support and have the same coincidence pattern outside it. -/
+the support and have the same coincidence pattern outside it.
+
+**Temporary**: the case of `ManyBody.apply_eq_of_mem_supportedOperators` for sites with no
+finiteness assumption, which some callers of the entropy layer use (issue #1051); deleted
+in step 4.0. -/
 theorem IsSupportedOn.apply_eq {X : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D : Finset V}
     (hX : IsSupportedOn X D) {σ τ σ' τ' : SiteConfig n} (h1 : ∀ v ∈ D, σ v = σ' v)
     (h2 : ∀ v ∈ D, τ v = τ' v) (h3 : ∀ v ∉ D, (σ v = τ v ↔ σ' v = τ' v)) :
@@ -67,7 +79,9 @@ theorem IsSupportedOn.apply_eq {X : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D
   · push Not at h
     exact hX.2 σ τ σ' τ' h1 h2 h (fun v hv ↦ (h3 v hv).mp (h v hv))
 
-/-- The cut decomposition of a configuration into its parts on `B` and on `Bᶜ`. -/
+/-- The cut decomposition of a configuration into its parts on `B` and on `Bᶜ`. It is
+`ManyBody.cutEquiv (fun v ↦ Fin (n v)) B`, written out so that callers unfolding it reach the
+same equivalence; temporary, swept onto `ManyBody.cutEquiv` in step 4.0. -/
 abbrev cutEquiv (n : V → ℕ) (B : Finset V) :
     SiteConfig n ≃ ((v : {v // v ∈ B}) → Fin (n v)) × ((v : {v // v ∉ B}) → Fin (n v)) :=
   Equiv.piEquivPiSubtypeProd (· ∈ B) fun v ↦ Fin (n v)
@@ -88,16 +102,20 @@ section OneSided
 variable {B : Finset V}
 
 omit [Fintype V] in
+/-- **Temporary** restatement of `ManyBody.cutEquiv_symm_apply_mem` over `Entropy.cutEquiv`
+(issue #1051); deleted in step 4.0. -/
 theorem cutEquiv_symm_apply_mem (x : (v : {v // v ∈ B}) → Fin (n v))
     (y : (v : {v // v ∉ B}) → Fin (n v)) {v : V} (hv : v ∈ B) :
-    (cutEquiv n B).symm (x, y) v = x ⟨v, hv⟩ := by
-  simp [Equiv.piEquivPiSubtypeProd, hv]
+    (cutEquiv n B).symm (x, y) v = x ⟨v, hv⟩ :=
+  ManyBody.cutEquiv_symm_apply_mem (X := fun v ↦ Fin (n v)) x y hv
 
 omit [Fintype V] in
+/-- **Temporary** restatement of `ManyBody.cutEquiv_symm_apply_not_mem` over
+`Entropy.cutEquiv` (issue #1051); deleted in step 4.0. -/
 theorem cutEquiv_symm_apply_not_mem (x : (v : {v // v ∈ B}) → Fin (n v))
     (y : (v : {v // v ∉ B}) → Fin (n v)) {v : V} (hv : v ∉ B) :
-    (cutEquiv n B).symm (x, y) v = y ⟨v, hv⟩ := by
-  simp [Equiv.piEquivPiSubtypeProd, hv]
+    (cutEquiv n B).symm (x, y) v = y ⟨v, hv⟩ :=
+  ManyBody.cutEquiv_symm_apply_not_mem (X := fun v ↦ Fin (n v)) x y hv
 
 /-- A term supported inside `B` is, in cut coordinates, a matrix on `B` tensored with the
 identity: its slice at any configuration `y₀` of `Bᶜ`. -/

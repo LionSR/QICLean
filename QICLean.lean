@@ -14,6 +14,7 @@ import QICLean.Channel
 import QICLean.Circuit
 import QICLean.Entropy
 import QICLean.Kraus
+import QICLean.ManyBody
 import QICLean.Probability
 import QICLean.QPF
 import QICLean.Representation

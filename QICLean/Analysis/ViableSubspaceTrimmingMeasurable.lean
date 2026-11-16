@@ -48,7 +48,7 @@ private theorem continuous_regionalPartialTrace (D : Finset V) :
 private theorem continuous_localLift (D : Finset V) :
     Continuous (localLift D : Matrix (RegionConfig n D) (RegionConfig n D) ℂ →
       Matrix (SiteConfig n) (SiteConfig n) ℂ) := by
-  unfold localLift Matrix.kroneckerMap
+  unfold localLift ManyBody.place Matrix.kroneckerMap
   fun_prop
 
 private theorem measurable_trimStep_of_measurable_trimProj {s : ℕ}

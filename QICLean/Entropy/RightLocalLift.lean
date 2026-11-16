@@ -42,7 +42,7 @@ private theorem rightCut_eq_localLift_compl (D : Finset V)
       (R.reindex (rightConfigComplEquiv (n := n) D) (rightConfigComplEquiv (n := n) D)) := by
   classical
   ext σ τ
-  simp [Entropy.localLift, Entropy.cutEquiv, Equiv.piEquivPiSubtypeProd,
+  simp [Entropy.localLift, ManyBody.place, Entropy.cutEquiv, Equiv.piEquivPiSubtypeProd,
     rightConfigComplEquiv, Matrix.reindex_apply, Matrix.kroneckerMap_apply,
     Matrix.one_apply, funext_iff, Subtype.forall, mul_comm]
 

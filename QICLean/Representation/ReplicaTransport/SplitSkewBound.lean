@@ -127,21 +127,14 @@ namespace TensorPower.ReplicaTransport
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- A positive semidefinite local lift `K ⊗ 1` has a positive semidefinite factor `K`. -/
+/-- A positive semidefinite local lift `K ⊗ 1` has a positive semidefinite factor `K`.
+
+**Temporary** restatement of `ManyBody.posSemidef_place_iff` over `Entropy.localLift`
+(issue #1051); deleted in step 4.0. -/
 theorem posSemidef_of_localLift [∀ v, NeZero (n v)] {Q : Finset V}
     {K : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ} (h : (localLift Q K).PosSemidef) :
-    K.PosSemidef := by
-  have h1 : (K ⊗ₖ (1 : Matrix ((v : {v // v ∉ Q}) → Fin (n v))
-      ((v : {v // v ∉ Q}) → Fin (n v)) ℂ)).PosSemidef := by
-    have := h.submatrix (cutEquiv n Q).symm
-    simpa [localLift, reindex_apply, submatrix_submatrix] using this
-  have e : K = (K ⊗ₖ (1 : Matrix ((v : {v // v ∉ Q}) → Fin (n v))
-      ((v : {v // v ∉ Q}) → Fin (n v)) ℂ)).submatrix (fun x => (x, fun _ => 0))
-        (fun x => (x, fun _ => 0)) := by
-    ext x x'
-    simp
-  rw [e]
-  exact h1.submatrix _
+    K.PosSemidef :=
+  (ManyBody.posSemidef_place_iff (X := fun v ↦ Fin (n v))).mp h
 
 /-- `1 - lift_Q K = lift_Q (1 - K)`. -/
 theorem one_sub_localLift {Q : Finset V} (K : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) :
