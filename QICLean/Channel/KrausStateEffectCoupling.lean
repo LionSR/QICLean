@@ -187,9 +187,8 @@ private theorem exists_matching_kraus_diagonal_identities
 with the same positive total mass admit a rectangular Kraus family with
 at most the larger of the output and effect ranks. No positivity,
 normalization or faithfulness assumption is imposed on the prepared
-matrix. This is a coherent coupling construction using the Kraus
-representation of Wolf, Section 2.1; it supplies local residual maps,
-not a general channel-root selector. -/
+matrix. The construction uses the Kraus representation of Wolf,
+Section 2.1. -/
 theorem exists_kraus_state_effect_coupling_max_rank {m n : Type*}
     [Fintype m] [Fintype n]
     {ρ B : Matrix m m ℂ} {A : Matrix n n ℂ}
