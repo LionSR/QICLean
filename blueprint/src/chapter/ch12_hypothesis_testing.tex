@@ -228,10 +228,13 @@ by one measurement, and bounds the trace distance below by the overlap.
 \begin{theorem}[Powers and traces of finite tensor products]
     \label{thm:testing_tensor_calculus}
     \lean{Matrix.finKronecker_mul, Matrix.trace_finKronecker,
+        Matrix.finKronecker_apply, Matrix.finKronecker_posSemidef,
         Matrix.finKronecker_submatrix_cons, Matrix.rpow_finKronecker,
         Matrix.PosSemidef.smul_rpow, Matrix.PosSemidef.rpow_submatrix_equiv}
     \leanok
     Let $A_i,B_i$ be square matrices on finite spaces, indexed by $0\le i<N$.
+    Their tensor product has entries $\prod_i(A_i)_{x_i,y_i}$.
+    Tensor products of positive semidefinite factors are positive semidefinite.
     Multiplication and trace satisfy
     \begin{align}
         \bigotimes_i(A_iB_i)&=\left(\bigotimes_i A_i\right)
