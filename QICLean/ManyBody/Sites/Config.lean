@@ -52,10 +52,14 @@ abbrev cutEquiv (X : V → Type*) (D : Finset V) :
 
 variable {X : V → Type*} {D : Finset V}
 
+/-- At a site of `D`, the configuration glued from `x` on `D` and `y` outside `D` takes the
+value of `x`. -/
 theorem cutEquiv_symm_apply_mem (x : RegionConfig X D) (y : ComplConfig X D) {v : V}
     (hv : v ∈ D) : (cutEquiv X D).symm (x, y) v = x ⟨v, hv⟩ := by
   simp [Equiv.piEquivPiSubtypeProd, hv]
 
+/-- At a site outside `D`, the configuration glued from `x` on `D` and `y` outside `D` takes
+the value of `y`. -/
 theorem cutEquiv_symm_apply_not_mem (x : RegionConfig X D) (y : ComplConfig X D) {v : V}
     (hv : v ∉ D) : (cutEquiv X D).symm (x, y) v = y ⟨v, hv⟩ := by
   simp [Equiv.piEquivPiSubtypeProd, hv]
