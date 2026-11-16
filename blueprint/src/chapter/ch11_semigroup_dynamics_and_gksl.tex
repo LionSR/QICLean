@@ -160,6 +160,7 @@
     \label{thm:semigroup_exp_algebra}
     \lean{expSemigroup_injective, Commute.expSemigroup_right, expSemigroup_pow}
     \leanok
+    \uses{def:exp_semigroup_ch12}
     Let $L,P\in\End_{\C}(\MN{D})$ and $t\in\R$.
     The map $e^{tL}$ is injective. If $PL=LP$, then $Pe^{tL}=e^{tL}P$.
     For every $n\in\N$, one has $(e^{tL})^n=e^{ntL}$.
@@ -167,10 +168,29 @@
 
 \begin{proof}
     \leanok
-    \uses{thm:expSemigroupCLM_add_ch12, thm:expSemigroup_zero_ch12}
-    The identity $e^{-tL}e^{tL}=I$ gives a left inverse.
-    Commutation with $L$ implies commutation with the exponential series.
-    Induction on $n$ and the semigroup law give the power identity.
+    \uses{thm:expSemigroupCLM_add_ch12, thm:expSemigroup_zero_ch12,
+        thm:expSemigroup_toCLM_ch12}
+    The exponential group law gives a left inverse:
+    \begin{align}
+        e^{-tL}e^{tL} &= e^{0L} = I.
+        \label{eq:semigroup_exp_left_inverse}
+    \end{align}
+    If $PL=LP$, then $PL^k=L^kP$ for every $k\in\N$, and hence
+    \begin{align}
+        P e^{tL}
+        &= \sum_{k=0}^{\infty}\frac{t^k}{k!}PL^k
+        = \sum_{k=0}^{\infty}\frac{t^k}{k!}L^kP
+        = e^{tL}P.
+        \label{eq:semigroup_exp_commutation}
+    \end{align}
+    For natural powers, the generic exponential identity
+    $\exp(n\cdot X)=(\exp X)^n$ yields
+    \begin{align}
+        (e^{tL})^n &= e^{n\cdot(tL)} = e^{ntL}.
+        \label{eq:semigroup_exp_natural_power}
+    \end{align}
+    Transport these identities through
+    Theorem~\ref{thm:expSemigroup_toCLM_ch12}.
 \end{proof}
 
 \begin{theorem}[Exponential semigroup as a dynamical semigroup]

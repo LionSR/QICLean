@@ -463,7 +463,7 @@ theorem expSemigroup_zero
 
 /-- Every real-time exponential is injective, with inverse at negative time.
 This is a consequence of Wolf Proposition 7.1's exponential group law. -/
-theorem expSemigroup_injective {D : ℕ}
+theorem expSemigroup_injective
     (L : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)) (t : ℝ) :
     Function.Injective (expSemigroup L t) := by
   have hleft : expSemigroup L (-t) * expSemigroup L t = 1 := by
@@ -477,7 +477,7 @@ theorem expSemigroup_injective {D : ℕ}
 
 /-- An endomorphism commuting with the generator commutes with every
 real-time exponential, as used with Wolf Proposition 7.1. -/
-theorem Commute.expSemigroup_right {D : ℕ}
+theorem Commute.expSemigroup_right
     {P L : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)}
     (hComm : Commute P L) (t : ℝ) : Commute P (expSemigroup L t) := by
   have hCLM : Commute (endEquiv P) (endEquiv L) := by
@@ -490,21 +490,15 @@ theorem Commute.expSemigroup_right {D : ℕ}
 
 /-- Natural powers of a real-time exponential multiply the time parameter.
 This is Wolf Proposition 7.1's exponential group law iterated finitely. -/
-theorem expSemigroup_pow {D : ℕ}
+theorem expSemigroup_pow
     (L : Module.End ℂ (Matrix (Fin D) (Fin D) ℂ)) (t : ℝ) (n : ℕ) :
     expSemigroup L t ^ n = expSemigroup L ((n : ℝ) * t) := by
-  induction n with
-  | zero =>
-    simp only [pow_zero, Nat.cast_zero, zero_mul, expSemigroup_zero]
-    rfl
-  | succ n ih =>
-    rw [pow_succ, ih]
-    change (expSemigroup L ((n : ℝ) * t)).comp (expSemigroup L t) = _
-    rw [← expSemigroup_comp]
-    congr 1
-    push_cast
-    ring
-
+  apply endEquiv.injective
+  simp only [map_pow, expSemigroup_toCLM, expSemigroupCLM]
+  rw [← NormedSpace.exp_nsmul]
+  congr 1
+  simp only [← Nat.cast_smul_eq_nsmul ℂ, smul_smul, Complex.ofReal_mul,
+    Complex.ofReal_natCast]
 
 theorem expSemigroup_isDynSemigroup
     (L : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ) :
