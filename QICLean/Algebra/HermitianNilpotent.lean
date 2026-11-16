@@ -41,13 +41,12 @@ theorem exists_hermitian_functional_killing_pair {b : ℕ} (hb : 2 ≤ b)
       φ ≠ 0 ∧ φ ρ = 0 ∧ φ u = 0 ∧
       (∀ X, X.IsHermitian → IsSelfAdjoint (φ X)) := by
   classical
-  let i : Fin b := ⟨0, by omega⟩
-  let j : Fin b := ⟨1, by omega⟩
+  let i : Fin b := ⟨0, lt_of_lt_of_le (by decide : 0 < 2) hb⟩
+  let j : Fin b := ⟨1, lt_of_lt_of_le (by decide : 1 < 2) hb⟩
   have hij : i ≠ j := by
     intro h
     have h' := congrArg Fin.val h
-    simp only [i, j] at h'
-    omega
+    norm_num [i, j] at h'
   let V := hρ.eigenvectorUnitary
   let Vm : Matrix (Fin b) (Fin b) ℂ := V
   have hV : Vmᴴ * Vm = 1 := by
