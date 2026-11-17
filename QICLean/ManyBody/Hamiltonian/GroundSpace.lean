@@ -37,6 +37,10 @@ TNLean's `Matrix.IsGappedGroundState` is the left side of
 
 * `ManyBody.mem_groundSpace_iff_mulVec` — membership as an equation of coordinate vectors.
 * `ManyBody.isGapped_iff_eigenvalues` — for Hermitian `H`, the gap in terms of the eigenvalues.
+* `ManyBody.IsGapped.posSemidef_sub_smul_one` — a gapped Hermitian matrix with ground space the
+  line through a unit vector `Ω` satisfies `H - E₀ I ≥ Δ (I - |Ω⟩⟨Ω|)`, for any `Δ`.
+* `ManyBody.mulVec_eq_of_groundSpace_eq_span` — a vector spanning the ground space is an
+  eigenvector at `E₀`.
 * `ManyBody.isGapped_and_groundSpace_eq_span_iff` — the operator form of a gapped unique
   ground state.
 
@@ -109,6 +113,72 @@ private theorem toEuclideanLin_gap_apply (H : Matrix n n ℂ) (E₀ Δ : ℝ)
   simp only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, toLpLin_one,
     LinearMap.id_apply, toEuclideanLin_vecMulVec_star_self_apply]
 
+/-- A vector spanning the ground space is an eigenvector of `H` at `E₀`. -/
+theorem mulVec_eq_of_groundSpace_eq_span {H : Matrix n n ℂ} {E₀ : ℝ}
+    {Ω : EuclideanSpace ℂ n} (hspan : groundSpace H E₀ = Submodule.span ℂ {Ω}) :
+    H *ᵥ WithLp.ofLp Ω = (E₀ : ℂ) • WithLp.ofLp Ω :=
+  mem_groundSpace_iff_mulVec.mp (hspan ▸ Submodule.mem_span_singleton_self Ω)
+
+/-- **The operator gap inequality.** If `H` is Hermitian and gapped at `E₀` with gap `Δ`, and
+its ground space is the line through the unit vector `Ω`, then
+`H - E₀ I ≥ Δ (I - |Ω⟩⟨Ω|)`. No sign of `Δ` is needed. Area law, `00-introduction.tex`,
+lines 44–47 (`thm:area`); polynomial-PEPS, `eq:global-gap`. -/
+theorem IsGapped.posSemidef_sub_smul_one {H : Matrix n n ℂ} {E₀ Δ : ℝ}
+    {Ω : EuclideanSpace ℂ n} (hH : H.IsHermitian) (hΩ : ‖Ω‖ = 1) (hgap : IsGapped H E₀ Δ)
+    (hspan : groundSpace H E₀ = Submodule.span ℂ {Ω}) :
+    (H - (E₀ : ℂ) • (1 : Matrix n n ℂ) - (Δ : ℂ) •
+      (1 - vecMulVec (fun x ↦ Ω x) (star (fun x ↦ Ω x)))).PosSemidef := by
+  have hT := isSymmetric_toEuclideanLin_iff.mpr hH
+  have hlin : toEuclideanLin H Ω = (E₀ : ℂ) • Ω :=
+    mem_groundSpace_iff.mp (hspan ▸ Submodule.mem_span_singleton_self Ω)
+  rw [← isPositive_toEuclideanLin_iff]
+  refine ⟨isSymmetric_toEuclideanLin_iff.mpr (hH.gap E₀ Δ Ω), fun ψ ↦ ?_⟩
+  set G := toEuclideanLin (H - (E₀ : ℂ) • 1 -
+    (Δ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))))
+  have hG : G.IsSymmetric := isSymmetric_toEuclideanLin_iff.mpr (hH.gap E₀ Δ Ω)
+  let b := hH.eigenvectorBasis
+  have hTb (k : n) : toEuclideanLin H (b k) = ((hH.eigenvalues k : ℝ) : ℂ) • b k := by
+    apply WithLp.ofLp_injective 2
+    rw [toLpLin_apply, WithLp.ofLp_toLp, WithLp.ofLp_smul]
+    exact (hH.mulVec_eigenvectorBasis k).trans (RCLike.real_smul_eq_coe_smul _ _)
+  -- Every eigenvector of `H` is an eigenvector of the gap defect, with eigenvalue `≥ 0`.
+  have hGb (k : n) : ∃ ν : ℝ, 0 ≤ ν ∧ G (b k) = (ν : ℂ) • b k := by
+    by_cases hk : hH.eigenvalues k = E₀
+    · have hmem : b k ∈ groundSpace H E₀ := mem_groundSpace_iff.mpr (by rw [hTb, hk])
+      rw [hspan] at hmem
+      obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.mp hmem
+      have hinner : ⟪Ω, b k⟫_ℂ = a := by
+        rw [← ha, inner_smul_right, inner_self_eq_norm_sq_to_K, hΩ]
+        simp
+      refine ⟨0, le_rfl, ?_⟩
+      rw [toEuclideanLin_gap_apply, hTb, hk, hinner, ha]
+      simp
+    · have hne : b k ≠ 0 := b.orthonormal.ne_zero k
+      have hev : Module.End.HasEigenvalue (toEuclideanLin H) (hH.eigenvalues k : ℂ) :=
+        Module.End.hasEigenvalue_of_hasEigenvector
+          ⟨Module.End.mem_eigenspace_iff.mpr (hTb k), hne⟩
+      have hge : E₀ + Δ ≤ hH.eigenvalues k := by
+        rcases hgap.2 _ hev with h | h
+        · exact absurd (Complex.ofReal_inj.mp h) hk
+        · exact Complex.real_le_real.mp h
+      have horth : ⟪Ω, b k⟫_ℂ = 0 := by
+        have h := hT Ω (b k)
+        rw [hlin, hTb, inner_smul_left, inner_smul_right, Complex.conj_ofReal] at h
+        have h' : ((hH.eigenvalues k : ℂ) - E₀) * ⟪Ω, b k⟫_ℂ = 0 := by
+          linear_combination -h
+        exact (mul_eq_zero.mp h').resolve_left
+          (sub_ne_zero.mpr (fun h ↦ hk (Complex.ofReal_inj.mp h)))
+      refine ⟨hH.eigenvalues k - E₀ - Δ, by linarith, ?_⟩
+      rw [toEuclideanLin_gap_apply, hTb, horth, zero_smul, sub_zero]
+      push_cast
+      module
+  choose ν hν hGν using hGb
+  rw [← b.sum_inner_mul_inner (G ψ) ψ, map_sum]
+  refine Finset.sum_nonneg fun k _ ↦ ?_
+  rw [hG ψ (b k), hGν k, inner_smul_right, mul_assoc, RCLike.re_to_complex,
+    Complex.re_ofReal_mul]
+  exact mul_nonneg (hν k) (by rw [← RCLike.re_to_complex, inner_mul_symm_re_eq_norm]; positivity)
+
 /-- **A gapped unique ground state.** For `0 < Δ`, a unit vector `Ω` with `H Ω = E₀ Ω` and
 `H - E₀ I ≥ Δ (I - |Ω⟩⟨Ω|)` is the same as a Hermitian `H`, gapped at `E₀` with gap `Δ`, whose
 ground space is the line through the unit vector `Ω`. The left side is TNLean's
@@ -162,57 +232,8 @@ theorem isGapped_and_groundSpace_eq_span_iff {H : Matrix n n ℂ} {E₀ Δ : ℝ
     refine ⟨?_, by simp [hreal]⟩
     simp only [Complex.ofReal_re]
     nlinarith
-  · rintro ⟨hH, hΩ, ⟨-, hgapE⟩, hspan⟩
-    have hT := isSymmetric_toEuclideanLin_iff.mpr hH
-    have hlin : toEuclideanLin H Ω = (E₀ : ℂ) • Ω :=
-      mem_groundSpace_iff.mp (hspan ▸ Submodule.mem_span_singleton_self Ω)
-    refine ⟨hΩ, hlin, ?_⟩
-    rw [← isPositive_toEuclideanLin_iff]
-    refine ⟨isSymmetric_toEuclideanLin_iff.mpr (hH.gap E₀ Δ Ω), fun ψ ↦ ?_⟩
-    set G := toEuclideanLin (H - (E₀ : ℂ) • 1 -
-      (Δ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω))))
-    have hG : G.IsSymmetric := isSymmetric_toEuclideanLin_iff.mpr (hH.gap E₀ Δ Ω)
-    let b := hH.eigenvectorBasis
-    have hTb (k : n) : toEuclideanLin H (b k) = ((hH.eigenvalues k : ℝ) : ℂ) • b k := by
-      apply WithLp.ofLp_injective 2
-      rw [toLpLin_apply, WithLp.ofLp_toLp, WithLp.ofLp_smul]
-      exact (hH.mulVec_eigenvectorBasis k).trans (RCLike.real_smul_eq_coe_smul _ _)
-    -- Every eigenvector of `H` is an eigenvector of the gap defect, with eigenvalue `≥ 0`.
-    have hGb (k : n) : ∃ ν : ℝ, 0 ≤ ν ∧ G (b k) = (ν : ℂ) • b k := by
-      by_cases hk : hH.eigenvalues k = E₀
-      · have hmem : b k ∈ groundSpace H E₀ := mem_groundSpace_iff.mpr (by rw [hTb, hk])
-        rw [hspan] at hmem
-        obtain ⟨a, ha⟩ := Submodule.mem_span_singleton.mp hmem
-        have hinner : ⟪Ω, b k⟫_ℂ = a := by
-          rw [← ha, inner_smul_right, inner_self_eq_norm_sq_to_K, hΩ]
-          simp
-        refine ⟨0, le_rfl, ?_⟩
-        rw [toEuclideanLin_gap_apply, hTb, hk, hinner, ha]
-        simp
-      · have hne : b k ≠ 0 := b.orthonormal.ne_zero k
-        have hev : Module.End.HasEigenvalue (toEuclideanLin H) (hH.eigenvalues k : ℂ) :=
-          Module.End.hasEigenvalue_of_hasEigenvector
-            ⟨Module.End.mem_eigenspace_iff.mpr (hTb k), hne⟩
-        have hge : E₀ + Δ ≤ hH.eigenvalues k := by
-          rcases hgapE _ hev with h | h
-          · exact absurd (Complex.ofReal_inj.mp h) hk
-          · exact Complex.real_le_real.mp h
-        have horth : ⟪Ω, b k⟫_ℂ = 0 := by
-          have h := hT Ω (b k)
-          rw [hlin, hTb, inner_smul_left, inner_smul_right, Complex.conj_ofReal] at h
-          have h' : ((hH.eigenvalues k : ℂ) - E₀) * ⟪Ω, b k⟫_ℂ = 0 := by
-            linear_combination -h
-          exact (mul_eq_zero.mp h').resolve_left
-            (sub_ne_zero.mpr (fun h ↦ hk (Complex.ofReal_inj.mp h)))
-        refine ⟨hH.eigenvalues k - E₀ - Δ, by linarith, ?_⟩
-        rw [toEuclideanLin_gap_apply, hTb, horth, zero_smul, sub_zero]
-        push_cast
-        module
-    choose ν hν hGν using hGb
-    rw [← b.sum_inner_mul_inner (G ψ) ψ, map_sum]
-    refine Finset.sum_nonneg fun k _ ↦ ?_
-    rw [hG ψ (b k), hGν k, inner_smul_right, mul_assoc, RCLike.re_to_complex,
-      Complex.re_ofReal_mul]
-    exact mul_nonneg (hν k) (by rw [← RCLike.re_to_complex, inner_mul_symm_re_eq_norm]; positivity)
+  · rintro ⟨hH, hΩ, hgap, hspan⟩
+    exact ⟨hΩ, mem_groundSpace_iff.mp (hspan ▸ Submodule.mem_span_singleton_self Ω),
+      hgap.posSemidef_sub_smul_one hH hΩ hspan⟩
 
 end ManyBody
