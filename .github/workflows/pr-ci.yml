@@ -550,7 +550,9 @@ jobs:
     name: Check blueprint compiles without errors
     needs: changes
     if: "!cancelled() && (github.event_name != 'pull_request' || needs.changes.result == 'success')"
-    runs-on: ubuntu-latest
+    # Pinned to 24.04: Playwright 1.55 has no Chromium for 26.04, and dvisvgm there drops TikZ
+    # ink. Return to ubuntu-latest once Playwright and the TeX toolchain support 26.04.
+    runs-on: ubuntu-24.04
     env:
       TEX_CHANGED: ${{ github.event_name != 'pull_request' || needs.changes.outputs.blueprint == 'true' }}
       # Main publication already compiles these PDFs; add the same gate to
