@@ -57,7 +57,9 @@ def HasOneShotZeroErrorBit (E : Mat →ₗ[ℂ] Mat) : Prop :=
   ∃ ρ₀ ∈ densityMatrices D, ∃ ρ₁ ∈ densityMatrices D, (E ρ₀ * E ρ₁).trace = 0
 
 /-- Full-rank outputs cannot contain two orthogonal density matrices. This is the
-one-shot full-rank-output criterion; it makes no assertion about tensor powers.
+one-shot full-rank-output criterion.
+
+**Scope restriction (one-shot capacity):** this makes no assertion about tensor powers.
 Sanz et al., arXiv:0909.5347, Theorem 2 cites Cubitt, Chen and Harrow,
 arXiv:0906.2547v2 for the regularized version. See
 `docs/paper-gaps/spwc10_zero_error_capacity.tex` for this scope restriction. -/
