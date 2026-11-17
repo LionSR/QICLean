@@ -98,6 +98,38 @@ one-dimensional ground space.
     $c>0$ and subtracting $a$ preserve the order of real eigenvalues.
 \end{proof}
 
+\begin{theorem}[The gap of a Kronecker sum]
+    \label{thm:hamiltonians_gap_kronecker_sum}
+    \lean{ManyBody.hasEigenvalue_toEuclideanLin_diagonal_iff,
+        ManyBody.mem_groundSpace_diagonal_iff, ManyBody.isGapped_diagonal_iff,
+        Matrix.IsHermitian.kronecker_add_eq_conj, Matrix.kronecker_mulVec_mul,
+        ManyBody.IsGapped.kronecker_add, ManyBody.groundSpace_kronecker_add_eq_span}
+    \leanok
+    \uses{def:hamiltonians_gap, lem:hamiltonians_gap_eigenvalues, lem:hamiltonians_gap_reindex}
+    Let $A$ and $B$ be Hermitian, gapped at $a$ and $b$ with gaps $\Delta_a$ and
+    $\Delta_b$, and let $H=A\otimes1+1\otimes B$. If $\Delta_a\ge0$ or
+    $\Delta_b\ge0$, then $H$ is gapped at $a+b$ with gap $\min(\Delta_a,\Delta_b)$.
+    If $\Delta_a,\Delta_b\ge0$, $\ker(A-a)=\C u$ and $\ker(B-b)=\C v$, then
+    $\ker(H-a-b)=\C\,u\otimes v$. A Hamiltonian with no term across a cut has this
+    form~\cite{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    Write $A=UD_AU^{*}$ and $B=VD_BV^{*}$ with $D_A=\operatorname{diag}(\lambda_i)$ and
+    $D_B=\operatorname{diag}(\mu_j)$. Then
+    \begin{align*}
+        H=(U\otimes V)\operatorname{diag}(\lambda_i+\mu_j)(U\otimes V)^{*},
+    \end{align*}
+    and by Lemma~\ref{lem:hamiltonians_gap_reindex} it suffices to treat the diagonal
+    matrix, whose eigenvalues are its entries. Some $\lambda_i=a$ and $\mu_j=b$. Each
+    $\lambda_i$ is $a$ or at least $a+\Delta_a$, and each $\mu_j$ is $b$ or at least
+    $b+\Delta_b$; in every case $\lambda_i+\mu_j$ is $a+b$ or at least
+    $a+b+\min(\Delta_a,\Delta_b)$, since $\Delta_a+\Delta_b\ge\min(\Delta_a,\Delta_b)$
+    when one gap is nonnegative. If both gaps are nonnegative, then $\lambda_i\ge a$ and
+    $\mu_j\ge b$, so $\lambda_i+\mu_j=a+b$ forces $\lambda_i=a$ and $\mu_j=b$. Then
+    $Ue_i\in\C u$ and $Ve_j\in\C v$, so $(U\otimes V)e_{ij}=Ue_i\otimes Ve_j\in\C\,u\otimes v$,
+    and $H(u\otimes v)=(a+b)\,u\otimes v$.
+\end{proof}
+
 \begin{lemma}[The operator gap inequality]
     \label{lem:hamiltonians_gap_operator_inequality}
     \lean{ManyBody.IsGapped.posSemidef_sub_smul_one,
