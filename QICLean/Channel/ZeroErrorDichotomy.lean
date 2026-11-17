@@ -57,7 +57,7 @@ def HasOneShotZeroErrorBit (E : Mat →ₗ[ℂ] Mat) : Prop :=
 one-shot full-rank-output criterion; it makes no assertion about tensor powers.
 Sanz et al., arXiv:0909.5347, Theorem 2 cites Cubitt, Chen and Harrow,
 arXiv:0906.2547v2 for the regularized version. See
-`docs/paper-gaps/zero-error-capacity.tex` for this scope restriction. -/
+`docs/paper-gaps/sanz10_zero_error_capacity.tex` for this scope restriction. -/
 theorem not_hasOneShotZeroErrorBit_of_posDef_outputs [NeZero D]
     (E : Mat →ₗ[ℂ] Mat) (hE : ∀ τ ∈ densityMatrices D, (E τ).PosDef) :
     ¬ HasOneShotZeroErrorBit E := by
