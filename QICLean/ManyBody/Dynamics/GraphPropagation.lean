@@ -132,50 +132,6 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Finty
 
 /-! ### The weighted estimate for nonnegative time -/
 
-/-- Finite-support interaction count: the norms of the terms meeting a finite set
-`S` sum to at most `|S| b₀`. Source: OpenAI area law, `eq:quasilocal-budget`
-and the bound `κ = v_R b₀` (`03-quasilocal.tex`, lines 31–37 and 94–96). -/
-private theorem sum_norm_meeting_le
-    {κ : Type*} [Fintype κ] {T : κ → Finset V}
-    (Φ : Interaction X T)
-    (b₀ : ℝ)
-    (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
-    (S : Finset V) :
-    ∑ j, (if Disjoint S (T j) then 0 else ‖Φ.term j‖) ≤
-      S.card * b₀ := by
-  classical
-  calc
-    _ ≤ ∑ j, ∑ x ∈ S, (if x ∈ T j then ‖Φ.term j‖ else 0) := by
-      refine Finset.sum_le_sum fun j _ => ?_
-      split_ifs with hkj
-      · exact Finset.sum_nonneg fun x _ => by split_ifs <;> simp
-      · obtain ⟨x, hxk, hxj⟩ := Finset.not_disjoint_iff.mp hkj
-        have hle := Finset.single_le_sum (f := fun x => if x ∈ T j then ‖Φ.term j‖ else 0)
-          (fun x _ => by split_ifs <;> simp) hxk
-        simpa only [hxj, ite_true] using hle
-    _ = ∑ x ∈ S, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ := by
-      rw [Finset.sum_comm]
-      exact Finset.sum_congr rfl fun x _ => (Finset.sum_filter _ _).symm
-    _ ≤ ∑ _x ∈ S, b₀ := Finset.sum_le_sum fun x _ => hBudget x
-    _ = S.card * b₀ := by rw [Finset.sum_const, nsmul_eq_mul]
-
-omit [Fintype V] [DecidableEq V] in
-/-- Distance to a finite set obeys the triangle bound, including the empty set. -/
-private theorem edist_finset_inf_le_add (G : SimpleGraph V) (Y : Finset V)
-    (x z : V) (r : ℕ) (h : G.edist x z ≤ r) :
-    Y.inf (G.edist x) ≤ Y.inf (G.edist z) + r := by
-  classical
-  by_cases hY : Y.Nonempty
-  · obtain ⟨y, hy, heq⟩ := Finset.exists_mem_eq_inf Y hY (G.edist z)
-    calc
-      Y.inf (G.edist x) ≤ G.edist x y := Finset.inf_le hy
-      _ ≤ G.edist x z + G.edist z y := G.edist_triangle
-      _ ≤ r + G.edist z y := add_le_add h le_rfl
-      _ = Y.inf (G.edist z) + r := by rw [heq, add_comm]
-  · simp [Finset.not_nonempty_iff_eq_empty.mp hY]
-
-/-! ### The Hastings–Koma form -/
-
 omit [Fintype V] in
 /-- A sum over the terms meeting `S` is at most the sum, over the sites of `S`, of the terms
 containing that site, for nonnegative summands. -/
@@ -197,6 +153,38 @@ private theorem sum_meeting_le_sum_sites
     _ = ∑ x ∈ S, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), g j := by
       rw [Finset.sum_comm]
       exact Finset.sum_congr rfl fun x _ => (Finset.sum_filter _ _).symm
+
+/-- Finite-support interaction count: the norms of the terms meeting a finite set
+`S` sum to at most `|S| b₀`. Source: OpenAI area law, `eq:quasilocal-budget`
+and the bound `κ = v_R b₀` (`03-quasilocal.tex`, lines 31–37 and 94–96). -/
+private theorem sum_norm_meeting_le
+    {κ : Type*} [Fintype κ] {T : κ → Finset V}
+    (Φ : Interaction X T)
+    (b₀ : ℝ)
+    (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
+    (S : Finset V) :
+    ∑ j, (if Disjoint S (T j) then 0 else ‖Φ.term j‖) ≤
+      S.card * b₀ :=
+  (sum_meeting_le_sum_sites T _ (fun j => norm_nonneg _) S).trans
+    ((Finset.sum_le_sum fun x _ => hBudget x).trans_eq
+      (by rw [Finset.sum_const, nsmul_eq_mul]))
+
+omit [Fintype V] [DecidableEq V] in
+/-- Distance to a finite set obeys the triangle bound, including the empty set. -/
+private theorem edist_finset_inf_le_add (G : SimpleGraph V) (Y : Finset V)
+    (x z : V) (r : ℕ) (h : G.edist x z ≤ r) :
+    Y.inf (G.edist x) ≤ Y.inf (G.edist z) + r := by
+  classical
+  by_cases hY : Y.Nonempty
+  · obtain ⟨y, hy, heq⟩ := Finset.exists_mem_eq_inf Y hY (G.edist z)
+    calc
+      Y.inf (G.edist x) ≤ G.edist x y := Finset.inf_le hy
+      _ ≤ G.edist x z + G.edist z y := G.edist_triangle
+      _ ≤ r + G.edist z y := add_le_add h le_rfl
+      _ = Y.inf (G.edist z) + r := by rw [heq, add_comm]
+  · simp [Finset.not_nonempty_iff_eq_empty.mp hY]
+
+/-! ### The Hastings–Koma form -/
 
 omit [Fintype V] [DecidableEq V] in
 /-- The distance from a set `Z` to `Y` exceeds the distance from a set `W` meeting `Z` by at
