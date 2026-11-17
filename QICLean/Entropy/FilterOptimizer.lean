@@ -156,9 +156,7 @@ section Max
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-theorem trace_regionState (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
-    (regionState D φ).trace = ((‖φ‖ ^ 2 : ℝ) : ℂ) :=
-  ManyBody.trace_regionState D φ
+export ManyBody (trace_regionState)
 
 /-- **Stationary filters are clipped.** Let a feasible filter `K` on a region `D` maximize
 the output norm `‖A (K ⊗ 1) C w‖` among feasible filters, where `A` is a descending chain for
@@ -208,7 +206,8 @@ theorem exists_clipped_of_max_feasible {D : Finset V}
     have := posSemidef_diagonal_iff.mp hD i
     exact_mod_cast this
   have hqs : 0 < ∑ i, q i := by
-    have htr := trace_regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w)
+    have htr : (regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w)).trace = _ :=
+      trace_regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w)
     rw [hρW, trace_mul_cycle, hW, Matrix.one_mul, trace_diagonal, ← Complex.ofReal_sum] at htr
     have := Complex.ofReal_injective htr
     rw [this]

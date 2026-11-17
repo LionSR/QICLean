@@ -42,13 +42,7 @@ abbrev regionConfigurationEquiv (D : Finset V) (D' : Finset V') (e : V ≃ V')
     RegionConfig n D ≃ RegionConfig n' D' :=
   (e.subtypeEquiv hD).piCongr (fun v ↦ f v.1)
 
-/-- The induced configuration bijection on the complementary region. -/
-abbrev complementConfigurationEquiv (D : Finset V) (D' : Finset V') (e : V ≃ V')
-    (hD : ∀ v, v ∈ D ↔ e v ∈ D')
-    (f : ∀ v, Fin (n v) ≃ Fin (n' (e v))) :
-    ((v : {v // v ∉ D}) → Fin (n v)) ≃
-      ((v : {v // v ∉ D'}) → Fin (n' v)) :=
-  (e.subtypeEquiv (fun v ↦ not_congr (hD v))).piCongr (fun v ↦ f v.1)
+export ManyBody (complementConfigurationEquiv)
 
 /-- A vector expressed in the transported configuration basis. -/
 noncomputable abbrev relabelVector (e : V ≃ V')
