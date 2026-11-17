@@ -11,5 +11,8 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.RegionExpectation
+import QICLean.ManyBody.Sites.RegionState
+import QICLean.ManyBody.Sites.RegionUnion
+import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Sites.Support
 import QICLean.ManyBody.Sites.Twirl
