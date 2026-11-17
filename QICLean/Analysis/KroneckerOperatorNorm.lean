@@ -36,4 +36,35 @@ theorem l2_opNorm_one_kronecker {X Y : Type*} [Fintype X] [Fintype Y]
   simpa using congrFun (congrFun h (Classical.choice ‹Nonempty X›, i))
     (Classical.choice ‹Nonempty X›, j)
 
+/-- Transposition preserves the Hilbert-space operator norm of a square complex matrix. -/
+theorem l2_opNorm_transpose {X : Type*} [Fintype X] [DecidableEq X]
+    (A : Matrix X X ℂ) : ‖Aᵀ‖ = ‖A‖ := by
+  let f : Matrix X X ℂ →⋆ₐ[ℂ] (Matrix X X ℂ)ᵐᵒᵖ :=
+    { (transposeAlgEquiv X ℂ ℂ).toAlgHom with
+      map_star' := fun A ↦ by
+        apply MulOpposite.unop_injective
+        rfl }
+  exact NonUnitalStarAlgHom.norm_map f (transposeAlgEquiv X ℂ ℂ).injective A
+
+/-- Tensoring with an identity on the right preserves the operator norm. -/
+theorem l2_opNorm_kronecker_one {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Nonempty Y] (K : Matrix X X ℂ) :
+    ‖K ⊗ₖ (1 : Matrix Y Y ℂ)‖ = ‖K‖ := by
+  change ‖leftKroneckerEmbed (n := Y) K‖ = ‖K‖
+  apply NonUnitalStarAlgHom.norm_map
+  intro A B h
+  ext i j
+  simpa using congrFun (congrFun h (i, Classical.choice ‹Nonempty Y›))
+    (j, Classical.choice ‹Nonempty Y›)
+
+/-- Submultiplicativity of the operator norm for a tensor product. -/
+theorem l2_opNorm_kronecker_le {X Y : Type*} [Fintype X] [Fintype Y]
+    [DecidableEq X] [DecidableEq Y] [Nonempty X] [Nonempty Y]
+    (A : Matrix X X ℂ) (B : Matrix Y Y ℂ) : ‖A ⊗ₖ B‖ ≤ ‖A‖ * ‖B‖ := by
+  calc
+    ‖A ⊗ₖ B‖ = ‖(A ⊗ₖ (1 : Matrix Y Y ℂ)) * ((1 : Matrix X X ℂ) ⊗ₖ B)‖ := by
+      rw [← mul_kronecker_mul, mul_one, one_mul]
+    _ ≤ ‖A ⊗ₖ (1 : Matrix Y Y ℂ)‖ * ‖(1 : Matrix X X ℂ) ⊗ₖ B‖ := l2_opNorm_mul _ _
+    _ = ‖A‖ * ‖B‖ := by rw [l2_opNorm_kronecker_one, l2_opNorm_one_kronecker]
+
 end Matrix

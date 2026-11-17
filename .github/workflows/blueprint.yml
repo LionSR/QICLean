@@ -48,7 +48,9 @@ permissions:
 
 jobs:
   blueprint:
-    runs-on: ubuntu-latest
+    # Pinned to 24.04: Playwright 1.55 has no Chromium for 26.04, and dvisvgm there drops TikZ
+    # ink. Return to ubuntu-latest once Playwright and the TeX toolchain support 26.04.
+    runs-on: ubuntu-24.04
     name: Build blueprint site components
     steps:
       - name: Checkout project

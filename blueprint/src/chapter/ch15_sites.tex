@@ -28,6 +28,16 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     exactly when they agree at every site of $D$, and likewise outside $D$.
 \end{definition}
 
+\begin{definition}[Terms crossing a cut]
+    \label{def:sites_crossing_terms}
+    \lean{ManyBody.crossingTerms}
+    \leanok
+    For a family of regions $(D_i)_{i\in I}$ and a region $B$, the terms
+    crossing the cut at $B$ are
+    $\mathcal I_\times=\{i\in I:D_i\cap B\neq\emptyset\text{ and }
+    D_i\setminus B\neq\emptyset\}$ \cite{OpenAI2026AreaLaw}.
+\end{definition}
+
 \section{Operators supported on a region}
 \label{sec:sites_support}
 
@@ -201,7 +211,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{definition}[Region expectation]
     \label{def:sites_region_expectation}
-    \lean{ManyBody.regionExpectation, ManyBody.regionExpectation_apply}
+    \lean{ManyBody.regionExpectation, ManyBody.regionExpectation_apply,
+        ManyBody.regionExpectationLM, ManyBody.regionExpectationLM_apply}
     \leanok
     \uses{def:sites_place}
     For a region $D$ put $c=|X_{V\setminus D}|$. The region expectation of an
@@ -228,12 +239,12 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.posSemidef_regionExpectation, ManyBody.regionExpectation_mono,
         ManyBody.norm_regionExpectation_le, ManyBody.regionExpectation_zero,
         ManyBody.regionExpectation_add, ManyBody.regionExpectation_smul,
-        ManyBody.regionExpectation_sub}
+        ManyBody.regionExpectation_sub, ManyBody.isHermitian_regionExpectation}
     \leanok
     \uses{def:sites_region_expectation, thm:sites_place_range, lem:sites_place_hom,
         thm:root_channel}
     The values of $E_D$ lie in $\mathcal A_D$. The map $E_D$ is linear and
-    compatible with adjoints. It satisfies
+    compatible with adjoints, so it maps Hermitian operators to Hermitian operators. It satisfies
     $E_D(BAC)=B\,E_D(A)\,C$ for all $B,C\in\mathcal A_D$ and $E_D(1)=1$, so it
     fixes $\mathcal A_D$ and $E_D\circ E_D=E_D$. It preserves the trace, maps
     positive semidefinite operators to positive semidefinite operators, is
@@ -318,4 +329,76 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     unitary supported on a site $y\notin D$, so
     Theorem~\ref{thm:sites_region_expectation_localization} with
     $\varepsilon=0$ gives $A=E_D(A)\in\mathcal A_D$.
+\end{proof}
+
+\section{Regional pure states and relabelling}
+
+\begin{definition}[Regional state and entropy]
+    \label{def:sites-regional-state}
+    \lean{ManyBody.cutVector, ManyBody.regionState, ManyBody.regionEntropy,
+        Entropy.regionState_eq_partialTraceRight, Entropy.regionEntropy_eq_vonNeumannEntropy}
+    \leanok
+    For a vector $\psi$ on a finite system with basis types $X_v$, let
+    $\rho_D=\operatorname{Tr}_{D^c}|\psi\rangle\langle\psi|$ and
+    $S_\psi(D)=-\operatorname{Tr}(\rho_D\log\rho_D)$, with $0\log0=0$.
+    Neither the vector nor its regional state is required to be normalized.
+\end{definition}
+
+\begin{lemma}[Regional expectations]
+    \label{lem:sites-regional-expectations}
+    \lean{Matrix.inner_toEuclideanLin_eq_trace, Matrix.eq_of_forall_trace_mul_eq,
+        ManyBody.norm_cutVector, ManyBody.regionState_posSemidef,
+        ManyBody.regionState_isHermitian, ManyBody.trace_regionState,
+        ManyBody.inner_place, ManyBody.trace_regionState_submatrix_mul,
+        ManyBody.inner_place_conj_eq, ManyBody.inner_conj_eq_of_mem_supportedOperators}
+    \leanok
+    \uses{def:sites-regional-state}
+    The matrix $\rho_D$ is positive semidefinite and has trace $\|\psi\|^2$.
+    For every matrix $A$ on $D$,
+    $\langle\psi,(A\otimes I)\psi\rangle=\operatorname{Tr}(\rho_D A)$.
+    If $K$ is invertible and commutes with $\rho_D$, conjugating an observable
+    supported on $D$ by $K\otimes I$ preserves its expectation in $\psi$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Positivity and trace preservation follow from the partial trace.
+    The expectation identity follows by summing the matrix entries in cut
+    coordinates. The final assertion follows by cyclicity of the trace.
+\end{proof}
+
+\begin{lemma}[Disjoint regions]
+    \label{lem:sites-regional-union}
+    \lean{ManyBody.regionUnionEquiv, ManyBody.regionUnionEquiv_apply_fst,
+        ManyBody.regionUnionEquiv_apply_snd, ManyBody.place_union_kronecker,
+        ManyBody.partialTraceRight_regionState_union}
+    \leanok
+    \uses{def:sites-regional-state}
+    For disjoint regions $B,C$, their union has configuration space
+    $X_B\times X_C$. Placing $A\otimes K$ on the union equals the product
+    of the placements of $A$ and $K$. The partial trace over $C$ of the
+    regional state on $B\cup C$ equals $\rho_B$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The placement identity follows entrywise. Pairing the proposed marginal
+    with every matrix on $B$ proves the partial-trace identity.
+\end{proof}
+
+\begin{lemma}[Covariance under site and basis bijections]
+    \label{lem:sites-regional-relabel}
+    \lean{ManyBody.siteConfigurationEquiv, ManyBody.regionConfigurationEquiv,
+        ManyBody.complementConfigurationEquiv, ManyBody.relabelVector,
+        ManyBody.norm_relabelVector, ManyBody.regionState_relabel,
+        ManyBody.regionEntropy_relabel}
+    \leanok
+    \uses{def:sites-regional-state}
+    A bijection of sites, together with bijections of their basis types,
+    preserves vector norms. For corresponding regions, the regional matrices
+    are related by the induced basis permutation and have equal entropy.
+    These statements hold for empty basis types and unnormalized vectors.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Reindex the sum over complementary configurations. The resulting regional
+    matrices are unitarily conjugate and have the same eigenvalues.
 \end{proof}
