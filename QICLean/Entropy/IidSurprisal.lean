@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.Entropy
-import QICLean.Analysis.CfcKronecker
+import QICLean.Analysis.FiniteKroneckerPowers
 import QICLean.Algebra.KroneckerFactorPositivity
 import QICLean.Analysis.SurprisalMoment
 import Mathlib.MeasureTheory.Integral.Pi
@@ -42,14 +42,6 @@ open scoped BigOperators Matrix Kronecker ComplexOrder Matrix.Norms.L2Operator
 
 noncomputable section
 namespace Matrix
-
-private theorem finKronecker_mul {k : ℕ} {n : Type*} [Fintype n]
-    (A B : Fin k → Matrix n n ℂ) :
-    finKronecker (fun j ↦ A j * B j) = finKronecker A * finKronecker B := by
-  ext x y
-  simp only [finKronecker_apply, mul_apply]
-  rw [Fintype.prod_sum]
-  simp only [Finset.prod_mul_distrib]
 
 private theorem finKronecker_diagonal {k : ℕ} {n : Type*} [Fintype n] [DecidableEq n]
     (d : Fin k → n → ℂ) :

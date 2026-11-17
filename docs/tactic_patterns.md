@@ -2399,3 +2399,14 @@ unitary norm arguments.
   Other conversions in that file each supply a different matrix or theorem
   context (the reversal proof uses both `S` and `W * S⁻¹.transpose`), so
   they do not duplicate evidence within a proof.
+
+### Separating the first finite tensor factor — shared lemma (2026-11-16)
+
+- **Pattern:** Reindex by `Fin.consEquiv`, expand the finite product, and split its
+  first factor using `Fin.prod_univ_succ`.
+- **Reuse:** `Matrix.finKronecker_submatrix_cons` in
+  `Algebra/KroneckerFactorPositivity.lean`. The positivity proof, finite tensor-order
+  proof, and real-power factorization now use it.
+- **Decision:** A lemma replaces the three copies. Finite tensor multiplication is
+  also exposed in `Analysis/FiniteKroneckerPowers.lean`; `Entropy/IidSurprisal.lean`
+  reuses it instead of its formerly private proof. No new tactic is needed.

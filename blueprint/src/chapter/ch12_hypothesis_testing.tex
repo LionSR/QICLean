@@ -222,3 +222,185 @@ by one measurement, and bounds the trace distance below by the overlap.
     (\ref{eq:trace_norm_overlap_posPart}) implies
     (\ref{eq:trace_norm_overlap_bound}).
 \end{proof}
+
+\section{Finite-copy Chernoff bounds}
+
+\begin{theorem}[Powers and traces of finite tensor products]
+    \label{thm:testing_tensor_calculus}
+    \lean{Matrix.finKronecker_mul, Matrix.trace_finKronecker,
+        Matrix.finKronecker_apply, Matrix.finKronecker_posSemidef,
+        Matrix.finKronecker_submatrix_cons, Matrix.rpow_finKronecker,
+        Matrix.PosSemidef.smul_rpow, Matrix.PosSemidef.rpow_submatrix_equiv}
+    \leanok
+    Let $A_i,B_i$ be square matrices on finite spaces, indexed by $0\le i<N$.
+    Their tensor product has entries $\prod_i(A_i)_{x_i,y_i}$.
+    Tensor products of positive semidefinite factors are positive semidefinite.
+    Multiplication and trace satisfy
+    \begin{align}
+        \bigotimes_i(A_iB_i)&=\left(\bigotimes_i A_i\right)
+            \left(\bigotimes_i B_i\right),
+        &\tr\left[\bigotimes_i A_i\right]&=\prod_i\tr A_i.
+    \end{align}
+    For $A\ge0$, real powers commute with bijective changes of coordinates.
+    Separating the first factor identifies the product on $N+1$ spaces with
+    $A_0\otimes\bigotimes_{i=1}^N A_i$. If each $A_i\ge0$, then for real $s$,
+    $(\bigotimes_i A_i)^s=\bigotimes_i A_i^s$. For $c\ge0$ and $A\ge0$,
+    $(cA)^s=c^sA^s$. Powers at zero use $0^0=1$ and $0^s=0$ for $s\ne0$.
+    The empty tensor product is the identity on a one-dimensional space.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:rpow_kronecker_possemidef}
+    The entry formula $(\bigotimes_i A_i)_{x,y}=\prod_i(A_i)_{x_i,y_i}$
+    gives multiplication and trace by distributing finite sums over products.
+    Induct on the number of factors for powers. After separating the first
+    factor by the coordinate change, apply
+    \begin{align}
+        \left(A_0\otimes\bigotimes_{i=1}^N A_i\right)^s
+          &=A_0^s\otimes\left(\bigotimes_{i=1}^N A_i\right)^s.
+    \end{align}
+    The induction hypothesis then factors the remaining power.
+    Scalar homogeneity follows from $(cx)^s=c^sx^s$ on the nonnegative spectrum.
+\end{proof}
+
+\begin{definition}[Minimum testing error]
+    \label{def:optimal_testing_error}
+    \lean{Matrix.optimalHypothesisTestError}
+    \leanok
+    \uses{def:hypothesis_test_error}
+    For a real prior $p$ and matrices $\rho,\sigma$, define
+    $e_*(p;\rho,\sigma)=\inf_{0\le P\le\Id}e(P)$, with $e(P)$ as in
+    \cite[Equation~(8.40)]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{theorem}[Attainment and bounds for the minimum error]
+    \label{thm:optimal_testing_error}
+    \lean{Matrix.optimalHypothesisTestError_eq,
+        Matrix.exists_hypothesisTestError_eq_optimal,
+        Matrix.optimalHypothesisTestError_le,
+        Matrix.optimalHypothesisTestError_nonneg,
+        Matrix.optimalHypothesisTestError_le_min}
+    \leanok
+    \uses{def:optimal_testing_error}
+    If $\rho,\sigma$ are Hermitian of unit trace and $p\in\R$, the infimum is
+    attained and
+    \begin{align}
+        e_*(p;\rho,\sigma)
+          &=\tfrac12\bigl(1-\lVert p\rho-(1-p)\sigma\rVert_1\bigr)
+          \le\min\{p,1-p\}.
+    \end{align}
+    It is at most the error of every effect. If $\rho,\sigma\ge0$ and
+    $p\in[0,1]$, it is nonnegative.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:quantum_neyman_pearson}
+    The quantum Neyman--Pearson theorem gives an attained least error and
+    its trace-norm formula. Unit trace gives
+    \begin{align}
+        e(0)&=p\tr\rho=p, & e(\Id)&=(1-p)\tr\sigma=1-p.
+    \end{align}
+    Since the minimum is at most either value, the two upper bounds follow.
+    For density matrices and a probability prior, both trace
+    pairings in the error of an optimal effect are nonnegative.
+\end{proof}
+
+\begin{theorem}[Products of ordinary overlaps]
+    \label{thm:testing_overlap_products}
+    \lean{Matrix.petzOverlap_nonneg, Matrix.petzOverlap_smul,
+        Matrix.petzOverlap_kronecker, Matrix.petzOverlap_finKronecker}
+    \leanok
+    Write $Q_s(A,B)=\operatorname{Re}\tr[A^sB^{1-s}]$. This is nonnegative.
+    For positive semidefinite factors, real $s$, and $a,b\ge0$,
+    \begin{align}
+        Q_s(aA,bB)&=a^sb^{1-s}Q_s(A,B),\\
+        Q_s(A\otimes C,B\otimes D)&=Q_s(A,B)Q_s(C,D),\\
+        Q_s\left(\bigotimes_i A_i,\bigotimes_i B_i\right)
+          &=\prod_i Q_s(A_i,B_i).
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:testing_tensor_calculus}
+    Real matrix powers are positive semidefinite, so
+    $\tr[A^sB^{1-s}]\in\R_{\ge0}$. For positive semidefinite factors,
+    scalar homogeneity and tensor factorization give
+    \begin{align}
+        \tr[(aA)^s(bB)^{1-s}]
+          &=a^sb^{1-s}\tr[A^sB^{1-s}],\\
+        \tr[(A\otimes C)^s(B\otimes D)^{1-s}]
+          &=\tr[(A^s\otimes C^s)(B^{1-s}\otimes D^{1-s})]\\
+          &=\tr[A^sB^{1-s}]\tr[C^sD^{1-s}],\\
+        \tr\left[\left(\bigotimes_i A_i\right)^s
+            \left(\bigotimes_i B_i\right)^{1-s}\right]
+          &=\tr\left[\bigotimes_i(A_i^sB_i^{1-s})\right]
+           =\prod_i\tr[A_i^sB_i^{1-s}].
+    \end{align}
+    Each trace factor is real, so taking real parts yields the three
+    overlap identities. The empty product has trace one.
+\end{proof}
+
+\begin{theorem}[Finite-copy Chernoff upper bound]
+    \label{thm:finite_copy_chernoff}
+    \lean{Matrix.optimalHypothesisTestError_le_petzOverlap,
+        Matrix.optimalHypothesisTestError_finKronecker_le,
+        Matrix.optimalHypothesisTestError_iid_le,
+        Matrix.optimalHypothesisTestError_iid_le_sInf}
+    \leanok
+    \uses{def:optimal_testing_error}
+    Let $\rho_i,\sigma_i$ be density matrices on finite spaces and
+    $p,s\in[0,1]$. Then
+    \begin{align}
+        e_*\left(p;\bigotimes_i\rho_i,\bigotimes_i\sigma_i\right)
+          &\le p^s(1-p)^{1-s}\prod_i Q_s(\rho_i,\sigma_i).
+        \label{eq:finite_copy_chernoff}
+    \end{align}
+    In particular, for $N$ identical copies, put
+    $e_N=e_*(p;\rho^{\otimes N},\sigma^{\otimes N})$. Then
+    \begin{align}
+        e_N&\le p^s(1-p)^{1-s}Q_s(\rho,\sigma)^N,\\
+        e_N&\le\inf_{s\in[0,1]}p^s(1-p)^{1-s}Q_s(\rho,\sigma)^N.
+    \end{align}
+    Singular states, endpoint priors and exponents, and $N=0$ are included.
+    This is the direct finite-copy estimate towards
+    \cite[Equation~(8.44)]{Wolf2012Quantum}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:trace_norm_overlap_bound, thm:optimal_testing_error,
+        thm:testing_overlap_products, thm:testing_tensor_calculus}
+    Apply the trace-distance overlap bound to $A=p\rho$ and $B=(1-p)\sigma$;
+    their traces sum to one, so
+    \begin{align}
+        \|p\rho-(1-p)\sigma\|_1
+        &\ge 1-2Q_s(p\rho,(1-p)\sigma)\\
+        &=1-2p^s(1-p)^{1-s}Q_s(\rho,\sigma).
+    \end{align}
+    Substituting the minimum-error formula gives the one-copy bound. Tensor products preserve positivity and unit trace,
+    and their overlaps multiply. Taking an infimum over $s$ gives the last bound
+    without requiring an optimizing exponent.
+\end{proof}
+
+\begin{theorem}[Exponential decay from an overlap]
+    \label{thm:chernoff_overlap_decay}
+    \lean{Matrix.optimalHypothesisTestError_iid_le_exp,
+        Matrix.tendsto_optimalHypothesisTestError_iid_zero}
+    \leanok
+    \uses{def:optimal_testing_error}
+    Let $\rho,\sigma$ be density matrices and $p,s\in[0,1]$. If
+    $Q_s(\rho,\sigma)>0$, then
+    $e_N\le\exp(N\log Q_s(\rho,\sigma))$ for every $N$.
+    If $Q_s(\rho,\sigma)<1$, then $e_N\to0$, including when the overlap is zero.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:finite_copy_chernoff, thm:optimal_testing_error,
+        thm:testing_overlap_products}
+    The prior factor $p^s(1-p)^{1-s}$ is at most one. For positive overlap,
+    $Q_s^N=\exp(N\log Q_s)$. For $q=Q_s(\rho,\sigma)$ with $0\le q<1$,
+    $q^N\to0$ as $N\to\infty$, and the nonnegative minimum errors are squeezed between zero and
+    the bound in~(\ref{eq:finite_copy_chernoff}).
+\end{proof}
+
+% Wolf (8.44) is not marked complete: its asymptotic converse is still missing.
+% See docs/paper-gaps/wolf_ch8_chernoff_asymptotics.tex.

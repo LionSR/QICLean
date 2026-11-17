@@ -32,7 +32,7 @@ noncomputable section
 variable {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
 
 /-- The ordinary Petz overlap in Wolf, Equation (8.35). -/
-def petzOverlap (s : ℝ) (ρ σ : Matrix m m ℂ) : ℝ :=
+def petzOverlap {m : Type*} [Fintype m] [DecidableEq m] (s : ℝ) (ρ σ : Matrix m m ℂ) : ℝ :=
   (ρ ^ s * σ ^ (1 - s)).trace.re
 
 /-- At exponent zero the ordinary overlap is the trace of the second argument,
