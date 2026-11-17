@@ -43,6 +43,9 @@ TNLean's `Matrix.IsGappedGroundState` is the left side of
   eigenvector at `E₀`.
 * `ManyBody.isGapped_and_groundSpace_eq_span_iff` — the operator form of a gapped unique
   ground state.
+* `ManyBody.groundSpace_reindex`, `ManyBody.isGapped_reindex_iff` and their `submatrix` forms —
+  relabelling the basis carries the ground space by the induced isometry and preserves the gap,
+  for every `Δ`.
 
 ## References
 
@@ -235,5 +238,108 @@ theorem isGapped_and_groundSpace_eq_span_iff {H : Matrix n n ℂ} {E₀ Δ : ℝ
   · rintro ⟨hH, hΩ, hgap, hspan⟩
     exact ⟨hΩ, mem_groundSpace_iff.mp (hspan ▸ Submodule.mem_span_singleton_self Ω),
       hgap.posSemidef_sub_smul_one hH hΩ hspan⟩
+
+/-! ### Relabelling the basis -/
+
+section Reindex
+
+variable {m : Type*} [Fintype m] [DecidableEq m]
+
+/-- Relabelling the basis conjugates the eigenspaces by the induced isometry
+`ψ ↦ ψ ∘ e.symm` of Euclidean spaces. -/
+theorem mem_eigenspace_toEuclideanLin_reindex_iff (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ)
+    (ψ : EuclideanSpace ℂ m) :
+    ψ ∈ Module.End.eigenspace (toEuclideanLin (reindex e e H)) μ ↔
+      (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).symm ψ ∈
+        Module.End.eigenspace (toEuclideanLin H) μ := by
+  rw [Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff,
+    ← (WithLp.ofLp_injective 2).eq_iff, ← (WithLp.ofLp_injective 2).eq_iff]
+  simp only [reindex_apply, toLpLin_apply, submatrix_mulVec_equiv, Equiv.symm_symm,
+    WithLp.ofLp_smul, funext_iff, Function.comp_apply, Pi.smul_apply, smul_eq_mul,
+    LinearIsometryEquiv.piLpCongrLeft_symm, LinearIsometryEquiv.piLpCongrLeft_apply,
+    Equiv.piCongrLeft'_apply]
+  refine ⟨fun h x => ?_, fun h x => ?_⟩
+  · have hx := h (e x)
+    rw [Equiv.symm_apply_apply] at hx
+    exact hx
+  · have hx := h (e.symm x)
+    rw [Equiv.apply_symm_apply] at hx
+    exact hx
+
+/-- The eigenspaces of a relabelled matrix are the images of the eigenspaces. -/
+theorem eigenspace_toEuclideanLin_reindex (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ) :
+    Module.End.eigenspace (toEuclideanLin (reindex e e H)) μ =
+      (Module.End.eigenspace (toEuclideanLin H) μ).map
+        ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearEquiv :
+          EuclideanSpace ℂ n →ₗ[ℂ] EuclideanSpace ℂ m) := by
+  ext ψ
+  rw [mem_eigenspace_toEuclideanLin_reindex_iff, Submodule.mem_map_equiv]
+  rfl
+
+/-- A relabelled matrix has the same eigenvalues. -/
+theorem hasEigenvalue_toEuclideanLin_reindex_iff (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ) :
+    Module.End.HasEigenvalue (toEuclideanLin (reindex e e H)) μ ↔
+      Module.End.HasEigenvalue (toEuclideanLin H) μ := by
+  rw [Module.End.hasEigenvalue_iff, Module.End.hasEigenvalue_iff,
+    eigenspace_toEuclideanLin_reindex, Ne, Ne, Submodule.map_eq_bot_iff]
+
+/-- A vector lies in the ground space of the relabelled matrix exactly when the relabelled
+vector lies in the ground space of `H`. -/
+theorem mem_groundSpace_reindex_iff (e : n ≃ m) {H : Matrix n n ℂ} {E₀ : ℝ}
+    {ψ : EuclideanSpace ℂ m} :
+    ψ ∈ groundSpace (reindex e e H) E₀ ↔
+      (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).symm ψ ∈ groundSpace H E₀ :=
+  mem_eigenspace_toEuclideanLin_reindex_iff e H _ ψ
+
+/-- The ground space of the relabelled matrix is the image of the ground space under the
+induced isometry. -/
+theorem groundSpace_reindex (e : n ≃ m) (H : Matrix n n ℂ) (E₀ : ℝ) :
+    groundSpace (reindex e e H) E₀ =
+      (groundSpace H E₀).map
+        ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearEquiv :
+          EuclideanSpace ℂ n →ₗ[ℂ] EuclideanSpace ℂ m) :=
+  eigenspace_toEuclideanLin_reindex e H _
+
+/-- A ground space spanned by `Ω` is carried to the line through the relabelled `Ω`. -/
+theorem groundSpace_reindex_eq_span (e : n ≃ m) {H : Matrix n n ℂ} {E₀ : ℝ}
+    {Ω : EuclideanSpace ℂ n} (hspan : groundSpace H E₀ = Submodule.span ℂ {Ω}) :
+    groundSpace (reindex e e H) E₀ =
+      Submodule.span ℂ {LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e Ω} := by
+  rw [groundSpace_reindex, hspan, Submodule.map_span, Set.image_singleton]
+  rfl
+
+/-- Relabelling the basis preserves the gap, for every `Δ`. -/
+theorem isGapped_reindex_iff (e : n ≃ m) {H : Matrix n n ℂ} {E₀ Δ : ℝ} :
+    IsGapped (reindex e e H) E₀ Δ ↔ IsGapped H E₀ Δ := by
+  simp only [IsGapped, hasEigenvalue_toEuclideanLin_reindex_iff, groundSpace_reindex, Ne,
+    Submodule.map_eq_bot_iff]
+
+omit [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] in
+private theorem submatrix_eq_reindex (e : m ≃ n) (H : Matrix n n ℂ) :
+    H.submatrix e e = reindex e.symm e.symm H := by
+  simp [reindex_apply]
+
+/-- The ground space of `H.submatrix e e` is the image of the ground space of `H`. -/
+theorem groundSpace_submatrix (e : m ≃ n) (H : Matrix n n ℂ) (E₀ : ℝ) :
+    groundSpace (H.submatrix e e) E₀ =
+      (groundSpace H E₀).map
+        ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e.symm).toLinearEquiv :
+          EuclideanSpace ℂ n →ₗ[ℂ] EuclideanSpace ℂ m) := by
+  rw [submatrix_eq_reindex, groundSpace_reindex]
+
+/-- A ground space spanned by `Ω` is carried to the line through the relabelled `Ω`. -/
+theorem groundSpace_submatrix_eq_span (e : m ≃ n) {H : Matrix n n ℂ} {E₀ : ℝ}
+    {Ω : EuclideanSpace ℂ n} (hspan : groundSpace H E₀ = Submodule.span ℂ {Ω}) :
+    groundSpace (H.submatrix e e) E₀ =
+      Submodule.span ℂ {LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e.symm Ω} := by
+  rw [submatrix_eq_reindex]
+  exact groundSpace_reindex_eq_span e.symm hspan
+
+/-- Restricting along an equivalence of bases preserves the gap, for every `Δ`. -/
+theorem isGapped_submatrix_iff (e : m ≃ n) {H : Matrix n n ℂ} {E₀ Δ : ℝ} :
+    IsGapped (H.submatrix e e) E₀ Δ ↔ IsGapped H E₀ Δ := by
+  rw [submatrix_eq_reindex, isGapped_reindex_iff]
+
+end Reindex
 
 end ManyBody

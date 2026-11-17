@@ -42,6 +42,29 @@ one-dimensional ground space.
     $\lambda_k$.
 \end{proof}
 
+\begin{lemma}[Relabelling the basis]
+    \label{lem:hamiltonians_gap_reindex}
+    \lean{ManyBody.mem_eigenspace_toEuclideanLin_reindex_iff,
+        ManyBody.eigenspace_toEuclideanLin_reindex,
+        ManyBody.hasEigenvalue_toEuclideanLin_reindex_iff,
+        ManyBody.mem_groundSpace_reindex_iff, ManyBody.groundSpace_reindex,
+        ManyBody.groundSpace_reindex_eq_span, ManyBody.isGapped_reindex_iff,
+        ManyBody.groundSpace_submatrix, ManyBody.groundSpace_submatrix_eq_span,
+        ManyBody.isGapped_submatrix_iff}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    Let $e$ be a bijection between finite index sets, let $P_e$ be the unitary
+    with $P_e\psi=\psi\circ e^{-1}$, and let $H'=P_eHP_e^{*}$ be the matrix $H$
+    with rows and columns relabelled by $e$. Then
+    $\ker(H'-E_0)=P_e\ker(H-E_0)$, $H'$ and $H$ have the same eigenvalues, and
+    $H'$ is gapped at $E_0$ with gap $\Delta$ if and only if $H$ is, for every
+    $\Delta\in\R$. In particular $\ker(H-E_0)=\C\Omega$ implies
+    $\ker(H'-E_0)=\C P_e\Omega$.
+\end{lemma}
+\begin{proof}\leanok
+    $H'\psi=\mu\psi$ if and only if $HP_e^{*}\psi=\mu P_e^{*}\psi$.
+\end{proof}
+
 \begin{lemma}[The operator gap inequality]
     \label{lem:hamiltonians_gap_operator_inequality}
     \lean{ManyBody.IsGapped.posSemidef_sub_smul_one,
