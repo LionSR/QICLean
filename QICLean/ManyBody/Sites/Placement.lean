@@ -292,18 +292,13 @@ theorem conjTranspose_prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) :
   ext σ τ
   simp [prodOp, Matrix.conjTranspose_apply]
 
-omit [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
-theorem star_prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) :
-    star (prodOp m) = prodOp fun v ↦ star (m v) :=
-  conjTranspose_prodOp m
-
 /-- A product of unitaries is unitary. -/
 theorem prodOp_mem_unitary {m : (v : V) → Matrix (X v) (X v) ℂ}
     (hm : ∀ v, m v ∈ unitary (Matrix (X v) (X v) ℂ)) :
     prodOp m ∈ unitary (Matrix (Config X) (Config X) ℂ) := by
   refine Matrix.mem_unitaryGroup_iff.mpr ?_
-  rw [star_prodOp, prodOp_mul]
-  simp only [fun v ↦ Unitary.mul_star_self_of_mem (hm v)]
+  rw [star_eq_conjTranspose, conjTranspose_prodOp, prodOp_mul]
+  simp only [← star_eq_conjTranspose, fun v ↦ Unitary.mul_star_self_of_mem (hm v)]
   exact prodOp_one
 
 /-- A product operator `⊗_v m_v` with `m_v = 1` outside `D` is supported on `D`. -/
