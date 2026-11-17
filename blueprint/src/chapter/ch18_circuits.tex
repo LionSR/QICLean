@@ -20,18 +20,33 @@ preservation, and the backward light cone.
     \label{def:circuits_geometry}
     \lean{QuantumCircuit.Geometry, QuantumCircuit.Geometry.neighbourhood,
         QuantumCircuit.Geometry.subset_neighbourhood,
-        QuantumCircuit.Geometry.neighbourhood_mono,
-        QuantumCircuit.Geometry.iterate_neighbourhood_mono,
         QuantumCircuit.Geometry.restrict}
     \leanok
     A geometry on $V$ is a set $\mathcal C$ of cells, each with a region
     $C_b\subseteq V$ and a cost $c_b\in\N$. The bonds of a ring, the windows of a
     chain, the edges of a graph, the wires of one site at cost zero and arbitrary
-    sets of parties are geometries. The neighbourhood of a region $R$ is $R$
-    together with every cell meeting $R$; it is monotone in $R$, and so are its
-    iterates, which also increase with the number of iterations. The cells
-    contained in a region $D$ form a geometry on $D$.
+    sets of parties are geometries. The neighbourhood $\mathcal N(R)$ of a region
+    $R$ is $R$ together with every cell meeting $R$, so $R\subseteq\mathcal N(R)$.
+    The cells contained in a region $D$ form a geometry on $D$.
 \end{definition}
+
+\begin{lemma}[Monotonicity of neighbourhoods]
+    \label{lem:circuits_neighbourhood_mono}
+    \lean{QuantumCircuit.Geometry.neighbourhood_mono,
+        QuantumCircuit.Geometry.iterate_neighbourhood_mono}
+    \leanok
+    \uses{def:circuits_geometry}
+    If $R\subseteq R'$ then $\mathcal N(R)\subseteq\mathcal N(R')$, and if moreover
+    $m\leq n$ then $\mathcal N^m(R)\subseteq\mathcal N^n(R')$.
+\end{lemma}
+\begin{proof}\leanok
+    A site of $\mathcal N(R)$ lies in $R\subseteq R'$ or in a cell meeting $R$, which
+    then meets $R'$. The second statement follows by induction on $n$: if
+    $m\leq n$ then
+    $\mathcal N^m(R)\subseteq\mathcal N^n(R')\subseteq\mathcal N^{n+1}(R')$, and
+    if $m=n+1$ then $\mathcal N^{n+1}(R)=\mathcal N(\mathcal N^n(R))\subseteq
+    \mathcal N(\mathcal N^n(R'))$ by the first statement.
+\end{proof}
 
 \begin{definition}[Gate families and interpretations]
     \label{def:circuits_gate_family}
@@ -208,7 +223,15 @@ and each Kraus operator is a product of local entries over the blocks.
 \end{theorem}
 \begin{proof}\leanok
     Induction on $c$; the branches of the composite are rearranged by the
-    associativity of dependent pairs, and the double sum over $(p,q)$ factors.
+    associativity of dependent pairs, which gives $K_{(p,q)}=K^{k_p}_qK^c_p$. For a
+    continuation $c'$ independent of $p$,
+    \begin{align}
+        \sum_{p,q}K'_qK_p\,\rho\,(K'_qK_p)^\dagger
+        &=\sum_qK'_q\Bigl(\sum_pK_p\rho K_p^\dagger\Bigr)K'^\dagger_q,
+        \notag
+    \end{align}
+    the map of $c'$ applied to the map of $c$. The empty circuit has the single
+    Kraus operator $1$.
 \end{proof}
 
 \section{Costs}
@@ -277,8 +300,16 @@ and each Kraus operator is a product of local entries over the blocks.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:circuits_layer_tp, lem:kraus_family_channel}
-    By induction the Heisenberg picture fixes the identity: the continuations fix
-    it, and then so does the first layer by Theorem~\ref{thm:circuits_layer_tp}.
+    By induction the Heisenberg picture fixes the identity. For a circuit that
+    starts with a layer $L$ with Kraus operators $K_i$ and continues with $c_i$,
+    \begin{align}
+        \sum_iK_i^\dagger\Bigl(\sum_pK^{c_i\dagger}_p\,1\,K^{c_i}_p\Bigr)K_i
+        &=\sum_iK_i^\dagger K_i=1,
+        \notag
+    \end{align}
+    by the induction hypothesis in the middle and Theorem~\ref{thm:circuits_layer_tp}
+    at the end. Then $\sum_pK_p^\dagger K_p=1$ for the branches $p$ of the
+    circuit.
 \end{proof}
 
 \begin{theorem}[Backward light cone of a circuit]
@@ -296,7 +327,7 @@ and each Kraus operator is a product of local entries over the blocks.
     $T$ is the depth.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:circuits_layer_light_cone}
+    \uses{thm:circuits_layer_light_cone, lem:circuits_neighbourhood_mono}
     Induction on the circuit. For an unbranched circuit the Heisenberg picture is
     that of the first layer applied to that of the common continuation, and
     Theorem~\ref{thm:circuits_layer_light_cone} applies. If every cell has positive
