@@ -12,6 +12,7 @@ from pathlib import Path
 
 import check_import_layers as layers
 import check_pass_through_declarations as forwarding
+from lean_import_syntax import strip_lean_comments
 
 
 class ImportLayerPolicyTests(unittest.TestCase):
@@ -100,6 +101,23 @@ class ImportLayerPolicyTests(unittest.TestCase):
         self.assertEqual(list(forwarding.pass_throughs_of_source(source)), [])
         self.assertEqual(list(forwarding.pass_throughs_of_source(
             'def text := "/-"\ntheorem real (x : T) : P x := Original.fact x\n')), ['real'])
+
+    def test_identifier_suffix_is_not_a_raw_string_opener(self) -> None:
+        for identifier in ["addr", "αr", "x_r", "x'r", "x1r"]:
+            with self.subTest(identifier=identifier):
+                # The escaped quote belongs to an ordinary string, even with
+                # no whitespace after the identifier. A raw-string misparse
+                # would expose the fake declaration or swallow the real one.
+                source = ('def text := ' + identifier + r'"escaped \"' + '\n'
+                          'theorem fake (x : T) : P x := Original.fact x\n"\n'
+                          'theorem real (x : T) : P x := Original.fact x\n')
+                self.assertEqual(strip_lean_comments(source), (source, None))
+                masked, error = strip_lean_comments(source, mask_strings=True)
+                self.assertIsNone(error)
+                self.assertIn(identifier + '"', masked)
+                self.assertNotIn('theorem fake', masked)
+                self.assertEqual(list(forwarding.pass_throughs_of_source(source)), ['real'])
+                self.assertEqual(layers.parse_module(source), ((), False))
 
     def test_import_modifiers_are_recognized(self) -> None:
         sources = {

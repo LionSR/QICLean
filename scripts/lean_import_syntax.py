@@ -44,7 +44,9 @@ def strip_lean_comments(source: str, *, mask_strings: bool = False) -> tuple[str
               (char := CHAR_LITERAL_RE.match(source, index))):
             output.append("' '" if mask_strings else char.group())
             index = char.end()
-        elif source[index] == "r" and (raw := RAW_STRING_START_RE.match(source, index)):
+        elif (source[index] == "r" and
+              (index == 0 or not (source[index - 1].isalnum() or source[index - 1] in "_'")) and
+              (raw := RAW_STRING_START_RE.match(source, index))):
             delimiter = '"' + (raw.group(1) or "")
             end = source.find(delimiter, raw.end())
             if end == -1:
