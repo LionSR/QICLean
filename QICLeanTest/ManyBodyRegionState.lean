@@ -76,7 +76,7 @@ omit [Fintype V] in
 example {A B : Finset V} (hAB : Disjoint A B)
     (a : Entropy.RegionConfig n A) (b : Entropy.RegionConfig n B) {v : V} (hv : v ∈ A) :
     (Entropy.regionUnionEquiv hAB).symm (a, b) ⟨v, Finset.mem_union_left B hv⟩ = a ⟨v, hv⟩ := by
-  simp only [Entropy.regionUnionEquiv, Equiv.coe_fn_symm_mk]
+  simp only [Entropy.regionUnionEquiv, ManyBody.regionUnionEquiv, Equiv.coe_fn_symm_mk]
   rw [dite_eq_left hv]
 
 end Compatibility

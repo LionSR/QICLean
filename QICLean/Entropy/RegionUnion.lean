@@ -46,31 +46,15 @@ theorem localLift_apply (D : Finset V) (K : Matrix (RegionConfig n D) (RegionCon
       if ∀ v ∉ D, σ v = τ v then K (fun v ↦ σ v) (fun v ↦ τ v) else 0 :=
   ManyBody.place_apply (X := fun v ↦ Fin (n v)) D K σ τ
 
-/-- Configurations of a disjoint union of regions are pairs of configurations. -/
-def regionUnionEquiv {X T : Finset V} (hXT : Disjoint X T) :
-    RegionConfig n (X ∪ T) ≃ RegionConfig n X × RegionConfig n T where
-  toFun σ := (fun v ↦ σ ⟨v.1, Finset.mem_union_left T v.2⟩,
-    fun v ↦ σ ⟨v.1, Finset.mem_union_right X v.2⟩)
-  invFun p v := if h : v.1 ∈ X then p.1 ⟨v.1, h⟩ else
-    p.2 ⟨v.1, (Finset.mem_union.mp v.2).resolve_left h⟩
-  left_inv σ := by
-    funext v
-    by_cases h : v.1 ∈ X <;> simp [h]
-  right_inv p := by
-    ext v
-    · simp [v.2]
-    · have : v.1 ∉ X := fun hv ↦ Finset.disjoint_left.mp hXT hv v.2
-      simp [this]
+/-- Configurations of a disjoint union of regions are pairs of configurations:
+`ManyBody.regionUnionEquiv` for the basis types `Fin (n v)`. -/
+abbrev regionUnionEquiv {X T : Finset V} (hXT : Disjoint X T) :
+    RegionConfig n (X ∪ T) ≃ RegionConfig n X × RegionConfig n T :=
+  ManyBody.regionUnionEquiv (β := fun v ↦ Fin (n v)) hXT
 
-omit [Fintype V] in
-@[simp] theorem regionUnionEquiv_apply_fst {X T : Finset V} (hXT : Disjoint X T)
-    (σ : RegionConfig n (X ∪ T)) (v : {v // v ∈ X}) :
-    (regionUnionEquiv hXT σ).1 v = σ ⟨v.1, Finset.mem_union_left T v.2⟩ := rfl
+export ManyBody (regionUnionEquiv_apply_fst)
 
-omit [Fintype V] in
-@[simp] theorem regionUnionEquiv_apply_snd {X T : Finset V} (hXT : Disjoint X T)
-    (σ : RegionConfig n (X ∪ T)) (v : {v // v ∈ T}) :
-    (regionUnionEquiv hXT σ).2 v = σ ⟨v.1, Finset.mem_union_right X v.2⟩ := rfl
+export ManyBody (regionUnionEquiv_apply_snd)
 
 /-- **Lifts of product operators on a disjoint union.** For disjoint regions `X` and `T`,
 `lift_{X ∪ T} (A ⊗ B) = lift_X A · lift_T B`. -/

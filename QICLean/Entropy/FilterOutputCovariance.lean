@@ -67,10 +67,10 @@ theorem localLift_relabel (D : Finset V) (D' : Finset V') (e : V ≃ V')
       localLift D' (reindex (regionConfigurationEquiv D D' e hD f)
         (regionConfigurationEquiv D D' e hD f) K) := by
   let R := regionConfigurationEquiv D D' e hD f
-  let C := complementConfigurationEquiv D D' e hD f
+  let C := complementConfigurationEquiv (X := fun v ↦ Fin (n v)) (X' := fun v ↦ Fin (n' v))
+    D D' e hD f
   ext σ τ
-  simp only [localLift, reindex_apply, submatrix_apply, Equiv.symm_symm,
-    kroneckerMap_apply, one_apply]
+  simp only [localLift, reindex_apply, submatrix_apply]
   change K (R.symm ((cutEquiv n' D') σ).1) (R.symm ((cutEquiv n' D') τ).1) *
       (if C.symm ((cutEquiv n' D') σ).2 = C.symm ((cutEquiv n' D') τ).2 then 1 else 0) =
     K (R.symm ((cutEquiv n' D') σ).1) (R.symm ((cutEquiv n' D') τ).1) *
