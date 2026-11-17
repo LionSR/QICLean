@@ -300,3 +300,22 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     of~\cite[proof of Lemma~4.1]{OpenAI2026AreaLaw}, there for one local
     dimension.
 \end{proof}
+
+\begin{corollary}[The commutant of the complement]
+    \label{cor:sites_commutant}
+    \lean{ManyBody.mem_supportedOperators_iff_forall_commute}
+    \leanok
+    \uses{def:sites_supported}
+    An operator lies in $\mathcal A_D$ if and only if it commutes with every
+    element of $\mathcal A_{V\setminus D}$.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{lem:sites_supported_commute, lem:sites_supported_mono,
+        thm:sites_region_expectation_localization, thm:sites_region_expectation}
+    Operators on disjoint regions commute
+    (Lemma~\ref{lem:sites_supported_commute}). Conversely, if $A$ commutes
+    with $\mathcal A_{V\setminus D}$, it commutes in particular with every
+    unitary supported on a site $y\notin D$, so
+    Theorem~\ref{thm:sites_region_expectation_localization} with
+    $\varepsilon=0$ gives $A=E_D(A)\in\mathcal A_D$.
+\end{proof}

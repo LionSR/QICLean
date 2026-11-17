@@ -35,6 +35,8 @@ over signed translations, and the expectation is `ManyBody.regionExpectation`.
   conjugations by products of on-site unitaries.
 * `ManyBody.norm_sub_regionExpectation_le` — the localization error through on-site
   commutators.
+* `ManyBody.mem_supportedOperators_iff_forall_commute` — the operators supported on a region
+  are exactly those commuting with every operator supported on its complement.
 -/
 
 open Matrix
@@ -501,6 +503,24 @@ theorem norm_sub_regionExpectation_le (K : Finset V) (B : Matrix (Config X) (Con
         have hN' : (Fintype.card ((v : V) → Label (X v)) : ℝ) ≠ 0 := by exact_mod_cast hN
         rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, ← mul_assoc, norm_inv,
           Complex.norm_natCast, inv_mul_cancel₀ hN', one_mul]
+
+/-- **The commutant of the complement.** An operator is supported on `D` exactly when it
+commutes with every operator supported on the complement of `D`. Source: OpenAI, *A
+two-dimensional area law from a global spectral gap*, `03-quasilocal.tex`, lines 386–388,
+where an operator commuting with the complementary algebra is fixed by the expectation. -/
+theorem mem_supportedOperators_iff_forall_commute {D : Finset V}
+    {A : Matrix (Config X) (Config X) ℂ} :
+    A ∈ supportedOperators X D ↔ ∀ B ∈ supportedOperators X Dᶜ, Commute A B := by
+  refine ⟨fun hA _ hB ↦ commute_of_mem_supportedOperators_of_disjoint hA hB
+    disjoint_compl_right, fun h ↦ ?_⟩
+  have hle := norm_sub_regionExpectation_le D A 0 fun y hy U hU _ ↦ by
+    have hU' : U ∈ supportedOperators X Dᶜ :=
+      supportedOperators_mono (Finset.singleton_subset_iff.mpr (Finset.mem_compl.mpr hy)) hU
+    rw [(h U hU').eq, sub_self, norm_zero]
+    rfl
+  simp only [Pi.zero_apply, Finset.sum_const_zero, norm_le_zero_iff, sub_eq_zero] at hle
+  rw [hle]
+  exact regionExpectation_mem_supportedOperators D A
 
 end Average
 
