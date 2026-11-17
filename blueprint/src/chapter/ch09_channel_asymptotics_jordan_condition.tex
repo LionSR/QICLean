@@ -23,12 +23,13 @@
       Matrix.jordanConditionNumber_of_isEmpty, Matrix.one_le_l2_opNorm_mul_of_mul_eq_one}
     \leanok
     Diagonal matrices and finite sums of positive-dimensional Jordan blocks
-    are normalized Jordan matrices. Every member of $\mathcal C_X$ is
-    nonnegative, and $\kappa_X\le c$ for every $c\in\mathcal C_X$.
+    are normalized Jordan matrices. The family $\mathcal C_X$ is bounded
+    below, and $\kappa_X\le c$ for every $c\in\mathcal C_X$.
     If the underlying space has positive dimension and $\mathcal C_X$ is
-    nonempty, then $1\le\kappa_X$. For every $\varepsilon>0$ there is
-    $c\in\mathcal C_X$ with $c<\kappa_X+\varepsilon$.
-    On the zero-dimensional space, $\mathcal C_X=\{0\}$ and $\kappa_X=0$.
+    nonempty, then $1\le\kappa_X$. If $\mathcal C_X$ is nonempty, then
+    for every $\varepsilon>0$ there is $c\in\mathcal C_X$ with
+    $c<\kappa_X+\varepsilon$.
+    On the zero-dimensional space, $\kappa_X=0$.
 \end{theorem}
 \begin{proof}
     \leanok
@@ -60,8 +61,18 @@
     For $s>0$, $r/s$ is a lower bound for $\mathcal C_X$, hence
     $r/s\le\kappa_X$. For $r>0$, apply the same argument to $s/r$.
     If either is zero, use any member of the nonempty family.
-    The power statement follows by applying the similarity comparison to
-    each admissible representative before taking the infimum.
+    For each admissible $X=PJQ$ with $PQ=QP=I$, the similarity comparison gives
+    \begin{align}
+      (\lVert P\rVert_\infty\lVert Q\rVert_\infty)^{-1}
+        \lVert J^n\rVert_\infty
+      \le\lVert X^n\rVert_\infty
+      \le\lVert P\rVert_\infty\lVert Q\rVert_\infty
+        \lVert J^n\rVert_\infty.
+    \end{align}
+    Set $c=\lVert P\rVert_\infty\lVert Q\rVert_\infty>0$ and
+    $s=\lVert X^n\rVert_\infty$. The common value
+    $r=\lVert J^n\rVert_\infty$ therefore satisfies $r\le cs$ and $s\le cr$
+    for every $c\in\mathcal C_X$, so the uniform comparison applies.
 \end{proof}
 
 \begin{theorem}[Scaling after a supplied Jordan similarity]
