@@ -26,7 +26,8 @@ without the abbreviation `Site Λ`.
 `ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj`,
 `ManyBody.IsAdmissibleSupport.edist_le`, `ManyBody.IsAdmissibleSupport.card_le` and
 `ManyBody.IsAdmissibleSupport.reachable` are moved from TNLean,
-`TNLean/PEPS/AreaLaw/GraphPropagation.lean` and `TNLean/PEPS/AreaLaw/ZeroBoundary.lean` on branch `claude/f6-plane-domain-graph` at commit `38fc1aa67a7b1f09af1610cb629d2ad5648b1a24`.
+`TNLean/PEPS/AreaLaw/GraphPropagation.lean` and `TNLean/PEPS/AreaLaw/ZeroBoundary.lean`
+on branch `claude/f6-plane-domain-graph` at commit `38fc1aa67a7b1f09af1610cb629d2ad5648b1a24`.
 Changes: the first was `latticeL1Distance_le_one_of_domainGraph_adj` in `TNLean.PEPS.AreaLaw`;
 `card_le` applies `ManyBody.card_le_diamond_of_walks` directly, in place of TNLean's
 `card_support_le_diamond`.
