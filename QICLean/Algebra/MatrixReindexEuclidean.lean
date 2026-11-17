@@ -25,14 +25,12 @@ TNLean's `TNLean/Algebra/MatrixReindexGap.lean` (commit
 replaced by corollaries of the eigenspace transport.
 -/
 
-open scoped InnerProductSpace
-
 /-- A linear equivalence `f` with `T ∘ f = f ∘ S` carries each eigenspace of `S` onto the
 eigenspace of `T` for the same eigenvalue. -/
-theorem Module.End.eigenspace_eq_map_of_intertwine {E F : Type*} [AddCommGroup E] [Module ℂ E]
-    [AddCommGroup F] [Module ℂ F] (f : E ≃ₗ[ℂ] F) (S : Module.End ℂ E) (T : Module.End ℂ F)
-    (h : ∀ x, T (f x) = f (S x)) (μ : ℂ) :
-    Module.End.eigenspace T μ = (Module.End.eigenspace S μ).map (f : E →ₗ[ℂ] F) := by
+theorem Module.End.eigenspace_eq_map_of_intertwine {R E F : Type*} [CommRing R]
+    [AddCommGroup E] [Module R E] [AddCommGroup F] [Module R F] (f : E ≃ₗ[R] F)
+    (S : Module.End R E) (T : Module.End R F) (h : ∀ x, T (f x) = f (S x)) (μ : R) :
+    Module.End.eigenspace T μ = (Module.End.eigenspace S μ).map (f : E →ₗ[R] F) := by
   ext y
   rw [Submodule.mem_map_equiv, Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff]
   conv_lhs => rw [← f.apply_symm_apply y, h, ← map_smul]
@@ -77,7 +75,8 @@ theorem hasEigenvalue_toEuclideanLin_reindex_iff (e : ι ≃ κ) (H : Matrix ι 
   rw [Module.End.hasEigenvalue_iff, Module.End.hasEigenvalue_iff,
     eigenspace_toEuclideanLin_reindex, Ne, Ne, Submodule.map_eq_bot_iff]
 
-/-- The configuration isometry maps the kernel onto the kernel of the reindexed matrix. -/
+/-- The reindexing isometry `ψ ↦ ψ ∘ e.symm` maps the kernel onto the kernel of the reindexed
+matrix. -/
 theorem ker_toEuclideanLin_reindex_map (e : ι ≃ κ) (H : Matrix ι ι ℂ) :
     (LinearMap.ker (toEuclideanLin H)).map
         (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearEquiv.toLinearMap =
