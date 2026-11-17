@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.MarginalTails
+import QICLean.Algebra.PureStateExpectation
 import QICLean.Analysis.TraceHolder
 import QICLean.Analysis.TraceDistance
 
@@ -43,15 +44,8 @@ omit [DecidableEq α] [DecidableEq β] in
 /-- An expectation is the trace against the pure-state matrix. -/
 theorem inner_toEuclideanLin_eq_trace {m : Type*} [Fintype m] [DecidableEq m]
     (Y : Matrix m m ℂ) (ψ : EuclideanSpace ℂ m) :
-    ⟪ψ, toEuclideanLin Y ψ⟫_ℂ = (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)) * Y).trace := by
-  simp only [PiLp.inner_apply, RCLike.inner_apply, toLpLin_apply, mulVec, dotProduct, trace,
-    diag, mul_apply, vecMulVec_apply, Pi.star_apply]
-  conv_rhs => rw [Finset.sum_comm]
-  refine Finset.sum_congr rfl fun x _ ↦ ?_
-  rw [Finset.sum_mul]
-  refine Finset.sum_congr rfl fun y _ ↦ ?_
-  simp only [star_def]
-  ring
+    ⟪ψ, toEuclideanLin Y ψ⟫_ℂ = (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)) * Y).trace :=
+  Matrix.inner_toEuclideanLin_eq_trace Y ψ
 
 /-- The squared norm of `(L ⊗ 1) Ψ` is `Re Tr (ρ L* L)` for the marginal `ρ` of `Ψ`. -/
 theorem norm_kronecker_one_apply_sq (L : Matrix α α ℂ) (Ψ : EuclideanSpace ℂ (α × β)) :
