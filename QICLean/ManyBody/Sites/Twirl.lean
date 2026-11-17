@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.RegionExpectation
+import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
+import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic.NoncommRing
 
@@ -485,6 +487,27 @@ theorem mem_supportedOperators_iff_forall_commute {D : Finset V}
   simp only [Pi.zero_apply, Finset.sum_const_zero, norm_le_zero_iff, sub_eq_zero] at hle
   rw [hle]
   exact regionExpectation_mem_supportedOperators D A
+
+/-- The continuous functional calculus preserves the support of an operator. -/
+theorem cfc_mem_supportedOperators {D : Finset V} (f : ℝ → ℝ)
+    {A : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X D) :
+    cfc f A ∈ supportedOperators X D :=
+  mem_supportedOperators_iff_forall_commute.mpr fun _ hB ↦
+    (commute_of_mem_supportedOperators_of_disjoint hA hB disjoint_compl_right).cfc_real f
+
+open scoped MatrixOrder ComplexOrder in
+/-- The square root preserves the support of an operator. -/
+theorem sqrt_mem_supportedOperators {D : Finset V} {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X D) : CFC.sqrt A ∈ supportedOperators X D := by
+  rw [CFC.sqrt_eq_cfc]
+  exact mem_supportedOperators_iff_forall_commute.mpr fun _ hB ↦
+    (commute_of_mem_supportedOperators_of_disjoint hA hB disjoint_compl_right).cfc_nnreal _
+
+open scoped MatrixOrder ComplexOrder in
+/-- The absolute value preserves the support of an operator. -/
+theorem abs_mem_supportedOperators {D : Finset V} {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X D) : CFC.abs A ∈ supportedOperators X D :=
+  sqrt_mem_supportedOperators (mul_mem (star_mem hA) hA)
 
 end Average
 
