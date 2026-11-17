@@ -707,9 +707,14 @@ $f(A)=\int k_t(A)\,d\mu(t)$ and $f(T(A))=\int k_t(T(A))\,d\mu(t)$,
 with both integrands integrable. If $k_t(T(A))\leq T(k_t(A))$ almost
 everywhere, then $f(T(A))\leq T(f(A))$.
 \end{lemma}
-\begin{proof}
-Integrate the pointwise inequality and commute the continuous linear map
-with the integral.
+\begin{proof}\leanok
+Integration preserves the almost-everywhere operator inequality, and the
+finite-dimensional linear map $T$ is continuous. Thus
+\[
+ f(T(A))=\int k_t(T(A))\,d\mu(t)
+ \leq\int T(k_t(A))\,d\mu(t)
+ =T\!\left(\int k_t(A)\,d\mu(t)\right)=T(f(A)).
+\]
 \end{proof}
 
 \begin{lemma}[Integration on a finite spectrum]
@@ -721,9 +726,20 @@ $t\mapsto k_t(\lambda)$ is integrable at every eigenvalue $\lambda$ of $A$.
 Then $t\mapsto k_t(A)$ is integrable and
 $(\int k_t\,d\mu)(A)=\int k_t(A)\,d\mu$.
 \end{lemma}
-\begin{proof}
-Apply the spectral decomposition and commute its continuous linear map from
-the finite vector of eigenvalue values with integration.
+\begin{proof}\leanok
+Choose a unitary diagonalization
+$A=U\operatorname{diag}(\lambda_1,\ldots,\lambda_n)U^\dagger$. Then
+\[
+ k_t(A)=U\operatorname{diag}(k_t(\lambda_1),\ldots,k_t(\lambda_n))U^\dagger.
+\]
+The map $v\mapsto U\operatorname{diag}(v)U^\dagger$ is continuous and
+real linear. The finite vector $(k_t(\lambda_i))_i$ is integrable by the
+coordinate hypotheses. Commuting this map with integration gives
+\[
+ \int k_t(A)\,d\mu(t)
+ =U\operatorname{diag}\left(\int k_t(\lambda_i)\,d\mu(t)\right)_i U^\dagger
+ =\left(\int k_t\,d\mu\right)(A).
+\]
 \end{proof}
 
 \begin{corollary}[Jensen from scalar spectral integrals]
@@ -738,8 +754,38 @@ $f(x)=\int k_t(x)\,d\mu(t)$, one has $f(T(A))\leq T(f(A))$.
 \end{corollary}
 \begin{proof}\leanok
 \uses{lem:finite-spectrum-integral, lem:integral-jensen-assembly}
-Apply the finite-spectrum integration lemma at $A$ and $T(A)$, then apply
-integral assembly to the almost-everywhere kernel inequality.
+The finite-spectrum lemma gives the integrable representations
+\[
+ f(T(A))=\int k_t(T(A))\,d\mu(t),\qquad
+ f(A)=\int k_t(A)\,d\mu(t).
+\]
+Integral assembly applied to these representations and the assumed
+almost-everywhere kernel inequality gives the conclusion.
+\end{proof}
+
+\begin{theorem}[Jensen for integrable resolvent mixtures]
+\label{thm:resolvent-mixture-jensen}
+\lean{Matrix.cfc_jensen_of_resolvent_representation}
+\leanok
+Fix $1<p<2$ and put
+\[
+ k_s(x)=s^{p-1}\bigl(s^{-1}x+s(s+x)^{-1}-1\bigr),\qquad s>0.
+\]
+Let $T:\MN{d}\to\MN{d}$ be positive and subunital, let $A\geq0$,
+and let $s(t)>0$ almost everywhere for a positive measure $\mu$.
+Suppose both matrix-valued kernels below are integrable and a real function
+$f$ satisfies
+\[
+ f(A)=\int k_{s(t)}(A)\,d\mu(t),\qquad
+ f(T(A))=\int k_{s(t)}(T(A))\,d\mu(t).
+\]
+Then $f(T(A))\leq T(f(A))$. No finite-measure assumption is required.
+\end{theorem}
+\begin{proof}\leanok
+\uses{lem:operator_jensen_positive_map_rpow_integrand_convex, lem:integral-jensen-assembly}
+The positive-map integrand inequality gives
+$k_{s(t)}(T(A))\leq T(k_{s(t)}(A))$ almost everywhere.
+Apply integral assembly to the two assumed representations.
 \end{proof}
 
 \section{Source boundary for Wolf's unitary comparison}
