@@ -250,14 +250,65 @@ section Product
 
 variable [∀ v, Fintype (X v)]
 
+/-- The product operator `⊗_v m_v` of a family of on-site matrices, with matrix elements
+`∏_v m_v(σ_v, τ_v)`. -/
+def prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) : Matrix (Config X) (Config X) ℂ :=
+  Matrix.of fun σ τ ↦ ∏ v, m v (σ v) (τ v)
+
+omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
+@[simp]
+theorem prodOp_apply (m : (v : V) → Matrix (X v) (X v) ℂ) (σ τ : Config X) :
+    prodOp m σ τ = ∏ v, m v (σ v) (τ v) :=
+  rfl
+
+omit [∀ v, DecidableEq (X v)] in
+/-- Product operators multiply sitewise. -/
+theorem prodOp_mul (m m' : (v : V) → Matrix (X v) (X v) ℂ) :
+    prodOp m * prodOp m' = prodOp fun v ↦ m v * m' v := by
+  ext σ τ
+  simp only [prodOp, Matrix.mul_apply, Matrix.of_apply, Fintype.prod_sum,
+    Finset.prod_mul_distrib]
+
+omit [DecidableEq V] [∀ v, Fintype (X v)] in
+@[simp]
+theorem prodOp_one : prodOp (fun v ↦ (1 : Matrix (X v) (X v) ℂ)) = 1 := by
+  ext σ τ
+  simp only [prodOp, Matrix.of_apply, Matrix.one_apply]
+  by_cases h : σ = τ
+  · subst h
+    simp
+  · obtain ⟨v, hv⟩ := Function.ne_iff.mp h
+    rw [ite_eq_right h]
+    exact Finset.prod_eq_zero (Finset.mem_univ v) (ite_eq_right hv)
+
+omit [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+/-- The adjoint of a product operator is the product of the adjoints. -/
+theorem conjTranspose_prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) :
+    (prodOp m)ᴴ = prodOp fun v ↦ (m v)ᴴ := by
+  ext σ τ
+  simp [prodOp, Matrix.conjTranspose_apply]
+
+omit [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+theorem star_prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) :
+    star (prodOp m) = prodOp fun v ↦ star (m v) :=
+  conjTranspose_prodOp m
+
+/-- A product of unitaries is unitary. -/
+theorem prodOp_mem_unitary {m : (v : V) → Matrix (X v) (X v) ℂ}
+    (hm : ∀ v, m v ∈ unitary (Matrix (X v) (X v) ℂ)) :
+    prodOp m ∈ unitary (Matrix (Config X) (Config X) ℂ) := by
+  refine Matrix.mem_unitaryGroup_iff.mpr ?_
+  rw [star_prodOp, prodOp_mul]
+  simp only [fun v ↦ Unitary.mul_star_self_of_mem (hm v)]
+  exact prodOp_one
+
 /-- A product operator `⊗_v m_v` with `m_v = 1` outside `D` is supported on `D`. -/
-theorem prod_mem_supportedOperators {m : (v : V) → Matrix (X v) (X v) ℂ}
-    (hm : ∀ v ∉ D, m v = 1) :
-    (Matrix.of fun σ τ : Config X ↦ ∏ v, m v (σ v) (τ v)) ∈ supportedOperators X D := by
+theorem prodOp_mem_supportedOperators {m : (v : V) → Matrix (X v) (X v) ℂ}
+    (hm : ∀ v ∉ D, m v = 1) : prodOp m ∈ supportedOperators X D := by
   refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ ?_, fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
-  · rw [of_apply]
+  · rw [prodOp_apply]
     exact Finset.prod_eq_zero (Finset.mem_univ v) (by rw [hm v hv, one_apply_ne hne])
-  · simp only [of_apply]
+  · simp only [prodOp_apply]
     refine Finset.prod_congr rfl fun v _ ↦ ?_
     by_cases hv : v ∈ D
     · rw [h1 v hv, h2 v hv]
@@ -267,14 +318,14 @@ omit [∀ v, Fintype (X v)] in
 /-- The placement of a matrix unit of a region is the product of the matrix units at the sites
 of the region and the identity at the other sites. -/
 theorem place_single (a b : RegionConfig X D) :
-    place D (single a b (1 : ℂ)) = Matrix.of fun σ τ : Config X ↦
-      ∏ v, (if h : v ∈ D then single (a ⟨v, h⟩) (b ⟨v, h⟩) (1 : ℂ) else 1) (σ v) (τ v) := by
+    place D (single a b (1 : ℂ)) =
+      prodOp fun v ↦ if h : v ∈ D then single (a ⟨v, h⟩) (b ⟨v, h⟩) (1 : ℂ) else 1 := by
   ext σ τ
   have hf : ∀ v, (if h : v ∈ D then single (a ⟨v, h⟩) (b ⟨v, h⟩) (1 : ℂ) else 1) (σ v) (τ v) =
       if (if h : v ∈ D then a ⟨v, h⟩ = σ v ∧ b ⟨v, h⟩ = τ v else σ v = τ v) then 1 else 0 := by
     intro v
     by_cases h : v ∈ D <;> simp [h, single_apply, one_apply]
-  rw [place_apply, of_apply, Finset.prod_congr rfl fun v _ ↦ hf v, Fintype.prod_boole]
+  rw [place_apply, prodOp_apply, Finset.prod_congr rfl fun v _ ↦ hf v, Fintype.prod_boole]
   by_cases hout : ∀ v ∉ D, σ v = τ v
   · rw [ite_eq_left hout, single_apply]
     refine if_congr ⟨fun ⟨ha, hb⟩ v ↦ ?_, fun h ↦ ⟨funext fun v ↦ ?_, funext fun v ↦ ?_⟩⟩ rfl rfl
@@ -298,7 +349,7 @@ are the linear combinations of the product operators `⊗_v m_v` with `m_v = 1` 
 theorem supportedOperators_toSubmodule_eq_span (D : Finset V) :
     Subalgebra.toSubmodule (supportedOperators X D).toSubalgebra =
       Submodule.span ℂ {A | ∃ m : (v : V) → Matrix (X v) (X v) ℂ, (∀ v ∉ D, m v = 1) ∧
-        A = Matrix.of fun σ τ ↦ ∏ v, m v (σ v) (τ v)} := by
+        A = prodOp m} := by
   refine le_antisymm (fun A hA ↦ ?_) (Submodule.span_le.mpr ?_)
   · obtain ⟨K, rfl⟩ := exists_eq_place_of_mem_supportedOperators hA
     rw [matrix_eq_sum_single K, place_sum]
@@ -311,7 +362,54 @@ theorem supportedOperators_toSubmodule_eq_span (D : Finset V) :
       if h : v ∈ D then single (a ⟨v, h⟩) (b ⟨v, h⟩) (1 : ℂ) else 1,
       fun v hv ↦ dite_eq_right hv, place_single a b⟩)
   · rintro _ ⟨m, hm, rfl⟩
-    exact prod_mem_supportedOperators hm
+    exact prodOp_mem_supportedOperators hm
+
+/-- **Induction over product operators.** A property of the operators supported on `D` holds
+for all of them if it holds for the product operators `⊗_v m_v` with `m_v = 1` outside `D` and
+is closed under sums and scalar multiples. -/
+@[elab_as_elim]
+theorem supportedOperators_induction {D : Finset V}
+    {p : (A : Matrix (Config X) (Config X) ℂ) → A ∈ supportedOperators X D → Prop}
+    (prod : ∀ (m : (v : V) → Matrix (X v) (X v) ℂ) (hm : ∀ v ∉ D, m v = 1),
+      p (prodOp m) (prodOp_mem_supportedOperators hm))
+    (add : ∀ A B hA hB, p A hA → p B hB → p (A + B) (add_mem hA hB))
+    (smul : ∀ (c : ℂ) A hA, p A hA → p (c • A) (SMulMemClass.smul_mem c hA))
+    {A : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X D) : p A hA := by
+  have hiff (B : Matrix (Config X) (Config X) ℂ) : B ∈ supportedOperators X D ↔
+      B ∈ Submodule.span ℂ {A | ∃ m : (v : V) → Matrix (X v) (X v) ℂ, (∀ v ∉ D, m v = 1) ∧
+        A = prodOp m} := by
+    rw [← supportedOperators_toSubmodule_eq_span]
+    rfl
+  refine Submodule.span_induction (p := fun B _ ↦ ∀ hB : B ∈ supportedOperators X D, p B hB)
+    ?_ ?_ ?_ ?_ ((hiff A).mp hA) hA
+  · rintro _ ⟨m, hm, rfl⟩ _
+    exact prod m hm
+  · intro h0
+    have h := smul 0 _ _ (prod (fun _ ↦ 1) fun _ _ ↦ rfl)
+    simp only [zero_smul] at h
+    exact h
+  · intro B C hB hC ihB ihC _
+    exact add B C _ _ (ihB ((hiff B).mpr hB)) (ihC ((hiff C).mpr hC))
+  · intro c B hB ihB _
+    exact smul c B _ (ihB ((hiff B).mpr hB))
+
+/-- Two bilinear maps that agree on pairs of product operators agree on all pairs of supported
+operators. -/
+theorem eq_of_mem_supportedOperators₂ {M : Type*} [AddCommMonoid M] [Module ℂ M]
+    {D D' : Finset V}
+    (f g : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] M)
+    (h : ∀ m m' : (v : V) → Matrix (X v) (X v) ℂ, (∀ v ∉ D, m v = 1) → (∀ v ∉ D', m' v = 1) →
+      f (prodOp m) (prodOp m') = g (prodOp m) (prodOp m'))
+    {A B : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X D)
+    (hB : B ∈ supportedOperators X D') : f A B = g A B := by
+  induction hA using supportedOperators_induction with
+  | prod m hm =>
+    induction hB using supportedOperators_induction with
+    | prod m' hm' => exact h m m' hm hm'
+    | add B C _ _ ihB ihC => rw [map_add, map_add, ihB, ihC]
+    | smul c B _ ihB => rw [map_smul, map_smul, ihB]
+  | add A C _ _ ihA ihC => rw [map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, ihA, ihC]
+  | smul c A _ ihA => rw [map_smul, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, ihA]
 
 end Product
 
