@@ -3,14 +3,17 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.JordanConditionNumber
+import QICLean.Analysis.KroneckerOperatorNorm
 import QICLean.Analysis.MatrixSqrt
 import QICLean.Channel.SelfDual
 
 /-!
 # Detailed balance and transfer matrices
 
-This file records the matrix identities at the start of Wolf's proof that
-detailed balance controls the Jordan condition number.
+This file proves Wolf's detailed-balance bounds on the infimum-defined
+Jordan condition number, through square-root conjugation and unitary
+diagonalization. It also verifies the sandwich representation and fixed point.
 
 ## Main results
 
@@ -25,6 +28,11 @@ detailed balance controls the Jordan condition number.
 * `Matrix.PosDef.exists_sqrt_mul_unitary_diagonalization_of_detailedBalance`:
   Wolf's resulting diagonalizing similarity is `S¹/² U`, and its condition
   factor is `sqrt (‖S‖ ‖S⁻¹‖)`.
+
+* `jordanConditionNumber_transferMatrix_le_of_detailedBalance`: the actual
+  Jordan-condition infimum is at most `sqrt (‖Σ̂‖ ‖Σ̂⁻¹‖)`.
+* `jordanConditionNumber_transferMatrix_le_of_sigmaSandwich`: for the
+  square-root sandwich it is at most `sqrt (‖sigma‖ ‖sigma⁻¹‖)`.
 
 ## References
 
@@ -157,8 +165,8 @@ condition factor is exactly `sqrt (‖S‖ ‖S⁻¹‖)`.
 
 This is the chosen-basis statement used in Wolf's proof.  It does not define
 or replace Wolf's Jordan condition number `κ_T`, which is an infimum over
-Jordan changes of basis; the passage from this factor to `κ_T` remains a
-separate Jordan-API prerequisite.
+Jordan changes of basis; the comparison with that infimum is proved below in
+`PosDef.jordanConditionNumber_le_of_detailedBalance`.
 
 Source: Wolf (2012), Chapter 8, proof of the proposition “Jordan condition
 number and detailed balance”, lines 1288--1292 of
@@ -242,4 +250,93 @@ theorem PosDef.exists_sqrt_mul_unitary_diagonalization_of_detailedBalance
       CFC.norm_sqrt S⁻¹ hSinv_nonneg]
     exact (Real.sqrt_mul (norm_nonneg S) ‖S⁻¹‖).symm
 
+/-- Wolf's detailed-balance bound on the actual Jordan-condition infimum,
+without any attainment assumption. Source: Chapter 8, Proposition 8.5,
+lines 1276--1292 of `Notes/WolfNoteTexSource/ch08_distance_measures.tex`. -/
+theorem PosDef.jordanConditionNumber_le_of_detailedBalance
+    {n : Type*} [Fintype n] [DecidableEq n]
+    {S A : Matrix n n ℂ} (hS : S.PosDef) (hdb : S * Aᴴ = A * S) :
+    jordanConditionNumber A ≤ Real.sqrt (‖S‖ * ‖S⁻¹‖) := by
+  cases isEmpty_or_nonempty n with
+  | inl h =>
+    rw [jordanConditionNumber_of_isEmpty]
+    exact Real.sqrt_nonneg _
+  | inr h =>
+    obtain ⟨U, d, hA, hPQ, hQP, hnorm⟩ :=
+      hS.exists_sqrt_mul_unitary_diagonalization_of_detailedBalance hdb
+    exact (jordanConditionNumber_le A _ _ _ hPQ hQP
+      (isJordanMatrix_diagonal _) hA).trans_eq hnorm
+
 end Matrix
+
+/-- Wolf Proposition 8.5 under precisely Hermiticity preservation and
+positive-definite detailed balance; complete positivity is not required.
+Source: Chapter 8, lines 1276--1292. -/
+theorem jordanConditionNumber_transferMatrix_le_of_detailedBalance
+    (T Sigma : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (hT : ∀ X, T Xᴴ = (T X)ᴴ) (hSigma : (transferMatrix Sigma).PosDef)
+    (hdb : Sigma.comp (Matrix.traceAdjointMap T) = T.comp Sigma) :
+    Matrix.jordanConditionNumber (transferMatrix T) ≤
+      Real.sqrt (‖transferMatrix Sigma‖ * ‖(transferMatrix Sigma)⁻¹‖) :=
+  hSigma.jordanConditionNumber_le_of_detailedBalance
+    (transferMatrix_detailedBalance T Sigma hT hdb)
+
+/-- The condition factor of the verified sandwich representation is bounded
+by that of the positive-definite state. This uses the Kronecker identity,
+not a definitional identification of the two matrices.
+Source: Wolf Proposition 8.5, lines 1291--1292. -/
+theorem conditionFactor_transferMatrix_sigmaSandwich_le
+    (sigma : Matrix (Fin D) (Fin D) ℂ) (hsigma : sigma.PosDef) :
+    ‖transferMatrix (unitaryConjLM (CFC.sqrt sigma))‖ *
+        ‖(transferMatrix (unitaryConjLM (CFC.sqrt sigma)))⁻¹‖ ≤
+      ‖sigma‖ * ‖sigma⁻¹‖ := by
+  by_cases hD : D = 0
+  · subst D
+    have ht : transferMatrix (unitaryConjLM (CFC.sqrt sigma)) = 0 := Subsingleton.elim _ _
+    have hs : sigma = 0 := Subsingleton.elim _ _
+    rw [ht, norm_zero, zero_mul, hs, norm_zero, zero_mul]
+  have : NeZero D := ⟨hD⟩
+  let R := CFC.sqrt sigma
+  have hrep : transferMatrix (unitaryConjLM R) = Rᵀ ⊗ₖ R := by
+    rw [(transferMatrix_sigmaSandwich_eq_kronecker_and_posDef sigma hsigma).1]
+    congr 1
+    ext i j
+    have h := congr_fun (congr_fun (Matrix.conjTranspose_cfc_sqrt sigma) j) i
+    exact h
+  have hR : ‖R‖ * ‖R‖ = ‖sigma‖ := by
+    rw [show R = CFC.sqrt sigma from rfl, CFC.norm_sqrt sigma hsigma.posSemidef.nonneg]
+    exact Real.mul_self_sqrt (norm_nonneg _)
+  have hRi : ‖R⁻¹‖ * ‖R⁻¹‖ = ‖sigma⁻¹‖ := by
+    have hi : R⁻¹ = CFC.sqrt sigma⁻¹ := by
+      simpa [R, Matrix.nonsing_inv_eq_ringInverse] using
+        (CFC.sqrt_ringInverse (a := sigma)).symm
+    have hn : 0 ≤ sigma⁻¹ := by
+      rw [Matrix.nonsing_inv_eq_ringInverse]
+      exact hsigma.isStrictlyPositive.ringInverse.nonneg
+    rw [hi, CFC.norm_sqrt sigma⁻¹ hn]
+    exact Real.mul_self_sqrt (norm_nonneg _)
+  change ‖transferMatrix (unitaryConjLM R)‖ *
+    ‖(transferMatrix (unitaryConjLM R))⁻¹‖ ≤ _
+  rw [hrep, Matrix.inv_kronecker, ← Matrix.transpose_nonsing_inv]
+  calc
+    ‖Rᵀ ⊗ₖ R‖ * ‖(R⁻¹)ᵀ ⊗ₖ R⁻¹‖ ≤
+        (‖Rᵀ‖ * ‖R‖) * (‖(R⁻¹)ᵀ‖ * ‖R⁻¹‖) :=
+      mul_le_mul (Matrix.l2_opNorm_kronecker_le _ _) (Matrix.l2_opNorm_kronecker_le _ _)
+        (norm_nonneg _) (by positivity)
+    _ = ‖sigma‖ * ‖sigma⁻¹‖ := by rw [Matrix.l2_opNorm_transpose,
+        Matrix.l2_opNorm_transpose, hR, hRi]
+
+/-- The fixed-point specialization of Wolf Proposition 8.5:
+`κ_T ≤ sqrt(κ(sigma))`. The fixed-point identity itself follows from
+`fixedPoint_of_detailedBalance_sigmaSandwich` when `T*(1) = 1`.
+Source: Chapter 8, lines 1283--1292. -/
+theorem jordanConditionNumber_transferMatrix_le_of_sigmaSandwich
+    (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
+    (sigma : Matrix (Fin D) (Fin D) ℂ) (hsigma : sigma.PosDef)
+    (hT : ∀ X, T Xᴴ = (T X)ᴴ)
+    (hdb : (unitaryConjLM (CFC.sqrt sigma)).comp (Matrix.traceAdjointMap T) =
+      T.comp (unitaryConjLM (CFC.sqrt sigma))) :
+    Matrix.jordanConditionNumber (transferMatrix T) ≤ Real.sqrt (‖sigma‖ * ‖sigma⁻¹‖) := by
+  exact (jordanConditionNumber_transferMatrix_le_of_detailedBalance T _ hT
+    (transferMatrix_sigmaSandwich_eq_kronecker_and_posDef sigma hsigma).2 hdb).trans
+      (Real.sqrt_le_sqrt (conditionFactor_transferMatrix_sigmaSandwich_le sigma hsigma))
