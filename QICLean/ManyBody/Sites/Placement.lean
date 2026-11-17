@@ -25,6 +25,7 @@ preserves the operator norm, and reflects the order.
 
 * `ManyBody.place` — the placement `K ↦ K ⊗ 1` of a regional matrix.
 * `ManyBody.placeHom` — the placement as a `*`-homomorphism.
+* `ManyBody.prodOp` — the product operator `⊗_v m_v` of on-site matrices.
 
 ## Implementation notes
 
@@ -44,6 +45,9 @@ its restriction to the region.
 * `ManyBody.place_mem_supportedOperators`, `ManyBody.exists_eq_place_of_mem_supportedOperators`,
   `ManyBody.range_placeHom` — the placed matrices are the supported operators.
 * `ManyBody.place_injective`, `ManyBody.norm_place`, `ManyBody.norm_place_le`.
+* `ManyBody.supportedOperators_toSubmodule_eq_span`, `ManyBody.supportedOperators_induction`,
+  `ManyBody.eq_of_mem_supportedOperators₂` — supported operators are spanned by product
+  operators, with the induction principle and the extension of bilinear identities.
 * `ManyBody.posSemidef_place`, `ManyBody.posSemidef_place_iff`, `ManyBody.place_le_place_iff`.
 -/
 

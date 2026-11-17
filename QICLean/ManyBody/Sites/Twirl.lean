@@ -39,6 +39,8 @@ over signed translations, and the expectation is `ManyBody.regionExpectation`.
   commutators.
 * `ManyBody.mem_supportedOperators_iff_forall_commute` — the operators supported on a region
   are exactly those commuting with every operator supported on its complement.
+* `ManyBody.cfc_mem_supportedOperators`, `ManyBody.sqrt_mem_supportedOperators`,
+  `ManyBody.abs_mem_supportedOperators` — the functional calculus preserves the support.
 -/
 
 open Matrix

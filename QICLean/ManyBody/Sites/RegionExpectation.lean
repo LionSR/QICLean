@@ -30,10 +30,15 @@ in the proofs of `ManyBody.regionExpectation_one` and `ManyBody.trace_regionExpe
 ## Main definitions
 
 * `ManyBody.regionExpectation` — the normalized partial trace onto a region.
+* `ManyBody.regionExpectationLM`, `ManyBody.regionExpectationCLM` — its linear and continuous
+  linear forms.
 
 ## Main results
 
 * `ManyBody.regionExpectation_apply` — the entries of the region expectation.
+* `ManyBody.regionExpectationLM_isKrausCPTP` — it is a trace-preserving completely positive map.
+* `ManyBody.norm_sub_regionExpectation_le_two_mul_norm_sub` — `‖A - E_D A‖ ≤ 2 ‖A - A₀‖` for
+  `A₀` supported on `D`.
 * `ManyBody.regionExpectation_mem_supportedOperators` — its values are supported on the
   region.
 * `ManyBody.regionExpectation_mul_mul` — `E_D(B A C) = B E_D(A) C` for `B` and `C`
