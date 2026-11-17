@@ -106,13 +106,8 @@ theorem IsUnitary.isTP [DecidableEq β] {K : KrausFamily α β} (h : K.IsUnitary
 
 /-- A trace-preserving Kraus family is a quantum channel. -/
 theorem isKrausCPTP_map [DecidableEq β] {K : KrausFamily α β} (h : K.IsTP) :
-    IsKrausCPTP K.map := by
-  let e := Fintype.equivFin K.Index
-  refine ⟨Fintype.card K.Index, fun j ↦ K.op (e.symm j), fun ρ ↦ ?_, ?_⟩
-  · rw [map_apply]
-    exact (e.symm.sum_comp fun i ↦ K.op i * ρ * (K.op i)ᴴ).symm
-  · rw [← h, effect]
-    exact e.symm.sum_comp fun i ↦ (K.op i)ᴴ * K.op i
+    IsKrausCPTP K.map :=
+  Matrix.rectangularKrausMap_isKrausCPTP K.op h
 
 /-- A trace-preserving Kraus family preserves the trace. -/
 theorem trace_map {K : KrausFamily α β} (h : K.IsTP) (ρ : Matrix α α ℂ) :
