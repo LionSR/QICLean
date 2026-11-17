@@ -96,8 +96,8 @@ def IsUnitary [DecidableEq β] (K : KrausFamily α β) : Prop :=
 
 omit [Fintype α] in
 theorem IsTP.isTraceNonincreasing {K : KrausFamily α β} (h : K.IsTP) :
-    K.IsTraceNonincreasing :=
-  le_of_eq h
+    K.IsTraceNonincreasing := by
+  rw [IsTraceNonincreasing, h]
 
 theorem IsUnitary.isTP [DecidableEq β] {K : KrausFamily α β} (h : K.IsUnitary) : K.IsTP := by
   obtain ⟨⟨u⟩, hK⟩ := h
