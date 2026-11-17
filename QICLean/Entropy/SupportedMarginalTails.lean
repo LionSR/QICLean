@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Entropy.MarginalTails
 import QICLean.Algebra.L2OpNormReindex
+import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.Support
 
 /-!
@@ -40,6 +41,10 @@ open Complex Matrix
 open scoped InnerProductSpace ComplexOrder Kronecker Matrix.Norms.L2Operator
 
 namespace Entropy
+
+/- `crossingTerms` is `ManyBody.crossingTerms`, exported under its former name until step 4.0
+of the many-body plan, when its callers use the Sites name. -/
+export ManyBody (crossingTerms)
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
@@ -400,12 +405,6 @@ end Decomposition
 section Main
 
 variable {ι : Type*} [Fintype ι]
-
-/-- The terms whose designated support meets both sides of the cut.
-Area-law manuscript, Lemma 3.1, `02-initial.tex`, lines 47–48. -/
-noncomputable def crossingTerms (D : ι → Finset V) (B : Finset V) : Finset ι := by
-  classical
-  exact Finset.univ.filter fun i ↦ (∃ v ∈ D i, v ∈ B) ∧ ∃ v ∈ D i, v ∉ B
 
 /-- The dimension `d_i = ∏_{v ∈ D_i} dim 𝓗_v` of a designated support.
 Area-law manuscript, Lemma 3.1, `02-initial.tex`, line 51. -/

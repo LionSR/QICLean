@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{The Domain of Quadratic Inverse-Power Perspectives}
+\author{}
+\date{2026-11-16}
+\begin{document}
+\maketitle
+\gapnote{false-source}{resolved}
+
+\section{The printed assertion}
+Wolf's Corollary~5.4(1), on printed page~86, asserts joint operator convexity
+of $LR^{-\alpha}L$ for $0\leq\alpha\leq1$, on ``positive $L$ and Hermitian
+$R$''.\footnote{The PDF is
+\path{Notes/WolfNotePDF/ch05_operator_inequalities.pdf}.
+The local transcription,
+\path{Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex}, lines 917--933,
+already says positive $R$, without recording the discrepancy.}
+The proof invokes Theorem~5.14 with $g(R)=R^\alpha$, and that theorem requires
+$g(R)$ positive and invertible.
+
+\section{The point at issue}
+Hermitian denominators are insufficient even for ordinary inverses. In dimension
+one, put $\alpha=1$, $L_1=L_2=1$, $R_1=-1$, $R_2=-2$, and give both points
+weight $1/2$. The mixed value is $-2/3$, while the average endpoint value is
+$-3/4$. Convexity would require $-2/3\leq-3/4$, which is false.
+For nonintegral exponents, real powers of general Hermitian matrices also need
+an additional convention.
+
+Even replacing Hermitian by positive semidefinite is insufficient if negative
+powers at zero are assigned zero. With $L_1=L_2=R_2=1$ and $R_1=0$,
+the mixed value at equal weights is $2$, whereas the average endpoint value is
+$1/2$. These are domain issues, independent of noncommutativity.
+
+\section{The corrected statement}
+For $R>0$ and arbitrary rectangular $L$, the map
+$(L,R)\mapsto L^\dagger R^{-\alpha}L$ is jointly operator convex for every
+$\alpha\in[0,1]$. It also satisfies the corresponding finite probability-mixture
+inequality.\footnote{The declarations are
+\leanid{Matrix.conjTranspose_rpow_neg_mul_convex} and
+\leanid{Matrix.sum_conjTranspose_rpow_neg_mul_le}.}
+No positivity, Hermitian, or invertibility assumption is imposed on $L$.
+For Hermitian $L$, this recovers $LR^{-\alpha}L$.
+
+More generally, an affine numerator $h$ and an operator-concave positive definite
+denominator $g$ on a convex domain give an operator-convex map
+$X\mapsto h(X)^\dagger g(X)^{-1}h(X)$.\footnote{This is
+\leanid{Matrix.convexOn_affine_quadraticPerspective}; the independent-numerator
+form is \leanid{Matrix.convexOn_quadraticPerspective}.}
+The proof sums positive Schur-complement block matrices, adds the positive
+remainder in the denominator block, and takes its Schur complement.
+Applying this result to $g(R)=R^\alpha$ proves the corrected corollary.
+
+\section{Disposition}
+The printed domain is false; the positive definite denominator restores the
+source's proof route. The corrected quadratic result is proved, including all
+exponent and mixing endpoints. For $\alpha=0$, singular denominators are also
+possible, but no extension for positive $\alpha$ follows from this endpoint.
+Theorem~5.14 for general operator convex or operator antitone functions, and
+Corollary~5.4(2--3), remain separate open obligations. They are not marked as
+proved by this quadratic specialization.
+\end{document}

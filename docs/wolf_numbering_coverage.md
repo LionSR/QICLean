@@ -27,15 +27,16 @@ Kraus-span characterization of primitive channels is formalized here.
 The August 29, 2026 audit covers all 153 literal lemma, proposition, theorem,
 and corollary environments in the transcribed Wolf chapters. Definitions and
 examples are outside this named-result count. After the positive-map
-formalizations of Theorems 6.2 and 6.5 and Corollary 6.3, the dispositions
-are: 84 exact, 15 corrected or otherwise dispositioned, 4 partial-packaging, 6
+formalizations of Theorems 6.2 and 6.5 and Corollary 6.3 and the November 16
+detailed-balance infimum assembly, the dispositions are:
+85 exact, 15 corrected or otherwise dispositioned, 3 partial-packaging, 6
 partial-scope, 2 obstructed, and 42 open. Fourteen of the 15
 corrected/dispositioned entries have an implemented corrected theorem; the
 remaining entry is a documented disposition rather than a replacement
-declaration. Thus 99 of the 153 named environments (64.7%) are exact or
-dispositioned, while 98 have an implemented exact or corrected theorem. There
-are 54 audit-unresolved environments (4 partial-packaging + 6 partial-scope + 2
-obstructed + 42 open), and 55 do not have an implemented exact or corrected
+declaration. Thus 100 of the 153 named environments (65.4%) are exact or
+dispositioned, while 99 have an implemented exact or corrected theorem. There
+are 53 audit-unresolved environments (3 partial-packaging + 6 partial-scope + 2
+obstructed + 42 open), and 54 do not have an implemented exact or corrected
 theorem.
 
 Here "partial-packaging" means that substantial clauses or equation-level
@@ -996,6 +997,45 @@ The complete-environment tally above records the historical August audit.
 - `SchurComplement.wolf_condition_three_not_sufficient` records the scalar
   counterexample to the uncorrected condition. The correction is documented in
   `docs/paper-gaps/wolf_schur_complement_tfae.tex`.
+
+### Theorem 5.14 and Corollary 5.4(1) — QUADRATIC CASE ON THE INVERTIBLE DOMAIN
+
+- `Matrix.convexOn_quadraticPerspective` proves joint operator convexity of
+  `Lᴴ * (g R)⁻¹ * L` for an operator-concave, positive definite denominator
+  on a convex domain. The numerator is arbitrary and may be rectangular.
+  `Matrix.convexOn_affine_quadraticPerspective` allows an arbitrary affine
+  numerator depending on the same parameters as the concave denominator.
+- `Matrix.sum_conjTranspose_inv_mul_le` proves the finite weighted inequality
+  whenever the positive definite denominator majorizes the weighted sum of
+  positive definite denominators. Weights are nonnegative, without normalization.
+- `Matrix.conjTranspose_rpow_neg_mul_convex` and
+  `Matrix.convexOn_conjTranspose_rpow_neg_mul` prove Corollary 5.4(1) for
+  positive definite `R`, all `α ∈ [0,1]`, and arbitrary rectangular `L`.
+  `Matrix.sum_conjTranspose_rpow_neg_mul_le` gives finite probability mixtures.
+- The PDF prints Hermitian `R`, unlike the transcription's positive `R`.
+  The printed claim fails already for scalar inverses at `R=-1,-2`.
+  The corrected inverse domain and the distinction from the still-open general-function
+  Theorem 5.14 are documented in
+  `docs/paper-gaps/wolf_ch5_quadratic_perspective_domain.tex`.
+  Corollary 5.4(2–3) and the full named environment remain open. No aggregate
+  environment count is changed by this clause-level result.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines 849–933.
+
+### Corollary 5.5(1,3) — TWO-FACTOR TENSOR POWERS
+
+- `Matrix.rpow_kronecker_rpow_concave` proves joint operator concavity for
+  `x,y ≥ 0`, `x+y ≤ 1`, on positive semidefinite pairs of the same size.
+- `Matrix.rpow_kronecker_rpow_convex` proves joint operator convexity for
+  `x ∈ [1,2]`, `y ∈ [1-x,0]`, with a positive semidefinite first input and
+  positive definite second input. This includes `x=1+α`, `y=-αβ` for
+  `α,β ∈ [0,1]`. The inverse domain follows the clarification in
+  `docs/paper-gaps/wolf_ch5_lieb_convexity_domain.tex`.
+- `Matrix.vec_transpose_kronecker_quadratic` proves Equation 5.48 for arbitrary
+  complex matrices. Testing every vector transfers the existing trace results
+  to the operator inequalities; no commutation assumption is added.
+- The arbitrary multi-factor assertion in Corollary 5.5(2) remains open.
+  The named environment is therefore still partial.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines 939–959.
 
 ### Theorem 5.15, Equation 5.47 (Ando--Lieb) — CONCAVE REGION AND CONVEX INVERTIBLE DOMAIN FORMALIZED
 
@@ -2686,12 +2726,20 @@ source-shaped prerequisites are available:
 The remaining obligations for the norm of
 `T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, identification
 of the channel's largest-block data and nilpotence range, the explicit
-positive-exponent assembly, and a justified passage to Wolf's `κ_T` infimum. These are
-recorded in
+positive-exponent assembly, and invariance of the subperipheral Jordan-power
+norm across all admissible forms. The source-shaped infimum and its uniform
+limiting comparison are now proved in `QICLean.Analysis.JordanConditionNumber`;
+no minimizing basis is assumed.
+`Matrix.exists_pos_pow_similarity_jordanBlockDirectSum_bounds` additionally
+assembles the lower constant and the all-positive-exponent upper bound for
+supplied genuine block data and a supplied similarity.
+`Matrix.pow_eq_zero_of_similarity_jordanBlockDirectSum_maximal_zero` handles
+zero maximal modulus from the largest block dimension onward.
+The remaining channel obligations are recorded in
 `docs/paper-gaps/wolf_thm823_jordan_scaling_qualifications.tex`; issue #297
 therefore remains open.
 
-### Proposition 8.5, “Jordan condition number and detailed balance” (Equation 8.110) — PARTIAL-PACKAGING
+### Proposition 8.5, “Jordan condition number and detailed balance” (Equation 8.110) — FORMALIZED
 
 In `QICLean.Channel.DetailedBalance`:
 
@@ -2707,11 +2755,21 @@ In `QICLean.Channel.DetailedBalance`:
   `fixedPoint_of_detailedBalance_sigmaSandwich` verify the square-root
   sandwich specialization and Wolf's fixed-point observation.
 
-The final printed inequality `κ_T ≤ sqrt (κ(Σ̂))` is not yet marked
-formalized. It depends on issue #297's source-shaped Jordan condition number
-and a theorem bounding that infimum by the condition factor of each
-admissible Jordan basis. The current declarations retain Wolf's chosen basis
-instead of silently replacing its factor by `κ_T`; issue #298 remains open.
+* `jordanConditionNumber_transferMatrix_le_of_detailedBalance` proves
+  `κ_T ≤ sqrt (κ(Σ̂))` under Hermiticity preservation, positive definiteness
+  of `Σ̂`, and `Σ T* = T Σ`.
+* `jordanConditionNumber_transferMatrix_le_of_sigmaSandwich` proves
+  `κ_T ≤ sqrt (κ(σ))`; its tensor-norm calculation uses the verified
+  Kronecker representation and the inverse Kronecker identity.
+
+Both bounds use `Matrix.jordanConditionNumber`, the infimum of factors of
+all similarities to finite sums of positive-dimensional normalized Jordan
+blocks (up to coordinate permutation). The diagonalizing matrix is an
+admissible member, so comparison with the infimum requires no attainment
+assumption. No positivity or complete positivity assumption is imposed on
+`T`; the statements also handle dimension zero. The previously proved
+fixed-point observation supplies the `T*(1)=1` clause. This completes the
+mathematical obligations of #298 without closing or changing the GitHub issue.
 
 ### Theorem 8.24, “Asymptotic convergence II” (Equation 8.111) — CORRECTED FORM FORMALIZED
 

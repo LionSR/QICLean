@@ -159,6 +159,7 @@ import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockComparison
 import QICLean.Analysis.JordanBlockDirectSum
 import QICLean.Analysis.JordanBlockPower
+import QICLean.Analysis.JordanConditionNumber
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
 import QICLean.Analysis.KernelSpectralGap
@@ -277,6 +278,7 @@ import QICLean.Analysis.ProjectionQuadraticBound
 import QICLean.Analysis.ProjectionQuadraticBounds
 import QICLean.Analysis.ProjectionResidual
 import QICLean.Analysis.PureStateTraceDistance
+import QICLean.Analysis.QuadraticPerspective
 import QICLean.Analysis.QuadraticScalarShift
 import QICLean.Analysis.QuantitativeFilterIteration
 import QICLean.Analysis.QuantumNeymanPearson
@@ -448,6 +450,7 @@ import QICLean.Analysis.SurprisalProductMoment
 import QICLean.Analysis.TensorEnergyMinimum
 import QICLean.Analysis.TensorFamilyImage
 import QICLean.Analysis.TensorOperatorPower
+import QICLean.Analysis.TensorPowerConvexity
 import QICLean.Analysis.TensorProductWeights
 import QICLean.Analysis.TerminalFamilyReferenceTrimming
 import QICLean.Analysis.TraceCFC

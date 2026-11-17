@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.FilterMoment
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.RegionState
 
 /-!
 # Operators and states on a region of a finite tensor product
@@ -76,19 +76,34 @@ theorem localLift_eq_reindex (D : Finset V)
 
 attribute [eqns localLift_eq_reindex] localLift
 
-/-- The regional state `ρ_{φ,D} = Tr_{Dᶜ} |φ⟩⟨φ|`. -/
-noncomputable def regionState (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
+/-- The regional state, specialized from arbitrary finite basis types. The reduced body
+preserves legacy entrywise simplification after `ext`. -/
+noncomputable abbrev regionState (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
     Matrix (RegionConfig n D) (RegionConfig n D) ℂ :=
   partialTraceRight (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ))))
 
+/-- The equation for the dimension-indexed regional state, preserving legacy rewrites. -/
+theorem regionState_eq_partialTraceRight (D : Finset V)
+    (φ : EuclideanSpace ℂ (SiteConfig n)) :
+    regionState D φ = partialTraceRight
+      (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ)))) := rfl
+
+attribute [eqns regionState_eq_partialTraceRight] regionState
+
 /-- Regional pure-state matrices are Hermitian. -/
 theorem regionState_isHermitian (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
-    (regionState D φ).IsHermitian :=
-  (posSemidef_vecMulVec_self_star _).partialTraceRight.isHermitian
+    (regionState D φ).IsHermitian := ManyBody.regionState_isHermitian D φ
 
-/-- The entropy `S_Ω(D)` of the regional state of `Ω` on `D`. -/
-noncomputable def regionEntropy (D : Finset V) (Ω : EuclideanSpace ℂ (SiteConfig n)) : ℝ :=
+/-- The entropy of the regional state, specialized from arbitrary finite basis types. -/
+noncomputable abbrev regionEntropy (D : Finset V) (Ω : EuclideanSpace ℂ (SiteConfig n)) : ℝ :=
   vonNeumannEntropy (regionState D Ω) (regionState_isHermitian D Ω)
+
+/-- The equation for regional entropy, preserving legacy rewrites. -/
+theorem regionEntropy_eq_vonNeumannEntropy (D : Finset V)
+    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
+    regionEntropy D Ω = vonNeumannEntropy (regionState D Ω) (regionState_isHermitian D Ω) := rfl
+
+attribute [eqns regionEntropy_eq_vonNeumannEntropy] regionEntropy
 
 variable {D : Finset V}
 
@@ -160,16 +175,8 @@ theorem IsSupportedOn.mono {X : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D D' 
 /-- **Expectations of lifted operators.** `⟨φ, lift_D K φ⟩ = Tr (ρ_{φ,D} K)`. -/
 theorem inner_localLift (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
     (φ : EuclideanSpace ℂ (SiteConfig n)) :
-    ⟪φ, toEuclideanLin (localLift D K) φ⟫_ℂ = (regionState D φ * K).trace := by
-  rw [inner_toEuclideanLin_eq_trace, regionState, trace_partialTraceRight_mul]
-  have hv : vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ))) =
-      (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))).submatrix (cutEquiv n D).symm
-        (cutEquiv n D).symm := by
-    ext a b; simp [vecMulVec_apply]
-  rw [hv, localLift_eq_reindex, reindex_apply, Equiv.symm_symm,
-    ← trace_submatrix_equiv (cutEquiv n D).symm,
-    ← submatrix_mul_equiv _ _ _ (cutEquiv n D).symm]
-  simp
+    ⟪φ, toEuclideanLin (localLift D K) φ⟫_ℂ = (regionState D φ * K).trace :=
+  ManyBody.inner_place (X := fun v ↦ Fin (n v)) K φ
 
 /-- **Temporary** restatement of `mul_mem` in `ManyBody.supportedOperators`; the configuration
 `σ₀` is not used. -/
@@ -186,16 +193,9 @@ theorem inner_localLift_conj_eq {K : Matrix (RegionConfig n D) (RegionConfig n D
     (hcomm : K * regionState D φ = regionState D φ * K)
     (A : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
     ⟪φ, toEuclideanLin (localLift D K * localLift D A * localLift D K⁻¹) φ⟫_ℂ =
-      ⟪φ, toEuclideanLin (localLift D A) φ⟫_ℂ := by
-  rw [← localLift_mul, ← localLift_mul, inner_localLift, inner_localLift]
-  have h1 : K⁻¹ * regionState D φ * K = regionState D φ := by
-    rw [Matrix.mul_assoc, ← hcomm, ← Matrix.mul_assoc, nonsing_inv_mul _ hK, Matrix.one_mul]
-  calc (regionState D φ * (K * A * K⁻¹)).trace
-      = (K⁻¹ * regionState D φ * K * A).trace := by
-        rw [show K⁻¹ * regionState D φ * K * A = K⁻¹ * (regionState D φ * K * A) by
-          simp only [Matrix.mul_assoc], trace_mul_comm K⁻¹]
-        simp only [Matrix.mul_assoc]
-    _ = (regionState D φ * A).trace := by rw [h1]
+      ⟪φ, toEuclideanLin (localLift D A) φ⟫_ℂ :=
+  ManyBody.inner_place_conj_eq (X := fun v ↦ Fin (n v))
+    (D := D) (K := K) (φ := φ) hK hcomm A
 
 /-- The trace argument for an arbitrary operator supported on `D`. -/
 theorem inner_conj_eq_of_isSupportedOn {K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ}
