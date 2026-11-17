@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.ManyBody.Sites.Lattice.Diamond
 import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Int.Interval
@@ -22,10 +23,24 @@ namespace `ManyBody` in place of `TNLean.Lattice`; `domainGraph` is renamed `pla
 distinguish it from the path graph `lineDomainGraph` of a domain of `ℤ`; the sites are written `↥Λ`,
 without the abbreviation `Site Λ`.
 
+`ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj`,
+`ManyBody.IsAdmissibleSupport.edist_le`, `ManyBody.IsAdmissibleSupport.card_le` and
+`ManyBody.IsAdmissibleSupport.reachable` are moved from TNLean, `TNLean/PEPS/AreaLaw/GraphPropagation.lean` and `TNLean/PEPS/AreaLaw/ZeroBoundary.lean`
+on branch `claude/f6-plane-domain-graph` at commit `38fc1aa67a7b1f09af1610cb629d2ad5648b1a24`.
+Changes: the first was `latticeL1Distance_le_one_of_domainGraph_adj` in `TNLean.PEPS.AreaLaw`;
+`card_le` applies `ManyBody.card_le_diamond_of_walks` directly, in place of TNLean's
+`card_support_le_diamond`.
+
 ## Main definitions
 
 * `ManyBody.planeDomainGraph` — the induced nearest-neighbour graph.
 * `ManyBody.IsAdmissibleSupport`, `ManyBody.AdmissibleSupport` — the supports of range `R`.
+
+## Main results
+
+* `ManyBody.IsAdmissibleSupport.edist_le`, `ManyBody.IsAdmissibleSupport.card_le` — a support of
+  range `R` has graph diameter at most `R` and at most `1 + 2R(R + 1)` sites.
+* `ManyBody.IsAdmissibleSupport.reachable` — a support lies in one connected component.
 
 ## References
 
@@ -104,5 +119,39 @@ theorem isAdmissibleSupport_pair_of_adj {Λ : Finset (ℤ × ℤ)}
   simp only [IsAdmissibleSupport]
   simp_rw [exists_walk_length_le_iff_edist_le]
   simp [SimpleGraph.edist_le_one_iff_adj_or_eq, h, h.symm]
+
+/-- Adjacent sites of the induced domain graph have lattice distance at most one.
+Source: area law, `01-preliminaries.tex`, lines 81–84. -/
+theorem latticeL1Distance_le_one_of_planeDomainGraph_adj {Λ : Finset (ℤ × ℤ)} {x y : ↥Λ}
+    (hxy : (planeDomainGraph Λ).Adj x y) : latticeL1Distance x.1 y.1 ≤ 1 := by
+  simp only [planeDomainGraph] at hxy
+  unfold latticeL1Distance
+  rcases hxy with ⟨h1, h2 | h2⟩ | ⟨h1, h2 | h2⟩ <;> omega
+
+namespace IsAdmissibleSupport
+
+variable {Λ : Finset (ℤ × ℤ)} {R : ℕ} {X : Finset ↥Λ}
+
+/-- An admissible support has induced-graph diameter at most `R`.
+Source: area law, `eq:hamiltonian` and `03-quasilocal.tex`, line 16. -/
+theorem edist_le (hX : IsAdmissibleSupport Λ R X) :
+    ∀ x ∈ X, ∀ z ∈ X, (planeDomainGraph Λ).edist x z ≤ R := fun x hx z hz =>
+  (exists_walk_length_le_iff_edist_le Λ R x z).mp (hX.2 x hx z hz)
+
+/-- An admissible support has at most `v_R = 1 + 2R(R + 1)` sites.
+Source: area law, `eq:quasilocal-budget` (`03-quasilocal.tex`, lines 31–39). -/
+theorem card_le (hX : IsAdmissibleSupport Λ R X) : X.card ≤ 1 + 2 * R * (R + 1) :=
+  let ⟨a, ha⟩ := hX.1
+  card_le_diamond_of_walks Subtype.val X Subtype.val_injective
+    (fun _ _ => latticeL1Distance_le_one_of_planeDomainGraph_adj) a R (hX.2 a ha)
+
+/-- **Every admissible support lies in one connected component.**
+Source: area law, Lemma 2.2 (`lem:zero-boundary`). -/
+theorem reachable (hX : IsAdmissibleSupport Λ R X) {x y : ↥Λ} (hx : x ∈ X) (hy : y ∈ X) :
+    (planeDomainGraph Λ).Reachable x y :=
+  let ⟨w, _⟩ := hX.2 x hx y hy
+  ⟨w⟩
+
+end IsAdmissibleSupport
 
 end ManyBody

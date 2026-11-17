@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody.Sites.Lattice
 
 import QICLean.ManyBody.Sites.Lattice.Chain
+import QICLean.ManyBody.Sites.Lattice.Diamond
 import QICLean.ManyBody.Sites.Lattice.Edge
 import QICLean.ManyBody.Sites.Lattice.Line
 import QICLean.ManyBody.Sites.Lattice.Plane
