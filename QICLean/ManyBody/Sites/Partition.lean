@@ -18,8 +18,8 @@ product of functions of the blocks gives the product of the sums over each block
 This is the computation behind the locality of a layer of a circuit, whose Kraus operators are
 products of local entries over its cells and its remaining sites.
 
-The same module records the finiteness and decidability of a system glued from two families
-by `Sum.elim`, such as data qubits and ancillas, which are not found by unification.
+The same module records that a system glued from two families by `Sum.elim`, such as data
+qubits and ancillas, has finite basis types with decidable equality when both families do.
 
 ## Main definitions
 

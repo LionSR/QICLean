@@ -25,8 +25,9 @@ preservation, and the backward light cone.
     A geometry on $V$ is a set $\mathcal C$ of cells, each with a region
     $C_b\subseteq V$ and a cost $c_b\in\N$. The bonds of a ring, the windows of a
     chain, the edges of a graph, the wires of one site at cost zero and arbitrary
-    sets of parties are geometries. The neighbourhood $\mathcal N(R)$ of a region
-    $R$ is $R$ together with every cell meeting $R$, so $R\subseteq\mathcal N(R)$.
+    sets of parties are geometries. When there are finitely many cells, the
+    neighbourhood $\mathcal N(R)$ of a region $R$ is $R$ together with every cell
+    meeting $R$, so $R\subseteq\mathcal N(R)$.
     The cells contained in a region $D$ form a geometry on $D$.
 \end{definition}
 
@@ -36,7 +37,8 @@ preservation, and the backward light cone.
         QuantumCircuit.Geometry.iterate_neighbourhood_mono}
     \leanok
     \uses{def:circuits_geometry}
-    If $R\subseteq R'$ then $\mathcal N(R)\subseteq\mathcal N(R')$, and if moreover
+    For a geometry with finitely many cells, if $R\subseteq R'$ then
+    $\mathcal N(R)\subseteq\mathcal N(R')$, and if moreover
     $m\leq n$ then $\mathcal N^m(R)\subseteq\mathcal N^n(R')$.
 \end{lemma}
 \begin{proof}\leanok
@@ -204,7 +206,9 @@ and each Kraus operator is a product of local entries over the blocks.
     the Kraus operators of its layers, the first layer on the right. The map of the
     circuit is $\rho\mapsto\sum_pK_p\rho K_p^\dagger$ over all branches $p$, and its
     Heisenberg picture is $A\mapsto\sum_pK_p^\dagger AK_p$, which is the Heisenberg
-    picture of the first layer applied to those of the continuations.
+    picture of the first layer applied to those of the continuations. A finite
+    sequence of layers on one system, applied from the first, is an unbranched
+    circuit.
 \end{definition}
 
 \begin{theorem}[Composition]
@@ -322,18 +326,27 @@ and each Kraus operator is a product of local entries over the blocks.
     Let a circuit be unbranched with trace-preserving gates and onsite families, and
     let $A$ be supported on $R$. Then the Heisenberg picture of $A$ is supported on
     the backward light cone of $R$
-    \cite{BravyiHastingsVerstraete2006LiebRobinson}. If every cell has positive
-    cost, the backward light cone lies in the $T$-fold neighbourhood of $R$, where
+    \cite{BravyiHastingsVerstraete2006LiebRobinson}. If the geometry has finitely
+    many cells and every cell has positive cost, the backward light cone lies in the $T$-fold neighbourhood of $R$, where
     $T$ is the depth.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:circuits_layer_light_cone, lem:circuits_neighbourhood_mono}
+    \uses{thm:circuits_layer_light_cone, lem:circuits_neighbourhood_mono,
+        lem:circuits_layer_factorization}
     Induction on the circuit. For an unbranched circuit the Heisenberg picture is
     that of the first layer applied to that of the common continuation, and
     Theorem~\ref{thm:circuits_layer_light_cone} applies. If every cell has positive
     cost, a layer of depth $0$ has no cells and adds nothing, and a layer of depth
     $1$ adds at most the neighbourhood. Both hypotheses are needed: with feedback
     from a measurement far from $R$ the Heisenberg picture depends on the measured
-    site, and a family outside the light cone with effect different from the
-    identity leaves that effect in the Heisenberg picture.
+    site. Without trace preservation, in the factorization of
+    Lemma~\ref{lem:circuits_layer_factorization} the far factor is the effect
+    \begin{align}
+        \sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger K^{\mathrm{far}}_{i_F}&=E_F,
+        \notag
+    \end{align}
+    so $\sum_iK_i^\dagger(A_1\otimes1)K_i
+    =\bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger A_1K^{\mathrm{near}}_{i_N}\bigr)
+    \otimes E_F$, which is not supported on $D$ when $E_F$ is not a multiple of the
+    identity.
 \end{proof}
