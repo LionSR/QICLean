@@ -157,10 +157,8 @@ section Max
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 theorem trace_regionState (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
-    (regionState D φ).trace = ((‖φ‖ ^ 2 : ℝ) : ℂ) := by
-  rw [regionState, trace_partialTraceRight, trace_vecMulVec,
-    ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K, norm_cutVector]
-  simp
+    (regionState D φ).trace = ((‖φ‖ ^ 2 : ℝ) : ℂ) :=
+  ManyBody.trace_regionState D φ
 
 /-- **Stationary filters are clipped.** Let a feasible filter `K` on a region `D` maximize
 the output norm `‖A (K ⊗ 1) C w‖` among feasible filters, where `A` is a descending chain for
