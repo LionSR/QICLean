@@ -167,12 +167,16 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{theorem}[Supported operators are spanned by product operators]
     \label{thm:sites_product_span}
-    \lean{ManyBody.supportedOperators_toSubmodule_eq_span,
-        ManyBody.prod_mem_supportedOperators, ManyBody.place_single}
+    \lean{ManyBody.supportedOperators_toSubmodule_eq_span, ManyBody.prodOp,
+        ManyBody.prodOp_apply, ManyBody.prodOp_mul, ManyBody.prodOp_one,
+        ManyBody.conjTranspose_prodOp, ManyBody.prodOp_mem_unitary,
+        ManyBody.prodOp_mem_supportedOperators, ManyBody.place_single}
     \leanok
     \uses{thm:sites_place_range, lem:sites_place_hom}
     The algebra $\mathcal A_D$ is the linear span of the product operators
-    $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$.
+    $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$. Product operators
+    multiply sitewise, $(\bigotimes_vm_v)^*=\bigotimes_vm_v^*$, and a product of
+    unitaries is unitary.
 \end{theorem}
 \begin{proof}\leanok
     The matrix element of $\bigotimes_vm_v$ at $(\sigma,\tau)$ is
@@ -182,6 +186,22 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     is $K\otimes1=\sum_{a,b\in X_D}K_{ab}\,(E_{ab}\otimes1)$, and the placed
     matrix unit $E_{ab}\otimes1$ is the product operator with
     $m_v=E_{a_vb_v}$ for $v\in D$ and $m_v=1$ for $v\notin D$.
+\end{proof}
+
+\begin{corollary}[Induction over product operators]
+    \label{cor:sites_product_induction}
+    \lean{ManyBody.supportedOperators_induction, ManyBody.eq_of_mem_supportedOperators₂}
+    \leanok
+    \uses{thm:sites_product_span}
+    A property of the operators of $\mathcal A_D$ that holds for the product
+    operators $\bigotimes_vm_v$ with $m_v=1$ outside $D$ and is closed under sums and
+    scalar multiples holds for all of $\mathcal A_D$. In particular, two bilinear maps
+    that agree on pairs of such product operators, for $D$ and $D'$, agree on
+    $\mathcal A_D\times\mathcal A_{D'}$.
+\end{corollary}
+\begin{proof}\leanok
+    By Theorem~\ref{thm:sites_product_span}, $\mathcal A_D$ is the span of the product
+    operators; induct over the span, and for the bilinear maps, in each argument.
 \end{proof}
 
 \begin{lemma}[Norm and order under placement]
@@ -239,7 +259,11 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.posSemidef_regionExpectation, ManyBody.regionExpectation_mono,
         ManyBody.norm_regionExpectation_le, ManyBody.regionExpectation_zero,
         ManyBody.regionExpectation_add, ManyBody.regionExpectation_smul,
-        ManyBody.regionExpectation_sub, ManyBody.isHermitian_regionExpectation}
+        ManyBody.regionExpectation_sub, ManyBody.isHermitian_regionExpectation,
+        ManyBody.regionExpectationLM, ManyBody.regionExpectationLM_apply,
+        ManyBody.regionExpectationCLM, ManyBody.regionExpectationCLM_apply,
+        ManyBody.regionExpectationLM_isKrausCPTP,
+        ManyBody.norm_sub_regionExpectation_le_two_mul_norm_sub}
     \leanok
     \uses{def:sites_region_expectation, thm:sites_place_range, lem:sites_place_hom,
         thm:root_channel}
@@ -248,7 +272,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $E_D(BAC)=B\,E_D(A)\,C$ for all $B,C\in\mathcal A_D$ and $E_D(1)=1$, so it
     fixes $\mathcal A_D$ and $E_D\circ E_D=E_D$. It preserves the trace, maps
     positive semidefinite operators to positive semidefinite operators, is
-    monotone, and satisfies $\lVert E_D(A)\rVert\leq\lVert A\rVert$.
+    monotone, and satisfies $\lVert E_D(A)\rVert\leq\lVert A\rVert$. It is a
+    trace-preserving completely positive map, and
+    $\lVert A-E_D(A)\rVert\le2\lVert A-A_0\rVert$ for every $A_0\in\mathcal A_D$.
 \end{theorem}
 \begin{proof}\leanok
     By~(\ref{eq:sites_region_expectation}), $E_D(A)$ is a multiple of a placed
@@ -270,7 +296,13 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     the space $\mathcal H_X$ is zero. Hence $\sum_{y,y'}W_{yy'}^*W_{yy'}=1$, and
     a sum $\sum_pW_p^*AW_p$ with $\sum_pW_p^*W_p=1$ preserves positivity and does
     not increase the operator norm. The trace of the right side
-    of~(\ref{eq:sites_region_expectation}) is $c^{-1}\cdot c\Tr A$.
+    of~(\ref{eq:sites_region_expectation}) is $c^{-1}\cdot c\Tr A$. The operators
+    $W_{yy'}^*$ are Kraus operators of $E_D$: $W_{yy'}^*=W_{y'y}$, so
+    $\sum W_{yy'}W_{yy'}^*=\sum W_{y'y}^*W_{y'y}=1$. Finally, for $A_0\in\mathcal A_D$,
+    \begin{align*}
+        A-E_D(A)=(A-A_0)-E_D(A-A_0),
+    \end{align*}
+    and both terms have norm at most $\lVert A-A_0\rVert$.
 \end{proof}
 
 \begin{theorem}[Localization error through on-site commutators]
@@ -331,6 +363,22 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $\varepsilon=0$ gives $A=E_D(A)\in\mathcal A_D$.
 \end{proof}
 
+\begin{corollary}[Functional calculus preserves the support]
+    \label{cor:sites_cfc_support}
+    \lean{ManyBody.cfc_mem_supportedOperators, ManyBody.sqrt_mem_supportedOperators,
+        ManyBody.abs_mem_supportedOperators}
+    \leanok
+    \uses{cor:sites_commutant}
+    If $A\in\mathcal A_D$, then $f(A)\in\mathcal A_D$ for every real function $f$,
+    and $\sqrt A,\lvert A\rvert\in\mathcal A_D$.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{lem:sites_supported_commute}
+    $A$ commutes with $\mathcal A_{V\setminus D}$, hence so does every function of
+    $A$; apply Corollary~\ref{cor:sites_commutant}. For the absolute value,
+    $\lvert A\rvert=\sqrt{A^*A}$ with $A^*A\in\mathcal A_D$.
+\end{proof}
+
 \section{Regional pure states and relabelling}
 
 \begin{definition}[Regional state and entropy]
@@ -389,13 +437,17 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \lean{ManyBody.siteConfigurationEquiv, ManyBody.regionConfigurationEquiv,
         ManyBody.complementConfigurationEquiv, ManyBody.relabelVector,
         ManyBody.norm_relabelVector, ManyBody.regionState_relabel,
-        ManyBody.regionEntropy_relabel}
+        ManyBody.regionEntropy_relabel, ManyBody.siteConfigurationEquiv_symm_apply,
+        ManyBody.reindex_siteConfigurationEquiv_mem_supportedOperators,
+        ManyBody.reindex_siteConfigurationEquiv_regionExpectation}
     \leanok
-    \uses{def:sites-regional-state}
+    \uses{def:sites-regional-state, def:sites_supported, def:sites_region_expectation}
     A bijection of sites, together with bijections of their basis types,
     preserves vector norms. For corresponding regions, the regional matrices
     are related by the induced basis permutation and have equal entropy.
-    These statements hold for empty basis types and unnormalized vectors.
+    These statements hold for empty basis types and unnormalized vectors. The
+    induced permutation carries $\mathcal A_D$ into $\mathcal A_{D'}$ and commutes
+    with the region expectation: $P\,E_D(A)\,P^*=E_{D'}(PAP^*)$.
 \end{lemma}
 \begin{proof}
     \leanok
