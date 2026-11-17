@@ -297,6 +297,15 @@ def finKronecker {N : ℕ} {α : Fin N → Type*} [∀ n, Fintype (α n)]
     finKronecker A x y = ∏ n, A n (x n) (y n) :=
   rfl
 
+/-- Separating the first tensor factor is a change of coordinates. -/
+theorem finKronecker_submatrix_cons {N : ℕ} {J : Fin (N + 1) → Type*}
+    [∀ i, Fintype (J i)] (A : (i : Fin (N + 1)) → Matrix (J i) (J i) ℂ) :
+    (finKronecker A).submatrix (Fin.consEquiv J) (Fin.consEquiv J) =
+      A 0 ⊗ₖ finKronecker (Fin.tail A) := by
+  ext ⟨a, x⟩ ⟨b, y⟩
+  rw [submatrix_apply, finKronecker_apply, kroneckerMap_apply, Fin.prod_univ_succ]
+  simp [Fin.cons_zero, Fin.cons_succ, finKronecker_apply, Fin.tail]
+
 /-- A finite Kronecker product of positive semidefinite matrices is positive
 semidefinite. -/
 theorem finKronecker_posSemidef :
@@ -319,14 +328,7 @@ theorem finKronecker_posSemidef :
       have htail := ih (Fin.tail M) (fun i ↦ hM i.succ)
       have hprod := (hM 0).kronecker htail
       rw [← posSemidef_submatrix_equiv (M := finKronecker M) (Fin.consEquiv I)]
-      have heq :
-          (finKronecker M).submatrix (Fin.consEquiv I) (Fin.consEquiv I) =
-            M 0 ⊗ₖ finKronecker (Fin.tail M) := by
-        ext ⟨a, x⟩ ⟨b, y⟩
-        rw [Matrix.submatrix_apply, finKronecker_apply,
-          Matrix.kroneckerMap_apply, Fin.prod_univ_succ]
-        simp [Fin.cons_zero, Fin.cons_succ, finKronecker_apply, Fin.tail]
-      rw [heq]
+      rw [finKronecker_submatrix_cons]
       exact hprod
 
 /-- A finite Kronecker product of nonzero matrices is nonzero: the entry at a

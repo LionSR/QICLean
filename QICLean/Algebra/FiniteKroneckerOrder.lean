@@ -72,17 +72,11 @@ theorem Matrix.finKronecker_mono
       (Fin.tail A) (fun i ↦ hA i.succ)
     have hB₀ : (B 0).PosSemidef :=
       Matrix.nonneg_iff_posSemidef.mp ((hA 0).nonneg.trans (hAB 0))
-    have heq (M : (i : Fin (N + 1)) → Matrix (I i) (I i) ℂ) :
-        (Matrix.finKronecker M).submatrix (Fin.consEquiv I) (Fin.consEquiv I) =
-          Matrix.kronecker (M 0) (Matrix.finKronecker (Fin.tail M)) := by
-      ext ⟨a, x⟩ ⟨b, y⟩
-      rw [Matrix.submatrix_apply, Matrix.finKronecker_apply,
-        Matrix.kronecker, Matrix.kroneckerMap_apply, Fin.prod_univ_succ]
-      simp [Fin.cons_zero, Fin.cons_succ, Matrix.finKronecker_apply, Fin.tail]
     rw [Matrix.le_iff,
       ← Matrix.posSemidef_submatrix_equiv
         (M := Matrix.finKronecker B - Matrix.finKronecker A) (Fin.consEquiv I),
-      Matrix.submatrix_sub, Pi.sub_apply, Pi.sub_apply, heq B, heq A, ← Matrix.le_iff]
+      Matrix.submatrix_sub, Pi.sub_apply, Pi.sub_apply, Matrix.finKronecker_submatrix_cons,
+      Matrix.finKronecker_submatrix_cons, ← Matrix.le_iff]
     exact Matrix.kronecker_mono_of_posSemidef (hAB 0) htail hB₀ htailPSD
   case zero =>
     intro I _ A B _ _
