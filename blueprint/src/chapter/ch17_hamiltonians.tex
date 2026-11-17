@@ -1,0 +1,116 @@
+\chapter{Ground spaces, gaps and Hermitian terms}
+\label{ch:hamiltonians}
+
+This chapter treats the spectral notions attached to the Hamiltonian of an
+interaction, with the notation of Chapters~\ref{ch:sites}
+and~\ref{ch:dynamics}. The ground space and the gap are defined for any
+square matrix, so they apply to the Hamiltonian of an interaction as it stands.
+The gap hypothesis of the two-dimensional area law~\cite{OpenAI2026AreaLaw} and
+of the polynomial approximation by projected entangled pair
+states~\cite{OpenAI2026PolynomialPEPS} is shown to be the same as a gap with a
+one-dimensional ground space.
+
+\section{Ground spaces and gaps}
+\label{sec:hamiltonians_gap}
+
+\begin{definition}[Ground space and gap]
+    \label{def:hamiltonians_gap}
+    \lean{ManyBody.groundSpace, ManyBody.mem_groundSpace_iff,
+        ManyBody.mem_groundSpace_iff_mulVec, ManyBody.IsGapped}
+    \leanok
+    Let $H$ be a complex $n\times n$ matrix and $E_0\in\R$. The ground space
+    of $H$ at $E_0$ is the eigenspace $\ker(H-E_0)$ of $\C^n$. For $\Delta\in\R$,
+    the matrix $H$ is gapped at $E_0$ with gap $\Delta$ when $\ker(H-E_0)\neq0$
+    and every eigenvalue $\mu\neq E_0$ of $H$ is real with $\mu\ge E_0+\Delta$.
+    For $\Delta>0$, this makes $E_0$ the least eigenvalue and $\Delta$ a lower
+    bound for the distance from $E_0$ to the rest of the spectrum.
+\end{definition}
+
+\begin{lemma}[The gap in terms of the eigenvalues]
+    \label{lem:hamiltonians_gap_eigenvalues}
+    \lean{Matrix.IsHermitian.hasEigenvalue_toEuclideanLin_iff,
+        ManyBody.isGapped_iff_eigenvalues}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    Let $H$ be Hermitian with eigenvalues $\lambda_1,\dots,\lambda_n$, counted
+    with multiplicity. Then $H$ is gapped at $E_0$ with gap $\Delta$ if and only
+    if $\ker(H-E_0)\neq0$ and every $\lambda_k$ equals $E_0$ or is at least
+    $E_0+\Delta$.
+\end{lemma}
+\begin{proof}\leanok
+    The eigenvalues of $H$ are its points of spectrum, which are the
+    $\lambda_k$.
+\end{proof}
+
+\begin{theorem}[A gapped unique ground state]
+    \label{thm:hamiltonians_gapped_unique}
+    \lean{ManyBody.isGapped_and_groundSpace_eq_span_iff}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    Let $\Delta>0$ and let $\Omega\in\C^n$. The following are equivalent.
+    \begin{enumerate}
+        \item $\lVert\Omega\rVert=1$, $H\Omega=E_0\Omega$ and
+              $H-E_0\ge\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$.
+        \item $H$ is Hermitian, $\lVert\Omega\rVert=1$, $H$ is gapped at $E_0$
+              with gap $\Delta$, and $\ker(H-E_0)=\C\Omega$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:positive_gap_uniqueness, lem:hamiltonians_gap_eigenvalues}
+    Write $G=H-E_0-\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$.
+
+    Assume (1). The matrix $H$ is $G$ plus Hermitian matrices, hence Hermitian,
+    and $\ker(H-E_0)=\C\Omega$ by
+    Theorem~\ref{thm:positive_gap_uniqueness}. Let $\psi\neq0$ satisfy
+    $H\psi=\mu\psi$ with $\mu\neq E_0$. Then $\mu$ is real, and
+    $\langle\Omega,\psi\rangle=0$ because $\Omega$ is an eigenvector of the
+    Hermitian matrix $H$ at a different eigenvalue. Hence
+    $0\le\langle\psi,G\psi\rangle=(\mu-E_0-\Delta)\lVert\psi\rVert^2$, so
+    $\mu\ge E_0+\Delta$.
+
+    Assume (2), and let $b_1,\dots,b_n$ be an orthonormal basis of
+    eigenvectors of $H$, with $Hb_k=\lambda_kb_k$. Then $H\Omega=E_0\Omega$.
+    If $\lambda_k=E_0$, then $b_k\in\C\Omega$, so
+    $b_k=\langle\Omega,b_k\rangle\Omega$ and $Gb_k=0$. Otherwise
+    $\lambda_k\ge E_0+\Delta$ by
+    Lemma~\ref{lem:hamiltonians_gap_eigenvalues}, and $b_k\perp\Omega$, so
+    $Gb_k=(\lambda_k-E_0-\Delta)b_k$. Thus $G$ is Hermitian with an orthonormal
+    basis of eigenvectors with nonnegative eigenvalues, and
+    $\langle\psi,G\psi\rangle=\sum_k\nu_k\lvert\langle b_k,\psi\rangle\rvert^2
+    \ge0$ for every $\psi$.
+\end{proof}
+
+\section{Hermitian parts of the terms}
+\label{sec:hamiltonians_hermitian_part}
+
+\begin{definition}[Hermitian parts of the terms]
+    \label{def:hamiltonians_hermitian_part}
+    \lean{ManyBody.Interaction.hermitianPart, ManyBody.Interaction.hermitianPart_term}
+    \leanok
+    \uses{def:dynamics_interaction, thm:sites_supported_subalgebra}
+    For an interaction $(h_i)_{i\in I}$ with supports $(S_i)_{i\in I}$, the
+    interaction of its Hermitian parts has the terms
+    $\operatorname{Re}h_i=\tfrac12(h_i+h_i^*)$ and the same supports. The term
+    $\operatorname{Re}h_i$ is supported on $S_i$, since the operators supported
+    on a region are closed under adjoints and real linear
+    combinations~\cite{OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{lemma}[Hermitian parts preserve a Hermitian Hamiltonian]
+    \label{lem:hamiltonians_hermitian_part}
+    \lean{ManyBody.Interaction.isHermitian_hermitianPart_term,
+        ManyBody.Interaction.norm_hermitianPart_term_le,
+        ManyBody.Interaction.hamiltonian_hermitianPart}
+    \leanok
+    \uses{def:hamiltonians_hermitian_part}
+    Each $\operatorname{Re}h_i$ is Hermitian with
+    $\lVert\operatorname{Re}h_i\rVert\le\lVert h_i\rVert$. If the index set is
+    finite and $\sum_ih_i$ is Hermitian, then
+    $\sum_i\operatorname{Re}h_i=\sum_ih_i$.
+\end{lemma}
+\begin{proof}\leanok
+    The norm bound is the triangle inequality for
+    $\tfrac12(h_i+h_i^*)$. The real part is real linear, so
+    $\sum_i\operatorname{Re}h_i=\operatorname{Re}\sum_ih_i$, which is
+    $\sum_ih_i$ when the sum is Hermitian.
+\end{proof}
