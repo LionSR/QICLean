@@ -57,8 +57,8 @@ In the form of Hastings–Koma, arXiv:math-ph/0507008, Appendix A, Theorem A.2: 
 site. If `S` and `Y` are disjoint and every site of `S` is at distance at least `n` from every
 site of `Y`, then `‖[τ_t(A), B]‖ ≤ 2 |S| ‖A‖ ‖B‖ e^{-μ n} (e^{2s|t|} - 1)`. The bound vanishes
 at `t = 0` and its velocity is `2s`. The two finite-support estimates above are derived from it,
-and it is proved by the weighted Volterra comparison with the weights `|Z| e^{-μ d(Z, Y)}` on
-the nonempty regions `Z`.
+and it is proved by the weighted Volterra comparison with the weights
+`|Z| e^{-μ min(n, d(Z, Y))}` on the nonempty regions `Z`.
 
 Moved from TNLean, `TNLean/Circuit/LiebRobinson/GraphPropagation.lean` at commit
 `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: an interaction `Φ : Interaction X T` on an
