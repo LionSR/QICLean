@@ -528,6 +528,7 @@ import QICLean.Analysis.ViableSubspaceTrimmingProjectionMeasurable
 import QICLean.Analysis.ViableSubspaceUnitApproximation
 import QICLean.Analysis.ViableTrimmingRadius
 import QICLean.Analysis.ViableTrimmingRank
+import QICLean.Analysis.Volterra
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
 import QICLean.Analysis.WeightedPositiveKernel

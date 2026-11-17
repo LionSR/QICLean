@@ -8,4 +8,5 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.ManyBody
 
+import QICLean.ManyBody.Dynamics
 import QICLean.ManyBody.Sites
