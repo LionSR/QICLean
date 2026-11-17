@@ -148,3 +148,22 @@ blueprint source synchronization and changed-declaration coverage, and the
 paper-gap PDF passed. The GLR source gate and mathematical scope are unchanged.
 Current-head CI and review acceptance must follow the push. No merge performed;
 merges are being serialized by the coordinating thread.
+
+## Documentation re-review, 2026-11-17
+
+Addressed the 11:09/11:11 review's remaining documentation findings:
+introduced general H-selfadjointness before use, wrote the resulting
+selfadjointness/normalization/cancellation identities explicitly, attached
+separate formal-traceability footnotes to the two corresponding results, and
+used the note's full semantic prefix on all five hypothesis labels.
+No Lean declarations, proof bodies, or hypotheses changed in this pass.
+
+Blueprint source synchronization, reader-facing prose, paper-gap reference
+checks (93 slugs), unique/prefixed equation labels, and the two-pass five-page
+paper-gap PDF passed. CI for the preceding `bbfe1344` head was green; new-head
+CI and review acceptance are required after the documentation push. Latest
+main `ea327f3de350991566fcd4fcfd34c238170640fb` changes unrelated detailed-balance
+files and was inspected without merging it into this documentation-only pass.
+The GLR source gate and all open mathematical prerequisites remain unchanged.
+
+Full blueprint PDF build also passed (957 pages).

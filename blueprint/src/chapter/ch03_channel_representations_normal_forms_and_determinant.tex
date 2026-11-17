@@ -251,6 +251,9 @@ similarity--congruence theorem controlling the sign characteristic.  The exact
 formalization boundary and the required transpose and inverse translations are
 recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
 
+For real square matrices $H$ and $C$ of the same size, $C$ is
+$H$-selfadjoint when $C^{\mathsf T}H=HC$.
+
 \begin{theorem}[Selfadjointness of the Minkowski Gram product]
     \label{thm:minkowski_gram_selfadjoint}
     \lean{Matrix.isMinkowskiSelfAdjoint_mul_gram,
@@ -267,8 +270,9 @@ recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
 \begin{proof}\leanok
     Transpose the product and use $H^{\mathsf T}=H$ and $H^2=I$;
     then specialize to $H=M$.
-    For the second assertion, multiply $A^{\mathsf T}H=HA$ on both
-    sides by $H$.
+    For the final assertion, multiplication of $A^{\mathsf T}H=HA$
+    on the left and right by $H$ gives
+    $HA^{\mathsf T}H^2=H^2AH$, hence $HA^{\mathsf T}=AH$.
 \end{proof}
 
 \begin{theorem}[Transpose and reversal of a given canonical pair]
@@ -299,8 +303,10 @@ recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
     $YC=(OJO^{\mathsf T})Y$.
 \end{theorem}
 \begin{proof}\leanok
-    Substitute the congruence into $OXHX^{\mathsf T}O^{\mathsf T}$.
-    Cancel $XX^{-1}$ and $O^{\mathsf T}O$ in the similarity identity.
+    With $Y=OX$, the congruence gives
+    $YHY^{\mathsf T}=OXHX^{\mathsf T}O^{\mathsf T}=ONO^{\mathsf T}=H$.
+    The similarity and $O^{\mathsf T}O=I$ give
+    $YC=OX(X^{-1}JX)=OJX=(OJO^{\mathsf T})Y$.
 \end{proof}
 
 \begin{theorem}[Gram equality from a normalized similarity]
@@ -312,8 +318,16 @@ recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
     Then $RHR^{\mathsf T}=Y^{\mathsf T}\Sigma H\Sigma^{\mathsf T}Y$.
 \end{theorem}
 \begin{proof}\leanok
-    Multiplication of either side by $YH$ gives $DY$, using
-    $YHY^{\mathsf T}=H$ and $H^2=I$. Cancel the invertible matrix $YH$.
+    The supplied similarity and Gram identities give
+    \begin{align}
+        (YH)(RHR^{\mathsf T})&=DY
+        =(YH)\bigl(Y^{\mathsf T}\Sigma H\Sigma^{\mathsf T}Y\bigr).
+        \label{eq:canonical_pair_gram_cancellation}
+    \end{align}
+    Indeed, the rightmost product is
+    $(YHY^{\mathsf T})(\Sigma H\Sigma^{\mathsf T})Y=H(HD)Y=DY$.
+    Cancel the invertible matrix $YH$ in
+    (\ref{eq:canonical_pair_gram_cancellation}).
 \end{proof}
 
 \begin{theorem}[Right isometry from an invertible Gram factor]
