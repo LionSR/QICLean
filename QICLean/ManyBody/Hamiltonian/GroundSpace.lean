@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.PositiveGapUniqueness
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Positive
+import Mathlib.Analysis.Matrix.Order
 
 /-!
 # Ground spaces and spectral gaps
@@ -43,9 +44,13 @@ TNLean's `Matrix.IsGappedGroundState` is the left side of
   eigenvector at `E₀`.
 * `ManyBody.isGapped_and_groundSpace_eq_span_iff` — the operator form of a gapped unique
   ground state.
-* `ManyBody.groundSpace_reindex`, `ManyBody.isGapped_reindex_iff` and their `submatrix` forms —
-  relabelling the basis carries the ground space by the induced isometry and preserves the gap,
-  for every `Δ`.
+* `ManyBody.groundSpace_eq_map_of_intertwine`, `ManyBody.isGapped_iff_of_intertwine` — a linear
+  equivalence intertwining two matrices carries the ground space and preserves the gap.
+* `ManyBody.groundSpace_reindex`, `ManyBody.isGapped_reindex_iff` and their `submatrix` forms,
+  `ManyBody.groundSpace_unitary_conj` and `ManyBody.isGapped_unitary_conj_iff` — relabelling the
+  basis and unitary conjugation carry the ground space and preserve the gap, for every `Δ`.
+* `ManyBody.IsGapped.mono`, `ManyBody.IsGapped.posSemidef_sub_ground` — a smaller gap, and
+  `H ≥ E₀` for a Hermitian `H` with a nonnegative gap.
 * `ManyBody.groundSpace_smul`, `ManyBody.IsGapped.smul`, `ManyBody.groundSpace_sub_smul_one`,
   `ManyBody.IsGapped.sub_smul_one` — scaling `H` by `c > 0` scales the ground energy and the gap
   by `c`, and shifting `H` by `-a` shifts the ground energy by `-a`, for every `Δ`.
@@ -69,6 +74,21 @@ theorem Matrix.IsHermitian.hasEigenvalue_toEuclideanLin_iff {n : Type*} [Fintype
   rw [Module.End.hasEigenvalue_iff_mem_spectrum, Matrix.spectrum_toLpLin,
     hH.spectrum_eq_image_range]
   simp [eq_comm]
+
+open scoped MatrixOrder in
+/-- A Hermitian matrix dominates any lower bound of its eigenvalues: if `a ≤ λₖ` for every
+eigenvalue, then `H - a ≥ 0`. -/
+theorem Matrix.IsHermitian.posSemidef_sub_smul_one_of_le_eigenvalues {n : Type*} [Fintype n]
+    [DecidableEq n] {H : Matrix n n ℂ} (hH : H.IsHermitian) {a : ℝ}
+    (ha : ∀ i, a ≤ hH.eigenvalues i) : (H - (a : ℂ) • 1).PosSemidef := by
+  have h : algebraMap ℝ (Matrix n n ℂ) a ≤ H := by
+    rw [algebraMap_le_iff_le_spectrum (a := H) hH.isSelfAdjoint]
+    intro x hx
+    rw [hH.spectrum_real_eq_range_eigenvalues] at hx
+    obtain ⟨i, rfl⟩ := hx
+    exact ha i
+  rw [Matrix.le_iff, Algebra.algebraMap_eq_smul_one] at h
+  simpa [Complex.coe_smul] using h
 
 namespace ManyBody
 
@@ -242,11 +262,75 @@ theorem isGapped_and_groundSpace_eq_span_iff {H : Matrix n n ℂ} {E₀ Δ : ℝ
     exact ⟨hΩ, mem_groundSpace_iff.mp (hspan ▸ Submodule.mem_span_singleton_self Ω),
       hgap.posSemidef_sub_smul_one hH hΩ hspan⟩
 
+/-! ### Transport along an intertwining equivalence -/
+
+/-- A linear equivalence `f` with `T ∘ f = f ∘ S` carries each eigenspace of `S` onto the
+eigenspace of `T` for the same eigenvalue. -/
+theorem eigenspace_eq_map_of_intertwine {E F : Type*} [AddCommGroup E] [Module ℂ E]
+    [AddCommGroup F] [Module ℂ F] (f : E ≃ₗ[ℂ] F) (S : Module.End ℂ E) (T : Module.End ℂ F)
+    (h : ∀ x, T (f x) = f (S x)) (μ : ℂ) :
+    Module.End.eigenspace T μ = (Module.End.eigenspace S μ).map (f : E →ₗ[ℂ] F) := by
+  ext y
+  rw [Submodule.mem_map_equiv, Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff]
+  conv_lhs => rw [← f.apply_symm_apply y, h, ← map_smul]
+  exact f.injective.eq_iff
+
+section Intertwine
+
+variable {m : Type*} [Fintype m] [DecidableEq m]
+
+/-- If a linear equivalence `f` of Euclidean spaces satisfies `H' f = f H`, it carries the
+ground space of `H` onto that of `H'`. -/
+theorem groundSpace_eq_map_of_intertwine (f : EuclideanSpace ℂ n ≃ₗ[ℂ] EuclideanSpace ℂ m)
+    {H : Matrix n n ℂ} {H' : Matrix m m ℂ}
+    (h : ∀ ψ, toEuclideanLin H' (f ψ) = f (toEuclideanLin H ψ)) (E₀ : ℝ) :
+    groundSpace H' E₀ = (groundSpace H E₀).map (f : EuclideanSpace ℂ n →ₗ[ℂ] _) :=
+  eigenspace_eq_map_of_intertwine f _ _ h _
+
+/-- If a linear equivalence `f` of Euclidean spaces satisfies `H' f = f H`, then `H'` and `H`
+have the same eigenvalues. -/
+theorem hasEigenvalue_iff_of_intertwine (f : EuclideanSpace ℂ n ≃ₗ[ℂ] EuclideanSpace ℂ m)
+    {H : Matrix n n ℂ} {H' : Matrix m m ℂ}
+    (h : ∀ ψ, toEuclideanLin H' (f ψ) = f (toEuclideanLin H ψ)) (μ : ℂ) :
+    Module.End.HasEigenvalue (toEuclideanLin H') μ ↔
+      Module.End.HasEigenvalue (toEuclideanLin H) μ := by
+  rw [Module.End.hasEigenvalue_iff, Module.End.hasEigenvalue_iff,
+    eigenspace_eq_map_of_intertwine f _ _ h, Ne, Ne, Submodule.map_eq_bot_iff]
+
+/-- If a linear equivalence `f` of Euclidean spaces satisfies `H' f = f H`, then `H'` is
+gapped exactly when `H` is, for every `Δ`. -/
+theorem isGapped_iff_of_intertwine (f : EuclideanSpace ℂ n ≃ₗ[ℂ] EuclideanSpace ℂ m)
+    {H : Matrix n n ℂ} {H' : Matrix m m ℂ}
+    (h : ∀ ψ, toEuclideanLin H' (f ψ) = f (toEuclideanLin H ψ)) {E₀ Δ : ℝ} :
+    IsGapped H' E₀ Δ ↔ IsGapped H E₀ Δ := by
+  simp only [IsGapped, hasEigenvalue_iff_of_intertwine f h, groundSpace_eq_map_of_intertwine f h,
+    Ne, Submodule.map_eq_bot_iff]
+
+end Intertwine
+
 /-! ### Relabelling the basis -/
 
 section Reindex
 
 variable {m : Type*} [Fintype m] [DecidableEq m]
+
+/-- The isometry `ψ ↦ ψ ∘ e.symm` induced by `e` intertwines `H` and `reindex e e H`. -/
+theorem toEuclideanLin_reindex_piLpCongrLeft (e : n ≃ m) (H : Matrix n n ℂ)
+    (ψ : EuclideanSpace ℂ n) :
+    toEuclideanLin (reindex e e H) (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e ψ) =
+      LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e (toEuclideanLin H ψ) := by
+  apply WithLp.ofLp_injective 2
+  ext i
+  simp [toLpLin_apply, reindex_apply, submatrix_mulVec_equiv, Equiv.piCongrLeft'_apply,
+    Function.comp_def]
+
+/-- The eigenspaces of a relabelled matrix are the images of the eigenspaces. -/
+theorem eigenspace_toEuclideanLin_reindex (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ) :
+    Module.End.eigenspace (toEuclideanLin (reindex e e H)) μ =
+      (Module.End.eigenspace (toEuclideanLin H) μ).map
+        ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearEquiv :
+          EuclideanSpace ℂ n →ₗ[ℂ] EuclideanSpace ℂ m) :=
+  eigenspace_eq_map_of_intertwine _ _ _ (toEuclideanLin_reindex_piLpCongrLeft e H) μ
 
 /-- Relabelling the basis conjugates the eigenspaces by the induced isometry
 `ψ ↦ ψ ∘ e.symm` of Euclidean spaces. -/
@@ -255,36 +339,14 @@ theorem mem_eigenspace_toEuclideanLin_reindex_iff (e : n ≃ m) (H : Matrix n n 
     ψ ∈ Module.End.eigenspace (toEuclideanLin (reindex e e H)) μ ↔
       (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).symm ψ ∈
         Module.End.eigenspace (toEuclideanLin H) μ := by
-  rw [Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff,
-    ← (WithLp.ofLp_injective 2).eq_iff, ← (WithLp.ofLp_injective 2).eq_iff]
-  simp only [reindex_apply, toLpLin_apply, submatrix_mulVec_equiv, Equiv.symm_symm,
-    WithLp.ofLp_smul, funext_iff, Function.comp_apply, Pi.smul_apply, smul_eq_mul,
-    LinearIsometryEquiv.piLpCongrLeft_symm, LinearIsometryEquiv.piLpCongrLeft_apply,
-    Equiv.piCongrLeft'_apply]
-  refine ⟨fun h x => ?_, fun h x => ?_⟩
-  · have hx := h (e x)
-    rw [Equiv.symm_apply_apply] at hx
-    exact hx
-  · have hx := h (e.symm x)
-    rw [Equiv.apply_symm_apply] at hx
-    exact hx
-
-/-- The eigenspaces of a relabelled matrix are the images of the eigenspaces. -/
-theorem eigenspace_toEuclideanLin_reindex (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ) :
-    Module.End.eigenspace (toEuclideanLin (reindex e e H)) μ =
-      (Module.End.eigenspace (toEuclideanLin H) μ).map
-        ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearEquiv :
-          EuclideanSpace ℂ n →ₗ[ℂ] EuclideanSpace ℂ m) := by
-  ext ψ
-  rw [mem_eigenspace_toEuclideanLin_reindex_iff, Submodule.mem_map_equiv]
+  rw [eigenspace_toEuclideanLin_reindex, Submodule.mem_map_equiv]
   rfl
 
 /-- A relabelled matrix has the same eigenvalues. -/
 theorem hasEigenvalue_toEuclideanLin_reindex_iff (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ) :
     Module.End.HasEigenvalue (toEuclideanLin (reindex e e H)) μ ↔
-      Module.End.HasEigenvalue (toEuclideanLin H) μ := by
-  rw [Module.End.hasEigenvalue_iff, Module.End.hasEigenvalue_iff,
-    eigenspace_toEuclideanLin_reindex, Ne, Ne, Submodule.map_eq_bot_iff]
+      Module.End.HasEigenvalue (toEuclideanLin H) μ :=
+  hasEigenvalue_iff_of_intertwine _ (toEuclideanLin_reindex_piLpCongrLeft e H) μ
 
 /-- A vector lies in the ground space of the relabelled matrix exactly when the relabelled
 vector lies in the ground space of `H`. -/
@@ -301,7 +363,7 @@ theorem groundSpace_reindex (e : n ≃ m) (H : Matrix n n ℂ) (E₀ : ℝ) :
       (groundSpace H E₀).map
         ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearEquiv :
           EuclideanSpace ℂ n →ₗ[ℂ] EuclideanSpace ℂ m) :=
-  eigenspace_toEuclideanLin_reindex e H _
+  groundSpace_eq_map_of_intertwine _ (toEuclideanLin_reindex_piLpCongrLeft e H) E₀
 
 /-- A ground space spanned by `Ω` is carried to the line through the relabelled `Ω`. -/
 theorem groundSpace_reindex_eq_span (e : n ≃ m) {H : Matrix n n ℂ} {E₀ : ℝ}
@@ -313,9 +375,8 @@ theorem groundSpace_reindex_eq_span (e : n ≃ m) {H : Matrix n n ℂ} {E₀ : �
 
 /-- Relabelling the basis preserves the gap, for every `Δ`. -/
 theorem isGapped_reindex_iff (e : n ≃ m) {H : Matrix n n ℂ} {E₀ Δ : ℝ} :
-    IsGapped (reindex e e H) E₀ Δ ↔ IsGapped H E₀ Δ := by
-  simp only [IsGapped, hasEigenvalue_toEuclideanLin_reindex_iff, groundSpace_reindex, Ne,
-    Submodule.map_eq_bot_iff]
+    IsGapped (reindex e e H) E₀ Δ ↔ IsGapped H E₀ Δ :=
+  isGapped_iff_of_intertwine _ (toEuclideanLin_reindex_piLpCongrLeft e H)
 
 omit [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m] in
 private theorem submatrix_eq_reindex (e : m ≃ n) (H : Matrix n n ℂ) :
@@ -344,6 +405,65 @@ theorem isGapped_submatrix_iff (e : m ≃ n) {H : Matrix n n ℂ} {E₀ Δ : ℝ
   rw [submatrix_eq_reindex, isGapped_reindex_iff]
 
 end Reindex
+
+/-! ### Unitary conjugation -/
+
+section Unitary
+
+/-- A unitary matrix as a linear equivalence of the Euclidean space. -/
+private noncomputable def unitaryLinearEquiv {U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ) :
+    EuclideanSpace ℂ n ≃ₗ[ℂ] EuclideanSpace ℂ n :=
+  LinearEquiv.ofLinearMap (toEuclideanLin U) (toEuclideanLin Uᴴ)
+    (by rw [← toLpLin_mul_same, ← star_eq_conjTranspose, mem_unitaryGroup_iff.mp hU,
+      toLpLin_one])
+    (by rw [← toLpLin_mul_same, ← star_eq_conjTranspose, mem_unitaryGroup_iff'.mp hU,
+      toLpLin_one])
+
+private theorem toEuclideanLin_unitary_conj {U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ)
+    (H : Matrix n n ℂ) (ψ : EuclideanSpace ℂ n) :
+    toEuclideanLin (U * H * Uᴴ) (unitaryLinearEquiv hU ψ) =
+      unitaryLinearEquiv hU (toEuclideanLin H ψ) := by
+  have hback : toEuclideanLin Uᴴ (toEuclideanLin U ψ) = ψ := by
+    rw [← LinearMap.comp_apply, ← toLpLin_mul_same, ← star_eq_conjTranspose,
+      mem_unitaryGroup_iff'.mp hU, toLpLin_one, LinearMap.id_apply]
+  change toEuclideanLin (U * H * Uᴴ) (toEuclideanLin U ψ) = toEuclideanLin U (toEuclideanLin H ψ)
+  rw [toLpLin_mul_same, toLpLin_mul_same, LinearMap.comp_apply, LinearMap.comp_apply, hback]
+
+/-- The ground space of `U H Uᴴ` is the image of the ground space of `H` under `U`. -/
+theorem groundSpace_unitary_conj {U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ)
+    (H : Matrix n n ℂ) (E₀ : ℝ) :
+    groundSpace (U * H * Uᴴ) E₀ = (groundSpace H E₀).map (toEuclideanLin U) :=
+  groundSpace_eq_map_of_intertwine (unitaryLinearEquiv hU) (toEuclideanLin_unitary_conj hU H) E₀
+
+/-- A ground space spanned by `Ω` is carried to the line through `U Ω`. -/
+theorem groundSpace_unitary_conj_eq_span {U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ)
+    {H : Matrix n n ℂ} {E₀ : ℝ} {Ω : EuclideanSpace ℂ n}
+    (hspan : groundSpace H E₀ = Submodule.span ℂ {Ω}) :
+    groundSpace (U * H * Uᴴ) E₀ = Submodule.span ℂ {toEuclideanLin U Ω} := by
+  rw [groundSpace_unitary_conj hU, hspan, Submodule.map_span, Set.image_singleton]
+
+/-- Unitary conjugation preserves the gap, for every `Δ`. -/
+theorem isGapped_unitary_conj_iff {U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ)
+    {H : Matrix n n ℂ} {E₀ Δ : ℝ} :
+    IsGapped (U * H * Uᴴ) E₀ Δ ↔ IsGapped H E₀ Δ :=
+  isGapped_iff_of_intertwine (unitaryLinearEquiv hU) (toEuclideanLin_unitary_conj hU H)
+
+end Unitary
+
+/-- A gap `Δ` is also a gap `Δ' ≤ Δ`. -/
+theorem IsGapped.mono {H : Matrix n n ℂ} {E₀ Δ Δ' : ℝ} (h : IsGapped H E₀ Δ) (hΔ : Δ' ≤ Δ) :
+    IsGapped H E₀ Δ' :=
+  ⟨h.1, fun μ hμ ↦ (h.2 μ hμ).imp_right fun h' ↦
+    (Complex.real_le_real.mpr (by linarith)).trans h'⟩
+
+/-- A Hermitian matrix gapped at `E₀` with a nonnegative gap satisfies `H ≥ E₀`: its ground
+energy is the bottom of its spectrum. -/
+theorem IsGapped.posSemidef_sub_ground {H : Matrix n n ℂ} {E₀ Δ : ℝ} (hH : H.IsHermitian)
+    (h : IsGapped H E₀ Δ) (hΔ : 0 ≤ Δ) : (H - (E₀ : ℂ) • 1).PosSemidef := by
+  refine hH.posSemidef_sub_smul_one_of_le_eigenvalues fun k ↦ ?_
+  rcases ((isGapped_iff_eigenvalues hH).mp h).2 k with hk | hk
+  · exact hk.ge
+  · linarith
 
 /-! ### Scaling and shifting the energy -/
 

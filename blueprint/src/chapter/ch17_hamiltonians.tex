@@ -29,28 +29,37 @@ one-dimensional ground space.
 \begin{lemma}[The gap in terms of the eigenvalues]
     \label{lem:hamiltonians_gap_eigenvalues}
     \lean{Matrix.IsHermitian.hasEigenvalue_toEuclideanLin_iff,
-        ManyBody.isGapped_iff_eigenvalues}
+        ManyBody.isGapped_iff_eigenvalues, ManyBody.IsGapped.mono,
+        Matrix.IsHermitian.posSemidef_sub_smul_one_of_le_eigenvalues,
+        ManyBody.IsGapped.posSemidef_sub_ground}
     \leanok
     \uses{def:hamiltonians_gap}
     Let $H$ be Hermitian with eigenvalues $\lambda_1,\dots,\lambda_n$, counted
     with multiplicity. Then $H$ is gapped at $E_0$ with gap $\Delta$ if and only
     if $\ker(H-E_0)\neq0$ and every $\lambda_k$ equals $E_0$ or is at least
-    $E_0+\Delta$.
+    $E_0+\Delta$. A gap $\Delta$ is also a gap $\Delta'\le\Delta$. If
+    $a\le\lambda_k$ for every $k$, then $H-a\ge0$; in particular $H-E_0\ge0$ when
+    $H$ is gapped at $E_0$ with a gap $\Delta\ge0$.
 \end{lemma}
 \begin{proof}\leanok
     The eigenvalues of $H$ are its points of spectrum, which are the
-    $\lambda_k$.
+    $\lambda_k$. A Hermitian matrix whose spectrum lies in $[a,\infty)$ satisfies
+    $H\ge a$.
 \end{proof}
 
-\begin{lemma}[Relabelling the basis]
+\begin{lemma}[Relabelling the basis and unitary conjugation]
     \label{lem:hamiltonians_gap_reindex}
-    \lean{ManyBody.mem_eigenspace_toEuclideanLin_reindex_iff,
+    \lean{ManyBody.eigenspace_eq_map_of_intertwine,
+        ManyBody.groundSpace_eq_map_of_intertwine, ManyBody.hasEigenvalue_iff_of_intertwine,
+        ManyBody.isGapped_iff_of_intertwine, ManyBody.toEuclideanLin_reindex_piLpCongrLeft,
+        ManyBody.mem_eigenspace_toEuclideanLin_reindex_iff,
         ManyBody.eigenspace_toEuclideanLin_reindex,
         ManyBody.hasEigenvalue_toEuclideanLin_reindex_iff,
         ManyBody.mem_groundSpace_reindex_iff, ManyBody.groundSpace_reindex,
         ManyBody.groundSpace_reindex_eq_span, ManyBody.isGapped_reindex_iff,
         ManyBody.groundSpace_submatrix, ManyBody.groundSpace_submatrix_eq_span,
-        ManyBody.isGapped_submatrix_iff}
+        ManyBody.isGapped_submatrix_iff, ManyBody.groundSpace_unitary_conj,
+        ManyBody.groundSpace_unitary_conj_eq_span, ManyBody.isGapped_unitary_conj_iff}
     \leanok
     \uses{def:hamiltonians_gap}
     Let $e$ be a bijection between finite index sets, let $P_e$ be the unitary
@@ -59,10 +68,12 @@ one-dimensional ground space.
     $\ker(H'-E_0)=P_e\ker(H-E_0)$, $H'$ and $H$ have the same eigenvalues, and
     $H'$ is gapped at $E_0$ with gap $\Delta$ if and only if $H$ is, for every
     $\Delta\in\R$. In particular $\ker(H-E_0)=\C\Omega$ implies
-    $\ker(H'-E_0)=\C P_e\Omega$.
+    $\ker(H'-E_0)=\C P_e\Omega$. The same holds for $UHU^{*}$ with a unitary $U$
+    in place of $P_e$, and more generally for any invertible $F$ with $H'F=FH$.
 \end{lemma}
 \begin{proof}\leanok
-    $H'\psi=\mu\psi$ if and only if $HP_e^{*}\psi=\mu P_e^{*}\psi$.
+    If $H'F=FH$, then $H'\psi=\mu\psi$ if and only if $HF^{-1}\psi=\mu F^{-1}\psi$.
+    Both $P_e$ and a unitary $U$ satisfy this with $H'=FHF^{*}$.
 \end{proof}
 
 \begin{lemma}[Scaling and shifting the energy]
