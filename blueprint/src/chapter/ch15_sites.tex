@@ -201,7 +201,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{definition}[Region expectation]
     \label{def:sites_region_expectation}
-    \lean{ManyBody.regionExpectation, ManyBody.regionExpectation_apply}
+    \lean{ManyBody.regionExpectation, ManyBody.regionExpectation_apply,
+        ManyBody.regionExpectationLM, ManyBody.regionExpectationLM_apply}
     \leanok
     \uses{def:sites_place}
     For a region $D$ put $c=|X_{V\setminus D}|$. The region expectation of an
@@ -228,12 +229,12 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.posSemidef_regionExpectation, ManyBody.regionExpectation_mono,
         ManyBody.norm_regionExpectation_le, ManyBody.regionExpectation_zero,
         ManyBody.regionExpectation_add, ManyBody.regionExpectation_smul,
-        ManyBody.regionExpectation_sub}
+        ManyBody.regionExpectation_sub, ManyBody.isHermitian_regionExpectation}
     \leanok
     \uses{def:sites_region_expectation, thm:sites_place_range, lem:sites_place_hom,
         thm:root_channel}
     The values of $E_D$ lie in $\mathcal A_D$. The map $E_D$ is linear and
-    compatible with adjoints. It satisfies
+    compatible with adjoints, so it maps Hermitian operators to Hermitian operators. It satisfies
     $E_D(BAC)=B\,E_D(A)\,C$ for all $B,C\in\mathcal A_D$ and $E_D(1)=1$, so it
     fixes $\mathcal A_D$ and $E_D\circ E_D=E_D$. It preserves the trace, maps
     positive semidefinite operators to positive semidefinite operators, is

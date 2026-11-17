@@ -503,3 +503,20 @@ norm. The map $P$ below is complex linear; it need not be idempotent.
     their generators $G,G_P$. This proves
     (\ref{eq:projected_comparison_error}) for the already chosen $U$.
 \end{proof}
+
+\begin{theorem}[Ordered products of commuting evolutions]
+    \label{thm:ordered_product_evolution}
+    \lean{MatrixEvolution.hasDerivAt_ordered_prod_of_commute}
+    \leanok
+    Let $U_1,\dots,U_m$ be paths of matrices with $U_j'(t)=iG_j(t)U_j(t)$ at a
+    time $t$, and suppose $U_j(t)$ commutes with $G_k(t)$ whenever $j\neq k$.
+    Then the ordered product $U_1\cdots U_m$ has derivative
+    $i\bigl(\sum_jG_j(t)\bigr)U_1(t)\cdots U_m(t)$ at $t$.
+\end{theorem}
+\begin{proof}\leanok
+    By induction on $m$, with the product rule: the derivative of
+    $U_1\cdot(U_2\cdots U_m)$ is
+    $iG_1U_1(U_2\cdots U_m)+U_1\,i\bigl(\sum_{k\ge2}G_k\bigr)(U_2\cdots U_m)$,
+    and $U_1$ commutes with $\sum_{k\ge2}G_k$. This is the product rule of the
+    block-evolution argument of~\cite{Osborne2006Efficient}.
+\end{proof}
