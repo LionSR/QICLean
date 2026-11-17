@@ -3,7 +3,9 @@ Copyright (c) 2026 TNLean and QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors, QICLean contributors
 -/
+import QICLean.Algebra.L2OpNormReindex
 import QICLean.Algebra.MatrixKroneckerEmbed
+import QICLean.Analysis.RootChannel
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.Matrix
 
@@ -18,6 +20,23 @@ The conclusion strengthens the reverse inequality proved in
 `111c9fe461af184e1aa20be8091ec1d1a775a68a`. The proof uses the existing
 Kronecker star-algebra homomorphism and Mathlib's isometry theorem for injective
 complex C-star-algebra homomorphisms, instead of extracting an isometric corner.
+
+For rectangular matrices, tensoring with an identity on either side does not increase the
+operator norm, and the operator norm is submultiplicative for Kronecker products, with no
+nonemptiness hypothesis. `Matrix.l2_opNorm_one_kronecker_le` and
+`Matrix.l2_opNorm_kronecker_le` are taken from TNLean,
+`TNLean/Algebra/MatrixKroneckerContraction.lean` at commit `868d2c9`, where they are
+`l2_opNorm_one_kronecker_rect_le` and `l2_opNorm_kronecker_le`. Changes: the first is renamed
+and replaces QICLean's square `l2_opNorm_one_kronecker_le` (from
+`QICLean/Analysis/TraceMulBound.lean`); the second replaces QICLean's square statement with
+`Nonempty` hypotheses.
+
+## Main results
+
+* `Matrix.l2_opNorm_one_kronecker`, `Matrix.l2_opNorm_kronecker_one` — equality for a square
+  matrix and a nonempty identity.
+* `Matrix.l2_opNorm_one_kronecker_le` — `‖1 ⊗ B‖ ≤ ‖B‖`.
+* `Matrix.l2_opNorm_kronecker_le` — `‖A ⊗ B‖ ≤ ‖A‖ ‖B‖`.
 -/
 
 open scoped Kronecker Matrix.Norms.L2Operator
@@ -57,14 +76,27 @@ theorem l2_opNorm_kronecker_one {X Y : Type*} [Fintype X] [Fintype Y]
   simpa using congrFun (congrFun h (i, Classical.choice ‹Nonempty Y›))
     (j, Classical.choice ‹Nonempty Y›)
 
-/-- Submultiplicativity of the operator norm for a tensor product. -/
-theorem l2_opNorm_kronecker_le {X Y : Type*} [Fintype X] [Fintype Y]
-    [DecidableEq X] [DecidableEq Y] [Nonempty X] [Nonempty Y]
-    (A : Matrix X X ℂ) (B : Matrix Y Y ℂ) : ‖A ⊗ₖ B‖ ≤ ‖A‖ * ‖B‖ := by
-  calc
-    ‖A ⊗ₖ B‖ = ‖(A ⊗ₖ (1 : Matrix Y Y ℂ)) * ((1 : Matrix X X ℂ) ⊗ₖ B)‖ := by
-      rw [← mul_kronecker_mul, mul_one, one_mul]
-    _ ≤ ‖A ⊗ₖ (1 : Matrix Y Y ℂ)‖ * ‖(1 : Matrix X X ℂ) ⊗ₖ B‖ := l2_opNorm_mul _ _
-    _ = ‖A‖ * ‖B‖ := by rw [l2_opNorm_kronecker_one, l2_opNorm_one_kronecker]
+/-- Tensoring a rectangular matrix with an identity on the left does not increase its
+operator norm. -/
+theorem l2_opNorm_one_kronecker_le {m n κ : Type*} [Fintype m] [Fintype n] [Fintype κ]
+    [DecidableEq n] [DecidableEq κ] (B : Matrix m n ℂ) :
+    ‖(1 : Matrix κ κ ℂ) ⊗ₖ B‖ ≤ ‖B‖ := by
+  have h : (1 : Matrix κ κ ℂ) ⊗ₖ B =
+      reindex (Equiv.prodComm m κ) (Equiv.prodComm n κ) (B ⊗ₖ (1 : Matrix κ κ ℂ)) := by
+    ext ⟨i, j⟩ ⟨k, l⟩
+    simp [kroneckerMap_apply, mul_comm]
+  rw [h]
+  exact (l2_opNorm_reindex_le _ _ _).trans (l2_opNorm_kronecker_one_le B)
+
+/-- Submultiplicativity of the operator norm for a tensor product of rectangular matrices. -/
+theorem l2_opNorm_kronecker_le {m n m' n' : Type*} [Fintype m] [Fintype n] [Fintype m']
+    [Fintype n'] [DecidableEq m] [DecidableEq n] (A : Matrix m' m ℂ) (B : Matrix n' n ℂ) :
+    ‖A ⊗ₖ B‖ ≤ ‖A‖ * ‖B‖ := by
+  classical
+  have h : A ⊗ₖ B = (A ⊗ₖ (1 : Matrix n' n' ℂ)) * ((1 : Matrix m m ℂ) ⊗ₖ B) := by
+    rw [← mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul]
+  rw [h]
+  exact (l2_opNorm_mul _ _).trans (mul_le_mul (l2_opNorm_kronecker_one_le A)
+    (l2_opNorm_one_kronecker_le B) (norm_nonneg _) (norm_nonneg _))
 
 end Matrix
