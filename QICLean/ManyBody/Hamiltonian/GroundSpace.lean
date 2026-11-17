@@ -46,6 +46,9 @@ TNLean's `Matrix.IsGappedGroundState` is the left side of
 * `ManyBody.groundSpace_reindex`, `ManyBody.isGapped_reindex_iff` and their `submatrix` forms —
   relabelling the basis carries the ground space by the induced isometry and preserves the gap,
   for every `Δ`.
+* `ManyBody.groundSpace_smul`, `ManyBody.IsGapped.smul`, `ManyBody.groundSpace_sub_smul_one`,
+  `ManyBody.IsGapped.sub_smul_one` — scaling `H` by `c > 0` scales the ground energy and the gap
+  by `c`, and shifting `H` by `-a` shifts the ground energy by `-a`, for every `Δ`.
 
 ## References
 
@@ -341,5 +344,90 @@ theorem isGapped_submatrix_iff (e : m ≃ n) {H : Matrix n n ℂ} {E₀ Δ : ℝ
   rw [submatrix_eq_reindex, isGapped_reindex_iff]
 
 end Reindex
+
+/-! ### Scaling and shifting the energy -/
+
+/-- Scaling `H` by a nonzero real `c` scales its eigenvalues by `c` and keeps the
+eigenspaces. -/
+theorem eigenspace_toEuclideanLin_smul {c : ℝ} (hc : c ≠ 0) (H : Matrix n n ℂ) (μ : ℂ) :
+    Module.End.eigenspace (toEuclideanLin ((c : ℂ) • H)) ((c : ℂ) * μ) =
+      Module.End.eigenspace (toEuclideanLin H) μ := by
+  ext ψ
+  rw [Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff, map_smul,
+    LinearMap.smul_apply, mul_smul]
+  exact (smul_right_injective _ (by exact_mod_cast hc : (c : ℂ) ≠ 0)).eq_iff
+
+/-- Subtracting `a` times the identity shifts the eigenvalues by `-a` and keeps the
+eigenspaces. -/
+theorem eigenspace_toEuclideanLin_sub_smul_one (H : Matrix n n ℂ) (a : ℝ) (μ : ℂ) :
+    Module.End.eigenspace (toEuclideanLin (H - (a : ℂ) • 1)) (μ - a) =
+      Module.End.eigenspace (toEuclideanLin H) μ := by
+  ext ψ
+  rw [Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff]
+  simp only [map_sub, map_smul, LinearMap.sub_apply, LinearMap.smul_apply, toLpLin_one,
+    LinearMap.id_apply, sub_smul, sub_left_inj]
+
+/-- Scaling `H` and the energy by a nonzero real `c` keeps the ground space. -/
+theorem groundSpace_smul {c : ℝ} (hc : c ≠ 0) (H : Matrix n n ℂ) (E₀ : ℝ) :
+    groundSpace ((c : ℂ) • H) (c * E₀) = groundSpace H E₀ := by
+  rw [groundSpace, groundSpace, Complex.ofReal_mul, eigenspace_toEuclideanLin_smul hc]
+
+/-- Shifting `H` by `-a` and the energy by `-a` keeps the ground space. -/
+theorem groundSpace_sub_smul_one (H : Matrix n n ℂ) (a E₀ : ℝ) :
+    groundSpace (H - (a : ℂ) • 1) (E₀ - a) = groundSpace H E₀ := by
+  rw [groundSpace, groundSpace, Complex.ofReal_sub, eigenspace_toEuclideanLin_sub_smul_one]
+
+/-- The ground space of `H` at `E₀` is the kernel of `H - E₀`. -/
+theorem groundSpace_sub_smul_one_self (H : Matrix n n ℂ) (E₀ : ℝ) :
+    groundSpace (H - (E₀ : ℂ) • 1) 0 = groundSpace H E₀ := by
+  simpa using groundSpace_sub_smul_one H E₀ E₀
+
+/-- Scaling by a positive real `c` scales the ground energy and the gap by `c`, for every
+`Δ`. -/
+theorem IsGapped.smul {H : Matrix n n ℂ} {E₀ Δ c : ℝ} (hc : 0 < c) (h : IsGapped H E₀ Δ) :
+    IsGapped ((c : ℂ) • H) (c * E₀) (c * Δ) := by
+  have hc0 : (c : ℂ) ≠ 0 := by exact_mod_cast hc.ne'
+  refine ⟨by rw [groundSpace_smul hc.ne']; exact h.1, fun ν hν ↦ ?_⟩
+  have hν' : Module.End.HasEigenvalue (toEuclideanLin H) (ν / c) := by
+    rw [Module.End.hasEigenvalue_iff, ← eigenspace_toEuclideanLin_smul hc.ne',
+      mul_div_cancel₀ _ hc0]
+    exact Module.End.hasEigenvalue_iff.mp hν
+  have hνc : ν = (c : ℂ) * (ν / c) := (mul_div_cancel₀ _ hc0).symm
+  rcases h.2 _ hν' with h' | h'
+  · left
+    rw [hνc, h']
+    push_cast
+    ring
+  · right
+    have hcle : (0 : ℂ) ≤ c := by exact_mod_cast hc.le
+    have := mul_le_mul_of_nonneg_left h' hcle
+    rw [← hνc] at this
+    convert this using 1
+    push_cast
+    ring
+
+/-- Shifting `H` and the energy by `-a` keeps the gap, for every `Δ`. -/
+theorem IsGapped.sub_smul_one {H : Matrix n n ℂ} {E₀ Δ : ℝ} (a : ℝ) (h : IsGapped H E₀ Δ) :
+    IsGapped (H - (a : ℂ) • 1) (E₀ - a) Δ := by
+  refine ⟨by rw [groundSpace_sub_smul_one]; exact h.1, fun ν hν ↦ ?_⟩
+  have hν' : Module.End.HasEigenvalue (toEuclideanLin H) (ν + a) := by
+    rw [Module.End.hasEigenvalue_iff, ← eigenspace_toEuclideanLin_sub_smul_one H a,
+      add_sub_cancel_right]
+    exact Module.End.hasEigenvalue_iff.mp hν
+  rcases h.2 _ hν' with h' | h'
+  · left
+    push_cast
+    linear_combination h'
+  · right
+    have := sub_le_sub_right h' (a : ℂ)
+    rw [add_sub_cancel_right] at this
+    convert this using 1
+    push_cast
+    ring
+
+/-- If `H` is gapped at `E₀`, then `H - E₀` is gapped at `0` with the same gap. -/
+theorem IsGapped.sub_smul_one_self {H : Matrix n n ℂ} {E₀ Δ : ℝ} (h : IsGapped H E₀ Δ) :
+    IsGapped (H - (E₀ : ℂ) • 1) 0 Δ := by
+  simpa using h.sub_smul_one E₀
 
 end ManyBody

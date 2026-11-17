@@ -65,6 +65,28 @@ one-dimensional ground space.
     $H'\psi=\mu\psi$ if and only if $HP_e^{*}\psi=\mu P_e^{*}\psi$.
 \end{proof}
 
+\begin{lemma}[Scaling and shifting the energy]
+    \label{lem:hamiltonians_gap_scaling}
+    \lean{ManyBody.eigenspace_toEuclideanLin_smul,
+        ManyBody.eigenspace_toEuclideanLin_sub_smul_one, ManyBody.groundSpace_smul,
+        ManyBody.groundSpace_sub_smul_one, ManyBody.groundSpace_sub_smul_one_self,
+        ManyBody.IsGapped.smul, ManyBody.IsGapped.sub_smul_one,
+        ManyBody.IsGapped.sub_smul_one_self}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    Let $c,a\in\R$ with $c\neq0$. The eigenspaces of $cH$ at $c\mu$ and of
+    $H-a$ at $\mu-a$ are the eigenspace of $H$ at $\mu$. In particular
+    $\ker(cH-cE_0)=\ker(H-E_0)$ and $\ker\bigl((H-a)-(E_0-a)\bigr)=\ker(H-E_0)$. If $H$
+    is gapped at $E_0$ with gap $\Delta$, then for $c>0$ the matrix $cH$ is gapped
+    at $cE_0$ with gap $c\Delta$, and $H-a$ is gapped at $E_0-a$ with gap $\Delta$,
+    for every $\Delta\in\R$.
+\end{lemma}
+\begin{proof}\leanok
+    $cH\psi=c\mu\psi$ if and only if $H\psi=\mu\psi$, and
+    $(H-a)\psi=(\mu-a)\psi$ if and only if $H\psi=\mu\psi$. Multiplying by
+    $c>0$ and subtracting $a$ preserve the order of real eigenvalues.
+\end{proof}
+
 \begin{lemma}[The operator gap inequality]
     \label{lem:hamiltonians_gap_operator_inequality}
     \lean{ManyBody.IsGapped.posSemidef_sub_smul_one,
