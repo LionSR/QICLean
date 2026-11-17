@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.Cut
+import QICLean.ManyBody.Sites.Lattice
 import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.RegionState
