@@ -77,16 +77,17 @@ theorem disjointProjectedPropagator_spec {m : ℕ}
               (List.ofFn fun j ↦ U j t).prod‖ ≤ (∑ j, ε j) * |t| := by
   classical
   intro U
-  have hU0 (j : Fin m) : U j 0 = 1 := (projectedRelativeEvolution_spec (K j) hA (hA.sub (hB j))).1
+  have hspec (j : Fin m) := projectedRelativeEvolution_spec (K j) hA (hA.sub (hB j))
+  have hU0 (j : Fin m) : U j 0 = 1 := (hspec j).1
   have hUd (j : Fin m) (t : ℝ) : HasDerivAt (U j)
       ((Complex.I • regionExpectation (K j) (heisenbergEvolution A t (B j))) * U j t) t := by
     have hcancel : A - (A - B j) = B j := by abel
     simpa only [U, disjointProjectedPropagator, hcancel] using
-      (projectedRelativeEvolution_spec (K j) hA (hA.sub (hB j))).2.1 t
+      (hspec j).2.1 t
   have hUunit (j : Fin m) (t : ℝ) : U j t ∈ Matrix.unitaryGroup (Config X) ℂ :=
-    (projectedRelativeEvolution_spec (K j) hA (hA.sub (hB j))).2.2.1 t
+    (hspec j).2.2.1 t
   have hUsupport (j : Fin m) (t : ℝ) : U j t ∈ supportedOperators X (K j) :=
-    (projectedRelativeEvolution_spec (K j) hA (hA.sub (hB j))).2.2.2.1 t
+    (hspec j).2.2.2.1 t
   refine ⟨hU0, hUd, hUunit, hUsupport, ?_⟩
   intro t ε herror
   let G : ℝ → Matrix (Config X) (Config X) ℂ :=

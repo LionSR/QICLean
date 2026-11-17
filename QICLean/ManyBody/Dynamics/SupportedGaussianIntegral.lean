@@ -47,13 +47,13 @@ one-dimensional note, part2a_mps_information.tex, lines 381–402. -/
 theorem exists_supported_gaussian_integral_of_projection_bounds
     {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
     [∀ v, DecidableEq (X v)]
-    {K' K : Matrix (Config X) (Config X) ℂ}
-    (hK' : K'.IsHermitian) (hK : K.IsHermitian) (Bgen : Finset V) :
+    {H' H : Matrix (Config X) (Config X) ℂ}
+    (hH' : H'.IsHermitian) (hH : H.IsHermitian) (Bgen : Finset V) :
     ∃ U : ℝ → Matrix (Config X) (Config X) ℂ,
       U 0 = 1 ∧
       (∀ t, HasDerivAt U
         ((Complex.I • regionExpectation Bgen
-          (heisenbergEvolution K' t (K' - K))) * U t) t) ∧
+          (heisenbergEvolution H' t (H' - H))) * U t) t) ∧
       (∀ t, U t ∈ Matrix.unitaryGroup (Config X) ℂ) ∧
       (∀ t, U t ∈ supportedOperators X Bgen) ∧
       ∀ (Bobs Bout : Finset V), Bobs ⊆ Bout → Bgen ⊆ Bout →
@@ -61,67 +61,67 @@ theorem exists_supported_gaussian_integral_of_projection_bounds
         0 ≤ T →
         ∀ εobs εgen : ℝ, 0 ≤ εobs → 0 ≤ εgen →
         (∀ t : ℝ, |t| ≤ T →
-          ‖heisenbergEvolution K' t W -
-            regionExpectation Bobs (heisenbergEvolution K' t W)‖ ≤ ‖W‖ * εobs) →
+          ‖heisenbergEvolution H' t W -
+            regionExpectation Bobs (heisenbergEvolution H' t W)‖ ≤ ‖W‖ * εobs) →
         (∀ t : ℝ, |t| ≤ T →
-          ‖heisenbergEvolution K' t (K' - K) -
-            regionExpectation Bgen (heisenbergEvolution K' t (K' - K))‖ ≤ εgen) →
+          ‖heisenbergEvolution H' t (H' - H) -
+            regionExpectation Bgen (heisenbergEvolution H' t (H' - H))‖ ≤ εgen) →
         let M := ∫ t : ℝ in Set.Icc (-T) T,
-          regionExpectation Bobs (heisenbergEvolution K' t W) * U t
+          regionExpectation Bobs (heisenbergEvolution H' t W) * U t
             ∂ProbabilityTheory.gaussianReal 0 η
         M ∈ supportedOperators X Bout ∧
         ‖M‖ ≤ ‖W‖ ∧
-        ‖M - GaussianFilter.gaussianIntertwinerTruncated η T K' K W‖ ≤
+        ‖M - GaussianFilter.gaussianIntertwinerTruncated η T H' H W‖ ≤
           ‖W‖ * (εobs + T * εgen) := by
   classical
   obtain ⟨U, hU0, hU, hunit, hsupport, _, hcompare⟩ :=
-    exists_supported_projected_relative_evolution Bgen hK' hK
+    exists_supported_projected_relative_evolution Bgen hH' hH
   refine ⟨U, hU0, hU, hunit, hsupport, ?_⟩
   intro Bobs Bout hobsSub hgenSub W η T hT εobs εgen hεobs hεgen hobs hgen M
   have hrelative (t : ℝ) (ht : |t| ≤ T) :
-      ‖Matrix.hermitianUnitaryPath K' t * Matrix.hermitianUnitaryPath K (-t) - U t‖ ≤
+      ‖Matrix.hermitianUnitaryPath H' t * Matrix.hermitianUnitaryPath H (-t) - U t‖ ≤
         εgen * |t| :=
     hcompare t _ (fun s hs ↦ hgen s
       ((show |s| ≤ |t| by
         simpa only [sub_zero] using Set.abs_sub_left_of_mem_uIcc hs).trans ht))
   have hfactor (t : ℝ) :
-      heisenbergEvolution K' t W *
-          (Matrix.hermitianUnitaryPath K' t * Matrix.hermitianUnitaryPath K (-t)) =
-        Matrix.hermitianUnitaryPath K' t * W * Matrix.hermitianUnitaryPath K (-t) := by
+      heisenbergEvolution H' t W *
+          (Matrix.hermitianUnitaryPath H' t * Matrix.hermitianUnitaryPath H (-t)) =
+        Matrix.hermitianUnitaryPath H' t * W * Matrix.hermitianUnitaryPath H (-t) := by
     rw [heisenbergEvolution,
-      Matrix.mul_assoc (Matrix.hermitianUnitaryPath K' t * W),
-      ← Matrix.mul_assoc (Matrix.hermitianUnitaryPath K' (-t))
-        (Matrix.hermitianUnitaryPath K' t),
+      Matrix.mul_assoc (Matrix.hermitianUnitaryPath H' t * W),
+      ← Matrix.mul_assoc (Matrix.hermitianUnitaryPath H' (-t))
+        (Matrix.hermitianUnitaryPath H' t),
       ← Matrix.hermitianUnitaryPath_add, neg_add_cancel,
       Matrix.hermitianUnitaryPath_zero, Matrix.one_mul]
   have hpoint (t : ℝ) (ht : |t| ≤ T) :
-      ‖regionExpectation Bobs (heisenbergEvolution K' t W) * U t -
-        Matrix.hermitianUnitaryPath K' t * W * Matrix.hermitianUnitaryPath K (-t)‖ ≤
+      ‖regionExpectation Bobs (heisenbergEvolution H' t W) * U t -
+        Matrix.hermitianUnitaryPath H' t * W * Matrix.hermitianUnitaryPath H (-t)‖ ≤
           ‖W‖ * (εobs + T * εgen) := by
     refine (hfactor t) ▸ (norm_sub_le_norm_sub_add_norm_sub
-      (regionExpectation Bobs (heisenbergEvolution K' t W) * U t)
-      (heisenbergEvolution K' t W * U t)
-      (heisenbergEvolution K' t W *
-        (Matrix.hermitianUnitaryPath K' t * Matrix.hermitianUnitaryPath K (-t)))).trans ?_
+      (regionExpectation Bobs (heisenbergEvolution H' t W) * U t)
+      (heisenbergEvolution H' t W * U t)
+      (heisenbergEvolution H' t W *
+        (Matrix.hermitianUnitaryPath H' t * Matrix.hermitianUnitaryPath H (-t)))).trans ?_
     rw [← sub_mul, ← mul_sub, CStarRing.norm_mul_mem_unitary _ (hunit t),
-      norm_sub_rev (regionExpectation Bobs (heisenbergEvolution K' t W))
-        (heisenbergEvolution K' t W)]
+      norm_sub_rev (regionExpectation Bobs (heisenbergEvolution H' t W))
+        (heisenbergEvolution H' t W)]
     refine (add_le_add (hobs t ht)
       (norm_mul_le_of_le
-        (show ‖heisenbergEvolution K' t W‖ ≤ ‖W‖ from
-          (SpectralFilter.norm_hermitianUnitaryPath_conj hK' W t).le)
+        (show ‖heisenbergEvolution H' t W‖ ≤ ‖W‖ from
+          (SpectralFilter.norm_hermitianUnitaryPath_conj hH' W t).le)
         ((norm_sub_rev (U t)
-          (Matrix.hermitianUnitaryPath K' t * Matrix.hermitianUnitaryPath K (-t))).trans_le
+          (Matrix.hermitianUnitaryPath H' t * Matrix.hermitianUnitaryPath H (-t))).trans_le
             (hrelative t ht)))).trans ?_
     nlinarith [mul_le_mul_of_nonneg_left ht (mul_nonneg (norm_nonneg W) hεgen)]
-  let f := fun t : ℝ ↦ regionExpectation Bobs (heisenbergEvolution K' t W) * U t
+  let f := fun t : ℝ ↦ regionExpectation Bobs (heisenbergEvolution H' t W) * U t
   have hnorm (t : ℝ) : ‖f t‖ ≤ ‖W‖ :=
     (CStarRing.norm_mul_mem_unitary _ (hunit t)).trans_le
       (MatrixEvolution.norm_projectedGenerator_le (regionExpectationLM Bobs)
-        norm_regionExpectation_le hK' W t)
+        norm_regionExpectation_le hH' W t)
   have hcont : Continuous f :=
     (MatrixEvolution.contDiff_projectedGenerator (regionExpectationLM Bobs)
-      K' W 0).continuous.mul
+      H' W 0).continuous.mul
       (show Differentiable ℝ U from fun t ↦ (hU t).differentiableAt).continuous
   have hint : Integrable f (gaussianReal 0 η) :=
     (integrable_const ‖W‖).mono' hcont.aestronglyMeasurable
@@ -139,10 +139,10 @@ theorem exists_supported_gaussian_integral_of_projection_bounds
       (fun t _ ↦ hnorm t)).trans
         (mul_le_of_le_one_right (norm_nonneg W) measureReal_le_one)
   · change ‖(∫ t : ℝ in Set.Icc (-T) T, f t ∂gaussianReal 0 η) -
-      GaussianFilter.gaussianIntertwinerTruncated η T K' K W‖ ≤ _
+      GaussianFilter.gaussianIntertwinerTruncated η T H' H W‖ ≤ _
     rw [GaussianFilter.gaussianIntertwinerTruncated,
       ← integral_sub (hint.restrict (s := Set.Icc (-T) T))
-        (GaussianFilter.integrable_intertwinerIntegrand_restrict η T hK' hK W)]
+        (GaussianFilter.integrable_intertwinerIntegrand_restrict η T hH' hH W)]
     exact (norm_setIntegral_le_of_norm_le_const (measure_lt_top _ _)
       (fun t ht ↦ hpoint t (abs_le.mpr ht))).trans
         (mul_le_of_le_one_right (by positivity) measureReal_le_one)

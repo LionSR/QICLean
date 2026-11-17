@@ -207,8 +207,8 @@ theorem regionExpectation_conjTranspose (A : Matrix (Config X) (Config X) ℂ) :
 
 /-- The region expectation of a Hermitian operator is Hermitian. -/
 theorem isHermitian_regionExpectation {A : Matrix (Config X) (Config X) ℂ}
-    (hA : A.IsHermitian) : (regionExpectation D A).IsHermitian := by
-  rw [IsHermitian, ← regionExpectation_conjTranspose, hA.eq]
+    (hA : A.IsHermitian) : (regionExpectation D A).IsHermitian :=
+  hA.apply_of_map_conjTranspose regionExpectation_conjTranspose
 
 /-- The region expectation as a linear map, for the statements about linear maps of matrices
 (conditional generators, Bochner integrals). Statements about the region expectation are

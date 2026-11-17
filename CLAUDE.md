@@ -368,3 +368,4 @@ for consumers.
 | `Kraus.map_compressed_fixedPoint` | helper theorem | Preserving a supported fixed point under finite-Kraus compression along an isometry | `QICLean/Channel/KrausCornerCompression.lean` |
 | `Matrix.isSimpleModule_pi` | helper theorem | Using simplicity of the defining module of a full matrix algebra over a field | `QICLean/Algebra/MatrixAlgHomCentralizer.lean` |
 | `IsSimpleRing.nonempty_linearEquiv_of_isSimpleModule` | helper theorem | Identifying two simple modules over a simple Artinian ring, instead of rebuilding the ideal/isotypic comparison | `QICLean/Algebra/MatrixAlgHomCentralizer.lean` |
+| `Matrix.IsHermitian.apply_of_map_conjTranspose` | helper theorem | Showing a map that commutes with `ᴴ` (placement, region expectation, local lift) sends Hermitian matrices to Hermitian matrices, instead of `rw [IsHermitian, ← f_conjTranspose, hA.eq]` | `QICLean/Algebra/HermitianHelpers.lean` |
