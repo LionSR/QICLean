@@ -1206,8 +1206,21 @@ Theorem~\ref{thm:trace_norm_abs}.
     $p+q=(1-\nu)a+(1-\mu)b$. The triangle inequality and norm monotonicity give
     $\|a-b\|\le2|1-\nu|\|a\|+|1-\mu|\|b\|$.
     Interchanging $a,b$ and taking the minimum gives the first bound.
-    Taking the average and applying the arithmetic-geometric mean inequality
-    gives the remaining bounds.
+    When $\mu,\nu\le1$, averaging the two asymmetric estimates gives
+    \begin{align}
+        \|a-b\|&\le\frac32\bigl(\|a\|+\|b\|-x-y\bigr),
+        \label{eq:cone_norm_average}
+    \end{align}
+    where $x=\nu\|a\|\ge0$ and $y=\mu\|b\|\ge0$. Since
+    \begin{align}
+        x+y-2\sqrt{xy}&=(\sqrt{x}-\sqrt{y})^2\ge0,
+        \label{eq:cone_norm_amgm}
+    \end{align}
+    substituting (\ref{eq:cone_norm_amgm}) into (\ref{eq:cone_norm_average}) yields
+    \begin{align}
+        \|a-b\|&\le3\left(\frac{\|a\|+\|b\|}{2}
+            -\sqrt{\nu\|a\|\mu\|b\|}\right).
+    \end{align}
 \end{proof}
 
 \begin{theorem}[Cone ratios under positive maps]

@@ -37,6 +37,7 @@ def diagonalMap : (ℝ × ℝ) →ₗ[ℝ] (ℝ × ℝ) where
 /-- Membership in the closed positive quadrant is coordinatewise nonnegativity. -/
 lemma mem_quadrant (x : ℝ × ℝ) : x ∈ quadrant ↔ 0 ≤ x.1 ∧ 0 ≤ x.2 := Iff.rfl
 
+/-- The diagonal map preserves the closed positive quadrant. -/
 lemma diagonalMap_positive (x : ℝ × ℝ) (hx : x ∈ quadrant) :
     diagonalMap x ∈ quadrant := by
   exact ⟨hx.1, mul_nonneg (by norm_num) hx.2⟩
