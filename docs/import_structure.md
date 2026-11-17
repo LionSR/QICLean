@@ -50,13 +50,22 @@ except under `ManyBody` and `Circuit`, where it is the first two. The checker
 prints witness imports for each new pair. The imported TNLean example-import
 ratchet also starts empty: theory must not depend on worked-example directories.
 
-`scripts/check_pass_through_declarations.py` records 74 lexical forwarding
-candidates at QICLean main `e9cc1cc6`. A candidate applies a single target to
+`scripts/check_pass_through_declarations.py` records 79 lexical forwarding
+candidates at QICLean main `dfd6b71656fbd67c501d3c8cd84259c629d15dce`. A candidate applies a single target to
 all its explicit binders, in order, either directly, with `by exact`, or with
 `by simpa using`. Unlike TNLean's scanner, the target can be unqualified or
 have a different name. This makes the inventory broader than upstream's
 same-name namespace aliases (15 here), without trying to prove semantic
 redundancy. The script docstring specifies the grammar and exclusions.
+
+The initial inventory includes five legacy compatibility proofs introduced by
+PR #1075 before this checker landed: `Entropy.eq_of_forall_trace_mul_eq`,
+`Entropy.inner_toEuclideanLin_eq_trace`, `Entropy.regionState_isHermitian`,
+`Entropy.regionState_posSemidef`, and `Entropy.trace_regionState`. The first two
+forward to `Matrix` results; the remaining three forward to `ManyBody` regional
+state results. They preserve existing legacy statements while the implementations
+move to the lower layers. These are recorded migration debt, not exceptions to
+future enforcement; no new-layer forwarding debt is recorded.
 
 These are review candidates, not a verdict that a one-line proof is redundant.
 The scanner does not elaborate Lean or compare statement types. In particular,
