@@ -285,6 +285,35 @@ $\sum_{k:\,x\in T_k}\lVert h_k\rVert\leq b_0$ for every site $x$.
     finite distance is joined to $a$.
 \end{proof}
 
+\begin{lemma}[Neighbourhoods of crossing supports avoid cores]
+    \label{lem:dynamics_support_separation}
+    \lean{ManyBody.graphBall_subset_of_finite_distance_margin,
+        ManyBody.reset_graphNeighborhood_disjoint_cores}
+    \leanok
+    \uses{def:dynamics_graph_ball, def:sites_crossing_terms}
+    If every site outside a region $D$ at finite distance from $x$ has
+    distance greater than a real number $w$, then $N_m(x)\subseteq D$ for every
+    natural $m\leq w$.
+    Let $(X_k)_k$ be regions of diameter at most $R$, let $D$ and $C$ be
+    disjoint regions, and let $R_0$ and $C_0$ be regions with
+    $N_{\ell+R}(r)\subseteq D$ for $r\in R_0$ and $N_{\ell+R}(c)\subseteq C$
+    for $c\in C_0$. Let $Z$ be the union of the $X_k$ crossing the cut at $D$.
+    Then the union of the balls $N_\ell(z)$ over
+    $z\in(D\cup C)^c\cup Z$ is disjoint from $R_0\cup C_0$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:dynamics_graph_ball}
+    A site outside $D$ at distance at most $m\leq w$ from $x$ would violate the
+    margin. For the second statement, let $a\in R_0\cup C_0$ lie within
+    distance $\ell$ of $z$. Every site within distance $R$ of $z$ lies in
+    $N_{\ell+R}(a)$, hence in $D$ or in $C$, according as $a\in R_0$ or
+    $a\in C_0$. If $z\notin D\cup C$ this already fails for $z$ itself. If
+    $z\in X_k$ with $X_k$ crossing $D$, then $X_k$ has a site outside $D$ and a
+    site in $D$, both within distance $R$ of $z$: the first contradicts
+    $a\in R_0$, and the second, lying in $C$ as well, contradicts the
+    disjointness of $D$ and $C$ when $a\in C_0$.
+\end{proof}
+
 \begin{theorem}[Localization onto graph balls]
     \label{thm:dynamics_localization}
     \lean{ManyBody.sum_pow_mul_exp_neg_le,

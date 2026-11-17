@@ -226,13 +226,42 @@ declaration:
 \doclink{QICLean/Analysis/JordanSimilarity.lean}.}
 
 Equation~(8.108) of Ref.~\cite{Wolf2012Quantum} instead uses the infimum
-$\kappa_T$ over all Jordan changes of basis. Replacing the chosen factor in
-(\ref{eq:wolf_thm823_jordan_scaling_qualifications_similarity_lower}) and
-(\ref{eq:wolf_thm823_jordan_scaling_qualifications_similarity_upper}) by this
-infimum requires either attainment of the infimum or a limiting argument
-compatible with the selected normalized Jordan form. The imported Lean Jordan
-API does not currently provide such a result, so the formal declaration does
-not assume a minimizing basis.
+$\kappa_T$ over all Jordan changes of basis. This infimum is now defined over
+similarities to finite sums of positive-dimensional normalized Jordan blocks,
+allowing permutations of coordinates. Every diagonal matrix is admissible.
+The family of factors is bounded below by zero, and by one on a nonzero
+space. Every admissible member bounds the infimum from above; a nonempty
+family contains a factor within any prescribed positive error of its
+infimum.\footnote{Formal declarations:
+\leanid{Matrix.jordanConditionNumber}, \leanid{Matrix.jordanConditionNumber_le},
+\leanid{Matrix.one_le_jordanConditionNumber}, and
+\leanid{Matrix.exists_jordanConditionFactor_lt} in
+\doclink{QICLean/Analysis/JordanConditionNumber.lean}.}
+The empty matrix has condition number zero; lower-bound statements explicitly
+exclude that space.
+
+Attainment is unnecessary for the norm comparison. If $r,s\ge0$ satisfy
+$r\le cs$ and $s\le cr$ for every admissible factor $c$, the
+positive-denominator cases give $r/s\le\inf c$ and $s/r\le\inf c$.
+The zero cases follow from any member of the nonempty family. Hence
+$\kappa_T^{-1}r\le s\le\kappa_T r$.\footnote{Formal declaration:
+\leanid{Matrix.jordanConditionNumber_bounds}. The matrix-power consequence
+\leanid{Matrix.l2_opNorm_pow_jordanConditionNumber_bounds} assumes explicitly
+that all admissible normalized Jordan representatives have the same power
+norm.}
+For the channel difference in Equation~(8.108), invariance of the
+subperipheral Jordan-power norm still needs a proof from Jordan-form
+uniqueness. The limiting theorem does not assume this missing algebraic fact
+implicitly, and does not assume a minimizing basis.
+
+For supplied block data and an explicit similarity, the polynomial estimates
+are already assembled: the lower constant is the printed single-block
+constant divided by the chosen condition factor, and a positive upper
+constant works at every positive exponent.\footnote{Formal declaration:
+\leanid{Matrix.exists_pos_pow_similarity_jordanBlockDirectSum_bounds} in
+\doclink{QICLean/Analysis/JordanSimilarity.lean}.}
+This statement requires positive maximal modulus and supplied genuine Jordan
+blocks. It is not the unrestricted channel theorem.
 
 Under the detailed-balance hypothesis in Equation~(8.110) of
 Ref.~\cite{Wolf2012Quantum}, the formal development constructs Wolf's chosen
@@ -261,12 +290,22 @@ The formal statement deliberately does not rename the chosen factor in
 (\ref{eq:wolf_thm823_jordan_scaling_qualifications_detailed_balance_factor})
 as $\kappa_T$.
 
-Completing the printed $\kappa_T$ bound still requires the source-shaped
-infimum tracked in
-\href{https://github.com/LionSR/QICLean/issues/297}{QICLean issue \#297} and a
-proof that this infimum is bounded above by the condition factor of every
-admissible Jordan change of basis. The detailed-balance assembly is tracked in
-\href{https://github.com/LionSR/QICLean/issues/298}{QICLean issue \#298}.
+The printed detailed-balance inequalities are now proved for the actual
+infimum. A diagonal matrix is a sum of one-dimensional normalized Jordan
+blocks, so the displayed basis is admissible. Comparison with the infimum
+proves $\kappa_T\le\sqrt{\kappa(\widehat\Sigma)}$ without an attainment
+hypothesis.\footnote{Formal declaration:
+\leanid{jordanConditionNumber_transferMatrix_le_of_detailedBalance}.}
+For $\Sigma(X)=\sqrt\sigma X\sqrt\sigma$, the verified Kronecker identity,
+the inverse Kronecker identity and the tensor-norm bound give
+$\kappa(\widehat\Sigma)\le\kappa(\sigma)$. Thus
+$\kappa_T\le\sqrt{\kappa(\sigma)}$.\footnote{Formal declarations:
+\leanid{conditionFactor_transferMatrix_sigmaSandwich_le} and
+\leanid{jordanConditionNumber_transferMatrix_le_of_sigmaSandwich}.}
+These statements require only Hermiticity preservation of $T$, positive
+definiteness of the weight, and the detailed-balance equation. They include
+dimension zero. The previously proved evaluation at the identity supplies
+the fixed-point observation under $T^*(1)=1$.
 
 \section{Verdict}
 
@@ -280,8 +319,9 @@ Jordan-sum maximum, eventual dominance, polynomial scaling, and zero-modulus
 nilpotence range are also proved. The full statement for
 $\widehat T^n-\widehat T_\varphi^n$ still requires a constructive Jordan
 decomposition, identification of the channel's largest-block data $d_\mu$
-and nilpotence range, assembly over explicit positive exponents, and a
-justified passage to $\kappa_T$. Until these dependencies are supplied,
+and nilpotence range, assembly over explicit positive exponents, and invariance of the subperipheral power norm across admissible Jordan
+forms. The infimum and the uniform limiting argument are proved; the latter
+does not discharge that invariance requirement. Until these dependencies are supplied,
 Equations~(8.106)--(8.109) of Ref.~\cite{Wolf2012Quantum} should not be marked
 formalized. The remaining work is tracked in
 \href{https://github.com/LionSR/QICLean/issues/297}{QICLean issue \#297}.

@@ -310,12 +310,21 @@ jobs:
               const q = `query($owner:String!,$repo:String!,$n:Int!){
                 repository(owner:$owner,name:$repo){
                   issue(number:$n){
-                    parent { number title state labels(first:30){nodes{name}} }
+                    parent { number title state repository { nameWithOwner } labels(first:30){nodes{name}} }
                   }
                 }}`;
               try {
                 const r = await github.graphql(q, { owner, repo, n: issueNumber });
-                return r.repository.issue?.parent || null;
+                const parent = r.repository.issue?.parent || null;
+                if (!parent) return null;
+                const parentRepo = parent.repository?.nameWithOwner;
+                // GITHUB_TOKEN is scoped to this repository. Never reinterpret
+                // a remote issue number as a local one (even if it exists here).
+                if (!parentRepo || parentRepo.toLowerCase() !== `${owner}/${repo}`.toLowerCase()) {
+                  core.info(`Parent of #${issueNumber} is in ${parentRepo || 'an unknown repository'}; skipping.`);
+                  return null;
+                }
+                return parent;
               } catch (e) {
                 core.warning(`Parent lookup for #${issueNumber} failed: ${e.message}`);
                 return null;
