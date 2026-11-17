@@ -250,10 +250,16 @@ by one measurement, and bounds the trace distance below by the overlap.
 \end{theorem}
 \begin{proof}
     \leanok
+    \uses{thm:rpow_kronecker_possemidef}
     The entry formula $(\bigotimes_i A_i)_{x,y}=\prod_i(A_i)_{x_i,y_i}$
     gives multiplication and trace by distributing finite sums over products.
-    Induct on the number of factors for powers, separating the first factor
-    and applying the two-factor power identity after the coordinate change.
+    Induct on the number of factors for powers. After separating the first
+    factor by the coordinate change, apply
+    \begin{align}
+        \left(A_0\otimes\bigotimes_{i=1}^N A_i\right)^s
+          &=A_0^s\otimes\left(\bigotimes_{i=1}^N A_i\right)^s.
+    \end{align}
+    The induction hypothesis then factors the remaining power.
     Scalar homogeneity follows from $(cx)^s=c^sx^s$ on the nonnegative spectrum.
 \end{proof}
 
@@ -290,8 +296,12 @@ by one measurement, and bounds the trace distance below by the overlap.
     \leanok
     \uses{thm:quantum_neyman_pearson}
     The quantum Neyman--Pearson theorem gives an attained least error and
-    its trace-norm formula. The effects $0$ and $\Id$ give the two upper
-    bounds. For density matrices and a probability prior, both trace
+    its trace-norm formula. Unit trace gives
+    \begin{align}
+        e(0)&=p\tr\rho=p, & e(\Id)&=(1-p)\tr\sigma=1-p.
+    \end{align}
+    Since the minimum is at most either value, the two upper bounds follow.
+    For density matrices and a probability prior, both trace
     pairings in the error of an optimal effect are nonnegative.
 \end{proof}
 

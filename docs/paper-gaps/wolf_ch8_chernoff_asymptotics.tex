@@ -35,7 +35,9 @@ for independent pairs $(\rho_i,\sigma_i)$ the overlap power in
 (\ref{eq:wolf_ch8_chernoff_asymptotics_finite_bound}) is replaced by the product of their overlaps.
 The proof combines the attained Neyman--Pearson minimum with Wolf's
 Equation (8.54)~\cite[Equations~(8.41), (8.54)]{Wolf2012Quantum}, then factors powers and traces over tensor products.
-If an overlap $q$ is positive, $e_N\le\exp(N\log q)$, uniformly over priors.
+For a fixed $s\in[0,1]$, write
+$q=Q_s(\rho,\sigma)=\operatorname{Re}\tr[\rho^s\sigma^{1-s}]$.
+If $q>0$, $e_N\le\exp(N\log q)$, uniformly over priors.
 If $q<1$, then $e_N\to0$.\footnote{Declarations in
 \path{QICLean/Channel/QuantumChernoff.lean}, especially
 \leanid{Matrix.optimalHypothesisTestError_iid_le} and
