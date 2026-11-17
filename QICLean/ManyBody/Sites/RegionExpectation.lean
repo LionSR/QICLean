@@ -205,6 +205,25 @@ theorem regionExpectation_conjTranspose (A : Matrix (Config X) (Config X) ℂ) :
   simp only [regionExpectation_eq_sum_conj, conjTranspose_sum, conjTranspose_mul,
     conjTranspose_conjTranspose, Matrix.mul_assoc]
 
+/-- The region expectation of a Hermitian operator is Hermitian. -/
+theorem isHermitian_regionExpectation {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A.IsHermitian) : (regionExpectation D A).IsHermitian := by
+  rw [IsHermitian, ← regionExpectation_conjTranspose, hA.eq]
+
+/-- The region expectation as a linear map, for the statements about linear maps of matrices
+(conditional generators, Bochner integrals). Statements about the region expectation are
+written with `ManyBody.regionExpectation`. -/
+noncomputable def regionExpectationLM (D : Finset V) :
+    Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ where
+  toFun := regionExpectation D
+  map_add' := regionExpectation_add
+  map_smul' := regionExpectation_smul
+
+@[simp]
+theorem regionExpectationLM_apply (D : Finset V) (A : Matrix (Config X) (Config X) ℂ) :
+    regionExpectationLM D A = regionExpectation D A :=
+  rfl
+
 /-- **Bimodule property.** For `B` and `C` supported on `D`, `E_D(B A C) = B E_D(A) C`. -/
 theorem regionExpectation_mul_mul {A B C : Matrix (Config X) (Config X) ℂ}
     (hB : B ∈ supportedOperators X D) (hC : C ∈ supportedOperators X D) :
