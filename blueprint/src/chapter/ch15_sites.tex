@@ -331,6 +331,34 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $\varepsilon=0$ gives $A=E_D(A)\in\mathcal A_D$.
 \end{proof}
 
+\section{Configurations along a partition}
+\label{sec:sites_partition}
+
+\begin{lemma}[Sums over a partition into blocks]
+    \label{lem:sites_partition}
+    \lean{ManyBody.IsComplPartition, ManyBody.complRestrict,
+        ManyBody.complPartitionEquiv, ManyBody.sum_prod_complPartition,
+        ManyBody.prod_ite_complPartition}
+    \leanok
+    \uses{def:sites_config}
+    Let $D$ be a region and let $(R_b)_{b\in B}$ be a finite family of pairwise
+    disjoint regions, disjoint from $D$, that cover $V\setminus D$. Restriction to
+    the blocks is a bijection $X_{V\setminus D}\to\prod_bX_{R_b}$. Consequently, for
+    functions $f_b$ on $X_{R_b}$,
+    \begin{align}
+        \sum_{w\in X_{V\setminus D}}\prod_bf_b(w|_{R_b})
+        &=\prod_b\sum_{z\in X_{R_b}}f_b(z),
+        \notag
+    \end{align}
+    and two configurations of $V\setminus D$ are equal exactly when they agree on
+    every block.
+\end{lemma}
+\begin{proof}\leanok
+    The inverse bijection takes a family of configurations of the blocks to the
+    configuration whose value at $v$ is read off the block containing $v$. The sum
+    of products over a product set is the product of the sums.
+\end{proof}
+
 \section{Regional pure states and relabelling}
 
 \begin{definition}[Regional state and entropy]

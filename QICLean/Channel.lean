@@ -70,6 +70,7 @@ import QICLean.Channel.JamiolkowskiSpectrum
 import QICLean.Channel.KoashiImoto
 import QICLean.Channel.KrausCPTP
 import QICLean.Channel.KrausCornerCompression
+import QICLean.Channel.KrausFamily
 import QICLean.Channel.KrausFreedom
 import QICLean.Channel.KrausGauge
 import QICLean.Channel.KrausIterateChoi
