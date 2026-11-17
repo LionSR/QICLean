@@ -24,6 +24,13 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 
 namespace Matrix
 
+/-- A map between square matrices that commutes with the conjugate transpose sends Hermitian
+matrices to Hermitian matrices. -/
+theorem IsHermitian.apply_of_map_conjTranspose {m l α : Type*} [Star α]
+    {f : Matrix m m α → Matrix l l α} (hf : ∀ A, f Aᴴ = (f A)ᴴ) {A : Matrix m m α}
+    (hA : A.IsHermitian) : (f A).IsHermitian := by
+  rw [IsHermitian, ← hf, hA.eq]
+
 omit [Fintype n] [DecidableEq n] in
 /-- Every complex square matrix is a fixed complex linear combination of two
 Hermitian matrices, chosen as its Hermitian and skew-Hermitian components. -/

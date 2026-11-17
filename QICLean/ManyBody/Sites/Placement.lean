@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Support
+import QICLean.Algebra.HermitianHelpers
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Order
@@ -120,8 +121,8 @@ theorem place_conjTranspose : place D Kᴴ = (place D K)ᴴ := by
 
 /-- The placement of a Hermitian matrix is Hermitian. -/
 theorem isHermitian_place {K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ}
-    (hK : K.IsHermitian) : (place D K).IsHermitian := by
-  rw [IsHermitian, ← place_conjTranspose, hK.eq]
+    (hK : K.IsHermitian) : (place D K).IsHermitian :=
+  hK.apply_of_map_conjTranspose place_conjTranspose
 
 @[simp]
 theorem place_one [DecidableEq (RegionConfig X D)] :
