@@ -693,10 +693,34 @@ logarithm.  The distinction is recorded in
 clause is recorded separately in \cite{gap:wolf_ch5_operator_jensen_lieb}.
 
 The finite-measure representation in Theorem~5.8 requires a further
-correction: its kernel is bounded above by $x^2$, so it forces a quadratic
-remainder after subtracting the tangent at zero. The operator-convex
+correction: writing $M=\mu((0,\infty))<\infty$, its kernel satisfies
+$0\leq yx^2/(y+x)\leq x^2$ for $x,y>0$, and hence
+$0\leq f(x)-a-bx\leq(c+M)x^2$ near zero. The operator-convex
 function $x^{3/2}$ violates this bound; see
 \cite{gap:wolf_ch5_operator_convexity_scope}.
+
+\begin{lemma}[Ordered integration through a linear map]
+\label{lem:ordered-integral-linear-map}
+\lean{Matrix.integral_le_map_integral}
+\leanok
+Let $T$ be a complex linear map between finite matrix algebras, possibly of
+unequal dimensions. For integrable matrix-valued functions $F$ and $G$
+satisfying $G(t)\leq T(F(t))$ almost everywhere,
+\[
+ \int G(t)\,d\mu(t)\leq T\!\left(\int F(t)\,d\mu(t)\right).
+\]
+No positivity assumption on $T$ is needed beyond the displayed hypothesis.
+\end{lemma}
+\begin{proof}\leanok
+Finite dimensionality makes $T$ continuous. Consequently $T\circ F$ is
+integrable, and
+\[
+ \int G(t)\,d\mu(t)\leq\int T(F(t))\,d\mu(t)
+ =T\!\left(\int F(t)\,d\mu(t)\right).
+\]
+The inequality integrates the almost-everywhere hypothesis; continuity and
+linearity give the equality.
+\end{proof}
 
 \begin{lemma}[Integral assembly of Jensen inequalities]
 \label{lem:integral-jensen-assembly}
@@ -708,6 +732,7 @@ with both integrands integrable. If $k_t(T(A))\leq T(k_t(A))$ almost
 everywhere, then $f(T(A))\leq T(f(A))$.
 \end{lemma}
 \begin{proof}\leanok
+\uses{lem:ordered-integral-linear-map}
 Integration preserves the almost-everywhere operator inequality, and the
 finite-dimensional linear map $T$ is continuous. Thus
 \[

@@ -27,7 +27,7 @@ attribute [local instance] Matrix.instL2OpNormedAlgebra
 
 namespace Matrix
 
-variable {n m : Type} {α : Type*} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
+variable {n m : Type*} {α : Type*} [Fintype n] [DecidableEq n] [Fintype m] [DecidableEq m]
 variable [MeasurableSpace α] {μ : Measure α}
 
 /-- Integrating almost-everywhere matrix inequalities commutes with a linear map.

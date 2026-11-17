@@ -120,13 +120,16 @@ page numbered 79, contains both the displayed kernel and the words
 The finite-measure condition in Equation~(5.18), with its displayed kernel,
 cannot characterize all operator-convex functions on the closed positive
 half-line. Indeed, put $M=\mu((0,\infty))<\infty$. For $x>0$ and $y>0$,
-\[
-  0\leq \frac{yx^2}{y+x}\leq x^2.
-\]
-Consequently every function with the displayed representation satisfies
-\[
-  0\leq f(x)-a-bx\leq (c+M)x^2.
-\]
+\begin{align}
+  0&\leq \frac{yx^2}{y+x}\leq x^2.
+  \label{eq:wolf_ch5_operator_convexity_scope_kernel_bound}
+\end{align}
+Integrating Equation~\ref{eq:wolf_ch5_operator_convexity_scope_kernel_bound}
+shows that every function with the displayed representation satisfies
+\begin{align}
+  0&\leq f(x)-a-bx\leq (c+M)x^2.
+  \label{eq:wolf_ch5_operator_convexity_scope_tangent_remainder}
+\end{align}
 In particular $f(0)=a$, its right derivative at zero exists and equals $b$,
 and its remainder after subtracting that tangent is bounded by a constant
 times $x^2$ near zero.
@@ -134,8 +137,8 @@ times $x^2$ near zero.
 Take $f(x)=x^{3/2}$. This function is operator convex on $[0,\infty)$
 (the power-convexity result already covers this exponent), but it cannot
 have the displayed finite-measure representation. Evaluation at zero gives
-$a=0$. Dividing the bound by $x$ and letting $x\downarrow0$ gives $b=0$.
-The bound would then give $x^{-1/2}\leq c+M$ for every $x>0$, a
+$a=0$. Dividing Equation~\ref{eq:wolf_ch5_operator_convexity_scope_tangent_remainder} by $x$ and letting $x\downarrow0$ gives $b=0$.
+Equation~\ref{eq:wolf_ch5_operator_convexity_scope_tangent_remainder} would then give $x^{-1/2}\leq c+M$ for every $x>0$, a
 contradiction. This obstruction concerns the representation itself, not
 merely the proof of the Jensen consequences.
 
