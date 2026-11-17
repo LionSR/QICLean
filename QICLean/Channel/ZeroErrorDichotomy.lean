@@ -16,7 +16,7 @@ import QICLean.Kraus.Wielandt.Primitivity.VectorSpreadPositivity
 A channel `E` can transmit one bit with zero error in a single use if two input states have
 orthogonal outputs. For a channel with a full-rank fixed point, either every power `Eⁿ` can
 transmit a bit with zero error, or every power `E^n`
-with `n ≥ q`, the quantum Wielandt index, cannot.
+with `n ≥ q`, where `q = wielandtIndex K` is the full-word-span threshold, cannot.
 
 If the fixed points are not all multiples of the full-rank one, the positive and negative parts
 of a traceless Hermitian fixed point give two orthogonal fixed states. Otherwise the channel is
@@ -30,14 +30,17 @@ maps every nonzero positive input to a full-rank output, so no two outputs are o
 
 * `HasOneShotZeroErrorBit`: two input states with orthogonal outputs.
 * `Kraus.zeroError_dichotomy_eventually`: Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347,
-  Theorem `thm:zero`, in its one-shot form.
+  Theorem `thm:zero`, restricted to one-shot capacity and the full-word-span threshold.
 
 ## References
 
 * M. Sanz, D. Pérez-García, M. M. Wolf, J. I. Cirac, *A quantum version of Wielandt's
   inequality*, arXiv:0909.5347, Theorem 2 (`thm:zero`), lines 736--771 of `main.tex`. The
   footnote to the theorem allows the one-shot zero-error capacity, which is the version proved
-  here for every `n ≥ q`. Regularized capacity over tensor powers is not formalized.
+  here only at the potentially later full-word-span threshold `i(A)`, not the source
+  positivity-improving threshold `q(E)`. Proposition 1 gives `q(E) ≤ i(A)`; equality need
+  not hold. Regularized capacity over tensor powers is also not formalized. See
+  `docs/paper-gaps/sanz10_zero_error_capacity.tex`.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder BigOperators
@@ -165,10 +168,16 @@ theorem pow_apply_of_apply_eq (E : Mat →ₗ[ℂ] Mat) {X : Mat} (hX : E X = X)
 open Classical in
 /-- **The zero-error dichotomy.** Let `K` be a trace-preserving Kraus family on `M_D(ℂ)` whose
 channel has a full-rank fixed point. Then either every power of the channel transmits one bit
-with zero error in a single use, or every power at or above the quantum Wielandt index does not.
+with zero error in a single use, or every power at or above the full-word-span threshold
+`wielandtIndex K` does not.
 
 Source: Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347, Theorem 2 (`thm:zero`), lines
-736--771, in the one-shot form allowed by its footnote. -/
+736--771.
+
+**Scope restriction (capacity and threshold):** the source permits one-shot capacity, but
+its threshold is the positivity-improving index `q(E)`. This theorem uses the potentially
+larger full-word-span index `i(A)` (Proposition 1: `q(E) ≤ i(A)`), and does not prove the
+source threshold or regularized capacity. See `docs/paper-gaps/sanz10_zero_error_capacity.tex`. -/
 theorem zeroError_dichotomy_eventually [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP K)
     {ρ : Mat} (hρ : IsUnit ρ) (hρfix : mapLM K ρ = ρ) :
     (∀ n : ℕ, HasOneShotZeroErrorBit ((mapLM K) ^ n)) ∨
@@ -281,7 +290,11 @@ theorem zeroError_dichotomy_eventually [NeZero D] {r : ℕ} (K : Fin r → Mat) 
       exists_orthogonal_fixed_densities (E ^ p) hChp.pos hChp.tp hρ'pd hρ'p hσ hσfix hne
     exact hshift p hp τ₀ hτ₀ τ₁ hτ₁ f₀ f₁ horth
 
-/-- The single-index consequence of `zeroError_dichotomy_eventually`. -/
+/-- The single-index consequence of `zeroError_dichotomy_eventually`.
+
+**Scope restriction (capacity and threshold):** the index is the full-word-span threshold,
+not the source positivity-improving index; capacity is one-shot. See
+`docs/paper-gaps/sanz10_zero_error_capacity.tex`. -/
 theorem zeroError_dichotomy [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP K)
     {ρ : Mat} (hρ : IsUnit ρ) (hρfix : mapLM K ρ = ρ) :
     (∀ n : ℕ, HasOneShotZeroErrorBit ((mapLM K) ^ n)) ∨

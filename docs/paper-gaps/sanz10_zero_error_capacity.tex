@@ -13,8 +13,16 @@
 \section{Zero-error capacity: scope}
 Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347,
 Theorem 2, allows one-shot capacity in its footnote. The formalization
-now covers every channel power at or above the Wielandt index, with
-unchanged hypotheses. The full-word-span persistence theorem supplies
+covers every channel power at or above the full Kraus-word-span threshold
+$i(A)$ in the primitive case, with unchanged channel hypotheses. This is
+a stronger threshold assumption than the source condition $n\ge q(E)$,
+where $q(E)$ is the first positivity-improving power. Proposition~1 proves
+$q(E)\le i(A)$, not equality. The example following Proposition~2 uses
+the three Pauli Kraus operators $\sigma_\alpha/\sqrt{3}$ and has
+$q(E)=1<i(A)=2$. Thus even the source-faithful one-shot threshold remains open.
+To remove this restriction, define the positivity-improving index and prove
+persistence of positive definite outputs from that index, then apply the
+one-shot trace-pairing criterion. No equality of the two indices is assumed. The full-word-span persistence theorem supplies
 positive definite outputs at every such power; the strictly positive
 trace pairing excludes orthogonal outputs.
 
