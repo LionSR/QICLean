@@ -441,6 +441,34 @@ supports of bounded range on them.
     position $m$. The other statements are comparisons of positions.
 \end{proof}
 
+\begin{lemma}[Boundary edges and the path distance]
+    \label{lem:sites_chain_boundary}
+    \lean{ManyBody.boundaryEdges, ManyBody.mem_boundaryEdges, ManyBody.boundaryEdges_empty,
+        ManyBody.boundaryEdges_univ,
+        ManyBody.IsChainSupport.exists_boundary_window_of_split,
+        ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one,
+        SimpleGraph.pathGraph_edist, SimpleGraph.pathGraph_card_sphere_le_two,
+        ManyBody.ChainSupport.edist_le}
+    \leanok
+    \uses{def:sites_chain_support, lem:sites_chain_support}
+    The boundary edges of a region $D$ of the chain are the positions $p$ with
+    $p+1<L$ such that exactly one of $p$ and $p+1$ lies in $D$; the empty region and
+    the whole chain have none. A support of range $R$ meeting $D$ and its complement
+    lies in the window $\lbrack p+1-R,p+1+R)$ about a boundary edge $p$ of $D$, and a
+    support of range one meeting both $[0,k)$ and its complement is
+    $\lbrack k-1,k+1)$. The graph distance of the path on $\{0,\dots,L-1\}$ is
+    $\lvert x-y\rvert$, every sphere of the path has at most two points, and a
+    support of range $R$ has path diameter at most $R$.
+\end{lemma}
+\begin{proof}\leanok
+    Between a point of the support in $D$ and one outside it, the indicator of $D$
+    changes at some consecutive pair $p,p+1$, and every point of the support is
+    within $R$ of both. A range-one support meeting both sides has two points, so
+    it is an interval of length two straddling $k$. A walk on the path changes the
+    position by one at each step, and the walk along consecutive positions attains
+    $\lvert x-y\rvert$.
+\end{proof}
+
 \begin{definition}[Finite domains of the integers]
     \label{def:sites_line_domain}
     \lean{ManyBody.sitePos, ManyBody.lineDomainGraph, ManyBody.IsDomainSupport,
