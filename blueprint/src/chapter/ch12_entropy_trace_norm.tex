@@ -1156,8 +1156,8 @@ Theorem~\ref{thm:trace_norm_abs}.
     \leanok
     Let $C$ be a closed convex cone in a real normed space, and suppose
     $\|x\|\le\|x+y\|$ for $x,y\in C$. For $a,b\in C$ with $b\ne0$, put
-    $r(a,b)=\sup\{t\ge0:a-tb\in C\}$.
-    This is the order description of the lower ratio in
+    $\inf(a/b)=\sup\{t\ge0:a-tb\in C\}$.
+    Here the source notation is defined by the order description in
     \cite[Chapter~8, Equation~(8.61)]{Wolf2012Quantum}.
 \end{definition}
 
@@ -1170,7 +1170,7 @@ Theorem~\ref{thm:trace_norm_abs}.
     \uses{def:lower_cone_ratio}
     For nonzero $a,b\in C$, the admissible scales form a closed set containing
     zero, bounded above by $\|a\|/\|b\|$. Its supremum is attained, and
-    $0\le r(a,b)\le\|a\|/\|b\|$, so $r(a,b)r(b,a)\le1$.
+    $0\le \inf(a/b)\le\|a\|/\|b\|$, so $\inf(a/b)\inf(b/a)\le1$.
 \end{lemma}
 \begin{proof}\leanok
     Monotonicity gives $t\|b\|\le\|a\|$ for each admissible $t$.
@@ -1185,7 +1185,7 @@ Theorem~\ref{thm:trace_norm_abs}.
         ProperCone.norm_sub_le_lowerRatio_log}
     \leanok
     \uses{lem:lower_cone_ratio_bounds}
-    For nonzero $a,b\in C$, write $\nu=r(b,a)$ and $\mu=r(a,b)$. Then
+    For nonzero $a,b\in C$, write $\nu=\inf(b/a)$ and $\mu=\inf(a/b)$. Then
     \begin{align}
         \|a-b\|\le |1-\nu|\|a\|+|1-\mu|\|b\|
             +\min\{|1-\nu|\|a\|,|1-\mu|\|b\|\}.
@@ -1198,7 +1198,7 @@ Theorem~\ref{thm:trace_norm_abs}.
     \end{align}
     If also $\mu\nu>0$, the square-root term equals
     $\sqrt{\|a\|\|b\|}\exp(\log(\mu\nu)/2)$.
-    These are \cite[Chapter~8, Equations~(8.63), (8.67)--(8.69)]{Wolf2012Quantum},
+    These are \cite[Chapter~8, Equations~(8.63), (8.68)--(8.69)]{Wolf2012Quantum},
     with the last expression written directly in terms of the lower ratios.
 \end{theorem}
 \begin{proof}\leanok
@@ -1217,15 +1217,16 @@ Theorem~\ref{thm:trace_norm_abs}.
     \uses{lem:lower_cone_ratio_bounds}
     Let $K$ be a closed convex cone in another real normed space whose norm
     is monotone on $K$, and let $T$ be linear with $T(C)\subseteq K$.
-    For nonzero $a,b\in C$ with nonzero images,
-    $r(a,b)\le r(Ta,Tb)$. If both input ratios are positive, then
+    For $a,b\in C$ with $b\ne0$ and $Tb\ne0$,
+    $\inf(a/b)\le \inf(Ta/Tb)$. If additionally $a\ne0$, $Ta\ne0$,
+    and both input ratios are positive, then
     \begin{align}
-        -\log\bigl(r(Ta,Tb)r(Tb,Ta)\bigr)
-          \le -\log\bigl(r(a,b)r(b,a)\bigr).
+        -\log\bigl(\inf(Ta/Tb)\inf(Tb/Ta)\bigr)
+          \le -\log\bigl(\inf(a/b)\inf(b/a)\bigr).
     \end{align}
 \end{theorem}
 \begin{proof}\leanok
-    Apply $T$ to $a-r(a,b)b\in C$ and use the supremum property in $K$.
+    Apply $T$ to $a-\inf(a/b)b\in C$ and use the supremum property in $K$.
     Multiply the inequalities in both directions and use monotonicity of
     the logarithm.
 \end{proof}

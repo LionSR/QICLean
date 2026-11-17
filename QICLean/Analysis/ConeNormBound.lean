@@ -39,6 +39,7 @@ def lowerRatio (a b : E) : ℝ := sSup {t : ℝ | 0 ≤ t ∧ a - t • b ∈ C}
 variable {C} (hm : C.NormMonotone) {a b : E}
 include hm
 
+/-- Admissible nonnegative scales are bounded above by the ratio of norms. -/
 lemma lowerRatio_bddAbove (hb : b ∈ C) (hb0 : b ≠ 0) :
     BddAbove {t : ℝ | 0 ≤ t ∧ a - t • b ∈ C} := by
   refine ⟨‖a‖ / ‖b‖, ?_⟩

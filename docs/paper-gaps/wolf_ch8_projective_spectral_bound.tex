@@ -13,7 +13,7 @@
 \section{The proposed extension}
 Wolf's spectral bound on projective diameter
 \cite[Equation (8.91)]{Wolf2012Quantum}, local source
-\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex}, lines 1021--1032,
+\path{Notes/WolfNoteTexSource/ch08_distance_measures.tex}, lines 1028--1037,
 assumes a positive linear map on a proper cone and a nonzero fixed vector
 $c$ in the cone. It asserts $|\lambda|\le\tanh(\Delta(T)/4)$ for an eigenvector
 not proportional to $c$. The bracketed note explicitly asks whether the
@@ -26,9 +26,26 @@ fixes $c=(1,0)\ne0$, and has the eigenvector $a=(0,1)$ with eigenvalue $2$.
 The vectors $a$ and $c$ are not proportional.
 
 For $t\ge1$, the two interior inputs $(1,t/2)$ and $(1,1/2)$ have images
-$(1,t)$ and $(1,1)$. Their lower cone ratios are respectively $1$ and $1/t$,
-so the Hilbert distance between the images is $\log t$. Consequently the
-projective diameter is infinite. With the usual limiting convention
+$(1,t)$ and $(1,1)$. The order description of the lower ratios gives
+\begin{align}
+    \inf\bigl((1,t)/(1,1)\bigr)
+        &= \sup\{s\ge0:s\le1,\ s\le t\}=1,
+        \label{eq:wolf_diameter_forward_ratio}\\
+    \inf\bigl((1,1)/(1,t)\bigr)
+        &= \sup\{s\ge0:s\le1,\ st\le1\}=1/t.
+        \label{eq:wolf_diameter_reverse_ratio}
+\end{align}
+The first equality uses $t\ge1$; the second uses $t>0$ and $1/t\le1$.
+For this quadrant, the upper ratios are the reciprocals of the reversed
+lower ratios. Thus the definition of Hilbert distance and
+(\ref{eq:wolf_diameter_forward_ratio})--(\ref{eq:wolf_diameter_reverse_ratio}) give
+\begin{align}
+    D\bigl(T(1,t/2),T(1,1/2)\bigr)
+        &= -\log\bigl(1\cdot(1/t)\bigr)=\log t.
+        \label{eq:wolf_diameter_log_distance}
+\end{align}
+Since $\log t$ is unbounded for $t\ge1$, (\ref{eq:wolf_diameter_log_distance})
+shows that the projective diameter is infinite. With the usual limiting convention
 $\tanh(+\infty)=1$, the claimed bound would read $2\le1$.
 Without an extended-real convention, the displayed expression is undefined
 on this example, so the example is not a counterexample to a finite-valued

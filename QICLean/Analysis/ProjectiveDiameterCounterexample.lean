@@ -12,10 +12,10 @@ import Mathlib.Analysis.Normed.Group.Constructions
 # A boundary fixed point does not bound the spectrum
 
 Wolf, *Quantum Channels & Operations*, Eq. (8.91), local source
-`Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 1021–1032.
+`Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 1028–1037.
 The bracketed source note proposes allowing a boundary fixed point and infinite
 projective diameter. The positive map `(x,y) ↦ (x,2y)` fixes `(1,0)` but has eigenvalue
-`2` on `(0,1)`. Thus an unrestricted extension with the convention `tanh(∞) = 1` fails.
+`2` on `(0,1)`. Thus an unrestricted extension with the convention \(\tanh(\infty) = 1\) fails.
 Without an infinite-diameter convention, the displayed expression is undefined
 on this example. The finite-diameter/interior-fixed-point theorem is not refuted,
 and no corrected spectral-diameter theorem is supplied.
@@ -34,6 +34,7 @@ def diagonalMap : (ℝ × ℝ) →ₗ[ℝ] (ℝ × ℝ) where
   map_add' x y := by ext <;> simp; ring
   map_smul' r x := by ext <;> simp; ring
 
+/-- Membership in the closed positive quadrant is coordinatewise nonnegativity. -/
 lemma mem_quadrant (x : ℝ × ℝ) : x ∈ quadrant ↔ 0 ≤ x.1 ∧ 0 ≤ x.2 := Iff.rfl
 
 lemma diagonalMap_positive (x : ℝ × ℝ) (hx : x ∈ quadrant) :
