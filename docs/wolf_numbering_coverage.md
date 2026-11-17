@@ -27,15 +27,16 @@ Kraus-span characterization of primitive channels is formalized here.
 The August 29, 2026 audit covers all 153 literal lemma, proposition, theorem,
 and corollary environments in the transcribed Wolf chapters. Definitions and
 examples are outside this named-result count. After the positive-map
-formalizations of Theorems 6.2 and 6.5 and Corollary 6.3, the dispositions
-are: 84 exact, 15 corrected or otherwise dispositioned, 4 partial-packaging, 6
+formalizations of Theorems 6.2 and 6.5 and Corollary 6.3 and the November 16
+detailed-balance infimum assembly, the dispositions are:
+85 exact, 15 corrected or otherwise dispositioned, 3 partial-packaging, 6
 partial-scope, 2 obstructed, and 42 open. Fourteen of the 15
 corrected/dispositioned entries have an implemented corrected theorem; the
 remaining entry is a documented disposition rather than a replacement
-declaration. Thus 99 of the 153 named environments (64.7%) are exact or
-dispositioned, while 98 have an implemented exact or corrected theorem. There
-are 54 audit-unresolved environments (4 partial-packaging + 6 partial-scope + 2
-obstructed + 42 open), and 55 do not have an implemented exact or corrected
+declaration. Thus 100 of the 153 named environments (65.4%) are exact or
+dispositioned, while 99 have an implemented exact or corrected theorem. There
+are 53 audit-unresolved environments (3 partial-packaging + 6 partial-scope + 2
+obstructed + 42 open), and 54 do not have an implemented exact or corrected
 theorem.
 
 Here "partial-packaging" means that substantial clauses or equation-level
@@ -2725,12 +2726,20 @@ source-shaped prerequisites are available:
 The remaining obligations for the norm of
 `T̂^n - T̂_ϕ^n` are a Jordan-form existence/decomposition API, identification
 of the channel's largest-block data and nilpotence range, the explicit
-positive-exponent assembly, and a justified passage to Wolf's `κ_T` infimum. These are
-recorded in
+positive-exponent assembly, and invariance of the subperipheral Jordan-power
+norm across all admissible forms. The source-shaped infimum and its uniform
+limiting comparison are now proved in `QICLean.Analysis.JordanConditionNumber`;
+no minimizing basis is assumed.
+`Matrix.exists_pos_pow_similarity_jordanBlockDirectSum_bounds` additionally
+assembles the lower constant and the all-positive-exponent upper bound for
+supplied genuine block data and a supplied similarity.
+`Matrix.pow_eq_zero_of_similarity_jordanBlockDirectSum_maximal_zero` handles
+zero maximal modulus from the largest block dimension onward.
+The remaining channel obligations are recorded in
 `docs/paper-gaps/wolf_thm823_jordan_scaling_qualifications.tex`; issue #297
 therefore remains open.
 
-### Proposition 8.5, “Jordan condition number and detailed balance” (Equation 8.110) — PARTIAL-PACKAGING
+### Proposition 8.5, “Jordan condition number and detailed balance” (Equation 8.110) — FORMALIZED
 
 In `QICLean.Channel.DetailedBalance`:
 
@@ -2746,11 +2755,21 @@ In `QICLean.Channel.DetailedBalance`:
   `fixedPoint_of_detailedBalance_sigmaSandwich` verify the square-root
   sandwich specialization and Wolf's fixed-point observation.
 
-The final printed inequality `κ_T ≤ sqrt (κ(Σ̂))` is not yet marked
-formalized. It depends on issue #297's source-shaped Jordan condition number
-and a theorem bounding that infimum by the condition factor of each
-admissible Jordan basis. The current declarations retain Wolf's chosen basis
-instead of silently replacing its factor by `κ_T`; issue #298 remains open.
+* `jordanConditionNumber_transferMatrix_le_of_detailedBalance` proves
+  `κ_T ≤ sqrt (κ(Σ̂))` under Hermiticity preservation, positive definiteness
+  of `Σ̂`, and `Σ T* = T Σ`.
+* `jordanConditionNumber_transferMatrix_le_of_sigmaSandwich` proves
+  `κ_T ≤ sqrt (κ(σ))`; its tensor-norm calculation uses the verified
+  Kronecker representation and the inverse Kronecker identity.
+
+Both bounds use `Matrix.jordanConditionNumber`, the infimum of factors of
+all similarities to finite sums of positive-dimensional normalized Jordan
+blocks (up to coordinate permutation). The diagonalizing matrix is an
+admissible member, so comparison with the infimum requires no attainment
+assumption. No positivity or complete positivity assumption is imposed on
+`T`; the statements also handle dimension zero. The previously proved
+fixed-point observation supplies the `T*(1)=1` clause. This completes the
+mathematical obligations of #298 without closing or changing the GitHub issue.
 
 ### Theorem 8.24, “Asymptotic convergence II” (Equation 8.111) — CORRECTED FORM FORMALIZED
 
