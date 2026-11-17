@@ -502,6 +502,27 @@ supports of bounded range on them.
     most $R$; distance zero means equality, and distance one adjacency.
 \end{proof}
 
+\begin{lemma}[Diameter, size and connectedness of a support]
+    \label{lem:sites_plane_domain_support}
+    \lean{ManyBody.IsAdmissibleSupport.edist_le, ManyBody.IsAdmissibleSupport.card_le,
+        ManyBody.IsAdmissibleSupport.reachable,
+        ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj,
+        ManyBody.latticeL1Distance_le_walk_length, ManyBody.card_latticeDiamond,
+        ManyBody.card_le_diamond_of_walks}
+    \leanok
+    \uses{def:sites_plane_domain, lem:sites_plane_domain}
+    A support $X$ of range $R$ in a finite set $\Lambda\subset\Z^2$ has graph
+    diameter at most $R$, lies in one connected component of $\Lambda$, and has
+    at most $v_R=1+2R(R+1)$ points~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The first two claims restate the walk condition. Fix $a\in X$. Each step of
+    a walk in $\Lambda$ changes the $\ell^1$ distance in $\Z^2$ by at most one,
+    so every point of $X$ lies in the closed $\ell^1$ ball of radius $R$ about
+    $a$. That ball has $2(R-\lvert x\rvert)+1$ points with first coordinate
+    $a_1+x$, for $\lvert x\rvert\le R$, and these sum to $1+2R(R+1)$.
+\end{proof}
+
 \begin{definition}[Oriented edges]
     \label{def:sites_edge}
     \lean{ManyBody.Edge, ManyBody.Edge.ofAdj}
