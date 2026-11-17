@@ -251,6 +251,159 @@ similarity--congruence theorem controlling the sign characteristic.  The exact
 formalization boundary and the required transpose and inverse translations are
 recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
 
+For real square matrices $H$ and $C$ of the same size, $C$ is
+$H$-selfadjoint when $C^{\mathsf T}H=HC$.
+
+\begin{theorem}[Selfadjointness of the Minkowski Gram product]
+    \label{thm:minkowski_gram_selfadjoint}
+    \lean{Matrix.isMinkowskiSelfAdjoint_mul_gram,
+        Matrix.isSelfAdjointFor_mul_self_mul_transpose,
+        Matrix.IsSelfAdjointFor.transpose_of_mul_self}
+    \leanok
+    \uses{def:four_dimensional_minkowski_selfadjoint}
+    For every real $4\times4$ matrix $R$, the matrix $C=MRMR^{\mathsf T}$
+    is $M$-selfadjoint. For every symmetric involutory real matrix $H$,
+    the product $HAHA^{\mathsf T}$ is $H$-selfadjoint.
+    More generally, if $H^2=I$ and
+    $A^{\mathsf T}H=HA$, then $AH=HA^{\mathsf T}$.
+\end{theorem}
+\begin{proof}\leanok
+    Using $H^{\mathsf T}=H$ and $H^2=I$, we obtain
+    \begin{align*}
+        (HAHA^{\mathsf T})^{\mathsf T}H
+        &=AHA^{\mathsf T}H^2=AHA^{\mathsf T}\\
+        &=H^2AHA^{\mathsf T}=H(HAHA^{\mathsf T}).
+    \end{align*}
+    Specializing to $H=M$ and $A=R$ proves the Minkowski case.
+    For the final assertion, multiplication of $A^{\mathsf T}H=HA$
+    on the left and right by $H$ gives
+    $HA^{\mathsf T}H^2=H^2AH$, hence $HA^{\mathsf T}=AH$.
+\end{proof}
+
+\begin{theorem}[Transpose and reversal of a given canonical pair]
+    \label{thm:canonical_pair_transpose_reversal}
+    \lean{Matrix.transpose_canonical_pair, Matrix.reverse_transpose_canonical_pair}
+    \leanok
+    Let $C,H,J,P,S$ be real square matrices of the same size, with $S$
+    invertible. Suppose $C^{\mathsf T}=S^{-1}JS$ and $H=S^{\mathsf T}PS$.
+    Then $C=S^{\mathsf T}J^{\mathsf T}S^{-\mathsf T}$ and
+    $S^{-\mathsf T}HS^{-1}=P$. If also
+    $W^2=I$, $WJ^{\mathsf T}W=J$, and $WPW^{\mathsf T}=P$, then
+    $X=WS^{-\mathsf T}$ is invertible and satisfies
+    $C=X^{-1}JX$ and $XHX^{\mathsf T}=P$.
+\end{theorem}
+\begin{proof}\leanok
+    Transposing the similarity and substituting the congruence gives
+    \begin{align*}
+        C&=S^{\mathsf T}J^{\mathsf T}S^{-\mathsf T},\\
+        S^{-\mathsf T}HS^{-1}
+        &=(S^{-\mathsf T}S^{\mathsf T})P(SS^{-1})=P.
+    \end{align*}
+    Since $S^{-\mathsf T}S^{\mathsf T}=I$ and $W^2=I$, the choice
+    $X=WS^{-\mathsf T}$ satisfies
+    \begin{align*}
+        XC&=WS^{-\mathsf T}(S^{\mathsf T}J^{\mathsf T}S^{-\mathsf T})
+          =WJ^{\mathsf T}S^{-\mathsf T}\\
+          &=(WJ^{\mathsf T}W)(WS^{-\mathsf T})=JX,\\
+        XHX^{\mathsf T}&=W(S^{-\mathsf T}HS^{-1})W^{\mathsf T}
+          =WPW^{\mathsf T}=P.
+    \end{align*}
+    Both $W$ and $S^{-\mathsf T}$ are invertible, so $X$ is invertible
+    and $C=X^{-1}(XC)=X^{-1}JX$.
+\end{proof}
+
+\begin{theorem}[Normalization of a given canonical pair]
+    \label{thm:canonical_pair_normalization}
+    \lean{Matrix.normalize_canonical_pair}
+    \leanok
+    Suppose $X$ is invertible, $C=X^{-1}JX$, $XHX^{\mathsf T}=N$,
+    $O^{\mathsf T}O=I$, and $ONO^{\mathsf T}=H$.
+    Then $Y=OX$ satisfies $YHY^{\mathsf T}=H$ and
+    $YC=(OJO^{\mathsf T})Y$.
+\end{theorem}
+\begin{proof}\leanok
+    With $Y=OX$, the congruence gives
+    $YHY^{\mathsf T}=OXHX^{\mathsf T}O^{\mathsf T}=ONO^{\mathsf T}=H$.
+    The similarity and $O^{\mathsf T}O=I$ give
+    $YC=OX(X^{-1}JX)=OJX=(OJO^{\mathsf T})Y$.
+\end{proof}
+
+\begin{theorem}[Gram equality from a normalized similarity]
+    \label{thm:gram_of_normalized_similarity}
+    \lean{Matrix.gram_eq_of_normalized_similarity}
+    \leanok
+    Suppose $H^2=I$, $Y$ is invertible, $YHY^{\mathsf T}=H$,
+    $Y(HRHR^{\mathsf T})=DY$, and $HD=\Sigma H\Sigma^{\mathsf T}$.
+    Then $RHR^{\mathsf T}=Y^{\mathsf T}\Sigma H\Sigma^{\mathsf T}Y$.
+\end{theorem}
+\begin{proof}\leanok
+    The supplied similarity and Gram identities give
+    \begin{align}
+        (YH)(RHR^{\mathsf T})&=DY
+        =(YH)\bigl(Y^{\mathsf T}\Sigma H\Sigma^{\mathsf T}Y\bigr).
+        \label{eq:canonical_pair_gram_cancellation}
+    \end{align}
+    Indeed, the rightmost product is
+    $(YHY^{\mathsf T})(\Sigma H\Sigma^{\mathsf T})Y=H(HD)Y=DY$.
+    Cancel the invertible matrix $YH$ in
+    (\ref{eq:canonical_pair_gram_cancellation}).
+\end{proof}
+
+\begin{theorem}[Right isometry from an invertible Gram factor]
+    \label{thm:right_isometry_invertible_gram}
+    \lean{Matrix.exists_right_isometry_of_gram_eq_of_isUnit,
+        Matrix.transpose_isometry_iff}
+    \leanok
+    Let $A,B,H$ be real square matrices of the same size. If $B$ is
+    invertible and $AHA^{\mathsf T}=BHB^{\mathsf T}$, then there is $L$
+    with $L^{\mathsf T}HL=H$ and $A=BL^{\mathsf T}$.
+    If $H^2=I$, the identities $L^{\mathsf T}HL=H$ and
+    $LHL^{\mathsf T}=H$ are equivalent.
+\end{theorem}
+\begin{proof}\leanok
+    Set $L=(B^{-1}A)^{\mathsf T}$. The Gram equality gives
+    \begin{align*}
+        L^{\mathsf T}HL
+        &=B^{-1}(AHA^{\mathsf T})B^{-\mathsf T}\\
+        &=B^{-1}(BHB^{\mathsf T})B^{-\mathsf T}
+          =(B^{-1}B)H(B^{-1}B)^{\mathsf T}=H,\\
+        BL^{\mathsf T}&=BB^{-1}A=A.
+    \end{align*}
+    If $H^2=I$ and $L^{\mathsf T}HL=H$, then
+    $(HL^{\mathsf T}H)L=H(L^{\mathsf T}HL)=H^2=I$.
+    A left inverse of a finite square matrix is also a right inverse,
+    so $L(HL^{\mathsf T}H)=I$. Multiplication on the right by $H$ gives
+    $LHL^{\mathsf T}H^2=H$, hence $LHL^{\mathsf T}=H$.
+    Apply the same argument to $L^{\mathsf T}$ for the converse.
+\end{proof}
+
+\begin{theorem}[Decomposition with supplied canonical data and invertible square root]
+    \label{thm:decomposition_supplied_canonical_pair}
+    \lean{Matrix.exists_decomposition_of_canonical_pair_of_isUnit}
+    \leanok
+    Let $H,R,J,N,X,O,\Sigma$ be real square matrices of the same size.
+    Suppose $H^2=I$, both $X$ and $\Sigma$ are invertible, and
+    \begin{align}
+        HRHR^{\mathsf T}&=X^{-1}JX,& XHX^{\mathsf T}&=N,\\
+        O^{\mathsf T}O&=I,& ONO^{\mathsf T}&=H,\\
+        H(OJO^{\mathsf T})&=\Sigma H\Sigma^{\mathsf T}.
+    \end{align}
+    There are $L_1,L_2$ satisfying $L_iHL_i^{\mathsf T}=H$ for
+    $i=1,2$ and $R=L_1\Sigma L_2^{\mathsf T}$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:canonical_pair_normalization, thm:gram_of_normalized_similarity,
+        thm:right_isometry_invertible_gram}
+    Set $Y=OX$ and $L_1=Y^{\mathsf T}$. Normalize the given canonical
+    pair and apply the Gram identity to obtain
+    $RHR^{\mathsf T}=(L_1\Sigma)H(L_1\Sigma)^{\mathsf T}$.
+    The factor $L_1\Sigma$ is invertible, so the right-isometry theorem
+    supplies $L_2$. The two isometry orientations agree because $H^2=I$.
+\end{proof}
+
+% These implications do not establish GLR existence, inertia exhaustiveness,
+% square-root existence, singular Witt extension, or proper/time orientation.
+
 \begin{definition}[Pauli transfer matrix]\label{def:pauli_transfer_matrix}
     \lean{Wolf.pauliMatrices, Wolf.pauliTransferEntry,
         Wolf.pauliTransferMatrix, Wolf.pauliTransferMatrixReal}
