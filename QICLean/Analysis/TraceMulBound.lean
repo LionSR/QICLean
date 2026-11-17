@@ -3,8 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.RootChannel
-import QICLean.Algebra.L2OpNormReindex
+import QICLean.Analysis.KroneckerOperatorNorm
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Order
 import Mathlib.Analysis.Matrix.Order
 
@@ -14,7 +13,6 @@ import Mathlib.Analysis.Matrix.Order
 * `Matrix.norm_star_dotProduct_mulVec_le` — `|⟨v, M v⟩| ≤ ‖M‖ ‖v‖²`.
 * `Matrix.PosSemidef.norm_trace_mul_le` — `|Tr(ρ M)| ≤ Tr ρ · ‖M‖` for `ρ ≥ 0`, in the operator
   norm.
-* `Matrix.l2_opNorm_one_kronecker_le` — `‖1 ⊗ G‖ ≤ ‖G‖`.
 * `Matrix.PosSemidef.norm_trace_mul_mul_le` — Cauchy–Schwarz for the expectation in `σ ≥ 0`:
   `|Tr(σ A B)| ≤ √(Re Tr(σ A Aᴴ)) √(Re Tr(σ Bᴴ B))`.
 * `Matrix.PosSemidef.re_trace_mul_mul_self_le` — `Re Tr(σ A A) ≤ Re Tr(σ A)` for `σ ≥ 0` and a
@@ -67,16 +65,6 @@ theorem PosSemidef.norm_trace_mul_le {ρ : Matrix n n ℂ} (hρ : ρ.PosSemidef)
   refine (norm_sum_le _ _).trans (Finset.sum_le_sum fun i _ => ?_)
   rw [mul_comm]
   exact norm_star_dotProduct_mulVec_le M (v i)
-
-/-- `‖1 ⊗ G‖ ≤ ‖G‖`. -/
-theorem l2_opNorm_one_kronecker_le {m κ : Type*} [Fintype m] [Fintype κ] [DecidableEq m]
-    [DecidableEq κ] (G : Matrix m m ℂ) : ‖(1 : Matrix κ κ ℂ) ⊗ₖ G‖ ≤ ‖G‖ := by
-  have h : (1 : Matrix κ κ ℂ) ⊗ₖ G =
-      reindex (Equiv.prodComm m κ) (Equiv.prodComm m κ) (G ⊗ₖ (1 : Matrix κ κ ℂ)) := by
-    ext ⟨a, b⟩ ⟨c, d⟩
-    simp [kroneckerMap_apply, mul_comm]
-  rw [h, l2_opNorm_reindex_equiv]
-  exact l2_opNorm_kronecker_one_le G
 
 omit [DecidableEq n] in
 /-- Cauchy–Schwarz for the expectation in a positive semidefinite matrix `σ`:

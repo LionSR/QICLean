@@ -9,11 +9,16 @@ import QICLean.Algebra.MatrixAux
 # Relabelling indices preserves the Euclidean operator norm
 
 Simultaneously relabelling the rows and columns of a square matrix through an
-equivalence preserves its `L²` operator norm.
+equivalence preserves its `L²` operator norm. Relabelling the rows and the columns of a
+rectangular matrix through two equivalences does not increase it.
+
+`Matrix.l2_opNorm_reindex_le` is taken from TNLean, `TNLean/Algebra/MatrixL2Contraction.lean`
+at commit `868d2c9`, unchanged.
 
 ## Main results
 
 * `Matrix.l2_opNorm_reindex_le_equiv`, `Matrix.l2_opNorm_reindex_equiv`.
+* `Matrix.l2_opNorm_reindex_le` — the rectangular bound.
 -/
 
 section L2Reindex
@@ -60,5 +65,26 @@ theorem Matrix.l2_opNorm_reindex_equiv
   apply le_antisymm (Matrix.l2_opNorm_reindex_le_equiv e A)
   have hback := Matrix.l2_opNorm_reindex_le_equiv e.symm (Matrix.reindex e e A)
   simpa [Matrix.reindex_apply] using hback
+
+/-- Relabelling the rows and the columns of a rectangular matrix through two equivalences
+does not increase the `L²` operator norm. -/
+theorem Matrix.l2_opNorm_reindex_le {m n m' n' : Type*} [Fintype m] [Fintype n]
+    [Fintype m'] [Fintype n'] [DecidableEq n] [DecidableEq n']
+    (e : m ≃ m') (f : n ≃ n') (A : Matrix m n ℂ) :
+    ‖reindex e f A‖ ≤ ‖A‖ := by
+  refine l2_opNorm_le_of_forall (norm_nonneg _) fun v => ?_
+  have h := A.l2_opNorm_mulVec (WithLp.toLp 2 fun j => v (f j))
+  have hv : ‖(WithLp.toLp 2 fun j => v (f j) : EuclideanSpace ℂ n)‖ =
+      ‖(EuclideanSpace.equiv n' ℂ).symm v‖ := by
+    rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]; congr 1
+    exact Equiv.sum_comp f (fun j => ‖v j‖ ^ 2)
+  have hA : ‖(EuclideanSpace.equiv m' ℂ).symm (reindex e f A *ᵥ v)‖ =
+      ‖(WithLp.toLp 2 (A *ᵥ fun j => v (f j)) : EuclideanSpace ℂ m)‖ := by
+    rw [EuclideanSpace.norm_eq, EuclideanSpace.norm_eq]; congr 1
+    refine (Equiv.sum_comp e fun i' => ‖(reindex e f A *ᵥ v) i'‖ ^ 2).symm.trans ?_
+    refine Finset.sum_congr rfl fun i _ => ?_
+    simp only [reindex_apply, mulVec, dotProduct, submatrix_apply]
+    congr 2; rw [← Equiv.sum_comp f]; simp
+  rw [hA, ← hv]; exact h
 
 end L2Reindex

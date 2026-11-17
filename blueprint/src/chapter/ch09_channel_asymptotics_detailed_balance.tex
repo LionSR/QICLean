@@ -123,18 +123,21 @@
 \begin{theorem}[Tensor and transpose operator norms]
     \label{thm:detailed_balance_tensor_norm}
     \lean{Matrix.l2_opNorm_transpose, Matrix.l2_opNorm_kronecker_one,
-      Matrix.l2_opNorm_kronecker_le}
+      Matrix.l2_opNorm_one_kronecker_le, Matrix.l2_opNorm_kronecker_le}
     \leanok
     For square complex matrices, transposition preserves the operator norm.
     Tensoring on the right with the identity of a nonzero finite-dimensional
-    space also preserves it. For square matrices $A,B$ on nonzero spaces,
+    space also preserves it. For complex matrices $A,B$ of any sizes,
     $\lVert A\otimes B\rVert_\infty\le\lVert A\rVert_\infty\lVert B\rVert_\infty$.
 \end{theorem}
 \begin{proof}
     \leanok
     Transposition is an injective $*$-algebra homomorphism into the opposite
     algebra, and $A\mapsto A\otimes I$ is an injective $*$-algebra
-    homomorphism. Both preserve the norm. Factor
+    homomorphism. Both preserve the norm. For rectangular $A$ and $B$,
+    $\lVert A\otimes I\rVert_\infty\le\lVert A\rVert_\infty$ and
+    $\lVert I\otimes B\rVert_\infty\le\lVert B\rVert_\infty$, the second
+    by permuting the tensor factors. Factor
     $A\otimes B=(A\otimes I)(I\otimes B)$ and use submultiplicativity.
 \end{proof}
 
