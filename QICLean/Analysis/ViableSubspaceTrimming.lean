@@ -245,8 +245,8 @@ variable {D : ℕ → Finset V} {ξ : ℝ} {u : Fin s → EuclideanSpace ℂ (Si
 /-- The lift of an orthogonal projection is an orthogonal projection. -/
 theorem localLift_isHermitian_of_isStarProjection {E : Finset V}
     {P : Matrix (RegionConfig n E) (RegionConfig n E) ℂ} (hP : IsStarProjection P) :
-    (localLift E P).IsHermitian := by
-  rw [IsHermitian, ← localLift_conjTranspose, hP.isSelfAdjoint.isHermitian.eq]
+    (localLift E P).IsHermitian :=
+  hP.isSelfAdjoint.isHermitian.apply_of_map_conjTranspose localLift_conjTranspose
 
 theorem localLift_mul_self_of_isStarProjection {E : Finset V}
     {P : Matrix (RegionConfig n E) (RegionConfig n E) ℂ} (hP : IsStarProjection P) :
