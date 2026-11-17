@@ -261,3 +261,40 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     not increase the operator norm. The trace of the right side
     of~(\ref{eq:sites_region_expectation}) is $c^{-1}\cdot c\Tr A$.
 \end{proof}
+
+\begin{theorem}[Localization error through on-site commutators]
+    \label{thm:sites_region_expectation_localization}
+    \lean{ManyBody.norm_sub_regionExpectation_le}
+    \leanok
+    \uses{def:sites_region_expectation, def:sites_supported}
+    Let $K$ be a region, $B$ an operator on $\mathcal H_X$ and $\varepsilon\colon
+    V\to\R$. Suppose that for every site $y\notin K$ and every unitary
+    $U\in\mathcal A_{\{y\}}$ we have $\lVert BU-UB\rVert\leq\varepsilon(y)$.
+    Then
+    \begin{align*}
+        \lVert B-E_K(B)\rVert\leq\sum_{y\notin K}\varepsilon(y).
+    \end{align*}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:sites_region_expectation, thm:sites_supported_subalgebra}
+    If $\mathcal H_X=0$ both sides are trivial, since $\varepsilon(y)\geq
+    \lVert B\cdot1-1\cdot B\rVert=0$. Otherwise every $X_v$ is nonempty.
+    Enumerate $X_v$ as $\{0,\dots,N_v-1\}$, and for a sign vector
+    $s\in\{\pm1\}^{X_v}$ and $k\in\Z/N_v$ let $T_{s,k}$ map the basis vector
+    $j$ to $s_i\,i$, where $i=j+k$. Each $T_{s,k}$ is unitary, and
+    \begin{align*}
+        \sum_{s,k}(T_{s,k})_{ij}\,\overline{(T_{s,k})_{i'j'}}
+            =2^{N_v}\,\delta_{ii'}\,\delta_{jj'}:
+    \end{align*}
+    the sum over the signs vanishes unless $i=i'$, and then exactly one
+    translation maps $j$ to $i$. For a family $g=(s_v,k_v)_{v\in V}$ let
+    $W_g$ be the product of the operators $T_{s_v,k_v}$ at the sites outside
+    $K$ and of the identity on $K$. Since products of product operators are
+    formed sitewise, the average of $W_g\,B\,W_g^*$ over all $g$ is, entrywise,
+    a constant multiple of $E_K(B)$, and the constant is $1$ by $E_K(1)=1$.
+    Hence $B-E_K(B)$ is the average of $(BW_g-W_gB)W_g^*$, whose norm is
+    $\lVert BW_g-W_gB\rVert$. Writing $W_g$ as the product of its on-site
+    factors, which are unitaries in $\mathcal A_{\{y\}}$, and using
+    $B(UW)-(UW)B=(BU-UB)W+U(BW-WB)$ repeatedly bounds this by
+    $\sum_{y\notin K}\varepsilon(y)$.
+\end{proof}
