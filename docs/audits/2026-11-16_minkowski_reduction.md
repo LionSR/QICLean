@@ -98,5 +98,29 @@ not solved by this change.
   test used `ignore_https_errors=True`. No repository/browser-test source or
   published configuration was changed for this environment workaround.
 
-All work remains local on the isolated branch; no push, PR, merge,
-or external issue/comment mutation was performed.
+At the original validation checkpoint, all work remained local on the isolated
+branch; no push, PR, merge, or external issue/comment mutation was performed.
+
+
+## Review preparation, 2026-11-17
+
+Fetched current main at `4fd4962204b7abdd012d4d0495d52d9d77003688` and checked
+open PRs and the Minkowski PR history. No overlapping open contribution was
+found. The original branch `work/426-canonical-pair-transport` remains at
+`e53705df676c08ebf06ecf06bea4264bb51a921b`. Its change was cherry-picked without
+conflicts onto `review/426-conditional-minkowski-reduction` from current main.
+The Lean module, affected blueprint chapter, and paper-gap note are identical
+to the original validated versions.
+
+On the review branch, the focused 5011-job build, strict Lean elaboration,
+all nine axiom audits, generated import manifest, blueprint synchronization
+(after regenerating the ignored declaration list), changed-declaration coverage,
+reader-facing prose, paper-gap references, and diff whitespace checks passed.
+The Algebra/root compiled aggregate attempts still stop on missing unrelated
+artifacts, so a full-library build and global compiled checkdecls are not
+certified. The PDF/web/browser results above describe the original validation
+checkpoint; those render builds were not repeated after unrelated main changes.
+
+Publication is authorized for review only. The PR should remain a draft pending
+full-library validation and scope review; the mathematical source gate and all
+explicit assumptions remain unchanged. No approval or merge is authorized.

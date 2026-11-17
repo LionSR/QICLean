@@ -21,5 +21,25 @@
     "affected_chapter_browser": "passed (1 page, 2298 typeset expressions; mobile/desktop layout and reader-text checks); test browser used ignore_https_errors=True because this environment rejects the jsDelivr CDN certificate"
   },
   "source_gate": "unresolved: exact GLR 1983 Theorem 5.3 clause not accessible",
-  "publication": "no push, PR, or merge"
+  "publication": "Original checkpoint: no push, PR, or merge. Review publication authorized 2026-11-17; no approval or merge.",
+  "review_checkpoint": {
+    "date": "2026-11-17",
+    "base": "4fd4962204b7abdd012d4d0495d52d9d77003688",
+    "original_head": "e53705df676c08ebf06ecf06bea4264bb51a921b",
+    "branch": "review/426-conditional-minkowski-reduction",
+    "conflicts": "none",
+    "rerun_passed": [
+      "focused build (5011 jobs)",
+      "strict new-module Lean elaboration",
+      "all nine axiom audits",
+      "generated import manifest",
+      "blueprint source synchronization after declaration-list regeneration",
+      "changed-declaration coverage",
+      "reader-facing prose",
+      "paper-gap references",
+      "diff whitespace"
+    ],
+    "compiled_aggregates": "blocked by missing unrelated artifacts",
+    "render_checks": "original checkpoint only, not rerun on updated main"
+  }
 }
