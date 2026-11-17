@@ -42,6 +42,31 @@ one-dimensional ground space.
     $\lambda_k$.
 \end{proof}
 
+\begin{lemma}[The operator gap inequality]
+    \label{lem:hamiltonians_gap_operator_inequality}
+    \lean{ManyBody.IsGapped.posSemidef_sub_smul_one,
+        ManyBody.mulVec_eq_of_groundSpace_eq_span}
+    \leanok
+    \uses{def:hamiltonians_gap, lem:hamiltonians_gap_eigenvalues}
+    Let $H$ be Hermitian, let $\Omega\in\C^n$ with $\lVert\Omega\rVert=1$, and let
+    $\Delta\in\R$. If $H$ is gapped at $E_0$ with gap $\Delta$ and
+    $\ker(H-E_0)=\C\Omega$, then $H\Omega=E_0\Omega$ and
+    $H-E_0\ge\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$. This is the gap
+    hypothesis of the two-dimensional area law~\cite{OpenAI2026AreaLaw}
+    (\texttt{00-introduction.tex}, lines 44--47).
+\end{lemma}
+\begin{proof}\leanok
+    Write $G=H-E_0-\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$, and let
+    $b_1,\dots,b_n$ be an orthonormal basis of eigenvectors of $H$, with
+    $Hb_k=\lambda_kb_k$. If $\lambda_k=E_0$, then $b_k\in\C\Omega$, so
+    $b_k=\langle\Omega,b_k\rangle\Omega$ and $Gb_k=0$. Otherwise
+    $\lambda_k\ge E_0+\Delta$ by Lemma~\ref{lem:hamiltonians_gap_eigenvalues}, and
+    $b_k\perp\Omega$, so $Gb_k=(\lambda_k-E_0-\Delta)b_k$. Thus $G$ is Hermitian with an
+    orthonormal basis of eigenvectors with nonnegative eigenvalues, and
+    $\langle\psi,G\psi\rangle=\sum_k\nu_k\lvert\langle b_k,\psi\rangle\rvert^2\ge0$ for
+    every $\psi$.
+\end{proof}
+
 \begin{theorem}[A gapped unique ground state]
     \label{thm:hamiltonians_gapped_unique}
     \lean{ManyBody.isGapped_and_groundSpace_eq_span_iff}
@@ -56,7 +81,7 @@ one-dimensional ground space.
     \end{enumerate}
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:positive_gap_uniqueness, lem:hamiltonians_gap_eigenvalues}
+    \uses{thm:positive_gap_uniqueness, lem:hamiltonians_gap_operator_inequality}
     Write $G=H-E_0-\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$.
 
     Assume (1). The matrix $H$ is $G$ plus Hermitian matrices, hence Hermitian,
@@ -68,16 +93,8 @@ one-dimensional ground space.
     $0\le\langle\psi,G\psi\rangle=(\mu-E_0-\Delta)\lVert\psi\rVert^2$, so
     $\mu\ge E_0+\Delta$.
 
-    Assume (2), and let $b_1,\dots,b_n$ be an orthonormal basis of
-    eigenvectors of $H$, with $Hb_k=\lambda_kb_k$. Then $H\Omega=E_0\Omega$.
-    If $\lambda_k=E_0$, then $b_k\in\C\Omega$, so
-    $b_k=\langle\Omega,b_k\rangle\Omega$ and $Gb_k=0$. Otherwise
-    $\lambda_k\ge E_0+\Delta$ by
-    Lemma~\ref{lem:hamiltonians_gap_eigenvalues}, and $b_k\perp\Omega$, so
-    $Gb_k=(\lambda_k-E_0-\Delta)b_k$. Thus $G$ is Hermitian with an orthonormal
-    basis of eigenvectors with nonnegative eigenvalues, and
-    $\langle\psi,G\psi\rangle=\sum_k\nu_k\lvert\langle b_k,\psi\rangle\rvert^2
-    \ge0$ for every $\psi$.
+    Assume (2). Then (1) is
+    Lemma~\ref{lem:hamiltonians_gap_operator_inequality}.
 \end{proof}
 
 \section{Hermitian parts of the terms}
