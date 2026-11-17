@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Representation.SchurWeylCommutant
-import QICLean.Entropy.LocalLift
+import QICLean.ManyBody.Sites.Support
 import QICLean.Analysis.RootChannel
 import QICLean.Algebra.L2OpNormReindex
 
@@ -30,7 +30,7 @@ the area-law paper (*A two-dimensional area law from a global spectral gap*,
 * `TensorPower.permOp_copyPerm_mul_siteOp`.
 -/
 
-open Matrix PermutationRepresentation Entropy
+open Matrix PermutationRepresentation
 open scoped Kronecker Matrix.Norms.L2Operator
 
 namespace PermutationRepresentation
@@ -106,8 +106,10 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {k : ℕ}
 
 /-- Entries of `h^{(j)}` for `h` supported on `D`: nonzero only between configurations that
 agree except on the `D` factors of the copy `j`. -/
-theorem siteOp_apply_of_isSupportedOn {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
-    {D : Finset V} (hh : IsSupportedOn h D) (j : Fin k) (x y : Fin k → SiteConfig n) :
+theorem siteOp_apply_of_isSupportedOn
+    {h : Matrix (ManyBody.Config (fun v => Fin (n v))) (ManyBody.Config (fun v => Fin (n v))) ℂ}
+    {D : Finset V} (hh : h ∈ ManyBody.supportedOperators (fun v => Fin (n v)) D)
+    (j : Fin k) (x y : Fin k → ManyBody.Config (fun v => Fin (n v))) :
     siteOp j h x y =
       if ∀ i v, (i ≠ j ∨ v ∉ D) → x i v = y i v then h (x j) (y j) else 0 := by
   rw [siteOp_apply]
@@ -120,14 +122,15 @@ theorem siteOp_apply_of_isSupportedOn {h : Matrix (SiteConfig n) (SiteConfig n) 
       rcases hiv with hi | hv
       · exact absurd (congrFun (hxy i hi) v) hne
       · by_cases hij : i = j
-        · subst hij; exact hh.1 _ _ ⟨v, hv, hne⟩
+        · subst hij; exact ManyBody.apply_eq_zero_of_mem_supportedOperators hh hv hne
         · exact absurd (congrFun (hxy i hij) v) hne
     · rfl
 
 /-- **One-copy operators commute with the copy permutations of disjoint subsystems**
 (`05-replicas.tex`, lines 470–473). -/
 theorem commute_permOp_subsystemPerm_siteOp_of_disjoint
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D Q : Finset V} (hh : IsSupportedOn h D)
+    {h : Matrix (ManyBody.Config (fun v => Fin (n v))) (ManyBody.Config (fun v => Fin (n v))) ℂ}
+    {D Q : Finset V} (hh : h ∈ ManyBody.supportedOperators (fun v => Fin (n v)) D)
     (hQD : Disjoint Q D) (j : Fin k) (π : Equiv.Perm (Fin k)) :
     Commute (permOp (subsystemPerm k (fun v => Fin (n v)) Q) π) (siteOp j h) := by
   refine commute_permOp_of_apply_eq _ π fun x y => ?_
@@ -152,7 +155,8 @@ theorem commute_permOp_subsystemPerm_siteOp_of_disjoint
       · simpa [ha', hb', hv] using hc i v hiv
   by_cases hc : ∀ i v, (i ≠ j ∨ v ∉ D) → x i v = y i v
   · rw [ite_eq_left (hcond.mpr hc), ite_eq_left hc]
-    refine hh.apply_eq (fun v hv => ?_) (fun v hv => ?_) (fun v hv => ?_)
+    refine ManyBody.apply_eq_of_mem_supportedOperators hh
+      (fun v hv => ?_) (fun v hv => ?_) (fun v hv => ?_)
     · have : v ∉ Q := fun hvQ => hQ v hvQ hv
       simp [ha', this]
     · have : v ∉ Q := fun hvQ => hQ v hvQ hv
@@ -165,7 +169,8 @@ theorem commute_permOp_subsystemPerm_siteOp_of_disjoint
 
 /-- **One-copy operators commute with copy permutations fixing their copy**: a permutation of
 the copies of a subsystem that fixes the copy `j` commutes with `h^{(j)}`. -/
-theorem commute_permOp_subsystemPerm_siteOp_of_fix (h : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+theorem commute_permOp_subsystemPerm_siteOp_of_fix
+    (h : Matrix (ManyBody.Config (fun v => Fin (n v))) (ManyBody.Config (fun v => Fin (n v))) ℂ)
     (Q : Finset V) {j : Fin k} {π : Equiv.Perm (Fin k)} (hπ : π j = j) :
     Commute (permOp (subsystemPerm k (fun v => Fin (n v)) Q) π) (siteOp j h) := by
   refine commute_permOp_of_apply_eq _ π fun x y => ?_
@@ -205,19 +210,23 @@ theorem commute_permOp_subsystemPerm_siteOp_of_fix (h : Matrix (SiteConfig n) (S
 
 /-- **Relabelling the copy of a one-copy operator**: `U(τ) h^{(j)} U(τ)^{-1} = h^{(τ j)}` for a
 permutation `τ` of entire copies. -/
-theorem permOp_copyPerm_mul_siteOp (h : Matrix (SiteConfig n) (SiteConfig n) ℂ) (j : Fin k)
-    (τ : Equiv.Perm (Fin k)) :
-    permOp (copyPerm (SiteConfig n) k) τ * siteOp j h =
-      siteOp (τ j) h * permOp (copyPerm (SiteConfig n) k) τ := by
+theorem permOp_copyPerm_mul_siteOp
+    (h : Matrix (ManyBody.Config (fun v => Fin (n v))) (ManyBody.Config (fun v => Fin (n v))) ℂ)
+    (j : Fin k) (τ : Equiv.Perm (Fin k)) :
+    permOp (copyPerm (ManyBody.Config (fun v => Fin (n v))) k) τ * siteOp j h =
+      siteOp (τ j) h * permOp (copyPerm (ManyBody.Config (fun v => Fin (n v))) k) τ := by
   ext x y
   simp only [Matrix.mul_apply, permOp_apply_apply]
-  rw [Finset.sum_eq_single ((copyPerm (SiteConfig n) k τ).symm x),
-    Finset.sum_eq_single (copyPerm (SiteConfig n) k τ y)]
+  rw [Finset.sum_eq_single ((copyPerm (ManyBody.Config (fun v => Fin (n v))) k τ).symm x),
+    Finset.sum_eq_single (copyPerm (ManyBody.Config (fun v => Fin (n v))) k τ y)]
   · simp only [Equiv.apply_symm_apply, ite_true, one_mul, mul_one, siteOp_apply]
-    have hsymm : (copyPerm (SiteConfig n) k τ).symm x = copyPerm (SiteConfig n) k τ⁻¹ x := by
+    have hsymm :
+        (copyPerm (ManyBody.Config (fun v => Fin (n v))) k τ).symm x =
+        copyPerm (ManyBody.Config (fun v => Fin (n v))) k τ⁻¹ x := by
       rw [Equiv.symm_apply_eq, ← Equiv.Perm.mul_apply, ← map_mul, mul_inv_cancel, map_one,
         Equiv.Perm.one_apply]
-    have e1 : ∀ i, (copyPerm (SiteConfig n) k τ).symm x i = x (τ i) := fun i => by
+    have e1 : ∀ i, (copyPerm (ManyBody.Config (fun v => Fin (n v))) k τ).symm x i = x (τ i) := by
+      intro i
       rw [hsymm, copyPerm_apply, inv_inv]
     simp only [e1, copyPerm_apply]
     have hcond : (∀ i, i ≠ j → x (τ i) = y i) ↔ ∀ i, i ≠ τ j → x i = y (τ⁻¹ i) := by
@@ -233,7 +242,8 @@ theorem permOp_copyPerm_mul_siteOp (h : Matrix (SiteConfig n) (SiteConfig n) ℂ
   · intro z _ hz; simp [Ne.symm hz]
   · simp
   · intro z _ hz
-    have : copyPerm (SiteConfig n) k τ z ≠ x := fun e => hz (by rw [← e, Equiv.symm_apply_apply])
+    have : copyPerm (ManyBody.Config (fun v => Fin (n v))) k τ z ≠ x :=
+      fun e => hz (by rw [← e, Equiv.symm_apply_apply])
     simp [this]
   · simp
 
