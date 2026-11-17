@@ -10,3 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 import QICLean.ManyBody.Hamiltonian.HermitianPart
+import QICLean.ManyBody.Hamiltonian.Models

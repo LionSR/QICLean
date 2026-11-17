@@ -23,6 +23,8 @@ Moved from TNLean at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`:
 * `ManyBody.SquareLatticeVertex` — the sites, with the lexicographic order.
 * `ManyBody.squareLatticeGraph` — the nearest-neighbour graph.
 * `ManyBody.squareLatticeRightEdge`, `ManyBody.squareLatticeUpEdge` — the coordinate edges.
+* `ManyBody.SquareLatticeSiteOrEdge`, `ManyBody.squareLatticeSiteOrEdgeSupport` — the vertices
+  and edges as one index set, each with its region.
 
 ## References
 
@@ -42,19 +44,13 @@ abbrev SquareLatticeVertex (width height : ℕ) :=
   Fin width × Fin height
 
 
-/-- The coordinate vertex set is ordered lexicographically.  The project-level
-`Edge` type uses an ambient linear order to orient undirected graph edges, so
-this instance lets the square-lattice graph use the same edge type as the
-general PEPS development.
+/-- The vertices are ordered lexicographically. The order orients the edges of the square-lattice
+graph, so that its edges form the type `ManyBody.Edge (squareLatticeGraph width height)`.
 
-The decidable-equality field is pinned to the canonical product decidable
-equality `instDecidableEqProd` rather than the comparison-derived one that
-`LinearOrder.lift'` would synthesize.  The square-lattice geometry layer builds
-its blocking data over the product decidable equality, while the per-edge gauge
-interface synthesizes a decidable equality from this linear order; pinning the
-field makes the two definitionally equal, so an interior blocking datum feeds the
-gauge interface with no subsingleton transport.  All other order fields are taken
-from `LinearOrder.lift'`, so the lexicographic comparison is unchanged. -/
+The decidable-equality field is the product decidable equality `instDecidableEqProd`, not the
+one derived from the comparison by `LinearOrder.lift'`, so the decidable equality of the
+vertices is definitionally the same whether it is found through the product or through this
+order. All other fields come from `LinearOrder.lift'`, so the comparison is lexicographic. -/
 instance instLinearOrderSquareLatticeVertex (width height : ℕ) :
     LinearOrder (SquareLatticeVertex width height) :=
   let src : LinearOrder (SquareLatticeVertex width height) :=
@@ -316,5 +312,17 @@ theorem verticalSquareLatticeEdge_eq_upEdge {width height : ℕ}
   ext <;> simp only [squareLatticeUpEdge]
   · exact congrArg Fin.val hc.1.symm
   · exact hc.2.symm
+
+/-- The vertices and the edges of the square lattice, as one index set. Area law and
+polynomial-PEPS, `eq:model`. -/
+abbrev SquareLatticeSiteOrEdge (width height : ℕ) :=
+  SquareLatticeVertex width height ⊕ Edge (squareLatticeGraph width height)
+
+/-- The region of a vertex or an edge: the vertex itself, or the two endpoints of the edge.
+Area law and polynomial-PEPS, `eq:model`. -/
+def squareLatticeSiteOrEdgeSupport {width height : ℕ} :
+    SquareLatticeSiteOrEdge width height → Finset (SquareLatticeVertex width height)
+  | .inl v => {v}
+  | .inr e => {e.1.1, e.1.2}
 
 end ManyBody
