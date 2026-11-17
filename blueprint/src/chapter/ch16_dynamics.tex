@@ -364,7 +364,8 @@ $e^{itH'}e^{-itH}$.
         ManyBody.disjointProjectedPropagator_spec,
         ManyBody.exists_disjoint_projected_propagator_approximation}
     \leanok
-    \uses{def:dynamics_heisenberg, def:sites_region_expectation}
+    \uses{def:dynamics_heisenberg, def:sites_region_expectation,
+        thm:dynamics_projected_relative}
     Let $K_1,\dots,K_m$ be pairwise disjoint regions, $A$ a Hermitian operator and
     $B_1,\dots,B_m$ Hermitian operators, and let $U_j$ be the projected relative
     evolution of $A$ against $A-B_j$ on $K_j$. If
@@ -395,7 +396,7 @@ $e^{itH'}e^{-itH}$.
     \lean{ManyBody.exists_supported_gaussian_integral_of_projection_bounds}
     \leanok
     \uses{def:dynamics_heisenberg, def:sites_region_expectation,
-        def:gaussian_filter_integrals}
+        def:gaussian_filter_integrals, thm:dynamics_projected_relative}
     Let $B_{\mathrm{gen}}$ be a region and $U$ the projected relative evolution on
     it. Let $B_{\mathrm{obs}}$ and $B_{\mathrm{out}}$ be regions with
     $B_{\mathrm{obs}}\cup B_{\mathrm{gen}}\subseteq B_{\mathrm{out}}$, let $W$ be an
@@ -415,7 +416,7 @@ $e^{itH'}e^{-itH}$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:dynamics_projected_relative, thm:sites_region_expectation,
-        thm:projected_generator_bound}
+        thm:projected_generator_bound, lem:sites_supported_mono}
     At each time,
     $\lVert E_{B_{\mathrm{obs}}}(\tau_t(W))U(t)-e^{itH'}We^{-itH}\rVert$ is at
     most the observable error plus $\lVert W\rVert$ times
