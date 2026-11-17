@@ -17,9 +17,10 @@ of sites of diameter at most `R` in this graph; it is a support of range `R` of 
 `|Λ|` sites, and it does not straddle a gap of `Λ`.
 
 Moved from TNLean, `TNLean/MPS/AreaLaw/ComponentReduction.lean` (section `Domain`, up to
-`IsDomainSupport.subset_or_disjoint_of_gap`) at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: namespace `ManyBody`
-in place of `TNLean.MPS.AreaLaw`; `domainGraph` is renamed `lineDomainGraph`, to distinguish it
-from the induced graph `planeDomainGraph` of a domain of `ℤ × ℤ`.
+`IsDomainSupport.subset_or_disjoint_of_gap`) at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`.
+Changes: namespace `ManyBody` in place of `TNLean.MPS.AreaLaw`; `domainGraph` is renamed
+`lineDomainGraph`, to distinguish it from the induced graph `planeDomainGraph` of a domain of `ℤ ×
+ℤ`.
 
 ## Main definitions
 

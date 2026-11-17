@@ -14,9 +14,9 @@ the ordered pair `(u, v)` of its endpoints with `u < v`. `ManyBody.Edge G` is th
 pairs, so that it has one element for each edge, and each edge comes with a first and a second
 endpoint. `ManyBody.Edge.ofAdj` orients an adjacent pair given in either order.
 
-Moved from TNLean, `TNLean/PEPS/Defs.lean` (`Edge`, `instFintypeEdge`, `Edge.ofAdj` and its
-lemmas) at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: namespace `ManyBody` in place of `TNLean.PEPS`; no other
-change.
+Moved from TNLean, `TNLean/PEPS/Defs.lean` (`Edge`, `instFintypeEdge`, `Edge.ofAdj` and its lemmas)
+at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: namespace `ManyBody` in place of
+`TNLean.PEPS`; no other change.
 
 ## Main definitions
 

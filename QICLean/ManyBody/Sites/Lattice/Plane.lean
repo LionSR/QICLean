@@ -17,10 +17,10 @@ domain, by a walk of length at most `R`. Neither connectedness nor the absence o
 assumed.
 
 Moved from TNLean, `TNLean/Lattice/FiniteDomain.lean` (`domainGraph`, `IsAdmissibleSupport`,
-`AdmissibleSupport` and their lemmas) at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: namespace `ManyBody` in place of
-`TNLean.Lattice`; `domainGraph` is renamed `planeDomainGraph`, to distinguish it from the path
-graph `lineDomainGraph` of a domain of `ℤ`; the sites are written `↥Λ`, without the
-abbreviation `Site Λ`.
+`AdmissibleSupport` and their lemmas) at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes:
+namespace `ManyBody` in place of `TNLean.Lattice`; `domainGraph` is renamed `planeDomainGraph`, to
+distinguish it from the path graph `lineDomainGraph` of a domain of `ℤ`; the sites are written `↥Λ`,
+without the abbreviation `Site Λ`.
 
 ## Main definitions
 

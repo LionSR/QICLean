@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Lattice.Edge
-import Mathlib.Data.Prod.Lex
+import Mathlib.Order.Prod.Lex.Basic
 
 /-!
 # The rectangular square lattice
@@ -14,9 +14,9 @@ lexicographically, and two sites are adjacent when they are nearest neighbours h
 vertically. Every edge is horizontal or vertical, and is the right or the upward edge of its
 first endpoint.
 
-Moved from TNLean at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`: `TNLean/PEPS/NormalBlocking.lean` (`SquareLatticeVertex`)
-and `TNLean/PEPS/SquareLatticeGraph.lean` (the whole module). Changes: namespace `ManyBody` in
-place of `TNLean.PEPS`; no other change.
+Moved from TNLean at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`:
+`TNLean/PEPS/NormalBlocking.lean` (`SquareLatticeVertex`) and `TNLean/PEPS/SquareLatticeGraph.lean`
+(the whole module). Changes: namespace `ManyBody` in place of `TNLean.PEPS`; no other change.
 
 ## Main definitions
 

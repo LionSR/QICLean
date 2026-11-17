@@ -13,9 +13,10 @@ The chain of `L` sites is `Fin L`, with consecutive positions adjacent. An inter
 the set of sites whose position lies in `[a, b)`. A support of range `R` is a nonempty set of
 sites of diameter at most `R`; it lies in `R + 1` consecutive sites.
 
-Moved from TNLean at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`: `TNLean/MPS/AreaLaw/Basic.lean` (the intervals) and
-`TNLean/MPS/AreaLaw/Hamiltonian.lean` (`IsChainSupport`, `ChainSupport` and their lemmas).
-Changes: namespace `ManyBody` in place of `TNLean.MPS.AreaLaw`; no other change.
+Moved from TNLean at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`:
+`TNLean/MPS/AreaLaw/Basic.lean` (the intervals) and `TNLean/MPS/AreaLaw/Hamiltonian.lean`
+(`IsChainSupport`, `ChainSupport` and their lemmas). Changes: namespace `ManyBody` in place of
+`TNLean.MPS.AreaLaw`; no other change.
 
 ## Main definitions
 
