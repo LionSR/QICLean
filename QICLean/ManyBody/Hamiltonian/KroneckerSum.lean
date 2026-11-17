@@ -38,6 +38,50 @@ at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`, with its statement and pro
 open Matrix
 open scoped Kronecker ComplexOrder
 
+/-- A Kronecker product acts factorwise on a product vector. -/
+theorem Matrix.kronecker_mulVec_mul {α β : Type*} [Fintype α] [Fintype β]
+    (M : Matrix α α ℂ) (N : Matrix β β ℂ) (u : α → ℂ)
+    (v : β → ℂ) :
+    (M ⊗ₖ N) *ᵥ (fun p ↦ u p.1 * v p.2) = fun p ↦ (M *ᵥ u) p.1 * (N *ᵥ v) p.2 := by
+  funext p
+  change (∑ t : α × β, M p.1 t.1 * N p.2 t.2 * (u t.1 * v t.2)) =
+    (∑ a : α, M p.1 a * u a) * (∑ b : β, N p.2 b * v b)
+  rw [Fintype.sum_prod_type, Finset.sum_mul_sum]
+  exact Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun b _ ↦ by ring
+
+/-- The Kronecker sum `A ⊗ 1 + 1 ⊗ B` of two Hermitian matrices is the conjugate, by the
+Kronecker product of their eigenvector unitaries, of the diagonal matrix of the sums of their
+eigenvalues. -/
+theorem Matrix.IsHermitian.kronecker_add_eq_conj {α β : Type*} [Fintype α] [DecidableEq α]
+    [Fintype β] [DecidableEq β] {A : Matrix α α ℂ} {B : Matrix β β ℂ}
+    (hA : A.IsHermitian) (hB : B.IsHermitian) :
+    A ⊗ₖ (1 : Matrix β β ℂ) + (1 : Matrix α α ℂ) ⊗ₖ B =
+      ((hA.eigenvectorUnitary : Matrix α α ℂ) ⊗ₖ (hB.eigenvectorUnitary : Matrix β β ℂ)) *
+        diagonal (fun p : α × β ↦ ((hA.eigenvalues p.1 + hB.eigenvalues p.2 : ℝ) : ℂ)) *
+        ((hA.eigenvectorUnitary : Matrix α α ℂ) ⊗ₖ (hB.eigenvectorUnitary : Matrix β β ℂ))ᴴ := by
+  set U : Matrix α α ℂ := (hA.eigenvectorUnitary : Matrix α α ℂ)
+  set V : Matrix β β ℂ := (hB.eigenvectorUnitary : Matrix β β ℂ)
+  have hA' : A = U * diagonal (fun i ↦ (hA.eigenvalues i : ℂ)) * Uᴴ := by
+    conv_lhs => rw [hA.spectral_theorem]
+    rfl
+  have hB' : B = V * diagonal (fun j ↦ (hB.eigenvalues j : ℂ)) * Vᴴ := by
+    conv_lhs => rw [hB.spectral_theorem]
+    rfl
+  have hU : U * Uᴴ = 1 := Unitary.mul_star_self_of_mem hA.eigenvectorUnitary.2
+  have hV : V * Vᴴ = 1 := Unitary.mul_star_self_of_mem hB.eigenvectorUnitary.2
+  have hdiag : diagonal (fun p : α × β ↦ ((hA.eigenvalues p.1 + hB.eigenvalues p.2 : ℝ) : ℂ)) =
+      diagonal (fun i ↦ (hA.eigenvalues i : ℂ)) ⊗ₖ (1 : Matrix β β ℂ) +
+        (1 : Matrix α α ℂ) ⊗ₖ diagonal (fun j ↦ (hB.eigenvalues j : ℂ)) := by
+    rw [← (diagonal_one : diagonal (1 : β → ℂ) = 1), ← (diagonal_one : diagonal (1 : α → ℂ) = 1),
+      diagonal_kronecker_diagonal, diagonal_kronecker_diagonal, diagonal_add]
+    congr 1
+    funext p
+    push_cast
+    ring
+  rw [hdiag, conjTranspose_kronecker, mul_add, add_mul, ← mul_kronecker_mul, ← mul_kronecker_mul,
+    ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.mul_one, Matrix.mul_one, hU, hV,
+    ← hA', ← hB']
+
 namespace ManyBody
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
@@ -75,38 +119,6 @@ theorem isGapped_diagonal_iff (d : n → ℝ) {E₀ Δ : ℝ} :
 
 variable {α β : Type*} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
-/-- The Kronecker sum `A ⊗ 1 + 1 ⊗ B` of two Hermitian matrices is the conjugate, by the
-Kronecker product of their eigenvector unitaries, of the diagonal matrix of the sums of their
-eigenvalues. -/
-theorem _root_.Matrix.IsHermitian.kronecker_add_eq_conj {A : Matrix α α ℂ} {B : Matrix β β ℂ}
-    (hA : A.IsHermitian) (hB : B.IsHermitian) :
-    A ⊗ₖ (1 : Matrix β β ℂ) + (1 : Matrix α α ℂ) ⊗ₖ B =
-      ((hA.eigenvectorUnitary : Matrix α α ℂ) ⊗ₖ (hB.eigenvectorUnitary : Matrix β β ℂ)) *
-        diagonal (fun p : α × β ↦ ((hA.eigenvalues p.1 + hB.eigenvalues p.2 : ℝ) : ℂ)) *
-        ((hA.eigenvectorUnitary : Matrix α α ℂ) ⊗ₖ (hB.eigenvectorUnitary : Matrix β β ℂ))ᴴ := by
-  set U : Matrix α α ℂ := (hA.eigenvectorUnitary : Matrix α α ℂ)
-  set V : Matrix β β ℂ := (hB.eigenvectorUnitary : Matrix β β ℂ)
-  have hA' : A = U * diagonal (fun i ↦ (hA.eigenvalues i : ℂ)) * Uᴴ := by
-    conv_lhs => rw [hA.spectral_theorem]
-    rfl
-  have hB' : B = V * diagonal (fun j ↦ (hB.eigenvalues j : ℂ)) * Vᴴ := by
-    conv_lhs => rw [hB.spectral_theorem]
-    rfl
-  have hU : U * Uᴴ = 1 := Unitary.mul_star_self_of_mem hA.eigenvectorUnitary.2
-  have hV : V * Vᴴ = 1 := Unitary.mul_star_self_of_mem hB.eigenvectorUnitary.2
-  have hdiag : diagonal (fun p : α × β ↦ ((hA.eigenvalues p.1 + hB.eigenvalues p.2 : ℝ) : ℂ)) =
-      diagonal (fun i ↦ (hA.eigenvalues i : ℂ)) ⊗ₖ (1 : Matrix β β ℂ) +
-        (1 : Matrix α α ℂ) ⊗ₖ diagonal (fun j ↦ (hB.eigenvalues j : ℂ)) := by
-    rw [← (diagonal_one : diagonal (1 : β → ℂ) = 1), ← (diagonal_one : diagonal (1 : α → ℂ) = 1),
-      diagonal_kronecker_diagonal, diagonal_kronecker_diagonal, diagonal_add]
-    congr 1
-    funext p
-    push_cast
-    ring
-  rw [hdiag, conjTranspose_kronecker, mul_add, add_mul, ← mul_kronecker_mul, ← mul_kronecker_mul,
-    ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.mul_one, Matrix.mul_one, hU, hV,
-    ← hA', ← hB']
-
 private theorem exists_eigenvalue_eq_of_isGapped {A : Matrix α α ℂ} (hA : A.IsHermitian)
     {a Δ : ℝ} (h : IsGapped A a Δ) : ∃ i, hA.eigenvalues i = a := by
   obtain ⟨k, hk⟩ := hA.hasEigenvalue_toEuclideanLin_iff.mp (Module.End.hasEigenvalue_iff.mpr h.1)
@@ -142,17 +154,6 @@ theorem IsGapped.kronecker_add {A : Matrix α α ℂ} {B : Matrix β β ℂ} (hA
     · exact Or.inr (by linarith)
     · exact Or.inr (by linarith)
     · exact Or.inr (by rcases hΔ with hΔ | hΔ <;> linarith)
-
-omit [DecidableEq α] [DecidableEq β] in
-/-- A Kronecker product acts factorwise on a product vector. -/
-theorem _root_.Matrix.kronecker_mulVec_mul (M : Matrix α α ℂ) (N : Matrix β β ℂ) (u : α → ℂ)
-    (v : β → ℂ) :
-    (M ⊗ₖ N) *ᵥ (fun p ↦ u p.1 * v p.2) = fun p ↦ (M *ᵥ u) p.1 * (N *ᵥ v) p.2 := by
-  funext p
-  change (∑ t : α × β, M p.1 t.1 * N p.2 t.2 * (u t.1 * v t.2)) =
-    (∑ a : α, M p.1 a * u a) * (∑ b : β, N p.2 b * v b)
-  rw [Fintype.sum_prod_type, Finset.sum_mul_sum]
-  exact Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun b _ ↦ by ring
 
 /-- **The ground space of a Kronecker sum.** If `A` and `B` are Hermitian and gapped at `a`
 and `b` with nonnegative gaps, and their ground spaces are the lines through `u` and `v`,
