@@ -49,12 +49,13 @@ one-dimensional ground space.
 
 \begin{lemma}[Relabelling the basis and unitary conjugation]
     \label{lem:hamiltonians_gap_reindex}
-    \lean{ManyBody.eigenspace_eq_map_of_intertwine,
+    \lean{Module.End.eigenspace_eq_map_of_intertwine,
         ManyBody.groundSpace_eq_map_of_intertwine, ManyBody.hasEigenvalue_iff_of_intertwine,
-        ManyBody.isGapped_iff_of_intertwine, ManyBody.toEuclideanLin_reindex_piLpCongrLeft,
-        ManyBody.mem_eigenspace_toEuclideanLin_reindex_iff,
-        ManyBody.eigenspace_toEuclideanLin_reindex,
-        ManyBody.hasEigenvalue_toEuclideanLin_reindex_iff,
+        ManyBody.isGapped_iff_of_intertwine, Matrix.toEuclideanLin_reindex_piLpCongrLeft,
+        Matrix.mem_eigenspace_toEuclideanLin_reindex_iff,
+        Matrix.eigenspace_toEuclideanLin_reindex,
+        Matrix.hasEigenvalue_toEuclideanLin_reindex_iff,
+        Matrix.ker_toEuclideanLin_reindex_map, Matrix.norm_gap_toEuclideanLin_reindex,
         ManyBody.mem_groundSpace_reindex_iff, ManyBody.groundSpace_reindex,
         ManyBody.groundSpace_reindex_eq_span, ManyBody.isGapped_reindex_iff,
         ManyBody.groundSpace_submatrix, ManyBody.groundSpace_submatrix_eq_span,
@@ -68,12 +69,18 @@ one-dimensional ground space.
     $\ker(H'-E_0)=P_e\ker(H-E_0)$, $H'$ and $H$ have the same eigenvalues, and
     $H'$ is gapped at $E_0$ with gap $\Delta$ if and only if $H$ is, for every
     $\Delta\in\R$. In particular $\ker(H-E_0)=\C\Omega$ implies
-    $\ker(H'-E_0)=\C P_e\Omega$. The same holds for $UHU^{*}$ with a unitary $U$
+    $\ker(H'-E_0)=\C P_e\Omega$. Likewise $\ker H'=P_e\ker H$, and if
+    $\|H\psi\|\ge\gamma\|\psi\|$ for every $\psi\perp\ker H$, then
+    $\|H'\psi\|\ge\gamma\|\psi\|$ for every $\psi\perp\ker H'$; neither
+    statement needs $H$ to be Hermitian. The same holds for $UHU^{*}$ with a unitary $U$
     in place of $P_e$, and more generally for any invertible $F$ with $H'F=FH$.
 \end{lemma}
 \begin{proof}\leanok
     If $H'F=FH$, then $H'\psi=\mu\psi$ if and only if $HF^{-1}\psi=\mu F^{-1}\psi$.
-    Both $P_e$ and a unitary $U$ satisfy this with $H'=FHF^{*}$.
+    Both $P_e$ and a unitary $U$ satisfy this with $H'=FHF^{*}$. The kernel is the
+    eigenspace at $0$, and $P_e$ is unitary, so it carries $(\ker H)^{\perp}$ onto
+    $(\ker H')^{\perp}$ and preserves norms; with $H'P_e=P_eH$ this transports the
+    norm bound.
 \end{proof}
 
 \begin{lemma}[Scaling and shifting the energy]
