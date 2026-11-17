@@ -752,14 +752,19 @@ rank, and $q$ is the least integer such that $K_m=\MN{d}$ for every $m\geq q$.
     \label{thm:zero_error_dichotomy}
     \lean{Kraus.exists_orthogonal_fixed_densities,
         Kraus.exists_posSemidef_fixed_not_smul,
-        Kraus.zeroError_dichotomy}
+        not_hasOneShotZeroErrorBit_of_posDef_outputs,
+        Kraus.zeroError_dichotomy_eventually, Kraus.zeroError_dichotomy}
     \leanok
     \uses{def:one_shot_zero_error_bit, thm:wolf_6_9_quantum_wielandt}
     Let $E$ be a quantum channel on $\MN{D}$ with a full-rank fixed point,
-    and let $q$ be its quantum Wielandt index. Then either $E^n$ transmits one
-    bit with zero error in a single use for every $n$, or $E^q$ does not.
-    This is~\cite[Theorem~2]{Sanz2010Quantum} in the one-shot form allowed
-    by its footnote.
+    and let $q$ be the least threshold beyond which all Kraus word spans are full
+    (set $q=0$ if no such threshold exists). Then either $E^n$ transmits one
+    bit with zero error in a single use for every $n$, or $E^n$ does not for every $n\ge q$.
+    This is a restricted consequence of~\cite[Theorem~2]{Sanz2010Quantum}:
+    capacity is one-shot and the threshold is the full-word-span index $i(A)$
+    in the primitive case. The source uses the positivity-improving index $q(E)$;
+    Proposition~1 gives $q(E)\le i(A)$, and the inequality can be strict.
+    These scope restrictions are documented in~\cite{gap:spwc10_zero_error_capacity}.
 \end{theorem}
 
 \begin{proof}\leanok
@@ -776,6 +781,17 @@ rank, and $q$ is the least integer such that $K_m=\MN{d}$ for every $m\geq q$.
     The first case for $E^p$ yields orthogonal states $\sigma_0,\sigma_1$
     fixed by $E^p$, and for every $n$ the inputs $E^m(\sigma_i)$ with
     $n+m\equiv0\pmod p$ have the outputs $\sigma_i$. If $E$ is primitive, the
-    word span at length $q$ is full, so $E^q$ maps every nonzero positive
-    matrix to a positive definite one, and no two outputs are orthogonal.
+    word span $K_n$ at every length $n\ge q$ is full. For $\varphi\ne0$,
+    \begin{align}
+        K_n&=\MN{D}, & H_n(K,\varphi)&=\C^D,\\
+        E^n(\varphi\varphi^\dagger)
+          &=\sum_{|w|=n}(K^w\varphi)(K^w\varphi)^\dagger\succ0.
+    \end{align}
+    For $X\succeq0$, $X\ne0$, decompose $X=\sum_j\varphi_j\varphi_j^\dagger$.
+    At least one $\varphi_j$ is nonzero, so
+    \begin{align}
+        E^n(X)&=\sum_j E^n(\varphi_j\varphi_j^\dagger)\succ0.
+    \end{align}
+    Thus two density-matrix outputs $B_0,B_1$ satisfy
+    $\tr(B_0B_1)>0$ and cannot be orthogonal.
 \end{proof}

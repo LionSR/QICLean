@@ -1,0 +1,120 @@
+% Source: Wolf (2012), Chapter 8, lines 1221--1224 and 1247--1254.
+
+\begin{definition}[Jordan condition number]
+    \label{def:wolf_jordan_condition_number}
+    \lean{Matrix.IsJordanMatrix, Matrix.jordanConditionFactors, Matrix.jordanConditionNumber}
+    \leanok
+    A normalized Jordan matrix is a finite direct sum of blocks
+    $J_{d_k}(\lambda_k)$ with $d_k>0$, up to a permutation of coordinates.
+    For a complex square matrix $X$, let
+    \begin{align}
+      \mathcal C_X&=\{\lVert P\rVert_\infty\lVert Q\rVert_\infty:
+        PQ=QP=I,\ X=PJQ,\ J\text{ is a normalized Jordan matrix}\},\\
+      \kappa_X&=\inf\mathcal C_X.
+    \end{align}
+    This is the definition in \cite[Chapter~8]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{theorem}[Admissible forms and the condition infimum]
+    \label{thm:wolf_jordan_condition_infimum}
+    \lean{Matrix.isJordanMatrix_diagonal, Matrix.isJordanMatrix_jordanBlockDirectSum,
+      Matrix.bddBelow_jordanConditionFactors, Matrix.jordanConditionNumber_le,
+      Matrix.one_le_jordanConditionNumber, Matrix.exists_jordanConditionFactor_lt,
+      Matrix.jordanConditionNumber_of_isEmpty, Matrix.one_le_l2_opNorm_mul_of_mul_eq_one}
+    \leanok
+    Diagonal matrices and finite sums of positive-dimensional Jordan blocks
+    are normalized Jordan matrices. The family $\mathcal C_X$ is bounded
+    below, and $\kappa_X\le c$ for every $c\in\mathcal C_X$.
+    If the underlying space has positive dimension and $\mathcal C_X$ is
+    nonempty, then $1\le\kappa_X$. If $\mathcal C_X$ is nonempty, then
+    for every $\varepsilon>0$ there is $c\in\mathcal C_X$ with
+    $c<\kappa_X+\varepsilon$.
+    On the zero-dimensional space, $\kappa_X=0$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{def:wolf_jordan_condition_number}
+    A diagonal matrix is the sum of its one-dimensional blocks.
+    Submultiplicativity gives $1=\lVert PQ\rVert_\infty
+    \le\lVert P\rVert_\infty\lVert Q\rVert_\infty$ on a nonzero space.
+    The greatest-lower-bound property proves the inequalities and the
+    $\varepsilon$ approximation. On the zero space all matrix norms vanish.
+\end{proof}
+
+\begin{theorem}[Uniform comparisons pass to the infimum]
+    \label{thm:wolf_jordan_infimum_comparison}
+    \lean{Matrix.jordanConditionNumber_bounds,
+      Matrix.l2_opNorm_pow_jordanConditionNumber_bounds}
+    \leanok
+    Suppose $X$ acts on a nonzero finite-dimensional space and
+    $\mathcal C_X\ne\varnothing$. Let $r,s\ge0$. If $r\le cs$ and $s\le cr$
+    for every $c\in\mathcal C_X$, then $\kappa_X^{-1}r\le s\le\kappa_Xr$.
+    In particular, if every admissible Jordan representative of $X$ has
+    power norm $\lVert J^n\rVert_\infty=r$, then
+    \begin{align}
+      \kappa_X^{-1}r\le\lVert X^n\rVert_\infty\le\kappa_Xr.
+    \end{align}
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_jordan_condition_infimum, lem:wolf_jordan_similarity_comparison}
+    For $s>0$, $r/s$ is a lower bound for $\mathcal C_X$, hence
+    $r/s\le\kappa_X$. For $r>0$, apply the same argument to $s/r$.
+    If either is zero, use any member of the nonempty family.
+    For each admissible $X=PJQ$ with $PQ=QP=I$, the similarity comparison gives
+    \begin{align}
+      (\lVert P\rVert_\infty\lVert Q\rVert_\infty)^{-1}
+        \lVert J^n\rVert_\infty
+      \le\lVert X^n\rVert_\infty
+      \le\lVert P\rVert_\infty\lVert Q\rVert_\infty
+        \lVert J^n\rVert_\infty.
+    \end{align}
+    Set $c=\lVert P\rVert_\infty\lVert Q\rVert_\infty>0$ and
+    $s=\lVert X^n\rVert_\infty$. The common value
+    $r=\lVert J^n\rVert_\infty$ therefore satisfies $r\le cs$ and $s\le cr$
+    for every $c\in\mathcal C_X$, so the uniform comparison applies.
+\end{proof}
+
+\begin{theorem}[Scaling after a supplied Jordan similarity]
+    \label{thm:wolf_supplied_jordan_similarity_scaling}
+    \lean{Matrix.exists_pos_pow_similarity_jordanBlockDirectSum_bounds}
+    \leanok
+    Let $J=\bigoplus_k J_{d_k}(\lambda_k)$ be a finite sum with $d_k>0$,
+    let $X=PJQ$ with $PQ=QP=I$, and set
+    $c=\lVert P\rVert_\infty\lVert Q\rVert_\infty$.
+    Choose a block of maximal modulus $0<\mu\le1$ and maximal dimension $d$
+    among ties. There exists $C_2>0$ such that for every positive integer $n$,
+    $\lVert X^n\rVert_\infty\le C_2\mu^n n^{d-1}$.
+    For every $n\ge d-1$,
+    \begin{align}
+      c^{-1}(\mu(d-1))^{-(d-1)}\mu^n n^{d-1}
+      \le\lVert X^n\rVert_\infty.
+    \end{align}
+    When $d=1$, the zeroth-power factor is one.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:wolf_jordan_similarity_comparison,
+      thm:wolf_finite_jordan_sum_polynomial_scaling}
+    Multiply the finite-sum upper constant by $c$. Multiply its lower
+    estimate by $c^{-1}$ and apply the similarity comparison.
+\end{proof}
+% The channel decomposition, identification of the subperipheral blocks and
+% invariance of their power norm over all admissible forms remain separate
+% obligations. This is not a completion of Wolf Theorem 8.23.
+
+
+\begin{theorem}[Nilpotence after a supplied Jordan similarity]
+    \label{thm:wolf_supplied_jordan_nilpotence}
+    \lean{Matrix.pow_eq_zero_of_similarity_jordanBlockDirectSum_maximal_zero}
+    \leanok
+    Let $X=PJQ$, $PQ=QP=I$, with $J$ a nonempty finite sum of
+    positive-dimensional Jordan blocks. If the maximal eigenvalue modulus
+    is zero and the largest block dimension is $d$, then $X^n=0$ for $n\ge d$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:wolf_finite_jordan_sum_nilpotence, lem:wolf_jordan_similarity_comparison}
+    The finite-sum nilpotence theorem gives $J^n=0$. The similarity upper
+    bound gives $\lVert X^n\rVert_\infty\le0$, hence $X^n=0$.
+\end{proof}

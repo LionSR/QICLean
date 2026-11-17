@@ -25,6 +25,11 @@ on:
       - 'scripts/check_oversized_lean_files.py'
       - 'scripts/lean_import_syntax.py'
       - 'scripts/test_lean_file_policies.py'
+      - 'scripts/check_import_layers.py'
+      - 'scripts/check_pass_through_declarations.py'
+      - 'scripts/test_architecture_policies.py'
+      - 'scripts/test_issue_automation.cjs'
+      - '.github/workflows/issue-automation.yml'
       - 'scripts/lake_build_hotspots.py'
       - 'scripts/test_lake_build_hotspots.py'
       - 'scripts/seed_lake_build.sh'
@@ -78,6 +83,11 @@ on:
       - 'scripts/check_oversized_lean_files.py'
       - 'scripts/lean_import_syntax.py'
       - 'scripts/test_lean_file_policies.py'
+      - 'scripts/check_import_layers.py'
+      - 'scripts/check_pass_through_declarations.py'
+      - 'scripts/test_architecture_policies.py'
+      - 'scripts/test_issue_automation.cjs'
+      - '.github/workflows/issue-automation.yml'
       - 'scripts/lake_build_hotspots.py'
       - 'scripts/test_lake_build_hotspots.py'
       - 'scripts/seed_lake_build.sh'
@@ -159,10 +169,16 @@ jobs:
               - 'scripts/nolints-style.txt'
               - 'scripts/ci_lean_checks.py'
             module_policy:
+              - 'docs/import_structure.md'
               - 'scripts/check_numbered_lean_files.py'
               - 'scripts/check_oversized_lean_files.py'
               - 'scripts/lean_import_syntax.py'
               - 'scripts/test_lean_file_policies.py'
+              - 'scripts/check_import_layers.py'
+              - 'scripts/check_pass_through_declarations.py'
+              - 'scripts/test_architecture_policies.py'
+              - 'scripts/test_issue_automation.cjs'
+              - '.github/workflows/issue-automation.yml'
               - 'scripts/lake_build_hotspots.py'
               - 'scripts/test_lake_build_hotspots.py'
               - 'scripts/seed_lake_build.sh'
@@ -452,6 +468,42 @@ jobs:
       - name: Test Lean module-policy checkers
         run: PYTHONPATH=scripts python3 scripts/test_lean_file_policies.py -v
 
+      - name: Test architecture ratchets
+        run: PYTHONPATH=scripts python3 scripts/test_architecture_policies.py -v
+
+      - name: Set up Node for tracking automation regression tests
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Test tracking automation without network access
+        run: node --test scripts/test_issue_automation.cjs
+
+      - name: Enforce architecture ratchets
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          args=()
+          # Only dispatch and a new-branch push may omit historical comparison.
+          if [ "$EVENT_NAME" != workflow_dispatch ]; then
+            if [[ ! "$BASE_SHA" =~ ^[0-9a-fA-F]{40}$ ]]; then
+              echo "::error::Missing or invalid architecture ratchet base SHA"
+              exit 1
+            fi
+            if [[ "$BASE_SHA" =~ ^0+$ ]]; then
+              if [ "$EVENT_NAME" != push ]; then
+                echo "::error::A pull request must have a nonzero base SHA"
+                exit 1
+              fi
+            else
+              git cat-file -e "$BASE_SHA^{commit}" || git fetch --no-tags origin "$BASE_SHA"
+              args=(--base-revision "$BASE_SHA")
+            fi
+          fi
+          python3 scripts/check_import_layers.py "${args[@]}"
+          python3 scripts/check_pass_through_declarations.py "${args[@]}"
+
       - name: Test Lean compilation-time checker
         run: python3 scripts/test_lake_build_hotspots.py
 
@@ -498,7 +550,9 @@ jobs:
     name: Check blueprint compiles without errors
     needs: changes
     if: "!cancelled() && (github.event_name != 'pull_request' || needs.changes.result == 'success')"
-    runs-on: ubuntu-latest
+    # Pinned to 24.04: Playwright 1.55 has no Chromium for 26.04, and dvisvgm there drops TikZ
+    # ink. Return to ubuntu-latest once Playwright and the TeX toolchain support 26.04.
+    runs-on: ubuntu-24.04
     env:
       TEX_CHANGED: ${{ github.event_name != 'pull_request' || needs.changes.outputs.blueprint == 'true' }}
       # Main publication already compiles these PDFs; add the same gate to

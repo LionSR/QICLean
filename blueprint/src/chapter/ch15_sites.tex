@@ -28,6 +28,16 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     exactly when they agree at every site of $D$, and likewise outside $D$.
 \end{definition}
 
+\begin{definition}[Terms crossing a cut]
+    \label{def:sites_crossing_terms}
+    \lean{ManyBody.crossingTerms}
+    \leanok
+    For a family of regions $(D_i)_{i\in I}$ and a region $B$, the terms
+    crossing the cut at $B$ are
+    $\mathcal I_\times=\{i\in I:D_i\cap B\neq\emptyset\text{ and }
+    D_i\setminus B\neq\emptyset\}$ \cite{OpenAI2026AreaLaw}.
+\end{definition}
+
 \section{Operators supported on a region}
 \label{sec:sites_support}
 
@@ -391,4 +401,188 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \leanok
     Reindex the sum over complementary configurations. The resulting regional
     matrices are unitarily conjugate and have the same eigenvalues.
+\end{proof}
+
+\section{Chains, integer domains and square lattices}
+\label{sec:sites_lattices}
+
+The systems of sites of the one-dimensional and two-dimensional models are
+chains, finite sets of integers, finite subsets of the plane lattice, and
+rectangles of the square lattice. This section records their graphs and the
+supports of bounded range on them.
+
+\begin{definition}[Intervals and supports of range $R$ on a chain]
+    \label{def:sites_chain_support}
+    \lean{ManyBody.interval, ManyBody.IsChainSupport, ManyBody.ChainSupport}
+    \leanok
+    The chain of $L$ sites is $\{0,\dots,L-1\}$. For $a,b\in\N$ its interval
+    $[a,b)$ is the set of sites $i$ with $a\le i<b$. A support of range $R$ is a
+    nonempty set $X$ of sites with $|x-y|\le R$ for all $x,y\in X$.
+\end{definition}
+
+\begin{lemma}[Intervals and chain supports]
+    \label{lem:sites_chain_support}
+    \lean{ManyBody.mem_interval, ManyBody.disjoint_interval_interval,
+        ManyBody.interval_mono, ManyBody.interval_eq_empty,
+        ManyBody.interval_zero_eq_univ, ManyBody.card_interval_le,
+        ManyBody.IsChainSupport.card_le,
+        ManyBody.IsChainSupport.exists_eq_interval_of_card_eq,
+        ManyBody.IsChainSupport.subset_window_of_splits}
+    \leanok
+    \uses{def:sites_chain_support}
+    Adjacent intervals are disjoint, intervals grow with their ends, and
+    $[a,b)$ has at most $b-a$ sites. A support of range $R$ has at most $R+1$
+    sites, and exactly $R+1$ only when it is an interval $[a,a+R+1)$. A
+    support of range $R$ that meets both $[a,b)$ and its complement lies in
+    $\lbrack a-R,a+R)$ or in $\lbrack b-R,b+R)$.
+\end{lemma}
+\begin{proof}\leanok
+    The positions of a support of range $R$ lie in $[m,m+R]$ for its least
+    position $m$. The other statements are comparisons of positions.
+\end{proof}
+
+\begin{definition}[Finite domains of the integers]
+    \label{def:sites_line_domain}
+    \lean{ManyBody.sitePos, ManyBody.lineDomainGraph, ManyBody.IsDomainSupport,
+        ManyBody.DomainSupport}
+    \leanok
+    Let $\Lambda\subset\Z$ be finite. Its sites are labelled
+    $0,\dots,\lvert\Lambda\rvert-1$ in increasing order of their positions
+    $x_0<x_1<\dots$ in $\Lambda$. Two sites are adjacent when their positions
+    are consecutive integers. A support of range $R$ is a nonempty set of sites
+    of diameter at most $R$ in this graph.
+\end{definition}
+
+\begin{lemma}[Supports of an integer domain]
+    \label{lem:sites_line_domain}
+    \lean{ManyBody.sitePos_mem, ManyBody.exists_sitePos_eq,
+        ManyBody.sub_le_sitePos_sub, ManyBody.val_eq_add_one_of_sitePos_eq_add_one,
+        ManyBody.sitePos_sub_val_of_walk, ManyBody.IsDomainSupport.exists_walk,
+        ManyBody.IsDomainSupport.isChainSupport, ManyBody.DomainSupport.toChainSupport,
+        ManyBody.DomainSupport.toChainSupport_injective,
+        ManyBody.IsDomainSupport.subset_or_disjoint_of_gap}
+    \leanok
+    \uses{def:sites_line_domain, def:sites_chain_support}
+    The labelling is a bijection onto $\Lambda$ with $x_j-x_i\ge j-i$ for
+    $i\le j$. Along a walk, position minus label is constant. Hence a support
+    of range $R$ of $\Lambda$ is a support of range $R$ of the chain of
+    $\lvert\Lambda\rvert$ sites, and if $x_{p+1}\neq x_p+1$, every support of
+    range $R$ lies in $[0,p+1)$ or avoids it.
+\end{lemma}
+\begin{proof}\leanok
+    Each step of a walk moves the position and the label by one in the same
+    direction. A support meeting both $[0,p+1)$ and its complement would
+    contain a walk across the gap between $x_p$ and $x_{p+1}$.
+\end{proof}
+
+\begin{definition}[Finite domains of the square lattice]
+    \label{def:sites_plane_domain}
+    \lean{ManyBody.planeDomainGraph, ManyBody.IsAdmissibleSupport,
+        ManyBody.AdmissibleSupport}
+    \leanok
+    Let $\Lambda\subset\Z^2$ be finite. Two of its points are adjacent when
+    they differ by one in exactly one coordinate. A support of range $R$ is a
+    nonempty set of points of $\Lambda$ any two of which are joined by a walk in
+    $\Lambda$ of length at most $R$~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Supports of small range]
+    \label{lem:sites_plane_domain}
+    \lean{ManyBody.isAdmissibleSupport_singleton,
+        ManyBody.exists_walk_length_le_iff_edist_le,
+        ManyBody.isAdmissibleSupport_zero_iff, ManyBody.isAdmissibleSupport_pair_of_adj}
+    \leanok
+    \uses{def:sites_plane_domain}
+    The walk condition is a bound on the graph distance. Every point is a
+    support of every range, the supports of range zero are the points, and two
+    adjacent points form a support of range one.
+\end{lemma}
+\begin{proof}\leanok
+    A walk of length at most $R$ exists exactly when the graph distance is at
+    most $R$; distance zero means equality, and distance one adjacency.
+\end{proof}
+
+\begin{lemma}[Diameter, size and connectedness of a support]
+    \label{lem:sites_plane_domain_support}
+    \lean{ManyBody.IsAdmissibleSupport.edist_le, ManyBody.IsAdmissibleSupport.card_le,
+        ManyBody.IsAdmissibleSupport.reachable,
+        ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj,
+        ManyBody.latticeL1Distance_le_walk_length, ManyBody.card_latticeDiamond,
+        ManyBody.card_le_diamond_of_walks}
+    \leanok
+    \uses{def:sites_plane_domain, lem:sites_plane_domain}
+    A support $X$ of range $R$ in a finite set $\Lambda\subset\Z^2$ has graph
+    diameter at most $R$, lies in one connected component of $\Lambda$, and has
+    at most $v_R=1+2R(R+1)$ points~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The first two claims restate the walk condition. Fix $a\in X$. Each step of
+    a walk in $\Lambda$ changes the $\ell^1$ distance in $\Z^2$ by at most one,
+    so every point of $X$ lies in the closed $\ell^1$ ball of radius $R$ about
+    $a$. That ball has $2(R-\lvert x\rvert)+1$ points with first coordinate
+    $a_1+x$, for $\lvert x\rvert\le R$, and these sum to $1+2R(R+1)$.
+\end{proof}
+
+\begin{definition}[Oriented edges]
+    \label{def:sites_edge}
+    \lean{ManyBody.Edge, ManyBody.Edge.ofAdj}
+    \leanok
+    Let $G$ be a graph on a linearly ordered finite vertex set. Each edge of $G$
+    is represented by the ordered pair $(u,v)$ of its endpoints with $u<v$. An
+    adjacent pair given in either order determines the edge.
+\end{definition}
+
+\begin{lemma}[Orienting an adjacent pair]
+    \label{lem:sites_edge}
+    \lean{ManyBody.Edge.ofAdj_of_lt, ManyBody.Edge.ofAdj_of_gt,
+        ManyBody.Edge.ofAdj_endpoints, ManyBody.Edge.ofAdj_eq_of_endpoints,
+        ManyBody.Edge.ofAdj_eq_ofAdj}
+    \leanok
+    \uses{def:sites_edge}
+    The edge of an adjacent pair $(u,v)$ is $(u,v)$ when $u<v$ and $(v,u)$
+    otherwise. Two adjacent pairs with the same set of endpoints give the same
+    edge.
+\end{lemma}
+\begin{proof}\leanok
+    The two endpoints are distinct, so exactly one of $u<v$ and $v<u$ holds.
+\end{proof}
+
+\begin{definition}[The rectangular square lattice]
+    \label{def:sites_square_lattice}
+    \lean{ManyBody.SquareLatticeVertex, ManyBody.squareLatticeHorizontalNeighbor,
+        ManyBody.squareLatticeVerticalNeighbor, ManyBody.squareLatticeGraph,
+        ManyBody.squareLatticeRightEdge, ManyBody.squareLatticeUpEdge,
+        ManyBody.IsHorizontalSquareLatticeEdge, ManyBody.IsVerticalSquareLatticeEdge,
+        ManyBody.SquareLatticeSiteOrEdge, ManyBody.squareLatticeSiteOrEdgeSupport}
+    \leanok
+    \uses{def:sites_edge}
+    The $w\times h$ square lattice has the vertices
+    $\{0,\dots,w-1\}\times\{0,\dots,h-1\}$, ordered lexicographically, and an
+    edge between nearest neighbours horizontally or
+    vertically~\cite{Molnar2018NormalPEPS}. The right edge of $(x,y)$ joins it
+    to $(x+1,y)$, and its upward edge joins it to $(x,y+1)$. The vertices and
+    the edges together form one index set, in which a vertex has the region
+    $\{v\}$ and an edge the region of its two endpoints.
+\end{definition}
+
+\begin{lemma}[Edges of the square lattice]
+    \label{lem:sites_square_lattice}
+    \lean{ManyBody.squareLatticeGraph_adj, ManyBody.squareLatticeGraph_adj_right,
+        ManyBody.squareLatticeGraph_adj_up, ManyBody.squareLatticeRightEdge_isHorizontal,
+        ManyBody.squareLatticeUpEdge_isVertical,
+        ManyBody.squareLatticeEdge_horizontal_or_vertical,
+        ManyBody.squareLatticeEdge_not_horizontal_and_vertical,
+        ManyBody.horizontalSquareLatticeEdge_coords,
+        ManyBody.horizontalSquareLatticeEdge_eq_rightEdge,
+        ManyBody.verticalSquareLatticeEdge_coords,
+        ManyBody.verticalSquareLatticeEdge_eq_upEdge}
+    \leanok
+    \uses{def:sites_square_lattice}
+    Every edge is horizontal or vertical, and not both. A horizontal edge is
+    the right edge of its first endpoint, and a vertical edge is the upward
+    edge of its first endpoint.
+\end{lemma}
+\begin{proof}\leanok
+    In the lexicographic order the first endpoint of a horizontal edge is the
+    left one, and the first endpoint of a vertical edge is the lower one.
 \end{proof}
