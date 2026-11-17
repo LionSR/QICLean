@@ -2787,7 +2787,7 @@ chi-squared corollary, and equal-support two-state interpolation remain open.
 In particular, no strict-positivity replacement for the equal-support theorem
 is claimed. The already-landed Eqs. (8.87), (8.93)–(8.95) are unchanged.
 
-### Spectral bound on projective diameter (Equation 8.91) — PRINTED STATEMENT FALSE
+### Spectral bound on projective diameter (Equation 8.91) — UNRESTRICTED EXTENSION OBSTRUCTION
 
 `QICLean.Analysis.ProjectiveDiameterCounterexample` gives the positive map
 `T(x,y)=(x,2y)` on the closed positive quadrant. It fixes `(1,0)` but has
@@ -2796,8 +2796,10 @@ coefficient at most `1`. Its output logarithmic distances on strictly
 positive inputs are unbounded: the lower ratios for images `(1,t)`, `(1,1)`
 are `1` and `1/t`, giving distance `log t`.
 
-Thus allowing both a boundary fixed point and infinite diameter invalidates
-the claimed estimate, even with `tanh(∞)=1`. See
+This refutes the proposed unrestricted extension only when `tanh(∞)=1`
+is adopted. Without an extended-real convention, the displayed expression
+is undefined on this example. It does not refute the finite-diameter or
+interior-fixed-point theorem. See
 `docs/paper-gaps/wolf_ch8_projective_spectral_bound.tex`. No corrected theorem
 is marked complete. The formal counterexample uses lower-ratio logarithms;
 the extended-valued metric/diameter API remains absent. The example does not

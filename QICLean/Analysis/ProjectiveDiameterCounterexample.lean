@@ -13,11 +13,12 @@ import Mathlib.Analysis.Normed.Group.Constructions
 
 Wolf, *Quantum Channels & Operations*, Eq. (8.91), local source
 `Notes/WolfNoteTexSource/ch08_distance_measures.tex`, lines 1021–1032.
-The printed hypotheses permit a boundary fixed point and infinite projective
-diameter. The positive map `(x,y) ↦ (x,2y)` fixes `(1,0)` but has eigenvalue
-`2` on `(0,1)`. Thus even the limiting proposed upper bound `1` fails.
-This is a counterexample to the printed statement, not a corrected version
-of the spectral-diameter theorem.
+The bracketed source note proposes allowing a boundary fixed point and infinite
+projective diameter. The positive map `(x,y) ↦ (x,2y)` fixes `(1,0)` but has eigenvalue
+`2` on `(0,1)`. Thus an unrestricted extension with the convention `tanh(∞) = 1` fails.
+Without an infinite-diameter convention, the displayed expression is undefined
+on this example. The finite-diameter/interior-fixed-point theorem is not refuted,
+and no corrected spectral-diameter theorem is supplied.
 -/
 
 noncomputable section
@@ -39,7 +40,7 @@ lemma diagonalMap_positive (x : ℝ × ℝ) (hx : x ∈ quadrant) :
     diagonalMap x ∈ quadrant := by
   exact ⟨hx.1, mul_nonneg (by norm_num) hx.2⟩
 
-/-- All the fixed-point and eigenvector hypotheses of the printed statement,
+/-- The fixed-point and eigenvector conditions of the proposed unrestricted extension,
 with an eigenvalue exceeding every coefficient bounded by one. -/
 theorem boundary_fixed_point_counterexample :
     (∀ x ∈ quadrant, diagonalMap x ∈ quadrant) ∧

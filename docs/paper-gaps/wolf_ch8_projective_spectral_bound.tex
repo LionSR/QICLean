@@ -10,7 +10,7 @@
 \maketitle
 \gapnote{counterexample}{open}
 
-\section{The printed hypotheses}
+\section{The proposed extension}
 Wolf's spectral bound on projective diameter
 \cite[Equation (8.91)]{Wolf2012Quantum}, local source
 \path{Notes/WolfNoteTexSource/ch08_distance_measures.tex}, lines 1021--1032,
@@ -30,9 +30,12 @@ $(1,t)$ and $(1,1)$. Their lower cone ratios are respectively $1$ and $1/t$,
 so the Hilbert distance between the images is $\log t$. Consequently the
 projective diameter is infinite. With the usual limiting convention
 $\tanh(+\infty)=1$, the claimed bound would read $2\le1$.
-If the infinite-diameter expression is left undefined instead, the printed
-statement lacks a hypothesis needed even to interpret its conclusion.
-Thus the proposed removal of both conditions is invalid.
+Without an extended-real convention, the displayed expression is undefined
+on this example, so the example is not a counterexample to a finite-valued
+interpretation of that formula. It refutes only the broadened extension
+allowing both a boundary fixed point and infinite diameter with
+$\tanh(+\infty)=1$. It does not refute the finite-diameter or
+interior-fixed-point theorem.
 
 \section{Formal verification and remaining scope}
 \doclink{QICLean/Analysis/ProjectiveDiameterCounterexample} verifies positivity,
@@ -41,7 +44,8 @@ failure of every spectral coefficient at most one. It also calculates the
 two lower ratios and proves that output logarithmic distances on strictly
 positive inputs exceed every real bound. This uses the order description
 of cone ratios; an extended-valued projective-diameter definition is not
-introduced. No corrected spectral-diameter theorem is claimed.
+introduced. No corrected spectral-diameter theorem is claimed, and the example is not
+a counterexample under the finite-diameter/interior hypotheses.
 
 The example does not challenge Birkhoff's contraction theorem or the
 trace-preserving matrix-channel bound (8.92): $T$ here does not preserve
