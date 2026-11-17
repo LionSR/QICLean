@@ -178,6 +178,9 @@ declarations in
 
 \section{Conditional change of basis and invertible Gram recovery}
 
+Here $C,H,J,P,S,W$ are real square matrices of the same finite size,
+with $S$ invertible. The arbitrary matrix $H$ replaces the earlier Minkowski
+metric $M$; $P$ is a supplied metric matrix.
 The algebraic translation is now proved for a supplied pair: from
 $C^{\mathsf T}=S^{-1}JS$ and $H=S^{\mathsf T}PS$, it derives
 $C=S^{\mathsf T}J^{\mathsf T}S^{-\mathsf T}$ and
@@ -188,11 +191,21 @@ implications between explicitly assumed equations, not a declaration of the
 unverified existence clause.
 
 There is also a complete conditional decomposition for real square matrices
-of any finite size. Assume $H^2=I$, invertible $X$ and $\Sigma$, and
+of any finite size. Let $H,R,J,N,X,O,\Sigma$ be such matrices;
+$N$ denotes the supplied transformed metric and $\Sigma$ a supplied Gram
+factor, rather than any specific canonical square root. Assume $H^2=I$,
+invertible $X$ and $\Sigma$, and
 \begin{align}
-    HRHR^{\mathsf T}&=X^{-1}JX, &XHX^{\mathsf T}&=N,\\
-    O^{\mathsf T}O&=I, &ONO^{\mathsf T}&=H,\\
+    HRHR^{\mathsf T}&=X^{-1}JX,
+    \label{eq:minkowski_reduction_similarity}\\
+    XHX^{\mathsf T}&=N,
+    \label{eq:minkowski_reduction_congruence}\\
+    O^{\mathsf T}O&=I,
+    \label{eq:minkowski_reduction_orthogonal}\\
+    ONO^{\mathsf T}&=H,
+    \label{eq:minkowski_reduction_normalization}\\
     H(OJO^{\mathsf T})&=\Sigma H\Sigma^{\mathsf T}.
+    \label{eq:minkowski_reduction_square_root}
 \end{align}
 Then $L_1=(OX)^{\mathsf T}$ preserves $H$, and
 $RHR^{\mathsf T}=(L_1\Sigma)H(L_1\Sigma)^{\mathsf T}$.

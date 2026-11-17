@@ -110,9 +110,8 @@ theorem signedSipMatrix_mul_self (ε : GLRSign) (n : ℕ) :
   rw [← mul_smul, hε, one_smul]
 
 /-- Every signed sip block is invertible; it is its own inverse. -/
-theorem signedSipMatrix_isUnit (ε : GLRSign) (n : ℕ) : IsUnit (signedSipMatrix ε n) := by
-  rw [isUnit_iff_exists_inv]
-  exact ⟨signedSipMatrix ε n, signedSipMatrix_mul_self ε n⟩
+theorem signedSipMatrix_isUnit (ε : GLRSign) (n : ℕ) : IsUnit (signedSipMatrix ε n) :=
+  IsUnit.of_mul_eq_one _ (signedSipMatrix_mul_self ε n)
 
 /-- An explicit change of basis diagonalizing the two-dimensional sip quadratic form. -/
 def sipBasisTwo : Matrix (Fin 2) (Fin 2) ℝ := !![1, 1; 1, -1]
@@ -401,9 +400,8 @@ theorem minkowskiMetric_mul_self : minkowskiMetric * minkowskiMetric = 1 := by
     simp [minkowskiMetric, Matrix.mul_apply, Fin.sum_univ_four]
 
 /-- The four-dimensional Minkowski metric is invertible and is its own inverse. -/
-theorem minkowskiMetric_isUnit : IsUnit minkowskiMetric := by
-  rw [isUnit_iff_exists_inv]
-  exact ⟨minkowskiMetric, minkowskiMetric_mul_self⟩
+theorem minkowskiMetric_isUnit : IsUnit minkowskiMetric :=
+  IsUnit.of_mul_eq_one _ minkowskiMetric_mul_self
 
 /-- A real matrix is selfadjoint for a symmetric metric `H` when `Aᵀ H = H A`.
 

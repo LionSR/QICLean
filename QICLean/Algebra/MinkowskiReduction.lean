@@ -30,14 +30,18 @@ theorem IsSelfAdjointFor.transpose_of_mul_self {H A : Matrix n n ℝ}
   simpa only [IsSelfAdjointFor, transpose_transpose, mul_assoc, hH, mul_one,
     ← mul_assoc H H, hH, one_mul] using he.symm
 
+/-- The Gram product is selfadjoint for any symmetric involutory real metric. -/
+theorem isSelfAdjointFor_mul_self_mul_transpose {H : Matrix n n ℝ}
+    (hHt : H.transpose = H) (hH : H * H = 1) (A : Matrix n n ℝ) :
+    IsSelfAdjointFor H (H * A * H * A.transpose) := by
+  simp only [IsSelfAdjointFor, transpose_mul, transpose_transpose, hHt, mul_assoc,
+    mul_one, ← mul_assoc H H, hH, one_mul]
+
 /-- The matrix `M R M Rᵀ` in VDDM Theorem 3 is Minkowski-selfadjoint, without any
 positivity or rank assumption on `R`. -/
 theorem isMinkowskiSelfAdjoint_mul_gram (R : Matrix (Fin 4) (Fin 4) ℝ) :
-    IsMinkowskiSelfAdjoint (minkowskiMetric * R * minkowskiMetric * R.transpose) := by
-  simp only [IsMinkowskiSelfAdjoint, IsSelfAdjointFor, transpose_mul,
-    transpose_transpose, minkowskiMetric_transpose, mul_assoc,
-    minkowskiMetric_mul_self, mul_one, ← mul_assoc minkowskiMetric minkowskiMetric,
-    minkowskiMetric_mul_self, one_mul]
+    IsMinkowskiSelfAdjoint (minkowskiMetric * R * minkowskiMetric * R.transpose) :=
+  isSelfAdjointFor_mul_self_mul_transpose minkowskiMetric_transpose minkowskiMetric_mul_self R
 
 /-- Transpose and inverse translation of a *given* simultaneous similarity and congruence.
 The conclusion uses `S⁻ᵀ` and the transposed Jordan matrix; it asserts no existence theorem. -/
@@ -63,13 +67,13 @@ theorem reverse_transpose_canonical_pair {C H J P S W : Matrix n n ℝ}
     (hS : IsUnit S) (hC : C.transpose = S⁻¹ * J * S)
     (hH : H = S.transpose * P * S) (hW : W * W = 1)
     (hJ : W * J.transpose * W = J) (hP : W * P * W.transpose = P) :
-    let X := W * S⁻¹.transpose
-    IsUnit X ∧ C = X⁻¹ * J * X ∧ X * H * X.transpose = P := by
+    IsUnit (W * S⁻¹.transpose) ∧
+      C = (W * S⁻¹.transpose)⁻¹ * J * (W * S⁻¹.transpose) ∧
+      (W * S⁻¹.transpose) * H * (W * S⁻¹.transpose).transpose = P := by
   obtain ⟨hCt, hHt⟩ := transpose_canonical_pair hS hC hH
-  have hWu : IsUnit W := (isUnit_iff_exists_inv).mpr ⟨W, hW⟩
+  have hWu : IsUnit W := IsUnit.of_mul_eq_one W hW
   have hX : IsUnit (W * S⁻¹.transpose) :=
     hWu.mul ((isUnit_transpose _).mpr (isUnit_nonsing_inv_iff.mpr hS))
-  dsimp only
   refine ⟨hX, ?_, ?_⟩
   · have hXC : (W * S⁻¹.transpose) * C = J * (W * S⁻¹.transpose) := by
       have ht : S⁻¹.transpose * S.transpose = 1 := by
@@ -136,9 +140,8 @@ isometry for `H`. This is an algebraic implication, not metric-normalization exi
 theorem normalize_canonical_pair {C H J N X O : Matrix n n ℝ}
     (hX : IsUnit X) (hC : C = X⁻¹ * J * X) (hN : X * H * X.transpose = N)
     (hO : O.transpose * O = 1) (hON : O * N * O.transpose = H) :
-    let Y := O * X
-    Y * H * Y.transpose = H ∧ Y * C = (O * J * O.transpose) * Y := by
-  dsimp only
+    (O * X) * H * (O * X).transpose = H ∧
+      (O * X) * C = (O * J * O.transpose) * (O * X) := by
   constructor
   · simpa only [transpose_mul, mul_assoc] using
       (calc
@@ -155,17 +158,17 @@ theorem normalize_canonical_pair {C H J N X O : Matrix n n ℝ}
 /-- A normalized similarity and a chosen indefinite square root give the row Gram identity.
 The square root is supplied, not constructed. This is the algebra in the proof of VDDM
 Theorem 3 before the recovery of the right Lorentz factor. -/
-theorem gram_eq_of_normalized_similarity {H R D Y Sigma : Matrix n n ℝ}
+theorem gram_eq_of_normalized_similarity {H R D Y sigma : Matrix n n ℝ}
     (hH : H * H = 1) (hY : IsUnit Y) (hIso : Y * H * Y.transpose = H)
     (hSim : Y * (H * R * H * R.transpose) = D * Y)
-    (hRoot : H * D = Sigma * H * Sigma.transpose) :
-    R * H * R.transpose = Y.transpose * (Sigma * H * Sigma.transpose) * Y := by
-  have hHu : IsUnit H := (isUnit_iff_exists_inv).mpr ⟨H, hH⟩
+    (hRoot : H * D = sigma * H * sigma.transpose) :
+    R * H * R.transpose = Y.transpose * (sigma * H * sigma.transpose) * Y := by
+  have hHu : IsUnit H := IsUnit.of_mul_eq_one H hH
   apply (hY.mul hHu).mul_left_cancel
   calc
     (Y * H) * (R * H * R.transpose) = D * Y := by
       simpa only [mul_assoc] using hSim
-    _ = (Y * H) * (Y.transpose * (Sigma * H * Sigma.transpose) * Y) := by
+    _ = (Y * H) * (Y.transpose * (sigma * H * sigma.transpose) * Y) := by
       rw [← hRoot]
       calc
         D * Y = H * (H * D) * Y := by rw [← mul_assoc H H, hH, one_mul]
@@ -179,22 +182,22 @@ block classification or existence of the input data is asserted.
 **Scope restriction (VDDM Theorem 3):** the invertible-square-root hypothesis excludes singular
 normal forms. See `docs/paper-gaps/qiclean_minkowski_canonical_pair_dependency.tex`. -/
 theorem exists_decomposition_of_canonical_pair_of_isUnit
-    {H R J N X O Sigma : Matrix n n ℝ}
+    {H R J N X O sigma : Matrix n n ℝ}
     (hH : H * H = 1) (hX : IsUnit X)
     (hC : H * R * H * R.transpose = X⁻¹ * J * X)
     (hN : X * H * X.transpose = N) (hO : O.transpose * O = 1)
     (hON : O * N * O.transpose = H)
-    (hRoot : H * (O * J * O.transpose) = Sigma * H * Sigma.transpose)
-    (hSigma : IsUnit Sigma) :
+    (hRoot : H * (O * J * O.transpose) = sigma * H * sigma.transpose)
+    (hsigma : IsUnit sigma) :
     ∃ L₁ L₂ : Matrix n n ℝ,
       L₁ * H * L₁.transpose = H ∧ L₂ * H * L₂.transpose = H ∧
-      R = L₁ * Sigma * L₂.transpose := by
+      R = L₁ * sigma * L₂.transpose := by
   obtain ⟨hIso, hSim⟩ := normalize_canonical_pair hX hC hN hO hON
-  have hOu : IsUnit O := (isUnit_iff_exists_inv).mpr ⟨O.transpose, mul_eq_one_comm.mp hO⟩
+  have hOu : IsUnit O := IsUnit.of_mul_eq_one_right O.transpose hO
   have hY := hOu.mul hX
   have hGram := gram_eq_of_normalized_similarity hH hY hIso hSim hRoot
-  have hFactor : IsUnit ((O * X).transpose * Sigma) :=
-    ((isUnit_transpose _).mpr hY).mul hSigma
+  have hFactor : IsUnit ((O * X).transpose * sigma) :=
+    ((isUnit_transpose _).mpr hY).mul hsigma
   obtain ⟨L₂, hL₂, hR⟩ := exists_right_isometry_of_gram_eq_of_isUnit hFactor
     (by simpa only [transpose_mul, transpose_transpose, mul_assoc] using hGram)
   refine ⟨(O * X).transpose, L₂, ?_, (transpose_isometry_iff hH).mp hL₂, hR⟩

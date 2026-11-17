@@ -7,3 +7,6 @@
 'Matrix.normalize_canonical_pair' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Matrix.gram_eq_of_normalized_similarity' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Matrix.exists_decomposition_of_canonical_pair_of_isUnit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.isSelfAdjointFor_mul_self_mul_transpose' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.signedSipMatrix_isUnit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Matrix.minkowskiMetric_isUnit' depends on axioms: [propext, Classical.choice, Quot.sound]

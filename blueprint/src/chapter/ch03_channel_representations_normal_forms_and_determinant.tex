@@ -254,15 +254,19 @@ recorded in \cite{gap:qiclean_minkowski_canonical_pair_dependency}.
 \begin{theorem}[Selfadjointness of the Minkowski Gram product]
     \label{thm:minkowski_gram_selfadjoint}
     \lean{Matrix.isMinkowskiSelfAdjoint_mul_gram,
+        Matrix.isSelfAdjointFor_mul_self_mul_transpose,
         Matrix.IsSelfAdjointFor.transpose_of_mul_self}
     \leanok
     \uses{def:four_dimensional_minkowski_selfadjoint}
     For every real $4\times4$ matrix $R$, the matrix $C=MRMR^{\mathsf T}$
-    is $M$-selfadjoint. More generally, if $H^2=I$ and
+    is $M$-selfadjoint. For every symmetric involutory real matrix $H$,
+    the product $HAHA^{\mathsf T}$ is $H$-selfadjoint.
+    More generally, if $H^2=I$ and
     $A^{\mathsf T}H=HA$, then $AH=HA^{\mathsf T}$.
 \end{theorem}
 \begin{proof}\leanok
-    Transpose the product and use $M^{\mathsf T}=M$ and $M^2=I$.
+    Transpose the product and use $H^{\mathsf T}=H$ and $H^2=I$;
+    then specialize to $H=M$.
     For the second assertion, multiply $A^{\mathsf T}H=HA$ on both
     sides by $H$.
 \end{proof}

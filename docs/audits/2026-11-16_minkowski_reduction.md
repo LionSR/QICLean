@@ -124,3 +124,27 @@ checkpoint; those render builds were not repeated after unrelated main changes.
 Publication is authorized for review only. The PR should remain a draft pending
 full-library validation and scope review; the mathematical source gate and all
 explicit assumptions remain unchanged. No approval or merge is authorized.
+
+## Review revisions, 2026-11-17
+
+Addressed the subsequent style/documentation review after independent review
+confirmed soundness of the conditional result. Merged main
+`476b3531e6a7352c4523a379284e63f08e11c144` without conflicts.
+
+- Expanded the two theorem-statement `let` expressions directly.
+- Reused Mathlib's `IsUnit.of_mul_eq_one` and `of_mul_eq_one_right` in all five
+  identified sites, including the two predecessor-module proofs. No new helper
+  duplicates these existing lemmas. The orthogonal case uses a left inverse,
+  not a self-involution hypothesis.
+- Added the general symmetric-involutory Gram selfadjointness theorem and made
+  the Minkowski instance its corollary; synchronized its blueprint entry.
+- Renamed the local `Sigma` variable to `sigma`.
+- Defined the general matrices in the gap note and labeled every equation of
+  the supplied-data hypothesis system.
+
+Focused build (5011 jobs), strict new-module elaboration, axiom audits (the ten
+reduction theorems and two refactored predecessor proofs), generated imports,
+blueprint source synchronization and changed-declaration coverage, and the
+paper-gap PDF passed. The GLR source gate and mathematical scope are unchanged.
+Current-head CI and review acceptance must follow the push. No merge performed;
+merges are being serialized by the coordinating thread.
