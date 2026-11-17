@@ -531,14 +531,17 @@ supports of bounded range on them.
     \lean{ManyBody.SquareLatticeVertex, ManyBody.squareLatticeHorizontalNeighbor,
         ManyBody.squareLatticeVerticalNeighbor, ManyBody.squareLatticeGraph,
         ManyBody.squareLatticeRightEdge, ManyBody.squareLatticeUpEdge,
-        ManyBody.IsHorizontalSquareLatticeEdge, ManyBody.IsVerticalSquareLatticeEdge}
+        ManyBody.IsHorizontalSquareLatticeEdge, ManyBody.IsVerticalSquareLatticeEdge,
+        ManyBody.SquareLatticeSiteOrEdge, ManyBody.squareLatticeSiteOrEdgeSupport}
     \leanok
     \uses{def:sites_edge}
     The $w\times h$ square lattice has the vertices
     $\{0,\dots,w-1\}\times\{0,\dots,h-1\}$, ordered lexicographically, and an
     edge between nearest neighbours horizontally or
     vertically~\cite{Molnar2018NormalPEPS}. The right edge of $(x,y)$ joins it
-    to $(x+1,y)$, and its upward edge joins it to $(x,y+1)$.
+    to $(x+1,y)$, and its upward edge joins it to $(x,y+1)$. The vertices and
+    the edges together form one index set, in which a vertex has the region
+    $\{v\}$ and an edge the region of its two endpoints.
 \end{definition}
 
 \begin{lemma}[Edges of the square lattice]

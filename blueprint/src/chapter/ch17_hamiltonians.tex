@@ -114,3 +114,25 @@ one-dimensional ground space.
     $\sum_i\operatorname{Re}h_i=\operatorname{Re}\sum_ih_i$, which is
     $\sum_ih_i$ when the sum is Hermitian.
 \end{proof}
+
+\section{Lattice models}
+\label{sec:hamiltonians_models}
+
+\begin{definition}[Lattice models]
+    \label{def:hamiltonians_models}
+    \lean{ManyBody.ChainInteraction, ManyBody.DomainInteraction,
+        ManyBody.PlaneInteraction, ManyBody.RectangleInteraction,
+        ManyBody.SquareInteraction}
+    \leanok
+    \uses{def:dynamics_interaction, def:sites_chain_support, def:sites_line_domain,
+        def:sites_plane_domain, def:sites_square_lattice}
+    Each lattice model is an interaction with local dimension $q$ at every site,
+    for a choice of sites and supports: the chain of $L$ sites with its supports
+    of range $R$; a finite set $\Lambda\subset\Z$ with its supports of range $R$;
+    a finite set $\Lambda\subset\Z^2$ with its supports of range
+    $R$~\cite{OpenAI2026AreaLaw}; and the $w\times h$ square lattice with one term
+    on each vertex and one on the two endpoints of each
+    edge~\cite{OpenAI2026PolynomialPEPS}, of which the $L\times L$ square is the
+    case $w=h=L$. Hermiticity and norm bounds of the terms are hypotheses of the
+    statements about a model, not part of the model.
+\end{definition}
