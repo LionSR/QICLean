@@ -45,7 +45,7 @@ No diameter bound on `S` is required. This is the propagation estimate in the
 TNLean one-dimensional note, Lemma `lem:LR`
 (`docs/notes/one_dimensional_note/part2a_mps_information.tex`, lines 267–309);
 the chain and localization statements are separate specializations.
-If `1 ≤ v_R`, one may instead take the numerical prefactor `C = 4` and
+One may instead take the numerical prefactor `C = 4` and
 velocity `v = 4 v_R |b₀| exp(2μR)`. The same constants also hold when the
 second observable is supported on any finite set `Y`, provided every site of
 `S` is at distance at least `n` from every site of `Y`. There is no `|Y|`
@@ -667,11 +667,10 @@ private theorem two_mul_exp_le {c C x x' : ℝ} (hc : 0 ≤ c) (hC : 2 ≤ C) (h
 /-- Graph-distance propagation from an arbitrary finite support. The prefactor
 is linear in its cardinality, with no bound on its diameter. Source: TNLean
 one-dimensional note, Lemma `lem:LR` (`part2a_mps_information.tex`, lines 267–309).
-It follows from `heisenbergCommutatorNorm_le_graphDistance_of_disjoint`; the anchors are not
-used. -/
+It follows from `heisenbergCommutatorNorm_le_graphDistance_of_disjoint`. -/
 theorem heisenbergCommutatorNorm_le_graphDistance_finset
     {κ : Type*} [Fintype κ] {T : κ → Finset V}
-    (G : SimpleGraph V) (Φ : Interaction X T) (a : κ → V) (_ha : ∀ k, a k ∈ T k)
+    (G : SimpleGraph V) (Φ : Interaction X T)
     (hHerm : ∀ k, (Φ.term k).IsHermitian)
     (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
     (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
@@ -708,7 +707,7 @@ of its diameter. Source: TNLean one-dimensional note, Lemma `lem:LR`
 (`part2a_mps_information.tex`, lines 267–309). -/
 theorem norm_heisenberg_commutator_le_graphDistance_finset
     {κ : Type*} [Fintype κ] {T : κ → Finset V}
-    (G : SimpleGraph V) (Φ : Interaction X T) (a : κ → V) (ha : ∀ k, a k ∈ T k)
+    (G : SimpleGraph V) (Φ : Interaction X T)
     (hHerm : ∀ k, (Φ.term k).IsHermitian)
     (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
     (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
@@ -729,7 +728,7 @@ theorem norm_heisenberg_commutator_le_graphDistance_finset
     _ ≤ ((2 + 4 * |b₀| * Real.exp (2 * μ * R)) * (S.card : ℝ) * ‖B‖ *
         Real.exp ((2 * vR * |b₀| * Real.exp (2 * μ * R) + 1) * |t| - μ * n)) * ‖A‖ :=
       mul_le_mul_of_nonneg_right
-        (heisenbergCommutatorNorm_le_graphDistance_finset G Φ a ha hHerm
+        (heisenbergCommutatorNorm_le_graphDistance_finset G Φ hHerm
           R hDiam vR hCard b₀ hBudget B y hB S μ hμ n hn t) (norm_nonneg A)
     _ = _ := by ring
 
@@ -737,14 +736,13 @@ theorem norm_heisenberg_commutator_le_graphDistance_finset
 The distance hypothesis is pairwise between the two supports; no cardinality factor
 for the second support is needed. Source: Hastings arXiv:0705.2024v4, eq. `lrb`, lines 96–112;
 this is the finite-graph propagation estimate, not the chain source-pair identification.
-It follows from `heisenbergCommutatorNorm_le_graphDistance_of_disjoint`; the anchors and the
-condition `1 ≤ v_R` are not used. -/
+It follows from `heisenbergCommutatorNorm_le_graphDistance_of_disjoint`. -/
 theorem heisenbergCommutatorNorm_le_graphDistance_finsets_numeric
     {κ : Type*} [Fintype κ] {T : κ → Finset V}
-    (G : SimpleGraph V) (Φ : Interaction X T) (a : κ → V) (_ha : ∀ k, a k ∈ T k)
+    (G : SimpleGraph V) (Φ : Interaction X T)
     (hHerm : ∀ k, (Φ.term k).IsHermitian)
     (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
-    (vR : ℕ) (hvR : 1 ≤ vR) (hCard : ∀ k, (T k).card ≤ vR)
+    (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
     (b₀ : ℝ)
     (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
     (B : Matrix (Config X) (Config X) ℂ) (Y : Finset V)
@@ -777,10 +775,10 @@ Source: Hastings arXiv:0705.2024v4, eq. `lrb`, lines 96–112. Both supports may
 this graph estimate does not identify the source's chain velocity and length pair. -/
 theorem norm_heisenberg_commutator_le_graphDistance_finsets_numeric
     {κ : Type*} [Fintype κ] {T : κ → Finset V}
-    (G : SimpleGraph V) (Φ : Interaction X T) (a : κ → V) (ha : ∀ k, a k ∈ T k)
+    (G : SimpleGraph V) (Φ : Interaction X T)
     (hHerm : ∀ k, (Φ.term k).IsHermitian)
     (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
-    (vR : ℕ) (hvR : 1 ≤ vR) (hCard : ∀ k, (T k).card ≤ vR)
+    (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
     (b₀ : ℝ)
     (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
     (S : Finset V) {A B : Matrix (Config X) (Config X) ℂ}
@@ -798,8 +796,8 @@ theorem norm_heisenberg_commutator_le_graphDistance_finsets_numeric
     _ ≤ (4 * (S.card : ℝ) * ‖B‖ *
         Real.exp ((4 * vR * |b₀| * Real.exp (2 * μ * R)) * |t| - μ * n)) * ‖A‖ :=
       mul_le_mul_of_nonneg_right
-        (heisenbergCommutatorNorm_le_graphDistance_finsets_numeric G Φ a ha hHerm
-          R hDiam vR hvR hCard b₀ hBudget B Y hB S μ hμ n hn t) (norm_nonneg A)
+        (heisenbergCommutatorNorm_le_graphDistance_finsets_numeric G Φ hHerm
+          R hDiam vR hCard b₀ hBudget B Y hB S μ hμ n hn t) (norm_nonneg A)
     _ = _ := by ring
 
 /-- **Graph-distance propagation**, explicit form. For an interaction family
