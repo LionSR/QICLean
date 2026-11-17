@@ -441,32 +441,64 @@ supports of bounded range on them.
     position $m$. The other statements are comparisons of positions.
 \end{proof}
 
-\begin{lemma}[Boundary edges and the path distance]
-    \label{lem:sites_chain_boundary}
+\begin{definition}[Boundary edges of a region of the chain]
+    \label{def:sites_chain_boundary}
     \lean{ManyBody.boundaryEdges, ManyBody.mem_boundaryEdges, ManyBody.boundaryEdges_empty,
-        ManyBody.boundaryEdges_univ,
-        ManyBody.IsChainSupport.exists_boundary_window_of_split,
-        ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one,
-        SimpleGraph.pathGraph_edist, SimpleGraph.pathGraph_card_sphere_le_two,
-        ManyBody.ChainSupport.edist_le}
+        ManyBody.boundaryEdges_univ}
     \leanok
-    \uses{def:sites_chain_support, lem:sites_chain_support}
-    The boundary edges of a region $D$ of the chain are the positions $p$ with
-    $p+1<L$ such that exactly one of $p$ and $p+1$ lies in $D$; the empty region and
-    the whole chain have none. A support of range $R$ meeting $D$ and its complement
-    lies in the window $\lbrack p+1-R,p+1+R)$ about a boundary edge $p$ of $D$, and a
-    support of range one meeting both $[0,k)$ and its complement is
-    $\lbrack k-1,k+1)$. The graph distance of the path on $\{0,\dots,L-1\}$ is
-    $\lvert x-y\rvert$, every sphere of the path has at most two points, and a
-    support of range $R$ has path diameter at most $R$.
+    \uses{def:sites_chain_support}
+    The boundary edges of a region $D$ of the chain of $L$ sites are the positions
+    $p$ with $p+1<L$ such that exactly one of $p$ and $p+1$ lies in $D$. The empty
+    region and the whole chain have no boundary edges.
+\end{definition}
+
+\begin{lemma}[A split support lies near a boundary edge]
+    \label{lem:sites_chain_boundary_window}
+    \lean{ManyBody.IsChainSupport.exists_boundary_window_of_split}
+    \leanok
+    \uses{def:sites_chain_boundary}
+    A support $X$ of range $R$ that meets a region $D$ and its complement lies in
+    the window $\lbrack p+1-R,p+1+R)$ about some boundary edge $p$ of $D$.
 \end{lemma}
 \begin{proof}\leanok
-    Between a point of the support in $D$ and one outside it, the indicator of $D$
-    changes at some consecutive pair $p,p+1$, and every point of the support is
-    within $R$ of both. A range-one support meeting both sides has two points, so
-    it is an interval of length two straddling $k$. A walk on the path changes the
-    position by one at each step, and the walk along consecutive positions attains
-    $\lvert x-y\rvert$.
+    Take $u<v$ in $X$ with exactly one of them in $D$. Membership in $D$ changes
+    between some consecutive positions $p,p+1$ with $u\le p<v$, and $p$ is a
+    boundary edge. For $x\in X$ the range condition gives $x\le u+R$ and
+    $v\le x+R$, so
+    \begin{align*}
+        p+1-R\le v-R\le x\le u+R\le p+R<p+1+R.
+    \end{align*}
+\end{proof}
+
+\begin{lemma}[A split support of range one]
+    \label{lem:sites_chain_range_one_cut}
+    \lean{ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one}
+    \leanok
+    \uses{lem:sites_chain_support}
+    A support of range one meeting both $[0,k)$ and its complement is
+    $\lbrack k-1,k+1)$.
+\end{lemma}
+\begin{proof}\leanok
+    It has two distinct points, so by Lemma~\ref{lem:sites_chain_support} it is an
+    interval $\lbrack a,a+2)$; meeting both sides of $k$ forces $a<k\le a+1$, so
+    $a=k-1$.
+\end{proof}
+
+\begin{lemma}[Distance on the path]
+    \label{lem:sites_path_distance}
+    \lean{SimpleGraph.pathGraph_edist, SimpleGraph.pathGraph_card_sphere_le_two,
+        ManyBody.ChainSupport.edist_le}
+    \leanok
+    \uses{def:sites_chain_support}
+    The graph distance of the path on $\{0,\dots,L-1\}$ is $d(x,y)=\lvert x-y\rvert$,
+    every sphere of the path has at most two points, and a support of range $R$ has
+    path diameter at most $R$.
+\end{lemma}
+\begin{proof}\leanok
+    Each step of a walk changes the position by one, so $d(x,y)\ge\lvert x-y\rvert$, and
+    the walk along consecutive positions has length $\lvert x-y\rvert$. The sphere of
+    radius $r$ about $x$ lies in $\{x-r,x+r\}$, and points of a support of range $R$
+    satisfy $\lvert x-y\rvert\le R$.
 \end{proof}
 
 \begin{definition}[Finite domains of the integers]
