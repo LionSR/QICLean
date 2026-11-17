@@ -9,4 +9,5 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody
 
 import QICLean.ManyBody.Dynamics
+import QICLean.ManyBody.Hamiltonian
 import QICLean.ManyBody.Sites
