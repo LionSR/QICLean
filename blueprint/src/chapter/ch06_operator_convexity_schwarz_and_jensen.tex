@@ -714,7 +714,7 @@ with the integral.
 
 \begin{lemma}[Integration on a finite spectrum]
 \label{lem:finite-spectrum-integral}
-\lean{Matrix.IsHermitian.integrable_cfc_of_eigenvalues, Matrix.IsHermitian.cfc_integral_of_eigenvalues, Matrix.cfc_jensen_of_scalar_integral}
+\lean{Matrix.IsHermitian.integrable_cfc_of_eigenvalues, Matrix.IsHermitian.cfc_integral_of_eigenvalues}
 \leanok
 Let $A$ be Hermitian and let $k_t$ be real functions such that
 $t\mapsto k_t(\lambda)$ is integrable at every eigenvalue $\lambda$ of $A$.
@@ -724,6 +724,22 @@ $(\int k_t\,d\mu)(A)=\int k_t(A)\,d\mu$.
 \begin{proof}
 Apply the spectral decomposition and commute its continuous linear map from
 the finite vector of eigenvalue values with integration.
+\end{proof}
+
+\begin{corollary}[Jensen from scalar spectral integrals]
+\label{cor:scalar-spectral-integral-jensen}
+\lean{Matrix.cfc_jensen_of_scalar_integral}
+\leanok
+Let $T$ be a complex linear map between finite matrix algebras, and suppose
+$A$ and $T(A)$ are Hermitian. Let $k_t$ be real functions integrable in $t$
+at every eigenvalue of both matrices. If
+$k_t(T(A))\leq T(k_t(A))$ almost everywhere, then, writing
+$f(x)=\int k_t(x)\,d\mu(t)$, one has $f(T(A))\leq T(f(A))$.
+\end{corollary}
+\begin{proof}\leanok
+\uses{lem:finite-spectrum-integral, lem:integral-jensen-assembly}
+Apply the finite-spectrum integration lemma at $A$ and $T(A)$, then apply
+integral assembly to the almost-everywhere kernel inequality.
 \end{proof}
 
 \section{Source boundary for Wolf's unitary comparison}
