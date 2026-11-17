@@ -28,6 +28,16 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     exactly when they agree at every site of $D$, and likewise outside $D$.
 \end{definition}
 
+\begin{definition}[Terms crossing a cut]
+    \label{def:sites_crossing_terms}
+    \lean{ManyBody.crossingTerms}
+    \leanok
+    For a family of regions $(D_i)_{i\in I}$ and a region $B$, the terms
+    crossing the cut at $B$ are
+    $\mathcal I_\times=\{i\in I:D_i\cap B\neq\emptyset\text{ and }
+    D_i\setminus B\neq\emptyset\}$ \cite{OpenAI2026AreaLaw}.
+\end{definition}
+
 \section{Operators supported on a region}
 \label{sec:sites_support}
 
