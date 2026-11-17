@@ -312,9 +312,22 @@ by one measurement, and bounds the trace distance below by the overlap.
 \begin{proof}
     \leanok
     \uses{thm:testing_tensor_calculus}
-    Powers of positive semidefinite matrices are positive semidefinite;
-    their trace pairings are real and nonnegative. Factor the powers,
-    multiply tensor products componentwise, and factor the trace.
+    Real matrix powers are positive semidefinite, so
+    $\tr[A^sB^{1-s}]\in\R_{\ge0}$. For positive semidefinite factors,
+    scalar homogeneity and tensor factorization give
+    \begin{align}
+        \tr[(aA)^s(bB)^{1-s}]
+          &=a^sb^{1-s}\tr[A^sB^{1-s}],\\
+        \tr[(A\otimes C)^s(B\otimes D)^{1-s}]
+          &=\tr[(A^s\otimes C^s)(B^{1-s}\otimes D^{1-s})]\\
+          &=\tr[A^sB^{1-s}]\tr[C^sD^{1-s}],\\
+        \tr\left[\left(\bigotimes_i A_i\right)^s
+            \left(\bigotimes_i B_i\right)^{1-s}\right]
+          &=\tr\left[\bigotimes_i(A_i^sB_i^{1-s})\right]
+           =\prod_i\tr[A_i^sB_i^{1-s}].
+    \end{align}
+    Each trace factor is real, so taking real parts yields the three
+    overlap identities. The empty product has trace one.
 \end{proof}
 
 \begin{theorem}[Finite-copy Chernoff upper bound]
