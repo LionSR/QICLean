@@ -1168,14 +1168,18 @@ Theorem~\ref{thm:trace_norm_abs}.
         ProperCone.lowerRatio_mul_le_one}
     \leanok
     \uses{def:lower_cone_ratio}
-    For nonzero $a,b\in C$, the admissible scales form a closed set containing
-    zero, bounded above by $\|a\|/\|b\|$. Its supremum is attained, and
-    $0\le \inf(a/b)\le\|a\|/\|b\|$, so $\inf(a/b)\inf(b/a)\le1$.
+    Let $b\in C$ with $b\ne0$, and let $a$ be any vector in the ambient space.
+    The admissible set $S=\{t\ge0:a-tb\in C\}$ is bounded above by
+    $\|a\|/\|b\|$. Every $t\in S$ satisfies $t\le\inf(a/b)$.
+    If additionally $a\in C$, then $S$ contains zero, its supremum is attained,
+    and $0\le\inf(a/b)\le\|a\|/\|b\|$.
+    If also $a\ne0$, then $\inf(a/b)\inf(b/a)\le1$.
 \end{lemma}
 \begin{proof}\leanok
     Monotonicity gives $t\|b\|\le\|a\|$ for each admissible $t$.
-    Closedness gives attainment. Multiplying the two norm bounds gives the
-    product bound.
+    The supremum bounds every admissible scale. When $a\in C$, zero is
+    admissible, and closedness gives attainment. When also $a\ne0$,
+    multiplying the norm bounds in both directions gives the product bound.
 \end{proof}
 
 \begin{theorem}[Norm comparison from cone ratios]

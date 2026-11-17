@@ -124,7 +124,9 @@ theorem norm_sub_le_lowerRatio_sqrt (ha : a ∈ C) (hb : b ∈ C)
   have hd := sq_nonneg (C.lowerRatio b a * ‖a‖ - C.lowerRatio a b * ‖b‖)
   nlinarith
 
-/-- Wolf Eq. (8.67), written with the logarithm of the product of lower ratios.
+/-- A logarithmic rewrite of the square-root bound in Wolf Eq. (8.69).
+The dual-cone ratio equivalence needed to identify this with Eq. (8.67)
+is not supplied here.
 Both ratios are positive here. The square-root theorem above covers zero ratios;
 this theorem does not assign a finite distance to those pairs. -/
 theorem norm_sub_le_lowerRatio_log (ha : a ∈ C) (hb : b ∈ C)
