@@ -180,7 +180,7 @@ centered at its initial sites. The kernel vanishes between distinct components.
 Source: TNLean one-dimensional note, Lemma `lem:LR`, lines 267–309. -/
 private theorem norm_heisenberg_commutator_le_graph_kernel_sum
     {κ : Type*} [Fintype κ] {T : κ → Finset V}
-    (G : SimpleGraph V) (Φ : Interaction X T) (a : κ → V) (ha : ∀ k, a k ∈ T k)
+    (G : SimpleGraph V) (Φ : Interaction X T)
     (hHerm : ∀ k, (Φ.term k).IsHermitian)
     (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
     (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
@@ -214,7 +214,7 @@ private theorem norm_heisenberg_commutator_le_graph_kernel_sum
           (f := fun x => if G.edist x y = ⊤ then 0 else
             Real.exp (-((G.edist x y).toNat : ℝ)))
           (fun x _ => by positivity) (Finset.mem_filter.mp hz).1)
-    have hLR := norm_heisenberg_commutator_le_graphDistance_finset G Φ a ha hHerm
+    have hLR := norm_heisenberg_commutator_le_graphDistance_finset G Φ hHerm
        R hDiam vR hCard b₀ hBudget S hA y hB 1 zero_le_one
       (G.edist z y).toNat hn t
     simp only [one_mul, mul_one, sub_eq_add_neg, Real.exp_add] at hLR
@@ -376,7 +376,7 @@ sphere growth, with no diameter bound on the initial support. Source: TNLean
 one-dimensional note, Lemma `lem:LR` (`part2a_mps_information.tex`, lines 267–309). -/
 theorem norm_heisenberg_sub_regionExpectation_graphNeighborhood_le
     {κ : Type*} [Fintype κ] {T : κ → Finset V}
-    (G : SimpleGraph V) (Φ : Interaction X T) (a : κ → V) (ha : ∀ k, a k ∈ T k)
+    (G : SimpleGraph V) (Φ : Interaction X T)
     (hHerm : ∀ k, (Φ.term k).IsHermitian)
     (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
     (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
@@ -404,7 +404,7 @@ theorem norm_heisenberg_sub_regionExpectation_graphNeighborhood_le
       (hUu : U ∈ unitary (Matrix (Config X) (Config X) ℂ)) :
       ‖heisenbergEvolution Φ.hamiltonian t A * U -
         U * heisenbergEvolution Φ.hamiltonian t A‖ ≤ c * w y := by
-    have hLR := norm_heisenberg_commutator_le_graph_kernel_sum G Φ a ha hHerm
+    have hLR := norm_heisenberg_commutator_le_graph_kernel_sum G Φ hHerm
       R hDiam vR hCard b₀ hBudget S hA y hU t
     have hw : 0 ≤ w y := Finset.sum_nonneg fun x _ ↦ by positivity
     dsimp only [c, w] at hw ⊢

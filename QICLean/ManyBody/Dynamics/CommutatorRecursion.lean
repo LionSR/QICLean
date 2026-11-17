@@ -403,6 +403,26 @@ theorem norm_heisenberg_commutator_le_heisenbergCommutatorNorm
   norm_commutator_le_supportedCommutatorNorm (Complex.I • H) B
     (supportedOperators X S).toSubalgebra.toSubmodule t hA
 
+/-- A bound on the commutators of the supported observables bounds the restricted commutator
+norm. -/
+theorem heisenbergCommutatorNorm_le_of_forall (H B : Matrix (Config X) (Config X) ℂ)
+    (S : Finset V) (t : ℝ) {M : ℝ} (hM : 0 ≤ M)
+    (h : ∀ A ∈ supportedOperators X S,
+      ‖heisenbergEvolution H t A * B - B * heisenbergEvolution H t A‖ ≤ M * ‖A‖) :
+    heisenbergCommutatorNorm H B S t ≤ M :=
+  (supportedCommutatorMap (Complex.I • H) B
+    (supportedOperators X S).toSubalgebra.toSubmodule t).opNorm_le_bound hM fun A ↦
+      h A A.property
+
+/-- For a Hermitian generator the restricted commutator norm is at most `2 ‖B‖` at every
+time. -/
+theorem heisenbergCommutatorNorm_le_two_mul {H : Matrix (Config X) (Config X) ℂ}
+    (hH : H.IsHermitian) (B : Matrix (Config X) (Config X) ℂ) (S : Finset V) (t : ℝ) :
+    heisenbergCommutatorNorm H B S t ≤ 2 * ‖B‖ :=
+  heisenbergCommutatorNorm_le_of_forall H B S t (by positivity) fun A _ ↦ by
+    simpa only [norm_heisenbergEvolution hH] using
+      norm_commutator_le (heisenbergEvolution H t A) B
+
 /-- The restricted commutator norm is nonnegative. -/
 theorem heisenbergCommutatorNorm_nonneg (H B : Matrix (Config X) (Config X) ℂ)
     (S : Finset V) (t : ℝ) : 0 ≤ heisenbergCommutatorNorm H B S t :=
