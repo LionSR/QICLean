@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.MatrixReindexEuclidean
 import QICLean.Analysis.PositiveGapUniqueness
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.InnerProductSpace.Positive
@@ -264,17 +265,6 @@ theorem isGapped_and_groundSpace_eq_span_iff {H : Matrix n n ℂ} {E₀ Δ : ℝ
 
 /-! ### Transport along an intertwining equivalence -/
 
-/-- A linear equivalence `f` with `T ∘ f = f ∘ S` carries each eigenspace of `S` onto the
-eigenspace of `T` for the same eigenvalue. -/
-theorem eigenspace_eq_map_of_intertwine {E F : Type*} [AddCommGroup E] [Module ℂ E]
-    [AddCommGroup F] [Module ℂ F] (f : E ≃ₗ[ℂ] F) (S : Module.End ℂ E) (T : Module.End ℂ F)
-    (h : ∀ x, T (f x) = f (S x)) (μ : ℂ) :
-    Module.End.eigenspace T μ = (Module.End.eigenspace S μ).map (f : E →ₗ[ℂ] F) := by
-  ext y
-  rw [Submodule.mem_map_equiv, Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff]
-  conv_lhs => rw [← f.apply_symm_apply y, h, ← map_smul]
-  exact f.injective.eq_iff
-
 section Intertwine
 
 variable {m : Type*} [Fintype m] [DecidableEq m]
@@ -285,7 +275,7 @@ theorem groundSpace_eq_map_of_intertwine (f : EuclideanSpace ℂ n ≃ₗ[ℂ] E
     {H : Matrix n n ℂ} {H' : Matrix m m ℂ}
     (h : ∀ ψ, toEuclideanLin H' (f ψ) = f (toEuclideanLin H ψ)) (E₀ : ℝ) :
     groundSpace H' E₀ = (groundSpace H E₀).map (f : EuclideanSpace ℂ n →ₗ[ℂ] _) :=
-  eigenspace_eq_map_of_intertwine f _ _ h _
+  Module.End.eigenspace_eq_map_of_intertwine f _ _ h _
 
 /-- If a linear equivalence `f` of Euclidean spaces satisfies `H' f = f H`, then `H'` and `H`
 have the same eigenvalues. -/
@@ -295,7 +285,7 @@ theorem hasEigenvalue_iff_of_intertwine (f : EuclideanSpace ℂ n ≃ₗ[ℂ] Eu
     Module.End.HasEigenvalue (toEuclideanLin H') μ ↔
       Module.End.HasEigenvalue (toEuclideanLin H) μ := by
   rw [Module.End.hasEigenvalue_iff, Module.End.hasEigenvalue_iff,
-    eigenspace_eq_map_of_intertwine f _ _ h, Ne, Ne, Submodule.map_eq_bot_iff]
+    Module.End.eigenspace_eq_map_of_intertwine f _ _ h, Ne, Ne, Submodule.map_eq_bot_iff]
 
 /-- If a linear equivalence `f` of Euclidean spaces satisfies `H' f = f H`, then `H'` is
 gapped exactly when `H` is, for every `Δ`. -/
@@ -313,40 +303,6 @@ end Intertwine
 section Reindex
 
 variable {m : Type*} [Fintype m] [DecidableEq m]
-
-/-- The isometry `ψ ↦ ψ ∘ e.symm` induced by `e` intertwines `H` and `reindex e e H`. -/
-theorem toEuclideanLin_reindex_piLpCongrLeft (e : n ≃ m) (H : Matrix n n ℂ)
-    (ψ : EuclideanSpace ℂ n) :
-    toEuclideanLin (reindex e e H) (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e ψ) =
-      LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e (toEuclideanLin H ψ) := by
-  apply WithLp.ofLp_injective 2
-  ext i
-  simp [toLpLin_apply, reindex_apply, submatrix_mulVec_equiv, Equiv.piCongrLeft'_apply,
-    Function.comp_def]
-
-/-- The eigenspaces of a relabelled matrix are the images of the eigenspaces. -/
-theorem eigenspace_toEuclideanLin_reindex (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ) :
-    Module.End.eigenspace (toEuclideanLin (reindex e e H)) μ =
-      (Module.End.eigenspace (toEuclideanLin H) μ).map
-        ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearEquiv :
-          EuclideanSpace ℂ n →ₗ[ℂ] EuclideanSpace ℂ m) :=
-  eigenspace_eq_map_of_intertwine _ _ _ (toEuclideanLin_reindex_piLpCongrLeft e H) μ
-
-/-- Relabelling the basis conjugates the eigenspaces by the induced isometry
-`ψ ↦ ψ ∘ e.symm` of Euclidean spaces. -/
-theorem mem_eigenspace_toEuclideanLin_reindex_iff (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ)
-    (ψ : EuclideanSpace ℂ m) :
-    ψ ∈ Module.End.eigenspace (toEuclideanLin (reindex e e H)) μ ↔
-      (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).symm ψ ∈
-        Module.End.eigenspace (toEuclideanLin H) μ := by
-  rw [eigenspace_toEuclideanLin_reindex, Submodule.mem_map_equiv]
-  rfl
-
-/-- A relabelled matrix has the same eigenvalues. -/
-theorem hasEigenvalue_toEuclideanLin_reindex_iff (e : n ≃ m) (H : Matrix n n ℂ) (μ : ℂ) :
-    Module.End.HasEigenvalue (toEuclideanLin (reindex e e H)) μ ↔
-      Module.End.HasEigenvalue (toEuclideanLin H) μ :=
-  hasEigenvalue_iff_of_intertwine _ (toEuclideanLin_reindex_piLpCongrLeft e H) μ
 
 /-- A vector lies in the ground space of the relabelled matrix exactly when the relabelled
 vector lies in the ground space of `H`. -/

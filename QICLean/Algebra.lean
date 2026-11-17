@@ -72,6 +72,7 @@ import QICLean.Algebra.MatrixRankBaseChange
 import QICLean.Algebra.MatrixRankClosed
 import QICLean.Algebra.MatrixRankKronecker
 import QICLean.Algebra.MatrixReindex
+import QICLean.Algebra.MatrixReindexEuclidean
 import QICLean.Algebra.MatrixReindexUnitary
 import QICLean.Algebra.MatrixSandwichIntertwine
 import QICLean.Algebra.MatrixSpectralDecomp
