@@ -241,7 +241,7 @@ by one measurement, and bounds the trace distance below by the overlap.
             \left(\bigotimes_i B_i\right),
         &\tr\left[\bigotimes_i A_i\right]&=\prod_i\tr A_i.
     \end{align}
-    Real powers commute with bijective changes of coordinates.
+    For $A\ge0$, real powers commute with bijective changes of coordinates.
     Separating the first factor identifies the product on $N+1$ spaces with
     $A_0\otimes\bigotimes_{i=1}^N A_i$. If each $A_i\ge0$, then for real $s$,
     $(\bigotimes_i A_i)^s=\bigotimes_i A_i^s$. For $c\ge0$ and $A\ge0$,
@@ -347,8 +347,13 @@ by one measurement, and bounds the trace distance below by the overlap.
     \uses{lem:trace_norm_overlap_bound, thm:optimal_testing_error,
         thm:testing_overlap_products, thm:testing_tensor_calculus}
     Apply the trace-distance overlap bound to $A=p\rho$ and $B=(1-p)\sigma$;
-    their traces sum to one. Substitute the minimum-error formula and factor
-    out the scalar powers. Tensor products preserve positivity and unit trace,
+    their traces sum to one, so
+    \begin{align}
+        \|p\rho-(1-p)\sigma\|_1
+        &\ge 1-2Q_s(p\rho,(1-p)\sigma)\\
+        &=1-2p^s(1-p)^{1-s}Q_s(\rho,\sigma).
+    \end{align}
+    Substituting the minimum-error formula gives the one-copy bound. Tensor products preserve positivity and unit trace,
     and their overlaps multiply. Taking an infimum over $s$ gives the last bound
     without requiring an optimizing exponent.
 \end{proof}
@@ -369,8 +374,8 @@ by one measurement, and bounds the trace distance below by the overlap.
     \uses{thm:finite_copy_chernoff, thm:optimal_testing_error,
         thm:testing_overlap_products}
     The prior factor $p^s(1-p)^{1-s}$ is at most one. For positive overlap,
-    $Q_s^N=\exp(N\log Q_s)$. For overlap less than one, its powers tend to
-    zero, and the nonnegative minimum errors are squeezed between zero and
+    $Q_s^N=\exp(N\log Q_s)$. For $q=Q_s(\rho,\sigma)$ with $0\le q<1$,
+    $q^N\to0$ as $N\to\infty$, and the nonnegative minimum errors are squeezed between zero and
     the bound in~(\ref{eq:finite_copy_chernoff}).
 \end{proof}
 

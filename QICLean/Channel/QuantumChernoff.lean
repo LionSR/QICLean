@@ -30,7 +30,7 @@ open scoped Matrix Kronecker ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 noncomputable section
 namespace Matrix
 
-variable {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
+variable {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
 
 /-- The minimum binary error, defined by optimization over all effects.
 Wolf, Equations (8.40)–(8.43), source lines 543–577. -/
@@ -117,7 +117,7 @@ theorem petzOverlap_kronecker {A B : Matrix m m ℂ} {C D : Matrix n n ℂ}
 
 /-- A finite product of independent pairs has overlap equal to the product of
 its single-factor overlaps. -/
-theorem petzOverlap_finKronecker {N : ℕ} {I : Fin N → Type}
+theorem petzOverlap_finKronecker {N : ℕ} {I : Fin N → Type*}
     [∀ i, Fintype (I i)] [∀ i, DecidableEq (I i)]
     (A B : (i : Fin N) → Matrix (I i) (I i) ℂ)
     (hA : ∀ i, (A i).PosSemidef) (hB : ∀ i, (B i).PosSemidef) (s : ℝ) :
@@ -156,7 +156,7 @@ theorem optimalHypothesisTestError_le_petzOverlap {ρ σ : Matrix m m ℂ}
 
 /-- Finite-copy Chernoff bound for independent, not necessarily identical, density
 matrices. This is a direct estimate towards Wolf (8.44), source lines 580–590. -/
-theorem optimalHypothesisTestError_finKronecker_le {N : ℕ} {I : Fin N → Type}
+theorem optimalHypothesisTestError_finKronecker_le {N : ℕ} {I : Fin N → Type*}
     [∀ i, Fintype (I i)] [∀ i, DecidableEq (I i)]
     (ρ σ : (i : Fin N) → Matrix (I i) (I i) ℂ)
     (hρ : ∀ i, (ρ i).PosSemidef) (hσ : ∀ i, (σ i).PosSemidef)
