@@ -119,3 +119,61 @@
     Evaluate detailed balance at the identity:
     $T(\sigma)=T(\Sigma(\Id))=\Sigma(T^*(\Id))=\Sigma(\Id)=\sigma$.
 \end{proof}
+
+\begin{theorem}[Tensor and transpose operator norms]
+    \label{thm:detailed_balance_tensor_norm}
+    \lean{Matrix.l2_opNorm_transpose, Matrix.l2_opNorm_kronecker_one,
+      Matrix.l2_opNorm_kronecker_le}
+    \leanok
+    For square complex matrices, transposition preserves the operator norm.
+    Tensoring on the right with the identity of a nonzero finite-dimensional
+    space also preserves it. For square matrices $A,B$ on nonzero spaces,
+    $\lVert A\otimes B\rVert_\infty\le\lVert A\rVert_\infty\lVert B\rVert_\infty$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Transposition is an injective $*$-algebra homomorphism into the opposite
+    algebra, and $A\mapsto A\otimes I$ is an injective $*$-algebra
+    homomorphism. Both preserve the norm. Factor
+    $A\otimes B=(A\otimes I)(I\otimes B)$ and use submultiplicativity.
+\end{proof}
+
+\begin{theorem}[Jordan condition number under detailed balance]
+    \label{thm:detailed_balance_jordan_condition}
+    \lean{Matrix.PosDef.jordanConditionNumber_le_of_detailedBalance,
+      jordanConditionNumber_transferMatrix_le_of_detailedBalance,
+      conditionFactor_transferMatrix_sigmaSandwich_le,
+      jordanConditionNumber_transferMatrix_le_of_sigmaSandwich}
+    \leanok
+    This is \cite[Proposition~8.5]{Wolf2012Quantum}.
+    Let $T:M_d(\mathbb C)\to M_d(\mathbb C)$ preserve Hermiticity and
+    let $\Sigma$ be linear with $\widehat\Sigma>0$ and $\Sigma T^*=T\Sigma$.
+    Writing $\kappa(S)=\lVert S\rVert_\infty\lVert S^{-1}\rVert_\infty$, one has
+    \begin{align}
+      \kappa_T\le\sqrt{\kappa(\widehat\Sigma)}.
+    \end{align}
+    In particular, if $\Sigma(X)=\sqrt\sigma X\sqrt\sigma$ with $\sigma>0$,
+    then $\kappa_T\le\sqrt{\kappa(\sigma)}$.
+    More generally, $S>0$ and $SA^\dagger=AS$ imply
+    $\kappa_A\le\sqrt{\kappa(S)}$ for arbitrary square complex matrices.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:detailed_balance_transfer_matrix,
+      thm:detailed_balance_diagonalizing_similarity,
+      thm:wolf_jordan_condition_infimum, thm:sigma_sandwich_transfer_matrix,
+      thm:detailed_balance_tensor_norm}
+    The diagonalizing basis $P=S^{1/2}U$ is admissible, so the infimum
+    is at most $\lVert P\rVert_\infty\lVert P^{-1}\rVert_\infty
+    =\sqrt{\kappa(S)}$.
+    For the specialization put $R=\sqrt\sigma$. The verified representation
+    is $\widehat\Sigma=R^{\mathsf T}\otimes R$ and its inverse is
+    $(R^{-1})^{\mathsf T}\otimes R^{-1}$. Thus
+    \begin{align}
+      \kappa(\widehat\Sigma)
+      \le\lVert R\rVert_\infty^2\lVert R^{-1}\rVert_\infty^2
+      =\kappa(\sigma).
+    \end{align}
+    Apply monotonicity of the square root. The zero-dimensional case has
+    condition number zero.
+\end{proof}

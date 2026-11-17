@@ -7,6 +7,16 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Inverse-pair condition factors — shared norm bound (2026-11-16)
+
+- **Pattern:** From `P * Q = 1`, submultiplicativity gives
+  `1 ≤ ‖P‖ * ‖Q‖`, hence positivity of the condition factor.
+- **Reuse:** `Matrix.one_le_l2_opNorm_mul_of_mul_eq_one` in
+  `Analysis/JordanSimilarity.lean`; used by the chosen-basis power bounds,
+  finite-sum scaling, infimum lower bound and infimum power comparison in
+  `Analysis/JordanConditionNumber.lean`.
+- **Decision:** One norm lemma replaces the repeated calculation; no tactic.
+
 ### Loewner order and complex quadratic forms — shared lemma (2026-11-15)
 
 - **Pattern:** From `A ≤ B`, apply `dotProduct_mulVec_nonneg` to `B - A`
