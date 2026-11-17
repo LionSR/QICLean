@@ -16,6 +16,7 @@ import QICLean.Channel.Schwarz.Closure
 import QICLean.Channel.Schwarz.DiagonalJensen
 import QICLean.Channel.Schwarz.Douglas
 import QICLean.Channel.Schwarz.EntropicJensen
+import QICLean.Channel.Schwarz.IntegralJensen
 import QICLean.Channel.Schwarz.KadisonSchwarz
 import QICLean.Channel.Schwarz.MonotoneTraceFunctions
 import QICLean.Channel.Schwarz.MultiplicativeDomain

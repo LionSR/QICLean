@@ -1,0 +1,74 @@
+\documentclass{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+
+\input{command}
+
+\title{The Finite-Measure Obstruction in Wolf Theorem 5.8}
+\author{}
+\date{2026-11-17}
+\begin{document}
+\maketitle
+\gapnote{false-source}{open}
+
+\section{A finite-measure obstruction in Theorem 5.8}
+
+Wolf's Theorem~5.8, Equation~(5.18) \cite{Wolf2012Quantum}, is the source assertion.
+The source PDF, \path{Notes/WolfNotePDF/ch05_operator_inequalities.pdf},
+page numbered 79, contains both the displayed kernel and the words
+``positive finite measure.'' Thus this is not a transcription defect.
+The assertion is that operator convexity on $[0,\infty)$ is equivalent to
+\begin{align}
+ f(x)&=a+bx+cx^2+\int_0^\infty\frac{yx^2}{y+x}\,d\mu(y),
+ \label{eq:wolf_ch5_finite_measure_representation_source}
+\end{align}
+where $a,b\in\mathbb R$, $c\geq0$ and $\mu$ is a finite positive measure.
+The finite-measure condition in Equation~(5.18), with its displayed kernel,
+cannot characterize all operator-convex functions on the closed positive
+half-line. Indeed, put $M=\mu((0,\infty))<\infty$. For $x>0$ and $y>0$,
+\begin{align}
+  0&\leq \frac{yx^2}{y+x}\leq x^2.
+  \label{eq:wolf_ch5_finite_measure_representation_kernel_bound}
+\end{align}
+Integrating Equation~\ref{eq:wolf_ch5_finite_measure_representation_kernel_bound}
+shows that every function with the displayed representation satisfies
+\begin{align}
+  0&\leq f(x)-a-bx\leq (c+M)x^2.
+  \label{eq:wolf_ch5_finite_measure_representation_tangent_remainder}
+\end{align}
+In particular $f(0)=a$, its right derivative at zero exists and equals $b$,
+and its remainder after subtracting that tangent is bounded by a constant
+times $x^2$ near zero.
+
+Take $f(x)=x^{3/2}$. This function is operator convex on $[0,\infty)$
+(the power-convexity result already covers this exponent), but it cannot
+have the displayed finite-measure representation. Evaluation at zero gives
+$a=0$. Dividing Equation~\ref{eq:wolf_ch5_finite_measure_representation_tangent_remainder} by $x$ and letting $x\downarrow0$ gives $b=0$.
+Equation~\ref{eq:wolf_ch5_finite_measure_representation_tangent_remainder} would then give $x^{-1/2}\leq c+M$ for every $x>0$, a
+contradiction. This obstruction concerns the representation itself, not
+merely the proof of the Jensen consequences.
+
+A corrected characterization must change the measure condition or the
+kernel and normalization, and must specify the endpoint regularity. Merely
+dropping finiteness without specifying convergence is not a replacement
+theorem. The general integral characterization remains open pending that
+precise replacement. Its necessity direction must not be used as a
+prerequisite for arbitrary-function Jensen in its present form. The
+sufficiency direction with a finite positive measure is not contradicted
+by this example.
+
+
+\section{Verdict}
+The necessity direction of the printed characterization is false. The
+counterexample is a mathematical argument, not a formalized counterexample.
+The classification remains open because a corrected replacement
+characterization, with precise convergence and endpoint hypotheses, has not
+been supplied. This is distinct from the open general formalization scope
+recorded in \path{docs/paper-gaps/wolf_ch5_operator_convexity_scope.tex}.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

@@ -112,6 +112,14 @@ For operator-monotone $f$, it gives
 This is Equation~(5.37) of Ref.~\cite{Wolf2012Quantum}; the operator-convex
 case gives the reverse inequality.
 
+\section{A separate false-source finding}
+
+The finite-measure necessity assertion in Wolf Theorem~5.8 is false,
+as witnessed by the operator-convex function $x^{3/2}$. This source error is
+classified separately in \cite{gap:wolf_ch5_finite_measure_representation}.
+It is distinct from this note's open restriction of the formal development;
+a corrected general representation theorem remains to be supplied.
+
 \section{The special-function restriction}
 
 The formal development proves Jensen inequalities only for the functions
@@ -169,6 +177,33 @@ instances of Wolf's general Jensen inequalities. They do not imply the
 integral characterization of every operator-convex function, L\"owner's
 theorem, the projection equivalences, the arbitrary-function Jensen
 inequalities, or the finite-family corollary.
+
+\section{Integral assembly prerequisite}
+
+For arbitrary positive measures, an integrable family of matrix inequalities
+$G(t)\leq T(F(t))$ yields $\int G\leq T(\int F)$, including when the input
+and output matrix dimensions differ. Consequently Jensen inequalities for
+functional-calculus kernels pass to their integral representations, provided
+the two matrix-valued integrals exist. For the resolvent kernels used in the
+power representation, positivity and subunitality establish the pointwise
+inequality. This proves Jensen for any function represented by such an
+integrable mixture, without assuming that the measure is finite.\footnote{
+Formal declarations: \leanid{Matrix.integral_le_map_integral},
+\leanid{Matrix.cfc_jensen_of_integral_representation}, and
+\leanid{Matrix.cfc_jensen_of_resolvent_representation} in
+\doclink{QICLean/Channel/Schwarz/IntegralJensen}.}
+
+Scalar functional calculus also commutes with integration when each scalar
+kernel is integrable at every eigenvalue of the Hermitian matrix. This needs
+neither continuity of the kernels nor a finite measure: the spectral theorem
+reduces the assertion to a continuous linear map on a finite product of real
+lines.\footnote{Formal declarations:
+\leanid{Matrix.IsHermitian.integrable_cfc_of_eigenvalues} and
+\leanid{Matrix.IsHermitian.cfc_integral_of_eigenvalues} in
+\doclink{QICLean/Analysis/MatrixCFCIntegral};
+\leanid{Matrix.cfc_jensen_of_scalar_integral} combines this with Jensen assembly.}
+Constructing representing measures and proving that every operator-convex
+function has such a representation remain open.
 
 \section{Verdict}
 
