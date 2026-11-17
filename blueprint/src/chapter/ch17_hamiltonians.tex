@@ -105,7 +105,8 @@ one-dimensional ground space.
         Matrix.IsHermitian.kronecker_add_eq_conj, Matrix.kronecker_mulVec_mul,
         ManyBody.IsGapped.kronecker_add, ManyBody.groundSpace_kronecker_add_eq_span}
     \leanok
-    \uses{def:hamiltonians_gap, lem:hamiltonians_gap_eigenvalues, lem:hamiltonians_gap_reindex}
+    \uses{def:hamiltonians_gap, lem:hamiltonians_gap_eigenvalues, lem:hamiltonians_gap_reindex,
+        lem:hamiltonians_gap_operator_inequality}
     Let $A$ and $B$ be Hermitian, gapped at $a$ and $b$ with gaps $\Delta_a$ and
     $\Delta_b$, and let $H=A\otimes1+1\otimes B$. If $\Delta_a\ge0$ or
     $\Delta_b\ge0$, then $H$ is gapped at $a+b$ with gap $\min(\Delta_a,\Delta_b)$.
