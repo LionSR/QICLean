@@ -200,7 +200,7 @@ theorem sum_norm_sq_mul_regionEntropy_le {ι : Type*} [Fintype ι] (T : Finset V
   rw [trace_regionState, Complex.ofReal_re]
   rcases eq_or_ne (φ i) 0 with h0 | h0
   · have hz : regionState T (φ i) = 0 := by
-      rw [h0]; ext a b; simp [regionState, partialTraceRight, vecMulVec_apply]
+      rw [h0]; ext a b; simp [regionState, ManyBody.regionState, partialTraceRight, vecMulVec_apply]
     have hn : ‖φ i‖ = 0 := by rw [h0, norm_zero]
     rw [hn, vonNeumannEntropy_congr hz _ isHermitian_zero, vonNeumannEntropy_zero]
     simp
@@ -220,7 +220,7 @@ theorem sum_norm_sq_mul_regionEntropy_le {ι : Type*} [Fintype ι] (T : Finset V
       (hst ▸ regionState_isHermitian T (φ i))
     rw [vonNeumannEntropy_congr hst _ (hst ▸ regionState_isHermitian T (φ i)), hS,
       trace_regionState, hξ]
-    simp [regionEntropy]
+    simp [regionEntropy, ManyBody.regionEntropy]
 
 /-- **The opposite norm comparison by Schmidt pinning.** Let `X` be a region and
 `T_0 ⊆ T_1 ⊆ ⋯` regions disjoint from `X`, with weights `a_j > 0`. If every nested product of

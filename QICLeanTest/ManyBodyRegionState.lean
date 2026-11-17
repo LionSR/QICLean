@@ -59,12 +59,13 @@ example (D : Finset V) (ψ : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
       vonNeumannEntropy (Entropy.regionState D ψ) (Entropy.regionState_isHermitian D ψ) := by
   rw [Entropy.regionEntropy]
 
--- Entrywise consumers reduce abbreviations before running their simp set.
+-- Entrywise consumers unfold the abbreviation and the Sites definition before running their
+-- simp set.
 example (D : Finset V) (c : ℂ) (ψ : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
     Entropy.regionState D (c • ψ) = ((‖c‖ ^ 2 : ℝ) : ℂ) • Entropy.regionState D ψ := by
   ext a b
-  simp only [Entropy.regionState, partialTraceRight, vecMulVec_apply, Matrix.smul_apply,
-    smul_eq_mul, Finset.mul_sum]
+  simp only [Entropy.regionState, ManyBody.regionState, partialTraceRight, vecMulVec_apply,
+    Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   simp only [PiLp.smul_apply, smul_eq_mul, Pi.star_apply, star_mul',
     Complex.ofReal_pow, ← Complex.mul_conj', Complex.star_def]

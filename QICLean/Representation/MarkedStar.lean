@@ -162,13 +162,6 @@ noncomputable def margLift (Q : Finset V) (θ : SiteConfig n → ℂ) :
     Matrix (SiteConfig n) (SiteConfig n) ℂ :=
   localLift Q (regionState Q (WithLp.toLp 2 θ))
 
-/-- **Temporary** restatement of `ManyBody.place_sum` over `Entropy.localLift`;
-deleted in step 4.0 of the many-body plan. -/
-theorem localLift_sum {ι : Type*} (s : Finset ι) (Q : Finset V)
-    (K : ι → Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) :
-    localLift Q (∑ i ∈ s, K i) = ∑ i ∈ s, localLift Q (K i) :=
-  ManyBody.place_sum (X := fun v ↦ Fin (n v)) s K
-
 /-- **Contracting a donor** (`05-replicas.tex`, lines 790–795): `∑_{a,b} ⟨θ, E_{ab} θ⟩ E_{ba}`
 is the marginal `ρ_Q(θ)` lifted to one copy. -/
 theorem sum_expect_regionUnit_smul (Q : Finset V) (θ : SiteConfig n → ℂ) :
@@ -184,7 +177,7 @@ theorem sum_expect_regionUnit_smul (Q : Finset V) (θ : SiteConfig n → ℂ) :
     simp only [Matrix.diag, Matrix.mul_apply, Matrix.single_apply, mul_ite, mul_one, mul_zero]
     simp only [ite_and, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   simp only [hexp]
-  simp only [regionUnit, ← localLift_smul, ← localLift_sum, margLift]
+  simp only [regionUnit, ← localLift_smul, ← ManyBody.place_sum, margLift]
   congr 1
   rw [Finset.sum_comm]
   conv_rhs => rw [Matrix.matrix_eq_sum_single (regionState Q (WithLp.toLp 2 θ))]
