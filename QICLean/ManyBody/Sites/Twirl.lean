@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.RegionExpectation
+import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
+import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic.NoncommRing
 
@@ -37,6 +39,8 @@ over signed translations, and the expectation is `ManyBody.regionExpectation`.
   commutators.
 * `ManyBody.mem_supportedOperators_iff_forall_commute` — the operators supported on a region
   are exactly those commuting with every operator supported on its complement.
+* `ManyBody.cfc_mem_supportedOperators`, `ManyBody.sqrt_mem_supportedOperators`,
+  `ManyBody.abs_mem_supportedOperators` — the functional calculus preserves the support.
 -/
 
 open Matrix
@@ -172,42 +176,6 @@ section Product
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)]
 
-/-- The product operator `⊗_v m_v`, in the form of `ManyBody.prod_mem_supportedOperators`. -/
-private def prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) : Matrix (Config X) (Config X) ℂ :=
-  Matrix.of fun σ τ ↦ ∏ v, m v (σ v) (τ v)
-
-omit [∀ v, DecidableEq (X v)] in
-private theorem prodOp_mul (m m' : (v : V) → Matrix (X v) (X v) ℂ) :
-    prodOp m * prodOp m' = prodOp fun v ↦ m v * m' v := by
-  ext σ τ
-  simp only [prodOp, Matrix.mul_apply, Matrix.of_apply, Fintype.prod_sum,
-    Finset.prod_mul_distrib]
-
-omit [DecidableEq V] [∀ v, Fintype (X v)] in
-private theorem prodOp_one : prodOp (fun v ↦ (1 : Matrix (X v) (X v) ℂ)) = 1 := by
-  ext σ τ
-  simp only [prodOp, Matrix.of_apply, Matrix.one_apply]
-  by_cases h : σ = τ
-  · subst h
-    simp
-  · obtain ⟨v, hv⟩ := Function.ne_iff.mp h
-    rw [ite_eq_right h]
-    exact Finset.prod_eq_zero (Finset.mem_univ v) (ite_eq_right hv)
-
-omit [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
-private theorem star_prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) :
-    star (prodOp m) = prodOp fun v ↦ star (m v) := by
-  ext σ τ
-  simp [prodOp, Matrix.star_apply]
-
-private theorem prodOp_mem_unitary {m : (v : V) → Matrix (X v) (X v) ℂ}
-    (hm : ∀ v, m v ∈ unitary (Matrix (X v) (X v) ℂ)) :
-    prodOp m ∈ unitary (Matrix (Config X) (Config X) ℂ) := by
-  refine Matrix.mem_unitaryGroup_iff.mpr ?_
-  rw [star_prodOp, prodOp_mul]
-  simp only [fun v ↦ Unitary.mul_star_self_of_mem (hm v)]
-  exact prodOp_one
-
 /-- The signed translation with label `l` at a site `v` of `M`, the identity elsewhere. -/
 private noncomputable def siteFactor (M : Finset V) (v : V) (l : Label (X v)) :
     Matrix (X v) (X v) ℂ :=
@@ -229,7 +197,7 @@ private theorem shiftOp_mem_unitary (M : Finset V) (g : (v : V) → Label (X v))
 
 private theorem shiftOp_singleton_mem_supportedOperators (y : V) (g : (v : V) → Label (X v)) :
     shiftOp {y} g ∈ supportedOperators X {y} :=
-  prod_mem_supportedOperators fun _ hv ↦ ite_eq_right hv
+  prodOp_mem_supportedOperators fun _ hv ↦ ite_eq_right hv
 
 private theorem shiftOp_insert {M : Finset V} {y : V} (hy : y ∉ M)
     (g : (v : V) → Label (X v)) :
@@ -244,7 +212,7 @@ private theorem shiftOp_insert {M : Finset V} {y : V} (hy : y ∉ M)
   · by_cases hvM : v ∈ M <;> simp [hvy, hvM]
 
 private theorem shiftOp_empty (g : (v : V) → Label (X v)) : shiftOp ∅ g = 1 := by
-  simpa [shiftOp, siteFactor] using prodOp_one
+  simp [shiftOp, siteFactor]
 
 /-- The commutator with a product of two unitaries is at most the sum of the commutators. -/
 private theorem norm_commutator_mul_le (B U W : Matrix (Config X) (Config X) ℂ)
@@ -521,6 +489,27 @@ theorem mem_supportedOperators_iff_forall_commute {D : Finset V}
   simp only [Pi.zero_apply, Finset.sum_const_zero, norm_le_zero_iff, sub_eq_zero] at hle
   rw [hle]
   exact regionExpectation_mem_supportedOperators D A
+
+/-- The continuous functional calculus preserves the support of an operator. -/
+theorem cfc_mem_supportedOperators {D : Finset V} (f : ℝ → ℝ)
+    {A : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X D) :
+    cfc f A ∈ supportedOperators X D :=
+  mem_supportedOperators_iff_forall_commute.mpr fun _ hB ↦
+    (commute_of_mem_supportedOperators_of_disjoint hA hB disjoint_compl_right).cfc_real f
+
+open scoped MatrixOrder ComplexOrder in
+/-- The square root preserves the support of an operator. -/
+theorem sqrt_mem_supportedOperators {D : Finset V} {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X D) : CFC.sqrt A ∈ supportedOperators X D := by
+  rw [CFC.sqrt_eq_cfc]
+  exact mem_supportedOperators_iff_forall_commute.mpr fun _ hB ↦
+    (commute_of_mem_supportedOperators_of_disjoint hA hB disjoint_compl_right).cfc_nnreal _
+
+open scoped MatrixOrder ComplexOrder in
+/-- The absolute value preserves the support of an operator. -/
+theorem abs_mem_supportedOperators {D : Finset V} {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X D) : CFC.abs A ∈ supportedOperators X D :=
+  sqrt_mem_supportedOperators (mul_mem (star_mem hA) hA)
 
 end Average
 

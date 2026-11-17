@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.ManyBody.Sites.Lattice.PathGraph
 import Mathlib.Data.Finset.Max
 import Mathlib.Order.Interval.Finset.Nat
 
@@ -18,10 +19,28 @@ Moved from TNLean at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`:
 (`IsChainSupport`, `ChainSupport` and their lemmas). Changes: namespace `ManyBody` in place of
 `TNLean.MPS.AreaLaw`; no other change.
 
+Moved from TNLean on branch `refactor/chain-support-manybody` at commit
+`83d33eaaede50fb5204da88a7c12b54261da53b6`, with names, statements and proofs unchanged:
+`boundaryEdges`, `mem_boundaryEdges`, `boundaryEdges_empty` and `boundaryEdges_univ` from
+`TNLean/MPS/AreaLaw/EntropyInequalities.lean`; `IsChainSupport.exists_boundary_window_of_split`
+from `TNLean/MPS/AreaLaw/BoundaryCounting.lean`; `IsChainSupport.eq_interval_of_splits_of_range_one`
+from `TNLean/MPS/AreaLaw/RangeOneCut.lean`; `ChainSupport.edist_le` from
+`TNLean/MPS/AreaLaw/LiebRobinson.lean`. Changes: namespace `ManyBody` in place of
+`TNLean.MPS.AreaLaw`.
+
 ## Main definitions
 
 * `ManyBody.interval` — the sites of position at least `a` and less than `b`.
 * `ManyBody.IsChainSupport`, `ManyBody.ChainSupport` — the supports of range `R`.
+* `ManyBody.boundaryEdges` — the edges of the chain leaving a region.
+
+## Main results
+
+* `ManyBody.IsChainSupport.exists_boundary_window_of_split` — a support split by a region lies
+  in a window of `2R` sites about one of its boundary edges.
+* `ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one` — a range-one support split by
+  a cut is the adjacent pair at that cut.
+* `ManyBody.ChainSupport.edist_le` — a support of range `R` has path-graph diameter at most `R`.
 
 ## References
 
@@ -145,5 +164,103 @@ theorem IsChainSupport.subset_window_of_splits {X : Finset (Fin L)}
     have h2 := hX.2 x hx w hwX
     rw [mem_interval]
     omega
+
+/-- A support of range one split by the cut after the first `k` sites is the adjacent pair at
+that cut. Source: Landau, Vazirani and Vidick, arXiv:1307.5143v1, `algo53.tex`, the
+nearest-neighbour assumption at line 283 and the cut decomposition at lines 409–410. -/
+theorem IsChainSupport.eq_interval_of_splits_of_range_one {L k : ℕ} {X : Finset (Fin L)}
+    (hX : IsChainSupport L 1 X)
+    (hsplit : (∃ x ∈ X, x.val < k) ∧ ∃ y ∈ X, k ≤ y.val) :
+    X = interval L (k - 1) (k + 1) := by
+  obtain ⟨⟨x, hx, hxk⟩, y, hy, hky⟩ := hsplit
+  have htwo : X.card = 2 := by
+    have hcard := hX.card_le
+    have hlt : 1 < X.card := Finset.one_lt_card.mpr
+      ⟨x, hx, y, hy, by rintro rfl; omega⟩
+    omega
+  obtain ⟨a, -, hXa⟩ := hX.exists_eq_interval_of_card_eq htwo
+  have hak : k = a + 1 := by
+    have hax := mem_interval.mp ((Finset.ext_iff.mp hXa x).mp hx)
+    have hay := mem_interval.mp ((Finset.ext_iff.mp hXa y).mp hy)
+    omega
+  rw [hXa]
+  congr 1 <;> omega
+
+/-- The path distance between two sites of a range-`R` support is at most `R`.
+Hastings, arXiv:0705.2024v4, finite-range condition, lines 90–94. -/
+theorem ChainSupport.edist_le {L R : ℕ} (X : ChainSupport L R)
+    (x : Fin L) (hx : x ∈ X.1) (z : Fin L) (hz : z ∈ X.1) :
+    (SimpleGraph.pathGraph L).edist x z ≤ (R : ℕ∞) := by
+  rw [SimpleGraph.pathGraph_edist]
+  have hxz := X.2.2 x hx z hz
+  have hzx := X.2.2 z hz x hx
+  exact_mod_cast (show Nat.dist x.val z.val ≤ R by
+    simp only [Nat.dist]
+    omega)
+
+/-! ### Boundary edges of a region -/
+
+/-- The boundary edges of a region `A` of the chain of `L` sites: the positions `p` with
+`p + 1 < L` such that exactly one of the sites at positions `p` and `p + 1` lies in `A`, that
+is, the edges `{p, p + 1}` of the chain leaving `A`. -/
+def boundaryEdges (L : ℕ) (A : Finset (Fin L)) : Finset ℕ :=
+  (Finset.range (L - 1)).filter fun p ↦ ¬ ((∃ i ∈ A, i.val = p) ↔ ∃ i ∈ A, i.val = p + 1)
+
+/-- Membership in the boundary edges of a region, in terms of positions. -/
+theorem mem_boundaryEdges {A : Finset (Fin L)} {p : ℕ} :
+    p ∈ boundaryEdges L A ↔
+      p + 1 < L ∧ ¬ ((∃ i ∈ A, i.val = p) ↔ ∃ i ∈ A, i.val = p + 1) := by
+  rw [boundaryEdges, Finset.mem_filter, Finset.mem_range, Nat.lt_sub_iff_add_lt]
+
+/-- The empty region has no boundary edges. -/
+theorem boundaryEdges_empty : boundaryEdges L ∅ = ∅ := by
+  ext p
+  simp [mem_boundaryEdges]
+
+/-- The whole chain has no boundary edges. -/
+theorem boundaryEdges_univ : boundaryEdges L Finset.univ = ∅ := by
+  ext p
+  simp only [mem_boundaryEdges, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false,
+    not_and, not_not]
+  intro hp
+  exact ⟨fun _ ↦ ⟨⟨p + 1, hp⟩, rfl⟩, fun _ ↦ ⟨⟨p, by omega⟩, rfl⟩⟩
+
+/-- A support split by a region lies in a window about one of its
+boundary edges. Source: TNLean note, `eq:count`, and
+`part2a_mps_information.tex`, lines 359–363. -/
+lemma IsChainSupport.exists_boundary_window_of_split
+    {L R : ℕ} {X D : Finset (Fin L)} (hX : IsChainSupport L R X)
+    (hsplit : (∃ u ∈ X, u ∈ D) ∧ ∃ v ∈ X, v ∉ D) :
+    ∃ p ∈ boundaryEdges L D,
+      X ⊆ interval L (p + 1 - R) (p + 1 + R) := by
+  classical
+  let P (m : ℕ) := ∃ i ∈ D, i.val = m
+  have hordered (u v : Fin L) (hu : u ∈ X) (hv : v ∈ X) (huv : u.val < v.val)
+      (hmem : ¬ (P u.val ↔ P v.val)) :
+      ∃ p ∈ boundaryEdges L D, X ⊆ interval L (p + 1 - R) (p + 1 + R) := by
+    let Q (n : ℕ) := u.val + n ≤ v.val ∧ (P (u.val + n) ↔ P v.val)
+    have hQ0 : ¬ Q 0 := by simpa only [Q, Nat.add_zero, huv.le, true_and] using hmem
+    have hQex : ∃ n, Q n := ⟨v.val - u.val, by
+      simp only [Q, Nat.add_sub_of_le huv.le, le_refl, iff_self, and_self]⟩
+    obtain ⟨n, hn, hn1⟩ := Nat.exists_not_and_succ_of_not_zero_of_exists hQ0 hQex
+    simp only [Q] at hn hn1
+    refine ⟨u.val + n, mem_boundaryEdges.mpr ⟨by have := v.isLt; omega, ?_⟩, ?_⟩
+    · change ¬ (P (u.val + n) ↔ P (u.val + n + 1))
+      intro he
+      exact hn ⟨by omega, he.trans (by simpa only [Nat.add_assoc] using hn1.2)⟩
+    · intro z hz
+      rw [mem_interval]
+      have huz := hX.2 u hu z hz
+      have hzv := hX.2 z hz v hv
+      omega
+  obtain ⟨⟨u, hu, huD⟩, v, hv, hvD⟩ := hsplit
+  have hPu : P u.val := ⟨u, huD, rfl⟩
+  have hPv : ¬ P v.val := by
+    rintro ⟨i, hi, hiv⟩
+    exact hvD (Fin.ext hiv ▸ hi)
+  rcases lt_trichotomy u.val v.val with huv | huv | hvu
+  · exact hordered u v hu hv huv (fun he ↦ hPv (he.mp hPu))
+  · exact (hPv (huv ▸ hPu)).elim
+  · exact hordered v u hv hu hvu (fun he ↦ hPv (he.mpr hPu))
 
 end ManyBody

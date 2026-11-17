@@ -1147,3 +1147,141 @@ Theorem~\ref{thm:trace_norm_abs}.
     \end{align}
     Thus $kT(\rho)-\rho$ is positive semidefinite.
 \end{proof}
+
+\section{Cone ratios and norm comparisons}
+
+\begin{definition}[Lower cone ratio]
+    \label{def:lower_cone_ratio}
+    \lean{ProperCone.lowerRatio, ProperCone.NormMonotone}
+    \leanok
+    Let $C$ be a closed convex cone in a real normed space, and suppose
+    $\|x\|\le\|x+y\|$ for $x,y\in C$. For $a,b\in C$ with $b\ne0$, put
+    $\inf(a/b)=\sup\{t\ge0:a-tb\in C\}$.
+    Here the source notation is defined by the order description in
+    \cite[Chapter~8, Equation~(8.61)]{Wolf2012Quantum}.
+\end{definition}
+
+\begin{lemma}[Attainment and bounds for cone ratios]
+    \label{lem:lower_cone_ratio_bounds}
+    \lean{ProperCone.lowerRatio_bddAbove, ProperCone.lowerRatio_mem,
+        ProperCone.le_lowerRatio, ProperCone.lowerRatio_le_norm_div,
+        ProperCone.lowerRatio_mul_le_one}
+    \leanok
+    \uses{def:lower_cone_ratio}
+    Let $b\in C$ with $b\ne0$, and let $a$ be any vector in the ambient space.
+    The admissible set $S=\{t\ge0:a-tb\in C\}$ is bounded above by
+    $\|a\|/\|b\|$. Every $t\in S$ satisfies $t\le\inf(a/b)$.
+    If additionally $a\in C$, then $S$ contains zero, its supremum is attained,
+    and $0\le\inf(a/b)\le\|a\|/\|b\|$.
+    If also $a\ne0$, then $\inf(a/b)\inf(b/a)\le1$.
+\end{lemma}
+\begin{proof}\leanok
+    Monotonicity gives $t\|b\|\le\|a\|$ for each admissible $t$.
+    The supremum bounds every admissible scale. When $a\in C$, zero is
+    admissible, and closedness gives attainment. When also $a\ne0$,
+    multiplying the norm bounds in both directions gives the product bound.
+\end{proof}
+
+\begin{theorem}[Norm comparison from cone ratios]
+    \label{thm:cone_ratio_norm_bound}
+    \lean{ProperCone.norm_sub_le_lowerRatio, ProperCone.norm_sub_le_of_scales,
+        ProperCone.norm_sub_le_lowerRatio_average, ProperCone.norm_sub_le_lowerRatio_sqrt,
+        ProperCone.norm_sub_le_lowerRatio_log}
+    \leanok
+    \uses{lem:lower_cone_ratio_bounds}
+    For nonzero $a,b\in C$, write $\nu=\inf(b/a)$ and $\mu=\inf(a/b)$. Then
+    \begin{align}
+        \|a-b\|\le |1-\nu|\|a\|+|1-\mu|\|b\|
+            +\min\{|1-\nu|\|a\|,|1-\mu|\|b\|\}.
+    \end{align}
+    If $\mu,\nu\le1$, then
+    \begin{align}
+        \|a-b\|&\le\frac32(\|a\|+\|b\|-\nu\|a\|-\mu\|b\|)\\
+        &\le3\left(\frac{\|a\|+\|b\|}{2}
+             -\sqrt{\nu\|a\|\mu\|b\|}\right).
+    \end{align}
+    If also $\mu\nu>0$, the square-root term equals
+    $\sqrt{\|a\|\|b\|}\exp(\log(\mu\nu)/2)$.
+    These are \cite[Chapter~8, Equations~(8.63), (8.68)--(8.69)]{Wolf2012Quantum},
+    with the last expression written directly in terms of the lower ratios.
+\end{theorem}
+\begin{proof}\leanok
+    Put $p=b-\nu a$ and $q=a-\mu b$. Both belong to $C$, and
+    $p+q=(1-\nu)a+(1-\mu)b$. The triangle inequality and norm monotonicity give
+    $\|a-b\|\le2|1-\nu|\|a\|+|1-\mu|\|b\|$.
+    Interchanging $a,b$ and taking the minimum gives the first bound.
+    When $\mu,\nu\le1$, averaging the two asymmetric estimates gives
+    \begin{align}
+        \|a-b\|&\le\frac32\bigl(\|a\|+\|b\|-x-y\bigr),
+        \label{eq:cone_norm_average}
+    \end{align}
+    where $x=\nu\|a\|\ge0$ and $y=\mu\|b\|\ge0$. Since
+    \begin{align}
+        x+y-2\sqrt{xy}&=(\sqrt{x}-\sqrt{y})^2\ge0,
+        \label{eq:cone_norm_amgm}
+    \end{align}
+    substituting (\ref{eq:cone_norm_amgm}) into (\ref{eq:cone_norm_average}) yields
+    \begin{align}
+        \|a-b\|&\le3\left(\frac{\|a\|+\|b\|}{2}
+            -\sqrt{\nu\|a\|\mu\|b\|}\right).
+    \end{align}
+\end{proof}
+
+\begin{theorem}[Cone ratios under positive maps]
+    \label{thm:cone_ratio_positive_map}
+    \lean{ProperCone.lowerRatio_le_map, ProperCone.neg_log_lowerRatio_map_le}
+    \leanok
+    \uses{lem:lower_cone_ratio_bounds}
+    Let $K$ be a closed convex cone in another real normed space whose norm
+    is monotone on $K$, and let $T$ be linear with $T(C)\subseteq K$.
+    For $a,b\in C$ with $b\ne0$ and $Tb\ne0$,
+    $\inf(a/b)\le \inf(Ta/Tb)$. If additionally $a\ne0$, $Ta\ne0$,
+    and both input ratios are positive, then
+    \begin{align}
+        -\log\bigl(\inf(Ta/Tb)\inf(Tb/Ta)\bigr)
+          \le -\log\bigl(\inf(a/b)\inf(b/a)\bigr).
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Apply $T$ to $a-\inf(a/b)b\in C$ and use the supremum property in $K$.
+    Multiply the inequalities in both directions and use monotonicity of
+    the logarithm.
+\end{proof}
+
+\begin{definition}[Expanding diagonal map on the quadrant]
+    \label{def:expanding_quadrant_map}
+    \lean{ProjectiveDiameterCounterexample.quadrant,
+        ProjectiveDiameterCounterexample.diagonalMap,
+        ProjectiveDiameterCounterexample.mem_quadrant}
+    \leanok
+    Let $C=\mathbb R_+^2$ and $T(x,y)=(x,2y)$.
+\end{definition}
+
+\begin{theorem}[Boundary fixed point and an expanding eigenvector]
+    \label{thm:boundary_fixed_point_expansion}
+    \lean{ProjectiveDiameterCounterexample.boundary_fixed_point_counterexample,
+        ProjectiveDiameterCounterexample.diagonalMap_positive,
+        ProjectiveDiameterCounterexample.eigenvalue_gt_tanh,
+        ProjectiveDiameterCounterexample.lowerRatio_first,
+        ProjectiveDiameterCounterexample.lowerRatio_second,
+        ProjectiveDiameterCounterexample.output_log_distance_unbounded}
+    \leanok
+    \uses{def:expanding_quadrant_map, def:lower_cone_ratio}
+    The positive map $T$ fixes the nonzero boundary vector $(1,0)$ and has
+    eigenvalue $2$ on $(0,1)$, which is not proportional to the fixed vector.
+    The eigenvalue exceeds every coefficient at most one, including every
+    $\tanh(D/4)$ for real $D$. Moreover, the logarithmic distances between
+    images of interior vectors are unbounded.
+    This obstructs the unrestricted extension proposed after
+    \cite[Chapter~8, Equation~(8.91)]{Wolf2012Quantum} if the convention
+    $\tanh(+\infty)=1$ is adopted. Without such a convention, the expression
+    is undefined for this map. The example does not refute the theorem with
+    finite diameter or an interior fixed point.
+\end{theorem}
+\begin{proof}\leanok
+    Positivity and the two eigenvector identities follow by coordinates.
+    For $t\ge1$, the images of $(1,t/2)$ and $(1,1/2)$ are $(1,t)$ and $(1,1)$.
+    Their lower cone ratios are $1$ and $1/t$. Hence their logarithmic
+    distance is $\log t$, which exceeds $R$ when
+    $t=\exp(\max\{R,0\}+1)$.
+\end{proof}

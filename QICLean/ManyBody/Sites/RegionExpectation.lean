@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Placement
 import QICLean.Analysis.RootChannel
+import QICLean.Channel.KrausCPTP
 
 /-!
 # The expectation onto a region
@@ -29,10 +30,15 @@ in the proofs of `ManyBody.regionExpectation_one` and `ManyBody.trace_regionExpe
 ## Main definitions
 
 * `ManyBody.regionExpectation` — the normalized partial trace onto a region.
+* `ManyBody.regionExpectationLM`, `ManyBody.regionExpectationCLM` — its linear and continuous
+  linear forms.
 
 ## Main results
 
 * `ManyBody.regionExpectation_apply` — the entries of the region expectation.
+* `ManyBody.regionExpectationLM_isKrausCPTP` — it is a trace-preserving completely positive map.
+* `ManyBody.norm_sub_regionExpectation_le_two_mul_norm_sub` — `‖A - E_D A‖ ≤ 2 ‖A - A₀‖` for
+  `A₀` supported on `D`.
 * `ManyBody.regionExpectation_mem_supportedOperators` — its values are supported on the
   region.
 * `ManyBody.regionExpectation_mul_mul` — `E_D(B A C) = B E_D(A) C` for `B` and `C`
@@ -224,6 +230,16 @@ theorem regionExpectationLM_apply (D : Finset V) (A : Matrix (Config X) (Config 
     regionExpectationLM D A = regionExpectation D A :=
   rfl
 
+/-- The region expectation as a continuous linear map, in the operator norm. -/
+noncomputable def regionExpectationCLM (D : Finset V) :
+    Matrix (Config X) (Config X) ℂ →L[ℂ] Matrix (Config X) (Config X) ℂ :=
+  LinearMap.toContinuousLinearMap (regionExpectationLM D)
+
+@[simp]
+theorem regionExpectationCLM_apply (D : Finset V) (A : Matrix (Config X) (Config X) ℂ) :
+    regionExpectationCLM D A = regionExpectation D A :=
+  rfl
+
 /-- **Bimodule property.** For `B` and `C` supported on `D`, `E_D(B A C) = B E_D(A) C`. -/
 theorem regionExpectation_mul_mul {A B C : Matrix (Config X) (Config X) ℂ}
     (hB : B ∈ supportedOperators X D) (hC : C ∈ supportedOperators X D) :
@@ -306,5 +322,40 @@ theorem norm_regionExpectation_le (A : Matrix (Config X) (Config X) ℂ) :
         regionExpectation_one
   rw [regionExpectation_eq_sum_conj]
   exact norm_sum_conjTranspose_mul_mul_le _ hW A
+
+/-- **Best approximation up to a factor two.** For any `A₀` supported on `D`,
+`‖A - E_D(A)‖ ≤ 2 ‖A - A₀‖`. -/
+theorem norm_sub_regionExpectation_le_two_mul_norm_sub (D : Finset V)
+    (A A₀ : Matrix (Config X) (Config X) ℂ) (hA₀ : A₀ ∈ supportedOperators X D) :
+    ‖A - regionExpectation D A‖ ≤ 2 * ‖A - A₀‖ := by
+  have h : A - regionExpectation D A = (A - A₀) - regionExpectation D (A - A₀) := by
+    rw [regionExpectation_sub, regionExpectation_of_mem_supportedOperators hA₀]
+    abel
+  rw [h]
+  calc
+    _ ≤ ‖A - A₀‖ + ‖regionExpectation D (A - A₀)‖ := norm_sub_le _ _
+    _ ≤ ‖A - A₀‖ + ‖A - A₀‖ := add_le_add le_rfl (norm_regionExpectation_le _)
+    _ = 2 * ‖A - A₀‖ := by ring
+
+/-- **The region expectation is a trace-preserving completely positive map.** Its Kraus
+operators are the adjoints of the operators `c^{-1/2} (1 ⊗ |y⟩⟨y'|)` of the conjugation formula,
+for the configurations `y, y'` outside the region. -/
+theorem regionExpectationLM_isKrausCPTP (D : Finset V) :
+    IsKrausCPTP (regionExpectationLM (X := X) D) := by
+  classical
+  let e := Fintype.equivFin (ComplConfig X D × ComplConfig X D)
+  refine ⟨Fintype.card (ComplConfig X D × ComplConfig X D), fun i ↦ (conjOp D (e.symm i))ᴴ,
+    fun A ↦ ?_, ?_⟩
+  · rw [regionExpectationLM_apply, regionExpectation_eq_sum_conj]
+    simp only [conjTranspose_conjTranspose]
+    exact (e.symm.sum_comp fun p ↦ (conjOp D p)ᴴ * A * conjOp D p).symm
+  · have hW : ∑ p, (conjOp (X := X) D p)ᴴ * conjOp D p = 1 := by
+      simpa only [Matrix.mul_one] using
+        (regionExpectation_eq_sum_conj (X := X) (D := D) 1).symm.trans regionExpectation_one
+    simp only [conjTranspose_conjTranspose]
+    rw [e.symm.sum_comp fun p ↦ conjOp D p * (conjOp D p)ᴴ, ← hW]
+    refine Fintype.sum_equiv (Equiv.prodComm _ _) _ _ fun p ↦ ?_
+    rw [conjOp_conjTranspose, conjOp_conjTranspose]
+    rfl
 
 end ManyBody

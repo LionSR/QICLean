@@ -41,8 +41,6 @@ namespace Wolf
 
 /-! ### The even/odd split of the exponential series -/
 
-set_option maxHeartbeats 800000 in
--- Elaborating this generic exponential-series rearrangement exceeds the project default.
 /-- The even/odd split of the exponential series: if the even subseries of the
 exponential series of `a` sums to `E` and the odd subseries to `O`, then
 `exp a = E + O`. -/
@@ -51,8 +49,9 @@ theorem exp_eq_add_of_even_odd {𝔸 : Type*} [NormedRing 𝔸] [NormedAlgebra �
     (hE : HasSum (fun n ↦ NormedSpace.expSeries ℝ 𝔸 (2 * n) (fun _ ↦ a)) E)
     (hO : HasSum (fun n ↦ NormedSpace.expSeries ℝ 𝔸 (2 * n + 1) (fun _ ↦ a)) O) :
     NormedSpace.exp a = E + O := by
+  -- Specify the whole series to avoid inferring it from its even subsequence.
   have hsum : HasSum (fun n ↦ NormedSpace.expSeries ℝ 𝔸 n (fun _ ↦ a)) (E + O) :=
-    hE.even_add_odd hO
+    HasSum.even_add_odd (f := fun n ↦ NormedSpace.expSeries ℝ 𝔸 n (fun _ ↦ a)) hE hO
   rw [congrFun (NormedSpace.exp_eq_tsum ℝ) a]
   simpa only [NormedSpace.expSeries_apply_eq] using hsum.tsum_eq
 
@@ -136,7 +135,8 @@ theorem pauliVector_sq (n : Fin 3 → ℝ) (hn : ∑ k, n k ^ 2 = 1) :
     simp [pauliVector, SpinCover.pauli, pow_two, Matrix.mul_apply, Fin.sum_univ_two,
       Fin.sum_univ_three] at hn ⊢ <;>
     ring_nf at hn ⊢ <;> try simp_all [Complex.I_sq]
-  all_goals norm_cast <;> try nlinarith [hn]
+  all_goals norm_cast
+  all_goals try nlinarith [hn]
 
 /-- A unit boost generator satisfies `(n·B)³ = n·B`. -/
 theorem boostGenerator_cube (n : Fin 3 → ℝ) (hn : ∑ k, n k ^ 2 = 1) :
@@ -149,7 +149,7 @@ theorem boostGenerator_cube (n : Fin 3 → ℝ) (hn : ∑ k, n k ^ 2 = 1) :
   fin_cases i <;> fin_cases j <;>
     simp [pow_succ, Matrix.mul_apply, Fin.sum_univ_four, Fin.sum_univ_three,
       boostGenerator] at hn ⊢ <;>
-    ring_nf at hn ⊢ <;> try rfl
+    ring_nf at hn ⊢
   all_goals linarith [h0, h1, h2]
 
 /-- A unit rotation generator satisfies `(n·R)³ = -(n·R)`. -/
@@ -163,7 +163,7 @@ theorem rotationGenerator_cube (n : Fin 3 → ℝ) (hn : ∑ k, n k ^ 2 = 1) :
   fin_cases i <;> fin_cases j <;>
     simp [pow_succ, Matrix.mul_apply, Fin.sum_univ_four, rotationGenerator,
       rotationGenerator3, Fin.sum_univ_three] at hn ⊢ <;>
-    ring_nf at hn ⊢ <;> try rfl
+    ring_nf at hn ⊢
   all_goals linarith [h0, h1, h2]
 
 
@@ -467,7 +467,8 @@ theorem spinorMatrix_boostExpSL2 (n : Fin 3 → ℝ) (hn : ∑ k, n k ^ 2 = 1) (
       Matrix.conjTranspose_apply, Fin.sum_univ_two, Fin.sum_univ_four, boostGenerator, pow_two,
       -Complex.ofReal_cosh, -Complex.ofReal_sinh] <;>
     simp only [hk, hs]
-  all_goals ring_nf at hu hh hus ⊢ <;> linarith [hh, hus]
+  all_goals ring_nf at hu hh hus ⊢
+  all_goals linarith [hh, hus]
 
 /-- Corrected-sign rotation identity for Wolf, Equation (2.44): with the
 printed generators `Rᵢ`, the congruence action sends `exp(-i t n·σ/2)` to
@@ -499,7 +500,8 @@ theorem spinorMatrix_rotationExpSL2 (n : Fin 3 → ℝ) (hn : ∑ k, n k ^ 2 = 1
       Matrix.conjTranspose_apply, Fin.sum_univ_two, Fin.sum_univ_four, rotationGenerator,
       rotationGenerator3, pow_two, -Complex.ofReal_cos, -Complex.ofReal_sin] <;>
     try simp only [hk, hs]
-  all_goals ring_nf at hu hh hus ⊢ <;> linarith [hh, hus]
+  all_goals ring_nf at hu hh hus ⊢
+  all_goals linarith [hh, hus]
 
 end Wolf
 end

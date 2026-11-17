@@ -58,6 +58,7 @@ import QICLean.Analysis.CompressedInverseFloor
 import QICLean.Analysis.CompressedPartialSwap
 import QICLean.Analysis.CompressionEnergyBounds
 import QICLean.Analysis.CompressionEnergyInterval
+import QICLean.Analysis.ConeNormBound
 import QICLean.Analysis.ConicProgram
 import QICLean.Analysis.ContractionChain
 import QICLean.Analysis.ContractionWordAppend
@@ -192,6 +193,7 @@ import QICLean.Analysis.MandatoryExponentialNorm
 import QICLean.Analysis.MarginalSupport
 import QICLean.Analysis.MatrixBernsteinInputs
 import QICLean.Analysis.MatrixBernsteinScalar
+import QICLean.Analysis.MatrixCFCIntegral
 import QICLean.Analysis.MatrixEvolution
 import QICLean.Analysis.MatrixFamilySupport
 import QICLean.Analysis.MatrixFamilySupportMeasurable
@@ -277,6 +279,7 @@ import QICLean.Analysis.ProjectionMatrixRange
 import QICLean.Analysis.ProjectionQuadraticBound
 import QICLean.Analysis.ProjectionQuadraticBounds
 import QICLean.Analysis.ProjectionResidual
+import QICLean.Analysis.ProjectiveDiameterCounterexample
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Analysis.QuadraticPerspective
 import QICLean.Analysis.QuadraticScalarShift

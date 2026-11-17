@@ -167,12 +167,16 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{theorem}[Supported operators are spanned by product operators]
     \label{thm:sites_product_span}
-    \lean{ManyBody.supportedOperators_toSubmodule_eq_span,
-        ManyBody.prod_mem_supportedOperators, ManyBody.place_single}
+    \lean{ManyBody.supportedOperators_toSubmodule_eq_span, ManyBody.prodOp,
+        ManyBody.prodOp_apply, ManyBody.prodOp_mul, ManyBody.prodOp_one,
+        ManyBody.conjTranspose_prodOp, ManyBody.prodOp_mem_unitary,
+        ManyBody.prodOp_mem_supportedOperators, ManyBody.place_single}
     \leanok
     \uses{thm:sites_place_range, lem:sites_place_hom}
     The algebra $\mathcal A_D$ is the linear span of the product operators
-    $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$.
+    $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$. Product operators
+    multiply sitewise, $(\bigotimes_vm_v)^*=\bigotimes_vm_v^*$, and a product of
+    unitaries is unitary.
 \end{theorem}
 \begin{proof}\leanok
     The matrix element of $\bigotimes_vm_v$ at $(\sigma,\tau)$ is
@@ -182,6 +186,22 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     is $K\otimes1=\sum_{a,b\in X_D}K_{ab}\,(E_{ab}\otimes1)$, and the placed
     matrix unit $E_{ab}\otimes1$ is the product operator with
     $m_v=E_{a_vb_v}$ for $v\in D$ and $m_v=1$ for $v\notin D$.
+\end{proof}
+
+\begin{corollary}[Induction over product operators]
+    \label{cor:sites_product_induction}
+    \lean{ManyBody.supportedOperators_induction, ManyBody.eq_of_mem_supportedOperators₂}
+    \leanok
+    \uses{thm:sites_product_span}
+    A property of the operators of $\mathcal A_D$ that holds for the product
+    operators $\bigotimes_vm_v$ with $m_v=1$ outside $D$ and is closed under sums and
+    scalar multiples holds for all of $\mathcal A_D$. In particular, two bilinear maps
+    that agree on pairs of such product operators, for $D$ and $D'$, agree on
+    $\mathcal A_D\times\mathcal A_{D'}$.
+\end{corollary}
+\begin{proof}\leanok
+    By Theorem~\ref{thm:sites_product_span}, $\mathcal A_D$ is the span of the product
+    operators; induct over the span, and for the bilinear maps, in each argument.
 \end{proof}
 
 \begin{lemma}[Norm and order under placement]
@@ -239,7 +259,11 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.posSemidef_regionExpectation, ManyBody.regionExpectation_mono,
         ManyBody.norm_regionExpectation_le, ManyBody.regionExpectation_zero,
         ManyBody.regionExpectation_add, ManyBody.regionExpectation_smul,
-        ManyBody.regionExpectation_sub, ManyBody.isHermitian_regionExpectation}
+        ManyBody.regionExpectation_sub, ManyBody.isHermitian_regionExpectation,
+        ManyBody.regionExpectationLM, ManyBody.regionExpectationLM_apply,
+        ManyBody.regionExpectationCLM, ManyBody.regionExpectationCLM_apply,
+        ManyBody.regionExpectationLM_isKrausCPTP,
+        ManyBody.norm_sub_regionExpectation_le_two_mul_norm_sub}
     \leanok
     \uses{def:sites_region_expectation, thm:sites_place_range, lem:sites_place_hom,
         thm:root_channel}
@@ -248,7 +272,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $E_D(BAC)=B\,E_D(A)\,C$ for all $B,C\in\mathcal A_D$ and $E_D(1)=1$, so it
     fixes $\mathcal A_D$ and $E_D\circ E_D=E_D$. It preserves the trace, maps
     positive semidefinite operators to positive semidefinite operators, is
-    monotone, and satisfies $\lVert E_D(A)\rVert\leq\lVert A\rVert$.
+    monotone, and satisfies $\lVert E_D(A)\rVert\leq\lVert A\rVert$. It is a
+    trace-preserving completely positive map, and
+    $\lVert A-E_D(A)\rVert\le2\lVert A-A_0\rVert$ for every $A_0\in\mathcal A_D$.
 \end{theorem}
 \begin{proof}\leanok
     By~(\ref{eq:sites_region_expectation}), $E_D(A)$ is a multiple of a placed
@@ -270,7 +296,13 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     the space $\mathcal H_X$ is zero. Hence $\sum_{y,y'}W_{yy'}^*W_{yy'}=1$, and
     a sum $\sum_pW_p^*AW_p$ with $\sum_pW_p^*W_p=1$ preserves positivity and does
     not increase the operator norm. The trace of the right side
-    of~(\ref{eq:sites_region_expectation}) is $c^{-1}\cdot c\Tr A$.
+    of~(\ref{eq:sites_region_expectation}) is $c^{-1}\cdot c\Tr A$. The operators
+    $W_{yy'}^*$ are Kraus operators of $E_D$: $W_{yy'}^*=W_{y'y}$, so
+    $\sum W_{yy'}W_{yy'}^*=\sum W_{y'y}^*W_{y'y}=1$. Finally, for $A_0\in\mathcal A_D$,
+    \begin{align*}
+        A-E_D(A)=(A-A_0)-E_D(A-A_0),
+    \end{align*}
+    and both terms have norm at most $\lVert A-A_0\rVert$.
 \end{proof}
 
 \begin{theorem}[Localization error through on-site commutators]
@@ -329,6 +361,22 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     unitary supported on a site $y\notin D$, so
     Theorem~\ref{thm:sites_region_expectation_localization} with
     $\varepsilon=0$ gives $A=E_D(A)\in\mathcal A_D$.
+\end{proof}
+
+\begin{corollary}[Functional calculus preserves the support]
+    \label{cor:sites_cfc_support}
+    \lean{ManyBody.cfc_mem_supportedOperators, ManyBody.sqrt_mem_supportedOperators,
+        ManyBody.abs_mem_supportedOperators}
+    \leanok
+    \uses{cor:sites_commutant}
+    If $A\in\mathcal A_D$, then $f(A)\in\mathcal A_D$ for every real function $f$,
+    and $\sqrt A,\lvert A\rvert\in\mathcal A_D$.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{lem:sites_supported_commute}
+    $A$ commutes with $\mathcal A_{V\setminus D}$, hence so does every function of
+    $A$; apply Corollary~\ref{cor:sites_commutant}. For the absolute value,
+    $\lvert A\rvert=\sqrt{A^*A}$ with $A^*A\in\mathcal A_D$.
 \end{proof}
 
 \section{Configurations along a partition}
@@ -420,13 +468,17 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \lean{ManyBody.siteConfigurationEquiv, ManyBody.regionConfigurationEquiv,
         ManyBody.complementConfigurationEquiv, ManyBody.relabelVector,
         ManyBody.norm_relabelVector, ManyBody.regionState_relabel,
-        ManyBody.regionEntropy_relabel}
+        ManyBody.regionEntropy_relabel, ManyBody.siteConfigurationEquiv_symm_apply,
+        ManyBody.reindex_siteConfigurationEquiv_mem_supportedOperators,
+        ManyBody.reindex_siteConfigurationEquiv_regionExpectation}
     \leanok
-    \uses{def:sites-regional-state}
+    \uses{def:sites-regional-state, def:sites_supported, def:sites_region_expectation}
     A bijection of sites, together with bijections of their basis types,
     preserves vector norms. For corresponding regions, the regional matrices
     are related by the induced basis permutation and have equal entropy.
-    These statements hold for empty basis types and unnormalized vectors.
+    These statements hold for empty basis types and unnormalized vectors. The
+    induced permutation carries $\mathcal A_D$ into $\mathcal A_{D'}$ and commutes
+    with the region expectation: $P\,E_D(A)\,P^*=E_{D'}(PAP^*)$.
 \end{lemma}
 \begin{proof}
     \leanok
@@ -470,6 +522,66 @@ supports of bounded range on them.
 \begin{proof}\leanok
     The positions of a support of range $R$ lie in $[m,m+R]$ for its least
     position $m$. The other statements are comparisons of positions.
+\end{proof}
+
+\begin{definition}[Boundary edges of a region of the chain]
+    \label{def:sites_chain_boundary}
+    \lean{ManyBody.boundaryEdges, ManyBody.mem_boundaryEdges, ManyBody.boundaryEdges_empty,
+        ManyBody.boundaryEdges_univ}
+    \leanok
+    \uses{def:sites_chain_support}
+    The boundary edges of a region $D$ of the chain of $L$ sites are the positions
+    $p$ with $p+1<L$ such that exactly one of $p$ and $p+1$ lies in $D$. The empty
+    region and the whole chain have no boundary edges.
+\end{definition}
+
+\begin{lemma}[A split support lies near a boundary edge]
+    \label{lem:sites_chain_boundary_window}
+    \lean{ManyBody.IsChainSupport.exists_boundary_window_of_split}
+    \leanok
+    \uses{def:sites_chain_boundary}
+    A support $X$ of range $R$ that meets a region $D$ and its complement lies in
+    the window $\lbrack p+1-R,p+1+R)$ about some boundary edge $p$ of $D$.
+\end{lemma}
+\begin{proof}\leanok
+    Take $u<v$ in $X$ with exactly one of them in $D$. Membership in $D$ changes
+    between some consecutive positions $p,p+1$ with $u\le p<v$, and $p$ is a
+    boundary edge. For $x\in X$ the range condition gives $x\le u+R$ and
+    $v\le x+R$, so
+    \begin{align*}
+        p+1-R\le v-R\le x\le u+R\le p+R<p+1+R.
+    \end{align*}
+\end{proof}
+
+\begin{lemma}[A split support of range one]
+    \label{lem:sites_chain_range_one_cut}
+    \lean{ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one}
+    \leanok
+    \uses{lem:sites_chain_support}
+    A support of range one meeting both $[0,k)$ and its complement is
+    $\lbrack k-1,k+1)$.
+\end{lemma}
+\begin{proof}\leanok
+    It has two distinct points, so by Lemma~\ref{lem:sites_chain_support} it is an
+    interval $\lbrack a,a+2)$; meeting both sides of $k$ forces $a<k\le a+1$, so
+    $a=k-1$.
+\end{proof}
+
+\begin{lemma}[Distance on the path]
+    \label{lem:sites_path_distance}
+    \lean{SimpleGraph.pathGraph_edist, SimpleGraph.pathGraph_card_sphere_le_two,
+        ManyBody.ChainSupport.edist_le}
+    \leanok
+    \uses{def:sites_chain_support}
+    The graph distance of the path on $\{0,\dots,L-1\}$ is $d(x,y)=\lvert x-y\rvert$,
+    every sphere of the path has at most two points, and a support of range $R$ has
+    path diameter at most $R$.
+\end{lemma}
+\begin{proof}\leanok
+    Each step of a walk changes the position by one, so $d(x,y)\ge\lvert x-y\rvert$, and
+    the walk along consecutive positions has length $\lvert x-y\rvert$. The sphere of
+    radius $r$ about $x$ lies in $\{x-r,x+r\}$, and points of a support of range $R$
+    satisfy $\lvert x-y\rvert\le R$.
 \end{proof}
 
 \begin{definition}[Finite domains of the integers]

@@ -2821,3 +2821,50 @@ four-positive-parts estimate of Equation (8.117), and
 and `Matrix.transferMatrix_l2_opNorm_pow_sub_le_sSup_traceNormAsymptoticDistance`
 prove the converse supremum lower bound in Equation (8.113) for every `n`, for
 positive dimension.
+
+Theorem 5.8 source boundary: the displayed kernel with a finite positive measure forces a quadratic tangent remainder at zero, excluding the operator-convex function `x^(3/2)`. See `docs/paper-gaps/wolf_ch5_operator_convexity_scope.tex`. The general integral characterization remains open; this is not a formal proof of its replacement.
+
+Theorem 5.12 prerequisite: `Matrix.cfc_jensen_of_resolvent_representation` proves subunital Jensen for integrable resolvent mixtures. `Matrix.cfc_jensen_of_integral_representation` provides general kernel assembly, including unequal matrix dimensions. Neither constructs a representing measure nor proves arbitrary operator-convex Jensen.
+
+Scalar-to-operator interchange is proved in `Matrix.IsHermitian.cfc_integral_of_eigenvalues`, with integrability only at each eigenvalue. `Matrix.cfc_jensen_of_scalar_integral` combines it with kernel Jensen. Representing-measure existence remains open.
+
+### Cone norm bounds (Equations 8.63, 8.67–8.69) — PARTIAL ISSUE #45
+
+`QICLean.Analysis.ConeNormBound` proves Eq. (8.63) for nonzero elements of a
+closed real convex cone with a norm monotone on the cone. `ProperCone.lowerRatio`
+uses the order supremum of Eq. (8.61), restricted to nonnegative scales;
+`lowerRatio_mem` proves finiteness and attainment under these hypotheses.
+No finite-dimensional or strict-positivity restriction is imposed.
+
+`norm_sub_le_lowerRatio_average` and `norm_sub_le_lowerRatio_sqrt` prove
+Eqs. (8.68)–(8.69), including zero ratios. `norm_sub_le_lowerRatio_log` gives
+Eq. (8.67) in lower-ratio logarithmic form when both ratios are positive.
+The dual-cone ratio equivalence and an extended-valued Hilbert metric are
+not yet supplied, so Eq. (8.67) is not recorded as fully formalized here.
+
+`lowerRatio_le_map` and `neg_log_lowerRatio_map_le` give positive-map
+nonexpansiveness in ratio and finite logarithmic form. They require
+cone-monotone norms on both spaces and nonzero input and output vectors.
+They do not prove the sharper Birkhoff coefficient in Eq. (8.89).
+The diameter bounds, uniqueness, trace comparisons, pseudoinverse formula,
+chi-squared corollary, and equal-support two-state interpolation remain open.
+In particular, no strict-positivity replacement for the equal-support theorem
+is claimed. The already-landed Eqs. (8.87), (8.93)–(8.95) are unchanged.
+
+### Spectral bound on projective diameter (Equation 8.91) — UNRESTRICTED EXTENSION OBSTRUCTION
+
+`QICLean.Analysis.ProjectiveDiameterCounterexample` gives the positive map
+`T(x,y)=(x,2y)` on the closed positive quadrant. It fixes `(1,0)` but has
+an independent eigenvector `(0,1)` of eigenvalue `2`, exceeding every
+coefficient at most `1`. Its output logarithmic distances on strictly
+positive inputs are unbounded: the lower ratios for images `(1,t)`, `(1,1)`
+are `1` and `1/t`, giving distance `log t`.
+
+This refutes the proposed unrestricted extension only when `tanh(∞)=1`
+is adopted. Without an extended-real convention, the displayed expression
+is undefined on this example. It does not refute the finite-diameter or
+interior-fixed-point theorem. See
+`docs/paper-gaps/wolf_ch8_projective_spectral_bound.tex`. No corrected theorem
+is marked complete. The formal counterexample uses lower-ratio logarithms;
+the extended-valued metric/diameter API remains absent. The example does not
+contradict Eq. (8.92), since the map is not trace preserving.
