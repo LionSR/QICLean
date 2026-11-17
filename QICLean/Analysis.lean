@@ -102,6 +102,7 @@ import QICLean.Analysis.FiniteExponentialRetainedMass
 import QICLean.Analysis.FiniteFamilyImageCoordinates
 import QICLean.Analysis.FiniteFamilyImageProjection
 import QICLean.Analysis.FiniteFrameMeasurable
+import QICLean.Analysis.FiniteKroneckerPowers
 import QICLean.Analysis.FiniteProductSectionProbability
 import QICLean.Analysis.FiniteProductUnionProbability
 import QICLean.Analysis.FiniteProductUpdateProbability

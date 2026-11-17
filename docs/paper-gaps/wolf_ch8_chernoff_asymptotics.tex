@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Quantum Chernoff: Finite-Copy Bounds and the Missing Converse}
+\author{}
+\date{2026-11-16}
+\begin{document}
+\maketitle
+\gapnote{open-gap}{open}
+
+\section{Source assertion}
+For density matrices $\rho,\sigma$ and $0<p<1$, Wolf asserts~\cite[Equation~(8.44)]{Wolf2012Quantum}
+\begin{align}
+ \lim_{N\to\infty}-\frac1N\log e_N
+   &=-\log\inf_{s\in[0,1]}\tr[\rho^s\sigma^{1-s}],
+ \label{eq:wolf_ch8_chernoff_asymptotics_source_limit}
+\end{align}
+where $e_N$ is the minimum error over all two-outcome measurements on $N$
+identical copies.\footnote{Wolf, \emph{Quantum Channels \& Operations},
+Equation (8.44), \path{Notes/WolfNoteTexSource/ch08_distance_measures.tex},
+lines 569--590. The substitution $s\mapsto1-s$ interchanges the source's
+exponent convention with the one used here.}
+
+\section{Established estimate}
+For $p,s\in[0,1]$ and every $N\ge0$, the attained minimum satisfies
+\begin{align}
+ 0\le e_N&\le p^s(1-p)^{1-s}
+     \left(\operatorname{Re}\tr[\rho^s\sigma^{1-s}]\right)^N.
+ \label{eq:wolf_ch8_chernoff_asymptotics_finite_bound}
+\end{align}
+This holds without invertibility or commutativity assumptions. More generally,
+for independent pairs $(\rho_i,\sigma_i)$ the overlap power in
+(\ref{eq:wolf_ch8_chernoff_asymptotics_finite_bound}) is replaced by the product of their overlaps.
+The proof combines the attained Neyman--Pearson minimum with Wolf's
+Equation (8.54)~\cite[Equations~(8.41), (8.54)]{Wolf2012Quantum}, then factors powers and traces over tensor products.
+For a fixed $s\in[0,1]$, write
+$q=Q_s(\rho,\sigma)=\operatorname{Re}\tr[\rho^s\sigma^{1-s}]$.
+If $q>0$, $e_N\le\exp(N\log q)$, uniformly over priors.
+If $q<1$, then $e_N\to0$.\footnote{Declarations in
+\path{QICLean/Channel/QuantumChernoff.lean}, especially
+\leanid{Matrix.optimalHypothesisTestError_iid_le} and
+\leanid{Matrix.optimalHypothesisTestError_iid_le_exp}.}
+
+\section{Remaining work}
+An upper bound on the error gives the direct bound on its exponent; it does not
+bound the exponent from above. The matching asymptotic converse, existence of
+the optimal logarithmic-rate limit, and its equality to the infimum expression
+are not proved by (\ref{eq:wolf_ch8_chernoff_asymptotics_finite_bound}). No conclusion equivalent to the
+converse is assumed in the finite-copy results.
+
+Singular states require care when expressing the full theorem: orthogonal
+supports can give $e_N=0$, so the exponent is infinite. A real-valued logarithm
+totalized at zero cannot express that case. One must use extended values or
+state and justify separate zero-error cases. The powers here take $A^0=\mathbb1$
+even for singular $A$; negative scalar powers vanish at zero. Any comparison
+with endpoint support-projection conventions must also be justified when
+passing to the infimum.
+
+To close the source theorem, formalize the quantum Chernoff converse and
+combine it with the finite-copy estimate using an appropriate treatment of
+infinite exponents. The Hiai--Petz and Stein theorems, inverse-power trace
+inequality (8.55)~\cite[Equation~(8.55)]{Wolf2012Quantum}, and the remaining quasi-relative-entropy range are separate
+open tasks. In particular, (8.55) cannot use totalized negative powers without
+a support condition: $A=1$, $B=0$, $s=1$ would assert $\tr1\le0$.
+These observations do not add hypotheses to the finite-copy estimate.
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}
