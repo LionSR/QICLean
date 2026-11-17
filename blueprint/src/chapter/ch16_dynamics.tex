@@ -43,15 +43,17 @@ or the local dimensions.
 \begin{lemma}[Rescaling energy and time]
     \label{lem:dynamics_time_scaling}
     \lean{ManyBody.heisenbergEvolution_smul,
-        ManyBody.heisenbergEvolution_inv_smul_mul}
+        ManyBody.heisenbergEvolution_inv_smul_mul, ManyBody.norm_heisenbergEvolution}
     \leanok
     \uses{def:dynamics_heisenberg}
     For real $c$, the evolution under $cH$ at time $t$ is the evolution under
     $H$ at time $ct$. In particular, for $\Delta\neq0$ the evolution under
     $\Delta^{-1}H$ at time $\Delta t$ is the evolution under $H$ at time $t$.
+    For Hermitian $H$, $\lVert\tau_t(A)\rVert=\lVert A\rVert$.
 \end{lemma}
 \begin{proof}\leanok
-    Both sides are $e^{ictH}Ae^{-ictH}$.
+    Both sides are $e^{ictH}Ae^{-ictH}$. For Hermitian $H$ the matrices
+    $e^{\pm itH}$ are unitary.
 \end{proof}
 
 \section{The local commutator recursion}
@@ -88,12 +90,15 @@ or the local dimensions.
         ManyBody.heisenbergCommutatorNorm_neg_time,
         ManyBody.continuous_heisenbergCommutatorNorm,
         ManyBody.heisenbergCommutatorNorm_zero_le,
-        ManyBody.heisenbergCommutatorNorm_zero_of_disjoint}
+        ManyBody.heisenbergCommutatorNorm_zero_of_disjoint,
+        ManyBody.heisenbergCommutatorNorm_le_of_forall,
+        ManyBody.heisenbergCommutatorNorm_le_two_mul}
     \leanok
-    \uses{def:dynamics_commutator_norm}
+    \uses{def:dynamics_commutator_norm, lem:dynamics_time_scaling}
     The function $F_S$ is nonnegative and continuous. Reversing time amounts to
     replacing $H$ by $-H$. At time zero, $F_S(0)\leq2\lVert B\rVert$, and
-    $F_S(0)=0$ when $B$ is supported on a region disjoint from $S$.
+    $F_S(0)=0$ when $B$ is supported on a region disjoint from $S$. For
+    Hermitian $H$, $F_S(t)\leq2\lVert B\rVert$ at every time.
 \end{lemma}
 \begin{proof}\leanok
     \uses{lem:dynamics_commutator_ring, lem:sites_supported_commute}
@@ -184,6 +189,43 @@ $\sum_{k:\,x\in T_k}\lVert h_k\rVert\leq b_0$ for every site $x$.
     reduces the system to the first form.
 \end{proof}
 
+\begin{theorem}[Lieb--Robinson bound of Hastings and Koma]
+    \label{thm:dynamics_lieb_robinson_hastings_koma}
+    \lean{ManyBody.heisenbergCommutatorNorm_le_graphDistance_of_disjoint,
+        ManyBody.norm_heisenberg_commutator_le_graphDistance_of_disjoint}
+    \leanok
+    \uses{def:dynamics_interaction, def:dynamics_heisenberg}
+    Let $\Phi=(h_k)_{k\in J}$ be an interaction with finitely many Hermitian
+    terms, where the support $T_k$ has $d_G$-diameter at most $D_k$. Let $\mu\geq0$
+    and $s\in\R$ with
+    \begin{align*}
+        \sum_{k:\,x\in T_k}\lvert T_k\rvert\,\lVert h_k\rVert e^{\mu D_k}\leq s
+    \end{align*}
+    for every site $x$. Let $S$ and $Y$ be disjoint regions with $d_G(x,y)\geq n$
+    for all $x\in S$ and $y\in Y$. If $A\in\mathcal A_S$ and
+    $B\in\mathcal A_Y$, then for every $t\in\R$
+    \begin{align*}
+        \lVert[\tau_t(A),B]\rVert\leq2\lvert S\rvert\lVert A\rVert\lVert B\rVert
+            e^{-\mu n}\bigl(e^{2s|t|}-1\bigr).
+    \end{align*}
+    This is~\cite[Theorem~A.2]{HastingsKoma2006SpectralGap} on a finite graph,
+    with Lieb--Robinson velocity $2s$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:dynamics_recursion, lem:dynamics_volterra, lem:dynamics_commutator_norm,
+        thm:dynamics_closed_region}
+    If $S$ is empty, $A$ is a multiple of the identity. Otherwise let $t\geq0$
+    and $s>0$, and index the recursion of
+    Theorem~\ref{thm:dynamics_recursion} by the nonempty regions $Z$, with weights
+    $w_Z=\lvert Z\rvert e^{-\mu\min(n,d_G(Z,Y))}$. If $T_k$ meets $Z$, then
+    $d_G(Z,Y)\leq d_G(T_k,Y)+D_k$, so $w_{T_k}\leq\lvert T_k\rvert e^{\mu D_k}
+    e^{-\mu\min(n,d_G(Z,Y))}$, and summing over the sites of $Z$ gives the row
+    bound of Lemma~\ref{lem:dynamics_volterra} with $v=2s$. The initial values
+    are at most $2\lVert B\rVert w_Z$ and vanish at $Z=S$, so the last bound of
+    that lemma applies. The case $s=0$ follows by letting $s$ decrease to $0$,
+    and $t<0$ by applying the result to $-\Phi$.
+\end{proof}
+
 \begin{theorem}[Lieb--Robinson bound in graph distance]
     \label{thm:dynamics_lieb_robinson}
     \lean{ManyBody.heisenbergCommutatorNorm_le_graphDistance,
@@ -212,15 +254,19 @@ $\sum_{k:\,x\in T_k}\lVert h_k\rVert\leq b_0$ for every site $x$.
     in~\cite{Hastings2007AreaLaw}.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:dynamics_recursion, lem:dynamics_volterra, lem:dynamics_commutator_norm}
+    \uses{thm:dynamics_recursion, lem:dynamics_volterra, lem:dynamics_commutator_norm,
+        thm:dynamics_lieb_robinson_hastings_koma}
     For $t\geq0$ apply Theorem~\ref{thm:dynamics_recursion} to every support
     $T_k$. Supports that meet have anchors at distance at most $2R$, so the
     weights $w_k=e^{-\mu\min(n,d_G(a_k,Y))}$ satisfy the row bound of
     Lemma~\ref{lem:dynamics_volterra} with $v=2v_Rb_0e^{2\mu R}$, and the
     initial values are at most $2\lVert B\rVert e^{\mu R}w_k$. For $t<0$ apply
-    the result to $-\Phi$. For a general region $S$, apply the bound to the
-    supports meeting $S$ in the recursion for $F_S$ and absorb the factor of
-    time into the velocity.
+    the result to $-\Phi$. For general regions $S$ and $Y$, if they meet then
+    $n=0$ and $F_S(t)\leq2\lVert B\rVert$; otherwise
+    Theorem~\ref{thm:dynamics_lieb_robinson_hastings_koma} with $D_k=R$ and
+    $s=v_R|b_0|e^{\mu R}$ gives
+    $2\lvert S\rvert\lVert B\rVert e^{2v_R|b_0|e^{\mu R}|t|-\mu n}$, which is at
+    most both stated bounds.
 \end{proof}
 
 \begin{theorem}[Exact vanishing at infinite distance]
