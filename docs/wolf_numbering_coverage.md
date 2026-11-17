@@ -997,6 +997,45 @@ The complete-environment tally above records the historical August audit.
   counterexample to the uncorrected condition. The correction is documented in
   `docs/paper-gaps/wolf_schur_complement_tfae.tex`.
 
+### Theorem 5.14 and Corollary 5.4(1) — QUADRATIC CASE ON THE INVERTIBLE DOMAIN
+
+- `Matrix.convexOn_quadraticPerspective` proves joint operator convexity of
+  `Lᴴ * (g R)⁻¹ * L` for an operator-concave, positive definite denominator
+  on a convex domain. The numerator is arbitrary and may be rectangular.
+  `Matrix.convexOn_affine_quadraticPerspective` allows an arbitrary affine
+  numerator depending on the same parameters as the concave denominator.
+- `Matrix.sum_conjTranspose_inv_mul_le` proves the finite weighted inequality
+  whenever the positive definite denominator majorizes the weighted sum of
+  positive definite denominators. Weights are nonnegative, without normalization.
+- `Matrix.conjTranspose_rpow_neg_mul_convex` and
+  `Matrix.convexOn_conjTranspose_rpow_neg_mul` prove Corollary 5.4(1) for
+  positive definite `R`, all `α ∈ [0,1]`, and arbitrary rectangular `L`.
+  `Matrix.sum_conjTranspose_rpow_neg_mul_le` gives finite probability mixtures.
+- The PDF prints Hermitian `R`, unlike the transcription's positive `R`.
+  The printed claim fails already for scalar inverses at `R=-1,-2`.
+  The corrected inverse domain and the distinction from the still-open general-function
+  Theorem 5.14 are documented in
+  `docs/paper-gaps/wolf_ch5_quadratic_perspective_domain.tex`.
+  Corollary 5.4(2–3) and the full named environment remain open. No aggregate
+  environment count is changed by this clause-level result.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines 849–933.
+
+### Corollary 5.5(1,3) — TWO-FACTOR TENSOR POWERS
+
+- `Matrix.rpow_kronecker_rpow_concave` proves joint operator concavity for
+  `x,y ≥ 0`, `x+y ≤ 1`, on positive semidefinite pairs of the same size.
+- `Matrix.rpow_kronecker_rpow_convex` proves joint operator convexity for
+  `x ∈ [1,2]`, `y ∈ [1-x,0]`, with a positive semidefinite first input and
+  positive definite second input. This includes `x=1+α`, `y=-αβ` for
+  `α,β ∈ [0,1]`. The inverse domain follows the clarification in
+  `docs/paper-gaps/wolf_ch5_lieb_convexity_domain.tex`.
+- `Matrix.vec_transpose_kronecker_quadratic` proves Equation 5.48 for arbitrary
+  complex matrices. Testing every vector transfers the existing trace results
+  to the operator inequalities; no commutation assumption is added.
+- The arbitrary multi-factor assertion in Corollary 5.5(2) remains open.
+  The named environment is therefore still partial.
+- Source: `Notes/WolfNoteTexSource/ch05_schwarz_inequalities.tex`, lines 939–959.
+
 ### Theorem 5.15, Equation 5.47 (Ando--Lieb) — CONCAVE REGION AND CONVEX INVERTIBLE DOMAIN FORMALIZED
 
 - `lieb_concavity_subboundary` proves the concave region on positive
