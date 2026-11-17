@@ -102,6 +102,7 @@ singular nondegenerate-row-space extension remains open, as recorded in
 theorem exists_right_isometry_of_gram_eq_of_isUnit {A B H : Matrix n n ℝ}
     (hB : IsUnit B) (hGram : A * H * A.transpose = B * H * B.transpose) :
     ∃ L : Matrix n n ℝ, L.transpose * H * L = H ∧ A = B * L.transpose := by
+  have hBdet : IsUnit B.det := (isUnit_iff_isUnit_det B).mp hB
   refine ⟨(B⁻¹ * A).transpose, ?_, ?_⟩
   · simp only [transpose_transpose, transpose_mul]
     calc
@@ -111,11 +112,11 @@ theorem exists_right_isometry_of_gram_eq_of_isUnit {A B H : Matrix n n ℝ}
       _ = H := by
         have ht : B.transpose * B⁻¹.transpose = 1 := by
           simpa only [transpose_mul, transpose_one] using
-            congrArg Matrix.transpose (nonsing_inv_mul B ((isUnit_iff_isUnit_det B).mp hB))
-        simp only [← mul_assoc, nonsing_inv_mul B ((isUnit_iff_isUnit_det B).mp hB), one_mul]
+            congrArg Matrix.transpose (nonsing_inv_mul B hBdet)
+        simp only [← mul_assoc, nonsing_inv_mul B hBdet, one_mul]
         rw [mul_assoc, ht, mul_one]
   · simp only [transpose_transpose, ← mul_assoc,
-      mul_nonsing_inv B ((isUnit_iff_isUnit_det B).mp hB), one_mul]
+      mul_nonsing_inv B hBdet, one_mul]
 
 /-- For an involutory metric the two orientations of the isometry equation agree.
 In particular this converts the recovered factor to the row convention of VDDM. -/

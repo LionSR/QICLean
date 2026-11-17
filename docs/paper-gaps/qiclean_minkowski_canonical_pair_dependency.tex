@@ -210,8 +210,23 @@ invertible $X$ and $\Sigma$, and
     H(OJO^{\mathsf T})&=\Sigma H\Sigma^{\mathsf T}.
     \label{eq:qiclean_minkowski_canonical_pair_dependency_decomposition_square_root}
 \end{align}
-Then $L_1=(OX)^{\mathsf T}$ preserves $H$, and
-$RHR^{\mathsf T}=(L_1\Sigma)H(L_1\Sigma)^{\mathsf T}$.
+Set $Y=OX$. Equations
+(\ref{eq:qiclean_minkowski_canonical_pair_dependency_decomposition_congruence}) and
+(\ref{eq:qiclean_minkowski_canonical_pair_dependency_decomposition_normalization})
+give $YHY^{\mathsf T}=O(XHX^{\mathsf T})O^{\mathsf T}=H$.
+Since $H^2=I$, the two isometry orientations agree, so
+$L_1=Y^{\mathsf T}$ also preserves $H$.
+By (\ref{eq:qiclean_minkowski_canonical_pair_dependency_decomposition_orthogonal}),
+$O$ is invertible, hence so is $Y$.
+Equations
+(\ref{eq:qiclean_minkowski_canonical_pair_dependency_decomposition_similarity}) and
+(\ref{eq:qiclean_minkowski_canonical_pair_dependency_decomposition_orthogonal})
+give $Y(HRHR^{\mathsf T})=(OJO^{\mathsf T})Y$.
+Using this normalized similarity, $YHY^{\mathsf T}=H$, $H^2=I$, and
+(\ref{eq:qiclean_minkowski_canonical_pair_dependency_decomposition_square_root}),
+the Gram calculation yields
+$RHR^{\mathsf T}=Y^{\mathsf T}\Sigma H\Sigma^{\mathsf T}Y
+=(L_1\Sigma)H(L_1\Sigma)^{\mathsf T}$.
 For an invertible factor $B=L_1\Sigma$, take
 $L_2=(B^{-1}R)^{\mathsf T}$. This proves
 $R=L_1\Sigma L_2^{\mathsf T}$ and $L_iHL_i^{\mathsf T}=H$.

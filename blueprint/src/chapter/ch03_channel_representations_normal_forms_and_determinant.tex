@@ -268,8 +268,13 @@ $H$-selfadjoint when $C^{\mathsf T}H=HC$.
     $A^{\mathsf T}H=HA$, then $AH=HA^{\mathsf T}$.
 \end{theorem}
 \begin{proof}\leanok
-    Transpose the product and use $H^{\mathsf T}=H$ and $H^2=I$;
-    then specialize to $H=M$.
+    Using $H^{\mathsf T}=H$ and $H^2=I$, we obtain
+    \begin{align*}
+        (HAHA^{\mathsf T})^{\mathsf T}H
+        &=AHA^{\mathsf T}H^2=AHA^{\mathsf T}\\
+        &=H^2AHA^{\mathsf T}=H(HAHA^{\mathsf T}).
+    \end{align*}
+    Specializing to $H=M$ and $A=R$ proves the Minkowski case.
     For the final assertion, multiplication of $A^{\mathsf T}H=HA$
     on the left and right by $H$ gives
     $HA^{\mathsf T}H^2=H^2AH$, hence $HA^{\mathsf T}=AH$.
@@ -288,9 +293,23 @@ $H$-selfadjoint when $C^{\mathsf T}H=HC$.
     $C=X^{-1}JX$ and $XHX^{\mathsf T}=P$.
 \end{theorem}
 \begin{proof}\leanok
-    Transpose the similarity and cancel $S$ against $S^{-1}$ in the
-    congruence. The reversal identities give $XC=JX$ and
-    $XHX^{\mathsf T}=WPW^{\mathsf T}=P$; multiply $XC=JX$ by $X^{-1}$.
+    Transposing the similarity and substituting the congruence gives
+    \begin{align*}
+        C&=S^{\mathsf T}J^{\mathsf T}S^{-\mathsf T},\\
+        S^{-\mathsf T}HS^{-1}
+        &=(S^{-\mathsf T}S^{\mathsf T})P(SS^{-1})=P.
+    \end{align*}
+    Since $S^{-\mathsf T}S^{\mathsf T}=I$ and $W^2=I$, the choice
+    $X=WS^{-\mathsf T}$ satisfies
+    \begin{align*}
+        XC&=WS^{-\mathsf T}(S^{\mathsf T}J^{\mathsf T}S^{-\mathsf T})
+          =WJ^{\mathsf T}S^{-\mathsf T}\\
+          &=(WJ^{\mathsf T}W)(WS^{-\mathsf T})=JX,\\
+        XHX^{\mathsf T}&=W(S^{-\mathsf T}HS^{-1})W^{\mathsf T}
+          =WPW^{\mathsf T}=P.
+    \end{align*}
+    Both $W$ and $S^{-\mathsf T}$ are invertible, so $X$ is invertible
+    and $C=X^{-1}(XC)=X^{-1}JX$.
 \end{proof}
 
 \begin{theorem}[Normalization of a given canonical pair]
@@ -342,12 +361,20 @@ $H$-selfadjoint when $C^{\mathsf T}H=HC$.
     $LHL^{\mathsf T}=H$ are equivalent.
 \end{theorem}
 \begin{proof}\leanok
-    Set $L=(B^{-1}A)^{\mathsf T}$. Congruence of the Gram equality by
-    $B^{-1}$ gives $L^{\mathsf T}HL=H$.
-    If $H^2=I$, the latter equality says that $HL^{\mathsf T}H$ is a
-    left inverse of $L$. It is also a right inverse, which gives the
-    other isometry identity; apply the same argument to $L^{\mathsf T}$
-    for the converse.
+    Set $L=(B^{-1}A)^{\mathsf T}$. The Gram equality gives
+    \begin{align*}
+        L^{\mathsf T}HL
+        &=B^{-1}(AHA^{\mathsf T})B^{-\mathsf T}\\
+        &=B^{-1}(BHB^{\mathsf T})B^{-\mathsf T}
+          =(B^{-1}B)H(B^{-1}B)^{\mathsf T}=H,\\
+        BL^{\mathsf T}&=BB^{-1}A=A.
+    \end{align*}
+    If $H^2=I$ and $L^{\mathsf T}HL=H$, then
+    $(HL^{\mathsf T}H)L=H(L^{\mathsf T}HL)=H^2=I$.
+    A left inverse of a finite square matrix is also a right inverse,
+    so $L(HL^{\mathsf T}H)=I$. Multiplication on the right by $H$ gives
+    $LHL^{\mathsf T}H^2=H$, hence $LHL^{\mathsf T}=H$.
+    Apply the same argument to $L^{\mathsf T}$ for the converse.
 \end{proof}
 
 \begin{theorem}[Decomposition with supplied canonical data and invertible square root]

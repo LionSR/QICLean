@@ -2388,3 +2388,14 @@ unitary norm arguments.
   `QICLean/Channel/KrausStateEffectCoupling.lean` (`hPrepared`).
   These two legacy calculations stay below the promotion threshold.
   Prefer the existing automorphism API for another unitary caller.
+
+## Candidate: matrix-unit determinant evidence — local reuse (2026-11-17)
+
+- **Pattern:** Convert `hB : IsUnit B` with
+  `(Matrix.isUnit_iff_isUnit_det B).mp hB` for nonsingular-inverse lemmas.
+- **Occurrence:** `Matrix.exists_right_isometry_of_gram_eq_of_isUnit` in
+  `Algebra/MinkowskiReduction.lean` now binds `hBdet` once for three uses.
+- **Decision:** Reuse the existing Mathlib equivalence; no wrapper or tactic.
+  Other conversions in that file each supply a different matrix or theorem
+  context (the reversal proof uses both `S` and `W * S⁻¹.transpose`), so
+  they do not duplicate evidence within a proof.
