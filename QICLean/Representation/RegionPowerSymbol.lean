@@ -70,12 +70,6 @@ theorem commute_localLift_of_isSupportedOn {Q D : Finset V} (hQD : Disjoint Q D)
   obtain ⟨K', rfl⟩ := hc.exists_localLift σ₀
   exact commute_localLift_of_disjoint hQD K K'
 
-/-- **Temporary** restatement of `ManyBody.place_pow` over `Entropy.localLift`;
-deleted in step 4.0 of the many-body plan. -/
-theorem localLift_pow {D : Finset V} (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
-    (m : ℕ) : localLift D (K ^ m) = localLift D K ^ m :=
-  ManyBody.place_pow (X := fun v ↦ Fin (n v)) K m
-
 /-- Real polynomials commute with lifts. -/
 theorem aeval_localLift {D : Finset V} (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
     (p : ℝ[X]) : aeval (localLift D K) p = localLift D (aeval K p) := by
@@ -83,7 +77,8 @@ theorem aeval_localLift {D : Finset V} (K : Matrix (RegionConfig n D) (RegionCon
   | add p q hp hq => rw [map_add, map_add, hp, hq, localLift_add]
   | monomial m c =>
     simp only [aeval_monomial, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul]
-    rw [← Complex.coe_smul, ← Complex.coe_smul, localLift_smul, localLift_pow]
+    rw [← Complex.coe_smul, ← Complex.coe_smul, localLift_smul]
+    simp only [ManyBody.place_pow]
 
 theorem l2_opNorm_localLift_le {D : Finset V}
     (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) : ‖localLift D K‖ ≤ ‖K‖ := by
@@ -276,12 +271,6 @@ theorem norm_localLift_cfc_mulVec_sq_le (Q : Finset V) (θ : SiteConfig n → �
     _ = B * Fintype.card (RegionConfig n Q) := by
         rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_comm]
 
-/-- **Temporary** restatement of `ManyBody.place_sub` over `Entropy.localLift`;
-deleted in step 4.0 of the many-body plan. -/
-theorem localLift_sub {D : Finset V} (K K' : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
-    localLift D (K - K') = localLift D K - localLift D K' :=
-  ManyBody.place_sub (X := fun v ↦ Fin (n v)) K K'
-
 /-- Unit vectors have Euclidean norm one. -/
 theorem norm_eq_one_of_mem_unitSphere {X : Type*} [Fintype X] {θ : X → ℂ}
     (hθ : θ ∈ unitSphere) : ‖(EuclideanSpace.equiv X ℂ).symm θ‖ = 1 := by
@@ -296,7 +285,7 @@ theorem l2_opNorm_localLift_cfc_sub_aeval_le (Q : Finset V) {θ : SiteConfig n �
     (hθ : θ ∈ unitSphere) (φ : ℝ → ℝ) (p : ℝ[X]) {M : ℝ} (hM0 : 0 ≤ M)
     (hM : ∀ x ∈ Set.Icc (0 : ℝ) 1, |φ x - p.eval x| ≤ M) :
     ‖localLift Q (cfc φ (regionState Q (WithLp.toLp 2 θ))) - aeval (margLift Q θ) p‖ ≤ M := by
-  rw [margLift, aeval_localLift, ← localLift_sub]
+  rw [margLift, aeval_localLift, ← ManyBody.place_sub]
   refine (l2_opNorm_localLift_le _).trans ?_
   exact (isHermitian_regionState Q θ).l2_opNorm_cfc_sub_aeval_le φ p hM0 fun i =>
     hM _ (eigenvalues_regionState_mem Q hθ i)
@@ -416,7 +405,7 @@ theorem norm_regionPow_sandwich_sub_le {t δ η : ℝ} (ht0 : 0 < t) (ht1 : t < 
     refine Real.le_sqrt_of_sq_le ?_
     have hsub : regionPow Q (-t) θ - G =
         localLift Q (cfc (fun x => suppRpow (-t) x - max x δ ^ (-t)) ρ) := by
-      rw [regionPow, ← localLift_sub, hρ.cfc_sub_cfc]
+      rw [regionPow, ← ManyBody.place_sub, hρ.cfc_sub_cfc]
     rw [hsub]
     have := norm_localLift_cfc_mulVec_sq_le Q θ (fun x => suppRpow (-t) x - max x δ ^ (-t))
       (B := δ ^ (1 - 2 * t)) fun i => by

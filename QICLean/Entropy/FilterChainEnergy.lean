@@ -478,8 +478,8 @@ theorem abs_re_inner_sub_chain_conj_le_logarithmic (D : ℕ → Finset V)
 theorem regionState_smul (D : Finset V) (c : ℂ) (ψ : EuclideanSpace ℂ (SiteConfig n)) :
     regionState D (c • ψ) = ((‖c‖ ^ 2 : ℝ) : ℂ) • regionState D ψ := by
   ext a b
-  simp only [regionState, partialTraceRight, vecMulVec_apply, Matrix.smul_apply, smul_eq_mul,
-    Finset.mul_sum]
+  simp only [regionState, ManyBody.regionState, partialTraceRight, vecMulVec_apply,
+    Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   simp only [PiLp.smul_apply, smul_eq_mul, Pi.star_apply, star_mul',
     Complex.ofReal_pow, ← Complex.mul_conj', star_def]

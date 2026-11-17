@@ -7,6 +7,7 @@ import QICLean.Entropy.MarginalTails
 import QICLean.Algebra.L2OpNormReindex
 import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.Support
+import QICLean.ManyBody.Sites.RegionState
 
 /-!
 # Marginal tails for interactions with designated supports
@@ -100,7 +101,7 @@ noncomputable abbrev cutOperator (B : Finset V) (X : Matrix (SiteConfig n) (Site
 /-- A vector in cut coordinates. -/
 noncomputable abbrev cutVector (B : Finset V) (Ψ : EuclideanSpace ℂ (SiteConfig n)) :
     EuclideanSpace ℂ (((v : {v // v ∈ B}) → Fin (n v)) × ((v : {v // v ∉ B}) → Fin (n v))) :=
-  WithLp.toLp 2 fun x ↦ Ψ ((cutEquiv n B).symm x)
+  ManyBody.cutVector (X := fun v ↦ Fin (n v)) B Ψ
 
 section OneSided
 
