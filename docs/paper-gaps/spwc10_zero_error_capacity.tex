@@ -11,28 +11,31 @@
 \gapnote{scope-restriction}{open}
 
 \section{Zero-error capacity: scope}
-Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347,
-Theorem 2, allows one-shot capacity in its footnote. The formalization
+The footnote to \cite[Theorem~2]{Sanz2010Quantum} allows one-shot capacity. The formalization
 covers every channel power at or above the full Kraus-word-span threshold
 $i(A)$ in the primitive case, with unchanged channel hypotheses. This is
 a stronger threshold assumption than the source condition $n\ge q(E)$,
-where $q(E)$ is the first positivity-improving power. Proposition~1 proves
-$q(E)\le i(A)$, not equality. The example following Proposition~2 uses
+where $q(E)$ is the first positivity-improving power.
+The comparison in \cite[Proposition~1]{Sanz2010Quantum} gives
+$q(E)\le i(A)$, not equality. The example following Proposition~2 of \cite{Sanz2010Quantum} uses
 the three Pauli Kraus operators $\sigma_\alpha/\sqrt{3}$ and has
 $q(E)=1<i(A)=2$. Thus even the source-faithful one-shot threshold remains open.
 To remove this restriction, define the positivity-improving index and prove
 persistence of positive definite outputs from that index, then apply the
-one-shot trace-pairing criterion. No equality of the two indices is assumed. The full-word-span persistence theorem supplies
+one-shot trace-pairing criterion. No equality of the two indices is assumed.
+The full-word-span persistence theorem supplies
 positive definite outputs at every such power; the strictly positive
 trace pairing excludes orthogonal outputs.
 
 The regularized zero-error classical capacity, allowing entangled inputs
 across tensor powers, remains outside the formalized definition.
-The cited reference [14] is Cubitt, Chen and Harrow,
-\emph{Superactivation of the asymptotic zero-error classical capacity
-of a quantum channel}, arXiv:0906.2547v2. A future formalization must
+The regularized argument cited in the proof of
+\cite[Theorem~2]{Sanz2010Quantum} refers to Cubitt, Chen and Harrow
+\cite{Cubitt2009Superactivation}. A future formalization must
 define tensor-power coding and prove the corresponding full-rank-output
 criterion; the elementary one-shot trace-pairing argument alone must not
 be advertised as that stronger result.
 
+\bibliographystyle{plain}
+\bibliography{references}
 \end{document}

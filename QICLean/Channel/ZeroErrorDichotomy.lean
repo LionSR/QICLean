@@ -40,7 +40,7 @@ maps every nonzero positive input to a full-rank output, so no two outputs are o
   here only at the potentially later full-word-span threshold `i(A)`, not the source
   positivity-improving threshold `q(E)`. Proposition 1 gives `q(E) ≤ i(A)`; equality need
   not hold. Regularized capacity over tensor powers is also not formalized. See
-  `docs/paper-gaps/sanz10_zero_error_capacity.tex`.
+  `docs/paper-gaps/spwc10_zero_error_capacity.tex`.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder BigOperators
@@ -60,7 +60,7 @@ def HasOneShotZeroErrorBit (E : Mat →ₗ[ℂ] Mat) : Prop :=
 one-shot full-rank-output criterion; it makes no assertion about tensor powers.
 Sanz et al., arXiv:0909.5347, Theorem 2 cites Cubitt, Chen and Harrow,
 arXiv:0906.2547v2 for the regularized version. See
-`docs/paper-gaps/sanz10_zero_error_capacity.tex` for this scope restriction. -/
+`docs/paper-gaps/spwc10_zero_error_capacity.tex` for this scope restriction. -/
 theorem not_hasOneShotZeroErrorBit_of_posDef_outputs [NeZero D]
     (E : Mat →ₗ[ℂ] Mat) (hE : ∀ τ ∈ densityMatrices D, (E τ).PosDef) :
     ¬ HasOneShotZeroErrorBit E := by
@@ -177,7 +177,7 @@ Source: Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347, Theorem 2 (`thm:z
 **Scope restriction (capacity and threshold):** the source permits one-shot capacity, but
 its threshold is the positivity-improving index `q(E)`. This theorem uses the potentially
 larger full-word-span index `i(A)` (Proposition 1: `q(E) ≤ i(A)`), and does not prove the
-source threshold or regularized capacity. See `docs/paper-gaps/sanz10_zero_error_capacity.tex`. -/
+source threshold or regularized capacity. See `docs/paper-gaps/spwc10_zero_error_capacity.tex`. -/
 theorem zeroError_dichotomy_eventually [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP K)
     {ρ : Mat} (hρ : IsUnit ρ) (hρfix : mapLM K ρ = ρ) :
     (∀ n : ℕ, HasOneShotZeroErrorBit ((mapLM K) ^ n)) ∨
@@ -294,7 +294,7 @@ theorem zeroError_dichotomy_eventually [NeZero D] {r : ℕ} (K : Fin r → Mat) 
 
 **Scope restriction (capacity and threshold):** the index is the full-word-span threshold,
 not the source positivity-improving index; capacity is one-shot. See
-`docs/paper-gaps/sanz10_zero_error_capacity.tex`. -/
+`docs/paper-gaps/spwc10_zero_error_capacity.tex`. -/
 theorem zeroError_dichotomy [NeZero D] {r : ℕ} (K : Fin r → Mat) (hTP : IsTP K)
     {ρ : Mat} (hρ : IsUnit ρ) (hρfix : mapLM K ρ = ρ) :
     (∀ n : ℕ, HasOneShotZeroErrorBit ((mapLM K) ^ n)) ∨
