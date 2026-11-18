@@ -395,4 +395,26 @@ theorem map_ofCells (ev : Interpretation G) (cells : Finset Γ.Cell)
 
 end Layer
 
+namespace Circuit
+
+variable {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+  [∀ s, DecidableEq (Y s)]
+
+/-- The circuit of an onsite layer of single operators `V s` is the conjugation by their product
+`⊗ₛ V s`. -/
+theorem map_ofLayer_ofOnsite_single (ev : Interpretation G) (V : ∀ s, Matrix (Y s) (X s) ℂ)
+    (ρ : Matrix (Config X) (Config X) ℂ) :
+    (ofLayer (Layer.ofOnsite (Γ := Γ) (G := G) fun s ↦ KrausFamily.single (V s))).map ev ρ =
+      prodOp V * ρ * (prodOp V)ᴴ := by
+  set L : Layer Γ G X Y := Layer.ofOnsite fun s ↦ KrausFamily.single (V s)
+  have : Subsingleton L.Index := ⟨fun i j ↦ Prod.ext
+    (funext fun b : L.cells ↦ absurd b.2 (Finset.notMem_empty _))
+    (funext fun _ ↦ Subsingleton.elim (α := Unit) _ _)⟩
+  let i₀ : L.Index := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun _ ↦ ())
+  rw [ofLayer, map_step, Fintype.sum_subsingleton _ i₀, map_done, LinearMap.id_apply,
+    Layer.kraus_ofOnsite]
+  rfl
+
+end Circuit
+
 end QuantumCircuit

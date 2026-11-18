@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Support
 import QICLean.Algebra.HermitianHelpers
+import QICLean.Algebra.MatrixUnitaryBetween
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Normed.Algebra.Exponential
@@ -351,6 +352,16 @@ theorem prodOp_mem_unitary {m : (v : V) → Matrix (X v) (X v) ℂ}
   rw [star_eq_conjTranspose, conjTranspose_prodOp, prodOp_mul]
   simp only [← star_eq_conjTranspose, fun v ↦ Unitary.mul_star_self_of_mem (hm v)]
   exact prodOp_one
+
+omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
+/-- The product of the basis inclusions along injections `e v` is the basis inclusion along the
+product injection. -/
+theorem prodOp_initializedBasisMatrix [∀ v, DecidableEq (Y v)]
+    (e : ∀ v, X v ↪ Y v) :
+    prodOp (fun v ↦ initializedBasisMatrix (e v)) =
+      initializedBasisMatrix (Function.Embedding.piCongrRight e) := by
+  ext y x
+  simp [prodOp_apply, initializedBasisMatrix, one_apply, funext_iff, Finset.prod_ite_zero]
 
 /-- A product operator `⊗_v m_v` with `m_v = 1` outside `D` is supported on `D`. -/
 theorem prodOp_mem_supportedOperators {m : (v : V) → Matrix (X v) (X v) ℂ}
