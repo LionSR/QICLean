@@ -275,6 +275,19 @@ and each Kraus operator is a product of local entries over the blocks.
     circuit of one layer has one continuation, the empty circuit, for every outcome.
 \end{proof}
 
+\begin{lemma}[The Heisenberg picture of a circuit is the adjoint of its map]
+    \label{lem:circuits_trace_adjoint}
+    \lean{QuantumCircuit.Circuit.traceAdjointMap_map}
+    \leanok
+    \uses{def:circuits_circuit, def:trace_pairing_adjoint}
+    The adjoint for the trace pairing of the map of a circuit is its Heisenberg picture.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:circuits_duality}
+    Both satisfy $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ by
+    Lemma~\ref{lem:circuits_duality}, and the trace pairing is nondegenerate.
+\end{proof}
+
 \begin{theorem}[Composition]
     \label{thm:circuits_composition}
     \lean{QuantumCircuit.Circuit.append, QuantumCircuit.Circuit.comp,

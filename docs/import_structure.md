@@ -26,9 +26,10 @@ Matrix foundations means `Algebra`, `Analysis`, `Topology`; single-system
 channels means `Channel`, `Kraus`. Lower prerequisites remain available at
 higher layers. Specific prefixes own modules before the enclosing `Circuit`
 prefix does. Nothing below `Circuit/Model` (Core, Geometry, Gate, Party,
-Algorithm) imports it; only `Circuit/Compile` and `Circuit/Protocol` do. Other QICLean targets are rejected from these new layers. Imports
-of external dependencies such as Mathlib are outside this local layer check.
-The repository rule that QICLean never depends on TNLean still applies.
+Algorithm) imports it; only `Circuit/Compile` and `Circuit/Protocol` do. Other
+QICLean targets are rejected from these new layers. Imports of external
+dependencies such as Mathlib are outside this local layer check. The
+repository rule that QICLean never depends on TNLean still applies.
 
 The check expands import-only aggregators recursively, including `QICLean.lean`.
 Aggregators themselves have no declarations and do not contribute dependency

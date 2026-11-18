@@ -71,22 +71,9 @@ expectations after the conversion of a product input factorize at distance great
 \section{Light cones of protocols}
 \label{sec:protocols_light_cones}
 
-For a linear map $\Phi$ from the matrices on $\mathcal H_X$ to those on $\mathcal H_Z$, its
-adjoint for the trace pairing is the linear map $\Phi^*$ with
-$\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ for all $\rho$ and $A$.
-
-\begin{lemma}[The Heisenberg picture of a circuit is the adjoint of its map]
-    \label{lem:protocols_trace_adjoint}
-    \lean{QuantumCircuit.Circuit.traceAdjointMap_map}
-    \leanok
-    \uses{def:circuits_circuit}
-    The adjoint for the trace pairing of the map of a circuit is its Heisenberg picture.
-\end{lemma}
-\begin{proof}\leanok
-    \uses{lem:circuits_duality}
-    Both satisfy $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ by
-    Lemma~\ref{lem:circuits_duality}, and the trace pairing is nondegenerate.
-\end{proof}
+For a linear map $\Phi$ from the matrices on $\mathcal H_X$ to those on $\mathcal H_Z$,
+$\Phi^*$ denotes its adjoint for the trace pairing (Definition~\ref{def:trace_pairing_adjoint});
+for the map of a circuit it is the Heisenberg picture (Lemma~\ref{lem:circuits_trace_adjoint}).
 
 \begin{theorem}[Light cones of protocols]
     \label{thm:protocols_light_cone}
@@ -94,7 +81,7 @@ $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ for all $\rh
         QuantumCircuit.IsProtocol.traceAdjointMap_mul,
         QuantumCircuit.IsConversion.trace_mul_mul_eq}
     \leanok
-    \uses{def:protocols_protocol, lem:protocols_trace_adjoint, def:sites_supported}
+    \uses{def:protocols_protocol, lem:circuits_trace_adjoint, def:sites_supported}
     Let every cell of $\Gamma$ have positive cost, let $\Phi$ be realised by a protocol of
     depth at most $T$, and write $N^T(R)$ for the $T$-fold neighbourhood of a region $R$.
     Then $\Phi^*$ maps an operator supported on $R$ to an operator supported on $N^T(R)$, and
@@ -109,7 +96,7 @@ $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ for all $\rh
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:circuits_light_cone, thm:circuits_light_cone_factorization}
-    By Lemma~\ref{lem:protocols_trace_adjoint}, $\Phi^*$ is the Heisenberg picture of the
+    By Lemma~\ref{lem:circuits_trace_adjoint}, $\Phi^*$ is the Heisenberg picture of the
     circuit. Its backward light cone of $R$ lies in $N^T(R)$ because every cell has positive
     cost and the depth is at most $T$, so Theorems~\ref{thm:circuits_light_cone}
     and~\ref{thm:circuits_light_cone_factorization} apply.
@@ -129,9 +116,9 @@ $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ for all $\rh
     regions with disjoint $T$-fold neighbourhoods.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:sites_block_place}
-    The adjoint read on the sites is the adjoint on the blocks followed by the
-    identification of configurations, which is multiplicative and, by
+    \uses{lem:sites_block_place, lem:trace_adjoint_reindex}
+    By Lemma~\ref{lem:trace_adjoint_reindex} the adjoint read on the sites is the adjoint on
+    the blocks followed by the identification of configurations, which is multiplicative and, by
     Lemma~\ref{lem:sites_block_place}, sends an operator placed on $N^T(R)$ to the same
     operator placed on $f^{-1}(N^T(R))$.
 \end{proof}

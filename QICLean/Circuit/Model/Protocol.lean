@@ -22,10 +22,6 @@ of depth `T` maps an operator on a region `R` to an operator on the `T`-fold nei
 product input, expectations of such operators factorize. The same holds for a protocol on the
 blocks of a map of sites, read on the sites.
 
-These are the circuit forms of TNLean's `IsLocalChannelProtocol`,
-`IsDimensionBoundedLocalChannelProtocol`, `IsAdaptiveChannelProtocol` and
-`IsLocalChannelConversion` (on the ring) and of `IsPhysicalPortProtocol` (on a port geometry).
-
 ## Main definitions
 
 * `QuantumCircuit.IsAdaptiveProtocol`, `QuantumCircuit.IsProtocol`,
@@ -46,6 +42,18 @@ These are the circuit forms of TNLean's `IsLocalChannelProtocol`,
 * `QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators`,
   `QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mul` — the light cone of a protocol on
   blocks of sites.
+
+The declarations restate, as restrictions of `Circuit`, the protocol classes and their light-cone
+and dimension lemmas of `TNLean/Circuit/Channel/Conversion.lean`,
+`TNLean/Circuit/Channel/Layer.lean`, `TNLean/Circuit/Channel/SiteBlocking.lean`,
+`TNLean/Circuit/Channel/DimensionBoundedConversion.lean` and
+`TNLean/Circuit/Measurement/AdaptiveConversion.lean` at commit
+`75fc22288234ef66239cb4c2fa0b22914cfa5c6b` (Apache-2.0). The changes: the classes are
+existentials over circuits of plain gates, on any geometry, instead of inductive families of ring
+or port layers; the existential dual is replaced by the trace-pairing adjoint `traceAdjointMap`;
+the light-cone statements take positivity of the costs of the cells for the ring's bonds of cost
+`1`; `IsBlockedLocalChannelConversion` and `IsBondChannelPreparedInDepth` are not carried (the
+blocked state is written out, and the second is a conversion of a product input).
 -/
 
 open Matrix ManyBody
@@ -61,29 +69,26 @@ variable (Γ : Geometry S) {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, Dec
 
 /-- An adaptive protocol of depth at most `T` realising `Φ`: a circuit of plain gates whose
 gates and onsite families are trace-preserving, with depth at most `T` and map `Φ`; later
-layers may depend on the outcomes of earlier ones (TNLean `IsAdaptiveChannelProtocol`). -/
+layers may depend on the outcomes of earlier ones. -/
 def IsAdaptiveProtocol (T : ℕ)
     (Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ) : Prop :=
   ∃ c : Circuit Γ KrausGate X Z, c.Forall KrausGate.ev KrausFamily.IsTP ∧ c.depth ≤ T ∧
     c.map KrausGate.ev = Φ
 
 /-- A protocol of depth at most `T` realising `Φ`: an adaptive protocol whose circuit is
-unbranched (TNLean `IsLocalChannelProtocol` on the ring, `IsPhysicalPortProtocol` on a port
-geometry). -/
+unbranched. -/
 def IsProtocol (T : ℕ)
     (Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ) : Prop :=
   ∃ c : Circuit Γ KrausGate X Z, c.Forall KrausGate.ev KrausFamily.IsTP ∧ c.depth ≤ T ∧
     c.map KrausGate.ev = Φ ∧ c.IsUnbranched
 
-/-- A protocol every basis along which has between `1` and `B` elements (TNLean
-`IsDimensionBoundedLocalChannelProtocol`). -/
+/-- A protocol every basis along which has between `1` and `B` elements. -/
 def IsBoundedProtocol (B T : ℕ)
     (Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ) : Prop :=
   ∃ c : Circuit Γ KrausGate X Z, c.Forall KrausGate.ev KrausFamily.IsTP ∧ c.depth ≤ T ∧
     c.map KrausGate.ev = Φ ∧ c.IsUnbranched ∧ c.IsDimBounded B
 
-/-- An exact conversion of `ρ` into `σ` by a protocol of depth at most `T` (TNLean
-`IsLocalChannelConversion`). -/
+/-- An exact conversion of `ρ` into `σ` by a protocol of depth at most `T`. -/
 def IsConversion (T : ℕ) (ρ : Matrix (Config X) (Config X) ℂ)
     (σ : Matrix (Config Z) (Config Z) ℂ) : Prop :=
   ∃ Φ, IsProtocol Γ T Φ ∧ Φ ρ = σ
@@ -109,7 +114,7 @@ theorem IsBoundedProtocol.isProtocol {B T : ℕ}
   let ⟨c, hTP, hd, hm, hc, _⟩ := h
   ⟨c, hTP, hd, hm, hc⟩
 
-/-- Adaptive protocols compose, with additive depth (TNLean `AdaptiveConversion.comp`). -/
+/-- Adaptive protocols compose, with additive depth. -/
 theorem IsAdaptiveProtocol.comp {T T' : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Y) (Config Y) ℂ}
     {Ψ : Matrix (Config Y) (Config Y) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
@@ -120,7 +125,7 @@ theorem IsAdaptiveProtocol.comp {T T' : ℕ}
   exact ⟨c.comp c', hcTP.comp _ hc'TP,
     (Circuit.depth_comp c c').trans (Nat.add_le_add hcd hc'd), Circuit.map_comp _ c c'⟩
 
-/-- Protocols compose, with additive depth (TNLean `IsLocalChannelProtocol.comp`). -/
+/-- Protocols compose, with additive depth. -/
 theorem IsProtocol.comp {T T' : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Y) (Config Y) ℂ}
     {Ψ : Matrix (Config Y) (Config Y) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
@@ -131,8 +136,7 @@ theorem IsProtocol.comp {T T' : ℕ}
     (Circuit.depth_comp c c').trans (Nat.add_le_add hcd hc'd), Circuit.map_comp _ c c',
     hc.comp hc'⟩
 
-/-- Bounded protocols compose with the same bound, with additive depth (TNLean
-`IsDimensionBoundedLocalChannelProtocol.comp`). -/
+/-- Bounded protocols compose with the same bound, with additive depth. -/
 theorem IsBoundedProtocol.comp {B T T' : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Y) (Config Y) ℂ}
     {Ψ : Matrix (Config Y) (Config Y) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
@@ -146,8 +150,7 @@ theorem IsBoundedProtocol.comp {B T T' : ℕ}
 
 /-! ### Dimension bounds -/
 
-/-- The input and output bases of a bounded protocol have between `1` and `B` elements (TNLean
-`IsDimensionBoundedLocalChannelProtocol.dimension_bounds`). -/
+/-- The input and output bases of a bounded protocol have between `1` and `B` elements. -/
 theorem IsBoundedProtocol.dimension_bounds {B T : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
     (h : IsBoundedProtocol Γ B T Φ) :
@@ -158,16 +161,14 @@ theorem IsBoundedProtocol.dimension_bounds {B T : ℕ}
   obtain ⟨p⟩ := (c.isTP_krausFamily _ hTP).nonempty_index
   exact ⟨hB.input, hB.output p⟩
 
-/-- A larger bound keeps a bounded protocol bounded (TNLean
-`IsDimensionBoundedLocalChannelProtocol.mono_bound`). -/
+/-- A larger bound keeps a bounded protocol bounded. -/
 theorem IsBoundedProtocol.mono_bound {B C T : ℕ} (hBC : B ≤ C)
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
     (h : IsBoundedProtocol Γ B T Φ) : IsBoundedProtocol Γ C T Φ :=
   let ⟨c, hTP, hd, hm, hc, hB⟩ := h
   ⟨c, hTP, hd, hm, hc, hB.mono hBC⟩
 
-/-- A protocol on nonempty input bases is bounded by some `B` (TNLean
-`IsLocalChannelProtocol.exists_dimension_bound`, whose `0 < d` is the nonemptiness). The bound
+/-- A protocol on nonempty input bases is bounded by some `B`. The bound
 depends on the protocol. -/
 theorem IsProtocol.exists_dimension_bound [∀ s, Nonempty (X s)] {T : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
@@ -194,8 +195,7 @@ private theorem IsProtocol.exists_circuit (hpos : ∀ b, 0 < Γ.cost b) {T : ℕ
 
 omit [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Y s)] in
 /-- On a geometry whose cells have positive cost, the trace-pairing adjoint of a protocol of
-depth `T` maps an operator on `R` to an operator on the `T`-fold neighbourhood of `R` (TNLean
-`IsLocalChannelProtocol.exists_dual`, on the ring). -/
+depth `T` maps an operator on `R` to an operator on the `T`-fold neighbourhood of `R`. -/
 theorem IsProtocol.traceAdjointMap_mem_supportedOperators (hpos : ∀ b, 0 < Γ.cost b) {T : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
     (h : IsProtocol Γ T Φ) {R : Finset S} {A : Matrix (Config Z) (Config Z) ℂ}
@@ -207,8 +207,7 @@ theorem IsProtocol.traceAdjointMap_mem_supportedOperators (hpos : ∀ b, 0 < Γ.
 
 omit [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Y s)] in
 /-- On a geometry whose cells have positive cost, the trace-pairing adjoint of a protocol of
-depth `T` is multiplicative on operators whose `T`-fold neighbourhoods are disjoint (TNLean
-`IsLocalChannelProtocol.exists_dual`, on the ring). -/
+depth `T` is multiplicative on operators whose `T`-fold neighbourhoods are disjoint. -/
 theorem IsProtocol.traceAdjointMap_mul (hpos : ∀ b, 0 < Γ.cost b) {T : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
     (h : IsProtocol Γ T Φ) {R R' : Finset S}
@@ -223,8 +222,7 @@ theorem IsProtocol.traceAdjointMap_mul (hpos : ∀ b, 0 < Γ.cost b) {T : ℕ}
 omit [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Y s)] in
 /-- On a geometry whose cells have positive cost, an exact conversion of depth `T` of a product
 input with unit-trace factors gives an output on which the expectations of operators with
-disjoint `T`-fold neighbourhoods factorize (TNLean
-`IsBondChannelPreparedInDepth.trace_mul_mul_eq`). -/
+disjoint `T`-fold neighbourhoods factorize. -/
 theorem IsConversion.trace_mul_mul_eq (hpos : ∀ b, 0 < Γ.cost b) {T : ℕ}
     {σ₀ : (s : S) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
     {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion Γ T (prodOp σ₀) σ) {R R' : Finset S}
@@ -243,26 +241,11 @@ section Block
 variable {S' : Type} [Fintype S'] [DecidableEq S'] (f : S → S') {Γ' : Geometry S'}
   [Fintype Γ'.Cell] {Z' : S' → Type} [∀ s, Fintype (Z' s)] [∀ s, DecidableEq (Z' s)]
 
-omit [∀ s, DecidableEq (Z' s)] in
-/-- The trace-pairing adjoint of a map on the blocked system, read on the system. -/
-private theorem traceAdjointMap_comp_block
-    (Φ : Matrix (Config (blockSystem f X)) (Config (blockSystem f X)) ℂ →ₗ[ℂ]
-      Matrix (Config Z') (Config Z') ℂ) (A : Matrix (Config Z') (Config Z') ℂ) :
-    traceAdjointMap (Φ ∘ₗ (reindexAlgEquiv ℂ ℂ (blockConfigEquiv f X).symm).toLinearMap) A =
-      reindexAlgEquiv ℂ ℂ (blockConfigEquiv f X) (traceAdjointMap Φ A) := by
-  refine Matrix.ext_iff_trace_mul_right.mpr fun N ↦ ?_
-  rw [trace_traceAdjointMap_mul, LinearMap.comp_apply, AlgEquiv.toLinearMap_apply,
-    ← trace_traceAdjointMap_mul, coe_reindexAlgEquiv, coe_reindexAlgEquiv,
-    ← trace_submatrix_equiv (blockConfigEquiv f X).symm, ← submatrix_mul_equiv _ _ _
-      (blockConfigEquiv f X).symm]
-  simp [reindex_apply]
-
 omit [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Y s)] [∀ s, Fintype (Z s)]
   [∀ s, DecidableEq (Z s)] [Fintype Γ.Cell] in
 /-- On a geometry of blocks whose cells have positive cost, a protocol of depth `T` on the
 blocks of `f`, read on the sites, has trace-pairing adjoint mapping an operator on a region `R`
-of blocks to an operator on the sites of the `T`-fold neighbourhood of `R` (TNLean
-`IsLocalChannelProtocol.exists_dual_comp_blockSites`, for the blocks of a ring). -/
+of blocks to an operator on the sites of the `T`-fold neighbourhood of `R`. -/
 theorem IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators
     (hpos : ∀ b, 0 < Γ'.cost b) {T : ℕ}
     {Φ : Matrix (Config (blockSystem f X)) (Config (blockSystem f X)) ℂ →ₗ[ℂ]
@@ -271,7 +254,7 @@ theorem IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators
     (hA : A ∈ supportedOperators Z' R) :
     traceAdjointMap (Φ ∘ₗ (reindexAlgEquiv ℂ ℂ (blockConfigEquiv f X).symm).toLinearMap) A ∈
       supportedOperators X (blockPreimage f (Γ'.neighbourhood^[T] R)) := by
-  rw [traceAdjointMap_comp_block]
+  rw [traceAdjointMap_comp_reindexAlgEquiv]
   obtain ⟨K, hK⟩ := exists_eq_place_of_mem_supportedOperators
     (h.traceAdjointMap_mem_supportedOperators hpos hA)
   rw [hK, coe_reindexAlgEquiv, reindex_blockConfigEquiv_place]
@@ -281,8 +264,7 @@ omit [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Y s)] [∀ s, Fintype (Z s)]
   [∀ s, DecidableEq (Z s)] [Fintype Γ.Cell] in
 /-- On a geometry of blocks whose cells have positive cost, a protocol of depth `T` on the
 blocks of `f`, read on the sites, has trace-pairing adjoint multiplicative on operators whose
-`T`-fold neighbourhoods are disjoint (TNLean `IsLocalChannelProtocol.exists_dual_comp_blockSites`,
-for the blocks of a ring). -/
+`T`-fold neighbourhoods are disjoint. -/
 theorem IsProtocol.traceAdjointMap_comp_block_mul (hpos : ∀ b, 0 < Γ'.cost b) {T : ℕ}
     {Φ : Matrix (Config (blockSystem f X)) (Config (blockSystem f X)) ℂ →ₗ[ℂ]
       Matrix (Config Z') (Config Z') ℂ}
@@ -295,7 +277,7 @@ theorem IsProtocol.traceAdjointMap_comp_block_mul (hpos : ∀ b, 0 < Γ'.cost b)
       traceAdjointMap (Φ ∘ₗ (reindexAlgEquiv ℂ ℂ (blockConfigEquiv f X).symm).toLinearMap) A *
         traceAdjointMap (Φ ∘ₗ (reindexAlgEquiv ℂ ℂ (blockConfigEquiv f X).symm).toLinearMap)
           B := by
-  simp only [traceAdjointMap_comp_block, h.traceAdjointMap_mul hpos hRR' hA hB, map_mul]
+  simp only [traceAdjointMap_comp_reindexAlgEquiv, h.traceAdjointMap_mul hpos hRR' hA hB, map_mul]
 
 end Block
 

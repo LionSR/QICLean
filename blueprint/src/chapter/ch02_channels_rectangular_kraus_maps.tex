@@ -9,6 +9,21 @@
     $(A,B)\mapsto \tr(AB)$.
 \end{definition}
 
+\begin{lemma}[Trace-pairing adjoint after a reindexing]
+    \label{lem:trace_adjoint_reindex}
+    \lean{Matrix.traceAdjointMap_comp_reindexAlgEquiv}
+    \leanok
+    \uses{def:trace_pairing_adjoint}
+    Let $e$ be a bijection of index sets and $P_e$ the reindexing of matrices along $e$.
+    For a linear map $E$, the trace-pairing adjoint of $E\circ P_e^{-1}$ is
+    $P_e\circ E^*$.
+\end{lemma}
+\begin{proof}\leanok
+    Reindexing preserves the trace and products, so
+    $\tr\bigl(P_e(E^*(A))\,N\bigr)=\tr\bigl(E^*(A)\,P_e^{-1}(N)\bigr)
+    =\tr\bigl(A\,E(P_e^{-1}(N))\bigr)$ for every $N$.
+\end{proof}
+
 \begin{definition}[Completely positive map in rectangular Kraus form]
     \label{def:is_kraus_cp}
     \lean{IsKrausCP}
