@@ -248,19 +248,14 @@ and each Kraus operator is a product of local entries over the blocks.
     \lean{QuantumCircuit.Circuit.total, QuantumCircuit.Circuit.total_done,
         QuantumCircuit.Layer.depth, QuantumCircuit.Layer.gateCount,
         QuantumCircuit.Layer.meets, QuantumCircuit.Circuit.depth,
-        QuantumCircuit.Circuit.gateCount, QuantumCircuit.Circuit.participation,
-        QuantumCircuit.Layer.cellCost, QuantumCircuit.Layer.gateCount_eq_sum,
-        QuantumCircuit.Layer.meets_eq_card, QuantumCircuit.Layer.depth_eq_min_one}
+        QuantumCircuit.Circuit.gateCount, QuantumCircuit.Circuit.participation}
     \leanok
     \uses{def:circuits_circuit}
     A cost of layers determines a cost of circuits by accumulation along the most
-    expensive branch. A weight of gates assigns to every gate on a cell a natural
-    number, and the cell cost of a layer is the sum of the weights of its gates. The
-    gate count of a layer is the cell cost for the weight $c_b$, the sum of the
-    costs of its cells; the number of gates of the layer meeting a site $s$ is the
-    cell cost for the weight that is $1$ on a cell of positive cost containing $s$
-    and $0$ otherwise. The depth of a layer is $\min(1,m)$, where $m$ is the number
-    of its cells of positive cost. Onsite families cost nothing. A circuit is of
+    expensive branch. The depth of a layer is $1$ if it uses a cell of positive
+    cost and $0$ otherwise; its gate count is the sum of the costs of its cells;
+    the number of gates of the layer meeting a site $s$ is the number of its cells
+    of positive cost containing $s$. Onsite families cost nothing. A circuit is of
     depth $T$ when its depth is at most $T$.
 \end{definition}
 
@@ -272,13 +267,14 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Layer.depth_le_gateCount,
         QuantumCircuit.Circuit.depth_le_gateCount,
         QuantumCircuit.Circuit.total_seq_le, QuantumCircuit.Circuit.depth_seq_le,
-        QuantumCircuit.Circuit.gateCount_seq_le}
+        QuantumCircuit.Circuit.gateCount_seq_le, QuantumCircuit.Layer.depth_le_one}
     \leanok
     \uses{def:circuits_costs, thm:circuits_composition}
     The cost of a circuit with continuations $k_p$ attached is at most the cost of
     the circuit plus the largest cost of a continuation. In particular depth, gate
     count and the number of gates meeting a site are subadditive under
-    composition. The depth of a circuit is at most its gate count. The cost of a
+    composition. A layer has depth at most $1$, and the depth of a circuit is at most
+    its gate count. The cost of a
     sequence of layers is at most the sum of the costs of its layers.
 \end{theorem}
 \begin{proof}\leanok
@@ -379,26 +375,22 @@ and each Kraus operator is a product of local entries over the blocks.
     identity.
 \end{proof}
 
-\section{Sequences, layers of several gates and adjoints}
+\section{Sequences and layers of several gates}
 \label{sec:circuits_sequences}
 
 \begin{lemma}[Sequences of layers of one operator]
     \label{lem:circuits_seq}
     \lean{QuantumCircuit.Circuit.kraus_seq, QuantumCircuit.Circuit.total_seq,
-        QuantumCircuit.Circuit.forall_seq, QuantumCircuit.Circuit.isUnbranched_seq,
-        QuantumCircuit.KrausFamily.isUnitary_single_one,
-        QuantumCircuit.Layer.gateCount_single, QuantumCircuit.Layer.depth_single,
-        QuantumCircuit.Layer.nonempty_index_single, QuantumCircuit.Layer.forall_single}
+        QuantumCircuit.Circuit.gateCount_seq_eq_length, QuantumCircuit.Circuit.forall_seq,
+        QuantumCircuit.Circuit.isUnbranched_seq}
     \leanok
-    \uses{def:circuits_circuit, def:circuits_costs, def:circuits_local,
-        lem:circuits_layer_single}
+    \uses{def:circuits_circuit, def:circuits_costs, def:circuits_local}
     Let $L_1,\dots,L_m$ be layers on one system, and suppose every Kraus operator of
     $L_k$ equals $U_k$. Then the Kraus operator of the sequence along every branch is
-    $U_m\cdots U_1$. The sequence is unbranched; a property holding locally on every
-    layer holds locally on the sequence; and if every layer has at least one outcome,
-    the cost of the sequence is the sum of the costs of its layers. The layer with a
-    single gate on a cell $b$ has gate count $c_b$, and depth $1$ if $c_b>0$; the
-    identity, as a family of one operator, is unitary.
+    $U_m\cdots U_1$. The sequence is unbranched, and a property holding locally on
+    every layer holds locally on the sequence. If every layer has at least one
+    outcome, the cost of the sequence is the sum of the costs of its layers; in
+    particular a sequence of such layers of gate count $1$ has the gate count $m$.
 \end{lemma}
 \begin{proof}\leanok
     Induction on $m$. The Kraus operator of $L_1$ followed by the rest along a
@@ -409,95 +401,58 @@ and each Kraus operator is a product of local entries over the blocks.
 
 \begin{definition}[A layer of gates on given cells]
     \label{def:circuits_of_cells}
-    \lean{QuantumCircuit.Layer.ofCells, QuantumCircuit.Layer.cellOp,
-        QuantumCircuit.Layer.placeFamily, QuantumCircuit.Layer.cellsUnion,
-        QuantumCircuit.Layer.cellsProd}
+    \lean{QuantumCircuit.Layer.ofCells, QuantumCircuit.Layer.placeFamily,
+        QuantumCircuit.Layer.single_eq_ofCells}
     \leanok
     \uses{def:circuits_layer, def:sites_place}
     For a set of pairwise disjoint cells $b$ of a geometry and a gate $g_b$ on each,
-    the layer of these gates carries the identity at every remaining site. For a
-    plain gate $g$ on a region $D$ the family of placements of $g$ is the family of
-    operators $K\otimes1$ on $\mathcal H_X$ for the operators $K$ of $g$.
+    the layer of these gates carries the identity at every remaining site. The layer of
+    one gate on one cell is the case of a single cell. For a finite Kraus family
+    $(K_\omega)_\omega$ on $\C^{X_D}$ the family of its placements is the family
+    $(K_\omega\otimes1)_\omega$ on $\mathcal H_X$.
 \end{definition}
 
 \begin{theorem}[A layer of disjoint gates is the product of their placements]
     \label{thm:circuits_of_cells}
-    \lean{QuantumCircuit.Layer.kraus_ofCells, QuantumCircuit.Layer.kraus_ofCells_eq_prod,
-        QuantumCircuit.Layer.map_ofCells, QuantumCircuit.Layer.cellsUnion_eq,
-        QuantumCircuit.Layer.disjoint_cellsUnion,
-        QuantumCircuit.Layer.prod_place_eq_place_cellsProd,
-        QuantumCircuit.Layer.cellsProd_apply, QuantumCircuit.Layer.pairwiseDisjoint_of_cons,
-        QuantumCircuit.Layer.consPi, QuantumCircuit.Layer.consIndexEquiv,
-        QuantumCircuit.Layer.kraus_cons, QuantumCircuit.Layer.gateCount_ofCells,
-        QuantumCircuit.Layer.depth_ofCells_le_one,
-        QuantumCircuit.Layer.nonempty_index_ofCells}
+    \lean{QuantumCircuit.Layer.kraus_ofCells, QuantumCircuit.Layer.map_ofCells,
+        QuantumCircuit.Layer.forall_ofCells, QuantumCircuit.Layer.nonempty_index_ofCells,
+        QuantumCircuit.Layer.forall_single, QuantumCircuit.Layer.nonempty_index_single,
+        QuantumCircuit.Layer.gateCount_single, QuantumCircuit.Layer.depth_single}
     \leanok
-    \uses{def:circuits_of_cells, def:circuits_costs, lem:sites_place_hom}
+    \uses{def:circuits_of_cells, def:circuits_costs, def:circuits_local,
+        lem:sites_place_hom}
     Let $b_1,\dots,b_m$ be an enumeration without repetition of a set of pairwise
-    disjoint cells carrying plain gates $g_{b_k}$. The Kraus operator of the layer at
-    an outcome $i$ is
+    disjoint cells carrying gates $g_{b_k}$, under any interpretation. The Kraus
+    operator of the layer at an outcome $i$ is
     \begin{align}
-        K_i&=(K_{b_1,i_{b_1}}\otimes1)\cdots(K_{b_m,i_{b_m}}\otimes1),
+        K_i&=(g_{b_1}(i_{b_1})\otimes1)\cdots(g_{b_m}(i_{b_m})\otimes1),
         \notag
     \end{align}
-    the product of the placements of the operators of the gates at $i$, and the map
-    of the layer is the composite of the maps of the families of placements of the
-    $g_{b_k}$, in this order. The gate count of the layer is the sum of the costs of
-    its cells, and its depth is at most $1$.
+    the product of the placements of the matrices of the gates at $i$, and the map of
+    the layer is the composite of the maps of the families of placements of the
+    $g_{b_k}$, in this order. A property of Kraus families holding for every gate and
+    for the identity holds locally on the layer; in particular a layer of
+    trace-preserving gates is a quantum channel by Theorem~\ref{thm:circuits_layer_tp}.
+    The layer of one gate on a cell $b$ has gate count $c_b$, and depth $1$ if
+    $c_b>0$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:circuits_layer_factorization}
-    Placements on disjoint regions $D_1,D_2$ multiply to the placement on
-    $D_1\cup D_2$ of the operator whose entry at $(y,x)$ is the product of the
-    entries of the two factors at the restrictions of $y$ and $x$, and that entry is
-    $0$ unless $y$ and $x$ agree outside $D_1\cup D_2$. By induction on $m$ the
-    product of the placements is the placement on the union of the cells of the
-    product of the local entries, which is the formula for the Kraus operator of a
-    layer, the identity at the remaining sites contributing the condition that $y$
-    and $x$ agree there. For the maps, split off the first cell: the outcomes of the
-    layer are the pairs of an outcome of $g_{b_1}$ and an outcome of the layer of the
-    other cells, and
-    $\sum_{i,j}(K_iK'_j)\rho(K_iK'_j)^\dagger
-    =\sum_iK_i\bigl(\sum_jK'_j\rho K_j'^\dagger\bigr)K_i^\dagger$.
+    \uses{lem:sites-regional-union}
+    By Lemma~\ref{lem:sites-regional-union}, placements on disjoint regions $D_1,D_2$
+    multiply to the placement on $D_1\cup D_2$ of the operator whose entry at $(y,x)$
+    is the product of the entries of the two factors at the restrictions of $y$ and
+    $x$. By induction on $m$ the product of the placements is the placement on the
+    union of the cells of the product of the local entries, which is the formula for
+    the Kraus operator of a layer, the identity at the remaining sites contributing
+    the condition that $y$ and $x$ agree there. For the maps, the composite of the
+    maps of families $F_1,\dots,F_m$ is the map of the family indexed by a choice of
+    an index at every position, with the products of the operators as Kraus
+    operators, by induction on $m$:
+    $\sum_{\omega,\omega'}(K_\omega K'_{\omega'})\rho(K_\omega K'_{\omega'})^\dagger
+    =\sum_\omega K_\omega\bigl(\sum_{\omega'}K'_{\omega'}\rho K_{\omega'}'^\dagger\bigr)
+    K_\omega^\dagger$. The choices of an index at every position of the enumeration are
+    the outcomes of the layer.
 \end{proof}
-
-\begin{definition}[Adjoint of a layer and of a sequence]
-    \label{def:circuits_adjoint}
-    \lean{KrausFamily.adjoint, QuantumCircuit.Layer.adjoint,
-        QuantumCircuit.Circuit.seqAdjoint}
-    \leanok
-    \uses{def:circuits_layer, def:kraus_family}
-    The adjoint of a finite Kraus family $(K_i)_i$ is $(K_i^\dagger)_i$. The adjoint
-    of a layer of plain gates from $X$ to $Y$ is the layer from $Y$ to $X$ on the
-    same cells, with the adjoint gates and onsite families. The adjoint of a sequence
-    of layers of plain gates on one system is the sequence of the adjoint layers in
-    reverse order.
-\end{definition}
-
-\begin{lemma}[Kraus operators and costs of adjoints]
-    \label{lem:circuits_adjoint}
-    \lean{QuantumCircuit.Layer.kraus_adjoint, QuantumCircuit.Layer.adjoint_adjoint,
-        QuantumCircuit.Circuit.kraus_seqAdjoint, QuantumCircuit.Circuit.total_seqAdjoint}
-    \leanok
-    \uses{def:circuits_adjoint, lem:circuits_seq}
-    The Kraus operators of the adjoint layer are the adjoints of those of the layer,
-    and the adjoint of the adjoint layer is the layer. If every Kraus operator of the
-    $k$-th layer of a sequence equals $U_k$, the Kraus operator of the adjoint
-    sequence is $(U_m\cdots U_1)^\dagger$. A cost unchanged by taking the adjoint
-    layer, such as depth or gate count, is the same for a sequence of layers with
-    outcomes and for its adjoint.
-\end{lemma}
-\begin{proof}\leanok
-    The entry of a Kraus operator of a layer is a product of entries of the gates and
-    onsite families; conjugating it and exchanging the configurations gives the
-    entry of the adjoint. The rest follows from Lemma~\ref{lem:circuits_seq}, with
-    $U_1^\dagger\cdots U_m^\dagger=(U_m\cdots U_1)^\dagger$ and the sum of costs
-    unchanged by reversing the order.
-\end{proof}
-
-An adjoint is defined only for a sequence on one system: when the systems change
-from layer to layer the Kraus operators need not be square, and when later layers
-depend on outcomes the reversal of a branch is not a circuit of the same kind.
 
 \section{Gates on sites and pairs}
 \label{sec:circuits_local_gates}
@@ -506,7 +461,9 @@ depend on outcomes the reversal of a branch is not a circuit of the same kind.
     \label{def:circuits_local_gate}
     \lean{QuantumCircuit.siteEquiv, QuantumCircuit.pairEquiv,
         QuantumCircuit.pairEquiv_symm_apply_left, QuantumCircuit.pairEquiv_symm_apply_right,
-        QuantumCircuit.KrausGate.ofMatrix, QuantumCircuit.Geometry.sitesAndPairs}
+        QuantumCircuit.KrausGate.ofMatrix, QuantumCircuit.Geometry.sitesAndPairs,
+        QuantumCircuit.Geometry.mem_sitesAndPairs_cell_inl,
+        QuantumCircuit.Geometry.mem_sitesAndPairs_cell_inr}
     \leanok
     \uses{def:circuits_gate_family, def:circuits_geometry, def:sites_config}
     The configurations of a single site $a$ are the basis $X_a$, and those of
@@ -517,141 +474,20 @@ depend on outcomes the reversal of a branch is not a circuit of the same kind.
     $\{a,b\}$ of cost $c_2$ for every ordered pair of distinct sites.
 \end{definition}
 
-\begin{lemma}[A unitary matrix gives a unitary gate]
+\begin{lemma}[Unitary gates, and a gate on one site acting on a vector]
     \label{lem:circuits_local_gate_unitary}
-    \lean{QuantumCircuit.KrausGate.isUnitary_ofMatrix}
+    \lean{KrausFamily.isUnitary_single, QuantumCircuit.KrausGate.isUnitary_ofMatrix,
+        QuantumCircuit.place_siteEquiv_mulVec}
     \leanok
-    \uses{def:circuits_local_gate}
-    The gate of a unitary matrix on a local basis is unitary.
+    \uses{def:circuits_local_gate, def:sites_place}
+    The family of one unitary matrix is unitary, so the gate of a unitary matrix on a
+    local basis is unitary. A matrix $M$ on $\C^{X_a}$ placed on the site $a$ maps a
+    vector $\psi$ to the vector whose value at $\sigma$ is
+    $\sum_bM_{\sigma_a,b}\,\psi(\sigma[a\mapsto b])$, where $\sigma[a\mapsto b]$ agrees
+    with $\sigma$ except at $a$, where it is $b$.
 \end{lemma}
 \begin{proof}\leanok
-    Relabelling rows and columns along one bijection preserves unitarity.
-\end{proof}
-
-\section{Moving circuits}
-\label{sec:circuits_maps}
-
-A circuit moves to a coarser geometry or a larger gate set on the same sites, and to
-a larger set of sites in which its sites are embedded. In both cases its Kraus
-operators, local properties, light cones and costs move with it.
-
-\begin{definition}[Morphisms of geometries and of gate families]
-    \label{def:circuits_geometry_hom}
-    \lean{QuantumCircuit.Geometry.Hom, QuantumCircuit.Geometry.Hom.cell_eq,
-        QuantumCircuit.Geometry.Hom.cellsEquiv,
-        QuantumCircuit.Geometry.Hom.cell_cellsEquiv_symm, QuantumCircuit.GateMorphism,
-        QuantumCircuit.GateMorphism.IsCompatible, QuantumCircuit.outcomeNdrec,
-        QuantumCircuit.ev_ndrec}
-    \leanok
-    \uses{def:circuits_geometry, def:circuits_gate_family}
-    Let $\iota:V\to V'$ be injective. A morphism of geometries over $\iota$ is an
-    injective map of cells $b\mapsto b'$ with $C_{b'}=\iota(C_b)$. A morphism of gate
-    families on the same sites, compatible with interpretations, maps every gate on
-    $D$ from $X$ to $Y$ to a gate on $D$ from $X$ to $Y$, with a bijection of
-    outcomes under which the interpreted matrices agree.
-\end{definition}
-
-\begin{theorem}[Moving a circuit on the same sites]
-    \label{thm:circuits_map_gate}
-    \lean{QuantumCircuit.Layer.mapGate, QuantumCircuit.Layer.mapGateCellsEquiv,
-        QuantumCircuit.Layer.mapGateFreeEquiv, QuantumCircuit.Layer.mapGateIndexEquiv,
-        QuantumCircuit.Layer.kraus_mapGate, QuantumCircuit.Layer.lightCone_mapGate,
-        QuantumCircuit.Layer.gateCount_mapGate, QuantumCircuit.Layer.depth_mapGate_le,
-        QuantumCircuit.Circuit.mapGate, QuantumCircuit.Circuit.mapGateIndexEquiv,
-        QuantumCircuit.Circuit.kraus_mapGate, QuantumCircuit.Circuit.isUnbranched_mapGate,
-        QuantumCircuit.Circuit.forall_mapGate, QuantumCircuit.Circuit.total_mapGate_le,
-        QuantumCircuit.Circuit.gateCount_mapGate_le, QuantumCircuit.Circuit.depth_mapGate_le,
-        QuantumCircuit.Circuit.lightCone_mapGate}
-    \leanok
-    \uses{def:circuits_geometry_hom, def:circuits_circuit, def:circuits_costs,
-        def:circuits_local}
-    Along a morphism of geometries over the identity of $V$ and a compatible morphism
-    of gate families, every circuit has an image on the same systems, whose branches
-    are in bijection with those of the circuit and have the same Kraus operators. The
-    image is unbranched if the circuit is, a property of Kraus families invariant
-    under relabelling of outcomes holds locally on the image if it holds locally on
-    the circuit, and the light cones agree. If no cell costs more after the move, the
-    gate count does not grow; if no cell of cost $0$ gets positive cost, the depth
-    does not grow.
-\end{theorem}
-\begin{proof}\leanok
-    The cells of the image layer are the images of the cells of the layer, with the
-    same regions, so the remaining sites and the onsite families do not change. The
-    outcomes correspond through the bijections of outcomes of the gates, and the
-    product of local entries is the same product. The statements about circuits
-    follow by induction.
-\end{proof}
-
-\begin{definition}[Systems on a larger set of sites]
-    \label{def:circuits_lift}
-    \lean{QuantumCircuit.siteEmb, QuantumCircuit.siteEmb_apply, QuantumCircuit.lift,
-        QuantumCircuit.Idle, QuantumCircuit.siteSplit, QuantumCircuit.siteEmb_siteSplit,
-        QuantumCircuit.liftSiteEquiv, QuantumCircuit.liftConfigEquiv,
-        QuantumCircuit.liftConfigEquiv_fst, QuantumCircuit.liftConfigEquiv_snd,
-        QuantumCircuit.regionSiteEquiv, QuantumCircuit.liftRegionEquiv}
-    \leanok
-    \uses{def:sites_config}
-    Let $V'$ be in bijection with the disjoint union of $V$ and a finite set $R$ of
-    idle sites, each $r\in R$ with a basis $W_r$, and let $\iota:V\to V'$ be the
-    inclusion of $V$. A system $X$ on $V$ becomes the system on $V'$ with basis
-    $X_s$ at $\iota(s)$ and $W_r$ at $r$; its configurations are the pairs of a
-    configuration of $X$ and a configuration of the idle sites, and the
-    configurations of $\iota(D)$ are those of $D$. Every injective map $\iota$ arises
-    this way, with $R$ the complement of its image.
-\end{definition}
-
-\begin{definition}[Transport of gates]
-    \label{def:circuits_transport}
-    \lean{QuantumCircuit.GateTransport, QuantumCircuit.GateTransport.IsCompatible,
-        QuantumCircuit.KrausGate.transport, QuantumCircuit.KrausGate.isCompatible_transport}
-    \leanok
-    \uses{def:circuits_lift, def:circuits_gate_family}
-    A transport of gate families along $V'\cong V\sqcup R$ maps every gate on $D$
-    from $X$ to $Y$ to a gate on $\iota(D)$ between the systems on $V'$, with a
-    bijection of outcomes. It is compatible with interpretations when the
-    interpreted matrices agree under the identification of configurations of $D$
-    and of $\iota(D)$. Plain gates have a compatible transport, the same operators
-    read on $\iota(D)$.
-\end{definition}
-
-\begin{theorem}[Moving a circuit to a larger set of sites]
-    \label{thm:circuits_map_sites}
-    \lean{QuantumCircuit.Layer.liftOnsite, QuantumCircuit.Layer.not_mem_of_mapSites,
-        QuantumCircuit.Layer.mapSites, QuantumCircuit.Layer.mapSitesCellsEquiv,
-        QuantumCircuit.Layer.freeEquiv, QuantumCircuit.Layer.mapSitesIndexEquiv,
-        QuantumCircuit.Layer.kraus_mapSites, QuantumCircuit.Layer.lightCone_mapSites,
-        QuantumCircuit.Layer.gateCount_mapSites, QuantumCircuit.Layer.depth_mapSites_le,
-        QuantumCircuit.Circuit.mapSites, QuantumCircuit.Circuit.mapSitesIndexEquiv,
-        QuantumCircuit.Circuit.kraus_mapSites, QuantumCircuit.Circuit.isUnbranched_mapSites,
-        QuantumCircuit.Circuit.total_mapSites_le, QuantumCircuit.Circuit.forall_mapSites,
-        QuantumCircuit.Circuit.lightCone_mapSites,
-        QuantumCircuit.Circuit.gateCount_mapSites_le,
-        QuantumCircuit.Circuit.depth_mapSites_le}
-    \leanok
-    \uses{def:circuits_lift, def:circuits_transport, def:circuits_geometry_hom,
-        def:circuits_circuit, def:circuits_costs, def:circuits_local}
-    Along a morphism of geometries over $\iota$ and a compatible transport of gates,
-    every circuit from $X$ to $Z$ on $V$ has an image from the lifted $X$ to the
-    lifted $Z$ on $V'$, carrying the identity at the idle sites. Its branches are in
-    bijection with those of the circuit, and along corresponding branches
-    \begin{align}
-        K'_p&=K_p\otimes1_{W},
-        \notag
-    \end{align}
-    in the identification of configurations of $V'$ with pairs. The image is
-    unbranched if the circuit is; a property of Kraus families invariant under
-    relabelling of bases and outcomes, and holding for the identity, holds locally
-    on the image if it holds locally on the circuit; the light cone of $\iota(T)$ is
-    the image of the light cone of $T$; and the gate count and the depth do not grow
-    under the conditions of Theorem~\ref{thm:circuits_map_gate}.
-\end{theorem}
-\begin{proof}\leanok
-    The cells of the image layer are the images of the cells, and its remaining sites
-    are the images of the remaining sites of the layer together with the idle sites.
-    The outcomes are those of the gates, of the onsite families at the images, and
-    the single outcome of the identity at each idle site. In the product of local
-    entries the factors at the cells and at the images of the remaining sites are
-    those of the layer, and the factors at the idle sites form the identity on
-    $\C^{W}$. The statements about circuits follow by induction, a branch of the
-    image being a branch of the circuit read through these bijections.
+    Relabelling rows and columns along one bijection preserves unitarity. The action
+    on a vector is the formula of Definition~\ref{def:sites_place}, with the
+    configurations of $\{a\}$ identified with $X_a$.
 \end{proof}

@@ -33,6 +33,7 @@ as needed for the Choi–Jamiolkowski isomorphism (Wolf Chapter 2).
 * `Matrix.swapMatrix_apply`: elementwise formula for `swapMatrix`
 * `Matrix.swapMatrix_mul_self`: `F² = 1`
 * `Matrix.swapMatrix_conjTranspose`: `F† = F`
+* `Matrix.swapMatrix_mem_unitaryGroup`: `F` is unitary
 * `Matrix.one_sub_swapMatrix_posSemidef`: `1 - F` is positive semidefinite
 * `Matrix.trace_omegaProj`: `tr(|Ω⟩⟨Ω|) = 1` when `d > 0`
 
@@ -176,6 +177,10 @@ theorem swapMatrix_conjTranspose :
     (propext ⟨fun ⟨a, b⟩ => ⟨b.symm, a.symm⟩,
              fun ⟨a, b⟩ => ⟨b.symm, a.symm⟩⟩)
     (fun _ => rfl) (fun _ => rfl)
+
+/-- `F` is unitary. -/
+theorem swapMatrix_mem_unitaryGroup : swapMatrix d ∈ unitaryGroup (Fin d × Fin d) ℂ := by
+  rw [mem_unitaryGroup_iff, star_eq_conjTranspose, swapMatrix_conjTranspose, swapMatrix_mul_self]
 
 /-- `1 - F` is positive semidefinite, where `F` is the SWAP operator: it is twice the
 orthogonal projector onto the antisymmetric subspace. -/

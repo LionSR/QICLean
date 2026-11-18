@@ -104,6 +104,12 @@ theorem IsUnitary.isTP [DecidableEq β] {K : KrausFamily α β} (h : K.IsUnitary
   rw [IsTP, effect, Fintype.sum_unique]
   exact (hK default).1
 
+/-- The family of one unitary operator is unitary. -/
+theorem isUnitary_single {V : Matrix α α ℂ} (hV : V ∈ Matrix.unitaryGroup α ℂ) :
+    (single V).IsUnitary :=
+  ⟨⟨inferInstanceAs (Unique Unit)⟩, fun _ ↦
+    ⟨Matrix.mem_unitaryGroup_iff'.mp hV, Matrix.mem_unitaryGroup_iff.mp hV⟩⟩
+
 /-- A trace-preserving Kraus family is a quantum channel. -/
 theorem isKrausCPTP_map [DecidableEq β] {K : KrausFamily α β} (h : K.IsTP) :
     IsKrausCPTP K.map :=

@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.Layer
+import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.RegionUnion
 
 /-!
@@ -29,6 +30,7 @@ constraint.
 ## Main results
 
 * `QuantumCircuit.KrausGate.isUnitary_ofMatrix` — a unitary matrix gives a unitary gate.
+* `QuantumCircuit.place_siteEquiv_mulVec` — a matrix on one site acting on a vector.
 -/
 
 open Matrix ManyBody
@@ -78,12 +80,29 @@ noncomputable def KrausGate.ofMatrix {D : Finset S} {X : S → Type} {β : Type}
 theorem KrausGate.isUnitary_ofMatrix {D : Finset S} {X : S → Type} [∀ s, Fintype (X s)]
     [∀ s, DecidableEq (X s)] {β : Type} [Fintype β] [DecidableEq β]
     (e : RegionConfig X D ≃ β) {M : Matrix β β ℂ} (hM : M ∈ unitaryGroup β ℂ) :
-    (KrausGate.ofMatrix e M).IsUnitary := by
-  have hU : M.submatrix e e ∈ unitaryGroup (RegionConfig X D) ℂ :=
-    submatrix_equiv_mem_unitary.mpr hM
-  refine ⟨⟨inferInstanceAs (Unique Unit)⟩, fun _ ↦ ⟨?_, ?_⟩⟩
-  · exact (mem_unitaryGroup_iff'.mp hU)
-  · exact (mem_unitaryGroup_iff.mp hU)
+    (KrausGate.ofMatrix e M).IsUnitary :=
+  KrausFamily.isUnitary_single (submatrix_equiv_mem_unitary.mpr hM)
+
+/-- A matrix placed on one site acts on a vector through the basis of that site. -/
+theorem place_siteEquiv_mulVec [Fintype S] {X : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)]
+    (a : S) (M : Matrix (X a) (X a) ℂ) (ψ : Config X → ℂ) (y : Config X) :
+    (place {a} (M.submatrix (siteEquiv X a) (siteEquiv X a)) *ᵥ ψ) y =
+      ∑ b : X a, M (y a) b * ψ (Function.update y a b) := by
+  rw [place_mulVec_apply, ← (siteEquiv X a).symm.sum_comp]
+  refine Finset.sum_congr rfl fun b _ ↦ ?_
+  rw [submatrix_apply, Equiv.apply_symm_apply]
+  have hcut : (cutEquiv X {a}).symm ((siteEquiv X a).symm b, (cutEquiv X {a} y).2) =
+      Function.update y a b := by
+    funext v
+    by_cases hv : v = a
+    · subst hv
+      rw [cutEquiv_symm_apply_mem _ _ (Finset.mem_singleton_self v), Function.update_self]
+      rfl
+    · rw [cutEquiv_symm_apply_not_mem _ _ (by simpa using hv), Function.update_of_ne hv]
+      rfl
+  rw [hcut]
+  rfl
 
 /-- The geometry with a cell on every site, at cost `c₁`, and on every ordered pair of distinct
 sites `(a, b)`, the region `{a} ∪ {b}`, at cost `c₂`. -/
@@ -98,5 +117,13 @@ abbrev Geometry.sitesAndPairs (S : Type) [DecidableEq S] (c₁ c₂ : ℕ) : Geo
 
 instance [Fintype S] (c₁ c₂ : ℕ) : Fintype (Geometry.sitesAndPairs S c₁ c₂).Cell :=
   inferInstanceAs (Fintype (S ⊕ {p : S × S // p.1 ≠ p.2}))
+
+theorem Geometry.mem_sitesAndPairs_cell_inl {c₁ c₂ : ℕ} {a v : S} :
+    v ∈ (Geometry.sitesAndPairs S c₁ c₂).cell (.inl a) ↔ v = a :=
+  Finset.mem_singleton
+
+theorem Geometry.mem_sitesAndPairs_cell_inr {c₁ c₂ : ℕ} {p : {p : S × S // p.1 ≠ p.2}} {v : S} :
+    v ∈ (Geometry.sitesAndPairs S c₁ c₂).cell (.inr p) ↔ v = p.1.1 ∨ v = p.1.2 := by
+  simp
 
 end QuantumCircuit
