@@ -46,6 +46,7 @@ by definition.
 -/
 
 open Matrix ManyBody Complex
+open scoped Kronecker
 open QuantumCircuit.Qubit (Q encode hadamard controlled dft gateLayers seqCells swapCells)
 
 namespace QuantumCircuit
@@ -100,7 +101,7 @@ noncomputable def queryLayer (j : Fin t) :
 
 /-- The inverse Fourier transform on the control register: the adjoint of `qft t`, moved to the
 register with the target idle, and into the gates of phase estimation. -/
-noncomputable def qftInv : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
+noncomputable abbrev qftInv : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
   ((Circuit.seqAdjoint (gateLayers (seqCells t ++ swapCells t))).mapSites
     (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (geometryHom t)
     (KrausGate.transport _ _)).mapGate (Geometry.Hom.refl _) GateMorphism.inl
@@ -108,7 +109,7 @@ noncomputable def qftInv : Circuit (geometry t) (Gate t m) (system t m) (system 
 /-- The unitary part of phase estimation (Nielsen–Chuang, Fig. 5.2 followed by the inverse
 Fourier transform): the Hadamard gates, the controlled calls `U^{2^{t-1-j}}` for
 `j = t - 1, …, 0`, and the inverse Fourier transform. -/
-noncomputable def unitary : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
+noncomputable abbrev unitary : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
   ((Circuit.seq ((List.finRange t).map (hadamardLayer t m))).comp
     (Circuit.seq ((List.finRange t).reverse.flatMap fun j : Fin t ↦
       List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)))).comp
@@ -125,15 +126,18 @@ def measureLayer : Layer (geometry t) (Gate t m) (system t m) (system t m) where
 
 /-- Phase estimation (Nielsen–Chuang, Fig. 5.3): the unitary part, then the measurement of the
 control register. -/
-noncomputable def circuit : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
+noncomputable abbrev circuit : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
   (unitary t m).comp (.step (measureLayer t m) fun _ ↦ .done _)
+
+/-- The outcomes of the measurement of the control register. -/
+def measured (i : (measureLayer t m).Index) : Config (Q t) :=
+  fun j ↦ i.2 ⟨.inl j, by simp [measureLayer]⟩
 
 /-- The measured integer of a branch: the outcomes of the measurement of the control register,
 the qubit `0` most significant. -/
 noncomputable def readout (p : (circuit t m).Index) : Fin (2 ^ t) :=
-  encode t fun j ↦
-    ((((unitary t m).compIndexEquiv _ p).2 : Σ _ : (measureLayer t m).Index, Unit).1.2
-      ⟨.inl j, by simp [measureLayer]⟩ : Fin 2)
+  encode t (measured t m
+    (((unitary t m).compIndexEquiv _ p).2 : Σ _ : (measureLayer t m).Index, Unit).1)
 
 /-- The configuration of the control register. -/
 def control (σ : Config (system t m)) : Config (Q t) :=
@@ -449,6 +453,231 @@ private theorem query_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ
     rw [show ∑ b, U a b * (f x * u b) = f x * ∑ b, U a b * u b by
       rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun b _ ↦ by ring, hU]
     ring
+
+/-- The outcomes of the measurement layer are the configurations of the control register. -/
+private def measuredEquiv : (measureLayer t m).Index ≃ Config (Q t) where
+  toFun := measured t m
+  invFun x := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun
+    | ⟨.inl j, _⟩ => x j
+    | ⟨.inr _, _⟩ => ())
+  left_inv i := by
+    refine Prod.ext (funext fun b ↦ absurd b.2 (Finset.notMem_empty _)) (funext fun s ↦ ?_)
+    rcases s with ⟨j | u, h⟩
+    · rfl
+    · rfl
+  right_inv x := rfl
+
+private theorem measure_entry (ev : Interpretation (Gate t m)) (i : (measureLayer t m).Index)
+    (y x : Config (system t m)) : (measureLayer t m).kraus ev i y x =
+      if y = x ∧ control t m y = measured t m i then 1 else 0 := by
+  have hcells : ∀ b : (measureLayer t m).cells, False := fun b ↦ Finset.notMem_empty _ b.2
+  rw [Layer.kraus, Fintype.prod_eq_one _ fun b ↦ (hcells b).elim, one_mul]
+  have hfree : ∀ v, v ∉ (measureLayer t m).cells.biUnion (geometry t).cell := by
+    simp [measureLayer]
+  have hinl : ∀ j, ((measureLayer t m).onsite ⟨.inl j, hfree _⟩).op (i.2 ⟨.inl j, hfree _⟩)
+      (y (.inl j)) (x (.inl j)) = if measured t m i j = control t m y j ∧
+        measured t m i j = control t m x j then 1 else 0 := fun j ↦
+    Matrix.single_apply ..
+  have hinr : ((measureLayer t m).onsite ⟨.inr (), hfree _⟩).op (i.2 ⟨.inr (), hfree _⟩)
+      (y (.inr ())) (x (.inr ())) = if y (.inr ()) = x (.inr ()) then 1 else 0 :=
+    one_apply
+  split_ifs with h
+  · obtain ⟨rfl, hy⟩ := h
+    refine Fintype.prod_eq_one _ fun s ↦ ?_
+    obtain ⟨j | ⟨⟩, hs⟩ := s
+    · rw [hinl, ite_eq_left (And.intro (congrFun hy.symm j) (congrFun hy.symm j))]
+    · rw [hinr, ite_eq_left rfl]
+  · refine Finset.prod_eq_zero_iff.mpr ?_
+    by_cases hyx : y = x
+    · subst hyx
+      have : ∃ j, measured t m i j ≠ control t m y j := by
+        by_contra hc
+        push Not at hc
+        exact h ⟨rfl, funext fun j ↦ (hc j).symm⟩
+      obtain ⟨j, hj⟩ := this
+      exact ⟨⟨.inl j, hfree _⟩, Finset.mem_univ _, by rw [hinl, ite_eq_right fun e ↦ hj e.1]⟩
+    · obtain ⟨v, hv⟩ := Function.ne_iff.mp hyx
+      rcases v with j | ⟨⟩
+      · exact ⟨⟨.inl j, hfree _⟩, Finset.mem_univ _, by
+          rw [hinl, ite_eq_right fun e ↦ hv (e.1.symm.trans e.2)]⟩
+      · exact ⟨⟨.inr (), hfree _⟩, Finset.mem_univ _, by rw [hinr, ite_eq_right hv]⟩
+
+private theorem measure_mulVec (ev : Interpretation (Gate t m)) (i : (measureLayer t m).Index)
+    (ψ : Config (system t m) → ℂ) :
+    (measureLayer t m).kraus ev i *ᵥ ψ =
+      fun σ ↦ if control t m σ = measured t m i then ψ σ else 0 := by
+  funext σ
+  simp only [mulVec, dotProduct, measure_entry, ite_mul, one_mul, zero_mul]
+  split_ifs with h
+  · simp [h]
+  · simp [h]
+
+/-- A matrix on the control register, tensored with the identity on the target. -/
+private theorem kron_one_mulVec (A : Matrix (Config (Q t)) (Config (Q t)) ℂ) (u : Fin m → ℂ) (f : Config (Q t) → ℂ) :
+    (A ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
+      (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t))
+      (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)) *ᵥ
+        tensorState u f = tensorState u (A *ᵥ f) := by
+  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+  have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
+  have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
+  funext σ
+  simp only [tensorState, mulVec, dotProduct, h1, h2]
+  rw [← E.symm.sum_comp, Fintype.sum_prod_type]
+  simp only [submatrix_apply, Equiv.apply_symm_apply, kroneckerMap_apply, one_apply, mul_ite,
+    mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true,
+    Finset.sum_mul]
+  exact Finset.sum_congr rfl fun x _ ↦ by ring
+
+/-- The amplitude `2^{-t} ∑_{j < 2^t} e^{2πi j (φ - k/2^t)}` of the outcome `k` (Nielsen–Chuang,
+eq. (5.24)). -/
+noncomputable def amplitude (t : ℕ) (φ : ℝ) (k : Fin (2 ^ t)) : ℂ :=
+  (2 ^ t : ℂ)⁻¹ * ∑ j : Fin (2 ^ t), exp (2 * Real.pi * I * j * (φ - k / 2 ^ t))
+
+private theorem dft_conjTranspose_mulVec (φ : ℝ) (y : Config (Q t)) :
+    ((dft t)ᴴ *ᵥ fun x ↦ invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ)) y =
+      amplitude t φ (encode t y) := by
+  rw [mulVec, dotProduct, amplitude, ← (encode t).symm.sum_comp, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun j _ ↦ ?_
+  have hstar : star (invSqrtTwo ^ t) = invSqrtTwo ^ t := by simp
+  simp only [conjTranspose_apply, dft, of_apply, star_mul', hstar, Equiv.apply_symm_apply,
+    Complex.star_def, ← Complex.exp_conj, ← Complex.exp_nat_mul]
+  rw [mul_mul_mul_comm, ← Complex.exp_add, ← mul_pow, invSqrtTwo_mul_self, inv_pow]
+  congr 2
+  simp only [map_div₀, map_mul, map_ofNat, Complex.conj_ofReal, Complex.conj_I, map_pow,
+    map_natCast]
+  ring
+
+private theorem ofReal_sum_norm_sq {n : Type} [Fintype n] (w : n → ℂ) :
+    ((∑ y, ‖w y‖ ^ 2 : ℝ) : ℂ) = star w ⬝ᵥ w := by
+  rw [dotProduct, Complex.ofReal_sum]
+  refine Finset.sum_congr rfl fun y _ ↦ ?_
+  rw [Pi.star_apply, Complex.star_def, mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]
+
+private theorem sum_norm_sq_mulVec {n : Type} [Fintype n] [DecidableEq n] {M : Matrix n n ℂ}
+    (hM : Mᴴ * M = 1) (v : n → ℂ) : ∑ y, ‖(M *ᵥ v) y‖ ^ 2 = ∑ x, ‖v x‖ ^ 2 := by
+  apply Complex.ofReal_injective
+  rw [ofReal_sum_norm_sq, ofReal_sum_norm_sq, star_mulVec, ← dotProduct_mulVec, mulVec_mulVec,
+    hM, one_mulVec]
+
+private theorem norm_invSqrtTwo_sq : ‖invSqrtTwo‖ ^ 2 = 2⁻¹ := by
+  rw [invSqrtTwo, norm_inv, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_nonneg (Real.sqrt_nonneg 2), inv_pow, Real.sq_sqrt (by norm_num)]
+
+/-- The probabilities of the outcomes sum to `1`. -/
+theorem sum_norm_sq_amplitude (φ : ℝ) : ∑ k, ‖amplitude t φ k‖ ^ 2 = 1 := by
+  have hU : ((dft t)ᴴ)ᴴ * (dft t)ᴴ = 1 := by
+    rw [conjTranspose_conjTranspose]
+    exact mem_unitaryGroup_iff.mp (Qubit.dft_mem_unitaryGroup t)
+  rw [← (encode t).sum_comp]
+  simp only [← dft_conjTranspose_mulVec]
+  rw [sum_norm_sq_mulVec hU]
+  have h : ∀ x : Config (Q t), ‖invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ)‖ ^ 2
+      = (2 ^ t : ℝ)⁻¹ := fun x ↦ by
+    rw [norm_mul, norm_pow, norm_pow, Complex.norm_exp]
+    simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
+      Complex.I_re, Complex.I_im, Complex.re_ofNat, Complex.im_ofNat]
+    rw [show ((2 * Real.pi - 0 * 0) * 0 - (2 * 0 + 0 * Real.pi) * 1) * φ -
+      ((2 * Real.pi - 0 * 0) * 1 + (2 * 0 + 0 * Real.pi) * 0) * 0 = 0 by ring, Real.exp_zero, one_pow, mul_one, ← pow_mul, mul_comm t 2, pow_mul, norm_invSqrtTwo_sq,
+      inv_pow]
+  simp only [h, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+  rw [Fintype.card_pi]
+  simp only [Fintype.card_fin, Finset.prod_const, Finset.card_univ]
+  push_cast
+  exact mul_inv_cancel₀ (pow_ne_zero _ two_ne_zero)
+private theorem foldl_query {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {c : ℂ}
+    (hu : U *ᵥ u = c • u) : ∀ (l : List (Fin t)) (g : Config (Q t) → ℂ),
+      l.foldl (fun w j ↦ place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
+        (pairEquiv (system t m) (inlNeInr j)) (pairEquiv (system t m) (inlNeInr j))) *ᵥ w)
+        (tensorState u g) =
+        tensorState u fun x ↦ c ^ (l.map fun j ↦ (x j : ℕ)).sum * g x
+  | [], g => by simp
+  | j :: l, g => by
+    rw [List.foldl_cons, query_mulVec hu, foldl_query hu l]
+    congr 1
+    funext x
+    rw [List.map_cons, List.sum_cons, pow_add]
+    ring
+
+/-- The control qubit `j` is called `2^{t-1-j}` times, so the exponents add up to `⟨x⟩`. -/
+private theorem sum_queries (x : Config (Q t)) :
+    (((List.finRange t).reverse.flatMap fun j : Fin t ↦ List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map
+      fun j ↦ (x j : ℕ)).sum = encode t x := by
+  have h : ∀ l : List (Fin t), ((l.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map
+      fun j ↦ (x j : ℕ)).sum = (l.map fun j ↦ (x j : ℕ) * 2 ^ (t - 1 - (j : ℕ))).sum := by
+    intro l
+    induction l with
+    | nil => rfl
+    | cons j l ih =>
+      rw [List.flatMap_cons, List.map_append, List.sum_append, ih, List.map_replicate,
+        List.sum_replicate, smul_eq_mul, List.map_cons, List.sum_cons, mul_comm]
+  rw [h, Qubit.encode_apply, List.map_reverse, List.sum_reverse, ← Fin.sum_univ_def]
+
+private theorem queries_eq :
+    ((List.finRange t).reverse.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)) =
+      ((List.finRange t).reverse.flatMap fun j : Fin t ↦
+        List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map (queryLayer t m) := by
+  rw [List.map_flatMap]
+  simp only [List.map_replicate]
+
+/-- The Kraus operator of the inverse Fourier transform on the register. -/
+private theorem kraus_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ)
+    (p : (qftInv t m).Index) :
+    (qftInv t m).kraus (Interpretation.sum KrausGate.ev (Oracle.ev V)) p =
+      ((dft t)ᴴ ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
+        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t))
+        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)) := by
+  rw [Circuit.kraus_mapGate _ _ (GateMorphism.isCompatible_inl _ _),
+    Circuit.kraus_mapSites _ _ _ _ (KrausGate.isCompatible_transport _ _)]
+  congr 2
+  rw [Circuit.kraus_seqAdjoint (Us := (seqCells t ++ swapCells t).map Qubit.gateOp),
+    Qubit.prod_gateOp_eq_dft Qubit.isGateOrder_seqCells Qubit.seqCells_nodup
+      Qubit.toFinset_seqCells]
+  rw [gateLayers, List.forall₂_map_left_iff, List.forall₂_map_right_iff]
+  exact List.forall₂_same.mpr fun b _ i ↦ Layer.kraus_single KrausGate.ev b (Qubit.qftGate b) i
+
+/-- The unitary part maps `|0…0⟩ ⊗ u` to `(∑ₖ αₖ |k⟩) ⊗ u`. -/
+private theorem kraus_unitary_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {φ : ℝ}
+    (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (p : (unitary t m).Index) :
+    (unitary t m).kraus (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U))) p *ᵥ
+      input t m u = tensorState u fun x ↦ amplitude t φ (encode t x) := by
+  rw [Circuit.kraus_comp, Circuit.kraus_comp, ← mulVec_mulVec, ← mulVec_mulVec,
+    Circuit.kraus_seq_map _ (hadamardLayer t m)
+      (fun j ↦ place {Sum.inl j} (hadamard.submatrix (siteEquiv (system t m) (.inl j))
+        (siteEquiv (system t m) (.inl j)))) _ (fun j _ i ↦ Layer.kraus_single _ _ _ i),
+    reverse_prod_mulVec, input_eq]
+  rw [show (tensorState u fun x ↦ if x = 0 then 1 else 0) = tensorState u (hadamardState ∅) by
+    congr 1; funext x; simp [hadamardState, funext_iff], foldl_hadamard u _ ∅
+      (List.nodup_finRange t) fun _ _ ↦ Finset.notMem_empty _]
+  have hq := Circuit.kraus_seq_map (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+    (queryLayer t m) (fun j ↦ place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
+      (pairEquiv (system t m) (inlNeInr j)) (pairEquiv (system t m) (inlNeInr j))))
+    ((List.finRange t).reverse.flatMap fun j : Fin t ↦ List.replicate (2 ^ (t - 1 - (j : ℕ))) j)
+    (fun j _ i ↦ Layer.kraus_single _ _ _ i)
+  rw [← queries_eq] at hq
+  rw [hq, reverse_prod_mulVec, show tensorState u (hadamardState (∅ ∪ (List.finRange t).toFinset))
+    = tensorState u fun _ ↦ invSqrtTwo ^ t by
+      congr 1; funext x; simp [hadamardState], foldl_query huφ, kraus_qftInv,
+    kron_one_mulVec]
+  congr 1
+  funext y
+  rw [← dft_conjTranspose_mulVec]
+  congr 1
+  funext x
+  rw [sum_queries, mul_comm]
+
+/-- The probability of a branch is the squared amplitude of its readout. -/
+private theorem prob_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
+    {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (p : (circuit t m).Index) :
+    (circuit t m).prob (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+      (vecMulVec (input t m u) (star (input t m u))) p = ‖amplitude t φ (readout t m p)‖ ^ 2 := by
+  rw [Circuit.prob_vecMulVec, Circuit.kraus_comp, ← mulVec_mulVec,
+    kraus_unitary_mulVec huφ]
+  obtain ⟨i, q⟩ := (((unitary t m).compIndexEquiv _ p).2 :
+    Σ _ : (measureLayer t m).Index, Unit)
+  sorry
 
 /-- Phase estimation with `t = n + ⌈log₂(2 + 1/(2ε))⌉` control qubits, on the input
 `|0…0⟩ ⊗ |u⟩` for an eigenvector `U u = e^{2πiφ} u` of norm `1`, returns an integer `k` with

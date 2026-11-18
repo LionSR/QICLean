@@ -23,6 +23,8 @@ probability of a reported value `ω` is the total probability of the branches re
 ## Main results
 
 * `KrausFamily.isTP_measure` — a measurement is trace-preserving.
+* `QuantumCircuit.Circuit.prob_vecMulVec` — on a pure input the probability of a branch is the
+  squared norm of the output vector.
 * `QuantumCircuit.Circuit.sum_prob` — for a circuit with trace-preserving local families the
   probabilities of the branches sum to the trace of the input.
 * `QuantumCircuit.Circuit.sum_outcomeProb` — so do those of the values of a readout.
@@ -60,6 +62,15 @@ noncomputable def prob (ev : Interpretation G) (c : Circuit Γ G X Z)
 noncomputable def outcomeProb (ev : Interpretation G) (c : Circuit Γ G X Z) {Ω : Type}
     [DecidableEq Ω] (r : c.Index → Ω) (ρ : Matrix (Config X) (Config X) ℂ) (ω : Ω) : ℝ :=
   ∑ p ∈ Finset.univ.filter (r · = ω), c.prob ev ρ p
+
+/-- On a pure input `ψψᴴ` the probability of a branch is the squared norm of `Kₚ ψ`. -/
+theorem prob_vecMulVec (ev : Interpretation G) (c : Circuit Γ G X Z) (ψ : Config X → ℂ)
+    (p : c.Index) : c.prob ev (vecMulVec ψ (star ψ)) p = ∑ σ, ‖(c.kraus ev p *ᵥ ψ) σ‖ ^ 2 := by
+  rw [prob, mul_vecMulVec, vecMulVec_mul, ← star_mulVec, trace_vecMulVec, dotProduct,
+    Complex.re_sum]
+  refine Finset.sum_congr rfl fun σ _ ↦ ?_
+  rw [Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  norm_cast
 
 /-- For a circuit with trace-preserving local families the probabilities of the branches sum to
 the trace of the input. -/
