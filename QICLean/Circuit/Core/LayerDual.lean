@@ -22,9 +22,9 @@ The factorization and order of finite tensor products give:
 * a layer whose gates and onsite families are trace-preserving is trace-preserving (take `D`
   empty);
 * a layer whose local effects are at most the identity is trace-nonincreasing;
-* the Heisenberg picture of such a layer maps an operator supported on `R` to an operator
-  supported on the backward light cone of `R`: `R` together with every cell of the layer that
-  meets it.
+* the Heisenberg picture of a trace-preserving layer maps an operator supported on `R` to an
+  operator supported on the backward light cone of `R`: `R` together with every cell of the
+  layer that meets it.
 
 ## Main definitions
 
