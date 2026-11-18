@@ -1,0 +1,230 @@
+\chapter{The quantum Fourier transform}
+\label{ch:qft}
+
+This chapter writes the quantum Fourier transform on $n$ qubits as a unitary circuit
+of one- and two-qubit gates, in the form of \cite[Fig.~5.1]{NielsenChuang2010}, and
+proves that its Kraus operator is the Fourier matrix. It then schedules the same
+gates in $2n-1$ layers of disjoint gates, followed by one layer of swaps, which gives
+a circuit of depth at most $2n$ for the same matrix. The chapter uses the circuits
+of Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
+
+\section{Qubits and gates}
+\label{sec:qft_qubits}
+
+\begin{definition}[Qubits and the binary encoding]
+    \label{def:qft_qubits}
+    \lean{QuantumCircuit.Qubit.Q, QuantumCircuit.Qubit.encode,
+        QuantumCircuit.Qubit.encode_apply, QuantumCircuit.Qubit.geometry}
+    \leanok
+    \uses{def:sites_config, def:circuits_local_gate}
+    The system of $n$ qubits has the sites $0,\dots,n-1$, each with basis
+    $\{0,1\}$. A configuration $x$ encodes the number
+    $\langle x\rangle=\sum_ix_i2^{n-1-i}$, the site $0$ most significant; this is a
+    bijection onto $\{0,\dots,2^n-1\}$. The circuits of this chapter use the
+    geometry of sites and pairs on the $n$ qubits, every cell of cost $1$.
+\end{definition}
+
+\begin{definition}[Gates]
+    \label{def:qft_gates}
+    \lean{QuantumCircuit.Qubit.hadamard, QuantumCircuit.Qubit.phaseShift,
+        QuantumCircuit.Qubit.controlled, QuantumCircuit.Qubit.swap,
+        QuantumCircuit.Qubit.siteLayer, QuantumCircuit.Qubit.pairLayer}
+    \leanok
+    \uses{def:qft_qubits, lem:circuits_layer_single}
+    The Hadamard gate is $H_{yx}=(-1)^{xy}/\sqrt2$, the phase gate is
+    $R_k=\operatorname{diag}(1,e^{2\pi i/2^k})$, the controlled gate of a matrix $U$
+    is $\lvert0\rangle\langle0\rvert\otimes1+\lvert1\rangle\langle1\rvert\otimes U$,
+    the control first, and the swap exchanges two qubits. A gate on one qubit or on
+    an ordered pair of distinct qubits gives the layer with this single gate.
+\end{definition}
+
+\begin{lemma}[The gates are unitary]
+    \label{lem:qft_gates_unitary}
+    \lean{QuantumCircuit.Qubit.hadamard_mem_unitaryGroup,
+        QuantumCircuit.Qubit.phaseShift_mem_unitaryGroup,
+        QuantumCircuit.Qubit.controlled_mem_unitaryGroup,
+        QuantumCircuit.Qubit.swap_mem_unitaryGroup,
+        QuantumCircuit.Qubit.forall_isUnitary_siteLayer,
+        QuantumCircuit.Qubit.forall_isUnitary_pairLayer,
+        QuantumCircuit.Qubit.kraus_siteLayer, QuantumCircuit.Qubit.kraus_pairLayer,
+        QuantumCircuit.Qubit.nonempty_index_siteLayer,
+        QuantumCircuit.Qubit.nonempty_index_pairLayer}
+    \leanok
+    \uses{def:qft_gates, lem:circuits_local_gate_unitary}
+    The four gates are unitary, so the layers of one of them are locally unitary.
+    The single Kraus operator of such a layer is the placement of the gate.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_single}
+    Direct computation for the four matrices; the controlled gate of a unitary
+    matrix is block diagonal with unitary blocks. The second statement is
+    Lemma~\ref{lem:circuits_layer_single}.
+\end{proof}
+
+\begin{lemma}[Gates on basis vectors]
+    \label{lem:qft_gates_vectors}
+    \lean{QuantumCircuit.Qubit.cut_update, QuantumCircuit.Qubit.place_site_mulVec,
+        QuantumCircuit.Qubit.place_diagonal_mulVec,
+        QuantumCircuit.Qubit.controlled_phaseShift}
+    \leanok
+    \uses{def:qft_gates, def:sites_place}
+    A gate $K$ placed on one qubit $a$ maps a vector $\psi$ to the vector whose value
+    at $\sigma$ is $\sum_bK_{\sigma_a,b}\,\psi(\sigma[a\mapsto b])$. A diagonal gate
+    $\operatorname{diag}(d)$ on a region multiplies the value at $\sigma$ by
+    $d(\sigma|_D)$. The controlled phase gate of $R_k$ is the diagonal gate
+    $(c,t)\mapsto e^{2\pi i\,ct/2^k}$.
+\end{lemma}
+\begin{proof}\leanok
+    The formula for a placed matrix acting on a vector, from
+    Definition~\ref{def:sites_place}, with the configurations of $\{a\}$ identified
+    with $\{0,1\}$.
+\end{proof}
+
+\section{The Fourier transform}
+\label{sec:qft_circuit}
+
+\begin{definition}[The Fourier matrix and its circuit]
+    \label{def:qft_circuit}
+    \lean{QuantumCircuit.Qubit.dft, QuantumCircuit.Qubit.rotationLayer,
+        QuantumCircuit.Qubit.qubitLayers, QuantumCircuit.Qubit.coreLayers,
+        QuantumCircuit.Qubit.rev_ne_of_lt_half, QuantumCircuit.Qubit.swapLayers,
+        QuantumCircuit.Qubit.qftCore, QuantumCircuit.Qubit.qft}
+    \leanok
+    \uses{def:qft_gates, def:circuits_circuit}
+    The Fourier matrix on $n$ qubits is
+    \begin{align}
+        F_{yx}&=2^{-n/2}\,e^{2\pi i\langle y\rangle\langle x\rangle/2^n}
+        \notag
+    \end{align}
+    \cite[eq.~(5.2)]{NielsenChuang2010}. For each qubit $i=0,\dots,n-1$ in turn, the
+    circuit applies the Hadamard gate to $i$ and then, for $j=i+1,\dots,n-1$, the
+    controlled gate of $R_{j-i+1}$ with control $j$ and target $i$. Its Fourier
+    circuit follows these gates by the swaps of the qubits $k$ and $n-1-k$ for
+    $k<\lfloor n/2\rfloor$. Every layer holds one gate.
+\end{definition}
+
+\begin{theorem}[The circuit computes the Fourier transform]
+    \label{thm:qft_kraus}
+    \lean{QuantumCircuit.Qubit.kraus_qftCore, QuantumCircuit.Qubit.kraus_qft,
+        QuantumCircuit.Qubit.U1, QuantumCircuit.Qubit.U1_siteLayer,
+        QuantumCircuit.Qubit.U1_pairLayer, QuantumCircuit.Qubit.prod_mulVec,
+        QuantumCircuit.Qubit.rotation_mulVec, QuantumCircuit.Qubit.swap_mulVec,
+        QuantumCircuit.Qubit.kraus_eq_U1_of_mem, QuantumCircuit.Qubit.phase,
+        QuantumCircuit.Qubit.qstate, QuantumCircuit.Qubit.qstate',
+        QuantumCircuit.Qubit.neg_one_pow_eq_exp, QuantumCircuit.Qubit.hadamard_qstate,
+        QuantumCircuit.Qubit.rotation_qstate', QuantumCircuit.Qubit.foldl_rotations,
+        QuantumCircuit.Qubit.sum_filter_finRange, QuantumCircuit.Qubit.phase_eq,
+        QuantumCircuit.Qubit.foldl_qubitLayers, QuantumCircuit.Qubit.qstate_zero,
+        QuantumCircuit.Qubit.foldl_coreLayers, QuantumCircuit.Qubit.swapped,
+        QuantumCircuit.Qubit.foldl_swapLayers, QuantumCircuit.Qubit.encode_rev_cast,
+        QuantumCircuit.Qubit.encode_cast, QuantumCircuit.Qubit.pow_ratio,
+        QuantumCircuit.Qubit.exponent_eq, QuantumCircuit.Qubit.qstate_n}
+    \leanok
+    \uses{def:qft_circuit, lem:circuits_seq}
+    Along its single branch the circuit without the swaps has the Kraus operator
+    whose entry at $(y,x)$ is $F_{\bar y x}$, where $\bar y_i=y_{n-1-i}$. The Kraus
+    operator of the Fourier circuit is $F$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:qft_gates_unitary, lem:qft_gates_vectors}
+    By Lemma~\ref{lem:circuits_seq} the Kraus operator is the product of the placed
+    gates, and it suffices to follow the column $e_x$ of every basis vector. After
+    the gates for the qubits $0,\dots,i-1$ the vector is the product state whose
+    factor at each processed qubit $k$ is
+    $2^{-1/2}(\lvert0\rangle+e^{2\pi i\,\phi_k}\lvert1\rangle)$ with
+    $\phi_k=\sum_{j\geq k}x_j2^{-(j-k+1)}$, the remaining qubits still in their
+    basis states. The Hadamard gate on $i$ produces the phase $x_i/2$, and the
+    controlled gate of $R_{j-i+1}$ adds $x_j2^{-(j-i+1)}$, since the control $j$ is
+    still in its basis state. At the end the entry at $y$ is
+    $2^{-n/2}\prod_ke^{2\pi i\,y_k\phi_k}$, and
+    $\sum_ky_k\phi_k$ differs from $\langle\bar y\rangle\langle x\rangle/2^n$ by an
+    integer: the terms $x_jy_k2^{j-k-1}$ with $j<k$ omitted from the product are
+    integers. The swaps reverse the order of the qubits.
+\end{proof}
+
+\begin{theorem}[Unitarity and cost of the Fourier circuit]
+    \label{thm:qft_cost}
+    \lean{QuantumCircuit.Qubit.isUnbranched_qft, QuantumCircuit.Qubit.forall_isUnitary_qft,
+        QuantumCircuit.Qubit.nonempty_index_and_gateCount_of_mem,
+        QuantumCircuit.Qubit.gateCount_seq_eq_length, QuantumCircuit.Qubit.length_qubitLayers,
+        QuantumCircuit.Qubit.length_coreLayers, QuantumCircuit.Qubit.gateCount_qftCore,
+        QuantumCircuit.Qubit.gateCount_qft, QuantumCircuit.Qubit.depth_qft_le}
+    \leanok
+    \uses{def:qft_circuit, def:circuits_costs, def:circuits_local}
+    The Fourier circuit is unbranched and locally unitary. Without the swaps it uses
+    $n(n+1)/2$ gates, and with them $n(n+1)/2+\lfloor n/2\rfloor$, which also bounds
+    its depth.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_seq, lem:qft_gates_unitary, thm:circuits_cost_subadditive}
+    Every layer holds one gate of cost $1$ and has one outcome, so by
+    Lemma~\ref{lem:circuits_seq} the gate count is the number of layers: $n-i$ for
+    the qubit $i$, in total $n(n+1)/2$, and $\lfloor n/2\rfloor$ swaps. The depth is
+    at most the gate count.
+\end{proof}
+
+\section{The Fourier transform in linear depth}
+\label{sec:qft_parallel}
+
+\begin{definition}[The scheduled Fourier circuit]
+    \label{def:qft_parallel}
+    \lean{QuantumCircuit.Qubit.qftV, QuantumCircuit.Qubit.qftGate,
+        QuantumCircuit.Qubit.timeCells, QuantumCircuit.Qubit.mem_cell_inl,
+        QuantumCircuit.Qubit.mem_cell_inr, QuantumCircuit.Qubit.timeCells_pairwiseDisjoint,
+        QuantumCircuit.Qubit.timeLayer, QuantumCircuit.Qubit.swapCell,
+        QuantumCircuit.Qubit.swapCells, QuantumCircuit.Qubit.swapV,
+        QuantumCircuit.Qubit.swapGate, QuantumCircuit.Qubit.swapCells_pairwiseDisjoint,
+        QuantumCircuit.Qubit.swapAll, QuantumCircuit.Qubit.qftPar}
+    \leanok
+    \uses{def:qft_circuit, def:circuits_of_cells}
+    Place the Hadamard gate on the qubit $i$ at time $2i$ and the controlled gate of
+    $R_{j-i+1}$ with control $j$ and target $i<j$ at time $i+j$. The cells used at
+    one time $t$ are pairwise disjoint: the pairs $\{i,j\}$ with $i+j=t$ are
+    disjoint, and the qubit $t/2$ lies in none of them. The scheduled circuit is the
+    sequence of the layers of the gates at the times $0,\dots,2n-2$, followed by the
+    layer of all swaps of $k$ and $n-1-k$ for $k<\lfloor n/2\rfloor$.
+\end{definition}
+
+\begin{theorem}[The scheduled circuit computes the Fourier transform in depth $2n$]
+    \label{thm:qft_parallel}
+    \lean{QuantumCircuit.Qubit.kraus_qftPar, QuantumCircuit.Qubit.depth_qftPar_le,
+        QuantumCircuit.Qubit.pstate, QuantumCircuit.Qubit.pstate_congr,
+        QuantumCircuit.Qubit.hadamard_pstate, QuantumCircuit.Qubit.rotation_pstate,
+        QuantumCircuit.Qubit.xval, QuantumCircuit.Qubit.doneSet, QuantumCircuit.Qubit.θt,
+        QuantumCircuit.Qubit.tstate, QuantumCircuit.Qubit.tstate_zero,
+        QuantumCircuit.Qubit.rotValid, QuantumCircuit.Qubit.rot_ne,
+        QuantumCircuit.Qubit.rotCell, QuantumCircuit.Qubit.rList,
+        QuantumCircuit.Qubit.contrib, QuantumCircuit.Qubit.contrib_nil,
+        QuantumCircuit.Qubit.contrib_cons, QuantumCircuit.Qubit.rList_mulVec,
+        QuantumCircuit.Qubit.hList, QuantumCircuit.Qubit.timeList,
+        QuantumCircuit.Qubit.mem_rList, QuantumCircuit.Qubit.timeList_nodup,
+        QuantumCircuit.Qubit.timeList_toFinset, QuantumCircuit.Qubit.θt_succ,
+        QuantumCircuit.Qubit.contrib_finRange, QuantumCircuit.Qubit.timeList_mulVec,
+        QuantumCircuit.Qubit.kraus_timeLayer, QuantumCircuit.Qubit.nonempty_index_timeLayer,
+        QuantumCircuit.Qubit.U1_timeLayer, QuantumCircuit.Qubit.swapCell_injective,
+        QuantumCircuit.Qubit.kraus_swapAll, QuantumCircuit.Qubit.nonempty_index_swapAll,
+        QuantumCircuit.Qubit.U1_swapAll, QuantumCircuit.Qubit.list_prod_mulVec,
+        QuantumCircuit.Qubit.foldl_timeLayers, QuantumCircuit.Qubit.tstate_final,
+        QuantumCircuit.Qubit.kraus_eq_U1_of_mem_par}
+    \leanok
+    \uses{def:qft_parallel, def:circuits_costs}
+    The Kraus operator of the scheduled circuit is the Fourier matrix $F$, and its
+    depth is at most $2n$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_of_cells, lem:circuits_seq, lem:qft_gates_vectors,
+        thm:qft_kraus, thm:circuits_cost_subadditive}
+    By Theorem~\ref{thm:circuits_of_cells} the Kraus operator of a layer is the
+    product of the placements of its gates, which commute since their cells are
+    disjoint. Follow the column $e_x$ as in Theorem~\ref{thm:qft_kraus}. After the
+    times $0,\dots,t-1$ the vector is the product state in which the qubits $k$ with
+    $2k<t$ carry the factor
+    $2^{-1/2}(\lvert0\rangle+e^{2\pi i\,\phi_k^{(t)}}\lvert1\rangle)$, where
+    $\phi_k^{(t)}=x_k/2+\sum_{k<j,\,k+j<t}x_j2^{-(j-k+1)}$, and the other qubits are
+    in their basis states. At time $t$ the Hadamard gate acts on a qubit still in its
+    basis state, and each controlled gate with control $j$ and target $i$, $i+j=t$,
+    acts while $j$ is in its basis state, since $2j>t$. At time $2n-1$ the phases are
+    those of Theorem~\ref{thm:qft_kraus}, and the swaps reverse the order of the
+    qubits. Each of the $2n$ layers has depth at most $1$, and the depth of a
+    sequence is at most the sum of the depths of its layers.
+\end{proof}

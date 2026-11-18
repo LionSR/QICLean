@@ -26,7 +26,6 @@ transform.
 
 * `QuantumCircuit.Qubit.kraus_qftPar` — the Kraus operator of `qftPar n` is `dft n`.
 * `QuantumCircuit.Qubit.depth_qftPar_le` — its depth is at most `2n`.
-* `QuantumCircuit.Qubit.gateCount_qftPar` — it uses the gates of `qft n`.
 -/
 
 open Matrix ManyBody Complex
