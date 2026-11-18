@@ -265,6 +265,20 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     the converse for positivity.
 \end{proof}
 
+\begin{lemma}[Placement and the exponential]
+    \label{lem:sites_place_exp}
+    \lean{ManyBody.place_exp, ManyBody.exp_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_place, lem:sites_place_hom, thm:sites_place_range}
+    For every matrix $K$ on $\C^{X_D}$, $e^{K}\otimes1=e^{K\otimes1}$. Hence
+    $\mathcal A_D$ is closed under the exponential.
+\end{lemma}
+\begin{proof}\leanok
+    The placement is a continuous unital ring homomorphism, and such a map
+    commutes with the exponential series. An element of $\mathcal A_D$ is some
+    $K\otimes1$, and its exponential is $e^K\otimes1$.
+\end{proof}
+
 \begin{definition}[Placement into a larger region]
     \label{def:sites_subregion_place}
     \lean{ManyBody.subregionConfigEquiv, ManyBody.subregionPlace,

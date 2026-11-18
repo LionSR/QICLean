@@ -16,5 +16,6 @@ import QICLean.ManyBody.Dynamics.GraphLocalization
 import QICLean.ManyBody.Dynamics.GraphPropagation
 import QICLean.ManyBody.Dynamics.HeisenbergEvolution
 import QICLean.ManyBody.Dynamics.Interaction
+import QICLean.ManyBody.Dynamics.ProductFormula
 import QICLean.ManyBody.Dynamics.ProjectedRelativeEvolution
 import QICLean.ManyBody.Dynamics.SupportedGaussianIntegral

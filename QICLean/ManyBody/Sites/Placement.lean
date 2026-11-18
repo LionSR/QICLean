@@ -7,6 +7,7 @@ import QICLean.ManyBody.Sites.Support
 import QICLean.Algebra.HermitianHelpers
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.Matrix
+import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
@@ -46,6 +47,8 @@ its restriction to the region.
 * `ManyBody.place_mem_supportedOperators`, `ManyBody.exists_eq_place_of_mem_supportedOperators`,
   `ManyBody.range_placeHom` — the placed matrices are the supported operators.
 * `ManyBody.place_injective`, `ManyBody.norm_place`, `ManyBody.norm_place_le`.
+* `ManyBody.place_exp`, `ManyBody.exp_mem_supportedOperators` — placement commutes with the
+  exponential, and the supported operators are closed under it.
 * `ManyBody.supportedOperators_toSubmodule_eq_span`, `ManyBody.supportedOperators_induction`,
   `ManyBody.eq_of_mem_supportedOperators₂` — supported operators are spanned by product
   operators, with the induction principle and the extension of bilinear identities.
@@ -601,5 +604,28 @@ theorem place_le_place_iff [∀ v, Finite (X v)]
   rw [Matrix.le_iff, Matrix.le_iff, ← place_sub, posSemidef_place_iff]
 
 end Order
+
+/-! ### The exponential -/
+
+section Exponential
+
+variable [∀ v, Fintype (X v)]
+
+/-- Placement commutes with the exponential: `exp(K) ⊗ 1 = exp(K ⊗ 1)`. -/
+theorem place_exp (K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ) :
+    place D (NormedSpace.exp K) = NormedSpace.exp (place D K) := by
+  let _ : NormedAlgebra ℚ (Matrix (RegionConfig X D) (RegionConfig X D) ℂ) :=
+    NormedAlgebra.restrictScalars ℚ ℂ _
+  exact NormedSpace.map_exp (placeHom (X := X) D)
+    (placeHom (X := X) D).toLinearMap.continuous_of_finiteDimensional K
+
+/-- The operators supported on a region are closed under the exponential. -/
+theorem exp_mem_supportedOperators {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X D) : NormedSpace.exp A ∈ supportedOperators X D := by
+  obtain ⟨K, rfl⟩ := exists_eq_place_of_mem_supportedOperators hA
+  rw [← place_exp]
+  exact place_mem_supportedOperators _
+
+end Exponential
 
 end ManyBody
