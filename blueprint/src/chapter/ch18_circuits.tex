@@ -1,0 +1,375 @@
+\chapter{Circuits of Kraus families on a geometry}
+\label{ch:circuits}
+
+This chapter uses the notation of Chapter~\ref{ch:sites}: $V$ is a finite set of
+sites, a system is a family $X=(X_v)_{v\in V}$ of finite basis sets, and
+$\mathcal H_X=\bigotimes_v\C^{X_v}$. A circuit acts layer by layer by finite Kraus
+families on disjoint cells of a geometry, and its basis sets may change from layer
+to layer, so that ancillas can be prepared and discarded and local dimensions can
+change. Later layers may depend on the outcomes of earlier ones. Unitary circuits,
+channels, measurement with classical feedback, block encodings and circuits with
+oracle queries are circuits of this one kind, distinguished by properties of their
+Kraus families \cite{NielsenChuang2010}. The chapter proves, once for all of them,
+the composition of circuits, the subadditivity of depth and gate count, trace
+preservation, and the backward light cone.
+
+\section{Geometries, gates and layers}
+\label{sec:circuits_layers}
+
+\begin{definition}[Geometry]
+    \label{def:circuits_geometry}
+    \lean{QuantumCircuit.Geometry, QuantumCircuit.Geometry.neighbourhood,
+        QuantumCircuit.Geometry.subset_neighbourhood,
+        QuantumCircuit.Geometry.restrict}
+    \leanok
+    A geometry on $V$ is a set $\mathcal C$ of cells, each with a region
+    $C_b\subseteq V$ and a cost $c_b\in\N$. The bonds of a ring, the windows of a
+    chain, the edges of a graph, the wires of one site at cost zero and arbitrary
+    sets of parties are geometries. When there are finitely many cells, the
+    neighbourhood $\mathcal N(R)$ of a region $R$ is $R$ together with every cell
+    meeting $R$, so $R\subseteq\mathcal N(R)$.
+    The cells contained in a region $D$ form a geometry on $D$.
+\end{definition}
+
+\begin{lemma}[Monotonicity of neighbourhoods]
+    \label{lem:circuits_neighbourhood_mono}
+    \lean{QuantumCircuit.Geometry.neighbourhood_mono,
+        QuantumCircuit.Geometry.iterate_neighbourhood_mono}
+    \leanok
+    \uses{def:circuits_geometry}
+    For a geometry with finitely many cells, if $R\subseteq R'$ then
+    $\mathcal N(R)\subseteq\mathcal N(R')$, and if moreover
+    $m\leq n$ then $\mathcal N^m(R)\subseteq\mathcal N^n(R')$.
+\end{lemma}
+\begin{proof}\leanok
+    A site of $\mathcal N(R)$ lies in $R\subseteq R'$ or in a cell meeting $R$, which
+    then meets $R'$. The second statement follows by induction on $n$: if
+    $m\leq n$ then
+    $\mathcal N^m(R)\subseteq\mathcal N^n(R')\subseteq\mathcal N^{n+1}(R')$, and
+    if $m=n+1$ then $\mathcal N^{n+1}(R)=\mathcal N(\mathcal N^n(R))\subseteq
+    \mathcal N(\mathcal N^n(R'))$ by the first statement.
+\end{proof}
+
+\begin{definition}[Gate families and interpretations]
+    \label{def:circuits_gate_family}
+    \lean{QuantumCircuit.GateFamily, QuantumCircuit.Interpretation,
+        QuantumCircuit.KrausGate, QuantumCircuit.KrausGate.ev}
+    \leanok
+    \uses{def:kraus_family, def:sites_config}
+    A gate family assigns to every region $D$ and systems $X,Y$ a set of gates on
+    $D$ from $X$ to $Y$, each with a finite set of outcomes. An interpretation
+    assigns to every outcome of every gate a matrix in
+    $\C^{Y_D\times X_D}$. The plain gates on $D$ are the finite Kraus families
+    from $\C^{X_D}$ to $\C^{Y_D}$, each interpreted as itself. Keeping the
+    matrices out of the gates allows one circuit to be evaluated against
+    different oracles, and allows gates that are themselves formal expressions,
+    such as weighted sums of circuits.
+\end{definition}
+
+\begin{definition}[Layer]
+    \label{def:circuits_layer}
+    \lean{QuantumCircuit.Layer, QuantumCircuit.Layer.Free,
+        QuantumCircuit.Layer.Index, QuantumCircuit.Layer.kraus,
+        QuantumCircuit.Layer.krausFamily, QuantumCircuit.Layer.Forall,
+        QuantumCircuit.Layer.lightCone}
+    \leanok
+    \uses{def:circuits_geometry, def:circuits_gate_family}
+    A layer from $X$ to $Y$ consists of a set of pairwise disjoint cells $b$, each
+    carrying a gate $g_b$ on $C_b$, and of a finite Kraus family
+    $(k_{s,\omega})_\omega$ from $\C^{X_s}$ to $\C^{Y_s}$ at every site $s$ met by
+    no cell. Its outcomes are the choices $i$ of an outcome for every cell and
+    every remaining site, and its Kraus operators are
+    \begin{align}
+        (K_i)_{yx}&=\prod_b g_b(i_b)_{y|_{C_b},x|_{C_b}}\prod_sk_{s,i_s}(y_s,x_s).
+        \notag
+    \end{align}
+    A property of Kraus families holds locally on the layer when it holds for
+    every gate, as interpreted, and every onsite family. The backward light cone
+    of a region $R$ through the layer is $R$ together with every cell of the layer
+    that meets $R$.
+\end{definition}
+
+\begin{lemma}[A single gate is its placement]
+    \label{lem:circuits_layer_single}
+    \lean{QuantumCircuit.Layer.single, QuantumCircuit.Layer.free_single_iff,
+        QuantumCircuit.Layer.kraus_single}
+    \leanok
+    \uses{def:circuits_layer, def:sites_place}
+    The layer with one plain gate $V$ on a cell $b$ and the identity at every other
+    site has the single Kraus operator $V\otimes1$, the placement of $V$ on $C_b$.
+\end{lemma}
+\begin{proof}\leanok
+    At a site outside $C_b$ the entry of the identity is $1$ when the two
+    configurations agree there and $0$ otherwise; the product of these entries is
+    the condition in the formula for the entries of a placed matrix.
+\end{proof}
+
+\section{The Heisenberg picture of a layer}
+\label{sec:circuits_layer_dual}
+
+The cells of a layer and its remaining sites are its blocks; they partition $V$,
+and each Kraus operator is a product of local entries over the blocks.
+
+\begin{lemma}[Factorization along a union of blocks]
+    \label{lem:circuits_layer_factorization}
+    \lean{QuantumCircuit.Layer.Block, QuantumCircuit.Layer.region,
+        QuantumCircuit.Layer.BlockIndex, QuantumCircuit.Layer.indexEquiv,
+        QuantumCircuit.Layer.region_disjoint, QuantumCircuit.Layer.blockOf,
+        QuantumCircuit.Layer.mem_region_blockOf, QuantumCircuit.Layer.blockOf_eq_of_mem,
+        QuantumCircuit.Layer.blockKraus, QuantumCircuit.Layer.kraus_apply_eq_prod,
+        QuantumCircuit.Layer.blockEffect, QuantumCircuit.Layer.blockEffect_eq_one,
+        QuantumCircuit.Layer.unionRegion, QuantumCircuit.Layer.region_subset_unionRegion,
+        QuantumCircuit.Layer.disjoint_unionRegion, QuantumCircuit.Layer.isComplPartition,
+        QuantumCircuit.Layer.nearKraus, QuantumCircuit.Layer.farKraus,
+        QuantumCircuit.Layer.farKraus_apply, QuantumCircuit.Layer.nearFarEquiv,
+        QuantumCircuit.Layer.kraus_eq_submatrix, QuantumCircuit.Layer.sum_farKraus,
+        QuantumCircuit.Layer.dual, QuantumCircuit.Layer.dual_apply',
+        QuantumCircuit.Layer.dual_place}
+    \leanok
+    \uses{def:circuits_layer, lem:sites_partition, def:sites_place}
+    Let $D$ be the union of a set $N$ of blocks of a layer. In the cut along $D$,
+    every Kraus operator is $K_i=K^{\mathrm{near}}_{i_N}\otimes K^{\mathrm{far}}_{i_F}$,
+    the products of the local entries over the blocks in $N$ and over the
+    remaining blocks $F$. If the families on the blocks in $F$ are
+    trace-preserving, then for every $A_1$ on $\C^{Y_D}$
+    \begin{align}
+        \sum_iK_i^\dagger(A_1\otimes1)K_i
+        &=\Bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger A_1
+        K^{\mathrm{near}}_{i_N}\Bigr)\otimes1.
+        \notag
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Splitting the product over the blocks into the blocks in $N$ and the others
+    gives the Kronecker factorization. Then
+    $K_i^\dagger(A_1\otimes1)K_i=((K^{\mathrm{near}})^\dagger A_1K^{\mathrm{near}})
+    \otimes((K^{\mathrm{far}})^\dagger K^{\mathrm{far}})$, and the sum over the
+    outcomes splits into a sum over $i_N$ and a sum over $i_F$. By
+    Lemma~\ref{lem:sites_partition} the entry of
+    $\sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger K^{\mathrm{far}}_{i_F}$ at $(w',w)$
+    is the product over the blocks in $F$ of the entries of their effects at the
+    restrictions of $w'$ and $w$. Each effect is the identity, so the product is
+    $1$ when $w'$ and $w$ agree on every block and $0$ otherwise; since the blocks
+    cover $V\setminus D$, this is the identity.
+\end{proof}
+
+\begin{theorem}[Trace preservation of a layer]
+    \label{thm:circuits_layer_tp}
+    \lean{QuantumCircuit.Layer.dual_one, QuantumCircuit.Layer.isTP_krausFamily}
+    \leanok
+    \uses{def:circuits_layer, def:kraus_family}
+    A layer whose gates and onsite families are trace-preserving is
+    trace-preserving.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_factorization}
+    Apply Lemma~\ref{lem:circuits_layer_factorization} with $N$ empty and
+    $A_1=1$: the union $D$ is empty, so the near factor is the identity on a
+    one-point space and $\sum_iK_i^\dagger K_i=1$.
+\end{proof}
+
+\begin{theorem}[Backward light cone of a layer]
+    \label{thm:circuits_layer_light_cone}
+    \lean{QuantumCircuit.Layer.dual_mem_supportedOperators_lightCone}
+    \leanok
+    \uses{def:circuits_layer, def:kraus_family, def:sites_supported}
+    If the gates and onsite families of a layer are trace-preserving and $A$ is
+    supported on $R$, then $\sum_iK_i^\dagger AK_i$ is supported on $R$ together
+    with the cells of the layer that meet $R$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_factorization, thm:sites_supported_subalgebra}
+    Let $N$ be the blocks meeting $R$ and $D$ their union. Every site of $R$ lies in
+    a block meeting $R$, so $R\subseteq D$ and $A=A_1\otimes1$ for an operator
+    $A_1$ on $D$. By Lemma~\ref{lem:circuits_layer_factorization} the Heisenberg
+    image is the placement of an operator on $D$, hence supported on $D$. A block
+    of $N$ is either a cell meeting $R$ or a site of $R$.
+\end{proof}
+
+\section{Circuits}
+\label{sec:circuits_circuits}
+
+\begin{definition}[Circuit]
+    \label{def:circuits_circuit}
+    \lean{QuantumCircuit.Circuit, QuantumCircuit.Circuit.Index,
+        QuantumCircuit.Circuit.kraus, QuantumCircuit.Circuit.kraus_done,
+        QuantumCircuit.Circuit.kraus_step, QuantumCircuit.Circuit.krausFamily,
+        QuantumCircuit.Circuit.map, QuantumCircuit.Circuit.dual,
+        QuantumCircuit.Circuit.dual_step, QuantumCircuit.Circuit.seq}
+    \leanok
+    \uses{def:circuits_layer}
+    A circuit from $X$ to $Z$ is either empty, when $X=Z$, or a layer $L$ from $X$
+    to some system $Y$ followed, for every outcome $i$ of $L$, by a circuit from $Y$
+    to $Z$. The dependence on $i$ is classical feedback; a circuit in which no
+    continuation depends on the outcome is unbranched. A branch is a choice of an
+    outcome of every layer along a path, and its Kraus operator is the product of
+    the Kraus operators of its layers, the first layer on the right. The map of the
+    circuit is $\rho\mapsto\sum_pK_p\rho K_p^\dagger$ over all branches $p$, and its
+    Heisenberg picture is $A\mapsto\sum_pK_p^\dagger AK_p$, which is the Heisenberg
+    picture of the first layer applied to those of the continuations. A finite
+    sequence of layers on one system, applied from the first, is an unbranched
+    circuit.
+\end{definition}
+
+\begin{theorem}[Composition]
+    \label{thm:circuits_composition}
+    \lean{QuantumCircuit.Circuit.append, QuantumCircuit.Circuit.comp,
+        QuantumCircuit.Circuit.appendIndexEquiv, QuantumCircuit.Circuit.kraus_append,
+        QuantumCircuit.Circuit.compIndexEquiv, QuantumCircuit.Circuit.kraus_comp,
+        QuantumCircuit.Circuit.map_comp, QuantumCircuit.Circuit.map_done,
+        QuantumCircuit.Circuit.done_comp, QuantumCircuit.Circuit.comp_done}
+    \leanok
+    \uses{def:circuits_circuit}
+    Attaching a circuit $k_p$ to every branch $p$ of a circuit $c$ gives a circuit
+    whose branches are the pairs $(p,q)$ of a branch of $c$ and a branch of $k_p$,
+    with Kraus operators $K^{k_p}_qK^c_p$. For a continuation independent of $p$ the
+    map of the composite is the composite of the maps, and the empty circuit is the
+    identity map. The empty circuit is a two-sided identity of composition.
+\end{theorem}
+\begin{proof}\leanok
+    Induction on $c$; the branches of the composite are rearranged by the
+    associativity of dependent pairs, which gives $K_{(p,q)}=K^{k_p}_qK^c_p$. For a
+    continuation $c'$ independent of $p$,
+    \begin{align}
+        \sum_{p,q}K'_qK_p\,\rho\,(K'_qK_p)^\dagger
+        &=\sum_qK'_q\Bigl(\sum_pK_p\rho K_p^\dagger\Bigr)K'^\dagger_q,
+        \notag
+    \end{align}
+    the map of $c'$ applied to the map of $c$. The empty circuit has the single
+    Kraus operator $1$; composing with it on the right changes no layer, by
+    induction on $c$.
+\end{proof}
+
+\section{Costs}
+\label{sec:circuits_costs}
+
+\begin{definition}[Depth, gate count and participation]
+    \label{def:circuits_costs}
+    \lean{QuantumCircuit.Circuit.total, QuantumCircuit.Circuit.total_done,
+        QuantumCircuit.Layer.depth, QuantumCircuit.Layer.gateCount,
+        QuantumCircuit.Layer.meets, QuantumCircuit.Circuit.depth,
+        QuantumCircuit.Circuit.gateCount, QuantumCircuit.Circuit.participation}
+    \leanok
+    \uses{def:circuits_circuit}
+    A cost of layers determines a cost of circuits by accumulation along the most
+    expensive branch. The depth of a layer is $1$ if it uses a cell of positive
+    cost and $0$ otherwise; its gate count is the sum of the costs of its cells;
+    the number of gates of the layer meeting a site $s$ is the number of its cells
+    of positive cost containing $s$. Onsite families cost nothing. A circuit is of
+    depth $T$ when its depth is at most $T$.
+\end{definition}
+
+\begin{theorem}[Subadditivity of costs]
+    \label{thm:circuits_cost_subadditive}
+    \lean{QuantumCircuit.Circuit.total_append, QuantumCircuit.Circuit.total_comp,
+        QuantumCircuit.Circuit.depth_comp, QuantumCircuit.Circuit.gateCount_comp,
+        QuantumCircuit.Circuit.participation_comp, QuantumCircuit.Circuit.total_mono,
+        QuantumCircuit.Layer.depth_le_gateCount,
+        QuantumCircuit.Circuit.depth_le_gateCount,
+        QuantumCircuit.Circuit.total_seq_le, QuantumCircuit.Circuit.depth_seq_le,
+        QuantumCircuit.Circuit.gateCount_seq_le}
+    \leanok
+    \uses{def:circuits_costs, thm:circuits_composition}
+    The cost of a circuit with continuations $k_p$ attached is at most the cost of
+    the circuit plus the largest cost of a continuation. In particular depth, gate
+    count and the number of gates meeting a site are subadditive under
+    composition. The depth of a circuit is at most its gate count. The cost of a
+    sequence of layers is at most the sum of the costs of its layers.
+\end{theorem}
+\begin{proof}\leanok
+    Induction on the circuit. The depth of a layer is at most its gate count,
+    because a cell of positive cost contributes at least $1$ to the sum of costs,
+    and accumulation along branches is monotone.
+\end{proof}
+
+\section{Trace preservation and the backward light cone}
+\label{sec:circuits_tp_light_cone}
+
+\begin{definition}[Local properties and unbranched circuits]
+    \label{def:circuits_local}
+    \lean{QuantumCircuit.Circuit.Forall, QuantumCircuit.Circuit.IsUnbranched,
+        QuantumCircuit.Circuit.lightCone}
+    \leanok
+    \uses{def:circuits_circuit}
+    A property of Kraus families holds locally on a circuit when it holds locally on
+    every layer of every branch. The backward light cone of a region $R$ through a
+    circuit is obtained from the last layer to the first, each layer adding its
+    cells that meet the current region, over all branches.
+\end{definition}
+
+\begin{lemma}[Local properties under composition]
+    \label{lem:circuits_local_comp}
+    \lean{QuantumCircuit.Circuit.Forall.append, QuantumCircuit.Circuit.Forall.comp,
+        QuantumCircuit.Circuit.IsUnbranched.comp, QuantumCircuit.Layer.lightCone_mono,
+        QuantumCircuit.Circuit.lightCone_mono, QuantumCircuit.Circuit.lightCone_comp}
+    \leanok
+    \uses{def:circuits_local, thm:circuits_composition}
+    A property holding locally on a circuit and on every continuation attached to
+    it holds locally on the composite. A composite of unbranched circuits is
+    unbranched. The backward light cone is monotone in the region, and the backward
+    light cone of $R$ through $c$ followed by $c'$ lies in the backward light cone
+    through $c$ of the backward light cone of $R$ through $c'$.
+\end{lemma}
+\begin{proof}\leanok
+    Induction on the first circuit; the layers of the composite are those of $c$
+    followed by those of the continuations.
+\end{proof}
+
+\begin{theorem}[Trace preservation of a circuit]
+    \label{thm:circuits_tp}
+    \lean{QuantumCircuit.Circuit.dual_one_of_forall,
+        QuantumCircuit.Circuit.isTP_krausFamily, QuantumCircuit.Circuit.isKrausCPTP_map,
+        QuantumCircuit.Circuit.trace_map}
+    \leanok
+    \uses{def:circuits_local, def:kraus_family, def:is_kraus_cptp}
+    A circuit whose gates and onsite families are trace-preserving is
+    trace-preserving, hence a quantum channel, whether or not it branches.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_layer_tp, lem:kraus_family_channel}
+    By induction the Heisenberg picture fixes the identity. For a circuit that
+    starts with a layer $L$ with Kraus operators $K_i$ and continues with $c_i$,
+    \begin{align}
+        \sum_iK_i^\dagger\Bigl(\sum_pK^{c_i\dagger}_p\,1\,K^{c_i}_p\Bigr)K_i
+        &=\sum_iK_i^\dagger K_i=1,
+        \notag
+    \end{align}
+    by the induction hypothesis in the middle and Theorem~\ref{thm:circuits_layer_tp}
+    at the end. Then $\sum_pK_p^\dagger K_p=1$ for the branches $p$ of the
+    circuit.
+\end{proof}
+
+\begin{theorem}[Backward light cone of a circuit]
+    \label{thm:circuits_light_cone}
+    \lean{QuantumCircuit.Circuit.dual_mem_supportedOperators_lightCone,
+        QuantumCircuit.Layer.lightCone_subset_neighbourhood,
+        QuantumCircuit.Circuit.lightCone_subset_neighbourhood}
+    \leanok
+    \uses{def:circuits_local, def:sites_supported}
+    Let a circuit be unbranched with trace-preserving gates and onsite families, and
+    let $A$ be supported on $R$. Then the Heisenberg picture of $A$ is supported on
+    the backward light cone of $R$
+    \cite{BravyiHastingsVerstraete2006LiebRobinson}. If the geometry has finitely
+    many cells and every cell has positive cost, the backward light cone lies in the $T$-fold neighbourhood of $R$, where
+    $T$ is the depth.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_layer_light_cone, lem:circuits_neighbourhood_mono,
+        lem:circuits_layer_factorization}
+    Induction on the circuit. For an unbranched circuit the Heisenberg picture is
+    that of the first layer applied to that of the common continuation, and
+    Theorem~\ref{thm:circuits_layer_light_cone} applies. If every cell has positive
+    cost, a layer of depth $0$ has no cells and adds nothing, and a layer of depth
+    $1$ adds at most the neighbourhood. Both hypotheses are needed: with feedback
+    from a measurement far from $R$ the Heisenberg picture depends on the measured
+    site. Without trace preservation, in the factorization of
+    Lemma~\ref{lem:circuits_layer_factorization} the far factor is the effect
+    \begin{align}
+        \sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger K^{\mathrm{far}}_{i_F}&=E_F,
+        \notag
+    \end{align}
+    so $\sum_iK_i^\dagger(A_1\otimes1)K_i
+    =\bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger A_1K^{\mathrm{near}}_{i_N}\bigr)
+    \otimes E_F$, which is not supported on $D$ when $E_F$ is not a multiple of the
+    identity.
+\end{proof}

@@ -1248,6 +1248,43 @@ them across the chapter boundary.
     \end{align}
 \end{definition}
 
+\begin{definition}[Finite Kraus family]
+    \label{def:kraus_family}
+    \lean{KrausFamily, KrausFamily.map, KrausFamily.map_apply, KrausFamily.effect,
+        KrausFamily.IsTP, KrausFamily.IsTraceNonincreasing, KrausFamily.IsUnitary,
+        KrausFamily.single, KrausFamily.single_op, KrausFamily.effect_single}
+    \leanok
+    \uses{def:mpdo_rectangular_kraus_map}
+    A finite Kraus family from $\C^I$ to $\C^J$ is a finite set $\Omega$ of
+    outcomes together with matrices $(K_\omega\in\C^{J\times I})_{\omega\in\Omega}$,
+    with no normalization imposed \cite[Theorem~2.1]{Wolf2012Quantum}. Its map is
+    the rectangular Kraus map $\rho\mapsto\sum_\omega K_\omega\rho K_\omega^\dagger$
+    and its effect is $E=\sum_\omega K_\omega^\dagger K_\omega$. The family is
+    trace-preserving when $E=1$ and trace-nonincreasing when $E\leq1$. A family of
+    one operator $V$ has effect $V^\dagger V$; it is trace-nonincreasing exactly
+    when $V$ is a contraction, and it is called unitary when
+    $V^\dagger V=1$ and $VV^\dagger=1$.
+\end{definition}
+
+\begin{lemma}[A trace-preserving Kraus family is a channel]
+    \label{lem:kraus_family_channel}
+    \lean{KrausFamily.isKrausCPTP_map, KrausFamily.trace_map,
+        KrausFamily.IsTP.isTraceNonincreasing, KrausFamily.IsUnitary.isTP}
+    \leanok
+    \uses{def:kraus_family, def:is_kraus_cptp}
+    The map of a trace-preserving finite Kraus family is completely positive and
+    trace-preserving. A trace-preserving family is trace-nonincreasing, and a
+    unitary family is trace-preserving.
+\end{lemma}
+\begin{proof}\leanok
+    Enumerating the outcomes gives a Kraus representation with
+    $\sum_\omega K_\omega^\dagger K_\omega=1$. For the trace,
+    $\operatorname{tr}\sum_\omega K_\omega\rho K_\omega^\dagger
+    =\operatorname{tr}(E\rho)=\operatorname{tr}\rho$. A trace-preserving family is
+    trace-nonincreasing because $E=1\leq1$, and a unitary family has
+    $E=V^\dagger V=1$.
+\end{proof}
+
 \begin{theorem}[Rectangular Kraus resolution]
     \label{thm:mpdo_rectangular_kraus_map_cptp}
     \lean{Matrix.rectangularKrausMap_isKrausCPTP}
