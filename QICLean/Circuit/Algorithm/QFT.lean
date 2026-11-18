@@ -238,15 +238,18 @@ private theorem rotation_phaseState {A : Finset (Fin n)} {θ : Fin n → ℂ}
   · simp only [phaseState, ite_eq_left hy, hy j hj]
     have hR : ∏ l ∈ A, exp (2 * Real.pi * I * ((y l : ℕ) : ℂ) *
         Function.update θ i (θ i + ((x j : ℕ) : ℂ) / (d : ℂ) ^ ((j : ℕ) - i + 1)) l) =
-        exp (2 * Real.pi * I * ((y i : ℕ) : ℂ) * (θ i + ((x j : ℕ) : ℂ) / (d : ℂ) ^ ((j : ℕ) - i + 1))) *
+        exp (2 * Real.pi * I * ((y i : ℕ) : ℂ) *
+          (θ i + ((x j : ℕ) : ℂ) / (d : ℂ) ^ ((j : ℕ) - i + 1))) *
           ∏ l ∈ A.erase i, exp (2 * Real.pi * I * ((y l : ℕ) : ℂ) * θ l) := by
       rw [← Finset.mul_prod_erase A _ hi, Function.update_self]
       congr 1
       exact Finset.prod_congr rfl fun l hl ↦ by
         rw [Function.update_of_ne (Finset.ne_of_mem_erase hl)]
     rw [hR, ← Finset.mul_prod_erase A _ hi, mul_add, Complex.exp_add]
-    have : 2 * (Real.pi : ℂ) * I * (((x j : ℕ) : ℂ) * ((y i : ℕ) : ℂ)) / (d : ℂ) ^ ((j : ℕ) - i + 1) =
-        2 * Real.pi * I * ((y i : ℕ) : ℂ) * (((x j : ℕ) : ℂ) / (d : ℂ) ^ ((j : ℕ) - i + 1)) := by ring
+    have : 2 * (Real.pi : ℂ) * I * (((x j : ℕ) : ℂ) * ((y i : ℕ) : ℂ)) /
+        (d : ℂ) ^ ((j : ℕ) - i + 1) =
+        2 * Real.pi * I * ((y i : ℕ) : ℂ) * (((x j : ℕ) : ℂ) / (d : ℂ) ^ ((j : ℕ) - i + 1)) := by
+      ring
     rw [this]
     ring
   · simp only [phaseState, ite_eq_right hy]
@@ -324,7 +327,8 @@ private theorem sum_phaseStep (k : Fin n) : ∑ b ∈ coreCells n, phaseStep x b
     rw [hp.2.1]
 
 private theorem encode_rev_cast (y : Config (Qudits (Fin n) d)) :
-    ((encode d n (fun i ↦ y (Fin.rev i)) : ℕ) : ℂ) = ∑ i : Fin n, ((y i : ℕ) : ℂ) * (d : ℂ) ^ (i : ℕ) := by
+    ((encode d n (fun i ↦ y (Fin.rev i)) : ℕ) : ℂ) =
+      ∑ i : Fin n, ((y i : ℕ) : ℂ) * (d : ℂ) ^ (i : ℕ) := by
   rw [encode_apply]
   push_cast
   refine Fintype.sum_equiv Fin.revPerm _ _ fun k ↦ ?_
@@ -365,13 +369,15 @@ private theorem exponent_eq (y : Config (Qudits (Fin n) d)) :
     have h := (Finset.mem_filter.mp hj).2
     rw [show ((y i : ℕ) : ℂ) * (d : ℂ) ^ (i : ℕ) * (((x j : ℕ) : ℂ) * (d : ℂ) ^ (n - 1 - (j : ℕ))) /
         (d : ℂ) ^ n = ((y i : ℕ) : ℂ) * ((x j : ℕ) : ℂ) *
-          ((d : ℂ) ^ (i : ℕ) * (d : ℂ) ^ (n - 1 - (j : ℕ)) / (d : ℂ) ^ n) by ring, pow_ratio hd, ite_eq_left h]
+          ((d : ℂ) ^ (i : ℕ) * (d : ℂ) ^ (n - 1 - (j : ℕ)) / (d : ℂ) ^ n) by ring, pow_ratio hd,
+      ite_eq_left h]
     ring
   · refine Finset.sum_congr rfl fun j hj ↦ ?_
     have h := (Finset.mem_filter.mp hj).2
     rw [show ((y i : ℕ) : ℂ) * (d : ℂ) ^ (i : ℕ) * (((x j : ℕ) : ℂ) * (d : ℂ) ^ (n - 1 - (j : ℕ))) /
         (d : ℂ) ^ n = ((y i : ℕ) : ℂ) * ((x j : ℕ) : ℂ) *
-          ((d : ℂ) ^ (i : ℕ) * (d : ℂ) ^ (n - 1 - (j : ℕ)) / (d : ℂ) ^ n) by ring, pow_ratio hd, ite_eq_right h]
+          ((d : ℂ) ^ (i : ℕ) * (d : ℂ) ^ (n - 1 - (j : ℕ)) / (d : ℂ) ^ n) by ring, pow_ratio hd,
+      ite_eq_right h]
 
 /-- The column with every qudit transformed is the column of the Fourier matrix, read with the
 output digits in reverse order. -/
@@ -666,7 +672,8 @@ theorem length_seqCells : (seqCells n).length = n * (n + 1) / 2 := by
 /-- Without the swaps, the Fourier transform reverses the order of the output digits. -/
 theorem kraus_qftCore (d n : ℕ) (p : (qftCore d n).Index) (y x : Config (Qudits (Fin n) d)) :
     (qftCore d n).kraus KrausGate.ev p y x = dft d n (fun i ↦ y (Fin.rev i)) x := by
-  rw [show (qftCore d n).kraus KrausGate.ev p = _ from Circuit.kraus_seq_map KrausGate.ev _ (gateOp d) _
+  rw [show (qftCore d n).kraus KrausGate.ev p = _ from
+      Circuit.kraus_seq_map KrausGate.ev _ (gateOp d) _
       (fun b _ i ↦ Layer.kraus_single KrausGate.ev b (qftGate d b) i) p,
     prod_gateOp_core isGateOrder_seqCells seqCells_nodup toFinset_seqCells]
 

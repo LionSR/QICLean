@@ -20,7 +20,8 @@ inverse, and names the complex numbers `1 / √x` and `1 / √2` with their basi
 * `Complex.invSqrtTwo`: the complex number `1 / √2`.
 
 The declarations are ported from `TNLean/Algebra/ComplexSqrt.lean` at commit
-`4150a33bacefe5ca311874b20cc4b90237fa447e` (Apache-2.0), with statements and names unchanged; `Complex.invSqrt` and its identities are new here.
+`4150a33bacefe5ca311874b20cc4b90237fa447e` (Apache-2.0), with statements and names unchanged;
+`Complex.invSqrt` and its identities are new here.
 -/
 
 namespace Complex
