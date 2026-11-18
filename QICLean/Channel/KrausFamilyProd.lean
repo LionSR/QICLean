@@ -23,6 +23,7 @@ its map is `partialTraceRight`.
 * `KrausFamily.prod` — the tensor product of two Kraus families.
 * `KrausFamily.tensorRight` — a family on the left factor, the identity on the right one.
 * `KrausFamily.traceRight` — the partial trace over the right factor.
+* `KrausFamily.reindex` — a family carried along equivalences of its bases.
 
 ## Main results
 
@@ -30,6 +31,8 @@ its map is `partialTraceRight`.
 * `Matrix.linearMap_ext_kronecker` — linear maps agreeing on Kronecker products are equal.
 * `KrausFamily.IsTP.prod`, `KrausFamily.IsUnitary.prod` — trace preservation and unitarity.
 * `KrausFamily.map_traceRight`, `KrausFamily.isTP_traceRight` — the partial trace.
+* `KrausFamily.IsTP.tensorRight`, `KrausFamily.IsUnitary.tensorRight`,
+  `KrausFamily.IsTP.reindex`, `KrausFamily.IsUnitary.reindex`.
 -/
 
 open Matrix
@@ -105,6 +108,43 @@ theorem IsUnitary.prod [DecidableEq β] [DecidableEq β'] {K : KrausFamily α β
 def tensorRight (K : KrausFamily α β) (W : Type) [DecidableEq W] :
     KrausFamily (α × W) (β × W) :=
   K.prod (single 1)
+
+omit [Fintype α] [Fintype α'] in
+theorem IsTP.tensorRight {K : KrausFamily α β} (hK : K.IsTP) (W : Type) [Fintype W]
+    [DecidableEq W] : (K.tensorRight W).IsTP :=
+  hK.prod (IsUnitary.isTP (isUnitary_single (one_mem _)))
+
+theorem IsUnitary.tensorRight [DecidableEq β] {K : KrausFamily α β} (hK : K.IsUnitary)
+    (W : Type) [Fintype W] [DecidableEq W] : (K.tensorRight W).IsUnitary :=
+  hK.prod (isUnitary_single (one_mem _))
+
+omit [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α] [DecidableEq α'] in
+/-- The family carried along equivalences `e` of the input and `f` of the output bases. -/
+def reindex (K : KrausFamily α β) (e : α' ≃ α) (f : β' ≃ β) : KrausFamily α' β' :=
+  ⟨K.Index, fun i ↦ (K.op i).submatrix f e⟩
+
+omit [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α] [DecidableEq α'] in
+@[simp] theorem reindex_op (K : KrausFamily α β) (e : α' ≃ α) (f : β' ≃ β)
+    (i : (K.reindex e f).Index) : (K.reindex e f).op i = (K.op i).submatrix f e :=
+  rfl
+
+omit [Fintype α] [Fintype α'] in
+theorem IsTP.reindex {K : KrausFamily α β} (hK : K.IsTP) (e : α' ≃ α) (f : β' ≃ β) :
+    (K.reindex e f).IsTP := by
+  rw [IsTP, effect] at hK ⊢
+  simp only [reindex_op, conjTranspose_submatrix, submatrix_mul_equiv]
+  ext a b
+  convert congrFun (congrFun hK (e a)) (e b) using 1
+  · simp only [Matrix.sum_apply, submatrix_apply]
+    rfl
+  · simp [one_apply, e.injective.eq_iff]
+
+theorem IsUnitary.reindex [DecidableEq β] [DecidableEq β'] {K : KrausFamily α β}
+    (hK : K.IsUnitary) (e : α' ≃ α) (f : β' ≃ β) : (K.reindex e f).IsUnitary := by
+  obtain ⟨u, hK⟩ := hK
+  refine ⟨u, fun i ↦ ⟨?_, ?_⟩⟩ <;>
+    simp only [reindex_op, conjTranspose_submatrix, submatrix_mul_equiv, (hK i).1, (hK i).2,
+      submatrix_one_equiv]
 
 /-- The partial trace over the right factor `F`: the operators `1 ⊗ ⟨f|`. -/
 def traceRight (β F : Type) [DecidableEq β] [Fintype F] [DecidableEq F] :
