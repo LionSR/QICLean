@@ -35,6 +35,13 @@ is trace-preserving when `K` is. On the code the encoded operators act as `K`:
 * `KrausFamily.map_encode_map_embed` — the encoded family after the encoding is the encoding
   after the family.
 * `KrausFamily.map_decode_map_embed` — decoding after encoding is the identity.
+
+The declarations restate the register encodings of `TNLean/Circuit/Channel/RegisterEncoding.lean`
+at commit `75fc22288234ef66239cb4c2fa0b22914cfa5c6b` (Apache-2.0). The changes: the encoding,
+decoding and encoded maps are finite Kraus families instead of linear maps with a Kraus
+predicate; the decoding sends the part of its input outside the code to a basis vector instead
+of a density matrix, so that it needs no support completion; the encoded family `encode` is
+given by explicit operators, not as the decoding followed by the family and the encoding.
 -/
 
 open Matrix

@@ -10,12 +10,40 @@ import QICLean.Circuit.Model.Protocol
 # Encoding circuits into larger bases
 
 Sitewise embeddings `e s : X s ↪ Y s` of bases encode a system into a larger one: the circuit
-`encodeCircuit Γ e` is the onsite layer of the isometries `|x⟩ ↦ |e s x⟩`. A layer of
-trace-preserving plain gates and onsite families is carried along such embeddings of its input
-and output systems to a layer on the same cells, again trace-preserving, which acts as the layer
-on the code (`Layer.exists_encoded`). Layer by layer, a circuit whose bases all have at most
-`B ≤ q` elements is carried to a circuit of the same depth on the alphabet `Fin q` at every
-site (`Circuit.exists_encoded_of_isDimBounded`).
+`encodeCircuit Γ e` is the onsite layer of the isometries `|x⟩ ↦ |e s x⟩`, and the circuit
+`decodeCircuit Γ e x₀` of the decodings with fallback basis vectors `x₀ s` is a left inverse of
+it. A layer of trace-preserving plain gates and onsite families is carried along such
+embeddings of its input and output systems to a layer on the same cells, again
+trace-preserving, which acts as the layer on the code (`Layer.exists_encoded`). Layer by layer,
+a circuit whose bases all have between `1` and `B ≤ q` elements is carried to a circuit of the
+same depth on the alphabet `Fin q` at every site (`Circuit.exists_encoded_of_isDimBounded`).
+
+This is not an instance of `Circuit.exists_substitute`: an embedding into `Fin q` exists only
+for bases of at most `q` elements, so the encoding of a layer needs the dimension bound along
+the circuit, and the encoded circuit keeps the branching of the circuit.
+
+## Main definitions
+
+* `QuantumCircuit.encodeCircuit` — the sitewise encoding along embeddings of bases.
+* `QuantumCircuit.decodeCircuit` — the sitewise decoding, with fallback basis vectors.
+
+## Main results
+
+* `QuantumCircuit.map_decodeCircuit_comp_map_encodeCircuit` — decoding after encoding is the
+  identity.
+* `QuantumCircuit.Layer.exists_encoded` — the encoding of a layer.
+* `QuantumCircuit.Circuit.exists_encoded_of_isDimBounded` — the encoding of a circuit with
+  bounded bases into a constant alphabet.
+* `QuantumCircuit.IsBoundedProtocol.exists_encoded` — the same for bounded protocols.
+
+The declarations restate the encodings of `TNLean/Circuit/Channel/OnsiteRegisterEncoding.lean`,
+`TNLean/Circuit/Channel/EncodedChannelLayer.lean` and
+`TNLean/Circuit/Channel/EncodedChannelProtocol.lean` at commit
+`75fc22288234ef66239cb4c2fa0b22914cfa5c6b` (Apache-2.0). The changes: the encodings are
+circuits of one onsite layer on any geometry instead of products of maps on a ring of registers;
+a layer is encoded on its own cells with explicit Kraus operators instead of through a pair of
+sites; the circuit theorem allows any codes of the input and output, keeps the depth and the
+branching, and replaces the words of fixed-register operations by circuits.
 -/
 
 open Matrix ManyBody
