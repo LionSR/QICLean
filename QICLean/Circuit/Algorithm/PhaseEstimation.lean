@@ -294,6 +294,162 @@ theorem queryCount_circuit : (circuit t m).queryCount = 2 ^ t - 1 := by
     simp only [List.length_replicate]
   rw [hq, hm, hH, hQ, zero_add, add_zero, add_zero]
 
+/-! ### The state along the circuit -/
+
+/-- Products of matrices along a list, the first on the right, applied to a vector. -/
+private theorem reverse_prod_mulVec {ι n : Type} [Fintype n] [DecidableEq n] (V : ι → Matrix n n ℂ)
+    (l : List ι) (v : n → ℂ) : (l.map V).reverse.prod *ᵥ v = l.foldl (fun w a ↦ V a *ᵥ w) v := by
+  induction l generalizing v with
+  | nil => simp
+  | cons a l ih =>
+    rw [List.map_cons, List.reverse_cons, List.prod_append, List.prod_singleton, ← mulVec_mulVec,
+      ih, List.foldl_cons]
+
+/-- The state `f(x) u(a)` of the register, `x` the control register and `a` the target. -/
+private def tensorState (u : Fin m → ℂ) (f : Config (Q t) → ℂ) : Config (system t m) → ℂ :=
+  fun σ ↦ f (control t m σ) * u (σ (.inr ()))
+
+/-- The configuration with the control register `x` and the target `a`. -/
+private def glue (x : Config (Q t)) (a : Fin m) : Config (system t m)
+  | .inl i => x i
+  | .inr () => a
+
+private theorem input_eq (u : Fin m → ℂ) :
+    input t m u = tensorState u fun x ↦ if x = 0 then 1 else 0 :=
+  rfl
+
+/-- The configuration glued from `a` on a region and `σ` elsewhere, read on the register. -/
+private theorem cut_eq_glue {D : Finset (Fin t ⊕ Unit)} (σ : Config (system t m))
+    (a : RegionConfig (system t m) D) (x : Config (Q t)) (b : Fin m)
+    (hx : ∀ i, (cutEquiv (system t m) D).symm (a, (cutEquiv (system t m) D σ).2) (.inl i) = x i)
+    (hb : (cutEquiv (system t m) D).symm (a, (cutEquiv (system t m) D σ).2) (.inr ()) = b) :
+    (cutEquiv (system t m) D).symm (a, (cutEquiv (system t m) D σ).2) = glue x b := by
+  funext s
+  rcases s with i | ⟨⟩
+  · exact hx i
+  · exact hb
+
+/-- The control register after the Hadamard gates on the qubits of `A`. -/
+private noncomputable def hadamardState (A : Finset (Fin t)) (x : Config (Q t)) : ℂ :=
+  invSqrtTwo ^ A.card * if ∀ j ∉ A, x j = 0 then 1 else 0
+
+private theorem hadamard_mulVec (u : Fin m → ℂ) {A : Finset (Fin t)} {j : Fin t} (hj : j ∉ A) :
+    place {Sum.inl j} (hadamard.submatrix (siteEquiv (system t m) (.inl j))
+      (siteEquiv (system t m) (.inl j))) *ᵥ tensorState u (hadamardState A) =
+      tensorState u (hadamardState (insert j A)) := by
+  funext σ
+  rw [place_mulVec_apply, ← (siteEquiv (system t m) (.inl j)).symm.sum_comp]
+  have hcut : ∀ b : Fin 2, (cutEquiv (system t m) {Sum.inl j}).symm
+      ((siteEquiv (system t m) (.inl j)).symm b, (cutEquiv (system t m) {Sum.inl j} σ).2) =
+      glue (Function.update (control t m σ) j b) (σ (.inr ())) := fun b ↦ by
+    refine cut_eq_glue _ _ _ _ (fun i ↦ ?_) ?_
+    · by_cases hij : i = j
+      · subst hij
+        rw [cutEquiv_symm_apply_mem _ _ (Finset.mem_singleton_self _)]
+        exact (Function.update_self i b (control t m σ)).symm
+      · rw [cutEquiv_symm_apply_not_mem _ _ (by simpa using hij)]
+        exact (Function.update_of_ne hij b (control t m σ)).symm
+    · rw [cutEquiv_symm_apply_not_mem _ _ (by simp)]
+      rfl
+  change ∑ b : Fin 2, hadamard (σ (.inl j)) b * tensorState u (hadamardState A)
+    ((cutEquiv (system t m) {Sum.inl j}).symm
+      ((siteEquiv (system t m) (.inl j)).symm b, (cutEquiv (system t m) {Sum.inl j} σ).2)) = _
+  simp only [hcut, Fin.sum_univ_two, tensorState]
+  change hadamard (control t m σ j) 0 * (hadamardState A (Function.update (control t m σ) j 0) *
+      u (σ (.inr ()))) + hadamard (control t m σ j) 1 *
+      (hadamardState A (Function.update (control t m σ) j 1) * u (σ (.inr ()))) = _
+  have h1 : ¬ ∀ i ∉ A, Function.update (control t m σ) j 1 i = 0 :=
+    fun h ↦ by simpa using h j hj
+  have h0 : (∀ i ∉ A, Function.update (control t m σ) j 0 i = 0) ↔
+      ∀ i ∉ insert j A, control t m σ i = 0 := by
+    refine ⟨fun h i hi ↦ ?_, fun h i hi ↦ ?_⟩
+    · rw [Finset.mem_insert, not_or] at hi
+      simpa [Function.update_of_ne hi.1] using h i hi.2
+    · by_cases hij : i = j
+      · subst hij; simp
+      · rw [Function.update_of_ne hij]
+        exact h i (by simp [hij, hi])
+  have hH : hadamard (control t m σ j) 0 = invSqrtTwo := by
+    change invSqrtTwo * (-1) ^ (((control t m σ j : Fin 2) : ℕ) * 0) = _
+    rw [mul_zero, pow_zero, mul_one]
+  simp only [hadamardState, h1, h0, ite_false, mul_zero,
+    Finset.card_insert_of_notMem hj, hH, pow_succ]
+  ring
+
+private theorem foldl_hadamard (u : Fin m → ℂ) :
+    ∀ (l : List (Fin t)) (A : Finset (Fin t)), l.Nodup → (∀ j ∈ l, j ∉ A) →
+      l.foldl (fun w j ↦ place {Sum.inl j} (hadamard.submatrix (siteEquiv (system t m) (.inl j))
+        (siteEquiv (system t m) (.inl j))) *ᵥ w) (tensorState u (hadamardState A)) =
+        tensorState u (hadamardState (A ∪ l.toFinset))
+  | [], A, _, _ => by simp
+  | j :: l, A, hnd, hA => by
+    rw [List.foldl_cons, hadamard_mulVec u (hA j List.mem_cons_self)]
+    rw [List.nodup_cons] at hnd
+    rw [foldl_hadamard u l (insert j A) hnd.2 fun i hi ↦ by
+      rw [Finset.mem_insert, not_or]
+      exact ⟨fun e ↦ hnd.1 (e ▸ hi), hA i (List.mem_cons_of_mem j hi)⟩]
+    congr 2
+    ext i
+    simp
+
+/-- The control qubit `j` and the target are distinct sites. -/
+private theorem inlNeInr (j : Fin t) : (Sum.inl j : Fin t ⊕ Unit) ≠ .inr () :=
+  Sum.inl_ne_inr
+
+/-- A call controlled by the qubit `j` multiplies by the eigenvalue when the qubit is `1`. -/
+private theorem query_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {c : ℂ}
+    (hu : U *ᵥ u = c • u) (j : Fin t) (f : Config (Q t) → ℂ) :
+    place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
+      (pairEquiv (system t m) (inlNeInr j)) (pairEquiv (system t m) (inlNeInr j))) *ᵥ
+      tensorState u f = tensorState u fun x ↦ c ^ (x j : ℕ) * f x := by
+  funext σ
+  rw [place_mulVec_apply, ← (pairEquiv (system t m) (inlNeInr j)).symm.sum_comp]
+  have hcut : ∀ q : system t m (.inl j) × system t m (.inr ()),
+      (cutEquiv (system t m) ({Sum.inl j} ∪ {Sum.inr ()})).symm
+      ((pairEquiv (system t m) (inlNeInr j)).symm q,
+        (cutEquiv (system t m) ({Sum.inl j} ∪ {Sum.inr ()}) σ).2) =
+      glue (Function.update (control t m σ) j q.1) q.2 := fun q ↦ by
+    refine cut_eq_glue _ _ _ _ (fun i ↦ ?_) ?_
+    · by_cases hij : i = j
+      · subst hij
+        rw [cutEquiv_symm_apply_mem _ _ (by simp)]
+        exact (pairEquiv_symm_apply_left (system t m) Sum.inl_ne_inr q).trans
+          (Function.update_self i q.1 (control t m σ)).symm
+      · rw [cutEquiv_symm_apply_not_mem _ _ (by simp [hij])]
+        exact (Function.update_of_ne hij q.1 (control t m σ)).symm
+    · rw [cutEquiv_symm_apply_mem _ _ (by simp)]
+      exact pairEquiv_symm_apply_right (system t m) Sum.inl_ne_inr q
+  have hq : ∀ q : system t m (.inl j) × system t m (.inr ()), (controlled U).submatrix (pairEquiv (system t m) (inlNeInr j))
+      (pairEquiv (system t m) (inlNeInr j)) (fun v ↦ σ v)
+        ((pairEquiv (system t m) (inlNeInr j)).symm q) =
+      controlled U (control t m σ j, σ (.inr ())) q := fun q ↦
+    congrArg (controlled U (control t m σ j, σ (.inr ())))
+      (Equiv.apply_symm_apply (pairEquiv (system t m) (inlNeInr j)) q)
+  simp only [hq, hcut, tensorState]
+  change ∑ q : Fin 2 × Fin m, controlled U (control t m σ j, σ (.inr ())) q *
+    (f (Function.update (control t m σ) j q.1) * u q.2) =
+      c ^ (control t m σ j : ℕ) * f (control t m σ) * u (σ (.inr ()))
+  have hU : ∀ a, ∑ b, U a b * u b = c * u a := fun a ↦ by
+    simpa [mulVec, dotProduct] using congrFun hu a
+  generalize control t m σ = x
+  refine (?_ : ∀ a : Fin m, ∑ q : Fin 2 × Fin m, controlled U (x j, a) q *
+    (f (Function.update x j q.1) * u q.2) = c ^ (x j : ℕ) * f x * u a) _
+  intro a
+  rw [Fintype.sum_prod_type, Fin.sum_univ_two]
+  rcases Fin.exists_fin_two.mp ⟨x j, rfl⟩ with h | h
+  · have hx : Function.update x j 0 = x := h ▸ Function.update_eq_self j x
+    simp only [Qubit.controlled_apply, h, hx, ite_true, Fin.zero_eq_one_iff, OfNat.ofNat_ne_one,
+      ite_false, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul,
+      one_apply, ite_mul, mul_comm (f x), ← mul_assoc]
+    rw [Finset.sum_ite_eq]
+    simp
+  · have hx : Function.update x j 1 = x := h ▸ Function.update_eq_self j x
+    simp only [Qubit.controlled_apply, h, hx, ite_true, Fin.one_eq_zero_iff, OfNat.ofNat_ne_one,
+      ite_false, zero_mul, Finset.sum_const_zero, zero_add, Fin.val_one, pow_one]
+    rw [show ∑ b, U a b * (f x * u b) = f x * ∑ b, U a b * u b by
+      rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun b _ ↦ by ring, hU]
+    ring
+
 /-- Phase estimation with `t = n + ⌈log₂(2 + 1/(2ε))⌉` control qubits, on the input
 `|0…0⟩ ⊗ |u⟩` for an eigenvector `U u = e^{2πiφ} u` of norm `1`, returns an integer `k` with
 `k / 2^t` within `2^{-n}` of `φ` modulo `1` with probability at least `1 - ε`
