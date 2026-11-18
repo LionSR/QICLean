@@ -603,23 +603,6 @@ theorem isUnitaryDilation_id : IsUnitaryDilation Γ 0
   rw [map_traceCircuit_apply, Fintype.sum_unique, map_prepareCircuit_apply,
     ite_eq_left_of_eq_true _ _ (eq_true ⟨Subsingleton.elim _ _, Subsingleton.elim _ _⟩)]
 
-omit [Fintype S] in
-/-- A layer of trace-preserving families on nonempty bases has a Kraus index. -/
-private theorem Layer.nonempty_index_of_isTP [∀ s, Nonempty (X s)] {L : Layer Γ KrausGate X Y}
-    (hL : L.Forall KrausGate.ev KrausFamily.IsTP) : Nonempty L.Index := by
-  have hTP : ∀ b, (L.gateFamily KrausGate.ev b).IsTP := hL.1
-  exact ⟨(fun b ↦ (hTP b).nonempty_index.some, fun t ↦ (hL.2 t).nonempty_index.some)⟩
-
-omit [Fintype S] in
-/-- A layer of trace-preserving families on nonempty bases has nonempty output bases. -/
-private theorem Layer.nonempty_of_isTP [∀ s, Nonempty (X s)] {L : Layer Γ KrausGate X Y}
-    (hL : L.Forall KrausGate.ev KrausFamily.IsTP) (s : S) : Nonempty (Y s) := by
-  have hTP : ∀ b, (L.gateFamily KrausGate.ev b).IsTP := hL.1
-  by_cases hs : s ∈ L.cells.biUnion Γ.cell
-  · obtain ⟨y⟩ := (hTP (L.cellOf hs)).nonempty_target
-    exact ⟨y ⟨s, L.mem_cellOf hs⟩⟩
-  · exact (hL.2 ⟨s, hs⟩).nonempty_target
-
 /-- An unbranched circuit of trace-preserving gates and onsite families on nonempty input bases
 is dilated by an unbranched circuit of unitary gates of no larger depth. -/
 theorem Circuit.isUnitaryDilation : {X Z : S → Type} → [∀ s, Fintype (X s)] →
@@ -636,8 +619,8 @@ theorem Circuit.isUnitaryDilation : {X Z : S → Type} → [∀ s, Fintype (X s)
     have hc : L.Forall KrausGate.ev KrausFamily.IsTP ∧
         ∀ i, (next i).Forall KrausGate.ev KrausFamily.IsTP := hc
     have hb : (∀ i j, next i = next j) ∧ ∀ i, (next i).IsUnbranched := hb
-    obtain ⟨i₀⟩ := Layer.nonempty_index_of_isTP hc.1
-    have := Layer.nonempty_of_isTP hc.1
+    obtain ⟨i₀⟩ := L.nonempty_index_of_forall_isTP KrausGate.ev hc.1
+    have := L.nonempty_output_of_forall_isTP KrausGate.ev hc.1
     rw [Circuit.step_eq_ofLayer_comp L hb.1 i₀, Circuit.map_comp]
     refine ((Layer.isUnitaryDilation L hc.1).comp
       (Circuit.isUnitaryDilation (next i₀) (hc.2 i₀) (hb.2 i₀))).mono ?_

@@ -106,6 +106,31 @@ preservation, and the backward light cone.
     the condition in the formula for the entries of a placed matrix.
 \end{proof}
 
+\begin{lemma}[A layer is the tensor product of its local maps]
+    \label{lem:circuits_layer_entry}
+    \lean{QuantumCircuit.Layer.cellOf, QuantumCircuit.Layer.mem_cellOf,
+        QuantumCircuit.Layer.cellOf_eq, QuantumCircuit.Layer.mem_biUnion_of_mem_cell,
+        QuantumCircuit.Layer.configEquiv, QuantumCircuit.Layer.gateFamily,
+        KrausFamily.map_single_apply, QuantumCircuit.Layer.map_single_apply}
+    \leanok
+    \uses{def:circuits_layer}
+    Every site met by a cell of a layer lies in exactly one cell, so a configuration is its
+    restrictions to the cells together with its values at the remaining sites. The map of
+    the layer is the tensor product of the maps of its gates and onsite families: on a
+    matrix unit $\ketbra{x}{x'}$ its entry at $(y,y')$ is
+    \begin{align}
+        \prod_b\Phi_{g_b}\bigl(\ketbra{x|_{C_b}}{x'|_{C_b}}\bigr)_{y|_{C_b},y'|_{C_b}}
+        \prod_s\Phi_{k_s}\bigl(\ketbra{x_s}{x'_s}\bigr)_{y_s,y'_s}.
+        \notag
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    The cells are pairwise disjoint. The entry of $\sum_iK_i\ketbra{x}{x'}K_i^\dagger$ is
+    $\sum_i(K_i)_{yx}\overline{(K_i)_{y'x'}}$; each $K_i$ is a product of local entries, and
+    the sum over the choices $i$ of one outcome per cell and remaining site is the product
+    of the local sums.
+\end{proof}
+
 \section{The Heisenberg picture of a layer}
 \label{sec:circuits_layer_dual}
 
