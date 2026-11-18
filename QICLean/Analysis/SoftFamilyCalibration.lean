@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import Mathlib.Analysis.Complex.ExponentialBounds
 import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Analysis.Real.Sqrt
 import Mathlib.Algebra.Order.Archimedean.Real.Basic
@@ -24,7 +25,10 @@ This is a scalar auxiliary for ALVV, arXiv:1602.08828v2,
 1262–1268, 1373–1420 and 1664–1673. The calibration is intended for
 half-dimension resampling followed by original-target trimming. It does
 not establish the sample-once iteration, the printed fourth-order
-parameter choice or a running-time bound.
+parameter choice, the Generate algorithm or a quasi-polynomial running-time bound.
+For gap width `0 < w ≤ 1`, gap `w²/2` and budgets `(24,10,10)`, the natural
+scale in this corrected calibration is bounded by a constant depending only
+on the local dimension times `(1 + w⁻¹)^4`.
 
 This is a new sufficient scalar calibration; it replaces no step of the
 source. The source specifies the window and filter scales of its
@@ -40,23 +44,30 @@ open Filter Topology
 
 namespace Real
 
-private theorem eventually_affine_log_le_nat_pow (a b epsilon : ℝ) {p : ℕ}
-    (hp : 0 < p) (hepsilon : 0 < epsilon) :
-    ∀ᶠ u : ℕ in atTop, a + b * log (u : ℝ) ≤ epsilon * (u : ℝ) ^ p := by
-  have hpR : 0 < (p : ℝ) := Nat.cast_pos.mpr hp
-  have hlog : log =o[atTop] (fun x : ℝ ↦ x ^ (p : ℝ)) :=
-    isLittleO_log_rpow_atTop hpR
-  have hconst : (fun _ : ℝ ↦ a) =o[atTop] (fun x : ℝ ↦ x ^ (p : ℝ)) := by
-    simpa only [Function.comp_def, id_eq] using
-      (Asymptotics.isLittleO_const_id_atTop a).comp_tendsto (tendsto_rpow_atTop hpR)
-  have hsmall : (fun x : ℝ ↦ a + b * log x) =o[atTop] (fun x : ℝ ↦ x ^ p) := by
-    simpa only [rpow_natCast] using hconst.add (hlog.const_mul_left b)
-  have hnat : Tendsto (fun u : ℕ ↦ (u : ℝ)) atTop atTop := tendsto_natCast_atTop_atTop
-  have hn := hnat.eventually (hsmall.def hepsilon)
-  filter_upwards [hn] with u hu
-  have hpower : 0 ≤ (u : ℝ) ^ p := pow_nonneg (Nat.cast_nonneg u) p
-  exact (le_abs_self _).trans (by
-    simpa only [Real.norm_eq_abs, abs_of_nonneg hpower] using hu)
+/-- A quadratic threshold in the normalized coefficients suffices for every positive
+natural exponent. This estimate quantifies the corrected scalar calibration. -/
+theorem affine_log_le_nat_pow_of_threshold (a b : ℝ) {ε x : ℝ} {p : ℕ}
+    (hp : 0 < p) (hε : 0 < ε) (hx : 1 ≤ x)
+    (h : ((|a| + 2 * |b|) / ε) ^ 2 ≤ x) :
+    a + b * log x ≤ ε * x ^ p := by
+  have hs := sq_sqrt (zero_le_one.trans hx)
+  have hs1 : 1 ≤ sqrt x := by simpa using sqrt_le_sqrt hx
+  have hl := log_le_sub_one_of_pos (zero_lt_one.trans_le hs1)
+  rw [log_sqrt (zero_le_one.trans hx)] at hl
+  have hc : (|a| + 2 * |b|) / ε ≤ sqrt x := by
+    nlinarith only [h, hs, sqrt_nonneg x, sq_nonneg ((|a| + 2 * |b|) / ε - sqrt x)]
+  have hcoef := (div_le_iff₀ hε).mp hc
+  calc
+    a + b * log x ≤ |a| * sqrt x + |b| * (2 * sqrt x) := by
+      gcongr
+      · exact (le_abs_self a).trans (le_mul_of_one_le_right (abs_nonneg a) hs1)
+      · exact log_nonneg hx
+      · exact le_abs_self b
+      · linarith
+    _ = (|a| + 2 * |b|) * sqrt x := by ring
+    _ ≤ (sqrt x * ε) * sqrt x := mul_le_mul_of_nonneg_right hcoef (sqrt_nonneg x)
+    _ = ε * x := by nlinarith only [congrArg (ε * ·) hs]
+    _ ≤ ε * x ^ p := mul_le_mul_of_nonneg_left (le_self_pow₀ hx hp.ne') hε.le
 
 private theorem soft_family_sqrt_gain {u g H : ℝ}
     (hu : 0 ≤ u) (hg : 0 < g) (hH : 0 < H) (hbound : H ≤ u ^ 12)
@@ -235,9 +246,68 @@ private theorem soft_family_log_bounds {q u : ℕ} (hq : 2 ≤ q) (hu : 1 ≤ u)
     dsimp only [M]
     nlinarith only [hp, hconstant]
 
-private theorem eventually_soft_family_log_budgets (q : ℕ) (hq : 2 ≤ q)
+/-- Real lower bound on the natural scale for all three soft-family error budgets. -/
+noncomputable def softFamilyThreshold (q : ℕ) (g : ℝ) (a b c : ℕ) : ℝ :=
+  let A := ((a : ℝ) + 12) * (log 2 + 40 * log (q : ℝ)) + (200 + g + |log (g / 2000000)|)
+  let B := ((a : ℝ) + 12) * 666 + 12 * ((b : ℝ) + c)
+  max (((|52 + g| + 2 * |90|) / 1) ^ 2)
+    (max (((|A| + 2 * |B|) / (1 / 64)) ^ 2)
+      (max (exp 1) (max (156 + 2 * g) (max (g / 40 + 24) (1 / g)))))
+
+/-- At gap `w²/2` and budgets `(24,10,10)`, the sufficient threshold grows at
+most quartically in inverse width. The constant is deliberately coarse. -/
+theorem softFamilyThreshold_half_sq_le (q : ℕ) (hq : 2 ≤ q) {w : ℝ}
+    (hw : 0 < w) (hw' : w ≤ 1) :
+    softFamilyThreshold q (w ^ 2 / 2) 24 10 10 ≤
+      (64 * (5000000 + 1440 * (q : ℝ))) ^ 2 * (1 + w⁻¹) ^ 4 := by
+  let z := (1 + w⁻¹) ^ 2
+  let K := 64 * (5000000 + 1440 * (q : ℝ))
+  have hz : 1 ≤ z := one_le_pow₀ (by linarith [inv_pos.mpr hw])
+  have hg : w ^ 2 / 2 ≤ 1 := by nlinarith [mul_nonneg hw.le (sub_nonneg.mpr hw')]
+  have hlog : |log (w ^ 2 / 2 / 2000000)| ≤ 4000000 * z := by
+    rw [abs_of_nonpos (log_nonpos (by positivity) (by linarith))]
+    rw [← log_inv]
+    have hi : (w ^ 2 / 2 / 2000000)⁻¹ = 4000000 * (w⁻¹)^2 := by
+      field_simp
+      ring
+    rw [hi]
+    have hl := log_le_sub_one_of_pos (by positivity : 0 < 4000000 * (w⁻¹)^2)
+    dsimp [z]
+    nlinarith [inv_pos.mpr hw]
+  have hq1 : (1 : ℝ) ≤ q := by exact_mod_cast (by omega : 1 ≤ q)
+  have hA := log_le_sub_one_of_pos (zero_lt_one.trans_le hq1)
+  have h2 := log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2)
+  have hK : 1000000 ≤ K := by dsimp [K]; linarith [Nat.cast_nonneg (α := ℝ) q]
+  have hKz : K ≤ K * z := le_mul_of_one_le_right (by linarith) hz
+  have hlarge : 1000000 * z ≤ (K * z)^2 := by
+    have h := mul_le_mul_of_nonneg_right hK (by linarith : 0 ≤ z)
+    nlinarith only [h, hKz, hK, mul_nonneg (show 0 ≤ K*z by linarith)
+      (show 0 ≤ K*z-1 by linarith)]
+  have he : exp 1 ≤ 3 := exp_one_lt_three.le
+  have hi : 1 / (w ^ 2 / 2) = 2 * (w⁻¹)^2 := by field_simp
+  have hiz : 1 / (w ^ 2 / 2) ≤ 2*z := by rw [hi]; dsimp [z]; nlinarith [inv_pos.mpr hw]
+  have hsq : K^2 * (1 + w⁻¹)^4 = (K*z)^2 := by dsimp [z]; ring
+  change _ ≤ K^2 * (1+w⁻¹)^4
+  rw [hsq]
+  unfold softFamilyThreshold
+  simp only [max_le_iff]
+  norm_num only [Nat.cast_ofNat]
+  rw [abs_of_nonneg (by positivity : 0 ≤ 52 + w^2/2),
+    abs_of_nonneg (by have := log_nonneg hq1; positivity : 0 ≤ (36:ℝ)*(log 2+40*log (q:ℝ)) +
+      (200+w^2/2+|log (w^2/2/2000000)|))]
+  refine ⟨?_, ?_, by linarith, by linarith, by linarith, by linarith⟩
+  · norm_num
+    apply pow_le_pow_left₀ (by positivity)
+    linarith
+  · apply pow_le_pow_left₀ (by positivity)
+    dsimp [K]
+    have hmul := mul_le_mul_of_nonneg_left hz
+      (show 0 ≤ 500000 + 1440*(q:ℝ) by positivity)
+    nlinarith only [hlog, hg, hA, h2, hmul, hz]
+
+private theorem soft_family_log_budgets_of_threshold (q : ℕ) (hq : 2 ≤ q)
     (g : ℝ) (hg : 0 < g) (a b c : ℕ) :
-    ∀ᶠ u : ℕ in atTop,
+    ∀ u : ℕ, 2 ≤ u → softFamilyThreshold q g a b c ≤ (u : ℝ) →
       let v : ℝ := u
       let D : ℝ := (v ^ 26 + 1) * ((q : ℝ) * v ^ 16) ^ (40 * u ^ 8)
       let M := 9 * v ^ 10 * (1 + 10 * log v) + 4 * v ^ 8 + 34
@@ -246,19 +316,14 @@ private theorem eventually_soft_family_log_budgets (q : ℕ) (hq : 2 ≤ q)
         1 ≤ g * v ^ 2 ∧ 1 ≤ D ∧ 1 ≤ M ∧ M + 5 + g ≤ v ^ 12 ∧
         ((a : ℝ) + 12) * log D + ((b : ℝ) + c) * log M +
           (200 + g + |log (g / 2000000)|) ≤ v ^ 9 / 64 := by
-  have hnat : Tendsto (fun u : ℕ ↦ (u : ℝ)) atTop atTop := tendsto_natCast_atTop_atTop
-  have hMbound := eventually_affine_log_le_nat_pow (52 + g) 90 1
-    (p := 2) (by norm_num) (by norm_num : (0 : ℝ) < 1)
-  have hbudget := eventually_affine_log_le_nat_pow
-    ((((a : ℝ) + 12) * (log 2 + 40 * log (q : ℝ))) +
-      (200 + g + |log (g / 2000000)|))
-    (((a : ℝ) + 12) * 666 + 12 * ((b : ℝ) + c)) (1 / 64)
-    (p := 1) (by norm_num) (by norm_num : (0 : ℝ) < 1 / 64)
-  filter_upwards [eventually_ge_atTop 2, hMbound, hbudget,
-    hnat.eventually (eventually_ge_atTop (exp 1)),
-    hnat.eventually (eventually_ge_atTop (156 + 2 * g)),
-    hnat.eventually (eventually_ge_atTop (g / 40 + 24)),
-    hnat.eventually (eventually_ge_atTop (1 / g))] with u hu hMb hbud hlog hcut hcut' hgu
+  intro u hu hthreshold
+  simp only [softFamilyThreshold, max_le_iff] at hthreshold
+  obtain ⟨h₁, h₂, hlog, hcut, hcut', hgu⟩ := hthreshold
+  have hx : (1 : ℝ) ≤ u := by exact_mod_cast (by omega : 1 ≤ u)
+  have hMb := affine_log_le_nat_pow_of_threshold (52 + g) 90 (p := 2)
+    (by decide) (by norm_num : (0 : ℝ) < 1) hx h₁
+  have hbud := affine_log_le_nat_pow_of_threshold _ _ (p := 1)
+    (by decide) (by norm_num : (0 : ℝ) < 1 / 64) hx h₂
   let v : ℝ := u
   let D : ℝ := (v ^ 26 + 1) * ((q : ℝ) * v ^ 16) ^ (40 * u ^ 8)
   let M := 9 * v ^ 10 * (1 + 10 * log v) + 4 * v ^ 8 + 34
@@ -322,9 +387,9 @@ The choices depend only on the local dimension, the positive gap and the three
 natural exponent budgets. No volume or target dimension occurs. The powers
 of the natural scale are a new sufficient calibration; the theorem does not
 assert the printed fourth-order choice or its quantitative gap dependence. -/
-theorem exists_soft_family_calibration (q : ℕ) (hq : 2 ≤ q)
-    (g : ℝ) (hg : 0 < g) (a b c : ℕ) :
-    ∃ u : ℕ, 2 ≤ u ∧
+theorem soft_family_calibration_of_threshold (q : ℕ) (hq : 2 ≤ q)
+    (g : ℝ) (hg : 0 < g) (a b c u : ℕ) (hu : 2 ≤ u)
+    (hthreshold : softFamilyThreshold q g a b c ≤ u) :
       let ell := u ^ 8
       let m := u ^ 10
       let t := 3 * (m : ℝ)
@@ -343,9 +408,8 @@ theorem exists_soft_family_calibration (q : ℕ) (hq : 2 ≤ q)
           tau * g / 1000000 ∧
         (2 * exp (-2 * (k : ℝ) * sqrt ((g / 2) / (M + xi + 4 + g)))) ^ 2 ≤
           1 / ((D : ℝ) ^ 12 * M ^ c) := by
-  obtain ⟨u, hu, hlogu, ht, hT, hT', hgu, hD, hM, hupper, hbudget⟩ :=
-    (eventually_soft_family_log_budgets q hq g hg a b c).exists
-  refine ⟨u, hu, ?_⟩
+  obtain ⟨_, hlogu, ht, hT, hT', hgu, hD, hM, hupper, hbudget⟩ :=
+    soft_family_log_budgets_of_threshold q hq g hg a b c u hu hthreshold
   intro ell m t k T D M tau xi
   have hu1 : 1 ≤ u := le_trans (by decide : 1 ≤ 2) hu
   have hu0 : 0 < u := zero_lt_one.trans_le hu1
@@ -392,5 +456,53 @@ theorem exists_soft_family_calibration (q : ℕ) (hq : 2 ≤ q)
   · simpa only [t, m, Nat.cast_pow] using ht
   · exact_mod_cast hD1
   · simpa only [tau, t, T, k, Nat.cast_pow] using hbounds
+
+/-- A natural scale satisfying the corrected calibration exists. -/
+theorem exists_soft_family_calibration (q : ℕ) (hq : 2 ≤ q)
+    (g : ℝ) (hg : 0 < g) (a b c : ℕ) :
+    ∃ u : ℕ, 2 ≤ u ∧
+      let ell := u ^ 8
+      let m := u ^ 10
+      let t := 3 * (m : ℝ)
+      let k := u ^ 16
+      let T := (u : ℝ) ^ 9
+      let D := (m * k + 1) * (q * k) ^ (36 * ell + 4 * (k / ell))
+      let M := 3 * t * (1 + log (m : ℝ)) + 4 * (ell : ℝ) + 34
+      let tau := 1 / ((D : ℝ) ^ a * M ^ b)
+      let xi := min 1 (tau * g ^ 2 / (20000 * (M + g + 8)))
+      1 ≤ ell ∧ 2 ≤ m ∧ 1 ≤ k ∧
+        156 + 2 * g ≤ t ∧ 156 + 2 * g ≤ T ∧ g / 40 + 24 ≤ T ∧
+        1 ≤ D ∧ 1 ≤ M ∧ 0 < tau ∧ tau ≤ 1 ∧ 0 < xi ∧ xi ≤ 1 ∧
+        3 * (32 * exp (-(T - g / 40 - 24) / 8) + (t / m) * (T / t) ^ m) ≤
+          tau * g / 1000000 ∧
+        3 * (32 * exp (-(T - 156 - 2 * g) / 8) + (t / m) * (T / t) ^ m) ≤
+          tau * g / 1000000 ∧
+        (2 * exp (-2 * (k : ℝ) * sqrt ((g / 2) / (M + xi + 4 + g)))) ^ 2 ≤
+          1 / ((D : ℝ) ^ 12 * M ^ c) := by
+  let u := max 2 ⌈softFamilyThreshold q g a b c⌉₊
+  have hu : 2 ≤ u := le_max_left ..
+  have h : softFamilyThreshold q g a b c ≤ (u : ℝ) :=
+    (Nat.le_ceil _).trans (Nat.cast_le.mpr (le_max_right ..))
+  exact ⟨u, hu, soft_family_calibration_of_threshold q hq g hg a b c u hu h⟩
+
+/-- For inverse-width estimates, a polynomially bounded natural scale meets the
+threshold of `soft_family_calibration_of_threshold` for the budgets `(24,10,10)`. -/
+theorem exists_soft_family_scale_half_sq (q : ℕ) (hq : 2 ≤ q) {w : ℝ}
+    (hw : 0 < w) (hw' : w ≤ 1) :
+    ∃ u : ℕ, 2 ≤ u ∧ softFamilyThreshold q (w^2 / 2) 24 10 10 ≤ u ∧
+      (u : ℝ) ≤ ((64 * (5000000 + 1440 * (q : ℝ))) ^ 2 + 2) * (1 + w⁻¹) ^ 4 := by
+  let K := 64 * (5000000 + 1440 * (q : ℝ))
+  let z := (1 + w⁻¹) ^ 4
+  have hz : 1 ≤ z := one_le_pow₀ (by linarith [inv_pos.mpr hw])
+  let u := max 2 ⌈K^2*z⌉₊
+  refine ⟨u, le_max_left .., (softFamilyThreshold_half_sq_le q hq hw hw').trans
+    ((Nat.le_ceil _).trans (Nat.cast_le.mpr (le_max_right ..))), ?_⟩
+  change (↑(max 2 ⌈K^2*z⌉₊) : ℝ) ≤ (K^2 + 2)*z
+  rw [Nat.cast_max, max_le_iff]
+  have hpos : 0 ≤ K^2*z := mul_nonneg (sq_nonneg _) (by linarith)
+  constructor
+  · norm_num
+    nlinarith only [hpos, hz]
+  · nlinarith only [Nat.ceil_lt_add_one hpos, hz]
 
 end Real
