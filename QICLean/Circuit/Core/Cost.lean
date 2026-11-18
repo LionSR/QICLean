@@ -15,12 +15,16 @@ gate count and the number of gates meeting a given site are its three instances:
 * the gate count of a layer is the sum of the costs of its cells;
 * a layer meets a site `s` as often as it has cells of positive cost containing `s`.
 
-Onsite families cost nothing. A circuit is "of depth `T`" when its depth is at most `T`, so
-statements are monotone in `T` without further proof. The cost of a composition is at most the
-sum of the costs; this is proved once for every cost.
+The gate count and the meeting count are sums over the cells of a layer of a weight of the gate
+on the cell (`Layer.cellCost`); a weight may depend on the gate and not only on its cell. The
+depth of a layer is `min 1` of the number of its cells of positive cost
+(`Layer.depth_eq_min_one`). Onsite families cost nothing. A circuit is "of depth `T`" when its
+depth is at most `T`, so statements are monotone in `T` without further proof. The cost of a
+composition is at most the sum of the costs; this is proved once for every cost.
 
 ## Main definitions
 
+* `QuantumCircuit.Layer.cellCost` — the total weight of the gates of a layer.
 * `QuantumCircuit.Circuit.total` — a cost of layers along the most expensive branch.
 * `QuantumCircuit.Circuit.depth`, `QuantumCircuit.Circuit.gateCount`,
   `QuantumCircuit.Circuit.participation` — its instances.
@@ -45,7 +49,7 @@ namespace Layer
 variable {X Y : S → Type}
 
 /-- The total weight of the cells used by a layer, for a weight `w b g` of the gate `g` on the
-cell `b`. The gate count, the participation of a site and the oracle calls are instances. -/
+cell `b`. The gate count and the participation of a site are instances. -/
 def cellCost (w : ∀ ⦃X Y : S → Type⦄ (b : Γ.Cell), G (Γ.cell b) X Y → ℕ) (L : Layer Γ G X Y) :
     ℕ :=
   ∑ b : L.cells, w b.1 (L.gate b)

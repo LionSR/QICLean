@@ -10,24 +10,31 @@ import QICLean.ManyBody.Sites.RegionUnion
 # Layers of several gates, and adjoints
 
 A layer of gates on a finite set of pairwise disjoint cells with the identity elsewhere is the
-parallel application of the gates. For plain gates of one operator each, its single Kraus
-operator is the product, in any order, of the placements of the gates, and it costs as much as
-its cells; its depth is `1` when one of its cells has positive cost.
+parallel application of the gates. For plain gates its Kraus operator at an index is the
+product, in any order, of the placements of the operators of the gates at that index, and its
+map is the composite, in any order, of the maps of the placed gates. The gates need not be
+unitary: a layer of trace-preserving gates is a quantum channel. It costs as much as its cells,
+and its depth is at most `1`.
 
 The adjoint of a Kraus family is the family of the adjoint operators. The adjoint of a sequence
-of layers of plain gates is the sequence of the adjoint layers in reverse order; for layers of
-one operator each its Kraus operator is the adjoint of the original one, and it has the same
-costs.
+of layers of plain gates on one system is the sequence of the adjoint layers in reverse order;
+for layers of one operator each its Kraus operator is the adjoint of the original one, and it has
+the same costs. An adjoint of a circuit whose systems change between layers is not provided: it
+would have to reverse the chain of intermediate systems, which `Circuit` does not expose as a
+list.
 
 ## Main definitions
 
 * `QuantumCircuit.Layer.ofCells` — gates on disjoint cells, the identity elsewhere.
+* `QuantumCircuit.Layer.placeFamily` — the placement of a Kraus family on a region.
 * `KrausFamily.adjoint`, `QuantumCircuit.Layer.adjoint`, `QuantumCircuit.Circuit.seqAdjoint`.
 
 ## Main results
 
-* `QuantumCircuit.Layer.kraus_ofCells`, `QuantumCircuit.Layer.gateCount_ofCells`,
-  `QuantumCircuit.Layer.depth_ofCells`.
+* `QuantumCircuit.Layer.kraus_ofCells_eq_prod`, `QuantumCircuit.Layer.kraus_ofCells` — the Kraus
+  operators of a layer of plain gates.
+* `QuantumCircuit.Layer.map_ofCells` — its map.
+* `QuantumCircuit.Layer.gateCount_ofCells`, `QuantumCircuit.Layer.depth_ofCells_le_one`.
 * `QuantumCircuit.Circuit.kraus_seqAdjoint`, `QuantumCircuit.Circuit.total_seqAdjoint`.
 -/
 
@@ -180,6 +187,7 @@ theorem kraus_ofCells_eq_prod (cells : Finset Γ.Cell)
     simp only [Finset.mem_univ, true_implies, Subtype.forall]
   rw [hfree, mul_ite, mul_one, mul_zero]
 
+omit [Fintype S] [DecidableEq S] in
 theorem pairwiseDisjoint_of_cons {b : Γ.Cell} {l : List Γ.Cell}
     (h : (((b :: l).toFinset : Finset Γ.Cell) : Set Γ.Cell).PairwiseDisjoint Γ.cell) :
     ((l.toFinset : Finset Γ.Cell) : Set Γ.Cell).PairwiseDisjoint Γ.cell :=
@@ -188,7 +196,7 @@ theorem pairwiseDisjoint_of_cons {b : Γ.Cell} {l : List Γ.Cell}
 /-- Functions on the cells `b :: l` are a value at `b` and a function on the cells `l`. -/
 def consPi {α : Type} [DecidableEq α] (F : α → Type) {b : α} {l : List α} (hb : b ∉ l) :
     ((c : (b :: l).toFinset) → F c) ≃ F b × ((c : l.toFinset) → F c) where
-  toFun f := (f ⟨b, by simp⟩, fun c ↦ f ⟨c, by simp [List.mem_toFinset.mp c.2]⟩)
+  toFun f := (f ⟨b, by simp⟩, fun c ↦ f ⟨c, by simp⟩)
   invFun p c := if h : c.1 = b then cast (congrArg F h.symm) p.1 else p.2 ⟨c.1, by
     have := List.mem_toFinset.mp c.2
     rw [List.mem_cons] at this
