@@ -32,6 +32,7 @@ control qubits to the register that also holds the target.
     \label{def:phase_estimation_circuit}
     \lean{QuantumCircuit.PhaseEstimation.hadamardLayer,
         QuantumCircuit.PhaseEstimation.queryLayer, QuantumCircuit.PhaseEstimation.prepare,
+        QuantumCircuit.PhaseEstimation.registerState,
         QuantumCircuit.PhaseEstimation.qftInv,
         QuantumCircuit.PhaseEstimation.unitary, QuantumCircuit.PhaseEstimation.measureLayer,
         QuantumCircuit.PhaseEstimation.circuit, QuantumCircuit.PhaseEstimation.measured,
@@ -59,7 +60,10 @@ control qubits to the register that also holds the target.
 
 \begin{theorem}[Number of calls]
     \label{thm:phase_estimation_query_count}
-    \lean{QuantumCircuit.PhaseEstimation.queryCount_circuit}
+    \lean{QuantumCircuit.PhaseEstimation.nonempty_unique_index_prepare,
+        QuantumCircuit.PhaseEstimation.isUnbranched_prepare,
+        QuantumCircuit.PhaseEstimation.queryCount_prepare,
+        QuantumCircuit.PhaseEstimation.queryCount_circuit}
     \leanok
     \uses{def:phase_estimation_circuit, def:circuits_oracle, lem:circuits_seq}
     Phase estimation with $t$ control qubits calls the oracle
@@ -76,6 +80,9 @@ control qubits to the register that also holds the target.
     \lean{QuantumCircuit.PhaseEstimation.amplitude,
         QuantumCircuit.PhaseEstimation.dft_conjTranspose_mulVec,
         QuantumCircuit.PhaseEstimation.ofReal_sum_norm_sq,
+        QuantumCircuit.PhaseEstimation.qubitGate_mulVec,
+        QuantumCircuit.PhaseEstimation.kraus_prepare_mulVec,
+        QuantumCircuit.PhaseEstimation.sum_norm_sq_registerState,
         QuantumCircuit.PhaseEstimation.outcomeProb_eq,
         QuantumCircuit.PhaseEstimation.sum_norm_sq_amplitude}
     \leanok
@@ -190,3 +197,26 @@ control qubits to the register that also holds the target.
     has the success probability of Theorem~\ref{thm:phase_estimation_success}, and it
     calls the oracle $2^t-1$ times.
 \end{theorem}
+\begin{proof}\leanok
+    After the preparation the control register is the product state
+    $\bigotimes_j2^{-1/2}(\lvert0\rangle+e^{2\pi i\varphi2^{t-1-j}}\lvert1\rangle)$, tensored
+    with $u$. Along a branch, the corrected measurement of the qubit $j$ with outcome $b_j$
+    keeps a product state, replacing the factor of the qubit $j$ by
+    $\beta_j\lvert b_j\rangle$ with
+    \begin{align}
+        \beta_j&=\tfrac12\bigl(1+(-1)^{b_j}e^{-2\pi i\theta_j}e^{2\pi i\varphi2^{t-1-j}}\bigr),
+        \notag
+    \end{align}
+    so the branch has probability $\prod_j\lvert\beta_j\rvert^2$. For the readout
+    $k=\sum_jb_j2^j$ one has $k/2^{j+1}\equiv b_j/2+\theta_j$ modulo $1$, hence
+    $\beta_j=\tfrac12(1+z^{2^{t-1-j}})$ with $z=e^{2\pi i(\varphi-k/2^t)}$, and
+    \begin{align}
+        \prod_j\beta_j&=2^{-t}\prod_{s<t}\bigl(1+z^{2^s}\bigr)=2^{-t}\sum_{l<2^t}z^l=\alpha_k.
+        \notag
+    \end{align}
+    The outcomes of the branches are the bit strings, each once, so the readout $k$ has
+    probability $\lvert\alpha_k\rvert^2$. The rest follows from
+    Theorems~\ref{thm:phase_estimation_amplitude} and~\ref{thm:phase_estimation_success}.
+    The measurements contain no calls, so the number of calls is that of the
+    preparation.
+\end{proof}

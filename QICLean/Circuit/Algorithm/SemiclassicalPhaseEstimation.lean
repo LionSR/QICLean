@@ -22,6 +22,14 @@ outcomes of the earlier layers. Its outcomes have the distribution of the cohere
 the success probability and the number of calls are those of phase estimation; the circuit has
 no two-qubit gates after the calls.
 
+The proof follows a branch. After the preparation the control register is the product state
+`∏ⱼ 2^{-1/2} (|0⟩ + e^{2πiφ 2^{t-1-j}} |1⟩)`. The corrected measurement of the qubit `j` with
+the outcome `bⱼ` keeps a product state, the qubit `j` replaced by `βⱼ |bⱼ⟩` with
+`βⱼ = (1 + (-1)^{bⱼ} e^{-2πiθⱼ} e^{2πiφ 2^{t-1-j}})/2`. Writing `k = ∑ⱼ bⱼ 2^j` for the readout,
+`k/2^{j+1} ≡ bⱼ/2 + θⱼ` modulo `1`, so `βⱼ = (1 + z^{2^{t-1-j}})/2` with `z = e^{2πi(φ - k/2^t)}`,
+and `∏ⱼ βⱼ = 2^{-t} ∑_{l < 2^t} z^l = αₖ`. The outcomes of the branches are the bit strings,
+each once.
+
 ## Main definitions
 
 * `QuantumCircuit.PhaseEstimation.correction` — the phase correction from the earlier outcomes.
@@ -299,12 +307,124 @@ private theorem prepared_eq (φ : ℝ) (x : Config (Q t)) :
   simp only [preparedFactor, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ,
     Fintype.card_fin, Finset.prod_pow_eq_pow_sum]
 
+/-- `∑_{j < 2^t} z^j = ∏_{s < t} (1 + z^{2^s})`. -/
+private theorem geom_sum_two_pow (z : ℂ) (t : ℕ) :
+    ∑ j ∈ Finset.range (2 ^ t), z ^ j = ∏ s ∈ Finset.range t, (1 + z ^ 2 ^ s) := by
+  induction t with
+  | zero => simp
+  | succ t ih =>
+    rw [pow_succ, mul_two, Finset.sum_range_add, Finset.prod_range_succ, ← ih]
+    simp only [pow_add, ← Finset.mul_sum]
+    ring
+
+/-- The digits of `k = ∑ B_{i'} 2^{i'}` around the position `i`. -/
+private theorem digits_split (t : ℕ) (B : Fin t → Fin 2) (i : Fin t) :
+    ∑ i', ((B i' : ℕ) : ℝ) * 2 ^ (i' : ℕ) =
+      2 ^ ((i : ℕ) + 1) * ((∑ i' ∈ Finset.univ.filter (i < ·),
+        (B i' : ℕ) * 2 ^ ((i' : ℕ) - i - 1) : ℕ) : ℝ) + 2 ^ (i : ℕ) * ((B i : ℕ) : ℝ) +
+        2 ^ ((i : ℕ) + 1) * ∑ i' ∈ Finset.univ.filter (· < i),
+          ((B i' : ℕ) : ℝ) / 2 ^ ((i : ℕ) - i' + 1) := by
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (i < ·)]
+  have hrest : Finset.univ.filter (fun i' : Fin t ↦ ¬ i < i') =
+      insert i (Finset.univ.filter (· < i)) := by
+    ext i'
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert, not_lt]
+    exact ⟨fun h ↦ (eq_or_lt_of_le h), fun h ↦ h.elim (fun e ↦ e ▸ le_rfl) le_of_lt⟩
+  rw [hrest, Finset.sum_insert (by simp)]
+  push_cast
+  rw [Finset.mul_sum, Finset.mul_sum]
+  have h1 : ∀ i' ∈ Finset.univ.filter (fun i' : Fin t ↦ i < i'),
+      ((B i' : ℕ) : ℝ) * 2 ^ (i' : ℕ) =
+        2 ^ ((i : ℕ) + 1) * (((B i' : ℕ) : ℝ) * 2 ^ ((i' : ℕ) - i - 1)) := by
+    intro i' hi'
+    have := (Finset.mem_filter.mp hi').2
+    have hle : (i : ℕ) + 1 ≤ i' := this
+    rw [mul_left_comm, ← pow_add, show (i : ℕ) + 1 + ((i' : ℕ) - i - 1) = i' by omega]
+  have h2 : ∀ i' ∈ Finset.univ.filter (fun i' : Fin t ↦ i' < i),
+      ((B i' : ℕ) : ℝ) * 2 ^ (i' : ℕ) =
+        2 ^ ((i : ℕ) + 1) * (((B i' : ℕ) : ℝ) / 2 ^ ((i : ℕ) - i' + 1)) := by
+    intro i' hi'
+    have := (Finset.mem_filter.mp hi').2
+    have hle : (i' : ℕ) < i := this
+    have hp : (2 : ℝ) ^ ((i : ℕ) + 1) = 2 ^ (i' : ℕ) * 2 ^ ((i : ℕ) - i' + 1) := by
+      rw [← pow_add]; congr 1; omega
+    rw [hp]
+    field_simp
+  rw [Finset.sum_congr rfl h1, Finset.sum_congr rfl h2]
+  ring
+
+private theorem beta_preparedFactor (θ φ : ℝ) (c : Fin 2) (i : Fin t) :
+    beta θ c (preparedFactor φ i) = 2⁻¹ * (1 + (-1) ^ (c : ℕ) *
+      exp (-(2 * Real.pi * I * θ)) * exp (2 * Real.pi * I * φ) ^ 2 ^ (t - 1 - (i : ℕ))) := by
+  simp only [beta, correctedHadamard, Fin.sum_univ_two, mul_diagonal, Qubit.hadamard, of_apply,
+    preparedFactor, Fin.val_zero, Fin.val_one, mul_zero, pow_zero, Nat.cast_zero, Nat.cast_one,
+    mul_one, zero_mul, neg_zero, Complex.exp_zero, one_mul]
+  linear_combination (1 + (-1) ^ (c : ℕ) * exp (-(2 * Real.pi * I * θ)) *
+    exp (2 * Real.pi * I * φ) ^ 2 ^ (t - 1 - (i : ℕ))) * invSqrtTwo_mul_self
+
+/-- The phase of the qubit `i` after the corrections is that of `z^{2^{t-1-i}}`,
+`z = e^{2πi(φ - k/2^t)}`, because `k/2^{i+1} ≡ bᵢ/2 + θᵢ` modulo `1`. -/
+private theorem phase_eq (φ : ℝ) (B : Fin t → Fin 2) (i : Fin t) :
+    (-1) ^ (B i : ℕ) * exp (-(2 * Real.pi * I * correction t B i)) *
+      exp (2 * Real.pi * I * φ) ^ 2 ^ (t - 1 - (i : ℕ)) =
+      exp (2 * Real.pi * I * (φ - (encode t fun s ↦ B s.rev : ℕ) / 2 ^ t)) ^
+        2 ^ (t - 1 - (i : ℕ)) := by
+  set k : ℕ := ((encode t fun s ↦ B s.rev : Fin (2 ^ t)) : ℕ)
+  set M : ℕ := ∑ i' ∈ Finset.univ.filter (i < ·), (B i' : ℕ) * 2 ^ ((i' : ℕ) - i - 1)
+  have hk : (k : ℝ) = ∑ i', ((B i' : ℕ) : ℝ) * 2 ^ (i' : ℕ) := by
+    have := Qubit.encode_apply (n := t) fun s ↦ B s.rev
+    simp only [k]
+    rw [this]
+    push_cast
+    refine Fintype.sum_equiv Fin.revPerm _ _ fun s ↦ ?_
+    simp only [Fin.revPerm_apply, Fin.val_rev]
+    congr 2
+    omega
+  have hi : (i : ℕ) < t := i.2
+  have hw : (2 : ℝ) ^ (t - 1 - (i : ℕ)) * k / 2 ^ t =
+      M + ((B i : ℕ) : ℝ) / 2 + correction t B i := by
+    have h2t : (2 : ℝ) ^ t = 2 ^ (t - 1 - (i : ℕ)) * 2 ^ ((i : ℕ) + 1) := by
+      rw [← pow_add]; congr 1; omega
+    rw [hk, digits_split t B i, h2t, correction]
+    field_simp
+    ring
+  have hw' : (2 : ℂ) ^ (t - 1 - (i : ℕ)) * k / 2 ^ t =
+      M + ((B i : ℕ) : ℂ) / 2 + correction t B i := by
+    have := congrArg (fun x : ℝ ↦ (x : ℂ)) hw
+    push_cast at this
+    exact this
+  have hB : exp (Real.pi * I * ((B i : ℕ) : ℂ)) = (-1) ^ (B i : ℕ) := by
+    rcases Fin.exists_fin_two.mp ⟨B i, rfl⟩ with h | h <;> rw [h] <;> simp [Complex.exp_pi_mul_I]
+  rw [← Complex.exp_nat_mul, ← Complex.exp_nat_mul]
+  push_cast
+  rw [show (2 : ℂ) ^ (t - 1 - (i : ℕ)) * (2 * Real.pi * I * (φ - k / 2 ^ t)) =
+      2 ^ (t - 1 - (i : ℕ)) * (2 * Real.pi * I * φ) -
+        2 * Real.pi * I * (2 ^ (t - 1 - (i : ℕ)) * k / 2 ^ t) by ring, hw',
+    Complex.exp_sub, show 2 * Real.pi * I * (M + ((B i : ℕ) : ℂ) / 2 + correction t B i) =
+      M * (2 * Real.pi * I) + Real.pi * I * ((B i : ℕ) : ℂ) +
+        2 * Real.pi * I * correction t B i by ring, Complex.exp_add, Complex.exp_add,
+    Complex.exp_nat_mul_two_pi_mul_I, hB, Complex.exp_neg]
+  rcases Fin.exists_fin_two.mp ⟨B i, rfl⟩ with h | h <;> rw [h] <;> field_simp <;> norm_num
+
 /-- The product of the amplitudes of the corrected measurements is the amplitude of the
 readout. -/
 private theorem prod_beta (φ : ℝ) (B : Fin t → Fin 2) :
     ∏ i, beta (correction t B i) (B i) (preparedFactor φ i) =
       amplitude t φ (encode t fun s ↦ B s.rev) := by
-  sorry
+  set z := exp (2 * Real.pi * I * (φ - (encode t fun s ↦ B s.rev : ℕ) / 2 ^ t))
+  have hsum : ∑ j : Fin (2 ^ t), exp (2 * Real.pi * I * j *
+      (φ - (encode t fun s ↦ B s.rev : ℕ) / 2 ^ t)) = ∑ j ∈ Finset.range (2 ^ t), z ^ j := by
+    rw [Fin.sum_univ_eq_sum_range (fun j ↦ exp (2 * Real.pi * I * j *
+      (φ - (encode t fun s ↦ B s.rev : ℕ) / 2 ^ t)))]
+    refine Finset.sum_congr rfl fun j _ ↦ ?_
+    rw [← Complex.exp_nat_mul]
+    congr 1
+    ring
+  rw [amplitude, hsum, geom_sum_two_pow, ← Finset.prod_range_reflect,
+    ← Fin.prod_univ_eq_prod_range (fun s ↦ 1 + z ^ 2 ^ (t - 1 - s)),
+    show ((2 : ℂ) ^ t)⁻¹ = ∏ _i : Fin t, (2 : ℂ)⁻¹ by simp, ← Finset.prod_mul_distrib]
+  refine Finset.prod_congr rfl fun i _ ↦ ?_
+  rw [beta_preparedFactor, phase_eq]
 
 private theorem prob_semiclassical {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ}
     (hu : star u ⬝ᵥ u = 1) {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u)
@@ -320,7 +440,8 @@ private theorem prob_semiclassical {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m �
   obtain ⟨-, h⟩ := finalFactors_eq (List.finRange t) (List.pairwise_lt_finRange t) 0
     (preparedFactor φ) q
   simp only [prodState, norm_prod, ← Finset.prod_pow]
-  rw [← Fintype.prod_sum (fun i y ↦ ‖finalFactors (List.finRange t) 0 (preparedFactor φ) q i y‖ ^ 2)]
+  rw [← Fintype.prod_sum fun i y ↦
+    ‖finalFactors (List.finRange t) 0 (preparedFactor φ) q i y‖ ^ 2]
   refine Finset.prod_congr rfl fun i _ ↦ ?_
   rw [h i (List.mem_finRange i)]
   simp only [apply_ite (fun z : ℂ ↦ ‖z‖ ^ 2), norm_zero, ne_eq, OfNat.ofNat_ne_zero,
