@@ -33,8 +33,6 @@ cost of a composition is at most the sum of the costs; this is proved once for e
 * `QuantumCircuit.Circuit.total_append` — subadditivity under composition.
 * `QuantumCircuit.Circuit.depth_comp`, `QuantumCircuit.Circuit.gateCount_comp`,
   `QuantumCircuit.Circuit.participation_comp` — its three instances for `comp`.
-* `QuantumCircuit.Layer.depth_eq_min_one` — the depth of a layer is `min 1` of the number of its
-  cells of positive cost.
 * `QuantumCircuit.Layer.depth_le_one`, `QuantumCircuit.Circuit.depth_le_gateCount` — a layer has
   depth at most `1`, and depth is at most the gate count.
 * `QuantumCircuit.Circuit.total_seq_le` — the cost of a sequence of layers is at most the sum
@@ -77,16 +75,6 @@ theorem meets_eq_card (s : S) (L : Layer Γ G X Y) :
     L.meets s = (L.cells.filter fun b ↦ s ∈ Γ.cell b ∧ 0 < Γ.cost b).card := by
   rw [meets, cellCost, Finset.sum_coe_sort L.cells fun b ↦
     if s ∈ Γ.cell b ∧ 0 < Γ.cost b then 1 else 0, Finset.sum_boole, Nat.cast_id]
-
-omit [Fintype S] [GateFamily G] in
-/-- The depth of a layer is `min 1` of the number of its cells of positive cost. -/
-theorem depth_eq_min_one (L : Layer Γ G X Y) :
-    L.depth = min 1 (L.cellCost fun _ _ b _ ↦ if 0 < Γ.cost b then 1 else 0) := by
-  rw [depth, cellCost, Finset.sum_coe_sort L.cells fun b ↦ if 0 < Γ.cost b then 1 else 0,
-    Finset.sum_boole, Nat.cast_id]
-  split_ifs with h
-  · exact (Nat.min_eq_left (Finset.card_pos.mpr h)).symm
-  · rw [Finset.not_nonempty_iff_eq_empty.mp h, Finset.card_empty, Nat.min_zero]
 
 omit [Fintype S] [GateFamily G] in
 theorem depth_le_one (L : Layer Γ G X Y) : L.depth ≤ 1 := by

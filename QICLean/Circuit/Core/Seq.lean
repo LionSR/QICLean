@@ -143,11 +143,6 @@ def adjoint (L : Layer Γ KrausGate X Y) : Layer Γ KrausGate Y X where
   gate b := (L.gate b).adjoint
   onsite s := (L.onsite s).adjoint
 
-omit [Fintype S] in
-@[simp] theorem adjoint_adjoint (L : Layer Γ KrausGate X Y) : L.adjoint.adjoint = L := by
-  obtain ⟨cells, hd, gate, onsite⟩ := L
-  simp only [adjoint, KrausFamily.adjoint_adjoint]
-
 /-- The Kraus operators of the adjoint layer are the adjoints of those of the layer. -/
 theorem kraus_adjoint [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
     [∀ s, DecidableEq (Y s)] (L : Layer Γ KrausGate X Y) (i : L.adjoint.Index) :

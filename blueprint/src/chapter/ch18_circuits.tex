@@ -265,17 +265,14 @@ and each Kraus operator is a product of local entries over the blocks.
 
 \begin{lemma}[Costs as sums over cells]
     \label{lem:circuits_cell_cost}
-    \lean{QuantumCircuit.Layer.gateCount_eq_sum, QuantumCircuit.Layer.meets_eq_card,
-        QuantumCircuit.Layer.depth_eq_min_one}
+    \lean{QuantumCircuit.Layer.gateCount_eq_sum, QuantumCircuit.Layer.meets_eq_card}
     \leanok
     \uses{def:circuits_costs}
-    The gate count of a layer is $\sum_bc_b$ over its cells, the number of its gates
-    meeting $s$ is the number of its cells of positive cost containing $s$, and its
-    depth is $\min(1,N)$, where $N$ is the number of its cells of positive cost.
+    The gate count of a layer is $\sum_bc_b$ over its cells, and the number of its
+    gates meeting $s$ is the number of its cells of positive cost containing $s$.
 \end{lemma}
 \begin{proof}\leanok
-    A sum of indicators is the number of cells where they are $1$, and
-    $\min(1,N)$ is $1$ exactly when $N>0$.
+    A sum of indicators is the number of cells where they are $1$.
 \end{proof}
 
 \begin{theorem}[Subadditivity of costs]
@@ -442,15 +439,14 @@ and each Kraus operator is a product of local entries over the blocks.
 
 \begin{definition}[Adjoint of a layer and of a sequence]
     \label{def:circuits_adjoint}
-    \lean{KrausFamily.adjoint, KrausFamily.adjoint_adjoint, QuantumCircuit.Layer.adjoint,
-        QuantumCircuit.Layer.adjoint_adjoint, QuantumCircuit.Circuit.seqAdjoint}
+    \lean{KrausFamily.adjoint, QuantumCircuit.Layer.adjoint, QuantumCircuit.Circuit.seqAdjoint}
     \leanok
     \uses{def:circuits_layer, def:kraus_family}
     The adjoint of a finite Kraus family $(K_i)_i$ is $(K_i^\dagger)_i$. The adjoint
     of a layer of plain gates from $X$ to $Y$ is the layer from $Y$ to $X$ on the
     same cells, with the adjoint gates and onsite families. The adjoint of a sequence
     of layers of plain gates on one system is the sequence of the adjoint layers in
-    reverse order. Taking the adjoint twice gives back the family and the layer.
+    reverse order.
 \end{definition}
 
 \begin{lemma}[Kraus operators of adjoints]
@@ -582,8 +578,7 @@ are embedded.
 \begin{definition}[Maps of layers]
     \label{def:circuits_layer_map}
     \lean{QuantumCircuit.LayerMap, QuantumCircuit.Circuit.mapLayers,
-        QuantumCircuit.Circuit.mapIndexEquiv, QuantumCircuit.outcomeNdrec,
-        QuantumCircuit.ev_ndrec, QuantumCircuit.prop_ndrec}
+        QuantumCircuit.Circuit.mapIndexEquiv}
     \leanok
     \uses{def:circuits_circuit}
     A map of layers from the circuits on $V$ with geometry $\Gamma$ and gate family
@@ -599,15 +594,13 @@ are embedded.
     \label{thm:circuits_layer_map}
     \lean{QuantumCircuit.Circuit.isUnbranched_mapLayers,
         QuantumCircuit.Circuit.forall_mapLayers, QuantumCircuit.Circuit.total_mapLayers_le,
-        QuantumCircuit.Circuit.lightCone_mapLayers, QuantumCircuit.Circuit.kraus_mapLayers}
+        QuantumCircuit.Circuit.kraus_mapLayers}
     \leanok
     \uses{def:circuits_layer_map, def:circuits_costs, def:circuits_local}
     The image of an unbranched circuit is unbranched. A local property holding on
     the image of every layer on which it holds holds on the image of every circuit
     on which it holds. A cost of layers that does not grow from a layer to its
-    image does not grow from a circuit to its image. If the light cone of the image
-    of a region through the image of every layer is the image of its light cone, the
-    same holds through circuits. If a map $\Phi$ of matrices between the
+    image does not grow from a circuit to its image. If a map $\Phi$ of matrices between the
     configurations of $X$ and of $X'$ sends $1$ to $1$ and products to products, and
     every Kraus operator of the image of a layer is $\Phi$ of the corresponding Kraus
     operator of the layer, the same holds for circuits.
@@ -618,33 +611,16 @@ are embedded.
 
 \begin{definition}[Morphisms of geometries]
     \label{def:circuits_geometry_hom}
-    \lean{QuantumCircuit.Geometry.Hom, QuantumCircuit.Geometry.Hom.cell_equivMap_symm,
-        QuantumCircuit.Geometry.Hom.biUnion_map, QuantumCircuit.Geometry.Hom.refl}
+    \lean{QuantumCircuit.Geometry.Hom, QuantumCircuit.Geometry.Hom.biUnion_map,
+        QuantumCircuit.Geometry.Hom.pairwiseDisjoint_map, QuantumCircuit.Geometry.Hom.refl}
     \leanok
     \uses{def:circuits_geometry}
     Let $\iota:V\to V'$ be injective. A morphism of geometries over $\iota$ is an
     injective map of cells $b\mapsto b'$ with $C_{b'}=\iota(C_b)$; costs are compared
     separately. The union of the images of a set of cells is the image of their
-    union. The identity of the cells is a morphism of a geometry to itself over the
+    union, and the images of pairwise disjoint cells are pairwise disjoint. The identity of the cells is a morphism of a geometry to itself over the
     identity of $V$.
 \end{definition}
-
-\begin{lemma}[Costs and light cones on image cells]
-    \label{lem:circuits_image_cells}
-    \lean{QuantumCircuit.Layer.lightCone_eq_of_cells,
-        QuantumCircuit.Layer.gateCount_eq_of_cells, QuantumCircuit.Layer.depth_le_of_cells}
-    \leanok
-    \uses{def:circuits_geometry_hom, def:circuits_costs}
-    Let a layer $L'$ use the images of the cells of a layer $L$ under a morphism of
-    geometries over $\iota$. Then the light cone of $\iota(R)$ through $L'$ is the
-    image of the light cone of $R$ through $L$, the gate count of $L'$ is the sum of
-    the costs of the image cells, and $L'$ is no deeper than $L$ when every image
-    cell of positive cost comes from a cell of positive cost.
-\end{lemma}
-\begin{proof}\leanok
-    The image of a cell meets $\iota(R)$ exactly when the cell meets $R$, since
-    $\iota$ is injective.
-\end{proof}
 
 \begin{definition}[Morphisms of gate families]
     \label{def:circuits_gate_morphism}
@@ -662,36 +638,30 @@ are embedded.
     \lean{QuantumCircuit.Layer.mapGate, QuantumCircuit.Layer.mapGateIndexEquiv,
         QuantumCircuit.Layer.kraus_mapGate, QuantumCircuit.Layer.forall_mapGate,
         QuantumCircuit.LayerMap.ofGate, QuantumCircuit.Circuit.mapGate,
-        QuantumCircuit.Circuit.kraus_mapGate, QuantumCircuit.Circuit.isUnbranched_mapGate,
-        QuantumCircuit.Circuit.forall_mapGate, QuantumCircuit.Circuit.gateCount_mapGate_le,
-        QuantumCircuit.Circuit.depth_mapGate_le, QuantumCircuit.Circuit.lightCone_mapGate}
+        QuantumCircuit.Layer.cellCost_mapGate, QuantumCircuit.Circuit.kraus_mapGate,
+        QuantumCircuit.Circuit.forall_mapGate}
     \leanok
-    \uses{def:circuits_geometry_hom, def:circuits_gate_morphism, thm:circuits_layer_map,
-        lem:circuits_image_cells}
+    \uses{def:circuits_geometry_hom, def:circuits_gate_morphism, def:circuits_costs}
     Along a morphism of geometries over the identity of $V$ and a morphism of gate
     families, every layer and every circuit has an image on the same systems. With a
     compatible morphism of gate families the Kraus operators along corresponding
-    branches agree. The image is unbranched if the circuit is, a property of Kraus
-    families invariant under relabelling of outcomes holds locally on the image if
-    it holds locally on the circuit, and the light cones agree. If no cell costs
-    more after the move, the gate count does not grow; if no cell of cost $0$ gets
-    positive cost, the depth does not grow.
+    branches agree, and a property of Kraus families invariant under relabelling of
+    outcomes holds locally on the image if it holds locally on the circuit. A weight
+    of gates that does not depend on the cell takes on the image of a layer the value
+    of the weight of the images of its gates on the layer.
 \end{theorem}
 \begin{proof}\leanok
     The cells of the image layer are the images of the cells of the layer, with the
     same regions, so the remaining sites and the onsite families do not change, and
-    the product of local entries is the same product. Theorem~\ref{thm:circuits_layer_map}
-    and Lemma~\ref{lem:circuits_image_cells} give the statements about circuits.
+    the product of local entries is the same product. The gates of the image layer
+    are the images of the gates, one on each image cell, which gives the weights.
+    Theorem~\ref{thm:circuits_layer_map} gives the statements about circuits.
 \end{proof}
 
 \begin{definition}[Systems on a larger set of sites]
     \label{def:circuits_extend_system}
-    \lean{QuantumCircuit.siteEmb, QuantumCircuit.siteEmb_apply,
-        QuantumCircuit.extendSystem, QuantumCircuit.Idle, QuantumCircuit.siteSplit,
-        QuantumCircuit.siteEmb_siteSplit, QuantumCircuit.extendSiteEquiv,
-        QuantumCircuit.extendConfigEquiv, QuantumCircuit.extendConfigEquiv_fst,
-        QuantumCircuit.extendConfigEquiv_snd, QuantumCircuit.extendRegionEquiv,
-        QuantumCircuit.extendRegionEquiv_restrict}
+    \lean{QuantumCircuit.siteEmb, QuantumCircuit.extendSystem,
+        QuantumCircuit.extendConfigEquiv, QuantumCircuit.extendRegionEquiv}
     \leanok
     \uses{def:sites_config}
     Let $V'$ be in bijection with the disjoint union of $V$ and a finite set $R$ of
@@ -699,8 +669,7 @@ are embedded.
     inclusion of $V$. A system $X$ on $V$ extends to the system on $V'$ with basis
     $X_s$ at $\iota(s)$ and $W_r$ at $r$. Its configurations are the pairs of a
     configuration of $X$ and a configuration of the idle sites, and the
-    configurations of $\iota(D)$ are those of $D$. Every injective map $\iota$ arises
-    this way, with $R$ the complement of its image.
+    configurations of $\iota(D)$ are those of $D$.
 \end{definition}
 
 \begin{definition}[Transport of gates]
@@ -722,13 +691,11 @@ are embedded.
     \lean{QuantumCircuit.Layer.mapSites, QuantumCircuit.Layer.mapSitesIndexEquiv,
         QuantumCircuit.Layer.kraus_mapSites, QuantumCircuit.Layer.forall_mapSites,
         QuantumCircuit.LayerMap.ofSites, QuantumCircuit.Circuit.mapSites,
-        QuantumCircuit.Circuit.kraus_mapSites, QuantumCircuit.Circuit.isUnbranched_mapSites,
-        QuantumCircuit.Circuit.forall_mapSites, QuantumCircuit.Circuit.lightCone_mapSites,
-        QuantumCircuit.Circuit.gateCount_mapSites_le,
-        QuantumCircuit.Circuit.depth_mapSites_le}
+        QuantumCircuit.Layer.cellCost_mapSites, QuantumCircuit.Circuit.kraus_mapSites,
+        QuantumCircuit.Circuit.forall_mapSites}
     \leanok
     \uses{def:circuits_extend_system, def:circuits_transport, def:circuits_geometry_hom,
-        thm:circuits_layer_map, lem:circuits_image_cells}
+        def:circuits_costs}
     Along a morphism of geometries over $\iota$ and a transport of gates, every
     circuit from $X$ to $Z$ on $V$ has an image from the extended $X$ to the
     extended $Z$ on $V'$, carrying the identity at the idle sites. With a compatible
@@ -737,12 +704,11 @@ are embedded.
         K'_p&=K_p\otimes1_{W},
         \notag
     \end{align}
-    in the identification of the configurations of $V'$ with pairs. The image is
-    unbranched if the circuit is; a property of Kraus families invariant under
-    relabelling of bases and outcomes, and holding for the identity, holds locally
-    on the image if it holds locally on the circuit; the light cone of $\iota(T)$ is
-    the image of the light cone of $T$; and the gate count and the depth do not grow
-    under the conditions of Theorem~\ref{thm:circuits_map_gate}.
+    in the identification of the configurations of $V'$ with pairs. A property of
+    Kraus families invariant under relabelling of bases and outcomes, and holding for
+    the identity, holds locally on the image if it holds locally on the circuit. A
+    weight of gates that does not depend on the cell takes on the image of a layer
+    the value of the weight of the transported gates on the layer.
 \end{theorem}
 \begin{proof}\leanok
     The cells of the image layer are the images of the cells, and its remaining sites
@@ -752,7 +718,8 @@ are embedded.
     entries the factors at the cells and at the images of the remaining sites are
     those of the layer, and the factors at the idle sites form the identity on
     $\C^{W}$. The map $K\mapsto K\otimes1_W$ sends $1$ to $1$ and products to
-    products, so Theorem~\ref{thm:circuits_layer_map} applies.
+    products, so Theorem~\ref{thm:circuits_layer_map} applies. The gates of the image
+    layer are the transported gates, one on each image cell, which gives the weights.
 \end{proof}
 
 \section{Sums of gate families, oracle calls and measurement}
@@ -773,7 +740,8 @@ are embedded.
 \begin{definition}[Oracle calls]
     \label{def:circuits_oracle}
     \lean{QuantumCircuit.Oracle, QuantumCircuit.Oracle.ev, QuantumCircuit.Oracle.callCount,
-        QuantumCircuit.Circuit.queryCount}
+        QuantumCircuit.Circuit.queryCount, QuantumCircuit.Circuit.NoCalls,
+        QuantumCircuit.Circuit.queryCount_eq_zero, QuantumCircuit.Circuit.noCalls_mapGate_inl}
     \leanok
     \uses{def:circuits_gate_sum, def:circuits_costs}
     Let $B$ be a finite set. A call of an oracle on $B$ on a region $D$ is given by a
@@ -783,41 +751,39 @@ are embedded.
     oracle calls has gates in the sum of a gate family and the oracle calls; the
     circuit does not depend on $V$, only its interpretation does. The number of
     calls of a circuit is the weight of Definition~\ref{def:circuits_costs} that is
-    $1$ on calls and $0$ on the other gates.
+    $1$ on calls and $0$ on the other gates. A circuit none of whose layers contains a
+    call makes no calls; so does every circuit of gates of the first family, included
+    in the sum.
 \end{definition}
 
 \begin{definition}[Measurement, branch probabilities and readouts]
     \label{def:circuits_outcome}
-    \lean{KrausFamily.measure, KrausFamily.isTP_measure, QuantumCircuit.Circuit.prob,
+    \lean{KrausFamily.measure, QuantumCircuit.Circuit.prob,
         QuantumCircuit.Circuit.outcomeProb}
     \leanok
     \uses{def:circuits_circuit, def:kraus_family}
     The measurement of a basis $B$ is the Kraus family of the projections
-    $\lvert b\rangle\langle b\rvert$, $b\in B$; it is trace-preserving. The
+    $\lvert b\rangle\langle b\rvert$, $b\in B$. The
     probability of a branch $p$ of a circuit on an input $\rho$ is
-    $\operatorname{tr}(K_p\rho K_p^\dagger)$. A readout of a circuit is a map $r$
+    $\operatorname{tr}(K_p\rho K_p^\dagger)$; for a state $\rho$ and a circuit with
+    trace-preserving gates and onsite families these are probabilities. A readout of a circuit is a map $r$
     from its branches to a finite set $\Omega$, and the probability of a value
     $\omega$ is the sum of the probabilities of the branches $p$ with $r(p)=\omega$.
 \end{definition}
 
-\begin{lemma}[Probabilities sum to the trace]
+\begin{lemma}[Probabilities on a pure input and bijective readouts]
     \label{lem:circuits_sum_prob}
-    \lean{QuantumCircuit.Circuit.prob_vecMulVec, QuantumCircuit.Circuit.sum_prob,
-        QuantumCircuit.Circuit.sum_outcomeProb}
+    \lean{QuantumCircuit.Circuit.prob_vecMulVec, QuantumCircuit.Circuit.outcomeProb_of_bijective}
     \leanok
-    \uses{def:circuits_outcome, thm:circuits_tp}
+    \uses{def:circuits_outcome}
     On a pure input $\rho=\psi\psi^\dagger$ the probability of a branch $p$ is
-    $\lVert K_p\psi\rVert^2$. For a circuit whose gates and onsite families are
-    trace-preserving, the probabilities of the branches, and the probabilities of the
-    values of a readout, sum to $\operatorname{tr}\rho$.
+    $\lVert K_p\psi\rVert^2$. If a readout $r$ is a bijection and the probability of
+    every branch $p$ is $f(r(p))$, the value $\omega$ has probability $f(\omega)$.
 \end{lemma}
 \begin{proof}\leanok
     The first statement is
-    $\operatorname{tr}(K_p\psi\psi^\dagger K_p^\dagger)=\lVert K_p\psi\rVert^2$.
-    The sum over branches of $\operatorname{tr}(K_p\rho K_p^\dagger)$ is the trace of
-    the image of $\rho$ under the channel of the circuit, which is
-    $\operatorname{tr}\rho$ by Theorem~\ref{thm:circuits_tp}. The values of a readout
-    partition the branches.
+    $\operatorname{tr}(K_p\psi\psi^\dagger K_p^\dagger)=\lVert K_p\psi\rVert^2$. For the
+    second, exactly one branch has the value $\omega$.
 \end{proof}
 
 \section{Product-formula circuits}

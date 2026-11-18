@@ -64,10 +64,6 @@ def single (V : Matrix β α ℂ) : KrausFamily α β :=
 def adjoint (K : KrausFamily α β) : KrausFamily β α :=
   ⟨K.Index, fun i ↦ (K.op i)ᴴ⟩
 
-@[simp] theorem adjoint_adjoint (K : KrausFamily α β) : K.adjoint.adjoint = K := by
-  simp only [adjoint, conjTranspose_conjTranspose]
-  rfl
-
 variable [Fintype α] [Fintype β]
 
 /-- The map `ρ ↦ ∑ᵢ Kᵢ ρ Kᵢᴴ` of a Kraus family. -/

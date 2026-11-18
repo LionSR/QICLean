@@ -18,7 +18,6 @@ of gates, a morphism of gate families on the same sites compatible with the inte
 * `QuantumCircuit.GateSum` — the sum of two gate families.
 * `QuantumCircuit.Interpretation.sum` — the interpretation of a sum.
 * `QuantumCircuit.GateMorphism.inl` — the inclusion of the first family.
-* `QuantumCircuit.Geometry.Hom.refl` — the identity morphism of a geometry.
 
 ## Main results
 
@@ -49,11 +48,6 @@ def Interpretation.sum (ev₁ : Interpretation G₁) (ev₂ : Interpretation G�
     Interpretation (GateSum G₁ G₂)
   | _, _, _, _, _, _, _, .inl g => ev₁ g
   | _, _, _, _, _, _, _, .inr g => ev₂ g
-
-/-- The identity morphism of a geometry. -/
-def Geometry.Hom.refl (Γ : Geometry S) : Γ.Hom Γ (Function.Embedding.refl S) where
-  cellMap := Function.Embedding.refl _
-  cell_cellMap _ := Finset.map_refl.symm
 
 /-- The inclusion of the gates of the first family into the sum. -/
 def GateMorphism.inl : GateMorphism G₁ (GateSum G₁ G₂) where

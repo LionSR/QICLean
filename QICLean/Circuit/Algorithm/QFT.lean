@@ -146,15 +146,6 @@ theorem swapCells_nodup : (swapCells n).Nodup := by
 
 /-! ### The column of a basis vector -/
 
-/-- Products of matrices along a list, the first on the right, applied to a vector. -/
-private theorem reverse_prod_mulVec (L : List (geometry n).Cell) (v : Config (Q n) → ℂ) :
-    (L.map gateOp).reverse.prod *ᵥ v = L.foldl (fun w b ↦ gateOp b *ᵥ w) v := by
-  induction L generalizing v with
-  | nil => simp
-  | cons b L ih =>
-    rw [List.map_cons, List.reverse_cons, List.prod_append, List.prod_singleton, ← mulVec_mulVec,
-      ih, List.foldl_cons]
-
 section Column
 
 variable (x : Config (Q n))
@@ -393,34 +384,20 @@ private theorem swap_mulVec {p : {p : Fin n × Fin n // p.1 ≠ p.2}} (hp : ¬ p
   obtain ⟨⟨a, b⟩, h⟩ := p
   change (place ({a} ∪ {b}) ((if b < a then controlled (phaseShift ((a : ℕ) - b + 1))
     else swapMatrix 2).submatrix (pairEquiv (Q n) h) (pairEquiv (Q n) h)) *ᵥ ψ) y = _
-  rw [ite_eq_right hp, place_mulVec_apply,
-    Finset.sum_eq_single ((pairEquiv (Q n) h).symm (y b, y a))]
-  · rw [submatrix_apply, Equiv.apply_symm_apply]
-    have hc : (pairEquiv (Q n) h fun v ↦ y v) = (y a, y b) := rfl
-    rw [hc, swapMatrix_apply, ite_eq_left ⟨rfl, rfl⟩, one_mul]
-    congr 1
-    funext v
+  rw [ite_eq_right hp, place_pairEquiv_mulVec, Finset.sum_eq_single (y b, y a)
+    (fun q _ hq ↦ by rw [swapMatrix_apply, ite_eq_right_iff.mpr fun hc ↦
+      absurd (Prod.ext hc.2.symm hc.1.symm) hq, zero_mul]) (by simp),
+    swapMatrix_apply, ite_eq_left ⟨rfl, rfl⟩, one_mul]
+  congr 1
+  funext v
+  by_cases hvb : v = b
+  · subst hvb
+    rw [Function.update_self, Equiv.swap_apply_right]
+  · rw [Function.update_of_ne hvb]
     by_cases hva : v = a
     · subst hva
-      rw [cutEquiv_symm_apply_mem _ _ (by simp), Equiv.swap_apply_left]
-      exact pairEquiv_symm_apply_left (Q n) h _
-    · by_cases hvb : v = b
-      · subst hvb
-        rw [cutEquiv_symm_apply_mem _ _ (by simp), Equiv.swap_apply_right]
-        exact pairEquiv_symm_apply_right (Q n) h _
-      · rw [cutEquiv_symm_apply_not_mem _ _ (by simp [hva, hvb]),
-          Equiv.swap_apply_of_ne_of_ne hva hvb]
-        rfl
-  · intro a' _ ha'
-    have hne : pairEquiv (Q n) h a' ≠ (y b, y a) :=
-      fun e ↦ ha' (by rw [← e, Equiv.symm_apply_apply])
-    rw [submatrix_apply]
-    rcases hq : pairEquiv (Q n) h a' with ⟨c₁, c₂⟩
-    rw [hq] at hne
-    change swapMatrix 2 (y a, y b) (c₁, c₂) * _ = 0
-    rw [swapMatrix_apply, ite_eq_right_iff.mpr fun hc ↦ absurd (Prod.ext hc.2.symm hc.1.symm) hne,
-      zero_mul]
-  · intro hm; exact absurd (Finset.mem_univ _) hm
+      rw [Function.update_self, Equiv.swap_apply_left]
+    · rw [Function.update_of_ne hva, Equiv.swap_apply_of_ne_of_ne hva hvb]
 
 /-- The configuration after the first `m` swaps: the sites `v` with `v < m` or `rev v < m` are
 reversed, the others fixed. -/
@@ -488,7 +465,7 @@ theorem prod_gateOp_core {L : List (geometry n).Cell} (hL : IsGateOrder ∅ L) (
     refine Finset.eq_univ_of_forall fun a ↦ ?_
     have : Sum.inl a ∈ L.toFinset := by rw [hcells]; simp [coreCells]
     simpa using List.mem_toFinset.mp this
-  have hcol := reverse_prod_mulVec L (Pi.single x 1)
+  have hcol := reverse_prod_mulVec gateOp L (Pi.single x 1)
   rw [← phaseState_empty x 0, foldl_phaseState x L ∅ 0 hL fun _ _ ↦ rfl, hA] at hcol
   have hy := congrFun hcol y
   rw [phaseState_empty, mulVec_single_one, col_apply] at hy
@@ -505,7 +482,7 @@ theorem prod_gateOp_eq_dft {L : List (geometry n).Cell} (hL : IsGateOrder ∅ L)
   ext y x
   rw [← col_apply (((L ++ swapCells n).map gateOp).reverse.prod) x y, ← mulVec_single_one,
     reverse_prod_mulVec, List.foldl_append,
-    ← reverse_prod_mulVec L, foldl_swapCells, mulVec_single_one]
+    ← reverse_prod_mulVec gateOp L, foldl_swapCells, mulVec_single_one]
   change (L.map gateOp).reverse.prod (fun v ↦ y v.rev) x = _
   rw [prod_gateOp_core hL hnd hcells]
   congr 2

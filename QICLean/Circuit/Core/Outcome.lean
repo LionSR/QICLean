@@ -22,12 +22,10 @@ probability of a reported value `ω` is the total probability of the branches re
 
 ## Main results
 
-* `KrausFamily.isTP_measure` — a measurement is trace-preserving.
 * `QuantumCircuit.Circuit.prob_vecMulVec` — on a pure input the probability of a branch is the
   squared norm of the output vector.
-* `QuantumCircuit.Circuit.sum_prob` — for a circuit with trace-preserving local families the
-  probabilities of the branches sum to the trace of the input.
-* `QuantumCircuit.Circuit.sum_outcomeProb` — so do those of the values of a readout.
+* `QuantumCircuit.Circuit.outcomeProb_of_bijective` — for a bijective readout whose values
+  determine the probabilities of the branches, the probability of a value.
 -/
 
 open Matrix ManyBody
@@ -37,11 +35,6 @@ namespace KrausFamily
 /-- The measurement of the basis `α`: the projections `|a⟩⟨a|`, indexed by `a : α`. -/
 def measure (α : Type) [Fintype α] [DecidableEq α] : KrausFamily α α :=
   ⟨α, fun a ↦ Matrix.single a a 1⟩
-
-theorem isTP_measure (α : Type) [Fintype α] [DecidableEq α] : (measure α).IsTP := by
-  change ∑ a, (Matrix.single a a (1 : ℂ) : Matrix α α ℂ)ᴴ * Matrix.single a a (1 : ℂ) = 1
-  ext x y
-  simp [Matrix.single, mul_apply, Matrix.sum_apply, one_apply, ite_and, eq_comm]
 
 end KrausFamily
 
@@ -53,12 +46,16 @@ variable {S : Type} [Fintype S] [DecidableEq S] {Γ : Geometry S}
   {G : Finset S → (S → Type) → (S → Type) → Type 1} [GateFamily G]
   {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Z s)]
 
-/-- The probability `tr(Kₚ ρ Kₚᴴ)` of the branch `p` on the input `ρ`. -/
+/-- The probability `tr(Kₚ ρ Kₚᴴ)` of the branch `p` on the input `ρ`. For a state `ρ` and a
+circuit with trace-preserving gates and onsite families these numbers are probabilities: they are
+nonnegative and sum to `1` over the branches. -/
 noncomputable def prob (ev : Interpretation G) (c : Circuit Γ G X Z)
     (ρ : Matrix (Config X) (Config X) ℂ) (p : c.Index) : ℝ :=
   (c.kraus ev p * ρ * (c.kraus ev p)ᴴ).trace.re
 
-/-- The probability that the readout `r` of the branches takes the value `ω`. -/
+/-- The probability that the readout `r` of the branches takes the value `ω`: the total
+probability `tr(Kₚ ρ Kₚᴴ)` of the branches `p` read as `ω`. For a state `ρ` and a circuit with
+trace-preserving gates and onsite families these are the probabilities of the values. -/
 noncomputable def outcomeProb (ev : Interpretation G) (c : Circuit Γ G X Z) {Ω : Type}
     [DecidableEq Ω] (r : c.Index → Ω) (ρ : Matrix (Config X) (Config X) ℂ) (ω : Ω) : ℝ :=
   ∑ p ∈ Finset.univ.filter (r · = ω), c.prob ev ρ p
@@ -72,22 +69,15 @@ theorem prob_vecMulVec (ev : Interpretation G) (c : Circuit Γ G X Z) (ψ : Conf
   rw [Pi.star_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]
   norm_cast
 
-/-- For a circuit with trace-preserving local families the probabilities of the branches sum to
-the trace of the input. -/
-theorem sum_prob (ev : Interpretation G) (c : Circuit Γ G X Z)
-    (h : c.Forall ev KrausFamily.IsTP) (ρ : Matrix (Config X) (Config X) ℂ) :
-    ∑ p, c.prob ev ρ p = ρ.trace.re := by
-  rw [← c.trace_map ev h ρ, map, KrausFamily.map_apply, trace_sum, Complex.re_sum]
-  rfl
-
-/-- For a circuit with trace-preserving local families the probabilities of the values of a
-readout sum to the trace of the input. -/
-theorem sum_outcomeProb (ev : Interpretation G) (c : Circuit Γ G X Z)
-    (h : c.Forall ev KrausFamily.IsTP) {Ω : Type} [Fintype Ω] [DecidableEq Ω]
-    (r : c.Index → Ω) (ρ : Matrix (Config X) (Config X) ℂ) :
-    ∑ ω, c.outcomeProb ev r ρ ω = ρ.trace.re := by
-  simp only [outcomeProb]
-  rw [← c.sum_prob ev h ρ, Finset.sum_fiberwise]
+/-- For a bijective readout `r` and probabilities of the branches that depend only on the value
+`f (r p)` of the readout, the value `ω` has probability `f ω`. -/
+theorem outcomeProb_of_bijective (ev : Interpretation G) (c : Circuit Γ G X Z) {Ω : Type}
+    [DecidableEq Ω] {r : c.Index → Ω} (hr : Function.Bijective r)
+    {ρ : Matrix (Config X) (Config X) ℂ} {f : Ω → ℝ} (hf : ∀ p, c.prob ev ρ p = f (r p))
+    (ω : Ω) : c.outcomeProb ev r ρ ω = f ω := by
+  obtain ⟨p, rfl⟩ := hr.2 ω
+  rw [outcomeProb, Finset.sum_eq_single p (fun q hq hqp ↦ absurd (hr.1 (Finset.mem_filter.mp hq).2)
+    hqp) (fun hp ↦ absurd (by simp) hp), hf]
 
 end Circuit
 

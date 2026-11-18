@@ -228,6 +228,17 @@ lemma exists_entry_ne_zero_of_ne_zero {m n R : Type*} [Zero R]
   ext i j
   exact h i j
 
+/-- A product of matrices along a list, the first factor on the right, applied to a vector is the
+vector with the matrices applied one by one. -/
+theorem reverse_prod_mulVec {ι n R : Type*} [Fintype n] [DecidableEq n] [CommRing R]
+    (V : ι → Matrix n n R) (l : List ι) (v : n → R) :
+    (l.map V).reverse.prod *ᵥ v = l.foldl (fun w a ↦ V a *ᵥ w) v := by
+  induction l generalizing v with
+  | nil => simp
+  | cons a l ih =>
+    rw [List.map_cons, List.reverse_cons, List.prod_append, List.prod_singleton, ← mulVec_mulVec,
+      ih, List.foldl_cons]
+
 section RankOneQuadratic
 
 variable {ι : Type*} [Fintype ι]

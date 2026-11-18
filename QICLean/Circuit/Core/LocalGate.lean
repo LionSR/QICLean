@@ -30,7 +30,8 @@ constraint.
 ## Main results
 
 * `QuantumCircuit.KrausGate.isUnitary_ofMatrix` — a unitary matrix gives a unitary gate.
-* `QuantumCircuit.place_siteEquiv_mulVec` — a matrix on one site acting on a vector.
+* `QuantumCircuit.place_siteEquiv_mulVec`, `QuantumCircuit.place_pairEquiv_mulVec` — a matrix on
+  one site, or on two, acting on a vector.
 -/
 
 open Matrix ManyBody
@@ -101,6 +102,33 @@ theorem place_siteEquiv_mulVec [Fintype S] {X : S → Type} [∀ s, Fintype (X s
       rfl
     · rw [cutEquiv_symm_apply_not_mem _ _ (by simpa using hv), Function.update_of_ne hv]
       rfl
+  rw [hcut]
+  rfl
+
+/-- A matrix placed on two distinct sites acts on a vector through the bases of the two sites. -/
+theorem place_pairEquiv_mulVec [Fintype S] {X : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] {a b : S} (h : a ≠ b) (M : Matrix (X a × X b) (X a × X b) ℂ)
+    (ψ : Config X → ℂ) (y : Config X) :
+    (place ({a} ∪ {b}) (M.submatrix (pairEquiv X h) (pairEquiv X h)) *ᵥ ψ) y =
+      ∑ q : X a × X b, M (y a, y b) q *
+        ψ (Function.update (Function.update y a q.1) b q.2) := by
+  rw [place_mulVec_apply, ← (pairEquiv X h).symm.sum_comp]
+  refine Finset.sum_congr rfl fun q _ ↦ ?_
+  rw [submatrix_apply, Equiv.apply_symm_apply]
+  have hcut : (cutEquiv X ({a} ∪ {b})).symm ((pairEquiv X h).symm q, (cutEquiv X ({a} ∪ {b}) y).2) =
+      Function.update (Function.update y a q.1) b q.2 := by
+    funext v
+    by_cases hvb : v = b
+    · subst hvb
+      rw [cutEquiv_symm_apply_mem _ _ (by simp), Function.update_self]
+      exact pairEquiv_symm_apply_right X h q
+    · rw [Function.update_of_ne hvb]
+      by_cases hva : v = a
+      · subst hva
+        rw [cutEquiv_symm_apply_mem _ _ (by simp), Function.update_self]
+        exact pairEquiv_symm_apply_left X h q
+      · rw [cutEquiv_symm_apply_not_mem _ _ (by simp [hva, hvb]), Function.update_of_ne hva]
+        rfl
   rw [hcut]
   rfl
 

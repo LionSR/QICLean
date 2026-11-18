@@ -21,6 +21,13 @@ calls and not their cells (`Layer.cellCost`).
 * `QuantumCircuit.Oracle` — calls to an oracle on the basis `β`.
 * `QuantumCircuit.Oracle.ev` — their interpretation by a matrix.
 * `QuantumCircuit.Circuit.queryCount` — the number of calls of a circuit.
+* `QuantumCircuit.Circuit.NoCalls` — no layer of a circuit calls the oracle.
+
+## Main results
+
+* `QuantumCircuit.Circuit.queryCount_eq_zero` — a circuit with no calls in its layers makes none.
+* `QuantumCircuit.Circuit.noCalls_mapGate_inl` — a circuit of plain gates, included into the sum,
+  makes no calls.
 -/
 
 open Matrix ManyBody
@@ -57,5 +64,34 @@ variable [Fintype S] [DecidableEq S] {Γ : Geometry S}
 /-- The number of oracle calls of a circuit, along the branch with most calls. -/
 def Circuit.queryCount {X Z : S → Type} (c : Circuit Γ (GateSum G (Oracle β)) X Z) : ℕ :=
   c.total fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g
+
+namespace Circuit
+
+/-- No layer of the circuit calls the oracle. -/
+def NoCalls : {X Z : S → Type} → Circuit Γ (GateSum G (Oracle β)) X Z → Prop
+  | _, _, done _ => True
+  | _, _, step L next => L.cellCost (fun _ _ _ g ↦ Oracle.callCount g) = 0 ∧ ∀ i, (next i).NoCalls
+
+/-- A circuit with no calls in its layers makes no calls. -/
+theorem queryCount_eq_zero : {X Z : S → Type} → {c : Circuit Γ (GateSum G (Oracle β)) X Z} →
+    c.NoCalls → c.queryCount = 0
+  | _, _, done _, _ => rfl
+  | _, _, step L next, h => by
+    change L.cellCost _ + Finset.univ.sup (fun i ↦ (next i).queryCount) = 0
+    rw [h.1, zero_add]
+    exact Nat.eq_zero_of_le_zero (Finset.sup_le fun i _ ↦ (queryCount_eq_zero (h.2 i)).le)
+
+omit [Fintype S] in
+/-- A circuit of plain gates, moved into the sum with the oracle calls, makes no calls. -/
+theorem noCalls_mapGate_inl {Δ : Geometry S} (h : Γ.Hom Δ (Function.Embedding.refl S)) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      (c : Circuit Γ G X Z) → (c.mapGate h (GateMorphism.inl (G₂ := Oracle β))).NoCalls
+  | _, _, _, _, done _ => by simp only [mapGate, mapLayers, NoCalls]
+  | _, _, _, _, step L next => by
+    change (L.mapGate h _).cellCost _ = 0 ∧ ∀ i, ((next _).mapGate h _).NoCalls
+    exact ⟨(L.cellCost_mapGate h _ _).trans (Finset.sum_eq_zero fun _ _ ↦ rfl),
+      fun _ ↦ noCalls_mapGate_inl h _⟩
+
+end Circuit
 
 end QuantumCircuit

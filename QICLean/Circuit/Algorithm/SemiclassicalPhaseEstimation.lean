@@ -11,7 +11,9 @@ import QICLean.Circuit.Algorithm.PhaseEstimation
 The inverse Fourier transform followed by a measurement can be replaced by measurements of the
 qubits one at a time, each preceded by a phase correction chosen from the earlier outcomes
 (Griffiths–Niu, *Semiclassical Fourier transform for quantum computation*, PRL 76 (1996) 3228;
-Nielsen–Chuang, §5.2). After the preparation, the control qubit `j` carries
+Nielsen–Chuang, §5.2). Griffiths and Niu show this for every input state; here it is proved for
+the input of phase estimation, `|0…0⟩ ⊗ u` with an eigenvector `u`, where the control register
+is a product state after the calls. After the preparation, the control qubit `j` carries
 `(|0⟩ + e^{2πiφ 2^{t-1-j}} |1⟩)/√2`. The qubits are measured in the order `0, 1, …, t - 1`: the
 qubit `j` gets the phase gate `diag(1, e^{-2πiθ})`, with `θ = ∑_{i < j} bᵢ / 2^{j-i+1}` from the
 outcomes `bᵢ` of the qubits measured before it, then the Hadamard gate, and is measured. The
@@ -19,9 +21,9 @@ outcome of the qubit `j` is the bit of the estimate `k` at the site `t - 1 - j`.
 
 This is a circuit with classical feedback: the layer measuring the qubit `j` depends on the
 outcomes of the earlier layers. It is the first circuit here whose continuation `next i` in
-`Circuit.step` depends on the outcome `i`. Its outcomes have the distribution of the coherent
-circuit, so the success probability and the number of calls are those of phase estimation; the
-circuit has no two-qubit gates after the calls.
+`Circuit.step` depends on the outcome `i`. On the eigenvector input its outcomes have the
+distribution of the coherent circuit, so the success probability and the number of calls are
+those of phase estimation; the circuit has no two-qubit gates after the calls.
 
 The proof follows a branch. After the preparation the control register is the product state
 `∏ⱼ 2^{-1/2} (|0⟩ + e^{2πiφ 2^{t-1-j}} |1⟩)`. The corrected measurement of the qubit `j` with
@@ -60,11 +62,14 @@ of the qubits measured before it. -/
 noncomputable def correction (b : Fin t → Fin 2) (j : Fin t) : ℝ :=
   ∑ i ∈ Finset.univ.filter (· < j), ((b i : ℕ) : ℝ) / 2 ^ ((j : ℕ) - i + 1)
 
+/-- The phase gate `diag(1, e^{-2πiθ})` followed by the Hadamard gate. -/
+noncomputable def correctedHadamard (θ : ℝ) : Matrix (Fin 2) (Fin 2) ℂ :=
+  hadamard * diagonal fun x : Fin 2 ↦ exp (-(2 * Real.pi * I * θ * ((x : ℕ) : ℂ)))
+
 /-- The measurement of a qubit after the phase gate `diag(1, e^{-2πiθ})` and the Hadamard gate:
 the outcome `c` has the operator `|c⟩⟨c| H diag(1, e^{-2πiθ})`. -/
 noncomputable def correctedMeasure (θ : ℝ) : KrausFamily (Fin 2) (Fin 2) :=
-  ⟨Fin 2, fun c ↦ Matrix.single c c 1 * hadamard *
-    diagonal fun x : Fin 2 ↦ exp (-(2 * Real.pi * I * θ * ((x : ℕ) : ℂ)))⟩
+  ⟨Fin 2, fun c ↦ Matrix.single c c 1 * correctedHadamard θ⟩
 
 /-- The corrected measurement of the control qubit `j`. -/
 noncomputable def measureQubit (j : Fin t) (θ : ℝ) :
@@ -111,10 +116,6 @@ private def outcomeIndex {j : Fin t} {θ : ℝ} (c : Fin 2) : (measureQubit t m 
     obtain ⟨y, hy⟩ := x
     obtain rfl := Finset.mem_singleton.mp hy
     exact c, fun _ ↦ ())
-
-private theorem qubitOutcome_outcomeIndex {j : Fin t} {θ : ℝ} (c : Fin 2) :
-    qubitOutcome t m (outcomeIndex (t := t) (m := m) (j := j) (θ := θ) c) = c :=
-  rfl
 
 private theorem outcomeIndex_qubitOutcome {j : Fin t} {θ : ℝ} (i : (measureQubit t m j θ).Index) :
     outcomeIndex (qubitOutcome t m i) = i := by
@@ -183,10 +184,6 @@ private theorem prodState_eq (F : Fin t → Fin 2 → ℂ) (j : Fin t) (x : Conf
     prodState F x = F j (x j) * ∏ i ∈ Finset.univ.erase j, F i (x i) :=
   (Finset.mul_prod_erase _ _ (Finset.mem_univ j)).symm
 
-/-- The matrix `H diag(1, e^{-2πiθ})` of the corrected measurement before the projection. -/
-private noncomputable def correctedHadamard (θ : ℝ) : Matrix (Fin 2) (Fin 2) ℂ :=
-  hadamard * diagonal fun x : Fin 2 ↦ exp (-(2 * Real.pi * I * θ * ((x : ℕ) : ℂ)))
-
 /-- The amplitude `∑_y (H D_θ)(c, y) G(y)` of the outcome `c` on a qubit in the state `G`. -/
 private noncomputable def beta (θ : ℝ) (c : Fin 2) (G : Fin 2 → ℂ) : ℂ :=
   ∑ y, correctedHadamard θ c y * G y
@@ -218,12 +215,9 @@ private theorem measureQubit_mulVec {ev : Interpretation (Oracle (Fin 2 × Fin m
       if x j = qubitOutcome t m i then correctedHadamard θ (qubitOutcome t m i) b else 0 := by
     intro b
     change ((Matrix.single (qubitOutcome t m i) (qubitOutcome t m i) (1 : ℂ) :
-      Matrix (Fin 2) (Fin 2) ℂ) * Qubit.hadamard * diagonal fun x : Fin 2 ↦
-        exp (-(2 * Real.pi * I * θ * ((x : ℕ) : ℂ)))) (x j) b = _
-    rw [Matrix.mul_assoc]
+      Matrix (Fin 2) (Fin 2) ℂ) * correctedHadamard θ) (x j) b = _
     split_ifs with h
     · rw [h, Matrix.single_mul_apply_same, one_mul]
-      rfl
     · exact Matrix.single_mul_apply_of_ne _ _ _ _ _ h _
   simp only [hV, prodState_eq _ j, Function.update_self, hrest, ite_mul, zero_mul]
   split_ifs with h
@@ -413,15 +407,7 @@ private theorem prod_beta (φ : ℝ) (B : Fin t → Fin 2) :
     ∏ i, beta (correction t B i) (B i) (preparedFactor φ i) =
       amplitude t φ (encode t fun s ↦ B s.rev) := by
   set z := exp (2 * Real.pi * I * (φ - (encode t fun s ↦ B s.rev : ℕ) / 2 ^ t))
-  have hsum : ∑ j : Fin (2 ^ t), exp (2 * Real.pi * I * j *
-      (φ - (encode t fun s ↦ B s.rev : ℕ) / 2 ^ t)) = ∑ j ∈ Finset.range (2 ^ t), z ^ j := by
-    rw [Fin.sum_univ_eq_sum_range (fun j ↦ exp (2 * Real.pi * I * j *
-      (φ - (encode t fun s ↦ B s.rev : ℕ) / 2 ^ t)))]
-    refine Finset.sum_congr rfl fun j _ ↦ ?_
-    rw [← Complex.exp_nat_mul]
-    congr 1
-    ring
-  rw [amplitude, hsum, geom_sum_two_pow, ← Finset.prod_range_reflect,
+  rw [amplitude_eq_geom_sum, geom_sum_two_pow, ← Finset.prod_range_reflect,
     ← Fin.prod_univ_eq_prod_range (fun s ↦ 1 + z ^ 2 ^ (t - 1 - s)),
     show ((2 : ℂ) ^ t)⁻¹ = ∏ _i : Fin t, (2 : ℂ)⁻¹ by simp, ← Finset.prod_mul_distrib]
   refine Finset.prod_congr rfl fun i _ ↦ ?_
@@ -468,14 +454,9 @@ theorem semiclassical_outcomeProb_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m
     (k : Fin (2 ^ t)) :
     (semiclassical t m).outcomeProb (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
       (semiclassicalReadout t m) (vecMulVec (input t m u) (star (input t m u))) k =
-      ‖amplitude t φ k‖ ^ 2 := by
-  rw [Circuit.outcomeProb, Finset.sum_filter]
-  simp only [prob_semiclassical hu huφ]
-  rw [Fintype.sum_bijective _ semiclassicalReadout_bijective
-    (fun p ↦ if semiclassicalReadout t m p = k then
-      ‖amplitude t φ (semiclassicalReadout t m p)‖ ^ 2 else 0)
-    (fun k' ↦ if k' = k then ‖amplitude t φ k'‖ ^ 2 else 0) fun _ ↦ rfl, Finset.sum_ite_eq']
-  simp
+      ‖amplitude t φ k‖ ^ 2 :=
+  Circuit.outcomeProb_of_bijective _ _ semiclassicalReadout_bijective
+    (f := fun k ↦ ‖amplitude t φ k‖ ^ 2) (prob_semiclassical hu huφ) k
 
 /-- Semiclassical phase estimation with `t = n + ⌈log₂(2 + 1/(2ε))⌉` control qubits returns an
 estimate within `2^{-n}` of `φ` modulo `1` with probability at least `1 - ε`. -/
@@ -493,17 +474,11 @@ theorem semiclassical_accurate_prob_ge (U : Matrix (Fin m) (Fin m) ℂ) (u : Fin
 /-- Semiclassical phase estimation calls the oracle `2^t - 1` times. -/
 theorem queryCount_semiclassical : (semiclassical t m).queryCount = 2 ^ t - 1 := by
   have h : ∀ (l : List (Fin t)) (b : Fin t → Fin 2), (measureFrom t m l b).total
-      (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 := by
-    intro l
-    induction l with
-    | nil => exact fun _ ↦ rfl
-    | cons j l ih =>
-      intro b
-      change (measureQubit t m j (correction t b j)).cellCost _ +
-        Finset.univ.sup (fun i ↦ (measureFrom t m l _).total _) = 0
-      rw [show (measureQubit t m j (correction t b j)).cellCost
-          (fun _ _ _ g ↦ Oracle.callCount g) = 0 from Layer.cellCost_single _ _ _, zero_add]
-      exact Nat.eq_zero_of_le_zero (Finset.sup_le fun _ _ ↦ (ih _).le)
+      (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 := fun l b ↦ by
+    refine Circuit.queryCount_eq_zero ?_
+    induction l generalizing b with
+    | nil => trivial
+    | cons j l ih => exact ⟨Layer.cellCost_single _ _ _, fun _ ↦ ih _⟩
   rw [Circuit.queryCount, Circuit.total_comp_of_isUnbranched _ isUnbranched_prepare
     ⟨nonempty_unique_index_prepare.some.default⟩, h, add_zero, ← Circuit.queryCount,
     queryCount_prepare]

@@ -159,34 +159,39 @@ noncomputable def readout (p : (circuit t m).Index) : Fin (2 ^ t) :=
 def control (σ : Config (system t m)) : Config (Q t) :=
   fun j ↦ σ (.inl j)
 
+variable {t m} in
+/-- The state `f(x) u(a)` of the register, `x` the control register and `a` the target. -/
+def registerState (u : Fin m → ℂ) (f : Config (Q t) → ℂ) : Config (system t m) → ℂ :=
+  fun σ ↦ f (control t m σ) * u (σ (.inr ()))
+
 /-- The input `|0…0⟩ ⊗ |u⟩`. -/
 def input (u : Fin m → ℂ) : Config (system t m) → ℂ :=
-  fun σ ↦ (if control t m σ = 0 then 1 else 0) * u (σ (.inr ()))
+  registerState u (Pi.single 0 1)
 
 /-! ### The branches and the number of calls -/
 
 variable {t m}
 
-/-- The local property of having a unique Kraus index. -/
-private abbrev UniqueIndex {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+/-- The local property of having exactly one Kraus index. -/
+private abbrev IsSingleIndex {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
     (K : KrausFamily α β) : Prop :=
   Nonempty (Unique K.Index)
 
-private theorem uniqueIndex_relabel {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
+private theorem isSingleIndex_relabel {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
     [DecidableEq β] (K : KrausFamily α β) {ι : Type} [Fintype ι] (u : ι ≃ K.Index)
-    (h : UniqueIndex K) : UniqueIndex (⟨ι, fun i ↦ K.op (u i)⟩ : KrausFamily α β) :=
+    (h : IsSingleIndex K) : IsSingleIndex (⟨ι, fun i ↦ K.op (u i)⟩ : KrausFamily α β) :=
   haveI := h.some
   ⟨u.unique⟩
 
-private theorem uniqueIndex_single {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
-    [DecidableEq β] (V : Matrix β α ℂ) : UniqueIndex (KrausFamily.single V) :=
+private theorem isSingleIndex_single {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
+    [DecidableEq β] (V : Matrix β α ℂ) : IsSingleIndex (KrausFamily.single V) :=
   ⟨inferInstanceAs (Unique Unit)⟩
 
-private theorem forall_uniqueIndex_hadamards (ev : Interpretation (Gate t m)) :
-    ∀ L ∈ (List.finRange t).map (hadamardLayer t m), L.Forall ev UniqueIndex := by
+private theorem forall_isSingleIndex_hadamards (ev : Interpretation (Gate t m)) :
+    ∀ L ∈ (List.finRange t).map (hadamardLayer t m), L.Forall ev IsSingleIndex := by
   intro L hL
   obtain ⟨j, -, rfl⟩ := List.mem_map.mp hL
-  exact Layer.forall_single ev (uniqueIndex_single 1) _ _ ⟨inferInstanceAs (Unique Unit)⟩
+  exact Layer.forall_single ev (isSingleIndex_single 1) _ _ ⟨inferInstanceAs (Unique Unit)⟩
 
 private theorem mem_queryLayers {L : Layer (geometry t) (Gate t m) (system t m) (system t m)}
     (hL : L ∈ (List.finRange t).reverse.flatMap fun j : Fin t ↦
@@ -195,82 +200,58 @@ private theorem mem_queryLayers {L : Layer (geometry t) (Gate t m) (system t m) 
   obtain ⟨j, -, hj⟩ := List.mem_flatMap.mp hL
   exact ⟨j, List.eq_of_mem_replicate hj⟩
 
-private theorem forall_uniqueIndex_queries (ev : Interpretation (Gate t m)) :
+private theorem forall_isSingleIndex_queries (ev : Interpretation (Gate t m)) :
     ∀ L ∈ (List.finRange t).reverse.flatMap (fun j : Fin t ↦
-      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)), L.Forall ev UniqueIndex := by
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)), L.Forall ev IsSingleIndex := by
   intro L hL
   obtain ⟨j, rfl⟩ := mem_queryLayers hL
-  exact Layer.forall_single ev (uniqueIndex_single 1) _ _ ⟨inferInstanceAs (Unique Unit)⟩
+  exact Layer.forall_single ev (isSingleIndex_single 1) _ _ ⟨inferInstanceAs (Unique Unit)⟩
 
-private theorem forall_uniqueIndex_adjoint {X Y : Fin t → Type} [∀ s, Fintype (X s)]
+private theorem forall_isSingleIndex_adjoint {X Y : Fin t → Type} [∀ s, Fintype (X s)]
     [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
-    {L : Layer (Qubit.geometry t) KrausGate X Y} (h : L.Forall KrausGate.ev UniqueIndex) :
-    L.adjoint.Forall KrausGate.ev UniqueIndex :=
+    {L : Layer (Qubit.geometry t) KrausGate X Y} (h : L.Forall KrausGate.ev IsSingleIndex) :
+    L.adjoint.Forall KrausGate.ev IsSingleIndex :=
   ⟨fun b ↦ h.1 b, fun s ↦ h.2 s⟩
 
-private theorem forall_uniqueIndex_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ) :
-    (qftInv t m).Forall (Interpretation.sum KrausGate.ev (Oracle.ev V)) UniqueIndex := by
+private theorem forall_isSingleIndex_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ) :
+    (qftInv t m).Forall (Interpretation.sum KrausGate.ev (Oracle.ev V)) IsSingleIndex := by
   refine Circuit.forall_mapGate _ _ (GateMorphism.isCompatible_inl _ _)
-    (fun K _ _ u hK ↦ uniqueIndex_relabel K u hK) ?_
+    (fun K _ _ u hK ↦ isSingleIndex_relabel K u hK) ?_
   refine Circuit.forall_mapSites _ _ _ _ (KrausGate.isCompatible_transport _ _)
-    (fun K u _ _ hK ↦ ⟨@Equiv.unique _ _ hK.some u⟩) (uniqueIndex_single 1) ?_
+    (fun K u _ _ hK ↦ ⟨@Equiv.unique _ _ hK.some u⟩) (isSingleIndex_single 1) ?_
   refine Circuit.forall_seq _ _ fun L hL ↦ ?_
   rw [List.mem_map] at hL
   obtain ⟨L, hL, rfl⟩ := hL
   rw [List.mem_reverse, gateLayers, List.mem_map] at hL
   obtain ⟨b, -, rfl⟩ := hL
-  exact forall_uniqueIndex_adjoint
-    (Layer.forall_single _ (uniqueIndex_single 1) b _ (uniqueIndex_single _))
+  exact forall_isSingleIndex_adjoint
+    (Layer.forall_single _ (isSingleIndex_single 1) b _ (isSingleIndex_single _))
 
-private theorem forall_uniqueIndex_unitary (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ) :
-    (unitary t m).Forall (Interpretation.sum KrausGate.ev (Oracle.ev V)) UniqueIndex :=
-  ((Circuit.forall_seq _ _ (forall_uniqueIndex_hadamards _)).comp _
-    (Circuit.forall_seq _ _ (forall_uniqueIndex_queries _))).comp _
-    (forall_uniqueIndex_qftInv V)
+private theorem forall_isSingleIndex_unitary (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ) :
+    (unitary t m).Forall (Interpretation.sum KrausGate.ev (Oracle.ev V)) IsSingleIndex :=
+  ((Circuit.forall_seq _ _ (forall_isSingleIndex_hadamards _)).comp _
+    (Circuit.forall_seq _ _ (forall_isSingleIndex_queries _))).comp _
+    (forall_isSingleIndex_qftInv V)
 
 /-- The unitary part has one branch. -/
 private theorem unique_index_unitary : Nonempty (Unique (unitary t m).Index) :=
-  Circuit.nonempty_unique_index _ (forall_uniqueIndex_unitary 0)
+  Circuit.nonempty_unique_index _ (forall_isSingleIndex_unitary 0)
 
 private theorem isUnbranched_unitary : (unitary t m).IsUnbranched :=
   ((Circuit.isUnbranched_seq _).comp (Circuit.isUnbranched_seq _)).comp
-    (Circuit.isUnbranched_mapGate _ _
-      (Circuit.isUnbranched_mapSites _ _ _ _ (Circuit.isUnbranched_seq _)))
-
-/-- A cost vanishing on every layer vanishes on every circuit. -/
-private theorem total_eq_zero {S : Type} [Fintype S] [DecidableEq S] {Γ : Geometry S}
-    {G : Finset S → (S → Type) → (S → Type) → Type 1} [GateFamily G]
-    {f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ} (hf : ∀ ⦃X Y : S → Type⦄ (L : Layer Γ G X Y),
-      f L = 0) : {X Z : S → Type} → (c : Circuit Γ G X Z) → c.total f = 0
-  | _, _, Circuit.done _ => rfl
-  | _, _, Circuit.step L next => by
-    change f L + Finset.univ.sup (fun i ↦ (next i).total f) = 0
-    simp only [hf L, total_eq_zero hf, zero_add]
-    exact Nat.eq_zero_of_le_zero (Finset.sup_le fun _ _ ↦ le_rfl)
-
-private theorem forall_uniqueIndex_seqHadamards (ev : Interpretation (Gate t m)) :
-    (Circuit.seq ((List.finRange t).map (hadamardLayer t m))).Forall ev UniqueIndex :=
-  Circuit.forall_seq _ _ (forall_uniqueIndex_hadamards ev)
-
-private theorem forall_uniqueIndex_seqQueries (ev : Interpretation (Gate t m)) :
-    (Circuit.seq ((List.finRange t).reverse.flatMap fun j : Fin t ↦
-      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j))).Forall ev UniqueIndex :=
-  Circuit.forall_seq _ _ (forall_uniqueIndex_queries ev)
+    (Circuit.isUnbranched_mapLayers _
+      (Circuit.isUnbranched_mapLayers _ (Circuit.isUnbranched_seq _)))
 
 private theorem sum_two_pow_sub (t : ℕ) : ∑ j : Fin t, 2 ^ (t - 1 - (j : ℕ)) = 2 ^ t - 1 := by
   rw [Fin.sum_univ_eq_sum_range (fun j ↦ 2 ^ (t - 1 - j)), Finset.sum_range_reflect
     (fun j ↦ 2 ^ j) t, Nat.geomSum_eq le_rfl, Nat.div_one]
 
-private theorem callCount_ndrec_inl {X Y : Fin t ⊕ Unit → Type} {D D' : Finset (Fin t ⊕ Unit)}
-    (hD : D = D') (g : KrausGate D X Y) :
-    Oracle.callCount (Eq.ndrec (motive := fun D ↦ Gate t m D X Y) (Sum.inl g) hD) = 0 := by
-  subst hD; rfl
-
 /-- The preparation has one branch. -/
 theorem nonempty_unique_index_prepare : Nonempty (Unique (prepare t m).Index) :=
   Circuit.nonempty_unique_index _
-    ((forall_uniqueIndex_seqHadamards (Interpretation.sum KrausGate.ev (Oracle.ev 0))).comp _
-      (forall_uniqueIndex_seqQueries _))
+    ((Circuit.forall_seq _ _
+      (forall_isSingleIndex_hadamards (Interpretation.sum KrausGate.ev (Oracle.ev 0)))).comp _
+      (Circuit.forall_seq _ _ (forall_isSingleIndex_queries _)))
 
 theorem isUnbranched_prepare : (prepare t m).IsUnbranched :=
   (Circuit.isUnbranched_seq _).comp (Circuit.isUnbranched_seq _)
@@ -278,15 +259,15 @@ theorem isUnbranched_prepare : (prepare t m).IsUnbranched :=
 /-- The preparation calls the oracle `∑_{j < t} 2^{t-1-j} = 2^t - 1` times. -/
 theorem queryCount_prepare : (prepare t m).queryCount = 2 ^ t - 1 := by
   have hseq : ∀ {Ls : List (Layer (geometry t) (Gate t m) (system t m) (system t m))},
-      (∀ L ∈ Ls, L.Forall (Interpretation.sum KrausGate.ev (Oracle.ev 0)) UniqueIndex) →
+      (∀ L ∈ Ls, L.Forall (Interpretation.sum KrausGate.ev (Oracle.ev 0)) IsSingleIndex) →
       ∀ L ∈ Ls, Nonempty L.Index := fun h L hL ↦
     ⟨(Circuit.nonempty_unique_index (c := .step L fun _ ↦ .done _) _
       ⟨h L hL, fun _ ↦ trivial⟩).some.default.1⟩
   rw [Circuit.queryCount, Circuit.total_comp_of_isUnbranched _ (Circuit.isUnbranched_seq _)
-      ⟨(Circuit.nonempty_unique_index _ (forall_uniqueIndex_seqHadamards
-        (Interpretation.sum KrausGate.ev (Oracle.ev 0)))).some.default⟩,
-    Circuit.total_seq _ _ (hseq (forall_uniqueIndex_hadamards _)),
-    Circuit.total_seq _ _ (hseq (forall_uniqueIndex_queries _))]
+      ⟨(Circuit.nonempty_unique_index _ (Circuit.forall_seq _ _ (forall_isSingleIndex_hadamards
+        (Interpretation.sum KrausGate.ev (Oracle.ev 0))))).some.default⟩,
+    Circuit.total_seq _ _ (hseq (forall_isSingleIndex_hadamards _)),
+    Circuit.total_seq _ _ (hseq (forall_isSingleIndex_queries _))]
   have hH : (((List.finRange t).map (hadamardLayer t m)).map fun L ↦
       L.cellCost fun _ _ _ g ↦ Oracle.callCount g).sum = 0 := by
     refine List.sum_eq_zero fun x hx ↦ ?_
@@ -308,62 +289,36 @@ theorem queryCount_prepare : (prepare t m).queryCount = 2 ^ t - 1 := by
 theorem queryCount_circuit : (circuit t m).queryCount = 2 ^ t - 1 := by
   have hne : ∀ {X Z : Fin t ⊕ Unit → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
       {c : Circuit (geometry t) (Gate t m) X Z},
-      c.Forall (Interpretation.sum KrausGate.ev (Oracle.ev 0)) UniqueIndex → Nonempty c.Index :=
+      c.Forall (Interpretation.sum KrausGate.ev (Oracle.ev 0)) IsSingleIndex → Nonempty c.Index :=
     fun h ↦ ⟨(Circuit.nonempty_unique_index _ h).some.default⟩
   rw [Circuit.queryCount, circuit,
-    Circuit.total_comp_of_isUnbranched _ isUnbranched_unitary (hne (forall_uniqueIndex_unitary 0)),
+    Circuit.total_comp_of_isUnbranched _ isUnbranched_unitary
+      (hne (forall_isSingleIndex_unitary 0)),
     unitary, Circuit.total_comp_of_isUnbranched _ isUnbranched_prepare
       ⟨nonempty_unique_index_prepare.some.default⟩]
   have hq : (qftInv t m).total (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 :=
-    Nat.eq_zero_of_le_zero ((Circuit.total_mapLayers_le _ (fun _ _ _ ↦ 0) _
-      (fun _ _ _ _ _ _ L ↦ by
-        unfold Layer.cellCost
-        exact Nat.le_zero.mpr (Finset.sum_eq_zero fun _ _ ↦ callCount_ndrec_inl _ _)) _).trans
-        (total_eq_zero (fun _ _ _ ↦ rfl) _).le)
+    Circuit.queryCount_eq_zero (Circuit.noCalls_mapGate_inl _ _)
   have hm : (Circuit.step (measureLayer t m) fun _ ↦ Circuit.done (system t m)).total
       (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 := by
-    change (measureLayer t m).cellCost _ + Finset.univ.sup (fun _ ↦ 0) = 0
+    refine Circuit.queryCount_eq_zero ⟨?_, fun _ ↦ trivial⟩
     simp [Layer.cellCost, measureLayer]
   rw [hq, hm, ← Circuit.queryCount, queryCount_prepare, add_zero, add_zero]
 
 /-! ### The state along the circuit -/
 
-/-- Products of matrices along a list, the first on the right, applied to a vector. -/
-private theorem reverse_prod_mulVec {ι n : Type} [Fintype n] [DecidableEq n] (V : ι → Matrix n n ℂ)
-    (l : List ι) (v : n → ℂ) : (l.map V).reverse.prod *ᵥ v = l.foldl (fun w a ↦ V a *ᵥ w) v := by
-  induction l generalizing v with
-  | nil => simp
-  | cons a l ih =>
-    rw [List.map_cons, List.reverse_cons, List.prod_append, List.prod_singleton, ← mulVec_mulVec,
-      ih, List.foldl_cons]
+private theorem control_update_inl (σ : Config (system t m)) (j : Fin t) (b : Fin 2) :
+    control t m (Function.update σ (.inl j) b) = Function.update (control t m σ) j b := by
+  funext i
+  by_cases hij : i = j
+  · subst hij
+    exact (Function.update_self (Sum.inl i) b σ).trans
+      (Function.update_self i b (control t m σ)).symm
+  · exact (Function.update_of_ne (fun h ↦ hij (Sum.inl_injective h)) b σ).trans
+      (Function.update_of_ne hij b (control t m σ)).symm
 
-/-- The state `f(x) u(a)` of the register, `x` the control register and `a` the target. -/
-def registerState (u : Fin m → ℂ) (f : Config (Q t) → ℂ) : Config (system t m) → ℂ :=
-  fun σ ↦ f (control t m σ) * u (σ (.inr ()))
-
-/-- The configuration with the control register `x` and the target `a`. -/
-private def glue (x : Config (Q t)) (a : Fin m) : Config (system t m)
-  | .inl i => x i
-  | .inr () => a
-
-private theorem input_eq (u : Fin m → ℂ) :
-    input t m u = registerState u fun x ↦ if x = 0 then 1 else 0 :=
-  rfl
-
-/-- The configuration glued from `a` on a region and `σ` elsewhere, read on the register. -/
-private theorem cut_eq_glue {D : Finset (Fin t ⊕ Unit)} (σ : Config (system t m))
-    (a : RegionConfig (system t m) D) (x : Config (Q t)) (b : Fin m)
-    (hx : ∀ i, (cutEquiv (system t m) D).symm (a, (cutEquiv (system t m) D σ).2) (.inl i) = x i)
-    (hb : (cutEquiv (system t m) D).symm (a, (cutEquiv (system t m) D σ).2) (.inr ()) = b) :
-    (cutEquiv (system t m) D).symm (a, (cutEquiv (system t m) D σ).2) = glue x b := by
-  funext s
-  rcases s with i | ⟨⟩
-  · exact hx i
-  · exact hb
-
-/-- The control register after the Hadamard gates on the qubits of `A`. -/
-private noncomputable def hadamardState (A : Finset (Fin t)) (x : Config (Q t)) : ℂ :=
-  invSqrtTwo ^ A.card * if ∀ j ∉ A, x j = 0 then 1 else 0
+private theorem control_update_inr (σ : Config (system t m)) (a : Fin m) :
+    control t m (Function.update σ (.inr ()) a) = control t m σ :=
+  funext fun _ ↦ Function.update_of_ne Sum.inl_ne_inr _ _
 
 /-- A matrix `V` on the control qubit `j` acts on the control register of `f(x) u(a)`. -/
 theorem qubitGate_mulVec (u : Fin m → ℂ) (V : Matrix (Fin 2) (Fin 2) ℂ) (j : Fin t)
@@ -372,28 +327,16 @@ theorem qubitGate_mulVec (u : Fin m → ℂ) (V : Matrix (Fin 2) (Fin 2) ℂ) (j
       (siteEquiv (system t m) (.inl j))) *ᵥ registerState u f =
       registerState u fun x ↦ ∑ b, V (x j) b * f (Function.update x j b) := by
   funext σ
-  rw [place_mulVec_apply, ← (siteEquiv (system t m) (.inl j)).symm.sum_comp]
-  have hcut : ∀ b : Fin 2, (cutEquiv (system t m) {Sum.inl j}).symm
-      ((siteEquiv (system t m) (.inl j)).symm b, (cutEquiv (system t m) {Sum.inl j} σ).2) =
-      glue (Function.update (control t m σ) j b) (σ (.inr ())) := fun b ↦ by
-    refine cut_eq_glue _ _ _ _ (fun i ↦ ?_) ?_
-    · by_cases hij : i = j
-      · subst hij
-        rw [cutEquiv_symm_apply_mem _ _ (Finset.mem_singleton_self _)]
-        exact (Function.update_self i b (control t m σ)).symm
-      · rw [cutEquiv_symm_apply_not_mem _ _ (by simpa using hij)]
-        exact (Function.update_of_ne hij b (control t m σ)).symm
-    · rw [cutEquiv_symm_apply_not_mem _ _ (by simp)]
-      rfl
-  change ∑ b : Fin 2, V (σ (.inl j)) b * registerState u f
-    ((cutEquiv (system t m) {Sum.inl j}).symm
-      ((siteEquiv (system t m) (.inl j)).symm b, (cutEquiv (system t m) {Sum.inl j} σ).2)) = _
-  simp only [hcut, registerState]
-  change ∑ b : Fin 2, V (control t m σ j) b * (f (Function.update (control t m σ) j b) *
-      u (σ (.inr ()))) = (∑ b, V (control t m σ j) b * f (Function.update (control t m σ) j b)) *
-        u (σ (.inr ()))
-  rw [Finset.sum_mul]
+  refine (place_siteEquiv_mulVec (X := system t m) (.inl j) V _ σ).trans ?_
+  change ∑ b : Fin 2, V (σ (.inl j)) b * (f (control t m (Function.update σ (.inl j) b)) *
+      u (Function.update σ (.inl j) b (.inr ()))) =
+    (∑ b, V (control t m σ j) b * f (Function.update (control t m σ) j b)) * u (σ (.inr ()))
+  simp only [control_update_inl, Finset.sum_mul]
   exact Finset.sum_congr rfl fun b _ ↦ (mul_assoc _ _ _).symm
+
+/-- The control register after the Hadamard gates on the qubits of `A`. -/
+private noncomputable def hadamardState (A : Finset (Fin t)) (x : Config (Q t)) : ℂ :=
+  invSqrtTwo ^ A.card * if ∀ j ∉ A, x j = 0 then 1 else 0
 
 private theorem hadamard_mulVec (u : Fin m → ℂ) {A : Finset (Fin t)} {j : Fin t} (hj : j ∉ A) :
     place {Sum.inl j} (hadamard.submatrix (siteEquiv (system t m) (.inl j))
@@ -436,41 +379,19 @@ private theorem foldl_hadamard (u : Fin m → ℂ) :
     ext i
     simp
 
-/-- The control qubit `j` and the target are distinct sites. -/
-private theorem inlNeInr (j : Fin t) : (Sum.inl j : Fin t ⊕ Unit) ≠ .inr () :=
-  Sum.inl_ne_inr
-
 /-- A call controlled by the qubit `j` multiplies by the eigenvalue when the qubit is `1`. -/
 private theorem query_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {c : ℂ}
     (hu : U *ᵥ u = c • u) (j : Fin t) (f : Config (Q t) → ℂ) :
     place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
-      (pairEquiv (system t m) (inlNeInr j)) (pairEquiv (system t m) (inlNeInr j))) *ᵥ
+      (pairEquiv (system t m) Sum.inl_ne_inr) (pairEquiv (system t m) Sum.inl_ne_inr)) *ᵥ
       registerState u f = registerState u fun x ↦ c ^ (x j : ℕ) * f x := by
   funext σ
-  rw [place_mulVec_apply, ← (pairEquiv (system t m) (inlNeInr j)).symm.sum_comp]
-  have hcut : ∀ q : system t m (.inl j) × system t m (.inr ()),
-      (cutEquiv (system t m) ({Sum.inl j} ∪ {Sum.inr ()})).symm
-      ((pairEquiv (system t m) (inlNeInr j)).symm q,
-        (cutEquiv (system t m) ({Sum.inl j} ∪ {Sum.inr ()}) σ).2) =
-      glue (Function.update (control t m σ) j q.1) q.2 := fun q ↦ by
-    refine cut_eq_glue _ _ _ _ (fun i ↦ ?_) ?_
-    · by_cases hij : i = j
-      · subst hij
-        rw [cutEquiv_symm_apply_mem _ _ (by simp)]
-        exact (pairEquiv_symm_apply_left (system t m) Sum.inl_ne_inr q).trans
-          (Function.update_self i q.1 (control t m σ)).symm
-      · rw [cutEquiv_symm_apply_not_mem _ _ (by simp [hij])]
-        exact (Function.update_of_ne hij q.1 (control t m σ)).symm
-    · rw [cutEquiv_symm_apply_mem _ _ (by simp)]
-      exact pairEquiv_symm_apply_right (system t m) Sum.inl_ne_inr q
-  have hq : ∀ q : system t m (.inl j) × system t m (.inr ()),
-      (controlled U).submatrix (pairEquiv (system t m) (inlNeInr j))
-      (pairEquiv (system t m) (inlNeInr j)) (fun v ↦ σ v)
-        ((pairEquiv (system t m) (inlNeInr j)).symm q) =
-      controlled U (control t m σ j, σ (.inr ())) q := fun q ↦
-    congrArg (controlled U (control t m σ j, σ (.inr ())))
-      (Equiv.apply_symm_apply (pairEquiv (system t m) (inlNeInr j)) q)
-  simp only [hq, hcut, registerState]
+  refine (place_pairEquiv_mulVec (X := system t m) Sum.inl_ne_inr (controlled U) _ σ).trans ?_
+  change ∑ q : Fin 2 × Fin m, controlled U (σ (.inl j), σ (.inr ())) q *
+    (f (control t m (Function.update (Function.update σ (.inl j) q.1) (.inr ()) q.2)) *
+      u (Function.update (Function.update σ (.inl j) q.1) (.inr ()) q.2 (.inr ()))) =
+      c ^ (control t m σ j : ℕ) * f (control t m σ) * u (σ (.inr ()))
+  simp only [control_update_inr, control_update_inl]
   change ∑ q : Fin 2 × Fin m, controlled U (control t m σ j, σ (.inr ())) q *
     (f (Function.update (control t m σ) j q.1) * u q.2) =
       c ^ (control t m σ j : ℕ) * f (control t m σ) * u (σ (.inr ()))
@@ -574,7 +495,7 @@ private theorem kron_one_mulVec (A : Matrix (Config (Q t)) (Config (Q t)) ℂ) (
 private theorem foldl_query {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {c : ℂ}
     (hu : U *ᵥ u = c • u) : ∀ (l : List (Fin t)) (g : Config (Q t) → ℂ),
       l.foldl (fun w j ↦ place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
-        (pairEquiv (system t m) (inlNeInr j)) (pairEquiv (system t m) (inlNeInr j))) *ᵥ w)
+        (pairEquiv (system t m) Sum.inl_ne_inr) (pairEquiv (system t m) Sum.inl_ne_inr)) *ᵥ w)
         (registerState u g) =
         registerState u fun x ↦ c ^ (l.map fun j ↦ (x j : ℕ)).sum * g x
   | [], g => by simp
@@ -635,13 +556,13 @@ theorem kraus_prepare_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ
     Circuit.kraus_seq_map _ (hadamardLayer t m)
       (fun j ↦ place {Sum.inl j} (hadamard.submatrix (siteEquiv (system t m) (.inl j))
         (siteEquiv (system t m) (.inl j)))) _ (fun j _ i ↦ Layer.kraus_single _ _ _ i),
-    reverse_prod_mulVec, input_eq]
-  rw [show (registerState u fun x ↦ if x = 0 then 1 else 0) = registerState u (hadamardState ∅) by
-    congr 1; funext x; simp [hadamardState, funext_iff], foldl_hadamard u _ ∅
+    reverse_prod_mulVec, input]
+  rw [show (registerState u (Pi.single 0 1)) = registerState u (hadamardState ∅) by
+    congr 1; funext x; simp [hadamardState, Pi.single_apply, funext_iff], foldl_hadamard u _ ∅
       (List.nodup_finRange t) fun _ _ ↦ Finset.notMem_empty _]
   have hq := Circuit.kraus_seq_map (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
     (queryLayer t m) (fun j ↦ place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
-      (pairEquiv (system t m) (inlNeInr j)) (pairEquiv (system t m) (inlNeInr j))))
+      (pairEquiv (system t m) Sum.inl_ne_inr) (pairEquiv (system t m) Sum.inl_ne_inr)))
     ((List.finRange t).reverse.flatMap fun j : Fin t ↦ List.replicate (2 ^ (t - 1 - (j : ℕ))) j)
     (fun j _ i ↦ Layer.kraus_single _ _ _ i)
   rw [← queries_eq] at hq
@@ -669,8 +590,10 @@ theorem sum_norm_sq_registerState {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
   set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
   have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
   have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
-  have hu' : ∑ b, ‖u b‖ ^ 2 = 1 := Complex.ofReal_injective (by
-    rw [ofReal_sum_norm_sq, hu, Complex.ofReal_one])
+  have hu' : ∑ b, ‖u b‖ ^ 2 = 1 := by
+    have h := re_star_dotProduct_self_eq_norm_sq u
+    rw [hu, EuclideanSpace.norm_sq_eq] at h
+    simpa using h.symm
   simp only [registerState, h1, h2]
   rw [← E.symm.sum_comp, Fintype.sum_prod_type]
   simp only [Equiv.apply_symm_apply, norm_mul, mul_pow]
@@ -715,16 +638,12 @@ theorem outcomeProb_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu 
     {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (k : Fin (2 ^ t)) :
     (circuit t m).outcomeProb (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
       (readout t m) (vecMulVec (input t m u) (star (input t m u))) k =
-      ‖amplitude t φ k‖ ^ 2 := by
-  rw [Circuit.outcomeProb, Finset.sum_filter]
-  simp only [prob_eq hu huφ]
-  rw [Fintype.sum_bijective _ readout_bijective
-    (fun p ↦ if readout t m p = k then ‖amplitude t φ (readout t m p)‖ ^ 2 else 0)
-    (fun k' ↦ if k' = k then ‖amplitude t φ k'‖ ^ 2 else 0) fun _ ↦ rfl, Finset.sum_ite_eq']
-  simp
+      ‖amplitude t φ k‖ ^ 2 :=
+  Circuit.outcomeProb_of_bijective _ _ readout_bijective (f := fun k ↦ ‖amplitude t φ k‖ ^ 2)
+    (prob_eq hu huφ) k
 
 /-- If `2^t φ` is an integer congruent to `k` modulo `2^t`, the outcome `k` has probability `1`
-(Nielsen–Chuang, §5.2.1). -/
+(Nielsen–Chuang, §5.2). -/
 theorem outcomeProb_eq_one_of_exact {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ}
     (hu : star u ⬝ᵥ u = 1) {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u)
     {k : Fin (2 ^ t)} (hk : ∃ q : ℤ, (2 : ℝ) ^ t * φ = k + 2 ^ t * q) :
