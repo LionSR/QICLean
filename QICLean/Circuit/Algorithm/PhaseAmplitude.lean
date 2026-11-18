@@ -83,7 +83,8 @@ theorem dft_conjTranspose_mulVec (φ : ℝ) (y : Config (Qudits (Fin t) 2)) :
 
 /-- The probabilities of the outcomes sum to `1`. -/
 theorem sum_norm_sq_amplitude (φ : ℝ) : ∑ k, ‖amplitude t φ k‖ ^ 2 = 1 := by
-  set v : Config (Qudits (Fin t) 2) → ℂ := fun x ↦ invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ)
+  set v : Config (Qudits (Fin t) 2) → ℂ :=
+    fun x ↦ invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ)
   have hv := congrArg (· ^ 2)
     (norm_toLp_mulVec_of_unitary (Unitary.star_mem (Qubit.dft_mem_unitaryGroup t)) v)
   simp only [EuclideanSpace.norm_sq_eq, star_eq_conjTranspose] at hv

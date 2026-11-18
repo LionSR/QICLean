@@ -475,7 +475,8 @@ private theorem measure_mulVec (ev : Interpretation (Gate t m)) (i : (measureLay
   · simp [h]
 
 /-- A matrix on the control register, tensored with the identity on the target. -/
-private theorem kron_one_mulVec (A : Matrix (Config (Qudits (Fin t) 2)) (Config (Qudits (Fin t) 2)) ℂ) (u : Fin m → ℂ)
+private theorem kron_one_mulVec
+    (A : Matrix (Config (Qudits (Fin t) 2)) (Config (Qudits (Fin t) 2)) ℂ) (u : Fin m → ℂ)
     (f : Config (Qudits (Fin t) 2) → ℂ) :
     (A ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
       (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2))
@@ -536,7 +537,8 @@ private theorem kraus_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ)
     (qftInv t m).kraus (Interpretation.sum KrausGate.ev (Oracle.ev V)) p =
       ((dft t)ᴴ ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
         (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2))
-        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2)) := by
+        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m)
+          (Qudits (Fin t) 2)) := by
   rw [Circuit.kraus_mapGate _ _ (GateMorphism.isCompatible_inl _ _),
     Circuit.kraus_mapSites _ _ _ _ (KrausGate.isCompatible_transport _ _)]
   congr 2
