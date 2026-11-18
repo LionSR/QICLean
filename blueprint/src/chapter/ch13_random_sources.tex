@@ -331,6 +331,28 @@ Hilbert--Schmidt square.
     separate multiplication and partial-trace bounds.
 \end{proof}
 
+\begin{lemma}[Trace-norm contraction under completely positive maps]
+    \label{lem:random_kraus_trace_norm_contraction}
+    \lean{KrausFamily.IsTP.rectangularTraceNorm_map_le}
+    \leanok
+    \uses{def:kraus_family, thm:random_exterior_contraction}
+    Let $(K_\omega)_\omega$ be a finite Kraus family with
+    $\sum_\omega K_\omega^\dagger K_\omega=1$. Then for every matrix $X$, not necessarily
+    Hermitian,
+    \begin{align}
+        \Bigl\lVert\sum_\omega K_\omega XK_\omega^\dagger\Bigr\rVert_1 & \leq\lVert X\rVert_1.
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    The matrix $B$ with rows indexed by pairs $(b,\omega)$ and entries
+    $B_{(b,\omega),a}=(K_\omega)_{ba}$ satisfies
+    $B^\dagger B=\sum_\omega K_\omega^\dagger K_\omega=1$, so it is a contraction, and
+    $\sum_\omega K_\omega XK_\omega^\dagger$ is the partial trace over $\omega$ of $BXB^\dagger$.
+    Theorem~\ref{thm:random_exterior_contraction} applies with $K=\widetilde K=B$.
+\end{proof}
+
 \subsection{Rectangular matrix second moments}
 
 \begin{theorem}[Second moments from diagonal coefficient moments]

@@ -8,6 +8,8 @@ later layers by the outcomes of earlier ones, a protocol is unbranched, and a bo
 in addition has every basis along it of bounded size. On a geometry whose cells have positive
 cost the Heisenberg picture of a protocol of depth $T$ has light cones of radius $T$, and
 expectations after the conversion of a product input factorize at distance greater than $2T$.
+Approximate conversions compose with additive depths and errors, and mutual asymptotic
+conversion at polylogarithmic depth is an equivalence relation.
 
 \section{Protocols and conversions}
 \label{sec:protocols_classes}
@@ -67,6 +69,86 @@ expectations after the conversion of a product input factorize at distance great
     nonempty input bases the circuit has a branch, and along it the output bases are bounded. A
     bound by $B$ on every basis is a bound by every $C\ge B$. The last statement is
     Lemma~\ref{lem:circuits_dim_bounded}.
+\end{proof}
+
+\section{Approximate and asymptotic conversion}
+\label{sec:protocols_approximate}
+
+The protocols of this chapter are unbranched and their onsite families may enlarge the local
+bases, while every layer using a cell of positive cost is counted once whatever the sizes of
+the bases. This differs from the protocols assisted by measurements and classical
+communication of~\cite{Piroli2021LOCC}, whose intersite gates act on physical qudits of fixed
+dimension; no simulation or inclusion between the two relations is proved, and the
+definitions below are those of the present model.
+% Scope restriction: docs/paper-gaps/psc21_local_channel_phase_scope.tex.
+
+\begin{definition}[Approximate conversion]
+    \label{def:protocols_approx_conversion}
+    \lean{QuantumCircuit.IsApproxConversion}
+    \leanok
+    \uses{def:protocols_protocol}
+    A matrix $\rho$ on $\mathcal H_X$ is converted into a matrix $\sigma$ on $\mathcal H_Z$ in
+    depth $T$ with error $\varepsilon$ if some $\Phi$ realised by a protocol of depth at most
+    $T$ has $\lVert\Phi(\rho)-\sigma\rVert_1\le\varepsilon$.
+\end{definition}
+
+\begin{theorem}[Composition of approximate conversions]
+    \label{thm:protocols_approx_comp}
+    \lean{QuantumCircuit.IsProtocol.rectangularTraceNorm_map_le,
+        QuantumCircuit.IsConversion.isApproxConversion, QuantumCircuit.IsApproxConversion.refl,
+        QuantumCircuit.IsApproxConversion.mono, QuantumCircuit.IsApproxConversion.trans,
+        QuantumCircuit.isApproxConversion_zero_iff}
+    \leanok
+    \uses{def:protocols_approx_conversion, thm:protocols_comp,
+        lem:random_kraus_trace_norm_contraction}
+    The map of a protocol contracts the trace norm of every matrix. Every matrix is converted
+    into itself in depth $0$ with error $0$, larger bounds keep a conversion, and a
+    conversion with error $0$ is an exact conversion. If $\rho$ is converted into $\sigma$ in
+    depth $T_1$ with error $\varepsilon_1$ and $\sigma$ into $\tau$ in depth $T_2$ with error
+    $\varepsilon_2$, then $\rho$ is converted into $\tau$ in depth $T_1+T_2$ with error
+    $\varepsilon_1+\varepsilon_2$.
+\end{theorem}
+\begin{proof}\leanok
+    The map of a protocol is that of a trace-preserving Kraus family, so
+    Lemma~\ref{lem:random_kraus_trace_norm_contraction} gives the contraction. For the
+    composite $\Psi\circ\Phi$ of Theorem~\ref{thm:protocols_comp},
+    \begin{align}
+        \lVert\Psi(\Phi(\rho))-\tau\rVert_1
+        &\le\lVert\Psi(\Phi(\rho)-\sigma)\rVert_1+\lVert\Psi(\sigma)-\tau\rVert_1
+        \le\varepsilon_1+\varepsilon_2.
+        \notag
+    \end{align}
+    The trace norm vanishes only at $0$, which gives the case of error $0$.
+\end{proof}
+
+\begin{definition}[Asymptotic conversion and phase equivalence]
+    \label{def:protocols_asymptotic}
+    \lean{QuantumCircuit.IsAsymptoticConversion, QuantumCircuit.IsPhaseEquivalent}
+    \leanok
+    \uses{def:protocols_approx_conversion}
+    Let $\Gamma_N$ be geometries indexed by $N\in\N$, and $\rho_N$ and $\sigma_N$ matrices on
+    systems over them. The family $(\rho_N)$ is asymptotically converted into $(\sigma_N)$ if
+    there are $k\in\N$, $C\ge0$ and errors $\varepsilon_N\to0$ such that, for all large $N$,
+    $\rho_N$ is converted into $\sigma_N$ on $\Gamma_N$ with error $\varepsilon_N$ in a depth
+    at most $C(1+\log(N+1))^k$. Two families are phase equivalent if each is asymptotically
+    converted into the other.
+\end{definition}
+
+\begin{theorem}[Phase equivalence is an equivalence relation]
+    \label{thm:protocols_phase_equivalence}
+    \lean{QuantumCircuit.IsAsymptoticConversion.refl, QuantumCircuit.IsAsymptoticConversion.trans,
+        QuantumCircuit.IsPhaseEquivalent.refl, QuantumCircuit.IsPhaseEquivalent.symm,
+        QuantumCircuit.IsPhaseEquivalent.trans, QuantumCircuit.isPhaseEquivalent_equivalence}
+    \leanok
+    \uses{def:protocols_asymptotic, thm:protocols_approx_comp}
+    Asymptotic conversion is reflexive and transitive, and phase equivalence is an
+    equivalence relation on families of matrices on a family of systems.
+\end{theorem}
+\begin{proof}\leanok
+    Reflexivity uses the empty protocols. For transitivity the errors add and tend to $0$ by
+    Theorem~\ref{thm:protocols_approx_comp}, and
+    $C_1(1+\log(N+1))^{k_1}+C_2(1+\log(N+1))^{k_2}\le(C_1+C_2)(1+\log(N+1))^{\max(k_1,k_2)}$
+    because $1+\log(N+1)\ge1$.
 \end{proof}
 
 \section{Light cones of protocols}

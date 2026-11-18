@@ -123,12 +123,13 @@ These are the source calculations in
     \lean{Matrix.rectangularTraceNorm_sum_smul_le}
     \lean{Matrix.rectangularTraceNorm_conjTranspose_le}
     \lean{Matrix.rectangularTraceNorm_conjTranspose}
+    \lean{Matrix.rectangularTraceNorm_eq_zero_iff}
     \leanok
     For arbitrary rectangular complex matrices of a fixed size, the
     trace norm satisfies $\lVert0\rVert_1=0$,
     $\lVert A+B\rVert_1\leq\lVert A\rVert_1+\lVert B\rVert_1$,
     $\lVert cA\rVert_1=|c|\lVert A\rVert_1$, and
-    $\lVert A^\dagger\rVert_1=\lVert A\rVert_1$.
+    $\lVert A^\dagger\rVert_1=\lVert A\rVert_1$; a square matrix of trace norm $0$ is $0$.
     For a finite set $B$ of branches and complex coefficients $c_\beta$,
     \begin{align}
         \Bigl\lVert\sum_{\beta\in B}c_\beta A_\beta\Bigr\rVert_1
@@ -152,7 +153,8 @@ These are the source calculations in
     inequality, hence exact homogeneity. Adjointing the test contraction
     and cyclically permuting the trace gives
     $\lVert A^\dagger\rVert_1\leq\lVert A\rVert_1$; applying this to the
-    adjoint gives equality.
+    adjoint gives equality. For a square matrix, a relabelling of the index set
+    by $\{1,\dots,D\}$ preserves the trace norm, which vanishes only at $0$.
 \end{proof}
 
 \begin{theorem}[Exact physical matrix-unit reinsertion]
