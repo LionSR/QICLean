@@ -31,6 +31,8 @@ sum of the costs; this is proved once for every cost.
 * `QuantumCircuit.Circuit.depth_comp`, `QuantumCircuit.Circuit.gateCount_comp`,
   `QuantumCircuit.Circuit.participation_comp` — its three instances for `comp`.
 * `QuantumCircuit.Circuit.depth_le_gateCount` — depth is at most the gate count.
+* `QuantumCircuit.Circuit.total_seq_le` — the cost of a sequence of layers is at most the sum
+  of their costs.
 -/
 
 namespace QuantumCircuit
@@ -144,6 +146,24 @@ theorem total_mono {f g : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ}
 /-- The depth of a circuit is at most its gate count. -/
 theorem depth_le_gateCount (c : Circuit Γ G X Z) : c.depth ≤ c.gateCount :=
   total_mono (fun _ _ L ↦ L.depth_le_gateCount) c
+
+/-- The cost of an unbranched sequence of layers is at most the sum of the costs of the
+layers. -/
+theorem total_seq_le [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ) :
+    (Ls : List (Layer Γ G X X)) → (seq Ls).total f ≤ (Ls.map fun L ↦ f L).sum
+  | [] => le_rfl
+  | L :: Ls => by
+    simp only [seq, total, List.map_cons, List.sum_cons]
+    exact Nat.add_le_add_left (Finset.sup_le fun _ _ ↦ total_seq_le f Ls) _
+
+theorem depth_seq_le [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    (Ls : List (Layer Γ G X X)) : (seq Ls).depth ≤ (Ls.map Layer.depth).sum :=
+  total_seq_le _ Ls
+
+theorem gateCount_seq_le [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    (Ls : List (Layer Γ G X X)) : (seq Ls).gateCount ≤ (Ls.map Layer.gateCount).sum :=
+  total_seq_le _ Ls
 
 end Circuit
 

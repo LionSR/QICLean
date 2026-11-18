@@ -25,6 +25,8 @@ outcomes. This is proved by induction from the trace preservation of a layer.
 
 ## Main results
 
+* `QuantumCircuit.Circuit.Forall.append`, `QuantumCircuit.Circuit.Forall.comp`,
+  `QuantumCircuit.Circuit.IsUnbranched.comp` — both notions pass to compositions.
 * `QuantumCircuit.Circuit.isTP_krausFamily` — local trace preservation gives trace
   preservation (Wolf, §2.1).
 * `QuantumCircuit.Circuit.isKrausCPTP_map` — such a circuit is a quantum channel.
@@ -54,6 +56,41 @@ def Forall (ev : Interpretation G)
 def IsUnbranched : {X Z : S → Type} → Circuit Γ G X Z → Prop
   | _, _, done _ => True
   | _, _, step _ next => (∀ i j, next i = next j) ∧ ∀ i, (next i).IsUnbranched
+
+omit [Fintype S] in
+/-- The local property `P` passes to `c.append k` from `c` and every continuation. -/
+theorem Forall.append (ev : Interpretation G)
+    {P : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β],
+      KrausFamily α β → Prop} {Z : S → Type} : {X Y : S → Type} →
+    [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] → [∀ s, Fintype (Y s)] →
+    [∀ s, DecidableEq (Y s)] → {c : Circuit Γ G X Y} → {k : c.Index → Circuit Γ G Y Z} →
+    c.Forall ev P → (∀ p, (k p).Forall ev P) → (c.append k).Forall ev P
+  | _, _, i₁, i₂, i₃, i₄, done _, _, _, hk => by
+    obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
+    obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
+    exact hk ()
+  | _, _, _, _, _, _, step _ next, _, hc, hk =>
+    ⟨hc.1, fun i ↦ Forall.append ev (c := next i) (hc.2 i) fun j ↦ hk ⟨i, j⟩⟩
+
+omit [Fintype S] in
+theorem Forall.comp (ev : Interpretation G)
+    {P : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β],
+      KrausFamily α β → Prop} {X Y Z : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    {c : Circuit Γ G X Y} {c' : Circuit Γ G Y Z} (hc : c.Forall ev P) (hc' : c'.Forall ev P) :
+    (c.comp c').Forall ev P :=
+  hc.append ev fun _ ↦ hc'
+
+omit [Fintype S] in
+/-- A composition of unbranched circuits is unbranched. -/
+theorem IsUnbranched.comp {Z : S → Type} : {X Y : S → Type} → {c : Circuit Γ G X Y} →
+    {c' : Circuit Γ G Y Z} → c.IsUnbranched → c'.IsUnbranched → (c.comp c').IsUnbranched
+  | _, _, done _, _, _, hc' => hc'
+  | _, _, step _ next, c', hc, hc' =>
+    ⟨fun i j ↦ by
+      change (next i).comp c' = (next j).comp c'
+      rw [hc.1 i j],
+      fun i ↦ IsUnbranched.comp (c := next i) (hc.2 i) hc'⟩
 
 /-- A circuit whose local families are trace-preserving has Heisenberg picture fixing the
 identity. -/

@@ -216,14 +216,15 @@ and each Kraus operator is a product of local entries over the blocks.
     \lean{QuantumCircuit.Circuit.append, QuantumCircuit.Circuit.comp,
         QuantumCircuit.Circuit.appendIndexEquiv, QuantumCircuit.Circuit.kraus_append,
         QuantumCircuit.Circuit.compIndexEquiv, QuantumCircuit.Circuit.kraus_comp,
-        QuantumCircuit.Circuit.map_comp, QuantumCircuit.Circuit.map_done}
+        QuantumCircuit.Circuit.map_comp, QuantumCircuit.Circuit.map_done,
+        QuantumCircuit.Circuit.done_comp, QuantumCircuit.Circuit.comp_done}
     \leanok
     \uses{def:circuits_circuit}
     Attaching a circuit $k_p$ to every branch $p$ of a circuit $c$ gives a circuit
     whose branches are the pairs $(p,q)$ of a branch of $c$ and a branch of $k_p$,
     with Kraus operators $K^{k_p}_qK^c_p$. For a continuation independent of $p$ the
     map of the composite is the composite of the maps, and the empty circuit is the
-    identity map.
+    identity map. The empty circuit is a two-sided identity of composition.
 \end{theorem}
 \begin{proof}\leanok
     Induction on $c$; the branches of the composite are rearranged by the
@@ -235,7 +236,8 @@ and each Kraus operator is a product of local entries over the blocks.
         \notag
     \end{align}
     the map of $c'$ applied to the map of $c$. The empty circuit has the single
-    Kraus operator $1$.
+    Kraus operator $1$; composing with it on the right changes no layer, by
+    induction on $c$.
 \end{proof}
 
 \section{Costs}
@@ -263,13 +265,16 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Circuit.depth_comp, QuantumCircuit.Circuit.gateCount_comp,
         QuantumCircuit.Circuit.participation_comp, QuantumCircuit.Circuit.total_mono,
         QuantumCircuit.Layer.depth_le_gateCount,
-        QuantumCircuit.Circuit.depth_le_gateCount}
+        QuantumCircuit.Circuit.depth_le_gateCount,
+        QuantumCircuit.Circuit.total_seq_le, QuantumCircuit.Circuit.depth_seq_le,
+        QuantumCircuit.Circuit.gateCount_seq_le}
     \leanok
     \uses{def:circuits_costs, thm:circuits_composition}
     The cost of a circuit with continuations $k_p$ attached is at most the cost of
     the circuit plus the largest cost of a continuation. In particular depth, gate
     count and the number of gates meeting a site are subadditive under
-    composition. The depth of a circuit is at most its gate count.
+    composition. The depth of a circuit is at most its gate count. The cost of a
+    sequence of layers is at most the sum of the costs of its layers.
 \end{theorem}
 \begin{proof}\leanok
     Induction on the circuit. The depth of a layer is at most its gate count,
@@ -291,6 +296,24 @@ and each Kraus operator is a product of local entries over the blocks.
     circuit is obtained from the last layer to the first, each layer adding its
     cells that meet the current region, over all branches.
 \end{definition}
+
+\begin{lemma}[Local properties under composition]
+    \label{lem:circuits_local_comp}
+    \lean{QuantumCircuit.Circuit.Forall.append, QuantumCircuit.Circuit.Forall.comp,
+        QuantumCircuit.Circuit.IsUnbranched.comp, QuantumCircuit.Layer.lightCone_mono,
+        QuantumCircuit.Circuit.lightCone_mono, QuantumCircuit.Circuit.lightCone_comp}
+    \leanok
+    \uses{def:circuits_local, thm:circuits_composition}
+    A property holding locally on a circuit and on every continuation attached to
+    it holds locally on the composite. A composite of unbranched circuits is
+    unbranched. The backward light cone is monotone in the region, and the backward
+    light cone of $R$ through $c$ followed by $c'$ lies in the backward light cone
+    through $c$ of the backward light cone of $R$ through $c'$.
+\end{lemma}
+\begin{proof}\leanok
+    Induction on the first circuit; the layers of the composite are those of $c$
+    followed by those of the continuations.
+\end{proof}
 
 \begin{theorem}[Trace preservation of a circuit]
     \label{thm:circuits_tp}

@@ -30,6 +30,7 @@ the geometry, where `T` is the depth.
 ## Main results
 
 * `QuantumCircuit.Circuit.dual_mem_supportedOperators_lightCone` — the light cone bound.
+* `QuantumCircuit.Circuit.lightCone_comp` — the light cone of a composition.
 * `QuantumCircuit.Circuit.lightCone_subset_neighbourhood` — the light cone in terms of depth.
 -/
 
@@ -49,6 +50,15 @@ theorem lightCone_subset_neighbourhood [Fintype Γ.Cell] {X Y : S → Type}
   refine Finset.union_subset_union le_rfl (Finset.biUnion_subset_biUnion_of_subset_left _ ?_)
   intro b hb
   exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, (Finset.mem_filter.mp hb).2⟩
+
+omit [Fintype S] [GateFamily G] in
+theorem lightCone_mono {X Y : S → Type} (L : Layer Γ G X Y) {R R' : Finset S} (h : R ⊆ R') :
+    L.lightCone R ⊆ L.lightCone R' := by
+  refine Finset.union_subset_union h (Finset.biUnion_subset_biUnion_of_subset_left _ ?_)
+  intro b hb
+  obtain ⟨hb, v, hv⟩ := Finset.mem_filter.mp hb
+  rw [Finset.mem_inter] at hv
+  exact Finset.mem_filter.mpr ⟨hb, v, Finset.mem_inter.mpr ⟨hv.1, h hv.2⟩⟩
 
 end Layer
 
@@ -95,6 +105,21 @@ theorem dual_mem_supportedOperators_lightCone (ev : Interpretation G) : {X Z : S
         Finset.sum_congr rfl fun i _ ↦ by rw [hnext i]
       rw [hsum]
       exact L.dual_mem_supportedOperators_lightCone ev h.1 hU
+
+theorem lightCone_mono : {X Z : S → Type} → (c : Circuit Γ G X Z) → {R R' : Finset S} →
+    R ⊆ R' → c.lightCone R ⊆ c.lightCone R'
+  | _, _, done _, _, _, h => h
+  | _, _, step L next, _, _, h =>
+    L.lightCone_mono (Finset.sup_mono_fun fun i _ ↦ lightCone_mono (next i) h)
+
+/-- The backward light cone through a composition lies in the light cone through the first
+circuit of the light cone through the second. -/
+theorem lightCone_comp {Z : S → Type} (R : Finset S) : {X Y : S → Type} →
+    (c : Circuit Γ G X Y) → (c' : Circuit Γ G Y Z) →
+      (c.comp c').lightCone R ⊆ c.lightCone (c'.lightCone R)
+  | _, _, done _, _ => le_rfl
+  | _, _, step L next, c' =>
+    L.lightCone_mono (Finset.sup_mono_fun fun i _ ↦ lightCone_comp R (next i) c')
 
 variable [Fintype Γ.Cell]
 

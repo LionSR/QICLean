@@ -33,6 +33,8 @@ every branch is `comp`, and `done` is its identity.
 
 ## Main results
 
+* `QuantumCircuit.Circuit.done_comp`, `QuantumCircuit.Circuit.comp_done` — `done` is the
+  identity of composition.
 * `QuantumCircuit.Circuit.kraus_append`, `QuantumCircuit.Circuit.kraus_comp` — the Kraus
   operators of a composition are the products of those of its parts.
 * `QuantumCircuit.Circuit.map_comp`, `QuantumCircuit.Circuit.map_done` — composition of maps.
@@ -130,6 +132,16 @@ def append : {X₁ X₂ X₃ : S → Type} → (c : Circuit Γ G X₁ X₂) → 
 /-- Attach the same circuit to every branch. -/
 def comp (c : Circuit Γ G X Y) (c' : Circuit Γ G Y Z) : Circuit Γ G X Z :=
   c.append fun _ ↦ c'
+
+omit [Fintype S] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] in
+@[simp] theorem done_comp (c : Circuit Γ G X Z) : (done X).comp c = c :=
+  rfl
+
+omit [Fintype S] in
+/-- `done` is a right identity of composition. -/
+@[simp] theorem comp_done : {X Z : S → Type} → (c : Circuit Γ G X Z) → c.comp (done Z) = c
+  | _, _, done _ => rfl
+  | _, _, step L next => congrArg (step L) (funext fun i ↦ comp_done (next i))
 
 /-- The branches of `c.append k` are a branch `p` of `c` followed by a branch of `k p`. -/
 def appendIndexEquiv : {X₁ X₂ X₃ : S → Type} → (c : Circuit Γ G X₁ X₂) →
