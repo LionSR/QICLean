@@ -352,17 +352,29 @@ theorem prodOp_mul_place [∀ v, Fintype (Y v)] [∀ v, DecidableEq (Y v)]
     ← mul_kronecker_mul, ← mul_kronecker_mul, h, Matrix.mul_one, Matrix.one_mul]
 
 omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
+/-- A product operator vanishes exactly when one of its on-site matrices does. -/
+theorem prodOp_eq_zero_iff (m : (v : V) → Matrix (X v) (Y v) ℂ) :
+    prodOp m = 0 ↔ ∃ v, m v = 0 := by
+  constructor
+  · intro h
+    by_contra! hm
+    have hentry (v : V) : ∃ a b, m v a b ≠ 0 := by
+      by_contra! h'
+      exact hm v (Matrix.ext h')
+    choose a b hab using hentry
+    have := congrFun (congrFun h a) b
+    rw [prodOp_apply, Matrix.zero_apply] at this
+    exact Finset.prod_ne_zero_iff.mpr (fun v _ ↦ hab v) this
+  · rintro ⟨v, hv⟩
+    ext σ τ
+    rw [prodOp_apply, Matrix.zero_apply]
+    exact Finset.prod_eq_zero (Finset.mem_univ v) (by rw [hv, Matrix.zero_apply])
+
+omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
 /-- A product of nonzero on-site matrices is nonzero. -/
 theorem prodOp_ne_zero (m : (v : V) → Matrix (X v) (Y v) ℂ) (hm : ∀ v, m v ≠ 0) :
-    prodOp m ≠ 0 := by
-  have hentry (v : V) : ∃ a b, m v a b ≠ 0 := by
-    by_contra! h
-    exact hm v (Matrix.ext h)
-  choose a b hab using hentry
-  intro h
-  have := congrFun (congrFun h a) b
-  rw [prodOp_apply, Matrix.zero_apply] at this
-  exact Finset.prod_ne_zero_iff.mpr (fun v _ ↦ hab v) this
+    prodOp m ≠ 0 :=
+  fun h ↦ let ⟨v, hv⟩ := (prodOp_eq_zero_iff m).mp h; hm v hv
 
 omit [∀ v, Fintype (X v)] in
 /-- A product operator `⊗_v m_v` with `m_v = 1` outside `D` is the placement of the product over
