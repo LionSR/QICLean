@@ -87,7 +87,7 @@ theorem KrausGate.isUnitary_ofMatrix {D : Finset S} {X : S → Type} [∀ s, Fin
 
 /-- The geometry with a cell on every site, at cost `c₁`, and on every ordered pair of distinct
 sites `(a, b)`, the region `{a} ∪ {b}`, at cost `c₂`. -/
-def Geometry.sitesAndPairs (S : Type) [DecidableEq S] (c₁ c₂ : ℕ) : Geometry S where
+abbrev Geometry.sitesAndPairs (S : Type) [DecidableEq S] (c₁ c₂ : ℕ) : Geometry S where
   Cell := S ⊕ {p : S × S // p.1 ≠ p.2}
   cell
     | .inl a => {a}
