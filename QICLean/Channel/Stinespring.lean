@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Basic
+import QICLean.Channel.KrausFamily
 import QICLean.Channel.KrausRepresentation
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 
@@ -29,6 +30,9 @@ for an explicit isometry `V` constructed from the Kraus operators (Wolf Eq. (2.1
 * `stinespring_schrodinger_representation` — `T(ρ) = tr_r(VρV†)` (Schrödinger picture)
 * `exists_stinespring_dilation` — existential Heisenberg-form dilation witness for CP maps
 * `exists_stinespring_isometry_of_cptp` — existential isometric dilation witness for CPTP maps
+* `KrausFamily.stinespringVGen_conjTranspose_mul`, `KrausFamily.map_eq_partialTraceRight` — the
+  same two identities for a finite Kraus family: `VᴴV` is its effect, and its map is
+  `ρ ↦ tr_K(VρVᴴ)`
 
 ## References
 
@@ -301,3 +305,23 @@ theorem exists_stinespring_isometry_of_cptp
     exact stinespring_schrodinger_representation (K := K) (X := A) (i := i) (j := j)
   · rw [stinespringV_conjTranspose_mul]
     exact kraus_sum_conjTranspose_mul_of_tp K E hK hEtp
+
+namespace KrausFamily
+
+variable {α β : Type} [Fintype β]
+
+/-- The Stinespring matrix of a finite Kraus family has `VᴴV` equal to its effect. -/
+theorem stinespringVGen_conjTranspose_mul (K : KrausFamily α β) :
+    (stinespringVGen K.op)ᴴ * stinespringVGen K.op = K.effect := by
+  ext a a'
+  simp [effect, mul_apply, Matrix.sum_apply, Fintype.sum_prod_type, Finset.sum_comm (γ := β)]
+
+/-- The map of a finite Kraus family is the partial trace of the conjugation by its
+Stinespring matrix. -/
+theorem map_eq_partialTraceRight [Fintype α] (K : KrausFamily α β) (X : Matrix α α ℂ) :
+    K.map X = partialTraceRight (stinespringVGen K.op * X * (stinespringVGen K.op)ᴴ) := by
+  classical
+  ext b b'
+  simp [map_apply, mul_apply, Matrix.sum_apply]
+
+end KrausFamily
