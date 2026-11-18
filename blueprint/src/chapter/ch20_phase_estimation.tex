@@ -73,6 +73,8 @@ control qubits to the register that also holds the target.
 \begin{theorem}[Amplitudes of the outcomes]
     \label{thm:phase_estimation_amplitude}
     \lean{QuantumCircuit.PhaseEstimation.amplitude,
+        QuantumCircuit.PhaseEstimation.dft_conjTranspose_mulVec,
+        QuantumCircuit.PhaseEstimation.ofReal_sum_norm_sq,
         QuantumCircuit.PhaseEstimation.outcomeProb_eq,
         QuantumCircuit.PhaseEstimation.sum_norm_sq_amplitude}
     \leanok
@@ -118,7 +120,8 @@ control qubits to the register that also holds the target.
 
 \begin{theorem}[Success probability]
     \label{thm:phase_estimation_success}
-    \lean{QuantumCircuit.PhaseEstimation.accurate_prob_ge}
+    \lean{QuantumCircuit.PhaseEstimation.sum_norm_sq_amplitude_far_le,
+        QuantumCircuit.PhaseEstimation.accurate_prob_ge}
     \leanok
     \uses{thm:phase_estimation_amplitude}
     Under the hypotheses of Theorem~\ref{thm:phase_estimation_amplitude}, let $n\in\N$,
