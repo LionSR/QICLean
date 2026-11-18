@@ -254,20 +254,24 @@ section Product
 
 variable [∀ v, Fintype (X v)]
 
-/-- The product operator `⊗_v m_v` of a family of on-site matrices, with matrix elements
-`∏_v m_v(σ_v, τ_v)`. -/
-def prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) : Matrix (Config X) (Config X) ℂ :=
+variable {Y Z : V → Type*}
+
+/-- The product operator `⊗_v m_v` of a family of on-site matrices `m_v` from `ℂ^{Y v}` to
+`ℂ^{X v}`, with matrix elements `∏_v m_v(σ_v, τ_v)`. The on-site matrices may be rectangular;
+for a square family it is an operator on `⊗_v ℂ^{X v}`. -/
+def prodOp (m : (v : V) → Matrix (X v) (Y v) ℂ) : Matrix (Config X) (Config Y) ℂ :=
   Matrix.of fun σ τ ↦ ∏ v, m v (σ v) (τ v)
 
 omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
 @[simp]
-theorem prodOp_apply (m : (v : V) → Matrix (X v) (X v) ℂ) (σ τ : Config X) :
+theorem prodOp_apply (m : (v : V) → Matrix (X v) (Y v) ℂ) (σ : Config X) (τ : Config Y) :
     prodOp m σ τ = ∏ v, m v (σ v) (τ v) :=
   rfl
 
-omit [∀ v, DecidableEq (X v)] in
-/-- Product operators multiply sitewise. -/
-theorem prodOp_mul (m m' : (v : V) → Matrix (X v) (X v) ℂ) :
+omit [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
+/-- Product operators of composable families multiply sitewise. -/
+theorem prodOp_mul [∀ v, Fintype (Y v)] (m : (v : V) → Matrix (X v) (Y v) ℂ)
+    (m' : (v : V) → Matrix (Y v) (Z v) ℂ) :
     prodOp m * prodOp m' = prodOp fun v ↦ m v * m' v := by
   ext σ τ
   simp only [prodOp, Matrix.mul_apply, Matrix.of_apply, Fintype.prod_sum,
@@ -287,7 +291,7 @@ theorem prodOp_one : prodOp (fun v ↦ (1 : Matrix (X v) (X v) ℂ)) = 1 := by
 
 omit [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
 /-- The adjoint of a product operator is the product of the adjoints. -/
-theorem conjTranspose_prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) :
+theorem conjTranspose_prodOp (m : (v : V) → Matrix (X v) (Y v) ℂ) :
     (prodOp m)ᴴ = prodOp fun v ↦ (m v)ᴴ := by
   ext σ τ
   simp [prodOp, Matrix.conjTranspose_apply]
@@ -312,6 +316,40 @@ theorem prodOp_mem_supportedOperators {m : (v : V) → Matrix (X v) (X v) ℂ}
     by_cases hv : v ∈ D
     · rw [h1 v hv, h2 v hv]
     · rw [hm v hv, h3 v hv, h4 v hv, one_apply_eq, one_apply_eq]
+
+omit [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
+/-- In the coordinates of the cut along `D`, a product operator is the product over the sites
+of `D` tensored with the product over the other sites. -/
+theorem reindex_cutEquiv_prodOp (m : (v : V) → Matrix (X v) (Y v) ℂ) :
+    reindex (cutEquiv X D) (cutEquiv Y D) (prodOp m) =
+      prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) ⊗ₖ
+        prodOp (X := fun w : {v // v ∉ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) := by
+  ext ⟨a, x⟩ ⟨b, y⟩
+  simp only [reindex_apply, submatrix_apply, kroneckerMap_apply, prodOp_apply]
+  rw [← Finset.prod_mul_prod_compl D,
+    Finset.prod_subtype (F := inferInstance) D (fun _ ↦ Iff.rfl),
+    Finset.prod_subtype (F := inferInstance) Dᶜ (fun _ ↦ Finset.mem_compl)]
+  congr 1
+  · refine Finset.prod_congr rfl fun w _ ↦ ?_
+    rw [cutEquiv_symm_apply_mem a x w.2, cutEquiv_symm_apply_mem b y w.2]
+  · refine Finset.prod_congr rfl fun w _ ↦ ?_
+    rw [cutEquiv_symm_apply_not_mem a x w.2, cutEquiv_symm_apply_not_mem b y w.2]
+
+/-- **Intertwining placements.** If the product of the on-site matrices over the sites of `D`
+intertwines `K'` with `K`, the product over all sites intertwines their placements. -/
+theorem prodOp_mul_place [∀ v, Fintype (Y v)] [∀ v, DecidableEq (Y v)]
+    (m : (v : V) → Matrix (X v) (Y v) ℂ) {K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ}
+    {K' : Matrix (RegionConfig Y D) (RegionConfig Y D) ℂ}
+    (h : prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) * K' =
+      K * prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1)) :
+    prodOp m * place D K' = place D K * prodOp m := by
+  apply (reindex (cutEquiv X D) (cutEquiv Y D)).injective
+  rw [reindex_apply, reindex_apply,
+    ← submatrix_mul_equiv (prodOp m) (place D K') _ (cutEquiv Y D).symm _,
+    ← submatrix_mul_equiv (place D K) (prodOp m) _ (cutEquiv X D).symm _,
+    ← reindex_apply, ← reindex_apply, ← reindex_apply,
+    reindex_cutEquiv_prodOp, reindex_cutEquiv_place, reindex_cutEquiv_place,
+    ← mul_kronecker_mul, ← mul_kronecker_mul, h, Matrix.mul_one, Matrix.one_mul]
 
 omit [∀ v, Fintype (X v)] in
 /-- The placement of a matrix unit of a region is the product of the matrix units at the sites

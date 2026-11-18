@@ -204,6 +204,32 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     operators; induct over the span, and for the bilinear maps, in each argument.
 \end{proof}
 
+\begin{lemma}[Product operators across a cut and intertwined placements]
+    \label{lem:sites_product_intertwine}
+    \lean{ManyBody.reindex_cutEquiv_prodOp, ManyBody.prodOp_mul_place}
+    \leanok
+    \uses{def:sites_config, def:sites_place, thm:sites_product_span}
+    Let $m_v$ be a matrix from $\C^{Y_v}$ to $\C^{X_v}$ for every site $v$, and
+    write $m_D=\bigotimes_{v\in D}m_v$. In the coordinates of the cuts along $D$,
+    \[
+        \bigotimes_{v\in V}m_v=m_D\otimes m_{V\setminus D}.
+    \]
+    If $K$ and $K'$ are matrices on $\C^{X_D}$ and $\C^{Y_D}$ with
+    $m_DK'=Km_D$, then
+    \[
+        \Bigl(\bigotimes_{v\in V}m_v\Bigr)(K'\otimes1)
+        =(K\otimes1)\Bigl(\bigotimes_{v\in V}m_v\Bigr).
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The matrix element of $\bigotimes_vm_v$ is the product over $V$ of the on-site
+    elements, which splits into the products over $D$ and over $V\setminus D$. Then
+    \[
+        (m_D\otimes m_{V\setminus D})(K'\otimes1)=m_DK'\otimes m_{V\setminus D}
+        =Km_D\otimes m_{V\setminus D}=(K\otimes1)(m_D\otimes m_{V\setminus D}).
+    \]
+\end{proof}
+
 \begin{lemma}[Norm and order under placement]
     \label{lem:sites_place_norm_order}
     \lean{ManyBody.norm_place_le, ManyBody.posSemidef_place,
@@ -224,6 +250,52 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     configuration $y$ of $V\setminus D$: the compression of $K\otimes1$ to the
     configurations $(a,y)$, $a\in X_D$, is $K$, which gives injectivity and
     the converse for positivity.
+\end{proof}
+
+\begin{definition}[Placement into a larger region]
+    \label{def:sites_subregion_place}
+    \lean{ManyBody.subregionConfigEquiv, ManyBody.subregionPlace,
+        ManyBody.subregionPlace_apply}
+    \leanok
+    \uses{def:sites_config, def:sites_place}
+    Let $R\subseteq U$ be regions. The sites of $U$, with the basis sets $X_v$,
+    form a system of sites in which $R$ is a region. The extension of a matrix $K$
+    on $\C^{X_R}$ to $U$ is its placement $K\otimes1_{U\setminus R}$ in that system:
+    the matrix on $\C^{X_U}$ whose element at $(\alpha,\beta)$ is
+    $K_{\alpha|_R,\beta|_R}$ if $\alpha$ and $\beta$ agree on $U\setminus R$, and $0$
+    otherwise.
+\end{definition}
+
+\begin{lemma}[Placement factors through a larger region]
+    \label{lem:sites_subregion_place}
+    \lean{ManyBody.place_subregionPlace, ManyBody.exists_place_eq_place_of_subset,
+        ManyBody.subregionPlace_self, ManyBody.subregionPlace_subregionPlace,
+        ManyBody.subregionPlace_zero, ManyBody.subregionPlace_add,
+        ManyBody.subregionPlace_smul, ManyBody.subregionPlace_sub,
+        ManyBody.subregionPlace_conjTranspose, ManyBody.subregionPlace_one,
+        ManyBody.subregionPlace_mul, ManyBody.subregionPlace_mem_supportedOperators,
+        ManyBody.norm_subregionPlace_le}
+    \leanok
+    \uses{def:sites_subregion_place, lem:sites_place_hom, thm:sites_place_range,
+        lem:sites_place_norm_order}
+    For regions $R\subseteq U\subseteq W$ and a matrix $K$ on $\C^{X_R}$,
+    \[
+        (K\otimes1_{U\setminus R})\otimes1_{V\setminus U}=K\otimes1_{V\setminus R},
+        \qquad
+        (K\otimes1_{U\setminus R})\otimes1_{W\setminus U}=K\otimes1_{W\setminus R},
+    \]
+    and the extension from $R$ to $R$ is the identity map. The extension is a unital
+    $*$-homomorphism, does not increase the operator norm, and its range is supported on
+    $R$ in the system of sites of $U$. In particular every operator placed on $R$ is
+    placed on $U$, with no condition on the basis sets.
+\end{lemma}
+\begin{proof}\leanok
+    Both sides of each identity have the element $K_{\sigma|_R,\tau|_R}$ when $\sigma$
+    and $\tau$ agree outside $R$, and $0$ otherwise: agreeing on $U\setminus R$ and
+    outside $U$ is agreeing outside $R$. The remaining statements are those of
+    Lemmas~\ref{lem:sites_place_hom} and~\ref{lem:sites_place_norm_order} and
+    Theorem~\ref{thm:sites_place_range} for the placement in the system of sites of
+    $U$, since relabelling along a bijection preserves products, adjoints and norms.
 \end{proof}
 
 \section{The expectation onto a region}
