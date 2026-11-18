@@ -1,4 +1,4 @@
-import QICLean.Circuit.TruncatedProductFormula
+import QICLean.Circuit.Simulation.TruncatedProductFormula
 
 /-! Kernel audit and boundary regressions for the finite circuit truncation estimates. -/
 open Matrix ManyBody ProductFormula QuantumCircuit

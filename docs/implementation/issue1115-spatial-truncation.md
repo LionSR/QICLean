@@ -32,7 +32,7 @@ an infinite-volume theorem to its sources.
 ## Circuit integration
 
 PR #1117 merged the finite comparison package, and #1116 merged the circuit API.
-`Circuit/TruncatedProductFormula.lean` now supplies the integration without changing
+`Circuit/Simulation/TruncatedProductFormula.lean` now supplies the integration without changing
 Core/Sites or introducing another interaction or evolution definition:
 
 1. `sum_place_localFamilyInside` identifies the sum of placed restricted local
