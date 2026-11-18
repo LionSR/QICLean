@@ -35,6 +35,8 @@ cannot hold.
 * `QuantumCircuit.Circuit.kraus_seq`, `QuantumCircuit.Circuit.kraus_seq_map` — the Kraus
   operator of a sequence of single-operator layers.
 * `QuantumCircuit.Circuit.total_seq` — the cost of a sequence of layers with outcomes.
+* `QuantumCircuit.Circuit.total_comp_of_isUnbranched` — the cost of an unbranched circuit
+  followed by another.
 * `QuantumCircuit.Circuit.gateCount_seq_eq_length` — a sequence of layers of gate count `1`.
 * `QuantumCircuit.Circuit.forall_seq`, `QuantumCircuit.Circuit.isUnbranched_seq`.
 * `QuantumCircuit.Layer.kraus_adjoint`, `QuantumCircuit.Circuit.kraus_seqAdjoint` — the Kraus
@@ -93,6 +95,21 @@ theorem gateCount_seq_eq_length (Ls : List (Layer Γ G X X))
     (seq Ls).gateCount = Ls.length := by
   rw [gateCount, total_seq _ Ls hne, List.map_congr_left hcount, List.map_const',
     List.sum_replicate, smul_eq_mul, mul_one]
+
+/-- The cost of an unbranched circuit with a branch followed by a circuit is the sum of the
+costs. -/
+theorem total_comp_of_isUnbranched (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ) {Z : S → Type} :
+    {X Y : S → Type} → {c : Circuit Γ G X Y} → c.IsUnbranched → Nonempty c.Index →
+      (c' : Circuit Γ G Y Z) → (c.comp c').total f = c.total f + c'.total f
+  | _, _, .done _, _, _, _ => (zero_add _).symm
+  | _, _, step L next, hc, ⟨p⟩, c' => by
+    obtain ⟨i, q⟩ := (p : Σ i : L.Index, (next i).Index)
+    have hn : ∀ j, next j = next i := fun j ↦ hc.1 j i
+    change f L + Finset.univ.sup (fun j ↦ ((next j).comp c').total f) =
+      (f L + Finset.univ.sup fun j ↦ (next j).total f) + c'.total f
+    simp only [hn]
+    rw [Finset.sup_const ⟨i, Finset.mem_univ i⟩, Finset.sup_const ⟨i, Finset.mem_univ i⟩,
+      total_comp_of_isUnbranched f (hc.2 i) ⟨q⟩ c', add_assoc]
 
 omit [Fintype S] in
 /-- A sequence of layers satisfying `P` locally satisfies `P` locally. -/

@@ -678,13 +678,13 @@ theorem length_seqCells : (seqCells n).length = n * (n + 1) / 2 := by
 theorem kraus_qftCore (n : ℕ) (p : (qftCore n).Index) (y x : Config (Q n)) :
     (qftCore n).kraus KrausGate.ev p y x = dft n (fun i ↦ y (Fin.rev i)) x := by
   rw [show (qftCore n).kraus KrausGate.ev p = _ from Circuit.kraus_seq_map KrausGate.ev _ gateOp _
-      (fun b _ i ↦ Layer.kraus_single b (qftMatrix b) i) p,
+      (fun b _ i ↦ Layer.kraus_single KrausGate.ev b (qftGate b) i) p,
     prod_gateOp_core isGateOrder_seqCells seqCells_nodup toFinset_seqCells]
 
 /-- The single Kraus operator of the circuit `qft n` is the Fourier transform. -/
 theorem kraus_qft (n : ℕ) (p : (qft n).Index) : (qft n).kraus KrausGate.ev p = dft n := by
   rw [show (qft n).kraus KrausGate.ev p = _ from Circuit.kraus_seq_map KrausGate.ev _ gateOp _
-      (fun b _ i ↦ Layer.kraus_single b (qftMatrix b) i) p,
+      (fun b _ i ↦ Layer.kraus_single KrausGate.ev b (qftGate b) i) p,
     prod_gateOp_eq_dft isGateOrder_seqCells seqCells_nodup toFinset_seqCells]
 
 theorem isUnbranched_qft (n : ℕ) : (qft n).IsUnbranched :=
