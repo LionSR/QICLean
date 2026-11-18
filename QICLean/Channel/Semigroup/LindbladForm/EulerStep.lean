@@ -7,7 +7,7 @@ import QICLean.Algebra.MatrixOperatorSpace
 import QICLean.Channel.Semigroup.LindbladForm.Basic
 import QICLean.Channel.Semigroup.LindbladForm.ChoiCCP
 import QICLean.Channel.Semigroup.CPClosure
-import QICLean.Channel.Semigroup.ProductFormula
+import QICLean.Analysis.ProductFormula
 import Mathlib.Analysis.Calculus.MeanValue
 import Mathlib.Analysis.Matrix.Order
 
@@ -451,7 +451,9 @@ private theorem generatorDecomp_cp_semigroup (G : GeneratorDecomp D) :
       have hF_le : ‖F‖ ≤ Real.exp (s * C0) := by
         simpa [F, s, C0, Lc, Qc] using norm_eulerStep_toCLM_le (G := G) hs_nonneg hs_le_t
       have hS_le0 : ‖S‖ ≤ Real.exp (s * ‖Lc‖) := by
-        simpa [S, Lc] using norm_expSemigroupCLM_le (A := Lc) s hs_nonneg
+        have h := @norm_exp_le_real_exp_norm (MatrixCLM (Fin D)) inferInstance inferInstance
+          inferInstance (TNOperatorSpace.instNormOneClassMatrixCLMFin D) ((s : ℂ) • Lc)
+        rwa [show ‖((s : ℂ) • Lc)‖ = s * ‖Lc‖ from norm_smul_of_nonneg hs_nonneg Lc] at h
       have hC0_ge : ‖Lc‖ ≤ C0 := by
         dsimp [C0]
         nlinarith [norm_nonneg Qc, ht]
@@ -475,8 +477,9 @@ private theorem generatorDecomp_cp_semigroup (G : GeneratorDecomp D) :
         exact hlocal0.trans <| mul_le_mul_of_nonneg_left hinside (sq_nonneg s)
       have hpow : ‖F ^ (n + 1) - S ^ (n + 1)‖ ≤
           ((n + 1 : ℕ) : ℝ) * (Real.exp (s * C0)) ^ (n + 1) * ‖F - S‖ :=
-        norm_pow_sub_pow_le_of_norm_le (D := D) (A := F) (B := S)
-          (M := Real.exp (s * C0)) hM hF_le hS_le (n + 1)
+        (ProductFormula.norm_pow_sub_pow_le hF_le hS_le (n + 1)).trans
+          (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_left
+            (pow_le_pow_right₀ hM (Nat.sub_le _ _)) (Nat.cast_nonneg _)) (norm_nonneg _))
       have hMpow : (Real.exp (s * C0)) ^ (n + 1) = Real.exp (t * C0) := by
         dsimp [s]
         rw [← Real.exp_nat_mul]
@@ -493,12 +496,10 @@ private theorem generatorDecomp_cp_semigroup (G : GeneratorDecomp D) :
       have hexp_eq : (endEquiv (D := D)) (expSemigroup G.toLinearMap t) = S ^ (n + 1) := by
         dsimp [S, Lc, s]
         rw [expSemigroup_toCLM]
-        symm
-        rw [expSemigroupCLM_pow_eq
-          (A := (endEquiv (D := D)) G.toLinearMap) (s := t / (n + 1)) (m := n + 1)]
-        congr 1
-        rw [Nat.cast_add, Nat.cast_one]
-        field_simp
+        rw [expSemigroupCLM, expSemigroupCLM]
+        refine (ProductFormula.exp_smul_div_pow (Nat.succ_ne_zero n) (t : ℂ) _).symm.trans ?_
+        push_cast
+        rfl
       rw [happrox_eq, hexp_eq]
       calc
         ‖F ^ (n + 1) - S ^ (n + 1)‖ ≤

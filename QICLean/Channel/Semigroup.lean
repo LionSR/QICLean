@@ -31,7 +31,6 @@ import QICLean.Channel.Semigroup.Primitivity.Helpers
 import QICLean.Channel.Semigroup.Primitivity.IrreducibleAnalysis
 import QICLean.Channel.Semigroup.Primitivity.MainTheorem
 import QICLean.Channel.Semigroup.Primitivity.SpectralMapping
-import QICLean.Channel.Semigroup.ProductFormula
 import QICLean.Channel.Semigroup.ReducibleQDS
 import QICLean.Channel.Semigroup.ReducibleQDS.Defs
 import QICLean.Channel.Semigroup.ReducibleQDS.Equivalence
