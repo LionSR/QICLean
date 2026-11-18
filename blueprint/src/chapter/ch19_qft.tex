@@ -15,12 +15,12 @@ uses the circuits of Chapter~\ref{ch:circuits} on the geometry of sites and pair
 
 \begin{definition}[Qubits and the binary encoding]
     \label{def:qft_qubits}
-    \lean{QuantumCircuit.Qubit.Q, QuantumCircuit.Qubit.encode,
+    \lean{QuantumCircuit.Qubit.encode,
         QuantumCircuit.Qubit.encode_apply, QuantumCircuit.Qubit.geometry}
     \leanok
     \uses{def:sites_config, def:circuits_local_gate}
-    The system of $n$ qubits has the sites $0,\dots,n-1$, each with basis
-    $\{0,1\}$. A configuration $x$ encodes the number
+    The system of $n$ qubits is the system of qudits of dimension $2$ on the sites
+    $0,\dots,n-1$. A configuration $x$ encodes the number
     $\langle x\rangle=\sum_ix_i2^{n-1-i}$, the site $0$ most significant; this is a
     bijection onto $\{0,\dots,2^n-1\}$. The circuits of this chapter use the
     geometry of sites and pairs on the $n$ qubits, every cell of cost $1$.

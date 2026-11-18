@@ -36,7 +36,7 @@ which bounds `|αₖ|` by `1/(2|ℓ - δ|)` when `2^t φ - k ≡ δ - ℓ` with 
 -/
 
 open Matrix ManyBody Complex
-open QuantumCircuit.Qubit (Q encode dft)
+open QuantumCircuit.Qubit (encode dft)
 
 namespace QuantumCircuit
 
@@ -67,7 +67,7 @@ private theorem norm_exp_two_pi_I_mul (x : ℝ) : ‖exp (2 * Real.pi * I * x)�
   exact Complex.norm_exp_ofReal_mul_I _
 
 /-- The inverse Fourier transform of `2^{-t/2} e^{2πiφ⟨x⟩}` has the amplitudes `αₖ`. -/
-theorem dft_conjTranspose_mulVec (φ : ℝ) (y : Config (Q t)) :
+theorem dft_conjTranspose_mulVec (φ : ℝ) (y : Config (Qudits (Fin t) 2)) :
     ((dft t)ᴴ *ᵥ fun x ↦ invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ)) y =
       amplitude t φ (encode t y) := by
   rw [mulVec, dotProduct, amplitude, ← (encode t).symm.sum_comp, Finset.mul_sum]
@@ -83,7 +83,7 @@ theorem dft_conjTranspose_mulVec (φ : ℝ) (y : Config (Q t)) :
 
 /-- The probabilities of the outcomes sum to `1`. -/
 theorem sum_norm_sq_amplitude (φ : ℝ) : ∑ k, ‖amplitude t φ k‖ ^ 2 = 1 := by
-  set v : Config (Q t) → ℂ := fun x ↦ invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ)
+  set v : Config (Qudits (Fin t) 2) → ℂ := fun x ↦ invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ)
   have hv := congrArg (· ^ 2)
     (norm_toLp_mulVec_of_unitary (Unitary.star_mem (Qubit.dft_mem_unitaryGroup t)) v)
   simp only [EuclideanSpace.norm_sq_eq, star_eq_conjTranspose] at hv
