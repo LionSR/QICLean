@@ -24,8 +24,7 @@ Cost `1` for one-qubit gates makes the gate count the number of gates of Nielsen
 
 ## Main definitions
 
-* `QuantumCircuit.Qubit.Q` — the register of `n` qubits.
-* `QuantumCircuit.Qubit.encode` — the binary encoding `Config (Q n) ≃ Fin (2 ^ n)`.
+* `QuantumCircuit.Qubit.encode` — the binary encoding `Config (Qudits (Fin n) 2) ≃ Fin (2 ^ n)`.
 * `QuantumCircuit.Qubit.hadamard`, `QuantumCircuit.Qubit.phaseShift`,
   `QuantumCircuit.Qubit.controlled` — the matrices.
 * `QuantumCircuit.Qubit.geometry` — cells on every qubit and every ordered pair, of cost `1`.
@@ -44,14 +43,11 @@ namespace QuantumCircuit
 
 namespace Qubit
 
-/-- The register of `n` qubits. -/
-abbrev Q (n : ℕ) : Fin n → Type := fun _ ↦ Fin 2
-
 /-- The binary encoding of a configuration, site `0` most significant. -/
-def encode (n : ℕ) : Config (Q n) ≃ Fin (2 ^ n) :=
+def encode (n : ℕ) : Config (Qudits (Fin n) 2) ≃ Fin (2 ^ n) :=
   (Equiv.arrowCongr Fin.revPerm (Equiv.refl (Fin 2))).trans finFunctionFinEquiv
 
-theorem encode_apply {n : ℕ} (x : Config (Q n)) :
+theorem encode_apply {n : ℕ} (x : Config (Qudits (Fin n) 2)) :
     (encode n x : ℕ) = ∑ i : Fin n, (x i : ℕ) * 2 ^ (n - 1 - (i : ℕ)) := by
   rw [encode, Equiv.trans_apply, finFunctionFinEquiv_apply]
   refine Fintype.sum_equiv Fin.revPerm _ _ fun i ↦ ?_

@@ -49,7 +49,7 @@ each once.
 -/
 
 open Matrix ManyBody Complex
-open QuantumCircuit.Qubit (Q encode hadamard controlled)
+open QuantumCircuit.Qubit (encode hadamard controlled)
 
 namespace QuantumCircuit
 
@@ -177,10 +177,10 @@ private theorem outcomesFrom_bijective :
 /-! ### The state along a branch -/
 
 /-- The product state `∏ᵢ Fᵢ(xᵢ)` of the control register. -/
-private def prodState (F : Fin t → Fin 2 → ℂ) (x : Config (Q t)) : ℂ :=
+private def prodState (F : Fin t → Fin 2 → ℂ) (x : Config (Qudits (Fin t) 2)) : ℂ :=
   ∏ i, F i (x i)
 
-private theorem prodState_eq (F : Fin t → Fin 2 → ℂ) (j : Fin t) (x : Config (Q t)) :
+private theorem prodState_eq (F : Fin t → Fin 2 → ℂ) (j : Fin t) (x : Config (Qudits (Fin t) 2)) :
     prodState F x = F j (x j) * ∏ i ∈ Finset.univ.erase j, F i (x i) :=
   (Finset.mul_prod_erase _ _ (Finset.mem_univ j)).symm
 
@@ -295,7 +295,7 @@ private theorem finalFactors_eq : ∀ (l : List (Fin t)), l.Pairwise (· < ·) �
 private noncomputable def preparedFactor (φ : ℝ) (i : Fin t) (y : Fin 2) : ℂ :=
   invSqrtTwo * exp (2 * Real.pi * I * φ) ^ ((y : ℕ) * 2 ^ (t - 1 - (i : ℕ)))
 
-private theorem prepared_eq (φ : ℝ) (x : Config (Q t)) :
+private theorem prepared_eq (φ : ℝ) (x : Config (Qudits (Fin t) 2)) :
     invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ) =
       prodState (preparedFactor φ) x := by
   rw [prodState, Qubit.encode_apply]

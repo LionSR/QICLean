@@ -59,7 +59,7 @@ amplitudes and their tail bound are in `PhaseAmplitude.lean`.
 
 open Matrix ManyBody Complex
 open scoped Kronecker
-open QuantumCircuit.Qubit (Q encode hadamard controlled dft gateLayers seqCells swapCells)
+open QuantumCircuit.Qubit (encode hadamard controlled dft gateLayers seqCells swapCells)
 
 namespace QuantumCircuit
 
@@ -73,7 +73,7 @@ variable (t m : ℕ)
 control register `Fin t`, and the basis `Fin m` at the target. It is the register of `t` qubits
 extended by the target along `Equiv.refl`. -/
 abbrev system : Fin t ⊕ Unit → Type :=
-  extendSystem (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+  extendSystem (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2)
 
 /-- The geometry of the register: a cell on every site and on every ordered pair of distinct
 sites, all of cost `1`. -/
@@ -146,7 +146,7 @@ noncomputable abbrev circuit : Circuit (geometry t) (Gate t m) (system t m) (sys
   (unitary t m).comp (.step (measureLayer t m) fun _ ↦ .done _)
 
 /-- The outcomes of the measurement of the control register. -/
-def measured (i : (measureLayer t m).Index) : Config (Q t) :=
+def measured (i : (measureLayer t m).Index) : Config (Qudits (Fin t) 2) :=
   fun j ↦ i.2 ⟨.inl j, by simp [measureLayer]⟩
 
 /-- The measured integer of a branch: the outcomes of the measurement of the control register,
@@ -156,12 +156,12 @@ noncomputable def readout (p : (circuit t m).Index) : Fin (2 ^ t) :=
     (((unitary t m).compIndexEquiv _ p).2 : Σ _ : (measureLayer t m).Index, Unit).1)
 
 /-- The configuration of the control register. -/
-def control (σ : Config (system t m)) : Config (Q t) :=
+def control (σ : Config (system t m)) : Config (Qudits (Fin t) 2) :=
   fun j ↦ σ (.inl j)
 
 variable {t m} in
 /-- The state `f(x) u(a)` of the register, `x` the control register and `a` the target. -/
-def registerState (u : Fin m → ℂ) (f : Config (Q t) → ℂ) : Config (system t m) → ℂ :=
+def registerState (u : Fin m → ℂ) (f : Config (Qudits (Fin t) 2) → ℂ) : Config (system t m) → ℂ :=
   fun σ ↦ f (control t m σ) * u (σ (.inr ()))
 
 /-- The input `|0…0⟩ ⊗ |u⟩`. -/
@@ -322,7 +322,7 @@ private theorem control_update_inr (σ : Config (system t m)) (a : Fin m) :
 
 /-- A matrix `V` on the control qubit `j` acts on the control register of `f(x) u(a)`. -/
 theorem qubitGate_mulVec (u : Fin m → ℂ) (V : Matrix (Fin 2) (Fin 2) ℂ) (j : Fin t)
-    (f : Config (Q t) → ℂ) :
+    (f : Config (Qudits (Fin t) 2) → ℂ) :
     place {Sum.inl j} (V.submatrix (siteEquiv (system t m) (.inl j))
       (siteEquiv (system t m) (.inl j))) *ᵥ registerState u f =
       registerState u fun x ↦ ∑ b, V (x j) b * f (Function.update x j b) := by
@@ -335,7 +335,7 @@ theorem qubitGate_mulVec (u : Fin m → ℂ) (V : Matrix (Fin 2) (Fin 2) ℂ) (j
   exact Finset.sum_congr rfl fun b _ ↦ (mul_assoc _ _ _).symm
 
 /-- The control register after the Hadamard gates on the qubits of `A`. -/
-private noncomputable def hadamardState (A : Finset (Fin t)) (x : Config (Q t)) : ℂ :=
+private noncomputable def hadamardState (A : Finset (Fin t)) (x : Config (Qudits (Fin t) 2)) : ℂ :=
   invSqrtTwo ^ A.card * if ∀ j ∉ A, x j = 0 then 1 else 0
 
 private theorem hadamard_mulVec (u : Fin m → ℂ) {A : Finset (Fin t)} {j : Fin t} (hj : j ∉ A) :
@@ -381,7 +381,7 @@ private theorem foldl_hadamard (u : Fin m → ℂ) :
 
 /-- A call controlled by the qubit `j` multiplies by the eigenvalue when the qubit is `1`. -/
 private theorem query_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {c : ℂ}
-    (hu : U *ᵥ u = c • u) (j : Fin t) (f : Config (Q t) → ℂ) :
+    (hu : U *ᵥ u = c • u) (j : Fin t) (f : Config (Qudits (Fin t) 2) → ℂ) :
     place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
       (pairEquiv (system t m) Sum.inl_ne_inr) (pairEquiv (system t m) Sum.inl_ne_inr)) *ᵥ
       registerState u f = registerState u fun x ↦ c ^ (x j : ℕ) * f x := by
@@ -417,7 +417,7 @@ private theorem query_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ
     ring
 
 /-- The outcomes of the measurement layer are the configurations of the control register. -/
-private def measuredEquiv : (measureLayer t m).Index ≃ Config (Q t) where
+private def measuredEquiv : (measureLayer t m).Index ≃ Config (Qudits (Fin t) 2) where
   toFun := measured t m
   invFun x := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun
     | ⟨.inl j, _⟩ => x j
@@ -475,13 +475,14 @@ private theorem measure_mulVec (ev : Interpretation (Gate t m)) (i : (measureLay
   · simp [h]
 
 /-- A matrix on the control register, tensored with the identity on the target. -/
-private theorem kron_one_mulVec (A : Matrix (Config (Q t)) (Config (Q t)) ℂ) (u : Fin m → ℂ)
-    (f : Config (Q t) → ℂ) :
+private theorem kron_one_mulVec
+    (A : Matrix (Config (Qudits (Fin t) 2)) (Config (Qudits (Fin t) 2)) ℂ) (u : Fin m → ℂ)
+    (f : Config (Qudits (Fin t) 2) → ℂ) :
     (A ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
-      (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t))
-      (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)) *ᵥ
+      (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2))
+      (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2)) *ᵥ
         registerState u f = registerState u (A *ᵥ f) := by
-  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2)
   have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
   have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
   funext σ
@@ -493,7 +494,7 @@ private theorem kron_one_mulVec (A : Matrix (Config (Q t)) (Config (Q t)) ℂ) (
   exact Finset.sum_congr rfl fun x _ ↦ by ring
 
 private theorem foldl_query {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {c : ℂ}
-    (hu : U *ᵥ u = c • u) : ∀ (l : List (Fin t)) (g : Config (Q t) → ℂ),
+    (hu : U *ᵥ u = c • u) : ∀ (l : List (Fin t)) (g : Config (Qudits (Fin t) 2) → ℂ),
       l.foldl (fun w j ↦ place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
         (pairEquiv (system t m) Sum.inl_ne_inr) (pairEquiv (system t m) Sum.inl_ne_inr)) *ᵥ w)
         (registerState u g) =
@@ -507,7 +508,7 @@ private theorem foldl_query {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ}
     ring
 
 /-- The control qubit `j` is called `2^{t-1-j}` times, so the exponents add up to `⟨x⟩`. -/
-private theorem sum_queries (x : Config (Q t)) :
+private theorem sum_queries (x : Config (Qudits (Fin t) 2)) :
     (((List.finRange t).reverse.flatMap fun j : Fin t ↦
       List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map
       fun j ↦ (x j : ℕ)).sum = encode t x := by
@@ -535,8 +536,9 @@ private theorem kraus_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ)
     (p : (qftInv t m).Index) :
     (qftInv t m).kraus (Interpretation.sum KrausGate.ev (Oracle.ev V)) p =
       ((dft t)ᴴ ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
-        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t))
-        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)) := by
+        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2))
+        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m)
+          (Qudits (Fin t) 2)) := by
   rw [Circuit.kraus_mapGate _ _ (GateMorphism.isCompatible_inl _ _),
     Circuit.kraus_mapSites _ _ _ _ (KrausGate.isCompatible_transport _ _)]
   congr 2
@@ -586,8 +588,8 @@ private theorem kraus_unitary_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m
 
 /-- For a unit vector `u` on the target, `f(x) u(a)` has the squared norm of `f`. -/
 theorem sum_norm_sq_registerState {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
-    (f : Config (Q t) → ℂ) : ∑ σ, ‖registerState u f σ‖ ^ 2 = ∑ x, ‖f x‖ ^ 2 := by
-  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+    (f : Config (Qudits (Fin t) 2) → ℂ) : ∑ σ, ‖registerState u f σ‖ ^ 2 = ∑ x, ‖f x‖ ^ 2 := by
+  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Qudits (Fin t) 2)
   have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
   have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
   have hu' : ∑ b, ‖u b‖ ^ 2 = 1 := by

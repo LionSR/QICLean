@@ -55,7 +55,7 @@ variable {n : ℕ}
 /-- The matrix of the quantum Fourier transform, `2^{-n/2} e^{2πi ⟨y⟩⟨x⟩ / 2^n}`, in the binary
 encoding with site `0` most significant (Nielsen–Chuang, eq. (5.2)). Mathlib's `ZMod.dft` has the
 opposite sign in the exponent and no normalization. -/
-noncomputable def dft (n : ℕ) : Matrix (Config (Q n)) (Config (Q n)) ℂ :=
+noncomputable def dft (n : ℕ) : Matrix (Config (Qudits (Fin n) 2)) (Config (Qudits (Fin n) 2)) ℂ :=
   Matrix.of fun y x ↦ invSqrtTwo ^ n *
     exp (2 * Real.pi * I * ((encode n y : ℕ) * (encode n x : ℕ) : ℂ) / 2 ^ n)
 
@@ -65,22 +65,25 @@ noncomputable def dft (n : ℕ) : Matrix (Config (Q n)) (Config (Q n)) ℂ :=
 pair `(j, i)` with `i < j` the controlled phase gate `R_{j-i+1}`, control `j` and target `i`; on
 an ordered pair `(a, b)` with `a < b` the swap. -/
 noncomputable def qftMatrix : (b : (geometry n).Cell) →
-    Matrix (RegionConfig (Q n) ((geometry n).cell b))
-      (RegionConfig (Q n) ((geometry n).cell b)) ℂ
-  | .inl a => hadamard.submatrix (siteEquiv (Q n) a) (siteEquiv (Q n) a)
+    Matrix (RegionConfig (Qudits (Fin n) 2) ((geometry n).cell b))
+      (RegionConfig (Qudits (Fin n) 2) ((geometry n).cell b)) ℂ
+  | .inl a => hadamard.submatrix (siteEquiv (Qudits (Fin n) 2) a) (siteEquiv (Qudits (Fin n) 2) a)
   | .inr p => (if p.1.2 < p.1.1 then controlled (phaseShift ((p.1.1 : ℕ) - p.1.2 + 1))
-      else swapMatrix 2).submatrix (pairEquiv (Q n) p.2) (pairEquiv (Q n) p.2)
+      else swapMatrix 2).submatrix (pairEquiv (Qudits (Fin n) 2) p.2)
+        (pairEquiv (Qudits (Fin n) 2) p.2)
 
 /-- The gate of the Fourier transform on a cell. -/
-noncomputable def qftGate (b : (geometry n).Cell) : KrausGate ((geometry n).cell b) (Q n) (Q n) :=
+noncomputable def qftGate (b : (geometry n).Cell) :
+    KrausGate ((geometry n).cell b) (Qudits (Fin n) 2) (Qudits (Fin n) 2) :=
   KrausFamily.single (qftMatrix b)
 
 /-- The gate on a cell, placed on the register. -/
-noncomputable def gateOp (b : (geometry n).Cell) : Matrix (Config (Q n)) (Config (Q n)) ℂ :=
+noncomputable def gateOp (b : (geometry n).Cell) :
+    Matrix (Config (Qudits (Fin n) 2)) (Config (Qudits (Fin n) 2)) ℂ :=
   place ((geometry n).cell b) (qftMatrix b)
 
 theorem qftMatrix_mem_unitaryGroup (b : (geometry n).Cell) :
-    qftMatrix b ∈ unitaryGroup (RegionConfig (Q n) ((geometry n).cell b)) ℂ := by
+    qftMatrix b ∈ unitaryGroup (RegionConfig (Qudits (Fin n) 2) ((geometry n).cell b)) ℂ := by
   rcases b with a | p
   · exact submatrix_equiv_mem_unitary.mpr hadamard_mem_unitaryGroup
   · refine submatrix_equiv_mem_unitary.mpr ?_
@@ -92,7 +95,7 @@ theorem isUnitary_qftGate (b : (geometry n).Cell) : (qftGate b).IsUnitary :=
   KrausFamily.isUnitary_single (qftMatrix_mem_unitaryGroup b)
 
 theorem gateOp_mem_unitaryGroup (b : (geometry n).Cell) :
-    gateOp b ∈ unitaryGroup (Config (Q n)) ℂ :=
+    gateOp b ∈ unitaryGroup (Config (Qudits (Fin n) 2)) ℂ :=
   place_mem_unitaryGroup (qftMatrix_mem_unitaryGroup b)
 
 /-! ### Admissible orders -/
@@ -148,11 +151,12 @@ theorem swapCells_nodup : (swapCells n).Nodup := by
 
 section Column
 
-variable (x : Config (Q n))
+variable (x : Config (Qudits (Fin n) 2))
 
 /-- The column with the qubits of `A` transformed with phases `θ` and the others still the input
 bits of `x`. -/
-private noncomputable def phaseState (A : Finset (Fin n)) (θ : Fin n → ℂ) (y : Config (Q n)) :
+private noncomputable def phaseState (A : Finset (Fin n)) (θ : Fin n → ℂ)
+    (y : Config (Qudits (Fin n) 2)) :
     ℂ :=
   invSqrtTwo ^ A.card * (if ∀ k, k ∉ A → y k = x k then 1 else 0) *
     ∏ i ∈ A, exp (2 * Real.pi * I * ((y i : ℕ) : ℂ) * θ i)
@@ -181,7 +185,8 @@ private theorem hadamard_phaseState {A : Finset (Fin n)} {θ : Fin n → ℂ} {a
     gateOp (.inl a) *ᵥ phaseState x A θ =
       phaseState x (insert a A) (Function.update θ a (((x a : ℕ) : ℂ) / 2)) := by
   funext y
-  change (place {a} (hadamard.submatrix (siteEquiv (Q n) a) (siteEquiv (Q n) a)) *ᵥ _) y = _
+  change (place {a} (hadamard.submatrix (siteEquiv (Qudits (Fin n) 2) a)
+    (siteEquiv (Qudits (Fin n) 2) a)) *ᵥ _) y = _
   rw [place_siteEquiv_mulVec, Fintype.sum_eq_single (x a)]
   · have hprod : ∏ i ∈ A, exp (2 * Real.pi * I * ((Function.update y a (x a) i : ℕ) : ℂ) * θ i) =
         ∏ i ∈ A, exp (2 * Real.pi * I * ((y i : ℕ) : ℂ) * θ i) :=
@@ -222,7 +227,8 @@ private theorem rotation_phaseState {A : Finset (Fin n)} {θ : Fin n → ℂ}
   obtain ⟨⟨j, i⟩, h⟩ := p
   funext y
   change (place ({j} ∪ {i}) ((if i < j then controlled (phaseShift ((j : ℕ) - i + 1))
-    else swapMatrix 2).submatrix (pairEquiv (Q n) h) (pairEquiv (Q n) h)) *ᵥ _) y = _
+    else swapMatrix 2).submatrix (pairEquiv (Qudits (Fin n) 2) h)
+      (pairEquiv (Qudits (Fin n) 2) h)) *ᵥ _) y = _
   rw [ite_eq_left hp, controlled_phaseShift, submatrix_diagonal_equiv, place_diagonal_mulVec]
   change exp (2 * Real.pi * I * (((y j : ℕ) : ℂ) * ((y i : ℕ) : ℂ)) / 2 ^ ((j : ℕ) - i + 1)) *
     _ = _
@@ -315,7 +321,7 @@ private theorem sum_phaseStep (k : Fin n) : ∑ b ∈ coreCells n, phaseStep x b
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp
     rw [hp.2.1]
 
-private theorem encode_rev_cast (y : Config (Q n)) :
+private theorem encode_rev_cast (y : Config (Qudits (Fin n) 2)) :
     ((encode n (fun i ↦ y (Fin.rev i)) : ℕ) : ℂ) = ∑ i : Fin n, ((y i : ℕ) : ℂ) * 2 ^ (i : ℕ) := by
   rw [encode_apply]
   push_cast
@@ -340,7 +346,7 @@ private theorem pow_ratio (i j : Fin n) :
     omega
 
 /-- The exponent of the Fourier matrix differs from the phases of the column by an integer. -/
-private theorem exponent_eq (y : Config (Q n)) :
+private theorem exponent_eq (y : Config (Qudits (Fin n) 2)) :
     ((encode n (fun i ↦ y (Fin.rev i)) : ℕ) : ℂ) * ((encode n x : ℕ) : ℂ) / 2 ^ n =
       (∑ i : Fin n, ((y i : ℕ) : ℂ) * phase x i) +
         ((∑ i : Fin n, ∑ j ∈ Finset.univ.filter (fun j ↦ ¬ i ≤ j),
@@ -366,7 +372,7 @@ private theorem exponent_eq (y : Config (Q n)) :
 
 /-- The column with every qubit transformed is the column of the Fourier matrix, read with the
 output bits in reverse order. -/
-private theorem phaseState_univ (y : Config (Q n)) :
+private theorem phaseState_univ (y : Config (Qudits (Fin n) 2)) :
     phaseState x Finset.univ (phase x) y = dft n (fun i ↦ y (Fin.rev i)) x := by
   rw [phaseState, dft, of_apply, Finset.card_univ, Fintype.card_fin,
     ite_eq_left (fun k hk ↦ absurd (Finset.mem_univ k) hk), mul_one, ← Complex.exp_sum]
@@ -379,11 +385,12 @@ private theorem phaseState_univ (y : Config (Q n)) :
 
 /-- The swap on the cell `(a, b)` with `a < b` exchanges the two qubits. -/
 private theorem swap_mulVec {p : {p : Fin n × Fin n // p.1 ≠ p.2}} (hp : ¬ p.1.2 < p.1.1)
-    (ψ : Config (Q n) → ℂ) (y : Config (Q n)) :
+    (ψ : Config (Qudits (Fin n) 2) → ℂ) (y : Config (Qudits (Fin n) 2)) :
     (gateOp (.inr p) *ᵥ ψ) y = ψ (fun v ↦ y (Equiv.swap p.1.1 p.1.2 v)) := by
   obtain ⟨⟨a, b⟩, h⟩ := p
   change (place ({a} ∪ {b}) ((if b < a then controlled (phaseShift ((a : ℕ) - b + 1))
-    else swapMatrix 2).submatrix (pairEquiv (Q n) h) (pairEquiv (Q n) h)) *ᵥ ψ) y = _
+    else swapMatrix 2).submatrix (pairEquiv (Qudits (Fin n) 2) h)
+      (pairEquiv (Qudits (Fin n) 2) h)) *ᵥ ψ) y = _
   rw [ite_eq_right hp, place_pairEquiv_mulVec, Finset.sum_eq_single (y b, y a)
     (fun q _ hq ↦ by rw [swapMatrix_apply, ite_eq_right_iff.mpr fun hc ↦
       absurd (Prod.ext hc.2.symm hc.1.symm) hq, zero_mul]) (by simp),
@@ -404,7 +411,7 @@ reversed, the others fixed. -/
 private def swapped (m : ℕ) (v : Fin n) : Fin n :=
   if (v : ℕ) < m ∨ (Fin.rev v : ℕ) < m then Fin.rev v else v
 
-private theorem foldl_swapCells (ψ : Config (Q n) → ℂ) :
+private theorem foldl_swapCells (ψ : Config (Qudits (Fin n) 2) → ℂ) :
     (swapCells n).foldl (fun w b ↦ gateOp b *ᵥ w) ψ = fun y ↦ ψ (fun v ↦ y (Fin.rev v)) := by
   have key : ∀ m ≤ n / 2, ((swapCells n).take m).foldl (fun w b ↦ gateOp b *ᵥ w) ψ =
       fun y ↦ ψ (fun v ↦ y (swapped m v)) := by
@@ -458,7 +465,7 @@ private theorem hadamardsAfter_eq (A : Finset (Fin n)) (L : List (geometry n).Ce
 /-- Along any admissible order of the Hadamard and controlled phase gates, the product of the
 placed gates is the Fourier matrix read with the output bits in reverse order. -/
 theorem prod_gateOp_core {L : List (geometry n).Cell} (hL : IsGateOrder ∅ L) (hnd : L.Nodup)
-    (hcells : L.toFinset = coreCells n) (y x : Config (Q n)) :
+    (hcells : L.toFinset = coreCells n) (y x : Config (Qudits (Fin n) 2)) :
     (L.map gateOp).reverse.prod y x = dft n (fun i ↦ y (Fin.rev i)) x := by
   have hA : hadamardsAfter ∅ L = Finset.univ := by
     rw [hadamardsAfter_eq]
@@ -503,15 +510,17 @@ def seqCells (n : ℕ) : List (geometry n).Cell :=
 
 /-- The layers of one gate each along a list of cells. -/
 noncomputable def gateLayers (L : List (geometry n).Cell) :
-    List (Layer (geometry n) KrausGate (Q n) (Q n)) :=
+    List (Layer (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2)) :=
   L.map fun b ↦ Layer.single b (qftGate b)
 
 /-- The Fourier transform with the output bits in reverse order. -/
-noncomputable def qftCore (n : ℕ) : Circuit (geometry n) KrausGate (Q n) (Q n) :=
+noncomputable def qftCore (n : ℕ) :
+    Circuit (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2) :=
   Circuit.seq (gateLayers (seqCells n))
 
 /-- The quantum Fourier transform of Nielsen–Chuang, Fig. 5.1. -/
-noncomputable def qft (n : ℕ) : Circuit (geometry n) KrausGate (Q n) (Q n) :=
+noncomputable def qft (n : ℕ) :
+    Circuit (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2) :=
   Circuit.seq (gateLayers (seqCells n ++ swapCells n))
 
 private theorem mem_qubitCells {i : Fin n} {b : (geometry n).Cell} :
@@ -619,7 +628,7 @@ theorem toFinset_seqCells : (seqCells n).toFinset = coreCells n := by
       exact ⟨p.1.2, List.mem_finRange _, mem_qubitCells.mpr (Or.inr ⟨p, rfl, this, rfl⟩)⟩
 
 /-- The Fourier matrix is unitary. -/
-theorem dft_mem_unitaryGroup (n : ℕ) : dft n ∈ unitaryGroup (Config (Q n)) ℂ := by
+theorem dft_mem_unitaryGroup (n : ℕ) : dft n ∈ unitaryGroup (Config (Qudits (Fin n) 2)) ℂ := by
   rw [← prod_gateOp_eq_dft isGateOrder_seqCells seqCells_nodup toFinset_seqCells]
   refine Submonoid.list_prod_mem _ fun M hM ↦ ?_
   obtain ⟨b, -, rfl⟩ := List.mem_map.mp (List.mem_reverse.mp hM)
@@ -652,7 +661,7 @@ theorem length_seqCells : (seqCells n).length = n * (n + 1) / 2 := by
   rw [this, Nat.add_mul_div_right _ _ two_pos]
 
 /-- Without the swaps, the Fourier transform reverses the order of the output bits. -/
-theorem kraus_qftCore (n : ℕ) (p : (qftCore n).Index) (y x : Config (Q n)) :
+theorem kraus_qftCore (n : ℕ) (p : (qftCore n).Index) (y x : Config (Qudits (Fin n) 2)) :
     (qftCore n).kraus KrausGate.ev p y x = dft n (fun i ↦ y (Fin.rev i)) x := by
   rw [show (qftCore n).kraus KrausGate.ev p = _ from Circuit.kraus_seq_map KrausGate.ev _ gateOp _
       (fun b _ i ↦ Layer.kraus_single KrausGate.ev b (qftGate b) i) p,

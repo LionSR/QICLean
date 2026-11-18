@@ -19,9 +19,10 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \lean{ManyBody.Config, ManyBody.RegionConfig, ManyBody.ComplConfig,
         ManyBody.cutEquiv, ManyBody.cutEquiv_symm_apply_mem,
         ManyBody.cutEquiv_symm_apply_not_mem, ManyBody.cutEquiv_fst_eq_iff,
-        ManyBody.cutEquiv_snd_eq_iff}
+        ManyBody.cutEquiv_snd_eq_iff, ManyBody.Qudits}
     \leanok
-    A configuration of the system is $\sigma\in X_V=\prod_{v\in V}X_v$. For a
+    A configuration of the system is $\sigma\in X_V=\prod_{v\in V}X_v$. The system of
+    qudits of dimension $d$ on $V$ has the basis $\{0,\dots,d-1\}$ at every site. For a
     region $D$, the cut along $D$ is the bijection
     $X_V\to X_D\times X_{V\setminus D}$, $\sigma\mapsto(\sigma|_D,
     \sigma|_{V\setminus D})$. Two configurations have the same part on $D$

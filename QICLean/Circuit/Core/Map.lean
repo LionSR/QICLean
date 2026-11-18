@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.Channel
 import QICLean.Circuit.Core.Cost
+import QICLean.Circuit.Geometry.Hom
 
 /-!
 # Moving circuits between sites, geometries and gate families
@@ -17,7 +18,8 @@ Unbranchedness, local properties, costs and Kraus operators move along
 `Circuit.kraus_mapLayers`) as soon as they move along each layer.
 
 There are two layer maps, one for each kind of change. Both move the cells along a morphism of
-geometries `Geometry.Hom` over a map of sites and put one gate on each image cell, so the gate
+geometries `Geometry.Hom` (`Circuit/Geometry/Hom.lean`) over a map of sites and put one gate
+on each image cell, so the gate
 outcomes, the gate factor of the Kraus operators, the local properties of the gates and the
 weights of gates of the image layer are computed once for both.
 
@@ -39,7 +41,6 @@ because a circuit may change its basis types, so that its Kraus operators need n
 
 ## Main definitions
 
-* `QuantumCircuit.Geometry.Hom` — a morphism of geometries over a map of sites.
 * `QuantumCircuit.LayerMap`, `QuantumCircuit.Circuit.mapLayers` — circuits moved layer by layer.
 * `QuantumCircuit.GateMorphism`, `QuantumCircuit.Circuit.mapGate` — the map on the same sites.
 * `QuantumCircuit.extendSystem` — a system on other sites.
@@ -62,51 +63,6 @@ open Matrix ManyBody
 open scoped Kronecker
 
 namespace QuantumCircuit
-
-/-! ### Morphisms of geometries -/
-
-section Hom
-
-variable {S S' : Type} {Γ : Geometry S} {Γ' : Geometry S'} {ι : S ↪ S'}
-
-/-- A morphism of geometries over the map of sites `ι`: an injective map of cells carrying the
-sites of a cell to the sites of its image. Costs are compared separately. -/
-structure Geometry.Hom (Γ : Geometry S) (Γ' : Geometry S') (ι : S ↪ S') where
-  /-- The map of cells. -/
-  cellMap : Γ.Cell ↪ Γ'.Cell
-  /-- The sites of the image of a cell. -/
-  cell_cellMap : ∀ b, Γ'.cell (cellMap b) = (Γ.cell b).map ι
-
-/-- The identity morphism of a geometry. -/
-def Geometry.Hom.refl (Γ : Geometry S) : Γ.Hom Γ (Function.Embedding.refl S) where
-  cellMap := Function.Embedding.refl _
-  cell_cellMap _ := Finset.map_refl.symm
-
-/-- The sites of the image of a set of cells are the image of its sites. -/
-theorem Geometry.Hom.biUnion_map [DecidableEq S] [DecidableEq S'] (h : Γ.Hom Γ' ι)
-    (s : Finset Γ.Cell) :
-    (s.map h.cellMap).biUnion Γ'.cell = (s.biUnion Γ.cell).map ι := by
-  ext v
-  simp only [Finset.mem_biUnion, Finset.mem_map]
-  constructor
-  · rintro ⟨_, ⟨b, hb, rfl⟩, hv⟩
-    rw [h.cell_cellMap] at hv
-    obtain ⟨t, ht, rfl⟩ := Finset.mem_map.mp hv
-    exact ⟨t, ⟨b, hb, ht⟩, rfl⟩
-  · rintro ⟨t, ⟨b, hb, ht⟩, rfl⟩
-    exact ⟨h.cellMap b, ⟨b, hb, rfl⟩, by rw [h.cell_cellMap]; exact Finset.mem_map_of_mem _ ht⟩
-
-/-- The images of pairwise disjoint cells are pairwise disjoint. -/
-theorem Geometry.Hom.pairwiseDisjoint_map (h : Γ.Hom Γ' ι) {s : Finset Γ.Cell}
-    (hs : (s : Set Γ.Cell).PairwiseDisjoint Γ.cell) :
-    ((s.map h.cellMap : Finset Γ'.Cell) : Set Γ'.Cell).PairwiseDisjoint Γ'.cell := by
-  intro b₁ hb₁ b₂ hb₂ hne
-  obtain ⟨c₁, hc₁, rfl⟩ := Finset.mem_map.mp hb₁
-  obtain ⟨c₂, hc₂, rfl⟩ := Finset.mem_map.mp hb₂
-  simp only [Function.onFun, h.cell_cellMap, Finset.disjoint_map]
-  exact hs hc₁ hc₂ fun hc ↦ hne (congrArg _ hc)
-
-end Hom
 
 /-! ### Gates moved to an equal region -/
 

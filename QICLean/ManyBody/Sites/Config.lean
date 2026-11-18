@@ -25,6 +25,7 @@ system `X` applies to them as it stands.
 * `ManyBody.Config` — configurations of a system.
 * `ManyBody.RegionConfig`, `ManyBody.ComplConfig` — configurations of a region and of its
   complement.
+* `ManyBody.Qudits` — the system with the basis `Fin d` at every site.
 * `ManyBody.cutEquiv` — a configuration as a pair of a configuration of a region and one of
   its complement.
 -/
@@ -36,6 +37,9 @@ variable {V : Type*}
 /-- Configurations of a system of sites with basis types `X`: the index type of the standard
 basis of `⊗_v ℂ^{X v}`. -/
 abbrev Config (X : V → Type*) := (v : V) → X v
+
+/-- The system with the basis `Fin d` at every site of `V`. -/
+abbrev Qudits (V : Type) (d : ℕ) : V → Type := fun _ ↦ Fin d
 
 /-- Configurations of a region `D`. -/
 abbrev RegionConfig (X : V → Type*) (D : Finset V) := (v : {v // v ∈ D}) → X v

@@ -242,7 +242,7 @@ private theorem swapCells_pairwiseDisjoint :
 /-- The layer of the gates on a list of cells with pairwise disjoint cells. -/
 noncomputable def listLayer (L : List (geometry n).Cell)
     (h : ((L.toFinset : Finset (geometry n).Cell) : Set (geometry n).Cell).PairwiseDisjoint
-      (geometry n).cell) : Layer (geometry n) KrausGate (Q n) (Q n) :=
+      (geometry n).cell) : Layer (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2) :=
   Layer.ofCells L.toFinset h fun c ↦ qftGate c.1
 
 private theorem kraus_listLayer {L : List (geometry n).Cell} (hnd : L.Nodup)
@@ -262,20 +262,24 @@ private theorem kraus_listLayer {L : List (geometry n).Cell} (hnd : L.Nodup)
   rw [List.attach_map_val, List.map_reverse]
 
 /-- The gates at time `t`. -/
-noncomputable def timeLayer (t : ℕ) : Layer (geometry n) KrausGate (Q n) (Q n) :=
+noncomputable def timeLayer (t : ℕ) :
+    Layer (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2) :=
   listLayer (timeCells t) (timeCells_pairwiseDisjoint t)
 
 /-- The swaps of the qubits `k` and `n - 1 - k`, for `k < n / 2`. -/
-noncomputable def swapLayer (n : ℕ) : Layer (geometry n) KrausGate (Q n) (Q n) :=
+noncomputable def swapLayer (n : ℕ) :
+    Layer (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2) :=
   listLayer (swapCells n) swapCells_pairwiseDisjoint
 
 /-- The layers of the Fourier transform in linear depth: the gates at the times
 `0, …, 2n - 2`, then the swaps. -/
-noncomputable def parLayers (n : ℕ) : List (Layer (geometry n) KrausGate (Q n) (Q n)) :=
+noncomputable def parLayers (n : ℕ) :
+    List (Layer (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2)) :=
   (List.range (2 * n - 1)).map timeLayer ++ [swapLayer n]
 
 /-- The Fourier transform in `2n` layers. -/
-noncomputable def qftPar (n : ℕ) : Circuit (geometry n) KrausGate (Q n) (Q n) :=
+noncomputable def qftPar (n : ℕ) :
+    Circuit (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2) :=
   Circuit.seq (parLayers n)
 
 private theorem reverse_prod_flatMap (f : ℕ → List (geometry n).Cell) :
@@ -290,8 +294,9 @@ private theorem reverse_prod_flatMap (f : ℕ → List (geometry n).Cell) :
 /-- The Fourier transform in linear depth has the matrix of the Fourier transform. -/
 theorem kraus_qftPar (n : ℕ) (p : (qftPar n).Index) :
     (qftPar n).kraus KrausGate.ev p = dft n := by
-  have h : List.Forall₂ (fun (M : Layer (geometry n) KrausGate (Q n) (Q n)) U ↦
-      ∀ i, M.kraus KrausGate.ev i = U) (parLayers n)
+  have h : List.Forall₂
+      (fun (M : Layer (geometry n) KrausGate (Qudits (Fin n) 2) (Qudits (Fin n) 2)) U ↦
+        ∀ i, M.kraus KrausGate.ev i = U) (parLayers n)
       ((List.range (2 * n - 1)).map (fun t ↦ ((timeCells t).map gateOp).reverse.prod) ++
         [((swapCells n).map gateOp).reverse.prod]) := by
     refine List.rel_append ?_ (List.Forall₂.cons (kraus_listLayer swapCells_nodup _) .nil)
