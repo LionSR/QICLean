@@ -95,8 +95,9 @@ preservation, and the backward light cone.
         QuantumCircuit.Layer.kraus_single}
     \leanok
     \uses{def:circuits_layer, def:sites_place}
-    The layer with one plain gate $V$ on a cell $b$ and the identity at every other
-    site has the single Kraus operator $V\otimes1$, the placement of $V$ on $C_b$.
+    The layer with one gate on a cell $b$ and the identity at every other site has,
+    at an outcome of the gate with matrix $V$, the Kraus operator $V\otimes1$, the
+    placement of $V$ on $C_b$.
 \end{lemma}
 \begin{proof}\leanok
     At a site outside $C_b$ the entry of the identity is $1$ when the two
@@ -416,7 +417,7 @@ and each Kraus operator is a product of local entries over the blocks.
 \begin{lemma}[Sequences of layers of one operator]
     \label{lem:circuits_seq}
     \lean{QuantumCircuit.Circuit.kraus_seq, QuantumCircuit.Circuit.kraus_seq_map,
-        QuantumCircuit.Circuit.total_seq,
+        QuantumCircuit.Circuit.total_seq, QuantumCircuit.Circuit.total_comp_of_isUnbranched,
         QuantumCircuit.Circuit.gateCount_seq_eq_length, QuantumCircuit.Circuit.forall_seq,
         QuantumCircuit.Circuit.isUnbranched_seq}
     \leanok
@@ -427,6 +428,8 @@ and each Kraus operator is a product of local entries over the blocks.
     every layer holds locally on the sequence. If every layer has at least one
     outcome, the cost of the sequence is the sum of the costs of its layers; in
     particular a sequence of such layers of gate count $1$ has the gate count $m$.
+    More generally the cost of an unbranched circuit with a branch, followed by any
+    circuit, is the sum of the two costs.
 \end{lemma}
 \begin{proof}\leanok
     Induction on $m$. The Kraus operator of $L_1$ followed by the rest along a
@@ -489,7 +492,8 @@ sequence on one system.
     \lean{QuantumCircuit.Layer.kraus_ofCells, QuantumCircuit.Layer.map_ofCells,
         QuantumCircuit.Layer.forall_ofCells, QuantumCircuit.Layer.nonempty_index_ofCells,
         QuantumCircuit.Layer.forall_single, QuantumCircuit.Layer.nonempty_index_single,
-        QuantumCircuit.Layer.gateCount_single, QuantumCircuit.Layer.depth_single}
+        QuantumCircuit.Layer.cellCost_single, QuantumCircuit.Layer.gateCount_single,
+        QuantumCircuit.Layer.depth_single}
     \leanok
     \uses{def:circuits_of_cells, def:circuits_costs, def:circuits_local,
         lem:sites_place_hom}
@@ -505,8 +509,8 @@ sequence on one system.
     $g_{b_k}$, in this order. A property of Kraus families holding for every gate and
     for the identity holds locally on the layer; in particular a layer of
     trace-preserving gates is a quantum channel by Theorem~\ref{thm:circuits_layer_tp}.
-    The layer of one gate on a cell $b$ has gate count $c_b$, and depth $1$ if
-    $c_b>0$.
+    The layer of one gate $g$ on a cell $b$ has the weight $w(b,g)$ for every weight
+    of gates, in particular gate count $c_b$, and depth $1$ if $c_b>0$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:sites-regional-union}
@@ -796,14 +800,18 @@ are embedded.
 
 \begin{lemma}[Probabilities sum to the trace]
     \label{lem:circuits_sum_prob}
-    \lean{QuantumCircuit.Circuit.sum_prob, QuantumCircuit.Circuit.sum_outcomeProb}
+    \lean{QuantumCircuit.Circuit.prob_vecMulVec, QuantumCircuit.Circuit.sum_prob,
+        QuantumCircuit.Circuit.sum_outcomeProb}
     \leanok
     \uses{def:circuits_outcome, thm:circuits_tp}
-    For a circuit whose gates and onsite families are trace-preserving, the
-    probabilities of the branches, and the probabilities of the values of a readout,
-    sum to $\operatorname{tr}\rho$.
+    On a pure input $\rho=\psi\psi^\dagger$ the probability of a branch $p$ is
+    $\lVert K_p\psi\rVert^2$. For a circuit whose gates and onsite families are
+    trace-preserving, the probabilities of the branches, and the probabilities of the
+    values of a readout, sum to $\operatorname{tr}\rho$.
 \end{lemma}
 \begin{proof}\leanok
+    The first statement is
+    $\operatorname{tr}(K_p\psi\psi^\dagger K_p^\dagger)=\lVert K_p\psi\rVert^2$.
     The sum over branches of $\operatorname{tr}(K_p\rho K_p^\dagger)$ is the trace of
     the image of $\rho$ under the channel of the circuit, which is
     $\operatorname{tr}\rho$ by Theorem~\ref{thm:circuits_tp}. The values of a readout

@@ -36,14 +36,30 @@ by definition.
 * `QuantumCircuit.PhaseEstimation.circuit` — the circuit of Nielsen–Chuang, Fig. 5.3, with the
   measurement of the control register.
 * `QuantumCircuit.PhaseEstimation.readout` — the measured integer.
+* `QuantumCircuit.PhaseEstimation.amplitude` — the amplitude of an outcome.
 
 ## Main results
 
 * `QuantumCircuit.PhaseEstimation.queryCount_circuit` — the circuit calls the oracle
   `2^t - 1` times.
+* `QuantumCircuit.PhaseEstimation.outcomeProb_eq` — the outcome `k` has probability `|αₖ|²`,
+  `αₖ = 2^{-t} ∑_{j < 2^t} e^{2πi j (φ - k/2^t)}` (Nielsen–Chuang, eq. (5.24)), and these sum to
+  `1` (`sum_norm_sq_amplitude`).
+* `QuantumCircuit.PhaseEstimation.outcomeProb_eq_one_of_exact` — if `2^t φ` is an integer, the
+  outcome congruent to it has probability `1`.
 * `QuantumCircuit.PhaseEstimation.accurate_prob_ge` — with `t = n + ⌈log₂(2 + 1/(2ε))⌉` qubits
   the estimate is within `2^{-n}` of `φ`, modulo `1`, with probability at least `1 - ε`
   (Nielsen–Chuang, eq. (5.35)).
+
+The statements need only the eigenvector equation `U u = e^{2πiφ} u`, not that `U` is unitary.
+
+The proof follows the state: the Hadamard gates give `2^{-t/2} ∑ₓ |x⟩ ⊗ u`, each controlled call
+multiplies the component with control `1` by the eigenvalue, so the calls give
+`2^{-t/2} ∑ₓ e^{2πiφ⟨x⟩} |x⟩ ⊗ u`, and the inverse Fourier transform gives `∑ₖ αₖ |k⟩ ⊗ u`. The
+tail bound is the estimate of Nielsen–Chuang, eqs. (5.26)–(5.34): `|αₖ| ≤ 1/(2|ℓ - δ|)` when
+`2^t φ - k ≡ δ - ℓ` with `0 ≤ δ < 1`, from `|1 - e^{2πix}| ≥ 4|x - r|` for `|x - r| ≤ 1/2`, and
+`∑_{a ≥ M} 1/a² ≤ 1/(M - 1)` on each side. This gives the bound `1/(2(2^{t-n} - 1))` for the
+outcomes farther than `2^{-n}`.
 -/
 
 open Matrix ManyBody Complex
@@ -295,7 +311,8 @@ theorem queryCount_circuit : (circuit t m).queryCount = 2 ^ t - 1 := by
     rw [List.map_congr_left fun L hL ↦ show L.cellCost (fun _ _ _ g ↦ Oracle.callCount g) = 1 by
       obtain ⟨j, rfl⟩ := mem_queryLayers hL
       exact Layer.cellCost_single _ _ _, List.map_const', List.sum_replicate, smul_eq_mul,
-      mul_one, List.length_flatMap, List.map_reverse, List.sum_reverse, ← sum_two_pow_sub t, Fin.sum_univ_def]
+      mul_one, List.length_flatMap, List.map_reverse, List.sum_reverse, ← sum_two_pow_sub t,
+      Fin.sum_univ_def]
     simp only [List.length_replicate]
   rw [hq, hm, hH, hQ, zero_add, add_zero, add_zero]
 
@@ -424,7 +441,8 @@ private theorem query_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ
         exact (Function.update_of_ne hij q.1 (control t m σ)).symm
     · rw [cutEquiv_symm_apply_mem _ _ (by simp)]
       exact pairEquiv_symm_apply_right (system t m) Sum.inl_ne_inr q
-  have hq : ∀ q : system t m (.inl j) × system t m (.inr ()), (controlled U).submatrix (pairEquiv (system t m) (inlNeInr j))
+  have hq : ∀ q : system t m (.inl j) × system t m (.inr ()),
+      (controlled U).submatrix (pairEquiv (system t m) (inlNeInr j))
       (pairEquiv (system t m) (inlNeInr j)) (fun v ↦ σ v)
         ((pairEquiv (system t m) (inlNeInr j)).symm q) =
       controlled U (control t m σ j, σ (.inr ())) q := fun q ↦
@@ -514,7 +532,8 @@ private theorem measure_mulVec (ev : Interpretation (Gate t m)) (i : (measureLay
   · simp [h]
 
 /-- A matrix on the control register, tensored with the identity on the target. -/
-private theorem kron_one_mulVec (A : Matrix (Config (Q t)) (Config (Q t)) ℂ) (u : Fin m → ℂ) (f : Config (Q t) → ℂ) :
+private theorem kron_one_mulVec (A : Matrix (Config (Q t)) (Config (Q t)) ℂ) (u : Fin m → ℂ)
+    (f : Config (Q t) → ℂ) :
     (A ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
       (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t))
       (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)) *ᵥ
@@ -579,7 +598,8 @@ theorem sum_norm_sq_amplitude (φ : ℝ) : ∑ k, ‖amplitude t φ k‖ ^ 2 = 1
     simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
       Complex.I_re, Complex.I_im, Complex.re_ofNat, Complex.im_ofNat]
     rw [show ((2 * Real.pi - 0 * 0) * 0 - (2 * 0 + 0 * Real.pi) * 1) * φ -
-      ((2 * Real.pi - 0 * 0) * 1 + (2 * 0 + 0 * Real.pi) * 0) * 0 = 0 by ring, Real.exp_zero, one_pow, mul_one, ← pow_mul, mul_comm t 2, pow_mul, norm_invSqrtTwo_sq,
+      ((2 * Real.pi - 0 * 0) * 1 + (2 * 0 + 0 * Real.pi) * 0) * 0 = 0 by ring, Real.exp_zero,
+      one_pow, mul_one, ← pow_mul, mul_comm t 2, pow_mul, norm_invSqrtTwo_sq,
       inv_pow]
   simp only [h, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
   rw [Fintype.card_pi]
@@ -602,7 +622,8 @@ private theorem foldl_query {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ}
 
 /-- The control qubit `j` is called `2^{t-1-j}` times, so the exponents add up to `⟨x⟩`. -/
 private theorem sum_queries (x : Config (Q t)) :
-    (((List.finRange t).reverse.flatMap fun j : Fin t ↦ List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map
+    (((List.finRange t).reverse.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map
       fun j ↦ (x j : ℕ)).sum = encode t x := by
   have h : ∀ l : List (Fin t), ((l.flatMap fun j : Fin t ↦
       List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map
@@ -762,7 +783,8 @@ private theorem norm_amplitude_le (t : ℕ) (φ : ℝ) (k : Fin (2 ^ t)) (r : �
     push_cast
     ring
   rw [amplitude, hsum, geom_sum_eq hz1, norm_mul, norm_div, norm_inv, norm_pow, Complex.norm_two]
-  have hnum : ‖z ^ 2 ^ t - 1‖ ≤ 2 := (norm_sub_le _ _).trans (by rw [norm_pow, hnorm]; simp; norm_num)
+  have hnum : ‖z ^ 2 ^ t - 1‖ ≤ 2 :=
+    (norm_sub_le _ _).trans (by rw [norm_pow, hnorm]; simp; norm_num)
   have hden : 0 < ‖z - 1‖ := by linarith
   calc (2 ^ t)⁻¹ * (‖z ^ 2 ^ t - 1‖ / ‖z - 1‖) ≤ (2 ^ t)⁻¹ * (2 / (4 * |x - r|)) := by
         gcongr
