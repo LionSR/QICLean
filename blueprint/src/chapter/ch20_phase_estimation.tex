@@ -153,3 +153,40 @@ control qubits to the register that also holds the target.
     $M\ge2+1/(2\varepsilon)$ gives $1/(2(M-1))\le\varepsilon$, and the probabilities of
     all outcomes sum to $1$.
 \end{proof}
+
+\section{Semiclassical phase estimation}
+\label{sec:phase_estimation_semiclassical}
+
+\begin{definition}[Semiclassical phase estimation]
+    \label{def:phase_estimation_semiclassical}
+    \lean{QuantumCircuit.PhaseEstimation.correction,
+        QuantumCircuit.PhaseEstimation.correctedMeasure,
+        QuantumCircuit.PhaseEstimation.measureQubit, QuantumCircuit.PhaseEstimation.qubitOutcome,
+        QuantumCircuit.PhaseEstimation.measureFrom, QuantumCircuit.PhaseEstimation.outcomesFrom,
+        QuantumCircuit.PhaseEstimation.semiclassical,
+        QuantumCircuit.PhaseEstimation.semiclassicalReadout}
+    \leanok
+    \uses{def:phase_estimation_circuit, def:circuits_circuit, def:circuits_outcome}
+    Semiclassical phase estimation \cite{GriffithsNiu1996} replaces the inverse Fourier
+    transform and the measurement by measurements of the control qubits one at a time,
+    in the order $0,1,\dots,t-1$. Before the qubit $j$ is measured it gets the phase
+    gate $\operatorname{diag}(1,e^{-2\pi i\theta_j})$ with
+    $\theta_j=\sum_{i<j}b_i/2^{j-i+1}$, where $b_i$ is the outcome of the qubit $i$,
+    and then the Hadamard gate. The circuit branches: the layer measuring the qubit $j$
+    depends on the outcomes of the earlier layers. The readout is the integer whose bit
+    at the site $t-1-j$ is $b_j$.
+\end{definition}
+
+\begin{theorem}[Semiclassical phase estimation]
+    \label{thm:phase_estimation_semiclassical}
+    \lean{QuantumCircuit.PhaseEstimation.semiclassical_outcomeProb_eq,
+        QuantumCircuit.PhaseEstimation.semiclassical_accurate_prob_ge,
+        QuantumCircuit.PhaseEstimation.queryCount_semiclassical}
+    \leanok
+    \uses{def:phase_estimation_semiclassical, thm:phase_estimation_amplitude,
+        thm:phase_estimation_success, thm:phase_estimation_query_count}
+    Under the hypotheses of Theorem~\ref{thm:phase_estimation_amplitude}, the readout $k$
+    of semiclassical phase estimation has probability $\lvert\alpha_k\rvert^2$. Hence it
+    has the success probability of Theorem~\ref{thm:phase_estimation_success}, and it
+    calls the oracle $2^t-1$ times.
+\end{theorem}
