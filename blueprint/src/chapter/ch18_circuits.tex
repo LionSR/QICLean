@@ -509,3 +509,153 @@ and each Kraus operator is a product of local entries over the blocks.
     on a vector is the formula of Definition~\ref{def:sites_place}, with the
     configurations of $\{a\}$ identified with $X_a$.
 \end{proof}
+
+\section{Product-formula circuits}
+\label{sec:circuits_product_formula}
+
+\begin{definition}[Product-formula circuit]
+    \label{def:circuits_product_formula}
+    \lean{QuantumCircuit.Geometry.ofSupports, QuantumCircuit.overlapGraph,
+        QuantumCircuit.colourClass, QuantumCircuit.colourOrder,
+        QuantumCircuit.colourSweeps, QuantumCircuit.productLayer,
+        QuantumCircuit.productCircuit}
+    \leanok
+    \uses{def:circuits_geometry, def:circuits_of_cells, lem:circuits_seq}
+    Let $(T_k)_{k\in K}$ be a finite family of regions. The geometry of the family
+    has the cells $T_k$, each of cost $1$. Its overlap graph joins distinct indices
+    whose regions meet, and a colouring $c$ of it with $m$ colours has colour classes
+    $C_i=\{k: c(k)=i\}$; listing the classes in turn gives an order of $K$. For a
+    gate $g_k$ on each $T_k$, the layer of colour $i$ carries the gates $g_k$,
+    $k\in C_i$, and the identity elsewhere, and the product-formula circuit with $n$
+    sweeps is the sequence of the $m$ colour layers in order, repeated $n$ times.
+\end{definition}
+
+\begin{lemma}[Colour classes]
+    \label{lem:circuits_colour_classes}
+    \lean{QuantumCircuit.disjoint_of_colour_eq, QuantumCircuit.mem_colourClass,
+        QuantumCircuit.pairwiseDisjoint_colourClass, QuantumCircuit.nodup_colourOrder,
+        QuantumCircuit.mem_colourOrder, QuantumCircuit.colourOrder_perm}
+    \leanok
+    \uses{def:circuits_product_formula}
+    The regions of one colour class are pairwise disjoint, and the order of the
+    colour classes lists every index exactly once.
+\end{lemma}
+\begin{proof}\leanok
+    Distinct indices whose regions meet are adjacent, so they have different
+    colours. Every index lies in the class of its colour and in no other.
+\end{proof}
+
+\begin{theorem}[Costs and light cone of a product-formula circuit]
+    \label{thm:circuits_product_formula_costs}
+    \lean{QuantumCircuit.length_colourSweeps, QuantumCircuit.sum_map_colourSweeps,
+        QuantumCircuit.reverse_prod_map_colourSweeps,
+        QuantumCircuit.isUnbranched_productCircuit,
+        QuantumCircuit.depth_productCircuit_le, QuantumCircuit.gateCount_productCircuit,
+        QuantumCircuit.participation_productCircuit,
+        QuantumCircuit.dual_productCircuit_mem_supportedOperators}
+    \leanok
+    \uses{def:circuits_product_formula, lem:circuits_colour_classes,
+        thm:circuits_of_cells, def:circuits_costs, thm:circuits_light_cone}
+    The product-formula circuit with $n$ sweeps is unbranched and has depth at most
+    $nm$. If every gate has an outcome, it has $n|K|$ gates and meets each site $s$
+    in $n\,|\{k: s\in T_k\}|$ gates. If every gate is trace-preserving, its
+    Heisenberg picture maps an operator supported on a region $R$ to an operator
+    supported on the $nm$-fold neighbourhood of $R$.
+\end{theorem}
+\begin{proof}\leanok
+    Each colour layer has depth at most $1$, costs $|C_i|$, and meets $s$ in the
+    gates of $C_i$ whose regions contain $s$; the classes partition $K$. The light
+    cone of a circuit whose cells have positive cost lies in the neighbourhood
+    iterated as often as its depth.
+\end{proof}
+
+\begin{theorem}[Plain gates]
+    \label{thm:circuits_product_formula_single}
+    \lean{QuantumCircuit.kraus_productCircuit_single,
+        QuantumCircuit.dual_productCircuit_single}
+    \leanok
+    \uses{thm:circuits_product_formula_costs, thm:circuits_of_cells, lem:circuits_seq}
+    For gates of one operator $V_k$ each, the product-formula circuit has a single
+    branch, with the Kraus operator
+    \[
+        W=\bigl((V_{o_N}\otimes1)\cdots(V_{o_1}\otimes1)\bigr)^n,
+    \]
+    where $o$ is the order of the colour classes, and its Heisenberg picture is
+    $A\mapsto W^*AW$.
+\end{theorem}
+\begin{proof}\leanok
+    The Kraus operator of a colour layer is the product of the placed gates of its
+    class; the sequence multiplies these, the first layer on the right, and the
+    order of the classes collects them into the product along $o$. Every layer has
+    one outcome, so the circuit has one branch.
+\end{proof}
+
+\section{The Trotter circuit}
+\label{sec:circuits_trotter}
+
+\begin{definition}[Trotter circuit]
+    \label{def:circuits_trotter}
+    \lean{QuantumCircuit.trotterGate, QuantumCircuit.trotterCircuit, QuantumCircuit.restrictTo,
+        QuantumCircuit.isHermitian_restrictTo}
+    \leanok
+    \uses{def:circuits_product_formula, lem:sites_place_exp}
+    Let $h_k$ be a matrix on $\C^{X_{T_k}}$ for each region $T_k$ of the family. The
+    Trotter circuit for a colouring $c$ of the overlap graph is the product-formula
+    circuit with the gates $e^{-ith_k/n}$. The restriction of the family to a region
+    $L$ keeps $h_k$ when $T_k\subseteq L$ and replaces it by $0$ otherwise; its gates
+    outside $L$ are the identity.
+\end{definition}
+
+\begin{theorem}[Trotter circuit]
+    \label{thm:circuits_trotter}
+    \lean{QuantumCircuit.kraus_trotterCircuit, QuantumCircuit.dual_trotterCircuit_eq,
+        QuantumCircuit.forall_isTP_trotterCircuit,
+        QuantumCircuit.dual_trotterCircuit_mem_supportedOperators,
+        QuantumCircuit.norm_kraus_trotterCircuit_sub_le,
+        QuantumCircuit.norm_dual_trotterCircuit_sub_le}
+    \leanok
+    \uses{def:circuits_trotter, thm:circuits_product_formula_costs,
+        thm:circuits_product_formula_single, thm:dynamics_trotter_error}
+    The Trotter circuit has the single Kraus operator $U_1(t)$, the first-order Trotter
+    propagator of the matrices $h_k\otimes1$ in the order $o$ of the colour classes,
+    and its Heisenberg picture is $A\mapsto U_1(t)^*AU_1(t)$. Let the $h_k$ be
+    Hermitian and $H=\sum_kh_k\otimes1$. Then the gates are unitary, the Heisenberg
+    picture maps an operator supported on $R$ to an operator supported on the
+    $nm$-fold neighbourhood of $R$, and for $n\geq1$
+    \[
+        \lVert U_1(t)-e^{-itH}\rVert\leq\frac{t^2}{2n}c(o),\qquad
+        \lVert U_1(t)^*AU_1(t)-e^{itH}Ae^{-itH}\rVert\leq2\lVert A\rVert\frac{t^2}{2n}c(o),
+    \]
+    with $c(o)=\sum_{i<j}\lVert[h_{o_i}\otimes1,h_{o_j}\otimes1]\rVert$.
+\end{theorem}
+\begin{proof}\leanok
+    The placement commutes with the exponential, so the placed gates are
+    $e^{-it(h_k\otimes1)/n}$, and Theorem~\ref{thm:circuits_product_formula_single}
+    gives the Kraus operator and the Heisenberg picture. The bounds are those of
+    Theorem~\ref{thm:dynamics_trotter_error} for the order $o$, which lists every index
+    once.
+\end{proof}
+
+\begin{theorem}[Only the light cone matters]
+    \label{thm:circuits_trotter_restrict}
+    \lean{QuantumCircuit.dual_trotterCircuit_eq_restrict,
+        QuantumCircuit.norm_dual_trotterCircuit_sub_le_restrict}
+    \leanok
+    \uses{thm:circuits_trotter, lem:sites_supported_commute}
+    Let the $h_k$ be Hermitian, let $A$ be supported on $R$, and let $L$ contain the
+    $nm$-fold neighbourhood of $R$. On $A$ the Heisenberg picture of the Trotter
+    circuit agrees with that of the Trotter circuit of the family restricted to $L$.
+    Consequently, with $H_L=\sum_{T_k\subseteq L}h_k\otimes1$, the Heisenberg picture
+    of $A$ differs from $e^{itH}Ae^{-itH}$ by at most
+    $2\lVert A\rVert\frac{t^2}{2n}c_L(o)+\lVert e^{itH_L}Ae^{-itH_L}-e^{itH}Ae^{-itH}\rVert$,
+    where $c_L(o)$ is the commutator sum of the restricted family.
+\end{theorem}
+\begin{proof}\leanok
+    Follow the operator through the layers from the last. A gate whose region misses
+    the current support commutes with the operator, since the gates of a layer have
+    disjoint regions, and drops out of the conjugation; a gate whose region meets the
+    current support lies in its neighbourhood, hence in $L$, so it is a gate of the
+    restriction too. The support grows by one neighbourhood per layer. The bound
+    follows from the triangle inequality and Theorem~\ref{thm:circuits_trotter} for
+    the restricted family.
+\end{proof}
