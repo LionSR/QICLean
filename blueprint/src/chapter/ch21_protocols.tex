@@ -83,9 +83,9 @@ $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ for all $\rh
     The adjoint for the trace pairing of the map of a circuit is its Heisenberg picture.
 \end{lemma}
 \begin{proof}\leanok
-    Both satisfy $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ by the
-    duality in Definition~\ref{def:circuits_circuit}, and the trace pairing is
-    nondegenerate.
+    \uses{lem:circuits_duality}
+    Both satisfy $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ by
+    Lemma~\ref{lem:circuits_duality}, and the trace pairing is nondegenerate.
 \end{proof}
 
 \begin{theorem}[Light cones of protocols]
