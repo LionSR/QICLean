@@ -497,18 +497,42 @@ theorem total_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G
       (total_mapSites_le h φ f f' hf _).trans (Finset.le_sup (f := fun i ↦ (next i).total f)
         (Finset.mem_univ _)))
 
-/-- A local property invariant under relabelling of bases, held by the identity, moves along
-with every transported gate. -/
+/-- A local property invariant under relabelling of bases and of Kraus indices, held by the
+identity, moves along with every transported gate. -/
 theorem forall_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
     {ev : Interpretation G} {ev' : Interpretation G'} (hφ : φ.IsCompatible e W ev ev')
     {P : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β],
       KrausFamily α β → Prop}
-    (hP : ∀ {α β α' β' : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
-      [Fintype α'] [DecidableEq α'] [Fintype β'] [DecidableEq β'] (K : KrausFamily α β)
-      (a : α' ≃ α) (b : β' ≃ β), P K → P ⟨K.Index, fun i ↦ (K.op i).submatrix b a⟩)
-    (hone : ∀ {α : Type} [Fintype α] [DecidableEq α], P (KrausFamily.single (1 : Matrix α α ℂ)))
-    {c : Circuit Γ G X Z} (hc : c.Forall ev P) : (c.mapSites e W h φ).Forall ev' P :=
-  sorry
+    (hP : ∀ {α β α' β' ι : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+      [Fintype α'] [DecidableEq α'] [Fintype β'] [DecidableEq β'] [Fintype ι]
+      (K : KrausFamily α β) (u : ι ≃ K.Index) (a : α' ≃ α) (b : β' ≃ β),
+      P K → P ⟨ι, fun i ↦ (K.op (u i)).submatrix b a⟩)
+    (hone : ∀ {α : Type} [Fintype α] [DecidableEq α], P (KrausFamily.single (1 : Matrix α α ℂ))) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      {c : Circuit Γ G X Z} → c.Forall ev P → (c.mapSites e W h φ).Forall ev' P
+  | _, _, _, _, done _, _ => trivial
+  | _, _, _, _, @step _ _ _ _ _ X₀ Y₀ _ _ _ L next, hc => by
+    refine ⟨⟨fun b' ↦ ?_, fun s' ↦ ?_⟩, fun i ↦ forall_mapSites h φ hφ hP hone (hc.2 _)⟩
+    · have hgen : ∀ {D D' : Finset S'} (hD : D = D') (g : G' D (lift e W X₀) (lift e W Y₀)),
+          P (⟨GateFamily.Outcome g, ev' g⟩ : KrausFamily (RegionConfig (lift e W X₀) D)
+            (RegionConfig (lift e W Y₀) D)) →
+          P (⟨GateFamily.Outcome (Eq.ndrec (motive := fun D ↦ G' D (lift e W X₀) (lift e W Y₀))
+              g hD), ev' (Eq.ndrec (motive := fun D ↦ G' D (lift e W X₀) (lift e W Y₀)) g hD)⟩ :
+              KrausFamily (RegionConfig (lift e W X₀) D') (RegionConfig (lift e W Y₀) D')) := by
+        intro D D' hD g hg; subst hD; exact hg
+      refine hgen _ _ ?_
+      have hK := hP _ (φ.outcome _) (liftRegionEquiv e W _ _) (liftRegionEquiv e W _ _)
+        (hc.1.1 ((L.cellsEquiv e h).symm b'))
+      rw [show ev' (φ.map (L.gate ((L.cellsEquiv e h).symm b'))) = fun o ↦
+        (ev (L.gate ((L.cellsEquiv e h).symm b')) (φ.outcome _ o)).submatrix
+          (liftRegionEquiv e W _ _) (liftRegionEquiv e W _ _) from funext (hφ _)]
+      exact hK
+    · have hgen : ∀ (t : S ⊕ R) (ht : ∀ s, t = .inl s → s ∉ L.cells.biUnion Γ.cell),
+          P (L.liftOnsite W t ht) := by
+        rintro (s | r) ht
+        · exact hc.1.2 _
+        · exact hone
+      exact hgen _ _
 
 /-- The light cone of the image of a region is the image of its light cone. -/
 theorem lightCone_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
