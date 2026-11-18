@@ -222,6 +222,122 @@ private theorem measureQubit_mulVec {ev : Interpretation (Oracle (Fin 2 × Fin m
     exact Finset.sum_congr rfl fun b _ ↦ by ring
   · simp
 
+/-- The factors of the product state at the end of a branch of `measureFrom l b`. -/
+private noncomputable def finalFactors :
+    (l : List (Fin t)) → (b : Fin t → Fin 2) → (Fin t → Fin 2 → ℂ) →
+      (measureFrom t m l b).Index → Fin t → Fin 2 → ℂ
+  | [], _, F, _ => F
+  | j :: l, b, F, p =>
+    let q := (p : Σ i : (measureQubit t m j (correction t b j)).Index,
+      (measureFrom t m l (Function.update b j (qubitOutcome t m i))).Index)
+    finalFactors l (Function.update b j (qubitOutcome t m q.1))
+      (Function.update F j fun y ↦ if y = qubitOutcome t m q.1 then
+        beta (correction t b j) (qubitOutcome t m q.1) (F j) else 0) q.2
+
+private theorem kraus_measureFrom_mulVec {ev : Interpretation (Oracle (Fin 2 × Fin m))}
+    (u : Fin m → ℂ) : ∀ (l : List (Fin t)) (b : Fin t → Fin 2) (F : Fin t → Fin 2 → ℂ)
+      (p : (measureFrom t m l b).Index),
+      (measureFrom t m l b).kraus (Interpretation.sum KrausGate.ev ev) p *ᵥ
+        registerState u (prodState F) = registerState u (prodState (finalFactors l b F p))
+  | [], _, F, _ => by
+    change (1 : Matrix _ _ ℂ) *ᵥ _ = _
+    rw [one_mulVec]
+    rfl
+  | j :: l, b, F, ⟨q, r⟩ => by
+    change ((measureFrom t m l _).kraus _ r * (measureQubit t m j _).kraus _ q) *ᵥ _ = _
+    rw [← mulVec_mulVec, measureQubit_mulVec, kraus_measureFrom_mulVec u l _ _ r]
+    rfl
+
+/-- The correction of the qubit `j` reads only the outcomes of the qubits before it. -/
+private theorem correction_congr {b b' : Fin t → Fin 2} {j : Fin t}
+    (h : ∀ i < j, b i = b' i) : correction t b j = correction t b' j :=
+  Finset.sum_congr rfl fun i hi ↦ by rw [h i (Finset.mem_filter.mp hi).2]
+
+/-- Along a branch measuring the qubits of `l` in increasing order, the factor of a measured
+qubit is its outcome with the amplitude of its corrected measurement. -/
+private theorem finalFactors_eq : ∀ (l : List (Fin t)), l.Pairwise (· < ·) →
+    ∀ (b : Fin t → Fin 2) (F : Fin t → Fin 2 → ℂ) (p : (measureFrom t m l b).Index),
+      (∀ i ∉ l, finalFactors l b F p i = F i) ∧ ∀ i ∈ l, finalFactors l b F p i = fun y ↦
+        if y = outcomesFrom t m l b p i then
+          beta (correction t (outcomesFrom t m l b p) i) (outcomesFrom t m l b p i) (F i) else 0
+  | [], _, _, _, _ => ⟨fun _ _ ↦ rfl, fun _ h ↦ absurd h (List.not_mem_nil)⟩
+  | j :: l, hl, b, F, ⟨q, r⟩ => by
+    rw [List.pairwise_cons] at hl
+    have hjl : j ∉ l := fun h ↦ lt_irrefl j (hl.1 j h)
+    obtain ⟨ih1, ih2⟩ := finalFactors_eq l hl.2 (Function.update b j (qubitOutcome t m q))
+      (Function.update F j fun y ↦ if y = qubitOutcome t m q then
+        beta (correction t b j) (qubitOutcome t m q) (F j) else 0) r
+    have hB : ∀ i ∉ l, outcomesFrom t m l (Function.update b j (qubitOutcome t m q)) r i =
+        Function.update b j (qubitOutcome t m q) i := outcomesFrom_of_notMem l _ r
+    refine ⟨fun i hi ↦ ?_, fun i hi ↦ ?_⟩
+    · rw [List.mem_cons, not_or] at hi
+      change finalFactors l _ _ r i = F i
+      rw [ih1 i hi.2, Function.update_of_ne hi.1]
+    · change finalFactors l _ _ r i = fun y ↦ if y = outcomesFrom t m l _ r i then
+        beta (correction t (outcomesFrom t m l _ r) i) (outcomesFrom t m l _ r i) (F i) else 0
+      rcases List.mem_cons.mp hi with rfl | hi
+      · have hc : correction t b i = correction t (outcomesFrom t m l _ r) i :=
+          correction_congr fun i' hi' ↦ by
+            rw [hB i' fun h ↦ lt_asymm hi' (hl.1 i' h), Function.update_of_ne hi'.ne]
+        rw [ih1 i hjl, Function.update_self, hB i hjl, Function.update_self,
+          show beta (correction t b i) (qubitOutcome t m q) (F i) =
+            beta (correction t (outcomesFrom t m l _ r) i) (qubitOutcome t m q) (F i) from
+            congrArg (fun θ ↦ beta θ (qubitOutcome t m q) (F i)) hc]
+      · rw [ih2 i hi, Function.update_of_ne (hl.1 i hi).ne']
+
+/-! ### The probabilities -/
+
+/-- The factor of the qubit `i` after the preparation:
+`2^{-1/2} (|0⟩ + e^{2πiφ 2^{t-1-i}} |1⟩)`. -/
+private noncomputable def preparedFactor (φ : ℝ) (i : Fin t) (y : Fin 2) : ℂ :=
+  invSqrtTwo * exp (2 * Real.pi * I * φ) ^ ((y : ℕ) * 2 ^ (t - 1 - (i : ℕ)))
+
+private theorem prepared_eq (φ : ℝ) (x : Config (Q t)) :
+    invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ) =
+      prodState (preparedFactor φ) x := by
+  rw [prodState, Qubit.encode_apply]
+  simp only [preparedFactor, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ,
+    Fintype.card_fin, Finset.prod_pow_eq_pow_sum]
+
+/-- The product of the amplitudes of the corrected measurements is the amplitude of the
+readout. -/
+private theorem prod_beta (φ : ℝ) (B : Fin t → Fin 2) :
+    ∏ i, beta (correction t B i) (B i) (preparedFactor φ i) =
+      amplitude t φ (encode t fun s ↦ B s.rev) := by
+  sorry
+
+private theorem prob_semiclassical {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ}
+    (hu : star u ⬝ᵥ u = 1) {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u)
+    (p : (semiclassical t m).Index) :
+    (semiclassical t m).prob (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+      (vecMulVec (input t m u) (star (input t m u))) p =
+      ‖amplitude t φ (semiclassicalReadout t m p)‖ ^ 2 := by
+  rw [Circuit.prob_vecMulVec, Circuit.kraus_comp, ← mulVec_mulVec, kraus_prepare_mulVec huφ,
+    show (fun x ↦ invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ)) =
+      prodState (preparedFactor φ) from funext (prepared_eq φ), kraus_measureFrom_mulVec,
+    sum_norm_sq_registerState hu, semiclassicalReadout, ← prod_beta]
+  generalize ((prepare t m).compIndexEquiv _ p).2 = q
+  obtain ⟨-, h⟩ := finalFactors_eq (List.finRange t) (List.pairwise_lt_finRange t) 0
+    (preparedFactor φ) q
+  simp only [prodState, norm_prod, ← Finset.prod_pow]
+  rw [← Fintype.prod_sum (fun i y ↦ ‖finalFactors (List.finRange t) 0 (preparedFactor φ) q i y‖ ^ 2)]
+  refine Finset.prod_congr rfl fun i _ ↦ ?_
+  rw [h i (List.mem_finRange i)]
+  simp only [apply_ite (fun z : ℂ ↦ ‖z‖ ^ 2), norm_zero, ne_eq, OfNat.ofNat_ne_zero,
+    not_false_eq_true, zero_pow]
+  rw [Finset.sum_ite_eq']
+  simp
+
+private theorem semiclassicalReadout_bijective :
+    Function.Bijective (semiclassicalReadout t m) := by
+  obtain ⟨hu⟩ := nonempty_unique_index_prepare (t := t) (m := m)
+  have h₁ : Function.Bijective fun p : (semiclassical t m).Index ↦
+      ((prepare t m).compIndexEquiv _ p).2 :=
+    (((prepare t m).compIndexEquiv _).trans (Equiv.uniqueProd _ _)).bijective
+  have h₂ : Function.Bijective fun B : Fin t → Fin 2 ↦ fun s : Fin t ↦ B s.rev :=
+    (Equiv.arrowCongr Fin.revPerm (Equiv.refl (Fin 2))).bijective
+  exact (encode t).bijective.comp (h₂.comp (outcomesFrom_bijective.comp h₁))
+
 /-- Semiclassical phase estimation has the outcome distribution of phase estimation: on the
 input `|0…0⟩ ⊗ u` for an eigenvector `U u = e^{2πiφ} u` of norm `1`, the outcome `k` has the
 probability `|αₖ|²` (Griffiths–Niu; Nielsen–Chuang, eq. (5.24)). -/
@@ -231,7 +347,13 @@ theorem semiclassical_outcomeProb_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m
     (semiclassical t m).outcomeProb (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
       (semiclassicalReadout t m) (vecMulVec (input t m u) (star (input t m u))) k =
       ‖amplitude t φ k‖ ^ 2 := by
-  sorry
+  rw [Circuit.outcomeProb, Finset.sum_filter]
+  simp only [prob_semiclassical hu huφ]
+  rw [Fintype.sum_bijective _ semiclassicalReadout_bijective
+    (fun p ↦ if semiclassicalReadout t m p = k then
+      ‖amplitude t φ (semiclassicalReadout t m p)‖ ^ 2 else 0)
+    (fun k' ↦ if k' = k then ‖amplitude t φ k'‖ ^ 2 else 0) fun _ ↦ rfl, Finset.sum_ite_eq']
+  simp
 
 /-- Semiclassical phase estimation with `t = n + ⌈log₂(2 + 1/(2ε))⌉` control qubits returns an
 estimate within `2^{-n}` of `φ` modulo `1` with probability at least `1 - ε`. -/
