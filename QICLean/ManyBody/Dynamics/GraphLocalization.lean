@@ -66,14 +66,6 @@ open scoped Matrix.Norms.L2Operator Nat
 
 namespace ManyBody
 
-/-- A unitary has operator norm at most one; it is one unless the algebra is zero. -/
-private theorem norm_le_one_of_mem_unitary {E : Type*} [NormedRing E] [StarRing E] [CStarRing E]
-    {U : E} (hU : U ∈ unitary E) : ‖U‖ ≤ 1 := by
-  rcases subsingleton_or_nontrivial E with hE | hE
-  · rw [Subsingleton.elim U 0, norm_zero]
-    exact zero_le_one
-  · exact (CStarRing.norm_of_mem_unitary hU).le
-
 /-! ### Tail sums -/
 
 /-- For every finite set `T` of integers larger than `l`,
@@ -323,7 +315,7 @@ theorem norm_heisenberg_sub_regionExpectation_graphBall_le
       rw [heisenberg_commutator_eq_zero_of_edist_eq_top G Φ a ha R hDiam i hA y hU
         hy t, norm_zero]
     · simp only [ε, hy, ite_false]
-      have hUn : ‖U‖ ≤ 1 := norm_le_one_of_mem_unitary hUu
+      have hUn : ‖U‖ ≤ 1 := CStarRing.norm_le_one_of_mem_unitary hUu
       have hn : ((D y : ℕ) : ℕ∞) ≤ G.edist (a i) y := by
         simp only [D]
         rw [ENat.natCast_toNat hy]
@@ -415,7 +407,7 @@ theorem norm_heisenberg_sub_regionExpectation_graphNeighborhood_le
             ∑ x ∈ S, (if G.edist x y = ⊤ then 0 else
               Real.exp (-((G.edist x y).toNat : ℝ))) := by
         gcongr
-        exact norm_le_one_of_mem_unitary hUu
+        exact CStarRing.norm_le_one_of_mem_unitary hUu
       _ = _ := by ring
   calc
     _ ≤ ∑ y ∈ Nᶜ, c * w y :=

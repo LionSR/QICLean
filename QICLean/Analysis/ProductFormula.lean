@@ -20,12 +20,23 @@ repeats the symmetric step: forward with `z/2`, then backward with `z/2`. Both a
 The estimates are in terms of the commutators of the generators. They take as a hypothesis a
 bound `M ≥ 1` on the norms of the exponentials `exp(s z ∑_{k ∈ l} A_k)`, `0 ≤ s ≤ 1`, of the
 sums over the sublists `l` of `order`. For skew-adjoint generators in a C*-algebra `M = 1`; in
-general `M = exp(‖z‖ ∑_k ‖A_k‖)` (`ProductFormula.norm_exp_smul_gen_le`).
+general `M = exp(‖z‖ ∑_k ‖A_k‖)` (`ProductFormula.expBound_exp_normSum`).
 
 * First order: `‖step A order z - exp(z ∑ A_k)‖ ≤ M^(N+3)/2 ‖z‖² ∑_{i<j} ‖[A_i, A_j]‖`, with `N`
-  the length of `order`; after `n` steps the error is divided by `n`.
+  the length of `order`; after `n` steps, with `M` bounding the exponentials at `z/n`,
+  `M^(Nn+3)/(2n) ‖z‖² ∑_{i<j} ‖[A_i, A_j]‖`.
 * Second order: `‖symmStep A order z - exp(z ∑ A_k)‖ ≤ M^(2N+3)/2 ‖z‖³ ∑_{i<j} ‖[A_i, A_j]‖
-  ∑_k ‖A_k‖`; after `n` steps it is divided by `n²`.
+  ∑_k ‖A_k‖`; after `n` steps `M^(2Nn+3)/(2n²) ‖z‖³ ∑_{i<j} ‖[A_i, A_j]‖ ∑_k ‖A_k‖`.
+
+The estimates are sharp in `M` only for `M = 1`. For `M > 1` the exponent of `M` grows with the
+length `N`: with the general choice `M = exp(‖z‖ ∑_k ‖A_k‖ / n)` at the step `z/n`, the factor
+`M^(Nn+3)` is `exp((N + 3/n) ‖z‖ ∑_k ‖A_k‖)`, a factor `N` in the exponent worse than a bound that
+tracks the growth of each generator separately.
+
+The first-order estimate is the pairwise-commutator form of the first-order bound of
+Childs, Su, Tran, Wiebe and Zhu (*Theory of Trotter error with commutator scaling*, Phys. Rev. X
+11 (2021)). The second-order estimate, in first-order commutators times the total norm, is
+weaker than their nested-commutator bound, which is not proved here.
 
 The one-step estimates for two elements, `norm_exp_mul_exp_sub_exp_add_le` and
 `norm_exp_half_mul_exp_mul_exp_half_sub_exp_add_le`, are proved by bounding the derivative of

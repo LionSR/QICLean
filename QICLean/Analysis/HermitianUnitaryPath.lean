@@ -18,6 +18,11 @@ import Mathlib.Tactic.Push
 
 The punctured-neighborhood result uses differentiation and a matrix unit,
 not eigenvalue enumeration or a trigonometric framework.
+
+Two facts about unitaries of any C*-ring sit at the end: `CStarRing.norm_le_one_of_mem_unitary`
+(a unitary has norm at most one, also in the zero ring) and
+`CStarRing.norm_star_mul_mul_sub_star_mul_mul_le` (conjugating by two unitaries,
+`‖U⋆ A U - W⋆ A W‖ ≤ 2 ‖A‖ ‖U - W‖`).
 -/
 
 open scoped Matrix Matrix.Norms.Operator
@@ -143,3 +148,38 @@ theorem eventually_hermitianUnitaryPath_nonscalar
   simp [hc]
 
 end Matrix
+
+namespace CStarRing
+
+variable {E : Type*} [NormedRing E] [StarRing E] [CStarRing E]
+
+/-- A unitary has norm at most one; it is one unless the ring is zero. -/
+theorem norm_le_one_of_mem_unitary {U : E} (hU : U ∈ unitary E) : ‖U‖ ≤ 1 := by
+  rcases subsingleton_or_nontrivial E with hE | hE
+  · rw [Subsingleton.elim U 0, norm_zero]
+    exact zero_le_one
+  · exact (CStarRing.norm_of_mem_unitary hU).le
+
+/-- Conjugating by two unitaries: `‖U⋆ A U - W⋆ A W‖ ≤ 2 ‖A‖ ‖U - W‖`. -/
+theorem norm_star_mul_mul_sub_star_mul_mul_le {U W : E} (hU : U ∈ unitary E)
+    (hW : W ∈ unitary E) (A : E) :
+    ‖star U * A * U - star W * A * W‖ ≤ 2 * ‖A‖ * ‖U - W‖ := by
+  have hsplit : star U * A * U - star W * A * W =
+      star U * A * (U - W) + star (U - W) * A * W := by
+    rw [star_sub]
+    noncomm_ring
+  have hU1 : ‖star U‖ ≤ 1 := (norm_star U).trans_le (norm_le_one_of_mem_unitary hU)
+  have hW1 := norm_le_one_of_mem_unitary hW
+  rw [hsplit]
+  calc ‖star U * A * (U - W) + star (U - W) * A * W‖
+      ≤ ‖star U‖ * ‖A‖ * ‖U - W‖ + ‖star (U - W)‖ * ‖A‖ * ‖W‖ :=
+        (norm_add_le _ _).trans (add_le_add
+          ((norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _)))
+          ((norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))))
+    _ ≤ 1 * ‖A‖ * ‖U - W‖ + ‖U - W‖ * ‖A‖ * 1 := by
+        rw [norm_star (U - W)]
+        exact add_le_add (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hU1
+          (norm_nonneg _)) (norm_nonneg _)) (mul_le_mul_of_nonneg_left hW1 (by positivity))
+    _ = 2 * ‖A‖ * ‖U - W‖ := by ring
+
+end CStarRing

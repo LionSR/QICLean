@@ -524,7 +524,15 @@ $A=A_{o_1}+\dots+A_{o_N}$. Write
 and suppose $M\geq1$ bounds $\lVert e^{szB}\rVert$ for $0\leq s\leq1$ and every
 sum $B$ of the elements along a sublist of $o$. If $\lVert1\rVert=1$, then
 $M=e^{\lvert z\rvert a(o)}$ will do; for skew-adjoint elements of a C*-algebra
-and real $z$, $M=1$. The commutator bounds follow~\cite{ChildsSuTranWiebeZhu2021TrotterError}.
+and real $z$, $M=1$. The estimates below are sharp in $M$ only for $M=1$: for
+$M>1$ the exponent of $M$ grows with $N$, and with the general choice
+$M=e^{\lvert z\rvert a(o)/n}$ at the step $z/n$ the factor $M^{Nn+3}$ is
+$e^{(N+3/n)\lvert z\rvert a(o)}$, a factor $N$ in the exponent worse than a bound
+that tracks the growth of each element separately. The first-order bound is the
+pairwise-commutator form of the first-order bound
+of~\cite{ChildsSuTranWiebeZhu2021TrotterError}. The second-order bound here, in
+first-order commutators times the total norm, is weaker than their
+nested-commutator bound, which is not proved.
 
 \begin{lemma}[Telescoping]
     \label{lem:product_formula_telescoping}

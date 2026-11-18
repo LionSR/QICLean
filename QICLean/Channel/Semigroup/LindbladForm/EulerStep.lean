@@ -451,6 +451,8 @@ private theorem generatorDecomp_cp_semigroup (G : GeneratorDecomp D) :
       have hF_le : ‖F‖ ≤ Real.exp (s * C0) := by
         simpa [F, s, C0, Lc, Qc] using norm_eulerStep_toCLM_le (G := G) hs_nonneg hs_le_t
       have hS_le0 : ‖S‖ ≤ Real.exp (s * ‖Lc‖) := by
+        -- Explicit: with `haveI` and the plain application, `NormOneClass (MatrixCLM (Fin D))`
+        -- fails to synthesize here; passing the instance positionally elaborates.
         have h := @norm_exp_le_real_exp_norm (MatrixCLM (Fin D)) inferInstance inferInstance
           inferInstance (TNOperatorSpace.instNormOneClassMatrixCLMFin D) ((s : ℂ) • Lc)
         rwa [show ‖((s : ℂ) • Lc)‖ = s * ‖Lc‖ from norm_smul_of_nonneg hs_nonneg Lc] at h

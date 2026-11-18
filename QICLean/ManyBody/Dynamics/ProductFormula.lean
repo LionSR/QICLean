@@ -46,41 +46,6 @@ open scoped Matrix.Norms.L2Operator
 
 namespace ManyBody
 
-section Unitary
-
-variable {n : Type*} [Fintype n] [DecidableEq n]
-
-/-- A unitary matrix has operator norm at most one. -/
-private theorem norm_le_one_of_mem_unitary {U : Matrix n n ℂ} (hU : U ∈ unitary (Matrix n n ℂ)) :
-    ‖U‖ ≤ 1 := by
-  rcases subsingleton_or_nontrivial (Matrix n n ℂ) with hE | hE
-  · rw [Subsingleton.elim U 0, norm_zero]
-    exact zero_le_one
-  · exact (CStarRing.norm_of_mem_unitary hU).le
-
-/-- Conjugating by two unitaries: `‖U† A U - W† A W‖ ≤ 2 ‖A‖ ‖U - W‖`. -/
-private theorem norm_conj_sub_conj_le {U W : Matrix n n ℂ} (hU : U ∈ unitary (Matrix n n ℂ))
-    (hW : W ∈ unitary (Matrix n n ℂ)) (A : Matrix n n ℂ) :
-    ‖Uᴴ * A * U - Wᴴ * A * W‖ ≤ 2 * ‖A‖ * ‖U - W‖ := by
-  have hsplit : Uᴴ * A * U - Wᴴ * A * W = Uᴴ * A * (U - W) + (U - W)ᴴ * A * W := by
-    rw [conjTranspose_sub]
-    noncomm_ring
-  have hU1 : ‖Uᴴ‖ ≤ 1 := (l2_opNorm_conjTranspose U).trans_le (norm_le_one_of_mem_unitary hU)
-  have hW1 := norm_le_one_of_mem_unitary hW
-  rw [hsplit]
-  calc ‖Uᴴ * A * (U - W) + (U - W)ᴴ * A * W‖
-      ≤ ‖Uᴴ‖ * ‖A‖ * ‖U - W‖ + ‖(U - W)ᴴ‖ * ‖A‖ * ‖W‖ :=
-        (norm_add_le _ _).trans (add_le_add
-          ((norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _)))
-          ((norm_mul_le _ _).trans (mul_le_mul_of_nonneg_right (norm_mul_le _ _) (norm_nonneg _))))
-    _ ≤ 1 * ‖A‖ * ‖U - W‖ + ‖U - W‖ * ‖A‖ * 1 := by
-        rw [l2_opNorm_conjTranspose (U - W)]
-        exact add_le_add (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hU1
-          (norm_nonneg _)) (norm_nonneg _)) (mul_le_mul_of_nonneg_left hW1 (by positivity))
-    _ = 2 * ‖A‖ * ‖U - W‖ := by ring
-
-end Unitary
-
 namespace Interaction
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
@@ -169,7 +134,8 @@ private theorem expBound_one (hH : ∀ k, (Φ.term k).IsHermitian) (order : List
       ((s * r : ℝ) : ℂ) • (Complex.I • gen Φ.term l) := by
     rw [← Complex.coe_smul s, smul_smul, Complex.ofReal_mul]
   rw [gen_smul, e]
-  exact norm_le_one_of_mem_unitary (hermitianUnitaryPath_mem_unitary (isHermitian_gen hH l) _)
+  exact CStarRing.norm_le_one_of_mem_unitary
+    (hermitianUnitaryPath_mem_unitary (isHermitian_gen hH l) _)
 
 /-! ### Error bounds -/
 
@@ -217,7 +183,7 @@ theorem norm_lieTrotter_heisenberg_sub_le [Fintype κ] (hH : ∀ k, (Φ.term k).
         heisenbergEvolution Φ.hamiltonian t A‖ ≤
       2 * ‖A‖ * (t ^ 2 / (2 * n) * commSum Φ.term order) := by
   rw [heisenbergEvolution_eq_conj hH]
-  exact (norm_conj_sub_conj_le (lieTrotter_mem_unitary hH order t n)
+  exact (CStarRing.norm_star_mul_mul_sub_star_mul_mul_le (lieTrotter_mem_unitary hH order t n)
     (hermitianUnitaryPath_mem_unitary (isHermitian_hamiltonian hH) (-t)) A).trans
     (mul_le_mul_of_nonneg_left (norm_lieTrotter_sub_le hH ho t hn) (by positivity))
 
@@ -230,7 +196,7 @@ theorem norm_strangTrotter_heisenberg_sub_le [Fintype κ] (hH : ∀ k, (Φ.term 
         heisenbergEvolution Φ.hamiltonian t A‖ ≤
       2 * ‖A‖ * (|t| ^ 3 / (2 * n ^ 2) * commSum Φ.term order * normSum Φ.term order) := by
   rw [heisenbergEvolution_eq_conj hH]
-  exact (norm_conj_sub_conj_le (strangTrotter_mem_unitary hH order t n)
+  exact (CStarRing.norm_star_mul_mul_sub_star_mul_mul_le (strangTrotter_mem_unitary hH order t n)
     (hermitianUnitaryPath_mem_unitary (isHermitian_hamiltonian hH) (-t)) A).trans
     (mul_le_mul_of_nonneg_left (norm_strangTrotter_sub_le hH ho t hn) (by positivity))
 
