@@ -93,9 +93,9 @@ The remaining Mathlib or local formalization gaps are:
   finite-dimensional map as a continuous linear map.  The pointwise
   positive-map resolvent estimate and its spectral reduction to
   `povm_resolvent_inv_le` are available as
-  `TNLean.OperatorJensen.positiveMap_resolvent_inv_le`, and the corresponding
+  `Matrix.positiveMap_resolvent_inv_le`, and the corresponding
   single-integrand Jensen inequality is
-  `TNLean.OperatorJensen.positiveMap_rpowIntegrand₀₁_jensen`.  The theorem
+  `Matrix.positiveMap_rpowIntegrand₀₁_jensen`.  The theorem
   `posMap_rpow_concave_jensen` below performs the corresponding
   Löwner-integral assembly.  The theorem `posMap_log_concave_jensen` below
   follows by taking the right limit `p → 0+` in the concave real-power
@@ -104,7 +104,7 @@ The remaining Mathlib or local formalization gaps are:
   `posMap_rpow_convex_jensen`, is available as `CFC.convexOn_rpow` in
   `TNLean.Analysis.RpowConvexity`; the convex case is now proved directly from
   the reversed Löwner integrand inequality
-  `TNLean.OperatorJensen.positiveMap_rpowIntegrand₁₂_jensen`.
+  `Matrix.positiveMap_rpowIntegrand₁₂_jensen`.
 * Lieb concavity integral representation: absent from Mathlib, but formalized
   locally as `Matrix.superop_lieb_concave` in
   `TNLean.Analysis.LiebOperatorConcave`, from which `lieb_concavity_posDef` below
@@ -125,9 +125,9 @@ The remaining Mathlib or local formalization gaps are:
    positive subunital map `T`.  Diagonalizing `A = ∑ i, λ i • P i` over its
    spectral projections and setting `B i = T (P i)` (positive semidefinite,
    with `∑ i, B i = T 1 ≤ 1`), this resolvent inequality is now proved as
-   `TNLean.OperatorJensen.positiveMap_resolvent_inv_le`; the displayed
+   `Matrix.positiveMap_resolvent_inv_le`; the displayed
    integrand inequality itself is
-   `TNLean.OperatorJensen.positiveMap_rpowIntegrand₀₁_jensen`.  The proof below
+   `Matrix.positiveMap_rpowIntegrand₀₁_jensen`.  The proof below
    integrates this pointwise bound using Mathlib's ordered Bochner monotonicity
    theorem, the local positive-semidefinite integral specialization in
    `TNLean.Channel.Schwarz.OperatorJensenAux`, and the commutation of `T` with
@@ -254,7 +254,7 @@ private lemma positiveMap_rpowIntegrand₀₁_cfcₙ_jensen
   have hTApsd : (T A).PosSemidef := hT A hApsd
   have hTA : 0 ≤ T A := Matrix.nonneg_iff_posSemidef.mpr hTApsd
   have hpoint :=
-    TNLean.OperatorJensen.positiveMap_rpowIntegrand₀₁_jensen
+    Matrix.positiveMap_rpowIntegrand₀₁_jensen
       hT hSub hApsd hp ht
   simpa [cfcₙ_rpowIntegrand₀₁_eq_cfc hA hp ht,
     cfcₙ_rpowIntegrand₀₁_eq_cfc hTA hp ht] using hpoint
@@ -282,7 +282,7 @@ private lemma positiveMap_rpowIntegrand₁₂_cfcₙ_jensen
   have hTApsd : (T A).PosSemidef := hT A hApsd
   have hTA : 0 ≤ T A := Matrix.nonneg_iff_posSemidef.mpr hTApsd
   have hpoint :=
-    TNLean.OperatorJensen.positiveMap_rpowIntegrand₁₂_jensen
+    Matrix.positiveMap_rpowIntegrand₁₂_jensen
       hT hSub hApsd hp ht
   simpa [cfcₙ_rpowIntegrand₁₂_eq_cfc hA hp ht,
     cfcₙ_rpowIntegrand₁₂_eq_cfc hTA hp ht] using hpoint

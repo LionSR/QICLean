@@ -84,7 +84,7 @@ theorem cfc_jensen_of_resolvent_representation
   apply cfc_jensen_of_integral_representation T A f
     (fun i => Real.rpowIntegrand₁₂ p (t i)) hAint hTAint hfA hfTA
   filter_upwards [ht] with i hi
-  exact TNLean.OperatorJensen.positiveMap_rpowIntegrand₁₂_jensen hT hSub hA hp hi
+  exact Matrix.positiveMap_rpowIntegrand₁₂_jensen hT hSub hA hp hi
 
 /-- Scalar spectral representations suffice for integral Jensen. Unlike the
 operator-valued assembly theorem, all integrability assumptions here concern
