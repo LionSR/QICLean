@@ -1,0 +1,137 @@
+\chapter{Protocols of channels}
+\label{ch:protocols}
+
+A protocol is a circuit of Chapter~\ref{ch:circuits} with plain gates whose gates and onsite
+families are trace-preserving, of bounded depth, regarded through the channel it realises.
+The classes of protocols below are restrictions of circuits: an adaptive protocol may choose
+later layers by the outcomes of earlier ones, a protocol is unbranched, and a bounded protocol
+in addition has every basis along it of bounded size. On a geometry whose cells have positive
+cost the Heisenberg picture of a protocol of depth $T$ has light cones of radius $T$, and
+expectations after the conversion of a product input factorize at distance greater than $2T$.
+
+\section{Protocols and conversions}
+\label{sec:protocols_classes}
+
+\begin{definition}[Protocols]
+    \label{def:protocols_protocol}
+    \lean{QuantumCircuit.IsAdaptiveProtocol, QuantumCircuit.IsProtocol,
+        QuantumCircuit.IsBoundedProtocol, QuantumCircuit.IsConversion}
+    \leanok
+    \uses{def:circuits_circuit, def:circuits_costs, def:circuits_local,
+        def:circuits_dim_bounded}
+    Let $\Gamma$ be a geometry on a finite set of sites, $X$ and $Z$ systems on it, and
+    $T\in\N$. A linear map $\Phi$ from the matrices on $\mathcal H_X$ to those on $\mathcal H_Z$
+    is realised by an adaptive protocol of depth at most $T$ if it is the map of a circuit
+    from $X$ to $Z$ of plain gates whose gates and onsite families are trace-preserving and
+    whose depth is at most $T$. It is realised by a protocol if the circuit can be taken
+    unbranched, and by a protocol bounded by $B$ if moreover every basis along the circuit has
+    between $1$ and $B$ elements. A matrix $\rho$ on $\mathcal H_X$ is converted into a matrix
+    $\sigma$ on $\mathcal H_Z$ in depth $T$ if some $\Phi$ realised by a protocol of depth at
+    most $T$ has $\Phi(\rho)=\sigma$.
+\end{definition}
+
+\begin{theorem}[Composition of protocols]
+    \label{thm:protocols_comp}
+    \lean{QuantumCircuit.IsProtocol.adaptive, QuantumCircuit.IsBoundedProtocol.isProtocol,
+        QuantumCircuit.IsAdaptiveProtocol.comp, QuantumCircuit.IsProtocol.comp,
+        QuantumCircuit.IsBoundedProtocol.comp}
+    \leanok
+    \uses{def:protocols_protocol, thm:circuits_composition, thm:circuits_cost_subadditive,
+        lem:circuits_dim_bounded}
+    A protocol is an adaptive protocol, and a protocol bounded by $B$ is a protocol. If $\Phi$
+    and $\Psi$ are realised in depths $T$ and $T'$ by protocols of one of the three classes,
+    with the same bound $B$ for bounded protocols, then $\Psi\circ\Phi$ is realised in depth
+    $T+T'$ by a protocol of the same class.
+\end{theorem}
+\begin{proof}\leanok
+    Compose the circuits. The map of the composite is $\Psi\circ\Phi$ and its depth is at
+    most $T+T'$; local trace preservation, being unbranched and the dimension bound pass to the
+    composite.
+\end{proof}
+
+\begin{lemma}[Dimension bounds of protocols]
+    \label{lem:protocols_dimension_bound}
+    \lean{QuantumCircuit.IsBoundedProtocol.dimension_bounds,
+        QuantumCircuit.IsBoundedProtocol.mono_bound,
+        QuantumCircuit.IsProtocol.exists_dimension_bound}
+    \leanok
+    \uses{def:protocols_protocol, lem:circuits_dim_bounded}
+    The input and output bases of a protocol bounded by $B$ have between $1$ and $B$
+    elements, and a protocol bounded by $B$ is bounded by every $C\ge B$. A protocol on
+    nonempty input bases is bounded by some $B$, which depends on the protocol.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:circuits_tp_nonempty}
+    The input bases are bounded by definition. A circuit whose gates and onsite families are
+    trace-preserving on nonempty bases has a branch by
+    Lemma~\ref{lem:circuits_tp_nonempty}, and along it the output bases are bounded. The
+    last statement is Lemma~\ref{lem:circuits_dim_bounded}.
+\end{proof}
+
+\section{Light cones of protocols}
+\label{sec:protocols_light_cones}
+
+For a linear map $\Phi$ from the matrices on $\mathcal H_X$ to those on $\mathcal H_Z$, its
+adjoint for the trace pairing is the linear map $\Phi^*$ with
+$\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ for all $\rho$ and $A$.
+
+\begin{lemma}[The Heisenberg picture of a circuit is the adjoint of its map]
+    \label{lem:protocols_trace_adjoint}
+    \lean{QuantumCircuit.Circuit.traceAdjointMap_map}
+    \leanok
+    \uses{def:circuits_circuit}
+    The adjoint for the trace pairing of the map of a circuit is its Heisenberg picture.
+\end{lemma}
+\begin{proof}\leanok
+    Both satisfy $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ by the
+    duality in Definition~\ref{def:circuits_circuit}, and the trace pairing is
+    nondegenerate.
+\end{proof}
+
+\begin{theorem}[Light cones of protocols]
+    \label{thm:protocols_light_cone}
+    \lean{QuantumCircuit.IsProtocol.traceAdjointMap_mem_supportedOperators,
+        QuantumCircuit.IsProtocol.traceAdjointMap_mul,
+        QuantumCircuit.IsConversion.trace_mul_mul_eq}
+    \leanok
+    \uses{def:protocols_protocol, lem:protocols_trace_adjoint, def:sites_supported}
+    Let every cell of $\Gamma$ have positive cost, let $\Phi$ be realised by a protocol of
+    depth at most $T$, and write $N^T(R)$ for the $T$-fold neighbourhood of a region $R$.
+    Then $\Phi^*$ maps an operator supported on $R$ to an operator supported on $N^T(R)$, and
+    $\Phi^*(AB)=\Phi^*(A)\Phi^*(B)$ for $A$ supported on $R$ and $B$ supported on $R'$ with
+    $N^T(R)\cap N^T(R')=\emptyset$. If a product $\bigotimes_s\sigma_s$ with
+    $\operatorname{tr}\sigma_s=1$ is converted into $\sigma$ in depth $T$, then for such $A$
+    and $B$
+    \begin{align}
+        \operatorname{tr}(\sigma AB)&=\operatorname{tr}(\sigma A)\operatorname{tr}(\sigma B).
+        \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_light_cone, thm:circuits_light_cone_factorization}
+    By Lemma~\ref{lem:protocols_trace_adjoint}, $\Phi^*$ is the Heisenberg picture of the
+    circuit. Its backward light cone of $R$ lies in $N^T(R)$ because every cell has positive
+    cost and the depth is at most $T$, so Theorems~\ref{thm:circuits_light_cone}
+    and~\ref{thm:circuits_light_cone_factorization} apply.
+\end{proof}
+
+\begin{theorem}[Light cones of protocols on blocks]
+    \label{thm:protocols_light_cone_block}
+    \lean{QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators,
+        QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mul}
+    \leanok
+    \uses{thm:protocols_light_cone, def:sites_block}
+    Let $f:V\to V'$ group the sites into blocks, let every cell of a geometry $\Gamma'$ on
+    $V'$ have positive cost, and let $\Phi$ be realised on the blocked system by a protocol
+    of depth at most $T$. Read on the sites, as $\rho\mapsto\Phi(\rho)$ with $\rho$ a matrix on
+    $\mathcal H_X$, its adjoint maps an operator supported on a region $R$ of blocks to an
+    operator supported on $f^{-1}(N^T(R))$, and is multiplicative on operators supported on
+    regions with disjoint $T$-fold neighbourhoods.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:sites_block_place}
+    The adjoint read on the sites is the adjoint on the blocks followed by the
+    identification of configurations, which is multiplicative and, by
+    Lemma~\ref{lem:sites_block_place}, sends an operator placed on $N^T(R)$ to the same
+    operator placed on $f^{-1}(N^T(R))$.
+\end{proof}

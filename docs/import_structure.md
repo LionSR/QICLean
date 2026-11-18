@@ -18,6 +18,7 @@ of a theorem, determines its intended layer.
 | `Circuit` | matrix foundations, channels, Sites, Gates |
 | `Circuit/Party` | matrix foundations, channels, Sites, Gates, Circuits |
 | `Circuit/Algorithm` | matrix foundations, channels, Sites, Gates, Circuits |
+| `Circuit/Model` | matrix foundations, channels, Sites, Gates, Circuits |
 
 Matrix foundations means `Algebra`, `Analysis`, `Topology`; single-system
 channels means `Channel`, `Kraus`. Lower prerequisites remain available at
