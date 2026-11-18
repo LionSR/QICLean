@@ -52,8 +52,7 @@ theorem Matrix.kronecker_mono_of_posSemidef
 
 /-- Finite Kronecker products preserve positive-semidefinite order when
 every lower factor is positive semidefinite. The factors may have different
-finite index types, including empty types; the number of factors may be zero. `Matrix.prod_le_one` applies the comparison to
-positive contractions restricted along an injective map of configuration bases.
+finite index types, including empty types; the number of factors may be zero.
 
 This is the tensor-order step used to pass from one-copy selected-marginal
 domination to independent copies in the September 24, 2026 area-law

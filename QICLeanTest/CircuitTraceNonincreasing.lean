@@ -78,7 +78,7 @@ example {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq �
 
 private def emptyFamily (α β : Type) : KrausFamily α β := ⟨Empty, Empty.elim⟩
 
-private theorem emptyFamily_tni (α β : Type) [Fintype α] [DecidableEq α] [Fintype β] :
+private theorem emptyFamily_tni (α β : Type) [Finite α] [DecidableEq α] [Fintype β] :
     (emptyFamily α β).IsTraceNonincreasing := by
   change (∑ i : Empty, (Empty.elim i : Matrix β α ℂ)ᴴ * Empty.elim i) ≤ 1
   simp
@@ -89,7 +89,8 @@ private theorem measure_tp : (KrausFamily.measure Bool).IsTP := by
   exact sum_single_one
 
 -- A measurement followed by a surviving identity branch or a branch with no outcomes.
-private noncomputable def branchCircuit : Circuit (geometry Unit) KrausGate (fun _ ↦ Bool) (fun _ ↦ Bool) := by
+private noncomputable def branchCircuit :
+    Circuit (geometry Unit) KrausGate (fun _ ↦ Bool) (fun _ ↦ Bool) := by
   classical
   exact Circuit.step (onsiteLayer (KrausFamily.measure Bool)) fun i ↦
     if (i.2 ⟨(), by simp [onsiteLayer]⟩ : Bool) = true then
