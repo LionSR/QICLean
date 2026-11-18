@@ -295,6 +295,7 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Circuit.compIndexEquiv, QuantumCircuit.Circuit.kraus_comp,
         QuantumCircuit.Circuit.map_comp, QuantumCircuit.Circuit.map_done,
         QuantumCircuit.Circuit.done_comp, QuantumCircuit.Circuit.comp_done,
+        QuantumCircuit.Circuit.comp_assoc,
         QuantumCircuit.Circuit.map_append, QuantumCircuit.Circuit.map_step,
         QuantumCircuit.Circuit.map_ofLayer, QuantumCircuit.Circuit.step_eq_ofLayer_comp,
         QuantumCircuit.Circuit.dual_step_of_forall_eq}
@@ -309,7 +310,8 @@ and each Kraus operator is a product of local entries over the blocks.
     composite is the composite of the maps, and the empty circuit is the identity map. A
     circuit starting with a layer whose continuations all agree is the circuit of the
     layer followed by one of them, and its Heisenberg picture is that of the layer
-    applied to that of the continuation. The empty circuit is a two-sided identity of composition.
+    applied to that of the continuation. The empty circuit is a two-sided identity of
+    composition, and composition is associative.
 \end{theorem}
 \begin{proof}\leanok
     Induction on $c$; the branches of the composite are rearranged by the
@@ -322,7 +324,8 @@ and each Kraus operator is a product of local entries over the blocks.
     \end{align}
     the map of $c'$ applied to the map of $c$. The empty circuit has the single
     Kraus operator $1$; composing with it on the right changes no layer, by
-    induction on $c$.
+    induction on $c$. Associativity is also an induction on $c$: both bracketings follow the
+    layers of $c$ by those of $c'$ and then of $c''$.
 \end{proof}
 
 \section{Costs}
@@ -648,7 +651,8 @@ sequence on one system.
         QuantumCircuit.Layer.forall_ofCells, QuantumCircuit.Layer.nonempty_index_ofCells,
         QuantumCircuit.Layer.forall_single, QuantumCircuit.Layer.nonempty_index_single,
         QuantumCircuit.Layer.cellCost_single, QuantumCircuit.Layer.gateCount_single,
-        QuantumCircuit.Layer.depth_single, QuantumCircuit.Layer.kraus_ofOnsite}
+        QuantumCircuit.Layer.depth_single, QuantumCircuit.Layer.kraus_ofOnsite,
+        QuantumCircuit.Layer.depth_ofOnsite}
     \leanok
     \uses{def:circuits_of_cells, def:circuits_costs, def:circuits_local,
         lem:sites_place_hom}
@@ -667,7 +671,8 @@ sequence on one system.
     The layer of one gate $g$ on a cell $b$ has the weight $w(b,g)$ for every weight
     of gates, in particular gate count $c_b$, and depth $1$ if $c_b>0$. The Kraus
     operator of a layer with no cells and families $(K^s_\omega)_\omega$ at the sites
-    $s$, at an outcome $i$, is the product operator $\bigotimes_sK^s_{i_s}$.
+    $s$, at an outcome $i$, is the product operator $\bigotimes_sK^s_{i_s}$, and such a layer
+    has depth $0$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:sites-regional-union}

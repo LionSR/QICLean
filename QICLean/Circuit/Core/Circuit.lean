@@ -35,8 +35,9 @@ every branch is `comp`, and `done` is its identity.
 
 ## Main results
 
-* `QuantumCircuit.Circuit.done_comp`, `QuantumCircuit.Circuit.comp_done` — `done` is the
-  identity of composition.
+* `QuantumCircuit.Circuit.done_comp`, `QuantumCircuit.Circuit.comp_done`,
+  `QuantumCircuit.Circuit.comp_assoc` — `done` is the identity of composition, and composition
+  is associative.
 * `QuantumCircuit.Circuit.kraus_append`, `QuantumCircuit.Circuit.kraus_comp` — the Kraus
   operators of a composition are the products of those of its parts.
 * `QuantumCircuit.Circuit.map_comp`, `QuantumCircuit.Circuit.map_done` — composition of maps.
@@ -172,6 +173,13 @@ omit [Fintype S] in
 @[simp] theorem comp_done : {X Z : S → Type} → (c : Circuit Γ G X Z) → c.comp (done Z) = c
   | _, _, done _ => rfl
   | _, _, step L next => congrArg (step L) (funext fun i ↦ comp_done (next i))
+
+omit [Fintype S] in
+/-- Composition is associative. -/
+theorem comp_assoc {W : S → Type} : {X Y : S → Type} → (c : Circuit Γ G X Y) →
+    (c' : Circuit Γ G Y Z) → (c'' : Circuit Γ G Z W) → (c.comp c').comp c'' = c.comp (c'.comp c'')
+  | _, _, done _, _, _ => rfl
+  | _, _, step L next, c', c'' => congrArg (step L) (funext fun i ↦ comp_assoc (next i) c' c'')
 
 /-- The branches of `c.append k` are a branch `p` of `c` followed by a branch of `k p`. -/
 def appendIndexEquiv : {X₁ X₂ X₃ : S → Type} → (c : Circuit Γ G X₁ X₂) →
