@@ -191,7 +191,7 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     \lean{KrausFamily.encode}
     \leanok
     \uses{def:protocols_encoding}
-    Let $K=(K_i)_i$ be a Kraus family from $\alpha$ to $\beta$, let $e:\alpha\to\alpha'$ and
+    Let $K=(K_i)_i$ be a Kraus family from $\C^\alpha$ to $\C^\beta$, let $e:\alpha\to\alpha'$ and
     $f:\beta\to\beta'$ be injective, and let $y_0\in\beta'$. The family carried along $e$ and
     $f$ has the operators $J_fK_iJ_e^\dagger$ for every $i$ and
     $\ket{y_0}\bra{a}(1-J_eJ_e^\dagger)$ for every $a\in\alpha'$.
@@ -215,7 +215,9 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     encoding along $e$ is the encoding along $f$ after $K$.
 \end{lemma}
 \begin{proof}\leanok
-    The identities follow from $J_e^\dagger J_e=1$. The effect of the carried family is
+    \uses{lem:gate_basis_inclusion_isometry}
+    The identities follow from $J_e^\dagger J_e=1$
+    (Lemma~\ref{lem:gate_basis_inclusion_isometry}). The effect of the carried family is
     $J_e(\sum_iK_i^\dagger K_i)J_e^\dagger+(1-J_eJ_e^\dagger)$, which is $1$ if
     $\sum_iK_i^\dagger K_i=1$. On a matrix $J_e\rho J_e^\dagger$ the operators of the second
     kind contribute $0$, and those of the first kind give $J_fK_i\rho K_i^\dagger J_f^\dagger$.
@@ -234,17 +236,25 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     layer.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:circuits_tp}
-    The bases of $Y$ are nonempty because the layer is trace-preserving, so every basis of
+    \uses{lem:circuits_tp_nonempty, lem:protocols_encoding}
+    The bases of $Y$ are nonempty by Lemma~\ref{lem:circuits_tp_nonempty}, so every basis of
     $Y'$ has a vector $y_0$ in the image of $f$. Carry every gate and every onsite family along
-    the embeddings of its cell or site with this fallback. A Kraus operator of the new layer is
-    the product of the operators on the cells and sites. If all of them are of the first kind,
-    its product with the basis inclusion of the product of the $e_s$ is the basis inclusion of
-    the product of the $f_s$ times the corresponding Kraus operator of the layer: on a
-    configuration in the
-    image of the $f_s$ this is the entrywise identity of Lemma~\ref{lem:protocols_encoded_family},
-    and outside it the factor at a site off the image vanishes. Otherwise the product vanishes.
-    The indices of the first kind are in bijection with the Kraus indices of the layer.
+    the embeddings of its cell or site with this fallback, and write $J_e$ and $J_f$ for the
+    basis inclusions of the products of the $e_s$ and of the $f_s$. A Kraus operator $L'_p$ of
+    the new layer is the product of the operators on the cells and sites; call $p$ of the first
+    kind if all of them are of the first kind, and then let $L_p$ be the corresponding Kraus
+    operator of the layer. Then
+    \begin{align}
+        L'_pJ_e&=J_fL_p\quad\text{($p$ of the first kind)}, &
+        L'_pJ_e&=0\quad\text{(otherwise)}.
+        \notag
+    \end{align}
+    On a configuration in the image of the $f_s$ the first identity is, factor by factor,
+    that of Lemma~\ref{lem:protocols_encoded_family}, and outside it the factor at a site off
+    the image vanishes by Lemma~\ref{lem:protocols_encoding}; the second holds because one
+    factor is of the second kind. The indices of the first kind are in bijection with the Kraus
+    indices of the layer, so
+    $\sum_pL'_pJ_e\rho J_e^\dagger L_p'^\dagger=J_f(\sum_pL_p\rho L_p^\dagger)J_f^\dagger$.
 \end{proof}
 
 \begin{theorem}[Encoding into a constant alphabet]
@@ -265,15 +275,27 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     and $\mathcal E_f$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:protocols_encoding}
+    \uses{lem:protocols_encoding, lem:protocols_encoded_family, lem:circuits_tp_nonempty}
     By induction on the circuit. The empty circuit is replaced by the sitewise decoding along
-    $e$ followed by the sitewise encoding along $f$, of depth $0$, which acts on the image of the
-    encoding along $e$ as the encoding along $f$ by Lemma~\ref{lem:protocols_encoding}. For a layer followed by continuations, embed the bases after the layer into
-    $\{0,\dots,q-1\}$, which is possible because they have at most $B\le q$ elements, encode
-    the layer as in Theorem~\ref{thm:protocols_encoded_layer}, and follow each Kraus index of
-    the first kind by the encoded continuation of the corresponding index of the layer, and
-    every other index by the encoded continuation of a fixed index. The other indices
-    contribute $0$ on the image of the encoding, so the maps agree. The encoded layer has the
+    $e$ followed by the sitewise encoding along $f$, of depth $0$, which acts on the image of
+    the encoding along $e$ as the encoding along $f$ by Lemma~\ref{lem:protocols_encoding}.
+    For a layer $L$ with continuations $c_i$, the layer has a Kraus index and nonempty output
+    bases by Lemma~\ref{lem:circuits_tp_nonempty}. Embed the bases after the layer into
+    $\{0,\dots,q-1\}$, which is possible because they have at most $B\le q$ elements, carry
+    the layer along the embeddings as in the proof of
+    Theorem~\ref{thm:protocols_encoded_layer}, and follow each Kraus index $p$ of the first kind
+    by the encoded continuation $c'_i$ of the corresponding index $i$ of the layer, and every
+    other index by the encoded continuation of a fixed index. With the identities of that
+    proof, the map $\Phi'$ of the new circuit satisfies
+    \begin{align}
+        \Phi'(J_e\rho J_e^\dagger)
+        &=\sum_{p\text{ of the first kind}}\Phi'_{c'_p}(L'_pJ_e\rho J_e^\dagger L_p'^\dagger)
+        =\sum_i\Phi'_{c'_i}(J_gL_i\rho L_i^\dagger J_g^\dagger)
+        =J_f\Bigl(\sum_i\Phi_{c_i}(L_i\rho L_i^\dagger)\Bigr)J_f^\dagger,
+        \notag
+    \end{align}
+    where $J_g$ is the basis inclusion of the bases after the layer, since $L'_pJ_e=0$ for the
+    other indices. The encoded layer has the
     cells of the layer and the continuations have the depths of the original ones, so the
     depth is unchanged; equal continuations have equal encodings, so an unbranched circuit stays
     unbranched.

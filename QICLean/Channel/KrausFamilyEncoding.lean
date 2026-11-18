@@ -150,7 +150,8 @@ variable [Fintype α] [Fintype β] [Fintype α'] [DecidableEq α'] [DecidableEq 
 
 /-- The family `K` carried along embeddings `e` of its input and `f` of its output basis: the
 operators `J_f Kᵢ J_eᴴ`, and `|y₀⟩⟨a| (1 - J_e J_eᴴ)` for every `a`, which send the part of the
-input outside the code to the output `y₀`. -/
+input outside the code to the output `y₀`. For `a` in the range of `e` the second operator is
+`0`; indexing it by all of `α'` makes its effect `1 - J_e J_eᴴ` a sum over all basis vectors. -/
 def encode (K : KrausFamily α β) (e : α ↪ α') (f : β ↪ β') (y₀ : β') : KrausFamily α' β' :=
   ⟨K.Index ⊕ α', Sum.elim
     (fun i ↦ initializedBasisMatrix f * K.op i * (initializedBasisMatrix e)ᴴ)
