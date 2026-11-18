@@ -9,7 +9,8 @@ import QICLean.Circuit.Core.Channel
 # Measurement, branch probabilities and readouts
 
 The measurement of a basis (`KrausFamily.measure`) has the projections onto the basis vectors as
-its Kraus operators, so its outcomes are the basis vectors. A branch `p` of a circuit has probability `tr(Kₚ ρ Kₚᴴ)` on an input `ρ`.
+its Kraus operators, so its outcomes are the basis vectors. A branch `p` of a circuit has
+probability `tr(Kₚ ρ Kₚᴴ)` on an input `ρ`.
 The branches of a circuit are dependent tuples of outcomes whose shape depends on the circuit,
 so what an algorithm reports is a *readout* `r : c.Index → Ω` of its branches, and the
 probability of a reported value `ω` is the total probability of the branches read as `ω`.

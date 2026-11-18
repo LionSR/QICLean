@@ -576,8 +576,7 @@ sequence on one system.
 \begin{definition}[A layer of gates on given cells]
     \label{def:circuits_of_cells}
     \lean{QuantumCircuit.Layer.ofCells, QuantumCircuit.Layer.placeFamily,
-        QuantumCircuit.Layer.single_eq_ofCells, QuantumCircuit.Layer.ofOnsite,
-        QuantumCircuit.Layer.kraus_ofOnsite}
+        QuantumCircuit.Layer.single_eq_ofCells, QuantumCircuit.Layer.ofOnsite}
     \leanok
     \uses{def:circuits_layer, def:sites_place}
     For a set of pairwise disjoint cells $b$ of a geometry and a gate $g_b$ on each,
@@ -585,8 +584,7 @@ sequence on one system.
     one gate on one cell is the case of a single cell. For a finite Kraus family
     $(K_\omega)_\omega$ on $\C^{X_D}$ the family of its placements is the family
     $(K_\omega\otimes1)_\omega$ on $\mathcal H_X$. A layer with no cells has a Kraus
-    family at every site, which may change the basis; its Kraus operators are the
-    products of one operator per site.
+    family at every site, which may change the basis.
 \end{definition}
 
 \begin{theorem}[A layer of disjoint gates is the product of their placements]
@@ -595,7 +593,7 @@ sequence on one system.
         QuantumCircuit.Layer.forall_ofCells, QuantumCircuit.Layer.nonempty_index_ofCells,
         QuantumCircuit.Layer.forall_single, QuantumCircuit.Layer.nonempty_index_single,
         QuantumCircuit.Layer.cellCost_single, QuantumCircuit.Layer.gateCount_single,
-        QuantumCircuit.Layer.depth_single}
+        QuantumCircuit.Layer.depth_single, QuantumCircuit.Layer.kraus_ofOnsite}
     \leanok
     \uses{def:circuits_of_cells, def:circuits_costs, def:circuits_local,
         lem:sites_place_hom}
@@ -612,7 +610,9 @@ sequence on one system.
     for the identity holds locally on the layer; in particular a layer of
     trace-preserving gates is a quantum channel by Theorem~\ref{thm:circuits_layer_tp}.
     The layer of one gate $g$ on a cell $b$ has the weight $w(b,g)$ for every weight
-    of gates, in particular gate count $c_b$, and depth $1$ if $c_b>0$.
+    of gates, in particular gate count $c_b$, and depth $1$ if $c_b>0$. The Kraus
+    operator of a layer with no cells and families $(K^s_\omega)_\omega$ at the sites
+    $s$, at an outcome $i$, is the product operator $\bigotimes_sK^s_{i_s}$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:sites-regional-union}
@@ -888,21 +888,33 @@ are embedded.
 \begin{definition}[Measurement, branch probabilities and readouts]
     \label{def:circuits_outcome}
     \lean{KrausFamily.measure, QuantumCircuit.Layer.measure,
-        QuantumCircuit.Layer.measure.outcome, QuantumCircuit.Layer.kraus_measure,
+        QuantumCircuit.Layer.measure.outcome,
         QuantumCircuit.Circuit.prob, QuantumCircuit.Circuit.outcomeProb}
     \leanok
-    \uses{def:circuits_circuit, def:kraus_family, def:circuits_of_cells, def:sites_place}
+    \uses{def:circuits_circuit, def:kraus_family, def:circuits_of_cells}
     The measurement of a basis $B$ is the Kraus family of the projections
     $\lvert b\rangle\langle b\rvert$, $b\in B$. The measurement of a region $D$ is
     the layer with no cells, the measurement of the basis at the sites of $D$ and the
-    identity elsewhere; its outcomes are the configurations $x$ of $D$, and the Kraus
-    operator of $x$ is $\lvert x\rangle\langle x\rvert\otimes1$. The
+    identity elsewhere; its outcomes are the configurations of $D$. The
     probability of a branch $p$ of a circuit on an input $\rho$ is
     $\operatorname{tr}(K_p\rho K_p^\dagger)$; for a state $\rho$ and a circuit with
     trace-preserving gates and onsite families these are probabilities. A readout of a
     circuit is a map $r$ from its branches to a finite set $\Omega$, and the probability of a value
     $\omega$ is the sum of the probabilities of the branches $p$ with $r(p)=\omega$.
 \end{definition}
+
+\begin{lemma}[The Kraus operators of a measurement]
+    \label{lem:circuits_measure_kraus}
+    \lean{QuantumCircuit.Layer.kraus_measure}
+    \leanok
+    \uses{def:circuits_outcome, thm:circuits_of_cells, def:sites_place}
+    The Kraus operator of the outcome $x$ of the measurement of a region $D$ is the
+    placed projection $\lvert x\rangle\langle x\rvert\otimes1$.
+\end{lemma}
+\begin{proof}\leanok
+    By Theorem~\ref{thm:circuits_of_cells} it is
+    $\bigotimes_{s\in D}\lvert x_s\rangle\langle x_s\rvert\otimes\bigotimes_{s\notin D}1$.
+\end{proof}
 
 \begin{lemma}[Preparation and discard]
     \label{lem:circuits_prepare_discard}
