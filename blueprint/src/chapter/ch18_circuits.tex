@@ -200,11 +200,19 @@ and each Kraus operator is a product of local entries over the blocks.
     \uses{lem:circuits_layer_factorization}
     Cut along the union $D$ of the blocks meeting the support of $A$. Then
     $A=A_1\otimes1$, and $B=1\otimes B_2$ because the support of $B$ is disjoint from
-    $D$, which lies in the light cone of the support of $A$. The Kraus operators factor as
-    $K^{\mathrm{near}}\otimes K^{\mathrm{far}}$ along the cut, so the Heisenberg picture of
-    $M\otimes N$ is that of $M$ through the near factors tensored with that of $N$ through
-    the far factors. Both factors are trace-preserving, so the Heisenberg picture of
-    $A_1\otimes B_2$ is the product of those of $A_1\otimes1$ and $1\otimes B_2$.
+    $D$, which lies in the light cone of the support of $A$. By
+    Lemma~\ref{lem:circuits_layer_factorization} the Kraus operators factor as
+    $K_i=K^{\mathrm{near}}_{i_N}\otimes K^{\mathrm{far}}_{i_F}$ along the cut, and the sum
+    over the outcomes splits, so for all $M$ on $\C^{Y_D}$ and $N$ on $\C^{Y_{V\setminus D}}$
+    \begin{align}
+        \sum_iK_i^\dagger(M\otimes N)K_i
+        &=\Bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger MK^{\mathrm{near}}_{i_N}\Bigr)
+        \otimes\Bigl(\sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger NK^{\mathrm{far}}_{i_F}\Bigr).
+        \notag
+    \end{align}
+    The near and far families are trace-preserving, so with $N=1$, $M=1$ and
+    $(M,N)=(A_1,B_2)$ the Heisenberg picture of $A_1\otimes B_2$ is the product of those of
+    $A_1\otimes1$ and $1\otimes B_2$.
 \end{proof}
 
 \section{Circuits}
@@ -216,10 +224,8 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Circuit.kraus, QuantumCircuit.Circuit.kraus_done,
         QuantumCircuit.Circuit.kraus_step, QuantumCircuit.Circuit.krausFamily,
         QuantumCircuit.Circuit.map, QuantumCircuit.Circuit.dual,
-        QuantumCircuit.Circuit.dual_step, QuantumCircuit.Circuit.dual_done,
-        KrausFamily.trace_map_mul, QuantumCircuit.Circuit.trace_map_mul,
-        QuantumCircuit.Circuit.ofLayer, QuantumCircuit.Circuit.kraus_ofLayer,
-        QuantumCircuit.Circuit.isUnbranched_ofLayer, QuantumCircuit.Circuit.seq}
+        QuantumCircuit.Circuit.dual_step, QuantumCircuit.Circuit.ofLayer,
+        QuantumCircuit.Circuit.seq}
     \leanok
     \uses{def:circuits_layer}
     A circuit from $X$ to $Z$ is either empty, when $X=Z$, or a layer $L$ from $X$
@@ -230,14 +236,35 @@ and each Kraus operator is a product of local entries over the blocks.
     the Kraus operators of its layers, the first layer on the right. The map of the
     circuit is $\rho\mapsto\sum_pK_p\rho K_p^\dagger$ over all branches $p$, and its
     Heisenberg picture is $A\mapsto\sum_pK_p^\dagger AK_p$, which is the Heisenberg
-    picture of the first layer applied to those of the continuations, and the identity
-    for the empty circuit. The two are dual,
-    $\operatorname{tr}(\Phi(\rho)A)=\operatorname{tr}(\rho\,\Phi^\dagger(A))$, as for
-    every finite Kraus family $\{K_i\}$ and its adjoint family $\{K_i^\dagger\}$. A
-    single layer is an unbranched circuit with the Kraus operators of the layer, and a
-    finite sequence of layers on one system applied from the first is an unbranched
-    circuit.
+    picture of the first layer applied to those of the continuations. A single layer is
+    a circuit, and a finite sequence of layers on one system applied from the first is an
+    unbranched circuit.
 \end{definition}
+
+\begin{lemma}[Duality, the empty circuit and circuits of one layer]
+    \label{lem:circuits_duality}
+    \lean{KrausFamily.trace_map_mul, QuantumCircuit.Circuit.trace_map_mul,
+        QuantumCircuit.Circuit.dual_done, QuantumCircuit.Circuit.kraus_ofLayer,
+        QuantumCircuit.Circuit.isUnbranched_ofLayer}
+    \leanok
+    \uses{def:circuits_circuit, def:kraus_family}
+    For a finite Kraus family $\{K_i\}$ from $\C^\alpha$ to $\C^\beta$, a matrix $\rho$ on
+    $\C^\alpha$ and a matrix $A$ on $\C^\beta$,
+    \begin{align}
+        \operatorname{tr}\Bigl(\sum_iK_i\rho K_i^\dagger\,A\Bigr)
+        &=\operatorname{tr}\Bigl(\rho\sum_iK_i^\dagger AK_i\Bigr),
+        \notag
+    \end{align}
+    so the map $\Phi$ of a circuit and its Heisenberg picture $\Phi^\dagger$ satisfy
+    $\operatorname{tr}(\Phi(\rho)A)=\operatorname{tr}(\rho\,\Phi^\dagger(A))$. The
+    Heisenberg picture of the empty circuit is the identity. The circuit of one layer is
+    unbranched and has the Kraus operators of the layer.
+\end{lemma}
+\begin{proof}\leanok
+    $\operatorname{tr}(K_i\rho K_i^\dagger A)=\operatorname{tr}(\rho K_i^\dagger AK_i)$ by
+    cyclicity of the trace. The empty circuit has the one Kraus operator $1$, and the
+    circuit of one layer has one continuation, the empty circuit, for every outcome.
+\end{proof}
 
 \begin{theorem}[Composition]
     \label{thm:circuits_composition}
@@ -284,12 +311,14 @@ and each Kraus operator is a product of local entries over the blocks.
     \lean{QuantumCircuit.Circuit.total, QuantumCircuit.Circuit.total_done,
         QuantumCircuit.Layer.depth, QuantumCircuit.Layer.gateCount,
         QuantumCircuit.Layer.meets, QuantumCircuit.Layer.cellCost,
-        QuantumCircuit.Circuit.depth,
+        QuantumCircuit.Circuit.depth, QuantumCircuit.Circuit.depth_step,
         QuantumCircuit.Circuit.gateCount, QuantumCircuit.Circuit.participation}
     \leanok
     \uses{def:circuits_circuit}
     A cost of layers determines a cost of circuits by accumulation along the most
-    expensive branch. Given a weight $w(b,g)\in\N$ of every gate $g$ on a cell $b$,
+    expensive branch: the cost of a circuit starting with a layer $L$ is the cost of $L$
+    plus the largest cost of a continuation, and the empty circuit costs nothing. Given a
+    weight $w(b,g)\in\N$ of every gate $g$ on a cell $b$,
     the weight of a layer is the sum of the weights of its gates. The gate count of
     a layer is the weight $w(b,g)=c_b$, the sum of the costs of its cells; the
     number of gates of the layer meeting a site $s$ is the weight that is $1$ on
@@ -502,7 +531,8 @@ and each Kraus operator is a product of local entries over the blocks.
     \end{align}
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:circuits_layer_dual_mul, lem:sites_product_state_factorization}
+    \uses{lem:circuits_layer_dual_mul, lem:sites_product_state_factorization,
+        lem:circuits_duality}
     Induction on the circuit, with Lemma~\ref{lem:circuits_layer_dual_mul} for the first
     layer: the light cones of $A$ and $B$ through the common continuation lie in their
     light cones through the circuit. For the expectation, write it as
