@@ -1157,3 +1157,81 @@ are embedded.
     follows from the triangle inequality and Theorem~\ref{thm:circuits_trotter} for
     the restricted family.
 \end{proof}
+
+\begin{lemma}[Hamiltonian of the restricted family]
+    \label{lem:circuits_restricted_hamiltonian}
+    \lean{QuantumCircuit.sum_place_localFamilyInside}
+    \leanok
+    \uses{def:circuits_trotter}
+    Let $h_k$ be arbitrary matrices on the regions $T_k$ and let $h^L_k=h_k$
+    if $T_k\subseteq L$, and $h^L_k=0$ otherwise. Then
+    \begin{align}
+        \label{eq:circuits_restricted_hamiltonian}
+        H_L:=\sum_k h^L_k\otimes1&=\sum_{k:T_k\subseteq L}h_k\otimes1.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Placement is linear, so $(h^L_k\otimes1)=\mathbf{1}_{T_k\subseteq L}(h_k\otimes1)$.
+    Summing this identity over the finite index set gives
+    (\ref{eq:circuits_restricted_hamiltonian}).
+\end{proof}
+
+\begin{theorem}[Spatial error of a restricted Trotter circuit]
+    \label{thm:circuits_trotter_spatial_error}
+    \lean{QuantumCircuit.norm_heisenbergEvolution_localFamilyInside_sub_le_graphDistance,
+        QuantumCircuit.norm_dual_trotterCircuit_localFamilyInside_sub_le_graphDistance,
+        QuantumCircuit.norm_dual_trotterCircuit_sub_le_restrict_graphDistance}
+    \leanok
+    \uses{lem:circuits_restricted_hamiltonian, thm:circuits_trotter,
+        thm:circuits_trotter_restrict, thm:dynamics_spatial_truncation}
+    Let $G$ be a graph on a finite set of sites with finite local bases, and let
+    $h_k$ be a finite family of Hermitian matrices on the regions $T_k$.
+    Write $\Phi_k=h_k\otimes1$, $H=\sum_k\Phi_k$, and suppose
+    $\operatorname{diam}_G(T_k)\leq r$, $|T_k|\leq v$, and
+    $\sum_{k:x\in T_k}\|\Phi_k\|\leq b$ for every site $x$.
+    Let $A$ be supported on $R$, let $\mu\geq0$, $d\in\mathbb N$, and assume
+    $d_G(x,z)\geq d+r$ for $x\in R$, $z\notin L$.
+    Set $M_L=\sum_{k:T_k\not\subseteq L}\|\Phi_k\|$. For every $t\in\R$,
+    \begin{align}
+        \label{eq:circuits_truncation_error}
+        \|\tau^{H_L}_t(A)-\tau^H_t(A)\|
+        &\leq E_L(t):=4|R|\|A\|M_L|t|
+            e^{4v|b|e^{2\mu r}|t|-\mu d}.
+    \end{align}
+    For a colouring of the overlap graph with $m$ colours, let $o$ be the colour
+    order and $U_{L,n}(t)$ the Trotter propagator of the restricted family.
+    Put $c_L(o)=\sum_{i<j}\|[h^L_{o_i}\otimes1,h^L_{o_j}\otimes1]\|$.
+    For every $n\geq1$,
+    \begin{align}
+        \label{eq:circuits_restricted_trotter_error}
+        \|U_{L,n}(t)^*AU_{L,n}(t)-\tau^H_t(A)\|
+        &\leq 2\|A\|\frac{t^2}{2n}c_L(o)+E_L(t).
+    \end{align}
+    If $L$ also contains the $nm$-fold neighbourhood of $R$ in the support
+    geometry, then~(\ref{eq:circuits_restricted_trotter_error}) holds with the full
+    Trotter propagator $U_n(t)$ in place of $U_{L,n}(t)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_restricted_hamiltonian, thm:circuits_trotter,
+        thm:circuits_trotter_restrict, thm:dynamics_spatial_truncation}
+    The placed matrices form the interaction $\Phi$ with support $T_k$.
+    Substitute~(\ref{eq:circuits_restricted_hamiltonian}) into
+    Theorem~\ref{thm:dynamics_spatial_truncation}, and use
+    $\|\tau^{H_L}_t(A)-\tau^H_t(A)\|=\|\tau^H_t(A)-\tau^{H_L}_t(A)\|$
+    to obtain~(\ref{eq:circuits_truncation_error}). The triangle inequality gives
+    \begin{align}
+        \|U_{L,n}(t)^*AU_{L,n}(t)-\tau^H_t(A)\|
+        &\leq\|U_{L,n}(t)^*AU_{L,n}(t)-\tau^{H_L}_t(A)\|\notag\\
+        &\quad+\|\tau^{H_L}_t(A)-\tau^H_t(A)\|.\notag
+    \end{align}
+    Apply Theorem~\ref{thm:circuits_trotter} to the restricted family and
+    (\ref{eq:circuits_truncation_error}) to prove
+    (\ref{eq:circuits_restricted_trotter_error}). For the full circuit, insert
+    (\ref{eq:circuits_truncation_error}) into the exact-evolution remainder of
+    Theorem~\ref{thm:circuits_trotter_restrict}.
+\end{proof}
+
+For fixed $t$ and $\mu>0$, the truncation contribution $E_L(t)$ decays exponentially
+in $d$ when $|R|$, $\|A\|$, $M_L$, $r$, $v$, and $|b|$ are uniformly bounded.
+The product-formula contribution also depends on $c_L(o)$ and the step count $n$.
+% Volume-uniform control of M_L and infinite-system dynamics remain outside these statements.

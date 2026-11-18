@@ -29,21 +29,34 @@ deleted total norm into a volume-independent constant. This is a derived finite
 consequence of the existing GraphPropagation estimate, not a new attribution of
 an infinite-volume theorem to its sources.
 
-## Circuit integration acceptance plan
+## Circuit integration
 
-PR #1116 owns the active circuit production files. No changes to those files are
-part of this increment. After that PR is integrated and its interfaces reviewed:
+PR #1117 merged the finite comparison package, and #1116 merged the circuit API.
+`Circuit/Simulation/TruncatedProductFormula.lean` now supplies the integration without changing
+Core/Sites or introducing another interaction or evolution definition:
 
-1. Identify the canonical Interaction associated with the placed local terms of
-   `norm_dual_trotterCircuit_sub_le_restrict`.
-2. Prove that its kept-term sum is the Hamiltonian of the existing `restrictTo`
-   family, preserving all support and Hermiticity hypotheses.
-3. Rewrite the existing exact-evolution remainder using that equality and, if
-   necessary, symmetry of the norm difference; apply the spatial theorem.
-4. Add the resulting bound to the existing product-formula error, without adding
-   another circuit, support, or evolution representation.
-5. Test the no-deletion case, negative and zero times, and disconnected regions;
-   state any additional uniform-volume assumptions explicitly.
+1. `sum_place_localFamilyInside` identifies the sum of placed restricted local
+   terms with the filtered kept Hamiltonian. The existing API is
+   `localFamilyInside`, not `restrictTo`; Hermiticity is not needed for this identity.
+2. `norm_heisenbergEvolution_localFamilyInside_sub_le_graphDistance` instantiates
+   the canonical Interaction with placed local terms and bounds the exact remainder.
+3. `norm_dual_trotterCircuit_localFamilyInside_sub_le_graphDistance` bounds the
+   restricted circuit against full evolution without a circuit-light-cone assumption.
+4. `norm_dual_trotterCircuit_sub_le_restrict_graphDistance` replaces the exact
+   remainder in the existing full-circuit theorem. This version retains its
+   additional n*m-fold support-neighbourhood containment hypothesis.
 
-This plan is not a formal circuit-composition theorem. Issue #1115 remains open
-for that integration and sharper volume-controlled estimates.
+Both circuit estimates add the restricted commutator-sum product-formula error
+`2 ‖A‖ (t²/(2n)) c_L` to the explicit truncation bound above, with n > 0 and any
+real t. They use finite site and local basis types as required by the circuit API.
+The truncation contribution decays with distance under uniform deleted-mass and
+other-parameter control; the product-formula contribution separately depends on
+c_L and n. No decay of the entire error in distance alone is claimed.
+
+## Remaining work
+
+Issue #1115 remains open for stronger volume-controlled or boundary-weighted
+estimates. The integration retains M_deleted explicitly and does not prove its
+uniform boundedness, nor an infinite-system limit. Acceptance requires independent
+review of the composition, exact-head CI, and regression checks for positive,
+negative and zero times, full retention, and empty-region boundary cases.

@@ -47,6 +47,7 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("model", ("QICLean.Circuit.Model",)),
     ("compile", ("QICLean.Circuit.Compile",)),
     ("protocol", ("QICLean.Circuit.Protocol",)),
+    ("simulation", ("QICLean.Circuit.Simulation",)),
     ("circuit", ("QICLean.Circuit",)),
     ("matrix", ("QICLean.Algebra", "QICLean.Analysis", "QICLean.Topology")),
     ("channel", ("QICLean.Channel", "QICLean.Kraus")),
@@ -56,7 +57,7 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
 # internal cycles are governed by MUTUAL_DIRECTORIES, not a new layer ordering.
 NEW_LAYERS = frozenset({
     "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "model",
-    "compile", "protocol"
+    "compile", "protocol", "simulation"
 })
 ALLOWED: dict[str, frozenset[str]] = {
     "sites": frozenset({"matrix", "channel"}),
@@ -69,6 +70,10 @@ ALLOWED: dict[str, frozenset[str]] = {
     "model": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
     "compile": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model"}),
     "protocol": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model", "compile"}),
+    # QICLean #1062: simulation consumes both circuits and many-body evolution.
+    "simulation": frozenset({
+        "matrix", "channel", "sites", "gate", "circuit", "dynamics", "hamiltonian"
+    }),
 }
 DEBT: frozenset[str] = frozenset({})
 DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
