@@ -187,6 +187,26 @@ and each Kraus operator is a product of local entries over the blocks.
     of $N$ is either a cell meeting $R$ or a site of $R$.
 \end{proof}
 
+\begin{lemma}[Disjoint light cones through a layer]
+    \label{lem:circuits_layer_dual_mul}
+    \lean{QuantumCircuit.Layer.dual_mul_of_disjoint_lightCone}
+    \leanok
+    \uses{thm:circuits_layer_light_cone}
+    If the gates and onsite families of a layer are trace-preserving and $A$, $B$ are
+    supported on regions whose light cones through the layer are disjoint, the Heisenberg
+    picture of $AB$ is the product of those of $A$ and $B$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_factorization}
+    Cut along the union $D$ of the blocks meeting the support of $A$. Then
+    $A=A_1\otimes1$, and $B=1\otimes B_2$ because the support of $B$ is disjoint from
+    $D$, which lies in the light cone of the support of $A$. The Kraus operators factor as
+    $K^{\mathrm{near}}\otimes K^{\mathrm{far}}$ along the cut, so the Heisenberg picture of
+    $M\otimes N$ is that of $M$ through the near factors tensored with that of $N$ through
+    the far factors. Both factors are trace-preserving, so the Heisenberg picture of
+    $A_1\otimes B_2$ is the product of those of $A_1\otimes1$ and $1\otimes B_2$.
+\end{proof}
+
 \section{Circuits}
 \label{sec:circuits_circuits}
 
@@ -196,7 +216,8 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Circuit.kraus, QuantumCircuit.Circuit.kraus_done,
         QuantumCircuit.Circuit.kraus_step, QuantumCircuit.Circuit.krausFamily,
         QuantumCircuit.Circuit.map, QuantumCircuit.Circuit.dual,
-        QuantumCircuit.Circuit.dual_step, QuantumCircuit.Circuit.seq}
+        QuantumCircuit.Circuit.dual_step, QuantumCircuit.Circuit.trace_map_mul,
+        QuantumCircuit.Circuit.ofLayer, QuantumCircuit.Circuit.seq}
     \leanok
     \uses{def:circuits_layer}
     A circuit from $X$ to $Z$ is either empty, when $X=Z$, or a layer $L$ from $X$
@@ -207,9 +228,10 @@ and each Kraus operator is a product of local entries over the blocks.
     the Kraus operators of its layers, the first layer on the right. The map of the
     circuit is $\rho\mapsto\sum_pK_p\rho K_p^\dagger$ over all branches $p$, and its
     Heisenberg picture is $A\mapsto\sum_pK_p^\dagger AK_p$, which is the Heisenberg
-    picture of the first layer applied to those of the continuations. A finite
-    sequence of layers on one system, applied from the first, is an unbranched
-    circuit.
+    picture of the first layer applied to those of the continuations; the two are dual,
+    $\operatorname{tr}(\Phi(\rho)A)=\operatorname{tr}(\rho\,\Phi^\dagger(A))$. A single
+    layer, and a finite sequence of layers on one system applied from the first, are
+    unbranched circuits.
 \end{definition}
 
 \begin{theorem}[Composition]
@@ -218,12 +240,16 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Circuit.appendIndexEquiv, QuantumCircuit.Circuit.kraus_append,
         QuantumCircuit.Circuit.compIndexEquiv, QuantumCircuit.Circuit.kraus_comp,
         QuantumCircuit.Circuit.map_comp, QuantumCircuit.Circuit.map_done,
-        QuantumCircuit.Circuit.done_comp, QuantumCircuit.Circuit.comp_done}
+        QuantumCircuit.Circuit.done_comp, QuantumCircuit.Circuit.comp_done,
+        QuantumCircuit.Circuit.map_append, QuantumCircuit.Circuit.map_step,
+        QuantumCircuit.Circuit.map_ofLayer}
     \leanok
     \uses{def:circuits_circuit}
     Attaching a circuit $k_p$ to every branch $p$ of a circuit $c$ gives a circuit
     whose branches are the pairs $(p,q)$ of a branch of $c$ and a branch of $k_p$,
-    with Kraus operators $K^{k_p}_qK^c_p$. For a continuation independent of $p$ the
+    with Kraus operators $K^{k_p}_qK^c_p$, and its map sends $\rho$ to
+    $\sum_p\Phi_{k_p}(K^c_p\rho K^{c\dagger}_p)$; for a circuit starting with a layer
+    this is the map layer by layer. For a continuation independent of $p$ the
     map of the composite is the composite of the maps, and the empty circuit is the
     identity map. The empty circuit is a two-sided identity of composition.
 \end{theorem}
@@ -299,6 +325,31 @@ and each Kraus operator is a product of local entries over the blocks.
     and accumulation along branches is monotone.
 \end{proof}
 
+\begin{definition}[Bounded local bases]
+    \label{def:circuits_dim_bounded}
+    \lean{QuantumCircuit.Circuit.IsDimBounded}
+    \leanok
+    \uses{def:circuits_circuit}
+    A circuit is bounded by $B$ when every basis of every system along every branch has
+    between $1$ and $B$ elements.
+\end{definition}
+
+\begin{lemma}[Bounds]
+    \label{lem:circuits_dim_bounded}
+    \lean{QuantumCircuit.Circuit.IsDimBounded.mono, QuantumCircuit.Circuit.IsDimBounded.comp,
+        QuantumCircuit.Circuit.IsDimBounded.input, QuantumCircuit.Circuit.IsDimBounded.output,
+        QuantumCircuit.Circuit.exists_isDimBounded}
+    \leanok
+    \uses{def:circuits_dim_bounded, lem:circuits_tp_nonempty}
+    A bound passes to every larger bound and to compositions. The bases of the input are
+    bounded, and so are those of the output along any branch. A circuit whose gates and
+    onsite families are trace-preserving, on nonempty finite bases, has a bound.
+\end{lemma}
+\begin{proof}\leanok
+    Induction on the circuit. For the last statement Lemma~\ref{lem:circuits_tp_nonempty}
+    keeps every basis along the circuit nonempty, and the largest basis is a bound.
+\end{proof}
+
 \section{Trace preservation and the backward light cone}
 \label{sec:circuits_tp_light_cone}
 
@@ -358,6 +409,19 @@ and each Kraus operator is a product of local entries over the blocks.
     circuit.
 \end{proof}
 
+\begin{lemma}[Trace preservation keeps bases nonempty]
+    \label{lem:circuits_tp_nonempty}
+    \lean{KrausFamily.IsTP.nonempty, QuantumCircuit.Layer.nonempty_of_forall_isTP}
+    \leanok
+    \uses{def:kraus_family, thm:circuits_layer_tp}
+    A trace-preserving Kraus family on a nonempty basis has an operator, and its target
+    basis is nonempty. A layer whose gates and onsite families are trace-preserving, on
+    nonempty bases, has an outcome, and its output bases are nonempty.
+\end{lemma}
+\begin{proof}\leanok
+    Otherwise $\sum_iK_i^\dagger K_i=0$, which is not the identity on a nonempty basis.
+\end{proof}
+
 \begin{lemma}[Circuits with one branch]
     \label{lem:circuits_unique_branch}
     \lean{QuantumCircuit.Circuit.nonempty_unique_index,
@@ -408,6 +472,34 @@ and each Kraus operator is a product of local entries over the blocks.
     =\bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger A_1K^{\mathrm{near}}_{i_N}\bigr)
     \otimes E_F$, which is not supported on $D$ when $E_F$ is not a multiple of the
     identity.
+\end{proof}
+
+\begin{theorem}[Light-cone factorization]
+    \label{thm:circuits_light_cone_factorization}
+    \lean{QuantumCircuit.Circuit.dual_mul_of_disjoint_lightCone,
+        QuantumCircuit.Circuit.trace_map_prodOp_mul_mul}
+    \leanok
+    \uses{thm:circuits_light_cone, def:sites_supported}
+    Let a circuit be unbranched with trace-preserving gates and onsite families, and let
+    $A$, $B$ be supported on regions with disjoint backward light cones. Then the
+    Heisenberg picture of $AB$ is the product of those of $A$ and $B$, and on a product
+    input $\rho=\bigotimes_s\sigma_s$ with $\operatorname{tr}\sigma_s=1$,
+    \begin{align}
+        \operatorname{tr}\bigl(\Phi(\rho)AB\bigr)
+        &=\operatorname{tr}\bigl(\Phi(\rho)A\bigr)\operatorname{tr}\bigl(\Phi(\rho)B\bigr).
+        \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_dual_mul, thm:sites_product_span}
+    Induction on the circuit, with Lemma~\ref{lem:circuits_layer_dual_mul} for the first
+    layer: the light cones of $A$ and $B$ through the common continuation lie in their
+    light cones through the circuit. For the expectation, write it as
+    $\operatorname{tr}(\rho\,\Phi^\dagger(A)\Phi^\dagger(B))$ by duality. The two
+    Heisenberg images are supported on disjoint regions, and the expectation of a product
+    of operators on disjoint regions in a product state factorizes: by bilinearity it is
+    enough to check it on product operators, where it is
+    $\prod_s\operatorname{tr}(\sigma_sm_sm'_s)$ with $m_s=1$ or $m'_s=1$ at every site.
 \end{proof}
 
 \section{Sequences and layers of several gates}
@@ -475,14 +567,17 @@ sequence on one system.
 \begin{definition}[A layer of gates on given cells]
     \label{def:circuits_of_cells}
     \lean{QuantumCircuit.Layer.ofCells, QuantumCircuit.Layer.placeFamily,
-        QuantumCircuit.Layer.single_eq_ofCells}
+        QuantumCircuit.Layer.single_eq_ofCells, QuantumCircuit.Layer.ofOnsite,
+        QuantumCircuit.Layer.kraus_ofOnsite}
     \leanok
     \uses{def:circuits_layer, def:sites_place}
     For a set of pairwise disjoint cells $b$ of a geometry and a gate $g_b$ on each,
     the layer of these gates carries the identity at every remaining site. The layer of
     one gate on one cell is the case of a single cell. For a finite Kraus family
     $(K_\omega)_\omega$ on $\C^{X_D}$ the family of its placements is the family
-    $(K_\omega\otimes1)_\omega$ on $\mathcal H_X$.
+    $(K_\omega\otimes1)_\omega$ on $\mathcal H_X$. A layer with no cells has a Kraus
+    family at every site, which may change the basis; its Kraus operators are the
+    products of one operator per site.
 \end{definition}
 
 \begin{theorem}[A layer of disjoint gates is the product of their placements]
@@ -577,7 +672,7 @@ are embedded.
 
 \begin{definition}[Maps of layers]
     \label{def:circuits_layer_map}
-    \lean{QuantumCircuit.LayerMap, QuantumCircuit.Circuit.mapLayers,
+    \lean{QuantumCircuit.SystemMap, QuantumCircuit.LayerMap, QuantumCircuit.Circuit.mapLayers,
         QuantumCircuit.Circuit.mapIndexEquiv}
     \leanok
     \uses{def:circuits_circuit}
@@ -594,7 +689,7 @@ are embedded.
     \label{thm:circuits_layer_map}
     \lean{QuantumCircuit.Circuit.isUnbranched_mapLayers,
         QuantumCircuit.Circuit.forall_mapLayers, QuantumCircuit.Circuit.total_mapLayers_le,
-        QuantumCircuit.Circuit.kraus_mapLayers}
+        QuantumCircuit.Circuit.kraus_mapLayers, QuantumCircuit.Circuit.mapLayers_comp}
     \leanok
     \uses{def:circuits_layer_map, def:circuits_costs, def:circuits_local}
     The image of an unbranched circuit is unbranched. A local property holding on
@@ -603,7 +698,8 @@ are embedded.
     image does not grow from a circuit to its image. If a map $\Phi$ of matrices between the
     configurations of $X$ and of $X'$ sends $1$ to $1$ and products to products, and
     every Kraus operator of the image of a layer is $\Phi$ of the corresponding Kraus
-    operator of the layer, the same holds for circuits.
+    operator of the layer, the same holds for circuits. The image of a composition is
+    the composition of the images.
 \end{theorem}
 \begin{proof}\leanok
     Induction on the circuit, along the bijection of branches.
@@ -692,7 +788,7 @@ are embedded.
         QuantumCircuit.Layer.kraus_mapSites, QuantumCircuit.Layer.forall_mapSites,
         QuantumCircuit.LayerMap.ofSites, QuantumCircuit.Circuit.mapSites,
         QuantumCircuit.Layer.cellCost_mapSites, QuantumCircuit.Circuit.kraus_mapSites,
-        QuantumCircuit.Circuit.forall_mapSites}
+        QuantumCircuit.Circuit.map_mapSites, QuantumCircuit.Circuit.forall_mapSites}
     \leanok
     \uses{def:circuits_extend_system, def:circuits_transport, def:circuits_geometry_hom,
         def:circuits_costs}
@@ -704,7 +800,8 @@ are embedded.
         K'_p&=K_p\otimes1_{W},
         \notag
     \end{align}
-    in the identification of the configurations of $V'$ with pairs. A property of
+    in the identification of the configurations of $V'$ with pairs, so the map of the
+    image sends $\rho\otimes\omega$ to $\Phi(\rho)\otimes\omega$. A property of
     Kraus families invariant under relabelling of bases and outcomes, and holding for
     the identity, holds locally on the image if it holds locally on the circuit. A
     weight of gates that does not depend on the cell takes on the image of a layer
@@ -720,6 +817,28 @@ are embedded.
     $\C^{W}$. The map $K\mapsto K\otimes1_W$ sends $1$ to $1$ and products to
     products, so Theorem~\ref{thm:circuits_layer_map} applies. The gates of the image
     layer are the transported gates, one on each image cell, which gives the weights.
+\end{proof}
+
+\begin{theorem}[Substituting circuits for layers]
+    \label{thm:circuits_substitute}
+    \lean{QuantumCircuit.Circuit.exists_substitute}
+    \leanok
+    \uses{def:circuits_layer_map, thm:circuits_composition, def:circuits_costs}
+    Let a map of systems from $V$ to $V'$ come with linear encodings $\iota_X$ of the
+    matrices of each system $X$, and let $K\in\N$. Suppose that every layer $L$ with
+    trace-preserving gates and onsite families is realised by an unbranched circuit on
+    $V'$ with trace-preserving local families and depth at most $K$ times that of $L$,
+    whose map $\Psi$ satisfies $\Psi\circ\iota_X=\iota_Y\circ\Phi_L$. Then every
+    unbranched circuit with trace-preserving local families on nonempty bases is realised
+    in the same way, with depth at most $K$ times its depth.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_tp_nonempty}
+    Induction on the circuit. A circuit starting with a layer $L$ has, by
+    Lemma~\ref{lem:circuits_tp_nonempty}, an outcome of $L$, and being unbranched it
+    continues with one circuit $c$; it is the composition of the circuit of $L$ with $c$.
+    Composing their realisations adds the depths, and the maps compose. A layer of depth
+    $0$ must be realised at depth $0$.
 \end{proof}
 
 \section{Sums of gate families, oracle calls and measurement}
@@ -766,13 +885,30 @@ are embedded.
     $\lvert b\rangle\langle b\rvert$, $b\in B$. The
     probability of a branch $p$ of a circuit on an input $\rho$ is
     $\operatorname{tr}(K_p\rho K_p^\dagger)$; for a state $\rho$ and a circuit with
-    trace-preserving gates and onsite families these are probabilities. A readout of a circuit is a map $r$
-    from its branches to a finite set $\Omega$, and the probability of a value
+    trace-preserving gates and onsite families these are probabilities. A readout of a
+    circuit is a map $r$ from its branches to a finite set $\Omega$, and the probability of a value
     $\omega$ is the sum of the probabilities of the branches $p$ with $r(p)=\omega$.
 \end{definition}
 
+\begin{lemma}[Preparation and discard]
+    \label{lem:circuits_prepare_discard}
+    \lean{KrausFamily.prepare, KrausFamily.discard, KrausFamily.isTP_prepare,
+        KrausFamily.isTP_discard, KrausFamily.map_prepare, KrausFamily.map_discard}
+    \leanok
+    \uses{def:kraus_family}
+    The preparation of a basis vector $b$ is the Kraus family of the one operator
+    $\lvert b\rangle$ from the one-point basis, and the discard of a basis $B$ is the
+    family of the operators $\langle b\rvert$, $b\in B$, onto the one-point basis. Both
+    are trace-preserving; the first maps $\lambda$ to
+    $\lambda\lvert b\rangle\langle b\rvert$ and the second maps $\rho$ to
+    $\operatorname{tr}\rho$.
+\end{lemma}
+\begin{proof}\leanok
+    $\langle b\vert b\rangle=1$ and $\sum_b\lvert b\rangle\langle b\rvert=1$.
+\end{proof}
+
 \begin{lemma}[Probabilities on a pure input and bijective readouts]
-    \label{lem:circuits_sum_prob}
+    \label{lem:circuits_prob_pure}
     \lean{QuantumCircuit.Circuit.prob_vecMulVec, QuantumCircuit.Circuit.outcomeProb_of_bijective}
     \leanok
     \uses{def:circuits_outcome}

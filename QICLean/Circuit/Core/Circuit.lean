@@ -29,6 +29,7 @@ every branch is `comp`, and `done` is its identity.
   `QuantumCircuit.Circuit.krausFamily`, `QuantumCircuit.Circuit.map`,
   `QuantumCircuit.Circuit.dual` — the semantics.
 * `QuantumCircuit.Circuit.append`, `QuantumCircuit.Circuit.comp` — composition.
+* `QuantumCircuit.Circuit.ofLayer` — the circuit of one layer.
 * `QuantumCircuit.Circuit.seq` — an unbranched sequence of layers on one system.
 
 ## Main results
@@ -38,6 +39,9 @@ every branch is `comp`, and `done` is its identity.
 * `QuantumCircuit.Circuit.kraus_append`, `QuantumCircuit.Circuit.kraus_comp` — the Kraus
   operators of a composition are the products of those of its parts.
 * `QuantumCircuit.Circuit.map_comp`, `QuantumCircuit.Circuit.map_done` — composition of maps.
+* `QuantumCircuit.Circuit.map_append`, `QuantumCircuit.Circuit.map_step` — the map along the
+  branches, and layer by layer.
+* `QuantumCircuit.Circuit.trace_map_mul` — the map and the Heisenberg picture are dual.
 * `QuantumCircuit.Circuit.dual_step` — the Heisenberg picture layer by layer.
 -/
 
@@ -121,6 +125,16 @@ theorem dual_step [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Fint
   refine Finset.sum_congr rfl fun j _ ↦ ?_
   simp only [kraus_step, conjTranspose_mul, Matrix.mul_assoc]
 
+/-- The map and the Heisenberg picture of a circuit are dual for the trace pairing. -/
+theorem trace_map_mul [∀ s, Fintype (Z s)] (ev : Interpretation G) (c : Circuit Γ G X Z)
+    (ρ : Matrix (Config X) (Config X) ℂ) (A : Matrix (Config Z) (Config Z) ℂ) :
+    (c.map ev ρ * A).trace = (ρ * c.dual ev A).trace := by
+  simp only [map, krausFamily, KrausFamily.map_apply, dual, Finset.sum_mul, Matrix.mul_sum,
+    trace_sum]
+  refine Finset.sum_congr rfl fun p _ ↦ ?_
+  rw [Matrix.mul_assoc, Matrix.mul_assoc, trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
+    ← Matrix.mul_assoc]
+
 /-! ### Composition -/
 
 /-- Attach the continuation `k p` to every branch `p` of a circuit. -/
@@ -200,6 +214,43 @@ theorem map_done (ev : Interpretation G) :
   simp only [map, krausFamily, KrausFamily.map_apply, LinearMap.id_apply]
   change ∑ _ : Unit, (1 : Matrix (Config X) (Config X) ℂ) * ρ * (1 : Matrix _ _ ℂ)ᴴ = ρ
   simp
+
+/-- The map of `c.append k`: along each branch `p` of `c`, the map of the continuation `k p`
+applied to `Kₚ ρ Kₚᴴ`. -/
+theorem map_append [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Z s)]
+    (ev : Interpretation G) (c : Circuit Γ G X Y) (k : c.Index → Circuit Γ G Y Z)
+    (ρ : Matrix (Config X) (Config X) ℂ) :
+    (c.append k).map ev ρ = ∑ p, (k p).map ev (c.kraus ev p * ρ * (c.kraus ev p)ᴴ) := by
+  simp only [map, krausFamily, KrausFamily.map_apply]
+  rw [← (c.appendIndexEquiv k).symm.sum_comp, Fintype.sum_sigma]
+  refine Finset.sum_congr rfl fun p _ ↦ Finset.sum_congr rfl fun q _ ↦ ?_
+  rw [kraus_append, Equiv.apply_symm_apply, conjTranspose_mul]
+  simp only [Matrix.mul_assoc]
+
+omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] in
+/-- The circuit of one layer. -/
+def ofLayer [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y) :
+    Circuit Γ G X Y :=
+  step L fun _ ↦ done Y
+
+/-- The map of a circuit layer by layer: along each Kraus index `i` of the first layer, the map
+of the continuation applied to `Kᵢ ρ Kᵢᴴ`. -/
+theorem map_step [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Z s)]
+    (ev : Interpretation G) (L : Layer Γ G X Y) (next : L.Index → Circuit Γ G Y Z)
+    (ρ : Matrix (Config X) (Config X) ℂ) :
+    (step L next).map ev ρ = ∑ i, (next i).map ev (L.kraus ev i * ρ * (L.kraus ev i)ᴴ) := by
+  rw [show step L next = (ofLayer L).append fun p ↦ next p.1 from rfl, map_append]
+  erw [Fintype.sum_sigma]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  change ∑ _u : Unit, (next i).map ev ((1 * L.kraus ev i) * ρ * (1 * L.kraus ev i)ᴴ) = _
+  rw [Fintype.sum_unique, Matrix.one_mul]
+
+/-- The map of the circuit of one layer is the map of the layer's Kraus family. -/
+theorem map_ofLayer [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (ev : Interpretation G)
+    (L : Layer Γ G X Y) : (ofLayer L).map ev = (L.krausFamily ev).map := by
+  ext1 ρ
+  rw [ofLayer, map_step, KrausFamily.map_apply]
+  exact Finset.sum_congr rfl fun i _ ↦ by rw [map_done]; rfl
 
 /-- An unbranched sequence of layers on one system, applied from the head of the list. -/
 def seq : List (Layer Γ G X X) → Circuit Γ G X X

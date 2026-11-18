@@ -26,11 +26,13 @@ a product of one placement per cell.
 
 * `QuantumCircuit.Layer.ofCells` — gates on disjoint cells, the identity elsewhere.
 * `QuantumCircuit.Layer.placeFamily` — the placement of a Kraus family on a region.
+* `QuantumCircuit.Layer.ofOnsite` — a layer with no cells.
 
 ## Main results
 
 * `QuantumCircuit.Layer.kraus_ofCells` — the Kraus operators, as products of placements.
 * `QuantumCircuit.Layer.map_ofCells` — the map, as a composite of the maps of placed gates.
+* `QuantumCircuit.Layer.kraus_ofOnsite` — the Kraus operators of an onsite layer.
 * `QuantumCircuit.Layer.forall_ofCells`, `QuantumCircuit.Layer.nonempty_index_ofCells`.
 * `QuantumCircuit.Layer.single_eq_ofCells` and its cases `QuantumCircuit.Layer.forall_single`,
   `QuantumCircuit.Layer.nonempty_index_single`, `QuantumCircuit.Layer.gateCount_single`,
@@ -134,6 +136,25 @@ theorem depth_single (b : Γ.Cell) (g : G (Γ.cell b) X X) (hb : 0 < Γ.cost b) 
   simp [depth, single, Finset.filter_singleton, hb]
 
 end Definition
+
+/-- The layer with no cells and the onsite family `o s` at every site. The local bases may
+change, as in a measurement or a preparation. -/
+def ofOnsite {X Y : S → Type} (o : (s : S) → KrausFamily (X s) (Y s)) : Layer Γ G X Y where
+  cells := ∅
+  pairwiseDisjoint := by simp
+  gate b := absurd b.2 (Finset.notMem_empty _)
+  onsite s := o s.1
+
+/-- The Kraus operators of an onsite layer are the products of one operator per site. -/
+theorem kraus_ofOnsite {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (ev : Interpretation G)
+    (o : (s : S) → KrausFamily (X s) (Y s)) (i : (ofOnsite (Γ := Γ) (G := G) o).Index) :
+    (ofOnsite (Γ := Γ) (G := G) o).kraus ev i =
+      prodOp fun s ↦ (o s).op (i.2 ⟨s, by simp [ofOnsite]⟩) := by
+  ext y x
+  rw [kraus, Fintype.prod_eq_one _ fun b ↦ absurd b.2 (Finset.notMem_empty _), one_mul, prodOp]
+  exact Fintype.prod_equiv (Equiv.subtypeUnivEquiv fun s ↦ by simp [ofOnsite]) _ _
+    fun _ ↦ rfl
 
 section Product
 

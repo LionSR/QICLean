@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.ManyBody.Sites
 
+import QICLean.ManyBody.Sites.Block
 import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.Lattice

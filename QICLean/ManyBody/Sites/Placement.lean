@@ -326,6 +326,12 @@ theorem prodOp_one : prodOp (fun v ↦ (1 : Matrix (X v) (X v) ℂ)) = 1 := by
     rw [ite_eq_right h]
     exact Finset.prod_eq_zero (Finset.mem_univ v) (ite_eq_right hv)
 
+omit [∀ v, DecidableEq (X v)] in
+/-- The trace of a product operator is the product of the traces. -/
+theorem trace_prodOp (m : (v : V) → Matrix (X v) (X v) ℂ) :
+    (prodOp m).trace = ∏ v, (m v).trace := by
+  simp only [trace, diag, prodOp_apply, Fintype.prod_sum]
+
 omit [DecidableEq V] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
 /-- The adjoint of a product operator is the product of the adjoints. -/
 theorem conjTranspose_prodOp (m : (v : V) → Matrix (X v) (Y v) ℂ) :
