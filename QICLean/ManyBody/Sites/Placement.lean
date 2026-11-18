@@ -8,6 +8,7 @@ import QICLean.Algebra.HermitianHelpers
 import Mathlib.Analysis.CStarAlgebra.Hom
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Normed.Algebra.Exponential
+import QICLean.Analysis.HermitianUnitaryPath
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
@@ -49,7 +50,8 @@ its restriction to the region.
   `ManyBody.range_placeHom` — the placed matrices are the supported operators.
 * `ManyBody.place_injective`, `ManyBody.norm_place`, `ManyBody.norm_place_le`.
 * `ManyBody.place_exp`, `ManyBody.exp_mem_supportedOperators` — placement commutes with the
-  exponential, and the supported operators are closed under it.
+  exponential, and the supported operators are closed under it; likewise
+  `ManyBody.place_hermitianUnitaryPath`, `ManyBody.hermitianUnitaryPath_mem_supportedOperators`.
 * `ManyBody.supportedOperators_toSubmodule_eq_span`, `ManyBody.supportedOperators_induction`,
   `ManyBody.eq_of_mem_supportedOperators₂` — supported operators are spanned by product
   operators, with the induction principle and the extension of bilinear identities.
@@ -643,6 +645,18 @@ theorem exp_mem_supportedOperators {A : Matrix (Config X) (Config X) ℂ}
   obtain ⟨K, rfl⟩ := exists_eq_place_of_mem_supportedOperators hA
   rw [← place_exp]
   exact place_mem_supportedOperators _
+
+/-- Placement commutes with the unitary path. -/
+theorem place_hermitianUnitaryPath (K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ) (r : ℝ) :
+    place D (Matrix.hermitianUnitaryPath K r) = Matrix.hermitianUnitaryPath (place D K) r := by
+  simp only [Matrix.hermitianUnitaryPath, place_exp, ← Complex.coe_smul, place_smul]
+
+/-- The operators supported on a region are closed under the unitary path. -/
+theorem hermitianUnitaryPath_mem_supportedOperators {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X D) (r : ℝ) :
+    Matrix.hermitianUnitaryPath A r ∈ supportedOperators X D := by
+  rw [Matrix.hermitianUnitaryPath, ← Complex.coe_smul]
+  exact exp_mem_supportedOperators (SMulMemClass.smul_mem _ (SMulMemClass.smul_mem _ hA))
 
 end Exponential
 
