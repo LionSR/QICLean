@@ -19,11 +19,14 @@ of a theorem, determines its intended layer.
 | `Circuit/Party` | matrix foundations, channels, Sites, Gates, Circuits |
 | `Circuit/Algorithm` | matrix foundations, channels, Sites, Gates, Circuits |
 | `Circuit/Model` | matrix foundations, channels, Sites, Gates, Circuits |
+| `Circuit/Compile` | matrix foundations, channels, Sites, Gates, Circuits, Model |
+| `Circuit/Protocol` | matrix foundations, channels, Sites, Gates, Circuits, Model, Compile |
 
 Matrix foundations means `Algebra`, `Analysis`, `Topology`; single-system
 channels means `Channel`, `Kraus`. Lower prerequisites remain available at
 higher layers. Specific prefixes own modules before the enclosing `Circuit`
-prefix does. Other QICLean targets are rejected from these new layers. Imports
+prefix does. Nothing below `Circuit/Model` (Core, Geometry, Gate, Party,
+Algorithm) imports it; only `Circuit/Compile` and `Circuit/Protocol` do. Other QICLean targets are rejected from these new layers. Imports
 of external dependencies such as Mathlib are outside this local layer check.
 The repository rule that QICLean never depends on TNLean still applies.
 

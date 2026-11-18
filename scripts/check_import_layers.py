@@ -45,6 +45,8 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("party", ("QICLean.Circuit.Party",)),
     ("algorithm", ("QICLean.Circuit.Algorithm",)),
     ("model", ("QICLean.Circuit.Model",)),
+    ("compile", ("QICLean.Circuit.Compile",)),
+    ("protocol", ("QICLean.Circuit.Protocol",)),
     ("circuit", ("QICLean.Circuit",)),
     ("matrix", ("QICLean.Algebra", "QICLean.Analysis", "QICLean.Topology")),
     ("channel", ("QICLean.Channel", "QICLean.Kraus")),
@@ -53,7 +55,8 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
 # Existing single-system directories are classified as targets, but their
 # internal cycles are governed by MUTUAL_DIRECTORIES, not a new layer ordering.
 NEW_LAYERS = frozenset({
-    "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "model"
+    "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "model",
+    "compile", "protocol"
 })
 ALLOWED: dict[str, frozenset[str]] = {
     "sites": frozenset({"matrix", "channel"}),
@@ -64,6 +67,8 @@ ALLOWED: dict[str, frozenset[str]] = {
     "party": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
     "algorithm": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
     "model": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
+    "compile": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model"}),
+    "protocol": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model", "compile"}),
 }
 DEBT: frozenset[str] = frozenset({})
 DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
