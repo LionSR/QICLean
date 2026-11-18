@@ -73,7 +73,7 @@ theorem dft_conjTranspose_mulVec (φ : ℝ) (y : Config (Qudits (Fin t) 2)) :
   rw [mulVec, dotProduct, amplitude, ← (encode t).symm.sum_comp, Finset.mul_sum]
   refine Finset.sum_congr rfl fun j _ ↦ ?_
   have hstar : star (invSqrtTwo ^ t) = invSqrtTwo ^ t := by simp
-  simp only [conjTranspose_apply, dft, of_apply, star_mul', hstar, Equiv.apply_symm_apply,
+  simp only [conjTranspose_apply, Qubit.dft_apply, star_mul', hstar, Equiv.apply_symm_apply,
     Complex.star_def, ← Complex.exp_conj, ← Complex.exp_nat_mul]
   rw [mul_mul_mul_comm, ← Complex.exp_add, ← mul_pow, invSqrtTwo_mul_self, inv_pow]
   congr 2

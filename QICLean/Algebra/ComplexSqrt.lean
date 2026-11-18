@@ -12,14 +12,15 @@ import Mathlib.Basic.Complex.Basic
 
 This file records the square identity for the complex coercion of a nonnegative
 real square root, together with the companion identity for the square of its
-inverse, and names the complex number `1 / √2` with its basic identities.
+inverse, and names the complex numbers `1 / √x` and `1 / √2` with their basic identities.
 
 ## Main definitions
 
+* `Complex.invSqrt`: the complex number `1 / √x` of a real number `x`.
 * `Complex.invSqrtTwo`: the complex number `1 / √2`.
 
 The declarations are ported from `TNLean/Algebra/ComplexSqrt.lean` at commit
-`4150a33bacefe5ca311874b20cc4b90237fa447e` (Apache-2.0), with statements and names unchanged.
+`4150a33bacefe5ca311874b20cc4b90237fa447e` (Apache-2.0), with statements and names unchanged; `Complex.invSqrt` and its identities are new here.
 -/
 
 namespace Complex
@@ -76,5 +77,17 @@ theorem sqrtTwo_mul_invSqrtTwo : (↑(Real.sqrt 2) : ℂ) * invSqrtTwo = 1 :=
 `Matrix.conjTranspose_smul`. -/
 @[simp] theorem star_invSqrtTwo : star invSqrtTwo = invSqrtTwo :=
   conj_invSqrtTwo
+
+/-- The complex number `1 / √x` of a real number `x`. -/
+noncomputable def invSqrt (x : ℝ) : ℂ := ((Real.sqrt x : ℝ) : ℂ)⁻¹
+
+theorem invSqrt_two : invSqrt 2 = invSqrtTwo := rfl
+
+theorem invSqrt_mul_self {x : ℝ} (hx : 0 ≤ x) : invSqrt x * invSqrt x = (x : ℂ)⁻¹ :=
+  ofReal_sqrt_inv_mul_self x hx
+
+/-- The complex number `1 / √x` is real, so `star` fixes it. -/
+@[simp] theorem star_invSqrt (x : ℝ) : star (invSqrt x) = invSqrt x := by
+  simp [invSqrt, Complex.conj_ofReal]
 
 end Complex
