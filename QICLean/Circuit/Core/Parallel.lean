@@ -34,7 +34,8 @@ a product of one placement per cell.
 
 * `QuantumCircuit.Layer.kraus_ofCells` — the Kraus operators, as products of placements.
 * `QuantumCircuit.Layer.map_ofCells` — the map, as a composite of the maps of placed gates.
-* `QuantumCircuit.Layer.kraus_ofOnsite` — the Kraus operators of an onsite layer.
+* `QuantumCircuit.Layer.kraus_ofOnsite`, `QuantumCircuit.Layer.depth_ofOnsite` — the Kraus
+  operators of an onsite layer, and its depth `0`.
 * `QuantumCircuit.Layer.kraus_measure` — the Kraus operator of an outcome of a measurement is the
   placed projection onto it.
 * `QuantumCircuit.Layer.forall_ofCells`, `QuantumCircuit.Layer.nonempty_index_ofCells`.
@@ -148,6 +149,12 @@ def ofOnsite {X Y : S → Type} (o : (s : S) → KrausFamily (X s) (Y s)) : Laye
   pairwiseDisjoint := by simp
   gate b := absurd b.2 (Finset.notMem_empty _)
   onsite s := o s.1
+
+omit [Fintype S] [GateFamily G] in
+/-- An onsite layer has depth `0`. -/
+theorem depth_ofOnsite {X Y : S → Type} (o : (s : S) → KrausFamily (X s) (Y s)) :
+    (ofOnsite (Γ := Γ) (G := G) o).depth = 0 := by
+  simp [depth, ofOnsite]
 
 /-- The Kraus operators of an onsite layer are the products of one operator per site. -/
 theorem kraus_ofOnsite {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]

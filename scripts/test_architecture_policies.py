@@ -68,10 +68,73 @@ class ImportLayerPolicyTests(unittest.TestCase):
                     self.assertEqual(layers.violations(sources), {f"{importer} -> {target}"})
         importer = "QICLean.Circuit.Simulation.TruncatedProductFormula"
         for target in ["QICLean.Circuit.Algorithm.QFT", "QICLean.Circuit.Party.Basic",
-                       "QICLean.Entropy.Defs"]:
+                       "QICLean.Circuit.Model.Protocol", "QICLean.Circuit.Compile.Encoding",
+                       "QICLean.Circuit.Protocol.Example", "QICLean.Entropy.Defs"]:
             with self.subTest(target=target):
                 self.assertEqual(layers.violations({importer: f"import {target}\ndef sim := 0\n"}),
                                  {f"{importer} -> {target}"})
+
+    def test_model_compile_protocol_own_only_their_specific_prefixes(self) -> None:
+        for module, layer in [("QICLean.Circuit.Model.Protocol", "model"),
+                              ("QICLean.Circuit.Compile.Encoding", "compile"),
+                              ("QICLean.Circuit.Protocol.Example", "protocol"),
+                              ("QICLean.Circuit.ModelLike", "circuit"),
+                              ("QICLean.Circuit.CompileLike", "circuit"),
+                              ("QICLean.Circuit.ProtocolLike", "circuit")]:
+            with self.subTest(module=module):
+                self.assertEqual(layers.layer_of(module), layer)
+
+    def test_model_compile_protocol_may_consume_lower_layers_in_order(self) -> None:
+        lower = ["QICLean.Algebra.MatrixAux", "QICLean.Channel.Basic",
+                 "QICLean.ManyBody.Sites.Placement", "QICLean.Circuit.Gate.Basic",
+                 "QICLean.Circuit.Core.Circuit"]
+        for importer, extra in [
+                ("QICLean.Circuit.Model.Protocol", []),
+                ("QICLean.Circuit.Compile.Encoding", ["QICLean.Circuit.Model.Protocol"]),
+                ("QICLean.Circuit.Protocol.Example",
+                 ["QICLean.Circuit.Model.Protocol", "QICLean.Circuit.Compile.Encoding"])]:
+            with self.subTest(importer=importer):
+                sources = {importer: "".join(f"import {module}\n" for module in lower + extra)
+                           + "def p := 0\n"}
+                self.assertEqual(layers.violations(sources), set())
+
+    def test_model_compile_protocol_are_not_reverse_import_routes(self) -> None:
+        lower = ["QICLean.Circuit.Core.Circuit", "QICLean.Circuit.ProductFormula",
+                 "QICLean.Circuit.Algorithm.QFT", "QICLean.Circuit.Party.Basic",
+                 "QICLean.Circuit.Gate.Basic", "QICLean.ManyBody.Sites.Placement",
+                 "QICLean.ManyBody.Dynamics.HeisenbergEvolution",
+                 "QICLean.ManyBody.Hamiltonian.Basic",
+                 "QICLean.Circuit.Simulation.TruncatedProductFormula"]
+        for target, prefix, above in [
+                ("QICLean.Circuit.Model.Protocol", "QICLean.Circuit.Model", []),
+                ("QICLean.Circuit.Compile.Encoding", "QICLean.Circuit.Compile",
+                 ["QICLean.Circuit.Model.Protocol"]),
+                ("QICLean.Circuit.Protocol.Example", "QICLean.Circuit.Protocol",
+                 ["QICLean.Circuit.Model.Protocol", "QICLean.Circuit.Compile.Encoding"])]:
+            for importer in lower + above:
+                for via in [target, prefix, "QICLean.Circuit"]:
+                    with self.subTest(importer=importer, via=via):
+                        sources = {
+                            target: "def t := 0\n",
+                            prefix: f"import {target}\n",
+                            "QICLean.Circuit": f"import {prefix}\n",
+                            importer: f"import {via}\ndef consumer := 0\n",
+                        }
+                        self.assertEqual(layers.violations(sources),
+                                         {f"{importer} -> {target}"})
+
+    def test_model_compile_protocol_do_not_reach_sideways(self) -> None:
+        for importer in ["QICLean.Circuit.Model.Protocol", "QICLean.Circuit.Compile.Encoding",
+                         "QICLean.Circuit.Protocol.Example"]:
+            for target in ["QICLean.ManyBody.Dynamics.HeisenbergEvolution",
+                           "QICLean.ManyBody.Hamiltonian.Basic", "QICLean.Circuit.Algorithm.QFT",
+                           "QICLean.Circuit.Party.Basic",
+                           "QICLean.Circuit.Simulation.TruncatedProductFormula",
+                           "QICLean.Entropy.Defs"]:
+                with self.subTest(importer=importer, target=target):
+                    self.assertEqual(
+                        layers.violations({importer: f"import {target}\ndef p := 0\n"}),
+                        {f"{importer} -> {target}"})
 
     def test_upward_and_sideways_imports_are_violations(self) -> None:
         sources = {
@@ -426,7 +489,10 @@ class RepositoryRatchetTests(unittest.TestCase):
                                ('ManyBody.Dynamics', 'ManyBody.Hamiltonian'),
                                ('ManyBody.Hamiltonian', 'Circuit'),
                                ('Circuit', 'ManyBody.Dynamics'),
-                               ('Circuit.Party', 'ManyBody.Hamiltonian')]:
+                               ('Circuit.Party', 'ManyBody.Hamiltonian'),
+                               ('Circuit.Model', 'Circuit.Compile'),
+                               ('Circuit.Compile', 'Circuit.Protocol'),
+                               ('Circuit.Protocol', 'Circuit.Simulation')]:
             with self.subTest(source=source, target=target):
                 self.assertTrue(layers.violations({f'QICLean.{source}.A':
                                                   f'import QICLean.{target}.B\ndef a := 0\n'}))

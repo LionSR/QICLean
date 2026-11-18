@@ -18,6 +18,9 @@ of a theorem, determines its intended layer.
 | `Circuit` | matrix foundations, channels, Sites, Gates |
 | `Circuit/Party` | matrix foundations, channels, Sites, Gates, Circuits |
 | `Circuit/Algorithm` | matrix foundations, channels, Sites, Gates, Circuits |
+| `Circuit/Model` | matrix foundations, channels, Sites, Gates, Circuits |
+| `Circuit/Compile` | matrix foundations, channels, Sites, Gates, Circuits, Model |
+| `Circuit/Protocol` | matrix foundations, channels, Sites, Gates, Circuits, Model, Compile |
 | `Circuit/Simulation` | matrix foundations, channels, Sites, Gates, Circuits, Dynamics, Hamiltonians |
 
 `Circuit/Simulation` owns statements comparing circuit simulation with many-body
@@ -28,19 +31,22 @@ circuit side, importing Hamiltonians and Dynamics. It implements the adopted TN
 architecture's statement-based ownership rule; the sibling relationship between
 circuit primitives and Hamiltonians remains unchanged. Only the specific
 `Circuit/Simulation` prefix gains those imports. Core, ordinary Circuit,
-Algorithm, Party, Sites, Dynamics and Hamiltonian cannot import Simulation,
-either directly or through an aggregator. Simulation cannot import Algorithm or
-Party. Low-level matrix product-formula results stay in Analysis, and generic
-circuit construction stays in Circuit. The integration layer introduces no
+Algorithm, Party, Model, Compile, Protocol, Sites, Dynamics and Hamiltonian
+cannot import Simulation, either directly or through an aggregator. Simulation
+cannot import Algorithm, Party, Model, Compile or Protocol. Low-level matrix
+product-formula results stay in Analysis, and generic circuit construction stays
+in Circuit. The integration layer introduces no
 alternative interaction, support or evolution definitions. No debt exception is
 added for this layer; regression tests enforce both allowed and forbidden edges.
 
 Matrix foundations means `Algebra`, `Analysis`, `Topology`; single-system
 channels means `Channel`, `Kraus`. Lower prerequisites remain available at
 higher layers. Specific prefixes own modules before the enclosing `Circuit`
-prefix does. Other QICLean targets are rejected from these new layers. Imports
-of external dependencies such as Mathlib are outside this local layer check.
-The repository rule that QICLean never depends on TNLean still applies.
+prefix does. Nothing below `Circuit/Model` (Core, Geometry, Gate, Party,
+Algorithm) imports it; only `Circuit/Compile` and `Circuit/Protocol` do. Other
+QICLean targets are rejected from these new layers. Imports of external
+dependencies such as Mathlib are outside this local layer check. The
+repository rule that QICLean never depends on TNLean still applies.
 
 The check expands import-only aggregators recursively, including `QICLean.lean`.
 Aggregators themselves have no declarations and do not contribute dependency

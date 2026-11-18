@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.MatrixTracePairing
 import QICLean.Circuit.Core.LayerDual
 
 /-!
@@ -34,14 +35,17 @@ every branch is `comp`, and `done` is its identity.
 
 ## Main results
 
-* `QuantumCircuit.Circuit.done_comp`, `QuantumCircuit.Circuit.comp_done` — `done` is the
-  identity of composition.
+* `QuantumCircuit.Circuit.done_comp`, `QuantumCircuit.Circuit.comp_done`,
+  `QuantumCircuit.Circuit.comp_assoc` — `done` is the identity of composition, and composition
+  is associative.
 * `QuantumCircuit.Circuit.kraus_append`, `QuantumCircuit.Circuit.kraus_comp` — the Kraus
   operators of a composition are the products of those of its parts.
 * `QuantumCircuit.Circuit.map_comp`, `QuantumCircuit.Circuit.map_done` — composition of maps.
 * `QuantumCircuit.Circuit.map_append`, `QuantumCircuit.Circuit.map_step` — the map along the
   branches, and layer by layer.
-* `QuantumCircuit.Circuit.trace_map_mul` — the map and the Heisenberg picture are dual.
+* `QuantumCircuit.Circuit.trace_map_mul`, `QuantumCircuit.Circuit.traceAdjointMap_map` — the map
+  and the Heisenberg picture are dual: the Heisenberg picture is the trace-pairing adjoint of
+  the map.
 * `QuantumCircuit.Circuit.dual_step`, `QuantumCircuit.Circuit.dual_done` — the Heisenberg
   picture layer by layer.
 * `QuantumCircuit.Circuit.step_eq_ofLayer_comp`, `QuantumCircuit.Circuit.dual_step_of_forall_eq`
@@ -136,6 +140,12 @@ theorem trace_map_mul [∀ s, Fintype (Z s)] (ev : Interpretation G) (c : Circui
   simp only [KrausFamily.map_apply, KrausFamily.adjoint, conjTranspose_conjTranspose]
   rfl
 
+/-- The Heisenberg picture of a circuit is the trace-pairing adjoint of its map. -/
+theorem traceAdjointMap_map [∀ s, Fintype (Z s)] (ev : Interpretation G) (c : Circuit Γ G X Z)
+    (A : Matrix (Config Z) (Config Z) ℂ) : traceAdjointMap (c.map ev) A = c.dual ev A := by
+  refine Matrix.ext_iff_trace_mul_right.mpr fun N ↦ ?_
+  rw [trace_traceAdjointMap_mul, trace_mul_comm, c.trace_map_mul, trace_mul_comm]
+
 /-- The empty circuit has the identity as Heisenberg picture. -/
 @[simp] theorem dual_done (ev : Interpretation G) (A : Matrix (Config X) (Config X) ℂ) :
     (done X : Circuit Γ G X X).dual ev A = A := by
@@ -163,6 +173,13 @@ omit [Fintype S] in
 @[simp] theorem comp_done : {X Z : S → Type} → (c : Circuit Γ G X Z) → c.comp (done Z) = c
   | _, _, done _ => rfl
   | _, _, step L next => congrArg (step L) (funext fun i ↦ comp_done (next i))
+
+omit [Fintype S] in
+/-- Composition is associative. -/
+theorem comp_assoc {W : S → Type} : {X Y : S → Type} → (c : Circuit Γ G X Y) →
+    (c' : Circuit Γ G Y Z) → (c'' : Circuit Γ G Z W) → (c.comp c').comp c'' = c.comp (c'.comp c'')
+  | _, _, done _, _, _ => rfl
+  | _, _, step L next, c', c'' => congrArg (step L) (funext fun i ↦ comp_assoc (next i) c' c'')
 
 /-- The branches of `c.append k` are a branch `p` of `c` followed by a branch of `k p`. -/
 def appendIndexEquiv : {X₁ X₂ X₃ : S → Type} → (c : Circuit Γ G X₁ X₂) →

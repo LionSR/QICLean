@@ -12,5 +12,6 @@ import QICLean.Circuit.Algorithm
 import QICLean.Circuit.Core
 import QICLean.Circuit.Gate
 import QICLean.Circuit.Geometry
+import QICLean.Circuit.Model
 import QICLean.Circuit.ProductFormula
 import QICLean.Circuit.Simulation

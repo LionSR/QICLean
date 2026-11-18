@@ -12,6 +12,7 @@ import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.LinearAlgebra.FiniteDimensional.Lemmas
 import Mathlib.LinearAlgebra.Matrix.StdBasis
 import Mathlib.LinearAlgebra.Matrix.Trace
+import QICLean.Algebra.TraceReindex
 import Mathlib.LinearAlgebra.Matrix.Vec
 import Mathlib.LinearAlgebra.Pi
 import Mathlib.LinearAlgebra.Span.Basic
@@ -51,6 +52,8 @@ linear map between matrix algebras.
 * `Matrix.traceAdjointMap_hasEigenvalue_iff` — the trace adjoint has the same eigenvalues
 * `Matrix.traceAdjointMap_traceAdjointMap` — the trace-pairing adjoint is involutive
 * `Matrix.traceAdjointMap_comp` — the trace-pairing adjoint reverses composition
+* `Matrix.traceAdjointMap_comp_reindexAlgEquiv` — the adjoint of a map precomposed with a
+  reindexing
 -/
 
 open scoped Matrix BigOperators
@@ -338,6 +341,19 @@ theorem traceAdjointMap_sub {n m : Type*} [Fintype m]
   classical
   ext ρ i j
   simp [traceAdjointMap, Matrix.mul_sub]
+
+/-- The trace-pairing adjoint of a map precomposed with a reindexing is the trace-pairing adjoint
+of the map followed by the inverse reindexing. -/
+theorem traceAdjointMap_comp_reindexAlgEquiv {m n k : Type*} [Fintype m] [Fintype n] [Fintype k]
+    [DecidableEq m] [DecidableEq n] (e : m ≃ n) (E : Matrix m m ℂ →ₗ[ℂ] Matrix k k ℂ)
+    (A : Matrix k k ℂ) :
+    traceAdjointMap (E ∘ₗ (reindexAlgEquiv ℂ ℂ e.symm).toLinearMap) A =
+      reindexAlgEquiv ℂ ℂ e (traceAdjointMap E A) := by
+  refine Matrix.ext_iff_trace_mul_right.mpr fun N ↦ ?_
+  rw [trace_traceAdjointMap_mul, LinearMap.comp_apply, AlgEquiv.toLinearMap_apply,
+    ← trace_traceAdjointMap_mul, coe_reindexAlgEquiv, coe_reindexAlgEquiv, ← trace_reindex e,
+    reindex_apply, reindex_apply, reindex_apply, ← submatrix_mul_equiv _ _ _ e.symm]
+  simp
 
 /-- In transposed matrix-unit coordinates, the matrix of the trace-pairing adjoint is the
 transpose of the matrix of the original endomorphism. -/

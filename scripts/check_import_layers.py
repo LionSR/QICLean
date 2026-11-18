@@ -44,6 +44,9 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("gate", ("QICLean.Circuit.Gate",)),
     ("party", ("QICLean.Circuit.Party",)),
     ("algorithm", ("QICLean.Circuit.Algorithm",)),
+    ("model", ("QICLean.Circuit.Model",)),
+    ("compile", ("QICLean.Circuit.Compile",)),
+    ("protocol", ("QICLean.Circuit.Protocol",)),
     ("simulation", ("QICLean.Circuit.Simulation",)),
     ("circuit", ("QICLean.Circuit",)),
     ("matrix", ("QICLean.Algebra", "QICLean.Analysis", "QICLean.Topology")),
@@ -53,7 +56,8 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
 # Existing single-system directories are classified as targets, but their
 # internal cycles are governed by MUTUAL_DIRECTORIES, not a new layer ordering.
 NEW_LAYERS = frozenset({
-    "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "simulation"
+    "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "model",
+    "compile", "protocol", "simulation"
 })
 ALLOWED: dict[str, frozenset[str]] = {
     "sites": frozenset({"matrix", "channel"}),
@@ -63,6 +67,9 @@ ALLOWED: dict[str, frozenset[str]] = {
     "circuit": frozenset({"matrix", "channel", "sites", "gate"}),
     "party": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
     "algorithm": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
+    "model": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
+    "compile": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model"}),
+    "protocol": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model", "compile"}),
     # QICLean #1062: simulation consumes both circuits and many-body evolution.
     "simulation": frozenset({
         "matrix", "channel", "sites", "gate", "circuit", "dynamics", "hamiltonian"
