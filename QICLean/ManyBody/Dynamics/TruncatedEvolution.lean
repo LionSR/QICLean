@@ -10,8 +10,8 @@ import Mathlib.Analysis.Calculus.MeanValue
 # Comparison of Hamiltonian evolutions
 
 The interaction-picture derivative compares two canonical Heisenberg evolutions through
-commutators with the Hamiltonian difference. This is the finite-dimensional Duhamel bridge
-for spatial truncation; it is not a comparison with a regional expectation.
+commutators with the Hamiltonian difference. This yields finite-dimensional bounds
+for spatial Hamiltonian truncation.
 -/
 
 open NormedSpace Matrix

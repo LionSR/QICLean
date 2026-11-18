@@ -685,21 +685,27 @@ nested-commutator bound, which is not proved.
     \leanok
     \uses{def:dynamics_heisenberg}
     In a complete real normed algebra, if $f'(s)$ exists, then
-    \[
-      \frac{d}{ds}\bigl(e^{sK}f(s)e^{-sK}\bigr)
-       =e^{sK}\bigl(Kf(s)+f'(s)-f(s)K\bigr)e^{-sK}.
-    \]
+    \begin{align}
+        \label{eq:dynamics_conjugation_derivative}
+        \frac{d}{ds}\bigl(e^{sK}f(s)e^{-sK}\bigr)
+        &=e^{sK}\bigl(Kf(s)+f'(s)-f(s)K\bigr)e^{-sK}.
+    \end{align}
     In particular, for arbitrary finite complex matrices $H,K,A$, put
     $F(s)=\tau^H_{-s}(\tau^K_s(A))$. Then
-    \[
-      F'(s)=\tau^H_{-s}\bigl(i[K-H,\tau^K_s(A)]\bigr).
-    \]
+    \begin{align}
+        \label{eq:dynamics_relative_derivative}
+        F'(s)&=\tau^H_{-s}\bigl(i[K-H,\tau^K_s(A)]\bigr).
+    \end{align}
     Neither differentiation identity requires Hermiticity.
 \end{lemma}
 \begin{proof}\leanok
     Apply the product rule to the two exponentials and the middle factor.
-    For the second formula apply the first formula twice, using that $K$
-    commutes with its exponential, and collect the two commutators.
+    To prove~(\ref{eq:dynamics_relative_derivative}), apply
+    (\ref{eq:dynamics_conjugation_derivative}) twice, using that $K$
+    commutes with its exponential. Writing $B=\tau^K_s(A)$, combine the terms by
+    \begin{align}
+        i[K,B]-i[H,B]&=i[K-H,B].\notag
+    \end{align}
 \end{proof}
 
 \begin{theorem}[Finite Hamiltonian comparison]
@@ -711,12 +717,13 @@ nested-commutator bound, which is not proved.
     Let $H$ be Hermitian, $K,A$ arbitrary finite complex matrices, and $t\in\R$.
     If $\|[K-H,\tau^K_s(A)]\|\leq\varepsilon$ for every $s$ between $0$ and $t$,
     then
-    \[
-      \|\tau^K_t(A)-\tau^H_t(A)\|\leq\varepsilon |t|.
-    \]
+    \begin{align}
+        \label{eq:dynamics_evolution_comparison}
+        \|\tau^K_t(A)-\tau^H_t(A)\|&\leq\varepsilon |t|.
+    \end{align}
     More generally, if $K-H=\sum_{j\in D}B_j$ for a finite set $D$, and
     $\|[\tau^K_s(A),B_j]\|\leq\varepsilon_j$ on that same interval, then
-    the right side can be replaced by $|t|\sum_{j\in D}\varepsilon_j$.
+    the right side of~(\ref{eq:dynamics_evolution_comparison}) can be replaced by $|t|\sum_{j\in D}\varepsilon_j$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:dynamics_relative_derivative}
@@ -742,28 +749,30 @@ nested-commutator bound, which is not proved.
     For a set $D$ of deleted terms and any Hermitian $H$ with
     $K-H=\sum_{j\in D}\Phi_j$, suppose $d_G(x,y)\geq d$ for
     $x\in S$, $y\in T_j$, $j\in D$. Then, with $M_D=\sum_{j\in D}\|\Phi_j\|$,
-    \[
-      \|\tau^K_t(A)-\tau^H_t(A)\|
-      \leq4|S|\|A\|M_D|t|
-      \exp\bigl(4v_R|b|e^{2\mu R}|t|-\mu d\bigr).
-    \]
+    \begin{align}
+        \label{eq:dynamics_spatial_truncation}
+        \|\tau^K_t(A)-\tau^H_t(A)\|
+        &\leq4|S|\|A\|M_D|t|
+        \exp\bigl(4v_R|b|e^{2\mu R}|t|-\mu d\bigr).
+    \end{align}
     In particular take $H=\sum_{j:T_j\subseteq L}\Phi_j$ and
-    $D=\{j:T_j\not\subseteq L\}$. The same estimate holds if
+    $D=\{j:T_j\not\subseteq L\}$. Estimate~(\ref{eq:dynamics_spatial_truncation}) holds if
     $d_G(x,z)\geq d+R$ for every $x\in S$, $z\notin L$.
-    This is a finite-dimensional consequence of the existing commutator
-    bound, not a claim about infinite-system dynamics.
+    % This finite-dimensional consequence does not establish infinite-system dynamics.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:dynamics_hamiltonian_comparison, thm:dynamics_lieb_robinson}
     For every $s$ between $0$ and $t$, the two-region commutator estimate gives
-    \[
-      \|[\tau^K_s(A),\Phi_j]\|
-       \leq4|S|\|A\|\|\Phi_j\|
-        e^{4v_R|b|e^{2\mu R}|s|-\mu d}
-       \leq4|S|\|A\|\|\Phi_j\|
+    \begin{align}
+        \label{eq:dynamics_deleted_commutator}
+        \|[\tau^K_s(A),\Phi_j]\|
+        &\leq4|S|\|A\|\|\Phi_j\|
+        e^{4v_R|b|e^{2\mu R}|s|-\mu d}\notag\\
+        &\leq4|S|\|A\|\|\Phi_j\|
         e^{4v_R|b|e^{2\mu R}|t|-\mu d}.
-    \]
-    Sum these bounds in the comparison theorem.
+    \end{align}
+    Sum~(\ref{eq:dynamics_deleted_commutator}) in
+    Theorem~\ref{thm:dynamics_hamiltonian_comparison}.
     For spatial truncation, choose $z\in T_j\setminus L$ for each deleted term.
     For $y\in T_j$ the triangle inequality yields
     $d+R\leq d_G(x,z)\leq d_G(x,y)+R$, hence $d\leq d_G(x,y)$,
@@ -772,6 +781,6 @@ nested-commutator bound, which is not proved.
 \end{proof}
 
 For fixed $t$, $\mu>0$, and uniformly bounded $|S|$, $\|A\|$, $M_D$, $R$,
-$v_R$, and $|b|$, this explicit right side decays exponentially in $d$.
-No bound on $M_D$ uniform in the ambient volume is proved here; obtaining
-such control or a boundary-weighted replacement remains a separate task.
+$v_R$, and $|b|$, the right side of~(\ref{eq:dynamics_spatial_truncation}) decays exponentially in $d$.
+% No bound on $M_D$ uniform in the ambient volume is proved here; obtaining
+% such control or a boundary-weighted replacement remains a separate task.
