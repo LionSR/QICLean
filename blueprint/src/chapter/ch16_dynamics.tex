@@ -7,8 +7,9 @@ local commutator recursion of Hastings and Koma~\cite{HastingsKoma2006SpectralGa
 (see also~\cite{NachtergaeleOgataSims2006Propagation}), exact locality on regions
 closed under the interaction, the Lieb--Robinson bound in the distance of a
 graph on the sites, and the approximation of the evolved operator by its
-expectation onto a graph ball. Its last section localizes relative evolutions
-on regions and assembles them over disjoint regions. The constants of the
+expectation onto a graph ball. A further section localizes relative evolutions
+on regions and assembles them over disjoint regions, and the last proves the Lie
+and Strang product formulas with errors bounded by commutators. The constants of the
 Lieb--Robinson bounds depend only on the range, the
 size of the supports and the norms of the terms, never on the number of sites
 or the local dimensions.
@@ -500,4 +501,178 @@ $e^{itH'}e^{-itH}$.
     lies in $\mathcal A_{B_{\mathrm{out}}}$, so it is fixed by
     $E_{B_{\mathrm{out}}}$, which commutes with the integral; and each integrand
     has norm at most $\lVert W\rVert$.
+\end{proof}
+
+\section{Product formulas}
+\label{sec:dynamics_product_formulas}
+
+Let $\mathfrak A$ be a complete normed algebra over $\C$, let $A_1,\dots,A_N$
+be elements of $\mathfrak A$ listed in an order $o=(o_1,\dots,o_N)$ (an index
+may repeat), and let $z\in\C$. The first-order step and the symmetric step are
+\[
+    S_1(z)=e^{zA_{o_N}}\cdots e^{zA_{o_1}},\qquad
+    S_2(z)=e^{zA_{o_1}/2}\cdots e^{zA_{o_N}/2}\,e^{zA_{o_N}/2}\cdots
+    e^{zA_{o_1}/2},
+\]
+so that $o_1$ acts first. With $n\geq1$ steps the Lie and Strang product
+formulas are $S_1(z/n)^n$ and $S_2(z/n)^n$; both approximate $e^{zA}$, where
+$A=A_{o_1}+\cdots+A_{o_N}$. Write
+\[
+    c(o)=\sum_{i<j}\lVert[A_{o_i},A_{o_j}]\rVert,\qquad
+    a(o)=\sum_i\lVert A_{o_i}\rVert,
+\]
+and suppose $M\geq1$ bounds $\lVert e^{szB}\rVert$ for $0\leq s\leq1$ and every
+sum $B$ of the elements along a sublist of $o$. If $\lVert1\rVert=1$, then
+$M=e^{\lvert z\rvert a(o)}$ will do; for skew-adjoint elements of a C*-algebra
+and real $z$, $M=1$. The estimates below are sharp in $M$ only for $M=1$: for
+$M>1$ the exponent of $M$ grows with $N$, and with the general choice
+$M=e^{\lvert z\rvert a(o)/n}$ at the step $z/n$ the factor $M^{Nn+3}$ is
+$e^{(N+3/n)\lvert z\rvert a(o)}$, a factor $N$ in the exponent worse than a bound
+that tracks the growth of each element separately. The first-order bound is the
+pairwise-commutator form of the first-order bound
+of~\cite{ChildsSuTranWiebeZhu2021TrotterError}. The second-order bound here, in
+first-order commutators times the total norm, is weaker than their
+nested-commutator bound, which is not proved.
+
+\begin{lemma}[Telescoping]
+    \label{lem:product_formula_telescoping}
+    \lean{ProductFormula.norm_pow_sub_pow_le, ProductFormula.exp_smul_div_pow,
+        norm_exp_le_real_exp_norm}
+    \leanok
+    In a normed ring, if $\lVert a\rVert,\lVert b\rVert\leq M$, then
+    $\lVert a^m-b^m\rVert\leq mM^{m-1}\lVert a-b\rVert$. Moreover
+    $(e^{zx/n})^n=e^{zx}$ for $n\geq1$, and $\lVert e^x\rVert\leq e^{\lVert x\rVert}$
+    when $\lVert1\rVert=1$.
+\end{lemma}
+\begin{proof}\leanok
+    $a^{m+1}-b^{m+1}=a^m(a-b)+(a^m-b^m)b$, and induction. The exponential of a
+    sum of commuting elements is the product of the exponentials. The norm of
+    the exponential series is at most the scalar series of the norm.
+\end{proof}
+
+\begin{lemma}[One step for two elements]
+    \label{lem:product_formula_two}
+    \lean{ProductFormula.norm_exp_smul_sub_one_le,
+        ProductFormula.norm_mul_exp_sub_exp_mul_le,
+        ProductFormula.norm_mul_exp_sub_exp_mul_sub_smul_le,
+        ProductFormula.norm_exp_mul_exp_sub_exp_add_le,
+        ProductFormula.norm_exp_half_mul_exp_mul_exp_half_sub_exp_add_le}
+    \leanok
+    Let $x,y\in\mathfrak A$ and suppose $e^{sx}$, $e^{sy}$ and $e^{s(x+y)}$ have
+    norm at most $M$ for $0\leq s\leq1$. Then
+    \[
+        \lVert e^xe^y-e^{x+y}\rVert\leq\tfrac{M^4}{2}\lVert[x,y]\rVert,
+    \]
+    and, if $M\geq1$,
+    \[
+        \lVert e^{x/2}e^ye^{x/2}-e^{x+y}\rVert\leq
+        \tfrac{M^5}{2}\lVert[x,y]\rVert\,(\lVert x\rVert+\lVert y\rVert).
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    For the first bound let $F(s)=e^{sx}e^{sy}e^{(1-s)(x+y)}$, so that $F(1)$
+    and $F(0)$ are the two sides. Its derivative is
+    $e^{sx}[x,e^{sy}]e^{(1-s)(x+y)}$. The commutator $[x,e^{sy}]$ is the integral
+    over $u\in[0,s]$ of $e^{(s-u)y}[x,y]e^{uy}$, so it has norm at most
+    $M^2\lVert[x,y]\rVert s$; integrating $M^4\lVert[x,y]\rVert s$ over $[0,1]$
+    gives the bound. For the second, write $h=x/2$ and
+    $F(s)=e^{sh}e^{sy}e^{sh}e^{(1-s)(x+y)}$, with derivative
+    $e^{sh}\bigl([h,e^{sy}]e^{sh}+e^{sy}[y,e^{sh}]\bigr)e^{(1-s)(x+y)}$. Up to
+    the second order in $s$, $[h,e^{sy}]=s[h,y]$ and $[y,e^{sh}]=-s[h,y]$, so the
+    first-order terms cancel and the bracket has norm at most
+    $3M^3\lVert[h,y]\rVert(\lVert h\rVert+\lVert y\rVert)s^2$. Integrating
+    gives $M^5\lVert[h,y]\rVert(\lVert h\rVert+\lVert y\rVert)$, at most the
+    stated bound.
+\end{proof}
+
+\begin{theorem}[Lie and Strang product formulas]
+    \label{thm:product_formula}
+    \lean{ProductFormula.step, ProductFormula.lie, ProductFormula.symmStep,
+        ProductFormula.strang, ProductFormula.gen, ProductFormula.commSum,
+        ProductFormula.normSum, ProductFormula.ExpBound,
+        ProductFormula.expBound_exp_normSum, ProductFormula.gen_eq_sum,
+        ProductFormula.norm_step_sub_exp_le, ProductFormula.norm_lie_sub_exp_le,
+        ProductFormula.norm_symmStep_sub_exp_le,
+        ProductFormula.norm_strang_sub_exp_le}
+    \leanok
+    \uses{lem:product_formula_telescoping, lem:product_formula_two}
+    With the notation above,
+    \[
+        \lVert S_1(z)-e^{zA}\rVert\leq\tfrac{M^{N+3}}{2}\lvert z\rvert^2c(o),\qquad
+        \lVert S_2(z)-e^{zA}\rVert\leq\tfrac{M^{2N+3}}{2}\lvert z\rvert^3c(o)a(o).
+    \]
+    If $M\geq1$ bounds the exponentials at $z/n$, then
+    \[
+        \lVert S_1(z/n)^n-e^{zA}\rVert\leq\frac{M^{Nn+3}}{2n}\lvert z\rvert^2c(o),
+        \qquad
+        \lVert S_2(z/n)^n-e^{zA}\rVert\leq\frac{M^{2Nn+3}}{2n^2}\lvert z\rvert^3
+        c(o)a(o).
+    \]
+    If $o$ lists every index of a finite family exactly once, then $A$ is the
+    sum of the family.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:product_formula_telescoping, lem:product_formula_two}
+    Induction on $o$. Write $o=(o_1,o')$ and $B$ for the sum along $o'$. Then
+    $S_1(z)-e^{zA}=(S_1'(z)-e^{zB})e^{zA_{o_1}}+(e^{zB}e^{zA_{o_1}}-e^{z(B+A_{o_1})})$;
+    the second term is bounded by Lemma~\ref{lem:product_formula_two}, with
+    $\lVert[B,A_{o_1}]\rVert\leq\sum_{j\geq2}\lVert[A_{o_1},A_{o_j}]\rVert$. The
+    symmetric step is $e^{zA_{o_1}/2}S_2'(z)e^{zA_{o_1}/2}$, and the same argument
+    applies with the symmetric two-element bound. The factors have norm at most
+    $M$, so $\lVert S_1(z)\rVert\leq M^N$ and $\lVert S_2(z)\rVert\leq M^{2N}$;
+    Lemma~\ref{lem:product_formula_telescoping} with $e^{zA}=(e^{zA/n})^n$
+    multiplies the one-step error at $z/n$ by $nM^{N(n-1)}$, respectively
+    $nM^{2N(n-1)}$.
+\end{proof}
+
+\begin{definition}[Trotter propagators]
+    \label{def:dynamics_trotter}
+    \lean{ManyBody.Interaction.localTerm, ManyBody.Interaction.place_localTerm,
+        ManyBody.Interaction.exp_smul_term_eq_place,
+        ManyBody.Interaction.lieTrotter, ManyBody.Interaction.strangTrotter,
+        ManyBody.Interaction.lieTrotter_eq}
+    \leanok
+    \uses{def:dynamics_interaction, lem:sites_place_exp, thm:product_formula}
+    Let $\Phi=(h_k)$ be an interaction with finitely many terms and $o$ an order
+    of its indices. The first- and second-order Trotter propagators with $n$
+    steps are the Lie and Strang formulas for the elements $ih_k$ at $z=-t$:
+    \[
+        U_1(t)=\Bigl(e^{-ith_{o_N}/n}\cdots e^{-ith_{o_1}/n}\Bigr)^n,
+    \]
+    and $U_2(t)$ likewise with the symmetric step. Each factor $e^{c\,h_k}$ is
+    $e^{c\,K_k}\otimes1$ for a matrix $K_k$ on the support of $h_k$ with
+    $K_k\otimes1=h_k$.
+\end{definition}
+
+\begin{theorem}[Trotter error]
+    \label{thm:dynamics_trotter_error}
+    \lean{ManyBody.Interaction.isHermitian_gen,
+        ManyBody.Interaction.lieTrotter_mem_unitary,
+        ManyBody.Interaction.strangTrotter_mem_unitary,
+        ManyBody.Interaction.norm_lieTrotter_sub_le,
+        ManyBody.Interaction.norm_strangTrotter_sub_le,
+        ManyBody.Interaction.norm_lieTrotter_heisenberg_sub_le,
+        ManyBody.Interaction.norm_strangTrotter_heisenberg_sub_le}
+    \leanok
+    \uses{def:dynamics_trotter, def:dynamics_heisenberg, thm:product_formula}
+    Let the terms be Hermitian and let $o$ list every index exactly once, and
+    let $n\geq1$. Then $U_1(t)$ and $U_2(t)$ are unitary,
+    \[
+        \lVert U_1(t)-e^{-itH_\Phi}\rVert\leq\frac{t^2}{2n}c(o),\qquad
+        \lVert U_2(t)-e^{-itH_\Phi}\rVert\leq\frac{\lvert t\rvert^3}{2n^2}c(o)a(o),
+    \]
+    with $c(o)=\sum_{i<j}\lVert[h_{o_i},h_{o_j}]\rVert$ and
+    $a(o)=\sum_i\lVert h_{o_i}\rVert$. In the Heisenberg picture, for every
+    operator $A$,
+    $\lVert U_1(t)^*AU_1(t)-\tau_t(A)\rVert\leq2\lVert A\rVert\frac{t^2}{2n}c(o)$,
+    and likewise for $U_2$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:product_formula}
+    The exponentials $e^{-ist B}$ of Hermitian $B$ are unitary, so
+    Theorem~\ref{thm:product_formula} applies with $M=1$, and multiplying the
+    elements by $i$ leaves $c(o)$ and $a(o)$ unchanged. For unitaries $U$ and
+    $W$, $U^*AU-W^*AW=U^*A(U-W)+(U-W)^*AW$ has norm at most
+    $2\lVert A\rVert\lVert U-W\rVert$, and $\tau_t(A)=W^*AW$ for
+    $W=e^{-itH_\Phi}$.
 \end{proof}

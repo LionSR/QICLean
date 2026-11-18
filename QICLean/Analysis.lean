@@ -265,6 +265,7 @@ import QICLean.Analysis.ProbabilityEntropy
 import QICLean.Analysis.ProbabilityEntropyConcentration
 import QICLean.Analysis.ProbabilityEntropyGeometricTails
 import QICLean.Analysis.ProbabilityEntropyRankTails
+import QICLean.Analysis.ProductFormula
 import QICLean.Analysis.ProductOverlapReplacement
 import QICLean.Analysis.ProductReferenceDensityError
 import QICLean.Analysis.ProjectedEvolution
