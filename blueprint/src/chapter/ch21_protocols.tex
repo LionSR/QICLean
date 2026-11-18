@@ -144,12 +144,12 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
 
 \begin{definition}[Encodings and decodings]
     \label{def:protocols_encoding}
-    \lean{Matrix.initializedBasisMatrix, KrausFamily.embed, KrausFamily.decode,
+    \lean{KrausFamily.embed, KrausFamily.decode,
         QuantumCircuit.encodeCircuit, QuantumCircuit.decodeCircuit}
     \leanok
-    \uses{def:kraus_family, def:circuits_circuit}
-    Let $e:\alpha\to\beta$ be an injective map of finite sets. Its isometry is the matrix
-    $J_e$ with $J_e\ket{a}=\ket{e(a)}$. The encoding along $e$ is the Kraus family with the one
+    \uses{def:kraus_family, def:circuits_circuit, def:gate_basis_inclusion}
+    Let $e:\alpha\to\beta$ be an injective map of finite sets and $J_e$ its basis inclusion
+    (Definition~\ref{def:gate_basis_inclusion}). The encoding along $e$ is the Kraus family with the one
     operator $J_e$. For $x_0\in\alpha$, the decoding along $e$ with fallback $x_0$ is the Kraus
     family with the operators $J_e^\dagger$ and $\ket{x_0}\bra{b}$ for every $b\notin e(\alpha)$.
     For injective maps $e_s$ of the bases of a system at every site, the sitewise encoding and
@@ -158,15 +158,15 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
 
 \begin{lemma}[Encodings and decodings]
     \label{lem:protocols_encoding}
-    \lean{Matrix.initializedBasisMatrix_isIsometry, Matrix.mul_initializedBasisMatrix_apply,
+    \lean{Matrix.mul_initializedBasisMatrix_apply,
         Matrix.initializedBasisMatrix_mul_apply_self,
         Matrix.initializedBasisMatrix_mul_apply_of_notMem, KrausFamily.isTP_embed,
         KrausFamily.isTP_decode, KrausFamily.decode_op_inl_mul, KrausFamily.decode_op_inr_mul,
         KrausFamily.map_decode_map_embed,
         QuantumCircuit.map_decodeCircuit_comp_map_encodeCircuit}
     \leanok
-    \uses{def:protocols_encoding}
-    The isometry of an injective map $e$ satisfies $J_e^\dagger J_e=1$; for matrices $M$,
+    \uses{def:protocols_encoding, lem:gate_basis_inclusion_isometry}
+    For the basis inclusion of an injective map $e$ and matrices $M$,
     $(MJ_e)_{ya}=M_{y,e(a)}$, $(J_eM)_{e(a),x}=M_{ax}$, and the rows of $J_eM$ outside $e(\alpha)$
     vanish. The encoding and the decoding are trace-preserving. On the image of $J_e$ the
     decoding operator $J_e^\dagger$ inverts $J_e$ and the operators $\ket{x_0}\bra{b}$ vanish,
@@ -175,11 +175,12 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
 \end{lemma}
 \begin{proof}\leanok
     The entries of $J_e$ are $(J_e)_{ba}=1$ if $b=e(a)$ and $0$ otherwise, and $e$ is
-    injective. The effect of the decoding is $J_eJ_e^\dagger+\sum_{b\notin e(\alpha)}\ket{b}\bra{b}$,
+    injective; $J_e^\dagger J_e=1$ by Lemma~\ref{lem:gate_basis_inclusion_isometry}. The effect
+    of the decoding is $J_eJ_e^\dagger+\sum_{b\notin e(\alpha)}\ket{b}\bra{b}$,
     the sum of the projections onto the span of $e(\alpha)$ and onto its complement. On the
-    sites, a Kraus operator of the sitewise decoding times the isometry of the product map is
-    the product of the operators at the sites times their isometries, which is $1$ for the
-    operators $J_{e_s}^\dagger$ at every site and $0$ otherwise.
+    sites, a Kraus operator of the sitewise decoding times the basis inclusion of the product
+    map is the product of the operators at the sites times their basis inclusions, which is $1$
+    for the operators $J_{e_s}^\dagger$ at every site and $0$ otherwise.
 \end{proof}
 
 \begin{definition}[Encoded family]
@@ -234,8 +235,9 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     $Y'$ has a vector $y_0$ in the image of $f$. Carry every gate and every onsite family along
     the embeddings of its cell or site with this fallback. A Kraus operator of the new layer is
     the product of the operators on the cells and sites. If all of them are of the first kind,
-    its product with the isometry of the product of the $e_s$ is the isometry of the product of
-    the $f_s$ times the corresponding Kraus operator of the layer: on a configuration in the
+    its product with the basis inclusion of the product of the $e_s$ is the basis inclusion of
+    the product of the $f_s$ times the corresponding Kraus operator of the layer: on a
+    configuration in the
     image of the $f_s$ this is the entrywise identity of Lemma~\ref{lem:protocols_encoded_family},
     and outside it the factor at a site off the image vanishes. Otherwise the product vanishes.
     The indices of the first kind are in bijection with the Kraus indices of the layer.

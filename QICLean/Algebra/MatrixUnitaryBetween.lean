@@ -68,13 +68,13 @@ def IsUnitaryBetween [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (A : Matrix m n ℂ) : Prop :=
   A.IsIsometry ∧ A.IsCoisometry
 
-/-- The matrix of an embedding of bases: the isometry `|k⟩ ↦ |e k⟩`. -/
-def initializedBasisMatrix {κ ι : Type*} [DecidableEq ι] (e : κ ↪ ι) : Matrix ι κ ℂ :=
+/-- The inclusion of the basis vectors of `κ` among those of `ι` along an injection. -/
+def initializedBasisMatrix {ι κ : Type*} [DecidableEq ι] (e : κ ↪ ι) : Matrix ι κ ℂ :=
   (1 : Matrix ι ι ℂ).submatrix id e
 
-/-- The matrix of an embedding of bases is an isometry. -/
-theorem initializedBasisMatrix_isIsometry {κ ι : Type*} [Fintype ι] [DecidableEq κ]
-    [DecidableEq ι] (e : κ ↪ ι) : (initializedBasisMatrix e).IsIsometry := by
+/-- A basis inclusion is an isometry. -/
+theorem initializedBasisMatrix_isIsometry {ι κ : Type*} [Fintype ι] [DecidableEq ι]
+    [DecidableEq κ] (e : κ ↪ ι) : (initializedBasisMatrix e).IsIsometry := by
   ext a b
   simp [initializedBasisMatrix, mul_apply, one_apply, e.injective.eq_iff]
 
