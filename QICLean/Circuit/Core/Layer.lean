@@ -38,8 +38,8 @@ dimensions.
 
 ## Main results
 
-* `QuantumCircuit.Layer.kraus_single` — a layer of one plain gate `V` on the cell `b` is the
-  placement `V ⊗ 1` of the Sites layer.
+* `QuantumCircuit.Layer.kraus_single` — a layer of one gate on the cell `b` is the placement
+  `M ⊗ 1` of the matrix of the gate.
 -/
 
 open Matrix ManyBody
@@ -173,37 +173,36 @@ theorem free_single_iff {X : S → Type} [∀ s, DecidableEq (X s)] (b : Γ.Cell
     s ∉ (single b g).cells.biUnion Γ.cell ↔ s ∉ Γ.cell b := by
   simp [single]
 
-/-- A layer of one plain gate `V` on the cell `b` is the placement `V ⊗ 1` of `V`. -/
+/-- The Kraus operator of a layer of one gate `g` on the cell `b` is the placement `M ⊗ 1` of the
+matrix `M` of `g` at the outcome of the index. -/
 theorem kraus_single {X : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
-    (b : Γ.Cell) (V : Matrix (RegionConfig X (Γ.cell b)) (RegionConfig X (Γ.cell b)) ℂ)
-    (i : (single (G := KrausGate) b (KrausFamily.single V)).Index) :
-    (single (G := KrausGate) b (KrausFamily.single V)).kraus KrausGate.ev i =
-      place (Γ.cell b) V := by
+    (ev : Interpretation G) (b : Γ.Cell) (g : G (Γ.cell b) X X) (i : (single b g).Index) :
+    (single b g).kraus ev i =
+      place (Γ.cell b) (ev g (i.1 ⟨b, Finset.mem_singleton_self b⟩)) := by
   ext y x
   rw [place_apply, kraus]
-  have hb : ∀ c : (single (G := KrausGate) b (KrausFamily.single V)).cells, c.1 = b :=
-    fun c ↦ Finset.mem_singleton.mp c.2
-  let : Unique (single (G := KrausGate) b (KrausFamily.single V)).cells :=
+  have hb : ∀ c : (single b g).cells, c.1 = b := fun c ↦ Finset.mem_singleton.mp c.2
+  let : Unique (single b g).cells :=
     ⟨⟨⟨b, Finset.mem_singleton_self b⟩⟩, fun c ↦ Subtype.ext (hb c)⟩
   rw [Fintype.prod_unique]
-  have hcell : KrausGate.ev ((single (G := KrausGate) b (KrausFamily.single V)).gate default)
-      (i.1 default) (fun v ↦ y v) (fun v ↦ x v) = V (fun v ↦ y v) (fun v ↦ x v) := rfl
+  have hcell : ev ((single b g).gate default) (i.1 default) (fun v ↦ y v) (fun v ↦ x v) =
+      ev g (i.1 ⟨b, Finset.mem_singleton_self b⟩) (fun v ↦ y v) (fun v ↦ x v) := rfl
   rw [hcell]
-  have hone : ∀ s : (single (G := KrausGate) b (KrausFamily.single V)).Free,
-      ((single (G := KrausGate) b (KrausFamily.single V)).onsite s).op (i.2 s) (y s) (x s) =
-        if y s = x s then 1 else 0 := fun s ↦ one_apply
+  have hone : ∀ s : (single b g).Free,
+      ((single b g).onsite s).op (i.2 s) (y s) (x s) = if y s = x s then 1 else 0 :=
+    fun s ↦ one_apply
   rw [Finset.prod_congr rfl fun s _ ↦ hone s]
   by_cases h : ∀ v ∉ Γ.cell b, y v = x v
   · rw [Finset.prod_eq_one, mul_one]
     · exact (ite_eq_left h).symm
     intro s _
-    simp only [h s ((free_single_iff b _ s).mp s.2), ↓reduceIte]
+    simp only [h s ((free_single_iff b g s).mp s.2), ↓reduceIte]
   · simp only [h, ↓reduceIte]
     push Not at h
     obtain ⟨v, hv, hne⟩ := h
     refine mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ ⟨v, ?_⟩)
       (by simp only [hne, ↓reduceIte]))
-    exact (free_single_iff (G := KrausGate) b (KrausFamily.single V) v).mpr hv
+    exact (free_single_iff b g v).mpr hv
 
 end Layer
 

@@ -26,6 +26,7 @@ family.
 * `KrausFamily.IsTP`, `KrausFamily.IsTraceNonincreasing`, `KrausFamily.IsUnitary` — the
   normalizations.
 * `KrausFamily.single` — the family of one operator.
+* `KrausFamily.adjoint` — the family of the adjoint operators.
 
 ## Main results
 
@@ -58,6 +59,10 @@ def single (V : Matrix β α ℂ) : KrausFamily α β :=
 
 @[simp] theorem single_op (V : Matrix β α ℂ) (i : (single V).Index) : (single V).op i = V :=
   rfl
+
+/-- The adjoint of a Kraus family: the adjoints of its operators, with the same index type. -/
+def adjoint (K : KrausFamily α β) : KrausFamily β α :=
+  ⟨K.Index, fun i ↦ (K.op i)ᴴ⟩
 
 variable [Fintype α] [Fintype β]
 

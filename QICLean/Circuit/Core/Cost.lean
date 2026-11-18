@@ -15,12 +15,15 @@ gate count and the number of gates meeting a given site are its three instances:
 * the gate count of a layer is the sum of the costs of its cells;
 * a layer meets a site `s` as often as it has cells of positive cost containing `s`.
 
-Onsite families cost nothing. A circuit is "of depth `T`" when its depth is at most `T`, so
-statements are monotone in `T` without further proof. The cost of a composition is at most the
-sum of the costs; this is proved once for every cost.
+The last two, and the depth up to `min 1`, are sums over the cells of a layer of a weight of the
+gate on the cell (`Layer.cellCost`). A weight may depend on the gate and not only on its cell,
+as the number of calls to an oracle does. Onsite families cost nothing. A circuit is "of depth
+`T`" when its depth is at most `T`, so statements are monotone in `T` without further proof. The
+cost of a composition is at most the sum of the costs; this is proved once for every cost.
 
 ## Main definitions
 
+* `QuantumCircuit.Layer.cellCost` — the total weight of the gates of a layer.
 * `QuantumCircuit.Circuit.total` — a cost of layers along the most expensive branch.
 * `QuantumCircuit.Circuit.depth`, `QuantumCircuit.Circuit.gateCount`,
   `QuantumCircuit.Circuit.participation` — its instances.
@@ -49,13 +52,29 @@ variable {X Y : S → Type}
 def depth (L : Layer Γ G X Y) : ℕ :=
   if (L.cells.filter fun b ↦ 0 < Γ.cost b).Nonempty then 1 else 0
 
+/-- The total weight of the gates of a layer, for a weight `w b g` of the gate `g` on the cell
+`b`. The gate count and the number of gates meeting a site are instances. -/
+def cellCost (w : ∀ ⦃X Y : S → Type⦄ (b : Γ.Cell), G (Γ.cell b) X Y → ℕ) (L : Layer Γ G X Y) :
+    ℕ :=
+  ∑ b : L.cells, w b.1 (L.gate b)
+
 /-- The gate count of a layer: the sum of the costs of its cells. -/
 def gateCount (L : Layer Γ G X Y) : ℕ :=
-  ∑ b ∈ L.cells, Γ.cost b
+  L.cellCost fun _ _ b _ ↦ Γ.cost b
 
 /-- The number of cells of positive cost of the layer containing the site `s`. -/
 def meets (s : S) (L : Layer Γ G X Y) : ℕ :=
-  (L.cells.filter fun b ↦ s ∈ Γ.cell b ∧ 0 < Γ.cost b).card
+  L.cellCost fun _ _ b _ ↦ if s ∈ Γ.cell b ∧ 0 < Γ.cost b then 1 else 0
+
+omit [Fintype S] [GateFamily G] in
+theorem gateCount_eq_sum (L : Layer Γ G X Y) : L.gateCount = ∑ b ∈ L.cells, Γ.cost b :=
+  Finset.sum_coe_sort L.cells _
+
+omit [Fintype S] [GateFamily G] in
+theorem meets_eq_card (s : S) (L : Layer Γ G X Y) :
+    L.meets s = (L.cells.filter fun b ↦ s ∈ Γ.cell b ∧ 0 < Γ.cost b).card := by
+  rw [meets, cellCost, Finset.sum_coe_sort L.cells fun b ↦
+    if s ∈ Γ.cell b ∧ 0 < Γ.cost b then 1 else 0, Finset.sum_boole, Nat.cast_id]
 
 omit [Fintype S] [GateFamily G] in
 theorem depth_le_one (L : Layer Γ G X Y) : L.depth ≤ 1 := by
@@ -63,7 +82,8 @@ theorem depth_le_one (L : Layer Γ G X Y) : L.depth ≤ 1 := by
 
 omit [Fintype S] [GateFamily G] in
 theorem depth_le_gateCount (L : Layer Γ G X Y) : L.depth ≤ L.gateCount := by
-  unfold depth gateCount
+  rw [gateCount_eq_sum]
+  unfold depth
   split_ifs with h
   · obtain ⟨b, hb⟩ := h
     rw [Finset.mem_filter] at hb

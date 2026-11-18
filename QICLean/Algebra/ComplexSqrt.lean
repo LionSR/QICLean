@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import Mathlib.Analysis.Real.Sqrt
+import Mathlib.Analysis.Complex.Basic
 import Mathlib.Basic.Complex.Basic
 
 /-!
@@ -49,6 +50,11 @@ theorem invSqrtTwo_mul_self : invSqrtTwo * invSqrtTwo = (2 : ℂ)⁻¹ := by
 /-- The square of `1 / √2` is `1 / 2`. -/
 theorem invSqrtTwo_sq : invSqrtTwo ^ 2 = (2 : ℂ)⁻¹ := by
   rw [pow_two, invSqrtTwo_mul_self]
+
+/-- The squared norm of `1 / √2` is `1 / 2`. -/
+theorem norm_invSqrtTwo_sq : ‖invSqrtTwo‖ ^ 2 = 2⁻¹ := by
+  rw [invSqrtTwo, _root_.norm_inv, Complex.norm_real, Real.norm_eq_abs,
+    abs_of_nonneg (Real.sqrt_nonneg 2), inv_pow, Real.sq_sqrt (by norm_num)]
 
 theorem invSqrtTwo_pow_mul_self (n : ℕ) :
     invSqrtTwo ^ n * invSqrtTwo ^ n * (2 : ℂ) ^ n = 1 := by

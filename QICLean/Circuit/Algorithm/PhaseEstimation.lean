@@ -1,0 +1,684 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Circuit.Algorithm.PhaseAmplitude
+import QICLean.Circuit.Core.Oracle
+import QICLean.Circuit.Core.Outcome
+import Mathlib.Analysis.SpecialFunctions.Log.Base
+
+/-!
+# Phase estimation
+
+Phase estimation (Nielsen–Chuang, §5.2, Fig. 5.2 and 5.3) runs on a control register of `t`
+qubits and a target of dimension `m`, with calls to an oracle `U` on the target controlled by
+one qubit. Starting from `|0…0⟩ ⊗ |u⟩` for an eigenvector `U u = e^{2πiφ} u`, it applies the
+Hadamard gate to every control qubit, then `U^{2^{t-1-j}}` controlled by the qubit `j` as
+`2^{t-1-j}` controlled calls, then the inverse Fourier transform on the control register, and
+measures the control register. The measured `t` bits, read as an integer `k`, give the estimate
+`k / 2^t` of `φ`.
+
+The circuit is one circuit for every oracle: its gates are plain gates and calls of the oracle
+family `Oracle (Fin 2 × Fin m)`, and `U` enters only through the interpretation
+`Oracle.ev (controlled U)`. The inverse Fourier transform is the adjoint of the circuit `qft t`
+on its own sites `Fin t`, moved to the register `Fin t ⊕ Unit` along `Equiv.refl`, with the
+target idle, and into the gate family of the circuit along the inclusion of plain gates. The
+controlled calls are written on the register itself: a call on the pair cell of the qubit `j`
+and the target identifies its configurations with `Fin 2 × Fin m` by `pairEquiv`, and no other
+identification is needed, because the basis of each site of the register is `Fin 2` or `Fin m`
+by definition.
+
+## Main definitions
+
+* `QuantumCircuit.PhaseEstimation.system` — the qubits of the control register and the target.
+* `QuantumCircuit.PhaseEstimation.circuit` — the circuit of Nielsen–Chuang, Fig. 5.3, with the
+  measurement of the control register.
+* `QuantumCircuit.PhaseEstimation.readout` — the measured integer.
+
+## Main results
+
+* `QuantumCircuit.PhaseEstimation.queryCount_circuit` — the circuit calls the oracle
+  `2^t - 1` times.
+* `QuantumCircuit.PhaseEstimation.outcomeProb_eq` — the outcome `k` has probability `|αₖ|²`,
+  `αₖ = 2^{-t} ∑_{j < 2^t} e^{2πi j (φ - k/2^t)}` (Nielsen–Chuang, eq. (5.24)), and these sum to
+  `1` (`sum_norm_sq_amplitude`).
+* `QuantumCircuit.PhaseEstimation.outcomeProb_eq_one_of_exact` — if `2^t φ` is an integer, the
+  outcome congruent to it has probability `1`.
+* `QuantumCircuit.PhaseEstimation.accurate_prob_ge` — with `t = n + ⌈log₂(2 + 1/(2ε))⌉` qubits
+  the estimate is within `2^{-n}` of `φ`, modulo `1`, with probability at least `1 - ε`
+  (Nielsen–Chuang, eq. (5.35)).
+
+The statements need only the eigenvector equation `U u = e^{2πiφ} u`, not that `U` is unitary.
+
+The proof follows the state: the Hadamard gates give `2^{-t/2} ∑ₓ |x⟩ ⊗ u`, each controlled call
+multiplies the component with control `1` by the eigenvalue, so the calls give
+`2^{-t/2} ∑ₓ e^{2πiφ⟨x⟩} |x⟩ ⊗ u`, and the inverse Fourier transform gives `∑ₖ αₖ |k⟩ ⊗ u`. The
+amplitudes and their tail bound are in `PhaseAmplitude.lean`.
+-/
+
+open Matrix ManyBody Complex
+open scoped Kronecker
+open QuantumCircuit.Qubit (Q encode hadamard controlled dft gateLayers seqCells swapCells)
+
+namespace QuantumCircuit
+
+namespace PhaseEstimation
+
+variable (t m : ℕ)
+
+/-! ### The register -/
+
+/-- The system of phase estimation on the sites `Fin t ⊕ Unit`: a qubit at each site of the
+control register `Fin t`, and the basis `Fin m` at the target. It is the register of `t` qubits
+extended by the target along `Equiv.refl`. -/
+abbrev system : Fin t ⊕ Unit → Type :=
+  extendSystem (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+
+/-- The geometry of the register: a cell on every site and on every ordered pair of distinct
+sites, all of cost `1`. -/
+abbrev geometry : Geometry (Fin t ⊕ Unit) :=
+  Geometry.sitesAndPairs (Fin t ⊕ Unit) 1 1
+
+/-- The gates of phase estimation: plain gates and calls of the oracle on a control qubit and
+the target. -/
+abbrev Gate : Finset (Fin t ⊕ Unit) → (Fin t ⊕ Unit → Type) → (Fin t ⊕ Unit → Type) → Type 1 :=
+  GateSum KrausGate (Oracle (Fin 2 × Fin m))
+
+/-- The cells of the register of `t` qubits as cells of the control register. -/
+def geometryHom : (Qubit.geometry t).Hom (geometry t) (siteEmb (Equiv.refl (Fin t ⊕ Unit))) where
+  cellMap :=
+    ⟨fun
+      | .inl a => .inl (.inl a)
+      | .inr p => .inr ⟨(.inl p.1.1, .inl p.1.2), fun h ↦ p.2 (Sum.inl_injective h)⟩,
+     by
+      rintro (a | ⟨⟨a, b⟩, h⟩) (a' | ⟨⟨a', b'⟩, h'⟩) hab <;> simp_all⟩
+  cell_cellMap := by
+    rintro (a | ⟨⟨a, b⟩, h⟩) <;> simp <;> rfl
+
+/-! ### The circuit -/
+
+/-- The Hadamard gate on the control qubit `j`. -/
+noncomputable def hadamardLayer (j : Fin t) :
+    Layer (geometry t) (Gate t m) (system t m) (system t m) :=
+  Layer.single (.inl (.inl j))
+    (.inl (KrausGate.ofMatrix (siteEquiv (system t m) (.inl j)) hadamard))
+
+/-- The call of the oracle controlled by the qubit `j`, on the pair cell of `j` and the
+target. -/
+noncomputable def queryLayer (j : Fin t) :
+    Layer (geometry t) (Gate t m) (system t m) (system t m) :=
+  Layer.single (.inr ⟨(.inl j, .inr ()), Sum.inl_ne_inr⟩)
+    (.inr (Oracle.call (pairEquiv (system t m) Sum.inl_ne_inr)))
+
+/-- The inverse Fourier transform on the control register: the adjoint of `qft t`, moved to the
+register with the target idle, and into the gates of phase estimation. -/
+noncomputable abbrev qftInv : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
+  ((Circuit.seqAdjoint (gateLayers (seqCells t ++ swapCells t))).mapSites
+    (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (geometryHom t)
+    (KrausGate.transport _ _)).mapGate (Geometry.Hom.refl _) GateMorphism.inl
+
+/-- The preparation (Nielsen–Chuang, Fig. 5.2): the Hadamard gates and the controlled calls
+`U^{2^{t-1-j}}` for `j = t - 1, …, 0`. -/
+noncomputable abbrev prepare : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
+  (Circuit.seq ((List.finRange t).map (hadamardLayer t m))).comp
+    (Circuit.seq ((List.finRange t).reverse.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)))
+
+/-- The unitary part of phase estimation (Nielsen–Chuang, Fig. 5.2 followed by the inverse
+Fourier transform): the Hadamard gates, the controlled calls `U^{2^{t-1-j}}` for
+`j = t - 1, …, 0`, and the inverse Fourier transform. -/
+noncomputable abbrev unitary : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
+  (prepare t m).comp (qftInv t m)
+
+/-- The measurement of the control register in the computational basis. -/
+def measureLayer : Layer (geometry t) (Gate t m) (system t m) (system t m) where
+  cells := ∅
+  pairwiseDisjoint := by simp
+  gate b := absurd b.2 (Finset.notMem_empty _)
+  onsite
+    | ⟨.inl _, _⟩ => KrausFamily.measure (Fin 2)
+    | ⟨.inr _, _⟩ => KrausFamily.single 1
+
+/-- Phase estimation (Nielsen–Chuang, Fig. 5.3): the unitary part, then the measurement of the
+control register. -/
+noncomputable abbrev circuit : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
+  (unitary t m).comp (.step (measureLayer t m) fun _ ↦ .done _)
+
+/-- The outcomes of the measurement of the control register. -/
+def measured (i : (measureLayer t m).Index) : Config (Q t) :=
+  fun j ↦ i.2 ⟨.inl j, by simp [measureLayer]⟩
+
+/-- The measured integer of a branch: the outcomes of the measurement of the control register,
+the qubit `0` most significant. -/
+noncomputable def readout (p : (circuit t m).Index) : Fin (2 ^ t) :=
+  encode t (measured t m
+    (((unitary t m).compIndexEquiv _ p).2 : Σ _ : (measureLayer t m).Index, Unit).1)
+
+/-- The configuration of the control register. -/
+def control (σ : Config (system t m)) : Config (Q t) :=
+  fun j ↦ σ (.inl j)
+
+variable {t m} in
+/-- The state `f(x) u(a)` of the register, `x` the control register and `a` the target. -/
+def registerState (u : Fin m → ℂ) (f : Config (Q t) → ℂ) : Config (system t m) → ℂ :=
+  fun σ ↦ f (control t m σ) * u (σ (.inr ()))
+
+/-- The input `|0…0⟩ ⊗ |u⟩`. -/
+def input (u : Fin m → ℂ) : Config (system t m) → ℂ :=
+  registerState u (Pi.single 0 1)
+
+/-! ### The branches and the number of calls -/
+
+variable {t m}
+
+/-- The local property of having exactly one Kraus index. -/
+private abbrev IsSingleIndex {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+    (K : KrausFamily α β) : Prop :=
+  Nonempty (Unique K.Index)
+
+private theorem isSingleIndex_relabel {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
+    [DecidableEq β] (K : KrausFamily α β) {ι : Type} [Fintype ι] (u : ι ≃ K.Index)
+    (h : IsSingleIndex K) : IsSingleIndex (⟨ι, fun i ↦ K.op (u i)⟩ : KrausFamily α β) :=
+  haveI := h.some
+  ⟨u.unique⟩
+
+private theorem isSingleIndex_single {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
+    [DecidableEq β] (V : Matrix β α ℂ) : IsSingleIndex (KrausFamily.single V) :=
+  ⟨inferInstanceAs (Unique Unit)⟩
+
+private theorem forall_isSingleIndex_hadamards (ev : Interpretation (Gate t m)) :
+    ∀ L ∈ (List.finRange t).map (hadamardLayer t m), L.Forall ev IsSingleIndex := by
+  intro L hL
+  obtain ⟨j, -, rfl⟩ := List.mem_map.mp hL
+  exact Layer.forall_single ev (isSingleIndex_single 1) _ _ ⟨inferInstanceAs (Unique Unit)⟩
+
+private theorem mem_queryLayers {L : Layer (geometry t) (Gate t m) (system t m) (system t m)}
+    (hL : L ∈ (List.finRange t).reverse.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)) :
+    ∃ j, L = queryLayer t m j := by
+  obtain ⟨j, -, hj⟩ := List.mem_flatMap.mp hL
+  exact ⟨j, List.eq_of_mem_replicate hj⟩
+
+private theorem forall_isSingleIndex_queries (ev : Interpretation (Gate t m)) :
+    ∀ L ∈ (List.finRange t).reverse.flatMap (fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)), L.Forall ev IsSingleIndex := by
+  intro L hL
+  obtain ⟨j, rfl⟩ := mem_queryLayers hL
+  exact Layer.forall_single ev (isSingleIndex_single 1) _ _ ⟨inferInstanceAs (Unique Unit)⟩
+
+private theorem forall_isSingleIndex_adjoint {X Y : Fin t → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    {L : Layer (Qubit.geometry t) KrausGate X Y} (h : L.Forall KrausGate.ev IsSingleIndex) :
+    L.adjoint.Forall KrausGate.ev IsSingleIndex :=
+  ⟨fun b ↦ h.1 b, fun s ↦ h.2 s⟩
+
+private theorem forall_isSingleIndex_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ) :
+    (qftInv t m).Forall (Interpretation.sum KrausGate.ev (Oracle.ev V)) IsSingleIndex := by
+  refine Circuit.forall_mapGate _ _ (GateMorphism.isCompatible_inl _ _)
+    (fun K _ _ u hK ↦ isSingleIndex_relabel K u hK) ?_
+  refine Circuit.forall_mapSites _ _ _ _ (KrausGate.isCompatible_transport _ _)
+    (fun K u _ _ hK ↦ ⟨@Equiv.unique _ _ hK.some u⟩) (isSingleIndex_single 1) ?_
+  refine Circuit.forall_seq _ _ fun L hL ↦ ?_
+  rw [List.mem_map] at hL
+  obtain ⟨L, hL, rfl⟩ := hL
+  rw [List.mem_reverse, gateLayers, List.mem_map] at hL
+  obtain ⟨b, -, rfl⟩ := hL
+  exact forall_isSingleIndex_adjoint
+    (Layer.forall_single _ (isSingleIndex_single 1) b _ (isSingleIndex_single _))
+
+private theorem forall_isSingleIndex_unitary (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ) :
+    (unitary t m).Forall (Interpretation.sum KrausGate.ev (Oracle.ev V)) IsSingleIndex :=
+  ((Circuit.forall_seq _ _ (forall_isSingleIndex_hadamards _)).comp _
+    (Circuit.forall_seq _ _ (forall_isSingleIndex_queries _))).comp _
+    (forall_isSingleIndex_qftInv V)
+
+/-- The unitary part has one branch. -/
+private theorem unique_index_unitary : Nonempty (Unique (unitary t m).Index) :=
+  Circuit.nonempty_unique_index _ (forall_isSingleIndex_unitary 0)
+
+private theorem isUnbranched_unitary : (unitary t m).IsUnbranched :=
+  ((Circuit.isUnbranched_seq _).comp (Circuit.isUnbranched_seq _)).comp
+    (Circuit.isUnbranched_mapLayers _
+      (Circuit.isUnbranched_mapLayers _ (Circuit.isUnbranched_seq _)))
+
+private theorem sum_two_pow_sub (t : ℕ) : ∑ j : Fin t, 2 ^ (t - 1 - (j : ℕ)) = 2 ^ t - 1 := by
+  rw [Fin.sum_univ_eq_sum_range (fun j ↦ 2 ^ (t - 1 - j)), Finset.sum_range_reflect
+    (fun j ↦ 2 ^ j) t, Nat.geomSum_eq le_rfl, Nat.div_one]
+
+/-- The preparation has one branch. -/
+theorem nonempty_unique_index_prepare : Nonempty (Unique (prepare t m).Index) :=
+  Circuit.nonempty_unique_index _
+    ((Circuit.forall_seq _ _
+      (forall_isSingleIndex_hadamards (Interpretation.sum KrausGate.ev (Oracle.ev 0)))).comp _
+      (Circuit.forall_seq _ _ (forall_isSingleIndex_queries _)))
+
+theorem isUnbranched_prepare : (prepare t m).IsUnbranched :=
+  (Circuit.isUnbranched_seq _).comp (Circuit.isUnbranched_seq _)
+
+/-- The preparation calls the oracle `∑_{j < t} 2^{t-1-j} = 2^t - 1` times. -/
+theorem queryCount_prepare : (prepare t m).queryCount = 2 ^ t - 1 := by
+  have hseq : ∀ {Ls : List (Layer (geometry t) (Gate t m) (system t m) (system t m))},
+      (∀ L ∈ Ls, L.Forall (Interpretation.sum KrausGate.ev (Oracle.ev 0)) IsSingleIndex) →
+      ∀ L ∈ Ls, Nonempty L.Index := fun h L hL ↦
+    ⟨(Circuit.nonempty_unique_index (c := .step L fun _ ↦ .done _) _
+      ⟨h L hL, fun _ ↦ trivial⟩).some.default.1⟩
+  rw [Circuit.queryCount, Circuit.total_comp_of_isUnbranched _ (Circuit.isUnbranched_seq _)
+      ⟨(Circuit.nonempty_unique_index _ (Circuit.forall_seq _ _ (forall_isSingleIndex_hadamards
+        (Interpretation.sum KrausGate.ev (Oracle.ev 0))))).some.default⟩,
+    Circuit.total_seq _ _ (hseq (forall_isSingleIndex_hadamards _)),
+    Circuit.total_seq _ _ (hseq (forall_isSingleIndex_queries _))]
+  have hH : (((List.finRange t).map (hadamardLayer t m)).map fun L ↦
+      L.cellCost fun _ _ _ g ↦ Oracle.callCount g).sum = 0 := by
+    refine List.sum_eq_zero fun x hx ↦ ?_
+    obtain ⟨L, hL, rfl⟩ := List.mem_map.mp hx
+    obtain ⟨j, -, rfl⟩ := List.mem_map.mp hL
+    exact Layer.cellCost_single _ _ _
+  have hQ : (((List.finRange t).reverse.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)).map fun L ↦
+        L.cellCost fun _ _ _ g ↦ Oracle.callCount g).sum = 2 ^ t - 1 := by
+    rw [List.map_congr_left fun L hL ↦ show L.cellCost (fun _ _ _ g ↦ Oracle.callCount g) = 1 by
+      obtain ⟨j, rfl⟩ := mem_queryLayers hL
+      exact Layer.cellCost_single _ _ _, List.map_const', List.sum_replicate, smul_eq_mul,
+      mul_one, List.length_flatMap, List.map_reverse, List.sum_reverse, ← sum_two_pow_sub t,
+      Fin.sum_univ_def]
+    simp only [List.length_replicate]
+  rw [hH, hQ, zero_add]
+
+/-- Phase estimation calls the oracle `2^t - 1` times. -/
+theorem queryCount_circuit : (circuit t m).queryCount = 2 ^ t - 1 := by
+  have hne : ∀ {X Z : Fin t ⊕ Unit → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+      {c : Circuit (geometry t) (Gate t m) X Z},
+      c.Forall (Interpretation.sum KrausGate.ev (Oracle.ev 0)) IsSingleIndex → Nonempty c.Index :=
+    fun h ↦ ⟨(Circuit.nonempty_unique_index _ h).some.default⟩
+  rw [Circuit.queryCount, circuit,
+    Circuit.total_comp_of_isUnbranched _ isUnbranched_unitary
+      (hne (forall_isSingleIndex_unitary 0)),
+    unitary, Circuit.total_comp_of_isUnbranched _ isUnbranched_prepare
+      ⟨nonempty_unique_index_prepare.some.default⟩]
+  have hq : (qftInv t m).total (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 :=
+    Circuit.queryCount_eq_zero (Circuit.noCalls_mapGate_inl _ _)
+  have hm : (Circuit.step (measureLayer t m) fun _ ↦ Circuit.done (system t m)).total
+      (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 := by
+    refine Circuit.queryCount_eq_zero ⟨?_, fun _ ↦ trivial⟩
+    simp [Layer.cellCost, measureLayer]
+  rw [hq, hm, ← Circuit.queryCount, queryCount_prepare, add_zero, add_zero]
+
+/-! ### The state along the circuit -/
+
+private theorem control_update_inl (σ : Config (system t m)) (j : Fin t) (b : Fin 2) :
+    control t m (Function.update σ (.inl j) b) = Function.update (control t m σ) j b := by
+  funext i
+  by_cases hij : i = j
+  · subst hij
+    exact (Function.update_self (Sum.inl i) b σ).trans
+      (Function.update_self i b (control t m σ)).symm
+  · exact (Function.update_of_ne (fun h ↦ hij (Sum.inl_injective h)) b σ).trans
+      (Function.update_of_ne hij b (control t m σ)).symm
+
+private theorem control_update_inr (σ : Config (system t m)) (a : Fin m) :
+    control t m (Function.update σ (.inr ()) a) = control t m σ :=
+  funext fun _ ↦ Function.update_of_ne Sum.inl_ne_inr _ _
+
+/-- A matrix `V` on the control qubit `j` acts on the control register of `f(x) u(a)`. -/
+theorem qubitGate_mulVec (u : Fin m → ℂ) (V : Matrix (Fin 2) (Fin 2) ℂ) (j : Fin t)
+    (f : Config (Q t) → ℂ) :
+    place {Sum.inl j} (V.submatrix (siteEquiv (system t m) (.inl j))
+      (siteEquiv (system t m) (.inl j))) *ᵥ registerState u f =
+      registerState u fun x ↦ ∑ b, V (x j) b * f (Function.update x j b) := by
+  funext σ
+  refine (place_siteEquiv_mulVec (X := system t m) (.inl j) V _ σ).trans ?_
+  change ∑ b : Fin 2, V (σ (.inl j)) b * (f (control t m (Function.update σ (.inl j) b)) *
+      u (Function.update σ (.inl j) b (.inr ()))) =
+    (∑ b, V (control t m σ j) b * f (Function.update (control t m σ) j b)) * u (σ (.inr ()))
+  simp only [control_update_inl, Finset.sum_mul]
+  exact Finset.sum_congr rfl fun b _ ↦ (mul_assoc _ _ _).symm
+
+/-- The control register after the Hadamard gates on the qubits of `A`. -/
+private noncomputable def hadamardState (A : Finset (Fin t)) (x : Config (Q t)) : ℂ :=
+  invSqrtTwo ^ A.card * if ∀ j ∉ A, x j = 0 then 1 else 0
+
+private theorem hadamard_mulVec (u : Fin m → ℂ) {A : Finset (Fin t)} {j : Fin t} (hj : j ∉ A) :
+    place {Sum.inl j} (hadamard.submatrix (siteEquiv (system t m) (.inl j))
+      (siteEquiv (system t m) (.inl j))) *ᵥ registerState u (hadamardState A) =
+      registerState u (hadamardState (insert j A)) := by
+  rw [qubitGate_mulVec]
+  congr 1
+  funext x
+  rw [Fin.sum_univ_two]
+  have h1 : ¬ ∀ i ∉ A, Function.update x j 1 i = 0 :=
+    fun h ↦ by simpa using h j hj
+  have h0 : (∀ i ∉ A, Function.update x j 0 i = 0) ↔ ∀ i ∉ insert j A, x i = 0 := by
+    refine ⟨fun h i hi ↦ ?_, fun h i hi ↦ ?_⟩
+    · rw [Finset.mem_insert, not_or] at hi
+      simpa [Function.update_of_ne hi.1] using h i hi.2
+    · by_cases hij : i = j
+      · subst hij; simp
+      · rw [Function.update_of_ne hij]
+        exact h i (by simp [hij, hi])
+  have hH : hadamard (x j) 0 = invSqrtTwo := by
+    change invSqrtTwo * (-1) ^ (((x j : Fin 2) : ℕ) * 0) = _
+    rw [mul_zero, pow_zero, mul_one]
+  simp only [hadamardState, h1, h0, ite_false, mul_zero, add_zero,
+    Finset.card_insert_of_notMem hj, hH, pow_succ]
+  ring
+
+private theorem foldl_hadamard (u : Fin m → ℂ) :
+    ∀ (l : List (Fin t)) (A : Finset (Fin t)), l.Nodup → (∀ j ∈ l, j ∉ A) →
+      l.foldl (fun w j ↦ place {Sum.inl j} (hadamard.submatrix (siteEquiv (system t m) (.inl j))
+        (siteEquiv (system t m) (.inl j))) *ᵥ w) (registerState u (hadamardState A)) =
+        registerState u (hadamardState (A ∪ l.toFinset))
+  | [], A, _, _ => by simp
+  | j :: l, A, hnd, hA => by
+    rw [List.foldl_cons, hadamard_mulVec u (hA j List.mem_cons_self)]
+    rw [List.nodup_cons] at hnd
+    rw [foldl_hadamard u l (insert j A) hnd.2 fun i hi ↦ by
+      rw [Finset.mem_insert, not_or]
+      exact ⟨fun e ↦ hnd.1 (e ▸ hi), hA i (List.mem_cons_of_mem j hi)⟩]
+    congr 2
+    ext i
+    simp
+
+/-- A call controlled by the qubit `j` multiplies by the eigenvalue when the qubit is `1`. -/
+private theorem query_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {c : ℂ}
+    (hu : U *ᵥ u = c • u) (j : Fin t) (f : Config (Q t) → ℂ) :
+    place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
+      (pairEquiv (system t m) Sum.inl_ne_inr) (pairEquiv (system t m) Sum.inl_ne_inr)) *ᵥ
+      registerState u f = registerState u fun x ↦ c ^ (x j : ℕ) * f x := by
+  funext σ
+  refine (place_pairEquiv_mulVec (X := system t m) Sum.inl_ne_inr (controlled U) _ σ).trans ?_
+  change ∑ q : Fin 2 × Fin m, controlled U (σ (.inl j), σ (.inr ())) q *
+    (f (control t m (Function.update (Function.update σ (.inl j) q.1) (.inr ()) q.2)) *
+      u (Function.update (Function.update σ (.inl j) q.1) (.inr ()) q.2 (.inr ()))) =
+      c ^ (control t m σ j : ℕ) * f (control t m σ) * u (σ (.inr ()))
+  simp only [control_update_inr, control_update_inl]
+  change ∑ q : Fin 2 × Fin m, controlled U (control t m σ j, σ (.inr ())) q *
+    (f (Function.update (control t m σ) j q.1) * u q.2) =
+      c ^ (control t m σ j : ℕ) * f (control t m σ) * u (σ (.inr ()))
+  have hU : ∀ a, ∑ b, U a b * u b = c * u a := fun a ↦ by
+    simpa [mulVec, dotProduct] using congrFun hu a
+  generalize control t m σ = x
+  refine (?_ : ∀ a : Fin m, ∑ q : Fin 2 × Fin m, controlled U (x j, a) q *
+    (f (Function.update x j q.1) * u q.2) = c ^ (x j : ℕ) * f x * u a) _
+  intro a
+  rw [Fintype.sum_prod_type, Fin.sum_univ_two]
+  rcases Fin.exists_fin_two.mp ⟨x j, rfl⟩ with h | h
+  · have hx : Function.update x j 0 = x := h ▸ Function.update_eq_self j x
+    simp only [Qubit.controlled_apply, h, hx, ite_true, Fin.zero_eq_one_iff, OfNat.ofNat_ne_one,
+      ite_false, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul,
+      one_apply, ite_mul, mul_comm (f x), ← mul_assoc]
+    rw [Finset.sum_ite_eq]
+    simp
+  · have hx : Function.update x j 1 = x := h ▸ Function.update_eq_self j x
+    simp only [Qubit.controlled_apply, h, hx, ite_true, Fin.one_eq_zero_iff, OfNat.ofNat_ne_one,
+      ite_false, zero_mul, Finset.sum_const_zero, zero_add, Fin.val_one, pow_one]
+    rw [show ∑ b, U a b * (f x * u b) = f x * ∑ b, U a b * u b by
+      rw [Finset.mul_sum]; exact Finset.sum_congr rfl fun b _ ↦ by ring, hU]
+    ring
+
+/-- The outcomes of the measurement layer are the configurations of the control register. -/
+private def measuredEquiv : (measureLayer t m).Index ≃ Config (Q t) where
+  toFun := measured t m
+  invFun x := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun
+    | ⟨.inl j, _⟩ => x j
+    | ⟨.inr _, _⟩ => ())
+  left_inv i := by
+    refine Prod.ext (funext fun b ↦ absurd b.2 (Finset.notMem_empty _)) (funext fun s ↦ ?_)
+    rcases s with ⟨j | u, h⟩
+    · rfl
+    · rfl
+  right_inv x := rfl
+
+private theorem measure_entry (ev : Interpretation (Gate t m)) (i : (measureLayer t m).Index)
+    (y x : Config (system t m)) : (measureLayer t m).kraus ev i y x =
+      if y = x ∧ control t m y = measured t m i then 1 else 0 := by
+  have hcells : ∀ b : (measureLayer t m).cells, False := fun b ↦ Finset.notMem_empty _ b.2
+  rw [Layer.kraus, Fintype.prod_eq_one _ fun b ↦ (hcells b).elim, one_mul]
+  have hfree : ∀ v, v ∉ (measureLayer t m).cells.biUnion (geometry t).cell := by
+    simp [measureLayer]
+  have hinl : ∀ j, ((measureLayer t m).onsite ⟨.inl j, hfree _⟩).op (i.2 ⟨.inl j, hfree _⟩)
+      (y (.inl j)) (x (.inl j)) = if measured t m i j = control t m y j ∧
+        measured t m i j = control t m x j then 1 else 0 := fun j ↦
+    Matrix.single_apply ..
+  have hinr : ((measureLayer t m).onsite ⟨.inr (), hfree _⟩).op (i.2 ⟨.inr (), hfree _⟩)
+      (y (.inr ())) (x (.inr ())) = if y (.inr ()) = x (.inr ()) then 1 else 0 :=
+    one_apply
+  split_ifs with h
+  · obtain ⟨rfl, hy⟩ := h
+    refine Fintype.prod_eq_one _ fun s ↦ ?_
+    obtain ⟨j | ⟨⟩, hs⟩ := s
+    · rw [hinl, ite_eq_left (And.intro (congrFun hy.symm j) (congrFun hy.symm j))]
+    · rw [hinr, ite_eq_left rfl]
+  · refine Finset.prod_eq_zero_iff.mpr ?_
+    by_cases hyx : y = x
+    · subst hyx
+      have : ∃ j, measured t m i j ≠ control t m y j := by
+        by_contra hc
+        push Not at hc
+        exact h ⟨rfl, funext fun j ↦ (hc j).symm⟩
+      obtain ⟨j, hj⟩ := this
+      exact ⟨⟨.inl j, hfree _⟩, Finset.mem_univ _, by rw [hinl, ite_eq_right fun e ↦ hj e.1]⟩
+    · obtain ⟨v, hv⟩ := Function.ne_iff.mp hyx
+      rcases v with j | ⟨⟩
+      · exact ⟨⟨.inl j, hfree _⟩, Finset.mem_univ _, by
+          rw [hinl, ite_eq_right fun e ↦ hv (e.1.symm.trans e.2)]⟩
+      · exact ⟨⟨.inr (), hfree _⟩, Finset.mem_univ _, by rw [hinr, ite_eq_right hv]⟩
+
+private theorem measure_mulVec (ev : Interpretation (Gate t m)) (i : (measureLayer t m).Index)
+    (ψ : Config (system t m) → ℂ) :
+    (measureLayer t m).kraus ev i *ᵥ ψ =
+      fun σ ↦ if control t m σ = measured t m i then ψ σ else 0 := by
+  funext σ
+  simp only [mulVec, dotProduct, measure_entry, ite_mul, one_mul, zero_mul]
+  split_ifs with h
+  · simp [h]
+  · simp [h]
+
+/-- A matrix on the control register, tensored with the identity on the target. -/
+private theorem kron_one_mulVec (A : Matrix (Config (Q t)) (Config (Q t)) ℂ) (u : Fin m → ℂ)
+    (f : Config (Q t) → ℂ) :
+    (A ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
+      (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t))
+      (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)) *ᵥ
+        registerState u f = registerState u (A *ᵥ f) := by
+  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+  have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
+  have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
+  funext σ
+  simp only [registerState, mulVec, dotProduct, h1, h2]
+  rw [← E.symm.sum_comp, Fintype.sum_prod_type]
+  simp only [submatrix_apply, Equiv.apply_symm_apply, kroneckerMap_apply, one_apply, mul_ite,
+    mul_one, mul_zero, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true,
+    Finset.sum_mul]
+  exact Finset.sum_congr rfl fun x _ ↦ by ring
+
+private theorem foldl_query {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {c : ℂ}
+    (hu : U *ᵥ u = c • u) : ∀ (l : List (Fin t)) (g : Config (Q t) → ℂ),
+      l.foldl (fun w j ↦ place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
+        (pairEquiv (system t m) Sum.inl_ne_inr) (pairEquiv (system t m) Sum.inl_ne_inr)) *ᵥ w)
+        (registerState u g) =
+        registerState u fun x ↦ c ^ (l.map fun j ↦ (x j : ℕ)).sum * g x
+  | [], g => by simp
+  | j :: l, g => by
+    rw [List.foldl_cons, query_mulVec hu, foldl_query hu l]
+    congr 1
+    funext x
+    rw [List.map_cons, List.sum_cons, pow_add]
+    ring
+
+/-- The control qubit `j` is called `2^{t-1-j}` times, so the exponents add up to `⟨x⟩`. -/
+private theorem sum_queries (x : Config (Q t)) :
+    (((List.finRange t).reverse.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map
+      fun j ↦ (x j : ℕ)).sum = encode t x := by
+  have h : ∀ l : List (Fin t), ((l.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map
+      fun j ↦ (x j : ℕ)).sum = (l.map fun j ↦ (x j : ℕ) * 2 ^ (t - 1 - (j : ℕ))).sum := by
+    intro l
+    induction l with
+    | nil => rfl
+    | cons j l ih =>
+      rw [List.flatMap_cons, List.map_append, List.sum_append, ih, List.map_replicate,
+        List.sum_replicate, smul_eq_mul, List.map_cons, List.sum_cons, mul_comm]
+  rw [h, Qubit.encode_apply, List.map_reverse, List.sum_reverse, ← Fin.sum_univ_def]
+
+private theorem queries_eq :
+    ((List.finRange t).reverse.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)) =
+      ((List.finRange t).reverse.flatMap fun j : Fin t ↦
+        List.replicate (2 ^ (t - 1 - (j : ℕ))) j).map (queryLayer t m) := by
+  rw [List.map_flatMap]
+  simp only [List.map_replicate]
+
+/-- The Kraus operator of the inverse Fourier transform on the register. -/
+private theorem kraus_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ)
+    (p : (qftInv t m).Index) :
+    (qftInv t m).kraus (Interpretation.sum KrausGate.ev (Oracle.ev V)) p =
+      ((dft t)ᴴ ⊗ₖ (1 : Matrix (Unit → Fin m) (Unit → Fin m) ℂ)).submatrix
+        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t))
+        (extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)) := by
+  rw [Circuit.kraus_mapGate _ _ (GateMorphism.isCompatible_inl _ _),
+    Circuit.kraus_mapSites _ _ _ _ (KrausGate.isCompatible_transport _ _)]
+  congr 2
+  rw [Circuit.kraus_seqAdjoint (Us := (seqCells t ++ swapCells t).map Qubit.gateOp),
+    Qubit.prod_gateOp_eq_dft Qubit.isGateOrder_seqCells Qubit.seqCells_nodup
+      Qubit.toFinset_seqCells]
+  rw [gateLayers, List.forall₂_map_left_iff, List.forall₂_map_right_iff]
+  exact List.forall₂_same.mpr fun b _ i ↦ Layer.kraus_single KrausGate.ev b (Qubit.qftGate b) i
+
+/-- The preparation maps `|0…0⟩ ⊗ u` to `2^{-t/2} ∑ₓ e^{2πiφ⟨x⟩} |x⟩ ⊗ u`. -/
+theorem kraus_prepare_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {φ : ℝ}
+    (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (p : (prepare t m).Index) :
+    (prepare t m).kraus (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U))) p *ᵥ
+      input t m u =
+      registerState u fun x ↦ invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ) := by
+  rw [Circuit.kraus_comp, ← mulVec_mulVec,
+    Circuit.kraus_seq_map _ (hadamardLayer t m)
+      (fun j ↦ place {Sum.inl j} (hadamard.submatrix (siteEquiv (system t m) (.inl j))
+        (siteEquiv (system t m) (.inl j)))) _ (fun j _ i ↦ Layer.kraus_single _ _ _ i),
+    reverse_prod_mulVec, input]
+  rw [show (registerState u (Pi.single 0 1)) = registerState u (hadamardState ∅) by
+    congr 1; funext x; simp [hadamardState, Pi.single_apply, funext_iff], foldl_hadamard u _ ∅
+      (List.nodup_finRange t) fun _ _ ↦ Finset.notMem_empty _]
+  have hq := Circuit.kraus_seq_map (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+    (queryLayer t m) (fun j ↦ place ({Sum.inl j} ∪ {Sum.inr ()}) ((controlled U).submatrix
+      (pairEquiv (system t m) Sum.inl_ne_inr) (pairEquiv (system t m) Sum.inl_ne_inr)))
+    ((List.finRange t).reverse.flatMap fun j : Fin t ↦ List.replicate (2 ^ (t - 1 - (j : ℕ))) j)
+    (fun j _ i ↦ Layer.kraus_single _ _ _ i)
+  rw [← queries_eq] at hq
+  rw [hq, reverse_prod_mulVec, show registerState u (hadamardState (∅ ∪ (List.finRange t).toFinset))
+    = registerState u fun _ ↦ invSqrtTwo ^ t by
+      congr 1; funext x; simp [hadamardState], foldl_query huφ]
+  congr 1
+  funext x
+  rw [sum_queries, mul_comm]
+
+/-- The unitary part maps `|0…0⟩ ⊗ u` to `(∑ₖ αₖ |k⟩) ⊗ u`. -/
+private theorem kraus_unitary_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} {φ : ℝ}
+    (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (p : (unitary t m).Index) :
+    (unitary t m).kraus (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U))) p *ᵥ
+      input t m u = registerState u fun x ↦ amplitude t φ (encode t x) := by
+  rw [Circuit.kraus_comp, ← mulVec_mulVec, kraus_prepare_mulVec huφ, kraus_qftInv,
+    kron_one_mulVec]
+  congr 1
+  funext y
+  rw [← dft_conjTranspose_mulVec]
+
+/-- For a unit vector `u` on the target, `f(x) u(a)` has the squared norm of `f`. -/
+theorem sum_norm_sq_registerState {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
+    (f : Config (Q t) → ℂ) : ∑ σ, ‖registerState u f σ‖ ^ 2 = ∑ x, ‖f x‖ ^ 2 := by
+  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+  have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
+  have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
+  have hu' : ∑ b, ‖u b‖ ^ 2 = 1 := by
+    have h := re_star_dotProduct_self_eq_norm_sq u
+    rw [hu, EuclideanSpace.norm_sq_eq] at h
+    simpa using h.symm
+  simp only [registerState, h1, h2]
+  rw [← E.symm.sum_comp, Fintype.sum_prod_type]
+  simp only [Equiv.apply_symm_apply, norm_mul, mul_pow]
+  refine Finset.sum_congr rfl fun x _ ↦ ?_
+  rw [← Finset.mul_sum, ← (Equiv.funUnique Unit (Fin m)).symm.sum_comp]
+  simp only [Equiv.funUnique_symm_apply, uniqueElim_const]
+  rw [hu', mul_one]
+
+/-- The probability of a branch is the squared amplitude of its readout. -/
+private theorem prob_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
+    {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (p : (circuit t m).Index) :
+    (circuit t m).prob (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+      (vecMulVec (input t m u) (star (input t m u))) p = ‖amplitude t φ (readout t m p)‖ ^ 2 := by
+  rw [Circuit.prob_vecMulVec, Circuit.kraus_comp, ← mulVec_mulVec,
+    kraus_unitary_mulVec huφ]
+  rw [readout]
+  generalize ((unitary t m).compIndexEquiv _ p).2 = q
+  obtain ⟨i, j⟩ := q
+  rw [Circuit.kraus_step, Circuit.kraus_done, Matrix.one_mul, measure_mulVec,
+    show (fun σ ↦ if control t m σ = measured t m i then
+      registerState u (fun x ↦ amplitude t φ (encode t x)) σ else 0) =
+      registerState u fun x ↦ if x = measured t m i then amplitude t φ (encode t x) else 0 by
+    funext σ; simp only [registerState]; split_ifs <;> simp,
+    sum_norm_sq_registerState hu, Finset.sum_eq_single (measured t m i)
+      (fun x _ hx ↦ by simp [hx]) (by simp)]
+  simp
+
+/-- The readout is a bijection from the branches onto the integers below `2^t`. -/
+private theorem readout_bijective : Function.Bijective (readout t m) := by
+  obtain ⟨hu⟩ := unique_index_unitary (t := t) (m := m)
+  let e : (circuit t m).Index ≃ Fin (2 ^ t) :=
+    ((unitary t m).compIndexEquiv _).trans ((Equiv.uniqueProd _ _).trans
+      ((Equiv.sigmaEquivProd (measureLayer t m).Index Unit).trans
+        ((Equiv.prodPUnit _).trans (measuredEquiv.trans (encode t)))))
+  exact (show readout t m = e from rfl) ▸ e.bijective
+
+/-- The probability of the outcome `k` is `|αₖ|²` with
+`αₖ = 2^{-t} ∑_{j < 2^t} e^{2πi j (φ - k/2^t)}` (Nielsen–Chuang, eq. (5.24)). It needs only the
+eigenvector equation and not that `U` is unitary; without unitarity the circuit is in general not
+trace-preserving, but on this input the probabilities still sum to `1`. -/
+theorem outcomeProb_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
+    {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (k : Fin (2 ^ t)) :
+    (circuit t m).outcomeProb (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+      (readout t m) (vecMulVec (input t m u) (star (input t m u))) k =
+      ‖amplitude t φ k‖ ^ 2 :=
+  Circuit.outcomeProb_of_bijective _ _ readout_bijective (f := fun k ↦ ‖amplitude t φ k‖ ^ 2)
+    (prob_eq hu huφ) k
+
+/-- If `2^t φ` is an integer congruent to `k` modulo `2^t`, the outcome `k` has probability `1`
+(Nielsen–Chuang, §5.2). -/
+theorem outcomeProb_eq_one_of_exact {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ}
+    (hu : star u ⬝ᵥ u = 1) {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u)
+    {k : Fin (2 ^ t)} (hk : ∃ q : ℤ, (2 : ℝ) ^ t * φ = k + 2 ^ t * q) :
+    (circuit t m).outcomeProb (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+      (readout t m) (vecMulVec (input t m u) (star (input t m u))) k = 1 := by
+  obtain ⟨q, hq⟩ := hk
+  have hφ : (φ : ℂ) - k / 2 ^ t = q := by
+    have : φ - k / 2 ^ t = q := by
+      field_simp
+      linarith
+    have h := congrArg (fun x : ℝ ↦ (x : ℂ)) this
+    push_cast at h
+    exact h
+  have hone : ∀ j : Fin (2 ^ t), exp (2 * Real.pi * I * j * (φ - k / 2 ^ t)) = 1 := fun j ↦ by
+    rw [mul_assoc, hφ, Complex.exp_eq_one_iff]
+    exact ⟨j * q, by push_cast; ring⟩
+  rw [outcomeProb_eq hu huφ, amplitude, Finset.sum_congr rfl fun j _ ↦ hone j,
+    Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_one, Nat.cast_pow,
+    Nat.cast_ofNat, inv_mul_cancel₀ (pow_ne_zero _ two_ne_zero), norm_one, one_pow]
+
+/-- Phase estimation with `t = n + ⌈log₂(2 + 1/(2ε))⌉` control qubits, on the input
+`|0…0⟩ ⊗ |u⟩` for an eigenvector `U u = e^{2πiφ} u` of norm `1`, returns an integer `k` with
+`k / 2^t` within `2^{-n}` of `φ` modulo `1` with probability at least `1 - ε`
+(Nielsen–Chuang, §5.2.1, eq. (5.35)). The statement needs only the eigenvector and not that `U`
+is unitary; without unitarity the circuit is in general not trace-preserving. -/
+theorem accurate_prob_ge (U : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → ℂ) (hu : star u ⬝ᵥ u = 1)
+    (φ : ℝ) (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (n : ℕ) {ε : ℝ} (hε : 0 < ε)
+    (ht : t = n + ⌈Real.logb 2 (2 + 1 / (2 * ε))⌉₊) :
+    1 - ε ≤ ∑ k ∈ Finset.univ.filter (fun k : Fin (2 ^ t) ↦
+        |(k : ℝ) / 2 ^ t - φ - round ((k : ℝ) / 2 ^ t - φ)| ≤ 1 / 2 ^ n),
+      (circuit t m).outcomeProb (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+        (readout t m) (vecMulVec (input t m u) (star (input t m u))) k := by
+  simp only [outcomeProb_eq hu huφ]
+  exact one_sub_le_sum_norm_sq_amplitude φ n hε ht
+
+end PhaseEstimation
+
+end QuantumCircuit

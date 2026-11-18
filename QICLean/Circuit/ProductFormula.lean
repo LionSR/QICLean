@@ -198,7 +198,7 @@ theorem gateCount_productCircuit (hg : ∀ k, Nonempty (GateFamily.Outcome (g k)
     Circuit.total_seq _ _ (nonempty_index_productLayer c g n hg), List.map_map,
     sum_map_colourSweeps]
   congr 1
-  simp only [Function.comp_def, productLayer, Layer.gateCount, Layer.ofCells,
+  simp only [Function.comp_def, productLayer, Layer.gateCount_eq_sum, Layer.ofCells,
     Geometry.ofSupports, Finset.sum_const, smul_eq_mul, mul_one]
   exact (Finset.card_eq_sum_card_fiberwise (f := c) (t := Finset.univ)
     fun _ _ ↦ Finset.mem_univ _).symm
@@ -211,8 +211,8 @@ theorem participation_productCircuit (hg : ∀ k, Nonempty (GateFamily.Outcome (
     Circuit.total_seq _ _ (nonempty_index_productLayer c g n hg), List.map_map,
     sum_map_colourSweeps]
   congr 1
-  simp only [Function.comp_def, Layer.meets, productLayer, Layer.ofCells, Geometry.ofSupports,
-    zero_lt_one, and_true]
+  simp only [Function.comp_def, Layer.meets_eq_card, productLayer, Layer.ofCells,
+    Geometry.ofSupports, zero_lt_one, and_true]
   rw [Finset.card_eq_sum_card_fiberwise (f := c) (t := Finset.univ) fun _ _ ↦ Finset.mem_univ _]
   refine Finset.sum_congr rfl fun i _ ↦ ?_
   rw [colourClass, Finset.filter_filter, Finset.filter_filter]

@@ -1,0 +1,222 @@
+\chapter{Phase estimation}
+\label{ch:phase_estimation}
+
+This chapter writes phase estimation \cite[\S5.2]{NielsenChuang2010} as a circuit with
+calls to an oracle, and states its success probability and its number of calls. The
+circuit is one circuit for every oracle: it consists of plain gates and calls, and the
+unitary $U$ enters only through the interpretation of the calls. The inverse Fourier
+transform is the adjoint of the circuit of Chapter~\ref{ch:qft}, moved from the $t$
+control qubits to the register that also holds the target.
+
+\section{The circuit}
+\label{sec:phase_estimation_circuit}
+
+\begin{definition}[The register]
+    \label{def:phase_estimation_register}
+    \lean{QuantumCircuit.PhaseEstimation.system, QuantumCircuit.PhaseEstimation.geometry,
+        QuantumCircuit.PhaseEstimation.Gate, QuantumCircuit.PhaseEstimation.geometryHom,
+        QuantumCircuit.PhaseEstimation.control, QuantumCircuit.PhaseEstimation.input}
+    \leanok
+    \uses{def:qft_qubits, def:circuits_extend_system, def:circuits_geometry_hom,
+        def:circuits_oracle}
+    The register has the sites $0,\dots,t-1$ of the control register, each with basis
+    $\{0,1\}$, and one target site with basis $\{1,\dots,m\}$; it is the register of
+    $t$ qubits extended by the target. Its geometry has a cell of cost $1$ on every
+    site and on every ordered pair of distinct sites, and the cells of the $t$ qubits
+    are cells of the register. Its gates are plain gates and calls of an oracle on
+    $\{0,1\}\times\{1,\dots,m\}$. For a vector $u\in\C^m$ the input is
+    $\lvert0\cdots0\rangle\otimes u$.
+\end{definition}
+
+\begin{definition}[Phase estimation]
+    \label{def:phase_estimation_circuit}
+    \lean{QuantumCircuit.PhaseEstimation.hadamardLayer,
+        QuantumCircuit.PhaseEstimation.queryLayer, QuantumCircuit.PhaseEstimation.prepare,
+        QuantumCircuit.PhaseEstimation.qftInv,
+        QuantumCircuit.PhaseEstimation.unitary, QuantumCircuit.PhaseEstimation.measureLayer,
+        QuantumCircuit.PhaseEstimation.circuit, QuantumCircuit.PhaseEstimation.measured,
+        QuantumCircuit.PhaseEstimation.readout}
+    \leanok
+    \uses{def:phase_estimation_register, def:qft_circuit, def:circuits_adjoint,
+        thm:circuits_map_sites, thm:circuits_map_gate, def:circuits_gate_sum,
+        def:circuits_outcome}
+    Phase estimation \cite[Fig.~5.2 and~5.3]{NielsenChuang2010} applies the Hadamard
+    gate to every control qubit; then, for $j=t-1,\dots,0$, $2^{t-1-j}$ calls on the
+    pair of the control qubit $j$ and the target, each identifying the configurations
+    of the pair with $\{0,1\}\times\{1,\dots,m\}$; then the inverse Fourier
+    transform on the control register; and finally it measures every control qubit
+    in the basis $\lvert0\rangle,\lvert1\rangle$. The readout of a branch is the
+    integer $k=\langle x\rangle$ encoded by the measured bits $x$. The oracle $U$ on
+    $\C^m$ interprets every call by the controlled gate of $U$, so the calls on the
+    qubit $j$ apply $U^{2^{t-1-j}}$ controlled by $j$. The inverse Fourier transform
+    is the adjoint of the circuit of Definition~\ref{def:qft_circuit} on the $t$
+    qubits, moved to the register with the target idle, its plain gates included
+    among the gates of the register.
+\end{definition}
+
+\section{Success probability and number of calls}
+\label{sec:phase_estimation_bounds}
+
+\begin{theorem}[Number of calls]
+    \label{thm:phase_estimation_query_count}
+    \lean{QuantumCircuit.PhaseEstimation.queryCount_circuit}
+    \leanok
+    \uses{def:phase_estimation_circuit, def:circuits_oracle}
+    Phase estimation with $t$ control qubits calls the oracle
+    $\sum_{j<t}2^{t-1-j}=2^t-1$ times.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_seq, thm:circuits_layer_map}
+    The circuit before the measurement has one branch, so its cost is the sum of the
+    costs of its parts. Only the layers of calls contain a call, one each, and there
+    are $\sum_{j<t}2^{t-1-j}$ of them. The inverse Fourier transform consists of plain
+    gates included in the sum, and the measurement has no cells, so neither contains a
+    call.
+\end{proof}
+
+\begin{theorem}[Amplitudes of the outcomes]
+    \label{thm:phase_estimation_amplitude}
+    \lean{QuantumCircuit.PhaseEstimation.amplitude,
+        QuantumCircuit.PhaseEstimation.outcomeProb_eq,
+        QuantumCircuit.PhaseEstimation.sum_norm_sq_amplitude}
+    \leanok
+    \uses{def:phase_estimation_circuit, def:circuits_outcome}
+    Let $U$ be an $m\times m$ matrix and $u\in\C^m$ a unit vector with
+    $Uu=e^{2\pi i\varphi}u$, $\varphi\in\R$. On the input
+    $\lvert0\cdots0\rangle\otimes u$ the readout $k$ of phase estimation has probability
+    $\lvert\alpha_k\rvert^2$, where
+    \begin{align}
+        \alpha_k&=2^{-t}\sum_{j<2^t}e^{2\pi ij(\varphi-k/2^t)}
+        \notag
+    \end{align}
+    \cite[eq.~(5.24)]{NielsenChuang2010}, and $\sum_k\lvert\alpha_k\rvert^2=1$. The matrix $U$
+    need not be unitary; the circuit is then in general not trace-preserving.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:qft_kraus, thm:circuits_map_sites, thm:circuits_map_gate, lem:circuits_adjoint,
+        lem:circuits_sum_prob}
+    The circuit has one branch before the measurement. The Hadamard gates map
+    $\lvert0\cdots0\rangle\otimes u$ to $2^{-t/2}\sum_x\lvert x\rangle\otimes u$. A call
+    controlled by the qubit $j$ multiplies the component with $x_j=1$ by the
+    eigenvalue, so the calls give
+    $2^{-t/2}\sum_xe^{2\pi i\varphi\langle x\rangle}\lvert x\rangle\otimes u$. The inverse
+    Fourier transform, the adjoint of the Fourier matrix of
+    Theorem~\ref{thm:qft_kraus} tensored with the identity on the target, gives
+    $\sum_k\alpha_k\lvert k\rangle\otimes u$. The measurement of the control register
+    with outcome $k$ keeps the component $\alpha_k\lvert k\rangle\otimes u$, of squared
+    norm $\lvert\alpha_k\rvert^2$, and the readout is a bijection from the branches onto
+    the outcomes. The sum of the $\lvert\alpha_k\rvert^2$ is $1$ because the Fourier matrix
+    is unitary.
+\end{proof}
+
+\begin{corollary}[Exact phases]
+    \label{cor:phase_estimation_exact}
+    \lean{QuantumCircuit.PhaseEstimation.outcomeProb_eq_one_of_exact}
+    \leanok
+    \uses{thm:phase_estimation_amplitude}
+    Under the hypotheses of Theorem~\ref{thm:phase_estimation_amplitude}, if $2^t\varphi$
+    is an integer congruent to $k$ modulo $2^t$, the readout is $k$ with probability $1$.
+\end{corollary}
+\begin{proof}\leanok
+    Then $\varphi-k/2^t$ is an integer, every term of the sum is $1$, and $\alpha_k=1$.
+\end{proof}
+
+\begin{theorem}[Success probability]
+    \label{thm:phase_estimation_success}
+    \lean{QuantumCircuit.PhaseEstimation.one_sub_le_sum_norm_sq_amplitude,
+        QuantumCircuit.PhaseEstimation.accurate_prob_ge}
+    \leanok
+    \uses{thm:phase_estimation_amplitude}
+    Under the hypotheses of Theorem~\ref{thm:phase_estimation_amplitude}, let $n\in\N$,
+    $\varepsilon>0$ and $t=n+\lceil\log_2(2+1/(2\varepsilon))\rceil$. Then phase
+    estimation with $t$ control qubits returns an integer $k$ such that $k/2^t$ lies
+    within $2^{-n}$ of $\varphi$ modulo $1$ with probability at least $1-\varepsilon$
+    \cite[eq.~(5.35)]{NielsenChuang2010}.
+\end{theorem}
+\begin{proof}\leanok
+    Write $2^t\varphi=b+\delta$ with $b$ an integer and $0\le\delta<1$, and for an
+    outcome $k$ let $r$ be the integer nearest to $k/2^t-\varphi$ and
+    $\ell=k-b-2^tr$, so that $\lvert k/2^t-\varphi-r\rvert=\lvert\ell-\delta\rvert/2^t\le1/2$;
+    distinct outcomes give distinct $\ell$. For $\lvert x-r\rvert\le1/2$ one has
+    $\lvert e^{2\pi ix}-1\rvert=2\lvert\sin\pi(x-r)\rvert\ge4\lvert x-r\rvert$, so summing
+    the geometric series,
+    \begin{align}
+        \lvert\alpha_k\rvert&\le\frac{2^{-t}\cdot2}{4\lvert\varphi-k/2^t+r\rvert}
+        =\frac1{2\lvert\ell-\delta\rvert}.
+        \notag
+    \end{align}
+    Let $M=2^{t-n}$. An outcome farther than $2^{-n}$ from $\varphi$ modulo $1$ has
+    $\lvert\ell-\delta\rvert>M$, hence $\ell\ge M+1$, with $\lvert\ell-\delta\rvert\ge\ell-1$,
+    or $-\ell\ge M$, with $\lvert\ell-\delta\rvert\ge-\ell$. Since
+    $1/a^2\le1/(a-1)-1/a$, a sum of $1/a^2$ over distinct integers $a\ge M$ is at most
+    $1/(M-1)$, so these outcomes have total probability at most
+    $\frac14\cdot\frac2{M-1}=1/(2(M-1))$. This is the estimate of
+    \cite[eqs.~(5.30)--(5.34)]{NielsenChuang2010} with $e=M-1$, slightly sharper. Finally
+    $M\ge2+1/(2\varepsilon)$ gives $1/(2(M-1))\le\varepsilon$, and the probabilities of
+    all outcomes sum to $1$.
+\end{proof}
+
+\section{Semiclassical phase estimation}
+\label{sec:phase_estimation_semiclassical}
+
+\begin{definition}[Semiclassical phase estimation]
+    \label{def:phase_estimation_semiclassical}
+    \lean{QuantumCircuit.PhaseEstimation.correction,
+        QuantumCircuit.PhaseEstimation.correctedMeasure,
+        QuantumCircuit.PhaseEstimation.measureQubit, QuantumCircuit.PhaseEstimation.qubitOutcome,
+        QuantumCircuit.PhaseEstimation.measureFrom, QuantumCircuit.PhaseEstimation.outcomesFrom,
+        QuantumCircuit.PhaseEstimation.semiclassical,
+        QuantumCircuit.PhaseEstimation.semiclassicalReadout}
+    \leanok
+    \uses{def:phase_estimation_circuit, def:circuits_circuit, def:circuits_outcome}
+    Semiclassical phase estimation \cite{GriffithsNiu1996} replaces the inverse Fourier
+    transform and the measurement by measurements of the control qubits one at a time,
+    in the order $0,1,\dots,t-1$. Griffiths and Niu show that the outcomes have the
+    distribution of the coherent circuit for every input; here this is proved for the
+    input of phase estimation, an eigenvector of the oracle on the target. Before the qubit $j$ is measured it gets the phase
+    gate $\operatorname{diag}(1,e^{-2\pi i\theta_j})$ with
+    $\theta_j=\sum_{i<j}b_i/2^{j-i+1}$, where $b_i$ is the outcome of the qubit $i$,
+    and then the Hadamard gate. The circuit branches: the layer measuring the qubit $j$
+    depends on the outcomes of the earlier layers. It is the first circuit of these
+    chapters in which the continuation after a layer depends on its outcome. The
+    readout is the integer whose bit at the site $t-1-j$ is $b_j$.
+\end{definition}
+
+\begin{theorem}[Semiclassical phase estimation]
+    \label{thm:phase_estimation_semiclassical}
+    \lean{QuantumCircuit.PhaseEstimation.semiclassical_outcomeProb_eq,
+        QuantumCircuit.PhaseEstimation.semiclassical_accurate_prob_ge,
+        QuantumCircuit.PhaseEstimation.queryCount_semiclassical}
+    \leanok
+    \uses{def:phase_estimation_semiclassical, thm:phase_estimation_amplitude}
+    Under the hypotheses of Theorem~\ref{thm:phase_estimation_amplitude}, that is, on the
+    input $\lvert0\cdots0\rangle\otimes u$ with $Uu=e^{2\pi i\varphi}u$, the readout $k$
+    of semiclassical phase estimation has probability $\lvert\alpha_k\rvert^2$. Hence it
+    has the success probability of Theorem~\ref{thm:phase_estimation_success}, and it
+    calls the oracle $2^t-1$ times.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:phase_estimation_success, thm:phase_estimation_query_count,
+        lem:circuits_sum_prob}
+    After the preparation the control register is the product state
+    $\bigotimes_j2^{-1/2}(\lvert0\rangle+e^{2\pi i\varphi2^{t-1-j}}\lvert1\rangle)$, tensored
+    with $u$. Along a branch, the corrected measurement of the qubit $j$ with outcome $b_j$
+    keeps a product state, replacing the factor of the qubit $j$ by
+    $\beta_j\lvert b_j\rangle$ with
+    \begin{align}
+        \beta_j&=\tfrac12\bigl(1+(-1)^{b_j}e^{-2\pi i\theta_j}e^{2\pi i\varphi2^{t-1-j}}\bigr),
+        \notag
+    \end{align}
+    so the branch has probability $\prod_j\lvert\beta_j\rvert^2$. For the readout
+    $k=\sum_jb_j2^j$ one has $k/2^{j+1}\equiv b_j/2+\theta_j$ modulo $1$, hence
+    $\beta_j=\tfrac12(1+z^{2^{t-1-j}})$ with $z=e^{2\pi i(\varphi-k/2^t)}$, and
+    \begin{align}
+        \prod_j\beta_j&=2^{-t}\prod_{s<t}\bigl(1+z^{2^s}\bigr)=2^{-t}\sum_{l<2^t}z^l=\alpha_k.
+        \notag
+    \end{align}
+    The outcomes of the branches are the bit strings, each once, so the readout $k$ has
+    probability $\lvert\alpha_k\rvert^2$. The rest follows from
+    Theorems~\ref{thm:phase_estimation_amplitude} and~\ref{thm:phase_estimation_success}.
+    The measurements contain no calls, so the number of calls is that of the
+    preparation.
+\end{proof}
