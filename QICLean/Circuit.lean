@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit
 
+import QICLean.Circuit.Algorithm
 import QICLean.Circuit.Core
 import QICLean.Circuit.Gate
 import QICLean.Circuit.Geometry

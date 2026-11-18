@@ -14,3 +14,5 @@ import QICLean.Circuit.Core.Cost
 import QICLean.Circuit.Core.Layer
 import QICLean.Circuit.Core.LayerDual
 import QICLean.Circuit.Core.LightCone
+import QICLean.Circuit.Core.LocalGate
+import QICLean.Circuit.Core.Seq
