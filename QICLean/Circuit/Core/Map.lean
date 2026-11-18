@@ -329,12 +329,18 @@ theorem liftOnsite_op_inr {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cell
       (cast (congrArg (Sum.elim Y W) htr) a) (cast (congrArg (Sum.elim X W) htr) b) := by
   subst htr; rfl
 
-omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
-  [∀ s, DecidableEq (Y s)] in
 theorem mapSites_gate (b' : (L.mapSites e W h φ).cells) :
     (L.mapSites e W h φ).gate b' = Eq.ndrec (motive := fun D ↦ G' D (lift e W X) (lift e W Y))
       (φ.map (L.gate ((L.cellsEquiv e h).symm b'))) (L.cell_cellsEquiv_symm e h b') :=
   rfl
+
+theorem ev_mapSites_gate {ev' : Interpretation G'} (b' : (L.mapSites e W h φ).cells)
+    (o : GateFamily.Outcome ((L.mapSites e W h φ).gate b')) (y : Config (lift e W Y))
+    (x : Config (lift e W X)) :
+    ev' ((L.mapSites e W h φ).gate b') o (fun v ↦ y v) (fun v ↦ x v) =
+      ev' (φ.map (L.gate ((L.cellsEquiv e h).symm b'))) (outcomeNdrec e W _ _ o)
+        (fun v ↦ y v) (fun v ↦ x v) :=
+  ev_ndrec e W (X' := X) (Y' := Y) _ _ o y x
 
 theorem onsite_op_freeEquiv_inl (a : L.Free)
     (o : ((L.mapSites e W h φ).onsite (L.freeEquiv e W h φ (.inl a))).Index)
@@ -371,9 +377,10 @@ theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G'
     mul_assoc]
   congr 1
   · refine Finset.prod_congr rfl fun b _ ↦ ?_
-    rw [mapSites_gate, ev_ndrec e W (X' := X) (Y' := Y), hφ, submatrix_apply,
-      liftRegionEquiv_restrict, liftRegionEquiv_restrict,
-      ev_gate_congr L ev ((L.cellsEquiv e h).symm_apply_apply b)]
+    rw [L.ev_mapSites_gate e W h φ (ev' := ev')]
+    refine (congrFun (congrFun (hφ _ _) _) _).trans ?_
+    rw [submatrix_apply, liftRegionEquiv_restrict, liftRegionEquiv_restrict]
+    exact ev_gate_congr L ev ((L.cellsEquiv e h).symm_apply_apply b) _ _ _
   · congr 1
     · refine Finset.prod_congr rfl fun a _ ↦ ?_
       rw [L.onsite_op_freeEquiv_inl e W h φ, liftConfigEquiv_fst, liftConfigEquiv_fst]
@@ -383,6 +390,7 @@ theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G'
       refine if_congr ?_ rfl rfl
       rw [funext_iff]
       simp only [liftConfigEquiv_snd]
+      exact Iff.rfl
 
 end Layer
 
