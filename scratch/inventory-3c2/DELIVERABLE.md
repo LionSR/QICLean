@@ -4,7 +4,13 @@ Method:
 - Four agents produced per-declaration verdict tables, one per group: A channel core, B registers, C physical ports, D routing and compilation.
 - Four more agents restated every (c) item in the core over one shared prelude of the missing notions.
 - I re-ran every file myself. Each typechecks with `lake env lean` against 28bd64e, with only `declaration uses sorry` warnings: A 23, B 16, C 12, D 21.
-- The four Lean files follow in the next four messages. Each (c) item is quoted verbatim from TNLean, with its file, directly above its core statement.
+- Everything is on the branch `inventory/3c2-restatements` (commit 03a1f78, off main, no PR, scratch only and not built), under `scratch/inventory-3c2/`:
+  - the four restatement files `Restate_{A,B,C,D}.lean`, each with `Prelude.lean` copied in at the top;
+  - their reports `Restate_*.md`;
+  - the verdict tables `inv_{A,B,C,D}.md`;
+  - this text.
+- Each (c) item is quoted verbatim from TNLean, with its file, directly above its core statement.
+- To check: `lake env lean scratch/inventory-3c2/Restate_X.lean` from a checkout at 28bd64e.
 
 ## 1. Verdicts
 
