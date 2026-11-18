@@ -110,6 +110,8 @@ end MaximallyEntangled
 
 namespace Matrix
 
+variable {d : ℕ}
+
 /-- The entries of `omegaVec` are real, so complex conjugation fixes it. -/
 theorem star_omegaVec :
     star (omegaVec d) = omegaVec d := by
