@@ -8,4 +8,5 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit.Model
 
+import QICLean.Circuit.Model.Approximate
 import QICLean.Circuit.Model.Protocol

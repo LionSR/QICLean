@@ -125,6 +125,17 @@ theorem IsAdaptiveProtocol.comp {T T' : ℕ}
   exact ⟨c.comp c', hcTP.comp _ hc'TP,
     (Circuit.depth_comp c c').trans (Nat.add_le_add hcd hc'd), Circuit.map_comp _ c c'⟩
 
+/-- The identity is realised by a protocol of depth `0`: the empty circuit. -/
+theorem IsProtocol.id : IsProtocol Γ 0 (LinearMap.id : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] _) :=
+  ⟨Circuit.done X, trivial, le_rfl, Circuit.map_done _, trivial⟩
+
+/-- A protocol of depth at most `T` has depth at most every `T' ≥ T`. -/
+theorem IsProtocol.mono {T T' : ℕ}
+    {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
+    (h : IsProtocol Γ T Φ) (hT : T ≤ T') : IsProtocol Γ T' Φ :=
+  let ⟨c, hc, hd, hm, hu⟩ := h
+  ⟨c, hc, hd.trans hT, hm, hu⟩
+
 /-- Protocols compose, with additive depth. -/
 theorem IsProtocol.comp {T T' : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Y) (Config Y) ℂ}

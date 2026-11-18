@@ -209,4 +209,12 @@ theorem rectangularTraceNorm_single_kronecker
     (basisRegisterInjection_conjTranspose_mul_self x)
     (basisRegisterInjection_conjTranspose_mul_self y)
 
+/-- A square matrix has trace norm `0` only if it is `0`. -/
+theorem rectangularTraceNorm_eq_zero_iff (A : Matrix n n ℂ) :
+    rectangularTraceNorm A = 0 ↔ A = 0 := by
+  let e := Fintype.equivFin n
+  rw [← rectangularTraceNorm_reindex e e A, rectangularTraceNorm_square, traceNorm_eq_zero_iff]
+  refine ⟨fun h ↦ ?_, fun h ↦ by rw [h]; rfl⟩
+  simpa using congrArg (reindex e.symm e.symm) h
+
 end Matrix
