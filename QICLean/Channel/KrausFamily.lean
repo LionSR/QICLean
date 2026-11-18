@@ -36,6 +36,8 @@ family.
 * `KrausFamily.isKrausCPTP_map` — a trace-preserving family gives a quantum channel in the
   sense of `IsKrausCPTP` (Wolf, Thm. 2.1 and §2.1).
 * `KrausFamily.trace_map` — a trace-preserving family preserves the trace.
+* `KrausFamily.trace_map_le` — a trace-nonincreasing family decreases the trace of
+  positive semidefinite inputs.
 * `KrausFamily.trace_map_mul` — the map of a family and the map of its adjoint family are dual
   for the trace pairing.
 * `KrausFamily.map_prepare`, `KrausFamily.map_discard` — preparation and discard as maps.
@@ -134,6 +136,16 @@ theorem trace_map {K : KrausFamily α β} (h : K.IsTP) (ρ : Matrix α α ℂ) :
   rw [map_apply, trace_sum]
   simp_rw [trace_mul_cycle (K.op _), ← trace_sum, ← Finset.sum_mul]
   rw [show ∑ i, (K.op i)ᴴ * K.op i = K.effect from rfl, h, Matrix.one_mul]
+
+/-- A trace-nonincreasing Kraus family decreases the trace of every positive semidefinite
+input. The inequality is in the real order on complex traces. -/
+theorem trace_map_le {K : KrausFamily α β} (h : K.IsTraceNonincreasing)
+    {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef) : (K.map ρ).trace ≤ ρ.trace := by
+  have hn := (Matrix.le_iff.mp h).trace_mul_nonneg hρ
+  rw [Matrix.sub_mul, Matrix.one_mul, Matrix.trace_sub, sub_nonneg] at hn
+  rw [map_apply, trace_sum]
+  simp_rw [trace_mul_cycle (K.op _), ← trace_sum, ← Finset.sum_mul]
+  exact hn
 
 omit [DecidableEq α] in
 /-- The map of a family and the map of its adjoint family are dual for the trace pairing:

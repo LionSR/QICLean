@@ -51,3 +51,21 @@ comparison of \cite[Section~8]{OpenAI2026AreaLaw}.
     $A_0\otimes A'\le B_0\otimes B'$. Separating the first coordinate
     identifies these two matrices with the original tensor products.
 \end{proof}
+
+\begin{corollary}[Products of positive contractions]
+    \label{cor:finite_kronecker_contractions}
+    \lean{Matrix.prod_le_one}
+    \leanok
+    Let $B$ and $J$ be finite sets, let $I_b$ be a finite set for every $b\in B$,
+    and let $0\le A_b\le1$ on $\mathbb C^{I_b}$. If
+    $f:J\to\prod_{b\in B}I_b$ is injective, then the matrix with entries
+    $M_{xy}=\prod_{b\in B}(A_b)_{f(x)_b,f(y)_b}$ satisfies $M\le1$.
+    The sets of factors and basis indices may be empty.
+\end{corollary}
+\begin{proof}\leanok
+    \uses{thm:finite_kronecker_order}
+    Enumerate $B$ by a finite initial interval. Theorem~\ref{thm:finite_kronecker_order}
+    gives $\bigotimes_b A_b\le\bigotimes_b1$. Restrict both matrix indices along $f$;
+    this preserves positivity of the difference. Since $f$ is injective, the
+    restriction of $\bigotimes_b1$ is the identity on $\mathbb C^J$.
+\end{proof}

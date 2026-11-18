@@ -459,6 +459,53 @@ and each Kraus operator is a product of local entries over the blocks.
     circuit.
 \end{proof}
 
+\begin{theorem}[Trace nonincrease of layers and circuits]
+    \label{thm:circuits_tni}
+    \lean{QuantumCircuit.Layer.blockEffect_le_one,
+        QuantumCircuit.Layer.configEquivBlocks, QuantumCircuit.Layer.effect_apply_eq_prod,
+        QuantumCircuit.Layer.isTraceNonincreasing_krausFamily, QuantumCircuit.Layer.dual_one_le,
+        QuantumCircuit.Circuit.dual_one_le_of_forall,
+        QuantumCircuit.Circuit.isTraceNonincreasing_krausFamily,
+        QuantumCircuit.Circuit.trace_map_le, KrausFamily.trace_map_le}
+    \leanok
+    \uses{def:circuits_local, def:kraus_family}
+    Suppose every gate and onsite family of a circuit has effect at most the
+    identity. Then the circuit effect $E_c=\sum_p(K_p^c)^\dagger K_p^c$ satisfies
+    $E_c\le1$. Its completely positive map $\Phi_c$ obeys
+    $\operatorname{tr}\Phi_c(\rho)\le\operatorname{tr}\rho$ for every $\rho\ge0$,
+    and its Heisenberg dual obeys $\Phi_c^*(1)\le1$.
+    The same statements hold for a single layer. The input and output bases may
+    differ and may be empty, and a branch may have no Kraus outcomes.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_factorization, lem:sites_partition,
+        cor:finite_kronecker_contractions}
+    Restriction to the blocks identifies global configurations with families
+    of block configurations. Write $K_{\beta,j}$ for the local Kraus operators
+    and $E_\beta=\sum_jK_{\beta,j}^\dagger K_{\beta,j}$. For an onsite block this
+    is the onsite effect after identifying a singleton configuration with its
+    coordinate. Thus $0\le E_\beta\le1$. Factoring the sums over output
+    configurations and Kraus outcomes gives
+    \begin{align}
+        (E_L)_{x,y}
+        &=\prod_\beta (E_\beta)_{x|_\beta,y|_\beta}.
+        \notag
+    \end{align}
+    Corollary~\ref{cor:finite_kronecker_contractions} gives $E_L\le1$.
+    Induct on the circuit. The empty circuit fixes $1$. If a layer $L$ has
+    continuation $c_i$ after outcome $i$, positivity of conjugation gives
+    \begin{align}
+        \Phi_c^*(1)
+        &=\sum_iK_i^\dagger\Phi_{c_i}^*(1)K_i
+        \le\sum_iK_i^\dagger K_i=E_L\le1.
+        \notag
+    \end{align}
+    Finally, cyclicity of trace gives
+    $\operatorname{tr}\Phi_c(\rho)=\operatorname{tr}(E_c\rho)$, and
+    $\operatorname{tr}((1-E_c)\rho)\ge0$ because both factors are positive
+    semidefinite. Complete positivity follows directly from the Kraus form.
+\end{proof}
+
 \begin{lemma}[Trace preservation keeps bases nonempty]
     \label{lem:circuits_tp_nonempty}
     \lean{KrausFamily.IsTP.nonempty_index, KrausFamily.IsTP.nonempty_target,
