@@ -206,7 +206,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{lemma}[Product operators across a cut and intertwined placements]
     \label{lem:sites_product_intertwine}
-    \lean{ManyBody.reindex_cutEquiv_prodOp, ManyBody.prodOp_mul_place}
+    \lean{ManyBody.reindex_cutEquiv_prodOp, ManyBody.prodOp_mul_place,
+        ManyBody.prodOp_ne_zero, ManyBody.prodOp_eq_place,
+        ManyBody.place_mul_prodOp_eq_zero_iff}
     \leanok
     \uses{def:sites_config, def:sites_place, thm:sites_product_span}
     Let $m_v$ be a matrix from $\C^{Y_v}$ to $\C^{X_v}$ for every site $v$, and
@@ -220,6 +222,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         \Bigl(\bigotimes_{v\in V}m_v\Bigr)(K'\otimes1)
         =(K\otimes1)\Bigl(\bigotimes_{v\in V}m_v\Bigr).
     \]
+    If every $m_v$ is nonzero, so is $\bigotimes_vm_v$. If $X=Y$ and $m_v=1$ for
+    $v\notin D$, then $\bigotimes_vm_v=m_D\otimes1$. If $m_{V\setminus D}\neq0$, then
+    $(K\otimes1)\bigotimes_vm_v=0$ if and only if $Km_D=0$.
 \end{lemma}
 \begin{proof}\leanok
     The matrix element of $\bigotimes_vm_v$ is the product over $V$ of the on-site
@@ -228,6 +233,11 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         (m_D\otimes m_{V\setminus D})(K'\otimes1)=m_DK'\otimes m_{V\setminus D}
         =Km_D\otimes m_{V\setminus D}=(K\otimes1)(m_D\otimes m_{V\setminus D}).
     \]
+    A nonzero $m_v$ has a nonzero entry $(m_v)_{a_vb_v}$, and the element of
+    $\bigotimes_vm_v$ at $(a,b)$ is their product. For $m_v=1$ outside $D$ the second
+    factor of the cut is $1$. Finally
+    $(K\otimes1)(m_D\otimes m_{V\setminus D})=Km_D\otimes m_{V\setminus D}$, and a
+    tensor product with a nonzero factor vanishes only if the other factor does.
 \end{proof}
 
 \begin{lemma}[Norm and order under placement]
