@@ -15,8 +15,9 @@ family `K` from `α` to `β` is carried to a family `K.encode e f y₀` from `α
 operators `J_f Kᵢ J_eᴴ` on the code space and `|y₀⟩⟨a| (1 - J_e J_eᴴ)` off it: the second kind
 sends the part of the input outside the code to the fixed output `y₀`, so that the encoded family
 is trace-preserving when `K` is. On the code the encoded operators act as `K`:
-`(K.encode e f y₀).op (inl i) * J_e = J_f * K.op i`, and the others vanish there. Decoding is the
-encoding of the identity family with the output embedding the identity.
+`(K.encode e f y₀).op (inl i) * J_e = J_f * K.op i`, and the others vanish there. The decoding
+`KrausFamily.decode e x₀` has the operators `J_eᴴ` and `|x₀⟩⟨b|` for `b` outside the range of
+`e`; it is a left inverse of the encoding.
 
 ## Main definitions
 
@@ -28,8 +29,9 @@ encoding of the identity family with the output embedding the identity.
 
 * `KrausFamily.isTP_embed`, `KrausFamily.IsTP.encode`, `KrausFamily.isTP_decode` — trace
   preservation.
-* `KrausFamily.encode_op_inl_mul`, `KrausFamily.encode_op_inr_mul` — the encoded operators on
-  the code.
+* `KrausFamily.encode_op_inl_mul`, `KrausFamily.encode_op_inr_mul`,
+  `KrausFamily.decode_op_inl_mul`, `KrausFamily.decode_op_inr_mul` — the encoded and decoding
+  operators on the code.
 * `KrausFamily.map_encode_map_embed` — the encoded family after the encoding is the encoding
   after the family.
 * `KrausFamily.map_decode_map_embed` — decoding after encoding is the identity.
@@ -48,6 +50,72 @@ def embed [DecidableEq β] (e : α ↪ β) : KrausFamily α β :=
 theorem isTP_embed [Fintype β] [DecidableEq α] [DecidableEq β] (e : α ↪ β) : (embed e).IsTP := by
   rw [IsTP, embed, effect_single]
   exact initializedBasisMatrix_isIsometry e
+
+/-- The decoding along an embedding `e` of bases with the fallback basis vector `x₀`: the
+adjoint of the encoding on the code, and `|x₀⟩⟨b|` for every `b` outside the range of `e`, which
+sends the part of the input outside the code to `x₀`. -/
+def decode [Fintype α] [Fintype β] [DecidableEq α] [DecidableEq β] (e : α ↪ β) (x₀ : α) :
+    KrausFamily β α :=
+  ⟨Unit ⊕ {b // b ∉ Set.range e},
+    Sum.elim (fun _ ↦ (initializedBasisMatrix e)ᴴ) fun b ↦ Matrix.single x₀ b.1 (1 : ℂ)⟩
+
+/-- The decoding is trace-preserving. -/
+theorem isTP_decode [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (e : α ↪ β)
+    (x₀ : α) : (decode e x₀).IsTP := by
+  change ∑ p : Unit ⊕ {b // b ∉ Set.range e}, ((decode e x₀).op p)ᴴ * (decode e x₀).op p = 1
+  rw [Fintype.sum_sum_type]
+  change ∑ _ : Unit, (initializedBasisMatrix e)ᴴᴴ * (initializedBasisMatrix e)ᴴ +
+    ∑ b : {b // b ∉ Set.range e}, (Matrix.single x₀ b.1 (1 : ℂ))ᴴ * Matrix.single x₀ b.1 1 = 1
+  simp only [Fintype.sum_unique, conjTranspose_conjTranspose, conjTranspose_single, star_one,
+    single_mul_single_same, mul_one]
+  ext i j
+  rw [Matrix.add_apply, Matrix.sum_apply, one_apply]
+  by_cases hi : i ∈ Set.range e
+  · obtain ⟨a, rfl⟩ := hi
+    rw [initializedBasisMatrix_mul_apply_self,
+      Finset.sum_eq_zero fun (c : {b // b ∉ Set.range e}) _ ↦
+      single_apply_of_row_ne (fun h ↦ c.2 ⟨a, h.symm⟩) _ _ _, add_zero]
+    simp [initializedBasisMatrix, one_apply, eq_comm]
+  · rw [initializedBasisMatrix_mul_apply_of_notMem _ _ hi, zero_add,
+      Finset.sum_eq_single (⟨i, hi⟩ : {b // b ∉ Set.range e}) (fun c _ hc ↦
+        single_apply_of_row_ne (fun h ↦ hc (Subtype.ext h)) _ _ _)
+        fun h ↦ absurd (Finset.mem_univ _) h]
+    simp [single_apply]
+
+/-- On the code, the decoding operator `J_eᴴ` inverts the encoding. -/
+theorem decode_op_inl_mul [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (e : α ↪ β)
+    (x₀ : α) :
+    (decode e x₀).op (Sum.inl () : Unit ⊕ {b // b ∉ Set.range e}) * initializedBasisMatrix e =
+      1 :=
+  initializedBasisMatrix_isIsometry e
+
+/-- On the code, the decoding operators sending the rest to `x₀` vanish. -/
+theorem decode_op_inr_mul [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β] (e : α ↪ β)
+    (x₀ : α) (b : {b // b ∉ Set.range e}) :
+    (decode e x₀).op (Sum.inr b : Unit ⊕ {b // b ∉ Set.range e}) * initializedBasisMatrix e =
+      0 := by
+  ext x a
+  change (Matrix.single x₀ b.1 (1 : ℂ) * initializedBasisMatrix e) x a = 0
+  rw [mul_initializedBasisMatrix_apply, single_apply]
+  exact ite_eq_right_iff.mpr fun h ↦ absurd ⟨a, h.2.symm⟩ b.2
+
+/-- Decoding after encoding is the identity. -/
+theorem map_decode_map_embed [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+    (e : α ↪ β) (x₀ : α) (ρ : Matrix α α ℂ) : (decode e x₀).map ((embed e).map ρ) = ρ := by
+  have he : (embed e).map ρ = initializedBasisMatrix e * ρ * (initializedBasisMatrix e)ᴴ :=
+    (map_apply _ _).trans (Fintype.sum_unique (ι := Unit) _)
+  have hz := decode_op_inr_mul e x₀
+  rw [he, map_apply]
+  change ∑ p : Unit ⊕ {b // b ∉ Set.range e}, _ = ρ
+  rw [Fintype.sum_sum_type]
+  change ∑ _ : Unit, (initializedBasisMatrix e)ᴴ * _ * (initializedBasisMatrix e)ᴴᴴ +
+    ∑ b : {b // b ∉ Set.range e},
+      (decode e x₀).op (Sum.inr b : Unit ⊕ {b // b ∉ Set.range e}) * _ *
+        ((decode e x₀).op (Sum.inr b : Unit ⊕ {b // b ∉ Set.range e}))ᴴ = ρ
+  have hJ := initializedBasisMatrix_isIsometry e
+  simp only [Fintype.sum_unique, conjTranspose_conjTranspose, ← Matrix.mul_assoc, hz,
+    Matrix.zero_mul, Finset.sum_const_zero, add_zero]
+  rw [hJ, Matrix.one_mul, Matrix.mul_assoc, hJ, Matrix.mul_one]
 
 variable [Fintype α] [Fintype β] [Fintype α'] [DecidableEq α'] [DecidableEq β']
 

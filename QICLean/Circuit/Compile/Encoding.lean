@@ -50,17 +50,67 @@ private theorem map_ofLayer_ofOnsite_single (V : ∀ s, Matrix (Y s) (X s) ℂ)
   change L.kraus _ i₀ * ρ * (L.kraus _ i₀)ᴴ = _
   rw [hJ]
 
+omit [DecidableEq S] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] in
+/-- The product of the isometries of embeddings is the isometry of the product embedding. -/
+private theorem prodOp_initializedBasisMatrix (e : ∀ s, X s ↪ Y s) :
+    prodOp (fun s ↦ initializedBasisMatrix (e s)) =
+      initializedBasisMatrix (Function.Embedding.piCongrRight e) := by
+  ext y x
+  simp [prodOp_apply, initializedBasisMatrix, one_apply, funext_iff, Finset.prod_ite_zero]
+
 /-- The encoding is conjugation by the isometry of the product embedding. -/
 private theorem map_encodeCircuit (e : ∀ s, X s ↪ Y s) (ρ : Matrix (Config X) (Config X) ℂ) :
     (encodeCircuit Γ e).map KrausGate.ev ρ =
       initializedBasisMatrix (Function.Embedding.piCongrRight e) * ρ *
         (initializedBasisMatrix (Function.Embedding.piCongrRight e))ᴴ := by
-  have hJ : prodOp (fun s ↦ initializedBasisMatrix (e s)) =
-      initializedBasisMatrix (Function.Embedding.piCongrRight e) := by
-    ext y x
-    simp [prodOp_apply, initializedBasisMatrix, one_apply, funext_iff, Finset.prod_ite_zero]
-  rw [encodeCircuit, ← hJ]
+  rw [encodeCircuit, ← prodOp_initializedBasisMatrix]
   exact map_ofLayer_ofOnsite_single _ ρ
+
+variable (Γ) in
+/-- The sitewise decoding along embeddings `e s : X s ↪ Y s` with fallback basis vectors
+`x₀ s`, as a circuit of one onsite layer. -/
+def decodeCircuit (e : ∀ s, X s ↪ Y s) (x₀ : ∀ s, X s) : Circuit Γ KrausGate Y X :=
+  Circuit.ofLayer (Layer.ofOnsite fun s ↦ KrausFamily.decode (e s) (x₀ s))
+
+/-- Decoding after encoding is the identity. -/
+theorem map_decodeCircuit_comp_map_encodeCircuit (e : ∀ s, X s ↪ Y s) (x₀ : ∀ s, X s) :
+    (decodeCircuit Γ e x₀).map KrausGate.ev ∘ₗ (encodeCircuit Γ e).map KrausGate.ev =
+      LinearMap.id := by
+  refine LinearMap.ext fun ρ ↦ ?_
+  set L : Layer Γ KrausGate Y X := Layer.ofOnsite fun s ↦ KrausFamily.decode (e s) (x₀ s)
+  set P := prodOp fun s ↦ initializedBasisMatrix (e s)
+  have hK : ∀ i, L.kraus KrausGate.ev i * P = prodOp fun s ↦
+      (KrausFamily.decode (e s) (x₀ s)).op (i.2 ⟨s, by simp [L, Layer.ofOnsite]⟩) *
+        initializedBasisMatrix (e s) := fun i ↦ by
+    rw [Layer.kraus_ofOnsite, prodOp_mul]
+  have hconj : ∀ i, L.kraus KrausGate.ev i * (P * ρ * Pᴴ) * (L.kraus KrausGate.ev i)ᴴ =
+      (L.kraus KrausGate.ev i * P) * ρ * (L.kraus KrausGate.ev i * P)ᴴ := fun i ↦ by
+    simp only [conjTranspose_mul, Matrix.mul_assoc]
+  let i₁ : L.Index := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun _ ↦ Sum.inl ())
+  rw [LinearMap.comp_apply, map_encodeCircuit, ← prodOp_initializedBasisMatrix, decodeCircuit,
+    Circuit.map_ofLayer, KrausFamily.map_apply, LinearMap.id_apply]
+  change ∑ i, L.kraus KrausGate.ev i * (P * ρ * Pᴴ) * (L.kraus KrausGate.ev i)ᴴ = ρ
+  rw [Finset.sum_eq_single i₁ (fun i _ hi ↦ ?_) fun h ↦ absurd (Finset.mem_univ _) h, hconj]
+  · rw [hK]
+    simp only [i₁, KrausFamily.decode_op_inl_mul, prodOp_one, Matrix.one_mul, conjTranspose_one,
+      Matrix.mul_one]
+  · obtain ⟨s, b, hb⟩ : ∃ s : L.Free, ∃ b, i.2 s = Sum.inr b := by
+      by_contra h
+      push Not at h
+      refine hi (Prod.ext (funext fun b ↦ absurd b.2 (Finset.notMem_empty _)) (funext fun s ↦ ?_))
+      cases h' : i.2 s with
+      | inl u => rfl
+      | inr b => exact absurd h' (h s b)
+    have h0 : L.kraus KrausGate.ev i * P = 0 := by
+      rw [hK]
+      ext y x
+      rw [prodOp_apply, Matrix.zero_apply]
+      refine Finset.prod_eq_zero (Finset.mem_univ s.1) ?_
+      change ((KrausFamily.decode (e s.1) (x₀ s.1)).op (i.2 s) *
+        initializedBasisMatrix (e s.1)) (y s.1) (x s.1) = 0
+      rw [hb, KrausFamily.decode_op_inr_mul, Matrix.zero_apply]
+    rw [hconj, h0]
+    simp
 
 namespace Layer
 
