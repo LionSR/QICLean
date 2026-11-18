@@ -67,7 +67,11 @@ theorem IsDimBounded.comp {B : ℕ} {Z : S → Type} : {X Y : S → Type} → {c
 
 omit [Fintype S] in
 /-- A circuit with trace-preserving local families on nonempty finite bases is bounded by the
-largest basis along it. -/
+largest basis along it.
+
+The input bases must be nonempty: `IsDimBounded` asks every basis to have an element, and on an
+empty configuration space the empty Kraus family is trace-preserving, so a trace-preserving layer
+on an empty basis may have no branches and leaves the later bases unconstrained. -/
 theorem exists_isDimBounded [Finite S] : {X Z : S → Type} → [∀ s, Fintype (X s)] →
     [∀ s, DecidableEq (X s)] → [∀ s, Nonempty (X s)] → (c : Circuit Γ G X Z) →
     c.Forall ev KrausFamily.IsTP → ∃ B, c.IsDimBounded B

@@ -43,7 +43,7 @@ theorem mem_fibre {v : V} {b : V'} : v ∈ fibre f b ↔ f v = b := by
   simp [fibre]
 
 /-- The fibres of `f` partition the sites. -/
-theorem isComplPartition_fibre :
+private theorem isComplPartition_fibre :
     IsComplPartition (∅ : Finset V) (fibre f) (fun v ↦ f v.1) where
   disjoint _ := Finset.disjoint_empty_right _
   mem _ := (mem_fibre f).mpr rfl

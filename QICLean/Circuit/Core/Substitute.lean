@@ -34,6 +34,10 @@ unbranched circuit on the sites `S'` with trace-preserving local families and de
 `K * L.depth`. Then so is every unbranched circuit with trace-preserving local families on
 nonempty bases, with depth at most `K` times its depth.
 
+The input bases must be nonempty: on an empty configuration space the empty Kraus family is
+trace-preserving, so a layer may then have no branch to continue along, and the realisations of
+the single layers give no circuit for the zero map.
+
 The bound `K * L.depth` asks a layer of depth `0`, one using only cells of cost `0` and onsite
 families, to be realised at depth `0`. This holds in the two uses: blocking sites keeps an onsite
 family onsite, and compiling to physical ports realises native onsite channels on cells of
