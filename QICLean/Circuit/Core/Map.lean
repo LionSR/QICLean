@@ -392,6 +392,34 @@ theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G'
       simp only [liftConfigEquiv_snd]
       exact Iff.rfl
 
+theorem lightCone_mapSites (T : Finset S) :
+    (L.mapSites e W h φ).lightCone (T.map (siteEmb e)) = (L.lightCone T).map (siteEmb e) := by
+  simp only [lightCone, mapSites, Finset.filter_map, Finset.map_union, Function.comp_def,
+    h.cell_cellMap, ← Finset.map_inter, Finset.map_nonempty]
+  congr 1
+  ext v
+  simp only [Finset.mem_biUnion, Finset.mem_map, h.cell_cellMap]
+  constructor
+  · rintro ⟨_, ⟨b, hb, rfl⟩, hv⟩
+    rw [h.cell_cellMap] at hv
+    obtain ⟨t, ht, rfl⟩ := Finset.mem_map.mp hv
+    exact ⟨t, ⟨b, hb, ht⟩, rfl⟩
+  · rintro ⟨t, ⟨b, hb, ht⟩, rfl⟩
+    exact ⟨h.cellMap b, ⟨b, hb, rfl⟩, by rw [h.cell_cellMap]; exact Finset.mem_map_of_mem _ ht⟩
+
+theorem gateCount_mapSites :
+    (L.mapSites e W h φ).gateCount = ∑ b ∈ L.cells, Γ'.cost (h.cellMap b) :=
+  Finset.sum_map _ _ _
+
+theorem depth_mapSites_le (hcost : ∀ b, 0 < Γ'.cost (h.cellMap b) → 0 < Γ.cost b) :
+    (L.mapSites e W h φ).depth ≤ L.depth := by
+  unfold depth
+  split_ifs with h₁ h₂ <;> try omega
+  obtain ⟨b', hb'⟩ := h₁
+  rw [Finset.mem_filter] at hb'
+  obtain ⟨b, hb, rfl⟩ := Finset.mem_map.mp hb'.1
+  exact absurd ⟨b, Finset.mem_filter.mpr ⟨hb, hcost b hb'.2⟩⟩ h₂
+
 end Layer
 
 namespace Circuit
@@ -441,9 +469,33 @@ theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G'
 variable {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
   [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)]
 
-theorem isUnbranched_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
-    {c : Circuit Γ G X Z} (hc : c.IsUnbranched) : (c.mapSites e W h φ).IsUnbranched :=
-  sorry
+theorem isUnbranched_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G') :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      {c : Circuit Γ G X Z} → c.IsUnbranched → (c.mapSites e W h φ).IsUnbranched
+  | _, _, _, _, done _, _ => trivial
+  | _, _, _, _, step L next, hc =>
+    ⟨fun i j ↦ by
+      change (next _).mapSites e W h φ = (next _).mapSites e W h φ
+      rw [hc.1 _ _],
+      fun i ↦ isUnbranched_mapSites h φ (hc.2 _)⟩
+
+/-- A cost of the moved layers bounded by a cost of the layers bounds the cost of the moved
+circuit. -/
+theorem total_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
+    (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ) (f' : ∀ ⦃X Y : S' → Type⦄, Layer Γ' G' X Y → ℕ)
+    (hf : ∀ ⦃X Y : S → Type⦄ [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+      [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y),
+      f' (L.mapSites e W h φ) ≤ f L) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      (c : Circuit Γ G X Z) → (c.mapSites e W h φ).total f' ≤ c.total f
+  | _, _, _, _, done _ => le_rfl
+  | _, _, _, _, step L next => by
+    change f' (L.mapSites e W h φ) + Finset.univ.sup (fun i ↦
+      ((next (L.mapSitesIndexEquiv e W h φ i)).mapSites e W h φ).total f') ≤
+      f L + Finset.univ.sup fun i ↦ (next i).total f
+    exact add_le_add (hf L) (Finset.sup_le fun i _ ↦
+      (total_mapSites_le h φ f f' hf _).trans (Finset.le_sup (f := fun i ↦ (next i).total f)
+        (Finset.mem_univ _)))
 
 /-- A local property invariant under relabelling of bases, held by the identity, moves along
 with every transported gate. -/
@@ -460,22 +512,39 @@ theorem forall_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G
 
 /-- The light cone of the image of a region is the image of its light cone. -/
 theorem lightCone_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
-    (c : Circuit Γ G X Z) (T : Finset S) :
-    (c.mapSites e W h φ).lightCone (T.map (siteEmb e)) = (c.lightCone T).map (siteEmb e) :=
-  sorry
+    (T : Finset S) : {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      (c : Circuit Γ G X Z) →
+      (c.mapSites e W h φ).lightCone (T.map (siteEmb e)) = (c.lightCone T).map (siteEmb e)
+  | _, _, _, _, done _ => rfl
+  | _, _, _, _, step L next => by
+    change (L.mapSites e W h φ).lightCone (Finset.univ.sup fun i ↦
+      ((next (L.mapSitesIndexEquiv e W h φ i)).mapSites e W h φ).lightCone
+        (T.map (siteEmb e))) = (L.lightCone (Finset.univ.sup fun i ↦ (next i).lightCone T)).map
+        (siteEmb e)
+    simp only [lightCone_mapSites h φ T]
+    rw [← Layer.lightCone_mapSites e W h φ]
+    congr 1
+    ext v
+    simp only [Finset.mem_sup, Finset.mem_univ, true_and, Finset.mem_map]
+    constructor
+    · rintro ⟨i, t, ht, rfl⟩
+      exact ⟨t, ⟨_, ht⟩, rfl⟩
+    · rintro ⟨t, ⟨i, ht⟩, rfl⟩
+      exact ⟨(L.mapSitesIndexEquiv e W h φ).symm i, t, by simpa using ht, rfl⟩
 
 /-- When no cell costs more after the move, neither does the circuit. -/
 theorem gateCount_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
     (hcost : ∀ b, Γ'.cost (h.cellMap b) ≤ Γ.cost b) (c : Circuit Γ G X Z) :
     (c.mapSites e W h φ).gateCount ≤ c.gateCount :=
-  sorry
+  total_mapSites_le e W h φ _ _ (fun _ _ _ _ _ _ L ↦ by
+    rw [L.gateCount_mapSites e W h φ]; exact Finset.sum_le_sum fun b _ ↦ hcost b) c
 
 /-- When a cell of positive cost after the move had positive cost before, the depth does not
 grow. -/
 theorem depth_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
     (hcost : ∀ b, 0 < Γ'.cost (h.cellMap b) → 0 < Γ.cost b) (c : Circuit Γ G X Z) :
     (c.mapSites e W h φ).depth ≤ c.depth :=
-  sorry
+  total_mapSites_le e W h φ _ _ (fun _ _ _ _ _ _ L ↦ L.depth_mapSites_le e W h φ hcost) c
 
 end Circuit
 
