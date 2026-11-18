@@ -44,21 +44,49 @@ namespace Layer
 
 variable {X Y : S → Type}
 
+/-- The total weight of the cells used by a layer, for a weight `w b g` of the gate `g` on the
+cell `b`. The gate count, the participation of a site and the oracle calls are instances. -/
+def cellCost (w : ∀ ⦃X Y : S → Type⦄ (b : Γ.Cell), G (Γ.cell b) X Y → ℕ) (L : Layer Γ G X Y) :
+    ℕ :=
+  ∑ b : L.cells, w b.1 (L.gate b)
+
 /-- A layer has depth `1` when it uses a cell of positive cost, and `0` otherwise. -/
 def depth (L : Layer Γ G X Y) : ℕ :=
   if (L.cells.filter fun b ↦ 0 < Γ.cost b).Nonempty then 1 else 0
 
 /-- The gate count of a layer: the sum of the costs of its cells. -/
 def gateCount (L : Layer Γ G X Y) : ℕ :=
-  ∑ b ∈ L.cells, Γ.cost b
+  L.cellCost fun _ _ b _ ↦ Γ.cost b
 
 /-- The number of cells of positive cost of the layer containing the site `s`. -/
 def meets (s : S) (L : Layer Γ G X Y) : ℕ :=
-  (L.cells.filter fun b ↦ s ∈ Γ.cell b ∧ 0 < Γ.cost b).card
+  L.cellCost fun _ _ b _ ↦ if s ∈ Γ.cell b ∧ 0 < Γ.cost b then 1 else 0
+
+omit [Fintype S] [GateFamily G] in
+theorem gateCount_eq_sum (L : Layer Γ G X Y) : L.gateCount = ∑ b ∈ L.cells, Γ.cost b :=
+  Finset.sum_coe_sort L.cells _
+
+omit [Fintype S] [GateFamily G] in
+theorem meets_eq_card (s : S) (L : Layer Γ G X Y) :
+    L.meets s = (L.cells.filter fun b ↦ s ∈ Γ.cell b ∧ 0 < Γ.cost b).card := by
+  rw [meets, cellCost, Finset.sum_coe_sort L.cells fun b ↦
+    if s ∈ Γ.cell b ∧ 0 < Γ.cost b then 1 else 0, Finset.sum_boole, Nat.cast_id]
+
+omit [Fintype S] [GateFamily G] in
+/-- The depth of a layer is `1` when the number of its cells of positive cost is, and `0`
+otherwise. -/
+theorem depth_eq_min_one (L : Layer Γ G X Y) :
+    L.depth = min 1 (L.cellCost fun _ _ b _ ↦ if 0 < Γ.cost b then 1 else 0) := by
+  rw [depth, cellCost, Finset.sum_coe_sort L.cells fun b ↦ if 0 < Γ.cost b then 1 else 0,
+    Finset.sum_boole, Nat.cast_id]
+  split_ifs with h
+  · exact (Nat.min_eq_left (Finset.card_pos.mpr h)).symm
+  · rw [Finset.not_nonempty_iff_eq_empty.mp h, Finset.card_empty, Nat.min_zero]
 
 omit [Fintype S] [GateFamily G] in
 theorem depth_le_gateCount (L : Layer Γ G X Y) : L.depth ≤ L.gateCount := by
-  unfold depth gateCount
+  rw [gateCount_eq_sum]
+  unfold depth
   split_ifs with h
   · obtain ⟨b, hb⟩ := h
     rw [Finset.mem_filter] at hb

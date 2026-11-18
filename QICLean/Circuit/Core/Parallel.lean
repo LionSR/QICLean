@@ -139,11 +139,152 @@ theorem kraus_ofCells (cells : Finset Γ.Cell) (h : (cells : Set Γ.Cell).Pairwi
     simp only [Finset.mem_univ, true_implies, Subtype.forall]
   rw [hfree, mul_ite, mul_one, mul_zero]
 
+/-- The operator of the gate on the cell `b` at the Kraus index `i` of a layer of plain gates, and
+the identity off its cells. -/
+noncomputable def cellOp (cells : Finset Γ.Cell) (h : (cells : Set Γ.Cell).PairwiseDisjoint Γ.cell)
+    (g : (b : Γ.Cell) → KrausGate (Γ.cell b) X X)
+    (i : (ofCells (G := KrausGate) cells h g).Index) (b : Γ.Cell) :
+    Matrix (RegionConfig X (Γ.cell b)) (RegionConfig X (Γ.cell b)) ℂ :=
+  if hb : b ∈ cells then (g b).op (i.1 ⟨b, hb⟩) else 1
+
+/-- The Kraus operator of a layer of plain gates on disjoint cells at the index `i` is the product
+of the placements of the operators of the gates at `i`, in the order of any enumeration of the
+cells. -/
+theorem kraus_ofCells_eq_prod (cells : Finset Γ.Cell)
+    (h : (cells : Set Γ.Cell).PairwiseDisjoint Γ.cell)
+    (g : (b : Γ.Cell) → KrausGate (Γ.cell b) X X) (l : List Γ.Cell) (hl : l.Nodup)
+    (hcells : l.toFinset = cells) (i : (ofCells (G := KrausGate) cells h g).Index) :
+    (ofCells (G := KrausGate) cells h g).kraus KrausGate.ev i =
+      (l.map fun b ↦ place (Γ.cell b) (cellOp cells h g i b)).prod := by
+  have hpw : l.Pairwise (Disjoint on Γ.cell) := hl.pairwise_of_set_pairwise (by
+    intro a ha b hb hab
+    exact h (by rw [← hcells]; exact List.mem_toFinset.mpr ha)
+      (by rw [← hcells]; exact List.mem_toFinset.mpr hb) hab)
+  rw [prod_place_eq_place_cellsProd _ l hpw]
+  ext y x
+  rw [place_apply, cellsProd_apply _ y x l hpw, ← List.prod_toFinset _ hl, hcells]
+  have hcell : ∏ b : cells, (g b.1).op (i.1 b) (fun v ↦ y v) (fun v ↦ x v) =
+      ∏ b ∈ cells, cellOp cells h g i b (fun v ↦ y v) (fun v ↦ x v) := by
+    rw [← Finset.prod_coe_sort cells]
+    exact Finset.prod_congr rfl fun b _ ↦ by rw [cellOp, dite_eq_left b.2]; rfl
+  change (∏ b : cells, (g b.1).op (i.1 b) (fun v ↦ y v) (fun v ↦ x v)) *
+    ∏ s : {s // s ∉ cells.biUnion Γ.cell},
+      (KrausFamily.single (1 : Matrix (X s) (X s) ℂ)).op (i.2 s) (y s) (x s) = _
+  rw [hcell]
+  have hfree : ∏ s : {s // s ∉ cells.biUnion Γ.cell},
+      (KrausFamily.single (1 : Matrix (X s) (X s) ℂ)).op (i.2 s) (y s) (x s) =
+        if ∀ v ∉ cellsUnion Γ l, y v = x v then 1 else 0 := by
+    change ∏ s : {s // s ∉ cells.biUnion Γ.cell}, (1 : Matrix (X s) (X s) ℂ) (y s) (x s) = _
+    simp only [one_apply]
+    rw [Finset.prod_boole, cellsUnion_eq, hcells]
+    simp only [Finset.mem_univ, true_implies, Subtype.forall]
+  rw [hfree, mul_ite, mul_one, mul_zero]
+
+theorem pairwiseDisjoint_of_cons {b : Γ.Cell} {l : List Γ.Cell}
+    (h : (((b :: l).toFinset : Finset Γ.Cell) : Set Γ.Cell).PairwiseDisjoint Γ.cell) :
+    ((l.toFinset : Finset Γ.Cell) : Set Γ.Cell).PairwiseDisjoint Γ.cell :=
+  h.subset (by intro c hc; simp only [Finset.mem_coe, List.mem_toFinset] at hc ⊢; simp [hc])
+
+/-- Functions on the cells `b :: l` are a value at `b` and a function on the cells `l`. -/
+def consPi {α : Type} [DecidableEq α] (F : α → Type) {b : α} {l : List α} (hb : b ∉ l) :
+    ((c : (b :: l).toFinset) → F c) ≃ F b × ((c : l.toFinset) → F c) where
+  toFun f := (f ⟨b, by simp⟩, fun c ↦ f ⟨c, by simp [List.mem_toFinset.mp c.2]⟩)
+  invFun p c := if h : c.1 = b then cast (congrArg F h.symm) p.1 else p.2 ⟨c.1, by
+    have := List.mem_toFinset.mp c.2
+    rw [List.mem_cons] at this
+    exact List.mem_toFinset.mpr (this.resolve_left h)⟩
+  left_inv f := by
+    funext ⟨c, hc⟩
+    by_cases h : c = b
+    · subst h; simp
+    · simp [h]
+  right_inv p := by
+    refine Prod.ext (by simp) (funext fun ⟨c, hc⟩ ↦ ?_)
+    have : c ≠ b := fun e ↦ hb (e ▸ List.mem_toFinset.mp hc)
+    simp [this]
+
+/-- The Kraus indices of a layer on the cells `b :: l` are an index of the gate on `b` and one of
+the layer on the cells `l`. -/
+def consIndexEquiv (g : (b : Γ.Cell) → KrausGate (Γ.cell b) X X) {b : Γ.Cell}
+    {l : List Γ.Cell} (hb : b ∉ l)
+    (h : (((b :: l).toFinset : Finset Γ.Cell) : Set Γ.Cell).PairwiseDisjoint Γ.cell) :
+    (ofCells (G := KrausGate) (b :: l).toFinset h g).Index ≃
+      (g b).Index × (ofCells (G := KrausGate) l.toFinset (pairwiseDisjoint_of_cons h) g).Index :=
+  (Equiv.prodCongr (consPi (fun c ↦ (g c).Index) hb)
+    ⟨fun _ _ ↦ (), fun _ _ ↦ (), fun _ ↦ rfl, fun _ ↦ rfl⟩).trans (Equiv.prodAssoc _ _ _)
+
+theorem kraus_cons (g : (b : Γ.Cell) → KrausGate (Γ.cell b) X X) {b : Γ.Cell}
+    {l : List Γ.Cell} (hl : (b :: l).Nodup)
+    (h : (((b :: l).toFinset : Finset Γ.Cell) : Set Γ.Cell).PairwiseDisjoint Γ.cell)
+    (i : (ofCells (G := KrausGate) (b :: l).toFinset h g).Index) :
+    (ofCells (G := KrausGate) (b :: l).toFinset h g).kraus KrausGate.ev i =
+      place (Γ.cell b) ((g b).op (consIndexEquiv g (List.nodup_cons.mp hl).1 h i).1) *
+        (ofCells (G := KrausGate) l.toFinset (pairwiseDisjoint_of_cons h) g).kraus KrausGate.ev
+          (consIndexEquiv g (List.nodup_cons.mp hl).1 h i).2 := by
+  rw [kraus_ofCells_eq_prod _ h g (b :: l) hl rfl,
+    kraus_ofCells_eq_prod _ _ g l (List.nodup_cons.mp hl).2 rfl, List.map_cons, List.prod_cons,
+    cellOp, dite_eq_left (by simp)]
+  congr 1
+  refine congrArg List.prod (List.map_congr_left fun c hc ↦ ?_)
+  rw [cellOp, cellOp, dite_eq_left (by simp [hc]), dite_eq_left (List.mem_toFinset.mpr hc)]
+  rfl
+
+/-- The Kraus family `K ↦ K ⊗ 1` of a Kraus family on a region. -/
+noncomputable def placeFamily (D : Finset S)
+    (K : KrausFamily (RegionConfig X D) (RegionConfig X D)) : KrausFamily (Config X) (Config X) :=
+  ⟨K.Index, fun i ↦ place D (K.op i)⟩
+
+/-- The map of a layer of plain gates on disjoint cells is the composite of the maps of the
+placed gates, in the order of any enumeration of the cells. The gates need not have one
+operator, so the layer may be a quantum channel that is not unitary. -/
+theorem map_ofCells (g : (b : Γ.Cell) → KrausGate (Γ.cell b) X X) :
+    (l : List Γ.Cell) → (hl : l.Nodup) →
+      (h : ((l.toFinset : Finset Γ.Cell) : Set Γ.Cell).PairwiseDisjoint Γ.cell) →
+      ((ofCells (G := KrausGate) l.toFinset h g).krausFamily KrausGate.ev).map =
+        (l.map fun b ↦ (placeFamily (Γ.cell b) (g b)).map).prod
+  | [], _, h => by
+    refine LinearMap.ext fun ρ ↦ ?_
+    rw [KrausFamily.map_apply, List.map_nil, List.prod_nil, Module.End.one_apply]
+    let : Unique (ofCells (G := KrausGate) ([] : List Γ.Cell).toFinset h g).Index :=
+      ⟨⟨(fun c ↦ (List.not_mem_nil (List.mem_toFinset.mp c.2)).elim, fun _ ↦ ())⟩, fun i ↦
+        Prod.ext (funext fun c ↦ (List.not_mem_nil (List.mem_toFinset.mp c.2)).elim) rfl⟩
+    have hK : ∀ i, (ofCells (G := KrausGate) ([] : List Γ.Cell).toFinset h g).kraus
+        KrausGate.ev i = 1 := fun i ↦
+      (kraus_ofCells_eq_prod [].toFinset h g [] List.nodup_nil rfl i).trans (by simp)
+    change ∑ i : (ofCells (G := KrausGate) ([] : List Γ.Cell).toFinset h g).Index,
+      (ofCells (G := KrausGate) _ h g).kraus KrausGate.ev i * ρ *
+        ((ofCells (G := KrausGate) _ h g).kraus KrausGate.ev i)ᴴ = ρ
+    rw [Fintype.sum_unique, hK, Matrix.one_mul, conjTranspose_one, Matrix.mul_one]
+  | b :: l, hl, h => by
+    have hb : b ∉ l := (List.nodup_cons.mp hl).1
+    have hl' : l.Nodup := (List.nodup_cons.mp hl).2
+    refine LinearMap.ext fun ρ ↦ ?_
+    rw [List.map_cons, List.prod_cons, Module.End.mul_apply,
+      ← map_ofCells g l hl' (pairwiseDisjoint_of_cons h), KrausFamily.map_apply,
+      KrausFamily.map_apply, KrausFamily.map_apply]
+    change ∑ i : (ofCells (G := KrausGate) (b :: l).toFinset h g).Index,
+      (ofCells (G := KrausGate) _ h g).kraus KrausGate.ev i * ρ *
+        ((ofCells (G := KrausGate) _ h g).kraus KrausGate.ev i)ᴴ = _
+    rw [Fintype.sum_equiv (consIndexEquiv g hb h) _ (fun p ↦
+      place (Γ.cell b) ((g b).op p.1) *
+        (ofCells (G := KrausGate) l.toFinset (pairwiseDisjoint_of_cons h) g).kraus KrausGate.ev
+          p.2 * ρ * (place (Γ.cell b) ((g b).op p.1) *
+        (ofCells (G := KrausGate) l.toFinset (pairwiseDisjoint_of_cons h) g).kraus KrausGate.ev
+          p.2)ᴴ) (fun i ↦ by rw [kraus_cons g hl h i]), Fintype.sum_prod_type]
+    refine Finset.sum_congr rfl fun o _ ↦ ?_
+    rw [Matrix.mul_sum, Matrix.sum_mul]
+    refine Finset.sum_congr rfl fun j _ ↦ ?_
+    change _ = place (Γ.cell b) ((g b).op o) * ((ofCells (G := KrausGate) l.toFinset _ g).kraus
+      KrausGate.ev j * ρ * ((ofCells (G := KrausGate) l.toFinset _ g).kraus KrausGate.ev j)ᴴ) *
+        (place (Γ.cell b) ((g b).op o))ᴴ
+    rw [conjTranspose_mul]
+    simp only [Matrix.mul_assoc]
+
 omit [Fintype S] [GateFamily G] [∀ s, Fintype (X s)] in
 theorem gateCount_ofCells (cells : Finset Γ.Cell)
     (h : (cells : Set Γ.Cell).PairwiseDisjoint Γ.cell) (g : (b : Γ.Cell) → G (Γ.cell b) X X) :
     (ofCells cells h g).gateCount = ∑ b ∈ cells, Γ.cost b :=
-  rfl
+  gateCount_eq_sum _
 
 omit [Fintype S] [GateFamily G] [∀ s, Fintype (X s)] in
 theorem depth_ofCells_le_one (cells : Finset Γ.Cell)

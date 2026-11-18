@@ -4,7 +4,6 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.LightCone
-import QICLean.Circuit.Core.GateSum
 
 /-!
 # Moving circuits between sites, geometries and gate families
@@ -114,6 +113,34 @@ noncomputable def liftRegionEquiv (X : S → Type) (D : Finset S) :
   (Equiv.piCongrLeft (fun v' : {v' // v' ∈ D.map (siteEmb e)} ↦ lift e W X v'.1)
     (regionSiteEquiv e D)).symm.trans
     (Equiv.piCongrRight fun v ↦ liftSiteEquiv e W X v.1)
+
+/-! ### Site maps from embeddings -/
+
+section Split
+
+variable {T : Type} [Fintype T] [DecidableEq T] {T' : Type} [Fintype T'] [DecidableEq T']
+
+/-- The sites of `T'` outside the image of an embedding. -/
+abbrev Idle (ι : T ↪ T') : Type := {s' // s' ∉ Finset.univ.map ι}
+
+/-- The site map of an embedding `ι : T ↪ T'`: the sites of `T` at their images, and the sites
+outside the image idle. -/
+noncomputable def siteSplit (ι : T ↪ T') : T' ≃ T ⊕ Idle ι :=
+  (Equiv.sumCompl (· ∈ Finset.univ.map ι)).symm.trans
+    (Equiv.sumCongr (Equiv.ofBijective (fun s ↦ (⟨ι s, Finset.mem_map_of_mem _ (Finset.mem_univ s)⟩ :
+        {s' // s' ∈ Finset.univ.map ι})) ⟨fun a b h ↦ ι.injective (congrArg Subtype.val h),
+        fun ⟨s', hs'⟩ ↦ by
+          obtain ⟨s, -, rfl⟩ := Finset.mem_map.mp hs'
+          exact ⟨s, rfl⟩⟩).symm (Equiv.refl _))
+
+omit [Fintype T'] in
+@[simp] theorem siteEmb_siteSplit (ι : T ↪ T') : siteEmb (siteSplit ι) = ι := by
+  ext s
+  simp only [siteEmb_apply, siteSplit, Equiv.symm_trans_apply, Equiv.symm_symm,
+    Equiv.sumCongr_symm, Equiv.sumCongr_apply, Sum.map_inl, Equiv.sumCompl_apply_inl]
+  rfl
+
+end Split
 
 /-! ### Geometries and gates -/
 
@@ -452,8 +479,9 @@ omit [(r : R) → Fintype (W r)] [Fintype S] [Fintype S'] [Fintype R] [Decidable
   Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
   s)] in
 theorem gateCount_mapSites :
-    (L.mapSites e W h φ).gateCount = ∑ b ∈ L.cells, Γ'.cost (h.cellMap b) :=
-  Finset.sum_map _ _ _
+    (L.mapSites e W h φ).gateCount = ∑ b ∈ L.cells, Γ'.cost (h.cellMap b) := by
+  rw [gateCount_eq_sum]
+  exact Finset.sum_map _ _ _
 
 omit [(r : R) → Fintype (W r)] [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] [(s : S) →
   Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
@@ -613,7 +641,8 @@ theorem gateCount_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e
     (hcost : ∀ b, Γ'.cost (h.cellMap b) ≤ Γ.cost b) (c : Circuit Γ G X Z) :
     (c.mapSites e W h φ).gateCount ≤ c.gateCount :=
   total_mapSites_le e W h φ _ _ (fun _ _ _ _ _ _ L ↦ by
-    rw [L.gateCount_mapSites e W h φ]; exact Finset.sum_le_sum fun b _ ↦ hcost b) c
+    rw [L.gateCount_mapSites e W h φ, Layer.gateCount_eq_sum]
+    exact Finset.sum_le_sum fun b _ ↦ hcost b) c
 
 omit [(s : S) → Fintype (Z s)] [(s : S) → DecidableEq (Z s)] [Fintype R] [DecidableEq R] in
 /-- When a cell of positive cost after the move had positive cost before, the depth does not
@@ -645,41 +674,162 @@ structure GateMorphism (G₁ G₂ : Finset S → (S → Type) → (S → Type) �
     [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (g : G₁ D X Y) (o : GateFamily.Outcome (map g)),
     ev₂ (map g) o = ev₁ g (outcome g o)
 
-/-- The embedding of a gate family into its sum with another. -/
-def GateMorphism.inl (ev₁ : Interpretation G₁) (ev₂ : Interpretation G₂) :
-    GateMorphism G₁ (GateSum G₁ G₂) ev₁ (ev₁.sum ev₂) where
-  map _ _ _ g := .inl g
-  outcome _ _ _ _ := Equiv.refl _
-  ev_map _ _ _ _ _ _ _ _ _ := rfl
+variable {ev₁ : Interpretation G₁} {ev₂ : Interpretation G₂} {Δ : Geometry S}
 
-variable {ev₁ : Interpretation G₁} {ev₂ : Interpretation G₂}
+theorem Geometry.Hom.cell_eq (h : Γ.Hom Δ (Function.Embedding.refl S)) (b : Γ.Cell) :
+    Δ.cell (h.cellMap b) = Γ.cell b := by
+  rw [h.cell_cellMap, Finset.map_refl]
 
-/-- A layer with its gates mapped. -/
-def Layer.mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) {X Y : S → Type} (L : Layer Γ G₁ X Y) :
-    Layer Γ G₂ X Y where
-  cells := L.cells
-  pairwiseDisjoint := L.pairwiseDisjoint
-  gate b := φ.map (L.gate b)
-  onsite := L.onsite
+/-- The cells of a finite set are the cells of its image. -/
+noncomputable def Geometry.Hom.cellsEquiv {S S' : Type} {Γ : Geometry S} {Γ' : Geometry S'}
+    {ι : S ↪ S'} (h : Γ.Hom Γ' ι) (s : Finset Γ.Cell) : s ≃ {b' // b' ∈ s.map h.cellMap} :=
+  Equiv.ofBijective (fun b ↦ ⟨h.cellMap b.1, Finset.mem_map_of_mem _ b.2⟩) (by
+    constructor
+    · intro a b hab
+      exact Subtype.ext (h.cellMap.injective (congrArg Subtype.val hab))
+    · rintro ⟨b', hb'⟩
+      obtain ⟨b, hb, rfl⟩ := Finset.mem_map.mp hb'
+      exact ⟨⟨b, hb⟩, rfl⟩)
 
-/-- The Kraus indices of a layer with its gates mapped. -/
-def Layer.mapGateIndexEquiv (φ : GateMorphism G₁ G₂ ev₁ ev₂) {X Y : S → Type}
-    (L : Layer Γ G₁ X Y) : (L.mapGate φ).Index ≃ L.Index :=
-  Equiv.prodCongr (Equiv.piCongrRight fun b ↦ φ.outcome (L.gate b)) (Equiv.refl _)
+namespace Layer
 
-/-- A circuit with its gates mapped. -/
-def Circuit.mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
-    {X Z : S → Type} → Circuit Γ G₁ X Z → Circuit Γ G₂ X Z
+variable {X Y : S → Type}
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [GateFamily G₁]
+  [GateFamily G₂] in
+theorem cell_cellsEquiv_symm_eq (h : Γ.Hom Δ (Function.Embedding.refl S)) (L : Layer Γ G₁ X Y)
+    (b' : {b' // b' ∈ L.cells.map h.cellMap}) :
+    Γ.cell ((h.cellsEquiv L.cells).symm b').1 = Δ.cell b'.1 := by
+  rw [← h.cell_eq]
+  exact congrArg (fun b ↦ Δ.cell b.1) ((h.cellsEquiv L.cells).apply_symm_apply b')
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [GateFamily G₁]
+  [GateFamily G₂] in
+theorem mem_biUnion_map_iff (h : Γ.Hom Δ (Function.Embedding.refl S)) (L : Layer Γ G₁ X Y)
+    (s : S) : s ∈ (L.cells.map h.cellMap).biUnion Δ.cell ↔ s ∈ L.cells.biUnion Γ.cell := by
+  simp only [Finset.mem_biUnion, Finset.mem_map, h.cell_eq]
+  constructor
+  · rintro ⟨_, ⟨b, hb, rfl⟩, hs⟩
+    exact ⟨b, hb, by rwa [h.cell_eq] at hs⟩
+  · rintro ⟨b, hb, hs⟩
+    exact ⟨h.cellMap b, ⟨b, hb, rfl⟩, by rwa [h.cell_eq]⟩
+
+/-- The layer with its cells moved along `h` and its gates along `φ`, on the same sites and
+systems. -/
+noncomputable def mapGate (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (L : Layer Γ G₁ X Y) : Layer Δ G₂ X Y where
+  cells := L.cells.map h.cellMap
+  pairwiseDisjoint := by
+    intro b₁ hb₁ b₂ hb₂ hne
+    obtain ⟨c₁, hc₁, rfl⟩ := Finset.mem_map.mp hb₁
+    obtain ⟨c₂, hc₂, rfl⟩ := Finset.mem_map.mp hb₂
+    simp only [Function.onFun, h.cell_eq]
+    exact L.pairwiseDisjoint hc₁ hc₂ fun hc ↦ hne (congrArg _ hc)
+  gate b' := Eq.ndrec (motive := fun D ↦ G₂ D X Y)
+    (φ.map (L.gate ((h.cellsEquiv L.cells).symm b'))) (L.cell_cellsEquiv_symm_eq h b')
+  onsite s := L.onsite ⟨s.1, fun hs ↦ s.2 ((L.mem_biUnion_map_iff h s.1).mpr hs)⟩
+
+/-- The cells of a layer are the cells of the layer with its cells moved. -/
+noncomputable def mapGateCellsEquiv (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (L : Layer Γ G₁ X Y) : L.cells ≃ (L.mapGate h φ).cells :=
+  h.cellsEquiv L.cells
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [GateFamily G₁] in
+/-- The outcomes of a gate moved to an equal region. -/
+def outcomeNdrec' {D D' : Finset S} (hD : D = D') (g : G₂ D X Y) :
+    GateFamily.Outcome (Eq.ndrec (motive := fun D ↦ G₂ D X Y) g hD) ≃ GateFamily.Outcome g := by
+  subst hD; exact Equiv.refl _
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [GateFamily G₁] [GateFamily G₂] in
+/-- The free sites of a layer with its cells moved. -/
+def mapGateFreeEquiv (h : Γ.Hom Δ (Function.Embedding.refl S)) (φ : GateMorphism G₁ G₂ ev₁ ev₂)
+    (L : Layer Γ G₁ X Y) : (L.mapGate h φ).Free ≃ L.Free :=
+  Equiv.subtypeEquivRight fun s ↦ not_congr (L.mem_biUnion_map_iff h s)
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
+/-- The Kraus indices of a layer with its cells and gates moved. -/
+noncomputable def mapGateIndexEquiv (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (L : Layer Γ G₁ X Y) : (L.mapGate h φ).Index ≃ L.Index :=
+  Equiv.prodCongr
+    ((Equiv.piCongrLeft (fun b' ↦ GateFamily.Outcome ((L.mapGate h φ).gate b'))
+      (h.cellsEquiv L.cells)).symm.trans (Equiv.piCongrRight fun b ↦
+        (outcomeNdrec' _ _).trans ((φ.outcome _).trans (Equiv.cast (congrArg
+          (fun c ↦ GateFamily.Outcome (L.gate c)) ((h.cellsEquiv L.cells).symm_apply_apply b))))))
+    (Equiv.piCongrLeft (fun s ↦ (L.onsite s).Index) (L.mapGateFreeEquiv h φ))
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [GateFamily G₁] in
+theorem ev_ndrec' {D D' : Finset S} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (hD : D = D') (g : G₂ D X Y)
+    (o : GateFamily.Outcome (Eq.ndrec (motive := fun D ↦ G₂ D X Y) g hD))
+    (y : Config Y) (x : Config X) :
+    ev₂ (Eq.ndrec (motive := fun D ↦ G₂ D X Y) g hD) o (fun v ↦ y v) (fun v ↦ x v) =
+      ev₂ g (outcomeNdrec' hD g o) (fun v ↦ y v) (fun v ↦ x v) := by
+  subst hD; rfl
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
+theorem kraus_mapGate [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+    [∀ s, DecidableEq (Y s)] (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (L : Layer Γ G₁ X Y) (i : (L.mapGate h φ).Index) :
+    (L.mapGate h φ).kraus ev₂ i = L.kraus ev₁ (L.mapGateIndexEquiv h φ i) := by
+  ext y x
+  simp only [kraus]
+  rw [← Fintype.prod_equiv (L.mapGateCellsEquiv h φ) _ _ fun _ ↦ rfl,
+    ← Fintype.prod_equiv (L.mapGateFreeEquiv h φ).symm _ _ fun _ ↦ rfl]
+  congr 1
+  refine Finset.prod_congr rfl fun b _ ↦ ?_
+  refine (ev_ndrec' _ _ _ y x).trans ?_
+  refine (congrFun (congrFun (φ.ev_map _ _) _) _).trans ?_
+  exact ev_gate_congr L ev₁ ((h.cellsEquiv L.cells).symm_apply_apply b) _ _ _
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
+theorem lightCone_mapGate (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (L : Layer Γ G₁ X Y) (T : Finset S) :
+    (L.mapGate h φ).lightCone T = L.lightCone T := by
+  simp only [lightCone, mapGate, Finset.filter_map, Function.comp_def, h.cell_eq]
+  congr 1
+  ext v
+  simp only [Finset.mem_biUnion, Finset.mem_map, h.cell_eq]
+  constructor
+  · rintro ⟨_, ⟨b, hb, rfl⟩, hv⟩
+    exact ⟨b, hb, by rwa [h.cell_eq] at hv⟩
+  · rintro ⟨b, hb, hv⟩
+    exact ⟨h.cellMap b, ⟨b, hb, rfl⟩, by rwa [h.cell_eq]⟩
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
+theorem gateCount_mapGate (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (L : Layer Γ G₁ X Y) :
+    (L.mapGate h φ).gateCount = ∑ b ∈ L.cells, Δ.cost (h.cellMap b) := by
+  rw [gateCount_eq_sum]
+  exact Finset.sum_map _ _ _
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
+theorem depth_mapGate_le (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (hcost : ∀ b, 0 < Δ.cost (h.cellMap b) → 0 < Γ.cost b)
+    (L : Layer Γ G₁ X Y) : (L.mapGate h φ).depth ≤ L.depth := by
+  unfold depth
+  split_ifs with h₁ h₂ <;> try omega
+  obtain ⟨b', hb'⟩ := h₁
+  rw [Finset.mem_filter] at hb'
+  obtain ⟨b, hb, rfl⟩ := Finset.mem_map.mp hb'.1
+  exact absurd ⟨b, Finset.mem_filter.mpr ⟨hb, hcost b hb'.2⟩⟩ h₂
+
+end Layer
+
+/-- A circuit with its cells moved along `h` and its gates along `φ`, on the same sites. -/
+noncomputable def Circuit.mapGate (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
+    {X Z : S → Type} → Circuit Γ G₁ X Z → Circuit Δ G₂ X Z
   | _, _, .done _ => .done _
   | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next =>
-      .step (L.mapGate φ) fun i ↦ (next (L.mapGateIndexEquiv φ i)).mapGate φ
+      .step (L.mapGate h φ) fun i ↦ (next (L.mapGateIndexEquiv h φ i)).mapGate h φ
 
-/-- The branches of a circuit with its gates mapped. -/
-def Circuit.mapGateIndexEquiv (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
-    {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate φ).Index ≃ c.Index
+/-- The branches of a circuit with its cells and gates moved. -/
+noncomputable def Circuit.mapGateIndexEquiv (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
+    {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate h φ).Index ≃ c.Index
   | _, _, .done _ => Equiv.refl Unit
   | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next =>
-      Equiv.sigmaCongr (L.mapGateIndexEquiv φ) fun _ ↦ (next _).mapGateIndexEquiv φ
+      Equiv.sigmaCongr (L.mapGateIndexEquiv h φ) fun _ ↦ (next _).mapGateIndexEquiv h φ
 
 /-- Reindexing a supremum over all indices along an equivalence. -/
 theorem _root_.Finset.univ_sup_equiv {α β γ : Type} [Fintype α] [Fintype β] [SemilatticeSup γ]
@@ -689,78 +839,90 @@ theorem _root_.Finset.univ_sup_equiv {α β γ : Type} [Fintype α] [Fintype β]
     (Finset.sup_le fun b _ ↦ by
       simpa using Finset.le_sup (f := fun a ↦ F (u a)) (Finset.mem_univ (u.symm b)))
 
-theorem Layer.kraus_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) {X Y : S → Type}
-    [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
-    (L : Layer Γ G₁ X Y) (i : (L.mapGate φ).Index) :
-    (L.mapGate φ).kraus ev₂ i = L.kraus ev₁ (L.mapGateIndexEquiv φ i) := by
-  ext y x
-  simp only [kraus]
-  congr 1
-  exact Finset.prod_congr rfl fun b _ ↦ congrFun (congrFun (φ.ev_map (L.gate b) (i.1 b)) _) _
-
-theorem Circuit.kraus_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
+theorem Circuit.kraus_mapGate (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
     {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
-      (c : Circuit Γ G₁ X Z) → (p : (c.mapGate φ).Index) →
-      (c.mapGate φ).kraus ev₂ p = c.kraus ev₁ (c.mapGateIndexEquiv φ p)
+      (c : Circuit Γ G₁ X Z) → (p : (c.mapGate h φ).Index) →
+      (c.mapGate h φ).kraus ev₂ p = c.kraus ev₁ (c.mapGateIndexEquiv h φ p)
   | _, _, _, _, .done _, _ => rfl
   | _, _, _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next, q => by
     obtain ⟨i, p⟩ := q
-    change ((next (L.mapGateIndexEquiv φ i)).mapGate φ).kraus ev₂ p *
-      (L.mapGate φ).kraus ev₂ i = _
-    rw [Circuit.kraus_mapGate φ _ p, Layer.kraus_mapGate φ L i]
+    change ((next (L.mapGateIndexEquiv h φ i)).mapGate h φ).kraus ev₂ p *
+      (L.mapGate h φ).kraus ev₂ i = _
+    rw [Circuit.kraus_mapGate h φ _ p, Layer.kraus_mapGate h φ L i]
     rfl
 
-omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [Fintype S] in
-theorem Circuit.isUnbranched_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
-    {X Z : S → Type} → {c : Circuit Γ G₁ X Z} → c.IsUnbranched → (c.mapGate φ).IsUnbranched
+theorem Circuit.isUnbranched_mapGate (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
+    {X Z : S → Type} → {c : Circuit Γ G₁ X Z} → c.IsUnbranched → (c.mapGate h φ).IsUnbranched
   | _, _, .done _, _ => trivial
   | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next, hc =>
     ⟨fun i j ↦ by
-      change (next _).mapGate φ = (next _).mapGate φ
+      change (next _).mapGate h φ = (next _).mapGate h φ
       rw [hc.1 _ _],
-      fun i ↦ Circuit.isUnbranched_mapGate φ (hc.2 _)⟩
+      fun i ↦ Circuit.isUnbranched_mapGate h φ (hc.2 _)⟩
 
-omit [Fintype S] in
-theorem Circuit.forall_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂)
+theorem Circuit.forall_mapGate (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂)
     {P : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β],
       KrausFamily α β → Prop}
     (hP : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
       (K : KrausFamily α β) {ι : Type} [Fintype ι] (u : ι ≃ K.Index),
         P K → P ⟨ι, fun i ↦ K.op (u i)⟩) :
     {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
-      {c : Circuit Γ G₁ X Z} → c.Forall ev₁ P → (c.mapGate φ).Forall ev₂ P
+      {c : Circuit Γ G₁ X Z} → c.Forall ev₁ P → (c.mapGate h φ).Forall ev₂ P
   | _, _, _, _, .done _, _ => trivial
-  | _, _, _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next, hc => by
-    refine ⟨⟨fun b ↦ ?_, hc.1.2⟩, fun i ↦ Circuit.forall_mapGate φ hP (hc.2 _)⟩
-    have := hP _ (φ.outcome (L.gate b)) (hc.1.1 b)
-    change P ⟨_, ev₂ (φ.map (L.gate b))⟩
-    rw [show ev₂ (φ.map (L.gate b)) = fun o ↦ ev₁ (L.gate b) (φ.outcome _ o) from
-      funext (φ.ev_map _)]
+  | _, _, _, _, @Circuit.step _ _ _ _ _ X₀ Y₀ _ _ _ L next, hc => by
+    refine ⟨⟨fun b' ↦ ?_, fun s ↦ hc.1.2 _⟩, fun i ↦ Circuit.forall_mapGate h φ hP (hc.2 _)⟩
+    have hgen : ∀ {D D' : Finset S} (hD : D = D') (g : G₂ D X₀ Y₀),
+        P (⟨GateFamily.Outcome g, ev₂ g⟩ : KrausFamily (RegionConfig X₀ D) (RegionConfig Y₀ D)) →
+        P (⟨GateFamily.Outcome (Eq.ndrec (motive := fun D ↦ G₂ D X₀ Y₀) g hD),
+          ev₂ (Eq.ndrec (motive := fun D ↦ G₂ D X₀ Y₀) g hD)⟩ :
+            KrausFamily (RegionConfig X₀ D') (RegionConfig Y₀ D')) := by
+      intro D D' hD g hg; subst hD; exact hg
+    refine hgen _ _ ?_
+    have := hP _ (φ.outcome _) (hc.1.1 ((h.cellsEquiv L.cells).symm b'))
+    rw [show ev₂ (φ.map (L.gate ((h.cellsEquiv L.cells).symm b'))) = fun o ↦
+      ev₁ (L.gate ((h.cellsEquiv L.cells).symm b')) (φ.outcome _ o) from funext (φ.ev_map _)]
     exact this
 
-omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
-/-- Mapping gates changes no cost that depends only on the cells of the layers. -/
-theorem Circuit.total_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂)
-    (f₁ : ∀ ⦃X Y : S → Type⦄, Layer Γ G₁ X Y → ℕ) (f₂ : ∀ ⦃X Y : S → Type⦄, Layer Γ G₂ X Y → ℕ)
-    (hf : ∀ ⦃X Y : S → Type⦄ (L : Layer Γ G₁ X Y), f₂ (L.mapGate φ) = f₁ L) :
-    {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate φ).total f₂ = c.total f₁
-  | _, _, .done _ => rfl
+/-- A cost of the moved layers bounded by a cost of the layers bounds the cost of the moved
+circuit. -/
+theorem Circuit.total_mapGate_le (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂)
+    (f₁ : ∀ ⦃X Y : S → Type⦄, Layer Γ G₁ X Y → ℕ) (f₂ : ∀ ⦃X Y : S → Type⦄, Layer Δ G₂ X Y → ℕ)
+    (hf : ∀ ⦃X Y : S → Type⦄ (L : Layer Γ G₁ X Y), f₂ (L.mapGate h φ) ≤ f₁ L) :
+    {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate h φ).total f₂ ≤ c.total f₁
+  | _, _, .done _ => le_rfl
   | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next => by
-    change f₂ (L.mapGate φ) + Finset.univ.sup (fun i ↦
-      ((next (L.mapGateIndexEquiv φ i)).mapGate φ).total f₂) = _
-    simp only [Circuit.total_mapGate φ f₁ f₂ hf, hf]
-    rw [Finset.univ_sup_equiv (L.mapGateIndexEquiv φ) fun i ↦ (next i).total f₁]
-    rfl
+    change f₂ (L.mapGate h φ) + Finset.univ.sup (fun i ↦
+      ((next (L.mapGateIndexEquiv h φ i)).mapGate h φ).total f₂) ≤ _
+    refine add_le_add (hf L) (Finset.sup_le fun i _ ↦ ?_)
+    exact (Circuit.total_mapGate_le h φ f₁ f₂ hf _).trans
+      (Finset.le_sup (f := fun i ↦ (next i).total f₁) (Finset.mem_univ _))
 
-omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
-theorem Circuit.lightCone_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) (T : Finset S) :
-    {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate φ).lightCone T = c.lightCone T
+theorem Circuit.gateCount_mapGate_le (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (hcost : ∀ b, Δ.cost (h.cellMap b) ≤ Γ.cost b)
+    {X Z : S → Type} (c : Circuit Γ G₁ X Z) : (c.mapGate h φ).gateCount ≤ c.gateCount :=
+  Circuit.total_mapGate_le h φ _ _ (fun _ _ L ↦ by
+    rw [L.gateCount_mapGate h φ, Layer.gateCount_eq_sum]
+    exact Finset.sum_le_sum fun b _ ↦ hcost b) c
+
+theorem Circuit.depth_mapGate_le (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (hcost : ∀ b, 0 < Δ.cost (h.cellMap b) → 0 < Γ.cost b)
+    {X Z : S → Type} (c : Circuit Γ G₁ X Z) : (c.mapGate h φ).depth ≤ c.depth :=
+  Circuit.total_mapGate_le h φ _ _ (fun _ _ L ↦ L.depth_mapGate_le h φ hcost) c
+
+theorem Circuit.lightCone_mapGate (h : Γ.Hom Δ (Function.Embedding.refl S))
+    (φ : GateMorphism G₁ G₂ ev₁ ev₂) (T : Finset S) :
+    {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate h φ).lightCone T = c.lightCone T
   | _, _, .done _ => rfl
   | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next => by
-    change (L.mapGate φ).lightCone (Finset.univ.sup fun i ↦
-      ((next (L.mapGateIndexEquiv φ i)).mapGate φ).lightCone T) = _
-    simp only [Circuit.lightCone_mapGate φ T]
-    rw [Finset.univ_sup_equiv (L.mapGateIndexEquiv φ) fun i ↦ (next i).lightCone T]
+    change (L.mapGate h φ).lightCone (Finset.univ.sup fun i ↦
+      ((next (L.mapGateIndexEquiv h φ i)).mapGate h φ).lightCone T) = _
+    simp only [Circuit.lightCone_mapGate h φ T]
+    rw [Finset.univ_sup_equiv (L.mapGateIndexEquiv h φ) fun i ↦ (next i).lightCone T,
+      Layer.lightCone_mapGate]
     rfl
 
 end MapGate
