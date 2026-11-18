@@ -37,8 +37,9 @@ Two consequences are proved from this one computation:
   layer.
 * `QuantumCircuit.Layer.dual_mul_of_disjoint_lightCone` — the Heisenberg picture is
   multiplicative on operators with disjoint light cones.
-* `QuantumCircuit.Layer.nonempty_of_forall_isTP` — such a layer on nonempty bases has a Kraus
-  index and nonempty output bases.
+* `QuantumCircuit.Layer.nonempty_index_of_forall_isTP`,
+  `QuantumCircuit.Layer.nonempty_output_of_forall_isTP` — such a layer on nonempty bases has a
+  Kraus index and nonempty output bases.
 -/
 
 open Matrix ManyBody
@@ -332,7 +333,13 @@ theorem dual_one (h : L.Forall ev KrausFamily.IsTP) : L.dual ev 1 = 1 := by
   rw [hnear, place_one, place_one] at hdual
   exact hdual
 
-/-- The effect of the blocks in `p` is the identity when the layer is trace-preserving. -/
+/-- The effect of the blocks in `p` is the identity when the layer is trace-preserving.
+
+The configuration `y` outside the union of the blocks is a witness that the configurations
+outside the union are nonempty: the proof reads the identity off the Heisenberg picture of the
+identity, `1 ⊗ (effect of the blocks in p)`, which determines the effect only when its second
+factor has an index. A direct proof would need, for configurations of the union, the partition
+lemma `sum_prod_complPartition` that the blocks outside `p` use. -/
 private theorem sum_nearKraus (h : L.Forall ev KrausFamily.IsTP)
     (y : ComplConfig X (L.unionRegion p)) :
     ∑ j, (L.nearKraus ev p j)ᴴ * L.nearKraus ev p j = 1 := by
@@ -346,7 +353,6 @@ private theorem sum_nearKraus (h : L.Forall ev KrausFamily.IsTP)
   ext a b
   rw [← place_apply_cutEquiv_symm (∑ j, (L.nearKraus ev p j)ᴴ * L.nearKraus ev p j) a b y, h2,
     place_apply_cutEquiv_symm]
-
 
 /-- A layer whose gates and onsite families are trace-preserving is trace-preserving. -/
 theorem isTP_krausFamily (h : L.Forall ev KrausFamily.IsTP) :
@@ -390,30 +396,6 @@ theorem dual_mem_supportedOperators_lightCone (h : L.Forall ev KrausFamily.IsTP)
   exact supportedOperators_mono (L.unionRegion_subset_lightCone R)
     (place_mem_supportedOperators _)
 
-/-- An operator supported on a region disjoint from `D` is `1 ⊗ B₂` along the cut at `D`. -/
-private theorem exists_eq_one_kronecker {Z : S → Type} [∀ s, Fintype (Z s)]
-    [∀ s, DecidableEq (Z s)] {D R : Finset S} (h : Disjoint R D)
-    {B : Matrix (Config Z) (Config Z) ℂ} (hB : B ∈ supportedOperators Z R) :
-    ∃ B₂ : Matrix (ComplConfig Z D) (ComplConfig Z D) ℂ,
-      B = ((1 : Matrix (RegionConfig Z D) (RegionConfig Z D) ℂ) ⊗ₖ B₂).submatrix
-        (cutEquiv Z D) (cutEquiv Z D) := by
-  induction hB using supportedOperators_induction with
-  | prod m hm =>
-    refine ⟨prodOp (X := fun w : {v // v ∉ D} ↦ Z w.1) fun w ↦ m w.1, ?_⟩
-    have h1 : prodOp (X := fun w : {v // v ∈ D} ↦ Z w.1) (fun w ↦ m w.1) = 1 := by
-      rw [show (fun w : {v // v ∈ D} ↦ m w.1) =
-          fun w : {v // v ∈ D} ↦ (1 : Matrix (Z w.1) (Z w.1) ℂ) from
-        funext fun w ↦ hm w.1 fun hw ↦ Finset.disjoint_left.mp h hw w.2, prodOp_one]
-    rw [← h1, ← reindex_cutEquiv_prodOp, reindex_apply]
-    simp
-  | add A B _ _ ihA ihB =>
-    obtain ⟨A₂, rfl⟩ := ihA
-    obtain ⟨B₂, rfl⟩ := ihB
-    exact ⟨A₂ + B₂, by rw [kronecker_add]; rfl⟩
-  | smul c A _ ihA =>
-    obtain ⟨A₂, rfl⟩ := ihA
-    exact ⟨c • A₂, by rw [kronecker_smul]; rfl⟩
-
 /-- The Heisenberg picture of a layer whose gates and onsite families are trace-preserving is
 multiplicative on operators whose light cones through the layer are disjoint. -/
 theorem dual_mul_of_disjoint_lightCone (hL : L.Forall ev KrausFamily.IsTP) {R R' : Finset S}
@@ -433,7 +415,7 @@ theorem dual_mul_of_disjoint_lightCone (hL : L.Forall ev KrausFamily.IsTP) {R R'
       (hRR'.mono (L.unionRegion_subset_lightCone R) Finset.subset_union_left).symm
     obtain ⟨A₁, rfl⟩ :=
       exists_eq_place_of_mem_supportedOperators (supportedOperators_mono hRD hA)
-    obtain ⟨B₂, rfl⟩ := exists_eq_one_kronecker hR'D hB
+    obtain ⟨B₂, rfl⟩ := exists_eq_one_kronecker_of_mem_supportedOperators hR'D hB
     have hF := L.sum_farKraus ev p fun β _ ↦ L.blockEffect_eq_one ev hL β
     have hN := L.sum_nearKraus ev p hL (cutEquiv X _ σ₀).2
     have hAB : place (L.unionRegion p) A₁ * (1 ⊗ₖ B₂).submatrix (cutEquiv Y _) (cutEquiv Y _) =
@@ -447,12 +429,20 @@ theorem dual_mul_of_disjoint_lightCone (hL : L.Forall ev KrausFamily.IsTP) {R R'
 
 omit [Fintype S] in
 /-- A layer whose gates and onsite families are trace-preserving, on nonempty bases, has a
-Kraus index and nonempty output bases. -/
-theorem nonempty_of_forall_isTP [Finite S] [∀ s, Nonempty (X s)]
-    (h : L.Forall ev KrausFamily.IsTP) : Nonempty L.Index ∧ ∀ s, Nonempty (Y s) := by
+Kraus index. -/
+theorem nonempty_index_of_forall_isTP [Finite S] [∀ s, Nonempty (X s)]
+    (h : L.Forall ev KrausFamily.IsTP) : Nonempty L.Index := by
   have := Fintype.ofFinite S
-  obtain ⟨hi, ⟨y⟩⟩ := KrausFamily.IsTP.nonempty (L.isTP_krausFamily ev h)
-  exact ⟨hi, fun s ↦ ⟨y s⟩⟩
+  exact (L.isTP_krausFamily ev h).nonempty_index
+
+omit [Fintype S] in
+/-- The output bases of a layer whose gates and onsite families are trace-preserving, on
+nonempty bases, are nonempty. -/
+theorem nonempty_output_of_forall_isTP [Finite S] [∀ s, Nonempty (X s)]
+    (h : L.Forall ev KrausFamily.IsTP) (s : S) : Nonempty (Y s) := by
+  have := Fintype.ofFinite S
+  obtain ⟨y⟩ := (L.isTP_krausFamily ev h).nonempty_target
+  exact ⟨y s⟩
 
 end Factorization
 

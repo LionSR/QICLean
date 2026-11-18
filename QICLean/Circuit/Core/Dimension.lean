@@ -81,7 +81,7 @@ theorem exists_isDimBounded [Finite S] : {X Z : S → Type} → [∀ s, Fintype 
       ⟨Nat.card_pos, Finset.le_sup (f := fun s ↦ Nat.card (X s)) (Finset.mem_univ s)⟩⟩
   | X, _, _, _, _, step L next, h => by
     have := Fintype.ofFinite S
-    have := (L.nonempty_of_forall_isTP ev h.1).2
+    have := L.nonempty_output_of_forall_isTP ev h.1
     choose B hB using fun i ↦ exists_isDimBounded (next i) (h.2 i)
     refine ⟨max (Finset.univ.sup fun s ↦ Nat.card (X s)) (Finset.univ.sup B), fun s ↦
       ⟨Nat.card_pos, (Finset.le_sup (f := fun s ↦ Nat.card (X s)) (Finset.mem_univ s)).trans

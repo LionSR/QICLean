@@ -800,12 +800,12 @@ theorem map_mapSites [Finite R] [∀ s, Fintype (Z s)] {ev : Interpretation G}
   classical
   have := Fintype.ofFinite R
   simp only [map, krausFamily, KrausFamily.map_apply]
-  erw [← (c.mapIndexEquiv (LayerMap.ofSites e W h φ)).symm.sum_comp]
-  have hk : ∀ p,
-      (c.mapSites e W h φ).kraus ev' ((c.mapIndexEquiv (LayerMap.ofSites e W h φ)).symm p) =
-        (c.kraus ev p ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (extendConfigEquiv e W Z)
-        (extendConfigEquiv e W X) := fun p ↦
-    (kraus_mapSites e W h φ hφ c _).trans (by rw [Equiv.apply_symm_apply])
+  refine (Fintype.sum_equiv (c.mapIndexEquiv (LayerMap.ofSites e W h φ)) _ (fun p ↦
+    (c.kraus ev p ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (extendConfigEquiv e W Z)
+      (extendConfigEquiv e W X) * (ρ ⊗ₖ ω).submatrix (extendConfigEquiv e W X)
+        (extendConfigEquiv e W X) *
+      ((c.kraus ev p ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (extendConfigEquiv e W Z)
+        (extendConfigEquiv e W X))ᴴ) fun p ↦ by rw [kraus_mapSites e W h φ hφ c p]).trans ?_
   have ht : ∀ K : Matrix (Config Z) (Config X) ℂ,
       (K ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (extendConfigEquiv e W Z)
           (extendConfigEquiv e W X) *
@@ -816,7 +816,7 @@ theorem map_mapSites [Finite R] [∀ s, Fintype (Z s)] {ev : Interpretation G}
     intro K
     rw [conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, conjTranspose_kronecker,
       conjTranspose_one, ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul]
-  simp only [hk, ht]
+  simp only [ht]
   ext a b
   simp [Matrix.sum_apply, kroneckerMap_apply, Finset.sum_mul]
 

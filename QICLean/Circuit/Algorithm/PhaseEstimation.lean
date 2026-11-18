@@ -131,29 +131,28 @@ Fourier transform): the Hadamard gates, the controlled calls `U^{2^{t-1-j}}` for
 noncomputable abbrev unitary : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
   (prepare t m).comp (qftInv t m)
 
+/-- The measurement of a control qubit, and the identity at the target. -/
+def measureFamily : (s : Fin t ⊕ Unit) → KrausFamily (system t m s) (system t m s)
+  | .inl _ => KrausFamily.measure (Fin 2)
+  | .inr _ => KrausFamily.single 1
+
 /-- The measurement of the control register in the computational basis. -/
-def measureLayer : Layer (geometry t) (Gate t m) (system t m) (system t m) where
-  cells := ∅
-  pairwiseDisjoint := by simp
-  gate b := absurd b.2 (Finset.notMem_empty _)
-  onsite
-    | ⟨.inl _, _⟩ => KrausFamily.measure (Fin 2)
-    | ⟨.inr _, _⟩ => KrausFamily.single 1
+abbrev measureLayer : Layer (geometry t) (Gate t m) (system t m) (system t m) :=
+  Layer.ofOnsite (measureFamily t m)
 
 /-- Phase estimation (Nielsen–Chuang, Fig. 5.3): the unitary part, then the measurement of the
 control register. -/
 noncomputable abbrev circuit : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
-  (unitary t m).comp (.step (measureLayer t m) fun _ ↦ .done _)
+  (unitary t m).comp (Circuit.ofLayer (measureLayer t m))
 
 /-- The outcomes of the measurement of the control register. -/
 def measured (i : (measureLayer t m).Index) : Config (Qudits (Fin t) 2) :=
-  fun j ↦ i.2 ⟨.inl j, by simp [measureLayer]⟩
+  fun j ↦ i.2 ⟨.inl j, by simp [measureLayer, Layer.ofOnsite]⟩
 
 /-- The measured integer of a branch: the outcomes of the measurement of the control register,
 the qubit `0` most significant. -/
 noncomputable def readout (p : (circuit t m).Index) : Fin (2 ^ t) :=
-  encode t (measured t m
-    (((unitary t m).compIndexEquiv _ p).2 : Σ _ : (measureLayer t m).Index, Unit).1)
+  encode t (measured t m ((unitary t m).compIndexEquiv _ p).2.1)
 
 /-- The configuration of the control register. -/
 def control (σ : Config (system t m)) : Config (Qudits (Fin t) 2) :=
@@ -261,7 +260,7 @@ theorem queryCount_prepare : (prepare t m).queryCount = 2 ^ t - 1 := by
   have hseq : ∀ {Ls : List (Layer (geometry t) (Gate t m) (system t m) (system t m))},
       (∀ L ∈ Ls, L.Forall (Interpretation.sum KrausGate.ev (Oracle.ev 0)) IsSingleIndex) →
       ∀ L ∈ Ls, Nonempty L.Index := fun h L hL ↦
-    ⟨(Circuit.nonempty_unique_index (c := .step L fun _ ↦ .done _) _
+    ⟨(Circuit.nonempty_unique_index (c := Circuit.ofLayer L) _
       ⟨h L hL, fun _ ↦ trivial⟩).some.default.1⟩
   rw [Circuit.queryCount, Circuit.total_comp_of_isUnbranched _ (Circuit.isUnbranched_seq _)
       ⟨(Circuit.nonempty_unique_index _ (Circuit.forall_seq _ _ (forall_isSingleIndex_hadamards
@@ -298,10 +297,10 @@ theorem queryCount_circuit : (circuit t m).queryCount = 2 ^ t - 1 := by
       ⟨nonempty_unique_index_prepare.some.default⟩]
   have hq : (qftInv t m).total (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 :=
     Circuit.queryCount_eq_zero (Circuit.noCalls_mapGate_inl _ _)
-  have hm : (Circuit.step (measureLayer t m) fun _ ↦ Circuit.done (system t m)).total
+  have hm : (Circuit.ofLayer (measureLayer t m)).total
       (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 := by
     refine Circuit.queryCount_eq_zero ⟨?_, fun _ ↦ trivial⟩
-    simp [Layer.cellCost, measureLayer]
+    simp [Layer.cellCost, measureLayer, Layer.ofOnsite]
   rw [hq, hm, ← Circuit.queryCount, queryCount_prepare, add_zero, add_zero]
 
 /-! ### The state along the circuit -/
@@ -432,23 +431,18 @@ private def measuredEquiv : (measureLayer t m).Index ≃ Config (Qudits (Fin t) 
 private theorem measure_entry (ev : Interpretation (Gate t m)) (i : (measureLayer t m).Index)
     (y x : Config (system t m)) : (measureLayer t m).kraus ev i y x =
       if y = x ∧ control t m y = measured t m i then 1 else 0 := by
-  have hcells : ∀ b : (measureLayer t m).cells, False := fun b ↦ Finset.notMem_empty _ b.2
-  rw [Layer.kraus, Fintype.prod_eq_one _ fun b ↦ (hcells b).elim, one_mul]
-  have hfree : ∀ v, v ∉ (measureLayer t m).cells.biUnion (geometry t).cell := by
-    simp [measureLayer]
-  have hinl : ∀ j, ((measureLayer t m).onsite ⟨.inl j, hfree _⟩).op (i.2 ⟨.inl j, hfree _⟩)
-      (y (.inl j)) (x (.inl j)) = if measured t m i j = control t m y j ∧
-        measured t m i j = control t m x j then 1 else 0 := fun j ↦
-    Matrix.single_apply ..
-  have hinr : ((measureLayer t m).onsite ⟨.inr (), hfree _⟩).op (i.2 ⟨.inr (), hfree _⟩)
-      (y (.inr ())) (x (.inr ())) = if y (.inr ()) = x (.inr ()) then 1 else 0 :=
-    one_apply
+  rw [Layer.kraus_ofOnsite, prodOp_apply]
+  have hinl : ∀ j, (measureFamily t m (.inl j)).op (measured t m i j) (y (.inl j)) (x (.inl j)) =
+      if measured t m i j = control t m y j ∧ measured t m i j = control t m x j then 1 else 0 :=
+    fun j ↦ Matrix.single_apply ..
+  have hinr : ∀ o, (measureFamily t m (.inr ())).op o (y (.inr ())) (x (.inr ())) =
+      if y (.inr ()) = x (.inr ()) then 1 else 0 := fun _ ↦ one_apply
   split_ifs with h
   · obtain ⟨rfl, hy⟩ := h
     refine Fintype.prod_eq_one _ fun s ↦ ?_
-    obtain ⟨j | ⟨⟩, hs⟩ := s
-    · rw [hinl, ite_eq_left (And.intro (congrFun hy.symm j) (congrFun hy.symm j))]
-    · rw [hinr, ite_eq_left rfl]
+    obtain j | ⟨⟩ := s
+    · exact (hinl j).trans (ite_eq_left (And.intro (congrFun hy.symm j) (congrFun hy.symm j)))
+    · exact (hinr _).trans (ite_eq_left rfl)
   · refine Finset.prod_eq_zero_iff.mpr ?_
     by_cases hyx : y = x
     · subst hyx
@@ -457,12 +451,12 @@ private theorem measure_entry (ev : Interpretation (Gate t m)) (i : (measureLaye
         push Not at hc
         exact h ⟨rfl, funext fun j ↦ (hc j).symm⟩
       obtain ⟨j, hj⟩ := this
-      exact ⟨⟨.inl j, hfree _⟩, Finset.mem_univ _, by rw [hinl, ite_eq_right fun e ↦ hj e.1]⟩
+      exact ⟨.inl j, Finset.mem_univ _, (hinl j).trans (ite_eq_right fun e ↦ hj e.1)⟩
     · obtain ⟨v, hv⟩ := Function.ne_iff.mp hyx
       rcases v with j | ⟨⟩
-      · exact ⟨⟨.inl j, hfree _⟩, Finset.mem_univ _, by
-          rw [hinl, ite_eq_right fun e ↦ hv (e.1.symm.trans e.2)]⟩
-      · exact ⟨⟨.inr (), hfree _⟩, Finset.mem_univ _, by rw [hinr, ite_eq_right hv]⟩
+      · exact ⟨.inl j, Finset.mem_univ _,
+          (hinl j).trans (ite_eq_right fun e ↦ hv (e.1.symm.trans e.2))⟩
+      · exact ⟨.inr (), Finset.mem_univ _, (hinr _).trans (ite_eq_right hv)⟩
 
 private theorem measure_mulVec (ev : Interpretation (Gate t m)) (i : (measureLayer t m).Index)
     (ψ : Config (system t m) → ℂ) :
@@ -613,13 +607,12 @@ private theorem prob_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu
     kraus_unitary_mulVec huφ]
   rw [readout]
   generalize ((unitary t m).compIndexEquiv _ p).2 = q
-  obtain ⟨i, j⟩ := q
-  rw [Circuit.kraus_step, Circuit.kraus_done, Matrix.one_mul, measure_mulVec,
-    show (fun σ ↦ if control t m σ = measured t m i then
+  rw [Circuit.kraus_ofLayer, measure_mulVec,
+    show (fun σ ↦ if control t m σ = measured t m q.1 then
       registerState u (fun x ↦ amplitude t φ (encode t x)) σ else 0) =
-      registerState u fun x ↦ if x = measured t m i then amplitude t φ (encode t x) else 0 by
+      registerState u fun x ↦ if x = measured t m q.1 then amplitude t φ (encode t x) else 0 by
     funext σ; simp only [registerState]; split_ifs <;> simp,
-    sum_norm_sq_registerState hu, Finset.sum_eq_single (measured t m i)
+    sum_norm_sq_registerState hu, Finset.sum_eq_single (measured t m q.1)
       (fun x _ hx ↦ by simp [hx]) (by simp)]
   simp
 

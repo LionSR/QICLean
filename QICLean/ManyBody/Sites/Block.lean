@@ -9,17 +9,17 @@ import QICLean.ManyBody.Sites.Placement
 /-!
 # Blocking sites
 
-A map of sites `f : V → V'` groups the sites of `V` into the blocks `fibre f b`, `b : V'`. A
-system `X` on `V` is then a system `blockSystem f X` on `V'`, whose basis at `b` is the
-configurations of the block. The configurations of the two systems are the same
-(`blockConfigEquiv`, the partition of the sites into the fibres, `complPartitionEquiv`), and so
-are the configurations of a region `D'` of blocks and of its preimage
+A map of sites `f : V → V'` groups the sites of `V` into blocks: the block `b : V'` is the
+preimage `blockPreimage f {b}`. A system `X` on `V` is then a system `blockSystem f X` on `V'`,
+whose basis at `b` is the configurations of the block. The configurations of the two systems are
+the same (`blockConfigEquiv`, the partition of the sites into the blocks, `complPartitionEquiv`),
+and so are the configurations of a region `D'` of blocks and of its preimage
 (`blockRegionConfigEquiv`). Placement commutes with blocking
 (`reindex_blockConfigEquiv_place`).
 
 ## Main definitions
 
-* `ManyBody.fibre`, `ManyBody.blockPreimage` — the sites of a block and of a region of blocks.
+* `ManyBody.blockPreimage` — the sites of a region of blocks.
 * `ManyBody.blockSystem` — the blocked system.
 * `ManyBody.blockConfigEquiv`, `ManyBody.blockRegionConfigEquiv` — its configurations.
 
@@ -35,19 +35,20 @@ namespace ManyBody
 
 variable {V V' : Type} [Fintype V] [DecidableEq V'] (f : V → V')
 
-/-- The fibre of `f` over `b`: the sites of the block `b`. -/
-def fibre (b : V') : Finset V :=
-  Finset.univ.filter (f · = b)
+/-- The preimage of a region of blocks: the sites whose block lies in the region. -/
+abbrev blockPreimage (D' : Finset V') : Finset V :=
+  Finset.univ.filter (f · ∈ D')
 
-theorem mem_fibre {v : V} {b : V'} : v ∈ fibre f b ↔ f v = b := by
-  simp [fibre]
+private theorem mem_blockPreimage_singleton {v : V} {b : V'} :
+    v ∈ blockPreimage f {b} ↔ f v = b := by
+  simp
 
-/-- The fibres of `f` partition the sites. -/
-private theorem isComplPartition_fibre :
-    IsComplPartition (∅ : Finset V) (fibre f) (fun v ↦ f v.1) where
+/-- The blocks partition the sites. -/
+private theorem isComplPartition_blockPreimage :
+    IsComplPartition (∅ : Finset V) (fun b ↦ blockPreimage f {b}) (fun v ↦ f v.1) where
   disjoint _ := Finset.disjoint_empty_right _
-  mem _ := (mem_fibre f).mpr rfl
-  eq_of_mem _ _ h := (mem_fibre f).mp h
+  mem _ := (mem_blockPreimage_singleton f).mpr rfl
+  eq_of_mem _ _ h := (mem_blockPreimage_singleton f).mp h
 
 /-- The configurations outside the empty region are the configurations. -/
 private def complEmptyEquiv (X : V → Type) : ComplConfig X ∅ ≃ Config X where
@@ -56,39 +57,35 @@ private def complEmptyEquiv (X : V → Type) : ComplConfig X ∅ ≃ Config X wh
   left_inv _ := rfl
   right_inv _ := rfl
 
-/-- The system on `V'` whose basis at `b` is the configurations of the fibre of `f` over `b`. -/
+/-- The system on `V'` whose basis at `b` is the configurations of the block `b`. -/
 abbrev blockSystem (X : V → Type) : V' → Type :=
-  fun b ↦ RegionConfig X (fibre f b)
+  fun b ↦ RegionConfig X (blockPreimage f {b})
 
 /-- The configurations of the blocked system are those of the system: the partition of the
-sites into the fibres of `f` (`complPartitionEquiv`). -/
+sites into the blocks of `f` (`complPartitionEquiv`). -/
 def blockConfigEquiv (X : V → Type) : Config (blockSystem f X) ≃ Config X :=
-  (complPartitionEquiv (isComplPartition_fibre f)).symm.trans (complEmptyEquiv X)
+  (complPartitionEquiv (isComplPartition_blockPreimage f)).symm.trans (complEmptyEquiv X)
 
 @[simp] theorem blockConfigEquiv_apply {X : V → Type} (z : Config (blockSystem f X)) (v : V) :
-    blockConfigEquiv f X z v = z (f v) ⟨v, (mem_fibre f).mpr rfl⟩ :=
+    blockConfigEquiv f X z v = z (f v) ⟨v, by simp⟩ :=
   rfl
 
 @[simp] theorem blockConfigEquiv_symm_apply {X : V → Type} (σ : Config X) (b : V')
-    (v : {v // v ∈ fibre f b}) : (blockConfigEquiv f X).symm σ b v = σ v :=
+    (v : {v // v ∈ blockPreimage f {b}}) : (blockConfigEquiv f X).symm σ b v = σ v :=
   rfl
-
-/-- The preimage of a region of blocks. -/
-abbrev blockPreimage (D' : Finset V') : Finset V :=
-  Finset.univ.filter (f · ∈ D')
 
 /-- The configurations of a region `D'` of the blocked system are those of its preimage. -/
 def blockRegionConfigEquiv (X : V → Type) (D' : Finset V') :
     RegionConfig (blockSystem f X) D' ≃ RegionConfig X (blockPreimage f D') where
-  toFun z v := z ⟨f v, (Finset.mem_filter.mp v.2).2⟩ ⟨v, (mem_fibre f).mpr rfl⟩
+  toFun z v := z ⟨f v, (Finset.mem_filter.mp v.2).2⟩ ⟨v, by simp⟩
   invFun a b v := a ⟨v, Finset.mem_filter.mpr ⟨Finset.mem_univ _,
-    ((mem_fibre f).mp v.2).symm ▸ b.2⟩⟩
+    ((mem_blockPreimage_singleton f).mp v.2).symm ▸ b.2⟩⟩
   left_inv z := by
     funext ⟨b, hb⟩ ⟨v, hv⟩
-    have key : ∀ b' (_ : b' = b) (hb' : b' ∈ D') (hv' : v ∈ fibre f b'),
+    have key : ∀ b' (_ : b' = b) (hb' : b' ∈ D') (hv' : v ∈ blockPreimage f {b'}),
         z ⟨b', hb'⟩ ⟨v, hv'⟩ = z ⟨b, hb⟩ ⟨v, hv⟩ := by
       rintro _ rfl _ _; rfl
-    exact key _ ((mem_fibre f).mp hv) _ _
+    exact key _ ((mem_blockPreimage_singleton f).mp hv) _ _
   right_inv _ := rfl
 
 variable [DecidableEq V] [Fintype V']
@@ -104,7 +101,7 @@ theorem reindex_blockConfigEquiv_place {X : V → Type} [∀ v, DecidableEq (X v
   ext σ τ
   rw [reindex_apply, submatrix_apply, place_apply, place_apply]
   refine if_congr ⟨fun h v hv ↦ ?_, fun h b hb ↦ funext fun v ↦ h v.1 ?_⟩ rfl rfl
-  · exact congrFun (h (f v) (by simpa using hv)) ⟨v, (mem_fibre f).mpr rfl⟩
-  · simpa [(mem_fibre f).mp v.2] using hb
+  · exact congrFun (h (f v) (by simpa using hv)) ⟨v, by simp⟩
+  · simpa [(mem_blockPreimage_singleton f).mp v.2] using hb
 
 end ManyBody

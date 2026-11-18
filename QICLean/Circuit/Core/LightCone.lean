@@ -67,27 +67,6 @@ theorem lightCone_mono {X Y : S → Type} (L : Layer Γ G X Y) {R R' : Finset S}
 
 end Layer
 
-/-- A product state factorizes over operators supported on disjoint regions. -/
-private theorem trace_prodOp_mul_mul {X : S → Type} [∀ s, Fintype (X s)]
-    [∀ s, DecidableEq (X s)] (σ : (s : S) → Matrix (X s) (X s) ℂ) (hσ : ∀ s, (σ s).trace = 1)
-    {R R' : Finset S} (hRR' : Disjoint R R') {A B : Matrix (Config X) (Config X) ℂ}
-    (hA : A ∈ supportedOperators X R) (hB : B ∈ supportedOperators X R') :
-    (prodOp σ * (A * B)).trace = (prodOp σ * A).trace * (prodOp σ * B).trace := by
-  let f : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] ℂ :=
-    LinearMap.mk₂ ℂ (fun A B ↦ (prodOp σ * (A * B)).trace)
-      (by simp [Matrix.add_mul, Matrix.mul_add]) (by simp)
-      (by simp [Matrix.mul_add]) (by simp)
-  let g : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] ℂ :=
-    LinearMap.mk₂ ℂ (fun A B ↦ (prodOp σ * A).trace * (prodOp σ * B).trace)
-      (by simp [Matrix.mul_add, add_mul]) (by simp [mul_assoc])
-      (by simp [mul_add]) (by simp [mul_left_comm])
-  refine eq_of_mem_supportedOperators₂ f g (fun m m' hm hm' ↦ ?_) hA hB
-  simp only [f, g, LinearMap.mk₂_apply, prodOp_mul, trace_prodOp, ← Finset.prod_mul_distrib]
-  refine Finset.prod_congr rfl fun s _ ↦ ?_
-  by_cases hs : s ∈ R
-  · rw [hm' s (Finset.disjoint_left.mp hRR' hs), Matrix.mul_one, Matrix.mul_one, hσ, mul_one]
-  · rw [hm s hs, Matrix.mul_one, Matrix.one_mul, hσ, one_mul]
-
 namespace Circuit
 
 /-- The backward light cone of the region `R` through a circuit, layer by layer from the last
@@ -107,29 +86,21 @@ theorem dual_mem_supportedOperators_lightCone (ev : Interpretation G) : {X Z : S
   | _, _, i₁, i₂, i₃, i₄, done _, _, _, R, A, hA => by
     obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
     obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
-    have : (done _ : Circuit Γ G _ _).dual ev A = A := by
-      change ∑ _ : Unit, ((1 : Matrix _ _ ℂ))ᴴ * A * 1 = A
-      simp
-    rw [this]
+    rw [dual_done]
     exact hA
   | _, _, _, _, _, _, step L next, hb, h, R, A, hA => by
-    rw [dual_step]
     cases isEmpty_or_nonempty L.Index with
     | inl hL =>
-      rw [Finset.univ_eq_empty, Finset.sum_empty]
+      rw [dual_step, Finset.univ_eq_empty, Finset.sum_empty]
       exact zero_mem _
     | inr hL =>
       obtain ⟨i₀⟩ := hL
-      have hnext : ∀ i, next i = next i₀ := fun i ↦ hb.1 i i₀
       have hU : (next i₀).dual ev A ∈ supportedOperators _
           (Finset.univ.sup fun i ↦ (next i).lightCone R) :=
         supportedOperators_mono (Finset.le_sup (f := fun i ↦ (next i).lightCone R)
           (Finset.mem_univ i₀))
           (dual_mem_supportedOperators_lightCone ev (next i₀) (hb.2 i₀) (h.2 i₀) hA)
-      have hsum : ∑ i, (L.kraus ev i)ᴴ * (next i).dual ev A * L.kraus ev i =
-          L.dual ev ((next i₀).dual ev A) :=
-        Finset.sum_congr rfl fun i _ ↦ by rw [hnext i]
-      rw [hsum]
+      rw [dual_step_of_forall_eq ev L hb.1 i₀]
       exact L.dual_mem_supportedOperators_lightCone ev h.1 hU
 
 /-- The Heisenberg picture of an unbranched circuit whose gates and onsite families are
@@ -143,25 +114,18 @@ theorem dual_mul_of_disjoint_lightCone (ev : Interpretation G) : {X Z : S → Ty
   | X, _, i₁, i₂, i₃, i₄, done _, _, _, R, R', _, A, B, _, _ => by
     obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
     obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
-    have h : ∀ M, (done X : Circuit Γ G X X).dual ev M = M := fun M ↦ by
-      change ∑ _ : Unit, ((1 : Matrix (Config X) (Config X) ℂ))ᴴ * M * 1 = M
-      simp
-    rw [h, h, h]
+    rw [dual_done, dual_done, dual_done]
   | _, _, _, _, _, _, step L next, hb, h, R, R', hRR', A, B, hA, hB => by
-    rw [dual_step, dual_step, dual_step]
     cases isEmpty_or_nonempty L.Index with
-    | inl hL => simp
+    | inl hL => simp [dual_step]
     | inr hL =>
       obtain ⟨i₀⟩ := hL
-      have hnext : ∀ i, next i = next i₀ := fun i ↦ hb.1 i i₀
-      have hsum : ∀ M, ∑ i, (L.kraus ev i)ᴴ * (next i).dual ev M * L.kraus ev i =
-          L.dual ev ((next i₀).dual ev M) := fun M ↦
-        Finset.sum_congr rfl fun i _ ↦ by rw [hnext i]
       have hle : ∀ R, (next i₀).lightCone R ⊆ Finset.univ.sup fun i ↦ (next i).lightCone R :=
         fun R ↦ Finset.le_sup (f := fun i ↦ (next i).lightCone R) (Finset.mem_univ i₀)
       have hsub : ∀ R, (Finset.univ.sup fun i ↦ (next i).lightCone R) ⊆
           (step L next).lightCone R := fun _ ↦ Finset.subset_union_left
-      rw [hsum, hsum, hsum, dual_mul_of_disjoint_lightCone ev (next i₀) (hb.2 i₀) (h.2 i₀)
+      simp only [dual_step_of_forall_eq ev L hb.1 i₀]
+      rw [dual_mul_of_disjoint_lightCone ev (next i₀) (hb.2 i₀) (h.2 i₀)
         ((hRR'.mono (hsub R) (hsub R')).mono (hle R) (hle R')) hA hB]
       exact L.dual_mul_of_disjoint_lightCone ev h.1 hRR'
         (supportedOperators_mono (hle R)
@@ -171,8 +135,7 @@ theorem dual_mul_of_disjoint_lightCone (ev : Interpretation G) : {X Z : S → Ty
 
 /-- **The light-cone factorization.** For an unbranched circuit whose gates and onsite families
 are trace-preserving, applied to a product input `⊗ₛ σₛ` with `tr σₛ = 1`, the expectations of
-operators with disjoint backward light cones factorize. (The unitary case on a pure product
-vector is proved directly for unitary circuits.) -/
+operators with disjoint backward light cones factorize. -/
 theorem trace_map_prodOp_mul_mul (ev : Interpretation G) {X Z : S → Type} [∀ s, Fintype (X s)]
     [∀ s, DecidableEq (X s)] [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)]
     (c : Circuit Γ G X Z) (hc : c.IsUnbranched) (hTP : c.Forall ev KrausFamily.IsTP)

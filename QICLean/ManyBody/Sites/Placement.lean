@@ -55,6 +55,10 @@ its restriction to the region.
 * `ManyBody.supportedOperators_toSubmodule_eq_span`, `ManyBody.supportedOperators_induction`,
   `ManyBody.eq_of_mem_supportedOperators₂` — supported operators are spanned by product
   operators, with the induction principle and the extension of bilinear identities.
+* `ManyBody.exists_eq_one_kronecker_of_mem_supportedOperators` — an operator supported away from
+  `D` is `1 ⊗ B₂` along the cut at `D`.
+* `ManyBody.trace_prodOp`, `ManyBody.trace_prodOp_mul_mul` — the trace of a product operator, and
+  the factorization of a product state over disjoint regions.
 * `ManyBody.posSemidef_place`, `ManyBody.posSemidef_place_iff`, `ManyBody.place_le_place_iff`.
 -/
 
@@ -556,6 +560,51 @@ theorem eq_of_mem_supportedOperators₂ {M : Type*} [AddCommMonoid M] [Module �
     | smul c B _ ihB => rw [map_smul, map_smul, ihB]
   | add A C _ _ ihA ihC => rw [map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, ihA, ihC]
   | smul c A _ ihA => rw [map_smul, map_smul, LinearMap.smul_apply, LinearMap.smul_apply, ihA]
+
+/-- A product state with unit-trace factors factorizes over operators supported on disjoint
+regions: `tr(σ A B) = tr(σ A) tr(σ B)`. -/
+theorem trace_prodOp_mul_mul (σ : (v : V) → Matrix (X v) (X v) ℂ) (hσ : ∀ v, (σ v).trace = 1)
+    {D D' : Finset V} (hDD' : Disjoint D D') {A B : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X D) (hB : B ∈ supportedOperators X D') :
+    (prodOp σ * (A * B)).trace = (prodOp σ * A).trace * (prodOp σ * B).trace := by
+  let f : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] ℂ :=
+    LinearMap.mk₂ ℂ (fun A B ↦ (prodOp σ * (A * B)).trace)
+      (by simp [Matrix.add_mul, Matrix.mul_add]) (by simp)
+      (by simp [Matrix.mul_add]) (by simp)
+  let g : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ →ₗ[ℂ] ℂ :=
+    LinearMap.mk₂ ℂ (fun A B ↦ (prodOp σ * A).trace * (prodOp σ * B).trace)
+      (by simp [Matrix.mul_add, add_mul]) (by simp [mul_assoc])
+      (by simp [mul_add]) (by simp [mul_left_comm])
+  refine eq_of_mem_supportedOperators₂ f g (fun m m' hm hm' ↦ ?_) hA hB
+  simp only [f, g, LinearMap.mk₂_apply, prodOp_mul, trace_prodOp, ← Finset.prod_mul_distrib]
+  refine Finset.prod_congr rfl fun v _ ↦ ?_
+  by_cases hv : v ∈ D
+  · rw [hm' v (Finset.disjoint_left.mp hDD' hv), Matrix.mul_one, Matrix.mul_one, hσ, mul_one]
+  · rw [hm v hv, Matrix.mul_one, Matrix.one_mul, hσ, one_mul]
+
+/-- An operator supported on a region disjoint from `D` is `1 ⊗ B₂` in the coordinates of the
+cut along `D`. -/
+theorem exists_eq_one_kronecker_of_mem_supportedOperators {D R : Finset V} (h : Disjoint R D)
+    {B : Matrix (Config X) (Config X) ℂ} (hB : B ∈ supportedOperators X R) :
+    ∃ B₂ : Matrix (ComplConfig X D) (ComplConfig X D) ℂ,
+      B = ((1 : Matrix (RegionConfig X D) (RegionConfig X D) ℂ) ⊗ₖ B₂).submatrix
+        (cutEquiv X D) (cutEquiv X D) := by
+  induction hB using supportedOperators_induction with
+  | prod m hm =>
+    refine ⟨prodOp (X := fun w : {v // v ∉ D} ↦ X w.1) fun w ↦ m w.1, ?_⟩
+    have h1 : prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (fun w ↦ m w.1) = 1 := by
+      rw [show (fun w : {v // v ∈ D} ↦ m w.1) =
+          fun w : {v // v ∈ D} ↦ (1 : Matrix (X w.1) (X w.1) ℂ) from
+        funext fun w ↦ hm w.1 fun hw ↦ Finset.disjoint_left.mp h hw w.2, prodOp_one]
+    rw [← h1, ← reindex_cutEquiv_prodOp, reindex_apply]
+    simp
+  | add A B _ _ ihA ihB =>
+    obtain ⟨A₂, rfl⟩ := ihA
+    obtain ⟨B₂, rfl⟩ := ihB
+    exact ⟨A₂ + B₂, by rw [kronecker_add]; rfl⟩
+  | smul c A _ ihA =>
+    obtain ⟨A₂, rfl⟩ := ihA
+    exact ⟨c • A₂, by rw [kronecker_smul]; rfl⟩
 
 end Product
 
