@@ -94,6 +94,134 @@ noncomputable def semiclassicalReadout (p : (semiclassical t m).Index) : Fin (2 
 
 variable {t m}
 
+/-! ### Branches -/
+
+/-- The index of the corrected measurement with the outcome `c`. -/
+private def outcomeIndex {j : Fin t} {θ : ℝ} (c : Fin 2) : (measureQubit t m j θ).Index :=
+  (fun x ↦ by
+    obtain ⟨y, hy⟩ := x
+    obtain rfl := Finset.mem_singleton.mp hy
+    exact c, fun _ ↦ ())
+
+private theorem qubitOutcome_outcomeIndex {j : Fin t} {θ : ℝ} (c : Fin 2) :
+    qubitOutcome t m (outcomeIndex (t := t) (m := m) (j := j) (θ := θ) c) = c :=
+  rfl
+
+private theorem outcomeIndex_qubitOutcome {j : Fin t} {θ : ℝ} (i : (measureQubit t m j θ).Index) :
+    outcomeIndex (qubitOutcome t m i) = i := by
+  refine Prod.ext (funext fun x ↦ ?_) (funext fun _ ↦ rfl)
+  obtain ⟨y, hy⟩ := x
+  obtain rfl := Finset.mem_singleton.mp hy
+  rfl
+
+/-- The outcomes outside `l` are those before. -/
+private theorem outcomesFrom_of_notMem : ∀ (l : List (Fin t)) (b : Fin t → Fin 2)
+    (p : (measureFrom t m l b).Index) (i : Fin t), i ∉ l → outcomesFrom t m l b p i = b i
+  | [], _, _, _, _ => rfl
+  | j :: l, b, ⟨q, r⟩, i, hi => by
+    rw [List.mem_cons, not_or] at hi
+    change outcomesFrom t m l _ r i = b i
+    rw [outcomesFrom_of_notMem l _ r i hi.2, Function.update_of_ne hi.1]
+
+private theorem outcomesFrom_injective : ∀ (l : List (Fin t)), l.Nodup → ∀ (b : Fin t → Fin 2),
+    Function.Injective (outcomesFrom t m l b)
+  | [], _, _, _, _, _ => rfl
+  | j :: l, hl, b, ⟨q, r⟩, ⟨q', r'⟩, h => by
+    rw [List.nodup_cons] at hl
+    have hj := congrFun h j
+    change outcomesFrom t m l _ r j = outcomesFrom t m l _ r' j at hj
+    rw [outcomesFrom_of_notMem l _ r j hl.1, outcomesFrom_of_notMem l _ r' j hl.1,
+      Function.update_self, Function.update_self] at hj
+    obtain rfl : q = q' := by
+      rw [← outcomeIndex_qubitOutcome q, ← outcomeIndex_qubitOutcome q', hj]
+    obtain rfl := outcomesFrom_injective l hl.2 _ h
+    rfl
+
+/-- The branch with the outcomes `B` on `l`. -/
+private noncomputable def branchOf (B : Fin t → Fin 2) :
+    (l : List (Fin t)) → (b : Fin t → Fin 2) → (measureFrom t m l b).Index
+  | [], _ => ()
+  | j :: l, b => ⟨outcomeIndex (B j), branchOf B l (Function.update b j (B j))⟩
+
+private theorem outcomesFrom_branchOf (B : Fin t → Fin 2) : ∀ (l : List (Fin t))
+    (b : Fin t → Fin 2) (i : Fin t),
+    outcomesFrom t m l b (branchOf B l b) i = if i ∈ l then B i else b i
+  | [], _, i => by simp [outcomesFrom]
+  | j :: l, b, i => by
+    change outcomesFrom t m l _ (branchOf B l _) i = _
+    rw [outcomesFrom_branchOf B l _ i]
+    change (if i ∈ l then B i else Function.update b j (B j) i) = _
+    by_cases hi : i ∈ l
+    · simp [hi]
+    · by_cases hij : i = j
+      · subst hij; simp
+      · simp [hi, hij]
+
+private theorem outcomesFrom_bijective :
+    Function.Bijective (outcomesFrom t m (List.finRange t) 0) := by
+  refine ⟨outcomesFrom_injective _ (List.nodup_finRange t) 0, fun B ↦ ⟨branchOf B _ 0, ?_⟩⟩
+  funext i
+  rw [outcomesFrom_branchOf]
+  simp
+
+/-! ### The state along a branch -/
+
+/-- The product state `∏ᵢ Fᵢ(xᵢ)` of the control register. -/
+private def prodState (F : Fin t → Fin 2 → ℂ) (x : Config (Q t)) : ℂ :=
+  ∏ i, F i (x i)
+
+private theorem prodState_eq (F : Fin t → Fin 2 → ℂ) (j : Fin t) (x : Config (Q t)) :
+    prodState F x = F j (x j) * ∏ i ∈ Finset.univ.erase j, F i (x i) :=
+  (Finset.mul_prod_erase _ _ (Finset.mem_univ j)).symm
+
+/-- The matrix `H diag(1, e^{-2πiθ})` of the corrected measurement before the projection. -/
+private noncomputable def correctedHadamard (θ : ℝ) : Matrix (Fin 2) (Fin 2) ℂ :=
+  hadamard * diagonal fun x : Fin 2 ↦ exp (-(2 * Real.pi * I * θ * ((x : ℕ) : ℂ)))
+
+/-- The amplitude `∑_y (H D_θ)(c, y) G(y)` of the outcome `c` on a qubit in the state `G`. -/
+private noncomputable def beta (θ : ℝ) (c : Fin 2) (G : Fin 2 → ℂ) : ℂ :=
+  ∑ y, correctedHadamard θ c y * G y
+
+/-- The corrected measurement with outcome `c` projects the qubit `j` of a product state onto
+`|c⟩`, with the amplitude `beta`. -/
+private theorem measureQubit_mulVec {ev : Interpretation (Oracle (Fin 2 × Fin m))} (j : Fin t)
+    (θ : ℝ) (i : (measureQubit t m j θ).Index) (u : Fin m → ℂ) (F : Fin t → Fin 2 → ℂ) :
+    (measureQubit t m j θ).kraus (Interpretation.sum KrausGate.ev ev) i *ᵥ
+      registerState u (prodState F) =
+      registerState u (prodState (Function.update F j fun y ↦
+        if y = qubitOutcome t m i then beta θ (qubitOutcome t m i) (F j) else 0)) := by
+  have hk : (measureQubit t m j θ).kraus (Interpretation.sum KrausGate.ev ev) i =
+      place {Sum.inl j} (((correctedMeasure θ).op (qubitOutcome t m i)).submatrix
+        (siteEquiv (system t m) (.inl j)) (siteEquiv (system t m) (.inl j))) :=
+    Layer.kraus_single _ _ _ i
+  rw [hk, qubitGate_mulVec]
+  congr 1
+  funext x
+  rw [prodState_eq _ j, Function.update_self]
+  have hrest : ∀ b : Fin 2, ∏ a ∈ Finset.univ.erase j, F a (Function.update x j b a) =
+      ∏ a ∈ Finset.univ.erase j, Function.update F j
+        (fun y ↦ if y = qubitOutcome t m i then beta θ (qubitOutcome t m i) (F j) else 0) a
+          (x a) := fun b ↦
+    Finset.prod_congr rfl fun a hi ↦ by
+      rw [Function.update_of_ne (Finset.ne_of_mem_erase hi),
+        Function.update_of_ne (Finset.ne_of_mem_erase hi)]
+  have hV : ∀ b, (correctedMeasure θ).op (qubitOutcome t m i) (x j) b =
+      if x j = qubitOutcome t m i then correctedHadamard θ (qubitOutcome t m i) b else 0 := by
+    intro b
+    change ((Matrix.single (qubitOutcome t m i) (qubitOutcome t m i) (1 : ℂ) :
+      Matrix (Fin 2) (Fin 2) ℂ) * Qubit.hadamard * diagonal fun x : Fin 2 ↦
+        exp (-(2 * Real.pi * I * θ * ((x : ℕ) : ℂ)))) (x j) b = _
+    rw [Matrix.mul_assoc]
+    split_ifs with h
+    · rw [h, Matrix.single_mul_apply_same, one_mul]
+      rfl
+    · exact Matrix.single_mul_apply_of_ne _ _ _ _ _ h _
+  simp only [hV, prodState_eq _ j, Function.update_self, hrest, ite_mul, zero_mul]
+  split_ifs with h
+  · rw [beta, Finset.sum_mul]
+    exact Finset.sum_congr rfl fun b _ ↦ by ring
+  · simp
+
 /-- Semiclassical phase estimation has the outcome distribution of phase estimation: on the
 input `|0…0⟩ ⊗ u` for an eigenvector `U u = e^{2πiφ} u` of norm `1`, the outcome `k` has the
 probability `|αₖ|²` (Griffiths–Niu; Nielsen–Chuang, eq. (5.24)). -/
