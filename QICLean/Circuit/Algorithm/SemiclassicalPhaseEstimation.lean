@@ -46,10 +46,10 @@ namespace PhaseEstimation
 
 variable (t m : ℕ)
 
-/-- The phase correction `θ = ∑ₘ hₘ / 2^{m+2}` of the next qubit, from the outcomes `h` of the
-qubits measured so far, the most recent first. -/
-noncomputable def correction (h : List (Fin 2)) : ℝ :=
-  (h.mapIdx fun i b ↦ ((b : ℕ) : ℝ) / 2 ^ (i + 2)).sum
+/-- The phase correction `θ = ∑_{i < j} bᵢ / 2^{j-i+1}` of the qubit `j`, from the outcomes `b`
+of the qubits measured before it. -/
+noncomputable def correction (b : Fin t → Fin 2) (j : Fin t) : ℝ :=
+  ∑ i ∈ Finset.univ.filter (· < j), ((b i : ℕ) : ℝ) / 2 ^ ((j : ℕ) - i + 1)
 
 /-- The measurement of a qubit after the phase gate `diag(1, e^{-2πiθ})` and the Hadamard gate:
 the outcome `c` has the operator `|c⟩⟨c| H diag(1, e^{-2πiθ})`. -/
@@ -67,33 +67,30 @@ noncomputable def measureQubit (j : Fin t) (θ : ℝ) :
 def qubitOutcome {j : Fin t} {θ : ℝ} (i : (measureQubit t m j θ).Index) : Fin 2 :=
   i.1 ⟨.inl (.inl j), Finset.mem_singleton_self _⟩
 
-/-- The corrected measurements of the qubits of `l` in order, after the outcomes `h`, the most
-recent first. -/
+/-- The corrected measurements of the qubits of `l` in order, after the outcomes `b`. -/
 noncomputable def measureFrom :
-    List (Fin t) → List (Fin 2) → Circuit (geometry t) (Gate t m) (system t m) (system t m)
+    List (Fin t) → (Fin t → Fin 2) → Circuit (geometry t) (Gate t m) (system t m) (system t m)
   | [], _ => .done _
-  | j :: l, h => .step (measureQubit t m j (correction h)) fun i ↦
-      measureFrom l (qubitOutcome t m i :: h)
+  | j :: l, b => .step (measureQubit t m j (correction t b j)) fun i ↦
+      measureFrom l (Function.update b j (qubitOutcome t m i))
 
-/-- The outcomes along a branch of `measureFrom l h`, the most recent first, after `h`. -/
+/-- The outcomes along a branch of `measureFrom l b`, with `b` at the qubits outside `l`. -/
 noncomputable def outcomesFrom :
-    (l : List (Fin t)) → (h : List (Fin 2)) → (measureFrom t m l h).Index → List (Fin 2)
-  | [], h, _ => h
-  | j :: l, h, p =>
-    outcomesFrom l (qubitOutcome t m
-      (p : Σ i : (measureQubit t m j (correction h)).Index,
-        (measureFrom t m l (qubitOutcome t m i :: h)).Index).1 :: h) p.2
+    (l : List (Fin t)) → (b : Fin t → Fin 2) → (measureFrom t m l b).Index → Fin t → Fin 2
+  | [], b, _ => b
+  | j :: l, b, p =>
+    outcomesFrom l (Function.update b j (qubitOutcome t m
+      (p : Σ i : (measureQubit t m j (correction t b j)).Index,
+        (measureFrom t m l (Function.update b j (qubitOutcome t m i))).Index).1)) p.2
 
 /-- Semiclassical phase estimation: the preparation, then the corrected measurements of the
 qubits `0, 1, …, t - 1`. -/
 noncomputable abbrev semiclassical : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
-  (prepare t m).comp (measureFrom t m (List.finRange t) [])
+  (prepare t m).comp (measureFrom t m (List.finRange t) 0)
 
-/-- The measured integer: the outcome of the qubit `j` is the bit at the site `t - 1 - j`, so the
-outcomes, the most recent first, are the bits from the site `0`. -/
+/-- The measured integer: the outcome of the qubit `j` is the bit at the site `t - 1 - j`. -/
 noncomputable def semiclassicalReadout (p : (semiclassical t m).Index) : Fin (2 ^ t) :=
-  encode t fun s ↦
-    (outcomesFrom t m (List.finRange t) [] ((prepare t m).compIndexEquiv _ p).2).getD s 0
+  encode t fun s ↦ outcomesFrom t m (List.finRange t) 0 ((prepare t m).compIndexEquiv _ p).2 s.rev
 
 variable {t m}
 
@@ -123,7 +120,21 @@ theorem semiclassical_accurate_prob_ge (U : Matrix (Fin m) (Fin m) ℂ) (u : Fin
 
 /-- Semiclassical phase estimation calls the oracle `2^t - 1` times. -/
 theorem queryCount_semiclassical : (semiclassical t m).queryCount = 2 ^ t - 1 := by
-  sorry
+  have h : ∀ (l : List (Fin t)) (b : Fin t → Fin 2), (measureFrom t m l b).total
+      (fun _ _ L ↦ L.cellCost fun _ _ _ g ↦ Oracle.callCount g) = 0 := by
+    intro l
+    induction l with
+    | nil => exact fun _ ↦ rfl
+    | cons j l ih =>
+      intro b
+      change (measureQubit t m j (correction t b j)).cellCost _ +
+        Finset.univ.sup (fun i ↦ (measureFrom t m l _).total _) = 0
+      rw [show (measureQubit t m j (correction t b j)).cellCost
+          (fun _ _ _ g ↦ Oracle.callCount g) = 0 from Layer.cellCost_single _ _ _, zero_add]
+      exact Nat.eq_zero_of_le_zero (Finset.sup_le fun _ _ ↦ (ih _).le)
+  rw [Circuit.queryCount, Circuit.total_comp_of_isUnbranched _ isUnbranched_prepare
+    ⟨nonempty_unique_index_prepare.some.default⟩, h, add_zero, ← Circuit.queryCount,
+    queryCount_prepare]
 
 end PhaseEstimation
 

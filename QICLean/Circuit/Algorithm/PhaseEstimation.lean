@@ -663,6 +663,22 @@ private theorem kraus_unitary_mulVec {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m
   funext y
   rw [← dft_conjTranspose_mulVec]
 
+/-- For a unit vector `u` on the target, `f(x) u(a)` has the squared norm of `f`. -/
+theorem sum_norm_sq_registerState {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
+    (f : Config (Q t) → ℂ) : ∑ σ, ‖registerState u f σ‖ ^ 2 = ∑ x, ‖f x‖ ^ 2 := by
+  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+  have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
+  have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
+  have hu' : ∑ b, ‖u b‖ ^ 2 = 1 := Complex.ofReal_injective (by
+    rw [ofReal_sum_norm_sq, hu, Complex.ofReal_one])
+  simp only [registerState, h1, h2]
+  rw [← E.symm.sum_comp, Fintype.sum_prod_type]
+  simp only [Equiv.apply_symm_apply, norm_mul, mul_pow]
+  refine Finset.sum_congr rfl fun x _ ↦ ?_
+  rw [← Finset.mul_sum, ← (Equiv.funUnique Unit (Fin m)).symm.sum_comp]
+  simp only [Equiv.funUnique_symm_apply, uniqueElim_const]
+  rw [hu', mul_one]
+
 /-- The probability of a branch is the squared amplitude of its readout. -/
 private theorem prob_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
     {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (p : (circuit t m).Index) :
@@ -673,20 +689,14 @@ private theorem prob_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu
   rw [readout]
   generalize ((unitary t m).compIndexEquiv _ p).2 = q
   obtain ⟨i, j⟩ := q
-  rw [Circuit.kraus_step, Circuit.kraus_done, Matrix.one_mul, measure_mulVec]
-  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
-  have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
-  have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
-  have hu' : ∑ b, ‖u b‖ ^ 2 = 1 := Complex.ofReal_injective (by
-    rw [ofReal_sum_norm_sq, hu, Complex.ofReal_one])
-  simp only [registerState, h1, h2]
-  rw [← E.symm.sum_comp, Fintype.sum_prod_type]
-  simp only [Equiv.apply_symm_apply]
-  rw [Finset.sum_eq_single (measured t m i) (fun x _ hx ↦ by simp [hx]) (by simp)]
-  simp only [ite_true, norm_mul, mul_pow]
-  rw [← Finset.mul_sum, ← (Equiv.funUnique Unit (Fin m)).symm.sum_comp]
-  simp only [Equiv.funUnique_symm_apply, uniqueElim_const]
-  rw [hu', mul_one]
+  rw [Circuit.kraus_step, Circuit.kraus_done, Matrix.one_mul, measure_mulVec,
+    show (fun σ ↦ if control t m σ = measured t m i then
+      registerState u (fun x ↦ amplitude t φ (encode t x)) σ else 0) =
+      registerState u fun x ↦ if x = measured t m i then amplitude t φ (encode t x) else 0 by
+    funext σ; simp only [registerState]; split_ifs <;> simp,
+    sum_norm_sq_registerState hu, Finset.sum_eq_single (measured t m i)
+      (fun x _ hx ↦ by simp [hx]) (by simp)]
+  simp
 
 /-- The readout is a bijection from the branches onto the integers below `2^t`. -/
 private theorem readout_bijective : Function.Bijective (readout t m) := by
