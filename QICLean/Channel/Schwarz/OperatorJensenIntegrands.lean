@@ -23,7 +23,7 @@ attribute [local instance] Matrix.instL2OpNormedAddCommGroup
 attribute [local instance] Matrix.instL2OpNormedRing
 attribute [local instance] Matrix.instL2OpNormedAlgebra
 
-namespace TNLean.OperatorJensen
+namespace Matrix
 
 variable {D : ℕ}
 
@@ -114,4 +114,4 @@ lemma cfc_rpowIntegrand₁₂_eq_resolvent
   have hcalc := hEq hA_nonneg
   simpa [Algebra.algebraMap_eq_smul_one, ← Matrix.nonsing_inv_eq_ringInverse] using hcalc
 
-end TNLean.OperatorJensen
+end Matrix

@@ -128,7 +128,7 @@ end
 
 end Matrix.PosDef
 
-namespace TNLean.OperatorJensen
+namespace Matrix
 
 section MatrixBochnerOrder
 
@@ -778,4 +778,4 @@ lemma positiveMap_rpowIntegrand₁₂_jensen
 
 end PositiveMapResolvent
 
-end TNLean.OperatorJensen
+end Matrix

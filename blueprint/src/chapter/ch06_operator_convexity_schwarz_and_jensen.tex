@@ -308,7 +308,7 @@ matrix-order tools used independently of the Fundamental Theorem.
 \section{Operator Jensen inequality for positive maps}
 
 \begin{definition}[Finite-POVM dilation construction]\label{def:operator_jensen_povm_aux}
-    \lean{TNLean.OperatorJensen.povmIsometry, TNLean.OperatorJensen.povmDiagonal}
+    \lean{Matrix.povmIsometry, Matrix.povmDiagonal}
     \leanok
     For a finite family of matrices $\{C_i\}_{i\in\iota}$ and a defect block
     $S$, one forms an isometric dilation whose rows are the adjoints of the
@@ -338,12 +338,12 @@ matrix-order tools used independently of the Fundamental Theorem.
 \end{proof}
 
 \begin{lemma}[Finite-POVM compression identities]\label{lem:operator_jensen_povm_compression}
-    \lean{TNLean.OperatorJensen.povmIsometry_star_mul,
-        TNLean.OperatorJensen.povmIsometry_compress_diagonal,
-        TNLean.OperatorJensen.povm_sum_add_defect,
-        TNLean.OperatorJensen.povmDiagonal_posDef,
-        TNLean.OperatorJensen.povmDiagonal_inv,
-        TNLean.OperatorJensen.povmIsometry_compress_diagonal_inv}
+    \lean{Matrix.povmIsometry_star_mul,
+        Matrix.povmIsometry_compress_diagonal,
+        Matrix.povm_sum_add_defect,
+        Matrix.povmDiagonal_posDef,
+        Matrix.povmDiagonal_inv,
+        Matrix.povmIsometry_compress_diagonal_inv}
     \leanok
     If the defect block satisfies
     \begin{align}
@@ -375,7 +375,7 @@ matrix-order tools used independently of the Fundamental Theorem.
 \end{proof}
 
 \begin{lemma}[Finite-POVM resolvent inequality]\label{lem:operator_jensen_povm_resolvent}
-    \lean{TNLean.OperatorJensen.povm_resolvent_inv_le}
+    \lean{Matrix.povm_resolvent_inv_le}
     \leanok
     \uses{lem:operator_jensen_povm_compression, lem:operator_jensen_inverse_compression}
     Let $w_i\ge0$ and $t>0$. If the defect block satisfies
@@ -400,7 +400,7 @@ matrix-order tools used independently of the Fundamental Theorem.
 \end{proof}
 
 \begin{lemma}[Spectral finite-POVM resolution]\label{lem:operator_jensen_spectral_resolution}
-    \lean{TNLean.OperatorJensen.posSemidef_spectral_resolution}
+    \lean{Matrix.posSemidef_spectral_resolution}
     \leanok
     Let $A\ge0$ be a finite matrix. There are positive semidefinite matrices
     $P_i$ and non-negative real numbers $\lambda_i$ such that
@@ -419,7 +419,7 @@ matrix-order tools used independently of the Fundamental Theorem.
 \end{proof}
 
 \begin{lemma}[Positive-map resolvent inequality]\label{lem:operator_jensen_positive_map_resolvent}
-    \lean{TNLean.OperatorJensen.positiveMap_resolvent_inv_le}
+    \lean{Matrix.positiveMap_resolvent_inv_le}
     \leanok
     \uses{lem:operator_jensen_povm_resolvent,
         lem:operator_jensen_spectral_resolution}
@@ -446,7 +446,7 @@ matrix-order tools used independently of the Fundamental Theorem.
 
 \begin{lemma}[Positive-map real-power integrand inequality]
     \label{lem:operator_jensen_positive_map_rpow_integrand}
-    \lean{TNLean.OperatorJensen.positiveMap_rpowIntegrand₀₁_jensen}
+    \lean{Matrix.positiveMap_rpowIntegrand₀₁_jensen}
     \leanok
     \uses{lem:operator_jensen_positive_map_resolvent}
     Let $T$ be a positive subunital map, let $A\ge0$, let
@@ -472,7 +472,7 @@ matrix-order tools used independently of the Fundamental Theorem.
 
 \begin{lemma}[Positive-map convex real-power integrand inequality]
     \label{lem:operator_jensen_positive_map_rpow_integrand_convex}
-    \lean{TNLean.OperatorJensen.positiveMap_rpowIntegrand₁₂_jensen}
+    \lean{Matrix.positiveMap_rpowIntegrand₁₂_jensen}
     \leanok
     \uses{lem:operator_jensen_positive_map_resolvent}
     Let $T$ be a positive subunital map, let $A\ge0$, let
@@ -501,7 +501,7 @@ matrix-order tools used independently of the Fundamental Theorem.
 \end{proof}
 
 \begin{lemma}[Positive matrix-valued integrals]\label{lem:operator_jensen_integral_order}
-    \lean{TNLean.OperatorJensen.integral_nonneg_matrix_of_ae}
+    \lean{Matrix.integral_nonneg_matrix_of_ae}
     \leanok
     Let $f$ be a function from a measure space to a finite matrix algebra. If
     $f(x)\ge0$ for almost every $x$, then
