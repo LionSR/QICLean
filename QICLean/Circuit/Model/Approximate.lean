@@ -90,15 +90,14 @@ theorem IsConversion.isApproxConversion {T : ℕ} {ρ : Matrix (Config X) (Confi
 /-- Every matrix is converted into itself in depth `0` with error `0`. -/
 theorem IsApproxConversion.refl (ρ : Matrix (Config X) (Config X) ℂ) :
     IsApproxConversion Γ 0 0 ρ ρ :=
-  ⟨LinearMap.id, ⟨Circuit.done X, trivial, le_rfl, Circuit.map_done _, trivial⟩,
-    by simp [rectangularTraceNorm_zero]⟩
+  ⟨LinearMap.id, .id, by simp [rectangularTraceNorm_zero]⟩
 
 /-- Larger bounds on the depth and the error keep a conversion. -/
 theorem IsApproxConversion.mono {T T' : ℕ} {ε ε' : ℝ} {ρ : Matrix (Config X) (Config X) ℂ}
     {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsApproxConversion Γ T ε ρ σ) (hT : T ≤ T')
     (hε : ε ≤ ε') : IsApproxConversion Γ T' ε' ρ σ :=
-  let ⟨Φ, ⟨c, hc, hd, hm, hu⟩, herr⟩ := h
-  ⟨Φ, ⟨c, hc, hd.trans hT, hm, hu⟩, herr.trans hε⟩
+  let ⟨Φ, hΦ, herr⟩ := h
+  ⟨Φ, hΦ.mono hT, herr.trans hε⟩
 
 /-- Conversions compose, adding their depths and their errors: the second protocol contracts
 the first error, and the triangle inequality adds the second. -/

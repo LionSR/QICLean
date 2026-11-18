@@ -35,18 +35,21 @@ conversion at polylogarithmic depth is an equivalence relation.
 \begin{theorem}[Composition of protocols]
     \label{thm:protocols_comp}
     \lean{QuantumCircuit.IsProtocol.adaptive, QuantumCircuit.IsBoundedProtocol.isProtocol,
+        QuantumCircuit.IsProtocol.id, QuantumCircuit.IsProtocol.mono,
         QuantumCircuit.IsAdaptiveProtocol.comp, QuantumCircuit.IsProtocol.comp,
         QuantumCircuit.IsBoundedProtocol.comp}
     \leanok
     \uses{def:protocols_protocol, thm:circuits_composition, thm:circuits_cost_subadditive,
         lem:circuits_dim_bounded}
-    A protocol is an adaptive protocol, and a protocol bounded by $B$ is a protocol. If $\Phi$
+    A protocol is an adaptive protocol, and a protocol bounded by $B$ is a protocol. The
+    identity is realised by a protocol of depth $0$, and a protocol of depth at most $T$ has
+    depth at most every $T'\ge T$. If $\Phi$
     and $\Psi$ are realised in depths $T$ and $T'$ by protocols of one of the three classes,
     with the same bound $B$ for bounded protocols, then $\Psi\circ\Phi$ is realised in depth
     $T+T'$ by a protocol of the same class.
 \end{theorem}
 \begin{proof}\leanok
-    Compose the circuits. The map of the composite is $\Psi\circ\Phi$ and its depth is at
+    The empty circuit realises the identity. Compose the circuits. The map of the composite is $\Psi\circ\Phi$ and its depth is at
     most $T+T'$; local trace preservation, being unbranched and the dimension bound pass to the
     composite.
 \end{proof}
