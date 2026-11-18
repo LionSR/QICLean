@@ -283,7 +283,7 @@ and each Kraus operator is a product of local entries over the blocks.
     The adjoint for the trace pairing of the map of a circuit is its Heisenberg picture.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{lem:circuits_duality}
+    \uses{lem:circuits_duality, thm:trace_nondeg, thm:trace_pairing_adjoint_identity}
     Both satisfy $\operatorname{tr}(\Phi^*(A)\rho)=\operatorname{tr}(A\,\Phi(\rho))$ by
     Lemma~\ref{lem:circuits_duality}, and the trace pairing is nondegenerate.
 \end{proof}

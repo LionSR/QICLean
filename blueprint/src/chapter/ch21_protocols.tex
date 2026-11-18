@@ -24,7 +24,7 @@ expectations after the conversion of a product input factorize at distance great
     is realised by an adaptive protocol of depth at most $T$ if it is the map of a circuit
     from $X$ to $Z$ of plain gates whose gates and onsite families are trace-preserving and
     whose depth is at most $T$. It is realised by a protocol if the circuit can be taken
-    unbranched, and by a protocol bounded by $B$ if moreover every basis along the circuit has
+    unbranched, and by a protocol bounded by $B$ if every basis along the circuit also has
     between $1$ and $B$ elements. A matrix $\rho$ on $\mathcal H_X$ is converted into a matrix
     $\sigma$ on $\mathcal H_Z$ in depth $T$ if some $\Phi$ realised by a protocol of depth at
     most $T$ has $\Phi(\rho)=\sigma$.
@@ -61,11 +61,12 @@ expectations after the conversion of a product input factorize at distance great
     nonempty input bases is bounded by some $B$, which depends on the protocol.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{lem:circuits_tp_nonempty}
-    The input bases are bounded by definition. A circuit whose gates and onsite families are
-    trace-preserving on nonempty bases has a branch by
-    Lemma~\ref{lem:circuits_tp_nonempty}, and along it the output bases are bounded. The
-    last statement is Lemma~\ref{lem:circuits_dim_bounded}.
+    \uses{lem:circuits_tp_nonempty, thm:circuits_tp}
+    The input bases are bounded by definition. The map of a circuit whose gates and onsite
+    families are trace-preserving is trace-preserving by Theorem~\ref{thm:circuits_tp}, so on
+    nonempty input bases the circuit has a branch, and along it the output bases are bounded. A
+    bound by $B$ on every basis is a bound by every $C\ge B$. The last statement is
+    Lemma~\ref{lem:circuits_dim_bounded}.
 \end{proof}
 
 \section{Light cones of protocols}
@@ -82,11 +83,11 @@ for the map of a circuit it is the Heisenberg picture (Lemma~\ref{lem:circuits_t
         QuantumCircuit.IsConversion.trace_mul_mul_eq}
     \leanok
     \uses{def:protocols_protocol, lem:circuits_trace_adjoint, def:sites_supported}
-    Let every cell of $\Gamma$ have positive cost, let $\Phi$ be realised by a protocol of
-    depth at most $T$, and write $N^T(R)$ for the $T$-fold neighbourhood of a region $R$.
-    Then $\Phi^*$ maps an operator supported on $R$ to an operator supported on $N^T(R)$, and
-    $\Phi^*(AB)=\Phi^*(A)\Phi^*(B)$ for $A$ supported on $R$ and $B$ supported on $R'$ with
-    $N^T(R)\cap N^T(R')=\emptyset$. If a product $\bigotimes_s\sigma_s$ with
+    Let $\Gamma$ have finitely many cells, each of positive cost, and let $\Phi$ be realised
+    by a protocol of depth at most $T$. Then $\Phi^*$ maps an operator supported on a region
+    $R$ to an operator supported on the $T$-fold neighbourhood of $R$, and
+    $\Phi^*(AB)=\Phi^*(A)\Phi^*(B)$ for $A$ supported on $R$ and $B$ supported on $R'$ when
+    the $T$-fold neighbourhoods of $R$ and $R'$ are disjoint. If a product $\bigotimes_s\sigma_s$ with
     $\operatorname{tr}\sigma_s=1$ is converted into $\sigma$ in depth $T$, then for such $A$
     and $B$
     \begin{align}
@@ -97,8 +98,9 @@ for the map of a circuit it is the Heisenberg picture (Lemma~\ref{lem:circuits_t
 \begin{proof}\leanok
     \uses{thm:circuits_light_cone, thm:circuits_light_cone_factorization}
     By Lemma~\ref{lem:circuits_trace_adjoint}, $\Phi^*$ is the Heisenberg picture of the
-    circuit. Its backward light cone of $R$ lies in $N^T(R)$ because every cell has positive
-    cost and the depth is at most $T$, so Theorems~\ref{thm:circuits_light_cone}
+    circuit. Its backward light cone of $R$ lies in the $T$-fold neighbourhood of $R$ because
+    the geometry has finitely many cells, every cell has positive cost and the depth is at most
+    $T$, so Theorems~\ref{thm:circuits_light_cone}
     and~\ref{thm:circuits_light_cone_factorization} apply.
 \end{proof}
 
@@ -108,17 +110,24 @@ for the map of a circuit it is the Heisenberg picture (Lemma~\ref{lem:circuits_t
         QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mul}
     \leanok
     \uses{thm:protocols_light_cone, def:sites_block}
-    Let $f:V\to V'$ group the sites into blocks, let every cell of a geometry $\Gamma'$ on
-    $V'$ have positive cost, and let $\Phi$ be realised on the blocked system by a protocol
-    of depth at most $T$. Read on the sites, as $\rho\mapsto\Phi(\rho)$ with $\rho$ a matrix on
-    $\mathcal H_X$, its adjoint maps an operator supported on a region $R$ of blocks to an
-    operator supported on $f^{-1}(N^T(R))$, and is multiplicative on operators supported on
-    regions with disjoint $T$-fold neighbourhoods.
+    Let $f:V\to V'$ group the sites into blocks, let a geometry $\Gamma'$ on $V'$ have
+    finitely many cells, each of positive cost, and let $\Phi$ be realised on the blocked system
+    by a protocol of depth at most $T$. Read on the sites, as $\rho\mapsto\Phi(\rho)$ with
+    $\rho$ a matrix on $\mathcal H_X$, its adjoint maps an operator supported on a region $R$
+    of blocks to an operator supported on the preimage under $f$ of the $T$-fold neighbourhood
+    of $R$, and is multiplicative on operators supported on regions with disjoint $T$-fold
+    neighbourhoods.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:sites_block_place, lem:trace_adjoint_reindex}
-    By Lemma~\ref{lem:trace_adjoint_reindex} the adjoint read on the sites is the adjoint on
-    the blocks followed by the identification of configurations, which is multiplicative and, by
-    Lemma~\ref{lem:sites_block_place}, sends an operator placed on $N^T(R)$ to the same
-    operator placed on $f^{-1}(N^T(R))$.
+    \uses{lem:sites_block_place, lem:trace_adjoint_reindex, thm:protocols_light_cone}
+    Write $\pi$ for the identification of the matrices on the blocked system with those on
+    the sites, induced by the identification of configurations. The map read on the sites is
+    $\Phi\circ\pi^{-1}$, and by Lemma~\ref{lem:trace_adjoint_reindex}
+    \begin{align}
+        (\Phi\circ\pi^{-1})^*&=\pi\circ\Phi^*.
+        \notag
+    \end{align}
+    The map $\pi$ is multiplicative and, by Lemma~\ref{lem:sites_block_place}, sends an
+    operator placed on a region of blocks to the same operator placed on its preimage under
+    $f$; Theorem~\ref{thm:protocols_light_cone} applied to $\Phi^*$ gives both statements.
 \end{proof}

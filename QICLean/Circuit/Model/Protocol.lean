@@ -157,7 +157,7 @@ theorem IsBoundedProtocol.dimension_bounds {B T : ℕ}
     (∀ s, 0 < Nat.card (X s) ∧ Nat.card (X s) ≤ B) ∧
       ∀ s, 0 < Nat.card (Z s) ∧ Nat.card (Z s) ≤ B := by
   obtain ⟨c, hTP, -, -, -, hB⟩ := h
-  have := fun s ↦ (Nat.card_pos_iff.mp (hB.input s).1).1
+  have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hB.input s).1).1
   obtain ⟨p⟩ := (c.isTP_krausFamily _ hTP).nonempty_index
   exact ⟨hB.input, hB.output p⟩
 
