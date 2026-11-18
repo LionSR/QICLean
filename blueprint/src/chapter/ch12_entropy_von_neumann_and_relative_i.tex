@@ -661,7 +661,8 @@
     \leanok
     \uses{lem:root_of_unity_orthogonality}
     Fix a dimension $d\ge1$ and a primitive $d$-th root of unity $\zeta$, and
-    let $X$ be the cyclic shift $\ket{i}\mapsto\ket{i+1}$ and
+    let $X$ be the cyclic shift $\ket{i}\mapsto\ket{i-1}$, whose entry at
+    $(i,i+1)$ is $1$, and
     $Z=\diag(\zeta^0,\ldots,\zeta^{d-1})$ the clock operator. For
     every matrix $M$ on $\C^d$, the uniform average of the conjugations
     by the $d^2$ Weyl operators $W(a,b)=X^aZ^b$ is the completely depolarizing
@@ -685,6 +686,32 @@
     cyclically permutes the diagonal entries, so each diagonal position receives
     the full sum $\sum_kv_k=\tr M$, giving $(\tr M)\Id$. Combining the two
     factors of $d$ with the prefactor $d^{-2}$ leaves $(\tr M/d)\Id$.
+\end{proof}
+
+\begin{lemma}[The Fourier matrix]
+    \label{lem:weyl_fourier}
+    \lean{Matrix.weylFourier, Matrix.weylFourier_mem_unitaryGroup,
+        Matrix.weylFourier_mul_weylShift}
+    \leanok
+    \uses{lem:root_of_unity_orthogonality, thm:weyl_twirl}
+    Fix a dimension $d\ge1$ and a primitive $d$-th root of unity $\zeta$. The
+    Fourier matrix $F_{ab}=\zeta^{ab}/\sqrt d$ on the residues modulo $d$ is
+    unitary, and it conjugates the cyclic shift into the clock operator of
+    $\zeta^{-1}$:
+    \begin{align}
+        FX & =Z(\zeta^{-1})F.
+        \label{eq:entropy_weyl_fourier_shift}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:root_of_unity_orthogonality}
+    The entry of $FF^\dagger$ at $(a,b)$ is
+    $d^{-1}\sum_c\zeta^{ca}\overline{\zeta^{cb}}$, which is $\delta_{ab}$ by
+    Lemma~\ref{lem:root_of_unity_orthogonality}. The entry of $FX$ at $(a,b)$ is
+    $F_{a,b-1}=\zeta^{a(b-1)}/\sqrt d$, and that of $Z(\zeta^{-1})F$ is
+    $\zeta^{-a}\zeta^{ab}/\sqrt d$; they agree because $\zeta^d=1$, so powers of
+    $\zeta$ depend only on the exponent modulo $d$.
 \end{proof}
 
 \begin{lemma}[Twirl as partial trace tensored with the maximally mixed ancilla]
