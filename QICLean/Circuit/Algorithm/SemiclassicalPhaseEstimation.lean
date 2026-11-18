@@ -76,8 +76,8 @@ noncomputable def measureFrom :
       measureFrom l (qubitOutcome t m i :: h)
 
 /-- The outcomes along a branch of `measureFrom l h`, the most recent first, after `h`. -/
-noncomputable def outcomesFrom : (l : List (Fin t)) → (h : List (Fin 2)) → (measureFrom t m l h).Index →
-    List (Fin 2)
+noncomputable def outcomesFrom :
+    (l : List (Fin t)) → (h : List (Fin 2)) → (measureFrom t m l h).Index → List (Fin 2)
   | [], h, _ => h
   | j :: l, h, p =>
     outcomesFrom l (qubitOutcome t m
