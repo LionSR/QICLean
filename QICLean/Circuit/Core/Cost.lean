@@ -17,9 +17,9 @@ gate count and the number of gates meeting a given site are its three instances:
 
 The last two, and the depth up to `min 1`, are sums over the cells of a layer of a weight of the
 gate on the cell (`Layer.cellCost`). A weight may depend on the gate and not only on its cell,
-as the number of calls to an oracle does. Onsite families cost nothing. A circuit is "of depth `T`" when its depth is at most `T`, so
-statements are monotone in `T` without further proof. The cost of a composition is at most the
-sum of the costs; this is proved once for every cost.
+as the number of calls to an oracle does. Onsite families cost nothing. A circuit is "of depth
+`T`" when its depth is at most `T`, so statements are monotone in `T` without further proof. The
+cost of a composition is at most the sum of the costs; this is proved once for every cost.
 
 ## Main definitions
 
