@@ -39,9 +39,12 @@ namespace Matrix
 
 /-- Two linear maps on the matrices of `α × α'` that agree on all Kronecker products are equal:
 the Kronecker products span. -/
-theorem linearMap_ext_kronecker {α α' M : Type} [Fintype α] [DecidableEq α] [Fintype α']
-    [DecidableEq α'] [AddCommMonoid M] [Module ℂ M]
-    {f g : Matrix (α × α') (α × α') ℂ →ₗ[ℂ] M} (h : ∀ x y, f (x ⊗ₖ y) = g (x ⊗ₖ y)) : f = g := by
+theorem linearMap_ext_kronecker {α α' M : Type} [Finite α] [Finite α'] [AddCommMonoid M]
+    [Module ℂ M] {f g : Matrix (α × α') (α × α') ℂ →ₗ[ℂ] M}
+    (h : ∀ x y, f (x ⊗ₖ y) = g (x ⊗ₖ y)) : f = g := by
+  classical
+  have := Fintype.ofFinite α
+  have := Fintype.ofFinite α'
   have : f ∘ₗ (kroneckerLinearEquiv α α α' α' ℂ).toLinearMap =
       g ∘ₗ (kroneckerLinearEquiv α α α' α' ℂ).toLinearMap :=
     TensorProduct.ext' fun x y ↦ h x y

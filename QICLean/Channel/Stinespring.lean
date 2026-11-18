@@ -165,7 +165,7 @@ theorem stinespring_dual_representation_gen
 /-- A linear combination of Kraus blocks is obtained by left-multiplying the
 Stinespring matrix by `1 ⊗ C`. -/
 theorem stinespringVGen_linear_combination
-    {η α β : Type*} [Fintype β] [DecidableEq β]
+    {r : ℕ} {η α β : Type*} [Fintype β] [DecidableEq β]
     (K : Fin r → Matrix β α ℂ)
     (C : Matrix η (Fin r) ℂ) :
     stinespringVGen (fun α : η => ∑ j : Fin r, C α j • K j) =
@@ -187,7 +187,7 @@ theorem stinespringVGen_linear_combination
 /-- The Kronecker identity
 `A ⊗ (CᴴC) = (𝟙 ⊗ C)ᴴ (A ⊗ 𝟙)(𝟙 ⊗ C)` for an arbitrary finite row type. -/
 theorem Matrix.kroneckerMap_conjTranspose_mul_kroneckerMap_gen
-    {η β : Type*} [Fintype η] [DecidableEq η] [Fintype β] [DecidableEq β]
+    {r : ℕ} {η β : Type*} [Fintype η] [DecidableEq η] [Fintype β] [DecidableEq β]
     (A : Matrix β β ℂ) (C : Matrix η (Fin r) ℂ) :
     (Matrix.kroneckerMap (· * ·) (1 : Matrix β β ℂ) C)ᴴ *
         Matrix.kroneckerMap (· * ·) A (1 : Matrix η η ℂ) *
@@ -316,6 +316,7 @@ theorem stinespringVGen_conjTranspose_mul (K : KrausFamily α β) :
   ext a a'
   simp [effect, mul_apply, Matrix.sum_apply, Fintype.sum_prod_type, Finset.sum_comm (γ := β)]
 
+omit [Fintype β] in
 /-- The map of a finite Kraus family is the partial trace of the conjugation by its
 Stinespring matrix. -/
 theorem map_eq_partialTraceRight [Fintype α] (K : KrausFamily α β) (X : Matrix α α ℂ) :
