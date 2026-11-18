@@ -51,7 +51,8 @@ supports `T : κ → Finset V` on an arbitrary system of sites, in place of a fa
 -/
 
 open NormedSpace
-private theorem hasDerivAt_exp_conjugation_variable
+/-- Differentiating conjugation of a variable observable by an exponential. -/
+theorem hasDerivAt_exp_conjugation_variable
     {R : Type*} [NormedRing R] [NormedAlgebra ℝ R] [CompleteSpace R]
     (K : R) {f : ℝ → R} {f' : R} {t : ℝ} (hf : HasDerivAt f f' t) :
     HasDerivAt (fun s : ℝ => exp (s • K) * f s * exp ((-s) • K))

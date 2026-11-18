@@ -676,3 +676,102 @@ nested-commutator bound, which is not proved.
     $2\lVert A\rVert\lVert U-W\rVert$, and $e^{itH}Ae^{-itH}=W^*AW$ for
     $W=e^{-itH}$.
 \end{proof}
+
+\section{Comparison with a spatially truncated Hamiltonian}
+
+\begin{lemma}[Derivative of a relative evolution]
+    \label{lem:dynamics_relative_derivative}
+    \lean{hasDerivAt_exp_conjugation_variable, ManyBody.hasDerivAt_relative_heisenberg}
+    \leanok
+    \uses{def:dynamics_heisenberg}
+    In a complete real normed algebra, if $f'(s)$ exists, then
+    \[
+      \frac{d}{ds}\bigl(e^{sK}f(s)e^{-sK}\bigr)
+       =e^{sK}\bigl(Kf(s)+f'(s)-f(s)K\bigr)e^{-sK}.
+    \]
+    In particular, for arbitrary finite complex matrices $H,K,A$, put
+    $F(s)=\tau^H_{-s}(\tau^K_s(A))$. Then
+    \[
+      F'(s)=\tau^H_{-s}\bigl(i[K-H,\tau^K_s(A)]\bigr).
+    \]
+    Neither differentiation identity requires Hermiticity.
+\end{lemma}
+\begin{proof}\leanok
+    Apply the product rule to the two exponentials and the middle factor.
+    For the second formula apply the first formula twice, using that $K$
+    commutes with its exponential, and collect the two commutators.
+\end{proof}
+
+\begin{theorem}[Finite Hamiltonian comparison]
+    \label{thm:dynamics_hamiltonian_comparison}
+    \lean{ManyBody.norm_heisenbergEvolution_sub_le_of_commutator_bound,
+      ManyBody.norm_heisenbergEvolution_sub_le_of_sum_commutator_bound}
+    \leanok
+    \uses{def:dynamics_heisenberg}
+    Let $H$ be Hermitian, $K,A$ arbitrary finite complex matrices, and $t\in\R$.
+    If $\|[K-H,\tau^K_s(A)]\|\leq\varepsilon$ for every $s$ between $0$ and $t$,
+    then
+    \[
+      \|\tau^K_t(A)-\tau^H_t(A)\|\leq\varepsilon |t|.
+    \]
+    More generally, if $K-H=\sum_{j\in D}B_j$ for a finite set $D$, and
+    $\|[\tau^K_s(A),B_j]\|\leq\varepsilon_j$ on that same interval, then
+    the right side can be replaced by $|t|\sum_{j\in D}\varepsilon_j$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:dynamics_relative_derivative}
+    Unitary conjugation by $H$ gives
+    $\|F'(s)\|=\|[K-H,\tau^K_s(A)]\|$.
+    The normed-space mean value inequality on the closed interval with
+    endpoints $0,t$ yields $\|F(t)-F(0)\|\leq\varepsilon|t|$.
+    Since $F(0)=A$, conjugating by $\tau^H_t$ gives the claimed difference.
+    For the finite-sum version, expand the commutator and apply the triangle
+    inequality: $\|[\sum_j B_j,\tau^K_s(A)]\|\leq\sum_j\varepsilon_j$.
+\end{proof}
+
+\begin{theorem}[Finite spatial truncation error]
+    \label{thm:dynamics_spatial_truncation}
+    \lean{ManyBody.norm_heisenbergEvolution_sub_le_graphDistance,
+      ManyBody.norm_heisenbergEvolution_sub_spatial_truncation_le}
+    \leanok
+    \uses{def:dynamics_interaction, def:dynamics_heisenberg}
+    Let $G$ be a finite graph and $\Phi_j$ Hermitian interactions supported
+    on $T_j$. Assume $\operatorname{diam}_G(T_j)\leq R$, $|T_j|\leq v_R$,
+    and $\sum_{j:x\in T_j}\|\Phi_j\|\leq b$ at every site $x$.
+    Put $K=\sum_j\Phi_j$, fix $A\in\mathcal A_S$, $\mu\geq0$, and $d\in\mathbb N$.
+    For a set $D$ of deleted terms and any Hermitian $H$ with
+    $K-H=\sum_{j\in D}\Phi_j$, suppose $d_G(x,y)\geq d$ for
+    $x\in S$, $y\in T_j$, $j\in D$. Then, with $M_D=\sum_{j\in D}\|\Phi_j\|$,
+    \[
+      \|\tau^K_t(A)-\tau^H_t(A)\|
+      \leq4|S|\|A\|M_D|t|
+      \exp\bigl(4v_R|b|e^{2\mu R}|t|-\mu d\bigr).
+    \]
+    In particular take $H=\sum_{j:T_j\subseteq L}\Phi_j$ and
+    $D=\{j:T_j\not\subseteq L\}$. The same estimate holds if
+    $d_G(x,z)\geq d+R$ for every $x\in S$, $z\notin L$.
+    This is a finite-dimensional consequence of the existing commutator
+    bound, not a claim about infinite-system dynamics.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:dynamics_hamiltonian_comparison, thm:dynamics_lieb_robinson}
+    For every $s$ between $0$ and $t$, the two-region commutator estimate gives
+    \[
+      \|[\tau^K_s(A),\Phi_j]\|
+       \leq4|S|\|A\|\|\Phi_j\|
+        e^{4v_R|b|e^{2\mu R}|s|-\mu d}
+       \leq4|S|\|A\|\|\Phi_j\|
+        e^{4v_R|b|e^{2\mu R}|t|-\mu d}.
+    \]
+    Sum these bounds in the comparison theorem.
+    For spatial truncation, choose $z\in T_j\setminus L$ for each deleted term.
+    For $y\in T_j$ the triangle inequality yields
+    $d+R\leq d_G(x,z)\leq d_G(x,y)+R$, hence $d\leq d_G(x,y)$,
+    also when the latter distance is infinite. The kept sum is Hermitian,
+    and partitioning the terms gives the required Hamiltonian difference.
+\end{proof}
+
+For fixed $t$, $\mu>0$, and uniformly bounded $|S|$, $\|A\|$, $M_D$, $R$,
+$v_R$, and $|b|$, this explicit right side decays exponentially in $d$.
+No bound on $M_D$ uniform in the ambient volume is proved here; obtaining
+such control or a boundary-weighted replacement remains a separate task.
