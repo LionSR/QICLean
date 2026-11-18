@@ -170,6 +170,53 @@ private theorem kraus_encode_mul_eq_zero (L : Layer Γ KrausGate X Y) (e : ∀ s
     exact (mul_initializedBasisMatrix_apply _ _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inr_mul _ _ _ _ a) _) _)
 
+/-- The encoded layer, followed by continuations that act on the code as the continuations of
+the layer, acts on the code as the layer followed by its continuations. -/
+private theorem map_step_encode {Z Z' : S → Type} [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)]
+    [∀ s, Fintype (Z' s)]
+    [∀ s, DecidableEq (Z' s)] (L : Layer Γ KrausGate X Y) (e : ∀ s, X s ↪ X' s)
+    (f : ∀ s, Y s ↪ Y' s) (g : ∀ s, Z s ↪ Z' s) (y₀ : ∀ s, Y' s)
+    (next : L.Index → Circuit Γ KrausGate Y Z)
+    (next' : (L.encode e f y₀).Index → Circuit Γ KrausGate Y' Z')
+    (h : ∀ i, (next' (L.encodeIndex e f y₀ i)).map KrausGate.ev ∘ₗ
+        (encodeCircuit Γ f).map KrausGate.ev =
+      (encodeCircuit Γ g).map KrausGate.ev ∘ₗ (next i).map KrausGate.ev) :
+    (Circuit.step (L.encode e f y₀) next').map KrausGate.ev ∘ₗ
+        (encodeCircuit Γ e).map KrausGate.ev =
+      (encodeCircuit Γ g).map KrausGate.ev ∘ₗ (Circuit.step L next).map KrausGate.ev := by
+  refine LinearMap.ext fun ρ ↦ ?_
+  simp only [LinearMap.comp_apply, Circuit.map_step, map_sum]
+  refine (Fintype.sum_of_injective (L.encodeIndex e f y₀) (L.encodeIndex_injective e f y₀) _ _
+    (fun p hp ↦ ?_) fun i ↦ ?_).symm
+  · rw [map_encodeCircuit, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
+      kraus_encode_mul_eq_zero L e f y₀ hp]
+    simp
+  · have hk := L.kraus_encode_mul e f y₀ i
+    have : (L.encode e f y₀).kraus KrausGate.ev (L.encodeIndex e f y₀ i) *
+          (encodeCircuit Γ e).map KrausGate.ev ρ *
+          ((L.encode e f y₀).kraus KrausGate.ev (L.encodeIndex e f y₀ i))ᴴ =
+        (encodeCircuit Γ f).map KrausGate.ev
+          (L.kraus KrausGate.ev i * ρ * (L.kraus KrausGate.ev i)ᴴ) := by
+      rw [map_encodeCircuit, map_encodeCircuit]
+      calc _ = (L.encode e f y₀).kraus KrausGate.ev (L.encodeIndex e f y₀ i) *
+              initializedBasisMatrix (Function.Embedding.piCongrRight e) * ρ *
+            ((L.encode e f y₀).kraus KrausGate.ev (L.encodeIndex e f y₀ i) *
+              initializedBasisMatrix (Function.Embedding.piCongrRight e))ᴴ := by
+            simp only [conjTranspose_mul, Matrix.mul_assoc]
+        _ = _ := by
+            rw [hk]
+            simp only [conjTranspose_mul, Matrix.mul_assoc]
+    rw [this]
+    exact (LinearMap.congr_fun (h i) _).symm
+
+/-- The circuit of the encoded layer acts on the code as the circuit of the layer. -/
+private theorem map_ofLayer_encode (L : Layer Γ KrausGate X Y) (e : ∀ s, X s ↪ X' s)
+    (f : ∀ s, Y s ↪ Y' s) (y₀ : ∀ s, Y' s) :
+    (Circuit.ofLayer (L.encode e f y₀)).map KrausGate.ev ∘ₗ (encodeCircuit Γ e).map KrausGate.ev =
+      (encodeCircuit Γ f).map KrausGate.ev ∘ₗ (Circuit.ofLayer L).map KrausGate.ev :=
+  map_step_encode L e f f y₀ _ _ fun _ ↦ by
+    rw [Circuit.map_done, Circuit.map_done, LinearMap.id_comp, LinearMap.comp_id]
+
 /-- A layer of trace-preserving plain gates and onsite families on nonempty bases is carried
 along embeddings `e` of its input and `f` of its output system to a layer on the same cells,
 again trace-preserving, which acts as the layer on the code. The nonemptiness supplies a basis
@@ -183,34 +230,90 @@ theorem exists_encoded [∀ s, Nonempty (X s)] (L : Layer Γ KrausGate X Y)
         (encodeCircuit Γ f).map KrausGate.ev ∘ₗ (Circuit.ofLayer L).map KrausGate.ev := by
   have := L.nonempty_output_of_forall_isTP KrausGate.ev hL
   let y₀ : ∀ s, Y' s := fun s ↦ f s (Classical.arbitrary _)
-  refine ⟨L.encode e f y₀, rfl, ⟨fun b ↦ (hL.1 b).encode _ _ _, fun s ↦ (hL.2 s).encode _ _ _⟩,
-    LinearMap.ext fun ρ ↦ ?_⟩
-  simp only [LinearMap.comp_apply, map_encodeCircuit, Circuit.map_ofLayer, KrausFamily.map_apply,
-    Matrix.mul_sum, Matrix.sum_mul]
-  refine (Fintype.sum_of_injective (L.encodeIndex e f y₀) (L.encodeIndex_injective e f y₀) _ _
-    (fun p hp ↦ ?_) fun p ↦ ?_).symm
-  · change (L.encode e f y₀).kraus _ p *
-        (initializedBasisMatrix (Function.Embedding.piCongrRight e) * ρ *
-          (initializedBasisMatrix (Function.Embedding.piCongrRight e))ᴴ) *
-        ((L.encode e f y₀).kraus _ p)ᴴ = 0
-    rw [← Matrix.mul_assoc, ← Matrix.mul_assoc, kraus_encode_mul_eq_zero L e f y₀ hp]
-    simp
-  · change initializedBasisMatrix (Function.Embedding.piCongrRight f) *
-        (L.kraus _ p * ρ * (L.kraus _ p)ᴴ) *
-          (initializedBasisMatrix (Function.Embedding.piCongrRight f))ᴴ =
-      (L.encode e f y₀).kraus _ (L.encodeIndex e f y₀ p) *
-        (initializedBasisMatrix (Function.Embedding.piCongrRight e) * ρ *
-          (initializedBasisMatrix (Function.Embedding.piCongrRight e))ᴴ) *
-        ((L.encode e f y₀).kraus _ (L.encodeIndex e f y₀ p))ᴴ
-    have h := L.kraus_encode_mul e f y₀ p
-    calc _ = initializedBasisMatrix (Function.Embedding.piCongrRight f) * L.kraus KrausGate.ev p *
-          ρ * (initializedBasisMatrix (Function.Embedding.piCongrRight f) *
-            L.kraus KrausGate.ev p)ᴴ := by
-          simp only [conjTranspose_mul, Matrix.mul_assoc]
-      _ = _ := by
-          rw [← h]
-          simp only [conjTranspose_mul, Matrix.mul_assoc]
+  exact ⟨L.encode e f y₀, rfl, ⟨fun b ↦ (hL.1 b).encode _ _ _, fun s ↦ (hL.2 s).encode _ _ _⟩,
+    map_ofLayer_encode L e f y₀⟩
 
 end Layer
+
+namespace Circuit
+
+/-- A circuit of trace-preserving plain gates and onsite families whose bases along it have
+between `1` and `B ≤ q` elements is carried along any embeddings `e` of its input and `f` of its
+output bases into `Fin q` to a circuit on `Fin q` at every site of the same depth, again
+trace-preserving and unbranched when the circuit is, which acts as the circuit on the code. -/
+theorem exists_encoded_of_isDimBounded {B q : ℕ} (hB : B ≤ q) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+    [∀ s, Fintype (Z s)] → [∀ s, DecidableEq (Z s)] → (c : Circuit Γ KrausGate X Z) →
+    c.Forall KrausGate.ev KrausFamily.IsTP → c.IsDimBounded B →
+    (e : ∀ s, X s ↪ Fin q) → (f : ∀ s, Z s ↪ Fin q) →
+    ∃ c' : Circuit Γ KrausGate (Qudits S q) (Qudits S q),
+      c'.Forall KrausGate.ev KrausFamily.IsTP ∧ (c.IsUnbranched → c'.IsUnbranched) ∧
+        c'.depth = c.depth ∧
+        c'.map KrausGate.ev ∘ₗ (encodeCircuit Γ e).map KrausGate.ev =
+          (encodeCircuit Γ f).map KrausGate.ev ∘ₗ c.map KrausGate.ev
+  | X, _, i₁, i₂, i₃, i₄, done _, _, hdim, e, f => by
+    obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
+    obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
+    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim s).1).1
+    let L : Layer Γ KrausGate X X := Layer.ofOnsite fun s ↦ KrausFamily.single 1
+    have hL : L.Forall KrausGate.ev KrausFamily.IsTP :=
+      ⟨fun b ↦ absurd b.2 (Finset.notMem_empty _), fun s ↦ by
+        change (KrausFamily.single (1 : Matrix (X s) (X s) ℂ)).IsTP
+        rw [KrausFamily.IsTP, KrausFamily.effect_single, conjTranspose_one, Matrix.one_mul]⟩
+    let y₀ : ∀ s, Fin q := fun s ↦ f s (Classical.arbitrary _)
+    refine ⟨ofLayer (L.encode e f y₀), ⟨⟨fun b ↦ (hL.1 b).encode _ _ _,
+      fun s ↦ (hL.2 s).encode _ _ _⟩, fun _ ↦ trivial⟩, fun _ ↦ isUnbranched_ofLayer _, ?_, ?_⟩
+    · change L.depth + Finset.univ.sup (fun _ ↦ 0) = 0
+      rw [Layer.depth_ofOnsite]
+      simp
+    · rw [Layer.map_ofLayer_encode, map_done]
+      have : (ofLayer L).map KrausGate.ev = LinearMap.id := LinearMap.ext fun ρ ↦ by
+        rw [map_ofLayer_ofOnsite_single, prodOp_one, Matrix.one_mul, conjTranspose_one,
+          Matrix.mul_one, LinearMap.id_apply]
+      rw [this]
+  | X, Z, _, _, _, _, step (Y := Y) L next, hc, hdim, e, f => by
+    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim.1 s).1).1
+    obtain ⟨i₀⟩ := L.nonempty_index_of_forall_isTP KrausGate.ev hc.1
+    have := L.nonempty_output_of_forall_isTP KrausGate.ev hc.1
+    let g : ∀ s, Y s ↪ Fin q := fun s ↦ (Fintype.equivFin (Y s)).toEmbedding.trans
+      (Fin.castLEEmb (by rw [← Nat.card_eq_fintype_card]; exact ((hdim.2 i₀).input s).2.trans hB))
+    let y₀ : ∀ s, Fin q := fun s ↦ g s (Classical.arbitrary _)
+    have spec := fun i ↦ (exists_encoded_of_isDimBounded hB (next i) (hc.2 i) (hdim.2 i) g f)
+    let F : L.Index → Circuit Γ KrausGate (Qudits S q) (Qudits S q) := fun i ↦ (spec i).choose
+    let r : (L.encode e g y₀).Index → L.Index := fun p ↦
+      (fun b ↦ Sum.elim id (fun _ ↦ i₀.1 b) (p.1 b), fun s ↦ Sum.elim id (fun _ ↦ i₀.2 s) (p.2 s))
+    refine ⟨step (L.encode e g y₀) fun p ↦ F (r p),
+      ⟨⟨fun b ↦ (hc.1.1 b).encode _ _ _, fun s ↦ (hc.1.2 s).encode _ _ _⟩,
+        fun p ↦ (spec (r p)).choose_spec.1⟩,
+      fun hu ↦ ⟨fun p p' ↦ by
+        change (spec (r p)).choose = (spec (r p')).choose
+        have h := hu.1 (r p) (r p')
+        congr 1
+        simp only [h],
+        fun p ↦ (spec (r p)).choose_spec.2.1 (hu.2 (r p))⟩, ?_,
+      Layer.map_step_encode L e g f y₀ next _ fun i ↦ (spec i).choose_spec.2.2.2⟩
+    rw [depth_step, depth_step]
+    refine congrArg (L.depth + ·) (le_antisymm (Finset.sup_le fun p _ ↦ ?_)
+      (Finset.sup_le fun i _ ↦ ?_))
+    · rw [(spec (r p)).choose_spec.2.2.1]
+      exact Finset.le_sup (f := fun i ↦ (next i).depth) (Finset.mem_univ _)
+    · rw [← (spec i).choose_spec.2.2.1]
+      exact Finset.le_sup (f := fun p ↦ (F (r p)).depth)
+        (Finset.mem_univ (Layer.encodeIndex L e g y₀ i))
+
+end Circuit
+
+/-- A map realised by a protocol bounded by `B ≤ q` in depth at most `T` is carried along any
+embeddings `e` of its input and `f` of its output bases into `Fin q` to a map realised by a
+protocol on `Fin q` at every site in depth at most `T`, which acts as the map on the code. -/
+theorem IsBoundedProtocol.exists_encoded {Z : S → Type} [∀ s, Fintype (Z s)]
+    [∀ s, DecidableEq (Z s)] {B q T : ℕ} (hB : B ≤ q)
+    {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
+    (h : IsBoundedProtocol Γ B T Φ) (e : ∀ s, X s ↪ Fin q) (f : ∀ s, Z s ↪ Fin q) :
+    ∃ Φ', IsProtocol Γ T (X := Qudits S q) (Z := Qudits S q) Φ' ∧
+      Φ' ∘ₗ (encodeCircuit Γ e).map KrausGate.ev = (encodeCircuit Γ f).map KrausGate.ev ∘ₗ Φ := by
+  obtain ⟨c, hc, hT, rfl, hu, hdim⟩ := h
+  obtain ⟨c', hc', hu', hd', hm'⟩ := c.exists_encoded_of_isDimBounded hB hc hdim e f
+  exact ⟨c'.map KrausGate.ev, ⟨c', hc', hd'.le.trans hT, rfl, hu' hu⟩, hm'⟩
 
 end QuantumCircuit
