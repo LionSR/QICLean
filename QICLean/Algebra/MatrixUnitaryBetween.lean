@@ -30,6 +30,8 @@ lines 534--605.
 
 * `Matrix.IsIsometry` and `Matrix.IsCoisometry` are the two one-sided identities.
 * `Matrix.IsUnitaryBetween` is their conjunction.
+* `Matrix.initializedBasisMatrix` is the isometry of an embedding of bases
+  (`Matrix.initializedBasisMatrix_isIsometry`).
 
 ## Main results
 
@@ -65,6 +67,38 @@ isometry and a coisometry. -/
 def IsUnitaryBetween [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (A : Matrix m n ℂ) : Prop :=
   A.IsIsometry ∧ A.IsCoisometry
+
+/-- The matrix of an embedding of bases: the isometry `|k⟩ ↦ |e k⟩`. -/
+def initializedBasisMatrix {κ ι : Type*} [DecidableEq ι] (e : κ ↪ ι) : Matrix ι κ ℂ :=
+  (1 : Matrix ι ι ℂ).submatrix id e
+
+/-- The matrix of an embedding of bases is an isometry. -/
+theorem initializedBasisMatrix_isIsometry {κ ι : Type*} [Fintype ι] [DecidableEq κ]
+    [DecidableEq ι] (e : κ ↪ ι) : (initializedBasisMatrix e).IsIsometry := by
+  ext a b
+  simp [initializedBasisMatrix, mul_apply, one_apply, e.injective.eq_iff]
+
+/-- The columns of `M * J_e` are the columns of `M` at the image of `e`. -/
+theorem mul_initializedBasisMatrix_apply {κ ι μ : Type*} [Fintype ι] [DecidableEq ι]
+    (e : κ ↪ ι) (M : Matrix μ ι ℂ) (y : μ) (a : κ) :
+    (M * initializedBasisMatrix e) y a = M y (e a) := by
+  simp [initializedBasisMatrix, mul_apply, one_apply]
+
+/-- The rows of `J_e * M` at the image of `e` are the rows of `M`. -/
+theorem initializedBasisMatrix_mul_apply_self {κ ι μ : Type*} [Fintype κ] [DecidableEq ι]
+    (e : κ ↪ ι) (M : Matrix κ μ ℂ) (a : κ) (x : μ) :
+    (initializedBasisMatrix e * M) (e a) x = M a x := by
+  rw [mul_apply, Finset.sum_eq_single a (fun b _ hb ↦ by
+    simp [initializedBasisMatrix, e.injective.ne (Ne.symm hb)]) (by simp)]
+  simp [initializedBasisMatrix, one_apply]
+
+/-- The rows of `J_e * M` outside the image of `e` vanish. -/
+theorem initializedBasisMatrix_mul_apply_of_notMem {κ ι μ : Type*} [Fintype κ] [DecidableEq ι]
+    (e : κ ↪ ι) (M : Matrix κ μ ℂ) {y : ι} (hy : y ∉ Set.range e) (x : μ) :
+    (initializedBasisMatrix e * M) y x = 0 := by
+  refine Finset.sum_eq_zero fun a _ ↦ ?_
+  simp only [initializedBasisMatrix, submatrix_apply, id, one_apply]
+  rw [ite_eq_right fun h ↦ absurd ⟨a, h.symm⟩ hy, zero_mul]
 
 /-- If $YZ=1$, then the dressed Gram equation
 $Y^\dagger GY=Y^\dagger Y$ is equivalent to $G=1$.
