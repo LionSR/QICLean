@@ -61,6 +61,9 @@ variable {S S' R : Type} [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S
 def siteEmb (e : S' ≃ S ⊕ R) : S ↪ S' :=
   ⟨fun s ↦ e.symm (.inl s), fun _ _ h ↦ Sum.inl_injective (e.symm.injective h)⟩
 
+@[simp] theorem siteEmb_apply (e : S' ≃ S ⊕ R) (s : S) : siteEmb e s = e.symm (.inl s) :=
+  rfl
+
 /-- A system on `S` as a system on `S'`: the basis `X s` at the site `ι s`, and `W r` at the
 idle site `e.symm (inr r)`. -/
 abbrev lift (e : S' ≃ S ⊕ R) (W : R → Type) (X : S → Type) : S' → Type :=
@@ -75,12 +78,25 @@ def liftSiteEquiv (X : S → Type) (s : S) : lift e W X (siteEmb e s) ≃ X s :=
 /-- The configurations of `lift e W X` are a configuration of `X` and one of the idle sites. -/
 def liftConfigEquiv (X : S → Type) :
     Config (lift e W X) ≃ Config X × ((r : R) → W r) :=
-  sorry
+  (Equiv.piCongrLeft (fun t ↦ Sum.elim X W t) e).trans (Equiv.sumPiEquivProdPi _)
+
+/-- The sites of a region are the sites of its image. -/
+noncomputable def regionSiteEquiv (D : Finset S) :
+    {v // v ∈ D} ≃ {v' // v' ∈ D.map (siteEmb e)} :=
+  Equiv.ofBijective (fun v ↦ ⟨siteEmb e v.1, Finset.mem_map_of_mem _ v.2⟩) (by
+    constructor
+    · intro a b h
+      exact Subtype.ext ((siteEmb e).injective (congrArg Subtype.val h))
+    · rintro ⟨v', hv'⟩
+      obtain ⟨s, hs, rfl⟩ := Finset.mem_map.mp hv'
+      exact ⟨⟨s, hs⟩, rfl⟩)
 
 /-- The configurations of the image of a region. -/
-def liftRegionEquiv (X : S → Type) (D : Finset S) :
+noncomputable def liftRegionEquiv (X : S → Type) (D : Finset S) :
     RegionConfig (lift e W X) (D.map (siteEmb e)) ≃ RegionConfig X D :=
-  sorry
+  (Equiv.piCongrLeft (fun v' : {v' // v' ∈ D.map (siteEmb e)} ↦ lift e W X v'.1)
+    (regionSiteEquiv e D)).symm.trans
+    (Equiv.piCongrRight fun v ↦ liftSiteEquiv e W X v.1)
 
 /-! ### Geometries and gates -/
 
@@ -135,17 +151,122 @@ namespace Layer
 variable {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
   [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
 
+variable (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G') (L : Layer Γ G X Y)
+
+/-- The cells of a layer are the cells of its image. -/
+noncomputable def cellsEquiv : L.cells ≃ {b' // b' ∈ L.cells.map h.cellMap} :=
+  Equiv.ofBijective (fun b ↦ ⟨h.cellMap b.1, Finset.mem_map_of_mem _ b.2⟩) (by
+    constructor
+    · intro a b hab
+      exact Subtype.ext (h.cellMap.injective (congrArg Subtype.val hab))
+    · rintro ⟨b', hb'⟩
+      obtain ⟨b, hb, rfl⟩ := Finset.mem_map.mp hb'
+      exact ⟨⟨b, hb⟩, rfl⟩)
+
+theorem cell_cellsEquiv_symm (b' : {b' // b' ∈ L.cells.map h.cellMap}) :
+    (Γ.cell ((L.cellsEquiv e h).symm b').1).map (siteEmb e) = Γ'.cell b'.1 := by
+  rw [← h.cell_cellMap]
+  exact congrArg (fun b ↦ Γ'.cell b.1) ((L.cellsEquiv e h).apply_symm_apply b')
+
+/-- The onsite family of the moved layer at a site of `S ⊕ R`: that of the layer at a site of
+`S`, the identity at an idle site. -/
+noncomputable def liftOnsite : (t : S ⊕ R) → (∀ s, t = .inl s → s ∉ L.cells.biUnion Γ.cell) →
+    KrausFamily (Sum.elim X W t) (Sum.elim Y W t)
+  | .inl s, hs => L.onsite ⟨s, hs s rfl⟩
+  | .inr r, _ => KrausFamily.single (1 : Matrix (W r) (W r) ℂ)
+
+theorem not_mem_of_mapSites {s' : S'}
+    (hs' : s' ∉ (L.cells.map h.cellMap).biUnion Γ'.cell) :
+    ∀ s, e s' = .inl s → s ∉ L.cells.biUnion Γ.cell := by
+  intro s hs hmem
+  obtain ⟨b, hb, hsb⟩ := Finset.mem_biUnion.mp hmem
+  refine hs' (Finset.mem_biUnion.mpr ⟨h.cellMap b, Finset.mem_map_of_mem _ hb, ?_⟩)
+  rw [h.cell_cellMap]
+  have : s' = siteEmb e s := by
+    change s' = e.symm (.inl s)
+    rw [← hs, Equiv.symm_apply_apply]
+  rw [this]
+  exact Finset.mem_map_of_mem _ hsb
+
 /-- The layer moved along `e`, the morphism of geometries `h` and the transport `φ`: the
 transported gates on the image cells, the onsite families at the sites of `S`, and the
 identity at the idle sites. -/
-noncomputable def mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
-    (L : Layer Γ G X Y) : Layer Γ' G' (lift e W X) (lift e W Y) :=
-  sorry
+noncomputable def mapSites : Layer Γ' G' (lift e W X) (lift e W Y) where
+  cells := L.cells.map h.cellMap
+  pairwiseDisjoint := by
+    intro b₁ hb₁ b₂ hb₂ hne
+    obtain ⟨c₁, hc₁, rfl⟩ := Finset.mem_map.mp hb₁
+    obtain ⟨c₂, hc₂, rfl⟩ := Finset.mem_map.mp hb₂
+    simp only [Function.onFun, h.cell_cellMap, Finset.disjoint_map]
+    exact L.pairwiseDisjoint hc₁ hc₂ fun hc ↦ hne (congrArg _ hc)
+  gate b' := Eq.ndrec (motive := fun D ↦ G' D (lift e W X) (lift e W Y))
+    (φ.map (L.gate ((L.cellsEquiv e h).symm b'))) (L.cell_cellsEquiv_symm e h b')
+  onsite s' := L.liftOnsite W (e s') (L.not_mem_of_mapSites e h s'.2)
+
+omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+  [∀ s, DecidableEq (Y s)] in
+/-- The outcomes of a gate moved to an equal region. -/
+def outcomeNdrec {D D' : Finset S'} (hD : D = D') (g : G' D (lift e W X) (lift e W Y)) :
+    GateFamily.Outcome (Eq.ndrec (motive := fun D ↦ G' D (lift e W X) (lift e W Y)) g hD) ≃
+      GateFamily.Outcome g := by
+  subst hD; exact Equiv.refl _
+
+/-- The idle and non-idle free sites of the moved layer. -/
+noncomputable def freeEquiv : L.Free ⊕ R ≃ (L.mapSites e W h φ).Free :=
+  Equiv.ofBijective
+    (Sum.elim (fun s ↦ ⟨siteEmb e s.1, fun hmem ↦ by
+        obtain ⟨b', hb', hsb⟩ := Finset.mem_biUnion.mp hmem
+        obtain ⟨b, hb, rfl⟩ := Finset.mem_map.mp hb'
+        rw [h.cell_cellMap] at hsb
+        obtain ⟨t, ht, hts⟩ := Finset.mem_map.mp hsb
+        obtain rfl := (siteEmb e).injective hts
+        exact s.2 (Finset.mem_biUnion.mpr ⟨b, hb, ht⟩)⟩)
+      (fun r ↦ ⟨e.symm (.inr r), fun hmem ↦ by
+        obtain ⟨b', hb', hsb⟩ := Finset.mem_biUnion.mp hmem
+        obtain ⟨b, hb, rfl⟩ := Finset.mem_map.mp hb'
+        rw [h.cell_cellMap] at hsb
+        obtain ⟨t, ht, hts⟩ := Finset.mem_map.mp hsb
+        simp at hts⟩)) (by
+    constructor
+    · rintro (a | a) (b | b) hab <;> simp [Subtype.ext_iff] at hab
+      · exact congrArg _ (Subtype.ext hab)
+      · exact congrArg _ hab
+    · rintro ⟨s', hs'⟩
+      rcases hes : e s' with s | r
+      · refine ⟨.inl ⟨s, L.not_mem_of_mapSites e h hs' s hes⟩, Subtype.ext ?_⟩
+        simp [← hes]
+      · exact ⟨.inr r, Subtype.ext (by simp [← hes])⟩)
+
+omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+  [∀ s, DecidableEq (Y s)] in
+/-- The Kraus indices of the onsite family of the moved layer at a site of `S`. -/
+def liftOnsiteIndexEquiv {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cells.biUnion Γ.cell)
+    {s : S} (hts : t = .inl s) :
+    (L.liftOnsite W t ht).Index ≃ (L.onsite ⟨s, ht s hts⟩).Index := by
+  subst hts; exact Equiv.refl _
+
+omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+  [∀ s, DecidableEq (Y s)] in
+/-- The Kraus index of the onsite family of the moved layer at an idle site is trivial. -/
+def liftOnsiteIndexEquivInr {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cells.biUnion Γ.cell)
+    {r : R} (htr : t = .inr r) : (L.liftOnsite W t ht).Index ≃ Unit := by
+  subst htr; exact Equiv.refl _
 
 /-- The Kraus indices of the moved layer are those of the layer. -/
-noncomputable def mapSitesIndexEquiv (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
-    (L : Layer Γ G X Y) : (L.mapSites e W h φ).Index ≃ L.Index :=
-  sorry
+noncomputable def mapSitesIndexEquiv : (L.mapSites e W h φ).Index ≃ L.Index :=
+  Equiv.prodCongr
+    ((Equiv.piCongrLeft (fun b' ↦ GateFamily.Outcome ((L.mapSites e W h φ).gate b'))
+      (L.cellsEquiv e h)).symm.trans (Equiv.piCongrRight fun b ↦
+        (outcomeNdrec e W _ _).trans ((φ.outcome _).trans (Equiv.cast (congrArg
+          (fun c ↦ GateFamily.Outcome (L.gate c)) ((L.cellsEquiv e h).symm_apply_apply b))))))
+    (((Equiv.piCongrLeft (fun s' ↦ ((L.mapSites e W h φ).onsite s').Index)
+      (L.freeEquiv e W h φ)).symm.trans (Equiv.sumPiEquivProdPi _)).trans
+      ((Equiv.prodCongr (Equiv.piCongrRight fun s ↦ L.liftOnsiteIndexEquiv W _
+          (s := s.1) (by simp [freeEquiv]))
+        (Equiv.piCongrRight fun r ↦ L.liftOnsiteIndexEquivInr W _ (r := r)
+          (by simp [freeEquiv]))).trans
+        ((Equiv.prodCongr (Equiv.refl _) (Equiv.ofUnique (R → Unit) PUnit.{1})).trans
+          (Equiv.prodPUnit _))))
 
 /-- The Kraus operators of the moved layer are those of the layer tensored with the identity on
 the idle sites. -/
