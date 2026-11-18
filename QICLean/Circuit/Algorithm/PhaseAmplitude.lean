@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Algorithm.QFT
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.Analysis.SpecialFunctions.Log.Base
 
 /-!
 # The amplitudes of phase estimation
@@ -26,7 +27,8 @@ which bounds `|αₖ|` by `1/(2|ℓ - δ|)` when `2^t φ - k ≡ δ - ℓ` with 
 * `QuantumCircuit.PhaseEstimation.dft_conjTranspose_mulVec` — the amplitudes are an inverse
   Fourier transform.
 * `QuantumCircuit.PhaseEstimation.sum_norm_sq_amplitude` — the probabilities sum to `1`.
-* `QuantumCircuit.PhaseEstimation.sum_norm_sq_amplitude_far_le` — the tail bound.
+* `QuantumCircuit.PhaseEstimation.one_sub_le_sum_norm_sq_amplitude` — the outcomes within `2^{-n}`
+  of `φ` have total probability at least `1 - ε` for `t = n + ⌈log₂(2 + 1/(2ε))⌉`.
 -/
 
 open Matrix ManyBody Complex
@@ -193,7 +195,7 @@ private theorem sum_inv_sq_le {M : ℤ} (hM : 2 ≤ M) (S : Finset ℤ) (hS : �
 
 /-- The outcomes farther than `2^{-n}` from `φ` modulo `1` have total probability at most
 `1/(2(2^{t-n} - 1))` (Nielsen–Chuang, eqs. (5.30)–(5.34)). -/
-theorem sum_norm_sq_amplitude_far_le (t n : ℕ) (hn : n ≤ t) (hM : 2 ≤ 2 ^ (t - n)) (φ : ℝ) :
+private theorem sum_norm_sq_amplitude_far_le (t n : ℕ) (hn : n ≤ t) (hM : 2 ≤ 2 ^ (t - n)) (φ : ℝ) :
     ∑ k ∈ Finset.univ.filter (fun k : Fin (2 ^ t) ↦
         ¬ |(k : ℝ) / 2 ^ t - φ - round ((k : ℝ) / 2 ^ t - φ)| ≤ 1 / 2 ^ n),
       ‖amplitude t φ k‖ ^ 2 ≤ 1 / (2 * ((2 : ℝ) ^ (t - n) - 1)) := by
@@ -330,6 +332,37 @@ theorem sum_norm_sq_amplitude_far_le (t n : ℕ) (hn : n ≤ t) (hM : 2 ≤ 2 ^ 
           linarith
         field_simp
         ring
+
+/-- With `t = n + ⌈log₂(2 + 1/(2ε))⌉`, the outcomes within `2^{-n}` of `φ` modulo `1` have total
+probability at least `1 - ε` (Nielsen–Chuang, eq. (5.35)). -/
+theorem one_sub_le_sum_norm_sq_amplitude (φ : ℝ) (n : ℕ) {ε : ℝ} (hε : 0 < ε)
+    (ht : t = n + ⌈Real.logb 2 (2 + 1 / (2 * ε))⌉₊) :
+    1 - ε ≤ ∑ k ∈ Finset.univ.filter (fun k : Fin (2 ^ t) ↦
+        |(k : ℝ) / 2 ^ t - φ - round ((k : ℝ) / 2 ^ t - φ)| ≤ 1 / 2 ^ n),
+      ‖amplitude t φ k‖ ^ 2 := by
+  set p := ⌈Real.logb 2 (2 + 1 / (2 * ε))⌉₊
+  have hp : 2 + 1 / (2 * ε) ≤ (2 : ℝ) ^ p := by
+    have hy : 0 < 2 + 1 / (2 * ε) := by positivity
+    calc 2 + 1 / (2 * ε) = (2 : ℝ) ^ Real.logb 2 (2 + 1 / (2 * ε)) :=
+          (Real.rpow_logb (by norm_num) (by norm_num) hy).symm
+      _ ≤ (2 : ℝ) ^ (p : ℝ) := Real.rpow_le_rpow_of_exponent_le (by norm_num) (Nat.le_ceil _)
+      _ = 2 ^ p := Real.rpow_natCast _ _
+  have htn : t - n = p := by omega
+  have hM : 2 ≤ 2 ^ (t - n) := by
+    rw [htn]
+    have : (2 : ℝ) < 2 ^ p := by
+      have : 0 < 1 / (2 * ε) := by positivity
+      linarith
+    exact_mod_cast this.le
+  have hbad := sum_norm_sq_amplitude_far_le t n (by omega) hM φ
+  have hε' : 1 / (2 * ((2 : ℝ) ^ (t - n) - 1)) ≤ ε := by
+    rw [htn, div_le_iff₀ (by nlinarith [show 0 < 1 / (2 * ε) by positivity])]
+    have : 1 / (2 * ε) * (2 * ε) = 1 := by field_simp
+    nlinarith
+  have hall := sum_norm_sq_amplitude (t := t) φ
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun k : Fin (2 ^ t) ↦
+    |(k : ℝ) / 2 ^ t - φ - round ((k : ℝ) / 2 ^ t - φ)| ≤ 1 / 2 ^ n)] at hall
+  linarith
 
 end PhaseEstimation
 

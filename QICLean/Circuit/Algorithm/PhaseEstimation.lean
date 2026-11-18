@@ -118,14 +118,18 @@ noncomputable abbrev qftInv : Circuit (geometry t) (Gate t m) (system t m) (syst
     (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (geometryHom t)
     (KrausGate.transport _ _)).mapGate (Geometry.Hom.refl _) GateMorphism.inl
 
+/-- The preparation (Nielsen–Chuang, Fig. 5.2): the Hadamard gates and the controlled calls
+`U^{2^{t-1-j}}` for `j = t - 1, …, 0`. -/
+noncomputable abbrev prepare : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
+  (Circuit.seq ((List.finRange t).map (hadamardLayer t m))).comp
+    (Circuit.seq ((List.finRange t).reverse.flatMap fun j : Fin t ↦
+      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)))
+
 /-- The unitary part of phase estimation (Nielsen–Chuang, Fig. 5.2 followed by the inverse
 Fourier transform): the Hadamard gates, the controlled calls `U^{2^{t-1-j}}` for
 `j = t - 1, …, 0`, and the inverse Fourier transform. -/
 noncomputable abbrev unitary : Circuit (geometry t) (Gate t m) (system t m) (system t m) :=
-  ((Circuit.seq ((List.finRange t).map (hadamardLayer t m))).comp
-    (Circuit.seq ((List.finRange t).reverse.flatMap fun j : Fin t ↦
-      List.replicate (2 ^ (t - 1 - (j : ℕ))) (queryLayer t m j)))).comp
-    (qftInv t m)
+  (prepare t m).comp (qftInv t m)
 
 /-- The measurement of the control register in the computational basis. -/
 def measureLayer : Layer (geometry t) (Gate t m) (system t m) (system t m) where
@@ -710,30 +714,8 @@ theorem accurate_prob_ge (U : Matrix (Fin m) (Fin m) ℂ) (u : Fin m → ℂ) (h
         |(k : ℝ) / 2 ^ t - φ - round ((k : ℝ) / 2 ^ t - φ)| ≤ 1 / 2 ^ n),
       (circuit t m).outcomeProb (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
         (readout t m) (vecMulVec (input t m u) (star (input t m u))) k := by
-  set p := ⌈Real.logb 2 (2 + 1 / (2 * ε))⌉₊
-  have hp : 2 + 1 / (2 * ε) ≤ (2 : ℝ) ^ p := by
-    have hy : 0 < 2 + 1 / (2 * ε) := by positivity
-    calc 2 + 1 / (2 * ε) = (2 : ℝ) ^ Real.logb 2 (2 + 1 / (2 * ε)) :=
-          (Real.rpow_logb (by norm_num) (by norm_num) hy).symm
-      _ ≤ (2 : ℝ) ^ (p : ℝ) := Real.rpow_le_rpow_of_exponent_le (by norm_num) (Nat.le_ceil _)
-      _ = 2 ^ p := Real.rpow_natCast _ _
-  have htn : t - n = p := by omega
-  have hM : 2 ≤ 2 ^ (t - n) := by
-    rw [htn]
-    have : (2 : ℝ) < 2 ^ p := by
-      have : 0 < 1 / (2 * ε) := by positivity
-      linarith
-    exact_mod_cast this.le
-  have hbad := sum_norm_sq_amplitude_far_le t n (by omega) hM φ
-  have hε' : 1 / (2 * ((2 : ℝ) ^ (t - n) - 1)) ≤ ε := by
-    rw [htn, div_le_iff₀ (by nlinarith [show 0 < 1 / (2 * ε) by positivity])]
-    have : 1 / (2 * ε) * (2 * ε) = 1 := by field_simp
-    nlinarith
-  have hall := sum_norm_sq_amplitude (t := t) φ
-  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun k : Fin (2 ^ t) ↦
-    |(k : ℝ) / 2 ^ t - φ - round ((k : ℝ) / 2 ^ t - φ)| ≤ 1 / 2 ^ n)] at hall
   simp only [outcomeProb_eq hu huφ]
-  linarith
+  exact one_sub_le_sum_norm_sq_amplitude φ n hε ht
 
 end PhaseEstimation
 

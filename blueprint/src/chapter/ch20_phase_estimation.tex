@@ -31,7 +31,8 @@ control qubits to the register that also holds the target.
 \begin{definition}[Phase estimation]
     \label{def:phase_estimation_circuit}
     \lean{QuantumCircuit.PhaseEstimation.hadamardLayer,
-        QuantumCircuit.PhaseEstimation.queryLayer, QuantumCircuit.PhaseEstimation.qftInv,
+        QuantumCircuit.PhaseEstimation.queryLayer, QuantumCircuit.PhaseEstimation.prepare,
+        QuantumCircuit.PhaseEstimation.qftInv,
         QuantumCircuit.PhaseEstimation.unitary, QuantumCircuit.PhaseEstimation.measureLayer,
         QuantumCircuit.PhaseEstimation.circuit, QuantumCircuit.PhaseEstimation.measured,
         QuantumCircuit.PhaseEstimation.readout}
@@ -120,7 +121,7 @@ control qubits to the register that also holds the target.
 
 \begin{theorem}[Success probability]
     \label{thm:phase_estimation_success}
-    \lean{QuantumCircuit.PhaseEstimation.sum_norm_sq_amplitude_far_le,
+    \lean{QuantumCircuit.PhaseEstimation.one_sub_le_sum_norm_sq_amplitude,
         QuantumCircuit.PhaseEstimation.accurate_prob_ge}
     \leanok
     \uses{thm:phase_estimation_amplitude}
