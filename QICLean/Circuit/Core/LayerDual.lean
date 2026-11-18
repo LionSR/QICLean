@@ -30,7 +30,8 @@ Two consequences are proved from this one computation:
 
 ## Main results
 
-* `QuantumCircuit.Layer.dual_place` — the factorization along a union of blocks.
+* `QuantumCircuit.Layer.dual_kronecker`, `QuantumCircuit.Layer.dual_place` — the factorization
+  along a union of blocks.
 * `QuantumCircuit.Layer.dual_one`, `QuantumCircuit.Layer.isTP_krausFamily` — local trace
   preservation gives trace preservation.
 * `QuantumCircuit.Layer.dual_mem_supportedOperators_lightCone` — the backward light cone of one
@@ -276,8 +277,10 @@ theorem dual_apply' (A : Matrix (Config Y) (Config Y) ℂ) :
     L.dual ev A = ∑ i, (L.kraus ev i)ᴴ * A * L.kraus ev i :=
   rfl
 
-/-- The Heisenberg picture of a product `M ⊗ N` along the union of the blocks in `p`. -/
-private theorem dual_kronecker
+/-- The Heisenberg picture of a product `M ⊗ N` along the union of the blocks in `p`: that of
+`M` through the Kraus operators of the blocks in `p`, tensored with that of `N` through the
+Kraus operators of the other blocks. -/
+theorem dual_kronecker
     (M : Matrix (RegionConfig Y (L.unionRegion p)) (RegionConfig Y (L.unionRegion p)) ℂ)
     (N : Matrix (ComplConfig Y (L.unionRegion p)) (ComplConfig Y (L.unionRegion p)) ℂ) :
     L.dual ev ((M ⊗ₖ N).submatrix (cutEquiv Y _) (cutEquiv Y _)) =

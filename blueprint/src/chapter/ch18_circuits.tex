@@ -125,14 +125,22 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Layer.farKraus_apply, QuantumCircuit.Layer.nearFarEquiv,
         QuantumCircuit.Layer.kraus_eq_submatrix, QuantumCircuit.Layer.sum_farKraus,
         QuantumCircuit.Layer.dual, QuantumCircuit.Layer.dual_apply',
-        QuantumCircuit.Layer.dual_place}
+        QuantumCircuit.Layer.dual_kronecker, QuantumCircuit.Layer.dual_place}
     \leanok
     \uses{def:circuits_layer, lem:sites_partition, def:sites_place}
     Let $D$ be the union of a set $N$ of blocks of a layer. In the cut along $D$,
     every Kraus operator is $K_i=K^{\mathrm{near}}_{i_N}\otimes K^{\mathrm{far}}_{i_F}$,
     the products of the local entries over the blocks in $N$ and over the
-    remaining blocks $F$. If the families on the blocks in $F$ are
-    trace-preserving, then for every $A_1$ on $\C^{Y_D}$
+    remaining blocks $F$, and for all $M$ on $\C^{Y_D}$ and $N$ on $\C^{Y_{V\setminus D}}$
+    \begin{align}
+        \sum_iK_i^\dagger(M\otimes N)K_i
+        &=\Bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger MK^{\mathrm{near}}_{i_N}\Bigr)
+        \otimes\Bigl(\sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger NK^{\mathrm{far}}_{i_F}\Bigr).
+        \notag
+    \end{align}
+    If the families on the blocks in $F$ are trace-preserving, then
+    $\sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger K^{\mathrm{far}}_{i_F}=1$, so for every
+    $A_1$ on $\C^{Y_D}$
     \begin{align}
         \sum_iK_i^\dagger(A_1\otimes1)K_i
         &=\Bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger A_1
@@ -143,9 +151,10 @@ and each Kraus operator is a product of local entries over the blocks.
 \begin{proof}\leanok
     Splitting the product over the blocks into the blocks in $N$ and the others
     gives the Kronecker factorization. Then
-    $K_i^\dagger(A_1\otimes1)K_i=((K^{\mathrm{near}})^\dagger A_1K^{\mathrm{near}})
-    \otimes((K^{\mathrm{far}})^\dagger K^{\mathrm{far}})$, and the sum over the
-    outcomes splits into a sum over $i_N$ and a sum over $i_F$. By
+    $K_i^\dagger(M\otimes N)K_i=((K^{\mathrm{near}})^\dagger MK^{\mathrm{near}})
+    \otimes((K^{\mathrm{far}})^\dagger NK^{\mathrm{far}})$, and the sum over the
+    outcomes splits into a sum over $i_N$ and a sum over $i_F$; the second identity is
+    the case $M=A_1$, $N=1$. By
     Lemma~\ref{lem:sites_partition} the entry of
     $\sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger K^{\mathrm{far}}_{i_F}$ at $(w',w)$
     is the product over the blocks in $F$ of the entries of their effects at the
@@ -200,19 +209,19 @@ and each Kraus operator is a product of local entries over the blocks.
     \uses{lem:circuits_layer_factorization}
     Cut along the union $D$ of the blocks meeting the support of $A$. Then
     $A=A_1\otimes1$, and $B=1\otimes B_2$ because the support of $B$ is disjoint from
-    $D$, which lies in the light cone of the support of $A$. By
-    Lemma~\ref{lem:circuits_layer_factorization} the Kraus operators factor as
-    $K_i=K^{\mathrm{near}}_{i_N}\otimes K^{\mathrm{far}}_{i_F}$ along the cut, and the sum
-    over the outcomes splits, so for all $M$ on $\C^{Y_D}$ and $N$ on $\C^{Y_{V\setminus D}}$
+    $D$, which lies in the light cone of the support of $A$. The near and far families are
+    trace-preserving, so by the identity for $M\otimes N$ in
+    Lemma~\ref{lem:circuits_layer_factorization}, with $(M,N)$ equal to $(A_1,1)$, $(1,B_2)$
+    and $(A_1,B_2)$,
     \begin{align}
-        \sum_iK_i^\dagger(M\otimes N)K_i
-        &=\Bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger MK^{\mathrm{near}}_{i_N}\Bigr)
-        \otimes\Bigl(\sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger NK^{\mathrm{far}}_{i_F}\Bigr).
+        \sum_iK_i^\dagger(A_1\otimes B_2)K_i
+        &=\Bigl(\sum_{i_N}(K^{\mathrm{near}}_{i_N})^\dagger A_1K^{\mathrm{near}}_{i_N}\Bigr)
+        \otimes\Bigl(\sum_{i_F}(K^{\mathrm{far}}_{i_F})^\dagger B_2K^{\mathrm{far}}_{i_F}\Bigr)
+        \notag\\
+        &=\Bigl(\sum_iK_i^\dagger(A_1\otimes1)K_i\Bigr)
+        \Bigl(\sum_iK_i^\dagger(1\otimes B_2)K_i\Bigr).
         \notag
     \end{align}
-    The near and far families are trace-preserving, so with $N=1$, $M=1$ and
-    $(M,N)=(A_1,B_2)$ the Heisenberg picture of $A_1\otimes B_2$ is the product of those of
-    $A_1\otimes1$ and $1\otimes B_2$.
 \end{proof}
 
 \section{Circuits}
@@ -311,7 +320,7 @@ and each Kraus operator is a product of local entries over the blocks.
     \lean{QuantumCircuit.Circuit.total, QuantumCircuit.Circuit.total_done,
         QuantumCircuit.Layer.depth, QuantumCircuit.Layer.gateCount,
         QuantumCircuit.Layer.meets, QuantumCircuit.Layer.cellCost,
-        QuantumCircuit.Circuit.depth, QuantumCircuit.Circuit.depth_step,
+        QuantumCircuit.Circuit.depth,
         QuantumCircuit.Circuit.gateCount, QuantumCircuit.Circuit.participation}
     \leanok
     \uses{def:circuits_circuit}
@@ -347,10 +356,13 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Layer.depth_le_gateCount,
         QuantumCircuit.Circuit.depth_le_gateCount,
         QuantumCircuit.Circuit.total_seq_le, QuantumCircuit.Circuit.depth_seq_le,
-        QuantumCircuit.Circuit.gateCount_seq_le, QuantumCircuit.Layer.depth_le_one}
+        QuantumCircuit.Circuit.gateCount_seq_le, QuantumCircuit.Layer.depth_le_one,
+        QuantumCircuit.Circuit.depth_step}
     \leanok
     \uses{def:circuits_costs, thm:circuits_composition}
-    The cost of a circuit with continuations $k_p$ attached is at most the cost of
+    The depth of a circuit starting with a layer $L$ is the depth of $L$ plus the largest
+    depth of a continuation. The cost of a circuit with continuations $k_p$ attached is at
+    most the cost of
     the circuit plus the largest cost of a continuation. In particular depth, gate
     count and the number of gates meeting a site are subadditive under
     composition. A layer has depth at most $1$, and the depth of a circuit is at most
