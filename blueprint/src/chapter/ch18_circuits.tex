@@ -538,7 +538,10 @@ operators, local properties, light cones and costs move with it.
 \begin{definition}[Morphisms of geometries and of gate families]
     \label{def:circuits_geometry_hom}
     \lean{QuantumCircuit.Geometry.Hom, QuantumCircuit.Geometry.Hom.cell_eq,
-        QuantumCircuit.Geometry.Hom.cellsEquiv, QuantumCircuit.GateMorphism}
+        QuantumCircuit.Geometry.Hom.cellsEquiv,
+        QuantumCircuit.Geometry.Hom.cell_cellsEquiv_symm, QuantumCircuit.GateMorphism,
+        QuantumCircuit.GateMorphism.IsCompatible, QuantumCircuit.outcomeNdrec,
+        QuantumCircuit.ev_ndrec}
     \leanok
     \uses{def:circuits_geometry, def:circuits_gate_family}
     Let $\iota:V\to V'$ be injective. A morphism of geometries over $\iota$ is an
@@ -613,8 +616,7 @@ operators, local properties, light cones and costs move with it.
 
 \begin{theorem}[Moving a circuit to a larger set of sites]
     \label{thm:circuits_map_sites}
-    \lean{QuantumCircuit.Layer.cellsEquiv, QuantumCircuit.Layer.cell_cellsEquiv_symm,
-        QuantumCircuit.Layer.liftOnsite, QuantumCircuit.Layer.not_mem_of_mapSites,
+    \lean{QuantumCircuit.Layer.liftOnsite, QuantumCircuit.Layer.not_mem_of_mapSites,
         QuantumCircuit.Layer.mapSites, QuantumCircuit.Layer.mapSitesCellsEquiv,
         QuantumCircuit.Layer.freeEquiv, QuantumCircuit.Layer.mapSitesIndexEquiv,
         QuantumCircuit.Layer.kraus_mapSites, QuantumCircuit.Layer.lightCone_mapSites,
