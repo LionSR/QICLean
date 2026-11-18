@@ -18,6 +18,22 @@ of a theorem, determines its intended layer.
 | `Circuit` | matrix foundations, channels, Sites, Gates |
 | `Circuit/Party` | matrix foundations, channels, Sites, Gates, Circuits |
 | `Circuit/Algorithm` | matrix foundations, channels, Sites, Gates, Circuits |
+| `Circuit/Simulation` | matrix foundations, channels, Sites, Gates, Circuits, Dynamics, Hamiltonians |
+
+`Circuit/Simulation` owns statements comparing circuit simulation with many-body
+Hamiltonian evolution. This is a separate upper integration layer, as specified
+by [QICLean #1062, “Where the planned modules go”](https://github.com/LionSR/QICLean/issues/1062):
+“Product formulas, simulation error bounds, simulation by circuits” belong on the
+circuit side, importing Hamiltonians and Dynamics. It implements the adopted TN
+architecture's statement-based ownership rule; the sibling relationship between
+circuit primitives and Hamiltonians remains unchanged. Only the specific
+`Circuit/Simulation` prefix gains those imports. Core, ordinary Circuit,
+Algorithm, Party, Sites, Dynamics and Hamiltonian cannot import Simulation,
+either directly or through an aggregator. Simulation cannot import Algorithm or
+Party. Low-level matrix product-formula results stay in Analysis, and generic
+circuit construction stays in Circuit. The integration layer introduces no
+alternative interaction, support or evolution definitions. No debt exception is
+added for this layer; regression tests enforce both allowed and forbidden edges.
 
 Matrix foundations means `Algebra`, `Analysis`, `Topology`; single-system
 channels means `Channel`, `Kraus`. Lower prerequisites remain available at
