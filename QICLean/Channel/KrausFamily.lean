@@ -27,12 +27,20 @@ family.
   normalizations.
 * `KrausFamily.single` — the family of one operator.
 * `KrausFamily.adjoint` — the family of the adjoint operators.
+* `KrausFamily.prepare`, `KrausFamily.discard` — the preparation of a basis vector from the
+  one-point basis, and the discard of a basis onto it.
+* `KrausFamily.measure` — the measurement of a basis.
 
 ## Main results
 
 * `KrausFamily.isKrausCPTP_map` — a trace-preserving family gives a quantum channel in the
   sense of `IsKrausCPTP` (Wolf, Thm. 2.1 and §2.1).
 * `KrausFamily.trace_map` — a trace-preserving family preserves the trace.
+* `KrausFamily.trace_map_mul` — the map of a family and the map of its adjoint family are dual
+  for the trace pairing.
+* `KrausFamily.map_prepare`, `KrausFamily.map_discard` — preparation and discard as maps.
+* `KrausFamily.IsTP.nonempty_index`, `KrausFamily.IsTP.nonempty_target` — a trace-preserving
+  family on a nonempty basis has an operator, and its target basis is nonempty.
 -/
 
 open Matrix
@@ -126,5 +134,70 @@ theorem trace_map {K : KrausFamily α β} (h : K.IsTP) (ρ : Matrix α α ℂ) :
   rw [map_apply, trace_sum]
   simp_rw [trace_mul_cycle (K.op _), ← trace_sum, ← Finset.sum_mul]
   rw [show ∑ i, (K.op i)ᴴ * K.op i = K.effect from rfl, h, Matrix.one_mul]
+
+omit [DecidableEq α] in
+/-- The map of a family and the map of its adjoint family are dual for the trace pairing:
+`tr(∑ Kᵢ ρ Kᵢᴴ · A) = tr(ρ · ∑ Kᵢᴴ A Kᵢ)`. -/
+theorem trace_map_mul (K : KrausFamily α β) (ρ : Matrix α α ℂ) (A : Matrix β β ℂ) :
+    (K.map ρ * A).trace = (ρ * K.adjoint.map A).trace := by
+  simp only [map_apply, adjoint, conjTranspose_conjTranspose, Finset.sum_mul, Matrix.mul_sum,
+    trace_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Matrix.mul_assoc, Matrix.mul_assoc, trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
+    ← Matrix.mul_assoc]
+
+/-! ### Preparation and discard -/
+
+/-- The preparation of the basis vector `b` from the one-point basis: the operator `|b⟩`. -/
+def prepare {β : Type} [DecidableEq β] (b : β) : KrausFamily PUnit β :=
+  single (Matrix.single b () 1)
+
+/-- The discard of a basis: the operators `⟨a|`, one for each basis vector `a`. -/
+def discard (α : Type) [Fintype α] [DecidableEq α] : KrausFamily α PUnit :=
+  ⟨α, fun a ↦ Matrix.single () a 1⟩
+
+/-- The measurement of the basis `α`: the projections `|a⟩⟨a|`, indexed by `a : α`. -/
+def measure (α : Type) [Fintype α] [DecidableEq α] : KrausFamily α α :=
+  ⟨α, fun a ↦ Matrix.single a a 1⟩
+
+theorem isTP_prepare {β : Type} [Fintype β] [DecidableEq β] (b : β) : (prepare b).IsTP := by
+  ext x y
+  simp [prepare, effect_single, mul_apply, Matrix.single_apply]
+
+theorem isTP_discard (α : Type) [Fintype α] [DecidableEq α] : (discard α).IsTP := by
+  rw [IsTP, effect]
+  simp only [discard, conjTranspose_single, star_one, single_mul_single_same, mul_one]
+  exact sum_single_one
+
+theorem map_prepare {β : Type} [DecidableEq β] (b : β)
+    (ρ : Matrix PUnit PUnit ℂ) : (prepare b).map ρ = ρ () () • Matrix.single b b 1 := by
+  ext x y
+  simp [map_apply, prepare, single, Matrix.single_apply]
+
+theorem map_discard (α : Type) [Fintype α] [DecidableEq α] (ρ : Matrix α α ℂ) :
+    (discard α).map ρ = of fun _ _ ↦ ρ.trace := by
+  ext x y
+  simp [map_apply, discard, trace, Matrix.sum_apply]
+
+/-- A trace-preserving family has a nonzero effect on a nonempty basis. -/
+private theorem IsTP.effect_ne_zero {α β : Type} [DecidableEq α] [Fintype β] [Nonempty α]
+    {K : KrausFamily α β} (h : K.IsTP) : K.effect ≠ 0 := fun h0 ↦ by
+  obtain ⟨a⟩ := ‹Nonempty α›
+  simpa using congrFun (congrFun (h.symm.trans h0) a) a
+
+/-- A trace-preserving Kraus family on a nonempty basis has an operator. -/
+theorem IsTP.nonempty_index {α β : Type} [DecidableEq α] [Fintype β] [Nonempty α]
+    {K : KrausFamily α β} (h : K.IsTP) : Nonempty K.Index := by
+  by_contra hi
+  rw [not_nonempty_iff] at hi
+  exact h.effect_ne_zero (Finset.sum_of_isEmpty _)
+
+/-- The target basis of a trace-preserving Kraus family on a nonempty basis is nonempty. -/
+theorem IsTP.nonempty_target {α β : Type} [DecidableEq α] [Fintype β] [Nonempty α]
+    {K : KrausFamily α β} (h : K.IsTP) : Nonempty β := by
+  by_contra hb
+  rw [not_nonempty_iff] at hb
+  exact h.effect_ne_zero (Finset.sum_eq_zero fun i _ ↦ by
+    rw [Subsingleton.elim (K.op i) 0, Matrix.mul_zero])
 
 end KrausFamily

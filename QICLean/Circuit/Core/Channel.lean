@@ -27,6 +27,7 @@ outcomes. This is proved by induction from the trace preservation of a layer.
 
 * `QuantumCircuit.Circuit.Forall.append`, `QuantumCircuit.Circuit.Forall.comp`,
   `QuantumCircuit.Circuit.IsUnbranched.comp` — both notions pass to compositions.
+* `QuantumCircuit.Circuit.isUnbranched_ofLayer` — the circuit of one layer is unbranched.
 * `QuantumCircuit.Circuit.isTP_krausFamily` — local trace preservation gives trace
   preservation (Wolf, §2.1).
 * `QuantumCircuit.Circuit.isKrausCPTP_map` — such a circuit is a quantum channel.
@@ -108,6 +109,12 @@ theorem IsUnbranched.comp {Z : S → Type} : {X Y : S → Type} → {c : Circuit
       fun i ↦ IsUnbranched.comp (c := next i) (hc.2 i) hc'⟩
 
 omit [Fintype S] in
+/-- The circuit of one layer is unbranched. -/
+theorem isUnbranched_ofLayer {X Y : S → Type} [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    (L : Layer Γ G X Y) : (ofLayer L).IsUnbranched :=
+  ⟨fun _ _ ↦ rfl, fun _ ↦ trivial⟩
+
+omit [Fintype S] in
 /-- A circuit whose gates and onsite families each have a unique Kraus index has a unique
 branch. A unitary local family has a unique index, so this applies to unitary circuits. -/
 theorem nonempty_unique_index (ev : Interpretation G) : {X Z : S → Type} →
@@ -145,8 +152,7 @@ theorem dual_one_of_forall (ev : Interpretation G) : {X Z : S → Type} →
   | _, _, i₁, i₂, i₃, i₄, done _, _ => by
     obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
     obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
-    change ∑ _ : Unit, ((1 : Matrix _ _ ℂ))ᴴ * 1 * 1 = 1
-    simp
+    exact dual_done ev 1
   | _, _, _, _, _, _, step L next, h => by
     rw [dual_step]
     have hnext : ∀ i, (next i).dual ev 1 = 1 := fun i ↦ dual_one_of_forall ev (next i) (h.2 i)

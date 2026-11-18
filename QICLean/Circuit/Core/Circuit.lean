@@ -29,6 +29,7 @@ every branch is `comp`, and `done` is its identity.
   `QuantumCircuit.Circuit.krausFamily`, `QuantumCircuit.Circuit.map`,
   `QuantumCircuit.Circuit.dual` — the semantics.
 * `QuantumCircuit.Circuit.append`, `QuantumCircuit.Circuit.comp` — composition.
+* `QuantumCircuit.Circuit.ofLayer` — the circuit of one layer.
 * `QuantumCircuit.Circuit.seq` — an unbranched sequence of layers on one system.
 
 ## Main results
@@ -38,7 +39,13 @@ every branch is `comp`, and `done` is its identity.
 * `QuantumCircuit.Circuit.kraus_append`, `QuantumCircuit.Circuit.kraus_comp` — the Kraus
   operators of a composition are the products of those of its parts.
 * `QuantumCircuit.Circuit.map_comp`, `QuantumCircuit.Circuit.map_done` — composition of maps.
-* `QuantumCircuit.Circuit.dual_step` — the Heisenberg picture layer by layer.
+* `QuantumCircuit.Circuit.map_append`, `QuantumCircuit.Circuit.map_step` — the map along the
+  branches, and layer by layer.
+* `QuantumCircuit.Circuit.trace_map_mul` — the map and the Heisenberg picture are dual.
+* `QuantumCircuit.Circuit.dual_step`, `QuantumCircuit.Circuit.dual_done` — the Heisenberg
+  picture layer by layer.
+* `QuantumCircuit.Circuit.step_eq_ofLayer_comp`, `QuantumCircuit.Circuit.dual_step_of_forall_eq`
+  — a step whose continuations agree.
 -/
 
 open Matrix ManyBody
@@ -121,6 +128,20 @@ theorem dual_step [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Fint
   refine Finset.sum_congr rfl fun j _ ↦ ?_
   simp only [kraus_step, conjTranspose_mul, Matrix.mul_assoc]
 
+/-- The map and the Heisenberg picture of a circuit are dual for the trace pairing. -/
+theorem trace_map_mul [∀ s, Fintype (Z s)] (ev : Interpretation G) (c : Circuit Γ G X Z)
+    (ρ : Matrix (Config X) (Config X) ℂ) (A : Matrix (Config Z) (Config Z) ℂ) :
+    (c.map ev ρ * A).trace = (ρ * c.dual ev A).trace := by
+  rw [map, KrausFamily.trace_map_mul]
+  simp only [KrausFamily.map_apply, KrausFamily.adjoint, conjTranspose_conjTranspose]
+  rfl
+
+/-- The empty circuit has the identity as Heisenberg picture. -/
+@[simp] theorem dual_done (ev : Interpretation G) (A : Matrix (Config X) (Config X) ℂ) :
+    (done X : Circuit Γ G X X).dual ev A = A := by
+  change ∑ _ : Unit, (1 : Matrix (Config X) (Config X) ℂ)ᴴ * A * 1 = A
+  simp
+
 /-! ### Composition -/
 
 /-- Attach the continuation `k p` to every branch `p` of a circuit. -/
@@ -200,6 +221,69 @@ theorem map_done (ev : Interpretation G) :
   simp only [map, krausFamily, KrausFamily.map_apply, LinearMap.id_apply]
   change ∑ _ : Unit, (1 : Matrix (Config X) (Config X) ℂ) * ρ * (1 : Matrix _ _ ℂ)ᴴ = ρ
   simp
+
+/-- The map of `c.append k`: along each branch `p` of `c`, the map of the continuation `k p`
+applied to `Kₚ ρ Kₚᴴ`. -/
+theorem map_append [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Z s)]
+    (ev : Interpretation G) (c : Circuit Γ G X Y) (k : c.Index → Circuit Γ G Y Z)
+    (ρ : Matrix (Config X) (Config X) ℂ) :
+    (c.append k).map ev ρ = ∑ p, (k p).map ev (c.kraus ev p * ρ * (c.kraus ev p)ᴴ) := by
+  simp only [map, krausFamily, KrausFamily.map_apply]
+  rw [← (c.appendIndexEquiv k).symm.sum_comp, Fintype.sum_sigma]
+  refine Finset.sum_congr rfl fun p _ ↦ Finset.sum_congr rfl fun q _ ↦ ?_
+  rw [kraus_append, Equiv.apply_symm_apply, conjTranspose_mul]
+  simp only [Matrix.mul_assoc]
+
+/-- The circuit of one layer. -/
+def ofLayer [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y) :
+    Circuit Γ G X Y :=
+  step L fun _ ↦ done Y
+
+/-- The map of a circuit layer by layer: along each Kraus index `i` of the first layer, the map
+of the continuation applied to `Kᵢ ρ Kᵢᴴ`. -/
+theorem map_step [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Fintype (Z s)]
+    (ev : Interpretation G) (L : Layer Γ G X Y) (next : L.Index → Circuit Γ G Y Z)
+    (ρ : Matrix (Config X) (Config X) ℂ) :
+    (step L next).map ev ρ = ∑ i, (next i).map ev (L.kraus ev i * ρ * (L.kraus ev i)ᴴ) := by
+  simp only [map, krausFamily, KrausFamily.map_apply]
+  change ∑ p : Σ i : L.Index, (next i).Index, (step L next).kraus ev p * ρ *
+    ((step L next).kraus ev p)ᴴ = _
+  rw [Fintype.sum_sigma]
+  refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_
+  simp only [kraus_step, conjTranspose_mul, Matrix.mul_assoc]
+
+/-- The Kraus operators of the circuit of one layer are those of the layer. -/
+@[simp] theorem kraus_ofLayer [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    (ev : Interpretation G) (L : Layer Γ G X Y) (p : (ofLayer L).Index) :
+    (ofLayer L).kraus ev p = L.kraus ev p.1 :=
+  Matrix.one_mul _
+
+/-- The map of the circuit of one layer is the map of the layer's Kraus family. -/
+theorem map_ofLayer [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (ev : Interpretation G)
+    (L : Layer Γ G X Y) : (ofLayer L).map ev = (L.krausFamily ev).map := by
+  ext1 ρ
+  rw [ofLayer, map_step, KrausFamily.map_apply]
+  exact Finset.sum_congr rfl fun i _ ↦ by rw [map_done]; rfl
+
+omit [Fintype S] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] in
+/-- A step whose continuations all agree is the circuit of its layer followed by any one of
+them. -/
+theorem step_eq_ofLayer_comp [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y)
+    {next : L.Index → Circuit Γ G Y Z} (h : ∀ i j, next i = next j) (i₀ : L.Index) :
+    step L next = (ofLayer L).comp (next i₀) := by
+  have hnext : next = fun _ ↦ next i₀ := funext fun i ↦ h i i₀
+  conv_lhs => rw [hnext]
+  rfl
+
+/-- The Heisenberg picture of a step whose continuations all agree: the layer applied to the
+Heisenberg picture of any one of them. -/
+theorem dual_step_of_forall_eq [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    [∀ s, Fintype (Z s)] (ev : Interpretation G) (L : Layer Γ G X Y)
+    {next : L.Index → Circuit Γ G Y Z} (h : ∀ i j, next i = next j) (i₀ : L.Index)
+    (A : Matrix (Config Z) (Config Z) ℂ) :
+    (step L next).dual ev A = L.dual ev ((next i₀).dual ev A) := by
+  rw [dual_step]
+  exact Finset.sum_congr rfl fun i _ ↦ by rw [h i i₀]
 
 /-- An unbranched sequence of layers on one system, applied from the head of the list. -/
 def seq : List (Layer Γ G X X) → Circuit Γ G X X

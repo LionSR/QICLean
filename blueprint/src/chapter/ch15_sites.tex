@@ -153,13 +153,15 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \lean{ManyBody.place_mem_supportedOperators,
         ManyBody.exists_eq_place_of_mem_supportedOperators,
         ManyBody.mem_supportedOperators_iff_exists_eq_place,
-        ManyBody.range_placeHom}
+        ManyBody.range_placeHom,
+        ManyBody.exists_eq_one_kronecker_of_mem_supportedOperators}
     \leanok
     \uses{def:sites_config, def:sites_supported, thm:sites_supported_subalgebra,
         def:sites_place, lem:sites_place_hom}
     An operator on $\mathcal H_X$ is supported on $D$ if and only if it is
     $K\otimes1$ for a matrix $K$ on $\C^{X_D}$. Hence $\mathcal A_D$ is the
-    image of the placement.
+    image of the placement. An operator supported on a region disjoint
+    from $D$ is $1\otimes B$ for a matrix $B$ on $\C^{X_{V\setminus D}}$.
 \end{theorem}
 \begin{proof}\leanok
     The matrix elements of $K\otimes1$ given in
@@ -175,13 +177,13 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \lean{ManyBody.supportedOperators_toSubmodule_eq_span, ManyBody.prodOp,
         ManyBody.prodOp_apply, ManyBody.prodOp_mul, ManyBody.prodOp_one,
         ManyBody.conjTranspose_prodOp, ManyBody.prodOp_mem_unitary,
-        ManyBody.prodOp_mem_supportedOperators, ManyBody.place_single}
+        ManyBody.prodOp_mem_supportedOperators, ManyBody.place_single, ManyBody.trace_prodOp}
     \leanok
     \uses{thm:sites_place_range, lem:sites_place_hom}
     The algebra $\mathcal A_D$ is the linear span of the product operators
     $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$. Product operators
-    multiply sitewise, $(\bigotimes_vm_v)^*=\bigotimes_vm_v^*$, and a product of
-    unitaries is unitary.
+    multiply sitewise, $(\bigotimes_vm_v)^*=\bigotimes_vm_v^*$, a product of
+    unitaries is unitary, and $\operatorname{tr}\bigotimes_vm_v=\prod_v\operatorname{tr}m_v$.
 \end{theorem}
 \begin{proof}\leanok
     The matrix element of $\bigotimes_vm_v$ at $(\sigma,\tau)$ is
@@ -207,6 +209,28 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{proof}\leanok
     By Theorem~\ref{thm:sites_product_span}, $\mathcal A_D$ is the span of the product
     operators; induct over the span, and for the bilinear maps, in each argument.
+\end{proof}
+
+\begin{lemma}[Product states factorize over disjoint regions]
+    \label{lem:sites_product_state_factorization}
+    \lean{ManyBody.trace_prodOp_mul_mul}
+    \leanok
+    \uses{cor:sites_product_induction}
+    Let $\sigma_v$ be matrices on $\C^{X_v}$ with $\operatorname{tr}\sigma_v=1$, and let
+    $A\in\mathcal A_D$ and $B\in\mathcal A_{D'}$ with $D\cap D'=\emptyset$. Then
+    \begin{align}
+        \operatorname{tr}\Bigl(\bigl(\textstyle\bigotimes_v\sigma_v\bigr)AB\Bigr)
+        &=\operatorname{tr}\Bigl(\bigl(\textstyle\bigotimes_v\sigma_v\bigr)A\Bigr)
+        \operatorname{tr}\Bigl(\bigl(\textstyle\bigotimes_v\sigma_v\bigr)B\Bigr).
+        \notag
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Both sides are bilinear in $(A,B)$, so by Corollary~\ref{cor:sites_product_induction}
+    it is enough to take product operators $A=\bigotimes_vm_v$ and
+    $B=\bigotimes_vm'_v$ with $m_v=1$ outside $D$ and $m'_v=1$ outside $D'$. Then both
+    sides are $\prod_v\operatorname{tr}(\sigma_vm_vm'_v)$, since at every site $m_v=1$
+    or $m'_v=1$ and $\operatorname{tr}\sigma_v=1$.
 \end{proof}
 
 \begin{lemma}[Product operators across a cut and intertwined placements]
@@ -512,6 +536,35 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     bijection is injective, so $w|_{R_b}\neq w'|_{R_b}$ for some block $b$, and the
     product over the blocks of the indicators of agreement has the factor $0$ at
     $b$.
+\end{proof}
+
+\section{Blocking sites}
+\label{sec:sites_block}
+
+\begin{definition}[Blocked systems]
+    \label{def:sites_block}
+    \lean{ManyBody.blockPreimage, ManyBody.blockSystem,
+        ManyBody.blockConfigEquiv, ManyBody.blockRegionConfigEquiv}
+    \leanok
+    \uses{lem:sites_partition}
+    A map $f:V\to V'$ groups the sites into the blocks $f^{-1}(b)$, $b\in V'$. A system
+    $X$ on $V$ is a system on $V'$ with basis $X_{f^{-1}(b)}$ at $b$. Its configurations
+    are those of $X$, by the bijection of Lemma~\ref{lem:sites_partition} for the
+    partition into the blocks, and the configurations of a region $D'$ of blocks are
+    those of its preimage $f^{-1}(D')$.
+\end{definition}
+
+\begin{lemma}[Blocking commutes with placement]
+    \label{lem:sites_block_place}
+    \lean{ManyBody.reindex_blockConfigEquiv_place}
+    \leanok
+    \uses{def:sites_block, def:sites_place}
+    An operator placed on a region $D'$ of the blocked system is, on the configurations
+    of $X$, the same operator placed on $f^{-1}(D')$.
+\end{lemma}
+\begin{proof}\leanok
+    Two configurations agree outside $D'$ in the blocked system exactly when they agree
+    outside $f^{-1}(D')$, and their parts on $D'$ and on $f^{-1}(D')$ correspond.
 \end{proof}
 
 \section{Regional pure states and relabelling}

@@ -11,6 +11,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Core.Channel
 import QICLean.Circuit.Core.Circuit
 import QICLean.Circuit.Core.Cost
+import QICLean.Circuit.Core.Dimension
 import QICLean.Circuit.Core.GateSum
 import QICLean.Circuit.Core.Layer
 import QICLean.Circuit.Core.LayerDual
@@ -21,3 +22,4 @@ import QICLean.Circuit.Core.Oracle
 import QICLean.Circuit.Core.Outcome
 import QICLean.Circuit.Core.Parallel
 import QICLean.Circuit.Core.Seq
+import QICLean.Circuit.Core.Substitute

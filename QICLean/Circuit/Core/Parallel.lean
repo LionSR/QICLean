@@ -26,11 +26,17 @@ a product of one placement per cell.
 
 * `QuantumCircuit.Layer.ofCells` — gates on disjoint cells, the identity elsewhere.
 * `QuantumCircuit.Layer.placeFamily` — the placement of a Kraus family on a region.
+* `QuantumCircuit.Layer.ofOnsite` — a layer with no cells.
+* `QuantumCircuit.Layer.measure`, `QuantumCircuit.Layer.measure.outcome` — the measurement of a
+  region, and the outcome of a branch.
 
 ## Main results
 
 * `QuantumCircuit.Layer.kraus_ofCells` — the Kraus operators, as products of placements.
 * `QuantumCircuit.Layer.map_ofCells` — the map, as a composite of the maps of placed gates.
+* `QuantumCircuit.Layer.kraus_ofOnsite` — the Kraus operators of an onsite layer.
+* `QuantumCircuit.Layer.kraus_measure` — the Kraus operator of an outcome of a measurement is the
+  placed projection onto it.
 * `QuantumCircuit.Layer.forall_ofCells`, `QuantumCircuit.Layer.nonempty_index_ofCells`.
 * `QuantumCircuit.Layer.single_eq_ofCells` and its cases `QuantumCircuit.Layer.forall_single`,
   `QuantumCircuit.Layer.nonempty_index_single`, `QuantumCircuit.Layer.gateCount_single`,
@@ -134,6 +140,101 @@ theorem depth_single (b : Γ.Cell) (g : G (Γ.cell b) X X) (hb : 0 < Γ.cost b) 
   simp [depth, single, Finset.filter_singleton, hb]
 
 end Definition
+
+/-- The layer with no cells and the onsite family `o s` at every site. The local bases may
+change, as in a measurement or a preparation. -/
+def ofOnsite {X Y : S → Type} (o : (s : S) → KrausFamily (X s) (Y s)) : Layer Γ G X Y where
+  cells := ∅
+  pairwiseDisjoint := by simp
+  gate b := absurd b.2 (Finset.notMem_empty _)
+  onsite s := o s.1
+
+/-- The Kraus operators of an onsite layer are the products of one operator per site. -/
+theorem kraus_ofOnsite {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (ev : Interpretation G)
+    (o : (s : S) → KrausFamily (X s) (Y s)) (i : (ofOnsite (Γ := Γ) (G := G) o).Index) :
+    (ofOnsite (Γ := Γ) (G := G) o).kraus ev i =
+      prodOp fun s ↦ (o s).op (i.2 ⟨s, by simp [ofOnsite]⟩) := by
+  ext y x
+  rw [kraus, Fintype.prod_eq_one _ fun b ↦ absurd b.2 (Finset.notMem_empty _), one_mul, prodOp]
+  exact Fintype.prod_equiv (Equiv.subtypeUnivEquiv fun s ↦ by simp [ofOnsite]) _ _
+    fun _ ↦ rfl
+
+section Measure
+
+variable [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+
+/-- The measurement of the region `D` in the computational basis: the onsite layer with the
+measurement of the basis at the sites of `D` and the identity elsewhere. -/
+def measure (D : Finset S) : Layer Γ G X X :=
+  ofOnsite fun s ↦ if s ∈ D then KrausFamily.measure (X s) else KrausFamily.single 1
+
+/-- The outcome of a branch of the measurement of `D`: a configuration of `D`. -/
+def measure.outcome {D : Finset S} (i : (measure (Γ := Γ) (G := G) (X := X) D).Index) :
+    RegionConfig X D :=
+  fun v ↦ cast (congrArg KrausFamily.Index (by simp [v.2] :
+    (if v.1 ∈ D then KrausFamily.measure (X v) else KrausFamily.single 1) =
+      KrausFamily.measure (X v)))
+    (i.2 ⟨v.1, by simp [measure, ofOnsite]⟩)
+
+omit [∀ s, Fintype (X s)] in
+private theorem op_eq_of_eq_measure {α : Type} [Fintype α] [DecidableEq α]
+    {K : KrausFamily α α} (h : K = KrausFamily.measure α) (j : K.Index) :
+    K.op j = Matrix.single (cast (congrArg KrausFamily.Index h) j : α)
+      (cast (congrArg KrausFamily.Index h) j : α) 1 := by
+  subst h
+  rfl
+
+private theorem op_eq_of_eq_single {α : Type} [DecidableEq α] {K : KrausFamily α α}
+    (h : K = KrausFamily.single 1) (j : K.Index) : K.op j = 1 := by
+  subst h
+  rfl
+
+/-- The Kraus operator of the outcome `x` of the measurement of `D` is the projection onto `x`,
+placed on `D`. -/
+theorem kraus_measure (ev : Interpretation G) (D : Finset S)
+    (i : (measure (Γ := Γ) (G := G) (X := X) D).Index) :
+    (measure (Γ := Γ) (G := G) (X := X) D).kraus ev i =
+      place D (Matrix.single (measure.outcome i) (measure.outcome i) 1) := by
+  refine (kraus_ofOnsite ev _ i).trans ?_
+  ext y x
+  rw [prodOp_apply, place_apply, Matrix.single_apply]
+  have hD : ∀ s (hs : s ∈ D), ((if s ∈ D then KrausFamily.measure (X s) else
+      KrausFamily.single 1).op (i.2 ⟨s, by simp [measure, ofOnsite]⟩)) (y s) (x s) =
+      if measure.outcome i ⟨s, hs⟩ = y s ∧ measure.outcome i ⟨s, hs⟩ = x s then 1 else 0 :=
+    fun s hs ↦ (congrFun (congrFun (op_eq_of_eq_measure (by simp [hs]) _) (y s)) (x s)).trans
+      (by rw [Matrix.single_apply]; rfl)
+  have hN : ∀ s (hs : s ∉ D), ((if s ∈ D then KrausFamily.measure (X s) else
+      KrausFamily.single 1).op (i.2 ⟨s, by simp [measure, ofOnsite]⟩)) (y s) (x s) =
+      if y s = x s then 1 else 0 :=
+    fun s hs ↦ (congrFun (congrFun (op_eq_of_eq_single (by simp [hs]) _) (y s)) (x s)).trans
+      (one_apply ..)
+  by_cases h : (∀ v ∉ D, y v = x v) ∧
+      measure.outcome i = (fun v : {v // v ∈ D} ↦ y v) ∧
+        measure.outcome i = fun v : {v // v ∈ D} ↦ x v
+  · rw [ite_eq_left h.1, ite_eq_left h.2]
+    refine Fintype.prod_eq_one _ fun s ↦ ?_
+    by_cases hs : s ∈ D
+    · exact (hD s hs).trans (ite_eq_left ⟨congrFun h.2.1 ⟨s, hs⟩, congrFun h.2.2 ⟨s, hs⟩⟩)
+    · exact (hN s hs).trans (ite_eq_left (h.1 s hs))
+  · rw [show (if ∀ v ∉ D, y v = x v then (if measure.outcome i = (fun v : {v // v ∈ D} ↦ y v) ∧
+        measure.outcome i = (fun v : {v // v ∈ D} ↦ x v) then (1 : ℂ) else 0) else 0) = 0 by
+      split_ifs with h1 h2 <;> first | rfl | exact absurd ⟨h1, h2⟩ h]
+    by_cases h1 : ∀ v ∉ D, y v = x v
+    · have h2 : ¬(measure.outcome i = (fun v : {v // v ∈ D} ↦ y v) ∧
+        measure.outcome i = fun v : {v // v ∈ D} ↦ x v) :=
+        fun h2 ↦ h ⟨h1, h2⟩
+      obtain ⟨v, hv⟩ : ∃ v : {v // v ∈ D},
+          ¬(measure.outcome i v = y v ∧ measure.outcome i v = x v) := by
+        by_contra hc
+        push Not at hc
+        exact h2 ⟨funext fun v ↦ (hc v).1, funext fun v ↦ (hc v).2⟩
+      exact Finset.prod_eq_zero (Finset.mem_univ v.1) ((hD v.1 v.2).trans (ite_eq_right hv))
+    · push Not at h1
+      obtain ⟨v, hv, hne⟩ := h1
+      exact Finset.prod_eq_zero (Finset.mem_univ v) ((hN v hv).trans (ite_eq_right hne))
+
+end Measure
 
 section Product
 

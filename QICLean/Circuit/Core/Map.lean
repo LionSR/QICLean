@@ -41,6 +41,7 @@ because a circuit may change its basis types, so that its Kraus operators need n
 
 ## Main definitions
 
+* `QuantumCircuit.SystemMap` — a map of systems between sets of sites.
 * `QuantumCircuit.LayerMap`, `QuantumCircuit.Circuit.mapLayers` — circuits moved layer by layer.
 * `QuantumCircuit.GateMorphism`, `QuantumCircuit.Circuit.mapGate` — the map on the same sites.
 * `QuantumCircuit.extendSystem` — a system on other sites.
@@ -51,6 +52,9 @@ because a circuit may change its basis types, so that its Kraus operators need n
 
 * `QuantumCircuit.Circuit.kraus_mapLayers`, `QuantumCircuit.Circuit.kraus_mapGate`,
   `QuantumCircuit.Circuit.kraus_mapSites` — the Kraus operators of the image.
+* `QuantumCircuit.Circuit.map_mapSites` — the map of a circuit moved to other sites is its map
+  tensored with the identity on the idle sites.
+* `QuantumCircuit.Circuit.mapLayers_comp` — moving commutes with composition.
 * `QuantumCircuit.Circuit.isUnbranched_mapLayers`, `QuantumCircuit.Circuit.forall_mapLayers`,
   `QuantumCircuit.Circuit.total_mapLayers_le` — what moves along each layer moves along the
   circuit; `Circuit.forall_mapGate` and `Circuit.forall_mapSites` are the local properties for the
@@ -202,18 +206,30 @@ section LayerMap
 
 variable {S S' : Type} [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S']
 
-/-- A map of layers from the geometry `Γ` with gates `G` on the sites `S` to the geometry `Γ'`
-with gates `G'` on the sites `S'`: a system on `S'` for every system on `S`, and for every layer
-a layer between the images of its systems, with an equivalence of Kraus indices. -/
-structure LayerMap (Γ : Geometry S) (G : Finset S → (S → Type) → (S → Type) → Type 1)
-    (Γ' : Geometry S') (G' : Finset S' → (S' → Type) → (S' → Type) → Type 1) [GateFamily G]
-    [GateFamily G'] where
+/-- A map of systems from the sites `S` to the sites `S'`, keeping finiteness and decidable
+equality of the bases. -/
+structure SystemMap (S S' : Type) where
   /-- The image of a system. -/
   system : (S → Type) → (S' → Type)
   /-- The image of a finite system is finite. -/
   fintype : ∀ (X : S → Type) [∀ s, Fintype (X s)], ∀ s', Fintype (system X s')
   /-- The image of a system with decidable equality has decidable equality. -/
   decidableEq : ∀ (X : S → Type) [∀ s, DecidableEq (X s)], ∀ s', DecidableEq (system X s')
+
+instance SystemMap.instFintype {S S' : Type} (F : SystemMap S S') (X : S → Type)
+    [∀ s, Fintype (X s)] (s' : S') : Fintype (F.system X s') :=
+  F.fintype X s'
+
+instance SystemMap.instDecidableEq {S S' : Type} (F : SystemMap S S') (X : S → Type)
+    [∀ s, DecidableEq (X s)] (s' : S') : DecidableEq (F.system X s') :=
+  F.decidableEq X s'
+
+/-- A map of layers from the geometry `Γ` with gates `G` on the sites `S` to the geometry `Γ'`
+with gates `G'` on the sites `S'`: a map of systems, and for every layer a layer between the
+images of its systems, with an equivalence of Kraus indices. -/
+structure LayerMap (Γ : Geometry S) (G : Finset S → (S → Type) → (S → Type) → Type 1)
+    (Γ' : Geometry S') (G' : Finset S' → (S' → Type) → (S' → Type) → Type 1) [GateFamily G]
+    [GateFamily G'] extends SystemMap S S' where
   /-- The image of a layer. -/
   layer : ∀ ⦃X Y : S → Type⦄ [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
     [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)],
@@ -225,14 +241,6 @@ structure LayerMap (Γ : Geometry S) (G : Finset S → (S → Type) → (S → T
 
 variable {Γ : Geometry S} {G : Finset S → (S → Type) → (S → Type) → Type 1} [GateFamily G]
   {Γ' : Geometry S'} {G' : Finset S' → (S' → Type) → (S' → Type) → Type 1} [GateFamily G']
-
-instance LayerMap.instFintype (F : LayerMap Γ G Γ' G') (X : S → Type) [∀ s, Fintype (X s)]
-    (s' : S') : Fintype (F.system X s') :=
-  F.fintype X s'
-
-instance LayerMap.instDecidableEq (F : LayerMap Γ G Γ' G') (X : S → Type)
-    [∀ s, DecidableEq (X s)] (s' : S') : DecidableEq (F.system X s') :=
-  F.decidableEq X s'
 
 namespace Circuit
 
@@ -291,6 +299,20 @@ theorem total_mapLayers_le (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → �
     exact add_le_add (hf L) (Finset.sup_le fun i _ ↦
       (total_mapLayers_le f f' hf _).trans (Finset.le_sup (f := fun i ↦ (next i).total f)
         (Finset.mem_univ _)))
+
+omit [Fintype S] [Fintype S'] in
+/-- Moving commutes with composition. -/
+theorem mapLayers_comp {Z : S → Type} :
+    {X Y : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+    [∀ s, Fintype (Y s)] → [∀ s, DecidableEq (Y s)] →
+    (c : Circuit Γ G X Y) → (c' : Circuit Γ G Y Z) →
+    (c.comp c').mapLayers F = (c.mapLayers F).comp (c'.mapLayers F)
+  | _, _, i₁, i₂, i₃, i₄, Circuit.done _, c' => by
+    obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
+    obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
+    rfl
+  | _, _, _, _, _, _, Circuit.step L next, c' =>
+    congrArg (Circuit.step (F.layer L)) (funext fun i ↦ mapLayers_comp (next _) c')
 
 /-- The Kraus operators of the moved circuit are the images of those of the circuit under a
 multiplicative and unital map `Φ`, when this holds for every layer. -/
@@ -765,6 +787,38 @@ theorem kraus_mapSites [Fintype R] {ev : Interpretation G} {ev' : Interpretation
       (extendConfigEquiv e W _) (extendConfigEquiv e W _) (extendConfigEquiv e W _)
     rw [← mul_kronecker_mul, Matrix.mul_one] at this
     exact this.symm
+
+/-- The map of the moved circuit is that of the circuit tensored with the identity on the idle
+sites. -/
+theorem map_mapSites [Finite R] [∀ s, Fintype (Z s)] {ev : Interpretation G}
+    {ev' : Interpretation G'} (hφ : φ.IsCompatible e W ev ev')
+    (c : Circuit Γ G X Z) (ρ : Matrix (Config X) (Config X) ℂ)
+    (ω : Matrix ((r : R) → W r) ((r : R) → W r) ℂ) :
+    (c.mapSites e W h φ).map ev'
+        ((ρ ⊗ₖ ω).submatrix (extendConfigEquiv e W X) (extendConfigEquiv e W X)) =
+      (c.map ev ρ ⊗ₖ ω).submatrix (extendConfigEquiv e W Z) (extendConfigEquiv e W Z) := by
+  classical
+  have := Fintype.ofFinite R
+  simp only [map, krausFamily, KrausFamily.map_apply]
+  refine (Fintype.sum_equiv (c.mapIndexEquiv (LayerMap.ofSites e W h φ)) _ (fun p ↦
+    (c.kraus ev p ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (extendConfigEquiv e W Z)
+      (extendConfigEquiv e W X) * (ρ ⊗ₖ ω).submatrix (extendConfigEquiv e W X)
+        (extendConfigEquiv e W X) *
+      ((c.kraus ev p ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (extendConfigEquiv e W Z)
+        (extendConfigEquiv e W X))ᴴ) fun p ↦ by rw [kraus_mapSites e W h φ hφ c p]).trans ?_
+  have ht : ∀ K : Matrix (Config Z) (Config X) ℂ,
+      (K ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (extendConfigEquiv e W Z)
+          (extendConfigEquiv e W X) *
+        (ρ ⊗ₖ ω).submatrix (extendConfigEquiv e W X) (extendConfigEquiv e W X) *
+        ((K ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (extendConfigEquiv e W Z)
+          (extendConfigEquiv e W X))ᴴ =
+      ((K * ρ * Kᴴ) ⊗ₖ ω).submatrix (extendConfigEquiv e W Z) (extendConfigEquiv e W Z) := by
+    intro K
+    rw [conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, conjTranspose_kronecker,
+      conjTranspose_one, ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul]
+  simp only [ht]
+  ext a b
+  simp [Matrix.sum_apply, kroneckerMap_apply, Finset.sum_mul]
 
 omit [Fintype S] [Fintype S'] in
 /-- A local property invariant under relabelling of bases and of Kraus indices, held by the

@@ -94,7 +94,7 @@ control qubits to the register that also holds the target.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:qft_kraus, thm:circuits_map_sites, thm:circuits_map_gate, lem:circuits_adjoint,
-        lem:circuits_sum_prob}
+        lem:circuits_prob_pure}
     The circuit has one branch before the measurement. The Hadamard gates map
     $\lvert0\cdots0\rangle\otimes u$ to $2^{-t/2}\sum_x\lvert x\rangle\otimes u$. A call
     controlled by the qubit $j$ multiplies the component with $x_j=1$ by the
@@ -197,7 +197,7 @@ control qubits to the register that also holds the target.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:phase_estimation_success, thm:phase_estimation_query_count,
-        lem:circuits_sum_prob}
+        lem:circuits_prob_pure}
     After the preparation the control register is the product state
     $\bigotimes_j2^{-1/2}(\lvert0\rangle+e^{2\pi i\varphi2^{t-1-j}}\lvert1\rangle)$, tensored
     with $u$. Along a branch, the corrected measurement of the qubit $j$ with outcome $b_j$

@@ -122,6 +122,11 @@ def participation (c : Circuit Γ G X Z) (s : S) : ℕ :=
     (done X : Circuit Γ G X X).total f = 0 :=
   rfl
 
+theorem depth_step [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y)
+    (next : L.Index → Circuit Γ G Y Z) :
+    (step L next).depth = L.depth + Finset.univ.sup fun i ↦ (next i).depth :=
+  rfl
+
 /-- The cost of `c.append k` is at most the cost of `c` plus the largest cost of a
 continuation. -/
 theorem total_append (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ) :
