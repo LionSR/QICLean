@@ -135,6 +135,7 @@ import QICLean.Analysis.HermitianFactorRepair
 import QICLean.Analysis.HermitianIntertwiner
 import QICLean.Analysis.HermitianMatrixCone
 import QICLean.Analysis.HermitianPartNorm
+import QICLean.Analysis.HermitianProductFormula
 import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.IidTailThreshold

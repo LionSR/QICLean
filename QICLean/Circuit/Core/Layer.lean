@@ -143,6 +143,17 @@ def Forall (ev : Interpretation G)
     KrausFamily (RegionConfig X (Γ.cell b.1)) (RegionConfig Y (Γ.cell b.1)))) ∧
     ∀ s, P (L.onsite s)
 
+omit [Fintype S] in
+/-- A local property passes to every property it implies. -/
+theorem Forall.mono {ev : Interpretation G}
+    {P Q : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β],
+      KrausFamily α β → Prop}
+    (hPQ : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+      (K : KrausFamily α β), P K → Q K)
+    {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+    [∀ s, DecidableEq (Y s)] {L : Layer Γ G X Y} (h : L.Forall ev P) : L.Forall ev Q :=
+  ⟨fun b ↦ hPQ _ (h.1 b), fun s ↦ hPQ _ (h.2 s)⟩
+
 /-- The backward light cone of the region `R` through a layer: `R` together with every cell of
 the layer that meets `R`. -/
 def lightCone {X Y : S → Type} (L : Layer Γ G X Y) (R : Finset S) : Finset S :=
