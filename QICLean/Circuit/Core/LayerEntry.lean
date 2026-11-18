@@ -33,6 +33,18 @@ maps agree therefore have the same map.
 
 open Matrix ManyBody
 
+namespace KrausFamily
+
+/-- The entries of the map of a Kraus family on a matrix unit. -/
+theorem map_single_apply {α β : Type} [Fintype α] [DecidableEq α]
+    (K : KrausFamily α β) (a a' : α) (c c' : β) :
+    K.map (Matrix.single a a' 1) c c' = ∑ i, K.op i c a * star (K.op i c' a') := by
+  rw [map_apply, Matrix.sum_apply]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp [mul_apply, Matrix.single_apply, ite_and]
+
+end KrausFamily
+
 namespace QuantumCircuit
 
 namespace Layer
@@ -95,15 +107,6 @@ noncomputable def configEquiv (L : Layer Γ G X Y) (F : S → Type) :
     · simp only [L.mem_biUnion_of_mem_cell b v.2, ↓reduceDIte]
       exact L.apply_cellOf p.1 b v _
     · simp only [s.2, ↓reduceDIte]
-
-omit [Fintype S] [DecidableEq S] in
-/-- The entries of the map of a Kraus family on a matrix unit. -/
-theorem _root_.KrausFamily.map_single_apply {α β : Type} [Fintype α] [DecidableEq α]
-    (K : KrausFamily α β) (a a' : α) (c c' : β) :
-    K.map (Matrix.single a a' 1) c c' = ∑ i, K.op i c a * star (K.op i c' a') := by
-  rw [KrausFamily.map_apply, Matrix.sum_apply]
-  refine Finset.sum_congr rfl fun i _ ↦ ?_
-  simp [mul_apply, Matrix.single_apply, ite_and]
 
 variable [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
   [∀ s, DecidableEq (Y s)]
