@@ -76,10 +76,26 @@ example {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq �
     (K : KrausFamily α β) : IsKrausCP K.map :=
   Matrix.rectangularKrausMap_isKrausCP K.op
 
+-- A nonzero rectangular filter from two basis states to one.
+example : ((Circuit.ofLayer (onsiteLayer
+    (KrausFamily.single (Matrix.single () false 1 : Matrix Unit Bool ℂ)))).krausFamily
+      KrausGate.ev).IsTraceNonincreasing := by
+  have he : (KrausFamily.single (Matrix.single () false 1 : Matrix Unit Bool ℂ)).effect =
+      filter.effect := by
+    rw [KrausFamily.effect_single, filter_effect]
+    ext a b
+    cases a <;> cases b <;> simp
+  apply Circuit.isTraceNonincreasing_krausFamily
+  refine ⟨onsiteLayer_forall ?_, fun _ ↦ trivial⟩
+  change _ ≤ 1
+  rw [he]
+  exact filter_tni
+
 private def emptyFamily (α β : Type) : KrausFamily α β := ⟨Empty, Empty.elim⟩
 
 private theorem emptyFamily_tni (α β : Type) [Finite α] [DecidableEq α] [Fintype β] :
     (emptyFamily α β).IsTraceNonincreasing := by
+  let := Fintype.ofFinite α
   change (∑ i : Empty, (Empty.elim i : Matrix β α ℂ)ᴴ * Empty.elim i) ≤ 1
   simp
 
@@ -120,9 +136,9 @@ example : ((onsiteLayer (emptyFamily Empty Bool)).krausFamily KrausGate.ev).IsTr
   Layer.isTraceNonincreasing_krausFamily _ _ (onsiteLayer_forall (emptyFamily_tni Empty Bool))
 
 -- No sites: the empty product is the identity on the singleton configuration basis.
-example (L : Layer (geometry Empty) KrausGate (fun _ ↦ Bool) (fun _ ↦ Bool))
-    (h : L.Forall KrausGate.ev KrausFamily.IsTraceNonincreasing) : L.dual KrausGate.ev 1 ≤ 1 :=
-  L.dual_one_le _ h
+example (L : Layer (geometry Empty) KrausGate (fun _ ↦ Bool) (fun _ ↦ Bool)) :
+    L.dual KrausGate.ev 1 ≤ 1 :=
+  L.dual_one_le _ ⟨fun b ↦ Empty.elim b.1, fun s ↦ Empty.elim s.1⟩
 
 end CircuitTraceNonincreasingTest
 
