@@ -404,23 +404,42 @@ noncomputable def mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W 
   | _, _, _, _, step L next =>
       step (L.mapSites e W h φ) fun i ↦ (next (L.mapSitesIndexEquiv e W h φ i)).mapSites h φ
 
-variable {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
-  [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)]
-
 /-- The branches of the moved circuit are those of the circuit. -/
-noncomputable def mapSitesIndexEquiv (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
-    (c : Circuit Γ G X Z) : (c.mapSites e W h φ).Index ≃ c.Index :=
-  sorry
+noncomputable def mapSitesIndexEquiv (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G') :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      (c : Circuit Γ G X Z) → (c.mapSites e W h φ).Index ≃ c.Index
+  | _, _, _, _, done _ => Equiv.refl Unit
+  | _, _, _, _, step L next =>
+      Equiv.sigmaCongr (L.mapSitesIndexEquiv e W h φ) fun i ↦
+        (next (L.mapSitesIndexEquiv e W h φ i)).mapSitesIndexEquiv h φ
 
 /-- The Kraus operators of the moved circuit are those of the circuit tensored with the
 identity on the idle sites. -/
 theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
-    {ev : Interpretation G} {ev' : Interpretation G'} (hφ : φ.IsCompatible e W ev ev')
-    (c : Circuit Γ G X Z) (p : (c.mapSites e W h φ).Index) :
-    (c.mapSites e W h φ).kraus ev' p =
-      (c.kraus ev (c.mapSitesIndexEquiv e W h φ p) ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix
-        (liftConfigEquiv e W Z) (liftConfigEquiv e W X) :=
-  sorry
+    {ev : Interpretation G} {ev' : Interpretation G'} (hφ : φ.IsCompatible e W ev ev') :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      [∀ s, Fintype (Z s)] → [∀ s, DecidableEq (Z s)] → (c : Circuit Γ G X Z) →
+      (p : (c.mapSites e W h φ).Index) →
+      (c.mapSites e W h φ).kraus ev' p =
+        (c.kraus ev (c.mapSitesIndexEquiv e W h φ p) ⊗ₖ
+          (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (liftConfigEquiv e W Z)
+          (liftConfigEquiv e W X)
+  | _, _, i₁, i₂, i₃, i₄, done _, p => by
+      obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
+      obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
+      change (1 : Matrix _ _ ℂ) = ((1 : Matrix _ _ ℂ) ⊗ₖ (1 : Matrix _ _ ℂ)).submatrix _ _
+      rw [one_kronecker_one, submatrix_one_equiv]
+  | _, _, _, _, _, _, step L next, q => by
+      obtain ⟨i, p⟩ := q
+      change ((next (L.mapSitesIndexEquiv e W h φ i)).mapSites e W h φ).kraus ev' p *
+        (L.mapSites e W h φ).kraus ev' i = _
+      rw [kraus_mapSites h φ hφ _ p, Layer.kraus_mapSites e W h φ hφ L i]
+      change _ = ((kraus ev (next _) _ * L.kraus ev _) ⊗ₖ _).submatrix _ _
+      rw [submatrix_mul_equiv, ← mul_kronecker_mul, Matrix.mul_one]
+      rfl
+
+variable {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+  [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)]
 
 theorem isUnbranched_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
     {c : Circuit Γ G X Z} (hc : c.IsUnbranched) : (c.mapSites e W h φ).IsUnbranched :=
