@@ -95,7 +95,8 @@ theorem U1_siteLayer {n : ℕ} (i : Fin n) (M : Matrix (Fin 2) (Fin 2) ℂ) :
 
 theorem U1_pairLayer {n : ℕ} {a b : Fin n} (h : a ≠ b)
     (M : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) ℂ) :
-    U1 (pairLayer h M) = place ({a} ∪ {b}) (M.submatrix (pairEquiv (Q n) h) (pairEquiv (Q n) h)) := by
+    U1 (pairLayer h M) =
+      place ({a} ∪ {b}) (M.submatrix (pairEquiv (Q n) h) (pairEquiv (Q n) h)) := by
   rw [U1, dite_eq_left_of_eq_true (eq_true (nonempty_index_pairLayer h M)), kraus_pairLayer]
 
 theorem prod_mulVec {n : ℕ} (Ls : List (Layer (geometry n) KrausGate (Q n) (Q n)))
@@ -220,13 +221,13 @@ theorem rotation_qstate' {m j : Fin n} (h : m < j) (c : ℂ) :
   funext y
   rw [rotation_mulVec]
   by_cases hy : ∀ k : Fin n, m < k → y k = x k
-  · simp only [qstate', if_pos hy, hy j h]
+  · simp only [qstate', ite_eq_left hy, hy j h]
     rw [mul_add, Complex.exp_add]
     have : 2 * (Real.pi : ℂ) * I * (((x j : ℕ) : ℂ) * ((y m : ℕ) : ℂ)) / 2 ^ ((j : ℕ) - m + 1) =
         2 * Real.pi * I * ((y m : ℕ) : ℂ) * (((x j : ℕ) : ℂ) / 2 ^ ((j : ℕ) - m + 1)) := by ring
     rw [this]
     ring
-  · simp only [qstate', if_neg hy]
+  · simp only [qstate', ite_eq_right hy]
     ring
 
 theorem foldl_rotations (m : Fin n) (c : ℂ) (l : List (Fin n)) :
@@ -238,9 +239,9 @@ theorem foldl_rotations (m : Fin n) (c : ℂ) (l : List (Fin n)) :
   | nil => simp
   | cons j l ih =>
     by_cases h : m < j
-    · rw [List.filterMap_cons, dif_pos h, List.foldl_cons, rotation_qstate' x h, ih,
+    · rw [List.filterMap_cons, dite_eq_left h, List.foldl_cons, rotation_qstate' x h, ih,
         List.filter_cons_of_pos (by simpa using h), List.map_cons, List.sum_cons, add_assoc]
-    · rw [List.filterMap_cons, dif_neg h, ih, List.filter_cons_of_neg (by simpa using h)]
+    · rw [List.filterMap_cons, dite_eq_right h, ih, List.filter_cons_of_neg (by simpa using h)]
 
 theorem sum_filter_finRange (p : Fin n → Prop) [DecidablePred p] (f : Fin n → ℂ) :
     (((List.finRange n).filter (p ·)).map f).sum = ∑ j ∈ Finset.univ.filter p, f j := by
@@ -260,7 +261,7 @@ theorem foldl_qubitLayers (m : Fin n) :
     sum_filter_finRange (m < ·), ← phase_eq]
   funext y
   have hind : (∀ k : Fin n, m < k → y k = x k) ↔ ∀ k : Fin n, (m : ℕ) + 1 ≤ k → y k = x k :=
-    forall_congr' fun k ↦ by rw [Fin.lt_iff_val_lt_val, Nat.succ_le_iff]
+    forall_congr' fun k ↦ by rw [Fin.lt_def, Nat.succ_le_iff]
   have hfil : Finset.univ.filter (fun i : Fin n ↦ (i : ℕ) < m + 1) =
       insert m (Finset.univ.filter fun i : Fin n ↦ (i : ℕ) < m) := by
     ext k
@@ -373,13 +374,13 @@ theorem exponent_eq (y : Config (Q n)) :
     have h := (Finset.mem_filter.mp hj).2
     rw [show ((y i : ℕ) : ℂ) * 2 ^ (i : ℕ) * (((x j : ℕ) : ℂ) * 2 ^ (n - 1 - (j : ℕ))) / 2 ^ n =
       ((y i : ℕ) : ℂ) * ((x j : ℕ) : ℂ) * ((2 : ℂ) ^ (i : ℕ) * 2 ^ (n - 1 - (j : ℕ)) / 2 ^ n) by
-        ring, pow_ratio, if_pos h]
+        ring, pow_ratio, ite_eq_left h]
     ring
   · refine Finset.sum_congr rfl fun j hj ↦ ?_
     have h := (Finset.mem_filter.mp hj).2
     rw [show ((y i : ℕ) : ℂ) * 2 ^ (i : ℕ) * (((x j : ℕ) : ℂ) * 2 ^ (n - 1 - (j : ℕ))) / 2 ^ n =
       ((y i : ℕ) : ℂ) * ((x j : ℕ) : ℂ) * ((2 : ℂ) ^ (i : ℕ) * 2 ^ (n - 1 - (j : ℕ)) / 2 ^ n) by
-        ring, pow_ratio, if_neg h]
+        ring, pow_ratio, ite_eq_right h]
 
 theorem qstate_n (y : Config (Q n)) : qstate x n y = dft n (fun i ↦ y (Fin.rev i)) x := by
   have hr : Real.sqrt (2 ^ n) = Real.sqrt 2 ^ n := by
@@ -389,11 +390,12 @@ theorem qstate_n (y : Config (Q n)) : qstate x n y = dft n (fun i ↦ y (Fin.rev
     rw [hr, Complex.ofReal_pow, inv_pow]
   have hfil : Finset.univ.filter (fun i : Fin n ↦ (i : ℕ) < n) = Finset.univ :=
     Finset.filter_true_of_mem fun i _ ↦ i.2
-  rw [qstate, dft, of_apply, hsqrt, hfil, if_pos (fun k hk ↦ absurd k.2 (by omega)), mul_one,
+  rw [qstate, dft, of_apply, hsqrt, hfil, ite_eq_left (fun k hk ↦ absurd k.2 (by omega)), mul_one,
     ← Complex.exp_sum]
   congr 1
   rw [mul_div_assoc, exponent_eq, mul_add, Complex.exp_add,
-    show 2 * (Real.pi : ℂ) * I * ((_ : ℕ) : ℂ) = ((_ : ℕ) : ℂ) * (2 * Real.pi * I) from mul_comm _ _,
+    show 2 * (Real.pi : ℂ) * I * ((_ : ℕ) : ℂ) = ((_ : ℕ) : ℂ) * (2 * Real.pi * I) from
+      mul_comm _ _,
     Complex.exp_nat_mul_two_pi_mul_I, mul_one, Finset.mul_sum]
   exact congrArg _ (Finset.sum_congr rfl fun i _ ↦ by ring)
 
@@ -405,7 +407,8 @@ end Column
 theorem kraus_qftCore (n : ℕ) (p : (qftCore n).Index) (y x : Config (Q n)) :
     (qftCore n).kraus KrausGate.ev p y x = dft n (fun i ↦ y (Fin.rev i)) x := by
   rw [show (qftCore n).kraus KrausGate.ev p = ((coreLayers n).map U1).reverse.prod from
-    Circuit.kraus_seq KrausGate.ev U1 _ (fun L hL ↦ kraus_eq_U1_of_mem (List.mem_append_left _ hL)) p,
+    Circuit.kraus_seq KrausGate.ev U1 _
+      (fun L hL ↦ kraus_eq_U1_of_mem (List.mem_append_left _ hL)) p,
     ← col_apply ((coreLayers n).map U1).reverse.prod x y,
     ← mulVec_single_one, prod_mulVec, foldl_coreLayers, qstate_n]
 

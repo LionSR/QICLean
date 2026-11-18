@@ -61,6 +61,7 @@ variable {S S' R : Type} [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S
 def siteEmb (e : S' ≃ S ⊕ R) : S ↪ S' :=
   ⟨fun s ↦ e.symm (.inl s), fun _ _ h ↦ Sum.inl_injective (e.symm.injective h)⟩
 
+omit [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
 @[simp] theorem siteEmb_apply (e : S' ≃ S ⊕ R) (s : S) : siteEmb e s = e.symm (.inl s) :=
   rfl
 
@@ -91,12 +92,16 @@ noncomputable def regionSiteEquiv (D : Finset S) :
       obtain ⟨s, hs, rfl⟩ := Finset.mem_map.mp hv'
       exact ⟨⟨s, hs⟩, rfl⟩)
 
+omit [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [(r : R)
+  → Fintype (W r)] [(r : R) → DecidableEq (W r)] in
 theorem liftConfigEquiv_fst (X : S → Type) (z : Config (lift e W X)) (s : S) :
     (liftConfigEquiv e W X z).1 s =
       cast (congrArg (Sum.elim X W) (e.apply_symm_apply (.inl s))) (z (e.symm (.inl s))) := by
   change (Equiv.piCongrLeft (fun t ↦ Sum.elim X W t) e z) (.inl s) = _
   rw [Equiv.piCongrLeft_apply_eq_cast]
 
+omit [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [(r : R)
+  → Fintype (W r)] [(r : R) → DecidableEq (W r)] in
 theorem liftConfigEquiv_snd (X : S → Type) (z : Config (lift e W X)) (r : R) :
     (liftConfigEquiv e W X z).2 r =
       cast (congrArg (Sum.elim X W) (e.apply_symm_apply (.inr r))) (z (e.symm (.inr r))) := by
@@ -150,6 +155,7 @@ noncomputable def KrausGate.transport : GateTransport e W (KrausGate (S := S))
     (liftRegionEquiv e W X _)⟩
   outcome _ _ _ _ := Equiv.refl _
 
+omit [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
 theorem KrausGate.isCompatible_transport :
     (KrausGate.transport e W).IsCompatible e W KrausGate.ev KrausGate.ev :=
   fun _ _ _ _ _ _ _ _ _ ↦ rfl
@@ -175,6 +181,9 @@ noncomputable def cellsEquiv : L.cells ≃ {b' // b' ∈ L.cells.map h.cellMap} 
       obtain ⟨b, hb, rfl⟩ := Finset.mem_map.mp hb'
       exact ⟨⟨b, hb⟩, rfl⟩)
 
+omit [Fintype S] [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [GateFamily G] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem cell_cellsEquiv_symm (b' : {b' // b' ∈ L.cells.map h.cellMap}) :
     (Γ.cell ((L.cellsEquiv e h).symm b').1).map (siteEmb e) = Γ'.cell b'.1 := by
   rw [← h.cell_cellMap]
@@ -187,6 +196,8 @@ noncomputable def liftOnsite : (t : S ⊕ R) → (∀ s, t = .inl s → s ∉ L.
   | .inl s, hs => L.onsite ⟨s, hs s rfl⟩
   | .inr r, _ => KrausFamily.single (1 : Matrix (W r) (W r) ℂ)
 
+omit [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] [GateFamily G] [(s : S) → Fintype (X s)]
+  [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y s)] in
 theorem not_mem_of_mapSites {s' : S'}
     (hs' : s' ∉ (L.cells.map h.cellMap).biUnion Γ'.cell) :
     ∀ s, e s' = .inl s → s ∉ L.cells.biUnion Γ.cell := by
@@ -244,9 +255,15 @@ noncomputable def freeEquiv : L.Free ⊕ R ≃ (L.mapSites e W h φ).Free :=
         obtain ⟨t, ht, hts⟩ := Finset.mem_map.mp hsb
         simp at hts⟩)) (by
     constructor
-    · rintro (a | a) (b | b) hab <;> simp [Subtype.ext_iff] at hab
-      · exact congrArg _ (Subtype.ext hab)
-      · exact congrArg _ hab
+    · rintro (a | a) (b | b) hab
+      · simp only [Sum.elim_inl, Subtype.mk.injEq, siteEmb_apply, EmbeddingLike.apply_eq_iff_eq,
+          Sum.inl.injEq] at hab
+        exact congrArg _ (Subtype.ext hab)
+      · simp [siteEmb_apply] at hab
+      · simp [siteEmb_apply] at hab
+      · simp only [Sum.elim_inr, Subtype.mk.injEq, EmbeddingLike.apply_eq_iff_eq,
+          Sum.inr.injEq] at hab
+        exact congrArg _ hab
     · rintro ⟨s', hs'⟩
       rcases hes : e s' with s | r
       · refine ⟨.inl ⟨s, L.not_mem_of_mapSites e h hs' s hes⟩, Subtype.ext ?_⟩
@@ -286,6 +303,8 @@ noncomputable def mapSitesIndexEquiv : (L.mapSites e W h φ).Index ≃ L.Index :
 
 omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
   [∀ s, DecidableEq (Y s)] in
+omit [Fintype S] [DecidableEq S] [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [(r : R)
+  → Fintype (W r)] [(r : R) → DecidableEq (W r)] in
 theorem liftRegionEquiv_restrict {Z : S → Type} (D : Finset S) (z : Config (lift e W Z)) :
     liftRegionEquiv e W Z D (fun v : {v // v ∈ D.map (siteEmb e)} ↦ z v.1) =
       fun v : {v // v ∈ D} ↦ (liftConfigEquiv e W Z z).1 v.1 := by
@@ -295,7 +314,8 @@ theorem liftRegionEquiv_restrict {Z : S → Type} (D : Finset S) (z : Config (li
   rw [Equiv.piCongrLeft_apply_eq_cast]
   rfl
 
-omit [Fintype S] [Fintype R] [DecidableEq R] in
+omit [Fintype S] [Fintype R] [DecidableEq R] [DecidableEq S] [Fintype S'] [DecidableEq S'] [(r : R)
+  → Fintype (W r)] [(r : R) → DecidableEq (W r)] in
 theorem ev_ndrec {ev' : Interpretation G'} {X' Y' : S → Type}
     [∀ s', Fintype (lift e W X' s')] [∀ s', DecidableEq (lift e W X' s')]
     [∀ s', Fintype (lift e W Y' s')] [∀ s', DecidableEq (lift e W Y' s')]
@@ -307,6 +327,7 @@ theorem ev_ndrec {ev' : Interpretation G'} {X' Y' : S → Type}
       ev' g (outcomeNdrec e W hD g o) (fun v ↦ y v) (fun v ↦ x v) := by
   subst hD; rfl
 
+omit [Fintype S] in
 theorem ev_gate_congr (ev : Interpretation G) {c₁ c₂ : L.cells} (hc : c₁ = c₂)
     (o : GateFamily.Outcome (L.gate c₁)) (y : Config Y) (x : Config X) :
     ev (L.gate c₁) o (fun v ↦ y v) (fun v ↦ x v) =
@@ -314,6 +335,9 @@ theorem ev_gate_congr (ev : Interpretation G) {c₁ c₂ : L.cells} (hc : c₁ =
         (fun v ↦ y v) (fun v ↦ x v) := by
   subst hc; rfl
 
+omit [Fintype S] [Fintype R] [DecidableEq R] [(r : R) → Fintype (W r)] [GateFamily G] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem liftOnsite_op_inl {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cells.biUnion Γ.cell)
     {s : S} (hts : t = .inl s) (o : (L.liftOnsite W t ht).Index) (a : Sum.elim Y W t)
     (b : Sum.elim X W t) :
@@ -322,6 +346,9 @@ theorem liftOnsite_op_inl {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cell
       (cast (congrArg (Sum.elim X W) hts) b) := by
   subst hts; rfl
 
+omit [Fintype S] [Fintype R] [DecidableEq R] [(r : R) → Fintype (W r)] [GateFamily G] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem liftOnsite_op_inr {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cells.biUnion Γ.cell)
     {r : R} (htr : t = .inr r) (o : (L.liftOnsite W t ht).Index) (a : Sum.elim Y W t)
     (b : Sum.elim X W t) :
@@ -329,11 +356,15 @@ theorem liftOnsite_op_inr {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cell
       (cast (congrArg (Sum.elim Y W) htr) a) (cast (congrArg (Sum.elim X W) htr) b) := by
   subst htr; rfl
 
+omit [(r : R) → Fintype (W r)] [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem mapSites_gate (b' : (L.mapSites e W h φ).cells) :
     (L.mapSites e W h φ).gate b' = Eq.ndrec (motive := fun D ↦ G' D (lift e W X) (lift e W Y))
       (φ.map (L.gate ((L.cellsEquiv e h).symm b'))) (L.cell_cellsEquiv_symm e h b') :=
   rfl
 
+omit [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] in
 theorem ev_mapSites_gate {ev' : Interpretation G'} (b' : (L.mapSites e W h φ).cells)
     (o : GateFamily.Outcome ((L.mapSites e W h φ).gate b')) (y : Config (lift e W Y))
     (x : Config (lift e W X)) :
@@ -342,6 +373,9 @@ theorem ev_mapSites_gate {ev' : Interpretation G'} (b' : (L.mapSites e W h φ).c
         (fun v ↦ y v) (fun v ↦ x v) :=
   ev_ndrec e W (X' := X) (Y' := Y) _ _ o y x
 
+omit [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] [(r : R) → Fintype (W r)] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem onsite_op_freeEquiv_inl (a : L.Free)
     (o : ((L.mapSites e W h φ).onsite (L.freeEquiv e W h φ (.inl a))).Index)
     (yv : lift e W Y (L.freeEquiv e W h φ (.inl a)).1)
@@ -352,6 +386,9 @@ theorem onsite_op_freeEquiv_inl (a : L.Free)
         (cast (congrArg (Sum.elim X W) (e.apply_symm_apply (.inl a.1))) xv) :=
   L.liftOnsite_op_inl W _ (e.apply_symm_apply (.inl a.1)) o yv xv
 
+omit [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] [(r : R) → Fintype (W r)] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem onsite_op_freeEquiv_inr (r : R)
     (o : ((L.mapSites e W h φ).onsite (L.freeEquiv e W h φ (.inr r))).Index)
     (yv : lift e W Y (L.freeEquiv e W h φ (.inr r)).1)
@@ -361,6 +398,7 @@ theorem onsite_op_freeEquiv_inr (r : R)
         (cast (congrArg (Sum.elim X W) (e.apply_symm_apply (.inr r))) xv) :=
   L.liftOnsite_op_inr W _ (e.apply_symm_apply (.inr r)) o yv xv
 
+omit [DecidableEq R] in
 /-- The Kraus operators of the moved layer are those of the layer tensored with the identity on
 the idle sites. -/
 theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
@@ -392,13 +430,16 @@ theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G'
       simp only [liftConfigEquiv_snd]
       exact Iff.rfl
 
+omit [(r : R) → Fintype (W r)] [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem lightCone_mapSites (T : Finset S) :
     (L.mapSites e W h φ).lightCone (T.map (siteEmb e)) = (L.lightCone T).map (siteEmb e) := by
   simp only [lightCone, mapSites, Finset.filter_map, Finset.map_union, Function.comp_def,
     h.cell_cellMap, ← Finset.map_inter, Finset.map_nonempty]
   congr 1
   ext v
-  simp only [Finset.mem_biUnion, Finset.mem_map, h.cell_cellMap]
+  simp only [Finset.mem_biUnion, Finset.mem_map]
   constructor
   · rintro ⟨_, ⟨b, hb, rfl⟩, hv⟩
     rw [h.cell_cellMap] at hv
@@ -407,10 +448,16 @@ theorem lightCone_mapSites (T : Finset S) :
   · rintro ⟨t, ⟨b, hb, ht⟩, rfl⟩
     exact ⟨h.cellMap b, ⟨b, hb, rfl⟩, by rw [h.cell_cellMap]; exact Finset.mem_map_of_mem _ ht⟩
 
+omit [(r : R) → Fintype (W r)] [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem gateCount_mapSites :
     (L.mapSites e W h φ).gateCount = ∑ b ∈ L.cells, Γ'.cost (h.cellMap b) :=
   Finset.sum_map _ _ _
 
+omit [(r : R) → Fintype (W r)] [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] [(s : S) →
+  Fintype (X s)] [(s : S) → DecidableEq (X s)] [(s : S) → Fintype (Y s)] [(s : S) → DecidableEq (Y
+  s)] in
 theorem depth_mapSites_le (hcost : ∀ b, 0 < Γ'.cost (h.cellMap b) → 0 < Γ.cost b) :
     (L.mapSites e W h φ).depth ≤ L.depth := by
   unfold depth
@@ -441,23 +488,23 @@ noncomputable def mapSitesIndexEquiv (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTran
       Equiv.sigmaCongr (L.mapSitesIndexEquiv e W h φ) fun i ↦
         (next (L.mapSitesIndexEquiv e W h φ i)).mapSitesIndexEquiv h φ
 
+omit [DecidableEq R] in
 /-- The Kraus operators of the moved circuit are those of the circuit tensored with the
 identity on the idle sites. -/
 theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
     {ev : Interpretation G} {ev' : Interpretation G'} (hφ : φ.IsCompatible e W ev ev') :
     {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
-      [∀ s, Fintype (Z s)] → [∀ s, DecidableEq (Z s)] → (c : Circuit Γ G X Z) →
+      (c : Circuit Γ G X Z) →
       (p : (c.mapSites e W h φ).Index) →
       (c.mapSites e W h φ).kraus ev' p =
         (c.kraus ev (c.mapSitesIndexEquiv e W h φ p) ⊗ₖ
           (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix (liftConfigEquiv e W Z)
           (liftConfigEquiv e W X)
-  | _, _, i₁, i₂, i₃, i₄, done _, p => by
-      obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
-      obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
+  | _, _, _, _, done _, p => by
       change (1 : Matrix _ _ ℂ) = ((1 : Matrix _ _ ℂ) ⊗ₖ (1 : Matrix _ _ ℂ)).submatrix _ _
       rw [one_kronecker_one, submatrix_one_equiv]
-  | _, _, _, _, _, _, step L next, q => by
+  | _, _, _, _, step L next, q => by
+      classical
       obtain ⟨i, p⟩ := q
       change ((next (L.mapSitesIndexEquiv e W h φ i)).mapSites e W h φ).kraus ev' p *
         (L.mapSites e W h φ).kraus ev' i = _
@@ -469,6 +516,7 @@ theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G'
 variable {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
   [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)]
 
+omit [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] in
 theorem isUnbranched_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G') :
     {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
       {c : Circuit Γ G X Z} → c.IsUnbranched → (c.mapSites e W h φ).IsUnbranched
@@ -479,6 +527,7 @@ theorem isUnbranched_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e
       rw [hc.1 _ _],
       fun i ↦ isUnbranched_mapSites h φ (hc.2 _)⟩
 
+omit [Fintype R] [DecidableEq R] in
 /-- A cost of the moved layers bounded by a cost of the layers bounds the cost of the moved
 circuit. -/
 theorem total_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
@@ -497,6 +546,7 @@ theorem total_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G
       (total_mapSites_le h φ f f' hf _).trans (Finset.le_sup (f := fun i ↦ (next i).total f)
         (Finset.mem_univ _)))
 
+omit [Fintype S] [Fintype S'] [Fintype R] [DecidableEq R] in
 /-- A local property invariant under relabelling of bases and of Kraus indices, held by the
 identity, moves along with every transported gate. -/
 theorem forall_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
@@ -534,6 +584,7 @@ theorem forall_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G
         · exact hone
       exact hgen _ _
 
+omit [Fintype R] [DecidableEq R] in
 /-- The light cone of the image of a region is the image of its light cone. -/
 theorem lightCone_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
     (T : Finset S) : {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
@@ -556,6 +607,7 @@ theorem lightCone_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W 
     · rintro ⟨t, ⟨i, ht⟩, rfl⟩
       exact ⟨(L.mapSitesIndexEquiv e W h φ).symm i, t, by simpa using ht, rfl⟩
 
+omit [(s : S) → Fintype (Z s)] [(s : S) → DecidableEq (Z s)] [Fintype R] [DecidableEq R] in
 /-- When no cell costs more after the move, neither does the circuit. -/
 theorem gateCount_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
     (hcost : ∀ b, Γ'.cost (h.cellMap b) ≤ Γ.cost b) (c : Circuit Γ G X Z) :
@@ -563,6 +615,7 @@ theorem gateCount_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e
   total_mapSites_le e W h φ _ _ (fun _ _ _ _ _ _ L ↦ by
     rw [L.gateCount_mapSites e W h φ]; exact Finset.sum_le_sum fun b _ ↦ hcost b) c
 
+omit [(s : S) → Fintype (Z s)] [(s : S) → DecidableEq (Z s)] [Fintype R] [DecidableEq R] in
 /-- When a cell of positive cost after the move had positive cost before, the depth does not
 grow. -/
 theorem depth_mapSites_le (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
@@ -626,7 +679,7 @@ def Circuit.mapGateIndexEquiv (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
     {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate φ).Index ≃ c.Index
   | _, _, .done _ => Equiv.refl Unit
   | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next =>
-      Equiv.sigmaCongr (L.mapGateIndexEquiv φ) fun i ↦ (next _).mapGateIndexEquiv φ
+      Equiv.sigmaCongr (L.mapGateIndexEquiv φ) fun _ ↦ (next _).mapGateIndexEquiv φ
 
 /-- Reindexing a supremum over all indices along an equivalence. -/
 theorem _root_.Finset.univ_sup_equiv {α β γ : Type} [Fintype α] [Fintype β] [SemilatticeSup γ]
@@ -657,7 +710,7 @@ theorem Circuit.kraus_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
     rw [Circuit.kraus_mapGate φ _ p, Layer.kraus_mapGate φ L i]
     rfl
 
-omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [Fintype S] in
 theorem Circuit.isUnbranched_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
     {X Z : S → Type} → {c : Circuit Γ G₁ X Z} → c.IsUnbranched → (c.mapGate φ).IsUnbranched
   | _, _, .done _, _ => trivial
@@ -667,6 +720,7 @@ theorem Circuit.isUnbranched_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
       rw [hc.1 _ _],
       fun i ↦ Circuit.isUnbranched_mapGate φ (hc.2 _)⟩
 
+omit [Fintype S] in
 theorem Circuit.forall_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂)
     {P : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β],
       KrausFamily α β → Prop}

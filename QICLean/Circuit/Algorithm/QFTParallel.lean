@@ -46,7 +46,8 @@ noncomputable def qftV : (b : (geometry n).Cell) →
       (pairEquiv (Q n) h)
 
 /-- The gate of the Fourier transform on a cell. -/
-noncomputable abbrev qftGate (b : (geometry n).Cell) : KrausGate ((geometry n).cell b) (Q n) (Q n) :=
+noncomputable abbrev qftGate (b : (geometry n).Cell) :
+    KrausGate ((geometry n).cell b) (Q n) (Q n) :=
   KrausFamily.single (qftV b)
 
 /-- The cells used at time `t`: the qubit `a` with `2a = t`, and the pairs `(j, i)` with `i < j`
@@ -112,7 +113,8 @@ noncomputable def swapV : (b : (geometry n).Cell) →
   | .inr ⟨_, h⟩ => swap.submatrix (pairEquiv (Q n) h) (pairEquiv (Q n) h)
 
 /-- The gate of the swaps. -/
-noncomputable abbrev swapGate (b : (geometry n).Cell) : KrausGate ((geometry n).cell b) (Q n) (Q n) :=
+noncomputable abbrev swapGate (b : (geometry n).Cell) :
+    KrausGate ((geometry n).cell b) (Q n) (Q n) :=
   KrausFamily.single (swapV b)
 
 theorem swapCells_pairwiseDisjoint :
@@ -204,7 +206,7 @@ theorem rotation_pstate {A : Finset (Fin n)} {c : ℂ} {θ : Fin n → ℂ} {j i
   rw [controlled_phaseShift, submatrix_diagonal_equiv, place_diagonal_mulVec]
   change exp (2 * Real.pi * I * (((y j : ℕ) : ℂ) * ((y i : ℕ) : ℂ)) / 2 ^ k) * _ = _
   by_cases hy : ∀ k, k ∉ A → y k = x k
-  · simp only [pstate, if_pos hy, hy j hj]
+  · simp only [pstate, ite_eq_left hy, hy j hj]
     have hR : ∏ l ∈ A, exp (2 * Real.pi * I * ((y l : ℕ) : ℂ) *
         Function.update θ i (θ i + ((x j : ℕ) : ℂ) / 2 ^ k) l) =
         exp (2 * Real.pi * I * ((y i : ℕ) : ℂ) * (θ i + ((x j : ℕ) : ℂ) / 2 ^ k)) *
@@ -218,7 +220,7 @@ theorem rotation_pstate {A : Finset (Fin n)} {c : ℂ} {θ : Fin n → ℂ} {j i
         2 * Real.pi * I * ((y i : ℕ) : ℂ) * (((x j : ℕ) : ℂ) / 2 ^ k) := by ring
     rw [this]
     ring
-  · simp only [pstate, if_neg hy]
+  · simp only [pstate, ite_eq_right hy]
     ring
 
 /-- The value of the input bit at the site `m`, and `0` past the last site. -/
@@ -272,8 +274,8 @@ theorem contrib_cons (t : ℕ) (i : Fin n) (L : List (Fin n)) (k : Fin n) :
       xval x (t - (i : ℕ)) / 2 ^ ((t - (i : ℕ)) - (i : ℕ) + 1) else 0) + contrib x t L k := by
   unfold contrib
   by_cases h : rotValid t i ∧ i = k
-  · rw [List.filter_cons_of_pos (by simpa using h), if_pos h, List.map_cons, List.sum_cons]
-  · rw [List.filter_cons_of_neg (by simpa using h), if_neg h, zero_add]
+  · rw [List.filter_cons_of_pos (by simpa using h), ite_eq_left h, List.map_cons, List.sum_cons]
+  · rw [List.filter_cons_of_neg (by simpa using h), ite_eq_right h, zero_add]
 
 theorem rList_mulVec (t : ℕ) (A : Finset (Fin n)) (c : ℂ)
     (hA : ∀ i (h : rotValid t i), i ∈ A ∧ (⟨t - i, h.2⟩ : Fin n) ∉ A) :
@@ -283,21 +285,21 @@ theorem rList_mulVec (t : ℕ) (A : Finset (Fin n)) (c : ℂ)
   | [], θ => by simp [rList, contrib_nil]
   | i :: L, θ => by
     by_cases h : rotValid t i
-    · rw [rList, List.filterMap_cons, dite_cond_eq_true (eq_true h), ← rList, List.map_cons,
+    · rw [rList, List.filterMap_cons, dite_eq_left_of_eq_true (eq_true h), ← rList, List.map_cons,
         List.prod_cons, ← mulVec_mulVec, rList_mulVec t A c hA L θ]
       refine ((rotation_pstate x (rot_ne h) (hA i h).1 (hA i h).2 _).trans ?_)
       congr 1
       funext k
       by_cases hk : k = i
       · subst hk
-        rw [Function.update_self, contrib_cons, if_pos ⟨h, rfl⟩, xval, dif_pos h.2]
+        rw [Function.update_self, contrib_cons, ite_eq_left ⟨h, rfl⟩, xval, dite_eq_left h.2]
         ring
-      · rw [Function.update_of_ne hk, contrib_cons, if_neg (fun e ↦ hk e.2.symm), zero_add]
-    · rw [rList, List.filterMap_cons, dite_cond_eq_false (eq_false h), ← rList,
+      · rw [Function.update_of_ne hk, contrib_cons, ite_eq_right (fun e ↦ hk e.2.symm), zero_add]
+    · rw [rList, List.filterMap_cons, dite_eq_right_of_eq_false (eq_false h), ← rList,
         rList_mulVec t A c hA L θ]
       congr 1
       funext k
-      rw [contrib_cons, if_neg (fun e ↦ h e.1), zero_add]
+      rw [contrib_cons, ite_eq_right (fun e ↦ h e.1), zero_add]
 
 /-- The Hadamard cell at time `t`, if `t` is even and `t / 2` a qubit. -/
 def hList (t : ℕ) : List (geometry n).Cell :=
@@ -312,18 +314,18 @@ theorem mem_rList {t : ℕ} {L : List (Fin n)} {b : (geometry n).Cell} :
   constructor
   · rintro ⟨i, hi, hb⟩
     by_cases h : rotValid t i
-    · rw [dite_cond_eq_true (eq_true h)] at hb
+    · rw [dite_eq_left_of_eq_true (eq_true h)] at hb
       exact ⟨i, hi, h, Option.some.inj hb⟩
-    · rw [dite_cond_eq_false (eq_false h)] at hb; cases hb
+    · rw [dite_eq_right_of_eq_false (eq_false h)] at hb; cases hb
   · rintro ⟨i, hi, h, rfl⟩
-    exact ⟨i, hi, by rw [dite_cond_eq_true (eq_true h)]⟩
+    exact ⟨i, hi, by rw [dite_eq_left_of_eq_true (eq_true h)]⟩
 
 theorem timeList_nodup (t : ℕ) : (timeList (n := n) t).Nodup := by
   refine List.Nodup.append ?_ ?_ ?_
   · refine List.Nodup.filterMap ?_ (List.nodup_finRange n)
     intro i i' b hb hb'
     by_cases h : rotValid t i <;> by_cases h' : rotValid t i' <;>
-      simp only [h, h', dite_cond_eq_true, dite_cond_eq_false, eq_true, eq_false,
+      simp only [h, h', dite_eq_left_of_eq_true, dite_eq_right_of_eq_false, eq_true,
         Option.mem_def, Option.some.injEq, reduceCtorEq] at hb hb'
     subst hb
     simp only [rotCell, Sum.inr.injEq, Subtype.mk.injEq, Prod.mk.injEq] at hb'
@@ -360,7 +362,7 @@ theorem timeList_toFinset (t : ℕ) : (timeList (n := n) t).toFinset = timeCells
     · rintro ⟨i', hv, h₁, h₂⟩
       subst h₁ h₂
       simp only [rotValid] at hv
-      show (i' : ℕ) < t - i' ∧ t - i' + i' = t
+      change (i' : ℕ) < t - i' ∧ t - i' + i' = t
       omega
     · rintro ⟨h₁, h₂⟩
       exact ⟨i, ⟨by omega, by omega⟩, Fin.ext (by simp; omega), rfl⟩
@@ -378,7 +380,7 @@ theorem θt_succ (t : ℕ) (k : Fin n) : θt x (t + 1) k = θt x t k +
   split_ifs with h
   · rw [show Finset.univ.filter (fun j : Fin n ↦ k ≤ j ∧ (k : ℕ) + j = t) = {⟨t - k, h.2⟩} by
       ext j; simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton,
-        Fin.ext_iff, Fin.le_def]; omega, Finset.sum_singleton, xval, dif_pos h.2]
+        Fin.ext_iff, Fin.le_def]; omega, Finset.sum_singleton, xval, dite_eq_left h.2]
   · rw [Finset.sum_eq_zero]
     intro j hj
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def] at hj
@@ -418,7 +420,7 @@ theorem timeList_mulVec (t : ℕ) :
       omega
     have hna : a ∉ doneSet (n := n) t := by
       simp only [doneSet, Finset.mem_filter, Finset.mem_univ, true_and]; omega
-    rw [hList, dite_cond_eq_true (eq_true hc), List.map_singleton, List.prod_singleton]
+    rw [hList, dite_eq_left_of_eq_true (eq_true hc), List.map_singleton, List.prod_singleton]
     have hH : place ((geometry n).cell (Sum.inl a)) (qftV (Sum.inl a)) *ᵥ tstate x t =
         pstate x (insert a (doneSet t))
           (((Real.sqrt 2 : ℂ))⁻¹ ^ (doneSet (n := n) t).card * ((Real.sqrt 2 : ℂ))⁻¹)
@@ -432,8 +434,8 @@ theorem timeList_mulVec (t : ℕ) :
     · subst hka
       have hθ : θt x t a = 0 := Finset.sum_eq_zero fun j hj ↦ by
         simp only [Finset.mem_filter, Finset.mem_univ, true_and, Fin.le_def] at hj; omega
-      rw [Function.update_self, if_neg (by simp only [rotValid]; omega), hθ,
-        if_pos (by omega), xval, dif_pos (by omega)]
+      rw [Function.update_self, ite_eq_right (by simp only [rotValid]; omega), hθ,
+        ite_eq_left (by omega), xval, dite_eq_left (by omega)]
       rw [show t - (a : ℕ) - a + 1 = 1 by omega, pow_one, zero_add, add_zero]
       have hfin : (⟨t - (a : ℕ), by omega⟩ : Fin n) = a :=
         Fin.ext (by change t - (a : ℕ) = a; omega)
@@ -446,8 +448,8 @@ theorem timeList_mulVec (t : ℕ) :
         · simpa [doneSet] using hk
       congr 1
       by_cases hv : t - (k : ℕ) < n
-      · rw [if_pos ⟨by omega, hv⟩, if_pos ⟨by omega, hv⟩]
-      · rw [if_neg (fun h ↦ hv h.2), if_neg (fun h ↦ hv h.2)]
+      · rw [ite_eq_left ⟨by omega, hv⟩, ite_eq_left ⟨by omega, hv⟩]
+      · rw [ite_eq_right (fun h ↦ hv h.2), ite_eq_right (fun h ↦ hv h.2)]
   · have hdone : doneSet (n := n) (t + 1) = doneSet t := by
       ext k
       simp only [doneSet, Finset.mem_filter, Finset.mem_univ, true_and]
@@ -456,17 +458,16 @@ theorem timeList_mulVec (t : ℕ) :
         by_contra hk'
         exact hc ⟨by omega, by omega⟩
       · intro hk; omega
-    rw [hList, dite_cond_eq_false (eq_false hc), List.map_nil, List.prod_nil, one_mulVec,
+    rw [hList, dite_eq_right_of_eq_false (eq_false hc), List.map_nil, List.prod_nil, one_mulVec,
       tstate, ← hdone, rList_mulVec x t _ _ hrot, tstate, hdone]
     refine pstate_congr x fun k hk ↦ ?_
     rw [contrib_finRange, θt_succ]
     have hk' : 2 * (k : ℕ) < t := by simpa [doneSet] using hk
     congr 1
     by_cases hv : t - (k : ℕ) < n
-    · rw [if_pos ⟨by omega, hv⟩, if_pos ⟨by omega, hv⟩]
-    · rw [if_neg (fun h ↦ hv h.2), if_neg (fun h ↦ hv h.2)]
+    · rw [ite_eq_left ⟨by omega, hv⟩, ite_eq_left ⟨by omega, hv⟩]
+    · rw [ite_eq_right (fun h ↦ hv h.2), ite_eq_right (fun h ↦ hv h.2)]
 
-set_option maxHeartbeats 1000000 in
 theorem kraus_timeLayer (t : ℕ) (i : (timeLayer (n := n) t).Index) :
     (timeLayer t).kraus KrausGate.ev i =
       ((timeList t).map fun b ↦ place ((geometry n).cell b) (qftV b)).prod := by
@@ -526,8 +527,8 @@ theorem tstate_final : tstate x (2 * n - 1) = qstate x n := by
     Finset.filter_true_of_mem fun a _ ↦ by have := a.2; omega
   funext y
   rw [tstate, pstate, qstate, hdone, Finset.card_univ, Fintype.card_fin,
-    if_pos (fun k hk ↦ absurd (Finset.mem_univ k) hk),
-    if_pos (fun k hk ↦ absurd k.2 (by omega)),
+    ite_eq_left (fun k hk ↦ absurd (Finset.mem_univ k) hk),
+    ite_eq_left (fun k hk ↦ absurd k.2 (by omega)),
     Finset.filter_true_of_mem fun i _ ↦ i.2]
   congr 1
   refine Finset.prod_congr rfl fun k _ ↦ ?_

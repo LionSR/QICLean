@@ -194,7 +194,7 @@ theorem place_diagonal_mulVec {n : ℕ} (D : Finset (Fin n)) (d : RegionConfig (
     (ψ : Config (Q n) → ℂ) (y : Config (Q n)) :
     (place D (diagonal d) *ᵥ ψ) y = d (fun v ↦ y v) * ψ y := by
   rw [place_mulVec_apply]
-  simp only [diagonal_apply, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  simp only [diagonal_apply, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   congr 1
   exact congrArg ψ ((cutEquiv (Q n) D).symm_apply_apply y)
 

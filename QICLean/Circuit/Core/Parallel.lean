@@ -94,7 +94,7 @@ theorem prod_place_eq_place_cellsProd
     rw [List.map_cons, List.prod_cons, prod_place_eq_place_cellsProd V l hl.of_cons]
     exact (place_union_kronecker (disjoint_cellsUnion hl) _ _).symm
 
-omit [Fintype S] in
+omit [Fintype S] [(s : S) → Fintype (X s)] in
 theorem cellsProd_apply
     (V : (b : Γ.Cell) → Matrix (RegionConfig X (Γ.cell b)) (RegionConfig X (Γ.cell b)) ℂ)
     (y x : Config X) : (l : List Γ.Cell) → (hl : l.Pairwise (Disjoint on Γ.cell)) →
@@ -151,6 +151,7 @@ theorem depth_ofCells_le_one (cells : Finset Γ.Cell)
     (ofCells cells h g).depth ≤ 1 := by
   unfold depth; split_ifs <;> omega
 
+omit [Fintype S] [(s : S) → Fintype (X s)] in
 theorem nonempty_index_ofCells (cells : Finset Γ.Cell)
     (h : (cells : Set Γ.Cell).PairwiseDisjoint Γ.cell) (g : (b : Γ.Cell) → G (Γ.cell b) X X)
     (hg : ∀ b, Nonempty (GateFamily.Outcome (g b))) : Nonempty (ofCells cells h g).Index :=
