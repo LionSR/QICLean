@@ -8,4 +8,5 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit.Compile
 
+import QICLean.Circuit.Compile.Dilation
 import QICLean.Circuit.Compile.Encoding

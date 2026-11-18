@@ -29,6 +29,7 @@ the circuit, and the encoded circuit keeps the branching of the circuit.
 
 ## Main results
 
+* `QuantumCircuit.map_encodeCircuit` — the encoding is conjugation by the product embedding.
 * `QuantumCircuit.map_decodeCircuit_comp_map_encodeCircuit` — decoding after encoding is the
   identity.
 * `QuantumCircuit.Layer.exists_encoded` — the encoding of a layer.
@@ -63,7 +64,7 @@ def encodeCircuit (e : ∀ s, X s ↪ Y s) : Circuit Γ KrausGate X Y :=
 variable {Γ}
 
 /-- The encoding is conjugation by the isometry of the product embedding. -/
-private theorem map_encodeCircuit (e : ∀ s, X s ↪ Y s) (ρ : Matrix (Config X) (Config X) ℂ) :
+theorem map_encodeCircuit (e : ∀ s, X s ↪ Y s) (ρ : Matrix (Config X) (Config X) ℂ) :
     (encodeCircuit Γ e).map KrausGate.ev ρ =
       initializedBasisMatrix (Function.Embedding.piCongrRight e) * ρ *
         (initializedBasisMatrix (Function.Embedding.piCongrRight e))ᴴ := by
