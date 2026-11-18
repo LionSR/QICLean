@@ -130,12 +130,18 @@ theorem isKrausCPTP_map [DecidableEq β] {K : KrausFamily α β} (h : K.IsTP) :
     IsKrausCPTP K.map :=
   Matrix.rectangularKrausMap_isKrausCPTP K.op h
 
+omit [DecidableEq α] in
+/-- The trace of a Kraus map is the trace pairing of its effect with the input. -/
+theorem trace_map_eq_trace_effect_mul (K : KrausFamily α β) (ρ : Matrix α α ℂ) :
+    (K.map ρ).trace = (K.effect * ρ).trace := by
+  rw [map_apply, trace_sum]
+  simp_rw [trace_mul_cycle (K.op _), ← trace_sum, ← Finset.sum_mul]
+  rfl
+
 /-- A trace-preserving Kraus family preserves the trace. -/
 theorem trace_map {K : KrausFamily α β} (h : K.IsTP) (ρ : Matrix α α ℂ) :
     (K.map ρ).trace = ρ.trace := by
-  rw [map_apply, trace_sum]
-  simp_rw [trace_mul_cycle (K.op _), ← trace_sum, ← Finset.sum_mul]
-  rw [show ∑ i, (K.op i)ᴴ * K.op i = K.effect from rfl, h, Matrix.one_mul]
+  rw [trace_map_eq_trace_effect_mul, h, Matrix.one_mul]
 
 /-- A trace-nonincreasing Kraus family decreases the trace of every positive semidefinite
 input. The inequality is in the real order on complex traces. -/
@@ -143,8 +149,7 @@ theorem trace_map_le {K : KrausFamily α β} (h : K.IsTraceNonincreasing)
     {ρ : Matrix α α ℂ} (hρ : ρ.PosSemidef) : (K.map ρ).trace ≤ ρ.trace := by
   have hn := (Matrix.le_iff.mp h).trace_mul_nonneg hρ
   rw [Matrix.sub_mul, Matrix.one_mul, Matrix.trace_sub, sub_nonneg] at hn
-  rw [map_apply, trace_sum]
-  simp_rw [trace_mul_cycle (K.op _), ← trace_sum, ← Finset.sum_mul]
+  rw [trace_map_eq_trace_effect_mul]
   exact hn
 
 omit [DecidableEq α] in

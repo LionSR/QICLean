@@ -12,7 +12,7 @@ Tensoring with a positive semidefinite matrix preserves matrix order on either
 side. This gives a two-factor comparison and, by induction, monotonicity of
 finite Kronecker products whose lower factors are positive semidefinite.
 The finite factors may have different, possibly empty, index types, and the
-number of factors may be zero. `Matrix.prod_le_one` applies the comparison to
+number of factors may be zero. `Matrix.prod_le_one_of_injective` applies the comparison to
 positive contractions restricted along an injective map of configuration bases.
 
 The two-factor comparison also applies when the lower first factor is
@@ -85,7 +85,7 @@ theorem Matrix.finKronecker_mono
 
 /-- A product of positive contractions, pulled back along an injective configuration map,
 is a positive contraction. Empty factors and empty index types are allowed. -/
-theorem Matrix.prod_le_one
+theorem Matrix.prod_le_one_of_injective
     {B α : Type*} [Fintype B] [Finite α] [DecidableEq α]
     {I : B → Type*} [∀ b, Finite (I b)] [∀ b, DecidableEq (I b)]
     (A : (b : B) → Matrix (I b) (I b) ℂ)

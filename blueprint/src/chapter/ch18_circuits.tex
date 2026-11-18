@@ -435,6 +435,26 @@ and each Kraus operator is a product of local entries over the blocks.
     followed by those of the continuations.
 \end{proof}
 
+\begin{lemma}[Effect identities]
+    \label{lem:circuits_effect_identities}
+    \lean{KrausFamily.trace_map_eq_trace_effect_mul,
+        QuantumCircuit.Layer.dual_one_eq_effect,
+        QuantumCircuit.Circuit.dual_one_eq_effect}
+    \leanok
+    \uses{def:kraus_family}
+    For any finite rectangular Kraus family $K$, with effect
+    $E=\sum_iK_i^\dagger K_i$ and map $\Phi(\rho)=\sum_iK_i\rho K_i^\dagger$,
+    one has $\operatorname{tr}\Phi(\rho)=\operatorname{tr}(E\rho)$ for every
+    input matrix $\rho$. For a layer or a circuit, the Heisenberg image of the
+    identity is its Kraus effect: $\Phi^*(1)=E$. No normalization or positivity
+    hypothesis on $\rho$ is needed for these identities.
+\end{lemma}
+\begin{proof}\leanok
+    Cyclicity gives $\operatorname{tr}(K_i\rho K_i^\dagger)
+    =\operatorname{tr}(K_i^\dagger K_i\rho)$; sum over $i$.
+    Substituting $1$ in $\Phi^*(A)=\sum_iK_i^\dagger A K_i$ gives $E$.
+\end{proof}
+
 \begin{theorem}[Trace preservation of a circuit]
     \label{thm:circuits_tp}
     \lean{QuantumCircuit.Circuit.dual_one_of_forall,
@@ -446,7 +466,7 @@ and each Kraus operator is a product of local entries over the blocks.
     trace-preserving, hence a quantum channel, whether or not it branches.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:circuits_layer_tp, lem:kraus_family_channel}
+    \uses{thm:circuits_layer_tp, lem:kraus_family_channel, lem:circuits_effect_identities}
     By induction the Heisenberg picture fixes the identity. For a circuit that
     starts with a layer $L$ with Kraus operators $K_i$ and continues with $c_i$,
     \begin{align}
@@ -479,7 +499,8 @@ and each Kraus operator is a product of local entries over the blocks.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:circuits_layer_factorization, lem:sites_partition,
-        cor:finite_kronecker_contractions, lem:psd_trace_product_nonneg}
+        cor:finite_kronecker_contractions, lem:psd_trace_product_nonneg,
+        lem:circuits_effect_identities}
     Restriction to the blocks identifies global configurations with families
     of block configurations. Write $K_{\beta,j}$ for the local Kraus operators
     and $E_\beta=\sum_jK_{\beta,j}^\dagger K_{\beta,j}$. For an onsite block this

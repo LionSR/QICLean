@@ -188,14 +188,19 @@ theorem dual_one_le_of_forall (ev : Interpretation G) : {X Z : S → Type} →
 
 variable {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Z s)]
 
+/-- The Heisenberg image of the identity is the circuit Kraus effect. -/
+theorem dual_one_eq_effect [∀ s, DecidableEq (Z s)]
+    (ev : Interpretation G) (c : Circuit Γ G X Z) :
+    c.dual ev 1 = (c.krausFamily ev).effect := by
+  simp only [dual, krausFamily, KrausFamily.effect, Matrix.mul_one]
+  congr 1
+
 /-- A circuit whose gates and onsite families are trace-preserving is trace-preserving. -/
 theorem isTP_krausFamily (ev : Interpretation G) (c : Circuit Γ G X Z)
     (h : c.Forall ev KrausFamily.IsTP) : (c.krausFamily ev).IsTP := by
   classical
-  have := c.dual_one_of_forall ev h
-  simp only [dual, Matrix.mul_one] at this
-  change ∑ p : c.Index, (c.kraus ev p)ᴴ * c.kraus ev p = 1
-  convert this using 2
+  rw [KrausFamily.IsTP, ← dual_one_eq_effect]
+  exact c.dual_one_of_forall ev h
 
 /-- A circuit whose gates and onsite families are trace-preserving is a quantum channel. -/
 theorem isKrausCPTP_map [∀ s, DecidableEq (Z s)] (ev : Interpretation G) (c : Circuit Γ G X Z)
@@ -213,10 +218,8 @@ theorem isTraceNonincreasing_krausFamily (ev : Interpretation G) (c : Circuit Γ
     (h : c.Forall ev KrausFamily.IsTraceNonincreasing) :
     (c.krausFamily ev).IsTraceNonincreasing := by
   classical
-  have he := c.dual_one_le_of_forall ev h
-  simp only [dual, Matrix.mul_one] at he
-  change (∑ p : c.Index, (c.kraus ev p)ᴴ * c.kraus ev p) ≤ 1
-  convert he using 2
+  rw [KrausFamily.IsTraceNonincreasing, ← dual_one_eq_effect]
+  exact c.dual_one_le_of_forall ev h
 
 /-- A locally trace-nonincreasing circuit decreases the trace of positive semidefinite
 inputs; this does not assert sub-unitality of its Schrödinger map. -/

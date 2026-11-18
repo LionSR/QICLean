@@ -144,7 +144,8 @@ end CircuitTraceNonincreasingTest
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  for decl in #[``Matrix.prod_le_one, ``KrausFamily.trace_map_le,
+  for decl in #[``Matrix.prod_le_one_of_injective, ``KrausFamily.trace_map_eq_trace_effect_mul,
+      ``QuantumCircuit.Layer.dual_one_eq_effect, ``QuantumCircuit.Circuit.dual_one_eq_effect, ``KrausFamily.trace_map_le,
       ``QuantumCircuit.Layer.blockEffect_le_one, ``QuantumCircuit.Layer.effect_apply_eq_prod,
       ``QuantumCircuit.Layer.isTraceNonincreasing_krausFamily, ``QuantumCircuit.Layer.dual_one_le,
       ``QuantumCircuit.Circuit.dual_one_le_of_forall,

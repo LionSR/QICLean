@@ -438,30 +438,29 @@ theorem isTraceNonincreasing_krausFamily
   have hpos : ∀ β, (L.blockEffect ev β).PosSemidef := fun β ↦
     Matrix.nonneg_iff_posSemidef.mp (Finset.sum_nonneg fun j _ ↦
       (Matrix.posSemidef_conjTranspose_mul_self (L.blockKraus ev β j)).nonneg)
-  have hprod := Matrix.prod_le_one (L.blockEffect ev) hpos (L.blockEffect_le_one ev h)
+  have hprod := Matrix.prod_le_one_of_injective (L.blockEffect ev) hpos (L.blockEffect_le_one ev h)
     (L.configEquivBlocks X) (L.configEquivBlocks X).injective
   unfold KrausFamily.IsTraceNonincreasing
   convert hprod using 1
   ext x y
   exact L.effect_apply_eq_prod ev x y
 
+/-- The Heisenberg image of the identity is the layer Kraus effect. -/
+theorem dual_one_eq_effect : L.dual ev 1 = (L.krausFamily ev).effect := by
+  simp only [dual, krausFamily, KrausFamily.effect, Matrix.mul_one]
+  congr 1
+
 /-- The Heisenberg picture of a locally trace-nonincreasing layer is sub-unital. -/
 theorem dual_one_le (h : L.Forall ev KrausFamily.IsTraceNonincreasing) :
     L.dual ev 1 ≤ 1 := by
-  have he := L.isTraceNonincreasing_krausFamily ev h
-  rw [dual_apply']
-  simp only [Matrix.mul_one]
-  change (∑ i : L.Index, (L.kraus ev i)ᴴ * L.kraus ev i) ≤ 1 at he
-  convert he using 2
+  rw [dual_one_eq_effect]
+  exact L.isTraceNonincreasing_krausFamily ev h
 
 /-- A layer whose gates and onsite families are trace-preserving is trace-preserving. -/
 theorem isTP_krausFamily (h : L.Forall ev KrausFamily.IsTP) :
     (L.krausFamily ev).IsTP := by
-  have hdual := L.dual_one ev h
-  rw [dual_apply'] at hdual
-  simp only [Matrix.mul_one] at hdual
-  change ∑ i : L.Index, (L.kraus ev i)ᴴ * L.kraus ev i = 1
-  convert hdual using 2
+  rw [KrausFamily.IsTP, ← dual_one_eq_effect]
+  exact L.dual_one ev h
 
 omit [GateFamily G] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
   [∀ s, DecidableEq (Y s)] [DecidablePred p] in
