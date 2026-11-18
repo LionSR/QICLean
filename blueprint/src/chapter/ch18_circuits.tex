@@ -252,26 +252,19 @@ and each Kraus operator is a product of local entries over the blocks.
 
 \begin{lemma}[Duality, the empty circuit and circuits of one layer]
     \label{lem:circuits_duality}
-    \lean{KrausFamily.trace_map_mul, QuantumCircuit.Circuit.trace_map_mul,
+    \lean{QuantumCircuit.Circuit.trace_map_mul,
         QuantumCircuit.Circuit.dual_done, QuantumCircuit.Circuit.kraus_ofLayer,
         QuantumCircuit.Circuit.isUnbranched_ofLayer}
     \leanok
     \uses{def:circuits_circuit, def:kraus_family}
-    For a finite Kraus family $\{K_i\}$ from $\C^\alpha$ to $\C^\beta$, a matrix $\rho$ on
-    $\C^\alpha$ and a matrix $A$ on $\C^\beta$,
-    \begin{align}
-        \operatorname{tr}\Bigl(\sum_iK_i\rho K_i^\dagger\,A\Bigr)
-        &=\operatorname{tr}\Bigl(\rho\sum_iK_i^\dagger AK_i\Bigr),
-        \notag
-    \end{align}
-    so the map $\Phi$ of a circuit and its Heisenberg picture $\Phi^\dagger$ satisfy
+    For a circuit, the map $\Phi$ of a circuit and its Heisenberg picture $\Phi^\dagger$ satisfy
     $\operatorname{tr}(\Phi(\rho)A)=\operatorname{tr}(\rho\,\Phi^\dagger(A))$. The
     Heisenberg picture of the empty circuit is the identity. The circuit of one layer is
     unbranched and has the Kraus operators of the layer.
 \end{lemma}
 \begin{proof}\leanok
-    $\operatorname{tr}(K_i\rho K_i^\dagger A)=\operatorname{tr}(\rho K_i^\dagger AK_i)$ by
-    cyclicity of the trace. The empty circuit has the one Kraus operator $1$, and the
+    \uses{lem:kraus_family_trace_duality}
+    Apply trace duality to the circuit's Kraus family. The empty circuit has the one Kraus operator $1$, and the
     circuit of one layer has one continuation, the empty circuit, for every outcome.
 \end{proof}
 

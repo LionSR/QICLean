@@ -131,12 +131,24 @@ theorem isKrausCPTP_map [DecidableEq β] {K : KrausFamily α β} (h : K.IsTP) :
   Matrix.rectangularKrausMap_isKrausCPTP K.op h
 
 omit [DecidableEq α] in
+/-- The map of a family and the map of its adjoint family are dual for the trace pairing:
+`tr(∑ Kᵢ ρ Kᵢᴴ · A) = tr(ρ · ∑ Kᵢᴴ A Kᵢ)`. -/
+theorem trace_map_mul (K : KrausFamily α β) (ρ : Matrix α α ℂ) (A : Matrix β β ℂ) :
+    (K.map ρ * A).trace = (ρ * K.adjoint.map A).trace := by
+  simp only [map_apply, adjoint, conjTranspose_conjTranspose, Finset.sum_mul, Matrix.mul_sum,
+    trace_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [Matrix.mul_assoc, Matrix.mul_assoc, trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
+    ← Matrix.mul_assoc]
+
+omit [DecidableEq α] in
 /-- The trace of a Kraus map is the trace pairing of its effect with the input. -/
 theorem trace_map_eq_trace_effect_mul (K : KrausFamily α β) (ρ : Matrix α α ℂ) :
     (K.map ρ).trace = (K.effect * ρ).trace := by
-  rw [map_apply, trace_sum]
-  simp_rw [trace_mul_cycle (K.op _), ← trace_sum, ← Finset.sum_mul]
-  rfl
+  classical
+  have he : K.adjoint.map 1 = K.effect := by
+    simp only [map_apply, adjoint, Matrix.mul_one, conjTranspose_conjTranspose, effect]
+  simpa only [Matrix.mul_one, he, trace_mul_comm ρ K.effect] using K.trace_map_mul ρ 1
 
 /-- A trace-preserving Kraus family preserves the trace. -/
 theorem trace_map {K : KrausFamily α β} (h : K.IsTP) (ρ : Matrix α α ℂ) :
@@ -151,17 +163,6 @@ theorem trace_map_le {K : KrausFamily α β} (h : K.IsTraceNonincreasing)
   rw [Matrix.sub_mul, Matrix.one_mul, Matrix.trace_sub, sub_nonneg] at hn
   rw [trace_map_eq_trace_effect_mul]
   exact hn
-
-omit [DecidableEq α] in
-/-- The map of a family and the map of its adjoint family are dual for the trace pairing:
-`tr(∑ Kᵢ ρ Kᵢᴴ · A) = tr(ρ · ∑ Kᵢᴴ A Kᵢ)`. -/
-theorem trace_map_mul (K : KrausFamily α β) (ρ : Matrix α α ℂ) (A : Matrix β β ℂ) :
-    (K.map ρ * A).trace = (ρ * K.adjoint.map A).trace := by
-  simp only [map_apply, adjoint, conjTranspose_conjTranspose, Finset.sum_mul, Matrix.mul_sum,
-    trace_sum]
-  refine Finset.sum_congr rfl fun i _ ↦ ?_
-  rw [Matrix.mul_assoc, Matrix.mul_assoc, trace_mul_comm, ← Matrix.mul_assoc, ← Matrix.mul_assoc,
-    ← Matrix.mul_assoc]
 
 /-! ### Preparation and discard -/
 
