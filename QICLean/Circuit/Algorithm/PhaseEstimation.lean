@@ -675,9 +675,48 @@ private theorem prob_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu
       (vecMulVec (input t m u) (star (input t m u))) p = ‖amplitude t φ (readout t m p)‖ ^ 2 := by
   rw [Circuit.prob_vecMulVec, Circuit.kraus_comp, ← mulVec_mulVec,
     kraus_unitary_mulVec huφ]
-  obtain ⟨i, q⟩ := (((unitary t m).compIndexEquiv _ p).2 :
-    Σ _ : (measureLayer t m).Index, Unit)
-  sorry
+  rw [readout]
+  generalize ((unitary t m).compIndexEquiv _ p).2 = q
+  obtain ⟨i, j⟩ := q
+  rw [Circuit.kraus_step, Circuit.kraus_done, Matrix.one_mul, measure_mulVec]
+  set E := extendConfigEquiv (Equiv.refl (Fin t ⊕ Unit)) (fun _ : Unit ↦ Fin m) (Q t)
+  have h1 : ∀ τ, control t m τ = (E τ).1 := fun _ ↦ rfl
+  have h2 : ∀ τ : Config (system t m), τ (.inr ()) = (E τ).2 () := fun _ ↦ rfl
+  have hu' : ∑ b, ‖u b‖ ^ 2 = 1 := Complex.ofReal_injective (by
+    rw [ofReal_sum_norm_sq, hu, Complex.ofReal_one])
+  simp only [tensorState, h1, h2]
+  rw [← E.symm.sum_comp, Fintype.sum_prod_type]
+  simp only [Equiv.apply_symm_apply]
+  rw [Finset.sum_eq_single (measured t m i) (fun x _ hx ↦ by simp [hx]) (by simp)]
+  simp only [ite_true, norm_mul, mul_pow]
+  rw [← Finset.mul_sum, ← (Equiv.funUnique Unit (Fin m)).symm.sum_comp]
+  simp only [Equiv.funUnique_symm_apply, uniqueElim_const]
+  rw [hu', mul_one]
+
+/-- The readout is a bijection from the branches onto the integers below `2^t`. -/
+private theorem readout_bijective : Function.Bijective (readout t m) := by
+  obtain ⟨hu⟩ := unique_index_unitary (t := t) (m := m)
+  let e : (circuit t m).Index ≃ Fin (2 ^ t) :=
+    ((unitary t m).compIndexEquiv _).trans ((Equiv.uniqueProd _ _).trans
+      ((Equiv.sigmaEquivProd (measureLayer t m).Index Unit).trans
+        ((Equiv.prodPUnit _).trans (measuredEquiv.trans (encode t)))))
+  exact (show readout t m = e from rfl) ▸ e.bijective
+
+/-- The probability of the outcome `k` is `|αₖ|²` with
+`αₖ = 2^{-t} ∑_{j < 2^t} e^{2πi j (φ - k/2^t)}` (Nielsen–Chuang, eq. (5.24)). It needs only the
+eigenvector equation and not that `U` is unitary; without unitarity the circuit is in general not
+trace-preserving, but on this input the probabilities still sum to `1`. -/
+theorem outcomeProb_eq {U : Matrix (Fin m) (Fin m) ℂ} {u : Fin m → ℂ} (hu : star u ⬝ᵥ u = 1)
+    {φ : ℝ} (huφ : U *ᵥ u = exp (2 * Real.pi * I * φ) • u) (k : Fin (2 ^ t)) :
+    (circuit t m).outcomeProb (Interpretation.sum KrausGate.ev (Oracle.ev (controlled U)))
+      (readout t m) (vecMulVec (input t m u) (star (input t m u))) k =
+      ‖amplitude t φ k‖ ^ 2 := by
+  rw [Circuit.outcomeProb, Finset.sum_filter]
+  simp only [prob_eq hu huφ]
+  rw [Fintype.sum_bijective _ readout_bijective
+    (fun p ↦ if readout t m p = k then ‖amplitude t φ (readout t m p)‖ ^ 2 else 0)
+    (fun k' ↦ if k' = k then ‖amplitude t φ k'‖ ^ 2 else 0) fun _ ↦ rfl, Finset.sum_ite_eq']
+  simp
 
 /-- Phase estimation with `t = n + ⌈log₂(2 + 1/(2ε))⌉` control qubits, on the input
 `|0…0⟩ ⊗ |u⟩` for an eigenvector `U u = e^{2πiφ} u` of norm `1`, returns an integer `k` with
