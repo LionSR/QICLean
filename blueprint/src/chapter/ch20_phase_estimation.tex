@@ -180,7 +180,8 @@ control qubits to the register that also holds the target.
     gate $\operatorname{diag}(1,e^{-2\pi i\theta_j})$ with
     $\theta_j=\sum_{i<j}b_i/2^{j-i+1}$, where $b_i$ is the outcome of the qubit $i$,
     and then the Hadamard gate. The circuit branches: the layer measuring the qubit $j$
-    depends on the outcomes of the earlier layers. The readout is the integer whose bit
+    depends on the outcomes of the earlier layers. It is the first circuit of these
+    chapters in which the continuation after a layer depends on its outcome. The readout is the integer whose bit
     at the site $t-1-j$ is $b_j$.
 \end{definition}
 

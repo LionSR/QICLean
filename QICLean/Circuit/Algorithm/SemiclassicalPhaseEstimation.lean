@@ -18,7 +18,8 @@ outcomes `bᵢ` of the qubits measured before it, then the Hadamard gate, and is
 outcome of the qubit `j` is the bit of the estimate `k` at the site `t - 1 - j`.
 
 This is a circuit with classical feedback: the layer measuring the qubit `j` depends on the
-outcomes of the earlier layers. Its outcomes have the distribution of the coherent circuit, so
+outcomes of the earlier layers. It is the first circuit here whose continuation `next i` in
+`Circuit.step` depends on the outcome `i`. Its outcomes have the distribution of the coherent circuit, so
 the success probability and the number of calls are those of phase estimation; the circuit has
 no two-qubit gates after the calls.
 
