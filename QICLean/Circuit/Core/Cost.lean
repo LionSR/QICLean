@@ -15,12 +15,15 @@ gate count and the number of gates meeting a given site are its three instances:
 * the gate count of a layer is the sum of the costs of its cells;
 * a layer meets a site `s` as often as it has cells of positive cost containing `s`.
 
-Onsite families cost nothing. A circuit is "of depth `T`" when its depth is at most `T`, so
+The last two, and the depth up to `min 1`, are sums over the cells of a layer of a weight of the
+gate on the cell (`Layer.cellCost`). A weight may depend on the gate and not only on its cell,
+as the number of calls to an oracle does. Onsite families cost nothing. A circuit is "of depth `T`" when its depth is at most `T`, so
 statements are monotone in `T` without further proof. The cost of a composition is at most the
 sum of the costs; this is proved once for every cost.
 
 ## Main definitions
 
+* `QuantumCircuit.Layer.cellCost` — the total weight of the gates of a layer.
 * `QuantumCircuit.Circuit.total` — a cost of layers along the most expensive branch.
 * `QuantumCircuit.Circuit.depth`, `QuantumCircuit.Circuit.gateCount`,
   `QuantumCircuit.Circuit.participation` — its instances.
@@ -30,6 +33,8 @@ sum of the costs; this is proved once for every cost.
 * `QuantumCircuit.Circuit.total_append` — subadditivity under composition.
 * `QuantumCircuit.Circuit.depth_comp`, `QuantumCircuit.Circuit.gateCount_comp`,
   `QuantumCircuit.Circuit.participation_comp` — its three instances for `comp`.
+* `QuantumCircuit.Layer.depth_eq_min_one` — the depth of a layer is `min 1` of the number of its
+  cells of positive cost.
 * `QuantumCircuit.Layer.depth_le_one`, `QuantumCircuit.Circuit.depth_le_gateCount` — a layer has
   depth at most `1`, and depth is at most the gate count.
 * `QuantumCircuit.Circuit.total_seq_le` — the cost of a sequence of layers is at most the sum
@@ -49,13 +54,39 @@ variable {X Y : S → Type}
 def depth (L : Layer Γ G X Y) : ℕ :=
   if (L.cells.filter fun b ↦ 0 < Γ.cost b).Nonempty then 1 else 0
 
+/-- The total weight of the gates of a layer, for a weight `w b g` of the gate `g` on the cell
+`b`. The gate count and the number of gates meeting a site are instances. -/
+def cellCost (w : ∀ ⦃X Y : S → Type⦄ (b : Γ.Cell), G (Γ.cell b) X Y → ℕ) (L : Layer Γ G X Y) :
+    ℕ :=
+  ∑ b : L.cells, w b.1 (L.gate b)
+
 /-- The gate count of a layer: the sum of the costs of its cells. -/
 def gateCount (L : Layer Γ G X Y) : ℕ :=
-  ∑ b ∈ L.cells, Γ.cost b
+  L.cellCost fun _ _ b _ ↦ Γ.cost b
 
 /-- The number of cells of positive cost of the layer containing the site `s`. -/
 def meets (s : S) (L : Layer Γ G X Y) : ℕ :=
-  (L.cells.filter fun b ↦ s ∈ Γ.cell b ∧ 0 < Γ.cost b).card
+  L.cellCost fun _ _ b _ ↦ if s ∈ Γ.cell b ∧ 0 < Γ.cost b then 1 else 0
+
+omit [Fintype S] [GateFamily G] in
+theorem gateCount_eq_sum (L : Layer Γ G X Y) : L.gateCount = ∑ b ∈ L.cells, Γ.cost b :=
+  Finset.sum_coe_sort L.cells _
+
+omit [Fintype S] [GateFamily G] in
+theorem meets_eq_card (s : S) (L : Layer Γ G X Y) :
+    L.meets s = (L.cells.filter fun b ↦ s ∈ Γ.cell b ∧ 0 < Γ.cost b).card := by
+  rw [meets, cellCost, Finset.sum_coe_sort L.cells fun b ↦
+    if s ∈ Γ.cell b ∧ 0 < Γ.cost b then 1 else 0, Finset.sum_boole, Nat.cast_id]
+
+omit [Fintype S] [GateFamily G] in
+/-- The depth of a layer is `min 1` of the number of its cells of positive cost. -/
+theorem depth_eq_min_one (L : Layer Γ G X Y) :
+    L.depth = min 1 (L.cellCost fun _ _ b _ ↦ if 0 < Γ.cost b then 1 else 0) := by
+  rw [depth, cellCost, Finset.sum_coe_sort L.cells fun b ↦ if 0 < Γ.cost b then 1 else 0,
+    Finset.sum_boole, Nat.cast_id]
+  split_ifs with h
+  · exact (Nat.min_eq_left (Finset.card_pos.mpr h)).symm
+  · rw [Finset.not_nonempty_iff_eq_empty.mp h, Finset.card_empty, Nat.min_zero]
 
 omit [Fintype S] [GateFamily G] in
 theorem depth_le_one (L : Layer Γ G X Y) : L.depth ≤ 1 := by
@@ -63,7 +94,8 @@ theorem depth_le_one (L : Layer Γ G X Y) : L.depth ≤ 1 := by
 
 omit [Fintype S] [GateFamily G] in
 theorem depth_le_gateCount (L : Layer Γ G X Y) : L.depth ≤ L.gateCount := by
-  unfold depth gateCount
+  rw [gateCount_eq_sum]
+  unfold depth
   split_ifs with h
   · obtain ⟨b, hb⟩ := h
     rw [Finset.mem_filter] at hb

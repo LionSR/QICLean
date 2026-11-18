@@ -120,7 +120,7 @@ omit [Fintype S] [Fintype S'] [GateFamily G] [GateFamily G'] in
 theorem Layer.gateCount_eq_of_cells (h : Γ.Hom Γ' ι) {L : Layer Γ G X Y}
     {L' : Layer Γ' G' X' Y'} (hc : L'.cells = L.cells.map h.cellMap) :
     L'.gateCount = ∑ b ∈ L.cells, Γ'.cost (h.cellMap b) := by
-  rw [Layer.gateCount, hc, Finset.sum_map]
+  rw [Layer.gateCount_eq_sum, hc, Finset.sum_map]
 
 omit [Fintype S] [Fintype S'] [GateFamily G] [GateFamily G'] in
 /-- A layer whose cells are the images of the cells of `L` is no deeper than `L` when a cell of
@@ -475,7 +475,7 @@ theorem forall_mapGate {ev₁ : Interpretation G₁} {ev₂ : Interpretation G�
 theorem gateCount_mapGate_le (hcost : ∀ b, Δ.cost (h.cellMap b) ≤ Γ.cost b)
     (c : Circuit Γ G₁ X Z) : (c.mapGate h φ).gateCount ≤ c.gateCount :=
   total_mapLayers_le _ _ _ (fun _ _ _ _ _ _ L ↦ by
-    rw [Layer.gateCount_eq_of_cells h rfl, Layer.gateCount]
+    rw [Layer.gateCount_eq_of_cells h rfl, Layer.gateCount_eq_sum]
     exact Finset.sum_le_sum fun b _ ↦ hcost b) c
 
 /-- When a cell of positive cost after the move had positive cost before, the depth does not
@@ -894,7 +894,7 @@ omit [Fintype R] [DecidableEq R] in
 theorem gateCount_mapSites_le (hcost : ∀ b, Γ'.cost (h.cellMap b) ≤ Γ.cost b)
     (c : Circuit Γ G X Z) : (c.mapSites e W h φ).gateCount ≤ c.gateCount :=
   total_mapLayers_le _ _ _ (fun _ _ _ _ _ _ L ↦ by
-    rw [Layer.gateCount_eq_of_cells h rfl, Layer.gateCount]
+    rw [Layer.gateCount_eq_of_cells h rfl, Layer.gateCount_eq_sum]
     exact Finset.sum_le_sum fun b _ ↦ hcost b) c
 
 omit [Fintype R] [DecidableEq R] in

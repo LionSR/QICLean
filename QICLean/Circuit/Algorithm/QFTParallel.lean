@@ -318,6 +318,7 @@ private theorem gateCount_listLayer {L : List (geometry n).Cell} (hnd : L.Nodup)
       (geometry n).cell) : (listLayer L h).gateCount = L.length := by
   have hcost : ∀ b : (geometry n).Cell, (geometry n).cost b = 1 := fun b ↦ by
     rcases b with a | p <;> rfl
+  rw [Layer.gateCount_eq_sum]
   change ∑ b ∈ L.toFinset, (geometry n).cost b = _
   rw [Finset.sum_congr rfl fun b _ ↦ hcost b, Finset.sum_const, smul_eq_mul, mul_one,
     List.toFinset_card_of_nodup hnd]

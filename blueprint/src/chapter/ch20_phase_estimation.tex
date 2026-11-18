@@ -1,0 +1,96 @@
+\chapter{Phase estimation}
+\label{ch:phase_estimation}
+
+This chapter writes phase estimation \cite[\S5.2]{NielsenChuang2010} as a circuit with
+calls to an oracle, and states its success probability and its number of calls. The
+circuit is one circuit for every oracle: it consists of plain gates and calls, and the
+unitary $U$ enters only through the interpretation of the calls. The inverse Fourier
+transform is the adjoint of the circuit of Chapter~\ref{ch:qft}, moved from the $t$
+control qubits to the register that also holds the target.
+
+\section{The circuit}
+\label{sec:phase_estimation_circuit}
+
+\begin{definition}[The register]
+    \label{def:phase_estimation_register}
+    \lean{QuantumCircuit.PhaseEstimation.system, QuantumCircuit.PhaseEstimation.geometry,
+        QuantumCircuit.PhaseEstimation.Gate, QuantumCircuit.PhaseEstimation.geometryHom,
+        QuantumCircuit.PhaseEstimation.control, QuantumCircuit.PhaseEstimation.input}
+    \leanok
+    \uses{def:qft_qubits, def:circuits_extend_system, def:circuits_geometry_hom,
+        def:circuits_oracle}
+    The register has the sites $0,\dots,t-1$ of the control register, each with basis
+    $\{0,1\}$, and one target site with basis $\{1,\dots,m\}$; it is the register of
+    $t$ qubits extended by the target. Its geometry has a cell of cost $1$ on every
+    site and on every ordered pair of distinct sites, and the cells of the $t$ qubits
+    are cells of the register. Its gates are plain gates and calls of an oracle on
+    $\{0,1\}\times\{1,\dots,m\}$. For a vector $u\in\C^m$ the input is
+    $\lvert0\cdots0\rangle\otimes u$.
+\end{definition}
+
+\begin{definition}[Phase estimation]
+    \label{def:phase_estimation_circuit}
+    \lean{QuantumCircuit.PhaseEstimation.hadamardLayer,
+        QuantumCircuit.PhaseEstimation.queryLayer, QuantumCircuit.PhaseEstimation.qftInv,
+        QuantumCircuit.PhaseEstimation.unitary, QuantumCircuit.PhaseEstimation.measureLayer,
+        QuantumCircuit.PhaseEstimation.circuit, QuantumCircuit.PhaseEstimation.readout}
+    \leanok
+    \uses{def:phase_estimation_register, def:qft_circuit, def:circuits_adjoint,
+        thm:circuits_map_sites, thm:circuits_map_gate, def:circuits_gate_sum,
+        def:circuits_outcome}
+    Phase estimation \cite[Fig.~5.2 and~5.3]{NielsenChuang2010} applies the Hadamard
+    gate to every control qubit; then, for $j=t-1,\dots,0$, $2^{t-1-j}$ calls on the
+    pair of the control qubit $j$ and the target, each identifying the configurations
+    of the pair with $\{0,1\}\times\{1,\dots,m\}$; then the inverse Fourier
+    transform on the control register; and finally it measures every control qubit
+    in the basis $\lvert0\rangle,\lvert1\rangle$. The readout of a branch is the
+    integer $k=\langle x\rangle$ encoded by the measured bits $x$. The oracle $U$ on
+    $\C^m$ interprets every call by the controlled gate of $U$, so the calls on the
+    qubit $j$ apply $U^{2^{t-1-j}}$ controlled by $j$. The inverse Fourier transform
+    is the adjoint of the circuit of Definition~\ref{def:qft_circuit} on the $t$
+    qubits, moved to the register with the target idle, its plain gates included
+    among the gates of the register.
+\end{definition}
+
+\section{Success probability and number of calls}
+\label{sec:phase_estimation_bounds}
+
+\begin{theorem}[Number of calls]
+    \label{thm:phase_estimation_query_count}
+    \lean{QuantumCircuit.PhaseEstimation.queryCount_circuit}
+    \leanok
+    \uses{def:phase_estimation_circuit, def:circuits_oracle}
+    Phase estimation with $t$ control qubits calls the oracle
+    $\sum_{j<t}2^j=2^t-1$ times.
+\end{theorem}
+\begin{proof}
+    Every branch passes through all layers, and only the layers of calls contain a
+    call, one each; there are $\sum_{j<t}2^{t-1-j}$ of them.
+\end{proof}
+
+\begin{theorem}[Success probability]
+    \label{thm:phase_estimation_success}
+    \lean{QuantumCircuit.PhaseEstimation.accurate_prob_ge}
+    \leanok
+    \uses{def:phase_estimation_circuit, def:circuits_outcome, thm:qft_kraus}
+    Let $U$ be an $m\times m$ matrix and $u\in\C^m$ a unit vector with
+    $Uu=e^{2\pi i\varphi}u$, $\varphi\in\R$. Let $n\in\N$, $\varepsilon>0$ and
+    $t=n+\lceil\log_2(2+1/(2\varepsilon))\rceil$. On the input
+    $\lvert0\cdots0\rangle\otimes u$, phase estimation with $t$ control qubits returns
+    an integer $k$ such that $k/2^t$ lies within $2^{-n}$ of $\varphi$ modulo $1$ with
+    probability at least $1-\varepsilon$ \cite[eq.~(5.35)]{NielsenChuang2010}.
+\end{theorem}
+\begin{proof}
+    The circuit has one branch before the measurement. The Hadamard gates and the
+    calls map $\lvert0\cdots0\rangle\otimes u$ to
+    $2^{-t/2}\sum_{k<2^t}e^{2\pi i\varphi k}\lvert k\rangle\otimes u$, because each
+    controlled power of $U$ multiplies the component with control $1$ by its
+    eigenvalue on $u$. The inverse Fourier transform gives the amplitude
+    $\alpha_\ell=2^{-t}\sum_{k<2^t}e^{2\pi ik(\varphi-\ell/2^t)}$ at $\lvert\ell\rangle$,
+    and the probability of the readout $\ell$ is $\lvert\alpha_\ell\rvert^2$. Let $b$ be
+    the integer with $0\le\delta=\varphi-b/2^t<2^{-t}$ modulo $1$. Summing the
+    geometric series, $\lvert\alpha_{b+\ell}\rvert\le1/(2^{t+1}\lvert\ell/2^t-\delta\rvert)$
+    for $-2^{t-1}<\ell\le2^{t-1}$, so the probability that $\lvert\ell\rvert>e$ is at
+    most $1/(2(e-1))$. With $e=2^{t-n}-1$ this is at most $\varepsilon$, and
+    $\lvert\ell\rvert\le e$ puts $(b+\ell)/2^t$ within $2^{-n}$ of $\varphi$.
+\end{proof}

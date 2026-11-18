@@ -15,6 +15,21 @@ layer on the right, when every layer has a single Kraus operator, and its costs 
 of the costs of the layers when every layer has an outcome. Local properties and unbranchedness
 hold by construction.
 
+The adjoint of a layer of plain gates has the adjoint gates and onsite families on the same
+cells, from the output system to the input system. The adjoint of a sequence of layers on one
+system is the sequence of the adjoint layers in reverse order, and for layers of one operator
+each its Kraus operator is the adjoint of that of the sequence. Only such sequences are reversed.
+In a branching circuit the later layers depend on the outcomes of the earlier ones, and in the
+reverse order they would have to be chosen before those outcomes exist, so the reversal is not a
+circuit. An unbranched circuit whose systems change from layer to layer reverses to a chain of
+layers through the same systems in the opposite order, which a list of layers on one system
+cannot hold.
+
+## Main definitions
+
+* `QuantumCircuit.Layer.adjoint`, `QuantumCircuit.Circuit.seqAdjoint` — the adjoint of a layer of
+  plain gates and of a sequence of such layers.
+
 ## Main results
 
 * `QuantumCircuit.Circuit.kraus_seq`, `QuantumCircuit.Circuit.kraus_seq_map` — the Kraus
@@ -22,6 +37,8 @@ hold by construction.
 * `QuantumCircuit.Circuit.total_seq` — the cost of a sequence of layers with outcomes.
 * `QuantumCircuit.Circuit.gateCount_seq_eq_length` — a sequence of layers of gate count `1`.
 * `QuantumCircuit.Circuit.forall_seq`, `QuantumCircuit.Circuit.isUnbranched_seq`.
+* `QuantumCircuit.Layer.kraus_adjoint`, `QuantumCircuit.Circuit.kraus_seqAdjoint` — the Kraus
+  operators of the adjoints.
 -/
 
 open Matrix ManyBody
@@ -92,6 +109,59 @@ omit [Fintype S] in
 theorem isUnbranched_seq : (Ls : List (Layer Γ G X X)) → (seq Ls).IsUnbranched
   | [] => trivial
   | _ :: Ls => ⟨fun _ _ ↦ rfl, fun _ ↦ isUnbranched_seq Ls⟩
+
+end Circuit
+
+/-! ### Adjoints -/
+
+namespace Layer
+
+variable {X Y : S → Type}
+
+/-- The adjoint of a layer of plain gates: the adjoint gates and onsite families on the same
+cells. -/
+def adjoint (L : Layer Γ KrausGate X Y) : Layer Γ KrausGate Y X where
+  cells := L.cells
+  pairwiseDisjoint := L.pairwiseDisjoint
+  gate b := (L.gate b).adjoint
+  onsite s := (L.onsite s).adjoint
+
+omit [Fintype S] in
+@[simp] theorem adjoint_adjoint (L : Layer Γ KrausGate X Y) : L.adjoint.adjoint = L := by
+  obtain ⟨cells, hd, gate, onsite⟩ := L
+  simp only [adjoint, KrausFamily.adjoint_adjoint]
+
+/-- The Kraus operators of the adjoint layer are the adjoints of those of the layer. -/
+theorem kraus_adjoint [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+    [∀ s, DecidableEq (Y s)] (L : Layer Γ KrausGate X Y) (i : L.adjoint.Index) :
+    L.adjoint.kraus KrausGate.ev i = (L.kraus KrausGate.ev i)ᴴ := by
+  ext y x
+  simp only [kraus, conjTranspose_apply, star_mul', star_prod]
+  rfl
+
+end Layer
+
+namespace Circuit
+
+variable {X : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+
+/-- The adjoint of a sequence of layers of plain gates: the adjoint layers in reverse order. -/
+def seqAdjoint (Ls : List (Layer Γ KrausGate X X)) : Circuit Γ KrausGate X X :=
+  seq (Ls.reverse.map Layer.adjoint)
+
+/-- When every Kraus operator of the `k`-th layer of a sequence is `Us[k]`, the Kraus operator of
+the adjoint sequence is the adjoint of the product of the `Us[k]`. -/
+theorem kraus_seqAdjoint {Ls : List (Layer Γ KrausGate X X)}
+    {Us : List (Matrix (Config X) (Config X) ℂ)}
+    (h : List.Forall₂ (fun L U ↦ ∀ i, L.kraus KrausGate.ev i = U) Ls Us)
+    (p : (seqAdjoint Ls).Index) :
+    (seqAdjoint Ls).kraus KrausGate.ev p = (Us.reverse.prod)ᴴ := by
+  rw [conjTranspose_list_prod]
+  refine kraus_seq KrausGate.ev ?_ p
+  rw [List.forall₂_map_left_iff, List.forall₂_map_right_iff, List.forall₂_reverse_iff]
+  refine h.imp fun L U hL i ↦ ?_
+  rw [Layer.kraus_adjoint]
+  exact congrArg _ (hL i)
 
 end Circuit
 

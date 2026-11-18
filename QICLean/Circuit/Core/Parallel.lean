@@ -116,7 +116,7 @@ omit [Fintype S] [GateFamily G] in
 /-- A layer of one gate has the gate count of its cell. -/
 theorem gateCount_single (b : Γ.Cell) (g : G (Γ.cell b) X X) :
     (single b g).gateCount = Γ.cost b := by
-  simp [gateCount, single]
+  simp [gateCount_eq_sum, single]
 
 omit [Fintype S] [GateFamily G] in
 /-- A layer of one gate on a cell of positive cost has depth `1`. -/

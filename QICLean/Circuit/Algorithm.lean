@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Circuit.Algorithm
 
+import QICLean.Circuit.Algorithm.PhaseEstimation
 import QICLean.Circuit.Algorithm.QFT
 import QICLean.Circuit.Algorithm.QFTParallel
 import QICLean.Circuit.Algorithm.Qubit
