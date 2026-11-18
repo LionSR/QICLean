@@ -31,6 +31,9 @@ outcomes. This is proved by induction from the trace preservation of a layer.
   preservation (Wolf, §2.1).
 * `QuantumCircuit.Circuit.isKrausCPTP_map` — such a circuit is a quantum channel.
 * `QuantumCircuit.Circuit.trace_map` — such a circuit preserves the trace.
+* `QuantumCircuit.Circuit.nonempty_unique_index`,
+  `QuantumCircuit.Circuit.dual_eq_of_subsingleton` — a circuit of local families with one index
+  each has one branch, and its Heisenberg picture is conjugation by its Kraus operator.
 -/
 
 open Matrix ManyBody
@@ -91,6 +94,35 @@ theorem IsUnbranched.comp {Z : S → Type} : {X Y : S → Type} → {c : Circuit
       change (next i).comp c' = (next j).comp c'
       rw [hc.1 i j],
       fun i ↦ IsUnbranched.comp (c := next i) (hc.2 i) hc'⟩
+
+omit [Fintype S] in
+/-- A circuit whose gates and onsite families each have a unique Kraus index has a unique
+branch. A unitary local family has a unique index, so this applies to unitary circuits. -/
+theorem nonempty_unique_index (ev : Interpretation G) : {X Z : S → Type} →
+    [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] → {c : Circuit Γ G X Z} →
+      c.Forall ev (fun K ↦ Nonempty (Unique K.Index)) → Nonempty (Unique c.Index)
+  | _, _, _, _, done _, _ => ⟨inferInstanceAs (Unique Unit)⟩
+  | _, _, _, _, step L next, h => by
+    obtain ⟨⟨hg, ho⟩, hn⟩ := (h : L.Forall ev _ ∧ ∀ i, (next i).Forall ev _)
+    have i₁ : ∀ b : L.cells, Unique (GateFamily.Outcome (L.gate b)) := fun b ↦ (hg b).some
+    have i₂ : ∀ s : L.Free, Unique (L.onsite s).Index := fun s ↦ (ho s).some
+    let u : Unique L.Index :=
+      { default := (fun b ↦ (i₁ b).default, fun s ↦ (i₂ s).default)
+        uniq := fun ⟨f, g⟩ ↦ Prod.ext (funext fun b ↦ (i₁ b).uniq (f b))
+          (funext fun s ↦ (i₂ s).uniq (g s)) }
+    have hu := fun i ↦ (nonempty_unique_index ev (hn i)).some
+    refine ⟨{ default := ⟨default, (hu default).default⟩, uniq := ?_ }⟩
+    rintro ⟨i, j⟩
+    obtain rfl := u.uniq i
+    exact Sigma.ext rfl (heq_of_eq ((hu default).uniq j))
+
+/-- The Heisenberg picture of a circuit with a single branch `p` is conjugation by its Kraus
+operator. -/
+theorem dual_eq_of_subsingleton (ev : Interpretation G) {X Z : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] [∀ s, Fintype (Z s)] (c : Circuit Γ G X Z) [Subsingleton c.Index]
+    (p : c.Index) (A : Matrix (Config Z) (Config Z) ℂ) :
+    c.dual ev A = (c.kraus ev p)ᴴ * A * c.kraus ev p :=
+  Fintype.sum_subsingleton _ p
 
 /-- A circuit whose local families are trace-preserving has Heisenberg picture fixing the
 identity. -/

@@ -1,0 +1,238 @@
+\chapter{The quantum Fourier transform}
+\label{ch:qft}
+
+This chapter writes the quantum Fourier transform on $n$ qubits as a unitary circuit
+of one- and two-qubit gates, in the form of \cite[Fig.~5.1]{NielsenChuang2010}, and
+proves that its Kraus operator is the Fourier matrix. The proof is given once, for
+every order of the gates in which each controlled phase gate acts after the Hadamard
+gate on its target and before the Hadamard gate on its control. Scheduling the gates
+by time in $2n-1$ layers of disjoint gates, followed by one layer of swaps, is such an
+order, and gives a circuit of depth at most $2n$ with the same gates. The chapter
+uses the circuits of Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
+
+\section{Qubits and gates}
+\label{sec:qft_qubits}
+
+\begin{definition}[Qubits and the binary encoding]
+    \label{def:qft_qubits}
+    \lean{QuantumCircuit.Qubit.Q, QuantumCircuit.Qubit.encode,
+        QuantumCircuit.Qubit.encode_apply, QuantumCircuit.Qubit.geometry}
+    \leanok
+    \uses{def:sites_config, def:circuits_local_gate}
+    The system of $n$ qubits has the sites $0,\dots,n-1$, each with basis
+    $\{0,1\}$. A configuration $x$ encodes the number
+    $\langle x\rangle=\sum_ix_i2^{n-1-i}$, the site $0$ most significant; this is a
+    bijection onto $\{0,\dots,2^n-1\}$. The circuits of this chapter use the
+    geometry of sites and pairs on the $n$ qubits, every cell of cost $1$.
+\end{definition}
+
+\begin{definition}[Gates]
+    \label{def:qft_gates}
+    \lean{QuantumCircuit.Qubit.hadamard, QuantumCircuit.Qubit.phaseShift,
+        QuantumCircuit.Qubit.controlled, QuantumCircuit.Qubit.controlled_apply}
+    \leanok
+    \uses{def:flip_operator}
+    The Hadamard gate is $H_{yx}=(-1)^{xy}/\sqrt2$ and the phase gate is
+    $R_k=\operatorname{diag}(1,e^{2\pi i/2^k})$. The controlled gate of a matrix $U$
+    is the controlled element $C(p,x)=px+(1-p)$ of $p=\lvert1\rangle\langle1\rvert\otimes1$
+    and $x=1\otimes U$,
+    \begin{align}
+        C(p,x)&=\lvert0\rangle\langle0\rvert\otimes1+\lvert1\rangle\langle1\rvert\otimes U,
+        \notag
+    \end{align}
+    the control first. The swap of two qubits is the flip operator $F$ on
+    $\C^2\otimes\C^2$.
+\end{definition}
+
+\begin{lemma}[The gates are unitary]
+    \label{lem:qft_gates_unitary}
+    \lean{QuantumCircuit.Qubit.hadamard_mem_unitaryGroup,
+        QuantumCircuit.Qubit.phaseShift_mem_unitaryGroup,
+        QuantumCircuit.Qubit.controlled_mem_unitaryGroup,
+        Matrix.swapMatrix_mem_unitaryGroup, QuantumCircuit.Qubit.controlled_phaseShift}
+    \leanok
+    \uses{def:qft_gates}
+    The Hadamard gate, the phase gates, the controlled gates of unitary matrices and the
+    swap are unitary. The controlled phase gate of $R_k$ is the diagonal matrix
+    $(c,t)\mapsto e^{2\pi i\,ct/2^k}$.
+\end{lemma}
+\begin{proof}\leanok
+    Direct computation; the controlled gate of a unitary matrix is block diagonal with
+    unitary blocks, and $F^\dagger=F$, $F^2=1$.
+\end{proof}
+
+\section{Admissible orders of the gates}
+\label{sec:qft_orders}
+
+\begin{definition}[The Fourier matrix and the gate table]
+    \label{def:qft_gate_table}
+    \lean{QuantumCircuit.Qubit.dft, QuantumCircuit.Qubit.qftMatrix,
+        QuantumCircuit.Qubit.qftGate, QuantumCircuit.Qubit.gateOp,
+        QuantumCircuit.Qubit.qftMatrix_mem_unitaryGroup,
+        QuantumCircuit.Qubit.isUnitary_qftGate, QuantumCircuit.Qubit.gateOp_mem_unitaryGroup}
+    \leanok
+    \uses{def:qft_gates, def:circuits_local_gate, lem:qft_gates_unitary,
+        lem:sites_place_hom}
+    The Fourier matrix on $n$ qubits is
+    \begin{align}
+        F_{yx}&=2^{-n/2}\,e^{2\pi i\langle y\rangle\langle x\rangle/2^n}
+        \notag
+    \end{align}
+    \cite[eq.~(5.2)]{NielsenChuang2010}. Its gates are given by one table on the cells:
+    the Hadamard gate on a qubit; on an ordered pair $(j,i)$ with $i<j$ the controlled
+    gate of $R_{j-i+1}$, with control $j$ and target $i$; on an ordered pair $(a,b)$
+    with $a<b$ the swap. Each is unitary, and so is its placement on the register.
+\end{definition}
+
+\begin{definition}[Admissible orders]
+    \label{def:qft_order}
+    \lean{QuantumCircuit.Qubit.coreCells, QuantumCircuit.Qubit.hadamardsAfter,
+        QuantumCircuit.Qubit.IsGateOrder, QuantumCircuit.Qubit.hadamardsAfter_append,
+        QuantumCircuit.Qubit.isGateOrder_append, QuantumCircuit.Qubit.swapCells,
+        QuantumCircuit.Qubit.swapCells_nodup}
+    \leanok
+    \uses{def:qft_gate_table}
+    The Hadamard and controlled phase cells are the qubits and the ordered pairs
+    $(j,i)$ with $i<j$. A sequence of such cells is admissible from a set $A$ of
+    transformed qubits when every Hadamard gate acts on a qubit not yet transformed,
+    which it then transforms, and every controlled phase gate $(j,i)$ acts when its
+    target $i$ is transformed and its control $j$ is not. A concatenation is admissible
+    exactly when the first part is admissible from $A$ and the second from $A$
+    together with the qubits transformed by the first. The swap cells are the pairs
+    $(k,n-1-k)$ for $k<\lfloor n/2\rfloor$.
+\end{definition}
+
+\begin{theorem}[Every admissible order computes the Fourier transform]
+    \label{thm:qft_order}
+    \lean{QuantumCircuit.Qubit.prod_gateOp_core, QuantumCircuit.Qubit.prod_gateOp_eq_dft}
+    \leanok
+    \uses{def:qft_order}
+    Let a sequence of the Hadamard and controlled phase cells contain each of them once
+    and be admissible from the empty set. The product of the placed gates along it, the
+    first on the right, has the entry $F_{\bar yx}$ at $(y,x)$, where
+    $\bar y_i=y_{n-1-i}$. Followed by the swaps, the product is $F$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_local_gate_unitary, lem:qft_gates_unitary}
+    Follow the column $e_x$ of a basis vector. After a prefix of the sequence the
+    column is the product state in which every transformed qubit $k$ carries
+    $2^{-1/2}(\lvert0\rangle+e^{2\pi i\,\theta_k}\lvert1\rangle)$ and every other qubit
+    its input bit $x_k$. The Hadamard gate on a qubit $a$ still in its basis state
+    gives it the phase $\theta_a=x_a/2$, by Lemma~\ref{lem:circuits_local_gate_unitary}
+    and $(-1)^{yx}=e^{2\pi i\,y\,x/2}$. The controlled phase gate $(j,i)$ is diagonal
+    by Lemma~\ref{lem:qft_gates_unitary}; since its control $j$ is still in the basis
+    state $x_j$ and its target $i$ is transformed, it adds $x_j2^{-(j-i+1)}$ to
+    $\theta_i$. Hence after the whole sequence
+    \begin{align}
+        \theta_k&=\frac{x_k}2+\sum_{j>k}\frac{x_j}{2^{j-k+1}},
+        \notag
+    \end{align}
+    independently of the order, and the entry at $y$ is
+    $2^{-n/2}\prod_ke^{2\pi i\,y_k\theta_k}$. The sum $\sum_ky_k\theta_k$ differs from
+    $\langle\bar y\rangle\langle x\rangle/2^n$ by an integer: the terms
+    $x_jy_k2^{j-k-1}$ with $j<k$ omitted from it are integers. The swap of $k$ and
+    $n-1-k$ exchanges the two coordinates, so the swaps reverse the order of the
+    qubits.
+\end{proof}
+
+\section{The circuit of Nielsen and Chuang}
+\label{sec:qft_circuit}
+
+\begin{definition}[The textbook circuit]
+    \label{def:qft_circuit}
+    \lean{QuantumCircuit.Qubit.qubitCells, QuantumCircuit.Qubit.seqCells,
+        QuantumCircuit.Qubit.gateLayers, QuantumCircuit.Qubit.qftCore,
+        QuantumCircuit.Qubit.qft, QuantumCircuit.Qubit.isGateOrder_seqCells,
+        QuantumCircuit.Qubit.seqCells_nodup, QuantumCircuit.Qubit.toFinset_seqCells,
+        QuantumCircuit.Qubit.length_seqCells}
+    \leanok
+    \uses{def:qft_order, def:circuits_circuit, def:circuits_of_cells}
+    The textbook circuit without swaps applies, for each qubit $i=0,\dots,n-1$ in turn,
+    the Hadamard gate to $i$ and then, for $j=i+1,\dots,n-1$, the controlled gate of
+    $R_{j-i+1}$ with control $j$ and target $i$, one gate per layer. This order is
+    admissible and contains each Hadamard and controlled phase cell once, $n(n+1)/2$
+    cells in all. The Fourier circuit is the textbook circuit followed by the swaps,
+    one per layer.
+\end{definition}
+
+\begin{theorem}[The textbook circuit computes the Fourier transform]
+    \label{thm:qft_kraus}
+    \lean{QuantumCircuit.Qubit.kraus_qftCore, QuantumCircuit.Qubit.kraus_qft,
+        QuantumCircuit.Qubit.dft_mem_unitaryGroup}
+    \leanok
+    \uses{def:qft_circuit}
+    Along its single branch the textbook circuit without the swaps has the Kraus
+    operator with entry $F_{\bar yx}$ at $(y,x)$, and the Kraus operator of the Fourier
+    circuit is $F$. In particular $F$ is unitary.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_seq, lem:circuits_layer_single, thm:qft_order}
+    By Lemma~\ref{lem:circuits_seq} and Lemma~\ref{lem:circuits_layer_single} the
+    Kraus operator is the product of the placed gates, and
+    Theorem~\ref{thm:qft_order} applies. A product of unitaries is unitary.
+\end{proof}
+
+\begin{theorem}[Unitarity and cost of the Fourier circuit]
+    \label{thm:qft_cost}
+    \lean{QuantumCircuit.Qubit.isUnbranched_qft, QuantumCircuit.Qubit.forall_isUnitary_qft,
+        QuantumCircuit.Qubit.gateCount_qftCore, QuantumCircuit.Qubit.gateCount_qft,
+        QuantumCircuit.Qubit.depth_qft_le}
+    \leanok
+    \uses{def:qft_circuit, def:circuits_costs, def:circuits_local}
+    The Fourier circuit is unbranched and locally unitary. Without the swaps it uses
+    $n(n+1)/2$ gates, and with them $n(n+1)/2+\lfloor n/2\rfloor$, which also bounds
+    its depth.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_seq, thm:circuits_of_cells, def:qft_gate_table,
+        thm:circuits_cost_subadditive}
+    Every layer holds one unitary gate of cost $1$ and has one outcome, so by
+    Lemma~\ref{lem:circuits_seq} the gate count is the number of layers, and the depth
+    is at most the gate count.
+\end{proof}
+
+\section{The Fourier transform in linear depth}
+\label{sec:qft_parallel}
+
+\begin{definition}[The scheduled Fourier circuit]
+    \label{def:qft_parallel}
+    \lean{QuantumCircuit.Qubit.rotationCells, QuantumCircuit.Qubit.hadamardCells,
+        QuantumCircuit.Qubit.timeCells, QuantumCircuit.Qubit.parCells,
+        QuantumCircuit.Qubit.listLayer, QuantumCircuit.Qubit.timeLayer,
+        QuantumCircuit.Qubit.swapLayer, QuantumCircuit.Qubit.parLayers,
+        QuantumCircuit.Qubit.qftPar, QuantumCircuit.Qubit.isGateOrder_parCells,
+        QuantumCircuit.Qubit.parCells_nodup, QuantumCircuit.Qubit.toFinset_parCells}
+    \leanok
+    \uses{def:qft_order, def:circuits_of_cells}
+    Place the Hadamard gate on the qubit $i$ at time $2i$ and the controlled gate of
+    $R_{j-i+1}$ with control $j$ and target $i<j$ at time $i+j$. Two distinct cells used
+    at the same time $t$ are disjoint: if they shared a qubit, the time and the order
+    $i<j$ would determine the other qubit of each. Every cell has a time below
+    $2n-1$. The scheduled circuit is the sequence of the layers of the gates at the
+    times $0,\dots,2n-2$, followed by the layer of all swaps. The order of the times is
+    admissible: $2i<i+j<2j$ for $i<j$.
+\end{definition}
+
+\begin{theorem}[The scheduled circuit computes the Fourier transform in depth $2n$]
+    \label{thm:qft_parallel}
+    \lean{QuantumCircuit.Qubit.kraus_qftPar, QuantumCircuit.Qubit.depth_qftPar_le,
+        QuantumCircuit.Qubit.gateCount_qftPar, QuantumCircuit.Qubit.forall_isUnitary_qftPar,
+        QuantumCircuit.Qubit.isUnbranched_qftPar}
+    \leanok
+    \uses{def:qft_parallel, def:circuits_costs, def:circuits_local}
+    The Kraus operator of the scheduled circuit is the Fourier matrix $F$. It is
+    unbranched and locally unitary, uses as many gates as the Fourier circuit of
+    Definition~\ref{def:qft_circuit}, and has depth at most $2n$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_of_cells, lem:circuits_seq, thm:qft_order, thm:qft_cost,
+        thm:circuits_cost_subadditive}
+    By Theorem~\ref{thm:circuits_of_cells} the Kraus operator of a layer is the
+    product of the placements of its gates, in any order; ordering each layer as its
+    time class, the product of the layers is the product along the concatenation of
+    the time classes, followed by the swaps, and Theorem~\ref{thm:qft_order} applies.
+    The time classes partition the Hadamard and controlled phase cells, so the gate
+    count is the number of these cells plus $\lfloor n/2\rfloor$, as for the Fourier
+    circuit. Each of the $2n$ layers has depth at most $1$, and the depth of a sequence
+    is at most the sum of the depths of its layers; for $n=0$ the only layer is empty.
+\end{proof}

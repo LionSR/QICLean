@@ -41,6 +41,8 @@ its restriction to the region.
 ## Main results
 
 * `ManyBody.place_apply` — the entries of a placed matrix.
+* `ManyBody.place_mulVec_apply`, `ManyBody.place_diagonal_mulVec` — the action of a placed
+  matrix, and of a placed diagonal matrix, on a vector.
 * `ManyBody.place_mul`, `ManyBody.place_one`, `ManyBody.place_conjTranspose` and the linear
   lemmas.
 * `ManyBody.place_mem_supportedOperators`, `ManyBody.exists_eq_place_of_mem_supportedOperators`,
@@ -172,6 +174,36 @@ theorem trace_place [Fintype (RegionConfig X D)] :
     simp only [Matrix.trace, diag_apply, submatrix_apply]
     exact (cutEquiv X D).sum_comp fun j ↦ M j j
   rw [place, reindex_apply, Equiv.symm_symm, h, trace_kronecker, trace_one, mul_comm]
+
+/-- A placed matrix acts on a vector through the configurations of its region, the rest of the
+configuration held fixed. -/
+theorem place_mulVec_apply [Fintype (RegionConfig X D)] (ψ : Config X → ℂ) (σ : Config X) :
+    (place D K *ᵥ ψ) σ =
+      ∑ a, K (fun v ↦ σ v) a * ψ ((cutEquiv X D).symm (a, (cutEquiv X D σ).2)) := by
+  obtain rfl : ‹Fintype (RegionConfig X D)› = Pi.instFintype := Subsingleton.elim _ _
+  rw [mulVec, dotProduct, ← (cutEquiv X D).symm.sum_comp, Fintype.sum_prod_type]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  simp only [place, reindex_apply, submatrix_apply, Equiv.symm_symm, Equiv.apply_symm_apply,
+    kroneckerMap_apply, one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul]
+  rw [Finset.sum_ite_eq]
+  simp
+
+/-- A diagonal matrix placed on a region multiplies a vector by its diagonal entry at the
+restriction of the configuration. -/
+theorem place_diagonal_mulVec (d : RegionConfig X D → ℂ)
+    (ψ : Config X → ℂ) (σ : Config X) :
+    (place D (diagonal d) *ᵥ ψ) σ = d (fun v ↦ σ v) * ψ σ := by
+  rw [place_mulVec_apply]
+  simp only [diagonal_apply, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
+  congr 1
+  exact congrArg ψ ((cutEquiv X D).symm_apply_apply σ)
+
+/-- The placement of a unitary matrix is unitary. -/
+theorem place_mem_unitaryGroup [Fintype (RegionConfig X D)] [DecidableEq (RegionConfig X D)]
+    {K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ} (hK : K ∈ unitaryGroup _ ℂ) :
+    place D K ∈ unitaryGroup (Config X) ℂ := by
+  rw [mem_unitaryGroup_iff, star_eq_conjTranspose, ← place_conjTranspose, ← place_mul,
+    ← star_eq_conjTranspose, mem_unitaryGroup_iff.mp hK, place_one]
 
 /-- The placement `K ↦ K ⊗ 1` as a unital `*`-homomorphism from the matrix algebra of a
 region to the matrix algebra of the system. -/

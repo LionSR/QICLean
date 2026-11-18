@@ -113,14 +113,18 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{definition}[Placement]
     \label{def:sites_place}
     \lean{ManyBody.place, ManyBody.place_apply, ManyBody.reindex_cutEquiv_place,
-        ManyBody.place_apply_cutEquiv_symm}
+        ManyBody.place_apply_cutEquiv_symm, ManyBody.place_mulVec_apply,
+        ManyBody.place_diagonal_mulVec}
     \leanok
     \uses{def:sites_config}
     The placement of a matrix $K$ on $\C^{X_D}$ is the operator $K\otimes1$ on
     $\mathcal H_X=\C^{X_D}\otimes\C^{X_{V\setminus D}}$, read in the
     coordinates of $\mathcal H_X$ through the cut along $D$. Its matrix element
     $(K\otimes1)_{\sigma\tau}$ is $K_{\sigma|_D,\tau|_D}$ if $\sigma$ and $\tau$
-    agree outside $D$, and $0$ otherwise.
+    agree outside $D$, and $0$ otherwise. On a vector $\psi$ it acts by
+    $((K\otimes1)\psi)(\sigma)=\sum_aK_{\sigma|_D,a}\,\psi(a,\sigma|_{V\setminus D})$,
+    the sum over the configurations $a$ of $D$. For a diagonal matrix
+    $\operatorname{diag}(d)$ this is $d(\sigma|_D)\,\psi(\sigma)$.
 \end{definition}
 
 \begin{lemma}[Placement is a unital $*$-homomorphism]
@@ -130,12 +134,12 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.place_sub, ManyBody.place_sum, ManyBody.place_conjTranspose,
         ManyBody.isHermitian_place, ManyBody.place_one, ManyBody.place_mul,
         ManyBody.place_pow, ManyBody.place_mul_place_inv,
-        ManyBody.place_inv_mul_place, ManyBody.trace_place}
+        ManyBody.place_inv_mul_place, ManyBody.trace_place, ManyBody.place_mem_unitaryGroup}
     \leanok
     \uses{def:sites_place}
     The map $K\mapsto K\otimes1$ is linear, unital, multiplicative and
-    compatible with adjoints. If $K$ is invertible, then $K^{-1}\otimes1$ is
-    the inverse of $K\otimes1$, and $\Tr(K\otimes1)=|X_{V\setminus D}|\Tr K$.
+    compatible with adjoints; in particular it maps unitaries to unitaries. If $K$ is
+    invertible, then $K^{-1}\otimes1$ is the inverse of $K\otimes1$, and $\Tr(K\otimes1)=|X_{V\setminus D}|\Tr K$.
 \end{lemma}
 \begin{proof}\leanok
     The cut is a bijection of index sets, so reindexing along it is a

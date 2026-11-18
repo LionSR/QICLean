@@ -30,7 +30,8 @@ sum of the costs; this is proved once for every cost.
 * `QuantumCircuit.Circuit.total_append` — subadditivity under composition.
 * `QuantumCircuit.Circuit.depth_comp`, `QuantumCircuit.Circuit.gateCount_comp`,
   `QuantumCircuit.Circuit.participation_comp` — its three instances for `comp`.
-* `QuantumCircuit.Circuit.depth_le_gateCount` — depth is at most the gate count.
+* `QuantumCircuit.Layer.depth_le_one`, `QuantumCircuit.Circuit.depth_le_gateCount` — a layer has
+  depth at most `1`, and depth is at most the gate count.
 * `QuantumCircuit.Circuit.total_seq_le` — the cost of a sequence of layers is at most the sum
   of their costs.
 -/
@@ -55,6 +56,10 @@ def gateCount (L : Layer Γ G X Y) : ℕ :=
 /-- The number of cells of positive cost of the layer containing the site `s`. -/
 def meets (s : S) (L : Layer Γ G X Y) : ℕ :=
   (L.cells.filter fun b ↦ s ∈ Γ.cell b ∧ 0 < Γ.cost b).card
+
+omit [Fintype S] [GateFamily G] in
+theorem depth_le_one (L : Layer Γ G X Y) : L.depth ≤ 1 := by
+  unfold depth; split_ifs <;> omega
 
 omit [Fintype S] [GateFamily G] in
 theorem depth_le_gateCount (L : Layer Γ G X Y) : L.depth ≤ L.gateCount := by
