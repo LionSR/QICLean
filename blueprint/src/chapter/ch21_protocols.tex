@@ -161,14 +161,17 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     \lean{Matrix.mul_initializedBasisMatrix_apply,
         Matrix.initializedBasisMatrix_mul_apply_self,
         Matrix.initializedBasisMatrix_mul_apply_of_notMem, KrausFamily.isTP_embed,
-        KrausFamily.isTP_decode, KrausFamily.decode_op_inl_mul, KrausFamily.decode_op_inr_mul,
+        KrausFamily.map_embed_apply, KrausFamily.decode_op_inl, KrausFamily.decode_op_inr,
+        KrausFamily.map_decode_apply, KrausFamily.effect_decode, KrausFamily.isTP_decode, KrausFamily.decode_op_inl_mul, KrausFamily.decode_op_inr_mul,
         KrausFamily.map_decode_map_embed,
         QuantumCircuit.map_decodeCircuit_comp_map_encodeCircuit}
     \leanok
     \uses{def:protocols_encoding, lem:gate_basis_inclusion_isometry}
     For the basis inclusion of an injective map $e$ and matrices $M$,
     $(MJ_e)_{ya}=M_{y,e(a)}$, $(J_eM)_{e(a),x}=M_{ax}$, and the rows of $J_eM$ outside $e(\alpha)$
-    vanish. The encoding and the decoding are trace-preserving. On the image of $J_e$ the
+    vanish. The encoding is $\rho\mapsto J_e\rho J_e^\dagger$ and the decoding is
+    $\rho\mapsto J_e^\dagger\rho J_e+\sum_{b\notin e(\alpha)}\ket{x_0}\bra{b}\rho\ket{b}\bra{x_0}$, and
+    both are trace-preserving. On the image of $J_e$ the
     decoding operator $J_e^\dagger$ inverts $J_e$ and the operators $\ket{x_0}\bra{b}$ vanish,
     so decoding after encoding is the identity, and so is the sitewise decoding after the
     sitewise encoding.
@@ -196,7 +199,8 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
 
 \begin{lemma}[Encoded family]
     \label{lem:protocols_encoded_family}
-    \lean{KrausFamily.encode_op_inl_mul, KrausFamily.encode_op_inr_mul,
+    \lean{KrausFamily.encode_op_inl, KrausFamily.encode_op_inr, KrausFamily.map_encode_apply,
+        KrausFamily.effect_encode, KrausFamily.encode_op_inl_mul, KrausFamily.encode_op_inr_mul,
         KrausFamily.IsTP.encode, KrausFamily.map_encode_map_embed}
     \leanok
     \uses{def:protocols_encoded_family, lem:protocols_encoding}
@@ -262,8 +266,9 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:protocols_encoding}
-    By induction on the circuit. The empty circuit is replaced by the encoded identity layer,
-    of depth $0$. For a layer followed by continuations, embed the bases after the layer into
+    By induction on the circuit. The empty circuit is replaced by the sitewise decoding along
+    $e$ followed by the sitewise encoding along $f$, of depth $0$, which acts on the image of the
+    encoding along $e$ as the encoding along $f$ by Lemma~\ref{lem:protocols_encoding}. For a layer followed by continuations, embed the bases after the layer into
     $\{0,\dots,q-1\}$, which is possible because they have at most $B\le q$ elements, encode
     the layer as in Theorem~\ref{thm:protocols_encoded_layer}, and follow each Kraus index of
     the first kind by the encoded continuation of the corresponding index of the layer, and

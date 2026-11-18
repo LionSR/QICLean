@@ -53,7 +53,8 @@ preservation, and the backward light cone.
 \begin{definition}[Gate families and interpretations]
     \label{def:circuits_gate_family}
     \lean{QuantumCircuit.GateFamily, QuantumCircuit.Interpretation,
-        QuantumCircuit.KrausGate, QuantumCircuit.KrausGate.ev}
+        QuantumCircuit.KrausGate, QuantumCircuit.KrausGate.ev,
+        QuantumCircuit.KrausGate.ev_apply}
     \leanok
     \uses{def:kraus_family, def:sites_config}
     A gate family assigns to every region $D$ and systems $X,Y$ a set of gates on
@@ -69,7 +70,7 @@ preservation, and the backward light cone.
 \begin{definition}[Layer]
     \label{def:circuits_layer}
     \lean{QuantumCircuit.Layer, QuantumCircuit.Layer.Free,
-        QuantumCircuit.Layer.Index, QuantumCircuit.Layer.kraus,
+        QuantumCircuit.Layer.Index, QuantumCircuit.Layer.kraus, QuantumCircuit.Layer.kraus_apply,
         QuantumCircuit.Layer.krausFamily, QuantumCircuit.Layer.Forall,
         QuantumCircuit.Layer.lightCone}
     \leanok
@@ -373,11 +374,12 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Circuit.depth_le_gateCount,
         QuantumCircuit.Circuit.total_seq_le, QuantumCircuit.Circuit.depth_seq_le,
         QuantumCircuit.Circuit.gateCount_seq_le, QuantumCircuit.Layer.depth_le_one,
-        QuantumCircuit.Circuit.depth_step}
+        QuantumCircuit.Circuit.depth_step, QuantumCircuit.Circuit.depth_ofLayer}
     \leanok
     \uses{def:circuits_costs, thm:circuits_composition}
     The depth of a circuit starting with a layer $L$ is the depth of $L$ plus the largest
-    depth of a continuation. The cost of a circuit with continuations $k_p$ attached is at
+    depth of a continuation; in particular the circuit of one layer has the depth of the
+    layer. The cost of a circuit with continuations $k_p$ attached is at
     most the cost of
     the circuit plus the largest cost of a continuation. In particular depth, gate
     count and the number of gates meeting a site are subadditive under
@@ -652,7 +654,7 @@ sequence on one system.
         QuantumCircuit.Layer.forall_single, QuantumCircuit.Layer.nonempty_index_single,
         QuantumCircuit.Layer.cellCost_single, QuantumCircuit.Layer.gateCount_single,
         QuantumCircuit.Layer.depth_single, QuantumCircuit.Layer.kraus_ofOnsite,
-        QuantumCircuit.Layer.depth_ofOnsite}
+        QuantumCircuit.Layer.depth_ofOnsite, QuantumCircuit.Circuit.map_ofLayer_ofOnsite_single}
     \leanok
     \uses{def:circuits_of_cells, def:circuits_costs, def:circuits_local,
         lem:sites_place_hom}
@@ -672,7 +674,8 @@ sequence on one system.
     of gates, in particular gate count $c_b$, and depth $1$ if $c_b>0$. The Kraus
     operator of a layer with no cells and families $(K^s_\omega)_\omega$ at the sites
     $s$, at an outcome $i$, is the product operator $\bigotimes_sK^s_{i_s}$, and such a layer
-    has depth $0$.
+    has depth $0$. If every family consists of one operator $V_s$, the map of the layer is
+    $\rho\mapsto(\bigotimes_sV_s)\rho(\bigotimes_sV_s)^\dagger$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:sites-regional-union}

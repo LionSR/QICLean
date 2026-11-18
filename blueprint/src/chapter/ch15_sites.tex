@@ -177,13 +177,16 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \lean{ManyBody.supportedOperators_toSubmodule_eq_span, ManyBody.prodOp,
         ManyBody.prodOp_apply, ManyBody.prodOp_mul, ManyBody.prodOp_one,
         ManyBody.conjTranspose_prodOp, ManyBody.prodOp_mem_unitary,
-        ManyBody.prodOp_mem_supportedOperators, ManyBody.place_single, ManyBody.trace_prodOp}
+        ManyBody.prodOp_mem_supportedOperators, ManyBody.place_single, ManyBody.trace_prodOp,
+        ManyBody.prodOp_initializedBasisMatrix}
     \leanok
-    \uses{thm:sites_place_range, lem:sites_place_hom}
+    \uses{thm:sites_place_range, lem:sites_place_hom, def:gate_basis_inclusion}
     The algebra $\mathcal A_D$ is the linear span of the product operators
     $\bigotimes_{v\in V}m_v$ with $m_v=1$ for every $v\notin D$. Product operators
     multiply sitewise, $(\bigotimes_vm_v)^*=\bigotimes_vm_v^*$, a product of
     unitaries is unitary, and $\operatorname{tr}\bigotimes_vm_v=\prod_v\operatorname{tr}m_v$.
+    The product of the basis inclusions along injections $e_v$ is the basis inclusion along the
+    product injection $(x_v)_v\mapsto(e_v(x_v))_v$.
 \end{theorem}
 \begin{proof}\leanok
     The matrix element of $\bigotimes_vm_v$ at $(\sigma,\tau)$ is

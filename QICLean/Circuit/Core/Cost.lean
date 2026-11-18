@@ -150,6 +150,13 @@ theorem total_comp (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ) (c :
     (c' : Circuit Γ G Y Z) : (c.comp c').total f ≤ c.total f + c'.total f :=
   (total_append f c fun _ ↦ c').trans (Nat.add_le_add_left (Finset.sup_le fun _ _ ↦ le_rfl) _)
 
+/-- The circuit of one layer has the depth of the layer. -/
+theorem depth_ofLayer [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y) :
+    (ofLayer L).depth = L.depth := by
+  rw [ofLayer, depth_step]
+  exact (congrArg (L.depth + ·) ((Finset.sup_eq_bot_iff _ _).mpr fun _ _ ↦ rfl)).trans
+    (add_zero _)
+
 theorem depth_comp (c : Circuit Γ G X Y) (c' : Circuit Γ G Y Z) :
     (c.comp c').depth ≤ c.depth + c'.depth :=
   total_comp _ c c'

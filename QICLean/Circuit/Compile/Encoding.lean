@@ -62,37 +62,13 @@ def encodeCircuit (e : ∀ s, X s ↪ Y s) : Circuit Γ KrausGate X Y :=
 
 variable {Γ}
 
-/-- The circuit of an onsite layer of single operators is conjugation by their product. -/
-private theorem map_ofLayer_ofOnsite_single (V : ∀ s, Matrix (Y s) (X s) ℂ)
-    (ρ : Matrix (Config X) (Config X) ℂ) :
-    (Circuit.ofLayer (Layer.ofOnsite (Γ := Γ) (G := KrausGate) fun s ↦
-      KrausFamily.single (V s))).map KrausGate.ev ρ = prodOp V * ρ * (prodOp V)ᴴ := by
-  set L : Layer Γ KrausGate X Y := Layer.ofOnsite fun s ↦ KrausFamily.single (V s)
-  have hJ : ∀ i, L.kraus KrausGate.ev i = prodOp V := fun i ↦ Layer.kraus_ofOnsite _ _ i
-  have : Subsingleton L.Index := ⟨fun i j ↦ Prod.ext
-    (funext fun b : L.cells ↦ absurd b.2 (Finset.notMem_empty _))
-    (funext fun _ ↦ Subsingleton.elim (α := Unit) _ _)⟩
-  let i₀ : L.Index := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun _ ↦ ())
-  rw [Circuit.map_ofLayer, KrausFamily.map_apply]
-  refine (Fintype.sum_subsingleton _ i₀).trans ?_
-  change L.kraus _ i₀ * ρ * (L.kraus _ i₀)ᴴ = _
-  rw [hJ]
-
-omit [DecidableEq S] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] in
-/-- The product of the isometries of embeddings is the isometry of the product embedding. -/
-private theorem prodOp_initializedBasisMatrix (e : ∀ s, X s ↪ Y s) :
-    prodOp (fun s ↦ initializedBasisMatrix (e s)) =
-      initializedBasisMatrix (Function.Embedding.piCongrRight e) := by
-  ext y x
-  simp [prodOp_apply, initializedBasisMatrix, one_apply, funext_iff, Finset.prod_ite_zero]
-
 /-- The encoding is conjugation by the isometry of the product embedding. -/
 private theorem map_encodeCircuit (e : ∀ s, X s ↪ Y s) (ρ : Matrix (Config X) (Config X) ℂ) :
     (encodeCircuit Γ e).map KrausGate.ev ρ =
       initializedBasisMatrix (Function.Embedding.piCongrRight e) * ρ *
         (initializedBasisMatrix (Function.Embedding.piCongrRight e))ᴴ := by
   rw [encodeCircuit, ← prodOp_initializedBasisMatrix]
-  exact map_ofLayer_ofOnsite_single _ ρ
+  exact Circuit.map_ofLayer_ofOnsite_single _ _ ρ
 
 variable (Γ) in
 /-- The sitewise decoding along embeddings `e s : X s ↪ Y s` with fallback basis vectors
@@ -116,26 +92,25 @@ theorem map_decodeCircuit_comp_map_encodeCircuit (e : ∀ s, X s ↪ Y s) (x₀ 
     simp only [conjTranspose_mul, Matrix.mul_assoc]
   let i₁ : L.Index := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun _ ↦ Sum.inl ())
   rw [LinearMap.comp_apply, map_encodeCircuit, ← prodOp_initializedBasisMatrix, decodeCircuit,
-    Circuit.map_ofLayer, KrausFamily.map_apply, LinearMap.id_apply]
-  change ∑ i, L.kraus KrausGate.ev i * (P * ρ * Pᴴ) * (L.kraus KrausGate.ev i)ᴴ = ρ
+    Circuit.ofLayer, Circuit.map_step, LinearMap.id_apply]
+  simp only [Circuit.map_done, LinearMap.id_apply]
   rw [Finset.sum_eq_single i₁ (fun i _ hi ↦ ?_) fun h ↦ absurd (Finset.mem_univ _) h, hconj]
   · rw [hK]
     simp only [i₁, KrausFamily.decode_op_inl_mul, prodOp_one, Matrix.one_mul, conjTranspose_one,
       Matrix.mul_one]
-  · obtain ⟨s, b, hb⟩ : ∃ s : L.Free, ∃ b, i.2 s = Sum.inr b := by
+  · obtain ⟨s, b, hb⟩ : ∃ s : S, ∃ b : {c // c ∉ Set.range (e s)},
+        i.2 ⟨s, by simp [L, Layer.ofOnsite]⟩ = (Sum.inr b : Unit ⊕ {c // c ∉ Set.range (e s)}) := by
       by_contra h
       push Not at h
       refine hi (Prod.ext (funext fun b ↦ absurd b.2 (Finset.notMem_empty _)) (funext fun s ↦ ?_))
       cases h' : i.2 s with
       | inl u => rfl
-      | inr b => exact absurd h' (h s b)
+      | inr b => exact absurd h' (h s.1 b)
     have h0 : L.kraus KrausGate.ev i * P = 0 := by
       rw [hK]
       ext y x
       rw [prodOp_apply, Matrix.zero_apply]
-      refine Finset.prod_eq_zero (Finset.mem_univ s.1) ?_
-      change ((KrausFamily.decode (e s.1) (x₀ s.1)).op (i.2 s) *
-        initializedBasisMatrix (e s.1)) (y s.1) (x s.1) = 0
+      refine Finset.prod_eq_zero (Finset.mem_univ s) ?_
       rw [hb, KrausFamily.decode_op_inr_mul, Matrix.zero_apply]
     rw [hconj, h0]
     simp
@@ -172,24 +147,25 @@ private theorem kraus_encode_mul (L : Layer Γ KrausGate X Y) (e : ∀ s, X s �
       initializedBasisMatrix (Function.Embedding.piCongrRight f) * L.kraus KrausGate.ev p := by
   ext y' x
   rw [mul_initializedBasisMatrix_apply]
-  have hgate : ∀ b : L.cells, KrausGate.ev ((L.encode e f y₀).gate b) (Sum.inl (p.1 b))
+  have hgate : ∀ b : (L.encode e f y₀).cells,
+      KrausGate.ev ((L.encode e f y₀).gate b) (Sum.inl (p.1 b))
       (fun v ↦ y' v) (fun v ↦ (Function.Embedding.piCongrRight e) x v) =
       (initializedBasisMatrix (Function.Embedding.piCongrRight fun v : {v // v ∈ Γ.cell b} ↦ f v)
         * KrausGate.ev (L.gate b) (p.1 b)) (fun v ↦ y' v) (fun v ↦ x v) := fun b ↦
     (mul_initializedBasisMatrix_apply _ _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inl_mul (L.gate b) _ _ _ (p.1 b)) _) _)
-  have honsite : ∀ s : L.Free, ((L.encode e f y₀).onsite s).op (Sum.inl (p.2 s)) (y' s)
+  have honsite : ∀ s : (L.encode e f y₀).Free,
+      ((L.encode e f y₀).onsite s).op (Sum.inl (p.2 s)) (y' s)
       ((Function.Embedding.piCongrRight e) x s) =
       (initializedBasisMatrix (f s) * (L.onsite s).op (p.2 s)) (y' s) (x s) := fun s ↦
     (mul_initializedBasisMatrix_apply _ _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inl_mul (L.onsite s) _ _ _ (p.2 s)) _) _)
-  change (∏ b : L.cells, _) * (∏ s : L.Free, _) = _
+  rw [Layer.kraus_apply]
   simp only [encodeIndex]
   rw [Finset.prod_congr rfl fun b _ ↦ hgate b, Finset.prod_congr rfl fun s _ ↦ honsite s]
   by_cases hy : y' ∈ Set.range (Function.Embedding.piCongrRight f)
   · obtain ⟨y, rfl⟩ := hy
-    rw [initializedBasisMatrix_mul_apply_self]
-    change _ = (∏ b : L.cells, _) * ∏ s : L.Free, _
+    rw [initializedBasisMatrix_mul_apply_self, Layer.kraus_apply]
     congr 1
     · exact Finset.prod_congr rfl fun b _ ↦
         initializedBasisMatrix_mul_apply_self
@@ -217,8 +193,7 @@ private theorem kraus_encode_mul_eq_zero (L : Layer Γ KrausGate X Y) (e : ∀ s
     (L.encode e f y₀).kraus KrausGate.ev p *
       initializedBasisMatrix (Function.Embedding.piCongrRight e) = 0 := by
   ext y' x
-  rw [mul_initializedBasisMatrix_apply, Matrix.zero_apply]
-  change (∏ b : L.cells, _) * (∏ s : L.Free, _) = 0
+  rw [mul_initializedBasisMatrix_apply, Matrix.zero_apply, Layer.kraus_apply]
   by_cases hg : ∀ b, ∃ i, p.1 b = Sum.inl i
   · have ho : ¬∀ s, ∃ i, p.2 s = Sum.inl i := fun ho ↦ hp
       ⟨(fun b ↦ (hg b).choose, fun s ↦ (ho s).choose), Prod.ext
@@ -230,7 +205,6 @@ private theorem kraus_encode_mul_eq_zero (L : Layer Γ KrausGate X Y) (e : ∀ s
       | inl i => exact absurd h (hs i)
       | inr a => exact ⟨a, rfl⟩
     refine mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ s) ?_)
-    change ((L.onsite s).encode (e s) (f s) (y₀ s)).op (p.2 s) (y' s) (e s (x s)) = 0
     rw [ha]
     exact (mul_initializedBasisMatrix_apply (e s) _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inr_mul _ _ _ _ a) _) _)
@@ -241,10 +215,7 @@ private theorem kraus_encode_mul_eq_zero (L : Layer Γ KrausGate X Y) (e : ∀ s
       | inl i => exact absurd h (hb i)
       | inr a => exact ⟨a, rfl⟩
     refine mul_eq_zero_of_left (Finset.prod_eq_zero (Finset.mem_univ b) ?_) _
-    change ((L.gate b).encode (Function.Embedding.piCongrRight fun v ↦ e v)
-      (Function.Embedding.piCongrRight fun v ↦ f v) fun v ↦ y₀ v).op (p.1 b) (fun v ↦ y' v)
-        ((Function.Embedding.piCongrRight fun v : {v // v ∈ Γ.cell b} ↦ e v) fun v ↦ x v) = 0
-    rw [ha]
+    rw [KrausGate.ev_apply, ha]
     exact (mul_initializedBasisMatrix_apply _ _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inr_mul _ _ _ _ a) _) _)
 
@@ -297,9 +268,9 @@ private theorem map_ofLayer_encode (L : Layer Γ KrausGate X Y) (e : ∀ s, X s 
 
 /-- A layer of trace-preserving plain gates and onsite families on nonempty bases is carried
 along embeddings `e` of its input and `f` of its output system to a layer on the same cells,
-again trace-preserving, which acts as the layer on the code. The nonemptiness supplies a basis
-vector of every output basis, to which the encoded layer sends the part of its input outside
-the code. -/
+again trace-preserving, which acts as the layer on the code. The input bases are nonempty, so
+the output bases are nonempty too, and each supplies a fallback basis vector: the branches of the
+encoded layer that leave the code send their output to these vectors. -/
 theorem exists_encoded [∀ s, Nonempty (X s)] (L : Layer Γ KrausGate X Y)
     (hL : L.Forall KrausGate.ev KrausFamily.IsTP) (e : ∀ s, X s ↪ X' s) (f : ∀ s, Y s ↪ Y' s) :
     ∃ L' : Layer Γ KrausGate X' Y', L'.cells = L.cells ∧
@@ -333,22 +304,18 @@ theorem exists_encoded_of_isDimBounded {B q : ℕ} (hB : B ≤ q) :
     obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
     obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
     have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim s).1).1
-    let L : Layer Γ KrausGate X X := Layer.ofOnsite fun s ↦ KrausFamily.single 1
-    have hL : L.Forall KrausGate.ev KrausFamily.IsTP :=
-      ⟨fun b ↦ absurd b.2 (Finset.notMem_empty _), fun s ↦ by
-        change (KrausFamily.single (1 : Matrix (X s) (X s) ℂ)).IsTP
-        rw [KrausFamily.IsTP, KrausFamily.effect_single, conjTranspose_one, Matrix.one_mul]⟩
-    let y₀ : ∀ s, Fin q := fun s ↦ f s (Classical.arbitrary _)
-    refine ⟨ofLayer (L.encode e f y₀), ⟨⟨fun b ↦ (hL.1 b).encode _ _ _,
-      fun s ↦ (hL.2 s).encode _ _ _⟩, fun _ ↦ trivial⟩, fun _ ↦ isUnbranched_ofLayer _, ?_, ?_⟩
-    · change L.depth + Finset.univ.sup (fun _ ↦ 0) = 0
-      rw [Layer.depth_ofOnsite]
-      simp
-    · rw [Layer.map_ofLayer_encode, map_done]
-      have : (ofLayer L).map KrausGate.ev = LinearMap.id := LinearMap.ext fun ρ ↦ by
-        rw [map_ofLayer_ofOnsite_single, prodOp_one, Matrix.one_mul, conjTranspose_one,
-          Matrix.mul_one, LinearMap.id_apply]
-      rw [this]
+    let x₀ : ∀ s, X s := fun _ ↦ Classical.arbitrary _
+    refine ⟨(decodeCircuit Γ e x₀).comp (encodeCircuit Γ f),
+      Forall.comp _ ⟨⟨fun b ↦ absurd b.2 (Finset.notMem_empty _),
+        fun s ↦ KrausFamily.isTP_decode (e s) (x₀ s)⟩, fun _ ↦ trivial⟩
+        ⟨⟨fun b ↦ absurd b.2 (Finset.notMem_empty _), fun s ↦ KrausFamily.isTP_embed (f s)⟩,
+          fun _ ↦ trivial⟩,
+      fun _ ↦ (isUnbranched_ofLayer _).comp (isUnbranched_ofLayer _),
+      Nat.le_zero.mp ((depth_comp _ _).trans ?_), ?_⟩
+    · rw [decodeCircuit, encodeCircuit, depth_ofLayer, depth_ofLayer, Layer.depth_ofOnsite,
+        Layer.depth_ofOnsite]
+    · rw [map_comp, LinearMap.comp_assoc, map_decodeCircuit_comp_map_encodeCircuit, map_done,
+        LinearMap.comp_id]
   | X, Z, _, _, _, _, step (Y := Y) L next, hc, hdim, e, f => by
     have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim.1 s).1).1
     obtain ⟨i₀⟩ := L.nonempty_index_of_forall_isTP KrausGate.ev hc.1
@@ -364,8 +331,8 @@ theorem exists_encoded_of_isDimBounded {B q : ℕ} (hB : B ≤ q) :
       ⟨⟨fun b ↦ (hc.1.1 b).encode _ _ _, fun s ↦ (hc.1.2 s).encode _ _ _⟩,
         fun p ↦ (spec (r p)).choose_spec.1⟩,
       fun hu ↦ ⟨fun p p' ↦ by
-        change (spec (r p)).choose = (spec (r p')).choose
         have h := hu.1 (r p) (r p')
+        simp only [F]
         congr 1
         simp only [h],
         fun p ↦ (spec (r p)).choose_spec.2.1 (hu.2 (r p))⟩, ?_,

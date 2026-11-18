@@ -81,6 +81,11 @@ instance : GateFamily (S := S) KrausGate where
 def KrausGate.ev : Interpretation (S := S) KrausGate :=
   fun g i ↦ g.op i
 
+@[simp] theorem KrausGate.ev_apply {D : Finset S} {X Y : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (g : KrausGate D X Y)
+    (i : GateFamily.Outcome g) : KrausGate.ev g i = g.op i :=
+  rfl
+
 variable [Fintype S] [DecidableEq S]
 
 /-- A layer from the system `X` to the system `Y` on the geometry `Γ`: gates of the family `G` on
@@ -120,6 +125,12 @@ def kraus (ev : Interpretation G) (L : Layer Γ G X Y) (i : L.Index) :
     Matrix (Config Y) (Config X) ℂ :=
   fun y x ↦ (∏ b : L.cells, ev (L.gate b) (i.1 b) (fun v ↦ y v) (fun v ↦ x v)) *
     ∏ s : L.Free, (L.onsite s).op (i.2 s) (y s) (x s)
+
+theorem kraus_apply (ev : Interpretation G) (L : Layer Γ G X Y) (i : L.Index) (y : Config Y)
+    (x : Config X) :
+    L.kraus ev i y x = (∏ b : L.cells, ev (L.gate b) (i.1 b) (fun v ↦ y v) (fun v ↦ x v)) *
+      ∏ s : L.Free, (L.onsite s).op (i.2 s) (y s) (x s) :=
+  rfl
 
 /-- The Kraus family of a layer. -/
 def krausFamily (ev : Interpretation G) (L : Layer Γ G X Y) :
