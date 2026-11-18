@@ -54,6 +54,20 @@ def pairEquiv (X : S → Type) {a b : S} (h : a ≠ b) :
   (regionUnionEquiv (Finset.disjoint_singleton.mpr h)).trans
     (Equiv.prodCongr (siteEquiv X a) (siteEquiv X b))
 
+theorem pairEquiv_symm_apply_left (X : S → Type) {a b : S} (h : a ≠ b) (p : X a × X b) :
+    (pairEquiv X h).symm p ⟨a, by simp⟩ = p.1 := by
+  rw [pairEquiv, Equiv.symm_trans_apply]
+  simp only [regionUnionEquiv, Equiv.coe_fn_symm_mk, Finset.mem_singleton_self, ↓reduceDIte,
+    Equiv.prodCongr_symm, Equiv.prodCongr_apply, Prod.map_fst]
+  rfl
+
+theorem pairEquiv_symm_apply_right (X : S → Type) {a b : S} (h : a ≠ b) (p : X a × X b) :
+    (pairEquiv X h).symm p ⟨b, by simp⟩ = p.2 := by
+  rw [pairEquiv, Equiv.symm_trans_apply]
+  simp only [regionUnionEquiv, Equiv.coe_fn_symm_mk, Finset.mem_singleton, Ne.symm h,
+    ↓reduceDIte, Equiv.prodCongr_symm, Equiv.prodCongr_apply, Prod.map_snd]
+  rfl
+
 /-- The gate of one operator: the matrix `M` on a basis `β`, transported to the configurations
 of the region `D` along `e`. -/
 noncomputable def KrausGate.ofMatrix {D : Finset S} {X : S → Type} {β : Type}

@@ -40,6 +40,7 @@ its restriction to the region.
 ## Main results
 
 * `ManyBody.place_apply` — the entries of a placed matrix.
+* `ManyBody.place_mulVec_apply` — the action of a placed matrix on a vector.
 * `ManyBody.place_mul`, `ManyBody.place_one`, `ManyBody.place_conjTranspose` and the linear
   lemmas.
 * `ManyBody.place_mem_supportedOperators`, `ManyBody.exists_eq_place_of_mem_supportedOperators`,
@@ -169,6 +170,19 @@ theorem trace_place [Fintype (RegionConfig X D)] :
     simp only [Matrix.trace, diag_apply, submatrix_apply]
     exact (cutEquiv X D).sum_comp fun j ↦ M j j
   rw [place, reindex_apply, Equiv.symm_symm, h, trace_kronecker, trace_one, mul_comm]
+
+/-- A placed matrix acts on a vector through the configurations of its region, the rest of the
+configuration held fixed. -/
+theorem place_mulVec_apply [Fintype (RegionConfig X D)] (ψ : Config X → ℂ) (σ : Config X) :
+    (place D K *ᵥ ψ) σ =
+      ∑ a, K (fun v ↦ σ v) a * ψ ((cutEquiv X D).symm (a, (cutEquiv X D σ).2)) := by
+  obtain rfl : ‹Fintype (RegionConfig X D)› = Pi.instFintype := Subsingleton.elim _ _
+  rw [mulVec, dotProduct, ← (cutEquiv X D).symm.sum_comp, Fintype.sum_prod_type]
+  refine Finset.sum_congr rfl fun a _ ↦ ?_
+  simp only [place, reindex_apply, submatrix_apply, Equiv.symm_symm, Equiv.apply_symm_apply,
+    kroneckerMap_apply, one_apply, mul_ite, mul_one, mul_zero, ite_mul, zero_mul]
+  rw [Finset.sum_ite_eq]
+  simp
 
 /-- The placement `K ↦ K ⊗ 1` as a unital `*`-homomorphism from the matrix algebra of a
 region to the matrix algebra of the system. -/

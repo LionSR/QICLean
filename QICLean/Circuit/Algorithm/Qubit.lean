@@ -168,6 +168,43 @@ theorem nonempty_index_pairLayer {n : ℕ} {a b : Fin n} (h : a ≠ b)
     (M : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) ℂ) : Nonempty (pairLayer h M).Index :=
   Layer.nonempty_index_single (Γ := geometry n) (h := ⟨()⟩) (.inr ⟨(a, b), h⟩) _
 
+/-! ### Gates on vectors -/
+
+theorem cut_update {n : ℕ} (i : Fin n) (y : Config (Q n)) (b : Fin 2) :
+    (cutEquiv (Q n) {i}).symm ((siteEquiv (Q n) i).symm b, (cutEquiv (Q n) {i} y).2) =
+      Function.update y i b := by
+  funext v
+  by_cases hv : v = i
+  · subst hv
+    rw [cutEquiv_symm_apply_mem _ _ (Finset.mem_singleton_self v), Function.update_self]
+    rfl
+  · rw [cutEquiv_symm_apply_not_mem _ _ (by simpa using hv), Function.update_of_ne hv]
+    rfl
+
+theorem place_site_mulVec {n : ℕ} (i : Fin n) (M : Matrix (Fin 2) (Fin 2) ℂ)
+    (ψ : Config (Q n) → ℂ) (y : Config (Q n)) :
+    (place {i} (M.submatrix (siteEquiv (Q n) i) (siteEquiv (Q n) i)) *ᵥ ψ) y =
+      ∑ b : Fin 2, M (y i) b * ψ (Function.update y i b) := by
+  rw [place_mulVec_apply, ← (siteEquiv (Q n) i).symm.sum_comp]
+  refine Finset.sum_congr rfl fun b _ ↦ ?_
+  rw [submatrix_apply, Equiv.apply_symm_apply, cut_update]
+  rfl
+
+theorem place_diagonal_mulVec {n : ℕ} (D : Finset (Fin n)) (d : RegionConfig (Q n) D → ℂ)
+    (ψ : Config (Q n) → ℂ) (y : Config (Q n)) :
+    (place D (diagonal d) *ᵥ ψ) y = d (fun v ↦ y v) * ψ y := by
+  rw [place_mulVec_apply]
+  simp only [diagonal_apply, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  congr 1
+  exact congrArg ψ ((cutEquiv (Q n) D).symm_apply_apply y)
+
+theorem controlled_phaseShift (k : ℕ) :
+    controlled (phaseShift k) = diagonal fun p : Fin 2 × Fin 2 ↦
+      exp (2 * Real.pi * I * ((p.1 : ℕ) * (p.2 : ℕ) : ℂ) / 2 ^ k) := by
+  ext ⟨c, t⟩ ⟨c', t'⟩
+  fin_cases c <;> fin_cases c' <;> fin_cases t <;> fin_cases t' <;>
+    simp [controlled, phaseShift, diagonal_apply, one_apply]
+
 end Qubit
 
 end QuantumCircuit
