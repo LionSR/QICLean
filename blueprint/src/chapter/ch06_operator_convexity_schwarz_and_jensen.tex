@@ -536,11 +536,12 @@ matrix-order tools used independently of the Fundamental Theorem.
     $F(t)=f_{p,t}(A)$ and $G(t)=f_{p,t}(T(A))$; both are integrable by the
     representation theorem. Apply Lemma~\ref{lem:ordered-integral-linear-map}
     to $-F$ and $-G$, using $-G(t)\leq T(-F(t))$, to obtain
-    \[
-        -\int G\,d\mu\leq -T\!\left(\int F\,d\mu\right),
-        \qquad T(A^p)=T\!\left(\int F\,d\mu\right)
+    \begin{align}
+        -\int G\,d\mu&\leq -T\!\left(\int F\,d\mu\right),\notag\\
+        T(A^p)&=T\!\left(\int F\,d\mu\right)
         \leq\int G\,d\mu=(T(A))^p.
-    \]
+        \label{eq:ch06_concave_power_integral_jensen}
+    \end{align}
 \end{proof}
 
 \begin{theorem}[Map form of Jensen for concave real powers]\label{thm:rpow_concave_jensen}
@@ -575,10 +576,11 @@ matrix-order tools used independently of the Fundamental Theorem.
     Lemma~\ref{lem:operator_jensen_positive_map_rpow_integrand_convex}.
     Lemma~\ref{lem:ordered-integral-linear-map} integrates the pointwise
     inequality and commutes $T$ with the integral, giving
-    \[
-        (T(A))^p=\int g_{p,t}(T(A))\,d\mu(t)
+    \begin{align}
+        (T(A))^p&=\int g_{p,t}(T(A))\,d\mu(t)
         \leq T\!\left(\int g_{p,t}(A)\,d\mu(t)\right)=T(A^p).
-    \]
+        \label{eq:ch06_convex_power_integral_jensen}
+    \end{align}
     Both integrands are integrable by the representing-measure theorem.
     The endpoint $p=2$ follows by taking the limit $q\to2^-$ in
     $(T(A))^q\le T(A^q)$: since $M^q\to M^2$ in the operator norm as
@@ -715,18 +717,20 @@ function $x^{3/2}$ violates this bound; see
 Let $T$ be a complex linear map between finite matrix algebras, possibly of
 unequal dimensions. For integrable matrix-valued functions $F$ and $G$
 satisfying $G(t)\leq T(F(t))$ almost everywhere,
-\[
- \int G(t)\,d\mu(t)\leq T\!\left(\int F(t)\,d\mu(t)\right).
-\]
+\begin{align}
+ \int G(t)\,d\mu(t)&\leq T\!\left(\int F(t)\,d\mu(t)\right).
+    \label{eq:ch06_ordered_integral_linear_map}
+\end{align}
 No positivity assumption on $T$ is needed beyond the displayed hypothesis.
 \end{lemma}
 \begin{proof}\leanok
 Finite dimensionality makes $T$ continuous. Consequently $T\circ F$ is
 integrable, and
-\[
- \int G(t)\,d\mu(t)\leq\int T(F(t))\,d\mu(t)
+\begin{align}
+ \int G(t)\,d\mu(t)&\leq\int T(F(t))\,d\mu(t)
  =T\!\left(\int F(t)\,d\mu(t)\right).
-\]
+    \label{eq:ch06_ordered_integral_linear_map_proof}
+\end{align}
 The inequality integrates the almost-everywhere hypothesis; continuity and
 linearity give the equality.
 \end{proof}
@@ -744,11 +748,12 @@ everywhere, then $f(T(A))\leq T(f(A))$.
 \uses{lem:ordered-integral-linear-map}
 Integration preserves the almost-everywhere operator inequality, and the
 finite-dimensional linear map $T$ is continuous. Thus
-\[
- f(T(A))=\int k_t(T(A))\,d\mu(t)
+\begin{align}
+ f(T(A))&=\int k_t(T(A))\,d\mu(t)
  \leq\int T(k_t(A))\,d\mu(t)
  =T\!\left(\int k_t(A)\,d\mu(t)\right)=T(f(A)).
-\]
+    \label{eq:ch06_integral_jensen_assembly}
+\end{align}
 \end{proof}
 
 \begin{lemma}[Integration on a finite spectrum]
@@ -763,17 +768,19 @@ $(\int k_t\,d\mu)(A)=\int k_t(A)\,d\mu$.
 \begin{proof}\leanok
 Choose a unitary diagonalization
 $A=U\operatorname{diag}(\lambda_1,\ldots,\lambda_n)U^\dagger$. Then
-\[
- k_t(A)=U\operatorname{diag}(k_t(\lambda_1),\ldots,k_t(\lambda_n))U^\dagger.
-\]
+\begin{align}
+ k_t(A)&=U\operatorname{diag}(k_t(\lambda_1),\ldots,k_t(\lambda_n))U^\dagger.
+    \label{eq:ch06_spectral_kernel_diagonalization}
+\end{align}
 The map $v\mapsto U\operatorname{diag}(v)U^\dagger$ is continuous and
 real linear. The finite vector $(k_t(\lambda_i))_i$ is integrable by the
 coordinate hypotheses. Commuting this map with integration gives
-\[
+\begin{align}
  \int k_t(A)\,d\mu(t)
- =U\operatorname{diag}\left(\int k_t(\lambda_i)\,d\mu(t)\right)_i U^\dagger
+ &=U\operatorname{diag}\left(\int k_t(\lambda_i)\,d\mu(t)\right)_i U^\dagger
  =\left(\int k_t\,d\mu\right)(A).
-\]
+    \label{eq:ch06_finite_spectrum_integral}
+\end{align}
 \end{proof}
 
 \begin{corollary}[Jensen from scalar spectral integrals]
@@ -789,10 +796,11 @@ $f(x)=\int k_t(x)\,d\mu(t)$, one has $f(T(A))\leq T(f(A))$.
 \begin{proof}\leanok
 \uses{lem:finite-spectrum-integral, lem:integral-jensen-assembly}
 The finite-spectrum lemma gives the integrable representations
-\[
- f(T(A))=\int k_t(T(A))\,d\mu(t),\qquad
- f(A)=\int k_t(A)\,d\mu(t).
-\]
+\begin{align}
+ f(T(A))&=\int k_t(T(A))\,d\mu(t),\notag\\
+ f(A)&=\int k_t(A)\,d\mu(t).
+    \label{eq:ch06_scalar_spectral_representations}
+\end{align}
 Integral assembly applied to these representations and the assumed
 almost-everywhere kernel inequality gives the conclusion.
 \end{proof}
@@ -801,18 +809,21 @@ almost-everywhere kernel inequality gives the conclusion.
 \label{thm:resolvent-mixture-jensen}
 \lean{Matrix.cfc_jensen_of_resolvent_representation}
 \leanok
+\uses{def:positive_map}
 Fix $1<p<2$ and put
-\[
- k_s(x)=s^{p-1}\bigl(s^{-1}x+s(s+x)^{-1}-1\bigr),\qquad s>0.
-\]
+\begin{align}
+ k_s(x)&=s^{p-1}\bigl(s^{-1}x+s(s+x)^{-1}-1\bigr),\qquad s>0.
+    \label{eq:ch06_resolvent_mixture_kernel}
+\end{align}
 Let $T:\MN{d}\to\MN{d}$ be positive and subunital, let $A\geq0$,
 and let $s(t)>0$ almost everywhere for a positive measure $\mu$.
 Suppose both matrix-valued kernels below are integrable and a real function
 $f$ satisfies
-\[
- f(A)=\int k_{s(t)}(A)\,d\mu(t),\qquad
- f(T(A))=\int k_{s(t)}(T(A))\,d\mu(t).
-\]
+\begin{align}
+ f(A)&=\int k_{s(t)}(A)\,d\mu(t),\notag\\
+ f(T(A))&=\int k_{s(t)}(T(A))\,d\mu(t).
+    \label{eq:ch06_resolvent_mixture_representations}
+\end{align}
 Then $f(T(A))\leq T(f(A))$. No finite-measure assumption is required.
 \end{theorem}
 \begin{proof}\leanok
