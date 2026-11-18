@@ -516,6 +516,30 @@ sequential-RG circuit'']{Malz2024Preparation}.
     and $p_2p_1=p_1p_2$.
 \end{proof}
 
+\section{Basis inclusions}
+\label{sec:gate_basis_inclusion}
+
+\begin{definition}[Basis inclusion]
+    \label{def:gate_basis_inclusion}
+    \lean{Matrix.initializedBasisMatrix}
+    \leanok
+    For an injective map $e:K\to I$ of finite sets, the basis inclusion along $e$ is the matrix
+    $J_e\in\C^{I\times K}$ with $J_e\ket{k}=\ket{e(k)}$, that is $(J_e)_{xk}=1$ if $x=e(k)$
+    and $0$ otherwise.
+\end{definition}
+
+\begin{lemma}[Basis inclusions are isometries]
+    \label{lem:gate_basis_inclusion_isometry}
+    \lean{Matrix.initializedBasisMatrix_isIsometry}
+    \leanok
+    \uses{def:gate_basis_inclusion}
+    A basis inclusion is an isometry: $J_e^\dagger J_e=1$.
+\end{lemma}
+\begin{proof}\leanok
+    The entry $(J_e^\dagger J_e)_{kl}$ counts the $x$ with $x=e(k)$ and $x=e(l)$, which is $1$
+    if $k=l$ and $0$ otherwise because $e$ is injective.
+\end{proof}
+
 \section{The unitary dilation of a partial isometry}
 \label{sec:gate_dilation}
 

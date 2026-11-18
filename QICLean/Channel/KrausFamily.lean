@@ -87,6 +87,11 @@ theorem map_apply (K : KrausFamily α β) (ρ : Matrix α α ℂ) :
 noncomputable def effect (K : KrausFamily α β) : Matrix α α ℂ :=
   ∑ i, (K.op i)ᴴ * K.op i
 
+omit [Fintype β] in
+/-- The map of the family of one operator `V` is the conjugation by `V`. -/
+theorem map_single (V : Matrix β α ℂ) (ρ : Matrix α α ℂ) : (single V).map ρ = V * ρ * Vᴴ :=
+  (map_apply _ _).trans (Fintype.sum_unique (ι := Unit) _)
+
 omit [Fintype α] in
 theorem effect_single (V : Matrix β α ℂ) : (single V).effect = Vᴴ * V :=
   Fintype.sum_unique (ι := Unit) _

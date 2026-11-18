@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit
 
 import QICLean.Circuit.Algorithm
+import QICLean.Circuit.Compile
 import QICLean.Circuit.Core
 import QICLean.Circuit.Gate
 import QICLean.Circuit.Geometry

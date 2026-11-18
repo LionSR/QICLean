@@ -1252,7 +1252,8 @@ them across the chapter boundary.
     \label{def:kraus_family}
     \lean{KrausFamily, KrausFamily.map, KrausFamily.map_apply, KrausFamily.effect,
         KrausFamily.IsTP, KrausFamily.IsTraceNonincreasing, KrausFamily.IsUnitary,
-        KrausFamily.single, KrausFamily.single_op, KrausFamily.effect_single}
+        KrausFamily.single, KrausFamily.single_op, KrausFamily.effect_single,
+        KrausFamily.map_single}
     \leanok
     \uses{def:mpdo_rectangular_kraus_map}
     A finite Kraus family from $\C^I$ to $\C^J$ is a finite set $\Omega$ of
@@ -1261,7 +1262,7 @@ them across the chapter boundary.
     the rectangular Kraus map $\rho\mapsto\sum_\omega K_\omega\rho K_\omega^\dagger$
     and its effect is $E=\sum_\omega K_\omega^\dagger K_\omega$. The family is
     trace-preserving when $E=1$ and trace-nonincreasing when $E\leq1$. A family of
-    one operator $V$ has effect $V^\dagger V$; it is trace-nonincreasing exactly
+    one operator $V$ has map $\rho\mapsto V\rho V^\dagger$ and effect $V^\dagger V$; it is trace-nonincreasing exactly
     when $V$ is a contraction, and it is called unitary when
     $V^\dagger V=1$ and $VV^\dagger=1$.
 \end{definition}
