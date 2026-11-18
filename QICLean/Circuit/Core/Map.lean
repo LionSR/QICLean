@@ -604,41 +604,86 @@ def Circuit.mapGateIndexEquiv (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
   | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next =>
       Equiv.sigmaCongr (L.mapGateIndexEquiv φ) fun i ↦ (next _).mapGateIndexEquiv φ
 
-variable {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+/-- Reindexing a supremum over all indices along an equivalence. -/
+theorem _root_.Finset.univ_sup_equiv {α β γ : Type} [Fintype α] [Fintype β] [SemilatticeSup γ]
+    [OrderBot γ] (u : α ≃ β) (F : β → γ) :
+    (Finset.univ.sup fun a ↦ F (u a)) = Finset.univ.sup F :=
+  le_antisymm (Finset.sup_le fun a _ ↦ Finset.le_sup (f := F) (Finset.mem_univ _))
+    (Finset.sup_le fun b _ ↦ by
+      simpa using Finset.le_sup (f := fun a ↦ F (u a)) (Finset.mem_univ (u.symm b)))
 
-theorem Circuit.kraus_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) (c : Circuit Γ G₁ X Z)
-    (p : (c.mapGate φ).Index) : (c.mapGate φ).kraus ev₂ p = c.kraus ev₁ (c.mapGateIndexEquiv φ p) :=
-  sorry
+theorem Layer.kraus_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) {X Y : S → Type}
+    [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    (L : Layer Γ G₁ X Y) (i : (L.mapGate φ).Index) :
+    (L.mapGate φ).kraus ev₂ i = L.kraus ev₁ (L.mapGateIndexEquiv φ i) := by
+  ext y x
+  simp only [kraus]
+  congr 1
+  exact Finset.prod_congr rfl fun b _ ↦ congrFun (congrFun (φ.ev_map (L.gate b) (i.1 b)) _) _
 
-omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [∀ s, Fintype (X s)]
-  [∀ s, DecidableEq (X s)] in
-theorem Circuit.isUnbranched_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) {c : Circuit Γ G₁ X Z}
-    (hc : c.IsUnbranched) : (c.mapGate φ).IsUnbranched :=
-  sorry
+theorem Circuit.kraus_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      (c : Circuit Γ G₁ X Z) → (p : (c.mapGate φ).Index) →
+      (c.mapGate φ).kraus ev₂ p = c.kraus ev₁ (c.mapGateIndexEquiv φ p)
+  | _, _, _, _, .done _, _ => rfl
+  | _, _, _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next, q => by
+    obtain ⟨i, p⟩ := q
+    change ((next (L.mapGateIndexEquiv φ i)).mapGate φ).kraus ev₂ p *
+      (L.mapGate φ).kraus ev₂ i = _
+    rw [Circuit.kraus_mapGate φ _ p, Layer.kraus_mapGate φ L i]
+    rfl
+
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
+theorem Circuit.isUnbranched_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) :
+    {X Z : S → Type} → {c : Circuit Γ G₁ X Z} → c.IsUnbranched → (c.mapGate φ).IsUnbranched
+  | _, _, .done _, _ => trivial
+  | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next, hc =>
+    ⟨fun i j ↦ by
+      change (next _).mapGate φ = (next _).mapGate φ
+      rw [hc.1 _ _],
+      fun i ↦ Circuit.isUnbranched_mapGate φ (hc.2 _)⟩
 
 theorem Circuit.forall_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂)
     {P : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β],
       KrausFamily α β → Prop}
     (hP : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
       (K : KrausFamily α β) {ι : Type} [Fintype ι] (u : ι ≃ K.Index),
-        P K → P ⟨ι, fun i ↦ K.op (u i)⟩)
-    {c : Circuit Γ G₁ X Z} (hc : c.Forall ev₁ P) : (c.mapGate φ).Forall ev₂ P :=
-  sorry
+        P K → P ⟨ι, fun i ↦ K.op (u i)⟩) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      {c : Circuit Γ G₁ X Z} → c.Forall ev₁ P → (c.mapGate φ).Forall ev₂ P
+  | _, _, _, _, .done _, _ => trivial
+  | _, _, _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next, hc => by
+    refine ⟨⟨fun b ↦ ?_, hc.1.2⟩, fun i ↦ Circuit.forall_mapGate φ hP (hc.2 _)⟩
+    have := hP _ (φ.outcome (L.gate b)) (hc.1.1 b)
+    change P ⟨_, ev₂ (φ.map (L.gate b))⟩
+    rw [show ev₂ (φ.map (L.gate b)) = fun o ↦ ev₁ (L.gate b) (φ.outcome _ o) from
+      funext (φ.ev_map _)]
+    exact this
 
-omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [∀ s, Fintype (X s)]
-  [∀ s, DecidableEq (X s)] in
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
 /-- Mapping gates changes no cost that depends only on the cells of the layers. -/
 theorem Circuit.total_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂)
     (f₁ : ∀ ⦃X Y : S → Type⦄, Layer Γ G₁ X Y → ℕ) (f₂ : ∀ ⦃X Y : S → Type⦄, Layer Γ G₂ X Y → ℕ)
-    (hf : ∀ ⦃X Y : S → Type⦄ (L : Layer Γ G₁ X Y), f₂ (L.mapGate φ) = f₁ L)
-    (c : Circuit Γ G₁ X Z) : (c.mapGate φ).total f₂ = c.total f₁ :=
-  sorry
+    (hf : ∀ ⦃X Y : S → Type⦄ (L : Layer Γ G₁ X Y), f₂ (L.mapGate φ) = f₁ L) :
+    {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate φ).total f₂ = c.total f₁
+  | _, _, .done _ => rfl
+  | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next => by
+    change f₂ (L.mapGate φ) + Finset.univ.sup (fun i ↦
+      ((next (L.mapGateIndexEquiv φ i)).mapGate φ).total f₂) = _
+    simp only [Circuit.total_mapGate φ f₁ f₂ hf, hf]
+    rw [Finset.univ_sup_equiv (L.mapGateIndexEquiv φ) fun i ↦ (next i).total f₁]
+    rfl
 
-omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] [∀ s, Fintype (X s)]
-  [∀ s, DecidableEq (X s)] in
-theorem Circuit.lightCone_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) (c : Circuit Γ G₁ X Z)
-    (T : Finset S) : (c.mapGate φ).lightCone T = c.lightCone T :=
-  sorry
+omit [Fintype S'] [DecidableEq S'] [Fintype R] [DecidableEq R] in
+theorem Circuit.lightCone_mapGate (φ : GateMorphism G₁ G₂ ev₁ ev₂) (T : Finset S) :
+    {X Z : S → Type} → (c : Circuit Γ G₁ X Z) → (c.mapGate φ).lightCone T = c.lightCone T
+  | _, _, .done _ => rfl
+  | _, _, @Circuit.step _ _ _ _ _ _ _ _ _ _ L next => by
+    change (L.mapGate φ).lightCone (Finset.univ.sup fun i ↦
+      ((next (L.mapGateIndexEquiv φ i)).mapGate φ).lightCone T) = _
+    simp only [Circuit.lightCone_mapGate φ T]
+    rw [Finset.univ_sup_equiv (L.mapGateIndexEquiv φ) fun i ↦ (next i).lightCone T]
+    rfl
 
 end MapGate
 
