@@ -32,7 +32,7 @@ restate a lemma about `ManyBody.place` are temporary forwarding lemmas, kept bec
 does not see through an abbreviation. They are deleted in step 4.0 of the many-body plan,
 when their callers use the Sites names.
 * `Entropy.inner_localLift`: `⟨φ, lift K φ⟩ = Tr (ρ_{φ,D} K)`.
-* `Entropy.inner_localLift_conj_eq`: the trace argument for commuting filters.
+* `Entropy.inner_conj_eq_of_isSupportedOn`: the trace argument for commuting filters.
 
 ## References
 
@@ -80,13 +80,14 @@ attribute [eqns localLift_eq_reindex] localLift
 preserves legacy entrywise simplification after `ext`. -/
 noncomputable abbrev regionState (D : Finset V) (φ : EuclideanSpace ℂ (SiteConfig n)) :
     Matrix (RegionConfig n D) (RegionConfig n D) ℂ :=
-  partialTraceRight (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ))))
+  ManyBody.regionState (X := fun v ↦ Fin (n v)) D φ
 
 /-- The equation for the dimension-indexed regional state, preserving legacy rewrites. -/
 theorem regionState_eq_partialTraceRight (D : Finset V)
     (φ : EuclideanSpace ℂ (SiteConfig n)) :
     regionState D φ = partialTraceRight
-      (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ)))) := rfl
+      (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ)))) :=
+  ManyBody.regionState.eq_1 D φ
 
 attribute [eqns regionState_eq_partialTraceRight] regionState
 
@@ -96,12 +97,13 @@ theorem regionState_isHermitian (D : Finset V) (φ : EuclideanSpace ℂ (SiteCon
 
 /-- The entropy of the regional state, specialized from arbitrary finite basis types. -/
 noncomputable abbrev regionEntropy (D : Finset V) (Ω : EuclideanSpace ℂ (SiteConfig n)) : ℝ :=
-  vonNeumannEntropy (regionState D Ω) (regionState_isHermitian D Ω)
+  ManyBody.regionEntropy (X := fun v ↦ Fin (n v)) D Ω
 
 /-- The equation for regional entropy, preserving legacy rewrites. -/
 theorem regionEntropy_eq_vonNeumannEntropy (D : Finset V)
     (Ω : EuclideanSpace ℂ (SiteConfig n)) :
-    regionEntropy D Ω = vonNeumannEntropy (regionState D Ω) (regionState_isHermitian D Ω) := rfl
+    regionEntropy D Ω = vonNeumannEntropy (regionState D Ω) (regionState_isHermitian D Ω) :=
+  ManyBody.regionEntropy.eq_1 D Ω
 
 attribute [eqns regionEntropy_eq_vonNeumannEntropy] regionEntropy
 
@@ -184,20 +186,10 @@ theorem IsSupportedOn.mul {X Y : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hX :
     (hY : IsSupportedOn Y D) (_σ₀ : SiteConfig n) : IsSupportedOn (X * Y) D :=
   (ManyBody.supportedOperators (fun v ↦ Fin (n v)) D).mul_mem hX hY
 
-/-- **The trace argument.** If `K` is invertible and commutes with the regional state
-`ρ_{φ,D}`, then conjugating a lifted observable by the lift of `K` does not change its
-expectation in `φ`.
-Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 368–372. -/
-theorem inner_localLift_conj_eq {K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ}
-    (hK : IsUnit K.det) {φ : EuclideanSpace ℂ (SiteConfig n)}
-    (hcomm : K * regionState D φ = regionState D φ * K)
-    (A : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
-    ⟪φ, toEuclideanLin (localLift D K * localLift D A * localLift D K⁻¹) φ⟫_ℂ =
-      ⟪φ, toEuclideanLin (localLift D A) φ⟫_ℂ :=
-  ManyBody.inner_place_conj_eq (X := fun v ↦ Fin (n v))
-    (D := D) (K := K) (φ := φ) hK hcomm A
-
-/-- The trace argument for an arbitrary operator supported on `D`. -/
+/-- **The trace argument** for an operator supported on `D`: if `K` is invertible and commutes
+with the regional state `ρ_{φ,D}`, conjugating by the lift of `K` does not change the
+expectation in `φ`. Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`,
+lines 368–372; the case of a lifted observable is `ManyBody.inner_place_conj_eq`. -/
 theorem inner_conj_eq_of_isSupportedOn {K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ}
     (hK : IsUnit K.det) {φ : EuclideanSpace ℂ (SiteConfig n)}
     (hcomm : K * regionState D φ = regionState D φ * K)
@@ -205,6 +197,6 @@ theorem inner_conj_eq_of_isSupportedOn {K : Matrix (RegionConfig n D) (RegionCon
     ⟪φ, toEuclideanLin (localLift D K * Y * localLift D K⁻¹) φ⟫_ℂ =
       ⟪φ, toEuclideanLin Y φ⟫_ℂ := by
   obtain ⟨A, rfl⟩ := hY.exists_localLift σ₀
-  exact inner_localLift_conj_eq hK hcomm A
+  exact ManyBody.inner_place_conj_eq (X := fun v ↦ Fin (n v)) hK hcomm A
 
 end Entropy

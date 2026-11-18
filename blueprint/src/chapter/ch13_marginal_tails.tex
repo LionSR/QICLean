@@ -332,7 +332,7 @@ depend on the common values there.
         Entropy.localLift_one, Entropy.localLift_conjTranspose,
         Entropy.isSupportedOn_localLift, Entropy.IsSupportedOn.exists_localLift,
         Entropy.IsSupportedOn.mono, Entropy.IsSupportedOn.mul, Entropy.inner_localLift,
-        Entropy.inner_localLift_conj_eq, Entropy.inner_conj_eq_of_isSupportedOn}
+        Entropy.inner_conj_eq_of_isSupportedOn}
     \leanok
     \uses{lem:supported_product_decomposition}
     The lift $K\mapsto K\otimes1$ from a region $D$ is a unital multiplicative
@@ -414,8 +414,7 @@ depend on the common values there.
 \begin{theorem}[Regional states under bijections of tensor factors]
     \label{thm:region_state_relabel}
     \lean{Entropy.siteConfigurationEquiv, Entropy.regionConfigurationEquiv,
-        Entropy.complementConfigurationEquiv, Entropy.relabelVector,
-        Entropy.regionState_relabel}
+        Entropy.relabelVector, Entropy.regionState_relabel}
     \leanok
     \uses{lem:local_lift}
     Let $V,V'$ be finite sets of sites, let $e:V\to V'$ be a bijection,
@@ -611,8 +610,7 @@ depend on the common values there.
     \label{prop:stationary_filter_clipped}
     \lean{Entropy.IsFeasibleFilter, Entropy.IsFeasibleFilter.conj,
         Entropy.IsFeasibleFilter.posDef, Entropy.trace_cfc_conj_diagonal,
-        Entropy.IsFeasibleFilter.of_common_basis, Entropy.trace_regionState,
-        Entropy.exists_clipped_of_max_feasible}
+        Entropy.IsFeasibleFilter.of_common_basis, Entropy.exists_clipped_of_max_feasible}
     \leanok
     \uses{lem:filter_stationarity, lem:filter_clipping, lem:commuting_hermitian}
     A filter on $D$ is feasible at floor $f>0$ and weight $a>0$ when it is

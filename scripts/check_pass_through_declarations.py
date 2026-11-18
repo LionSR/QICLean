@@ -293,7 +293,6 @@ PASS_THROUGH: frozenset[str] = frozenset({
     "Entropy.regionState_isHermitian",
     "Entropy.regionState_posSemidef",
     "Entropy.strongSubadditivity",
-    "Entropy.trace_regionState",
     "IsCPMap.radon_nikodym_of_stinespring",
     "IsCPMap.tensorMapId_posSemidef",
     "IsKrausCP.tensorMapId_posSemidef",
