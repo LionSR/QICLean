@@ -56,6 +56,15 @@ theorem depth_single (b : Γ.Cell) (g : G (Γ.cell b) X X) (hb : 0 < Γ.cost b) 
   simp [depth, single, Finset.filter_singleton, hb]
 
 omit [Fintype S] in
+/-- A layer of a single gate with an outcome has a Kraus index. -/
+theorem nonempty_index_single (b : Γ.Cell) (g : G (Γ.cell b) X X)
+    [h : Nonempty (GateFamily.Outcome g)] : Nonempty (single b g).Index := by
+  refine ⟨(fun c ↦ ?_, fun _ ↦ ())⟩
+  obtain ⟨c, hc⟩ := c
+  obtain rfl := Finset.mem_singleton.mp hc
+  exact Classical.choice h
+
+omit [Fintype S] in
 /-- A layer of a single gate whose Kraus family satisfies `P`, with the identity elsewhere, has
 `P` locally when the identity has it. -/
 theorem forall_single [∀ s, Fintype (X s)] (ev : Interpretation G)

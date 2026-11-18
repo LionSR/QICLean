@@ -78,14 +78,41 @@ def swap : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) ℂ :=
   (1 : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) ℂ).submatrix id Prod.swap
 
 theorem hadamard_mem_unitaryGroup : hadamard ∈ unitaryGroup (Fin 2) ℂ := by
-  sorry
+  rw [mem_unitaryGroup_iff]
+  have h2 : ((Real.sqrt 2 : ℂ))⁻¹ * ((Real.sqrt 2 : ℂ))⁻¹ = 1 / 2 := by
+    rw [← mul_inv, ← Complex.ofReal_mul, Real.mul_self_sqrt (by norm_num)]; push_cast; ring
+  ext i j
+  fin_cases i <;> fin_cases j <;>
+    simp [hadamard, mul_apply, Fin.sum_univ_two, star_eq_conjTranspose, h2]; norm_num
 
 theorem phaseShift_mem_unitaryGroup (k : ℕ) : phaseShift k ∈ unitaryGroup (Fin 2) ℂ := by
-  sorry
+  refine diagonal_mem_unitary.mpr ?_
+  rw [Unitary.mem_iff_star_mul_self]
+  funext b
+  simp only [Pi.mul_apply, Pi.star_apply, Pi.one_apply, Complex.star_def, ← Complex.exp_conj,
+    ← Complex.exp_add]
+  rw [← Complex.exp_zero]
+  congr 1
+  simp [map_div₀, Complex.conj_ofReal, map_ofNat]
+  ring
 
 theorem controlled_mem_unitaryGroup {β : Type} [Fintype β] [DecidableEq β] {U : Matrix β β ℂ}
     (hU : U ∈ unitaryGroup β ℂ) : controlled U ∈ unitaryGroup (Fin 2 × β) ℂ := by
-  sorry
+  have heq : controlled U = (blockDiagonal fun c : Fin 2 ↦ if c = 1 then U else 1).submatrix
+      (Equiv.prodComm _ _) (Equiv.prodComm _ _) := by
+    ext ⟨c, y⟩ ⟨c', x⟩
+    simp only [controlled, of_apply, submatrix_apply, Equiv.prodComm_apply, Prod.swap_prod_mk,
+      blockDiagonal_apply]
+    split_ifs <;> simp_all
+  rw [heq]
+  refine submatrix_equiv_mem_unitary.mpr ?_
+  rw [← unitaryGroup, mem_unitaryGroup_iff, star_eq_conjTranspose, blockDiagonal_conjTranspose,
+    ← blockDiagonal_mul, ← blockDiagonal_one]
+  congr 1
+  funext c
+  split_ifs
+  · exact mem_unitaryGroup_iff.mp hU
+  · simp
 
 theorem swap_mem_unitaryGroup : swap ∈ unitaryGroup (Fin 2 × Fin 2) ℂ :=
   submatrix_equiv_mem_unitary (e₁ := Equiv.refl _) (e₂ := Equiv.prodComm _ _) |>.mpr
@@ -135,11 +162,11 @@ theorem kraus_pairLayer {n : ℕ} {a b : Fin n} (h : a ≠ b)
 
 theorem nonempty_index_siteLayer {n : ℕ} (i : Fin n) (M : Matrix (Fin 2) (Fin 2) ℂ) :
     Nonempty (siteLayer i M).Index :=
-  sorry
+  Layer.nonempty_index_single (Γ := geometry n) (h := ⟨()⟩) (.inl i) _
 
 theorem nonempty_index_pairLayer {n : ℕ} {a b : Fin n} (h : a ≠ b)
     (M : Matrix (Fin 2 × Fin 2) (Fin 2 × Fin 2) ℂ) : Nonempty (pairLayer h M).Index :=
-  sorry
+  Layer.nonempty_index_single (Γ := geometry n) (h := ⟨()⟩) (.inr ⟨(a, b), h⟩) _
 
 end Qubit
 

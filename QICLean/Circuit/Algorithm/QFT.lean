@@ -107,13 +107,61 @@ theorem forall_isUnitary_qft (n : ℕ) : (qft n).Forall KrausGate.ev KrausFamily
       (controlled_mem_unitaryGroup (phaseShift_mem_unitaryGroup _))
   · exact forall_isUnitary_pairLayer _ swap_mem_unitaryGroup
 
+/-! ### Gate counts -/
+
+theorem nonempty_index_and_gateCount_of_mem {n : ℕ} {L : Layer (geometry n) KrausGate (Q n) (Q n)}
+    (hL : L ∈ coreLayers n ++ swapLayers n) : Nonempty L.Index ∧ L.gateCount = 1 := by
+  simp only [List.mem_append, coreLayers, qubitLayers, List.mem_flatMap, List.mem_cons,
+    List.mem_filterMap, swapLayers, List.mem_ofFn] at hL
+  obtain ⟨i, -, rfl | ⟨j, -, hj⟩⟩ | ⟨k, rfl⟩ := hL
+  · exact ⟨nonempty_index_siteLayer _ _, Layer.gateCount_single (Γ := geometry n) _ _⟩
+  · split_ifs at hj with h
+    obtain rfl := Option.some.inj hj
+    exact ⟨nonempty_index_pairLayer _ _, Layer.gateCount_single (Γ := geometry n) _ _⟩
+  · exact ⟨nonempty_index_pairLayer _ _, Layer.gateCount_single (Γ := geometry n) _ _⟩
+
+theorem gateCount_seq_eq_length {n : ℕ} (Ls : List (Layer (geometry n) KrausGate (Q n) (Q n)))
+    (h : ∀ L ∈ Ls, Nonempty L.Index ∧ L.gateCount = 1) :
+    (Circuit.seq Ls).gateCount = Ls.length := by
+  rw [Circuit.gateCount, Circuit.total_seq _ Ls fun L hL ↦ (h L hL).1,
+    List.map_congr_left fun L hL ↦ (h L hL).2, List.map_const', List.sum_replicate, smul_eq_mul,
+    mul_one]
+
+theorem length_qubitLayers {n : ℕ} (i : Fin n) : (qubitLayers i).length = n - i := by
+  rw [qubitLayers, List.length_cons, List.length_filterMap_eq_countP]
+  have : ∀ j : Fin n, ((if h : i < j then some (rotationLayer h.ne') else none).isSome) =
+      decide (i < j) := fun j ↦ by split_ifs with h <;> simp [h]
+  simp only [this]
+  rw [List.countP_eq_length_filter,
+    ← List.toFinset_card_of_nodup ((List.nodup_finRange n).filter _), List.toFinset_filter,
+    List.toFinset_finRange]
+  simp only [decide_eq_true_eq]
+  rw [Finset.filter_lt_eq_Ioi, Fin.card_Ioi]
+  omega
+
+theorem length_coreLayers (n : ℕ) : (coreLayers n).length = n * (n + 1) / 2 := by
+  rw [coreLayers, List.length_flatMap]
+  simp only [length_qubitLayers]
+  rw [← Fin.sum_univ_def, Fin.sum_univ_eq_sum_range (fun k ↦ n - k)]
+  have h1 : ∑ k ∈ Finset.range n, (n - k) = ∑ k ∈ Finset.range n, (n - 1 - k + 1) :=
+    Finset.sum_congr rfl fun k hk ↦ by rw [Finset.mem_range] at hk; omega
+  rw [h1, Finset.sum_range_reflect (fun k ↦ k + 1) n, Finset.sum_add_distrib, Finset.sum_range_id,
+    Finset.sum_const, Finset.card_range, smul_eq_mul, mul_one]
+  have : n * (n + 1) = n * (n - 1) + n * 2 := by
+    cases n with
+    | zero => rfl
+    | succ m => simp only [Nat.add_sub_cancel]; ring
+  rw [this, Nat.add_mul_div_right _ _ two_pos]
+
 /-- The Fourier transform without the swaps uses `n (n + 1) / 2` gates: `n` Hadamard gates and
 `n (n - 1) / 2` controlled phase gates. -/
 theorem gateCount_qftCore (n : ℕ) : (qftCore n).gateCount = n * (n + 1) / 2 := by
-  sorry
+  rw [qftCore, gateCount_seq_eq_length _ fun L hL ↦
+    nonempty_index_and_gateCount_of_mem (List.mem_append_left _ hL), length_coreLayers]
 
 theorem gateCount_qft (n : ℕ) : (qft n).gateCount = n * (n + 1) / 2 + n / 2 := by
-  sorry
+  rw [qft, gateCount_seq_eq_length _ fun L hL ↦ nonempty_index_and_gateCount_of_mem hL,
+    List.length_append, length_coreLayers, swapLayers, List.length_ofFn]
 
 /-- A depth bound. Every layer holds one gate, so the depth is the gate count; packing
 commuting gates into layers gives depth `O(n)`, which is not attempted here. -/
