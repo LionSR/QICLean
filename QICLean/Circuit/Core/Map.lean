@@ -91,6 +91,18 @@ noncomputable def regionSiteEquiv (D : Finset S) :
       obtain ⟨s, hs, rfl⟩ := Finset.mem_map.mp hv'
       exact ⟨⟨s, hs⟩, rfl⟩)
 
+theorem liftConfigEquiv_fst (X : S → Type) (z : Config (lift e W X)) (s : S) :
+    (liftConfigEquiv e W X z).1 s =
+      cast (congrArg (Sum.elim X W) (e.apply_symm_apply (.inl s))) (z (e.symm (.inl s))) := by
+  change (Equiv.piCongrLeft (fun t ↦ Sum.elim X W t) e z) (.inl s) = _
+  rw [Equiv.piCongrLeft_apply_eq_cast]
+
+theorem liftConfigEquiv_snd (X : S → Type) (z : Config (lift e W X)) (r : R) :
+    (liftConfigEquiv e W X z).2 r =
+      cast (congrArg (Sum.elim X W) (e.apply_symm_apply (.inr r))) (z (e.symm (.inr r))) := by
+  change (Equiv.piCongrLeft (fun t ↦ Sum.elim X W t) e z) (.inr r) = _
+  rw [Equiv.piCongrLeft_apply_eq_cast]
+
 /-- The configurations of the image of a region. -/
 noncomputable def liftRegionEquiv (X : S → Type) (D : Finset S) :
     RegionConfig (lift e W X) (D.map (siteEmb e)) ≃ RegionConfig X D :=
@@ -211,6 +223,10 @@ def outcomeNdrec {D D' : Finset S'} (hD : D = D') (g : G' D (lift e W X) (lift e
       GateFamily.Outcome g := by
   subst hD; exact Equiv.refl _
 
+/-- The cells of a layer are the cells of the moved layer. -/
+noncomputable def mapSitesCellsEquiv : L.cells ≃ (L.mapSites e W h φ).cells :=
+  L.cellsEquiv e h
+
 /-- The idle and non-idle free sites of the moved layer. -/
 noncomputable def freeEquiv : L.Free ⊕ R ≃ (L.mapSites e W h φ).Free :=
   Equiv.ofBijective
@@ -268,6 +284,77 @@ noncomputable def mapSitesIndexEquiv : (L.mapSites e W h φ).Index ≃ L.Index :
         ((Equiv.prodCongr (Equiv.refl _) (Equiv.ofUnique (R → Unit) PUnit.{1})).trans
           (Equiv.prodPUnit _))))
 
+omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+  [∀ s, DecidableEq (Y s)] in
+theorem liftRegionEquiv_restrict {Z : S → Type} (D : Finset S) (z : Config (lift e W Z)) :
+    liftRegionEquiv e W Z D (fun v : {v // v ∈ D.map (siteEmb e)} ↦ z v.1) =
+      fun v : {v // v ∈ D} ↦ (liftConfigEquiv e W Z z).1 v.1 := by
+  funext v
+  change liftSiteEquiv e W Z v.1 (z (e.symm (.inl v.1))) =
+    (Equiv.piCongrLeft (fun t ↦ Sum.elim Z W t) e z) (.inl v.1)
+  rw [Equiv.piCongrLeft_apply_eq_cast]
+  rfl
+
+omit [Fintype S] [Fintype R] [DecidableEq R] in
+theorem ev_ndrec {ev' : Interpretation G'} {X' Y' : S → Type}
+    [∀ s', Fintype (lift e W X' s')] [∀ s', DecidableEq (lift e W X' s')]
+    [∀ s', Fintype (lift e W Y' s')] [∀ s', DecidableEq (lift e W Y' s')]
+    {D D' : Finset S'} (hD : D = D') (g : G' D (lift e W X') (lift e W Y'))
+    (o : GateFamily.Outcome (Eq.ndrec (motive := fun D ↦ G' D (lift e W X') (lift e W Y')) g hD))
+    (y : Config (lift e W Y')) (x : Config (lift e W X')) :
+    ev' (Eq.ndrec (motive := fun D ↦ G' D (lift e W X') (lift e W Y')) g hD) o
+        (fun v ↦ y v) (fun v ↦ x v) =
+      ev' g (outcomeNdrec e W hD g o) (fun v ↦ y v) (fun v ↦ x v) := by
+  subst hD; rfl
+
+theorem ev_gate_congr (ev : Interpretation G) {c₁ c₂ : L.cells} (hc : c₁ = c₂)
+    (o : GateFamily.Outcome (L.gate c₁)) (y : Config Y) (x : Config X) :
+    ev (L.gate c₁) o (fun v ↦ y v) (fun v ↦ x v) =
+      ev (L.gate c₂) (Equiv.cast (congrArg (fun c ↦ GateFamily.Outcome (L.gate c)) hc) o)
+        (fun v ↦ y v) (fun v ↦ x v) := by
+  subst hc; rfl
+
+theorem liftOnsite_op_inl {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cells.biUnion Γ.cell)
+    {s : S} (hts : t = .inl s) (o : (L.liftOnsite W t ht).Index) (a : Sum.elim Y W t)
+    (b : Sum.elim X W t) :
+    (L.liftOnsite W t ht).op o a b = (L.onsite ⟨s, ht s hts⟩).op
+      (L.liftOnsiteIndexEquiv W ht hts o) (cast (congrArg (Sum.elim Y W) hts) a)
+      (cast (congrArg (Sum.elim X W) hts) b) := by
+  subst hts; rfl
+
+theorem liftOnsite_op_inr {t : S ⊕ R} (ht : ∀ s, t = .inl s → s ∉ L.cells.biUnion Γ.cell)
+    {r : R} (htr : t = .inr r) (o : (L.liftOnsite W t ht).Index) (a : Sum.elim Y W t)
+    (b : Sum.elim X W t) :
+    (L.liftOnsite W t ht).op o a b = (1 : Matrix (W r) (W r) ℂ)
+      (cast (congrArg (Sum.elim Y W) htr) a) (cast (congrArg (Sum.elim X W) htr) b) := by
+  subst htr; rfl
+
+omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
+  [∀ s, DecidableEq (Y s)] in
+theorem mapSites_gate (b' : (L.mapSites e W h φ).cells) :
+    (L.mapSites e W h φ).gate b' = Eq.ndrec (motive := fun D ↦ G' D (lift e W X) (lift e W Y))
+      (φ.map (L.gate ((L.cellsEquiv e h).symm b'))) (L.cell_cellsEquiv_symm e h b') :=
+  rfl
+
+theorem onsite_op_freeEquiv_inl (a : L.Free)
+    (o : ((L.mapSites e W h φ).onsite (L.freeEquiv e W h φ (.inl a))).Index)
+    (yv : lift e W Y (L.freeEquiv e W h φ (.inl a)).1)
+    (xv : lift e W X (L.freeEquiv e W h φ (.inl a)).1) :
+    ((L.mapSites e W h φ).onsite (L.freeEquiv e W h φ (.inl a))).op o yv xv =
+      (L.onsite a).op (L.liftOnsiteIndexEquiv W _ (e.apply_symm_apply (.inl a.1)) o)
+        (cast (congrArg (Sum.elim Y W) (e.apply_symm_apply (.inl a.1))) yv)
+        (cast (congrArg (Sum.elim X W) (e.apply_symm_apply (.inl a.1))) xv) :=
+  L.liftOnsite_op_inl W _ (e.apply_symm_apply (.inl a.1)) o yv xv
+
+theorem onsite_op_freeEquiv_inr (r : R)
+    (o : ((L.mapSites e W h φ).onsite (L.freeEquiv e W h φ (.inr r))).Index)
+    (yv : lift e W Y (L.freeEquiv e W h φ (.inr r)).1)
+    (xv : lift e W X (L.freeEquiv e W h φ (.inr r)).1) :
+    ((L.mapSites e W h φ).onsite (L.freeEquiv e W h φ (.inr r))).op o yv xv =
+      (1 : Matrix (W r) (W r) ℂ) (cast (congrArg (Sum.elim Y W) (e.apply_symm_apply (.inr r))) yv)
+        (cast (congrArg (Sum.elim X W) (e.apply_symm_apply (.inr r))) xv) :=
+  L.liftOnsite_op_inr W _ (e.apply_symm_apply (.inr r)) o yv xv
+
 /-- The Kraus operators of the moved layer are those of the layer tensored with the identity on
 the idle sites. -/
 theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G')
@@ -275,8 +362,27 @@ theorem kraus_mapSites (h : Γ.Hom Γ' (siteEmb e)) (φ : GateTransport e W G G'
     (L : Layer Γ G X Y) (i : (L.mapSites e W h φ).Index) :
     (L.mapSites e W h φ).kraus ev' i =
       (L.kraus ev (L.mapSitesIndexEquiv e W h φ i) ⊗ₖ (1 : Matrix ((r : R) → W r) _ ℂ)).submatrix
-        (liftConfigEquiv e W Y) (liftConfigEquiv e W X) :=
-  sorry
+        (liftConfigEquiv e W Y) (liftConfigEquiv e W X) := by
+  ext y x
+  rw [submatrix_apply, kronecker_apply]
+  simp only [kraus]
+  rw [← Fintype.prod_equiv (L.mapSitesCellsEquiv e W h φ) _ _ fun _ ↦ rfl,
+    ← Fintype.prod_equiv (L.freeEquiv e W h φ) _ _ fun _ ↦ rfl, Fintype.prod_sum_type,
+    mul_assoc]
+  congr 1
+  · refine Finset.prod_congr rfl fun b _ ↦ ?_
+    rw [mapSites_gate, ev_ndrec e W (X' := X) (Y' := Y), hφ, submatrix_apply,
+      liftRegionEquiv_restrict, liftRegionEquiv_restrict,
+      ev_gate_congr L ev ((L.cellsEquiv e h).symm_apply_apply b)]
+  · congr 1
+    · refine Finset.prod_congr rfl fun a _ ↦ ?_
+      rw [L.onsite_op_freeEquiv_inl e W h φ, liftConfigEquiv_fst, liftConfigEquiv_fst]
+      rfl
+    · rw [Finset.prod_congr rfl fun r _ ↦ L.onsite_op_freeEquiv_inr e W h φ r _ _ _]
+      simp only [one_apply, Finset.prod_boole, Finset.mem_univ, true_implies]
+      refine if_congr ?_ rfl rfl
+      rw [funext_iff]
+      simp only [liftConfigEquiv_snd]
 
 end Layer
 
