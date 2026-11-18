@@ -300,13 +300,15 @@ and each Kraus operator is a product of local entries over the blocks.
 
 \begin{lemma}[Local properties under composition]
     \label{lem:circuits_local_comp}
-    \lean{QuantumCircuit.Circuit.Forall.append, QuantumCircuit.Circuit.Forall.comp,
+    \lean{QuantumCircuit.Layer.Forall.mono, QuantumCircuit.Circuit.Forall.mono,
+        QuantumCircuit.Circuit.Forall.append, QuantumCircuit.Circuit.Forall.comp,
         QuantumCircuit.Circuit.IsUnbranched.comp, QuantumCircuit.Layer.lightCone_mono,
         QuantumCircuit.Circuit.lightCone_mono, QuantumCircuit.Circuit.lightCone_comp}
     \leanok
     \uses{def:circuits_local, thm:circuits_composition}
-    A property holding locally on a circuit and on every continuation attached to
-    it holds locally on the composite. A composite of unbranched circuits is
+    A property holding locally implies locally every property it implies. A property
+    holding locally on a circuit and on every continuation attached to it holds
+    locally on the composite. A composite of unbranched circuits is
     unbranched. The backward light cone is monotone in the region, and the backward
     light cone of $R$ through $c$ followed by $c'$ lies in the backward light cone
     through $c$ of the backward light cone of $R$ through $c'$.
@@ -595,8 +597,8 @@ and each Kraus operator is a product of local entries over the blocks.
 
 \begin{definition}[Trotter circuit]
     \label{def:circuits_trotter}
-    \lean{QuantumCircuit.trotterGate, QuantumCircuit.trotterCircuit, QuantumCircuit.restrictTo,
-        QuantumCircuit.isHermitian_restrictTo}
+    \lean{QuantumCircuit.trotterGate, QuantumCircuit.trotterCircuit, QuantumCircuit.localFamilyInside,
+        QuantumCircuit.isHermitian_localFamilyInside}
     \leanok
     \uses{def:circuits_product_formula, lem:sites_place_exp}
     Let $h_k$ be a matrix on $\C^{X_{T_k}}$ for each region $T_k$ of the family. The
@@ -609,7 +611,7 @@ and each Kraus operator is a product of local entries over the blocks.
 \begin{theorem}[Trotter circuit]
     \label{thm:circuits_trotter}
     \lean{QuantumCircuit.kraus_trotterCircuit, QuantumCircuit.dual_trotterCircuit_eq,
-        QuantumCircuit.forall_isTP_trotterCircuit,
+        QuantumCircuit.forall_isUnitary_trotterCircuit,
         QuantumCircuit.dual_trotterCircuit_mem_supportedOperators,
         QuantumCircuit.norm_kraus_trotterCircuit_sub_le,
         QuantumCircuit.norm_dual_trotterCircuit_sub_le}

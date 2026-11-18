@@ -22,15 +22,24 @@ The circuit is unbranched, has depth at most `n m`, and, when every gate has an 
 `n |κ|` gates and meets each site `s` in `n` times as many gates as there are supports containing
 `s`. For plain gates of one operator `V k` its Kraus operator is
 `(∏_{k ∈ colourOrder c} V_k ⊗ 1)^n`, the colour classes in order, the head applied first,
-and its Heisenberg picture is the conjugation by that operator. The Trotter circuit of an
-interaction, its error and its restriction to the light cone are in
-`ManyBody/Simulation/TrotterCircuit`.
+and its Heisenberg picture is the conjugation by that operator.
+
+For matrices `h_k` on the supports, the Trotter circuit `trotterCircuit c h t n` has the gates
+`e^{-i (t/n) h_k}`. Its Kraus operator is the first-order product formula
+`ProductFormula.lieEvolution` of the placed matrices `h_k ⊗ 1` in the order `colourOrder c`. For
+Hermitian `h_k` its gates are unitary, and its error against `e^{-itH}`, `H = ∑_k h_k ⊗ 1`, and the
+error of its Heisenberg picture against `e^{itH} A e^{-itH}` are those of the product formula. On
+an operator supported on `R` its Heisenberg picture agrees with that of the Trotter circuit of
+the family restricted to the supports inside any region containing the `n m`-fold
+neighbourhood of `R` (`localFamilyInside`).
 
 ## Main definitions
 
 * `QuantumCircuit.Geometry.ofSupports` — the cells `T k`, each of cost one.
 * `QuantumCircuit.overlapGraph`, `QuantumCircuit.colourClass`, `QuantumCircuit.colourOrder`.
 * `QuantumCircuit.colourSweeps`, `QuantumCircuit.productLayer`, `QuantumCircuit.productCircuit`.
+* `QuantumCircuit.trotterGate`, `QuantumCircuit.trotterCircuit`,
+  `QuantumCircuit.localFamilyInside`.
 
 ## Main results
 
@@ -40,6 +49,12 @@ interaction, its error and its restriction to the light cone are in
 * `QuantumCircuit.kraus_productCircuit_single`, `QuantumCircuit.dual_productCircuit_single` —
   the Kraus operator and the Heisenberg picture for plain gates.
 * `QuantumCircuit.dual_productCircuit_mem_supportedOperators` — the light cone.
+* `QuantumCircuit.kraus_trotterCircuit`, `QuantumCircuit.dual_trotterCircuit_eq`,
+  `QuantumCircuit.forall_isUnitary_trotterCircuit`.
+* `QuantumCircuit.norm_kraus_trotterCircuit_sub_le`,
+  `QuantumCircuit.norm_dual_trotterCircuit_sub_le` — the Trotter errors.
+* `QuantumCircuit.dual_trotterCircuit_eq_restrict`,
+  `QuantumCircuit.norm_dual_trotterCircuit_sub_le_restrict` — only the light cone matters.
 -/
 
 open Matrix ManyBody ProductFormula SpectralFilter
@@ -297,7 +312,7 @@ noncomputable def trotterCircuit (t : ℝ) (n : ℕ) : Circuit (Geometry.ofSuppo
 
 /-- The family `h_k` for the supports inside the region `L`, and `0` for the others: its gates
 outside `L` are the identity. -/
-noncomputable def restrictTo (L : Finset S) (k : κ) :
+noncomputable def localFamilyInside (L : Finset S) (k : κ) :
     Matrix (RegionConfig X (T k)) (RegionConfig X (T k)) ℂ :=
   if T k ⊆ L then h k else 0
 
@@ -329,15 +344,12 @@ include hh
 
 omit [Fintype S] in
 /-- For Hermitian `h_k` the gates of the Trotter circuit are unitary. -/
-theorem forall_isTP_trotterCircuit (t : ℝ) (n : ℕ) :
-    (trotterCircuit c h t n).Forall KrausGate.ev KrausFamily.IsTP := by
+theorem forall_isUnitary_trotterCircuit (t : ℝ) (n : ℕ) :
+    (trotterCircuit c h t n).Forall KrausGate.ev KrausFamily.IsUnitary := by
   refine Circuit.forall_seq _ _ fun L hL ↦ ?_
   obtain ⟨i, -, rfl⟩ := List.mem_map.mp hL
-  refine Layer.forall_ofCells _ (fun {_} _ _ ↦ (KrausFamily.isUnitary_single (one_mem _)).isTP)
-    _ _ _ fun b ↦ ?_
-  change (KrausFamily.single (hermitianUnitaryPath (h b.1) (-t / n))).effect = 1
-  rw [KrausFamily.effect_single, hermitianUnitaryPath_conjTranspose (hh b.1),
-    ← hermitianUnitaryPath_add, neg_add_cancel, hermitianUnitaryPath_zero]
+  exact Layer.forall_ofCells _ (fun {_} _ _ ↦ KrausFamily.isUnitary_single (one_mem _)) _ _ _
+    fun b ↦ KrausFamily.isUnitary_single (hermitianUnitaryPath_mem_unitary (hh b.1) _)
 
 /-- **The light cone of the Trotter circuit.** -/
 theorem dual_trotterCircuit_mem_supportedOperators (t : ℝ) (n : ℕ) {R : Finset S}
@@ -345,7 +357,7 @@ theorem dual_trotterCircuit_mem_supportedOperators (t : ℝ) (n : ℕ) {R : Fins
     (trotterCircuit c h t n).dual KrausGate.ev A ∈
       supportedOperators X ((Geometry.ofSupports T).neighbourhood^[n * m] R) :=
   dual_productCircuit_mem_supportedOperators c _ n KrausGate.ev
-    (forall_isTP_trotterCircuit c hh t n) hA
+    ((forall_isUnitary_trotterCircuit c hh t n).mono fun _ ↦ KrausFamily.IsUnitary.isTP) hA
 
 /-- **First-order Trotter error of the circuit.** For Hermitian `h_k`,
 `‖U - e^{-itH}‖ ≤ t²/(2n) ∑_{i<j} ‖[h_i ⊗ 1, h_j ⊗ 1]‖` with `H = ∑_k h_k ⊗ 1`. -/
@@ -369,8 +381,9 @@ theorem norm_dual_trotterCircuit_sub_le (t : ℝ) {n : ℕ} (hn : 0 < n)
   exact norm_lieEvolution_conj_sub_le (fun k ↦ isHermitian_place (hh k)) _ t hn A
 
 omit [Fintype S] [Fintype κ] [DecidableEq κ] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] in
-theorem isHermitian_restrictTo (L : Finset S) (k : κ) : (restrictTo h L k).IsHermitian := by
-  rw [restrictTo]
+theorem isHermitian_localFamilyInside (L : Finset S) (k : κ) :
+    (localFamilyInside h L k).IsHermitian := by
+  rw [localFamilyInside]
   split_ifs
   · exact hh k
   · exact isHermitian_zero
@@ -491,12 +504,12 @@ include hh
 
 /-- **Only the light cone matters.** For Hermitian `h_k` and an operator `A` supported on `R`, the
 Heisenberg picture of the Trotter circuit agrees on `A` with that of the Trotter circuit of
-`restrictTo h L`, for any region `L` containing the `n m`-fold neighbourhood of `R`. -/
+`localFamilyInside h L`, for any region `L` containing the `n m`-fold neighbourhood of `R`. -/
 theorem dual_trotterCircuit_eq_restrict (t : ℝ) (n : ℕ) {R L : Finset S}
     (hRL : (Geometry.ofSupports T).neighbourhood^[n * m] R ⊆ L)
     {A : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X R) :
     (trotterCircuit c h t n).dual KrausGate.ev A =
-      (trotterCircuit c (restrictTo h L) t n).dual KrausGate.ev A := by
+      (trotterCircuit c (localFamilyInside h L) t n).dual KrausGate.ev A := by
   rw [dual_trotterCircuit_eq, dual_trotterCircuit_eq, lieEvolution_eq, lieEvolution_eq,
     colourOrder_prod_pow, colourOrder_prod_pow]
   have hlen : ((List.replicate n (List.ofFn fun i ↦ (colourClass c i).toList)).flatten).length =
@@ -504,10 +517,11 @@ theorem dual_trotterCircuit_eq_restrict (t : ℝ) (n : ℕ) {R L : Finset S}
     simp [List.length_flatten, List.map_replicate, List.sum_replicate]
   refine (conj_prod_seq
     (fun k ↦ hermitianUnitaryPath_mem_unitary (isHermitian_place (hh k)) _)
-    (fun k ↦ hermitianUnitaryPath_mem_unitary (isHermitian_place (isHermitian_restrictTo hh L k)) _)
+    (fun k ↦ hermitianUnitaryPath_mem_unitary
+      (isHermitian_place (isHermitian_localFamilyInside hh L k)) _)
     (fun k ↦ hermitianUnitaryPath_mem_supportedOperators (place_mem_supportedOperators _) _)
     (fun k ↦ hermitianUnitaryPath_mem_supportedOperators (place_mem_supportedOperators _) _)
-    (fun k hk ↦ by simp [restrictTo, hk]) hA _ (fun l hl ↦ ?_) (hlen ▸ hRL)).1
+    (fun k hk ↦ by simp [localFamilyInside, hk]) hA _ (fun l hl ↦ ?_) (hlen ▸ hRL)).1
   obtain ⟨l', hl', hll'⟩ := List.mem_flatten.mp hl
   obtain ⟨i, rfl⟩ := List.mem_ofFn.mp ((List.eq_of_mem_replicate hl') ▸ hll')
   exact (Finset.nodup_toList _).pairwise_of_set_pairwise fun k hk l hl hkl ↦
@@ -525,14 +539,14 @@ theorem norm_dual_trotterCircuit_sub_le_restrict (t : ℝ) {n : ℕ} (hn : 0 < n
         hermitianUnitaryPath (∑ k, place (T k) (h k)) t * A *
           hermitianUnitaryPath (∑ k, place (T k) (h k)) (-t)‖ ≤
       2 * ‖A‖ * (t ^ 2 / (2 * n) *
-          commSum (fun k ↦ place (T k) (restrictTo h L k)) (colourOrder c)) +
-        ‖hermitianUnitaryPath (∑ k, place (T k) (restrictTo h L k)) t * A *
-            hermitianUnitaryPath (∑ k, place (T k) (restrictTo h L k)) (-t) -
+          commSum (fun k ↦ place (T k) (localFamilyInside h L k)) (colourOrder c)) +
+        ‖hermitianUnitaryPath (∑ k, place (T k) (localFamilyInside h L k)) t * A *
+            hermitianUnitaryPath (∑ k, place (T k) (localFamilyInside h L k)) (-t) -
           hermitianUnitaryPath (∑ k, place (T k) (h k)) t * A *
             hermitianUnitaryPath (∑ k, place (T k) (h k)) (-t)‖ := by
   rw [dual_trotterCircuit_eq_restrict c hh t n hRL hA]
   exact (norm_sub_le_norm_sub_add_norm_sub _ _ _).trans (add_le_add
-    (norm_dual_trotterCircuit_sub_le c (isHermitian_restrictTo hh L) t hn A) le_rfl)
+    (norm_dual_trotterCircuit_sub_le c (isHermitian_localFamilyInside hh L) t hn A) le_rfl)
 
 end Trotter
 

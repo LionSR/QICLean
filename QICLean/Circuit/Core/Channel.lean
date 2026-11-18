@@ -55,6 +55,18 @@ def Forall (ev : Interpretation G)
   | _, _, _, _, done _ => True
   | _, _, _, _, step L next => L.Forall ev P ∧ ∀ i, (next i).Forall ev P
 
+omit [Fintype S] in
+/-- A local property passes to every property it implies. -/
+theorem Forall.mono {ev : Interpretation G}
+    {P Q : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β],
+      KrausFamily α β → Prop}
+    (hPQ : ∀ {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
+      (K : KrausFamily α β), P K → Q K) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      {c : Circuit Γ G X Z} → c.Forall ev P → c.Forall ev Q
+  | _, _, _, _, done _, _ => trivial
+  | _, _, _, _, step _ next, h => ⟨h.1.mono hPQ, fun i ↦ Forall.mono hPQ (c := next i) (h.2 i)⟩
+
 /-- A circuit is unbranched when no continuation depends on the outcome of a layer. -/
 def IsUnbranched : {X Z : S → Type} → Circuit Γ G X Z → Prop
   | _, _, done _ => True
