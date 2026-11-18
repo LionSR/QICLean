@@ -19,3 +19,4 @@ import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Dynamics.ProductFormula
 import QICLean.ManyBody.Dynamics.ProjectedRelativeEvolution
 import QICLean.ManyBody.Dynamics.SupportedGaussianIntegral
+import QICLean.ManyBody.Dynamics.TruncatedEvolution
