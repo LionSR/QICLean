@@ -23,3 +23,4 @@ import QICLean.Circuit.Core.Outcome
 import QICLean.Circuit.Core.Parallel
 import QICLean.Circuit.Core.Seq
 import QICLean.Circuit.Core.Substitute
+import QICLean.Circuit.Core.TensorRight
