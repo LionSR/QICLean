@@ -674,23 +674,17 @@ theorem length_seqCells : (seqCells n).length = n * (n + 1) / 2 := by
     | succ m => simp only [Nat.add_sub_cancel]; ring
   rw [this, Nat.add_mul_div_right _ _ two_pos]
 
-private theorem forall₂_gateLayers (L : List (geometry n).Cell) :
-    List.Forall₂ (fun (M : Layer (geometry n) KrausGate (Q n) (Q n)) U ↦
-      ∀ i, M.kraus KrausGate.ev i = U) (gateLayers L) (L.map gateOp) := by
-  rw [gateLayers, List.forall₂_map_left_iff, List.forall₂_map_right_iff]
-  exact List.forall₂_same.mpr fun b _ i ↦ Layer.kraus_single b (qftMatrix b) i
-
 /-- Without the swaps, the Fourier transform reverses the order of the output bits. -/
 theorem kraus_qftCore (n : ℕ) (p : (qftCore n).Index) (y x : Config (Q n)) :
     (qftCore n).kraus KrausGate.ev p y x = dft n (fun i ↦ y (Fin.rev i)) x := by
-  rw [show (qftCore n).kraus KrausGate.ev p = _ from
-      Circuit.kraus_seq KrausGate.ev (forall₂_gateLayers _) p,
+  rw [show (qftCore n).kraus KrausGate.ev p = _ from Circuit.kraus_seq_map KrausGate.ev _ gateOp _
+      (fun b _ i ↦ Layer.kraus_single b (qftMatrix b) i) p,
     prod_gateOp_core isGateOrder_seqCells seqCells_nodup toFinset_seqCells]
 
 /-- The single Kraus operator of the circuit `qft n` is the Fourier transform. -/
 theorem kraus_qft (n : ℕ) (p : (qft n).Index) : (qft n).kraus KrausGate.ev p = dft n := by
-  rw [show (qft n).kraus KrausGate.ev p = _ from
-      Circuit.kraus_seq KrausGate.ev (forall₂_gateLayers _) p,
+  rw [show (qft n).kraus KrausGate.ev p = _ from Circuit.kraus_seq_map KrausGate.ev _ gateOp _
+      (fun b _ i ↦ Layer.kraus_single b (qftMatrix b) i) p,
     prod_gateOp_eq_dft isGateOrder_seqCells seqCells_nodup toFinset_seqCells]
 
 theorem isUnbranched_qft (n : ℕ) : (qft n).IsUnbranched :=

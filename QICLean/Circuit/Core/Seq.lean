@@ -17,8 +17,8 @@ hold by construction.
 
 ## Main results
 
-* `QuantumCircuit.Circuit.kraus_seq` — the Kraus operator of a sequence of single-operator
-  layers.
+* `QuantumCircuit.Circuit.kraus_seq`, `QuantumCircuit.Circuit.kraus_seq_map` — the Kraus
+  operator of a sequence of single-operator layers.
 * `QuantumCircuit.Circuit.total_seq` — the cost of a sequence of layers with outcomes.
 * `QuantumCircuit.Circuit.gateCount_seq_eq_length` — a sequence of layers of gate count `1`.
 * `QuantumCircuit.Circuit.forall_seq`, `QuantumCircuit.Circuit.isUnbranched_seq`.
@@ -47,6 +47,16 @@ theorem kraus_seq (ev : Interpretation G) :
     change (step L fun _ ↦ seq Ls).kraus ev ⟨i, p⟩ = _
     rw [kraus_step, kraus_seq ev h p, hL i, List.reverse_cons, List.prod_append,
       List.prod_singleton]
+
+/-- The Kraus operator of the sequence of layers `f a` along a list `l`, when every Kraus
+operator of `f a` is `V a`, is the product of the `V a`, the first layer on the right. -/
+theorem kraus_seq_map (ev : Interpretation G) {ι : Type} (f : ι → Layer Γ G X X)
+    (V : ι → Matrix (Config X) (Config X) ℂ) (l : List ι)
+    (h : ∀ a ∈ l, ∀ i, (f a).kraus ev i = V a) (p : (seq (l.map f)).Index) :
+    (seq (l.map f)).kraus ev p = (l.map V).reverse.prod := by
+  refine kraus_seq ev ?_ p
+  rw [List.forall₂_map_left_iff, List.forall₂_map_right_iff]
+  exact List.forall₂_same.mpr h
 
 /-- The cost of a sequence of layers with outcomes is the sum of their costs. -/
 theorem total_seq (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ) :

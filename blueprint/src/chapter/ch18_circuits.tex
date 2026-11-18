@@ -340,6 +340,23 @@ and each Kraus operator is a product of local entries over the blocks.
     circuit.
 \end{proof}
 
+\begin{lemma}[Circuits with one branch]
+    \label{lem:circuits_unique_branch}
+    \lean{QuantumCircuit.Circuit.nonempty_unique_index,
+        QuantumCircuit.Circuit.dual_eq_of_subsingleton}
+    \leanok
+    \uses{def:circuits_local}
+    If every gate and every onsite family of a circuit has exactly one Kraus operator,
+    for instance if they are unitary, the circuit has exactly one branch $p$. The
+    Heisenberg picture of a circuit with one branch $p$ is $A\mapsto K_p^\dagger AK_p$.
+\end{lemma}
+\begin{proof}\leanok
+    Induction on the circuit: the outcomes of a layer are a choice of an outcome of every
+    gate and onsite family, and the branches of a circuit that starts with a layer are an
+    outcome of the layer and a branch of the continuation. The Heisenberg picture is the
+    sum over the branches.
+\end{proof}
+
 \begin{theorem}[Backward light cone of a circuit]
     \label{thm:circuits_light_cone}
     \lean{QuantumCircuit.Circuit.dual_mem_supportedOperators_lightCone,
@@ -380,7 +397,8 @@ and each Kraus operator is a product of local entries over the blocks.
 
 \begin{lemma}[Sequences of layers of one operator]
     \label{lem:circuits_seq}
-    \lean{QuantumCircuit.Circuit.kraus_seq, QuantumCircuit.Circuit.total_seq,
+    \lean{QuantumCircuit.Circuit.kraus_seq, QuantumCircuit.Circuit.kraus_seq_map,
+        QuantumCircuit.Circuit.total_seq,
         QuantumCircuit.Circuit.gateCount_seq_eq_length, QuantumCircuit.Circuit.forall_seq,
         QuantumCircuit.Circuit.isUnbranched_seq}
     \leanok
