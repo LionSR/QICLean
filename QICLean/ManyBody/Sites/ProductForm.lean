@@ -3,7 +3,6 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.ClusterExpansion.Temperature
 import QICLean.ManyBody.Sites.Placement
 
 /-!
@@ -19,8 +18,7 @@ the sites. The index type may depend on the site.
 
 Product forms with the same relation are closed under products and powers, and an operator
 supported on a region near a centre has a product form with a matrix-unit index on its
-support and none elsewhere (lines 1053–1075). The positivity of even powers is the
-positivity part of eq. `mplt` (lines 1303–1317).
+support and none elsewhere (lines 1053–1075).
 
 ## Main definitions and results
 
@@ -30,20 +28,17 @@ positivity part of eq. `mplt` (lines 1303–1317).
 * `ManyBody.ProductForm.ofSupported`, `ManyBody.ProductForm.card_index_ofSupported`,
   `ManyBody.hasProductForm_of_mem_supportedOperators_radius`.
 * `ManyBody.ProductForm.restrict`: removing index values whose coefficient vanishes.
-* `ManyBody.HasProductForm.pow_of_even`.
 
 Moved from TNLean (`e113e005`): `TNLean/Lattice/ProductForm.lean`,
-`ProductFormIndexRestriction.lean`, the supported factor of `TrotterIndexCount.lean`, and
-`HasProductForm.pow_of_even` of `ClusterExpansion/AllTemperatures.lean`. Changes: the
-configurations are `Config X` for any finite basis types, and the product operator is
-`ManyBody.prodOp` (TNLean's `piKronecker`). The supported-operator form uses the indices of
+`ProductFormIndexRestriction.lean` and the supported factor of `TrotterIndexCount.lean`.
+Changes: the configurations are `Config X` for any finite basis types, and the product operator
+is `ManyBody.prodOp` (TNLean's `piKronecker`). The supported-operator form uses the indices of
 `ofSupported` on the support only, so no common dimension and no relation `near i i` is
 needed; TNLean's `apply_eq_apply_of_mem_supportedOperators` is
 `ManyBody.apply_eq_of_mem_supportedOperators`.
 -/
 
 open Matrix
-open scoped MatrixOrder ComplexOrder
 
 universe u
 
@@ -202,19 +197,6 @@ theorem HasProductForm.pow {ρ : Matrix (Config X) (Config X) ℂ}
     (hρ : HasProductForm X near ρ) (n : ℕ) : HasProductForm X near (ρ ^ n) := by
   obtain ⟨P⟩ := hρ
   exact ⟨P.pow n⟩
-
-/-- **Eq. `mplt` keeps the matrix product form.** For a Hermitian `ρ` in product form and
-even `m`, the power `ρ^m` is positive semidefinite and in product form with the same
-coefficient neighbourhoods, the `m` indices at each site being grouped into one.
-Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1303–1317.
-
-**Local fix (positivity at every temperature):** the source states positive definiteness,
-which would need the base to be invertible; the statement here is positive
-semidefiniteness, as documented in `docs/paper-gaps/hastings05_mplt_positivity.tex`. -/
-theorem HasProductForm.pow_of_even {ρ : Matrix (Config X) (Config X) ℂ}
-    (hρ : HasProductForm X near ρ) (hH : ρ.IsHermitian) {m : ℕ} (hm : Even m) :
-    HasProductForm X near (ρ ^ m) ∧ (ρ ^ m).PosSemidef :=
-  ⟨hρ.pow m, ClusterExpansion.posSemidef_pow_of_even hH hm⟩
 
 /-- The product form of an operator supported on `D`, with one matrix-unit label at each
 site of `D` and no label off `D`. The configuration `z` supplies the labels off `D`, where

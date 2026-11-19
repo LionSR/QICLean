@@ -1052,9 +1052,9 @@ interactions is imposed.
 
 \begin{lemma}[Windows and connected components on a path]
     \label{thm:cluster_label_window_geometry}
-    \lean{ClusterExpansion.ordConnected_of_pathGraph_connected,
-        ClusterExpansion.pathGraph_connected_of_ordConnected,
-        ClusterExpansion.eq_Icc_of_ordConnected,
+    \lean{SimpleGraph.ordConnected_of_pathGraph_connected,
+        SimpleGraph.pathGraph_connected_of_ordConnected,
+        SimpleGraph.eq_Icc_of_ordConnected,
         ClusterExpansion.exists_interval_subset_card,
         ClusterExpansion.noLargeCluster_pathGraph_iff,
         ClusterExpansion.pathWindows_exists_marker,
@@ -1705,7 +1705,7 @@ every cut \cite[lines 1298--1303 and 1971--2013]{Arad2016RigorousRG}.
 
 \begin{lemma}[Physical nearest-neighbour crossing decomposition]
     \label{thm:physical_cluster_crossing_decomposition}
-    \lean{ManyBody.ClusterExpansion.overlapGraph_bond_eq_pathGraph,
+    \lean{ManyBody.overlapGraph_chainBond_eq_pathGraph,
         ManyBody.ClusterExpansion.commute_nearestNeighbor_of_not_adj,
         ClusterExpansion.truncatedExp_pathGraph_eq_crossing_components,
         ManyBody.ClusterExpansion.truncatedExp_nearestNeighbor_eq_crossing_components}
@@ -1770,7 +1770,7 @@ every cut \cite[lines 1298--1303 and 1971--2013]{Arad2016RigorousRG}.
 
 \begin{lemma}[Two-sided rank of a crossing interval]
     \label{thm:physical_cluster_interval_rank}
-    \lean{ManyBody.ClusterExpansion.card_biUnion_bond_le,
+    \lean{ManyBody.card_biUnion_chainBond_le,
         ManyBody.ClusterExpansion.operatorSchmidtRank_clusterOp_nearestNeighbor_le}
     \leanok
     \uses{thm:hastings_cluster_operator_support, thm:cluster_label_window_geometry}

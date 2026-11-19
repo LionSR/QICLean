@@ -7,6 +7,7 @@ import QICLean.Analysis.ClusterExpansion.Path
 import QICLean.Algebra.OperatorSchmidtBounds
 import QICLean.Entropy.SupportedOperatorSchmidtRank
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion.Factorization
+import QICLean.ManyBody.Sites.Lattice.Chain
 
 /-!
 # The cluster expansion of a nearest-neighbour chain
@@ -31,7 +32,6 @@ rest on. It moves down to the many-body layers with that chain when `SiteConfig`
 
 ## Main results
 
-* `ManyBody.ClusterExpansion.overlapGraph_bond_eq_pathGraph`.
 * `ManyBody.ClusterExpansion.truncatedExp_nearestNeighbor_eq_crossing_components`.
 * `ManyBody.ClusterExpansion.retained_nearestNeighbor_interval_mem_supportedOperators` and its
   left and right forms.
@@ -40,9 +40,11 @@ rest on. It moves down to the many-body layers with that chain when `SiteConfig`
 Moved from TNLean (`e113e005`): `TNLean/Lattice/ClusterExpansion/NearestNeighborPath.lean`,
 `NearestNeighborSupport.lean`, `NearestNeighborIntervalRank.lean` and
 `NearestNeighborTruncationRank.lean`. Changes: the terms are those of an interaction on the bonds
-`ManyBody.ClusterExpansion.bond N`; the support statements hold for any finite basis types and
-are stated as membership in `supportedOperators` (renamed from `isSupportedOn_retained_…`); the
-rank statements are on `Fin q` sites and state the cut through `ManyBody.cutEquiv`.
+`ManyBody.chainBond N` of `ManyBody/Sites/Lattice/Chain.lean`, which also holds the overlap
+graph of the bonds and the size of their union; the support statements hold for any finite
+basis types and are stated as membership in `supportedOperators` (renamed from
+`isSupportedOn_retained_…`); the rank statements are on `Fin q` sites and state the cut
+through `ManyBody.cutEquiv`.
 -/
 
 open Finset SimpleGraph Matrix _root_.ClusterExpansion
@@ -51,36 +53,21 @@ namespace ManyBody
 
 namespace ClusterExpansion
 
-/-- The bond `{i, i + 1}` of a chain of `N + 1` sites, for a label `i : Fin N`. -/
-def bond (N : ℕ) (i : Fin N) : Finset (Fin (N + 1)) := {i.castSucc, i.succ}
-
-/-- The overlap graph of the bonds is the label path. Supporting ALVV, arXiv:1602.08828v2,
-`eq:rho-expansion`, lines 1971–2013. -/
-theorem overlapGraph_bond_eq_pathGraph (N : ℕ) : overlapGraph (bond N) = pathGraph N := by
-  ext i j
-  change (i ≠ j ∧ (({i.castSucc, i.succ} : Finset (Fin (N + 1))) ∩
-    {j.castSucc, j.succ}).Nonempty) ↔ _
-  rw [pathGraph_adj]
-  simp only [Finset.Nonempty, mem_inter, mem_insert, mem_singleton]
-  simp only [or_and_right, exists_or, exists_eq_left]
-  simp only [Fin.ext_iff, Fin.val_castSucc, Fin.val_succ]
-  omega
-
 section Path
 
 variable {N : ℕ} {X : Fin (N + 1) → Type*} [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)]
 
 /-- Terms on the bonds commute at labels that are not adjacent on the path. -/
-theorem commute_nearestNeighbor_of_not_adj (Φ : Interaction X (bond N)) :
+theorem commute_nearestNeighbor_of_not_adj (Φ : Interaction X (chainBond N)) :
     ∀ j k, ¬ (pathGraph N).Adj j k → Commute (Φ.term j) (Φ.term k) := by
-  simpa only [overlapGraph_bond_eq_pathGraph] using commute_of_not_adj_overlapGraph Φ
+  simpa only [overlapGraph_chainBond_eq_pathGraph] using commute_of_not_adj_overlapGraph Φ
 
 open Classical in
 /-- The nearest-neighbour label truncation splits into one no-crossing product and the sum over
 the components crossing a given bond. Supporting the interaction-label version of ALVV,
 arXiv:1602.08828v2, `eq:rho-expansion`, lines 1971–2013. -/
-theorem truncatedExp_nearestNeighbor_eq_crossing_components {r : ℕ} (Φ : Interaction X (bond N))
-    (p : Fin N) (β : ℝ) :
+theorem truncatedExp_nearestNeighbor_eq_crossing_components {r : ℕ}
+    (Φ : Interaction X (chainBond N)) (p : Fin N) (β : ℝ) :
     let F := fun B : Finset (Fin N) ↦
       ∑ A ∈ B.powerset with NoLargeCluster (pathGraph N) (fun C ↦ r ≤ C.card) A,
         clusterOp Φ.term A β
@@ -97,7 +84,7 @@ open Classical in
 /-- A retained sum over the labels in a physical interval acts only on that interval. Supporting
 ALVV, arXiv:1602.08828v2, `eq:rho-expansion`, lines 1971–2013. -/
 theorem retained_nearestNeighbor_interval_mem_supportedOperators {r : ℕ}
-    (Φ : Interaction X (bond N)) (B : Finset (Fin N)) (a b : ℕ)
+    (Φ : Interaction X (chainBond N)) (B : Finset (Fin N)) (a b : ℕ)
     (hB : ∀ i ∈ B, a ≤ i.val ∧ i.val + 1 < b) (β : ℝ) :
     ∑ A ∈ B.powerset with NoLargeCluster (pathGraph N) (fun C ↦ r ≤ C.card) A,
         clusterOp Φ.term A β ∈
@@ -108,14 +95,14 @@ theorem retained_nearestNeighbor_interval_mem_supportedOperators {r : ℕ}
   obtain ⟨i, hi, hvi⟩ := mem_biUnion.mp hv
   have hb := hB i hi
   refine mem_filter.mpr ⟨mem_univ _, ?_⟩
-  simp only [bond, mem_insert, mem_singleton] at hvi
+  simp only [chainBond, mem_insert, mem_singleton] at hvi
   rcases hvi with rfl | rfl <;> simp only [Fin.val_castSucc, Fin.val_succ] <;> omega
 
 open Classical in
 /-- The retained sum of labels strictly left of a bond acts on the left side of its cut.
 Supporting ALVV, arXiv:1602.08828v2, `eq:rho-expansion`, lines 1971–2013. -/
 theorem retained_nearestNeighbor_left_mem_supportedOperators {r : ℕ}
-    (Φ : Interaction X (bond N)) (p : Fin N) (B : Finset (Fin N)) (hB : ∀ i ∈ B, i.val < p.val)
+    (Φ : Interaction X (chainBond N)) (p : Fin N) (B : Finset (Fin N)) (hB : ∀ i ∈ B, i.val < p.val)
     (β : ℝ) :
     ∑ A ∈ B.powerset with NoLargeCluster (pathGraph N) (fun C ↦ r ≤ C.card) A,
         clusterOp Φ.term A β ∈
@@ -128,7 +115,7 @@ open Classical in
 /-- The retained sum of labels strictly right of a bond acts on the right side of its cut.
 Supporting ALVV, arXiv:1602.08828v2, `eq:rho-expansion`, lines 1971–2013. -/
 theorem retained_nearestNeighbor_right_mem_supportedOperators {r : ℕ}
-    (Φ : Interaction X (bond N)) (p : Fin N) (B : Finset (Fin N)) (hB : ∀ i ∈ B, p.val < i.val)
+    (Φ : Interaction X (chainBond N)) (p : Fin N) (B : Finset (Fin N)) (hB : ∀ i ∈ B, p.val < i.val)
     (β : ℝ) :
     ∑ A ∈ B.powerset with NoLargeCluster (pathGraph N) (fun C ↦ r ≤ C.card) A,
         clusterOp Φ.term A β ∈
@@ -137,32 +124,6 @@ theorem retained_nearestNeighbor_right_mem_supportedOperators {r : ℕ}
     Φ B (p.val + 1) (N + 1)
     (fun i hi ↦ ⟨Nat.succ_le_of_lt (hB i hi), Nat.add_lt_add_right i.isLt 1⟩) β)
   exact fun v hv ↦ mem_filter.mpr ⟨mem_univ _, Nat.lt_of_succ_le (mem_filter.mp hv).2.1⟩
-
-/-- The bonds of a connected label interval cover at most one more site than labels. Supporting
-ALVV, arXiv:1602.08828v2, `eq:rho-expansion`, lines 1971–2013. -/
-theorem card_biUnion_bond_le {C : Finset (Fin N)}
-    (hC : ((pathGraph N).induce (C : Set (Fin N))).Connected) :
-    (C.biUnion (bond N)).card ≤ C.card + 1 := by
-  have hord := ordConnected_of_pathGraph_connected hC
-  have hne : C.Nonempty := by
-    obtain ⟨p⟩ := hC.nonempty
-    exact ⟨p, p.property⟩
-  have hsub : C.biUnion (bond N) ⊆ Icc (C.min' hne).castSucc (C.max' hne).succ := by
-    intro v hv
-    obtain ⟨i, hi, hvi⟩ := mem_biUnion.mp hv
-    have hmin : (C.min' hne).val ≤ i.val := C.min'_le i hi
-    have hmax : i.val ≤ (C.max' hne).val := C.le_max' i hi
-    rw [mem_Icc]
-    simp only [bond, mem_insert, mem_singleton] at hvi
-    rcases hvi with rfl | rfl <;> simp only [Fin.le_def, Fin.val_castSucc, Fin.val_succ] <;> omega
-  have hlen : C.card = (C.max' hne).val + 1 - (C.min' hne).val :=
-    (congrArg Finset.card (eq_Icc_of_ordConnected hord hne)).trans (Fin.card_Icc _ _)
-  have hle : (C.min' hne).val ≤ (C.max' hne).val := C.min'_le _ (C.max'_mem hne)
-  have hcard : (Icc (C.min' hne).castSucc (C.max' hne).succ).card = C.card + 1 := by
-    rw [Fin.card_Icc]
-    simp only [Fin.val_castSucc, Fin.val_succ]
-    omega
-  exact (Finset.card_le_card hsub).trans_eq hcard
 
 end Path
 
@@ -174,21 +135,21 @@ variable {N q : ℕ}
 rank at most `q ^ r` at every cut. Supporting ALVV, arXiv:1602.08828v2, `eq:rho-expansion`,
 lines 1971–2013. -/
 theorem operatorSchmidtRank_clusterOp_nearestNeighbor_le {r : ℕ} (hq : 1 ≤ q)
-    (Φ : Interaction (fun _ : Fin (N + 1) ↦ Fin q) (bond N)) {C : Finset (Fin N)}
+    (Φ : Interaction (fun _ : Fin (N + 1) ↦ Fin q) (chainBond N)) {C : Finset (Fin N)}
     (hC : ((pathGraph N).induce (C : Set (Fin N))).Connected) (hshort : C.card < r)
     (A : Finset (Fin (N + 1))) (β : ℝ) :
     operatorSchmidtRank (reindex (cutEquiv (fun _ ↦ Fin q) A) (cutEquiv (fun _ ↦ Fin q) A)
       (clusterOp Φ.term C β)) ≤ q ^ r :=
   (Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_pow_card hq (A := A)
     (clusterOp_mem_supportedOperators Φ C β)).trans
-    (Nat.pow_le_pow_right hq ((card_biUnion_bond_le hC).trans (Nat.succ_le_of_lt hshort)))
+    (Nat.pow_le_pow_right hq ((card_biUnion_chainBond_le hC).trans (Nat.succ_le_of_lt hshort)))
 
 open Classical in
 /-- The nearest-neighbour truncation has operator Schmidt rank at most one plus the number of
 crossing intervals times the interval rank. Supporting ALVV, arXiv:1602.08828v2, `thm:cluster`,
 lines 1298–1303 and 1971–2013. -/
 theorem operatorSchmidtRank_truncatedExp_nearestNeighbor_le_count {r : ℕ} (hq : 1 ≤ q)
-    (Φ : Interaction (fun _ : Fin (N + 1) ↦ Fin q) (bond N)) (p : Fin N) (β : ℝ) :
+    (Φ : Interaction (fun _ : Fin (N + 1) ↦ Fin q) (chainBond N)) (p : Fin N) (β : ℝ) :
     operatorSchmidtRank
       (reindex (cutEquiv (fun _ ↦ Fin q) {v ∈ (univ : Finset (Fin (N + 1))) | v.val ≤ p.val})
         (cutEquiv (fun _ ↦ Fin q) {v ∈ (univ : Finset (Fin (N + 1))) | v.val ≤ p.val})
@@ -253,7 +214,7 @@ open Classical in
 interior cut. Supporting the corrected interaction-label form of ALVV, arXiv:1602.08828v2,
 `thm:cluster`, lines 1298–1303 and 1971–2013. -/
 theorem operatorSchmidtRank_truncatedExp_nearestNeighbor_le {r : ℕ} (hq : 1 ≤ q) (hr : 0 < r)
-    (Φ : Interaction (fun _ : Fin (N + 1) ↦ Fin q) (bond N)) (p : Fin N) (β : ℝ) :
+    (Φ : Interaction (fun _ : Fin (N + 1) ↦ Fin q) (chainBond N)) (p : Fin N) (β : ℝ) :
     operatorSchmidtRank
       (reindex (cutEquiv (fun _ ↦ Fin q) {v ∈ (univ : Finset (Fin (N + 1))) | v.val ≤ p.val})
         (cutEquiv (fun _ ↦ Fin q) {v ∈ (univ : Finset (Fin (N + 1))) | v.val ≤ p.val})

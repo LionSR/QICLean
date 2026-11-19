@@ -3,6 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.OverlapGraph
+import QICLean.Algebra.PathGraphConnected
 import QICLean.ManyBody.Sites.Lattice.PathGraph
 import Mathlib.Data.Finset.Max
 import Mathlib.Order.Interval.Finset.Nat
@@ -28,11 +30,16 @@ from `TNLean/MPS/AreaLaw/RangeOneCut.lean`; `ChainSupport.edist_le` from
 `TNLean/MPS/AreaLaw/LiebRobinson.lean`. Changes: namespace `ManyBody` in place of
 `TNLean.MPS.AreaLaw`.
 
+Moved from TNLean (`e113e005`): the bonds, their overlap graph and the size of their union from
+`TNLean/Lattice/ClusterExpansion/NearestNeighborPath.lean` and `NearestNeighborIntervalRank.lean`.
+Changes: `nearestNeighbor` is `ManyBody.chainBond`, and the lemmas are renamed after it.
+
 ## Main definitions
 
 * `ManyBody.interval` — the sites of position at least `a` and less than `b`.
 * `ManyBody.IsChainSupport`, `ManyBody.ChainSupport` — the supports of range `R`.
 * `ManyBody.boundaryEdges` — the edges of the chain leaving a region.
+* `ManyBody.chainBond` — the nearest-neighbour bonds `{i, i + 1}`.
 
 ## Main results
 
@@ -41,6 +48,8 @@ from `TNLean/MPS/AreaLaw/RangeOneCut.lean`; `ChainSupport.edist_le` from
 * `ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one` — a range-one support split by
   a cut is the adjacent pair at that cut.
 * `ManyBody.ChainSupport.edist_le` — a support of range `R` has path-graph diameter at most `R`.
+* `ManyBody.overlapGraph_chainBond_eq_pathGraph` — the overlap graph of the bonds is the path.
+* `ManyBody.card_biUnion_chainBond_le` — the bonds of `s` consecutive labels cover `s + 1` sites.
 
 ## References
 
@@ -262,5 +271,58 @@ lemma IsChainSupport.exists_boundary_window_of_split
   · exact hordered u v hu hv huv (fun he ↦ hPv (he.mp hPu))
   · exact (hPv (huv ▸ hPu)).elim
   · exact hordered v u hv hu hvu (fun he ↦ hPv (he.mpr hPu))
+
+/-! ### The nearest-neighbour bonds -/
+
+section ChainBond
+
+open Finset SimpleGraph
+
+variable {N : ℕ}
+
+/-- The bond `{i, i + 1}` of the chain of `N + 1` sites, for a label `i : Fin N`: the support
+of a nearest-neighbour term. ALVV, arXiv:1602.08828v2, `eq:rho-expansion`, lines 1971–2013. -/
+def chainBond (N : ℕ) (i : Fin N) : Finset (Fin (N + 1)) := {i.castSucc, i.succ}
+
+/-- The overlap graph of the bonds is the label path. Supporting ALVV, arXiv:1602.08828v2,
+`eq:rho-expansion`, lines 1971–2013. -/
+theorem overlapGraph_chainBond_eq_pathGraph (N : ℕ) :
+    overlapGraph (chainBond N) = pathGraph N := by
+  ext i j
+  change (i ≠ j ∧ (({i.castSucc, i.succ} : Finset (Fin (N + 1))) ∩
+    {j.castSucc, j.succ}).Nonempty) ↔ _
+  rw [pathGraph_adj]
+  simp only [Finset.Nonempty, mem_inter, mem_insert, mem_singleton]
+  simp only [or_and_right, exists_or, exists_eq_left]
+  simp only [Fin.ext_iff, Fin.val_castSucc, Fin.val_succ]
+  omega
+
+/-- The bonds of a connected label interval cover at most one more site than labels. Supporting
+ALVV, arXiv:1602.08828v2, `eq:rho-expansion`, lines 1971–2013. -/
+theorem card_biUnion_chainBond_le {C : Finset (Fin N)}
+    (hC : ((pathGraph N).induce (C : Set (Fin N))).Connected) :
+    (C.biUnion (chainBond N)).card ≤ C.card + 1 := by
+  have hord := ordConnected_of_pathGraph_connected hC
+  have hne : C.Nonempty := by
+    obtain ⟨p⟩ := hC.nonempty
+    exact ⟨p, p.property⟩
+  have hsub : C.biUnion (chainBond N) ⊆ Icc (C.min' hne).castSucc (C.max' hne).succ := by
+    intro v hv
+    obtain ⟨i, hi, hvi⟩ := mem_biUnion.mp hv
+    have hmin : (C.min' hne).val ≤ i.val := C.min'_le i hi
+    have hmax : i.val ≤ (C.max' hne).val := C.le_max' i hi
+    rw [mem_Icc]
+    simp only [chainBond, mem_insert, mem_singleton] at hvi
+    rcases hvi with rfl | rfl <;> simp only [Fin.le_def, Fin.val_castSucc, Fin.val_succ] <;> omega
+  have hlen : C.card = (C.max' hne).val + 1 - (C.min' hne).val :=
+    (congrArg Finset.card (eq_Icc_of_ordConnected hord hne)).trans (Fin.card_Icc _ _)
+  have hle : (C.min' hne).val ≤ (C.max' hne).val := C.min'_le _ (C.max'_mem hne)
+  have hcard : (Icc (C.min' hne).castSucc (C.max' hne).succ).card = C.card + 1 := by
+    rw [Fin.card_Icc]
+    simp only [Fin.val_castSucc, Fin.val_succ]
+    omega
+  exact (Finset.card_le_card hsub).trans_eq hcard
+
+end ChainBond
 
 end ManyBody
