@@ -369,3 +369,45 @@ theorem norm_apply_sub_inner_smul_le_add_offDiagonalPartFamily [CompleteSpace E]
 end LowEnergyBasis
 
 end SimpleSpectrum
+
+namespace LowEnergyBasis
+
+open scoped InnerProductSpace
+
+section Perturbation
+
+variable {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+  {n : ℕ} [NeZero n]
+
+/-- Taking the off-diagonal part is linear in the operator. Hastings,
+arXiv:cond-mat/0508554v3, `proj3new.tex`, definition of `o(i)` at lines 476–480. -/
+theorem offDiagonalPartFamily_sub (v : Fin n → E) (A B : E →L[𝕜] E) :
+    offDiagonalPartFamily v (A - B) = offDiagonalPartFamily v A - offDiagonalPartFamily v B := by
+  simp only [offDiagonalPartFamily, shiftPart, sub_apply, inner_sub_right, sub_smul,
+    Finset.sum_sub_distrib]
+
+/-- The off-diagonal part has norm at most `n-1` times the original operator norm.
+Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 476–480 and 1678–1708. -/
+theorem norm_offDiagonalPartFamily_le_mul_norm {v : Fin n → E} (hv : Orthonormal 𝕜 v)
+    (A : E →L[𝕜] E) : ‖offDiagonalPartFamily v A‖ ≤ (n - 1 : ℕ) * ‖A‖ := by
+  refine norm_offDiagonalPartFamily_le hv A (norm_nonneg _) fun a c _ => ?_
+  refine (norm_inner_le_norm _ _).trans ?_
+  simpa only [hv.1 a, hv.1 c, one_mul, mul_one] using A.le_opNorm (v c)
+
+/-- Changing an operator by `ε` changes its off-diagonal norm by at most `(n-1)ε`.
+This transfers the truncation error of Hastings, arXiv:cond-mat/0508554v3,
+`proj3new.tex`, eq. `apb` (lines 300–320), to the quantity in eq. `oibu`. -/
+theorem norm_offDiagonalPartFamily_le_add {v : Fin n → E} (hv : Orthonormal 𝕜 v)
+    (A B : E →L[𝕜] E) :
+    ‖offDiagonalPartFamily v A‖ ≤ ‖offDiagonalPartFamily v B‖ + (n - 1 : ℕ) * ‖A - B‖ := by
+  have heq : offDiagonalPartFamily v A =
+      offDiagonalPartFamily v B + offDiagonalPartFamily v (A - B) := by
+    rw [offDiagonalPartFamily_sub]
+    abel
+  calc _ = ‖offDiagonalPartFamily v B + offDiagonalPartFamily v (A - B)‖ := congrArg norm heq
+    _ ≤ ‖offDiagonalPartFamily v B‖ + ‖offDiagonalPartFamily v (A - B)‖ := norm_add_le _ _
+    _ ≤ _ := add_le_add le_rfl (norm_offDiagonalPartFamily_le_mul_norm hv (A - B))
+
+end Perturbation
+
+end LowEnergyBasis

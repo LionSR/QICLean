@@ -496,4 +496,41 @@ theorem sum_norm_offDiagonalPartFamily_le_oibu_levels (Kg : ℝ) (kg : ℕ)
 
 end Graph
 
+section CompressionPerturbation
+
+open Matrix
+open scoped Matrix.Norms.L2Operator
+
+variable {ν : Type*} [Fintype ν] [DecidableEq ν]
+
+/-- Ground-space compression is contractive on differences. Hastings,
+arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `apb` and lines 1562–1564. -/
+theorem norm_groundCompression_sub_le (H : Matrix ν ν ℂ) (E₀ : ℝ) (W B : Matrix ν ν ℂ) :
+    ‖groundCompression H E₀ W - groundCompression H E₀ B‖ ≤ ‖W - B‖ := by
+  have heq : groundCompression H E₀ W - groundCompression H E₀ B =
+      groundCompression H E₀ (W - B) := by
+    simp only [groundCompression, map_sub, sub_mul, mul_sub]
+  rw [heq]
+  exact norm_groundCompression_le H E₀ (W - B)
+
+/-- Summed off-diagonal norms change by at most `n-1` times the total operator error.
+Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eqs. `apb` and `oibu`,
+lines 300–320 and 1678–1708. -/
+theorem sum_norm_offDiagonalPartFamily_groundCompression_le {κ : Type*} [Fintype κ]
+    {n : ℕ} [NeZero n] {v : Fin n → EuclideanSpace ℂ ν} (hv : Orthonormal ℂ v)
+    (H : Matrix ν ν ℂ) (E₀ : ℝ) (W B : κ → Matrix ν ν ℂ) :
+    ∑ i, ‖offDiagonalPartFamily v (groundCompression H E₀ (W i))‖ ≤
+      ∑ i, ‖offDiagonalPartFamily v (groundCompression H E₀ (B i))‖ +
+        (n - 1 : ℕ) * ∑ i, ‖W i - B i‖ := by
+  calc _ ≤ ∑ i, (‖offDiagonalPartFamily v (groundCompression H E₀ (B i))‖ +
+      (n - 1 : ℕ) * ‖W i - B i‖) := by
+        refine Finset.sum_le_sum fun i _ => ?_
+        exact (norm_offDiagonalPartFamily_le_add hv
+          (groundCompression H E₀ (W i)) (groundCompression H E₀ (B i))).trans (add_le_add le_rfl
+          (mul_le_mul_of_nonneg_left (norm_groundCompression_sub_le H E₀ (W i) (B i))
+            (Nat.cast_nonneg _)))
+    _ = _ := by rw [Finset.sum_add_distrib, Finset.mul_sum]
+
+end CompressionPerturbation
+
 end ManyBody

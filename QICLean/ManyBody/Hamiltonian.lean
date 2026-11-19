@@ -23,3 +23,4 @@ import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorExample
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorSum
 import QICLean.ManyBody.Hamiltonian.Models
 import QICLean.ManyBody.Hamiltonian.NegativeFrequency
+import QICLean.ManyBody.Hamiltonian.VariationalBound
