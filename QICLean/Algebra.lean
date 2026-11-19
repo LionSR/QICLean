@@ -113,6 +113,7 @@ import QICLean.Algebra.OrthogonalProjection
 import QICLean.Algebra.OverlapGraph
 import QICLean.Algebra.OverlappingLiftAlgebra
 import QICLean.Algebra.PartialTraceDomination
+import QICLean.Algebra.PathGraphConnected
 import QICLean.Algebra.PermutationMatrixUnitary
 import QICLean.Algebra.PerronFrobenius
 import QICLean.Algebra.PiProductTrace
