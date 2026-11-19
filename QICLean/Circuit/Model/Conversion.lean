@@ -53,7 +53,7 @@ theorem IsProtocol.traceAdjointMap_mem_supportedOperators_ringBall
     {A : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R) :
     traceAdjointMap Φ A ∈ supportedOperators X (ringBall R T) := by
   simpa only [Geometry.iterate_neighbourhood_ring] using
-    h.traceAdjointMap_mem_supportedOperators (fun _ ↦ Nat.one_pos) hA
+    h.traceAdjointMap_mem_supportedOperators Geometry.ring_cost_pos hA
 
 /-- The trace-pairing adjoint of a protocol of depth `T` on the ring is multiplicative on
 operators on regions whose ring balls of radius `T` are disjoint.
@@ -64,7 +64,7 @@ theorem IsProtocol.traceAdjointMap_mul_of_disjoint_ringBall
     (hRR' : Disjoint (ringBall R T) (ringBall R' T)) {A B : Matrix (Config Z) (Config Z) ℂ}
     (hA : A ∈ supportedOperators Z R) (hB : B ∈ supportedOperators Z R') :
     traceAdjointMap Φ (A * B) = traceAdjointMap Φ A * traceAdjointMap Φ B :=
-  h.traceAdjointMap_mul (fun _ ↦ Nat.one_pos)
+  h.traceAdjointMap_mul Geometry.ring_cost_pos
     (by simpa only [Geometry.iterate_neighbourhood_ring] using hRR') hA hB
 
 /-- **Vanishing connected correlations beyond distance `2T`.** If `σ` is converted in depth `T`
@@ -81,7 +81,7 @@ theorem IsConversion.trace_mul_mul_eq_of_isRingSeparated
     {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
     (hB : B ∈ supportedOperators Z R') :
     (σ * (A * B)).trace = (σ * A).trace * (σ * B).trace :=
-  h.trace_mul_mul_eq (fun _ ↦ Nat.one_pos) hσ₀
+  h.trace_mul_mul_eq Geometry.ring_cost_pos hσ₀
     (by simpa only [Geometry.iterate_neighbourhood_ring] using hRR'.disjoint_ringBall) hA hB
 
 end QuantumCircuit

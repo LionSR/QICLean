@@ -26,12 +26,20 @@ blocks of a map of sites, read on the sites.
 
 * `QuantumCircuit.IsAdaptiveProtocol`, `QuantumCircuit.IsProtocol`,
   `QuantumCircuit.IsBoundedProtocol` — the three classes of protocols.
-* `QuantumCircuit.IsConversion` — exact conversion of one matrix into another.
+* `QuantumCircuit.IsConversion`, `QuantumCircuit.IsAdaptiveConversion` — exact conversion of
+  one matrix into another, by a protocol or an adaptive protocol.
 
 ## Main results
 
 * `QuantumCircuit.IsProtocol.comp`, `QuantumCircuit.IsAdaptiveProtocol.comp`,
   `QuantumCircuit.IsBoundedProtocol.comp` — composition, with additive depth.
+* `QuantumCircuit.IsAdaptiveProtocol.step` — classical feedforward: a layer followed by
+  adaptive protocols depending on its outcome.
+* `QuantumCircuit.IsAdaptiveProtocol.isKrausCPTP`, `QuantumCircuit.IsProtocol.isKrausCPTP` —
+  protocols realise channels.
+* `QuantumCircuit.IsConversion.trans`, `QuantumCircuit.IsConversion.density`,
+  `QuantumCircuit.IsAdaptiveConversion.trans`, `QuantumCircuit.IsAdaptiveConversion.density` —
+  conversions compose, with additive depth, and map density matrices to density matrices.
 * `QuantumCircuit.IsBoundedProtocol.dimension_bounds`,
   `QuantumCircuit.IsProtocol.exists_dimension_bound` — the bounds of a bounded protocol, and a
   bound for every protocol on nonempty bases.
@@ -234,21 +242,28 @@ theorem IsConversion.trans {T₁ T₂ : ℕ} {ρ : Matrix (Config X) (Config X) 
   obtain ⟨Ψ, hΨ, rfl⟩ := h₂
   exact ⟨_, hΦ.comp hΨ, rfl⟩
 
-/-- A conversion maps density matrices to density matrices. -/
-theorem IsConversion.density {T : ℕ}
-    {ρ : Matrix (Config X) (Config X) ℂ} {σ : Matrix (Config Z) (Config Z) ℂ}
-    (h : IsConversion Γ T ρ σ) (hρ : ρ.PosSemidef ∧ ρ.trace = 1) :
-    σ.PosSemidef ∧ σ.trace = 1 := by
-  classical
-  obtain ⟨Φ, hΦ, rfl⟩ := h
-  exact ⟨hΦ.isKrausCPTP.map_posSemidef hρ.1, (hΦ.isKrausCPTP.trace_map ρ).trans hρ.2⟩
-
 /-- An exact conversion is an adaptive one. -/
 theorem IsConversion.adaptive {T : ℕ} {ρ : Matrix (Config X) (Config X) ℂ}
     {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion Γ T ρ σ) :
     IsAdaptiveConversion Γ T ρ σ :=
   let ⟨Φ, hΦ, hρ⟩ := h
   ⟨Φ, hΦ.adaptive, hρ⟩
+
+/-- An adaptive conversion maps density matrices to density matrices. -/
+theorem IsAdaptiveConversion.density {T : ℕ}
+    {ρ : Matrix (Config X) (Config X) ℂ} {σ : Matrix (Config Z) (Config Z) ℂ}
+    (h : IsAdaptiveConversion Γ T ρ σ) (hρ : ρ.PosSemidef ∧ ρ.trace = 1) :
+    σ.PosSemidef ∧ σ.trace = 1 := by
+  classical
+  obtain ⟨Φ, hΦ, rfl⟩ := h
+  exact ⟨hΦ.isKrausCPTP.map_posSemidef hρ.1, (hΦ.isKrausCPTP.trace_map ρ).trans hρ.2⟩
+
+/-- A conversion maps density matrices to density matrices. -/
+theorem IsConversion.density {T : ℕ}
+    {ρ : Matrix (Config X) (Config X) ℂ} {σ : Matrix (Config Z) (Config Z) ℂ}
+    (h : IsConversion Γ T ρ σ) (hρ : ρ.PosSemidef ∧ ρ.trace = 1) :
+    σ.PosSemidef ∧ σ.trace = 1 :=
+  h.adaptive.density hρ
 
 /-- Every matrix is converted adaptively into itself in depth `0`. -/
 theorem IsAdaptiveConversion.refl (ρ : Matrix (Config X) (Config X) ℂ) :
@@ -270,15 +285,6 @@ theorem IsAdaptiveConversion.trans {T₁ T₂ : ℕ} {ρ : Matrix (Config X) (Co
   obtain ⟨Φ, hΦ, rfl⟩ := h₁
   obtain ⟨Ψ, hΨ, rfl⟩ := h₂
   exact ⟨_, hΦ.comp hΨ, rfl⟩
-
-/-- An adaptive conversion maps density matrices to density matrices. -/
-theorem IsAdaptiveConversion.density {T : ℕ}
-    {ρ : Matrix (Config X) (Config X) ℂ} {σ : Matrix (Config Z) (Config Z) ℂ}
-    (h : IsAdaptiveConversion Γ T ρ σ) (hρ : ρ.PosSemidef ∧ ρ.trace = 1) :
-    σ.PosSemidef ∧ σ.trace = 1 := by
-  classical
-  obtain ⟨Φ, hΦ, rfl⟩ := h
-  exact ⟨hΦ.isKrausCPTP.map_posSemidef hρ.1, (hΦ.isKrausCPTP.trace_map ρ).trans hρ.2⟩
 
 /-! ### Dimension bounds -/
 

@@ -42,6 +42,10 @@ abbrev ring (N : ℕ) : Geometry (Fin N) where
   cell k := {k, finRotate N k}
   cost _ := 1
 
+/-- Every cell of the ring has positive cost. -/
+theorem ring_cost_pos {N : ℕ} (b : (ring N).Cell) : 0 < (ring N).cost b :=
+  Nat.one_pos
+
 variable {N : ℕ} [NeZero N]
 
 theorem ring_cell (k : Fin N) : (ring N).cell k = {k, k + 1} := by
