@@ -13,7 +13,7 @@ import QICLean.ManyBody.Hamiltonian.LowEnergyCommutator
 Hastings, arXiv:cond-mat/0508554v3, eq. `oibu` (lines 1689–1694), sums the decaying bound on the
 commutators of ground-space compressions over the terms.
 
-* `shellSumConst`, `sum_exp_neg_edist_le`: exponential sums over the shells of a graph of
+* `Real.shellSumConst`, `sum_exp_neg_edist_le`: exponential sums over the shells of a graph of
   polynomial growth.
 * `norm_groundCompression_commutator_le_exp(_edist)`: exponential decay of the low-energy
   commutators in the graph distance between anchors.
@@ -32,114 +32,6 @@ open scoped Matrix.Norms.L2Operator InnerProductSpace Nat Topology
 
 namespace ManyBody
 
-section ShellSums
-
-/-- **A power against an exponential at rate `γ`.** For `γ > 0` and `x ≥ 0`,
-`(x + 1)^k e^{-γ x} ≤ k! (2/γ)^k e^{γ/2} e^{-(γ/2) x}`. -/
-theorem add_one_pow_mul_exp_neg_le {γ : ℝ} (hγ : 0 < γ) (k : ℕ) {x : ℝ} (hx : 0 ≤ x) :
-    (x + 1) ^ k * Real.exp (-(γ * x)) ≤
-      k ! * (2 / γ) ^ k * Real.exp (γ / 2) * Real.exp (-(γ / 2 * x)) := by
-  have hfac : (0 : ℝ) < k ! := by exact_mod_cast Nat.factorial_pos k
-  have h := Real.pow_div_factorial_le_exp (x := γ * (x + 1) / 2) (by positivity) k
-  rw [div_le_iff₀ hfac] at h
-  have hpow : (x + 1) ^ k = (2 / γ) ^ k * (γ * (x + 1) / 2) ^ k := by
-    rw [← mul_pow]
-    congr 1
-    field_simp
-  calc (x + 1) ^ k * Real.exp (-(γ * x))
-      = (2 / γ) ^ k * (γ * (x + 1) / 2) ^ k * Real.exp (-(γ * x)) := by rw [hpow]
-    _ ≤ (2 / γ) ^ k * (Real.exp (γ * (x + 1) / 2) * k !) * Real.exp (-(γ * x)) := by
-        gcongr
-    _ = k ! * (2 / γ) ^ k * Real.exp (γ / 2) * Real.exp (-(γ / 2 * x)) := by
-        rw [show γ * (x + 1) / 2 = γ / 2 + γ / 2 * x by ring, Real.exp_add]
-        have : Real.exp (γ / 2 * x) * Real.exp (-(γ * x)) = Real.exp (-(γ / 2 * x)) := by
-          rw [← Real.exp_add]; ring_nf
-        calc (2 / γ) ^ k * (Real.exp (γ / 2) * Real.exp (γ / 2 * x) * k !) *
-              Real.exp (-(γ * x))
-            = k ! * (2 / γ) ^ k * Real.exp (γ / 2) *
-                (Real.exp (γ / 2 * x) * Real.exp (-(γ * x))) := by ring
-          _ = _ := by rw [this]
-
-/-- The constant `S_{γ,k} = k! (2/γ)^k e^{γ/2} / (1 - e^{-γ/2})` bounding
-`∑_{d ≥ 0} (d + 1)^k e^{-γ d}`. -/
-noncomputable def shellSumConst (γ : ℝ) (k : ℕ) : ℝ :=
-  k ! * (2 / γ) ^ k * Real.exp (γ / 2) / (1 - Real.exp (-(γ / 2)))
-
-theorem shellSumConst_nonneg {γ : ℝ} (hγ : 0 < γ) (k : ℕ) : 0 ≤ shellSumConst γ k := by
-  have h1 : Real.exp (-(γ / 2)) < 1 := Real.exp_lt_one_iff.mpr (by linarith)
-  unfold shellSumConst
-  have : 0 < 1 - Real.exp (-(γ / 2)) := by linarith
-  positivity
-
-/-- **Shell sum at rate `γ`.** For every finite set `τ` of natural numbers,
-`∑_{d ∈ τ} (d + 1)^k e^{-γ d} ≤ S_{γ,k}`. -/
-theorem sum_add_one_pow_mul_exp_neg_le {γ : ℝ} (hγ : 0 < γ) (k : ℕ) (τ : Finset ℕ) :
-    ∑ d ∈ τ, ((d : ℝ) + 1) ^ k * Real.exp (-(γ * d)) ≤ shellSumConst γ k := by
-  set r := Real.exp (-(γ / 2)) with hr
-  have hr0 : 0 ≤ r := (Real.exp_pos _).le
-  have hr1 : r < 1 := Real.exp_lt_one_iff.mpr (by linarith)
-  set M : ℝ := k ! * (2 / γ) ^ k * Real.exp (γ / 2) with hM
-  have hM0 : 0 ≤ M := by positivity
-  have hterm (d : ℕ) : ((d : ℝ) + 1) ^ k * Real.exp (-(γ * d)) ≤ M * r ^ d := by
-    have hrd : r ^ d = Real.exp (-(γ / 2 * d)) := by
-      rw [hr, ← Real.exp_nat_mul]; ring_nf
-    rw [hrd]
-    exact add_one_pow_mul_exp_neg_le hγ k (Nat.cast_nonneg d)
-  obtain ⟨m, hm⟩ : ∃ m, τ ⊆ Finset.range m :=
-    ⟨τ.sup id + 1, fun d hd => Finset.mem_range.mpr
-      (Nat.lt_succ_of_le (Finset.le_sup (f := id) hd))⟩
-  calc _ ≤ ∑ d ∈ τ, M * r ^ d := Finset.sum_le_sum fun d _ => hterm d
-    _ ≤ ∑ d ∈ Finset.range m, M * r ^ d :=
-      Finset.sum_le_sum_of_subset_of_nonneg hm fun d _ _ => by positivity
-    _ = M * ∑ d ∈ Finset.range m, r ^ d := (Finset.mul_sum _ _ _).symm
-    _ ≤ M * (1 / (1 - r)) := by
-        gcongr
-        have h := geom_sum_Ico_le_of_lt_one (m := 0) (n := m) hr0 hr1
-        rw [pow_zero] at h
-        rw [Finset.range_eq_Ico]
-        exact h
-    _ = shellSumConst γ k := by rw [shellSumConst, hM, hr]; ring
-
-/-- **Exponential decay summed over the sites.** If the sphere of radius `d` about `x` has at
-most `K_g (d + 1)^k` sites, then `∑_y e^{-γ d(x, y)}` over the sites at finite distance is at
-most `K_g S_{γ,k}`. -/
-theorem sum_exp_neg_edist_le {V : Type*} [Fintype V] (G : SimpleGraph V) (x : V) (Kg : ℝ)
-    (kg : ℕ) (hGrowth : ∀ d : ℕ,
-      ((Finset.univ.filter fun y => G.edist x y = d).card : ℝ) ≤ Kg * ((d : ℝ) + 1) ^ kg)
-    {γ : ℝ} (hγ : 0 < γ) :
-    ∑ y ∈ Finset.univ.filter (fun y => G.edist x y ≠ ⊤),
-      Real.exp (-(γ * ((G.edist x y).toNat : ℝ))) ≤ Kg * shellSumConst γ kg := by
-  classical
-  have hKg : 0 ≤ Kg := by
-    have := hGrowth 0
-    simp only [CharP.cast_eq_zero, zero_add, one_pow, mul_one] at this
-    exact (Nat.cast_nonneg _).trans this
-  set S := Finset.univ.filter fun y => G.edist x y ≠ ⊤
-  set D : V → ℕ := fun y => (G.edist x y).toNat
-  have hfib : ∀ d ∈ S.image D, ((S.filter fun y => D y = d).card : ℝ) ≤
-      Kg * ((d : ℝ) + 1) ^ kg := by
-    intro d _
-    refine le_trans ?_ (hGrowth d)
-    exact_mod_cast Finset.card_le_card fun y hy => by
-      simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hy ⊢
-      rw [← hy.2]
-      exact (ENat.natCast_toNat hy.1).symm
-  calc ∑ y ∈ S, Real.exp (-(γ * (D y : ℝ)))
-      = ∑ d ∈ S.image D, ∑ y ∈ S.filter (fun y => D y = d), Real.exp (-(γ * (D y : ℝ))) :=
-        (Finset.sum_fiberwise_of_maps_to (fun y hy => Finset.mem_image_of_mem D hy) _).symm
-    _ = ∑ d ∈ S.image D, ((S.filter fun y => D y = d).card : ℝ) * Real.exp (-(γ * d)) := by
-        refine Finset.sum_congr rfl fun d _ => ?_
-        rw [Finset.sum_congr rfl fun y hy => by rw [(Finset.mem_filter.mp hy).2],
-          Finset.sum_const, nsmul_eq_mul]
-    _ ≤ ∑ d ∈ S.image D, Kg * ((d : ℝ) + 1) ^ kg * Real.exp (-(γ * d)) :=
-        Finset.sum_le_sum fun d hd =>
-          mul_le_mul_of_nonneg_right (hfib d hd) (Real.exp_pos _).le
-    _ = Kg * ∑ d ∈ S.image D, ((d : ℝ) + 1) ^ kg * Real.exp (-(γ * d)) := by
-        rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun d _ => by ring
-    _ ≤ Kg * shellSumConst γ kg :=
-        mul_le_mul_of_nonneg_left (sum_add_one_pow_mul_exp_neg_le hγ kg _) hKg
-
-end ShellSums
 
 section Compression
 
@@ -458,7 +350,7 @@ theorem sum_norm_groundCompression_commutator_le (Kg : ℝ) (kg : ℕ)
         groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀
             (Φ.term j)‖ ≤
       commutatorConst R vR b₀ Kg kg * Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) *
-        ‖Φ.term j‖ * (|b₀| * (Kg * shellSumConst (commutatorRate R vR b₀ ΔE) kg)) := by
+        ‖Φ.term j‖ * (|b₀| * (Kg * Real.shellSumConst (commutatorRate R vR b₀ ΔE) kg)) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
@@ -497,7 +389,7 @@ theorem sum_norm_groundCompression_commutator_le (Kg : ℝ) (kg : ℕ)
     intro x
     exact (sum_weight_anchor_le_of_support_budget T a ha (fun i ↦ ‖Φ.term i‖)
       (fun i ↦ norm_nonneg _) b₀ hBudget x).trans (le_abs_self b₀)
-  have hsites : ∑ x, w x ≤ Kg * shellSumConst γ kg := by
+  have hsites : ∑ x, w x ≤ Kg * Real.shellSumConst γ kg := by
     have hsplit : ∑ x, w x = ∑ x ∈ Finset.univ.filter (fun x => G.edist (a j) x ≠ ⊤),
         Real.exp (-(γ * ((G.edist (a j) x).toNat : ℝ))) := by
       rw [Finset.sum_filter]
@@ -510,7 +402,7 @@ theorem sum_norm_groundCompression_commutator_le (Kg : ℝ) (kg : ℕ)
     _ = C * ∑ i, ‖Φ.term i‖ * w (a i) := (Finset.mul_sum _ _ _).symm
     _ ≤ C * ∑ x, |b₀| * w x := mul_le_mul_of_nonneg_left hgroup hC
     _ = C * (|b₀| * ∑ x, w x) := by rw [← Finset.mul_sum]
-    _ ≤ C * (|b₀| * (Kg * shellSumConst γ kg)) := by
+    _ ≤ C * (|b₀| * (Kg * Real.shellSumConst γ kg)) := by
         gcongr
     _ = _ := by simp only [C]
 
@@ -534,7 +426,7 @@ theorem sum_norm_offDiagonalPartFamily_le_oibu (Kg : ℝ) (kg : ℕ)
         (groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm q ΔE Φ.hamiltonian (Φ.term i)))‖ ≤
       (m - 1 : ℕ) * (commutatorConst R vR b₀ Kg kg *
         Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) * ‖Φ.term j‖ *
-          (|b₀| * (Kg * shellSumConst (commutatorRate R vR b₀ ΔE) kg)) / δ) := by
+          (|b₀| * (Kg * Real.shellSumConst (commutatorRate R vR b₀ ΔE) kg)) / δ) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   simp only [groundCompression_gaussianFilteredTerm hq hH] at hAv ⊢
@@ -574,7 +466,7 @@ theorem sum_norm_offDiagonalPartFamily_le_oibu_levels (Kg : ℝ) (kg : ℕ)
       (m - 1 : ℕ) * levelBoundB m r (2 * J ^ 2) 1 (L - 1) *
         ∑ ℓ ∈ Finset.range L, commutatorConst R vR b₀ Kg kg *
           Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) * ‖Φ.term (j ℓ)‖ *
-            (|b₀| * (Kg * shellSumConst (commutatorRate R vR b₀ ΔE) kg)) := by
+            (|b₀| * (Kg * Real.shellSumConst (commutatorRate R vR b₀ ΔE) kg)) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   simp only [groundCompression_gaussianFilteredTerm hq hH]
@@ -607,152 +499,5 @@ theorem sum_norm_offDiagonalPartFamily_le_oibu_levels (Kg : ℝ) (kg : ℕ)
       hBudget Kg kg hGrowth hΔE hgap (j ℓ)
 
 end Graph
-
-
-
-end ManyBody
-
-namespace ManyBody
-
-
-variable {V : Type*}
-
-/-- Successive square roots of a decay kernel. Hastings, arXiv:cond-mat/0508554v3,
-`proj3new.tex`, lines 1695–1708, with the cross terms retained. -/
-noncomputable def sqrtKernel (k : V → V → ℝ) : ℕ → V → V → ℝ
-  | 0 => k
-  | n + 1 => fun i j => Real.sqrt (sqrtKernel k n i j)
-
-@[simp]
-theorem sqrtKernel_zero (k : V → V → ℝ) (i j : V) : sqrtKernel k 0 i j = k i j := rfl
-
-@[simp]
-theorem sqrtKernel_succ (k : V → V → ℝ) (n : ℕ) (i j : V) :
-    sqrtKernel k (n + 1) i j = Real.sqrt (sqrtKernel k n i j) := rfl
-
-theorem sqrtKernel_nonneg {k : V → V → ℝ} (hk : ∀ i j, 0 ≤ k i j) :
-    ∀ n i j, 0 ≤ sqrtKernel k n i j
-  | 0, i, j => hk i j
-  | _ + 1, _, _ => Real.sqrt_nonneg _
-
-theorem sqrtKernel_le_one {k : V → V → ℝ} (hk : ∀ i j, k i j ≤ 1) :
-    ∀ n i j, sqrtKernel k n i j ≤ 1
-  | 0, i, j => hk i j
-  | n + 1, i, j => Real.sqrt_le_one.mpr (sqrtKernel_le_one hk n i j)
-
-theorem sqrtKernel_symm {k : V → V → ℝ} (hk : ∀ i j, k i j = k j i) :
-    ∀ n i j, sqrtKernel k n i j = sqrtKernel k n j i
-  | 0, i, j => hk i j
-  | n + 1, i, j => congrArg Real.sqrt (sqrtKernel_symm hk n i j)
-
-theorem sqrtKernel_succ_sq {k : V → V → ℝ} (hk : ∀ i j, 0 ≤ k i j) (n : ℕ) (i j : V) :
-    sqrtKernel k (n + 1) i j ^ 2 = sqrtKernel k n i j :=
-  Real.sq_sqrt (sqrtKernel_nonneg hk n i j)
-
-theorem sqrtKernel_mono {k : V → V → ℝ} (hk0 : ∀ i j, 0 ≤ k i j)
-    (hk1 : ∀ i j, k i j ≤ 1) (i j : V) : Monotone fun n => sqrtKernel k n i j := by
-  apply monotone_nat_of_le_succ
-  intro n
-  rw [sqrtKernel_succ]
-  apply Real.le_sqrt_of_sq_le
-  have h0 := sqrtKernel_nonneg hk0 n i j
-  have h1 := sqrtKernel_le_one hk1 n i j
-  nlinarith
-
-/-- The multiplicative triangle inequality persists under taking square roots. Hastings,
-arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708. -/
-theorem sqrtKernel_mul_le {k : V → V → ℝ} (hk0 : ∀ i j, 0 ≤ k i j)
-    (hmul : ∀ i j l, k i j * k j l ≤ k i l) :
-    ∀ n i j l, sqrtKernel k n i j * sqrtKernel k n j l ≤ sqrtKernel k n i l
-  | 0, i, j, l => hmul i j l
-  | n + 1, i, j, l => by
-      rw [sqrtKernel_succ, sqrtKernel_succ, sqrtKernel_succ,
-        ← Real.sqrt_mul (sqrtKernel_nonneg hk0 n i j)]
-      exact Real.sqrt_le_sqrt (sqrtKernel_mul_le hk0 hmul n i j l)
-
-/-- The sum of a kernel over a finite list of selected terms, allowing repeated selections
-at different spectral splits. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
-lines 1695–1708. -/
-def listKernelSum (k : V → V → ℝ) (s : List V) (i : V) : ℝ := (s.map (k i)).sum
-
-@[simp]
-theorem listKernelSum_nil (k : V → V → ℝ) (i : V) : listKernelSum k [] i = 0 := rfl
-
-@[simp]
-theorem listKernelSum_cons (k : V → V → ℝ) (j : V) (s : List V) (i : V) :
-    listKernelSum k (j :: s) i = k i j + listKernelSum k s i := rfl
-
-@[simp]
-theorem listKernelSum_append (k : V → V → ℝ) (s t : List V) (i : V) :
-    listKernelSum k (s ++ t) i = listKernelSum k s i + listKernelSum k t i := by
-  simp only [listKernelSum, List.map_append, List.sum_append]
-
-theorem listKernelSum_nonneg {k : V → V → ℝ} (hk : ∀ i j, 0 ≤ k i j)
-    (s : List V) (i : V) : 0 ≤ listKernelSum k s i := by
-  induction s with
-  | nil => exact le_rfl
-  | cons j s hs => exact add_nonneg (hk i j) hs
-
-/-- Exponential graph decay, set to zero between disconnected components. Hastings,
-arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `blecm` and lines 1689–1708. -/
-noncomputable def graphDecayKernel (G : SimpleGraph V) (γ : ℝ) (i j : V) : ℝ :=
-  if G.edist i j = ⊤ then 0 else Real.exp (-(γ * ((G.edist i j).toNat : ℝ)))
-
-theorem graphDecayKernel_nonneg (G : SimpleGraph V) (γ : ℝ) (i j : V) :
-    0 ≤ graphDecayKernel G γ i j := by
-  unfold graphDecayKernel
-  split_ifs <;> positivity
-
-theorem graphDecayKernel_le_one (G : SimpleGraph V) {γ : ℝ} (hγ : 0 ≤ γ) (i j : V) :
-    graphDecayKernel G γ i j ≤ 1 := by
-  unfold graphDecayKernel
-  split_ifs
-  · norm_num
-  · exact Real.exp_le_one_iff.mpr
-      (neg_nonpos.mpr (mul_nonneg hγ (Nat.cast_nonneg _)))
-
-theorem graphDecayKernel_symm (G : SimpleGraph V) (γ : ℝ) (i j : V) :
-    graphDecayKernel G γ i j = graphDecayKernel G γ j i := by
-  simp only [graphDecayKernel, G.edist_comm (u := i) (v := j)]
-
-/-- The graph triangle inequality in multiplicative form, including infinite distances.
-Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708. -/
-theorem graphDecayKernel_mul_le (G : SimpleGraph V) {γ : ℝ} (hγ : 0 ≤ γ) (i j l : V) :
-    graphDecayKernel G γ i j * graphDecayKernel G γ j l ≤ graphDecayKernel G γ i l := by
-  classical
-  by_cases hij : G.edist i j = ⊤
-  · simpa only [graphDecayKernel, hij, ↓reduceIte, zero_mul] using
-      graphDecayKernel_nonneg G γ i l
-  by_cases hjl : G.edist j l = ⊤
-  · simpa only [graphDecayKernel, hjl, ↓reduceIte, mul_zero] using
-      graphDecayKernel_nonneg G γ i l
-  have hsum : G.edist i j + G.edist j l ≠ ⊤ := by simp [hij, hjl]
-  have htri := G.edist_triangle (u := i) (v := j) (w := l)
-  have hil : G.edist i l ≠ ⊤ := fun h => hsum (top_le_iff.mp (h ▸ htri))
-  have hnat := ENat.toNat_le_toNat htri hsum
-  rw [ENat.toNat_add hij hjl] at hnat
-  have hreal : ((G.edist i l).toNat : ℝ) ≤
-      ((G.edist i j).toNat : ℝ) + ((G.edist j l).toNat : ℝ) := by exact_mod_cast hnat
-  simp only [graphDecayKernel, hij, hjl, hil, ↓reduceIte]
-  rw [← Real.exp_add]
-  apply Real.exp_le_exp.mpr
-  nlinarith [mul_le_mul_of_nonneg_left hreal hγ]
-
-/-- Taking square roots `n` times divides the graph exponential rate by `2^n`.
-Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708, with the
-cross terms of each spectral refinement retained. -/
-theorem sqrtKernel_graphDecayKernel (G : SimpleGraph V) (γ : ℝ) (n : ℕ) (i j : V) :
-    sqrtKernel (graphDecayKernel G γ) n i j = graphDecayKernel G (γ / 2 ^ n) i j := by
-  induction n with
-  | zero => simp only [sqrtKernel_zero, pow_zero, div_one]
-  | succ n ih =>
-    rw [sqrtKernel_succ, ih]
-    unfold graphDecayKernel
-    split_ifs
-    · simp
-    · rw [← Real.exp_half]
-      congr 1
-      rw [pow_succ]
-      ring
 
 end ManyBody

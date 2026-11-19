@@ -7,6 +7,8 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Finite
 import Mathlib.Combinatorics.SimpleGraph.Walk.Counting
+import QICLean.Analysis.LowEnergyBasis.Recursive
+import QICLean.Analysis.PowerExponential
 import QICLean.ManyBody.Dynamics.GraphBall
 
 /-!
@@ -506,5 +508,106 @@ theorem card_connected_induce_le_exponential {Δ : ℕ} (hΔ : ∀ v, G.degree v
   exact (pow_le_pow_left' (le_max_right 1 (Δ ^ 2)) (n - 1)).trans
     (pow_le_pow_right' (le_max_left 1 (Δ ^ 2)) (Nat.sub_le n 1))
 
+
+section PolynomialGrowth
+
+open LowEnergyBasis
+
+variable {V κ : Type*} [Fintype V] [DecidableEq V] [Fintype κ]
+
+/-- **Exponential decay summed over the sites.** If the sphere of radius `d` about `x` has at
+most `K_g (d + 1)^k` sites, then `∑_y e^{-γ d(x, y)}` over the sites at finite distance is at
+most `K_g S_{γ,k}`. -/
+theorem sum_exp_neg_edist_le {V : Type*} [Fintype V] (G : SimpleGraph V) (x : V) (Kg : ℝ)
+    (kg : ℕ) (hGrowth : ∀ d : ℕ,
+      ((Finset.univ.filter fun y => G.edist x y = d).card : ℝ) ≤ Kg * ((d : ℝ) + 1) ^ kg)
+    {γ : ℝ} (hγ : 0 < γ) :
+    ∑ y ∈ Finset.univ.filter (fun y => G.edist x y ≠ ⊤),
+      Real.exp (-(γ * ((G.edist x y).toNat : ℝ))) ≤ Kg * Real.shellSumConst γ kg := by
+  classical
+  have hKg : 0 ≤ Kg := by
+    have := hGrowth 0
+    simp only [CharP.cast_eq_zero, zero_add, one_pow, mul_one] at this
+    exact (Nat.cast_nonneg _).trans this
+  set S := Finset.univ.filter fun y => G.edist x y ≠ ⊤
+  set D : V → ℕ := fun y => (G.edist x y).toNat
+  have hfib : ∀ d ∈ S.image D, ((S.filter fun y => D y = d).card : ℝ) ≤
+      Kg * ((d : ℝ) + 1) ^ kg := by
+    intro d _
+    refine le_trans ?_ (hGrowth d)
+    exact_mod_cast Finset.card_le_card fun y hy => by
+      simp only [S, Finset.mem_filter, Finset.mem_univ, true_and] at hy ⊢
+      rw [← hy.2]
+      exact (ENat.natCast_toNat hy.1).symm
+  calc ∑ y ∈ S, Real.exp (-(γ * (D y : ℝ)))
+      = ∑ d ∈ S.image D, ∑ y ∈ S.filter (fun y => D y = d), Real.exp (-(γ * (D y : ℝ))) :=
+        (Finset.sum_fiberwise_of_maps_to (fun y hy => Finset.mem_image_of_mem D hy) _).symm
+    _ = ∑ d ∈ S.image D, ((S.filter fun y => D y = d).card : ℝ) * Real.exp (-(γ * d)) := by
+        refine Finset.sum_congr rfl fun d _ => ?_
+        rw [Finset.sum_congr rfl fun y hy => by rw [(Finset.mem_filter.mp hy).2],
+          Finset.sum_const, nsmul_eq_mul]
+    _ ≤ ∑ d ∈ S.image D, Kg * ((d : ℝ) + 1) ^ kg * Real.exp (-(γ * d)) :=
+        Finset.sum_le_sum fun d hd =>
+          mul_le_mul_of_nonneg_right (hfib d hd) (Real.exp_pos _).le
+    _ = Kg * ∑ d ∈ S.image D, ((d : ℝ) + 1) ^ kg * Real.exp (-(γ * d)) := by
+        rw [Finset.mul_sum]; refine Finset.sum_congr rfl fun d _ => by ring
+    _ ≤ Kg * Real.shellSumConst γ kg :=
+        mul_le_mul_of_nonneg_left (Real.sum_add_one_pow_mul_exp_neg_le hγ kg _) hKg
+
+/-- A weighted exponential row sum, with a bound on the weights at each anchor.
+This is the geometric summation in Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
+eq. `oibu`, lines 1689–1694, valid at any positive rate. -/
+theorem sum_weight_mul_exp_neg_edist_le (G : SimpleGraph V) (a : κ → V)
+    (w : κ → ℝ) (hw : ∀ i, 0 ≤ w i) (B : ℝ)
+    (hBudget : ∀ x, ∑ i ∈ Finset.univ.filter (fun i => a i = x), w i ≤ B)
+    (x : V) (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ r : ℕ,
+      ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
+    {β : ℝ} (hβ : 0 < β) :
+    ∑ i, w i * (if G.edist x (a i) = ⊤ then 0 else
+      Real.exp (-(β * ((G.edist x (a i)).toNat : ℝ)))) ≤ B * (Kg * Real.shellSumConst β kg) := by
+  classical
+  let f : V → ℝ := fun y => if G.edist x y = ⊤ then 0 else
+    Real.exp (-(β * ((G.edist x y).toNat : ℝ)))
+  have hf (y : V) : 0 ≤ f y := by dsimp only [f]; split_ifs <;> positivity
+  have hB : 0 ≤ B := (Finset.sum_nonneg fun i _ => hw i).trans (hBudget x)
+  have hgroup := sum_weight_mul_comp_le_budget_mul_sum a w B hBudget f hf
+  have hsites : ∑ y, f y ≤ Kg * Real.shellSumConst β kg := by
+    have heq : ∑ y, f y = ∑ y ∈ Finset.univ.filter (fun y => G.edist x y ≠ ⊤),
+        Real.exp (-(β * ((G.edist x y).toNat : ℝ))) := by
+      rw [Finset.sum_filter]
+      refine Finset.sum_congr rfl fun y _ => ?_
+      dsimp only [f]
+      split_ifs <;> simp_all
+    rw [heq]
+    exact sum_exp_neg_edist_le G x Kg kg hGrowth hβ
+  exact hgroup.trans (mul_le_mul_of_nonneg_left hsites hB)
+
+/-- Each anchor in a finite list contributes one weighted geometric row sum.
+Repeated anchors are counted with their multiplicity.
+Hastings, arXiv:cond-mat/0508554v3, eq. `oibu`, lines 1689–1708. -/
+theorem sum_weight_list_graphDecayKernel_le (G : SimpleGraph V) (a : κ → V)
+    (w : κ → ℝ) (hw : ∀ i, 0 ≤ w i) (B : ℝ)
+    (hBudget : ∀ x, ∑ i ∈ Finset.univ.filter (fun i ↦ a i = x), w i ≤ B)
+    (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
+      ((Finset.univ.filter fun y ↦ G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
+    {β : ℝ} (hβ : 0 < β) (s : List κ) :
+    ∑ i, w i * listKernelSum (fun i j ↦ graphDecayKernel G β (a i) (a j)) s i ≤
+      (s.length : ℝ) * (B * (Kg * Real.shellSumConst β kg)) := by
+  induction s with
+  | nil => simp only [listKernelSum_nil, mul_zero, Finset.sum_const_zero,
+      List.length_nil, Nat.cast_zero, zero_mul]; exact le_rfl
+  | cons j s ih =>
+    have hrow : ∑ i, w i * graphDecayKernel G β (a i) (a j) ≤
+        B * (Kg * Real.shellSumConst β kg) := by
+      calc
+        _ = ∑ i, w i * graphDecayKernel G β (a j) (a i) :=
+          Finset.sum_congr rfl fun i _ ↦ by rw [graphDecayKernel_symm]
+        _ ≤ _ := sum_weight_mul_exp_neg_edist_le G a w hw B hBudget (a j) Kg kg
+          (hGrowth (a j)) hβ
+    simp only [listKernelSum_cons, mul_add, Finset.sum_add_distrib, List.length_cons,
+      Nat.cast_add, Nat.cast_one]
+    exact (add_le_add hrow ih).trans_eq (by ring)
+
+end PolynomialGrowth
 
 end ManyBody

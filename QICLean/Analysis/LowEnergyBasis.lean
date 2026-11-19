@@ -8,6 +8,8 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.LowEnergyBasis
 
+import QICLean.Analysis.LowEnergyBasis.Construction
 import QICLean.Analysis.LowEnergyBasis.Iteration
 import QICLean.Analysis.LowEnergyBasis.OffDiagonal
+import QICLean.Analysis.LowEnergyBasis.Recursive
 import QICLean.Analysis.LowEnergyBasis.SpectralSplit
