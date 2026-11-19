@@ -27,6 +27,7 @@ family.
   normalizations.
 * `KrausFamily.single` — the family of one operator.
 * `KrausFamily.adjoint` — the family of the adjoint operators.
+* `KrausFamily.reindex` — a family carried along equivalences of its bases.
 * `KrausFamily.prepare`, `KrausFamily.discard` — the preparation of a basis vector from the
   one-point basis, and the discard of a basis onto it.
 * `KrausFamily.measure` — the measurement of a basis.
@@ -204,5 +205,40 @@ theorem IsTP.nonempty_target {α β : Type} [DecidableEq α] [Fintype β] [Nonem
   rw [not_nonempty_iff] at hb
   exact h.effect_ne_zero (Finset.sum_eq_zero fun i _ ↦ by
     rw [Subsingleton.elim (K.op i) 0, Matrix.mul_zero])
+
+/-! ### Reindexing -/
+
+section Reindex
+
+variable {α β α' β' : Type}
+
+/-- The family carried along equivalences `e` of the input and `f` of the output bases. -/
+def reindex (K : KrausFamily α β) (e : α' ≃ α) (f : β' ≃ β) : KrausFamily α' β' :=
+  ⟨K.Index, fun i ↦ (K.op i).submatrix f e⟩
+
+@[simp] theorem reindex_op (K : KrausFamily α β) (e : α' ≃ α) (f : β' ≃ β)
+    (i : (K.reindex e f).Index) : (K.reindex e f).op i = (K.op i).submatrix f e :=
+  rfl
+
+theorem effect_reindex [Fintype β] [Fintype β'] (K : KrausFamily α β) (e : α' ≃ α)
+    (f : β' ≃ β) : (K.reindex e f).effect = K.effect.submatrix e e := by
+  ext a b
+  simp only [effect, reindex_op, conjTranspose_submatrix, submatrix_mul_equiv, Matrix.sum_apply,
+    submatrix_apply]
+  rfl
+
+theorem IsTP.reindex [Fintype β] [Fintype β'] [DecidableEq α] [DecidableEq α']
+    {K : KrausFamily α β} (hK : K.IsTP) (e : α' ≃ α) (f : β' ≃ β) : (K.reindex e f).IsTP := by
+  rw [IsTP, effect_reindex, hK, submatrix_one_equiv]
+
+theorem IsUnitary.reindex [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α]
+    [DecidableEq β] [DecidableEq α'] [DecidableEq β'] {K : KrausFamily α β} (hK : K.IsUnitary)
+    (e : α' ≃ α) (f : β' ≃ β) : (K.reindex e f).IsUnitary := by
+  obtain ⟨u, hK⟩ := hK
+  refine ⟨u, fun i ↦ ⟨?_, ?_⟩⟩ <;>
+    simp only [reindex_op, conjTranspose_submatrix, submatrix_mul_equiv, (hK i).1, (hK i).2,
+      submatrix_one_equiv]
+
+end Reindex
 
 end KrausFamily

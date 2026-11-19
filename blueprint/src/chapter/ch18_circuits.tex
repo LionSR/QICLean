@@ -762,13 +762,14 @@ are embedded.
     \label{thm:circuits_layer_map}
     \lean{QuantumCircuit.Circuit.isUnbranched_mapLayers,
         QuantumCircuit.Circuit.forall_mapLayers, QuantumCircuit.Circuit.total_mapLayers_le,
-        QuantumCircuit.Circuit.kraus_mapLayers, QuantumCircuit.Circuit.mapLayers_comp}
+        QuantumCircuit.Circuit.total_mapLayers, QuantumCircuit.Circuit.kraus_mapLayers, QuantumCircuit.Circuit.mapLayers_comp}
     \leanok
     \uses{def:circuits_layer_map, def:circuits_costs, def:circuits_local}
     The image of an unbranched circuit is unbranched. A local property holding on
     the image of every layer on which it holds holds on the image of every circuit
     on which it holds. A cost of layers that does not grow from a layer to its
-    image does not grow from a circuit to its image. If a map $\Phi$ of matrices between the
+    image does not grow from a circuit to its image, and one that does not change from a
+    layer to its image does not change from a circuit to its image. If a map $\Phi$ of matrices between the
     configurations of $X$ and of $X'$ sends $1$ to $1$ and products to products, and
     every Kraus operator of the image of a layer is $\Phi$ of the corresponding Kraus
     operator of the layer, the same holds for circuits. The image of a composition is
@@ -890,6 +891,43 @@ are embedded.
     $\C^{W}$. The map $K\mapsto K\otimes1_W$ sends $1$ to $1$ and products to
     products, so Theorem~\ref{thm:circuits_layer_map} applies. The gates of the image
     layer are the transported gates, one on each image cell, which gives the weights.
+\end{proof}
+
+\begin{theorem}[A circuit tensored with an environment at every site]
+    \label{thm:circuits_tensor_right}
+    \lean{QuantumCircuit.Layer.tensorRight, QuantumCircuit.Layer.tensorRightIndexEquiv,
+        QuantumCircuit.Layer.tensorRightIndexEquiv_apply,
+        QuantumCircuit.Layer.kraus_tensorRight, QuantumCircuit.Layer.forall_tensorRight,
+        QuantumCircuit.LayerMap.tensorRight, QuantumCircuit.Circuit.tensorRight,
+        QuantumCircuit.Circuit.kraus_tensorRight, QuantumCircuit.Circuit.map_tensorRight,
+        QuantumCircuit.Circuit.forall_isTP_tensorRight,
+        QuantumCircuit.Circuit.forall_isUnitary_tensorRight,
+        QuantumCircuit.Circuit.depth_tensorRight,
+        QuantumCircuit.Circuit.gateCount_tensorRight}
+    \leanok
+    \uses{def:circuits_layer_map, def:kraus_family_prod, def:circuits_costs,
+        def:circuits_local}
+    Let $W_s$ be a finite basis at every site $s$. Every circuit of plain gates from
+    $X$ to $Z$ has an image from the system $s\mapsto X_s\times W_s$ to the system
+    $s\mapsto Z_s\times W_s$ on the same cells: every gate $g$ on a cell $D$ becomes
+    $g\otimes1$ on $\C^{X_D}\otimes\C^{W_D}$, and every onsite family $K$ becomes
+    $K\otimes1$. Along corresponding branches $K'_p=K_p\otimes1_W$ in the
+    identification of the configurations of the enlarged system with pairs, so the map of the image sends $\rho\otimes\omega$ to $\Phi(\rho)\otimes\omega$. The
+    image is locally trace-preserving, or locally unitary, when the circuit is, and its
+    depth and gate count are those of the circuit.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_layer_map, lem:kraus_family_prod}
+    The image layer has the cells and the remaining sites of the layer, and the
+    outcomes of its gates and onsite families are those of the layer. In the product of
+    local entries every factor is the entry of the layer's gate or onsite family times
+    the entry of the identity on the local environment, and the latter multiply to the
+    identity on $\C^W$ because the cells and the remaining sites partition the sites.
+    The map $K\mapsto K\otimes1_W$ sends $1$ to $1$ and products to products, so
+    Theorem~\ref{thm:circuits_layer_map} applies. Tensor products and relabellings of
+    trace-preserving or unitary families are trace-preserving or unitary, by
+    Lemma~\ref{lem:kraus_family_prod}, and the cells, hence the costs, of every layer
+    are unchanged.
 \end{proof}
 
 \begin{theorem}[Substituting circuits for layers]

@@ -15,7 +15,7 @@ A circuit moves layer by layer. A *layer map* `LayerMap` sends every system `X` 
 with an equivalence of Kraus indices; `Circuit.mapLayers` applies it to every layer of a circuit.
 Unbranchedness, local properties, costs and Kraus operators move along
 (`Circuit.isUnbranched_mapLayers`, `Circuit.forall_mapLayers`, `Circuit.total_mapLayers_le`,
-`Circuit.kraus_mapLayers`) as soon as they move along each layer.
+`Circuit.total_mapLayers`, `Circuit.kraus_mapLayers`) as soon as they move along each layer.
 
 There are two layer maps, one for each kind of change. Both move the cells along a morphism of
 geometries `Geometry.Hom` (`Circuit/Geometry/Hom.lean`) over a map of sites and put one gate
@@ -56,9 +56,9 @@ because a circuit may change its basis types, so that its Kraus operators need n
   tensored with the identity on the idle sites.
 * `QuantumCircuit.Circuit.mapLayers_comp` — moving commutes with composition.
 * `QuantumCircuit.Circuit.isUnbranched_mapLayers`, `QuantumCircuit.Circuit.forall_mapLayers`,
-  `QuantumCircuit.Circuit.total_mapLayers_le` — what moves along each layer moves along the
-  circuit; `Circuit.forall_mapGate` and `Circuit.forall_mapSites` are the local properties for the
-  two maps.
+  `QuantumCircuit.Circuit.total_mapLayers_le`, `QuantumCircuit.Circuit.total_mapLayers` — what
+  moves along each layer moves along the circuit; `Circuit.forall_mapGate` and
+  `Circuit.forall_mapSites` are the local properties for the two maps.
 * `QuantumCircuit.Layer.cellCost_mapGate`, `QuantumCircuit.Layer.cellCost_mapSites` — a weight of
   gates on a moved layer.
 -/
@@ -299,6 +299,22 @@ theorem total_mapLayers_le (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → �
     exact add_le_add (hf L) (Finset.sup_le fun i _ ↦
       (total_mapLayers_le f f' hf _).trans (Finset.le_sup (f := fun i ↦ (next i).total f)
         (Finset.mem_univ _)))
+
+/-- A cost of the moved layers equal to a cost of the layers gives the cost of the moved
+circuit. -/
+theorem total_mapLayers (f : ∀ ⦃X Y : S → Type⦄, Layer Γ G X Y → ℕ)
+    (f' : ∀ ⦃X Y : S' → Type⦄, Layer Γ' G' X Y → ℕ)
+    (hf : ∀ ⦃X Y : S → Type⦄ [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+      [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y), f' (F.layer L) = f L) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      (c : Circuit Γ G X Z) → (c.mapLayers F).total f' = c.total f
+  | _, _, _, _, done _ => rfl
+  | _, _, _, _, step L next => by
+    change f' (F.layer L) +
+        Finset.univ.sup (fun i ↦ ((next (F.indexEquiv L i)).mapLayers F).total f') =
+      f L + Finset.univ.sup fun i ↦ (next i).total f
+    rw [hf L, ← Finset.map_univ_equiv (F.indexEquiv L), Finset.sup_map]
+    exact congrArg _ (Finset.sup_congr rfl fun i _ ↦ total_mapLayers f f' hf _)
 
 omit [Fintype S] [Fintype S'] in
 /-- Moving commutes with composition. -/
@@ -563,8 +579,7 @@ def GateTransport.IsCompatible (φ : GateTransport e W G G') (ev : Interpretatio
 /-- The transport of plain gates. -/
 noncomputable def KrausGate.transport : GateTransport e W (KrausGate (S := S))
     (KrausGate (S := S')) where
-  map _ X Y g := ⟨g.Index, fun i ↦ (g.op i).submatrix (extendRegionEquiv e W Y _)
-    (extendRegionEquiv e W X _)⟩
+  map _ X Y g := g.reindex (extendRegionEquiv e W X _) (extendRegionEquiv e W Y _)
   outcome _ _ _ _ := Equiv.refl _
 
 theorem KrausGate.isCompatible_transport :

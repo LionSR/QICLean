@@ -61,6 +61,7 @@ import QICLean.Algebra.MatrixIsometryEntries
 import QICLean.Algebra.MatrixIsometryKronecker
 import QICLean.Algebra.MatrixKernelRigidity
 import QICLean.Algebra.MatrixKroneckerEmbed
+import QICLean.Algebra.MatrixKroneckerExt
 import QICLean.Algebra.MatrixMulRange
 import QICLean.Algebra.MatrixOperatorSpace
 import QICLean.Algebra.MatrixPolynomialDegree
