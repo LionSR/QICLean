@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Algebra.MatrixGramUnitary
 import QICLean.Channel.KrausFamilyEncoding
 import QICLean.Channel.KrausFamilyProd
+import QICLean.Channel.Stinespring
 
 /-!
 # The unitary dilation of a trace-preserving Kraus family
@@ -24,9 +25,10 @@ environment depends on the family and its initial state is a basis vector, which
 circuit of local gates needs; `Matrix.exists_rectangular_unitary_dilation` is the same
 construction for a channel on `Fin`-indexed spaces with an unspecified Kraus rank.
 
-The construction: for a basis vector `a₀` of `α`, the matrix `W` with
-`W (b, (a', i)) a = [a' = a₀] (Kᵢ)_{ba}` is an isometry, because `K` is trace-preserving, and
-`tr_F (W ρ Wᴴ) = K(ρ)`. It is extended from the inclusion `a ↦ (a, e₀)` to a unitary.
+The construction: for a basis vector `a₀` of `α`, the Stinespring isometry
+`V : |a⟩ ↦ ∑ᵢ Kᵢ|a⟩ ⊗ |i⟩` followed by the inclusion `|i⟩ ↦ |a₀, i⟩` is an isometry `W` from
+`α` to `β × F`, because `K` is trace-preserving, and `tr_F (W ρ Wᴴ) = K(ρ)`. It is extended
+from the inclusion `a ↦ (a, e₀)` to a unitary.
 
 ## Main results
 
@@ -34,84 +36,54 @@ The construction: for a basis vector `a₀` of `α`, the matrix `W` with
 -/
 
 open Matrix
+open scoped Kronecker
 
 namespace KrausFamily
 
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
-/-- The reordering `α × (β × I) ≃ β × (α × I)` of the two enlarged systems. -/
-private def dilationEquiv (α β I : Type) : α × (β × I) ≃ β × (α × I) where
-  toFun p := (p.2.1, (p.1, p.2.2))
-  invFun q := (q.2.1, (q.1, q.2.2))
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 /-- A trace-preserving Kraus family on a nonempty basis is a unitary family on the system and
 the environment `β × K.Index`, started in a basis vector `e₀` of the environment, followed by
 the partial trace over the environment `α × K.Index` (the construction in the proof of Wolf,
-Thm. 2.5). The basis vector `a₀` of
-`α` that the construction needs comes from `[Nonempty α]`, which also makes the environment
-nonempty. -/
+Thm. 2.5). The basis vector `a₀` of `α` that the construction needs comes from `[Nonempty α]`,
+which also makes the environment nonempty. -/
 theorem IsTP.exists_unitary_dilation [Nonempty α] {K : KrausFamily α β} [DecidableEq K.Index]
     (hK : K.IsTP) :
     ∃ (e₀ : β × K.Index) (U : KrausFamily (α × (β × K.Index)) (β × (α × K.Index))),
       U.IsUnitary ∧ K.map = (traceRight β (α × K.Index)).map ∘ₗ U.map ∘ₗ
-        (embed ⟨fun a ↦ (a, e₀), fun _ _ h ↦ congrArg Prod.fst h⟩).map := by
+        (embed (Function.Embedding.sectL α e₀)).map := by
   obtain ⟨i₀⟩ := hK.nonempty_index
   obtain ⟨b₀⟩ := hK.nonempty_target
-  let a₀ : α := Classical.arbitrary α
   let e₀ : β × K.Index := (b₀, i₀)
-  let ι : α ↪ α × (β × K.Index) := ⟨fun a ↦ (a, e₀), fun _ _ h ↦ congrArg Prod.fst h⟩
-  let σ := dilationEquiv α β K.Index
-  let W : Matrix (β × (α × K.Index)) α ℂ :=
-    of fun q a ↦ if q.2.1 = a₀ then K.op q.2.2 q.1 a else 0
-  have hW : Wᴴ * W = 1 := by
-    rw [← hK]
-    ext a a'
-    simp [W, effect, mul_apply, Matrix.sum_apply, Fintype.sum_prod_type, Finset.sum_comm (γ := β)]
-  let J : Matrix (β × (α × K.Index)) α ℂ := (initializedBasisMatrix ι).submatrix σ.symm id
-  have hJ : Jᴴ * J = 1 := by
-    rw [conjTranspose_submatrix, submatrix_mul_equiv _ _ _ σ.symm, submatrix_id_id]
-    exact initializedBasisMatrix_isIsometry ι
-  obtain ⟨U₁, hU₀⟩ := exists_unitary_mul_eq_of_conjTranspose_mul_eq W J (hW.trans hJ.symm)
-  set U₀ : Matrix (β × (α × K.Index)) (β × (α × K.Index)) ℂ := U₁.1 with hU₀def
-  let P : Matrix (β × (α × K.Index)) (α × (β × K.Index)) ℂ := (1 : Matrix _ _ ℂ).submatrix id σ
-  have hPP : Pᴴ * P = 1 := by
-    rw [conjTranspose_submatrix, conjTranspose_one,
-      show (1 : Matrix (β × (α × K.Index)) _ ℂ).submatrix σ id * P =
-        (1 : Matrix (β × (α × K.Index)) _ ℂ).submatrix σ (Equiv.refl _) *
-          (1 : Matrix (β × (α × K.Index)) _ ℂ).submatrix (Equiv.refl _) σ from rfl,
-      submatrix_mul_equiv, Matrix.one_mul, submatrix_one_equiv]
-  have hPP' : P * Pᴴ = 1 := by
-    rw [conjTranspose_submatrix, conjTranspose_one, submatrix_mul_equiv _ _ _ σ, Matrix.one_mul,
-      submatrix_id_id]
-  have hU : U₀ᴴ * U₀ = 1 := mem_unitaryGroup_iff'.mp U₁.2
-  have hU' : U₀ * U₀ᴴ = 1 := mem_unitaryGroup_iff.mp U₁.2
-  have hPJ : P * initializedBasisMatrix ι = J := by
+  let σ : α × (β × K.Index) ≃ β × (α × K.Index) :=
+    ((Equiv.prodAssoc α β K.Index).symm.trans
+      ((Equiv.prodComm α β).prodCongr (Equiv.refl _))).trans (Equiv.prodAssoc β α K.Index)
+  let B := initializedBasisMatrix (Function.Embedding.sectR (Classical.arbitrary α) K.Index)
+  have hB : Bᴴ * B = 1 := initializedBasisMatrix_isIsometry _
+  -- the Stinespring isometry, with the environment `α` in the basis vector `a₀`
+  let W := ((1 : Matrix β β ℂ) ⊗ₖ B) * stinespringVGen K.op
+  let J := initializedBasisMatrix ((Function.Embedding.sectL α e₀).trans σ.toEmbedding)
+  have hW : Wᴴ * W = Jᴴ * J := by
+    rw [initializedBasisMatrix_isIsometry, ← hK, ← stinespringVGen_conjTranspose_mul]
+    simp only [W, conjTranspose_mul, conjTranspose_kronecker, conjTranspose_one, Matrix.mul_assoc]
+    rw [← Matrix.mul_assoc (1 ⊗ₖ Bᴴ), ← mul_kronecker_mul, Matrix.one_mul, hB, one_kronecker_one,
+      Matrix.one_mul]
+  obtain ⟨U₀, hU₀⟩ := exists_unitary_mul_eq_of_conjTranspose_mul_eq W J hW
+  let U := Matrix.reindex (Equiv.refl _) σ.symm U₀.1
+  let ι := initializedBasisMatrix (Function.Embedding.sectL α e₀)
+  have hUJ : U * ι = W := by
+    rw [hU₀]
     ext q a
-    simp only [P, J, initializedBasisMatrix, mul_apply, submatrix_apply, id, one_apply]
-    rw [Finset.sum_eq_single (σ.symm q) (fun p _ hp ↦ by
-      have : q ≠ σ p := fun h ↦ hp (by rw [h, Equiv.symm_apply_apply])
-      simp [this]) (by simp)]
-    simp
-  let V := U₀ * P
-  refine ⟨e₀, single V, ⟨⟨inferInstanceAs (Unique Unit)⟩, fun _ ↦ ⟨?_, ?_⟩⟩, ?_⟩
-  · simp only [single_op, V, conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc _ _ P, hU,
-      Matrix.one_mul, hPP]
-  · simp only [single_op, V, conjTranspose_mul, Matrix.mul_assoc, ← Matrix.mul_assoc P, hPP',
-      Matrix.one_mul, hU']
-  refine LinearMap.ext fun ρ ↦ ?_
-  have hVW : V * initializedBasisMatrix ι = W := by
-    rw [Matrix.mul_assoc, hPJ, hU₀]
+    simp only [U, J, ι, mul_initializedBasisMatrix_apply]
+    rfl
+  refine ⟨e₀, single U, ⟨⟨inferInstanceAs (Unique Unit)⟩, fun _ ↦ IsUnitaryBetween.reindex _
+    ⟨mem_unitaryGroup_iff'.mp U₀.2, mem_unitaryGroup_iff.mp U₀.2⟩ _ _⟩, LinearMap.ext fun ρ ↦ ?_⟩
   rw [LinearMap.comp_apply, LinearMap.comp_apply, map_embed_apply, map_single, map_traceRight,
-    show V * (initializedBasisMatrix ι * ρ * (initializedBasisMatrix ι)ᴴ) * Vᴴ = W * ρ * Wᴴ by
-      rw [← hVW, conjTranspose_mul V (initializedBasisMatrix ι)]; simp only [Matrix.mul_assoc]]
-  ext b b'
-  rw [map_apply, partialTraceRight_apply, Matrix.sum_apply, Fintype.sum_prod_type,
-    Finset.sum_eq_single a₀ (fun a _ ha ↦ by
-      refine Finset.sum_eq_zero fun i _ ↦ ?_
-      simp [W, mul_apply, ha]) (by simp)]
-  refine Finset.sum_congr rfl fun i _ ↦ ?_
-  simp [W, mul_apply]
+    show U * (ι * ρ * ιᴴ) * Uᴴ = W * ρ * Wᴴ by
+      rw [← hUJ, conjTranspose_mul]; simp only [Matrix.mul_assoc],
+    show W * ρ * Wᴴ = (1 ⊗ₖ B) * (stinespringVGen K.op * ρ * (stinespringVGen K.op)ᴴ) *
+      (1 ⊗ₖ B)ᴴ by simp only [W, conjTranspose_mul, Matrix.mul_assoc],
+    partialTraceRight_kronecker_conj_of_right_isometry _ _ hB, Matrix.one_mul, conjTranspose_one,
+    Matrix.mul_one, map_eq_partialTraceRight]
 
 end KrausFamily

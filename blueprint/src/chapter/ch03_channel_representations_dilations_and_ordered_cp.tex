@@ -228,16 +228,18 @@ channel.
     fixed dimension $d(d')^2$ in a general normalized vector.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:kraus_family_prod, lem:exists_unitary_mul_eq_of_gram_eq,
+    \uses{lem:kraus_family_prod, lem:kraus_family_stinespring,
+        lem:partial_trace_product_isometry, lem:exists_unitary_mul_eq_of_gram_eq,
         lem:circuits_tp_nonempty}
     A trace-preserving family on a nonempty basis has an operator and a nonempty
-    target, so $E$ is nonempty; choose $e_0\in E$ and $a_0\in I$. The matrix
-    $W:\C^I\to\C^J\otimes\C^F$ with $W\ket a=\sum_\omega K_\omega\ket a\otimes\ket{a_0,\omega}$
-    satisfies $W^\dagger W=\sum_\omega K_\omega^\dagger K_\omega=1$, and
-    $\tr_F(W\rho W^\dagger)=K(\rho)$. The inclusion $\ket a\mapsto\ket a\otimes\ket{e_0}$,
+    target, so $E$ is nonempty; choose $e_0\in E$ and $a_0\in I$. Let $V$ be the
+    Stinespring matrix of $K$ and $B:\C^\Omega\to\C^F$ the inclusion
+    $\ket\omega\mapsto\ket{a_0,\omega}$. Then $W=(1\otimes B)V$ satisfies
+    $W^\dagger W=V^\dagger V=1$, and $\tr_F(W\rho W^\dagger)=\tr_\Omega(V\rho V^\dagger)=K(\rho)$
+    because $B$ is an isometry. The inclusion $\ket a\mapsto\ket a\otimes\ket{e_0}$,
     composed with the reordering $\C^I\otimes\C^E\cong\C^J\otimes\C^F$ of the factors, is
-    an isometry with the same Gram matrix $1$, so $W$ is a unitary times it; composing
-    that unitary with the reordering gives $U$.
+    an isometry with the same Gram matrix $1$, so $W$ is a unitary times it; relabelling
+    the columns of that unitary along the reordering gives $U$.
 \end{proof}
 
 \begin{theorem}[Stinespring representation, rectangular form]

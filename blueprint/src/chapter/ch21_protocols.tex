@@ -244,6 +244,7 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
 \begin{lemma}[Encodings and decodings]
     \label{lem:protocols_encoding}
     \lean{Matrix.mul_initializedBasisMatrix_apply,
+        Matrix.conjTranspose_initializedBasisMatrix_mul_apply,
         Matrix.initializedBasisMatrix_mul_apply_self,
         Matrix.initializedBasisMatrix_mul_apply_of_notMem, KrausFamily.isTP_embed,
         KrausFamily.map_embed_apply, KrausFamily.decode_op_inl, KrausFamily.decode_op_inr,
@@ -253,7 +254,7 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     \leanok
     \uses{def:protocols_encoding, lem:gate_basis_inclusion_isometry}
     For the basis inclusion of an injective map $e$ and matrices $M$,
-    $(MJ_e)_{ya}=M_{y,e(a)}$, $(J_eM)_{e(a),x}=M_{ax}$, and the rows of $J_eM$ outside $e(\alpha)$
+    $(MJ_e)_{ya}=M_{y,e(a)}$, $(J_e^\dagger M)_{ax}=M_{e(a),x}$, $(J_eM)_{e(a),x}=M_{ax}$, and the rows of $J_eM$ outside $e(\alpha)$
     vanish. The encoding is $\rho\mapsto J_e\rho J_e^\dagger$ and the decoding is
     $\rho\mapsto J_e^\dagger\rho J_e+\sum_{b\notin e(\alpha)}\ket{x_0}\bra{b}\rho\ket{b}\bra{x_0}$, and
     both are trace-preserving. On the image of $J_e$ the
