@@ -26,6 +26,7 @@ require_verdict = true
 [paper_gaps.sources]
 spwc10 = "Sanz, Pérez-García, Wolf and Cirac, A quantum version of Wielandt’s inequality, arXiv:0909.5347"
 hastings05 = "Hastings, Solving gapped Hamiltonians locally, Phys. Rev. B 73 (2006) 085115, arXiv:cond-mat/0508554"
+hastings07 = "Hastings, An area law for one-dimensional quantum systems, J. Stat. Mech. (2007) P08024, arXiv:0705.2024"
 qiclean = "internal theorem-surface audit, no single external source"
 wolf    = "Wolf, Quantum Channels & Operations (2012 lecture notes)"
 ha98    = "Ha, Atomic Positive Linear Maps in Matrix Algebras (1998)"
