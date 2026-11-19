@@ -90,7 +90,8 @@ an alphabet of $q$ letters at every site.
         QuantumCircuit.IsAdaptiveConversion.mono, QuantumCircuit.IsAdaptiveConversion.trans,
         QuantumCircuit.IsAdaptiveConversion.density}
     \leanok
-    \uses{def:protocols_protocol, thm:protocols_comp, thm:circuits_tp}
+    \uses{def:protocols_protocol, thm:protocols_comp, thm:circuits_tp,
+        lem:is_kraus_cptp_map_pos, thm:is_kraus_cptp_trace_map}
     The map of an adaptive protocol is completely positive and trace-preserving. Every matrix
     is converted into itself in depth $0$; a conversion in depth $T$ is one in every depth
     $T'\ge T$; converting $\rho$ into $\sigma$ in depth $T_1$ and $\sigma$ into $\tau$ in
