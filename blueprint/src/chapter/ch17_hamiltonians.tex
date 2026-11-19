@@ -299,6 +299,32 @@ one-dimensional ground space.
     $\bar cu_{v_0}$ gives the product formula.
 \end{proof}
 
+\begin{theorem}[Zero entropy across a cut that splits no term]
+    \label{thm:hamiltonians_zero_entropy_cut}
+    \lean{ManyBody.Interaction.entropy_eq_zero_of_forall_subset_or_disjoint}
+    \leanok
+    \uses{def:dynamics_interaction, def:hamiltonians_gap,
+        def:finite_product_regional_entropy}
+    Let $\Phi=(h_i)_{i\in I}$ be an interaction of Hermitian terms with $I$ finite,
+    and let $B$ be a region such that every support $T_i$ lies inside $B$ or is
+    disjoint from $B$. Let $\Delta>0$ and let $\Omega$ be a unit vector. If
+    $H_\Phi$ is gapped at $E_0$ with gap $\Delta$ and
+    $\ker(H_\Phi-E_0)=\C\Omega$, then $S_\Omega(B)=0$
+    \cite[Lemma~2.2]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_kronecker_sum_product_ground, thm:sites_place_range,
+        def:sites-regional-state, thm:entropy_zero_of_rank_le_one}
+    Group the terms supported inside $B$ into $H_{\mathrm{in}}$ and the others into
+    $H_{\mathrm{out}}$. In the coordinates of the cut along $B$,
+    $H_{\mathrm{in}}=K\otimes1$ and $H_{\mathrm{out}}=1\otimes L$ with $K,L$
+    Hermitian, so $H_\Phi=K\otimes1+1\otimes L$. By
+    Theorem~\ref{thm:hamiltonians_kronecker_sum_product_ground},
+    $\Omega=u\otimes w$ in these coordinates. The reduction of $\Omega$ to $B$ is
+    $\lVert w\rVert^2\lvert u\rangle\langle u\rvert$, a density matrix of rank one,
+    whose entropy is zero.
+\end{proof}
+
 \section{Hermitian parts of the terms}
 \label{sec:hamiltonians_hermitian_part}
 

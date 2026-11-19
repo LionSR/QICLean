@@ -19,6 +19,8 @@ identities `P Q P = s P` and `Q P Q = s Q` give `(P - Q)³ = (1 - s) (P - Q)`, s
 * `Matrix.abs_eq_inv_sqrt_smul_mul_self`: `|X| = c^{-1/2} X²` for Hermitian `X` with
   `X³ = c X`, `c > 0`.
 * `Matrix.traceDistance_vecMulVec_eq`: the pure-state trace-distance formula.
+* `Matrix.traceDistance_vecMulVec_le_norm_sub`: the trace distance of two pure states is at
+  most the distance of the unit vectors.
 
 ## References
 
@@ -84,5 +86,20 @@ theorem traceDistance_vecMulVec_eq {ψ φ : EuclideanSpace ℂ n} (hψ : ‖ψ�
   rw [traceDistance, h, Real.sqrt_mul (by positivity : 0 ≤ (4 : ℝ)),
     show (4 : ℝ) = (2 : ℝ) ^ 2 by norm_num, Real.sqrt_sq (by positivity)]
   exact mul_div_cancel_left₀ _ (by positivity : (2 : ℝ) ≠ 0)
+
+/-- The trace distance of two pure states is at most the distance of the unit vectors
+representing them. Two-dimensional area law, `01-preliminaries.tex`, lines 76–77. -/
+theorem traceDistance_vecMulVec_le_norm_sub {ψ φ : EuclideanSpace ℂ n} (hψ : ‖ψ‖ = 1)
+    (hφ : ‖φ‖ = 1) :
+    traceDistance (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)))
+        (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))) ≤ ‖ψ - φ‖ := by
+  rw [traceDistance_vecMulVec_eq hψ hφ]
+  have hre : RCLike.re ⟪ψ, φ⟫_ℂ ≤ ‖⟪ψ, φ⟫_ℂ‖ := RCLike.re_le_norm _
+  have hsq : ‖ψ - φ‖ ^ 2 = 2 - 2 * RCLike.re ⟪ψ, φ⟫_ℂ := by
+    rw [@norm_sub_sq ℂ, hψ, hφ]
+    ring
+  refine Real.sqrt_le_iff.mpr ⟨norm_nonneg _, ?_⟩
+  rw [hsq]
+  nlinarith [sq_nonneg (1 - ‖⟪ψ, φ⟫_ℂ‖)]
 
 end Matrix

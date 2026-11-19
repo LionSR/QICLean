@@ -45,27 +45,18 @@ end FiniteProduct
 
 namespace Entropy
 
-/-- The regional pure-state matrix agrees with finite-product reduction. -/
-theorem regionState_eq_reducedPure {V : Type*} [Fintype V] [DecidableEq V]
-    {n : V → ℕ} (ψ : EuclideanSpace ℂ (SiteConfig n)) (R : Finset V) :
-    regionState R ψ = FiniteProduct.reducedPure (fun v ↦ Fin (n v)) ψ R := by
-  ext a b
-  exact (FiniteProduct.complementEquiv (fun v ↦ Fin (n v)) R).sum_comp
-    (fun c ↦ ψ ((FiniteProduct.splitEquiv (fun v ↦ Fin (n v)) R).symm (a, c)) *
-      star (ψ ((FiniteProduct.splitEquiv (fun v ↦ Fin (n v)) R).symm (b, c))))
-
 /-- Complementary regions of a pure state have equal reduced-matrix ranks. -/
 theorem rank_regionState_compl {V : Type*} [Fintype V] [DecidableEq V]
     {n : V → ℕ} (ψ : EuclideanSpace ℂ (SiteConfig n)) (R : Finset V) :
     (regionState Rᶜ ψ).rank = (regionState R ψ).rank := by
-  simp only [regionState_eq_reducedPure, FiniteProduct.rank_reducedPure_compl]
+  simp only [ManyBody.regionState_eq_reducedPure, FiniteProduct.rank_reducedPure_compl]
 
 /-- The rank on a disjoint union is at most the product of the regional ranks. -/
 theorem rank_regionState_union_le {V : Type*} [Fintype V] [DecidableEq V]
     {n : V → ℕ} (ψ : EuclideanSpace ℂ (SiteConfig n)) (R T : Finset V)
     (h : Disjoint R T) :
     (regionState (R ∪ T) ψ).rank ≤ (regionState R ψ).rank * (regionState T ψ).rank := by
-  simp only [regionState_eq_reducedPure, FiniteProduct.reducedPure]
+  simp only [ManyBody.regionState_eq_reducedPure, FiniteProduct.reducedPure]
   exact FiniteProduct.rank_reducedMatrix_union_le _
     (Matrix.posSemidef_vecMulVec_self_star _) R T h
 

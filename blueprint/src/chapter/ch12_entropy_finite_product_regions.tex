@@ -1,0 +1,155 @@
+\section{Regions of a pure state: zero entropy, perturbations and products}
+
+The following statements concern a unit vector on a finite product of local
+spaces, with regional entropies and mutual information as in
+Definition~\ref{def:finite_product_regional_entropy}. No geometry of the sites
+enters.
+
+\begin{theorem}[Araki--Lieb inequality and the dimension bound]
+    \label{thm:finite_product_araki_lieb}
+    \lean{FiniteProduct.entropy_le_union_add, FiniteProduct.entropy_le_log_card}
+    \leanok
+    \uses{def:finite_product_regional_entropy}
+    Let $\psi$ be a unit vector. For disjoint regions $R,T$,
+    $S_\psi(R)\le S_\psi(R\cup T)+S_\psi(T)$. For every region $R$,
+    $S_\psi(R)\le\log\dim\mathcal H_R$
+    \cite[Section~2]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_product_entropy_complement,
+        thm:finite_product_entropy_subadditivity, thm:entropy_le_log_rank}
+    The complement of $R$ is the disjoint union of $(R\cup T)^c$ and $T$.
+    Subadditivity and the equality of complementary entropies give
+    $S_\psi(R)=S_\psi(R^c)\le S_\psi((R\cup T)^c)+S_\psi(T)
+    =S_\psi(R\cup T)+S_\psi(T)$. The reduction to $R$ is a density matrix on
+    $\mathcal H_R$, whose entropy is at most $\log\dim\mathcal H_R$.
+\end{proof}
+
+\begin{theorem}[Regions of zero entropy]
+    \label{thm:finite_product_zero_entropy_region}
+    \lean{FiniteProduct.entropy_sdiff_eq_of_eq_zero,
+        FiniteProduct.entropy_union_eq_of_eq_zero,
+        FiniteProduct.entropy_symmDiff_eq_of_eq_zero}
+    \leanok
+    \uses{def:finite_product_regional_entropy}
+    Let $\psi$ be a unit vector and $P$ a region with $S_\psi(P)=0$. Then
+    $S_\psi(P\setminus X)=S_\psi(X)$ for $X\subseteq P$, and
+    $S_\psi(X\cup Y)=S_\psi(X)+S_\psi(Y)$ for $X\subseteq P$ and $Y$ disjoint
+    from $P$. Consequently $S_\psi(A\mathbin{\triangle} P)=S_\psi(A)$ for every
+    region $A$ \cite[proof of Theorem~1.1]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_product_araki_lieb, thm:finite_product_entropy_subadditivity,
+        thm:finite_product_entropy_submodular}
+    The Araki--Lieb inequality applied to $X$ and $P\setminus X$ in both orders
+    gives the first identity. For the second, subadditivity gives
+    $S_\psi(X\cup Y)\le S_\psi(X)+S_\psi(Y)$; submodularity for $P$ and $X\cup Y$,
+    whose intersection is $X$ and whose union is $Y\cup P$, together with the
+    Araki--Lieb inequality for $Y$ and $P$, gives the reverse inequality. Write
+    $A\mathbin{\triangle} P=(P\setminus(A\cap P))\cup(A\setminus P)$ and
+    $A=(A\cap P)\cup(A\setminus P)$ and apply both identities.
+\end{proof}
+
+\begin{theorem}[Trace distance of pure states and of their reductions]
+    \label{thm:finite_product_reduced_trace_distance}
+    \lean{Matrix.traceDistance_vecMulVec_le_norm_sub,
+        FiniteProduct.traceDistance_reducedPure_le}
+    \leanok
+    \uses{def:finite_product_regional_entropy}
+    For unit vectors $\psi,\eta$, the trace distance of
+    $\lvert\psi\rangle\langle\psi\rvert$ and $\lvert\eta\rangle\langle\eta\rvert$
+    is at most $\lVert\psi-\eta\rVert$, and the trace distance of their reductions
+    to any region is at most that of the pure states
+    \cite[Section~2]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:pure_trace_distance, lem:trace_distance_jordan}
+    The trace distance of the pure states is
+    $\sqrt{1-\lvert\langle\psi,\eta\rangle\rvert^2}$, and
+    $\lVert\psi-\eta\rVert^2=2-2\operatorname{Re}\langle\psi,\eta\rangle
+    \ge2-2\lvert\langle\psi,\eta\rangle\rvert\ge1-\lvert\langle\psi,\eta\rangle\rvert^2$.
+    The partial trace does not increase the trace distance.
+\end{proof}
+
+\begin{theorem}[Mutual information near a state without correlations]
+    \label{thm:finite_product_information_perturbation}
+    \lean{FiniteProduct.mutualInformation_le_of_norm_sub_le,
+        FiniteProduct.mutualInformation_le_of_supported_unitary,
+        FiniteProduct.mutualInformation_le_inv_pow_of_supported_unitary}
+    \leanok
+    \uses{def:finite_product_regional_entropy, def:sites_supported}
+    Let $X,J$ be disjoint regions and $\psi,\eta,\varphi$ unit vectors with
+    $I_\eta(X:J)=0$. Then
+    \begin{align}
+        I_\psi(X:J)\le8\sqrt{\lVert\psi-\eta\rVert}\,\log(\mathrm e\dim\mathcal H_X).
+    \end{align}
+    If $U$ is a unitary supported on a region disjoint from $X\cup J$, the same
+    bound holds for $I_\varphi(X:J)$ with $\lVert U\varphi-\eta\rVert$ in place of
+    $\lVert\psi-\eta\rVert$. If moreover
+    $\lVert U\varphi-\eta\rVert\le C_1n^{-K/2}$ and
+    $\log\dim\mathcal H_X\le C_2n^2$ for integers $n\ge1$, $M\ge0$ and $K$ with
+    $K\ge4(M+2)$, then
+    $I_\varphi(X':J)\le8\sqrt{C_1}(1+C_2)n^{-M}$ for every $X'\subseteq X$
+    \cite[Proposition~10.2]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{cor:entropy_mutual_information_continuity,
+        thm:finite_product_reduced_trace_distance, thm:sites-regional-unitary,
+        thm:finite_product_information_discarding}
+    The first bound is the continuity of mutual information in the dimension of
+    $X$ alone, together with
+    Theorem~\ref{thm:finite_product_reduced_trace_distance} applied to the
+    reduction to $X\cup J$. By Theorem~\ref{thm:sites-regional-unitary}, $U$ changes
+    none of the reductions to $X$, $J$ and $X\cup J$, so
+    $I_\varphi(X:J)=I_{U\varphi}(X:J)$, and $U\varphi$ is a unit vector. Under the
+    polynomial assumptions the bound is at most
+    $8\sqrt{C_1}(1+C_2)n^{2-K/4}\le8\sqrt{C_1}(1+C_2)n^{-M}$, and discarding part
+    of $X$ does not increase the mutual information.
+\end{proof}
+
+\begin{theorem}[Regional entropies of a product over two systems of sites]
+    \label{thm:finite_product_sum_sites}
+    \lean{FiniteProduct.sumSitesProduct, FiniteProduct.disjSumEquiv,
+        FiniteProduct.reducedPure_sumSitesProduct,
+        FiniteProduct.entropy_sumSitesProduct,
+        FiniteProduct.mutualInformation_sumSitesProduct_inl,
+        FiniteProduct.mutualInformation_sumSitesProduct_inr_inl}
+    \leanok
+    \uses{def:finite_product_regional_entropy}
+    Let $f$ be a vector on the sites $A$ and $g$ a vector on the sites $B$, and let
+    $f\otimes g$ be their product on the sites $A\sqcup B$. Write $\rho^f_R$ for the
+    reduction of $f$ to $R$. For $R\subseteq A$ and $T\subseteq B$, identifying a
+    configuration of $R\sqcup T$ with a pair of configurations of $R$ and of $T$,
+    \[
+        \rho^{f\otimes g}_{R\sqcup T}=\rho^f_R\otimes\rho^g_T .
+    \]
+    For unit vectors $f$ and $g$,
+    \[
+        S_{f\otimes g}(R\sqcup T)=S_f(R)+S_g(T),\qquad
+        I_{f\otimes g}(R:T')=I_f(R:T'),\qquad
+        I_{f\otimes g}(T:R)=0
+    \]
+    for regions $R,T'\subseteq A$ and $T\subseteq B$
+    \cite[Proposition~10.2]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:entropy_kronecker}
+    The complement of $R\sqcup T$ is $R^c\sqcup T^c$, so a configuration of it is a
+    pair $(y,y')$ with $y$ on $A\setminus R$ and $y'$ on $B\setminus T$, and
+    $(f\otimes g)(x\,x',y\,y')=f(x,y)\,g(x',y')$. Hence
+    \[
+        \rho^{f\otimes g}_{R\sqcup T}\bigl((x,x'),(z,z')\bigr)
+        =\sum_{y,y'}f(x,y)g(x',y')\overline{f(z,y)g(z',y')}
+        =\rho^f_R(x,z)\,\rho^g_T(x',z').
+    \]
+    The entropy of a Kronecker product of density matrices is the sum of their
+    entropies, which gives the entropy identity. The empty region of a unit vector
+    has entropy zero, so with $T=\emptyset$
+    \[
+        I_{f\otimes g}(R:T')=S_f(R)+S_f(T')-S_f(R\cup T')=I_f(R:T'),
+    \]
+    and with $R\sqcup\emptyset$ and $\emptyset\sqcup T$
+    \[
+        I_{f\otimes g}(T:R)=S_g(T)+S_f(R)-\bigl(S_f(R)+S_g(T)\bigr)=0 .
+    \]
+\end{proof}

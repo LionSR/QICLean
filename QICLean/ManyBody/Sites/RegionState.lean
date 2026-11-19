@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.RegionUnion
+import QICLean.Channel.FiniteProduct
 import QICLean.Algebra.PureStateExpectation
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.TraceDistance
@@ -14,7 +15,9 @@ import QICLean.Analysis.TraceDistance
 The regional state is the unnormalized partial trace of the outer product of a vector.
 Expectations of placed matrices are its trace pairings. The statements allow arbitrary
 finite basis types, empty bases and unnormalized vectors. The supported-operator trace
-argument needs no reference configuration.
+argument needs no reference configuration. A unitary supported away from a region leaves
+the regional state unchanged, and the regional state is the reduction
+`FiniteProduct.reducedPure` of the same vector.
 
 The definitions and proofs generalize `Entropy.LocalLift`; the dimension-indexed API
 is retained there as a specialization.
@@ -59,6 +62,15 @@ theorem trace_regionState (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
   rw [regionState, trace_partialTraceRight, trace_vecMulVec,
     ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K, norm_cutVector]
   simp
+
+/-- The regional state is the reduction `FiniteProduct.reducedPure` of the same vector: the two
+differ only in how the configurations outside `D` are indexed. -/
+theorem regionState_eq_reducedPure (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
+    regionState D φ = FiniteProduct.reducedPure X φ D := by
+  ext a b
+  exact (FiniteProduct.complementEquiv X D).sum_comp
+    (fun c ↦ φ ((FiniteProduct.splitEquiv X D).symm (a, c)) *
+      star (φ ((FiniteProduct.splitEquiv X D).symm (b, c))))
 
 variable [∀ v, DecidableEq (X v)]
 
@@ -147,5 +159,23 @@ theorem inner_conj_eq_of_mem_supportedOperators [Fintype (RegionConfig X D)]
     Subsingleton.elim _ _
   obtain ⟨A, rfl⟩ := exists_eq_place_of_mem_supportedOperators hY
   exact inner_place_conj_eq hK hcomm A
+
+/-- **A unitary away from a region leaves the regional state unchanged.** If `U` is unitary and
+supported on a region `S` disjoint from `D`, then `ρ_{Uφ,D} = ρ_{φ,D}` for every vector `φ`,
+which may be entangled across the cut. Two-dimensional area law, `09-amplification.tex`,
+lines 547–550. -/
+theorem regionState_toEuclideanLin_of_mem_supportedOperators {S : Finset V}
+    (hSD : Disjoint S D) {U : Matrix (Config X) (Config X) ℂ}
+    (hU : U ∈ supportedOperators X S) (hUu : Uᴴ * U = 1) (φ : EuclideanSpace ℂ (Config X)) :
+    regionState D (toEuclideanLin U φ) = regionState D φ := by
+  have hmul (A B : Matrix (Config X) (Config X) ℂ) (x : EuclideanSpace ℂ (Config X)) :
+      toEuclideanLin A (toEuclideanLin B x) = toEuclideanLin (A * B) x := by
+    simp [toLpLin_apply, mulVec_mulVec]
+  refine eq_of_forall_trace_mul_eq fun N ↦ ?_
+  have hc := commute_of_mem_supportedOperators_of_disjoint hU
+    (place_mem_supportedOperators (D := D) N) hSD
+  rw [← inner_place, ← inner_place, ← LinearMap.adjoint_inner_right,
+    ← toEuclideanLin_conjTranspose_eq_adjoint, hmul, hmul, Matrix.mul_assoc, ← hc.eq,
+    ← Matrix.mul_assoc, hUu, Matrix.one_mul]
 
 end ManyBody

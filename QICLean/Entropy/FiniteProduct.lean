@@ -5,6 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.FiniteProduct
 import QICLean.Entropy.Bipartite
+import QICLean.ManyBody.Sites.RegionState
 
 /-!
 # Regional entropy of finite-product pure states
@@ -177,3 +178,16 @@ theorem mutualInformation_nonneg (ψ : EuclideanSpace ℂ ((v : V) → β v))
   exact sub_nonneg.mpr (entropy_union_le β ψ hψ R T h)
 
 end FiniteProduct
+
+namespace ManyBody
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+  [∀ v, DecidableEq (X v)]
+
+/-- The regional entropy `S_Ω(D)` is the entropy `FiniteProduct.entropy` of the reduction of
+`Ω` to `D`. -/
+theorem regionEntropy_eq_entropy (D : Finset V) (Ω : EuclideanSpace ℂ (Config X)) :
+    regionEntropy D Ω = FiniteProduct.entropy X Ω D :=
+  vonNeumannEntropy_congr (regionState_eq_reducedPure D Ω) _ _
+
+end ManyBody

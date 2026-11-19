@@ -623,6 +623,44 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     with every matrix on $B$ proves the partial-trace identity.
 \end{proof}
 
+\begin{theorem}[A unitary away from a region]
+    \label{thm:sites-regional-unitary}
+    \lean{ManyBody.regionState_toEuclideanLin_of_mem_supportedOperators}
+    \leanok
+    \uses{def:sites-regional-state, def:sites_supported}
+    Let $U$ be a unitary supported on a region $S$ disjoint from $D$. Then
+    $\rho_D$ is the same for $U\psi$ as for $\psi$, for every vector $\psi$
+    \cite[Section~10]{OpenAI2026AreaLaw}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:sites-regional-expectations, lem:sites_supported_commute}
+    For every matrix $A$ on $D$, the placement of $A$ commutes with $U$, so
+    $\langle U\psi,(A\otimes I)U\psi\rangle
+    =\langle\psi,U^*U(A\otimes I)\psi\rangle
+    =\langle\psi,(A\otimes I)\psi\rangle$. The two regional states have the same
+    trace pairing with every $A$, hence are equal.
+\end{proof}
+
+\begin{theorem}[A unitary polar factor on the same support]
+    \label{thm:sites-supported-polar-unitary}
+    \lean{ManyBody.exists_supported_unitary_polar_correction}
+    \leanok
+    \uses{def:sites_supported}
+    Every operator $D$ supported on a region $S$ has a unitary $U$ supported on $S$
+    with $\lVert Ux-y\rVert\le\lVert Dx-y\rVert+\lVert D^*y-x\rVert$ for all
+    vectors $x,y$ \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{thm:sites_place_range, thm:unitary_polar_correction,
+        thm:unitary_polar_spectator}
+    Write $D$ as the placement of an operator $K$ on $S$, take a unitary polar
+    factor $U'$ of $K$, and let $U$ be the placement of $U'$. In cut coordinates
+    $D=K\otimes I$ and $U=U'\otimes I$, and the estimate is the two-sided
+    correction bound for the polar factor tensored with the identity.
+\end{proof}
+
 \begin{lemma}[Covariance under site and basis bijections]
     \label{lem:sites-regional-relabel}
     \lean{ManyBody.siteConfigurationEquiv, ManyBody.regionConfigurationEquiv,
