@@ -94,8 +94,8 @@ theorem map_single (V : Matrix β α ℂ) (ρ : Matrix α α ℂ) : (single V).m
   (map_apply _ _).trans (Fintype.sum_unique (ι := Unit) _)
 
 omit [Fintype β] in
-/-- The entries of the map of a Kraus family on a matrix unit. -/
-theorem map_single_apply [DecidableEq α] (K : KrausFamily α β) (a a' : α) (c c' : β) :
+/-- The entries of the map of a Kraus family on the matrix unit `|a⟩⟨a'|`. -/
+theorem map_matrixUnit_apply [DecidableEq α] (K : KrausFamily α β) (a a' : α) (c c' : β) :
     K.map (Matrix.single a a' 1) c c' = ∑ i, K.op i c a * star (K.op i c' a') := by
   rw [map_apply, Matrix.sum_apply]
   refine Finset.sum_congr rfl fun i _ ↦ ?_
@@ -205,6 +205,22 @@ theorem IsTP.nonempty_index {α β : Type} [DecidableEq α] [Fintype β] [Nonemp
   by_contra hi
   rw [not_nonempty_iff] at hi
   exact h.effect_ne_zero (Finset.sum_of_isEmpty _)
+
+/-- A trace-preserving family between one-element bases is the identity: every entry of its map
+is the entry of the input. -/
+theorem IsTP.map_apply_of_subsingleton {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
+    [Subsingleton α] [Subsingleton β] {K : KrausFamily α β} (h : K.IsTP) (ρ : Matrix α α ℂ)
+    (a a' : α) (b b' : β) : K.map ρ b b' = ρ a a' := by
+  rw [Subsingleton.elim a' a, Subsingleton.elim b' b]
+  let := uniqueOfSubsingleton a
+  let := uniqueOfSubsingleton b
+  have hK := congrFun (congrFun h a) a
+  rw [effect, Matrix.sum_apply, one_apply_eq] at hK
+  rw [map_apply, Matrix.sum_apply, ← mul_one (ρ a a), ← hK, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp only [mul_apply, Fintype.sum_unique, conjTranspose_apply, Subsingleton.elim default a,
+    Subsingleton.elim default b]
+  ring
 
 /-- The target basis of a trace-preserving Kraus family on a nonempty basis is nonempty. -/
 theorem IsTP.nonempty_target {α β : Type} [DecidableEq α] [Fintype β] [Nonempty α]

@@ -30,6 +30,8 @@ Two consequences are proved from this one computation:
 
 ## Main results
 
+* `QuantumCircuit.Layer.sum_prod_region` — a sum over the configurations of a product over the
+  blocks factors.
 * `QuantumCircuit.Layer.dual_kronecker`, `QuantumCircuit.Layer.dual_place` — the factorization
   along a union of blocks.
 * `QuantumCircuit.Layer.dual_one`, `QuantumCircuit.Layer.isTP_krausFamily` — local trace
@@ -110,6 +112,23 @@ omit [Fintype S] [GateFamily G] in
 theorem blockOf_eq_of_mem {v : S} {β : L.Block} (hv : v ∈ L.region β) : L.blockOf v = β := by
   by_contra h
   exact Finset.disjoint_left.mp (L.region_disjoint h) (L.mem_region_blockOf v) hv
+
+omit [Fintype S] [GateFamily G] in
+/-- The blocks partition the sites. -/
+theorem isComplPartition_region :
+    IsComplPartition (∅ : Finset S) L.region (fun v ↦ L.blockOf v.1) where
+  disjoint _ := Finset.disjoint_empty_right _
+  mem v := L.mem_region_blockOf v.1
+  eq_of_mem _ _ hv := L.blockOf_eq_of_mem hv
+
+omit [GateFamily G] in
+/-- A sum over the configurations of a product over the blocks of functions of the restrictions
+is the product over the blocks of the sums over their configurations. -/
+theorem sum_prod_region {R : Type*} [CommSemiring R] {F : S → Type} [∀ s, Fintype (F s)]
+    (g : (β : L.Block) → RegionConfig F (L.region β) → R) :
+    ∑ f : Config F, ∏ β, g β (fun v ↦ f v) = ∏ β, ∑ z, g β z := by
+  rw [← sum_prod_complPartition L.isComplPartition_region g]
+  exact Fintype.sum_equiv (complEmptyEquiv F).symm _ _ fun _ ↦ rfl
 
 variable [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
   [∀ s, DecidableEq (Y s)]

@@ -1270,19 +1270,23 @@ them across the chapter boundary.
 \begin{lemma}[A trace-preserving Kraus family is a channel]
     \label{lem:kraus_family_channel}
     \lean{KrausFamily.isKrausCPTP_map, KrausFamily.trace_map,
-        KrausFamily.IsTP.isTraceNonincreasing, KrausFamily.IsUnitary.isTP}
+        KrausFamily.IsTP.isTraceNonincreasing, KrausFamily.IsUnitary.isTP,
+        KrausFamily.map_matrixUnit_apply, KrausFamily.IsTP.map_apply_of_subsingleton}
     \leanok
     \uses{def:kraus_family, def:is_kraus_cptp}
     The map of a trace-preserving finite Kraus family is completely positive and
     trace-preserving. A trace-preserving family is trace-nonincreasing, and a
-    unitary family is trace-preserving.
+    unitary family is trace-preserving. On a matrix unit the map has the entries
+    $K(\ketbra a{a'})_{cc'}=\sum_\omega(K_\omega)_{ca}\overline{(K_\omega)_{c'a'}}$, and a
+    trace-preserving family between one-element bases is the identity.
 \end{lemma}
 \begin{proof}\leanok
     Enumerating the outcomes gives a Kraus representation with
     $\sum_\omega K_\omega^\dagger K_\omega=1$. For the trace,
     $\operatorname{tr}\sum_\omega K_\omega\rho K_\omega^\dagger
     =\operatorname{tr}(E\rho)=\operatorname{tr}\rho$. A trace-preserving family is
-    trace-nonincreasing because $E=1\leq1$, and a unitary family has
+    trace-nonincreasing because $E=1\leq1$. Between one-element bases the map is
+    $\rho\mapsto(\sum_\omega\lvert K_\omega\rvert^2)\rho=E\rho=\rho$. A unitary family has
     $E=V^\dagger V=1$.
 \end{proof}
 

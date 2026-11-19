@@ -106,6 +106,52 @@ theorem initializedBasisMatrix_mul_apply_of_notMem {κ ι μ : Type*} [Fintype �
   simp only [initializedBasisMatrix, submatrix_apply, id, one_apply]
   rw [ite_eq_right fun h ↦ absurd ⟨a, h.symm⟩ hy, zero_mul]
 
+/-- The columns of `M * J_eᴴ` at the image of `e` are the columns of `M`. -/
+theorem mul_conjTranspose_initializedBasisMatrix_apply_self {κ ι μ : Type*} [Fintype κ]
+    [DecidableEq ι] (e : κ ↪ ι) (M : Matrix μ κ ℂ) (x : μ) (a : κ) :
+    (M * (initializedBasisMatrix e)ᴴ) x (e a) = M x a := by
+  rw [mul_apply, Finset.sum_eq_single a (fun b _ hb ↦ by
+    simp [initializedBasisMatrix, Ne.symm hb]) (by simp)]
+  simp [initializedBasisMatrix, one_apply]
+
+/-- The columns of `M * J_eᴴ` outside the image of `e` vanish. -/
+theorem mul_conjTranspose_initializedBasisMatrix_apply_of_notMem {κ ι μ : Type*} [Fintype κ]
+    [DecidableEq ι] (e : κ ↪ ι) (M : Matrix μ κ ℂ) (x : μ) {y : ι} (hy : y ∉ Set.range e) :
+    (M * (initializedBasisMatrix e)ᴴ) x y = 0 := by
+  refine Finset.sum_eq_zero fun a _ ↦ ?_
+  simp only [conjTranspose_apply, initializedBasisMatrix, submatrix_apply, id, one_apply]
+  rw [ite_eq_right fun h ↦ absurd ⟨a, h.symm⟩ hy, star_zero, mul_zero]
+
+/-- Conjugation by `J_e` carries the matrix unit `|a⟩⟨a'|` to `|e a⟩⟨e a'|`. -/
+theorem initializedBasisMatrix_mul_single_mul_conjTranspose {κ ι : Type*} [Fintype κ]
+    [DecidableEq κ] [DecidableEq ι] (e : κ ↪ ι) (a a' : κ) :
+    initializedBasisMatrix e * single a a' (1 : ℂ) * (initializedBasisMatrix e)ᴴ =
+      single (e a) (e a') 1 := by
+  ext y y'
+  by_cases hy : y ∈ Set.range e
+  · obtain ⟨b, rfl⟩ := hy
+    by_cases hy' : y' ∈ Set.range e
+    · obtain ⟨b', rfl⟩ := hy'
+      rw [mul_conjTranspose_initializedBasisMatrix_apply_self,
+        initializedBasisMatrix_mul_apply_self]
+      simp [single_apply, e.injective.eq_iff]
+    · rw [mul_conjTranspose_initializedBasisMatrix_apply_of_notMem _ _ _ hy', single_apply,
+        ite_eq_right fun h ↦ absurd ⟨a', h.2⟩ hy']
+  · rw [Matrix.mul_assoc, initializedBasisMatrix_mul_apply_of_notMem _ _ hy, single_apply,
+      ite_eq_right fun h ↦ absurd ⟨a, h.1⟩ hy]
+
+/-- Conjugation by `J_σ` for an equivalence `σ` is the relabelling along `σ`. -/
+theorem initializedBasisMatrix_equiv_mul_mul_conjTranspose {κ ι : Type*} [Fintype κ]
+    [DecidableEq ι] (σ : κ ≃ ι) (ρ : Matrix κ κ ℂ) :
+    initializedBasisMatrix σ.toEmbedding * ρ * (initializedBasisMatrix σ.toEmbedding)ᴴ =
+      ρ.submatrix σ.symm σ.symm := by
+  ext y y'
+  rw [← σ.apply_symm_apply y, ← σ.apply_symm_apply y']
+  rw [show σ (σ.symm y') = σ.toEmbedding (σ.symm y') from rfl,
+    mul_conjTranspose_initializedBasisMatrix_apply_self,
+    show σ (σ.symm y) = σ.toEmbedding (σ.symm y) from rfl, initializedBasisMatrix_mul_apply_self]
+  simp
+
 /-- If $YZ=1$, then the dressed Gram equation
 $Y^\dagger GY=Y^\dagger Y$ is equivalent to $G=1$.
 

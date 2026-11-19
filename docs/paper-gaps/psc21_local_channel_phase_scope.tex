@@ -95,11 +95,11 @@ resource comparison; the encoding of a protocol with bounded bases into a
 fixed alphabet at every site, of the same depth, is one such ingredient. Every
 protocol of the enlarged-site model is a preparation of basis vectors on
 environments at the sites, an unbranched circuit of unitary gates of no larger
-depth on the same cells, and a partial trace over the output environments; the
-environment of a gate lies in the local basis of one site of its cell, so this
-does not yet act on fixed-dimensional physical qudits, which requires encoding
-the environments into qudits and routing them.\footnote{Formal declaration:
-    \leanid{QuantumCircuit.IsProtocol.exists_unitary_dilation} in
+depth on the same geometry, and a partial trace over the output environments.
+The environments lie in the local bases, and their dimensions depend on the
+protocol, so this does not yet act on fixed-dimensional physical qudits, which
+requires encoding the environments into qudits and routing them.\footnote{Formal declaration:
+    \leanid{QuantumCircuit.IsProtocol.isUnitaryDilation} in
     \doclink{QICLean/Circuit/Compile/Dilation}.} Once
 those source-model depth bounds are established, the contraction of the
 trace norm supplies the same error estimate.
