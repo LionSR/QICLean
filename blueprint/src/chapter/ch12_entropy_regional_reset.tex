@@ -45,6 +45,23 @@
     change of coordinates.
 \end{proof}
 
+\begin{lemma}[Two-sided residuals of a nearby operator]
+    \label{lem:gaussian_two_sided_nearby}
+    \lean{Matrix.norm_two_sided_le_of_norm_sub_le}
+    \leanok
+    Let $\psi,\varphi$ be unit vectors and let $M'$ satisfy
+    $\lVert M'\psi-z\varphi\rVert\le\varepsilon$ and
+    $\lVert M'^*\varphi-z\psi\rVert\le\varepsilon$. If $\lVert M-M'\rVert\le\delta$,
+    then both residuals of $M$ are at most $\delta+\varepsilon$
+    \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+\end{lemma}
+\begin{proof}\leanok
+    By the triangle inequality,
+    $\lVert M\psi-z\varphi\rVert\le\lVert(M-M')\psi\rVert+\lVert M'\psi-z\varphi\rVert
+    \le\delta+\varepsilon$, and the same with $M^*$, since
+    $\lVert M^*-M'^*\rVert=\lVert M-M'\rVert$.
+\end{proof}
+
 \begin{lemma}[The entropy cost of the reset]
     \label{lem:gaussian_reset_scalar}
     \lean{Real.eight_mul_sqrt_mul_le_rpow_neg}
