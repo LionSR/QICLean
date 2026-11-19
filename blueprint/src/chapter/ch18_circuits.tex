@@ -56,9 +56,9 @@ preservation, and the backward light cone.
         QuantumCircuit.Geometry.ring_cost_pos}
     \leanok
     \uses{def:circuits_geometry}
-    The ring of $N$ sites is the geometry on $\Z_N$ with one cell $\{k,k+1\}$ of cost $1$
-    for each site $k$, indices modulo $N$. For $N=1$ the cell is $\{0\}$, and for $N=2$
-    both cells are $\{0,1\}$.
+    For $N\ge1$, the ring of $N$ sites is the geometry on $\Z_N$ with one cell
+    $\{k,k+1\}$ of cost $1$ for each site $k$, indices modulo $N$. For $N=1$ the cell is
+    $\{0\}$, and for $N=2$ both cells are $\{0,1\}$.
 \end{definition}
 
 \begin{lemma}[Neighbourhoods on the ring]
@@ -71,7 +71,8 @@ preservation, and the backward light cone.
     about $R$, and the $r$-fold neighbourhood is the ball of radius $r$.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{def:circuits_ring_geometry, lem:sites_ring_ball}
+    \uses{def:circuits_geometry, def:circuits_ring_geometry, def:sites_ring_ball,
+        lem:sites_ring_ball}
     A cell $\{k,k+1\}$ meeting $R$ lies within distance $1$ of $R$, and a site $x+m$ with
     $x\in R$ and $m\in\{-1,0,1\}$ lies in $R$ or in the cell $\{x-1,x\}$ or $\{x,x+1\}$,
     which meets $R$. The second statement follows by induction on $r$ from

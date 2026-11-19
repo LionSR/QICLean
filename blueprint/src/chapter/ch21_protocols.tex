@@ -284,7 +284,7 @@ Section~\ref{sec:protocols_light_cones} are ring balls.
     \lean{QuantumCircuit.IsProtocol.traceAdjointMap_mem_supportedOperators_ringBall,
         QuantumCircuit.IsProtocol.traceAdjointMap_mul_of_disjoint_ringBall}
     \leanok
-    \uses{thm:protocols_light_cone, def:circuits_ring_geometry,
+    \uses{thm:protocols_light_cone, def:circuits_ring_geometry, def:sites_ring_ball,
         lem:circuits_ring_neighbourhood}
     Let $\Phi$ be realised by a protocol of depth at most $T$ on the ring of $N\ge1$ sites.
     Then $\Phi^*$ maps an operator supported on a region $R$ to an operator supported on the
@@ -301,7 +301,7 @@ Section~\ref{sec:protocols_light_cones} are ring balls.
     \label{thm:protocols_ring_correlations}
     \lean{QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isRingSeparated}
     \leanok
-    \uses{thm:protocols_light_cone, def:circuits_ring_geometry,
+    \uses{thm:protocols_light_cone, def:circuits_ring_geometry, def:sites_ring_ball,
         lem:circuits_ring_neighbourhood, lem:sites_ring_separated}
     Let a product $\bigotimes_s\sigma_s$ with $\operatorname{tr}\sigma_s=1$ be converted into
     $\sigma$ in depth $T$ on the ring of $N\ge1$ sites, and let the regions $R$ and $R'$ be
