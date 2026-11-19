@@ -110,17 +110,16 @@ theorem initializedBasisMatrix_mul_apply_of_notMem {κ ι μ : Type*} [Fintype �
 theorem mul_conjTranspose_initializedBasisMatrix_apply_self {κ ι μ : Type*} [Fintype κ]
     [DecidableEq ι] (e : κ ↪ ι) (M : Matrix μ κ ℂ) (x : μ) (a : κ) :
     (M * (initializedBasisMatrix e)ᴴ) x (e a) = M x a := by
-  rw [mul_apply, Finset.sum_eq_single a (fun b _ hb ↦ by
-    simp [initializedBasisMatrix, Ne.symm hb]) (by simp)]
-  simp [initializedBasisMatrix, one_apply]
+  rw [← conjTranspose_conjTranspose (M * _), conjTranspose_apply, conjTranspose_mul,
+    conjTranspose_conjTranspose, initializedBasisMatrix_mul_apply_self, conjTranspose_apply,
+    star_star]
 
 /-- The columns of `M * J_eᴴ` outside the image of `e` vanish. -/
 theorem mul_conjTranspose_initializedBasisMatrix_apply_of_notMem {κ ι μ : Type*} [Fintype κ]
     [DecidableEq ι] (e : κ ↪ ι) (M : Matrix μ κ ℂ) (x : μ) {y : ι} (hy : y ∉ Set.range e) :
     (M * (initializedBasisMatrix e)ᴴ) x y = 0 := by
-  refine Finset.sum_eq_zero fun a _ ↦ ?_
-  simp only [conjTranspose_apply, initializedBasisMatrix, submatrix_apply, id, one_apply]
-  rw [ite_eq_right fun h ↦ absurd ⟨a, h.symm⟩ hy, star_zero, mul_zero]
+  rw [← conjTranspose_conjTranspose (M * _), conjTranspose_apply, conjTranspose_mul,
+    conjTranspose_conjTranspose, initializedBasisMatrix_mul_apply_of_notMem _ _ hy, star_zero]
 
 /-- Conjugation by `J_e` carries the matrix unit `|a⟩⟨a'|` to `|e a⟩⟨e a'|`. -/
 theorem initializedBasisMatrix_mul_single_mul_conjTranspose {κ ι : Type*} [Fintype κ]

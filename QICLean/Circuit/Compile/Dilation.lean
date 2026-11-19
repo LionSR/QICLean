@@ -240,13 +240,18 @@ private theorem map_trace_relabel (Q : Matrix (Config fun s ↦ (Z s × B s) × 
   rw [← (Equiv.arrowProdEquivProdArrow S B C).symm.sum_comp, Fintype.sum_prod_type]
   rfl
 
+/-- The reordering `(A × B) × C ≃ (A × C) × B` of the two trailing factors. -/
+private def swapTailEquiv (A B C : Type) : (A × B) × C ≃ (A × C) × B where
+  toFun p := ((p.1.1, p.2), p.1.2)
+  invFun q := ((q.1.1, q.2), q.1.2)
+  left_inv _ := rfl
+  right_inv _ := rfl
+
 /-- Tracing out an environment after moving a prepared one past it is preparing after tracing. -/
 private theorem map_trace_relabel_prepare (b₀ : ∀ s, B s)
     (M : Matrix (Config fun s ↦ Y s × C s) (Config fun s ↦ Y s × C s) ℂ) :
     (traceCircuit Γ (fun s ↦ Y s × B s) C).map KrausGate.ev
-        ((relabelCircuit Γ fun s ↦ ((Equiv.prodAssoc (Y s) (C s) (B s)).trans
-          ((Equiv.refl (Y s)).prodCongr (Equiv.prodComm (C s) (B s)))).trans
-            (Equiv.prodAssoc (Y s) (B s) (C s)).symm).map KrausGate.ev
+        ((relabelCircuit Γ fun s ↦ swapTailEquiv (Y s) (C s) (B s)).map KrausGate.ev
           ((M ⊗ₖ Matrix.single b₀ b₀ (1 : ℂ)).submatrix
             (Equiv.arrowProdEquivProdArrow S (fun s ↦ Y s × C s) B)
             (Equiv.arrowProdEquivProdArrow S (fun s ↦ Y s × C s) B))) =
@@ -254,9 +259,7 @@ private theorem map_trace_relabel_prepare (b₀ : ∀ s, B s)
   ext w w'
   simp only [map_traceCircuit_apply, map_relabelCircuit_apply, map_prepareCircuit_apply,
     submatrix_apply, Equiv.arrowProdEquivProdArrow_apply, kroneckerMap_apply, Matrix.single_apply,
-    Equiv.symm_trans_apply, Equiv.prodAssoc_apply, Equiv.prodCongr_symm, Equiv.prodCongr_apply,
-    Equiv.refl_symm, Equiv.prodComm_symm, Equiv.symm_symm, Prod.map, Equiv.refl_apply,
-    Equiv.prodComm_apply, Prod.swap, Equiv.prodAssoc_symm_apply, funext_iff]
+    swapTailEquiv, Equiv.coe_fn_symm_mk, funext_iff]
   by_cases h1 : ∀ s, (w s).2 = b₀ s <;> by_cases h2 : ∀ s, (w' s).2 = b₀ s <;>
     simp [h1, h2, eq_comm]
 
@@ -374,9 +377,7 @@ theorem IsUnitaryDilation.comp {T₁ T₂ : ℕ}
   obtain ⟨E₁, F₁, _, _, _, _, e₁, c₁, hu₁, hb₁, hd₁, rfl⟩ := h₁
   obtain ⟨E₂, F₂, _, _, _, _, e₂, c₂, hu₂, hb₂, hd₂, rfl⟩ := h₂
   let R₁ := relabelCircuit Γ fun s ↦ (Equiv.prodAssoc (X s) (E₁ s) (E₂ s)).symm
-  let R₂ := relabelCircuit Γ fun s ↦
-    ((Equiv.prodAssoc (Y s) (F₁ s) (E₂ s)).trans ((Equiv.refl (Y s)).prodCongr
-      (Equiv.prodComm (F₁ s) (E₂ s)))).trans (Equiv.prodAssoc (Y s) (E₂ s) (F₁ s)).symm
+  let R₂ := relabelCircuit Γ fun s ↦ swapTailEquiv (Y s) (F₁ s) (E₂ s)
   let R₃ := relabelCircuit Γ fun s ↦ Equiv.prodAssoc (Z s) (F₂ s) (F₁ s)
   refine ⟨fun s ↦ E₁ s × E₂ s, fun s ↦ F₂ s × F₁ s, inferInstance, inferInstance, inferInstance,
     inferInstance, fun s ↦ (e₁ s, e₂ s),
