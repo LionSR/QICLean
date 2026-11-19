@@ -146,7 +146,7 @@ private theorem exists_common_unit_fixed_ground_of_disjoint_support
   exact ⟨x, hx, by simpa only [ha] using hAx, by simpa only [hb] using hBx⟩
 
 /-- Original regional operators with pairwise disjoint supports have a
-common unit vector attaining their supplied genuine ground energies.
+common unit vector attaining the given minimum eigenvalues.
 Auxiliary to the three successive truncations in ALVV,
 arXiv:1602.08828v2, Corollary c:goodagsphardtrunc, lines 979–1005. -/
 private theorem exists_common_unit_fixed_ground_of_disjoint_family
@@ -228,8 +228,8 @@ private theorem exists_common_unit_fixed_ground_of_disjoint_family
       exact sub_eq_zero.mp (by
         simpa only [sub_mulVec, smul_mulVec, one_mulVec] using hwi)
 
-/-- Hermitian operators with pairwise disjoint actual supports have a common
-unit vector attaining their genuine ground energies. Auxiliary to ALVV,
+/-- Hermitian operators with pairwise disjoint supports have a common
+unit vector attaining their minimum eigenvalues. Auxiliary to ALVV,
 arXiv:1602.08828v2, Corollary c:goodagsphardtrunc, lines 979–1005. -/
 private theorem exists_common_unit_ground_of_disjoint_family
     {ι : Type*}

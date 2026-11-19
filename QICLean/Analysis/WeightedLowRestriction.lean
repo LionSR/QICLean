@@ -50,7 +50,7 @@ namespace Matrix
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
-/-- From a conjugation bound on `Y`, the actual exponential weight of `A` has a
+/-- From a conjugation bound on `Y`, the exponential weight of `A` has a
 small restriction from the low spectral span of `X + Y` to the high spectral
 range of `A`. AKL14, arXiv:1406.3898, Theorem `lowspec`, lines 1102–1168. -/
 theorem exists_weighted_low_restriction_of_conjugation_le
