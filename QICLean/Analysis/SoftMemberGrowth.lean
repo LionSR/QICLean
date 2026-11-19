@@ -15,14 +15,12 @@ of degree at most 36 and 104 in one plus the logarithm of the length. -/
 
 namespace Real
 
-/-- The inner logarithm costs at most a factor of two on the unit interval. -/
-theorem soft_half_le_log_one_add {x : ℝ} (hx : 0 ≤ x) (hx' : x ≤ 1) :
+private theorem soft_half_le_log_one_add {x : ℝ} (hx : 0 ≤ x) (hx' : x ≤ 1) :
     x / 2 ≤ log (1 + x) := by
-  have hp : 0 < 1 + x := by linarith
-  apply le_trans _ (one_sub_inv_le_log_of_pos hp)
-  rw [le_sub_iff_add_le, inv_eq_one_div, ← le_sub_iff_add_le']
-  apply (div_le_iff₀ hp).2
-  nlinarith only [mul_nonneg hx (sub_nonneg.mpr hx')]
+  refine le_trans ?_ (le_log_one_add_of_nonneg hx)
+  apply (le_div_iff₀ (by positivity : 0 < x + 2)).mpr
+  have h := mul_nonpos_of_nonneg_of_nonpos hx (show x - 2 ≤ 0 by linarith only [hx'])
+  nlinarith only [h]
 
 /-- Linearize the nested logarithm in the actual natural cluster order.
 The natural ceiling and lower cutoff together cost at most one. -/
