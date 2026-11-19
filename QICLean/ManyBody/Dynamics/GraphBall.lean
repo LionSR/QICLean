@@ -3,6 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import Mathlib.Algebra.Group.Action.TypeTags
+import Mathlib.Combinatorics.SimpleGraph.Circulant
 import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Data.Real.Basic
 import Mathlib.Order.SuccPred.ENat
@@ -161,3 +163,34 @@ theorem reset_graphNeighborhood_disjoint_cores {κ : Type*} [DecidableEq V] [Fin
     · exact Finset.disjoint_left.mp hDC hxD (hC a haC (hNear x (hDiam k z hzX x hx)))
 
 end ManyBody
+
+namespace SimpleGraph
+
+variable {V : Type*} {G : Type*} [Group G] [MulAction G V]
+
+/-- **Site actions by graph automorphisms preserve distances.** If every `g` preserves
+adjacency of the graph `Γ` on the sites, then `d(g • x, g • y) = d(x, y)`. For the
+translations of a lattice this is the source's setting of a translationally invariant system
+on a lattice: Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1603–1612. -/
+theorem edist_smul_of_adj_iff (Γ : SimpleGraph V)
+    (hΓ : ∀ (g : G) (x y : V), Γ.Adj (g • x) (g • y) ↔ Γ.Adj x y) (g : G) (x y : V) :
+    Γ.edist (g • x) (g • y) = Γ.edist x y := by
+  have hle : ∀ (g : G) (x y : V), Γ.edist (g • x) (g • y) ≤ Γ.edist x y := by
+    intro g x y
+    rcases eq_or_ne (Γ.edist x y) ⊤ with h | h
+    · simp [h]
+    · obtain ⟨w, hw⟩ := Γ.exists_walk_of_edist_ne_top h
+      let φ : Γ →g Γ := ⟨(g • ·), (hΓ g _ _).mpr⟩
+      rw [← hw]
+      exact (Γ.edist_le (w.map φ)).trans_eq (by simp)
+  refine le_antisymm (hle g x y) ?_
+  simpa only [inv_smul_smul] using hle g⁻¹ (g • x) (g • y)
+
+/-- The rotations of a ring of `n` sites, `x ↦ a + x`, are automorphisms of the cycle graph. -/
+theorem cycleGraph_adj_smul {n : ℕ} [NeZero n] (a : Multiplicative (Fin n)) (x y : Fin n) :
+    (cycleGraph n).Adj (a • x) (a • y) ↔ (cycleGraph n).Adj x y := by
+  change (cycleGraph n).Adj (a.toAdd + x) (a.toAdd + y) ↔ _
+  simp only [cycleGraph_adj', add_sub_add_left_eq_sub]
+
+
+end SimpleGraph

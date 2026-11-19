@@ -299,4 +299,32 @@ theorem norm_gaussianFilteredTerm_apply_le_commutator_of_isGapped {q ΔE : ℝ}
   obtain ⟨c, rfl⟩ := hφ
   rw [inner_smul_left, hcenter, mul_zero]
 
+section Conjugation
+
+open GaussianFilter Matrix
+
+/-- Conjugating `H` and `W` by the same unitary conjugates the Gaussian-filtered operator.
+Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1603–1618. -/
+theorem gaussianFilteredTerm_conj {n : Type*} [Fintype n] [DecidableEq n] (r ΔE : ℝ)
+    {U H : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ) (hH : H.IsHermitian) (W : Matrix n n ℂ) :
+    gaussianFilteredTerm r ΔE (U * H * Uᴴ) (U * W * Uᴴ) =
+      U * gaussianFilteredTerm r ΔE H W * Uᴴ := by
+  have hUU : U * Uᴴ = 1 := by simpa [star_eq_conjTranspose] using (mem_unitaryGroup_iff).mp hU
+  have hUU' : Uᴴ * U = 1 := by simpa [star_eq_conjTranspose] using (mem_unitaryGroup_iff').mp hU
+  have hpath (t : ℝ) : hermitianUnitaryPath (U * H * Uᴴ) t = U * hermitianUnitaryPath H t * Uᴴ := by
+    have hinv : Uᴴ = U⁻¹ := (inv_eq_right_inv hUU).symm
+    rw [hinv, hermitianUnitaryPath, hermitianUnitaryPath,
+      ← exp_conj U _ ((isUnit_iff_isUnit_det U).mpr (isUnit_det_of_right_inverse hUU))]
+    simp only [Matrix.mul_smul, Matrix.smul_mul]
+  have hint (t : ℝ) : hermitianUnitaryPath (U * H * Uᴴ) t * (U * W * Uᴴ) *
+      hermitianUnitaryPath (U * H * Uᴴ) (-t) =
+        U * (hermitianUnitaryPath H t * W * hermitianUnitaryPath H (-t)) * Uᴴ := by
+    rw [hpath, hpath]
+    simp only [Matrix.mul_assoc, ← Matrix.mul_assoc Uᴴ U, hUU', Matrix.one_mul]
+  simp only [gaussianFilteredTerm, gaussianIntertwiner, hint]
+  exact (ContinuousLinearMap.mulLeftRight ℂ (Matrix n n ℂ) U Uᴴ).integral_comp_comm
+    (integrable_intertwinerIntegrand _ hH hH W)
+
+end Conjugation
+
 end ManyBody

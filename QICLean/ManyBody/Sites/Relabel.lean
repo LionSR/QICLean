@@ -198,6 +198,7 @@ site `π v`. Its operator is the permutation matrix of the configuration bijecti
 that supported operators and the region expectation transform by the theorems above. -/
 
 open Matrix
+open scoped Matrix.Norms.L2Operator
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [DecidableEq α]
 
@@ -242,6 +243,7 @@ theorem sitePermOp_apply (π : Equiv.Perm V) (σ τ : Config fun _ : V ↦ α) :
     Option.mem_def, Option.some.injEq, siteConfigurationEquiv_inv_apply]
   exact if_congr eq_comm rfl rfl
 
+omit [DecidableEq V] in
 theorem sitePermOp_one : sitePermOp (V := V) (α := α) 1 = 1 := by
   ext σ τ
   simp [sitePermOp_apply, Matrix.one_apply, eq_comm]
@@ -264,11 +266,17 @@ theorem sitePermOp_mul (π π' : Equiv.Perm V) :
   · intro ρ _ hρ; simp [hρ]
   · simp
 
+theorem sitePermOp_pow (π : Equiv.Perm V) (N : ℕ) :
+    sitePermOp (α := α) π ^ N = sitePermOp (π ^ N) := by
+  induction N with
+  | zero => rw [pow_zero, pow_zero, sitePermOp_one]
+  | succ N ih => rw [pow_succ, ih, sitePermOp_mul, pow_succ]
+
 theorem sitePermOp_mem_unitary (π : Equiv.Perm V) :
     sitePermOp (α := α) π ∈ unitary (Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :=
   Equiv.Perm.permMatrix_mem_unitaryGroup _
 
-omit [Fintype α] in
+omit [DecidableEq V] [Fintype α] in
 theorem conjTranspose_sitePermOp (π : Equiv.Perm V) :
     (sitePermOp (α := α) π)ᴴ = sitePermOp π⁻¹ := by
   ext σ τ
@@ -308,6 +316,16 @@ theorem sitePermOp_mul_mul_conjTranspose (π : Equiv.Perm V)
     have h' : ¬τ = ρ ∘ ⇑π⁻¹ := by rintro rfl; exact hρ (comp_symm_comp ρ π).symm
     simp only [h', ↓reduceIte]
   · simp
+
+/-- Conjugation by the site-permutation operator preserves the operator norm. -/
+theorem norm_sitePermOp_mul_mul_conjTranspose (π : Equiv.Perm V)
+    (A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
+    ‖sitePermOp π * A * (sitePermOp π)ᴴ‖ = ‖A‖ := by
+  let U : unitary (Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :=
+    ⟨sitePermOp π, sitePermOp_mem_unitary π⟩
+  calc ‖sitePermOp π * A * (sitePermOp π)ᴴ‖
+      = ‖(U : Matrix _ _ ℂ) * A * ((star U : unitary _) : Matrix _ _ ℂ)‖ := rfl
+    _ = ‖A‖ := by rw [CStarRing.norm_mul_coe_unitary, CStarRing.norm_coe_unitary_mul]
 
 /-- A supported operator conjugated by the site-permutation operator is supported on the
 permuted region. -/
