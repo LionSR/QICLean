@@ -11,12 +11,18 @@ import QICLean.Channel.KrausFamilyProd
 # The unitary dilation of a trace-preserving Kraus family
 
 A trace-preserving finite Kraus family `K` from `α` to `β` is a unitary channel on an enlarged
-system followed by a partial trace (Wolf, *Quantum Channels & Operations*, Thm. 2.5): with the
-environments `E = β × K.Index` on the input and `F = α × K.Index` on the output, there are a
-basis vector `e₀` of `E` and a unitary `U` from `α × E` to `β × F` with
-`K(ρ) = tr_F (U (ρ ⊗ |e₀⟩⟨e₀|) Uᴴ)`. The two enlarged systems have the same dimension
-`|α| |β| |K.Index|`, and the environments are given by the family itself, not by a bound on its
-Kraus rank.
+system followed by a partial trace: with the environments `E = β × K.Index` on the input and
+`F = α × K.Index` on the output, there are a basis vector `e₀` of `E` and a unitary `U` from
+`α × E` to `β × F` with `K(ρ) = tr_F (U (ρ ⊗ |e₀⟩⟨e₀|) Uᴴ)`. The two enlarged systems have the
+same dimension `|α| |β| |K.Index|`, and the environments are given by the family itself.
+
+This is the Stinespring construction used in the proof of Wolf, *Quantum Channels &
+Operations*, Thm. 2.5, not that theorem's statement: Wolf's theorem fixes an environment of
+dimension `d (d')²`, independent of the Kraus representation, at the price of a general normalized
+vector instead of a basis vector (`Channel.IsKrausCPTP.exists_openSystem_unitary`). Here the
+environment depends on the family and its initial state is a basis vector, which is what a
+circuit of local gates needs; `Matrix.exists_rectangular_unitary_dilation` is the same
+construction for a channel on `Fin`-indexed spaces with an unspecified Kraus rank.
 
 The construction: for a basis vector `a₀` of `α`, the matrix `W` with
 `W (b, (a', i)) a = [a' = a₀] (Kᵢ)_{ba}` is an isometry, because `K` is trace-preserving, and
@@ -42,7 +48,8 @@ private def dilationEquiv (α β I : Type) : α × (β × I) ≃ β × (α × I)
 
 /-- A trace-preserving Kraus family on a nonempty basis is a unitary family on the system and
 the environment `β × K.Index`, started in a basis vector `e₀` of the environment, followed by
-the partial trace over the environment `α × K.Index` (Wolf, Thm. 2.5). The basis vector `a₀` of
+the partial trace over the environment `α × K.Index` (the construction in the proof of Wolf,
+Thm. 2.5). The basis vector `a₀` of
 `α` that the construction needs comes from `[Nonempty α]`, which also makes the environment
 nonempty. -/
 theorem IsTP.exists_unitary_dilation [Nonempty α] {K : KrausFamily α β} [DecidableEq K.Index]

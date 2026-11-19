@@ -221,11 +221,15 @@ channel.
         K(\rho)&=\tr_F\bigl(U(\rho\otimes\ketbra{e_0}{e_0})U^\dagger\bigr)
         \label{eq:kraus_family_unitary_dilation}
     \end{align}
-    for every matrix $\rho$ on $\C^I$ \cite[Theorem~2.5]{Wolf2012Quantum}.
+    for every matrix $\rho$ on $\C^I$. This is the construction in the proof of
+    \cite[Theorem~2.5]{Wolf2012Quantum}, not that theorem: the environment here depends on
+    the family and starts in a basis vector, while
+    Theorem~\ref{thm:channel_exists_open_system_unitary_rectangular} has an environment of
+    fixed dimension $d(d')^2$ in a general normalized vector.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:kraus_family_prod, lem:exists_unitary_mul_eq_of_gram_eq,
-        lem:kraus_family_channel}
+        lem:circuits_tp_nonempty}
     A trace-preserving family on a nonempty basis has an operator and a nonempty
     target, so $E$ is nonempty; choose $e_0\in E$ and $a_0\in I$. The matrix
     $W:\C^I\to\C^J\otimes\C^F$ with $W\ket a=\sum_\omega K_\omega\ket a\otimes\ket{a_0,\omega}$
