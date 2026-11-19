@@ -42,7 +42,7 @@ Moved from TNLean (`e113e005`): `TNLean/Lattice/TranslationSupercell.lean`,
 `TranslationMomentum.lean`, `TranslationGroundSpace.lean`, `TranslationSupercellSpacing.lean`
 and `TranslationSupercellDecay.lean`, with `gaussianFilteredTerm_sitePermMatrix_conj` from
 `SiteSymmetry.lean`. Changes: namespace `ManyBody`; the site permutation is
-`sitePermOp (MulAction.toPerm g)`; terms are given by `Φ : Interaction (fun _ ↦ Fin d) T`; gaps
+`sitePermOp (α := α) (MulAction.toPerm g)`; terms are given by `Φ : Interaction (fun _ ↦ α) T`; gaps
 are stated as `IsGapped`.
 -/
 
@@ -61,17 +61,17 @@ filtered operator of the translate `P_g W P_g†` is the translate of the filter
 `W`. With covariant terms `H_{g•i} = P_g H_i P_g†` this gives the relation
 `M_{g•i} = P_g M_i P_g†` that Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
 lines 1613–1618, uses for translationally invariant systems. -/
-theorem gaussianFilteredTerm_sitePermOp_conj {q : ℕ} (r ΔE : ℝ)
-    {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ}
+theorem gaussianFilteredTerm_sitePermOp_conj {α : Type*} [Fintype α] [DecidableEq α] (r ΔE : ℝ)
+    {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
         (hInv : IsSiteInvariant G H) (hH : H.IsHermitian)
-    (g : G) (W : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ) :
+    (g : G) (W : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
     gaussianFilteredTerm r ΔE H
-        (sitePermOp (α := Fin q) (MulAction.toPerm g) * W * (sitePermOp (α := Fin q)
+        (sitePermOp (α := α) (MulAction.toPerm g) * W * (sitePermOp (α := α)
             (MulAction.toPerm g))ᴴ) =
-      sitePermOp (α := Fin q) (MulAction.toPerm g) * gaussianFilteredTerm r ΔE H W *
-        (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ := by
-  have hu := sitePermOp_mem_unitary (V := V) (α := Fin q) (MulAction.toPerm g)
-  have hconj : sitePermOp (α := Fin q) (MulAction.toPerm g) * H * (sitePermOp (α := Fin q)
+      sitePermOp (α := α) (MulAction.toPerm g) * gaussianFilteredTerm r ΔE H W *
+        (sitePermOp (α := α) (MulAction.toPerm g))ᴴ := by
+  have hu := sitePermOp_mem_unitary (V := V) (α := α) (MulAction.toPerm g)
+  have hconj : sitePermOp (α := α) (MulAction.toPerm g) * H * (sitePermOp (α := α)
       (MulAction.toPerm g))ᴴ = H := by
     rw [(hInv g).eq, Matrix.mul_assoc]
     simpa [star_eq_conjTranspose] using
@@ -84,40 +84,15 @@ end ManyBody
 open Matrix GaussianFilter
 open scoped InnerProductSpace
 
-section Projection
 
-variable {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
-  [CompleteSpace E]
-
-/-- **Compression of a conjugate by an operator fixing the subspace.** If the adjoint `U†`
-leaves every vector of `K` unchanged, then `P (U W U†) P = P W P`, where `P` is the orthogonal
-projection onto `K`: indeed `U† P = P`, and so `P U = P` on taking adjoints. -/
-theorem Submodule.starProjection_mul_conj_mul_starProjection {K : Submodule 𝕜 E}
-    [K.HasOrthogonalProjection] {U : E →L[𝕜] E} (hU : ∀ v ∈ K, U.adjoint v = v)
-    (W : E →L[𝕜] E) :
-    K.starProjection * (U * W * U.adjoint) * K.starProjection =
-      K.starProjection * W * K.starProjection := by
-  have hP : U.adjoint * K.starProjection = K.starProjection := by
-    ext1 x
-    exact hU _ (K.starProjection_apply_mem x)
-  have hP' : K.starProjection * U = K.starProjection := by
-    have hsa : K.starProjection.adjoint = K.starProjection :=
-      (isSelfAdjoint_starProjection K).adjoint_eq
-    have h := congrArg star hP
-    simpa only [star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_adjoint,
-      hsa] using h
-  calc K.starProjection * (U * W * U.adjoint) * K.starProjection
-      = K.starProjection * U * W * (U.adjoint * K.starProjection) := by simp only [mul_assoc]
-    _ = K.starProjection * W * K.starProjection := by rw [hP', hP]
-
-end Projection
 
 
 namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {G : Type*} [Group G] [MulAction G V]
 
-variable {q : ℕ} {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ} {E₀ : ℝ}
+variable {α : Type*} [Fintype α] [DecidableEq α] {H : Matrix (Config fun _ : V ↦ α) (Config fun _
+    : V ↦ α) ℂ} {E₀ : ℝ}
 
 /-- **The low-energy compression is unchanged by a supercell translation.** Let `S` be a
 subgroup whose site permutations leave every ground vector of `H` unchanged: the source's
@@ -126,27 +101,24 @@ supercell" (Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1626–162
 `g ∈ S` the compression of `P_g W P_g†` to the ground space equals that of `W`. -/
 theorem groundCompression_sitePermOp_conj (S : Subgroup G)
     (hS : ∀ g ∈ S, ∀ v ∈ groundSpace H E₀,
-      sitePermOp (α := Fin q) (MulAction.toPerm g) *ᵥ WithLp.ofLp v = WithLp.ofLp v)
-    {g : G} (hg : g ∈ S) (W : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ) :
-    groundCompression H E₀ (sitePermOp (α := Fin q) (MulAction.toPerm g) * W * (sitePermOp (α
-        := Fin q) (MulAction.toPerm g))ᴴ) =
+      toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) v = v)
+    {g : G} (hg : g ∈ S) (W : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
+    groundCompression H E₀ (sitePermOp (α := α) (MulAction.toPerm g) * W * (sitePermOp (α
+        := α) (MulAction.toPerm g))ᴴ) =
       groundCompression H E₀ W := by
-  have hstar : toEuclideanCLM (n := V → Fin q) (𝕜 := ℂ) (sitePermOp (α := Fin q)
+  have hstar : toEuclideanCLM (n := V → α) (𝕜 := ℂ) (sitePermOp (α := α)
       (MulAction.toPerm g))ᴴ =
-      (toEuclideanCLM (n := V → Fin q) (𝕜 := ℂ) (sitePermOp (α := Fin q)
+      (toEuclideanCLM (n := V → α) (𝕜 := ℂ) (sitePermOp (α := α)
           (MulAction.toPerm g))).adjoint := by
     rw [← star_eq_conjTranspose, map_star, ContinuousLinearMap.star_eq_adjoint]
   simp only [groundCompression]
   rw [map_mul, map_mul, hstar]
   refine Submodule.starProjection_mul_conj_mul_starProjection (fun v hv ↦ ?_) _
   rw [← hstar, ← sitePermOp_toPerm_inv]
-  calc toEuclideanCLM (n := V → Fin q) (𝕜 := ℂ) (sitePermOp (α := Fin q) (MulAction.toPerm g⁻¹)) v
-      = WithLp.toLp 2 (sitePermOp (α := Fin q) (MulAction.toPerm g⁻¹) *ᵥ WithLp.ofLp v)
-          := toEuclideanCLM_toLp _ _
-    _ = v := by rw [hS g⁻¹ (S.inv_mem hg) v hv]
+  exact hS g⁻¹ (S.inv_mem hg) v hv
 
-variable {κ : Type*} [MulAction G κ] {h : κ → Matrix (Config fun _ : V ↦ Fin q)
-    (Config fun _ : V ↦ Fin q) ℂ}
+variable {κ : Type*} [MulAction G κ] {h : κ → Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ}
 
 /-- **Low-energy commutators across a supercell translation.** Let the terms be covariant,
 `h_{g•k} = P_g h_k P_g†` (Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, line 862, the
@@ -158,11 +130,11 @@ the commutator "equal[s] `[M_{x₁,y₁}, M_{x₂+x',y₂}]` where `x'` translat
 of supercells". -/
 theorem groundCompression_commutator_eq_of_mem_supercell (r ΔE : ℝ)
     (hInv : IsSiteInvariant G H) (hH : H.IsHermitian)
-    (hcov : ∀ (g : G) k, h (g • k) = sitePermOp (α := Fin q) (MulAction.toPerm g) * h k *
-        (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ)
+    (hcov : ∀ (g : G) k, h (g • k) = sitePermOp (α := α) (MulAction.toPerm g) * h k *
+        (sitePermOp (α := α) (MulAction.toPerm g))ᴴ)
     (S : Subgroup G)
     (hS : ∀ g ∈ S, ∀ v ∈ groundSpace H E₀,
-      sitePermOp (α := Fin q) (MulAction.toPerm g) *ᵥ WithLp.ofLp v = WithLp.ofLp v)
+      toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) v = v)
     {g : G} (hg : g ∈ S) (i j : κ) :
     groundCompression H E₀ (gaussianFilteredTerm r ΔE H (h i)) *
         groundCompression H E₀ (gaussianFilteredTerm r ΔE H (h (g • j))) -
@@ -186,11 +158,11 @@ low-energy commutator of the filtered terms at `i` and `j` for all `i` and `j`, 
 `proj3new.tex`, lines 1634–1641. -/
 theorem norm_groundCompression_commutator_le_of_mem_supercell (r ΔE : ℝ)
     (hInv : IsSiteInvariant G H) (hH : H.IsHermitian)
-    (hcov : ∀ (g : G) k, h (g • k) = sitePermOp (α := Fin q) (MulAction.toPerm g) * h k *
-        (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ)
+    (hcov : ∀ (g : G) k, h (g • k) = sitePermOp (α := α) (MulAction.toPerm g) * h k *
+        (sitePermOp (α := α) (MulAction.toPerm g))ᴴ)
     (S : Subgroup G)
     (hS : ∀ g ∈ S, ∀ v ∈ groundSpace H E₀,
-      sitePermOp (α := Fin q) (MulAction.toPerm g) *ᵥ WithLp.ofLp v = WithLp.ofLp v)
+      toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) v = v)
     (B : κ → κ → ℝ)
     (hB : ∀ i j,
       ‖groundCompression H E₀ (gaussianFilteredTerm r ΔE H (h i)) *
@@ -214,62 +186,62 @@ open Matrix Module.End
 namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {G : Type*} [CommGroup G] [MulAction G V]
-  {q : ℕ}
+  {α : Type*} [Fintype α] [DecidableEq α]
 
-private theorem toEuclideanLin_apply_eq (A : Matrix (Config fun _ : V ↦ Fin q)
-    (Config fun _ : V ↦ Fin q) ℂ)
-    (v : EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)) :
+private theorem toEuclideanLin_apply_eq (A : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ)
+    (v : EuclideanSpace ℂ (Config fun _ : V ↦ α)) :
     toEuclideanLin A v = WithLp.toLp 2 (A *ᵥ WithLp.ofLp v) := rfl
 
 theorem toEuclideanLin_sitePermOp_toPerm_mul (g h : G) (v : EuclideanSpace ℂ
-    (Config fun _ : V ↦ Fin q)) :
-    toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm (g * h))) v =
-      toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm g)) (toEuclideanLin (sitePermOp
-          (α := Fin q) (MulAction.toPerm h)) v) := by
+    (Config fun _ : V ↦ α)) :
+    toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm (g * h))) v =
+      toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) (toEuclideanLin (sitePermOp
+          (MulAction.toPerm h)) v) := by
   rw [sitePermOp_toPerm_mul]
   simp [toEuclideanLin_apply_eq, mulVec_mulVec]
 
-theorem toEuclideanLin_sitePermOp_toPerm_one (v : EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)) :
-    toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm (1 : G))) v = v := by
+theorem toEuclideanLin_sitePermOp_toPerm_one (v : EuclideanSpace ℂ (Config fun _ : V ↦ α)) :
+    toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm (1 : G))) v = v := by
   rw [sitePermOp_toPerm_one, toEuclideanLin_apply_eq]
   simp only [one_mulVec, WithLp.toLp_ofLp]
 
 /-- An invariant `H` has its ground space mapped into itself by every site permutation. -/
-theorem mapsTo_groundSpace_sitePermOp {H : Matrix (Config fun _ : V ↦ Fin q)
-    (Config fun _ : V ↦ Fin q) ℂ}
+theorem mapsTo_groundSpace_sitePermOp {H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) (g : G) :
-    Set.MapsTo (toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm g)))
-      (groundSpace H E₀ : Set (EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)))
-      (groundSpace H E₀ : Set (EuclideanSpace ℂ (Config fun _ : V ↦ Fin q))) := fun v hv ↦ by
+    Set.MapsTo (toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)))
+      (groundSpace H E₀ : Set (EuclideanSpace ℂ (Config fun _ : V ↦ α)))
+      (groundSpace H E₀ : Set (EuclideanSpace ℂ (Config fun _ : V ↦ α))) := fun v hv ↦ by
   rw [SetLike.mem_coe, mem_groundSpace_iff_mulVec] at hv ⊢
   rw [toEuclideanLin_apply_eq, WithLp.ofLp_toLp, mulVec_mulVec, ← (hInv g).eq, ← mulVec_mulVec,
     hv, mulVec_smul]
 
-variable (G q) in
+variable (G) in
 /-- **The momentum sector** of the ground space of `H` at energy `E₀` for a character
 `χ : G →* ℂ`: the ground vectors `v` with `P_g v = χ(g) v` for every `g`. Hastings,
 arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1613–1618, ground states that are eigenvectors
 of the translations with momentum `k_a`, for which `χ(x) = e^{i k_a · x}`. -/
-noncomputable def momentumSector (H : Matrix (Config fun _ : V ↦ Fin q)
-    (Config fun _ : V ↦ Fin q) ℂ) (E₀ : ℝ)
-    (χ : G →* ℂ) : Submodule ℂ (EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)) :=
-  groundSpace H E₀ ⊓ ⨅ g, eigenspace (toEuclideanLin (sitePermOp (α := Fin q)
+noncomputable def momentumSector (H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ) (E₀ : ℝ)
+    (χ : G →* ℂ) : Submodule ℂ (EuclideanSpace ℂ (Config fun _ : V ↦ α)) :=
+  groundSpace H E₀ ⊓ ⨅ g, eigenspace (toEuclideanLin (sitePermOp (α := α)
       (MulAction.toPerm g))) (χ g)
 
-theorem momentumSector_le_groundSpace (H : Matrix (Config fun _ : V ↦ Fin q)
-    (Config fun _ : V ↦ Fin q) ℂ) (E₀ : ℝ)
-    (χ : G →* ℂ) : momentumSector G q H E₀ χ ≤ groundSpace H E₀ :=
+theorem momentumSector_le_groundSpace (H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ) (E₀ : ℝ)
+    (χ : G →* ℂ) : momentumSector G H E₀ χ ≤ groundSpace H E₀ :=
   inf_le_left
 
 theorem toEuclideanLin_sitePermOp_of_mem_momentumSector
-    {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ} {E₀ : ℝ} {χ : G →* ℂ}
-    {v : EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)} (hv : v ∈ momentumSector G q H E₀ χ) (g : G) :
-    toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm g)) v = χ g • v :=
+    {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ} {E₀ : ℝ} {χ : G →* ℂ}
+    {v : EuclideanSpace ℂ (Config fun _ : V ↦ α)} (hv : v ∈ momentumSector G H E₀ χ) (g : G) :
+    toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) v = χ g • v :=
   mem_eigenspace_iff.mp (Submodule.mem_iInf _ |>.mp hv.2 g)
 
 /-- A site permutation has finite order on the configurations. -/
 theorem exists_pow_sitePermOp_eq_one (g : G) :
-    ∃ N : ℕ, 0 < N ∧ sitePermOp (V := V) (α := Fin q) (MulAction.toPerm g) ^ N = 1 := by
+    ∃ N : ℕ, 0 < N ∧ sitePermOp (V := V) (α := α) (MulAction.toPerm g) ^ N = 1 := by
   refine ⟨orderOf (MulAction.toPerm g : Equiv.Perm V), orderOf_pos _, ?_⟩
   rw [sitePermOp_pow, pow_orderOf_eq_one, sitePermOp_one]
 
@@ -277,15 +249,15 @@ theorem exists_pow_sitePermOp_eq_one (g : G) :
 an invariant `H`, every ground vector is a sum of ground vectors with definite momentum.
 Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1613–1618: "we can pick the ground
 states to be eigenvectors of the translation operators". -/
-theorem iSup_momentumSector {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ}
+theorem iSup_momentumSector {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) :
-    ⨆ χ : G →* ℂ, momentumSector G q H E₀ χ = groundSpace H E₀ := by
+    ⨆ χ : G →* ℂ, momentumSector G H E₀ χ = groundSpace H E₀ := by
   set K := groundSpace H E₀
   let R : G → Module.End ℂ K := fun g ↦
-    (toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm g))).restrict
+    (toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g))).restrict
       (mapsTo_groundSpace_sitePermOp hInv E₀ g)
-  have hR (g : G) (v : K) : (R g v : EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)) =
-      toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm g)) v := rfl
+  have hR (g : G) (v : K) : (R g v : EuclideanSpace ℂ (Config fun _ : V ↦ α)) =
+      toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) v := rfl
   have hRmul (g h : G) (v : K) : R (g * h) v = R g (R h v) := by
     ext1; simp only [hR, toEuclideanLin_sitePermOp_toPerm_mul]
   have hcomm : Pairwise fun g h ↦ Commute (R g) (R h) := fun g h _ ↦
@@ -293,12 +265,12 @@ theorem iSup_momentumSector {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun
       change R g (R h v) = R h (R g v)
       rw [← hRmul, ← hRmul, mul_comm]
   have hss (g : G) : Module.End.IsFinitelySemisimple (R g) := by
-    obtain ⟨N, hN, hpow⟩ := exists_pow_sitePermOp_eq_one (V := V) (q := q) g
+    obtain ⟨N, hN, hpow⟩ := exists_pow_sitePermOp_eq_one (V := V) (α := α) g
     refine (isSemisimple_of_squarefree_aeval_eq_zero (p := Polynomial.X ^ N - 1) ?_ ?_)
       |>.isFinitelySemisimple
     · exact (Polynomial.separable_X_pow_sub_C 1 (by exact_mod_cast hN.ne') one_ne_zero).squarefree
-    · have hRpow (n : ℕ) (v : K) : ((R g ^ n) v : EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)) =
-          toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm g) ^ n) v := by
+    · have hRpow (n : ℕ) (v : K) : ((R g ^ n) v : EuclideanSpace ℂ (Config fun _ : V ↦ α)) =
+          toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g) ^ n) v := by
         induction n with
         | zero => simp
         | succ n ih =>
@@ -314,7 +286,7 @@ theorem iSup_momentumSector {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun
   refine le_antisymm (iSup_le fun χ ↦ momentumSector_le_groundSpace H E₀ χ) ?_
   -- every joint eigenspace of the restrictions lies in a momentum sector
   have hjoint (χ : G → ℂ) :
-      (⨅ g, eigenspace (R g) (χ g)).map K.subtype ≤ ⨆ χ : G →* ℂ, momentumSector G q H E₀ χ := by
+      (⨅ g, eigenspace (R g) (χ g)).map K.subtype ≤ ⨆ χ : G →* ℂ, momentumSector G H E₀ χ := by
     by_cases hbot : ⨅ g, eigenspace (R g) (χ g) = ⊥
     · simp [hbot]
     obtain ⟨w, hw, hw0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hbot
@@ -337,23 +309,23 @@ theorem iSup_momentumSector {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun
     _ = (⨆ χ : G → ℂ, ⨅ g, eigenspace (R g) (χ g)).map K.subtype := by rw [htop]
     _ ≤ _ := by rw [Submodule.map_iSup]; exact iSup_le hjoint
 
-variable (G q) in
+variable (G) in
 /-- **The supercell**: the elements of `G` on which every character with a nonzero momentum
 sector of the ground space is trivial. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
 lines 1626–1630, the translations by whole supercells, which leave every ground state unchanged
 (`mem_supercell_iff`). -/
-noncomputable def supercell (H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ)
+noncomputable def supercell (H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ)
     (E₀ : ℝ) : Subgroup G :=
-  ⨅ (χ : G →* ℂ) (_ : momentumSector G q H E₀ χ ≠ ⊥), χ.ker
+  ⨅ (χ : G →* ℂ) (_ : momentumSector G H E₀ χ ≠ ⊥), χ.ker
 
 /-- **The supercell fixes the ground space.** For an abelian group acting on the sites and an
 invariant `H`, `g` lies in the supercell exactly when `P_g v = v` for every ground vector `v`.
 Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1626–1630: "all of the `n` ground
 states are unchanged by translation by a supercell". -/
-theorem mem_supercell_iff {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ}
+theorem mem_supercell_iff {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) {E₀ : ℝ} {g : G} :
-    g ∈ supercell G q H E₀ ↔
-      ∀ v ∈ groundSpace H E₀, toEuclideanLin (sitePermOp (α := Fin q) (MulAction.toPerm g)) v
+    g ∈ supercell G H E₀ ↔
+      ∀ v ∈ groundSpace H E₀, toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) v
           = v := by
   simp only [supercell, Subgroup.mem_iInf, MonoidHom.mem_ker]
   constructor
@@ -361,7 +333,7 @@ theorem mem_supercell_iff {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _
     rw [← iSup_momentumSector hInv E₀] at hv
     induction hv using Submodule.iSup_induction' with
     | mem χ v hv =>
-      by_cases hbot : momentumSector G q H E₀ χ = ⊥
+      by_cases hbot : momentumSector G H E₀ χ = ⊥
       · rw [hbot, Submodule.mem_bot] at hv; simp [hv]
       · rw [toEuclideanLin_sitePermOp_of_mem_momentumSector hv, hg χ hbot, one_smul]
     | zero => simp
@@ -372,16 +344,6 @@ theorem mem_supercell_iff {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _
       (hg v (momentumSector_le_groundSpace H E₀ χ hv))
     exact smul_left_injective ℂ hv0 (this.trans (one_smul ℂ v).symm)
 
-/-- The supercell satisfies the hypothesis on the subgroup in
-`groundCompression_sitePermOp_conj`, `groundCompression_commutator_eq_of_mem_supercell` and
-`norm_groundCompression_commutator_le_of_mem_supercell`. -/
-theorem sitePermOp_mulVec_eq_of_mem_supercell {H : Matrix (Config fun _ : V ↦ Fin q)
-    (Config fun _ : V ↦ Fin q) ℂ}
-    (hInv : IsSiteInvariant G H) {E₀ : ℝ} {g : G} (hg : g ∈ supercell G q H E₀)
-    (v : EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)) (hv : v ∈ groundSpace H E₀) :
-    sitePermOp (α := Fin q) (MulAction.toPerm g) *ᵥ WithLp.ofLp v = WithLp.ofLp v := by
-  simpa [toEuclideanLin_apply_eq] using congrArg WithLp.ofLp ((mem_supercell_iff hInv).mp hg v hv)
-
 end ManyBody
 
 open Matrix
@@ -391,39 +353,39 @@ open scoped Matrix.Norms.L2Operator
 namespace ManyBody
 
 variable {V G : Type*} [Fintype V] [DecidableEq V] [CommGroup G] [MulAction G V]
-  {d : ℕ}
+  {α : Type*} [Fintype α] [DecidableEq α]
 
 /-- A site translation acts unitarily on the actual ground eigenspace.
 Hastings, arXiv:cond-mat/0508554v3, lines 1603–1618. -/
-noncomputable def groundTranslation {H : Matrix (Config fun _ : V ↦ Fin d)
-    (Config fun _ : V ↦ Fin d) ℂ}
+noncomputable def groundTranslation {H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) (g : G) :
     groundSpace H E₀ ≃ₗᵢ[ℂ] groundSpace H E₀ := by
   let f : groundSpace H E₀ →ₗᵢ[ℂ] groundSpace H E₀ := {
-    toFun := fun x ↦ ⟨toEuclideanLin (sitePermOp (α := Fin d) (MulAction.toPerm g)) x,
+    toFun := fun x ↦ ⟨toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) x,
       mapsTo_groundSpace_sitePermOp hInv E₀ g x.property⟩
     map_add' := fun x y ↦ Subtype.ext
-      (map_add (toEuclideanLin (sitePermOp (α := Fin d) (MulAction.toPerm g)))
-        (x : EuclideanSpace ℂ (Config fun _ : V ↦ Fin d)) (y : EuclideanSpace ℂ
-            (Config fun _ : V ↦ Fin d)))
+      (map_add (toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)))
+        (x : EuclideanSpace ℂ (Config fun _ : V ↦ α)) (y : EuclideanSpace ℂ
+            (Config fun _ : V ↦ α)))
     map_smul' := fun c x ↦ Subtype.ext
-      (map_smul (toEuclideanLin (sitePermOp (α := Fin d) (MulAction.toPerm g))) c
-          (x : EuclideanSpace ℂ (Config fun _ : V ↦ Fin d)))
+      (map_smul (toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g))) c
+          (x : EuclideanSpace ℂ (Config fun _ : V ↦ α)))
     norm_map' := by
       intro x
-      change ‖toEuclideanCLM (n := V → Fin d) (𝕜 := ℂ) (sitePermOp (α := Fin d)
+      change ‖toEuclideanCLM (n := V → α) (𝕜 := ℂ) (sitePermOp (α := α)
           (MulAction.toPerm g))
-        (x : EuclideanSpace ℂ (Config fun _ : V ↦ Fin d))‖ = ‖(x : EuclideanSpace ℂ
-            (Config fun _ : V ↦ Fin d))‖
+        (x : EuclideanSpace ℂ (Config fun _ : V ↦ α))‖ = ‖(x : EuclideanSpace ℂ
+            (Config fun _ : V ↦ α))‖
       exact ContinuousLinearMap.norm_map_of_mem_unitary
-        (Unitary.map_mem (toEuclideanCLM (n := V → Fin d) (𝕜 := ℂ))
+        (Unitary.map_mem (toEuclideanCLM (n := V → α) (𝕜 := ℂ))
           (sitePermOp_mem_unitary (MulAction.toPerm g))) x }
   exact LinearIsometryEquiv.ofSurjective f (LinearMap.surjective_of_injective f.injective)
 
 /-- Conjugation on the ground-space operator algebra preserves the operator norm.
 Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
-noncomputable def groundTranslationConjugation {H : Matrix (Config fun _ : V ↦ Fin d)
-    (Config fun _ : V ↦ Fin d) ℂ}
+noncomputable def groundTranslationConjugation {H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) (g : G) :
     (groundSpace H E₀ →L[ℂ] groundSpace H E₀) ≃ₗᵢ[ℂ]
       (groundSpace H E₀ →L[ℂ] groundSpace H E₀) := by
@@ -438,18 +400,18 @@ noncomputable def groundTranslationConjugation {H : Matrix (Config fun _ : V ↦
 
 /-- The site translation commutes with the canonical orthogonal ground projection.
 Hastings, arXiv:cond-mat/0508554v3, lines 1603–1618. -/
-theorem sitePerm_starProjection_commute {H : Matrix (Config fun _ : V ↦ Fin d)
-    (Config fun _ : V ↦ Fin d) ℂ}
+theorem sitePerm_starProjection_commute {H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) (g : G)
-    (x : EuclideanSpace ℂ (Config fun _ : V ↦ Fin d)) :
-    toEuclideanLin (sitePermOp (α := Fin d) (MulAction.toPerm g))
+    (x : EuclideanSpace ℂ (Config fun _ : V ↦ α)) :
+    toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g))
         ((groundSpace H E₀).starProjection x) =
-      (groundSpace H E₀).starProjection (toEuclideanLin (sitePermOp (α := Fin d)
+      (groundSpace H E₀).starProjection (toEuclideanLin (sitePermOp (α := α)
           (MulAction.toPerm g)) x) := by
-  let u : EuclideanSpace ℂ (Config fun _ : V ↦ Fin d) ≃ₗᵢ[ℂ] EuclideanSpace ℂ
-      (Config fun _ : V ↦ Fin d) :=
+  let u : EuclideanSpace ℂ (Config fun _ : V ↦ α) ≃ₗᵢ[ℂ] EuclideanSpace ℂ
+      (Config fun _ : V ↦ α) :=
     Unitary.linearIsometryEquiv
-      ⟨toEuclideanCLM (n := V → Fin d) (𝕜 := ℂ) (sitePermOp (α := Fin d) (MulAction.toPerm g)),
+      ⟨toEuclideanCLM (n := V → α) (𝕜 := ℂ) (sitePermOp (α := α) (MulAction.toPerm g)),
         Unitary.map_mem _ (sitePermOp_mem_unitary (MulAction.toPerm g))⟩
   have hle : (groundSpace H E₀).map u.toLinearEquiv.toLinearMap ≤
       groundSpace H E₀ := by
@@ -461,22 +423,22 @@ theorem sitePerm_starProjection_commute {H : Matrix (Config fun _ : V ↦ Fin d)
   have h := u.toLinearIsometry.map_starProjection (groundSpace H E₀) x
   change u ((groundSpace H E₀).starProjection x) =
     ((groundSpace H E₀).map u.toLinearEquiv.toLinearMap).starProjection (u x) at h
-  have hu (y : EuclideanSpace ℂ (Config fun _ : V ↦ Fin d)) :
-      u y = toEuclideanLin (sitePermOp (α := Fin d) (MulAction.toPerm g)) y := rfl
+  have hu (y : EuclideanSpace ℂ (Config fun _ : V ↦ α)) :
+      u y = toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) y := rfl
   simpa only [heq, hu] using h
 
 /-- The ground-space unitary is the restriction of the physical site translation.
 Hastings, arXiv:cond-mat/0508554v3, lines 1603–1618. -/
-@[simp] theorem groundTranslation_apply_coe {H : Matrix (Config fun _ : V ↦ Fin d)
-    (Config fun _ : V ↦ Fin d) ℂ}
+@[simp] theorem groundTranslation_apply_coe {H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) (g : G) (x : groundSpace H E₀) :
-    (groundTranslation hInv E₀ g x : EuclideanSpace ℂ (Config fun _ : V ↦ Fin d)) =
-      toEuclideanLin (sitePermOp (α := Fin d) (MulAction.toPerm g)) x := rfl
+    (groundTranslation hInv E₀ g x : EuclideanSpace ℂ (Config fun _ : V ↦ α)) =
+      toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) x := rfl
 
 /-- Inverse ground translation agrees with the inverse physical site translation.
 Hastings, arXiv:cond-mat/0508554v3, lines 1603–1618. -/
-theorem groundTranslation_symm_apply {H : Matrix (Config fun _ : V ↦ Fin d)
-    (Config fun _ : V ↦ Fin d) ℂ}
+theorem groundTranslation_symm_apply {H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) (g : G) (x : groundSpace H E₀) :
     (groundTranslation hInv E₀ g).symm x = groundTranslation hInv E₀ g⁻¹ x := by
   apply (groundTranslation hInv E₀ g).injective
@@ -488,18 +450,18 @@ theorem groundTranslation_symm_apply {H : Matrix (Config fun _ : V ↦ Fin d)
 /-- Ground-space conjugation is compression of physical conjugation.
 Hastings, arXiv:cond-mat/0508554v3, lines 1603–1618 and 1644–1654. -/
 theorem groundTranslationConjugation_groundSpaceCompression
-    {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ}
+    {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) (g : G)
-    (W : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ) :
+    (W : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
     groundTranslationConjugation hInv E₀ g (groundSpaceCompression H E₀ W) =
-      groundSpaceCompression H E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * W * (sitePermOp
-          (α := Fin d) (MulAction.toPerm g))ᴴ) := by
+      groundSpaceCompression H E₀ (sitePermOp (α := α) (MulAction.toPerm g) * W * (sitePermOp
+          (MulAction.toPerm g))ᴴ) := by
   apply ContinuousLinearMap.ext
   intro x
   apply Subtype.ext
   change (groundTranslation hInv E₀ g
     (groundSpaceCompression H E₀ W ((groundTranslation hInv E₀ g).symm x)) :
-      EuclideanSpace ℂ (Config fun _ : V ↦ Fin d)) = _
+      EuclideanSpace ℂ (Config fun _ : V ↦ α)) = _
   rw [groundTranslation_symm_apply, groundTranslation_apply_coe,
     coe_groundSpaceCompression_apply, coe_groundSpaceCompression_apply]
   simp only [groundCompression, mul_apply_eq_comp]
@@ -513,11 +475,11 @@ theorem groundTranslationConjugation_groundSpaceCompression
 /-- Iterating ground-space conjugation follows the orbit of any covariant local family.
 Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
 theorem groundTranslationConjugation_pow_compression_of_covariant
-    {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ}
+    {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hInv : IsSiteInvariant G H) (E₀ : ℝ) {κ : Type*} [MulAction G κ]
-    (M : κ → Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ)
-    (hcov : ∀ (g : G) i, M (g • i) = sitePermOp (α := Fin d) (MulAction.toPerm g) * M i *
-        (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
+    (M : κ → Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ)
+    (hcov : ∀ (g : G) i, M (g • i) = sitePermOp (α := α) (MulAction.toPerm g) * M i *
+        (sitePermOp (α := α) (MulAction.toPerm g))ᴴ)
     (g : G) (k : ℕ) (i : κ) :
     ((groundTranslationConjugation hInv E₀ g).toLinearMap ^ k)
         (groundSpaceCompression H E₀ (M i)) =
@@ -536,19 +498,20 @@ No covariance assumption on a local decomposition is needed. Hastings,
 arXiv:cond-mat/0508554v3, lines 1644–1654. -/
 theorem groundTranslationConjugation_pow_compression
     {V Γ : Type*} [Fintype V] [DecidableEq V] [CommGroup Γ] [MulAction Γ V]
-    {d : ℕ} {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ}
+    {α : Type*} [Fintype α] [DecidableEq α] {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦
+        α) ℂ}
     (hInv : IsSiteInvariant Γ H) (E₀ : ℝ) (g : Γ) (k : ℕ)
-    (W : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ) :
+    (W : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
     ((groundTranslationConjugation hInv E₀ g).toLinearMap ^ k)
         (groundSpaceCompression H E₀ W) =
       groundSpaceCompression H E₀
-        (sitePermOp (α := Fin d) (MulAction.toPerm (g ^ k)) * W * (sitePermOp (α := Fin d)
+        (sitePermOp (α := α) (MulAction.toPerm (g ^ k)) * W * (sitePermOp (α := α)
             (MulAction.toPerm (g ^ k)))ᴴ) := by
-  let M : Γ → Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ :=
-    fun h ↦ sitePermOp (α := Fin d) (MulAction.toPerm h) * W * (sitePermOp (α := Fin d)
+  let M : Γ → Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ :=
+    fun h ↦ sitePermOp (α := α) (MulAction.toPerm h) * W * (sitePermOp (α := α)
         (MulAction.toPerm h))ᴴ
-  have hcov (a b : Γ) : M (a • b) = sitePermOp (α := Fin d) (MulAction.toPerm a) * M b *
-      (sitePermOp (α := Fin d) (MulAction.toPerm a))ᴴ := by
+  have hcov (a b : Γ) : M (a • b) = sitePermOp (α := α) (MulAction.toPerm a) * M b *
+      (sitePermOp (α := α) (MulAction.toPerm a))ᴴ := by
     dsimp [M]
     rw [sitePermOp_toPerm_mul, Matrix.conjTranspose_mul]
     noncomm_ring
@@ -584,16 +547,16 @@ private theorem natAbs_valMinAbs_sub_le_one_of_adj_cycleGraph {n : ℕ} [NeZero 
   · rw [← natCast_val_sub, h, Nat.cast_one]; exact hone
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {G : Type*} [CommGroup G] [MulAction G V]
-  {d : ℕ}
+  {α : Type*} [Fintype α] [DecidableEq α]
 
 /-- **Momenta of denominator `q`.** If every character with a nonzero momentum sector satisfies
 `χ(g)^q = 1`, then every `q`-th power lies in the supercell. For the translations of a lattice
 these are the momenta `2πp/q` of Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
 lines 1620–1625, and `g^q` is a translation by whole supercells (lines 1626–1630). -/
-theorem pow_mem_supercell {H : Matrix (Config fun _ : V ↦ Fin d)
-    (Config fun _ : V ↦ Fin d) ℂ} {E₀ : ℝ} {q : ℕ}
-    (hden : ∀ χ : G →* ℂ, momentumSector G d H E₀ χ ≠ ⊥ → ∀ g, χ g ^ q = 1) (g : G) :
-    g ^ q ∈ supercell G d H E₀ := by
+theorem pow_mem_supercell {H : Matrix (Config fun _ : V ↦ α)
+    (Config fun _ : V ↦ α) ℂ} {E₀ : ℝ} {q : ℕ}
+    (hden : ∀ χ : G →* ℂ, momentumSector G H E₀ χ ≠ ⊥ → ∀ g, χ g ^ q = 1) (g : G) :
+    g ^ q ∈ supercell G H E₀ := by
   simp only [supercell, Subgroup.mem_iInf, MonoidHom.mem_ker, map_pow]
   exact fun χ hχ ↦ hden χ hχ g
 
@@ -607,13 +570,13 @@ one. Then some supercell translation satisfies
 Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1620–1641, chooses a supercell
 translation carrying a site to a distance of order the linear size of the system. -/
 theorem exists_mem_supercell_lt_edist_add {Γ : Type*} [CommGroup Γ] [MulAction Γ V]
-    {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ} {E₀ : ℝ} {q : ℕ}
+    {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ} {E₀ : ℝ} {q : ℕ}
         (hq : 0 < q)
-    (hden : ∀ χ : Γ →* ℂ, momentumSector Γ d H E₀ χ ≠ ⊥ → ∀ g, χ g ^ q = 1)
+    (hden : ∀ χ : Γ →* ℂ, momentumSector Γ H E₀ χ ≠ ⊥ → ∀ g, χ g ^ q = 1)
     (G : SimpleGraph V) {n R : ℕ} [NeZero n] (hR : 0 < R) (π : V → ZMod n)
     (hπ : ∀ u v, G.Adj u v → (π v - π u).valMinAbs.natAbs ≤ R)
     (e : Γ) (he : ∀ v, π (e • v) = π v + 1) (x y : V) :
-    ∃ g ∈ supercell Γ d H E₀, ((n / 2 : ℕ) : ℕ∞) < (R : ℕ∞) * G.edist x (g • y) + q := by
+    ∃ g ∈ supercell Γ H E₀, ((n / 2 : ℕ) : ℕ∞) < (R : ℕ∞) * G.edist x (g • y) + q := by
   obtain ⟨t, ht⟩ := ZMod.exists_lt_natAbs_valMinAbs_add hq (π x) (π y)
   refine ⟨(e ^ t) ^ q, pow_mem_supercell hden _, ?_⟩
   rw [← pow_mul, Nat.mul_comm t q]
@@ -630,15 +593,15 @@ strictly greater than `l` from any other. This combines the geometric choice
 with its distance consequence in Hastings, arXiv:cond-mat/0508554v3,
 `proj3new.tex`, lines 1634–1641. -/
 theorem exists_mem_supercell_lt_edist {Γ : Type*} [CommGroup Γ] [MulAction Γ V]
-    {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ} {E₀ : ℝ} {q : ℕ}
+    {H : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ} {E₀ : ℝ} {q : ℕ}
         (hq : 0 < q)
-    (hden : ∀ χ : Γ →* ℂ, momentumSector Γ d H E₀ χ ≠ ⊥ → ∀ g, χ g ^ q = 1)
+    (hden : ∀ χ : Γ →* ℂ, momentumSector Γ H E₀ χ ≠ ⊥ → ∀ g, χ g ^ q = 1)
     (G : SimpleGraph V) {n : ℕ} [NeZero n] (π : V → ZMod n)
     (hπ : ∀ u v, G.Adj u v → (π v - π u).valMinAbs.natAbs ≤ 1)
     (e : Γ) (he : ∀ v, π (e • v) = π v + 1)
     (l : ℕ) (hl : l + q ≤ n / 2) (x y : V) :
-    ∃ g ∈ supercell Γ d H E₀, (l : ℕ∞) < G.edist x (g • y) := by
-  obtain ⟨g, hg, hdist⟩ : ∃ g ∈ supercell Γ d H E₀,
+    ∃ g ∈ supercell Γ H E₀, (l : ℕ∞) < G.edist x (g • y) := by
+  obtain ⟨g, hg, hdist⟩ : ∃ g ∈ supercell Γ H E₀,
       ((n / 2 : ℕ) : ℕ∞) < G.edist x (g • y) + q := by
     simpa only [Nat.cast_one, one_mul] using
       exists_mem_supercell_lt_edist_add hq hden G (R := 1) Nat.zero_lt_one π hπ e he x y
@@ -656,11 +619,12 @@ theorem exists_mem_supercell_lt_edist {Γ : Type*} [CommGroup Γ] [MulAction Γ 
 `exists_mem_supercell_lt_edist_add` for the rotations of a ring of `n` sites, with the
 coordinate of a site as a residue modulo `n`. -/
 theorem exists_mem_supercell_lt_edist_add_ring {n : ℕ} [NeZero n]
-    {H : Matrix (Fin n → Fin d) (Fin n → Fin d) ℂ} {E₀ : ℝ} {q : ℕ} (hq : 0 < q)
+    {H : Matrix (Config fun _ : Fin n ↦ α) (Config fun _ : Fin n ↦ α) ℂ} {E₀ : ℝ} {q : ℕ} (hq : 0
+        < q)
     (hden : ∀ χ : Multiplicative (Fin n) →* ℂ,
-      momentumSector (Multiplicative (Fin n)) d H E₀ χ ≠ ⊥ → ∀ g, χ g ^ q = 1)
+      momentumSector (Multiplicative (Fin n)) H E₀ χ ≠ ⊥ → ∀ g, χ g ^ q = 1)
     (x y : Fin n) :
-    ∃ g ∈ supercell (Multiplicative (Fin n)) d H E₀,
+    ∃ g ∈ supercell (Multiplicative (Fin n)) H E₀,
       ((n / 2 : ℕ) : ℕ∞) < (SimpleGraph.cycleGraph n).edist x (g • y) + q := by
   simpa only [Nat.cast_one, one_mul] using
     exists_mem_supercell_lt_edist_add hq hden (SimpleGraph.cycleGraph n) (R := 1)
@@ -679,9 +643,10 @@ open scoped Matrix.Norms.L2Operator
 
 namespace ManyBody
 
-variable {V : Type*} [Fintype V] [DecidableEq V] {d : ℕ} {κ : Type*} [Fintype κ]
+variable {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [Fintype α] [DecidableEq α] {κ :
+    Type*} [Fintype κ]
   (G : SimpleGraph V) {T : κ → Finset V}
-  (Φ : Interaction (fun _ : V ↦ Fin d) T) (hHerm : ∀ k, (Φ.term k).IsHermitian)
+  (Φ : Interaction (fun _ : V ↦ α) T) (hHerm : ∀ k, (Φ.term k).IsHermitian)
   (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
   (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
   (b₀ : ℝ) (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
@@ -698,8 +663,8 @@ graph distance `l` of the support of `h_i`, then the low-energy commutator of th
 `τ ≥ 0`. This is the step of lines 1634–1641. -/
 theorem norm_groundCompression_commutator_le_of_supercell_separation
     {Γ : Type*} [Group Γ] [MulAction Γ V] [MulAction Γ κ]
-    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g)
-        * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
+    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := α) (MulAction.toPerm g)
+        * Φ.term k * (sitePermOp (α := α) (MulAction.toPerm g))ᴴ)
     (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
@@ -707,7 +672,7 @@ theorem norm_groundCompression_commutator_le_of_supercell_separation
     {E₀ : ℝ} (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
     (S : Subgroup Γ)
     (hS : ∀ g ∈ S, ∀ v ∈ groundSpace Φ.hamiltonian E₀,
-      sitePermOp (α := Fin d) (MulAction.toPerm g) *ᵥ WithLp.ofLp v = WithLp.ofLp v)
+      toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) v = v)
     {g : Γ} (hg : g ∈ S) (i j : κ) (l : ℕ)
     (hsep : Disjoint ((T i).biUnion fun x => graphBall G x l) (T (g • j)))
     {τ : ℝ} (hT : 0 ≤ τ) :

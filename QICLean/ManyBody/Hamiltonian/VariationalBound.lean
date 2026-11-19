@@ -88,6 +88,7 @@ open Finset
 open scoped ComplexOrder
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {G : Type*} [Group G] [MulAction G V]
+  {α : Type*} [Fintype α] [DecidableEq α]
 
 /-- **The variational lower bound for translates on finitely many sites.** Let a finite group
 `G`, such as the translations of a periodic lattice or any group of automorphisms of a finite
@@ -98,34 +99,34 @@ particular the ground energy `E₀`, satisfies `E ≥ |G| λ`: with `λ = λ_min
 number of summands, `E₀/N ≥ λ_min(K)`. When `G` acts simply transitively on the sites, as the
 translations of a periodic lattice do, `N` is the number of sites.
 Hastings, arXiv:cond-mat/0508554v3, eq. `varnum`, lines 856–877. -/
-theorem card_mul_le_of_mulVec_eq_smul_of_sitePermOp [Fintype G] (q : ℕ)
-    (H₀ : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ) (a : ℕ → ℝ)
+theorem card_mul_le_of_mulVec_eq_smul_of_sitePermOp [Fintype G]
+    (H₀ : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) (a : ℕ → ℝ)
         (m : ℕ) {c : ℝ}
     (hK : (H₀ + ∑ k ∈ range m, ((a (k + 1) : ℂ) * Complex.I ^ (k + 1)) •
-        (GaussianFilter.commutatorCLM (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g)
-            * H₀ * (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ) ^ (k + 1)) H₀ -
+        (GaussianFilter.commutatorCLM (∑ g : G, sitePermOp (α := α) (MulAction.toPerm g)
+            * H₀ * (sitePermOp (α := α) (MulAction.toPerm g))ᴴ) ^ (k + 1)) H₀ -
           (c : ℂ) • 1).PosSemidef)
-    {E : ℝ} {Ω : (Config fun _ : V ↦ Fin q) → ℂ} (hΩ : Ω ≠ 0)
-    (hE : (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin q)
+    {E : ℝ} {Ω : (Config fun _ : V ↦ α) → ℂ} (hΩ : Ω ≠ 0)
+    (hE : (∑ g : G, sitePermOp (α := α) (MulAction.toPerm g) * H₀ * (sitePermOp (α := α)
         (MulAction.toPerm g))ᴴ) *ᵥ Ω = (E : ℂ) • Ω) :
     Fintype.card G * c ≤ E :=
-  Matrix.card_mul_le_of_mulVec_eq_smul_of_conj (fun g ↦ sitePermOp (α := Fin q)
+  Matrix.card_mul_le_of_mulVec_eq_smul_of_conj (fun g ↦ sitePermOp (α := α)
       (MulAction.toPerm g))
     (fun g ↦ sitePermOp_mem_unitary (MulAction.toPerm g)) H₀
         (isSiteInvariant_sum_conj H₀) a m hK hΩ hE
 
 /-- The least-eigenvalue specialization for translates on finitely many sites.
 Hastings, arXiv:cond-mat/0508554v3, eq. `varnum`, lines 856–877. -/
-theorem card_mul_sInf_spectrum_le_of_sitePermOp [Fintype G] (q : ℕ)
-    (H₀ : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ) (hH₀ : H₀.IsHermitian)
-    (a : ℕ → ℝ) (m : ℕ) {E : ℝ} {Ω : (Config fun _ : V ↦ Fin q) → ℂ} (hΩ : Ω ≠ 0)
-    (hE : (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin q)
+theorem card_mul_sInf_spectrum_le_of_sitePermOp [Fintype G]
+    (H₀ : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) (hH₀ : H₀.IsHermitian)
+    (a : ℕ → ℝ) (m : ℕ) {E : ℝ} {Ω : (Config fun _ : V ↦ α) → ℂ} (hΩ : Ω ≠ 0)
+    (hE : (∑ g : G, sitePermOp (α := α) (MulAction.toPerm g) * H₀ * (sitePermOp (α := α)
         (MulAction.toPerm g))ᴴ) *ᵥ Ω = (E : ℂ) • Ω) :
     Fintype.card G * sInf (spectrum ℝ
       (H₀ + ∑ k ∈ range m, ((a (k + 1) : ℂ) * Complex.I ^ (k + 1)) •
-        (GaussianFilter.commutatorCLM (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g)
-            * H₀ * (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ) ^ (k + 1)) H₀)) ≤ E :=
-  Matrix.card_mul_sInf_spectrum_le_of_conj (fun g ↦ sitePermOp (α := Fin q) (MulAction.toPerm g))
+        (GaussianFilter.commutatorCLM (∑ g : G, sitePermOp (α := α) (MulAction.toPerm g)
+            * H₀ * (sitePermOp (α := α) (MulAction.toPerm g))ᴴ) ^ (k + 1)) H₀)) ≤ E :=
+  Matrix.card_mul_sInf_spectrum_le_of_conj (fun g ↦ sitePermOp (α := α) (MulAction.toPerm g))
     (fun g ↦ sitePermOp_mem_unitary (MulAction.toPerm g)) H₀ hH₀
         (isSiteInvariant_sum_conj H₀) a m hΩ hE
 
@@ -134,22 +135,23 @@ end SitePermutation
 section SiteAction
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {G : Type*} [Group G] [MulAction G V]
+  {α : Type*} [Fintype α] [DecidableEq α]
 
 /-- For translates of one term on a finite set of sites, the least eigenvalue of the
 Gaussian-filtered term bounds the ground energy per translate. For a simply transitive
 site action, the number of translates is the number of sites. Hastings,
 arXiv:cond-mat/0508554v3, eq. `varnum` (lines 856–877) and lines 1005–1009. -/
 theorem card_mul_sInf_spectrum_gaussianFilteredTerm_le_of_sitePermOp [Fintype G]
-    (d : ℕ) (q ΔE : ℝ) (H₀ : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ)
-    (hH₀ : H₀.IsHermitian) {E : ℝ} {Ω : (Config fun _ : V ↦ Fin d) → ℂ} (hΩ : Ω ≠ 0)
-    (hE : (∑ g : G, sitePermOp (α := Fin d) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin d)
+    (q ΔE : ℝ) (H₀ : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ)
+    (hH₀ : H₀.IsHermitian) {E : ℝ} {Ω : (Config fun _ : V ↦ α) → ℂ} (hΩ : Ω ≠ 0)
+    (hE : (∑ g : G, sitePermOp (α := α) (MulAction.toPerm g) * H₀ * (sitePermOp (α := α)
         (MulAction.toPerm g))ᴴ) *ᵥ Ω =
       (E : ℂ) • Ω) :
     Fintype.card G * sInf (spectrum ℝ (gaussianFilteredTerm q ΔE
-      (∑ g : G, sitePermOp (α := Fin d) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin d)
+      (∑ g : G, sitePermOp (α := α) (MulAction.toPerm g) * H₀ * (sitePermOp (α := α)
           (MulAction.toPerm g))ᴴ) H₀)) ≤ E :=
   card_mul_sInf_spectrum_gaussianFilteredTerm_le_of_conj q ΔE
-    (fun g ↦ sitePermOp (α := Fin d) (MulAction.toPerm g)) (fun g ↦ sitePermOp_mem_unitary
+    (fun g ↦ sitePermOp (α := α) (MulAction.toPerm g)) (fun g ↦ sitePermOp_mem_unitary
         (MulAction.toPerm g)) H₀ hH₀
     (isSiteInvariant_sum_conj H₀) hΩ hE
 
