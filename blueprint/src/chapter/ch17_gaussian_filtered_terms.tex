@@ -1,0 +1,1176 @@
+\chapter{Gaussian-filtered terms of an interaction}
+\label{chap:gaussian_filtered_terms}
+
+This chapter treats the Gaussian-filtered terms of a gapped Hamiltonian
+$H=\sum_k h_k$ given by an interaction on a finite system of sites, after
+M.~B. Hastings, \emph{Solving gapped Hamiltonians locally}. A term $W$ is
+replaced by its Heisenberg evolution averaged against a centred Gaussian in
+time; the average is nearly local, nearly preserves the ground space, and is
+approximated by the same average under the terms near the support of $W$.
+The counting results on graphs and lattices that these estimates use close the
+chapter.
+
+\section{Gaussian-filtered terms}
+\label{sec:gaussian_filtered_lemma1}
+
+\begin{definition}[Gaussian-filtered operator]
+    \label{def:hastings_gaussian_filtered_term}
+    \lean{ManyBody.gaussianFilteredTerm}
+    \leanok
+    For $q>0$ and a matrix $W$, the \emph{Gaussian-filtered operator} is
+    \begin{align}
+        \widetilde W & =\frac{\Delta E}{\sqrt{2\pi q}}\int_{-\infty}^{\infty}
+        e^{iHt}We^{-iHt}\,e^{-(t\Delta E)^2/(2q)}\,dt,
+        \label{eq:hastings_gaussian_filtered_term}
+    \end{align}
+    and $\widetilde W=W$ for $q=0$. Applied to the centered parts
+    $W\in\{H_L,H_B,H_R\}$, (\ref{eq:hastings_gaussian_filtered_term}) gives
+    $\tilde H_L^0,\tilde H_B^0,\tilde H_R^0$ of
+    \cite[lines 783--793]{Hastings2007AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Spectral properties of filtered operators]
+    \label{thm:hastings_gaussian_filtered_spectral}
+    \lean{ManyBody.inner_gaussianFilteredTerm, ManyBody.inner_gaussianFilteredTerm_ground, ManyBody.norm_gaussianFilteredTerm_le, ManyBody.gaussianFilteredTerm_sum, ManyBody.gaussianFilteredTerm_self, ManyBody.sum_gaussianFilteredTerm, ManyBody.inner_eq_zero_of_mem_groundSpace, ManyBody.norm_sub_starProjection_gaussianFilteredTerm_le}
+    \leanok
+    \uses{def:hastings_gaussian_filtered_term}
+    If $Hv=Ev$ and $Hw=E'w$, then
+    \begin{align}
+        \langle v,\widetilde Ww\rangle
+         & =e^{-q((E-E')/\Delta E)^2/2}\,\langle v,Ww\rangle,
+        \label{eq:hastings_gaussian_filtered_matrix_element}
+    \end{align}
+    so $\langle v,\widetilde Ww\rangle=\langle v,Ww\rangle$ when $E=E'=E_0$.
+    The map $W\mapsto\widetilde W$ is linear, satisfies
+    $\|\widetilde W\|\le\|W\|$ and $\widetilde H=H$, and thus
+    $\sum_i\widetilde H_i=H$ whenever $\sum_iH_i=H$
+    \cite[line 793]{Hastings2007AreaLaw}. For a ground vector $\psi$ and the
+    ground-space projection $P_{\mathrm{gs}}$,
+    $\|(1-P_{\mathrm{gs}})\widetilde W\psi\|\le\|W\|e^{-q/2}\|\psi\|$.
+\end{lemma}
+\begin{proof}\leanok
+    In the $H$-eigenbasis, $\langle v,e^{iHt}We^{-iHt}w\rangle
+        =e^{i(E-E')t}\langle v,Ww\rangle$, whose Gaussian integral is
+    (\ref{eq:hastings_gaussian_filtered_matrix_element}). Unitaries preserve
+    $\|W\|$, and $e^{iHt}He^{-iHt}=H$. Since $|E-E_0|\ge\Delta E$ on the
+    excited subspace, each excited coefficient of $\widetilde W\psi$ is scaled
+    by at most $e^{-q/2}$.
+\end{proof}
+
+\begin{lemma}[Filtered operators without ground components]
+    \label{thm:hastings_filtered_no_ground_component}
+    \lean{ManyBody.norm_gaussianFilteredTerm_apply_le_commutator, ManyBody.norm_gaussianFilteredTerm_apply_le_commutator_of_isGapped}
+    \leanok
+    \uses{thm:hastings_gaussian_filtered_spectral}
+    If $H\psi=E_0\psi$ and $P_{\mathrm{gs}}W\psi=0$, then
+    \begin{align}
+        \|\widetilde W\psi\| & \le\Delta E^{-1}e^{-q/2}\,\|[H,W]\psi\|.
+        \label{eq:hastings_filtered_no_ground_component}
+    \end{align}
+    In particular, (\ref{eq:hastings_filtered_no_ground_component}) holds for a
+    unique gapped ground state $\Psi_0$ when $\langle\Psi_0,W\Psi_0\rangle=0$,
+    hence for the centered parts $H_L,H_B,H_R$
+    \cite[lines 794--815]{Hastings2007AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    For an $H$-eigenvector $v_E$ with eigenvalue $E$,
+    $\langle v_E,[H,W]\psi\rangle=(E-E_0)\langle v_E,W\psi\rangle$. Since
+    $\langle v_{E_0},W\psi\rangle=0$ and $E-E_0\ge\Delta E$ on the excited
+    subspace, (\ref{eq:hastings_gaussian_filtered_matrix_element}) gives
+    $|\langle v_E,\widetilde W\psi\rangle|
+        \le\Delta E^{-1}e^{-q/2}|\langle v_E,[H,W]\psi\rangle|$.
+\end{proof}
+
+\begin{lemma}[Locality of filtered operators]
+    \label{thm:hastings_filtered_locality}
+    \lean{ManyBody.norm_map_gaussianFilteredTerm_le_mass, ManyBody.norm_commutator_gaussianFilteredTerm_le_mass, ManyBody.gaussianFilter_tail_le, ManyBody.norm_commutator_gaussianFilteredTerm_le}
+    \leanok
+    \uses{def:hastings_gaussian_filtered_term}
+    If $q>0$, $T,\varepsilon\ge0$, and
+    $\|[e^{iHt}We^{-iHt},O]\|\le\varepsilon$ for all $|t|\le T$, then
+    \begin{align}
+        \|[\widetilde W,O]\| & \le\varepsilon
+        +2\|W\|\,\|O\|\,e^{-(T\Delta E)^2/(2q)}.
+        \label{eq:hastings_filtered_locality}
+    \end{align}
+    For $q=0$, $\widetilde W=W$ and $\|[W,O]\|\le\varepsilon$ from $t=0$
+    \cite[lines 816--828]{Hastings2007AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    Split (\ref{eq:hastings_gaussian_filtered_term}) at $|t|=T$. On $[-T,T]$
+    the integrand norm is at most $\varepsilon$; on $\mathbb R\setminus[-T,T]$
+    it is at most $2\|W\|\,\|O\|$, and with $h=q/\Delta E^2$ the substitution
+    $t=T+s$ and $(T+s)^2\ge T^2+s^2$ bound the tail mass by $e^{-T^2/(2h)}$.
+\end{proof}
+
+\begin{lemma}[Localization of filtered operators by partial trace]
+    \label{thm:hastings_filtered_partial_trace}
+    \lean{ManyBody.norm_sub_regionExpectation_gaussianFilteredTerm_le_mass, ManyBody.norm_sub_regionExpectation_gaussianFilteredTerm_le}
+    \leanok
+    \uses{thm:hastings_filtered_locality}
+    Let $\mathbb E_K$ be the normalized partial trace over $K^c$ tensored with
+    $1_{K^c}$. If $q>0$, $T,\varepsilon\ge0$, and
+    $\|e^{iHt}We^{-iHt}-\mathbb E_K(e^{iHt}We^{-iHt})\|\le\varepsilon$ for all
+    $|t|\le T$, then $\mathbb E_K(\widetilde W)$ is supported on $K$, satisfies
+    $\|\mathbb E_K(\widetilde W)\|\le\|W\|$, and
+    \begin{align}
+        \|\widetilde W-\mathbb E_K(\widetilde W)\| & \le\varepsilon
+        +2\|W\|\,e^{-(T\Delta E)^2/(2q)}.
+        \label{eq:hastings_filtered_partial_trace}
+    \end{align}
+    For $q=0$, $\|\widetilde W-\mathbb E_K(\widetilde W)\|\le\varepsilon$. This
+    replaces the truncated-evolution approximation of
+    \cite[lines 816--828]{Hastings2007AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    Since $\mathrm{id}-\mathbb E_K$ is continuous and linear with
+    $\|(\mathrm{id}-\mathbb E_K)(M)\|\le2\|M\|$, splitting the time integral at
+    $|t|=T$ as in Lemma~\ref{thm:hastings_filtered_locality} gives
+    (\ref{eq:hastings_filtered_partial_trace}).
+\end{proof}
+
+
+\section{Commuting and zero-range terms}
+\label{sec:gaussian_filtered_zero_range}
+
+\begin{lemma}[Filtering an observable that commutes with the Hamiltonian]
+    \label{thm:hastings_commuting_filter_exact}
+    \lean{ManyBody.gaussianFilteredTerm_eq_of_commute, ManyBody.mem_groundSpace_apply_of_commute, ManyBody.starProjection_apply_eq_of_commute}
+    \leanok
+    \uses{def:hastings_gaussian_filtered_term}
+    If $HW=WH$, then the Gaussian filter of $W$ under $H$ equals $W$ for
+    every nonnegative variance. Moreover, if $H\psi=E_0\psi$, then
+    $H(W\psi)=E_0W\psi$. Thus the orthogonal projection $P_0$ onto the
+    $E_0$-eigenspace satisfies $P_0W\psi=W\psi$.
+\end{lemma}
+\begin{proof}\leanok
+    Commutativity gives $e^{iHt}W=We^{iHt}$, so
+    $e^{iHt}We^{-iHt}=W$. Its average against a Gaussian probability
+    measure is $W$. Also $HW\psi=WH\psi=E_0W\psi$.
+\end{proof}
+
+\begin{lemma}[Commutativity of terms acting on individual sites]
+    \label{thm:hastings_single_site_terms_commute}
+    \lean{ManyBody.commute_of_singleton_support, ManyBody.commute_sum_of_singleton_support, ManyBody.gaussianFilteredTerm_sum_eq_of_singleton_support}
+    \leanok
+    Let $\Lambda$ be a finite set of sites, with a $d$-dimensional Hilbert
+    space at each site. Suppose $H_i$ acts only at $i$ for every $i\in\Lambda$.
+    Then $[H_i,H_j]=0$ for all $i,j$. Consequently, for every subset
+    $s\subseteq\Lambda$, the sum $H_s=\sum_{j\in s}H_j$ commutes with every
+    $H_i$, and the Gaussian filter of $H_i$ under $H_s$ equals $H_i$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_commuting_filter_exact}
+    If $i\ne j$, the singleton supports are disjoint, so the terms commute.
+    If $i=j$, the commutator also vanishes. Summing the commutation
+    identities gives $[H_s,H_i]=0$, and
+    Lemma~\ref{thm:hastings_commuting_filter_exact} evaluates the filter.
+\end{proof}
+
+\begin{lemma}[Exact truncation at zero interaction range]
+    \label{thm:hastings_zero_range_exact}
+    \lean{ManyBody.singleton_support_of_zero_range, ManyBody.gaussianFilteredTerm_sum_eq_of_zero_range, ManyBody.gaussianFilteredTerm_full_and_sum_eq_of_zero_range, ManyBody.starProjection_term_eq_of_zero_range, ManyBody.sub_starProjection_gaussianFilteredTerm_sum_eq_zero_of_zero_range}
+    \leanok
+    Let $\Lambda$ be a finite metric space, and suppose $H_i$ acts inside
+    the closed ball of radius zero about $i$. Put $H=\sum_iH_i$ and let
+    $s\subseteq\Lambda$ be arbitrary. For $q\ge0$ and $\Delta E\in\mathbb R$,
+    both the full Gaussian filter $\widetilde H_i$ and the filter $M_i$
+    under $H_s$ equal $H_i$. If $H\psi=E_0\psi$, then
+    \begin{align*}
+        \widetilde H_i & =M_i=H_i, \\
+        (1-P_0)M_i\psi & =0.
+    \end{align*}
+    In particular, the approximation error in (apb) and the excited
+    component in (facld) both vanish, without a spectral-gap assumption.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_single_site_terms_commute, thm:hastings_commuting_filter_exact}
+    A closed ball of radius zero in a metric space is the singleton of its
+    centre. Apply Lemma~\ref{thm:hastings_single_site_terms_commute} to
+    $s$ and $\Lambda$. The eigenspace statement in
+    Lemma~\ref{thm:hastings_commuting_filter_exact} gives
+    $P_0H_i\psi=H_i\psi$, hence the last identity.
+\end{proof}
+
+
+\section{Localization on a graph}
+\label{sec:gaussian_filtered_local_projective_form}
+
+\begin{lemma}[Locality of a filtered term on a graph]
+    \label{thm:hastings05_filtered_locality_graph}
+    \lean{ManyBody.norm_commutator_gaussianFilteredTerm_le_graphDistance}
+    \leanok
+    \uses{thm:hastings_filtered_locality, thm:dynamics_lieb_robinson}
+    Let $W$ act on $S$, $B$ act on $\{y\}$ with $\min_{x\in S}d_G(x,y)\ge l$,
+    and $q,\mu,T\ge0$, $\Delta E\in\mathbb R$. With $(C,v)$ from
+    Theorem~\ref{thm:dynamics_lieb_robinson},
+    \begin{align}
+        \|[\widetilde W,B]\|\le C|S|\,\|W\|\,\|B\|\,e^{vT-\mu l}
+        +2\|W\|\,\|B\|\,e^{-(T\Delta E)^2/(2q)}.
+        \label{eq:hastings05_filtered_graph_commutator}
+    \end{align}
+    For $T=c_1l$ this is eq.~(lbnd) of~\cite[lines 266--283]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    Combine the $|t|\le T$ commutator bound of
+    Theorem~\ref{thm:dynamics_lieb_robinson} with
+    Lemma~\ref{thm:hastings_filtered_locality}.
+\end{proof}
+
+\begin{lemma}[The finite-range approximation of a filtered term]
+    \label{thm:hastings05_filtered_approximation_graph}
+    \lean{ManyBody.norm_gaussianFilteredTerm_sub_regionExpectation_le_graphNeighborhood, ManyBody.exists_local_approx_gaussianFilteredTerm, ManyBody.isHermitian_gaussianFilteredTerm}
+    \leanok
+    \uses{thm:hastings_filtered_partial_trace, thm:dynamics_localization, thm:sites_region_expectation, thm:hastings_gaussian_filtered_spectral}
+    Assume $|\{y:d_G(x,y)=r\}|\le K_g(r+1)^k$ for all $x$ and $r\ge0$, and let
+    $(C,v,T_k)$ be as in Lemma~\ref{thm:dynamics_localization}.
+    For $W$ supported on $S$, $l\in\mathbb N$, $N_l(S)=\{y:d_G(y,S)\le l\}$,
+    positive local dimension, $q,T\ge0$, and $\Delta E\in\mathbb R$, the
+    operator $M=\mathbb E_{N_l(S)}(\widetilde W)$ acts on $N_l(S)$, satisfies
+    $\|M\|\le\|W\|$ (and $M=M^\dagger$ if $W=W^\dagger$), and
+    \begin{align}
+        \|\widetilde W-M\|\le C|S|^2\,\|W\|\,K_gT_k\,e^{vT-l/2}
+        +2\|W\|\,e^{-(T\Delta E)^2/(2q)}.
+        \label{eq:hastings05_filtered_graph_approximation}
+    \end{align}
+    For $W=H_i$ supported in the $R$-ball around $i$ and
+    $l=l_{\mathrm{proj}}-R\ge0$, $M_i=M$ acts within radius
+    $l_{\mathrm{proj}}$ of $i$ with $\|M_i\|\le J$
+    \cite[lines 285--320]{Hastings2006Solving},
+    \cite{gap:hastings05_filtered_term_approximation}.
+    Every finite graph satisfies this assumption with $K_g$ equal to its
+    number of vertices and $k=0$, but that choice does not give a constant
+    uniform in system size\cite{gap:hastings05_geometric_growth_scope}.
+\end{lemma}
+\begin{proof}\leanok
+    Combine Lemma~\ref{thm:dynamics_localization} for $|t|\le T$
+    with Lemma~\ref{thm:hastings_filtered_partial_trace}.
+\end{proof}
+
+\begin{lemma}[Ground vectors are nearly invariant under the approximation]
+    \label{thm:hastings05_facld}
+    \lean{ManyBody.norm_sub_starProjection_apply_le_of_gaussianFilteredTerm, ManyBody.norm_apply_sub_inner_smul_le_of_gaussianFilteredTerm}
+    \leanok
+    \uses{thm:hastings_gaussian_filtered_spectral, thm:hastings_filtered_no_ground_component, def:hamiltonians_gap}
+    Let $H=H^\dagger$ have ground energy $E_0$, gap $\Delta E>0$, and ground
+    projection $P$, and let $q\ge0$. For any $H\psi=E_0\psi$ and operators
+    $W,M$, $\|(1-P)M\psi\|\le(\|W\|e^{-q/2}+\|\widetilde W-M\|)\|\psi\|$. If
+    $\operatorname{ran}P=\mathbb C\Omega$ with $\|\Omega\|=1$, then
+    \begin{align}
+        \|M\Omega-\langle\Omega,M\Omega\rangle\Omega\|
+        \le\|W\|e^{-q/2}+\|\widetilde W-M\|
+        \label{eq:hastings05_filtered_ground_vector}
+    \end{align}
+    With $M=M_i$ as in
+    Lemma~\ref{thm:hastings05_filtered_approximation_graph} and
+    $q=c_1l_{\mathrm{proj}}\Delta E$, these give the form of eq.~(facld)
+    and the unique-ground-state bound of
+    \cite[lines 322--348 and 375--387]{Hastings2006Solving} under the
+    additional growth assumption. They do not establish those statements
+    on every source metric lattice\cite{gap:hastings05_geometric_growth_scope}.
+\end{lemma}
+\begin{proof}\leanok
+    Since $(1-P)M\psi=(1-P)\widetilde W\psi+(1-P)(M-\widetilde W)\psi$,
+    Lemma~\ref{thm:hastings_gaussian_filtered_spectral} bounds the first term
+    by $\|W\|e^{-q/2}\|\psi\|$ and $\|(1-P)(M-\widetilde W)\psi\|\le\|\widetilde W-M\|\,\|\psi\|$.
+    For $\operatorname{ran}P=\mathbb C\Omega$, $P\phi=\langle\Omega,\phi\rangle\Omega$.
+\end{proof}
+
+\begin{lemma}[The sum of the approximations]
+    \label{thm:hastings05_sum_approximation}
+    \lean{ManyBody.norm_sum_sub_le_of_sum_eq}
+    \leanok
+    \uses{thm:hastings_gaussian_filtered_spectral}
+    If $H$ is Hermitian and $\sum_iW_i=H$, then any operators $M_i$ satisfy
+    $\|\sum_iM_i-H\|\le\sum_i\|\widetilde W_i-M_i\|$. This is the comparison of
+    $H$ with $M=\sum_iM_i$ in~\cite[lines 359--374]{Hastings2006Solving}. The
+    consequence drawn there, that an actual ground state of $M$ has nonzero
+    projection onto the ground eigenspace of $H$ at a radius of order
+    $\log N$, is quantified in
+    Lemma~\ref{thm:hastings05_metric_ground_overlap}.
+\end{lemma}
+\begin{proof}\leanok
+    By Lemma~\ref{thm:hastings_gaussian_filtered_spectral},
+    $\sum_i\widetilde W_i=H$, so $\sum_iM_i-H=\sum_i(M_i-\widetilde W_i)$.
+\end{proof}
+
+
+\section{Truncated dynamics}
+\label{sec:gaussian_filtered_truncated_dynamics}
+
+\begin{lemma}[Support of the truncated filter]
+    \label{thm:hastings_truncated_support}
+    \lean{ManyBody.hermitianUnitaryPath_conj_mem_supportedOperators, ManyBody.gaussianFilteredTerm_mem_supportedOperators}
+    \leanok
+    \uses{def:hastings_gaussian_filtered_term}
+    If $H$ and $W$ act on $K$, then $e^{iHt}We^{-iHt}$ ($t\in\mathbb R$) and
+    $\widetilde W$ act on $K$; in particular, the filter $M_i$ of $h_i$ under the terms within distance
+    $l_{proj}-R$ of $i$ acts within distance $l_{proj}$ of $i$
+    \cite[lines 302--304]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Operators supported on $K$ form a closed subalgebra, hence contain
+    $e^{iHt}We^{-iHt}$ and its Gaussian integral $\widetilde W$.
+\end{proof}
+
+\begin{lemma}[Filtering a comparison of evolutions]
+    \label{thm:hastings_truncated_filter_comparison}
+    \lean{ManyBody.norm_gaussianFilteredTerm_sub_le}
+    \leanok
+    \uses{def:hastings_gaussian_filtered_term}
+    If $H,H'$ are Hermitian, $q,T,\varepsilon\ge0$, and
+    $\|e^{iHt}We^{-iHt}-e^{iH't}We^{-iH't}\|\le\varepsilon$ for all $|t|\le T$,
+    then the Gaussian filters $\widetilde W_H$ and $\widetilde W_{H'}$ satisfy
+    $\|\widetilde W_H-\widetilde W_{H'}\|\le\varepsilon+2\|W\|e^{-(T\Delta E)^2/(2q)}$
+    \cite[eq.~(dmi), lines 1524--1533]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_filtered_locality}
+    Split the Gaussian integral at $|t|=T$ as in
+    Lemma~\ref{thm:hastings_filtered_locality}, using integrand bound
+    $\varepsilon$ on $[-T,T]$ and $2\|W\|$ on $\mathbb R\setminus[-T,T]$.
+\end{proof}
+
+\begin{lemma}[Lieb--Robinson bound against an operator on several sites]
+    \label{thm:hastings_truncated_multisite_lieb_robinson}
+    \lean{ManyBody.norm_commutator_heisenbergEvolution_le_graphDistance_finset}
+    \leanok
+    \uses{thm:dynamics_lieb_robinson}
+    Under the assumptions of Theorem~\ref{thm:dynamics_lieb_robinson}, if
+    $A$ acts on $S$, $B$ acts on $Y$, and $d_G(x,y)\ge m$ for all $x\in S$,
+    $y\in Y$, then for all $\mu\ge0$, with $C=2+4|b_0|e^{2\mu R}$ and
+    $v=2v_R|b_0|e^{2\mu R}+1$,
+    \begin{align}
+        \|[B,\tau_t(A)]\|\le2|Y|\,C\,|S|\,\|A\|\,\|B\|\,e^{v|t|-\mu m}.
+        \label{eq:hastings_truncated_multisite_lieb_robinson}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:dynamics_lieb_robinson, thm:sites_region_expectation}
+    With $E$ the normalized partial trace over $Y$,
+    $\|[B,\tau_t(A)]\|\le2\|B\|\,\|\tau_t(A)-E(\tau_t(A))\|$; bound the latter
+    by summing the single-site commutators over $y\in Y$ via
+    Lemma~\ref{thm:sites_region_expectation} and
+    Theorem~\ref{thm:dynamics_lieb_robinson}.
+\end{proof}
+
+\begin{lemma}[The omitted terms against the truncated evolution]
+    \label{thm:hastings_truncated_omitted_commutator}
+    \lean{ManyBody.norm_commutator_sub_truncated_le}
+    \leanok
+    \uses{thm:hastings_truncated_multisite_lieb_robinson}
+    Let $W$ act on $S\subseteq K$, $s$ be a family of terms supported in $K$,
+    $H_s=\sum_{k\in s}h_k$, and $d_G(S,X_k)\ge m$ for every omitted term
+    $k\notin s$ with $X_k\cap K\ne\emptyset$. Then
+    \begin{align}
+        \|[H-H_s,e^{iH_su}We^{-iH_su}]\|
+        \le2v_RC\,|S|\,\|W\|\Bigl(\sum_{\substack{k\notin s \\ X_k\cap K\ne\emptyset}}\|h_k\|\Bigr)e^{v|u|-\mu m}
+        \label{eq:hastings_truncated_omitted_commutator}
+    \end{align}
+    \cite[lines 1469--1505]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncated_support, thm:hastings_truncated_multisite_lieb_robinson}
+    By Lemma~\ref{thm:hastings_truncated_support}, $e^{iH_su}We^{-iH_su}$ acts
+    on $K$, so omitted terms with $X_k\cap K=\emptyset$ commute with it; for
+    $X_k\cap K\ne\emptyset$, apply
+    (\ref{eq:hastings_truncated_multisite_lieb_robinson}) with $|X_k|\le v_R$.
+\end{proof}
+
+\begin{lemma}[Hastings' truncated approximation]
+    \label{thm:hastings_truncated_approximation}
+    \lean{ManyBody.norm_gaussianFilteredTerm_sub_truncated_le_sum, ManyBody.norm_gaussianFilteredTerm_sub_truncated_le, ManyBody.truncated_approx_gaussianFilteredTerm}
+    \leanok
+    \uses{def:hastings_gaussian_filtered_term}
+    In the setting of Lemma~\ref{thm:hastings_truncated_omitted_commutator},
+    if $\|h_k\|\le J$ and $N=|\{k\notin s:X_k\cap K\ne\emptyset\}|$, then the
+    filter $M$ of $W$ under $H_s$ acts on $K$, satisfies $\|M\|\le\|W\|$ (and
+    $M=M^\dagger$ if $W=W^\dagger$), and for all $q,T,\mu\ge0$,
+    \begin{align}
+        \|\widetilde W-M\|\le2v_RC\,|S|\,\|W\|\,J\,N\,T\,e^{vT-\mu m}
+        +2\|W\|e^{-(T\Delta E)^2/(2q)}
+        \label{eq:hastings_truncated_approximation}
+    \end{align}
+    \cite[eq.~(apb), lines 300--320]{Hastings2006Solving},
+    \cite{gap:hastings05_truncated_dynamics}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncated_support, thm:dynamics_hamiltonian_comparison, thm:hastings_truncated_filter_comparison, thm:hastings_truncated_omitted_commutator, thm:hastings_gaussian_filtered_spectral}
+    Combine Lemmas~\ref{thm:hastings_truncated_omitted_commutator},
+    \ref{thm:dynamics_hamiltonian_comparison}, and
+    \ref{thm:hastings_truncated_filter_comparison} with
+    Lemmas~\ref{thm:hastings_truncated_support}
+    and~\ref{thm:hastings_gaussian_filtered_spectral}.
+\end{proof}
+
+\begin{lemma}[The truncated approximation at the time window $T=q/\Delta E$]
+    \label{thm:hastings_truncated_approximation_time}
+    \lean{ManyBody.exp_neg_sq_div_eq_of_time_eq, ManyBody.norm_gaussianFilteredTerm_sub_truncated_le_of_time}
+    \leanok
+    \uses{thm:hastings_truncated_approximation}
+    In the setting of Lemma~\ref{thm:hastings_truncated_approximation} with
+    $q\ge0$ and $\Delta E>0$, setting $T=q/\Delta E$ gives
+    \begin{align}
+        \|\widetilde W-M\|\le2v_RC\,|S|\,\|W\|\,J\,N\,\frac{q}{\Delta E}\,
+        e^{vq/\Delta E-\mu m}+2\|W\|e^{-q/2}
+        \label{eq:hastings_truncated_approximation_time}
+    \end{align}
+    \cite[lines 337--349]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncated_approximation}
+    Substitute $T=q/\Delta E$ into (\ref{eq:hastings_truncated_approximation}).
+\end{proof}
+
+\begin{lemma}[Ground vectors under the truncated approximation]
+    \label{thm:hastings_truncated_facld}
+    \lean{ManyBody.norm_sub_starProjection_truncated_apply_le, ManyBody.norm_truncated_apply_sub_inner_smul_le}
+    \leanok
+    \uses{thm:hastings_truncated_approximation_time, thm:hastings05_facld}
+    In the setting of Lemma~\ref{thm:hastings_truncated_approximation} with
+    $q\ge0$, ground energy $E_0$, gap $\Delta E>0$, ground projection $P$, and
+    \begin{align}
+        \delta=3\|W\|e^{-q/2}+2v_RC\,|S|\,\|W\|\,J\,N\,\frac{q}{\Delta E}\,
+        e^{vq/\Delta E-\mu m},
+        \label{eq:hastings_truncated_facld_delta}
+    \end{align}
+    every ground vector $\psi$ satisfies $\|(1-P)M\psi\|\le\delta\|\psi\|$, and
+    a unique unit ground state $\Omega$ satisfies
+    $\|M\Omega-\langle\Omega,M\Omega\rangle\Omega\|\le\delta$
+    \cite[eq.~(facld), lines 322--348 and 375--387]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncated_approximation_time, thm:hastings05_facld}
+    Combine Lemma~\ref{thm:hastings05_facld} with
+    (\ref{eq:hastings_truncated_approximation_time}).
+\end{proof}
+
+\begin{lemma}[The sum of the truncated approximations]
+    \label{thm:hastings_truncated_sum}
+    \lean{ManyBody.norm_sum_truncated_sub_le, ManyBody.norm_sum_truncated_sub_le_card}
+    \leanok
+    \uses{thm:hastings_truncated_approximation_time, thm:hastings05_sum_approximation}
+    In the setting of Lemma~\ref{thm:hastings_truncated_approximation} with
+    $q,\mu\ge0$, $\Delta E>0$, and $H=\sum_ih_i=H^\dagger$, let each $h_i$
+    (supported on $X_i\subseteq K_i$) be filtered under $\sum_{k\in s_i}h_k$ to
+    $M_i$, where the $N_i$ omitted terms meeting $K_i$ satisfy
+    $d_G(X_i,X_k)\ge m$. Then
+    \begin{align}
+        \Bigl\|\sum_iM_i-H\Bigr\|\le\sum_i\Bigl(2v_RC\,|X_i|\,\|h_i\|\,J\,N_i\,
+        \frac{q}{\Delta E}\,e^{vq/\Delta E-\mu m}+2\|h_i\|e^{-q/2}\Bigr),
+        \label{eq:hastings_truncated_sum}
+    \end{align}
+    which is at most $|\{i\}|\bigl(2v_R^2CJ^2N_0(q/\Delta E)e^{vq/\Delta E-\mu m}+2Je^{-q/2}\bigr)$
+    when $N_i\le N_0$ \cite[lines 343--374]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncated_approximation_time, thm:hastings05_sum_approximation}
+    Combine Lemma~\ref{thm:hastings05_sum_approximation} with
+    (\ref{eq:hastings_truncated_approximation_time}) for each $W=h_i$, and use
+    $|X_i|\le v_R$, $\|h_i\|\le J$, $N_i\le N_0$.
+\end{proof}
+
+\begin{lemma}[Exponential decay under polynomial shell growth]
+    \label{thm:hastings_truncated_facld_decay}
+    \lean{ManyBody.exists_norm_sub_starProjection_truncated_apply_le_exp, ManyBody.exists_norm_truncated_apply_sub_inner_smul_le_exp, Real.add_one_pow_mul_le_mul_exp}
+    \leanok
+    \uses{thm:hastings_truncated_facld}
+    In the setting of Lemma~\ref{thm:hastings_truncated_facld}, let $J\ge0$,
+    fix $\mu>0$ and $c_1>0$ with $c_1v<\mu$, and set
+    $l_{fac}=2/\min(c_1\Delta E,\ \mu-c_1v)$. For each projection radius
+    $l\in\mathbb{N}$ let $M_l$ be the truncated filter of $W$ at
+    $q=c_1l\Delta E$, built from the terms of a set $s_l$ acting inside a
+    region $K_l\supseteq S$, such that every omitted term meeting $K_l$ lies at
+    distance at least $m=l-3R$ from $S$. Suppose the number $N_l$ of omitted
+    terms meeting $K_l$ satisfies $N_l\le K_g(l+1)^k$. Then there is a constant
+    $C_1'\ge0$, independent of $l$, such that for every $l$ and every ground
+    vector $\psi$ the component of $M_l\psi$ orthogonal to the ground space
+    has norm at most $\|W\|(3+C_1'J)e^{-l/l_{fac}}\|\psi\|$.
+    If $\Omega$ is a unique ground state with gap $\Delta E$, there is also a
+    constant $C_2'\ge0$, independent of $l$, such that for every $l$,
+    $\|M_l\Omega-\langle\Omega,M_l\Omega\rangle\Omega\|\le
+        \|W\|(3+C_2'J)e^{-l/l_{fac}}$. This is the form $JO(e^{-l_{proj}/l_{fac}})$
+    of eq.~(facld) of \cite[lines 322--349]{Hastings2006Solving}, with the
+    polynomial growth of the shell as an additional hypothesis absent from
+    source lines 169--190. Theorem~\ref{thm:hastings05_metric_facld} proves
+    the actual physical metric cutoff without this extra growth condition
+    \cite{gap:hastings05_truncated_dynamics,gap:hastings05_geometric_growth_scope}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncated_facld}
+    With $\delta_0=\min(c_1\Delta E,\mu-c_1v)=2/l_{fac}>0$, $q=c_1l\Delta E$, and
+    $\mu m\ge\mu l-3\mu R$, one has $e^{-q/2}\le e^{-\delta_0l/2}$,
+    $e^{vq/\Delta E-\mu m}\le e^{3\mu R}e^{-\delta_0l}$, and
+    $N_ll\le K_g(l+1)^kl\le K_g(k+1)!e^{\delta_0/2}(\delta_0/2)^{-(k+1)}e^{\delta_0l/2}$;
+    substitute into (\ref{eq:hastings_truncated_facld_delta}).
+\end{proof}
+
+\begin{lemma}[Degree bounds and graph-ball separation]
+    \label{thm:hastings05_degree_ball}
+    \lean{ManyBody.card_graphBall_le, ManyBody.graphBall_subset_of_mem, ManyBody.graphBall_separation}
+    \leanok
+    \uses{def:dynamics_graph_ball}
+    If every vertex has degree at most $D$, then
+    $|B_G(x,r)|\le(D+1)^r$. Furthermore, $i\in B_G(x,l)$ implies
+    $B_G(i,R)\subseteq B_G(x,l+R)$. If $k\notin B_G(x,l)$,
+    $z\in B_G(x,R)$ and $y\in B_G(k,R)$, then
+    $d_G(z,y)\ge\max(l-2R,0)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:dynamics_graph_ball}
+    A shortest path shows that every vertex of $B_G(x,r+1)$ is either
+    a vertex of $B_G(x,r)$ or a neighbour of one. Hence its cardinality
+    is at most $(D+1)|B_G(x,r)|$, and induction proves the bound.
+    The remaining assertions follow from the graph triangle inequality;
+    for separation, the reverse inequality would place $k$ in $B_G(x,l)$.
+\end{proof}
+
+\begin{lemma}[Weighted local budgets]
+    \label{thm:hastings05_weighted_region_budget}
+    \lean{ManyBody.sum_weight_mul_comp_le_budget_mul_sum, ManyBody.sum_weight_meeting_le_card_mul_budget, ManyBody.sum_weight_meeting_graphBall_le}
+    \leanok
+    \uses{thm:hastings05_degree_ball}
+    Let $w_k\ge0$ be weights on finitely many supports $X_k$ and assume
+    $\sum_{k:y\in X_k}w_k\le B$ at every site $y$. For any family $T$
+    of terms whose supports meet a region $K$,
+    \begin{align}
+        \sum_{k\in T}w_k & \le B|K|.
+        \label{eq:hastings05_weighted_region_budget}
+    \end{align}
+    In particular, if the graph degree is at most $D$ and
+    $K\subseteq B_G(x,l+C)$, then this sum is at most
+    $B(D+1)^C e^{\nu l}$, where $\nu=\ln(D+1)$.
+    More generally, for any anchors $a_k$, any real weights $w_k$,
+    and $f\ge0$, the bound $\sum_{k:a_k=y}w_k\le B$ implies
+    $\sum_kw_kf(a_k)\le B\sum_yf(y)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_degree_ball}
+    Each term meeting $K$ contributes its weight to at least one site
+    budget in $K$. Summing those budgets proves
+    (\ref{eq:hastings05_weighted_region_budget}); apply the ball bound
+    for its exponential form. The last assertion follows by grouping
+    the sum according to the anchor and applying the fibre bound.
+\end{proof}
+
+\begin{lemma}[Exponentially weighted graph tails]
+    \label{thm:hastings05_degree_weighted_tail}
+    \lean{ManyBody.sum_exp_neg_edist_le_degree, ManyBody.sum_weight_exp_neg_edist_tail_le_degree}
+    \leanok
+    \uses{thm:hastings05_degree_ball, thm:hastings05_weighted_region_budget}
+    Suppose the degree is at most $D$. Put $\nu=\ln(D+1)$, let
+    $\mu>\nu$, and define $k_\mu(x,y)=e^{-\mu d_G(x,y)}$ at finite
+    distance and $k_\mu(x,y)=0$ at infinite distance. Then
+    \begin{align}
+        \sum_y k_\mu(x,y) & \le\frac1{1-e^{-(\mu-\nu)}}.
+        \label{eq:hastings05_degree_exponential_row}
+    \end{align}
+    If $w_k\ge0$, $B\ge0$ and $\sum_{k:a_k=y}w_k\le B$,
+    then every family $T$ with $d_G(x,a_k)\ge m$ for $k\in T$ satisfies
+    \begin{align}
+        \sum_{k\in T}w_k k_\mu(x,a_k)
+         & \le\frac{B e^{-\beta m}}{1-e^{-\beta}},
+        \qquad \beta=\frac{\mu-\nu}{2}>0.
+        \label{eq:hastings05_degree_exponential_tail}
+    \end{align}
+    Thus summation over omitted terms requires only bounded local geometry
+    when the spatial decay rate is chosen above the graph growth rate.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_degree_ball, thm:hastings05_weighted_region_budget}
+    Group vertices by their finite distance $r$ from $x$. Each sphere has
+    at most $(D+1)^r$ vertices, so the sum is bounded by the geometric
+    series $\sum_{r\ge0}e^{-(\mu-\nu)r}$, proving
+    (\ref{eq:hastings05_degree_exponential_row}). On the omitted family,
+    $k_\mu(x,a_k)\le e^{-\beta m}k_{\mu-\beta}(x,a_k)$.
+    Grouping by anchors and applying
+    (\ref{eq:hastings05_degree_exponential_row}) at rate $\mu-\beta$
+    proves (\ref{eq:hastings05_degree_exponential_tail}).
+\end{proof}
+
+\begin{lemma}[Absorbing the time prefactor]
+    \label{lem:hastings05_gaussian_decay_absorption}
+    \lean{ManyBody.gaussian_truncation_bound_le_exp}
+    \leanok
+    Let $a,\gamma>0$ and $A,w,l\ge0$, and put $\delta=\min(a,\gamma)$.
+    Then
+    \begin{align}
+        3we^{-al/2}+Awl e^{-\gamma l}
+        \le w\left(3+\frac{A}{e\delta/2}\right)e^{-\delta l/2}.
+        \label{eq:hastings05_gaussian_decay_absorption}
+    \end{align}
+    In the truncated Gaussian approximation, $a=c_1\Delta E$ and
+    $\gamma$ is the spatial decay rate after subtracting $c_1v$.
+\end{lemma}
+\begin{proof}\leanok
+    The Gaussian term is at most $3we^{-\delta l/2}$. For the second term,
+    $le^{-\gamma l}\le le^{-\delta l}$ and
+    $le^{-\delta l}\le(e\delta/2)^{-1}e^{-\delta l/2}$, by maximizing
+    $u e^{-u}$ at $u=1$ with $u=\delta l/2$.
+\end{proof}
+
+\begin{lemma}[The spectral gap above the actual ground eigenspace]
+    \label{thm:hastings05_ground_space_quadratic_gap}
+    \lean{ManyBody.groundSpace_gap_le_of_eigenvalues}
+    \leanok
+    Let $H$ be Hermitian and suppose every eigenvalue equals $E_0$ or is
+    at least $E_0+\Delta$. Let $P_0$ be the orthogonal projection onto
+    $\ker(H-E_0)$. Then every vector $\psi$ satisfies
+    \begin{align}
+        \Delta\bigl(\|\psi\|^2-\|P_0\psi\|^2\bigr)
+        \le \operatorname{Re}\langle\psi,H\psi\rangle-E_0\|\psi\|^2.
+        \label{eq:hastings05_ground_space_quadratic_gap}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    In an orthonormal eigenbasis $b_k$, the excess energy is
+    $\sum_k(\lambda_k-E_0)|\langle b_k,\psi\rangle|^2$.
+    The coefficients of $(1-P_0)\psi$ vanish when $\lambda_k=E_0$ and
+    otherwise equal those of $\psi$. Each remaining coefficient has
+    weight at least $\Delta$. Parseval and the orthogonal decomposition
+    $\psi=P_0\psi+(1-P_0)\psi$ give the inequality.
+\end{proof}
+
+\begin{lemma}[An actual ground vector of the approximate Hamiltonian]
+    \label{thm:hastings05_approximate_ground_vector_energy}
+    \lean{ManyBody.exists_groundVector_energy_le_of_norm_sub_le}
+    \leanok
+    Let $M$ be Hermitian, $\|H-M\|\le\epsilon$, and let $\Omega$ be a unit
+    eigenvector of $H$ of real energy $E_0$. There exist a real number $e$
+    and a unit vector $\phi$ such that $M\phi=e\phi$,
+    $e\|\psi\|^2\le\operatorname{Re}\langle\psi,M\psi\rangle$ for every
+    $\psi$, and
+    \begin{align}
+        \operatorname{Re}\langle\phi,H\phi\rangle-E_0\le2\epsilon.
+        \label{eq:hastings05_approximate_ground_vector_energy}
+    \end{align}
+    No spectral-gap hypothesis on $M$ is needed.
+\end{lemma}
+\begin{proof}\leanok
+    Minimize the Rayleigh quotient of $M$ on the unit sphere. A minimizer
+    is an eigenvector. The variational principle and the two norm-error
+    estimates give
+    $\langle\phi,H\phi\rangle
+        \le\langle\phi,M\phi\rangle+\epsilon
+        \le\langle\Omega,M\Omega\rangle+\epsilon
+        \le E_0+2\epsilon$, after taking real parts.
+\end{proof}
+
+\begin{lemma}[Ground-space overlap and phase accuracy]
+    \label{thm:hastings05_ground_overlap_norm_error}
+    \lean{ManyBody.exists_groundVector_projected_mass_of_norm_sub_le, ManyBody.exists_groundVector_overlap_of_norm_sub_le}
+    \leanok
+    \uses{thm:hastings05_approximate_ground_vector_energy, thm:hastings05_ground_space_quadratic_gap}
+    Under the quadratic gap (\ref{eq:hastings05_ground_space_quadratic_gap})
+    and the hypotheses of
+    Lemma~\ref{thm:hastings05_approximate_ground_vector_energy}, an actual
+    unit ground vector of $M$ can be chosen with
+    \begin{align}
+        \Delta(1-\|P_0\phi\|^2)\le2\epsilon.
+        \label{eq:hastings05_ground_overlap_norm_error}
+    \end{align}
+    Consequently $P_0\phi\ne0$ whenever $2\epsilon<\Delta$.
+    If the original ground state is unique, with unit vector $\Omega$
+    and gap $\Delta>0$, a unit ground vector of $M$ also satisfies
+    \begin{align}
+        \Delta(1-|\langle\Omega,\phi\rangle|^2) & \le2\epsilon,        \\
+        \min_{\theta\in\mathbb R}
+        \|\phi-e^{i\theta}\Omega\|^2            & \le4\epsilon/\Delta.
+        \label{eq:hastings05_ground_phase_norm_error}
+    \end{align}
+    The minimum is attained. These are quantitative forms of the overlap
+    assertion of~\cite[lines 362--367]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_approximate_ground_vector_energy, thm:hastings05_ground_space_quadratic_gap}
+    Apply the gap inequality to the minimizing vector. In the unique case,
+    $P_0\phi=\langle\Omega,\phi\rangle\Omega$ and the minimum squared
+    phase distance is $2(1-|\langle\Omega,\phi\rangle|)$, which is at most
+    $2(1-|\langle\Omega,\phi\rangle|^2)$.
+\end{proof}
+
+\begin{lemma}[The logarithmic overlap radius]
+    \label{thm:hastings05_logarithmic_overlap_radius}
+    \lean{ManyBody.exp_error_le_of_log_radius, ManyBody.exists_groundVector_projection_of_exp_norm_bound, ManyBody.exists_groundVector_overlap_of_exp_norm_bound}
+    \leanok
+    \uses{thm:hastings05_ground_overlap_norm_error}
+    Let $\beta,\Delta,\eta>0$, and suppose the Hermitian approximation
+    satisfies $\|H-M_\ell\|\le B e^{-\beta\ell}$. Put
+    $\tau=\min(\eta,1)$ and $Q=\max(B,1)$. If
+    \begin{align}
+        \ell\ge\frac1\beta\ln\frac{4Q}{\Delta\tau},
+        \label{eq:hastings05_logarithmic_overlap_radius}
+    \end{align}
+    then $B e^{-\beta\ell}\le\Delta\tau/4$. Under the original ground-space
+    gap, there is an actual unit ground vector $\phi$ of $M_\ell$ with
+    $P_0\phi\ne0$ and $1-\|P_0\phi\|^2\le\eta$. In the unique-ground-state
+    case there is an actual unit ground vector of nonzero overlap with
+    $\Omega$ whose attained minimum squared phase error is at most $\eta$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_ground_overlap_norm_error}
+    Exponentiating (\ref{eq:hastings05_logarithmic_overlap_radius}) gives
+    $e^{-\beta\ell}\le\Delta\tau/(4Q)$. Since $B\le Q$, the norm error is
+    at most $\Delta\tau/4$. Apply
+    Lemma~\ref{thm:hastings05_ground_overlap_norm_error}; its projection
+    cannot vanish because $2\epsilon\le\Delta/2<\Delta$.
+\end{proof}
+
+\begin{lemma}[Ground-state overlap for the actual metric truncation]
+    \label{thm:hastings05_metric_ground_overlap}
+    \lean{ManyBody.exists_metric_truncated_groundVector_projection, ManyBody.exists_metric_truncated_groundVector_overlap}
+    \leanok
+    \uses{thm:hastings05_metric_filter_sum, thm:hastings05_ground_space_quadratic_gap, thm:hastings05_logarithmic_overlap_radius}
+    Fix the local parameters $R>0,S,J\ge0,\Delta>0$. There are
+    $c_1,\beta>0$ and $C\ge0$, independent of the finite metric space and
+    Hamiltonian, with the following property. Let $H=\sum_i h_i$ satisfy
+    the support, norm and local-cardinality assumptions of
+    Theorem~\ref{thm:hastings05_metric_filter_sum}, and suppose its spectrum
+    consists of $E_0$ and eigenvalues at least $E_0+\Delta$. Assume a unit
+    ground vector exists, and let $N$ be the number of sites. For every
+    $\eta>0$ and every
+    \begin{align}
+        \ell\ge\max\left\{R,\frac1\beta
+        \ln\frac{4\max(NJC,1)}{\Delta\min(\eta,1)}\right\},
+        \label{eq:hastings05_metric_ground_overlap_radius}
+    \end{align}
+    the actual truncated sum
+    $M_\ell=\sum_i M_i(c_1\ell\Delta,\Delta,\ell)$ has a unit ground vector
+    $\phi$ with nonzero projection onto the actual ground eigenspace of
+    $H$, and $1-\|P_0\phi\|^2\le\eta$. If the original ground state is
+    unique, an actual unit ground vector of $M_\ell$ has nonzero overlap
+    with it and attained minimum squared phase error at most $\eta$.
+    For fixed local parameters and accuracy, the required radius grows
+    as $O(\log N)$, as asserted in
+    \cite[lines 362--367]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_metric_filter_sum, thm:hastings05_ground_space_quadratic_gap, thm:hastings05_logarithmic_overlap_radius}
+    Each truncated term, hence their sum, is Hermitian.
+    Theorem~\ref{thm:hastings05_metric_filter_sum} bounds the norm error by
+    $NJC e^{-\beta\ell}$. The source's eigenvalue gap gives the quadratic
+    gap above the canonical ground eigenspace by
+    Lemma~\ref{thm:hastings05_ground_space_quadratic_gap}. Apply
+    Lemma~\ref{thm:hastings05_logarithmic_overlap_radius} with $B=NJC$.
+\end{proof}
+
+
+\section{Truncation in a finite metric space}
+\label{sec:gaussian_filtered_metric_localization}
+
+\begin{lemma}[Termwise commutator control of Gaussian truncation]
+    \label{thm:hastings05_termwise_gaussian_truncation}
+    \lean{ManyBody.norm_gaussianFilteredTerm_sub_truncated_le_of_commutator_bounds}
+    \leanok
+    Let $H=\sum_jh_j$, with every $h_j$ Hermitian. Suppose $C_j\ge0$ and
+    $\|[h_j,\tau_t^s(W)]\|\le C_j$ whenever $j\notin s$ and $|t|\le T$.
+    Then
+    \begin{align}
+        \|\mathcal F_{q,\Delta}^{H}(W)-\mathcal F_{q,\Delta}^{H_s}(W)\|
+         & \le T\sum_{j\notin s}C_j
+        +2\|W\|e^{-(T\Delta)^2/(2q)}.
+        \label{eq:hastings05_termwise_gaussian_truncation}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:dynamics_hamiltonian_comparison, thm:hastings_truncated_filter_comparison}
+    The finite-sum triangle inequality gives
+    $\|[H-H_s,\tau_t^s(W)]\|\le\sum_{j\notin s}C_j$.
+    The Duhamel formula therefore bounds the difference of the two
+    evolutions by $T\sum_{j\notin s}C_j$ on $[-T,T]$.
+    Gaussian integration adds the tail in
+    (\ref{eq:hastings05_termwise_gaussian_truncation}).
+\end{proof}
+
+\begin{lemma}[Propagation between anchored supports]
+    \label{thm:hastings05_anchor_lr}
+    \lean{ManyBody.norm_commutator_heisenbergEvolution_le_anchor_kernel}
+    \leanok
+    Suppose $B$ acts on $Y$, with $d_G(y,b)\le r$ for $y\in Y$.
+    For every $\mu>0$ and $t\in\mathbb R$,
+    \begin{align}
+        \|[B,e^{iHt}We^{-iHt}]\|
+         & \le A_\mu(S)\|W\|\|B\|e^{v_\mu|t|}k_\mu(z,b).
+        \label{eq:hastings05_anchor_lr}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:dynamics_lieb_robinson}
+    If $d_G(z,b)>2r+l$, the triangle inequality separates $S$ and $Y$
+    by at least $l$. The finite-support propagation bound gives
+    $4|S|\|W\|\|B\|e^{v_\mu|t|-\mu l}$. Combine this with
+    $\|[B,e^{iHt}We^{-iHt}]\|\le2\|W\|\|B\|$ and absorb the integer
+    shift $2r+1$. At infinite anchor distance, let $l$ tend to infinity.
+\end{proof}
+
+\begin{lemma}[Gaussian truncation with weighted omitted interactions]
+    \label{thm:hastings05_weighted_gaussian_truncation}
+    \lean{ManyBody.norm_gaussianFilteredTerm_sub_truncated_le_anchor_sum}
+    \leanok
+    The retained family $s$ may be arbitrary. For every $\mu>0$,
+    \begin{align}
+        \|\mathcal F_{q,\Delta}^{H}(W)-\mathcal F_{q,\Delta}^{H_s}(W)\|
+         & \le A_\mu(S)\|W\|T e^{v_\mu T}
+        \sum_{j\notin s}\|h_j\|k_\mu(z,a_j)
+        +2\|W\|e^{-(T\Delta)^2/(2q)}.
+        \label{eq:hastings05_weighted_gaussian_truncation}
+    \end{align}
+    No cardinality bound is imposed on a region containing the retained
+    interactions.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_anchor_lr, thm:hastings05_termwise_gaussian_truncation}
+    The retained Hamiltonian satisfies the original local norm budget.
+    Apply (\ref{eq:hastings05_anchor_lr}) to its evolution and each omitted
+    $h_j$, with $b=a_j$ and $Y=X_j$. Bound $e^{v_\mu|t|}$ by
+    $e^{v_\mu T}$ and use
+    (\ref{eq:hastings05_termwise_gaussian_truncation}).
+\end{proof}
+
+\begin{lemma}[A bounded-degree tail controls truncation]
+    \label{thm:hastings05_degree_gaussian_truncation}
+    \lean{ManyBody.norm_gaussianFilteredTerm_sub_truncated_le_degree_tail}
+    \leanok
+    Suppose the graph degree is at most $D$, $B\ge0$ and
+    $\sum_{j:\,a_j=x}\|h_j\|\le B$ at each anchor $x$.
+    If $d_G(z,a_j)\ge m$ for every omitted $j$, choose
+    $\mu>\log(D+1)$ and put $\beta=(\mu-\log(D+1))/2$.
+    Then
+    \begin{align}
+        \|\mathcal F_{q,\Delta}^{H}(W)-\mathcal F_{q,\Delta}^{H_s}(W)\|
+         & \le A_\mu(S)\|W\|T e^{v_\mu T}
+        \frac{B e^{-\beta m}}{1-e^{-\beta}}
+        +2\|W\|e^{-(T\Delta)^2/(2q)}.
+        \label{eq:hastings05_degree_gaussian_truncation}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_weighted_gaussian_truncation, thm:hastings05_degree_weighted_tail}
+    Substitute the weighted tail estimate into
+    (\ref{eq:hastings05_weighted_gaussian_truncation}).
+\end{proof}
+
+\begin{lemma}[Support and norm of the physical metric truncation]
+    \label{thm:hastings05_metric_filter_properties}
+    \lean{ManyBody.metric_truncated_filter_properties}
+    \leanok
+    If $\ell\ge R$, then $M_i(q,\Delta,\ell)$ is Hermitian, acts inside
+    $B_\ell(i)$ and has norm at most $J$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_metric_retained_support, thm:hastings_truncated_support, thm:hastings_gaussian_filtered_spectral}
+    Every retained interaction and the initial $h_i$ act inside
+    $B_\ell(i)$. Their evolution, and hence its Gaussian average, has the
+    same support. Gaussian filtering preserves Hermitian operators and
+    contracts the operator norm.
+\end{proof}
+
+\begin{lemma}[Uniform metric truncation and leakage budget]
+    \label{thm:hastings05_metric_filter_budget}
+    \lean{ManyBody.exists_metric_truncated_filter_budget}
+    \leanok
+    Fix $R>0$, $S\in\mathbb N$, $J\ge0$ and $\Delta>0$. There are
+    $c_1,\lambda>0$ and $C\ge0$, chosen before $\Lambda$ and its
+    Hamiltonian, such that every family satisfying the local metric
+    assumptions and every $\ell\ge R$ obeys
+    \begin{align}
+        \|h_i\|e^{-q/2}
+        +\|\mathcal F_{q,\Delta}^{H}(h_i)-M_i(q,\Delta,\ell)\|
+         & \le\|h_i\|C e^{-\lambda\ell},
+         & q                             & =c_1\ell\Delta.
+        \label{eq:hastings05_metric_filter_budget}
+    \end{align}
+    One choice of constants is
+    \begin{align}
+        \mu    & =\log(S+1)+1,                                  & v                          & =4S^2Je^{4\mu},
+               & c_1                                            & =\frac1{4R(v+1)},\nonumber                           \\
+        \gamma & =\frac1{2R}-vc_1>0,                            &
+        \delta & =\min(c_1\Delta,\gamma),                       & \lambda                    & =\frac\delta2,\nonumber \\
+        A      & =\frac{4(S+1)e^{5\mu}Jc_1e^{1/2}}{1-e^{-1/2}}, &
+        C      & =3+\frac{2A}{e\delta}.
+        \label{eq:hastings05_metric_filter_constants}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_degree_gaussian_truncation, thm:hastings05_metric_interaction_data, thm:hastings05_metric_graph_separation, lem:hastings05_gaussian_decay_absorption}
+    The metric interaction graph has degree at most $S$, support diameter
+    at most two and local norm budget $SJ$. Take anchors $a_j=j$, whose
+    norm budget is $J$. Omitted anchors have graph distance at least
+    $m=\lceil(\ell-R)/R\rceil$. With $\beta=1/2$,
+    $e^{-\beta m}\le e^{1/2}e^{-\ell/(2R)}$.
+    In (\ref{eq:hastings05_degree_gaussian_truncation}) take
+    $T=c_1\ell$ and $q=c_1\ell\Delta$; its Gaussian tail becomes
+    $2\|h_i\|e^{-q/2}$. Adding the spectral term gives
+    $3\|h_i\|e^{-c_1\Delta\ell/2}+A\|h_i\|\ell e^{-\gamma\ell}$.
+    The time-prefactor estimate bounds this by
+    $\|h_i\|C e^{-\delta\ell/2}$.
+\end{proof}
+
+\begin{theorem}[Exponential localization of actual truncated terms]
+    \label{thm:hastings05_metric_facld}
+    \lean{ManyBody.exists_metric_truncated_filter_localization}
+    \leanok
+    Under the metric assumptions of
+    Lemma~\ref{thm:hastings05_metric_filter_budget}, constants
+    $c_1,\lambda>0$ and $C\ge0$, independent of the finite site set and
+    Hamiltonian, give the following statements. Put $q=c_1\ell\Delta$
+    and $M_i=M_i(q,\Delta,\ell)$ for $\ell\ge R$.
+    Each $M_i$ is Hermitian, acts on $B_\ell(i)$ and has norm at most $J$,
+    and
+    \begin{align}
+        \|\mathcal F_{q,\Delta}^{H}(h_i)-M_i\| & \le JC e^{-\lambda\ell}.
+        \label{eq:hastings05_metric_filter_error}
+    \end{align}
+    If every eigenvalue of $H$ equals $E_0$ or is at least $E_0+\Delta$,
+    let $P_0$ be the orthogonal projection onto the $E_0$-eigenspace.
+    Every vector $\psi$ in that eigenspace satisfies
+    \begin{align}
+        \|(1-P_0)M_i\psi\| & \le JC e^{-\lambda\ell}\|\psi\|.
+        \label{eq:hastings05_metric_facld}
+    \end{align}
+    In particular, if $\Omega$ is a normalized unique ground state with
+    gap $\Delta$, then
+    $\|M_i\Omega-\langle\Omega,M_i\Omega\rangle\Omega\|
+        \le JC e^{-\lambda\ell}$.
+    This is the exponential order asserted in (facld) of
+    \cite[lines 322--348]{Hastings2006Solving}. The printed minimum of
+    decay lengths is read as a minimum of decay rates, as explained in
+    \cite{gap:hastings05_truncated_dynamics}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hastings05_metric_filter_budget, thm:hastings05_metric_filter_properties, thm:hastings05_facld}
+    The spectral leakage and approximation inequalities bound
+    $\|(1-P_0)M_i\psi\|$ by the left side of
+    (\ref{eq:hastings05_metric_filter_budget}) times $\|\psi\|$.
+    Use $\|h_i\|\le J$. For a unique ground state,
+    $P_0\phi=\langle\Omega,\phi\rangle\Omega$.
+\end{proof}
+
+\begin{theorem}[The sum of the physical metric approximations]
+    \label{thm:hastings05_metric_filter_sum}
+    \lean{ManyBody.exists_metric_truncated_filter_sum_bound}
+    \leanok
+    Fix $R,S,J,\Delta$ as in
+    Lemma~\ref{thm:hastings05_metric_filter_budget}. Uniform constants
+    $c_1,\lambda>0$ and $C\ge0$ give, for every admissible Hamiltonian and
+    $\ell\ge R$,
+    \begin{align}
+        \Bigl\|\sum_iM_i(c_1\ell\Delta,\Delta,\ell)-H\Bigr\|
+         & \le|\Lambda|JC e^{-\lambda\ell}.
+        \label{eq:hastings05_metric_filter_sum}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hastings05_metric_facld, thm:hastings05_sum_approximation}
+    The full filtered terms sum to $H$. The finite-sum triangle
+    inequality bounds the error by the sum of
+    (\ref{eq:hastings05_metric_filter_error}).
+\end{proof}
+
+
+\section{The graph of a metric interaction range}
+\label{sec:gaussian_filtered_metric_interaction_graph}
+
+\begin{definition}[The metric interaction graph]
+    \label{def:hastings05_metric_interaction_graph}
+    \lean{ManyBody.metricRangeGraph, ManyBody.metricRangeBall, ManyBody.mem_metricRangeBall, ManyBody.coe_metricRangeBall, ManyBody.self_mem_metricRangeBall}
+    \leanok
+    Let $V$ be a finite metric space and $R\ge0$. Write $B_R(x)$ for its
+    closed metric ball. Join distinct sites $x,y$ when $d(x,y)\le R$, obtaining
+    a simple graph $G_R$. Every site belongs to its own interaction ball.
+\end{definition}
+
+\begin{lemma}[Local metric data give graph interaction bounds]
+    \label{thm:hastings05_metric_interaction_data}
+    \lean{ManyBody.metricRangeGraph_edist_le_one, ManyBody.metricRangeGraph_edist_le_two, ManyBody.metricRangeGraph_neighbor_card_le, ManyBody.metricRangeBall_graph_diameter_le_two, ManyBody.sum_norm_metricRangeBall_le, ManyBody.metricRangeBall_norm_budget_le}
+    \leanok
+    \uses{def:hastings05_metric_interaction_graph}
+    Suppose $|B_R(x)|\le S$ for every site. The degree of $G_R$ is at most
+    $S$, and every interaction ball has graph diameter at most two. If
+    $\|h_i\|\le J$ with $J\ge0$, then
+    $\sum_{i:\,x\in B_R(i)}\|h_i\|\le SJ$ at every site $x$.
+\end{lemma}
+\begin{proof}\leanok
+    A graph neighbour lies in the metric ball. Two sites in one interaction
+    ball are joined through its centre by at most two graph edges.
+    By symmetry of the metric, the centres whose interaction balls contain
+    $x$ lie in $B_R(x)$. Sum their norm bounds.
+\end{proof}
+
+\begin{lemma}[Physical separation and intrinsic graph distance]
+    \label{thm:hastings05_metric_graph_separation}
+    \lean{ManyBody.dist_le_range_mul_walkLength, ManyBody.dist_le_range_mul_graphDist, ManyBody.metricRangeGraph_edist_lower_ceil, ManyBody.metricRangeGraph_zero_edist_eq_top, ManyBody.metricRangeGraph_omitted_threshold}
+    \leanok
+    \uses{def:hastings05_metric_interaction_graph}
+    Every graph walk of length $n$ has endpoints at physical distance at
+    most $Rn$. Thus, on a connected component,
+    $d(x,y)\le R d_{G_R}(x,y)$. For $R>0$, a site omitted by the source
+    truncation $d(i,j)\le\ell-R$ has extended graph distance at least
+    $\lceil(\ell-R)/R\rceil$ from $i$. At range zero, sites at positive
+    physical distance lie in different graph components.
+\end{lemma}
+\begin{proof}\leanok
+    Sum the edge-length bounds along a shortest walk. Graph distance is an
+    integer, giving the ceiling bound; disconnected sites have infinite
+    extended graph distance. At range zero, every reachable pair has
+    physical distance zero.
+\end{proof}
+
+\begin{lemma}[The source's metric truncation preserves local support]
+    \label{thm:hastings05_metric_retained_support}
+    \lean{ManyBody.metricRangeBall_retained_support, ManyBody.metricRangeBall_initial_support}
+    \leanok
+    \uses{def:hastings05_metric_interaction_graph}
+    If $d(i,j)\le\ell-R$, then $B_R(j)\subseteq B_\ell(i)$.
+    If $\ell\ge R$, then $B_R(i)\subseteq B_\ell(i)$ as well.
+\end{lemma}
+\begin{proof}\leanok
+    For $x\in B_R(j)$, the triangle inequality gives
+    $d(i,x)\le d(i,j)+d(j,x)\le\ell-R+R=\ell$.
+\end{proof}
+
+
+\section{Connected sets in a graph of bounded degree}
+\label{sec:gaussian_filtered_connected_set_count}
+
+\begin{lemma}[Clusters through a vertex]
+    \label{thm:hastings_connected_set_count_mem}
+    \lean{ManyBody.card_connected_induce_mem_le}
+    \leanok
+    Let $G$ be a finite simple graph in which every vertex has degree at most
+    $\Delta$, let $v$ be a vertex, and let $n$ be a natural number. At most
+    $\Delta^{2(n-1)}$ sets of $n$ vertices contain $v$ and induce a connected
+    subgraph of $G$, where $n-1$ is read as $0$ when $n=0$; no such set
+    exists then.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Let $S$ be such a set. Starting from $\{v\}$ and the walk of length zero,
+    add the vertices of $S$ one at a time: as long as the set $T$ reached so
+    far is a proper subset of $S$, a path inside $S$ from $v$ to a vertex of
+    $S\setminus T$ leaves $T$ along an edge $wu$ with $w\in T$ and
+    $u\in S\setminus T$. Inserting the detour $w\to u\to w$ into the current
+    closed walk at a visit of $w$ adds two to its length and exactly the vertex
+    $u$ to its vertex set. After $n-1$ steps this gives a closed walk from $v$
+    of length $2(n-1)$ whose vertex set is $S$. The walk determines $S$, so
+    distinct sets give distinct walks, and at most $\Delta^{L}$ walks of length
+    $L$ start at $v$, since each step has at most $\Delta$ choices.
+\end{proof}
+
+\begin{lemma}[Clusters of a given size]
+    \label{thm:hastings_connected_set_count}
+    \lean{ManyBody.card_connected_induce_le, ManyBody.card_connected_induce_le_exponential}
+    \leanok
+    Let $G$ be a simple graph on $N$ vertices in which every vertex has degree
+    at most $\Delta$, and let $n$ be a natural number. At most
+    $N\Delta^{2(n-1)}$ sets of $n$ vertices induce a connected subgraph of $G$,
+    with $n-1$ read as $0$ when $n=0$.
+    In particular the number is at most $Nx^n$ for
+    $x=\max(1,\Delta^2)$. The latter bound also holds for $n=0$, since the
+    empty induced graph is not connected.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_connected_set_count_mem}
+    A set inducing a connected subgraph is nonempty, so it contains some
+    vertex; sum the bound of Lemma~\ref{thm:hastings_connected_set_count_mem}
+    over the $N$ vertices.
+    For $n\ge1$, $\Delta^{2(n-1)}=(\Delta^2)^{n-1}\le x^{n-1}\le x^n$,
+    since $x\ge1$. This choice also covers $\Delta=0$, when the connected
+    singleton sets would prevent taking $x=0$.
+\end{proof}
+
+
+\section{Ball counts in integer lattices}
+\label{sec:gaussian_filtered_cluster_truncation}
+
+\begin{lemma}[Polynomial ball growth in the integer lattice]
+    \label{lem:hastings_integer_lattice_ball_count}
+    \lean{ManyBody.card_centres_integerLattice_ball_le, ManyBody.card_centres_integerLattice_ball_le_polynomial, ManyBody.card_centres_ball_le_polynomial_of_dist_le, ManyBody.card_centres_ball_le_polynomial_of_isometry}
+    \leanok
+    For distinct centres in $\mathbb Z^D$ with the coordinate maximum
+    metric, every radius-$r$ ball contains at most
+    $(2\lceil r\rceil+1)^D\le2^D(\lceil r\rceil+1)^D$ centres.
+    The same bound holds for every metric on a finite integer-lattice
+    domain that dominates coordinate maximum distance, including its
+    intrinsic walk metric. More generally, it transfers through any
+    injective coordinate map that does not increase distances.
+    This is the polynomial volume growth, with $C=2^D$, used in the local
+    index count of the cluster expansion.
+\end{lemma}
+\begin{proof}\leanok
+    Every coordinate of a centre in the ball lies in an integer interval
+    with $2\lceil r\rceil+1$ elements. Containment in the product of these
+    intervals proves the first bound. The second follows from
+    $2\lceil r\rceil+1\le2(\lceil r\rceil+1)$.
+\end{proof}
+
+
+\section{The first-moment Gaussian tail}
+\label{sec:gaussian_filtered_gaussian_time_average}
+
+\begin{lemma}[First absolute moment of a Gaussian tail]
+    \label{thm:hastings_gaussian_absolute_moment_tail}
+    \lean{GaussianFilter.integral_compl_Icc_abs_gaussianReal_le}
+    \leanok
+    For $h,T\ge0$ (with the right-hand side $0$ when $h=0$),
+    \begin{align}
+        \int_{|t|>T}|t|\,d\gamma_h(t)
+        \le \sqrt{2h/\pi}\,e^{-T^2/(2h)}.
+        \label{eq:hastings_gaussian_absolute_moment_tail}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    For $h=0$, $\gamma_0=\delta_0$ gives $0$. For $h>0$, with
+    $\varphi_h(t)=(2\pi h)^{-1/2}e^{-t^2/(2h)}$ and $(-h\varphi_h)'=t\varphi_h$,
+    \begin{align}
+        \int_{|t|>T}|t|\,d\gamma_h(t)=2\int_T^\infty t\varphi_h(t)\,dt
+        =2h\varphi_h(T)=\sqrt{2h/\pi}\,e^{-T^2/(2h)}.
+        \notag
+    \end{align}
+\end{proof}
+
+\begin{lemma}[First absolute moment of a Gaussian]
+    \label{thm:hastings_gaussian_absolute_moment}
+    \lean{GaussianFilter.integral_abs_gaussianReal_le_sqrt_two_mul_div_pi, GaussianFilter.integral_abs_gaussianReal_le}
+    \leanok
+    For every $h\ge0$,
+    $\int|t|\,d\gamma_h(t)\le\sqrt{2h/\pi}\le\sqrt h$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_gaussian_absolute_moment_tail}
+    Set $T=0$ in~(\ref{eq:hastings_gaussian_absolute_moment_tail}) and use
+    $2\le\pi$.
+\end{proof}
+
+
+\section{Powers against decaying exponentials}
+\label{sec:gaussian_filtered_decay_slack}
+
+\begin{lemma}[A power against an exponential]
+    \label{thm:hastings_pow_exp}
+    \lean{Real.pow_mul_exp_neg_le, Real.pow_mul_exp_neg_add_le}
+    \leanok
+    For $\delta>0$, a natural number $p$, a real number $r$ and $l\ge0$,
+    \begin{align}
+        l^pe^{-\delta l}    & \le\Bigl(\frac{p}{e\delta}\Bigr)^p,        &
+        l^pe^{-(r+\delta)l} & \le\Bigl(\frac{p}{e\delta}\Bigr)^pe^{-rl}.
+        \label{eq:hastings_pow_exp}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    With $x=\delta l/p$ for $p\ge1$, $l^pe^{-\delta l}=(p/\delta)^p(xe^{-x})^p$ and
+    $xe^{-x}\le e^{-1}$. The second bound follows from the first after
+    splitting off $e^{-rl}$.
+\end{proof}

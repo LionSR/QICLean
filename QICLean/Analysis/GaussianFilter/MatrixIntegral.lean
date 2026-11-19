@@ -176,7 +176,7 @@ also includes zero variance; the density formula below requires positive varianc
 theorem norm_gaussianIntertwiner_sub_truncated_le (h : ℝ≥0) {T : ℝ} (hT : 0 ≤ T)
     {H' H : Matrix n n ℂ} (hH' : H'.IsHermitian) (hH : H.IsHermitian) (W : Matrix n n ℂ) :
     ‖gaussianIntertwiner h H' H W - gaussianIntertwinerTruncated h T H' H W‖ ≤
-      (2 * Real.exp (-T ^ 2 / (2 * (h : ℝ)))) * ‖W‖ :=
+      Real.exp (-T ^ 2 / (2 * (h : ℝ))) * ‖W‖ :=
   (norm_gaussianIntertwiner_sub_truncated_le_mass h T hH' hH W).trans
     (mul_le_mul_of_nonneg_right (measure_compl_Icc_le h hT) (norm_nonneg W))
 

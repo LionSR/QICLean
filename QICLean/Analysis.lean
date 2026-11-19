@@ -260,6 +260,7 @@ import QICLean.Analysis.PositiveFactorRepair
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
 import QICLean.Analysis.PositiveProjectionCompression
+import QICLean.Analysis.PowerExponential
 import QICLean.Analysis.PowerSpectralFilter
 import QICLean.Analysis.PrincipalSubmatrixNorm
 import QICLean.Analysis.ProbabilityEntropy

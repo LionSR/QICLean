@@ -175,9 +175,11 @@ theorem norm_gaussianIntertwinerTruncated_ground_le (h : ℝ≥0) {T : ℝ} (hT 
       simpa only [hΨ, mul_one, EuclideanSpace.equiv,
         PiLp.continuousLinearEquiv_symm_apply, Matrix.toLpLin_apply] using
         (N - M).l2_opNorm_mulVec Ψ
-    exact hv.trans (by
-      rw [norm_sub_rev]
-      exact norm_gaussianIntertwiner_sub_truncated_le h hT hH' hH W)
+    refine hv.trans ?_
+    rw [norm_sub_rev]
+    refine (norm_gaussianIntertwiner_sub_truncated_le h hT hH' hH W).trans ?_
+    gcongr
+    linarith [Real.exp_pos (-T ^ 2 / (2 * (h : ℝ)))]
   have hsplit : toEuclideanLin N Ψ - z • Φ =
       (toEuclideanLin M Ψ - z • Φ) + toEuclideanLin (N - M) Ψ := by
     rw [map_sub, LinearMap.sub_apply]
