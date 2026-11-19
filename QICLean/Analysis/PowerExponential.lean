@@ -3,6 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import Mathlib.Algebra.Order.Field.GeomSum
+import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Analysis.SpecialFunctions.Exp
 
 /-!
@@ -22,6 +24,10 @@ lines 766–907), and in eq. `facld` of Hastings, arXiv:cond-mat/0508554v3, `pro
 
 Moved from TNLean, `TNLean/Algebra/PowerExponential.lean` at commit `e113e005`.
 Changes: the two power bounds are in namespace `Real` in place of `TNLean.MPS.AreaLaw.Hastings`.
+
+`Real.add_one_pow_mul_exp_neg_le` and `Real.sum_add_one_pow_mul_exp_neg_le` bound
+`(x + 1)^k e^{-γx}` and its sums over the naturals by `Real.shellSumConst`; they are moved from
+TNLean (`e113e005`) `TNLean/Lattice/LowEnergyCommutatorSum.lean`.
 -/
 
 open Real
@@ -73,5 +79,77 @@ theorem pow_mul_exp_neg_add_le {r δ l : ℝ} (hδ : 0 < δ) (hl : 0 ≤ l) (p :
     rw [← exp_add]; ring_nf
   rw [hsplit, ← mul_assoc]
   exact mul_le_mul_of_nonneg_right (pow_mul_exp_neg_le hδ hl p) (exp_pos _).le
+
+end Real
+
+namespace Real
+
+open scoped Nat
+
+/-- **A power against an exponential at rate `γ`.** For `γ > 0` and `x ≥ 0`,
+`(x + 1)^k e^{-γ x} ≤ k! (2/γ)^k e^{γ/2} e^{-(γ/2) x}`. -/
+theorem add_one_pow_mul_exp_neg_le {γ : ℝ} (hγ : 0 < γ) (k : ℕ) {x : ℝ} (hx : 0 ≤ x) :
+    (x + 1) ^ k * Real.exp (-(γ * x)) ≤
+      k ! * (2 / γ) ^ k * Real.exp (γ / 2) * Real.exp (-(γ / 2 * x)) := by
+  have hfac : (0 : ℝ) < k ! := by exact_mod_cast Nat.factorial_pos k
+  have h := Real.pow_div_factorial_le_exp (x := γ * (x + 1) / 2) (by positivity) k
+  rw [div_le_iff₀ hfac] at h
+  have hpow : (x + 1) ^ k = (2 / γ) ^ k * (γ * (x + 1) / 2) ^ k := by
+    rw [← mul_pow]
+    congr 1
+    field_simp
+  calc (x + 1) ^ k * Real.exp (-(γ * x))
+      = (2 / γ) ^ k * (γ * (x + 1) / 2) ^ k * Real.exp (-(γ * x)) := by rw [hpow]
+    _ ≤ (2 / γ) ^ k * (Real.exp (γ * (x + 1) / 2) * k !) * Real.exp (-(γ * x)) := by
+        gcongr
+    _ = k ! * (2 / γ) ^ k * Real.exp (γ / 2) * Real.exp (-(γ / 2 * x)) := by
+        rw [show γ * (x + 1) / 2 = γ / 2 + γ / 2 * x by ring, Real.exp_add]
+        have : Real.exp (γ / 2 * x) * Real.exp (-(γ * x)) = Real.exp (-(γ / 2 * x)) := by
+          rw [← Real.exp_add]; ring_nf
+        calc (2 / γ) ^ k * (Real.exp (γ / 2) * Real.exp (γ / 2 * x) * k !) *
+              Real.exp (-(γ * x))
+            = k ! * (2 / γ) ^ k * Real.exp (γ / 2) *
+                (Real.exp (γ / 2 * x) * Real.exp (-(γ * x))) := by ring
+          _ = _ := by rw [this]
+
+/-- The constant `S_{γ,k} = k! (2/γ)^k e^{γ/2} / (1 - e^{-γ/2})` bounding
+`∑_{d ≥ 0} (d + 1)^k e^{-γ d}`. -/
+noncomputable def shellSumConst (γ : ℝ) (k : ℕ) : ℝ :=
+  k ! * (2 / γ) ^ k * Real.exp (γ / 2) / (1 - Real.exp (-(γ / 2)))
+
+theorem shellSumConst_nonneg {γ : ℝ} (hγ : 0 < γ) (k : ℕ) : 0 ≤ shellSumConst γ k := by
+  have h1 : Real.exp (-(γ / 2)) < 1 := Real.exp_lt_one_iff.mpr (by linarith)
+  unfold shellSumConst
+  have : 0 < 1 - Real.exp (-(γ / 2)) := by linarith
+  positivity
+
+/-- **Shell sum at rate `γ`.** For every finite set `τ` of natural numbers,
+`∑_{d ∈ τ} (d + 1)^k e^{-γ d} ≤ S_{γ,k}`. -/
+theorem sum_add_one_pow_mul_exp_neg_le {γ : ℝ} (hγ : 0 < γ) (k : ℕ) (τ : Finset ℕ) :
+    ∑ d ∈ τ, ((d : ℝ) + 1) ^ k * Real.exp (-(γ * d)) ≤ shellSumConst γ k := by
+  set r := Real.exp (-(γ / 2)) with hr
+  have hr0 : 0 ≤ r := (Real.exp_pos _).le
+  have hr1 : r < 1 := Real.exp_lt_one_iff.mpr (by linarith)
+  set M : ℝ := k ! * (2 / γ) ^ k * Real.exp (γ / 2) with hM
+  have hM0 : 0 ≤ M := by positivity
+  have hterm (d : ℕ) : ((d : ℝ) + 1) ^ k * Real.exp (-(γ * d)) ≤ M * r ^ d := by
+    have hrd : r ^ d = Real.exp (-(γ / 2 * d)) := by
+      rw [hr, ← Real.exp_nat_mul]; ring_nf
+    rw [hrd]
+    exact add_one_pow_mul_exp_neg_le hγ k (Nat.cast_nonneg d)
+  obtain ⟨m, hm⟩ : ∃ m, τ ⊆ Finset.range m :=
+    ⟨τ.sup id + 1, fun d hd => Finset.mem_range.mpr
+      (Nat.lt_succ_of_le (Finset.le_sup (f := id) hd))⟩
+  calc _ ≤ ∑ d ∈ τ, M * r ^ d := Finset.sum_le_sum fun d _ => hterm d
+    _ ≤ ∑ d ∈ Finset.range m, M * r ^ d :=
+      Finset.sum_le_sum_of_subset_of_nonneg hm fun d _ _ => by positivity
+    _ = M * ∑ d ∈ Finset.range m, r ^ d := (Finset.mul_sum _ _ _).symm
+    _ ≤ M * (1 / (1 - r)) := by
+        gcongr
+        have h := geom_sum_Ico_le_of_lt_one (m := 0) (n := m) hr0 hr1
+        rw [pow_zero] at h
+        rw [Finset.range_eq_Ico]
+        exact h
+    _ = shellSumConst γ k := by rw [shellSumConst, hM, hr]; ring
 
 end Real
