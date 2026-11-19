@@ -308,7 +308,8 @@ theorem softFamilyThreshold_half_sq_le (q : ℕ) (hq : 2 ≤ q) {w : ℝ}
       (show 0 ≤ 500000 + 1440*(q:ℝ) by positivity)
     nlinarith only [hlog, hg, hA, h2, hmul, hz]
 
-private theorem soft_family_log_budgets_of_threshold (q : ℕ) (hq : 2 ≤ q)
+/-- The calibrated scale bounds the logarithmic costs of the dimension and energy budgets. -/
+theorem soft_family_log_budgets_of_threshold (q : ℕ) (hq : 2 ≤ q)
     (g : ℝ) (hg : 0 < g) (a b c : ℕ) :
     ∀ u : ℕ, 2 ≤ u → softFamilyThreshold q g a b c ≤ (u : ℝ) →
       let v : ℝ := u

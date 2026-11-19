@@ -357,3 +357,62 @@ It is a sufficient calibration, not the printed fourth-order choice of
 This is a new sufficient scalar choice for the soft estimates of
 \cite[lines 1262--1268 and 1373--1420]{Arad2016RigorousRG}.
 It does not assert the printed fourth-order choice, a bound on the bond dimension of a chain, or a running-time bound.
+
+\begin{theorem}[Length dependence of the scalar ceilings]
+    \label{thm:soft_scalar_growth}
+    \lean{Real.exists_soft_family_scalar_growth}
+    \uses{def:soft_family_threshold,thm:soft_family_calibration}
+    \leanok
+    Fix an integer $q\ge2$ and $\mu>0$. There are real constants $C_s,C_b$
+    such that for each integer $N\ge2$ with $w=\mu/(3\log N)\le1$,
+    there exists a single $u\in\mathbb N$ with
+    $u\ge\max\{2,S(q,w^2/2,24,10,10)\}$ for which both bounds below hold.
+    Use the parameters of Theorem~\ref{thm:soft_family_calibration} at this
+    scale, and put $X=1+\log N$, $b_0=2(e^{1/3}-1)$ and $W=t2^{m+1}$.
+    For the order and dimension factor
+    \begin{align}
+        r &= \max\{1,\lceil(2\log N-\log\log(1+\xi/W))/(-\log b_0)\rceil\},
+        \label{eq:soft_growth_order}\\
+        B &= 2r^2 q^r(m+1), \label{eq:soft_growth_factor}
+    \end{align}
+    the same choice gives $D\le \exp(C_s X^{36})$ and
+    $\max\{1,B\}^{2k}\le \exp(C_b X^{104})$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:soft_family_quartic_scale,thm:soft_family_calibration}
+    Set $K_0=64(5000000+1440q)$ and $d=-\log b_0>0$.
+    Choose the witness from Theorem~\ref{thm:soft_family_quartic_scale},
+    which gives $u\le(K_0^2+2)(1+w^{-1})^4$ in addition to the lower bound.
+    Since $w^{-1}=3\log N/\mu$ and $\log N\ge0$, this yields
+    \begin{align}
+        1+w^{-1} &\le (1+3/\mu)X, \label{eq:soft_growth_inverse_width}\\
+        u &\le AX^4,\qquad A=(K_0^2+2)(1+3/\mu)^4.
+            \label{eq:soft_growth_length_scale}
+    \end{align}
+    The calibration bounds give $D\ge1$ and $\log D\le u^9$.
+    Exponentiating yields
+    \begin{align}
+        D &\le \exp(u^9)\le \exp(A^9X^{36}),
+            \label{eq:soft_growth_size_bound}
+    \end{align}
+    so one may take $C_s=A^9$.
+    Applying $x/2\le\log(1+x)$ at $x=\xi/W$ bounds the numerator
+    defining $r$ by $2\log N+20100m$. Hence both $r$ and $m$ are
+    bounded by $R X^{40}$, where
+    \begin{align}
+        R &= \max\left\{A^{10},1+\frac{2+20100A^{10}}{d}\right\}.
+            \label{eq:soft_growth_order_constant}
+    \end{align}
+    Also
+    $k=u^{16}\le KX^{64}$ with $K=A^{16}$. Since $r\ge1$ and $q\ge2$,
+    one has $B\ge1$. Using $\log y\le y-1$ for $y>0$ gives
+    \begin{align}
+        \log\max\{1,B\} &= 2\log r+r\log q+\log 2+\log(m+1),
+            \label{eq:soft_growth_log_factor}\\
+        \log\max\{1,B\} &\le (6+\log q)R X^{40},
+            \label{eq:soft_growth_log_bound}\\
+        2k\log\max\{1,B\} &\le 2K(6+\log q)R X^{104}.
+            \label{eq:soft_growth_log_dimension}
+    \end{align}
+    Exponentiating gives the asserted bound with $C_b=2K(6+\log q)R$.
+\end{proof}
