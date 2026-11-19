@@ -10,10 +10,11 @@
 
 \begin{theorem}[Uniform physical-buffer Gaussian approximation]
     \label{thm:gaussian_physical_uniform}
-    \lean{GaussianFilter.exists_uniform_physicalBuffer_filter}
+    \lean{GaussianFilter.physicalBuffer_filter_of_le}
     \leanok
-    Let $\Delta>0$ and $r\ge0$ be real. There are constants $a>0$ and
-    $T_0>0$, depending only on $\Delta,r$, with the following property.
+    Let $\Delta>0$ and $r\ge0$ be real, and let $a,T_0$ be real with $T_0\ge0$,
+    $30+r\le a\Delta^2/2$ and $30+r\le T_0^2/(2a)$; for instance
+    $a=2(30+r)/\Delta^2$ and $T_0=2(30+r)/\Delta$. Then the following holds.
     Let $\mathcal H_R,\mathcal H_C,\mathcal H_Q$ be finite-dimensional
     complex Hilbert spaces, and put
     $\mathcal H=\mathcal H_R\otimes\mathcal H_C\otimes\mathcal H_Q$.
@@ -65,7 +66,7 @@
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:gaussian_parameters, thm:physical_buffer_gaussian_filter}
-    Choose $a,T_0$ by Theorem~\ref{thm:gaussian_parameters}, before the
+    The first condition forces $a>0$. The constants $a,T_0$ are fixed before the
     Hilbert spaces, $H,\Omega,E_0,b$, or $L$ are specified.
     Theorem~\ref{thm:physical_buffer_gaussian_filter} then provides $W,z$
     from the original-system hypotheses, before the variance and cutoff
