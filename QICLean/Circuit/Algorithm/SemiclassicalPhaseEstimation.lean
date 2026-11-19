@@ -298,7 +298,7 @@ private noncomputable def preparedFactor (φ : ℝ) (i : Fin t) (y : Fin 2) : �
 private theorem prepared_eq (φ : ℝ) (x : Config (Qudits (Fin t) 2)) :
     invSqrtTwo ^ t * exp (2 * Real.pi * I * φ) ^ (encode t x : ℕ) =
       prodState (preparedFactor φ) x := by
-  rw [prodState, Qubit.encode_apply]
+  rw [prodState, Qudit.encode_apply]
   simp only [preparedFactor, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ,
     Fintype.card_fin, Finset.prod_pow_eq_pow_sum]
 
@@ -351,7 +351,7 @@ private theorem digits_split (t : ℕ) (B : Fin t → Fin 2) (i : Fin t) :
 private theorem beta_preparedFactor (θ φ : ℝ) (c : Fin 2) (i : Fin t) :
     beta θ c (preparedFactor φ i) = 2⁻¹ * (1 + (-1) ^ (c : ℕ) *
       exp (-(2 * Real.pi * I * θ)) * exp (2 * Real.pi * I * φ) ^ 2 ^ (t - 1 - (i : ℕ))) := by
-  simp only [beta, correctedHadamard, Fin.sum_univ_two, mul_diagonal, Qubit.hadamard, of_apply,
+  simp only [beta, correctedHadamard, Fin.sum_univ_two, mul_diagonal, Qubit.hadamard_apply,
     preparedFactor, Fin.val_zero, Fin.val_one, mul_zero, pow_zero, Nat.cast_zero, Nat.cast_one,
     mul_one, zero_mul, neg_zero, Complex.exp_zero, one_mul]
   linear_combination (1 + (-1) ^ (c : ℕ) * exp (-(2 * Real.pi * I * θ)) *
@@ -367,7 +367,7 @@ private theorem phase_eq (φ : ℝ) (B : Fin t → Fin 2) (i : Fin t) :
   set k : ℕ := ((encode t fun s ↦ B s.rev : Fin (2 ^ t)) : ℕ)
   set M : ℕ := ∑ i' ∈ Finset.univ.filter (i < ·), (B i' : ℕ) * 2 ^ ((i' : ℕ) - i - 1)
   have hk : (k : ℝ) = ∑ i', ((B i' : ℕ) : ℝ) * 2 ^ (i' : ℕ) := by
-    have := Qubit.encode_apply (n := t) fun s ↦ B s.rev
+    have := Qudit.encode_apply (n := t) fun s ↦ B s.rev
     simp only [k]
     rw [this]
     push_cast
