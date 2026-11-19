@@ -1,0 +1,881 @@
+\chapter{Translations and momentum sectors}
+\label{chap:translations}
+
+For a translationally invariant gapped Hamiltonian, Hastings
+\cite[lines 1603--1654]{Hastings2006Solving} decomposes the ground space into
+momentum sectors and translates one filtered term far from another within a
+supercell, so that their low-energy commutator is small. When the momentum
+denominators grow with the system size, a finite-orbit recurrence for the
+translations on the operators of the ground space gives the same conclusion
+\cite{gap:hastings05_translation_supercell}. A variational bound for the
+translates of one term closes the chapter.
+
+\section{Site permutations}
+\label{sec:translations_site_permutations}
+
+\begin{definition}[Site permutations]
+    \label{def:hastings_site_permutation}
+    \lean{ManyBody.sitePermOp, ManyBody.sitePermOp_toPerm_mul,
+        ManyBody.sitePermOp_mem_unitary,
+        ManyBody.sitePermOp_mul_mul_conjTranspose}
+    \leanok
+    For $g\in G$, $P_g$ is the permutation matrix of $x\mapsto g\cdot x$ on the
+    configurations. The map $g\mapsto P_g$ is a unitary representation of $G$, and
+    $(P_gAP_g^\dagger)(x,y)=A(x\circ g,y\circ g)$ for every operator $A$.
+\end{definition}
+
+\begin{lemma}[Support of a translated operator]
+    \label{thm:hastings_site_permutation_support}
+    \lean{ManyBody.sitePermOp_mul_mul_conjTranspose_mem_supportedOperators}
+    \leanok
+    \uses{def:hastings_site_permutation}
+    If $A$ acts on the sites $S$, then $P_gAP_g^\dagger$ acts on $g\cdot S$.
+\end{lemma}
+\begin{proof}\leanok
+    $P_gAP_g^\dagger$ is $A$ with both configurations precomposed with the
+    permutation $v\mapsto g\cdot v$ of the sites, which carries the support $S$ to
+    $g\cdot S$.
+\end{proof}
+
+\begin{definition}[Invariant operators]
+    \label{def:hastings_site_invariant}
+    \lean{ManyBody.IsSiteInvariant, ManyBody.isSiteInvariant_of_conj}
+    \leanok
+    \uses{def:hastings_site_permutation}
+    An operator $H$ is invariant under the action of $G$ when $P_gH=HP_g$ for every
+    $g\in G$. In particular, $H$ is invariant if $P_gHP_g^\dagger=H$ for every
+    $g\in G$.
+\end{definition}
+
+\begin{lemma}[Sums of translated terms]
+    \label{thm:hastings_site_invariant_sum}
+    \lean{ManyBody.isSiteInvariant_sum_of_covariant, ManyBody.isSiteInvariant_sum_conj}
+    \leanok
+    \uses{def:hastings_site_invariant}
+    Let $G$ also act on a finite index set $K$, and let the operators $h_k$ satisfy
+    $h_{g\cdot k}=P_gh_kP_g^\dagger$. Then $\sum_kh_k$ is invariant. In particular,
+    for one operator $H_0$, the sum $\sum_{g\in G}P_gH_0P_g^\dagger$ of its
+    translates is invariant.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:hastings_site_permutation}
+    Conjugating by $P_g$ sends $h_k$ to $h_{g\cdot k}$, and $k\mapsto g\cdot k$
+    permutes $K$. For the translates, take $K=G$ acting on itself by left
+    multiplication.
+\end{proof}
+
+\begin{lemma}[Filtering commutes with translation]
+    \label{thm:hastings_filtered_term_translate}
+    \lean{ManyBody.gaussianFilteredTerm_conj,
+        ManyBody.gaussianFilteredTerm_sitePermOp_conj}
+    \leanok
+    \uses{def:hastings_site_invariant,def:hastings_gaussian_filtered_term}
+    For a unitary $U$ and Hermitian $H$, filtering $UWU^\dagger$ with respect to
+    $UHU^\dagger$ gives $U\widetilde WU^\dagger$. If $H$ is invariant, the filtered
+    operator of $P_gWP_g^\dagger$ is therefore $P_g\widetilde WP_g^\dagger$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:hastings_site_permutation}
+    $e^{iUHU^\dagger t}=Ue^{iHt}U^\dagger$, so the integrand of the filter is
+    conjugated by $U$ at every time, and conjugation by $U$ commutes with the
+    integral.
+\end{proof}
+
+\begin{lemma}[Graph automorphisms preserve distances]
+    \label{thm:hastings_site_action_distance}
+    \lean{SimpleGraph.edist_smul_of_adj_iff, SimpleGraph.cycleGraph_adj_smul}
+    \leanok
+    If every $g\in G$ preserves the adjacency of a graph on $V$, then
+    $d(g\cdot x,g\cdot y)=d(x,y)$ for all sites $x$, $y$. The rotations of a ring
+    of $n$ sites are such an action.
+\end{lemma}
+\begin{proof}\leanok
+    A walk from $x$ to $y$ is carried to a walk of the same length from $g\cdot x$ to
+    $g\cdot y$, so $d(g\cdot x,g\cdot y)\le d(x,y)$; apply this to $g^{-1}$ for the
+    reverse inequality.
+\end{proof}
+
+\section{Momentum sectors and supercells}
+\label{sec:translations_supercells}
+
+\begin{lemma}[Compression of a conjugate]
+    \label{thm:hastings_supercell_compression}
+    \lean{Submodule.starProjection_mul_conj_mul_starProjection,
+        ManyBody.sitePermOp_toPerm_inv,
+        ManyBody.groundCompression_sitePermOp_conj}
+    \leanok
+    \uses{def:hastings_site_permutation}
+    Let $Q$ be the orthogonal projection onto a closed subspace $K$ of a Hilbert
+    space, and let $U^\dagger$ fix every vector of $K$. Then
+    $Q(UWU^\dagger)Q=QWQ$ for every operator $W$. In particular
+    $P(P_gWP_g^\dagger)P=PWP$ for every $g\in S$.
+\end{lemma}
+\begin{proof}\leanok
+    $U^\dagger Q=Q$, and taking adjoints $QU=Q$; so
+    $QUWU^\dagger Q=QWQ$. For $g\in S$ take $U=P_g$: then
+    $U^\dagger=P_{g^{-1}}$ and $g^{-1}\in S$.
+\end{proof}
+
+\begin{lemma}[Low-energy commutators across a supercell translation]
+    \label{thm:hastings_supercell_commutator}
+    \lean{ManyBody.groundCompression_commutator_eq_of_mem_supercell,
+        ManyBody.norm_groundCompression_commutator_le_of_mem_supercell}
+    \leanok
+    \uses{def:hastings_site_permutation,def:hastings_site_invariant,def:hastings_gaussian_filtered_term}
+    Let $G$ act on an index set, let the terms satisfy
+    $h_{g\cdot k}=P_gh_kP_g^\dagger$, and let $M_k$ be their filtered operators.
+    For every $g\in S$ and all indices $i$, $j$,
+    \begin{align}
+        [PM_iP,PM_jP]=[PM_iP,PM_{g\cdot j}P].
+    \end{align}
+    Consequently, if $B(i,j)$ bounds $\|[PM_iP,PM_jP]\|$ for all $i$ and $j$,
+    then $B(i,g\cdot j)$ bounds it too, for every $g\in S$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_supercell_compression,thm:hastings_filtered_term_translate}
+    Since $H$ is invariant, $M_{g\cdot j}=P_gM_jP_g^\dagger$, and its
+    compression is $PM_jP$ by the previous theorem.
+\end{proof}
+
+\begin{lemma}[Decay across a supercell translation]
+    \label{thm:hastings_supercell_decay}
+    \lean{ManyBody.norm_groundCompression_commutator_le_of_supercell_separation}
+    \leanok
+    \uses{def:hastings_site_permutation,def:hastings_gaussian_filtered_term,thm:hastings05_blecm}
+    Let the sites be the vertices of a finite graph, let each term $h_k$ act on
+    a set $X_k$, let the terms satisfy $h_{g\cdot k}=P_gh_kP_g^\dagger$, and let
+    every eigenvalue of $H=\sum_kh_k$ equal $E_0$ or be at least $E_0+\Delta E$.
+    If $g\in S$ and $X_{g\cdot j}$ is disjoint from the sites within distance $l$
+    of $X_i$, then $\|[PM_iP,PM_jP]\|$ is at most the bound of
+    Lemma~\ref{thm:hastings05_blecm} for the pair $h_i$, $h_{g\cdot j}$ at
+    separation $l$, which decays exponentially in $l$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_supercell_compression,thm:hastings05_low_energy_commutator,thm:hastings05_blecm}
+    The compression of $M_k$ is that of $h_k$, and the compression of
+    $h_{g\cdot j}=P_gh_jP_g^\dagger$ is that of $h_j$ by
+    Lemma~\ref{thm:hastings_supercell_compression}. Apply the bound for
+    separated operators to $h_i$ and $h_{g\cdot j}$.
+\end{proof}
+
+\begin{definition}[Momentum sector]
+    \label{def:hastings_momentum_sector}
+    \lean{ManyBody.momentumSector}
+    \leanok
+    \uses{def:hastings_site_permutation}
+    For a character $\chi$ of $G$, a homomorphism from $G$ to the multiplicative
+    group $\mathbb{C}^\times$, the
+    momentum sector of $\chi$ is the set of vectors $v$ in the eigenspace of $H$
+    for $E_0$ with $P_gv=\chi(g)v$ for every $g\in G$. For the ground states of
+    momentum $\vec k_a$ in \cite[lines 1613--1618]{Hastings2006Solving},
+    $\chi(\vec x)=e^{i\vec x\cdot\vec k_a}$.
+\end{definition}
+
+\begin{lemma}[The momentum sectors span the ground space]
+    \label{thm:hastings_momentum_sectors_span}
+    \lean{ManyBody.iSup_momentumSector}
+    \leanok
+    \uses{def:hastings_momentum_sector,def:hastings_site_invariant}
+    Let $G$ be abelian and $H$ invariant. Then the eigenspace of $H$ for $E_0$ is
+    the sum of the momentum sectors of the characters of $G$.
+\end{lemma}
+\begin{proof}\leanok
+    Since $H$ is invariant, each $P_g$ maps the eigenspace into itself. A
+    permutation has finite order, so $P_g^N=1$ for some $N\ge1$, and since
+    $X^N-1$ has no repeated roots the restriction of $P_g$ is diagonalizable.
+    These restrictions commute, so they are simultaneously diagonalizable: the
+    eigenspace is the sum of the joint eigenspaces on which each $P_g$ acts as
+    a scalar $\chi(g)$. On a nonzero joint eigenspace,
+    $P_{gh}=P_gP_h$ and $P_1=1$ give $\chi(gh)=\chi(g)\chi(h)$ and $\chi(1)=1$,
+    so $\chi$ is a character and the joint eigenspace lies in its momentum
+    sector.
+\end{proof}
+
+\begin{definition}[The supercell of the momenta]
+    \label{def:hastings_supercell_of_momenta}
+    \lean{ManyBody.supercell}
+    \leanok
+    \uses{def:hastings_momentum_sector}
+    The supercell of $H$ at $E_0$ is the intersection of the kernels of the
+    characters of $G$ whose momentum sector is nonzero, a subgroup of $G$.
+\end{definition}
+
+\begin{lemma}[The supercell fixes the ground space]
+    \label{thm:hastings_supercell_of_momenta}
+    \lean{ManyBody.mem_supercell_iff,
+        ManyBody.sitePermOp_mulVec_eq_of_mem_supercell}
+    \leanok
+    \uses{def:hastings_supercell_of_momenta,def:hastings_site_invariant}
+    Let $G$ be abelian and $H$ invariant. Then $g$ lies in the supercell if and
+    only if $P_gv=v$ for every $v$ in the eigenspace of $H$ for $E_0$. So the
+    supercell is a subgroup $S$ with the property assumed above, the
+    translations by whole supercells of
+    \cite[lines 1626--1630]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_momentum_sectors_span}
+    If $g$ lies in the supercell, then $P_g$ fixes every vector of each nonzero
+    momentum sector, hence of their sum, which is the eigenspace by
+    Lemma~\ref{thm:hastings_momentum_sectors_span}. Conversely, if $P_g$ fixes
+    the eigenspace and $v\ne0$ lies in the sector of $\chi$, then
+    $\chi(g)v=P_gv=v$, so $\chi(g)=1$.
+\end{proof}
+
+\begin{lemma}[Momenta of bounded denominator]
+    \label{thm:hastings_supercell_pow}
+    \lean{ManyBody.pow_mem_supercell}
+    \leanok
+    \uses{def:hastings_supercell_of_momenta}
+    If $\chi(g)^N=1$ for every $g\in G$ and every character $\chi$ with a nonzero
+    momentum sector, then $g^N$ lies in the supercell for every $g\in G$.
+\end{lemma}
+\begin{proof}\leanok
+    $\chi(g^N)=\chi(g)^N=1$ for each such $\chi$.
+\end{proof}
+
+\begin{lemma}[Distance and cell coordinates]
+    \label{thm:hastings_cell_distance_le}
+    \lean{SimpleGraph.natAbs_valMinAbs_sub_le_edist}
+    \leanok
+    Writing $d(x,y)$ for graph distance,
+    $|\pi(y)-\pi(x)|_n\le r\,d(x,y)$.
+\end{lemma}
+\begin{proof}\leanok
+    Along an edge the circular distance to $\pi(x)$ changes by at most $r$,
+    so a walk of length $m$ gives displacement at most $rm$. Take a shortest
+    walk; for disconnected vertices the graph distance is infinite.
+\end{proof}
+
+\begin{lemma}[Multiples of $N$ reach far]
+    \label{thm:hastings_multiples_reach_far}
+    \lean{ZMod.exists_lt_natAbs_valMinAbs_add}
+    \leanok
+    For $N\ge1$ and $a,b\in\mathbb{Z}/n$ there is $t\ge0$ such that $b+Nt-a$
+    has circular distance more than $\lfloor n/2\rfloor-N$.
+\end{lemma}
+\begin{proof}\leanok
+    The residues $b+Nt-a$ for $t\ge0$ meet every arc of $N$ consecutive
+    residues. Choose $t$ with $b+Nt-a$ among the $N$ residues ending at
+    $\lfloor n/2\rfloor$.
+\end{proof}
+
+\begin{lemma}[A supercell translation carries a site far away]
+    \label{thm:hastings_supercell_far}
+    \lean{ManyBody.exists_mem_supercell_lt_edist_add,
+        ManyBody.exists_mem_supercell_lt_edist,
+        ManyBody.exists_mem_supercell_lt_edist_add_ring}
+    \leanok
+    \uses{thm:hastings_supercell_pow,thm:hastings_cell_distance_le,thm:hastings_multiples_reach_far}
+    Let $G$ be abelian, let $H$ be invariant, let $\pi$ and $e$ be as above, and
+    let $\chi(g)^N=1$ for every $g$ and every character $\chi$ with a nonzero
+    momentum sector, where $N\ge1$. For sites $x$, $y$ some $g$ in the supercell
+    satisfies $\lfloor n/2\rfloor<r\,d(x,g\cdot y)+N$, so it carries $y$ to
+    graph distance more than $(\lfloor n/2\rfloor-N)/r$ from $x$. For the ring,
+    and in the theorem below, $r=1$. In this case, whenever
+    $l+N\le\lfloor n/2\rfloor$, the translate can be chosen with
+    $d(x,g\cdot y)>l$. With $N$ the least common multiple of the
+    denominators of the momenta, this is the supercell
+    of \cite[lines 1620--1630]{Hastings2006Solving} and the choice of
+    $\vec x'$ in lines 1634--1641.
+\end{lemma}
+\begin{proof}\leanok
+    Take $t$ from Lemma~\ref{thm:hastings_multiples_reach_far} for $a=\pi(x)$ and
+    $b=\pi(y)$, and $g=(e^t)^N$, which lies in the supercell by
+    Lemma~\ref{thm:hastings_supercell_pow}. Then $\pi(g\cdot y)=\pi(y)+Nt$, and
+    Lemma~\ref{thm:hastings_cell_distance_le} bounds the distance.
+\end{proof}
+
+\begin{lemma}[Low-energy commutators of a translation-invariant lattice]
+    \label{thm:hastings_supercell_commutator_small}
+    \lean{ManyBody.norm_groundCompression_commutator_le_of_momenta,
+        ManyBody.norm_sitePermOp_mul_mul_conjTranspose}
+    \leanok
+    \uses{def:hastings_supercell_of_momenta,thm:hastings05_blecm}
+    Let the terms $h_k$ be indexed by the sites, with $h_k$ acting on a set
+    $X_k\ni k$ of diameter at most $R$ in the lattice graph, let $G$ be an abelian
+    group of translations with $h_{g\cdot k}=P_gh_kP_g^\dagger$, and let every
+    eigenvalue of $H=\sum_kh_k$ equal $E_0$ or be at least $E_0+\Delta E$. Let
+    $\chi(g)^N=1$ for every $g$ and every character $\chi$ with a nonzero
+    momentum sector, and let $\pi$, $e$ and $n$ be as above. Then for every $l$
+    with $2R+l+N\le\lfloor n/2\rfloor$ the low-energy commutator of the filtered
+    terms at $i$ and $j$ obeys the bound of
+    Lemma~\ref{thm:hastings05_blecm} at separation $l$, with the norms of $h_i$
+    and $h_j$. Taking $l=\lfloor n/2\rfloor-N-2R$ makes it exponentially small in
+    $n$. This is the conclusion of \cite[lines 1603--1641]{Hastings2006Solving}
+    for the filtered terms $\tilde H_i$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_site_invariant_sum,thm:hastings_supercell_of_momenta,thm:hastings_supercell_far,thm:hastings_supercell_decay}
+    The sum of covariant terms is invariant. By
+    Lemma~\ref{thm:hastings_supercell_far} some $g$ in the supercell carries
+    $j$ to distance more than $\lfloor n/2\rfloor-N\ge2R+l$ from $i$, so the
+    sites within distance $l$ of $X_i$ miss $X_{g\cdot j}$. The supercell fixes the
+    ground space by Lemma~\ref{thm:hastings_supercell_of_momenta}, so
+    Lemma~\ref{thm:hastings_supercell_decay} applies, and
+    $\|h_{g\cdot j}\|=\|P_gh_jP_g^\dagger\|=\|h_j\|$.
+\end{proof}
+
+\begin{lemma}[A closed exponential bound for filtered low-energy commutators]
+    \label{thm:hastings_supercell_commutator_exp}
+    \lean{ManyBody.norm_groundCompression_commutator_le_of_momenta_exp}
+    \leanok
+    \uses{thm:hastings_supercell_commutator_small,thm:hastings05_blecm_exp}
+    Under the hypotheses of Lemma~\ref{thm:hastings_supercell_commutator_small},
+    let $\tilde H_i$ be the Gaussian-filtered term with any nonnegative
+    filter parameter. Write $K_g(r+1)^{k}$ for the sphere-growth bound and set
+    \begin{align}
+        v      & =2v_R|b_0|e^{2R}+1,                       &
+        \gamma & =\min\bigl(1/4,\Delta E/(8v)\bigr),\notag   \\
+        C      & =2(2+4|b_0|e^{2R})v_R^2K_g
+        \frac{2^{k}k!e^{1/2}}{1-e^{-1/2}}+6.\notag
+    \end{align}
+    Then
+    \begin{align}
+        \|[P\tilde H_iP,P\tilde H_jP]\|
+         & \le C\|h_i\|\,\|h_j\|
+        e^{-\gamma(\lfloor n/2\rfloor-N-2R)}.
+        \label{eq:hastings_supercell_exp}
+    \end{align}
+    The subtraction in the exponent is real subtraction, and the estimate
+    holds for every system size. This is an explicit bound for the filtered
+    terms in the supercell argument of
+    \cite[lines 1620--1641]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_site_invariant_sum,thm:hastings_supercell_of_momenta,thm:hastings_supercell_far,thm:hastings_supercell_commutator,thm:hastings_supercell_commutator_small,thm:hastings05_low_energy_commutator,thm:hastings05_blecm_exp}
+    If $\lfloor n/2\rfloor\ge N+2R$, take
+    $l=\lfloor n/2\rfloor-N-2R$.
+    Lemma~\ref{thm:hastings_supercell_far} gives a supercell translation $g$
+    such that
+    \begin{align}
+        d(i,g\cdot j)                            & >\lfloor n/2\rfloor-N=2R+l,\notag \\
+        X_{g\cdot j}\cap\bigcup_{x\in X_i}B_l(x) & =\varnothing.\notag
+    \end{align}
+    The supercell fixes the ground space, and covariance preserves the norm:
+    \begin{align}
+        [P\tilde H_iP,P\tilde H_{g\cdot j}P]
+                         & =[P\tilde H_iP,P\tilde H_jP],\notag   \\
+        \|h_{g\cdot j}\| & =\|P_gh_jP_g^\dagger\|=\|h_j\|.\notag
+    \end{align}
+    Lemma~\ref{thm:hastings05_blecm_exp} now gives
+    (\ref{eq:hastings_supercell_exp}).
+    Otherwise the exponential in (\ref{eq:hastings_supercell_exp}) is at least
+    one. The commutator is at most $2\|h_i\|\,\|h_j\|$, and $C\ge6$.
+    The original nonnegative filter parameter is arbitrary, since
+    Lemma~\ref{thm:hastings05_low_energy_commutator} gives
+    \begin{align}
+        P\tilde H_kP=Ph_kP.\notag
+    \end{align}
+\end{proof}
+
+\begin{lemma}[The truncated terms up to their truncation errors]
+    \label{thm:hastings_supercell_commutator_truncated}
+    \lean{ManyBody.norm_groundCompression_commutator_le_of_norm_sub_le,
+        ManyBody.norm_groundCompression_commutator_truncated_le_of_momenta}
+    \leanok
+    \uses{thm:hastings_supercell_commutator_small,thm:hastings05_blecm_exp,thm:hastings_gaussian_filtered_spectral}
+    In the setting of Lemma~\ref{thm:hastings_supercell_commutator_small}, let
+    $M_k$ be the filter of $h_k$ under a truncated Hamiltonian
+    $\sum_{k'\in s_k}h_{k'}$, the term of eq.~\texttt{mid} of
+    \cite[lines 285--307]{Hastings2006Solving}, and let
+    $\lVert\tilde H_i-M_i\rVert\le\varepsilon_i$ and
+    $\lVert\tilde H_j-M_j\rVert\le\varepsilon_j$, as eq.~\texttt{apb} provides.
+    Then $\lVert[PM_iP,PM_jP]\rVert$ is at most the bound of
+    Lemma~\ref{thm:hastings_supercell_commutator_small} plus
+    $2\varepsilon_i\lVert h_j\rVert+2\lVert h_i\rVert\varepsilon_j$. The errors of
+    eq.~\texttt{apb} do not decrease with $n$; the exponential smallness in $n$
+    for the $M_i$ is Theorem~\ref{thm:hastings_supercell_truncated_small}.
+\end{lemma}
+\begin{proof}\leanok
+    Write $A=P\tilde H_iP$, $A'=PM_iP$, $B=P\tilde H_jP$ and $B'=PM_jP$. Then
+    $[A',B']=[A,B]+[A'-A,B']+[A,B'-B]$. Compression by $P$ does not increase
+    the norm, $\lVert B'\rVert\le\lVert M_j\rVert\le\lVert h_j\rVert$, and
+    $\lVert A\rVert\le\lVert h_i\rVert$, so the last two commutators are at most
+    $2\varepsilon_i\lVert h_j\rVert$ and $2\lVert h_i\rVert\varepsilon_j$.
+\end{proof}
+
+\begin{theorem}[The source's truncated terms]
+    \label{thm:hastings_supercell_truncated_small}
+    \lean{ManyBody.gaussianFilteredTerm_truncation_smul,
+        ManyBody.gaussianFilteredTerm_truncation_smul,
+        ManyBody.norm_groundCompression_truncatedTerm_commutator_le_of_momenta}
+    \leanok
+    \uses{def:hastings_supercell_of_momenta,thm:hastings05_blecm}
+    In the setting of Lemma~\ref{thm:hastings_supercell_commutator_small}, let
+    $M_k$ be the filter of $h_k$ under $\sum_{k'\in s_k}h_{k'}$, the term of
+    eq.~\texttt{mid} of \cite[lines 285--307]{Hastings2006Solving}, with
+    covariant truncations $s_{g\cdot k}=g\cdot s_k$, and let $h_k$ and the terms of
+    $s_k$ act on a set $K_k\ni k$ of diameter at most $R'$. Then for every $l$
+    with $2R'+l+N\le\lfloor n/2\rfloor$ the low-energy commutator of $M_i$ and
+    $M_j$ obeys the bound of Lemma~\ref{thm:hastings05_blecm} at separation
+    $l$. Taking $l=\lfloor n/2\rfloor-N-2R'$ makes it exponentially small in $n$,
+    which is the conclusion of \cite[lines 1603--1641]{Hastings2006Solving} for
+    the source's $M_i$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hastings_site_invariant_sum,thm:hastings_supercell_compression,thm:hastings_supercell_of_momenta,thm:hastings_supercell_far,thm:hastings05_blecm}
+    Covariance of the terms and of the truncations gives
+    $M_{g\cdot k}=P_gM_kP_g^\dagger$, since conjugation by $P_g$ commutes with
+    the Gaussian filter. Each $M_k$ acts on $K_k$. Take $g$ in the supercell
+    carrying $j$ to distance more than $\lfloor n/2\rfloor-N\ge2R'+l$ from $i$, so
+    that the sites within distance $l$ of $K_i$ miss $K_{g\cdot j}$. Then
+    $PM_{g\cdot j}P=PM_jP$, eq.~\texttt{blecm} applies to $M_i$ and
+    $M_{g\cdot j}$, and $\lVert M_{g\cdot j}\rVert=\lVert M_j\rVert$.
+\end{proof}
+
+\section{Translated terms}
+\label{sec:translations_terms}
+
+\begin{lemma}[A uniform basis bound for the actual truncated terms]
+    \label{thm:hastings05_uniform_truncated_basis}
+    \lean{ManyBody.exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_le}
+    \leanok
+    \uses{thm:hastings05_recursive_uniform_basis,thm:hastings05_uniform_ground_basis,thm:hastings05_observable_commutator_decay}
+    Let $M_i$ be the actual operators of (mid), obtained by Gaussian
+    filtering $h_i$ under the Hamiltonian truncated to its chosen local
+    region. Suppose these regions have diameter at most $R_M$ and
+    cardinality at most $v_M$, contain the support of $h_i$ and all terms
+    retained in its generator, and contain the centre $i$.
+    Under the original Hamiltonian gap and local geometric hypotheses,
+    including the additional sphere bound
+    (\ref{eq:hastings05_polynomial_sphere_scope}),
+    put $\gamma$ equal to the original interaction's commutator decay rate
+    and $C_M=C(R,v_M,b_0,|K_g|,k_g)e^{\gamma(2R_M+1)}$.
+    There is an actual orthonormal ground-space basis satisfying
+    \begin{align}
+        \sum_i o(M_i)
+         & \le(n-1)^2D_n(C_M)\,|b_0||K_g|S_{\gamma/2^n,k_g}.
+        \label{eq:hastings05_uniform_truncated_basis}
+    \end{align}
+    For fixed local data and ground-space dimension the bound is
+    independent of the number of sites. No inverse spectral spread,
+    conditioning assumption or accumulated truncation error occurs. This
+    proves a restricted form of (oibu), not its general metric version
+    \cite{gap:hastings05_geometric_growth_scope}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings05_recursive_uniform_basis,thm:hastings05_observable_commutator_decay}
+    Each $M_i$ is Hermitian, has norm at most $\|h_i\|$ and acts on its
+    prescribed local region. Apply the low-energy commutator estimate to
+    these observables by filtering them again under the original
+    Hamiltonian. Its velocity uses the original interaction range and
+    norm budget; only the observable support size and separation correction
+    use $v_M,R_M$. Normalize the ground-space compressions by $\|h_i\|$,
+    construct the recursive basis, and sum its anchor rows as in
+    Lemma~\ref{thm:hastings05_uniform_ground_basis}.
+\end{proof}
+
+\begin{lemma}[Stability of the summed off-diagonal bound]
+    \label{thm:hastings05_basis_perturbation}
+    \lean{LowEnergyBasis.offDiagonalPartFamily_sub,
+        LowEnergyBasis.norm_offDiagonalPartFamily_le_mul_norm,
+        LowEnergyBasis.norm_offDiagonalPartFamily_le_add,
+        ManyBody.norm_groundCompression_sub_le,
+        ManyBody.sum_norm_offDiagonalPartFamily_groundCompression_le}
+    \leanok
+    \uses{thm:hastings05_simple_spectrum_basis}
+    For an orthonormal family $v$ of length $n>0$, let
+    $o_v(A)=\|\operatorname{off}_v(A)\|$. Then
+    \begin{align*}
+        o_v(A)\le o_v(B)+(n-1)\|A-B\|.
+    \end{align*}
+    Consequently any two finite operator families $M_i,F_i$ satisfy
+    \begin{align*}
+        \sum_i o_v(PM_iP)\le\sum_i o_v(PF_iP)
+        +(n-1)\sum_i\|M_i-F_i\|.
+    \end{align*}
+    This transfers the error in (apb) to the summed bound in (oibu)
+    of~\cite[lines 300--320 and 1678--1708]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    Taking the off-diagonal part is linear and has operator norm at most
+    $n-1$, by the matrix-element estimate. Apply the triangle inequality to
+    $\operatorname{off}_v(B)+\operatorname{off}_v(A-B)$.
+    Compression by an orthogonal projection is contractive on differences;
+    sum the resulting inequalities over the family.
+\end{proof}
+
+\begin{lemma}[The basis bound with a growing localization radius]
+    \label{thm:hastings05_basis_coupled_radius}
+    \lean{ManyBody.exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_perturbation_le}
+    \leanok
+    \uses{thm:hastings05_uniform_ground_basis,thm:hastings05_basis_perturbation,thm:hastings_truncated_approximation}
+    Under the original Hamiltonian hypotheses of
+    Lemma~\ref{thm:hastings05_uniform_ground_basis}, let $B_{\rm orig}$ denote
+    its uniform summed bound. There is one orthonormal ground-space basis such
+    that, for every $r\ge0$ and every truncation family $s_i$, the actual terms
+    $M_i=\operatorname{Filter}_{r,\Delta E}(H_{s_i},h_i)$ satisfy
+    \begin{align*}
+        \sum_i o(M_i)\le B_{\rm orig}+(n-1)\sum_i
+        \|\operatorname{Filter}_{r,\Delta E}(H,h_i)-M_i\|.
+    \end{align*}
+    In particular a size-dependent localization choice with total error at most
+    $\varepsilon$ has bound $B_{\rm orig}+(n-1)\varepsilon$. The total-error
+    estimate must be supplied by the quantitative truncation theorem; it is
+    not inferred from the fixed-radius bound of
+    Lemma~\ref{thm:hastings05_uniform_truncated_basis}. The original-term
+    basis still requires polynomial sphere growth with size-independent
+    constants; the perturbation argument does not remove this source
+    restriction\cite{gap:hastings05_geometric_growth_scope}.
+\end{lemma}
+\begin{proof}\leanok
+    Choose the basis from the original terms, and use
+    $P\operatorname{Filter}_{r,\Delta E}(H,h_i)P=Ph_iP$ for every $r\ge0$.
+    Apply Lemma~\ref{thm:hastings05_basis_perturbation} to the actual truncated
+    terms and these first filters under the full Hamiltonian.
+\end{proof}
+
+\section{Finite translation orbits}
+\label{sec:translations_finite_orbit}
+
+\begin{definition}[Translation on the ground space]
+    \label{def:hastings_ground_translation}
+    \lean{ManyBody.groundTranslation,
+        ManyBody.groundTranslationConjugation}
+    \leanok
+    Let $H$ be invariant under unitary site translations $U_g$, and let
+    $K=\ker(H-E_0)$ be its ground eigenspace. Write $u_g=U_g|_K$.
+    The induced translation on the ground-space operator algebra is
+    $T_g(B)=u_gBu_g^{-1}$.
+\end{definition}
+
+\begin{lemma}[Compression and translation]
+    \label{lem:hastings_ground_translation_compression}
+    \lean{ManyBody.sitePermOp_toPerm_one, ManyBody.sitePerm_starProjection_commute,
+        ManyBody.groundTranslation_apply_coe,
+        ManyBody.groundTranslation_symm_apply,
+        ManyBody.groundTranslationConjugation_groundSpaceCompression,
+        ManyBody.groundTranslationConjugation_pow_compression_of_covariant,
+        ManyBody.groundTranslationConjugation_pow_compression}
+    \leanok
+    Let $P$ be the orthogonal projection onto $K$, and put
+    $C_K(W)=(PWP)|_K$. Then $U_gP=PU_g$, $u_g^{-1}=u_{g^{-1}}$, and
+    \[
+        T_g(C_K(W))=C_K(U_gWU_g^*).
+    \]
+    Consequently $T_g^k(C_K(W))=C_K(U_{g^k}WU_{g^k}^*)$ for every $k\ge0$.
+    If $M_{g\cdot i}=U_gM_iU_g^*$, this also gives
+    $T_g^k(C_K(M_i))=C_K(M_{g^k\cdot i})$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:hastings_ground_translation}
+    Commutation with $H$ preserves $K$. The inverse translation also
+    preserves $K$, so its image is exactly $K$. An isometry transports
+    orthogonal projections onto the corresponding image subspaces;
+    hence $U_gP=PU_g$. Restriction gives the inverse and conjugation
+    identities, and induction gives the identity for powers.
+\end{proof}
+
+\begin{lemma}[A finite family of separated translates]
+    \label{lem:hastings_finite_translation_spacing}
+    \lean{ZMod.coordinate_pow_smul,
+        ZMod.natAbs_valMinAbs_add_mul_ge_of_near,
+        SimpleGraph.edist_pow_mul_ge_of_near}
+    \leanok
+    Let $\pi$ be a cell coordinate modulo $N$, and suppose translation
+    $e$ increases $\pi$ by one. Fix integers $L>0$ and $m\ge0$ with
+    $2(m+1)L\le N$. If the circular coordinate separation of $i,j$ is
+    at most $\lfloor L/2\rfloor$, then the separation of
+    $i,e^{kL}\cdot j$ is at least $\lfloor L/2\rfloor$ for every
+    $1\le k\le m$. If each graph edge changes the coordinate by at
+    most one, their graph distance satisfies the same lower bound.
+\end{lemma}
+\begin{proof}\leanok
+    Translation by $e^r$ adds $r$ to the coordinate, by induction.
+    Represent the initial difference by a signed residue of absolute
+    value at most $\lfloor L/2\rfloor$. Adding $kL$ places it between
+    $\lfloor L/2\rfloor$ and $N-\lfloor L/2\rfloor$, by the assumed
+    bound on $mL$. This proves the circular separation, including a
+    residue crossing zero. Summing the coordinate changes along a
+    graph path gives the graph-distance bound.
+\end{proof}
+
+\begin{lemma}[A commutator from finitely many translation iterates]
+    \label{thm:hastings_finite_translation_commutator}
+    \lean{norm_commutator_le_of_finite_translation_orbit_bounds}
+    \leanok
+    Let $K$ have complex dimension $n$, and let $T$ be a complex linear
+    isometry of its operator space. If $C\ge0$ and
+    \[
+        \|[A,T^k(B)]\|\le C\qquad(1\le k\le n^2),
+    \]
+    then $\|[A,B]\|\le(2^{n^2}-1)C$.
+\end{lemma}
+\begin{proof}\leanok
+    Put $m=n^2$ and let $p(z)=\sum_{k=0}^m p_kz^k$ be the
+    characteristic polynomial of $T$. A nonzero eigenvector and norm
+    preservation imply that every root has modulus one. Thus
+    $|p_0|=1$, and the coefficient bound for a monic polynomial with
+    roots on the unit circle gives
+    $\sum_{k=1}^m|p_k|\le2^m-1$.
+    Cayley--Hamilton gives
+    \[
+        B=-\sum_{k=1}^m p_0^{-1}p_k T^k(B).
+    \]
+    Apply the linear map $B\mapsto[A,B]$ and the triangle inequality.
+    The operator space has dimension $n^2$, as used above. When
+    $n=0$, all its operators vanish and the conclusion still holds.
+\end{proof}
+
+\begin{lemma}[The integer orbit spacing]
+    \label{lem:hastings_translation_floor_decay}
+    \lean{translation_half_natDiv_lower_bound,
+        exp_neg_half_translation_natDiv_le,
+        translation_finiteOrbit_rate_pos}
+    \leanok
+    For natural numbers $N,m$, put $L=\lfloor N/(2(m+1))\rfloor$.
+    Then
+    \begin{align}
+        \frac{N}{4(m+1)} & \le\frac L2+\frac12, \\
+        e^{-\gamma L/2}  & \le e^{\gamma/2}
+        e^{-\gamma N/(4(m+1))}\qquad(\gamma\ge0).
+        \label{eq:hastings_translation_floor_decay}
+    \end{align}
+    If $\gamma>0$, the rate $\gamma/(4(m+1))$ is positive.
+\end{lemma}
+\begin{proof}\leanok
+    Euclidean division gives $N=2(m+1)L+r$ with $0\le r<2(m+1)$.
+    Divide by $4(m+1)$ and exponentiate the resulting inequality.
+\end{proof}
+
+\begin{lemma}[The support offset in the translation estimate]
+    \label{lem:hastings_translation_support_offset_decay}
+    \lean{translation_exp_floor_decay_le}
+    \leanok
+    \uses{lem:hastings_translation_floor_decay}
+    With $L=\lfloor N/(2(m+1))\rfloor$, $\gamma\ge0$ and $\rho\in\mathbb R$,
+    \begin{align}
+        e^{-\gamma(L/2-2\rho-1)}
+        \le e^{\gamma(2\rho+2)}e^{-\gamma N/(4(m+1))}.
+        \label{eq:hastings_translation_support_offset_decay}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:hastings_translation_floor_decay}
+    Factor the left side as $e^{\gamma(2\rho+1)}e^{-\gamma L/2}$.
+    The rounding loss in
+    (\ref{eq:hastings_translation_floor_decay}) gives the prefactor
+    $e^{\gamma(2\rho+3/2)}$, which is at most $e^{\gamma(2\rho+2)}$.
+\end{proof}
+
+\begin{lemma}[A common estimate for small and large systems]
+    \label{lem:hastings_translation_near_far_decay}
+    \lean{one_le_two_pow_sub_one,
+        translation_finiteOrbit_decay_of_near_far}
+    \leanok
+    \uses{lem:hastings_translation_floor_decay,lem:hastings_translation_support_offset_decay}
+    Let $m\ge1$, $\gamma>0$, $C\ge0$, $\rho,z\in\mathbb R$, and set
+    $L=\lfloor N/(2(m+1))\rfloor$. Suppose $z\le C$ and, whenever
+    $L/2>2\rho+1$, suppose also
+    $z\le(2^m-1)C e^{-\gamma(L/2-2\rho-1)}$. Then for every $N$,
+    \begin{align}
+        z\le(2^m-1)C e^{\gamma(2\rho+2)}e^{-\gamma N/(4(m+1))}.
+        \label{eq:hastings_translation_near_far_decay}
+    \end{align}
+    This includes $L=0$ and all other small sizes with the same constants.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:hastings_translation_floor_decay,lem:hastings_translation_support_offset_decay}
+    The coefficient satisfies $2^m-1\ge1$. For $L/2>2\rho+1$, apply
+    (\ref{eq:hastings_translation_support_offset_decay}) to the far estimate.
+    Otherwise (\ref{eq:hastings_translation_floor_decay}) gives
+    $N/(4(m+1))\le2\rho+2$, so
+    $e^{\gamma(2\rho+2)}e^{-\gamma N/(4(m+1))}\ge1$ and the bound follows
+    from $z\le C$.
+\end{proof}
+
+\begin{lemma}[Translation of one observable]
+    \label{lem:hastings_finite_observable_orbit}
+    \lean{ManyBody.norm_groundCompression_commutator_le_of_finite_observable_orbit}
+    \leanok
+    Let $H$ be translation invariant, let $m\ge\max\{1,(\dim K)^2\}$,
+    and suppose $2(m+1)L\le N$. If every translate of $B$ whose centre
+    is at graph distance at least $\lfloor L/2\rfloor$ from the centre
+    of $W$ satisfies $\|[PWP,PU_gBU_g^*P]\|\le C$, where $C\ge0$,
+    then $\|[PWP,PBP]\|\le(2^m-1)C$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:hastings_finite_translation_spacing,thm:hastings_finite_translation_commutator,lem:hastings_ground_translation_compression}
+    For initially separated centres use the identity translation.
+    Otherwise translate by $e^{kL}$, for $1\le k\le(\dim K)^2$,
+    and apply the finite-dimensional recurrence to $T_{e^L}$.
+    Norms before and after restriction to $K$ agree. If $L=0$, the
+    original pair already satisfies the hypothesis. Finally
+    $1\le2^m-1$ absorbs the cases needing no nontrivial translate.
+\end{proof}
+
+\begin{lemma}[Exponential smallness under invariant-Hamiltonian translations]
+    \label{thm:hastings_finite_translation_exp}
+    \lean{ManyBody.norm_groundCompression_commutator_le_finite_translation_exp}
+    \leanok
+    Suppose translations preserve the interaction graph and the
+    Hamiltonian $H$. Let a cell coordinate modulo $N$ change by at
+    most one along every graph edge, and let $e$ advance it by one.
+    Assume the local generator bounds of
+    Lemma~\ref{thm:hastings05_growth_free_blecm_separation}, and let
+    the original spectral gap above $K$ be $\Delta>0$.
+    If $\dim K\le n_0$, put
+    \[
+        m=\max\{1,n_0^2\},\qquad
+        v=4v_R|b_0|e^{2R}+1,\qquad
+        \gamma=\min\{1/4,\Delta/(8v)\}>0.
+    \]
+    Let $W,B$ act within graph radius $\rho$ of $i,j$, respectively,
+    and let the first support have at most $v_{\rm obs}$ sites. Then
+    \begin{align}
+        \|[PWP,PBP]\|
+         & \le (2^m-1)(4v_{\rm obs}+4)\|W\|\|B\|
+        e^{\gamma(2\rho+2)}e^{-\gamma N/[4(m+1)]}.
+        \label{eq:hastings_finite_translation_exp}
+    \end{align}
+    There is no condition on the ground-state momenta or on covariance
+    of a chosen decomposition of $H$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:hastings_finite_observable_orbit,thm:hastings05_growth_free_blecm_separation,lem:hastings_translation_near_far_decay}
+    Set $L=\lfloor N/[2(m+1)]\rfloor$. A translation preserves the
+    second support's radius and its operator norm. If its centre is
+    at distance at least $D$ from $i$, the support separation is at
+    least $D-2\rho$. The propagation and original-gap estimate bounds
+    the commutator by
+    $(4v_{\rm obs}+4)\|W\|\|B\|e^{-\gamma(D-2\rho)}$, with natural
+    subtraction when the separation is an integer. Apply the
+    preceding lemma at $D=\lfloor L/2\rfloor$. The floor and support
+    losses are absorbed by the scalar estimates, yielding
+    (\ref{eq:hastings_finite_translation_exp}). For small $N$, use
+    $\|[PWP,PBP]\|\le2\|W\|\|B\|$ and the same prefactor.
+\end{proof}
+
+\begin{lemma}[The actual truncated Gaussian terms without momentum restrictions]
+    \label{cor:hastings_finite_translation_truncated}
+    \lean{ManyBody.norm_groundCompression_truncated_commutator_le_finite_translation_exp}
+    \leanok
+    In the preceding setting let $M_i$ be the actual Gaussian filter
+    of $h_i$ under the Hamiltonian retaining a prescribed set of
+    interactions near $i$. Suppose the initial term and every retained
+    interaction act within graph radius $\rho$ of $i$, in a set of
+    at most $v_{\rm obs}$ sites, and $\|h_i\|\le J$ for all $i$.
+    Then
+    \[
+        \|[PM_iP,PM_jP]\|
+        \le (2^m-1)(4v_{\rm obs}+4)J^2
+        e^{\gamma(2\rho+2)}e^{-\gamma N/[4(m+1)]}.
+    \]
+    The retained sets need not be covariant. This includes the
+    physical ball cutoff of the source and the case of momentum
+    denominators growing with $N$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_finite_translation_exp,thm:hastings_truncated_support,thm:hastings_gaussian_filtered_spectral}
+    The retained Hamiltonian and the initial term have the stated
+    support, so their Gaussian evolution and its integral have that
+    support. Gaussian filtering contracts the norm, giving
+    $\|M_i\|\le J$. Apply the theorem with $W=M_i$, $B=M_j$.
+\end{proof}
+
+\section{A variational lower bound}
+\label{sec:translations_variational}
+
+\begin{lemma}[Iterated commutators of Hermitian operators]
+    \label{thm:hastings_commutator_iter_hermitian}
+    \lean{Matrix.isHermitian_smul_commutatorCLM_pow,
+        Matrix.conjTranspose_commutatorCLM_pow, Matrix.commutatorCLM_pow_succ_apply}
+    \leanok
+    For Hermitian $H$ and $A$, a real number $a$ and $k\ge0$, the operator
+    $a\,i^k\operatorname{ad}_H^k(A)$ is Hermitian.
+\end{lemma}
+\begin{proof}\leanok
+    By induction, $(\operatorname{ad}_H^kA)^\dagger=(-1)^k\operatorname{ad}_H^k(A)$,
+    and $\overline{i^k}(-1)^k=i^k$.
+\end{proof}
+
+\begin{lemma}[The variational lower bound for unitary conjugates]
+    \label{thm:hastings_variational_lower_bound}
+    \lean{Matrix.card_mul_le_of_mulVec_eq_smul_of_conj,
+        Matrix.card_mul_sInf_spectrum_le_of_conj,
+        Matrix.posSemidef_sub_card_smul_of_conj, Matrix.commutatorCLM_pow_conj,
+        Matrix.commutatorCLM_pow_sum, Matrix.commutatorCLM_pow_self_succ}
+    \leanok
+    \uses{thm:hastings_commutator_iter_hermitian}
+    Let $H_0$ be an operator, let $U_1,\dots,U_N$ be unitaries, and let
+    $H=\sum_iU_iH_0U_i^\dagger$ with every $U_i$ commuting with $H$. For real
+    constants $a_1,\dots,a_m$ let
+    \begin{align}
+        K=H_0+\sum_{k=1}^ma_k\,i^k\operatorname{ad}_H^k(H_0).
+    \end{align}
+    If $K-\lambda\ge0$, then $H-N\lambda\ge0$; in particular every eigenvalue
+    of $H$, and so its ground energy $E_0$, is at least $N\lambda$. This
+    generalizes equation (varnum) of \cite{Hastings2006Solving}, whose terms are
+    the translates of one term; the source's form is
+    Lemma~\ref{thm:hastings_variational_lower_bound_sites}.
+\end{lemma}
+\begin{proof}\leanok
+    Conjugation by a unitary $U$ that commutes with $H$ commutes with
+    $\operatorname{ad}_H$, so
+    $\sum_iU_i\operatorname{ad}_H^k(H_0)U_i^\dagger=\operatorname{ad}_H^k(H)=0$
+    for $k\ge1$, and $\sum_iU_iKU_i^\dagger=H$. Since $U_i(K-\lambda)U_i^\dagger\ge0$
+    and $U_iU_i^\dagger=1$, summing gives $H-N\lambda\ge0$. For an eigenvector
+    $\Omega$ of $H$ with eigenvalue $E$,
+    $0\le\langle\Omega,(H-N\lambda)\Omega\rangle=(E-N\lambda)\|\Omega\|^2$.
+\end{proof}
+
+\begin{lemma}[The variational lower bound]
+    \label{thm:hastings_variational_lower_bound_sites}
+    \lean{ManyBody.card_mul_le_of_mulVec_eq_smul_of_sitePermOp,
+        ManyBody.card_mul_sInf_spectrum_le_of_sitePermOp}
+    \leanok
+    \uses{thm:hastings_variational_lower_bound,thm:hastings_site_invariant_sum}
+    Let a finite group $G$ act on a finite set of sites, such as the
+    translations of a periodic lattice of any dimension or a group of
+    automorphisms of a finite graph, and let $P_g$ be the unitary that moves the
+    configurations of the sites along $g$. For the sum
+    $H=\sum_{g\in G}P_gH_0P_g^\dagger$ of the translates of one term $H_0$, and
+    $K$ as in Lemma~\ref{thm:hastings_variational_lower_bound}, every
+    eigenvalue of $H$ is at least $|G|\lambda$ whenever $K-\lambda\ge0$. For
+    Hermitian $H_0$, with $\lambda=\lambda_{\min}(K)$ and $N=|G|$,
+    \begin{align}
+        E_0/N\ge\lambda_{\min}\Bigl(H_0+\sum_{k=1}^ma_k\,i^k
+        \operatorname{ad}_H^k(H_0)\Bigr).
+    \end{align}
+    Here $N=|G|$ counts the summands. When $G$ acts simply transitively on the
+    sites, as the translations of a periodic lattice do, $N$ is the number of
+    sites. This is equation (varnum) of \cite{Hastings2006Solving}, lines
+    856--877, for translation-invariant $H=\sum_iH_i$; there the terms are
+    written with $[H_i,H]=-\operatorname{ad}_H(H_i)$, which only changes the
+    signs of the arbitrary constants.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:hastings_site_permutation}
+    The map $g\mapsto P_g$ is multiplicative, so conjugation by $P_h$ permutes
+    the translates and fixes $H$, and each $P_h$ is a unitary commuting with $H$.
+    Lemma~\ref{thm:hastings_variational_lower_bound} applies. For Hermitian
+    $K$, its real spectrum is finite, and every spectral value is at least
+    its infimum. The spectral theorem therefore gives
+    $K-\lambda_{\min}(K)\ge0$, yielding the stated specialization.
+\end{proof}
+
+\begin{lemma}[The Gaussian-filtered variational lower bound]
+    \label{thm:hastings_gaussian_variational_lower_bound}
+    \lean{ManyBody.sum_conj_gaussianFilteredTerm,
+        ManyBody.card_mul_sInf_spectrum_gaussianFilteredTerm_le_of_conj,
+        ManyBody.card_mul_sInf_spectrum_gaussianFilteredTerm_le_of_sitePermOp}
+    \leanok
+    \uses{thm:hastings_variational_lower_bound,def:hastings_gaussian_filtered_term}
+    Let $H_0$ be Hermitian, let $U_1,\ldots,U_N$ be unitaries, and suppose
+    each $U_i$ commutes with $H=\sum_i U_iH_0U_i^\dagger$.
+    Let $K$ be the Gaussian average of $e^{itH}H_0e^{-itH}$, with variance
+    $q/\Delta E^2$, where $q\ge0$ and $\Delta E>0$. Then
+    $H=\sum_iU_iKU_i^\dagger$, and every eigenvalue $E$ of $H$ satisfies
+    $E\ge N\lambda_{\min}(K)$. For a simply transitive translation action,
+    $N$ is the number of sites, so $E_0/N\ge\lambda_{\min}(K)$.
+    This is the filtered choice discussed in \cite{Hastings2006Solving},
+    source lines 1005--1009, in the variational bound (varnum).
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_variational_lower_bound,thm:hastings_gaussian_filtered_spectral,thm:hastings_filtered_term_translate}
+    Covariance of the Gaussian average gives
+    $U_iKU_i^\dagger=\widetilde{U_iH_0U_i^\dagger}$, because $U_i$ fixes $H$.
+    The filtered terms sum to $H$. Apply
+    Lemma~\ref{thm:hastings_variational_lower_bound} with local term $K$
+    and all commutator coefficients zero.
+\end{proof}

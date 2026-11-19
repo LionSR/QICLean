@@ -35,7 +35,6 @@ main theorem is in the root namespace.
 
 open Polynomial Finset
 
-namespace FiniteOrbitProof
 
 private theorem monic_mahlerMeasure_eq_one {p : ℂ[X]} (hp : p.Monic)
     (hr : ∀ z ∈ p.roots, ‖z‖ = 1) : p.mahlerMeasure = 1 := by
@@ -161,7 +160,7 @@ private theorem finrank_operator_space {K : Type*} [NormedAddCommGroup K]
 an isometric translation orbit control the original commutator, uniformly in all translation
 phases. This is the finite-dimensional step omitted in Hastings,
 arXiv:cond-mat/0508554v3, lines 1644–1654. -/
-theorem _root_.norm_commutator_le_of_finite_translation_orbit_bounds
+theorem norm_commutator_le_of_finite_translation_orbit_bounds
     {K : Type*} [NormedAddCommGroup K] [NormedSpace ℂ K] [FiniteDimensional ℂ K]
     (T : Module.End ℂ (K →L[ℂ] K)) (hT : ∀ B, ‖T B‖ = ‖B‖)
     (A B : K →L[ℂ] K) {C : ℝ} (hC : 0 ≤ C)
@@ -178,5 +177,4 @@ theorem _root_.norm_commutator_le_of_finite_translation_orbit_bounds
   simpa only [F, finrank_operator_space, LinearMap.sub_apply, LinearMap.mul_apply',
     LinearMap.mulRight_apply] using hf
 
-end FiniteOrbitProof
 
