@@ -29,7 +29,7 @@ The proofs are written from the paper; no Lean source was adapted.
 
 * `Entropy.regionalMovementEta` — `S_θ(x|P) + S_θ(x|Y₀)`, written with region entropies.
 * `Entropy.movementEta_frameVector` — the exponent of Lemma 5.1 is `S_θ(x|P) + S_θ(x|Y₀)`.
-* `Entropy.regionEntropy_eq_entropy`, `Entropy.regionEntropy_compl`.
+* `Entropy.regionEntropy_compl`.
 * `Entropy.regionalMovementEta_eq_cmi_left`, `Entropy.regionalMovementEta_eq_cmi_right` —
   `η_θ = I_θ(x:F|P) = I_θ(x:F|Y₀)`.
 * `Entropy.regionalMovementEta_nonneg` — `η_θ ≥ 0`.
@@ -170,27 +170,10 @@ end FourPartition
 
 /-! ### Equivalent forms -/
 
-/-- The region entropy is the entropy of the reduced pure state of `FiniteProduct`. -/
-theorem regionEntropy_eq_entropy (D : Finset V) (θ : EuclideanSpace ℂ (SiteConfig n)) :
-    regionEntropy D θ = FiniteProduct.entropy (fun v => Fin (n v)) θ D := by
-  have hs : IsRegionSplit D (Equiv.refl _) (FiniteProduct.splitEquiv (fun v => Fin (n v)) D) :=
-    { fst := fun _ => rfl
-      snd := fun σ τ => by
-        constructor
-        · intro hst v hv
-          exact congrFun hst ⟨v, Finset.mem_compl.mpr hv⟩
-        · intro hst
-          funext v
-          exact hst v (Finset.mem_compl.mp v.2) }
-  have hρ := hs.partialTraceRight_vecMulVec θ.ofLp
-  simp only [WithLp.toLp_ofLp, Equiv.refl_symm, Equiv.coe_refl, submatrix_id_id] at hρ
-  rw [regionEntropy, FiniteProduct.entropy]
-  exact vonNeumannEntropy_congr hρ.symm _ _
-
 /-- Complementary regions of a vector have equal entropy. -/
 theorem regionEntropy_compl (D : Finset V) (θ : EuclideanSpace ℂ (SiteConfig n)) :
     regionEntropy Dᶜ θ = regionEntropy D θ := by
-  rw [regionEntropy_eq_entropy, regionEntropy_eq_entropy, FiniteProduct.entropy_compl]
+  simp only [ManyBody.regionEntropy_eq_entropy, FiniteProduct.entropy_compl]
 
 variable {P x Y F : Finset V}
 
@@ -206,7 +189,7 @@ theorem regionalMovementEta_eq_cmi_left (h : FourPartition P x Y F)
     rw [← regionEntropy_compl Y, h.compl_Y]
   rw [regionalMovementEta, e1, e2, Finset.union_comm P x,
     FiniteProduct.conditionalMutualInformation]
-  simp only [regionEntropy_eq_entropy]
+  simp only [ManyBody.regionEntropy_eq_entropy]
   ring
 
 /-- **`S_θ(x|P) + S_θ(x|Y₀) = I_θ(x:F|Y₀)`** for a partition `P, x, Y₀, F` (`05-replicas.tex`,
