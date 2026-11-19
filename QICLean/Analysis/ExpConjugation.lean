@@ -4,9 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Data.Nat.Factorial.Basic
-import Mathlib.Logic.Function.Iterate
 import Mathlib.Analysis.CStarAlgebra.Matrix
-import Mathlib.Analysis.Normed.Operator.Mul
+import QICLean.Analysis.MatrixCommutator
 import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.Analysis.Normed.Operator.Bilinear
 import Mathlib.Topology.Algebra.InfiniteSum.Module
@@ -46,110 +45,22 @@ Moved from TNLean, `TNLean/Algebra/ExpConjugation.lean` at commit
   positive term).
 -/
 
-open scoped Matrix.Norms.L2Operator
-
-namespace Matrix
-
-variable {n : Type*} [Fintype n] [DecidableEq n]
-
-/-- Exponentiating left multiplication gives left multiplication by the
-exponential. Supporting the Hadamard identity of AKL14, arXiv:1406.3898,
-low70.tex, lines 795–810. -/
-private theorem exp_left_multiplication_apply (H O : Matrix n n ℂ) :
-    NormedSpace.exp (ContinuousLinearMap.mul ℂ (Matrix n n ℂ) H) O =
-      NormedSpace.exp H * O := by
-  let L : Matrix n n ℂ →+* (Matrix n n ℂ →L[ℂ] Matrix n n ℂ) :=
-    { toFun := ContinuousLinearMap.mul ℂ (Matrix n n ℂ)
-      map_zero' := ContinuousLinearMap.ext fun X ↦ zero_mul X
-      map_one' := ContinuousLinearMap.ext fun X ↦ one_mul X
-      map_add' := fun X Y ↦ ContinuousLinearMap.ext fun Z ↦ add_mul X Y Z
-      map_mul' := fun X Y ↦ ContinuousLinearMap.ext fun Z ↦ mul_assoc X Y Z }
-  let _ : NormedAlgebra ℚ (Matrix n n ℂ) := NormedAlgebra.restrictScalars ℚ ℂ _
-  let _ : NormedAlgebra ℚ (Matrix n n ℂ →L[ℂ] Matrix n n ℂ) :=
-    NormedAlgebra.restrictScalars ℚ ℂ _
-  have h := NormedSpace.map_exp L (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).continuous H
-  exact (congrArg (fun f : Matrix n n ℂ →L[ℂ] Matrix n n ℂ ↦ f O) h).symm
-
-/-- The opposite regular representation gives the corresponding right
-multiplication identity. Supporting AKL14, arXiv:1406.3898, lines 795–810. -/
-private theorem exp_right_multiplication_apply (H O : Matrix n n ℂ) :
-    NormedSpace.exp ((ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H) O =
-      O * NormedSpace.exp H := by
-  let R : (Matrix n n ℂ)ᵐᵒᵖ →+* (Matrix n n ℂ →L[ℂ] Matrix n n ℂ) :=
-    { toFun := fun a ↦ (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip a.unop
-      map_zero' := ContinuousLinearMap.ext fun X ↦ mul_zero X
-      map_one' := ContinuousLinearMap.ext fun X ↦ mul_one X
-      map_add' := fun X Y ↦ ContinuousLinearMap.ext fun Z ↦ mul_add Z X.unop Y.unop
-      map_mul' := by
-        intro X Y
-        apply ContinuousLinearMap.ext
-        intro Z
-        change Z * (Y.unop * X.unop) = (Z * Y.unop) * X.unop
-        exact (mul_assoc Z Y.unop X.unop).symm }
-  have hR : Continuous R :=
-    (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip.continuous.comp
-      MulOpposite.continuous_unop
-  let _ : NormedAlgebra ℚ (Matrix n n ℂ)ᵐᵒᵖ := NormedAlgebra.restrictScalars ℚ ℂ _
-  let _ : NormedAlgebra ℚ (Matrix n n ℂ →L[ℂ] Matrix n n ℂ) :=
-    NormedAlgebra.restrictScalars ℚ ℂ _
-  have h := NormedSpace.map_exp R hR (MulOpposite.op H)
-  have hO := congrArg (fun f : Matrix n n ℂ →L[ℂ] Matrix n n ℂ ↦ f O) h
-  change O * (NormedSpace.exp (MulOpposite.op H)).unop =
-    NormedSpace.exp ((ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H) O at hO
-  simpa only [NormedSpace.exp_op, MulOpposite.unop_op,
-    ContinuousLinearMap.flip_apply, ContinuousLinearMap.mul_apply'] using hO.symm
-
-/-- Left and right multiplication commute, so the exponential of their
-commutator splits into two regular exponentials. This is the algebraic step in
-AKL14, arXiv:1406.3898, low70.tex, lines 795–810. -/
-private theorem exp_commutator_operator (H : Matrix n n ℂ) :
-    NormedSpace.exp (ContinuousLinearMap.mul ℂ (Matrix n n ℂ) H -
-      (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H) =
-    NormedSpace.exp (ContinuousLinearMap.mul ℂ (Matrix n n ℂ) H) *
-      NormedSpace.exp (-((ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H)) := by
-  let L := ContinuousLinearMap.mul ℂ (Matrix n n ℂ) H
-  let R := (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H
-  have hcomm : Commute L R := by
-    apply ContinuousLinearMap.ext
-    intro X
-    change H * (X * H) = (H * X) * H
-    exact (mul_assoc H X H).symm
-  let _ : NormedAlgebra ℚ (Matrix n n ℂ →L[ℂ] Matrix n n ℂ) :=
-    NormedAlgebra.restrictScalars ℚ ℂ _
-  simpa only [sub_eq_add_neg] using NormedSpace.exp_add_of_commute hcomm.neg_right
-
-/-- The exponential of the commutator acts by conjugation. This is the
-algebraic Hadamard identity underlying AKL14, arXiv:1406.3898,
-low70.tex, lines 795–810. -/
-private theorem exp_commutator_apply (H O : Matrix n n ℂ) :
-    NormedSpace.exp (ContinuousLinearMap.mul ℂ (Matrix n n ℂ) H -
-      (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H) O =
-      NormedSpace.exp H * O * NormedSpace.exp (-H) := by
-  have hneg : -((ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H) =
-      (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip (-H) :=
-    (map_neg (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H).symm
-  rw [exp_commutator_operator H, hneg, mul_apply_eq_comp,
-    exp_right_multiplication_apply, exp_left_multiplication_apply, mul_assoc]
-
-end Matrix
+open scoped Matrix.Norms.L2Operator BigOperators
 
 namespace ContinuousLinearMap
 
-/-- Evaluate the complex operator exponential series at an arbitrary vector.
-Supporting AKL14, arXiv:1406.3898, low70.tex, lines 804–811. -/
-private theorem hasSum_exp_smul_apply_iterate {E : Type*}
+/-- The exponential series of `s T`, evaluated at a vector. -/
+private theorem hasSum_exp_smul_apply_pow {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℂ E] [CompleteSpace E]
     (T : E →L[ℂ] E) (s : ℂ) (O : E) :
-    HasSum (fun m : ℕ ↦ (s ^ m / (m.factorial : ℂ)) • ((T : E → E)^[m] O))
+    HasSum (fun m : ℕ ↦ (s ^ m / (m.factorial : ℂ)) • (T ^ m) O)
       ((NormedSpace.exp (s • T)) O) := by
   have h := (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (s • T)).mapL
     (ContinuousLinearMap.apply ℂ E O)
-  simpa only [ContinuousLinearMap.apply_apply, smul_pow, smul_apply,
-    pow_apply_eq_iterate, smul_smul, div_eq_mul_inv, mul_comm] using h
+  simpa only [ContinuousLinearMap.apply_apply, smul_pow, smul_apply, smul_smul, div_eq_mul_inv,
+    mul_comm] using h
 
 end ContinuousLinearMap
-
-open scoped BigOperators
 
 namespace NormedSpace
 
@@ -188,25 +99,7 @@ private theorem summable_factorial_smul_and_norm_tsum_le_two
 
 end NormedSpace
 
-namespace ContinuousLinearMap
-
-variable {R : Type*} [NormedRing R] [NormedAlgebra ℂ R]
-
-/-- Scalar multiplication of the commutator map is scalar multiplication
-of its generator. Auxiliary to AKL14, arXiv:1406.3898, lines 804–837. -/
-private theorem smul_mul_sub_flip (A : R) (s : ℂ) :
-    s • (mul ℂ R A - (mul ℂ R).flip A) =
-      mul ℂ R (s • A) - (mul ℂ R).flip (s • A) := by
-  apply ContinuousLinearMap.ext
-  intro O
-  change s • (A * O - O * A) = (s • A) * O - O * (s • A)
-  rw [smul_sub, smul_mul_assoc, mul_smul_comm]
-
-end ContinuousLinearMap
-
 namespace Matrix
-
-open scoped Matrix.Norms.L2Operator
 
 /-- **Conjugation from factorial commutator growth.** If `‖ad_H^m O‖ ≤ a^m m! ‖O‖` for every
 `m`, then `‖e^{sH} O e^{-sH}‖ ≤ 2‖O‖` for `0 ≤ s` with `as ≤ 1/2`.
@@ -215,31 +108,21 @@ theorem norm_exp_conjugation_le_two_of_growth {n : Type*} [Fintype n] [Decidable
     (H O : Matrix n n ℂ) (a s : ℝ)
     (hs0 : 0 ≤ s) (hs : a * s ≤ 1 / 2)
     (hgrowth : ∀ m : ℕ,
-      ‖((fun X : Matrix n n ℂ ↦ H * X - X * H)^[m] O)‖ ≤
-        a ^ m * (m.factorial : ℝ) * ‖O‖) :
+      ‖(GaussianFilter.commutatorCLM H ^ m) O‖ ≤ a ^ m * (m.factorial : ℝ) * ‖O‖) :
     ‖NormedSpace.exp ((s : ℂ) • H) * O *
       NormedSpace.exp (-((s : ℂ) • H))‖ ≤ 2 * ‖O‖ := by
   rcases eq_or_ne O 0 with rfl | hO
   · simp
   have ha : 0 ≤ a := by
     have h1 := hgrowth 1
-    simp only [Function.iterate_one, pow_one, Nat.factorial_one, Nat.cast_one, mul_one] at h1
+    simp only [pow_one, Nat.factorial_one, Nat.cast_one, mul_one] at h1
     exact nonneg_of_mul_nonneg_left ((norm_nonneg _).trans h1) (norm_pos_iff.mpr hO)
-  let ad : Matrix n n ℂ →L[ℂ] Matrix n n ℂ :=
-    ContinuousLinearMap.mul ℂ (Matrix n n ℂ) H -
-      (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip H
-  have hsum := ContinuousLinearMap.hasSum_exp_smul_apply_iterate ad (s : ℂ) O
-  obtain ⟨_hsummable, hbound⟩ :=
-    NormedSpace.summable_factorial_smul_and_norm_tsum_le_two
-      (fun m : ℕ ↦ ((ad : Matrix n n ℂ → Matrix n n ℂ)^[m] O))
-      ‖O‖ a s (norm_nonneg O) ha hs0 hs (by exact hgrowth)
-  rw [hsum.tsum_eq] at hbound
-  have had : (s : ℂ) • ad =
-      ContinuousLinearMap.mul ℂ (Matrix n n ℂ) ((s : ℂ) • H) -
-        (ContinuousLinearMap.mul ℂ (Matrix n n ℂ)).flip ((s : ℂ) • H) :=
-    ContinuousLinearMap.smul_mul_sub_flip H (s : ℂ)
-  rw [had, exp_commutator_apply] at hbound
-  exact hbound
+  have hsum := ContinuousLinearMap.hasSum_exp_smul_apply_pow
+    (GaussianFilter.commutatorCLM H) (s : ℂ) O
+  obtain ⟨-, hbound⟩ := NormedSpace.summable_factorial_smul_and_norm_tsum_le_two
+    (fun m : ℕ ↦ (GaussianFilter.commutatorCLM H ^ m) O) ‖O‖ a s (norm_nonneg O) ha hs0 hs
+    hgrowth
+  rwa [hsum.tsum_eq, GaussianFilter.exp_smul_commutatorCLM_apply] at hbound
 
 open scoped ComplexOrder MatrixOrder
 

@@ -102,7 +102,7 @@ theorem exists_commutator_iterate_decomposition (Φ : Interaction X T) (s : Fins
     {O : Matrix (Config X) (Config X) ℂ} {S₀ : Finset V} (hO : O ∈ supportedOperators X S₀)
     (m : ℕ) :
     ∃ (N : ℕ) (Y : Fin N → Matrix (Config X) (Config X) ℂ) (S : Fin N → Finset V),
-      (fun Z ↦ (∑ i ∈ s, Φ.term i) * Z - Z * (∑ i ∈ s, Φ.term i))^[m] O = ∑ a, Y a ∧
+      (GaussianFilter.commutatorCLM (∑ i ∈ s, Φ.term i) ^ m) O = ∑ a, Y a ∧
       (∀ a, Y a ∈ supportedOperators X (S a)) ∧
       (∀ a, ‖Y a‖ ≤ ‖O‖) ∧ (∀ a, (S a).card ≤ S₀.card + m * k) ∧
       N ≤ ∏ j ∈ Finset.range m, g * (S₀.card + j * k) := by
@@ -131,8 +131,9 @@ theorem exists_commutator_iterate_decomposition (Φ : Interaction X T) (s : Fins
         · exact sub_eq_zero.mpr
             (commute_of_mem_supportedOperators_of_disjoint (Φ.mem i) (hsupp a) hd).eq
         · exact False.elim (hiA (Finset.mem_filter.mpr ⟨hi, hd⟩))
-      rw [Function.iterate_succ_apply', hsum, Finset.mul_sum, Finset.sum_mul,
-        ← Finset.sum_sub_distrib]
+      rw [pow_succ', mul_apply_eq_comp,
+        GaussianFilter.commutatorCLM_apply, hsum,
+        Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]
       calc
         ∑ a, (H * Y a - Y a * H) =
             ∑ a, ∑ i : ↥(A a), (Φ.term i.1 * Y a - Y a * Φ.term i.1) := by
@@ -177,7 +178,7 @@ theorem norm_commutator_iterate_le (Φ : Interaction X T) (s : Finset ι)
     (hk : ∀ i, (T i).card ≤ k) (hg : ∀ v, (s.filter fun i ↦ v ∈ T i).card ≤ g)
     {O : Matrix (Config X) (Config X) ℂ} {S₀ : Finset V} (hO : O ∈ supportedOperators X S₀)
     (hS₀ : S₀.card ≤ k) (m : ℕ) :
-    ‖(fun Z ↦ (∑ i ∈ s, Φ.term i) * Z - Z * (∑ i ∈ s, Φ.term i))^[m] O‖ ≤
+    ‖(GaussianFilter.commutatorCLM (∑ i ∈ s, Φ.term i) ^ m) O‖ ≤
       ((g * k : ℕ) : ℝ) ^ m * (m.factorial : ℝ) * ‖O‖ := by
   obtain ⟨N, Y, S, hsum, -, hnorm, -, hN⟩ :=
     exists_commutator_iterate_decomposition Φ s hpos hle hk hg hO m
@@ -219,10 +220,10 @@ theorem norm_exp_conjugation_shift_le_two (Φ : Interaction X T) (s : Finset ι)
   apply Matrix.norm_exp_conjugation_le_two_of_growth (H - z • 1) O ((g * k : ℕ) : ℝ) t ht0
     (by linarith)
   intro m
-  have had : (fun Z : Matrix (Config X) (Config X) ℂ ↦ (H - z • 1) * Z - Z * (H - z • 1)) =
-      fun Z ↦ H * Z - Z * H := by
-    funext Z
-    simp only [sub_mul, mul_sub, smul_mul_assoc, mul_smul_comm, one_mul, mul_one]
+  have had : GaussianFilter.commutatorCLM (H - z • 1) = GaussianFilter.commutatorCLM H := by
+    refine ContinuousLinearMap.ext fun Z ↦ ?_
+    simp only [GaussianFilter.commutatorCLM_apply, sub_mul, mul_sub, smul_mul_assoc,
+      mul_smul_comm, one_mul, mul_one]
     abel
   rw [had]
   exact norm_commutator_iterate_le Φ s hpos hle hk hg hO hS₀ m

@@ -799,8 +799,10 @@ in~\cite{gap:akl14_hadamard_bound_scope}.
 
 \begin{lemma}[Conjugation from factorial commutator growth]
     \label{lem:factorial_growth_rate_conjugation}
-    \lean{Matrix.norm_exp_conjugation_le_two_of_growth}
+    \lean{GaussianFilter.exp_smul_commutatorCLM_apply,
+        Matrix.norm_exp_conjugation_le_two_of_growth}
     \leanok
+    \uses{def:gaussian_commutator_operator}
     Let $H,O$ be complex square matrices and $a,t\in\R$ with $t\ge0$ and
     $at\le1/2$. If
     $\lVert\operatorname{ad}_H^m(O)\rVert\le a^m\,m!\,\lVert O\rVert$ for every
