@@ -15,7 +15,9 @@ import QICLean.Analysis.TraceDistance
 The regional state is the unnormalized partial trace of the outer product of a vector.
 Expectations of placed matrices are its trace pairings. The statements allow arbitrary
 finite basis types, empty bases and unnormalized vectors. The supported-operator trace
-argument needs no reference configuration.
+argument needs no reference configuration. A unitary supported away from a region leaves
+the regional state unchanged, and the regional state is the reduction
+`FiniteProduct.reducedPure` of the same vector.
 
 The definitions and proofs generalize `Entropy.LocalLift`; the dimension-indexed API
 is retained there as a specialization.

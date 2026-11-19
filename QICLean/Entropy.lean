@@ -84,6 +84,7 @@ import QICLean.Entropy.MutualInformation
 import QICLean.Entropy.MutualInformationBasic
 import QICLean.Entropy.MutualInformationDataProcessing
 import QICLean.Entropy.MutualInformationOperatorSchmidt
+import QICLean.Entropy.MutualInformationPerturbation
 import QICLean.Entropy.OrderedEntropyAlgebra
 import QICLean.Entropy.PatchNormalizedFirstVariation
 import QICLean.Entropy.PatchStationarity
@@ -96,6 +97,7 @@ import QICLean.Entropy.PureTensorPower
 import QICLean.Entropy.PurificationSplitting
 import QICLean.Entropy.RegionCovariance
 import QICLean.Entropy.RegionEntropy
+import QICLean.Entropy.RegionEntropyInequalities
 import QICLean.Entropy.RegionPureApproximationTail
 import QICLean.Entropy.RegionRank
 import QICLean.Entropy.RegionSplit
@@ -124,6 +126,7 @@ import QICLean.Entropy.SelectedSchmidtEntropy
 import QICLean.Entropy.SpectralTail
 import QICLean.Entropy.StrongSubadditivity
 import QICLean.Entropy.SubregionCut
+import QICLean.Entropy.SumSitesProduct
 import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.SupportedOperatorAlgebra
 import QICLean.Entropy.SupportedOperatorSchmidtRank
@@ -134,9 +137,11 @@ import QICLean.Entropy.TwoFamilies
 import QICLean.Entropy.TypicalBellPin
 import QICLean.Entropy.TypicalBellPinPowers
 import QICLean.Entropy.TypicalDensity
+import QICLean.Entropy.TypicalMarginalMass
 import QICLean.Entropy.TypicalPureCompression
 import QICLean.Entropy.TypicalPureState
 import QICLean.Entropy.TypicalSpectrum
 import QICLean.Entropy.TypicalStateFromTail
 import QICLean.Entropy.UnnormalizedStrongSubadditivity
 import QICLean.Entropy.VonNeumann
+import QICLean.Entropy.ZeroEntropy

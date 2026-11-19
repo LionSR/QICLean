@@ -22,4 +22,5 @@ import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Sites.SiteAction
 import QICLean.ManyBody.Sites.Subregion
 import QICLean.ManyBody.Sites.Support
+import QICLean.ManyBody.Sites.SupportedUnitary
 import QICLean.ManyBody.Sites.Twirl
