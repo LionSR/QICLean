@@ -164,7 +164,7 @@ theorem soft_orders_le_log_powers {μ L H : ℝ} (hμ : 0 < μ) (hL : 0 ≤ L)
   · exact (pow_le_pow_left₀ (Nat.cast_nonneg u) hscale 10).trans_eq (by rw [mul_pow, ← pow_mul])
   · exact (pow_le_pow_left₀ (Nat.cast_nonneg u) hscale 16).trans_eq (by rw [mul_pow, ← pow_mul])
 
-/-- For the TN member-bond expression, order and soft-order bounds of degree
+/-- For the scalar bond dimension ceiling, order and soft-order bounds of degree
 40 and a filter-degree bound of degree 64 yield the scalar exponent 104. -/
 theorem soft_member_bond_le_exp {r m k q : ℕ} (hr : 1 ≤ r) (hq : 1 ≤ q)
     {X A K : ℝ} (hX : 1 ≤ X) (hA : 1 ≤ A)
