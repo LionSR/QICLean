@@ -784,3 +784,113 @@ For fixed $t$, $\mu>0$, and uniformly bounded $|S|$, $\|A\|$, $M_D$, $R$,
 $v_R$, and $|b|$, the right side of~(\ref{eq:dynamics_spatial_truncation}) decays exponentially in $d$.
 % No bound on $M_D$ uniform in the ambient volume is proved here; obtaining
 % such control or a boundary-weighted replacement remains a separate task.
+
+\section{Imaginary-time conjugation for bounded support and degree}
+\label{sec:dynamics_imaginary_time}
+
+Write $\operatorname{ad}_H(X)=HX-XH$. This section bounds the imaginary-time
+conjugation $e^{tH}Oe^{-tH}$ when $H$ is a sum of positive contractions of
+bounded support and degree, following the proof of the conjugation lemma
+of~\cite[lines 795--880]{Arad2014Connecting}. The statement is restricted to
+contractions, to a degree that counts terms, and to observables on at most
+$k$ sites, with the bound $2\lVert O\rVert$ in place of the printed
+$(1-gkt)^{-R/(gk)}\lVert O\rVert$; the restriction is recorded
+in~\cite{gap:akl14_hadamard_bound_scope}.
+
+\begin{lemma}[Conjugation from factorial commutator growth]
+    \label{lem:factorial_growth_rate_conjugation}
+    \lean{Matrix.norm_exp_conjugation_le_two_of_growth}
+    \leanok
+    Let $H,O$ be complex square matrices and $a,t\in\R$ with $t\ge0$ and
+    $at\le1/2$. If
+    $\lVert\operatorname{ad}_H^m(O)\rVert\le a^m\,m!\,\lVert O\rVert$ for every
+    $m\in\N$, then
+    \begin{align}
+        \lVert e^{tH}Oe^{-tH}\rVert\le2\lVert O\rVert.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    If $O=0$ there is nothing to prove; otherwise the bound at $m=1$ gives
+    $a\ge0$. Left and right multiplication by $H$ commute, so the exponential of
+    $t\operatorname{ad}_H$ is the conjugation by $e^{tH}$, and
+    \begin{align}
+        e^{tH}Oe^{-tH}=\sum_{m=0}^{\infty}\frac{t^m}{m!}\operatorname{ad}_H^m(O).
+    \end{align}
+    The terms have norm at most $(at)^m\lVert O\rVert\le2^{-m}\lVert O\rVert$,
+    and $\sum_m2^{-m}=2$.
+\end{proof}
+
+\begin{lemma}[Commutators with positive contractions]
+    \label{lem:positive_contraction_commutator}
+    \lean{Matrix.norm_commutator_le_of_nonneg_le_one,
+        ManyBody.Interaction.norm_commutator_sum_le_card}
+    \leanok
+    \uses{def:dynamics_interaction, lem:sites_supported_commute}
+    If $0\le h\le1$, then $\lVert hX-Xh\rVert\le\lVert X\rVert$ for every square
+    matrix $X$. Consequently, if the terms $h_i$ of an interaction with supports
+    $T$ satisfy $0\le h_i\le1$, $s$ is a finite set of indices and
+    $O\in\mathcal A_S$, then
+    \begin{align}
+        \Bigl\lVert\Bigl[\sum_{i\in s}h_i,O\Bigr]\Bigr\rVert
+        \le\bigl|\{i\in s:T_i\cap S\neq\emptyset\}\bigr|\,\lVert O\rVert.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    The matrix $h-\tfrac12$ is self-adjoint with $-\tfrac12\le h-\tfrac12\le\tfrac12$,
+    so its norm is at most $\tfrac12$, and $[h,X]=[h-\tfrac12,X]$. Terms whose
+    support misses $S$ commute with $O$.
+\end{proof}
+
+\begin{lemma}[Factorial commutator growth for bounded support and degree]
+    \label{thm:bounded_degree_commutator_growth}
+    \lean{Finset.card_filter_not_disjoint_le,
+        ManyBody.Interaction.exists_commutator_iterate_decomposition,
+        ManyBody.Interaction.norm_commutator_iterate_le}
+    \leanok
+    \uses{lem:positive_contraction_commutator}
+    Let $k,g\in\N$, and let the terms $h_i$ of an interaction with supports $T$
+    satisfy $0\le h_i\le1$ and $|T_i|\le k$. Let $s$ be a finite set of indices
+    such that every site lies in $T_i$ for at most $g$ indices $i\in s$, and
+    put $H=\sum_{i\in s}h_i$. Then at most $g|S|$ indices $i\in s$ have $T_i$
+    meeting a region $S$. If $O\in\mathcal A_S$, then
+    $\operatorname{ad}_H^m(O)$ is a sum of at most $\prod_{j<m}g(|S|+jk)$
+    operators, each of norm at most $\lVert O\rVert$ and supported on at most
+    $|S|+mk$ sites. In particular, if $|S|\le k$,
+    \begin{align}
+        \lVert\operatorname{ad}_H^m(O)\rVert\le(gk)^m\,m!\,\lVert O\rVert.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:positive_contraction_commutator}
+    Every index whose support meets $S$ has a site of $S$ in its support, and
+    each site of $S$ lies in at most $g$ supports. Induct on $m$: commuting a
+    piece supported on $R$ with $H$ leaves only the at most $g|R|$ terms $h_i$
+    whose support meets $R$, each giving a piece supported on $R\cup T_i$ of
+    norm at most that of the original piece by
+    Lemma~\ref{lem:positive_contraction_commutator}. If $|S|\le k$, then
+    $g(|S|+jk)\le gk(j+1)$ and $\prod_{j<m}gk(j+1)=(gk)^m\,m!$.
+\end{proof}
+
+\begin{lemma}[Short imaginary-time conjugation for bounded support and degree]
+    \label{thm:bounded_degree_imaginary_time}
+    \lean{ManyBody.Interaction.norm_exp_conjugation_shift_le_two,
+        ManyBody.Interaction.norm_exp_conjugation_shift_sum_le}
+    \leanok
+    \uses{thm:bounded_degree_commutator_growth, lem:factorial_growth_rate_conjugation}
+    In the setting of Lemma~\ref{thm:bounded_degree_commutator_growth}, let
+    $O$ be supported on at most $k$ sites, let $z\in\C$, and let $t\ge0$ with
+    $2gkt\le1$. Then
+    \begin{align}
+        \bigl\lVert e^{t(H-z)}Oe^{-t(H-z)}\bigr\rVert\le2\lVert O\rVert.
+    \end{align}
+    For a finite set $J$ of indices, the same conjugation of $\sum_{j\in J}h_j$
+    has norm at most $2|J|$. This is the conjugation lemma
+    of~\cite[lines 795--880]{Arad2014Connecting} for contractions, a degree that counts terms and observables on at most $k$
+    sites~\cite{gap:akl14_hadamard_bound_scope}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:bounded_degree_commutator_growth, lem:factorial_growth_rate_conjugation}
+    The scalar shift does not change commutators. Apply
+    Lemma~\ref{lem:factorial_growth_rate_conjugation} with $a=gk$, and for the
+    sum use $\lVert h_j\rVert\le1$ and $|T_j|\le k$ for each $j\in J$.
+\end{proof}

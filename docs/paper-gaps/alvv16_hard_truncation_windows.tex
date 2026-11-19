@@ -131,4 +131,52 @@ remains a separate result. The generic conditional spectral-window theorem
 above is unchanged and does not assert the physical estimate without its
 restricted perturbation premise. This boundary is tracked in
 \href{https://github.com/LionSR/TNLean/issues/9844}{TNLean issue 9844}.
+\section{An explicit cutoff for interactions of bounded support and degree}
+
+Theorem~2.6 of
+\href{https://arxiv.org/pdf/1406.3898}{AKL, arXiv:1406.3898v3}
+(\texttt{thm:lowspec}, \texttt{low70.tex}, lines 719--748, with the truncation
+\texttt{def:Ht}, lines 684--697) is stated for positive terms on at most $k$
+particles with every particle in terms of total norm at most $g$; ALVV quote it
+as Proposition~4.4 and Lemma~4.5 and apply it to chains. The flat sector of
+the previous section shows that its truncated-side estimate needs a cutoff
+condition. The following form is sufficient.
+
+Let the terms satisfy $0\le h_i\le1$, let each be supported on at most $k$
+sites with every site in the supports of at most $g$ terms, $gk>0$, and let
+$\Lambda$ be a region. Write $H_{\rm in}$, $H_{\rm out}$ and $Y$ for the sums
+of the terms supported in $\Lambda$, supported outside $\Lambda$, and
+crossing the cut, and $b$ for the number of crossing terms. Let
+$e_{\rm in},e_{\rm out}$ be the minimum eigenvalues of $H_{\rm in}$ and
+$H_{\rm out}$, and centre
+\begin{align*}
+    H & =H_{\rm in}+H_{\rm out}+Y-(e_{\rm in}+e_{\rm out}), \\
+    F & =\min(H_{\rm in},e_{\rm in}+t)+H_{\rm out}+Y-(e_{\rm in}+e_{\rm out}).
+\end{align*}
+Both ground energies $E$ of $H$ and $E'$ of $F$ lie in $[0,b]$. For $\eta>0$
+and
+\begin{align*}
+    t & \ge\eta+3b+1, &
+    \xi & =4gk(b+1)\exp\Bigl(-\frac{t-\eta-3b-1}{2gk}\Bigr),
+\end{align*}
+the restrictions of $H-F$ to the spectral spaces of $H$ and of $F$ below
+$E+\eta$ have norm at most $\xi$; every eigenvalue of $F$ below $E+\eta$
+satisfies $\lambda_i(F)\le\lambda_i(H)\le\lambda_i(F)+\xi$; $E'\le E\le
+E'+\xi$; and for $\delta>0$ the windows of the first section give
+$\eta'=\eta+\xi+2\xi\sqrt{\lceil\eta/(2\xi)\rceil/\delta}$.
+
+The constants come from the conjugation bound
+$\lVert e^{s(H_{\rm in}-c)}Ye^{-s(H_{\rm in}-c)}\rVert\le2b$ at
+$s=1/(2gk)$, from the separation $u=\eta+3b+1$ of the clipping threshold
+above the window, and from the weighted restriction estimate
+\begin{align*}
+    \frac{e^{-s(t-u)-1}}{s}\cdot\frac{2b}{u-(E+\eta)-2b}\le\xi,
+\end{align*}
+whose second denominator is at least one because $E\le b$. They replace the
+printed rate $\lambda=1/(2gk)$ with prefactor $6\lambda^{-3/2}$ and the
+separations $3|L_\partial|$ and $33|L_\partial|$ of
+\texttt{eq:Pi-bound}--\texttt{e:spectrum}. For a nearest-neighbour chain
+$b\le2$ and the cutoff is $\eta+7$.\footnote{Formal declaration:
+    \leanid{ManyBody.Interaction.exists_region_hard_truncation_spectral_comparison}
+    in \doclink{QICLean/ManyBody/Hamiltonian/HardTruncation}.}
 \end{document}

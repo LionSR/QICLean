@@ -91,6 +91,7 @@ import QICLean.Analysis.EntropySubadditivity
 import QICLean.Analysis.EuclideanEigenvectorBasis
 import QICLean.Analysis.EuclideanReindex
 import QICLean.Analysis.ExcitationSubsetCounts
+import QICLean.Analysis.ExpConjugation
 import QICLean.Analysis.ExponentialDistanceProfile
 import QICLean.Analysis.ExponentialGeometricTailOrder
 import QICLean.Analysis.ExponentialPolynomialAbsorption
@@ -240,6 +241,7 @@ import QICLean.Analysis.OperatorNormConvergence
 import QICLean.Analysis.OptimizedPureErrorMass
 import QICLean.Analysis.OptimizedPureStateTraceError
 import QICLean.Analysis.OptimizedPureTraceError
+import QICLean.Analysis.OrderedSpectralSpan
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.OrthonormalMatrixNorm
@@ -546,6 +548,7 @@ import QICLean.Analysis.ViableTrimmingRank
 import QICLean.Analysis.Volterra
 import QICLean.Analysis.VonNeumannEntropySpectralTail
 import QICLean.Analysis.WeightedCesaroMean
+import QICLean.Analysis.WeightedLowRestriction
 import QICLean.Analysis.WeightedPositiveKernel
 import QICLean.Analysis.WeightedProjection
 import QICLean.Analysis.WeightedPureStateTraceNorm

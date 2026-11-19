@@ -1,0 +1,83 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\setlength{\emergencystretch}{2em}
+\input{command}
+\title{The Scope of the Imaginary-Time Conjugation Bound for Interactions of Bounded Degree}
+\author{}
+\date{2026-11-19}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+\section{The printed lemma}
+
+Arad, Kuwahara and Landau,
+\href{https://arxiv.org/abs/1406.3898}{arXiv:1406.3898v3}, consider a
+Hamiltonian $H=\sum_Xh_X$ on finitely many particles with $h_X\ge0$,
+$h_X=0$ for $|X|>k$, and the degree condition
+\begin{align}
+    \sum_{X\ni i}\lVert h_X\rVert\le g
+    \label{eq:akl14_hadamard_degree}
+\end{align}
+at every particle $i$ (Section \texttt{sec:settings}, \texttt{low70.tex},
+lines 400--445). For an operator $A$, let $E_A$ be a set of terms with
+$[H,A]=\sum_{X\in E_A}[h_X,A]$ and $R=\sum_{X\in E_A}\lVert h_X\rVert$
+(lines 523--525). Lemma \texttt{lem:Hadamard-bound} (lines 795--880) states
+\begin{align}
+    \lVert e^{sH}Ae^{-sH}\rVert\le\lVert A\rVert\,(1-gks)^{-R/(gk)}
+    \qquad\text{for }0\le s<\frac1{gk}.
+    \label{eq:akl14_hadamard_bound}
+\end{align}
+The proof expands $e^{sH}Ae^{-sH}$ in nested commutators, bounds
+$\lVert[h_X,O]\rVert\le\lVert h_X\rVert\,\lVert O\rVert$ for $h_X\ge0$, and
+bounds the norm sum of the terms entering the $j$-th commutator by
+$R+(j-1)gk$.
+
+\section{The formalized statement}
+
+The formal statement\footnote{Formal declaration:
+    \leanid{ManyBody.Interaction.norm_exp_conjugation_shift_le_two} in
+    \doclink{QICLean/ManyBody/Dynamics/BoundedDegreeImaginaryTime}.}
+assumes:
+\begin{enumerate}
+    \item every term satisfies $0\le h_X\le1$;
+    \item every site lies in the supports of at most $g$ terms;
+    \item the observable $O$ is supported on at most $k$ sites.
+\end{enumerate}
+It concludes, for every $z\in\C$ and $0\le s$ with $2gks\le1$,
+\begin{align}
+    \lVert e^{s(H-z)}Oe^{-s(H-z)}\rVert\le2\lVert O\rVert.
+    \label{eq:akl14_hadamard_formal}
+\end{align}
+Under the first two assumptions, \eqref{eq:akl14_hadamard_degree} holds,
+since every term meeting a site has norm at most one. Under the third,
+the terms not commuting with $O$ meet one of at most $k$ sites, so
+$R\le gk$. For $gks\le1/2$ this gives
+$(1-gks)^{-R/(gk)}\le(1-gks)^{-1}\le2$, so
+\eqref{eq:akl14_hadamard_formal} is the specialization of
+\eqref{eq:akl14_hadamard_bound} to these hypotheses. The proof is the same
+expansion: after $j$ commutators a piece is supported on at most $|S|+jk$
+sites, at most $g(|S|+jk)$ terms fail to commute with it, and so
+$\lVert\operatorname{ad}_H^m(O)\rVert\le(gk)^m\,m!\,\lVert O\rVert$ when
+$|S|\le k$. The scalar shift $z$ does not change the commutators.
+
+\section{What is not formalized}
+
+The formal statement is narrower than \eqref{eq:akl14_hadamard_bound} in
+three respects: the terms are contractions; the degree counts terms instead
+of summing their norms, which is a stronger hypothesis when the norms are
+small; and the observable lies on at most $k$ sites, with only the
+consequence $2\lVert O\rVert$ at $s\le1/(2gk)$ stated. The printed bound for
+an arbitrary $R$ and $s<1/(gk)$, with the norm-weighted degree
+\eqref{eq:akl14_hadamard_degree}, remains unformalized. Its elimination is a
+formal statement with $R$ and the norm-weighted degree as hypotheses, from
+the bound $\lVert\operatorname{ad}_H^m(A)\rVert\le\prod_{j<m}(R+jgk)\,
+\lVert A\rVert$ and the binomial series of $(1-gks)^{-R/(gk)}$. The hard
+truncation of a region\footnote{Formal declaration:
+    \leanid{ManyBody.Interaction.exists_region_hard_truncation_spectral_comparison}
+    in \doclink{QICLean/ManyBody/Hamiltonian/HardTruncation}.}
+uses \eqref{eq:akl14_hadamard_formal} only for terms supported on at most
+$k$ sites, where the restricted form suffices.
+\end{document}
