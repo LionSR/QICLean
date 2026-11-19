@@ -32,6 +32,7 @@ dimensions.
 * `QuantumCircuit.KrausGate`, `QuantumCircuit.KrausGate.ev` — plain gates.
 * `QuantumCircuit.Layer` — gates on disjoint cells and onsite families elsewhere.
 * `QuantumCircuit.Layer.kraus`, `QuantumCircuit.Layer.krausFamily` — its Kraus operators.
+* `QuantumCircuit.Layer.gateFamily` — the gate on a cell as a Kraus family.
 * `QuantumCircuit.Layer.Forall` — every gate and onsite family satisfies a predicate.
 * `QuantumCircuit.Layer.single` — one gate, with the identity elsewhere.
 * `QuantumCircuit.Layer.lightCone` — a region together with the cells of the layer meeting it.
@@ -143,6 +144,19 @@ namespace Layer
 
 variable {Γ : Geometry S} {G : Finset S → (S → Type) → (S → Type) → Type 1} [GateFamily G]
 
+/-- The gate of the layer on a cell, as a Kraus family under the interpretation `ev`. -/
+def gateFamily (ev : Interpretation G) {X Y : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y)
+    (b : L.cells) : KrausFamily (RegionConfig X (Γ.cell b)) (RegionConfig Y (Γ.cell b)) :=
+  ⟨GateFamily.Outcome (L.gate b), ev (L.gate b)⟩
+
+omit [Fintype S] in
+/-- The gate of a layer of plain gates is its own Kraus family. -/
+@[simp] theorem gateFamily_krausGate {X Y : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    (L : Layer Γ KrausGate X Y) (b : L.cells) : L.gateFamily KrausGate.ev b = L.gate b :=
+  rfl
+
 /-- Every gate of the layer, as a Kraus family under the interpretation `ev`, and every onsite
 family satisfies the predicate `P`. -/
 def Forall (ev : Interpretation G)
@@ -150,9 +164,7 @@ def Forall (ev : Interpretation G)
       KrausFamily α β → Prop)
     {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
     [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y) : Prop :=
-  (∀ b : L.cells, P (⟨GateFamily.Outcome (L.gate b), ev (L.gate b)⟩ :
-    KrausFamily (RegionConfig X (Γ.cell b.1)) (RegionConfig Y (Γ.cell b.1)))) ∧
-    ∀ s, P (L.onsite s)
+  (∀ b : L.cells, P (L.gateFamily ev b)) ∧ ∀ s, P (L.onsite s)
 
 omit [Fintype S] in
 /-- A local property passes to every property it implies. -/
