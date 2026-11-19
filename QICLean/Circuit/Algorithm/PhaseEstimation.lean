@@ -221,7 +221,7 @@ private theorem forall_isSingleIndex_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 
   refine Circuit.forall_seq _ _ fun L hL ↦ ?_
   rw [List.mem_map] at hL
   obtain ⟨L, hL, rfl⟩ := hL
-  rw [List.mem_reverse, gateLayers, List.mem_map] at hL
+  rw [List.mem_reverse, gateLayers, Qudit.gateLayers, List.mem_map] at hL
   obtain ⟨b, -, rfl⟩ := hL
   exact forall_isSingleIndex_adjoint
     (Layer.forall_single _ (isSingleIndex_single 1) b _ (isSingleIndex_single _))
@@ -356,8 +356,7 @@ private theorem hadamard_mulVec (u : Fin m → ℂ) {A : Finset (Fin t)} {j : Fi
       · rw [Function.update_of_ne hij]
         exact h i (by simp [hij, hi])
   have hH : hadamard (x j) 0 = invSqrtTwo := by
-    change invSqrtTwo * (-1) ^ (((x j : Fin 2) : ℕ) * 0) = _
-    rw [mul_zero, pow_zero, mul_one]
+    rw [Qubit.hadamard_apply, Fin.val_zero, mul_zero, pow_zero, mul_one]
   simp only [hadamardState, h1, h0, ite_false, mul_zero, add_zero,
     Finset.card_insert_of_notMem hj, hH, pow_succ]
   ring
@@ -515,7 +514,7 @@ private theorem sum_queries (x : Config (Qudits (Fin t) 2)) :
     | cons j l ih =>
       rw [List.flatMap_cons, List.map_append, List.sum_append, ih, List.map_replicate,
         List.sum_replicate, smul_eq_mul, List.map_cons, List.sum_cons, mul_comm]
-  rw [h, Qubit.encode_apply, List.map_reverse, List.sum_reverse, ← Fin.sum_univ_def]
+  rw [h, Qudit.encode_apply, List.map_reverse, List.sum_reverse, ← Fin.sum_univ_def]
 
 private theorem queries_eq :
     ((List.finRange t).reverse.flatMap fun j : Fin t ↦
@@ -537,9 +536,9 @@ private theorem kraus_qftInv (V : Matrix (Fin 2 × Fin m) (Fin 2 × Fin m) ℂ)
     Circuit.kraus_mapSites _ _ _ _ (KrausGate.isCompatible_transport _ _)]
   congr 2
   rw [Circuit.kraus_seqAdjoint (Us := (seqCells t ++ swapCells t).map Qubit.gateOp),
-    Qubit.prod_gateOp_eq_dft Qubit.isGateOrder_seqCells Qubit.seqCells_nodup
+    Qudit.prod_gateOp_eq_dft Qubit.isGateOrder_seqCells Qubit.seqCells_nodup
       Qubit.toFinset_seqCells]
-  rw [gateLayers, List.forall₂_map_left_iff, List.forall₂_map_right_iff]
+  rw [gateLayers, Qudit.gateLayers, List.forall₂_map_left_iff, List.forall₂_map_right_iff]
   exact List.forall₂_same.mpr fun b _ i ↦ Layer.kraus_single KrausGate.ev b (Qubit.qftGate b) i
 
 /-- The preparation maps `|0…0⟩ ⊗ u` to `2^{-t/2} ∑ₓ e^{2πiφ⟨x⟩} |x⟩ ⊗ u`. -/
