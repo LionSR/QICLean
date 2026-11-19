@@ -486,12 +486,15 @@ consists of terms whose supports meet the cluster support
         ClusterExpansion.clusters,
         ClusterExpansion.biUnion_clusters,
         ClusterExpansion.clusterOp_eq_noncommProd_clusters,
-        ClusterExpansion.truncatedExp_eq_sum_noncommProd_clusters}
+        ClusterExpansion.truncatedExp_eq_sum_noncommProd_clusters,
+        ManyBody.ClusterExpansion.commute_of_not_adj_overlapGraph,
+        ManyBody.ClusterExpansion.truncatedExp_eq_sum_noncommProd_clusters_overlapGraph}
     \leanok
     \uses{def:hastings_cluster_operator, def:hastings_truncated_expansion,
         def:hastings_cluster_of_terms}
     Summing over $A\subseteq K$ with no cluster in $T$,
-    $\rho(\beta,l)=\sum_AE_A$. If non-adjacent terms commute, then
+    $\rho(\beta,l)=\sum_AE_A$. If non-adjacent terms commute (in particular for
+    the overlap graph when each $H_k$ acts on $S_k$), then
     $E_A=\prod_{C\in\mathrm{clusters}(A)}E_C$ with commuting factors
     \cite[lines 1108--1110]{Hastings2006Solving}.
 \end{lemma}
@@ -1323,3 +1326,506 @@ the existing exact-label coefficients.
     and the two coordinates recover the endpoints and hence $C$.
 \end{proof}
 
+\section{The matrix product form of Trotter products}
+\label{sec:hastings_product_form}
+
+% Hastings, arXiv:cond-mat/0508554v3, proj3new.tex, lines 1024--1046 (eq. mpf)
+% and 1048--1079 (the Trotter decomposition).
+
+For the density matrix at nonzero temperature, \cite[lines
+    1024--1079]{Hastings2006Solving} introduces a matrix product form in which
+every site carries one index, every site carries an operator acting on it
+alone, and the coefficients are products of functions of finite range. Every
+Trotter product of the terms of an interaction has this form exactly, with
+indices only on the supports of its factors. The error between a Trotter
+product and the Gibbs operator is not estimated here. The neighbourhoods are
+arbitrary; on a finite metric lattice they are the balls of radius $R$ about
+the centres of the terms, as in the source.
+
+\begin{definition}[Matrix product form]
+    \label{def:hastings_product_form}
+    \lean{ManyBody.IsLocalCoefficient,
+        ManyBody.ProductForm,
+        ManyBody.HasProductForm,
+        ManyBody.IsLocalCoefficient.mono,
+        ManyBody.HasProductForm.mono}
+    \leanok
+    Let $\Lambda$ be a finite set of sites with local dimension $d_j$ at the
+    site $j$, and prescribe a neighborhood $N_i$ at every site $i$. On a
+    metric lattice of range $l\ge0$, take $N_i=\{j:d_\Lambda(i,j)\le l\}$.
+    An operator $\rho$ on $\mathcal H_\Lambda$ has a matrix product form
+    with these neighborhoods if there are finite sets $\mathcal A_j$ and operators
+    $\rho_j(a)$ on site $j$ for every site $j$ and every
+    $a\in\mathcal A_j$, and functions
+    $F_i\colon\prod_{j\in\Lambda}\mathcal A_j\to\mathbb C$
+    for every site $i$, such that $F_i(\alpha)$ depends only on the indices
+    $\alpha_j$ with $j\in N_i$ and
+    \begin{align}
+        \label{eq:hastings_mpf}
+        \rho=\sum_{\alpha\in\prod_{j\in\Lambda}\mathcal A_j}
+        \Bigl(\prod_{i\in\Lambda}F_i(\alpha)\Bigr)
+        \bigotimes_{j\in\Lambda}\rho_j(\alpha_j)
+    \end{align}
+    This is the right-hand side of the product-form identity in~\cite[lines
+        1024--1039]{Hastings2006Solving}. The index set may vary with the site,
+    and so may the local dimension; a common local dimension $q$ is the case
+    $d_j=q$.
+    Enlarging any coefficient neighborhood
+    preserves the product form; in particular a metric product form of range
+    $l$ has every larger range.
+\end{definition}
+
+\begin{lemma}[Operators supported near a specified centre]
+    \label{thm:hastings_product_form_supported_radius}
+    \lean{ManyBody.hasProductForm_of_mem_supportedOperators_radius}
+    \leanok
+    \uses{def:hastings_product_form}
+    Fix $i_0\in\Lambda$ and $X\subseteq\Lambda$ such that
+    $X\subseteq N_{i_0}$.
+    Every operator supported on $X$ has a matrix product form with these
+    coefficient neighborhoods.
+    The centre need not belong to $X$, and $X$ may be empty.
+    This is the supported-factor expansion
+    in~\cite[lines 1053--1061]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    At each site $j\in X$ take $\mathcal A_j=\{1,\dots,d_j\}^2$, with a single value at the other sites, and let the single-site operators be
+    the matrix units $|a_j\rangle\langle b_j|$. Attach to $i_0$ the matrix
+    element between the configurations equal to $a$ and $b$ on $X$ and
+    equal to $a_{i_0}$ off $X$. At every site outside $X$, multiply the
+    coefficient by the indicator of $a_j=b_j$, including at $i_0$ if
+    $i_0\notin X$. The matrix element reads only indices on $X$ and at
+    $i_0$, all in $N_{i_0}$; each diagonal indicator reads only its
+    own index. Supported operators vanish between configurations differing
+    off $X$, and their other entries depend only on the labels on $X$.
+    Thus~(\ref{eq:hastings_mpf}) holds entry by entry.
+\end{proof}
+
+\begin{lemma}[Operators supported on a small set]
+    \label{thm:hastings_product_form_supported}
+    \lean{ManyBody.hasProductForm_of_mem_supportedOperators}
+    \leanok
+    \uses{thm:hastings_product_form_supported_radius}
+    Let $X\subseteq\Lambda$ be nonempty
+    with $y\in N_x$ for all $x,y\in X$.
+    Every operator supported on $X$ has a matrix product form with these
+    coefficient neighborhoods.
+\end{lemma}
+\begin{proof}\leanok
+    Pick $i_0\in X$ and apply
+    Lemma~\ref{thm:hastings_product_form_supported_radius}.
+\end{proof}
+
+\begin{lemma}[Products of matrix product forms]
+    \label{thm:hastings_product_form_mul}
+    \lean{ManyBody.HasProductForm.mul,
+        ManyBody.hasProductForm_one,
+        ManyBody.hasProductForm_list_prod,
+        ManyBody.HasProductForm.pow}
+    \leanok
+    \uses{def:hastings_product_form}
+    Operators with matrix product forms of range $l$ contain $1$ and are closed
+    under multiplication, finite ordered products, and powers.
+\end{lemma}
+\begin{proof}\leanok
+    For forms over $\mathcal A$ and $\mathcal B$, take index set
+    $\mathcal A\times\mathcal B$, site operators $\rho_j(a)\sigma_j(b)$, and
+    site functions $F_i(\alpha)G_i(\beta)$
+    \cite[lines 1068--1077]{Hastings2006Solving}.
+\end{proof}
+
+\begin{lemma}[Trotter products with prescribed centres]
+    \label{thm:hastings_trotter_product_form_radius}
+    \lean{ManyBody.Interaction.hasProductForm_lie}
+    \leanok
+    \uses{thm:hastings_product_form_supported_radius,thm:hastings_product_form_mul}
+    Let the terms $H_k$ of an interaction be supported on sets $X_k\subseteq N_{c(k)}$ for
+    centres $c(k)$. Then for any finite list $k_1,\dots,k_m$ of indices, repetitions
+    allowed, any $z\in\mathbb C$ and $n\in\mathbb N$ (with the $n=0$ product equal to $1$),
+    \begin{align}
+        \label{eq:hastings_trotter_product_radius}
+        \Bigl[\prod_{j=1}^m\exp\bigl(\tfrac zn H_{k_j}\bigr)\Bigr]^n
+    \end{align}
+    has a matrix product form with the neighbourhoods $N_i$. Neither Hermiticity nor
+    nonempty supports are required. On a finite metric lattice with $N_i$ the
+    radius-$R$ ball about $i$ and $z=-\beta$, this is the radius-based construction
+    of~\cite[lines 1053--1077]{Hastings2006Solving}: the Trotter product has a matrix
+    product form of range $R$.
+\end{lemma}
+\begin{proof}\leanok
+    Each $\exp(-\tfrac\beta nH_{i_k})$ is supported on $X_{i_k}$; apply
+    Lemmas~\ref{thm:hastings_product_form_supported_radius}
+    and~\ref{thm:hastings_product_form_mul}.
+\end{proof}
+
+\begin{lemma}[Local index counts of Trotter products]
+    \label{thm:hastings_trotter_index_count}
+    \lean{ManyBody.ProductForm.ofSupported,
+        ManyBody.ProductForm.card_index_ofSupported,
+        ManyBody.ProductForm.one,
+        ManyBody.ProductForm.mul,
+        ManyBody.ProductForm.pow,
+        ManyBody.ProductForm.card_index_one,
+        ManyBody.ProductForm.card_index_mul,
+        ManyBody.ProductForm.card_index_pow,
+        ManyBody.exists_productForm_list_prod_card_index,
+        ManyBody.Interaction.exists_productForm_lie_card_index}
+    \leanok
+    \uses{def:hastings_product_form,thm:hastings_product_form_mul}
+    In the setting of Lemma~\ref{thm:hastings_trotter_product_form_radius}, let $c_j$ be the
+    number of entries $k_1,\dots,k_m$ whose support contains the site $j$. The product
+    (\ref{eq:hastings_trotter_product_radius}) has a matrix product form whose index set at
+    every site $j$ has exactly
+    \begin{align}
+        |\mathcal A_j|=d_j^{2nc_j}
+        \label{eq:hastings_trotter_index_count}
+    \end{align}
+    elements, $d_j$ being the number of basis labels at $j$. At $n=0$ every index set has one
+    element. If $c_j\le S$, as when the centres are distinct and every radius-$R$ ball of a
+    metric lattice contains at most $S$ sites, this is at most $(d_j^2)^{nS}$, the count of at
+    most $nS$ components with $d_j^2$ values each asserted in
+    \cite[lines 1068--1075]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    Expand a factor only in matrix units at its supporting sites, and use a
+    one-element index set elsewhere. The matrix-element coefficient is
+    attached to the factor's centre and depends only on its support.
+    At a site $j$, the indices of an ordered product therefore have
+    $(d_j^2)^{a_j}$ values, where $a_j$ is the number of its factors acting
+    at $j$. Such a factor has its centre within distance $R$ of $j$;
+    distinctness of the centres gives $a_j\le S$.
+    In $n$ copies of the product the site index sets are multiplied $n$
+    times, which gives $(d_j^2)^{na_j}\le(d_j^2)^{nS}$.
+\end{proof}
+
+\begin{lemma}[Matrix product form with the counted index sets]
+    \label{lem:hastings_active_index_product_form}
+    \lean{ManyBody.Interaction.exists_productForm_lie_card_index_eq}
+    \leanok
+    \uses{def:hastings_product_form}
+    Let the terms $H_k$ of an interaction be supported on sets $X_k\subseteq N_{c(k)}$, and
+    let $k_1,\dots,k_m$ list every index exactly once. For $z\in\mathbb C$ and $n\in\mathbb N$,
+    with the zero-step product equal to $1$, the product
+    (\ref{eq:hastings_trotter_product_radius}) has a matrix product form with neighbourhoods
+    $N_i$ whose index set at every site $j$ has cardinality $(d_j^2)^{nc_j}$, where
+    $c_j=|\{k : j\in X_k\}|$. A zero exponent gives cardinality one, including when
+    $d_j=0$. Hastings' index range follows: if $c_j\le S$ at every site, the index set at
+    $j$ has at most $(d_j^2)^{nS}$ values, as stated in
+    \cite[lines 1053--1075]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_product_form_mul}
+    The exponential of an operator acting on $X_i$ again acts on $X_i$,
+    since these operators form a closed algebra. Expand each factor in
+    matrix units at the sites of its support, with a one-element index set
+    elsewhere, and attach the matrix-element coefficient to its centre
+    $i$; this coefficient reads only indices in $X_i\subseteq N_i$.
+    Multiplying such forms pairs the indices at each site, so an ordered
+    product carries one pair of physical indices at $j$ for every factor
+    acting at $j$. A sweep contains $c_j$ such factors, and $n$ sweeps give
+    $nc_j$ pairs, each with $d_j^2$ values. If some local dimension is
+    zero there are no configurations, and index sets of these cardinalities
+    with vanishing coefficients give a matrix product form.
+\end{proof}
+
+\section{The truncated operator of an interaction}
+\label{sec:cluster_expansion_interaction}
+
+For the terms of an interaction the operators of the cluster expansion act on
+the sites of their clusters, and the truncated operator has a matrix product
+form \cite[lines 1256--1320]{Hastings2006Solving}.
+
+\begin{lemma}[The operator of a cluster acts on its sites]
+    \label{thm:hastings_cluster_operator_support}
+    \lean{ManyBody.ClusterExpansion.clusterOp_mem_supportedOperators}
+    \leanok
+    \uses{def:hastings_cluster_operator}
+    If each $H_k$ acts on $S_k$, then $E_C$ acts on $\bigcup_{k\in C}S_k$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:sites_place_exp}
+    For every $D\subseteq C$, $H_D$ and $e^{-\beta H_D}$ act on
+    $\bigcup_{k\in C}S_k$.
+\end{proof}
+
+\begin{lemma}[The truncated operator in matrix product form]
+    \label{thm:hastings_truncated_product_form}
+    \lean{ManyBody.ClusterExpansion.IsLargeSupport,
+        ManyBody.ClusterExpansion.noncommProd_apply_of_pairwiseDisjoint,
+        ManyBody.ClusterExpansion.noLargeCluster_iff_filter,
+        ManyBody.ClusterExpansion.truncatedExp_eq_mul,
+        ManyBody.ClusterExpansion.sum_clusterOp_apply,
+        ManyBody.ClusterExpansion.isLocalCoefficient_clusterCoeff,
+        ManyBody.ClusterExpansion.sum_prod_clusterCoeff,
+        ManyBody.ClusterExpansion.hasProductForm_sum_clusterOp,
+        ManyBody.ClusterExpansion.hasProductForm_truncatedExp,
+        ManyBody.ClusterExpansion.hasProductForm_truncatedExp_of_dist_le}
+    \leanok
+    \uses{def:hastings_product_form, def:hastings_truncated_expansion,
+        def:hastings_cluster_of_terms}
+    Let the domain be
+    nonempty, let every term $H_k$ act only on a set $S_k$ of
+    sites, let two terms be adjacent when their sets of sites meet, and call a
+    set of terms large when its sites contain two sites at distance larger
+    than $l$. Then the truncated operator $\rho(\beta,l)$ is in matrix product
+    form of range $l$. This is the matrix product form at high temperature
+    of~\cite[lines 1256--1279]{Hastings2006Solving}, on every finite metric
+    lattice. The local index count is given below.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncation_cluster_products,
+        thm:hastings_cluster_operator_support,
+        thm:hastings_product_form_supported_radius, thm:hastings_product_form_mul}
+    By Lemmas~\ref{thm:hastings_truncation_cluster_products}
+    and~\ref{thm:hastings_cluster_operator_support},
+    $\rho(\beta,l)=\sum_A\prod_{C\in\mathrm{clusters}(A)}E_C$, where empty-support
+    terms factor out as a scalar multiple of $1$ and each remaining cluster $C$
+    acts on $S_C=\bigcup_{k\in C}S_k$ with $\operatorname{diam}S_C\le l$ and
+    pairwise disjoint $S_C$. Indexing each site by its containing cluster (if
+    any) and matrix-unit labels $(a_j,b_j)$ expresses $\sum_A\prod_CE_C$ in the
+    form (\ref{eq:hastings_mpf}) of range $l$; conclude by
+    Lemma~\ref{thm:hastings_product_form_mul}.
+\end{proof}
+
+\begin{lemma}[Local index ranges of the truncated operator]
+    \label{thm:hastings_truncated_index_count}
+    \lean{ManyBody.ProductForm.restrict,
+        ManyBody.ProductForm.card_index_restrict,
+        ManyBody.ClusterExpansion.clusterProductForm,
+        ManyBody.ClusterExpansion.clusterIndexSet,
+        ManyBody.ClusterExpansion.localClusterProductForm,
+        ManyBody.ClusterExpansion.coeff_clusterProductForm_eq_zero_of_not_mem_clusterIndexSet,
+        ManyBody.ClusterExpansion.card_clusterIndexSet_le,
+        ManyBody.ClusterExpansion.IsValidCluster.subset_centres_ball,
+        ManyBody.ClusterExpansion.card_clusterIndexSet_le_ball,
+        ManyBody.ClusterExpansion.card_index_localClusterProductForm_le,
+        ManyBody.ClusterExpansion.exists_productForm_truncatedExp_card_index,
+        ManyBody.ClusterExpansion.exists_productForm_truncatedExp_pow_card_index,
+        ManyBody.ClusterExpansion.exists_productForm_truncatedExp_card_index_of_polynomial_growth,
+        ManyBody.ClusterExpansion.exists_productForm_truncatedExp_pow_card_index_of_polynomial_growth}
+    \leanok
+    \uses{thm:hastings_truncated_product_form, thm:hastings_product_form_mul}
+    Let the site set be nonempty, let every site $i$ carry a nonempty basis of $d_i$ labels, and suppose that each
+    $H_k$ is supported within distance $R\ge0$ of its centre $c_k$. For $l\ge0$, put
+    \begin{align*}
+        M_i=\#\{k:d(i,c_k)\le l+R\}.
+    \end{align*}
+    The actual diameter-truncated operator $\rho(\beta,l)$ has a matrix
+    product form of range $l$ with site index sets satisfying
+    \begin{align*}
+        |\mathcal A_i|\le d_i^2(1+2^{M_i}).
+    \end{align*}
+    Its $m$-th power has index ranges at most
+    $[d_i^2(1+2^{M_i})]^m$; if the terms are Hermitian and $m$ is even,
+    this power is positive semidefinite. If, moreover,
+    $M_i\le C(\lceil l+R\rceil+1)^D$ for every $i$, these bounds become
+    \begin{align*}
+        d_i^2\bigl(1+2^{C(\lceil l+R\rceil+1)^D}\bigr),\qquad
+        \bigl[d_i^2\bigl(1+2^{C(\lceil l+R\rceil+1)^D}\bigr)\bigr]^m.
+    \end{align*}
+    This makes explicit the polynomial volume growth used in the source's
+    exponential dimensional estimates
+    \cite[lines 1273--1275 and 1318--1320]{Hastings2006Solving}; a metric
+    alone does not imply such growth\cite{gap:hastings05_planar_domain_scope}.
+\end{lemma}
+\begin{proof}\leanok
+    Delete index values that record a cluster not containing their site;
+    its coefficient is zero at that site. A retained cluster containing $i$
+    has diameter at most $l$. Each of its terms acts on some site $j$, so
+    $d(i,c_k)\le d(i,j)+d(j,c_k)\le l+R$. There are at most $2^{M_i}$
+    possible sets of these terms. The additional value records no cluster,
+    and each choice has $d_i^2$ matrix-unit labels. Empty-support terms split
+    off as a scalar factor whose index sets have one element.
+    Products multiply the index cardinalities, giving the bound for powers.
+\end{proof}
+
+\begin{theorem}[The matrix product form at every temperature]
+    \label{thm:hastings_thermal_all_temperatures}
+    \lean{ManyBody.HasProductForm.pow_of_even}
+    \leanok
+    \uses{def:hastings_product_form, thm:hastings_even_powers}
+    Let $\rho$ be a Hermitian operator in matrix product form of range $l$, and
+    let $m$ be even. Then $\rho^m$ is positive semidefinite and in matrix product
+    form of range $l$. By Lemma~\ref{thm:hastings_even_powers} there is an even
+    $m\ge2$ with $\beta/m\le\beta_0$. Applied to the truncated high-temperature
+    form $\rho(\beta/m,l_{\mathrm{proj}})$, which is Hermitian, this is the
+    positivity and the matrix product form of
+    $\rho(\beta,l_{\mathrm{proj}})=\rho(\beta/m,l_{\mathrm{proj}})^m$ in
+    eq.~(mplt) of \cite[lines 1303--1317]{Hastings2006Solving}, with positive
+    semidefiniteness in place of the source's positive definiteness, which
+    would need $\rho(\beta/m,l_{\mathrm{proj}})$ to be
+    invertible~\cite{gap:hastings05_mplt_positivity}. The local index ranges
+    and their growth under powers are proved in
+    Lemma~\ref{thm:hastings_truncated_index_count}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hastings_product_form_mul}
+    For $m=2k$, $\rho^m=(\rho^k)^\dagger\rho^k$ since $\rho^k$ is Hermitian, and
+    this is positive semidefinite. Products of operators in matrix product form
+    of range $l$ are again in that form, with the indices at each site grouped
+    into one (Lemma~\ref{thm:hastings_product_form_mul}). For the number of
+    factors take $m=2(\lceil\beta/\beta_0\rceil+1)$.
+\end{proof}
+
+\begin{lemma}[The truncated operator at every temperature]
+    \label{thm:hastings_truncated_all_temperatures}
+    \lean{ManyBody.ClusterExpansion.hasProductForm_truncatedExp_pow_of_even,
+        ManyBody.ClusterExpansion.hasProductForm_truncatedExp_pow_of_even_of_dist_le}
+    \leanok
+    \uses{def:hastings_product_form, def:hastings_truncated_expansion,
+        def:hastings_cluster_of_terms}
+    Let the finite metric lattice be nonempty, let every term $H_k$ be Hermitian and act only
+    on a set $S_k$ of sites, with clusters and largeness as in
+    Lemma~\ref{thm:hastings_truncated_product_form}, and let $m$ be even.
+    Then $\rho(\beta,l)^m$ is in matrix product form of range $l$ and positive
+    semidefinite. With $\beta/m$ in place of $\beta$, this is the matrix product
+    form and the positivity of
+    $\rho(\beta,l_{\mathrm{proj}})=\rho(\beta/m,l_{\mathrm{proj}})^m$ in
+    eq.~(mplt) of \cite[lines 1303--1317]{Hastings2006Solving}, with positive
+    semidefiniteness in place of positive
+    definiteness~\cite{gap:hastings05_mplt_positivity}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_truncated_product_form, thm:hastings_truncated_positivity,
+        thm:hastings_thermal_all_temperatures}
+    The truncated operator is in matrix product form of range $l$ by
+    Lemma~\ref{thm:hastings_truncated_product_form} and Hermitian by
+    Lemma~\ref{thm:hastings_truncated_positivity}, so
+    Theorem~\ref{thm:hastings_thermal_all_temperatures} applies.
+\end{proof}
+
+\section{Nearest-neighbour chains}
+\label{sec:cluster_expansion_nearest_neighbour}
+
+For terms on the bonds of a chain the overlap graph is the path of the bond
+labels, and the truncated expansion has a bounded operator Schmidt rank at
+every cut \cite[lines 1298--1303 and 1971--2013]{Arad2016RigorousRG}.
+
+\begin{lemma}[Physical nearest-neighbour crossing decomposition]
+    \label{thm:physical_cluster_crossing_decomposition}
+    \lean{ManyBody.ClusterExpansion.overlapGraph_bond_eq_pathGraph,
+        ManyBody.ClusterExpansion.commute_nearestNeighbor_of_not_adj,
+        ClusterExpansion.truncatedExp_pathGraph_eq_crossing_components,
+        ManyBody.ClusterExpansion.truncatedExp_nearestNeighbor_eq_crossing_components}
+    \leanok
+    \uses{thm:retained_crossing_component_sum, thm:cluster_path_exterior_sides,
+        thm:retained_separated_sum_product}
+    Let $H_i$, $0\leq i<N$, be operators on $N+1$ sites, with
+    $H_i$ supported on the designated pair $\{i,i+1\}$. Fix an integer
+    $r\geq1$ and a label $p$, corresponding to the physical cut after
+    site $p$. In (\ref{eq:retained_allowed_labels}), retain supports
+    whose label components have fewer than $r$ labels. For every real
+    $\beta$, their actual selected expansion satisfies
+    \begin{align}
+        M_r=F(L_p)F(R_p)+
+        \sum_{\substack{C\text{ an interval of labels} \\p\in C,\ |C|<r}}
+        E_C\bigl(F(L(C))F(R(C))\bigr).
+        \label{eq:physical_cluster_crossing_decomposition}
+    \end{align}
+    All factors are the finite sums in
+    (\ref{eq:retained_allowed_labels}). Neither Hermiticity nor
+    positivity of the interactions is needed for this identity.
+    When $r=1$ the sum over crossing components is empty.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:retained_crossing_component_sum,
+        thm:cluster_path_exterior_sides, thm:retained_separated_sum_product}
+    The overlap graph of the designated pairs $\{i,i+1\}$ is exactly
+    the path on the interaction labels. Nonadjacent terms act on
+    disjoint physical sites and commute. Split the retained supports
+    according to whether they contain $p$. The first family is a
+    product of the two sums on $L_p$ and $R_p$. In the second family,
+    use the unique component containing $p$ and split its exterior
+    into $L(C)$ and $R(C)$.
+\end{proof}
+
+\begin{lemma}[Physical support of retained side sums]
+    \label{thm:retained_cluster_physical_support}
+    \lean{ManyBody.ClusterExpansion.sum_retained_clusterOp_mem_supportedOperators,
+        ManyBody.ClusterExpansion.retained_nearestNeighbor_interval_mem_supportedOperators,
+        ManyBody.ClusterExpansion.retained_nearestNeighbor_left_mem_supportedOperators,
+        ManyBody.ClusterExpansion.retained_nearestNeighbor_right_mem_supportedOperators}
+    \leanok
+    \uses{thm:hastings_cluster_operator_support}
+    If each $H_i$ acts on a designated set $X_i$, then $F(B)$ acts
+    only on $\bigcup_{i\in B}X_i$. In the nearest-neighbour case,
+    suppose $a\leq i$ and $i+1<b$ for every $i\in B$. Then $F(B)$
+    acts only on the physical interval $[a,b)$.
+    In particular, labels $i<p$ give a factor acting only on sites
+    at most $p$, and labels $p<i$ give a factor acting only on sites
+    strictly greater than $p$. These conclusions apply to all the
+    side factors in (\ref{eq:physical_cluster_crossing_decomposition}).
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_cluster_operator_support}
+    Each summand $E_A$, $A\subseteq B$, is supported on
+    $\bigcup_{i\in A}X_i\subseteq\bigcup_{i\in B}X_i$.
+    The support algebra is closed under finite sums. For a bond
+    label $i$, both endpoints $i$ and $i+1$ lie in the stated physical
+    interval. The two one-sided conclusions follow from the strict
+    inequalities relative to $p$.
+\end{proof}
+
+\begin{lemma}[Two-sided rank of a crossing interval]
+    \label{thm:physical_cluster_interval_rank}
+    \lean{ManyBody.ClusterExpansion.card_biUnion_bond_le,
+        ManyBody.ClusterExpansion.operatorSchmidtRank_clusterOp_nearestNeighbor_le}
+    \leanok
+    \uses{thm:hastings_cluster_operator_support, thm:cluster_label_window_geometry}
+    Let every site have dimension $q\geq1$. If $C$ is a connected
+    interval of nearest-neighbour labels, its designated physical
+    support has at most $|C|+1$ sites. If $|C|<r$, then at every
+    physical cut the exact-label coefficient $E_C$ satisfies
+    \begin{align}
+        \operatorname{OSR}(E_C)\leq q^r.\notag
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_cluster_operator_support, thm:cluster_label_window_geometry}
+    Write $C=[a,b]$. All its bonds act within the physical interval
+    $[a,b+1]$, which has $|C|+1\leq r$ sites. On a designated support
+    $X$, the matrix-unit bound on the two sides of a cut $A$ gives
+    \begin{align}
+        \operatorname{OSR}_A(T)
+        \leq\min\{q^{2|X\cap A|},q^{2|X\setminus A|}\}
+        \leq q^{|X|}.\notag
+    \end{align}
+    The two parts partition $X$, so twice the smaller cardinality
+    is at most $|X|$. Apply this to the proved support of $E_C$.
+\end{proof}
+
+\begin{lemma}[All cut ranks of the label truncation]
+    \label{thm:physical_cluster_all_cut_rank}
+    \lean{ManyBody.ClusterExpansion.operatorSchmidtRank_truncatedExp_nearestNeighbor_le_count,
+        ManyBody.ClusterExpansion.operatorSchmidtRank_truncatedExp_nearestNeighbor_le}
+    \leanok
+    \uses{thm:physical_cluster_crossing_decomposition,
+        thm:retained_cluster_physical_support,
+        thm:physical_cluster_interval_rank, thm:physical_cluster_crossing_count}
+    Let $r\geq1$, $q\geq1$, and let the interactions have the actual
+    designated nearest-neighbour supports. For every real $\beta$,
+    at an interior cut the selected operator satisfies
+    \begin{align}
+        \operatorname{OSR}(M_r)
+        \leq1+(r-1)^2q^r\leq r^2q^r.\notag
+    \end{align}
+    The bound $r^2q^r$ holds at every chain cut, including the two
+    endpoint cuts. No Hermiticity or positivity is required.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:physical_cluster_crossing_decomposition,
+        thm:retained_cluster_physical_support,
+        thm:physical_cluster_interval_rank, thm:physical_cluster_crossing_count}
+    In the exact crossing decomposition, the product with no
+    crossing component has rank at most one. Each crossing term
+    has rank at most $q^r$: its central factor has this rank, and
+    both exterior factors act on only one side. Subadditivity and
+    submultiplicativity of operator Schmidt rank give the first
+    inequality. For $r\geq1$, $1+(r-1)^2\leq r^2$ and $q^r\geq1$.
+    An endpoint cut has a one-dimensional configuration space on
+    one side. If $q=1$ the whole operator space is one-dimensional;
+    if $r=1$ the crossing family is empty. These observations also
+    cover a chain with one site and no interactions.
+\end{proof}
