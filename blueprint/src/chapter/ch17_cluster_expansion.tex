@@ -1,0 +1,1325 @@
+\chapter{The high-temperature cluster expansion}
+\label{chap:cluster_expansion}
+
+Hastings \cite[Section~IV]{Hastings2006Solving} approximates the thermal
+operator $e^{-\beta H}$ of a Hamiltonian $H=\sum_k H_k$ by expanding it into
+words in the terms $H_k$, joining the terms of a word into clusters when they
+are adjacent in a graph on the terms, and discarding the words that contain a
+large cluster. This chapter proves the parts of that expansion that involve no
+sites: the cluster parts and their single-cluster bound, the truncated
+expansion as an inclusion--exclusion sum over large clusters, the percolation
+estimate for clusters of large diameter, the bound in trace norm, the error at
+every temperature, and the expansion on a path of terms used for chains of
+interaction labels \cite{Arad2016RigorousRG}. The terms are matrices indexed
+by a finite set and the graph is arbitrary; for terms acting on sites it is
+the overlap graph, in which two terms are adjacent when their supports meet.
+
+\section{The single-cluster bound in Hastings' cluster expansion}
+\label{sec:hastings_single_cluster_bound}
+
+
+
+\begin{definition}[The cluster part]
+    \label{def:hastings_cluster_part}
+    \lean{ClusterExpansion.clusterPart,
+        ClusterExpansion.clusterPart_eq_sum_powerset}
+    \leanok
+    For a Hamiltonian $H$ containing the terms $H_k$, a cluster $C$, its boundary
+    $B(C)$ and $\beta\in\mathbb R$, put
+    \begin{align}
+        \rho(\beta,C)=\sum_{D\subseteq C}(-1)^{|D|}e^{-\beta(H-H_{B(C)}-H_D)}.
+        \label{eq:hastings_cluster_part}
+    \end{align}
+    By inclusion and exclusion this is the sum of the terms of the power series
+    of $e^{-\beta H}$ that contain every $H_i$ with $i\in C$ and no $H_j$ with
+    $j\in B(C)$, the operator $\rho(\beta,C)$
+    of~\cite[lines 1174--1177]{Hastings2006Solving}. With $E=C\setminus D$ it is
+    $\sum_{E\subseteq C}(-1)^{|C|-|E|}e^{-(Y+\sum_{i\in E}\beta H_i)}$ for
+    $Y=\beta(H-H_C-H_{B(C)})$.
+\end{definition}
+
+\begin{lemma}[Removing a cluster and its boundary]
+    \label{thm:hastings_cluster_removal_trace}
+    \lean{ClusterExpansion.re_trace_exp_sub_sum_sub_sum_le}
+    \leanok
+    Let $H$ be Hermitian, let the terms $H_k$ with $k\in C\cup B(C)$ be Hermitian
+    with $\|H_k\|\le J$, and let $\beta\ge0$. Then, with
+    $Z=\operatorname{tr}e^{-\beta H}$,
+    \begin{align}
+        \operatorname{tr}e^{-\beta(H-H_C-H_{B(C)})}\le e^{(n_C+n_{B(C)})J\beta}Z.
+        \label{eq:hastings_cluster_removal_trace}
+    \end{align}
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:trace_exp_add_le}
+    The triangle inequality gives
+    $\|\beta(H_C+H_{B(C)})\|\le(n_C+n_{B(C)})J\beta$, and the bound for a
+    Hermitian perturbation in the exponent (Theorem~\ref{thm:trace_exp_add_le}),
+    applied to $-\beta H+\beta(H_C+H_{B(C)})$, gives the claim.
+\end{proof}
+
+\begin{lemma}[The boundary count in the exponent]
+    \label{thm:hastings_cluster_exp_count}
+    \lean{ClusterExpansion.exp_card_add_card_mul_le}
+    \leanok
+    Let $\|H_k\|\le J$ for $k\in C\cup B(C)$, let $\beta\ge0$, and suppose that
+    $n_C+n_{B(C)}\le Sn_C$. Then
+    $e^{(n_C+n_{B(C)})J\beta}\le\bigl(e^{SJ\beta}\bigr)^{n_C}$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    If $C\cup B(C)$ is empty, both sides equal $1$. Otherwise $J\ge0$, so
+    $(n_C+n_{B(C)})J\beta\le Sn_CJ\beta$.
+\end{proof}
+
+\begin{lemma}[The bound on the cluster part]
+    \label{thm:hastings_cluster_part_bound}
+    \lean{ClusterExpansion.norm_trace_mul_clusterPart_le}
+    \leanok
+    \uses{def:hastings_cluster_part}
+    Let $H$ be Hermitian, let the terms $H_k$ with $k\in C\cup B(C)$ be Hermitian
+    with $\|H_k\|\le J$, and let $\beta\ge0$. Then for every operator $O$,
+    with $Z=\operatorname{tr}e^{-\beta H}$,
+    \begin{align}
+        \left|\operatorname{tr}\bigl(O\rho(\beta,C)\bigr)\right|
+        \le\|O\|\bigl(e^{\beta J}-1\bigr)^{n_C}e^{(n_C+n_{B(C)})J\beta}Z.
+        \label{eq:hastings_cluster_part_bound}
+    \end{align}
+    This is the bound stated before equation (percb2)
+    in~\cite[lines 1174--1195]{Hastings2006Solving}, with $\|O\|Z$ in place of the
+    printed $\operatorname{tr}(Oe^{-\beta H})$, which is the form used in (percb2),
+    and with $\|H_C+H_{B(C)}\|\le(n_C+n_{B(C)})J$. The printed form fails: applied
+    to $\pm O$ it would make $\rho(\beta,C)$ a multiple of $e^{-\beta H}$
+    \cite{gap:hastings05_cluster_part_trace_pairing}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{def:hastings_cluster_part, thm:hastings_cluster_removal_trace, thm:trace_exp_alternating_sum}
+    By~(\ref{eq:hastings_cluster_part}) with $E=C\setminus D$, the alternating-sum
+    bound of Theorem~\ref{thm:trace_exp_alternating_sum},
+    applied with $Y=\beta(H-H_C-H_{B(C)})$ and the terms $\beta H_i$, $i\in C$, of
+    norm at most $\beta J$, gives
+    \begin{align}
+        \left|\operatorname{tr}\bigl(O\rho(\beta,C)\bigr)\right|
+        \le\|O\|\bigl(e^{\beta J}-1\bigr)^{n_C}\operatorname{tr}e^{-Y}.\notag
+    \end{align}
+    Lemma~\ref{thm:hastings_cluster_removal_trace} gives
+    $\operatorname{tr}e^{-Y}\le e^{(n_C+n_{B(C)})J\beta}Z$.
+\end{proof}
+
+\begin{lemma}[The boundary count]
+    \label{thm:hastings_cluster_boundary_count}
+    \lean{ClusterExpansion.clusterBoundary,
+        ClusterExpansion.card_add_card_clusterBoundary_le}
+    \leanok
+    Let $C$ be a set of sites, and let $B(C)$ be the set of $j\notin C$ such
+    that $H_j$ acts on some site of $C$. Suppose that every site $i\in C$ has a
+    set $N(i)$ of at most $S$ sites that contains $i$ and every $j$ for which
+    $H_j$ acts on $i$. Then
+    \begin{align}
+        n_C+n_{B(C)}\le Sn_C.\notag
+    \end{align}
+    In~\cite[lines 181--183]{Hastings2006Solving}, $N(i)$ is the set of sites
+    within the interaction range $R$ of $i$, of which there are at most $S$,
+    and $H_j$ acts only on sites within distance $R$ of $j$. This is the second
+    inequality of~\cite[line 1186]{Hastings2006Solving}. The same count holds
+    with $H_j$ acting on $i$ replaced by any relation between terms. For the
+    boundary of terms whose support meets that of $H_C$, which the truncated
+    expansion needs \cite{gap:hastings05_cluster_boundary}, $N(i)$ is the set
+    of terms whose support meets that of $H_i$. Their centres lie within $2R$
+    of $i$, so $S$ counts the sites within distance $2R$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The sets $C$ and $B(C)$ are disjoint, and both lie in
+    $\bigcup_{i\in C}N(i)$, which has at most $Sn_C$ elements.
+\end{proof}
+
+\begin{lemma}[Equation (percb2)]
+    \label{thm:hastings_cluster_part_percb2}
+    \lean{ClusterExpansion.norm_trace_mul_clusterPart_le_pow}
+    \leanok
+    \uses{thm:hastings_cluster_part_bound}
+    In the setting of Lemma~\ref{thm:hastings_cluster_part_bound}, suppose that
+    $n_C+n_{B(C)}\le Sn_C$. Then, with $y=(e^{J\beta}-1)e^{SJ\beta}$,
+    \begin{align}
+        \left|\operatorname{tr}\bigl(O\rho(\beta,C)\bigr)\right|
+        \le\|O\|y^{n_C}Z.
+        \label{eq:hastings_cluster_part_percb2}
+    \end{align}
+    This is equation (percb2) of~\cite[lines 1186--1195]{Hastings2006Solving},
+    multiplied by $Z$. The source obtains $n_C+n_{B(C)}\le Sn_C$ from
+    the lattice, where $S$ bounds the number of terms acting on a site; here it
+    is a hypothesis, which Lemma~\ref{thm:hastings_cluster_boundary_count}
+    supplies.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_cluster_part_bound, thm:hastings_cluster_exp_count}
+    By Lemma~\ref{thm:hastings_cluster_exp_count},
+    $e^{(n_C+n_{B(C)})J\beta}\le e^{SJ\beta n_C}$, and
+    (\ref{eq:hastings_cluster_part_bound}) gives the claim.
+\end{proof}
+
+\begin{lemma}[Several clusters]
+    \label{thm:hastings_cluster_part_several}
+    \lean{ClusterExpansion.norm_trace_mul_clusterPart_biUnion_le}
+    \leanok
+    \uses{thm:hastings_cluster_part_percb2}
+    Let $C_1,\dots,C_m$ be pairwise disjoint clusters with boundaries
+    $B(C_1),\dots,B(C_m)$, each with $n_{C_i}+n_{B(C_i)}\le Sn_{C_i}$, and let
+    $\rho(\beta,C_1,\dots,C_m)$ be the operator~(\ref{eq:hastings_cluster_part})
+    for the cluster $C_1\cup\dots\cup C_m$ and the boundary
+    $B(C_1)\cup\dots\cup B(C_m)$. Under the hypotheses of
+    Lemma~\ref{thm:hastings_cluster_part_bound} on these terms,
+    \begin{align}
+        \left|\operatorname{tr}\bigl(O\rho(\beta,C_1,\dots,C_m)\bigr)\right|
+        \le\|O\|\prod_{i=1}^m y^{n_{C_i}}Z.\notag
+    \end{align}
+    This is the bound on $\rho(\beta,C_1,C_2,\dots)$ that the remark
+    of~\cite[lines 1218--1224]{Hastings2006Solving} derives in the same way as
+    (percb2). For the clusters of one term of the power series, no $C_j$ meets
+    $B(C_i)$, so the operator above is the source's $\rho(\beta,C_1,\dots,C_m)$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_cluster_part_percb2}
+    The union of the clusters has $\sum_in_{C_i}$ sites, and the union of the
+    boundaries has at most $\sum_in_{B(C_i)}$ terms, so the union satisfies
+    $n_C+n_{B(C)}\le Sn_C$. Lemma~\ref{thm:hastings_cluster_part_percb2} gives
+    $\|O\|y^{\sum_in_{C_i}}Z=\|O\|\prod_iy^{n_{C_i}}Z$.
+\end{proof}
+
+\begin{lemma}[The cluster part between thermal factors]
+    \label{thm:hastings_cluster_part_thermal}
+    \lean{ClusterExpansion.norm_trace_mul_exp_mul_clusterPart_mul_exp_le_pow}
+    \leanok
+    \uses{thm:hastings_cluster_part_percb2}
+    In the setting of Lemma~\ref{thm:hastings_cluster_part_percb2}, let $n\ge1$ and
+    $0\le k\le n-1$, and put $y=(e^{J\beta/n}-1)e^{SJ\beta/n}$. Then
+    \begin{align}
+        \left|\operatorname{tr}\bigl(Oe^{-k\beta H/n}\rho(\beta/n,C)
+        e^{-(n-k-1)\beta H/n}\bigr)\right|
+        \le\|O\|y^{n_C}Z.
+        \label{eq:hastings_cluster_part_thermal}
+    \end{align}
+    This is the bound of~\cite[lines 1322--1333]{Hastings2006Solving}, multiplied by $Z$,
+    where $\rho(\beta)=e^{-\beta H}$; the source proves it as (percb2).
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{def:hastings_cluster_part, thm:hastings_cluster_removal_trace,
+        thm:hastings_cluster_exp_count, thm:trace_exp_alternating_sum_between_pow}
+    Put $Y=\beta(H-H_C-H_{B(C)})$. As in the proof of
+    Lemma~\ref{thm:hastings_cluster_part_bound}, $\rho(\beta/n,C)$ is the alternating sum of
+    the $e^{-(Y+\sum_{i\in E}\beta H_i)/n}$ over $E\subseteq C$. The bound for alternating
+    sums between thermal factors (Theorem~\ref{thm:trace_exp_alternating_sum_between_pow}),
+    with the weights $k/n$, $1/n$ and $(n-k-1)/n$ and the terms $\beta H_i$ of norm at most
+    $\beta J$, gives
+    \begin{align}
+        \left|\operatorname{tr}\bigl(Oe^{-k\beta H/n}\rho(\beta/n,C)
+        e^{-(n-k-1)\beta H/n}\bigr)\right|
+        \le\|O\|\bigl(e^{J\beta/n}-1\bigr)^{n_C}Z^{(n-1)/n}
+        \bigl(\operatorname{tr}e^{-Y}\bigr)^{1/n}.\notag
+    \end{align}
+    Lemma~\ref{thm:hastings_cluster_removal_trace} gives
+    $\operatorname{tr}e^{-Y}\le e^{(n_C+n_{B(C)})J\beta}Z$. Taking
+    $1/n$-th powers and using $Z^{(n-1)/n}Z^{1/n}=Z$ bounds the right side by
+    $\|O\|(e^{J\beta/n}-1)^{n_C}e^{(n_C+n_{B(C)})J\beta/n}Z$, and
+    Lemma~\ref{thm:hastings_cluster_exp_count}, with $\beta/n$ in place of
+    $\beta$, bounds $e^{(n_C+n_{B(C)})J\beta/n}$ by $e^{SJ\beta n_C/n}$.
+\end{proof}
+
+\begin{lemma}[Products of cluster parts]
+    \label{thm:hastings_cluster_part_product}
+    \lean{ClusterExpansion.clusterPart_empty_empty,
+        ClusterExpansion.norm_trace_mul_list_prod_clusterPart_le_pow}
+    \leanok
+    \uses{def:hastings_cluster_part}
+    Let $H$ be a Hermitian Hamiltonian, let $\beta\ge0$, and put
+    $Z=\operatorname{tr}e^{-\beta H}$. Let $n\ge1$, and for each $j<n$ let $C_j$ be a
+    cluster with boundary $B_j$ such that the terms $H_k$ with $k\in C_j\cup B_j$ are
+    Hermitian with $\|H_k\|\le J$, and $n_{C_j}+n_{B_j}\le Sn_{C_j}$. With
+    $y=(e^{J\beta/n}-1)e^{SJ\beta/n}$, for every operator $O$,
+    \begin{align}
+        \left|\operatorname{tr}\bigl(O\rho(\beta/n,C_0)\rho(\beta/n,C_1)\cdots
+        \rho(\beta/n,C_{n-1})\bigr)\right|
+        \le\|O\|y^{\sum_jn_{C_j}}Z.
+        \label{eq:hastings_cluster_part_product}
+    \end{align}
+    A factor with $C_j=B_j=\emptyset$ is the thermal factor $e^{-\beta H/n}$, so this bounds
+    every product of thermal factors and cluster parts in the operator $\rho_m$
+    of~\cite[lines 1334--1341]{Hastings2006Solving}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{def:hastings_cluster_part, thm:hastings_cluster_removal_trace,
+        thm:hastings_cluster_exp_count, thm:trace_exp_alternating_sum_product_pow}
+    Put $Y_j=\beta(H-H_{C_j}-H_{B_j})$, so that $\rho(\beta/n,C_j)$ is the alternating sum of
+    the $e^{-(Y_j+\sum_{i\in E}\beta H_i)/n}$ over $E\subseteq C_j$. The bound for products of
+    alternating sums (Theorem~\ref{thm:trace_exp_alternating_sum_product_pow}), with
+    the operator $O$ before the first factor, the identity before the others, the weight $1/n$
+    on every factor and the terms $\beta H_i$ of norm at most $\beta J$, gives
+    \begin{align}
+        \left|\operatorname{tr}\bigl(O\rho(\beta/n,C_0)\cdots\rho(\beta/n,C_{n-1})\bigr)\right|
+        \le\|O\|\prod_j\bigl(e^{J\beta/n}-1\bigr)^{n_{C_j}}
+        \bigl(\operatorname{tr}e^{-Y_j}\bigr)^{1/n}.\notag
+    \end{align}
+    Lemmas~\ref{thm:hastings_cluster_removal_trace} and~\ref{thm:hastings_cluster_exp_count},
+    the latter with $\beta/n$ in place of $\beta$, give
+    $(\operatorname{tr}e^{-Y_j})^{1/n}\le e^{Sn_{C_j}J\beta/n}Z^{1/n}$, and the $n$ factors
+    $Z^{1/n}$ multiply to $Z$.
+\end{proof}
+
+\section{The truncated expansion as an inclusion--exclusion sum}
+\label{sec:hastings_cluster_truncation}
+
+% Hastings, arXiv:cond-mat/0508554v3, proj3new.tex, lines 1090--1138 (active
+% bonds, clusters, the boundary) and 1197--1225 (the inclusion--exclusion sum
+% and the remark added).
+
+Expanding $e^{-\beta H}=\sum_n\frac{(-\beta)^n}{n!}\bigl(\sum_kH_k\bigr)^n$ into
+words $H_{k_1}\cdots H_{k_n}$, the truncated operator
+$\rho(\beta,l_{\mathrm{proj}})$ keeps words containing no cluster of active
+bonds of diameter larger than $l_{\mathrm{proj}}$
+\cite[lines 1090--1114]{Hastings2006Solving} and equals the inclusion--exclusion
+sum $\rho-\rho_1+\rho_2-\cdots$ over families of large clusters
+\cite[lines 1218--1224]{Hastings2006Solving}, provided the cluster boundary
+consists of terms whose supports meet the cluster support
+\cite[lines 1131--1134]{Hastings2006Solving},
+\cite{gap:hastings05_cluster_boundary}.
+
+\begin{definition}[Clusters of a set of terms]
+    \label{def:hastings_cluster_of_terms}
+    \lean{SimpleGraph.overlapGraph,
+        ClusterExpansion.boundary,
+        ClusterExpansion.mem_boundary_overlapGraph,
+        ClusterExpansion.IsCluster,
+        ClusterExpansion.IsAdmissible}
+    \leanok
+    \uses{thm:hastings_cluster_boundary_count}
+    Let $G$ be a graph on a finite term index set $K$ (in the overlap graph,
+    $k\sim k'$ when $k\ne k'$ and their supports meet). For $C\subseteq K$, its
+    \emph{boundary} is $\partial C=\{k\in K\setminus C:\exists c\in C,\ k\sim c\}$.
+    A \emph{cluster} of $A\subseteq K$ is a $G$-connected subset $C\subseteq A$
+    with $A\cap\partial C=\emptyset$. A family $U$ of subsets of $K$ is
+    \emph{admissible} if $C\cap\partial C'=\emptyset$ for all $C,C'\in U$.
+\end{definition}
+
+\begin{lemma}[Clusters that meet]
+    \label{thm:hastings_clusters_meet}
+    \lean{ClusterExpansion.subset_of_connected_of_disjoint_boundary,
+        ClusterExpansion.eq_of_isCluster_of_inter_nonempty,
+        ClusterExpansion.pairwiseDisjoint_of_admissible,
+        ClusterExpansion.biUnion_boundary_eq_of_admissible,
+        ClusterExpansion.card_biUnion_of_admissible,
+        ClusterExpansion.card_add_card_biUnion_boundary_le}
+    \leanok
+    \uses{def:hastings_cluster_of_terms}
+    Intersecting clusters of $A$ coincide. For an admissible family $U$ of
+    connected sets with $C_U=\bigcup_{C\in U}C$, the members of $U$ are pairwise
+    disjoint, $\partial C_U=\bigcup_{C\in U}\partial C$, and if
+    $n_C+n_{\partial C}\le Sn_C$ for all $C\in U$, then
+    $n_{C_U}+n_{\partial C_U}\le Sn_{C_U}$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    If $C$ is connected, $C\cap C'\ne\emptyset$, and $C\cap\partial C'=\emptyset$,
+    any path in $C$ from $C\cap C'$ stays in $C'$, so $C\subseteq C'$; symmetry
+    gives equality for intersecting clusters of $A$ and pairwise disjointness for
+    admissible families, whence $\partial C_U=\bigcup_{C\in U}\partial C$ and
+    the additive size bound.
+\end{proof}
+
+\begin{lemma}[Words containing a set of terms]
+    \label{thm:hastings_words_inclusion_exclusion}
+    \lean{ClusterExpansion.sum_pow_eq_sum_words,
+        ClusterExpansion.sum_powerset_neg_one_pow_card_disjoint,
+        ClusterExpansion.sum_words_contain_avoid}
+    \leanok
+    In any ring, $(\sum_{k\in s}a_k)^n=\sum_{w\in s^n}a_{w_1}\cdots a_{w_n}$,
+    and for disjoint $B,C\subseteq K$, the sum of $a_{w_1}\cdots a_{w_n}$ over
+    words of length $n$ whose letter set $X$ satisfies $C\subseteq X$ and
+    $X\cap B=\emptyset$ equals
+    \begin{align}
+        \sum_{D\subseteq C}(-1)^{|D|}\Bigl(\sum_{k\notin B\cup D}a_k\Bigr)^n.
+        \label{eq:hastings_words_inclusion_exclusion}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    For $X\cap B=\emptyset$,
+    $\sum_{D\subseteq C\setminus X}(-1)^{|D|}=[C\subseteq X]$.
+\end{proof}
+
+\begin{lemma}[The cluster part as a sum of words]
+    \label{thm:hastings_cluster_part_words}
+    \lean{ClusterExpansion.hasSum_div_factorial_smul_pow,
+        ClusterExpansion.hasSum_words_clusterPart}
+    \leanok
+    \uses{thm:hastings_words_inclusion_exclusion, def:hastings_cluster_part}
+    For $H=\sum_{k\in K}H_k$ and disjoint $B,C\subseteq K$, the words whose
+    letter set contains $C$ and avoids $B$, weighted by $(-\beta)^n/n!$, sum to
+    $\rho(\beta,C)$ of (\ref{eq:hastings_cluster_part}) with boundary $B$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Sum (\ref{eq:hastings_words_inclusion_exclusion}) weighted by
+    $(-\beta)^n/n!$ over $n\ge0$.
+\end{proof}
+
+\begin{definition}[The truncated operator]
+    \label{def:hastings_truncated_expansion}
+    \lean{ClusterExpansion.NoLargeCluster,
+        ClusterExpansion.largeConnected,
+        ClusterExpansion.truncatedExpTerm,
+        ClusterExpansion.truncatedExp}
+    \leanok
+    \uses{def:hastings_cluster_of_terms}
+    For a set $T$ of large connected subsets of $K$, $\rho(\beta,l)$ is the sum
+    over $n\ge0$ of $\frac{(-\beta)^n}{n!}\sum H_{k_1}\cdots H_{k_n}$ restricted
+    to words whose letter set has no cluster in $T$
+    \cite[lines 1101--1104]{Hastings2006Solving}.
+\end{definition}
+
+\begin{lemma}[Inclusion and exclusion for one word]
+    \label{thm:hastings_word_large_clusters}
+    \lean{ClusterExpansion.mem_largeConnected,
+        ClusterExpansion.forall_isCluster_iff,
+        ClusterExpansion.ite_noLargeCluster_eq_sum}
+    \leanok
+    \uses{thm:hastings_clusters_meet, def:hastings_truncated_expansion}
+    For $A\subseteq K$, summing over admissible $U\subseteq T$ with
+    $\bigcup_{C\in U}C\subseteq A$ and
+    $A\cap\bigcup_{C\in U}\partial C=\emptyset$ gives
+    \begin{align}
+        [\text{no cluster of }A\text{ lies in }T]
+        =\sum_{U}(-1)^{|U|}.
+        \label{eq:hastings_word_large_clusters}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    Such $U$ are precisely the subsets of the set $L$ of large clusters of $A$,
+    and $\sum_{U\subseteq L}(-1)^{|U|}=[L=\emptyset]$.
+\end{proof}
+
+\begin{lemma}[The truncated operator by inclusion and exclusion]
+    \label{thm:hastings_truncation_inclusion_exclusion}
+    \lean{ClusterExpansion.hasSum_truncatedExpTerm,
+        ClusterExpansion.truncatedExp_eq_sum,
+        ClusterExpansion.exp_sub_truncatedExp}
+    \leanok
+    \uses{thm:hastings_word_large_clusters, thm:hastings_cluster_part_words,
+        def:hastings_truncated_expansion}
+    For $H=\sum_{k\in K}H_k$, the series $\rho(\beta,l)$ converges and, summing
+    over admissible $U\subseteq T$ with $\rho(\beta,U)$ given by
+    (\ref{eq:hastings_cluster_part}) for $\bigl(\bigcup_{C\in U}C,\bigcup_{C\in U}\partial C\bigr)$,
+    \begin{align}
+        \rho(\beta,l)=\sum_U(-1)^{|U|}\rho(\beta,U),\qquad
+        e^{-\beta H}-\rho(\beta,l)=-\sum_{U\neq\emptyset}(-1)^{|U|}\rho(\beta,U)
+        \label{eq:hastings_truncation_inclusion_exclusion}
+    \end{align}
+    \cite[lines 1197--1225]{Hastings2006Solving},
+    \cite{gap:hastings05_cluster_boundary}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Substitute (\ref{eq:hastings_word_large_clusters}) into
+    Definition~\ref{def:hastings_truncated_expansion}, exchange sums, and apply
+    Lemma~\ref{thm:hastings_cluster_part_words} (with $\rho(\beta,\emptyset)=e^{-\beta H}$).
+\end{proof}
+
+\begin{lemma}[The bound summed by the percolation estimate]
+    \label{thm:hastings_truncation_trace_bound}
+    \lean{ClusterExpansion.norm_trace_mul_exp_sub_truncatedExp_le}
+    \leanok
+    \uses{thm:hastings_truncation_inclusion_exclusion,
+        thm:hastings_cluster_part_several}
+    If $H=\sum_kH_k$ has Hermitian terms with $\|H_k\|\le J$, $\beta\ge0$, and
+    $n_C+n_{\partial C}\le Sn_C$ for all $C\in T$, then for every $O$, with
+    $y=(e^{J\beta}-1)e^{SJ\beta}$ and $Z=\operatorname{tr}e^{-\beta H}$,
+    \begin{align}
+        \bigl|\operatorname{tr}\bigl(O(e^{-\beta H}-\rho(\beta,l))\bigr)\bigr|
+        \le\|O\|Z\sum_{U\neq\emptyset}\prod_{C\in U}y^{n_C}.
+        \label{eq:hastings_truncation_trace_bound}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncation_inclusion_exclusion,
+        thm:hastings_cluster_part_several, thm:hastings_clusters_meet}
+    Apply Lemmas~\ref{thm:hastings_cluster_part_several}
+    and~\ref{thm:hastings_clusters_meet} to each term of
+    (\ref{eq:hastings_truncation_inclusion_exclusion}).
+\end{proof}
+
+\begin{definition}[The operator of a set of terms]
+    \label{def:hastings_cluster_operator}
+    \lean{ClusterExpansion.clusterOp,
+        ClusterExpansion.clusterOp_eq_clusterPart,
+        ClusterExpansion.hasSum_words_clusterOp}
+    \leanok
+    \uses{thm:hastings_cluster_part_words}
+    For $A\subseteq K$ and $H_D=\sum_{k\in D}H_k$, define
+    \begin{align}
+        E_A=\sum_{D\subseteq A}(-1)^{|A\setminus D|}e^{-\beta H_D},
+        \label{eq:hastings_cluster_operator}
+    \end{align}
+    which sums the words in the expansion of $e^{-\beta H}$ whose letter set is
+    exactly $A$ \cite[lines 1268--1269]{Hastings2006Solving}.
+\end{definition}
+
+\begin{lemma}[The truncated operator as a sum of products over clusters]
+    \label{thm:hastings_truncation_cluster_products}
+    \lean{ClusterExpansion.truncatedExp_eq_sum_clusterOp,
+        ClusterExpansion.clusterOp_union,
+        ClusterExpansion.clusters,
+        ClusterExpansion.biUnion_clusters,
+        ClusterExpansion.clusterOp_eq_noncommProd_clusters,
+        ClusterExpansion.truncatedExp_eq_sum_noncommProd_clusters}
+    \leanok
+    \uses{def:hastings_cluster_operator, def:hastings_truncated_expansion,
+        def:hastings_cluster_of_terms}
+    Summing over $A\subseteq K$ with no cluster in $T$,
+    $\rho(\beta,l)=\sum_AE_A$. If non-adjacent terms commute, then
+    $E_A=\prod_{C\in\mathrm{clusters}(A)}E_C$ with commuting factors
+    \cite[lines 1108--1110]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{def:hastings_cluster_operator, thm:hastings_clusters_meet}
+    Grouping words by letter set $A$ gives $\rho(\beta,l)=\sum_AE_A$. For
+    disjoint commuting sets $A,B$,
+    $e^{-\beta H_{D_1\cup D_2}}=e^{-\beta H_{D_1}}e^{-\beta H_{D_2}}$ yields
+    $E_{A\cup B}=E_AE_B$; induct over the clusters partitioning $A$.
+\end{proof}
+
+\section{The percolation sum in Hastings' cluster expansion}
+\label{sec:hastings_percolation}
+
+% Hastings, arXiv:cond-mat/0508554v3, proj3new.tex, lines 1196--1254 (the
+% inclusion--exclusion sum over large clusters and eq. perc2).
+
+At high temperature, \cite[lines 1196--1225]{Hastings2006Solving} bounds
+$e^{-\beta H}-\rho(\beta,l_{\rm proj})$ via an inclusion--exclusion sum over
+families $U$ of clusters of diameter $>l_{\rm proj}$, where each $U$ contributes
+at most $\|O\|\prod_{C\in U}a_C$ with $0\le a_C\le y^{n_C}$ and
+$y=(e^{J\beta}-1)e^{SJ\beta}$. For terms of range $R$, a cluster of $n$ terms
+has diameter at most $2Rn$, so diameter $>l_{\rm proj}$ implies
+$n_C\ge l+1$ with $l=\lfloor l_{\rm proj}/(2R)\rfloor$, correcting the
+nearest-neighbour threshold $l_{\rm proj}+1$ of
+\cite[line 1240]{Hastings2006Solving}; see
+\cite{gap:hastings05_percolation_cluster_size}.
+
+\begin{lemma}[Families of a given number of clusters]
+    \label{thm:hastings_percolation_families}
+    \lean{ClusterExpansion.sum_powersetCard_prod_le}
+    \leanok
+    For a finite set $T$ with weights $a_C\ge0$ ($C\in T$) and $m\in\mathbb N$,
+    \begin{align}
+        \sum_{U\subseteq T,\ |U|=m}\ \prod_{C\in U}a_C
+        \le\frac1{m!}\Bigl(\sum_{C\in T}a_C\Bigr)^m
+        \label{eq:hastings_percolation_families}
+    \end{align}
+    \cite[line 1210]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Induct on $|T|$: for $b\notin T$ and $s=\sum_{C\in T}a_C$,
+    $s^{m+1}/(m+1)!+a_bs^m/m!\le(s+a_b)^{m+1}/(m+1)!$.
+\end{proof}
+
+\begin{lemma}[All nonempty families of clusters]
+    \label{thm:hastings_percolation_exp}
+    \lean{ClusterExpansion.sum_nonempty_powerset_prod_eq,
+        ClusterExpansion.sum_nonempty_powerset_prod_le_exp}
+    \leanok
+    For a finite set $T$ with weights $a_C\ge0$ ($C\in T$),
+    \begin{align}
+        \sum_{\emptyset\ne U\subseteq T}\ \prod_{C\in U}a_C
+        =\prod_{C\in T}(1+a_C)-1
+        \le\exp\Bigl(\sum_{C\in T}a_C\Bigr)-1
+        \label{eq:hastings_percolation_exp}
+    \end{align}
+    \cite[lines 1238--1241]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Expand $\prod_{C\in T}(1+a_C)$ and use $1+a_C\le e^{a_C}$.
+\end{proof}
+
+\begin{lemma}[The sum over large clusters]
+    \label{thm:hastings_percolation_cluster_sum}
+    \lean{ClusterExpansion.sum_pow_le_of_forall_lt,
+        ClusterExpansion.sum_pow_le_of_card_le}
+    \leanok
+    If every $C\in T$ has $n_C\ge l+1$, $|\{C\in T:n_C=k\}|\le Nx^k$ for all
+    $k$ ($N\ge0$), and $x,y\ge0$ with $xy<1$, then
+    \begin{align}
+        \sum_{C\in T}y^{n_C}
+        \le N\frac{(xy)^{l+1}}{1-xy}
+        \label{eq:hastings_percolation_cluster_sum}
+    \end{align}
+    \cite[lines 1238--1241]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Group by $k=n_C\ge l+1$ and bound
+    \begin{align}
+        \sum_{k\ge l+1}N(xy)^k=N\frac{(xy)^{l+1}}{1-xy}.
+        \notag
+    \end{align}
+\end{proof}
+
+\begin{lemma}[The percolation bound]
+    \label{thm:hastings_percolation}
+    \lean{ClusterExpansion.sum_nonempty_powerset_prod_le_percolation,
+        ClusterExpansion.pow_succ_div_one_sub_le,
+        ClusterExpansion.pow_eq_exp_neg_div}
+    \leanok
+    \uses{thm:hastings_percolation_exp, thm:hastings_percolation_cluster_sum}
+    In the setting of Lemma~\ref{thm:hastings_percolation_cluster_sum}, if
+    $0\le a_C\le y^{n_C}$, $0<xy\le1/2$, and $\xi=1/\ln(1/(xy))$, then
+    \begin{align}
+        \sum_{\emptyset\ne U\subseteq T}\ \prod_{C\in U}a_C
+        \le\exp\bigl(Ne^{-l/\xi}\bigr)-1
+        \label{eq:hastings_percolation}
+    \end{align}
+    \cite[eq.~(perc2), lines 1227--1254]{Hastings2006Solving},
+    \cite{gap:hastings05_percolation_cluster_size}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_percolation_exp, thm:hastings_percolation_cluster_sum}
+    Combine (\ref{eq:hastings_percolation_exp}) and
+    (\ref{eq:hastings_percolation_cluster_sum}) with
+    $(xy)^{l+1}/(1-xy)\le(xy)^l=e^{-l/\xi}$ for $0<xy\le1/2$.
+\end{proof}
+
+\begin{lemma}[The percolation bound for connected clusters]
+    \label{thm:hastings_percolation_connected}
+    \lean{ClusterExpansion.sum_nonempty_powerset_prod_le_percolation_connected}
+    \leanok
+    \uses{thm:hastings_percolation, thm:hastings_connected_set_count}
+    Let $G$ be a simple graph on $N$ vertices of maximum degree $\Delta$,
+    $x=\max(1,\Delta^2)$, and $T$ be a family of connected vertex sets $C$ with
+    $|C|\ge l+1$ and weights $0\le a_C\le y^{|C|}$. If $0<xy\le1/2$, then
+    (\ref{eq:hastings_percolation}) holds with $\xi=1/\ln(1/(xy))$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_percolation, thm:hastings_connected_set_count}
+    Combine Lemma~\ref{thm:hastings_connected_set_count}
+    ($|\{C\in T:|C|=k\}|\le Nx^k$) with Lemma~\ref{thm:hastings_percolation}.
+\end{proof}
+
+\begin{lemma}[A percolation temperature]
+    \label{thm:hastings_percolation_temperature}
+    \lean{ClusterExpansion.exists_percolation_temperature}
+    \leanok
+    For any $J,S,x\in\mathbb R$ there exists $\beta_0>0$ such that
+    $x(e^{J\beta}-1)e^{SJ\beta}\le1/2$ for all $0\le\beta\le\beta_0$
+    \cite[lines 1242--1245]{Hastings2006Solving}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The function $\beta\mapsto x(e^{J\beta}-1)e^{SJ\beta}$ is continuous and
+    vanishes at $\beta=0$.
+\end{proof}
+
+\begin{definition}[Clusters of large diameter]
+    \label{def:hastings_large_diameter}
+    \lean{ClusterExpansion.IsLargeDiam}
+    \leanok
+    \uses{def:hastings_cluster_of_terms}
+    For terms $H_k$ supported in a metric space of sites, a set $C$ of terms has
+    \emph{large diameter} if the support of $H_C$ contains two sites at distance
+    $>l_{\mathrm{proj}}$ \cite[lines 1104--1107]{Hastings2006Solving}.
+\end{definition}
+
+\begin{lemma}[Size and number of clusters of large diameter]
+    \label{thm:hastings_large_diameter_count}
+    \lean{ClusterExpansion.dist_le_of_walk,
+        ClusterExpansion.dist_le_of_mem_biUnion_of_connected,
+        ClusterExpansion.card_ge_of_isLargeDiam,
+        ClusterExpansion.card_add_card_boundary_le}
+    \leanok
+    \uses{def:hastings_large_diameter}
+    If every term support has diameter at most $2R$ ($R>0$) and overlaps at most
+    $\Delta$ other terms, then any connected set of $n$ terms has support
+    diameter at most $2Rn$, every large-diameter connected set $C$ satisfies
+    $n_C\ge\lfloor l_{\mathrm{proj}}/(2R)\rfloor+1$, and
+    $n_C+n_{\partial C}\le(\Delta+1)n_C$
+    \cite[line 1235]{Hastings2006Solving},
+    \cite{gap:hastings05_percolation_cluster_size}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Any two sites in the support of $C$ are connected by an overlap walk of at
+    most $n$ supports of diameter $\le2R$, giving distance $\le2Rn$, and each
+    $k\in\partial C$ overlaps some $c\in C$.
+\end{proof}
+
+\begin{lemma}[The percolation bound for clusters of large diameter]
+    \label{thm:hastings_percolation_large_diameter}
+    \lean{ClusterExpansion.norm_trace_mul_exp_sub_truncatedExp_le_isLargeDiam,
+        ClusterExpansion.exp_neg_floor_div_le,
+        ClusterExpansion.norm_trace_mul_exp_sub_truncatedExp_le_isLargeDiam_dist}
+    \leanok
+    \uses{thm:hastings_large_diameter_count, thm:hastings_truncation_trace_bound,
+        thm:hastings_percolation_connected}
+    In the setting of Lemma~\ref{thm:hastings_large_diameter_count}, let
+    $H=\sum_kH_k$ have $N$ Hermitian terms with $\|H_k\|\le J$, $\beta\ge0$,
+    $x=\max(1,\Delta^2)$, $y=(e^{J\beta}-1)e^{(\Delta+1)J\beta}$, and
+    $0<xy\le1/2$. With $Z=\operatorname{tr}e^{-\beta H}$,
+    $l=\lfloor l_{\mathrm{proj}}/(2R)\rfloor$, $\xi=1/\ln(1/(xy))$, and
+    $\xi_{\mathrm{perc}}=2R/\ln(1/(xy))$, for every $O$,
+    \begin{align}
+        \bigl|\operatorname{tr}\bigl(O(e^{-\beta H}-\rho(\beta,l_{\mathrm{proj}}))\bigr)\bigr|
+         & \le\|O\|\bigl(\exp(Ne^{-l/\xi})-1\bigr)Z
+        \notag                                                                               \\
+         & \le\|O\|\bigl(\exp(N(xy)^{-1}e^{-l_{\mathrm{proj}}/\xi_{\mathrm{perc}}})-1\bigr)Z
+        \label{eq:hastings_percolation_large_diameter}
+    \end{align}
+    \cite[eq.~(perc2), lines 1227--1254]{Hastings2006Solving},
+    \cite{gap:hastings05_percolation_cluster_size,gap:hastings05_cluster_boundary}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_large_diameter_count, thm:hastings_truncation_trace_bound,
+        thm:hastings_percolation_connected}
+    Combine Lemma~\ref{thm:hastings_truncation_trace_bound} ($S=\Delta+1$),
+    Lemma~\ref{thm:hastings_large_diameter_count}, and
+    Lemma~\ref{thm:hastings_percolation_connected}, using
+    $l\ge l_{\mathrm{proj}}/(2R)-1$.
+\end{proof}
+
+\section{The trace-norm bound and every temperature in Hastings' thermal expansion}
+\label{sec:hastings_thermal_trace_norm}
+
+% Hastings, arXiv:cond-mat/0508554v3, proj3new.tex, lines 1281--1301 (the
+% trace-norm form) and 1303--1320 (eq. mplt, every temperature).
+
+Two steps of \cite[Section~IV]{Hastings2006Solving} follow the high-temperature
+cluster expansion. The first turns its bound on expectation values into a bound
+in trace norm. The second extends the expansion to every temperature by taking an
+even power of the high-temperature operator, eq.~(mplt) of
+\cite[lines 1303--1317]{Hastings2006Solving}. This section proves the first step
+and the positivity of the even power for general operators. The truncated
+density matrix $\rho(\beta,l_{\mathrm{proj}})$ of the cluster expansion enters
+only through the hypotheses. Its error bound at every temperature
+\cite[lines 1322--1349]{Hastings2006Solving} is proved in
+Section~\ref{sec:hastings_temperature_error}. The trace norm of a square matrix $D$ is
+$\|D\|_1=\operatorname{Tr}\sqrt{D^\dagger D}$, and $\|O\|$ is the operator norm.
+
+\begin{lemma}[The trace norm from expectation values]
+    \label{thm:hastings_thermal_trace_norm_duality}
+    \lean{Matrix.re_trace_sqrt_conjTranspose_mul_self_le_of_forall_norm_trace_mul_le}
+    \leanok
+    Let $D$ be a square complex matrix and $\epsilon$ a real number. If
+    $|\operatorname{Tr}(OD)|\le\epsilon$ for every matrix $O$ with
+    $\|O\|\le1$, then $\|D\|_1\le\epsilon$.
+\end{lemma}
+\begin{proof}\leanok
+    The polar decomposition writes $D=U\sqrt{D^\dagger D}$ with $U$ unitary.
+    Then $O=U^\dagger$ has $\|O\|\le1$ and
+    $\operatorname{Tr}(OD)=\operatorname{Tr}\sqrt{D^\dagger D}=\|D\|_1$. For a
+    Hermitian $D$ this $O$ may be taken to be the operator of signs of the
+    eigenvalues of $D$ that \cite[lines 1291--1294]{Hastings2006Solving} uses;
+    the polar decomposition removes the need for $D$ to be Hermitian.
+\end{proof}
+
+\begin{theorem}[The trace-norm form of the cluster-expansion bound]
+    \label{thm:hastings_thermal_trace_norm}
+    \lean{ClusterExpansion.re_trace_sqrt_sub_le_of_forall_norm_trace_mul_sub_le}
+    \leanok
+    Let $\rho$ and $\sigma$ be square complex matrices with
+    $\operatorname{Re}\operatorname{Tr}\rho\ge0$, and let $\epsilon\ge0$. If
+    \begin{align}
+        |\operatorname{Tr}(O\rho)-\operatorname{Tr}(O\sigma)|
+        \le\epsilon\,\|O\|\operatorname{Re}\operatorname{Tr}\rho
+    \end{align}
+    for every matrix $O$, then
+    $\|\rho-\sigma\|_1\le\epsilon\operatorname{Re}\operatorname{Tr}\rho$. For the
+    thermal state $\rho=\rho(\beta)$, which is positive with
+    $\operatorname{Tr}\rho(\beta)=Z=\|\rho(\beta)\|_1$, and
+    $\sigma=\rho(\beta,l_{\mathrm{proj}})$, the hypothesis is the bound of
+    Lemma~\ref{thm:hastings_percolation_large_diameter} with
+    $\epsilon=\exp[N(xy)^{-1}\exp(-l_{\mathrm{proj}}/\xi_{\mathrm{perc}})]-1$.
+    The factor $(xy)^{-1}$ is the size-threshold correction to eq.~(perc2)
+    \cite{gap:hastings05_percolation_cluster_size}. The conclusion is the
+    corresponding trace-norm bound of \cite[lines 1281--1299]{Hastings2006Solving}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hastings_thermal_trace_norm_duality}
+    For $\|O\|\le1$ the hypothesis gives
+    $|\operatorname{Tr}(O(\rho-\sigma))|\le\epsilon\operatorname{Re}\operatorname{Tr}\rho$,
+    since $\epsilon\ge0$. Apply
+    Lemma~\ref{thm:hastings_thermal_trace_norm_duality} to $D=\rho-\sigma$.
+\end{proof}
+
+\begin{lemma}[Even powers and the number of factors]
+    \label{thm:hastings_even_powers}
+    \lean{ClusterExpansion.posSemidef_pow_two_mul,
+        ClusterExpansion.posSemidef_pow_of_even,
+        ClusterExpansion.exists_even_div_le}
+    \leanok
+    Let $\rho$ be a Hermitian matrix and let $m$ be even. Then $\rho^m$ is
+    positive semidefinite. For $\beta\ge0$ and $\beta_0>0$ there is an even
+    $m\ge2$ with $\beta/m\le\beta_0$. This is the positivity part of eq.~(mplt)
+    of \cite[lines 1303--1317]{Hastings2006Solving}, with positive
+    semidefiniteness in place of the source's positive definiteness, which would
+    need $\rho(\beta/m,l_{\mathrm{proj}})$ to be
+    invertible~\cite{gap:hastings05_mplt_positivity}.
+\end{lemma}
+\begin{proof}\leanok
+    For $m=2k$, $\rho^m=(\rho^k)^\dagger\rho^k$ since $\rho^k$ is Hermitian, and
+    this is positive semidefinite. For the number of factors take
+    $m=2(\lceil\beta/\beta_0\rceil+1)$.
+\end{proof}
+
+\begin{lemma}[Positivity of the truncated operator at every temperature]
+    \label{thm:hastings_truncated_positivity}
+    \lean{ClusterExpansion.isHermitian_clusterPart,
+        ClusterExpansion.isHermitian_truncatedExp,
+        ClusterExpansion.posSemidef_truncatedExp_pow}
+    \leanok
+    \uses{def:hastings_truncated_expansion, def:hastings_cluster_part}
+    Let $H=\sum_kH_k$ with Hermitian terms $H_k$. Then every cluster part
+    $\rho(\beta,C)$ and the truncated operator $\rho(\beta,l)$ are Hermitian, and
+    for every even $m$ the power $\rho(\beta,l)^m$ is positive semidefinite. With
+    $\beta/m$ in place of $\beta$, this is the positivity of
+    $\rho(\beta,l_{\mathrm{proj}})=\rho(\beta/m,l_{\mathrm{proj}})^m$ in
+    eq.~(mplt) of \cite[lines 1303--1314]{Hastings2006Solving}, with positive
+    semidefiniteness in place of positive
+    definiteness~\cite{gap:hastings05_mplt_positivity}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_truncation_inclusion_exclusion,
+        thm:hastings_even_powers}
+    Each $\rho(\beta,C)$ is a sum of the exponentials $e^{-\beta(H-H_B-H_D)}$ of
+    Hermitian operators with coefficients $\pm1$, hence Hermitian. By
+    Lemma~\ref{thm:hastings_truncation_inclusion_exclusion}, $\rho(\beta,l)$ is a
+    sum of the $\rho(\beta,U)$ with coefficients $\pm1$, hence Hermitian, and
+    Lemma~\ref{thm:hastings_even_powers} gives the positivity of
+    its even powers.
+\end{proof}
+
+\begin{lemma}[The least sufficient even number of factors]
+    \label{thm:hastings_even_temperature_factors}
+    \lean{ClusterExpansion.evenTemperatureFactors,
+        ClusterExpansion.evenTemperatureFactors_spec,
+        ClusterExpansion.evenTemperatureFactors_le,
+        ClusterExpansion.exp_evenTemperatureFactors_mul_sub_one_le}
+    \leanok
+    For $\beta>0$ and $\beta_0>0$, put
+    $n=2\lceil\beta/(2\beta_0)\rceil$. Then $n\ge2$ is the least
+    positive even integer with $\beta/n\le\beta_0$, and
+    \begin{align*}
+        \beta/\beta_0\le n<\beta/\beta_0+2.
+    \end{align*}
+    Consequently, for every $A\ge0$,
+    $e^{nA}-1\le e^{(\beta/\beta_0+2)A}-1$.
+    This supplies the exact rounding bound for the choice in
+    \cite[lines 1307--1312]{Hastings2006Solving} and its corrected
+    error estimate\cite{gap:hastings05_temperature_factor_count}.
+\end{lemma}
+\begin{proof}\leanok
+    The ceiling lies between $\beta/(2\beta_0)$ and
+    $\beta/(2\beta_0)+1$. Multiplication by two gives the displayed
+    interval and $\beta/n\le\beta_0$. Any sufficient positive even
+    integer is $2k$ with $k\ge\beta/(2\beta_0)$, hence is at least $n$.
+    The last inequality follows from monotonicity of the exponential.
+\end{proof}
+
+\section{The error of the truncated expansion at every temperature}
+\label{sec:hastings_temperature_error}
+
+At an arbitrary inverse temperature $\beta$, the truncated operator is used in
+$n$ factors: Hastings replaces $e^{-\beta H}=(e^{-\beta H/n})^n$ by the product
+$\rho(\beta/n,l)^n$ of $n$ truncated factors, each at the inverse temperature
+$\beta/n$ \cite[lines 1303--1314]{Hastings2006Solving}. The error is the sum of
+the operators $\rho_m$ of the terms with at least $m$ large clusters across the
+$n$ factors \cite[lines 1334--1341]{Hastings2006Solving}, and it is estimated
+``following the same arguments as before''
+\cite[lines 1342--1347]{Hastings2006Solving}. This section carries out that
+estimate. Throughout, $y=(e^{J\beta/n}-1)e^{SJ\beta/n}$ and
+$Z=\operatorname{tr}e^{-\beta H}$.
+
+\begin{lemma}[The error of the product of truncated factors]
+    \label{thm:hastings_temperature_error}
+    \lean{ClusterExpansion.sum_prod_le_exp_of_subset_powerset,
+        ClusterExpansion.norm_trace_mul_exp_sub_truncatedExp_pow_le}
+    \leanok
+    \uses{thm:hastings_truncation_inclusion_exclusion,
+        thm:hastings_cluster_part_product, thm:hastings_percolation_exp}
+    Let $H=\sum_kH_k$ be Hermitian with Hermitian terms of norm at most $J$, let
+    $\beta\ge0$ and $n\ge1$, and let every large connected set $C$ have
+    $n_C+n_{\partial C}\le Sn_C$. Then for every operator $O$
+    \begin{align}
+        \bigl|\operatorname{tr}\bigl(O(e^{-\beta H}-\rho(\beta/n,l)^n)\bigr)\bigr|
+        \le\|O\|\Bigl(\exp\Bigl(n\sum_Cy^{n_C}\Bigr)-1\Bigr)Z,
+        \label{eq:hastings_temperature_error}
+    \end{align}
+    summed over the large connected sets $C$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_truncation_inclusion_exclusion,
+        thm:hastings_words_inclusion_exclusion, thm:hastings_cluster_part_product,
+        thm:hastings_percolation_exp, thm:hastings_clusters_meet}
+    By Lemma~\ref{thm:hastings_truncation_inclusion_exclusion} at the inverse
+    temperature $\beta/n$, each factor is $\sum_U(-1)^{|U|}\rho(\beta/n,U)$ over
+    the admissible families $U$ of large connected sets, and the empty family
+    gives $e^{-\beta H/n}$. Expanding the $n$-th power gives a sum over the
+    sequences $(U_0,\dots,U_{n-1})$ of admissible families of the ordered
+    products $\prod_j(-1)^{|U_j|}\rho(\beta/n,U_j)$, and the sequence of empty
+    families gives $e^{-\beta H}$. The members of an admissible family are
+    pairwise disjoint (Lemma~\ref{thm:hastings_clusters_meet}), so the union
+    of $U_j$ has $\sum_{C\in U_j}n_C$ terms and satisfies the hypothesis of
+    Lemma~\ref{thm:hastings_cluster_part_product}, which bounds the term of
+    every other sequence by $\|O\|Z\prod_jf(U_j)$ with
+    $f(U)=\prod_{C\in U}y^{n_C}$. Summing over the sequences other than the
+    empty one gives $\|O\|Z\bigl((\sum_Uf(U))^n-1\bigr)$. The nonempty admissible
+    families are among the nonempty sets of large connected sets, so
+    Lemma~\ref{thm:hastings_percolation_exp} gives
+    $\sum_Uf(U)\le\exp(\sum_Cy^{n_C})$, and the $n$-th power of this is the
+    exponential in~(\ref{eq:hastings_temperature_error}).
+\end{proof}
+
+Grouping the sequences by their total number $m$ of large clusters recovers the
+bound $(1/m!)(n\sum_Cy^{n_C})^m$ on the operator $\rho_m$
+of~\cite[lines 1334--1341]{Hastings2006Solving}.
+
+\begin{theorem}[The error at every temperature, percolation form]
+    \label{thm:hastings_temperature_error_percolation}
+    \lean{ClusterExpansion.norm_trace_mul_exp_sub_truncatedExp_pow_le_percolation}
+    \leanok
+    \uses{thm:hastings_temperature_error, thm:hastings_percolation_cluster_sum,
+        thm:hastings_percolation}
+    In the setting of Lemma~\ref{thm:hastings_temperature_error}, let every
+    large connected set have at least $l+1$ terms, let at most $Nx^k$ large
+    connected sets have $k$ terms, for every $k$, where $N,x\ge0$, and let
+    $0<xy\le1/2$. Put $\xi=1/\ln(1/(xy))$. Then for every operator $O$
+    \begin{align*}
+        \bigl|\operatorname{tr}\bigl(O(e^{-\beta H}-\rho(\beta/n,l)^n)\bigr)\bigr|
+        \le\|O\|\bigl(\exp(nNe^{-l/\xi})-1\bigr)Z.
+    \end{align*}
+    The source prints the bound
+    $\{\exp[(\beta/\beta_0)Ne^{-l/\xi}]-1\}\|O\|$ on
+    $Z^{-1}|\operatorname{tr}O\rho(\beta)-\operatorname{tr}O\rho(\beta,l)|$
+    \cite[lines 1342--1347]{Hastings2006Solving}, with $\beta/\beta_0$ in place of
+    the number $n$ of factors. Its $n$, the smallest even integer with
+    $\beta/n\le\beta_0$, satisfies $\beta/\beta_0\le n<\beta/\beta_0+2$, and its bound
+    on $\rho_m$ gives the exponent with $n$, which is the bound proved here
+    \cite{gap:hastings05_temperature_factor_count}. The threshold $l$ counts the
+    terms of a large connected set rather than its diameter, as in
+    Lemma~\ref{thm:hastings_percolation}
+    \cite{gap:hastings05_percolation_cluster_size}.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    \uses{thm:hastings_temperature_error, thm:hastings_percolation_cluster_sum,
+        thm:hastings_percolation}
+    Lemma~\ref{thm:hastings_percolation_cluster_sum} bounds
+    $\sum_Cy^{n_C}$ by $N(xy)^{l+1}/(1-xy)$, which is at most
+    $N(xy)^l=Ne^{-l/\xi}$ since $xy\le1/2$, as in
+    Lemma~\ref{thm:hastings_percolation}. Insert this into
+    Lemma~\ref{thm:hastings_temperature_error}.
+\end{proof}
+
+\begin{corollary}[The corrected temperature-ratio bound]
+    \label{cor:hastings_temperature_error_add_two}
+    \lean{ClusterExpansion.norm_trace_mul_exp_sub_truncatedExp_pow_le_percolation_add_two}
+    \leanok
+    \uses{thm:hastings_temperature_error_percolation,
+        thm:hastings_even_temperature_factors}
+    In Theorem~\ref{thm:hastings_temperature_error_percolation}, take
+    $\beta>0$, $\beta_0>0$ and
+    $n=2\lceil\beta/(2\beta_0)\rceil$. Then
+    \begin{align*}
+        \bigl|\operatorname{tr}\bigl(O(e^{-\beta H}-\rho(\beta/n,l)^n)\bigr)\bigr|
+        \le\|O\|\bigl(\exp[(\beta/\beta_0+2)Ne^{-l/\xi}]-1\bigr)Z.
+    \end{align*}
+    This is the explicit correction to the printed temperature factor
+    in \cite[lines 1342--1347]{Hastings2006Solving}
+    recorded in \cite{gap:hastings05_temperature_factor_count}.
+\end{corollary}
+\begin{proof}\leanok
+    Apply $n<\beta/\beta_0+2$ in the percolation bound; the other
+    factors and $Ne^{-l/\xi}$ are nonnegative.
+\end{proof}
+
+\section{Cluster truncation on a chain of interaction labels}
+\label{sec:interval_cluster_truncation}
+
+\subsection{Required labels with an empty forbidden set}
+
+For a finite set $U$ of required interaction labels, let
+\begin{align}
+    R_U^H(\beta)
+     & =\sum_{D\subseteq U}(-1)^{|D|}
+    e^{-\beta(H-H_D)},
+     & H_D                            & =\sum_{i\in D}H_i.
+    \label{eq:mandatory_cluster_part}
+\end{align}
+This is the cluster part~(\ref{eq:hastings_cluster_part}) with the forbidden
+set equal to $\varnothing$. The normalization below is an auxiliary
+estimate for the interaction-label expansion related to the argument
+of~\cite[lines 1270--1291 and 1935--1968]{Arad2016RigorousRG}.
+It is distinct from the printed spatial approximation estimate, whose
+obstructions are recorded in~\cite{gap:alvv16_cluster_approximation}.
+
+\begin{lemma}[Normalized norm of the empty-boundary cluster part]
+    \label{thm:mandatory_cluster_part_norm}
+    \lean{ClusterExpansion.norm_clusterPart_empty_boundary_le_of_lower_bound}
+    \leanok
+    Let $H$ and $H_i$, $i\in U$, be Hermitian complex matrices of the same
+    size. Suppose $\|H_i\|\leq1$, $H\geq\lambda I$, and $\beta\geq0$.
+    Then
+    \begin{align}
+        e^{\beta\lambda}\|R_U^H(\beta)\|
+        \leq(e^\beta-1)^{|U|}.
+        \label{eq:mandatory_cluster_part_norm}
+    \end{align}
+    The real number $\lambda$ is any supplied lower energy. The background
+    $H$ need not be the sum of the selected terms.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:hastings_cluster_part}
+    The defining finite sum~(\ref{eq:mandatory_cluster_part}) is the
+    alternating sum to which the normalized mandatory-label estimate
+    applies, with no forbidden labels.
+\end{proof}
+
+\begin{lemma}[The mandatory-label part as a sum over exact supports]
+    \label{thm:mandatory_cluster_part_support_sum}
+    \lean{ClusterExpansion.clusterPart_empty_boundary_eq_sum_clusterOp}
+    \leanok
+    Let $K$ be a finite label set, let $H_i$, $i\in K$, be complex square
+    matrices, and put $H=\sum_{i\in K}H_i$. For $U\subseteq K$ and every
+    real $\beta$, the operators $E_A$ of
+    Definition~\ref{def:hastings_cluster_operator} satisfy
+    \begin{align}
+        R_U^H(\beta)=\sum_{\substack{A\subseteq K \\U\subseteq A}}E_A.
+        \label{eq:mandatory_cluster_part_support_sum}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_cluster_part_words, def:hastings_cluster_operator}
+    At each word length, partition the words containing $U$ according to
+    their exact letter set $A$. The possible sets $A$ form a finite
+    family. Summing their convergent word series gives
+    (\ref{eq:mandatory_cluster_part_support_sum}). Word order and repeated
+    occurrences of a label are retained in this partition.
+\end{proof}
+
+
+\subsection{A normalized tail for an interaction-label cutoff}
+
+The cutoff in this subsection counts interaction labels. It differs from
+both physical-site support and the unrestricted estimate discussed
+in~\cite{gap:alvv16_cluster_approximation}. No positivity of the individual
+interactions is imposed.
+
+\begin{definition}[Intervals of interaction labels]
+    \label{def:cluster_label_intervals}
+    \lean{ClusterExpansion.pathWindows,
+        ClusterExpansion.mem_pathWindows,
+        ClusterExpansion.pathIntervals,
+        ClusterExpansion.mem_pathIntervals}
+    \leanok
+    Give the labels $K=\{0,\ldots,N-1\}$ their path adjacency. For an integer
+    $r\geq1$, let $\mathcal W_r$ be the family of intervals of exactly $r$
+    labels, and let $\mathcal I_r$ be the family of nonempty intervals of
+    at least $r$ labels.
+\end{definition}
+
+\begin{lemma}[Windows and connected components on a path]
+    \label{thm:cluster_label_window_geometry}
+    \lean{ClusterExpansion.ordConnected_of_pathGraph_connected,
+        ClusterExpansion.pathGraph_connected_of_ordConnected,
+        ClusterExpansion.eq_Icc_of_ordConnected,
+        ClusterExpansion.exists_interval_subset_card,
+        ClusterExpansion.noLargeCluster_pathGraph_iff,
+        ClusterExpansion.pathWindows_exists_marker,
+        ClusterExpansion.card_pathIntervals_le,
+        ClusterExpansion.clusters_biUnion_pathWindows_subset}
+    \leanok
+    \uses{def:cluster_label_intervals, def:hastings_cluster_of_terms}
+    A nonempty support is connected in the label path if and only if it is
+    an interval. Every interval with at least $r$ labels contains a member
+    of $\mathcal W_r$. Hence a support has no component of size at least
+    $r$ if and only if it contains no member of $\mathcal W_r$.
+    The left endpoints of the members of $\mathcal W_r$ are distinct and
+    belong to their respective windows. Moreover, $|\mathcal I_r|\leq N^2$.
+    Every component of a union of members of $\mathcal W_r$ belongs to
+    $\mathcal I_r$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_clusters_meet}
+    A walk cannot cross a missing label: adjacent labels differ by one.
+    Conversely, the induced path on an interval is the Hasse graph of its
+    inherited order and is connected. A nonempty interval is determined
+    by its minimum and maximum. Its size is the difference of these
+    endpoints plus one, which gives a length-$r$ subinterval and the
+    injectivity of the left endpoint for fixed length. The pair of
+    endpoints gives the bound $N^2$.
+
+    If a window meets a component of a support containing it, connectedness
+    and avoidance of the component boundary force the window to lie in
+    that component. This proves both the cutoff characterization and
+    the assertion about unions of windows.
+\end{proof}
+
+\begin{lemma}[Inclusion and exclusion over mandatory windows]
+    \label{thm:cluster_window_inclusion_exclusion}
+    \lean{ClusterExpansion.sum_clusterOp_bad_windows_eq,
+        ClusterExpansion.exp_sub_truncatedExp_eq_sum_clusterPart_windows,
+        Finset.norm_sum_powerset_biUnion_sign_le_two_pow}
+    \leanok
+    \uses{thm:mandatory_cluster_part_support_sum}
+    Let $K$ be finite, let $H_i$, $i\in K$, be complex square matrices,
+    and put $H=\sum_iH_i$. Let $\mathcal W$ be a finite family of subsets
+    of $K$. For every real $\beta$,
+    \begin{align}
+        \sum_{\substack{A\subseteq K                   \\
+                \exists I\in\mathcal W:\ I\subseteq A}}E_A
+         & =\sum_{\varnothing\ne F\subseteq\mathcal W}
+        (-1)^{|F|+1}R_{\bigcup F}^H(\beta).
+        \label{eq:cluster_window_inclusion_exclusion}
+    \end{align}
+    If the retained supports of a truncated expansion are exactly those
+    avoiding every window, its error $e^{-\beta H}-M$ equals
+    (\ref{eq:cluster_window_inclusion_exclusion}).
+    If each member $I$ of $\mathcal W$ has a distinct selected label
+    belonging to $I$, then the grouped coefficient
+    \begin{align}
+        c_U=\sum_{\substack{\varnothing\ne F\subseteq\mathcal W \\
+                \bigcup F=U}}(-1)^{|F|+1}
+        ,\qquad |c_U|\leq2^{|U|}.
+        \label{eq:cluster_window_coefficient}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:mandatory_cluster_part_support_sum}
+    Apply finite inclusion and exclusion to the events $I\subseteq A$,
+    then sum over $A$. For each $F$, the intersection of these events is
+    $\bigcup F\subseteq A$, whose exact-support sum is
+    $R_{\bigcup F}^H(\beta)$.
+    A contributing family with union $U$ consists of windows contained in
+    $U$. Their selected labels are distinct elements of $U$, so there
+    are at most $|U|$ such windows and at most $2^{|U|}$ contributing
+    families. Each sign has absolute value one.
+\end{proof}
+
+\begin{lemma}[Weighted unions of windows]
+    \label{thm:cluster_label_window_weights}
+    \lean{ClusterExpansion.sum_pow_card_unions_pathWindows_le}
+    \leanok
+    \uses{thm:cluster_label_window_geometry}
+    For $0\leq b\leq1$, put
+    $\mathcal U_r=\{\bigcup F:\varnothing\ne F\subseteq\mathcal W_r\}$.
+    Then
+    \begin{align}
+        \sum_{U\in\mathcal U_r}b^{|U|}
+        \leq\exp(N^2b^r)-1.
+        \label{eq:cluster_label_window_weights}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:cluster_label_window_geometry,
+        thm:hastings_truncation_cluster_products}
+    The component family determines $U$, its members are disjoint,
+    and each belongs to $\mathcal I_r$. Thus
+    \begin{align}
+        \sum_{U\in\mathcal U_r}b^{|U|}
+         & \leq\sum_{\varnothing\ne F\subseteq\mathcal I_r}
+        \prod_{C\in F}b^{|C|}
+        =\prod_{C\in\mathcal I_r}(1+b^{|C|})-1
+        \leq\exp\Bigl(\sum_{C\in\mathcal I_r}b^{|C|}\Bigr)-1
+        \leq\exp(N^2b^r)-1.
+        \label{eq:cluster_label_weight_product}
+    \end{align}
+    The last inequality uses $|C|\geq r$ and
+    $|\mathcal I_r|\leq N^2$.
+\end{proof}
+
+\begin{theorem}[Normalized interaction-label tail on a path]
+    \label{thm:normalized_cluster_label_tail}
+    \lean{ClusterExpansion.norm_exp_sub_truncatedExp_pathGraph_le}
+    \leanok
+    \uses{def:hastings_truncated_expansion, thm:mandatory_cluster_part_norm,
+        thm:cluster_label_window_geometry, thm:cluster_window_inclusion_exclusion,
+        thm:cluster_label_window_weights}
+    Let $H=\sum_{i=0}^{N-1}H_i$, where the $H_i$ are Hermitian matrices
+    with $\|H_i\|\leq1$. Suppose $H\geq\lambda I$, $r\geq1$,
+    $\beta\geq0$, and $b=2(e^\beta-1)\leq1$.
+    Let $M_r$ retain exactly the words whose label supports have no
+    path component of size at least $r$. Then
+    \begin{align}
+        e^{\beta\lambda}\|e^{-\beta H}-M_r\|
+        \leq\exp(N^2b^r)-1.
+        \label{eq:normalized_cluster_label_tail}
+    \end{align}
+    The number $\lambda$ is any lower energy. No commutation of the terms
+    is required for this estimate.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:mandatory_cluster_part_norm, thm:cluster_label_window_geometry,
+        thm:cluster_window_inclusion_exclusion, thm:cluster_label_window_weights}
+    The cutoff characterization and inclusion and exclusion group the
+    discarded operator by required label union.
+    The left endpoints provide the distinct selected labels for the
+    coefficient bound. Hence
+    \begin{align}
+        e^{\beta\lambda}\|e^{-\beta H}-M_r\|
+         & \leq\sum_{U\in\mathcal U_r}|c_U|(e^\beta-1)^{|U|}
+        \leq\sum_{U\in\mathcal U_r}b^{|U|}
+        \leq\exp(N^2b^r)-1.
+        \label{eq:normalized_cluster_label_tail_proof}
+    \end{align}
+    This changes both the normalization and the cutoff of the printed
+    estimate in~\cite[lines 1270--1291 and 1935--1968]{Arad2016RigorousRG}.
+    It does not assert that estimate or a matrix product representation.
+\end{proof}
+
+
+\subsection{Physical factors at a cut of the label path}
+
+Let $K$ be a finite interaction-label set with graph $G$, let $H_i$ be
+complex square matrices, and let $E_A$ be their exact-label operators.
+For a fixed criterion of large components, write
+\begin{align}
+    F(B)=\sum_{\substack{A\subseteq B \\
+            A\text{ has no large component}}}E_A.
+    \label{eq:retained_allowed_labels}
+\end{align}
+Every operator in (\ref{eq:retained_allowed_labels}) is a finite sum of
+the existing exact-label coefficients.
+
+\begin{lemma}[Clusters of separated supports]
+    \label{thm:clusters_separated_supports}
+    \lean{ClusterExpansion.isCluster_union_iff_of_no_adj,
+        ClusterExpansion.noLargeCluster_union_iff_of_no_adj,
+        ClusterExpansion.isCluster_self_of_connected,
+        ClusterExpansion.noLargeCluster_iff_not_large_of_connected}
+    \leanok
+    \uses{def:hastings_cluster_of_terms}
+    Suppose no vertex of $B$ is adjacent to a vertex of $D$.
+    A set $C$ is a component of $B\cup D$ if and only if it is a
+    component of $B$ or of $D$. Hence $B\cup D$ has no large component
+    if and only if neither $B$ nor $D$ has a large component.
+    A connected nonempty set $C$ is its own component and has no
+    large component if and only if $C$ itself is not large.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_clusters_meet}
+    The two supports have no edges between them. A connected component
+    meeting one side therefore stays on that side. Conversely, a
+    component of one side has no adjacent vertex in the other side.
+    The assertions about a connected set follow from uniqueness of
+    a component meeting it.
+\end{proof}
+
+\begin{lemma}[Finite retained sums on separated label sets]
+    \label{thm:retained_separated_sum_product}
+    \lean{ClusterExpansion.sum_retained_clusterOp_union_eq_mul}
+    \leanok
+    \uses{thm:clusters_separated_supports, def:hastings_cluster_operator}
+    Suppose nonadjacent labels correspond to commuting matrices.
+    If $B,D\subseteq K$ are disjoint and no edge joins them, then
+    $F(B\cup D)=F(B)F(D)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:clusters_separated_supports,
+        thm:hastings_truncation_cluster_products}
+    The maps $A\mapsto(A\cap B,A\cap D)$ and
+    $(A_1,A_2)\mapsto A_1\cup A_2$ are inverse on the retained
+    supports. The selector separates over the two parts, and
+    $E_{A_1\cup A_2}=E_{A_1}E_{A_2}$. Distributing the two finite
+    sums gives the identity.
+\end{proof}
+
+\begin{lemma}[Grouping by the component containing a label]
+    \label{thm:retained_crossing_component_sum}
+    \lean{ClusterExpansion.sum_retained_clusterOp_containing_eq}
+    \leanok
+    \uses{thm:clusters_separated_supports,
+        thm:retained_separated_sum_product}
+    Suppose nonadjacent labels correspond to commuting matrices,
+    and fix $p\in K$. Let $\partial C$ be the graph boundary of $C$.
+    Then
+    \begin{align}
+        \sum_{\substack{A\subseteq K  \\A\text{ has no large component}\\p\in A}}E_A
+        =\sum_{\substack{C\subseteq K \\p\in C,\ C\text{ connected}\\C\text{ not large}}}
+        E_C F\bigl(K\setminus(C\cup\partial C)\bigr).
+        \label{eq:retained_crossing_component_sum}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_clusters_meet, thm:clusters_separated_supports}
+    Choose the unique component $C$ of $A$ containing $p$ and put
+    $B=A\setminus C$. Then $B$ avoids both $C$ and $\partial C$.
+    Conversely, any retained $B\subseteq K\setminus(C\cup\partial C)$
+    gives a retained support $C\cup B$ whose component containing $p$
+    is exactly $C$. These maps are inverse, and the exact-label
+    operator factors as $E_{C\cup B}=E_CE_B$.
+\end{proof}
+
+\begin{lemma}[The two exterior sides of an interval]
+    \label{thm:cluster_path_exterior_sides}
+    \lean{ClusterExpansion.pathGraph_exterior_eq_sides,
+        ClusterExpansion.pathGraph_sides_separated,
+        ClusterExpansion.pathGraph_compl_singleton_eq_sides,
+        ClusterExpansion.pathGraph_point_sides_separated}
+    \leanok
+    \uses{thm:cluster_label_window_geometry}
+    Give $K=\{0,\ldots,N-1\}$ its path adjacency. For a nonempty
+    connected $C$, put
+    \begin{align}
+        L(C) & =\{j\in K:j+1<c\text{ for every }c\in C\},
+             & R(C)                                       & =\{j\in K:c+1<j\text{ for every }c\in C\}.
+        \label{eq:cluster_path_exterior_sides}
+    \end{align}
+    The exterior $K\setminus(C\cup\partial C)$ equals $L(C)\cup R(C)$,
+    and these sets are disjoint and have no edge between them.
+    Similarly, deleting a single label $p$ leaves the separated sets
+    $L_p=\{j:j<p\}$ and $R_p=\{j:p<j\}$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:cluster_label_window_geometry}
+    The set $C$ is an interval. A vertex outside it lies entirely
+    on one side; avoiding its boundary increases the separation by
+    one label. The displayed inequalities also prove disjointness
+    and the absence of an edge. The assertion about a single deleted
+    label follows by splitting its complement according to order.
+\end{proof}
+
+\begin{lemma}[Counting crossing label intervals]
+    \label{thm:physical_cluster_crossing_count}
+    \lean{ClusterExpansion.card_crossing_intervals_le}
+    \leanok
+    \uses{thm:cluster_label_window_geometry}
+    For a fixed label $p$, there are at most $(r-1)^2$ connected
+    label sets $C$ with $p\in C$ and $|C|<r$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:cluster_label_window_geometry}
+    For $r\leq1$ there are none. Otherwise send $C=[a,b]$ to
+    $(p-a,b-p)$. Each coordinate belongs to $\{0,\ldots,r-2\}$,
+    and the two coordinates recover the endpoints and hence $C$.
+\end{proof}
+

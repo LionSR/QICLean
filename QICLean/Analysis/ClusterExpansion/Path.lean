@@ -528,7 +528,7 @@ is assumed here.
 
 **Local fix (interaction-label cutoff):** this decomposition uses components of the actual
 label path. It does not identify the resulting truncation with the source's minimal physical-site
-support selector; see `docs/paper-gaps/alvv16_cluster_approximation.tex`.
+support selector; see https://sirui-lu.com/TNLean/paper-gaps/alvv16_cluster_approximation.pdf.
 -/
 
 open Finset SimpleGraph
@@ -607,8 +607,8 @@ to ALVV, arXiv:1602.08828v2, `thm:cluster-approx`, source lines 1270–1291 and 
 The cutoff counts interaction labels, the norm is normalized by a supplied lower energy, and the
 factor `2` accounts for the grouped inclusion--exclusion coefficients. The printed
 physical-support approximation remains false; see
-`docs/paper-gaps/alvv16_cluster_approximation.tex`. The spatial cut and matrix product operator
-conclusions are separate and are not asserted here.
+https://sirui-lu.com/TNLean/paper-gaps/alvv16_cluster_approximation.pdf. The spatial cut and
+matrix product operator conclusions are separate and are not asserted here.
 -/
 
 open Finset SimpleGraph
@@ -674,7 +674,8 @@ For Hermitian norm-one terms and a supplied lower energy `lambda`, the discarded
 normalized norm at most `exp (N² (2 (exp β - 1))^r) - 1`. The cutoff counts interaction labels.
 This auxiliary correction to ALVV, arXiv:1602.08828v2, `thm:cluster-approx`, source lines
 1270–1291 and 1935–1968, does not assert the false printed physical-support estimate or a matrix
-product operator representation; see `docs/paper-gaps/alvv16_cluster_approximation.tex`. -/
+product operator representation; see
+https://sirui-lu.com/TNLean/paper-gaps/alvv16_cluster_approximation.pdf. -/
 theorem norm_exp_sub_truncatedExp_pathGraph_le {N r : ℕ} (hr : 0 < r)
     (h : Fin N → Matrix ι ι ℂ) (hh : ∀ i, (h i).IsHermitian) (hnorm : ∀ i, ‖h i‖ ≤ 1)
     (lambda β : ℝ) (hlo : (lambda : ℂ) • 1 ≤ ∑ i, h i) (hβ : 0 ≤ β)

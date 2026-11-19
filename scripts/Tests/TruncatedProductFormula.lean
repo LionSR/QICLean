@@ -1,7 +1,7 @@
 import QICLean.Circuit.Simulation.TruncatedProductFormula
 
 /-! Kernel audit and boundary regressions for the finite circuit truncation estimates. -/
-open Matrix ManyBody ProductFormula QuantumCircuit
+open Matrix ManyBody ProductFormula QuantumCircuit SimpleGraph
 open scoped Matrix.Norms.L2Operator
 
 #print axioms QuantumCircuit.sum_place_localFamilyInside

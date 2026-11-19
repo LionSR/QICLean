@@ -524,7 +524,7 @@ of Hastings, arXiv:cond-mat/0508554v3, source lines 1174–1177 and 1268–1269.
 auxiliary results for a corrected interaction-label expansion related
 to ALVV, arXiv:1602.08828v2, `thm:cluster-approx`, lines 1270–1291 and 1935–1968.
 The false printed spatial approximation estimate remains distinct; see
-`docs/paper-gaps/alvv16_cluster_approximation.tex`. No spatial cut or matrix
+https://sirui-lu.com/TNLean/paper-gaps/alvv16_cluster_approximation.pdf. No spatial cut or matrix
 product operator construction is concluded here.
 -/
 

@@ -46,7 +46,7 @@ not part of this file.
 positive definite. An even power of a Hermitian operator is positive semidefinite, and positive
 definite only when the base `ρ(β/n, l_proj)` is invertible, which the source does not establish.
 The results here state positive semidefiniteness, which is what the even power is used for.
-Documented in `docs/paper-gaps/hastings05_mplt_positivity.tex`.
+Documented in https://sirui-lu.com/TNLean/paper-gaps/hastings05_mplt_positivity.pdf.
 
 ### Main results
 
@@ -168,7 +168,7 @@ Hermitian operators with real coefficients.
 
 **Local fix (positivity at every temperature):** the source states that `ρ(β, l_proj)` is
 positive definite. The result here is positive semidefiniteness, as in the first section.
-Documented in `docs/paper-gaps/hastings05_mplt_positivity.tex`.
+Documented in https://sirui-lu.com/TNLean/paper-gaps/hastings05_mplt_positivity.pdf.
 
 ### Main results
 
