@@ -68,7 +68,7 @@ theorem encode_apply {n : ℕ} (x : Config (Qudits (Fin n) d)) :
 
 /-! ### The matrices -/
 
-/-- The Fourier matrix of one qudit: Mathlib's `ZMod d` Fourier matrix `weylFourier ζ` at
+/-- The Fourier matrix of one qudit: the `ZMod d` Fourier matrix `Matrix.weylFourier ζ` at
 `ζ = e^{2πi/d}`, on `Fin d`. -/
 noncomputable def fourier (d : ℕ) : Matrix (Fin d) (Fin d) ℂ :=
   (weylFourier (d := d) (exp (2 * Real.pi * I / d))).submatrix (fun y ↦ ((y : ℕ) : ZMod d))
