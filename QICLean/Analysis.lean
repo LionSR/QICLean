@@ -396,8 +396,8 @@ import QICLean.Analysis.SinhRatioShift
 import QICLean.Analysis.SkewFromPhases
 import QICLean.Analysis.SoftClusterParameters
 import QICLean.Analysis.SoftFamilyCalibration
-import QICLean.Analysis.SoftMemberGrowth
 import QICLean.Analysis.SoftHardTruncation
+import QICLean.Analysis.SoftMemberGrowth
 import QICLean.Analysis.SoftRegionalEnergyParameters
 import QICLean.Analysis.SoftTerminalEnergyParameters
 import QICLean.Analysis.SoftTruncation
