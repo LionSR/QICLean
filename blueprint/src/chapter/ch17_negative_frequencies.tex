@@ -66,7 +66,7 @@ hypothesis.
         ManyBody.inner_ground_projected_eq_negativeFrequency_commutator,
         ManyBody.inner_ground_connected_eq_negativeFrequency_commutator}
     \leanok
-    \uses{def:hk_negative_frequency_part}
+    \uses{def:hk_negative_frequency_part,def:hamiltonians_gap}
     Suppose $E_0\le E_i$ for every $i$, let $\psi$ belong to the
     eigenspace at $E_0$, and let $P_0$ project onto that full eigenspace.
     Then $A^-\psi=0$ and
@@ -88,9 +88,15 @@ hypothesis.
     eigenspace in the energy basis. Between that vector and a ground
     bra, every nonzero matrix element of $A$ lowers energy, so it is
     retained by $A^-$. Apply this to $(1-P_0)B\psi$.
-    The term $BA^-\psi$ vanishes. In a one-dimensional ground space,
-    the rank-one projection formula gives the last identity without
-    choosing a normalized vector.
+    The term $BA^-\psi$ vanishes. If the ground eigenspace is
+    $\mathbb C\psi$, then
+    \[
+        P_0x=\frac{\langle\psi,x\rangle}{\|\psi\|^2}\,\psi,
+        \qquad
+        \langle\psi,AP_0B\psi\rangle
+        =\frac{\langle\psi,A\psi\rangle\langle\psi,B\psi\rangle}{\|\psi\|^2},
+    \]
+    and substituting this into the first identity gives the second.
 \end{proof}
 
 The sharp energy-lowering part need not be local. The following lemmas
@@ -307,8 +313,7 @@ argument below.
     commutator vanishes. Outside the time window, the rational factor
     is at most $T^{-1}$ and the commutator norm at most
     $2\|A\|\|B\|$. Split the Gaussian integral and apply its
-    Gaussian tail bound. No bound growing as $\varepsilon^{-1}$ is
-    used for this passage.
+    Gaussian tail bound. Both bounds are independent of $\varepsilon$.
 \end{proof}
 
 \begin{lemma}[Gaussian ground-vector separation]
@@ -316,7 +321,8 @@ argument below.
     \lean{ManyBody.exists_gaussianNegativeFrequency_ground_limits,
         ManyBody.exists_gaussianNegativeFrequency_ground_commutator_limit}
     \leanok
-    \uses{lem:hk_regularized_frequency_matrix_elements,lem:hk_gaussian_negative_frequency_cutoff}
+    \uses{lem:hk_regularized_frequency_matrix_elements,lem:hk_gaussian_negative_frequency_cutoff,
+        def:hamiltonians_gap}
     Suppose the full ground eigenspace of $H$ is $\mathbb C\psi$,
     every other energy is at least $\Delta>0$ above it, and
     $\langle\psi,A\psi\rangle=0$. For $q>0$, put $h=q/\Delta^2$.
@@ -332,14 +338,37 @@ argument below.
         |\langle\psi,AB\psi\rangle-z|
         \le 2e^{-q/2}\|A\|\|B\|\|\psi\|^2.
     \]
-    No normalization of $\psi$ or centering of $B$ is required.
+    Here $\psi$ need not be a unit vector, and $B$ is arbitrary.
 \end{lemma}
 \begin{proof}\leanok
-    Expand in an orthonormal energy basis and apply the matrix-element
-    limit. Centering removes all ground-energy coefficients. The two
-    probability-tail estimates bound the remaining coefficients, and
-    Parseval gives the vector bounds. Move the adjoint across the inner
-    product and apply Cauchy--Schwarz to the two error terms.
+    Let $b_i$ be an orthonormal energy basis, $Hb_i=E_ib_i$, and write
+    $F=F_{q,\Delta}$. The matrix-element limit gives
+    \[
+        \langle b_i,\xi\rangle=F(E_i-E_0)\langle b_i,A\psi\rangle,
+        \qquad
+        \langle b_i,\eta\rangle=F(E_0-E_i)\langle b_i,A^\dagger\psi\rangle.
+    \]
+    If $E_i=E_0$, then $b_i\in\mathbb C\psi$, and centering gives
+    $\langle b_i,A\psi\rangle=\langle b_i,A^\dagger\psi\rangle=0$.
+    Otherwise $E_i-E_0\ge\Delta$, so $F(E_i-E_0)\le e^{-q/2}$ and
+    $|1-F(E_0-E_i)|\le e^{-q/2}$. By Parseval,
+    \[
+        \|\xi\|^2=\sum_i|\langle b_i,\xi\rangle|^2
+        \le e^{-q}\sum_i|\langle b_i,A\psi\rangle|^2
+        =e^{-q}\|A\psi\|^2,
+    \]
+    and in the same way
+    $\|A^\dagger\psi-\eta\|^2\le e^{-q}\|A^\dagger\psi\|^2$.
+    Finally,
+    \[
+        \langle\psi,AB\psi\rangle-
+        \langle\psi,(A^-B-BA^-)\psi\rangle
+        \longrightarrow
+        \langle A^\dagger\psi-\eta,B\psi\rangle
+        +\langle B^\dagger\psi,\xi\rangle,
+    \]
+    and Cauchy--Schwarz bounds each term by
+    $e^{-q/2}\|A\|\|B\|\|\psi\|^2$.
 \end{proof}
 
 
