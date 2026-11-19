@@ -65,11 +65,13 @@ theorem norm_groundCompression_commutator_le_of_momenta
     (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
     (b₀ : ℝ) (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
     {Γ : Type*} [CommGroup Γ] [MulAction Γ V]
-    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g) * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
+    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g)
+        * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
     (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {r q ΔE : ℝ} (hr : 0 ≤ r) (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ} (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
+    {r q ΔE : ℝ} (hr : 0 ≤ r) (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ}
+        (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
     {N : ℕ} (hN : 0 < N)
     (hden : ∀ χ : Γ →* ℂ, momentumSector Γ d Φ.hamiltonian E₀ χ ≠ ⊥ → ∀ g, χ g ^ N = 1)
     {n : ℕ} [NeZero n] (π : V → ZMod n)
@@ -93,7 +95,8 @@ theorem norm_groundCompression_commutator_le_of_momenta
     exists_mem_supercell_lt_edist hN hden G π hπ e he (2 * R + l) hl i j
   have hsep := disjoint_biUnion_graphBall_of_lt_edist G (T := T) id hX R hDiam
     (g • j) i l hfar
-  have hmain := norm_groundCompression_commutator_le_of_supercell_separation G Φ hHerm R hDiam vR hCard b₀
+  have hmain
+      := norm_groundCompression_commutator_le_of_supercell_separation G Φ hHerm R hDiam vR hCard b₀
     hBudget hcov Kg kg hGrowth hr hq hΔE hgap
     (supercell Γ d Φ.hamiltonian E₀)
     (fun g hg v hv ↦ sitePermOp_mulVec_eq_of_mem_supercell hInv hg v hv) hg i j l hsep hT
@@ -104,7 +107,8 @@ theorem norm_groundCompression_commutator_le_of_momenta
 `H_tilde_i`, `H_tilde_j` is at most `B`, and the operators `M_i`, `M_j` are within `ε_i`, `ε_j`
 of them with `‖M_j‖ ≤ ‖h_j‖`, then `‖[P M_i P, P M_j P]‖ ≤ B + 2 ε_i ‖h_j‖ + 2 ‖h_i‖ ε_j`. -/
 theorem norm_groundCompression_commutator_le_of_norm_sub_le
-    {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ} (hH : H.IsHermitian) (E₀ r ΔE : ℝ) (hr : 0 ≤ r)
+    {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ} (hH : H.IsHermitian)
+        (E₀ r ΔE : ℝ) (hr : 0 ≤ r)
     {hi hj Mi Mj : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ} {B εi εj : ℝ}
     (hB : ‖groundCompression H E₀ (gaussianFilteredTerm r ΔE H hi) *
           groundCompression H E₀ (gaussianFilteredTerm r ΔE H hj) -
@@ -166,11 +170,13 @@ theorem norm_groundCompression_commutator_truncated_le_of_momenta
     (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
     (b₀ : ℝ) (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
     {Γ : Type*} [CommGroup Γ] [MulAction Γ V]
-    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g) * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
+    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g)
+        * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
     (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {r q ΔE : ℝ} (hr : 0 ≤ r) (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ} (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
+    {r q ΔE : ℝ} (hr : 0 ≤ r) (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ}
+        (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
     {N : ℕ} (hN : 0 < N)
     (hden : ∀ χ : Γ →* ℂ, momentumSector Γ d Φ.hamiltonian E₀ χ ≠ ⊥ → ∀ g, χ g ^ N = 1)
     {n : ℕ} [NeZero n] (π : V → ZMod n)
@@ -182,10 +188,14 @@ theorem norm_groundCompression_commutator_truncated_le_of_momenta
       gaussianFilteredTerm r ΔE (∑ k ∈ s i, Φ.term k) (Φ.term i)‖ ≤ εi)
     (hεj : ‖gaussianFilteredTerm r ΔE Φ.hamiltonian (Φ.term j) -
       gaussianFilteredTerm r ΔE (∑ k ∈ s j, Φ.term k) (Φ.term j)‖ ≤ εj) :
-    ‖groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k ∈ s i, Φ.term k) (Φ.term i)) *
-          groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k ∈ s j, Φ.term k) (Φ.term j)) -
-        groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k ∈ s j, Φ.term k) (Φ.term j)) *
-          groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k ∈ s i, Φ.term k) (Φ.term i))‖ ≤
+    ‖groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k ∈ s i, Φ.term k)
+        (Φ.term i)) *
+          groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k ∈ s j, Φ.term k)
+              (Φ.term j)) -
+        groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k ∈ s j, Φ.term k)
+            (Φ.term j)) *
+          groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k ∈ s i, Φ.term k)
+              (Φ.term i))‖ ≤
       (2 * ‖Φ.term j‖ *
           ((2 + 4 * |b₀| * Real.exp (2 * R)) * ((T i).card : ℝ) ^ 2 * ‖Φ.term i‖ * Kg *
               (2 ^ kg * kg.factorial * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))) *
@@ -193,10 +203,12 @@ theorem norm_groundCompression_commutator_truncated_le_of_momenta
             2 * ‖Φ.term i‖ * Real.exp (-(τ * ΔE) ^ 2 / (2 * q))) +
         2 * ‖Φ.term i‖ * ‖Φ.term j‖ * Real.exp (-q / 2))
         + 2 * εi * ‖Φ.term j‖ + 2 * ‖Φ.term i‖ * εj :=
-  norm_groundCompression_commutator_le_of_norm_sub_le (Interaction.isHermitian_hamiltonian hHerm) E₀ r ΔE hr
+  norm_groundCompression_commutator_le_of_norm_sub_le
+      (Interaction.isHermitian_hamiltonian hHerm) E₀ r ΔE hr
     (norm_groundCompression_commutator_le_of_momenta G hX Φ hHerm R hDiam vR hCard b₀
       hBudget hcov Kg kg hGrowth hr hq hΔE hgap hN hden π hπ e he i j l hl hT) hεi hεj
-    (norm_gaussianFilteredTerm_le _ _ (isSelfAdjoint_sum _ fun k _ ↦ (hHerm k).isSelfAdjoint).isHermitian _)
+    (norm_gaussianFilteredTerm_le _ _ (isSelfAdjoint_sum _ fun k _ ↦
+        (hHerm k).isSelfAdjoint).isHermitian _)
 
 
 /-- A closed exponential bound for the low-energy commutator of the
@@ -216,7 +228,8 @@ theorem norm_groundCompression_commutator_le_of_momenta_exp
     (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
     (b₀ : ℝ) (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
     {Γ : Type*} [CommGroup Γ] [MulAction Γ V]
-    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g) * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
+    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g)
+        * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
     (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
@@ -298,7 +311,8 @@ namespace ManyBody
 local decomposition. Hastings, arXiv:cond-mat/0508554v3, lines 1603–1654. -/
 theorem norm_groundCompression_commutator_le_of_finite_observable_orbit
     {V Γ : Type*} [Fintype V] [DecidableEq V] [CommGroup Γ] [MulAction Γ V] {d : ℕ}
-    {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ} (hInv : IsSiteInvariant Γ H) (E₀ : ℝ)
+    {H : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ}
+        (hInv : IsSiteInvariant Γ H) (E₀ : ℝ)
     (W B : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ)
     (G : SimpleGraph V) {n : ℕ} [NeZero n] (π : V → ZMod n)
     (hπ : ∀ u v, G.Adj u v → (π v - π u).valMinAbs.natAbs ≤ 1)
@@ -308,8 +322,10 @@ theorem norm_groundCompression_commutator_le_of_finite_observable_orbit
     (hn : 2 * (m + 1) * L ≤ n) (i j : V) {C : ℝ} (hC : 0 ≤ C)
     (hfar : ∀ g : Γ, ((L / 2 : ℕ) : ℕ∞) ≤ G.edist i (g • j) →
       ‖groundCompression H E₀ W * groundCompression H E₀
-          (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) -
-        groundCompression H E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) *
+          (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d)
+              (MulAction.toPerm g))ᴴ) -
+        groundCompression H E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp
+            (α := Fin d) (MulAction.toPerm g))ᴴ) *
           groundCompression H E₀ W‖ ≤ C) :
     ‖groundCompression H E₀ W * groundCompression H E₀ B -
       groundCompression H E₀ B * groundCompression H E₀ W‖ ≤ ((2 : ℝ) ^ m - 1) * C := by
@@ -405,7 +421,8 @@ theorem norm_groundCompression_commutator_le_finite_translation_exp
     {n : ℕ} [NeZero n] (π : V → ZMod n)
     (hπ : ∀ u v, G.Adj u v → (π v - π u).valMinAbs.natAbs ≤ 1)
     (e : Γ) (he : ∀ v, π (e • v) = π v + 1)
-    (i j : V) (S Y : Finset V) {W B : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ}
+    (i j : V) (S Y : Finset V) {W B : Matrix (Config fun _ : V ↦ Fin d)
+        (Config fun _ : V ↦ Fin d) ℂ}
     (hW : W ∈ supportedOperators (fun _ ↦ Fin d) S)
     (hB : B ∈ supportedOperators (fun _ ↦ Fin d) Y) (ρ vObs : ℕ)
     (hSrad : ∀ x ∈ S, G.edist i x ≤ ρ) (hYrad : ∀ y ∈ Y, G.edist j y ≤ ρ)
@@ -435,12 +452,15 @@ theorem norm_groundCompression_commutator_le_finite_translation_exp
   have hvR : 1 ≤ vR := (Finset.one_le_card.mpr ⟨i, hX i⟩).trans (hCard i)
   have hpoint (g : Γ) (D : ℕ) (hsep : (D : ℕ∞) ≤ G.edist i (g • j)) :
       ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀
-          (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) -
-        groundCompression Φ.hamiltonian E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) *
+          (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d)
+              (MulAction.toPerm g))ᴴ) -
+        groundCompression Φ.hamiltonian E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * B *
+            (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) *
           groundCompression Φ.hamiltonian E₀ W‖ ≤
       C * Real.exp (-(γ * ((D - 2 * ρ : ℕ) : ℝ))) := by
     let Yg := Y.map (MulAction.toPerm g).toEmbedding
-    have hBg : sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ ∈
+    have hBg : sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d)
+        (MulAction.toPerm g))ᴴ ∈
         supportedOperators (fun _ ↦ Fin d) Yg := by
       have heq : ((MulAction.toPerm g).toEmbedding : V → V) = (g • ·) := rfl
       simpa only [Yg, Finset.map_eq_image, Equiv.coe_toEmbedding] using
@@ -454,12 +474,15 @@ theorem norm_groundCompression_commutator_le_finite_translation_exp
         ((D - 2 * ρ : ℕ) : ℕ∞) ≤ G.edist x y :=
       finiteOrbit_support_separation G hsep (hSrad x hx)
         (by simpa only [G.edist_comm] using hYg y hy)
-    have hp := norm_groundCompression_commutator_le_graphSeparation G Φ hHerm R hDiam vR hvR hCard b₀ hBudget hΔ hgap S Yg hW hBg
+    have hp := norm_groundCompression_commutator_le_graphSeparation G Φ hHerm R hDiam vR hvR hCard
+        b₀ hBudget hΔ hgap S Yg hW hBg
       (D - 2 * ρ) hseps
     rw [norm_sitePermOp_mul_mul_conjTranspose] at hp
     change ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀
-          (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) -
-        groundCompression Φ.hamiltonian E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) *
+          (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d)
+              (MulAction.toPerm g))ᴴ) -
+        groundCompression Φ.hamiltonian E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * B *
+            (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) *
           groundCompression Φ.hamiltonian E₀ W‖ ≤
       (4 * (S.card : ℝ) + 4) * ‖W‖ * ‖B‖ *
         Real.exp (-(γ * ((D - 2 * ρ : ℕ) : ℝ))) at hp
@@ -473,8 +496,10 @@ theorem norm_groundCompression_commutator_le_finite_translation_exp
   intro _hlarge
   have hfar (g : Γ) (hsep : ((L / 2 : ℕ) : ℕ∞) ≤ G.edist i (g • j)) :
       ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀
-          (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) -
-        groundCompression Φ.hamiltonian E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) *
+          (sitePermOp (α := Fin d) (MulAction.toPerm g) * B * (sitePermOp (α := Fin d)
+              (MulAction.toPerm g))ᴴ) -
+        groundCompression Φ.hamiltonian E₀ (sitePermOp (α := Fin d) (MulAction.toPerm g) * B *
+            (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) *
           groundCompression Φ.hamiltonian E₀ W‖ ≤
       C * Real.exp (-(γ * ((L : ℝ) / 2 - 2 * (ρ : ℝ) - 1))) := by
     refine (hpoint g (L / 2) hsep).trans (mul_le_mul_of_nonneg_left ?_ hC)
@@ -534,7 +559,8 @@ theorem norm_groundCompression_truncated_commutator_le_finite_translation_exp
     (norm_gaussianFilteredTerm_le q Δ
       (isSelfAdjoint_sum _ fun k _ ↦ (hHerm k).isSelfAdjoint).isHermitian (Φ.term a)).trans
       (hNorm a)
-  have hg := norm_groundCompression_commutator_le_finite_translation_exp G hAut T hX Φ hHerm R hDiam vR hCard b₀ hBudget hInv hΔ hgap nGroundBound hDim π hπ e he
+  have hg := norm_groundCompression_commutator_le_finite_translation_exp G hAut T hX Φ hHerm R
+      hDiam vR hCard b₀ hBudget hInv hΔ hgap nGroundBound hDim π hπ e he
     i j (K i) (K j) (hMsupp i) (hMsupp j) ρ vObs (hKrad i) (hKrad j) (hKCard i)
   have hcoeff : 0 ≤ (2 : ℝ) ^ m - 1 :=
     le_trans (by norm_num) (one_le_two_pow_sub_one m (le_max_left _ _))
@@ -564,13 +590,16 @@ eq. `mid`, lines 285–307). If the terms are covariant,
 `M_{g•k} = P_g M_k P_g†`. -/
 theorem gaussianFilteredTerm_truncation_smul {Γ : Type*} [Group Γ] [MulAction Γ V] (r ΔE : ℝ)
     {T : V → Finset V} {Φ : Interaction (fun _ : V ↦ Fin d) T} (hHerm : ∀ k, (Φ.term k).IsHermitian)
-    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g) * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
+    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g)
+        * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
     {s : V → Finset V} (hs : ∀ (g : Γ) k, s (g • k) = (s k).map (MulAction.toPerm g).toEmbedding)
     (g : Γ) (k : V) :
     gaussianFilteredTerm r ΔE (∑ k' ∈ s (g • k), Φ.term k') (Φ.term (g • k)) =
-      sitePermOp (α := Fin d) (MulAction.toPerm g) * gaussianFilteredTerm r ΔE (∑ k' ∈ s k, Φ.term k') (Φ.term k) * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ := by
+      sitePermOp (α := Fin d) (MulAction.toPerm g) * gaussianFilteredTerm r ΔE (∑ k' ∈ s k
+          , Φ.term k') (Φ.term k) * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ := by
   have hsum : ∑ k' ∈ s (g • k), Φ.term k' =
-      sitePermOp (α := Fin d) (MulAction.toPerm g) * (∑ k' ∈ s k, Φ.term k') * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ := by
+      sitePermOp (α := Fin d) (MulAction.toPerm g) * (∑ k' ∈ s k, Φ.term k') * (sitePermOp (α
+          := Fin d) (MulAction.toPerm g))ᴴ := by
     rw [hs, Finset.sum_map, Finset.mul_sum, Finset.sum_mul]
     exact Finset.sum_congr rfl fun k' _ ↦ hcov g k'
   rw [hsum, hcov, gaussianFilteredTerm_conj r ΔE (sitePermOp_mem_unitary (MulAction.toPerm g))
@@ -594,7 +623,8 @@ theorem norm_groundCompression_truncatedTerm_commutator_le_of_momenta
     (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
     (b₀ : ℝ) (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
     {Γ : Type*} [CommGroup Γ] [MulAction Γ V]
-    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g) * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
+    (hcov : ∀ (g : Γ) k, Φ.term (g • k) = sitePermOp (α := Fin d) (MulAction.toPerm g)
+        * Φ.term k * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ)
     (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
@@ -609,17 +639,24 @@ theorem norm_groundCompression_truncatedTerm_commutator_le_of_momenta
     (K : V → Finset V) (hsK : ∀ k, ∀ k' ∈ s k, T k' ⊆ K k) (hXK : ∀ k, T k ⊆ K k)
     (R' : ℕ) (hKdiam : ∀ k, ∀ x ∈ K k, ∀ z ∈ K k, G.edist x z ≤ R')
     (i j : V) (l : ℕ) (hl : 2 * R' + l + N ≤ n / 2) {τ : ℝ} (hT : 0 ≤ τ) :
-    ‖groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)) *
-          groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s j, Φ.term k') (Φ.term j)) -
-        groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s j, Φ.term k') (Φ.term j)) *
-          groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i))‖ ≤
+    ‖groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k')
+        (Φ.term i)) *
+          groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s j, Φ.term k')
+              (Φ.term j)) -
+        groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s j, Φ.term k')
+            (Φ.term j)) *
+          groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k')
+              (Φ.term i))‖ ≤
       2 * ‖gaussianFilteredTerm r ΔE (∑ k' ∈ s j, Φ.term k') (Φ.term j)‖ *
           ((2 + 4 * |b₀| * Real.exp (2 * R)) * ((K i).card : ℝ) ^ 2 *
               ‖gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)‖ * Kg *
               (2 ^ kg * kg.factorial * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))) *
               Real.exp ((2 * vR * |b₀| * Real.exp (2 * R) + 1) * τ - l / 2) +
-            2 * ‖gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)‖ * Real.exp (-(τ * ΔE) ^ 2 / (2 * q))) +
-        2 * ‖gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)‖ * ‖gaussianFilteredTerm r ΔE (∑ k' ∈ s j, Φ.term k') (Φ.term j)‖ * Real.exp (-q / 2) := by
+            2 * ‖gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)‖ * Real.exp (-(τ
+                * ΔE) ^ 2 / (2 * q))) +
+        2 * ‖gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)‖
+            * ‖gaussianFilteredTerm r ΔE (∑ k' ∈ s j, Φ.term k') (Φ.term j)‖ * Real.exp
+                (-q / 2) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   set M : V → Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ :=
@@ -635,7 +672,8 @@ theorem norm_groundCompression_truncatedTerm_commutator_le_of_momenta
     exists_mem_supercell_lt_edist hN hden G π hπ e he (2 * R' + l) hl i j
   have hsep := disjoint_biUnion_graphBall_of_lt_edist G (T := K) id hkK R' hKdiam
     (g • j) i l hfar
-  have hMg : M (g • j) = sitePermOp (α := Fin d) (MulAction.toPerm g) * M j * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ :=
+  have hMg : M (g • j) = sitePermOp (α := Fin d) (MulAction.toPerm g) * M j * (sitePermOp (α
+      := Fin d) (MulAction.toPerm g))ᴴ :=
     gaussianFilteredTerm_truncation_smul r ΔE hHerm hcov hs g j
   have hcomp : groundCompression Φ.hamiltonian E₀ (M (g • j)) =
       groundCompression Φ.hamiltonian E₀ (M j) := by

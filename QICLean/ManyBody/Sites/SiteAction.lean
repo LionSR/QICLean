@@ -46,6 +46,7 @@ theorem sitePermOp_toPerm_mul (g h : G) :
   rw [sitePermOp_mul, show (MulAction.toPerm (g * h) : Equiv.Perm V) =
     MulAction.toPerm g * MulAction.toPerm h from map_mul (MulAction.toPermHom G V) g h]
 
+omit [DecidableEq V] [Fintype α] in
 /-- The site permutation of `g⁻¹` is the adjoint of that of `g`. -/
 theorem sitePermOp_toPerm_inv (g : G) :
     sitePermOp (α := α) (MulAction.toPerm g⁻¹ : Equiv.Perm V) =

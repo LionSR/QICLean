@@ -7,7 +7,7 @@ import Mathlib.Algebra.Group.Action.TypeTags
 import QICLean.Algebra.ZModDisplacement
 import Mathlib.Combinatorics.SimpleGraph.Circulant
 import Mathlib.Combinatorics.SimpleGraph.Metric
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Order.SuccPred.ENat
 import QICLean.ManyBody.Sites.Cut
 

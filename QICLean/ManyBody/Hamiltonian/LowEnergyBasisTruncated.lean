@@ -65,7 +65,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_le
     let C := commutatorConst R vObs b₀ |Kg| kg * Real.exp (γ * (2 * Robs + 1))
     ∃ b : OrthonormalBasis (Fin n) ℂ (groundSpace Φ.hamiltonian E₀),
       ∑ i, ‖offDiagonalPartFamily (fun c ↦ (b c : EuclideanSpace ℂ (Config X)))
-        (groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)))‖ ≤
+        (groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k')
+            (Φ.term i)))‖ ≤
         ((n - 1 : ℕ) : ℝ) ^ 2 * recursiveBasisCoeff n C *
           (|b₀| * (|Kg| * Real.shellSumConst (γ / 2 ^ n) kg)) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
@@ -91,7 +92,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_le
   refine exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_le G id hX Φ.term M
     hMherm hMnorm b₀ hBudget Kg kg hGrowth _ E₀ hγ hC fun i j ↦ ?_
   refine (norm_subspaceCompression_commutator _ _ _).le.trans ?_
-  refine (norm_groundCompression_observables_commutator_le_exp_edist G Φ hHerm R hDiam vR hCard b₀ hBudget Kg kg hGrowth hΔE hgap
+  refine (norm_groundCompression_observables_commutator_le_exp_edist G Φ hHerm R hDiam vR hCard b₀
+      hBudget Kg kg hGrowth hΔE hgap
     K id (fun i ↦ hXK i (hX i)) M hMsupp Robs hKDiam vObs hKCard j i).trans ?_
   change C * ‖M i‖ * ‖M j‖ * _ ≤ C * ‖Φ.term i‖ * ‖Φ.term j‖ * _
   exact mul_le_mul_of_nonneg_right
@@ -135,11 +137,13 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_perturb
     ∃ b : OrthonormalBasis (Fin n) ℂ (groundSpace Φ.hamiltonian E₀),
       ∀ r : ℝ, 0 ≤ r → ∀ s : V → Finset V,
         ∑ i, ‖offDiagonalPartFamily (fun c => (b c : EuclideanSpace ℂ (Config X)))
-          (groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)))‖ ≤
+          (groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k')
+              (Φ.term i)))‖ ≤
           ((n - 1 : ℕ) : ℝ) ^ 2 * recursiveBasisCoeff n C *
               (|b₀| * (|Kg| * Real.shellSumConst (γ / 2 ^ n) kg)) +
             (n - 1 : ℕ) * ∑ i,
-              ‖gaussianFilteredTerm r ΔE Φ.hamiltonian (Φ.term i) - gaussianFilteredTerm r ΔE (∑ k' ∈ s i, Φ.term k') (Φ.term i)‖ := by
+              ‖gaussianFilteredTerm r ΔE Φ.hamiltonian (Φ.term i) - gaussianFilteredTerm r ΔE
+                  (∑ k' ∈ s i, Φ.term k') (Φ.term i)‖ := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
@@ -151,7 +155,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_perturb
   have hv : Orthonormal ℂ (fun c => (b c : EuclideanSpace ℂ (Config X))) :=
     b.orthonormal.comp_linearIsometry V.subtypeₗᵢ
   have hpert := sum_norm_offDiagonalPartFamily_groundCompression_le hv Φ.hamiltonian E₀
-    (fun k ↦ gaussianFilteredTerm r ΔE (∑ k' ∈ s k, Φ.term k') (Φ.term k)) (fun i => gaussianFilteredTerm r ΔE Φ.hamiltonian (Φ.term i))
+    (fun k ↦ gaussianFilteredTerm r ΔE (∑ k' ∈ s k, Φ.term k') (Φ.term k))
+        (fun i => gaussianFilteredTerm r ΔE Φ.hamiltonian (Φ.term i))
   simp only [groundCompression_gaussianFilteredTerm hr hH] at hpert
   simp only [groundCompression_gaussianFilteredTerm (q := 0) le_rfl hH] at hb
   simpa only [norm_sub_rev] using hpert.trans (add_le_add hb le_rfl)

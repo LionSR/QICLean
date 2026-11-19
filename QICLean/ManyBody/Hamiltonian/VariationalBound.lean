@@ -99,27 +99,35 @@ number of summands, `E₀/N ≥ λ_min(K)`. When `G` acts simply transitively on
 translations of a periodic lattice do, `N` is the number of sites.
 Hastings, arXiv:cond-mat/0508554v3, eq. `varnum`, lines 856–877. -/
 theorem card_mul_le_of_mulVec_eq_smul_of_sitePermOp [Fintype G] (q : ℕ)
-    (H₀ : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ) (a : ℕ → ℝ) (m : ℕ) {c : ℝ}
+    (H₀ : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ) (a : ℕ → ℝ)
+        (m : ℕ) {c : ℝ}
     (hK : (H₀ + ∑ k ∈ range m, ((a (k + 1) : ℂ) * Complex.I ^ (k + 1)) •
-        (GaussianFilter.commutatorCLM (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ) ^ (k + 1)) H₀ -
+        (GaussianFilter.commutatorCLM (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g)
+            * H₀ * (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ) ^ (k + 1)) H₀ -
           (c : ℂ) • 1).PosSemidef)
     {E : ℝ} {Ω : (Config fun _ : V ↦ Fin q) → ℂ} (hΩ : Ω ≠ 0)
-    (hE : (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ) *ᵥ Ω = (E : ℂ) • Ω) :
+    (hE : (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin q)
+        (MulAction.toPerm g))ᴴ) *ᵥ Ω = (E : ℂ) • Ω) :
     Fintype.card G * c ≤ E :=
-  Matrix.card_mul_le_of_mulVec_eq_smul_of_conj (fun g ↦ sitePermOp (α := Fin q) (MulAction.toPerm g))
-    (fun g ↦ sitePermOp_mem_unitary (MulAction.toPerm g)) H₀ (isSiteInvariant_sum_conj H₀) a m hK hΩ hE
+  Matrix.card_mul_le_of_mulVec_eq_smul_of_conj (fun g ↦ sitePermOp (α := Fin q)
+      (MulAction.toPerm g))
+    (fun g ↦ sitePermOp_mem_unitary (MulAction.toPerm g)) H₀
+        (isSiteInvariant_sum_conj H₀) a m hK hΩ hE
 
 /-- The least-eigenvalue specialization for translates on finitely many sites.
 Hastings, arXiv:cond-mat/0508554v3, eq. `varnum`, lines 856–877. -/
 theorem card_mul_sInf_spectrum_le_of_sitePermOp [Fintype G] (q : ℕ)
     (H₀ : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ) (hH₀ : H₀.IsHermitian)
     (a : ℕ → ℝ) (m : ℕ) {E : ℝ} {Ω : (Config fun _ : V ↦ Fin q) → ℂ} (hΩ : Ω ≠ 0)
-    (hE : (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ) *ᵥ Ω = (E : ℂ) • Ω) :
+    (hE : (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin q)
+        (MulAction.toPerm g))ᴴ) *ᵥ Ω = (E : ℂ) • Ω) :
     Fintype.card G * sInf (spectrum ℝ
       (H₀ + ∑ k ∈ range m, ((a (k + 1) : ℂ) * Complex.I ^ (k + 1)) •
-        (GaussianFilter.commutatorCLM (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ) ^ (k + 1)) H₀)) ≤ E :=
+        (GaussianFilter.commutatorCLM (∑ g : G, sitePermOp (α := Fin q) (MulAction.toPerm g)
+            * H₀ * (sitePermOp (α := Fin q) (MulAction.toPerm g))ᴴ) ^ (k + 1)) H₀)) ≤ E :=
   Matrix.card_mul_sInf_spectrum_le_of_conj (fun g ↦ sitePermOp (α := Fin q) (MulAction.toPerm g))
-    (fun g ↦ sitePermOp_mem_unitary (MulAction.toPerm g)) H₀ hH₀ (isSiteInvariant_sum_conj H₀) a m hΩ hE
+    (fun g ↦ sitePermOp_mem_unitary (MulAction.toPerm g)) H₀ hH₀
+        (isSiteInvariant_sum_conj H₀) a m hΩ hE
 
 end SitePermutation
 
@@ -134,12 +142,15 @@ arXiv:cond-mat/0508554v3, eq. `varnum` (lines 856–877) and lines 1005–1009. 
 theorem card_mul_sInf_spectrum_gaussianFilteredTerm_le_of_sitePermOp [Fintype G]
     (d : ℕ) (q ΔE : ℝ) (H₀ : Matrix (Config fun _ : V ↦ Fin d) (Config fun _ : V ↦ Fin d) ℂ)
     (hH₀ : H₀.IsHermitian) {E : ℝ} {Ω : (Config fun _ : V ↦ Fin d) → ℂ} (hΩ : Ω ≠ 0)
-    (hE : (∑ g : G, sitePermOp (α := Fin d) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) *ᵥ Ω =
+    (hE : (∑ g : G, sitePermOp (α := Fin d) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin d)
+        (MulAction.toPerm g))ᴴ) *ᵥ Ω =
       (E : ℂ) • Ω) :
     Fintype.card G * sInf (spectrum ℝ (gaussianFilteredTerm q ΔE
-      (∑ g : G, sitePermOp (α := Fin d) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin d) (MulAction.toPerm g))ᴴ) H₀)) ≤ E :=
+      (∑ g : G, sitePermOp (α := Fin d) (MulAction.toPerm g) * H₀ * (sitePermOp (α := Fin d)
+          (MulAction.toPerm g))ᴴ) H₀)) ≤ E :=
   card_mul_sInf_spectrum_gaussianFilteredTerm_le_of_conj q ΔE
-    (fun g ↦ sitePermOp (α := Fin d) (MulAction.toPerm g)) (fun g ↦ sitePermOp_mem_unitary (MulAction.toPerm g)) H₀ hH₀
+    (fun g ↦ sitePermOp (α := Fin d) (MulAction.toPerm g)) (fun g ↦ sitePermOp_mem_unitary
+        (MulAction.toPerm g)) H₀ hH₀
     (isSiteInvariant_sum_conj H₀) hΩ hE
 
 

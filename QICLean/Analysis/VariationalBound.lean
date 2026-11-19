@@ -55,15 +55,17 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 theorem commutatorCLM_pow_succ_apply (H A : Matrix n n ℂ) (k : ℕ) :
     (GaussianFilter.commutatorCLM H ^ (k + 1)) A =
       H * (GaussianFilter.commutatorCLM H ^ k) A - (GaussianFilter.commutatorCLM H ^ k) A * H := by
-  rw [pow_succ', ContinuousLinearMap.mul_apply, GaussianFilter.commutatorCLM_apply]
+  rw [pow_succ', mul_apply_eq_comp, GaussianFilter.commutatorCLM_apply]
 
 /-- `(ad_Hᵏ A)† = (−1)ᵏ ad_Hᵏ(A†)` for Hermitian `H`. -/
 theorem conjTranspose_commutatorCLM_pow {H : Matrix n n ℂ} (hH : H.IsHermitian) (A : Matrix n n ℂ)
-    (k : ℕ) : ((GaussianFilter.commutatorCLM H ^ k) A)ᴴ = ((-1 : ℂ) ^ k) • (GaussianFilter.commutatorCLM H ^ k) Aᴴ := by
+    (k : ℕ) : ((GaussianFilter.commutatorCLM H ^ k) A)ᴴ = ((-1 : ℂ) ^ k) •
+        (GaussianFilter.commutatorCLM H ^ k) Aᴴ := by
   induction k with
   | zero => simp
   | succ k ih =>
-    rw [commutatorCLM_pow_succ_apply, commutatorCLM_pow_succ_apply, conjTranspose_sub, conjTranspose_mul,
+    rw [commutatorCLM_pow_succ_apply, commutatorCLM_pow_succ_apply, conjTranspose_sub
+        , conjTranspose_mul,
       conjTranspose_mul, ih, hH.eq, smul_mul_assoc, mul_smul_comm, pow_succ, mul_neg_one,
       neg_smul, smul_sub]
     abel
@@ -81,23 +83,26 @@ theorem isHermitian_smul_commutatorCLM_pow {H A : Matrix n n ℂ} (hH : H.IsHerm
 /-- The iterated commutator is additive in its argument. -/
 theorem commutatorCLM_pow_sum {ι : Type*} (s : Finset ι) (H : Matrix n n ℂ)
     (A : ι → Matrix n n ℂ) (k : ℕ) :
-    (GaussianFilter.commutatorCLM H ^ k) (∑ i ∈ s, A i) = ∑ i ∈ s, (GaussianFilter.commutatorCLM H ^ k) (A i) := by
+    (GaussianFilter.commutatorCLM H ^ k) (∑ i ∈ s, A i) = ∑ i ∈ s,
+        (GaussianFilter.commutatorCLM H ^ k) (A i) := by
   induction k with
   | zero => simp
   | succ k ih => simp only [commutatorCLM_pow_succ_apply, ih, Finset.mul_sum, Finset.sum_mul,
       ← Finset.sum_sub_distrib]
 
 /-- `ad_Hᵏ(H) = 0` for `k ≥ 1`. -/
-theorem commutatorCLM_pow_self_succ (H : Matrix n n ℂ) (k : ℕ) : (GaussianFilter.commutatorCLM H ^ (k + 1)) H = 0 := by
+theorem commutatorCLM_pow_self_succ (H : Matrix n n ℂ) (k : ℕ) :
+    (GaussianFilter.commutatorCLM H ^ (k + 1)) H = 0 := by
   induction k with
-  | zero => simp [commutatorCLM_pow_succ_apply]
+  | zero => simp
   | succ k ih => rw [commutatorCLM_pow_succ_apply, ih, mul_zero, zero_mul, sub_zero]
 
 
 /-- Conjugation by a unitary that commutes with `H` commutes with `ad_H`. -/
 theorem commutatorCLM_pow_conj {H U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n ℂ)
     (hUH : Commute U H) (A : Matrix n n ℂ) (k : ℕ) :
-    U * (GaussianFilter.commutatorCLM H ^ k) A * Uᴴ = (GaussianFilter.commutatorCLM H ^ k) (U * A * Uᴴ) := by
+    U * (GaussianFilter.commutatorCLM H ^ k) A * Uᴴ = (GaussianFilter.commutatorCLM H ^ k) (U
+        * A * Uᴴ) := by
   have hUstar : Uᴴ * U = 1 := by
     simpa [star_eq_conjTranspose] using (mem_unitaryGroup_iff').mp hU
   have hUU : U * Uᴴ = 1 := by
@@ -110,7 +115,8 @@ theorem commutatorCLM_pow_conj {H U : Matrix n n ℂ} (hU : U ∈ unitaryGroup n
   induction k with
   | zero => rfl
   | succ k ih =>
-    rw [commutatorCLM_pow_succ_apply, commutatorCLM_pow_succ_apply, ← ih, Matrix.mul_sub, Matrix.sub_mul]
+    rw [commutatorCLM_pow_succ_apply, commutatorCLM_pow_succ_apply, ← ih, Matrix.mul_sub
+        , Matrix.sub_mul]
     congr 1
     · rw [← Matrix.mul_assoc, hUH.eq]; simp only [Matrix.mul_assoc]
     · simp only [Matrix.mul_assoc, hHUstar]
@@ -124,7 +130,8 @@ theorem posSemidef_sub_card_smul_of_conj {ι : Type*} [Fintype ι] (U : ι → M
     (hU : ∀ i, U i ∈ unitaryGroup n ℂ) (H₀ : Matrix n n ℂ)
     (hcomm : ∀ i, Commute (U i) (∑ j, U j * H₀ * (U j)ᴴ)) (a : ℕ → ℝ) (m : ℕ) {c : ℝ}
     (hK : (H₀ + ∑ k ∈ range m, ((a (k + 1) : ℂ) * Complex.I ^ (k + 1)) •
-        (GaussianFilter.commutatorCLM (∑ j, U j * H₀ * (U j)ᴴ) ^ (k + 1)) H₀ - (c : ℂ) • 1).PosSemidef) :
+        (GaussianFilter.commutatorCLM (∑ j, U j * H₀ * (U j)ᴴ) ^ (k + 1)) H₀ -
+            (c : ℂ) • 1).PosSemidef) :
     ((∑ j, U j * H₀ * (U j)ᴴ) - ((Fintype.card ι * c : ℝ) : ℂ) • 1).PosSemidef := by
   set H := ∑ j, U j * H₀ * (U j)ᴴ with hHdef
   set K := H₀ + ∑ k ∈ range m, ((a (k + 1) : ℂ) * Complex.I ^ (k + 1)) •
@@ -162,7 +169,8 @@ theorem card_mul_le_of_mulVec_eq_smul_of_conj {ι : Type*} [Fintype ι] (U : ι 
     (hU : ∀ i, U i ∈ unitaryGroup n ℂ) (H₀ : Matrix n n ℂ)
     (hcomm : ∀ i, Commute (U i) (∑ j, U j * H₀ * (U j)ᴴ)) (a : ℕ → ℝ) (m : ℕ) {c : ℝ}
     (hK : (H₀ + ∑ k ∈ range m, ((a (k + 1) : ℂ) * Complex.I ^ (k + 1)) •
-        (GaussianFilter.commutatorCLM (∑ j, U j * H₀ * (U j)ᴴ) ^ (k + 1)) H₀ - (c : ℂ) • 1).PosSemidef)
+        (GaussianFilter.commutatorCLM (∑ j, U j * H₀ * (U j)ᴴ) ^ (k + 1)) H₀ -
+            (c : ℂ) • 1).PosSemidef)
     {E : ℝ} {Ω : n → ℂ} (hΩ : Ω ≠ 0)
     (hE : (∑ j, U j * H₀ * (U j)ᴴ) *ᵥ Ω = (E : ℂ) • Ω) :
     Fintype.card ι * c ≤ E := by
