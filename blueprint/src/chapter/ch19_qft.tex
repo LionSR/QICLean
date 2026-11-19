@@ -37,10 +37,12 @@ Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
         QuantumCircuit.Qubit.hadamard_apply, QuantumCircuit.Qubit.phaseShift,
         QuantumCircuit.Qubit.controlled, QuantumCircuit.Qubit.controlled_apply}
     \leanok
-    \uses{def:flip_operator}
-    The Fourier gate of one qudit is $(F_d)_{yx}=d^{-1/2}e^{2\pi i\,xy/d}$, and the
-    controlled phase of order $k$ on two qudits is the diagonal matrix
-    $(c,t)\mapsto e^{2\pi i\,ct/d^k}$. The swap of two qudits is the flip operator $F$
+    \uses{def:flip_operator, lem:weyl_fourier}
+    The Fourier gate $F_d$ of one qudit is the Fourier matrix of the residues modulo $d$ at
+    the primitive root $\zeta=e^{2\pi i/d}$, indexed by $\{0,\dots,d-1\}$:
+    $(F_d)_{yx}=\zeta^{xy}/\sqrt d=d^{-1/2}e^{2\pi i\,xy/d}$, the factor $d^{-1/2}$
+    normalizing it. The controlled phase of order $k$ on two qudits is the diagonal
+    matrix $(c,t)\mapsto e^{2\pi i\,ct/d^k}$. The swap of two qudits is the flip operator $F$
     on $\C^d\otimes\C^d$. For qubits, $F_2$ is the Hadamard gate
     $H_{yx}=(-1)^{xy}/\sqrt2$; the phase gate is
     $R_k=\operatorname{diag}(1,e^{2\pi i/2^k})$, and the controlled gate of a matrix $U$
@@ -68,8 +70,9 @@ Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
     controlled gate of $R_k$ is the controlled phase of order $k$.
 \end{lemma}
 \begin{proof}\leanok
-    The rows of $F_d$ are orthonormal by the orthogonality of the characters
-    $y\mapsto e^{2\pi i\,xy/d}$ of $\Z/d\Z$. A diagonal matrix of phases is unitary.
+    \uses{lem:weyl_fourier}
+    For $d\geq1$, $F_d$ is unitary by Lemma~\ref{lem:weyl_fourier}, since $e^{2\pi i/d}$ is a
+    primitive $d$-th root of unity; for $d=0$ there is nothing to prove. A diagonal matrix of phases is unitary.
     The controlled gate of a unitary matrix is block diagonal with unitary blocks, and
     $F^\dagger=F$, $F^2=1$.
 \end{proof}
@@ -124,8 +127,10 @@ Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
     \lean{QuantumCircuit.Qudit.prod_gateOp_core, QuantumCircuit.Qudit.prod_gateOp_eq_dft}
     \leanok
     \uses{def:qft_order}
-    Let a sequence of the Fourier and controlled phase cells contain each of them once
-    and be admissible from the empty set. The product of the placed gates along it, the
+    Every admissible order of the Fourier and controlled phase gates computes the quantum
+    Fourier transform, with the qudits in reverse order until the swaps restore it.
+    Precisely, let a sequence of the Fourier and controlled phase cells contain each of
+    them once and be admissible from the empty set. The product of the placed gates along it, the
     first on the right, has the entry $F_{\bar yx}$ at $(y,x)$, where
     $\bar y_i=y_{n-1-i}$. Followed by the swaps, the product is $F$.
 \end{theorem}

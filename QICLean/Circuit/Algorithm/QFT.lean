@@ -734,7 +734,7 @@ noncomputable abbrev dft (n : ℕ) :
 theorem dft_apply {n : ℕ} (y x : Config (Qudits (Fin n) 2)) :
     dft n y x = invSqrtTwo ^ n *
       exp (2 * Real.pi * I * ((encode n y : ℕ) * (encode n x : ℕ) : ℂ) / 2 ^ n) := by
-  simp only [dft, Qudit.dft, of_apply, Nat.cast_ofNat, invSqrt_two]
+  simp only [dft, Qudit.dft, of_apply, Nat.cast_ofNat]
 
 /-- The gate of the Fourier transform on a cell of a register of qubits. -/
 noncomputable abbrev qftGate {n : ℕ} (b : (geometry n).Cell) :

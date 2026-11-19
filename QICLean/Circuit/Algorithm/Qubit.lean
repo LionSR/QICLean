@@ -68,13 +68,20 @@ theorem encode_apply {n : ℕ} (x : Config (Qudits (Fin n) d)) :
 
 /-! ### The matrices -/
 
-/-- The Fourier matrix `F_d(y, x) = d^{-1/2} e^{2πi xy/d}` of one qudit. -/
+/-- The Fourier matrix of one qudit: Mathlib's `ZMod d` Fourier matrix `weylFourier ζ` at
+`ζ = e^{2πi/d}`, on `Fin d`. -/
 noncomputable def fourier (d : ℕ) : Matrix (Fin d) (Fin d) ℂ :=
-  Matrix.of fun y x ↦ invSqrt d * exp (2 * Real.pi * I * ((y : ℕ) * (x : ℕ) : ℂ) / d)
+  (weylFourier (d := d) (exp (2 * Real.pi * I / d))).submatrix (fun y ↦ ((y : ℕ) : ZMod d))
+    (fun x ↦ ((x : ℕ) : ZMod d))
 
+/-- The entries `F_d(y, x) = d^{-1/2} e^{2πi xy/d}` of the Fourier matrix; the normalization
+`d^{-1/2}` makes it unitary. -/
 theorem fourier_apply (y x : Fin d) :
-    fourier d y x = invSqrt d * exp (2 * Real.pi * I * ((y : ℕ) * (x : ℕ) : ℂ) / d) :=
-  rfl
+    fourier d y x = invSqrt d * exp (2 * Real.pi * I * ((y : ℕ) * (x : ℕ) : ℂ) / d) := by
+  rw [fourier, submatrix_apply, weylFourier, of_apply, ZMod.val_natCast_of_lt y.2,
+    ZMod.val_natCast_of_lt x.2, ← Complex.exp_nat_mul, div_eq_inv_mul, invSqrt]
+  push_cast
+  ring_nf
 
 /-- The controlled phase `e^{2πi c t/d^k}` of two qudits, a diagonal matrix. -/
 noncomputable def controlledPhase (d k : ℕ) : Matrix (Fin d × Fin d) (Fin d × Fin d) ℂ :=
@@ -85,34 +92,12 @@ theorem fourier_mem_unitaryGroup (d : ℕ) : fourier d ∈ unitaryGroup (Fin d) 
   · rw [Subsingleton.elim (fourier 0) 1]
     exact one_mem _
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_one_of_ne_zero hd.ne'
-  have hζ := Complex.isPrimitiveRoot_exp (k + 1) (Nat.succ_ne_zero k)
-  have hexp (y x : Fin (k + 1)) : exp (2 * Real.pi * I * ((y : ℕ) * (x : ℕ) : ℂ) / (k + 1 : ℕ)) =
-      exp (2 * Real.pi * I / (k + 1 : ℕ)) ^ ((x : ℕ) * (y : ℕ)) := by
-    rw [← Complex.exp_nat_mul]
-    push_cast
-    ring_nf
-  rw [mem_unitaryGroup_iff]
-  ext i j
-  have := Matrix.sum_rootOfUnity_pow_eq hζ (show ZMod (k + 1) from i) (show ZMod (k + 1) from j)
-  simp only [mul_apply, star_apply, fourier_apply, hexp, star_mul', star_invSqrt] at this ⊢
-  rw [one_apply]
-  calc _ = invSqrt (k + 1 : ℕ) * invSqrt (k + 1 : ℕ) * ∑ b : ZMod (k + 1),
-          exp (2 * Real.pi * I / (k + 1 : ℕ)) ^ (b.val * (show ZMod (k + 1) from i).val) *
-            (starRingEnd ℂ) (exp (2 * Real.pi * I / (k + 1 : ℕ)) ^
-              (b.val * (show ZMod (k + 1) from j).val)) := by
-        rw [Finset.mul_sum]
-        refine Finset.sum_congr rfl fun b _ ↦ ?_
-        rw [show ZMod.val (show ZMod (k + 1) from b) = b from rfl,
-          show ZMod.val (show ZMod (k + 1) from i) = i from rfl,
-          show ZMod.val (show ZMod (k + 1) from j) = j from rfl, Complex.star_def]
-        ring
-    _ = if i = j then 1 else 0 := by
-        rw [this, invSqrt_mul_self (Nat.cast_nonneg _)]
-        split_ifs with h₁ h₂ h₃
-        · exact inv_mul_cancel₀ (by exact_mod_cast Nat.succ_ne_zero k)
-        · exact absurd h₁ h₂
-        · exact absurd h₃ h₁
-        · exact mul_zero _
+  have h : fourier (k + 1) = weylFourier (d := k + 1) (exp (2 * Real.pi * I / (k + 1 : ℕ))) := by
+    ext y x
+    exact congrArg₂ (weylFourier _) (ZMod.natCast_zmod_val (n := k + 1) y)
+      (ZMod.natCast_zmod_val (n := k + 1) x)
+  rw [h]
+  exact weylFourier_mem_unitaryGroup (Complex.isPrimitiveRoot_exp (k + 1) (Nat.succ_ne_zero k))
 
 theorem controlledPhase_mem_unitaryGroup (d k : ℕ) :
     controlledPhase d k ∈ unitaryGroup (Fin d × Fin d) ℂ := by
@@ -152,7 +137,7 @@ noncomputable abbrev hadamard : Matrix (Fin 2) (Fin 2) ℂ :=
 theorem hadamard_apply (y x : Fin 2) :
     hadamard y x = invSqrtTwo * (-1) ^ ((y : ℕ) * (x : ℕ)) := by
   change Qudit.fourier 2 y x = _
-  rw [Qudit.fourier_apply, Nat.cast_ofNat, invSqrt_two, ← Complex.exp_pi_mul_I,
+  rw [Qudit.fourier_apply, Nat.cast_ofNat, ← Complex.exp_pi_mul_I,
     ← Complex.exp_nat_mul]
   congr 2
   push_cast
