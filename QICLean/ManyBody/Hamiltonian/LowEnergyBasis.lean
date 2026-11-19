@@ -6,10 +6,25 @@ Authors: QICLean contributors
 import Mathlib.Analysis.InnerProductSpace.JointEigenspace
 import Mathlib.Analysis.Normed.Group.Quotient
 import Mathlib.LinearAlgebra.Complex.Module
+import QICLean.Analysis.LowEnergyBasis.SpectralSplit
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorSum
 
 /-!
-@@DOC
+# A ground-space basis with summable off-diagonal parts
+
+Hastings, arXiv:cond-mat/0508554v3, lines 1678–1708, chooses a basis of the ground space in
+which the compressions of the filtered terms have summable off-diagonal parts.
+
+* `exists_orthonormalBasis_joint_eigenvectors`, `exists_orthonormalBasis_norm_inner_le_commutators`:
+  bases from commuting families and from the commutator map, with the condition number
+  `compressionConditionNumber`.
+* `groundSpaceCompression` and `exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le`.
+* `twoDimensionalSpectralSpread` and the basis of a two-dimensional ground space
+  (`exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le`).
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasisConstruction.lean`,
+`LowEnergyBasisTwoDimensional.lean` and `LowEnergyBasisUniform.lean`. Changes as in
+`LowEnergyCommutator`.
 -/
 
 noncomputable section
@@ -212,9 +227,7 @@ noncomputable abbrev realCompressionSpan (B : V → E →L[ℂ] E) : Submodule �
 
 set_option backward.isDefEq.respectTransparency false in
 /-- Construction of the basis and of at most `n²` original compressions controlling every
-off-diagonal entry. The coefficient is the explicit inverse lower norm of the commutator
-map modulo its kernel; no spectral separation or chosen basis is assumed.
-Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708. -/
+off-diagonal entry. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708. -/
 theorem exists_orthonormalBasis_norm_inner_le_commutators (B : V → E →L[ℂ] E)
     (hB : ∀ i, IsSelfAdjoint (B i)) :
     ∃ (m : ℕ) (j : Fin m → V)
@@ -257,8 +270,10 @@ variable {ν : Type*} [Fintype ν] [DecidableEq ν]
 local instance (H : Matrix ν ν ℂ) (E₀ : ℝ) : CompleteSpace (groundSpace H E₀) :=
   FiniteDimensional.complete ℂ (groundSpace H E₀)
 
-/-- The compression `P W P`, acting on the ground eigenspace itself. Hastings,
-arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1678–1708. -/
+/-- The compression `P W P`, acting on the ground eigenspace itself. It is the compression
+`subspaceCompression` of `W` to the ground space
+(`groundSpaceCompression_eq_subspaceCompression`). Hastings, arXiv:cond-mat/0508554v3,
+`proj3new.tex`, lines 1678–1708. -/
 noncomputable def groundSpaceCompression (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ) :
     groundSpace H E₀ →L[ℂ] groundSpace H E₀ :=
   ((groundCompression H E₀ W).codRestrict (groundSpace H E₀)
@@ -269,6 +284,29 @@ noncomputable def groundSpaceCompression (H : Matrix ν ν ℂ) (E₀ : ℝ) (W 
 theorem coe_groundSpaceCompression_apply (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ)
     (x : groundSpace H E₀) :
     (groundSpaceCompression H E₀ W x : EuclideanSpace ℂ ν) = groundCompression H E₀ W x := rfl
+
+/-- The ground-space compression is the compression to the ground space. -/
+theorem groundSpaceCompression_eq_subspaceCompression (H : Matrix ν ν ℂ) (E₀ : ℝ)
+    (W : Matrix ν ν ℂ) :
+    groundSpaceCompression H E₀ W =
+      subspaceCompression (groundSpace H E₀) (toEuclideanCLM (n := ν) (𝕜 := ℂ) W) := by
+  ext x
+  simp [coe_subspaceCompression_apply, groundCompression, mul_apply_eq_comp,
+    (groundSpace H E₀).starProjection_eq_self_iff.mpr x.2]
+
+theorem norm_groundSpaceCompression_apply (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ)
+    (x : groundSpace H E₀) :
+    ‖groundSpaceCompression H E₀ W x‖ = ‖groundCompression H E₀ W x‖ := by
+  rw [← coe_groundSpaceCompression_apply]
+  rfl
+
+theorem coe_groundSpaceCompression_commutator_apply (H : Matrix ν ν ℂ) (E₀ : ℝ)
+    (W B : Matrix ν ν ℂ) (x : groundSpace H E₀) :
+    ((groundSpaceCompression H E₀ W * groundSpaceCompression H E₀ B -
+        groundSpaceCompression H E₀ B * groundSpaceCompression H E₀ W) x : EuclideanSpace ℂ ν) =
+      (groundCompression H E₀ W * groundCompression H E₀ B -
+        groundCompression H E₀ B * groundCompression H E₀ W) x := by
+  simp [mul_apply_eq_comp, _root_.sub_apply]
 
 theorem isSelfAdjoint_groundSpaceCompression (H : Matrix ν ν ℂ) (E₀ : ℝ)
     {W : Matrix ν ν ℂ} (hW : W.IsHermitian) : IsSelfAdjoint (groundSpaceCompression H E₀ W) := by
@@ -283,7 +321,8 @@ theorem norm_groundSpaceCompression_le (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : 
   refine (show ‖groundSpaceCompression H E₀ W‖ ≤ ‖groundCompression H E₀ W‖ from ?_).trans
     (norm_groundCompression_le H E₀ W)
   exact ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x =>
-    (groundCompression H E₀ W).le_opNorm x.val
+    (norm_groundSpaceCompression_apply H E₀ W x).trans_le
+      ((groundCompression H E₀ W).le_opNorm x.val)
 
 /-- Restriction to the ground space does not increase the norm of the commutator.
 Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `oibu`, lines 1683–1708. -/
@@ -294,16 +333,18 @@ theorem norm_groundSpaceCompression_commutator_le (H : Matrix ν ν ℂ) (E₀ :
       ‖groundCompression H E₀ W * groundCompression H E₀ B -
         groundCompression H E₀ B * groundCompression H E₀ W‖ := by
   refine ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x => ?_
-  exact (groundCompression H E₀ W * groundCompression H E₀ B -
+  have h := (groundCompression H E₀ W * groundCompression H E₀ B -
     groundCompression H E₀ B * groundCompression H E₀ W).le_opNorm x.val
+  rwa [← coe_groundSpaceCompression_commutator_apply] at h
 
 /-- The ambient compression has exactly the operator norm of its restriction to the
-actual ground eigenspace. Hastings, arXiv:cond-mat/0508554v3, lines 1562–1601. -/
+ground eigenspace. Hastings, arXiv:cond-mat/0508554v3, lines 1562–1601. -/
 theorem norm_groundSpaceCompression_eq (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ) :
     ‖groundSpaceCompression H E₀ W‖ = ‖groundCompression H E₀ W‖ := by
   apply le_antisymm
   · exact ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x ↦
-      (groundCompression H E₀ W).le_opNorm x.val
+      (norm_groundSpaceCompression_apply H E₀ W x).trans_le
+        ((groundCompression H E₀ W).le_opNorm x.val)
   · refine ContinuousLinearMap.opNorm_le_bound (groundCompression H E₀ W)
       (norm_nonneg (groundSpaceCompression H E₀ W)) ?_
     intro x
@@ -375,11 +416,10 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Finty
 
 set_option backward.isDefEq.respectTransparency false in
 /-- A constructed orthonormal basis of the nonzero ground space satisfies a summed
-off-diagonal estimate using at most `n²` actual local terms. The geometric constant is that
+off-diagonal estimate using at most `n²` local terms. The geometric constant is that
 of the commutator row sum, and the additional factor is the explicitly displayed quotient
-conditioning of the selected ground-space commutator map. This conditioning is not asserted
-to be uniform in the system size. No basis, spectral refinement or separation hypothesis is
-supplied. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `oibu` and lines 1695–1708. -/
+conditioning of the selected ground-space commutator map, which may depend on the system
+size. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `oibu` and lines 1695–1708. -/
 theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
     (G : SimpleGraph V) {T : κ → Finset V} (a : κ → V) (ha : ∀ k, a k ∈ T k)
     (Φ : Interaction X T) (hHerm : ∀ k, (Φ.term k).IsHermitian)
@@ -708,9 +748,9 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Finty
   [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ]
 
 set_option backward.isDefEq.respectTransparency false in
-/-- There is an actual orthonormal basis of a two-dimensional ground space for which the
+/-- There is an orthonormal basis of a two-dimensional ground space for which the
 sum of the off-diagonal parts is bounded only by the local norm budget, range, gap and
-graph growth. No lower bound on a compressed spectral gap is assumed. The rate is half
+graph growth. The rate is half
 the commutator decay rate. This proves the qualitative size independence of Hastings,
 arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `oibu`, lines 1678–1694, with an explicit
 corrected constant; see `docs/paper-gaps/hastings05_two_dim_ground_basis.tex`. -/

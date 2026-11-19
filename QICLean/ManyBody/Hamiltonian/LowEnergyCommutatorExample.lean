@@ -50,6 +50,10 @@ Spins are encoded by `Fin 2`, with `0` for up and `1` for down.
   large-radius truncated filters fix every term exactly.
 * `not_commute_compress_truncatedTerm`, `commute_compress_truncatedTerm_zero_of_three_le`:
   the same commutator conclusions for the source's truncated terms.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyCommutatorExample.lean`. Changes:
+namespace `ManyBody.LowEnergyExample`; the one-site operator `siteOp i u` is the placement
+`place {i}` of `u`, with its algebraic lemmas proved here.
 -/
 
 noncomputable section

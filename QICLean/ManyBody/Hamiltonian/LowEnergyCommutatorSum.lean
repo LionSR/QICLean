@@ -8,7 +8,21 @@ import QICLean.ManyBody.Dynamics.GraphGrowth
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutator
 
 /-!
-@@DOC
+# Summing the low-energy commutators
+
+Hastings, arXiv:cond-mat/0508554v3, eq. `oibu` (lines 1689–1694), sums the decaying bound on the
+commutators of ground-space compressions over the terms.
+
+* `shellSumConst`, `sum_exp_neg_edist_le`: exponential sums over the shells of a graph of
+  polynomial growth.
+* `norm_groundCompression_commutator_le_exp(_edist)`: exponential decay of the low-energy
+  commutators in the graph distance between anchors.
+* `sum_norm_offDiagonalPartFamily_le_oibu(_levels)`: eq. `oibu`.
+* `sqrtKernel`, `listKernelSum`, `graphDecayKernel`: the decay kernels of the recursive basis
+  construction.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyCommutatorSum.lean` and
+`LowEnergyDecayKernel.lean`. Changes as in `LowEnergyCommutator`.
 -/
 
 noncomputable section
@@ -341,7 +355,7 @@ omit ha in
 anchors. The velocity uses the Hamiltonian generator parameters `R,vR`; the observable
 support parameters `Robs,vObs` enter only the prefactor and support-separation correction.
 Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `blecm`, lines 1548–1601,
-with the actual truncated observables `M_i` allowed as the family `W`. -/
+with the truncated observables `M_i` allowed as the family `W`. -/
 theorem norm_groundCompression_observables_commutator_le_exp_edist
     (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)

@@ -7,7 +7,19 @@ import QICLean.Analysis.LowEnergyBasis.SpectralSplit
 import QICLean.ManyBody.Hamiltonian.LowEnergyBasis
 
 /-!
-@@DOC
+# A uniform ground-space basis
+
+Hastings, arXiv:cond-mat/0508554v3, eq. `oibu` and lines 1695–1708, refines the basis
+recursively along spectral splits. With the decay kernel of the low-energy commutators this
+gives a basis of the ground space whose summed off-diagonal parts are bounded uniformly in the
+system size.
+
+* `recursiveCommutatorCoeff`, `recursiveBasisCoeff`, `exists_orthonormalBasis_uniform_kernel`.
+* `exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_le` and
+  `exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform`.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasisRecursive.lean` and
+`LowEnergyBasisUniformGeneral.lean`. Changes as in `LowEnergyCommutator`.
 -/
 
 noncomputable section
@@ -205,9 +217,9 @@ theorem exists_orthonormalBasis_uniform_kernel_aux {κ : Type*} [Finite κ]
           mul_add, add_comm, add_left_comm, add_assoc] using h
 
 set_option backward.isDefEq.respectTransparency false in
-/-- A finite Hermitian family admits an actual orthonormal basis with uniform
-matrix-element decay from at most `n-1` original anchors. No spectral denominators or
-supplied separation assumptions occur. The conclusion retains the cross terms through
+/-- A finite Hermitian family admits an orthonormal basis with uniform
+matrix-element decay from at most `n-1` original anchors. The conclusion retains the cross terms
+through
 successive square roots of the decay kernel. Hastings, arXiv:cond-mat/0508554v3,
 `proj3new.tex`, lines 1695–1708. -/
 theorem exists_orthonormalBasis_uniform_kernel {κ E : Type*} [Finite κ]
@@ -248,7 +260,6 @@ theorem smul_inv_smul_eq_of_norm_le (B : κ → E →L[ℂ] E) (w : κ → ℝ)
 
 omit [CompleteSpace E] in
 /-- Weighted commutator decay becomes an unweighted estimate after normalization.
-No nonzero-term hypothesis is needed.
 Hastings, arXiv:cond-mat/0508554v3, lines 1698–1708. -/
 theorem norm_commutator_inv_smul_le (B : κ → E →L[ℂ] E) (w : κ → ℝ)
     (hw : ∀ i, 0 ≤ w i)
@@ -447,10 +458,9 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_
     _ = _ := by ring
 
 set_option backward.isDefEq.respectTransparency false in
-/-- An actual basis of an arbitrary nonzero finite-dimensional ground space has a
+/-- An basis of an arbitrary nonzero finite-dimensional ground space has a
 summed off-diagonal bound independent of the number of sites. Its constant depends
 only on the ground-space dimension, the local norm budget, interaction geometry and gap.
-No supplied basis, spectral separation or conditioning hypothesis is assumed.
 Hastings, arXiv:cond-mat/0508554v3, eq. `oibu` and lines 1698–1708, with the retained
 cross terms and weakened rate recorded in `docs/paper-gaps/hastings05_two_dim_ground_basis.tex`. -/
 theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform

@@ -186,6 +186,7 @@ import QICLean.Analysis.LogarithmicEnvelope
 import QICLean.Analysis.LowDensityCountParameters
 import QICLean.Analysis.LowDensityDyadicScale
 import QICLean.Analysis.LowDensityEntropyParameters
+import QICLean.Analysis.LowEnergyBasis
 import QICLean.Analysis.LowEnergyCluster
 import QICLean.Analysis.LowEnergyCoordinates
 import QICLean.Analysis.LowEnergyOrder

@@ -6,7 +6,16 @@ Authors: QICLean contributors
 import QICLean.Analysis.LowEnergyBasis.OffDiagonal
 
 /-!
-@@DOC
+# Iterating the choice of a basis over levels
+
+Hastings, arXiv:cond-mat/0508554v3, lines 1695–1705, chooses a basis of a ground space of any
+dimension by iterating over further compressions. Here the eigenvalues of one operator are
+grouped into level classes separated by `levelGap`, and the off-diagonal parts of the other
+operators are bounded by `levelBoundA` and `levelBoundB`
+(`sum_norm_offDiagonalPartFamily_le_levelBoundB`).
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasisIteration.lean`. Changes:
+namespace `LowEnergyBasis`.
 -/
 
 noncomputable section

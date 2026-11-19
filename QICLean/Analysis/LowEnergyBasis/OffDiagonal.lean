@@ -8,7 +8,24 @@ import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.Analysis.InnerProductSpace.Projection.Basic
 
 /-!
-@@DOC
+# Off-diagonal parts in an eigenbasis
+
+Hastings, *Solving gapped Hamiltonians locally*, arXiv:cond-mat/0508554v3, lines 476–491 and
+1678–1693, chooses a basis of a ground space that diagonalizes the compression of one
+approximate term. This file works on an arbitrary inner product space.
+
+* `abs_sub_mul_norm_inner_le_norm_commutator`, `norm_inner_le_norm_commutator_div`: between
+  eigenvectors of a self-adjoint `A` with eigenvalues `r ≠ s`, `|⟨v, B w⟩| ≤ ‖[A, B]‖ / |r - s|`.
+* `offDiagonalPart`, `norm_offDiagonalPart_le_norm_commutator_div`: the off-diagonal part of an
+  operator in an orthonormal pair, bounded by the commutator over the eigenvalue difference.
+* `offDiagonalPartFamily`, `sum_norm_offDiagonalPartFamily_le`: the same in an orthonormal
+  family of eigenvectors with pairwise separated eigenvalues, summed over a finite family.
+* `norm_apply_sub_inner_smul_le_add_offDiagonalPart(Family)`: eq. `low` up to the off-diagonal
+  part.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasis.lean`,
+`LowEnergyBasisSimpleSpectrum.lean`, and the off-diagonal section of
+`LowEnergyCommutator.lean`. Changes: namespace `LowEnergyBasis`.
 -/
 
 noncomputable section

@@ -9,7 +9,28 @@ import QICLean.ManyBody.Hamiltonian.GaussianFilterMetric
 import QICLean.ManyBody.Hamiltonian.GaussianFilterTruncation
 
 /-!
-@@DOC
+# Low-energy commutators of filtered terms
+
+For a Hermitian `H` with every eigenvalue equal to `E₀` or at least `E₀ + ΔE`, let `P` project
+onto the ground space. Hastings, arXiv:cond-mat/0508554v3, eqs. `lc` and `blecm`
+(lines 1548–1601), bounds `‖[P W P, P B P]‖` by the locality of the Gaussian-filtered terms.
+
+* `groundCompression H E₀ W`: the compression `P W P`; `groundCompression_gaussianFilteredTerm`:
+  filtering leaves it unchanged.
+* `norm_groundCompression_commutator_le`: the commutator of two compressions, up to
+  `2‖W‖‖B‖e^{-q/2}`, is that of the filtered term with `B`.
+* `norm_commutator_gaussianFilteredTerm_le_of_disjoint`,
+  `norm_groundCompression_commutator_le_graphNeighborhood`: eqs. `lc` and `blecm` for an
+  interaction on a finite graph.
+* `norm_groundCompression_commutator_le_graphSeparation`,
+  `norm_groundCompression_commutator_le_metricSeparation`,
+  `norm_groundCompression_commutator_le_metricBalls`: exponential decay in the graph distance,
+  without a growth assumption, and in a finite metric space.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyCommutator.lean` (ground and graph
+sections) and `LowEnergyMetricCommutator.lean`. Changes: namespace `ManyBody`; terms given by
+`Φ : Interaction X T` on `Config X`; the gap stated as `IsGapped`, with the Hermiticity of the
+Hamiltonian derived from that of the terms.
 -/
 
 noncomputable section
@@ -383,7 +404,8 @@ theorem norm_groundCompression_commutator_le_metricBalls
     have h2 := dist_triangle y x j
     rw [dist_comm y x] at h2
     linarith
-  have hg := norm_groundCompression_commutator_le_metricSeparation hR S hJ Φ hHerm hNorm hCard hΔ hgap
+  have hg := norm_groundCompression_commutator_le_metricSeparation hR S hJ Φ hHerm hNorm hCard
+    hΔ hgap
     (metricRangeBall ρ j) (metricRangeBall ρ i)
     hB' hW' (dist i j - 2 * ρ) hsep
   change ‖groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W -
@@ -396,7 +418,7 @@ theorem norm_groundCompression_commutator_le_metricBalls
     2 * (γ / R) * ρ + -((γ / R) * dist i j) by ring, Real.exp_add]
   ring
 
-/-- The source's actual truncated operators satisfy the growth-free low-energy
+/-- The source's truncated operators satisfy the growth-free low-energy
 commutator bound; the second Gaussian filter is independent of their first filter.
 Hastings, arXiv:cond-mat/0508554v3, lines 1548–1601. -/
 theorem norm_groundCompression_metric_truncated_commutator_le

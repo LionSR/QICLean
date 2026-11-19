@@ -8,7 +8,21 @@ import Mathlib.LinearAlgebra.Basis.Prod
 import QICLean.Analysis.LowEnergyBasis.OffDiagonal
 
 /-!
-@@DOC
+# Compressions to subspaces and spectral splits
+
+Hastings, arXiv:cond-mat/0508554v3, lines 1695–1708, refines a basis of a ground space by
+splitting the spectrum of one compression and compressing the remaining operators to each part.
+This file works with an arbitrary closed subspace of an inner product space.
+
+* `subspaceCompression`, `subspaceExtension`: the compression `P B P` to a subspace and its
+  extension by zero; `exists_orthonormalBasis_orthogonal_sum`: bases of orthogonal parts combine.
+* `basisSplitProjection`, `norm_basisSplitProjection_cross_le_commutator`: the projection onto
+  the eigenvectors below a threshold and the bound of its cross blocks by commutators.
+* `exists_selfAdjoint_spectral_split`, `exists_family_spectral_split`: a split at a gap of size
+  at least the spread divided by the dimension, and `norm_commutator_compression_le_kernel`.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasisRefinement.lean` and
+`LowEnergyBasisSpectralSplit.lean`. Changes: namespace `LowEnergyBasis`.
 -/
 
 noncomputable section
@@ -306,9 +320,7 @@ theorem exp_dist_half_mul_le {ι : Type*} [PseudoMetricSpace ι] {γ : ℝ}
   nlinarith [mul_le_mul_of_nonneg_left (dist_triangle i j k) hγ]
 
 /-- Compressing after a spectral split preserves a uniform exponential commutator
-estimate, with half the decay rate. The two displayed cross-block estimates are the
-inputs supplied by the spectral-spread and spectral-gap bounds.
-Hastings, arXiv:cond-mat/0508554v3, lines 1698–1708. -/
+estimate, with half the decay rate. Hastings, arXiv:cond-mat/0508554v3, lines 1698–1708. -/
 theorem norm_commutator_compression_le_exp {A ι : Type*} [NormedRing A]
     [PseudoMetricSpace ι] (P : A) (hPP : P * P = P) (hP : ‖P‖ ≤ 1)
     (B : ι → A) (w : ι → ℝ) (hw : ∀ i, 0 ≤ w i) {C D γ : ℝ}
@@ -397,7 +409,7 @@ noncomputable def basisSplitProjection (b : OrthonormalBasis ι ℂ E) (s : Fins
 
 omit [CompleteSpace E] [DecidableEq ι] in
 open Classical in
-/-- The selected-basis projection is the orthogonal projection onto its actual span.
+/-- The selected-basis projection is the orthogonal projection onto its span.
 Hastings, arXiv:cond-mat/0508554v3, lines 1698–1708. -/
 theorem basisSplitProjection_eq_starProjection (b : OrthonormalBasis ι ℂ E)
     (s : Finset ι) :
@@ -447,7 +459,7 @@ theorem basisSplitProjection_compl (b : OrthonormalBasis ι ℂ E) (s : Finset �
   by_cases hi : i ∈ s <;> simp [hi]
 
 omit [CompleteSpace E] in
-/-- The cross-block operator is the actual sum of its matrix coefficients.
+/-- The cross-block operator is the sum of its matrix coefficients.
 Hastings, arXiv:cond-mat/0508554v3, lines 1698–1708. -/
 theorem basisSplitProjection_mul_mul_compl (b : OrthonormalBasis ι ℂ E)
     (s : Finset ι) (B : E →L[ℂ] E) :
@@ -466,7 +478,7 @@ theorem basisSplitProjection_mul_mul_compl (b : OrthonormalBasis ι ℂ E)
   exact Finset.sum_comm
 
 omit [CompleteSpace E] in
-/-- Separated spectral coefficients control the norm of the actual cross-block operator.
+/-- Separated spectral coefficients control the norm of the cross-block operator.
 The dimension factor is the number of matrix coefficients across the cut.
 Hastings, arXiv:cond-mat/0508554v3, lines 1698–1708. -/
 theorem norm_basisSplitProjection_mul_mul_compl_le (b : OrthonormalBasis ι ℂ E)
@@ -488,7 +500,7 @@ theorem norm_basisSplitProjection_mul_mul_compl_le (b : OrthonormalBasis ι ℂ 
         b.orthonormal.1 a, b.orthonormal.1 c, one_mul, mul_one] using hcoeff a ha c hc
     _ = _ := by simp only [Finset.sum_const, nsmul_eq_mul]; ring
 
-/-- A separated spectral cut bounds its actual cross-block operator by the commutator.
+/-- A separated spectral cut bounds its cross-block operator by the commutator.
 Repeated eigenvalues on either side of the cut are allowed.
 Hastings, arXiv:cond-mat/0508554v3, lines 1698–1708. -/
 theorem norm_basisSplitProjection_cross_le_commutator {A : E →L[ℂ] E}
@@ -511,7 +523,7 @@ theorem norm_basisSplitProjection_cross_le_commutator {A : E →L[ℂ] E}
         norm_inner_le_norm_commutator_div hA B (hAv a) (hAv c) hne
     _ ≤ _ := div_le_div_of_nonneg_left (norm_nonneg _) hδ (hgap a ha c hc)
 
-/-- A nonconstant self-adjoint operator has an actual nontrivial spectral projection
+/-- A nonconstant self-adjoint operator has a nontrivial spectral projection
 with a dimension-controlled commutator estimate across its two spectral blocks.
 Hastings, arXiv:cond-mat/0508554v3, lines 1698–1708. -/
 theorem exists_selfAdjoint_spectral_split [FiniteDimensional ℂ E]
