@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import Mathlib.RingTheory.MatrixAlgebra
+import QICLean.Algebra.MatrixUnitaryBetween
 import QICLean.Channel.KrausFamily
 
 /-!
@@ -11,9 +11,9 @@ import QICLean.Channel.KrausFamily
 
 The tensor product of finite Kraus families `K` from `α` to `β` and `L` from `α'` to `β'` is
 the family of the Kronecker products `Kᵢ ⊗ Lⱼ`, from `α × α'` to `β × β'`. Its map sends
-`ρ ⊗ σ` to `K(ρ) ⊗ L(σ)`, and a linear map on matrices of `α × α'` is determined by its values
-on Kronecker products. Trace preservation and unitarity pass to the tensor product. The family
-`K` acting on the left factor only is `K.tensorRight W = K.prod (single 1)`.
+`ρ ⊗ σ` to `K(ρ) ⊗ L(σ)`, which determines it (`Matrix.linearMap_ext_kronecker`). Trace
+preservation and unitarity pass to the tensor product. The family `K` acting on the left factor
+only is `K.tensorRight W = K.prod (single 1)`.
 
 The partial trace over a factor `F` is the family `traceRight β F` of the operators `1 ⊗ ⟨f|`;
 its map is `partialTraceRight`.
@@ -23,38 +23,17 @@ its map is `partialTraceRight`.
 * `KrausFamily.prod` — the tensor product of two Kraus families.
 * `KrausFamily.tensorRight` — a family on the left factor, the identity on the right one.
 * `KrausFamily.traceRight` — the partial trace over the right factor.
-* `KrausFamily.reindex` — a family carried along equivalences of its bases.
 
 ## Main results
 
 * `KrausFamily.map_prod` — `(K ⊗ L)(ρ ⊗ σ) = K(ρ) ⊗ L(σ)`.
-* `Matrix.linearMap_ext_kronecker` — linear maps agreeing on Kronecker products are equal.
 * `KrausFamily.IsTP.prod`, `KrausFamily.IsUnitary.prod` — trace preservation and unitarity.
 * `KrausFamily.map_traceRight`, `KrausFamily.isTP_traceRight` — the partial trace.
-* `KrausFamily.IsTP.tensorRight`, `KrausFamily.IsUnitary.tensorRight`,
-  `KrausFamily.IsTP.reindex`, `KrausFamily.IsUnitary.reindex`.
+* `KrausFamily.IsTP.tensorRight`, `KrausFamily.IsUnitary.tensorRight`.
 -/
 
 open Matrix
 open scoped Kronecker
-
-namespace Matrix
-
-/-- Two linear maps on the matrices of `α × α'` that agree on all Kronecker products are equal:
-the Kronecker products span. -/
-theorem linearMap_ext_kronecker {α α' M : Type} [Finite α] [Finite α'] [AddCommMonoid M]
-    [Module ℂ M] {f g : Matrix (α × α') (α × α') ℂ →ₗ[ℂ] M}
-    (h : ∀ x y, f (x ⊗ₖ y) = g (x ⊗ₖ y)) : f = g := by
-  classical
-  have := Fintype.ofFinite α
-  have := Fintype.ofFinite α'
-  have : f ∘ₗ (kroneckerLinearEquiv α α α' α' ℂ).toLinearMap =
-      g ∘ₗ (kroneckerLinearEquiv α α α' α' ℂ).toLinearMap :=
-    TensorProduct.ext' fun x y ↦ h x y
-  ext X
-  simpa using LinearMap.congr_fun this ((kroneckerLinearEquiv α α α' α' ℂ).symm X)
-
-end Matrix
 
 namespace KrausFamily
 
@@ -118,65 +97,37 @@ theorem IsUnitary.tensorRight [DecidableEq β] {K : KrausFamily α β} (hK : K.I
     (W : Type) [Fintype W] [DecidableEq W] : (K.tensorRight W).IsUnitary :=
   hK.prod (isUnitary_single (one_mem _))
 
-omit [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α] [DecidableEq α'] in
-/-- The family carried along equivalences `e` of the input and `f` of the output bases. -/
-def reindex (K : KrausFamily α β) (e : α' ≃ α) (f : β' ≃ β) : KrausFamily α' β' :=
-  ⟨K.Index, fun i ↦ (K.op i).submatrix f e⟩
-
-omit [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α] [DecidableEq α'] in
-@[simp] theorem reindex_op (K : KrausFamily α β) (e : α' ≃ α) (f : β' ≃ β)
-    (i : (K.reindex e f).Index) : (K.reindex e f).op i = (K.op i).submatrix f e :=
-  rfl
-
-omit [Fintype α] [Fintype α'] in
-theorem IsTP.reindex {K : KrausFamily α β} (hK : K.IsTP) (e : α' ≃ α) (f : β' ≃ β) :
-    (K.reindex e f).IsTP := by
-  rw [IsTP, effect] at hK ⊢
-  simp only [reindex_op, conjTranspose_submatrix, submatrix_mul_equiv]
-  ext a b
-  convert congrFun (congrFun hK (e a)) (e b) using 1
-  · simp only [Matrix.sum_apply, submatrix_apply]
-    rfl
-  · simp [one_apply, e.injective.eq_iff]
-
-theorem IsUnitary.reindex [DecidableEq β] [DecidableEq β'] {K : KrausFamily α β}
-    (hK : K.IsUnitary) (e : α' ≃ α) (f : β' ≃ β) : (K.reindex e f).IsUnitary := by
-  obtain ⟨u, hK⟩ := hK
-  refine ⟨u, fun i ↦ ⟨?_, ?_⟩⟩ <;>
-    simp only [reindex_op, conjTranspose_submatrix, submatrix_mul_equiv, (hK i).1, (hK i).2,
-      submatrix_one_equiv]
-
-/-- The partial trace over the right factor `F`: the operators `1 ⊗ ⟨f|`. -/
-def traceRight (β F : Type) [DecidableEq β] [Fintype F] [DecidableEq F] :
+/-- The partial trace over the right factor `F`: the operators `1 ⊗ ⟨f|`, the adjoints of the
+basis inclusions `b ↦ (b, f)`. -/
+abbrev traceRight (β F : Type) [DecidableEq β] [Fintype F] [DecidableEq F] :
     KrausFamily (β × F) β :=
-  ⟨F, fun f ↦ of fun b q ↦ if q = (b, f) then 1 else 0⟩
+  ⟨F, fun f ↦ (initializedBasisMatrix (Function.Embedding.sectL β f))ᴴ⟩
+
+omit [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α] [DecidableEq α'] in
+@[simp] theorem traceRight_op [DecidableEq β] {F : Type} [Fintype F] [DecidableEq F]
+    (f : F) : (traceRight β F).op f = (initializedBasisMatrix (Function.Embedding.sectL β f))ᴴ :=
+  rfl
 
 omit [Fintype α] [Fintype α'] [DecidableEq α] [DecidableEq α'] in
 theorem map_traceRight [DecidableEq β] {F : Type} [Fintype F] [DecidableEq F]
     (ρ : Matrix (β × F) (β × F) ℂ) : (traceRight β F).map ρ = partialTraceRight ρ := by
   ext b b'
-  simp only [map_apply, Matrix.sum_apply, partialTraceRight_apply]
-  refine Finset.sum_congr rfl fun f _ ↦ ?_
-  simp [traceRight, mul_apply]
+  simp only [map_apply, conjTranspose_conjTranspose, Matrix.sum_apply,
+    partialTraceRight_apply, mul_initializedBasisMatrix_apply,
+    conjTranspose_initializedBasisMatrix_mul_apply]
+  rfl
 
 omit [Fintype α] [Fintype α'] [DecidableEq α] [DecidableEq α'] in
 theorem isTP_traceRight [DecidableEq β] {F : Type} [Fintype F] [DecidableEq F] :
     (traceRight β F).IsTP := by
-  have h (f : F) (q q' : β × F) :
-      (((traceRight β F).op f)ᴴ * (traceRight β F).op f) q q' =
-        if q = q' ∧ q.2 = f then 1 else 0 := by
-    obtain ⟨b, g⟩ := q
-    obtain ⟨b', g'⟩ := q'
-    rw [mul_apply, Finset.sum_eq_single b]
-    · by_cases hb : b = b' <;> by_cases hg : g = f <;> by_cases hg' : g' = f <;>
-        simp [traceRight, hb, hg, hg'] <;> grind
-    · intro c _ hc
-      simp [traceRight, Prod.ext_iff, Ne.symm hc]
-    · simp
-  ext q q'
-  rw [effect, Matrix.sum_apply]
-  change ∑ f : F, (((traceRight β F).op f)ᴴ * (traceRight β F).op f) q q' = _
-  simp only [h, one_apply]
-  by_cases hq : q = q' <;> simp [hq]
+  ext ⟨b, g⟩ q
+  rw [effect, Matrix.sum_apply, Finset.sum_eq_single (show (traceRight β F).Index from g)
+    (fun f _ hf ↦ ?_) (fun h ↦ absurd (Finset.mem_univ _) h)]
+  · rw [traceRight_op, conjTranspose_conjTranspose,
+      show ((b, g) : β × F) = Function.Embedding.sectL β g b from rfl,
+      initializedBasisMatrix_mul_apply_self]
+    simp [initializedBasisMatrix, one_apply, eq_comm]
+  · rw [traceRight_op, conjTranspose_conjTranspose]
+    exact initializedBasisMatrix_mul_apply_of_notMem _ _ (by simpa using hf) _
 
 end KrausFamily

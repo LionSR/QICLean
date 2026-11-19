@@ -787,13 +787,14 @@ are embedded.
     \label{thm:circuits_layer_map}
     \lean{QuantumCircuit.Circuit.isUnbranched_mapLayers,
         QuantumCircuit.Circuit.forall_mapLayers, QuantumCircuit.Circuit.total_mapLayers_le,
-        QuantumCircuit.Circuit.kraus_mapLayers, QuantumCircuit.Circuit.mapLayers_comp}
+        QuantumCircuit.Circuit.total_mapLayers, QuantumCircuit.Circuit.kraus_mapLayers, QuantumCircuit.Circuit.mapLayers_comp}
     \leanok
     \uses{def:circuits_layer_map, def:circuits_costs, def:circuits_local}
     The image of an unbranched circuit is unbranched. A local property holding on
     the image of every layer on which it holds holds on the image of every circuit
     on which it holds. A cost of layers that does not grow from a layer to its
-    image does not grow from a circuit to its image. If a map $\Phi$ of matrices between the
+    image does not grow from a circuit to its image, and one that does not change from a
+    layer to its image does not change from a circuit to its image. If a map $\Phi$ of matrices between the
     configurations of $X$ and of $X'$ sends $1$ to $1$ and products to products, and
     every Kraus operator of the image of a layer is $\Phi$ of the corresponding Kraus
     operator of the layer, the same holds for circuits. The image of a composition is
@@ -926,10 +927,8 @@ are embedded.
         QuantumCircuit.Circuit.kraus_tensorRight, QuantumCircuit.Circuit.map_tensorRight,
         QuantumCircuit.Circuit.forall_isTP_tensorRight,
         QuantumCircuit.Circuit.forall_isUnitary_tensorRight,
-        QuantumCircuit.Circuit.depth_tensorRight_le,
-        QuantumCircuit.Circuit.gateCount_tensorRight_le, KrausFamily.reindex,
-        KrausFamily.reindex_op, KrausFamily.IsTP.reindex, KrausFamily.IsUnitary.reindex,
-        KrausFamily.IsTP.tensorRight, KrausFamily.IsUnitary.tensorRight}
+        QuantumCircuit.Circuit.depth_tensorRight,
+        QuantumCircuit.Circuit.gateCount_tensorRight}
     \leanok
     \uses{def:circuits_layer_map, def:kraus_family_prod, def:circuits_costs,
         def:circuits_local}
@@ -937,15 +936,10 @@ are embedded.
     $X$ to $Z$ has an image from the system $s\mapsto X_s\times W_s$ to the system
     $s\mapsto Z_s\times W_s$ on the same cells: every gate $g$ on a cell $D$ becomes
     $g\otimes1$ on $\C^{X_D}\otimes\C^{W_D}$, and every onsite family $K$ becomes
-    $K\otimes1$. Along corresponding branches
-    \begin{align}
-        K'_p&=K_p\otimes1_W,
-        \notag
-    \end{align}
-    in the identification of the configurations of the enlarged system with pairs, so
-    the map of the image sends $\rho\otimes\omega$ to $\Phi(\rho)\otimes\omega$. The
+    $K\otimes1$. Along corresponding branches $K'_p=K_p\otimes1_W$ in the
+    identification of the configurations of the enlarged system with pairs, so the map of the image sends $\rho\otimes\omega$ to $\Phi(\rho)\otimes\omega$. The
     image is locally trace-preserving, or locally unitary, when the circuit is, and its
-    depth and gate count are at most those of the circuit.
+    depth and gate count are those of the circuit.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:circuits_layer_map, lem:kraus_family_prod}

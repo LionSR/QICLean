@@ -84,6 +84,12 @@ theorem mul_initializedBasisMatrix_apply {κ ι μ : Type*} [Fintype ι] [Decida
     (M * initializedBasisMatrix e) y a = M y (e a) := by
   simp [initializedBasisMatrix, mul_apply, one_apply]
 
+/-- The rows of `J_eᴴ * M` are the rows of `M` at the image of `e`. -/
+theorem conjTranspose_initializedBasisMatrix_mul_apply {κ ι μ : Type*} [Fintype ι]
+    [DecidableEq ι] (e : κ ↪ ι) (M : Matrix ι μ ℂ) (a : κ) (x : μ) :
+    ((initializedBasisMatrix e)ᴴ * M) a x = M (e a) x := by
+  simp [initializedBasisMatrix, mul_apply, one_apply]
+
 /-- The rows of `J_e * M` at the image of `e` are the rows of `M`. -/
 theorem initializedBasisMatrix_mul_apply_self {κ ι μ : Type*} [Fintype κ] [DecidableEq ι]
     (e : κ ↪ ι) (M : Matrix κ μ ℂ) (a : κ) (x : μ) :

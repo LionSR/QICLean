@@ -15,7 +15,7 @@ For a basis `W s` at every site, a circuit of plain gates from `X` to `Z` acts o
 Mathlib's `Equiv.arrowProdEquivProdArrow`, and every onsite family `K` becomes `K ⊗ 1`. The cells
 do not change, so neither do the depth and the gate count. This is a layer map
 (`LayerMap.tensorRight`), and the moved circuit `Circuit.tensorRight` inherits composition,
-unbranchedness and the cost bounds from `Circuit.mapLayers`. Its Kraus operator along a branch is
+unbranchedness and the costs from `Circuit.mapLayers`. Its Kraus operator along a branch is
 that of the circuit tensored with the identity on the environments, and its map sends
 `ρ ⊗ ω` to `c(ρ) ⊗ ω`.
 
@@ -32,7 +32,8 @@ that of the circuit tensored with the identity on the environments, and its map 
 * `QuantumCircuit.Circuit.forall_isTP_tensorRight`,
   `QuantumCircuit.Circuit.forall_isUnitary_tensorRight` — trace preservation and unitarity of the
   gates and onsite families.
-* `QuantumCircuit.Circuit.depth_tensorRight_le`, `QuantumCircuit.Circuit.gateCount_tensorRight_le`.
+* `QuantumCircuit.Circuit.depth_tensorRight`, `QuantumCircuit.Circuit.gateCount_tensorRight` —
+  the depth and the gate count do not change.
 -/
 
 open Matrix ManyBody
@@ -42,6 +43,10 @@ namespace QuantumCircuit
 
 variable {S : Type} [Fintype S] [DecidableEq S] {Γ : Geometry S} (W : S → Type)
   [∀ s, Fintype (W s)] [∀ s, DecidableEq (W s)]
+
+set_option hygiene false in
+/-- The configurations of `fun s ↦ X s × W s` as pairs of configurations of `X` and of `W`. -/
+local notation "⟪" X "⟫" => Equiv.arrowProdEquivProdArrow S X W
 
 namespace Layer
 
@@ -119,8 +124,7 @@ on the environments. -/
 theorem kraus_tensorRight (L : Layer Γ KrausGate X Y) (i : (L.tensorRight W).Index) :
     (L.tensorRight W).kraus KrausGate.ev i =
       (L.kraus KrausGate.ev (L.tensorRightIndexEquiv W i) ⊗ₖ
-        (1 : Matrix (Config W) (Config W) ℂ)).submatrix
-          (Equiv.arrowProdEquivProdArrow S Y W) (Equiv.arrowProdEquivProdArrow S X W) := by
+        (1 : Matrix (Config W) (Config W) ℂ)).submatrix ⟪Y⟫ ⟪X⟫ := by
   ext y x
   rw [submatrix_apply, kronecker_apply, kraus_apply, kraus_apply, ← prod_one_mul_prod_one W L,
     tensorRightIndexEquiv_apply]
@@ -169,46 +173,31 @@ identity on the environments. -/
 theorem kraus_tensorRight (c : Circuit Γ KrausGate X Z) (p : (c.tensorRight W).Index) :
     (c.tensorRight W).kraus KrausGate.ev p =
       (c.kraus KrausGate.ev (c.mapIndexEquiv (LayerMap.tensorRight W) p) ⊗ₖ
-        (1 : Matrix (Config W) (Config W) ℂ)).submatrix
-          (Equiv.arrowProdEquivProdArrow S Z W) (Equiv.arrowProdEquivProdArrow S X W) := by
+        (1 : Matrix (Config W) (Config W) ℂ)).submatrix ⟪Z⟫ ⟪X⟫ := by
   refine kraus_mapLayers (LayerMap.tensorRight W)
-    (fun _ _ K ↦ (K ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix
-      (Equiv.arrowProdEquivProdArrow S _ W) (Equiv.arrowProdEquivProdArrow S _ W))
+    (fun _ _ K ↦ (K ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix ⟪_⟫ ⟪_⟫)
     (fun _ _ ↦ ?_) (fun _ _ _ _ A B ↦ ?_)
     (fun _ _ _ _ _ _ L i ↦ Layer.kraus_tensorRight W L i) c p
   · rw [one_kronecker_one, submatrix_one_equiv]
-  · have := submatrix_mul_equiv (A ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)) (B ⊗ₖ 1)
-      (Equiv.arrowProdEquivProdArrow S _ W) (Equiv.arrowProdEquivProdArrow S _ W)
-      (Equiv.arrowProdEquivProdArrow S _ W)
+  · have := submatrix_mul_equiv (A ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)) (B ⊗ₖ 1) ⟪_⟫ ⟪_⟫ ⟪_⟫
     rw [← mul_kronecker_mul, Matrix.mul_one] at this
     exact this.symm
 
 /-- The map of the tensored circuit sends `ρ ⊗ ω` to `c(ρ) ⊗ ω`. -/
 theorem map_tensorRight [∀ s, Fintype (Z s)] (c : Circuit Γ KrausGate X Z)
     (ρ : Matrix (Config X) (Config X) ℂ) (ω : Matrix (Config W) (Config W) ℂ) :
-    (c.tensorRight W).map KrausGate.ev
-        ((ρ ⊗ₖ ω).submatrix (Equiv.arrowProdEquivProdArrow S X W)
-          (Equiv.arrowProdEquivProdArrow S X W)) =
-      (c.map KrausGate.ev ρ ⊗ₖ ω).submatrix (Equiv.arrowProdEquivProdArrow S Z W)
-        (Equiv.arrowProdEquivProdArrow S Z W) := by
+    (c.tensorRight W).map KrausGate.ev ((ρ ⊗ₖ ω).submatrix ⟪X⟫ ⟪X⟫) =
+      (c.map KrausGate.ev ρ ⊗ₖ ω).submatrix ⟪Z⟫ ⟪Z⟫ := by
   simp only [map, krausFamily, KrausFamily.map_apply]
   refine (Fintype.sum_equiv (c.mapIndexEquiv (LayerMap.tensorRight W)) _ (fun p ↦
     (c.kraus KrausGate.ev p ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix
-      (Equiv.arrowProdEquivProdArrow S Z W) (Equiv.arrowProdEquivProdArrow S X W) *
-      (ρ ⊗ₖ ω).submatrix (Equiv.arrowProdEquivProdArrow S X W)
-        (Equiv.arrowProdEquivProdArrow S X W) *
-      ((c.kraus KrausGate.ev p ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix
-        (Equiv.arrowProdEquivProdArrow S Z W) (Equiv.arrowProdEquivProdArrow S X W))ᴴ)
+      ⟪Z⟫ ⟪X⟫ * (ρ ⊗ₖ ω).submatrix ⟪X⟫ ⟪X⟫ *
+      ((c.kraus KrausGate.ev p ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix ⟪Z⟫ ⟪X⟫)ᴴ)
     fun p ↦ by rw [kraus_tensorRight W c p]).trans ?_
   have ht : ∀ K : Matrix (Config Z) (Config X) ℂ,
-      (K ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix
-          (Equiv.arrowProdEquivProdArrow S Z W) (Equiv.arrowProdEquivProdArrow S X W) *
-        (ρ ⊗ₖ ω).submatrix (Equiv.arrowProdEquivProdArrow S X W)
-          (Equiv.arrowProdEquivProdArrow S X W) *
-        ((K ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix
-          (Equiv.arrowProdEquivProdArrow S Z W) (Equiv.arrowProdEquivProdArrow S X W))ᴴ =
-      ((K * ρ * Kᴴ) ⊗ₖ ω).submatrix (Equiv.arrowProdEquivProdArrow S Z W)
-        (Equiv.arrowProdEquivProdArrow S Z W) := by
+      (K ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix ⟪Z⟫ ⟪X⟫ * (ρ ⊗ₖ ω).submatrix ⟪X⟫ ⟪X⟫ *
+        ((K ⊗ₖ (1 : Matrix (Config W) (Config W) ℂ)).submatrix ⟪Z⟫ ⟪X⟫)ᴴ =
+      ((K * ρ * Kᴴ) ⊗ₖ ω).submatrix ⟪Z⟫ ⟪Z⟫ := by
     intro K
     rw [conjTranspose_submatrix, submatrix_mul_equiv, submatrix_mul_equiv, conjTranspose_kronecker,
       conjTranspose_one, ← mul_kronecker_mul, ← mul_kronecker_mul, Matrix.mul_one, Matrix.one_mul]
@@ -234,13 +223,12 @@ theorem forall_isUnitary_tensorRight {c : Circuit Γ KrausGate X Z}
   forall_mapLayers _ (fun _ _ _ _ _ _ _ hL ↦ Layer.forall_tensorRight W
     (fun _ hK ↦ hK.tensorRight _) (fun _ e f hK ↦ hK.reindex e f) hL) hc
 
-theorem depth_tensorRight_le (c : Circuit Γ KrausGate X Z) :
-    (c.tensorRight W).depth ≤ c.depth :=
-  total_mapLayers_le _ _ _ (fun _ _ _ _ _ _ _ ↦ le_rfl) c
+theorem depth_tensorRight (c : Circuit Γ KrausGate X Z) : (c.tensorRight W).depth = c.depth :=
+  total_mapLayers _ _ _ (fun _ _ _ _ _ _ _ ↦ rfl) c
 
-theorem gateCount_tensorRight_le (c : Circuit Γ KrausGate X Z) :
-    (c.tensorRight W).gateCount ≤ c.gateCount :=
-  total_mapLayers_le _ _ _ (fun _ _ _ _ _ _ _ ↦ le_rfl) c
+theorem gateCount_tensorRight (c : Circuit Γ KrausGate X Z) :
+    (c.tensorRight W).gateCount = c.gateCount :=
+  total_mapLayers _ _ _ (fun _ _ _ _ _ _ _ ↦ rfl) c
 
 end Circuit
 
