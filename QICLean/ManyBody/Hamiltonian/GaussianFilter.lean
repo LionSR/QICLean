@@ -155,12 +155,6 @@ theorem sum_gaussianFilteredTerm {ι : Type*} (s : Finset ι) (q ΔE : ℝ) {H :
     ∑ i ∈ s, gaussianFilteredTerm q ΔE H (Hterm i) = H := by
   rw [← gaussianFilteredTerm_sum s q ΔE hH, hsum, gaussianFilteredTerm_self]
 
-/-- An eigenbasis vector of `H` with eigenvalue `E₀` lies in the ground space at `E₀`. -/
-theorem eigenvectorBasis_mem_groundSpace {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
-    {k : n} (hk : hH.eigenvalues k = E₀) : hH.eigenvectorBasis k ∈ groundSpace H E₀ :=
-  mem_groundSpace_iff_mulVec.mpr
-    (by simpa [hk] using SpectralFilter.mulVec_eigenvectorBasis_complex hH k)
-
 omit [DecidableEq n] in
 /-- Comparison of norms through the coefficients in an orthonormal basis: if every coefficient
 of `x` is at most `r` times the corresponding coefficient of `y`, then `‖x‖ ≤ r ‖y‖`. -/
@@ -178,22 +172,6 @@ theorem norm_le_of_inner_coefficients_le
     exact pow_le_pow_left₀ (norm_nonneg _) (hcoef i) 2
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (mul_nonneg hr (norm_nonneg _))
     two_ne_zero).mp hsq
-
-/-- An eigenvector of `H` with energy different from `E₀` is orthogonal to the
-ground eigenspace. -/
-theorem inner_eq_zero_of_mem_groundSpace {H : Matrix n n ℂ} (hH : H.IsHermitian)
-    {E₀ E : ℝ} (hE : E ≠ E₀) {v w : EuclideanSpace ℂ n}
-    (hv : H *ᵥ WithLp.ofLp v = (E : ℂ) • WithLp.ofLp v) (hw : w ∈ groundSpace H E₀) :
-    ⟪v, w⟫_ℂ = 0 := by
-  have hsymm := (Matrix.isSymmetric_toEuclideanLin_iff.mpr hH) v w
-  have hv' : toEuclideanLin H v = (E : ℂ) • v := by
-    apply (WithLp.ofLp_injective 2); simpa using hv
-  have hw' : toEuclideanLin H w = (E₀ : ℂ) • w := Module.End.mem_eigenspace_iff.mp hw
-  rw [hv', hw', inner_smul_left, inner_smul_right, Complex.conj_ofReal] at hsymm
-  have : ((E : ℂ) - E₀) * ⟪v, w⟫_ℂ = 0 := by rw [sub_mul, hsymm, sub_self]
-  rcases mul_eq_zero.mp this with h | h
-  · exact absurd (by exact_mod_cast sub_eq_zero.mp h) hE
-  · exact h
 
 /-- The excited component of a filtered ground vector is exponentially small: if every
 eigenvalue of `H` equals `E₀` or is at least `E₀ + ΔE`, then for each ground vector `ψ`

@@ -12,6 +12,7 @@ import QICLean.ManyBody.Hamiltonian.GaussianFilter
 import QICLean.ManyBody.Hamiltonian.GaussianFilterLocality
 import QICLean.ManyBody.Hamiltonian.GaussianFilterMetric
 import QICLean.ManyBody.Hamiltonian.GaussianFilterTruncation
+import QICLean.ManyBody.Hamiltonian.GroundPerturbation
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 import QICLean.ManyBody.Hamiltonian.HermitianPart
 import QICLean.ManyBody.Hamiltonian.KroneckerSum

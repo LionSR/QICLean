@@ -165,20 +165,6 @@ theorem norm_sub_regionExpectation_gaussianFilteredTerm_le_mass {V : Type*} [Fin
         _ = 2 * ‖W‖ := by rw [norm_intertwinerIntegrand hH hH W t]; ring
   simpa only [hL] using this
 
-/-- The Gaussian mass of the times `|t| > T` in the filter of `gaussianFilteredTerm q ΔE` is
-at most `exp(-(T ΔE)² / (2q))`. -/
-theorem gaussianFilter_tail_le {q ΔE T : ℝ} (hq : 0 ≤ q) (hT : 0 ≤ T) :
-    (gaussianReal 0 (q / ΔE ^ 2).toNNReal).real (Set.Icc (-T) T)ᶜ ≤
-      Real.exp (-(T * ΔE) ^ 2 / (2 * q)) := by
-  refine (measure_compl_Icc_le _ hT).trans_eq ?_
-  rw [Real.coe_toNNReal _ (div_nonneg hq (sq_nonneg _))]
-  congr 1
-  rcases eq_or_ne ΔE 0 with h0 | h0
-  · simp [h0]
-  rcases eq_or_ne q 0 with hq0 | hq0
-  · simp [hq0]
-  field_simp
-
 /-- **Locality of a filtered term.** If `‖[W(t), O]‖ ≤ ε` for all `|t| ≤ T`, then
 `‖[W_tilde, O]‖ ≤ ε + 2 ‖W‖ ‖O‖ exp(-(T ΔE)²/(2q))`. With the Lieb–Robinson bound
 `ε = ‖W‖ ‖O‖ g(T, l)` and `T = c₁ l`, this is Hastings, arXiv:cond-mat/0508554v3, eq. `lbnd`
@@ -192,7 +178,7 @@ theorem norm_commutator_gaussianFilteredTerm_le {q ΔE : ℝ} (hq : 0 ≤ q) {H 
       ε + 2 * ‖W‖ * ‖O‖ * Real.exp (-(T * ΔE) ^ 2 / (2 * q)) := by
   refine (norm_commutator_gaussianFilteredTerm_le_mass q ΔE hH W O hε hloc).trans ?_
   gcongr
-  exact gaussianFilter_tail_le hq hT
+  exact measure_compl_Icc_le_div_sq hq hT
 
 /-- **Localization of a filtered term.** If the normalized partial trace onto `K` approximates
 `W(t)` within `ε` for all `|t| ≤ T`, then it approximates `W_tilde` within
@@ -213,7 +199,7 @@ theorem norm_sub_regionExpectation_gaussianFilteredTerm_le {V : Type*} [Fintype 
       ε + 2 * ‖W‖ * Real.exp (-(T * ΔE) ^ 2 / (2 * q)) := by
   refine (norm_sub_regionExpectation_gaussianFilteredTerm_le_mass q ΔE hH W K hε hloc).trans ?_
   gcongr
-  exact gaussianFilter_tail_le hq hT
+  exact measure_compl_Icc_le_div_sq hq hT
 
 end FilterLocality
 

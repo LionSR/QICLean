@@ -197,6 +197,20 @@ theorem measure_compl_Icc_le (h : ℝ≥0) {T : ℝ} (hT : 0 ≤ T) :
         measureReal_union_le _ _
     _ ≤ Real.exp (-T ^ 2 / (2 * h)) := by linarith
 
+/-- The tail at variance `q / ΔE²`: the mass outside `[-T, T]` is at most `exp(-(T ΔE)² / (2q))`.
+This is the time tail of a filter of gap `ΔE` and parameter `q`. -/
+theorem measure_compl_Icc_le_div_sq {q ΔE T : ℝ} (hq : 0 ≤ q) (hT : 0 ≤ T) :
+    (gaussianReal 0 (q / ΔE ^ 2).toNNReal).real (Icc (-T) T)ᶜ ≤
+      Real.exp (-(T * ΔE) ^ 2 / (2 * q)) := by
+  refine (measure_compl_Icc_le _ hT).trans_eq ?_
+  rw [Real.coe_toNNReal _ (div_nonneg hq (sq_nonneg _))]
+  congr 1
+  rcases eq_or_ne ΔE 0 with h0 | h0
+  · simp [h0]
+  rcases eq_or_ne q 0 with hq0 | hq0
+  · simp [hq0]
+  field_simp
+
 /-- The unrenormalized density tail in the paper is bounded by `exp(-T²/(2h))`. -/
 theorem integral_kernel_compl_Icc_le {h : ℝ≥0} (hh : h ≠ 0) {T : ℝ} (hT : 0 ≤ T) :
     (∫ t in (Icc (-T) T)ᶜ, kernel h t) ≤ Real.exp (-T ^ 2 / (2 * h)) := by

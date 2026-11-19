@@ -100,7 +100,7 @@ theorem norm_gaussianFilteredTerm_sub_le {q ΔE : ℝ} (hq : 0 ≤ q) {H H' : Ma
   refine (add_le_add (norm_setIntegral_le_of_norm_le_const (μ := μ) (by finiteness) hloc)
     (norm_setIntegral_le_of_norm_le_const (μ := μ) (by finiteness) (fun t _ => hglob t))).trans ?_
   exact add_le_add (mul_le_of_le_one_right hε measureReal_le_one)
-    (mul_le_mul_of_nonneg_left (gaussianFilter_tail_le hq hT) (by positivity))
+    (mul_le_mul_of_nonneg_left (measure_compl_Icc_le_div_sq hq hT) (by positivity))
 
 end Abstract
 
@@ -162,7 +162,9 @@ Then `‖[B, τ_t(A)]‖ ≤ 2 |Y| C |S| ‖A‖ ‖B‖ e^{v|t| - μm}`, with `
 `v = 2 v_R |b₀| e^{2μR} + 1`: the partial trace of `τ_t(A)` over `Y` commutes with `B`, and
 it differs from `τ_t(A)` by at most the sum of the single-site commutator bounds over `Y`.
 This is the input `‖[H_j, H_i(t')]‖` of Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
-lines 1484–1505. -/
+lines 1484–1505. The two-set bound
+`ManyBody.norm_heisenberg_commutator_le_graphDistance_finsets_numeric` has no factor `|Y|`
+and prefactor `4 |S|`, at the larger rate `4 v_R |b₀| e^{2μR}`; neither implies the other. -/
 theorem norm_commutator_heisenbergEvolution_le_graphDistance_finset [∀ v, Nonempty (X v)]
     (S : Finset V)
     {A B : Matrix (Config X) (Config X) ℂ}

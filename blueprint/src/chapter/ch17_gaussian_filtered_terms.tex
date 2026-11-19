@@ -83,7 +83,7 @@ chapter.
 
 \begin{lemma}[Locality of filtered operators]
     \label{thm:hastings_filtered_locality}
-    \lean{ManyBody.norm_map_gaussianFilteredTerm_le_mass, ManyBody.norm_commutator_gaussianFilteredTerm_le_mass, ManyBody.gaussianFilter_tail_le, ManyBody.norm_commutator_gaussianFilteredTerm_le}
+    \lean{ManyBody.norm_map_gaussianFilteredTerm_le_mass, ManyBody.norm_commutator_gaussianFilteredTerm_le_mass, GaussianFilter.measure_compl_Icc_le_div_sq, ManyBody.norm_commutator_gaussianFilteredTerm_le}
     \leanok
     \uses{def:hastings_gaussian_filtered_term}
     If $q>0$, $T,\varepsilon\ge0$, and
@@ -599,7 +599,6 @@ chapter.
 
 \begin{lemma}[Absorbing the time prefactor]
     \label{lem:hastings05_gaussian_decay_absorption}
-    \lean{ManyBody.gaussian_truncation_bound_le_exp}
     \leanok
     Let $a,\gamma>0$ and $A,w,l\ge0$, and put $\delta=\min(a,\gamma)$.
     Then
@@ -700,7 +699,7 @@ chapter.
 
 \begin{lemma}[The logarithmic overlap radius]
     \label{thm:hastings05_logarithmic_overlap_radius}
-    \lean{ManyBody.exp_error_le_of_log_radius, ManyBody.exists_groundVector_projection_of_exp_norm_bound, ManyBody.exists_groundVector_overlap_of_exp_norm_bound}
+    \lean{ManyBody.exists_groundVector_projection_of_exp_norm_bound, ManyBody.exists_groundVector_overlap_of_exp_norm_bound}
     \leanok
     \uses{thm:hastings05_ground_overlap_norm_error}
     Let $\beta,\Delta,\eta>0$, and suppose the Hermitian approximation
