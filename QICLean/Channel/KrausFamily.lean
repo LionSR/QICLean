@@ -93,6 +93,14 @@ omit [Fintype β] in
 theorem map_single (V : Matrix β α ℂ) (ρ : Matrix α α ℂ) : (single V).map ρ = V * ρ * Vᴴ :=
   (map_apply _ _).trans (Fintype.sum_unique (ι := Unit) _)
 
+omit [Fintype β] in
+/-- The entries of the map of a Kraus family on a matrix unit. -/
+theorem map_single_apply [DecidableEq α] (K : KrausFamily α β) (a a' : α) (c c' : β) :
+    K.map (Matrix.single a a' 1) c c' = ∑ i, K.op i c a * star (K.op i c' a') := by
+  rw [map_apply, Matrix.sum_apply]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  simp [mul_apply, Matrix.single_apply, ite_and]
+
 omit [Fintype α] in
 theorem effect_single (V : Matrix β α ℂ) : (single V).effect = Vᴴ * V :=
   Fintype.sum_unique (ι := Unit) _

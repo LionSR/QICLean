@@ -398,36 +398,75 @@ cells and their costs do not change.
 \begin{definition}[Preparation, partial trace and relabelling]
     \label{def:protocols_dilation_circuits}
     \lean{QuantumCircuit.prepareCircuit, QuantumCircuit.traceCircuit,
-        QuantumCircuit.relabelCircuit, QuantumCircuit.map_prepareCircuit_apply,
-        QuantumCircuit.map_traceCircuit_apply, QuantumCircuit.map_relabelCircuit_apply,
+        QuantumCircuit.relabelCircuit}
+    \leanok
+    \uses{def:protocols_encoding, def:kraus_family_prod}
+    For bases $E_s$ and basis vectors $e_s\in E_s$, the preparation is the sitewise encoding
+    along $a\mapsto(a,e_s)$, and the partial trace over bases $F_s$ is the onsite layer of the
+    partial traces over $\C^{F_s}$. The relabelling along bijections of the local bases is the
+    sitewise encoding along them.
+\end{definition}
+
+\begin{lemma}[Preparation, partial trace and relabelling on matrices]
+    \label{lem:protocols_dilation_circuits}
+    \lean{QuantumCircuit.map_prepareCircuit_apply, QuantumCircuit.map_traceCircuit_apply,
+        QuantumCircuit.map_relabelCircuit_apply,
         QuantumCircuit.forall_isUnitary_relabelCircuit,
         QuantumCircuit.isUnbranched_relabelCircuit, QuantumCircuit.depth_relabelCircuit,
         QuantumCircuit.map_traceCircuit_kronecker,
         QuantumCircuit.map_traceCircuit_map_tensorRight}
     \leanok
-    \uses{def:protocols_encoding, def:kraus_family_prod, thm:circuits_tensor_right}
-    For bases $E_s$ and basis vectors $e_s\in E_s$, the preparation is the sitewise encoding
-    along $a\mapsto(a,e_s)$, and the partial trace over bases $F_s$ is the onsite layer of the
-    partial traces over $\C^{F_s}$; on matrices they act as $\rho\mapsto\rho\otimes\ketbra ee$
-    and $M\mapsto\tr_F M$. The relabelling along bijections of the local bases is the sitewise
-    encoding along them; it is unitary and of depth $0$. The partial trace over $\C^F$ of
+    \uses{def:protocols_dilation_circuits, thm:circuits_tensor_right}
+    The preparation acts as $\rho\mapsto\rho\otimes\ketbra ee$ and the partial trace as
+    $M\mapsto\tr_F M$; the relabelling acts by relabelling the entries, and it is an
+    unbranched unitary circuit of depth $0$. The partial trace over $\C^F$ of
     $A\otimes\omega$ is $(\tr\omega)A$, and it commutes with a circuit tensored with the
-    identity on $\C^F$: $\tr_F\bigl((\Phi\otimes\mathrm{id})(N)\bigr)=\Phi(\tr_FN)$ for every
-    matrix $N$.
-\end{definition}
+    identity on $\C^F$:
+    \begin{align}
+        \tr_F\bigl((\Phi\otimes\mathrm{id})(N)\bigr)&=\Phi(\tr_FN)
+        \label{eq:protocols_trace_tensor_right}
+    \end{align}
+    for every matrix $N$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:protocols_encoding, lem:kraus_family_prod}
+    The three circuits are single layers with no cells, so their maps are tensor products of
+    the local maps: the encodings along $a\mapsto(a,e_s)$ and along bijections
+    (Lemma~\ref{lem:protocols_encoding}), and the partial traces over $\C^{F_s}$
+    (Lemma~\ref{lem:kraus_family_prod}). A sitewise encoding along bijections has unitary
+    onsite families, one Kraus index and no cells. The partial trace of $A\otimes\omega$ is
+    computed entrywise. Both sides of~\eqref{eq:protocols_trace_tensor_right} are linear in
+    $N$, so it suffices to take $N=A\otimes\omega$; then the left side is
+    $\tr_F(\Phi(A)\otimes\omega)=(\tr\omega)\Phi(A)=\Phi(\tr_F(A\otimes\omega))$ by
+    Theorem~\ref{thm:circuits_tensor_right}.
+\end{proof}
 
 \begin{definition}[Unitary dilation]
     \label{def:protocols_unitary_dilation}
-    \lean{QuantumCircuit.IsUnitaryDilation, QuantumCircuit.IsUnitaryDilation.mono,
-        QuantumCircuit.isUnitaryDilation_id}
+    \lean{QuantumCircuit.IsUnitaryDilation, QuantumCircuit.IsUnitaryDilation.mono}
     \leanok
     \uses{def:protocols_dilation_circuits, def:circuits_local, def:circuits_costs}
     A map $\Phi$ has a unitary dilation of depth $T$ when there are bases $E_s$ and $F_s$,
     basis vectors $e_s\in E_s$ and an unbranched circuit $c$ of unitary gates and onsite
     families of depth at most $T$ from $s\mapsto X_s\times E_s$ to $s\mapsto Z_s\times F_s$ with
-    $\Phi(\rho)=\tr_F\bigl(\Phi_c(\rho\otimes\ketbra ee)\bigr)$. The identity has one of depth $0$,
-    with one-element environments and the empty circuit.
+    $\Phi(\rho)=\tr_F\bigl(\Phi_c(\rho\otimes\ketbra ee)\bigr)$. A dilation of depth $T$ is
+    one of every larger depth.
 \end{definition}
+
+\begin{lemma}[The identity has a unitary dilation]
+    \label{lem:protocols_dilation_id}
+    \lean{QuantumCircuit.isUnitaryDilation_id}
+    \leanok
+    \uses{def:protocols_unitary_dilation}
+    The identity has a unitary dilation of depth $0$, with one-element environments and the
+    empty circuit.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:protocols_dilation_circuits}
+    With one-element bases $E_s=F_s=\{*\}$, the empty circuit is the identity, and
+    $\tr_F(\rho\otimes\ketbra ee)=\rho$ because the sum over the configurations of $F$ has
+    one term.
+\end{proof}
 
 \begin{theorem}[Unitary dilations compose]
     \label{thm:protocols_dilation_comp}
@@ -439,7 +478,7 @@ cells and their costs do not change.
     $F_2\times F_1$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{def:protocols_dilation_circuits}
+    \uses{lem:protocols_dilation_circuits}
     Prepare both environments, regroup, apply $c_1\otimes1_{E_2}$, regroup, apply
     $c_2\otimes1_{F_1}$ and regroup; the regroupings are relabellings of depth $0$. On
     $\rho\otimes\ketbra{e_1}{e_1}\otimes\ketbra{e_2}{e_2}$ the first step gives
@@ -470,10 +509,26 @@ cells and their costs do not change.
     for its whole cell; place it at one chosen site of the cell and give the other sites of
     the cell a one-element basis, so that the configurations of the environment on the cell
     are the environment of the gate. A gate on an empty cell acts on a one-element basis, so
-    by trace preservation its map is the identity; replace it by the identity. By
-    Lemma~\ref{lem:circuits_layer_entry} the maps of the original layer and of the dilated
-    layer, traced and prepared, are both tensor products of local maps, and these agree cell by
-    cell and site by site.
+    by trace preservation its map is the identity; replace it by the identity. Write
+    $U_b$ and $V_s$ for the dilations of the gate $g_b$ and of the onsite family $k_s$, with
+    environments $F_b$ and $F_s$ started in $e_b$ and $e_s$. By
+    Lemma~\ref{lem:circuits_layer_entry} for the dilated layer, and since the configurations
+    of $F$ are those of the $F_b$ and the $F_s$,
+    \begin{align}
+        \tr_F\bigl(\Phi_U(\ketbra{x,e}{x',e})\bigr)_{yy'}
+        &=\prod_b\sum_{f\in F_b}\Phi_{U_b}
+            \bigl(\ketbra{x|_{C_b},e_b}{x'|_{C_b},e_b}\bigr)_{(y|_{C_b},f),(y'|_{C_b},f)}
+        \notag\\
+        &\qquad\cdot\prod_s\sum_{f\in F_s}\Phi_{V_s}
+            \bigl(\ketbra{x_s,e_s}{x'_s,e_s}\bigr)_{(y_s,f),(y'_s,f)}
+        \notag\\
+        &=\prod_b\Phi_{g_b}\bigl(\ketbra{x|_{C_b}}{x'|_{C_b}}\bigr)_{y|_{C_b},y'|_{C_b}}
+        \prod_s\Phi_{k_s}\bigl(\ketbra{x_s}{x'_s}\bigr)_{y_s,y'_s},
+        \notag
+    \end{align}
+    by Theorem~\ref{thm:kraus_family_unitary_dilation} on every factor. By
+    Lemma~\ref{lem:circuits_layer_entry} again this is the entry of the map of the layer on
+    $\ketbra{x}{x'}$; the matrix units span.
 \end{proof}
 
 \begin{theorem}[Unitary dilation of a protocol]
@@ -488,8 +543,9 @@ cells and their costs do not change.
     depth at most $T$ on the same geometry.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:circuits_tp_nonempty}
-    By induction on the circuit. A layer of a trace-preserving circuit on nonempty bases has a
+    \uses{lem:circuits_tp_nonempty, lem:protocols_dilation_id}
+    By induction on the circuit. The empty circuit is the identity, which has a dilation of
+    depth $0$ (Lemma~\ref{lem:protocols_dilation_id}). A layer of a trace-preserving circuit on nonempty bases has a
     Kraus index and nonempty output bases (Lemma~\ref{lem:circuits_tp_nonempty}), so an
     unbranched circuit is its first layer followed by one continuation. Compose the dilation of
     the layer (Theorem~\ref{thm:protocols_dilation_layer}) with that of the continuation

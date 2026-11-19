@@ -28,22 +28,9 @@ maps agree therefore have the same map.
 
 * `QuantumCircuit.Layer.cellOf_eq` — the cell containing a site is unique.
 * `QuantumCircuit.Layer.map_single_apply` — the entries of the map of a layer on matrix units.
-* `KrausFamily.map_single_apply` — the entries of the map of a Kraus family on matrix units.
 -/
 
 open Matrix ManyBody
-
-namespace KrausFamily
-
-/-- The entries of the map of a Kraus family on a matrix unit. -/
-theorem map_single_apply {α β : Type} [Fintype α] [DecidableEq α]
-    (K : KrausFamily α β) (a a' : α) (c c' : β) :
-    K.map (Matrix.single a a' 1) c c' = ∑ i, K.op i c a * star (K.op i c' a') := by
-  rw [map_apply, Matrix.sum_apply]
-  refine Finset.sum_congr rfl fun i _ ↦ ?_
-  simp [mul_apply, Matrix.single_apply, ite_and]
-
-end KrausFamily
 
 namespace QuantumCircuit
 
