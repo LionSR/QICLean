@@ -347,6 +347,7 @@ It is a sufficient calibration, not the printed fourth-order choice of
     \end{align}
 \end{theorem}
 \begin{proof}\leanok
+    \uses{def:soft_family_threshold}
     Write $z=(1+w^{-1})^2$. Since $g\le1$ and
     $|\log(g/2000000)|\le4000000z$, substitution in the maximum for $S_w$
     bounds each term by $K^2z^2$. Choose $u=\max\{2,\lceil K^2z^2\rceil\}$.
@@ -355,5 +356,4 @@ It is a sufficient calibration, not the printed fourth-order choice of
 
 This is a new sufficient scalar choice for the soft estimates of
 \cite[lines 1262--1268 and 1373--1420]{Arad2016RigorousRG}.
-It does not assert the printed fourth-order choice, a member-bond
-bound for a chain, or a running-time bound.
+It does not assert the printed fourth-order choice, a bound on the bond dimension of a chain, or a running-time bound.

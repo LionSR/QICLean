@@ -63,7 +63,7 @@ theorem affine_log_le_nat_pow_of_threshold (a b : ℝ) {ε x : ℝ} {p : ℕ}
       · exact (le_abs_self a).trans (le_mul_of_one_le_right (abs_nonneg a) hs1)
       · exact log_nonneg hx
       · exact le_abs_self b
-      · linarith
+      · linarith only [hl]
     _ = (|a| + 2 * |b|) * sqrt x := by ring
     _ ≤ (sqrt x * ε) * sqrt x := mul_le_mul_of_nonneg_right hcoef (sqrt_nonneg x)
     _ = ε * x := by nlinarith only [congrArg (ε * ·) hs]
@@ -262,10 +262,10 @@ theorem softFamilyThreshold_half_sq_le (q : ℕ) (hq : 2 ≤ q) {w : ℝ}
       (64 * (5000000 + 1440 * (q : ℝ))) ^ 2 * (1 + w⁻¹) ^ 4 := by
   let z := (1 + w⁻¹) ^ 2
   let K := 64 * (5000000 + 1440 * (q : ℝ))
-  have hz : 1 ≤ z := one_le_pow₀ (by linarith [inv_pos.mpr hw])
-  have hg : w ^ 2 / 2 ≤ 1 := by nlinarith [mul_nonneg hw.le (sub_nonneg.mpr hw')]
+  have hz : 1 ≤ z := one_le_pow₀ (by linarith only [inv_pos.mpr hw])
+  have hg : w ^ 2 / 2 ≤ 1 := by nlinarith only [mul_nonneg hw.le (sub_nonneg.mpr hw'), hw']
   have hlog : |log (w ^ 2 / 2 / 2000000)| ≤ 4000000 * z := by
-    rw [abs_of_nonpos (log_nonpos (by positivity) (by linarith))]
+    rw [abs_of_nonpos (log_nonpos (by positivity) (by linarith only [hg]))]
     rw [← log_inv]
     have hi : (w ^ 2 / 2 / 2000000)⁻¹ = 4000000 * (w⁻¹)^2 := by
       field_simp
@@ -273,19 +273,20 @@ theorem softFamilyThreshold_half_sq_le (q : ℕ) (hq : 2 ≤ q) {w : ℝ}
     rw [hi]
     have hl := log_le_sub_one_of_pos (by positivity : 0 < 4000000 * (w⁻¹)^2)
     dsimp [z]
-    nlinarith [inv_pos.mpr hw]
+    nlinarith only [hl, inv_pos.mpr hw]
   have hq1 : (1 : ℝ) ≤ q := by exact_mod_cast (by omega : 1 ≤ q)
   have hA := log_le_sub_one_of_pos (zero_lt_one.trans_le hq1)
   have h2 := log_le_sub_one_of_pos (by norm_num : (0:ℝ) < 2)
-  have hK : 1000000 ≤ K := by dsimp [K]; linarith [Nat.cast_nonneg (α := ℝ) q]
-  have hKz : K ≤ K * z := le_mul_of_one_le_right (by linarith) hz
+  have hK : 1000000 ≤ K := by dsimp [K]; linarith only [Nat.cast_nonneg (α := ℝ) q]
+  have hK0 : 0 ≤ K := by linarith only [hK]
+  have hKz : K ≤ K * z := le_mul_of_one_le_right hK0 hz
   have hlarge : 1000000 * z ≤ (K * z)^2 := by
-    have h := mul_le_mul_of_nonneg_right hK (by linarith : 0 ≤ z)
-    nlinarith only [h, hKz, hK, mul_nonneg (show 0 ≤ K*z by linarith)
-      (show 0 ≤ K*z-1 by linarith)]
+    have h := mul_le_mul_of_nonneg_right hK (by linarith only [hz] : 0 ≤ z)
+    nlinarith only [h, hKz, hK, mul_nonneg (show 0 ≤ K*z by positivity)
+      (show 0 ≤ K*z-1 by linarith only [hKz, hK])]
   have he : exp 1 ≤ 3 := exp_one_lt_three.le
   have hi : 1 / (w ^ 2 / 2) = 2 * (w⁻¹)^2 := by field_simp
-  have hiz : 1 / (w ^ 2 / 2) ≤ 2*z := by rw [hi]; dsimp [z]; nlinarith [inv_pos.mpr hw]
+  have hiz : 1 / (w ^ 2 / 2) ≤ 2*z := by rw [hi]; dsimp [z]; nlinarith only [inv_pos.mpr hw]
   have hsq : K^2 * (1 + w⁻¹)^4 = (K*z)^2 := by dsimp [z]; ring
   change _ ≤ K^2 * (1+w⁻¹)^4
   rw [hsq]
@@ -295,10 +296,12 @@ theorem softFamilyThreshold_half_sq_le (q : ℕ) (hq : 2 ≤ q) {w : ℝ}
   rw [abs_of_nonneg (by positivity : 0 ≤ 52 + w^2/2),
     abs_of_nonneg (by have := log_nonneg hq1; positivity : 0 ≤ (36:ℝ)*(log 2+40*log (q:ℝ)) +
       (200+w^2/2+|log (w^2/2/2000000)|))]
-  refine ⟨?_, ?_, by linarith, by linarith, by linarith, by linarith⟩
+  refine ⟨?_, ?_, by linarith only [he, hlarge, hz],
+    by linarith only [hg, hlarge, hz], by linarith only [hg, hlarge, hz],
+    by linarith only [hiz, hlarge, hz]⟩
   · norm_num
     apply pow_le_pow_left₀ (by positivity)
-    linarith
+    linarith only [hg, hKz, hK]
   · apply pow_le_pow_left₀ (by positivity)
     dsimp [K]
     have hmul := mul_le_mul_of_nonneg_left hz
@@ -457,7 +460,9 @@ theorem soft_family_calibration_of_threshold (q : ℕ) (hq : 2 ≤ q)
   · exact_mod_cast hD1
   · simpa only [tau, t, T, k, Nat.cast_pow] using hbounds
 
-/-- A natural scale satisfying the corrected calibration exists. -/
+/-- A natural scale satisfies the corrected scalar calibration for the soft estimates
+of ALVV, arXiv:1602.08828v2. See `soft_family_calibration_of_threshold` for the
+sufficient threshold and its relation to the paper. -/
 theorem exists_soft_family_calibration (q : ℕ) (hq : 2 ≤ q)
     (g : ℝ) (hg : 0 < g) (a b c : ℕ) :
     ∃ u : ℕ, 2 ≤ u ∧
@@ -493,13 +498,13 @@ theorem exists_soft_family_scale_half_sq (q : ℕ) (hq : 2 ≤ q) {w : ℝ}
       (u : ℝ) ≤ ((64 * (5000000 + 1440 * (q : ℝ))) ^ 2 + 2) * (1 + w⁻¹) ^ 4 := by
   let K := 64 * (5000000 + 1440 * (q : ℝ))
   let z := (1 + w⁻¹) ^ 4
-  have hz : 1 ≤ z := one_le_pow₀ (by linarith [inv_pos.mpr hw])
+  have hz : 1 ≤ z := one_le_pow₀ (by linarith only [inv_pos.mpr hw])
   let u := max 2 ⌈K^2*z⌉₊
   refine ⟨u, le_max_left .., (softFamilyThreshold_half_sq_le q hq hw hw').trans
     ((Nat.le_ceil _).trans (Nat.cast_le.mpr (le_max_right ..))), ?_⟩
   change (↑(max 2 ⌈K^2*z⌉₊) : ℝ) ≤ (K^2 + 2)*z
   rw [Nat.cast_max, max_le_iff]
-  have hpos : 0 ≤ K^2*z := mul_nonneg (sq_nonneg _) (by linarith)
+  have hpos : 0 ≤ K^2*z := mul_nonneg (sq_nonneg _) (by linarith only [hz])
   constructor
   · norm_num
     nlinarith only [hpos, hz]
