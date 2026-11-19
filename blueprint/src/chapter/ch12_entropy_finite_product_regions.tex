@@ -117,19 +117,39 @@ enters.
     \leanok
     \uses{def:finite_product_regional_entropy}
     Let $f$ be a vector on the sites $A$ and $g$ a vector on the sites $B$, and let
-    $f\otimes g$ be their product on the sites $A\sqcup B$. For $R\subseteq A$ and
-    $T\subseteq B$, the reduction of $f\otimes g$ to $R\sqcup T$ is the Kronecker
-    product of the reductions of $f$ to $R$ and of $g$ to $T$. For unit vectors,
-    $S_{f\otimes g}(R\sqcup T)=S_f(R)+S_g(T)$. Consequently
-    $I_{f\otimes g}(R:T')=I_f(R:T')$ for regions $R,T'$ of $A$, and a region of
-    $B$ has no mutual information with a region of $A$
+    $f\otimes g$ be their product on the sites $A\sqcup B$. Write $\rho^f_R$ for the
+    reduction of $f$ to $R$. For $R\subseteq A$ and $T\subseteq B$, identifying a
+    configuration of $R\sqcup T$ with a pair of configurations of $R$ and of $T$,
+    \[
+        \rho^{f\otimes g}_{R\sqcup T}=\rho^f_R\otimes\rho^g_T .
+    \]
+    For unit vectors $f$ and $g$,
+    \[
+        S_{f\otimes g}(R\sqcup T)=S_f(R)+S_g(T),\qquad
+        I_{f\otimes g}(R:T')=I_f(R:T'),\qquad
+        I_{f\otimes g}(T:R)=0
+    \]
+    for regions $R,T'\subseteq A$ and $T\subseteq B$
     \cite[Proposition~10.2]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:entropy_kronecker}
-    The configurations of $R\sqcup T$ and of its complement split as pairs of
-    configurations of the two systems, and the sum defining the reduction
-    factors accordingly. The entropy of a Kronecker product of density matrices
-    is the sum of their entropies, and the empty region of a unit vector has
-    entropy zero.
+    The complement of $R\sqcup T$ is $R^c\sqcup T^c$, so a configuration of it is a
+    pair $(y,y')$ with $y$ on $A\setminus R$ and $y'$ on $B\setminus T$, and
+    $(f\otimes g)(x\,x',y\,y')=f(x,y)\,g(x',y')$. Hence
+    \[
+        \rho^{f\otimes g}_{R\sqcup T}\bigl((x,x'),(z,z')\bigr)
+        =\sum_{y,y'}f(x,y)g(x',y')\overline{f(z,y)g(z',y')}
+        =\rho^f_R(x,z)\,\rho^g_T(x',z').
+    \]
+    The entropy of a Kronecker product of density matrices is the sum of their
+    entropies, which gives the entropy identity. The empty region of a unit vector
+    has entropy zero, so with $T=\emptyset$
+    \[
+        I_{f\otimes g}(R:T')=S_f(R)+S_f(T')-S_f(R\cup T')=I_f(R:T'),
+    \]
+    and with $R\sqcup\emptyset$ and $\emptyset\sqcup T$
+    \[
+        I_{f\otimes g}(T:R)=S_g(T)+S_f(R)-\bigl(S_f(R)+S_g(T)\bigr)=0 .
+    \]
 \end{proof}
