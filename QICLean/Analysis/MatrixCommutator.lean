@@ -47,6 +47,7 @@ noncomputable def commutatorCLM (H : Matrix n n ℂ) :
     Matrix n n ℂ →L[ℂ] Matrix n n ℂ :=
   ContinuousLinearMap.mul ℂ _ H - (ContinuousLinearMap.mul ℂ _).flip H
 
+/-- The commutator map sends `W` to `[H, W] = H W - W H`. -/
 @[simp] theorem commutatorCLM_apply (H W : Matrix n n ℂ) :
     commutatorCLM H W = H * W - W * H := rfl
 

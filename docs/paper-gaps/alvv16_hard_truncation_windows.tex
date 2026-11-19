@@ -140,7 +140,11 @@ Theorem~2.6 of
 particles with every particle in terms of total norm at most $g$; ALVV quote it
 as Proposition~4.4 and Lemma~4.5 and apply it to chains. The flat sector of
 the previous section shows that its truncated-side estimate needs a cutoff
-condition. The following form is sufficient.
+condition. The following form is sufficient. Its hypotheses are narrower than
+those of Theorem~2.6 in one respect: the terms are contractions, $0\le h_i\le1$, and
+the degree counts the terms whose support contains a site, where AKL bound the sum
+of their norms, $\sum_{X\ni i}\lVert h_X\rVert\le g$; see
+\texttt{akl14\_hadamard\_bound\_scope.tex}.
 
 Let the terms satisfy $0\le h_i\le1$, let each be supported on at most $k$
 sites with every site in the supports of at most $g$ terms, $gk>0$, and let
@@ -175,8 +179,8 @@ above the window, and from the weighted restriction estimate
 whose second denominator is at least one because $E\le b$. They replace the
 printed rate $\lambda=1/(2gk)$ with prefactor $6\lambda^{-3/2}$ and the
 separations $3|L_\partial|$ and $33|L_\partial|$ of
-\texttt{eq:Pi-bound}--\texttt{e:spectrum}. For a nearest-neighbour chain
-$b\le2$ and the cutoff is $\eta+7$.\footnote{Formal declaration:
+\texttt{eq:Pi-bound}--\texttt{e:spectrum}. For an interval $\Lambda$ of a
+nearest-neighbour chain, $b\le2$ and the cutoff is $\eta+7$.\footnote{Formal declaration:
     \leanid{ManyBody.Interaction.exists_region_hard_truncation_spectral_comparison}
     in \doclink{QICLean/ManyBody/Hamiltonian/HardTruncation}.}
 \end{document}

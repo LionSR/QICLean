@@ -202,12 +202,35 @@ one-dimensional ground space.
     Lemma~\ref{lem:hamiltonians_gap_operator_inequality}.
 \end{proof}
 
+\begin{theorem}[A unit eigenvector at the least eigenvalue]
+    \label{thm:hamiltonians_least_eigenvector}
+    \lean{exists_unit_eigenvector_minEigenvalue}
+    \leanok
+    A Hermitian matrix $H$ on a nonempty finite index set has a unit eigenvector
+    $u$ at its least eigenvalue $a$, and $H\ge a$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:posdef_trace_lower_bound}
+    Take a vector of an orthonormal eigenbasis at an index attaining the least
+    eigenvalue; $H-a\ge0$ by the spectral theorem.
+\end{proof}
+
+\begin{theorem}[Inner products of product vectors]
+    \label{thm:hamiltonians_product_vector_inner}
+    \lean{Matrix.star_mul_dotProduct_mul}
+    \leanok
+    For vectors $u,u'$ and $v,v'$,
+    $\langle u\otimes v,u'\otimes v'\rangle=\langle u,u'\rangle\langle v,v'\rangle$.
+\end{theorem}
+\begin{proof}\leanok
+    Expand the sum over pairs of indices as a product of two sums.
+\end{proof}
+
 \begin{theorem}[A gapped unique ground vector of a Kronecker sum is a product]
     \label{thm:hamiltonians_kronecker_sum_product_ground}
-    \lean{Matrix.star_mul_dotProduct_mul, ManyBody.exists_isGapped_factors_of_kronecker_sum}
+    \lean{ManyBody.exists_isGapped_factors_of_kronecker_sum}
     \leanok
-    \uses{thm:hamiltonians_gap_kronecker_sum, lem:hamiltonians_gap_operator_inequality,
-        thm:hamiltonians_gapped_unique}
+    \uses{def:hamiltonians_gap}
     Let $A$ and $B$ be Hermitian, let $\Delta>0$, and let $\Omega$ be a unit
     vector. If $H=A\otimes1+1\otimes B$ is gapped at $E_0$ with gap $\Delta$ and
     $\ker(H-E_0)=\C\Omega$, then there are real numbers $a,b$ and unit vectors
@@ -219,6 +242,9 @@ one-dimensional ground space.
     of~\cite[Part~I]{TNLean2026OneDimensional}.
 \end{theorem}
 \begin{proof}\leanok
+    \uses{thm:hamiltonians_gap_kronecker_sum, lem:hamiltonians_gap_operator_inequality,
+        thm:hamiltonians_gapped_unique, thm:hamiltonians_least_eigenvector,
+        thm:hamiltonians_product_vector_inner}
     By Lemma~\ref{lem:hamiltonians_gap_operator_inequality},
     $H\Omega=E_0\Omega$ and
     $G=H-E_0-\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)\ge0$. Let $a,b$
@@ -242,7 +268,7 @@ one-dimensional ground space.
     \label{thm:hamiltonians_site_sum_product_ground}
     \lean{ManyBody.exists_isGapped_factors_of_sum_place}
     \leanok
-    \uses{thm:hamiltonians_kronecker_sum_product_ground, def:sites_place}
+    \uses{def:hamiltonians_gap, def:sites_place}
     Let $V$ be a nonempty finite set of sites and, for each $v\in V$, let $H_v$
     be a Hermitian matrix on $\C^{X_{\{v\}}}$. Let $\Delta>0$ and let $\Omega$ be
     a unit vector. If $H=\sum_vH_v\otimes1$ is gapped at $E_0$ with gap $\Delta$
@@ -257,7 +283,9 @@ one-dimensional ground space.
     Hamiltonian inherits the gap inequality with the same gap.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:hamiltonians_kronecker_sum_product_ground}
+    \uses{thm:hamiltonians_kronecker_sum_product_ground, lem:hamiltonians_gap_reindex,
+        thm:sites_place_range, lem:sites_place_hom, lem:hamiltonians_gap_operator_inequality,
+        thm:hamiltonians_gap_kronecker_sum}
     Fix $v$. In the coordinates of the cut along $\{v\}$,
     $H=H_v\otimes1+1\otimes H'$, where $H'$ comes from the sum of the other terms,
     which are supported off $v$. By
@@ -331,17 +359,12 @@ one-dimensional ground space.
 \section{Common ground vectors on disjoint regions}
 \label{sec:hamiltonians_disjoint_ground}
 
-In this section every basis set $X_v$ is nonempty.
-
 \begin{theorem}[One set of regional minima for every clipping]
     \label{thm:disjoint_regional_clipping}
     \lean{ManyBody.exists_disjoint_regional_clipping_structure}
     \leanok
-    \uses{lem:sites_supported_commute, def:sites_place, thm:partial_clipping_common_vector,
-        thm:partial_clipping_norm_budget, thm:partial_clipping_commutation,
-        thm:partial_clipping_high_projection, thm:positive_boundary_ground_energy,
-        thm:normalized_eigenvector_energies}
-    Let $(R_i)_{i\in I}$ be a finite family of pairwise disjoint regions, and
+    \uses{thm:sites_supported_subalgebra, def:closed_threshold_projection}
+    Let every basis set $X_v$ be nonempty. Let $(R_i)_{i\in I}$ be a finite family of pairwise disjoint regions, and
     let $A_i\in\mathcal A_{R_i}$ with $0\le A_i\le c_i$, where $c_i\in\N$. Let
     $0\le Y\le C$ with $C\in\N$. There are real numbers $e_i$ and a unit vector
     $x$ with $A_ix=e_ix$ and $A_i\ge e_i$ for every $i$ such that, for every
@@ -355,9 +378,15 @@ In this section every basis set $X_v$ is nonempty.
     Moreover $Z+Y\le b$ and $\lVert Z+Y\rVert\le b$, and there are a unit
     vector $z$ and a real number $E$ with $(Z+Y)z=Ez$, $Z+Y\ge E$ and
     $0\le E\le C$. This is the disjoint-region construction
-    of~\cite[lines 873--886 and 979--1005]{Arad2016RigorousRG}.
+    of~\cite[lines 873--886, 979--1005 and 1010--1024]{Arad2016RigorousRG}.
 \end{theorem}
 \begin{proof}\leanok
+    \uses{lem:sites_supported_commute, lem:sites_supported_mono, thm:sites_place_range,
+        lem:sites_place_norm_order, lem:sites_place_hom, thm:hamiltonians_gap_kronecker_sum,
+        thm:hamiltonians_least_eigenvector, thm:hamiltonians_product_vector_inner,
+        thm:partial_clipping_common_vector, thm:partial_clipping_norm_budget,
+        thm:partial_clipping_commutation, thm:partial_clipping_high_projection,
+        thm:positive_boundary_ground_energy, thm:normalized_eigenvector_energies}
     For two regions $S$ and its complement, the cut along $S$ writes the two
     operators as $A_0\otimes1$ and $1\otimes B_0$; the product of unit
     eigenvectors of $A_0$ and $B_0$ for their least eigenvalues attains both
@@ -385,41 +414,50 @@ eigenvectors of $M$ with eigenvalue at most $c$, as in
 Definition~\ref{def:spectral_span_le}, and number the eigenvalues
 $\lambda_1(M)\ge\lambda_2(M)\ge\cdots$ in decreasing order.
 
-\begin{lemma}[The decreasing order and the spectral spans]
-    \label{lem:canonical_spectral_span}
+\begin{theorem}[The decreasing order and the spectral spans]
+    \label{thm:canonical_spectral_span}
     \lean{Matrix.IsHermitian.eigenvalues₀_last_eq_minEigenvalue,
         Matrix.IsHermitian.spectralSpanLE_eigenvectorBasis_eq}
     \leanok
     \uses{def:spectral_span_le}
     For a Hermitian matrix on a nonempty finite index set, the last eigenvalue
-    in decreasing order is the least eigenvalue. Relabelling an orthonormal
-    eigenbasis does not change its spectral span below any energy.
-\end{lemma}
+    in decreasing order is the least eigenvalue. The two canonical orthonormal
+    eigenbases of a Hermitian matrix, one indexed by the coordinates and one in
+    decreasing order of the eigenvalues, span the same space below every energy.
+\end{theorem}
 \begin{proof}\leanok
-    The decreasing order is antitone and attains the minimum; a relabelling is
-    a bijection preserving the eigenvalue attached to each vector.
+    The decreasing order is antitone and attains the minimum. The second basis is
+    the first relabelled by a bijection that preserves the eigenvalue attached to
+    each vector.
 \end{proof}
 
-\begin{lemma}[Restricted clipping error from a conjugation bound]
+\begin{theorem}[Restricted clipping error from a conjugation bound]
     \label{thm:regional_truncation_low_from_conjugation}
     \lean{Matrix.exists_weighted_low_restriction_of_conjugation_le,
         Matrix.norm_truncation_excess_low_le_of_conjugation_le,
         Matrix.norm_partially_clipped_truncation_low_le}
     \leanok
-    \uses{def:spectral_span_le, thm:partial_clipping_commutation,
-        thm:partial_clipping_high_projection, thm:weighted_restricted_sylvester,
-        thm:projection_range_quadratic_lower, thm:weighted_projection_norms,
-        thm:excess_actual_weighted_restriction}
-    Let $A_j$, for $j$ in a finite set, be pairwise commuting Hermitian matrices
-    with $A_j\ge e_j$. For a subset $K$ and $t\in\R$, let $F_j$ and
-    $Z=\sum_j(F_j-e_j)$ be as in Theorem~\ref{thm:disjoint_regional_clipping},
-    let $Y$ be any matrix, let $(b_v)$ be an orthonormal eigenbasis of $Z+Y$ with
-    eigenvalues $a_v$, and put $G=\operatorname{span}\{b_v:a_v\le\varepsilon\}$.
-    Let $s>0$, $0\le u\le t$ and $C<u-\varepsilon$, and suppose that
+    \uses{def:spectral_span_le, def:closed_threshold_projection}
+    Let $A$ be Hermitian, let $X$ commute with $A$, let $r\in\R$, $s>0$ and
+    $u\le t$, and let $Q=\mathbf1_{[r+u,\infty)}(A)$ with $uQ\le X$. Let $Y$ be any
+    matrix, let $(b_v)$ be an orthonormal eigenbasis of $X+Y$ with eigenvalues
+    $a_v$, and put $G=\operatorname{span}\{b_v:a_v\le\varepsilon\}$. Suppose that
+    $C<u-\varepsilon$ and, with $W=e^{s(A-r-u)}$,
     \begin{align}
-        \bigl\lVert e^{s(A_j-e_j-u)}\,Y\,e^{-s(A_j-e_j-u)}\bigr\rVert\le C.
+        \bigl\lVert W\,Y\,W^{-1}\bigr\rVert\le C.
     \end{align}
-    Then
+    Then $WQ$ restricted to $G$ maps into the range of $Q$ with norm at most
+    $C/(u-\varepsilon-C)$, and
+    \begin{align}
+        \bigl\lVert(A-\min(A,r+t))|_G\bigr\rVert
+        \le\frac{e^{-s(t-u)-1}}{s}\cdot\frac{C}{u-\varepsilon-C}.
+    \end{align}
+    In particular, let $A_i$, for $i$ in a finite set $I$, be pairwise commuting
+    Hermitian matrices with $A_i\ge e_i$; for a subset $K\subseteq I$ and $t\ge0$
+    let $F_i$ and $Z=\sum_i(F_i-e_i)$ be as in
+    Theorem~\ref{thm:disjoint_regional_clipping}, and fix $j\in I$ and $0\le u\le
+    t$. With $X=Z$, $r=e_j$ and $A=A_j$, the conjugation bound by $e^{s(A_j-e_j-u)}$
+    gives
     \begin{align}
         \bigl\lVert(A_j-\min(A_j,e_j+t))|_G\bigr\rVert
         \le\frac{e^{-s(t-u)-1}}{s}\cdot\frac{C}{u-\varepsilon-C}.
@@ -427,8 +465,14 @@ $\lambda_1(M)\ge\lambda_2(M)\ge\cdots$ in decreasing order.
     This is the weighted estimate in the proof
     of~\cite[Theorem~2.6]{Arad2014Connecting}, with locality entering only
     through the conjugation bound.
-\end{lemma}
+\end{theorem}
 \begin{proof}\leanok
+    \uses{thm:partial_clipping_commutation, thm:partial_clipping_high_projection,
+        thm:weighted_restricted_sylvester, thm:projection_range_quadratic_lower,
+        thm:weighted_projection_norms, thm:excess_actual_weighted_restriction,
+        thm:exponential_weight_projection, thm:separated_quadratic_sylvester,
+        thm:spectral_span_projection_commutes, thm:spectral_span_quadratic_form,
+        thm:restricted_map_ambient_norm, thm:closed_threshold_projection}
     The partial-clipping inequalities give that $Z$ commutes with $A_j$ and
     $uQ\le Z$ for $Q=\mathbf1_{[e_j+u,\infty)}(A_j)$. With
     $W=e^{s(A_j-e_j-u)}$, the operator $WQ$ restricted to $G$ solves a Sylvester
@@ -442,14 +486,11 @@ $\lambda_1(M)\ge\lambda_2(M)\ge\cdots$ in decreasing order.
 \end{proof}
 
 \begin{theorem}[Hard truncation of a region]
-    \label{lem:lattice_region_hard_truncation_spectral_comparison}
+    \label{thm:lattice_region_hard_truncation_spectral_comparison}
     \lean{ManyBody.Interaction.exists_region_hard_truncation_spectral_comparison}
     \leanok
-    \uses{def:dynamics_interaction, def:sites_crossing_terms,
-        thm:disjoint_regional_clipping, thm:bounded_degree_imaginary_time,
-        thm:regional_truncation_low_from_conjugation, lem:canonical_spectral_span,
-        thm:positive_unit_sum_budget, lem:attained_canonical_ground_energy,
-        thm:low_spectral_eigenvalue_comparison, thm:relative_low_energy_spaces_close}
+    \uses{def:dynamics_interaction, def:sites_crossing_terms, def:energy_truncation,
+        def:subspace_close, def:spectral_span_le}
     Let every basis set $X_v$ be nonempty, let $k,g\in\N$ with $gk>0$, and let
     the terms $h_i$ of an interaction with supports $T$ satisfy $0\le h_i\le1$
     and $|T_i|\le k$, every site lying in at most $g$ of the $T_i$. For a region
@@ -474,17 +515,21 @@ $\lambda_1(M)\ge\lambda_2(M)\ge\cdots$ in decreasing order.
     For $\delta>0$ put
     $\eta'=\eta+\xi+2\xi\sqrt{\lceil\eta/(2\xi)\rceil/\delta}$; then
     $T_F(E'+\eta')$ is $\delta$-close to $T_H(E+\eta)$, and $T_H(E+\eta')$ is
-    $\delta$-close to $T_F(E'+\eta)$. The ground space may be degenerate. For a
-    nearest-neighbour chain $b\le2$, and the cutoff is $t\ge\eta+7$. This is the
-    truncation of~\cite[Definition~2.5 and Theorem~2.6]{Arad2014Connecting},
+    $\delta$-close to $T_F(E'+\eta)$. The ground space may be degenerate. This is
+    the truncation of~\cite[Definition~2.5 and Theorem~2.6]{Arad2014Connecting},
     quoted in~\cite[Definition~4.3, Proposition~4.4 and
-    Lemma~4.5]{Arad2016RigorousRG}, with an explicit sufficient cutoff, explicit
-    constants and the window count corrected
+    Lemma~4.5]{Arad2016RigorousRG}, for terms that are contractions and a degree
+    that counts terms~\cite{gap:akl14_hadamard_bound_scope}, with an explicit
+    sufficient cutoff, explicit constants and the window count corrected
     in~\cite{gap:alvv16_hard_truncation_windows}.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:disjoint_regional_clipping, thm:bounded_degree_imaginary_time,
-        thm:regional_truncation_low_from_conjugation, lem:canonical_spectral_span}
+        thm:regional_truncation_low_from_conjugation, thm:canonical_spectral_span,
+        thm:positive_unit_sum_budget, lem:attained_canonical_ground_energy,
+        thm:low_spectral_eigenvalue_comparison, thm:relative_low_energy_spaces_close,
+        thm:weyl_monotonicity_loewner, thm:energy_truncation,
+        thm:normalized_eigenvector_energies, lem:sites_supported_commute}
     The inner and outer sums are supported on $\Lambda$ and its complement, and
     each is positive and bounded by its number of terms
     (Theorem~\ref{thm:positive_unit_sum_budget}), so
@@ -493,10 +538,10 @@ $\lambda_1(M)\ge\lambda_2(M)\ge\cdots$ in decreasing order.
     $s=1/(2gk)$ and $u=\eta+3b+1$,
     Lemma~\ref{thm:bounded_degree_imaginary_time} bounds the conjugation of $Y$
     by $e^{s(H_{\rm in}-e_{\rm in}-u)}$ by $2b$. Apply
-    Lemma~\ref{thm:regional_truncation_low_from_conjugation} to the original and
+    Theorem~\ref{thm:regional_truncation_low_from_conjugation} to the original and
     to the inner-clipped family with $\varepsilon=E+\eta$; the denominator
     $u-\varepsilon-2b$ is at least one since $E\le b$, and the resulting
-    coefficient is at most $\xi$. By Lemma~\ref{lem:canonical_spectral_span} the
+    coefficient is at most $\xi$. By Theorem~\ref{thm:canonical_spectral_span} the
     spectral spans of the two eigenbases agree. The ground energies $E,E'$ are the
     last ordered eigenvalues. The inequality $F\le H$ gives the lower eigenvalue
     comparison and the error on $T_F(E+\eta)$ the upper one
@@ -504,3 +549,6 @@ $\lambda_1(M)\ge\lambda_2(M)\ge\cdots$ in decreasing order.
     spectral-window comparison of Theorem~\ref{thm:relative_low_energy_spaces_close},
     applied to both errors, gives the closeness statements.
 \end{proof}
+
+For an interval $\Lambda$ of a nearest-neighbour chain at most two terms cross the
+cut, so $b\le2$ and the cutoff condition reads $t\ge\eta+7$.

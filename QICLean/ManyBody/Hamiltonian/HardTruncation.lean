@@ -38,8 +38,13 @@ for `s = 1 / (2 g k)`, and the weighted restriction estimate for the clipping er
 **Local fix (cutoff, constants and window count):** the cutoff is the sufficient
 `t ≥ η + 3 b + 1` in place of the printed `t > η`, the decay rate is `1 / (2 g k)` with the
 displayed prefactor in place of the printed constants, and the enlargement of the window
-includes the ceiling window count and the ground shift. For a nearest-neighbour chain `b ≤ 2`
-and the cutoff is `η + 7`. See `docs/paper-gaps/alvv16_hard_truncation_windows.tex`.
+includes the ceiling window count and the ground shift. For an interval `Λ` of a
+nearest-neighbour chain, `b ≤ 2` and the cutoff is `η + 7`. See
+`docs/paper-gaps/alvv16_hard_truncation_windows.tex`.
+
+**Scope restriction (contractions, count degree):** the terms are contractions `0 ≤ hᵢ ≤ 1`
+and the degree `g` counts the terms whose support contains a site, where AKL14 assume
+`h_X ≥ 0` with `∑_{X ∋ i} ‖h_X‖ ≤ g`. See `docs/paper-gaps/akl14_hadamard_bound_scope.tex`.
 
 Moved from TNLean, `TNLean/Lattice/HardTruncation.lean` at commit `e41c3b63`, restated for an
 interaction on a system of sites with nonempty basis types; the crossing terms are
