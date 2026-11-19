@@ -37,8 +37,8 @@ sequential-RG circuit'']{Malz2024Preparation}.
 \begin{theorem}[Identities for $1/\sqrt x$]
     \label{thm:gate_inv_sqrt_two}
     \lean{Complex.invSqrt_ne_zero, Complex.invSqrt_mul_self, Complex.invSqrt_sq,
-        Complex.norm_invSqrt_sq, Complex.invSqrt_pow_mul_self, Complex.invSqrt_mul_sqrt,
-        Complex.sqrt_mul_invSqrt, Complex.conj_invSqrt, Complex.star_invSqrt,
+        Complex.norm_invSqrt_sq, Complex.invSqrt_pow, Complex.invSqrt_pow_mul_self,
+        Complex.invSqrt_mul_sqrt, Complex.sqrt_mul_invSqrt, Complex.conj_invSqrt, Complex.star_invSqrt,
         Complex.invSqrtTwo_ne_zero, Complex.invSqrtTwo_mul_self,
         Complex.invSqrtTwo_sq, Complex.norm_invSqrtTwo_sq, Complex.invSqrtTwo_pow_mul_self,
         Complex.invSqrtTwo_mul_sqrtTwo, Complex.sqrtTwo_mul_invSqrtTwo,
@@ -46,7 +46,7 @@ sequential-RG circuit'']{Malz2024Preparation}.
     \leanok
     \uses{def:gate_inv_sqrt_two}
     For $x\geq0$ the number $c_x=1/\sqrt x$ satisfies $c_x\cdot c_x=c_x^2=x^{-1}$,
-    $|c_x|^2=x^{-1}$ and $\overline{c_x}=c_x$; for $x>0$ moreover $c_x\neq0$,
+    $|c_x|^2=x^{-1}$, $\overline{c_x}=c_x$ and $c_{x^n}=c_x^n$; for $x>0$ moreover $c_x\neq0$,
     $c_x\sqrt x=\sqrt x\,c_x=1$ and $c_x^nc_x^nx^n=1$ for every integer $n\geq0$. In
     particular $c=1/\sqrt2$ satisfies $c\neq0$, $c\cdot c=c^2=|c|^2=\tfrac12$,
     $c\sqrt2=\sqrt2\,c=1$, $\overline c=c$ and $c^nc^n2^n=1$.
@@ -56,7 +56,8 @@ sequential-RG circuit'']{Malz2024Preparation}.
     For $x>0$, $\sqrt x>0$, so its inverse is nonzero and $c_x\sqrt x=\sqrt x\,c_x=1$.
     For $x\geq0$, $(\sqrt x)^2=x$ (Theorem~\ref{thm:gate_ofreal_sqrt_sq}) gives
     $c_x\cdot c_x=x^{-1}$, hence $c_x^nc_x^nx^n=(c_x\cdot c_x\cdot x)^n=1$ for $x>0$. The
-    number $c_x$ is real, so conjugation fixes it. The identities for $c$ are those at $x=2$.
+    number $c_x$ is real, so conjugation fixes it, and $\sqrt{x^n}=(\sqrt x)^n$ for $x\geq0$
+    by induction on $n$. The identities for $c$ are those at $x=2$.
 \end{proof}
 
 \section{Two-level operators}

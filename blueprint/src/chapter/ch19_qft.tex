@@ -86,16 +86,12 @@ Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
         QuantumCircuit.Qudit.qftGate, QuantumCircuit.Qudit.gateOp,
         QuantumCircuit.Qudit.qftMatrix_mem_unitaryGroup,
         QuantumCircuit.Qudit.isUnitary_qftGate, QuantumCircuit.Qudit.gateOp_mem_unitaryGroup,
-        QuantumCircuit.Qubit.dft, QuantumCircuit.Qubit.dft_apply,
-        QuantumCircuit.Qubit.qftGate, QuantumCircuit.Qubit.gateOp}
+        QuantumCircuit.Qubit.dft, QuantumCircuit.Qubit.qftGate, QuantumCircuit.Qubit.gateOp}
     \leanok
     \uses{def:qft_gates, def:circuits_local_gate, lem:qft_gates_unitary,
         lem:sites_place_hom}
-    The Fourier matrix on $n$ qudits is
-    \begin{align}
-        F_{yx}&=d^{-n/2}\,e^{2\pi i\langle y\rangle\langle x\rangle/d^n}
-        \notag
-    \end{align}
+    The Fourier matrix $F$ on $n$ qudits is the Fourier matrix $F_{d^n}$ of
+    $\Z/d^n\Z$ in the base-$d$ encoding, $F_{yx}=(F_{d^n})_{\langle y\rangle\langle x\rangle}$
     \cite[eq.~(5.2)]{NielsenChuang2010} for $d=2$. Its gates are given by one table on
     the cells: the Fourier gate $F_d$ on a qudit; on an ordered pair $(j,i)$ with $i<j$
     the controlled phase of order $j-i+1$, with control $j$ and target $i$; on an
@@ -103,6 +99,25 @@ Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
     on the register. For qubits these are the Hadamard gate and the controlled gate of
     $R_{j-i+1}$.
 \end{definition}
+
+\begin{lemma}[The Fourier matrix]
+    \label{lem:qft_dft}
+    \lean{QuantumCircuit.Qudit.dft_apply, QuantumCircuit.Qudit.dft_mem_unitaryGroup,
+        QuantumCircuit.Qubit.dft_apply, QuantumCircuit.Qubit.dft_mem_unitaryGroup}
+    \leanok
+    \uses{def:qft_gate_table}
+    The Fourier matrix on $n$ qudits is unitary, and
+    \begin{align}
+        F_{yx}&=d^{-n/2}\,e^{2\pi i\langle y\rangle\langle x\rangle/d^n}.
+        \label{eq:qft_dft_entries}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:qft_gates_unitary, thm:gate_inv_sqrt_two}
+    By the entries of $F_{d^n}$ and $(d^n)^{-1/2}=(d^{-1/2})^n$. A relabelling of a unitary
+    matrix along a bijection of its index set is unitary, and $F_{d^n}$ is unitary by
+    Lemma~\ref{lem:qft_gates_unitary}.
+\end{proof}
 
 \begin{definition}[Admissible orders]
     \label{def:qft_order}
@@ -132,10 +147,11 @@ Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
     Precisely, let a sequence of the Fourier and controlled phase cells contain each of
     them once and be admissible from the empty set. The product of the placed gates along it, the
     first on the right, has the entry $F_{\bar yx}$ at $(y,x)$, where
-    $\bar y_i=y_{n-1-i}$. Followed by the swaps, the product is $F$.
+    $\bar y_i=y_{n-1-i}$. Followed by the swaps, the product is $F$, the Fourier matrix of
+    $\Z/d^n\Z$ in the base-$d$ encoding.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:circuits_local_gate_unitary, lem:qft_gates_unitary}
+    \uses{lem:circuits_local_gate_unitary, lem:qft_gates_unitary, lem:qft_dft}
     Follow the column $e_x$ of a basis vector. After a prefix of the sequence the
     column is the product state in which every transformed qudit $k$ carries
     $d^{-1/2}\sum_ce^{2\pi i\,c\,\theta_k}\lvert c\rangle$ and every other qudit its
@@ -180,20 +196,19 @@ Chapter~\ref{ch:circuits} on the geometry of sites and pairs.
 \begin{theorem}[The textbook circuit computes the Fourier transform]
     \label{thm:qft_kraus}
     \lean{QuantumCircuit.Qudit.kraus_qftCore, QuantumCircuit.Qudit.kraus_qft,
-        QuantumCircuit.Qudit.dft_mem_unitaryGroup, QuantumCircuit.Qubit.kraus_qft,
-        QuantumCircuit.Qubit.dft_mem_unitaryGroup}
+        QuantumCircuit.Qubit.kraus_qft}
     \leanok
     \uses{def:qft_circuit}
     Along its single branch the textbook circuit without the swaps has the Kraus
     operator with entry $F_{\bar yx}$ at $(y,x)$, and the Kraus operator of the Fourier
-    circuit is $F$. In particular $F$ is unitary. For qubits this is the circuit of
+    circuit is $F$. For qubits this is the circuit of
     \cite[Fig.~5.1]{NielsenChuang2010}.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:circuits_seq, lem:circuits_layer_single, thm:qft_order}
     By Lemma~\ref{lem:circuits_seq} and Lemma~\ref{lem:circuits_layer_single} the
     Kraus operator is the product of the placed gates, and
-    Theorem~\ref{thm:qft_order} applies. A product of unitaries is unitary.
+    Theorem~\ref{thm:qft_order} applies.
 \end{proof}
 
 \begin{theorem}[Unitarity and cost of the Fourier circuit]

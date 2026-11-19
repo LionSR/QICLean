@@ -60,6 +60,15 @@ theorem invSqrt_pow_mul_self {x : ℝ} (hx : 0 < x) (n : ℕ) :
   rw [← mul_pow, ← mul_pow, invSqrt_mul_self hx.le,
     inv_mul_cancel₀ (ofReal_ne_zero.2 hx.ne'), one_pow]
 
+/-- `1 / √(xⁿ) = (1 / √x)ⁿ` for `x ≥ 0`. -/
+theorem invSqrt_pow {x : ℝ} (hx : 0 ≤ x) (n : ℕ) : invSqrt (x ^ n) = invSqrt x ^ n := by
+  induction n with
+  | zero => simp [invSqrt]
+  | succ n ih =>
+    rw [pow_succ, pow_succ, ← ih]
+    simp only [invSqrt]
+    rw [Real.sqrt_mul (pow_nonneg hx n), ofReal_mul, mul_inv]
+
 theorem invSqrt_mul_sqrt {x : ℝ} (hx : 0 < x) : invSqrt x * (↑(Real.sqrt x) : ℂ) = 1 :=
   inv_mul_cancel₀ (ofReal_ne_zero.2 (Real.sqrt_ne_zero'.2 hx))
 

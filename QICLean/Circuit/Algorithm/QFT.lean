@@ -30,7 +30,7 @@ of `QFTParallel.lean` applies the same gates in linear depth. The qubit circuit 
 
 ## Main definitions
 
-* `QuantumCircuit.Qudit.dft` — the Fourier matrix.
+* `QuantumCircuit.Qudit.dft` — the Fourier matrix of `ℤ/dⁿ` in the base-`d` encoding.
 * `QuantumCircuit.Qudit.qftGate`, `QuantumCircuit.Qudit.gateOp` — the gate on a cell, and its
   placement on the register.
 * `QuantumCircuit.Qudit.IsGateOrder` — the admissible orders of the gates.
@@ -44,7 +44,8 @@ of `QFTParallel.lean` applies the same gates in linear depth. The qubit circuit 
   transform.
 * `QuantumCircuit.Qudit.kraus_qft`, `QuantumCircuit.Qudit.kraus_qftCore` — the Kraus operators.
 * `QuantumCircuit.Qudit.forall_isUnitary_qft`, `QuantumCircuit.Qudit.gateCount_qft`.
-* `QuantumCircuit.Qudit.dft_mem_unitaryGroup` — the Fourier matrix is unitary.
+* `QuantumCircuit.Qudit.dft_apply`, `QuantumCircuit.Qudit.dft_mem_unitaryGroup` — its entries,
+  and its unitarity, from that of `Qudit.fourier (d ^ n)`.
 * `QuantumCircuit.Qubit.kraus_qft`, `QuantumCircuit.Qubit.gateCount_qft`,
   `QuantumCircuit.Qubit.depth_qft_le` — the case `d = 2`.
 -/
@@ -57,13 +58,24 @@ namespace Qudit
 
 variable {d n : ℕ}
 
-/-- The matrix of the quantum Fourier transform, `d^{-n/2} e^{2πi ⟨y⟩⟨x⟩ / d^n}`, in the base-`d`
+/-- The matrix of the quantum Fourier transform: the Fourier matrix of `ℤ/dⁿ` in the base-`d`
 encoding with site `0` most significant (Nielsen–Chuang, eq. (5.2) for `d = 2`). Mathlib's
 `ZMod.dft` has the opposite sign in the exponent and no normalization. -/
 noncomputable def dft (d n : ℕ) :
     Matrix (Config (Qudits (Fin n) d)) (Config (Qudits (Fin n) d)) ℂ :=
-  Matrix.of fun y x ↦ invSqrt d ^ n *
-    exp (2 * Real.pi * I * ((encode d n y : ℕ) * (encode d n x : ℕ) : ℂ) / (d : ℂ) ^ n)
+  (fourier (d ^ n)).submatrix (encode d n) (encode d n)
+
+/-- The entries `d^{-n/2} e^{2πi ⟨y⟩⟨x⟩ / d^n}` of the Fourier matrix. -/
+theorem dft_apply (y x : Config (Qudits (Fin n) d)) :
+    dft d n y x = invSqrt d ^ n *
+      exp (2 * Real.pi * I * ((encode d n y : ℕ) * (encode d n x : ℕ) : ℂ) / (d : ℂ) ^ n) := by
+  rw [dft, submatrix_apply, fourier_apply, Nat.cast_pow, Nat.cast_pow,
+    invSqrt_pow (Nat.cast_nonneg d)]
+
+/-- The Fourier matrix is unitary. -/
+theorem dft_mem_unitaryGroup (d n : ℕ) :
+    dft d n ∈ unitaryGroup (Config (Qudits (Fin n) d)) ℂ :=
+  submatrix_equiv_mem_unitary.mpr (fourier_mem_unitaryGroup _)
 
 /-! ### The gates -/
 
@@ -383,7 +395,7 @@ private theorem exponent_eq (y : Config (Qudits (Fin n) d)) :
 output digits in reverse order. -/
 private theorem phaseState_univ (y : Config (Qudits (Fin n) d)) :
     phaseState x Finset.univ (phase x) y = dft d n (fun i ↦ y (Fin.rev i)) x := by
-  rw [phaseState, dft, of_apply, Finset.card_univ, Fintype.card_fin,
+  rw [phaseState, dft_apply, Finset.card_univ, Fintype.card_fin,
     ite_eq_left (fun k hk ↦ absurd (Finset.mem_univ k) hk), mul_one, ← Complex.exp_sum]
   congr 1
   rw [mul_div_assoc, exponent_eq, mul_add, Complex.exp_add,
@@ -636,13 +648,6 @@ theorem toFinset_seqCells : (seqCells n).toFinset = coreCells n := by
     · have : p.1.2 < p.1.1 := by simpa [coreCells] using hb
       exact ⟨p.1.2, List.mem_finRange _, mem_siteCells.mpr (Or.inr ⟨p, rfl, this, rfl⟩)⟩
 
-/-- The Fourier matrix is unitary. -/
-theorem dft_mem_unitaryGroup (d n : ℕ) : dft d n ∈ unitaryGroup (Config (Qudits (Fin n) d)) ℂ := by
-  rw [← prod_gateOp_eq_dft isGateOrder_seqCells seqCells_nodup toFinset_seqCells]
-  refine Submonoid.list_prod_mem _ fun M hM ↦ ?_
-  obtain ⟨b, -, rfl⟩ := List.mem_map.mp (List.mem_reverse.mp hM)
-  exact gateOp_mem_unitaryGroup b
-
 private theorem length_siteCells (i : Fin n) : (siteCells i).length = n - i := by
   rw [siteCells, List.length_cons, List.length_filterMap_eq_countP]
   have : ∀ j : Fin n, ((if h : i < j then
@@ -734,7 +739,7 @@ noncomputable abbrev dft (n : ℕ) :
 theorem dft_apply {n : ℕ} (y x : Config (Qudits (Fin n) 2)) :
     dft n y x = invSqrtTwo ^ n *
       exp (2 * Real.pi * I * ((encode n y : ℕ) * (encode n x : ℕ) : ℂ) / 2 ^ n) := by
-  simp only [dft, Qudit.dft, of_apply, Nat.cast_ofNat]
+  simp only [dft, Qudit.dft_apply, Nat.cast_ofNat]
 
 /-- The gate of the Fourier transform on a cell of a register of qubits. -/
 noncomputable abbrev qftGate {n : ℕ} (b : (geometry n).Cell) :
