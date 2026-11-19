@@ -50,6 +50,33 @@ preservation, and the backward light cone.
     \mathcal N(\mathcal N^n(R'))$ by the first statement.
 \end{proof}
 
+\begin{definition}[The ring geometry]
+    \label{def:circuits_ring_geometry}
+    \lean{QuantumCircuit.Geometry.ring, QuantumCircuit.Geometry.ring_cell}
+    \leanok
+    \uses{def:circuits_geometry}
+    The ring of $N$ sites is the geometry on $\Z_N$ with one cell $\{k,k+1\}$ of cost $1$
+    for each site $k$, indices modulo $N$. For $N=1$ the cell is $\{0\}$, and for $N=2$
+    both cells are $\{0,1\}$.
+\end{definition}
+
+\begin{lemma}[Neighbourhoods on the ring]
+    \label{lem:circuits_ring_neighbourhood}
+    \lean{QuantumCircuit.Geometry.neighbourhood_ring,
+        QuantumCircuit.Geometry.iterate_neighbourhood_ring}
+    \leanok
+    \uses{def:circuits_ring_geometry, def:sites_ring_ball}
+    For $N\ge1$, the neighbourhood of a region $R$ of the ring is the ball of radius $1$
+    about $R$, and the $r$-fold neighbourhood is the ball of radius $r$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:sites_ring_ball}
+    A cell $\{k,k+1\}$ meeting $R$ lies within distance $1$ of $R$, and a site $x+m$ with
+    $x\in R$ and $m\in\{-1,0,1\}$ lies in $R$ or in the cell $\{x-1,x\}$ or $\{x,x+1\}$,
+    which meets $R$. The second statement follows by induction on $r$ from
+    Lemma~\ref{lem:sites_ring_ball}.
+\end{proof}
+
 \begin{definition}[Gate families and interpretations]
     \label{def:circuits_gate_family}
     \lean{QuantumCircuit.GateFamily, QuantumCircuit.Interpretation,

@@ -57,6 +57,7 @@ blocked state is written out, and the second is a conversion of a product input)
 -/
 
 open Matrix ManyBody
+open scoped ComplexOrder
 
 namespace QuantumCircuit
 
@@ -92,6 +93,11 @@ def IsBoundedProtocol (B T : ℕ)
 def IsConversion (T : ℕ) (ρ : Matrix (Config X) (Config X) ℂ)
     (σ : Matrix (Config Z) (Config Z) ℂ) : Prop :=
   ∃ Φ, IsProtocol Γ T Φ ∧ Φ ρ = σ
+
+/-- An exact conversion of `ρ` into `σ` by an adaptive protocol of depth at most `T`. -/
+def IsAdaptiveConversion (T : ℕ) (ρ : Matrix (Config X) (Config X) ℂ)
+    (σ : Matrix (Config Z) (Config Z) ℂ) : Prop :=
+  ∃ Φ, IsAdaptiveProtocol Γ T Φ ∧ Φ ρ = σ
 
 end Classes
 
@@ -158,6 +164,121 @@ theorem IsBoundedProtocol.comp {B T T' : ℕ}
   exact ⟨c.comp c', hcTP.comp _ hc'TP,
     (Circuit.depth_comp c c').trans (Nat.add_le_add hcd hc'd), Circuit.map_comp _ c c',
     hc.comp hc', hcB.comp hc'B⟩
+
+/-- The identity is realised by an adaptive protocol of depth `0`. -/
+theorem IsAdaptiveProtocol.id :
+    IsAdaptiveProtocol Γ 0 (LinearMap.id : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] _) :=
+  IsProtocol.id.adaptive
+
+/-- An adaptive protocol of depth at most `T` has depth at most every `T' ≥ T`. -/
+theorem IsAdaptiveProtocol.mono {T T' : ℕ}
+    {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
+    (h : IsAdaptiveProtocol Γ T Φ) (hT : T ≤ T') : IsAdaptiveProtocol Γ T' Φ :=
+  let ⟨c, hc, hd, hm⟩ := h
+  ⟨c, hc, hd.trans hT, hm⟩
+
+/-- **Classical feedforward.** A layer of trace-preserving plain gates followed, on each of its
+Kraus outcomes `i`, by an adaptive protocol `Ψ i` of depth at most `T` is an adaptive protocol
+of depth at most the depth of the layer plus `T`; it realises `ρ ↦ ∑ᵢ Ψ i (Kᵢ ρ Kᵢ†)`.
+
+Source: arXiv:2103.13367, main text, paragraph "Quantum circuits and LOCC" (later operations
+conditioned on earlier measurement outcomes). -/
+theorem IsAdaptiveProtocol.step {T : ℕ}
+    (L : Layer Γ KrausGate X Y) (hL : L.Forall KrausGate.ev KrausFamily.IsTP)
+    {Ψ : L.Index → Matrix (Config Y) (Config Y) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
+    (hΨ : ∀ i, IsAdaptiveProtocol Γ T (Ψ i)) :
+    IsAdaptiveProtocol Γ (L.depth + T)
+      (∑ i, Ψ i ∘ₗ singleKrausMap (L.kraus KrausGate.ev i)) := by
+  choose c hTP hd hm using hΨ
+  refine ⟨Circuit.step L c, ⟨hL, hTP⟩, ?_, ?_⟩
+  · rw [Circuit.depth_step]
+    exact Nat.add_le_add_left (Finset.sup_le fun i _ ↦ hd i) _
+  · ext1 ρ
+    simp [Circuit.map_step, hm]
+
+/-- An adaptive protocol is trace-preserving and completely positive. -/
+theorem IsAdaptiveProtocol.isKrausCPTP [∀ s, DecidableEq (Z s)] {T : ℕ}
+    {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
+    (h : IsAdaptiveProtocol Γ T Φ) : IsKrausCPTP Φ := by
+  obtain ⟨c, hTP, -, rfl⟩ := h
+  exact c.isKrausCPTP_map _ hTP
+
+/-- A protocol is trace-preserving and completely positive. -/
+theorem IsProtocol.isKrausCPTP [∀ s, DecidableEq (Z s)] {T : ℕ}
+    {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
+    (h : IsProtocol Γ T Φ) : IsKrausCPTP Φ :=
+  h.adaptive.isKrausCPTP
+
+/-! ### Conversions -/
+
+/-- Every matrix is converted into itself in depth `0`. -/
+theorem IsConversion.refl (ρ : Matrix (Config X) (Config X) ℂ) : IsConversion Γ 0 ρ ρ :=
+  ⟨_, IsProtocol.id, rfl⟩
+
+/-- A conversion in depth `T` is a conversion in every depth `T' ≥ T`. -/
+theorem IsConversion.mono {T T' : ℕ} {ρ : Matrix (Config X) (Config X) ℂ}
+    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion Γ T ρ σ) (hT : T ≤ T') :
+    IsConversion Γ T' ρ σ :=
+  let ⟨Φ, hΦ, hρ⟩ := h
+  ⟨Φ, hΦ.mono hT, hρ⟩
+
+/-- **Composition of conversions.** Converting `ρ` into `σ` in depth `T₁` and `σ` into `τ` in
+depth `T₂` converts `ρ` into `τ` in depth `T₁ + T₂`.
+
+Source: arXiv:2103.13367, main text, paragraph "Phases of matter". -/
+theorem IsConversion.trans {T₁ T₂ : ℕ} {ρ : Matrix (Config X) (Config X) ℂ}
+    {σ : Matrix (Config Y) (Config Y) ℂ} {τ : Matrix (Config Z) (Config Z) ℂ}
+    (h₁ : IsConversion Γ T₁ ρ σ) (h₂ : IsConversion Γ T₂ σ τ) :
+    IsConversion Γ (T₁ + T₂) ρ τ := by
+  obtain ⟨Φ, hΦ, rfl⟩ := h₁
+  obtain ⟨Ψ, hΨ, rfl⟩ := h₂
+  exact ⟨_, hΦ.comp hΨ, rfl⟩
+
+/-- A conversion maps density matrices to density matrices. -/
+theorem IsConversion.density {T : ℕ}
+    {ρ : Matrix (Config X) (Config X) ℂ} {σ : Matrix (Config Z) (Config Z) ℂ}
+    (h : IsConversion Γ T ρ σ) (hρ : ρ.PosSemidef ∧ ρ.trace = 1) :
+    σ.PosSemidef ∧ σ.trace = 1 := by
+  classical
+  obtain ⟨Φ, hΦ, rfl⟩ := h
+  exact ⟨hΦ.isKrausCPTP.map_posSemidef hρ.1, (hΦ.isKrausCPTP.trace_map ρ).trans hρ.2⟩
+
+/-- An exact conversion is an adaptive one. -/
+theorem IsConversion.adaptive {T : ℕ} {ρ : Matrix (Config X) (Config X) ℂ}
+    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion Γ T ρ σ) :
+    IsAdaptiveConversion Γ T ρ σ :=
+  let ⟨Φ, hΦ, hρ⟩ := h
+  ⟨Φ, hΦ.adaptive, hρ⟩
+
+/-- Every matrix is converted adaptively into itself in depth `0`. -/
+theorem IsAdaptiveConversion.refl (ρ : Matrix (Config X) (Config X) ℂ) :
+    IsAdaptiveConversion Γ 0 ρ ρ :=
+  (IsConversion.refl ρ).adaptive
+
+/-- An adaptive conversion in depth `T` is one in every depth `T' ≥ T`. -/
+theorem IsAdaptiveConversion.mono {T T' : ℕ} {ρ : Matrix (Config X) (Config X) ℂ}
+    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsAdaptiveConversion Γ T ρ σ) (hT : T ≤ T') :
+    IsAdaptiveConversion Γ T' ρ σ :=
+  let ⟨Φ, hΦ, hρ⟩ := h
+  ⟨Φ, hΦ.mono hT, hρ⟩
+
+/-- Adaptive conversions compose, with additive depth. -/
+theorem IsAdaptiveConversion.trans {T₁ T₂ : ℕ} {ρ : Matrix (Config X) (Config X) ℂ}
+    {σ : Matrix (Config Y) (Config Y) ℂ} {τ : Matrix (Config Z) (Config Z) ℂ}
+    (h₁ : IsAdaptiveConversion Γ T₁ ρ σ) (h₂ : IsAdaptiveConversion Γ T₂ σ τ) :
+    IsAdaptiveConversion Γ (T₁ + T₂) ρ τ := by
+  obtain ⟨Φ, hΦ, rfl⟩ := h₁
+  obtain ⟨Ψ, hΨ, rfl⟩ := h₂
+  exact ⟨_, hΦ.comp hΨ, rfl⟩
+
+/-- An adaptive conversion maps density matrices to density matrices. -/
+theorem IsAdaptiveConversion.density {T : ℕ}
+    {ρ : Matrix (Config X) (Config X) ℂ} {σ : Matrix (Config Z) (Config Z) ℂ}
+    (h : IsAdaptiveConversion Γ T ρ σ) (hρ : ρ.PosSemidef ∧ ρ.trace = 1) :
+    σ.PosSemidef ∧ σ.trace = 1 := by
+  classical
+  obtain ⟨Φ, hΦ, rfl⟩ := h
+  exact ⟨hΦ.isKrausCPTP.map_posSemidef hρ.1, (hΦ.isKrausCPTP.trace_map ρ).trans hρ.2⟩
 
 /-! ### Dimension bounds -/
 
