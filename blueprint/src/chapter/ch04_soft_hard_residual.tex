@@ -247,9 +247,38 @@ one natural parameter and verifies the resulting inequalities together.
 It is a sufficient calibration, not the printed fourth-order choice of
 \cite[lines 1373--1420]{Arad2016RigorousRG}.
 
+\begin{lemma}[An explicit affine-logarithm bound]
+    \label{lem:soft_affine_log_threshold}
+    \lean{Real.affine_log_le_nat_pow_of_threshold}
+    \leanok
+    For $a,b\in\mathbb R$, $\varepsilon>0$, an integer $p\ge1$, and
+    $x\ge1$ with $x\ge((|a|+2|b|)/\varepsilon)^2$,
+    one has $a+b\log x\le\varepsilon x^p$.
+\end{lemma}
+\begin{proof}\leanok
+    Apply $\log y\le y-1$ at $y=\sqrt x$. Then
+    $a+b\log x\le (|a|+2|b|)\sqrt x\le\varepsilon x\le\varepsilon x^p$.
+\end{proof}
+
+\begin{definition}[Soft-family calibration threshold]
+    \label{def:soft_family_threshold}
+    \lean{Real.softFamilyThreshold}
+    \leanok
+    For $q,a,b,c\in\mathbb N$, $q\ge2$ and $g>0$, define
+    \begin{align}
+        A &= (a+12)(\log 2+40\log q)+200+g+|\log(g/2000000)|,
+            \label{eq:soft_threshold_affine_constant}\\
+        B &= 666(a+12)+12(b+c). \label{eq:soft_threshold_affine_slope}
+    \end{align}
+    Write $S(q,g,a,b,c)$ for the maximum of
+    $(|52+g|+180)^2$, $[64(|A|+2|B|)]^2$, $e$, $156+2g$,
+    $g/40+24$ and $1/g$.
+\end{definition}
+
 \begin{theorem}[A common natural scale]
     \label{thm:soft_family_calibration}
-    \lean{Real.exists_soft_family_calibration}
+    \lean{Real.soft_family_calibration_of_threshold, Real.exists_soft_family_calibration}
+    \uses{def:soft_family_threshold}
     \leanok
     Fix $q\in\mathbb N$ with $q\ge2$, $g>0$, and
     $a,b,c\in\mathbb N$. There is $u\in\mathbb N$, $u\ge2$, such that
@@ -273,24 +302,29 @@ It is a sufficient calibration, not the printed fourth-order choice of
         \left[2e^{-2k\sqrt{(g/2)/(M+\xi+4+g)}}\right]^2
          & \le D^{-12}M^{-c}.
     \end{align}
-    The scale $u$ is chosen before any volume or target dimension.
+    Every natural $u\ge2$ with $u\ge S(q,g,a,b,c)$ satisfies these bounds.
+    In particular the scale can be chosen before any volume or target dimension.
 \end{theorem}
 \begin{proof}\leanok
-    Since $k/\ell=u^8$, direct logarithmic estimates give
+    \uses{lem:soft_affine_log_threshold, def:soft_family_threshold}
+    Take $u=\max\{2,\lceil S(q,g,a,b,c)\rceil\}$ for existence.
+    For every $u$ meeting the same lower bounds, $k/\ell=u^8$ and direct logarithmic estimates give
     \begin{align}
         \log D & \le u^8(\log2+40\log q+666\log u),      \\
         M+R    & \le u^{10}(47+R+90\log u)\qquad(R\ge0).
     \end{align}
-    The relation $\log u=o(u^p)$ for each $p>0$ now gives, for all
-    sufficiently large natural $u$,
+    Apply Lemma~\ref{lem:soft_affine_log_threshold} to $52+g+90\log u$
+    with $(\varepsilon,p)=(1,2)$ and to $A+B\log u$ with
+    $(\varepsilon,p)=(1/64,1)$. The first two terms in the maximum
+    defining $S$ supply the respective hypotheses. This gives
     \begin{align}
         M+5+g & \le u^{12},        \\
         (a+12)\log D+(b+c)\log M
         +200+g+\left|\log\frac{g}{2000000}\right|
               & \le\frac{u^9}{64}.
     \end{align}
-    Increase $u$ further to satisfy the displayed threshold conditions,
-    $gu^2\ge1$ and $\log u\ge1$. Exponentiating the second inequality
+    The other terms in $S$ give the cutoff conditions, $gu^2\ge1$ and
+    $\log u\ge1$. Exponentiating the second inequality
     bounds the exponential residuals and $9(3u)^{-m}$. The first
     inequality and $gu^2\ge1$ imply
     \begin{align}
@@ -299,7 +333,27 @@ It is a sufficient calibration, not the printed fourth-order choice of
     which proves the squared shrinking bound at the same count.
 \end{proof}
 
+\begin{theorem}[Quartic inverse-width scale]
+    \label{thm:soft_family_quartic_scale}
+    \lean{Real.softFamilyThreshold_half_sq_le, Real.exists_soft_family_scale_half_sq}
+    \uses{def:soft_family_threshold}
+    \leanok
+    Fix $q\in\mathbb N$, $q\ge2$, and $0<w\le1$.
+    Put $g=w^2/2$, $S_w=S(q,g,24,10,10)$ and $K=64(5000000+1440q)$.
+    Then $S_w\le K^2(1+w^{-1})^4$, and there exists $u\in\mathbb N$ with
+    \begin{align}
+        \max\{2,S_w\}\le u\le(K^2+2)(1+w^{-1})^4.
+        \label{eq:soft_family_quartic_scale}
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:soft_family_threshold}
+    Write $z=(1+w^{-1})^2$. Since $g\le1$ and
+    $|\log(g/2000000)|\le4000000z$, substitution in the maximum for $S_w$
+    bounds each term by $K^2z^2$. Choose $u=\max\{2,\lceil K^2z^2\rceil\}$.
+    Rounding costs at most one and $z\ge1$, giving the stated upper bound.
+\end{proof}
+
 This is a new sufficient scalar choice for the soft estimates of
 \cite[lines 1262--1268 and 1373--1420]{Arad2016RigorousRG}.
-It does not assert the printed fourth-order choice, a quantitative gap
-exponent, or a running-time bound.
+It does not assert the printed fourth-order choice, a bound on the bond dimension of a chain, or a running-time bound.

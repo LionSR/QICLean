@@ -10,6 +10,7 @@ import Mathlib.LinearAlgebra.Matrix.Permutation
 import Mathlib.LinearAlgebra.Matrix.Trace
 import Mathlib.RingTheory.RootsOfUnity.Complex
 import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
+import QICLean.Algebra.ComplexSqrt
 
 /-!
 # The Weyl-operator unitary 1-design twirl
@@ -17,15 +18,20 @@ import Mathlib.RingTheory.RootsOfUnity.PrimitiveRoots
 For a finite dimension $d \ge 1$, this file proves that the $d^2$
 Heisenberg--Weyl operators $W(a,b) = X^a Z^b$ on $\mathbb C^d$ form a unitary
 $1$-design. Here $X$ is the cyclic shift
-$\lvert i\rangle \mapsto \lvert i+1\rangle$ and $Z$ is the clock operator
+$\lvert i\rangle \mapsto \lvert i-1\rangle$, with entry $1$ at $(i, i+1)$, and $Z$ is the
+clock operator
 $\operatorname{diag}(\zeta^0,\ldots,\zeta^{d-1})$ for a primitive $d$-th root
 of unity $\zeta$. The index set is $\mathbb Z/d\mathbb Z$.
 
-## Main results
+## Main definitions
 
 * `Matrix.weylShift` and `Matrix.weylClock` are the cyclic shift and clock
   generators.
 * `Matrix.weyl` is the Weyl operator $W(a,b)=X^aZ^b$.
+* `Matrix.weylFourier` is the Fourier matrix $F_{ab} = \zeta^{ab} / \sqrt d$.
+
+## Main results
+
 * `Matrix.sum_weyl_conj` states the unitary $1$-design identity
   \[
     \frac{1}{d^2}\sum_{a,b}W(a,b)M W(a,b)^\dagger
@@ -110,8 +116,8 @@ theorem sum_rootOfUnity_pow_eq {ζ : ℂ} (hζ : IsPrimitiveRoot ζ d) (i j : ZM
 /-! ### The Weyl operators -/
 
 /-- The cyclic shift operator $X$ on $\mathbb Z / d\mathbb Z$, sending
-$\lvert i\rangle$ to $\lvert i+1\rangle$, as the permutation matrix of addition
-by $1$. -/
+$\lvert i\rangle$ to $\lvert i-1\rangle$, as the permutation matrix of addition
+by $1$: its entry at $(i, i+1)$ is $1$. -/
 def weylShift : Matrix (ZMod d) (ZMod d) ℂ := (Equiv.addRight (1 : ZMod d)).permMatrix ℂ
 
 /-- The clock operator $Z = \operatorname{diag}(\zeta^0, \dots, \zeta^{d-1})$ for
@@ -254,5 +260,57 @@ theorem sum_weyl_conj {ζ : ℂ} (hζ : IsPrimitiveRoot ζ d) (M : Matrix (ZMod 
   congr 1
   have hd : (d : ℂ) ≠ 0 := Nat.cast_ne_zero.mpr (NeZero.ne d)
   field_simp
+
+/-! ### The Fourier matrix -/
+
+omit [NeZero d] in
+/-- The Fourier matrix $F_{ab} = \zeta^{ab} / \sqrt d$ on $\mathbb Z / d\mathbb Z$. -/
+noncomputable def weylFourier (ζ : ℂ) : Matrix (ZMod d) (ZMod d) ℂ :=
+  of fun a b ↦ ζ ^ (a.val * b.val) / (Real.sqrt d : ℂ)
+
+/-- The Fourier matrix of a primitive $d$-th root of unity is unitary. -/
+theorem weylFourier_mem_unitaryGroup {ζ : ℂ} (hζ : IsPrimitiveRoot ζ d) :
+    weylFourier ζ ∈ unitaryGroup (ZMod d) ℂ := by
+  have hd : (Real.sqrt d : ℂ) ≠ 0 :=
+    Complex.ofReal_ne_zero.mpr (Real.sqrt_ne_zero'.mpr (Nat.cast_pos.mpr (NeZero.pos d)))
+  rw [mem_unitaryGroup_iff]
+  ext a b
+  have h := sum_rootOfUnity_pow_eq hζ a b
+  simp only [mul_apply, star_apply, weylFourier, of_apply, star_div₀, Complex.star_def,
+    Complex.conj_ofReal]
+  calc ∑ c : ZMod d, ζ ^ (a.val * c.val) / (Real.sqrt d : ℂ) *
+        ((starRingEnd ℂ) (ζ ^ (b.val * c.val)) / (Real.sqrt d : ℂ))
+      = (∑ c : ZMod d, ζ ^ (c.val * a.val) * (starRingEnd ℂ) (ζ ^ (c.val * b.val))) /
+          ((Real.sqrt d : ℂ) ^ 2) := by
+        rw [Finset.sum_div]
+        refine Finset.sum_congr rfl fun c _ ↦ ?_
+        rw [mul_comm a.val, mul_comm b.val]
+        field_simp
+    _ = (1 : Matrix (ZMod d) (ZMod d) ℂ) a b := by
+        rw [h, Complex.ofReal_sqrt_sq _ (Nat.cast_nonneg d), one_apply, Complex.ofReal_natCast]
+        split_ifs
+        · exact div_self (Nat.cast_ne_zero.mpr (NeZero.ne d))
+        · exact zero_div _
+
+/-- The Fourier matrix conjugates the shift into the clock operator of $\zeta^{-1}$:
+$F X = Z(\zeta^{-1}) F$. -/
+theorem weylFourier_mul_weylShift {ζ : ℂ} (hζ : IsPrimitiveRoot ζ d) :
+    weylFourier (d := d) ζ * weylShift = weylClock ζ⁻¹ * weylFourier ζ := by
+  have hζ0 : ζ ≠ 0 := hζ.ne_zero (NeZero.ne d)
+  ext a b
+  rw [weylShift, Equiv.Perm.permMatrix, PEquiv.mul_toMatrix_toPEquiv, weylClock, diagonal_mul,
+    submatrix_apply]
+  simp only [weylFourier, of_apply, id, Equiv.addRight_symm, Equiv.coe_addRight, inv_pow]
+  rw [← mul_div_assoc, inv_mul_eq_div]
+  congr 1
+  rw [eq_div_iff (pow_ne_zero _ hζ0), ← pow_add, ← Nat.mul_add_one]
+  have hmod {m m' : ℕ} (h : m ≡ m' [MOD d]) : ζ ^ m = ζ ^ m' := by
+    rw [← Nat.mod_add_div m d, ← Nat.mod_add_div m' d, h, pow_add, pow_add, pow_mul, pow_mul,
+      hζ.pow_eq_one, one_pow, one_pow]
+  refine hmod (Nat.ModEq.mul_left _ ?_)
+  rw [← ZMod.natCast_eq_natCast_iff]
+  push_cast
+  simp only [ZMod.natCast_val, ZMod.cast_id', id]
+  ring
 
 end Matrix
