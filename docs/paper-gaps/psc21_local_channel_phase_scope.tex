@@ -54,6 +54,21 @@ operator, Hermitian or not.\footnote{Formal declarations:
     \doclink{QICLean/Channel/KrausFamilyTraceNorm} and
     \leanid{QuantumCircuit.IsApproxConversion.trans}.}
 
+On the ring $\mathbb Z_N$ of $N\ge1$ sites, whose cells are the pairs $\{k,k+1\}$ of
+cost $1$, the ball of radius $T$ about a region $R$ is the set of sites $x+m$ with $x\in R$
+and $\lvert m\rvert\le T$, indices modulo $N$. Two regions $R$ and $R'$ are at ring distance
+larger than $s$ if no site of $R'$ is of the form $x+m$ with $x\in R$ and
+$\lvert m\rvert\le s$. The $T$-fold neighbourhood of a region is its ball of radius $T$.
+A state $\sigma$ converted in depth $T$ from a product of unit-trace factors therefore has
+$\operatorname{tr}(\sigma AB)=\operatorname{tr}(\sigma A)\operatorname{tr}(\sigma B)$
+for $A$ and $B$ supported on regions at ring distance larger than $2T$. This is the
+necessary condition of Proposition~2 of~\cite{Piroli2021LOCC} in the enlarged-site
+model; the source states it for pure states prepared by unitary circuits.\footnote{Formal
+    declarations: \leanid{QuantumCircuit.Geometry.ring} in
+    \doclink{QICLean/Circuit/Geometry/Ring} and
+    \leanid{QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isRingSeparated} in
+    \doclink{QICLean/Circuit/Model/Conversion}.}
+
 For families on a family of geometries indexed by a size $N$, the error tends
 to zero and the depth is eventually bounded by $C(1+\log(N+1))^p$, for a
 nonnegative constant $C$ and an integer $p\ge0$. Mutual conversion is an

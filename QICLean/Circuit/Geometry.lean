@@ -10,3 +10,4 @@ Authors: QICLean contributors
 
 import QICLean.Circuit.Geometry.Basic
 import QICLean.Circuit.Geometry.Hom
+import QICLean.Circuit.Geometry.Ring
