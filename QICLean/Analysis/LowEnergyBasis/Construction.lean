@@ -14,7 +14,25 @@ import Mathlib.Analysis.InnerProductSpace.JointEigenspace
 import QICLean.Analysis.LowEnergyBasis.OffDiagonal
 
 /-!
-@@DOC
+# Bases from commutators
+
+Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1678–1708, chooses a basis of a
+ground space in which given self-adjoint operators are nearly diagonal. This file works on an
+arbitrary finite-dimensional complex inner product space.
+
+* `quotientConditionNumber`: the inverse lower norm of a linear map modulo its kernel.
+* `exists_orthonormalBasis_joint_eigenvectors`: a common eigenbasis of commuting self-adjoint
+  operators.
+* `compressionCommutatorMap`, `compressionConditionNumber`,
+  `exists_orthonormalBasis_norm_inner_le_commutators`: a basis whose off-diagonal entries are
+  bounded by the commutators with finitely many of the operators.
+* `twoDimensionalSpectralSpread`, `exists_orthonormalBasis_norm_inner_le_sqrt_commutator_decay`:
+  in dimension two, a basis whose off-diagonal entries are bounded by the square root of a
+  commutator bound.
+
+Moved from TNLean (`e113e005`): the site-free parts of
+`TNLean/Lattice/LowEnergyBasisConstruction.lean` and `LowEnergyBasisTwoDimensional.lean`.
+Changes: namespace `LowEnergyBasis`.
 -/
 
 noncomputable section
@@ -141,7 +159,6 @@ def compressionCommutatorMap {m : ℕ} (V : Submodule ℝ (E →L[ℂ] E))
   map_add' x y := by ext i u; simp [mul_add, add_mul]; abel
   map_smul' c x := by ext i u; simp [smul_sub]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The quotient conditioning of the selected compression commutator map, with the
 operator norm on the real compression span and the maximum norm on the commutators.
 Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708. -/
@@ -152,13 +169,11 @@ noncomputable def compressionConditionNumber {m : ℕ} (V : Submodule ℝ (E →
   letI : NormedSpace ℝ (Fin m → E →L[ℂ] E) := Pi.normedSpace
   quotientConditionNumber (F := V) (G := Fin m → E →L[ℂ] E) (compressionCommutatorMap V A)
 
-set_option backward.isDefEq.respectTransparency false in
 theorem compressionConditionNumber_nonneg {m : ℕ} (V : Submodule ℝ (E →L[ℂ] E))
     (A : Fin m → E →L[ℂ] E) : 0 ≤ compressionConditionNumber V A := by
   unfold compressionConditionNumber
   exact quotientConditionNumber_nonneg (compressionCommutatorMap V A)
 
-set_option backward.isDefEq.respectTransparency false in
 /-- A real span of self-adjoint operators has an orthonormal basis in which every
 off-diagonal entry is controlled by its commutators with any finite spanning family.
 The kernel consists of the centre of this span, whose members commute and hence have a
@@ -219,7 +234,6 @@ arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708. -/
 noncomputable abbrev realCompressionSpan (B : V → E →L[ℂ] E) : Submodule ℝ (E →L[ℂ] E) :=
   Submodule.span ℝ (Set.range B)
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Construction of the basis and of at most `n²` original compressions controlling every
 off-diagonal entry. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708. -/
 theorem exists_orthonormalBasis_norm_inner_le_commutators (B : V → E →L[ℂ] E)
@@ -369,7 +383,6 @@ theorem exists_orthonormalBasis_maximal_twoDimensionalSpectralSpread [Finite V]
       norm_offDiagonalPartFamily_le_norm_commutator_div (hB j) (B i) b.orthonormal
         (fun a => (hB j).isSymmetric.apply_eigenvectorBasis hn a) hδ hgap
 
-set_option backward.isDefEq.respectTransparency false in
 /-- Normalizing by the original term bounds and comparing the spectral-spread estimate
 with the commutator estimate removes the small denominator. The resulting decay is the
 square root of the commutator decay. This gives a uniform version of the qualitative

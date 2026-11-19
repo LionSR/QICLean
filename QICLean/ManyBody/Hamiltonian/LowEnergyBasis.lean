@@ -14,18 +14,19 @@ import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorSum
 # A ground-space basis with summable off-diagonal parts
 
 Hastings, arXiv:cond-mat/0508554v3, lines 1678–1708, chooses a basis of the ground space in
-which the compressions of the filtered terms have summable off-diagonal parts.
+which the compressions of the filtered terms have summable off-diagonal parts. The basis
+constructions themselves are in `Analysis/LowEnergyBasis/Construction`.
 
-* `exists_orthonormalBasis_joint_eigenvectors`, `exists_orthonormalBasis_norm_inner_le_commutators`:
-  bases from commuting families and from the commutator map, with the condition number
-  `compressionConditionNumber`.
-* `groundSpaceCompression` and `exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le`.
-* `twoDimensionalSpectralSpread` and the basis of a two-dimensional ground space
-  (`exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le`).
+* `groundSpaceCompression`: the compression of a matrix to the ground space, as
+  `subspaceCompression`.
+* `exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le`: eq. `oibu` with the condition
+  number of the commutator map.
+* `exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le`: a
+  two-dimensional ground space.
 
 Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasisConstruction.lean`,
-`LowEnergyBasisTwoDimensional.lean` and `LowEnergyBasisUniform.lean`. Changes as in
-`LowEnergyCommutator`.
+`LowEnergyBasisTwoDimensional.lean` and `LowEnergyBasisUniform.lean`, their Hamiltonian parts.
+Changes as in `LowEnergyCommutator`.
 -/
 
 noncomputable section
@@ -51,139 +52,18 @@ variable {ν : Type*} [Fintype ν] [DecidableEq ν]
 local instance (H : Matrix ν ν ℂ) (E₀ : ℝ) : CompleteSpace (groundSpace H E₀) :=
   FiniteDimensional.complete ℂ (groundSpace H E₀)
 
-/-- The compression `P W P`, acting on the ground eigenspace itself. It is the compression
-`subspaceCompression` of `W` to the ground space
-(`groundSpaceCompression_eq_subspaceCompression`). Hastings, arXiv:cond-mat/0508554v3,
-`proj3new.tex`, lines 1678–1708. -/
-noncomputable def groundSpaceCompression (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ) :
+/-- The compression `P W P` of `W` to the ground eigenspace, acting on that eigenspace.
+Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1678–1708. -/
+noncomputable abbrev groundSpaceCompression (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ) :
     groundSpace H E₀ →L[ℂ] groundSpace H E₀ :=
-  ((groundCompression H E₀ W).codRestrict (groundSpace H E₀)
-    (fun _ => (groundSpace H E₀).starProjection_apply_mem _)).comp
-      (groundSpace H E₀).subtypeL
+  subspaceCompression (groundSpace H E₀) (toEuclideanCLM (n := ν) (𝕜 := ℂ) W)
 
 @[simp]
 theorem coe_groundSpaceCompression_apply (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ)
     (x : groundSpace H E₀) :
-    (groundSpaceCompression H E₀ W x : EuclideanSpace ℂ ν) = groundCompression H E₀ W x := rfl
-
-/-- The ground-space compression is the compression to the ground space. -/
-theorem groundSpaceCompression_eq_subspaceCompression (H : Matrix ν ν ℂ) (E₀ : ℝ)
-    (W : Matrix ν ν ℂ) :
-    groundSpaceCompression H E₀ W =
-      subspaceCompression (groundSpace H E₀) (toEuclideanCLM (n := ν) (𝕜 := ℂ) W) := by
-  ext x
+    (groundSpaceCompression H E₀ W x : EuclideanSpace ℂ ν) = groundCompression H E₀ W x := by
   simp [coe_subspaceCompression_apply, groundCompression, mul_apply_eq_comp,
     (groundSpace H E₀).starProjection_eq_self_iff.mpr x.2]
-
-theorem norm_groundSpaceCompression_apply (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ)
-    (x : groundSpace H E₀) :
-    ‖groundSpaceCompression H E₀ W x‖ = ‖groundCompression H E₀ W x‖ := by
-  rw [← coe_groundSpaceCompression_apply]
-  rfl
-
-theorem coe_groundSpaceCompression_commutator_apply (H : Matrix ν ν ℂ) (E₀ : ℝ)
-    (W B : Matrix ν ν ℂ) (x : groundSpace H E₀) :
-    ((groundSpaceCompression H E₀ W * groundSpaceCompression H E₀ B -
-        groundSpaceCompression H E₀ B * groundSpaceCompression H E₀ W) x : EuclideanSpace ℂ ν) =
-      (groundCompression H E₀ W * groundCompression H E₀ B -
-        groundCompression H E₀ B * groundCompression H E₀ W) x := by
-  simp [mul_apply_eq_comp, _root_.sub_apply]
-
-theorem isSelfAdjoint_groundSpaceCompression (H : Matrix ν ν ℂ) (E₀ : ℝ)
-    {W : Matrix ν ν ℂ} (hW : W.IsHermitian) : IsSelfAdjoint (groundSpaceCompression H E₀ W) := by
-  apply ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr
-  intro x y
-  exact (isSelfAdjoint_groundCompression H E₀ hW).isSymmetric x.val y.val
-
-/-- The norm of a ground-space compression does not exceed the original term norm.
-Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1678–1708. -/
-theorem norm_groundSpaceCompression_le (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ) :
-    ‖groundSpaceCompression H E₀ W‖ ≤ ‖W‖ := by
-  refine (show ‖groundSpaceCompression H E₀ W‖ ≤ ‖groundCompression H E₀ W‖ from ?_).trans
-    (norm_groundCompression_le H E₀ W)
-  exact ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x =>
-    (norm_groundSpaceCompression_apply H E₀ W x).trans_le
-      ((groundCompression H E₀ W).le_opNorm x.val)
-
-/-- Restriction to the ground space does not increase the norm of the commutator.
-Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `oibu`, lines 1683–1708. -/
-theorem norm_groundSpaceCompression_commutator_le (H : Matrix ν ν ℂ) (E₀ : ℝ)
-    (W B : Matrix ν ν ℂ) :
-    ‖groundSpaceCompression H E₀ W * groundSpaceCompression H E₀ B -
-        groundSpaceCompression H E₀ B * groundSpaceCompression H E₀ W‖ ≤
-      ‖groundCompression H E₀ W * groundCompression H E₀ B -
-        groundCompression H E₀ B * groundCompression H E₀ W‖ := by
-  refine ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x => ?_
-  have h := (groundCompression H E₀ W * groundCompression H E₀ B -
-    groundCompression H E₀ B * groundCompression H E₀ W).le_opNorm x.val
-  rwa [← coe_groundSpaceCompression_commutator_apply] at h
-
-/-- The ambient compression has exactly the operator norm of its restriction to the
-ground eigenspace. Hastings, arXiv:cond-mat/0508554v3, lines 1562–1601. -/
-theorem norm_groundSpaceCompression_eq (H : Matrix ν ν ℂ) (E₀ : ℝ) (W : Matrix ν ν ℂ) :
-    ‖groundSpaceCompression H E₀ W‖ = ‖groundCompression H E₀ W‖ := by
-  apply le_antisymm
-  · exact ContinuousLinearMap.opNorm_le_bound _ (norm_nonneg _) fun x ↦
-      (norm_groundSpaceCompression_apply H E₀ W x).trans_le
-        ((groundCompression H E₀ W).le_opNorm x.val)
-  · refine ContinuousLinearMap.opNorm_le_bound (groundCompression H E₀ W)
-      (norm_nonneg (groundSpaceCompression H E₀ W)) ?_
-    intro x
-    let y : groundSpace H E₀ :=
-      ⟨(groundSpace H E₀).starProjection x,
-        (groundSpace H E₀).starProjection_apply_mem x⟩
-    have hCx : groundCompression H E₀ W x =
-        (groundSpaceCompression H E₀ W y : EuclideanSpace ℂ ν) := by
-      have hp : (groundSpace H E₀).starProjection
-          ((groundSpace H E₀).starProjection x) =
-          (groundSpace H E₀).starProjection x :=
-        (groundSpace H E₀).starProjection_eq_self_iff.mpr
-          ((groundSpace H E₀).starProjection_apply_mem x)
-      simp only [y, coe_groundSpaceCompression_apply, groundCompression,
-        mul_apply_eq_comp, hp]
-    rw [hCx]
-    exact ((groundSpaceCompression H E₀ W).le_opNorm y).trans
-      (mul_le_mul_of_nonneg_left
-        ((groundSpace H E₀).norm_starProjection_apply_le x)
-        (norm_nonneg (groundSpaceCompression H E₀ W)))
-
-/-- Restricting a compressed commutator to the ground eigenspace preserves its norm.
-Hastings, arXiv:cond-mat/0508554v3, lines 1562–1601 and 1644–1654. -/
-theorem norm_groundSpaceCompression_commutator_eq (H : Matrix ν ν ℂ) (E₀ : ℝ)
-    (W B : Matrix ν ν ℂ) :
-    ‖groundSpaceCompression H E₀ W * groundSpaceCompression H E₀ B -
-        groundSpaceCompression H E₀ B * groundSpaceCompression H E₀ W‖ =
-      ‖groundCompression H E₀ W * groundCompression H E₀ B -
-        groundCompression H E₀ B * groundCompression H E₀ W‖ := by
-  apply le_antisymm (norm_groundSpaceCompression_commutator_le H E₀ W B)
-  refine ContinuousLinearMap.opNorm_le_bound
-    (groundCompression H E₀ W * groundCompression H E₀ B -
-      groundCompression H E₀ B * groundCompression H E₀ W)
-    (norm_nonneg (groundSpaceCompression H E₀ W * groundSpaceCompression H E₀ B -
-      groundSpaceCompression H E₀ B * groundSpaceCompression H E₀ W)) ?_
-  intro x
-  let y : groundSpace H E₀ :=
-    ⟨(groundSpace H E₀).starProjection x,
-      (groundSpace H E₀).starProjection_apply_mem x⟩
-  have hp : (groundSpace H E₀).starProjection
-      ((groundSpace H E₀).starProjection x) =
-      (groundSpace H E₀).starProjection x :=
-    (groundSpace H E₀).starProjection_eq_self_iff.mpr
-      ((groundSpace H E₀).starProjection_apply_mem x)
-  have hCx : (groundCompression H E₀ W * groundCompression H E₀ B -
-      groundCompression H E₀ B * groundCompression H E₀ W) x =
-      ((groundSpaceCompression H E₀ W * groundSpaceCompression H E₀ B -
-        groundSpaceCompression H E₀ B * groundSpaceCompression H E₀ W) y :
-          EuclideanSpace ℂ ν) := by
-    simp only [_root_.sub_apply, mul_apply_eq_comp, Submodule.coe_sub,
-      coe_groundSpaceCompression_apply, y, groundCompression, hp]
-  rw [hCx]
-  exact ((groundSpaceCompression H E₀ W * groundSpaceCompression H E₀ B -
-    groundSpaceCompression H E₀ B * groundSpaceCompression H E₀ W).le_opNorm y).trans
-      (mul_le_mul_of_nonneg_left ((groundSpace H E₀).norm_starProjection_apply_le x)
-        (norm_nonneg (groundSpaceCompression H E₀ W * groundSpaceCompression H E₀ B -
-          groundSpaceCompression H E₀ B * groundSpaceCompression H E₀ W)))
-
 
 end GroundSpace
 
@@ -195,7 +75,6 @@ open scoped Matrix.Norms.L2Operator
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- A constructed orthonormal basis of the nonzero ground space satisfies a summed
 off-diagonal estimate using at most `n²` local terms. The geometric constant is that
 of the commutator row sum, and the additional factor is the explicitly displayed quotient
@@ -210,11 +89,12 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
     (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
     {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ}
-    (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
-    [NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀))] :
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE) :
     let B : κ → groundSpace Φ.hamiltonian E₀ →L[ℂ]
         groundSpace Φ.hamiltonian E₀ :=
       fun i => groundSpaceCompression Φ.hamiltonian E₀ (Φ.term i)
+    haveI : NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)) :=
+      ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
     ∃ (m : ℕ) (j : Fin m → κ)
       (b : OrthonormalBasis
         (Fin (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀))) ℂ
@@ -228,12 +108,14 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
             Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) * ‖Φ.term (j k)‖ *
               (|b₀| * (Kg * Real.shellSumConst (commutatorRate R vR b₀ ΔE) kg)) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have : NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)) :=
+    ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let K := groundSpace Φ.hamiltonian E₀
   let B := fun i => groundSpaceCompression Φ.hamiltonian E₀ (Φ.term i)
   obtain ⟨m, j, b, hm, _, hb⟩ := exists_orthonormalBasis_norm_inner_le_commutators B
-    (fun i => isSelfAdjoint_groundSpaceCompression _ _ (hHerm i))
+    (fun i => isSelfAdjoint_subspaceCompression _ _ ((hHerm i).isSelfAdjoint.map toEuclideanCLM))
   refine ⟨m, j, b, hm, ?_⟩
   simp only [groundCompression_gaussianFilteredTerm hq hH]
   let C := compressionConditionNumber (realCompressionSpan B) (B ∘ j)
@@ -244,7 +126,9 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
       ‖offDiagonalPartFamily (fun c => (b c : EuclideanSpace ℂ (Config X)))
         (groundCompression Φ.hamiltonian E₀ (Φ.term i))‖ ≤
         (Module.finrank ℂ K - 1 : ℕ) * (C * ∑ k, ‖B (j k) * B i - B i * B (j k)‖) := by
-    exact norm_offDiagonalPartFamily_le hv _ (by positivity) fun c e hce => hb i c e hce
+    refine norm_offDiagonalPartFamily_le hv _ (by positivity) fun c e hce => ?_
+    have h := hb i c e hce
+    rwa [Submodule.coe_inner, coe_groundSpaceCompression_apply] at h
   calc _ ≤ ∑ i, (Module.finrank ℂ K - 1 : ℕ) *
         (C * ∑ k, ‖B (j k) * B i - B i * B (j k)‖) :=
       Finset.sum_le_sum fun i _ => hent i
@@ -255,8 +139,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
     _ ≤ _ := by
       apply mul_le_mul_of_nonneg_left _ (mul_nonneg (Nat.cast_nonneg _) hC)
       refine Finset.sum_le_sum fun k _ => ?_
-      refine (Finset.sum_le_sum fun i _ => norm_groundSpaceCompression_commutator_le
-        Φ.hamiltonian E₀ (Φ.term (j k)) (Φ.term i)).trans ?_
+      refine (Finset.sum_le_sum fun i _ =>
+        (norm_subspaceCompression_commutator (groundSpace Φ.hamiltonian E₀) _ _).le).trans ?_
       exact sum_norm_groundCompression_commutator_le G a ha Φ hHerm R hDiam vR
         hCard b₀ hBudget Kg kg hGrowth hΔE hgap (j k)
 
@@ -277,7 +161,6 @@ open scoped Matrix.Norms.L2Operator
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- There is an orthonormal basis of a two-dimensional ground space for which the
 sum of the off-diagonal parts is bounded only by the local norm budget, range, gap and
 graph growth. The rate is half
@@ -319,7 +202,7 @@ theorem exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
   let f := fun j i => if G.edist (a j) (a i) = ⊤ then 0 else
     Real.exp (-(γ / 2 * ((G.edist (a j) (a i)).toNat : ℝ)))
   have hf (j i : κ) : 0 ≤ f j i := by dsimp only [f]; split_ifs <;> positivity
-  have hnorm (i : κ) : ‖B i‖ ≤ ‖Φ.term i‖ := norm_groundSpaceCompression_le _ _ _
+  have hnorm (i : κ) : ‖B i‖ ≤ ‖Φ.term i‖ := norm_subspaceCompression_le _ _
   have hcomm (i j : κ) : ‖B j * B i - B i * B j‖ ≤ C * ‖Φ.term j‖ * ‖Φ.term i‖ * (f j i) ^ 2 := by
     have heq : (f j i) ^ 2 = if G.edist (a j) (a i) = ⊤ then 0 else
         Real.exp (-(γ * ((G.edist (a j) (a i)).toNat : ℝ))) := by
@@ -330,11 +213,12 @@ theorem exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
         congr 1
         ring
     rw [heq]
-    exact (norm_groundSpaceCompression_commutator_le _ _ _ _).trans
+    exact ((norm_subspaceCompression_commutator _ _ _).le).trans
       (norm_groundCompression_commutator_le_exp_edist G a ha Φ hHerm R hDiam vR
         hCard b₀ hBudget |Kg| kg hGrow hΔE hgap i j)
   obtain ⟨b, hb⟩ := exists_orthonormalBasis_norm_inner_le_sqrt_commutator_decay B
-    (fun i => isSelfAdjoint_groundSpaceCompression _ _ (hHerm i)) hdim
+    (fun i => isSelfAdjoint_subspaceCompression _ _
+      ((hHerm i).isSelfAdjoint.map toEuclideanCLM)) hdim
     (fun i => ‖Φ.term i‖) (fun i => norm_nonneg _) hnorm hC f hf hcomm
   refine ⟨b, ?_⟩
   simp only [groundCompression_gaussianFilteredTerm hq hH]
@@ -350,8 +234,7 @@ theorem exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
     simpa only [mul_zero] using norm_offDiagonalPartFamily_le hv
       (groundCompression Φ.hamiltonian E₀ (Φ.term i)) le_rfl (fun c e hce => by
         have heq := hzero i c e hce
-        change ⟪(b c : EuclideanSpace ℂ (Config X)),
-          groundCompression Φ.hamiltonian E₀ (Φ.term i) (b e)⟫_ℂ = 0 at heq
+        rw [Submodule.coe_inner, coe_groundSpaceCompression_apply] at heq
         simpa only [heq, norm_zero] using (le_rfl : (0 : ℝ) ≤ 0))
   · have hterm (i : κ) :
         ‖offDiagonalPartFamily (fun c => (b c : EuclideanSpace ℂ (Config X)))
@@ -359,7 +242,9 @@ theorem exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le
       simpa only [Nat.reduceSub, Nat.cast_one, one_mul] using norm_offDiagonalPartFamily_le hv
         (groundCompression Φ.hamiltonian E₀ (Φ.term i))
         (mul_nonneg (mul_nonneg (Real.sqrt_nonneg _) (norm_nonneg _)) (hf j i))
-        (fun c e hce => hb i c e hce)
+        (fun c e hce => by
+          have h := hb i c e hce
+          rwa [Submodule.coe_inner, coe_groundSpaceCompression_apply] at h)
     calc _ ≤ ∑ i, Real.sqrt C * ‖Φ.term i‖ * f j i := Finset.sum_le_sum fun i _ => hterm i
       _ = Real.sqrt C * ∑ i, ‖Φ.term i‖ * f j i := by simp only [← mul_assoc, Finset.mul_sum]
       _ ≤ _ := by

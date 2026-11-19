@@ -24,6 +24,10 @@ lines 766–907), and in eq. `facld` of Hastings, arXiv:cond-mat/0508554v3, `pro
 
 Moved from TNLean, `TNLean/Algebra/PowerExponential.lean` at commit `e113e005`.
 Changes: the two power bounds are in namespace `Real` in place of `TNLean.MPS.AreaLaw.Hastings`.
+
+`Real.add_one_pow_mul_exp_neg_le` and `Real.sum_add_one_pow_mul_exp_neg_le` bound
+`(x + 1)^k e^{-γx}` and its sums over the naturals by `Real.shellSumConst`; they are moved from
+TNLean (`e113e005`) `TNLean/Lattice/LowEnergyCommutatorSum.lean`.
 -/
 
 open Real

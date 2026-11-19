@@ -10,17 +10,16 @@ import QICLean.ManyBody.Hamiltonian.LowEnergyBasis
 /-!
 # A uniform ground-space basis
 
-Hastings, arXiv:cond-mat/0508554v3, eq. `oibu` and lines 1695–1708, refines the basis
-recursively along spectral splits. With the decay kernel of the low-energy commutators this
-gives a basis of the ground space whose summed off-diagonal parts are bounded uniformly in the
+Hastings, arXiv:cond-mat/0508554v3, eq. `oibu` and lines 1695–1708: the recursive basis of
+`Analysis/LowEnergyBasis/Recursive`, applied to the ground-space compressions with the decay
+kernel of the low-energy commutators, bounds the summed off-diagonal parts uniformly in the
 system size.
 
-* `recursiveCommutatorCoeff`, `recursiveBasisCoeff`, `exists_orthonormalBasis_uniform_kernel`.
 * `exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_le` and
   `exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform`.
 
-Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasisRecursive.lean` and
-`LowEnergyBasisUniformGeneral.lean`. Changes as in `LowEnergyCommutator`.
+Moved from TNLean (`e113e005`): the Hamiltonian part of
+`TNLean/Lattice/LowEnergyBasisUniformGeneral.lean`. Changes as in `LowEnergyCommutator`.
 -/
 
 noncomputable section
@@ -44,7 +43,6 @@ open scoped Matrix.Norms.L2Operator
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ]
 
-set_option backward.isDefEq.respectTransparency false in
 /-- **The basis construction from a decaying commutator bound.** Let `M_i` be Hermitian with
 `‖M_i‖ ≤ ‖h_i‖`, where the weights `‖h_i‖` obey the support budget `b₀`, and let the ground-space
 compressions `B_i = P M_i P` satisfy `‖[B_i, B_j]‖ ≤ C ‖h_i‖ ‖h_j‖ k(a_i, a_j)` for the graph
@@ -81,8 +79,9 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_
   have hk0 : ∀ i j, 0 ≤ k i j := fun i j ↦ graphDecayKernel_nonneg G γ (a i) (a j)
   obtain ⟨b, s, hs, hb⟩ := exists_orthonormalBasis_uniform_weighted_kernel
     (fun i ↦ groundSpaceCompression H E₀ (M i))
-    (fun i ↦ isSelfAdjoint_groundSpaceCompression _ _ (hMherm i)) (fun i ↦ ‖h i‖)
-    (fun i ↦ norm_nonneg _) (fun i ↦ (norm_groundSpaceCompression_le _ _ _).trans (hMnorm i))
+    (fun i ↦ isSelfAdjoint_subspaceCompression _ _
+      ((hMherm i).isSelfAdjoint.map toEuclideanCLM)) (fun i ↦ ‖h i‖)
+    (fun i ↦ norm_nonneg _) (fun i ↦ (norm_subspaceCompression_le _ _).trans (hMnorm i))
     k hk0
     (fun i j ↦ graphDecayKernel_le_one G hγ.le (a i) (a j))
     (fun i j ↦ graphDecayKernel_symm G γ (a i) (a j))
@@ -97,7 +96,9 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_
     norm_offDiagonalPartFamily_le hv _
       (mul_nonneg (mul_nonneg (recursiveBasisCoeff_nonneg n C) (norm_nonneg _))
         (listKernelSum_nonneg (sqrtKernel_nonneg hk0 n) s i))
-      (fun c e hce ↦ hb i c e hce)
+      (fun c e hce ↦ by
+        have h := hb i c e hce
+        rwa [Submodule.coe_inner, coe_groundSpaceCompression_apply] at h)
   have hβ : 0 < γ / 2 ^ n := div_pos hγ (pow_pos (by norm_num) n)
   have hBudget' : ∀ x, ∑ i ∈ Finset.univ.filter (fun i ↦ a i = x), ‖h i‖ ≤ |b₀| :=
     fun x ↦ (sum_weight_anchor_le_of_support_budget T a ha
@@ -131,8 +132,7 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_
         (mul_nonneg (Nat.cast_nonneg _) (recursiveBasisCoeff_nonneg n C))
     _ = _ := by ring
 
-set_option backward.isDefEq.respectTransparency false in
-/-- An basis of an arbitrary nonzero finite-dimensional ground space has a
+/-- A basis of an arbitrary nonzero finite-dimensional ground space has a
 summed off-diagonal bound independent of the number of sites. Its constant depends
 only on the ground-space dimension, the local norm budget, interaction geometry and gap.
 Hastings, arXiv:cond-mat/0508554v3, eq. `oibu` and lines 1698–1708, with the retained
@@ -146,9 +146,9 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform
     (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y ↦ G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
     {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ}
-    (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
-    [NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀))] :
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE) :
     let n := Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)
+    haveI : NeZero n := ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
     let γ := commutatorRate R vR b₀ ΔE
     let C := commutatorConst R vR b₀ |Kg| kg * Real.exp (γ * (2 * R + 1))
     ∃ b : OrthonormalBasis (Fin n) ℂ (groundSpace Φ.hamiltonian E₀),
@@ -157,6 +157,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform
         ((n - 1 : ℕ) : ℝ) ^ 2 * recursiveBasisCoeff n C *
           (|b₀| * (|Kg| * Real.shellSumConst (γ / 2 ^ n) kg)) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have : NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)) :=
+    ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let γ := commutatorRate R vR b₀ ΔE
@@ -173,7 +175,7 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform
   exact exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_of_commutator_le G a ha Φ.term
     Φ.term
     hHerm (fun _ ↦ le_rfl) b₀ hBudget Kg kg hGrowth _ E₀ hγ hC fun i j ↦
-      (norm_groundSpaceCompression_commutator_le _ _ _ _).trans
+      (norm_subspaceCompression_commutator _ _ _).le.trans
         (norm_groundCompression_commutator_le_exp_edist G a ha Φ hHerm R hDiam vR
           hCard b₀ hBudget |Kg| kg hGrow hΔE hgap j i)
 

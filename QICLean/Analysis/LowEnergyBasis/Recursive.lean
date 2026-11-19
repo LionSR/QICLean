@@ -11,7 +11,21 @@ import Mathlib.Analysis.InnerProductSpace.JointEigenspace
 import QICLean.Analysis.LowEnergyBasis.SpectralSplit
 
 /-!
-@@DOC
+# A recursive basis with decaying matrix elements
+
+Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1695–1708, refines a basis by repeated
+spectral splits. For a finite family of self-adjoint operators whose commutators are bounded by
+a decay kernel, this gives a basis whose off-diagonal entries are bounded by iterated square
+roots of the kernel.
+
+* `sqrtKernel`, `listKernelSum`, `graphDecayKernel`: the kernels and their sums along a list of
+  anchors.
+* `recursiveCommutatorCoeff`, `recursiveBasisCoeff`, `exists_orthonormalBasis_uniform_kernel`.
+* `exists_orthonormalBasis_uniform_weighted_kernel`: the same with weights normalized away.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasisRecursive.lean`,
+`LowEnergyDecayKernel.lean` and the site-free part of `LowEnergyBasisUniformGeneral.lean`.
+Changes: namespace `LowEnergyBasis`.
 -/
 
 noncomputable section
@@ -225,7 +239,6 @@ theorem recursiveCommutatorCoeff_step {m N t : ℕ} (hm : m ≤ N) {C : ℝ} (hC
 
 universe u
 
-set_option backward.isDefEq.respectTransparency false in
 /-- The finite-rank induction constructing the basis. The total dimension budget bounds
 both the recursion depth and the number of selected original terms. Scalar terminal
 subspaces need not have dimension one. Hastings, arXiv:cond-mat/0508554v3,
@@ -357,7 +370,6 @@ theorem exists_orthonormalBasis_uniform_kernel_aux {κ : Type*} [Finite κ]
         simpa only [OrthonormalBasis.reindex_apply, listKernelSum_cons, listKernelSum_append,
           mul_add, add_comm, add_left_comm, add_assoc] using h
 
-set_option backward.isDefEq.respectTransparency false in
 /-- A finite Hermitian family admits an orthonormal basis with uniform
 matrix-element decay from at most `n-1` original anchors. The conclusion retains the cross terms
 through

@@ -18,11 +18,9 @@ commutators of ground-space compressions over the terms.
 * `norm_groundCompression_commutator_le_exp(_edist)`: exponential decay of the low-energy
   commutators in the graph distance between anchors.
 * `sum_norm_offDiagonalPartFamily_le_oibu(_levels)`: eq. `oibu`.
-* `sqrtKernel`, `listKernelSum`, `graphDecayKernel`: the decay kernels of the recursive basis
-  construction.
 
-Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyCommutatorSum.lean` and
-`LowEnergyDecayKernel.lean`. Changes as in `LowEnergyCommutator`.
+Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyCommutatorSum.lean`, its Hamiltonian
+part. Changes as in `LowEnergyCommutator`.
 -/
 
 noncomputable section
@@ -161,7 +159,6 @@ include ha hHerm hDiam hCard hBudget
 
 set_option maxHeartbeats 400000 in
 -- The explicit Gaussian prefactor comparison expands several nested products and real casts.
-set_option backward.isDefEq.respectTransparency false in
 omit ha in
 /-- The exponential low-energy commutator estimate for arbitrary separated local
 observables. The observable support cardinality `vObs` is independent of the generator
@@ -241,7 +238,6 @@ theorem norm_groundCompression_observables_commutator_le_exp
         exact gaussian_error_prefactor A ‖W‖ ‖B‖ vObs |Kg| Ck E
 
 
-set_option backward.isDefEq.respectTransparency false in
 omit ha in
 /-- Exponential decay between arbitrary local observables in the distance between
 anchors. The velocity uses the Hamiltonian generator parameters `R,vR`; the observable

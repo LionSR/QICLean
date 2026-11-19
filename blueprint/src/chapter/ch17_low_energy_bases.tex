@@ -346,9 +346,9 @@ summable over the terms, and records the counterexample of
 
 \begin{lemma}[A summed bound under polynomial sphere growth]
     \label{thm:hastings05_oibu}
-    \lean{ManyBody.add_one_pow_mul_exp_neg_le,
-        ManyBody.shellSumConst,
-        ManyBody.sum_add_one_pow_mul_exp_neg_le,
+    \lean{Real.add_one_pow_mul_exp_neg_le,
+        Real.shellSumConst,
+        Real.sum_add_one_pow_mul_exp_neg_le,
         ManyBody.sum_exp_neg_edist_le,
         ManyBody.isSelfAdjoint_groundCompression,
         ManyBody.sum_norm_groundCompression_commutator_le,
@@ -414,10 +414,10 @@ summable over the terms, and records the counterexample of
 
 \begin{definition}[Conditioning of the commutator map]
     \label{def:hastings05_commutator_conditioning}
-    \lean{ManyBody.quotientConditionNumber,
-        ManyBody.compressionCommutatorMap,
-        ManyBody.compressionConditionNumber,
-        ManyBody.realCompressionSpan}
+    \lean{LowEnergyBasis.quotientConditionNumber,
+        LowEnergyBasis.compressionCommutatorMap,
+        LowEnergyBasis.compressionConditionNumber,
+        LowEnergyBasis.realCompressionSpan}
     \leanok
     Let $V$ be the real span of Hermitian operators $A_i$ on an
     $n$-dimensional complex inner product space, and choose original operators
@@ -434,11 +434,11 @@ summable over the terms, and records the counterexample of
 
 \begin{lemma}[Construction of a basis controlling the off-diagonal entries]
     \label{thm:hastings05_constructed_ground_basis}
-    \lean{ManyBody.norm_le_quotientConditionNumber_mul,
-        ManyBody.exists_orthonormalBasis_joint_eigenvectors,
-        ManyBody.finrank_selfAdjoint_continuousLinearMap,
-        ManyBody.exists_orthonormalBasis_norm_inner_le_compressionCommutatorMap,
-        ManyBody.exists_orthonormalBasis_norm_inner_le_commutators}
+    \lean{LowEnergyBasis.norm_le_quotientConditionNumber_mul,
+        LowEnergyBasis.exists_orthonormalBasis_joint_eigenvectors,
+        LowEnergyBasis.finrank_selfAdjoint_continuousLinearMap,
+        LowEnergyBasis.exists_orthonormalBasis_norm_inner_le_compressionCommutatorMap,
+        LowEnergyBasis.exists_orthonormalBasis_norm_inner_le_commutators}
     \leanok
     \uses{def:hastings05_commutator_conditioning}
     There are $m\le n^2$ original operators spanning $V$ and an orthonormal
@@ -465,8 +465,8 @@ summable over the terms, and records the counterexample of
     \label{thm:hastings05_constructed_oibu}
     \lean{ManyBody.groundSpaceCompression,
         ManyBody.coe_groundSpaceCompression_apply,
-        ManyBody.isSelfAdjoint_groundSpaceCompression,
-        ManyBody.norm_groundSpaceCompression_commutator_le,
+        LowEnergyBasis.isSelfAdjoint_subspaceCompression,
+        LowEnergyBasis.norm_subspaceCompression_commutator,
         ManyBody.exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le}
     \leanok
     \uses{thm:hastings05_constructed_ground_basis,thm:hastings05_oibu}
@@ -494,12 +494,12 @@ summable over the terms, and records the counterexample of
 
 \begin{lemma}[Choosing a basis in dimension two]
     \label{thm:hastings05_two_dim_basis_construction}
-    \lean{ManyBody.twoDimensionalSpectralSpread,
-        ManyBody.eq_smul_one_of_twoDimensionalSpectralSpread_eq_zero,
-        ManyBody.exists_norm_sub_smul_one_eq_twoDimensionalSpectralSpread,
-        ManyBody.norm_inner_le_twoDimensionalSpectralSpread,
-        ManyBody.norm_offDiagonalPartFamily_le_twoDimensionalSpectralSpread,
-        ManyBody.exists_orthonormalBasis_maximal_twoDimensionalSpectralSpread}
+    \lean{LowEnergyBasis.twoDimensionalSpectralSpread,
+        LowEnergyBasis.eq_smul_one_of_twoDimensionalSpectralSpread_eq_zero,
+        LowEnergyBasis.exists_norm_sub_smul_one_eq_twoDimensionalSpectralSpread,
+        LowEnergyBasis.norm_inner_le_twoDimensionalSpectralSpread,
+        LowEnergyBasis.norm_offDiagonalPartFamily_le_twoDimensionalSpectralSpread,
+        LowEnergyBasis.exists_orthonormalBasis_maximal_twoDimensionalSpectralSpread}
     \leanok
     A finite Hermitian family on a two-dimensional space is either scalar, or
     has an original member of maximal positive spectral spread $\delta$.
@@ -518,7 +518,7 @@ summable over the terms, and records the counterexample of
 
 \begin{lemma}[A uniform sum in dimension two]
     \label{thm:hastings05_two_dim_uniform_sum}
-    \lean{ManyBody.exists_orthonormalBasis_norm_inner_le_sqrt_commutator_decay,
+    \lean{LowEnergyBasis.exists_orthonormalBasis_norm_inner_le_sqrt_commutator_decay,
         ManyBody.sum_weight_mul_exp_neg_edist_le,
         ManyBody.exists_twoDimensional_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le}
     \leanok
@@ -684,9 +684,9 @@ summable over the terms, and records the counterexample of
 
 \begin{definition}[Successive square-root decay kernels]
     \label{def:hastings05_sqrt_decay_kernel}
-    \lean{ManyBody.sqrtKernel,
-        ManyBody.graphDecayKernel,
-        ManyBody.listKernelSum}
+    \lean{LowEnergyBasis.sqrtKernel,
+        LowEnergyBasis.graphDecayKernel,
+        LowEnergyBasis.listKernelSum}
     \leanok
     For a nonnegative kernel $k$ define $k_0=k$ and $k_{t+1}=\sqrt{k_t}$
     pointwise. For graph distance, take $k(i,j)=e^{-\gamma d(i,j)}$, with value
@@ -696,23 +696,23 @@ summable over the terms, and records the counterexample of
 
 \begin{lemma}[Preservation of the decay kernel]
     \label{thm:hastings05_sqrt_decay_kernel}
-    \lean{ManyBody.sqrtKernel_zero,
-        ManyBody.sqrtKernel_succ,
-        ManyBody.sqrtKernel_nonneg,
-        ManyBody.sqrtKernel_le_one,
-        ManyBody.sqrtKernel_symm,
-        ManyBody.sqrtKernel_succ_sq,
-        ManyBody.sqrtKernel_mono,
-        ManyBody.sqrtKernel_mul_le,
-        ManyBody.listKernelSum_nil,
-        ManyBody.listKernelSum_cons,
-        ManyBody.listKernelSum_append,
-        ManyBody.listKernelSum_nonneg,
-        ManyBody.graphDecayKernel_nonneg,
-        ManyBody.graphDecayKernel_le_one,
-        ManyBody.graphDecayKernel_symm,
-        ManyBody.graphDecayKernel_mul_le,
-        ManyBody.sqrtKernel_graphDecayKernel}
+    \lean{LowEnergyBasis.sqrtKernel_zero,
+        LowEnergyBasis.sqrtKernel_succ,
+        LowEnergyBasis.sqrtKernel_nonneg,
+        LowEnergyBasis.sqrtKernel_le_one,
+        LowEnergyBasis.sqrtKernel_symm,
+        LowEnergyBasis.sqrtKernel_succ_sq,
+        LowEnergyBasis.sqrtKernel_mono,
+        LowEnergyBasis.sqrtKernel_mul_le,
+        LowEnergyBasis.listKernelSum_nil,
+        LowEnergyBasis.listKernelSum_cons,
+        LowEnergyBasis.listKernelSum_append,
+        LowEnergyBasis.listKernelSum_nonneg,
+        LowEnergyBasis.graphDecayKernel_nonneg,
+        LowEnergyBasis.graphDecayKernel_le_one,
+        LowEnergyBasis.graphDecayKernel_symm,
+        LowEnergyBasis.graphDecayKernel_mul_le,
+        LowEnergyBasis.sqrtKernel_graphDecayKernel}
     \leanok
     \uses{def:hastings05_sqrt_decay_kernel}
     If $0\le k\le1$, $k(i,j)=k(j,i)$ and $k(i,j)k(j,l)\le k(i,l)$, the same
@@ -731,8 +731,8 @@ summable over the terms, and records the counterexample of
 
 \begin{definition}[Coefficients of the uniform basis construction]
     \label{def:hastings05_recursive_basis_coeff}
-    \lean{ManyBody.recursiveCommutatorCoeff,
-        ManyBody.recursiveBasisCoeff}
+    \lean{LowEnergyBasis.recursiveCommutatorCoeff,
+        LowEnergyBasis.recursiveBasisCoeff}
     \leanok
     For a total dimension bound $N$ and commutator coefficient $C\ge0$, put
     \begin{align*}
@@ -743,12 +743,12 @@ summable over the terms, and records the counterexample of
 
 \begin{lemma}[A uniform basis in every finite dimension]
     \label{thm:hastings05_recursive_uniform_basis}
-    \lean{ManyBody.recursiveCommutatorCoeff_nonneg,
-        ManyBody.recursiveBasisCoeff_nonneg,
-        ManyBody.sqrt_recursiveCommutatorCoeff_le,
-        ManyBody.recursiveCommutatorCoeff_step,
-        ManyBody.exists_orthonormalBasis_uniform_kernel_aux,
-        ManyBody.exists_orthonormalBasis_uniform_kernel}
+    \lean{LowEnergyBasis.recursiveCommutatorCoeff_nonneg,
+        LowEnergyBasis.recursiveBasisCoeff_nonneg,
+        LowEnergyBasis.sqrt_recursiveCommutatorCoeff_le,
+        LowEnergyBasis.recursiveCommutatorCoeff_step,
+        LowEnergyBasis.exists_orthonormalBasis_uniform_kernel_aux,
+        LowEnergyBasis.exists_orthonormalBasis_uniform_kernel}
     \leanok
     \uses{thm:hastings05_orthogonal_basis_refinement,thm:hastings05_sqrt_decay_kernel,def:hastings05_recursive_basis_coeff,thm:hastings05_uniform_family_split}
     Let $A_i$ be a finite Hermitian family on a complex inner product space of
@@ -782,13 +782,13 @@ summable over the terms, and records the counterexample of
 
 \begin{lemma}[A uniform summed ground-space basis bound]
     \label{thm:hastings05_uniform_ground_basis}
-    \lean{ManyBody.smul_inv_smul_eq_of_norm_le,
+    \lean{LowEnergyBasis.smul_inv_smul_eq_of_norm_le,
         ManyBody.sum_weight_anchor_le_of_support_budget,
-        ManyBody.norm_commutator_inv_smul_le,
-        ManyBody.exists_orthonormalBasis_uniform_weighted_kernel,
+        LowEnergyBasis.norm_commutator_inv_smul_le,
+        LowEnergyBasis.exists_orthonormalBasis_uniform_weighted_kernel,
         ManyBody.sum_weight_list_graphDecayKernel_le,
-        ManyBody.sqrtKernel_comp,
-        ManyBody.norm_groundSpaceCompression_le,
+        LowEnergyBasis.sqrtKernel_comp,
+        LowEnergyBasis.norm_subspaceCompression_le,
         ManyBody.exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform}
     \leanok
     \uses{thm:hastings05_recursive_uniform_basis,thm:hastings05_blecm_exp}

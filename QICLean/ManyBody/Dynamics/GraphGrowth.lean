@@ -44,6 +44,12 @@ accordingly.
 * `ManyBody.sum_exp_neg_edist_le_degree`, `ManyBody.sum_weight_exp_neg_edist_tail_le_degree` —
   exponential row sums and their tails.
 * `ManyBody.card_connected_induce_le_exponential` — the count of connected sets of size `n`.
+
+For a graph whose spheres grow polynomially, `sum_exp_neg_edist_le`,
+`sum_weight_mul_exp_neg_edist_le` and `sum_weight_list_graphDecayKernel_le` bound exponential
+sums over the sites; they are moved from TNLean (`e113e005`)
+`TNLean/Lattice/LowEnergyCommutatorSum.lean`, `LowEnergyBasisUniform.lean` and
+`LowEnergyBasisUniformGeneral.lean`.
 -/
 
 namespace ManyBody
