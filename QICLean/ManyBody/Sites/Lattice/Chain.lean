@@ -32,7 +32,8 @@ from `TNLean/MPS/AreaLaw/RangeOneCut.lean`; `ChainSupport.edist_le` from
 
 Moved from TNLean (`e113e005`): the bonds, their overlap graph and the size of their union from
 `TNLean/Lattice/ClusterExpansion/NearestNeighborPath.lean` and `NearestNeighborIntervalRank.lean`.
-Changes: `nearestNeighbor` is `ManyBody.chainBond`, and the lemmas are renamed after it.
+Changes: the family `fun i ↦ {i.castSucc, i.succ}`, written inline there, is named
+`ManyBody.chainBond`, and the lemmas are renamed after it.
 
 ## Main definitions
 
