@@ -140,8 +140,9 @@ theorem norm_commutator_gaussianFilteredTerm_le_mass (q ΔE : ℝ) {H : Matrix n
 
 This replaces the truncated dynamics of Hastings' `M_i`, arXiv:cond-mat/0508554v3, eqs. `mid`,
 `odef` (lines 285–320) and eq. `truncb` (lines 1507–1522), by the partial trace. -/
-theorem norm_sub_regionExpectation_gaussianFilteredTerm_le_mass {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
-  [∀ v, DecidableEq (X v)] (q ΔE : ℝ) {H : Matrix (Config X) (Config X) ℂ}
+theorem norm_sub_regionExpectation_gaussianFilteredTerm_le_mass {V : Type*} [Fintype V]
+    [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] (q ΔE : ℝ)
+    {H : Matrix (Config X) (Config X) ℂ}
     (hH : H.IsHermitian) (W : Matrix (Config X) (Config X) ℂ) (K : Finset V) {T ε : ℝ}
     (hε : 0 ≤ ε)
     (hloc : ∀ t ∈ Set.Icc (-T) T,
@@ -198,8 +199,9 @@ theorem norm_commutator_gaussianFilteredTerm_le {q ΔE : ℝ} (hq : 0 ≤ q) {H 
 `ε + 2 ‖W‖ exp(-(T ΔE)²/(2q))`. This is the bound of Hastings, arXiv:cond-mat/0508554v3,
 eq. `apb` (lines 300–320) for the partial-trace localization in place of the truncated
 dynamics of eq. `mid`. -/
-theorem norm_sub_regionExpectation_gaussianFilteredTerm_le {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
-  [∀ v, DecidableEq (X v)] {q ΔE : ℝ} (hq : 0 ≤ q)
+theorem norm_sub_regionExpectation_gaussianFilteredTerm_le {V : Type*} [Fintype V]
+    [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] {q ΔE : ℝ}
+    (hq : 0 ≤ q)
     {H : Matrix (Config X) (Config X) ℂ} (hH : H.IsHermitian)
     (W : Matrix (Config X) (Config X) ℂ) (K : Finset V) {T ε : ℝ} (hT : 0 ≤ T) (hε : 0 ≤ ε)
     (hloc : ∀ t ∈ Set.Icc (-T) T,
@@ -217,7 +219,8 @@ end FilterLocality
 
 section HeisenbergIncrement
 
-variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+variable {V : Type*} [Fintype V] [DecidableEq V]
+    {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)]
 
 /-- **Localization of the Heisenberg increment.** If every Duhamel integrand
@@ -247,7 +250,8 @@ end HeisenbergIncrement
 
 section IncrementSites
 
-variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+variable {V : Type*} [Fintype V] [DecidableEq V]
+    {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)]
 
 /-- **Localizing the change made by the filter.** Suppose the evolved commutator
@@ -303,7 +307,8 @@ theorem norm_gaussianFilteredTerm_sub_localized_le_mass (q ΔE : ℝ)
       le_rfl).abs
   have hshort (t : ℝ) (ht : t ∈ Set.Icc (-T) T) : ‖L (f t)‖ ≤ T * ε := by
     simp only [hL, f]
-    refine (norm_heisenbergEvolution_sub_sub_regionExpectation_le K (fun s hs => hloc s ?_)).trans ?_
+    refine (norm_heisenbergEvolution_sub_sub_regionExpectation_le K
+      (fun s hs => hloc s ?_)).trans ?_
     · rcases ht with ⟨h1, h2⟩
       rcases Set.mem_uIcc.mp hs with ⟨h3, h4⟩ | ⟨h3, h4⟩ <;> constructor <;> linarith
     · rw [mul_comm]
@@ -394,7 +399,8 @@ end Increment
 
 section Graph
 
-variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+variable {V : Type*} [Fintype V] [DecidableEq V]
+    {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ]
   (G : SimpleGraph V) {T : κ → Finset V}
   (Φ : Interaction X T) (hHerm : ∀ k, (Φ.term k).IsHermitian)
@@ -417,7 +423,8 @@ theorem norm_commutator_gaussianFilteredTerm_le_graphDistance {q ΔE : ℝ} (hq 
     (hB : B ∈ supportedOperators X ({y} : Finset V)) (μ : ℝ)
     (hμ : 0 ≤ μ) (l : ℕ)
     (hl : ∀ x ∈ S, (l : ℕ∞) ≤ G.edist x y) {τ : ℝ} (hT : 0 ≤ τ) :
-    ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W * B - B * gaussianFilteredTerm q ΔE Φ.hamiltonian W‖ ≤
+    ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W * B -
+        B * gaussianFilteredTerm q ΔE Φ.hamiltonian W‖ ≤
       (2 + 4 * |b₀| * Real.exp (2 * μ * R)) * (S.card : ℝ) * ‖W‖ * ‖B‖ *
           Real.exp ((2 * vR * |b₀| * Real.exp (2 * μ * R) + 1) * τ - μ * l) +
         2 * ‖W‖ * ‖B‖ * Real.exp (-(τ * ΔE) ^ 2 / (2 * q)) := by
@@ -504,7 +511,8 @@ theorem exists_local_approx_gaussianFilteredTerm (Kg : ℝ) (kg : ℕ)
     (norm_regionExpectation_le _).trans (norm_gaussianFilteredTerm_le q ΔE hH W),
     fun hW' => (isHermitian_regionExpectation (isHermitian_gaussianFilteredTerm q ΔE hH
         hW')),
-    norm_gaussianFilteredTerm_sub_regionExpectation_le_graphNeighborhood G Φ hHerm R hDiam vR hCard b₀ hBudget Kg kg hGrowth hq S hW l hT⟩
+    norm_gaussianFilteredTerm_sub_regionExpectation_le_graphNeighborhood G Φ hHerm R hDiam vR hCard
+      b₀ hBudget Kg kg hGrowth hq S hW l hT⟩
 
 end Graph
 
@@ -617,7 +625,8 @@ end Commuting
 
 section SingleSites
 
-variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
+variable {V : Type*} [Fintype V] [DecidableEq V]
+    {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)]
 
 /-- Terms supported on their individual sites commute pairwise. -/

@@ -32,11 +32,6 @@ Lieb–Robinson function is bounded by `T` times its value at `T`; the constants
 Gaussian weight printed in eq. `mid` as `exp[-(tΔE)²/2]` is read as `exp[-(tΔE)²/(2q)]` of eq.
 `thd`. Documented in `docs/paper-gaps/hastings05_truncated_dynamics.tex`.
 
-**Scope restriction (shell growth):** the single-exponential form of eq. `facld` on a graph
-assumes polynomial growth of the omitted shell, which source lines 169–190 do not impose; the
-general metric version is in `ManyBody.Hamiltonian.GaussianFilterMetric`. See
-`docs/paper-gaps/hastings05_geometric_growth_scope.tex`.
-
 ## Main results
 
 * `ManyBody.gaussianFilteredTerm_mem_supportedOperators` — the support of `M_i`.
@@ -45,8 +40,7 @@ general metric version is in `ManyBody.Hamiltonian.GaussianFilterMetric`. See
 * `ManyBody.norm_gaussianFilteredTerm_sub_truncated_le`,
   `ManyBody.truncated_approx_gaussianFilteredTerm` — eq. `apb`.
 * `ManyBody.norm_gaussianFilteredTerm_sub_truncated_le_degree_tail` — the weighted tail.
-* `ManyBody.norm_sub_starProjection_truncated_apply_le`,
-  `ManyBody.exists_norm_sub_starProjection_truncated_apply_le_exp` — eq. `facld`.
+* `ManyBody.norm_sub_starProjection_truncated_apply_le` — eq. `facld`.
 
 ## References
 
@@ -57,8 +51,8 @@ lines 1458–1533 with the comparison of the two evolutions (lines 1469–1505),
 
 Moved from TNLean, `TNLean/Lattice/GaussianFilteredTruncation.lean`,
 `GaussianFilteredTruncationWeighted.lean`, `GaussianFilteredTruncationGround.lean`,
-`GaussianTruncationDecayBound.lean` and `GaussianFilteredTruncationDecay.lean` at commit
-`e113e005`. Changes: an interaction `Φ : Interaction X T` on any system of sites in place of a
+at commit `e113e005`.
+Changes: an interaction `Φ : Interaction X T` on any system of sites in place of a
 family of terms with supports on `ι → Fin d`, with `[∀ v, Nonempty (X v)]` in place of
 `[NeZero d]`; the time cutoff is written `τ`; the comparison `norm_conj_sub_conj_le` of two
 Heisenberg evolutions is replaced by `ManyBody.norm_heisenbergEvolution_sub_le_of_commutator_bound`.
@@ -169,7 +163,8 @@ Then `‖[B, τ_t(A)]‖ ≤ 2 |Y| C |S| ‖A‖ ‖B‖ e^{v|t| - μm}`, with `
 it differs from `τ_t(A)` by at most the sum of the single-site commutator bounds over `Y`.
 This is the input `‖[H_j, H_i(t')]‖` of Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
 lines 1484–1505. -/
-theorem norm_commutator_heisenbergEvolution_le_graphDistance_finset [∀ v, Nonempty (X v)] (S : Finset V)
+theorem norm_commutator_heisenbergEvolution_le_graphDistance_finset [∀ v, Nonempty (X v)]
+    (S : Finset V)
     {A B : Matrix (Config X) (Config X) ℂ}
     (hA : A ∈ supportedOperators X S)
     (Y : Finset V) (hB : B ∈ supportedOperators X Y) (μ : ℝ)
@@ -290,7 +285,8 @@ Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `apb` (lines 300–320),
 lines 1458–1533: the difference of the two evolutions is bounded for `|t| ≤ τ` by the
 commutators with the omitted terms (eqs. `thib`, `truncb`), and the Gaussian tail bounds the
 rest. -/
-theorem norm_gaussianFilteredTerm_sub_truncated_le_sum [∀ v, Nonempty (X v)] [DecidableEq κ] {q ΔE : ℝ}
+theorem norm_gaussianFilteredTerm_sub_truncated_le_sum [∀ v, Nonempty (X v)] [DecidableEq κ]
+    {q ΔE : ℝ}
     (hq : 0 ≤ q) (s : Finset κ) (K : Finset V) (hsK : ∀ k ∈ s, T k ⊆ K) (S : Finset V)
     (hSK : S ⊆ K) {W : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S) (μ : ℝ) (hμ : 0 ≤ μ) (m : ℕ)
@@ -380,7 +376,8 @@ theorem truncated_approx_gaussianFilteredTerm [∀ v, Nonempty (X v)] [Decidable
     gaussianFilteredTerm q ΔE (∑ k ∈ s, Φ.term k) W ∈ supportedOperators X K ∧
       ‖gaussianFilteredTerm q ΔE (∑ k ∈ s, Φ.term k) W‖ ≤ ‖W‖ ∧
       (W.IsHermitian → (gaussianFilteredTerm q ΔE (∑ k ∈ s, Φ.term k) W).IsHermitian) ∧
-      ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W - gaussianFilteredTerm q ΔE (∑ k ∈ s, Φ.term k) W‖ ≤
+      ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W -
+          gaussianFilteredTerm q ΔE (∑ k ∈ s, Φ.term k) W‖ ≤
         2 * vR * (2 + 4 * |b₀| * Real.exp (2 * μ * R)) * (S.card : ℝ) * ‖W‖ * J *
             ((sᶜ.filter (fun k => ¬Disjoint (T k) K)).card : ℝ) * τ *
             Real.exp ((2 * vR * |b₀| * Real.exp (2 * μ * R) + 1) * τ - μ * m) +
@@ -777,228 +774,5 @@ theorem norm_sum_truncated_sub_le_card [∀ v, Nonempty (X v)] [DecidableEq κ] 
 end Graph
 
 end TruncationGround
-
-section DecayScalars
-
-/-- The three Gaussian-filter errors decay at rate `min(1/4, Δ/(8v))` for the
-window `τ=l/(4v)` and filter parameter `q=TΔ`. Hastings,
-arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `blecm`, lines 1562–1601. -/
-theorem commutator_time_window_exp_bounds {v Δ l : ℝ} (hv : 0 < v) (hΔ : 0 < Δ)
-    (hl : 0 ≤ l) :
-    let τ := l / (4 * v)
-    let q := τ * Δ
-    let γ := min (1 / 4) (Δ / (8 * v))
-    Real.exp (v * τ - l / 2) ≤ Real.exp (-(γ * l)) ∧
-      Real.exp (-(τ * Δ) ^ 2 / (2 * q)) ≤ Real.exp (-(γ * l)) ∧
-      Real.exp (-q / 2) ≤ Real.exp (-(γ * l)) := by
-  let τ := l / (4 * v)
-  let q := τ * Δ
-  let γ := min (1 / 4) (Δ / (8 * v))
-  have hvT : v * τ = l / 4 := by dsimp [τ]; field_simp
-  have hqT : (τ * Δ) ^ 2 / (2 * q) = q / 2 := by
-    dsimp only [q]
-    rcases eq_or_ne (τ * Δ) 0 with h0 | h0
-    · rw [h0]; simp
-    · field_simp
-  have hq8 : q / 2 = Δ / (8 * v) * l := by dsimp [q, τ]; field_simp; ring
-  have hγ4 : γ ≤ 1 / 4 := min_le_left _ _
-  have hγ8 : γ ≤ Δ / (8 * v) := min_le_right _ _
-  refine ⟨Real.exp_le_exp.mpr ?_, Real.exp_le_exp.mpr ?_, Real.exp_le_exp.mpr ?_⟩
-  · change v * τ - l / 2 ≤ -(γ * l)
-    rw [hvT]
-    nlinarith
-  · change -(τ * Δ) ^ 2 / (2 * q) ≤ -(γ * l)
-    rw [neg_div, hqT, hq8]
-    nlinarith
-  · change -q / 2 ≤ -(γ * l)
-    rw [neg_div, hq8]
-    nlinarith
-
-/-- Absorb a linear prefactor into half the smaller exponential decay rate.
-Hastings, arXiv:cond-mat/0508554v3, eq. `facld`, lines 322–349. -/
-lemma gaussian_truncation_bound_le_exp {a γ A w l : ℝ}
-    (ha : 0 < a) (hγ : 0 < γ) (hA : 0 ≤ A) (hw : 0 ≤ w) (hl : 0 ≤ l) :
-    let δ := min a γ
-    3 * w * Real.exp (-(a * l) / 2) + A * w * l * Real.exp (-(γ * l)) ≤
-      w * (3 + A / (Real.exp 1 * (δ / 2))) * Real.exp (-(δ / 2) * l) := by
-  intro δ
-  have hδ : 0 < δ := lt_min ha hγ
-  have hfirst : Real.exp (-(a * l) / 2) ≤ Real.exp (-(δ / 2) * l) :=
-    Real.exp_le_exp.mpr (by nlinarith [min_le_left a γ])
-  have hsecond : Real.exp (-(γ * l)) ≤ Real.exp (-(δ * l)) :=
-    Real.exp_le_exp.mpr (by nlinarith [min_le_right a γ])
-  have hlinear : l * Real.exp (-(δ * l)) ≤
-      (1 / (Real.exp 1 * (δ / 2))) * Real.exp (-(δ / 2) * l) := by
-    simpa only [pow_one, Nat.cast_one, add_halves, neg_mul] using
-      Real.pow_mul_exp_neg_add_le
-        (r := δ / 2) (half_pos hδ) hl 1
-  calc 3 * w * Real.exp (-(a * l) / 2) + A * w * l * Real.exp (-(γ * l))
-      ≤ 3 * w * Real.exp (-(δ / 2) * l) + A * w * (l * Real.exp (-(δ * l))) := by
-        have h1 := mul_le_mul_of_nonneg_left hfirst (show 0 ≤ 3 * w by positivity)
-        have h2 := mul_le_mul_of_nonneg_left hsecond (show 0 ≤ A * w * l by positivity)
-        nlinarith
-    _ ≤ 3 * w * Real.exp (-(δ / 2) * l) + A * w *
-        ((1 / (Real.exp 1 * (δ / 2))) * Real.exp (-(δ / 2) * l)) := by gcongr
-    _ = _ := by ring
-
-end DecayScalars
-
-section TruncationDecay
-
-/-- The two terms of eq. `facld` at `q = c₁ l ΔE` and `m = l - 3R` decay as `e^{-δ l / 2}`,
-`δ = min (c₁ ΔE) (μ - c₁ v)`, once the shell count `N` is at most `K_g (l + 1)^k`.
-Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `facld` and the choice of `q`
-(lines 322–349). -/
-private theorem facld_bound_le_exp {ΔE c₁ μ v B w J N Kg : ℝ} (kg l R : ℕ) (hΔE : 0 < ΔE)
-    (hc₁ : 0 < c₁) (hμ : 0 ≤ μ) (hc₁v : c₁ * v < μ) (hB : 0 ≤ B) (hw : 0 ≤ w) (hJ : 0 ≤ J)
-    (hN0 : 0 ≤ N) (hKg : 0 ≤ Kg) (hN : N ≤ Kg * (l + 1) ^ kg) :
-    3 * w * Real.exp (-(c₁ * l * ΔE) / 2) +
-        B * w * J * N * (c₁ * l * ΔE / ΔE) *
-          Real.exp (v * (c₁ * l * ΔE / ΔE) - μ * (l - 3 * R : ℕ)) ≤
-      w * (3 + B * Kg * c₁ * Real.exp (3 * μ * R) *
-          ((kg + 1)! * Real.exp (min (c₁ * ΔE) (μ - c₁ * v) / 2) /
-            (min (c₁ * ΔE) (μ - c₁ * v) / 2) ^ (kg + 1)) * J) *
-        Real.exp (-(min (c₁ * ΔE) (μ - c₁ * v) / 2) * l) := by
-  have hm : (l : ℝ) - 3 * R ≤ ((l - 3 * R : ℕ) : ℝ) := by
-    have : l ≤ l - 3 * R + 3 * R := le_tsub_add
-    rw [sub_le_iff_le_add]; exact_mod_cast this
-  have hL : (0 : ℝ) ≤ l := Nat.cast_nonneg l
-  set L : ℝ := (l : ℝ)
-  set m : ℝ := ((l - 3 * R : ℕ) : ℝ)
-  set δ := min (c₁ * ΔE) (μ - c₁ * v) with hδdef
-  have hδ : 0 < δ := lt_min (mul_pos hc₁ hΔE) (by linarith)
-  set P := (kg + 1)! * Real.exp (δ / 2) / (δ / 2) ^ (kg + 1)
-  have hqΔ : c₁ * L * ΔE / ΔE = c₁ * L := by field_simp
-  rw [hqΔ]
-  have hδL1 : δ * L ≤ c₁ * ΔE * L := mul_le_mul_of_nonneg_right (min_le_left _ _) hL
-  have hδL2 : δ * L ≤ (μ - c₁ * v) * L := mul_le_mul_of_nonneg_right (min_le_right _ _) hL
-  have h1 : Real.exp (-(c₁ * L * ΔE) / 2) ≤ Real.exp (-(δ / 2) * L) :=
-    Real.exp_le_exp.2 (by nlinarith)
-  have h2 : Real.exp (v * (c₁ * L) - μ * m) ≤ Real.exp (3 * μ * R) * Real.exp (-δ * L) := by
-    rw [← Real.exp_add]
-    exact Real.exp_le_exp.2 (by nlinarith [mul_le_mul_of_nonneg_left hm hμ])
-  have hpoly := Real.add_one_pow_mul_le_mul_exp (half_pos hδ) kg hL
-  have h3 : N * (c₁ * L) * (Real.exp (3 * μ * R) * Real.exp (-δ * L)) ≤
-      Kg * c₁ * Real.exp (3 * μ * R) * P * Real.exp (-(δ / 2) * L) := by
-    have hsplit : Real.exp (-(δ / 2) * L) = Real.exp (δ / 2 * L) * Real.exp (-δ * L) := by
-      rw [← Real.exp_add]; ring_nf
-    have hNL : N * L ≤ Kg * (P * Real.exp (δ / 2 * L)) :=
-      calc N * L ≤ Kg * (L + 1) ^ kg * L := by gcongr
-        _ = Kg * ((L + 1) ^ kg * L) := by ring
-        _ ≤ Kg * (P * Real.exp (δ / 2 * L)) := by gcongr
-    rw [hsplit]
-    have := mul_le_mul_of_nonneg_right hNL
-      (by positivity : 0 ≤ c₁ * Real.exp (3 * μ * R) * Real.exp (-δ * L))
-    nlinarith
-  have hBwJ : 0 ≤ B * w * J := by positivity
-  calc 3 * w * Real.exp (-(c₁ * L * ΔE) / 2) +
-        B * w * J * N * (c₁ * L) * Real.exp (v * (c₁ * L) - μ * m)
-      ≤ 3 * w * Real.exp (-(δ / 2) * L) +
-          B * w * J * (N * (c₁ * L) * (Real.exp (3 * μ * R) * Real.exp (-δ * L))) := by
-        have hNc : 0 ≤ B * w * J * N * (c₁ * L) := by positivity
-        have := mul_le_mul_of_nonneg_left h2 hNc
-        nlinarith
-    _ ≤ 3 * w * Real.exp (-(δ / 2) * L) +
-          B * w * J * (Kg * c₁ * Real.exp (3 * μ * R) * P * Real.exp (-(δ / 2) * L)) := by
-        gcongr
-    _ = w * (3 + B * Kg * c₁ * Real.exp (3 * μ * R) * P * J) * Real.exp (-(δ / 2) * L) := by
-        ring
-
-section Graph
-
-variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
-  [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ]
-  (G : SimpleGraph V) {T : κ → Finset V}
-  (Φ : Interaction X T) (hHerm : ∀ k, (Φ.term k).IsHermitian)
-  (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
-  (vR : ℕ) (hCard : ∀ k, (T k).card ≤ vR)
-  (b₀ : ℝ) (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
-
-include hHerm hDiam hCard hBudget
-
-/-- **Eq. `facld` as an exponential decay in the projection radius.** Let every eigenvalue of
-`H = ∑ₖ hₖ` equal `E₀` or be at least `E₀ + ΔE`. Fix `μ > 0` and `c₁ > 0` with `c₁ v < μ`, where
-`v = 2 v_R |b₀| e^{2μR} + 1`. For each projection radius `l`, let `M_l` be the truncated filter
-of `W` under `H_{s l} = ∑_{k ∈ s l} hₖ` at `q = c₁ l ΔE`, where every omitted term meeting
-`K l` lies at distance at least `l - 3R` from `S`, and suppose the number of such terms is at
-most `K_g (l + 1)^k`. Then there is `C' ≥ 0` such that, for every `l` and every ground vector
-`ψ`, the component of `M_l ψ` orthogonal to the ground eigenspace has norm at most
-`‖W‖ (3 + C' J) e^{-l / l_fac} ‖ψ‖` with `l_fac = 2 / min (c₁ ΔE) (μ - c₁ v)`.
-Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `facld` (lines 322–348) with the choice
-`q = c₁ l_proj ΔE` (lines 337–349). -/
-theorem exists_norm_sub_starProjection_truncated_apply_le_exp [∀ v, Nonempty (X v)] [DecidableEq κ]
-    {ΔE : ℝ} (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ j, hH.eigenvalues j = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues j) (s : ℕ → Finset κ)
-    (K : ℕ → Finset V) (hsK : ∀ l, ∀ k ∈ s l, T k ⊆ K l) (S : Finset V) (hSK : ∀ l, S ⊆ K l)
-    {W : Matrix (Config X) (Config X) ℂ}
-    (hW : W ∈ supportedOperators X S) (J : ℝ)
-    (hJ : ∀ k, ‖Φ.term k‖ ≤ J) (hJ0 : 0 ≤ J) {μ c₁ : ℝ} (hμ : 0 < μ) (hc₁ : 0 < c₁)
-    (hc₁v : c₁ * (2 * vR * |b₀| * Real.exp (2 * μ * R) + 1) < μ)
-    (hm : ∀ l, ∀ k ∉ s l, ¬Disjoint (T k) (K l) → ∀ x ∈ S, ∀ y ∈ T k,
-      ((l - 3 * R : ℕ) : ℕ∞) ≤ G.edist x y)
-    (Kg kg : ℕ) (hN : ∀ l, ((s l)ᶜ.filter (fun k => ¬Disjoint (T k) (K l))).card ≤
-      Kg * (l + 1) ^ kg) :
-    ∃ C' : ℝ, 0 ≤ C' ∧ ∀ l : ℕ, ∀ ψ ∈ groundSpace Φ.hamiltonian E₀,
-      ‖toEuclideanLin (gaussianFilteredTerm (c₁ * l * ΔE) ΔE (∑ k ∈ s l, Φ.term k) W) ψ -
-          (groundSpace Φ.hamiltonian E₀).starProjection
-            (toEuclideanLin (gaussianFilteredTerm (c₁ * l * ΔE) ΔE (∑ k ∈ s l, Φ.term k) W) ψ)‖ ≤
-        ‖W‖ * (3 + C' * J) * Real.exp (-(min (c₁ * ΔE)
-          (μ - c₁ * (2 * vR * |b₀| * Real.exp (2 * μ * R) + 1)) / 2) * l) * ‖ψ‖ := by
-  set v := 2 * vR * |b₀| * Real.exp (2 * μ * R) + 1
-  set δ := min (c₁ * ΔE) (μ - c₁ * v)
-  have hδ : 0 < δ := lt_min (mul_pos hc₁ hΔE) (by linarith)
-  refine ⟨2 * vR * (2 + 4 * |b₀| * Real.exp (2 * μ * R)) * (S.card : ℝ) * Kg * c₁ *
-    Real.exp (3 * μ * R) * ((kg + 1)! * Real.exp (δ / 2) / (δ / 2) ^ (kg + 1)), by positivity,
-    fun l ψ hψ => ?_⟩
-  have hb := norm_sub_starProjection_truncated_apply_le G Φ hHerm R hDiam vR hCard
-    b₀ hBudget (by positivity : 0 ≤ c₁ * l * ΔE) hΔE hH hgap (s l) (K l) (hsK l) S (hSK l) hW J hJ
-    μ hμ.le (l - 3 * R) (hm l) hψ
-  refine hb.trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg ψ))
-  exact facld_bound_le_exp kg l R hΔE hc₁ hμ.le hc₁v (by positivity) (norm_nonneg W) hJ0
-    (Nat.cast_nonneg _) (Nat.cast_nonneg Kg) (by exact_mod_cast hN l)
-
-/-- **A unique gapped ground state is exponentially close to an eigenvector of `M_l`.** If
-`H = ∑ₖ hₖ` is gapped at `E₀` with gap `ΔE > 0` and its ground space is the line through the
-unit vector `Ω`, then under the choices and the shell growth of
-`exists_norm_sub_starProjection_truncated_apply_le_exp` there is `C' ≥ 0` with
-`‖M_l Ω - ⟨Ω, M_l Ω⟩ Ω‖ ≤ ‖W‖ (3 + C' J) e^{-l / l_fac}` for every `l`, where
-`l_fac = 2 / min (c₁ ΔE) (μ - c₁ v)`. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
-eq. `facld` (lines 322–348) with `q = c₁ l_proj ΔE` (lines 337–349), in the case of one ground
-state (lines 375–387). -/
-theorem exists_norm_truncated_apply_sub_inner_smul_le_exp [∀ v, Nonempty (X v)] [DecidableEq κ]
-    {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ} {Ω : EuclideanSpace ℂ (Config X)}
-    (hΩ : ‖Ω‖ = 1) (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
-    (hspan : groundSpace Φ.hamiltonian E₀ = Submodule.span ℂ {Ω}) (s : ℕ → Finset κ)
-    (K : ℕ → Finset V) (hsK : ∀ l, ∀ k ∈ s l, T k ⊆ K l) (S : Finset V) (hSK : ∀ l, S ⊆ K l)
-    {W : Matrix (Config X) (Config X) ℂ}
-    (hW : W ∈ supportedOperators X S) (J : ℝ)
-    (hJ : ∀ k, ‖Φ.term k‖ ≤ J) (hJ0 : 0 ≤ J) {μ c₁ : ℝ} (hμ : 0 < μ) (hc₁ : 0 < c₁)
-    (hc₁v : c₁ * (2 * vR * |b₀| * Real.exp (2 * μ * R) + 1) < μ)
-    (hm : ∀ l, ∀ k ∉ s l, ¬Disjoint (T k) (K l) → ∀ x ∈ S, ∀ y ∈ T k,
-      ((l - 3 * R : ℕ) : ℕ∞) ≤ G.edist x y)
-    (Kg kg : ℕ) (hN : ∀ l, ((s l)ᶜ.filter (fun k => ¬Disjoint (T k) (K l))).card ≤
-      Kg * (l + 1) ^ kg) :
-    ∃ C' : ℝ, 0 ≤ C' ∧ ∀ l : ℕ,
-      ‖toEuclideanLin (gaussianFilteredTerm (c₁ * l * ΔE) ΔE (∑ k ∈ s l, Φ.term k) W) Ω -
-          ⟪Ω, toEuclideanLin (gaussianFilteredTerm (c₁ * l * ΔE) ΔE (∑ k ∈ s l, Φ.term k) W) Ω⟫_ℂ •
-            Ω‖ ≤
-        ‖W‖ * (3 + C' * J) * Real.exp (-(min (c₁ * ΔE)
-          (μ - c₁ * (2 * vR * |b₀| * Real.exp (2 * μ * R) + 1)) / 2) * l) := by
-  set v := 2 * vR * |b₀| * Real.exp (2 * μ * R) + 1
-  set δ := min (c₁ * ΔE) (μ - c₁ * v)
-  have hδ : 0 < δ := lt_min (mul_pos hc₁ hΔE) (by linarith)
-  refine ⟨2 * vR * (2 + 4 * |b₀| * Real.exp (2 * μ * R)) * (S.card : ℝ) * Kg * c₁ *
-    Real.exp (3 * μ * R) * ((kg + 1)! * Real.exp (δ / 2) / (δ / 2) ^ (kg + 1)), by positivity,
-    fun l => ?_⟩
-  have hb := norm_truncated_apply_sub_inner_smul_le G Φ hHerm R hDiam vR hCard
-    b₀ hBudget (by positivity : 0 ≤ c₁ * l * ΔE) hΔE hΩ hgap hspan (s l) (K l) (hsK l) S (hSK l) hW
-    J hJ μ hμ.le (l - 3 * R) (hm l)
-  refine hb.trans ?_
-  exact facld_bound_le_exp kg l R hΔE hc₁ hμ.le hc₁v (by positivity) (norm_nonneg W) hJ0
-    (Nat.cast_nonneg _) (Nat.cast_nonneg Kg) (by exact_mod_cast hN l)
-
-end Graph
-
-end TruncationDecay
 
 end ManyBody
