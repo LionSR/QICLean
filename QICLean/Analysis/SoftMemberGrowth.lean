@@ -9,7 +9,9 @@ import QICLean.Analysis.SoftFamilyCalibration
 
 The denominator of the geometric cutoff is independent of the width and length.
 The nested logarithm in its numerator can be bounded by ordinary logarithms of
-the heat weight and error budget. -/
+the heat weight and error budget. For fixed local dimension and positive width
+coefficient, the resulting scalar size and bond dimension ceilings have logarithms
+of degree at most 36 and 104 in one plus the logarithm of the length. -/
 
 namespace Real
 

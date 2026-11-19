@@ -357,3 +357,33 @@ It is a sufficient calibration, not the printed fourth-order choice of
 This is a new sufficient scalar choice for the soft estimates of
 \cite[lines 1262--1268 and 1373--1420]{Arad2016RigorousRG}.
 It does not assert the printed fourth-order choice, a bound on the bond dimension of a chain, or a running-time bound.
+
+\begin{theorem}[Length dependence of the scalar ceilings]
+    \label{thm:soft_scalar_growth}
+    \lean{Real.exists_soft_family_scalar_growth}
+    \uses{def:soft_family_threshold,thm:soft_family_calibration}
+    \leanok
+    Fix an integer $q\ge2$ and $\mu>0$. There are real constants $C_s,C_b$
+    such that for each integer $N\ge2$ with $w=\mu/(3\log N)\le1$,
+    one may choose a natural $u\ge\max\{2,S(q,w^2/2,24,10,10)\}$.
+    Use the parameters of Theorem~\ref{thm:soft_family_calibration} at this
+    scale, and put $X=1+\log N$, $b_0=2(e^{1/3}-1)$ and $W=t2^{m+1}$.
+    For the order and dimension factor
+    \begin{align}
+        r &= \max\{1,\lceil(2\log N-\log\log(1+\xi/W))/(-\log b_0)\rceil\},
+        \label{eq:soft_growth_order}\\
+        B &= 2r^2 q^r(m+1), \label{eq:soft_growth_factor}
+    \end{align}
+    the same choice gives $D\le \exp(C_s X^{36})$ and
+    $\max\{1,B\}^{2k}\le \exp(C_b X^{104})$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:soft_family_quartic_scale}
+    The quartic scale bound gives $u\le A X^4$ for a constant depending
+    only on $q,\mu$. The calibration bounds give $\log D\le u^9$.
+    Applying $x/2\le\log(1+x)$ at $x=\xi/W$ bounds the numerator
+    defining $r$ by $2\log N+20100m$. Hence both $r$ and $m$ are
+    bounded by constant multiples of $X^{40}$. Taking logarithms of
+    the bond dimension ceiling introduces the additional factor
+    $2k=2u^{16}$, bounded by a constant multiple of $X^{64}$.
+\end{proof}
