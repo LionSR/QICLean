@@ -252,7 +252,9 @@ theorem edist_pow_mul_ge_of_near {V Γ : Type*} [Group Γ] [MulAction Γ V]
     (hnear : (π y - π x).valMinAbs.natAbs ≤ L / 2)
     {k : ℕ} (hk : 1 ≤ k) (hkm : k ≤ m) :
     ((L / 2 : ℕ) : ℕ∞) ≤ G.edist x (e ^ (k * L) • y) := by
-  have hc := natAbs_valMinAbs_add_mul_ge_of_near hL hn (π y - π x) hnear hk hkm
+  have hkL : L ≤ k * L := Nat.le_mul_of_pos_left L hk
+  have hkn : k * L + L ≤ n := by nlinarith [Nat.mul_le_mul_right L hkm]
+  have hc := natAbs_valMinAbs_add_ge_of_near hL hkL hkn (π y - π x) hnear
   have hd := SimpleGraph.natAbs_valMinAbs_sub_le_edist (by decide : 0 < (1 : ℕ))
     π hπ x (e ^ (k * L) • y)
   rw [coordinate_pow_smul π e he] at hd

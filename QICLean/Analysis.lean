@@ -48,6 +48,7 @@ import QICLean.Analysis.ChebyshevWordPower
 import QICLean.Analysis.ChronologicalGarbage
 import QICLean.Analysis.ChronologicalGarbageError
 import QICLean.Analysis.CloseSubspaceEnergyTransfer
+import QICLean.Analysis.ClusterExpansion
 import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommonCompressionEnergy
 import QICLean.Analysis.CommutingExponentialOrder

@@ -1136,7 +1136,7 @@ are embedded.
 
 \begin{definition}[Product-formula circuit]
     \label{def:circuits_product_formula}
-    \lean{QuantumCircuit.Geometry.ofSupports, QuantumCircuit.overlapGraph,
+    \lean{QuantumCircuit.Geometry.ofSupports, SimpleGraph.overlapGraph,
         QuantumCircuit.colourClass, QuantumCircuit.colourOrder,
         QuantumCircuit.colourSweeps, QuantumCircuit.productLayer,
         QuantumCircuit.productCircuit}
@@ -1153,7 +1153,7 @@ are embedded.
 
 \begin{lemma}[Colour classes]
     \label{lem:circuits_colour_classes}
-    \lean{QuantumCircuit.disjoint_of_colour_eq, QuantumCircuit.mem_colourClass,
+    \lean{SimpleGraph.Coloring.disjoint_of_overlapGraph, QuantumCircuit.mem_colourClass,
         QuantumCircuit.pairwiseDisjoint_colourClass, QuantumCircuit.nodup_colourOrder,
         QuantumCircuit.mem_colourOrder, QuantumCircuit.colourOrder_perm}
     \leanok

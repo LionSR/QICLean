@@ -15,7 +15,7 @@ therefore adds to the product-formula error of that family. The deleted-term nor
 sum remains explicit in the resulting circuit error bounds.
 -/
 
-open Matrix ManyBody ProductFormula
+open Matrix ManyBody ProductFormula SimpleGraph
 open scoped Matrix.Norms.L2Operator
 
 namespace QuantumCircuit

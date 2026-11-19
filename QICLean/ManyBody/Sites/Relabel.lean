@@ -258,19 +258,20 @@ theorem sitePermOp_mulVec (π : Equiv.Perm V) (ψ : (Config fun _ : V ↦ α) �
 
 theorem sitePermOp_mul (π π' : Equiv.Perm V) :
     sitePermOp (α := α) π * sitePermOp π' = sitePermOp (π * π') := by
-  ext σ τ
-  simp only [Matrix.mul_apply, sitePermOp_apply, mul_ite, mul_one, mul_zero]
-  rw [Finset.sum_eq_single (σ ∘ π)]
-  · simp only [ite_true]
-    exact if_congr (by rw [Equiv.Perm.coe_mul, Function.comp_assoc]) rfl rfl
-  · intro ρ _ hρ; simp [hρ]
-  · simp
+  rw [sitePermOp, sitePermOp, sitePermOp, ← Matrix.permMatrix_mul]
+  congr 1
+  ext σ v
+  simp only [Equiv.Perm.coe_mul, Function.comp_apply, siteConfigurationEquiv_inv_apply,
+    _root_.mul_inv_rev]
+  rw [siteConfigurationEquiv_refl_apply]
+  rfl
 
 theorem sitePermOp_pow (π : Equiv.Perm V) (N : ℕ) :
-    sitePermOp (α := α) π ^ N = sitePermOp (π ^ N) := by
-  induction N with
-  | zero => rw [pow_zero, pow_zero, sitePermOp_one]
-  | succ N ih => rw [pow_succ, ih, sitePermOp_mul, pow_succ]
+    sitePermOp (α := α) π ^ N = sitePermOp (π ^ N) :=
+  let f : Equiv.Perm V →* Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ :=
+    { toFun := sitePermOp, map_one' := sitePermOp_one,
+      map_mul' := fun π π' ↦ (sitePermOp_mul π π').symm }
+  (map_pow f π N).symm
 
 theorem sitePermOp_mem_unitary (π : Equiv.Perm V) :
     sitePermOp (α := α) π ∈ unitary (Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :=
@@ -279,12 +280,14 @@ theorem sitePermOp_mem_unitary (π : Equiv.Perm V) :
 omit [DecidableEq V] [Fintype α] in
 theorem conjTranspose_sitePermOp (π : Equiv.Perm V) :
     (sitePermOp (α := α) π)ᴴ = sitePermOp π⁻¹ := by
-  ext σ τ
-  simp only [Matrix.conjTranspose_apply, sitePermOp_apply]
-  by_cases h : σ = τ ∘ π
-  · subst h; simp [Function.comp_assoc]
-  · have h' : ¬τ = σ ∘ ⇑π⁻¹ := by rintro rfl; exact h (comp_symm_comp σ π).symm
-    simp only [h, h', ↓reduceIte, star_zero]
+  rw [sitePermOp, sitePermOp, Matrix.conjTranspose_permMatrix]
+  congr 1
+  ext σ v
+  have h : (siteConfigurationEquiv (X := fun _ : V ↦ α) (X' := fun _ : V ↦ α) π⁻¹
+      fun _ ↦ Equiv.refl α)⁻¹ σ = σ ∘ π.symm := by
+    rw [Equiv.Perm.inv_def, Equiv.symm_apply_eq, siteConfigurationEquiv_inv_apply]
+    exact (comp_symm_comp σ π).symm
+  rw [h, inv_inv, siteConfigurationEquiv_refl_apply]
 
 /-- The action of `sitePermOp π` on a vector is the relabelling of its configurations along the
 inverse permutation. -/

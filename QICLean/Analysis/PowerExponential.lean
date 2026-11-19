@@ -156,65 +156,59 @@ end Real
 
 section TranslationSpacing
 
-/-! Exponential decay after rounding the finite-orbit spacing `N / (2(m+1))`: decay at half
-that spacing is decay in `N` at rate `γ/(4(m+1))`, up to a size-independent prefactor. Hastings,
-arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1644–1654; moved from TNLean (`e113e005`)
-`TNLean/Lattice/TranslationFiniteOrbitDecay.lean`. -/
+/-! Exponential decay after rounding a spacing `N / q`: decay at half that spacing is decay in
+`N` at rate `γ/(2q)`, up to a size-independent prefactor. Hastings' finite-orbit argument takes
+`q = 2(m+1)`, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1644–1654; moved from TNLean
+(`e113e005`) `TNLean/Lattice/TranslationFiniteOrbitDecay.lean`, there stated for that `q`. -/
 
-/-- Rounding the orbit spacing loses at most one half after division by two.
+/-- Rounding the spacing `N / q` loses at most one half after division by two.
 Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
-theorem translation_half_natDiv_lower_bound (N m : ℕ) :
-    (N : ℝ) / (4 * ((m : ℝ) + 1)) ≤
-      ((N / (2 * (m + 1)) : ℕ) : ℝ) / 2 + 1 / 2 := by
-  have hd : 0 < 2 * (m + 1) := by omega
-  have hmod := Nat.mod_lt N hd
-  have hrepr := Nat.mod_add_div N (2 * (m + 1))
-  have hnat : N ≤ (2 * (m + 1)) * (N / (2 * (m + 1)) + 1) := by nlinarith
-  have hreal : (N : ℝ) ≤ (2 * ((m : ℝ) + 1)) *
-      (((N / (2 * (m + 1)) : ℕ) : ℝ) + 1) := by exact_mod_cast hnat
-  apply (div_le_iff₀ (show (0 : ℝ) < 4 * ((m : ℝ) + 1) by positivity)).mpr
+theorem translation_half_natDiv_lower_bound (N : ℕ) {q : ℕ} (hq : 0 < q) :
+    (N : ℝ) / (2 * q) ≤ ((N / q : ℕ) : ℝ) / 2 + 1 / 2 := by
+  have hmod := Nat.mod_lt N hq
+  have hrepr := Nat.mod_add_div N q
+  have hnat : N ≤ q * (N / q + 1) := by nlinarith
+  have hreal : (N : ℝ) ≤ (q : ℝ) * (((N / q : ℕ) : ℝ) + 1) := by exact_mod_cast hnat
+  have hq' : (0 : ℝ) < q := by exact_mod_cast hq
+  apply (div_le_iff₀ (show (0 : ℝ) < 2 * q by positivity)).mpr
   nlinarith
 
-/-- Exponential decay at half the integer orbit spacing gives decay in system size.
+/-- Exponential decay at half the integer spacing gives decay in system size.
 Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
-theorem exp_neg_half_translation_natDiv_le (N m : ℕ) {γ : ℝ} (hγ : 0 ≤ γ) :
-    Real.exp (-(γ * (((N / (2 * (m + 1)) : ℕ) : ℝ) / 2))) ≤
-      Real.exp (γ / 2) * Real.exp (-((γ / (4 * ((m : ℝ) + 1))) * N)) := by
+theorem exp_neg_half_translation_natDiv_le (N : ℕ) {q : ℕ} (hq : 0 < q) {γ : ℝ} (hγ : 0 ≤ γ) :
+    Real.exp (-(γ * (((N / q : ℕ) : ℝ) / 2))) ≤
+      Real.exp (γ / 2) * Real.exp (-((γ / (2 * q)) * N)) := by
   rw [← Real.exp_add]
   apply Real.exp_le_exp.mpr
-  have hs := mul_le_mul_of_nonneg_left (translation_half_natDiv_lower_bound N m) hγ
-  have hs' : (γ / (4 * ((m : ℝ) + 1))) * N ≤
-      γ * (((N / (2 * (m + 1)) : ℕ) : ℝ) / 2) + γ / 2 := by
-    calc _ = γ * ((N : ℝ) / (4 * ((m : ℝ) + 1))) := by ring
-      _ ≤ γ * (((N / (2 * (m + 1)) : ℕ) : ℝ) / 2 + 1 / 2) := hs
+  have hs := mul_le_mul_of_nonneg_left (translation_half_natDiv_lower_bound N hq) hγ
+  have hs' : (γ / (2 * q)) * N ≤ γ * (((N / q : ℕ) : ℝ) / 2) + γ / 2 := by
+    calc _ = γ * ((N : ℝ) / (2 * q)) := by ring
+      _ ≤ γ * (((N / q : ℕ) : ℝ) / 2 + 1 / 2) := hs
       _ = _ := by ring
   linarith
 
-
 /-- The size-decay rate is strictly positive whenever the spatial rate is positive.
 Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
-theorem translation_finiteOrbit_rate_pos (m : ℕ) {γ : ℝ} (hγ : 0 < γ) :
-    0 < γ / (4 * ((m : ℝ) + 1)) := div_pos hγ (by positivity)
+theorem translation_finiteOrbit_rate_pos {q : ℕ} (hq : 0 < q) {γ : ℝ} (hγ : 0 < γ) :
+    0 < γ / (2 * q) := div_pos hγ (by positivity)
 
 /-- Fixed support offsets are absorbed into a size-independent prefactor.
 Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
-theorem translation_exp_floor_decay_le (N m : ℕ) {γ : ℝ} (hγ : 0 ≤ γ) (ρ : ℝ) :
-    Real.exp (-(γ * (((N / (2 * (m + 1)) : ℕ) : ℝ) / 2 - 2 * ρ - 1))) ≤
-      Real.exp (γ * (2 * ρ + 2)) * Real.exp (-((γ / (4 * ((m : ℝ) + 1))) * N)) := by
-  have he := exp_neg_half_translation_natDiv_le N m hγ
-  calc Real.exp (-(γ * (((N / (2 * (m + 1)) : ℕ) : ℝ) / 2 - 2 * ρ - 1)))
-      = Real.exp (γ * (2 * ρ + 1)) *
-          Real.exp (-(γ * (((N / (2 * (m + 1)) : ℕ) : ℝ) / 2))) := by
+theorem translation_exp_floor_decay_le (N : ℕ) {q : ℕ} (hq : 0 < q) {γ : ℝ} (hγ : 0 ≤ γ)
+    (ρ : ℝ) :
+    Real.exp (-(γ * (((N / q : ℕ) : ℝ) / 2 - 2 * ρ - 1))) ≤
+      Real.exp (γ * (2 * ρ + 2)) * Real.exp (-((γ / (2 * q)) * N)) := by
+  have he := exp_neg_half_translation_natDiv_le N hq hγ
+  calc Real.exp (-(γ * (((N / q : ℕ) : ℝ) / 2 - 2 * ρ - 1)))
+      = Real.exp (γ * (2 * ρ + 1)) * Real.exp (-(γ * (((N / q : ℕ) : ℝ) / 2))) := by
             rw [← Real.exp_add]
             congr 1
             ring
-    _ ≤ Real.exp (γ * (2 * ρ + 1)) *
-        (Real.exp (γ / 2) * Real.exp (-((γ / (4 * ((m : ℝ) + 1))) * N))) :=
+    _ ≤ Real.exp (γ * (2 * ρ + 1)) * (Real.exp (γ / 2) * Real.exp (-((γ / (2 * q)) * N))) :=
       mul_le_mul_of_nonneg_left he (Real.exp_pos _).le
-    _ = Real.exp (γ * (2 * ρ + 1) + γ / 2) *
-        Real.exp (-((γ / (4 * ((m : ℝ) + 1))) * N)) := by rw [Real.exp_add]; ring
-    _ ≤ Real.exp (γ * (2 * ρ + 2)) *
-        Real.exp (-((γ / (4 * ((m : ℝ) + 1))) * N)) := by
+    _ = Real.exp (γ * (2 * ρ + 1) + γ / 2) * Real.exp (-((γ / (2 * q)) * N)) := by
+      rw [Real.exp_add]; ring
+    _ ≤ Real.exp (γ * (2 * ρ + 2)) * Real.exp (-((γ / (2 * q)) * N)) := by
           gcongr
           nlinarith
 
@@ -227,27 +221,24 @@ theorem one_le_two_pow_sub_one (m : ℕ) (hm : 1 ≤ m) : 1 ≤ (2 : ℝ) ^ m - 
   rw [heq]
   linarith
 
-/-- Near sizes, including zero orbit spacing, are absorbed by the same explicit
-prefactor as the far-distance estimate, with coefficient `2^m-1`.
+/-- Near sizes, including zero spacing, are absorbed by the same explicit prefactor as the
+far-distance estimate, with coefficient `2^m-1`.
 Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
-theorem translation_finiteOrbit_decay_of_near_far (N m : ℕ) (hm : 1 ≤ m)
-    {γ ρ C z : ℝ} (hγ : 0 < γ) (hC : 0 ≤ C) (htriv : z ≤ C)
-    (hfar : 2 * ρ + 1 < ((N / (2 * (m + 1)) : ℕ) : ℝ) / 2 →
-      z ≤ ((2 : ℝ) ^ m - 1) * C *
-        Real.exp (-(γ * (((N / (2 * (m + 1)) : ℕ) : ℝ) / 2 - 2 * ρ - 1)))) :
+theorem translation_finiteOrbit_decay_of_near_far (N : ℕ) {q : ℕ} (hq : 0 < q) (m : ℕ)
+    (hm : 1 ≤ m) {γ ρ C z : ℝ} (hγ : 0 < γ) (hC : 0 ≤ C) (htriv : z ≤ C)
+    (hfar : 2 * ρ + 1 < ((N / q : ℕ) : ℝ) / 2 →
+      z ≤ ((2 : ℝ) ^ m - 1) * C * Real.exp (-(γ * (((N / q : ℕ) : ℝ) / 2 - 2 * ρ - 1)))) :
     z ≤ ((2 : ℝ) ^ m - 1) * C * Real.exp (γ * (2 * ρ + 2)) *
-      Real.exp (-((γ / (4 * ((m : ℝ) + 1))) * N)) := by
+      Real.exp (-((γ / (2 * q)) * N)) := by
   have hc := one_le_two_pow_sub_one m hm
   have hc0 : 0 ≤ ((2 : ℝ) ^ m - 1) * C := mul_nonneg (by linarith) hC
-  by_cases hnear : ((N / (2 * (m + 1)) : ℕ) : ℝ) / 2 ≤ 2 * ρ + 1
-  · have hratio : (N : ℝ) / (4 * ((m : ℝ) + 1)) ≤ 2 * ρ + 2 := by
-      linarith [translation_half_natDiv_lower_bound N m]
+  by_cases hnear : ((N / q : ℕ) : ℝ) / 2 ≤ 2 * ρ + 1
+  · have hratio : (N : ℝ) / (2 * q) ≤ 2 * ρ + 2 := by
+      linarith [translation_half_natDiv_lower_bound N hq]
     have hscaled := mul_le_mul_of_nonneg_left hratio hγ.le
-    have heq : γ * ((N : ℝ) / (4 * ((m : ℝ) + 1))) =
-        (γ / (4 * ((m : ℝ) + 1))) * N := by ring
+    have heq : γ * ((N : ℝ) / (2 * q)) = (γ / (2 * q)) * N := by ring
     rw [heq] at hscaled
-    have he : 1 ≤ Real.exp (γ * (2 * ρ + 2)) *
-        Real.exp (-((γ / (4 * ((m : ℝ) + 1))) * N)) := by
+    have he : 1 ≤ Real.exp (γ * (2 * ρ + 2)) * Real.exp (-((γ / (2 * q)) * N)) := by
       rw [← Real.exp_add]
       apply Real.one_le_exp
       linarith
@@ -255,12 +246,11 @@ theorem translation_finiteOrbit_decay_of_near_far (N m : ℕ) (hm : 1 ≤ m)
       _ ≤ ((2 : ℝ) ^ m - 1) * C := by
         simpa only [one_mul] using mul_le_mul_of_nonneg_right hc hC
       _ ≤ (((2 : ℝ) ^ m - 1) * C) *
-          (Real.exp (γ * (2 * ρ + 2)) *
-            Real.exp (-((γ / (4 * ((m : ℝ) + 1))) * N))) :=
+          (Real.exp (γ * (2 * ρ + 2)) * Real.exp (-((γ / (2 * q)) * N))) :=
         le_mul_of_one_le_right hc0 he
       _ = _ := by ring
   · have hh := hfar (lt_of_not_ge hnear)
-    have he := translation_exp_floor_decay_le N m hγ.le ρ
+    have he := translation_exp_floor_decay_le N hq hγ.le ρ
     exact hh.trans ((mul_le_mul_of_nonneg_left he hc0).trans_eq (by ring))
 
 end TranslationSpacing
