@@ -18,6 +18,8 @@ import QICLean.ManyBody.Dynamics.GraphBall
 
 noncomputable section
 
+open LowEnergyBasis
+
 namespace ManyBody
 
 open GaussianFilter Matrix
@@ -324,7 +326,7 @@ theorem mem_supercell_iff {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _
 /-- The supercell satisfies the hypothesis on the subgroup in
 `groundCompression_sitePermOp_conj`, `groundCompression_commutator_eq_of_mem_supercell` and
 `norm_groundCompression_commutator_le_of_mem_supercell`. -/
-theorem sitePermOp_toPerm_mulVec_eq_of_mem_supercell {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ}
+theorem sitePermOp_mulVec_eq_of_mem_supercell {H : Matrix (Config fun _ : V ↦ Fin q) (Config fun _ : V ↦ Fin q) ℂ}
     (hInv : IsSiteInvariant G H) {E₀ : ℝ} {g : G} (hg : g ∈ supercell G q H E₀)
     (v : EuclideanSpace ℂ (Config fun _ : V ↦ Fin q)) (hv : v ∈ groundSpace H E₀) :
     sitePermOp (α := Fin q) (MulAction.toPerm g) *ᵥ WithLp.ofLp v = WithLp.ofLp v := by
@@ -492,94 +494,9 @@ end ManyBody
 
 open Matrix
 
-namespace SimpleGraph
 
-variable {V : Type*} {Γ : SimpleGraph V} {n R : ℕ}
-
-/-- One step of the triangle inequality: crossing an edge changes the circular displacement
-from a fixed site by at most \(R\). -/
-private theorem natAbs_valMinAbs_sub_le_add_of_adj (π : V → ZMod n)
-    (hπ : ∀ u v, Γ.Adj u v → (π v - π u).valMinAbs.natAbs ≤ R)
-    (u w x : V) (h : Γ.Adj u w) :
-    (π w - π x).valMinAbs.natAbs ≤ (π u - π x).valMinAbs.natAbs + R := by
-  simpa only [add_comm (π u - π x) (π w - π u), sub_add_sub_cancel] using
-    (ZMod.natAbs_valMinAbs_add_le (π u - π x) (π w - π u)).trans
-      ((Int.natAbs_add_le _ _).trans (Nat.add_le_add_left (hπ u w h) _))
-
-/-- Accumulating the one-edge step along a walk: the circular displacement grows by at most
-\(R\) times the length of the walk. -/
-private theorem natAbs_valMinAbs_sub_le_add_length_mul (π : V → ZMod n)
-    (hπ : ∀ u v, Γ.Adj u v → (π v - π u).valMinAbs.natAbs ≤ R)
-    (x : V) {u y : V} (p : Γ.Walk u y) :
-    (π y - π x).valMinAbs.natAbs ≤
-      (π u - π x).valMinAbs.natAbs + R * p.length := by
-  induction p with
-  | nil => simp
-  | cons h p ih =>
-    have hstep := natAbs_valMinAbs_sub_le_add_of_adj π hπ _ _ x h
-    rw [SimpleGraph.Walk.length_cons, Nat.mul_succ]
-    omega
-
-/-- If each edge changes a cell coordinate by at most the positive integer \(R\), its
-circular displacement is at most \(R\) times the graph distance. -/
-theorem natAbs_valMinAbs_sub_le_edist (hR : 0 < R) (π : V → ZMod n)
-    (hπ : ∀ u v, Γ.Adj u v → (π v - π u).valMinAbs.natAbs ≤ R) (x y : V) :
-    ((π y - π x).valMinAbs.natAbs : ℕ∞) ≤ (R : ℕ∞) * Γ.edist x y := by
-  rcases eq_or_ne (Γ.edist x y) ⊤ with h | h
-  · simp [h, hR.ne']
-  · obtain ⟨p, hp⟩ := SimpleGraph.exists_walk_of_edist_ne_top h
-    rw [← hp]
-    have hw := natAbs_valMinAbs_sub_le_add_length_mul π hπ x p
-    simp only [sub_self, ZMod.valMinAbs_zero, Int.natAbs_zero, zero_add] at hw
-    exact_mod_cast hw
-
-end SimpleGraph
 
 namespace ManyBody
-
-/-- Translation by the `k`-th power advances a cell coordinate by `k`.
-Hastings, arXiv:cond-mat/0508554v3, lines 1603–1618. -/
-theorem coordinate_pow_smul {V Γ : Type*} [Group Γ] [MulAction Γ V]
-    {n : ℕ} (π : V → ZMod n) (e : Γ) (he : ∀ v, π (e • v) = π v + 1)
-    (k : ℕ) (v : V) : π (e ^ k • v) = π v + (k : ZMod n) := by
-  induction k with
-  | zero => simp
-  | succ k ih => rw [pow_succ', mul_smul, he, ih, Nat.cast_succ]; abel
-
-/-- **Multiples of `q` reach far.** For `q ≥ 1` and residues `a`, `b` modulo `n`, some
-`b + qt` lies at circular distance more than `n / 2 - q` from `a`. -/
-theorem exists_lt_natAbs_valMinAbs_add {n : ℕ} [NeZero n] {q : ℕ} (hq : 0 < q)
-    (a b : ZMod n) :
-    ∃ t : ℕ, n / 2 < (b + ((q * t : ℕ) : ZMod n) - a).valMinAbs.natAbs + q := by
-  have hn := NeZero.pos n
-  set c := (b - a).val with hc
-  have hcL : c < n := ZMod.val_lt (b - a)
-  set h := n / 2 with hh
-  have hhn : h ≤ n - h := by omega
-  have hval (t : ℕ) : (b + ((q * t : ℕ) : ZMod n) - a).val = (q * t + c) % n := by
-    rw [← ZMod.val_natCast, Nat.cast_add, hc, ZMod.natCast_zmod_val]
-    congr 1
-    abel
-  simp only [ZMod.valMinAbs_natAbs_eq_min]
-  by_cases hsmall : h < q
-  · exact ⟨0, by omega⟩
-  replace hsmall := not_lt.mp hsmall
-  by_cases hch : c ≤ h
-  · refine ⟨(h - c) / q, ?_⟩
-    have h1 := Nat.div_mul_le_self (h - c) q
-    have h2 := Nat.lt_div_mul_add (a := h - c) hq
-    rw [mul_comm] at h1 h2
-    rw [hval, Nat.mod_eq_of_lt (show q * ((h - c) / q) + c < n by omega)]
-    omega
-  · refine ⟨(n + h - c) / q, ?_⟩
-    have h1 := Nat.div_mul_le_self (n + h - c) q
-    have h2 := Nat.lt_div_mul_add (a := n + h - c) hq
-    rw [mul_comm] at h1 h2
-    set s := q * ((n + h - c) / q) + c
-    have hs : s % n = s - n := by
-      rw [Nat.mod_eq_sub_mod (by omega), Nat.mod_eq_of_lt (by omega)]
-    rw [hval, hs]
-    omega
 
 /-- The coordinate of a site of the ring, as a residue: subtraction of sites is subtraction of
 residues. -/
@@ -628,11 +545,11 @@ theorem exists_mem_supercell_lt_edist_add {Γ : Type*} [CommGroup Γ] [MulAction
     (hπ : ∀ u v, G.Adj u v → (π v - π u).valMinAbs.natAbs ≤ R)
     (e : Γ) (he : ∀ v, π (e • v) = π v + 1) (x y : V) :
     ∃ g ∈ supercell Γ d H E₀, ((n / 2 : ℕ) : ℕ∞) < (R : ℕ∞) * G.edist x (g • y) + q := by
-  obtain ⟨t, ht⟩ := exists_lt_natAbs_valMinAbs_add hq (π x) (π y)
+  obtain ⟨t, ht⟩ := ZMod.exists_lt_natAbs_valMinAbs_add hq (π x) (π y)
   refine ⟨(e ^ t) ^ q, pow_mem_supercell hden _, ?_⟩
   rw [← pow_mul, Nat.mul_comm t q]
   have hdist := SimpleGraph.natAbs_valMinAbs_sub_le_edist hR π hπ x (e ^ (q * t) • y)
-  rw [coordinate_pow_smul π e he] at hdist
+  rw [ZMod.coordinate_pow_smul π e he] at hdist
   have h1 : ((n / 2 : ℕ) : ℕ∞) <
       ((π y + ((q * t : ℕ) : ZMod n) - π x).valMinAbs.natAbs : ℕ∞) + q := by
     exact_mod_cast ht
