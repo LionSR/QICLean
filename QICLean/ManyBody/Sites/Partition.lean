@@ -24,6 +24,7 @@ qubits and ancillas, has finite basis types with decidable equality when both fa
 ## Main definitions
 
 * `ManyBody.complPartitionEquiv` — configurations outside `D` as families over the blocks.
+* `ManyBody.complEmptyEquiv` — the configurations outside the empty region.
 
 ## Main results
 
@@ -66,6 +67,13 @@ def complPartitionEquiv (h : IsComplPartition D r blk) :
     have key : ∀ b' (_ : b' = b) (hv' : v ∈ r b'), F b' ⟨v, hv'⟩ = F b ⟨v, hv⟩ := by
       rintro b' rfl _; rfl
     exact key _ (h.eq_of_mem ⟨v, Finset.disjoint_left.mp (h.disjoint b) hv⟩ b hv) _
+
+/-- The configurations outside the empty region are the configurations. -/
+def complEmptyEquiv (X : V → Type*) : ComplConfig X ∅ ≃ Config X where
+  toFun w v := w ⟨v, Finset.notMem_empty v⟩
+  invFun σ v := σ v.1
+  left_inv _ := rfl
+  right_inv _ := rfl
 
 /-- A sum over the configurations outside `D` of a product of functions of the blocks is the
 product over the blocks of the sums over their configurations. -/

@@ -516,8 +516,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{lemma}[Sums over a partition into blocks]
     \label{lem:sites_partition}
     \lean{ManyBody.IsComplPartition, ManyBody.complRestrict,
-        ManyBody.complPartitionEquiv, ManyBody.sum_prod_complPartition,
-        ManyBody.prod_ite_complPartition}
+        ManyBody.complPartitionEquiv, ManyBody.complEmptyEquiv,
+        ManyBody.sum_prod_complPartition, ManyBody.prod_ite_complPartition}
     \leanok
     \uses{def:sites_config}
     Let $D$ be a region and let $(R_b)_{b\in B}$ be a finite family of pairwise
@@ -530,7 +530,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         \notag
     \end{align}
     and two configurations of $V\setminus D$ are equal exactly when they agree on
-    every block.
+    every block. For $D$ empty, the configurations of $V\setminus D$ are those of $V$.
 \end{lemma}
 \begin{proof}\leanok
     The inverse bijection takes a family of configurations of the blocks to the

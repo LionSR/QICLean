@@ -71,7 +71,8 @@ preservation, and the backward light cone.
     \label{def:circuits_layer}
     \lean{QuantumCircuit.Layer, QuantumCircuit.Layer.Free,
         QuantumCircuit.Layer.Index, QuantumCircuit.Layer.kraus, QuantumCircuit.Layer.kraus_apply,
-        QuantumCircuit.Layer.krausFamily, QuantumCircuit.Layer.Forall,
+        QuantumCircuit.Layer.krausFamily, QuantumCircuit.Layer.gateFamily,
+        QuantumCircuit.Layer.gateFamily_krausGate, QuantumCircuit.Layer.Forall,
         QuantumCircuit.Layer.lightCone}
     \leanok
     \uses{def:circuits_geometry, def:circuits_gate_family}
@@ -106,6 +107,27 @@ preservation, and the backward light cone.
     the condition in the formula for the entries of a placed matrix.
 \end{proof}
 
+\begin{lemma}[A layer is the tensor product of its local maps]
+    \label{lem:circuits_layer_entry}
+    \lean{QuantumCircuit.Layer.map_matrixUnit_apply}
+    \leanok
+    \uses{def:circuits_layer}
+    The map of the layer is the tensor product of the maps of its gates and onsite families: on a
+    matrix unit $\ketbra{x}{x'}$ its entry at $(y,y')$ is
+    \begin{align}
+        \prod_b\Phi_{g_b}\bigl(\ketbra{x|_{C_b}}{x'|_{C_b}}\bigr)_{y|_{C_b},y'|_{C_b}}
+        \prod_s\Phi_{k_s}\bigl(\ketbra{x_s}{x'_s}\bigr)_{y_s,y'_s}.
+        \notag
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:kraus_family_channel}
+    The entry of $\sum_iK_i\ketbra{x}{x'}K_i^\dagger$ is
+    $\sum_i(K_i)_{yx}\overline{(K_i)_{y'x'}}$; each $K_i$ is a product of local entries, and
+    the sum over the choices $i$ of one outcome per cell and remaining site is the product
+    of the local sums.
+\end{proof}
+
 \section{The Heisenberg picture of a layer}
 \label{sec:circuits_layer_dual}
 
@@ -118,6 +140,8 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Layer.BlockIndex, QuantumCircuit.Layer.indexEquiv,
         QuantumCircuit.Layer.region_disjoint, QuantumCircuit.Layer.blockOf,
         QuantumCircuit.Layer.mem_region_blockOf, QuantumCircuit.Layer.blockOf_eq_of_mem,
+        QuantumCircuit.Layer.isComplPartition_region, QuantumCircuit.Layer.sum_prod_region,
+        QuantumCircuit.Layer.sum_prod_mul_prod,
         QuantumCircuit.Layer.blockKraus, QuantumCircuit.Layer.kraus_apply_eq_prod,
         QuantumCircuit.Layer.blockEffect, QuantumCircuit.Layer.blockEffect_eq_one,
         QuantumCircuit.Layer.unionRegion, QuantumCircuit.Layer.region_subset_unionRegion,
@@ -129,7 +153,10 @@ and each Kraus operator is a product of local entries over the blocks.
         QuantumCircuit.Layer.dual_kronecker, QuantumCircuit.Layer.dual_place}
     \leanok
     \uses{def:circuits_layer, lem:sites_partition, def:sites_place}
-    Let $D$ be the union of a set $N$ of blocks of a layer. In the cut along $D$,
+    The blocks of a layer partition the sites, so a sum over the configurations of any
+    system of a product over the blocks of functions of the restrictions is the product over
+    the blocks of the sums over their configurations. Let $D$ be the union of a set $N$ of
+    blocks of a layer. In the cut along $D$,
     every Kraus operator is $K_i=K^{\mathrm{near}}_{i_N}\otimes K^{\mathrm{far}}_{i_F}$,
     the products of the local entries over the blocks in $N$ and over the
     remaining blocks $F$, and for all $M$ on $\C^{Y_D}$ and $N$ on $\C^{Y_{V\setminus D}}$
@@ -150,6 +177,7 @@ and each Kraus operator is a product of local entries over the blocks.
     \end{align}
 \end{lemma}
 \begin{proof}\leanok
+    The first statement is Lemma~\ref{lem:sites_partition} with $D$ empty.
     Splitting the product over the blocks into the blocks in $N$ and the others
     gives the Kronecker factorization. Then
     $K_i^\dagger(M\otimes N)K_i=((K^{\mathrm{near}})^\dagger MK^{\mathrm{near}})

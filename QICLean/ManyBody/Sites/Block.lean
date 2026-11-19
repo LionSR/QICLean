@@ -50,13 +50,6 @@ private theorem isComplPartition_blockPreimage :
   mem _ := (mem_blockPreimage_singleton f).mpr rfl
   eq_of_mem _ _ h := (mem_blockPreimage_singleton f).mp h
 
-/-- The configurations outside the empty region are the configurations. -/
-private def complEmptyEquiv (X : V → Type) : ComplConfig X ∅ ≃ Config X where
-  toFun w v := w ⟨v, Finset.notMem_empty v⟩
-  invFun σ v := σ v.1
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 /-- The system on `V'` whose basis at `b` is the configurations of the block `b`. -/
 abbrev blockSystem (X : V → Type) : V' → Type :=
   fun b ↦ RegionConfig X (blockPreimage f {b})
