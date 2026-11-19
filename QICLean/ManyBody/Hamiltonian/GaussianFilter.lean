@@ -15,26 +15,26 @@ import QICLean.ManyBody.Hamiltonian.GroundSpace
 For a Hermitian matrix `H`, a gap `ΔE > 0` and a parameter `q ≥ 0`, the Gaussian-filtered version
 of an operator `W` is its Heisenberg evolution under `H` averaged against the centered Gaussian of
 variance `q / ΔE²`:
-`W̃ = (ΔE / √(2πq)) ∫ e^{iHt} W e^{-iHt} e^{-(tΔE)²/(2q)} dt`.
+`W_tilde = (ΔE / √(2πq)) ∫ e^{iHt} W e^{-iHt} e^{-(tΔE)²/(2q)} dt`.
 It is the Gaussian intertwiner `GaussianFilter.gaussianIntertwiner` with both Hamiltonians equal
 to `H`, and its matrix elements between eigenvectors of energies `E` and `E'` are those of `W`
 times `exp (-q ((E - E') / ΔE)² / 2)`.
 
 Filtering is additive in `W`, returns `H` from `H`, does not increase the operator norm, and keeps
 the matrix elements between ground vectors. If every eigenvalue of `H` equals the ground energy
-`E₀` or is at least `E₀ + ΔE`, the excited component of `W̃ ψ` has norm at most
+`E₀` or is at least `E₀ + ΔE`, the excited component of `W_tilde ψ` has norm at most
 `‖W‖ e^{-q/2} ‖ψ‖` for each ground vector `ψ`; if moreover `W ψ` has no ground component, then
-`‖W̃ ψ‖ ≤ ΔE⁻¹ e^{-q/2} ‖[H, W] ψ‖`. The ground space may be degenerate. Nothing here involves
+`‖W_tilde ψ‖ ≤ ΔE⁻¹ e^{-q/2} ‖[H, W] ψ‖`. The ground space may be degenerate. Nothing here involves
 sites.
 
 ## Main definitions
 
-* `ManyBody.gaussianFilteredTerm` — the filtered operator `W̃`.
+* `ManyBody.gaussianFilteredTerm` — the filtered operator `W_tilde`.
 
 ## Main results
 
 * `ManyBody.inner_gaussianFilteredTerm` — the matrix elements.
-* `ManyBody.norm_sub_starProjection_gaussianFilteredTerm_le` — the excited component of `W̃ ψ`.
+* `ManyBody.norm_sub_starProjection_gaussianFilteredTerm_le` — the excited component of `W_tilde ψ`.
 * `ManyBody.gaussianFilteredTerm_sum`, `ManyBody.gaussianFilteredTerm_self`,
   `ManyBody.norm_gaussianFilteredTerm_le`, `ManyBody.inner_gaussianFilteredTerm_ground`.
 * `ManyBody.norm_gaussianFilteredTerm_apply_le_commutator`,
@@ -48,7 +48,8 @@ sites.
   (lines 223–227), the excited-component bound is eq. `gs` (lines 237–243), and the sum,
   ground-space and norm statements are eq. `hsum` and lines 250–257. The source places the ground
   energy at `0`; here it is an arbitrary `E₀`. The source sums the low-energy projector over
-  `0 ≤ a ≤ n` (line 229) and writes `‖H_i⁰‖` (line 256); `0 ≤ a ≤ n - 1` and `‖H̃_i⁰‖` are meant.
+  `0 ≤ a ≤ n` (line 229) and writes `‖H_i⁰‖` (line 256); `0 ≤ a ≤ n - 1` and `‖H_tilde_i⁰‖`
+  are meant.
 * Hastings, *An area law for one-dimensional quantum systems*, arXiv:0705.2024v4, eqs. `tighter`
   and `tighter2` (`law16.tex`, lines 794–815), for the commutator bound.
 

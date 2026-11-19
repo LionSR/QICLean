@@ -15,19 +15,19 @@ import QICLean.ManyBody.Sites.Twirl
 # Locality of Gaussian-filtered terms
 
 If the Heisenberg evolution `W(t) = e^{iHt} W e^{-iHt}` nearly commutes with an operator `O`
-for all times `|t| ≤ T`, so does the Gaussian-filtered operator `W̃`, up to the Gaussian mass of
-the times `|t| > T`, where the commutator is bounded crudely by `2 ‖W‖ ‖O‖`. The same splitting
-of the filter integral localizes `W̃` by a region expectation. By the Duhamel formula the change
-`W̃ - W` made by the filter is nearly supported near the support of `[H, W]`, with the
+for all times `|t| ≤ T`, so does the Gaussian-filtered operator `W_tilde`, up to the Gaussian
+mass of the times `|t| > T`, where the commutator is bounded crudely by `2 ‖W‖ ‖O‖`. The same
+splitting of the filter integral localizes `W_tilde` by a region expectation. By the Duhamel
+formula the change `W_tilde - W` made by the filter is nearly supported near the support of `[H, W]`, with the
 first-moment Gaussian tail in place of the Gaussian mass.
 
 For an interaction `Φ : Interaction X T` of Hermitian terms on a finite graph, with supports of
 diameter at most `R` and at most `v_R` sites and a per-site budget `b₀`, the Lieb–Robinson
-bounds of `ManyBody.Dynamics` supply the commutator and localization inputs: `W̃` is
+bounds of `ManyBody.Dynamics` supply the commutator and localization inputs: `W_tilde` is
 approximated on the graph neighbourhood of the support of `W`. If the supports are single sites
 (in a metric space, balls of radius zero), the terms commute and filtering fixes each of them.
 
-**Local fix (the approximation `M_i`, eq. `mid`):** the supported approximation of `W̃` is its
+**Local fix (the approximation `M_i`, eq. `mid`):** the supported approximation of `W_tilde` is its
 region expectation onto the `l`-neighbourhood of the support of `W`, not the source's evolution
 of `H_i` under the terms within distance `l_proj - R` of `i`; the source radius requires
 `l = l_proj - R`, the constants are not identified with the source's, and the Gaussian weight
@@ -43,7 +43,7 @@ do not impose; the metric version without growth hypothesis is in
 
 **Local fix (error of the localized parts, arXiv:0705.2024v4, lines 816–828):** the source
 prints `‖M_L - H_L‖ ≤ O(ΔE⁻¹ J² e^{-l/3ξ})`, which cannot hold in general; the next step needs
-`‖M_L - H̃_L‖` small, which is what the increment estimate proves, with `M_L - H_L` supported
+`‖M_L - H_tilde_L‖` small, which is what the increment estimate proves, with `M_L - H_L` supported
 near the cut. Documented in `docs/paper-gaps/hastings07_filtered_part_localization.tex`.
 
 ## Main results

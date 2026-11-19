@@ -12,7 +12,7 @@ import QICLean.ManyBody.Hamiltonian.GaussianFilterLocality
 /-!
 # Gaussian-filtered terms under truncated dynamics
 
-Hastings approximates the Gaussian-filtered term `H̃_i` by
+Hastings approximates the Gaussian-filtered term `H_tilde_i` by
 `M_i = (ΔE / √(2πq)) ∫ e^{-(tΔE)²/(2q)} e^{iH_s t} H_i e^{-iH_s t} dt`, where the truncated
 Hamiltonian `H_s = ∑_{k ∈ s} h_k` keeps only the terms of the interaction near `i`: `M_i` is the
 filter of `H_i` under `H_s`. If the generator and `W` act on a region `K`, so does the filter.
