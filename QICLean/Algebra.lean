@@ -17,6 +17,7 @@ import QICLean.Algebra.CommutingPolynomialSchmidtRank
 import QICLean.Algebra.CompactSVD
 import QICLean.Algebra.ComplexPhasePositivity
 import QICLean.Algebra.ComplexSqrt
+import QICLean.Algebra.ConnectedSetCount
 import QICLean.Algebra.ConstantPowerSums
 import QICLean.Algebra.CornerCompression
 import QICLean.Algebra.CornerSkolemNoether
@@ -109,6 +110,7 @@ import QICLean.Algebra.OperatorSchmidtTwoCuts
 import QICLean.Algebra.OrderedMatrixAction
 import QICLean.Algebra.OrderedPolynomialGaps
 import QICLean.Algebra.OrthogonalProjection
+import QICLean.Algebra.OverlapGraph
 import QICLean.Algebra.OverlappingLiftAlgebra
 import QICLean.Algebra.PartialTraceDomination
 import QICLean.Algebra.PermutationMatrixUnitary

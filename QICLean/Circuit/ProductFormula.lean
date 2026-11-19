@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Circuit.Core.Parallel
 import QICLean.Circuit.Core.LightCone
 import QICLean.Analysis.HermitianProductFormula
-import Mathlib.Combinatorics.SimpleGraph.Coloring.Vertex
+import QICLean.Algebra.OverlapGraph
 
 /-!
 # Product-formula circuits
@@ -36,7 +36,7 @@ neighbourhood of `R` (`localFamilyInside`).
 ## Main definitions
 
 * `QuantumCircuit.Geometry.ofSupports` — the cells `T k`, each of cost one.
-* `QuantumCircuit.overlapGraph`, `QuantumCircuit.colourClass`, `QuantumCircuit.colourOrder`.
+* `QuantumCircuit.colourClass`, `QuantumCircuit.colourOrder`.
 * `QuantumCircuit.colourSweeps`, `QuantumCircuit.productLayer`, `QuantumCircuit.productCircuit`.
 * `QuantumCircuit.trotterGate`, `QuantumCircuit.trotterCircuit`,
   `QuantumCircuit.localFamilyInside`.
@@ -57,7 +57,7 @@ neighbourhood of `R` (`localFamilyInside`).
   `QuantumCircuit.norm_dual_trotterCircuit_sub_le_restrict` — only the light cone matters.
 -/
 
-open Matrix ManyBody ProductFormula SpectralFilter
+open Matrix ManyBody ProductFormula SpectralFilter SimpleGraph
 open scoped Matrix.Norms.L2Operator
 
 namespace QuantumCircuit
@@ -75,41 +75,29 @@ instance (T : κ → Finset S) : Fintype (Geometry.ofSupports T).Cell :=
 
 /-! ### Colourings -/
 
-/-- The overlap graph of a family of supports: distinct indices are adjacent when their supports
-meet. -/
-def overlapGraph (T : κ → Finset S) : SimpleGraph κ :=
-  SimpleGraph.fromRel fun k l ↦ ¬Disjoint (T k) (T l)
-
 variable {T : κ → Finset S} {m : ℕ}
-
-omit [Fintype S] [DecidableEq S] [Fintype κ] [DecidableEq κ] in
-/-- Distinct indices of one colour have disjoint supports. -/
-theorem disjoint_of_colour_eq (c : (overlapGraph T).Coloring (Fin m)) {k l : κ} (hkl : k ≠ l)
-    (h : c k = c l) : Disjoint (T k) (T l) := by
-  by_contra hd
-  exact c.valid ((SimpleGraph.fromRel_adj _ _ _).mpr ⟨hkl, Or.inl hd⟩) h
 
 /-- The indices of the colour `i`. -/
 def colourClass (c : (overlapGraph T).Coloring (Fin m)) (i : Fin m) : Finset κ :=
   Finset.univ.filter fun k ↦ c k = i
 
-omit [Fintype S] [DecidableEq S] [DecidableEq κ] in
+omit [Fintype S] [DecidableEq κ] in
 theorem mem_colourClass {c : (overlapGraph T).Coloring (Fin m)} {i : Fin m} {k : κ} :
     k ∈ colourClass c i ↔ c k = i := by
   simp [colourClass]
 
-omit [Fintype S] [DecidableEq S] [DecidableEq κ] in
+omit [Fintype S] [DecidableEq κ] in
 theorem pairwiseDisjoint_colourClass (c : (overlapGraph T).Coloring (Fin m)) (i : Fin m) :
     ((colourClass c i : Finset κ) : Set κ).PairwiseDisjoint T := by
   intro k hk l hl hkl
-  exact disjoint_of_colour_eq c hkl
+  exact c.disjoint_of_overlapGraph hkl
     ((mem_colourClass.mp hk).trans (mem_colourClass.mp hl).symm)
 
 /-- The indices colour by colour, each colour class in the order of `Finset.toList`. -/
 noncomputable def colourOrder (c : (overlapGraph T).Coloring (Fin m)) : List κ :=
   (List.ofFn fun i ↦ (colourClass c i).toList).flatten
 
-omit [Fintype S] [DecidableEq S] [DecidableEq κ] in
+omit [Fintype S] [DecidableEq κ] in
 theorem nodup_colourOrder (c : (overlapGraph T).Coloring (Fin m)) : (colourOrder c).Nodup := by
   refine List.nodup_flatten.mpr ⟨fun l hl ↦ ?_, List.pairwise_ofFn.mpr fun i j hij ↦ ?_⟩
   · obtain ⟨i, rfl⟩ := List.mem_ofFn.mp hl
@@ -118,12 +106,12 @@ theorem nodup_colourOrder (c : (overlapGraph T).Coloring (Fin m)) : (colourOrder
     rw [Finset.mem_toList, mem_colourClass] at hi hj
     exact absurd (hi.symm.trans hj) hij.ne
 
-omit [Fintype S] [DecidableEq S] [DecidableEq κ] in
+omit [Fintype S] [DecidableEq κ] in
 theorem mem_colourOrder (c : (overlapGraph T).Coloring (Fin m)) (k : κ) : k ∈ colourOrder c := by
   rw [colourOrder, List.mem_flatten]
   exact ⟨_, List.mem_ofFn.mpr ⟨c k, rfl⟩, Finset.mem_toList.mpr (mem_colourClass.mpr rfl)⟩
 
-omit [Fintype S] [DecidableEq S] [DecidableEq κ] in
+omit [Fintype S] [DecidableEq κ] in
 /-- The colour classes list every index exactly once. -/
 theorem colourOrder_perm (c : (overlapGraph T).Coloring (Fin m)) :
     (colourOrder c).Perm Finset.univ.toList :=
