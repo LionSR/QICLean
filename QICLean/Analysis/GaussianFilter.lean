@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Analysis.GaussianFilter
 
+import QICLean.Analysis.GaussianFilter.CauchyTransform
 import QICLean.Analysis.GaussianFilter.CommutatorSeries
 import QICLean.Analysis.GaussianFilter.GroundEstimate
 import QICLean.Analysis.GaussianFilter.Kernel
