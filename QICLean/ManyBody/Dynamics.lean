@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.ManyBody.Dynamics
 
+import QICLean.ManyBody.Dynamics.BoundedDegreeImaginaryTime
 import QICLean.ManyBody.Dynamics.CommutatorRecursion
 import QICLean.ManyBody.Dynamics.ComponentLocality
 import QICLean.ManyBody.Dynamics.DisjointRelativeEvolution

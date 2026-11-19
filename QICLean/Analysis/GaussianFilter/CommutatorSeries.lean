@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.GaussianFilter.MatrixIntegral
+import QICLean.Analysis.MatrixCommutator
 import Mathlib.Analysis.Normed.Operator.Mul
 import Mathlib.Analysis.InnerProductSpace.Dual
 
@@ -19,6 +20,7 @@ locally*, arXiv:cond-mat/0508554v3, lines 1005–1009. For the source's variance
 `h = q/ΔE²`, the coefficient at order `2r` contains `(q/ΔE²)ʳ`, rather than the printed
 power `(q/ΔE²)^{2r}`. The proof uses the finite-dimensional spectral theorem and the
 norm-convergent exponential series, without interchanging an integral and a series.
+The commutator map `commutatorCLM` is defined in `QICLean/Analysis/MatrixCommutator.lean`.
 
 **Local fix (Gaussian moments):** The corrected variance power is documented at
 `docs/paper-gaps/hastings05_gaussian_series_coefficients.tex`.
@@ -30,15 +32,6 @@ open scoped Matrix.Norms.L2Operator InnerProductSpace NNReal
 namespace GaussianFilter
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
-
-/-- Commutation with `H`, as a continuous linear map on matrices.
-Hastings, arXiv:cond-mat/0508554v3, lines 856–877 and 1005–1009. -/
-noncomputable def commutatorCLM (H : Matrix n n ℂ) :
-    Matrix n n ℂ →L[ℂ] Matrix n n ℂ :=
-  ContinuousLinearMap.mul ℂ _ H - (ContinuousLinearMap.mul ℂ _).flip H
-
-@[simp] theorem commutatorCLM_apply (H W : Matrix n n ℂ) :
-    commutatorCLM H W = H * W - W * H := rfl
 
 private noncomputable def matrixCoefficientCLM (v w : n → ℂ) : Matrix n n ℂ →L[ℂ] ℂ :=
   ((dotProductBilin ℂ ℂ (star v)).comp ((Matrix.mulVecBilin ℂ ℂ).flip w)).toContinuousLinearMap

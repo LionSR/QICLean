@@ -46,7 +46,7 @@ span of the $b'_j$ with $a'_j\le c$.
 \begin{theorem}[Eigenvalue comparison from a low-energy residual]
     \label{thm:low_spectral_eigenvalue_comparison}
     \lean{Matrix.IsHermitian.eigenvalues₀_le_add_of_norm_domRestrict_low_le}
-    \notready
+    \leanok
     \uses{def:spectral_span_le}
     Let $H,F\in\MN{d}$ be Hermitian, with eigenvalues listed in decreasing
     order, and let $G$ be the closed spectral subspace of $F$ at energy $c$.
@@ -56,7 +56,7 @@ span of the $b'_j$ with $a'_j\le c$.
     bounds in~\cite[lines 955--968]{Arad2016RigorousRG}.
 \end{theorem}
 \begin{proof}
-    \notready
+    \leanok
     The first $i+1$ eigenvectors of $H$ and the last $d-i$ eigenvectors of
     $F$ span subspaces with a common nonzero vector $x$. The latter subspace
     is contained in $G$. Spectral expansion and the residual estimate give
@@ -285,7 +285,7 @@ span of the $b'_j$ with $a'_j\le c$.
 \begin{theorem}[Relative low-energy spaces above the actual ground energies]
     \label{thm:relative_low_energy_spaces_close}
     \lean{Matrix.IsHermitian.groundEnergy_compare_and_isCloseTo_spectralSpanLE_of_norm_domRestrict_le}
-    \notready
+    \leanok
     \uses{def:spectral_span_le,def:subspace_close}
     Let $H,F$ be Hermitian matrices on a nonzero finite-dimensional space,
     with $F\le H$. Let $E$ and $E'$ be their respective least eigenvalues,
@@ -309,7 +309,7 @@ span of the $b'_j$ with $a'_j\le c$.
     \cite{gap:alvv16_hard_truncation_windows}.
 \end{theorem}
 \begin{proof}
-    \notready
+    \leanok
     \uses{thm:low_spectral_eigenvalue_comparison,
         thm:spectral_span_close_of_perturbation}
     Weyl monotonicity gives $E'\le E$. Since the lowest eigenvalue of

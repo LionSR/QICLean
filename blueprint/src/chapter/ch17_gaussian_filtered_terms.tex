@@ -129,6 +129,30 @@ chapter.
     (\ref{eq:hastings_filtered_partial_trace}).
 \end{proof}
 
+\begin{theorem}[The Gaussian commutator expansion of a filtered operator]
+    \label{thm:hastings_gaussian_commutator_series}
+    \lean{ManyBody.gaussianFilteredTerm_eq_exp_commutator,
+        ManyBody.hasSum_gaussianFilteredTerm_commutator}
+    \leanok
+    \uses{def:hastings_gaussian_filtered_term, def:gaussian_commutator_operator}
+    Let $H$ be Hermitian, let $W$ be any matrix, and let $q\ge0$ and
+    $\Delta E\in\R$. With $h=q/\Delta E^2$,
+    \begin{align}
+        \widetilde W
+         & =\exp\bigl(-\tfrac h2\operatorname{ad}_H^2\bigr)(W)
+        =\sum_{r=0}^{\infty}\frac{(-h/2)^r}{r!}\operatorname{ad}_H^{2r}(W),
+    \end{align}
+    the series converging in operator norm. The variance has power $r$ at
+    order $2r$, as required by the correction of the printed coefficients
+    in~\cite[lines 1005--1009]{Hastings2006Solving}, documented
+    in~\cite{gap:hastings05_gaussian_series_coefficients}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_commutator_series}
+    This is Theorem~\ref{thm:gaussian_commutator_series} at the nonnegative
+    variance $h=q/\Delta E^2$ of the filter.
+\end{proof}
+
 
 \section{Commuting and zero-range terms}
 \label{sec:gaussian_filtered_zero_range}

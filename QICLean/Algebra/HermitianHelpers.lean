@@ -335,6 +335,21 @@ theorem sub_minEigenvalue_smul_one_posSemidef [Nonempty n]
   rw [hermitian_sub_scalar_spectral hM (minEigenvalue hM)]
   simpa [U, Λ] using hconj
 
+/-- A Hermitian matrix on a nonempty finite space has a unit eigenvector `u` for its smallest
+eigenvalue `a`, and `H - a ≥ 0`. -/
+theorem exists_unit_eigenvector_minEigenvalue [Nonempty n] {H : Matrix n n ℂ}
+    (hH : H.IsHermitian) :
+    ∃ (a : ℝ) (u : n → ℂ), H *ᵥ u = (a : ℂ) • u ∧ star u ⬝ᵥ u = 1 ∧
+      (H - (a : ℂ) • 1).PosSemidef := by
+  obtain ⟨i, hi⟩ := minEigenvalue_achieved hH
+  refine ⟨minEigenvalue hH, ⇑(hH.eigenvectorBasis i), ?_, ?_,
+    sub_minEigenvalue_smul_one_posSemidef hH⟩
+  · rw [hH.mulVec_eigenvectorBasis, hi]
+    simp [Complex.coe_smul]
+  · have h := hH.eigenvectorBasis.inner_eq_one i
+    rw [EuclideanSpace.inner_eq_star_dotProduct] at h
+    simpa [dotProduct_comm] using h
+
 /-- Positive-definite trace lower bound by the smallest eigenvalue.
 
 This is the matrix estimate used in Wolf's compactness argument for the Lorentz

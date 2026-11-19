@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.GaussianFilter.CommutatorSeries
 import QICLean.Analysis.GaussianFilter.MatrixIntegral
 import QICLean.Analysis.GaussianFilter.PhysicalBuffer
 import QICLean.Analysis.GaussianFilter.SpectralGap
@@ -40,6 +41,9 @@ sites.
 * `ManyBody.norm_gaussianFilteredTerm_apply_le_commutator`,
   `ManyBody.norm_gaussianFilteredTerm_apply_le_commutator_of_isGapped` — a term without ground
   component is controlled by its commutator with `H`.
+* `ManyBody.gaussianFilteredTerm_eq_exp_commutator`,
+  `ManyBody.hasSum_gaussianFilteredTerm_commutator` — the filtered operator is
+  `exp(-(q/(2ΔE²)) ad_H²) W`, the norm-convergent sum of its even commutators.
 
 ## References
 
@@ -54,7 +58,12 @@ sites.
   and `tighter2` (`law16.tex`, lines 794–815), for the commutator bound.
 
 Moved from TNLean, `TNLean/Lattice/GaussianFilteredTerm.lean` and `GaussianFilteredGround.lean`
-at commit `e113e005`. Changes: namespace `ManyBody` in place of `TNLean.Lattice`.
+at commit `e113e005`, and `TNLean/Lattice/GaussianFilteredCommutatorSeries.lean` at commit
+`e41c3b63`. Changes: namespace `ManyBody` in place of `TNLean.Lattice`.
+
+**Local fix (Gaussian moments):** in the commutator expansion the variance `q/ΔE²` occurs to the
+power `r` at order `2r`, not to the printed power `2r`; see
+`docs/paper-gaps/hastings05_gaussian_series_coefficients.tex`.
 -/
 
 open GaussianFilter Matrix
@@ -326,5 +335,31 @@ theorem gaussianFilteredTerm_conj {n : Type*} [Fintype n] [DecidableEq n] (r ΔE
     (integrable_intertwinerIntegrand _ hH hH W)
 
 end Conjugation
+
+section CommutatorSeries
+
+/-- The Gaussian-filtered operator is `exp(-(q/(2ΔE²)) ad_H²) W`, where `ad_H W = HW - WH`.
+Hastings, arXiv:cond-mat/0508554v3, lines 1005–1009, with the variance power of the
+module's local fix. -/
+theorem gaussianFilteredTerm_eq_exp_commutator {q : ℝ} (hq : 0 ≤ q) (ΔE : ℝ)
+    {H : Matrix n n ℂ} (hH : H.IsHermitian) (W : Matrix n n ℂ) :
+    gaussianFilteredTerm q ΔE H W =
+      NormedSpace.exp ((-((q / ΔE ^ 2 : ℝ) : ℂ) / 2) • commutatorCLM H ^ 2) W := by
+  rw [gaussianFilteredTerm, gaussianIntertwiner_eq_exp_commutator (q / ΔE ^ 2).toNNReal hH W,
+    Real.coe_toNNReal _ (div_nonneg hq (sq_nonneg ΔE))]
+
+/-- The Gaussian-filtered operator is the operator-norm convergent sum
+`∑ᵣ (-q/(2ΔE²))ʳ/r! ad_H^{2r} W`. Hastings, arXiv:cond-mat/0508554v3, lines 1005–1009, with
+the variance power of the module's local fix. -/
+theorem hasSum_gaussianFilteredTerm_commutator {q : ℝ} (hq : 0 ≤ q) (ΔE : ℝ)
+    {H : Matrix n n ℂ} (hH : H.IsHermitian) (W : Matrix n n ℂ) :
+    HasSum (fun r : ℕ ↦
+      ((-((q / ΔE ^ 2 : ℝ) : ℂ) / 2) ^ r / (r.factorial : ℂ)) •
+        ((commutatorCLM H) ^ (2 * r)) W)
+      (gaussianFilteredTerm q ΔE H W) := by
+  have hs := hasSum_gaussianIntertwiner_commutator (q / ΔE ^ 2).toNNReal hH W
+  rwa [Real.coe_toNNReal _ (div_nonneg hq (sq_nonneg ΔE))] at hs
+
+end CommutatorSeries
 
 end ManyBody
