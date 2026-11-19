@@ -7,7 +7,36 @@ import QICLean.ManyBody.Hamiltonian.ClusterExpansion.Factorization
 import QICLean.ManyBody.Sites.ProductForm
 
 /-!
-DOC
+# The truncated operator of an interaction in matrix product form
+
+Hastings, *Solving gapped Hamiltonians locally*, arXiv:cond-mat/0508554v3, `proj3new.tex`,
+lines 1256–1279, shows that the truncated operator `ρ(β, l_proj)` "can be exactly written in a
+matrix product form", the form of eq. `mpf` (lines 1024–1039). For an interaction `Φ` whose term
+`h_k` acts on `acts k`, a reflexive locality relation `near` and the overlap graph of the
+supports, a cluster is large when two sites of its supports are not related by `near`
+(`IsLargeSupport`). The index at a site records the cluster containing it, if any, and a
+matrix-unit label; the coefficient at a site checks that the recorded cluster is valid and
+recorded at every site of its supports, and at one anchor site carries the matrix element of
+`E_C`. Labels off a cluster are those of a fixed configuration `z`, as in
+`ManyBody.ProductForm.ofSupported`, so the basis types may vary with the site.
+
+The last section takes even powers (eq. `mplt`, lines 1303–1317): `ρ(β, l)^m` is in product form
+and positive semidefinite for even `m`.
+
+## Main results
+
+* `ManyBody.ClusterExpansion.truncatedExp_eq_mul`: the terms acting on no site split off.
+* `ManyBody.ClusterExpansion.hasProductForm_sum_clusterOp`,
+  `ManyBody.ClusterExpansion.hasProductForm_truncatedExp`: `ρ(β, l)` has a matrix product form
+  with the coefficient neighbourhoods `near`.
+* `ManyBody.ClusterExpansion.hasProductForm_truncatedExp_pow_of_even`,
+  `hasProductForm_truncatedExp_of_dist_le`, `hasProductForm_truncatedExp_pow_of_even_of_dist_le`.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/ClusterExpansion/TruncatedProductForm.lean` and
+`TruncatedAllTemperatures.lean`. Changes: the terms are those of `Φ : Interaction X acts` on any
+finite basis types; the coefficient `clusterCoeff` takes the reference configuration `z` for
+the labels off the cluster instead of reusing the label at the anchor site, which needed a
+common dimension; `piKronecker` is `ManyBody.prodOp`.
 -/
 
 universe u
@@ -30,7 +59,8 @@ private theorem apply_eq_apply_of_mem_supportedOperators {σ : Type*} [Fintype �
 
 section Entry
 
-variable {σ ι : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)]
+variable {σ ι : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v,
+    DecidableEq (X v)]
 
 /-- **Entries of a product of operators on disjoint sets of sites.** If the operators `O C`,
 `C ∈ S`, act on pairwise disjoint sets `Y C`, the `(u, v)` entry of their product is the diagonal
@@ -101,7 +131,8 @@ end Entry
 
 section Split
 
-variable {σ : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ] [DecidableEq κ]
+variable {σ : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v,
+    DecidableEq (X v)] {κ : Type*} [Fintype κ] [DecidableEq κ]
 
 /-- A set `C` of terms is large when the union of its supports contains two sites
 that do not satisfy the locality relation `near`.
@@ -146,7 +177,8 @@ theorem truncatedExp_eq_mul (acts : κ → Finset σ)
     truncatedExp (overlapGraph acts) (IsLargeSupport near acts) Φ.term β =
       (∑ A with ∀ k ∈ A, ¬ (acts k).Nonempty, clusterOp Φ.term A β) *
         ∑ A with (∀ k ∈ A, (acts k).Nonempty) ∧
-          NoLargeCluster (overlapGraph acts) (IsLargeSupport near acts) A, clusterOp Φ.term A β := by
+          NoLargeCluster (overlapGraph acts) (IsLargeSupport near acts) A, clusterOp Φ.term A β :=
+              by
   rw [truncatedExp_eq_sum_clusterOp, Finset.sum_mul_sum, ← Finset.sum_product']
   have hf0 : ∀ A₀ A₁ : Finset κ, (∀ k ∈ A₀, ¬ (acts k).Nonempty) →
       (∀ k ∈ A₁, (acts k).Nonempty) → {k ∈ A₀ ∪ A₁ | ¬ (acts k).Nonempty} = A₀ := by
@@ -182,7 +214,8 @@ end Split
 
 section Core
 
-variable {σ : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ] [DecidableEq κ]
+variable {σ : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v,
+    DecidableEq (X v)] {κ : Type*} [Fintype κ] [DecidableEq κ]
   (acts : κ → Finset σ) (near : σ → σ → Prop)
 
 /-- A *valid cluster*: a nonempty connected set of terms, each acting on some site, whose
@@ -467,7 +500,8 @@ of valid clusters with disjoint supports; at such an assignment the product is t
 off the supports times the matrix elements of the `E_C`. -/
 theorem sum_prod_clusterCoeff (z : Config X) (Φ : Interaction X acts) (β : ℝ)
     (u v : Config X) :
-    ∑ c : σ → Option (Finset κ), ∏ i, clusterCoeff acts near z Φ.term β i (fun j ↦ (c j, (u j, v j))) =
+    ∑ c : σ → Option (Finset κ), ∏ i, clusterCoeff acts near z Φ.term β i (fun j ↦ (c j, (u j, v
+        j))) =
       ∑ S ∈ validFamilies acts near,
         (∏ j ∈ (S.biUnion (·.biUnion acts))ᶜ, if u j = v j then 1 else 0) *
           ∏ C ∈ S, clusterOp Φ.term C β u (fun j ↦ if j ∈ C.biUnion acts then v j else u j) := by
@@ -592,7 +626,8 @@ end Core
 
 section Main
 
-variable {σ : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] {κ : Type*} [Fintype κ] [DecidableEq κ]
+variable {σ : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v,
+    DecidableEq (X v)] {κ : Type*} [Fintype κ] [DecidableEq κ]
 
 /-- **The truncated operator in matrix product form** (Hastings, arXiv:cond-mat/0508554v3,
 `proj3new.tex`, lines 1256–1279). For terms `h k` acting on the sites `acts k` of a nonempty
@@ -617,6 +652,91 @@ theorem hasProductForm_truncatedExp [Nonempty σ] (acts : κ → Finset σ)
   exact absurd ⟨x, hxk⟩ ((mem_filter.1 hA).2 k hk)
 
 end Main
+
+
+/-!
+## The truncated operator at every temperature
+
+Hastings, *Solving gapped Hamiltonians locally* (arXiv:cond-mat/0508554v3,
+`References/cond-mat_0508554/proj3new.tex`, lines 1303–1317), sets
+`ρ(β, l_proj) = ρ(β/n, l_proj)^n` (eq. `mplt`) with `n` even, and states that this power is
+positive and in the matrix product form of eq. `mpf`, the `n` indices at each site being grouped
+into one. This file proves both for the actual truncated operator of the cluster expansion: it is
+in product form of range `l` (`hasProductForm_truncatedExp`) and Hermitian when the terms are
+(`isHermitian_truncatedExp`), so `HasProductForm.pow_of_even` applies.
+
+**Local fix (positivity at every temperature):** the source states positive definiteness; the
+result is positive semidefiniteness. Documented in `docs/paper-gaps/hastings05_mplt_positivity.tex`.
+
+The product form holds on every nonempty finite site set with reflexive locality, and
+therefore on every finite metric lattice. The local index ranges of its powers are proved
+in `LocalIndexCount`, with the lattice-volume interpretation
+recorded in `docs/paper-gaps/hastings05_planar_domain_scope.tex`.
+
+### Main results
+
+* `hasProductForm_truncatedExp_pow_of_even`: for even `m`,
+  `ρ(β, l)^m` is in product form of range `l` and positive semidefinite.
+
+### References
+
+* M. B. Hastings, *Solving gapped Hamiltonians locally*, Phys. Rev. B 73 (2006) 085115,
+  arXiv:cond-mat/0508554v3, Section IV, eq. `mplt`, lines 1303–1317.
+-/
+
+section AllTemperatures
+
+open scoped MatrixOrder ComplexOrder
+
+variable {σ : Type*} [Fintype σ] [DecidableEq σ] {X : σ → Type u} [∀ v, Fintype (X v)] [∀ v,
+    DecidableEq (X v)] {κ : Type*} [Fintype κ] [DecidableEq κ]
+
+/-- **Eq. `mplt` for the truncated operator** (Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`,
+lines 1303–1317). Let the finite site set be nonempty, let the locality relation be reflexive,
+let each term `h k` be Hermitian and act on the sites `acts k`, and let `m` be even. Then
+`ρ(β, l)^m` is in matrix product form with the same locality relation and
+positive semidefinite. With `β/n` in place of `β` and `m = n`, this is the matrix product form and
+the positivity of `ρ(β, l_proj) = ρ(β/n, l_proj)^n`; the source states positive definiteness, see
+the section docstring. -/
+theorem hasProductForm_truncatedExp_pow_of_even [Nonempty σ] (acts : κ → Finset σ)
+    (Φ : Interaction X acts)
+    (hherm : ∀ k, (Φ.term k).IsHermitian) (near : σ → σ → Prop) (hnear : ∀ i, near i i)
+    (β : ℝ) {m : ℕ} (hm : Even m) :
+    HasProductForm X near
+        ((truncatedExp (overlapGraph acts) (IsLargeSupport near acts) Φ.term β) ^ m) ∧
+      ((truncatedExp (overlapGraph acts) (IsLargeSupport near acts) Φ.term β) ^ m).PosSemidef :=
+  (hasProductForm_truncatedExp acts Φ near hnear β).pow_of_even
+    (isHermitian_truncatedExp _ _ hherm β) hm
+
+/-- The source's diameter truncation on an arbitrary finite pseudometric site set has
+matrix product form of range `l`. Hastings, arXiv:cond-mat/0508554v3, lines 1256–1279. -/
+theorem hasProductForm_truncatedExp_of_dist_le [PseudoMetricSpace σ] [Nonempty σ]
+    (acts : κ → Finset σ) (Φ : Interaction X acts)
+    {l : ℝ} (hl : 0 ≤ l) (β : ℝ) :
+    HasProductForm X (fun i j ↦ dist i j ≤ l)
+      (truncatedExp (overlapGraph acts) (IsLargeDiam acts l) Φ.term β) := by
+  have hlarge : IsLargeSupport (fun i j ↦ dist i j ≤ l) acts = IsLargeDiam acts l := by
+    funext C
+    simp only [IsLargeSupport, IsLargeDiam, not_le]
+  rw [← hlarge]
+  exact hasProductForm_truncatedExp acts Φ (fun i j ↦ dist i j ≤ l)
+    (fun i ↦ by simpa using hl) β
+
+/-- At every temperature, the even power of the source's diameter-truncated operator on
+an arbitrary finite metric lattice is positive semidefinite and retains its matrix product
+form. Hastings, arXiv:cond-mat/0508554v3, eq. `mplt`, lines 1303–1317. -/
+theorem hasProductForm_truncatedExp_pow_of_even_of_dist_le
+    [PseudoMetricSpace σ] [Nonempty σ] (acts : κ → Finset σ)
+    (Φ : Interaction X acts)
+    (hherm : ∀ k, (Φ.term k).IsHermitian) {l : ℝ} (hl : 0 ≤ l) (β : ℝ)
+    {m : ℕ} (hm : Even m) :
+    HasProductForm X (fun i j ↦ dist i j ≤ l)
+        ((truncatedExp (overlapGraph acts) (IsLargeDiam acts l) Φ.term β) ^ m) ∧
+      ((truncatedExp (overlapGraph acts) (IsLargeDiam acts l) Φ.term β) ^ m).PosSemidef :=
+  (hasProductForm_truncatedExp_of_dist_le acts Φ hl β).pow_of_even
+    (isHermitian_truncatedExp _ _ hherm β) hm
+
+end AllTemperatures
 
 end ClusterExpansion
 

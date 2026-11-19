@@ -28,6 +28,13 @@ doubles, times `‖A‖`.
   `ManyBody.Interaction.norm_strangEvolution_sub_hamiltonian_le`.
 * `ManyBody.Interaction.norm_lieEvolution_heisenberg_sub_le`,
   `ManyBody.Interaction.norm_strangEvolution_heisenberg_sub_le`.
+* `ManyBody.Interaction.exists_productForm_lie_card_index`,
+  `ManyBody.Interaction.exists_productForm_lie_card_index_eq`,
+  `ManyBody.Interaction.hasProductForm_lie`: for every complex `z`, every order and every number
+  of steps, `lie Φ.term order z n` has a matrix product form with `|X j|^{2 n c_j}` index values
+  at `j` (Hastings, arXiv:cond-mat/0508554v3, eq. `mpf`, lines 1024–1077). The supported factors
+  and the index counts are moved from TNLean (`e113e005`) `TNLean/Lattice/TrotterIndexCount.lean`
+  and `ProductForm.lean`.
 -/
 
 open Matrix ProductFormula
