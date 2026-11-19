@@ -1,0 +1,386 @@
+\chapter{Negative frequencies and connected ground correlations}
+\label{chap:negative_frequencies}
+
+This chapter proves the negative-frequency step of the exponential
+clustering theorem of Hastings and Koma
+\cite[Section 3, Lemma 3.1]{Hastings2006Spectral}. For a Hermitian
+matrix with a spectral gap above a one-dimensional ground space, the
+connected ground correlation of two observables is the ground expectation
+of a commutator with the energy-lowering part of the first. A Gaussian
+regularization of that part has a commutator bound uniform in the
+regularizer whenever the Heisenberg evolution satisfies a Lieb--Robinson
+bound, and its ground expectations approximate the sharp ones up to a
+Gaussian error in the gap. The Lieb--Robinson bound enters as a
+hypothesis.
+
+\section{Centering and the energy-lowering part}
+\label{sec:hk_energy_lowering}
+
+\begin{lemma}[Centering an observable at an unnormalized vector]
+    \label{lem:hk_observable_centering}
+    \lean{ManyBody.centeredObservable,
+        ManyBody.norm_inner_div_norm_sq_le,
+        ManyBody.inner_centeredObservable_eq_zero,
+        ManyBody.norm_centeredObservable_le,
+        ManyBody.inner_centeredObservable_mul,
+        ManyBody.centeredObservable_mem,
+        ManyBody.centeredObservable_commutator}
+    \leanok
+    For $\psi\ne0$, write
+    $\langle A\rangle_\psi=\langle\psi,A\psi\rangle/\|\psi\|^2$
+    and $A_0=A-\langle A\rangle_\psi\Id$. Then
+    $|\langle A\rangle_\psi|\le\|A\|$,
+    $\langle\psi,A_0\psi\rangle=0$, and $\|A_0\|\le2\|A\|$.
+    The centered observable gives the connected correlation:
+    \[
+        \frac{\langle\psi,A_0B\psi\rangle}{\|\psi\|^2}
+        =\langle AB\rangle_\psi
+        -\langle A\rangle_\psi\langle B\rangle_\psi.
+    \]
+    Subtracting this scalar identity preserves every linear space of
+    observables containing $A$ and $\Id$, as well as the commutator with $B$.
+\end{lemma}
+\begin{proof}\leanok
+    Use Cauchy--Schwarz, the operator-norm bound, and the triangle
+    inequality. Expand the scalar identity and use that $\|\psi\|^2>0$.
+\end{proof}
+
+\begin{definition}[The energy-lowering part of an observable]
+    \label{def:hk_negative_frequency_part}
+    \lean{ManyBody.negativeFrequencyPart}
+    \leanok
+    Let $H$ be a finite Hermitian Hamiltonian with an orthonormal
+    eigenbasis $e_i$ and energies $E_i$. For an observable $A$, define
+    \[
+        A^- = \sum_{E_i<E_j}
+        \langle e_i,Ae_j\rangle\,|e_i\rangle\langle e_j|.
+    \]
+    This is the sharp negative-frequency part of the Heisenberg
+    evolution $e^{itH}Ae^{-itH}$ in
+    \cite[Section 3, equations (3.1)--(3.6)]{Hastings2006Spectral}.
+\end{definition}
+
+\begin{lemma}[Exact separation of the connected correlation]
+    \label{lem:hk_negative_frequency_ground_correlation}
+    \lean{ManyBody.negativeFrequencyPart_apply_ground_eq_zero,
+        ManyBody.inner_ground_projected_eq_negativeFrequency_commutator,
+        ManyBody.inner_ground_connected_eq_negativeFrequency_commutator}
+    \leanok
+    \uses{def:hk_negative_frequency_part}
+    Suppose $E_0\le E_i$ for every $i$, let $\psi$ belong to the
+    eigenspace at $E_0$, and let $P_0$ project onto that full eigenspace.
+    Then $A^-\psi=0$ and
+    \[
+        \langle\psi,A(1-P_0)B\psi\rangle
+        =\langle\psi,[A^-,B]\psi\rangle.
+    \]
+    If the ground eigenspace is $\mathbb C\psi$, this is
+    \[
+        \langle\psi,AB\psi\rangle-
+        \frac{\langle\psi,A\psi\rangle\langle\psi,B\psi\rangle}
+        {\|\psi\|^2}
+        =\langle\psi,[A^-,B]\psi\rangle.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    An energy-lowering matrix element cannot act nontrivially on a
+    ground vector. Expand an arbitrary vector orthogonal to the ground
+    eigenspace in the energy basis. Between that vector and a ground
+    bra, every nonzero matrix element of $A$ lowers energy, so it is
+    retained by $A^-$. Apply this to $(1-P_0)B\psi$.
+    The term $BA^-\psi$ vanishes. In a one-dimensional ground space,
+    the rank-one projection formula gives the last identity without
+    choosing a normalized vector.
+\end{proof}
+
+The sharp energy-lowering part need not be local. The following lemmas
+replace it by a Gaussian regularization, control that regularization by a
+time integral of local commutators, and derive exponential clustering.
+
+\section{The Gaussian--Cauchy transform}
+\label{sec:hk_gaussian_cauchy}
+
+\begin{lemma}[The Gaussian negative-frequency selector]
+    \label{lem:hk_gaussian_negative_frequency_cutoff}
+    \lean{GaussianFilter.gaussianNegativeFrequencyCutoff,
+        GaussianFilter.gaussianNegativeFrequencyCutoff_nonneg,
+        GaussianFilter.gaussianNegativeFrequencyCutoff_le_one,
+        GaussianFilter.gaussianNegativeFrequencyCutoff_le_exp_of_gap,
+        GaussianFilter.abs_one_sub_gaussianNegativeFrequencyCutoff_le_exp_of_gap}
+    \leanok
+    For $q,\Delta>0$, let $X$ be a centered Gaussian of variance
+    $\Delta^2/q$ and put $F_{q,\Delta}(\omega)=\mathbb P(X\ge\omega)$.
+    Then $0\le F_{q,\Delta}(\omega)\le1$ and
+    \[
+        \omega\ge\Delta\ \Longrightarrow\
+        F_{q,\Delta}(\omega)\le e^{-q/2},
+        \qquad
+        \omega\le-\Delta\ \Longrightarrow\
+        |1-F_{q,\Delta}(\omega)|\le e^{-q/2}.
+    \]
+    This is the Gaussian selector of
+    \cite[Lemma 3.1, equation (3.7)]{Hastings2006Spectral}, with
+    $\alpha=\Delta^2/(2q)$.
+\end{lemma}
+\begin{proof}\leanok
+    The moment-generating function is
+    $\mathbb E(e^{tX})=\exp(\Delta^2t^2/(2q))$.
+    Chernoff's bound at $\Delta$ is $e^{-q/2}$. The positive-frequency
+    statement follows by inclusion of the corresponding tail events.
+    The complementary event for $\omega\le-\Delta$ is contained in
+    $\{-X\ge\Delta\}$, and $-X$ has the same sub-Gaussian bound.
+\end{proof}
+
+The following regularized time-integral argument identifies this actual
+Gaussian selector. The operator locality estimates are proved after it.
+
+\begin{definition}[The regularized Gaussian--Cauchy kernel]
+    \label{def:hk_gaussian_cauchy_kernel}
+    \lean{GaussianFilter.gaussianCauchyKernel}
+    \leanok
+    For $\alpha,\varepsilon>0$, set
+    \[
+        K_{\alpha,\varepsilon}(t)=
+        \frac{e^{-\alpha t^2}}{2\pi(\varepsilon-it)}.
+    \]
+    This is the regularized negative-frequency time kernel of
+    \cite[Lemma 3.1, equation (3.8)]{Hastings2006Spectral}.
+\end{definition}
+
+\begin{lemma}[Laplace representation and integrability of the kernel]
+    \label{lem:hk_gaussian_cauchy_integrability}
+    \lean{GaussianFilter.cauchyDenominator_ne_zero,
+        GaussianFilter.norm_inv_cauchyDenominator_le,
+        GaussianFilter.inv_cauchyDenominator_eq_integral,
+        GaussianFilter.norm_gaussianCauchyKernel_le,
+        GaussianFilter.integrable_gaussianCauchyKernel_mul_exp,
+        GaussianFilter.norm_integral_gaussianCauchyKernel_mul_exp_le}
+    \leanok
+    \uses{def:hk_gaussian_cauchy_kernel}
+    For $\alpha,\varepsilon>0$ and $\omega,t\in\mathbb R$,
+    \[
+        \frac1{\varepsilon-it}
+        =\int_0^\infty e^{(-\varepsilon+it)s}\,ds,
+        \qquad
+        |K_{\alpha,\varepsilon}(t)|
+        \le\frac{e^{-\alpha t^2}}{2\pi\varepsilon}.
+    \]
+    The function $K_{\alpha,\varepsilon}(t)e^{i\omega t}$ is absolutely
+    integrable and
+    \[
+        \left|\int_{\mathbb R}
+        K_{\alpha,\varepsilon}(t)e^{i\omega t}\,dt\right|
+        \le \frac1{2\pi\varepsilon}\sqrt{\frac\pi\alpha}.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The complex exponential integral converges since its exponent has
+    real part $-\varepsilon<0$. Its antiderivative gives the Laplace
+    identity. The denominator has norm at least $\varepsilon$, so
+    the kernel is dominated by the displayed Gaussian. The oscillatory
+    exponential has norm one; Gaussian integrability and the Gaussian
+    integral formula finish the proof.
+\end{proof}
+
+The bound retains its dependence on $\varepsilon$. It is not a uniform
+regularizer-limit estimate. The next lemma interchanges the two integrals,
+identifies the Gaussian selector, and passes to the regularizer limit.
+
+\begin{lemma}[The scalar Gaussian--Cauchy limit]
+    \label{lem:hk_gaussian_cauchy_limit}
+    \lean{GaussianFilter.gaussianCauchyTransform,
+        GaussianFilter.gaussianCauchyTransform_eq_integral,
+        GaussianFilter.tendsto_gaussianCauchyTransform_zero_regularizer,
+        GaussianFilter.halfLine_gaussian_integral_eq_measureReal,
+        GaussianFilter.tendsto_normalized_gaussianCauchyTransform,
+        GaussianFilter.tendsto_normalized_gaussianCauchyTransform_cutoff}
+    \leanok
+    \uses{lem:hk_gaussian_cauchy_integrability,lem:hk_gaussian_negative_frequency_cutoff}
+    Let $\nu_h$ be the centered Gaussian probability measure of variance
+    $h>0$, and let $c_h$ be the density at zero of $\nu_{1/h}$.
+    For $\varepsilon>0$, define the transform
+    \[
+        C_{h,\varepsilon}(\omega)=\int_{\mathbb R}
+        \frac{e^{i\omega t}}{\varepsilon-it}\,d\nu_h(t).
+    \]
+    Then
+    \[
+        C_{h,\varepsilon}(\omega)=
+        \int_0^\infty e^{-\varepsilon s}
+        e^{-h(\omega+s)^2/2}\,ds,
+        \qquad
+        c_hC_{h,\varepsilon}(\omega)
+        \longrightarrow \nu_{1/h}([\omega,\infty))
+    \]
+    as $\varepsilon\downarrow0$.
+    In particular, $h=q/\Delta^2$ gives the Gaussian selector
+    $F_{q,\Delta}$ above and its explicit gap-error bounds.
+\end{lemma}
+\begin{proof}\leanok
+    Insert the half-line Laplace representation of the Cauchy
+    denominator. Under $\nu_h\otimes ds$ on $s>0$, the absolute value of
+    the joint integrand is $e^{-\varepsilon s}$, which is integrable.
+    Fubini and the exact Gaussian characteristic function give the first
+    identity. For the limit, the translated Gaussian
+    $e^{-h(\omega+s)^2/2}$ is an integrable majorant independent of
+    $\varepsilon>0$. Apply dominated convergence.
+    The density formula for $\nu_{1/h}$, translation invariance
+    of Lebesgue integration, and equality of open and closed integral
+    endpoints give the normalization to the probability tail.
+\end{proof}
+
+The scalar frequency selector and its integral representation supply
+the regularized observable, ground-vector comparison, and locality
+argument below.
+
+\section{The regularized negative-frequency observable}
+\label{sec:hk_regularized_observable}
+
+\begin{definition}[The regularized negative-frequency observable]
+    \label{def:hk_regularized_negative_frequency_operator}
+    \lean{ManyBody.gaussianNegativeFrequencyIntegrand,
+        ManyBody.gaussianNegativeFrequencyOperator}
+    \leanok
+    \uses{lem:hk_gaussian_cauchy_limit}
+    For a Hermitian $H$, an observable $A$, Gaussian time variance $h$,
+    and positive regularizer $\varepsilon$, put
+    \[
+        A^-_{h,\varepsilon}
+        =c_h\int_{\mathbb R}
+        \frac{e^{itH}Ae^{-itH}}{\varepsilon-it}\,d\nu_h(t).
+    \]
+\end{definition}
+
+\begin{lemma}[regularized energy matrix elements]
+    \label{lem:hk_regularized_frequency_matrix_elements}
+    \lean{ManyBody.continuous_gaussianNegativeFrequencyIntegrand,
+        ManyBody.norm_gaussianNegativeFrequencyIntegrand_le,
+        ManyBody.integrable_gaussianNegativeFrequencyIntegrand,
+        ManyBody.norm_gaussianNegativeFrequencyOperator_le,
+        ManyBody.dotProduct_integral_gaussianNegativeFrequencyIntegrand_mulVec,
+        ManyBody.dotProduct_gaussianNegativeFrequencyOperator_mulVec,
+        ManyBody.inner_gaussianNegativeFrequencyOperator,
+        ManyBody.tendsto_dotProduct_gaussianNegativeFrequencyOperator}
+    \leanok
+    \uses{def:hk_regularized_negative_frequency_operator,lem:hk_gaussian_cauchy_limit}
+    The regularized observable is integrable and
+    $\|A^-_{h,\varepsilon}\|\le c_h\varepsilon^{-1}\|A\|$.
+    For energy eigenvectors $Hv=Ev$ and $Hw=E'w$,
+    \[
+        \langle v,A^-_{h,\varepsilon}w\rangle
+        =c_hC_{h,\varepsilon}(E-E')\langle v,Aw\rangle.
+    \]
+    If $h>0$, the entries therefore converge as
+    $\varepsilon\downarrow0$ to
+    \[
+        \nu_{1/h}([E-E',\infty))\langle v,Aw\rangle.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    Unitary conjugation preserves the norm, and the rational factor has
+    norm at most $\varepsilon^{-1}$, so the finite Gaussian measure
+    gives integrability. Between energy eigenvectors the actual
+    Heisenberg evolution contributes $e^{it(E-E')}$. Passing the matrix
+    element through the integral gives the scalar transform.
+    Apply its proved Gaussian probability-tail limit.
+\end{proof}
+
+\begin{lemma}[Uniform locality after cancelling the Cauchy singularity]
+    \label{lem:hk_regularized_frequency_uniform_locality}
+    \lean{ManyBody.norm_commutator_gaussianNegativeFrequencyOperator_le}
+    \leanok
+    \uses{def:hk_regularized_negative_frequency_operator}
+    Suppose $C,v\ge0$ and the dynamics satisfy
+    $\|[A(t),B]\|\le C(e^{v|t|}-1)$ for all real $t$.
+    For $T,\varepsilon>0$,
+    \[
+        \|[A^-_{h,\varepsilon},B]\|
+        \le c_h\left(Cve^{vT}
+        +\frac{2\|A\|\|B\|}{T}e^{-T^2/(2h)}\right).
+    \]
+    In particular the bound is independent of the positive regularizer.
+\end{lemma}
+\begin{proof}\leanok
+    The rational factor is at most $|t|^{-1}$ for $t\ne0$.
+    For $|t|\le T$, the inequality $e^x-1\le xe^x$ cancels this
+    factor against the short-time increment. At $t=0$ the
+    commutator vanishes. Outside the time window, the rational factor
+    is at most $T^{-1}$ and the commutator norm at most
+    $2\|A\|\|B\|$. Split the Gaussian integral and apply its
+    Gaussian tail bound. No bound growing as $\varepsilon^{-1}$ is
+    used for this passage.
+\end{proof}
+
+\begin{lemma}[Gaussian ground-vector separation]
+    \label{lem:hk_gaussian_ground_frequency_separation}
+    \lean{ManyBody.exists_gaussianNegativeFrequency_ground_limits,
+        ManyBody.exists_gaussianNegativeFrequency_ground_commutator_limit}
+    \leanok
+    \uses{lem:hk_regularized_frequency_matrix_elements,lem:hk_gaussian_negative_frequency_cutoff}
+    Suppose the full ground eigenspace of $H$ is $\mathbb C\psi$,
+    every other energy is at least $\Delta>0$ above it, and
+    $\langle\psi,A\psi\rangle=0$. For $q>0$, put $h=q/\Delta^2$.
+    The vectors $A^-_{h,\varepsilon}\psi$ and
+    $(A^-_{h,\varepsilon})^\dagger\psi$ have limits $\xi,\eta$ with
+    \[
+        \|\xi\|\le e^{-q/2}\|A\psi\|,
+        \qquad \|A^\dagger\psi-\eta\|
+        \le e^{-q/2}\|A^\dagger\psi\|.
+    \]
+    The scalar commutator therefore converges to a number $z$ satisfying
+    \[
+        |\langle\psi,AB\psi\rangle-z|
+        \le 2e^{-q/2}\|A\|\|B\|\|\psi\|^2.
+    \]
+    No normalization of $\psi$ or centering of $B$ is required.
+\end{lemma}
+\begin{proof}\leanok
+    Expand in an orthonormal energy basis and apply the matrix-element
+    limit. Centering removes all ground-energy coefficients. The two
+    probability-tail estimates bound the remaining coefficients, and
+    Parseval gives the vector bounds. Move the adjoint across the inner
+    product and apply Cauchy--Schwarz to the two error terms.
+\end{proof}
+
+
+\begin{lemma}[Ordinary centered correlation from Gaussian frequency separation]
+    \label{lem:hk_gaussian_ordinary_centered_correlation}
+    \lean{ManyBody.norm_centered_ground_correlation_le_gaussian}
+    \leanok
+    \uses{lem:hk_gaussian_ground_frequency_separation,lem:hk_regularized_frequency_uniform_locality}
+    Under the preceding ground-line and propagation hypotheses, for
+    $q,T>0$ and $h=q/\Delta^2$,
+    \[
+        |\langle\psi,AB\psi\rangle|
+        \le\left(2e^{-q/2}\|A\|\|B\|
+        +c_h\left(Cve^{vT}
+            +\frac{2\|A\|\|B\|}{T}e^{-T^2/(2h)}\right)\right)\|\psi\|^2.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The regularized commutator is bounded uniformly in its positive
+    regularizer. Pass this bound to its scalar limit and add the proved
+    Gaussian ground-vector error.
+\end{proof}
+
+\begin{lemma}[An exponential rate for the Gaussian frequency bound]
+    \label{lem:hk_gaussian_frequency_clustering_rate}
+    \lean{GaussianFilter.kernel_inv_zero_eq_sqrt,
+        GaussianFilter.exists_gaussianFrequencyClusteringRate}
+    \leanok
+    If $\Delta,v>0$, there are $C,\kappa>0$ such that for $m\ge0$ and
+    $\ell\ge1$,
+    \[
+        2e^{-\ell\Delta/(4v)}+
+        \sqrt{\frac{\ell}{4\pi v\Delta}}
+        \left(2mv e^{-\ell/2}
+        +\frac{4v}{\ell}e^{-\ell\Delta/(4v)}\right)
+        \le C(m+1)e^{-\kappa\ell}.
+    \]
+\end{lemma}
+\begin{proof}\leanok
+    The density normalization is $c_h=\sqrt{h/(2\pi)}$.
+    Take $\kappa=\min(1/4,\Delta/(8v))$ and absorb the square-root
+    factors using $\sqrt\ell\le\ell$ and
+    $\ell e^{-\ell/2}\le4e^{-\ell/4}$.
+\end{proof}
