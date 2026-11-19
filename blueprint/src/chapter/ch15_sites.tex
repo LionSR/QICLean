@@ -623,15 +623,15 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     with every matrix on $B$ proves the partial-trace identity.
 \end{proof}
 
-\begin{lemma}[A unitary away from a region]
-    \label{lem:sites-regional-unitary}
+\begin{theorem}[A unitary away from a region]
+    \label{thm:sites-regional-unitary}
     \lean{ManyBody.regionState_toEuclideanLin_of_mem_supportedOperators}
     \leanok
     \uses{def:sites-regional-state, def:sites_supported}
     Let $U$ be a unitary supported on a region $S$ disjoint from $D$. Then
     $\rho_D$ is the same for $U\psi$ as for $\psi$, for every vector $\psi$
     \cite[Section~10]{OpenAI2026AreaLaw}.
-\end{lemma}
+\end{theorem}
 \begin{proof}
     \leanok
     \uses{lem:sites-regional-expectations, lem:sites_supported_commute}

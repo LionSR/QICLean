@@ -17,7 +17,7 @@ enters.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:finite_product_entropy_complement,
-        thm:finite_product_entropy_subadditivity, thm:entropy_le_log_dim}
+        thm:finite_product_entropy_subadditivity, thm:entropy_le_log_rank}
     The complement of $R$ is the disjoint union of $(R\cup T)^c$ and $T$.
     Subadditivity and the equality of complementary entropies give
     $S_\psi(R)=S_\psi(R^c)\le S_\psi((R\cup T)^c)+S_\psi(T)
@@ -50,8 +50,8 @@ enters.
     $A=(A\cap P)\cup(A\setminus P)$ and apply both identities.
 \end{proof}
 
-\begin{lemma}[Trace distance of pure states and of their reductions]
-    \label{lem:finite_product_reduced_trace_distance}
+\begin{theorem}[Trace distance of pure states and of their reductions]
+    \label{thm:finite_product_reduced_trace_distance}
     \lean{Matrix.traceDistance_vecMulVec_le_norm_sub,
         FiniteProduct.traceDistance_reducedPure_le}
     \leanok
@@ -61,9 +61,9 @@ enters.
     is at most $\lVert\psi-\eta\rVert$, and the trace distance of their reductions
     to any region is at most that of the pure states
     \cite[Section~2]{OpenAI2026AreaLaw}.
-\end{lemma}
+\end{theorem}
 \begin{proof}\leanok
-    \uses{lem:trace_distance_jordan}
+    \uses{lem:pure_trace_distance, lem:trace_distance_jordan}
     The trace distance of the pure states is
     $\sqrt{1-\lvert\langle\psi,\eta\rangle\rvert^2}$, and
     $\lVert\psi-\eta\rVert^2=2-2\operatorname{Re}\langle\psi,\eta\rangle
@@ -87,18 +87,19 @@ enters.
     bound holds for $I_\varphi(X:J)$ with $\lVert U\varphi-\eta\rVert$ in place of
     $\lVert\psi-\eta\rVert$. If moreover
     $\lVert U\varphi-\eta\rVert\le C_1n^{-K/2}$ and
-    $\log\dim\mathcal H_X\le C_2n^2$ for integers $n\ge1$ and $K\ge4(M+2)$, then
+    $\log\dim\mathcal H_X\le C_2n^2$ for integers $n\ge1$, $M\ge0$ and $K$ with
+    $K\ge4(M+2)$, then
     $I_\varphi(X':J)\le8\sqrt{C_1}(1+C_2)n^{-M}$ for every $X'\subseteq X$
     \cite[Proposition~10.2]{OpenAI2026AreaLaw}.
 \end{theorem}
 \begin{proof}\leanok
     \uses{cor:entropy_mutual_information_continuity,
-        lem:finite_product_reduced_trace_distance, lem:sites-regional-unitary,
+        thm:finite_product_reduced_trace_distance, thm:sites-regional-unitary,
         thm:finite_product_information_discarding}
     The first bound is the continuity of mutual information in the dimension of
     $X$ alone, together with
-    Lemma~\ref{lem:finite_product_reduced_trace_distance} applied to the
-    reduction to $X\cup J$. By Lemma~\ref{lem:sites-regional-unitary}, $U$ changes
+    Theorem~\ref{thm:finite_product_reduced_trace_distance} applied to the
+    reduction to $X\cup J$. By Theorem~\ref{thm:sites-regional-unitary}, $U$ changes
     none of the reductions to $X$, $J$ and $X\cup J$, so
     $I_\varphi(X:J)=I_{U\varphi}(X:J)$, and $U\varphi$ is a unit vector. Under the
     polynomial assumptions the bound is at most
