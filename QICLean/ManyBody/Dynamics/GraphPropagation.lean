@@ -760,7 +760,11 @@ theorem heisenbergCommutatorNorm_le_graphDistance_finsets_numeric
 
 /-- The observable form of finite-support propagation with numerical prefactor `4`.
 Source: Hastings arXiv:0705.2024v4, eq. `lrb`, lines 96–112. Both supports may be empty;
-this graph estimate does not identify the source's chain velocity and length pair. -/
+this graph estimate does not identify the source's chain velocity and length pair. The
+single-site bound summed over `Y`,
+`ManyBody.norm_commutator_heisenbergEvolution_le_graphDistance_finset`, has the factor `|Y|` and
+the smaller rate `2 v_R |b₀| e^{2μR} + 1` in place of `4 v_R |b₀| e^{2μR}`; neither implies the
+other. -/
 theorem norm_heisenberg_commutator_le_graphDistance_finsets_numeric
     {κ : Type*} [Fintype κ] {T : κ → Finset V}
     (G : SimpleGraph V) (Φ : Interaction X T)

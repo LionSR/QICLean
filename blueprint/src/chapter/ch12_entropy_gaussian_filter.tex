@@ -103,7 +103,7 @@ both the suppression of excited energies and the cost of truncating time.
 \end{proof}
 
 For $T\ge0$, write $I_T=[-T,T]$. Set
-$\tau_h(T)=2\exp(-T^2/(2h))$ for $h>0$, and $\tau_0(T)=2$.
+$\tau_h(T)=\exp(-T^2/(2h))$ for $h>0$, and $\tau_0(T)=1$.
 The value at zero permits a common bound for all nonnegative variances;
 the actual mass of $I_T^c$ under $\mu_0=\delta_0$ is zero.
 
@@ -116,16 +116,17 @@ the actual mass of $I_T^c$ under $\mu_0=\delta_0$ is zero.
     For $h\ge0$ and $T\ge0$, $\mu_h(I_T^c)\le\tau_h(T)$.
     For $h>0$, this gives the density estimate
     \begin{align}
-        \int_{I_T^c}g_h(t)\,dt&\le 2e^{-T^2/(2h)}.
+        \int_{I_T^c}g_h(t)\,dt&\le e^{-T^2/(2h)}.
         \label{eq:gaussian_density_tail}
     \end{align}
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:gaussian_characteristic, thm:gaussian_density_integrals}
-    The exponential-moment bound applied to $t$ and $-t$ gives
-    $\mu_h\{t\ge T\}\le e^{-T^2/(2h)}$ and
-    $\mu_h\{-t\ge T\}\le e^{-T^2/(2h)}$ when $h>0$.
-    Their sum bounds $\mu_h(I_T^c)$ by the union bound. At $h=0$,
+    \uses{thm:gaussian_density_integrals}
+    Let $h>0$. The substitution $t=T+s$ and $(T+s)^2\ge T^2+s^2$ for
+    $s,T\ge0$ give $\int_T^\infty g_h(t)\,dt\le e^{-T^2/(2h)}
+    \int_0^\infty g_h(s)\,ds=\tfrac12e^{-T^2/(2h)}$. The density is even, so
+    the left tail has the same mass, and the union bound gives
+    $\mu_h(I_T^c)\le e^{-T^2/(2h)}$. At $h=0$,
     the discarded mass is zero. The density identity follows from
     Theorem~\ref{thm:gaussian_density_integrals}.
 \end{proof}
@@ -514,7 +515,7 @@ real for two different vectors.
     for $h\ge0$ and $T\ge0$,
     \begin{align}
         \|M_h^T\Psi-z\Phi\|
-            &\le\bigl(q_h+\tau_h(T)\bigr)\|W\|.
+            &\le\bigl(q_h+2\tau_h(T)\bigr)\|W\|.
         \label{eq:gaussian_truncated_ground}
     \end{align}
 \end{theorem}
@@ -523,7 +524,8 @@ real for two different vectors.
     Split $M_h^T\Psi-z\Phi=(M_h\Psi-z\Phi)+(M_h^T-M_h)\Psi$.
     The triangle inequality, $\|\Psi\|=1$, and
     (\ref{eq:gaussian_truncation_error}) bound the two terms by
-    $q_h\|W\|$ and $\tau_h(T)\|W\|$.
+    $q_h\|W\|$ and $\tau_h(T)\|W\|\le2\tau_h(T)\|W\|$; the factor $2$ is the
+    tail constant of the source passage.
 \end{proof}
 
 \begin{theorem}[Two-sided estimate after time truncation]
@@ -533,7 +535,7 @@ real for two different vectors.
     \uses{def:gaussian_filter_integrals}
     Under~(\ref{eq:gaussian_ground_vectors}) and
     (\ref{eq:gaussian_two_gaps}), suppose $\Delta>0$, $h\ge0$, and $T\ge0$.
-    With $\varepsilon=(q_h+\tau_h(T))\|W\|$,
+    With $\varepsilon=(q_h+2\tau_h(T))\|W\|$,
     \begin{align}
         \|M_h^T\Psi-z\Phi\|&\le\varepsilon, &
         \|(M_h^T)^\dagger\Phi-\overline z\Psi\|&\le\varepsilon.
@@ -650,13 +652,13 @@ For an operator $H$ on $\mathcal H$ and a vector $\Omega\in\mathcal H$, set
         \|M_h\Psi-z\Phi\|&\le e^{-h\Delta^2/2},
             & \|M_h^\dagger\Phi-z\Psi\|&\le e^{-h\Delta^2/2},
             \notag\\
-        \|M_h^T\Psi-z\Phi\|&\le e^{-h\Delta^2/2}+\tau_h(T),
+        \|M_h^T\Psi-z\Phi\|&\le e^{-h\Delta^2/2}+2\tau_h(T),
             & \|(M_h^T)^\dagger\Phi-z\Psi\|&\le
-                e^{-h\Delta^2/2}+\tau_h(T).
+                e^{-h\Delta^2/2}+2\tau_h(T).
             \notag
     \end{align}
-    For $h>0$, $\tau_h(T)=2e^{-T^2/(2h)}$. At $h=0$, the probability
-    integral gives $M_0=V$ and the displayed bounds use $\tau_0(T)=2$.
+    For $h>0$, $2\tau_h(T)=2e^{-T^2/(2h)}$. At $h=0$, the probability
+    integral gives $M_0=V$ and the displayed bounds use $2\tau_0(T)=2$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:physical_buffer_controlled_overlap,

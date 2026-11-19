@@ -23,10 +23,10 @@ example : (∫ t : ℝ, (kernel 2 t : ℂ) * Complex.exp ((1 : ℂ) * t * Comple
   convert integral_kernel_cexp (h := 2) (by norm_num) 1 using 1
   norm_num
 
-example : (∫ t in (Icc (0 : ℝ) 0)ᶜ, kernel 1 t) ≤ 2 := by
+example : (∫ t in (Icc (0 : ℝ) 0)ᶜ, kernel 1 t) ≤ 1 := by
   simpa using integral_kernel_compl_Icc_le (h := 1) one_ne_zero (T := 0) le_rfl
 
-example : (gaussianReal 0 1).real (Icc (-2 : ℝ) 2)ᶜ ≤ 2 * Real.exp (-2) := by
+example : (gaussianReal 0 1).real (Icc (-2 : ℝ) 2)ᶜ ≤ Real.exp (-2) := by
   convert measure_compl_Icc_le 1 (T := 2) (by norm_num) using 1
   norm_num
 

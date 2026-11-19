@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import QICLean.Analysis.HermitianUnitaryPath
 
 /-!
@@ -30,6 +31,12 @@ Changes: any finite index type in place of `ι → Fin q`; the body is written w
 
 * `ManyBody.heisenbergEvolution_smul`, `ManyBody.heisenbergEvolution_inv_smul_mul` — rescaling
   the energy rescales the time.
+* `ManyBody.heisenbergEvolution_sub_eq_integral` — the Duhamel formula
+  `τ_t(A) - A = ∫₀ᵗ τ_s(i[H, A]) ds`.
+
+The Duhamel formula is moved from TNLean, `TNLean/Lattice/HeisenbergDuhamel.lean` at commit
+`e113e005`. Changes: stated with `ManyBody.heisenbergEvolution` in place of the product of
+unitary paths.
 -/
 
 open NormedSpace
@@ -75,5 +82,39 @@ theorem norm_heisenbergEvolution {H : Matrix n n ℂ} (hH : H.IsHermitian) (t : 
       (Matrix.mem_unitaryGroup_iff.mpr (Matrix.hermitianUnitaryPath_mul_conjTranspose H hH (-t))),
     CStarRing.norm_mem_unitary_mul _
       (Matrix.mem_unitaryGroup_iff.mpr (Matrix.hermitianUnitaryPath_mul_conjTranspose H hH t))]
+
+open scoped Matrix.Norms.L2Operator in
+/-- **Duhamel formula** for the Heisenberg picture:
+`τ_t(A) - A = ∫₀ᵗ τ_s(i (HA - AH)) ds`. Use site: Hastings, arXiv:0705.2024v4, appendix,
+`law16.tex` lines 816–828. -/
+theorem heisenbergEvolution_sub_eq_integral (H A : Matrix n n ℂ) (t : ℝ) :
+    heisenbergEvolution H t A - A =
+      ∫ s in (0 : ℝ)..t, heisenbergEvolution H s (Complex.I • (H * A - A * H)) := by
+  simp only [heisenbergEvolution]
+  have hderiv : ∀ x : ℝ, HasDerivAt
+      (fun s : ℝ => Matrix.hermitianUnitaryPath H s * A * Matrix.hermitianUnitaryPath H (-s))
+      (Matrix.hermitianUnitaryPath H x * (Complex.I • (H * A - A * H)) *
+        Matrix.hermitianUnitaryPath H (-x)) x := by
+    intro x
+    have hleft : HasDerivAt (Matrix.hermitianUnitaryPath H)
+        (Matrix.hermitianUnitaryPath H x * (Complex.I • H)) x :=
+      hasDerivAt_exp_smul_const (𝕂 := ℝ) (Complex.I • H) x
+    have hright : HasDerivAt (fun s : ℝ => Matrix.hermitianUnitaryPath H (-s))
+        (-(Complex.I • H) * Matrix.hermitianUnitaryPath H (-x)) x := by
+      simpa only [Matrix.hermitianUnitaryPath, Function.comp_def, neg_one_smul, neg_mul] using
+        (hasDerivAt_exp_smul_const' (𝕂 := ℝ) (Complex.I • H) (-x)).scomp x
+          (hasDerivAt_neg x)
+    have h := (hleft.mul_const A).mul hright
+    convert h using 1
+    simp only [Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_sub, Matrix.sub_mul, neg_mul,
+      Matrix.mul_neg, Matrix.mul_assoc, smul_sub]
+    abel
+  have hcont : Continuous (fun s : ℝ => Matrix.hermitianUnitaryPath H s *
+      (Complex.I • (H * A - A * H)) * Matrix.hermitianUnitaryPath H (-s)) := by
+    have := Matrix.continuous_hermitianUnitaryPath H
+    fun_prop
+  rw [intervalIntegral.integral_eq_sub_of_hasDerivAt (fun x _ => hderiv x)
+    (hcont.intervalIntegrable _ _)]
+  simp
 
 end ManyBody

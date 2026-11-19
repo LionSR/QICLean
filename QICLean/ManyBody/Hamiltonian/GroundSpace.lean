@@ -28,7 +28,9 @@ Moved from TNLean, `TNLean/Lattice/GaussianFilteredTerm.lean` (`groundEigenspace
 `groundSpace` is a definition, not an abbreviation. `ManyBody.IsGapped` is new: the
 eigenvalue form of `Lattice/LowEnergyBasis*` is `ManyBody.isGapped_iff_eigenvalues`, and
 TNLean's `Matrix.IsGappedGroundState` is the left side of
-`ManyBody.isGapped_and_groundSpace_eq_span_iff`.
+`ManyBody.isGapped_and_groundSpace_eq_span_iff`. The two eigenvector lemmas are moved from
+`TNLean/Lattice/GaussianFilteredTerm.lean` at commit `e113e005`, the first proved from
+Mathlib's `Matrix.IsHermitian.mulVec_eigenvectorBasis`.
 
 ## Main definitions
 
@@ -55,6 +57,9 @@ TNLean's `Matrix.IsGappedGroundState` is the left side of
 * `ManyBody.groundSpace_smul`, `ManyBody.IsGapped.smul`, `ManyBody.groundSpace_sub_smul_one`,
   `ManyBody.IsGapped.sub_smul_one` — scaling `H` by `c > 0` scales the ground energy and the gap
   by `c`, and shifting `H` by `-a` shifts the ground energy by `-a`, for every `Δ`.
+* `ManyBody.eigenvectorBasis_mem_groundSpace`, `ManyBody.inner_eq_zero_of_mem_groundSpace` — an
+  eigenbasis vector at `E₀` lies in the ground space, and an eigenvector at another energy is
+  orthogonal to it.
 
 ## References
 
@@ -505,5 +510,38 @@ theorem IsGapped.sub_smul_one {H : Matrix n n ℂ} {E₀ Δ : ℝ} (a : ℝ) (h 
 theorem IsGapped.sub_smul_one_self {H : Matrix n n ℂ} {E₀ Δ : ℝ} (h : IsGapped H E₀ Δ) :
     IsGapped (H - (E₀ : ℂ) • 1) 0 Δ := by
   simpa using h.sub_smul_one E₀
+
+
+/-! ### Eigenvectors and the ground space -/
+
+section EigenvectorBasis
+
+open scoped InnerProductSpace
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- An eigenbasis vector of `H` with eigenvalue `E₀` lies in the ground space at `E₀`. -/
+theorem eigenvectorBasis_mem_groundSpace {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
+    {k : n} (hk : hH.eigenvalues k = E₀) : hH.eigenvectorBasis k ∈ groundSpace H E₀ :=
+  mem_groundSpace_iff_mulVec.mpr
+    (by simpa [hk, Complex.coe_smul] using hH.mulVec_eigenvectorBasis k)
+
+/-- An eigenvector of `H` with energy different from `E₀` is orthogonal to the
+ground eigenspace. -/
+theorem inner_eq_zero_of_mem_groundSpace {H : Matrix n n ℂ} (hH : H.IsHermitian)
+    {E₀ E : ℝ} (hE : E ≠ E₀) {v w : EuclideanSpace ℂ n}
+    (hv : H *ᵥ WithLp.ofLp v = (E : ℂ) • WithLp.ofLp v) (hw : w ∈ groundSpace H E₀) :
+    ⟪v, w⟫_ℂ = 0 := by
+  have hsymm := (Matrix.isSymmetric_toEuclideanLin_iff.mpr hH) v w
+  have hv' : toEuclideanLin H v = (E : ℂ) • v := by
+    apply (WithLp.ofLp_injective 2); simpa using hv
+  have hw' : toEuclideanLin H w = (E₀ : ℂ) • w := Module.End.mem_eigenspace_iff.mp hw
+  rw [hv', hw', inner_smul_left, inner_smul_right, Complex.conj_ofReal] at hsymm
+  have : ((E : ℂ) - E₀) * ⟪v, w⟫_ℂ = 0 := by rw [sub_mul, hsymm, sub_self]
+  rcases mul_eq_zero.mp this with h | h
+  · exact absurd (by exact_mod_cast sub_eq_zero.mp h) hE
+  · exact h
+
+end EigenvectorBasis
 
 end ManyBody

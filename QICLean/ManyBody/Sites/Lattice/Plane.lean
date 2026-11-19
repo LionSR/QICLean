@@ -7,6 +7,7 @@ import QICLean.ManyBody.Sites.Lattice.Diamond
 import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Int.Interval
+import QICLean.ManyBody.Sites.Cut
 
 /-!
 # Finite domains of the square lattice
@@ -23,6 +24,11 @@ namespace `ManyBody` in place of `TNLean.Lattice`; `domainGraph` is renamed `pla
 distinguish it from the path graph `lineDomainGraph` of a domain of `ℤ`; the sites are written `↥Λ`,
 without the abbreviation `Site Λ`.
 
+The edge boundary `ManyBody.edgeBoundary`, the ambient dilation `ManyBody.ambientDilation` and
+the sites `ManyBody.crossingSites` of the supports crossing a region are moved from TNLean,
+`TNLean/Lattice/FiniteDomain.lean` and `TNLean/Lattice/CrossingSupports.lean` at commit
+`e113e005`, with `ManyBody.crossingTerms` in place of `Entropy.crossingTerms`.
+
 `ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj`,
 `ManyBody.IsAdmissibleSupport.edist_le`, `ManyBody.IsAdmissibleSupport.card_le` and
 `ManyBody.IsAdmissibleSupport.reachable` are moved from TNLean,
@@ -36,17 +42,25 @@ Changes: the first was `latticeL1Distance_le_one_of_domainGraph_adj` in `TNLean.
 
 * `ManyBody.planeDomainGraph` — the induced nearest-neighbour graph.
 * `ManyBody.IsAdmissibleSupport`, `ManyBody.AdmissibleSupport` — the supports of range `R`.
+* `ManyBody.edgeBoundary` — the edges of the domain crossing a region.
+* `ManyBody.ambientDilation` — the sup-norm dilation of a finite set of lattice points.
+* `ManyBody.crossingSites` — the sites of the supports of range `R` crossing a region.
 
 ## Main results
 
 * `ManyBody.IsAdmissibleSupport.edist_le`, `ManyBody.IsAdmissibleSupport.card_le` — a support of
   range `R` has graph diameter at most `R` and at most `1 + 2R(R + 1)` sites.
 * `ManyBody.IsAdmissibleSupport.reachable` — a support lies in one connected component.
+* `ManyBody.exists_edgeBoundary_of_walk` — a walk leaving a region crosses its edge boundary.
+* `ManyBody.exists_walks_of_mem_crossingSites` — a site of a crossing support is near both
+  sides of the region.
 
 ## References
 
 * OpenAI, *A two-dimensional area law from a global spectral gap*, September 24, 2026,
-  Theorem 1.1, `eq:hamiltonian`, and Section 2.
+  Theorem 1.1, `eq:hamiltonian`, Sections 1 and 2, Definition 9.3.
+* OpenAI, *Polynomial PEPS approximation of gapped square-grid ground states*,
+  September 24, 2026, `02-information.tex`, lines 416–424 and 498–564.
 -/
 
 namespace ManyBody
@@ -154,5 +168,76 @@ theorem reachable (hX : IsAdmissibleSupport Λ R X) {x y : ↥Λ} (hx : x ∈ X)
   ⟨w⟩
 
 end IsAdmissibleSupport
+
+/-! ### Edge boundaries, ambient dilations and crossing supports -/
+
+/-- Unordered edges of the domain with one endpoint in `A` and the other outside `A`.
+Source: area-law Section 1, definition of `∂Λ A`. -/
+noncomputable def edgeBoundary (Λ : Finset (ℤ × ℤ)) (A : Finset ↥Λ) : Finset (Sym2 ↥Λ) := by
+  classical
+  exact (planeDomainGraph Λ).edgeFinset.filter fun e ↦ ∃ x ∈ A, ∃ y ∉ A, e = s(x, y)
+
+/-- Empty cuts have no crossing edges. -/
+@[simp] theorem edgeBoundary_empty (Λ : Finset (ℤ × ℤ)) : edgeBoundary Λ ∅ = ∅ := by
+  classical
+  simp [edgeBoundary]
+
+/-- The whole domain has no crossing edges. -/
+@[simp] theorem edgeBoundary_univ (Λ : Finset (ℤ × ℤ)) : edgeBoundary Λ Finset.univ = ∅ := by
+  classical
+  simp [edgeBoundary]
+
+/-- A walk in the domain from a site of `A` to a site outside `A` crosses an edge `{u, v}` of
+the cut with `u ∈ A` and `v ∉ A`, and its initial segment joins the starting site to `u` in at
+most as many steps. Source: area-law Section 1, definition of `∂Λ A`. -/
+theorem exists_edgeBoundary_of_walk {Λ : Finset (ℤ × ℤ)} {A : Finset ↥Λ}
+    {x y : ↥Λ} (p : (planeDomainGraph Λ).Walk x y) (hx : x ∈ A) (hy : y ∉ A) :
+    ∃ u v, u ∈ A ∧ v ∉ A ∧ s(u, v) ∈ edgeBoundary Λ A ∧
+      ∃ p' : (planeDomainGraph Λ).Walk x u, p'.length ≤ p.length := by
+  classical
+  obtain ⟨d, hd, hdA, hdA'⟩ := p.exists_boundary_dart (A : Set ↥Λ) hx hy
+  have hsupp := p.dart_fst_mem_support_of_mem_darts hd
+  refine ⟨d.fst, d.snd, hdA, hdA', ?_, p.takeUntil d.fst hsupp,
+    p.length_takeUntil_le_length hsupp⟩
+  simp only [edgeBoundary, Finset.mem_filter, SimpleGraph.mem_edgeFinset,
+    SimpleGraph.mem_edgeSet]
+  exact ⟨d.adj, d.fst, hdA, d.snd, hdA', rfl⟩
+
+/-- The integer sup-norm dilation of a finite set of lattice points, independent of walks in a
+domain. Source: area-law Definition 9.3 and the sets `T_j`. -/
+def ambientDilation (T : Finset (ℤ × ℤ)) (r : ℕ) : Finset (ℤ × ℤ) :=
+  T.biUnion fun x ↦
+    (Finset.Icc (x.1 - (r : ℤ)) (x.1 + r)).product (Finset.Icc (x.2 - (r : ℤ)) (x.2 + r))
+
+/-- Membership in an ambient dilation, in coordinate inequalities. -/
+theorem mem_ambientDilation_iff {S : Finset (ℤ × ℤ)} {r : ℕ} {x : ℤ × ℤ} :
+    x ∈ ambientDilation S r ↔ ∃ p ∈ S,
+      p.1 - r ≤ x.1 ∧ x.1 ≤ p.1 + r ∧ p.2 - r ≤ x.2 ∧ x.2 ≤ p.2 + r := by
+  simp only [ambientDilation, Finset.mem_biUnion, Finset.product_eq_sprod,
+    Finset.mem_product, Finset.mem_Icc]
+  tauto
+
+/-- Zero dilation changes no lattice points. -/
+@[simp] theorem ambientDilation_zero (T : Finset (ℤ × ℤ)) : ambientDilation T 0 = T := by
+  simp [ambientDilation]
+
+/-- The sites of the supports of range `R` crossing `A`, that is, of the supports meeting both
+`A` and its complement. At range one these are the endpoints of the edges crossing `A`.
+Source: polynomial-PEPS `02-information.tex`, lines 416–424 and 513–524, at range `R`. -/
+noncomputable def crossingSites (Λ : Finset (ℤ × ℤ)) (R : ℕ) (A : Finset ↥Λ) : Finset ↥Λ := by
+  classical
+  exact (crossingTerms (fun X : AdmissibleSupport Λ R ↦ X.1) A).biUnion fun X ↦ X.1
+
+/-- **Every site of a crossing support is near both sides of `A`.** It is joined by walks of
+length at most `R` to a site of `A` and to a site outside `A`. -/
+theorem exists_walks_of_mem_crossingSites {Λ : Finset (ℤ × ℤ)} {R : ℕ} {A : Finset ↥Λ}
+    {z : ↥Λ} (hz : z ∈ crossingSites Λ R A) :
+    ∃ x ∈ A, ∃ y ∉ A, (∃ p : (planeDomainGraph Λ).Walk z x, p.length ≤ R) ∧
+      ∃ p : (planeDomainGraph Λ).Walk z y, p.length ≤ R := by
+  classical
+  simp only [crossingSites, crossingTerms, Finset.mem_biUnion, Finset.mem_filter,
+    Finset.mem_univ, true_and] at hz
+  obtain ⟨X, ⟨⟨x, hxX, hxA⟩, y, hyX, hyA⟩, hzX⟩ := hz
+  exact ⟨x, hxA, y, hyA, X.2.2 z hzX x hxX, X.2.2 z hzX y hyX⟩
 
 end ManyBody
