@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.MatrixKroneckerExt
 import QICLean.Channel.KrausFamilyDilation
 import QICLean.Circuit.Compile.Encoding
 import QICLean.Circuit.Core.LayerEntry
@@ -19,16 +20,16 @@ the protocol; only the local bases grow.
 
 The proof is by layers. A layer is dilated on its own cells (`Layer.isUnitaryDilation`): every
 gate and onsite family is replaced by its unitary dilation
-(`KrausFamily.IsTP.exists_unitary_dilation`, Wolf, Thm. 2.5), whose environment is a single
-basis for the whole cell; it is placed at one designated site of the cell (`IsRep`), the other
-sites of the cell carrying a one-element basis (`Distribute`). A gate on an empty cell acts on a
-one-element basis, so by trace preservation its map is the identity and it is replaced by the
-identity. The map of a layer is the tensor product of the maps of its gates and onsite families
-(`Layer.map_single_apply`), so the dilated layer, traced and prepared, has the map of the
-layer. Dilations compose (`IsUnitaryDilation.comp`): the environments of the later circuit are
-prepared at the start and carried through the earlier one by `Circuit.tensorRight`, and those
-of the earlier circuit are carried through the later one; the partial trace over an
-environment commutes with a circuit tensored with the identity on it
+(`KrausFamily.IsTP.exists_unitary_dilation`, the construction in the proof of Wolf, Thm. 2.5),
+whose environment is a single basis for the whole cell; it is placed at one designated site of
+the cell (`IsRep`), the other sites of the cell carrying a one-element basis (`Distribute`). A
+gate on an empty cell acts on a one-element basis, so by trace preservation its map is the
+identity and it is replaced by the identity. The map of a layer is the tensor product of the
+maps of its gates and onsite families (`Layer.map_single_apply`), so the dilated layer, traced
+and prepared, has the map of the layer. Dilations compose (`IsUnitaryDilation.comp`): the
+environments of the later circuit are prepared at the start and carried through the earlier one
+by `Circuit.tensorRight`, and those of the earlier circuit are carried through the later one;
+the partial trace over an environment commutes with a circuit tensored with the identity on it
 (`map_traceCircuit_map_tensorRight`), and depth-zero layers of relabellings regroup the local
 products in between.
 
@@ -70,7 +71,7 @@ variable {X Y Z E F : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X 
 
 /-- The preparation of the environment `E s` at every site in the basis vector `e₀ s`. -/
 def prepareCircuit (e₀ : ∀ s, E s) : Circuit Γ KrausGate X (fun s ↦ X s × E s) :=
-  encodeCircuit Γ fun s ↦ ⟨fun a ↦ (a, e₀ s), fun _ _ h ↦ congrArg Prod.fst h⟩
+  encodeCircuit Γ fun s ↦ Function.Embedding.sectL (X s) (e₀ s)
 
 /-- The partial trace over the environment `F s` at every site. -/
 def traceCircuit (Z F : S → Type) [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)]
@@ -92,7 +93,7 @@ theorem map_prepareCircuit_apply (e₀ : ∀ s, E s) (ρ : Matrix (Config X) (Co
   rw [prepareCircuit, map_encodeCircuit]
   have key : ∀ (w : Config fun s ↦ X s × E s) (x : Config X),
       w = (Function.Embedding.piCongrRight fun s ↦
-        (⟨fun a ↦ (a, e₀ s), fun _ _ h ↦ congrArg Prod.fst h⟩ : X s ↪ X s × E s)) x ↔
+        Function.Embedding.sectL (X s) (e₀ s)) x ↔
         (fun s ↦ (w s).2) = e₀ ∧ x = fun s ↦ (w s).1 := by
     intro w x
     constructor
@@ -126,12 +127,12 @@ theorem map_traceCircuit_apply (M : Matrix (Config fun s ↦ Z s × F s)
     split_ifs with h
     · subst h
       refine Finset.prod_eq_one fun s _ ↦ ?_
-      simp only [KrausFamily.traceRight, of_apply]
-      exact ite_eq_left rfl
+      simp only [initializedBasisMatrix, conjTranspose_apply, submatrix_apply, id, one_apply]
+      exact (congrArg star (ite_eq_left rfl)).trans (star_one ℂ)
     · obtain ⟨s, hs⟩ := Function.ne_iff.mp h
       refine Finset.prod_eq_zero (Finset.mem_univ s) ?_
-      simp only [KrausFamily.traceRight, of_apply]
-      exact ite_eq_right hs
+      simp only [initializedBasisMatrix, conjTranspose_apply, submatrix_apply, id, one_apply]
+      exact (congrArg star (ite_eq_right hs)).trans (star_zero ℂ)
   rw [traceCircuit, Circuit.map_ofLayer, KrausFamily.map_apply, Matrix.sum_apply]
   refine Fintype.sum_equiv e _ _ fun i ↦ ?_
   change (L.kraus KrausGate.ev i * M * (L.kraus KrausGate.ev i)ᴴ) y y' = _
@@ -405,12 +406,12 @@ theorem IsUnitaryDilation.comp {T₁ T₂ : ℕ}
         (isUnbranched_relabelCircuit _))))
   · refine (Circuit.depth_comp _ _).trans ?_
     rw [depth_relabelCircuit, zero_add]
-    refine (Circuit.depth_comp _ _).trans (add_le_add ((Circuit.depth_tensorRight_le _ _).trans hd₁)
+    refine (Circuit.depth_comp _ _).trans (add_le_add ((Circuit.depth_tensorRight _ _).trans_le hd₁)
       ((Circuit.depth_comp _ _).trans ?_))
     rw [depth_relabelCircuit, zero_add]
     refine (Circuit.depth_comp _ _).trans ?_
     rw [depth_relabelCircuit, add_zero]
-    exact (Circuit.depth_tensorRight_le _ _).trans hd₂
+    exact (Circuit.depth_tensorRight _ _).trans_le hd₂
   · refine LinearMap.ext fun ρ ↦ ?_
     simp only [LinearMap.comp_apply, Circuit.map_comp, R₁, R₂, R₃]
     rw [map_relabel_prepare, Circuit.map_tensorRight, map_trace_relabel,
@@ -432,19 +433,16 @@ private theorem sum_map_single_of_dilation {α β E F : Type} [Fintype α] [Deci
     [Fintype β] [DecidableEq β] [Fintype E] [DecidableEq E] [Fintype F] [DecidableEq F]
     {K : KrausFamily α β} {e₀ : E} {U : KrausFamily (α × E) (β × F)}
     (h : K.map = (KrausFamily.traceRight β F).map ∘ₗ U.map ∘ₗ
-      (KrausFamily.embed ⟨fun a ↦ (a, e₀), fun _ _ h ↦ congrArg Prod.fst h⟩).map)
+      (KrausFamily.embed (Function.Embedding.sectL α e₀)).map)
     (a a' : α) (b b' : β) :
     ∑ f : F, U.map (Matrix.single (a, e₀) (a', e₀) 1) (b, f) (b', f) =
       K.map (Matrix.single a a' 1) b b' := by
-  have hJ : initializedBasisMatrix (⟨fun a ↦ (a, e₀), fun _ _ h ↦ congrArg Prod.fst h⟩ :
-      α ↪ α × E) * Matrix.single a a' (1 : ℂ) * (initializedBasisMatrix
-        (⟨fun a ↦ (a, e₀), fun _ _ h ↦ congrArg Prod.fst h⟩ : α ↪ α × E))ᴴ =
+  have hJ : initializedBasisMatrix (Function.Embedding.sectL α e₀) * Matrix.single a a' (1 : ℂ) *
+      (initializedBasisMatrix (Function.Embedding.sectL α e₀))ᴴ =
       Matrix.single (a, e₀) (a', e₀) (1 : ℂ) := by
     ext w w'
-    have he : ∀ x : α, (⟨fun a ↦ (a, e₀), fun _ _ h ↦ congrArg Prod.fst h⟩ : α ↪ α × E) x =
-        (x, e₀) := fun _ ↦ rfl
     simp only [mul_apply, conjTranspose_apply, initializedBasisMatrix, submatrix_apply, id,
-      one_apply, Matrix.single_apply, he]
+      one_apply, Matrix.single_apply, Function.Embedding.sectL_apply]
     simp only [ite_and, apply_ite star, star_one, star_zero, mul_ite, mul_one, mul_zero,
       Finset.sum_ite_eq, Finset.mem_univ, ite_true]
     rw [Finset.sum_eq_single a' (fun x _ hx ↦ by simp [Ne.symm hx]) (by simp)]
