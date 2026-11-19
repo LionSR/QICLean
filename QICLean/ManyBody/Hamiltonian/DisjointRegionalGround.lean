@@ -114,7 +114,8 @@ private theorem exists_common_unit_ground_of_complementary_support (S : Finset V
         by_cases hik : i = k <;> by_cases hjl : j = l <;> simp [hik, hjl]
       rw [hk, hBe]
       ext σ τ
-      simp only [Matrix.sub_apply, Matrix.smul_apply, submatrix_apply, one_apply, c.injective.eq_iff, c]
+      simp only [Matrix.sub_apply, Matrix.smul_apply, submatrix_apply, one_apply,
+        c.injective.eq_iff, c]
     rw [hsplit]
     exact (PosSemidef.one.kronecker hwB).submatrix c
 
@@ -311,7 +312,8 @@ theorem exists_disjoint_regional_clipping_structure
   have hxall (i : ι) : A i *ᵥ x = (e i : ℂ) • x := hx i (Finset.mem_univ i)
   have helowall (i : ι) : (A i - (e i : ℂ) • 1).PosSemidef :=
     helow i (Finset.mem_univ i)
-  have he (i : ι) : (e i : ℂ) • (1 : Matrix (Config X) (Config X) ℂ) ≤ A i := le_iff.mpr (helowall i)
+  have he (i : ι) : (e i : ℂ) • (1 : Matrix (Config X) (Config X) ℂ) ≤ A i :=
+    le_iff.mpr (helowall i)
   have hcomm : Pairwise fun i j ↦ Commute (A i) (A j) := by
     intro i j hij
     exact commute_of_mem_supportedOperators_of_disjoint (hsupp i) (hsupp j) (hdisj hij)

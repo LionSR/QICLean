@@ -94,6 +94,7 @@ private theorem residual_coefficient_le {κ b E η t : ℝ} (hκ : 0 < κ) (hb :
       mul_le_mul_of_nonneg_left h1 (by positivity)
     _ = _ := mul_one _
 
+omit [Fintype V] in
 /-- The terms crossing the cut at `Λ` are those supported neither in `Λ` nor outside it. -/
 private theorem crossingTerms_eq_filter (Λ : Finset V) :
     crossingTerms T Λ = Finset.univ.filter fun i ↦ ¬T i ⊆ Λ ∧ ¬Disjoint (T i) Λ := by
@@ -170,7 +171,7 @@ private theorem exists_region_hard_truncation_residuals (Φ : Interaction X T) {
   have hsum : Φ.hamiltonian = (∑ j, A j) + Y := by
     rw [Fin.sum_univ_two]
     change ∑ i, Φ.term i = Hin + Hout + Y
-    simp only [Hin, Hout, Y, Iin, Iout, crossingTerms_eq_filter]
+    simp only [Hin, Hout, Y, crossingTerms_eq_filter]
     rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun i ↦ T i ⊆ Λ),
       ← Finset.sum_filter_add_sum_filter_not (Finset.univ.filter fun i ↦ ¬T i ⊆ Λ)
         (fun i ↦ Disjoint (T i) Λ), Finset.filter_filter, Finset.filter_filter, add_assoc]

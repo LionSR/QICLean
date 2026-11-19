@@ -45,6 +45,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Finty
 private def siteConfigEquiv : Config X ≃ ∀ v, RegionConfig X {v} :=
   Equiv.piCongrRight fun v ↦ (Equiv.piUnique fun w : ({v} : Finset V) ↦ X w.1).symm
 
+omit [Fintype V] [DecidableEq V] [∀ v, Fintype (X v)] in
 private theorem siteConfigEquiv_apply (x : Config X) (v : V) :
     siteConfigEquiv x v = fun w : ({v} : Finset V) ↦ x w := by
   funext w
@@ -172,7 +173,8 @@ theorem exists_isGapped_factors_of_sum_place [Nonempty V]
     (hspan : groundSpace (∑ v, place {v} (H v)) E₀ = Submodule.span ℂ {Ω}) :
     ∃ (a : V → ℝ) (ω : ∀ v, EuclideanSpace ℂ (RegionConfig X {v})), E₀ = ∑ v, a v ∧
       (∀ x, Ω x = ∏ v, ω v (fun w : ({v} : Finset V) ↦ x w)) ∧
-      ∀ v, ‖ω v‖ = 1 ∧ IsGapped (H v) (a v) Δ ∧ groundSpace (H v) (a v) = Submodule.span ℂ {ω v} := by
+      ∀ v, ‖ω v‖ = 1 ∧ IsGapped (H v) (a v) Δ ∧
+        groundSpace (H v) (a v) = Submodule.span ℂ {ω v} := by
   classical
   choose a u hu1 hgap hsp hev using exists_site_factor hH hΔ hΩ hgs hspan
   have hΩne : WithLp.ofLp Ω ≠ 0 := by
@@ -195,7 +197,8 @@ theorem exists_isGapped_factors_of_sum_place [Nonempty V]
     simp [hu1']
   have hψ : WithLp.toLp 2 (siteProduct u) ∈ groundSpace (∑ v, place {v} (H v)) E₀ := by
     rw [mem_groundSpace_iff_mulVec, WithLp.ofLp_toLp, sum_mulVec, hE]
-    simp only [fun v ↦ place_mulVec_siteProduct u v (H v) (mulVec_eq_of_groundSpace_eq_span (hsp v)),
+    simp only [fun v ↦ place_mulVec_siteProduct u v (H v)
+        (mulVec_eq_of_groundSpace_eq_span (hsp v)),
       ← Finset.sum_smul, Complex.ofReal_sum]
   rw [hspan] at hψ
   obtain ⟨c, hc⟩ := Submodule.mem_span_singleton.mp hψ
