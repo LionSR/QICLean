@@ -161,7 +161,8 @@ private theorem exists_site_factor {H : ∀ v, Matrix (RegionConfig X {v}) (Regi
 `Hᵥ` be Hermitian on the site `v` of a nonempty finite set of sites, and let
 `H = ∑ᵥ place {v} Hᵥ` be gapped at `E₀` with gap `Δ > 0` and ground space the line through the
 unit vector `Ω`. Then `Ω(x) = ∏ᵥ ωᵥ(x_v)` for unit vectors `ωᵥ`, `E₀ = ∑ᵥ aᵥ`, and each `Hᵥ`
-is gapped at `aᵥ` with the same gap `Δ` and ground space the line through `ωᵥ`.
+is gapped at `aᵥ` with the same gap `Δ` and ground space the line through `ωᵥ`. The set of
+sites is nonempty because the empty product is `1`, while for no sites `Ω` can be any unit scalar.
 TNLean one-dimensional note, Lemma reductions (`lem:reductions`), `part1_arealaw.tex`,
 lines 64–89: each component Hamiltonian inherits the gap inequality with the same gap. -/
 theorem exists_isGapped_factors_of_sum_place [Nonempty V]
