@@ -91,7 +91,7 @@ noncomputable def localClusterProductForm (acts : κ → Finset σ) (near : σ �
     (fun i α hα ↦ coeff_clusterProductForm_eq_zero_of_not_mem_clusterIndexSet
       acts near hnear z Φ β i α hα)
 
-omit [Fintype σ] [DecidableEq κ] in
+omit [Fintype σ] [DecidableEq κ] [∀ v, DecidableEq (X v)] in
 /-- If all valid clusters containing a site use terms from `T`, that site's allowed
 index set has at most `(1 + 2^|T|) q²` values. Empty-support terms cannot belong to a valid
 cluster and do not contribute labels. Hastings, arXiv:cond-mat/0508554v3, lines 1273–1275. -/
@@ -143,7 +143,7 @@ theorem IsValidCluster.subset_centres_ball [PseudoMetricSpace σ]
   have hcentre : dist j (c k) ≤ R := by rw [dist_comm]; exact hR k j hj
   exact (dist_triangle i j (c k)).trans (add_le_add hlocal hcentre)
 
-omit [Fintype σ] [DecidableEq κ] in
+omit [Fintype σ] [DecidableEq κ] [∀ v, DecidableEq (X v)] in
 /-- A site's cluster index range is bounded by the number of interaction centres in a
 local ball, rather than by the total number of terms.
 Source: Hastings, arXiv:cond-mat/0508554v3, lines 1273–1275. -/

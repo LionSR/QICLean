@@ -117,7 +117,7 @@ variable (X) in
 theorem hasProductForm_one (near : V → V → Prop) : HasProductForm X near 1 :=
   ⟨ProductForm.one X near⟩
 
-omit [∀ v, DecidableEq (X v)] in
+omit [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
 /-- Every operator has a product form when there are no configurations. -/
 theorem hasProductForm_of_isEmpty [IsEmpty (Config X)] (near : V → V → Prop)
     (ρ : Matrix (Config X) (Config X) ℂ) : HasProductForm X near ρ :=
@@ -147,10 +147,12 @@ noncomputable def ProductForm.mul {ρ σ : Matrix (Config X) (Config X) ℂ}
     simp [prodOp_mul, Finset.prod_mul_distrib, Equiv.arrowProdEquivProdArrow, smul_smul,
       mul_comm]
 
+omit [∀ v, DecidableEq (X v)] in
 /-- Products preserve coefficient neighbourhoods. -/
 theorem HasProductForm.mul {ρ σ : Matrix (Config X) (Config X) ℂ}
     (hρ : HasProductForm X near ρ) (hσ : HasProductForm X near σ) :
     HasProductForm X near (ρ * σ) := by
+  classical
   obtain ⟨P⟩ := hρ
   obtain ⟨Q⟩ := hσ
   exact ⟨P.mul Q⟩
