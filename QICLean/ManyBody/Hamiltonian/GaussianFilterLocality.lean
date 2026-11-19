@@ -18,8 +18,8 @@ If the Heisenberg evolution `W(t) = e^{iHt} W e^{-iHt}` nearly commutes with an 
 for all times `|t| ≤ T`, so does the Gaussian-filtered operator `W_tilde`, up to the Gaussian
 mass of the times `|t| > T`, where the commutator is bounded crudely by `2 ‖W‖ ‖O‖`. The same
 splitting of the filter integral localizes `W_tilde` by a region expectation. By the Duhamel
-formula the change `W_tilde - W` made by the filter is nearly supported near the support of `[H, W]`, with the
-first-moment Gaussian tail in place of the Gaussian mass.
+formula the change `W_tilde - W` made by the filter is nearly supported near the support of
+`[H, W]`, with the first-moment Gaussian tail in place of the Gaussian mass.
 
 For an interaction `Φ : Interaction X T` of Hermitian terms on a finite graph, with supports of
 diameter at most `R` and at most `v_R` sites and a per-site budget `b₀`, the Lieb–Robinson
