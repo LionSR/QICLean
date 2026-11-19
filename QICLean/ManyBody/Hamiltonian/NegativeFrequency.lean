@@ -84,8 +84,8 @@ theorem norm_inner_div_norm_sq_le
     _ ≤ ‖ψ‖ * (‖A‖ * ‖ψ‖) := mul_le_mul_of_nonneg_left hA (norm_nonneg _)
     _ = _ := by ring
 
-/-- The centered observable has zero expectation without assuming
-that its nonzero reference vector is normalized. Source: Hastings–Koma,
+/-- The centered observable has zero expectation in its nonzero reference vector.
+Source: Hastings–Koma,
 arXiv:math-ph/0507008, Section 3, equations (3.1)–(3.6). -/
 theorem inner_centeredObservable_eq_zero
     {ψ : EuclideanSpace ℂ n} (hψ : ψ ≠ 0) (A : Matrix n n ℂ) :
@@ -159,9 +159,8 @@ namespace ManyBody
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
-/-- Retain exactly the energy-lowering matrix elements of an observable in
-an orthonormal eigenbasis of the Hermitian Hamiltonian. The rank-one
-operators are Mathlib's canonical operators. Source: Hastings–Koma,
+/-- The energy-lowering part `∑_{E_i < E_j} ⟨e_i, A e_j⟩ |e_i⟩⟨e_j|` of an observable, in an
+orthonormal eigenbasis of the Hermitian Hamiltonian. Source: Hastings–Koma,
 arXiv:math-ph/0507008, equations (3.1)–(3.6). -/
 def negativeFrequencyPart {H : Matrix n n ℂ} (hH : H.IsHermitian)
     (A : Matrix n n ℂ) : EuclideanSpace ℂ n →L[ℂ] EuclideanSpace ℂ n := by
@@ -193,9 +192,8 @@ private theorem inner_apply_eq_double_sum
       simp only [mul_assoc]
     _ = _ := Finset.sum_comm
 
-/-- The negative-frequency part annihilates a ground vector. Only
-that its energy is a least eigenvalue is needed, not a supplied filtering
-or ground-orthogonality premise. Source: Hastings–Koma,
+/-- The negative-frequency part annihilates every eigenvector at the least eigenvalue.
+Source: Hastings–Koma,
 arXiv:math-ph/0507008, equations (3.2)–(3.5). -/
 theorem negativeFrequencyPart_apply_ground_eq_zero {H : Matrix n n ℂ}
     (hH : H.IsHermitian) {E₀ : ℝ} (hmin : ∀ i, E₀ ≤ hH.eigenvalues i)
@@ -252,11 +250,9 @@ private theorem inner_ground_negativeFrequencyPart_apply
         simp only [hz, mul_zero]
     simpa only [ite_eq_right hij, _root_.zero_apply, inner_zero_right] using hvanish.symm
 
-/-- Ground-space-subtracted correlation is exactly a commutator involving
-the negative-frequency part. This supplies the spectral separation
-needed before estimating that commutator by a regularized time integral.
-No locality or correlation-decay condition is assumed. The entire ground
-space is removed, so degeneracy is allowed. Source: Hastings–Koma,
+/-- For a vector `ψ` at the least eigenvalue and the projection `P₀` onto that eigenspace,
+`⟨ψ, A (1 - P₀) B ψ⟩ = ⟨ψ, [A⁻, B] ψ⟩`, where `A⁻` is the negative-frequency part. The
+eigenspace may be degenerate. Source: Hastings–Koma,
 arXiv:math-ph/0507008, equations (3.1)–(3.6). -/
 theorem inner_ground_projected_eq_negativeFrequency_commutator
     {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
@@ -279,17 +275,14 @@ theorem inner_ground_projected_eq_negativeFrequency_commutator
   simpa only [_root_.sub_apply, ContinuousLinearMap.comp_apply,
     hkill, map_zero, sub_zero] using hsplit.symm
 
-/-- At a one-dimensional ground space, the sharp-frequency commutator is
-exactly the ordinary connected correlation of the unnormalized ground
-vector. The squared norm in the denominator keeps normalization explicit;
-no continuous choice of a normalized vector is needed.
+/-- If the ground space is spanned by `ψ`, then
+`⟨ψ, A B ψ⟩ - ⟨ψ, A ψ⟩ ⟨ψ, B ψ⟩ / ‖ψ‖² = ⟨ψ, [A⁻, B] ψ⟩`.
 Source: Hastings–Koma, arXiv:math-ph/0507008, equations (3.1)–(3.6),
 specialized to an exactly one-dimensional ground eigenspace. -/
 theorem inner_ground_connected_eq_negativeFrequency_commutator
     {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
     (hmin : ∀ i, E₀ ≤ hH.eigenvalues i) (A B : Matrix n n ℂ)
-    {ψ : EuclideanSpace ℂ n} (hψ : ψ ∈ groundSpace H E₀)
-    (hline : groundSpace H E₀ = Submodule.span ℂ {ψ}) :
+    {ψ : EuclideanSpace ℂ n} (hline : groundSpace H E₀ = Submodule.span ℂ {ψ}) :
     ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ) A
         (toEuclideanCLM (n := n) (𝕜 := ℂ) B ψ)⟫_ℂ -
         ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ) A ψ⟫_ℂ *
@@ -297,6 +290,7 @@ theorem inner_ground_connected_eq_negativeFrequency_commutator
             ((‖ψ‖ ^ 2 : ℝ) : ℂ) =
       ⟪ψ, ((negativeFrequencyPart hH A).comp (toEuclideanCLM (n := n) (𝕜 := ℂ) B) -
         (toEuclideanCLM (n := n) (𝕜 := ℂ) B).comp (negativeFrequencyPart hH A)) ψ⟫_ℂ := by
+  have hψ : ψ ∈ groundSpace H E₀ := hline ▸ Submodule.mem_span_singleton_self ψ
   calc
     _ = ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ) A
         (toEuclideanCLM (n := n) (𝕜 := ℂ) B ψ -
@@ -377,8 +371,7 @@ theorem integrable_gaussianNegativeFrequencyIntegrand
     (continuous_gaussianNegativeFrequencyIntegrand H A hε).aestronglyMeasurable
   exact Filter.Eventually.of_forall (norm_gaussianNegativeFrequencyIntegrand_le hH A hε)
 
-/-- The regularized observable has a finite explicit norm bound.
-The inverse regularizer is retained. Source: Hastings–Koma,
+/-- The regularized observable has norm at most `c_h ε⁻¹ ‖A‖`. Source: Hastings–Koma,
 arXiv:math-ph/0507008, equation (3.8). -/
 theorem norm_gaussianNegativeFrequencyOperator_le
     (h : ℝ≥0) {H : Matrix n n ℂ} (hH : H.IsHermitian) (A : Matrix n n ℂ)
@@ -391,9 +384,9 @@ theorem norm_gaussianNegativeFrequencyOperator_le
   simpa using norm_integral_le_of_norm_le_const (μ := gaussianReal 0 h)
     (Filter.Eventually.of_forall (norm_gaussianNegativeFrequencyIntegrand_le hH A hε))
 
-/-- Energy eigenvectors identify the operator integral with its
-scalar Gaussian--Cauchy transform. No matrix-element or frequency witness
-is assumed. Source: Hastings–Koma, arXiv:math-ph/0507008, Lemma 3.1,
+/-- Between energy eigenvectors at energies `E` and `E'`, the matrix element of the operator
+integral is the Gaussian–Cauchy transform at `E - E'` times the matrix element of `A`.
+Source: Hastings–Koma, arXiv:math-ph/0507008, Lemma 3.1,
 equations (3.7)–(3.13). -/
 theorem dotProduct_integral_gaussianNegativeFrequencyIntegrand_mulVec
     (h : ℝ≥0) {H : Matrix n n ℂ} (hH : H.IsHermitian) (A : Matrix n n ℂ)
@@ -490,12 +483,11 @@ private theorem exp_sub_one_le_mul_exp (x : ℝ) :
   rw [← Real.exp_add, neg_add_cancel, Real.exp_zero] at h
   nlinarith
 
-/-- The regularized frequency commutator is uniformly local in the
-regularizer, once the Heisenberg commutator has the indicated
-Lieb–Robinson increment. Its short-time zero cancels the Cauchy pole;
-the long-time part is controlled by the Gaussian tail. This is
-an intermediate form of Hastings–Koma, arXiv:math-ph/0507008,
-Section 3; no ordinary correlation estimate is assumed. -/
+/-- If `‖[A(t), B]‖ ≤ C (e^{v|t|} - 1)` for all `t`, then the commutator of the regularized
+negative-frequency operator with `B` is bounded by
+`c_h (C v e^{vT} + (2‖A‖‖B‖/T) e^{-T²/(2h)})`, uniformly in the regularizer `ε > 0`. The
+short-time zero of the commutator cancels the Cauchy pole; the Gaussian tail bounds the
+long-time part. Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3. -/
 theorem norm_commutator_gaussianNegativeFrequencyOperator_le
     (h : ℝ≥0) {H : Matrix n n ℂ} (hH : H.IsHermitian) (A B : Matrix n n ℂ)
     {ε T C v : ℝ} (hε : 0 < ε) (hT : 0 < T) (hC : 0 ≤ C) (hv : 0 ≤ v)
@@ -615,7 +607,7 @@ private theorem star_inner_matrix (A : Matrix n n ℂ)
     star ⟪x, L A y⟫_ℂ = ⟪y, L Aᴴ x⟫_ℂ :=
   (inner_adjoint_matrix A y x).symm
 
-private theorem actual_inner_cutoff_limit
+private theorem inner_cutoff_limit
     {q Δ : ℝ} (hq : 0 < q) (hΔ : 0 < Δ)
     {H : Matrix n n ℂ} (hH : H.IsHermitian) (A : Matrix n n ℂ)
     {v w : EuclideanSpace ℂ n} {E E' : ℝ}
@@ -662,9 +654,8 @@ arXiv:math-ph/0507008, Section 3, equations (3.1)–(3.14), Lemma 3.1. -/
 theorem exists_gaussianNegativeFrequency_ground_limits
     {q Δ : ℝ} (hq : 0 < q) (hΔ : 0 < Δ)
     {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ i, hH.eigenvalues i = E₀ ∨ E₀ + Δ ≤ hH.eigenvalues i)
-    {ψ : EuclideanSpace ℂ n} (hψ : ψ ∈ groundSpace H E₀)
-    (hline : groundSpace H E₀ = Submodule.span ℂ {ψ})
+    (hgap : IsGapped H E₀ Δ)
+    {ψ : EuclideanSpace ℂ n} (hline : groundSpace H E₀ = Submodule.span ℂ {ψ})
     (A : Matrix n n ℂ) (hcenter : ⟪ψ, L A ψ⟫_ℂ = 0) :
     ∃ ξ η : EuclideanSpace ℂ n,
       Tendsto (fun ε : ℝ ↦
@@ -675,6 +666,8 @@ theorem exists_gaussianNegativeFrequency_ground_limits
         (nhdsWithin 0 (Set.Ioi 0)) (𝓝 η) ∧
       ‖ξ‖ ≤ Real.exp (-q / 2) * ‖L A ψ‖ ∧
       ‖L Aᴴ ψ - η‖ ≤ Real.exp (-q / 2) * ‖L Aᴴ ψ‖ := by
+  have hψ : ψ ∈ groundSpace H E₀ := hline ▸ Submodule.mem_span_singleton_self ψ
+  replace hgap := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let b := hH.eigenvectorBasis
   let F := fun ε : ℝ ↦ gaussianNegativeFrequencyOperator (q / Δ ^ 2).toNNReal ε H A
@@ -682,13 +675,13 @@ theorem exists_gaussianNegativeFrequency_ground_limits
       H *ᵥ WithLp.ofLp (b i) = (hH.eigenvalues i : ℂ) • WithLp.ofLp (b i) :=
     SpectralFilter.mulVec_eigenvectorBasis_complex hH i
   have hψ' := mem_groundSpace_iff_mulVec.mp hψ
-  have hplus (i : n) := actual_inner_cutoff_limit hq hΔ hH A (hb i) hψ'
+  have hplus (i : n) := inner_cutoff_limit hq hΔ hH A (hb i) hψ'
   have hminus (i : n) :
       Tendsto (fun ε : ℝ ↦ ⟪b i, L (F ε)ᴴ ψ⟫_ℂ)
         (nhdsWithin 0 (Set.Ioi 0))
         (𝓝 ((gaussianNegativeFrequencyCutoff q Δ (E₀ - hH.eigenvalues i) : ℂ) *
           ⟪b i, L Aᴴ ψ⟫_ℂ)) := by
-    have h := (actual_inner_cutoff_limit hq hΔ hH A hψ' (hb i)).star
+    have h := (inner_cutoff_limit hq hΔ hH A hψ' (hb i)).star
     simpa only [star_mul', star_inner_matrix, Complex.star_def, Complex.conj_ofReal,
       mul_comm] using h
   obtain ⟨ξ, hξ, hξcoef⟩ := exists_vector_limit_of_inner_limits b
@@ -734,17 +727,15 @@ theorem exists_gaussianNegativeFrequency_ground_limits
       exact mul_le_mul_of_nonneg_right
         (abs_one_sub_gaussianNegativeFrequencyCutoff_le_exp_of_gap hq hΔ hω) (norm_nonneg _)
 
-/-- The regularized scalar commutator has a limit approximating the
-ordinary ground correlation, with the Gaussian separation error. Only the
-first observable is centered, and the ground vector is not required to have
-unit norm. Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3,
+/-- For a centered first observable, the ground expectation of the commutator of the
+regularized operator with `B` converges as `ε → 0⁺` to a number within
+`2 e^{-q/2} ‖A‖ ‖B‖ ‖ψ‖²` of `⟨ψ, A B ψ⟩`. Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3,
 equations (3.1)–(3.14), before using the Lieb–Robinson bound. -/
 theorem exists_gaussianNegativeFrequency_ground_commutator_limit
     {q Δ : ℝ} (hq : 0 < q) (hΔ : 0 < Δ)
     {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ i, hH.eigenvalues i = E₀ ∨ E₀ + Δ ≤ hH.eigenvalues i)
-    {ψ : EuclideanSpace ℂ n} (hψ : ψ ∈ groundSpace H E₀)
-    (hline : groundSpace H E₀ = Submodule.span ℂ {ψ})
+    (hgap : IsGapped H E₀ Δ)
+    {ψ : EuclideanSpace ℂ n} (hline : groundSpace H E₀ = Submodule.span ℂ {ψ})
     (A B : Matrix n n ℂ) (hcenter : ⟪ψ, L A ψ⟫_ℂ = 0) :
     ∃ z : ℂ,
       Tendsto (fun ε : ℝ ↦
@@ -753,8 +744,9 @@ theorem exists_gaussianNegativeFrequency_ground_commutator_limit
         (nhdsWithin 0 (Set.Ioi 0)) (𝓝 z) ∧
       ‖⟪ψ, L (A * B) ψ⟫_ℂ - z‖ ≤
         2 * Real.exp (-q / 2) * ‖A‖ * ‖B‖ * ‖ψ‖ ^ 2 := by
+  have hψ : ψ ∈ groundSpace H E₀ := hline ▸ Submodule.mem_span_singleton_self ψ
   obtain ⟨ξ, η, hξ, hη, hsmall, herror⟩ :=
-    exists_gaussianNegativeFrequency_ground_limits hq hΔ hH hgap hψ hline A hcenter
+    exists_gaussianNegativeFrequency_ground_limits hq hΔ hH hgap hline A hcenter
   let z := ⟪η, L B ψ⟫_ℂ - ⟪L Bᴴ ψ, ξ⟫_ℂ
   have hmove (M : Matrix n n ℂ) (x y : EuclideanSpace ℂ n) :
       ⟪L Mᴴ x, y⟫_ℂ = ⟪x, L M y⟫_ℂ := by
@@ -813,18 +805,16 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 
 local notation "L" => Matrix.toEuclideanCLM (n := n) (𝕜 := ℂ)
 
-/-- The ordinary correlation of a centered observable is bounded by
-the derived Gaussian gap error and uniform frequency-locality
-bound. The Cauchy regularizer is eliminated by the proved scalar limit.
-No filtered-to-ordinary comparison or clustering estimate is assumed.
+/-- For a centered first observable and a Lieb–Robinson commutator bound, the ground
+correlation `⟨ψ, A B ψ⟩` is bounded by the Gaussian gap error `2 e^{-q/2} ‖A‖ ‖B‖` plus the
+locality bound of the regularized operator, times `‖ψ‖²`.
 Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3. -/
 theorem norm_centered_ground_correlation_le_gaussian
     {q Δ T C v : ℝ} (hq : 0 < q) (hΔ : 0 < Δ) (hT : 0 < T)
     (hC : 0 ≤ C) (hv : 0 ≤ v)
     {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ i, hH.eigenvalues i = E₀ ∨ E₀ + Δ ≤ hH.eigenvalues i)
-    {ψ : EuclideanSpace ℂ n} (hψ : ψ ∈ groundSpace H E₀)
-    (hline : groundSpace H E₀ = Submodule.span ℂ {ψ})
+    (hgap : IsGapped H E₀ Δ)
+    {ψ : EuclideanSpace ℂ n} (hline : groundSpace H E₀ = Submodule.span ℂ {ψ})
     (A B : Matrix n n ℂ) (hcenter : ⟪ψ, L A ψ⟫_ℂ = 0)
     (hLR : ∀ t : ℝ,
       ‖heisenbergEvolution H t A * B - B * heisenbergEvolution H t A‖ ≤
@@ -834,11 +824,12 @@ theorem norm_centered_ground_correlation_le_gaussian
       (2 * Real.exp (-q / 2) * ‖A‖ * ‖B‖ +
         kernel h⁻¹ 0 * (C * v * Real.exp (v * T) +
           (2 * ‖A‖ * ‖B‖ / T) * Real.exp (-T ^ 2 / (2 * (h : ℝ))))) * ‖ψ‖ ^ 2 := by
+  have hψ : ψ ∈ groundSpace H E₀ := hline ▸ Submodule.mem_span_singleton_self ψ
   let h := (q / Δ ^ 2).toNNReal
   let K := kernel h⁻¹ 0 * (C * v * Real.exp (v * T) +
     (2 * ‖A‖ * ‖B‖ / T) * Real.exp (-T ^ 2 / (2 * (h : ℝ))))
   obtain ⟨z, hlim, herror⟩ := exists_gaussianNegativeFrequency_ground_commutator_limit
-    hq hΔ hH hgap hψ hline A B hcenter
+    hq hΔ hH hgap hline A B hcenter
   have hpoint (ε : ℝ) (hε : 0 < ε) :
       let F := gaussianNegativeFrequencyOperator h ε H A
       ‖⟪ψ, L (F * B - B * F) ψ⟫_ℂ‖ ≤ K * ‖ψ‖ ^ 2 := by

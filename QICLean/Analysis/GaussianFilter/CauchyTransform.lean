@@ -139,9 +139,7 @@ theorem integrable_gaussianCauchyKernel_mul_exp {α ε : ℝ}
   rw [norm_mul, hphase, mul_one]
   exact norm_gaussianCauchyKernel_le hε α t
 
-/-- A finite explicit bound for the regularized frequency integral.
-Its dependence on the regularizer is retained; this is not a uniform
-regularizer-limit or locality bound. Source: Hastings–Koma,
+/-- The regularized frequency integral is bounded by `(2πε)⁻¹ √(π/α)`. Source: Hastings–Koma,
 arXiv:math-ph/0507008, equation (3.8). -/
 theorem norm_integral_gaussianCauchyKernel_mul_exp_le {α ε : ℝ}
     (hα : 0 < α) (hε : 0 < ε) (ω : ℝ) :
@@ -258,9 +256,7 @@ theorem gaussianNegativeFrequencyCutoff_le_one (q Δ ω : ℝ) :
     gaussianNegativeFrequencyCutoff q Δ ω ≤ 1 :=
   measureReal_le_one
 
-/-- Above the positive gap, the Gaussian selector has the
-explicit exponential error. The Gaussian tail bound is proved from its
-moment-generating function. Source: Hastings–Koma,
+/-- Above the positive gap, the Gaussian selector is at most `e^{-q/2}`. Source: Hastings–Koma,
 arXiv:math-ph/0507008, Lemma 3.1, equation (3.7). -/
 theorem gaussianNegativeFrequencyCutoff_le_exp_of_gap
     {q Δ ω : ℝ} (hq : 0 < q) (hΔ : 0 < Δ) (hω : Δ ≤ ω) :
@@ -275,9 +271,7 @@ theorem gaussianNegativeFrequencyCutoff_le_exp_of_gap
     _ = _ := gaussian_gap_rate hq hΔ
 
 /-- Below the negative gap, the Gaussian selector differs from one
-by at most the same explicit exponential error. No symmetry or tail
-estimate is assumed: apply the Gaussian moment-generating-function bound
-to the negated variable. Source: Hastings–Koma,
+by at most `e^{-q/2}`. Source: Hastings–Koma,
 arXiv:math-ph/0507008, Lemma 3.1, equation (3.7). -/
 theorem abs_one_sub_gaussianNegativeFrequencyCutoff_le_exp_of_gap
     {q Δ ω : ℝ} (hq : 0 < q) (hΔ : 0 < Δ) (hω : ω ≤ -Δ) :
@@ -442,10 +436,9 @@ theorem tendsto_normalized_gaussianCauchyTransform
   simpa only [GaussianFilter.halfLine_gaussian_integral_eq_measureReal h hh ω] using hlim
 
 /-- The source Gaussian parameters give the frequency cutoff whose
-positive- and negative-gap errors are bounded by \(e^{-q/2}\). This proves
-the scalar Cauchy/Gaussian limit identity rather than assuming a Fourier
-or approximation premise. Source: Hastings–Koma, arXiv:math-ph/0507008,
-Lemma 3.1, equation (3.7), with \(\alpha=\Delta^2/(2q)\). -/
+positive- and negative-gap errors are bounded by \(e^{-q/2}\).
+Source: Hastings–Koma, arXiv:math-ph/0507008, Lemma 3.1, equation (3.7),
+with \(\alpha=\Delta^2/(2q)\). -/
 theorem tendsto_normalized_gaussianCauchyTransform_cutoff
     {q Δ : ℝ} (hq : 0 < q) (hΔ : 0 < Δ) (ω : ℝ) :
     let h := (q / Δ ^ 2).toNNReal
@@ -491,10 +484,8 @@ end GaussianFilter
 
 namespace GaussianFilter
 
-/-- The explicit frequency-separation bound has a uniform positive
-exponential rate. The prefactor is linear in the nonnegative support
-parameter, and neither a rate nor a decay estimate is supplied as a
-premise. Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3,
+/-- The frequency-separation bound decays exponentially in `ℓ`, with a prefactor linear in
+the support parameter `m`. Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3,
 Gaussian frequency separation with T=ℓ/(2v). -/
 theorem exists_gaussianFrequencyClusteringRate
     (Δ v : ℝ) (hΔ : 0 < Δ) (hv : 0 < v) :
