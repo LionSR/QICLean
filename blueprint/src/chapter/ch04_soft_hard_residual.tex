@@ -378,12 +378,21 @@ It does not assert the printed fourth-order choice, a bound on the bond dimensio
     $\max\{1,B\}^{2k}\le \exp(C_b X^{104})$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:soft_family_quartic_scale}
+    \uses{thm:soft_family_quartic_scale,thm:soft_family_calibration}
     The quartic scale bound gives $u\le A X^4$ for a constant depending
     only on $q,\mu$. The calibration bounds give $\log D\le u^9$.
     Applying $x/2\le\log(1+x)$ at $x=\xi/W$ bounds the numerator
     defining $r$ by $2\log N+20100m$. Hence both $r$ and $m$ are
-    bounded by constant multiples of $X^{40}$. Taking logarithms of
-    the bond dimension ceiling introduces the additional factor
-    $2k=2u^{16}$, bounded by a constant multiple of $X^{64}$.
+    bounded by $R X^{40}$ for a common constant $R\ge1$. Also
+    $k=u^{16}\le KX^{64}$ with $K=A^{16}$. Since $r\ge1$ and $q\ge2$,
+    one has $B\ge1$. Using $\log y\le y-1$ for $y>0$ gives
+    \begin{align}
+        \log\max\{1,B\} &= 2\log r+r\log q+\log 2+\log(m+1),
+            \label{eq:soft_growth_log_factor}\\
+        \log\max\{1,B\} &\le (6+\log q)R X^{40},
+            \label{eq:soft_growth_log_bound}\\
+        2k\log\max\{1,B\} &\le 2K(6+\log q)R X^{104}.
+            \label{eq:soft_growth_log_dimension}
+    \end{align}
+    Exponentiating gives the asserted bound with $C_b=2K(6+\log q)R$.
 \end{proof}
