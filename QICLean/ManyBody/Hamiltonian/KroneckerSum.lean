@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.HermitianHelpers
+import QICLean.Algebra.KroneckerFactorPositivity
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 import Mathlib.LinearAlgebra.Matrix.Kronecker
 import Mathlib.LinearAlgebra.UnitaryGroup
@@ -20,8 +21,7 @@ ground spaces are the lines through `u` and `v`, the ground space of the sum is 
 `u ⊗ v`. A Hamiltonian with no term across a cut is such a sum.
 
 `Matrix.kronecker_mulVec_mul` is moved from TNLean, `TNLean/Algebra/KroneckerLeastEigenvalue.lean`
-at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`, and `Matrix.star_mul_dotProduct_mul` from the
-same file at commit `e41c3b63`, with their statements and proofs unchanged.
+at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`, with its statement and proof unchanged.
 
 ## Main results
 
@@ -63,14 +63,6 @@ theorem Matrix.kronecker_mulVec_mul {α β : Type*} [Fintype α] [Fintype β]
     (∑ a : α, M p.1 a * u a) * (∑ b : β, N p.2 b * v b)
   rw [Fintype.sum_prod_type, Finset.sum_mul_sum]
   exact Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun b _ ↦ by ring
-
-/-- The inner product of two product vectors is the product of the inner products. -/
-theorem Matrix.star_mul_dotProduct_mul {α β : Type*} [Fintype α] [Fintype β] (u u' : α → ℂ)
-    (v v' : β → ℂ) :
-    star (fun p : α × β ↦ u p.1 * v p.2) ⬝ᵥ (fun p ↦ u' p.1 * v' p.2) =
-      (star u ⬝ᵥ u') * (star v ⬝ᵥ v') := by
-  simp only [dotProduct, Pi.star_apply, star_mul', Fintype.sum_prod_type, Finset.sum_mul_sum]
-  exact Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ by ring
 
 /-- The Kronecker sum `A ⊗ 1 + 1 ⊗ B` of two Hermitian matrices is the conjugate, by the
 Kronecker product of their eigenvector unitaries, of the diagonal matrix of the sums of their
@@ -278,20 +270,6 @@ private theorem norm_toLp_eq_one_of_star_dotProduct {γ : Type*} [Fintype γ]
       congrArg (RCLike.re : ℂ → ℝ) hinner
   nlinarith [norm_nonneg (WithLp.toLp 2 w)]
 
-
-/-- A unit eigenvector for the minimum eigenvalue of a Hermitian matrix. -/
-private theorem exists_unit_eigenvector_minEigenvalue {γ : Type*} [Fintype γ] [DecidableEq γ]
-    [Nonempty γ] {H : Matrix γ γ ℂ} (hH : H.IsHermitian) :
-    ∃ (a : ℝ) (u : γ → ℂ), H *ᵥ u = (a : ℂ) • u ∧ star u ⬝ᵥ u = 1 ∧
-      (H - (a : ℂ) • 1).PosSemidef := by
-  obtain ⟨i, hi⟩ := minEigenvalue_achieved hH
-  refine ⟨minEigenvalue hH, ⇑(hH.eigenvectorBasis i), ?_, ?_,
-    sub_minEigenvalue_smul_one_posSemidef hH⟩
-  · rw [hH.mulVec_eigenvectorBasis, hi]
-    simp [Complex.coe_smul]
-  · have h := hH.eigenvectorBasis.inner_eq_one i
-    rw [EuclideanSpace.inner_eq_star_dotProduct] at h
-    simpa [dotProduct_comm] using h
 
 
 omit [Fintype α] in

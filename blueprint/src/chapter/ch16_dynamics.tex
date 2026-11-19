@@ -818,20 +818,21 @@ $k$ sites, with the bound $2\lVert O\rVert$ in place of the printed
 $(1-gkt)^{-R/(gk)}\lVert O\rVert$; the restriction is recorded
 in~\cite{gap:akl14_hadamard_bound_scope}.
 
-\begin{lemma}[Conjugation from factorial commutator growth]
-    \label{lem:factorial_growth_rate_conjugation}
+\begin{theorem}[Conjugation from factorial commutator growth]
+    \label{thm:factorial_growth_rate_conjugation}
     \lean{GaussianFilter.exp_smul_commutatorCLM_apply,
         Matrix.norm_exp_conjugation_le_two_of_growth}
     \leanok
     \uses{def:gaussian_commutator_operator}
-    Let $H,O$ be complex square matrices and $a,t\in\R$ with $t\ge0$ and
-    $at\le1/2$. If
+    Let $H,O$ be complex square matrices. For every $s\in\C$,
+    $\exp(s\operatorname{ad}_H)(O)=e^{sH}Oe^{-sH}$. Let $a,t\in\R$ with $t\ge0$
+    and $at\le1/2$. If
     $\lVert\operatorname{ad}_H^m(O)\rVert\le a^m\,m!\,\lVert O\rVert$ for every
     $m\in\N$, then
     \begin{align}
         \lVert e^{tH}Oe^{-tH}\rVert\le2\lVert O\rVert.
     \end{align}
-\end{lemma}
+\end{theorem}
 \begin{proof}\leanok
     If $O=0$ there is nothing to prove; otherwise the bound at $m=1$ gives
     $a\ge0$. Left and right multiplication by $H$ commute, so the exponential of
@@ -843,34 +844,40 @@ in~\cite{gap:akl14_hadamard_bound_scope}.
     and $\sum_m2^{-m}=2$.
 \end{proof}
 
-\begin{lemma}[Commutators with positive contractions]
-    \label{lem:positive_contraction_commutator}
+\begin{theorem}[Commutators with positive contractions]
+    \label{thm:positive_contraction_commutator}
     \lean{Matrix.norm_commutator_le_of_nonneg_le_one,
+        ManyBody.Interaction.commutator_sum_eq_sum_filter_not_disjoint,
         ManyBody.Interaction.norm_commutator_sum_le_card}
     \leanok
-    \uses{def:dynamics_interaction, lem:sites_supported_commute}
+    \uses{def:dynamics_interaction, thm:sites_supported_subalgebra}
     If $0\le h\le1$, then $\lVert hX-Xh\rVert\le\lVert X\rVert$ for every square
-    matrix $X$. Consequently, if the terms $h_i$ of an interaction with supports
-    $T$ satisfy $0\le h_i\le1$, $s$ is a finite set of indices and
-    $O\in\mathcal A_S$, then
+    matrix $X$. For the terms $h_i$ of an interaction with supports $T$, a finite
+    set $s$ of indices and $O\in\mathcal A_S$,
+    \begin{align}
+        \Bigl[\sum_{i\in s}h_i,O\Bigr]=\sum_{i\in s,\,T_i\cap S\neq\emptyset}[h_i,O].
+    \end{align}
+    Consequently, if $0\le h_i\le1$ for every $i$, then
     \begin{align}
         \Bigl\lVert\Bigl[\sum_{i\in s}h_i,O\Bigr]\Bigr\rVert
         \le\bigl|\{i\in s:T_i\cap S\neq\emptyset\}\bigr|\,\lVert O\rVert.
     \end{align}
-\end{lemma}
+\end{theorem}
 \begin{proof}\leanok
+    \uses{lem:sites_supported_commute}
     The matrix $h-\tfrac12$ is self-adjoint with $-\tfrac12\le h-\tfrac12\le\tfrac12$,
     so its norm is at most $\tfrac12$, and $[h,X]=[h-\tfrac12,X]$. Terms whose
     support misses $S$ commute with $O$.
 \end{proof}
 
-\begin{lemma}[Factorial commutator growth for bounded support and degree]
+\begin{theorem}[Factorial commutator growth for bounded support and degree]
     \label{thm:bounded_degree_commutator_growth}
     \lean{Finset.card_filter_not_disjoint_le,
         ManyBody.Interaction.exists_commutator_iterate_decomposition,
         ManyBody.Interaction.norm_commutator_iterate_le}
     \leanok
-    \uses{lem:positive_contraction_commutator}
+    \uses{def:dynamics_interaction, def:gaussian_commutator_operator,
+        thm:sites_supported_subalgebra}
     Let $k,g\in\N$, and let the terms $h_i$ of an interaction with supports $T$
     satisfy $0\le h_i\le1$ and $|T_i|\le k$. Let $s$ be a finite set of indices
     such that every site lies in $T_i$ for at most $g$ indices $i\in s$, and
@@ -882,38 +889,39 @@ in~\cite{gap:akl14_hadamard_bound_scope}.
     \begin{align}
         \lVert\operatorname{ad}_H^m(O)\rVert\le(gk)^m\,m!\,\lVert O\rVert.
     \end{align}
-\end{lemma}
+\end{theorem}
 \begin{proof}\leanok
-    \uses{lem:positive_contraction_commutator}
+    \uses{thm:positive_contraction_commutator, lem:sites_supported_mono}
     Every index whose support meets $S$ has a site of $S$ in its support, and
     each site of $S$ lies in at most $g$ supports. Induct on $m$: commuting a
     piece supported on $R$ with $H$ leaves only the at most $g|R|$ terms $h_i$
     whose support meets $R$, each giving a piece supported on $R\cup T_i$ of
     norm at most that of the original piece by
-    Lemma~\ref{lem:positive_contraction_commutator}. If $|S|\le k$, then
+    Theorem~\ref{thm:positive_contraction_commutator}. If $|S|\le k$, then
     $g(|S|+jk)\le gk(j+1)$ and $\prod_{j<m}gk(j+1)=(gk)^m\,m!$.
 \end{proof}
 
-\begin{lemma}[Short imaginary-time conjugation for bounded support and degree]
+\begin{theorem}[Short imaginary-time conjugation for bounded support and degree]
     \label{thm:bounded_degree_imaginary_time}
     \lean{ManyBody.Interaction.norm_exp_conjugation_shift_le_two,
         ManyBody.Interaction.norm_exp_conjugation_shift_sum_le}
     \leanok
-    \uses{thm:bounded_degree_commutator_growth, lem:factorial_growth_rate_conjugation}
-    In the setting of Lemma~\ref{thm:bounded_degree_commutator_growth}, let
+    \uses{thm:bounded_degree_commutator_growth}
+    In the setting of Theorem~\ref{thm:bounded_degree_commutator_growth}, let
     $O$ be supported on at most $k$ sites, let $z\in\C$, and let $t\ge0$ with
     $2gkt\le1$. Then
     \begin{align}
         \bigl\lVert e^{t(H-z)}Oe^{-t(H-z)}\bigr\rVert\le2\lVert O\rVert.
     \end{align}
     For a finite set $J$ of indices, the same conjugation of $\sum_{j\in J}h_j$
-    has norm at most $2|J|$. This is the conjugation lemma
-    of~\cite[lines 795--880]{Arad2014Connecting} for contractions, a degree that counts terms and observables on at most $k$
-    sites~\cite{gap:akl14_hadamard_bound_scope}.
-\end{lemma}
+    has norm at most $2|J|$. Of the conjugation lemma
+    of~\cite[lines 795--880]{Arad2014Connecting}, only the bound $2\lVert O\rVert$
+    for $0\le t\le1/(2gk)$ is proved here, for contractions, a degree that counts
+    terms and observables on at most $k$ sites~\cite{gap:akl14_hadamard_bound_scope}.
+\end{theorem}
 \begin{proof}\leanok
-    \uses{thm:bounded_degree_commutator_growth, lem:factorial_growth_rate_conjugation}
+    \uses{thm:bounded_degree_commutator_growth, thm:factorial_growth_rate_conjugation}
     The scalar shift does not change commutators. Apply
-    Lemma~\ref{lem:factorial_growth_rate_conjugation} with $a=gk$, and for the
+    Theorem~\ref{thm:factorial_growth_rate_conjugation} with $a=gk$, and for the
     sum use $\lVert h_j\rVert\le1$ and $|T_j|\le k$ for each $j\in J$.
 \end{proof}

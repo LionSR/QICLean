@@ -46,20 +46,6 @@ namespace ManyBody
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)] [∀ v, Nonempty (X v)]
 
-/-- A unit eigenvector for the minimum eigenvalue of a Hermitian matrix. -/
-private theorem exists_unit_eigenvector_minEigenvalue {γ : Type*} [Fintype γ] [DecidableEq γ]
-    [Nonempty γ] {H : Matrix γ γ ℂ} (hH : H.IsHermitian) :
-    ∃ (a : ℝ) (u : γ → ℂ), H *ᵥ u = (a : ℂ) • u ∧ star u ⬝ᵥ u = 1 ∧
-      (H - (a : ℂ) • 1).PosSemidef := by
-  obtain ⟨i, hi⟩ := minEigenvalue_achieved hH
-  refine ⟨minEigenvalue hH, ⇑(hH.eigenvectorBasis i), ?_, ?_,
-    sub_minEigenvalue_smul_one_posSemidef hH⟩
-  · rw [hH.mulVec_eigenvectorBasis, hi]
-    simp [Complex.coe_smul]
-  · have h := hH.eigenvectorBasis.inner_eq_one i
-    rw [EuclideanSpace.inner_eq_star_dotProduct] at h
-    simpa [dotProduct_comm] using h
-
 /-- Hermitian operators supported on a region and on its complement have a common unit vector
 attaining both minimum eigenvalues. ALVV, arXiv:1602.08828v2, `def:hard-trunc`,
 lines 873–886. -/

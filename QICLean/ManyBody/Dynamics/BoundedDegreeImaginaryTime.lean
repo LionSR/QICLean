@@ -7,6 +7,7 @@ import Mathlib.Algebra.BigOperators.Intervals
 import Mathlib.Data.Fintype.Sigma
 import QICLean.Algebra.IncidenceCount
 import QICLean.Analysis.ExpConjugation
+import QICLean.Analysis.VariationalBound
 import QICLean.ManyBody.Dynamics.Interaction
 
 /-!
@@ -39,7 +40,8 @@ dropped.
 
 ## Main results
 
-* `ManyBody.Interaction.norm_commutator_sum_le_card` — only the terms meeting the support
+* `ManyBody.Interaction.commutator_sum_eq_sum_filter_not_disjoint`,
+  `ManyBody.Interaction.norm_commutator_sum_le_card` — only the terms meeting the support
   contribute to a commutator, each at most the norm of the observable.
 * `ManyBody.Interaction.exists_commutator_iterate_decomposition` — the commutator iterate as
   a sum of few pieces of bounded support and norm.
@@ -61,6 +63,23 @@ namespace ManyBody.Interaction
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
   [∀ v, DecidableEq (X v)] {ι : Type*} {T : ι → Finset V}
 
+/-- Only the terms meeting the support of `O` contribute to its commutator with a sum of
+terms: `[∑_{i ∈ s} hᵢ, O] = ∑ [hᵢ, O]` over the `i ∈ s` with `T i` meeting `S`, for `O`
+supported on `S`. AKL14, arXiv:1406.3898, proof of `lem:Hadamard-bound`, `low70.tex`,
+lines 817–837. -/
+theorem commutator_sum_eq_sum_filter_not_disjoint (Φ : Interaction X T) (s : Finset ι)
+    {O : Matrix (Config X) (Config X) ℂ} {S : Finset V} (hO : O ∈ supportedOperators X S) :
+    (∑ i ∈ s, Φ.term i) * O - O * (∑ i ∈ s, Φ.term i) =
+      ∑ i ∈ s.filter (fun i ↦ ¬Disjoint (T i) S), (Φ.term i * O - O * Φ.term i) := by
+  classical
+  rw [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
+  symm
+  apply Finset.sum_subset (Finset.filter_subset _ _)
+  intro i hi hia
+  by_cases hd : Disjoint (T i) S
+  · exact sub_eq_zero.mpr (commute_of_mem_supportedOperators_of_disjoint (Φ.mem i) hO hd).eq
+  · exact False.elim (hia (Finset.mem_filter.mpr ⟨hi, hd⟩))
+
 /-- If the terms of `Φ` are positive contractions and `O` is supported on `S`, then
 `‖[∑_{i ∈ s} hᵢ, O]‖` is at most the number of indices `i ∈ s` with `T i` meeting `S`,
 times `‖O‖`. AKL14, arXiv:1406.3898, proof of `lem:Hadamard-bound`, `low70.tex`,
@@ -72,20 +91,10 @@ theorem norm_commutator_sum_le_card (Φ : Interaction X T) (s : Finset ι)
       ((s.filter fun i ↦ ¬Disjoint (T i) S).card : ℝ) * ‖O‖ := by
   classical
   let active := s.filter fun i ↦ ¬Disjoint (T i) S
-  have hsum : (∑ i ∈ s, (Φ.term i * O - O * Φ.term i)) =
-      ∑ i ∈ active, (Φ.term i * O - O * Φ.term i) := by
-    symm
-    apply Finset.sum_subset (Finset.filter_subset _ _)
-    intro i hi hia
-    by_cases hd : Disjoint (T i) S
-    · exact sub_eq_zero.mpr (commute_of_mem_supportedOperators_of_disjoint (Φ.mem i) hO hd).eq
-    · exact False.elim (hia (Finset.mem_filter.mpr ⟨hi, hd⟩))
+  rw [commutator_sum_eq_sum_filter_not_disjoint Φ s hO]
   calc
-    ‖(∑ i ∈ s, Φ.term i) * O - O * (∑ i ∈ s, Φ.term i)‖ =
-        ‖∑ i ∈ s, (Φ.term i * O - O * Φ.term i)‖ := by
-      rw [Finset.sum_mul, Finset.mul_sum, Finset.sum_sub_distrib]
-    _ = ‖∑ i ∈ active, (Φ.term i * O - O * Φ.term i)‖ := congrArg (‖·‖) hsum
-    _ ≤ ∑ i ∈ active, ‖Φ.term i * O - O * Φ.term i‖ := norm_sum_le _ _
+    ‖∑ i ∈ active, (Φ.term i * O - O * Φ.term i)‖ ≤
+        ∑ i ∈ active, ‖Φ.term i * O - O * Φ.term i‖ := norm_sum_le _ _
     _ ≤ ∑ _i ∈ active, ‖O‖ := Finset.sum_le_sum fun i _ ↦
       Matrix.norm_commutator_le_of_nonneg_le_one _ O (hpos i) (hle i)
     _ = (active.card : ℝ) * ‖O‖ := by simp only [Finset.sum_const, nsmul_eq_mul]
@@ -122,18 +131,10 @@ theorem exists_commutator_iterate_decomposition (Φ : Interaction X T) (s : Fins
     let R : σ → Finset V := fun p ↦ S p.1 ∪ T p.2.1
     refine ⟨Fintype.card σ, fun j ↦ f (e.symm j), fun j ↦ R (e.symm j), ?_, ?_, ?_, ?_, ?_⟩
     · have hterm (a : Fin N) :
-          H * Y a - Y a * H = ∑ i ∈ A a, (Φ.term i * Y a - Y a * Φ.term i) := by
-        rw [Finset.sum_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]
-        symm
-        apply Finset.sum_subset (Finset.filter_subset _ _)
-        intro i hi hiA
-        by_cases hd : Disjoint (T i) (S a)
-        · exact sub_eq_zero.mpr
-            (commute_of_mem_supportedOperators_of_disjoint (Φ.mem i) (hsupp a) hd).eq
-        · exact False.elim (hiA (Finset.mem_filter.mpr ⟨hi, hd⟩))
-      rw [pow_succ', mul_apply_eq_comp,
-        GaussianFilter.commutatorCLM_apply, hsum,
-        Finset.mul_sum, Finset.sum_mul, ← Finset.sum_sub_distrib]
+          H * Y a - Y a * H = ∑ i ∈ A a, (Φ.term i * Y a - Y a * Φ.term i) :=
+        commutator_sum_eq_sum_filter_not_disjoint Φ s (hsupp a)
+      rw [Matrix.commutatorCLM_pow_succ_apply, hsum, Finset.mul_sum, Finset.sum_mul,
+        ← Finset.sum_sub_distrib]
       calc
         ∑ a, (H * Y a - Y a * H) =
             ∑ a, ∑ i : ↥(A a), (Φ.term i.1 * Y a - Y a * Φ.term i.1) := by
