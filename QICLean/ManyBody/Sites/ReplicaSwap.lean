@@ -53,12 +53,12 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [Fintype α] [Deci
 /-! ### The exchange of replicas -/
 
 /-- The exchange of the two replicas at the sites of `R`. -/
-def replicaSwapFun (R : Finset V) : V ⊕ V → V ⊕ V
+private def replicaSwapFun (R : Finset V) : V ⊕ V → V ⊕ V
   | .inl v => if v ∈ R then .inr v else .inl v
   | .inr v => if v ∈ R then .inl v else .inr v
 
 omit [Fintype V] in
-theorem replicaSwapFun_involutive (R : Finset V) : Function.Involutive (replicaSwapFun R) := by
+private theorem replicaSwapFun_involutive (R : Finset V) : Function.Involutive (replicaSwapFun R) := by
   rintro (v | v) <;> by_cases hv : v ∈ R <;> simp [replicaSwapFun, hv]
 
 /-- The exchange of the two replicas at the sites of `R`, as a permutation of `V ⊕ V`. -/
