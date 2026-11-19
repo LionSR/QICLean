@@ -31,7 +31,8 @@
     \cite[Lemma~3.3]{OpenAI2026PolynomialPEPS}, written on the two replicas.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:gaussian_physical_uniform}
+    \uses{thm:gaussian_physical_uniform, lem:hamiltonians_gap_operator_inequality,
+        thm:relative_entropy_product_marginals, thm:gaussian_reindex_filters}
     The two numerical conditions of Theorem~\ref{thm:gaussian_physical_uniform} hold
     with equality for $a$ and $T_0$, and $b\ge I_\Omega(R:C)\ge0$. Write one replica
     in the coordinates of the two regions and the buffer. Then the gap hypotheses
@@ -45,8 +46,8 @@
     change of coordinates.
 \end{proof}
 
-\begin{lemma}[Two-sided residuals of a nearby operator]
-    \label{lem:gaussian_two_sided_nearby}
+\begin{theorem}[Two-sided residuals of a nearby operator]
+    \label{thm:gaussian_two_sided_nearby}
     \lean{Matrix.norm_two_sided_le_of_norm_sub_le}
     \leanok
     Let $\psi,\varphi$ be unit vectors and let $M'$ satisfy
@@ -54,7 +55,7 @@
     $\lVert M'^*\varphi-z\psi\rVert\le\varepsilon$. If $\lVert M-M'\rVert\le\delta$,
     then both residuals of $M$ are at most $\delta+\varepsilon$
     \cite[Section~2]{OpenAI2026PolynomialPEPS}.
-\end{lemma}
+\end{theorem}
 \begin{proof}\leanok
     By the triangle inequality,
     $\lVert M\psi-z\varphi\rVert\le\lVert(M-M')\psi\rVert+\lVert M'\psi-z\varphi\rVert
@@ -62,13 +63,13 @@
     $\lVert M^*-M'^*\rVert=\lVert M-M'\rVert$.
 \end{proof}
 
-\begin{lemma}[The entropy cost of the reset]
-    \label{lem:gaussian_reset_scalar}
+\begin{theorem}[The entropy cost of the reset]
+    \label{thm:gaussian_reset_scalar}
     \lean{Real.eight_mul_sqrt_mul_le_rpow_neg}
     \leanok
     If $L\ge1$, $8\sqrt C(1+l)\le L$, $\delta\le CL^{-(2p+10)}$ and $N\le1+L^2l$, then
     $8\sqrt\delta N\le L^{-p}$ \cite[Section~2]{OpenAI2026PolynomialPEPS}.
-\end{lemma}
+\end{theorem}
 \begin{proof}\leanok
     If $N<0$ the left side is nonpositive, and if $C<0$ then $\delta\le0$. Otherwise
     $\sqrt\delta\le\sqrt CL^{-(p+5)}$ and $N\le L^2(1+l)$, so

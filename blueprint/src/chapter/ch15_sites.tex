@@ -691,15 +691,15 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     matrices are unitarily conjugate and have the same eigenvalues.
 \end{proof}
 
-\begin{lemma}[A local permutation of sites]
-    \label{lem:sites-local-permutation}
+\begin{theorem}[A local permutation of sites]
+    \label{thm:sites-local-permutation}
     \lean{ManyBody.sitePermOp_mem_supportedOperators}
     \leanok
     \uses{def:sites_supported}
     On identical sites, if a permutation $\pi$ of the sites fixes every site outside
     a region $D$, the operator moving the content of every site along $\pi$ is
     supported on $D$.
-\end{lemma}
+\end{theorem}
 \begin{proof}
     \leanok
     The permutation maps $D$ onto itself. Its matrix entry between $\sigma$ and
@@ -755,7 +755,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.sitePermOp_replicaSwap_conj_doubled_mem_supportedOperators}
     \leanok
     \uses{def:sites-replica-swap, def:dynamics_interaction_sum,
-        lem:sites-local-permutation}
+        thm:sites-local-permutation}
     Let $F_R$ be the operator of the exchange of replicas on $R$, and let $A$ be
     supported on $S$, with doubled operator $A_d=A\otimes1+1\otimes A$. Then $F_R$ is
     supported on $R\sqcup R$ and $A_d$ on $S\sqcup S$, and
@@ -765,7 +765,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \end{theorem}
 \begin{proof}
     \leanok
-    \uses{lem:sites_supported_commute}
+    \uses{lem:sites_supported_commute, thm:hastings_site_permutation_support}
     The exchange on $R\setminus S$ is supported on $(R\setminus S)\sqcup(R\setminus S)$,
     disjoint from $S\sqcup S$, so it commutes with $A_d$; this gives the reduction to
     $R\cap S$. Exchanging the replicas on the whole support of $A$ maps $A\otimes1$ to
