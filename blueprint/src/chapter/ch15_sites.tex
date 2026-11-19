@@ -766,11 +766,25 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{proof}
     \leanok
     \uses{lem:sites_supported_commute, thm:hastings_site_permutation_support}
-    The exchange on $R\setminus S$ is supported on $(R\setminus S)\sqcup(R\setminus S)$,
-    disjoint from $S\sqcup S$, so it commutes with $A_d$; this gives the reduction to
-    $R\cap S$. Exchanging the replicas on the whole support of $A$ maps $A\otimes1$ to
-    $1\otimes A$ and back, by a comparison of matrix entries using the support of $A$.
-    The image of $S\sqcup S$ under any exchange of replicas is $S\sqcup S$.
+    Exchanges on disjoint regions commute and compose, so
+    $F_R=F_{R\cap S}F_{R\setminus S}$. The exchange on $R\setminus S$ is supported
+    on $(R\setminus S)\sqcup(R\setminus S)$, which is disjoint from $S\sqcup S$, so
+    \[
+        F_{R\setminus S}A_dF_{R\setminus S}^*=A_d,\qquad
+        F_RA_dF_R^*=F_{R\cap S}\bigl(F_{R\setminus S}A_dF_{R\setminus S}^*\bigr)
+            F_{R\cap S}^*=F_{R\cap S}A_dF_{R\cap S}^* .
+    \]
+    Exchanging the replicas on the whole support of $A$ swaps the two tensor
+    factors there; comparing matrix entries, using that $A$ acts as the identity
+    off $S$, gives
+    \[
+        F_S(A\otimes1)F_S^*=1\otimes A,\qquad F_S(1\otimes A)F_S^*=A\otimes1,
+        \qquad\text{so}\qquad F_SA_dF_S^*=A_d .
+    \]
+    If $S\subseteq R$ then $R\cap S=S$, and if $S\cap R=\varnothing$ then
+    $F_{R\cap S}=1$; in both cases $F_RA_dF_R^*=A_d$. The image of $S\sqcup S$
+    under any exchange of replicas is $S\sqcup S$, so $F_RA_dF_R^*$ is supported
+    on $S\sqcup S$.
 \end{proof}
 
 
