@@ -30,7 +30,9 @@ namespace Matrix.IsHermitian
 
 variable {n : Type*} [Fintype n] [DecidableEq n]
 
-/-- The last eigenvalue in decreasing order is the minimum eigenvalue. -/
+/-- The last eigenvalue in decreasing order is the minimum eigenvalue: for a Hermitian `M` on
+`n` coordinates with eigenvalues `λ₀ ≥ ⋯ ≥ λ_{n-1}`, `λ_{n-1} = min_i λ_i`. An auxiliary identity
+for the ground energy of an ordered spectrum. -/
 theorem eigenvalues₀_last_eq_minEigenvalue [Nonempty n] {M : Matrix n n ℂ}
     (hM : M.IsHermitian) :
     hM.eigenvalues₀ ⟨Fintype.card n - 1, Nat.sub_lt Fintype.card_pos (by decide)⟩ =
@@ -48,8 +50,10 @@ theorem eigenvalues₀_last_eq_minEigenvalue [Nonempty n] {M : Matrix n n ℂ}
   · simpa only [IsHermitian.eigenvalues, e, Equiv.symm_apply_apply] using
       minEigenvalue_le hM (e ⟨Fintype.card n - 1, Nat.sub_lt Fintype.card_pos (by decide)⟩)
 
-/-- The closed spectral span of the eigenvector basis below `c` is that of the eigenvector
-basis indexed in decreasing order of the eigenvalues. -/
+/-- The two canonical eigenvector bases of a Hermitian `M`, one indexed by the coordinates and
+one in decreasing order of the eigenvalues, span the same space below every threshold `c`:
+`span{vᵢ : λᵢ ≤ c} = span{w_j : μ_j ≤ c}`. An auxiliary identity relating the two
+enumerations of the spectrum. -/
 theorem spectralSpanLE_eigenvectorBasis_eq {M : Matrix n n ℂ} (hM : M.IsHermitian) (c : ℝ) :
     Submodule.spectralSpanLE hM.eigenvectorBasis hM.eigenvalues c =
       Submodule.spectralSpanLE

@@ -30,6 +30,8 @@ a complex matrix is determined by its quadratic form.
 - `Matrix.posSemidef_of_forall_star_dotProduct_mulVec_nonneg`: a complex
   matrix with nonnegative quadratic form is positive semidefinite; over `ℂ`
   the Hermitian property is automatic.
+- `Matrix.star_mul_dotProduct_mul`: the inner product of two product vectors
+  factors.
 - `Matrix.star_dotProduct_kronecker_mulVec_prod`: on a product vector the
   quadratic form of a Kronecker product factors.
 - `Matrix.finKronecker_posSemidef`: a finite Kronecker product of positive
@@ -114,6 +116,17 @@ theorem posSemidef_of_forall_star_dotProduct_mulVec_nonneg
     have hsub := eq_zero_of_forall_star_dotProduct_mulVec_eq_zero hzero
     exact (sub_eq_zero.mp hsub).symm
   exact Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hherm h
+
+/-- The inner product of two product vectors is the product of the inner products:
+`⟨u ⊗ v, u' ⊗ v'⟩ = ⟨u, u'⟩ ⟨v, v'⟩`. An auxiliary identity for product vectors.
+
+Moved from TNLean, `TNLean/Algebra/KroneckerLeastEigenvalue.lean` at commit `e41c3b63`, with its
+statement and proof unchanged. -/
+theorem star_mul_dotProduct_mul (u u' : m → ℂ) (v v' : n → ℂ) :
+    star (fun p : m × n ↦ u p.1 * v p.2) ⬝ᵥ (fun p ↦ u' p.1 * v' p.2) =
+      (star u ⬝ᵥ u') * (star v ⬝ᵥ v') := by
+  simp only [dotProduct, Pi.star_apply, star_mul', Fintype.sum_prod_type, Finset.sum_mul_sum]
+  exact Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ by ring
 
 /-- On a product vector, the quadratic form of a Kronecker product is the
 product of the quadratic forms of the two factors. -/
