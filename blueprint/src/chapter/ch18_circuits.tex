@@ -892,6 +892,50 @@ are embedded.
     layer are the transported gates, one on each image cell, which gives the weights.
 \end{proof}
 
+\begin{theorem}[A circuit tensored with an environment at every site]
+    \label{thm:circuits_tensor_right}
+    \lean{QuantumCircuit.Layer.tensorRight, QuantumCircuit.Layer.tensorRightIndexEquiv,
+        QuantumCircuit.Layer.tensorRightIndexEquiv_apply,
+        QuantumCircuit.Layer.kraus_tensorRight, QuantumCircuit.Layer.forall_tensorRight,
+        QuantumCircuit.LayerMap.tensorRight, QuantumCircuit.Circuit.tensorRight,
+        QuantumCircuit.Circuit.kraus_tensorRight, QuantumCircuit.Circuit.map_tensorRight,
+        QuantumCircuit.Circuit.forall_isTP_tensorRight,
+        QuantumCircuit.Circuit.forall_isUnitary_tensorRight,
+        QuantumCircuit.Circuit.depth_tensorRight_le,
+        QuantumCircuit.Circuit.gateCount_tensorRight_le, KrausFamily.reindex,
+        KrausFamily.reindex_op, KrausFamily.IsTP.reindex, KrausFamily.IsUnitary.reindex,
+        KrausFamily.IsTP.tensorRight, KrausFamily.IsUnitary.tensorRight}
+    \leanok
+    \uses{def:circuits_layer_map, def:kraus_family_prod, def:circuits_costs,
+        def:circuits_local}
+    Let $W_s$ be a finite basis at every site $s$. Every circuit of plain gates from
+    $X$ to $Z$ has an image from the system $s\mapsto X_s\times W_s$ to the system
+    $s\mapsto Z_s\times W_s$ on the same cells: every gate $g$ on a cell $D$ becomes
+    $g\otimes1$ on $\C^{X_D}\otimes\C^{W_D}$, and every onsite family $K$ becomes
+    $K\otimes1$. Along corresponding branches
+    \begin{align}
+        K'_p&=K_p\otimes1_W,
+        \notag
+    \end{align}
+    in the identification of the configurations of the enlarged system with pairs, so
+    the map of the image sends $\rho\otimes\omega$ to $\Phi(\rho)\otimes\omega$. The
+    image is locally trace-preserving, or locally unitary, when the circuit is, and its
+    depth and gate count are at most those of the circuit.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_layer_map, lem:kraus_family_prod}
+    The image layer has the cells and the remaining sites of the layer, and the
+    outcomes of its gates and onsite families are those of the layer. In the product of
+    local entries every factor is the entry of the layer's gate or onsite family times
+    the entry of the identity on the local environment, and the latter multiply to the
+    identity on $\C^W$ because the cells and the remaining sites partition the sites.
+    The map $K\mapsto K\otimes1_W$ sends $1$ to $1$ and products to products, so
+    Theorem~\ref{thm:circuits_layer_map} applies. Tensor products and relabellings of
+    trace-preserving or unitary families are trace-preserving or unitary, by
+    Lemma~\ref{lem:kraus_family_prod}, and the cells, hence the costs, of every layer
+    are unchanged.
+\end{proof}
+
 \begin{theorem}[Substituting circuits for layers]
     \label{thm:circuits_substitute}
     \lean{QuantumCircuit.Circuit.exists_substitute}
