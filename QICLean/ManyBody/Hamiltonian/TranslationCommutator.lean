@@ -9,7 +9,29 @@ import QICLean.ManyBody.Hamiltonian.Translation
 import QICLean.ManyBody.Hamiltonian.GaussianFilterTruncation
 
 /-!
-@@DOC
+# Low-energy commutators of translation-invariant interactions
+
+For a translation-invariant interaction with a gap, Hastings, arXiv:cond-mat/0508554v3,
+`proj3new.tex`, lines 1603–1654, bounds the low-energy commutators of the filtered terms by
+translating one term far away within the supercell, or, for arbitrary momentum denominators,
+through the finite-orbit recurrence of `Analysis/FiniteOrbit`.
+
+* `norm_groundCompression_commutator_le_of_momenta(_exp)`: eq. `blecm` for momenta of bounded
+  denominator (lines 1620–1641).
+* `norm_groundCompression_commutator_le_of_norm_sub_le`,
+  `norm_groundCompression_commutator_truncated_le_of_momenta`: the truncated terms of eq. `mid`, up
+  to the errors of eq. `apb`.
+* `norm_groundCompression_commutator_le_finite_translation_exp` and its truncated form: decay in
+  the system size with no condition on the momenta (lines 1644–1654).
+* `gaussianFilteredTerm_truncation_smul`,
+  `norm_groundCompression_truncatedTerm_commutator_le_of_momenta`: covariant truncations.
+
+The truncated term `M_k` is written as `gaussianFilteredTerm r ΔE (∑ k' ∈ s k, Φ.term k')
+(Φ.term k)`, as in `Hamiltonian/GaussianFilterTruncation`.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/TranslationSupercellCommutator.lean`,
+`TranslationFiniteOrbitCommutator.lean` and `TranslationSupercellTruncated.lean`. Changes as in
+`Translation`; the definition `truncatedTerm` is replaced by its expression.
 -/
 
 noncomputable section

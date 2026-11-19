@@ -13,7 +13,37 @@ import QICLean.ManyBody.Sites.SiteAction
 import QICLean.ManyBody.Dynamics.GraphBall
 
 /-!
-@@DOC
+# Translations, momentum sectors and supercells
+
+Let a group `G` act on identical sites and let `H` be site-invariant
+(`IsSiteInvariant G H`). Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1603–1654,
+treats translationally invariant systems through the momentum sectors of the ground space.
+
+* `gaussianFilteredTerm_sitePermOp_conj`: filtering commutes with the site action
+  (lines 1613–1618).
+* `mapsTo_groundSpace_sitePermOp`, `momentumSector`, `iSup_momentumSector`: for an abelian group
+  the ground space is the sum of its momentum sectors.
+* `supercell H E₀`: the subgroup acting trivially on the ground space;
+  `groundCompression_commutator_eq_of_mem_supercell` and
+  `norm_groundCompression_commutator_le_of_mem_supercell` (lines 1620–1641).
+* `groundTranslation`, `groundTranslationConjugation`: the translations restricted to the ground
+  space, conjugating ground-space compressions (lines 1644–1654).
+* `pow_mem_supercell`, `exists_mem_supercell_lt_edist(_add)(_ring)`: momenta of bounded
+  denominator give a supercell translate at large graph distance.
+* `norm_groundCompression_commutator_le_of_supercell_separation`: eq. `blecm` for a far supercell
+  translate (lines 1634–1641).
+
+The spacing statements are phrased with Mathlib's `G.edist` for a graph on which a cell
+coordinate `π : V → ZMod n` changes by a bounded circular displacement along edges, or with
+`(SimpleGraph.cycleGraph n).edist` on `Fin n`; the arithmetic of `ZMod.valMinAbs` is in
+`Algebra/ZModDisplacement`.
+
+Moved from TNLean (`e113e005`): `TNLean/Lattice/TranslationSupercell.lean`,
+`TranslationMomentum.lean`, `TranslationGroundSpace.lean`, `TranslationSupercellSpacing.lean`
+and `TranslationSupercellDecay.lean`, with `gaussianFilteredTerm_sitePermMatrix_conj` from
+`SiteSymmetry.lean`. Changes: namespace `ManyBody`; the site permutation is
+`sitePermOp (MulAction.toPerm g)`; terms are given by `Φ : Interaction (fun _ ↦ Fin d) T`; gaps
+are stated as `IsGapped`.
 -/
 
 noncomputable section
