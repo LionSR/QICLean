@@ -4,6 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.RegionState
+import Mathlib.LinearAlgebra.Matrix.Permutation
+import QICLean.Algebra.PermutationMatrixUnitary
 import QICLean.ManyBody.Sites.RegionExpectation
 
 /-!
@@ -184,5 +186,166 @@ theorem reindex_siteConfigurationEquiv_regionExpectation (e : V ≃ V')
   refine Finset.sum_congr rfl fun y _ ↦ ?_
   rw [Matrix.reindex_apply, Matrix.submatrix_apply, hinv, hinv, hcut, hcut]
   rfl
+
+
+section SitePermutation
+
+/-! ### The site-permutation operator
+
+For identical sites, a permutation `π` of the sites moves the content of every site `v` to the
+site `π v`. Its operator is the permutation matrix of the configuration bijection
+`siteConfigurationEquiv π⁻¹`, and conjugation by it is the reindexing along that bijection, so
+that supported operators and the region expectation transform by the theorems above. -/
+
+open Matrix
+open scoped Matrix.Norms.L2Operator
+
+variable {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [DecidableEq α]
+
+omit [Fintype V] [DecidableEq V] [DecidableEq α] in
+private theorem comp_symm_comp (σ : V → α) (π : Equiv.Perm V) : (σ ∘ ⇑π.symm) ∘ ⇑π = σ :=
+  funext fun v ↦ congrArg σ (π.symm_apply_apply v)
+
+omit [Fintype V] [DecidableEq V] [DecidableEq α] in
+private theorem comp_comp_symm (σ : V → α) (π : Equiv.Perm V) : (σ ∘ ⇑π) ∘ ⇑π.symm = σ :=
+  funext fun v ↦ congrArg σ (π.apply_symm_apply v)
+
+/-- The operator moving the content of every site `v` to the site `π v`: it maps a vector `ψ`
+to `σ ↦ ψ (σ ∘ π)`. -/
+noncomputable def sitePermOp (π : Equiv.Perm V) :
+    Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ :=
+  Equiv.Perm.permMatrix ℂ (siteConfigurationEquiv (X := fun _ : V ↦ α) (X' := fun _ : V ↦ α)
+    π⁻¹ fun _ ↦ Equiv.refl α)
+
+omit [Fintype V] [DecidableEq V] [DecidableEq α] in
+/-- Relabelling identical sites along `π` precomposes a configuration with `π⁻¹`. -/
+theorem siteConfigurationEquiv_refl_apply (π : Equiv.Perm V) (σ : Config fun _ : V ↦ α) :
+    siteConfigurationEquiv (X := fun _ : V ↦ α) (X' := fun _ : V ↦ α) π
+      (fun _ ↦ Equiv.refl α) σ = σ ∘ π.symm := by
+  have h : (siteConfigurationEquiv (X := fun _ : V ↦ α) (X' := fun _ : V ↦ α) π
+      fun _ ↦ Equiv.refl α).symm (σ ∘ π.symm) = σ := by
+    funext v
+    rw [siteConfigurationEquiv, Equiv.piCongr_symm_apply]
+    exact congrArg σ (π.symm_apply_apply v)
+  exact ((Equiv.symm_apply_eq _).mp h).symm
+
+omit [Fintype V] [DecidableEq V] [DecidableEq α] in
+theorem siteConfigurationEquiv_inv_apply (π : Equiv.Perm V) (σ : Config fun _ : V ↦ α) :
+    siteConfigurationEquiv (X := fun _ : V ↦ α) (X' := fun _ : V ↦ α) π⁻¹
+      (fun _ ↦ Equiv.refl α) σ = σ ∘ π := by
+  rw [siteConfigurationEquiv_refl_apply]
+  rfl
+
+omit [DecidableEq V] in
+theorem sitePermOp_apply (π : Equiv.Perm V) (σ τ : Config fun _ : V ↦ α) :
+    sitePermOp π σ τ = if τ = σ ∘ π then 1 else 0 := by
+  simp only [sitePermOp, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, Equiv.toPEquiv_apply,
+    Option.mem_def, Option.some.injEq, siteConfigurationEquiv_inv_apply]
+  exact if_congr eq_comm rfl rfl
+
+omit [DecidableEq V] in
+theorem sitePermOp_one : sitePermOp (V := V) (α := α) 1 = 1 := by
+  ext σ τ
+  simp [sitePermOp_apply, Matrix.one_apply, eq_comm]
+
+variable [Fintype α]
+
+theorem sitePermOp_mulVec (π : Equiv.Perm V) (ψ : (Config fun _ : V ↦ α) → ℂ) :
+    sitePermOp π *ᵥ ψ = fun σ ↦ ψ (σ ∘ π) := by
+  rw [sitePermOp, Matrix.permMatrix_mulVec]
+  funext σ
+  simp [siteConfigurationEquiv_inv_apply]
+
+theorem sitePermOp_mul (π π' : Equiv.Perm V) :
+    sitePermOp (α := α) π * sitePermOp π' = sitePermOp (π * π') := by
+  ext σ τ
+  simp only [Matrix.mul_apply, sitePermOp_apply, mul_ite, mul_one, mul_zero]
+  rw [Finset.sum_eq_single (σ ∘ π)]
+  · simp only [ite_true]
+    exact if_congr (by rw [Equiv.Perm.coe_mul, Function.comp_assoc]) rfl rfl
+  · intro ρ _ hρ; simp [hρ]
+  · simp
+
+theorem sitePermOp_pow (π : Equiv.Perm V) (N : ℕ) :
+    sitePermOp (α := α) π ^ N = sitePermOp (π ^ N) := by
+  induction N with
+  | zero => rw [pow_zero, pow_zero, sitePermOp_one]
+  | succ N ih => rw [pow_succ, ih, sitePermOp_mul, pow_succ]
+
+theorem sitePermOp_mem_unitary (π : Equiv.Perm V) :
+    sitePermOp (α := α) π ∈ unitary (Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :=
+  Equiv.Perm.permMatrix_mem_unitaryGroup _
+
+omit [DecidableEq V] [Fintype α] in
+theorem conjTranspose_sitePermOp (π : Equiv.Perm V) :
+    (sitePermOp (α := α) π)ᴴ = sitePermOp π⁻¹ := by
+  ext σ τ
+  simp only [Matrix.conjTranspose_apply, sitePermOp_apply]
+  by_cases h : σ = τ ∘ π
+  · subst h; simp [Function.comp_assoc]
+  · have h' : ¬τ = σ ∘ ⇑π⁻¹ := by rintro rfl; exact h (comp_symm_comp σ π).symm
+    simp only [h, h', ↓reduceIte, star_zero]
+
+/-- The action of `sitePermOp π` on a vector is the relabelling of its configurations along the
+inverse permutation. -/
+theorem sitePermOp_mulVec_eq_relabelVector (π : Equiv.Perm V)
+    (ψ : EuclideanSpace ℂ (Config fun _ : V ↦ α)) :
+    WithLp.toLp 2 (sitePermOp π *ᵥ ψ.ofLp) =
+      relabelVector (X := fun _ : V ↦ α) (X' := fun _ : V ↦ α) π (fun _ ↦ Equiv.refl α) ψ := by
+  simp only [relabelVector, sitePermOp_mulVec]
+  congr 1
+
+/-- Conjugation by the site-permutation operator is the reindexing along the configuration
+bijection `siteConfigurationEquiv π`. -/
+theorem sitePermOp_mul_mul_conjTranspose (π : Equiv.Perm V)
+    (A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
+    sitePermOp π * A * (sitePermOp π)ᴴ =
+      Matrix.reindex (siteConfigurationEquiv π fun _ ↦ Equiv.refl α)
+        (siteConfigurationEquiv π fun _ ↦ Equiv.refl α) A := by
+  ext σ τ
+  rw [conjTranspose_sitePermOp, Matrix.reindex_apply, Matrix.submatrix_apply]
+  simp only [Matrix.mul_apply, sitePermOp_apply, ite_mul, one_mul, zero_mul, mul_ite, mul_one,
+    mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ite_true]
+  have hinv (ρ : Config fun _ : V ↦ α) : (siteConfigurationEquiv (X := fun _ : V ↦ α)
+      (X' := fun _ : V ↦ α) π fun _ ↦ Equiv.refl α).symm ρ = ρ ∘ π := by
+    rw [Equiv.symm_apply_eq, siteConfigurationEquiv_refl_apply]
+    exact (comp_comp_symm ρ π).symm
+  rw [hinv, hinv, Finset.sum_eq_single (τ ∘ π)]
+  · simp [Function.comp_assoc]
+  · intro ρ _ hρ
+    have h' : ¬τ = ρ ∘ ⇑π⁻¹ := by rintro rfl; exact hρ (comp_symm_comp ρ π).symm
+    simp only [h', ↓reduceIte]
+  · simp
+
+/-- Conjugation by the site-permutation operator preserves the operator norm. -/
+theorem norm_sitePermOp_mul_mul_conjTranspose (π : Equiv.Perm V)
+    (A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
+    ‖sitePermOp π * A * (sitePermOp π)ᴴ‖ = ‖A‖ := by
+  let U : unitary (Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :=
+    ⟨sitePermOp π, sitePermOp_mem_unitary π⟩
+  calc ‖sitePermOp π * A * (sitePermOp π)ᴴ‖
+      = ‖(U : Matrix _ _ ℂ) * A * ((star U : unitary _) : Matrix _ _ ℂ)‖ := rfl
+    _ = ‖A‖ := by rw [CStarRing.norm_mul_coe_unitary, CStarRing.norm_coe_unitary_mul]
+
+/-- A supported operator conjugated by the site-permutation operator is supported on the
+permuted region. -/
+theorem sitePermOp_mul_mul_conjTranspose_mem_supportedOperators (π : Equiv.Perm V)
+    {D : Finset V} {A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
+    (hA : A ∈ supportedOperators (fun _ : V ↦ α) D) :
+    sitePermOp π * A * (sitePermOp π)ᴴ ∈ supportedOperators (fun _ : V ↦ α) (D.image π) := by
+  rw [sitePermOp_mul_mul_conjTranspose]
+  exact reindex_siteConfigurationEquiv_mem_supportedOperators π _
+    (fun v ↦ by simp [π.injective.eq_iff]) hA
+
+/-- The region expectation commutes with conjugation by the site-permutation operator. -/
+theorem sitePermOp_mul_mul_conjTranspose_regionExpectation (π : Equiv.Perm V) (D : Finset V)
+    (A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
+    sitePermOp π * regionExpectation D A * (sitePermOp π)ᴴ =
+      regionExpectation (D.image π) (sitePermOp π * A * (sitePermOp π)ᴴ) := by
+  rw [sitePermOp_mul_mul_conjTranspose, sitePermOp_mul_mul_conjTranspose]
+  exact reindex_siteConfigurationEquiv_regionExpectation π _
+    (fun v ↦ by simp [π.injective.eq_iff]) A
+
+end SitePermutation
 
 end ManyBody

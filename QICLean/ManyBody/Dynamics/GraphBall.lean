@@ -3,8 +3,11 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import Mathlib.Algebra.Group.Action.TypeTags
+import QICLean.Algebra.ZModDisplacement
+import Mathlib.Combinatorics.SimpleGraph.Circulant
 import Mathlib.Combinatorics.SimpleGraph.Metric
-import Mathlib.Data.Real.Basic
+import Mathlib.Basic.Real.Basic
 import Mathlib.Order.SuccPred.ENat
 import QICLean.ManyBody.Sites.Cut
 
@@ -161,3 +164,106 @@ theorem reset_graphNeighborhood_disjoint_cores {κ : Type*} [DecidableEq V] [Fin
     · exact Finset.disjoint_left.mp hDC hxD (hC a haC (hNear x (hDiam k z hzX x hx)))
 
 end ManyBody
+
+namespace SimpleGraph
+
+variable {V : Type*} {G : Type*} [Group G] [MulAction G V]
+
+/-- **Site actions by graph automorphisms preserve distances.** If every `g` preserves
+adjacency of the graph `Γ` on the sites, then `d(g • x, g • y) = d(x, y)`. For the
+translations of a lattice this is the source's setting of a translationally invariant system
+on a lattice: Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, lines 1603–1612. -/
+theorem edist_smul_of_adj_iff (Γ : SimpleGraph V)
+    (hΓ : ∀ (g : G) (x y : V), Γ.Adj (g • x) (g • y) ↔ Γ.Adj x y) (g : G) (x y : V) :
+    Γ.edist (g • x) (g • y) = Γ.edist x y := by
+  have hle : ∀ (g : G) (x y : V), Γ.edist (g • x) (g • y) ≤ Γ.edist x y := by
+    intro g x y
+    rcases eq_or_ne (Γ.edist x y) ⊤ with h | h
+    · simp [h]
+    · obtain ⟨w, hw⟩ := Γ.exists_walk_of_edist_ne_top h
+      let φ : Γ →g Γ := ⟨(g • ·), (hΓ g _ _).mpr⟩
+      rw [← hw]
+      exact (Γ.edist_le (w.map φ)).trans_eq (by simp)
+  refine le_antisymm (hle g x y) ?_
+  simpa only [inv_smul_smul] using hle g⁻¹ (g • x) (g • y)
+
+/-- The rotations of a ring of `n` sites, `x ↦ a + x`, are automorphisms of the cycle graph. -/
+theorem cycleGraph_adj_smul {n : ℕ} [NeZero n] (a : Multiplicative (Fin n)) (x y : Fin n) :
+    (cycleGraph n).Adj (a • x) (a • y) ↔ (cycleGraph n).Adj x y := by
+  change (cycleGraph n).Adj (a.toAdd + x) (a.toAdd + y) ↔ _
+  simp only [cycleGraph_adj', add_sub_add_left_eq_sub]
+
+
+end SimpleGraph
+
+namespace SimpleGraph
+
+variable {V : Type*} {Γ : SimpleGraph V} {n R : ℕ}
+
+/-- One step of the triangle inequality: crossing an edge changes the circular displacement
+from a fixed site by at most \(R\). -/
+private theorem natAbs_valMinAbs_sub_le_add_of_adj (π : V → ZMod n)
+    (hπ : ∀ u v, Γ.Adj u v → (π v - π u).valMinAbs.natAbs ≤ R)
+    (u w x : V) (h : Γ.Adj u w) :
+    (π w - π x).valMinAbs.natAbs ≤ (π u - π x).valMinAbs.natAbs + R := by
+  simpa only [add_comm (π u - π x) (π w - π u), sub_add_sub_cancel] using
+    (ZMod.natAbs_valMinAbs_add_le (π u - π x) (π w - π u)).trans
+      ((Int.natAbs_add_le _ _).trans (Nat.add_le_add_left (hπ u w h) _))
+
+/-- Accumulating the one-edge step along a walk: the circular displacement grows by at most
+\(R\) times the length of the walk. -/
+private theorem natAbs_valMinAbs_sub_le_add_length_mul (π : V → ZMod n)
+    (hπ : ∀ u v, Γ.Adj u v → (π v - π u).valMinAbs.natAbs ≤ R)
+    (x : V) {u y : V} (p : Γ.Walk u y) :
+    (π y - π x).valMinAbs.natAbs ≤
+      (π u - π x).valMinAbs.natAbs + R * p.length := by
+  induction p with
+  | nil => simp
+  | cons h p ih =>
+    have hstep := natAbs_valMinAbs_sub_le_add_of_adj π hπ _ _ x h
+    rw [SimpleGraph.Walk.length_cons, Nat.mul_succ]
+    omega
+
+/-- If each edge changes a cell coordinate by at most the positive integer \(R\), its
+circular displacement is at most \(R\) times the graph distance. -/
+theorem natAbs_valMinAbs_sub_le_edist (hR : 0 < R) (π : V → ZMod n)
+    (hπ : ∀ u v, Γ.Adj u v → (π v - π u).valMinAbs.natAbs ≤ R) (x y : V) :
+    ((π y - π x).valMinAbs.natAbs : ℕ∞) ≤ (R : ℕ∞) * Γ.edist x y := by
+  rcases eq_or_ne (Γ.edist x y) ⊤ with h | h
+  · simp [h, hR.ne']
+  · obtain ⟨p, hp⟩ := SimpleGraph.exists_walk_of_edist_ne_top h
+    rw [← hp]
+    have hw := natAbs_valMinAbs_sub_le_add_length_mul π hπ x p
+    simp only [sub_self, ZMod.valMinAbs_zero, Int.natAbs_zero, zero_add] at hw
+    exact_mod_cast hw
+
+
+section Spacing
+
+open ZMod
+
+/-- The separated coordinates give graph separation for the same finite orbit.
+Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
+theorem edist_pow_mul_ge_of_near {V Γ : Type*} [Group Γ] [MulAction Γ V]
+    {n L m : ℕ} [NeZero n] (hL : 0 < L) (hn : 2 * (m + 1) * L ≤ n)
+    (G : SimpleGraph V) (π : V → ZMod n)
+    (hπ : ∀ u v, G.Adj u v → (π v - π u).valMinAbs.natAbs ≤ 1)
+    (e : Γ) (he : ∀ v, π (e • v) = π v + 1) (x y : V)
+    (hnear : (π y - π x).valMinAbs.natAbs ≤ L / 2)
+    {k : ℕ} (hk : 1 ≤ k) (hkm : k ≤ m) :
+    ((L / 2 : ℕ) : ℕ∞) ≤ G.edist x (e ^ (k * L) • y) := by
+  have hc := natAbs_valMinAbs_add_mul_ge_of_near hL hn (π y - π x) hnear hk hkm
+  have hd := SimpleGraph.natAbs_valMinAbs_sub_le_edist (by decide : 0 < (1 : ℕ))
+    π hπ x (e ^ (k * L) • y)
+  rw [coordinate_pow_smul π e he] at hd
+  have heq : π y - π x + ((k * L : ℕ) : ZMod n) =
+      π y + ((k * L : ℕ) : ZMod n) - π x := by abel
+  rw [heq] at hc
+  simpa only [Nat.cast_one, one_mul] using (show
+    ((L / 2 : ℕ) : ℕ∞) ≤
+      ((π y + ((k * L : ℕ) : ZMod n) - π x).valMinAbs.natAbs : ℕ∞) by
+        exact_mod_cast hc).trans hd
+
+end Spacing
+
+end SimpleGraph

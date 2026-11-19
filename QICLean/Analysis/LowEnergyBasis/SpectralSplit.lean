@@ -740,3 +740,31 @@ theorem norm_commutator_compression_le_kernel {A ι : Type*} [NormedRing A]
 end LowEnergyBasis
 
 end SpectralSplit
+
+section ConjugateCompression
+
+variable {𝕜 E : Type*} [RCLike 𝕜] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
+  [CompleteSpace E]
+
+/-- **Compression of a conjugate by an operator fixing the subspace.** If the adjoint `U†`
+leaves every vector of `K` unchanged, then `P (U W U†) P = P W P`, where `P` is the orthogonal
+projection onto `K`: indeed `U† P = P`, and so `P U = P` on taking adjoints. -/
+theorem Submodule.starProjection_mul_conj_mul_starProjection {K : Submodule 𝕜 E}
+    [K.HasOrthogonalProjection] {U : E →L[𝕜] E} (hU : ∀ v ∈ K, U.adjoint v = v)
+    (W : E →L[𝕜] E) :
+    K.starProjection * (U * W * U.adjoint) * K.starProjection =
+      K.starProjection * W * K.starProjection := by
+  have hP : U.adjoint * K.starProjection = K.starProjection := by
+    ext1 x
+    exact hU _ (K.starProjection_apply_mem x)
+  have hP' : K.starProjection * U = K.starProjection := by
+    have hsa : K.starProjection.adjoint = K.starProjection :=
+      (isSelfAdjoint_starProjection K).adjoint_eq
+    have h := congrArg star hP
+    simpa only [star_mul, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_adjoint,
+      hsa] using h
+  calc K.starProjection * (U * W * U.adjoint) * K.starProjection
+      = K.starProjection * U * W * (U.adjoint * K.starProjection) := by simp only [mul_assoc]
+    _ = K.starProjection * W * K.starProjection := by rw [hP', hP]
+
+end ConjugateCompression

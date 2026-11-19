@@ -104,6 +104,7 @@ import QICLean.Analysis.FiniteFamilyImageCoordinates
 import QICLean.Analysis.FiniteFamilyImageProjection
 import QICLean.Analysis.FiniteFrameMeasurable
 import QICLean.Analysis.FiniteKroneckerPowers
+import QICLean.Analysis.FiniteOrbit
 import QICLean.Analysis.FiniteProductSectionProbability
 import QICLean.Analysis.FiniteProductUnionProbability
 import QICLean.Analysis.FiniteProductUpdateProbability
@@ -494,6 +495,7 @@ import QICLean.Analysis.UnitarySchurTriangularization
 import QICLean.Analysis.UntrimmedTensorFamilyPowers
 import QICLean.Analysis.UpperTriangularBound
 import QICLean.Analysis.VariableRankSampleProjection
+import QICLean.Analysis.VariationalBound
 import QICLean.Analysis.VectorMajorization
 import QICLean.Analysis.VectorMajorizationOrthostochastic
 import QICLean.Analysis.VectorSubmajorization

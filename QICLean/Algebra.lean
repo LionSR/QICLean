@@ -164,3 +164,4 @@ import QICLean.Algebra.WordCoefficient
 import QICLean.Algebra.WordCoefficientExpansion
 import QICLean.Algebra.WordMultiplicity
 import QICLean.Algebra.ZModCyclicSums
+import QICLean.Algebra.ZModDisplacement
