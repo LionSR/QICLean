@@ -32,7 +32,7 @@ for an explicit isometry `V` constructed from the Kraus operators (Wolf Eq. (2.1
 * `exists_stinespring_isometry_of_cptp` — existential isometric dilation witness for CPTP maps
 * `KrausFamily.stinespringVGen_conjTranspose_mul`, `KrausFamily.map_eq_partialTraceRight` — the
   same two identities for a finite Kraus family: `VᴴV` is its effect, and its map is
-  `ρ ↦ tr_K(VρVᴴ)`
+  `ρ ↦ tr_Ω(VρVᴴ)`, the partial trace over the Kraus index `Ω = K.Index`
 
 ## References
 
