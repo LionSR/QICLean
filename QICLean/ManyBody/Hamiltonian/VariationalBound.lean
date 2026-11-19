@@ -21,7 +21,7 @@ The proof uses the actual Gaussian integral, its covariance and preservation of 
 Hamiltonian sum. It does not require a gap or an approximation by finite polynomials.
 QICLean identifies that integral with the norm-convergent even-commutator series;
 the correction to the printed coefficients is documented at
-https://sirui-lu.com/QICLean/paper-gaps/hastings05_gaussian_series_coefficients.pdf.
+`docs/paper-gaps/hastings05_gaussian_series_coefficients.tex`.
 -/
 
 open GaussianFilter Matrix

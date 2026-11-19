@@ -21,7 +21,7 @@ power `(q/ΔE²)^{2r}`. The proof uses the finite-dimensional spectral theorem a
 norm-convergent exponential series, without interchanging an integral and a series.
 
 **Local fix (Gaussian moments):** The corrected variance power is documented at
-https://sirui-lu.com/QICLean/paper-gaps/hastings05_gaussian_series_coefficients.pdf.
+`docs/paper-gaps/hastings05_gaussian_series_coefficients.tex`.
 -/
 
 open Matrix

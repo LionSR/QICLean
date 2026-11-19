@@ -134,7 +134,7 @@ translates of one term closes the chapter.
 \begin{proof}\leanok
     \uses{thm:hastings_supercell_compression,thm:hastings_filtered_term_translate}
     Since $H$ is invariant, $M_{g\cdot j}=P_gM_jP_g^\dagger$, and its
-    compression is $PM_jP$ by the previous theorem.
+    compression is $PM_jP$ by Lemma~\ref{thm:hastings_supercell_compression}.
 \end{proof}
 
 \begin{lemma}[Decay across a supercell translation]
@@ -264,13 +264,13 @@ translates of one term closes the chapter.
         ManyBody.exists_mem_supercell_lt_edist,
         ManyBody.exists_mem_supercell_lt_edist_add_ring}
     \leanok
-    \uses{thm:hastings_supercell_pow,thm:hastings_cell_distance_le,thm:hastings_multiples_reach_far}
+    \uses{def:hastings_supercell_of_momenta,def:hastings_site_invariant}
     Let $G$ be abelian, let $H$ be invariant, let $\pi$ and $e$ be as above, and
     let $\chi(g)^N=1$ for every $g$ and every character $\chi$ with a nonzero
     momentum sector, where $N\ge1$. For sites $x$, $y$ some $g$ in the supercell
     satisfies $\lfloor n/2\rfloor<r\,d(x,g\cdot y)+N$, so it carries $y$ to
     graph distance more than $(\lfloor n/2\rfloor-N)/r$ from $x$. For the ring,
-    and in the theorem below, $r=1$. In this case, whenever
+    and in Lemma~\ref{thm:hastings_supercell_commutator_small}, $r=1$. In this case, whenever
     $l+N\le\lfloor n/2\rfloor$, the translate can be chosen with
     $d(x,g\cdot y)>l$. With $N$ the least common multiple of the
     denominators of the momenta, this is the supercell
@@ -278,6 +278,7 @@ translates of one term closes the chapter.
     $\vec x'$ in lines 1634--1641.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{thm:hastings_supercell_pow,thm:hastings_cell_distance_le,thm:hastings_multiples_reach_far}
     Take $t$ from Lemma~\ref{thm:hastings_multiples_reach_far} for $a=\pi(x)$ and
     $b=\pi(y)$, and $g=(e^t)^N$, which lies in the supercell by
     Lemma~\ref{thm:hastings_supercell_pow}. Then $\pi(g\cdot y)=\pi(y)+Nt$, and
@@ -568,7 +569,7 @@ translates of one term closes the chapter.
 \begin{lemma}[A finite family of separated translates]
     \label{lem:hastings_finite_translation_spacing}
     \lean{ZMod.coordinate_pow_smul,
-        ZMod.natAbs_valMinAbs_add_mul_ge_of_near,
+        ZMod.natAbs_valMinAbs_add_ge_of_near,
         SimpleGraph.edist_pow_mul_ge_of_near}
     \leanok
     Let $\pi$ be a cell coordinate modulo $N$, and suppose translation
@@ -622,19 +623,20 @@ translates of one term closes the chapter.
         exp_neg_half_translation_natDiv_le,
         translation_finiteOrbit_rate_pos}
     \leanok
-    For natural numbers $N,m$, put $L=\lfloor N/(2(m+1))\rfloor$.
+    For natural numbers $N$ and $q\ge1$, put $L=\lfloor N/q\rfloor$.
     Then
     \begin{align}
-        \frac{N}{4(m+1)} & \le\frac L2+\frac12, \\
+        \frac{N}{2q} & \le\frac L2+\frac12, \\
         e^{-\gamma L/2}  & \le e^{\gamma/2}
-        e^{-\gamma N/(4(m+1))}\qquad(\gamma\ge0).
+        e^{-\gamma N/(2q)}\qquad(\gamma\ge0).
         \label{eq:hastings_translation_floor_decay}
     \end{align}
-    If $\gamma>0$, the rate $\gamma/(4(m+1))$ is positive.
+    If $\gamma>0$, the rate $\gamma/(2q)$ is positive. The finite-orbit
+    argument of \cite[lines 1644--1654]{Hastings2006Solving} takes $q=2(m+1)$.
 \end{lemma}
 \begin{proof}\leanok
-    Euclidean division gives $N=2(m+1)L+r$ with $0\le r<2(m+1)$.
-    Divide by $4(m+1)$ and exponentiate the resulting inequality.
+    Euclidean division gives $N=qL+r$ with $0\le r<q$.
+    Divide by $2q$ and exponentiate the resulting inequality.
 \end{proof}
 
 \begin{lemma}[The support offset in the translation estimate]
@@ -642,10 +644,10 @@ translates of one term closes the chapter.
     \lean{translation_exp_floor_decay_le}
     \leanok
     \uses{lem:hastings_translation_floor_decay}
-    With $L=\lfloor N/(2(m+1))\rfloor$, $\gamma\ge0$ and $\rho\in\mathbb R$,
+    With $q\ge1$, $L=\lfloor N/q\rfloor$, $\gamma\ge0$ and $\rho\in\mathbb R$,
     \begin{align}
         e^{-\gamma(L/2-2\rho-1)}
-        \le e^{\gamma(2\rho+2)}e^{-\gamma N/(4(m+1))}.
+        \le e^{\gamma(2\rho+2)}e^{-\gamma N/(2q)}.
         \label{eq:hastings_translation_support_offset_decay}
     \end{align}
 \end{lemma}
@@ -664,11 +666,11 @@ translates of one term closes the chapter.
     \leanok
     \uses{lem:hastings_translation_floor_decay,lem:hastings_translation_support_offset_decay}
     Let $m\ge1$, $\gamma>0$, $C\ge0$, $\rho,z\in\mathbb R$, and set
-    $L=\lfloor N/(2(m+1))\rfloor$. Suppose $z\le C$ and, whenever
+    $L=\lfloor N/q\rfloor$ for some $q\ge1$. Suppose $z\le C$ and, whenever
     $L/2>2\rho+1$, suppose also
     $z\le(2^m-1)C e^{-\gamma(L/2-2\rho-1)}$. Then for every $N$,
     \begin{align}
-        z\le(2^m-1)C e^{\gamma(2\rho+2)}e^{-\gamma N/(4(m+1))}.
+        z\le(2^m-1)C e^{\gamma(2\rho+2)}e^{-\gamma N/(2q)}.
         \label{eq:hastings_translation_near_far_decay}
     \end{align}
     This includes $L=0$ and all other small sizes with the same constants.
@@ -678,8 +680,8 @@ translates of one term closes the chapter.
     The coefficient satisfies $2^m-1\ge1$. For $L/2>2\rho+1$, apply
     (\ref{eq:hastings_translation_support_offset_decay}) to the far estimate.
     Otherwise (\ref{eq:hastings_translation_floor_decay}) gives
-    $N/(4(m+1))\le2\rho+2$, so
-    $e^{\gamma(2\rho+2)}e^{-\gamma N/(4(m+1))}\ge1$ and the bound follows
+    $N/(2q)\le2\rho+2$, so
+    $e^{\gamma(2\rho+2)}e^{-\gamma N/(2q)}\ge1$ and the bound follows
     from $z\le C$.
 \end{proof}
 
@@ -738,8 +740,8 @@ translates of one term closes the chapter.
     least $D-2\rho$. The propagation and original-gap estimate bounds
     the commutator by
     $(4v_{\rm obs}+4)\|W\|\|B\|e^{-\gamma(D-2\rho)}$, with natural
-    subtraction when the separation is an integer. Apply the
-    preceding lemma at $D=\lfloor L/2\rfloor$. The floor and support
+    subtraction when the separation is an integer. Apply
+    Lemma~\ref{lem:hastings_finite_observable_orbit} at $D=\lfloor L/2\rfloor$. The floor and support
     losses are absorbed by the scalar estimates, yielding
     (\ref{eq:hastings_finite_translation_exp}). For small $N$, use
     $\|[PWP,PBP]\|\le2\|W\|\|B\|$ and the same prefactor.
@@ -749,7 +751,7 @@ translates of one term closes the chapter.
     \label{cor:hastings_finite_translation_truncated}
     \lean{ManyBody.norm_groundCompression_truncated_commutator_le_finite_translation_exp}
     \leanok
-    In the preceding setting let $M_i$ be the actual Gaussian filter
+    In the setting of Lemma~\ref{thm:hastings_finite_translation_exp} let $M_i$ be the actual Gaussian filter
     of $h_i$ under the Hamiltonian retaining a prescribed set of
     interactions near $i$. Suppose the initial term and every retained
     interaction act within graph radius $\rho$ of $i$, in a set of
@@ -769,7 +771,7 @@ translates of one term closes the chapter.
     The retained Hamiltonian and the initial term have the stated
     support, so their Gaussian evolution and its integral have that
     support. Gaussian filtering contracts the norm, giving
-    $\|M_i\|\le J$. Apply the theorem with $W=M_i$, $B=M_j$.
+    $\|M_i\|\le J$. Apply Lemma~\ref{thm:hastings_finite_translation_exp} with $W=M_i$, $B=M_j$.
 \end{proof}
 
 \section{A variational lower bound}

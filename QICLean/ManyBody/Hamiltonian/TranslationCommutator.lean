@@ -494,7 +494,9 @@ theorem norm_groundCompression_commutator_le_finite_translation_exp
   have htriv := hpoint 1 0 (by simp)
   simp only [sitePermOp_toPerm_one, Matrix.conjTranspose_one, Matrix.one_mul, zero_tsub,
     Nat.cast_zero, mul_zero, neg_zero, Real.exp_zero, mul_one] at htriv
-  apply translation_finiteOrbit_decay_of_near_far n m hm hγ hC htriv
+  have h4 : (2 * ((2 * (m + 1) : ℕ) : ℝ)) = 4 * ((m : ℝ) + 1) := by push_cast; ring
+  rw [← h4]
+  apply translation_finiteOrbit_decay_of_near_far n (q := 2 * (m + 1)) (by omega) m hm hγ hC htriv
   intro _hlarge
   have hfar (g : Γ) (hsep : ((L / 2 : ℕ) : ℕ∞) ≤ G.edist i (g • j)) :
       ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀

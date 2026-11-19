@@ -18,6 +18,12 @@ Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eqs. `mid`, `apb` and `oibu`
   chosen for the filtered terms works for every truncated family, up to the total truncation
   error.
 
+**Scope restriction (polynomial growth):** both theorems assume the polynomial growth `hGrowth`
+of the spheres of `G`. Hastings' lines 169–190 assume only finite-range local bounds and a metric,
+which do not imply polynomial growth, and the unrestricted metric-lattice assertion is false;
+the correction, with the retained cross terms and weakened rate of `LowEnergyBasisUniform`, is
+recorded in `docs/paper-gaps/hastings05_two_dim_ground_basis.tex`.
+
 Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyBasisTruncatedUniform.lean` and the
 ground-space part of `LowEnergyBasisPerturbation.lean`. Changes as in `LowEnergyCommutator`.
 -/
@@ -58,9 +64,9 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_le
     (r : ℝ) (s : V → Finset V) (K : V → Finset V)
     (hsK : ∀ i, ∀ j ∈ s i, T j ⊆ K i) (hXK : ∀ i, T i ⊆ K i)
     (Robs : ℕ) (hKDiam : ∀ i, ∀ x ∈ K i, ∀ z ∈ K i, G.edist x z ≤ Robs)
-    (vObs : ℕ) (hKCard : ∀ i, (K i).card ≤ vObs)
-    [NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀))] :
+    (vObs : ℕ) (hKCard : ∀ i, (K i).card ≤ vObs) :
     let n := Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)
+    haveI : NeZero n := ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
     let γ := commutatorRate R vR b₀ ΔE
     let C := commutatorConst R vObs b₀ |Kg| kg * Real.exp (γ * (2 * Robs + 1))
     ∃ b : OrthonormalBasis (Fin n) ℂ (groundSpace Φ.hamiltonian E₀),
@@ -70,6 +76,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_le
         ((n - 1 : ℕ) : ℝ) ^ 2 * recursiveBasisCoeff n C *
           (|b₀| * (|Kg| * Real.shellSumConst (γ / 2 ^ n) kg)) := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have : NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)) :=
+    ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let M : V → Matrix (Config X) (Config X) ℂ :=
@@ -129,9 +137,9 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_perturb
     (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
     {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ}
-    (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
-    [NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀))] :
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE) :
     let n := Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)
+    haveI : NeZero n := ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
     let γ := commutatorRate R vR b₀ ΔE
     let C := commutatorConst R vR b₀ |Kg| kg * Real.exp (γ * (2 * R + 1))
     ∃ b : OrthonormalBasis (Fin n) ℂ (groundSpace Φ.hamiltonian E₀),
@@ -145,6 +153,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_truncated_perturb
               ‖gaussianFilteredTerm r ΔE Φ.hamiltonian (Φ.term i) - gaussianFilteredTerm r ΔE
                   (∑ k' ∈ s i, Φ.term k') (Φ.term i)‖ := by
   have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have : NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)) :=
+    ⟨fun h0 ↦ hgap.1 (Submodule.finrank_eq_zero.mp h0)⟩
   have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let V := groundSpace Φ.hamiltonian E₀

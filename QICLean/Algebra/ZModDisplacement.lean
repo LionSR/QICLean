@@ -69,27 +69,24 @@ theorem exists_lt_natAbs_valMinAbs_add {n : ℕ} [NeZero n] {q : ℕ} (hq : 0 < 
     rw [hval, hs]
     omega
 
-/-- Every positive multiple up to `mL` carries a nearby coordinate at least `L/2` away.
-Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654. -/
-theorem natAbs_valMinAbs_add_mul_ge_of_near {n L m : ℕ} [NeZero n]
-    (hL : 0 < L) (hn : 2 * (m + 1) * L ≤ n)
-    (a : ZMod n) (ha : a.valMinAbs.natAbs ≤ L / 2)
-    {k : ℕ} (hk : 1 ≤ k) (hkm : k ≤ m) :
-    L / 2 ≤ (a + ((k * L : ℕ) : ZMod n)).valMinAbs.natAbs := by
+/-- A displacement `d` with `L ≤ d` and `d + L ≤ n` carries a coordinate within `L/2` of zero
+to one at least `L/2` away. Hastings, arXiv:cond-mat/0508554v3, lines 1644–1654, uses the
+displacements `d = kL`, `1 ≤ k ≤ m`, with `2(m+1)L ≤ n`. -/
+theorem natAbs_valMinAbs_add_ge_of_near {n L d : ℕ} [NeZero n]
+    (hL : 0 < L) (hLd : L ≤ d) (hdn : d + L ≤ n)
+    (a : ZMod n) (ha : a.valMinAbs.natAbs ≤ L / 2) :
+    L / 2 ≤ (a + (d : ZMod n)).valMinAbs.natAbs := by
   rw [ZMod.valMinAbs_natAbs_eq_min] at ha ⊢
-  have hm : 2 * (m * L) + 2 * L ≤ n := by nlinarith only [hn]
   have hav := ZMod.val_lt a
-  have hkl : L ≤ k * L := by nlinarith
-  have hku : k * L ≤ m * L := Nat.mul_le_mul_right L hkm
   have hhalf : 2 * (L / 2) ≤ L := Nat.mul_div_le L 2
-  have hval : (a + ((k * L : ℕ) : ZMod n)).val = (a.val + k * L) % n := by
+  have hval : (a + (d : ZMod n)).val = (a.val + d) % n := by
     rw [ZMod.val_add, ZMod.val_natCast, Nat.add_mod_mod]
   rw [hval]
   rcases min_le_iff.mp ha with ha | ha
-  · rw [Nat.mod_eq_of_lt (by nlinarith : a.val + k * L < n)]
+  · rw [Nat.mod_eq_of_lt (by omega : a.val + d < n)]
     apply le_min <;> omega
-  · have hge : n ≤ a.val + k * L := by omega
-    have hlt : a.val + k * L - n < n := by omega
+  · have hge : n ≤ a.val + d := by omega
+    have hlt : a.val + d - n < n := by omega
     rw [Nat.mod_eq_sub_mod hge, Nat.mod_eq_of_lt hlt]
     apply le_min <;> omega
 

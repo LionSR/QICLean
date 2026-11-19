@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Matrix.Order
+import QICLean.Algebra.HermitianHelpers
 import QICLean.Analysis.GaussianFilter.CommutatorSeries
 
 /-!
@@ -74,7 +75,10 @@ theorem conjTranspose_commutatorCLM_pow {H : Matrix n n ℂ} (hH : H.IsHermitian
 theorem isHermitian_smul_commutatorCLM_pow {H A : Matrix n n ℂ} (hH : H.IsHermitian)
     (hA : A.IsHermitian) (a : ℝ) (k : ℕ) :
     (((a : ℂ) * Complex.I ^ k) • (GaussianFilter.commutatorCLM H ^ k) A).IsHermitian := by
-  rw [IsHermitian, conjTranspose_smul, conjTranspose_commutatorCLM_pow hH, hA.eq, smul_smul]
+  refine IsHermitian.apply_of_map_conjTranspose
+    (f := fun B ↦ ((a : ℂ) * Complex.I ^ k) • (GaussianFilter.commutatorCLM H ^ k) B)
+    (fun B ↦ ?_) hA
+  rw [conjTranspose_smul, conjTranspose_commutatorCLM_pow hH, smul_smul]
   congr 1
   simp only [star_mul', Complex.star_def, Complex.conj_ofReal, star_pow, Complex.conj_I]
   rw [mul_assoc, ← mul_pow]
