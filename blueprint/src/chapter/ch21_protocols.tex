@@ -435,7 +435,7 @@ its costs do not change.
     for every matrix $N$.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{lem:protocols_encoding, lem:kraus_family_prod}
+    \uses{lem:protocols_encoding, lem:kraus_family_prod, thm:circuits_tensor_right}
     The three circuits are single layers with no cells, so their maps are tensor products of
     the local maps: the encodings along $a\mapsto(a,e_s)$ and along bijections
     (Lemma~\ref{lem:protocols_encoding}), and the partial traces over $\C^{F_s}$
@@ -508,7 +508,8 @@ its costs do not change.
     unitary dilation of its own depth.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:kraus_family_unitary_dilation, lem:circuits_layer_entry, lem:kraus_family_channel}
+    \uses{thm:kraus_family_unitary_dilation, lem:circuits_layer_entry, lem:kraus_family_channel,
+        lem:circuits_layer_factorization}
     The dilating circuit is one layer of unitary gates on the same cells. Replace every gate and onsite family by its unitary dilation
     (Theorem~\ref{thm:kraus_family_unitary_dilation}). The environment of a gate is one basis
     for its whole cell; place it at one chosen site of the cell and give the other sites of
@@ -535,7 +536,7 @@ its costs do not change.
     Lemma~\ref{lem:circuits_layer_entry} again this is the entry of the map of the layer on
     $\ketbra{x}{x'}$; the matrix units span. The sum over the configurations of $F$ factors
     into the sums over the $F_b$ and the $F_s$ because the cells and the remaining sites
-    partition the sites.
+    partition the sites (Lemma~\ref{lem:circuits_layer_factorization}).
 \end{proof}
 
 \begin{theorem}[Unitary dilation of a protocol]
