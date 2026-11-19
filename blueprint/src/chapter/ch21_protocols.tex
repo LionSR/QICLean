@@ -19,7 +19,8 @@ an alphabet of $q$ letters at every site.
 \begin{definition}[Protocols]
     \label{def:protocols_protocol}
     \lean{QuantumCircuit.IsAdaptiveProtocol, QuantumCircuit.IsProtocol,
-        QuantumCircuit.IsBoundedProtocol, QuantumCircuit.IsConversion}
+        QuantumCircuit.IsBoundedProtocol, QuantumCircuit.IsConversion,
+        QuantumCircuit.IsAdaptiveConversion}
     \leanok
     \uses{def:circuits_circuit, def:circuits_costs, def:circuits_local,
         def:circuits_dim_bounded}
@@ -31,21 +32,23 @@ an alphabet of $q$ letters at every site.
     unbranched, and by a protocol bounded by $B$ if every basis along the circuit also has
     between $1$ and $B$ elements. A matrix $\rho$ on $\mathcal H_X$ is converted into a matrix
     $\sigma$ on $\mathcal H_Z$ in depth $T$ if some $\Phi$ realised by a protocol of depth at
-    most $T$ has $\Phi(\rho)=\sigma$.
+    most $T$ has $\Phi(\rho)=\sigma$, and converted adaptively if some $\Phi$ realised by an
+    adaptive protocol of depth at most $T$ has $\Phi(\rho)=\sigma$.
 \end{definition}
 
 \begin{theorem}[Composition of protocols]
     \label{thm:protocols_comp}
     \lean{QuantumCircuit.IsProtocol.adaptive, QuantumCircuit.IsBoundedProtocol.isProtocol,
         QuantumCircuit.IsProtocol.id, QuantumCircuit.IsProtocol.mono,
+        QuantumCircuit.IsAdaptiveProtocol.id, QuantumCircuit.IsAdaptiveProtocol.mono,
         QuantumCircuit.IsAdaptiveProtocol.comp, QuantumCircuit.IsProtocol.comp,
         QuantumCircuit.IsBoundedProtocol.comp}
     \leanok
     \uses{def:protocols_protocol, thm:circuits_composition, thm:circuits_cost_subadditive,
         lem:circuits_dim_bounded}
     A protocol is an adaptive protocol, and a protocol bounded by $B$ is a protocol. The
-    identity is realised by a protocol of depth $0$, and a protocol of depth at most $T$ has
-    depth at most every $T'\ge T$. If $\Phi$
+    identity is realised by a protocol of depth $0$, and a protocol or adaptive protocol of
+    depth at most $T$ has depth at most every $T'\ge T$. If $\Phi$
     and $\Psi$ are realised in depths $T$ and $T'$ by protocols of one of the three classes,
     with the same bound $B$ for bounded protocols, then $\Psi\circ\Phi$ is realised in depth
     $T+T'$ by a protocol of the same class.
@@ -54,6 +57,55 @@ an alphabet of $q$ letters at every site.
     The empty circuit realises the identity. Compose the circuits. The map of the composite is $\Psi\circ\Phi$ and its depth is at
     most $T+T'$; local trace preservation, being unbranched and the dimension bound pass to the
     composite.
+\end{proof}
+
+\begin{lemma}[Classical feedforward]
+    \label{lem:protocols_feedforward}
+    \lean{QuantumCircuit.IsAdaptiveProtocol.step}
+    \leanok
+    \uses{def:protocols_protocol, thm:circuits_composition, thm:circuits_cost_subadditive,
+        def:mpdo_single_kraus_map}
+    Let $L$ be a layer of trace-preserving plain gates from $X$ to $Y$ with Kraus operators
+    $(K_i)_i$ and depth $t$, and for each $i$ let $\Psi_i$ be realised by an adaptive
+    protocol of depth at most $T$. Then
+    \begin{align}
+        \rho&\mapsto\sum_i\Psi_i\bigl(K_i\rho K_i^\dagger\bigr)
+        \notag
+    \end{align}
+    is realised by an adaptive protocol of depth at most $t+T$. This is the classical
+    feedforward of~\cite{Piroli2021LOCC}: the operations after $L$ depend on its outcome.
+\end{lemma}
+\begin{proof}\leanok
+    Let $c_i$ be the circuit of $\Psi_i$, and take the circuit that applies $L$ and then,
+    on the outcome $i$, continues with $c_i$. Its map is the displayed sum, its gates and
+    onsite families are those of $L$ and of the $c_i$, and its depth is $t$ plus the largest
+    depth of the $c_i$.
+\end{proof}
+
+\begin{lemma}[Conversions]
+    \label{lem:protocols_conversion}
+    \lean{QuantumCircuit.IsAdaptiveProtocol.isKrausCPTP, QuantumCircuit.IsProtocol.isKrausCPTP,
+        QuantumCircuit.IsConversion.refl, QuantumCircuit.IsConversion.mono,
+        QuantumCircuit.IsConversion.trans, QuantumCircuit.IsConversion.density,
+        QuantumCircuit.IsConversion.adaptive, QuantumCircuit.IsAdaptiveConversion.refl,
+        QuantumCircuit.IsAdaptiveConversion.mono, QuantumCircuit.IsAdaptiveConversion.trans,
+        QuantumCircuit.IsAdaptiveConversion.density}
+    \leanok
+    \uses{def:protocols_protocol, thm:protocols_comp, thm:circuits_tp,
+        lem:is_kraus_cptp_map_pos, thm:is_kraus_cptp_trace_map}
+    The map of an adaptive protocol is completely positive and trace-preserving. Every matrix
+    is converted into itself in depth $0$; a conversion in depth $T$ is one in every depth
+    $T'\ge T$; converting $\rho$ into $\sigma$ in depth $T_1$ and $\sigma$ into $\tau$ in
+    depth $T_2$ converts $\rho$ into $\tau$ in depth $T_1+T_2$; and a conversion maps density
+    matrices to density matrices. A conversion is an adaptive conversion, and the same
+    statements hold for adaptive conversions.
+\end{lemma}
+\begin{proof}\leanok
+    The circuit of an adaptive protocol has trace-preserving gates and onsite families, so its
+    map is completely positive and trace-preserving by Theorem~\ref{thm:circuits_tp}. The
+    remaining statements follow from Theorem~\ref{thm:protocols_comp}, and such a map sends
+    positive semidefinite matrices of unit trace to positive semidefinite matrices of unit
+    trace.
 \end{proof}
 
 \begin{lemma}[Dimension bounds of protocols]
@@ -217,6 +269,56 @@ for the map of a circuit it is the Heisenberg picture (Lemma~\ref{lem:circuits_t
     The map $\pi$ is multiplicative and, by Lemma~\ref{lem:sites_block_place}, sends an
     operator placed on a region of blocks to the same operator placed on its preimage under
     $f$; Theorem~\ref{thm:protocols_light_cone} applied to $\Phi^*$ gives both statements.
+\end{proof}
+
+\section{Protocols on the ring}
+\label{sec:protocols_ring}
+
+On the ring geometry (Definition~\ref{def:circuits_ring_geometry}) every cell has cost $1$
+and the $T$-fold neighbourhood of a region is its ring ball of radius $T$
+(Lemma~\ref{lem:circuits_ring_neighbourhood}), so the light cones of
+Section~\ref{sec:protocols_light_cones} are ring balls.
+
+\begin{theorem}[Light cones of protocols on the ring]
+    \label{thm:protocols_ring_light_cone}
+    \lean{QuantumCircuit.IsProtocol.traceAdjointMap_mem_supportedOperators_ringBall,
+        QuantumCircuit.IsProtocol.traceAdjointMap_mul_of_disjoint_ringBall}
+    \leanok
+    \uses{thm:protocols_light_cone, def:circuits_ring_geometry, def:sites_ring_ball,
+        lem:circuits_ring_neighbourhood}
+    Let $\Phi$ be realised by a protocol of depth at most $T$ on the ring of $N\ge1$ sites.
+    Then $\Phi^*$ maps an operator supported on a region $R$ to an operator supported on the
+    ball of radius $T$ about $R$, and $\Phi^*(AB)=\Phi^*(A)\Phi^*(B)$ for $A$ supported on
+    $R$ and $B$ supported on $R'$ when the balls of radius $T$ about $R$ and $R'$ are
+    disjoint~\cite{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    Theorem~\ref{thm:protocols_light_cone} with the $T$-fold neighbourhoods identified by
+    Lemma~\ref{lem:circuits_ring_neighbourhood}.
+\end{proof}
+
+\begin{theorem}[No correlations beyond twice the depth]
+    \label{thm:protocols_ring_correlations}
+    \lean{QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isRingSeparated}
+    \leanok
+    \uses{thm:protocols_light_cone, def:circuits_ring_geometry, def:sites_ring_ball,
+        lem:circuits_ring_neighbourhood, lem:sites_ring_separated}
+    Let a product $\bigotimes_s\sigma_s$ with $\operatorname{tr}\sigma_s=1$ be converted into
+    $\sigma$ in depth $T$ on the ring of $N\ge1$ sites, and let the regions $R$ and $R'$ be
+    separated by $2T$. Then for $A$ supported on $R$ and $B$ supported on $R'$
+    \begin{align}
+        \operatorname{tr}(\sigma AB)&=\operatorname{tr}(\sigma A)\operatorname{tr}(\sigma B).
+        \notag
+    \end{align}
+    This is the necessary condition of~\cite[Proposition~2]{Piroli2021LOCC}, stated there for
+    pure states prepared by unitary circuits, here for product inputs and local channels with
+    ancillas and discarding, without measurements.
+\end{theorem}
+\begin{proof}\leanok
+    By Lemma~\ref{lem:sites_ring_separated} the balls of radius $T$ about $R$ and $R'$ are
+    disjoint; they are the $T$-fold neighbourhoods by
+    Lemma~\ref{lem:circuits_ring_neighbourhood}, and Theorem~\ref{thm:protocols_light_cone}
+    applies.
 \end{proof}
 
 \section{Encoding into a constant alphabet}

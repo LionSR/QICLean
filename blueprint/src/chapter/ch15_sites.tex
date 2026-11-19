@@ -886,6 +886,63 @@ supports of bounded range on them.
     satisfy $\lvert x-y\rvert\le R$.
 \end{proof}
 
+\begin{definition}[Balls and separation on the ring]
+    \label{def:sites_ring_ball}
+    \lean{ManyBody.ringBall, ManyBody.mem_ringBall, ManyBody.subset_ringBall,
+        ManyBody.IsRingSeparated}
+    \leanok
+    On the ring $\Z_N$ of $N\ge1$ sites, the ball of radius $r$ about a set $X$ of sites
+    is the set of sites $x+m$ with $x\in X$ and $\lvert m\rvert\le r$, indices modulo $N$;
+    it contains $X$. Two sets $X$ and $Y$ are separated by $s$ if no site of $Y$ is of the
+    form $x+m$ with $x\in X$ and $\lvert m\rvert\le s$.
+\end{definition}
+
+\begin{lemma}[Balls on the ring]
+    \label{lem:sites_ring_ball}
+    \lean{ManyBody.ringBall_zero, ManyBody.ringBall_succ, ManyBody.ringBall_image_finRotate}
+    \leanok
+    \uses{def:sites_ring_ball}
+    The ball of radius $0$ about $X$ is $X$, the ball of radius $r+1$ is the ball of
+    radius $1$ about the ball of radius $r$, and the rotation $k\mapsto k+1$ of the ring
+    carries the ball of radius $r$ about $X$ to the ball of radius $r$ about the rotated
+    set.
+\end{lemma}
+\begin{proof}\leanok
+    A displacement $m$ with $\lvert m\rvert\le 0$ is $0$. A site $x+m+m'$ with
+    $\lvert m\rvert\le r$ and $\lvert m'\rvert\le1$ is $x+(m+m')$ with
+    $\lvert m+m'\rvert\le r+1$; conversely, a displacement with $\lvert m\rvert\le r+1$ is
+    $(m-s)+s$ with $s\in\{-1,0,1\}$ of the sign of $m$ and $\lvert m-s\rvert\le r$. The
+    rotation adds $1$ to both $x$ and $x+m$.
+\end{proof}
+
+\begin{lemma}[Separated sets on the ring]
+    \label{lem:sites_ring_separated}
+    \lean{ManyBody.IsRingSeparated.disjoint_ringBall, ManyBody.IsRingSeparated.symm,
+        ManyBody.IsRingSeparated.notMem_ringBall, ManyBody.isRingSeparated_of_val_bounds,
+        ManyBody.exists_isRingSeparated_singletons_notMem_ringBall,
+        ManyBody.IsRingSeparated.lt_edist}
+    \leanok
+    \uses{def:sites_ring_ball}
+    Let $X$ and $Y$ be separated by $s$. Then $Y$ and $X$ are separated by $s$, no site of
+    $Y$ lies in the ball of radius $s$ about $X$, and every $x\in X$ and $y\in Y$ are at
+    distance larger than $s$ in the cycle graph on $\Z_N$. If $s=2T$, the balls of radius
+    $T$ about $X$ and $Y$ are disjoint. Sets with positions in $\lbrack a,a+w)$ and $\lbrack b,b+w')$
+    are separated by $s$ when $a+w+s\le b$ and $b+w'+s\le a+N$. If $N>4T+4$, there are
+    sites $i$ and $j$ with $\{i\}$ and $\{j\}$ separated by $2T$, and a site $k$ outside
+    the balls of radius $T$ about $i$ and about $j$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:sites_ring_ball}
+    If $y=x+m$ then $x=y+(-m)$. A common site $x+m=y+m'$ of the two balls gives
+    $y=x+(m-m')$ with $\lvert m-m'\rvert\le 2T$. A walk of length $\ell$ in the cycle graph
+    moves by $\pm1$ at each step, so its end is its start moved by at most $\ell$; a walk
+    of length at most $s$ from $x$ to $y$ would give $y=x+m$ with $\lvert m\rvert\le s$.
+    For the interval criterion, $y=x+m$ makes $N$ divide $y-x-m$, which lies in $[0,N)$
+    by the two gap conditions; it is then $0$, contradicting the bounds on the positions.
+    For the last statement take $i=0$, $j=2T+2$ and $k=T+1$ and apply the interval
+    criterion three times.
+\end{proof}
+
 \begin{definition}[Finite domains of the integers]
     \label{def:sites_line_domain}
     \lean{ManyBody.sitePos, ManyBody.lineDomainGraph, ManyBody.IsDomainSupport,
