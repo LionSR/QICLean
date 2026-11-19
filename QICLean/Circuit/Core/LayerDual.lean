@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.Layer
 import QICLean.ManyBody.Sites.Partition
+import QICLean.Algebra.FiniteKroneckerOrder
 
 /-!
 # The Heisenberg picture of a layer
@@ -16,13 +17,14 @@ of blocks the Kraus operators therefore factor as `K_near ⊗ K_far`, and the He
 `(∑ K_nearᴴ A₁ K_near) ⊗ (∑ K_farᴴ K_far)`. When the families on the blocks outside `D` are
 trace-preserving, the second factor is the identity.
 
-Two consequences are proved from this one computation:
+The factorization and order of finite tensor products give:
 
 * a layer whose gates and onsite families are trace-preserving is trace-preserving (take `D`
   empty);
-* the Heisenberg picture of such a layer maps an operator supported on `R` to an operator
-  supported on the backward light cone of `R`: `R` together with every cell of the layer that
-  meets it.
+* a layer whose local effects are at most the identity is trace-nonincreasing;
+* the Heisenberg picture of a trace-preserving layer maps an operator supported on `R` to an
+  operator supported on the backward light cone of `R`: `R` together with every cell of the
+  layer that meets it.
 
 ## Main definitions
 
@@ -36,6 +38,9 @@ Two consequences are proved from this one computation:
   along a union of blocks.
 * `QuantumCircuit.Layer.dual_one`, `QuantumCircuit.Layer.isTP_krausFamily` — local trace
   preservation gives trace preservation.
+* `QuantumCircuit.Layer.blockEffect_le_one`, `QuantumCircuit.Layer.dual_one_le`,
+  `QuantumCircuit.Layer.isTraceNonincreasing_krausFamily` — local trace nonincrease gives
+  trace nonincrease without assumptions on nonempty bases or outcomes.
 * `QuantumCircuit.Layer.dual_mem_supportedOperators_lightCone` — the backward light cone of one
   layer.
 * `QuantumCircuit.Layer.dual_mul_of_disjoint_lightCone` — the Heisenberg picture is
@@ -46,7 +51,7 @@ Two consequences are proved from this one computation:
 -/
 
 open Matrix ManyBody
-open scoped Kronecker
+open scoped Kronecker ComplexOrder MatrixOrder
 
 namespace QuantumCircuit
 
@@ -176,6 +181,74 @@ theorem blockEffect_eq_one (ev : Interpretation G) (h : L.Forall ev KrausFamily.
     refine Finset.sum_congr rfl fun j _ ↦ ?_
     exact (Equiv.piUnique fun v : {v // v ∈ L.region (.inr s)} ↦ Y v).sum_comp
       (fun z ↦ star ((L.onsite s).op j z (a default)) * (L.onsite s).op j z (c default))
+
+omit [Fintype S] in
+/-- Local trace nonincrease bounds the effect of every block by the identity. -/
+theorem blockEffect_le_one (ev : Interpretation G)
+    (h : L.Forall ev KrausFamily.IsTraceNonincreasing) (β : L.Block) :
+    L.blockEffect ev β ≤ 1 := by
+  classical
+  match β with
+  | .inl b => exact h.1 b
+  | .inr s =>
+    let : Unique {v // v ∈ L.region (.inr s)} :=
+      ⟨⟨⟨s, Finset.mem_singleton_self _⟩⟩, fun v ↦ Subtype.ext (Finset.mem_singleton.mp v.2)⟩
+    let e := Equiv.piUnique fun v : {v // v ∈ L.region (.inr s)} ↦ X v
+    have he : L.blockEffect ev (.inr s) = (L.onsite s).effect.submatrix e e := by
+      ext a c
+      simp only [blockEffect, KrausFamily.effect, Matrix.sum_apply, mul_apply,
+        conjTranspose_apply, submatrix_apply]
+      refine Finset.sum_congr rfl fun j _ ↦ ?_
+      exact (Equiv.piUnique fun v : {v // v ∈ L.region (.inr s)} ↦ Y v).sum_comp
+        (fun z ↦ star ((L.onsite s).op j z (a default)) * (L.onsite s).op j z (c default))
+    rw [he, Matrix.le_iff]
+    convert (Matrix.le_iff.mp (h.2 s)).submatrix e using 1
+    ext a b
+    simp only [submatrix_apply, Matrix.sub_apply]
+    rw [← submatrix_apply (1 : Matrix (X s) (X s) ℂ) e e, submatrix_one_equiv]
+
+/-- Restricting to the blocks identifies global configurations with block configurations. -/
+noncomputable def configEquivBlocks (Z : S → Type) :
+    Config Z ≃ ((β : L.Block) → RegionConfig Z (L.region β)) :=
+  (show Config Z ≃ ComplConfig Z ∅ from
+    ⟨fun x v ↦ x v, fun w v ↦ w ⟨v, Finset.notMem_empty v⟩,
+      fun _ ↦ rfl, fun _ ↦ rfl⟩).trans
+    (complPartitionEquiv (show IsComplPartition ∅ L.region (fun v ↦ L.blockOf v.1) from
+      ⟨fun _ ↦ Finset.disjoint_empty_right _, fun v ↦ L.mem_region_blockOf v,
+        fun _ _ hv ↦ L.blockOf_eq_of_mem hv⟩))
+
+/-- The layer effect is the product of its block effects, in configuration coordinates. -/
+theorem effect_apply_eq_prod (ev : Interpretation G) (x y : Config X) :
+    (L.krausFamily ev).effect x y =
+      ∏ β, L.blockEffect ev β (fun v ↦ x v) (fun v ↦ y v) := by
+  classical
+  change (∑ i : L.Index, (L.kraus ev i)ᴴ * L.kraus ev i) x y = _
+  simp only [Matrix.sum_apply, mul_apply, conjTranspose_apply]
+  simp_rw [show ∀ i z, L.kraus ev i z x =
+    ∏ β, L.blockKraus ev β (L.indexEquiv i β) (fun v ↦ z v) (fun v ↦ x v)
+    from fun i z ↦ L.kraus_apply_eq_prod ev i z x]
+  simp_rw [show ∀ i z, L.kraus ev i z y =
+    ∏ β, L.blockKraus ev β (L.indexEquiv i β) (fun v ↦ z v) (fun v ↦ y v)
+    from fun i z ↦ L.kraus_apply_eq_prod ev i z y]
+  simp_rw [star_prod, ← Finset.prod_mul_distrib]
+  have hsum (i : L.Index) :
+      (∑ z : Config Y, ∏ β, star (L.blockKraus ev β (L.indexEquiv i β)
+          (fun v ↦ z v) (fun v ↦ x v)) *
+        L.blockKraus ev β (L.indexEquiv i β) (fun v ↦ z v) (fun v ↦ y v)) =
+      ∏ β, ∑ z, star (L.blockKraus ev β (L.indexEquiv i β) z (fun v ↦ x v)) *
+        L.blockKraus ev β (L.indexEquiv i β) z (fun v ↦ y v) := by
+    rw [Fintype.prod_sum]
+    exact (L.configEquivBlocks Y).sum_comp (fun z ↦ ∏ β,
+      star (L.blockKraus ev β (L.indexEquiv i β) (z β) (fun v ↦ x v)) *
+        L.blockKraus ev β (L.indexEquiv i β) (z β) (fun v ↦ y v))
+  simp_rw [hsum]
+  rw [L.indexEquiv.sum_comp (fun j ↦ ∏ β, ∑ z,
+    star (L.blockKraus ev β (j β) z (fun v ↦ x v)) *
+      L.blockKraus ev β (j β) z (fun v ↦ y v))]
+  rw [← Fintype.prod_sum (fun β j ↦ ∑ z,
+    star (L.blockKraus ev β j z (fun v ↦ x v)) *
+      L.blockKraus ev β j z (fun v ↦ y v))]
+  simp only [blockEffect, Matrix.sum_apply, mul_apply, conjTranspose_apply]
 
 end Blocks
 
@@ -376,14 +449,37 @@ private theorem sum_nearKraus (h : L.Forall ev KrausFamily.IsTP)
   rw [← place_apply_cutEquiv_symm (∑ j, (L.nearKraus ev p j)ᴴ * L.nearKraus ev p j) a b y, h2,
     place_apply_cutEquiv_symm]
 
+/-- Local trace nonincrease gives trace nonincrease of the entire layer. -/
+theorem isTraceNonincreasing_krausFamily
+    (h : L.Forall ev KrausFamily.IsTraceNonincreasing) :
+    (L.krausFamily ev).IsTraceNonincreasing := by
+  classical
+  have hpos : ∀ β, (L.blockEffect ev β).PosSemidef := fun β ↦
+    Matrix.nonneg_iff_posSemidef.mp (Finset.sum_nonneg fun j _ ↦
+      (Matrix.posSemidef_conjTranspose_mul_self (L.blockKraus ev β j)).nonneg)
+  have hprod := Matrix.prod_le_one_of_injective (L.blockEffect ev) hpos (L.blockEffect_le_one ev h)
+    (L.configEquivBlocks X) (L.configEquivBlocks X).injective
+  unfold KrausFamily.IsTraceNonincreasing
+  convert hprod using 1
+  ext x y
+  exact L.effect_apply_eq_prod ev x y
+
+/-- The Heisenberg image of the identity is the layer Kraus effect. -/
+theorem dual_one_eq_effect : L.dual ev 1 = (L.krausFamily ev).effect := by
+  simp only [dual, krausFamily, KrausFamily.effect, Matrix.mul_one]
+  congr 1
+
+/-- The Heisenberg picture of a locally trace-nonincreasing layer is sub-unital. -/
+theorem dual_one_le (h : L.Forall ev KrausFamily.IsTraceNonincreasing) :
+    L.dual ev 1 ≤ 1 := by
+  rw [dual_one_eq_effect]
+  exact L.isTraceNonincreasing_krausFamily ev h
+
 /-- A layer whose gates and onsite families are trace-preserving is trace-preserving. -/
 theorem isTP_krausFamily (h : L.Forall ev KrausFamily.IsTP) :
     (L.krausFamily ev).IsTP := by
-  have hdual := L.dual_one ev h
-  rw [dual_apply'] at hdual
-  simp only [Matrix.mul_one] at hdual
-  change ∑ i : L.Index, (L.kraus ev i)ᴴ * L.kraus ev i = 1
-  convert hdual using 2
+  rw [KrausFamily.IsTP, ← dual_one_eq_effect]
+  exact L.dual_one ev h
 
 omit [GateFamily G] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
   [∀ s, DecidableEq (Y s)] [DecidablePred p] in

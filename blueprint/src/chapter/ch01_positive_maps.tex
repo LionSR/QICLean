@@ -1267,6 +1267,37 @@ them across the chapter boundary.
     $V^\dagger V=1$ and $VV^\dagger=1$.
 \end{definition}
 
+\begin{lemma}[Trace duality of a Kraus family]
+    \label{lem:kraus_family_trace_duality}
+    \lean{KrausFamily.trace_map_mul}
+    \leanok
+    \uses{def:kraus_family}
+    For a finite Kraus family $\{K_i\}$ from $\C^\alpha$ to $\C^\beta$, a matrix $\rho$ on
+    $\C^\alpha$ and a matrix $A$ on $\C^\beta$,
+    \begin{align}
+        \operatorname{tr}\Bigl(\sum_iK_i\rho K_i^\dagger\,A\Bigr)
+        &=\operatorname{tr}\Bigl(\rho\sum_iK_i^\dagger AK_i\Bigr).
+        \notag
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Cycle the factors under the trace in each summand.
+\end{proof}
+
+\begin{lemma}[Trace pairing with the Kraus effect]
+    \label{lem:kraus_family_trace_effect}
+    \lean{KrausFamily.trace_map_eq_trace_effect_mul}
+    \leanok
+    \uses{def:kraus_family}
+    For a finite rectangular Kraus family with map $\Phi$ and effect $E$,
+    $\operatorname{tr}\Phi(\rho)=\operatorname{tr}(E\rho)$ for every input matrix $\rho$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:kraus_family_trace_duality}
+    Set $A=1$ in the trace duality identity and use
+    $\operatorname{tr}(\rho E)=\operatorname{tr}(E\rho)$.
+\end{proof}
+
 \begin{lemma}[A trace-preserving Kraus family is a channel]
     \label{lem:kraus_family_channel}
     \lean{KrausFamily.isKrausCPTP_map, KrausFamily.trace_map,
@@ -1281,6 +1312,7 @@ them across the chapter boundary.
     trace-preserving family between one-element bases is the identity.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{lem:kraus_family_trace_effect}
     Enumerating the outcomes gives a Kraus representation with
     $\sum_\omega K_\omega^\dagger K_\omega=1$. For the trace,
     $\operatorname{tr}\sum_\omega K_\omega\rho K_\omega^\dagger

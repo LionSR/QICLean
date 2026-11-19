@@ -201,7 +201,7 @@ and each Kraus operator is a product of local entries over the blocks.
     trace-preserving.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:circuits_layer_factorization}
+    \uses{lem:circuits_layer_factorization, lem:circuits_effect_identities}
     Apply Lemma~\ref{lem:circuits_layer_factorization} with $N$ empty and
     $A_1=1$: the union $D$ is empty, so the near factor is the identity on a
     one-point space and $\sum_iK_i^\dagger K_i=1$.
@@ -281,26 +281,19 @@ and each Kraus operator is a product of local entries over the blocks.
 
 \begin{lemma}[Duality, the empty circuit and circuits of one layer]
     \label{lem:circuits_duality}
-    \lean{KrausFamily.trace_map_mul, QuantumCircuit.Circuit.trace_map_mul,
+    \lean{QuantumCircuit.Circuit.trace_map_mul,
         QuantumCircuit.Circuit.dual_done, QuantumCircuit.Circuit.kraus_ofLayer,
         QuantumCircuit.Circuit.isUnbranched_ofLayer}
     \leanok
     \uses{def:circuits_circuit, def:kraus_family}
-    For a finite Kraus family $\{K_i\}$ from $\C^\alpha$ to $\C^\beta$, a matrix $\rho$ on
-    $\C^\alpha$ and a matrix $A$ on $\C^\beta$,
-    \begin{align}
-        \operatorname{tr}\Bigl(\sum_iK_i\rho K_i^\dagger\,A\Bigr)
-        &=\operatorname{tr}\Bigl(\rho\sum_iK_i^\dagger AK_i\Bigr),
-        \notag
-    \end{align}
-    so the map $\Phi$ of a circuit and its Heisenberg picture $\Phi^\dagger$ satisfy
+    The map $\Phi$ of a circuit and its Heisenberg picture $\Phi^\dagger$ satisfy
     $\operatorname{tr}(\Phi(\rho)A)=\operatorname{tr}(\rho\,\Phi^\dagger(A))$. The
     Heisenberg picture of the empty circuit is the identity. The circuit of one layer is
     unbranched and has the Kraus operators of the layer.
 \end{lemma}
 \begin{proof}\leanok
-    $\operatorname{tr}(K_i\rho K_i^\dagger A)=\operatorname{tr}(\rho K_i^\dagger AK_i)$ by
-    cyclicity of the trace. The empty circuit has the one Kraus operator $1$, and the
+    \uses{lem:kraus_family_trace_duality}
+    Apply trace duality to the circuit's Kraus family. The empty circuit has the one Kraus operator $1$, and the
     circuit of one layer has one continuation, the empty circuit, for every outcome.
 \end{proof}
 
@@ -481,6 +474,19 @@ and each Kraus operator is a product of local entries over the blocks.
     followed by those of the continuations.
 \end{proof}
 
+\begin{lemma}[The effect of a layer or circuit]
+    \label{lem:circuits_effect_identities}
+    \lean{QuantumCircuit.Layer.dual_one_eq_effect,
+        QuantumCircuit.Circuit.dual_one_eq_effect}
+    \leanok
+    \uses{def:kraus_family, lem:circuits_layer_factorization, def:circuits_circuit}
+    For a layer or a circuit, the Heisenberg image of the identity is its
+    Kraus effect: $\Phi^*(1)=E$.
+\end{lemma}
+\begin{proof}\leanok
+    Substituting $1$ in $\Phi^*(A)=\sum_iK_i^\dagger A K_i$ gives $E$.
+\end{proof}
+
 \begin{theorem}[Trace preservation of a circuit]
     \label{thm:circuits_tp}
     \lean{QuantumCircuit.Circuit.dual_one_of_forall,
@@ -492,7 +498,7 @@ and each Kraus operator is a product of local entries over the blocks.
     trace-preserving, hence a quantum channel, whether or not it branches.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:circuits_layer_tp, lem:kraus_family_channel}
+    \uses{thm:circuits_layer_tp, lem:kraus_family_channel, lem:circuits_effect_identities}
     By induction the Heisenberg picture fixes the identity. For a circuit that
     starts with a layer $L$ with Kraus operators $K_i$ and continues with $c_i$,
     \begin{align}
@@ -503,6 +509,54 @@ and each Kraus operator is a product of local entries over the blocks.
     by the induction hypothesis in the middle and Theorem~\ref{thm:circuits_layer_tp}
     at the end. Then $\sum_pK_p^\dagger K_p=1$ for the branches $p$ of the
     circuit.
+\end{proof}
+
+\begin{theorem}[Trace nonincrease of layers and circuits]
+    \label{thm:circuits_tni}
+    \lean{QuantumCircuit.Layer.blockEffect_le_one,
+        QuantumCircuit.Layer.configEquivBlocks, QuantumCircuit.Layer.effect_apply_eq_prod,
+        QuantumCircuit.Layer.isTraceNonincreasing_krausFamily, QuantumCircuit.Layer.dual_one_le,
+        QuantumCircuit.Circuit.dual_one_le_of_forall,
+        QuantumCircuit.Circuit.isTraceNonincreasing_krausFamily,
+        QuantumCircuit.Circuit.trace_map_le, KrausFamily.trace_map_le}
+    \leanok
+    \uses{def:circuits_local, def:kraus_family}
+    Suppose every gate and onsite family of a circuit has effect at most the
+    identity. Then the circuit effect $E_c=\sum_p(K_p^c)^\dagger K_p^c$ satisfies
+    $E_c\le1$. Its completely positive map $\Phi_c$ obeys
+    $\operatorname{tr}\Phi_c(\rho)\le\operatorname{tr}\rho$ for every $\rho\ge0$,
+    and its Heisenberg dual obeys $\Phi_c^*(1)\le1$.
+    The same statements hold for a single layer. The input and output bases may
+    differ and may be empty, and a branch may have no Kraus outcomes.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_factorization, lem:sites_partition,
+        cor:finite_kronecker_contractions, lem:psd_trace_product_nonneg,
+        lem:circuits_effect_identities, lem:kraus_family_trace_effect}
+    Restriction to the blocks identifies global configurations with families
+    of block configurations. Write $K_{\beta,j}$ for the local Kraus operators
+    and $E_\beta=\sum_jK_{\beta,j}^\dagger K_{\beta,j}$. For an onsite block this
+    is the onsite effect after identifying a singleton configuration with its
+    coordinate. Thus $0\le E_\beta\le1$. Factoring the sums over output
+    configurations and Kraus outcomes gives
+    \begin{align}
+        (E_L)_{x,y}
+        &=\prod_\beta (E_\beta)_{x|_\beta,y|_\beta}.
+        \notag
+    \end{align}
+    Corollary~\ref{cor:finite_kronecker_contractions} gives $E_L\le1$.
+    Induct on the circuit. The empty circuit fixes $1$. If a layer $L$ has
+    continuation $c_i$ after outcome $i$, positivity of conjugation gives
+    \begin{align}
+        \Phi_c^*(1)
+        &=\sum_iK_i^\dagger\Phi_{c_i}^*(1)K_i
+        \le\sum_iK_i^\dagger K_i=E_L\le1.
+        \notag
+    \end{align}
+    Finally, cyclicity of trace gives
+    $\operatorname{tr}\Phi_c(\rho)=\operatorname{tr}(E_c\rho)$, and
+    $\operatorname{tr}((1-E_c)\rho)\ge0$ because both factors are positive
+    semidefinite. Complete positivity follows directly from the Kraus form.
 \end{proof}
 
 \begin{lemma}[Trace preservation keeps bases nonempty]

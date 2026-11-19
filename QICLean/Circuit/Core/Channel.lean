@@ -30,6 +30,9 @@ outcomes. This is proved by induction from the trace preservation of a layer.
 * `QuantumCircuit.Circuit.isUnbranched_ofLayer` — the circuit of one layer is unbranched.
 * `QuantumCircuit.Circuit.isTP_krausFamily` — local trace preservation gives trace
   preservation (Wolf, §2.1).
+* `QuantumCircuit.Circuit.isTraceNonincreasing_krausFamily`,
+  `QuantumCircuit.Circuit.dual_one_le_of_forall`, `QuantumCircuit.Circuit.trace_map_le` —
+  local trace nonincrease gives trace nonincrease and a sub-unital Heisenberg dual.
 * `QuantumCircuit.Circuit.isKrausCPTP_map` — such a circuit is a quantum channel.
 * `QuantumCircuit.Circuit.trace_map` — such a circuit preserves the trace.
 * `QuantumCircuit.Circuit.nonempty_unique_index`,
@@ -38,6 +41,8 @@ outcomes. This is proved by induction from the trace preservation of a layer.
 -/
 
 open Matrix ManyBody
+
+open scoped ComplexOrder MatrixOrder
 
 namespace QuantumCircuit
 
@@ -159,16 +164,43 @@ theorem dual_one_of_forall (ev : Interpretation G) : {X Z : S → Type} →
     simp_rw [hnext]
     exact L.dual_one ev h.1
 
+/-- Local trace nonincrease makes the Heisenberg picture sub-unital, including circuits
+whose continuation depends on the preceding Kraus outcome. -/
+theorem dual_one_le_of_forall (ev : Interpretation G) : {X Z : S → Type} →
+    [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] → [∀ s, Fintype (Z s)] →
+    [∀ s, DecidableEq (Z s)] → (c : Circuit Γ G X Z) →
+      c.Forall ev KrausFamily.IsTraceNonincreasing → c.dual ev 1 ≤ 1
+  | _, _, i₁, i₂, i₃, i₄, done _, _ => by
+    obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
+    obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
+    rw [dual_done]
+  | _, _, _, _, _, _, step L next, h => by
+    rw [dual_step]
+    calc
+      _ ≤ ∑ i, (L.kraus ev i)ᴴ * 1 * L.kraus ev i := by
+        apply Finset.sum_le_sum
+        intro i _
+        apply Matrix.le_iff.mpr
+        have hn := Matrix.le_iff.mp (dual_one_le_of_forall ev (next i) (h.2 i))
+        simpa only [Matrix.mul_sub, Matrix.sub_mul] using
+          hn.conjTranspose_mul_mul_same (L.kraus ev i)
+      _ ≤ 1 := L.dual_one_le ev h.1
+
 variable {X Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Z s)]
+
+/-- The Heisenberg image of the identity is the circuit Kraus effect. -/
+theorem dual_one_eq_effect [∀ s, DecidableEq (Z s)]
+    (ev : Interpretation G) (c : Circuit Γ G X Z) :
+    c.dual ev 1 = (c.krausFamily ev).effect := by
+  simp only [dual, krausFamily, KrausFamily.effect, Matrix.mul_one]
+  congr 1
 
 /-- A circuit whose gates and onsite families are trace-preserving is trace-preserving. -/
 theorem isTP_krausFamily (ev : Interpretation G) (c : Circuit Γ G X Z)
     (h : c.Forall ev KrausFamily.IsTP) : (c.krausFamily ev).IsTP := by
   classical
-  have := c.dual_one_of_forall ev h
-  simp only [dual, Matrix.mul_one] at this
-  change ∑ p : c.Index, (c.kraus ev p)ᴴ * c.kraus ev p = 1
-  convert this using 2
+  rw [KrausFamily.IsTP, ← dual_one_eq_effect]
+  exact c.dual_one_of_forall ev h
 
 /-- A circuit whose gates and onsite families are trace-preserving is a quantum channel. -/
 theorem isKrausCPTP_map [∀ s, DecidableEq (Z s)] (ev : Interpretation G) (c : Circuit Γ G X Z)
@@ -180,6 +212,22 @@ theorem trace_map (ev : Interpretation G) (c : Circuit Γ G X Z)
     (h : c.Forall ev KrausFamily.IsTP) (ρ : Matrix (Config X) (Config X) ℂ) :
     (c.map ev ρ).trace = ρ.trace :=
   KrausFamily.trace_map (c.isTP_krausFamily ev h) ρ
+
+/-- Local trace nonincrease gives trace nonincrease of the full branching Kraus family. -/
+theorem isTraceNonincreasing_krausFamily (ev : Interpretation G) (c : Circuit Γ G X Z)
+    (h : c.Forall ev KrausFamily.IsTraceNonincreasing) :
+    (c.krausFamily ev).IsTraceNonincreasing := by
+  classical
+  rw [KrausFamily.IsTraceNonincreasing, ← dual_one_eq_effect]
+  exact c.dual_one_le_of_forall ev h
+
+/-- A locally trace-nonincreasing circuit decreases the trace of positive semidefinite
+inputs; this does not assert sub-unitality of its Schrödinger map. -/
+theorem trace_map_le (ev : Interpretation G) (c : Circuit Γ G X Z)
+    (h : c.Forall ev KrausFamily.IsTraceNonincreasing)
+    {ρ : Matrix (Config X) (Config X) ℂ} (hρ : ρ.PosSemidef) :
+    (c.map ev ρ).trace ≤ ρ.trace :=
+  KrausFamily.trace_map_le (c.isTraceNonincreasing_krausFamily ev h) hρ
 
 end Circuit
 

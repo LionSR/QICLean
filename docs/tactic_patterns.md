@@ -7,6 +7,24 @@ in a regression file are not additional mathematical consumers.
 
 ## Promoted
 
+### Kraus effect, dual of one and trace — shared identities (2026-11-18)
+
+- **Pattern:** Expand the dual at the identity into the Kraus effect, or cycle
+  the trace of a Kraus map into the trace pairing with its effect, then use
+  equality or Loewner order against the identity.
+- **Reuse:** `Layer.dual_one_eq_effect` in `Circuit/Core/LayerDual.lean` and
+  `Circuit.dual_one_eq_effect` in `Circuit/Core/Channel.lean` replace the four
+  repeated dual/effect conversions in the TP and TNI consequences.
+  `KrausFamily.trace_map_eq_trace_effect_mul` in `Channel/KrausFamily.lean`
+  supplies the shared trace calculation for `trace_map` and `trace_map_le`.
+- **Decision:** Mathematical identities suffice; no tactic or extra assumptions.
+  The referenced scanner `scripts/tactic_pattern_scan.py` and process document
+  `docs/tactic_development.md` are absent in this checkout; the listed sites
+  were inspected directly.
+  The generic tensor helper is renamed from `Matrix.prod_le_one` to
+  `Matrix.prod_le_one_of_injective` before release; all callers and blueprint
+  tags are migrated, without retaining a duplicate alias.
+
 ### Inverse-pair condition factors — shared norm bound (2026-11-16)
 
 - **Pattern:** From `P * Q = 1`, submultiplicativity gives
