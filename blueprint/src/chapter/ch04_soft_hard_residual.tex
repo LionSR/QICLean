@@ -380,7 +380,13 @@ It does not assert the printed fourth-order choice, a bound on the bond dimensio
 \begin{proof}\leanok
     \uses{thm:soft_family_quartic_scale,thm:soft_family_calibration}
     The quartic scale bound gives $u\le A X^4$ for a constant depending
-    only on $q,\mu$. The calibration bounds give $\log D\le u^9$.
+    only on $q,\mu$. The calibration bounds give $D\ge1$ and $\log D\le u^9$.
+    Exponentiating yields
+    \begin{align}
+        D &\le \exp(u^9)\le \exp(A^9X^{36}),
+            \label{eq:soft_growth_size_bound}
+    \end{align}
+    so one may take $C_s=A^9$.
     Applying $x/2\le\log(1+x)$ at $x=\xi/W$ bounds the numerator
     defining $r$ by $2\log N+20100m$. Hence both $r$ and $m$ are
     bounded by $R X^{40}$ for a common constant $R\ge1$. Also
