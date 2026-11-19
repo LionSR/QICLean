@@ -106,7 +106,7 @@ theorem siteOp_diagonal (i : Fin L) (f : Fin 2 → ℂ) :
   rw [siteOp_apply, diagonal_apply, diagonal_apply]
   by_cases hxy : x = y
   · subst hxy; simp
-  · rw [if_neg hxy]
+  · simp only [hxy, ↓reduceIte]
     split_ifs with h h'
     · exact absurd (funext fun j ↦ if hj : j = i then hj ▸ h' else h j hj) hxy
     · rfl

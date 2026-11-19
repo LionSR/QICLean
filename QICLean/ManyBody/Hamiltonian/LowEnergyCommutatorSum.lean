@@ -264,8 +264,8 @@ lines 1548–1601. -/
 theorem norm_groundCompression_observables_commutator_le_exp
     (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {ΔE : ℝ} (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k)
+    {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
     (S : Finset V) {W B : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S) (vObs : ℕ) (hSCard : S.card ≤ vObs)
     (l : ℕ) (Y : Finset V)
@@ -275,6 +275,8 @@ theorem norm_groundCompression_observables_commutator_le_exp
       groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W‖ ≤
         commutatorConst R vObs b₀ |Kg| kg * ‖W‖ * ‖B‖ *
           Real.exp (-(commutatorRate R vR b₀ ΔE * l)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   have hKg : 0 ≤ |Kg| := abs_nonneg Kg
   have hGrowthAbs : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ |Kg| * ((r : ℝ) + 1) ^ kg :=
@@ -288,7 +290,7 @@ theorem norm_groundCompression_observables_commutator_le_exp
   set q : ℝ := τ * ΔE with hq
   have hq0 : 0 ≤ q := by positivity
   have hb := norm_groundCompression_commutator_le_graphNeighborhood G Φ hHerm R
-    hDiam vR hCard b₀ hBudget |Kg| kg hGrowthAbs hq0 hΔE hH hgap S hW l Y hY hB hT0
+    hDiam vR hCard b₀ hBudget |Kg| kg hGrowthAbs hq0 hΔE hgap S hW l Y hY hB hT0
   set A : ℝ := 2 + 4 * |b₀| * Real.exp (2 * R)
   set Ck : ℝ := 2 ^ kg * kg ! * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))
   have hA : 0 ≤ A := by positivity
@@ -343,8 +345,8 @@ with the actual truncated observables `M_i` allowed as the family `W`. -/
 theorem norm_groundCompression_observables_commutator_le_exp_edist
     (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {ΔE : ℝ} (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k)
+    {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
     {η : Type*} (Y : η → Finset V) (c : η → V) (hc : ∀ i, c i ∈ Y i)
     (W : η → Matrix (Config X) (Config X) ℂ)
     (hW : ∀ i, W i ∈ supportedOperators X (Y i : Finset V))
@@ -356,6 +358,8 @@ theorem norm_groundCompression_observables_commutator_le_exp_edist
           Real.exp (commutatorRate R vR b₀ ΔE * (2 * Robs + 1)) * ‖W j‖ * ‖W i‖ *
           (if G.edist (c j) (c i) = ⊤ then 0 else
             Real.exp (-(commutatorRate R vR b₀ ΔE * ((G.edist (c j) (c i)).toNat : ℝ)))) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   let γ := commutatorRate R vR b₀ ΔE
   have hγ : 0 < γ := commutatorRate_pos hΔE R vR b₀
   have hC : 2 ≤ commutatorConst R vObs b₀ |Kg| kg :=
@@ -364,7 +368,7 @@ theorem norm_groundCompression_observables_commutator_le_exp_edist
     Robs (G.edist (c j) (c i)) (norm_groundCompression_commutator_le_two_mul _ _ _ _)
   intro l hlt
   exact norm_groundCompression_observables_commutator_le_exp G Φ hHerm R
-    hDiam vR hCard b₀ hBudget Kg kg hGrowth hΔE hH hgap (Y j) (hW j) vObs (hYCard j)
+    hDiam vR hCard b₀ hBudget Kg kg hGrowth hΔE hgap (Y j) (hW j) vObs (hYCard j)
     l (Y i)
     (disjoint_biUnion_graphBall_of_lt_edist G (T := Y) c hc Robs hYDiam i j l hlt) (hW i)
 
@@ -379,20 +383,23 @@ on `q`. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `blecm` (lines 1
 theorem norm_groundCompression_commutator_le_exp (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {ΔE : ℝ} (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k) (i j : κ) (l : ℕ)
+    {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE) (i j : κ) (l : ℕ)
     (hY : Disjoint ((T j).biUnion fun x => graphBall G x l) (T i)) :
     ‖groundCompression Φ.hamiltonian E₀ (Φ.term j) * groundCompression Φ.hamiltonian E₀ (Φ.term i) -
-        groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀ (Φ.term j)‖ ≤
+        groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀
+            (Φ.term j)‖ ≤
       commutatorConst R vR b₀ Kg kg * ‖Φ.term j‖ * ‖Φ.term i‖ *
         Real.exp (-(commutatorRate R vR b₀ ΔE * l)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   have hKg : 0 ≤ Kg := by
     have := hGrowth (a i) 0
     simp only [CharP.cast_eq_zero, zero_add, one_pow, mul_one] at this
     exact (Nat.cast_nonneg _).trans this
   simpa only [abs_of_nonneg hKg] using
     norm_groundCompression_observables_commutator_le_exp G Φ hHerm R hDiam vR
-      hCard b₀ hBudget Kg kg hGrowth hΔE hH hgap (T j) (Φ.mem j) vR (hCard j) l (T i) hY
+      hCard b₀ hBudget Kg kg hGrowth hΔE hgap (T j) (Φ.mem j) vR (hCard j) l (T i) hY
       (Φ.mem i)
 
 /-- **Eq. `blecm` in the distance of the anchors.** If the anchors `a_j`, `a_i` are at finite
@@ -402,21 +409,24 @@ eq. `blecm` (lines 1562–1601). -/
 theorem norm_groundCompression_commutator_le_exp_edist (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {ΔE : ℝ} (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k) (i j : κ) :
+    {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE) (i j : κ) :
     ‖groundCompression Φ.hamiltonian E₀ (Φ.term j) * groundCompression Φ.hamiltonian E₀ (Φ.term i) -
-        groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀ (Φ.term j)‖ ≤
+        groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀
+            (Φ.term j)‖ ≤
       commutatorConst R vR b₀ Kg kg * Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) *
         ‖Φ.term j‖ * ‖Φ.term i‖ *
         (if G.edist (a j) (a i) = ⊤ then 0 else
           Real.exp (-(commutatorRate R vR b₀ ΔE * ((G.edist (a j) (a i)).toNat : ℝ)))) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   have hKg : 0 ≤ Kg := by
     have := hGrowth (a i) 0
     simp only [CharP.cast_eq_zero, zero_add, one_pow, mul_one] at this
     exact (Nat.cast_nonneg _).trans this
   simpa only [abs_of_nonneg hKg] using
     norm_groundCompression_observables_commutator_le_exp_edist G Φ hHerm R hDiam
-      vR hCard b₀ hBudget Kg kg hGrowth hΔE hH hgap T a ha Φ.term Φ.mem R hDiam vR hCard i j
+      vR hCard b₀ hBudget Kg kg hGrowth hΔE hgap T a ha Φ.term Φ.mem R hDiam vR hCard i j
 
 /-- **The sum of the low-energy commutators over all terms.** Let every eigenvalue of
 `H = ∑ₖ hₖ` equal `E₀` or be at least `E₀ + ΔE`, and let the spheres of the graph grow at most
@@ -427,12 +437,16 @@ lines 1689–1694: summing the decay of eq. `blecm` over all `i`. -/
 theorem sum_norm_groundCompression_commutator_le (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {ΔE : ℝ} (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k) (j : κ) :
-    ∑ i, ‖groundCompression Φ.hamiltonian E₀ (Φ.term j) * groundCompression Φ.hamiltonian E₀ (Φ.term i) -
-        groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀ (Φ.term j)‖ ≤
+    {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE) (j : κ) :
+    ∑ i, ‖groundCompression Φ.hamiltonian E₀ (Φ.term j) * groundCompression Φ.hamiltonian E₀
+        (Φ.term i) -
+        groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀
+            (Φ.term j)‖ ≤
       commutatorConst R vR b₀ Kg kg * Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) *
         ‖Φ.term j‖ * (|b₀| * (Kg * shellSumConst (commutatorRate R vR b₀ ΔE) kg)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   set γ := commutatorRate R vR b₀ ΔE
   have hγ : 0 < γ := commutatorRate_pos hΔE R vR b₀
@@ -453,11 +467,13 @@ theorem sum_norm_groundCompression_commutator_le (Kg : ℝ) (kg : ℕ)
     · exact (Real.exp_pos _).le
   -- Each term is at most `C ‖h_i‖ w(a_i)`.
   have hterm (i : κ) :
-      ‖groundCompression Φ.hamiltonian E₀ (Φ.term j) * groundCompression Φ.hamiltonian E₀ (Φ.term i) -
-        groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀ (Φ.term j)‖ ≤
+      ‖groundCompression Φ.hamiltonian E₀ (Φ.term j) * groundCompression Φ.hamiltonian E₀
+          (Φ.term i) -
+        groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀
+            (Φ.term j)‖ ≤
         C * (‖Φ.term i‖ * w (a i)) := by
     refine (norm_groundCompression_commutator_le_exp_edist G a ha Φ hHerm R hDiam vR
-      hCard b₀ hBudget Kg kg hGrowth hΔE hH hgap i j).trans (le_of_eq ?_)
+      hCard b₀ hBudget Kg kg hGrowth hΔE hgap i j).trans (le_of_eq ?_)
     simp only [C, w]
     ring
   -- Group the terms by their anchor and use the norm budget of each site.
@@ -493,23 +509,26 @@ sites and terms. Hastings, arXiv:cond-mat/0508554v3, `proj3new.tex`, eq. `oibu`
 theorem sum_norm_offDiagonalPartFamily_le_oibu (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k) (j : κ) {m : ℕ}
+    {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE) (j : κ) {m : ℕ}
     [NeZero m] {v : Fin m → EuclideanSpace ℂ (Config X)} (hv : Orthonormal ℂ v)
     {r : Fin m → ℝ}
-    (hAv : ∀ c, groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm q ΔE Φ.hamiltonian (Φ.term j))
+    (hAv : ∀ c, groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm q ΔE Φ.hamiltonian
+        (Φ.term j))
       (v c) = (r c : ℂ) • v c) {δ : ℝ} (hδ : 0 < δ) (hgap' : ∀ c c', c ≠ c' → δ ≤ |r c - r c'|) :
     ∑ i, ‖offDiagonalPartFamily v
         (groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm q ΔE Φ.hamiltonian (Φ.term i)))‖ ≤
       (m - 1 : ℕ) * (commutatorConst R vR b₀ Kg kg *
         Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) * ‖Φ.term j‖ *
           (|b₀| * (Kg * shellSumConst (commutatorRate R vR b₀ ΔE) kg)) / δ) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   simp only [groundCompression_gaussianFilteredTerm hq hH] at hAv ⊢
   refine (sum_norm_offDiagonalPartFamily_le Finset.univ
     (isSelfAdjoint_groundCompression _ E₀ (hHerm j)) _ hv hAv hδ hgap').trans ?_
   gcongr
   exact sum_norm_groundCompression_commutator_le G a ha Φ hHerm R hDiam vR hCard b₀
-    hBudget Kg kg hGrowth hΔE hH hgap j
+    hBudget Kg kg hGrowth hΔE hgap j
 
 /-- **Eq. `oibu` for a degenerate ground space.** Let `v : Fin m → E` be an orthonormal basis of
 the ground space, and record the source's iteration by labels `r ℓ` and the terms `j ℓ` whose
@@ -526,8 +545,8 @@ displays the corresponding commutator conditioning. Hastings, arXiv:cond-mat/050
 theorem sum_norm_offDiagonalPartFamily_le_oibu_levels (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k) {J : ℝ}
+    {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE) {J : ℝ}
     (hJ : ∀ k, ‖Φ.term k‖ ≤ J) {m : ℕ} [NeZero m] {v : Fin m → EuclideanSpace ℂ (Config X)}
     (hv : Orthonormal ℂ v)
     (hspan : ∀ u ∈ groundSpace Φ.hamiltonian E₀, u = ∑ c, ⟪v c, u⟫_ℂ • v c)
@@ -542,6 +561,8 @@ theorem sum_norm_offDiagonalPartFamily_le_oibu_levels (Kg : ℝ) (kg : ℕ)
         ∑ ℓ ∈ Finset.range L, commutatorConst R vR b₀ Kg kg *
           Real.exp (commutatorRate R vR b₀ ΔE * (2 * R + 1)) * ‖Φ.term (j ℓ)‖ *
             (|b₀| * (Kg * shellSumConst (commutatorRate R vR b₀ ΔE) kg)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   simp only [groundCompression_gaussianFilteredTerm hq hH]
   set A : ℕ → _ := fun ℓ => groundCompression Φ.hamiltonian E₀ (Φ.term (j ℓ))
   set B : κ → _ := fun i => groundCompression Φ.hamiltonian E₀ (Φ.term i)
@@ -569,7 +590,7 @@ theorem sum_norm_offDiagonalPartFamily_le_oibu_levels (Kg : ℝ) (kg : ℕ)
     rw [Finset.sum_comm]
     refine Finset.sum_le_sum fun ℓ _ => ?_
     exact sum_norm_groundCompression_commutator_le G a ha Φ hHerm R hDiam vR hCard b₀
-      hBudget Kg kg hGrowth hΔE hH hgap (j ℓ)
+      hBudget Kg kg hGrowth hΔE hgap (j ℓ)
 
 end Graph
 

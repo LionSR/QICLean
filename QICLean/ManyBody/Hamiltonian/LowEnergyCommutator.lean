@@ -50,14 +50,15 @@ theorem groundCompression_gaussianFilteredTerm {q ΔE : ℝ} (hq : 0 ≤ q) {H :
 following eq. `gs`. -/
 theorem norm_one_sub_starProjection_mul_gaussianFilteredTerm_mul_le {q ΔE : ℝ} (hq : 0 ≤ q)
     (hΔE : 0 < ΔE) {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k) (W : Matrix n n ℂ) :
+    (hgap : IsGapped H E₀ ΔE) (W : Matrix n n ℂ) :
     ‖(1 - (groundSpace H E₀).starProjection) *
         toEuclideanCLM (n := n) (𝕜 := ℂ) (gaussianFilteredTerm q ΔE H W) *
         (groundSpace H E₀).starProjection‖ ≤ ‖W‖ * Real.exp (-q / 2) := by
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   set K := groundSpace H E₀
   refine ContinuousLinearMap.opNorm_le_bound _ (by positivity) fun x => ?_
   simp only [mul_apply_eq_comp, _root_.sub_apply, one_apply_eq_self]
-  refine (norm_sub_starProjection_gaussianFilteredTerm_le hq hΔE hH hgap W
+  refine (norm_sub_starProjection_gaussianFilteredTerm_le hq hΔE hH hgapE W
     (K.starProjection_apply_mem x)).trans ?_
   gcongr
   exact K.norm_starProjection_apply_le x
@@ -66,10 +67,11 @@ theorem norm_one_sub_starProjection_mul_gaussianFilteredTerm_mul_le {q ΔE : ℝ
 `W_tilde` is the filtered version of `Wᴴ`. Hastings, arXiv:cond-mat/0508554v3, line 1586. -/
 theorem norm_starProjection_mul_gaussianFilteredTerm_mul_one_sub_le {q ΔE : ℝ} (hq : 0 ≤ q)
     (hΔE : 0 < ΔE) {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k) (W : Matrix n n ℂ) :
+    (hgap : IsGapped H E₀ ΔE) (W : Matrix n n ℂ) :
     ‖(groundSpace H E₀).starProjection *
         toEuclideanCLM (n := n) (𝕜 := ℂ) (gaussianFilteredTerm q ΔE H W) *
         (1 - (groundSpace H E₀).starProjection)‖ ≤ ‖W‖ * Real.exp (-q / 2) := by
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   set P := (groundSpace H E₀).starProjection
   have hP : star P = P := (isSelfAdjoint_starProjection _).star_eq
   have hstar : star (toEuclideanCLM (n := n) (𝕜 := ℂ) (gaussianFilteredTerm q ΔE H W)) =
@@ -89,11 +91,12 @@ compression of `W` equals that of `W_tilde`, and the triangle inequality after l
 together with eq. `gs` bounds the difference. -/
 theorem norm_groundCompression_commutator_le {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE)
     {H : Matrix n n ℂ} (hH : H.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k) (W B : Matrix n n ℂ) :
+    (hgap : IsGapped H E₀ ΔE) (W B : Matrix n n ℂ) :
     ‖groundCompression H E₀ W * groundCompression H E₀ B -
         groundCompression H E₀ B * groundCompression H E₀ W‖ ≤
       ‖gaussianFilteredTerm q ΔE H W * B - B * gaussianFilteredTerm q ΔE H W‖ +
         2 * ‖W‖ * ‖B‖ * Real.exp (-q / 2) := by
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   have hlow := norm_one_sub_starProjection_mul_gaussianFilteredTerm_mul_le hq hΔE hH hgap W
   have hhigh := norm_starProjection_mul_gaussianFilteredTerm_mul_one_sub_le hq hΔE hH hgap W
   rw [← groundCompression_gaussianFilteredTerm (ΔE := ΔE) hq hH E₀ W]
@@ -169,7 +172,8 @@ theorem norm_commutator_gaussianFilteredTerm_le_of_disjoint (Kg : ℝ) (kg : ℕ
     (hW : W ∈ supportedOperators X S) (l : ℕ) (Y : Finset V)
     (hY : Disjoint (S.biUnion fun x => graphBall G x l) Y)
     (hB : B ∈ supportedOperators X Y) {τ : ℝ} (hT : 0 ≤ τ) :
-    ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W * B - B * gaussianFilteredTerm q ΔE Φ.hamiltonian W‖ ≤
+    ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W * B - B
+        * gaussianFilteredTerm q ΔE Φ.hamiltonian W‖ ≤
       2 * ‖B‖ *
         ((2 + 4 * |b₀| * Real.exp (2 * R)) * (S.card : ℝ) ^ 2 * ‖W‖ * Kg *
             (2 ^ kg * kg.factorial * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))) *
@@ -202,8 +206,8 @@ source takes `τ = c₁ l` and `q = c₁ l ΔE`. -/
 theorem norm_groundCompression_commutator_le_graphNeighborhood (Kg : ℝ) (kg : ℕ)
     (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k)
+    {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
     (S : Finset V) {W B : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S) (l : ℕ) (Y : Finset V)
     (hY : Disjoint (S.biUnion fun x => graphBall G x l) Y)
@@ -215,7 +219,10 @@ theorem norm_groundCompression_commutator_le_graphNeighborhood (Kg : ℝ) (kg : 
               (2 ^ kg * kg.factorial * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))) *
               Real.exp ((2 * vR * |b₀| * Real.exp (2 * R) + 1) * τ - l / 2) +
             2 * ‖W‖ * Real.exp (-(τ * ΔE) ^ 2 / (2 * q))) +
-        2 * ‖W‖ * ‖B‖ * Real.exp (-q / 2) :=
+        2 * ‖W‖ * ‖B‖ * Real.exp (-q / 2) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
+  exact
   (norm_groundCompression_commutator_le hq hΔE hH hgap W B).trans <| add_le_add_left
     (norm_commutator_gaussianFilteredTerm_le_of_disjoint G Φ hHerm R hDiam vR
       hCard b₀ hBudget Kg kg hGrowth hq S hW l Y hY hB hT) _
@@ -240,8 +247,8 @@ theorem norm_groundCompression_commutator_le_graphSeparation
     (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ y ∈ T k, G.edist x y ≤ R)
     (vR : ℕ) (hvR : 1 ≤ vR) (hCard : ∀ k, (T k).card ≤ vR) (b₀ : ℝ)
     (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j ↦ x ∈ T j), ‖Φ.term j‖ ≤ b₀)
-    {Δ : ℝ} (hΔ : 0 < Δ) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + Δ ≤ hH.eigenvalues k)
+    {Δ : ℝ} (hΔ : 0 < Δ) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ Δ)
     (S Y : Finset V) {W B : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S)
     (hB : B ∈ supportedOperators X Y) (m : ℕ)
@@ -251,6 +258,8 @@ theorem norm_groundCompression_commutator_le_graphSeparation
     ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀ B -
         groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W‖ ≤
       (4 * (S.card : ℝ) + 4) * ‖W‖ * ‖B‖ * Real.exp (-(γ * m)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   intro v γ
   have hv : 0 < v := by dsimp [v]; positivity
   let τ : ℝ := m / (4 * v)
@@ -299,8 +308,8 @@ theorem norm_groundCompression_commutator_le_metricSeparation
     [PseudoMetricSpace V] {R J Δ : ℝ} (hR : 0 < R) (S : ℕ) (hJ : 0 ≤ J)
     (Φ : Interaction X (metricRangeBall R)) (hHerm : ∀ i, (Φ.term i).IsHermitian)
     (hNorm : ∀ i, ‖Φ.term i‖ ≤ J) (hCard : ∀ i : V, (metricRangeBall R i).card ≤ S)
-    (hΔ : 0 < Δ) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + Δ ≤ hH.eigenvalues k)
+    (hΔ : 0 < Δ) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ Δ)
     (T Y : Finset V) {W B : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X T)
     (hB : B ∈ supportedOperators X Y) (ℓ : ℝ)
@@ -311,6 +320,8 @@ theorem norm_groundCompression_commutator_le_metricSeparation
     ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀ B -
         groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W‖ ≤
       (4 * (T.card : ℝ) + 4) * ‖W‖ * ‖B‖ * Real.exp (-((γ / R) * ℓ)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   intro vR v γ
   have hdist (x : V) (hx : x ∈ T) (y : V) (hy : y ∈ Y) :
@@ -323,7 +334,7 @@ theorem norm_groundCompression_commutator_le_metricSeparation
     (metricRangeGraph R) Φ hHerm 2
     (metricRangeBall_graph_diameter_le_two R) vR (by dsimp [vR]; omega)
     (fun i ↦ (hCard i).trans (by dsimp [vR]; omega)) ((S : ℝ) * J)
-    (metricRangeBall_norm_budget_le hCard hJ Φ.term hNorm) hΔ hH hgap T Y hW hB
+    (metricRangeBall_norm_budget_le hCard hJ Φ.term hNorm) hΔ hgap T Y hW hB
     (Nat.ceil (ℓ / R)) hdist
   change ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀ B -
       groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W‖ ≤
@@ -345,8 +356,8 @@ theorem norm_groundCompression_commutator_le_metricBalls
     [PseudoMetricSpace V] {R J Δ : ℝ} (hR : 0 < R) (S : ℕ) (hJ : 0 ≤ J)
     (Φ : Interaction X (metricRangeBall R)) (hHerm : ∀ i, (Φ.term i).IsHermitian)
     (hNorm : ∀ i, ‖Φ.term i‖ ≤ J) (hCard : ∀ i : V, (metricRangeBall R i).card ≤ S)
-    (hΔ : 0 < Δ) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + Δ ≤ hH.eigenvalues k)
+    (hΔ : 0 < Δ) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ Δ)
     (ρ : ℝ) (i j : V) {W B : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X (metricRangeBall ρ i))
     (hB : B ∈ supportedOperators X (metricRangeBall ρ j)) :
@@ -357,6 +368,8 @@ theorem norm_groundCompression_commutator_le_metricBalls
         groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W‖ ≤
       (4 * ((metricRangeBall ρ j).card : ℝ) + 4) * ‖W‖ * ‖B‖ *
         Real.exp (2 * (γ / R) * ρ) * Real.exp (-((γ / R) * dist i j)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   intro vR v γ
   have hW' : W ∈ supportedOperators X (metricRangeBall ρ i : Finset V) :=
     hW
@@ -370,7 +383,8 @@ theorem norm_groundCompression_commutator_le_metricBalls
     have h2 := dist_triangle y x j
     rw [dist_comm y x] at h2
     linarith
-  have hg := norm_groundCompression_commutator_le_metricSeparation hR S hJ Φ hHerm hNorm hCard hΔ hH hgap (metricRangeBall ρ j) (metricRangeBall ρ i)
+  have hg := norm_groundCompression_commutator_le_metricSeparation hR S hJ Φ hHerm hNorm hCard hΔ hgap
+    (metricRangeBall ρ j) (metricRangeBall ρ i)
     hB' hW' (dist i j - 2 * ρ) hsep
   change ‖groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W -
       groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀ B‖ ≤
@@ -389,8 +403,8 @@ theorem norm_groundCompression_metric_truncated_commutator_le
     [PseudoMetricSpace V] {R J Δ : ℝ} (hR : 0 < R) (S : ℕ) (hJ : 0 ≤ J)
     (Φ : Interaction X (metricRangeBall R)) (hHerm : ∀ i, (Φ.term i).IsHermitian)
     (hNorm : ∀ i, ‖Φ.term i‖ ≤ J) (hCard : ∀ i : V, (metricRangeBall R i).card ≤ S)
-    (hΔ : 0 < Δ) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + Δ ≤ hH.eigenvalues k)
+    (hΔ : 0 < Δ) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ Δ)
     (q ρ : ℝ) (hρ : R ≤ ρ) (i j : V) :
     let vR := S + 1
     let v := 4 * vR * |(S : ℝ) * J| * Real.exp (2 * (2 : ℝ)) + 1
@@ -401,11 +415,13 @@ theorem norm_groundCompression_metric_truncated_commutator_le
         groundCompression Φ.hamiltonian E₀ Mj * groundCompression Φ.hamiltonian E₀ Mi‖ ≤
       (4 * ((metricRangeBall ρ j).card : ℝ) + 4) * J ^ 2 *
         Real.exp (2 * (γ / R) * ρ) * Real.exp (-((γ / R) * dist i j)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   intro vR v γ Mi Mj
   obtain ⟨hMi, -, hnMi⟩ := metric_truncated_filter_properties hρ Φ hHerm hNorm q Δ i
   obtain ⟨hMj, -, hnMj⟩ := metric_truncated_filter_properties hρ Φ hHerm hNorm q Δ j
   have hg := norm_groundCompression_commutator_le_metricBalls hR S hJ Φ hHerm
-    hNorm hCard hΔ hH hgap ρ i j hMi hMj
+    hNorm hCard hΔ hgap ρ i j hMi hMj
   refine hg.trans ?_
   calc (4 * ((metricRangeBall ρ j).card : ℝ) + 4) * ‖Mi‖ * ‖Mj‖ *
       Real.exp (2 * (γ / R) * ρ) * Real.exp (-((γ / R) * dist i j))

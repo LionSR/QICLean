@@ -461,8 +461,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform
     (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j ↦ x ∈ T j), ‖Φ.term j‖ ≤ b₀)
     (Kg : ℝ) (kg : ℕ) (hGrowth : ∀ x (r : ℕ),
       ((Finset.univ.filter fun y ↦ G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
-    {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) (hH : Φ.hamiltonian.IsHermitian) {E₀ : ℝ}
-    (hgap : ∀ k, hH.eigenvalues k = E₀ ∨ E₀ + ΔE ≤ hH.eigenvalues k)
+    {q ΔE : ℝ} (hq : 0 ≤ q) (hΔE : 0 < ΔE) {E₀ : ℝ}
+    (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
     [NeZero (Module.finrank ℂ (groundSpace Φ.hamiltonian E₀))] :
     let n := Module.finrank ℂ (groundSpace Φ.hamiltonian E₀)
     let γ := commutatorRate R vR b₀ ΔE
@@ -472,6 +472,8 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform
         (groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm q ΔE Φ.hamiltonian (Φ.term i)))‖ ≤
         ((n - 1 : ℕ) : ℝ) ^ 2 * recursiveBasisCoeff n C *
           (|b₀| * (|Kg| * shellSumConst (γ / 2 ^ n) kg)) := by
+  have hH : Φ.hamiltonian.IsHermitian := Interaction.isHermitian_hamiltonian hHerm
+  have hgapE := ((isGapped_iff_eigenvalues hH).mp hgap).2
   classical
   let γ := commutatorRate R vR b₀ ΔE
   have hγ : 0 < γ := commutatorRate_pos hΔE R vR b₀
@@ -489,7 +491,7 @@ theorem exists_groundSpaceBasis_sum_norm_offDiagonalPartFamily_le_uniform
     hHerm (fun _ ↦ le_rfl) b₀ hBudget Kg kg hGrowth _ E₀ hγ hC fun i j ↦
       (norm_groundSpaceCompression_commutator_le _ _ _ _).trans
         (norm_groundCompression_commutator_le_exp_edist G a ha Φ hHerm R hDiam vR
-          hCard b₀ hBudget |Kg| kg hGrow hΔE hH hgap j i)
+          hCard b₀ hBudget |Kg| kg hGrow hΔE hgap j i)
 
 end Graph
 
