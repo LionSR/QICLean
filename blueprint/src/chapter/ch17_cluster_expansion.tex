@@ -1405,13 +1405,14 @@ the centres of the terms, as in the source.
     \label{thm:hastings_product_form_supported}
     \lean{ManyBody.hasProductForm_of_mem_supportedOperators}
     \leanok
-    \uses{thm:hastings_product_form_supported_radius}
+    \uses{def:hastings_product_form}
     Let $X\subseteq\Lambda$ be nonempty
     with $y\in N_x$ for all $x,y\in X$.
     Every operator supported on $X$ has a matrix product form with these
     coefficient neighborhoods.
 \end{lemma}
 \begin{proof}\leanok
+    \uses{thm:hastings_product_form_supported_radius}
     Pick $i_0\in X$ and apply
     Lemma~\ref{thm:hastings_product_form_supported_radius}.
 \end{proof}
@@ -1438,7 +1439,7 @@ the centres of the terms, as in the source.
     \label{thm:hastings_trotter_product_form_radius}
     \lean{ManyBody.Interaction.hasProductForm_lie}
     \leanok
-    \uses{thm:hastings_product_form_supported_radius,thm:hastings_product_form_mul}
+    \uses{def:hastings_product_form}
     Let the terms $H_k$ of an interaction be supported on sets $X_k\subseteq N_{c(k)}$ for
     centres $c(k)$. Then for any finite list $k_1,\dots,k_m$ of indices, repetitions
     allowed, any $z\in\mathbb C$ and $n\in\mathbb N$ (with the $n=0$ product equal to $1$),
@@ -1453,7 +1454,8 @@ the centres of the terms, as in the source.
     product form of range $R$.
 \end{lemma}
 \begin{proof}\leanok
-    Each $\exp(-\tfrac\beta nH_{i_k})$ is supported on $X_{i_k}$; apply
+    \uses{thm:hastings_product_form_supported_radius,thm:hastings_product_form_mul}
+    Each $\exp(\tfrac znH_{k_j})$ is supported on $X_{k_j}$; apply
     Lemmas~\ref{thm:hastings_product_form_supported_radius}
     and~\ref{thm:hastings_product_form_mul}.
 \end{proof}
@@ -1773,7 +1775,7 @@ every cut \cite[lines 1298--1303 and 1971--2013]{Arad2016RigorousRG}.
     \lean{ManyBody.card_biUnion_chainBond_le,
         ManyBody.ClusterExpansion.operatorSchmidtRank_clusterOp_nearestNeighbor_le}
     \leanok
-    \uses{thm:hastings_cluster_operator_support, thm:cluster_label_window_geometry}
+    \uses{def:hastings_cluster_operator, def:cluster_label_intervals}
     Let every site have dimension $q\geq1$. If $C$ is a connected
     interval of nearest-neighbour labels, its designated physical
     support has at most $|C|+1$ sites. If $|C|<r$, then at every
@@ -1801,9 +1803,7 @@ every cut \cite[lines 1298--1303 and 1971--2013]{Arad2016RigorousRG}.
     \lean{ManyBody.ClusterExpansion.operatorSchmidtRank_truncatedExp_nearestNeighbor_le_count,
         ManyBody.ClusterExpansion.operatorSchmidtRank_truncatedExp_nearestNeighbor_le}
     \leanok
-    \uses{thm:physical_cluster_crossing_decomposition,
-        thm:retained_cluster_physical_support,
-        thm:physical_cluster_interval_rank, thm:physical_cluster_crossing_count}
+    \uses{def:hastings_truncated_expansion}
     Let $r\geq1$, $q\geq1$, and let the interactions have the actual
     designated nearest-neighbour supports. For every real $\beta$,
     at an interior cut the selected operator satisfies
@@ -1811,8 +1811,7 @@ every cut \cite[lines 1298--1303 and 1971--2013]{Arad2016RigorousRG}.
         \operatorname{OSR}(M_r)
         \leq1+(r-1)^2q^r\leq r^2q^r.\notag
     \end{align}
-    The bound $r^2q^r$ holds at every chain cut, including the two
-    endpoint cuts. No Hermiticity or positivity is required.
+    No Hermiticity or positivity is required.
 \end{lemma}
 \begin{proof}\leanok
     \uses{thm:physical_cluster_crossing_decomposition,
@@ -1824,8 +1823,4 @@ every cut \cite[lines 1298--1303 and 1971--2013]{Arad2016RigorousRG}.
     both exterior factors act on only one side. Subadditivity and
     submultiplicativity of operator Schmidt rank give the first
     inequality. For $r\geq1$, $1+(r-1)^2\leq r^2$ and $q^r\geq1$.
-    An endpoint cut has a one-dimensional configuration space on
-    one side. If $q=1$ the whole operator space is one-dimensional;
-    if $r=1$ the crossing family is empty. These observations also
-    cover a chain with one site and no interactions.
 \end{proof}
