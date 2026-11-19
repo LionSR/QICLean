@@ -1286,6 +1286,53 @@ them across the chapter boundary.
     $E=V^\dagger V=1$.
 \end{proof}
 
+\begin{definition}[Tensor products of Kraus families and the partial trace]
+    \label{def:kraus_family_prod}
+    \lean{KrausFamily.prod, KrausFamily.prod_op, KrausFamily.tensorRight,
+        KrausFamily.traceRight, KrausFamily.traceRight_op, KrausFamily.reindex,
+        KrausFamily.reindex_op}
+    \leanok
+    \uses{def:kraus_family}
+    The tensor product of finite Kraus families $(K_\omega)_\omega$ from $\C^I$ to
+    $\C^J$ and $(L_\nu)_\nu$ from $\C^{I'}$ to $\C^{J'}$ is the family
+    $(K_\omega\otimes L_\nu)_{(\omega,\nu)}$ from $\C^I\otimes\C^{I'}$ to
+    $\C^J\otimes\C^{J'}$. The family $K$ on the left factor of $\C^I\otimes\C^W$ is its
+    tensor product with the family of the one operator $1$. The partial trace over
+    $\C^F$ is the family $(1\otimes\bra f)_{f\in F}$ from $\C^J\otimes\C^F$ to $\C^J$,
+    whose operators are the adjoints of the basis inclusions $b\mapsto(b,f)$. For
+    bijections $e:I'\to I$ and $f:J'\to J$, the relabelled family has the operators
+    $K_\omega$ with rows indexed through $f$ and columns through $e$.
+\end{definition}
+
+\begin{lemma}[Maps of tensor products and of the partial trace]
+    \label{lem:kraus_family_prod}
+    \lean{KrausFamily.map_prod, KrausFamily.effect_prod, Matrix.linearMap_ext_kronecker,
+        KrausFamily.IsTP.prod, KrausFamily.IsUnitary.prod, KrausFamily.IsTP.tensorRight,
+        KrausFamily.IsUnitary.tensorRight, KrausFamily.effect_reindex,
+        KrausFamily.IsTP.reindex, KrausFamily.IsUnitary.reindex, KrausFamily.map_traceRight,
+        KrausFamily.isTP_traceRight}
+    \leanok
+    \uses{def:kraus_family_prod, def:partial_trace}
+    The map of the tensor product $K\otimes L$ sends $\rho\otimes\sigma$ to
+    $K(\rho)\otimes L(\sigma)$, and its effect is the tensor product of the effects. A
+    linear map on the matrices of $\C^I\otimes\C^{I'}$ is determined by its values on
+    tensor products. Tensor products of trace-preserving families are trace-preserving,
+    and tensor products of unitary families are unitary; in particular so is a family
+    tensored with the identity. The effect of a relabelled family is the relabelled
+    effect, so relabelling preserves trace preservation and unitarity. The map of the partial-trace
+    family is the partial trace over the right factor, and the family is
+    trace-preserving.
+\end{lemma}
+\begin{proof}\leanok
+    The first two statements hold entrywise, since
+    $(K_\omega\otimes L_\nu)^\dagger=K_\omega^\dagger\otimes L_\nu^\dagger$ and
+    $(A\otimes B)(C\otimes D)=AC\otimes BD$. Tensor products span the matrices of a
+    product index set. Relabelling along bijections commutes with products and
+    adjoints. For the partial trace,
+    $(1\otimes\bra f)\rho(1\otimes\ket f)$ is the block of $\rho$ at $(f,f)$, and
+    $\sum_f(1\otimes\ket f)(1\otimes\bra f)=1$.
+\end{proof}
+
 \begin{theorem}[Rectangular Kraus resolution]
     \label{thm:mpdo_rectangular_kraus_map_cptp}
     \lean{Matrix.rectangularKrausMap_isKrausCPTP}

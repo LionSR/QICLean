@@ -194,6 +194,54 @@ channel.
     the Stinespring isometry condition $V^\dagger V=\Id$.
 \end{proof}
 
+\begin{lemma}[The Stinespring matrix of a finite Kraus family]
+    \label{lem:kraus_family_stinespring}
+    \lean{KrausFamily.stinespringVGen_conjTranspose_mul,
+        KrausFamily.map_eq_partialTraceRight}
+    \leanok
+    \uses{def:stinespring_v_gen, def:kraus_family, def:partial_trace}
+    For a finite Kraus family $K$ with Stinespring matrix $V$, the matrix $V^\dagger V$ is
+    the effect of $K$, and the map of $K$ is $\rho\mapsto\tr_\Omega(V\rho V^\dagger)$.
+\end{lemma}
+\begin{proof}\leanok
+    Expand the entries, as in Theorems~\ref{thm:stinespring_v_conjTranspose_mul}
+    and~\ref{thm:stinespring_schrodinger_representation}.
+\end{proof}
+
+\begin{theorem}[Unitary dilation of a trace-preserving Kraus family]
+    \label{thm:kraus_family_unitary_dilation}
+    \lean{KrausFamily.IsTP.exists_unitary_dilation}
+    \leanok
+    \uses{def:kraus_family_prod, def:protocols_encoding}
+    Let $K=(K_\omega)_{\omega\in\Omega}$ be a trace-preserving finite Kraus family from
+    $\C^I$ to $\C^J$ with $I$ nonempty, and put $E=J\times\Omega$ and $F=I\times\Omega$.
+    There are a basis vector $e_0$ of $\C^E$ and a unitary
+    $U:\C^I\otimes\C^E\to\C^J\otimes\C^F$ with
+    \begin{align}
+        K(\rho)&=\tr_F\bigl(U(\rho\otimes\ketbra{e_0}{e_0})U^\dagger\bigr)
+        \label{eq:kraus_family_unitary_dilation}
+    \end{align}
+    for every matrix $\rho$ on $\C^I$. This is the construction in the proof of
+    \cite[Theorem~2.5]{Wolf2012Quantum}, not that theorem: the environment here depends on
+    the family and starts in a basis vector, while
+    Theorem~\ref{thm:channel_exists_open_system_unitary_rectangular} has an environment of
+    fixed dimension $d(d')^2$ in a general normalized vector.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:kraus_family_prod, lem:kraus_family_stinespring,
+        lem:partial_trace_product_isometry, lem:exists_unitary_mul_eq_of_gram_eq,
+        lem:circuits_tp_nonempty}
+    A trace-preserving family on a nonempty basis has an operator and a nonempty
+    target, so $E$ is nonempty; choose $e_0\in E$ and $a_0\in I$. Let $V$ be the
+    Stinespring matrix of $K$ and $B:\C^\Omega\to\C^F$ the inclusion
+    $\ket\omega\mapsto\ket{a_0,\omega}$. Then $W=(1\otimes B)V$ satisfies
+    $W^\dagger W=V^\dagger V=1$, and $\tr_F(W\rho W^\dagger)=\tr_\Omega(V\rho V^\dagger)=K(\rho)$
+    because $B$ is an isometry. The inclusion $\ket a\mapsto\ket a\otimes\ket{e_0}$,
+    composed with the reordering $\C^I\otimes\C^E\cong\C^J\otimes\C^F$ of the factors, is
+    an isometry with the same Gram matrix $1$, so $W$ is a unitary times it; relabelling
+    the columns of that unitary along the reordering gives $U$.
+\end{proof}
+
 \begin{theorem}[Stinespring representation, rectangular form]
     \label{thm:stinespring_rectangular}
     \lean{ChoiRectangular.exists_stinespringV_of_isKrausCP,

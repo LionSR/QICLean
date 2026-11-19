@@ -29,19 +29,6 @@ namespace KrausFamily
 
 variable {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
-omit [Fintype α] [DecidableEq α] [DecidableEq β] in
-private theorem stinespringVGen_conjTranspose_mul (K : KrausFamily α β) :
-    (stinespringVGen K.op)ᴴ * stinespringVGen K.op = K.effect := by
-  ext a a'
-  simp [effect, mul_apply, Matrix.sum_apply, Fintype.sum_prod_type, Finset.sum_comm (γ := β)]
-
-omit [DecidableEq α] [Fintype β] [DecidableEq β] in
-private theorem map_eq_partialTraceRight (K : KrausFamily α β) (X : Matrix α α ℂ) :
-    K.map X = partialTraceRight (stinespringVGen K.op * X * (stinespringVGen K.op)ᴴ) := by
-  classical
-  ext b b'
-  simp [map_apply, mul_apply, Matrix.sum_apply]
-
 /-- A trace-preserving finite Kraus family contracts the trace norm of every matrix. -/
 theorem IsTP.rectangularTraceNorm_map_le {K : KrausFamily α β} (hK : K.IsTP)
     (X : Matrix α α ℂ) : rectangularTraceNorm (K.map X) ≤ rectangularTraceNorm X := by
