@@ -9,6 +9,23 @@ space in which the compressions are nearly diagonal, with off-diagonal parts
 summable over the terms, and records the counterexample of
 \cite[Appendix B]{Hastings2006Solving} to a sharper bound.
 
+
+The estimates of this chapter on a graph assume the polynomial sphere bound
+\begin{equation}
+    |\{y:d_G(x,y)=r\}|\le K_g(r+1)^k
+    \quad(x\in V,\ r\in\mathbb N),
+    \label{eq:hastings05_polynomial_sphere_scope}
+\end{equation}
+with constants independent of system size. This condition is absent from
+the metric and finite-range assumptions of
+\cite[lines 169--190]{Hastings2006Solving}, and bounded degree does not imply
+it; the general metric version of (facld) is
+Theorem~\ref{thm:hastings05_metric_facld}
+\cite{gap:hastings05_geometric_growth_scope}. Without such a bound the
+assertion (oibu) is false \cite{gap:hastings05_tree_basis_counterexample},
+and the basis bounds below are the corrected statements under
+\eqref{eq:hastings05_polynomial_sphere_scope}.
+
 \section{Low-energy commutators and ground-space bases}
 \label{sec:low_energy_bases}
 
