@@ -644,12 +644,17 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{theorem}[A unitary polar factor on the same support]
     \label{thm:sites-supported-polar-unitary}
-    \lean{ManyBody.exists_supported_unitary_polar_correction}
+    \lean{ManyBody.exists_supported_unitary_polar_correction,
+        ManyBody.exists_supported_unitary_of_two_sided}
     \leanok
     \uses{def:sites_supported}
     Every operator $D$ supported on a region $S$ has a unitary $U$ supported on $S$
     with $\lVert Ux-y\rVert\le\lVert Dx-y\rVert+\lVert D^*y-x\rVert$ for all
-    vectors $x,y$ \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+    vectors $x,y$ \cite[Section~2]{OpenAI2026PolynomialPEPS}. Consequently, if
+    $b\ge0$, $z\ge e^{-2b}$ and both residuals $\lVert Mx-zy\rVert$ and
+    $\lVert M^*y-zx\rVert$ of an operator $M$ supported on $S$ are at most
+    $Ce^{-10b}\varepsilon$, then a unitary $U$ supported on $S$ has
+    $\lVert Ux-y\rVert\le2C\varepsilon$.
 \end{theorem}
 \begin{proof}
     \leanok
@@ -658,7 +663,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     Write $D$ as the placement of an operator $K$ on $S$, take a unitary polar
     factor $U'$ of $K$, and let $U$ be the placement of $U'$. In cut coordinates
     $D=K\otimes I$ and $U=U'\otimes I$, and the estimate is the two-sided
-    correction bound for the polar factor tensored with the identity.
+    correction bound for the polar factor tensored with the identity. For the
+    consequence apply this to $D=M/z$, whose residuals are at most
+    $z^{-1}Ce^{-10b}\varepsilon\le Ce^{-8b}\varepsilon$.
 \end{proof}
 
 \begin{lemma}[Covariance under site and basis bijections]
@@ -683,6 +690,89 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     Reindex the sum over complementary configurations. The resulting regional
     matrices are unitarily conjugate and have the same eigenvalues.
 \end{proof}
+
+\begin{lemma}[A local permutation of sites]
+    \label{lem:sites-local-permutation}
+    \lean{ManyBody.sitePermOp_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_supported}
+    On identical sites, if a permutation $\pi$ of the sites fixes every site outside
+    a region $D$, the operator moving the content of every site along $\pi$ is
+    supported on $D$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The permutation maps $D$ onto itself. Its matrix entry between $\sigma$ and
+    $\tau$ is $1$ exactly when $\tau=\sigma\circ\pi$; this vanishes when $\sigma$
+    and $\tau$ differ outside $D$, and depends only on the values on $D$ otherwise.
+\end{proof}
+
+\section{Two replicas}
+
+\begin{definition}[Two replicas and their exchange]
+    \label{def:sites-replica-swap}
+    \lean{ManyBody.replicaSwapFun, ManyBody.replicaSwapFun_involutive, ManyBody.replicaSwap,
+        ManyBody.replicaSwap_inl, ManyBody.replicaSwap_inr, ManyBody.replicaSwap_inl_of_mem,
+        ManyBody.replicaSwap_inl_of_notMem, ManyBody.replicaSwap_inr_of_mem,
+        ManyBody.replicaSwap_inr_of_notMem, ManyBody.replicaSwap_mul_self,
+        ManyBody.replicaSwap_eq_mul, ManyBody.replicaSwap_empty,
+        ManyBody.replicaPairEquiv, ManyBody.replicaPairEquiv_apply,
+        ManyBody.replicaPairRegionEquiv}
+    \leanok
+    Two replicas of a system of sites $V$ with alphabet $\alpha$ are the sites
+    $V\sqcup V$. The exchange of the replicas on a region $R$ is the involution of
+    $V\sqcup V$ exchanging the two copies of every site of $R$; on $R\cap S$ followed
+    by $R\setminus S$ it is the exchange on $R$. Pairing the two copies of every site
+    identifies the configurations of $V\sqcup V$ with those of $V$ with the alphabet
+    $\alpha\times\alpha$, and the configurations of $S\sqcup S$ with those of $S$.
+\end{definition}
+
+\begin{theorem}[Support and placement transfer]
+    \label{thm:sites-replica-pair-transfer}
+    \lean{ManyBody.reindex_replicaPairEquiv_mem_supportedOperators_iff,
+        ManyBody.reindex_replicaPairEquiv_place}
+    \leanok
+    \uses{def:sites-replica-swap, def:sites_supported, def:sites_place}
+    An operator on two replicas is supported on $S\sqcup S$ exactly when, on paired
+    sites, it is supported on $S$. The placement of a matrix on $S\sqcup S$ is, on
+    paired sites, the placement on $S$ of the same matrix with the replicas paired.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Two configurations of the replicas agree on $S\sqcup S$, or outside it, exactly
+    when their pairings agree on $S$, or outside it. The two conditions on matrix
+    entries defining support therefore correspond, and so do the entries of the two
+    placements.
+\end{proof}
+
+\begin{theorem}[The exchange of replicas and doubled operators]
+    \label{thm:sites-replica-swap-doubled}
+    \lean{ManyBody.sitePermOp_replicaSwap_mem_supportedOperators,
+        ManyBody.doubled_mem_supportedOperators,
+        ManyBody.sitePermOp_replicaSwap_conj_doubled,
+        ManyBody.sitePermOp_replicaSwap_conj_doubled_of_subset,
+        ManyBody.sitePermOp_replicaSwap_conj_doubled_of_disjoint,
+        ManyBody.sitePermOp_replicaSwap_conj_doubled_mem_supportedOperators}
+    \leanok
+    \uses{def:sites-replica-swap, def:dynamics_interaction_sum,
+        lem:sites-local-permutation}
+    Let $F_R$ be the operator of the exchange of replicas on $R$, and let $A$ be
+    supported on $S$, with doubled operator $A_d=A\otimes1+1\otimes A$. Then $F_R$ is
+    supported on $R\sqcup R$ and $A_d$ on $S\sqcup S$, and
+    $F_RA_dF_R^*=F_{R\cap S}A_dF_{R\cap S}^*$. In particular $F_RA_dF_R^*=A_d$ when
+    $S\subseteq R$ or $S\cap R=\varnothing$, and in general $F_RA_dF_R^*$ is
+    supported on $S\sqcup S$ \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}
+    \leanok
+    \uses{lem:sites_supported_commute}
+    The exchange on $R\setminus S$ is supported on $(R\setminus S)\sqcup(R\setminus S)$,
+    disjoint from $S\sqcup S$, so it commutes with $A_d$; this gives the reduction to
+    $R\cap S$. Exchanging the replicas on the whole support of $A$ maps $A\otimes1$ to
+    $1\otimes A$ and back, by a comparison of matrix entries using the support of $A$.
+    The image of $S\sqcup S$ under any exchange of replicas is $S\sqcup S$.
+\end{proof}
+
 
 \section{Chains, integer domains and square lattices}
 \label{sec:sites_lattices}

@@ -142,6 +142,7 @@ import QICLean.Analysis.HermitianProductFormula
 import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.IidTailThreshold
+import QICLean.Analysis.InformationResetScalar
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.InterleavedCountPolynomialBound
 import QICLean.Analysis.InterleavedOutputPolynomialBound

@@ -19,8 +19,10 @@ import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.RegionState
 import QICLean.ManyBody.Sites.RegionUnion
 import QICLean.ManyBody.Sites.Relabel
+import QICLean.ManyBody.Sites.ReplicaSwap
 import QICLean.ManyBody.Sites.SiteAction
 import QICLean.ManyBody.Sites.Subregion
+import QICLean.ManyBody.Sites.SumSites
 import QICLean.ManyBody.Sites.Support
 import QICLean.ManyBody.Sites.SupportedUnitary
 import QICLean.ManyBody.Sites.Twirl

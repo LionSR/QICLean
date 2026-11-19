@@ -109,6 +109,7 @@ enters.
 \begin{theorem}[Regional entropies of a product over two systems of sites]
     \label{thm:finite_product_sum_sites}
     \lean{FiniteProduct.sumSitesProduct, FiniteProduct.disjSumEquiv,
+        FiniteProduct.norm_sumSitesProduct,
         FiniteProduct.reducedPure_sumSitesProduct,
         FiniteProduct.entropy_sumSitesProduct,
         FiniteProduct.mutualInformation_sumSitesProduct_inl,
@@ -118,7 +119,8 @@ enters.
     Let $f$ be a vector on the sites $A$ and $g$ a vector on the sites $B$, and let
     $f\otimes g$ be their product on the sites $A\sqcup B$. For $R\subseteq A$ and
     $T\subseteq B$, the reduction of $f\otimes g$ to $R\sqcup T$ is the Kronecker
-    product of the reductions of $f$ to $R$ and of $g$ to $T$. For unit vectors,
+    product of the reductions of $f$ to $R$ and of $g$ to $T$, and
+    $\lVert f\otimes g\rVert=\lVert f\rVert\lVert g\rVert$. For unit vectors,
     $S_{f\otimes g}(R\sqcup T)=S_f(R)+S_g(T)$. Consequently
     $I_{f\otimes g}(R:T')=I_f(R:T')$ for regions $R,T'$ of $A$, and a region of
     $B$ has no mutual information with a region of $A$
@@ -131,4 +133,23 @@ enters.
     factors accordingly. The entropy of a Kronecker product of density matrices
     is the sum of their entropies, and the empty region of a unit vector has
     entropy zero.
+\end{proof}
+
+\begin{theorem}[The cores of the exchanged doubled vector are uncorrelated]
+    \label{thm:finite_product_replica_swap_cores}
+    \lean{FiniteProduct.mutualInformation_replicaSwap_eq_zero}
+    \leanok
+    \uses{thm:finite_product_sum_sites, def:sites-replica-swap}
+    Let $\Omega$ be a unit vector on the sites $V$ and $F_R$ the exchange of the two
+    replicas on a region $R$. For $R_0\subseteq R$ and $C_0$ disjoint from $R$, the
+    first copies of $R_0$ and $C_0$ have no mutual information in
+    $F_R(\Omega\otimes\Omega)$ \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:sites-regional-relabel}
+    The vector $F_R(\Omega\otimes\Omega)$ is $\Omega\otimes\Omega$ relabelled along the
+    exchange, so the entropy of a region is that of its image. The first copy of
+    $R_0$ goes to the second copy, the first copy of $C_0$ stays, and their union goes
+    to $C_0\sqcup R_0$. By Theorem~\ref{thm:finite_product_sum_sites} the three
+    entropies are $S_\Omega(R_0)$, $S_\Omega(C_0)$ and $S_\Omega(C_0)+S_\Omega(R_0)$.
 \end{proof}

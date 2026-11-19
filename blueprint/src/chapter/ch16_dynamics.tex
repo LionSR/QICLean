@@ -33,6 +33,27 @@ or the local dimensions.
     supports and the Hamiltonian $-H_\Phi$.
 \end{definition}
 
+\begin{definition}[Two systems side by side]
+    \label{def:dynamics_interaction_sum}
+    \lean{ManyBody.inlOp, ManyBody.inrOp, ManyBody.inlOp_apply, ManyBody.inrOp_apply,
+        ManyBody.inlOp_add_inrOp, ManyBody.inlOp_sum, ManyBody.inrOp_sum,
+        ManyBody.conjTranspose_inlOp, ManyBody.conjTranspose_inrOp,
+        ManyBody.inlOp_mem_supportedOperators, ManyBody.inrOp_mem_supportedOperators,
+        ManyBody.Interaction.sum, ManyBody.Interaction.hamiltonian_sum,
+        ManyBody.Interaction.hamiltonian_sum_self}
+    \leanok
+    \uses{def:dynamics_interaction}
+    Let $\Phi=(h_i)_{i\in I}$ be an interaction on the sites $A$ with supports
+    $T_i$, and $\Psi=(k_j)_{j\in J}$ one on the sites $B$ with supports $U_j$.
+    On the sites $A\sqcup B$, an operator $M$ on $A$ acts as $M\otimes1$ and an
+    operator $N$ on $B$ as $1\otimes N$; an operator supported on $S\subseteq A$
+    acts with support $S\sqcup\varnothing$. The interaction of the two systems side
+    by side has the terms $h_i\otimes1$, supported on $T_i\sqcup\varnothing$, and
+    $1\otimes k_j$, supported on $\varnothing\sqcup U_j$. Its Hamiltonian is
+    $H_\Phi\otimes1+1\otimes H_\Psi$. For an interaction beside itself on identical
+    sites, this is the doubled Hamiltonian $H\otimes1+1\otimes H$ of two replicas.
+\end{definition}
+
 \begin{definition}[Heisenberg picture]
     \label{def:dynamics_heisenberg}
     \lean{ManyBody.heisenbergEvolution, ManyBody.heisenbergEvolution_def}

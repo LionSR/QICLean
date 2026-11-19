@@ -1,0 +1,84 @@
+\subsection{The information reset on two replicas}
+\label{sec:gaussian_regional_reset}
+
+\begin{theorem}[The two-sided Gaussian filter of the information reset]
+    \label{thm:gaussian_regional_filter}
+    \lean{GaussianFilter.resetVariance, GaussianFilter.resetCutoff,
+        GaussianFilter.regional_physicalBuffer_filter}
+    \leanok
+    \uses{thm:gaussian_physical_uniform, def:sites-replica-swap,
+        def:dynamics_interaction_sum, def:finite_product_regional_entropy}
+    Let $\Delta>0$ and $r\ge0$, and put $a=2(30+r)/\Delta^2$ and $T_0=2(30+r)/\Delta$.
+    Let $H$ be a Hermitian operator on a system of sites $V$, gapped at $E_0$ with gap
+    $\Delta$ and with ground space the line through a unit vector $\Omega$, and let
+    $R,C$ be disjoint regions with $I_\Omega(R:C)\le b$. On the two replicas
+    $V\sqcup V$ put $\Psi=\Omega\otimes\Omega$, the exchange $F=F_R$ of the replicas on
+    $R$ and the doubled Hamiltonian $K=H\otimes1+1\otimes H$, and let
+    $Q=(R\cup C)^c$. There are a Hermitian contraction $W$ on the two copies
+    $Q\sqcup Q$ of the buffer and a real $z\ge e^{-2b}$ such that, for every $L\ge1$,
+    with $B_*=1+b+\log L$, $h=aB_*$, $T=T_0B_*$ and $V$ the placement of $W$ on
+    $Q\sqcup Q$, the integral
+    \begin{align}
+        M_L&=\int_{-T}^{T}(2\pi h)^{-1/2}e^{-t^2/(2h)}
+            e^{itFKF^*}Ve^{-itK}\,dt
+    \end{align}
+    satisfies $\|M_L\|\le1$ and
+    \begin{align}
+        \|M_L\Psi-zF\Psi\|&\le3e^{-10b}L^{-r}, &
+        \|M_L^*F\Psi-z\Psi\|&\le3e^{-10b}L^{-r}.
+    \end{align}
+    This is the two-sided Gaussian filter of
+    \cite[Lemma~3.3]{OpenAI2026PolynomialPEPS}, written on the two replicas.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:gaussian_physical_uniform}
+    The two numerical conditions of Theorem~\ref{thm:gaussian_physical_uniform} hold
+    with equality for $a$ and $T_0$, and $b\ge I_\Omega(R:C)\ge0$. Write one replica
+    in the coordinates of the two regions and the buffer. Then the gap hypotheses
+    transfer, and the relative entropy of the joint state of $R$ and $C$ from the
+    product of its marginals is $I_\Omega(R:C)\le b$. Theorem~\ref{thm:gaussian_physical_uniform}
+    provides $W$ and $z$. In the coordinates $(R\times C)^2\times Q^2$ of the two
+    replicas, the exchange $F_R$ is the partial swap of the two $R$ registers tensored
+    with the identity, $K$ is the doubled Hamiltonian of the regional coordinates,
+    $1\otimes W$ is the placement of $W$ on $Q\sqcup Q$, and the doubled vector is
+    $\Omega\otimes\Omega$. The Gaussian integral and the norms are unchanged by this
+    change of coordinates.
+\end{proof}
+
+\begin{lemma}[The entropy cost of the reset]
+    \label{lem:gaussian_reset_scalar}
+    \lean{Real.eight_mul_sqrt_mul_le_rpow_neg}
+    \leanok
+    If $L\ge1$, $8\sqrt C(1+l)\le L$, $\delta\le CL^{-(2p+10)}$ and $N\le1+L^2l$, then
+    $8\sqrt\delta N\le L^{-p}$ \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+\end{lemma}
+\begin{proof}\leanok
+    If $N<0$ the left side is nonpositive, and if $C<0$ then $\delta\le0$. Otherwise
+    $\sqrt\delta\le\sqrt CL^{-(p+5)}$ and $N\le L^2(1+l)$, so
+    $8\sqrt\delta N\le8\sqrt C(1+l)L^{-(p+3)}\le L^3L^{-(p+3)}=L^{-p}$.
+\end{proof}
+
+\begin{theorem}[The entropy comparison of the information reset]
+    \label{thm:gaussian_reset_entropy}
+    \lean{FiniteProduct.mutualInformation_cores_le_of_reset_unitary}
+    \leanok
+    \uses{def:sites-replica-swap, def:finite_product_regional_entropy}
+    Let $\Omega$ be a unit vector on the sites $V$ with alphabet $\alpha$, let
+    $R_0\subseteq D$ and $C_0$ disjoint from $D$, and let $U$ be a unitary on the two
+    replicas supported on a region disjoint from the first copies of $R_0$ and $C_0$.
+    If $\lVert U(\Omega\otimes\Omega)-F_D(\Omega\otimes\Omega)\rVert\le\delta$, then
+    \begin{align}
+        I_\Omega(R_0:C_0)\le8\sqrt\delta\log\bigl(e\lvert\alpha\rvert^{\lvert R_0\rvert}\bigr)
+    \end{align}
+    \cite[Lemma~3.3]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:finite_product_information_perturbation,
+        thm:finite_product_replica_swap_cores, thm:finite_product_sum_sites}
+    Both $\Omega\otimes\Omega$ and its exchange are unit vectors. In
+    $F_D(\Omega\otimes\Omega)$ the first copies of the cores have no mutual information,
+    and in $\Omega\otimes\Omega$ they have the mutual information $I_\Omega(R_0:C_0)$.
+    Theorem~\ref{thm:finite_product_information_perturbation}, for the unitary $U$
+    supported away from both cores, bounds it by $8\sqrt\delta\log(e\dim)$, where the
+    dimension of the first copy of $R_0$ is $\lvert\alpha\rvert^{\lvert R_0\rvert}$.
+\end{proof}
