@@ -45,6 +45,8 @@ without measurements, as in the preparation of matrix product states of arXiv:23
   scalars.
 * `QuantumCircuit.Circuit.measureCorrect` — a measurement of a region followed by onsite
   corrections chosen by the outcome.
+* `QuantumCircuit.Layer.branching`, `QuantumCircuit.Circuit.rounds` — the number of rounds of
+  measurements, the blocks of classical control along a branch.
 * `QuantumCircuit.IsMeasurementConversion` — deterministic conversion of vectors by a
   measurement circuit.
 * `QuantumCircuit.IsOneRoundConversion` — the same with one round of measurements.
@@ -72,9 +74,12 @@ without measurements, as in the preparation of matrix product states of arXiv:23
 * `QuantumCircuit.IsUnitaryCircuit.isMeasurementConversion`,
   `QuantumCircuit.IsPreparedInDepth.exists_isMeasurementConversion` — unitary circuits are
   measurement circuits.
-* `QuantumCircuit.IsOneRoundConversion.isMeasurementConversion`,
-  `QuantumCircuit.IsUnitaryCircuit.isOneRoundConversion` — one round is a measurement circuit,
-  and a unitary circuit is one round without measurements.
+* `QuantumCircuit.IsOneRoundConversion.exists_circuit`,
+  `QuantumCircuit.IsOneRoundConversion.isMeasurementConversion`,
+  `QuantumCircuit.IsUnitaryCircuit.isOneRoundConversion` — one round is a measurement circuit
+  with one round of measurements, and a unitary circuit is one round without measurements.
+* `QuantumCircuit.Circuit.rounds_comp`, `QuantumCircuit.Circuit.rounds_measureCorrect_le`,
+  `QuantumCircuit.UnitaryCircuit.rounds_toCircuit` — counting rounds.
 * `QuantumCircuit.IsOneRoundConversion.mulVec` — a unitary circuit after one round.
 
 The declarations restate, as restrictions of `Circuit`, the measurement-assisted protocols and the
@@ -408,6 +413,77 @@ theorem forall_measureCorrect (D : Finset S)
 
 end MeasureCorrect
 
+/-! ### Rounds of measurements -/
+
+/-- The branching count of a layer: `1` when the layer has two different Kraus indices, so
+that its outcome is a classical record on which later layers may depend, and `0` otherwise. A
+layer of unitary gates and onsite unitaries does not branch; a measurement of a region with
+more than one configuration does. -/
+noncomputable def _root_.QuantumCircuit.Layer.branching {X Y : S → Type} (L : Layer Γ G X Y) :
+    ℕ :=
+  @ite _ (Nontrivial L.Index) (Classical.dec _) 1 0
+
+omit [Fintype S] in
+theorem _root_.QuantumCircuit.Layer.branching_le_one {X Y : S → Type} (L : Layer Γ G X Y) :
+    L.branching ≤ 1 := by
+  unfold Layer.branching
+  split_ifs <;> omega
+
+omit [Fintype S] in
+/-- A layer with at most one Kraus index does not branch. -/
+theorem _root_.QuantumCircuit.Layer.branching_eq_zero {X Y : S → Type} (L : Layer Γ G X Y)
+    [Subsingleton L.Index] : L.branching = 0 := by
+  unfold Layer.branching
+  rw [@ite_eq_right_iff]
+  exact fun h ↦ absurd h (not_nontrivial L.Index)
+
+/-- The number of rounds of measurements of a circuit: the number of branching layers along the
+branch with most of them. It counts the blocks of classical control: the layers whose outcomes
+later layers may read. -/
+noncomputable def rounds {X Z : S → Type} (c : Circuit Γ G X Z) : ℕ :=
+  c.total fun _ _ L ↦ L.branching
+
+/-- The rounds of a composition are at most the sum of the rounds. -/
+theorem rounds_comp {X Y Z : S → Type} (c : Circuit Γ G X Y) (c' : Circuit Γ G Y Z) :
+    (c.comp c').rounds ≤ c.rounds + c'.rounds :=
+  total_comp _ c c'
+
+section MeasureCorrectRounds
+
+variable {X : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+
+/-- A measurement with onsite corrections is one round of measurements. -/
+theorem rounds_measureCorrect_le (D : Finset S)
+    (V : RegionConfig X D → (s : S) → Matrix (X s) (X s) ℂ) :
+    (measureCorrect (Γ := Γ) (G := G) D V).rounds ≤ 1 := by
+  rw [rounds, measureCorrect, total]
+  refine (Nat.add_le_add (Layer.branching_le_one _) (Finset.sup_le fun i _ ↦ ?_)).trans_eq
+    (add_zero 1)
+  let L : Layer Γ G X X :=
+    Layer.ofOnsite fun s ↦ KrausFamily.single (V (Layer.measure.outcome i) s)
+  have : Subsingleton L.Index := ⟨fun j k ↦ Prod.ext
+    (funext fun b ↦ absurd b.2 (Finset.notMem_empty _))
+    (funext fun _ ↦ Subsingleton.elim (α := Unit) _ _)⟩
+  change L.branching + Finset.univ.sup (fun _ ↦ 0) ≤ 0
+  rw [L.branching_eq_zero, zero_add]
+  exact Finset.sup_le fun _ _ ↦ le_rfl
+
+end MeasureCorrectRounds
+
+end Circuit
+
+/-- A unitary circuit has no rounds of measurements. -/
+theorem UnitaryCircuit.rounds_toCircuit {X : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] (c : UnitaryCircuit Γ X) : c.toCircuit.rounds = 0 := by
+  refine Nat.eq_zero_of_le_zero ((Circuit.total_seq_le _ c.layers).trans_eq ?_)
+  refine List.sum_eq_zero fun n hn ↦ ?_
+  obtain ⟨L, hL, rfl⟩ := List.mem_map.mp hn
+  have := (Layer.nonempty_unique_index_of_forall_isUnitary (c.isUnitary L hL)).some
+  exact L.branching_eq_zero
+
+namespace Circuit
+
+
 end Circuit
 
 /-! ### Deterministic conversions -/
@@ -609,23 +685,38 @@ def IsOneRoundConversion (T₁ T₂ : ℕ) (φ ψ : Config X → ℂ) : Prop :=
 
 variable {Γ}
 
-/-- **One round is a measurement circuit.** A conversion with one round of measurements is a
-deterministic conversion in the total depth: the circuit `U`, the measurement with corrections,
-and the circuit `U'`. -/
-theorem IsOneRoundConversion.isMeasurementConversion {T₁ T₂ : ℕ} {φ ψ : Config X → ℂ}
-    (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) : IsMeasurementConversion Γ (T₁ + T₂) φ ψ := by
-  obtain ⟨hφ, U, U', D, V, ⟨u, hud, rfl⟩, ⟨u', hu'd, rfl⟩, hV, hψ⟩ := h
-  refine ⟨hφ, u.toCircuit.comp ((Circuit.measureCorrect D V).comp u'.toCircuit),
+/-- **One round is a measurement circuit with one round.** A conversion with one round of
+measurements is realised by a measurement circuit of depth at most `T₁ + T₂` with at most one
+round of measurements: the circuit `U`, the measurement with corrections, and the circuit `U'`.
+-/
+theorem IsOneRoundConversion.exists_circuit {T₁ T₂ : ℕ} {φ ψ : Config X → ℂ}
+    (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) :
+    ∃ c : Circuit Γ KrausGate X X, c.Forall KrausGate.ev KrausFamily.IsUnitaryOrMeasurement ∧
+      c.depth ≤ T₁ + T₂ ∧ c.rounds ≤ 1 ∧ ∀ p, ∃ z : ℂ, c.kraus KrausGate.ev p *ᵥ φ = z • ψ := by
+  obtain ⟨-, U, U', D, V, ⟨u, hud, rfl⟩, ⟨u', hu'd, rfl⟩, hV, hψ⟩ := h
+  refine ⟨u.toCircuit.comp ((Circuit.measureCorrect D V).comp u'.toCircuit),
     (u.forall_isUnitary.mono fun _ hK ↦ Or.inl hK).comp _
       ((Circuit.forall_measureCorrect D hV).comp _
-        (u'.forall_isUnitary.mono fun _ hK ↦ Or.inl hK)), ?_, fun q ↦ ?_⟩
+        (u'.forall_isUnitary.mono fun _ hK ↦ Or.inl hK)), ?_, ?_, fun q ↦ ?_⟩
   · refine (Circuit.depth_comp _ _).trans (Nat.add_le_add hud ?_)
     refine (Circuit.depth_comp _ _).trans ?_
     rw [Circuit.depth_measureCorrect, zero_add]
     exact hu'd
+  · refine (Circuit.rounds_comp _ _).trans ?_
+    rw [u.rounds_toCircuit, zero_add]
+    refine (Circuit.rounds_comp _ _).trans ?_
+    rw [u'.rounds_toCircuit, add_zero]
+    exact Circuit.rounds_measureCorrect_le D V
   · rw [Circuit.kraus_comp, Circuit.kraus_comp, Circuit.kraus_measureCorrect, u.kraus_eq_op,
       u'.kraus_eq_op]
     simpa only [Matrix.mul_assoc] using hψ _
+
+/-- **One round is a measurement circuit.** A conversion with one round of measurements is a
+deterministic conversion in the total depth. -/
+theorem IsOneRoundConversion.isMeasurementConversion {T₁ T₂ : ℕ} {φ ψ : Config X → ℂ}
+    (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) : IsMeasurementConversion Γ (T₁ + T₂) φ ψ :=
+  let ⟨c, hc, hd, _, hψ⟩ := h.exists_circuit
+  ⟨h.1, c, hc, hd, hψ⟩
 
 theorem IsOneRoundConversion.mono {T₁ T₂ T₁' T₂' : ℕ} {φ ψ : Config X → ℂ}
     (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) (h₁ : T₁ ≤ T₁') (h₂ : T₂ ≤ T₂') :

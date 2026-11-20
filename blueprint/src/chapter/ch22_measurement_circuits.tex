@@ -155,6 +155,34 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
     $m$.
 \end{proof}
 
+\begin{definition}[Rounds of measurements]
+    \label{def:measurement_rounds}
+    \lean{QuantumCircuit.Layer.branching, QuantumCircuit.Circuit.rounds}
+    \leanok
+    \uses{def:circuits_costs}
+    A layer branches if it has two different Kraus indices, so that its outcome is a classical
+    record on which later layers may depend. The number of rounds of measurements of a circuit
+    is the largest number of branching layers along one of its branches: it counts the blocks
+    of classical control.
+\end{definition}
+
+\begin{lemma}[Counting rounds]
+    \label{lem:measurement_rounds}
+    \lean{QuantumCircuit.Layer.branching_le_one, QuantumCircuit.Layer.branching_eq_zero,
+        QuantumCircuit.Circuit.rounds_comp, QuantumCircuit.Circuit.rounds_measureCorrect_le,
+        QuantumCircuit.UnitaryCircuit.rounds_toCircuit}
+    \leanok
+    \uses{def:measurement_rounds, def:measurement_correct, thm:circuits_cost_subadditive}
+    The rounds of a composition are at most the sum of the rounds. A measurement with onsite
+    corrections has at most one round, and a unitary circuit none.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The number of rounds is a cost of layers accumulated along the most expensive branch, so
+    it is subadditive by Theorem~\ref{thm:circuits_cost_subadditive}. A layer with a unique
+    Kraus index does not branch.
+\end{proof}
+
 \section{Deterministic conversions}
 \label{sec:measurement_conversion}
 
@@ -245,15 +273,18 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
 
 \begin{lemma}[One round]
     \label{lem:measurement_one_round}
-    \lean{QuantumCircuit.IsOneRoundConversion.isMeasurementConversion,
+    \lean{QuantumCircuit.IsOneRoundConversion.exists_circuit,
+        QuantumCircuit.IsOneRoundConversion.isMeasurementConversion,
         QuantumCircuit.IsOneRoundConversion.mono,
         QuantumCircuit.IsOneRoundConversion.mulVec,
         QuantumCircuit.IsUnitaryCircuit.isOneRoundConversion}
     \leanok
     \uses{def:measurement_one_round, def:measurement_conversion,
-        thm:measurement_conversion_comp}
-    A conversion with one round of measurements in depths $(T_1,T_2)$ is a deterministic
-    conversion in depth $T_1+T_2$, and one in all larger depths. Following it by a unitary
+        thm:measurement_conversion_comp, lem:measurement_rounds}
+    A conversion with one round of measurements in depths $(T_1,T_2)$ is realised by a
+    measurement circuit of depth at most $T_1+T_2$ with at most one round of measurements; in
+    particular it is a deterministic conversion in depth $T_1+T_2$, and it is one round in all
+    larger depths. Following it by a unitary
     circuit of depth at most $T$ with matrix $W$ gives a conversion into $W\psi$ in depths
     $(T_1,T_2+T)$. A unitary circuit of depth at most $T$ with matrix $U$ converts every
     nonzero $\varphi$ into $U\varphi$ with one round in depths $(T,0)$, measuring no site.
