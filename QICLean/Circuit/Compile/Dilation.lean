@@ -519,13 +519,15 @@ private theorem sum_map_matrixUnit_of_dilation {α β E F : Type} [Fintype α] [
   rfl
 
 omit [Fintype S] [DecidableEq S] in
-/-- The one operator with all entries `1` between one-element bases is unitary. -/
+/-- The one operator with all entries `1` between one-element bases is unitary: it is the identity
+on a one-element basis, carried along the equivalences of the two bases with it. -/
 private theorem isUnitary_single_ones {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
     [DecidableEq β] [Unique α] [Unique β] :
-    (KrausFamily.single (Matrix.of fun (_ : β) (_ : α) ↦ (1 : ℂ))).IsUnitary :=
-  ⟨⟨inferInstanceAs (Unique Unit)⟩, fun _ ↦
-    ⟨by ext a a'; rw [Subsingleton.elim a' a]; simp [mul_apply],
-      by ext a a'; rw [Subsingleton.elim a' a]; simp [mul_apply]⟩⟩
+    (KrausFamily.single (Matrix.of fun (_ : β) (_ : α) ↦ (1 : ℂ))).IsUnitary := by
+  convert (KrausFamily.isUnitary_single (one_mem (unitaryGroup Unit ℂ))).reindex
+    (Equiv.ofUnique α Unit) (Equiv.ofUnique β Unit) using 1
+  simp only [KrausFamily.reindex, KrausFamily.single]
+  congr
 
 omit [Fintype S] [DecidableEq S] in
 /-- A trace-preserving family on a nonempty basis is the partial trace of a unitary family on the
