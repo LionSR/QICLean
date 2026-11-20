@@ -126,8 +126,8 @@ def logDim (x : Finset V) : ℝ := Real.log (Real.exp 1 * ∏ v ∈ x, (n v : �
 def moveEta (π : PYF V) (m : Move V) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) : ℝ :=
   match m with
   | .stay => 0
-  | .toP x => FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ x π.F π.P
-  | .toF x => FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ x π.P π.F
+  | .toP x => ManyBody.conditionalMutualInformation (fun v => Fin (n v)) θ x π.F π.P
+  | .toF x => ManyBody.conditionalMutualInformation (fun v => Fin (n v)) θ x π.P π.F
 
 /-- The designated support `D` lies in one part of `π`. -/
 def PYF.Contains (π : PYF V) (D : Finset V) : Prop := D ⊆ π.P ∨ D ⊆ π.Y ∨ D ⊆ π.F
@@ -146,8 +146,8 @@ the receiving side is `P` and `I_θ(x : P | F)` otherwise (`06-transport.tex`
 lines 345--347). -/
 def splitBandEta (π : PYF V) (D : Finset V) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) : ℝ :=
   if π.SplitsToP D then
-    FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ (D ∩ π.Y) π.F π.P
-  else FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ (D ∩ π.Y) π.P π.F
+    ManyBody.conditionalMutualInformation (fun v => Fin (n v)) θ (D ∩ π.Y) π.F π.P
+  else ManyBody.conditionalMutualInformation (fun v => Fin (n v)) θ (D ∩ π.Y) π.P π.F
 
 /-- The data of one round: a weighted history tree, old partitions in `K` bands,
 conditional choice trees and the moves of every choice (`06-transport.tex`

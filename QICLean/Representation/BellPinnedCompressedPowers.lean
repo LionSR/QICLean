@@ -26,7 +26,7 @@ original full family.
   `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped InnerProductSpace ComplexOrder MatrixOrder
 open scoped Matrix.Norms.L2Operator
 
@@ -42,7 +42,7 @@ variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β C) R
-local notation "ιe" => compressedSiteSpace β X R
+local notation "ιe" => ManyBody.compressedSiteSpace β X R
 
 local instance bellPinnedCompressedPowersConfigDecidableEq (k : ℕ) : DecidableEq (Config k ι₀) :=
   Fintype.decidablePiFintype
@@ -61,9 +61,9 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
     {t : ℝ} (ht : 0 ≤ t) (K : ℕ) (U Y : S → Fin K → Finset V)
     (hdisj : ∀ j g, Disjoint (U j g) (Y j g))
     (hnest : ∀ j j' g h, g < h → U j g ∪ Y j g ⊆ U j' h)
-    (b : (Configuration β X × C) → ℂ) (T : Matrix.MeanTree S) :
+    (b : (ManyBody.RegionConfig β X × C) → ℂ) (T : Matrix.MeanTree S) :
     let e := bellInsertionCopyEquiv β X C R k
-    let J := (addedSiteInsertion ιe (Configuration β X × C) k b).submatrix e id
+    let J := (addedSiteInsertion ιe (ManyBody.RegionConfig β X × C) k b).submatrix e id
     let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
     let P := J * Pe * Jᴴ
     let W := replicaMetric ι₀ t k

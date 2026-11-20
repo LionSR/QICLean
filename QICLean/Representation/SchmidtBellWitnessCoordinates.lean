@@ -29,19 +29,20 @@ open scoped BigOperators Matrix Kronecker
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-variable (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ)
+variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 
-local notation "A" => Configuration β X
-local notation "B" => Configuration β Xᶜ
+local notation "A" => ManyBody.RegionConfig β X
+local notation "B" => ManyBody.RegionConfig β Xᶜ
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-local notation "ιe" => compressedSiteSpace β X (Fin E.card)
+local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "L" => Fin k → A × E
 
-local instance schmidtBellCoordinatesConfigurationDecidableEq : DecidableEq (Configuration β X) :=
+local instance schmidtBellCoordinatesConfigurationDecidableEq : DecidableEq
+    (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
 local instance schmidtBellCoordinatesExteriorConfigDecidableEq :
@@ -55,7 +56,7 @@ def schmidtBellWitnessEquiv : Config k ι₀ ≃ L × Config k ιe :=
   (bellInsertionCopyEquiv β X ↥E (Fin E.card) k).trans
     (addedSiteConfigEquiv ιe (A × E) k)
 
-variable (Ω : EuclideanSpace ℂ (Configuration β X × Configuration β Xᶜ))
+variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.RegionConfig β Xᶜ))
 
 /-- The actual insertion range matrix is the selected Bell tensor-power
 matrix tensored with the exterior identity, in the explicit witness
@@ -69,9 +70,10 @@ theorem bellInsertion_mul_conjTranspose_selectedBell :
     J * Jᴴ =
       ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (Config k ιe) (Config k ιe) ℂ)).submatrix
-          (schmidtBellWitnessEquiv β X E k) (schmidtBellWitnessEquiv β X E k) := by
+          (ManyBody.schmidtBellWitnessEquiv β X E k)
+              (ManyBody.schmidtBellWitnessEquiv β X E k) := by
   intro e b J
-  let τ := schmidtBellWitnessEquiv β X E k
+  let τ := ManyBody.schmidtBellWitnessEquiv β X E k
   let : DecidableEq (Config k ιe) := fun y z ↦ Classical.propDecidable (y = z)
   ext x y
   change (∑ q : Config k ιe,
@@ -91,4 +93,4 @@ theorem bellInsertion_mul_conjTranspose_selectedBell :
           finKronecker_apply, selectedBellProjection, vecMulVec_apply,
           Pi.star_apply, Matrix.one_apply, b, τ, h, star_prod, Finset.prod_mul_distrib]
 
-end FiniteProduct
+end ManyBody

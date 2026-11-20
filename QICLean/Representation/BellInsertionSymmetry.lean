@@ -30,7 +30,7 @@ symmetry, or nonempty-coordinate hypothesis is used. Zero copies are included.
   `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 
 universe u
 
@@ -42,8 +42,8 @@ variable {V : Type u} [Fintype V] [DecidableEq V]
 variable (β : V → Type u) (X : Finset V) (C R : Type u)
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β C) R
-local notation "ιe" => compressedSiteSpace β X R
-local notation "A" => Configuration β X × C
+local notation "ιe" => ManyBody.compressedSiteSpace β X R
+local notation "A" => ManyBody.RegionConfig β X × C
 local notation "ι₁" => addedSiteSpace ιe A
 
 /-- Grouping each copy separately commutes with simultaneous copy permutations. -/
@@ -92,7 +92,7 @@ private theorem bellInsertionCopyEquiv_subsystemPerm_auxiliary (k : ℕ)
 variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
-local instance : DecidableEq (Configuration β X) :=
+local instance : DecidableEq (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
 omit [DecidableEq C] in

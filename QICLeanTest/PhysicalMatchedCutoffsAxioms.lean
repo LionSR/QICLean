@@ -15,9 +15,9 @@ run_cmd do
     ``TensorPower.dim_le_pow_card_of_subsystem_labelProj_ne_zero,
     ``TensorPower.labelCutoff_subsystemPerm_mul_of_nested,
     ``TensorPower.toEuclideanLin_labelCutoff_of_matched,
-    ``FiniteProduct.exteriorRegion_symmDiff,
-    ``FiniteProduct.card_configuration_exteriorRegion_symmDiff,
-    ``FiniteProduct.toEuclideanLin_compressedPhysicalCutoff_of_matched]
+    ``ManyBody.exteriorRegion_symmDiff,
+    ``ManyBody.card_configuration_exteriorRegion_symmDiff,
+    ``ManyBody.toEuclideanLin_compressedPhysicalCutoff_of_matched]
   for decl in declarations do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"

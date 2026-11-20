@@ -48,7 +48,7 @@ arXiv:1602.08828v2, Theorem `t:ais`, lines 1010–1024. -/
 lemma regionTensorCoordinates_eq_exteriorFirst (q : ℕ) (J : Finset V) :
     regionTensorCoordinates q J =
       ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
-        ((FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) J).trans (Equiv.prodComm _ _))).trans
+        ((ManyBody.splitEquiv (fun _ : V ↦ Fin q) J).trans (Equiv.prodComm _ _))).trans
           (Submodule.euclideanTensorEquiv (↥(Jᶜ) → Fin q) (J → Fin q))).trans
         (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ (↥(Jᶜ) → Fin q))
           (EuclideanSpace ℂ (J → Fin q))) := by

@@ -54,7 +54,7 @@ theorem trace_exp_labelEntropy_replicaExcitationComponent_eq
     let m := Bᶜ.card
     let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix K K ℂ)) *ᵥ u
     let f := fun x : ((Fin m → Q) × K) × ((Fin m → T) × (↥B → Q × T)) =>
-      w ((FiniteProduct.splitEquiv (fun _ : Fin k => Q × T) B).symm
+      w ((ManyBody.splitEquiv (fun _ : Fin k => Q × T) B).symm
         (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) i),
           x.2.1 ((Finset.equivFin Bᶜ) i))), x.1.2)
     let F := PermutationRepresentation.labelEntropy (TensorPower.copyPerm Q m)

@@ -51,7 +51,6 @@ import QICLean.Entropy.FilterPrefix
 import QICLean.Entropy.FilterStationarity
 import QICLean.Entropy.FilterZeroFloor
 import QICLean.Entropy.FilterZeroFloorEnergy
-import QICLean.Entropy.FiniteProduct
 import QICLean.Entropy.FiniteProductConditional
 import QICLean.Entropy.FiniteProductConditionalSum
 import QICLean.Entropy.FiniteProductContinuity

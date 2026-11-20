@@ -49,9 +49,9 @@ private theorem log_dim_bounds_of_subset {S U : Finset F} (hSU : S ⊆ U)
     (hp : labelProj (subsystemPerm k ι S) l *
       labelProj (subsystemPerm k ι U) ν ≠ 0) :
     Real.log ν.dim ≤ Real.log l.dim +
-        (k : ℝ) * Real.log (Fintype.card (FiniteProduct.Configuration ι (U \ S))) ∧
+        (k : ℝ) * Real.log (Fintype.card (ManyBody.RegionConfig ι (U \ S))) ∧
       Real.log l.dim ≤ Real.log ν.dim +
-        (k : ℝ) * Real.log (Fintype.card (FiniteProduct.Configuration ι (U \ S))) := by
+        (k : ℝ) * Real.log (Fintype.card (ManyBody.RegionConfig ι (U \ S))) := by
   classical
   have hsum : (∑ μ : IrrepLabel (Equiv.Perm (Fin k)),
       labelProj (subsystemPerm k ι S) l * labelProj (subsystemPerm k ι (U \ S)) μ *
@@ -76,9 +76,9 @@ private theorem log_dim_bounds_of_subset {S U : Finset F} (hSU : S ⊆ U)
   have hm : (0 : ℝ) < μ.dim := Nat.cast_pos.mpr μ.dim_pos
   have hn : (0 : ℝ) < ν.dim := Nat.cast_pos.mpr ν.dim_pos
   have hμlog : Real.log μ.dim ≤
-      (k : ℝ) * Real.log (Fintype.card (FiniteProduct.Configuration ι (U \ S))) := by
+      (k : ℝ) * Real.log (Fintype.card (ManyBody.RegionConfig ι (U \ S))) := by
     have hd : (μ.dim : ℝ) ≤
-        (Fintype.card (FiniteProduct.Configuration ι (U \ S)) : ℝ) ^ k := by
+        (Fintype.card (ManyBody.RegionConfig ι (U \ S)) : ℝ) ^ k := by
       exact_mod_cast dim_le_pow_card_of_subsystem_labelProj_ne_zero ι k (U \ S) μ hμproj
     simpa only [Real.log_pow] using Real.log_le_log hm hd
   have hlarge := Real.log_le_log hn
@@ -97,7 +97,7 @@ assumed. Source: `07-comparators.tex`, lines 356–365,
 theorem labelCutoff_subsystemPerm_mul_of_nested {B Q : Finset F}
     (hnested : B ⊆ Q ∨ Q ⊆ B) {a t : ℝ}
     (ht : a + (k : ℝ) *
-      Real.log (Fintype.card (FiniteProduct.Configuration ι (B ∆ Q))) ≤ t) :
+      Real.log (Fintype.card (ManyBody.RegionConfig ι (B ∆ Q))) ≤ t) :
     labelCutoff (subsystemPerm k ι Q) t * labelCutoff (subsystemPerm k ι B) a =
       labelCutoff (subsystemPerm k ι B) a := by
   classical
@@ -111,7 +111,7 @@ theorem labelCutoff_subsystemPerm_mul_of_nested {B Q : Finset F}
   have hlog : ∀ l ν : IrrepLabel (Equiv.Perm (Fin k)),
       labelProj (subsystemPerm k ι B) l * labelProj (subsystemPerm k ι Q) ν ≠ 0 →
       Real.log ν.dim ≤ Real.log l.dim + (k : ℝ) *
-        Real.log (Fintype.card (FiniteProduct.Configuration ι (B ∆ Q))) := by
+        Real.log (Fintype.card (ManyBody.RegionConfig ι (B ∆ Q))) := by
     intro l ν hp
     rcases hnested with h | h
     · have hd : B ∆ Q = Q \ B := by
@@ -168,7 +168,7 @@ theorem toEuclideanLin_labelCutoff_of_matched
     {D : Type*} [Fintype D] [DecidableEq D] {B Q : Finset F}
     (hnested : B ⊆ Q ∨ Q ⊆ B) {s z Bsh Bexc : ℝ}
     (hz : 0 < z) (hsh : s ≤ Bsh)
-    (hexc : 1 + Real.log (Fintype.card (FiniteProduct.Configuration ι (B ∆ Q))) ≤ Bexc)
+    (hexc : 1 + Real.log (Fintype.card (ManyBody.RegionConfig ι (B ∆ Q))) ≤ Bexc)
     (φ : EuclideanSpace ℂ (D × Config k ι))
     (hφ : toEuclideanLin
       ((1 : Matrix D D ℂ) ⊗ₖ labelCutoff (subsystemPerm k ι B) ((k : ℝ) * (s / z + 1)))
@@ -177,11 +177,11 @@ theorem toEuclideanLin_labelCutoff_of_matched
       ((1 : Matrix D D ℂ) ⊗ₖ
         labelCutoff (subsystemPerm k ι Q) ((k : ℝ) * (Bsh / z + Bexc))) φ = φ := by
   have hthreshold : (k : ℝ) * (s / z + 1) + (k : ℝ) *
-      Real.log (Fintype.card (FiniteProduct.Configuration ι (B ∆ Q))) ≤
+      Real.log (Fintype.card (ManyBody.RegionConfig ι (B ∆ Q))) ≤
         (k : ℝ) * (Bsh / z + Bexc) := by
     calc
       _ = (k : ℝ) * (s / z +
-          (1 + Real.log (Fintype.card (FiniteProduct.Configuration ι (B ∆ Q))))) := by ring
+          (1 + Real.log (Fintype.card (ManyBody.RegionConfig ι (B ∆ Q))))) := by ring
       _ ≤ _ := mul_le_mul_of_nonneg_left
         (add_le_add (div_le_div_of_nonneg_right hsh hz.le) hexc) (Nat.cast_nonneg k)
   have hmul := labelCutoff_subsystemPerm_mul_of_nested ι k hnested hthreshold

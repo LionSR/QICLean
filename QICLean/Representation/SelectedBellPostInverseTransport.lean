@@ -24,7 +24,7 @@ Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 283--308,
 370--381 and 383--418, revision `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped BigOperators Matrix Kronecker ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 noncomputable section
@@ -43,8 +43,8 @@ Every real exponent is allowed. The sharp leaf/tree estimate can be inserted
 on the left for nonnegative exponents without any further operator premise. -/
 theorem selectedBellPost_inverse_norm_le_physical
     {S : Type*} (Ω : EuclideanSpace ℂ ((v : V) → β v)) (hΩ : ‖Ω‖ = 1)
-    (X : Finset V) (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k n : ℕ)
     (Z : Matrix (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)))
       (Fin n) ℂ)
@@ -57,10 +57,10 @@ theorem selectedBellPost_inverse_norm_le_physical
     (hnest : ∀ j j' g h, g < h → U j g ∪ Y j g ⊆ U j' h)
     (T : MeanTree S) (ell : IrrepLabel (Equiv.Perm (Fin k))) (s : ℝ) :
     let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-    let z := (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
+    let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
-      (schmidtBellSitePrevector β X E k ΩX ell ∘ schmidtBellWitnessEquiv β X E k)
+      (ManyBody.schmidtBellSitePrevector β X E k ΩX ell ∘ ManyBody.schmidtBellWitnessEquiv β X E k)
     let W := replicaMetric ι₀ t k
     let Q := fun j g ↦ insert (some none)
       ((X ∪ U j g).image fun v ↦ some (some v))
@@ -96,12 +96,12 @@ theorem selectedBellPost_inverse_norm_le_physical
       cases o with
       | none => exact (inferInstance : Nonempty E)
       | some v => exact (inferInstance : Nonempty (β v))
-  let b : Configuration β X × E → ℂ := selectedBellVector ΩX E
-  let J := (addedSiteInsertion (compressedSiteSpace β X (Fin E.card))
-    (Configuration β X × E) k b).submatrix
+  let b : ManyBody.RegionConfig β X × E → ℂ := selectedBellVector ΩX E
+  let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X (Fin E.card))
+    (ManyBody.RegionConfig β X × E) k b).submatrix
       (bellInsertionCopyEquiv β X E (Fin E.card) k) id
   let Pe := symProj (copyPerm
-    ((o : Option ↥(Xᶜ)) → compressedSiteSpace β X (Fin E.card) o) k)
+    ((o : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) o) k)
   let P := J * Pe * Jᴴ
   let c : ℂ := ((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k
   have hb : ‖WithLp.toLp 2 b‖ = 1 := by

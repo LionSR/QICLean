@@ -179,7 +179,7 @@ end FourPartition
 /-- Complementary regions of a vector have equal entropy. -/
 theorem regionEntropy_compl (D : Finset V) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     ManyBody.regionEntropy θ Dᶜ = ManyBody.regionEntropy θ D := by
-  simp only [ManyBody.regionEntropy_eq_entropy, FiniteProduct.entropy_compl]
+  simp only [ManyBody.regionEntropy_compl]
 
 variable {P x Y F : Finset V}
 
@@ -188,14 +188,14 @@ lines 491–492; `04-conditional.tex`, lines 122–124 and 138–139). -/
 theorem regionalMovementEta_eq_cmi_left (h : FourPartition P x Y F)
     (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     regionalMovementEta P x Y θ =
-      FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ x F P := by
+      ManyBody.conditionalMutualInformation (fun v => Fin (n v)) θ x F P := by
   have e1 : ManyBody.regionEntropy θ (x ∪ Y) = ManyBody.regionEntropy θ (F ∪ P) := by
     rw [← regionEntropy_compl (x ∪ Y), h.compl_union_xY]
   have e2 : ManyBody.regionEntropy θ Y = ManyBody.regionEntropy θ (x ∪ F ∪ P) := by
     rw [← regionEntropy_compl Y, h.compl_Y]
   rw [regionalMovementEta, e1, e2, Finset.union_comm P x,
-    FiniteProduct.conditionalMutualInformation]
-  simp only [ManyBody.regionEntropy_eq_entropy]
+    ManyBody.conditionalMutualInformation]
+  simp only []
   ring
 
 /-- **`S_θ(x|P) + S_θ(x|Y₀) = I_θ(x:F|Y₀)`** for a partition `P, x, Y₀, F` (`05-replicas.tex`,
@@ -203,7 +203,7 @@ lines 491–492; `04-conditional.tex`, lines 122–124 and 138–139). -/
 theorem regionalMovementEta_eq_cmi_right (h : FourPartition P x Y F)
     (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     regionalMovementEta P x Y θ =
-      FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ x F Y := by
+      ManyBody.conditionalMutualInformation (fun v => Fin (n v)) θ x F Y := by
   have h' : FourPartition Y x P F :=
     ⟨h.xY.symm, h.PY.symm, h.YF, h.Px.symm, h.xF, h.PF,
       fun v => by rcases h.cover v with h1 | h1 | h1 | h1 <;> simp [h1]⟩

@@ -33,7 +33,7 @@ adc7f1241b42e322a6451854ab7e4b4c146bf78a.
 Independently written from the manuscript; no upstream Lean text is reused.
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped BigOperators InnerProductSpace ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 noncomputable section
@@ -42,13 +42,13 @@ namespace TensorPower
 local instance replicaPinnedSharpLeafRegionDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (X : Finset V) : DecidableEq (Configuration β X) :=
+    (X : Finset V) : DecidableEq (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
 local instance replicaPinnedSharpLeafSiteDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (X : Finset V) (E : Finset (Configuration β X)) (f : Option (Option V)) :
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (f : Option (Option V)) :
     DecidableEq (addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) := by
   cases f with
   | none => exact (inferInstance : DecidableEq (Fin E.card))
@@ -60,7 +60,7 @@ local instance replicaPinnedSharpLeafSiteDecidableEq
 local instance replicaPinnedSharpLeafConfigDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ) :
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) :
     DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) := by
   let instCopy : DecidableEq ((f : Option (Option V)) →
       addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) :=
@@ -133,18 +133,18 @@ theorem re_inner_exp_labelEntropy_bellInsertion
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (X : Finset V) (C R : Type) [Fintype C] [DecidableEq C]
     [Fintype R] [DecidableEq R] (k : ℕ)
-    (b : Configuration β X × C → ℂ) (hb : ‖WithLp.toLp 2 b‖ = 1)
-    (Ψ : EuclideanSpace ℂ (Config k (compressedSiteSpace β X R)))
+    (b : ManyBody.RegionConfig β X × C → ℂ) (hb : ‖WithLp.toLp 2 b‖ = 1)
+    (Ψ : EuclideanSpace ℂ (Config k (ManyBody.compressedSiteSpace β X R)))
     (Q : Finset V) (u : ℝ) :
     let ι₀ := addedSiteSpace (addedSiteSpace β C) R
-    let J := (addedSiteInsertion (compressedSiteSpace β X R)
-      (Configuration β X × C) k b).submatrix (bellInsertionCopyEquiv β X C R k) id
+    let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+      (ManyBody.RegionConfig β X × C) k b).submatrix (bellInsertionCopyEquiv β X C R k) id
     let p := WithLp.toLp 2 (J *ᵥ WithLp.ofLp Ψ)
     (⟪p, Matrix.toEuclideanLin (NormedSpace.exp ((u : ℂ) •
       labelEntropy (subsystemPerm k ι₀ ((Q \ X).image fun v ↦ some (some v))))) p⟫_ℂ).re =
     (⟪Ψ, Matrix.toEuclideanLin (NormedSpace.exp ((u : ℂ) •
-      labelEntropy (subsystemPerm k (compressedSiteSpace β X R)
-        (exteriorRegion X Q)))) Ψ⟫_ℂ).re := by
+      labelEntropy (subsystemPerm k (ManyBody.compressedSiteSpace β X R)
+        (ManyBody.exteriorRegion X Q)))) Ψ⟫_ℂ).re := by
   classical
   intro ι₀ J p
   have hJ : Jᴴ * J = 1 := isIsometry_bellInsertion β X C R k b hb
@@ -161,26 +161,27 @@ private theorem re_inner_exp_labelEntropy_selectedBellPost_le
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X Q : Finset V)
-    (hXQ : Disjoint X Q) (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (hXQ : Disjoint X Q) (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (u : ℝ) :
-    let z := (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-    let χ : Fin E.card × Configuration β Xᶜ → ℂ := fun x ↦
+    let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
-      (fun x : Config k (compressedSiteSpace β X (Fin E.card)) ↦
+      (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
         ∏ j, χ (Equiv.piOptionEquivProd (x j)))
     let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-    let b : Configuration β X × E → ℂ := Matrix.selectedBellVector ΩX E
-    let J := (addedSiteInsertion (compressedSiteSpace β X (Fin E.card))
-      (Configuration β X × E) k b).submatrix
+    let b : ManyBody.RegionConfig β X × E → ℂ := Matrix.selectedBellVector ΩX E
+    let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X (Fin E.card))
+      (ManyBody.RegionConfig β X × E) k b).submatrix
         (bellInsertionCopyEquiv β X E (Fin E.card) k) id
     let p := WithLp.toLp 2 (J *ᵥ WithLp.ofLp Ψ)
     (⟪p, Matrix.toEuclideanLin (NormedSpace.exp ((u : ℂ) •
       labelEntropy (subsystemPerm k ι₀ ((Q \ X).image fun v ↦ some (some v))))) p⟫_ℂ).re ≤
-      z⁻¹ ^ k * (Matrix.finKronecker (fun _ : Fin k ↦ reducedPure β Ω Q) *
-        NormedSpace.exp ((u : ℂ) • labelEntropy (copyPerm (Configuration β Q) k))).trace.re := by
+      z⁻¹ ^ k * (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
+        NormedSpace.exp
+            ((u : ℂ) • labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k))).trace.re := by
   classical
   intro z ΩX χ Ψ ι₀ b J p
   have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
@@ -189,8 +190,8 @@ private theorem re_inner_exp_labelEntropy_selectedBellPost_le
     simpa only [b, WithLp.toLp_ofLp] using Matrix.norm_selectedBellVector ΩX E hzX
   calc
     _ = (⟪Ψ, Matrix.toEuclideanLin (NormedSpace.exp ((u : ℂ) •
-        labelEntropy (subsystemPerm k (compressedSiteSpace β X (Fin E.card))
-          (exteriorRegion X Q)))) Ψ⟫_ℂ).re :=
+        labelEntropy (subsystemPerm k (ManyBody.compressedSiteSpace β X (Fin E.card))
+          (ManyBody.exteriorRegion X Q)))) Ψ⟫_ℂ).re :=
       re_inner_exp_labelEntropy_bellInsertion β X E (Fin E.card) k b hb Ψ Q u
     _ ≤ _ := re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
       β Ω X Q hXQ E hz k u
@@ -199,14 +200,14 @@ private theorem compressedTypicalSiteTensor_ne_zero
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-    let χ : Fin E.card × Configuration β Xᶜ → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
-      (fun x : Config k (compressedSiteSpace β X (Fin E.card)) ↦
+      (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
         ∏ j, χ (Equiv.piOptionEquivProd (x j)))
     WithLp.ofLp Ψ ≠ 0 := by
   classical
@@ -222,7 +223,7 @@ private theorem compressedTypicalSiteTensor_ne_zero
     rw [hzero, norm_zero] at hn
     norm_num at hn
   obtain ⟨c, hc⟩ := hχne
-  let x₀ : (v : Option ↥(Xᶜ)) → compressedSiteSpace β X (Fin E.card) v :=
+  let x₀ : (v : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) v :=
     Equiv.piOptionEquivProd.symm ((Finset.equivFin E) c.1, c.2)
   intro h
   have hval := congrFun h (fun _ : Fin k ↦ x₀)
@@ -296,39 +297,39 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (hΩ : ‖Ω‖ = 1)
-    (X : Finset V) (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     {a K r : ℝ} (ha : 0 < a) (har : 6 * a ≤ r) (ha1 : 6 * a ≤ 1) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (k : ℕ) (U Y : Finset V),
       Disjoint X U → Disjoint X Y → Disjoint U Y →
       (∀ Q : Finset V, Q = U ∨ Q = U ∪ Y ∨ Q = Y →
         ∀ v : ℝ, |v| ≤ r →
           Real.log (Entropy.surprisalMoment
-            (reducedPure_posSemidef β Ω Q).isHermitian.eigenvalues v) ≤
-            v * vonNeumannEntropy (reducedPure β Ω Q)
-              (reducedPure_posSemidef β Ω Q).isHermitian + K * v ^ 2) →
-      let z := (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
-      let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-      let χ : Fin E.card × Configuration β Xᶜ → ℂ := fun x ↦
+            (ManyBody.regionState_posSemidef Q Ω).isHermitian.eigenvalues v) ≤
+            v * vonNeumannEntropy (ManyBody.regionState Ω Q)
+              (ManyBody.regionState_posSemidef Q Ω).isHermitian + K * v ^ 2) →
+      let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
+      let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+      let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
         Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
       let Ψ := WithLp.toLp 2
-        (fun x : Config k (compressedSiteSpace β X (Fin E.card)) ↦
+        (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
           ∏ j, χ (Equiv.piOptionEquivProd (x j)))
       let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-      let b : Configuration β X × E → ℂ := Matrix.selectedBellVector ΩX E
-      let J := (addedSiteInsertion (compressedSiteSpace β X (Fin E.card))
-        (Configuration β X × E) k b).submatrix
+      let b : ManyBody.RegionConfig β X × E → ℂ := Matrix.selectedBellVector ΩX E
+      let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X (Fin E.card))
+        (ManyBody.RegionConfig β X × E) k b).submatrix
           (bellInsertionCopyEquiv β X E (Fin E.card) k) id
       let p := WithLp.toLp 2 (J *ᵥ WithLp.ofLp Ψ)
       let W := replicaMetric ι₀ (a / 2) k
       let ext := fun Q : Finset V ↦ (Q \ X).image fun v ↦ some (some v)
       let D := ((W (ext U))⁻¹ * (W (ext (U ∪ Y)))⁻¹ * W (ext Y)) ^ 2
-      let S := fun Q : Finset V ↦ vonNeumannEntropy (reducedPure β Ω Q)
-        (reducedPure_posSemidef β Ω Q).isHermitian
+      let S := fun Q : Finset V ↦ vonNeumannEntropy (ManyBody.regionState Ω Q)
+        (ManyBody.regionState_posSemidef Q Ω).isHermitian
       Real.log (⟪p, Matrix.toEuclideanLin D p⟫_ℂ).re ≤
         (k : ℝ) * a * (S U + S (U ∪ Y) - S Y) + 12 * K * k * a ^ 2 -
           k * Real.log z + C * Real.log ((k : ℝ) + 2) +
-          ((Fintype.card (Configuration β Y) : ℝ) ^ 2 / 6) *
+          ((Fintype.card (ManyBody.RegionConfig β Y) : ℝ) ^ 2 / 6) *
             Real.log ((k : ℝ) + 1) := by
   classical
   obtain ⟨x, _⟩ : ∃ x, Ω x ≠ 0 := by
@@ -384,19 +385,19 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
         k * K * (3 * a) ^ 2 - k * Real.log z) ∧
       M Q (-3 * a) ≤ Real.exp ((-3 * a) * ((k : ℝ) * S Q) +
         (2 * k * K * (3 * a) ^ 2 +
-          ((Fintype.card (Configuration β Q) : ℝ) ^ 2 / 2) *
+          ((Fintype.card (ManyBody.RegionConfig β Q) : ℝ) ^ 2 / 2) *
             Real.log ((k : ℝ) + 1)) - k * Real.log z) := by
     have htransfer (v : ℝ) : M Q v ≤ z⁻¹ ^ k *
-        (Matrix.finKronecker (fun _ : Fin k ↦ reducedPure β Ω Q) *
+        (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
           NormedSpace.exp ((v : ℂ) •
-            labelEntropy (copyPerm (Configuration β Q) k))).trace.re := by
+            labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k))).trace.re := by
       have hpair : M Q v =
           (⟪p, Matrix.toEuclideanLin (NormedSpace.exp ((v : ℂ) • L Q)) p⟫_ℂ).re :=
         (congrArg Complex.re (Entropy.inner_toEuclideanLin_eq_trace _ p)).symm
       exact hpair.trans_le
         (re_inner_exp_labelEntropy_selectedBellPost_le β Ω X Q hXQ E hz k v)
     simpa only [S, neg_mul] using signed_moments_of_marginal_domination
-      (reducedPure_posSemidef β Ω Q) (trace_reducedPure β Ω hΩ Q)
+      (ManyBody.regionState_posSemidef Q Ω) (ManyBody.trace_regionState_eq_one hΩ (D := Q))
       (hmoment Q hQ) k (M Q) hz
       (show 0 ≤ 3 * a from mul_nonneg (by norm_num) ha.le) (by linarith only [har])
       (by linarith only [ha1]) htransfer

@@ -60,8 +60,6 @@ import QICLean.Channel.EnvironmentEmbedding
 import QICLean.Channel.EnvironmentInducedInstrument
 import QICLean.Channel.FaithfulMarginalWhitenedChoi
 import QICLean.Channel.FilterNormalization
-import QICLean.Channel.FiniteProduct
-import QICLean.Channel.FiniteProductOperatorSchmidt
 import QICLean.Channel.FixedPoint
 import QICLean.Channel.GaugeConjugation
 import QICLean.Channel.InformationallyCompleteEffects

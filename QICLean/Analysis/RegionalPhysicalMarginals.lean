@@ -7,7 +7,7 @@ import QICLean.Representation.RegionalFiveFactorCoordinates
 import QICLean.Analysis.PhysicalSingletonDensity
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Representation.RegionalPhysicalVector
-import QICLean.Entropy.FiniteProduct
+import QICLean.Entropy.RegionEntropy
 import Mathlib.Logic.Equiv.Fin.Basic
 
 /-!
@@ -30,7 +30,7 @@ noncomputable section
 open TensorPower
 open scoped Matrix ComplexOrder
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type u} [Fintype V] [DecidableEq V]
 
@@ -40,7 +40,7 @@ def regionalPhysicalRegion (Q Y : Finset V) : Fin 3 → Finset V :=
   ![Q, Y, (Q ∪ Y)ᶜ]
 
 
-end FiniteProduct
+end ManyBody
 
 namespace Matrix
 
@@ -57,19 +57,19 @@ private theorem singletonDensity_eq_reducedPure_of_coordinates
     (ι : Fin 5 → Type*) [∀ f, Fintype (ι f)]
     (Ω : ((v : V) → β v) → ℂ) (T : Finset V) (j : Fin 3)
     (e : ((v : V) → β v) ≃ ι 0 × (ι 1 × ι 2))
-    (a : FiniteProduct.Configuration β T ≃ ι (j.castAdd 2))
-    (b : FiniteProduct.Configuration β Tᶜ ≃
+    (a : ManyBody.RegionConfig β T ≃ ι (j.castAdd 2))
+    (b : ManyBody.RegionConfig β Tᶜ ≃
       ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2)))
     (hcoords : ∀ x, physicalSingletonEquiv ι j (e x) =
-      (a.prodCongr b) (FiniteProduct.splitEquiv β T x)) :
+      (a.prodCongr b) (ManyBody.splitEquiv β T x)) :
     physicalSingletonDensity ι (Ω ∘ e.symm) j =
-      (FiniteProduct.reducedPure β (WithLp.toLp 2 Ω) T).submatrix a.symm a.symm := by
+      (ManyBody.regionState (WithLp.toLp 2 Ω) T).submatrix a.symm a.symm := by
   classical
   have he : e.trans (physicalSingletonEquiv ι j) =
-      (FiniteProduct.splitEquiv β T).trans (a.prodCongr b) :=
+      (ManyBody.splitEquiv β T).trans (a.prodCongr b) :=
     Equiv.ext hcoords
   let M := (vecMulVec Ω (star Ω)).submatrix
-    (FiniteProduct.splitEquiv β T).symm (FiniteProduct.splitEquiv β T).symm
+    (ManyBody.splitEquiv β T).symm (ManyBody.splitEquiv β T).symm
   calc
     _ = partialTraceRight (M.submatrix (a.prodCongr b).symm
         (a.prodCongr b).symm) := by
@@ -78,8 +78,8 @@ private theorem singletonDensity_eq_reducedPure_of_coordinates
       ext x y
       change Ω ((e.trans (physicalSingletonEquiv ι j)).symm x) *
           star (Ω ((e.trans (physicalSingletonEquiv ι j)).symm y)) =
-        Ω (((FiniteProduct.splitEquiv β T).trans (a.prodCongr b)).symm x) *
-          star (Ω (((FiniteProduct.splitEquiv β T).trans (a.prodCongr b)).symm y))
+        Ω (((ManyBody.splitEquiv β T).trans (a.prodCongr b)).symm x) *
+          star (Ω (((ManyBody.splitEquiv β T).trans (a.prodCongr b)).symm y))
       rw [he]
     _ = _ := partialTraceRight_submatrix_prod_equiv a b M
 
@@ -94,32 +94,32 @@ Source: `07-comparators.tex`, lines 421--456 and 550--590. -/
 theorem regional_physicalSingletonDensity_eq_reducedPure
     (Ω : ((v : V) → β v) → ℂ) (Q Y : Finset V) (hQY : Disjoint Q Y) :
     let ι := regionalFiveFactorSpace β C R Q Y
-    let ψ := Ω ∘ (FiniteProduct.regionalPhysicalEquiv β Q Y hQY).symm
-    physicalSingletonDensity ι ψ 0 = FiniteProduct.reducedPure β (WithLp.toLp 2 Ω) Q ∧
-      physicalSingletonDensity ι ψ 1 = FiniteProduct.reducedPure β (WithLp.toLp 2 Ω) Y ∧
+    let ψ := Ω ∘ (ManyBody.regionalPhysicalEquiv β Q Y hQY).symm
+    physicalSingletonDensity ι ψ 0 = ManyBody.regionState (WithLp.toLp 2 Ω) Q ∧
+      physicalSingletonDensity ι ψ 1 = ManyBody.regionState (WithLp.toLp 2 Ω) Y ∧
       physicalSingletonDensity ι ψ 2 =
-        FiniteProduct.reducedPure β (WithLp.toLp 2 Ω) (Q ∪ Y)ᶜ := by
+        ManyBody.regionState (WithLp.toLp 2 Ω) (Q ∪ Y)ᶜ := by
   classical
   intro ι ψ
-  let e := FiniteProduct.regionalPhysicalEquiv β Q Y hQY
-  let b₀ := (FiniteProduct.complementUnionEquiv β Q Y hQY).trans
+  let e := ManyBody.regionalPhysicalEquiv β Q Y hQY
+  let b₀ := (ManyBody.complementUnionEquiv β Q Y hQY).trans
     (physicalRemainingPairEquiv ι 0)
-  let b₁ := (FiniteProduct.complementUnionEquiv β Y Q hQY.symm).trans
+  let b₁ := (ManyBody.complementUnionEquiv β Y Q hQY.symm).trans
     (((Equiv.refl _).prodCongr
-      (FiniteProduct.configurationCongr β
+      (ManyBody.configurationCongr β
         (congrArg (fun T : Finset V => Tᶜ) (Finset.union_comm Y Q)))).trans
       (physicalRemainingPairEquiv ι 1))
-  let b₂ := (FiniteProduct.configurationCongr β (compl_compl (Q ∪ Y))).trans
-    ((FiniteProduct.unionEquiv β Q Y hQY).trans (physicalRemainingPairEquiv ι 2))
+  let b₂ := (ManyBody.configurationCongr β (compl_compl (Q ∪ Y))).trans
+    ((ManyBody.unionEquiv β Q Y hQY).trans (physicalRemainingPairEquiv ι 2))
   have h₀ (x : (v : V) → β v) : physicalSingletonEquiv ι 0 (e x) =
-      ((Equiv.refl _).prodCongr b₀) (FiniteProduct.splitEquiv β Q x) := by
+      ((Equiv.refl _).prodCongr b₀) (ManyBody.splitEquiv β Q x) := by
     apply Prod.ext
     · rfl
     · apply (physicalRemainingPairEquiv ι 0).symm.injective
       simp only [b₀, Equiv.prodCongr_apply, Prod.map_snd]
       rfl
   have h₁ (x : (v : V) → β v) : physicalSingletonEquiv ι 1 (e x) =
-      ((Equiv.refl _).prodCongr b₁) (FiniteProduct.splitEquiv β Y x) := by
+      ((Equiv.refl _).prodCongr b₁) (ManyBody.splitEquiv β Y x) := by
     apply Prod.ext
     · rfl
     · apply (physicalRemainingPairEquiv ι 1).symm.injective
@@ -128,12 +128,12 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
       apply Prod.ext
       · rfl
       · funext v
-        change x v = FiniteProduct.configurationCongr β
+        change x v = ManyBody.configurationCongr β
           (congrArg (fun T : Finset V => Tᶜ) (Finset.union_comm Y Q))
           (fun w => x w) v
-        rw [FiniteProduct.configurationCongr_apply]
+        rw [ManyBody.configurationCongr_apply]
   have h₂ (x : (v : V) → β v) : physicalSingletonEquiv ι 2 (e x) =
-      ((Equiv.refl _).prodCongr b₂) (FiniteProduct.splitEquiv β (Q ∪ Y)ᶜ x) := by
+      ((Equiv.refl _).prodCongr b₂) (ManyBody.splitEquiv β (Q ∪ Y)ᶜ x) := by
     apply Prod.ext
     · rfl
     · apply (physicalRemainingPairEquiv ι 2).symm.injective
@@ -141,13 +141,13 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
         Equiv.trans_apply]
       apply Prod.ext
       · funext v
-        change x v = FiniteProduct.configurationCongr β (compl_compl (Q ∪ Y))
+        change x v = ManyBody.configurationCongr β (compl_compl (Q ∪ Y))
           (fun w => x w) ⟨v, Finset.mem_union_left Y v.property⟩
-        rw [FiniteProduct.configurationCongr_apply]
+        rw [ManyBody.configurationCongr_apply]
       · funext v
-        change x v = FiniteProduct.configurationCongr β (compl_compl (Q ∪ Y))
+        change x v = ManyBody.configurationCongr β (compl_compl (Q ∪ Y))
           (fun w => x w) ⟨v, Finset.mem_union_right Q v.property⟩
-        rw [FiniteProduct.configurationCongr_apply]
+        rw [ManyBody.configurationCongr_apply]
   exact ⟨singletonDensity_eq_reducedPure_of_coordinates β ι Ω Q 0 e
       (Equiv.refl _) b₀ h₀,
     singletonDensity_eq_reducedPure_of_coordinates β ι Ω Y 1 e
@@ -171,16 +171,16 @@ Source: `07-comparators.tex`, lines 550--590. -/
 theorem regional_physicalSingleton_spectral_statistics
     (Ω : ((v : V) → β v) → ℂ) (Q Y : Finset V) (hQY : Disjoint Q Y) (j : Fin 3) :
     let ι := regionalFiveFactorSpace β C R Q Y
-    let ψ := Ω ∘ (FiniteProduct.regionalPhysicalEquiv β Q Y hQY).symm
-    let T := FiniteProduct.regionalPhysicalRegion Q Y j
+    let ψ := Ω ∘ (ManyBody.regionalPhysicalEquiv β Q Y hQY).symm
+    let T := ManyBody.regionalPhysicalRegion Q Y j
     vonNeumannEntropy (physicalSingletonDensity ι ψ j)
         (posSemidef_physicalSingletonDensity ι ψ j).isHermitian =
-      FiniteProduct.entropy β (WithLp.toLp 2 Ω) T ∧
+      ManyBody.regionEntropy (WithLp.toLp 2 Ω) T ∧
       ∀ v : ℝ, Entropy.surprisalMoment
           (posSemidef_physicalSingletonDensity ι ψ j).isHermitian.eigenvalues v =
         Entropy.surprisalMoment
-          (FiniteProduct.reducedPure_posSemidef β
-            (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues v := by
+          (ManyBody.regionState_posSemidef
+            T (WithLp.toLp 2 Ω)).isHermitian.eigenvalues v := by
   intro ι ψ T
   obtain ⟨h₀, h₁, h₂⟩ := regional_physicalSingletonDensity_eq_reducedPure β C R Ω Q Y hQY
   fin_cases j

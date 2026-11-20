@@ -27,7 +27,7 @@ namespace Entropy
 private theorem localLift_eq_middleFirst {V : Type*} [Fintype V] [DecidableEq V]
     {q : ℕ} (J : Finset V)
     (K : Matrix (J → Fin q) (J → Fin q) ℂ) :
-    let tau := (FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) J).trans
+    let tau := (ManyBody.splitEquiv (fun _ : V ↦ Fin q) J).trans
       (Equiv.prodComm _ _)
     ManyBody.place (X := fun _ ↦ Fin q) J K =
       ((1 : Matrix (↥(Jᶜ) → Fin q) (↥(Jᶜ) → Fin q) ℂ) ⊗ₖ K).submatrix tau tau := by
@@ -38,9 +38,9 @@ private theorem localLift_eq_middleFirst {V : Type*} [Fintype V] [DecidableEq V]
   simp only [submatrix_apply, kroneckerMap_apply, one_apply,
     tau, Equiv.trans_apply, Equiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap]
   have hfst (ξ : V → Fin q) :
-      ((FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) J) ξ).1 = (fun v : J ↦ ξ v) := rfl
+      ((ManyBody.splitEquiv (fun _ : V ↦ Fin q) J) ξ).1 = (fun v : J ↦ ξ v) := rfl
   have hsnd (ξ : V → Fin q) :
-      ((FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) J) ξ).2 =
+      ((ManyBody.splitEquiv (fun _ : V ↦ Fin q) J) ξ).2 =
         (fun v : ↥(Jᶜ) ↦ ξ v) := rfl
   have hrest : ((fun v : ↥(Jᶜ) ↦ σ v) = (fun v : ↥(Jᶜ) ↦ ρ v)) ↔
       ∀ v ∉ J, σ v = ρ v := by
@@ -61,13 +61,13 @@ theorem localLift_middleFirst_conjugation {V : Type*} [Fintype V] [DecidableEq V
     {q : ℕ} (J : Finset V)
     (K : Matrix (J → Fin q) (J → Fin q) ℂ) :
     let beta := fun _ : V ↦ Fin q
-    let tau := (FiniteProduct.splitEquiv beta J).trans (Equiv.prodComm _ _)
+    let tau := (ManyBody.splitEquiv beta J).trans (Equiv.prodComm _ _)
     let U := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ tau
-    let Phi := ((EuclideanSpace.basisFun (FiniteProduct.Configuration beta Jᶜ) ℂ).tensorProduct
-      (EuclideanSpace.basisFun (FiniteProduct.Configuration beta J) ℂ)).repr
+    let Phi := ((EuclideanSpace.basisFun (ManyBody.RegionConfig beta Jᶜ) ℂ).tensorProduct
+      (EuclideanSpace.basisFun (ManyBody.RegionConfig beta J) ℂ)).repr
     let Tm := (U.trans Phi.symm).trans (TensorProduct.commIsometry ℂ
-      (EuclideanSpace ℂ (FiniteProduct.Configuration beta Jᶜ))
-      (EuclideanSpace ℂ (FiniteProduct.Configuration beta J)))
+      (EuclideanSpace ℂ (ManyBody.RegionConfig beta Jᶜ))
+      (EuclideanSpace ℂ (ManyBody.RegionConfig beta J)))
     Tm.toContinuousLinearEquiv.toContinuousLinearMap ∘L
         toEuclideanCLM (𝕜 := ℂ) (n := V → Fin q)
           (ManyBody.place (X := fun _ ↦ Fin q) J K) ∘L

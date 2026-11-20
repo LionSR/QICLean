@@ -35,11 +35,11 @@ private theorem goodAuxiliary_density_factorization_with_remainder
     (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) {k : ℕ} (B : Finset (Fin k))
     (u : (Fin k → A) × C → ℂ) :
     let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u
-    let φ : FiniteProduct.Configuration (fun _ : Fin k => A) Bᶜ → ℂ :=
+    let φ : ManyBody.RegionConfig (fun _ : Fin k => A) Bᶜ → ℂ :=
       fun g => ∏ i : ↥(Bᶜ), Ω (g i)
-    let f := fun x : (FiniteProduct.Configuration (fun _ : Fin k => A) Bᶜ × C) ×
-        FiniteProduct.Configuration (fun _ : Fin k => A) B =>
-      w ((FiniteProduct.splitEquiv (fun _ : Fin k => A) B).symm (x.2, x.1.1), x.1.2)
+    let f := fun x : (ManyBody.RegionConfig (fun _ : Fin k => A) Bᶜ × C) ×
+        ManyBody.RegionConfig (fun _ : Fin k => A) B =>
+      w ((ManyBody.splitEquiv (fun _ : Fin k => A) B).symm (x.2, x.1.1), x.1.2)
     partialTraceRight (vecMulVec f (star f)) =
       vecMulVec φ (star φ) ⊗ₖ
         partialTraceLeft (vecMulVec (replicaGoodCopyRemainder Ω B w)
@@ -77,21 +77,21 @@ theorem partialTraceLeft_replicaExcitationComponent_eq_remainder
     simpa only [EuclideanSpace.inner_toLp_toLp, dotProduct, Pi.star_apply, hΩ,
       RCLike.ofReal_one, one_pow] using
       (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (WithLp.toLp 2 Ω))
-  have hgood : (∑ g : FiniteProduct.Configuration (fun _ : Fin k => A) Bᶜ,
+  have hgood : (∑ g : ManyBody.RegionConfig (fun _ : Fin k => A) Bᶜ,
       (∏ i : ↥(Bᶜ), Ω (g i)) * star (∏ i : ↥(Bᶜ), Ω (g i))) = 1 := by
     simp only [star_prod, ← Finset.prod_mul_distrib]
     simpa only [hdot, Finset.prod_const_one] using
       (Fintype.prod_sum (fun (_ : ↥(Bᶜ)) (a : A) => Ω a * star (Ω a))).symm
   ext c c'
   rw [partialTraceLeft_apply]
-  rw [← (FiniteProduct.splitEquiv (fun _ : Fin k => A) B).symm.sum_comp]
+  rw [← (ManyBody.splitEquiv (fun _ : Fin k => A) B).symm.sum_comp]
   simp only [Fintype.sum_prod_type, vecMulVec_apply, Pi.star_apply,
     replicaExcitationProjection_mulVec_factorization Ω hΩ B u,
     partialTraceLeft_apply, star_mul]
   apply Finset.sum_congr rfl
   intro b _
   calc
-    _ = (∑ g : FiniteProduct.Configuration (fun _ : Fin k => A) Bᶜ,
+    _ = (∑ g : ManyBody.RegionConfig (fun _ : Fin k => A) Bᶜ,
         (∏ i : ↥(Bᶜ), Ω (g i)) * star (∏ i : ↥(Bᶜ), Ω (g i))) *
         (replicaGoodCopyRemainder Ω B
           ((replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u) (b,c) *
@@ -117,11 +117,11 @@ theorem partialTraceRight_replicaExcitationComponent_goodAuxiliary_density
     (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) {k : ℕ} (B : Finset (Fin k))
     (u : (Fin k → A) × C → ℂ) :
     let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u
-    let φ : FiniteProduct.Configuration (fun _ : Fin k => A) Bᶜ → ℂ :=
+    let φ : ManyBody.RegionConfig (fun _ : Fin k => A) Bᶜ → ℂ :=
       fun g => ∏ i : ↥(Bᶜ), Ω (g i)
-    let f := fun x : (FiniteProduct.Configuration (fun _ : Fin k => A) Bᶜ × C) ×
-        FiniteProduct.Configuration (fun _ : Fin k => A) B =>
-      w ((FiniteProduct.splitEquiv (fun _ : Fin k => A) B).symm (x.2, x.1.1), x.1.2)
+    let f := fun x : (ManyBody.RegionConfig (fun _ : Fin k => A) Bᶜ × C) ×
+        ManyBody.RegionConfig (fun _ : Fin k => A) B =>
+      w ((ManyBody.splitEquiv (fun _ : Fin k => A) B).symm (x.2, x.1.1), x.1.2)
     partialTraceRight (vecMulVec f (star f)) =
       vecMulVec φ (star φ) ⊗ₖ partialTraceLeft (vecMulVec w (star w)) := by
   dsimp only

@@ -36,15 +36,15 @@ open Matrix PermutationRepresentation TensorPower
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-variable (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ)
+variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 
-local notation "A" => Configuration β X
-local notation "B" => Configuration β Xᶜ
-local notation "ι" => compressedSiteSpace β X (Fin E.card)
+local notation "A" => ManyBody.RegionConfig β X
+local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "ι" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "M" => (Fin k → A × E) × Config k ι
 local notation "N" => (Fin k → A × Fin E.card) ×
   ((Fin k → Fin E.card) × (Fin k → B))
@@ -58,7 +58,7 @@ def schmidtBellSiteEquiv : M ≃ N :=
       ((exteriorCopyEquiv β X (Fin E.card) k).trans
         (Equiv.prodComm (Fin k → B) (Fin k → Fin E.card)))
 
-variable (Ω : EuclideanSpace ℂ (Configuration β X × Configuration β Xᶜ))
+variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.RegionConfig β Xᶜ))
 
 /-- Pulling back the enumerated Bell projector gives the literal selected
 Bell projector, with identity on the actual exterior sites.
@@ -69,7 +69,7 @@ theorem selectedBellProjection_schmidtBellSiteEquiv :
     let P := finKronecker fun _ : Fin k ↦ vecMulVec b (star b)
     ((P ⊗ₖ (1 : Matrix ((Fin k → Fin E.card) × (Fin k → B))
         ((Fin k → Fin E.card) × (Fin k → B)) ℂ)).submatrix
-        (schmidtBellSiteEquiv β X E k) (schmidtBellSiteEquiv β X E k)) =
+        (ManyBody.schmidtBellSiteEquiv β X E k) (ManyBody.schmidtBellSiteEquiv β X E k)) =
       (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (Config k ι) (Config k ι) ℂ) := by
   intro b P
@@ -100,7 +100,7 @@ theorem labelProj_schmidtBellSiteEquiv
     (((1 : Matrix (Fin k → A × Fin E.card) (Fin k → A × Fin E.card) ℂ) ⊗ₖ
         (labelProj (copyPerm (Fin E.card) k) ell ⊗ₖ
           (1 : Matrix (Fin k → B) (Fin k → B) ℂ))).submatrix
-        (schmidtBellSiteEquiv β X E k) (schmidtBellSiteEquiv β X E k)) =
+        (ManyBody.schmidtBellSiteEquiv β X E k) (ManyBody.schmidtBellSiteEquiv β X E k)) =
       (1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
         labelProj (subsystemPerm k ι {none}) ell := by
   let eL := Equiv.piCongrRight fun _ : Fin k ↦
@@ -134,7 +134,7 @@ theorem schmidtBellSiteEquiv_post :
     let χ : Fin E.card × B → ℂ := fun x ↦
       compressedTypicalPureState Ω E ((Finset.equivFin E).symm x.1, x.2)
     (fun x : N ↦ (∏ j, b (x.1 j)) * ∏ j, χ (x.2.1 j, x.2.2 j)) ∘
-        schmidtBellSiteEquiv β X E k =
+        ManyBody.schmidtBellSiteEquiv β X E k =
       fun x : M ↦ (∏ j, selectedBellVector Ω E (x.1 j)) *
         ∏ j, compressedTypicalPureState Ω E
           ((Finset.equivFin E).symm (x.2 j none), fun v ↦ x.2 j (some v)) := by
@@ -165,7 +165,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
         (Fin k → B) (Fin k → Fin E.card))).trans
       ((Equiv.arrowProdEquivProdArrow (Fin k) (fun _ ↦ A) (fun _ ↦ B)).symm.prodCongr
         (Equiv.refl ((Fin k → Fin E.card) × (Fin k → Fin E.card))))
-    let e := schmidtBellSiteEquiv β X E k
+    let e := ManyBody.schmidtBellSiteEquiv β X E k
     let post : M → ℂ := fun x ↦ (∏ j, selectedBellVector Ω E (x.1 j)) *
       ∏ j, compressedTypicalPureState Ω E
         ((Finset.equivFin E).symm (x.2 j none), fun v ↦ x.2 j (some v))
@@ -195,12 +195,12 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
   have hP : P.submatrix e e =
       (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (Config k ι) (Config k ι) ℂ) :=
-    selectedBellProjection_schmidtBellSiteEquiv β X E k Ω
+    ManyBody.selectedBellProjection_schmidtBellSiteEquiv β X E k Ω
   have hQ : Q.submatrix e e =
       (1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
         labelProj (subsystemPerm k ι {none}) ell :=
-    labelProj_schmidtBellSiteEquiv β X E k ell
-  have hpost : postFin ∘ e = post := schmidtBellSiteEquiv_post β X E k Ω
+    ManyBody.labelProj_schmidtBellSiteEquiv β X E k ell
+  have hpost : postFin ∘ e = post := ManyBody.schmidtBellSiteEquiv_post β X E k Ω
   ext x
   have hx := congrArg (fun v : EuclideanSpace ℂ N ↦ v (e x)) hold
   change (((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
@@ -213,4 +213,4 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
   simpa only [Function.comp_def, Equiv.apply_symm_apply, WithLp.ofLp_smul,
     WithLp.ofLp_toLp, Pi.smul_apply, smul_eq_mul] using hx
 
-end FiniteProduct
+end ManyBody

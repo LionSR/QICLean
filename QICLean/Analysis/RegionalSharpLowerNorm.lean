@@ -73,10 +73,10 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
       (∀ j j' g h, g < h → Q j g ∪ Y j g ⊆ Q j' h) →
       ∀ (K rMom : ℝ),
       (∀ (j : J) (g : Fin G) (a : Fin 3) (v : ℝ), |v| ≤ rMom →
-        let U := FiniteProduct.regionalPhysicalRegion (Q j g) (Y j g) a
+        let U := ManyBody.regionalPhysicalRegion (Q j g) (Y j g) a
         Real.log (Entropy.surprisalMoment
-          (FiniteProduct.reducedPure_posSemidef β (WithLp.toLp 2 Ω) U).isHermitian.eigenvalues v) ≤
-            v * FiniteProduct.entropy β (WithLp.toLp 2 Ω) U + K * v ^ 2) →
+          (ManyBody.regionState_posSemidef U (WithLp.toLp 2 Ω)).isHermitian.eigenvalues v) ≤
+            v * ManyBody.regionEntropy (WithLp.toLp 2 Ω) U + K * v ^ 2) →
       20 * t ≤ rMom → 20 * t ≤ 1 → 0 ≤ K →
       ∀ (T : MeanTree J) (ellC ellR : IrrepLabel (Equiv.Perm (Fin k)))
         (S ε s : ℝ),
@@ -99,9 +99,9 @@ theorem exists_replicaMetric_symProj_bandProduct_sharp_lower_norm
       let v := toEuclideanLin Z φ
       let δ := ((star v ⬝ᵥ (globalReplicaMeanHamiltonian β C R H k *ᵥ v)).re - E₀) / gap
       let entropyGap := fun j g =>
-        FiniteProduct.entropy β (WithLp.toLp 2 Ω) (Q j g) +
-          FiniteProduct.entropy β (WithLp.toLp 2 Ω) (Q j g ∪ Y j g)ᶜ -
-          FiniteProduct.entropy β (WithLp.toLp 2 Ω) (Y j g)
+        ManyBody.regionEntropy (WithLp.toLp 2 Ω) (Q j g) +
+          ManyBody.regionEntropy (WithLp.toLp 2 Ω) (Q j g ∪ Y j g)ᶜ -
+          ManyBody.regionEntropy (WithLp.toLp 2 Ω) (Y j g)
       let gaps := (Finset.univ : Finset (J × Fin G)).image
         (fun p => entropyGap p.1 p.2)
       let gmax := (insert (0 : ℝ) gaps).max' (Finset.insert_nonempty _ _)

@@ -96,7 +96,7 @@ noncomputable def replicaGoodPairMarginal
       ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))) ×
       ((Fin Bᶜ.card → Y) ×
         ((↥B → Q × (Y × V)) × ((Fin B.card → C) × (Fin B.card → R)))) =>
-    w ((FiniteProduct.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).symm
+    w ((ManyBody.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).symm
       (x.2.2.1, fun i => (x.1.1.1 ((Finset.equivFin Bᶜ) i),
         (x.2.1 ((Finset.equivFin Bᶜ) i), x.1.2.1 ((Finset.equivFin Bᶜ) i)))),
       ((TensorPower.goodBadCopiesEquiv C B).symm (x.1.1.2, x.2.2.2.1),
@@ -133,14 +133,14 @@ private theorem excitationComponent_swap
 OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
 private theorem split_physical_reindex {A A' : Type*} {k : ℕ}
     (e : A ≃ A') (B : Finset (Fin k)) (b : ↥B → A) (g : ↥(Bᶜ) → A) :
-    (FiniteProduct.splitEquiv (fun _ : Fin k => A') B).symm
+    (ManyBody.splitEquiv (fun _ : Fin k => A') B).symm
       ((fun i => e (b i)), (fun i => e (g i))) =
-    fun i => e ((FiniteProduct.splitEquiv (fun _ : Fin k => A) B).symm (b, g) i) := by
+    fun i => e ((ManyBody.splitEquiv (fun _ : Fin k => A) B).symm (b, g) i) := by
   classical
   funext i
   by_cases hi : i ∈ B
-  all_goals simp [FiniteProduct.splitEquiv_symm_apply_of_mem,
-    FiniteProduct.splitEquiv_symm_apply_of_notMem, hi]
+  all_goals simp [ManyBody.splitEquiv_symm_apply_of_mem,
+    ManyBody.splitEquiv_symm_apply_of_notMem, hi]
 
 /-- The transported component has the exchanged common density.
 OpenAI area-law manuscript, `07-comparators.tex`, lines 23, 103–110 and 524–549. -/
@@ -249,7 +249,7 @@ theorem partialTraceRight_replicaGoodPairMarginal
         (((Fin Bᶜ.card → C) × (Fin B.card → C)) × (Fin k → R)) =>
       ((replicaExcitationProjection Ω k B ⊗ₖ
       (1 : Matrix ((Fin k → C) × (Fin k → R)) ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ u)
-      ((FiniteProduct.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).symm
+      ((ManyBody.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).symm
         (x.1.2, fun i => (x.1.1.1 (Bᶜ.equivFin i), x.1.1.2 (Bᶜ.equivFin i))),
         (TensorPower.goodBadCopiesEquiv C B).symm x.2.1, x.2.2))
 
@@ -293,7 +293,7 @@ private noncomputable def goodPairCoordinates (Q Y V C R : Type*) {k : ℕ}
     ((Equiv.arrowProdEquivProdArrow (Fin Bᶜ.card) (fun _ => Q) (fun _ => Y × V)).trans
       ((Equiv.refl (Fin Bᶜ.card → Q)).prodCongr
         (Equiv.arrowProdEquivProdArrow (Fin Bᶜ.card) (fun _ => Y) (fun _ => V))))
-  let ePhys := (FiniteProduct.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).trans
+  let ePhys := (ManyBody.splitEquiv (fun _ : Fin k => Q × (Y × V)) B).trans
     ((Equiv.refl (↥B → Q × (Y × V))).prodCongr eGood)
   let regroup : ((↥B → Q × (Y × V)) ×
       ((Fin Bᶜ.card → Q) × ((Fin Bᶜ.card → Y) × (Fin Bᶜ.card → V)))) ×

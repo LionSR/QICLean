@@ -119,11 +119,11 @@ lemma isViable_region_congr {q : ℕ} {delta : ℝ} {J K : Finset V}
       (G.map (regionTensorCoordinates q J).toLinearEquiv.toLinearMap)) :
     Submodule.IsViable delta
       (S.map (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
-        (FiniteProduct.configurationCongr (fun _ : V ↦ Fin q) hJK)).toLinearEquiv.toLinearMap)
+        (ManyBody.configurationCongr (fun _ : V ↦ Fin q) hJK)).toLinearEquiv.toLinearMap)
       (G.map (regionTensorCoordinates q K).toLinearEquiv.toLinearMap) := by
   subst K
   let e := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
-    (FiniteProduct.configurationCongr (fun _ : V ↦ Fin q) (rfl : J = J))
+    (ManyBody.configurationCongr (fun _ : V ↦ Fin q) (rfl : J = J))
   have hid : e.toLinearEquiv.toLinearMap = LinearMap.id := by
     ext x c
     rfl

@@ -13,7 +13,7 @@ under regional coordinates. -/
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   for decl in #[``TensorPower.addedSiteSpace,
-      ``FiniteProduct.regionalPhysicalEquiv,
+      ``ManyBody.regionalPhysicalEquiv,
       ``TensorPower.replicaPhysicalCoordinateEquiv,
       ``TensorPower.regionalFiveFactorSpace,
       ``TensorPower.globalReplicaCopiesEquiv,

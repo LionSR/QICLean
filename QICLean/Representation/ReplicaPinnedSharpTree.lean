@@ -27,7 +27,7 @@ September 24, 2026, `07-comparators.tex`, lines 383–418, revision
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped BigOperators InnerProductSpace ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 noncomputable section
@@ -37,13 +37,13 @@ namespace TensorPower
 local instance sharpTreeRegionDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (X : Finset V) : DecidableEq (Configuration β X) :=
+    (X : Finset V) : DecidableEq (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
 local instance sharpTreeSiteDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (X : Finset V) (E : Finset (Configuration β X)) (f : Option (Option V)) :
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (f : Option (Option V)) :
     DecidableEq (addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) := by
   cases f with
   | none => exact (inferInstance : DecidableEq (Fin E.card))
@@ -55,7 +55,7 @@ local instance sharpTreeSiteDecidableEq
 local instance sharpTreeConfigDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ) :
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) :
     DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) := by
   let instCopy : DecidableEq ((f : Option (Option V)) →
       addedSiteSpace (addedSiteSpace β E) (Fin E.card) f) :=
@@ -70,17 +70,17 @@ coordinates, using the supplied physical vector and spectral selection.
 Source: `07-comparators.tex`, lines 283–308 and 383–415. -/
 def selectedBellPost
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (Configuration β X)) (k : ℕ) :
+    (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) :
     EuclideanSpace ℂ (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
-  let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-  let χ : Fin E.card × Configuration β Xᶜ → ℂ := fun x ↦
+  let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+  let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
     Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
   let Ψ := WithLp.toLp 2
-    (fun x : Config k (compressedSiteSpace β X (Fin E.card)) ↦
+    (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
       ∏ j, χ (Equiv.piOptionEquivProd (x j)))
-  let b : Configuration β X × E → ℂ := Matrix.selectedBellVector ΩX E
-  let J := (addedSiteInsertion (compressedSiteSpace β X (Fin E.card))
-    (Configuration β X × E) k b).submatrix
+  let b : ManyBody.RegionConfig β X × E → ℂ := Matrix.selectedBellVector ΩX E
+  let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X (Fin E.card))
+    (ManyBody.RegionConfig β X × E) k b).submatrix
       (bellInsertionCopyEquiv β X E (Fin E.card) k) id
   WithLp.toLp 2 (J *ᵥ WithLp.ofLp Ψ)
 
@@ -106,8 +106,8 @@ or conclusions of this finite-copy result.
 Source: `07-comparators.tex`, lines 383–418. -/
 theorem exists_selectedBellPost_sharp_tree_bounds
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (hΩ : ‖Ω‖ = 1)
-    (X : Finset V) (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     {a K r : ℝ} (ha : 0 < a) (har : 6 * a ≤ r) (ha1 : 6 * a ≤ 1) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (k G : ℕ) {ι : Type} [Fintype ι] [DecidableEq ι]
       (U Y : ι → Fin G → Finset V),
@@ -117,9 +117,9 @@ theorem exists_selectedBellPost_sharp_tree_bounds
       (∀ j g (Q : Finset V), Q = U j g ∨ Q = U j g ∪ Y j g ∨ Q = Y j g →
         ∀ v : ℝ, |v| ≤ r →
           Real.log (Entropy.surprisalMoment
-            (reducedPure_posSemidef β Ω Q).isHermitian.eigenvalues v) ≤
-            v * vonNeumannEntropy (reducedPure β Ω Q)
-              (reducedPure_posSemidef β Ω Q).isHermitian + K * v ^ 2) →
+            (ManyBody.regionState_posSemidef Q Ω).isHermitian.eigenvalues v) ≤
+            v * vonNeumannEntropy (ManyBody.regionState Ω Q)
+              (ManyBody.regionState_posSemidef Q Ω).isHermitian + K * v ^ 2) →
       ∀ (T : MeanTree ι) (ell : IrrepLabel (Equiv.Perm (Fin k))),
       let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
       let p := selectedBellPost β Ω X E k
@@ -132,12 +132,12 @@ theorem exists_selectedBellPost_sharp_tree_bounds
         ((W (ext (U j g)))⁻¹ * (W (ext (U j g ∪ Y j g)))⁻¹ * W (ext (Y j g))) ^ 2
       let M := (List.ofFn fun g ↦ T.eval (D · g)).prod
       let φ := (‖toEuclideanLin P p‖⁻¹ : ℂ) • toEuclideanLin P p
-      let S := fun Q : Finset V ↦ vonNeumannEntropy (reducedPure β Ω Q)
-        (reducedPure_posSemidef β Ω Q).isHermitian
+      let S := fun Q : Finset V ↦ vonNeumannEntropy (ManyBody.regionState Ω Q)
+        (ManyBody.regionState_posSemidef Q Ω).isHermitian
       let L := (k : ℝ) * a * (∑ g, ∑ j, T.weight j *
           (S (U j g) + S (U j g ∪ Y j g) - S (Y j g))) +
         (G : ℝ) * (12 * K * k * a ^ 2 - k * Real.log
-          ((reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E) +
+          ((ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) +
             C * Real.log ((k : ℝ) + 2))
       (inner ℂ φ (toEuclideanLin (CFC.log M) φ)).re ≤ -(G : ℝ) * Real.log q + L ∧
       ∀ s : ℝ, 0 ≤ s →
@@ -146,7 +146,7 @@ theorem exists_selectedBellPost_sharp_tree_bounds
   classical
   obtain ⟨C₀, hC₀, hleaf⟩ :=
     exists_log_re_inner_replicaPinnedFactor_post_le β Ω hΩ X E hz ha har ha1
-  let d : ℝ := ∑ Q : Finset V, (Fintype.card (Configuration β Q) : ℝ) ^ 2 / 6
+  let d : ℝ := ∑ Q : Finset V, (Fintype.card (ManyBody.RegionConfig β Q) : ℝ) ^ 2 / 6
   have hd : 0 ≤ d := Finset.sum_nonneg fun _ _ ↦ by positivity
   refine ⟨C₀ + d, add_nonneg hC₀ hd, ?_⟩
   intro k G ι _ _ U Y hXU hXY hUY hnest hmoment T ell ι₀ p P q hq W ext D M φ S L
@@ -212,7 +212,7 @@ theorem exists_selectedBellPost_sharp_tree_bounds
     exact (((hPL (ext (U j g)) _).mul_right (hPL (ext (U j g ∪ Y j g)) _)).mul_right
       (hPL (ext (Y j g)) (replicaLabelWeight ι₀ (a / 2)))).pow_right 2
   let c := 12 * K * k * a ^ 2 - k * Real.log
-    ((reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E) +
+    ((ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) +
       (C₀ + d) * Real.log ((k : ℝ) + 2)
   have hleaf' (j : ι) (g : Fin G) :
       Real.log (inner ℂ p (toEuclideanLin (D j g) p)).re ≤
@@ -221,13 +221,13 @@ theorem exists_selectedBellPost_sharp_tree_bounds
     change Real.log (inner ℂ p (toEuclideanLin (D j g) p)).re ≤
       (k : ℝ) * a * (S (U j g) + S (U j g ∪ Y j g) - S (Y j g)) +
         12 * K * k * a ^ 2 - k * Real.log
-          ((reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E) +
+          ((ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) +
             C₀ * Real.log ((k : ℝ) + 2) +
-              ((Fintype.card (Configuration β (Y j g)) : ℝ) ^ 2 / 6) *
+              ((Fintype.card (ManyBody.RegionConfig β (Y j g)) : ℝ) ^ 2 / 6) *
                 Real.log ((k : ℝ) + 1) at hb
-    have hdim : (Fintype.card (Configuration β (Y j g)) : ℝ) ^ 2 / 6 ≤ d :=
+    have hdim : (Fintype.card (ManyBody.RegionConfig β (Y j g)) : ℝ) ^ 2 / 6 ≤ d :=
       Finset.single_le_sum (s := Finset.univ)
-        (f := fun Q : Finset V ↦ (Fintype.card (Configuration β Q) : ℝ) ^ 2 / 6)
+        (f := fun Q : Finset V ↦ (Fintype.card (ManyBody.RegionConfig β Q) : ℝ) ^ 2 / 6)
         (fun Q _ ↦ by positivity) (Finset.mem_univ (Y j g))
     have hlog1 : 0 ≤ Real.log ((k : ℝ) + 1) := Real.log_nonneg
       (le_add_of_nonneg_left (show (0 : ℝ) ≤ k from Nat.cast_nonneg k))

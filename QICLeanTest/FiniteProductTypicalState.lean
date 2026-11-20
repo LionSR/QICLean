@@ -12,17 +12,17 @@ variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 
 theorem oneState_forall_disjointRegions
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
-    (X : Finset V) (E : Finset (FiniteProduct.Configuration β X))
-    (hz : 0 < (FiniteProduct.reducedPure_posSemidef β ψ X).isHermitian.spectralRestrictionMass E) :
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X ψ).isHermitian.spectralRestrictionMass E) :
     ∃ φ : EuclideanSpace ℂ ((v : V) → β v), ‖φ‖ = 1 ∧
       ∀ B : Finset V, Disjoint X B →
-        (((FiniteProduct.reducedPure_posSemidef β ψ X).isHermitian.spectralRestrictionMass E)⁻¹ •
-            FiniteProduct.reducedPure β ψ B - FiniteProduct.reducedPure β φ B).PosSemidef ∧
-        FiniteProduct.entropy β φ B ≤ FiniteProduct.entropy β ψ B /
-          (FiniteProduct.reducedPure_posSemidef β ψ X).isHermitian.spectralRestrictionMass E := by
-  exact ⟨FiniteProduct.typicalPureState β ψ X E,
-    FiniteProduct.norm_typicalPureState β ψ X E hz,
-    fun B h ↦ ⟨FiniteProduct.reducedPure_typicalPureState_le β ψ X E B h hz,
-      FiniteProduct.entropy_typicalPureState_le β ψ X E B h hψ hz⟩⟩
+        (((ManyBody.regionState_posSemidef X ψ).isHermitian.spectralRestrictionMass E)⁻¹ •
+            ManyBody.regionState ψ B - ManyBody.regionState φ B).PosSemidef ∧
+        ManyBody.regionEntropy φ B ≤ ManyBody.regionEntropy ψ B /
+          (ManyBody.regionState_posSemidef X ψ).isHermitian.spectralRestrictionMass E := by
+  exact ⟨ManyBody.typicalPureState β ψ X E,
+    ManyBody.norm_typicalPureState β ψ X E hz,
+    fun B h ↦ ⟨ManyBody.regionState_typicalPureState_le β ψ X E B h hz,
+      ManyBody.regionEntropy_typicalPureState_le β ψ X E B h hψ hz⟩⟩
 
 end FiniteProductTypicalStateTest

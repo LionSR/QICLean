@@ -54,7 +54,7 @@ theorem symProj_mul_replicaExcitationComponent_goodAuxiliary_density
     (u : (Fin k → A) × C → ℂ) :
     let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u
     let f := fun x : ((Fin (Bᶜ.card) → A) × C) × (↥B → A) =>
-      w ((FiniteProduct.splitEquiv (fun _ : Fin k => A) B).symm
+      w ((ManyBody.splitEquiv (fun _ : Fin k => A) B).symm
         (x.2, fun i => x.1.1 ((Finset.equivFin Bᶜ) i)), x.1.2)
     (symProj (copyPerm A Bᶜ.card) ⊗ₖ (1 : Matrix C C ℂ)) *
       partialTraceRight (vecMulVec f (star f)) =

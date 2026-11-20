@@ -30,7 +30,7 @@ isometry.
 
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 
 universe u
 
@@ -51,12 +51,12 @@ property is derived from the unit norm of the inserted vector.
 Source: area-law manuscript, `07-comparators.tex`, lines 283–308,
 `comparator:pinned-metric`. -/
 theorem isStarProjection_bellInsertion_symProj (k : ℕ)
-    (b : (Configuration β X × C) → ℂ) (hb : ‖WithLp.toLp 2 b‖ = 1) :
+    (b : (ManyBody.RegionConfig β X × C) → ℂ) (hb : ‖WithLp.toLp 2 b‖ = 1) :
     let e := bellInsertionCopyEquiv β X C R k
-    let J := (addedSiteInsertion (compressedSiteSpace β X R)
-      (Configuration β X × C) k b).submatrix e id
+    let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+      (ManyBody.RegionConfig β X × C) k b).submatrix e id
     let Pe := symProj (copyPerm
-      ((v : Option ↥(Xᶜ)) → compressedSiteSpace β X R v) k)
+      ((v : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X R v) k)
     IsStarProjection (J * Pe * Jᴴ) := by
   intro e J Pe
   have hJ : Jᴴ * J = 1 := isIsometry_bellInsertion β X C R k b hb
@@ -65,9 +65,9 @@ theorem isStarProjection_bellInsertion_symProj (k : ℕ)
   simpa only [Matrix.conjTranspose_conjTranspose] using
     IsStarProjection.conjTranspose_mul_mul_of_mul_conjTranspose_eq_one
       ((exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
-        (X := Config k (compressedSiteSpace β X R))).elim (fun l hl ↦
+        (X := Config k (ManyBody.compressedSiteSpace β X R))).elim (fun l hl ↦
           Eq.mp (congrArg IsStarProjection (hl (copyPerm
-            ((v : Option ↥(Xᶜ)) → compressedSiteSpace β X R v) k)))
+            ((v : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X R v) k)))
             ⟨labelProj_mul_self _ l, (isHermitian_labelProj _ l).isSelfAdjoint⟩)) Jᴴ hU
 
 end TensorPower

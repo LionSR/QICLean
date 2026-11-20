@@ -40,7 +40,7 @@ theorem partialTraceRight_replicaExcitationComponent_goodFin_density
     (u : (Fin k → A) × K → ℂ) :
     let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix K K ℂ)) *ᵥ u
     let f := fun x : ((Fin Bᶜ.card → A) × K) × (↥B → A) =>
-      w ((FiniteProduct.splitEquiv (fun _ : Fin k => A) B).symm
+      w ((ManyBody.splitEquiv (fun _ : Fin k => A) B).symm
         (x.2, fun i => x.1.1 ((Finset.equivFin Bᶜ) i)), x.1.2)
     partialTraceRight (vecMulVec f (star f)) =
       finKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) ⊗ₖ

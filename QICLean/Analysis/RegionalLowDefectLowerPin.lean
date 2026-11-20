@@ -61,7 +61,7 @@ private theorem regional_lower_pin_pullback
     {b₀ b : ℝ} (hb₀ : 0 < b₀) (hbb : b₀ ≤ b)
     (hpin :
       let ι := regionalFiveFactorSpace β C R Q Y
-      let ψ := Ω ∘ (FiniteProduct.regionalPhysicalEquiv β Q Y hQY).symm
+      let ψ := Ω ∘ (ManyBody.regionalPhysicalEquiv β Q Y hQY).symm
       let η := fiveFactorCopiesEquiv ι k
       let P := (replicaLowDefectProjection (C := C) (R := R)
         ψ k ellC ellR τ).submatrix η η
@@ -76,13 +76,13 @@ private theorem regional_lower_pin_pullback
     b⁻¹ • (Zᴴ * P * Z) ≤ Zᴴ * A * Z := by
   intro P W A
   let ι := regionalFiveFactorSpace β C R Q Y
-  let ψ := Ω ∘ (FiniteProduct.regionalPhysicalEquiv β Q Y hQY).symm
+  let ψ := Ω ∘ (ManyBody.regionalPhysicalEquiv β Q Y hQY).symm
   let η := fiveFactorCopiesEquiv ι k
   let e := regionalFiveFactorCopyEquiv β C R Q Y hQY k
   let Pc := (replicaLowDefectProjection (C := C) (R := R)
     ψ k ellC ellR τ).submatrix η η
   have hψ : ‖WithLp.toLp 2 ψ‖ = 1 :=
-    (FiniteProduct.norm_regionalPhysicalVector β Ω Q Y hQY).trans hΩ
+    (ManyBody.norm_regionalPhysicalVector β Ω Q Y hQY).trans hΩ
   have hPc : 0 ≤ Pc := by
     exact ((Matrix.nonneg_iff_posSemidef.mp
       (isStarProjection_replicaLowDefectProjection ψ hψ k ellC ellR τ).nonneg).submatrix η).nonneg
@@ -154,9 +154,9 @@ theorem exists_globalReplicaLowDefectProjection_rough_lower_pin
   refine ⟨(globalReplicaLowDefectProjection_properties β C R Ω hΩ k ellC ellR τ).2.2
     n Z hZZ, ?_⟩
   intro Q Y hQY W A
-  let ψ := Ω ∘ (FiniteProduct.regionalPhysicalEquiv β Q Y hQY).symm
+  let ψ := Ω ∘ (ManyBody.regionalPhysicalEquiv β Q Y hQY).symm
   have hψ : ‖WithLp.toLp 2 ψ‖ = 1 :=
-    (FiniteProduct.norm_regionalPhysicalVector β Ω Q Y hQY).trans hΩ
+    (ManyBody.norm_regionalPhysicalVector β Ω Q Y hQY).trans hΩ
   let b₀ := ((k : ℝ) + 1) * Real.exp (k * Real.binEntropy τ) *
     (((k : ℝ) + 2) ^ f (Q, Y) * Real.exp
       (-(k : ℝ) * (2 * t) * (2 * S - τ * d - 3 * Real.binEntropy τ) + (2 * t) * ε))
@@ -189,15 +189,15 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
         IsStarProjection (Zᴴ * P * Z) ∧
           ∀ (Q Y : Finset V), Disjoint Q Y → ∀ (K r : ℝ),
             (∀ j : Fin 3, ∀ v : ℝ, |v| ≤ r →
-              let T := FiniteProduct.regionalPhysicalRegion Q Y j
+              let T := ManyBody.regionalPhysicalRegion Q Y j
               Real.log (Entropy.surprisalMoment
-                (FiniteProduct.reducedPure_posSemidef β (WithLp.toLp 2 Ω) T).isHermitian.eigenvalues
+                (ManyBody.regionState_posSemidef T (WithLp.toLp 2 Ω)).isHermitian.eigenvalues
                 v) ≤
-                  v * FiniteProduct.entropy β (WithLp.toLp 2 Ω) T + K * v ^ 2) →
+                  v * ManyBody.regionEntropy (WithLp.toLp 2 Ω) T + K * v ^ 2) →
             20 * t ≤ r → 20 * t ≤ 1 → 0 ≤ K →
-            let g := FiniteProduct.entropy β (WithLp.toLp 2 Ω) Q +
-              FiniteProduct.entropy β (WithLp.toLp 2 Ω) (Q ∪ Y)ᶜ -
-              FiniteProduct.entropy β (WithLp.toLp 2 Ω) Y
+            let g := ManyBody.regionEntropy (WithLp.toLp 2 Ω) Q +
+              ManyBody.regionEntropy (WithLp.toLp 2 Ω) (Q ∪ Y)ᶜ -
+              ManyBody.regionEntropy (WithLp.toLp 2 Ω) Y
             let b := ((k : ℝ) + 1) * Real.exp (k * Real.binEntropy τ) *
               (((k : ℝ) + 2) ^ c * Real.exp
                 (-(k : ℝ) * (2 * t) *
@@ -226,9 +226,9 @@ theorem exists_globalReplicaLowDefectProjection_sharp_lower_pin
   refine ⟨(globalReplicaLowDefectProjection_properties β C R Ω hΩ k ellC ellR τ).2.2
     n Z hZZ, ?_⟩
   intro Q Y hQY K r hmoment htr htone hK g b W A
-  let ψ := Ω ∘ (FiniteProduct.regionalPhysicalEquiv β Q Y hQY).symm
+  let ψ := Ω ∘ (ManyBody.regionalPhysicalEquiv β Q Y hQY).symm
   have hψ : ‖WithLp.toLp 2 ψ‖ = 1 :=
-    (FiniteProduct.norm_regionalPhysicalVector β Ω Q Y hQY).trans hΩ
+    (ManyBody.norm_regionalPhysicalVector β Ω Q Y hQY).trans hΩ
   have hstats := regional_physicalSingleton_spectral_statistics β C R Ω Q Y hQY
   have hmoment' (j : Fin 3) (v : ℝ) (hv : |v| ≤ r) :
       Real.log (Entropy.surprisalMoment

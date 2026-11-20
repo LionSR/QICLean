@@ -23,7 +23,7 @@ copies of the cores; TNLean's unitary on paired sites supported on `S` with `S` 
 
 ## Main results
 
-* `FiniteProduct.mutualInformation_cores_le_of_reset_unitary`.
+* `ManyBody.regionMutualInformation_cores_le_of_reset_unitary`.
 
 ## References
 
@@ -35,7 +35,7 @@ copies of the cores; TNLean's unitary on paired sites supported on `S` with `S` 
 
 open Matrix ManyBody
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [Fintype α] [DecidableEq α]
 
@@ -44,20 +44,21 @@ and `C₀` disjoint from `D`, and let `U` be a unitary supported on a region `S`
 replicas disjoint from the first copies of `R₀` and `C₀`, with
 `‖U (Ω ⊗ Ω) - F_D (Ω ⊗ Ω)‖ ≤ δ`. Then `I_Ω(R₀ : C₀) ≤ 8 √δ log(e |α|^{|R₀|})`. Polynomial PEPS
 approximation, `02-information.tex`, lines 597–630. -/
-theorem mutualInformation_cores_le_of_reset_unitary
+theorem regionMutualInformation_cores_le_of_reset_unitary
     {Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)} (hΩ : ‖Ω‖ = 1) {D R₀ C₀ : Finset V}
     (hR₀ : R₀ ⊆ D) (hC₀ : Disjoint C₀ D) {S : Finset (V ⊕ V)}
     (hS : Disjoint S ((R₀ ∪ C₀).disjSum ∅))
     {U : Matrix (Config fun _ : V ⊕ V ↦ α) (Config fun _ : V ⊕ V ↦ α) ℂ}
     (hU : U ∈ unitaryGroup _ ℂ) (hUs : U ∈ supportedOperators (fun _ : V ⊕ V ↦ α) S) {δ : ℝ}
-    (hδ : ‖toEuclideanLin U (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω) -
-      toEuclideanLin (sitePermOp (replicaSwap D)) (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω)‖
+    (hδ : ‖toEuclideanLin U (ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω) -
+      toEuclideanLin (sitePermOp (replicaSwap D))
+          (ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω)‖
         ≤ δ) :
-    mutualInformation (fun _ : V ↦ α) Ω R₀ C₀ ≤
+    ManyBody.regionMutualInformation Ω R₀ C₀ ≤
       8 * √δ * Real.log (Real.exp 1 * (Fintype.card α : ℝ) ^ R₀.card) := by
-  set Ψ := sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
+  set Ψ := ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
   have hΨ : ‖Ψ‖ = 1 := by
-    rw [norm_sumSitesProduct, hΩ, mul_one]
+    rw [ManyBody.norm_sumSitesProduct, hΩ, mul_one]
   have hF : ‖toEuclideanLin (sitePermOp (α := α) (replicaSwap D)) Ψ‖ = 1 := by
     have h := sitePermOp_mulVec_eq_relabelVector (α := α) (replicaSwap D) Ψ
     change ‖WithLp.toLp 2 (sitePermOp _ *ᵥ WithLp.ofLp Ψ)‖ = 1
@@ -73,14 +74,18 @@ theorem mutualInformation_cores_le_of_reset_unitary
       ext w
       rcases w with v | v <;> simp
     rwa [h]
-  have hprod := mutualInformation_replicaSwap_eq_zero (α := α) hΩ hR₀ hC₀
-  have hent := mutualInformation_le_of_supported_unitary (fun _ : V ⊕ V ↦ α) hΨ hF hXJ hS' hUs
+  have hprod := ManyBody.regionMutualInformation_replicaSwap_eq_zero (α := α) hΩ hR₀ hC₀
+  have hent := ManyBody.regionMutualInformation_le_of_supported_unitary
+      (fun _ : V ⊕ V ↦ α) hΨ hF hXJ hS' hUs
     (mem_unitaryGroup_iff'.mp hU) hprod
-  rw [mutualInformation_sumSitesProduct_inl (X := fun _ : V ⊕ V ↦ α) hΩ hΩ R₀ C₀] at hent
-  have hpos : (1 : ℝ) ≤ Fintype.card (Configuration (fun _ : V ⊕ V ↦ α) (R₀.disjSum ∅)) :=
+  rw
+      [ManyBody.regionMutualInformation_sumSitesProduct_inl
+      (X := fun _ : V ⊕ V ↦ α) hΩ hΩ R₀ C₀] at hent
+  have hpos : (1 : ℝ) ≤ Fintype.card (ManyBody.RegionConfig (fun _ : V ⊕ V ↦ α) (R₀.disjSum ∅)) :=
     Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr
-      (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one (trace_reducedPure _ Ψ hΨ _)))
-  have hcard : Fintype.card (Configuration (fun _ : V ⊕ V ↦ α) (R₀.disjSum ∅)) =
+      (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one
+          (ManyBody.trace_regionState_eq_one hΨ (D := _))))
+  have hcard : Fintype.card (ManyBody.RegionConfig (fun _ : V ⊕ V ↦ α) (R₀.disjSum ∅)) =
       Fintype.card α ^ R₀.card := by
     change Fintype.card (R₀.disjSum (∅ : Finset V) → α) = _
     rw [Fintype.card_fun, Fintype.card_coe, Finset.card_disjSum, Finset.card_empty, add_zero]
@@ -91,4 +96,4 @@ theorem mutualInformation_cores_le_of_reset_unitary
   exact hent.trans (mul_le_mul_of_nonneg_right
     (mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt hδ) (by norm_num)) hlog0)
 
-end FiniteProduct
+end ManyBody

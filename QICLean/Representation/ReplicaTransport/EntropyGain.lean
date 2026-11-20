@@ -119,25 +119,25 @@ omit [∀ v, NeZero (n v)] in
 quadratic in the vector and `ρ ↦ Tr η(ρ)` is continuous on Hermitian matrices. -/
 theorem continuous_entropy (R : Finset V) :
     Continuous fun θ : (∀ v, Fin (n v)) → ℂ =>
-      FiniteProduct.entropy (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
+      ManyBody.regionEntropy ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
   have hρ : Continuous fun θ : (∀ v, Fin (n v)) → ℂ =>
-      FiniteProduct.reducedPure (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
+      ManyBody.regionState ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
     refine continuous_pi fun a => continuous_pi fun b => ?_
-    simp only [FiniteProduct.reducedPure, FiniteProduct.reducedMatrix_apply, vecMulVec_apply]
+    simp only [ManyBody.regionState_eq_regionMatrix, ManyBody.regionMatrix_apply, vecMulVec_apply]
     fun_prop
   have heq : ∀ θ : (∀ v, Fin (n v)) → ℂ,
-      FiniteProduct.entropy (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R =
-        (cfc Real.negMulLog (FiniteProduct.reducedPure (fun v => Fin (n v))
+      ManyBody.regionEntropy ((EuclideanSpace.equiv _ ℂ).symm θ) R =
+        (cfc Real.negMulLog (ManyBody.regionState
           ((EuclideanSpace.equiv _ ℂ).symm θ) R)).trace.re := fun θ => by
-    have hH := (FiniteProduct.reducedPure_posSemidef (fun v => Fin (n v))
-      ((EuclideanSpace.equiv _ ℂ).symm θ) R).isHermitian
+    have hH := (ManyBody.regionState_posSemidef
+      R ((EuclideanSpace.equiv _ ℂ).symm θ)).isHermitian
     rw [FiniteProduct.entropy, _root_.vonNeumannEntropy, hH.cfc_eq, ← RCLike.re_eq_complex_re,
       Matrix.IsHermitian.trace_cfc_eq_sum_re]
   simp_rw [heq]
   refine Complex.continuous_re.comp (continuous_id.matrix_trace.comp ?_)
   exact Continuous.cfc_of_mem_nhdsSet (s := Set.univ) Real.negMulLog Filter.univ_mem hρ
-    (fun θ => (FiniteProduct.reducedPure_posSemidef (fun v => Fin (n v))
-      ((EuclideanSpace.equiv _ ℂ).symm θ) R).isHermitian.isSelfAdjoint)
+    (fun θ => (ManyBody.regionState_posSemidef
+      R ((EuclideanSpace.equiv _ ℂ).symm θ)).isHermitian.isSelfAdjoint)
     Real.continuous_negMulLog.continuousOn
 
 omit [∀ v, NeZero (n v)] in
@@ -148,11 +148,11 @@ theorem continuous_moveEta (π : PYF V) (m : Move V) :
   cases m with
   | stay => exact continuous_const
   | toP x =>
-    simp only [moveEta, FiniteProduct.conditionalMutualInformation]
+    simp only [moveEta, ManyBody.conditionalMutualInformation]
     exact (((continuous_entropy _).add (continuous_entropy _)).sub (continuous_entropy _)).sub
       (continuous_entropy _)
   | toF x =>
-    simp only [moveEta, FiniteProduct.conditionalMutualInformation]
+    simp only [moveEta, ManyBody.conditionalMutualInformation]
     exact (((continuous_entropy _).add (continuous_entropy _)).sub (continuous_entropy _)).sub
       (continuous_entropy _)
 

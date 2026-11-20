@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.FiniteProduct
+import QICLean.Entropy.RegionEntropy
 import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
 
@@ -48,7 +48,7 @@ theorem entropy_eq_zero_of_forall_subset_or_disjoint {Φ : Interaction X S}
     {Ω : EuclideanSpace ℂ (Config X)} (hΩ : ‖Ω‖ = 1) (hgs : IsGapped Φ.hamiltonian E₀ Δ)
     (hspan : groundSpace Φ.hamiltonian E₀ = Submodule.span ℂ {Ω}) {B : Finset V}
     (hsplit : ∀ i, S i ⊆ B ∨ Disjoint (S i) B) :
-    FiniteProduct.entropy X Ω B = 0 := by
+    ManyBody.regionEntropy Ω B = 0 := by
   classical
   set c := cutEquiv X B
   obtain ⟨x₀⟩ : Nonempty (Config X) := by
@@ -115,7 +115,7 @@ theorem entropy_eq_zero_of_forall_subset_or_disjoint {Φ : Interaction X S}
     refine Finset.sum_congr rfl fun y _ ↦ ?_
     rw [hΩc, hΩc, star_mul']
     ring
-  rw [← regionEntropy_eq_entropy]
+  rw []
   refine vonNeumannEntropy_eq_zero_of_rank_le_one (regionState_posSemidef B Ω)
     (by rw [trace_regionState, hΩ]; simp) ?_
   rw [hρ]

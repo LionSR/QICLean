@@ -32,7 +32,7 @@ noncomputable section
 
 open LowEnergyBasis
 
-open Matrix 
+open Matrix
 open scoped Matrix.Norms.L2Operator InnerProductSpace
 
 
@@ -114,7 +114,7 @@ namespace ManyBody
 
 section GroundSpace
 
-open Matrix 
+open Matrix
 open scoped Matrix.Norms.L2Operator
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]

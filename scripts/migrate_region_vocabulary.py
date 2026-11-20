@@ -782,6 +782,16 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             new = MODULE_MOVES.get(mm.group(2))
             return mm.group(1) + new if new else mm.group(0)
         new_text2 = re.sub(r"^(import\s+)(\S+)", mv, new_text, flags=re.M)
+        # two old modules may move into one: keep its first import
+        seen: set[str] = set()
+        kept_lines = []
+        for ln in new_text2.split("\n"):
+            if ln.startswith("import "):
+                if ln in seen:
+                    continue
+                seen.add(ln)
+            kept_lines.append(ln)
+        new_text2 = "\n".join(kept_lines)
         if new_text2 != new_text:
             new_text, changed = new_text2, True
     if new_text != original:

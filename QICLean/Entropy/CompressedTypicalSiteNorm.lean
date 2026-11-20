@@ -26,7 +26,7 @@ open scoped ComplexOrder
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
@@ -37,18 +37,18 @@ on the auxiliary site and the original complementary physical sites.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240–247. -/
 theorem norm_compressedTypicalSiteState
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     ‖WithLp.toLp 2
-      (fun x : (f : Option ↥(Xᶜ)) → compressedSiteSpace β X (Fin E.card) f ↦
+      (fun x : (f : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))‖ = 1 := by
   intro ΩX
-  let e : ((f : Option ↥(Xᶜ)) → compressedSiteSpace β X (Fin E.card) f) ≃
-      E × Configuration β Xᶜ :=
-    (Equiv.piOptionEquivProd (β := compressedSiteSpace β X (Fin E.card))).trans
-      ((Finset.equivFin E).symm.prodCongr (Equiv.refl (Configuration β Xᶜ)))
+  let e : ((f : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) f) ≃
+      E × ManyBody.RegionConfig β Xᶜ :=
+    (Equiv.piOptionEquivProd (β := ManyBody.compressedSiteSpace β X (Fin E.card))).trans
+      ((Finset.equivFin E).symm.prodCongr (Equiv.refl (ManyBody.RegionConfig β Xᶜ)))
   have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
       (Matrix.PosSemidef.isHermitian
         (Matrix.posSemidef_vecMulVec_self_star ΩX).partialTraceRight) E := by
@@ -59,4 +59,4 @@ theorem norm_compressedTypicalSiteState
         (Matrix.compressedTypicalPureState ΩX E)
     _ = 1 := Matrix.norm_compressedTypicalPureState ΩX E hzX
 
-end FiniteProduct
+end ManyBody

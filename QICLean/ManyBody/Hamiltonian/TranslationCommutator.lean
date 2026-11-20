@@ -38,7 +38,7 @@ noncomputable section
 
 open LowEnergyBasis
 
-open Matrix GaussianFilter 
+open Matrix GaussianFilter
 open scoped Matrix.Norms.L2Operator
 
 namespace ManyBody
@@ -301,7 +301,7 @@ theorem norm_groundCompression_commutator_le_of_momenta_exp
 
 end ManyBody
 
-open Matrix 
+open Matrix
 open scoped Matrix.Norms.L2Operator InnerProductSpace
 
 
@@ -581,7 +581,7 @@ theorem norm_groundCompression_truncated_commutator_le_finite_translation_exp
 
 end ManyBody
 
-open Matrix GaussianFilter 
+open Matrix GaussianFilter
 open scoped Matrix.Norms.L2Operator
 
 namespace ManyBody

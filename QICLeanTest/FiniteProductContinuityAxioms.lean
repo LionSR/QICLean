@@ -11,7 +11,7 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let decl := ``FiniteProduct.abs_entropy_sub_le_sqrt_traceDistance
+  let decl := ``ManyBody.abs_regionEntropy_sub_le_sqrt_traceDistance
   unless (← Lean.getEnv).contains decl do
     throwError "Missing declaration {decl}"
   let axioms ← Lean.collectAxioms decl

@@ -41,55 +41,55 @@ Source: OpenAI area-law manuscript, comparator:post-marginal and
 comparator:sharp-upper, 07-comparators.tex, lines 405–412. -/
 theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod_le
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X Q : Finset V)
-    (hXQ : Disjoint X Q) (E : Finset (FiniteProduct.Configuration β X))
-    (hz : 0 < (FiniteProduct.reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (hXQ : Disjoint X Q) (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (u : ℝ) :
-    let z := (FiniteProduct.reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-    let χ : Fin E.card × FiniteProduct.Configuration β Xᶜ → ℂ := fun x ↦
+    let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
-      (fun x : Config k (FiniteProduct.compressedSiteSpace β X (Fin E.card)) ↦
+      (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
         ∏ j, χ (Equiv.piOptionEquivProd (x j)))
     (⟪Ψ, Matrix.toEuclideanLin
       (NormedSpace.exp ((u : ℂ) • labelEntropy
-        (subsystemPerm k (FiniteProduct.compressedSiteSpace β X (Fin E.card))
-          (FiniteProduct.exteriorRegion X Q)))) Ψ⟫_ℂ).re ≤
+        (subsystemPerm k (ManyBody.compressedSiteSpace β X (Fin E.card))
+          (ManyBody.exteriorRegion X Q)))) Ψ⟫_ℂ).re ≤
       z⁻¹ ^ k *
-        (Matrix.finKronecker (fun _ : Fin k ↦ FiniteProduct.reducedPure β Ω Q) *
+        (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) *
           NormedSpace.exp ((u : ℂ) •
-            labelEntropy (copyPerm (FiniteProduct.Configuration β Q) k))).trace.re := by
+            labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k))).trace.re := by
   classical
   dsimp only
   rw [re_inner_exp_labelEntropy_compressedTypicalSiteState_prod β Ω X Q hXQ E k u]
   have hsingle := Matrix.le_iff.mpr
-    (FiniteProduct.reducedPure_typicalPureState_le β Ω X E Q hXQ hz)
+    (ManyBody.regionState_typicalPureState_le β Ω X E Q hXQ hz)
   have htensor := Matrix.finKronecker_mono
-    (fun _ : Fin k ↦ FiniteProduct.reducedPure β (FiniteProduct.typicalPureState β Ω X E) Q)
+    (fun _ : Fin k ↦ ManyBody.regionState (ManyBody.typicalPureState β Ω X E) Q)
     (fun _ : Fin k ↦
-      ((FiniteProduct.reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)⁻¹ •
-        FiniteProduct.reducedPure β Ω Q)
-    (fun _ ↦ FiniteProduct.reducedPure_posSemidef β
-      (FiniteProduct.typicalPureState β Ω X E) Q) (fun _ ↦ hsingle)
+      ((ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)⁻¹ •
+        ManyBody.regionState Ω Q)
+    (fun _ ↦ ManyBody.regionState_posSemidef
+      Q (ManyBody.typicalPureState β Ω X E)) (fun _ ↦ hsingle)
   have hscalar (c : ℝ) :
-      Matrix.finKronecker (fun _ : Fin k ↦ c • FiniteProduct.reducedPure β Ω Q) =
-        c ^ k • Matrix.finKronecker (fun _ : Fin k ↦ FiniteProduct.reducedPure β Ω Q) := by
+      Matrix.finKronecker (fun _ : Fin k ↦ c • ManyBody.regionState Ω Q) =
+        c ^ k • Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q) := by
     ext x y
     simp [Matrix.finKronecker_apply, Matrix.smul_apply,
       RCLike.real_smul_eq_coe_mul, Finset.prod_mul_distrib]
   rw [hscalar] at htensor
   have hH : ((u : ℂ) •
-      labelEntropy (copyPerm (FiniteProduct.Configuration β Q) k)).IsHermitian :=
-    (isHermitian_labelObservable (copyPerm (FiniteProduct.Configuration β Q) k)
+      labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k)).IsHermitian :=
+    (isHermitian_labelObservable (copyPerm (ManyBody.RegionConfig β Q) k)
       (fun l ↦ Real.log l.dim)).smul (by simp [IsSelfAdjoint])
   have htrace := Matrix.PosSemidef.re_trace_mul_le_re_trace_mul
     (Matrix.nonneg_iff_posSemidef.mp hH.isSelfAdjoint.exp_nonneg) htensor
   simp only [Matrix.mul_smul, Matrix.trace_smul, Complex.smul_re, smul_eq_mul] at htrace
   rw [Matrix.trace_mul_comm
     (Matrix.finKronecker (fun _ : Fin k ↦
-      FiniteProduct.reducedPure β (FiniteProduct.typicalPureState β Ω X E) Q)) _,
+      ManyBody.regionState (ManyBody.typicalPureState β Ω X E) Q)) _,
     Matrix.trace_mul_comm
-      (Matrix.finKronecker (fun _ : Fin k ↦ FiniteProduct.reducedPure β Ω Q)) _]
+      (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState Ω Q)) _]
   exact htrace
 
 end TensorPower

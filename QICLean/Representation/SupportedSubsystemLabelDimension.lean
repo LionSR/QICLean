@@ -77,9 +77,9 @@ dimension inequalities in `05-replicas.tex`, lines 105–111. -/
 theorem dim_le_pow_card_of_subsystem_labelProj_ne_zero
     (l : IrrepLabel (Equiv.Perm (Fin k)))
     (hl : labelProj (subsystemPerm k ι B) l ≠ 0) :
-    l.dim ≤ Fintype.card (FiniteProduct.Configuration ι B) ^ k := by
+    l.dim ≤ Fintype.card (ManyBody.RegionConfig ι B) ^ k := by
   classical
-  have hregional : labelProj (copyPerm (FiniteProduct.Configuration ι B) k) l ≠ 0 := by
+  have hregional : labelProj (copyPerm (ManyBody.RegionConfig ι B) k) l ≠ 0 := by
     intro hz
     apply hl
     ext x y
@@ -89,9 +89,9 @@ theorem dim_le_pow_card_of_subsystem_labelProj_ne_zero
     simpa only [Matrix.submatrix_apply, Equiv.symm_apply_apply, hz,
       Matrix.kronecker_zero, Matrix.zero_apply] using h
   calc
-    l.dim ≤ Fintype.card (Fin k → FiniteProduct.Configuration ι B) :=
+    l.dim ≤ Fintype.card (Fin k → ManyBody.RegionConfig ι B) :=
       dim_le_card_of_labelProj_ne_zero
-        (copyPerm (FiniteProduct.Configuration ι B) k) l hregional
-    _ = Fintype.card (FiniteProduct.Configuration ι B) ^ k := by simp
+        (copyPerm (ManyBody.RegionConfig ι B) k) l hregional
+    _ = Fintype.card (ManyBody.RegionConfig ι B) ^ k := by simp
 
 end TensorPower

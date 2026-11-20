@@ -18,11 +18,13 @@ import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.ProductFamily
 import QICLean.ManyBody.Sites.ProductForm
 import QICLean.ManyBody.Sites.RegionExpectation
+import QICLean.ManyBody.Sites.RegionMatrix
 import QICLean.ManyBody.Sites.RegionState
 import QICLean.ManyBody.Sites.RegionUnion
 import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Sites.ReplicaSwap
 import QICLean.ManyBody.Sites.SiteAction
+import QICLean.ManyBody.Sites.SplitOperatorSchmidt
 import QICLean.ManyBody.Sites.Subregion
 import QICLean.ManyBody.Sites.SumSites
 import QICLean.ManyBody.Sites.Support

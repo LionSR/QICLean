@@ -38,7 +38,7 @@ sector. Restriction of a matrix mean to that range is a separate result.
 
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 
 universe u
 
@@ -88,8 +88,8 @@ variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β C) R
-local notation "ιe" => compressedSiteSpace β X R
-local notation "B" => Configuration β X × C
+local notation "ιe" => ManyBody.compressedSiteSpace β X R
+local notation "B" => ManyBody.RegionConfig β X × C
 
 /-- The actual far region consists of R and the physical complement of X ∪ U. -/
 private theorem bellFarRegion_eq_compl (U : Finset V) :
@@ -113,7 +113,7 @@ theorem labelObservable_mul_bellInsertion_symProj_far (k : ℕ) (U : Finset V)
     let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
     labelObservable (subsystemPerm k ι₀
         (insert none (((X ∪ U)ᶜ).image fun v ↦ some (some v)))) f * (J * Pe) =
-      (J * Pe) * labelObservable (subsystemPerm k ιe (exteriorRegion X U)) f := by
+      (J * Pe) * labelObservable (subsystemPerm k ιe (ManyBody.exteriorRegion X U)) f := by
   intro e J Pe
   let P := insert (some none) ((X ∪ U).image fun v ↦ some (some v))
   let P₀ := symProj (copyPerm ((v : Option (Option V)) → ι₀ v) k)
@@ -132,7 +132,7 @@ theorem labelObservable_mul_bellInsertion_symProj_far (k : ℕ) (U : Finset V)
       rw [← hsym, ← Matrix.mul_assoc, hcompl, Matrix.mul_assoc, hsym]
     _ = _ := intertwine_mul_projection
       (labelObservable_mul_bellInsertion_withPin β X C R k U f b)
-      (commute_labelObservable_symProj ιe k (exteriorRegion X U) f)
+      (commute_labelObservable_symProj ιe k (ManyBody.exteriorRegion X U) f)
 
 /-- The actual original metric factor agrees on the Bell-inserted symmetric
 range with the exterior U, U ∪ Y, Y product. All six replica metrics in this
@@ -157,7 +157,7 @@ theorem replicaMetric_factor_mul_bellInsertion_symProj
   let K := J * Pe
   let w : IrrepLabel (Equiv.Perm (Fin k)) → ℝ := replicaLabelWeight ι₀ t
   let w' := fun l ↦ (w l)⁻¹
-  let L := fun Q f ↦ labelObservable (subsystemPerm k ιe (exteriorRegion X Q)) f
+  let L := fun Q f ↦ labelObservable (subsystemPerm k ιe (ManyBody.exteriorRegion X Q)) f
   have hinv (Q : Finset (Option (Option V))) : (W Q)⁻¹ =
       labelObservable (subsystemPerm k ι₀ Q) w' :=
     labelObservable_inv _ (fun l ↦ (replicaLabelWeight_pos ι₀ ht l).ne')
@@ -165,12 +165,12 @@ theorem replicaMetric_factor_mul_bellInsertion_symProj
       labelObservable (subsystemPerm k ι₀ (E Q)) f * K = K * L Q f :=
     intertwine_mul_projection
       (labelObservable_mul_bellInsertion_exterior β X C R k Q f b)
-      (commute_labelObservable_symProj ιe k (exteriorRegion X Q) f)
+      (commute_labelObservable_symProj ιe k (ManyBody.exteriorRegion X Q) f)
   have hP : (W P)⁻¹ * K = K * L U w' := by
     rw [hinv]
     exact intertwine_mul_projection
       (labelObservable_mul_bellInsertion_withPin β X C R k U w' b)
-      (commute_labelObservable_symProj ιe k (exteriorRegion X U) w')
+      (commute_labelObservable_symProj ιe k (ManyBody.exteriorRegion X U) w')
   have hF : (W F)⁻¹ * K = K * L (U ∪ Y) w' := by
     rw [hinv]
     exact labelObservable_mul_bellInsertion_symProj_far β X C R k (U ∪ Y) w' b

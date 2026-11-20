@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.RegionUnion
-import QICLean.Channel.FiniteProduct
+import QICLean.ManyBody.Sites.RegionMatrix
 import QICLean.Algebra.PureStateExpectation
 import QICLean.Analysis.Entropy
 import QICLean.Analysis.TraceDistance
@@ -63,14 +63,19 @@ theorem trace_regionState (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
     ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K, norm_cutVector]
   simp
 
-/-- The regional state is the reduction `FiniteProduct.reducedPure` of the same vector: the two
-differ only in how the configurations outside `D` are indexed. -/
-theorem regionState_eq_reducedPure (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
-    regionState φ D = FiniteProduct.reducedPure X φ D := by
+/-- The regional state is the regional matrix of the projection onto the vector: the two differ
+only in how the configurations outside `D` are indexed. -/
+theorem regionState_eq_regionMatrix (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
+    regionState φ D = regionMatrix (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))) D := by
   ext a b
-  exact (FiniteProduct.complementEquiv X D).sum_comp
-    (fun c ↦ φ ((FiniteProduct.splitEquiv X D).symm (a, c)) *
-      star (φ ((FiniteProduct.splitEquiv X D).symm (b, c))))
+  exact (complementEquiv X D).sum_comp
+    (fun c ↦ φ ((splitEquiv X D).symm (a, c)) * star (φ ((splitEquiv X D).symm (b, c))))
+
+/-- A unit vector has regional states of unit trace. -/
+theorem trace_regionState_eq_one {D : Finset V} {φ : EuclideanSpace ℂ (Config X)}
+    (hφ : ‖φ‖ = 1) : (regionState φ D).trace = 1 := by
+  rw [trace_regionState, hφ]
+  simp
 
 variable [∀ v, DecidableEq (X v)]
 
