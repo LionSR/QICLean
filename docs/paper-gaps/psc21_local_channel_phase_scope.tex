@@ -86,8 +86,17 @@ Proposition~2 (p.~8), the intersite gates act only on the physical qudits;
 the entanglement bound across a cut depends on their fixed dimension $d$,
 not on the number of onsite ancillas. Allowing one intersite layer to act
 on an arbitrarily enlarged local space does not by itself give a
-uniform-depth simulation in that convention. No such simulation or
-inclusion between the two asymptotic conversion relations is proved here.
+uniform-depth simulation in that convention. For protocols whose bases have
+at most $B\le d^k$ elements the simulation is proved: on the ring of $N\ge2$
+sites with $2k+1$ qudits of dimension $d$ per site, whose intersite gates act
+on one port qudit of each of two neighbouring sites, a protocol of depth $T$
+is realised in depth $2kT$ on the registers encoded in the data
+qudits.\footnote{Formal declaration:
+    \leanid{QuantumCircuit.IsBoundedProtocol.exists_portRing} in
+    \doclink{QICLean/Circuit/Compile/PortProtocol}.} The factor $2k$ is
+formalization-side. The inclusion between the two asymptotic conversion
+relations is not proved here: it also needs the bound on the bases along the
+protocols of the enlarged-site model.
 
 \section{Remaining scope}
 The equivalence proved here belongs to the enlarged-site protocol model. It
@@ -112,8 +121,10 @@ protocol of the enlarged-site model is a preparation of basis vectors on
 environments at the sites, an unbranched circuit of unitary gates of no larger
 depth on the same geometry, and a partial trace over the output environments.
 The environments lie in the local bases, and their dimensions depend on the
-protocol, so this does not yet act on fixed-dimensional physical qudits, which
-requires encoding the environments into qudits and routing them.\footnote{Formal declaration:
+protocol; for a protocol with bounded bases the simulation on the ring with
+physical ports above acts on fixed-dimensional qudits, and a pure or
+approximately pure output of a dilated map is, up to $\sqrt{2\varepsilon}$, a
+product with an environment vector.\footnote{Formal declaration:
     \leanid{QuantumCircuit.IsProtocol.isUnitaryDilation} in
     \doclink{QICLean/Circuit/Compile/Dilation}.} Once
 those source-model depth bounds are established, the contraction of the
