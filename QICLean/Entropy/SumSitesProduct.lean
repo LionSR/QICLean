@@ -143,7 +143,7 @@ theorem regionState_sumSitesProduct (f : EuclideanSpace ℂ ((a : A) → X (.inl
         (ManyBody.disjSumEquiv R T) (ManyBody.disjSumEquiv R T) := by
   ext a b
   simp only
-      [ManyBody.regionState_eq_regionMatrix, ManyBody.regionMatrix_apply, submatrix_apply,
+      [ManyBody.regionState, ManyBody.regionMatrix_apply, submatrix_apply,
       kroneckerMap_apply,
     vecMulVec_apply, Pi.star_apply, ManyBody.sumSitesProduct]
   rw [← (disjSumComplEquiv R T).symm.sum_comp, Fintype.sum_prod_type, Finset.sum_mul_sum]

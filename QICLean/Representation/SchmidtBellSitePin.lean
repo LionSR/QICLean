@@ -45,7 +45,7 @@ variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 local notation "A" => ManyBody.RegionConfig β X
 local notation "B" => ManyBody.RegionConfig β Xᶜ
 local notation "ι" => ManyBody.compressedSiteSpace β X (Fin E.card)
-local notation "M" => (Fin k → A × E) × Config k ι
+local notation "M" => (Fin k → A × E) × TensorPower.Config k ι
 local notation "N" => (Fin k → A × Fin E.card) ×
   ((Fin k → Fin E.card) × (Fin k → B))
 
@@ -71,7 +71,7 @@ theorem selectedBellProjection_schmidtBellSiteEquiv :
         ((Fin k → Fin E.card) × (Fin k → B)) ℂ)).submatrix
         (ManyBody.schmidtBellSiteEquiv β X E k) (ManyBody.schmidtBellSiteEquiv β X E k)) =
       (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-        (1 : Matrix (Config k ι) (Config k ι) ℂ) := by
+        (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ) := by
   intro b P
   let eL := Equiv.piCongrRight fun _ : Fin k ↦
     (Equiv.refl A).prodCongr (Finset.equivFin E)
@@ -171,7 +171,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
         ((Finset.equivFin E).symm (x.2 j none), fun v ↦ x.2 j (some v))
     WithLp.toLp 2
       (((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-        (1 : Matrix (Config k ι) (Config k ι) ℂ)) *ᵥ
+        (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) *ᵥ
           (replicaPrevector Ω E.card k ell ∘ (r ∘ e))) =
       (((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k) • WithLp.toLp 2
         (((1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
@@ -194,7 +194,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
     c • WithLp.toLp 2 (Q *ᵥ postFin) at hold
   have hP : P.submatrix e e =
       (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-        (1 : Matrix (Config k ι) (Config k ι) ℂ) :=
+        (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ) :=
     ManyBody.selectedBellProjection_schmidtBellSiteEquiv β X E k Ω
   have hQ : Q.submatrix e e =
       (1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
@@ -204,7 +204,7 @@ theorem selectedBellProjection_replicaPrevector_site (hz : 0 < z)
   ext x
   have hx := congrArg (fun v : EuclideanSpace ℂ N ↦ v (e x)) hold
   change (((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-      (1 : Matrix (Config k ι) (Config k ι) ℂ)) *ᵥ
+      (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) *ᵥ
         (replicaPrevector Ω E.card k ell ∘ (r ∘ e))) x =
     c * (((1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
       labelProj (subsystemPerm k ι {none}) ell) *ᵥ post) x

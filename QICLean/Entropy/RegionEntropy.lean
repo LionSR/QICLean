@@ -54,9 +54,7 @@ theorem regionState_eq_partialTrace (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (R : Finset V) :
     ManyBody.regionState ψ R = Matrix.partialTraceRight
       (Matrix.vecMulVec (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x))
-        (star (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x)))) := by
-  rw [regionState_eq_regionMatrix]
-  rfl
+        (star (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x)))) := rfl
 
 omit [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)] in
 /-- Complementary splits exchange their factors, including the canonical
@@ -81,7 +79,7 @@ theorem regionState_compl_eq_partialTraceLeft
         (star (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x)))) := by
   ext a b
   simp only
-      [ManyBody.regionState_eq_regionMatrix, ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply,
+      [ManyBody.regionState, ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply,
       Pi.star_apply,
     Matrix.partialTraceLeft_apply]
   simp_rw [ManyBody.split_compl_symm]
@@ -127,12 +125,10 @@ theorem regionEntropy_union_le (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ
   have htr : ρ.trace = 1 := by
     rw [Matrix.trace_submatrix_equiv]
     exact ManyBody.trace_regionState_eq_one hψ (D := (R ∪ T))
-  have hR : Matrix.partialTraceRight ρ = ManyBody.regionState ψ R := by
-    simp only [ρ, regionState_eq_regionMatrix]
-    exact partialTraceRight_regionMatrix_union β _ R T h
-  have hT : Matrix.partialTraceLeft ρ = ManyBody.regionState ψ T := by
-    simp only [ρ, regionState_eq_regionMatrix]
-    exact partialTraceLeft_regionMatrix_union β _ R T h
+  have hR : Matrix.partialTraceRight ρ = ManyBody.regionState ψ R :=
+    ManyBody.partialTraceRight_regionMatrix_union β _ R T h
+  have hT : Matrix.partialTraceLeft ρ = ManyBody.regionState ψ T :=
+    ManyBody.partialTraceLeft_regionMatrix_union β _ R T h
   have hsub := Entropy.subadditivity ρ hρ htr
   rw [vonNeumannEntropy_congr hR _ (ManyBody.regionState_posSemidef R ψ).isHermitian,
     vonNeumannEntropy_congr hT _ (ManyBody.regionState_posSemidef T ψ).isHermitian] at hsub
@@ -177,12 +173,10 @@ theorem regionMutualInformation_eq_matrix (ψ : EuclideanSpace ℂ ((v : V) → 
   let ρ := (ManyBody.regionState ψ (R ∪ T)).submatrix
     (ManyBody.unionEquiv β R T h).symm (ManyBody.unionEquiv β R T h).symm
   have hρ : ρ.PosSemidef := (ManyBody.regionState_posSemidef (R ∪ T) ψ).submatrix _
-  have hR : Matrix.partialTraceRight ρ = ManyBody.regionState ψ R := by
-    simp only [ρ, regionState_eq_regionMatrix]
-    exact partialTraceRight_regionMatrix_union β _ R T h
-  have hT : Matrix.partialTraceLeft ρ = ManyBody.regionState ψ T := by
-    simp only [ρ, regionState_eq_regionMatrix]
-    exact partialTraceLeft_regionMatrix_union β _ R T h
+  have hR : Matrix.partialTraceRight ρ = ManyBody.regionState ψ R :=
+    ManyBody.partialTraceRight_regionMatrix_union β _ R T h
+  have hT : Matrix.partialTraceLeft ρ = ManyBody.regionState ψ T :=
+    ManyBody.partialTraceLeft_regionMatrix_union β _ R T h
   have heq := Entropy.mutualInformation_submatrix_prod_equiv
     (Fintype.equivFin (ManyBody.RegionConfig β R)).symm
     (Fintype.equivFin (ManyBody.RegionConfig β T)).symm ρ hρ.isHermitian

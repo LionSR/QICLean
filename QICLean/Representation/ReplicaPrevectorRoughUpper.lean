@@ -44,10 +44,10 @@ local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
 
 local instance replicaPrevectorRoughUpperConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
+    DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
 
 local instance replicaPrevectorRoughUpperSelectedConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
+    DecidableEq (TensorPower.Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
   Fintype.decidablePiFintype
 
 open Classical in
@@ -67,14 +67,14 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
     let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun _ ↦
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ιe {none}) (ell k)) (Ψ k)‖ ^ 2
     (∀ᶠ k : ℕ in atTop,
       1 / (2 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ q k) →
     ∃ c : ℝ, 0 ≤ c ∧ ∀ᶠ k : ℕ in atTop,
-      ∀ (n : ℕ) (Z : Matrix (Config k ι₀) (Fin n) ℂ),
+      ∀ (n : ℕ) (Z : Matrix (TensorPower.Config k ι₀) (Fin n) ℂ),
       Zᴴ * Z = 1 →
       Z * Zᴴ = symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k) →
       ∀ (K : ℕ) (U Y : S → Fin K → Finset V),
@@ -87,7 +87,7 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
         ∃ D ∈ regions, (D ⊆ Q ∨ Q ⊆ D) ∧
           1 + Real.log (Fintype.card (ManyBody.RegionConfig β (D ∆ Q))) ≤ Bexc) →
       ∀ s : ℝ, 2 * s ∈ Set.Icc (0 : ℝ) 1 →
-      let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
+      let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (replicaPrevector Ω E.card k (ell k) ∘
           globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)
       let extRegion := fun Q : Finset V ↦ (Q \ X).image fun x ↦ some (some x)
@@ -109,8 +109,8 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
     (S := S) β Ω X E hΩ hz regions hnested hdisjoint ell ht hmass
   refine ⟨c, hc, hu.mono fun k hk n Z hZ hZZ K U Y hUY hnest hXY
     T Bsh Bexc hsh hmatch s hs ↦ ?_⟩
-  let e : Config k ι₀ ≃
-      Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
+  let e : TensorPower.Config k ι₀ ≃
+      TensorPower.Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
     Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight fun o ↦
       match o with
       | none => Equiv.refl (Fin E.card)
@@ -134,7 +134,7 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       addedSiteSpace (addedSiteSpace β E) (Fin E.card) o) k) := by
     simpa only [ZE, Matrix.conjTranspose_submatrix, Equiv.coe_refl] using
       ((Matrix.submatrix_mul_equiv Z Zᴴ e.symm (Equiv.refl (Fin n)) e.symm).trans
-        (congrArg (fun P : Matrix (Config k ι₀) (Config k ι₀) ℂ ↦
+        (congrArg (fun P : Matrix (TensorPower.Config k ι₀) (TensorPower.Config k ι₀) ℂ ↦
           P.submatrix e.symm e.symm) hZZ)).trans hSymm.symm
   have hp :
       toEuclideanLin Zᴴ (WithLp.toLp 2

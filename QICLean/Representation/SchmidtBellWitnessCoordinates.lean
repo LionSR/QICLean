@@ -46,13 +46,13 @@ local instance schmidtBellCoordinatesConfigurationDecidableEq : DecidableEq
   Fintype.decidablePiFintype
 
 local instance schmidtBellCoordinatesExteriorConfigDecidableEq :
-    DecidableEq (Config k ιe) := Fintype.decidablePiFintype
+    DecidableEq (TensorPower.Config k ιe) := Fintype.decidablePiFintype
 
 /-- Separate the actual selected-Bell copies from the retained exterior
 copies. The left selected coordinate E and the right coordinate Fin E.card
 are retained separately.
 Source: area-law manuscript, `07-comparators.tex`, lines 240–254 and 283–290. -/
-def schmidtBellWitnessEquiv : Config k ι₀ ≃ L × Config k ιe :=
+def schmidtBellWitnessEquiv : TensorPower.Config k ι₀ ≃ L × TensorPower.Config k ιe :=
   (bellInsertionCopyEquiv β X ↥E (Fin E.card) k).trans
     (addedSiteConfigEquiv ιe (A × E) k)
 
@@ -69,14 +69,14 @@ theorem bellInsertion_mul_conjTranspose_selectedBell :
     let J := (addedSiteInsertion ιe (A × E) k b).submatrix e id
     J * Jᴴ =
       ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-        (1 : Matrix (Config k ιe) (Config k ιe) ℂ)).submatrix
+        (1 : Matrix (TensorPower.Config k ιe) (TensorPower.Config k ιe) ℂ)).submatrix
           (ManyBody.schmidtBellWitnessEquiv β X E k)
               (ManyBody.schmidtBellWitnessEquiv β X E k) := by
   intro e b J
   let τ := ManyBody.schmidtBellWitnessEquiv β X E k
-  let : DecidableEq (Config k ιe) := fun y z ↦ Classical.propDecidable (y = z)
+  let : DecidableEq (TensorPower.Config k ιe) := fun y z ↦ Classical.propDecidable (y = z)
   ext x y
-  change (∑ q : Config k ιe,
+  change (∑ q : TensorPower.Config k ιe,
       ((∏ j, b ((τ x).1 j)) * if (τ x).2 = q then 1 else 0) *
         star ((∏ j, b ((τ y).1 j)) * if (τ y).2 = q then 1 else 0)) = _
   calc

@@ -49,7 +49,7 @@ theorem conditionalMutualInformation_eq_sub
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (X C Z : Finset V) :
     ManyBody.conditionalMutualInformation β ψ X C Z =
       ManyBody.regionMutualInformation ψ X (C ∪ Z) - ManyBody.regionMutualInformation ψ X Z := by
-  unfold ManyBody.conditionalMutualInformation mutualInformation
+  unfold ManyBody.conditionalMutualInformation regionMutualInformation
   rw [Finset.union_assoc]
   ring
 

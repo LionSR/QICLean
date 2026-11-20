@@ -93,7 +93,7 @@ theorem toEuclideanLin_compressedPhysicalCutoff_of_matched
     (hz : 0 < z) {Bsh Bexc : ℝ}
     (hsh : ManyBody.regionEntropy Ω B ≤ Bsh)
     (hexc : 1 + Real.log (Fintype.card (ManyBody.RegionConfig β (B ∆ Q))) ≤ Bexc)
-    (φ : EuclideanSpace ℂ (L × Config k ι))
+    (φ : EuclideanSpace ℂ (L × TensorPower.Config k ι))
     (hcuts : ∀ C ∈ regions,
       toEuclideanLin
         ((1 : Matrix L L ℂ) ⊗ₖ

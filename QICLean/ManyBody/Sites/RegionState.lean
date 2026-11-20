@@ -41,15 +41,27 @@ noncomputable abbrev cutVector (D : Finset V) (φ : EuclideanSpace ℂ (Config X
     ‖cutVector D φ‖ = ‖φ‖ :=
   (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv X D)).norm_map φ
 
-/-- The regional state `ρ_{φ,D} = Tr_{Dᶜ} |φ⟩⟨φ|`. -/
+/-- The regional state `ρ_{φ,D} = Tr_{Dᶜ} |φ⟩⟨φ|`: the regional matrix of the projection onto
+`φ`. -/
 noncomputable def regionState (φ : EuclideanSpace ℂ (Config X)) (D : Finset V) :
     Matrix (RegionConfig X D) (RegionConfig X D) ℂ :=
-  partialTraceRight (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ))))
+  regionMatrix (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))) D
+
+/-- The regional state in the coordinates of the cut along `D`: the partial trace of the outer
+product of the cut vector. The two differ only in how the configurations outside `D` are
+indexed. -/
+theorem regionState_eq_partialTraceRight_cutVector (D : Finset V)
+    (φ : EuclideanSpace ℂ (Config X)) :
+    regionState φ D = partialTraceRight
+      (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ)))) := by
+  ext a b
+  exact ((complementEquiv X D).sum_comp
+    (fun c ↦ φ ((splitEquiv X D).symm (a, c)) * star (φ ((splitEquiv X D).symm (b, c))))).symm
 
 /-- Regional pure-state matrices are positive semidefinite. -/
 theorem regionState_posSemidef (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
     (regionState φ D).PosSemidef :=
-  (posSemidef_vecMulVec_self_star _).partialTraceRight
+  regionMatrix_posSemidef X (posSemidef_vecMulVec_self_star _) D
 
 /-- Regional pure-state matrices are Hermitian. -/
 theorem regionState_isHermitian (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
@@ -59,17 +71,9 @@ theorem regionState_isHermitian (D : Finset V) (φ : EuclideanSpace ℂ (Config 
 /-- The trace of a regional state is the squared norm of the original vector. -/
 theorem trace_regionState (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
     (regionState φ D).trace = ((‖φ‖ ^ 2 : ℝ) : ℂ) := by
-  rw [regionState, trace_partialTraceRight, trace_vecMulVec,
-    ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K, norm_cutVector]
+  rw [regionState, trace_regionMatrix, trace_vecMulVec,
+    ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K]
   simp
-
-/-- The regional state is the regional matrix of the projection onto the vector: the two differ
-only in how the configurations outside `D` are indexed. -/
-theorem regionState_eq_regionMatrix (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :
-    regionState φ D = regionMatrix (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))) D := by
-  ext a b
-  exact (complementEquiv X D).sum_comp
-    (fun c ↦ φ ((splitEquiv X D).symm (a, c)) * star (φ ((splitEquiv X D).symm (b, c))))
 
 /-- A unit vector has regional states of unit trace. -/
 theorem trace_regionState_eq_one {D : Finset V} {φ : EuclideanSpace ℂ (Config X)}
@@ -89,7 +93,8 @@ variable {D : Finset V}
 theorem inner_place (K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ)
     (φ : EuclideanSpace ℂ (Config X)) :
     ⟪φ, toEuclideanLin (place D K) φ⟫_ℂ = (regionState φ D * K).trace := by
-  rw [inner_toEuclideanLin_eq_trace, regionState, trace_partialTraceRight_mul]
+  rw [inner_toEuclideanLin_eq_trace, regionState_eq_partialTraceRight_cutVector,
+    trace_partialTraceRight_mul]
   have hv : vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ))) =
       (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))).submatrix (cutEquiv X D).symm
         (cutEquiv X D).symm := by

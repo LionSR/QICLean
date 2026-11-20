@@ -44,14 +44,14 @@ local notation "L" => Fin k → A × E
 local instance schmidtBellRangeConfigurationDecidableEq : DecidableEq (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
-local instance schmidtBellRangeOriginalConfigDecidableEq : DecidableEq (Config k ι₀) :=
+local instance schmidtBellRangeOriginalConfigDecidableEq : DecidableEq (TensorPower.Config k ι₀) :=
   Fintype.decidablePiFintype
 
 /-- Pullback of a vector in the selected Bell range and the simultaneous-copy
 symmetric subspace is fixed by the actual inserted symmetric operator.
 Source: area-law manuscript, `07-comparators.tex`, lines 283–308 and 346–354. -/
 theorem schmidtBellWitness_pullback_range
-    (Ω : EuclideanSpace ℂ (A × B)) (φ : EuclideanSpace ℂ (L × Config k ιe))
+    (Ω : EuclideanSpace ℂ (A × B)) (φ : EuclideanSpace ℂ (L × TensorPower.Config k ιe))
     (hsym :
       let e := Equiv.arrowProdEquivProdArrow (Fin k)
         (fun _ ↦ A × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ιe f)
@@ -59,9 +59,9 @@ theorem schmidtBellWitness_pullback_range
         (copyPerm ((A × E) × ((f : Option ↥(Xᶜ)) → ιe f)) k))
     (hBell : toEuclideanLin
       ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-        (1 : Matrix (Config k ιe) (Config k ιe) ℂ)) φ = φ) :
+        (1 : Matrix (TensorPower.Config k ιe) (TensorPower.Config k ιe) ℂ)) φ = φ) :
     let τ := ManyBody.schmidtBellWitnessEquiv β X E k
-    let Φ : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2 (φ ∘ τ)
+    let Φ : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2 (φ ∘ τ)
     let J := (addedSiteInsertion ιe (A × E) k (selectedBellVector Ω E)).submatrix
       (bellInsertionCopyEquiv β X ↥E (Fin E.card) k) id
     let Pe := symProj (copyPerm ((f : Option ↥(Xᶜ)) → ιe f) k)
@@ -83,7 +83,7 @@ theorem schmidtBellWitness_pullback_range
     rw [Matrix.submatrix_mulVec_equiv]
     simpa only [τ, Function.comp_def, Equiv.apply_symm_apply, Matrix.toEuclideanLin,
       Matrix.toLpLin_apply, WithLp.ofLp_toLp] using
-      congrArg (fun v : EuclideanSpace ℂ (L × Config k ιe) ↦ (fun x ↦ v (τ x))) hBell
+      congrArg (fun v : EuclideanSpace ℂ (L × TensorPower.Config k ιe) ↦ (fun x ↦ v (τ x))) hBell
   have hPi := symProj_mul_bellInsertion β X ↥E (Fin E.card) k (selectedBellVector Ω E)
   have hP : J * Pe * Jᴴ =
       symProj (copyPerm ((f : Option (Option V)) → ι₀ f) k) * (J * Jᴴ) := by
@@ -104,7 +104,7 @@ theorem labelProj_schmidtBellWitnessEquiv_auxiliary
       labelProj (subsystemPerm k ι₀ {none}) ell := by
   classical
   let τ := ManyBody.schmidtBellWitnessEquiv β X E k
-  have he (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
+  have he (σ : Equiv.Perm (Fin k)) (x : TensorPower.Config k ι₀) :
       τ (subsystemPerm k ι₀ {none} σ x) =
         ((τ x).1, subsystemPerm k ιe {none} σ (τ x).2) := by
     apply Prod.ext
@@ -149,7 +149,7 @@ theorem labelCutoff_schmidtBellWitnessEquiv_exterior (U : Finset V) (a : ℝ) :
   classical
   let τ := ManyBody.schmidtBellWitnessEquiv β X E k
   let q := ManyBody.exteriorRegion X U
-  have he (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
+  have he (σ : Equiv.Perm (Fin k)) (x : TensorPower.Config k ι₀) :
       τ (subsystemPerm k ι₀ ((U \ X).image fun v ↦ some (some v)) σ x) =
         ((τ x).1, subsystemPerm k ιe q σ (τ x).2) := by
     change addedSiteConfigEquiv ιe (A × E) k

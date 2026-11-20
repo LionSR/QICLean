@@ -75,8 +75,8 @@ theorem eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
       (fun x : (f : Option ↥(Xᶜ)) → ι f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ι) := fun k ↦
-      WithLp.toLp 2 (fun x : Config k ι ↦ ∏ j, χsite (x j))
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
+      WithLp.toLp 2 (fun x : TensorPower.Config k ι ↦ ∏ j, χsite (x j))
     let a := ManyBody.compressedRegionalThreshold β Ω X E
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2

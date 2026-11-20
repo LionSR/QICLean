@@ -51,7 +51,7 @@ local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
 
 local instance schmidtBellPhysicalWitnessConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
+    DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
 
 open Classical in
 /-- The supplied auxiliary-label mass bound produces one eventual unit
@@ -72,7 +72,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun _ ↦
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ιe {none}) (ell k)) (Ψ k)‖ ^ 2
@@ -86,9 +86,9 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
         (bellInsertionCopyEquiv β X ↥E (Fin E.card) k) id
       let Pe := symProj (copyPerm ((o : Option ↥(Xᶜ)) → ιe o) k)
       let P := J * Pe * Jᴴ
-      let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
+      let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘ τ)
-      ∃ Φ : EuclideanSpace ℂ (Config k ι₀),
+      ∃ Φ : EuclideanSpace ℂ (TensorPower.Config k ι₀),
         ‖Φ‖ = 1 ∧
         (fun x ↦ Φ x) ∈ symmetricSubspace k ι₀ ∧
         toEuclideanLin P Φ = Φ ∧
@@ -129,13 +129,13 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   intro τ J Pe P v
   have hΦ := ManyBody.schmidtBellWitness_pullback_range β X E k ΩX φ
     (by simpa only [mem_invariantSubspace, permOp_mulVec] using hφsym) hφBell
-  have hpull (A' : Matrix ((Fin k → A × E) × Config k ιe)
-      ((Fin k → A × E) × Config k ιe) ℂ) (hA' : toEuclideanLin A' φ = φ) :
+  have hpull (A' : Matrix ((Fin k → A × E) × TensorPower.Config k ιe)
+      ((Fin k → A × E) × TensorPower.Config k ιe) ℂ) (hA' : toEuclideanLin A' φ = φ) :
       toEuclideanLin (A'.submatrix τ τ) (WithLp.toLp 2 (φ ∘ τ)) =
         WithLp.toLp 2 (φ ∘ τ) := by
     simpa only [toEuclideanLin, toLpLin_apply, WithLp.ofLp_toLp,
       submatrix_mulVec_equiv, Function.comp_def, Equiv.apply_symm_apply] using!
-      congrArg (fun w : EuclideanSpace ℂ ((Fin k → A × E) × Config k ιe) ↦
+      congrArg (fun w : EuclideanSpace ℂ ((Fin k → A × E) × TensorPower.Config k ιe) ↦
         WithLp.toLp 2 (w ∘ τ)) hA'
   refine ⟨WithLp.toLp 2 (φ ∘ τ),
     ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).norm_map φ).trans hφnorm,
@@ -149,7 +149,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
         (isHermitian_mul_mul_conjTranspose J
           (isHermitian_symProj (Ω := ((o : Option ↥(Xᶜ)) → ιe o)) (k := k))))
         (WithLp.toLp 2 (φ ∘ τ)) v).symm.trans
-        ((congrArg (fun w : EuclideanSpace ℂ (Config k ι₀) ↦ inner ℂ w v)
+        ((congrArg (fun w : EuclideanSpace ℂ (TensorPower.Config k ι₀) ↦ inner ℂ w v)
           hΦ.2).trans
           ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).inner_map_map φ
             (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k))))

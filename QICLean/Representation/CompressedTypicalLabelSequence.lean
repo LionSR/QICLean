@@ -51,7 +51,7 @@ theorem exists_label_sequence_compressedTypicalSite_mass_regionEntropy_asymptoti
     let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ι) := fun _ ↦
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     ∃ ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)),
       (∀ᶠ k : ℕ in atTop,
@@ -97,11 +97,11 @@ theorem exists_label_sequence_commonLabelCutoff_compressedTypical_bell_vector
     let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ι) := fun k ↦
-      WithLp.toLp 2 (fun x : Config k ι ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
+      WithLp.toLp 2 (fun x : TensorPower.Config k ι ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let a := ManyBody.compressedRegionalThreshold β Ω X E
     let post : (k : ℕ) →
-        EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × Config k ι) := fun k ↦
+        EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x ↦
         (∏ j, selectedBellVector ΩX E (x.1 j)) * Ψ k x.2)
     ∃ ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)),
@@ -119,13 +119,13 @@ theorem exists_label_sequence_commonLabelCutoff_compressedTypical_bell_vector
     ∀ᶠ k : ℕ in atTop,
       let e := Equiv.arrowProdEquivProdArrow (Fin k)
         (fun _ ↦ ManyBody.RegionConfig β X × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ι f)
-      ∃ φ : EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × Config k ι),
+      ∃ φ : EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι),
         ‖φ‖ = 1 ∧
         (fun x ↦ φ (e x)) ∈ invariantSubspace
           (copyPerm ((ManyBody.RegionConfig β X × E) × ((f : Option ↥(Xᶜ)) → ι f)) k) ∧
         toEuclideanLin
           ((finKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
-            (1 : Matrix (Config k ι) (Config k ι) ℂ)) φ = φ ∧
+            (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ ∧
         toEuclideanLin
           ((1 : Matrix (Fin k → ManyBody.RegionConfig β X × E)
             (Fin k → ManyBody.RegionConfig β X × E) ℂ) ⊗ₖ

@@ -231,7 +231,7 @@ FINITE_PRODUCT_DEFS = {
 }
 
 # a definition unfolded in a rewrite list -> the theorem that characterizes its survivor
-FINITE_PRODUCT_UNAPPLIED = {"reducedPure": "ManyBody.regionState_eq_regionMatrix"}
+FINITE_PRODUCT_UNAPPLIED: dict[str, str] = {}
 
 LATTICE = {
     # TNLean.Lattice (TNLean/Lattice/RegionalEntropy, RegionalEntropyBridge, EntropyDimension)
@@ -318,7 +318,8 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
             new, ops, need = finite_product_lemma_name(short), [], 0
         r = Rule("FiniteProduct." + short, new, ops, need,
                  unapplied=FINITE_PRODUCT_UNAPPLIED.get(short, ""),
-                 rename_unapplied=short in ("entropy", "mutualInformation", "reducedMatrix"))
+                 rename_unapplied=short in ("entropy", "mutualInformation", "reducedMatrix",
+                                            "reducedPure"))
         qualified[r.old] = r
         bare["FiniteProduct"][short] = r
     for short, (new, ops, need) in (LATTICE.items() if part != "A" else []):

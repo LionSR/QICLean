@@ -59,7 +59,7 @@ theorem rank_regionState_union_le {V : Type*} [Fintype V] [DecidableEq V]
     (h : Disjoint R T) :
     (ManyBody.regionState ψ (R ∪ T)).rank ≤ (ManyBody.regionState ψ R).rank *
         (ManyBody.regionState ψ T).rank := by
-  simp only [ManyBody.regionState_eq_regionMatrix]
+  simp only [ManyBody.regionState]
   exact ManyBody.rank_regionMatrix_union_le _
     (Matrix.posSemidef_vecMulVec_self_star _) R T h
 

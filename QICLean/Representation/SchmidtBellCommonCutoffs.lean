@@ -74,10 +74,10 @@ theorem exists_label_sequence_schmidtBellPrevector_commonCutoffs
       (fun x : (f : Option ↥(Xᶜ)) → ι f ↦
         compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ι) := fun k ↦
-      WithLp.toLp 2 (fun x : Config k ι ↦ ∏ j, χsite (x j))
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
+      WithLp.toLp 2 (fun x : TensorPower.Config k ι ↦ ∏ j, χsite (x j))
     let a := ManyBody.compressedRegionalThreshold β Ω X E
-    let post : (k : ℕ) → EuclideanSpace ℂ ((Fin k → A × E) × Config k ι) := fun k ↦
+    let post : (k : ℕ) → EuclideanSpace ℂ ((Fin k → A × E) × TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x ↦ (∏ j, selectedBellVector ΩX E (x.1 j)) * Ψ k x.2)
     ‖WithLp.toLp 2 ψ‖ = 1 ∧
       Matrix.partialTraceLeft (Matrix.vecMulVec ψ (star ψ)) =
@@ -122,13 +122,13 @@ theorem exists_label_sequence_schmidtBellPrevector_commonCutoffs
       ∀ᶠ k : ℕ in atTop,
         let e := Equiv.arrowProdEquivProdArrow (Fin k)
           (fun _ ↦ ManyBody.RegionConfig β X × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ι f)
-        ∃ φ : EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × Config k ι),
+        ∃ φ : EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι),
           ‖φ‖ = 1 ∧
           (fun x ↦ φ (e x)) ∈ invariantSubspace
             (copyPerm ((ManyBody.RegionConfig β X × E) × ((f : Option ↥(Xᶜ)) → ι f)) k) ∧
           toEuclideanLin
             ((finKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
-              (1 : Matrix (Config k ι) (Config k ι) ℂ)) φ = φ ∧
+              (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ ∧
           toEuclideanLin
             ((1 : Matrix (Fin k → ManyBody.RegionConfig β X × E)
               (Fin k → ManyBody.RegionConfig β X × E) ℂ) ⊗ₖ

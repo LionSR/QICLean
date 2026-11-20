@@ -65,17 +65,17 @@ private theorem spectralData_eq_of_eq [DecidableEq A] {ρ σ : Matrix A A ℂ}
 
 private theorem typicalPureState_reindex_right [DecidableEq A] (e : B ≃ C)
     (ψ : EuclideanSpace ℂ (A × B)) (E : Finset A) :
-    ManyBody.typicalPureState
+    typicalPureState
       (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ ((Equiv.refl A).prodCongr e) ψ) E =
     LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ ((Equiv.refl A).prodCongr e)
-      (ManyBody.typicalPureState ψ E) := by
+      (typicalPureState ψ E) := by
   have hs := spectralData_eq_of_eq
     (posSemidef_vecMulVec_self_star
       (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
         ((Equiv.refl A).prodCongr e) ψ)).partialTraceRight.isHermitian
     (posSemidef_vecMulVec_self_star ψ).partialTraceRight.isHermitian
     (partialTraceRight_reindex_right e ψ) E
-  simp only [ManyBody.typicalPureState, hs.1, hs.2.1, leftFilteredVector_reindex_right, map_smul]
+  simp only [typicalPureState, hs.1, hs.2.1, leftFilteredVector_reindex_right, map_smul]
 
 end Matrix
 
@@ -150,7 +150,7 @@ omit [∀ v, DecidableEq (β v)] in
 private theorem reducedPure_eq_three_marginal :
     Matrix.partialTraceRight (Matrix.partialTraceLeft (Matrix.vecMulVec φABC (star φABC))) =
       ManyBody.regionState ψ B := by
-  unfold reducedPure
+  unfold ManyBody.regionState
   rw [← ManyBody.partialTraceLeft_regionMatrix_union β (Matrix.vecMulVec ψ (star ψ)) X B h]
   ext b b'
   simp only [Matrix.partialTraceRight_apply, Matrix.partialTraceLeft_apply,

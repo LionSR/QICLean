@@ -74,7 +74,7 @@ theorem partialTraceLeft_compressedTypicalPureState_region
         simpa only [Matrix.partialTraceLeft_apply, Matrix.vecMulVec_apply,
           Pi.star_apply, hselected] using hm
   change Matrix.partialTraceLeft (Matrix.vecMulVec τ (star τ)) = ManyBody.regionState Ψ B
-  rw [ManyBody.regionState_eq_regionMatrix, ← ManyBody.partialTraceLeft_regionMatrix_union β
+  rw [ManyBody.regionState, ← ManyBody.partialTraceLeft_regionMatrix_union β
     (Matrix.vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ))) X B hXB]
   ext b b'
   change (∑ rc : Fin E.card × ManyBody.RegionConfig β (X ∪ B)ᶜ,

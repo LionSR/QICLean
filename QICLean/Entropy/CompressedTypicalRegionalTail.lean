@@ -63,7 +63,7 @@ theorem exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp
           ((k : ℝ) * (ManyBody.regionEntropy Ω B /
             (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1)))
         (WithLp.toLp 2
-          (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
+          (fun x : TensorPower.Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
             ∏ j, χsite (x j)))‖ ^ 2 ≤ Real.exp (-c * (k : ℝ)) := by
   intro ΩX χsite
   let ι := ManyBody.compressedSiteSpace β X (Fin E.card)

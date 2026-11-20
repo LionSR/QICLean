@@ -41,7 +41,7 @@ local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
 
 local instance replicaPrevectorSharpUpperConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
+    DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
 
 open Classical in
 /-- The original enumerated physical prevector satisfies the sharp weighted
@@ -68,7 +68,7 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
     ∃ C : ℝ, 0 ≤ C ∧
       (∀ G : ℕ, Tendsto (Real.bellOverlapRemainder E.card C G) atTop (𝓝 0)) ∧
       ∀ᶠ k : ℕ in atTop,
-      ∀ (n : ℕ) (Z : Matrix (Config k ι₀) (Fin n) ℂ),
+      ∀ (n : ℕ) (Z : Matrix (TensorPower.Config k ι₀) (Fin n) ℂ),
       Zᴴ * Z = 1 →
       Z * Zᴴ = symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k) →
       ∀ (G : ℕ) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -83,7 +83,7 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
             v * vonNeumannEntropy (ManyBody.regionState Ω Q)
               (ManyBody.regionState_posSemidef Q Ω).isHermitian + K * v ^ 2) →
       ∀ (T : MeanTree ι) (s : ℝ), 2 * s ∈ Set.Icc (0 : ℝ) 1 →
-      let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
+      let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (replicaPrevector Ω E.card k (ell k) ∘
           globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)
       let W := replicaMetric ι₀ (a / 2) k
@@ -110,8 +110,8 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
   refine ⟨C, hC, hlim, hu.mono ?_⟩
   intro k hk n Z hZ hZZ G ι instF instD U Y hXU hXY hUY hnest hmom T s hs
     v W Q F ext A M Nsq S
-  let e : Config k ι₀ ≃
-      Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
+  let e : TensorPower.Config k ι₀ ≃
+      TensorPower.Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
     Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight fun o ↦
       match o with
       | none => Equiv.refl (Fin E.card)
@@ -135,7 +135,7 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
       addedSiteSpace (addedSiteSpace β E) (Fin E.card) o) k) := by
     simpa only [ZE, Matrix.conjTranspose_submatrix, Equiv.coe_refl] using
       ((Matrix.submatrix_mul_equiv Z Zᴴ e.symm (Equiv.refl (Fin n)) e.symm).trans
-        (congrArg (fun P : Matrix (Config k ι₀) (Config k ι₀) ℂ ↦
+        (congrArg (fun P : Matrix (TensorPower.Config k ι₀) (TensorPower.Config k ι₀) ℂ ↦
           P.submatrix e.symm e.symm) hZZ)).trans hSymm.symm
   have hp :
       toEuclideanLin Zᴴ (WithLp.toLp 2

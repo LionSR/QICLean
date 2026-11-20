@@ -49,7 +49,7 @@ local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
 
 local instance bellPhysicalRoughUpperConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
+    DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
 
 open Classical in
 /-- The rough upper estimate for the original supplied-label prevector and
@@ -69,14 +69,14 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
     let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun _ ↦
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ιe {none}) (ell k)) (Ψ k)‖ ^ 2
     (∀ᶠ k : ℕ in atTop,
       1 / (2 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ q k) →
     ∃ c : ℝ, 0 ≤ c ∧ ∀ᶠ k : ℕ in atTop,
-      ∀ (n : ℕ) (Z : Matrix (Config k ι₀) (Fin n) ℂ),
+      ∀ (n : ℕ) (Z : Matrix (TensorPower.Config k ι₀) (Fin n) ℂ),
       Zᴴ * Z = 1 →
       Z * Zᴴ = symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k) →
       ∀ (K : ℕ) (U Y : S → Fin K → Finset V),
@@ -90,7 +90,7 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
           1 + Real.log (Fintype.card (ManyBody.RegionConfig β (D ∆ Q))) ≤ Bexc) →
       ∀ s : ℝ, 2 * s ∈ Set.Icc (0 : ℝ) 1 →
       let τ := ManyBody.schmidtBellWitnessEquiv β X E k
-      let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
+      let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘ τ)
       let extRegion := fun Q : Finset V ↦ (Q \ X).image fun x ↦ some (some x)
       let W := replicaMetric ι₀ t k

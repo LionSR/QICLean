@@ -123,7 +123,7 @@ theorem continuous_entropy (R : Finset V) :
   have hρ : Continuous fun θ : (∀ v, Fin (n v)) → ℂ =>
       ManyBody.regionState ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
     refine continuous_pi fun a => continuous_pi fun b => ?_
-    simp only [ManyBody.regionState_eq_regionMatrix, ManyBody.regionMatrix_apply, vecMulVec_apply]
+    simp only [ManyBody.regionState, ManyBody.regionMatrix_apply, vecMulVec_apply]
     fun_prop
   have heq : ∀ θ : (∀ v, Fin (n v)) → ℂ,
       ManyBody.regionEntropy ((EuclideanSpace.equiv _ ℂ).symm θ) R =

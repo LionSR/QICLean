@@ -44,7 +44,7 @@ variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 local notation "A" => ManyBody.RegionConfig β X
 local notation "B" => ManyBody.RegionConfig β Xᶜ
 local notation "ι" => ManyBody.compressedSiteSpace β X (Fin E.card)
-local notation "M" => (Fin k → A × E) × Config k ι
+local notation "M" => (Fin k → A × E) × TensorPower.Config k ι
 
 local instance schmidtBellOverlapConfigurationDecidableEq : DecidableEq
     (ManyBody.RegionConfig β X) :=
@@ -79,7 +79,7 @@ theorem inner_schmidtBellSitePrevector (hz : 0 < z)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) (φ : EuclideanSpace ℂ M)
     (hφ : toEuclideanLin
       ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-        (1 : Matrix (Config k ι) (Config k ι) ℂ)) φ = φ) :
+        (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ) :
     let post : EuclideanSpace ℂ M := WithLp.toLp 2
       (fun x ↦ (∏ j, selectedBellVector Ω E (x.1 j)) *
         ∏ j, compressedTypicalPureState Ω E
@@ -91,7 +91,7 @@ theorem inner_schmidtBellSitePrevector (hz : 0 < z)
             labelProj (subsystemPerm k ι {none}) ell) post⟫_ℂ := by
   intro post
   let P := (finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-    (1 : Matrix (Config k ι) (Config k ι) ℂ)
+    (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)
   let Q := (1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
     labelProj (subsystemPerm k ι {none}) ell
   let c : ℂ := ((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k
@@ -99,7 +99,7 @@ theorem inner_schmidtBellSitePrevector (hz : 0 < z)
     (isStarProjection_finKronecker_selectedBellProjection Ω E k hz).isSelfAdjoint.isHermitian
   have hP : P.IsHermitian := by
     change (finKronecker (fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
-      (1 : Matrix (Config k ι) (Config k ι) ℂ))ᴴ = _
+      (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ))ᴴ = _
     rw [conjTranspose_kronecker, hBell.eq, conjTranspose_one]
   have hpin := ManyBody.selectedBellProjection_replicaPrevector_site β X E k Ω hz ell
   change toEuclideanLin P (ManyBody.schmidtBellSitePrevector β X E k Ω ell) =
