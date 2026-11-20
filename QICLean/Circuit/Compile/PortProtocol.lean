@@ -28,13 +28,14 @@ namespace QuantumCircuit
 variable {N k d : ℕ} [NeZero d]
 
 /-- The induction behind `IsBoundedProtocol.exists_portRing`, along the circuit. -/
-private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B ≤ d ^ k) :
+private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B ≤ d ^ k)
+    (D : Finset (Fin N × Fin (2 * k + 1))) (hD : ∀ i, ∃ w, (i, w) ∈ D) :
     {X Z : Fin N → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
     [∀ s, Fintype (Z s)] → [∀ s, DecidableEq (Z s)] →
     (c : Circuit (Geometry.ring N) KrausGate X Z) →
     c.Forall KrausGate.ev KrausFamily.IsTP → c.IsDimBounded B → c.IsUnbranched →
     (e : ∀ s, X s ↪ Fin k → Fin d) → (f : ∀ s, Z s ↪ Fin k → Fin d) →
-    ∃ Φ, IsProtocol (Geometry.portRing N (2 * k + 1)) (2 * k * c.depth) Φ ∧
+    ∃ Φ, IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (2 * k * c.depth) Φ ∧
       Φ ∘ₗ (reindexAlgEquiv ℂ ℂ
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))).toLinearMap ∘ₗ
           (encodeCircuit (Geometry.ring N) (portDataEmbedding N k d)).map KrausGate.ev ∘ₗ
@@ -51,7 +52,7 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
     obtain ⟨L', hc', hL', hm'⟩ := L₀.exists_encoded
       ⟨fun b ↦ absurd b.2 (Finset.notMem_empty _),
         fun _ ↦ (KrausFamily.isUnitary_single (one_mem _)).isTP⟩ e f
-    obtain ⟨Φ, hΦ, hΦm⟩ := Layer.exists_portRing hN L' hL'
+    obtain ⟨Φ, hΦ, hΦm⟩ := Layer.exists_portRing hN L' hL' D hD
     refine ⟨Φ, hΦ.mono (le_of_eq ?_), LinearMap.ext fun ρ ↦ ?_⟩
     · rw [show L'.depth = 0 by simp [Layer.depth, hc', L₀, Layer.ofOnsite]]
       rfl
@@ -69,9 +70,9 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
         rw [Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, ← Nat.card_eq_fintype_card]
         exact (hY s).2.trans hB))
     obtain ⟨L', hc', hL', hm'⟩ := L.exists_encoded hc.1 e g
-    obtain ⟨Φ₁, hΦ₁, hΦ₁m⟩ := Layer.exists_portRing hN L' hL'
+    obtain ⟨Φ₁, hΦ₁, hΦ₁m⟩ := Layer.exists_portRing hN L' hL' D hD
     obtain ⟨Φ₂, hΦ₂, hΦ₂m⟩ :=
-      exists_portRing_of_isDimBounded hN hB (next i₀) (hc.2 i₀) (hdim.2 i₀) (hu.2 i₀) g f
+      exists_portRing_of_isDimBounded hN hB D hD (next i₀) (hc.2 i₀) (hdim.2 i₀) (hu.2 i₀) g f
     refine ⟨Φ₂ ∘ₗ Φ₁, (hΦ₁.comp hΦ₂).mono (le_of_eq ?_), LinearMap.ext fun ρ ↦ ?_⟩
     · have hsup : (Finset.univ.sup fun i ↦ (next i).depth) = (next i₀).depth := by
         simp only [hu.1 _ i₀]
@@ -102,8 +103,9 @@ theorem IsBoundedProtocol.exists_portRing {X Z : Fin N → Type} [∀ s, Fintype
     (hN : 2 ≤ N) (hB : B ≤ d ^ k)
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
     (h : IsBoundedProtocol (Geometry.ring N) B T Φ) (e : ∀ s, X s ↪ Fin k → Fin d)
-    (f : ∀ s, Z s ↪ Fin k → Fin d) :
-    ∃ Φ', IsProtocol (Geometry.portRing N (2 * k + 1)) (2 * k * T) Φ' ∧
+    (f : ∀ s, Z s ↪ Fin k → Fin d) (D : Finset (Fin N × Fin (2 * k + 1)))
+    (hD : ∀ i, ∃ w, (i, w) ∈ D) :
+    ∃ Φ', IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (2 * k * T) Φ' ∧
       Φ' ∘ₗ (reindexAlgEquiv ℂ ℂ
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))).toLinearMap ∘ₗ
           (encodeCircuit (Geometry.ring N) (portDataEmbedding N k d)).map KrausGate.ev ∘ₗ
@@ -113,7 +115,7 @@ theorem IsBoundedProtocol.exists_portRing {X Z : Fin N → Type} [∀ s, Fintype
           (encodeCircuit (Geometry.ring N) (portDataEmbedding N k d)).map KrausGate.ev ∘ₗ
             (encodeCircuit (Geometry.ring N) f).map KrausGate.ev ∘ₗ Φ := by
   obtain ⟨c, hc, hT, rfl, hu, hdim⟩ := h
-  obtain ⟨Φ', hΦ', hm⟩ := exists_portRing_of_isDimBounded hN hB c hc hdim hu e f
+  obtain ⟨Φ', hΦ', hm⟩ := exists_portRing_of_isDimBounded hN hB D hD c hc hdim hu e f
   exact ⟨Φ', hΦ'.mono (Nat.mul_le_mul_left _ hT), hm⟩
 
 end QuantumCircuit

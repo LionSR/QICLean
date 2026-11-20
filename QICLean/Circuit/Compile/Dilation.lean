@@ -274,52 +274,75 @@ section Distribute
 variable {G : Finset S → (S → Type) → (S → Type) → Type 1} [GateFamily G] {X Y : S → Type}
   {Γ} (L : Layer Γ G X Y)
 
-/-- The site `s` is the designated site of the cell `b`, a site chosen in the nonempty cell. -/
-def IsRep (b : L.cells) (s : S) : Prop :=
-  ∃ h : (Γ.cell b.1).Nonempty, h.choose = s
+/-- The designated site of the nonempty cell `b`: a site of `b` in `D` if `b` meets `D`, and a
+site of `b` otherwise. -/
+noncomputable def repSite (D : Finset S) (b : L.cells) (h : (Γ.cell b.1).Nonempty) : S :=
+  if h' : (Γ.cell b.1 ∩ D).Nonempty then h'.choose else h.choose
+
+/-- The site `s` is the designated site of the cell `b`. -/
+def IsRep (D : Finset S) (b : L.cells) (s : S) : Prop :=
+  ∃ h : (Γ.cell b.1).Nonempty, L.repSite D b h = s
 
 /-- The cells a site is designated for, decided classically. -/
-@[instance_reducible] noncomputable def decIsRep (s : S) : DecidablePred fun b ↦ L.IsRep b s :=
+@[instance_reducible] noncomputable def decIsRep (D : Finset S) (s : S) :
+    DecidablePred fun b ↦ L.IsRep D b s :=
   Classical.decPred _
 
 attribute [local instance] decIsRep
 
-variable {L}
+variable {L} {D : Finset S}
 
 omit [Fintype S] [GateFamily G] in
-theorem IsRep.mem {b : L.cells} {s : S} (h : L.IsRep b s) : s ∈ Γ.cell b.1 := by
+theorem repSite_mem (b : L.cells) (h : (Γ.cell b.1).Nonempty) : L.repSite D b h ∈ Γ.cell b.1 := by
+  unfold repSite
+  split_ifs with h'
+  · exact (Finset.mem_inter.mp h'.choose_spec).1
+  · exact h.choose_spec
+
+omit [Fintype S] [GateFamily G] in
+/-- A cell meeting `D` is designated a site of `D`. -/
+theorem repSite_mem_of_not_disjoint {b : L.cells} (h : (Γ.cell b.1).Nonempty)
+    (hD : ¬ Disjoint (Γ.cell b.1) D) : L.repSite D b h ∈ D := by
+  have h' := Finset.not_disjoint_iff_nonempty_inter.mp hD
+  simp only [repSite, h', ↓reduceDIte]
+  exact (Finset.mem_inter.mp h'.choose_spec).2
+
+omit [Fintype S] [GateFamily G] in
+theorem IsRep.mem {b : L.cells} {s : S} (h : L.IsRep D b s) : s ∈ Γ.cell b.1 := by
   obtain ⟨h, rfl⟩ := h
-  exact h.choose_spec
+  exact repSite_mem b h
 
 omit [Fintype S] [GateFamily G] in
 /-- A site is the designated site of at most the one cell containing it. -/
-theorem IsRep.eq {b c : L.cells} {s : S} (h : L.IsRep c s) (hb : s ∈ Γ.cell b.1) : c = b :=
+theorem IsRep.eq {b c : L.cells} {s : S} (h : L.IsRep D c s) (hb : s ∈ Γ.cell b.1) : c = b :=
   Subtype.ext (Set.PairwiseDisjoint.elim_finset L.pairwiseDisjoint c.2 b.2 s h.mem hb)
 
 omit [Fintype S] [GateFamily G] in
-theorem not_isRep_of_free {c : L.cells} (t : L.Free) : ¬ L.IsRep c t.1 :=
+theorem not_isRep_of_free {c : L.cells} (t : L.Free) : ¬ L.IsRep D c t.1 :=
   fun h ↦ t.2 (Finset.subset_biUnion_of_mem Γ.cell c.2 h.mem)
 
 variable (L) in
 /-- Types `T b` on the cells and `T' t` at the free sites of a layer, as a system: the site `s`
 carries `T b` for the cells `b` it is designated for, at most one, and `T' t` if it is the free
 site `t`. -/
-abbrev Distribute (T : L.cells → Type) (T' : L.Free → Type) (s : S) : Type :=
-  ((c : {c : L.cells // L.IsRep c s}) → T c.1) × ((t : {t : L.Free // t.1 = s}) → T' t.1)
+abbrev Distribute (D : Finset S) (T : L.cells → Type) (T' : L.Free → Type) (s : S) : Type :=
+  ((c : {c : L.cells // L.IsRep D c s}) → T c.1) × ((t : {t : L.Free // t.1 = s}) → T' t.1)
 
 omit [Fintype S] [GateFamily G] in
 /-- On a nonempty cell `b` the distributed system is `T b`. -/
-noncomputable def distributeCellEquiv (T : L.cells → Type) (T' : L.Free → Type) (b : L.cells)
-    (h : (Γ.cell b.1).Nonempty) : RegionConfig (L.Distribute T T') (Γ.cell b) ≃ T b where
-  toFun φ := (φ ⟨h.choose, h.choose_spec⟩).1 ⟨b, h, rfl⟩
+noncomputable def distributeCellEquiv (D : Finset S) (T : L.cells → Type) (T' : L.Free → Type)
+    (b : L.cells) (h : (Γ.cell b.1).Nonempty) :
+    RegionConfig (L.Distribute D T T') (Γ.cell b) ≃ T b where
+  toFun φ := (φ ⟨L.repSite D b h, repSite_mem b h⟩).1 ⟨b, h, rfl⟩
   invFun t v := (fun c ↦ cast (congrArg T (c.2.eq v.2).symm) t,
     fun t' ↦ (t'.1.2 (by rw [t'.2]; exact Finset.subset_biUnion_of_mem Γ.cell b.2 v.2)).elim)
   left_inv φ := by
     funext ⟨v, hvb⟩
     refine Prod.ext (funext fun ⟨c, hcv⟩ ↦ ?_) (funext fun t' ↦ ?_)
     · obtain rfl : c = b := hcv.eq hvb
-      have key : ∀ (w : S) (hw : w ∈ Γ.cell c.1) (_ : w = h.choose) (p : L.IsRep c w),
-          cast (congrArg T (p.eq hw).symm) ((φ ⟨h.choose, h.choose_spec⟩).1 ⟨c, h, rfl⟩) =
+      have key : ∀ (w : S) (hw : w ∈ Γ.cell c.1) (_ : w = L.repSite D c h) (p : L.IsRep D c w),
+          cast (congrArg T (p.eq hw).symm)
+            ((φ ⟨L.repSite D c h, repSite_mem c h⟩).1 ⟨c, h, rfl⟩) =
             (φ ⟨w, hw⟩).1 ⟨c, p⟩ := by
         rintro w hw rfl p
         rfl
@@ -329,8 +352,8 @@ noncomputable def distributeCellEquiv (T : L.cells → Type) (T' : L.Free → Ty
 
 omit [Fintype S] [GateFamily G] in
 /-- At a free site `t` the distributed system is `T' t`. -/
-def distributeFreeEquiv (T : L.cells → Type) (T' : L.Free → Type) (t : L.Free) :
-    L.Distribute T T' t.1 ≃ T' t where
+def distributeFreeEquiv (D : Finset S) (T : L.cells → Type) (T' : L.Free → Type) (t : L.Free) :
+    L.Distribute D T T' t.1 ≃ T' t where
   toFun p := p.2 ⟨t, rfl⟩
   invFun x := (fun c ↦ (not_isRep_of_free t c.2).elim,
     fun t' ↦ cast (congrArg T' (Subtype.ext t'.2).symm) x)
@@ -347,6 +370,46 @@ end Layer
 
 /-! ### Unitary dilations -/
 
+section UnitaryOff
+
+variable {Γ} {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+  [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+
+/-- Every gate of the layer on a nonempty cell disjoint from `D` and every onsite family at a
+site outside `D` is unitary: the families that are not unitary act on sites of `D`. -/
+def Layer.IsUnitaryOff (D : Finset S) (L : Layer Γ KrausGate X Y) : Prop :=
+  (∀ b : L.cells, (Γ.cell b.1).Nonempty → Disjoint (Γ.cell b.1) D → (L.gate b).IsUnitary) ∧
+    ∀ t : L.Free, t.1 ∉ D → (L.onsite t).IsUnitary
+
+namespace Circuit
+
+/-- Every layer of the circuit is unitary off `D` (`Layer.IsUnitaryOff`). -/
+def IsUnitaryOff (D : Finset S) : {X Z : S → Type} → [∀ s, Fintype (X s)] →
+    [∀ s, DecidableEq (X s)] → Circuit Γ KrausGate X Z → Prop
+  | _, _, _, _, done _ => True
+  | _, _, _, _, step L next => L.IsUnitaryOff D ∧ ∀ i, (next i).IsUnitaryOff D
+
+/-- Every circuit is unitary off the set of all sites. -/
+theorem isUnitaryOff_univ : {X Z : S → Type} → [∀ s, Fintype (X s)] →
+    [∀ s, DecidableEq (X s)] → (c : Circuit Γ KrausGate X Z) → c.IsUnitaryOff Finset.univ
+  | _, _, _, _, done _ => trivial
+  | _, _, _, _, step _ next => ⟨⟨fun _ h hd ↦ absurd (Finset.disjoint_self_iff_empty _ |>.mp
+        (hd.mono_right (Finset.subset_univ _))) h.ne_empty,
+      fun t ht ↦ absurd (Finset.mem_univ t.1) ht⟩, fun i ↦ isUnitaryOff_univ (next i)⟩
+
+omit [Fintype S] in
+/-- A circuit of unitary gates and onsite families is unitary off every set of sites. -/
+theorem isUnitaryOff_of_forall_isUnitary (D : Finset S) : {X Z : S → Type} →
+    [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] → {c : Circuit Γ KrausGate X Z} →
+    c.Forall KrausGate.ev KrausFamily.IsUnitary → c.IsUnitaryOff D
+  | _, _, _, _, done _, _ => trivial
+  | _, _, _, _, step _ next, h => ⟨⟨fun b _ _ ↦ h.1.1 b, fun t _ ↦ h.1.2 t⟩,
+      fun i ↦ isUnitaryOff_of_forall_isUnitary D (c := next i) (h.2 i)⟩
+
+end Circuit
+
+end UnitaryOff
+
 section Dilation
 
 variable {X Y Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
@@ -354,12 +417,13 @@ variable {X Y Z : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
 
 /-- The map `Φ` is the partial trace over output environments `F s` of an unbranched circuit of
 unitary gates of depth at most `T`, applied after the preparation of input environments `E s` in
-basis vectors. -/
-def IsUnitaryDilation (T : ℕ)
+basis vectors, where the environments at the sites outside `D` have at most one element. -/
+def IsUnitaryDilation (D : Finset S) (T : ℕ)
     (Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ) : Prop :=
   ∃ (E F : S → Type) (_ : ∀ s, Fintype (E s)) (_ : ∀ s, DecidableEq (E s))
     (_ : ∀ s, Fintype (F s)) (_ : ∀ s, DecidableEq (F s)) (e₀ : ∀ s, E s)
     (c : Circuit Γ KrausGate (fun s ↦ X s × E s) (fun s ↦ Z s × F s)),
+    (∀ s ∉ D, Subsingleton (E s) ∧ Subsingleton (F s)) ∧
     c.Forall KrausGate.ev KrausFamily.IsUnitary ∧ c.IsUnbranched ∧ c.depth ≤ T ∧
       Φ = (traceCircuit Γ Z F).map KrausGate.ev ∘ₗ c.map KrausGate.ev ∘ₗ
         (prepareCircuit Γ e₀).map KrausGate.ev
@@ -369,19 +433,23 @@ variable {Γ}
 /-- A composition of dilated maps is dilated, with the sum of the depths: the environments of
 the second map are prepared at the start and carried through the first circuit, and those of
 the first are carried through the second. -/
-theorem IsUnitaryDilation.comp {T₁ T₂ : ℕ}
+theorem IsUnitaryDilation.comp {D : Finset S} {T₁ T₂ : ℕ}
     {Φ₁ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Y) (Config Y) ℂ}
     {Φ₂ : Matrix (Config Y) (Config Y) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
-    (h₁ : IsUnitaryDilation Γ T₁ Φ₁) (h₂ : IsUnitaryDilation Γ T₂ Φ₂) :
-    IsUnitaryDilation Γ (T₁ + T₂) (Φ₂ ∘ₗ Φ₁) := by
-  obtain ⟨E₁, F₁, _, _, _, _, e₁, c₁, hu₁, hb₁, hd₁, rfl⟩ := h₁
-  obtain ⟨E₂, F₂, _, _, _, _, e₂, c₂, hu₂, hb₂, hd₂, rfl⟩ := h₂
+    (h₁ : IsUnitaryDilation Γ D T₁ Φ₁) (h₂ : IsUnitaryDilation Γ D T₂ Φ₂) :
+    IsUnitaryDilation Γ D (T₁ + T₂) (Φ₂ ∘ₗ Φ₁) := by
+  obtain ⟨E₁, F₁, _, _, _, _, e₁, c₁, hD₁, hu₁, hb₁, hd₁, rfl⟩ := h₁
+  obtain ⟨E₂, F₂, _, _, _, _, e₂, c₂, hD₂, hu₂, hb₂, hd₂, rfl⟩ := h₂
   let R₁ := relabelCircuit Γ fun s ↦ (Equiv.prodAssoc (X s) (E₁ s) (E₂ s)).symm
   let R₂ := relabelCircuit Γ fun s ↦ swapTailEquiv (Y s) (F₁ s) (E₂ s)
   let R₃ := relabelCircuit Γ fun s ↦ Equiv.prodAssoc (Z s) (F₂ s) (F₁ s)
   refine ⟨fun s ↦ E₁ s × E₂ s, fun s ↦ F₂ s × F₁ s, inferInstance, inferInstance, inferInstance,
     inferInstance, fun s ↦ (e₁ s, e₂ s),
-    R₁.comp ((c₁.tensorRight E₂).comp (R₂.comp ((c₂.tensorRight F₁).comp R₃))), ?_, ?_, ?_, ?_⟩
+    R₁.comp ((c₁.tensorRight E₂).comp (R₂.comp ((c₂.tensorRight F₁).comp R₃))), fun s hs ↦ ?_,
+    ?_, ?_, ?_, ?_⟩
+  · obtain ⟨_, _⟩ := hD₁ s hs
+    obtain ⟨_, _⟩ := hD₂ s hs
+    exact ⟨inferInstance, inferInstance⟩
   · exact (forall_isUnitary_relabelCircuit _).comp _ ((Circuit.forall_isUnitary_tensorRight _
       hu₁).comp _ ((forall_isUnitary_relabelCircuit _).comp _
         ((Circuit.forall_isUnitary_tensorRight _ hu₂).comp _ (forall_isUnitary_relabelCircuit _))))
@@ -426,37 +494,68 @@ private theorem isUnitary_single_ones {α β : Type} [Fintype α] [DecidableEq �
     ⟨by ext a a'; rw [Subsingleton.elim a' a]; simp [mul_apply],
       by ext a a'; rw [Subsingleton.elim a' a]; simp [mul_apply]⟩⟩
 
+omit [Fintype S] [DecidableEq S] in
+/-- A trace-preserving family on a nonempty basis is the partial trace of a unitary family on the
+system and an environment prepared in a basis vector, with one-element environments if the
+family is itself unitary. -/
+private theorem _root_.KrausFamily.IsTP.exists_local_dilation {α β : Type} [Fintype α]
+    [DecidableEq α] [Fintype β] [DecidableEq β] [Nonempty α] {K : KrausFamily α β}
+    (hK : K.IsTP) :
+    ∃ (E F : Type) (_ : Fintype E) (_ : DecidableEq E) (_ : Fintype F) (_ : DecidableEq F)
+      (e₀ : E) (U : KrausFamily (α × E) (β × F)), U.IsUnitary ∧
+      K.map = (KrausFamily.traceRight β F).map ∘ₗ U.map ∘ₗ
+        (KrausFamily.embed (Function.Embedding.sectL α e₀)).map ∧
+      (K.IsUnitary → Subsingleton E ∧ Subsingleton F) := by
+  by_cases hU : K.IsUnitary
+  · refine ⟨Unit, Unit, inferInstance, inferInstance, inferInstance, inferInstance, (),
+      K.reindex (Equiv.prodPUnit α) (Equiv.prodPUnit β), hU.reindex _ _, ?_,
+      fun _ ↦ ⟨inferInstance, inferInstance⟩⟩
+    refine LinearMap.ext fun ρ ↦ ?_
+    ext b b'
+    rw [LinearMap.comp_apply, LinearMap.comp_apply, KrausFamily.map_traceRight,
+      KrausFamily.map_embed_apply, partialTraceRight_apply, Fintype.sum_unique,
+      KrausFamily.map_apply, KrausFamily.map_apply, Matrix.sum_apply, Matrix.sum_apply]
+    refine Finset.sum_congr rfl fun i _ ↦ ?_
+    simp [mul_apply, initializedBasisMatrix, Fintype.sum_prod_type, one_apply]
+    rfl
+  · let : DecidableEq K.Index := Classical.decEq _
+    obtain ⟨e₀, U, hU', hK'⟩ := hK.exists_unitary_dilation
+    exact ⟨_, _, inferInstance, inferInstance, inferInstance, inferInstance, e₀, U, hU', hK',
+      fun h ↦ (hU h).elim⟩
+
 namespace Layer
 
 attribute [local instance] decIsRep
 
-variable (L : Layer Γ KrausGate X Y) {T T₂ : L.cells → Type} {T' T₂' : L.Free → Type}
+variable (L : Layer Γ KrausGate X Y) {D : Finset S} {T T₂ : L.cells → Type}
+  {T' T₂' : L.Free → Type}
 
 /-- The enlarged configurations of a nonempty cell `b`: the configurations of the system and the
 environment `T b` of its gate. -/
-private noncomputable def cellEquiv {W : S → Type} (T : L.cells → Type) (T' : L.Free → Type)
+private noncomputable def cellEquiv {W : S → Type} (D : Finset S) (T : L.cells → Type)
+    (T' : L.Free → Type)
     (b : L.cells) (h : (Γ.cell b.1).Nonempty) :
-    RegionConfig (fun s ↦ W s × L.Distribute T T' s) (Γ.cell b) ≃
+    RegionConfig (fun s ↦ W s × L.Distribute D T T' s) (Γ.cell b) ≃
       RegionConfig W (Γ.cell b) × T b :=
   (Equiv.arrowProdEquivProdArrow _ _ _).trans ((Equiv.refl _).prodCongr
-    (distributeCellEquiv T T' b h))
+    (distributeCellEquiv D T T' b h))
 
 /-- The layer of the families `Ub b` on the nonempty cells and `Us t` at the free sites, each on
 the system and its environment, and of the identity on the empty cells. -/
-private noncomputable abbrev dilate
+private noncomputable abbrev dilate (D : Finset S)
     (Ub : ∀ b : L.cells,
       KrausFamily (RegionConfig X (Γ.cell b) × T b) (RegionConfig Y (Γ.cell b) × T₂ b))
     (Us : ∀ t : L.Free, KrausFamily (X t × T' t) (Y t × T₂' t)) :
-    Layer Γ KrausGate (fun s ↦ X s × L.Distribute T T' s)
-      (fun s ↦ Y s × L.Distribute T₂ T₂' s) where
+    Layer Γ KrausGate (fun s ↦ X s × L.Distribute D T T' s)
+      (fun s ↦ Y s × L.Distribute D T₂ T₂' s) where
   cells := L.cells
   pairwiseDisjoint := L.pairwiseDisjoint
   gate b := if h : (Γ.cell b.1).Nonempty then
-      (Ub b).reindex (L.cellEquiv T T' b h) (L.cellEquiv T₂ T₂' b h)
+      (Ub b).reindex (L.cellEquiv D T T' b h) (L.cellEquiv D T₂ T₂' b h)
     else
       KrausFamily.single (Matrix.of fun _ _ ↦ 1)
-  onsite t := (Us t).reindex ((Equiv.refl _).prodCongr (distributeFreeEquiv T T' t))
-    ((Equiv.refl _).prodCongr (distributeFreeEquiv T₂ T₂' t))
+  onsite t := (Us t).reindex ((Equiv.refl _).prodCongr (distributeFreeEquiv D T T' t))
+    ((Equiv.refl _).prodCongr (distributeFreeEquiv D T₂ T₂' t))
 
 variable {Ub : ∀ b : L.cells,
     KrausFamily (RegionConfig X (Γ.cell b) × T b) (RegionConfig Y (Γ.cell b) × T₂ b)}
@@ -465,24 +564,25 @@ variable {Ub : ∀ b : L.cells,
 omit [Fintype S] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
   [∀ s, DecidableEq (Y s)] in
 private theorem dilate_gate_of_nonempty {b : L.cells} (h : (Γ.cell b.1).Nonempty) :
-    (L.dilate Ub Us).gate b =
-      (Ub b).reindex (L.cellEquiv T T' b h) (L.cellEquiv T₂ T₂' b h) := by
+    (L.dilate D Ub Us).gate b =
+      (Ub b).reindex (L.cellEquiv D T T' b h) (L.cellEquiv D T₂ T₂' b h) := by
   simp only [dilate, h, ↓reduceDIte]
 
 omit [Fintype S] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]
   [∀ s, DecidableEq (Y s)] in
 private theorem dilate_gate_of_not_nonempty {b : L.cells} (h : ¬ (Γ.cell b.1).Nonempty) :
-    (L.dilate Ub Us).gate b = KrausFamily.single (Matrix.of fun _ _ ↦ 1) := by
+    (L.dilate D Ub Us).gate b = KrausFamily.single (Matrix.of fun _ _ ↦ 1) := by
   simp only [dilate, h, ↓reduceDIte]
 
 variable [∀ b, Fintype (T b)] [∀ b, DecidableEq (T b)] [∀ b, Fintype (T₂ b)]
   [∀ b, DecidableEq (T₂ b)] [∀ t, Fintype (T' t)] [∀ t, DecidableEq (T' t)]
   [∀ t, Fintype (T₂' t)] [∀ t, DecidableEq (T₂' t)]
-  [∀ s, DecidableEq (L.Distribute T T' s)] [∀ s, DecidableEq (L.Distribute T₂ T₂' s)]
+  [∀ s, DecidableEq (L.Distribute D T T' s)] [∀ s, DecidableEq (L.Distribute D T₂ T₂' s)]
 
 
 private theorem forall_isUnitary_dilate (hb : ∀ b, (Ub b).IsUnitary)
-    (ht : ∀ t, (Us t).IsUnitary) : (L.dilate Ub Us).Forall KrausGate.ev KrausFamily.IsUnitary := by
+    (ht : ∀ t, (Us t).IsUnitary) :
+    (L.dilate D Ub Us).Forall KrausGate.ev KrausFamily.IsUnitary := by
   refine ⟨fun b ↦ ?_, fun t ↦ (ht t).reindex _ _⟩
   rw [gateFamily_krausGate]
   by_cases h : (Γ.cell b.1).Nonempty
@@ -502,11 +602,11 @@ private theorem map_dilate (hTP : ∀ b, (L.gate b).IsTP) (eb : ∀ b, T b) (es 
     (hKs : ∀ t, (L.onsite t).map = (KrausFamily.traceRight _ (T₂' t)).map ∘ₗ (Us t).map ∘ₗ
       (KrausFamily.embed (Function.Embedding.sectL _ (es t))).map) :
     (Circuit.ofLayer L).map KrausGate.ev =
-      (traceCircuit Γ Y (L.Distribute T₂ T₂')).map KrausGate.ev ∘ₗ
-        (Circuit.ofLayer (L.dilate Ub Us)).map KrausGate.ev ∘ₗ
+      (traceCircuit Γ Y (L.Distribute D T₂ T₂')).map KrausGate.ev ∘ₗ
+        (Circuit.ofLayer (L.dilate D Ub Us)).map KrausGate.ev ∘ₗ
           (prepareCircuit Γ fun s ↦ ((fun c ↦ eb c.1, fun t ↦ es t.1) :
-            L.Distribute T T' s)).map KrausGate.ev := by
-  let e₀ : ∀ s, L.Distribute T T' s := fun s ↦ (fun c ↦ eb c.1, fun t ↦ es t.1)
+            L.Distribute D T T' s)).map KrausGate.ev := by
+  let e₀ : ∀ s, L.Distribute D T T' s := fun s ↦ (fun c ↦ eb c.1, fun t ↦ es t.1)
   apply Matrix.ext_linearMap
   intro x x'
   apply LinearMap.ext_ring
@@ -514,17 +614,17 @@ private theorem map_dilate (hTP : ∀ b, (L.gate b).IsTP) (eb : ∀ b, T b) (es 
   simp only [LinearMap.comp_apply, Matrix.singleLinearMap_apply, prepareCircuit,
     map_encodeCircuit, initializedBasisMatrix_mul_single_mul_conjTranspose, map_traceCircuit_apply,
     Circuit.map_ofLayer, map_matrixUnit_apply, gateFamily_krausGate]
-  refine Eq.trans ?_ ((L.dilate Ub Us).sum_prod_mul_prod (F := L.Distribute T₂ T₂')
-    (fun b g ↦ ((L.dilate Ub Us).gate b).map
+  refine Eq.trans ?_ ((L.dilate D Ub Us).sum_prod_mul_prod (F := L.Distribute D T₂ T₂')
+    (fun b g ↦ ((L.dilate D Ub Us).gate b).map
       (Matrix.single (fun v ↦ (x v, e₀ v)) (fun v ↦ (x' v, e₀ v)) 1)
       (fun v ↦ (y v, g v)) (fun v ↦ (y' v, g v)))
-    (fun t g ↦ ((L.dilate Ub Us).onsite t).map (Matrix.single (x t, e₀ t) (x' t, e₀ t) 1)
+    (fun t g ↦ ((L.dilate D Ub Us).onsite t).map (Matrix.single (x t, e₀ t) (x' t, e₀ t) 1)
       (y t, g) (y' t, g))).symm
   congr 1
   · refine Fintype.prod_congr _ _ fun b ↦ ?_
     by_cases h : (Γ.cell b.1).Nonempty
     · rw [L.dilate_gate_of_nonempty h, ← sum_map_matrixUnit_of_dilation (hKb b h)]
-      refine (Fintype.sum_equiv (distributeCellEquiv T₂ T₂' b h) _ _ fun g ↦ ?_).symm
+      refine (Fintype.sum_equiv (distributeCellEquiv D T₂ T₂' b h) _ _ fun g ↦ ?_).symm
       rw [KrausFamily.map_matrixUnit_apply, KrausFamily.map_matrixUnit_apply]
       rfl
     · have : IsEmpty {v // v ∈ Γ.cell b.1} :=
@@ -537,76 +637,86 @@ private theorem map_dilate (hTP : ∀ b, (L.gate b).IsTP) (eb : ∀ b, T b) (es 
           (fun v : {v // v ∈ Γ.cell b.1} ↦ (x' v, e₀ v)), single_apply_same, single_apply_same]
   · refine Fintype.prod_congr _ _ fun t ↦ ?_
     rw [← sum_map_matrixUnit_of_dilation (hKs t)]
-    refine (Fintype.sum_equiv (distributeFreeEquiv T₂ T₂' t) _ _ fun g ↦ ?_).symm
+    refine (Fintype.sum_equiv (distributeFreeEquiv D T₂ T₂' t) _ _ fun g ↦ ?_).symm
     rw [KrausFamily.map_matrixUnit_apply, KrausFamily.map_matrixUnit_apply]
     rfl
 
 end Layer
 
-/-- A layer of trace-preserving gates and onsite families on nonempty bases has a unitary
-dilation of its own depth. The dilating circuit is one layer on the same cells: every gate and
-onsite family is replaced by its unitary dilation (`KrausFamily.IsTP.exists_unitary_dilation`),
-the environment of a gate placed at the designated site of its cell, and a gate on an empty
-cell, which acts on a one-element basis, by the identity. -/
+/-- A layer of trace-preserving gates and onsite families on nonempty bases, unitary off `D`, has
+a unitary dilation of its own depth with environments only at the sites of `D`. The dilating
+circuit is one layer on the same cells: a unitary gate or onsite family is kept, with a
+one-element environment; every other one is replaced by its unitary dilation
+(`KrausFamily.IsTP.exists_unitary_dilation`), the environment of a gate placed at the designated
+site of its cell, which lies in `D` (`Layer.repSite`); and a gate on an empty cell, which acts on
+a one-element basis, is replaced by the identity. -/
 theorem Layer.isUnitaryDilation [∀ s, Nonempty (X s)] (L : Layer Γ KrausGate X Y)
-    (hL : L.Forall KrausGate.ev KrausFamily.IsTP) :
-    IsUnitaryDilation Γ L.depth ((Circuit.ofLayer L).map KrausGate.ev) := by
-  let : ∀ b : L.cells, DecidableEq (L.gate b).Index := fun _ ↦ Classical.decEq _
-  let : ∀ t : L.Free, DecidableEq (L.onsite t).Index := fun _ ↦ Classical.decEq _
-  let := Layer.decIsRep L
+    (D : Finset S) (hL : L.Forall KrausGate.ev KrausFamily.IsTP) (hD : L.IsUnitaryOff D) :
+    IsUnitaryDilation Γ D L.depth ((Circuit.ofLayer L).map KrausGate.ev) := by
+  let := Layer.decIsRep L D
   have hTP : ∀ b, (L.gate b).IsTP := hL.1
-  choose eb Ub hUb hKb using fun b : L.cells ↦ (hTP b).exists_unitary_dilation
-  choose es Us hUs hKs using fun t : L.Free ↦ (hL.2 t).exists_unitary_dilation
-  let T : L.cells → Type := fun b ↦ RegionConfig Y (Γ.cell b) × (L.gate b).Index
-  let T₂ : L.cells → Type := fun b ↦ RegionConfig X (Γ.cell b) × (L.gate b).Index
-  let T' : L.Free → Type := fun t ↦ Y t × (L.onsite t).Index
-  let T₂' : L.Free → Type := fun t ↦ X t × (L.onsite t).Index
-  let : ∀ s, DecidableEq (L.Distribute T T' s) := fun _ ↦ Classical.decEq _
-  let : ∀ s, DecidableEq (L.Distribute T₂ T₂' s) := fun _ ↦ Classical.decEq _
-  exact ⟨L.Distribute T T', L.Distribute T₂ T₂', inferInstance, inferInstance, inferInstance,
-    inferInstance, fun s ↦ (fun c ↦ eb c.1, fun t ↦ es t.1), Circuit.ofLayer (L.dilate Ub Us),
-    ⟨forall_isUnitary_dilate (L := L) hUb hUs, fun _ ↦ trivial⟩, Circuit.isUnbranched_ofLayer _,
-    (Circuit.depth_ofLayer (L.dilate Ub Us)).trans_le le_rfl,
-    map_dilate (L := L) hTP eb es (fun b _ ↦ hKb b) hKs⟩
+  choose T T₂ _ _ _ _ eb Ub hUb hKb hTb using fun b : L.cells ↦ (hTP b).exists_local_dilation
+  choose T' T₂' _ _ _ _ es Us hUs hKs hTs using fun t : L.Free ↦ (hL.2 t).exists_local_dilation
+  let : ∀ s, DecidableEq (L.Distribute D T T' s) := fun _ ↦ Classical.decEq _
+  let : ∀ s, DecidableEq (L.Distribute D T₂ T₂' s) := fun _ ↦ Classical.decEq _
+  refine ⟨L.Distribute D T T', L.Distribute D T₂ T₂', inferInstance, inferInstance, inferInstance,
+    inferInstance, fun s ↦ (fun c ↦ eb c.1, fun t ↦ es t.1), Circuit.ofLayer (L.dilate D Ub Us),
+    fun s hs ↦ ?_, ⟨forall_isUnitary_dilate (L := L) (D := D) hUb hUs, fun _ ↦ trivial⟩,
+    Circuit.isUnbranched_ofLayer _, (Circuit.depth_ofLayer (L.dilate D Ub Us)).trans_le le_rfl,
+    map_dilate (L := L) (D := D) hTP eb es (fun b _ ↦ hKb b) hKs⟩
+  have hc : ∀ c : {c : L.cells // L.IsRep D c s}, (L.gate c.1).IsUnitary := by
+    rintro ⟨c, hn, rfl⟩
+    exact hD.1 c hn (by by_contra h; exact hs (repSite_mem_of_not_disjoint hn h))
+  have ht : ∀ t : {t : L.Free // t.1 = s}, (L.onsite t.1).IsUnitary := fun t ↦
+    hD.2 t.1 fun h ↦ hs (t.2 ▸ h)
+  have : ∀ c : {c : L.cells // L.IsRep D c s}, Subsingleton (T c.1) := fun c ↦ (hTb c.1 (hc c)).1
+  have : ∀ c : {c : L.cells // L.IsRep D c s}, Subsingleton (T₂ c.1) := fun c ↦
+    (hTb c.1 (hc c)).2
+  have : ∀ t : {t : L.Free // t.1 = s}, Subsingleton (T' t.1) := fun t ↦ (hTs t.1 (ht t)).1
+  have : ∀ t : {t : L.Free // t.1 = s}, Subsingleton (T₂' t.1) := fun t ↦ (hTs t.1 (ht t)).2
+  exact ⟨inferInstance, inferInstance⟩
 
-theorem IsUnitaryDilation.mono {T T' : ℕ}
+theorem IsUnitaryDilation.mono {D : Finset S} {T T' : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
-    (h : IsUnitaryDilation Γ T Φ) (hT : T ≤ T') : IsUnitaryDilation Γ T' Φ := by
-  obtain ⟨E, F, i₁, i₂, i₃, i₄, e₀, c, hu, hb, hd, hΦ⟩ := h
-  exact ⟨E, F, i₁, i₂, i₃, i₄, e₀, c, hu, hb, hd.trans hT, hΦ⟩
+    (h : IsUnitaryDilation Γ D T Φ) (hT : T ≤ T') : IsUnitaryDilation Γ D T' Φ := by
+  obtain ⟨E, F, i₁, i₂, i₃, i₄, e₀, c, hD, hu, hb, hd, hΦ⟩ := h
+  exact ⟨E, F, i₁, i₂, i₃, i₄, e₀, c, hD, hu, hb, hd.trans hT, hΦ⟩
 
 /-- The identity is dilated by the empty circuit, with trivial environments. -/
-theorem isUnitaryDilation_id : IsUnitaryDilation Γ 0
+theorem isUnitaryDilation_id {D : Finset S} : IsUnitaryDilation Γ D 0
     (LinearMap.id : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config X) (Config X) ℂ) := by
   refine ⟨fun _ ↦ PUnit, fun _ ↦ PUnit, inferInstance, inferInstance, inferInstance,
-    inferInstance, fun _ ↦ PUnit.unit, Circuit.done _, trivial, trivial, le_rfl, ?_⟩
+    inferInstance, fun _ ↦ PUnit.unit, Circuit.done _, fun _ _ ↦ ⟨inferInstance, inferInstance⟩,
+    trivial, trivial, le_rfl, ?_⟩
   refine LinearMap.ext fun ρ ↦ ?_
   ext y y'
   simp only [LinearMap.comp_apply, Circuit.map_done, LinearMap.id_apply]
   rw [map_traceCircuit_apply, Fintype.sum_unique, map_prepareCircuit_apply,
     ite_eq_left_of_eq_true _ _ (eq_true ⟨Subsingleton.elim _ _, Subsingleton.elim _ _⟩)]
 
-/-- An unbranched circuit of trace-preserving gates and onsite families on nonempty input bases
-is dilated by an unbranched circuit of unitary gates of no larger depth. -/
-theorem Circuit.isUnitaryDilation : {X Z : S → Type} → [∀ s, Fintype (X s)] →
+/-- An unbranched circuit of trace-preserving gates and onsite families on nonempty input bases,
+unitary off `D`, is dilated by an unbranched circuit of unitary gates of no larger depth with
+environments only at the sites of `D`. This statement is formalization-side. -/
+theorem Circuit.isUnitaryDilation (D : Finset S) : {X Z : S → Type} → [∀ s, Fintype (X s)] →
     [∀ s, DecidableEq (X s)] → [∀ s, Fintype (Z s)] → [∀ s, DecidableEq (Z s)] →
     [∀ s, Nonempty (X s)] → (c : Circuit Γ KrausGate X Z) →
-    c.Forall KrausGate.ev KrausFamily.IsTP → c.IsUnbranched →
-      IsUnitaryDilation Γ c.depth (c.map KrausGate.ev)
-  | _, _, i₁, i₂, i₃, i₄, _, done _, _, _ => by
+    c.Forall KrausGate.ev KrausFamily.IsTP → c.IsUnbranched → c.IsUnitaryOff D →
+      IsUnitaryDilation Γ D c.depth (c.map KrausGate.ev)
+  | _, _, i₁, i₂, i₃, i₄, _, done _, _, _, _ => by
     obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
     obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
     rw [Circuit.map_done]
     exact isUnitaryDilation_id
-  | _, _, _, _, _, _, _, step L next, hc, hb => by
+  | _, _, _, _, _, _, _, step L next, hc, hb, hD => by
     have hc : L.Forall KrausGate.ev KrausFamily.IsTP ∧
         ∀ i, (next i).Forall KrausGate.ev KrausFamily.IsTP := hc
     have hb : (∀ i j, next i = next j) ∧ ∀ i, (next i).IsUnbranched := hb
+    have hD : L.IsUnitaryOff D ∧ ∀ i, (next i).IsUnitaryOff D := hD
     obtain ⟨i₀⟩ := L.nonempty_index_of_forall_isTP KrausGate.ev hc.1
     have := L.nonempty_output_of_forall_isTP KrausGate.ev hc.1
     rw [Circuit.step_eq_ofLayer_comp L hb.1 i₀, Circuit.map_comp]
-    refine ((Layer.isUnitaryDilation L hc.1).comp
-      (Circuit.isUnitaryDilation (next i₀) (hc.2 i₀) (hb.2 i₀))).mono ?_
+    refine ((Layer.isUnitaryDilation L D hc.1 hD.1).comp
+      (Circuit.isUnitaryDilation D (next i₀) (hc.2 i₀) (hb.2 i₀) (hD.2 i₀))).mono ?_
     rw [← Circuit.step_eq_ofLayer_comp L hb.1 i₀, Circuit.depth_step]
     exact Nat.add_le_add_left (Finset.le_sup (f := fun i ↦ (next i).depth)
       (Finset.mem_univ i₀)) _
@@ -617,9 +727,9 @@ circuit `c` of unitary gates and onsite families of depth at most `T` on the sam
 `fun s ↦ X s × E s` to `fun s ↦ Z s × F s`, with `Φ ρ = tr_F (c (ρ ⊗ |e₀⟩⟨e₀|))`. -/
 theorem IsProtocol.isUnitaryDilation [∀ s, Nonempty (X s)] {T : ℕ}
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
-    (h : IsProtocol Γ T Φ) : IsUnitaryDilation Γ T Φ := by
+    (h : IsProtocol Γ T Φ) : IsUnitaryDilation Γ Finset.univ T Φ := by
   obtain ⟨c, hc, hd, rfl, hb⟩ := h
-  exact (Circuit.isUnitaryDilation c hc hb).mono hd
+  exact (Circuit.isUnitaryDilation _ c hc hb (Circuit.isUnitaryOff_univ c)).mono hd
 
 end Dilation
 

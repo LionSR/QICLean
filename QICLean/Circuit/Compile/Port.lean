@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Circuit.Compile.Encoding
-import QICLean.Circuit.Core.Parallel
+import QICLean.Circuit.Compile.Dilation
+import QICLean.Circuit.Compile.PermGate
 import QICLean.Circuit.Geometry.Port
 import QICLean.Circuit.Geometry.Ring
 import QICLean.ManyBody.Sites.Relabel
@@ -43,86 +43,6 @@ code conjugated by `sitePermOp τ` (`routed_code`), so the backward routing retu
 open Matrix ManyBody
 
 namespace QuantumCircuit
-
-/-! ### Layers of permutations of qudits -/
-
-section Perm
-
-variable {V : Type} [Fintype V] [DecidableEq V] {Γ : Geometry V} {α : Type} [Fintype α]
-  [DecidableEq α]
-
-/-- The permutation of the qudits of the region `D` along a permutation `π` of the sites that
-preserves `D`, as a gate: the matrix with entries `[u ∘ π = u']`. -/
-private def permGate (π : Equiv.Perm V) (D : Finset V) (hD : ∀ v ∈ D, π v ∈ D) :
-    KrausGate D (fun _ ↦ α) (fun _ ↦ α) :=
-  KrausFamily.single (Matrix.of fun u u' ↦
-    if (fun v : {v // v ∈ D} ↦ u ⟨π v, hD v v.2⟩) = u' then 1 else 0)
-
-omit [Fintype V] in
-private theorem isUnitary_permGate (π : Equiv.Perm V) (D : Finset V)
-    (hD : ∀ v ∈ D, π v ∈ D) : (permGate (α := α) π D hD).IsUnitary := by
-  have hD' : ∀ v ∈ D, π.symm v ∈ D := by
-    intro v hv
-    have hmap : D.map π.toEmbedding = D := Finset.map_eq_of_subset fun w hw ↦ by
-      obtain ⟨u, hu, rfl⟩ := Finset.mem_map.mp hw
-      exact hD u hu
-    rw [← hmap] at hv
-    obtain ⟨u, hu, rfl⟩ := Finset.mem_map.mp hv
-    simpa using hu
-  let e : RegionConfig (fun _ ↦ α) D ≃ RegionConfig (fun _ ↦ α) D :=
-    { toFun := fun u v ↦ u ⟨π v, hD v v.2⟩
-      invFun := fun u v ↦ u ⟨π.symm v, hD' v v.2⟩
-      left_inv := fun u ↦ funext fun v ↦ congrArg u (Subtype.ext (by simp))
-      right_inv := fun u ↦ funext fun v ↦ congrArg u (Subtype.ext (by simp)) }
-  have h : (Matrix.of fun u u' ↦
-      if (fun v : {v // v ∈ D} ↦ u ⟨π v, hD v v.2⟩) = u' then (1 : ℂ) else 0) =
-      Equiv.Perm.permMatrix ℂ e := by
-    ext u u'
-    simp [Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, e]
-  rw [permGate, h]
-  exact KrausFamily.isUnitary_single (Equiv.Perm.permMatrix_mem_unitaryGroup e)
-
-/-- **A layer of permutations.** Let `π` permute the sites, preserving each of the pairwise
-disjoint cells `C` and fixing every other site. The layer of the permutations of the qudits of
-the cells of `C` along `π` has the one Kraus operator `sitePermOp π`. -/
-private theorem kraus_ofCells_permGate (C : Finset Γ.Cell)
-    (hC : (C : Set Γ.Cell).PairwiseDisjoint Γ.cell) (π : Equiv.Perm V)
-    (hπ : ∀ b ∈ C, ∀ v ∈ Γ.cell b, π v ∈ Γ.cell b)
-    (hfix : ∀ v, v ∉ C.biUnion Γ.cell → π v = v)
-    (i : (Layer.ofCells (G := KrausGate) C hC fun b ↦ permGate (α := α) π (Γ.cell b)
-      (hπ b b.2)).Index) :
-    (Layer.ofCells (G := KrausGate) C hC fun b ↦ permGate (α := α) π (Γ.cell b)
-      (hπ b b.2)).kraus KrausGate.ev i = sitePermOp π := by
-  ext y x
-  rw [Layer.kraus_apply, sitePermOp_apply]
-  by_cases h : x = y ∘ π
-  · subst h
-    have h₁ : ∏ b : C, KrausGate.ev ((Layer.ofCells (G := KrausGate) C hC fun b ↦
-        permGate (α := α) π (Γ.cell b) (hπ b b.2)).gate b) (i.1 b) (fun v ↦ y v)
-        (fun v ↦ (y ∘ π) v) = 1 :=
-      Fintype.prod_eq_one _ fun b ↦ ite_eq_left rfl
-    have h₂ : ∏ t : (Layer.ofCells (G := KrausGate) C hC fun b ↦
-        permGate (α := α) π (Γ.cell b) (hπ b b.2)).Free, ((Layer.ofCells (G := KrausGate) C hC
-        fun b ↦ permGate (α := α) π (Γ.cell b) (hπ b b.2)).onsite t).op (i.2 t) (y t)
-        ((y ∘ π) t) = 1 :=
-      Fintype.prod_eq_one _ fun t ↦ by
-        change (1 : Matrix α α ℂ) (y t) (y (π t)) = 1
-        rw [hfix t t.2, one_apply_eq]
-    rw [ite_eq_left rfl]
-    exact (congrArg₂ (· * ·) h₁ h₂).trans (mul_one 1)
-  · rw [ite_eq_right h]
-    obtain ⟨v, hv⟩ := Function.ne_iff.mp h
-    by_cases hc : v ∈ C.biUnion Γ.cell
-    · obtain ⟨b, hb, hvb⟩ := Finset.mem_biUnion.mp hc
-      refine mul_eq_zero_of_left (Finset.prod_eq_zero (Finset.mem_univ ⟨b, hb⟩) ?_) _
-      change (if _ then (1 : ℂ) else 0) = 0
-      exact ite_eq_right fun e ↦ hv (congrFun e ⟨v, hvb⟩).symm
-    · refine mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ ⟨v, hc⟩) ?_)
-      change (1 : Matrix α α ℂ) (y v) (x v) = 0
-      refine one_apply_ne fun e ↦ hv ?_
-      rw [Function.comp_apply, hfix v hc, e]
-
-end Perm
 
 /-! ### The routing circuit -/
 
@@ -615,10 +535,10 @@ private def forwardCircuit (C : Finset (Fin N))
       (Qudits (Fin N × Fin (2 * k + 1)) d) :=
   Circuit.seq ((routeIndex (List.finRange k)).map (routeLayer d C hring hC))
 
-private theorem isProtocol_forwardCircuit (C : Finset (Fin N))
+private theorem isUnitaryDilation_forwardCircuit [NeZero d] (C : Finset (Fin N))
     (hring : (C : Set (Fin N)).PairwiseDisjoint (Geometry.ring N).cell)
-    (hC : ∀ j ∈ C, finRotate N j ∉ C) :
-    IsProtocol (Geometry.portRing N (2 * k + 1)) (k * if C.Nonempty then 1 else 0)
+    (hC : ∀ j ∈ C, finRotate N j ∉ C) (D : Finset (Fin N × Fin (2 * k + 1))) :
+    IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (k * if C.Nonempty then 1 else 0)
       ((forwardCircuit (k := k) d C hring hC).map KrausGate.ev) ∧
     ∀ ρ, (forwardCircuit (k := k) d C hring hC).map KrausGate.ev ρ =
       sitePermOp (routeTotal C hC (List.finRange k)) * ρ *
@@ -631,9 +551,8 @@ private theorem isProtocol_forwardCircuit (C : Finset (Fin N))
       Nonempty L.Index := fun L hL ↦ by
     obtain ⟨a, -, rfl⟩ := List.mem_map.mp hL
     exact nonempty_index_of_forall_isUnitary (forall_isUnitary_routeLayer d C hring hC a)
-  refine ⟨⟨forwardCircuit (k := k) d C hring hC, hU.mono fun _ h ↦ h.isTP, ?_, rfl,
-    Circuit.isUnbranched_seq _⟩,
-    map_eq_of_kraus hU fun p ↦ ?_⟩
+  refine ⟨(Circuit.isUnitaryDilation D _ (hU.mono fun _ h ↦ h.isTP) (Circuit.isUnbranched_seq _)
+    (Circuit.isUnitaryOff_of_forall_isUnitary D hU)).mono ?_, map_eq_of_kraus hU fun p ↦ ?_⟩
   · unfold forwardCircuit
     rw [Circuit.depth, Circuit.total_seq _ _ hne, depth_routeLayer,
       List.length_finRange]
@@ -655,10 +574,10 @@ private def backwardCircuit (C : Finset (Fin N))
       (Qudits (Fin N × Fin (2 * k + 1)) d) :=
   Circuit.seqAdjoint ((routeIndex (List.finRange k)).map (routeLayer d C hring hC))
 
-private theorem isProtocol_backwardCircuit (C : Finset (Fin N))
+private theorem isUnitaryDilation_backwardCircuit [NeZero d] (C : Finset (Fin N))
     (hring : (C : Set (Fin N)).PairwiseDisjoint (Geometry.ring N).cell)
-    (hC : ∀ j ∈ C, finRotate N j ∉ C) :
-    IsProtocol (Geometry.portRing N (2 * k + 1)) (k * if C.Nonempty then 1 else 0)
+    (hC : ∀ j ∈ C, finRotate N j ∉ C) (D : Finset (Fin N × Fin (2 * k + 1))) :
+    IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (k * if C.Nonempty then 1 else 0)
       ((backwardCircuit (k := k) d C hring hC).map KrausGate.ev) ∧
     ∀ ρ, (backwardCircuit (k := k) d C hring hC).map KrausGate.ev ρ =
       (sitePermOp (routeTotal C hC (List.finRange k)))ᴴ * ρ *
@@ -675,8 +594,9 @@ private theorem isProtocol_backwardCircuit (C : Finset (Fin N))
     obtain ⟨a, -, rfl⟩ := List.mem_map.mp (List.mem_reverse.mp hL')
     exact nonempty_index_of_forall_isUnitary
       (forall_isUnitary_adjoint (forall_isUnitary_routeLayer d C hring hC a))
-  refine ⟨⟨backwardCircuit (k := k) d C hring hC, hU.mono fun _ h ↦ h.isTP, ?_, rfl,
-    Circuit.isUnbranched_seq _⟩, fun ρ ↦ ?_⟩
+  refine ⟨(Circuit.isUnitaryDilation D _ (hU.mono fun _ h ↦ h.isTP)
+    (Circuit.isUnbranched_seq _) (Circuit.isUnitaryOff_of_forall_isUnitary D hU)).mono ?_,
+    fun ρ ↦ ?_⟩
   · unfold backwardCircuit Circuit.seqAdjoint
     rw [Circuit.depth, Circuit.total_seq _ _ hne, List.map_map, List.map_reverse,
       List.sum_reverse]
@@ -814,6 +734,14 @@ private theorem forall_isTP_refine (hL : L.Forall KrausGate.ev KrausFamily.IsTP)
     (K := ⟨L.BlockIndex (L.blockOf i), L.blockKraus KrausGate.ev (L.blockOf i)⟩)
     (L.blockEffect_eq_one KrausGate.ev hL (L.blockOf i)) _ _
 
+/-- The refined layer is unitary off every set of wires meeting every site. -/
+private theorem isUnitaryOff_refine {D : Finset (Fin N × Fin (2 * k + 1))}
+    (hD : ∀ i, ∃ w, (i, w) ∈ D) : (refine L).IsUnitaryOff D := by
+  refine ⟨fun ⟨b, hb⟩ _ hdis ↦ ?_, fun s _ ↦ (refine_free_isEmpty L s).elim⟩
+  obtain ⟨i, -, rfl⟩ := Finset.mem_map.mp hb
+  obtain ⟨w, hw⟩ := hD i
+  exact (Finset.disjoint_left.mp hdis (mem_cell_inlCell.mpr rfl : (i, w) ∈ _) hw).elim
+
 private theorem map_refine :
     (Circuit.ofLayer (refine L)).map KrausGate.ev ∘ₗ
         (reindexAlgEquiv ℂ ℂ (blockConfigEquiv Prod.fst X)).toLinearMap =
@@ -929,8 +857,9 @@ This lemma is formalization-side: it is the routing step of arXiv:2103.13367, Su
 of Proposition 2, p. 8, with the depth `2k` per layer. -/
 theorem Layer.exists_portRing (hN : 2 ≤ N)
     (L : Layer (Geometry.ring N) KrausGate (fun _ ↦ Fin k → Fin d) (fun _ ↦ Fin k → Fin d))
-    (hL : L.Forall KrausGate.ev KrausFamily.IsTP) :
-    ∃ Φ, IsProtocol (Geometry.portRing N (2 * k + 1)) (2 * k * L.depth) Φ ∧
+    (hL : L.Forall KrausGate.ev KrausFamily.IsTP) (D : Finset (Fin N × Fin (2 * k + 1)))
+    (hD : ∀ i, ∃ w, (i, w) ∈ D) :
+    ∃ Φ, IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (2 * k * L.depth) Φ ∧
       Φ ∘ₗ (reindexAlgEquiv ℂ ℂ
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))).toLinearMap ∘ₗ
           (encodeCircuit (Geometry.ring N) (portDataEmbedding N k d)).map KrausGate.ev =
@@ -954,12 +883,12 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
   obtain ⟨L₂, -, hL₂, hm₂⟩ := L₁.exists_encoded (hL₁ hL) (routedEmbedding (d := d) _ _ hτ)
     (routedEmbedding (d := d) _ _ hτ)
   have hm₃ := map_refine L₂
-  obtain ⟨hF, hFm⟩ := isProtocol_forwardCircuit (k := k) d L.cells L.pairwiseDisjoint hC
-  obtain ⟨hB, hBm⟩ := isProtocol_backwardCircuit (k := k) d L.cells L.pairwiseDisjoint hC
-  have hM : IsProtocol (Geometry.portRing N (2 * k + 1)) 0
+  obtain ⟨hF, hFm⟩ := isUnitaryDilation_forwardCircuit (k := k) d L.cells L.pairwiseDisjoint hC D
+  obtain ⟨hB, hBm⟩ := isUnitaryDilation_backwardCircuit (k := k) d L.cells L.pairwiseDisjoint hC D
+  have hM : IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D 0
       ((Circuit.ofLayer (refine L₂)).map KrausGate.ev) :=
-    ⟨Circuit.ofLayer (refine L₂), ⟨forall_isTP_refine L₂ hL₂, fun _ ↦ trivial⟩,
-      by rw [Circuit.depth_ofLayer, depth_refine], rfl, Circuit.isUnbranched_ofLayer _⟩
+    (Layer.isUnitaryDilation (refine L₂) D (forall_isTP_refine L₂ hL₂)
+      (isUnitaryOff_refine L₂ hD)).mono (depth_refine L₂).le
   set P := sitePermOp (α := Fin d) (routeTotal L.cells hC (List.finRange k))
   set J := initializedBasisMatrix ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
     (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding)
