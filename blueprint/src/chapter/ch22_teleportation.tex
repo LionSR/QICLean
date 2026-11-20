@@ -1,0 +1,557 @@
+%% ==================================================
+%% Section: Teleportation and long-range gates
+%% Sources: arXiv:2307.01696 (Malz, Styliaris, Wei, Cirac), eq. (16) and
+%% paragraph "Tree-RG circuit with measurements"; arXiv:2103.13367 (Piroli,
+%% Styliaris, Cirac), paragraph "State transformations with QC and LOCC" and
+%% Example 2.
+%% ==================================================
+
+\section{Teleportation and long-range gates}
+\label{sec:teleport}
+
+Registers that are far apart ``can be teleported at neighboring registers with
+a constant overhead'' by ``creating nearest-neighbor entangled pairs, then
+performing simultaneous measurements, and correcting (without postselection)
+based on the measurement outcomes'' \cite{Malz2024Preparation}. This section
+proves this for qudits of any dimension: one hop moves the content of a site
+across two sites through an entangled pair on two cells of any geometry, any
+number of sites is moved at once along chains of hops of any length in depth at
+most $2$, and on the ring two-site gates joining the sites $a$ and $a+2L+1$, on
+pairwise disjoint stretches $\{a,\dots,a+2L+1\}$, are applied in depth at most
+$5$ for every $L$. Gates at even separation, or on overlapping stretches, are
+not covered. Registers of $s\ge1$ consecutive sites are teleported site by
+site, and a layer of gates on pairs of distant registers is applied in depth at
+most $4s+K$ when the gates on the registers, brought next to each other, form a
+unitary circuit of depth at most $K$. The ancilla teleported through entangled
+pairs between neighbouring sites by local operations and classical
+communication in \cite{Piroli2021LOCC} is the case of one hop.
+
+Throughout, the local labels are $\mathbb Z_d=\{0,\dots,d-1\}$ with $d\ge1$,
+$\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
+
+\begin{definition}[Vectors with zero at given sites]
+    \label{def:teleport_zero_on}
+    \lean{QuantumCircuit.IsZeroOn, QuantumCircuit.IsZeroOn.mono,
+        QuantumCircuit.IsZeroOn.smul, QuantumCircuit.zeroOnSubmodule,
+        QuantumCircuit.mem_zeroOnSubmodule}
+    \leanok
+    A vector $v$ on the configurations of qudits on the sites $S$ has $\ket0$ on
+    $D\subseteq S$ if $v(x)=0$ whenever $x_i\ne0$ for some $i\in D$. These
+    vectors form a linear subspace, which shrinks as $D$ grows.
+\end{definition}
+
+\begin{lemma}[Projections, one-site operators and permutations of sites]
+    \label{lem:teleport_site_operators}
+    \lean{QuantumCircuit.place_single_self_mulVec_apply,
+        QuantumCircuit.place_single_union, QuantumCircuit.commute_place_single,
+        QuantumCircuit.prodOp_update_one_mulVec_apply,
+        QuantumCircuit.isZeroOn_iff_place_single_mulVec,
+        QuantumCircuit.IsZeroOn.mulVec_of_mem_supportedOperators,
+        QuantumCircuit.IsZeroOn.prodOp_update_one_mulVec,
+        QuantumCircuit.IsZeroOn.sitePermOp_mulVec_image,
+        QuantumCircuit.IsZeroOn.sitePermOp_mulVec_of_mapsTo,
+        QuantumCircuit.sitePermOp_mul_prodOp}
+    \leanok
+    \uses{def:teleport_zero_on, def:sites_place, def:hastings_site_permutation}
+    Let $P_{D,m}$ be the matrix unit $\ket m\bra m$ of a configuration $m$ of
+    $D$, placed on $D$, and let $P_\pi$ act by $(P_\pi v)(x)=v(x\circ\pi)$.
+    \begin{enumerate}
+        \item $(P_{D,m}v)(x)=v(x)$ if $x$ restricts to $m$ on $D$, and $0$
+              otherwise; for the restrictions of one configuration $z$,
+              $P_{D\cup D',z}=P_{D,z}P_{D',z}$, and these projections commute.
+        \item The operator $u$ at the site $t$ acts by
+              $(u_tv)(x)=\sum_ju_{x_t,j}\,v(x[t\mapsto j])$.
+        \item A vector has $\ket0$ on $D$ if and only if $P_{D,0}$ fixes it;
+              hence every operator supported on a region disjoint from $D$, in
+              particular a one-site operator at a site outside $D$, keeps
+              $\ket0$ on $D$.
+        \item If $v$ has $\ket0$ on $D$, then $P_\pi v$ has $\ket0$ on $\pi(D)$,
+              and on $D'$ whenever $\pi$ maps no site outside $D$ into $D'$.
+        \item $P_\pi\bigotimes_ig_i=\bigl(\bigotimes_ig_{\pi^{-1}(i)}\bigr)P_\pi$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    \leanok
+    Items (1), (2), (4) and (5) follow by evaluating at a configuration. For
+    (3), $P_{D,0}$ is supported on $D$, so it commutes with every operator
+    supported on a disjoint region.
+\end{proof}
+
+\begin{definition}[A teleportation hop]
+    \label{def:teleport_hop}
+    \lean{QuantumCircuit.TeleportHop, QuantumCircuit.TeleportHop.pairGate₁,
+        QuantumCircuit.TeleportHop.pairGate₂,
+        QuantumCircuit.TeleportHop.pairGate₁_mem_unitaryGroup,
+        QuantumCircuit.TeleportHop.pairGate₂_mem_unitaryGroup,
+        QuantumCircuit.TeleportHop.gate₁, QuantumCircuit.TeleportHop.gate₂,
+        QuantumCircuit.TeleportHop.gate₁_mem_unitaryGroup,
+        QuantumCircuit.TeleportHop.gate₂_mem_unitaryGroup,
+        QuantumCircuit.TeleportHop.gate₁_mem_supportedOperators,
+        QuantumCircuit.TeleportHop.gate₂_mem_supportedOperators,
+        QuantumCircuit.TeleportHop.pre, QuantumCircuit.TeleportHop.frame,
+        QuantumCircuit.TeleportHop.frame_mem_unitaryGroup,
+        QuantumCircuit.TeleportHop.frame_of_ne}
+    \leanok
+    \uses{def:circuits_geometry, def:sites_place, def:teleport_zero_on}
+    A hop on a geometry consists of three distinct sites $c,e,f$ and two cells
+    whose regions are $\{e,f\}$ and $\{c,e\}$. Its first gate $G_1$, on
+    $\{e,f\}$, applies $F$ at $e$ and then $\ket a_e\ket b_f\mapsto\ket
+        a_e\ket{b+a}_f$; its second gate $G_2$, on $\{c,e\}$, applies $\ket
+        a_c\ket b_e\mapsto\ket a_c\ket{b-a}_e$ and then $F$ at $c$. Both are
+    unitary. For a configuration $z$, the hop before the correction is
+    $P_{\{c,e\},z}G_2G_1$, and its frame consists of the one-site unitaries
+    $\ket q\mapsto\ket{q+z_c}$ at $c$, $\ket q\mapsto\ket{q+z_e}$ at $e$,
+    $X^{z_e}Z^{z_c}\colon\ket q\mapsto\zeta^{z_cq}\ket{q+z_e}$ at $f$, and the
+    identity elsewhere.
+\end{definition}
+
+\begin{lemma}[One hop]
+    \label{lem:teleport_hop}
+    \lean{QuantumCircuit.TeleportHop.pre_mulVec}
+    \leanok
+    \uses{def:teleport_hop, lem:teleport_site_operators}
+    On every vector $v$ with $\ket0$ on $\{e,f\}$,
+    \[
+        P_{\{c,e\},z}G_2G_1v=\frac1d\Bigl(\bigotimes_i\Phi_i\Bigr)P_{(c\,f)}v,
+    \]
+    where $\Phi$ is the frame of the hop for $z$ and $(c\,f)$ exchanges $c$
+    and $f$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    On $\ket0_e\ket0_f$, the gate $G_1$ prepares
+    $d^{-1/2}\sum_j\ket j_e\ket j_f$, so
+    $(G_1v)(w)=d^{-1/2}v(w[e\mapsto0,f\mapsto w_f-w_e])$. Applying $G_2$ gives
+    $(G_2G_1v)(y)=F_{y_c,\,y_f-y_e}\,d^{-1/2}\,v(y[c\mapsto y_f-y_e,e\mapsto0,f\mapsto0])$.
+    For $(y_c,y_e)=(z_c,z_e)$ the amplitude is
+    $d^{-1}\zeta^{z_c(y_f-z_e)}$, the value read at $c$ is the label $y_f-z_e$
+    carried to $f$, and the right-hand side evaluates to the same; otherwise
+    both sides vanish, the right-hand side because $v$ is read at a
+    configuration with a nonzero label at $e$ or $f$.
+\end{proof}
+
+\begin{definition}[Layers given by lists]
+    \label{def:teleport_list_layer}
+    \lean{QuantumCircuit.Layer.ofList, QuantumCircuit.Layer.kraus_ofList,
+        QuantumCircuit.Layer.forall_isUnitary_ofList}
+    \leanok
+    \uses{def:circuits_of_cells, thm:circuits_of_cells, def:sites_place}
+    For a list of operators $G_i$ supported on pairwise disjoint nonempty
+    cells, the layer with, on each of these cells, the matrix whose placement is
+    the corresponding $G_i$, and the identity elsewhere, has the Kraus operator
+    $\prod_iG_i$, the product along the list. It is unitary when the $G_i$ are.
+\end{definition}
+
+\begin{definition}[Valid lists of hops]
+    \label{def:teleport_valid}
+    \lean{QuantumCircuit.TeleportHop.sites,
+        QuantumCircuit.TeleportHop.allSites,
+        QuantumCircuit.TeleportHop.pairSites,
+        QuantumCircuit.TeleportHop.measuredSites,
+        QuantumCircuit.TeleportHop.Valid, QuantumCircuit.TeleportHop.valid_nil,
+        QuantumCircuit.TeleportHop.mem_allSites,
+        QuantumCircuit.TeleportHop.measuredSites_subset_allSites,
+        QuantumCircuit.TeleportHop.disjoint_measuredSites,
+        QuantumCircuit.TeleportHop.pairwise_disjoint_one,
+        QuantumCircuit.TeleportHop.pairwise_disjoint_two,
+        QuantumCircuit.TeleportHop.layerOne, QuantumCircuit.TeleportHop.layerTwo,
+        QuantumCircuit.TeleportHop.forall_isUnitary_layerOne,
+        QuantumCircuit.TeleportHop.forall_isUnitary_layerTwo,
+        QuantumCircuit.TeleportHop.kraus_layerOne,
+        QuantumCircuit.TeleportHop.kraus_layerTwo,
+        QuantumCircuit.TeleportHop.sitePerm,
+        QuantumCircuit.TeleportHop.sitePerm_apply_of_notMem,
+        QuantumCircuit.IsZeroOn.sitePermOp_sitePerm_mulVec}
+    \leanok
+    \uses{def:teleport_hop, def:teleport_list_layer}
+    A list of hops $(h_1,\dots,h_H)$, the most recent first, is valid if for
+    every $j<k$ the sites $e_j,f_j$ are not sites of $h_k$ and $c_j$ is neither
+    $c_k$ nor $e_k$; the site $c_j$ may be $f_k$, so hops chain as
+    $c_k\to f_k=c_j\to f_j$. For a valid list the cells $\{e_j,f_j\}$ are
+    pairwise disjoint, and so are the cells $\{c_j,e_j\}$: the first gates of
+    all hops form one unitary layer, and so do the second gates. The
+    permutation of sites of the list is $(c_1\,f_1)\cdots(c_H\,f_H)$; it fixes
+    every site of no hop, so $P_\pi$ keeps $\ket0$ on any set of sites met by
+    no hop.
+\end{definition}
+
+\begin{lemma}[Chains of hops before the correction]
+    \label{lem:teleport_chain_pre}
+    \lean{QuantumCircuit.TeleportHop.chainFrame,
+        QuantumCircuit.TeleportHop.chainPre,
+        QuantumCircuit.TeleportHop.chainFrame_mem_unitaryGroup,
+        QuantumCircuit.TeleportHop.chainFrame_of_notMem,
+        QuantumCircuit.TeleportHop.prod_gate₂_mem_supportedOperators,
+        QuantumCircuit.TeleportHop.pre_mem_supportedOperators,
+        QuantumCircuit.TeleportHop.chainPre_cons,
+        QuantumCircuit.TeleportHop.chainPre_mulVec}
+    \leanok
+    \uses{def:teleport_valid, lem:teleport_hop, lem:teleport_site_operators}
+    For a valid list of $H$ hops and a configuration $z$, there are one-site
+    unitaries $\Phi_i$, equal to the identity off the sites of the hops, such
+    that on every vector $v$ with $\ket0$ at the sites $e_j,f_j$ of all hops
+    \[
+        P_{M,z}\Bigl(\prod_jG_{2,h_j}\Bigr)\Bigl(\prod_jG_{1,h_j}\Bigr)v
+        =d^{-H}\Bigl(\bigotimes_i\Phi_i\Bigr)P_\pi v,
+    \]
+    $M$ the set of the sites $c_j,e_j$ and $\pi$ the permutation of sites of
+    the list.
+\end{lemma}
+\begin{proof}
+    \leanok
+    By induction on the list. The first gate of $h_1$ commutes with the second
+    gates of the later hops, whose sites it does not meet, and the projection
+    onto the later outcomes commutes with the operator of $h_1$, so the
+    operator of the list is that of $h_1$ times that of the rest. The frame of
+    the rest is split into its unitary at $c_1$ and the others; the others
+    commute with the operator of $h_1$, the unitary at $c_1$ keeps $\ket0$ on
+    $\{e_1,f_1\}$, and Lemma~\ref{lem:teleport_hop} moves it to $f_1$ through
+    the exchange $(c_1\,f_1)$.
+\end{proof}
+
+\begin{theorem}[Teleportation in one round]
+    \label{thm:teleport_round}
+    \lean{QuantumCircuit.TeleportHop.roundUnitary,
+        QuantumCircuit.TeleportHop.extendOutcome,
+        QuantumCircuit.TeleportHop.round,
+        QuantumCircuit.TeleportHop.op_roundUnitary,
+        QuantumCircuit.TeleportHop.depth_round_le,
+        QuantumCircuit.TeleportHop.depth_round_id_le,
+        QuantumCircuit.TeleportHop.forall_round,
+        QuantumCircuit.TeleportHop.isImplementationOn_round}
+    \leanok
+    \uses{lem:teleport_chain_pre, def:measurement_circuit,
+        def:measurement_correct, lem:measurement_round_implementation,
+        def:measurement_implementation}
+    For a valid list of $H$ hops and a unitary circuit $u$ with operator $U$,
+    the teleportation round applies $u$, the layer of the first gates and the
+    layer of the second gates of the hops, measures the sites $c_j,e_j$, and
+    corrects by the inverse of the frame of Lemma~\ref{lem:teleport_chain_pre}
+    for the outcome. It is a measurement circuit of depth at most
+    $\operatorname{depth}(u)+2$, whatever the number and the lengths of the
+    chains, and it implements $P_\pi U$ on the vectors $v$ such that $Uv$ has
+    $\ket0$ at the sites $e_j,f_j$ of all hops, with the scalar $d^{-H}$ on
+    every branch.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The unitary part of the round has the operator
+    $\bigl(\prod_jG_{2,h_j}\bigr)\bigl(\prod_jG_{1,h_j}\bigr)U$. For the
+    outcome $m$, extended by $0$ to a configuration $z$, the measurement
+    projection is $P_{M,z}$, and by Lemma~\ref{lem:teleport_chain_pre} the
+    corrected operator maps $v$ to
+    $(\bigotimes_i\Phi_i)^\dagger d^{-H}(\bigotimes_i\Phi_i)P_\pi Uv=d^{-H}P_\pi
+        Uv$. Lemma~\ref{lem:measurement_round_implementation} concludes.
+\end{proof}
+
+\begin{lemma}[Gates conjugated by teleportation]
+    \label{lem:teleport_conjugated}
+    \lean{QuantumCircuit.TeleportHop.isImplementationOn_round_comp_round}
+    \leanok
+    \uses{thm:teleport_round, lem:measurement_implementation_comp}
+    For valid lists of hops $\mathcal T$ and $\mathcal B$ and a unitary circuit
+    with operator $U$, the round teleporting along $\mathcal T$ followed by
+    the round applying the circuit and teleporting along $\mathcal B$
+    implements $P_{\mathcal B}UP_{\mathcal T}$ on the vectors $v$ with $\ket0$
+    at the sites $e,f$ of $\mathcal T$ such that $UP_{\mathcal T}v$ has $\ket0$
+    at the sites $e,f$ of $\mathcal B$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Theorem~\ref{thm:teleport_round} for both rounds, the first after the empty
+    circuit, composed by Lemma~\ref{lem:measurement_implementation_comp}.
+\end{proof}
+
+\begin{lemma}[Chains between distant sites of the ring]
+    \label{lem:teleport_chains}
+    \lean{QuantumCircuit.add_natCast_injective, QuantumCircuit.add_natCast_succ,
+        QuantumCircuit.add_natCast_ne,
+        QuantumCircuit.TeleportHop.After,
+        QuantumCircuit.TeleportHop.valid_iff_pairwise,
+        QuantumCircuit.TeleportHop.sitePerm_append,
+        QuantumCircuit.TeleportHop.pairSites_append,
+        QuantumCircuit.TeleportHop.chainHop,
+        QuantumCircuit.TeleportHop.chainHopBack,
+        QuantumCircuit.TeleportHop.forwardChain,
+        QuantumCircuit.TeleportHop.backwardChain,
+        QuantumCircuit.TeleportHop.mem_forwardChain,
+        QuantumCircuit.TeleportHop.mem_backwardChain,
+        QuantumCircuit.TeleportHop.valid_forwardChain,
+        QuantumCircuit.TeleportHop.valid_backwardChain,
+        QuantumCircuit.TeleportHop.sitePerm_forwardChain,
+        QuantumCircuit.TeleportHop.sitePerm_backwardChain,
+        QuantumCircuit.TeleportHop.pairSites_forwardChain_subset,
+        QuantumCircuit.TeleportHop.pairSites_backwardChain_subset,
+        QuantumCircuit.TeleportHop.allSites_forwardChain_subset,
+        QuantumCircuit.TeleportHop.allSites_backwardChain_subset,
+        QuantumCircuit.TeleportHop.isZeroOn_sitePermOp_forwardChain}
+    \leanok
+    \uses{def:teleport_valid, def:circuits_ring_geometry,
+        lem:teleport_site_operators}
+    On the ring of $N$ sites, with cells $\{k,k+1\}$, let $2L<N$. The forward
+    chain from $a$ consists of the hops $(a+2j,a+2j+1,a+2j+2)$, $j=L-1,\dots,0$,
+    and the backward chain of the hops $(a+2j+2,a+2j+1,a+2j)$,
+    $j=0,\dots,L-1$. Both are valid, their sites lie in $\{a,\dots,a+2L\}$, and
+    their permutations of sites are inverse to each other; the forward one maps
+    $a$ to $a+2L$ and fixes $a+j$ for $2L<j<N$. The sites $e,f$ of the forward
+    chain lie in $\{a+1,\dots,a+2L\}$ and those of the backward chain in
+    $\{a,\dots,a+2L-1\}$, and if $v$ has $\ket0$ on $\{a+1,\dots,a+2L\}$, the
+    forward chain moves it to a vector with $\ket0$ on $\{a,\dots,a+2L-1\}$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The sites $a+j$, $0\le j<N$, are distinct. The transpositions
+    $(a+2j\;\;a+2j+2)$, $j=0,\dots,L-1$, move $a$ to $a+2L$ and shift
+    $\{a+1,\dots,a+2L\}$ onto $\{a,\dots,a+2L-1\}$, and the backward chain
+    applies them in the reverse order.
+\end{proof}
+
+\begin{definition}[Placement along an injection]
+    \label{def:teleport_place_along}
+    \lean{QuantumCircuit.placeAlongSiteEquiv,
+        QuantumCircuit.placeAlongSiteEquiv_apply, QuantumCircuit.placeAlongEquiv,
+        QuantumCircuit.placeAlong,
+        QuantumCircuit.placeAlong_apply,
+        QuantumCircuit.placeAlong_mem_supportedOperators,
+        QuantumCircuit.placeAlong_mem_unitaryGroup,
+        QuantumCircuit.sitePermOp_mul_placeAlong_mul,
+        Equiv.Perm.apply_mem_of_forall_notMem,
+        List.mul_prod_mul_of_mul_eq_one}
+    \leanok
+    \uses{def:sites_place, def:hastings_site_permutation}
+    For an injection $\iota\colon I\to S$ and a matrix $X$ on the qudits of
+    $I$, the placement of $X$ along $\iota$ acts as $X$ on the sites
+    $\iota(i)$, the site $\iota(i)$ in the role of $i$, and as the identity
+    elsewhere. It is supported on the image of $\iota$, unitary when $X$ is,
+    and $P_\pi\,\mathrm{place}_\iota(X)\,P_\pi^{-1}=\mathrm{place}_{\pi\circ\iota}(X)$
+    for every permutation of sites $\pi$.
+\end{definition}
+
+\begin{lemma}[Parallel chains]
+    \label{lem:teleport_parallel}
+    \lean{QuantumCircuit.TeleportHop.mem_allSites_flatMap,
+        QuantumCircuit.TeleportHop.mem_pairSites_flatMap,
+        QuantumCircuit.TeleportHop.after_of_disjoint,
+        QuantumCircuit.TeleportHop.sites_subset_allSites,
+        QuantumCircuit.TeleportHop.valid_flatMap,
+        QuantumCircuit.TeleportHop.sitePerm_flatMap_apply,
+        QuantumCircuit.TeleportHop.sitePerm_flatMap_apply_of_notMem}
+    \leanok
+    \uses{def:teleport_valid, lem:teleport_chains}
+    If valid lists of hops $\mathcal L_g$ have their sites in pairwise disjoint
+    sets $S_g$, their concatenation is valid, and its permutation of sites
+    agrees with that of $\mathcal L_g$ on $S_g$ and fixes every site outside
+    $\bigcup_gS_g$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Hops on disjoint sets of sites satisfy the validity condition in either
+    order, and the permutation of sites of each $\mathcal L_g$ maps $S_g$ into
+    itself and fixes the other sites.
+\end{proof}
+
+\begin{theorem}[A layer of distant gates in depth five with measurements]
+    \label{thm:teleport_long_range}
+    \lean{QuantumCircuit.LongRangeGate, QuantumCircuit.LongRangeGate.far,
+        QuantumCircuit.LongRangeGate.near, QuantumCircuit.LongRangeGate.span,
+        QuantumCircuit.LongRangeGate.interior,
+        QuantumCircuit.LongRangeGate.cleared, QuantumCircuit.LongRangeGate.op,
+        QuantumCircuit.LongRangeGate.mem_span,
+        QuantumCircuit.LongRangeGate.mem_interior,
+        QuantumCircuit.LongRangeGate.localGate,
+        QuantumCircuit.LongRangeGate.there, QuantumCircuit.LongRangeGate.back,
+        QuantumCircuit.LongRangeGate.near_ne_far,
+        QuantumCircuit.LongRangeGate.a_ne_far,
+        QuantumCircuit.LongRangeGate.near_add_one,
+        QuantumCircuit.LongRangeGate.localGate_mem_unitaryGroup,
+        QuantumCircuit.LongRangeGate.localGate_mem_supportedOperators,
+        QuantumCircuit.LongRangeGate.op_mem_unitaryGroup,
+        QuantumCircuit.LongRangeGate.op_mem_supportedOperators,
+        QuantumCircuit.LongRangeGate.far_mem_span,
+        QuantumCircuit.LongRangeGate.cell_near_subset_span,
+        QuantumCircuit.LongRangeGate.interior_subset_span,
+        QuantumCircuit.LongRangeGate.cleared_subset_span,
+        QuantumCircuit.LongRangeGate.allSites_there_subset_span,
+        QuantumCircuit.LongRangeGate.allSites_back_subset_span,
+        QuantumCircuit.LongRangeGate.disjoint_cleared_cell_near,
+        QuantumCircuit.LongRangeGate.sitePerm_back_near,
+        QuantumCircuit.LongRangeGate.sitePerm_back_far,
+        QuantumCircuit.LongRangeGate.sitePerm_back_sitePerm_there,
+        QuantumCircuit.LongRangeGate.pairwise_disjoint_cell,
+        QuantumCircuit.LongRangeGate.localLayer,
+        QuantumCircuit.LongRangeGate.kraus_localLayer,
+        QuantumCircuit.LongRangeGate.forall_isUnitary_localLayer,
+        QuantumCircuit.LongRangeGate.valid_there,
+        QuantumCircuit.LongRangeGate.valid_back,
+        QuantumCircuit.LongRangeGate.isZeroOn_sitePermOp_there,
+        QuantumCircuit.LongRangeGate.isZeroOn_localGates,
+        QuantumCircuit.LongRangeGate.sitePerm_there_eq_symm,
+        QuantumCircuit.LongRangeGate.sitePermOp_back_mul_localGates_mul_sitePermOp_there,
+        QuantumCircuit.LongRangeGate.rounds,
+        QuantumCircuit.LongRangeGate.depth_rounds_le,
+        QuantumCircuit.LongRangeGate.forall_rounds,
+        QuantumCircuit.LongRangeGate.isImplementationOn_rounds}
+    \leanok
+    \uses{lem:teleport_conjugated, lem:teleport_chains, lem:teleport_parallel,
+        def:teleport_place_along, def:teleport_list_layer}
+    On the ring of $N$ sites, let $u_1,\dots,u_n$ be two-site unitaries on the
+    pairs $\{a_r,a_r+2L_r+1\}$, $2L_r+1<N$, at odd separation, whose stretches
+    $\{a_r,\dots,a_r+2L_r+1\}$ are pairwise disjoint. A measurement circuit of
+    depth at most $5$ implements $\prod_ru_r$ on the vectors with $\ket0$ at
+    the sites $a_r+1,\dots,a_r+2L_r$ of every $r$, without postselection.
+\end{theorem}
+\begin{proof}
+    \leanok
+    By Lemmas~\ref{lem:teleport_chains} and~\ref{lem:teleport_parallel}, the
+    concatenated forward chains $\mathcal T$ from the sites $a_r$ and the
+    concatenated backward chains $\mathcal B$ are valid with
+    $P_{\mathcal B}=P_{\mathcal T}^{-1}$, and $P_{\mathcal T}v$ has $\ket0$ at
+    the sites $a_r,\dots,a_r+2L_r-1$, which the layer
+    $G=\prod_r(u_r)_{\{a_r+2L_r,\,a_r+2L_r+1\}}$ on neighbouring pairs keeps.
+    By Lemma~\ref{lem:teleport_conjugated}, the round of $\mathcal T$ followed
+    by the round of $G$ and $\mathcal B$, of depths at most $2$ and $3$,
+    implements $P_{\mathcal T}^{-1}GP_{\mathcal T}$, which is
+    $\prod_r(u_r)_{\{a_r,\,a_r+2L_r+1\}}$ by
+    Definition~\ref{def:teleport_place_along}, since $P_{\mathcal B}$ maps
+    $a_r+2L_r$ to $a_r$ and fixes $a_r+2L_r+1$.
+\end{proof}
+
+\begin{definition}[Register gates]
+    \label{def:teleport_register_gate}
+    \lean{QuantumCircuit.RegisterGate, QuantumCircuit.RegisterGate.offset,
+        QuantumCircuit.RegisterGate.sites,
+        QuantumCircuit.RegisterGate.localSites,
+        QuantumCircuit.RegisterGate.span, QuantumCircuit.RegisterGate.zone,
+        QuantumCircuit.RegisterGate.interior,
+        QuantumCircuit.RegisterGate.mem_span,
+        QuantumCircuit.RegisterGate.mem_zone,
+        QuantumCircuit.RegisterGate.offset_lt,
+        QuantumCircuit.RegisterGate.sites_injective,
+        QuantumCircuit.RegisterGate.localSites_injective,
+        QuantumCircuit.RegisterGate.localSites_succ,
+        QuantumCircuit.RegisterGate.sitesEmb,
+        QuantumCircuit.RegisterGate.localSitesEmb,
+        QuantumCircuit.RegisterGate.op, QuantumCircuit.RegisterGate.localOp,
+        QuantumCircuit.RegisterGate.sites_mem_span,
+        QuantumCircuit.RegisterGate.localSites_mem_span,
+        QuantumCircuit.RegisterGate.zone_subset_span,
+        QuantumCircuit.RegisterGate.op_mem_unitaryGroup,
+        QuantumCircuit.RegisterGate.op_mem_supportedOperators,
+        QuantumCircuit.RegisterGate.add_eq_add_iff}
+    \leanok
+    \uses{def:teleport_place_along, def:circuits_ring_geometry}
+    On the ring of $N$ sites, a register gate $(X,a,L)$ with $2L+2s\le N$
+    places a matrix $X$ on $2s$ qudits along the two registers
+    $\{a,\dots,a+s-1\}$ and $\{a+2L+s,\dots,a+2L+2s-1\}$; it is unitary when
+    $X$ is. Its stretch is $\{a,\dots,a+2L+2s-1\}$, its zones are
+    $Z_t=\{a+t,\dots,a+t+2L-1\}$, $0\le t\le s$, its interior is $Z_s$, and its
+    local gate places $X$ along the consecutive sites
+    $a+2L,\dots,a+2L+2s-1$.
+\end{definition}
+
+\begin{lemma}[Teleporting registers site by site]
+    \label{lem:teleport_register_chains}
+    \lean{QuantumCircuit.RegisterGate.two_mul_L_lt,
+        QuantumCircuit.RegisterGate.there, QuantumCircuit.RegisterGate.back,
+        QuantumCircuit.RegisterGate.allSites_there_subset,
+        QuantumCircuit.RegisterGate.allSites_back_subset,
+        QuantumCircuit.RegisterGate.allSites_there_subset_span,
+        QuantumCircuit.RegisterGate.allSites_back_subset_span,
+        QuantumCircuit.RegisterGate.pairSites_there_subset,
+        QuantumCircuit.RegisterGate.pairSites_back_subset,
+        QuantumCircuit.RegisterGate.sitePerm_there_apply_of_lt,
+        QuantumCircuit.RegisterGate.sitePerm_there_apply_self,
+        QuantumCircuit.RegisterGate.sitePerm_back_eq_inv,
+        QuantumCircuit.RegisterGate.sitePerm_back_apply_of_lt,
+        QuantumCircuit.RegisterGate.sitePerm_back_apply_self,
+        QuantumCircuit.RegisterGate.sitePerm_there_notMem_zone,
+        QuantumCircuit.RegisterGate.sitePerm_back_notMem_zone,
+        QuantumCircuit.RegisterGate.thereAll,
+        QuantumCircuit.RegisterGate.backAll,
+        QuantumCircuit.RegisterGate.zoneAll,
+        QuantumCircuit.RegisterGate.mem_zoneAll,
+        QuantumCircuit.RegisterGate.valid_thereAll,
+        QuantumCircuit.RegisterGate.valid_backAll,
+        QuantumCircuit.RegisterGate.sitePerm_thereAll_apply,
+        QuantumCircuit.RegisterGate.sitePerm_backAll_apply,
+        QuantumCircuit.RegisterGate.isZeroOn_sitePermOp_thereAll,
+        QuantumCircuit.RegisterGate.isZeroOn_sitePermOp_backAll,
+        QuantumCircuit.RegisterGate.pairSites_thereAll_subset,
+        QuantumCircuit.RegisterGate.pairSites_backAll_subset,
+        QuantumCircuit.RegisterGate.sitePerm_backAll_eq_inv,
+        QuantumCircuit.RegisterGate.therePerm,
+        QuantumCircuit.RegisterGate.therePerm_apply,
+        QuantumCircuit.RegisterGate.therePerm_comp_sites,
+        QuantumCircuit.RegisterGate.isZeroOn_sitePermOp_therePerm,
+        QuantumCircuit.RegisterGate.isZeroOn_sitePermOp_therePerm_inv,
+        QuantumCircuit.RegisterGate.thereRounds,
+        QuantumCircuit.RegisterGate.backRounds,
+        QuantumCircuit.RegisterGate.depth_thereRounds_le,
+        QuantumCircuit.RegisterGate.depth_backRounds_le,
+        QuantumCircuit.RegisterGate.forall_thereRounds,
+        QuantumCircuit.RegisterGate.forall_backRounds,
+        QuantumCircuit.RegisterGate.isImplementationOn_thereRounds,
+        QuantumCircuit.RegisterGate.isImplementationOn_backRounds}
+    \leanok
+    \uses{def:teleport_register_gate, thm:teleport_round, lem:teleport_chains,
+        lem:teleport_parallel, lem:teleport_site_operators,
+        lem:measurement_implementation_comp}
+    Let $g_1,\dots,g_n$ be register gates with pairwise disjoint stretches and
+    $s\ge1$. For $t=s-1,\dots,0$, the round of the forward chains from the
+    sites $a_r+t$ teleports $a_r+t$ to $a_r+2L_r+t$ and moves $\ket0$ from
+    $\bigcup_rZ_{r,t+1}$ to $\bigcup_rZ_{r,t}$. The $s$ forward rounds form a
+    measurement circuit of depth at most $2s$ which implements the composite
+    $P$ of their permutations of sites on the vectors with $\ket0$ on
+    $\bigcup_rZ_{r,s}$, and $P$ moves these vectors to vectors with $\ket0$ on
+    $\bigcup_rZ_{r,0}$; the $s$ backward rounds, for $t=0,\dots,s-1$, form a
+    measurement circuit of depth at most $2s$ which implements $P^{-1}$ on the
+    vectors with $\ket0$ on $\bigcup_rZ_{r,0}$. The composite $P$ maps the
+    sites of the two registers of $g_r$ to its consecutive sites.
+\end{lemma}
+\begin{proof}
+    \leanok
+    By Lemmas~\ref{lem:teleport_chains} and~\ref{lem:teleport_parallel}, each
+    round is valid, requires $\ket0$ on $\bigcup_rZ_{r,t+1}$, and maps no site
+    outside $\bigcup_rZ_{r,t+1}$ into $\bigcup_rZ_{r,t}$. The rounds compose by
+    Theorem~\ref{thm:teleport_round} and
+    Lemma~\ref{lem:measurement_implementation_comp}; by induction on $t$, the
+    forward rounds move $a_r+u$ to $a_r+2L_r+u$ for $u<t$ and fix $a_r+j$ for
+    $j\ge t+2L_r$ in the stretch.
+\end{proof}
+
+\begin{theorem}[A layer of register gates in constant depth with measurements]
+    \label{thm:teleport_register_layer}
+    \lean{QuantumCircuit.RegisterGate.rounds,
+        QuantumCircuit.RegisterGate.depth_rounds_le,
+        QuantumCircuit.RegisterGate.forall_rounds,
+        QuantumCircuit.RegisterGate.localProd,
+        QuantumCircuit.RegisterGate.isZeroOn_localProd_mulVec,
+        QuantumCircuit.RegisterGate.sitePermOp_inv_mul_localProd_mul_sitePermOp,
+        QuantumCircuit.RegisterGate.isZeroOn_zoneAll_iff,
+        QuantumCircuit.RegisterGate.isImplementationOn_rounds,
+        QuantumCircuit.RegisterGate.isUnitaryCircuit_localProd,
+        QuantumCircuit.RegisterGate.exists_rounds}
+    \leanok
+    \uses{lem:teleport_register_chains, lem:measurement_implementation_comp,
+        def:measurement_circuit}
+    Let $g_1,\dots,g_n$ be register gates with pairwise disjoint stretches, and
+    let the product of their local gates be the operator of a unitary circuit
+    of depth at most $K$ on the ring. Then a measurement circuit of depth at
+    most $4s+K$ implements $\prod_rg_r$ on the vectors with $\ket0$ on the
+    interiors of all $g_r$, without postselection. Such a circuit exists when
+    every $X_r$ is a product of gates of total cost at most $K$ on neighbouring
+    sites of the open chain of $2s$ sites.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The local gates are supported outside $\bigcup_rZ_{r,0}$ and keep $\ket0$
+    there. The $s$ forward rounds, the unitary circuit and the $s$ backward
+    rounds of Lemma~\ref{lem:teleport_register_chains} compose by
+    Lemma~\ref{lem:measurement_implementation_comp} to an implementation of
+    $P^{-1}\bigl(\prod_r\mathrm{place}_{\mathrm{local}}(X_r)\bigr)P$, which is
+    $\prod_rg_r$ by Definition~\ref{def:teleport_place_along}, in depth at
+    most $2s+K+2s$. For the last claim, each product of gates on the open chain
+    placed on the consecutive sites of $g_r$ is a unitary circuit of depth at
+    most $K$ inside them, and circuits inside pairwise disjoint regions run in
+    the same layers.
+\end{proof}
