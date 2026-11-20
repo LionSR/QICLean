@@ -162,7 +162,8 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
         QuantumCircuit.IsMeasurementConversion.trans,
         QuantumCircuit.Circuit.IsImplementationOn.isMeasurementConversion,
         QuantumCircuit.IsMeasurementConversion.of_prodOp,
-        QuantumCircuit.isMeasurementConversion_of_kraus_eq}
+        QuantumCircuit.IsUnitaryCircuit.isMeasurementConversion,
+        QuantumCircuit.IsPreparedInDepth.exists_isMeasurementConversion}
     \leanok
     \uses{def:measurement_conversion, lem:measurement_implementation_comp,
         lem:measurement_nonzero_branch, lem:measurement_tp}
@@ -175,7 +176,8 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
     from $(\bigotimes_sU_s)\varphi$, for unitaries $U_s$, is a conversion from $\varphi$ in the
     same depth; in particular a conversion from a product vector is one from a basis
     configuration. A unitary circuit of depth at most $T$ with matrix $U$ converts every
-    nonzero $\varphi$ into $U\varphi$ in depth $T$.
+    nonzero $\varphi$ into $U\varphi$ in depth $T$; hence a nonzero vector prepared in depth $T$
+    by a unitary circuit is converted in depth $T$ from a product vector.
 \end{theorem}
 \begin{proof}
     \leanok
@@ -223,8 +225,8 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
     \label{lem:measurement_one_round}
     \lean{QuantumCircuit.IsOneRoundConversion.isMeasurementConversion,
         QuantumCircuit.IsOneRoundConversion.mono,
-        QuantumCircuit.IsOneRoundConversion.comp,
-        QuantumCircuit.isOneRoundConversion_of_kraus_eq}
+        QuantumCircuit.IsOneRoundConversion.mulVec,
+        QuantumCircuit.IsUnitaryCircuit.isOneRoundConversion}
     \leanok
     \uses{def:measurement_one_round, def:measurement_conversion,
         thm:measurement_conversion_comp}

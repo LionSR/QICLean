@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Center
 import QICLean.Circuit.Model.Protocol
+import QICLean.Circuit.Model.Unitary
 
 /-!
 # Measurement circuits
@@ -64,10 +65,13 @@ without measurements, as in the preparation of matrix product states of arXiv:23
   `QuantumCircuit.Circuit.IsImplementationOn.isMeasurementConversion`.
 * `QuantumCircuit.IsMeasurementConversion.isAdaptiveConversion` — measurement circuits are
   adaptive protocols.
+* `QuantumCircuit.IsUnitaryCircuit.isMeasurementConversion`,
+  `QuantumCircuit.IsPreparedInDepth.exists_isMeasurementConversion` — unitary circuits are
+  measurement circuits.
 * `QuantumCircuit.IsOneRoundConversion.isMeasurementConversion`,
-  `QuantumCircuit.isOneRoundConversion_of_kraus_eq` — one round is a measurement circuit, and a
-  unitary circuit is one round without measurements.
-* `QuantumCircuit.IsOneRoundConversion.comp` — a unitary circuit after one round.
+  `QuantumCircuit.IsUnitaryCircuit.isOneRoundConversion` — one round is a measurement circuit,
+  and a unitary circuit is one round without measurements.
+* `QuantumCircuit.IsOneRoundConversion.mulVec` — a unitary circuit after one round.
 
 The declarations restate, as restrictions of `Circuit`, the measurement-assisted protocols and the
 measurement rounds of `TNLean/Circuit/Measurement/Protocol.lean`,
@@ -451,15 +455,23 @@ theorem IsMeasurementConversion.of_prodOp {T : ℕ} {U : (s : S) → Matrix (X s
     rw [Circuit.kraus_comp, Circuit.kraus_ofLayer, hL, ← mulVec_mulVec, hz]
 
 omit [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Finite (Z s)] in
-/-- **Unitary circuits are measurement circuits.** A circuit of unitary local families of depth
-at most `T`, all of whose Kraus operators are `U`, converts every nonzero vector `φ` into `U φ`,
-measuring no site. -/
-theorem isMeasurementConversion_of_kraus_eq {T : ℕ} {c : Circuit Γ KrausGate X Z}
-    {U : Matrix (Config Z) (Config X) ℂ} (hc : c.Forall KrausGate.ev KrausFamily.IsUnitary)
-    (hd : c.depth ≤ T) (hU : ∀ p, c.kraus KrausGate.ev p = U) {φ : Config X → ℂ} (hφ : φ ≠ 0) :
-    IsMeasurementConversion Γ T φ (U *ᵥ φ) :=
-  ⟨hφ, c, hc.mono fun _ hK ↦ hK.isUnitaryOrMeasurement, hd,
-    fun p ↦ ⟨1, by rw [hU p, one_smul]⟩⟩
+/-- **Unitary circuits are measurement circuits.** A unitary circuit `U` of depth at most `T`
+converts every nonzero vector `φ` into `U φ`, measuring no site. -/
+theorem IsUnitaryCircuit.isMeasurementConversion {T : ℕ} {U : Matrix (Config X) (Config X) ℂ}
+    (hU : IsUnitaryCircuit Γ T U) {φ : Config X → ℂ} (hφ : φ ≠ 0) :
+    IsMeasurementConversion Γ T φ (U *ᵥ φ) := by
+  obtain ⟨c, hd, rfl⟩ := hU
+  exact ⟨hφ, c.toCircuit, c.forall_isUnitary.mono fun _ hK ↦ hK.isUnitaryOrMeasurement, hd,
+    fun p ↦ ⟨1, by rw [c.kraus_eq_op, one_smul]⟩⟩
+
+omit [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Finite (Z s)] in
+/-- A nonzero vector prepared in depth `T` by a unitary circuit from a product vector is
+converted from that product vector in depth `T`. -/
+theorem IsPreparedInDepth.exists_isMeasurementConversion {T : ℕ} {ψ : Config X → ℂ}
+    (h : IsPreparedInDepth Γ T ψ) (hψ : ψ ≠ 0) :
+    ∃ v : (s : S) → X s → ℂ, IsMeasurementConversion Γ T (fun σ ↦ ∏ s, v s (σ s)) ψ := by
+  obtain ⟨U, hU, v, rfl⟩ := h
+  exact ⟨v, hU.isMeasurementConversion fun h0 ↦ hψ (by rw [h0, mulVec_zero])⟩
 
 omit [∀ s, Finite (Z s)] in
 /-- **Deterministic conversions are adaptive conversions.** A deterministic conversion of the unit
@@ -497,14 +509,13 @@ section OneRound
 variable (Γ) {X : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
 
 /-- **Conversion with one round of measurements.** The nonzero vector `φ` is converted into `ψ`
-by a unitary circuit `u` with matrix `U`, of depth at most `T₁`, the measurement of a region `D`,
-unitaries `V m s` at every site chosen by the outcome `m`, and a unitary circuit `u'` with matrix
-`U'`, of depth at most `T₂`, that does not depend on the outcome, so that every output
-`U' (⊗ₛ V m s) P_m U φ` is a scalar multiple of `ψ`, `P_m` the projection onto the outcome `m`
-placed on `D`.
+by a unitary circuit `U` of depth at most `T₁`, the measurement of a region `D`, unitaries
+`V m s` at every site chosen by the outcome `m`, and a unitary circuit `U'` of depth at most `T₂`
+that does not depend on the outcome, so that every output `U' (⊗ₛ V m s) P_m U φ` is a scalar
+multiple of `ψ`, `P_m` the projection onto the outcome `m` placed on `D`.
 
 With `T₂ = 0` this is the class `QCcc_ℓ` of arXiv:2103.13367 at `ℓ = T₁`: a circuit of depth
-`0` consists of onsite unitaries, free local unitaries in the source. A circuit `u'` of positive
+`0` consists of onsite unitaries, free local unitaries in the source. A circuit `U'` of positive
 depth is a second transformation, without measurements, composed with the first, as in
 "Phases of matter" with `k = 2`. The correction at a site may depend on the whole outcome: the
 classical communication is global. The differences from the source: any site may be measured,
@@ -518,77 +529,70 @@ depth-`ℓ` circuit ... Then, we sequentially measure each ancilla `a_i` in some
 measurements" ("First create `|χ_{N/q}⟩`, which can be done in constant depth with measurements
 ... Subsequently, apply in parallel the isometries `W`"). -/
 def IsOneRoundConversion (T₁ T₂ : ℕ) (φ ψ : Config X → ℂ) : Prop :=
-  φ ≠ 0 ∧ ∃ (u u' : Circuit Γ KrausGate X X) (U U' : Matrix (Config X) (Config X) ℂ)
-    (D : Finset S) (V : RegionConfig X D → (s : S) → Matrix (X s) (X s) ℂ),
-    u.Forall KrausGate.ev KrausFamily.IsUnitary ∧ u.depth ≤ T₁ ∧
-    (∀ p, u.kraus KrausGate.ev p = U) ∧ u'.Forall KrausGate.ev KrausFamily.IsUnitary ∧
-    u'.depth ≤ T₂ ∧ (∀ p, u'.kraus KrausGate.ev p = U') ∧
-    (∀ m s, V m s ∈ unitaryGroup (X s) ℂ) ∧
+  φ ≠ 0 ∧ ∃ (U U' : Matrix (Config X) (Config X) ℂ) (D : Finset S)
+    (V : RegionConfig X D → (s : S) → Matrix (X s) (X s) ℂ),
+    IsUnitaryCircuit Γ T₁ U ∧ IsUnitaryCircuit Γ T₂ U' ∧ (∀ m s, V m s ∈ unitaryGroup (X s) ℂ) ∧
     ∀ m, ∃ z : ℂ, (U' * prodOp (V m) * place D (single m m 1) * U) *ᵥ φ = z • ψ
 
 variable {Γ}
 
 /-- **One round is a measurement circuit.** A conversion with one round of measurements is a
-deterministic conversion in the total depth: the circuit `u`, the measurement with corrections,
-and the circuit `u'`. -/
+deterministic conversion in the total depth: the circuit `U`, the measurement with corrections,
+and the circuit `U'`. -/
 theorem IsOneRoundConversion.isMeasurementConversion {T₁ T₂ : ℕ} {φ ψ : Config X → ℂ}
     (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) : IsMeasurementConversion Γ (T₁ + T₂) φ ψ := by
-  obtain ⟨hφ, u, u', U, U', D, V, hu, hud, hU, hu', hu'd, hU', hV, hψ⟩ := h
-  refine ⟨hφ, u.comp ((Circuit.measureCorrect D V).comp u'),
-    (hu.mono fun _ hK ↦ hK.isUnitaryOrMeasurement).comp _
+  obtain ⟨hφ, U, U', D, V, ⟨u, hud, rfl⟩, ⟨u', hu'd, rfl⟩, hV, hψ⟩ := h
+  refine ⟨hφ, u.toCircuit.comp ((Circuit.measureCorrect D V).comp u'.toCircuit),
+    (u.forall_isUnitary.mono fun _ hK ↦ hK.isUnitaryOrMeasurement).comp _
       ((Circuit.forall_measureCorrect D hV).comp _
-        (hu'.mono fun _ hK ↦ hK.isUnitaryOrMeasurement)), ?_, fun q ↦ ?_⟩
+        (u'.forall_isUnitary.mono fun _ hK ↦ hK.isUnitaryOrMeasurement)), ?_, fun q ↦ ?_⟩
   · refine (Circuit.depth_comp _ _).trans (Nat.add_le_add hud ?_)
     refine (Circuit.depth_comp _ _).trans ?_
     rw [Circuit.depth_measureCorrect, zero_add]
     exact hu'd
-  · rw [Circuit.kraus_comp, Circuit.kraus_comp, Circuit.kraus_measureCorrect, hU, hU']
+  · rw [Circuit.kraus_comp, Circuit.kraus_comp, Circuit.kraus_measureCorrect, u.kraus_eq_op,
+      u'.kraus_eq_op]
     simpa only [Matrix.mul_assoc] using hψ _
 
 theorem IsOneRoundConversion.mono {T₁ T₂ T₁' T₂' : ℕ} {φ ψ : Config X → ℂ}
     (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) (h₁ : T₁ ≤ T₁') (h₂ : T₂ ≤ T₂') :
     IsOneRoundConversion Γ T₁' T₂' φ ψ :=
-  let ⟨hφ, u, u', U, U', D, V, hu, hud, hU, hu', hu'd, hU', hV, hψ⟩ := h
-  ⟨hφ, u, u', U, U', D, V, hu, hud.trans h₁, hU, hu', hu'd.trans h₂, hU', hV, hψ⟩
+  let ⟨hφ, U, U', D, V, hU, hU', hV, hψ⟩ := h
+  ⟨hφ, U, U', D, V, hU.mono h₁, hU'.mono h₂, hV, hψ⟩
 
 /-- **A circuit after one round.** A conversion with one round of measurements into `ψ`, followed
-by a unitary circuit of depth at most `T` with matrix `W`, is a conversion into `W ψ`, the
-second circuit deeper by `T`. -/
-theorem IsOneRoundConversion.comp {T₁ T₂ T : ℕ} {φ ψ : Config X → ℂ}
-    (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) {c : Circuit Γ KrausGate X X}
-    {W : Matrix (Config X) (Config X) ℂ} (hc : c.Forall KrausGate.ev KrausFamily.IsUnitary)
-    (hd : c.depth ≤ T) (hW : ∀ p, c.kraus KrausGate.ev p = W) :
-    IsOneRoundConversion Γ T₁ (T₂ + T) φ (W *ᵥ ψ) := by
-  obtain ⟨hφ, u, u', U, U', D, V, hu, hud, hU, hu', hu'd, hU', hV, hψ⟩ := h
-  refine ⟨hφ, u, u'.comp c, U, W * U', D, V, hu, hud, hU, hu'.comp _ hc,
-    (Circuit.depth_comp u' c).trans (Nat.add_le_add hu'd hd),
-    fun q ↦ by rw [Circuit.kraus_comp KrausGate.ev u' c q, hU', hW], hV, fun m ↦ ?_⟩
+by a unitary circuit `W` of depth at most `T`, is a conversion into `W ψ`, the second circuit
+deeper by `T`. -/
+theorem IsOneRoundConversion.mulVec {T₁ T₂ T : ℕ} {φ ψ : Config X → ℂ}
+    (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) {W : Matrix (Config X) (Config X) ℂ}
+    (hW : IsUnitaryCircuit Γ T W) : IsOneRoundConversion Γ T₁ (T₂ + T) φ (W *ᵥ ψ) := by
+  obtain ⟨hφ, U, U', D, V, hU, hU', hV, hψ⟩ := h
+  refine ⟨hφ, U, W * U', D, V, hU, add_comm T₂ T ▸ hW.mul hU', hV, fun m ↦ ?_⟩
   obtain ⟨z, hz⟩ := hψ m
   refine ⟨z, ?_⟩
   rw [← mulVec_smul, ← hz, mulVec_mulVec]
   simp only [Matrix.mul_assoc]
 
-/-- **Unitary circuits are one round without measurements.** A circuit of unitary local families
-of depth at most `T`, all of whose Kraus operators are `U`, converts every nonzero vector `φ`
-into `U φ` with one round of measurements in depth `T`, measuring no site. -/
-theorem isOneRoundConversion_of_kraus_eq {T : ℕ} {c : Circuit Γ KrausGate X X}
-    {U : Matrix (Config X) (Config X) ℂ} (hc : c.Forall KrausGate.ev KrausFamily.IsUnitary)
-    (hd : c.depth ≤ T) (hU : ∀ p, c.kraus KrausGate.ev p = U) {φ : Config X → ℂ}
-    (hφ : φ ≠ 0) : IsOneRoundConversion Γ T 0 φ (U *ᵥ φ) := by
-  refine ⟨hφ, c, .done X, U, 1, ∅, fun _ _ ↦ 1, hc, hd, hU, trivial, le_rfl, fun _ ↦ rfl,
-    fun _ _ ↦ one_mem _, fun m ↦ ⟨1, ?_⟩⟩
-  have hplace : place (∅ : Finset S) (single m m (1 : ℂ)) = 1 := by
+/-- **Unitary circuits are one round without measurements.** A unitary circuit `U` of depth at
+most `T` converts every nonzero vector `φ` into `U φ` with one round of measurements in depth
+`T`, measuring no site. -/
+theorem IsUnitaryCircuit.isOneRoundConversion {T : ℕ} {U : Matrix (Config X) (Config X) ℂ}
+    (hU : IsUnitaryCircuit Γ T U) {φ : Config X → ℂ} (hφ : φ ≠ 0) :
+    IsOneRoundConversion Γ T 0 φ (U *ᵥ φ) := by
+  refine ⟨hφ, U, 1, ∅, fun _ _ ↦ 1, hU, IsUnitaryCircuit.one Γ X 0, fun _ _ ↦ one_mem _,
+    fun m ↦ ⟨1, ?_⟩⟩
+  have hplace : ManyBody.place (∅ : Finset S) (single m m (1 : ℂ)) = 1 := by
     ext y x
     have hy : (fun v : {v // v ∈ (∅ : Finset S)} ↦ y v) = m :=
       funext fun v ↦ absurd v.2 (Finset.notMem_empty _)
     have hx : (fun v : {v // v ∈ (∅ : Finset S)} ↦ x v) = m :=
       funext fun v ↦ absurd v.2 (Finset.notMem_empty _)
-    rw [place_apply, single_apply, one_apply, hy, hx]
+    rw [ManyBody.place_apply, single_apply, one_apply, hy, hx]
     by_cases hxy : y = x
     · simp [hxy]
     · rw [ite_eq_right_iff.mpr fun h ↦ absurd (funext fun v ↦ h v (by simp)) hxy,
         ite_eq_right_iff.mpr fun h ↦ absurd h hxy]
-  rw [hplace, prodOp_one, Matrix.one_mul, Matrix.one_mul, Matrix.one_mul, one_smul]
+  rw [hplace, ManyBody.prodOp_one, Matrix.one_mul, Matrix.one_mul, Matrix.one_mul, one_smul]
 
 end OneRound
 
