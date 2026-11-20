@@ -284,4 +284,31 @@ theorem preimage_ringBall_subset (R : Finset (Fin M)) (r : ℕ) :
 
 end Block
 
+/-! ### Windows of consecutive sites -/
+
+section Window
+
+variable {k : ℕ}
+
+/-- The window of `k ≤ N` consecutive sites starting at the site `i`: the injection `j ↦ i + j`
+of `Fin k` into the ring, indices modulo `N`. -/
+def ringWindow (hk : k ≤ N) (i : Fin N) : Fin k ↪ Fin N :=
+  ⟨fun j ↦ i + Fin.castLE hk j, fun _ _ h ↦ Fin.castLE_injective hk (add_left_cancel h)⟩
+
+omit [NeZero N] in
+@[simp]
+theorem ringWindow_apply (hk : k ≤ N) (i : Fin N) (j : Fin k) :
+    ringWindow hk i j = i + Fin.castLE hk j :=
+  rfl
+
+/-- The window of two sites starting at `i` is the bond `{i, i + 1}`. -/
+theorem map_ringWindow_two (hk : 2 ≤ N) (i : Fin N) :
+    Finset.univ.map (ringWindow hk i) = {i, i + 1} := by
+  have h0 : (Fin.castLE hk 0 : Fin N) = 0 := Fin.ext (by simp)
+  have h1 : (Fin.castLE hk 1 : Fin N) = 1 := Fin.ext (by simp [Nat.mod_eq_of_lt hk])
+  ext j
+  simp [Fin.exists_fin_two, h0, h1, eq_comm]
+
+end Window
+
 end ManyBody
