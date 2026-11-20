@@ -9,5 +9,6 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Model
 
 import QICLean.Circuit.Model.Approximate
+import QICLean.Circuit.Model.Channel
 import QICLean.Circuit.Model.Conversion
 import QICLean.Circuit.Model.Protocol
