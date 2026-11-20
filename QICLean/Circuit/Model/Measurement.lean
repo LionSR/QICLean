@@ -115,10 +115,6 @@ Source: arXiv:2103.13367, paragraph "Quantum circuits and LOCC" (unitary gates a
 def IsUnitaryOrMeasurement (K : KrausFamily α β) : Prop :=
   K.IsUnitary ∨ ∃ (e : K.Index ≃ α) (f : α ≃ β), ∀ i, K.op i = Matrix.single (f (e i)) (e i) 1
 
-theorem IsUnitary.isUnitaryOrMeasurement {K : KrausFamily α β} (h : K.IsUnitary) :
-    K.IsUnitaryOrMeasurement :=
-  Or.inl h
-
 /-- The measurement of a basis is a local family of a measurement circuit. -/
 theorem isUnitaryOrMeasurement_measure : (measure α).IsUnitaryOrMeasurement :=
   Or.inr ⟨Equiv.refl _, Equiv.refl _, fun _ ↦ rfl⟩
@@ -406,9 +402,9 @@ theorem forall_measureCorrect (D : Finset S)
       KrausFamily.single 1).IsUnitaryOrMeasurement
     split_ifs
     · exact KrausFamily.isUnitaryOrMeasurement_measure
-    · exact (KrausFamily.isUnitary_single (one_mem _)).isUnitaryOrMeasurement
+    · exact Or.inl (KrausFamily.isUnitary_single (one_mem _))
   · refine ⟨⟨fun b ↦ absurd b.2 (Finset.notMem_empty _), fun s ↦ ?_⟩, fun _ ↦ trivial⟩
-    exact (KrausFamily.isUnitary_single (hV _ _)).isUnitaryOrMeasurement
+    exact Or.inl (KrausFamily.isUnitary_single (hV _ _))
 
 end MeasureCorrect
 
@@ -513,7 +509,7 @@ theorem IsMeasurementConversion.of_prodOp {T : ℕ} {U : (s : S) → Matrix (X s
   have hL : ∀ i, L.kraus KrausGate.ev i = prodOp U := fun i ↦ Layer.kraus_ofOnsite _ _ i
   refine ⟨fun h0 ↦ hφ (by rw [h0, mulVec_zero]), (Circuit.ofLayer L).comp c,
     Circuit.Forall.comp _ ⟨⟨fun b ↦ absurd b.2 (Finset.notMem_empty _),
-      fun s ↦ (KrausFamily.isUnitary_single (hU s)).isUnitaryOrMeasurement⟩, fun _ ↦ trivial⟩ hc,
+      fun s ↦ Or.inl (KrausFamily.isUnitary_single (hU s))⟩, fun _ ↦ trivial⟩ hc,
     ?_, fun q ↦ ?_⟩
   · refine (Circuit.depth_comp _ c).trans ?_
     rw [Circuit.depth_ofLayer, Layer.depth_ofOnsite, zero_add]
@@ -529,7 +525,7 @@ theorem IsUnitaryCircuit.isMeasurementConversion {T : ℕ} {U : Matrix (Config X
     (hU : IsUnitaryCircuit Γ T U) {φ : Config X → ℂ} (hφ : φ ≠ 0) :
     IsMeasurementConversion Γ T φ (U *ᵥ φ) := by
   obtain ⟨c, hd, rfl⟩ := hU
-  exact ⟨hφ, c.toCircuit, c.forall_isUnitary.mono fun _ hK ↦ hK.isUnitaryOrMeasurement, hd,
+  exact ⟨hφ, c.toCircuit, c.forall_isUnitary.mono fun _ hK ↦ Or.inl hK, hd,
     fun p ↦ ⟨1, by rw [c.kraus_eq_op, one_smul]⟩⟩
 
 omit [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Finite (Z s)] in
@@ -620,9 +616,9 @@ theorem IsOneRoundConversion.isMeasurementConversion {T₁ T₂ : ℕ} {φ ψ : 
     (h : IsOneRoundConversion Γ T₁ T₂ φ ψ) : IsMeasurementConversion Γ (T₁ + T₂) φ ψ := by
   obtain ⟨hφ, U, U', D, V, ⟨u, hud, rfl⟩, ⟨u', hu'd, rfl⟩, hV, hψ⟩ := h
   refine ⟨hφ, u.toCircuit.comp ((Circuit.measureCorrect D V).comp u'.toCircuit),
-    (u.forall_isUnitary.mono fun _ hK ↦ hK.isUnitaryOrMeasurement).comp _
+    (u.forall_isUnitary.mono fun _ hK ↦ Or.inl hK).comp _
       ((Circuit.forall_measureCorrect D hV).comp _
-        (u'.forall_isUnitary.mono fun _ hK ↦ hK.isUnitaryOrMeasurement)), ?_, fun q ↦ ?_⟩
+        (u'.forall_isUnitary.mono fun _ hK ↦ Or.inl hK)), ?_, fun q ↦ ?_⟩
   · refine (Circuit.depth_comp _ _).trans (Nat.add_le_add hud ?_)
     refine (Circuit.depth_comp _ _).trans ?_
     rw [Circuit.depth_measureCorrect, zero_add]
