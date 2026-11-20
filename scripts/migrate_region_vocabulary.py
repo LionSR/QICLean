@@ -678,10 +678,12 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
                 prev = "".join(out) + text[pos:m.start()]
                 lm = re.search(r"(,\s*|\[\s*)(←\s*)?$", prev)
                 after = text[m.end():]
-                if lm and re.match(r"\s*[,\]]", after):
+                if lm and re.match(r"\s*[,\]]", after) and in_rewrite_list(prev, lm.end()):
                     opens = lm.group(1).startswith("[")
                     tail = re.match(r"\s*,\s*", after) if opens else None
-                    out = [prev[:lm.start()] + ("[" if opens else "")]
+                    # a list the drop empties is marked, so that only such lists are cleaned up
+                    emptied = opens and tail is None
+                    out = [prev[:lm.start()] + ("[" + EMPTIED if emptied else "[" if opens else "")]
                     pos = m.end() + (tail.end() if tail else 0)
                     rep.rewritten += 1
                     changed = True
@@ -817,8 +819,7 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         ls = new_text.split("\n")
         keep = []
         for i, ln in enumerate(ls):
-            em = EMPTY_LIST.match(ln)
-            if em and ln.strip() == em.group(0).strip():
+            if EMPTY_LIST.match(ln):
                 nxt = next((x for x in ls[i + 1:] if x.strip()), "")
                 if line_indent_of(nxt) == line_indent_of(ln):
                     continue
@@ -847,7 +848,28 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
 
 
 MAX = 100
-EMPTY_LIST = re.compile(r"^[ \t]*(?:rw|simp only|simp_rw) \[\][ \t]*$")
+EMPTIED = "\ue000"  # marks a rewrite list emptied by the migration, until the report
+EMPTY_LIST = re.compile(r"^[ \t]*(?:rw|rewrite|simp only|simp_rw) \[" + EMPTIED +
+                        r"\](?:[ \t]+at[ \t][^\n]*)?[ \t]*$")
+REWRITE_TACTIC = re.compile(r"(?:^|[\s(;>])(?:rw|rwa|rewrite|erw|simp_rw|nth_rw\s+\d+|"
+                            r"nth_rewrite\s+\d+|simp|simpa|dsimp|simp_all|field_simp)[!?]?"
+                            r"(?:\s+only)?\s*$")
+
+
+def in_rewrite_list(text: str, end: int) -> bool:
+    """Whether position `end` of `text` lies directly inside the list of a rewriting tactic
+    (`rw [...]`, `simp only [...]`, ...), not in a list literal or another bracket."""
+    depth, k = 0, end
+    while k > 0:
+        k -= 1
+        c = text[k]
+        if c in ")]}⟩":
+            depth += 1
+        elif c in "([{⟨":
+            if depth == 0:
+                return c == "[" and bool(REWRITE_TACTIC.search(text[:k]))
+            depth -= 1
+    return False
 
 
 def line_indent_of(line: str) -> int:
@@ -1038,16 +1060,16 @@ def main() -> int:
                 final.remaining = [shift(e) for e in final.remaining]
                 nt = dropped
                 rep.files.add(p)
+            # an emptied rewrite list that ends its block is left for a hand edit; the marks of
+            # the emptied lists go
+            emptied = [f"{p}:{i + 1}: emptied rewrite list ends its block: delete it, or close "
+                       "the goal with `rfl`"
+                       for i, ln in enumerate(nt.split("\n")) if EMPTY_LIST.match(ln)]
+            nt = nt.replace(EMPTIED, "")
             if nt != t:
                 with open(p, "w", encoding="utf8") as h:
                     h.write(nt)
-            rep.unhandled += final.remaining
-            # an emptied rewrite list that ends its block is left for a hand edit
-            empty = re.compile(EMPTY_LIST.pattern, re.M)
-            if len(empty.findall(nt)) > len(empty.findall(t)):
-                rep.unhandled += [f"{p}:{lineno(nt, em.start())}: emptied rewrite list ends its "
-                                  "block: delete it, or close the goal with `rfl`"
-                                  for em in empty.finditer(nt)]
+            rep.unhandled += final.remaining + emptied
             rep.unhandled += [u for u in dict.fromkeys(frep.unhandled)
                               if re.search(r": (line longer than|`\.[\w']+` needs)", u)]
     lines = []
