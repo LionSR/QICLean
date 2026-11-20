@@ -562,10 +562,17 @@ the depth is $2T$ for $M$ even and $3T$ for $M$ odd.
         \Phi_L&=\mathcal D\circ\Phi_O\circ\Phi_{L'_0}\circ\dots\circ\Phi_{L'_{r-1}}\circ\mathcal E.
         \label{eq:protocols_block_split}
     \end{align}
-    The factorization $\Phi_{L'}=\Phi_O\circ\Phi_{L'_{\mathrm{cells}}}$ through the layer of
-    all gates holds Kraus operator by Kraus operator: the product $O_kC_i$ evaluated at
-    $(y,x)$ is a sum over intermediate configurations, of which only the one equal to $y$ on
-    the cells and to $x$ at the free sites contributes. The layer of all gates is the
+    The factorization $\Phi_{L'}=\Phi_O\circ\Phi_{L'_{\mathrm{cells}}}$ through the layer
+    $L'_{\mathrm{cells}}$ of all gates holds Kraus operator by Kraus operator. Let $w_0$ be the
+    configuration equal to $y$ on the cells and to $x$ at the free sites. Since $O_k$ is the
+    identity on the cells and the Kraus operator $C_i$ of $L'_{\mathrm{cells}}$ is the identity
+    at the free sites, every other term of the sum vanishes, and
+    \begin{align}
+        (O_kC_i)(y,x)&=\sum_wO_k(y,w)\,C_i(w,x)=O_k(y,w_0)\,C_i(w_0,x)=L'_{(i,k)}(y,x),
+        \notag
+    \end{align}
+    the Kraus operator of $L'$ with the outcomes $i$ of its gates and $k$ of its onsite
+    families. The layer of all gates is the
     composite of the layers $L'_c$ by Theorem~\ref{thm:circuits_of_cells}, enumerating the
     cells colour by colour. Each factor of~(\ref{eq:protocols_block_split}) is a
     trace-preserving layer whose cells have pairwise disjoint covering cells, those of one
