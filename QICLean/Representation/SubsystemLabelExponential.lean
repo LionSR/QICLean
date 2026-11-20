@@ -59,8 +59,8 @@ theorem re_inner_exp_labelEntropy_subsystemPerm_prod
       (NormedSpace.exp ((u : ℂ) • labelEntropy (subsystemPerm k ι Q))).submatrix
         (subsystemSplitEquiv ι k Q).symm (subsystemSplitEquiv ι k Q).symm =
       Matrix.kronecker
-        (1 : Matrix (Fin k → ManyBody.RegionConfig ι Qᶜ)
-          (Fin k → ManyBody.RegionConfig ι Qᶜ) ℂ)
+        (1 : Matrix (Fin k → ManyBody.ComplConfig ι Q)
+          (Fin k → ManyBody.ComplConfig ι Q) ℂ)
         (NormedSpace.exp ((u : ℂ) •
           labelEntropy (copyPerm (ManyBody.RegionConfig ι Q) k))) := by
     rw [hexp, hexp]
@@ -71,17 +71,17 @@ theorem re_inner_exp_labelEntropy_subsystemPerm_prod
         (_ : l ∈ Finset.univ) ↦ congrArg
           (fun M ↦ Complex.exp ((u : ℂ) * (Real.log l.dim : ℂ)) * M x y)
           (labelProj_subsystemPerm_submatrix ι k Q l)))
-  let τ : ManyBody.RegionConfig ι Qᶜ × ManyBody.RegionConfig ι Q → ℂ :=
-    fun x ↦ ψ ((ManyBody.splitEquiv ι Q).symm (x.2, x.1))
-  let v' : (Fin k → ManyBody.RegionConfig ι Qᶜ) ×
+  let τ : ManyBody.ComplConfig ι Q × ManyBody.RegionConfig ι Q → ℂ :=
+    fun x ↦ ψ ((ManyBody.cutEquiv ι Q).symm (x.2, x.1))
+  let v' : (Fin k → ManyBody.ComplConfig ι Q) ×
       (Fin k → ManyBody.RegionConfig ι Q) → ℂ :=
     fun x ↦ ∏ j, τ (x.1 j, x.2 j)
   have htrace (P : Matrix (Fin k → ManyBody.RegionConfig ι Q)
       (Fin k → ManyBody.RegionConfig ι Q) ℂ) :
       (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ Q) * P).trace =
         (Matrix.vecMulVec v' (star v') * Matrix.kronecker
-          (1 : Matrix (Fin k → ManyBody.RegionConfig ι Qᶜ)
-            (Fin k → ManyBody.RegionConfig ι Qᶜ) ℂ) P).trace := by
+          (1 : Matrix (Fin k → ManyBody.ComplConfig ι Q)
+            (Fin k → ManyBody.ComplConfig ι Q) ℂ) P).trace := by
     simpa only [v', Matrix.partialTraceLeft_vecMulVec_prod,
       show Matrix.partialTraceLeft (Matrix.vecMulVec τ (star τ)) =
         ManyBody.regionState ψ Q from rfl, Matrix.kronecker] using

@@ -143,8 +143,8 @@ noncomputable def replicaGoodConfigurationMarginal (ι : Fin 5 → Type*)
   let f := fun x : Config Bᶜ.card ι ×
       ((↥B → ι 0 × (ι 1 × ι 2)) × ((Fin B.card → ι 3) × (Fin B.card → ι 4))) =>
     let g := fiveFactorCopiesEquiv ι Bᶜ.card x.1
-    w ((ManyBody.splitEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
-      (x.2.1, fun i => g.1 ((Finset.equivFin Bᶜ) i)),
+    w ((ManyBody.cutEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
+      (x.2.1, fun i => g.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i))),
       ((goodBadCopiesEquiv (ι 3) B).symm (g.2.1, x.2.2.1),
         (goodBadCopiesEquiv (ι 4) B).symm (g.2.2, x.2.2.2)))
   Matrix.partialTraceRight (Matrix.vecMulVec f (star f))
@@ -173,8 +173,8 @@ theorem replicaGoodConfigurationMarginal_eq (ι : Fin 5 → Type*)
         ((Fin k → ι 3) × (Fin k → ι 4)) ℂ)) *ᵥ u
     let f := fun x : ((Fin Bᶜ.card → ι 0 × (ι 1 × ι 2)) ×
         ((Fin k → ι 3) × (Fin k → ι 4))) × (↥B → ι 0 × (ι 1 × ι 2)) =>
-      w ((ManyBody.splitEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
-        (x.2, fun i => x.1.1 ((Finset.equivFin Bᶜ) i)), x.1.2)
+      w ((ManyBody.cutEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
+        (x.2, fun i => x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i))), x.1.2)
     replicaGoodConfigurationMarginal ι Ω k B u =
       (Matrix.partialTraceRightAlong (goodAuxiliarySplit ι B)
         (Matrix.partialTraceRight (Matrix.vecMulVec f (star f)))).submatrix

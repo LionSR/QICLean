@@ -36,7 +36,7 @@ variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 
 local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "B" => ManyBody.ComplConfig β X
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
 local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "L" => Fin k → A × E
@@ -56,7 +56,7 @@ def schmidtBellWitnessEquiv : TensorPower.Config k ι₀ ≃ L × TensorPower.Co
   (bellInsertionCopyEquiv β X ↥E (Fin E.card) k).trans
     (addedSiteConfigEquiv ιe (A × E) k)
 
-variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.RegionConfig β Xᶜ))
+variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.ComplConfig β X))
 
 /-- The actual insertion range matrix is the selected Bell tensor-power
 matrix tensored with the exterior identity, in the explicit witness

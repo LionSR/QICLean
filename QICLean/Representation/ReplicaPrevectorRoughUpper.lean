@@ -37,7 +37,7 @@ variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
 variable (E : Finset (ManyBody.RegionConfig β X))
 
 local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "B" => ManyBody.ComplConfig β X
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
 local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
@@ -64,7 +64,7 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
     (hdisjoint : ∀ D ∈ regions, Disjoint X D)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)))
     {t : ℝ} (ht : 0 < t) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦

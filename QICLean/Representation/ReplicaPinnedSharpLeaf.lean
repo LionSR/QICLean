@@ -165,8 +165,8 @@ private theorem re_inner_exp_labelEntropy_selectedBellPost_le
     (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (u : ℝ) :
     let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.ComplConfig β X → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
       (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
@@ -203,8 +203,8 @@ private theorem compressedTypicalSiteTensor_ne_zero
     (E : Finset (ManyBody.RegionConfig β X))
     (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.ComplConfig β X → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
       (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
@@ -223,7 +223,7 @@ private theorem compressedTypicalSiteTensor_ne_zero
     rw [hzero, norm_zero] at hn
     norm_num at hn
   obtain ⟨c, hc⟩ := hχne
-  let x₀ : (v : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) v :=
+  let x₀ : (v : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X (Fin E.card) v :=
     Equiv.piOptionEquivProd.symm ((Finset.equivFin E) c.1, c.2)
   intro h
   have hval := congrFun h (fun _ : Fin k ↦ x₀)
@@ -309,8 +309,8 @@ theorem exists_log_re_inner_replicaPinnedFactor_post_le
             v * vonNeumannEntropy (ManyBody.regionState Ω Q)
               (ManyBody.regionState_posSemidef Q Ω).isHermitian + K * v ^ 2) →
       let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
-      let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-      let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
+      let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+      let χ : Fin E.card × ManyBody.ComplConfig β X → ℂ := fun x ↦
         Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
       let Ψ := WithLp.toLp 2
         (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦

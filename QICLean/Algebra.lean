@@ -31,6 +31,7 @@ import QICLean.Algebra.FiniteCauchySchwarz
 import QICLean.Algebra.FiniteKroneckerOrder
 import QICLean.Algebra.FiniteMonomialInterpolation
 import QICLean.Algebra.FiniteSumPowers
+import QICLean.Algebra.FinsetComplSubtype
 import QICLean.Algebra.FrameOperator
 import QICLean.Algebra.FrobeniusHilbert
 import QICLean.Algebra.GramMatrixLI

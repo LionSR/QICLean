@@ -34,8 +34,9 @@ and the complement of their union. Source: `07-comparators.tex`, lines 20--37. -
 def regionalPhysicalEquiv (Q Y : Finset V) (hQY : Disjoint Q Y) :
     ((v : V) → β v) ≃ ManyBody.RegionConfig β Q ×
       (ManyBody.RegionConfig β Y × ManyBody.RegionConfig β (Q ∪ Y)ᶜ) :=
-  (ManyBody.splitEquiv β Q).trans
-    ((Equiv.refl _).prodCongr (ManyBody.complementUnionEquiv β Q Y hQY))
+  (ManyBody.cutEquiv β Q).trans
+    ((Equiv.refl _).prodCongr ((ManyBody.complementUnionEquiv β Q Y hQY).trans
+      ((Equiv.refl _).prodCongr (ManyBody.complementEquiv β (Q ∪ Y)))))
 
 end ManyBody
 

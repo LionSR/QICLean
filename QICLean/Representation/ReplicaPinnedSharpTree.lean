@@ -72,8 +72,8 @@ def selectedBellPost
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
     (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) :
     EuclideanSpace ℂ (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
-  let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-  let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
+  let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+  let χ : Fin E.card × ManyBody.ComplConfig β X → ℂ := fun x ↦
     Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
   let Ψ := WithLp.toLp 2
     (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦

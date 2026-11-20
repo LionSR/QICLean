@@ -70,9 +70,9 @@ theorem eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
     (hdisjoint : ∀ B ∈ regions, Disjoint X B)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
     let ι := ManyBody.compressedSiteSpace β X (Fin E.card)
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let χsite := WithLp.toLp 2
-      (fun x : (f : Option ↥(Xᶜ)) → ι f ↦
+      (fun x : (f : Option {v // v ∉ X}) → ι f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
@@ -98,7 +98,7 @@ theorem eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
       1 / (4 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ r k := by
   classical
   intro ι ΩX χsite Ψ a q loss r hmass
-  let failure (k : ℕ) (D : Finset (Option ↥(Xᶜ))) : ℝ :=
+  let failure (k : ℕ) (D : Finset (Option {v // v ∉ X})) : ℝ :=
     ‖toEuclideanLin (1 - labelCutoff (subsystemPerm k ι D) (a k D)) (Ψ k)‖ ^ 2
   let lossAt (i : Fin regions.length) (k : ℕ) : ℝ :=
     failure k (ManyBody.exteriorRegion X (regions.get i))
@@ -124,7 +124,7 @@ theorem eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
     rw [ManyBody.compressedRegionalThreshold_exteriorRegion β Ω X (regions.get i) hi E k]
     exact hck k hk
   have haux : ∀ D ∈ regions.map (ManyBody.exteriorRegion X),
-      Disjoint D ({none} : Finset (Option ↥(Xᶜ))) := by
+      Disjoint D ({none} : Finset (Option {v // v ∉ X})) := by
     simpa only [List.forall_mem_map] using
       (fun B (_ : B ∈ regions) ↦ ManyBody.exteriorRegion_disjoint_auxiliary X B)
   have hretain (k : ℕ) : q k - loss k ≤ r k :=

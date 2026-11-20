@@ -67,9 +67,9 @@ theorem eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
     (hdisjoint : ∀ B ∈ regions, Disjoint X B)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
     let ι := ManyBody.compressedSiteSpace β X (Fin E.card)
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let χsite := WithLp.toLp 2
-      (fun x : (f : Option ↥(Xᶜ)) → ι f ↦
+      (fun x : (f : Option {v // v ∉ X}) → ι f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
@@ -90,11 +90,11 @@ theorem eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
       1 / (2 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ q k) →
     ∀ᶠ k : ℕ in atTop,
       let e := Equiv.arrowProdEquivProdArrow (Fin k)
-        (fun _ ↦ ManyBody.RegionConfig β X × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ι f)
+        (fun _ ↦ ManyBody.RegionConfig β X × E) (fun _ ↦ (f : Option {v // v ∉ X}) → ι f)
       ∃ φ : EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι),
         ‖φ‖ = 1 ∧
         (fun x ↦ φ (e x)) ∈ invariantSubspace
-          (copyPerm ((ManyBody.RegionConfig β X × E) × ((f : Option ↥(Xᶜ)) → ι f)) k) ∧
+          (copyPerm ((ManyBody.RegionConfig β X × E) × ((f : Option {v // v ∉ X}) → ι f)) k) ∧
         toEuclideanLin
           ((finKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
             (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ ∧
@@ -127,7 +127,7 @@ theorem eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
       (fun p ↦ Matrix.compressedTypicalPureState ΩX E
         ((Finset.equivFin E).symm p.1, p.2))
   have haux : ∀ D ∈ regions.map (ManyBody.exteriorRegion X),
-      Disjoint D ({none} : Finset (Option ↥(Xᶜ))) :=
+      Disjoint D ({none} : Finset (Option {v // v ∉ X})) :=
     List.forall_mem_map.mpr (fun B _ ↦ ManyBody.exteriorRegion_disjoint_auxiliary X B)
   filter_upwards [hm] with k hk
   rcases hk with ⟨_, _, hpos, hhalf, hbound⟩

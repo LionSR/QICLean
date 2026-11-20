@@ -41,8 +41,8 @@ comparator:sharp-upper, 07-comparators.tex, lines 405–412. -/
 theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X Q : Finset V)
     (hXQ : Disjoint X Q) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) (u : ℝ) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.ComplConfig β X → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
       (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦

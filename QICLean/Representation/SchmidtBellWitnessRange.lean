@@ -36,7 +36,7 @@ variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 
 local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "B" => ManyBody.ComplConfig β X
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
 local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "L" => Fin k → A × E
@@ -47,6 +47,11 @@ local instance schmidtBellRangeConfigurationDecidableEq : DecidableEq (ManyBody.
 local instance schmidtBellRangeOriginalConfigDecidableEq : DecidableEq (TensorPower.Config k ι₀) :=
   Fintype.decidablePiFintype
 
+-- Without it, instance search fails on `DecidableEq` of the compressed configurations
+-- `(f : Option {v // v ∉ X}) → ιe f` inside the copy products below.
+local instance : DecidableEq ((f : Option {v // v ∉ X}) → ιe f) :=
+  Fintype.decidablePiFintype
+
 /-- Pullback of a vector in the selected Bell range and the simultaneous-copy
 symmetric subspace is fixed by the actual inserted symmetric operator.
 Source: area-law manuscript, `07-comparators.tex`, lines 283–308 and 346–354. -/
@@ -54,9 +59,9 @@ theorem schmidtBellWitness_pullback_range
     (Ω : EuclideanSpace ℂ (A × B)) (φ : EuclideanSpace ℂ (L × TensorPower.Config k ιe))
     (hsym :
       let e := Equiv.arrowProdEquivProdArrow (Fin k)
-        (fun _ ↦ A × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ιe f)
+        (fun _ ↦ A × E) (fun _ ↦ (f : Option {v // v ∉ X}) → ιe f)
       (fun x ↦ φ (e x)) ∈ invariantSubspace
-        (copyPerm ((A × E) × ((f : Option ↥(Xᶜ)) → ιe f)) k))
+        (copyPerm ((A × E) × ((f : Option {v // v ∉ X}) → ιe f)) k))
     (hBell : toEuclideanLin
       ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ιe) (TensorPower.Config k ιe) ℂ)) φ = φ) :
@@ -64,13 +69,13 @@ theorem schmidtBellWitness_pullback_range
     let Φ : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2 (φ ∘ τ)
     let J := (addedSiteInsertion ιe (A × E) k (selectedBellVector Ω E)).submatrix
       (bellInsertionCopyEquiv β X ↥E (Fin E.card) k) id
-    let Pe := symProj (copyPerm ((f : Option ↥(Xᶜ)) → ιe f) k)
+    let Pe := symProj (copyPerm ((f : Option {v // v ∉ X}) → ιe f) k)
     (fun x ↦ Φ x) ∈ symmetricSubspace k ι₀ ∧
       toEuclideanLin (J * Pe * Jᴴ) Φ = Φ := by
   classical
   intro τ Φ J Pe
   let e := Equiv.arrowProdEquivProdArrow (Fin k)
-    (fun _ ↦ A × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ιe f)
+    (fun _ ↦ A × E) (fun _ ↦ (f : Option {v // v ∉ X}) → ιe f)
   have hΦ : (fun x ↦ Φ x) ∈ symmetricSubspace k ι₀ := by
     intro σ
     funext x
@@ -120,12 +125,12 @@ theorem labelProj_schmidtBellWitnessEquiv_auxiliary
       cases o with
       | none =>
         change subsystemPerm k ι₀ {none} σ x j none =
-          if none ∈ ({none} : Finset (Option ↥(Xᶜ))) then
+          if none ∈ ({none} : Finset (Option {v // v ∉ X})) then
             x (σ⁻¹ j) none else x j none
         simp
       | some v =>
         change subsystemPerm k ι₀ {none} σ x j (some (some (v : V))) =
-          if some v ∈ ({none} : Finset (Option ↥(Xᶜ))) then
+          if some v ∈ ({none} : Finset (Option {v // v ∉ X})) then
             x (σ⁻¹ j) (some (some (v : V))) else x j (some (some (v : V)))
         simp
   have h := groupAlgebraRep_submatrix_of_prod_action

@@ -58,18 +58,18 @@ private theorem singletonDensity_eq_reducedPure_of_coordinates
     (Ω : ((v : V) → β v) → ℂ) (T : Finset V) (j : Fin 3)
     (e : ((v : V) → β v) ≃ ι 0 × (ι 1 × ι 2))
     (a : ManyBody.RegionConfig β T ≃ ι (j.castAdd 2))
-    (b : ManyBody.RegionConfig β Tᶜ ≃
+    (b : ManyBody.ComplConfig β T ≃
       ((l : {l : Fin 3 // l ≠ j}) → ι (l.1.castAdd 2)))
     (hcoords : ∀ x, physicalSingletonEquiv ι j (e x) =
-      (a.prodCongr b) (ManyBody.splitEquiv β T x)) :
+      (a.prodCongr b) (ManyBody.cutEquiv β T x)) :
     physicalSingletonDensity ι (Ω ∘ e.symm) j =
       (ManyBody.regionState (WithLp.toLp 2 Ω) T).submatrix a.symm a.symm := by
   classical
   have he : e.trans (physicalSingletonEquiv ι j) =
-      (ManyBody.splitEquiv β T).trans (a.prodCongr b) :=
+      (ManyBody.cutEquiv β T).trans (a.prodCongr b) :=
     Equiv.ext hcoords
   let M := (vecMulVec Ω (star Ω)).submatrix
-    (ManyBody.splitEquiv β T).symm (ManyBody.splitEquiv β T).symm
+    (ManyBody.cutEquiv β T).symm (ManyBody.cutEquiv β T).symm
   calc
     _ = partialTraceRight (M.submatrix (a.prodCongr b).symm
         (a.prodCongr b).symm) := by
@@ -78,8 +78,8 @@ private theorem singletonDensity_eq_reducedPure_of_coordinates
       ext x y
       change Ω ((e.trans (physicalSingletonEquiv ι j)).symm x) *
           star (Ω ((e.trans (physicalSingletonEquiv ι j)).symm y)) =
-        Ω (((ManyBody.splitEquiv β T).trans (a.prodCongr b)).symm x) *
-          star (Ω (((ManyBody.splitEquiv β T).trans (a.prodCongr b)).symm y))
+        Ω (((ManyBody.cutEquiv β T).trans (a.prodCongr b)).symm x) *
+          star (Ω (((ManyBody.cutEquiv β T).trans (a.prodCongr b)).symm y))
       rw [he]
     _ = _ := partialTraceRight_submatrix_prod_equiv a b M
 
@@ -103,23 +103,25 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
   intro ι ψ
   let e := ManyBody.regionalPhysicalEquiv β Q Y hQY
   let b₀ := (ManyBody.complementUnionEquiv β Q Y hQY).trans
-    (physicalRemainingPairEquiv ι 0)
+    (((Equiv.refl _).prodCongr (ManyBody.complementEquiv β (Q ∪ Y))).trans
+      (physicalRemainingPairEquiv ι 0))
   let b₁ := (ManyBody.complementUnionEquiv β Y Q hQY.symm).trans
-    (((Equiv.refl _).prodCongr
+    (((Equiv.refl _).prodCongr ((ManyBody.complementEquiv β (Y ∪ Q)).trans
       (ManyBody.configurationCongr β
-        (congrArg (fun T : Finset V => Tᶜ) (Finset.union_comm Y Q)))).trans
+        (congrArg (fun T : Finset V => Tᶜ) (Finset.union_comm Y Q))))).trans
       (physicalRemainingPairEquiv ι 1))
-  let b₂ := (ManyBody.configurationCongr β (compl_compl (Q ∪ Y))).trans
+  let b₂ := ((ManyBody.complementEquiv β (Q ∪ Y)ᶜ).trans
+    (ManyBody.configurationCongr β (compl_compl (Q ∪ Y)))).trans
     ((ManyBody.unionEquiv β Q Y hQY).trans (physicalRemainingPairEquiv ι 2))
   have h₀ (x : (v : V) → β v) : physicalSingletonEquiv ι 0 (e x) =
-      ((Equiv.refl _).prodCongr b₀) (ManyBody.splitEquiv β Q x) := by
+      ((Equiv.refl _).prodCongr b₀) (ManyBody.cutEquiv β Q x) := by
     apply Prod.ext
     · rfl
     · apply (physicalRemainingPairEquiv ι 0).symm.injective
       simp only [b₀, Equiv.prodCongr_apply, Prod.map_snd]
       rfl
   have h₁ (x : (v : V) → β v) : physicalSingletonEquiv ι 1 (e x) =
-      ((Equiv.refl _).prodCongr b₁) (ManyBody.splitEquiv β Y x) := by
+      ((Equiv.refl _).prodCongr b₁) (ManyBody.cutEquiv β Y x) := by
     apply Prod.ext
     · rfl
     · apply (physicalRemainingPairEquiv ι 1).symm.injective
@@ -133,7 +135,7 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
           (fun w => x w) v
         rw [ManyBody.configurationCongr_apply]
   have h₂ (x : (v : V) → β v) : physicalSingletonEquiv ι 2 (e x) =
-      ((Equiv.refl _).prodCongr b₂) (ManyBody.splitEquiv β (Q ∪ Y)ᶜ x) := by
+      ((Equiv.refl _).prodCongr b₂) (ManyBody.cutEquiv β (Q ∪ Y)ᶜ x) := by
     apply Prod.ext
     · rfl
     · apply (physicalRemainingPairEquiv ι 2).symm.injective

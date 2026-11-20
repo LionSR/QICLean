@@ -28,7 +28,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 arXiv:1602.08828v2, Definition `d:vs`, lines 433–440. -/
 noncomputable def regionTensorCoordinates (q : ℕ) (J : Finset V) :
     EuclideanSpace ℂ (V → Fin q) ≃ₗᵢ[ℂ]
-      (EuclideanSpace ℂ (J → Fin q) ⊗[ℂ] EuclideanSpace ℂ (↥(Jᶜ) → Fin q)) :=
+      (EuclideanSpace ℂ (J → Fin q) ⊗[ℂ] EuclideanSpace ℂ ({v // v ∉ J} → Fin q)) :=
   (regionConfigurationSplit q J).trans (Submodule.euclideanTensorEquiv _ _)
 
 /-- Regional coordinate extension is viability in the actual tensor split.
@@ -36,7 +36,7 @@ Supporting ALVV, arXiv:1602.08828v2, Definition `d:vs`, lines 433–440. -/
 lemma isCloseTo_prodExt_region_iff_isViable {q : ℕ} {delta : ℝ}
     (J : Finset V) (S : Submodule ℂ (EuclideanSpace ℂ (J → Fin q)))
     (G : Submodule ℂ (EuclideanSpace ℂ (V → Fin q))) :
-    Submodule.IsCloseTo delta (Submodule.prodExt S (↥(Jᶜ) → Fin q))
+    Submodule.IsCloseTo delta (Submodule.prodExt S ({v // v ∉ J} → Fin q))
       (G.map (regionConfigurationSplit q J).toLinearEquiv.toLinearMap) ↔
     Submodule.IsViable delta S (G.map (regionTensorCoordinates q J).toLinearEquiv.toLinearMap) := by
   rw [Submodule.isCloseTo_prodExt_iff_isViable, ← Submodule.map_comp]
@@ -48,13 +48,13 @@ arXiv:1602.08828v2, Theorem `t:ais`, lines 1010–1024. -/
 lemma regionTensorCoordinates_eq_exteriorFirst (q : ℕ) (J : Finset V) :
     regionTensorCoordinates q J =
       ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
-        ((ManyBody.splitEquiv (fun _ : V ↦ Fin q) J).trans (Equiv.prodComm _ _))).trans
-          (Submodule.euclideanTensorEquiv (↥(Jᶜ) → Fin q) (J → Fin q))).trans
-        (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ (↥(Jᶜ) → Fin q))
+        ((ManyBody.cutEquiv (fun _ : V ↦ Fin q) J).trans (Equiv.prodComm _ _))).trans
+          (Submodule.euclideanTensorEquiv ({v // v ∉ J} → Fin q) (J → Fin q))).trans
+        (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ ({v // v ∉ J} → Fin q))
           (EuclideanSpace ℂ (J → Fin q))) := by
   apply LinearIsometryEquiv.ext
   intro psi
-  apply (Submodule.euclideanTensorEquiv (J → Fin q) (↥(Jᶜ) → Fin q)).symm.injective
+  apply (Submodule.euclideanTensorEquiv (J → Fin q) ({v // v ∉ J} → Fin q)).symm.injective
   change (Submodule.euclideanTensorEquiv _ _).symm
       (Submodule.euclideanTensorEquiv _ _ (regionConfigurationSplit q J psi)) = _
   rw [LinearIsometryEquiv.symm_apply_apply]

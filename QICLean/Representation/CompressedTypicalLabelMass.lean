@@ -47,8 +47,8 @@ theorem labelProj_compressedSite_submatrix
     (l : IrrepLabel (Equiv.Perm (Fin k))) :
     (labelProj (subsystemPerm k (ManyBody.compressedSiteSpace β X R) {none}) l).submatrix
         (exteriorCopyEquiv β X R k).symm (exteriorCopyEquiv β X R k).symm =
-      (1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
-        (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
+      (1 : Matrix (Fin k → ManyBody.ComplConfig β X)
+        (Fin k → ManyBody.ComplConfig β X) ℂ) ⊗ₖ
           labelProj (copyPerm R k) l := by
   exact groupAlgebraRep_submatrix_of_prod_action
     (subsystemPerm k (ManyBody.compressedSiteSpace β X R) {none})
@@ -59,23 +59,23 @@ theorem labelProj_compressedSite_submatrix
 projection mass of the same tensor-power vector in physical-first coordinates.
 No normalization, nonzero mass, or symmetry hypothesis is required. -/
 theorem norm_sq_labelProj_compressedSite_prod
-    (χ : R × ManyBody.RegionConfig β Xᶜ → ℂ)
+    (χ : R × ManyBody.ComplConfig β X → ℂ)
     (l : IrrepLabel (Equiv.Perm (Fin k))) :
     ‖toEuclideanLin
         (labelProj (subsystemPerm k (ManyBody.compressedSiteSpace β X R) {none}) l)
         (WithLp.toLp 2 (fun x : Config k (ManyBody.compressedSiteSpace β X R) ↦
           ∏ j, χ (Equiv.piOptionEquivProd (x j))))‖ ^ 2 =
       ‖WithLp.toLp 2
-        (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
-            (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
+        (((1 : Matrix (Fin k → ManyBody.ComplConfig β X)
+            (Fin k → ManyBody.ComplConfig β X) ℂ) ⊗ₖ
             labelProj (copyPerm R k) l) *ᵥ
-          (fun x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → R) ↦
+          (fun x : (Fin k → ManyBody.ComplConfig β X) × (Fin k → R) ↦
             ∏ j, χ (x.2 j, x.1 j)))‖ ^ 2 := by
   let e := exteriorCopyEquiv β X R k
   let Q := labelProj (subsystemPerm k (ManyBody.compressedSiteSpace β X R) {none}) l
   let v : Config k (ManyBody.compressedSiteSpace β X R) → ℂ :=
     fun x ↦ ∏ j, χ (Equiv.piOptionEquivProd (x j))
-  let w : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → R) → ℂ :=
+  let w : (Fin k → ManyBody.ComplConfig β X) × (Fin k → R) → ℂ :=
     fun x ↦ ∏ j, χ (x.2 j, x.1 j)
   have hw : v ∘ e.symm = w := by
     funext x
@@ -107,8 +107,8 @@ theorem norm_sq_labelProj_compressedTypicalSite_prod
     (Ω : EuclideanSpace ℂ ((v : V) → β v))
     (E : Finset (ManyBody.RegionConfig β X))
     (l : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let ψ : ManyBody.ComplConfig β X × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     ‖toEuclideanLin
         (labelProj (subsystemPerm k
@@ -117,10 +117,10 @@ theorem norm_sq_labelProj_compressedTypicalSite_prod
           (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
             ∏ j, ψ ((fun v ↦ x j (some v)), x j none)))‖ ^ 2 =
       ‖WithLp.toLp 2
-        (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
-            (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
+        (((1 : Matrix (Fin k → ManyBody.ComplConfig β X)
+            (Fin k → ManyBody.ComplConfig β X) ℂ) ⊗ₖ
             labelProj (copyPerm (Fin E.card) k) l) *ᵥ
-          (fun x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → Fin E.card) ↦
+          (fun x : (Fin k → ManyBody.ComplConfig β X) × (Fin k → Fin E.card) ↦
             ∏ j, ψ (x.1 j, x.2 j)))‖ ^ 2 := by
   intro ΩX ψ
   exact norm_sq_labelProj_compressedSite_prod β X (Fin E.card) k

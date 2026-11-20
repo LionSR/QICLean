@@ -97,8 +97,8 @@ theorem norm_sq_labelProj_selectedBellPost_eq
     (E : Finset (ManyBody.RegionConfig β X))
     (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.ComplConfig β X → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
       (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
@@ -126,18 +126,18 @@ theorem norm_sq_labelProj_selectedBellPost_prod
     (E : Finset (ManyBody.RegionConfig β X))
     (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let ψ : ManyBody.ComplConfig β X × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     ‖toEuclideanLin
       (labelProj (subsystemPerm k
         (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) {none}) ell)
       (selectedBellPost β Ω X E k)‖ ^ 2 =
     ‖WithLp.toLp 2
-      (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
-        (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
+      (((1 : Matrix (Fin k → ManyBody.ComplConfig β X)
+        (Fin k → ManyBody.ComplConfig β X) ℂ) ⊗ₖ
           labelProj (copyPerm (Fin E.card) k) ell) *ᵥ
-        (fun x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → Fin E.card) ↦
+        (fun x : (Fin k → ManyBody.ComplConfig β X) × (Fin k → Fin E.card) ↦
           ∏ j, ψ (x.1 j, x.2 j)))‖ ^ 2 := by
   intro ΩX ψ
   exact (norm_sq_labelProj_selectedBellPost_eq β Ω X E hz k ell).trans

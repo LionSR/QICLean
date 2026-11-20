@@ -50,42 +50,32 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 
 omit [∀ v, DecidableEq (β v)] in
-/-- A pure-state density after the region/complement coordinate split. -/
-theorem regionState_eq_partialTrace (ψ : EuclideanSpace ℂ ((v : V) → β v))
-    (R : Finset V) :
-    ManyBody.regionState ψ R = Matrix.partialTraceRight
-      (Matrix.vecMulVec (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x))
-        (star (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x)))) := rfl
-
-omit [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)] in
-/-- Complementary splits exchange their factors, including the canonical
-identification of the double complement. -/
-theorem split_compl_symm (R : Finset V) (a : ManyBody.RegionConfig β Rᶜ)
-    (b : ManyBody.RegionConfig β Rᶜᶜ) :
-    (ManyBody.splitEquiv β Rᶜ).symm (a, b) =
-      (ManyBody.splitEquiv β R).symm (ManyBody.configurationCongr β (compl_compl R) b, a) := by
-  funext v
-  by_cases hv : v ∈ R
-  · simp
-      [ManyBody.splitEquiv, Equiv.piEquivPiSubtypeProd, ManyBody.complementEquiv,
-      ManyBody.configurationCongr_apply, hv]
-  · simp [ManyBody.splitEquiv, Equiv.piEquivPiSubtypeProd, ManyBody.complementEquiv, hv]
-
-omit [∀ v, DecidableEq (β v)] in
-/-- Reducing the complement is the left marginal in the original region split. -/
+/-- Reducing to the complement `Rᶜ` is the left marginal in the cut along `R`, with the
+configurations outside `R` read as configurations of `Rᶜ`. -/
 theorem regionState_compl_eq_partialTraceLeft
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (R : Finset V) :
-    ManyBody.regionState ψ Rᶜ = Matrix.partialTraceLeft
-      (Matrix.vecMulVec (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x))
-        (star (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x)))) := by
+    ManyBody.regionState ψ Rᶜ = (Matrix.partialTraceLeft
+      (Matrix.vecMulVec (fun x ↦ ψ ((ManyBody.cutEquiv β R).symm x))
+        (star (fun x ↦ ψ ((ManyBody.cutEquiv β R).symm x))))).reindex
+      (ManyBody.complementEquiv β R) (ManyBody.complementEquiv β R) := by
+  let e := (ManyBody.complementEquiv β Rᶜ).trans (ManyBody.configurationCongr β (compl_compl R))
+  have hcut (x : ManyBody.RegionConfig β Rᶜ) (c : ManyBody.ComplConfig β Rᶜ) :
+      (ManyBody.cutEquiv β Rᶜ).symm (x, c) =
+        (ManyBody.cutEquiv β R).symm (e c, (ManyBody.complementEquiv β R).symm x) := by
+    funext v
+    by_cases hv : v ∈ R
+    · rw [ManyBody.cutEquiv_symm_apply_not_mem _ _ (Finset.notMem_compl.mpr hv),
+        ManyBody.cutEquiv_symm_apply_mem _ _ hv]
+      simp [e, ManyBody.configurationCongr_apply, ManyBody.complementEquiv]
+    · rw [ManyBody.cutEquiv_symm_apply_mem _ _ (Finset.mem_compl.mpr hv),
+        ManyBody.cutEquiv_symm_apply_not_mem _ _ hv]
+      rfl
   ext a b
-  simp only [ManyBody.regionState, ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply,
-      Pi.star_apply,
-    Matrix.partialTraceLeft_apply]
-  simp_rw [ManyBody.split_compl_symm]
-  exact (ManyBody.configurationCongr β (compl_compl R)).sum_comp
-    (fun c ↦ ψ ((ManyBody.splitEquiv β R).symm (c, a)) *
-      star (ψ ((ManyBody.splitEquiv β R).symm (c, b))))
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, ManyBody.regionState,
+    ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply, Pi.star_apply,
+    Matrix.partialTraceLeft_apply, hcut]
+  exact e.sum_comp (fun c ↦ ψ ((ManyBody.cutEquiv β R).symm (c, _)) *
+    star (ψ ((ManyBody.cutEquiv β R).symm (c, _))))
 
 /-- Complementary regional entropies of a pure state are equal, without any
 normalization or invertibility assumption. -/
@@ -93,8 +83,11 @@ normalization or invertibility assumption. -/
 theorem regionEntropy_compl (ψ : EuclideanSpace ℂ ((v : V) → β v)) (R : Finset V) :
     ManyBody.regionEntropy ψ Rᶜ = ManyBody.regionEntropy ψ R := by
   unfold regionEntropy
-  rw [vonNeumannEntropy_congr (ManyBody.regionState_compl_eq_partialTraceLeft β ψ R),
-    vonNeumannEntropy_congr (ManyBody.regionState_eq_partialTrace β ψ R)]
+  rw [vonNeumannEntropy_congr ((ManyBody.regionState_compl_eq_partialTraceLeft β ψ R).trans
+      (Matrix.reindex_apply _ _ _)) _ ((Matrix.isHermitian_submatrix_equiv _).mpr
+        (Matrix.posSemidef_vecMulVec_self_star _).partialTraceLeft.isHermitian),
+    vonNeumannEntropy_submatrix_equiv,
+    vonNeumannEntropy_congr (ManyBody.regionState_eq_partialTraceRight_cutVector R ψ)]
   exact (Entropy.pure_marginal_entropy_eq _).symm
 
 /-- The empty region has zero entropy for a normalized state. -/

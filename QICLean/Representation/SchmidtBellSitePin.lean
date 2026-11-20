@@ -43,7 +43,7 @@ variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 
 local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "B" => ManyBody.ComplConfig β X
 local notation "ι" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "M" => (Fin k → A × E) × TensorPower.Config k ι
 local notation "N" => (Fin k → A × Fin E.card) ×
@@ -58,7 +58,7 @@ def schmidtBellSiteEquiv : M ≃ N :=
       ((exteriorCopyEquiv β X (Fin E.card) k).trans
         (Equiv.prodComm (Fin k → B) (Fin k → Fin E.card)))
 
-variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.RegionConfig β Xᶜ))
+variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.ComplConfig β X))
 
 /-- Pulling back the enumerated Bell projector gives the literal selected
 Bell projector, with identity on the actual exterior sites.

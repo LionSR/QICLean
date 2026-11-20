@@ -53,16 +53,16 @@ theorem eventually_suppliedSchmidtBell_sharp_upper
     (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     {a K r : ℝ} (ha : 0 < a) (har : 6 * a ≤ r) (ha1 : 6 * a ≤ 1)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let ψ : ManyBody.ComplConfig β X × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     (∀ᶠ k : ℕ in atTop,
       (2 * (((k + 1) ^ (E.card ^ 2) : ℕ) : ℝ))⁻¹ ≤
         ‖WithLp.toLp 2
-          (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
-            (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
+          (((1 : Matrix (Fin k → ManyBody.ComplConfig β X)
+            (Fin k → ManyBody.ComplConfig β X) ℂ) ⊗ₖ
               labelProj (copyPerm (Fin E.card) k) (ell k)) *ᵥ
-            (fun x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → Fin E.card) ↦
+            (fun x : (Fin k → ManyBody.ComplConfig β X) × (Fin k → Fin E.card) ↦
               ∏ j, ψ (x.1 j, x.2 j)))‖ ^ 2) →
     ∃ C : ℝ, 0 ≤ C ∧
       (∀ G : ℕ, Tendsto (Real.bellOverlapRemainder E.card C G) atTop (𝓝 0)) ∧

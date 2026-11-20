@@ -25,7 +25,6 @@ import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Sites.ReplicaSwap
 import QICLean.ManyBody.Sites.SiteAction
 import QICLean.ManyBody.Sites.SitewiseProduct
-import QICLean.ManyBody.Sites.SplitOperatorSchmidt
 import QICLean.ManyBody.Sites.Subregion
 import QICLean.ManyBody.Sites.SumSites
 import QICLean.ManyBody.Sites.Support

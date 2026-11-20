@@ -131,7 +131,7 @@ theorem schmidtBellSitePrevector_compressed_enumerate_C
       (TensorPower.Config k (addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)))
       (Fin n) ℂ)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let ιE := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
     let ιF := addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
     let changeSite : ∀ o : Option (Option V), ιF o ≃ ιE o := fun o ↦
