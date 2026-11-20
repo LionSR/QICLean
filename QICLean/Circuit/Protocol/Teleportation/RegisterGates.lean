@@ -1,0 +1,771 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Circuit.Model.UnitaryPlacement
+import QICLean.Circuit.Model.UnitaryRegion
+import QICLean.Circuit.Protocol.Teleportation.LongRangeGates
+
+/-!
+# Gates between distant registers of several sites in constant depth with measurements
+
+The isometries of the tree-RG circuit of arXiv:2307.01696, eq. (16), act on registers carrying
+`ℂ^{D²}`, which occupy several sites of the ring once `D² > d`. The paragraph "Tree-RG circuit
+with measurements" teleports such registers "at neighboring registers with a constant
+overhead". This file proves this for a layer of gates on pairs of registers of `s` sites.
+
+A *register gate* (`QuantumCircuit.RegisterGate`) is a matrix `X` on `2s` sites acting on the
+two registers `a, …, a + s - 1` and `a + 2L + s, …, a + 2L + 2s - 1` of the ring, with
+`2L + 2s ≤ N`; the structure does not require `X` to be unitary, and the gate on the ring is
+unitary when `X` is (`QuantumCircuit.RegisterGate.op_mem_unitaryGroup`). For a list of register
+gates whose stretches `a, …, a + 2L + 2s - 1` are pairwise disjoint, and a unitary circuit `u`
+applying the matrices `X` to the `2s` consecutive sites `a + 2L, …, a + 2L + 2s - 1`, the circuit
+`QuantumCircuit.RegisterGate.rounds` does the following, in parallel for all the gates: teleport
+the site `a + t` of the first register to `a + 2L + t` along a chain of `L` hops, one round of
+depth at most `2` for each `t`, from `t = s - 1` down to `t = 0`; apply `u`; teleport the sites
+back, one round for each `t`, from `t = 0` up to `t = s - 1`. The site `a + t` is moved only after
+the sites `a + t + 1, …, a + s - 1` of its register, so its chain meets only sites carrying `|0⟩`.
+
+On the vectors with `|0⟩` at the `2L` sites strictly between the two registers of every gate,
+the circuit implements the product of the gates `X` at their registers
+(`QuantumCircuit.RegisterGate.isImplementationOn_rounds`). No outcome is post-selected. If `u`
+has depth at most `K`, the circuit has depth at most `4s + K`, independent of the distances `2L`
+and of the number of gates. If every `X` is a product of gates of total cost at most `K` on
+neighbouring sites of the open chain of `2s` sites, such a `u` exists
+(`QuantumCircuit.RegisterGate.isUnitaryCircuit_localProd`), so some measurement circuit of depth
+at most `4s + K` implements the layer (`QuantumCircuit.RegisterGate.exists_rounds`).
+
+## Main definitions
+
+* `QuantumCircuit.RegisterGate`, `QuantumCircuit.RegisterGate.op`,
+  `QuantumCircuit.RegisterGate.localOp`.
+* `QuantumCircuit.RegisterGate.therePerm` — the permutation of sites of the forward chains.
+* `QuantumCircuit.RegisterGate.rounds` — the circuit applying a layer of register gates.
+
+## Main results
+
+* `QuantumCircuit.RegisterGate.depth_rounds_le` — the circuit has depth at most
+  `4s` plus the depth of `u`.
+* `QuantumCircuit.RegisterGate.isUnitaryCircuit_localProd` — the gates on the consecutive sites
+  run in parallel.
+* `QuantumCircuit.RegisterGate.isImplementationOn_rounds`.
+* `QuantumCircuit.RegisterGate.exists_rounds`.
+
+The declarations restate `TNLean/Circuit/Teleportation/RegisterGates.lean` at commit
+`414a18fb88` (Apache-2.0). The changes: the gates on the ring are placements along injections,
+`QuantumCircuit.placeAlong`; the sequences of rounds are circuits composed by `Circuit.comp`,
+with depths bounded by `≤`; the circuit applying the matrices `X` on the consecutive sites is a
+`UnitaryCircuit` of the ring with operator `localProd gs`, run without a teleportation round
+around it, so the depth bound is `4s + K` in place of `4s + K + 2`; a product of at most `K`
+two-site gates on neighbouring sites (TNLean's `IsPairProduct`) is `IsGateProduct` on the path
+graph of `2s` sites, placed on the ring by `IsGateProduct.isUnitaryCircuitOn_ring` and run in
+parallel by `IsUnitaryCircuitOn.list_prod`.
+
+## References
+
+* arXiv:2307.01696 (Malz, Styliaris, Wei, Cirac), eq. (16) and paragraph "Tree-RG circuit with
+  measurements".
+-/
+
+open Matrix ManyBody
+
+namespace QuantumCircuit
+
+open Fin.NatCast TeleportHop
+
+variable {d N s : ℕ} [NeZero N]
+
+/-! ### Register gates -/
+
+/-- A *register gate*: a matrix `X` on `2s` sites acting on the two registers
+`a, …, a + s - 1` and `a + 2L + s, …, a + 2L + 2s - 1` of the ring, with `2L + 2s ≤ N`. The
+structure does not require `X` to be unitary: the circuit implements the gates for every family
+of matrices `X` whose product on the consecutive sites is applied by a unitary circuit.
+
+Source: arXiv:2307.01696, paragraph "Tree-RG circuit with measurements" (isometries acting on
+"a constant number of sites which, although spatially separated, can be teleported at
+neighboring registers"). -/
+structure RegisterGate (d N s : ℕ) [NeZero N] where
+  /-- The first site of the first register. -/
+  a : Fin N
+  /-- The number of hops of the chain teleporting each site of the first register. -/
+  L : ℕ
+  le : 2 * L + 2 * s ≤ N
+  /-- The matrix on the two registers, the first register on its first `s` sites. -/
+  X : Matrix (Config (Qudits (Fin (s + s)) d)) (Config (Qudits (Fin (s + s)) d)) ℂ
+
+namespace RegisterGate
+
+variable (g : RegisterGate d N s)
+
+/-- The offset from `a` of the site `t` of the two registers. -/
+def offset (t : Fin (s + s)) : ℕ := if t.val < s then t.val else t.val + 2 * g.L
+
+/-- The sites of the two registers: `a + t` for `t < s` and `a + 2L + t` for `s ≤ t < 2s`. -/
+def sites (t : Fin (s + s)) : Fin N := g.a + (g.offset t : Fin N)
+
+/-- The `2s` consecutive sites `a + 2L, …, a + 2L + 2s - 1` on which `X` is applied after the
+first register is teleported. -/
+def localSites (t : Fin (s + s)) : Fin N := g.a + ((2 * g.L + t.val : ℕ) : Fin N)
+
+/-- The stretch `a, …, a + 2L + 2s - 1` of the gate. -/
+def span : Finset (Fin N) :=
+  (Finset.range (2 * g.L + 2 * s)).image fun j : ℕ ↦ g.a + (j : Fin N)
+
+/-- The `2L` sites `a + t, …, a + t + 2L - 1`, which carry `|0⟩` before the chain of the site
+`t - 1` of the first register and after the chain of the site `t`. -/
+def zone (t : ℕ) : Finset (Fin N) :=
+  (Finset.Ico t (t + 2 * g.L)).image fun j : ℕ ↦ g.a + (j : Fin N)
+
+/-- The `2L` sites `a + s, …, a + s + 2L - 1` strictly between the two registers. -/
+def interior : Finset (Fin N) := g.zone s
+
+theorem mem_span {i : Fin N} : i ∈ g.span ↔ ∃ j < 2 * g.L + 2 * s, i = g.a + (j : Fin N) := by
+  simp [span, eq_comm]
+
+theorem mem_zone {t : ℕ} {i : Fin N} :
+    i ∈ g.zone t ↔ ∃ j, t ≤ j ∧ j < t + 2 * g.L ∧ i = g.a + (j : Fin N) := by
+  simp [zone, eq_comm, and_assoc]
+
+theorem offset_lt (t : Fin (s + s)) : g.offset t < 2 * g.L + 2 * s := by
+  unfold offset; split_ifs <;> omega
+
+theorem sites_injective : Function.Injective g.sites := by
+  intro t t' h
+  have hN := g.le
+  have := add_natCast_injective g.a (by have := g.offset_lt t; omega)
+    (by have := g.offset_lt t'; omega) h
+  unfold offset at this
+  exact Fin.ext (by split_ifs at this <;> omega)
+
+theorem localSites_injective : Function.Injective g.localSites := by
+  intro t t' h
+  have hN := g.le
+  exact Fin.ext (by
+    have := add_natCast_injective g.a (by omega) (by omega) h
+    omega)
+
+theorem localSites_succ (t t' : Fin (s + s)) (h : t'.val = t.val + 1) :
+    g.localSites t' = g.localSites t + 1 := by
+  rw [localSites, localSites, add_natCast_succ, h, Nat.add_assoc]
+
+/-- The sites of the two registers, as an injection. -/
+def sitesEmb : Fin (s + s) ↪ Fin N := ⟨g.sites, g.sites_injective⟩
+
+/-- The consecutive sites, as an injection. -/
+def localSitesEmb : Fin (s + s) ↪ Fin N := ⟨g.localSites, g.localSites_injective⟩
+
+/-- The gate on the ring: `X` at the two registers. -/
+noncomputable def op : Matrix (Config (Qudits (Fin N) d)) (Config (Qudits (Fin N) d)) ℂ :=
+  placeAlong g.sitesEmb g.X
+
+/-- The gate `X` on the consecutive sites `a + 2L, …, a + 2L + 2s - 1`. -/
+noncomputable def localOp : Matrix (Config (Qudits (Fin N) d)) (Config (Qudits (Fin N) d)) ℂ :=
+  placeAlong g.localSitesEmb g.X
+
+theorem sites_mem_span (t : Fin (s + s)) : g.sites t ∈ g.span :=
+  g.mem_span.mpr ⟨_, g.offset_lt t, rfl⟩
+
+theorem localSites_mem_span (t : Fin (s + s)) : g.localSites t ∈ g.span :=
+  g.mem_span.mpr ⟨_, by omega, rfl⟩
+
+theorem zone_subset_span {t : ℕ} (ht : t ≤ s) : g.zone t ⊆ g.span := fun _ hi ↦ by
+  obtain ⟨j, _, hj, hi⟩ := g.mem_zone.mp hi
+  exact g.mem_span.mpr ⟨j, by omega, hi⟩
+
+theorem op_mem_unitaryGroup
+    (hX : g.X ∈ unitaryGroup (Config (Qudits (Fin (s + s)) d)) ℂ) :
+    g.op ∈ unitaryGroup (Config (Qudits (Fin N) d)) ℂ :=
+  placeAlong_mem_unitaryGroup _ hX
+
+theorem op_mem_supportedOperators :
+    g.op ∈ supportedOperators (Qudits (Fin N) d) (Finset.univ.map g.sitesEmb) :=
+  placeAlong_mem_supportedOperators _ _
+
+/-- The sites `a + j` of the stretch are distinct. -/
+theorem add_eq_add_iff {j j' : ℕ} (hj : j < 2 * g.L + 2 * s) (hj' : j' < 2 * g.L + 2 * s) :
+    g.a + (j : Fin N) = g.a + (j' : Fin N) ↔ j = j' := by
+  have := g.le
+  exact ⟨add_natCast_injective g.a (by omega) (by omega), fun h ↦ h ▸ rfl⟩
+
+/-! ### The chains of one register gate -/
+
+variable [NeZero s]
+
+theorem two_mul_L_lt : 2 * g.L < N := by
+  have := g.le; have := NeZero.ne s; omega
+
+/-- The forward chain of `L` hops teleporting the site `a + t` to `a + t + 2L`. -/
+def there (t : ℕ) : List (TeleportHop (Geometry.ring N)) :=
+  forwardChain (g.a + (t : Fin N)) g.L g.two_mul_L_lt
+
+/-- The backward chain of `L` hops teleporting the site `a + t + 2L` to `a + t`. -/
+def back (t : ℕ) : List (TeleportHop (Geometry.ring N)) :=
+  backwardChain (g.a + (t : Fin N)) g.L g.two_mul_L_lt
+
+omit [NeZero s] in
+private theorem add_add (t j : ℕ) :
+    g.a + (t : Fin N) + (j : Fin N) = g.a + ((t + j : ℕ) : Fin N) := by
+  rw [add_assoc, Nat.cast_add]
+
+omit [NeZero s] in
+private theorem image_add_subset (t : ℕ) {J : Finset ℕ} :
+    J.image (fun j : ℕ ↦ g.a + (t : Fin N) + (j : Fin N)) ⊆
+      (J.image (t + ·)).image fun j : ℕ ↦ g.a + (j : Fin N) := by
+  intro i hi
+  obtain ⟨j, hj, rfl⟩ := Finset.mem_image.mp hi
+  exact Finset.mem_image.mpr ⟨t + j, Finset.mem_image_of_mem _ hj, (g.add_add t j).symm⟩
+
+theorem allSites_there_subset (t : ℕ) :
+    allSites (g.there t) ⊆
+      ((Finset.range (2 * g.L + 1)).image (t + ·)).image fun j : ℕ ↦ g.a + (j : Fin N) :=
+  (allSites_forwardChain_subset _ _ _).trans (g.image_add_subset t)
+
+theorem allSites_back_subset (t : ℕ) :
+    allSites (g.back t) ⊆
+      ((Finset.range (2 * g.L + 1)).image (t + ·)).image fun j : ℕ ↦ g.a + (j : Fin N) :=
+  (allSites_backwardChain_subset _ _ _).trans (g.image_add_subset t)
+
+theorem allSites_there_subset_span {t : ℕ} (ht : t < s) : allSites (g.there t) ⊆ g.span :=
+  (g.allSites_there_subset t).trans (Finset.image_subset_image fun j hj ↦ by
+    simp only [Finset.mem_image, Finset.mem_range] at hj ⊢
+    omega)
+
+theorem allSites_back_subset_span {t : ℕ} (ht : t < s) : allSites (g.back t) ⊆ g.span :=
+  (g.allSites_back_subset t).trans (Finset.image_subset_image fun j hj ↦ by
+    simp only [Finset.mem_image, Finset.mem_range] at hj ⊢
+    omega)
+
+theorem pairSites_there_subset (t : ℕ) : pairSites (g.there t) ⊆ g.zone (t + 1) :=
+  (pairSites_forwardChain_subset _ _ _).trans ((g.image_add_subset t).trans
+    (Finset.image_subset_image fun j hj ↦ by
+      simp only [Finset.mem_image, Finset.mem_Icc, Finset.mem_Ico] at hj ⊢
+      omega))
+
+theorem pairSites_back_subset (t : ℕ) : pairSites (g.back t) ⊆ g.zone t :=
+  (pairSites_backwardChain_subset _ _ _).trans ((g.image_add_subset t).trans
+    (Finset.image_subset_image fun j hj ↦ by
+      simp only [Finset.mem_image, Finset.mem_range, Finset.mem_Ico] at hj ⊢
+      omega))
+
+/-- The site `a + j` is fixed by the forward chain of the site `t` when `j < t` or
+`t + 2L < j`. -/
+theorem sitePerm_there_apply_of_lt {t j : ℕ} (ht : t < s) (hj : j < 2 * g.L + 2 * s)
+    (htj : j < t ∨ t + 2 * g.L < j) :
+    sitePerm (g.there t) (g.a + (j : Fin N)) = g.a + (j : Fin N) := by
+  rcases htj with htj | htj
+  · refine sitePerm_apply_of_notMem fun hi ↦ ?_
+    obtain ⟨j', hj', he⟩ := Finset.mem_image.mp (g.allSites_there_subset t hi)
+    simp only [Finset.mem_image, Finset.mem_range] at hj'
+    obtain ⟨k, hk, rfl⟩ := hj'
+    have : j = t + k := (g.add_eq_add_iff hj (by have := g.le; omega)).mp he.symm
+    omega
+  · have hN := g.le
+    have := (sitePerm_forwardChain (g.a + (t : Fin N)) g.L g.two_mul_L_lt).2 (j - t)
+      (by omega) (by omega)
+    rwa [g.add_add, Nat.add_sub_cancel' (by omega)] at this
+
+theorem sitePerm_there_apply_self (t : ℕ) :
+    sitePerm (g.there t) (g.a + (t : Fin N)) = g.a + ((t + 2 * g.L : ℕ) : Fin N) := by
+  rw [there, (sitePerm_forwardChain _ _ _).1, g.add_add]
+
+theorem sitePerm_back_eq_inv (t : ℕ) : sitePerm (g.back t) = (sitePerm (g.there t))⁻¹ :=
+  sitePerm_backwardChain _ _ _
+
+theorem sitePerm_back_apply_of_lt {t j : ℕ} (ht : t < s) (hj : j < 2 * g.L + 2 * s)
+    (htj : j < t ∨ t + 2 * g.L < j) :
+    sitePerm (g.back t) (g.a + (j : Fin N)) = g.a + (j : Fin N) := by
+  rw [sitePerm_back_eq_inv, Equiv.Perm.inv_eq_iff_eq]
+  exact (g.sitePerm_there_apply_of_lt ht hj htj).symm
+
+theorem sitePerm_back_apply_self (t : ℕ) :
+    sitePerm (g.back t) (g.a + ((t + 2 * g.L : ℕ) : Fin N)) = g.a + (t : Fin N) := by
+  rw [sitePerm_back_eq_inv, Equiv.Perm.inv_eq_iff_eq, sitePerm_there_apply_self]
+
+/-- The chain of the site `t` maps no site outside `zone (t + 1)` into `zone t`. -/
+theorem sitePerm_there_notMem_zone {t : ℕ} (ht : t < s) {x : Fin N} (hx : x ∈ g.span)
+    (hx' : x ∉ g.zone (t + 1)) : sitePerm (g.there t) x ∉ g.zone t := by
+  obtain ⟨j, hj, rfl⟩ := g.mem_span.mp hx
+  intro hz
+  obtain ⟨j', h1, h2, he⟩ := g.mem_zone.mp hz
+  have hj' : j' < 2 * g.L + 2 * s := by omega
+  rcases Nat.lt_trichotomy j t with hjt | rfl | hjt
+  · rw [g.sitePerm_there_apply_of_lt ht hj (Or.inl hjt), g.add_eq_add_iff hj hj'] at he
+    omega
+  · rw [g.sitePerm_there_apply_self, g.add_eq_add_iff (by omega) hj'] at he
+    omega
+  · have : t + 2 * g.L < j := by
+      by_contra h
+      exact hx' (g.mem_zone.mpr ⟨j, by omega, by omega, rfl⟩)
+    rw [g.sitePerm_there_apply_of_lt ht hj (Or.inr this), g.add_eq_add_iff hj hj'] at he
+    omega
+
+/-- The backward chain of the site `t` maps no site outside `zone t` into `zone (t + 1)`. -/
+theorem sitePerm_back_notMem_zone {t : ℕ} (ht : t < s) {x : Fin N} (hx : x ∈ g.span)
+    (hx' : x ∉ g.zone t) : sitePerm (g.back t) x ∉ g.zone (t + 1) := by
+  obtain ⟨j, hj, rfl⟩ := g.mem_span.mp hx
+  intro hz
+  obtain ⟨j', h1, h2, he⟩ := g.mem_zone.mp hz
+  have hj' : j' < 2 * g.L + 2 * s := by omega
+  rcases Nat.lt_or_ge j t with hjt | hjt
+  · rw [g.sitePerm_back_apply_of_lt ht hj (Or.inl hjt), g.add_eq_add_iff hj hj'] at he
+    omega
+  have hjt' : t + 2 * g.L ≤ j := by
+    by_contra h
+    exact hx' (g.mem_zone.mpr ⟨j, hjt, by omega, rfl⟩)
+  rcases hjt'.lt_or_eq with hjt' | rfl
+  · rw [g.sitePerm_back_apply_of_lt ht hj (Or.inr hjt'), g.add_eq_add_iff hj hj'] at he
+    omega
+  · rw [g.sitePerm_back_apply_self, g.add_eq_add_iff (by omega) hj'] at he
+    omega
+
+/-! ### Layers of register gates -/
+
+variable {g}
+
+section Layer
+
+variable {gs : List (RegisterGate d N s)}
+  (hgs : gs.Pairwise fun g g' ↦ Disjoint g.span g'.span)
+
+/-- The forward chains of the site `t` of every gate. -/
+def thereAll (gs : List (RegisterGate d N s)) (t : ℕ) : List (TeleportHop (Geometry.ring N)) :=
+  gs.flatMap fun g ↦ g.there t
+
+/-- The backward chains of the site `t` of every gate. -/
+def backAll (gs : List (RegisterGate d N s)) (t : ℕ) : List (TeleportHop (Geometry.ring N)) :=
+  gs.flatMap fun g ↦ g.back t
+
+/-- The sites of the zones `zone t` of all the gates. -/
+def zoneAll (gs : List (RegisterGate d N s)) (t : ℕ) : Finset (Fin N) :=
+  Finset.univ.filter fun i ↦ ∃ g ∈ gs, i ∈ g.zone t
+
+omit [NeZero s] in
+theorem mem_zoneAll {gs : List (RegisterGate d N s)} {t : ℕ} {i : Fin N} :
+    i ∈ zoneAll gs t ↔ ∃ g ∈ gs, i ∈ g.zone t := by
+  simp [zoneAll]
+
+include hgs in
+theorem valid_thereAll {t : ℕ} (ht : t < s) : Valid (thereAll gs t) :=
+  valid_flatMap (fun _ _ ↦ valid_forwardChain _ _ _)
+    (fun g _ ↦ g.allSites_there_subset_span ht) hgs
+
+include hgs in
+theorem valid_backAll {t : ℕ} (ht : t < s) : Valid (backAll gs t) :=
+  valid_flatMap (fun _ _ ↦ valid_backwardChain _ _ _)
+    (fun g _ ↦ g.allSites_back_subset_span ht) hgs
+
+include hgs in
+/-- On the stretch of a gate, the forward chains of all the gates act as its own. -/
+theorem sitePerm_thereAll_apply {t : ℕ} (ht : t < s) {g : RegisterGate d N s} (hg : g ∈ gs)
+    {i : Fin N} (hi : i ∈ g.span) : sitePerm (thereAll gs t) i = sitePerm (g.there t) i :=
+  sitePerm_flatMap_apply (fun g _ ↦ g.allSites_there_subset_span ht) hgs hg hi
+
+include hgs in
+theorem sitePerm_backAll_apply {t : ℕ} (ht : t < s) {g : RegisterGate d N s} (hg : g ∈ gs)
+    {i : Fin N} (hi : i ∈ g.span) : sitePerm (backAll gs t) i = sitePerm (g.back t) i :=
+  sitePerm_flatMap_apply (fun g _ ↦ g.allSites_back_subset_span ht) hgs hg hi
+
+omit [NeZero s] in
+include hgs in
+private theorem notMem_zoneAll_of_mem_span {t : ℕ} (ht : t ≤ s) {g : RegisterGate d N s}
+    (hg : g ∈ gs) {y : Fin N} (hy : y ∈ g.span) (hy' : y ∉ g.zone t) : y ∉ zoneAll gs t := by
+  have : Std.Symm fun g g' : RegisterGate d N s ↦ Disjoint g.span g'.span :=
+    ⟨fun _ _ h ↦ h.symm⟩
+  intro h
+  obtain ⟨g', hg', hy''⟩ := mem_zoneAll.mp h
+  by_cases hgg : g = g'
+  · exact hy' (hgg ▸ hy'')
+  · exact Finset.disjoint_left.mp (hgs.forall hg hg' hgg) hy (g'.zone_subset_span ht hy'')
+
+omit [NeZero s] in
+include hgs in
+/-- Parallel chains, one in the stretch of every gate, each mapping no site of the stretch
+outside the zone `A` into the zone `B`, move the sites carrying `|0⟩` from the zones `A` to the
+zones `B`. -/
+private theorem isZeroOn_sitePermOp_flatMap [NeZero d]
+    {f : RegisterGate d N s → List (TeleportHop (Geometry.ring N))}
+    (hf : ∀ g ∈ gs, allSites (f g) ⊆ g.span) {A B : ℕ} (hB : B ≤ s)
+    (hmaps : ∀ g ∈ gs, ∀ x ∈ g.span, x ∉ g.zone A → sitePerm (f g) x ∉ g.zone B)
+    {v : Config (Qudits (Fin N) d) → ℂ} (hv : IsZeroOn (zoneAll gs A) v) :
+    IsZeroOn (zoneAll gs B) (sitePermOp (sitePerm (gs.flatMap f)) *ᵥ v) := by
+  refine hv.sitePermOp_mulVec_of_mapsTo fun x hx ↦ ?_
+  by_cases hxs : ∃ g ∈ gs, x ∈ g.span
+  · obtain ⟨g, hg, hxg⟩ := hxs
+    have hfix : ∀ i ∉ (g.span : Set (Fin N)), sitePerm (f g) i = i := fun i hi ↦
+      sitePerm_apply_of_notMem fun hi' ↦ hi (hf g hg hi')
+    rw [sitePerm_flatMap_apply hf hgs hg hxg]
+    exact notMem_zoneAll_of_mem_span hgs hB hg (Equiv.Perm.apply_mem_of_forall_notMem hfix hxg)
+      (hmaps g hg x hxg fun h ↦ hx (mem_zoneAll.mpr ⟨g, hg, h⟩))
+  · simp only [not_exists, not_and] at hxs
+    rw [sitePerm_flatMap_apply_of_notMem hf hxs]
+    intro h
+    obtain ⟨g, hg, hxg⟩ := mem_zoneAll.mp h
+    exact hxs g hg (g.zone_subset_span hB hxg)
+
+include hgs in
+/-- The forward chains of the site `t` move the sites carrying `|0⟩` from the zones `t + 1` to
+the zones `t`. -/
+theorem isZeroOn_sitePermOp_thereAll [NeZero d] {t : ℕ} (ht : t < s)
+    {v : Config (Qudits (Fin N) d) → ℂ} (hv : IsZeroOn (zoneAll gs (t + 1)) v) :
+    IsZeroOn (zoneAll gs t) (sitePermOp (sitePerm (thereAll gs t)) *ᵥ v) :=
+  isZeroOn_sitePermOp_flatMap hgs (fun g _ ↦ g.allSites_there_subset_span ht) ht.le
+    (fun g _ _ hx ↦ g.sitePerm_there_notMem_zone ht hx) hv
+
+include hgs in
+/-- The backward chains of the site `t` move the sites carrying `|0⟩` from the zones `t` to the
+zones `t + 1`. -/
+theorem isZeroOn_sitePermOp_backAll [NeZero d] {t : ℕ} (ht : t < s)
+    {v : Config (Qudits (Fin N) d) → ℂ} (hv : IsZeroOn (zoneAll gs t) v) :
+    IsZeroOn (zoneAll gs (t + 1)) (sitePermOp (sitePerm (backAll gs t)) *ᵥ v) :=
+  isZeroOn_sitePermOp_flatMap hgs (fun g _ ↦ g.allSites_back_subset_span ht) ht
+    (fun g _ _ hx ↦ g.sitePerm_back_notMem_zone ht hx) hv
+
+theorem pairSites_thereAll_subset (t : ℕ) : pairSites (thereAll gs t) ⊆ zoneAll gs (t + 1) :=
+  fun _ hi ↦ by
+    obtain ⟨g, hg, hi⟩ := mem_pairSites_flatMap.mp hi
+    exact mem_zoneAll.mpr ⟨g, hg, g.pairSites_there_subset t hi⟩
+
+theorem pairSites_backAll_subset (t : ℕ) : pairSites (backAll gs t) ⊆ zoneAll gs t :=
+  fun _ hi ↦ by
+    obtain ⟨g, hg, hi⟩ := mem_pairSites_flatMap.mp hi
+    exact mem_zoneAll.mpr ⟨g, hg, g.pairSites_back_subset t hi⟩
+
+include hgs in
+/-- The backward chains invert the forward chains. -/
+theorem sitePerm_backAll_eq_inv {t : ℕ} (ht : t < s) :
+    sitePerm (backAll gs t) = (sitePerm (thereAll gs t))⁻¹ := by
+  refine Equiv.ext fun i ↦ ?_
+  rw [Equiv.Perm.eq_inv_iff_eq]
+  by_cases hi : ∃ g ∈ gs, i ∈ g.span
+  · obtain ⟨g, hg, hi⟩ := hi
+    have hfix : ∀ j ∉ (g.span : Set (Fin N)), sitePerm (g.back t) j = j := fun j hj ↦
+      sitePerm_apply_of_notMem fun hj' ↦ hj (g.allSites_back_subset_span ht hj')
+    have hmem := Equiv.Perm.apply_mem_of_forall_notMem hfix hi
+    rw [sitePerm_backAll_apply hgs ht hg hi, sitePerm_thereAll_apply hgs ht hg hmem,
+      g.sitePerm_back_eq_inv]
+    simp
+  · simp only [not_exists, not_and] at hi
+    rw [thereAll, backAll,
+      sitePerm_flatMap_apply_of_notMem (fun g _ ↦ g.allSites_back_subset_span ht) hi,
+      sitePerm_flatMap_apply_of_notMem (fun g _ ↦ g.allSites_there_subset_span ht) hi]
+
+/-! ### The composite of the forward chains -/
+
+/-- The permutation of sites of the forward chains of the sites `t - 1, …, 0`, the chain of
+`t - 1` applied first. -/
+def therePerm (gs : List (RegisterGate d N s)) : ℕ → Equiv.Perm (Fin N)
+  | 0 => 1
+  | t + 1 => therePerm gs t * sitePerm (thereAll gs t)
+
+include hgs in
+/-- The forward chains of the sites `t - 1, …, 0` move the site `a + u`, `u < t`, of the first
+register to `a + 2L + u`, and fix the sites `a + j` with `t + 2L ≤ j`. -/
+theorem therePerm_apply {g : RegisterGate d N s} (hg : g ∈ gs) :
+    ∀ {t : ℕ}, t ≤ s →
+      (∀ u < t, therePerm gs t (g.a + (u : Fin N)) = g.a + ((u + 2 * g.L : ℕ) : Fin N)) ∧
+      ∀ j, t + 2 * g.L ≤ j → j < 2 * g.L + 2 * s →
+        therePerm gs t (g.a + (j : Fin N)) = g.a + (j : Fin N)
+  | 0, _ => ⟨fun u hu ↦ absurd hu (Nat.not_lt_zero u), fun _ _ _ ↦ rfl⟩
+  | t + 1, ht => by
+    obtain ⟨h1, h2⟩ := therePerm_apply hg (t := t) (by omega)
+    have hspan : ∀ j < 2 * g.L + 2 * s, g.a + (j : Fin N) ∈ g.span := fun j hj ↦
+      g.mem_span.mpr ⟨j, hj, rfl⟩
+    refine ⟨fun u hu ↦ ?_, fun j hj hjs ↦ ?_⟩
+    · rw [therePerm, Equiv.Perm.mul_apply,
+        sitePerm_thereAll_apply hgs (by omega) hg (hspan u (by omega))]
+      rcases (Nat.lt_succ_iff.mp hu).lt_or_eq with hu | rfl
+      · rw [g.sitePerm_there_apply_of_lt (by omega) (by omega) (Or.inl hu), h1 u hu]
+      · rw [g.sitePerm_there_apply_self, h2 _ le_rfl (by omega)]
+    · rw [therePerm, Equiv.Perm.mul_apply,
+        sitePerm_thereAll_apply hgs (by omega) hg (hspan j hjs),
+        g.sitePerm_there_apply_of_lt (by omega) hjs (Or.inr (by omega)), h2 j (by omega) hjs]
+
+include hgs in
+/-- The forward chains of all the sites of the first register place it next to the second: they
+map the site `t` of the two registers to the consecutive site `a + 2L + t`. -/
+theorem therePerm_comp_sites {g : RegisterGate d N s} (hg : g ∈ gs) :
+    therePerm gs s ∘ g.sites = g.localSites := by
+  funext t
+  obtain ⟨h1, h2⟩ := therePerm_apply hgs hg (t := s) le_rfl
+  simp only [Function.comp_apply, sites, offset, localSites]
+  split_ifs with ht
+  · rw [h1 _ ht, Nat.add_comm]
+  · rw [h2 _ (by omega) (by omega)]
+    congr 2
+    omega
+
+include hgs in
+/-- The forward chains of the sites `t - 1, …, 0` move the sites carrying `|0⟩` from the zones
+`t` to the zones `0`. -/
+theorem isZeroOn_sitePermOp_therePerm [NeZero d] :
+    ∀ {t : ℕ}, t ≤ s → ∀ {v : Config (Qudits (Fin N) d) → ℂ}, IsZeroOn (zoneAll gs t) v →
+      IsZeroOn (zoneAll gs 0) (sitePermOp (therePerm gs t) *ᵥ v)
+  | 0, _, v, hv => by simpa [therePerm, sitePermOp_one] using hv
+  | t + 1, ht, v, hv => by
+    rw [therePerm, ← sitePermOp_mul, ← mulVec_mulVec]
+    exact isZeroOn_sitePermOp_therePerm (by omega) (isZeroOn_sitePermOp_thereAll hgs (by omega) hv)
+
+include hgs in
+/-- The backward chains of the sites `0, …, t - 1` move the sites carrying `|0⟩` from the zones
+`0` to the zones `t`. -/
+theorem isZeroOn_sitePermOp_therePerm_inv [NeZero d] :
+    ∀ {t : ℕ}, t ≤ s → ∀ {v : Config (Qudits (Fin N) d) → ℂ}, IsZeroOn (zoneAll gs 0) v →
+      IsZeroOn (zoneAll gs t) (sitePermOp (therePerm gs t)⁻¹ *ᵥ v)
+  | 0, _, v, hv => by simpa [therePerm, sitePermOp_one] using hv
+  | t + 1, ht, v, hv => by
+    rw [therePerm, _root_.mul_inv_rev, ← sitePerm_backAll_eq_inv hgs (by omega),
+      ← sitePermOp_mul, ← mulVec_mulVec]
+    exact isZeroOn_sitePermOp_backAll hgs (by omega)
+      (isZeroOn_sitePermOp_therePerm_inv (by omega) hv)
+
+/-! ### The rounds -/
+
+variable [NeZero d]
+
+/-- The rounds teleporting the sites `t - 1, …, 0` of the first registers, in this order. -/
+noncomputable def thereRounds (gs : List (RegisterGate d N s))
+    (hgs : gs.Pairwise fun g g' ↦ Disjoint g.span g'.span) :
+    (t : ℕ) → t ≤ s →
+      Circuit (Geometry.ring N) KrausGate (Qudits (Fin N) d) (Qudits (Fin N) d)
+  | 0, _ => .done _
+  | t + 1, ht =>
+      (round (UnitaryCircuit.id _ _) (thereAll gs t) (valid_thereAll hgs (by omega))).comp
+        (thereRounds gs hgs t (by omega))
+
+/-- The rounds teleporting the sites `0, …, t - 1` back, in this order. -/
+noncomputable def backRounds (gs : List (RegisterGate d N s))
+    (hgs : gs.Pairwise fun g g' ↦ Disjoint g.span g'.span) :
+    (t : ℕ) → t ≤ s →
+      Circuit (Geometry.ring N) KrausGate (Qudits (Fin N) d) (Qudits (Fin N) d)
+  | 0, _ => .done _
+  | t + 1, ht => (backRounds gs hgs t (by omega)).comp
+      (round (UnitaryCircuit.id _ _) (backAll gs t) (valid_backAll hgs (by omega)))
+
+/-- The circuit applying a layer of register gates: the forward teleportations, the unitary
+circuit `u` applying the gates `X` to the consecutive sites, and the backward teleportations.
+
+Source: arXiv:2307.01696, paragraph "Tree-RG circuit with measurements". -/
+noncomputable def rounds (u : UnitaryCircuit (Geometry.ring N) (Qudits (Fin N) d)) :
+    Circuit (Geometry.ring N) KrausGate (Qudits (Fin N) d) (Qudits (Fin N) d) :=
+  (thereRounds gs hgs s le_rfl).comp (u.toCircuit.comp (backRounds gs hgs s le_rfl))
+
+theorem depth_thereRounds_le : ∀ (t : ℕ) (ht : t ≤ s), (thereRounds gs hgs t ht).depth ≤ 2 * t
+  | 0, _ => le_rfl
+  | t + 1, ht => by
+    refine (Circuit.depth_comp _ _).trans ?_
+    have h₁ := depth_round_id_le (d := d) (thereAll gs t) (valid_thereAll hgs (by omega))
+    have h₂ := depth_thereRounds_le t (by omega)
+    omega
+
+theorem depth_backRounds_le : ∀ (t : ℕ) (ht : t ≤ s), (backRounds gs hgs t ht).depth ≤ 2 * t
+  | 0, _ => le_rfl
+  | t + 1, ht => by
+    refine (Circuit.depth_comp _ _).trans ?_
+    have h₁ := depth_round_id_le (d := d) (backAll gs t) (valid_backAll hgs (by omega))
+    have h₂ := depth_backRounds_le t (by omega)
+    omega
+
+/-- The circuit has depth at most `4s` plus the depth of `u`, whatever the distances and the
+number of gates. -/
+theorem depth_rounds_le (u : UnitaryCircuit (Geometry.ring N) (Qudits (Fin N) d)) :
+    (rounds hgs u).depth ≤ 4 * s + u.depth := by
+  refine (Circuit.depth_comp _ _).trans ?_
+  have h₁ := depth_thereRounds_le hgs s le_rfl
+  have h₂ := (Circuit.depth_comp u.toCircuit (backRounds gs hgs s le_rfl)).trans
+    (Nat.add_le_add_left (depth_backRounds_le hgs s le_rfl) _)
+  change _ + (u.toCircuit.comp _).depth ≤ _
+  have : u.toCircuit.depth = u.depth := rfl
+  omega
+
+theorem forall_thereRounds : ∀ (t : ℕ) (ht : t ≤ s),
+    (thereRounds gs hgs t ht).Forall KrausGate.ev KrausFamily.IsUnitaryOrMeasurement
+  | 0, _ => trivial
+  | t + 1, ht => (forall_round _ _ _).comp _ (forall_thereRounds t (by omega))
+
+theorem forall_backRounds : ∀ (t : ℕ) (ht : t ≤ s),
+    (backRounds gs hgs t ht).Forall KrausGate.ev KrausFamily.IsUnitaryOrMeasurement
+  | 0, _ => trivial
+  | t + 1, ht => (forall_backRounds t (by omega)).comp _ (forall_round _ _ _)
+
+/-- The circuit is a measurement circuit. -/
+theorem forall_rounds (u : UnitaryCircuit (Geometry.ring N) (Qudits (Fin N) d)) :
+    (rounds hgs u).Forall KrausGate.ev KrausFamily.IsUnitaryOrMeasurement :=
+  (forall_thereRounds hgs s le_rfl).comp _
+    ((u.forall_isUnitary.mono fun _ hK ↦ Or.inl hK).comp _ (forall_backRounds hgs s le_rfl))
+
+theorem isImplementationOn_thereRounds : ∀ (t : ℕ) (ht : t ≤ s),
+    (thereRounds gs hgs t ht).IsImplementationOn KrausGate.ev
+      {v : Config (Qudits (Fin N) d) → ℂ | IsZeroOn (zoneAll gs t) v}
+      (sitePermOp (therePerm gs t))
+  | 0, _ => by
+    rw [therePerm, sitePermOp_one]
+    exact Circuit.isImplementationOn_done _
+  | t + 1, ht => by
+    have h₁ := (isImplementationOn_round (UnitaryCircuit.id _ (Qudits (Fin N) d))
+      (valid_thereAll hgs (t := t) (by omega))).mono
+        (E' := {v : Config (Qudits (Fin N) d) → ℂ | IsZeroOn (zoneAll gs (t + 1)) v})
+        fun v hv ↦ by simpa using (show IsZeroOn _ v from hv).mono (pairSites_thereAll_subset t)
+    have h := h₁.comp (isImplementationOn_thereRounds t (by omega)) fun v hv ↦ by
+      simpa using isZeroOn_sitePermOp_thereAll hgs (by omega) hv
+    rwa [UnitaryCircuit.op_id, Matrix.mul_one, sitePermOp_mul, ← therePerm] at h
+
+theorem isImplementationOn_backRounds : ∀ (t : ℕ) (ht : t ≤ s),
+    (backRounds gs hgs t ht).IsImplementationOn KrausGate.ev
+      {v : Config (Qudits (Fin N) d) → ℂ | IsZeroOn (zoneAll gs 0) v}
+      (sitePermOp (therePerm gs t)⁻¹)
+  | 0, _ => by
+    rw [therePerm, inv_one, sitePermOp_one]
+    exact Circuit.isImplementationOn_done _
+  | t + 1, ht => by
+    have h₁ := (isImplementationOn_round (UnitaryCircuit.id _ (Qudits (Fin N) d))
+      (valid_backAll hgs (t := t) (by omega))).mono
+        (E' := {v : Config (Qudits (Fin N) d) → ℂ | IsZeroOn (zoneAll gs t) v})
+        fun v hv ↦ by simpa using (show IsZeroOn _ v from hv).mono (pairSites_backAll_subset t)
+    have h := (isImplementationOn_backRounds t (by omega)).comp h₁ fun v hv ↦
+      isZeroOn_sitePermOp_therePerm_inv hgs (by omega) hv
+    rwa [UnitaryCircuit.op_id, Matrix.mul_one, sitePermOp_mul,
+      sitePerm_backAll_eq_inv hgs (by omega), ← _root_.mul_inv_rev, ← therePerm] at h
+
+/-! ### The gates on the consecutive sites -/
+
+/-- The gates `X` on the consecutive sites `a + 2L, …, a + 2L + 2s - 1` of every gate. -/
+noncomputable def localProd (gs : List (RegisterGate d N s)) :
+    Matrix (Config (Qudits (Fin N) d)) (Config (Qudits (Fin N) d)) ℂ :=
+  (gs.map localOp).prod
+
+omit [NeZero s] in
+include hgs in
+/-- The gates on the consecutive sites keep `|0⟩` at the zones `0`. -/
+theorem isZeroOn_localProd_mulVec {v : Config (Qudits (Fin N) d) → ℂ}
+    (hv : IsZeroOn (zoneAll gs 0) v) : IsZeroOn (zoneAll gs 0) (localProd gs *ᵥ v) := by
+  have : Std.Symm fun g g' : RegisterGate d N s ↦ Disjoint g.span g'.span :=
+    ⟨fun _ _ h ↦ h.symm⟩
+  refine hv.mulVec_of_mem_supportedOperators
+    (T := Finset.univ.filter fun i ↦ ∃ g ∈ gs, i ∈ Finset.univ.map g.localSitesEmb)
+    ?_ (list_prod_mem fun A hA ↦ ?_)
+  · rw [Finset.disjoint_left]
+    intro i hi hi'
+    obtain ⟨g, hg, hi⟩ := mem_zoneAll.mp hi
+    obtain ⟨j, hj1, hj2, rfl⟩ := g.mem_zone.mp hi
+    obtain ⟨g', hg', hi'⟩ := (Finset.mem_filter.mp hi').2
+    obtain ⟨t, -, ht⟩ := Finset.mem_map.mp hi'
+    change g'.localSites t = _ at ht
+    by_cases hgg : g = g'
+    · subst hgg
+      rw [localSites, g.add_eq_add_iff (by omega) (by omega)] at ht
+      omega
+    · exact Finset.disjoint_left.mp (hgs.forall hg hg' hgg) (g.zone_subset_span (Nat.zero_le s)
+        (g.mem_zone.mpr ⟨j, hj1, hj2, rfl⟩)) (ht ▸ g'.localSites_mem_span t)
+  · obtain ⟨g, hg, rfl⟩ := List.mem_map.mp hA
+    refine supportedOperators_mono ?_ (placeAlong_mem_supportedOperators _ g.X)
+    exact fun i hi ↦ Finset.mem_filter.mpr ⟨Finset.mem_univ _, g, hg, hi⟩
+
+omit [NeZero d] in
+include hgs in
+/-- **The layer conjugated by the chains.** The backward chains, the gates on the consecutive
+sites, and the forward chains compose to the product of the register gates. -/
+theorem sitePermOp_inv_mul_localProd_mul_sitePermOp :
+    sitePermOp (therePerm gs s)⁻¹ * localProd gs * sitePermOp (α := Fin d) (therePerm gs s) =
+      (gs.map op).prod := by
+  set π := therePerm gs s
+  have hPQ : sitePermOp (α := Fin d) π⁻¹ * sitePermOp π = 1 := by
+    rw [sitePermOp_mul, inv_mul_cancel, sitePermOp_one]
+  have hQP : sitePermOp (α := Fin d) π * sitePermOp π⁻¹ = 1 := by
+    rw [sitePermOp_mul, mul_inv_cancel, sitePermOp_one]
+  rw [localProd, List.mul_prod_mul_of_mul_eq_one hQP hPQ, List.map_map]
+  refine congrArg List.prod (List.map_congr_left fun g hg ↦ ?_)
+  have h := sitePermOp_mul_placeAlong_mul (d := d) π⁻¹ g.localSitesEmb g.X
+  rw [inv_inv] at h
+  rw [Function.comp_apply, localOp, h, op]
+  congr 1
+  ext t
+  have := congrFun (therePerm_comp_sites hgs hg) t
+  simp only [Function.comp_apply] at this
+  change (π⁻¹ (g.localSites t) : ℕ) = g.sites t
+  rw [← this]
+  simp [π]
+
+omit [NeZero s] in
+/-- A vector has `|0⟩` at the zones `s` of all the gates exactly when it has `|0⟩` strictly
+between the two registers of every gate. -/
+theorem isZeroOn_zoneAll_iff {v : Config (Qudits (Fin N) d) → ℂ} :
+    IsZeroOn (zoneAll gs s) v ↔ ∀ g ∈ gs, IsZeroOn g.interior v :=
+  ⟨fun h g hg ↦ h.mono fun _ hi ↦ mem_zoneAll.mpr ⟨g, hg, hi⟩,
+    fun h y hy _ hi ↦ by
+      obtain ⟨g, hg, hi⟩ := mem_zoneAll.mp hi
+      exact h g hg y hy _ hi⟩
+
+/-- **A layer of register gates in constant depth with measurements.** For register gates on
+pairwise disjoint stretches and a unitary circuit `u` applying the gates `X` on the consecutive
+sites, the circuit `rounds hgs u`, of depth at most `4s + K` for `u` of depth at most `K`
+(`depth_rounds_le`), implements the product of the register gates on the vectors with `|0⟩`
+strictly between the two registers of every gate: whatever the outcomes, every output is a
+scalar multiple of the product of the gates `X` at their registers applied to the input. No
+outcome is post-selected.
+
+Source: arXiv:2307.01696, paragraph "Tree-RG circuit with measurements" ("Isometries ... act on
+a constant number of sites which, although spatially separated, can be teleported at
+neighboring registers with a constant overhead ... Therefore every isometry ... takes constant
+time using measurement"). -/
+theorem isImplementationOn_rounds {u : UnitaryCircuit (Geometry.ring N) (Qudits (Fin N) d)}
+    (hu : u.op = localProd gs) :
+    (rounds hgs u).IsImplementationOn KrausGate.ev
+      {v | ∀ g ∈ gs, IsZeroOn g.interior v} (gs.map op).prod := by
+  have h₂ : u.toCircuit.IsImplementationOn KrausGate.ev
+      {v : Config (Qudits (Fin N) d) → ℂ | IsZeroOn (zoneAll gs 0) v} (localProd gs) :=
+    Circuit.isImplementationOn_of_kraus_eq (fun p ↦ (u.kraus_eq_op p).trans hu) _
+  have h₂₃ := h₂.comp (isImplementationOn_backRounds hgs s le_rfl)
+    fun v hv ↦ isZeroOn_localProd_mulVec hgs hv
+  have h := (isImplementationOn_thereRounds hgs s le_rfl).comp h₂₃
+    fun v hv ↦ isZeroOn_sitePermOp_therePerm hgs le_rfl hv
+  rw [sitePermOp_inv_mul_localProd_mul_sitePermOp hgs] at h
+  exact h.mono fun v hv ↦ isZeroOn_zoneAll_iff.mpr hv
+
+omit [NeZero s] [NeZero d] in
+include hgs in
+/-- If every gate `X` is a product of gates of total cost at most `K` on neighbouring sites of
+the open chain of `2s` sites, the gates on the consecutive sites run in parallel: their product
+is a unitary circuit of depth at most `K` on the ring.
+
+Source: arXiv:2307.01696, paragraph before "The sequential-RG circuit" (block unitaries applied
+in parallel, each in depth `O(q)`). -/
+theorem isUnitaryCircuit_localProd {K : ℕ}
+    (hK : ∀ g ∈ gs, IsGateProduct (Geometry.graph (SimpleGraph.pathGraph (s + s))) K g.X) :
+    IsUnitaryCircuit (Geometry.ring N) K (localProd gs) := by
+  classical
+  have hone : ∀ g ∈ gs, IsUnitaryCircuitOn (Geometry.ring N)
+      (Finset.univ.map g.localSitesEmb) K g.localOp := fun g hg ↦
+    IsGateProduct.isUnitaryCircuitOn_ring (placeAlongSiteEquiv g.localSitesEmb)
+      (fun p p' h ↦ g.localSites_succ p p' h) (hK g hg)
+  have hmap : ∀ g : RegisterGate d N s, Finset.univ.map g.localSitesEmb ⊆ g.span := fun g x hx ↦ by
+    obtain ⟨t, -, rfl⟩ := Finset.mem_map.mp hx
+    exact g.localSites_mem_span t
+  have hpw : gs.Pairwise (Function.onFun Disjoint fun g ↦ Finset.univ.map g.localSitesEmb) :=
+    hgs.imp fun {g g'} h ↦ h.mono (hmap g) (hmap g')
+  exact (IsUnitaryCircuitOn.list_prod Geometry.ring_cell_nonempty _ _ gs hpw hone).isUnitaryCircuit
+
+include hgs in
+/-- **A layer of register gates in depth `4s + K` with measurements.** If every gate `X` of a list
+of register gates on pairwise disjoint stretches is a product of gates of total cost at most `K`
+on neighbouring sites, some measurement circuit of depth at most `4s + K` implements the product
+of the register gates on the vectors with `|0⟩` strictly between the two registers of every
+gate.
+
+Source: arXiv:2307.01696, paragraph "Tree-RG circuit with measurements". -/
+theorem exists_rounds {K : ℕ}
+    (hK : ∀ g ∈ gs, IsGateProduct (Geometry.graph (SimpleGraph.pathGraph (s + s))) K g.X) :
+    ∃ c : Circuit (Geometry.ring N) KrausGate (Qudits (Fin N) d) (Qudits (Fin N) d),
+      c.Forall KrausGate.ev KrausFamily.IsUnitaryOrMeasurement ∧ c.depth ≤ 4 * s + K ∧
+        c.IsImplementationOn KrausGate.ev {v | ∀ g ∈ gs, IsZeroOn g.interior v}
+          (gs.map op).prod := by
+  obtain ⟨u, hu, hop⟩ := isUnitaryCircuit_localProd hgs hK
+  exact ⟨rounds hgs u, forall_rounds hgs u, (depth_rounds_le hgs u).trans (by omega),
+    isImplementationOn_rounds hgs hop⟩
+
+end Layer
+
+end RegisterGate
+
+end QuantumCircuit
