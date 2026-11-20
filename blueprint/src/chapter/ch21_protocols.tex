@@ -913,8 +913,8 @@ holding a local memory of qudits.
 \end{lemma}
 \begin{proof}\leanok
     \uses{lem:circuits_layer_entry}
-    The operator $g_C$ is the permutation matrix of the bijection $u\mapsto u\circ\pi$ of the
-    configurations of $C$, since $\pi$ maps $C$ onto itself. By
+    The operator $g_C$ is the permutation matrix of the bijection $u\mapsto u\circ\pi^{-1}$ of
+    the configurations of $C$, since $\pi$ maps $C$ onto itself. By
     Lemma~\ref{lem:circuits_layer_entry} the entry of the layer at $(y,x)$ is the product of
     the entries $[x|_C=y|_C\circ\pi]$ over the cells and of $[x_v=y_v]=[x_v=y_{\pi(v)}]$ over
     the other sites, which is $[x=y\circ\pi]$, the entry of $P_\pi$.
