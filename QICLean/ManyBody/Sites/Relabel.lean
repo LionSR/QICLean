@@ -266,21 +266,24 @@ theorem sitePermOp_mul (π π' : Equiv.Perm V) :
   rw [siteConfigurationEquiv_refl_apply]
   rfl
 
+/-- The site-permutation operators as a monoid homomorphism from the permutations of the sites
+to the matrices on the configurations. -/
+@[simps]
+noncomputable def sitePermOpHom :
+    Equiv.Perm V →* Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ where
+  toFun := sitePermOp
+  map_one' := sitePermOp_one
+  map_mul' π π' := (sitePermOp_mul π π').symm
+
 /-- The product of the permutation operators of a list of permutations is the permutation
 operator of their product. -/
-theorem list_prod_map_sitePermOp :
-    ∀ l : List (Equiv.Perm V), (l.map (sitePermOp (α := α))).prod = sitePermOp l.prod
-  | [] => sitePermOp_one.symm
-  | π :: l => by
-    rw [List.map_cons, List.prod_cons, list_prod_map_sitePermOp l, sitePermOp_mul,
-      List.prod_cons]
+theorem list_prod_map_sitePermOp (l : List (Equiv.Perm V)) :
+    (l.map (sitePermOp (α := α))).prod = sitePermOp l.prod :=
+  (map_list_prod (sitePermOpHom (α := α)) l).symm
 
 theorem sitePermOp_pow (π : Equiv.Perm V) (N : ℕ) :
     sitePermOp (α := α) π ^ N = sitePermOp (π ^ N) :=
-  let f : Equiv.Perm V →* Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ :=
-    { toFun := sitePermOp, map_one' := sitePermOp_one,
-      map_mul' := fun π π' ↦ (sitePermOp_mul π π').symm }
-  (map_pow f π N).symm
+  (map_pow (sitePermOpHom (α := α)) π N).symm
 
 theorem sitePermOp_mem_unitary (π : Equiv.Perm V) :
     sitePermOp (α := α) π ∈ unitary (Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :=
