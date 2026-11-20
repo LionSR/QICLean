@@ -553,7 +553,7 @@ private theorem _root_.KrausFamily.IsTP.exists_local_dilation {α β : Type} [Fi
     refine Finset.sum_congr rfl fun i _ ↦ ?_
     simp [mul_apply, initializedBasisMatrix, Fintype.sum_prod_type, one_apply]
     rfl
-  · let : DecidableEq K.Index := Classical.decEq _
+  · classical
     obtain ⟨e₀, U, hU', hK'⟩ := hK.exists_unitary_dilation
     exact ⟨_, _, inferInstance, inferInstance, inferInstance, inferInstance, e₀, U, hU', hK',
       fun h ↦ (hU h).elim⟩
@@ -694,6 +694,9 @@ theorem Layer.isUnitaryDilation [∀ s, Nonempty (X s)] (L : Layer Γ KrausGate 
   have hTP : ∀ b, (L.gate b).IsTP := hL.1
   choose T T₂ _ _ _ _ eb Ub hUb hKb hTb using fun b : L.cells ↦ (hTP b).exists_local_dilation
   choose T' T₂' _ _ _ _ es Us hUs hKs hTs using fun t : L.Free ↦ (hL.2 t).exists_local_dilation
+  -- Named opaque instances, not `classical`: under `classical`, instance search builds the
+  -- decidable equality of `L.Distribute D T T' s` from its product and function-space
+  -- structure, and the proof then times out at `whnf`, also at a million heartbeats.
   let : ∀ s, DecidableEq (L.Distribute D T T' s) := fun _ ↦ Classical.decEq _
   let : ∀ s, DecidableEq (L.Distribute D T₂ T₂' s) := fun _ ↦ Classical.decEq _
   have hU : ∀ s ∉ D, Nat.card (L.Distribute D T T' s) = 1 ∧
