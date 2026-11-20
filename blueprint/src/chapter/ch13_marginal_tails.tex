@@ -1390,11 +1390,11 @@ has trace two.
 
 \begin{theorem}[Strong subadditivity for regions]
     \label{thm:region_ssa}
-    \lean{ManyBody.regionEntropy, Entropy.trace_regionState_submatrix_mul,
+    \lean{ManyBody.regionEntropy, ManyBody.trace_regionState_submatrix_mul,
         Entropy.disjoint_union_of_disjoint, Entropy.tripleEquiv, Entropy.tripleEquiv_apply,
         Entropy.localLift_tripleEquiv_kronecker_one, ManyBody.regionState_posSemidef,
         Entropy.tripleState, Entropy.partialTraceLeft_tripleState,
-        Entropy.partialTraceRight_regionState_union,
+        ManyBody.partialTraceRight_regionState_union,
         Entropy.partialTraceRight_reassoc_tripleState, Entropy.regionEntropy_ssa,
         Entropy.regionEntropy_cond_anti}
     \leanok

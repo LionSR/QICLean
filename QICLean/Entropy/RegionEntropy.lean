@@ -197,13 +197,7 @@ namespace Entropy
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- Expectations of reindexed regional states. -/
-theorem trace_regionState_submatrix_mul {D : Finset V} {κ : Type*} [Fintype κ]
-    (f : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ≃ κ) (Ω : EuclideanSpace ℂ (∀ v, Fin (n v)))
-        (K : Matrix κ κ ℂ) :
-    ((ManyBody.regionState Ω D).submatrix f.symm f.symm * K).trace =
-      ⟪Ω, toEuclideanLin (ManyBody.place D (K.submatrix f f)) Ω⟫_ℂ :=
-  ManyBody.trace_regionState_submatrix_mul (X := fun v ↦ Fin (n v)) f Ω K
+export ManyBody (trace_regionState_submatrix_mul)
 
 section Triple
 
@@ -309,12 +303,7 @@ theorem partialTraceLeft_tripleState (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))
     rfl
   rw [h, localLift_union_kronecker, ManyBody.place_one, Matrix.one_mul]
 
-/-- The `B` marginal of the `B ∪ C` state. -/
-theorem partialTraceRight_regionState_union (hBC : Disjoint B C)
-    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
-    partialTraceRight ((ManyBody.regionState Ω (B ∪ C)).submatrix (regionUnionEquiv hBC).symm
-      (regionUnionEquiv hBC).symm) = ManyBody.regionState Ω B :=
-  ManyBody.partialTraceRight_regionState_union (X := fun v ↦ Fin (n v)) hBC Ω
+export ManyBody (partialTraceRight_regionState_union)
 
 /-- The `A ∪ B` marginal of the tripartite state. -/
 theorem partialTraceRight_reassoc_tripleState (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
