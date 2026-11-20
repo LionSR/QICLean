@@ -25,6 +25,13 @@ outcomes of the earlier layers. It is the first circuit here whose continuation 
 distribution of the coherent circuit, so the success probability and the number of calls are
 those of phase estimation; the circuit has no two-qubit gates after the calls.
 
+**Scope restriction (eigenvector input):** `semiclassical_outcomeProb_eq` and
+`semiclassical_accurate_prob_ge` assume the input `|0…0⟩ ⊗ u` with `U u = e^{2πiφ} u`, while
+Griffiths and Niu prove that the semiclassical measurements reproduce the outcome distribution
+of the coherent circuit for every input. Documented in
+`docs/paper-gaps/gn96_semiclassical_general_input_scope.tex`, with the elimination by deferred
+measurement, an identity of instruments valid on every input.
+
 The proof follows a branch. After the preparation the control register is the product state
 `∏ⱼ 2^{-1/2} (|0⟩ + e^{2πiφ 2^{t-1-j}} |1⟩)`. The corrected measurement of the qubit `j` with
 the outcome `bⱼ` keeps a product state, the qubit `j` replaced by `βⱼ |bⱼ⟩` with
