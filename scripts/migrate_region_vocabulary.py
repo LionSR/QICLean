@@ -46,8 +46,9 @@ becomes `ComplConfig X R`, unless the file applies `regionState`, `regionMatrix`
 `regionEntropy` to a complement region: then those types are reported. The uses of
 `ManyBody.complementEquiv` and, in such files, of `mem_compl` are reported for review (they are
 not old names, so `--check` does not list them). The names that survive with a restated
-statement (`PART_C_RESTATED`: `complementUnionEquiv`, `split_union_symm`,
-`regionConfigurationSplit`, whose complement factor is now `ComplConfig`) are never rewritten;
+statement (`PART_C_RESTATED`, among them `complementUnionEquiv`, `regionConfigurationSplit`
+and `regionTensorCoordinates`, whose complement factor is now `ComplConfig`, and the lemmas
+about them used downstream) are never rewritten;
 every use is reported, by the rewrite and by `--check`, as "restated: check by hand".
 
 Contract: this is a one-time migration tool. On TNLean (and on any branch of it) it either
@@ -323,7 +324,10 @@ PART_C_REVIEW = {
 }
 # Names that survive part C with a restated statement (their complement factor is now
 # `ComplConfig`): every use is reported, in the report and by `--check`, and never rewritten.
-PART_C_RESTATED = ("complementUnionEquiv", "split_union_symm", "regionConfigurationSplit")
+PART_C_RESTATED = ("complementUnionEquiv", "split_union_symm", "regionConfigurationSplit",
+                   "regionTensorCoordinates", "regionTensorCoordinates_eq_exteriorFirst",
+                   "isCloseTo_prodExt_region_iff_isViable", "splitTwoRegionsEquiv",
+                   "splitTwoRegionsState", "regionState_eq_partialTrace", "regionMatrix_apply")
 PART_C_ON = False  # set by `main` for `--part C` and `--part all`
 
 
