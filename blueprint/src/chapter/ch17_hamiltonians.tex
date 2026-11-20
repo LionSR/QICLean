@@ -590,31 +590,6 @@ kernel, either from the quadratic form or from the norm.
     $\sum_i h_{i,i+1}$~\cite{Schuch2011Phases}.
 \end{definition}
 
-\begin{definition}[A rectangle interaction on the plane]
-    \label{def:hamiltonians_rectangle_to_plane}
-    \lean{ManyBody.RectangleInteraction.toPlaneInteraction}
-    \leanok
-    \uses{def:hamiltonians_models, def:sites_rectangle_domain,
-        def:dynamics_interaction_relabel, def:dynamics_interaction_extend}
-    An interaction on the $w\times h$ square lattice is an interaction of range one on
-    the rectangular domain: relabel its sites along the identification of the vertices
-    with the sites of the domain, and extend it along the injective map taking a vertex
-    or an edge to its support in the domain. The terms on the supports of vertices and
-    edges are the relabelled terms, and the others
-    vanish~\cite{OpenAI2026AreaLaw, OpenAI2026PolynomialPEPS}.
-\end{definition}
-
-\begin{lemma}[The Hamiltonian on the plane]
-    \label{lem:hamiltonians_rectangle_to_plane}
-    \lean{ManyBody.RectangleInteraction.hamiltonian_toPlaneInteraction}
-    \leanok
-    \uses{def:hamiltonians_rectangle_to_plane, lem:dynamics_interaction_relabel,
-        lem:dynamics_interaction_extend}
-    The interaction on the rectangular domain has the Hamiltonian of the rectangle
-    interaction, transported to the configurations of the domain.
-\end{lemma}
-\begin{proof}
-    \leanok
 \begin{lemma}[Translation invariance on the ring]
     \label{lem:hamiltonians_translation_invariant}
     \lean{ManyBody.Interaction.translationInvariant_term_add_one,
@@ -643,6 +618,31 @@ kernel, either from the quadratic form or from the norm.
     local term~\cite{Landau2013PolynomialTime}.
 \end{definition}
 
+\begin{definition}[A rectangle interaction on the plane]
+    \label{def:hamiltonians_rectangle_to_plane}
+    \lean{ManyBody.RectangleInteraction.toPlaneInteraction}
+    \leanok
+    \uses{def:hamiltonians_models, def:sites_rectangle_domain,
+        def:dynamics_interaction_relabel, def:dynamics_interaction_extend}
+    An interaction on the $w\times h$ square lattice is an interaction of range one on
+    the rectangular domain: relabel its sites along the identification of the vertices
+    with the sites of the domain, and extend it along the injective map taking a vertex
+    or an edge to its support in the domain. The terms on the supports of vertices and
+    edges are the relabelled terms, and the others
+    vanish~\cite{OpenAI2026AreaLaw, OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{lemma}[The Hamiltonian on the plane]
+    \label{lem:hamiltonians_rectangle_to_plane}
+    \lean{ManyBody.RectangleInteraction.hamiltonian_toPlaneInteraction}
+    \leanok
+    \uses{def:hamiltonians_rectangle_to_plane, lem:dynamics_interaction_relabel,
+        lem:dynamics_interaction_extend}
+    The interaction on the rectangular domain has the Hamiltonian of the rectangle
+    interaction, transported to the configurations of the domain.
+\end{lemma}
+\begin{proof}
+    \leanok
     Extension keeps the Hamiltonian, and relabelling transports it.
 \end{proof}
 
