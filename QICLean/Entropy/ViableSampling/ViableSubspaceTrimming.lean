@@ -19,7 +19,7 @@ collectively, cut by cut (arXiv:1602.08828v2, `local_alg_arxiv_v2.tex`, Definiti
 vectors of the partially trimmed `ψ` with Schmidt coefficient at least `ξ`, and
 `Trim_ξ(S)` is the span of `(P^1 ⊗ 1) ⋯ (P^m ⊗ 1) u_i`.
 
-Here `H_A = ℂ^σ` with `σ = SiteConfig n` the configurations of a finite set of sites, and the
+Here `H_A = ℂ^σ` with `σ = (∀ v, Fin (n v))` the configurations of a finite set of sites, and the
 cuts are a monotone family of regions `D 0 ⊆ D 1 ⊆ ⋯`; the cut `j` puts the sites of `D j` on the
 left. For a chain `H_A = H_A^1 ⊗ ⋯ ⊗ H_A^ℓ`, `D j` is the first `j + 1` factors and there are
 `m = ℓ - 1` cuts. The target `T` lives in `ℂ^{σ × β}`, the environment `H_B = ℂ^β` sitting on
@@ -195,8 +195,8 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {s : ℕ}
 
 /-- The vector `ψ = ∑_i u_i ⊗ |i⟩` of `ℂ^σ ⊗ ℂ^s` stacking a family of vectors
 (arXiv:1602.08828v2, `local_alg_arxiv_v2.tex`, Definition `def:trimming`, line 647). -/
-def stackVector (u : Fin s → EuclideanSpace ℂ (SiteConfig n)) :
-    EuclideanSpace ℂ (SiteConfig n × Fin s) :=
+def stackVector (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    EuclideanSpace ℂ ((∀ v, Fin (n v)) × Fin s) :=
   WithLp.toLp 2 fun p ↦ u p.2 p.1
 
 /-- The product `(P^1 ⊗ 1) ⋯ (P^j ⊗ 1)` of the first `j` trimming projections
@@ -205,99 +205,103 @@ projection added at the cut `D j` is the spectral projection onto `[ξ², ∞)` 
 across that cut, of the partially trimmed stacked vector: the projection onto its left Schmidt
 vectors with Schmidt coefficient at least `ξ`. -/
 noncomputable def trimProj (D : ℕ → Finset V) (ξ : ℝ)
-    (u : Fin s → EuclideanSpace ℂ (SiteConfig n)) :
-    ℕ → Matrix (SiteConfig n) (SiteConfig n) ℂ
+    (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ℕ → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ
   | 0 => 1
-  | j + 1 => trimProj D ξ u j * localLift (D j) (spectralProjectionGE
+  | j + 1 => trimProj D ξ u j * ManyBody.place (D j) (spectralProjectionGE
       (leftMarginal (cutEnvVector (D j) (leftApply (trimProj D ξ u j) (stackVector u)))) (ξ ^ 2))
 
 /-- The projection `P^{j+1}` of the cut `D j`: the spectral projection onto `[ξ², ∞)` of the left
 marginal of the partially trimmed stacked vector. -/
 noncomputable def trimStep (D : ℕ → Finset V) (ξ : ℝ)
-    (u : Fin s → EuclideanSpace ℂ (SiteConfig n)) (j : ℕ) :
-    Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ :=
+    (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))) (j : ℕ) :
+    Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ :=
   spectralProjectionGE
     (leftMarginal (cutEnvVector (D j) (leftApply (trimProj D ξ u j) (stackVector u)))) (ξ ^ 2)
 
-theorem trimProj_zero (D : ℕ → Finset V) (ξ : ℝ) (u : Fin s → EuclideanSpace ℂ (SiteConfig n)) :
+theorem trimProj_zero (D : ℕ → Finset V) (ξ : ℝ) (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))) :
     trimProj D ξ u 0 = 1 :=
   rfl
 
-theorem trimProj_succ (D : ℕ → Finset V) (ξ : ℝ) (u : Fin s → EuclideanSpace ℂ (SiteConfig n))
-    (j : ℕ) : trimProj D ξ u (j + 1) = trimProj D ξ u j * localLift (D j) (trimStep D ξ u j) :=
+theorem trimProj_succ (D : ℕ → Finset V) (ξ : ℝ) (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)))
+    (j : ℕ) : trimProj D ξ u (j + 1) = trimProj D ξ u j * ManyBody.place (D j) (trimStep D ξ u j) :=
   rfl
 
 /-- The `ξ`-trimmed subspace `Trim_ξ(S)` after `m` cuts: the span of the trimmed basis vectors
 (arXiv:1602.08828v2, `local_alg_arxiv_v2.tex`, Definition `def:trimming`,
 eq. `def-viable-trim`, line 654). -/
 noncomputable def trimSubspace (D : ℕ → Finset V) (ξ : ℝ)
-    (u : Fin s → EuclideanSpace ℂ (SiteConfig n)) (m : ℕ) :
-    Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) :=
+    (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))) (m : ℕ) :
+    Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) :=
   Submodule.span ℂ (Set.range fun i ↦ toEuclideanLin (trimProj D ξ u m) (u i))
 
 theorem trimStep_isStarProjection (D : ℕ → Finset V) (ξ : ℝ)
-    (u : Fin s → EuclideanSpace ℂ (SiteConfig n)) (j : ℕ) :
+    (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))) (j : ℕ) :
     IsStarProjection (trimStep D ξ u j) :=
   (posSemidef_leftMarginal _).isHermitian.isStarProjection_spectralProjectionGE _
 
-variable {D : ℕ → Finset V} {ξ : ℝ} {u : Fin s → EuclideanSpace ℂ (SiteConfig n)}
+variable {D : ℕ → Finset V} {ξ : ℝ} {u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))}
 
 /-- The lift of an orthogonal projection is an orthogonal projection. -/
 theorem localLift_isHermitian_of_isStarProjection {E : Finset V}
-    {P : Matrix (RegionConfig n E) (RegionConfig n E) ℂ} (hP : IsStarProjection P) :
-    (localLift E P).IsHermitian :=
-  hP.isSelfAdjoint.isHermitian.apply_of_map_conjTranspose localLift_conjTranspose
+    {P : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) E)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) E) ℂ} (hP : IsStarProjection P) :
+    (ManyBody.place E P).IsHermitian :=
+  hP.isSelfAdjoint.isHermitian.apply_of_map_conjTranspose ManyBody.place_conjTranspose
 
 theorem localLift_mul_self_of_isStarProjection {E : Finset V}
-    {P : Matrix (RegionConfig n E) (RegionConfig n E) ℂ} (hP : IsStarProjection P) :
-    localLift E P * localLift E P = localLift E P := by
-  rw [← localLift_mul, hP.isIdempotentElem.eq]
+    {P : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) E)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) E) ℂ} (hP : IsStarProjection P) :
+    ManyBody.place E P * ManyBody.place E P = ManyBody.place E P := by
+  rw [← ManyBody.place_mul, hP.isIdempotentElem.eq]
 
 /-- **Nesting of the trimming projections.** `trimProj` is an orthogonal projection supported
 in `D j`, and the next factor lies in its range, so `trimProj (j + 1)` is the lift of the
 projection `trimStep j`. -/
-theorem trimProj_props (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n) (j : ℕ) :
+theorem trimProj_props (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v))) (j : ℕ) :
     (trimProj D ξ u j).IsHermitian ∧ trimProj D ξ u j * trimProj D ξ u j = trimProj D ξ u j ∧
-      IsSupportedOn (trimProj D ξ u j) (D j) ∧
-      trimProj D ξ u (j + 1) = localLift (D j) (trimStep D ξ u j) := by
+      ManyBody.IsSupportedOn (trimProj D ξ u j) (D j) ∧
+      trimProj D ξ u (j + 1) = ManyBody.place (D j) (trimStep D ξ u j) := by
   have key : ∀ j, (trimProj D ξ u j).IsHermitian ∧
       trimProj D ξ u j * trimProj D ξ u j = trimProj D ξ u j ∧
-      IsSupportedOn (trimProj D ξ u j) (D j) := by
+      ManyBody.IsSupportedOn (trimProj D ξ u j) (D j) := by
     intro j
     induction j with
     | zero =>
       refine ⟨isHermitian_one, Matrix.mul_one _, ?_⟩
-      rw [trimProj_zero, ← localLift_one (D := D 0)]
-      exact isSupportedOn_localLift _
+      rw [trimProj_zero, ← ManyBody.place_one (D := D 0)]
+      exact ManyBody.place_mem_supportedOperators _
     | succ j ih =>
       obtain ⟨hh, hi, hs⟩ := ih
       have heq := trimProj_succ_eq_aux hD hξ σ₀ j hh hi hs
       rw [heq]
       exact ⟨localLift_isHermitian_of_isStarProjection (trimStep_isStarProjection D ξ u j),
         localLift_mul_self_of_isStarProjection (trimStep_isStarProjection D ξ u j),
-        (isSupportedOn_localLift _).mono (hD (Nat.le_succ j))⟩
+        (ManyBody.place_mem_supportedOperators _).mono (hD (Nat.le_succ j))⟩
   obtain ⟨hh, hi, hs⟩ := key j
   exact ⟨hh, hi, hs, trimProj_succ_eq_aux hD hξ σ₀ j hh hi hs⟩
 where
   /-- The inductive step of the nesting. -/
-  trimProj_succ_eq_aux (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n) (j : ℕ)
+  trimProj_succ_eq_aux (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v))) (j : ℕ)
       (hh : (trimProj D ξ u j).IsHermitian)
       (hi : trimProj D ξ u j * trimProj D ξ u j = trimProj D ξ u j)
-      (hs : IsSupportedOn (trimProj D ξ u j) (D j)) :
-      trimProj D ξ u (j + 1) = localLift (D j) (trimStep D ξ u j) := by
-    obtain ⟨K, hK⟩ := hs.exists_localLift σ₀
+      (hs : ManyBody.IsSupportedOn (trimProj D ξ u j) (D j)) :
+      trimProj D ξ u (j + 1) = ManyBody.place (D j) (trimStep D ξ u j) := by
+    obtain ⟨K, hK⟩ := ManyBody.exists_eq_place_of_mem_supportedOperators hs
     set ψj := leftApply (trimProj D ξ u j) (stackVector u)
     have hfix : leftApply K (cutEnvVector (D j) ψj) = cutEnvVector (D j) ψj := by
       rw [← cutEnvVector_leftApply_of_cutOperator_eq_kronecker_one (D j)
-        (X := trimProj D ξ u j) (by rw [hK]; exact cutOperator_localLift K), leftApply_leftApply,
+        (X := trimProj D ξ u j) (by rw [hK]; exact ManyBody.cutOperator_place K),
+            leftApply_leftApply,
         hi]
     have hKP : K * trimStep D ξ u j = trimStep D ξ u j :=
       mul_spectralProjectionGE_leftMarginal_of_leftApply_eq hfix (by positivity)
-    rw [trimProj_succ, hK, ← localLift_mul, hKP]
+    rw [trimProj_succ, hK, ← ManyBody.place_mul, hKP]
 
 /-- **The trimming projections decrease.** For `k ≤ j`, `trimProj k * trimProj j = trimProj j`
 and `trimProj j * trimProj k = trimProj j`. -/
-theorem trimProj_mul_trimProj_of_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n)
+theorem trimProj_mul_trimProj_of_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v)))
     {k j : ℕ} (hkj : k ≤ j) :
     trimProj D ξ u k * trimProj D ξ u j = trimProj D ξ u j ∧
       trimProj D ξ u j * trimProj D ξ u k = trimProj D ξ u j := by
@@ -320,15 +324,15 @@ theorem trimProj_mul_trimProj_of_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : Si
 
 /-- The difference of consecutive trimming projections. -/
 noncomputable def trimDiff (D : ℕ → Finset V) (ξ : ℝ)
-    (u : Fin s → EuclideanSpace ℂ (SiteConfig n)) (j : ℕ) :
-    Matrix (SiteConfig n) (SiteConfig n) ℂ :=
+    (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))) (j : ℕ) :
+    Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ :=
   trimProj D ξ u j - trimProj D ξ u (j + 1)
 
-theorem trimDiff_isHermitian (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n) (j : ℕ) :
+theorem trimDiff_isHermitian (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v))) (j : ℕ) :
     (trimDiff D ξ u j).IsHermitian :=
   (trimProj_props hD hξ σ₀ j).1.sub (trimProj_props hD hξ σ₀ (j + 1)).1
 
-theorem trimDiff_mul_self (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n) (j : ℕ) :
+theorem trimDiff_mul_self (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v))) (j : ℕ) :
     trimDiff D ξ u j * trimDiff D ξ u j = trimDiff D ξ u j := by
   obtain ⟨h1, h2⟩ := trimProj_mul_trimProj_of_le (u := u) hD hξ σ₀ (Nat.le_succ j)
   have hi := (trimProj_props (u := u) hD hξ σ₀ j).2.1
@@ -337,7 +341,7 @@ theorem trimDiff_mul_self (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n
   abel
 
 /-- `(1 - trimProj j) * trimDiff j = 0`. -/
-theorem one_sub_trimProj_mul_trimDiff (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n)
+theorem one_sub_trimProj_mul_trimDiff (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v)))
     (j : ℕ) : (1 - trimProj D ξ u j) * trimDiff D ξ u j = 0 := by
   obtain ⟨h1, -⟩ := trimProj_mul_trimProj_of_le (u := u) hD hξ σ₀ (Nat.le_succ j)
   have hi := (trimProj_props (u := u) hD hξ σ₀ j).2.1
@@ -345,17 +349,20 @@ theorem one_sub_trimProj_mul_trimDiff (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : 
   abel
 
 /-- `trimDiff j = lift (1 - P^{j+1}) * trimProj j`: the part removed at the cut `D j`. -/
-theorem trimDiff_eq (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n) (j : ℕ) :
-    trimDiff D ξ u j = localLift (D j) (1 - trimStep D ξ u j) * trimProj D ξ u j := by
+theorem trimDiff_eq (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v))) (j : ℕ) :
+    trimDiff D ξ u j = ManyBody.place (D j) (1 - trimStep D ξ u j) * trimProj D ξ u j := by
   obtain ⟨-, h2⟩ := trimProj_mul_trimProj_of_le (u := u) hD hξ σ₀ (Nat.le_succ j)
   rw [localLift_sub_one_mul, ← (trimProj_props (u := u) hD hξ σ₀ j).2.2.2, h2, trimDiff]
 where
   localLift_sub_one_mul :
-      localLift (D j) (1 - trimStep D ξ u j) * trimProj D ξ u j =
-        trimProj D ξ u j - localLift (D j) (trimStep D ξ u j) * trimProj D ξ u j := by
-    rw [show (1 : Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ) - trimStep D ξ u j =
+      ManyBody.place (D j) (1 - trimStep D ξ u j) * trimProj D ξ u j =
+        trimProj D ξ u j - ManyBody.place (D j) (trimStep D ξ u j) * trimProj D ξ u j := by
+    rw
+        [show
+        (1 : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ) - trimStep D ξ u j =
         1 + (-1 : ℂ) • trimStep D ξ u j by rw [neg_one_smul, sub_eq_add_neg],
-      localLift_add, localLift_one, localLift_smul, Matrix.add_mul, Matrix.one_mul,
+      ManyBody.place_add, ManyBody.place_one, ManyBody.place_smul, Matrix.add_mul, Matrix.one_mul,
       Matrix.smul_mul, neg_one_smul, sub_eq_add_neg]
 
 variable {β : Type*} [Fintype β] [DecidableEq β]
@@ -363,8 +370,8 @@ variable {β : Type*} [Fintype β] [DecidableEq β]
 omit [DecidableEq β] in
 /-- The removed pieces of `t` at the successive cuts are orthogonal and together no longer than
 `t`: `∑_{j < m} ‖(trimDiff j ⊗ 1) t‖² ≤ ‖t‖²`. -/
-theorem sum_norm_leftApply_trimDiff_sq_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n)
-    (m : ℕ) (t : EuclideanSpace ℂ (SiteConfig n × β)) :
+theorem sum_norm_leftApply_trimDiff_sq_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v)))
+    (m : ℕ) (t : EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)) :
     ∑ j ∈ Finset.range m, ‖leftApply (trimDiff D ξ u j) t‖ ^ 2 ≤ ‖t‖ ^ 2 := by
   have key : ∀ m, ‖leftApply (1 - trimProj D ξ u m) t‖ ^ 2 =
       ∑ j ∈ Finset.range m, ‖leftApply (trimDiff D ξ u j) t‖ ^ 2 := by
@@ -401,14 +408,14 @@ theorem sum_norm_leftApply_trimDiff_sq_le (hD : Monotone D) (hξ : 0 < ξ) (σ�
 omit [DecidableEq β] in
 /-- A vector of `S ⊗ ℂ^β` in the stacked form: with an orthonormal basis `u_i` of `S`,
 `w = ∑_i u_i ⊗ c_i` where `c_i b = ⟪u_i, w (·, b)⟫`, that is `w = (1 ⊗ C) ψ`. -/
-theorem eq_rightApply_stackVector {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
-    (bS : OrthonormalBasis (Fin s) ℂ S) {w : EuclideanSpace ℂ (SiteConfig n × β)}
+theorem eq_rightApply_stackVector {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
+    (bS : OrthonormalBasis (Fin s) ℂ S) {w : EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)}
     (hw : w ∈ Submodule.prodExt S β) :
-    w = rightApply (Matrix.of fun b i ↦ inner ℂ (bS i : EuclideanSpace ℂ (SiteConfig n))
+    w = rightApply (Matrix.of fun b i ↦ inner ℂ (bS i : EuclideanSpace ℂ (∀ v, Fin (n v)))
         (WithLp.toLp 2 fun a ↦ w (a, b))) (stackVector fun i ↦ (bS i : _)) := by
   ext ⟨a, b⟩
   have hrep := bS.sum_repr' ⟨_, hw b⟩
-  have h := congrArg (fun x : S ↦ (x : EuclideanSpace ℂ (SiteConfig n)) a) hrep
+  have h := congrArg (fun x : S ↦ (x : EuclideanSpace ℂ (∀ v, Fin (n v))) a) hrep
   simp only [Submodule.coe_sum, Submodule.coe_smul, WithLp.ofLp_sum, WithLp.ofLp_smul,
     Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Submodule.coe_inner] at h
   change w (a, b) = ∑ i, (stackVector fun i ↦ (bS i : _)) (a, i) * _
@@ -419,18 +426,18 @@ theorem eq_rightApply_stackVector {S : Submodule ℂ (EuclideanSpace ℂ (SiteCo
 omit [DecidableEq β] in
 /-- The squared Frobenius norm of the coefficients `⟪u_i, w (·, b)⟫` of a vector of `S ⊗ ℂ^β` is
 `‖w‖²`. -/
-theorem sum_norm_inner_sq_eq {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
-    (bS : OrthonormalBasis (Fin s) ℂ S) {w : EuclideanSpace ℂ (SiteConfig n × β)}
+theorem sum_norm_inner_sq_eq {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
+    (bS : OrthonormalBasis (Fin s) ℂ S) {w : EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)}
     (hw : w ∈ Submodule.prodExt S β) :
-    ∑ b, ∑ i, ‖inner ℂ (bS i : EuclideanSpace ℂ (SiteConfig n))
+    ∑ b, ∑ i, ‖inner ℂ (bS i : EuclideanSpace ℂ (∀ v, Fin (n v)))
       (WithLp.toLp 2 fun a ↦ w (a, b))‖ ^ 2 = ‖w‖ ^ 2 := by
-  calc ∑ b, ∑ i, ‖inner ℂ (bS i : EuclideanSpace ℂ (SiteConfig n))
+  calc ∑ b, ∑ i, ‖inner ℂ (bS i : EuclideanSpace ℂ (∀ v, Fin (n v)))
         (WithLp.toLp 2 fun a ↦ w (a, b))‖ ^ 2
-      = ∑ b, ‖(WithLp.toLp 2 fun a ↦ w (a, b) : EuclideanSpace ℂ (SiteConfig n))‖ ^ 2 := by
+      = ∑ b, ‖(WithLp.toLp 2 fun a ↦ w (a, b) : EuclideanSpace ℂ (∀ v, Fin (n v)))‖ ^ 2 := by
         refine Finset.sum_congr rfl fun b _ ↦ ?_
         have h := bS.sum_sq_norm_inner_right (⟨_, hw b⟩ : S)
         rw [show ‖(⟨_, hw b⟩ : S)‖ = ‖(WithLp.toLp 2 fun a ↦ w (a, b) :
-          EuclideanSpace ℂ (SiteConfig n))‖ from rfl] at h
+          EuclideanSpace ℂ (∀ v, Fin (n v)))‖ from rfl] at h
         simpa only [Submodule.coe_inner] using h
     _ = ‖w‖ ^ 2 := by
         rw [EuclideanSpace.norm_sq_eq w, Fintype.sum_prod_type, Finset.sum_comm]
@@ -442,19 +449,19 @@ omit [DecidableEq β] in
 `lem:trimming`, lines 666–680). Let `w ∈ S ⊗ ℂ^β` and let `t` have Schmidt rank at most `b` across
 the cut `D j`. The part `(trimDiff j ⊗ 1) w` of `w` removed at that cut pairs with `t` to at most
 `ξ √b ‖w‖ ‖(trimDiff j ⊗ 1) t‖`. -/
-theorem norm_inner_leftApply_trimDiff_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : SiteConfig n)
-    {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))} (bS : OrthonormalBasis (Fin s) ℂ S)
-    {w t : EuclideanSpace ℂ (SiteConfig n × β)} (hw : w ∈ Submodule.prodExt S β) {b : ℕ}
+theorem norm_inner_leftApply_trimDiff_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀ : (∀ v, Fin (n v)))
+    {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))} (bS : OrthonormalBasis (Fin s) ℂ S)
+    {w t : EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)} (hw : w ∈ Submodule.prodExt S β) {b : ℕ}
     (j : ℕ) (ht : Matrix.schmidtRank (WithLp.ofLp (cutEnvVector (D j) t)) ≤ b) :
     ‖inner ℂ (leftApply (trimDiff D ξ (fun i ↦ (bS i : _)) j) w) t‖ ≤
       ξ * √b * ‖w‖ * ‖leftApply (trimDiff D ξ (fun i ↦ (bS i : _)) j) t‖ := by
-  set u : Fin s → EuclideanSpace ℂ (SiteConfig n) := fun i ↦ (bS i : _) with hu
+  set u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) := fun i ↦ (bS i : _) with hu
   set Δ := trimDiff D ξ u j
   set C : Matrix β (Fin s) ℂ := Matrix.of fun b i ↦
-    inner ℂ (bS i : EuclideanSpace ℂ (SiteConfig n)) (WithLp.toLp 2 fun a ↦ w (a, b))
+    inner ℂ (bS i : EuclideanSpace ℂ (∀ v, Fin (n v))) (WithLp.toLp 2 fun a ↦ w (a, b))
   have hΔh : Δ.IsHermitian := trimDiff_isHermitian (u := u) hD hξ σ₀ j
   have hΔi : Δ * Δ = Δ := trimDiff_mul_self (u := u) hD hξ σ₀ j
-  have hΔe : Δ = localLift (D j) (1 - trimStep D ξ u j) * trimProj D ξ u j :=
+  have hΔe : Δ = ManyBody.place (D j) (1 - trimStep D ξ u j) * trimProj D ξ u j :=
     trimDiff_eq hD hξ σ₀ j
   have hwC : w = rightApply C (stackVector u) := eq_rightApply_stackVector bS hw
   -- move `Δ` onto `t`, and `C` onto the other side
@@ -463,9 +470,10 @@ theorem norm_inner_leftApply_trimDiff_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀
     rw [← hΔi, ← leftApply_leftApply, inner_leftApply_left, hΔh.eq, hΔi, hwC,
       leftApply_rightApply, inner_rightApply_left]
   -- the part removed from the stacked vector is the discarded part at the cut
-  obtain ⟨K, hK⟩ := (trimProj_props (u := u) hD hξ σ₀ j).2.2.1.exists_localLift σ₀
-  have hΔeq : Δ = localLift (D j) ((1 - trimStep D ξ u j) * K) := by
-    rw [localLift_mul, ← hK]
+  obtain ⟨K, hK⟩ := ManyBody.exists_eq_place_of_mem_supportedOperators
+      ((trimProj_props (u := u) hD hξ σ₀ j).2.2.1)
+  have hΔeq : Δ = ManyBody.place (D j) ((1 - trimStep D ξ u j) * K) := by
+    rw [ManyBody.place_mul, ← hK]
     exact hΔe
   have h2 : cutEnvVector (D j) (leftApply Δ (stackVector u)) =
       leftApply (1 - trimStep D ξ u j)
@@ -497,8 +505,8 @@ theorem norm_inner_leftApply_trimDiff_le (hD : Monotone D) (hξ : 0 < ξ) (σ₀
 omit [DecidableEq β] in
 /-- The trimmed vector lies in the trimmed extension: `(trimProj m ⊗ 1) w ∈ Trim_ξ(S) ⊗ ℂ^β`
 for `w ∈ S ⊗ ℂ^β`. -/
-theorem leftApply_trimProj_mem_prodExt {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
-    (bS : OrthonormalBasis (Fin s) ℂ S) {w : EuclideanSpace ℂ (SiteConfig n × β)}
+theorem leftApply_trimProj_mem_prodExt {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
+    (bS : OrthonormalBasis (Fin s) ℂ S) {w : EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)}
     (hw : w ∈ Submodule.prodExt S β) (m : ℕ) :
     leftApply (trimProj D ξ (fun i ↦ (bS i : _)) m) w ∈
       Submodule.prodExt (trimSubspace D ξ (fun i ↦ (bS i : _)) m) β := by
@@ -511,7 +519,7 @@ theorem leftApply_trimProj_mem_prodExt {S : Submodule ℂ (EuclideanSpace ℂ (S
     ext a
     simp [leftApply, toEuclid, mul_apply, mulVec, dotProduct]
   rw [hslice]
-  have hcoe := congrArg (fun x : S ↦ (x : EuclideanSpace ℂ (SiteConfig n))) hrep
+  have hcoe := congrArg (fun x : S ↦ (x : EuclideanSpace ℂ (∀ v, Fin (n v)))) hrep
   simp only [Submodule.coe_sum, Submodule.coe_smul] at hcoe
   rw [← hcoe, map_sum]
   refine Submodule.sum_mem _ fun i _ ↦ ?_
@@ -526,18 +534,18 @@ Schmidt rank at most `b` across each of the cuts `D 0, …, D (m - 1)`. Then for
 trimmed subspace `Trim_ξ(S)` after the `m` cuts satisfies: `Trim_ξ(S) ⊗ ℂ^β` is
 `(δ + 2 ξ √(m b))`-close to `T`. -/
 theorem isCloseTo_prodExt_trimSubspace (hD : Monotone D) (hξ : 0 < ξ)
-    {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))} (bS : OrthonormalBasis (Fin s) ℂ S)
-    {T : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))} {δ : ℝ}
+    {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))} (bS : OrthonormalBasis (Fin s) ℂ S)
+    {T : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))} {δ : ℝ}
     (hT : Submodule.IsCloseTo δ (Submodule.prodExt S β) T) {m b : ℕ}
     (hb : ∀ t ∈ T, ∀ j < m, Matrix.schmidtRank (WithLp.ofLp (cutEnvVector (D j) t)) ≤ b) :
     Submodule.IsCloseTo (δ + 2 * (ξ * √(m * b))) (Submodule.prodExt
       (trimSubspace D ξ (fun i ↦ (bS i : _)) m) β) T := by
   rw [Submodule.isCloseTo_iff] at hT ⊢
   intro t ht
-  rcases isEmpty_or_nonempty (SiteConfig n) with hσ | ⟨⟨σ₀⟩⟩
+  rcases isEmpty_or_nonempty (∀ v, Fin (n v)) with hσ | ⟨⟨σ₀⟩⟩
   · have : t = 0 := by ext ⟨a, _⟩; exact isEmptyElim a
     simp [this]
-  set u : Fin s → EuclideanSpace ℂ (SiteConfig n) := fun i ↦ (bS i : _)
+  set u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) := fun i ↦ (bS i : _)
   set ε := ξ * √(m * b) with hε
   have hε0 : 0 ≤ ε := by positivity
   set K := Submodule.prodExt S β
@@ -642,20 +650,20 @@ theorem isCloseTo_prodExt_trimSubspace (hD : Monotone D) (hξ : 0 < ξ)
 lines 662–663 and 690–692). Every spanning vector `trimProj m u_i` of `Trim_ξ(S)` has Schmidt
 rank at most `s / ξ²` across each cut `D k`, `k < m`: `ξ² · rank ≤ s`. -/
 theorem schmidtRank_cutVector_trimmed_le (hD : Monotone D) (hξ : 0 < ξ)
-    {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))} (bS : OrthonormalBasis (Fin s) ℂ S)
+    {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))} (bS : OrthonormalBasis (Fin s) ℂ S)
     {m k : ℕ} (hk : k < m) (i : Fin s) :
-    ξ ^ 2 * Matrix.schmidtRank (WithLp.ofLp (cutVector (D k)
+    ξ ^ 2 * Matrix.schmidtRank (WithLp.ofLp (ManyBody.cutVector (D k)
       (toEuclideanLin (trimProj D ξ (fun i ↦ (bS i : _)) m)
-        ((bS i : S) : EuclideanSpace ℂ (SiteConfig n))))) ≤ s := by
-  rcases isEmpty_or_nonempty (SiteConfig n) with hσ | ⟨⟨σ₀⟩⟩
-  · have : Matrix.schmidtRank (WithLp.ofLp (cutVector (D k)
+        ((bS i : S) : EuclideanSpace ℂ (∀ v, Fin (n v)))))) ≤ s := by
+  rcases isEmpty_or_nonempty (∀ v, Fin (n v)) with hσ | ⟨⟨σ₀⟩⟩
+  · have : Matrix.schmidtRank (WithLp.ofLp (ManyBody.cutVector (D k)
         (toEuclideanLin (trimProj D ξ (fun i ↦ (bS i : _)) m)
-          ((bS i : S) : EuclideanSpace ℂ (SiteConfig n))))) = 0 := by
+          ((bS i : S) : EuclideanSpace ℂ (∀ v, Fin (n v)))))) = 0 := by
       rw [Matrix.schmidtRank, show schmidtCoeffMatrix _ = 0 from by
-        ext x y; exact isEmptyElim ((cutEquiv n (D k)).symm (x, y))]
+        ext x y; exact isEmptyElim ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) (D k)).symm (x, y))]
       exact Matrix.rank_zero
     rw [this]; simp
-  set u : Fin s → EuclideanSpace ℂ (SiteConfig n) := fun i ↦ (bS i : _)
+  set u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) := fun i ↦ (bS i : _)
   set ψ := stackVector u
   set Q := trimProj D ξ u m
   -- the trimmed vector is a slice of the trimmed stacked vector
@@ -669,7 +677,7 @@ theorem schmidtRank_cutVector_trimmed_le (hD : Monotone D) (hξ : 0 < ξ)
   · gcongr
     refine (schmidtRank_cutVector_slice_le (D k) _ i).trans ?_
     -- `Q = lift P_k * Q`
-    have hQ : Q = localLift (D k) (trimStep D ξ u k) * Q := by
+    have hQ : Q = ManyBody.place (D k) (trimStep D ξ u k) * Q := by
       rw [← (trimProj_props (u := u) hD hξ σ₀ k).2.2.2]
       exact ((trimProj_mul_trimProj_of_le (u := u) hD hξ σ₀ (Nat.succ_le_of_lt hk)).1).symm
     rw [hQ, ← leftApply_leftApply, cutEnvVector_leftApply_localLift, Matrix.schmidtRank,

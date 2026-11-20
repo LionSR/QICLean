@@ -156,7 +156,6 @@ section Max
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-export ManyBody (trace_regionState)
 
 /-- **Stationary filters are clipped.** Let a feasible filter `K` on a region `D` maximize
 the output norm `‖A (K ⊗ 1) C w‖` among feasible filters, where `A` is a descending chain for
@@ -165,21 +164,26 @@ the output `ψ ≠ 0` on regions containing `D`, and let `card · f < 1`. Then `
 and `|log l_i - log l_k| ≤ (a/2) |log q_i - log q_k|` for positive `q_i, q_k`.
 Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 342–405. -/
 theorem exists_clipped_of_max_feasible {D : Finset V}
-    {K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ} {f a : ℝ} (hf : 0 < f) (ha : 0 < a)
-    (hcard : Fintype.card (RegionConfig n D) * f < 1) (hK : IsFeasibleFilter f a K)
-    {outer : List (RegionFilter n)} (C : Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (w : EuclideanSpace ℂ (SiteConfig n)) (σ₀ : SiteConfig n)
+    {K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ} {f a : ℝ} (hf : 0 < f) (ha : 0 < a)
+    (hcard : Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) * f < 1)
+        (hK : IsFeasibleFilter f a K)
+    {outer : List (RegionFilter n)} (C : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (w : EuclideanSpace ℂ (∀ v, Fin (n v))) (σ₀ : (∀ v, Fin (n v)))
     (hmax : ∀ K', IsFeasibleFilter f a K' →
-      ‖toEuclideanLin (liftProd outer * localLift D K' * C) w‖ ≤
-        ‖toEuclideanLin (liftProd outer * localLift D K * C) w‖)
-    (hchain : IsDescendingChain (toEuclideanLin (liftProd outer * localLift D K * C) w) outer)
+      ‖toEuclideanLin (liftProd outer * ManyBody.place D K' * C) w‖ ≤
+        ‖toEuclideanLin (liftProd outer * ManyBody.place D K * C) w‖)
+    (hchain : IsDescendingChain (toEuclideanLin (liftProd outer * ManyBody.place D K * C) w) outer)
     (hsub : ∀ p ∈ outer, D ⊆ p.1)
-    (hψ : toEuclideanLin (liftProd outer * localLift D K * C) w ≠ 0) :
-    K * regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) =
-        regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) * K ∧
-      ∃ (W : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) (l q : RegionConfig n D → ℝ),
+    (hψ : toEuclideanLin (liftProd outer * ManyBody.place D K * C) w ≠ 0) :
+    K * ManyBody.regionState (toEuclideanLin (liftProd outer * ManyBody.place D K * C) w) D =
+        ManyBody.regionState (toEuclideanLin (liftProd outer * ManyBody.place D K * C) w) D * K ∧
+      ∃
+          (W : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ)
+          (l q : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) → ℝ),
         Wᴴ * W = 1 ∧ (∀ i, 0 < l i) ∧ K = W * diagonal (fun i ↦ (l i : ℂ)) * Wᴴ ∧
-        regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w) =
+        ManyBody.regionState (toEuclideanLin (liftProd outer * ManyBody.place D K * C) w) D =
           W * diagonal (fun i ↦ (q i : ℂ)) * Wᴴ ∧
         ∀ i k, 0 < q i → 0 < q k →
           |Real.log (l i) - Real.log (l k)| ≤ a / 2 * |Real.log (q i) - Real.log (q k)| := by
@@ -188,14 +192,14 @@ theorem exists_clipped_of_max_feasible {D : Finset V}
     (fun U hU ↦ hmax _ (hK.conj hU)) hchain hsub
   refine ⟨hcomm, ?_⟩
   obtain ⟨W, k, q, hW, hW', hKW, hρW⟩ :=
-    exists_unitary_diagonal_of_commute hpd.1 (regionState_isHermitian D _) hcomm
+    exists_unitary_diagonal_of_commute hpd.1 (ManyBody.regionState_isHermitian D _) hcomm
   obtain ⟨x, hx, hxs, hkx⟩ := hK.of_common_basis hf ha hW hKW
   have hKx : K = W * diagonal (fun i ↦ ((x i ^ (a / 2) : ℝ) : ℂ)) * Wᴴ := by
     rw [hKW]; congr 3; funext i; rw [hkx]
   have hxpos : ∀ i, 0 < x i := fun i ↦ hf.trans_le (hx i)
   -- nonnegativity and positive total mass of `q`
   have hq : ∀ i, 0 ≤ q i := by
-    set ρ := regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w)
+    set ρ := ManyBody.regionState (toEuclideanLin (liftProd outer * ManyBody.place D K * C) w) D
     have hpsd : ρ.PosSemidef := (posSemidef_vecMulVec_self_star _).partialTraceRight
     have hD : (diagonal (fun i ↦ (q i : ℂ))).PosSemidef := by
       have h := hpsd.conjTranspose_mul_mul_same W
@@ -206,8 +210,10 @@ theorem exists_clipped_of_max_feasible {D : Finset V}
     have := posSemidef_diagonal_iff.mp hD i
     exact_mod_cast this
   have hqs : 0 < ∑ i, q i := by
-    have htr : (regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w)).trace = _ :=
-      trace_regionState D (toEuclideanLin (liftProd outer * localLift D K * C) w)
+    have htr :
+        (ManyBody.regionState (toEuclideanLin (liftProd outer * ManyBody.place D K * C) w) D).trace
+        = _ :=
+      ManyBody.trace_regionState D (toEuclideanLin (liftProd outer * ManyBody.place D K * C) w)
     rw [hρW, trace_mul_cycle, hW, Matrix.one_mul, trace_diagonal, ← Complex.ofReal_sum] at htr
     have := Complex.ofReal_injective htr
     rw [this]

@@ -187,7 +187,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Finty
 /-- The regional entropy `S_Ω(D)` is the entropy `FiniteProduct.entropy` of the reduction of
 `Ω` to `D`. -/
 theorem regionEntropy_eq_entropy (D : Finset V) (Ω : EuclideanSpace ℂ (Config X)) :
-    regionEntropy D Ω = FiniteProduct.entropy X Ω D :=
+    regionEntropy Ω D = FiniteProduct.entropy X Ω D :=
   vonNeumannEntropy_congr (regionState_eq_reducedPure D Ω) _ _
 
 end ManyBody

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.CanonicalSamplingTrimmingMeasurable
+import QICLean.Entropy.ViableSampling.CanonicalSamplingTrimmingMeasurable
 import QICLean.Analysis.ViableSubspaceTensorProjectionMeasurable
 
 /-!
@@ -29,9 +29,9 @@ arXiv:1602.08828v2, Definition d:vs, lines 433–440. -/
 theorem measurableSet_isViable_trim_sample_family_image_rank_size
     {V β ι : Type*} [Fintype V] [DecidableEq V] [Fintype β] [Fintype ι]
     {n : V → ℕ} {d a : ℕ}
-    (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ) (s : ℕ → ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin a) ℂ) (delta : ℝ)
-    (T : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n) ⊗[ℂ] EuclideanSpace ℂ β)) :
+    (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ) (s : ℕ → ℕ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin a) ℂ) (delta : ℝ)
+    (T : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)) ⊗[ℂ] EuclideanSpace ℂ β)) :
     let S := fun p : Matrix (Fin a) (Fin a) ℂ × Matrix.rankUnitaryProduct a ↦
       trimMatrixRange e D xi k (Matrix.familySupportProj (fun i ↦ F i *
         (Matrix.toEuclideanCLM (n := Fin a) (𝕜 := ℂ)).symm
@@ -47,9 +47,9 @@ the entire exterior tensor factor. Its failure event is Borel as well. -/
 theorem measurableSet_isViable_trim_sample_family_image
     {V β ι : Type*} [Fintype V] [DecidableEq V] [Fintype β] [Fintype ι]
     {n : V → ℕ} {d a : ℕ}
-    (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V) (xi : ℝ) (k s : ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin a) ℂ) (delta : ℝ)
-    (T : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n) ⊗[ℂ] EuclideanSpace ℂ β)) :
+    (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V) (xi : ℝ) (k s : ℕ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin a) ℂ) (delta : ℝ)
+    (T : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)) ⊗[ℂ] EuclideanSpace ℂ β)) :
     let S := fun p : Matrix (Fin a) (Fin a) ℂ × Matrix.rankUnitaryProduct a ↦
       trimMatrixRange e D xi k (Matrix.familySupportProj (fun i ↦ F i *
         (Matrix.toEuclideanCLM (n := Fin a) (𝕜 := ℂ)).symm

@@ -45,37 +45,46 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 /-- **Product decomposition across disjoint regions.** An operator supported on `X ∪ T`, with
 `X, T` disjoint, is a finite sum of products `a_i b_i` with `a_i` supported on `X` and `b_i`
 supported on `T` (`05-replicas.tex`, lines 678–681). -/
-theorem IsSupportedOn.exists_sum_mul {M : Matrix (SiteConfig n) (SiteConfig n) ℂ}
-    {X T : Finset V} (hXT : Disjoint X T) (hM : IsSupportedOn M (X ∪ T)) (σ₀ : SiteConfig n) :
-    ∃ (N : ℕ) (a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ),
-      (∀ i, IsSupportedOn (a i) X) ∧ (∀ i, IsSupportedOn (b i) T) ∧
+theorem _root_.ManyBody.IsSupportedOn.exists_sum_mul
+    {M : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+    {X T : Finset V} (hXT : Disjoint X T) (hM : ManyBody.IsSupportedOn M (X ∪ T)) :
+    ∃ (N : ℕ) (a b : Fin N → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ),
+      (∀ i, ManyBody.IsSupportedOn (a i) X) ∧ (∀ i, ManyBody.IsSupportedOn (b i) T) ∧
         M = ∑ i, a i * b i := by
   classical
-  obtain ⟨K, rfl⟩ := hM.exists_localLift σ₀
+  obtain ⟨K, rfl⟩ := ManyBody.exists_eq_place_of_mem_supportedOperators hM
   set e := regionUnionEquiv (n := n) hXT
   set K' := reindex e e K
-  set I := (RegionConfig n X × RegionConfig n T) × (RegionConfig n X × RegionConfig n T)
+  set I :=
+      ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ×
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T)) ×
+      ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ×
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T))
   set g := Fintype.equivFin I
-  set A : I → Matrix (SiteConfig n) (SiteConfig n) ℂ := fun p =>
-    K' p.1 p.2 • localLift X (single p.1.1 p.2.1 1)
-  set B : I → Matrix (SiteConfig n) (SiteConfig n) ℂ := fun p =>
-    localLift T (single p.1.2 p.2.2 1)
+  set A : I → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ := fun p =>
+    K' p.1 p.2 • ManyBody.place X (single p.1.1 p.2.1 1)
+  set B : I → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ := fun p =>
+    ManyBody.place T (single p.1.2 p.2.2 1)
   refine ⟨Fintype.card I, fun i => A (g.symm i), fun i => B (g.symm i), fun i => ?_,
-    fun i => isSupportedOn_localLift _, ?_⟩
-  · simp only [A, ← localLift_smul]
-    exact isSupportedOn_localLift _
+    fun i => ManyBody.place_mem_supportedOperators _, ?_⟩
+  · simp only [A, ← ManyBody.place_smul]
+    exact ManyBody.place_mem_supportedOperators _
   · have hK : K = reindex e.symm e.symm K' := by simp [K']
     -- The lift of a reindexed matrix is linear in that matrix.
-    let Ψ : Matrix (RegionConfig n X × RegionConfig n T) (RegionConfig n X × RegionConfig n T) ℂ
-        →ₗ[ℂ] Matrix (SiteConfig n) (SiteConfig n) ℂ :=
-      { toFun := fun L => localLift (X ∪ T) (reindex e.symm e.symm L)
+    let Ψ : Matrix
+        ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ×
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T))
+        ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ×
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T)) ℂ
+        →ₗ[ℂ] Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ :=
+      { toFun := fun L => ManyBody.place (X ∪ T) (reindex e.symm e.symm L)
         map_add' := fun L L' => by
-          rw [← localLift_add]
+          rw [← ManyBody.place_add]
           congr 1
         map_smul' := fun c L => by
-          rw [RingHom.id_apply, ← localLift_smul]
+          rw [RingHom.id_apply, ← ManyBody.place_smul]
           congr 1 }
-    have hΨ : ∀ L, Ψ L = localLift (X ∪ T) (reindex e.symm e.symm L) := fun _ => rfl
+    have hΨ : ∀ L, Ψ L = ManyBody.place (X ∪ T) (reindex e.symm e.symm L) := fun _ => rfl
     rw [Equiv.sum_comp g.symm (fun p => A p * B p), hK, ← hΨ, matrix_eq_sum_single K',
       map_sum]
     conv_rhs => rw [Fintype.sum_prod_type]
@@ -151,14 +160,14 @@ noncomputable def leafMetric (t : ℝ) (k : ℕ) (P Y F : Finset V) :
 
 /-- The copy mean `hbar = k^{-1} ∑_j h^{(j)}` of a one-copy operator (`05-replicas.tex`,
 line 470). -/
-noncomputable def copyMean (k : ℕ) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ) :
+noncomputable def copyMean (k : ℕ) (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
   ((k : ℂ))⁻¹ • ∑ j, siteOp j h
 
 /-- The similarity transform `O_k = A_k^{-1/2} hbar A_k^{1/2}` (`05-replicas.tex`, Lemma 6.4,
 line 621). -/
 noncomputable def markedSimilarity (t : ℝ) (k : ℕ) (P Y F : Finset V)
-    (h : Matrix (SiteConfig n) (SiteConfig n) ℂ) :
+    (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
   (CFC.sqrt (leafMetric n t k P Y F))⁻¹ * copyMean n k h * CFC.sqrt (leafMetric n t k P Y F)
 
@@ -209,7 +218,7 @@ omit [∀ v, NeZero (n v)] in
 /-- Label observables of a subsystem commute with the permutations of entire copies. -/
 theorem commute_copyPerm_labelObservable (k : ℕ) (Q : Finset V)
     (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) (τ : Equiv.Perm (Fin k)) :
-    Commute (permOp (copyPerm (SiteConfig n) k) τ)
+    Commute (permOp (copyPerm (∀ v, Fin (n v)) k) τ)
       (labelObservable (subsystemPerm k (fun v => Fin (n v)) Q) f) := by
   rw [permOp_of_eq_mul (subsystemPerm k (fun v => Fin (n v)) Q)
     (subsystemPerm k (fun v => Fin (n v)) Qᶜ) _ (fun g => copyPerm_eq_mul_compl Q g) τ]
@@ -223,9 +232,9 @@ theorem commute_copyPerm_labelObservable (k : ℕ) (Q : Finset V)
 
 omit [∀ v, NeZero (n v)] in
 /-- The copy mean commutes with the permutations of entire copies. -/
-theorem commute_copyPerm_copyMean (k : ℕ) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+theorem commute_copyPerm_copyMean (k : ℕ) (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
     (τ : Equiv.Perm (Fin k)) :
-    Commute (permOp (copyPerm (SiteConfig n) k) τ) (copyMean n k h) := by
+    Commute (permOp (copyPerm (∀ v, Fin (n v)) k) τ) (copyMean n k h) := by
   unfold copyMean
   refine Commute.smul_right ?_ _
   rw [Commute, SemiconjBy, Finset.mul_sum, Finset.sum_mul]
@@ -237,17 +246,17 @@ omit [∀ v, NeZero (n v)] in
 between operators commuting with the permutations of entire copies, `h^{(j)}` may replace
 `h^{(j')}`. -/
 theorem star_dotProduct_siteOp_eq {k : ℕ} (j j' : Fin k)
-    (h : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
     {M N : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ}
-    (hM : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) k) τ) M)
-    (hN : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) k) τ) N)
+    (hM : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) k) τ) M)
+    (hN : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) k) τ) N)
     {w z : Config k (fun v => Fin (n v)) → ℂ}
     (hw : w ∈ symmetricSubspace k (fun v => Fin (n v)))
     (hz : z ∈ symmetricSubspace k (fun v => Fin (n v))) :
     star w ⬝ᵥ ((M * siteOp j h * N) *ᵥ z) = star w ⬝ᵥ ((M * siteOp j' h * N) *ᵥ z) := by
   set τ := Equiv.swap j j'
-  set U := permOp (copyPerm (SiteConfig n) k) τ
-  set U' := permOp (copyPerm (SiteConfig n) k) τ⁻¹
+  set U := permOp (copyPerm (∀ v, Fin (n v)) k) τ
+  set U' := permOp (copyPerm (∀ v, Fin (n v)) k) τ⁻¹
   have hs : siteOp j' h = U * siteOp j h * U' := by
     have := permOp_copyPerm_mul_siteOp h j τ
     rw [Equiv.swap_apply_left] at this
@@ -270,10 +279,10 @@ theorem star_dotProduct_siteOp_eq {k : ℕ} (j j' : Fin k)
 omit [∀ v, NeZero (n v)] in
 /-- Between symmetric vectors the copy mean may be replaced by any single copy. -/
 theorem star_dotProduct_copyMean_eq {m : ℕ} (j : Fin (m + 1))
-    (h : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
     {M N : Matrix (Config (m + 1) fun v => Fin (n v)) (Config (m + 1) fun v => Fin (n v)) ℂ}
-    (hM : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) M)
-    (hN : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) N)
+    (hM : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ) M)
+    (hN : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ) N)
     {w z : Config (m + 1) (fun v => Fin (n v)) → ℂ}
     (hw : w ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)))
     (hz : z ∈ symmetricSubspace (m + 1) (fun v => Fin (n v))) :
@@ -309,7 +318,8 @@ theorem norm_star_dotProduct_le {X : Type*} [Fintype X] (u v : X → ℂ) :
 omit [∀ v, NeZero (n v)] in
 /-- A label observable of a subsystem commutes with one-copy operators supported off it. -/
 theorem commute_labelObservable_siteOp_of_disjoint {k : ℕ} {Q D : Finset V}
-    {c : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hc : IsSupportedOn c D) (hQD : Disjoint Q D)
+    {c : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hc : ManyBody.IsSupportedOn c D)
+        (hQD : Disjoint Q D)
     (j : Fin k) (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
     Commute (labelObservable (subsystemPerm k (fun v => Fin (n v)) Q) f) (siteOp j c) :=
   commute_labelObservable_of_forall_commute _
@@ -318,7 +328,7 @@ theorem commute_labelObservable_siteOp_of_disjoint {k : ℕ} {Q D : Finset V}
 omit [∀ v, NeZero (n v)] in
 /-- A label observable of the first copies commutes with one-copy operators on the last copy. -/
 theorem commute_labelObservable_first_siteOp_last {m : ℕ} (Q : Finset V)
-    (c : Matrix (SiteConfig n) (SiteConfig n) ℂ) (f : IrrepLabel (Equiv.Perm (Fin m)) → ℝ) :
+    (c : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) (f : IrrepLabel (Equiv.Perm (Fin m)) → ℝ) :
     Commute (labelObservable ((subsystemPerm (m + 1) (fun v => Fin (n v)) Q).comp
       (firstCopies m)) f) (siteOp (Fin.last m) c) :=
   commute_labelObservable_of_forall_commute _ (fun g => by
@@ -358,8 +368,8 @@ theorem commute_labelObservable_first_of_disjoint {m : ℕ} {Q Q' : Finset V} (h
 supported on `Y` and `a` supported on `P`, with `P, Y` disjoint,
 `W_Y^{-1} W_P (b a)^{(k)} W_P^{-1} W_Y = (R_Y^{-1} b^{(k)} R_Y)(R_P a^{(k)} R_P^{-1})`. -/
 theorem replicaMetric_conj_siteOp_mul {t : ℝ} (ht : 0 ≤ t) (m : ℕ) {P Y : Finset V}
-    (hPY : Disjoint P Y) {a b : Matrix (SiteConfig n) (SiteConfig n) ℂ}
-    (ha : IsSupportedOn a P) (hb : IsSupportedOn b Y) :
+    (hPY : Disjoint P Y) {a b : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+    (ha : ManyBody.IsSupportedOn a P) (hb : ManyBody.IsSupportedOn b Y) :
     (replicaMetric (fun v => Fin (n v)) t (m + 1) Y)⁻¹ *
         replicaMetric (fun v => Fin (n v)) t (m + 1) P *
           (siteOp (Fin.last m) b * siteOp (Fin.last m) a) *
@@ -455,7 +465,7 @@ theorem replicaMetric_conj_siteOp_mul {t : ℝ} (ht : 0 ≤ t) (m : ℕ) {P Y : 
 `O_{m+1} = W_Y^{-1} W_P hbar W_P^{-1} W_Y`. -/
 theorem markedSimilarity_succ_eq {t : ℝ} (ht0 : 0 ≤ t) (m : ℕ) {P Y F : Finset V}
     (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) :
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hh : ManyBody.IsSupportedOn h (P ∪ Y)) :
     markedSimilarity n t (m + 1) P Y F h =
       (replicaMetric (fun v => Fin (n v)) t (m + 1) Y)⁻¹ *
         replicaMetric (fun v => Fin (n v)) t (m + 1) P * copyMean n (m + 1) h *
@@ -504,9 +514,9 @@ theorem markedSimilarity_succ_eq {t : ℝ} (ht0 : 0 ≤ t) (m : ℕ) {P Y F : Fi
 /-- The similarity transform commutes with the permutations of entire copies. -/
 theorem commute_copyPerm_markedSimilarity_succ {t : ℝ} (ht0 : 0 ≤ t) (m : ℕ)
     {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y))
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hh : ManyBody.IsSupportedOn h (P ∪ Y))
     (τ : Equiv.Perm (Fin (m + 1))) :
-    Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ)
+    Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ)
       (markedSimilarity n t (m + 1) P Y F h) := by
   rw [markedSimilarity_succ_eq ht0 m hPY hPF hYF hh, replicaMetric_inv_eq ht0,
     replicaMetric_inv_eq ht0]
@@ -520,9 +530,10 @@ writing `h = ∑_i b_i a_i` with `b_i` supported on `Y` and `a_i` on `P`, for sy
 `⟨u, O_{m+1} z⟩ = ∑_i ⟨u, (R_Y^{-1} b_i^{(k)} R_Y)(R_P a_i^{(k)} R_P^{-1}) z⟩`. -/
 theorem star_dotProduct_markedSimilarity_eq_sum {t : ℝ} (ht0 : 0 ≤ t) (m : ℕ)
     {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) {N : ℕ}
-    {a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ} (ha : ∀ i, IsSupportedOn (a i) P)
-    (hb : ∀ i, IsSupportedOn (b i) Y) (hdec : h = ∑ i, b i * a i)
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hh : ManyBody.IsSupportedOn h (P ∪ Y)) {N : ℕ}
+    {a b : Fin N → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+        (ha : ∀ i, ManyBody.IsSupportedOn (a i) P)
+    (hb : ∀ i, ManyBody.IsSupportedOn (b i) Y) (hdec : h = ∑ i, b i * a i)
     {u z : Config (m + 1) (fun v => Fin (n v)) → ℂ}
     (hu : u ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)))
     (hz : z ∈ symmetricSubspace (m + 1) (fun v => Fin (n v))) :
@@ -533,17 +544,17 @@ theorem star_dotProduct_markedSimilarity_eq_sum {t : ℝ} (ht0 : 0 ≤ t) (m : �
           (markedRatio (fun v => Fin (n v)) t m P)⁻¹)) *ᵥ z) := by
   set WP := replicaMetric (fun v => Fin (n v)) t (m + 1) P
   set WY := replicaMetric (fun v => Fin (n v)) t (m + 1) Y
-  have hcWP : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WP := fun τ =>
+  have hcWP : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ) WP := fun τ =>
     commute_copyPerm_labelObservable _ P _ τ
-  have hcWY : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WY := fun τ =>
+  have hcWY : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ) WY := fun τ =>
     commute_copyPerm_labelObservable _ Y _ τ
-  have hcWPi : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WP⁻¹ := fun τ => by
+  have hcWPi : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ) WP⁻¹ := fun τ => by
     rw [replicaMetric_inv_eq ht0]; exact commute_copyPerm_labelObservable _ P _ τ
-  have hcWYi : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) WY⁻¹ := fun τ => by
+  have hcWYi : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ) WY⁻¹ := fun τ => by
     rw [replicaMetric_inv_eq ht0]; exact commute_copyPerm_labelObservable _ Y _ τ
-  have hcM : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) (WY⁻¹ * WP) :=
+  have hcM : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ) (WY⁻¹ * WP) :=
     fun τ => (hcWYi τ).mul_right (hcWP τ)
-  have hcN : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ) (WP⁻¹ * WY) :=
+  have hcN : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ) (WP⁻¹ * WY) :=
     fun τ => (hcWPi τ).mul_right (hcWY τ)
   rw [markedSimilarity_succ_eq ht0 m hPY hPF hYF hh,
     star_dotProduct_copyMean_eq (Fin.last m) h hcM hcN hu hz, hdec, siteOp_sum]
@@ -559,15 +570,14 @@ one-copy operator `h` supported on `P ∪ Y`, `sup_k ‖O_k‖ < ∞` on the sym
 with a bound depending on the fixed system, `t` and `h`. -/
 theorem exists_norm_markedSimilarity_mulVec_le {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1 / 2)
     {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) :
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hh : ManyBody.IsSupportedOn h (P ∪ Y)) :
     ∃ C, ∀ (k : ℕ) (z : Config k (fun v => Fin (n v)) → ℂ),
       z ∈ symmetricSubspace k (fun v => Fin (n v)) →
         ‖(EuclideanSpace.equiv _ ℂ).symm (markedSimilarity n t k P Y F h *ᵥ z)‖ ≤
           C * ‖(EuclideanSpace.equiv _ ℂ).symm z‖ := by
   set ι : V → Type := fun v => Fin (n v)
-  have hσ₀ : SiteConfig n := fun _ => 0
   obtain ⟨N, b, a, hb, ha, hdec⟩ :=
-    (show IsSupportedOn h (Y ∪ P) by rwa [Finset.union_comm]).exists_sum_mul hPY.symm hσ₀
+    (show ManyBody.IsSupportedOn h (Y ∪ P) by rwa [Finset.union_comm]).exists_sum_mul hPY.symm
   obtain ⟨CR, hCR⟩ := exists_l2_opNorm_markedRatio_le ι ht0 (by linarith)
   obtain ⟨CI₀, hCI₀⟩ := exists_norm_markedRatio_inv_mulVec_le ι ht0 ht1
   set CI := max CI₀ 0
@@ -584,12 +594,12 @@ theorem exists_norm_markedSimilarity_mulVec_le {t : ℝ} (ht0 : 0 < t) (ht1 : t 
     simp only [markedSimilarity, h0, mul_zero, zero_mul, zero_mulVec]
     simp only [map_zero, norm_zero]
     positivity
-  have hcO : ∀ τ, Commute (permOp (copyPerm (SiteConfig n) (m + 1)) τ)
+  have hcO : ∀ τ, Commute (permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ)
       (markedSimilarity n t (m + 1) P Y F h) :=
     commute_copyPerm_markedSimilarity_succ ht0.le m hPY hPF hYF hh
   set u := markedSimilarity n t (m + 1) P Y F h *ᵥ z with hu_def
   have hu : u ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) := fun τ => by
-    change permOp (copyPerm (SiteConfig n) (m + 1)) τ *ᵥ u = u
+    change permOp (copyPerm (∀ v, Fin (n v)) (m + 1)) τ *ᵥ u = u
     rw [hu_def, mulVec_mulVec, (hcO τ).eq, ← mulVec_mulVec, hz τ]
   have hkey := star_dotProduct_markedSimilarity_eq_sum (F := F) ht0.le m hPY hPF hYF hh ha hb
     hdec hu hz
@@ -601,7 +611,7 @@ theorem exists_norm_markedSimilarity_mulVec_le {t : ℝ} (ht0 : 0 < t) (ht1 : t 
     rw [markedRatio_inv_eq_hom _ ht0.le]
     exact (isOrthogonalResolution_branch m Q).isHermitian_hom (isHermitian_branch _ m Q) _
   have hCR0 : 0 ≤ CR := (norm_nonneg _).trans (hCR m P)
-  have hstep : ∀ (Q : Finset V) (c : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+  have hstep : ∀ (Q : Finset V) (c : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
       (x : Config (m + 1) (fun v => Fin (n v)) → ℂ),
       x ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) →
         ‖(EuclideanSpace.equiv _ ℂ).symm ((markedRatio (fun v => Fin (n v)) t m Q *

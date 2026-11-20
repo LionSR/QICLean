@@ -67,8 +67,10 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 and every density matrix `ρ_R` on `R`. -/
 theorem exists_l2_opNorm_compensator_le [∀ v, NeZero (n v)] {t : ℝ} (ht : 0 < t) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ (k : ℕ) (R : Finset V)
-      (ρ : Matrix (RegionConfig n R) (RegionConfig n R) ℂ), ρ.PosSemidef → ρ.trace = 1 →
-        ‖(replicaMetric (fun v => Fin (n v)) t k R)⁻¹ * tensorPow (k := k) (localLift R (ρ ^ t))‖
+      (ρ : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R)
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R) ℂ), ρ.PosSemidef → ρ.trace = 1 →
+        ‖(replicaMetric (fun v => Fin (n v)) t k R)⁻¹ * tensorPow (k := k)
+            (ManyBody.place R (ρ ^ t))‖
           ≤ ((k : ℝ) + 2) ^ C := by
   set ι : V → Type := fun v => Fin (n v)
   have : ∀ v, Nonempty (ι v) := fun v => ⟨⟨0, Nat.pos_of_ne_zero (NeZero.ne _)⟩⟩
@@ -80,7 +82,7 @@ theorem exists_l2_opNorm_compensator_le [∀ v, NeZero (n v)] {t : ℝ} (ht : 0 
   have hinv := replicaMetric_inv_eq (n := n) ht.le k R
   set A := labelObservable (copyPerm (SubConfig ι R) k) fun l => (w l)⁻¹
   have hre : reindex (splitEquiv ι k R) (splitEquiv ι k R)
-      ((replicaMetric ι t k R)⁻¹ * tensorPow (k := k) (localLift R (ρ ^ t))) =
+      ((replicaMetric ι t k R)⁻¹ * tensorPow (k := k) (ManyBody.place R (ρ ^ t))) =
       (A * tensorPow (k := k) (ρ ^ t)) ⊗ₖ
         (1 : Matrix (Fin k → ComplConfig ι R) (Fin k → ComplConfig ι R) ℂ) := by
     rw [reindex_apply, ← submatrix_mul_equiv _ _ _ (splitEquiv ι k R).symm, ← reindex_apply,

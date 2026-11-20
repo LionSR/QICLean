@@ -290,29 +290,32 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 Then `⟪ψ, A (M ⊗ 1) C w⟫ = Tr (ρ_{ψ,D} M L⁻¹)` for every `M` on `D`.
 PEPS manuscript, `03-patches.tex`, lines 138–160, `eq:patch-trace-stripping`. -/
 theorem inner_mulLocalLift_eq_trace {D : Finset V}
-    {L : Matrix (RegionConfig n D) (RegionConfig n D) ℂ} (hL : IsUnit L.det)
-    {outer : List (RegionFilter n)} (C : Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (w : EuclideanSpace ℂ (SiteConfig n)) (σ₀ : SiteConfig n)
-    (hchain : IsDescendingChain (toEuclideanLin (liftProd outer * localLift D L * C) w) outer)
-    (hsub : ∀ p ∈ outer, D ⊆ p.1) (M : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
-    ⟪toEuclideanLin (liftProd outer * localLift D L * C) w,
-        toEuclideanLin (liftProd outer * localLift D M * C) w⟫_ℂ =
-      (regionState D (toEuclideanLin (liftProd outer * localLift D L * C) w) *
+    {L : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ} (hL : IsUnit L.det)
+    {outer : List (RegionFilter n)} (C : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (w : EuclideanSpace ℂ (∀ v, Fin (n v))) (σ₀ : (∀ v, Fin (n v)))
+    (hchain : IsDescendingChain (toEuclideanLin (liftProd outer * ManyBody.place D L * C) w) outer)
+    (hsub : ∀ p ∈ outer, D ⊆ p.1)
+        (M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ) :
+    ⟪toEuclideanLin (liftProd outer * ManyBody.place D L * C) w,
+        toEuclideanLin (liftProd outer * ManyBody.place D M * C) w⟫_ℂ =
+      (ManyBody.regionState (toEuclideanLin (liftProd outer * ManyBody.place D L * C) w) D *
         (M * L⁻¹)).trace := by
-  have hM : localLift D M = localLift D (M * L⁻¹) * localLift D L := by
-    rw [← localLift_mul, Matrix.mul_assoc, nonsing_inv_mul _ hL, Matrix.mul_one]
-  have hvec : toEuclideanLin (liftProd outer * localLift D M * C) w =
-      toEuclideanLin (liftProd outer * localLift D (M * L⁻¹) * liftProdInv outer)
-        (toEuclideanLin (liftProd outer * localLift D L * C) w) := by
-    rw [hM, ← toEuclideanLin_mul_apply', show liftProd outer * localLift D (M * L⁻¹) *
-        liftProdInv outer * (liftProd outer * localLift D L * C) =
-        liftProd outer * localLift D (M * L⁻¹) * (liftProdInv outer * liftProd outer) *
-          localLift D L * C by simp only [Matrix.mul_assoc],
+  have hM : ManyBody.place D M = ManyBody.place D (M * L⁻¹) * ManyBody.place D L := by
+    rw [← ManyBody.place_mul, Matrix.mul_assoc, nonsing_inv_mul _ hL, Matrix.mul_one]
+  have hvec : toEuclideanLin (liftProd outer * ManyBody.place D M * C) w =
+      toEuclideanLin (liftProd outer * ManyBody.place D (M * L⁻¹) * liftProdInv outer)
+        (toEuclideanLin (liftProd outer * ManyBody.place D L * C) w) := by
+    rw [hM, ← toEuclideanLin_mul_apply', show liftProd outer * ManyBody.place D (M * L⁻¹) *
+        liftProdInv outer * (liftProd outer * ManyBody.place D L * C) =
+        liftProd outer * ManyBody.place D (M * L⁻¹) * (liftProdInv outer * liftProd outer) *
+          ManyBody.place D L * C by simp only [Matrix.mul_assoc],
       liftProdInv_mul_liftProd hchain, Matrix.mul_one]
     simp only [Matrix.mul_assoc]
-  have hY : ∀ p ∈ outer, IsSupportedOn (localLift D (M * L⁻¹)) p.1 := fun p hp ↦
-    (isSupportedOn_localLift _).mono (hsub p hp)
-  rw [hvec, inner_liftProd_conj σ₀ hchain hY, inner_localLift]
+  have hY : ∀ p ∈ outer, ManyBody.IsSupportedOn (ManyBody.place D (M * L⁻¹)) p.1 := fun p hp ↦
+    (ManyBody.place_mem_supportedOperators _).mono (hsub p hp)
+  rw [hvec, inner_liftProd_conj σ₀ hchain hY, ManyBody.inner_place]
 
 /-- **Commutation for one factor of the patch objective.** If the density `x` minimizes
 `‖A ((x + b 1)^{-a/2} ⊗ 1) C w‖` among density matrices on `D`, with `A` a descending chain for
@@ -320,32 +323,39 @@ the output on regions containing `D`, then the filter and `x` commute with the r
 the output.
 PEPS manuscript, `03-patches.tex`, lines 130–168, `eq:patch-stationarity-commutation`. -/
 theorem patchFilter_commute_regionState {D : Finset V}
-    {x : Matrix (RegionConfig n D) (RegionConfig n D) ℂ} (hx : x.PosSemidef) (hxt : x.trace = 1)
+    {x : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ} (hx : x.PosSemidef) (hxt : x.trace = 1)
     {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
-    {outer : List (RegionFilter n)} (C : Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (w : EuclideanSpace ℂ (SiteConfig n)) (σ₀ : SiteConfig n)
-    (hmin : ∀ y : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, y.PosSemidef → y.trace = 1 →
-      ‖toEuclideanLin (liftProd outer * localLift D ((x + b • 1) ^ (-a / 2)) * C) w‖ ≤
-        ‖toEuclideanLin (liftProd outer * localLift D ((y + b • 1) ^ (-a / 2)) * C) w‖)
+    {outer : List (RegionFilter n)} (C : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (w : EuclideanSpace ℂ (∀ v, Fin (n v))) (σ₀ : (∀ v, Fin (n v)))
+    (hmin : ∀ y : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ, y.PosSemidef → y.trace = 1 →
+      ‖toEuclideanLin (liftProd outer * ManyBody.place D ((x + b • 1) ^ (-a / 2)) * C) w‖ ≤
+        ‖toEuclideanLin (liftProd outer * ManyBody.place D ((y + b • 1) ^ (-a / 2)) * C) w‖)
     (hchain : IsDescendingChain
-      (toEuclideanLin (liftProd outer * localLift D ((x + b • 1) ^ (-a / 2)) * C) w) outer)
+      (toEuclideanLin (liftProd outer * ManyBody.place D ((x + b • 1) ^ (-a / 2)) * C) w) outer)
     (hsub : ∀ p ∈ outer, D ⊆ p.1) :
     Commute ((x + b • 1) ^ (-a / 2))
-        (regionState D (toEuclideanLin (liftProd outer *
-          localLift D ((x + b • 1) ^ (-a / 2)) * C) w)) ∧
-      Commute x (regionState D (toEuclideanLin (liftProd outer *
-          localLift D ((x + b • 1) ^ (-a / 2)) * C) w)) := by
-  set K := x + b • (1 : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) with hKdef
+        (ManyBody.regionState (toEuclideanLin (liftProd outer *
+          ManyBody.place D ((x + b • 1) ^ (-a / 2)) * C) w) D) ∧
+      Commute x (ManyBody.regionState (toEuclideanLin (liftProd outer *
+          ManyBody.place D ((x + b • 1) ^ (-a / 2)) * C) w) D) := by
+  set K := x + b •
+      (1 : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ) with hKdef
   have hK : K.PosDef := hx.add_smul_one_posDef hb
   have hL : (K ^ (-a / 2)).PosDef :=
     Matrix.isStrictlyPositive_iff_posDef.mp
       (IsStrictlyPositive.rpow K (-a / 2) hK.isStrictlyPositive)
-  have hc : K ^ (-a / 2) * regionState D (toEuclideanLin (liftProd outer *
-      localLift D (K ^ (-a / 2)) * C) w) = regionState D (toEuclideanLin (liftProd outer *
-      localLift D (K ^ (-a / 2)) * C) w) * K ^ (-a / 2) := by
+  have hc : K ^ (-a / 2) * ManyBody.regionState (toEuclideanLin (liftProd outer *
+      ManyBody.place D (K ^ (-a / 2)) * C) w) D = ManyBody.regionState
+          (toEuclideanLin (liftProd outer *
+      ManyBody.place D (K ^ (-a / 2)) * C) w) D * K ^ (-a / 2) := by
     refine commute_regionState_of_unitary_min hL C w σ₀ (fun U hU ↦ ?_) hchain hsub
     have hU' : U * Uᴴ = 1 := mul_eq_one_comm.mp hU
-    have hUu : U ∈ unitary (Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :=
+    have hUu : U ∈ unitary
+        (Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ) :=
       Unitary.mem_iff.mpr
         ⟨by simpa [star_eq_conjTranspose] using hU, by simpa [star_eq_conjTranspose] using hU'⟩
     have hconj := rpow_conj_unitary hK.posSemidef (-a / 2) ⟨U, hUu⟩
@@ -364,34 +374,41 @@ minimality of `patchFilter_commute_regionState`, every density matrix `y` commut
 satisfies `Re Tr (G y) ≤ Re Tr (G x)` with `G = ρ (x + b 1)^{-1}`.
 PEPS manuscript, `03-patches.tex`, lines 170–178, `eq:patch-simplex-derivative`. -/
 theorem re_trace_variation_le_of_patch_min {D : Finset V}
-    {x : Matrix (RegionConfig n D) (RegionConfig n D) ℂ} (hx : x.PosSemidef) (hxt : x.trace = 1)
+    {x : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ} (hx : x.PosSemidef) (hxt : x.trace = 1)
     {a b : ℝ} (ha : 0 < a) (hb : 0 < b)
-    {outer : List (RegionFilter n)} (C : Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (w : EuclideanSpace ℂ (SiteConfig n)) (σ₀ : SiteConfig n)
-    (hmin : ∀ y : Matrix (RegionConfig n D) (RegionConfig n D) ℂ, y.PosSemidef → y.trace = 1 →
-      ‖toEuclideanLin (liftProd outer * localLift D ((x + b • 1) ^ (-a / 2)) * C) w‖ ≤
-        ‖toEuclideanLin (liftProd outer * localLift D ((y + b • 1) ^ (-a / 2)) * C) w‖)
+    {outer : List (RegionFilter n)} (C : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (w : EuclideanSpace ℂ (∀ v, Fin (n v))) (σ₀ : (∀ v, Fin (n v)))
+    (hmin : ∀ y : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ, y.PosSemidef → y.trace = 1 →
+      ‖toEuclideanLin (liftProd outer * ManyBody.place D ((x + b • 1) ^ (-a / 2)) * C) w‖ ≤
+        ‖toEuclideanLin (liftProd outer * ManyBody.place D ((y + b • 1) ^ (-a / 2)) * C) w‖)
     (hchain : IsDescendingChain
-      (toEuclideanLin (liftProd outer * localLift D ((x + b • 1) ^ (-a / 2)) * C) w) outer)
+      (toEuclideanLin (liftProd outer * ManyBody.place D ((x + b • 1) ^ (-a / 2)) * C) w) outer)
     (hsub : ∀ p ∈ outer, D ⊆ p.1)
-    (y : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) (hy : y.PosSemidef) (hyt : y.trace = 1)
+    (y : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ) (hy : y.PosSemidef) (hyt : y.trace = 1)
     (hxy : Commute x y) :
-    (regionState D (toEuclideanLin (liftProd outer * localLift D ((x + b • 1) ^ (-a / 2)) * C) w) *
+    (ManyBody.regionState
+        (toEuclideanLin (liftProd outer * ManyBody.place D ((x + b • 1) ^ (-a / 2)) * C) w) D *
         (x + b • 1) ^ (-1 : ℝ) * y).trace.re ≤
-      (regionState D (toEuclideanLin (liftProd outer *
-          localLift D ((x + b • 1) ^ (-a / 2)) * C) w) * (x + b • 1) ^ (-1 : ℝ) * x).trace.re := by
-  set K := x + b • (1 : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) with hKdef
+      (ManyBody.regionState (toEuclideanLin (liftProd outer *
+          ManyBody.place D ((x + b • 1) ^ (-a / 2)) * C) w) D * (x + b • 1) ^
+              (-1 : ℝ) * x).trace.re := by
+  set K := x + b •
+      (1 : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ) with hKdef
   set r : ℝ := -a / 2 with hr
   have hr0 : r < 0 := by rw [hr]; linarith
   have hK : K.PosDef := hx.add_smul_one_posDef hb
-  set ψ := toEuclideanLin (liftProd outer * localLift D (K ^ r) * C) w with hψ
-  set ρ := regionState D ψ with hρ
+  set ψ := toEuclideanLin (liftProd outer * ManyBody.place D (K ^ r) * C) w with hψ
+  set ρ := ManyBody.regionState ψ D with hρ
   set h := y - x with hhdef
   have hh : h.IsHermitian := hy.isHermitian.sub hx.isHermitian
   have hxh : x * h = h * x := by rw [hhdef, Matrix.mul_sub, Matrix.sub_mul, hxy.eq]
   have hg := hx.hasDerivAt_add_smul_add_smul_one_rpow_of_commute hh hxh hb r
   set Φ := (LinearMap.mulRight ℂ C) ∘ₗ localLiftₗ (n := n) D
-  have hΦ : ∀ M, liftProd outer * Φ M = liftProd outer * localLift D M * C := fun M ↦ by
+  have hΦ : ∀ M, liftProd outer * Φ M = liftProd outer * ManyBody.place D M * C := fun M ↦ by
     simp [Φ, localLiftₗ, Matrix.mul_assoc]
   have hF := hasDerivAt_norm_sq_mulApply Φ (liftProd outer) w hg
   simp only [zero_smul, add_zero, hΦ] at hF
@@ -412,7 +429,7 @@ theorem re_trace_variation_le_of_patch_min {D : Finset V}
       (Set.right_mem_Icc.mpr zero_le_one)
   have hF' := hF
   rw [show (fun s : ℝ ↦ ‖toEuclideanLin (liftProd outer *
-      localLift D ((x + s • h + b • (1 : Matrix _ _ ℂ)) ^ r) * C) w‖ ^ 2) =
+      ManyBody.place D ((x + s • h + b • (1 : Matrix _ _ ℂ)) ^ r) * C) w‖ ^ 2) =
       (fun s : ℝ ↦ ‖toEuclideanLin (liftProd outer *
         Φ ((x + s • h + b • (1 : Matrix _ _ ℂ)) ^ r)) w‖ ^ 2) by simp only [hΦ]] at hF'
   have h0 := hseg.isLocalMinOn.hasFDerivWithinAt_nonneg hF'.hasFDerivAt.hasFDerivWithinAt
@@ -437,9 +454,9 @@ theorem re_trace_variation_le_of_patch_min {D : Finset V}
   nlinarith
 
 /-- `IsDescendingChain` grows by a filter at the inner end. -/
-theorem isDescendingChain_append_singleton {φ : EuclideanSpace ℂ (SiteConfig n)}
+theorem isDescendingChain_append_singleton {φ : EuclideanSpace ℂ (∀ v, Fin (n v))}
     {p : RegionFilter n} (hu : IsUnit p.2.det)
-    (hc : p.2 * regionState p.1 φ = regionState p.1 φ * p.2) :
+    (hc : p.2 * ManyBody.regionState φ p.1 = ManyBody.regionState φ p.1 * p.2) :
     ∀ {l : List (RegionFilter n)}, IsDescendingChain φ l → (∀ q ∈ l, p.1 ⊆ q.1) →
       IsDescendingChain φ (l ++ [p])
   | [], _, _ => ⟨hu, hc, by simp, trivial⟩
@@ -460,7 +477,8 @@ structure PatchFactor (n : V → ℕ) where
   /-- The exponent `a_j`. -/
   exponent : ℝ
   /-- The variable `x_j`, a density matrix at feasible points. -/
-  density : Matrix (RegionConfig n region) (RegionConfig n region) ℂ
+  density : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) region)
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) region) ℂ
 
 /-- The regularized filter `L_j = (x_j + b 1)^{-a_j/2}` of a factor, as a regional filter. -/
 noncomputable def PatchFactor.filter (b : ℝ) (f : PatchFactor n) : RegionFilter n :=
@@ -469,18 +487,18 @@ noncomputable def PatchFactor.filter (b : ℝ) (f : PatchFactor n) : RegionFilte
 /-- The output `L_m ⋯ L_1 Ω` of an ordered list of factors; the head of the list is applied
 last. PEPS manuscript, `03-patches.tex`, `eq:patch-variational-problem`. -/
 noncomputable def patchOutput (b : ℝ) (l : List (PatchFactor n))
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) : EuclideanSpace ℂ (SiteConfig n) :=
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) : EuclideanSpace ℂ (∀ v, Fin (n v)) :=
   toEuclideanLin (liftProd (l.map (PatchFactor.filter b))) Ω
 
 /-- The normalized output `φ = L_m ⋯ L_1 Ω / ‖L_m ⋯ L_1 Ω‖` (zero if the output vanishes). -/
 noncomputable def patchState (b : ℝ) (l : List (PatchFactor n))
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) : EuclideanSpace ℂ (SiteConfig n) :=
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) : EuclideanSpace ℂ (∀ v, Fin (n v)) :=
   ((‖patchOutput b l Ω‖⁻¹ : ℝ) : ℂ) • patchOutput b l Ω
 
 /-- `l` minimizes the ordered patch objective among lists with the same regions and exponents
 whose matrices are density matrices. PEPS manuscript, `03-patches.tex`,
 `eq:patch-variational-problem`. -/
-def IsPatchMinimizer (b : ℝ) (l : List (PatchFactor n)) (Ω : EuclideanSpace ℂ (SiteConfig n)) :
+def IsPatchMinimizer (b : ℝ) (l : List (PatchFactor n)) (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     Prop :=
   ∀ l' : List (PatchFactor n), l'.map PatchFactor.region = l.map PatchFactor.region →
     l'.map PatchFactor.exponent = l.map PatchFactor.exponent →
@@ -488,10 +506,10 @@ def IsPatchMinimizer (b : ℝ) (l : List (PatchFactor n)) (Ω : EuclideanSpace �
     ‖patchOutput b l Ω‖ ≤ ‖patchOutput b l' Ω‖
 
 theorem patchOutput_append_cons (b : ℝ) (pre post : List (PatchFactor n)) (f : PatchFactor n)
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     patchOutput b (pre ++ f :: post) Ω =
       toEuclideanLin (liftProd (pre.map (PatchFactor.filter b)) *
-        localLift f.region ((f.density + b • 1) ^ (-f.exponent / 2)) *
+        ManyBody.place f.region ((f.density + b • 1) ^ (-f.exponent / 2)) *
           liftProd (post.map (PatchFactor.filter b))) Ω := by
   rw [patchOutput, List.map_append, List.map_cons, liftProd_append, liftProd_cons,
     Matrix.mul_assoc]
@@ -499,9 +517,10 @@ theorem patchOutput_append_cons (b : ℝ) (pre post : List (PatchFactor n)) (f :
 
 /-- Minimality of the whole list gives minimality in each coordinate. -/
 theorem IsPatchMinimizer.coord {b : ℝ} {pre post : List (PatchFactor n)} {f : PatchFactor n}
-    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hmin : IsPatchMinimizer b (pre ++ f :: post) Ω)
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (hmin : IsPatchMinimizer b (pre ++ f :: post) Ω)
     (hden : ∀ g ∈ pre ++ f :: post, g.density.PosSemidef ∧ g.density.trace = 1)
-    (y : Matrix (RegionConfig n f.region) (RegionConfig n f.region) ℂ) (hy : y.PosSemidef)
+    (y : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) f.region)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) f.region) ℂ) (hy : y.PosSemidef)
     (hyt : y.trace = 1) :
     ‖patchOutput b (pre ++ f :: post) Ω‖ ≤
       ‖patchOutput b (pre ++ ⟨f.region, f.exponent, y⟩ :: post) Ω‖ := by
@@ -517,7 +536,7 @@ outer factors form a descending chain for `ψ`, then the factor's filter and den
 `ρ = ρ_{ψ, X}`, and `ρ ≤ ‖ψ‖² (x + b 1)`.
 PEPS manuscript, `03-patches.tex`, lines 130–205. -/
 theorem patchFactor_stationary {b : ℝ} (hb : 0 < b) {pre post : List (PatchFactor n)}
-    {f : PatchFactor n} {Ω : EuclideanSpace ℂ (SiteConfig n)} (σ₀ : SiteConfig n)
+    {f : PatchFactor n} {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (σ₀ : (∀ v, Fin (n v)))
     (hexp : 0 < f.exponent)
     (hden : ∀ g ∈ pre ++ f :: post, g.density.PosSemidef ∧ g.density.trace = 1)
     (hnest : (pre ++ f :: post).Pairwise fun g g' ↦ g'.region ⊆ g.region)
@@ -525,22 +544,23 @@ theorem patchFactor_stationary {b : ℝ} (hb : 0 < b) {pre post : List (PatchFac
     (hchain : IsDescendingChain (patchOutput b (pre ++ f :: post) Ω)
       (pre.map (PatchFactor.filter b))) :
     Commute ((f.density + b • 1) ^ (-f.exponent / 2))
-        (regionState f.region (patchOutput b (pre ++ f :: post) Ω)) ∧
-      Commute f.density (regionState f.region (patchOutput b (pre ++ f :: post) Ω)) ∧
-      regionState f.region (patchOutput b (pre ++ f :: post) Ω) ≤
+        (ManyBody.regionState (patchOutput b (pre ++ f :: post) Ω) f.region) ∧
+      Commute f.density (ManyBody.regionState (patchOutput b (pre ++ f :: post) Ω) f.region) ∧
+      ManyBody.regionState (patchOutput b (pre ++ f :: post) Ω) f.region ≤
         (‖patchOutput b (pre ++ f :: post) Ω‖ ^ 2) • (f.density + b • 1) := by
   obtain ⟨hx, hxt⟩ := hden f (by simp)
   have hsub : ∀ p ∈ pre.map (PatchFactor.filter b), f.region ⊆ p.1 := by
     intro p hp
     obtain ⟨q, hq, rfl⟩ := List.mem_map.mp hp
     exact (List.pairwise_append.mp hnest).2.2 q hq f (by simp)
-  have hmin' : ∀ y : Matrix (RegionConfig n f.region) (RegionConfig n f.region) ℂ,
+  have hmin' : ∀ y : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) f.region)
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) f.region) ℂ,
       y.PosSemidef → y.trace = 1 →
       ‖toEuclideanLin (liftProd (pre.map (PatchFactor.filter b)) *
-          localLift f.region ((f.density + b • 1) ^ (-f.exponent / 2)) *
+          ManyBody.place f.region ((f.density + b • 1) ^ (-f.exponent / 2)) *
             liftProd (post.map (PatchFactor.filter b))) Ω‖ ≤
         ‖toEuclideanLin (liftProd (pre.map (PatchFactor.filter b)) *
-          localLift f.region ((y + b • 1) ^ (-f.exponent / 2)) *
+          ManyBody.place f.region ((y + b • 1) ^ (-f.exponent / 2)) *
             liftProd (post.map (PatchFactor.filter b))) Ω‖ := by
     intro y hy hyt
     have h := hmin.coord hden y hy hyt
@@ -549,15 +569,16 @@ theorem patchFactor_stationary {b : ℝ} (hb : 0 < b) {pre post : List (PatchFac
   obtain ⟨hcL, hcx⟩ := patchFilter_commute_regionState hx hxt hexp hb _ Ω σ₀ hmin' hchain hsub
   refine ⟨hcL, hcx, ?_⟩
   have hvar := re_trace_variation_le_of_patch_min hx hxt hexp hb _ Ω σ₀ hmin' hchain hsub
-  have h := hx.le_trace_smul_add_smul_one_of_forall_density (regionState_posSemidef _ _) hcx hb
+  have h := hx.le_trace_smul_add_smul_one_of_forall_density
+      (ManyBody.regionState_posSemidef _ _) hcx hb
     fun y hy hyt hxy ↦ hvar y hy hyt hxy
-  rwa [trace_regionState, Complex.ofReal_re] at h
+  rwa [ManyBody.trace_regionState, Complex.ofReal_re] at h
 
 /-- Along a patch minimizer with nested regions, every initial segment of the list is a
 descending chain for the output. PEPS manuscript, `03-patches.tex`, lines 130–168: the
 induction in decreasing order of `j`. -/
 theorem isDescendingChain_of_patch_min {b : ℝ} (hb : 0 < b) {l : List (PatchFactor n)}
-    {Ω : EuclideanSpace ℂ (SiteConfig n)} (σ₀ : SiteConfig n)
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (σ₀ : (∀ v, Fin (n v)))
     (hexp : ∀ f ∈ l, 0 < f.exponent)
     (hden : ∀ f ∈ l, f.density.PosSemidef ∧ f.density.trace = 1)
     (hnest : l.Pairwise fun g g' ↦ g'.region ⊆ g.region)
@@ -591,22 +612,22 @@ state `ρ_j` of the normalized output on `X_j` satisfies `[x_j, ρ_j] = 0` and
 PEPS manuscript, `03-patches.tex`, lines 130–205, `eq:patch-stationarity-commutation`,
 `eq:patch-kkt`, `eq:patch-clipped-eigenvalues`. -/
 theorem patch_stationarity {b : ℝ} (hb : 0 < b) {l : List (PatchFactor n)}
-    {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))}
     (hexp : ∀ f ∈ l, 0 < f.exponent)
     (hden : ∀ f ∈ l, f.density.PosSemidef ∧ f.density.trace = 1)
     (hnest : l.Pairwise fun g g' ↦ g'.region ⊆ g.region)
     (hmin : IsPatchMinimizer b l Ω) :
-    ∀ f ∈ l, Commute f.density (regionState f.region (patchState b l Ω)) ∧
-      regionState f.region (patchState b l Ω) ≤ f.density + b • 1 := by
+    ∀ f ∈ l, Commute f.density (ManyBody.regionState (patchState b l Ω) f.region) ∧
+      ManyBody.regionState (patchState b l Ω) f.region ≤ f.density + b • 1 := by
   intro f hf
   obtain ⟨hx, -⟩ := hden f hf
   have hK := hx.add_smul_one_posDef hb
-  by_cases hne : Nonempty (SiteConfig n)
+  by_cases hne : Nonempty (∀ v, Fin (n v))
   swap
-  · have : Subsingleton (EuclideanSpace ℂ (SiteConfig n)) := by
+  · have : Subsingleton (EuclideanSpace ℂ (∀ v, Fin (n v))) := by
       rw [not_nonempty_iff] at hne
       infer_instance
-    have h0 : regionState f.region (patchState b l Ω) = 0 := by
+    have h0 : ManyBody.regionState (patchState b l Ω) f.region = 0 := by
       rw [Subsingleton.elim (patchState b l Ω) ((0 : ℂ) • patchState b l Ω), regionState_smul]
       simp
     rw [h0]
@@ -617,8 +638,8 @@ theorem patch_stationarity {b : ℝ} (hb : 0 < b) {l : List (PatchFactor n)}
   subst hl
   obtain ⟨-, hcx, hle⟩ := patchFactor_stationary hb σ₀ (hexp f hf) hden hnest hmin hc
   set ψ := patchOutput b (pre ++ f :: post) Ω
-  have hst : regionState f.region (patchState b (pre ++ f :: post) Ω) =
-      (‖ψ‖⁻¹ ^ 2) • regionState f.region ψ := by
+  have hst : ManyBody.regionState (patchState b (pre ++ f :: post) Ω) f.region =
+      (‖ψ‖⁻¹ ^ 2) • ManyBody.regionState ψ f.region := by
     rw [patchState, regionState_smul, Complex.norm_real, Real.norm_eq_abs,
       abs_of_nonneg (inv_nonneg.mpr (norm_nonneg _)), Complex.coe_smul]
   rw [hst]
@@ -636,16 +657,16 @@ theorem patch_stationarity {b : ℝ} (hb : 0 < b) {l : List (PatchFactor n)}
 objective, `T_j = b ρ_j (x_j + b 1)^{-1}` satisfies `0 ≤ T_j ≤ b 1` and `T_j ≤ ρ_j`.
 PEPS manuscript, `03-patches.tex`, lines 130–205 and 390–400. -/
 theorem patch_shiftedRegulator_bounds {b : ℝ} (hb : 0 < b) {l : List (PatchFactor n)}
-    {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))}
     (hexp : ∀ f ∈ l, 0 < f.exponent)
     (hden : ∀ f ∈ l, f.density.PosSemidef ∧ f.density.trace = 1)
     (hnest : l.Pairwise fun g g' ↦ g'.region ⊆ g.region)
     (hmin : IsPatchMinimizer b l Ω) (f : PatchFactor n) (hf : f ∈ l) :
-    (b • (regionState f.region (patchState b l Ω) * (f.density + b • 1)⁻¹)).PosSemidef ∧
-      b • (regionState f.region (patchState b l Ω) * (f.density + b • 1)⁻¹) ≤ b • 1 ∧
-      b • (regionState f.region (patchState b l Ω) * (f.density + b • 1)⁻¹) ≤
-        regionState f.region (patchState b l Ω) := by
+    (b • (ManyBody.regionState (patchState b l Ω) f.region * (f.density + b • 1)⁻¹)).PosSemidef ∧
+      b • (ManyBody.regionState (patchState b l Ω) f.region * (f.density + b • 1)⁻¹) ≤ b • 1 ∧
+      b • (ManyBody.regionState (patchState b l Ω) f.region * (f.density + b • 1)⁻¹) ≤
+        ManyBody.regionState (patchState b l Ω) f.region := by
   obtain ⟨hc, hle⟩ := patch_stationarity hb hexp hden hnest hmin f hf
-  exact (hden f hf).1.shiftedRegulator_bounds (regionState_posSemidef _ _) hb hc.symm hle
+  exact (hden f hf).1.shiftedRegulator_bounds (ManyBody.regionState_posSemidef _ _) hb hc.symm hle
 
 end Entropy

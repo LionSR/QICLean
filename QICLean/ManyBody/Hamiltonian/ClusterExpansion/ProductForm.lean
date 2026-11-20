@@ -78,7 +78,7 @@ private theorem apply_eq_apply_of_mem_supportedOperators {V : Type*} [Fintype V]
     {A : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X D) {u v x y : Config X}
     (hux : ∀ j ∈ D, u j = x j) (hvy : ∀ j ∈ D, v j = y j) (huv : ∀ j ∉ D, u j = v j)
     (hxy : ∀ j ∉ D, x j = y j) : A u v = A x y :=
-  apply_eq_of_mem_supportedOperators hA hux hvy fun j hj ↦ ⟨fun _ ↦ hxy j hj, fun _ ↦ huv j hj⟩
+  IsSupportedOn.apply_eq hA hux hvy fun j hj ↦ ⟨fun _ ↦ hxy j hj, fun _ ↦ huv j hj⟩
 
 section Entry
 

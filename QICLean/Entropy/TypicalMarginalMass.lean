@@ -49,8 +49,8 @@ noncomputable def concentrationWidth (ϑ ℬ : ℝ) (N : ℕ) (M : ℝ) : ℝ :=
   32 * Real.sqrt ((1 + ϑ) * ℬ) * (M * Real.log (N + 2) + Real.exp 1 / 2 + Real.log 2)
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {ι : Type*} [Fintype ι]
-  {h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ} {D : ι → Finset V} {c₀ E₀ g₀ : ℝ}
-  {Ψ : EuclideanSpace ℂ (SiteConfig n)} {B : Finset V}
+  {h : ι → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} {D : ι → Finset V} {c₀ E₀ g₀ : ℝ}
+  {Ψ : EuclideanSpace ℂ (∀ v, Fin (n v))} {B : Finset V}
   {ρ : Matrix ((v : {v // v ∈ B}) → Fin (n v)) ((v : {v // v ∈ B}) → Fin (n v)) ℂ}
 
 /-- **The typical marginal spectrum.** In the setting of `surprisalTail_cut_le`, the
@@ -58,18 +58,18 @@ eigenvalues of the marginal `ρ` whose surprisal lies within the concentration w
 `S(ρ)` carry mass at least `1 - (N + 2)^{-M}`, for every `N` and every real `M`.
 Two-dimensional area law, `02-initial.tex`, lines 209–219, the concentration statement after
 Lemma 3.1, before the lattice bound on the cut budget is inserted. -/
-theorem one_sub_rpow_le_typicalMass_cut (hsupp : ∀ i, IsSupportedOn (h i) (D i))
+theorem one_sub_rpow_le_typicalMass_cut (hsupp : ∀ i, ManyBody.IsSupportedOn (h i) (D i))
     (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀) (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hΨ : ‖Ψ‖ = 1)
     (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
     (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
       (g₀ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ)))).PosSemidef)
-    (hρdef : partialTraceRight (vecMulVec (WithLp.ofLp (cutVector B Ψ))
-      (star (WithLp.ofLp (cutVector B Ψ)))) = ρ) (hρ : ρ.IsHermitian) (N : ℕ) (M : ℝ) :
+    (hρdef : partialTraceRight (vecMulVec (WithLp.ofLp (ManyBody.cutVector B Ψ))
+      (star (WithLp.ofLp (ManyBody.cutVector B Ψ)))) = ρ) (hρ : ρ.IsHermitian) (N : ℕ) (M : ℝ) :
     1 - ((N : ℝ) + 2) ^ (-M) ≤
       typicalMass hρ.eigenvalues (vonNeumannEntropy ρ hρ)
-        (concentrationWidth (c₀ / g₀) (cutLogBudget (crossingTerms D B) (supportDim n ∘ D))
+        (concentrationWidth (c₀ / g₀) (cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D))
           N M) := by
-  set ℬ := cutLogBudget (crossingTerms D B) (supportDim n ∘ D)
+  set ℬ := cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D)
   set w := concentrationWidth (c₀ / g₀) ℬ N M
   have hpsd : ρ.PosSemidef := hρdef ▸ ManyBody.regionState_posSemidef B Ψ
   have hs : ∑ i, hρ.eigenvalues i = 1 := by
@@ -86,7 +86,7 @@ theorem one_sub_rpow_le_typicalMass_cut (hsupp : ∀ i, IsSupportedOn (h i) (D i
     (vonNeumannEntropy ρ hρ) w
   have hR : 0 < Real.sqrt ((1 + c₀ / g₀) * ℬ) := Real.sqrt_pos.mpr (by
     have : 0 ≤ c₀ / g₀ := div_nonneg hc₀ hg₀.le
-    have := one_le_cutLogBudget (crossingTerms D B) (supportDim n ∘ D)
+    have := one_le_cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D)
     positivity)
   have hexp : 2 * Real.exp (Real.exp 1 / 2) *
       Real.exp (-(w / (32 * Real.sqrt ((1 + c₀ / g₀) * ℬ)))) = ((N : ℝ) + 2) ^ (-M) := by

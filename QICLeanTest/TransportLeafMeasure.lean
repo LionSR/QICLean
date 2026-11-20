@@ -31,7 +31,7 @@ example : Measurable (D.transportLeafDensity n t k pre p ⟨h, some c⟩) :=
   D.measurable_transportLeafDensity n t k pre p ⟨h, some c⟩
 
 example : Integrable (D.transportLeafDensity n t k pre p ⟨h, none⟩)
-    (volume.prod (unitaryHaar (SiteConfig n))) :=
+    (volume.prod (unitaryHaar (∀ v, Fin (n v)))) :=
   D.integrable_transportLeafDensity n t k pre p ⟨h, none⟩
 
 example : D.transportLeafMeasure n t k pre 0 ⟨h, some c⟩ = 0 := by simp
@@ -43,14 +43,14 @@ example : D.transportLeafMeasure n t k 0 p ⟨h, none⟩ = 0 ∧
 
 -- Both leaf kinds use the actual accepted state and exactly the same Fourier factor.
 example (hD : D.IsAdmissible) (ht : 0 ≤ t) (hc : D.CrossBandCommute n t k)
-    {f : (SiteConfig n → ℂ) → ℝ} (hf : Continuous f) :
+    {f : ((∀ v, Fin (n v)) → ℂ) → ℝ} (hf : Continuous f) :
     (∫ θ, f (fun x => θ.1 x) ∂D.transportLeafMeasure n t k pre p ⟨h, none⟩) =
       ∫ u, Matrix.Transport.fourierWeight u *
         realCoherentIntegral k (TransportData.base n) (D.state n t k pre p ⟨h, none⟩ u) f :=
   D.integral_transportLeafMeasure n t k pre p ⟨h, none⟩ hD ht hc hf
 
 example (hD : D.IsAdmissible) (ht : 0 ≤ t) (hc : D.CrossBandCommute n t k)
-    {f : (SiteConfig n → ℂ) → ℝ} (hf : Continuous f) :
+    {f : ((∀ v, Fin (n v)) → ℂ) → ℝ} (hf : Continuous f) :
     (∫ θ, f (fun x => θ.1 x) ∂D.transportLeafMeasure n t k pre p ⟨h, some c⟩) =
       ∫ u, Matrix.Transport.fourierWeight u *
         realCoherentIntegral k (TransportData.base n) (D.state n t k pre p ⟨h, some c⟩ u) f :=

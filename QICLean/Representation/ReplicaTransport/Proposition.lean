@@ -57,7 +57,7 @@ theorem transport_of_relativePinBoundAt_of_splitSkewBoundAt {c₁ Cpin epin c₂
       [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
       {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
       D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
       ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ min (min c₁ (1 / 4)) (min c₂ (1 / 4)) →
       (∀ k, D.CrossBandCommute n (a / 2) k) →
       (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
@@ -99,7 +99,7 @@ theorem transport_of_relativePin_of_splitSkewBound (hpin : RelativePinBound.{u})
         [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
         {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
         D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+        (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
         ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
         (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
         (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →

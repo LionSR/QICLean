@@ -96,7 +96,7 @@ theorem transport_explicit :
       [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
       {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
       D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
       ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ transportThreshold →
       (∀ k, D.CrossBandCommute n (a / 2) k) →
       (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
@@ -164,7 +164,7 @@ theorem transport :
         [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
         {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
         D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+        (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
         ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
         (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
         (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →

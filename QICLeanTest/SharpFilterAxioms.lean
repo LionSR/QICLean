@@ -10,9 +10,9 @@ import QICLean.Entropy.FilterChainEnergy
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   for decl in #[``Entropy.cosh_mul_sub_one_le_sq_mul,
-      ``Entropy.sqrt_mul_cosh_sub_one_le_sharp, ``Entropy.card_innerConfig,
-      ``Entropy.IsSupportedOn.hasProductDecomposition_inner,
-      ``Entropy.IsSupportedOn.hasProductDecomposition,
+      ``Entropy.sqrt_mul_cosh_sub_one_le_sharp, ``ManyBody.card_innerConfig,
+      ``ManyBody.IsSupportedOn.hasProductDecomposition_inner,
+      ``ManyBody.IsSupportedOn.hasProductDecomposition,
       ``Entropy.abs_re_inner_sub_inner_conj_le_sharp,
       ``Entropy.abs_re_inner_sub_inner_conj_le,
       ``Entropy.abs_re_inner_sub_conj_le_of_common_basis_sharp,

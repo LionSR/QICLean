@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Algebra
 
 import QICLean.Algebra.AKLVFrequencyBounds
+import QICLean.Algebra.BipartiteDecomposition
 import QICLean.Algebra.BlockPermutation
 import QICLean.Algebra.BurnsideTheorem
 import QICLean.Algebra.CommutingOverlappingDecomp

@@ -127,26 +127,19 @@ namespace TensorPower.ReplicaTransport
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- A positive semidefinite local lift `K ⊗ 1` has a positive semidefinite factor `K`.
-
-**Temporary** restatement of `ManyBody.posSemidef_place_iff` over `Entropy.localLift`;
-deleted in step 4.0 of the many-body plan. -/
-theorem posSemidef_of_localLift [∀ v, NeZero (n v)] {Q : Finset V}
-    {K : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ} (h : (localLift Q K).PosSemidef) :
-    K.PosSemidef :=
-  (ManyBody.posSemidef_place_iff (X := fun v ↦ Fin (n v))).mp h
-
 /-- `1 - lift_Q K = lift_Q (1 - K)`. -/
-theorem one_sub_localLift {Q : Finset V} (K : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) :
-    1 - localLift Q K = localLift Q (1 - K) := by
-  rw [sub_eq_add_neg, sub_eq_add_neg, localLift_add, ← neg_one_smul ℂ K, localLift_smul,
-    localLift_one, neg_one_smul]
+theorem one_sub_localLift {Q : Finset V}
+    (K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q)
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) ℂ) :
+    1 - ManyBody.place Q K = ManyBody.place Q (1 - K) := by
+  rw [sub_eq_add_neg, sub_eq_add_neg, ManyBody.place_add, ← neg_one_smul ℂ K, ManyBody.place_smul,
+    ManyBody.place_one, neg_one_smul]
 
 omit [Fintype V] in
 /-- The cardinality of the configurations of a region is the product of its site
 dimensions. -/
 theorem card_regionConfig (Q : Finset V) :
-    (Fintype.card (RegionConfig n Q) : ℝ) = ∏ v ∈ Q, (n v : ℝ) := by
+    (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) : ℝ) = ∏ v ∈ Q, (n v : ℝ) := by
   rw [Fintype.card_pi]
   push_cast
   simp only [Fintype.card_fin]
@@ -155,7 +148,10 @@ theorem card_regionConfig (Q : Finset V) :
 omit [Fintype V] in
 /-- `log(e (dim A)(dim B)) = log(e dim (A ∪ B))` for disjoint regions. -/
 theorem log_exp_mul_card_mul_card {A B : Finset V} (hAB : Disjoint A B) :
-    Real.log (Real.exp 1 * (Fintype.card (RegionConfig n A) * Fintype.card (RegionConfig n B))) =
+    Real.log
+        (Real.exp 1 *
+        (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) A) * Fintype.card
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) B))) =
       logDim n (A ∪ B) := by
   rw [card_regionConfig, card_regionConfig, ← Finset.prod_union hAB, logDim]
 
@@ -178,26 +174,26 @@ theorem skewConst_nonneg : 0 ≤ Entropy.ConditionalSkew.skewConst := by
   positivity
 
 /-- The coherent projection onto `𝒮_k` commutes with the copy mean. -/
-theorem commute_symProj_copyMean (k : ℕ) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ) :
-    Commute (symProj (copyPerm (SiteConfig n) k)) (copyMean n k h) :=
+theorem commute_symProj_copyMean (k : ℕ) (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) :
+    Commute (symProj (copyPerm (∀ v, Fin (n v)) k)) (copyMean n k h) :=
   commute_symProj_of_forall_commute_permOp fun s => commute_copyPerm_copyMean k h s
 
 /-- A matrix fixed by `Π` on the left is fixed by every copy permutation. -/
 theorem permOp_mul_of_symProj_mul {k : ℕ}
     {ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ}
-    (hρ : symProj (copyPerm (SiteConfig n) k) * ρ = ρ) (s : Equiv.Perm (Fin k)) :
-    permOp (copyPerm (SiteConfig n) k) s * ρ = ρ := by
+    (hρ : symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ) (s : Equiv.Perm (Fin k)) :
+    permOp (copyPerm (∀ v, Fin (n v)) k) s * ρ = ρ := by
   rw [← hρ, ← Matrix.mul_assoc, permOp_mul_symProj]
 
 /-- **One split, for all large `k`** (`06-transport.tex`, lines 735–748, from
 `05-replicas.tex`, lines 640–660): the bound of `SplitSkewBound` with an additive `ε`. -/
 theorem eventually_re_trace_skewSquare_le [∀ v, NeZero (n v)] {π : PYF V}
-    (hπ : π.IsPartition) {D : Finset V} {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
-    (h0 : 0 ≤ h) (h1 : h ≤ 1) (hh : IsSupportedOn h D)
+    (hπ : π.IsPartition) {D : Finset V} {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+    (h0 : 0 ≤ h) (h1 : h ≤ 1) (hh : ManyBody.IsSupportedOn h D)
     (hsplit : π.SplitsToP D ∨ π.SplitsToF D) {t : ℝ} (ht0 : 0 < t)
     (hsmall : 2 * t * logDim n D ≤ 1 / 8) {ε : ℝ} (hε : 0 < ε) :
     ∀ᶠ k in atTop, ∀ ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ,
-      ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+      ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ →
       (ρ * Transport.skewSquare (bandMetric n t k π) (copyMean n k h)).trace.re ≤
         2 * Entropy.ConditionalSkew.skewConst * (2 * t) ^ 2 * logDim n D ^ (4 : ℝ) *
           realCoherentIntegral k (TransportData.base n) ρ (fun θ =>
@@ -218,7 +214,8 @@ theorem eventually_re_trace_skewSquare_le [∀ v, NeZero (n v)] {π : PYF V}
     posDef_bandMetric ⟨hPY, hPF, hYF, hcov⟩ ht0.le k
   -- the comparison of the two skew operators and of the two coherent integrals
   have hcmp : ∀ (k : ℕ) (ρ : Matrix (Config k fun v => Fin (n v))
-      (Config k fun v => Fin (n v)) ℂ), ρ.PosSemidef → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+      (Config k fun v => Fin (n v)) ℂ), ρ.PosSemidef → symProj
+          (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ →
       ((ρ * skewOperator k (markedSimilarity n t k π.P π.Y π.F h)).trace).re =
         (ρ * Transport.skewSquare (bandMetric n t k π) (copyMean n k h)).trace.re := by
     intro k ρ hρ hsym
@@ -242,22 +239,23 @@ theorem eventually_re_trace_skewSquare_le [∀ v, NeZero (n v)] {π : PYF V}
       (Finset.union_subset Finset.inter_subset_right Finset.inter_subset_left) hDsub
     have hP₀x : Disjoint P₀ x :=
       Finset.disjoint_of_subset_left Finset.inter_subset_left (h4.Px)
-    obtain ⟨K, rfl⟩ := (hh.mono hDsub).exists_localLift (fun _ => 0)
+    obtain ⟨K, rfl⟩ := ManyBody.exists_eq_place_of_mem_supportedOperators (hh.mono hDsub)
     have hK0 : 0 ≤ K := Matrix.nonneg_iff_posSemidef.mpr
-      (posSemidef_of_localLift (Matrix.nonneg_iff_posSemidef.mp h0))
+      (ManyBody.posSemidef_place_iff.mp (Matrix.nonneg_iff_posSemidef.mp h0))
     have hK1 : K ≤ 1 := by
       rw [Matrix.le_iff] at h1 ⊢
       rw [one_sub_localLift] at h1
-      exact posSemidef_of_localLift h1
-    have hlog : Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-        Fintype.card (RegionConfig n x))) = logDim n D := by
+      exact ManyBody.posSemidef_place_iff.mp h1
+    have hlog : Real.log
+        (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+        Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) = logDim n D := by
       rw [log_exp_mul_card_mul_card hP₀x, hDeq]
     have hev := hsk.eventually_re_trace_skewOperator_le_regionalMovementEta hK0 hK1 ha
       (by rw [hlog]; exact hsmall) hε
     filter_upwards [hev] with k hk ρ hρ htr hsym
     have hb := hk (TransportData.base n) ρ hρ htr (permOp_mul_of_symProj_mul hsym)
     rw [ht2, hP, hY, hcmp k ρ hρ hsym, hlog, re_coherentIntegral_ofReal _ hρ] at hb
-    have hf : (fun θ : SiteConfig n → ℂ =>
+    have hf : (fun θ : (∀ v, Fin (n v)) → ℂ =>
         regionalMovementEta π.P x (π.Y \ x) (WithLp.toLp 2 θ) ^ (1 / 8 : ℝ)) =
         fun θ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ) :=
       funext fun θ => by
@@ -286,22 +284,23 @@ theorem eventually_re_trace_skewSquare_le [∀ v, NeZero (n v)] {π : PYF V}
       (Finset.union_subset Finset.inter_subset_right Finset.inter_subset_left) hDsub
     have hP₀x : Disjoint P₀ x :=
       Finset.disjoint_of_subset_left Finset.inter_subset_left (h4.xF.symm)
-    obtain ⟨K, rfl⟩ := (hh.mono hDsub).exists_localLift (fun _ => 0)
+    obtain ⟨K, rfl⟩ := ManyBody.exists_eq_place_of_mem_supportedOperators (hh.mono hDsub)
     have hK0 : 0 ≤ K := Matrix.nonneg_iff_posSemidef.mpr
-      (posSemidef_of_localLift (Matrix.nonneg_iff_posSemidef.mp h0))
+      (ManyBody.posSemidef_place_iff.mp (Matrix.nonneg_iff_posSemidef.mp h0))
     have hK1 : K ≤ 1 := by
       rw [Matrix.le_iff] at h1 ⊢
       rw [one_sub_localLift] at h1
-      exact posSemidef_of_localLift h1
-    have hlog : Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-        Fintype.card (RegionConfig n x))) = logDim n D := by
+      exact ManyBody.posSemidef_place_iff.mp h1
+    have hlog : Real.log
+        (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+        Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) = logDim n D := by
       rw [log_exp_mul_card_mul_card hP₀x, hDeq]
     have hev := hsk.eventually_re_trace_skewOperator_le_swap hK0 hK1 ha
       (by rw [hlog]; exact hsmall) hε
     filter_upwards [hev] with k hk ρ hρ htr hsym
     have hb := hk (TransportData.base n) ρ hρ htr (permOp_mul_of_symProj_mul hsym)
     rw [ht2, hP, hY, hcmp k ρ hρ hsym, hlog, re_coherentIntegral_ofReal _ hρ] at hb
-    have hf : (fun θ : SiteConfig n → ℂ =>
+    have hf : (fun θ : (∀ v, Fin (n v)) → ℂ =>
         regionalMovementEta π.F x (π.Y \ x) (WithLp.toLp 2 θ) ^ (1 / 8 : ℝ)) =
         fun θ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ) :=
       funext fun θ => by
@@ -330,7 +329,7 @@ theorem splitSkewBoundAt : SplitSkewBoundAt.{u} (1 / 8) splitSkewConst 4 := by
         splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ))
   set S : ℕ → Type _ := fun k => {ρ : Matrix (Config k fun v => Fin (n v))
     (Config k fun v => Fin (n v)) ℂ // ρ.PosSemidef ∧ ρ.trace = 1 ∧
-      symProj (copyPerm (SiteConfig n) k) * ρ = ρ}
+      symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ}
   have hmain : ∀ k (ρ : S k), 0 ≤ main k ρ.1 := fun k ρ => by
     have hD1 := one_le_logDim (n := n) D
     have := realCoherentIntegral_nonneg (k := k) (TransportData.base n) ρ.2.1
@@ -341,7 +340,7 @@ theorem splitSkewBoundAt : SplitSkewBoundAt.{u} (1 / 8) splitSkewConst 4 := by
     positivity
   obtain ⟨r, hr, hle⟩ := exists_tendsto_zero_forall_le
     (fun k (ρ : S k) => (ρ.1 * M k).trace.re - main k ρ.1)
-    (fun k => ⟨‖M k * symProj (copyPerm (SiteConfig n) k)‖, fun ρ => by
+    (fun k => ⟨‖M k * symProj (copyPerm (∀ v, Fin (n v)) k)‖, fun ρ => by
       have h1 := (Complex.re_le_norm _).trans (norm_trace_mul_le_of_symmetric ρ.2.1 ρ.2.2.1
         (permOp_mul_of_symProj_mul ρ.2.2.2) (M k))
       linarith [hmain k ρ]⟩)

@@ -27,7 +27,7 @@ without the abbreviation `Site Λ`.
 The edge boundary `ManyBody.edgeBoundary`, the ambient dilation `ManyBody.ambientDilation` and
 the sites `ManyBody.crossingSites` of the supports crossing a region are moved from TNLean,
 `TNLean/Lattice/FiniteDomain.lean` and `TNLean/Lattice/CrossingSupports.lean` at commit
-`e113e005`, with `ManyBody.crossingTerms` in place of `Entropy.crossingTerms`.
+`e113e005`, with `ManyBody.crossingTerms` in place of `ManyBody.crossingTerms`.
 
 `ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj`,
 `ManyBody.IsAdmissibleSupport.edist_le`, `ManyBody.IsAdmissibleSupport.card_le` and

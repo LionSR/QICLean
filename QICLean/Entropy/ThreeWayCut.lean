@@ -27,9 +27,9 @@ Hamiltonian is supported inside `B` and the rest `H_i + H_R` outside `A`.
 ## Main results
 
 * `Entropy.threeCutEquiv_eq_trans`: the three-way coordinates refine the two-way cut at `B`.
-* `Entropy.IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one`: an operator supported
+* `ManyBody.IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one`: an operator supported
   inside `B` is `M ⊗ 1`.
-* `Entropy.IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker`: an operator supported outside
+* `ManyBody.IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker`: an operator supported outside
   `A` is `1 ⊗ K` after reassociation.
 
 ## References
@@ -48,7 +48,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 /-- The coordinates `((x, y), z)` of a configuration, with `x` its part on `A`, `y` its part on
 `B \ A` and `z` its part on `Bᶜ`, for regions `A ⊆ B`. -/
 def threeCutEquiv (n : V → ℕ) {A B : Finset V} (hAB : A ⊆ B) :
-    SiteConfig n ≃
+    (∀ v, Fin (n v)) ≃
       ((((v : {v // v ∈ A}) → Fin (n v)) × ((v : {v // v ∈ B \ A}) → Fin (n v))) ×
         ((v : {v // v ∉ B}) → Fin (n v))) where
   toFun σ := ((fun v ↦ σ v, fun v ↦ σ v), fun v ↦ σ v)
@@ -113,14 +113,16 @@ omit [Fintype V] in
 `B` followed by the split of the part on `B` into its parts on `A` and `B \ A`. -/
 theorem threeCutEquiv_eq_trans :
     threeCutEquiv n hAB =
-      (cutEquiv n B).trans ((subsetSplitEquiv n hAB).prodCongr (Equiv.refl _)) := by
+      (ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).trans
+          ((subsetSplitEquiv n hAB).prodCongr (Equiv.refl _)) := by
   ext σ <;> rfl
 
 /-- **An operator supported inside `B`** is, in three-way cut coordinates, a matrix on the parts
 in `A` and `B \ A` tensored with the identity on `Bᶜ`: its slice at any configuration `z₀`
 of `Bᶜ`. -/
-theorem IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one
-    {X : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D : Finset V} (hX : IsSupportedOn X D)
+theorem _root_.ManyBody.IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one
+    {X : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} {D : Finset V}
+        (hX : ManyBody.IsSupportedOn X D)
     (hDB : D ⊆ B) (z₀ : (v : {v // v ∉ B}) → Fin (n v)) :
     reindex (threeCutEquiv n hAB) (threeCutEquiv n hAB) X =
       (fun p p' ↦ reindex (threeCutEquiv n hAB) (threeCutEquiv n hAB) X (p, z₀) (p', z₀)) ⊗ₖ
@@ -157,8 +159,9 @@ omit [Fintype V] in
 /-- **An operator supported outside `A`** is, in three-way cut coordinates reassociated to
 `(x, (y, z))`, the identity on `A` tensored with a matrix on `(B \ A) × Bᶜ`: its slice at any
 configuration `x₀` of `A`. -/
-theorem IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker
-    {X : Matrix (SiteConfig n) (SiteConfig n) ℂ} {D : Finset V} (hX : IsSupportedOn X D)
+theorem _root_.ManyBody.IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker
+    {X : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} {D : Finset V}
+        (hX : ManyBody.IsSupportedOn X D)
     (hDA : Disjoint D A) (x₀ : (v : {v // v ∈ A}) → Fin (n v)) :
     reindex (threeCutEquiv n hAB) (threeCutEquiv n hAB) X =
       reindex (Equiv.prodAssoc _ _ _).symm (Equiv.prodAssoc _ _ _).symm

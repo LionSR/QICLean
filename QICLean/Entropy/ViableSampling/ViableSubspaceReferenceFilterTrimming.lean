@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.ViableSubspaceReferenceTrimming
+import QICLean.Entropy.ViableSampling.ViableSubspaceReferenceTrimming
 import QICLean.Analysis.ViableSubspaceOrder
 import QICLean.Analysis.ViableSubspaceSharpErrorReduction
 import QICLean.Analysis.ViableFilterTrimmingIteration
@@ -34,11 +34,11 @@ the construction of the physical reference and its parameters is separate. -/
 theorem isCloseTo_prodExt_trimSubspace_after_filter
     {D : ℕ → Finset V} {ξ c δ ε η : ℝ} (hD : Monotone D) (hξ : 0 < ξ)
     (hc : 0 < c) (hc1 : c ≤ 1) (hδ0 : 0 ≤ δ) (hδ : δ ≤ 1 / 2) (hε0 : 0 ≤ ε)
-    {U S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
+    {U S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
     (bS : OrthonormalBasis (Fin s) ℂ S)
-    {T R : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))}
-    (K : EuclideanSpace ℂ (SiteConfig n × β) →L[ℂ]
-      EuclideanSpace ℂ (SiteConfig n × β))
+    {T R : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))}
+    (K : EuclideanSpace ℂ ((∀ v, Fin (n v)) × β) →L[ℂ]
+      EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))
     (hU : Submodule.IsCloseTo δ (Submodule.prodExt U β) T)
     (himage : (Submodule.prodExt U β).map K.toLinearMap ≤ Submodule.prodExt S β)
     (hKT : ∀ t ∈ T, K t ∈ T) (hKTo : ∀ q ∈ Tᗮ, K q ∈ Tᗮ)

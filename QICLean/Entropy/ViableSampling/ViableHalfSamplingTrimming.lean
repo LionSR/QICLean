@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.ViableHalfSampling
-import QICLean.Analysis.ViableSubspaceReferenceTrimming
-import QICLean.Analysis.ViableSubspaceTrimmingInvariance
+import QICLean.Entropy.ViableSampling.ViableSubspaceReferenceTrimming
+import QICLean.Entropy.ViableSampling.ViableSubspaceTrimmingInvariance
 
 /-!
 # Original-target reference trimming after one half-dimensional sample
@@ -42,14 +42,14 @@ lines 749–755, 1065–1074 and 1801–1813; it does not supply the physical
 family/reference or claim a joint adaptive sampling law. -/
 theorem exists_measurable_half_sample_reference_trim_event
     {D q m bRef : ℕ} {Delta epsilon epsilonRef xi : ℝ}
-    {Graw R : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))}
-    (x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+    {Graw R : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))}
+    (x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
     (hcard : Fintype.card ι ≤ D ^ 2)
     (hRawSoft : ∀ x, Submodule.IsCloseTo epsilon Graw (T x))
     (hSoftRaw : ∀ x, Submodule.IsCloseTo (1 / 200) (T x) Graw)
     (hA : ∀ x delta, delta < 1 →
-      ∀ S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)),
+      ∀ S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))),
       Submodule.IsCloseTo delta (Submodule.prodExt S β) (T x) →
       Submodule.IsCloseTo (Delta / (1 - delta) ^ 2)
         (Submodule.prodExt (⨆ i, S.map (A i : _ →ₗ[ℂ] _)) β) (T x))
@@ -62,7 +62,7 @@ theorem exists_measurable_half_sample_reference_trim_event
     (hRank : ∀ t ∈ R, ∀ j < m,
       Matrix.schmidtRank (WithLp.ofLp (cutEnvVector (C j) t)) ≤ bRef)
     (hbudget : xi * Real.sqrt ((m : ℝ) * (bRef : ℝ)) ≤ 1 / 1000)
-    {W : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
+    {W : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
     (b : OrthonormalBasis (Fin q) ℂ W)
     (hW : Submodule.IsCloseTo 0.04 (Submodule.prodExt W β) Graw)
     (hq : 4 * D ^ 2 ≤ q) :
@@ -71,12 +71,12 @@ theorem exists_measurable_half_sample_reference_trim_event
     let Coord := Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s q))
     let sample := fun U : Matrix.unitaryGroup (Fin q) ℂ ↦ Submodule.randomSubspace b Coord U
     let image : Matrix.unitaryGroup (Fin q) ℂ →
-        Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) := fun U ↦
+        Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) := fun U ↦
       ⨆ i, (sample U).map (A i : _ →ₗ[ℂ] _)
     let output : Matrix.unitaryGroup (Fin q) ℂ →
-        Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) := fun U ↦
+        Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) := fun U ↦
       trimSubspace C xi
-        (fun i ↦ (stdOrthonormalBasis ℂ (image U) i : EuclideanSpace ℂ (SiteConfig n))) m
+        (fun i ↦ (stdOrthonormalBasis ℂ (image U) i : EuclideanSpace ℂ (∀ v, Fin (n v)))) m
     1 ≤ s ∧ 0 < alpha ∧ alpha ≤ 1 ∧
     (∀ U, sample U ≤ W ∧ finrank ℂ (sample U) = s ∧
       finrank ℂ (image U) ≤ q / 2 ∧ finrank ℂ (output U) ≤ q / 2) ∧
@@ -96,9 +96,9 @@ theorem exists_measurable_half_sample_reference_trim_event
         ENNReal.ofReal (Submodule.bootstrapFailure D q (finrank ℂ Graw)) := by
   classical
   intro s alpha Coord sample image output
-  let e := Submodule.euclideanTensorEquiv (SiteConfig n) β
+  let e := Submodule.euclideanTensorEquiv (∀ v, Fin (n v)) β
   have hImprove (x) (delta) (hdelta : delta < 1)
-      (S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)))
+      (S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))))
       (hS : Submodule.IsViable delta S ((T x).map e.toLinearEquiv.toLinearMap)) :
       Submodule.IsViable (Delta / (1 - delta) ^ 2)
         (⨆ i, S.map (A i : _ →ₗ[ℂ] _)) ((T x).map e.toLinearEquiv.toLinearMap) :=
@@ -127,7 +127,7 @@ theorem exists_measurable_half_sample_reference_trim_event
     exact ht.of_le (Real.half_sampling_trim_error_le le_rfl hepsilonRef hbudget)
   have hOutputDim (U) : finrank ℂ (output U) ≤ q / 2 := by
     change finrank ℂ (trimSubspace C xi
-      (fun i ↦ (stdOrthonormalBasis ℂ (image U) i : EuclideanSpace ℂ (SiteConfig n))) m) ≤ _
+      (fun i ↦ (stdOrthonormalBasis ℂ (image U) i : EuclideanSpace ℂ (∀ v, Fin (n v)))) m) ≤ _
     rw [trimSubspace_eq_map_of_orthonormalBasis]
     exact (Submodule.finrank_map_le _ _).trans (hprofile U).2.2
   refine ⟨hs1, ha0, ha1,

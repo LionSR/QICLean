@@ -5,7 +5,9 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.ReplicaIntegral
 import QICLean.Representation.CoherentResolution
-import QICLean.Entropy.LocalLift
+import QICLean.Entropy.SupportedMarginalTails
+import QICLean.Entropy.FilterMoment
+import QICLean.ManyBody.Sites.RegionState
 import Mathlib.MeasureTheory.SpecificCodomains.WithLp
 
 /-!
@@ -34,25 +36,30 @@ namespace TensorPower
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 theorem localLift_splitEquiv_apply (Q : Finset V)
-    (M : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ)
-    (a b : RegionConfig n Q) (c c' : (v : {v // v ∉ Q}) → Fin (n v)) :
-    localLift Q M ((cutEquiv n Q).symm (a, c)) ((cutEquiv n Q).symm (b, c')) =
+    (M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) ℂ)
+    (a b : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q)) (c c' : (v : {v // v ∉ Q}) → Fin (n v)) :
+    ManyBody.place Q M ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q).symm (a, c))
+        ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q).symm (b, c')) =
       M a b * if c = c' then 1 else 0 := by
-  simp only [localLift, ManyBody.place, reindex_apply, submatrix_apply, Equiv.symm_symm,
+  simp only [ManyBody.place, ManyBody.place, reindex_apply, submatrix_apply, Equiv.symm_symm,
     Equiv.apply_symm_apply, kroneckerMap_apply, one_apply]
 
 omit [Fintype V] in
 theorem splitEquiv_symm_apply_eq (k : ℕ) (Q : Finset V)
-    (p : (Fin k → RegionConfig n Q) × (Fin k → (v : {v // v ∉ Q}) → Fin (n v))) (j : Fin k) :
-    (splitEquiv (fun v => Fin (n v)) k Q).symm p j = (cutEquiv n Q).symm (p.1 j, p.2 j) := by
+    (p : (Fin k → (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q)) ×
+        (Fin k → (v : {v // v ∉ Q}) → Fin (n v))) (j : Fin k) :
+    (splitEquiv (fun v => Fin (n v)) k Q).symm p j = (ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q).symm
+        (p.1 j, p.2 j) := by
   funext v
   by_cases h : v ∈ Q <;> simp [splitEquiv, Equiv.piEquivPiSubtypeProd, h]
 
 /-- The tensor power of a local lift, in split coordinates. -/
 theorem reindex_tensorPow_localLift (k : ℕ) (Q : Finset V)
-    (M : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) :
+    (M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) ℂ) :
     reindex (splitEquiv (fun v => Fin (n v)) k Q) (splitEquiv (fun v => Fin (n v)) k Q)
-        (tensorPow (k := k) (localLift Q M)) =
+        (tensorPow (k := k) (ManyBody.place Q M)) =
       tensorPow (k := k) M ⊗ₖ (1 : Matrix (Fin k → (v : {v // v ∉ Q}) → Fin (n v))
         (Fin k → (v : {v // v ∉ Q}) → Fin (n v)) ℂ) := by
   ext p p'
@@ -74,18 +81,19 @@ theorem reindex_injective {α β : Type*} (e : α ≃ β) {A B : Matrix α α �
 theorem exists_replicaMetric_integral_localLift [∀ v, NeZero (n v)] {t : ℝ} (ht0 : 0 < t)
     (ht1 : t ≤ 1) (Q : Finset V) :
     ∃ (Ω : Type) (_ : MeasurableSpace Ω) (P : Measure Ω), IsProbabilityMeasure P ∧
-      ∃ τ : Ω → Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ,
+      ∃ τ : Ω → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q)
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) ℂ,
         (∀ᵐ ω ∂P, (τ ω).PosDef ∧ (τ ω).trace.re ≤ 1) ∧
         (∀ (k : ℕ) (x y : Config k fun v => Fin (n v)),
-          Integrable (fun ω => tensorPow (k := k) (localLift Q (τ ω ^ t)) x y) P) ∧
+          Integrable (fun ω => tensorPow (k := k) (ManyBody.place Q (τ ω ^ t)) x y) P) ∧
         ∀ (k : ℕ) (x y : Config k fun v => Fin (n v)),
           replicaMetric (fun v => Fin (n v)) t k Q x y =
-            ∫ ω, tensorPow (k := k) (localLift Q (τ ω ^ t)) x y ∂P := by
+            ∫ ω, tensorPow (k := k) (ManyBody.place Q (τ ω ^ t)) x y ∂P := by
   have : ∀ v, Nonempty (Fin (n v)) := fun v => ⟨⟨0, Nat.pos_of_ne_zero (NeZero.ne _)⟩⟩
   obtain ⟨Ω, _, P, hP, τ, hτ, hint, heq⟩ :=
     exists_replicaMetric_integral (fun v => Fin (n v)) ht0 ht1 Q
   have hentry : ∀ (k : ℕ) (x y : Config k fun v => Fin (n v)) (ω : Ω),
-      tensorPow (k := k) (localLift Q (τ ω ^ t)) x y =
+      tensorPow (k := k) (ManyBody.place Q (τ ω ^ t)) x y =
         tensorPow (k := k) (τ ω ^ t) (splitEquiv _ k Q x).1 (splitEquiv _ k Q y).1 *
           (1 : Matrix (Fin k → (v : {v // v ∉ Q}) → Fin (n v))
             (Fin k → (v : {v // v ∉ Q}) → Fin (n v)) ℂ) (splitEquiv _ k Q x).2

@@ -64,7 +64,7 @@ theorem leafMetric_comm {t : ℝ} (ht : 0 ≤ t) (k : ℕ) {P Y F : Finset V} (h
   rw [leafMetric, leafMetric, leafRoot_comm ht k hPF]
 
 theorem markedSimilarity_comm {t : ℝ} (ht : 0 ≤ t) (k : ℕ) {P Y F : Finset V}
-    (hPF : Disjoint P F) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ) :
+    (hPF : Disjoint P F) (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) :
     markedSimilarity n t k F Y P h = markedSimilarity n t k P Y F h := by
   rw [markedSimilarity, markedSimilarity, leafMetric_comm ht k hPF]
 
@@ -79,14 +79,16 @@ equation `replicas:relative-pin`, lines 486–505): the bound of
 theorem relativePin_regionalMovementEta_explicit :
     ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
       {P x Y F : Finset V} (_ : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
-      2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤
+      2 * t * Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ≤
         conditionalMovementThreshold →
-      ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+      ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))), ‖θ‖ = 1 →
         ∀ w : Config k (fun v => Fin (n v)) → ℂ,
           ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
             Real.exp (k * (2 * t) * (regionalMovementEta P x Y θ -
               relativePinConst * (2 * t) ^ (1 / 4 : ℝ) *
-                Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
+                Real.log
+                    (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ^
+                    2)) ≤
           K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re := by
   intro V _ _ n _ P x Y F h t ht0 ht1 hsmall
   obtain ⟨K, N, hK, H'⟩ := relativePin_explicit h ht0 ht1 hsmall
@@ -106,13 +108,16 @@ theorem relativePin_regionalMovementEta :
     ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
       ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
         {P x Y F : Finset V} (_ : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
-        2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤ c →
-        ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+        2 * t * Real.log
+            (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ≤ c →
+        ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))), ‖θ‖ = 1 →
           ∀ w : Config k (fun v => Fin (n v)) → ℂ,
             ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
               Real.exp (k * (2 * t) * (regionalMovementEta P x Y θ -
                 C * (2 * t) ^ (1 / 4 : ℝ) *
-                  Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
+                  Real.log
+                      (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ^
+                      2)) ≤
             K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re :=
   ⟨_, _, relativePinConst_pos, conditionalMovementThreshold_pos,
     relativePin_regionalMovementEta_explicit⟩
@@ -126,13 +131,16 @@ theorem relativePin_toF :
     ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
       ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
         {P x Y F : Finset V} (_ : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
-        2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤ c →
-        ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+        2 * t * Real.log
+            (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ≤ c →
+        ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))), ‖θ‖ = 1 →
           ∀ w : Config k (fun v => Fin (n v)) → ℂ,
             ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
               Real.exp (k * (2 * t) * (regionalMovementEta F x Y θ -
                 C * (2 * t) ^ (1 / 4 : ℝ) *
-                  Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
+                  Real.log
+                      (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ^
+                      2)) ≤
             K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ
               (((CFC.sqrt (leafMetric n t k P (x ∪ Y) F))⁻¹ * leafMetric n t k P Y (F ∪ x) *
                 (CFC.sqrt (leafMetric n t k P (x ∪ Y) F))⁻¹) *ᵥ w)).re := by
@@ -194,7 +202,7 @@ theorem isRegionSplit_Px : IsRegionSplit ((P₀ ∪ P₁) ∪ x)
         simp only [Finset.mem_union, not_or] <;> have := nm v <;> tauto
 
 omit [Fintype V] in
-theorem marginalUF_rhoW_transport (θ : SiteConfig n → ℂ) :
+theorem marginalUF_rhoW_transport (θ : (∀ v, Fin (n v)) → ℂ) :
     marginalUF (rhoW (hp.transport n θ)) =
       partialTraceLeft
         (vecMulVec (θ ∘ ((SkewPartition.equiv (n := n) hp).trans regroupUF.symm).symm)
@@ -210,22 +218,22 @@ theorem marginalUF_rhoW_transport (θ : SiteConfig n → ℂ) :
 /-- **`η_θ` of the skew bound in region form**: `I(x:F|U)` of the transported vector is
 `S_θ(x|P) + S_θ(x|U)` with `P = P₀ ∪ P₁` (`05-replicas.tex`, lines 645–647; the two forms
 agree by purity, `04-conditional.tex`, lines 122–124 and 138–139). -/
-theorem skewEta_transport (θ : SiteConfig n → ℂ) :
+theorem skewEta_transport (θ : (∀ v, Fin (n v)) → ℂ) :
     skewEta (hp.transport n θ) = regionalMovementEta (P₀ ∪ P₁) x U (WithLp.toLp 2 θ) := by
   set θt := hp.transport n θ
   set w := θ ∘ ((SkewPartition.equiv (n := n) hp).trans regroupUF.symm).symm
   have eXU : ∀ hh, _root_.vonNeumannEntropy (marginalXU (rhoW θt)) hh =
-      regionEntropy (x ∪ U) (WithLp.toLp 2 θ) := by
+      ManyBody.regionEntropy (WithLp.toLp 2 θ) (x ∪ U) := by
     intro hh
     rw [_root_.vonNeumannEntropy_congr (by rw [marginalXU_rhoW, hp.margY_transport]) hh
-      ((regionState_isHermitian _ _).submatrix _)]
+      ((ManyBody.regionState_isHermitian _ _).submatrix _)]
     exact vonNeumannEntropy_submatrix_equiv _ _ _
   have eU : ∀ hh, _root_.vonNeumannEntropy (marginalU (rhoW θt)) hh =
-      regionEntropy U (WithLp.toLp 2 θ) := fun hh =>
+      ManyBody.regionEntropy (WithLp.toLp 2 θ) U := fun hh =>
     _root_.vonNeumannEntropy_congr (by
       rw [marginalU, marginalXU_rhoW, hp.margY_transport, partialTraceLeft_regionState_union]) hh _
   have eW : ∀ hh, _root_.vonNeumannEntropy (rhoW θt) hh =
-      regionEntropy (P₀ ∪ P₁) (WithLp.toLp 2 θ) := by
+      ManyBody.regionEntropy (WithLp.toLp 2 θ) (P₀ ∪ P₁) := by
     intro hh
     have h1 : _root_.vonNeumannEntropy (rhoW θt) hh =
         _root_.vonNeumannEntropy (partialTraceLeft (vecMulVec θt (star θt)))
@@ -233,16 +241,16 @@ theorem skewEta_transport (θ : SiteConfig n → ℂ) :
       vonNeumannEntropy_submatrix_equiv assocE.symm _ _
     rw [h1, ← pure_marginal_entropy_eq, _root_.vonNeumannEntropy_congr
       (show partialTraceRight (vecMulVec θt (star θt)) = _ from hp.margP_transport θ) _
-      ((regionState_isHermitian _ _).submatrix _)]
+      ((ManyBody.regionState_isHermitian _ _).submatrix _)]
     exact vonNeumannEntropy_submatrix_equiv _ _ _
   have eUF : ∀ hh, _root_.vonNeumannEntropy (marginalUF (rhoW θt)) hh =
-      regionEntropy ((P₀ ∪ P₁) ∪ x) (WithLp.toLp 2 θ) := by
+      ManyBody.regionEntropy (WithLp.toLp 2 θ) ((P₀ ∪ P₁) ∪ x) := by
     intro hh
     rw [_root_.vonNeumannEntropy_congr (hp.marginalUF_rhoW_transport θ) hh
       (posSemidef_vecMulVec_self_star w).partialTraceLeft.isHermitian,
       ← pure_marginal_entropy_eq, _root_.vonNeumannEntropy_congr
         (hp.isRegionSplit_Px.partialTraceRight_vecMulVec θ) _
-        ((regionState_isHermitian _ _).submatrix _)]
+        ((ManyBody.regionState_isHermitian _ _).submatrix _)]
     exact vonNeumannEntropy_submatrix_equiv _ _ _
   have hρ := posSemidef_rhoW θt
   have a1 := eXU (hρ.submatrix assocE).partialTraceRight.isHermitian
@@ -259,17 +267,19 @@ symmetric density matrices `σ`,
 `Tr σ 𝒟_k ≤ 2 C a² log⁴(e d_h) ∫ η_θ^{1/8} dμ_σ(θ) + o_k(1)` with
 `η_θ = S_θ(x|P) + S_θ(x|U)`, `P = P₀ ∪ P₁` and `C = skewConst`. -/
 theorem eventually_re_trace_skewOperator_le_regionalMovementEta [∀ v, NeZero (n v)]
-    {K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
+    {K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
     (hK1 : K ≤ 1) {a : ℝ} (ha : 0 < a)
-    (hac : a * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-      Fintype.card (RegionConfig n x))) ≤ 1 / 8) {ε : ℝ} (hε : 0 < ε) :
-    ∀ᶠ k in Filter.atTop, ∀ (b : SiteConfig n)
-      (σ : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ), σ.PosSemidef →
-      σ.trace = 1 → (∀ π, permOp (copyPerm (SiteConfig n) k) π * σ = σ) →
+    (hac : a * Real.log (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+      Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ≤ 1 / 8) {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ k in Filter.atTop, ∀ (b : (∀ v, Fin (n v)))
+      (σ : Matrix (Fin k → (∀ v, Fin (n v))) (Fin k → (∀ v, Fin (n v))) ℂ), σ.PosSemidef →
+      σ.trace = 1 → (∀ π, permOp (copyPerm (∀ v, Fin (n v)) k) π * σ = σ) →
         ((σ * skewOperator k (markedSimilarity n (a / 2) k (P₀ ∪ P₁) (x ∪ U) F
-            (localLift (P₀ ∪ x) K))).trace).re ≤
-          2 * skewConst * a ^ 2 * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-            Fintype.card (RegionConfig n x))) ^ 4 *
+            (ManyBody.place (P₀ ∪ x) K))).trace).re ≤
+          2 * skewConst * a ^ 2 * Real.log
+              (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+            Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ^ 4 *
             (coherentIntegral b σ fun θ =>
               ((regionalMovementEta (P₀ ∪ P₁) x U (WithLp.toLp 2 θ) ^ (1 / 8 : ℝ) : ℝ) :
                 ℂ)).re + ε := by
@@ -281,21 +291,23 @@ and lines 842–843). For the partition metric `A_k(F, x ∪ U, P₀ ∪ P₁)`,
 `P₀ ∪ P₁` contains the support `P₀` of `h` outside the middle part, the bound holds with
 `η_θ = S_θ(x|P₀ ∪ P₁) + S_θ(x|U)`. -/
 theorem eventually_re_trace_skewOperator_le_swap [∀ v, NeZero (n v)]
-    {K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
+    {K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
     (hK1 : K ≤ 1) {a : ℝ} (ha : 0 < a)
-    (hac : a * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-      Fintype.card (RegionConfig n x))) ≤ 1 / 8) {ε : ℝ} (hε : 0 < ε) :
-    ∀ᶠ k in Filter.atTop, ∀ (b : SiteConfig n)
-      (σ : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ), σ.PosSemidef →
-      σ.trace = 1 → (∀ π, permOp (copyPerm (SiteConfig n) k) π * σ = σ) →
+    (hac : a * Real.log (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+      Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ≤ 1 / 8) {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ k in Filter.atTop, ∀ (b : (∀ v, Fin (n v)))
+      (σ : Matrix (Fin k → (∀ v, Fin (n v))) (Fin k → (∀ v, Fin (n v))) ℂ), σ.PosSemidef →
+      σ.trace = 1 → (∀ π, permOp (copyPerm (∀ v, Fin (n v)) k) π * σ = σ) →
         ((σ * skewOperator k (markedSimilarity n (a / 2) k F (x ∪ U) (P₀ ∪ P₁)
-            (localLift (P₀ ∪ x) K))).trace).re ≤
-          2 * skewConst * a ^ 2 * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-            Fintype.card (RegionConfig n x))) ^ 4 *
+            (ManyBody.place (P₀ ∪ x) K))).trace).re ≤
+          2 * skewConst * a ^ 2 * Real.log
+              (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+            Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ^ 4 *
             (coherentIntegral b σ fun θ =>
               ((regionalMovementEta (P₀ ∪ P₁) x U (WithLp.toLp 2 θ) ^ (1 / 8 : ℝ) : ℝ) :
                 ℂ)).re + ε := by
-  have hc : ∀ (k : ℕ) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ),
+  have hc : ∀ (k : ℕ) (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ),
       markedSimilarity n (a / 2) k F (x ∪ U) (P₀ ∪ P₁) h =
         markedSimilarity n (a / 2) k (P₀ ∪ P₁) (x ∪ U) F h := fun k h =>
     markedSimilarity_comm (by positivity) k hp.PF h

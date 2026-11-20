@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Analysis.ViableSubspaceTrimming
+import QICLean.Entropy.ViableSampling.ViableSubspaceTrimming
 import QICLean.Channel.SchmidtMarginalAction
 
 /-!
@@ -28,8 +28,9 @@ sites and environment is the regional partial trace of the original left
 marginal. This identifies the reduced operators in ALVV,
 arXiv:1602.08828v2, Definition `def:trimming`, lines 648–655. -/
 theorem leftMarginal_cutEnvVector {β : Type*} [Fintype β]
-    (D : Finset V) (w : EuclideanSpace ℂ (SiteConfig n × β)) :
-    leftMarginal (cutEnvVector D w) = partialTraceRight (cutOperator D (leftMarginal w)) := by
+    (D : Finset V) (w : EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)) :
+    leftMarginal (cutEnvVector D w) = partialTraceRight
+        (ManyBody.cutOperator D (leftMarginal w)) := by
   ext x y
   simp only [leftMarginal, mul_apply, conjTranspose_apply, schmidtCoeffMatrix_apply,
     cutEnvVector_apply, partialTraceRight_apply, reindex_apply,
@@ -39,10 +40,10 @@ theorem leftMarginal_cutEnvVector {β : Type*} [Fintype β]
 by the original Gram operator. Used for the successive projections of ALVV,
 arXiv:1602.08828v2, Definition `def:trimming`, lines 648–655. -/
 theorem leftMarginal_cutEnvVector_leftApply {β : Type*} [Fintype β]
-    (D : Finset V) (P : Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (w : EuclideanSpace ℂ (SiteConfig n × β)) :
+    (D : Finset V) (P : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (w : EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)) :
     leftMarginal (cutEnvVector D (leftApply P w)) =
-      partialTraceRight (cutOperator D (P * leftMarginal w * Pᴴ)) := by
+      partialTraceRight (ManyBody.cutOperator D (P * leftMarginal w * Pᴴ)) := by
   rw [leftMarginal_cutEnvVector, leftMarginal_leftApply]
 
 /-- Families with equal Gram operators give the same literal products of
@@ -51,8 +52,8 @@ threshold is needed for this identity. Source: ALVV,
 arXiv:1602.08828v2, Definition `def:trimming`, lines 648–655. -/
 theorem trimProj_eq_of_leftMarginal_stackVector_eq {s t : ℕ}
     (D : ℕ → Finset V) (xi : ℝ)
-    (u : Fin s → EuclideanSpace ℂ (SiteConfig n))
-    (v : Fin t → EuclideanSpace ℂ (SiteConfig n))
+    (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)))
+    (v : Fin t → EuclideanSpace ℂ (∀ v, Fin (n v)))
     (h : leftMarginal (stackVector u) = leftMarginal (stackVector v)) (j : ℕ) :
     trimProj D xi u j = trimProj D xi v j := by
   induction j with
@@ -65,7 +66,7 @@ omit [Fintype V] [DecidableEq V] in
 operators. This is the original operator determining ALVV collective
 trimming, arXiv:1602.08828v2, Definition `def:trimming`, lines 648–655. -/
 theorem leftMarginal_stackVector {s : ℕ}
-    (u : Fin s → EuclideanSpace ℂ (SiteConfig n)) :
+    (u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v))) :
     leftMarginal (stackVector u) =
       ∑ i, vecMulVec (WithLp.ofLp (u i)) (star (WithLp.ofLp (u i))) := by
   ext x y
@@ -77,13 +78,13 @@ operator is exactly its orthogonal projection. Thus the input to ALVV
 collective trimming depends only on the subspace; see
 arXiv:1602.08828v2, Definition `def:trimming`, lines 648–655. -/
 theorem toEuclideanLin_leftMarginal_stackVector_orthonormalBasis {s : ℕ}
-    {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
+    {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
     (b : OrthonormalBasis (Fin s) ℂ S) :
-    toEuclideanLin (leftMarginal (stackVector fun i ↦ (b i : EuclideanSpace ℂ (SiteConfig n)))) =
+    toEuclideanLin (leftMarginal (stackVector fun i ↦ (b i : EuclideanSpace ℂ (∀ v, Fin (n v))))) =
       S.starProjection.toLinearMap := by
   rw [leftMarginal_stackVector, map_sum]
   have hstar := congrArg
-    (fun P : EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n) ↦
+    (fun P : EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)) ↦
       P.toLinearMap) b.starProjection_eq_sum_rankOne
   rw [hstar]
   simp only [ContinuousLinearMap.toLinearMap_sum]
@@ -91,8 +92,8 @@ theorem toEuclideanLin_leftMarginal_stackVector_orthonormalBasis {s : ℕ}
   intro i _
   have h := congrArg toEuclideanLin
     (InnerProductSpace.symm_toEuclideanLin_rankOne (𝕜 := ℂ)
-      (x := (b i : EuclideanSpace ℂ (SiteConfig n)))
-      (y := (b i : EuclideanSpace ℂ (SiteConfig n))))
+      (x := (b i : EuclideanSpace ℂ (∀ v, Fin (n v))))
+      (y := (b i : EuclideanSpace ℂ (∀ v, Fin (n v)))))
   simpa using h.symm
 
 /-- The successive collective-trimming projections are independent of
@@ -101,10 +102,10 @@ basis invariance of ALVV, arXiv:1602.08828v2,
 Definition `def:trimming`, lines 648–655. -/
 theorem trimProj_eq_of_orthonormalBasis {s t : ℕ}
     (D : ℕ → Finset V) (xi : ℝ)
-    {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
+    {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
     (b : OrthonormalBasis (Fin s) ℂ S) (c : OrthonormalBasis (Fin t) ℂ S) (j : ℕ) :
-    trimProj D xi (fun i ↦ (b i : EuclideanSpace ℂ (SiteConfig n))) j =
-      trimProj D xi (fun i ↦ (c i : EuclideanSpace ℂ (SiteConfig n))) j := by
+    trimProj D xi (fun i ↦ (b i : EuclideanSpace ℂ (∀ v, Fin (n v)))) j =
+      trimProj D xi (fun i ↦ (c i : EuclideanSpace ℂ (∀ v, Fin (n v)))) j := by
   apply trimProj_eq_of_leftMarginal_stackVector_eq
   apply Matrix.toEuclideanLin.injective
   rw [toEuclideanLin_leftMarginal_stackVector_orthonormalBasis,
@@ -115,13 +116,13 @@ its literal product of collective projections. Source: ALVV,
 arXiv:1602.08828v2, Definition `def:trimming`, lines 648–655. -/
 theorem trimSubspace_eq_map_of_orthonormalBasis {s : ℕ}
     (D : ℕ → Finset V) (xi : ℝ)
-    {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
+    {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
     (b : OrthonormalBasis (Fin s) ℂ S) (j : ℕ) :
-    trimSubspace D xi (fun i ↦ (b i : EuclideanSpace ℂ (SiteConfig n))) j =
+    trimSubspace D xi (fun i ↦ (b i : EuclideanSpace ℂ (∀ v, Fin (n v)))) j =
       S.map (toEuclideanLin
-        (trimProj D xi (fun i ↦ (b i : EuclideanSpace ℂ (SiteConfig n))) j)) := by
+        (trimProj D xi (fun i ↦ (b i : EuclideanSpace ℂ (∀ v, Fin (n v)))) j)) := by
   have hspan : Submodule.span ℂ
-      (Set.range fun i ↦ (b i : EuclideanSpace ℂ (SiteConfig n))) = S := by
+      (Set.range fun i ↦ (b i : EuclideanSpace ℂ (∀ v, Fin (n v)))) = S := by
     simpa only [← Set.range_comp, Function.comp_def] using
       (Submodule.span_val_image_eq_iff S (Set.range b)).mpr b.toBasis.span_eq
   rw [trimSubspace, Set.range_comp', ← Submodule.map_span, hspan]
@@ -132,10 +133,10 @@ thresholds. Source: ALVV, arXiv:1602.08828v2,
 Definition `def:trimming`, lines 648–655. -/
 theorem trimSubspace_eq_of_orthonormalBasis {s t : ℕ}
     (D : ℕ → Finset V) (xi : ℝ)
-    {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
+    {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
     (b : OrthonormalBasis (Fin s) ℂ S) (c : OrthonormalBasis (Fin t) ℂ S) (j : ℕ) :
-    trimSubspace D xi (fun i ↦ (b i : EuclideanSpace ℂ (SiteConfig n))) j =
-      trimSubspace D xi (fun i ↦ (c i : EuclideanSpace ℂ (SiteConfig n))) j := by
+    trimSubspace D xi (fun i ↦ (b i : EuclideanSpace ℂ (∀ v, Fin (n v)))) j =
+      trimSubspace D xi (fun i ↦ (c i : EuclideanSpace ℂ (∀ v, Fin (n v)))) j := by
   rw [trimSubspace_eq_map_of_orthonormalBasis, trimSubspace_eq_map_of_orthonormalBasis,
     trimProj_eq_of_orthonormalBasis D xi b c j]
 

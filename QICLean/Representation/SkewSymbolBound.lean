@@ -197,8 +197,11 @@ theorem P₀x : Disjoint P₀ x :=
     (Finset.disjoint_of_subset_right Finset.subset_union_left hp.PY)
 
 /-- The coordinates `V ≅ (P₀ P₁)((x U) F)`. -/
-def equiv : SiteConfig n ≃ (RegionConfig n P₀ × RegionConfig n P₁) ×
-    ((RegionConfig n x × RegionConfig n U) × RegionConfig n F) :=
+def equiv : (∀ v, Fin (n v)) ≃
+    ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) ×
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₁)) ×
+    (((ManyBody.RegionConfig (fun v ↦ Fin (n v)) x) × (ManyBody.RegionConfig (fun v ↦ Fin (n v)) U))
+        × (ManyBody.RegionConfig (fun v ↦ Fin (n v)) F)) :=
   (regionSplitEquiv hp.P_W hp.cover_P).trans (Equiv.prodCongr (regionUnionEquiv hp.P₀P₁)
     ((regionUnionEquiv hp.YF).trans (Equiv.prodCongr (regionUnionEquiv hp.xU) (Equiv.refl _))))
 
@@ -211,13 +214,13 @@ theorem isRegionSplit_P :
   rwa [Equiv.refl_trans] at h
 
 omit [Fintype V] in
-theorem equiv_apply (σ : SiteConfig n) :
+theorem equiv_apply (σ : (∀ v, Fin (n v))) :
     SkewPartition.equiv hp σ = (((fun v : {v // v ∈ P₀} => σ v), (fun v : {v // v ∈ P₁} => σ v)),
       (((fun v : {v // v ∈ x} => σ v), (fun v : {v // v ∈ U} => σ v)),
         (fun v : {v // v ∈ F} => σ v))) := rfl
 
 omit [Fintype V] [DecidableEq V] hp in
-theorem restrict_eq_iff {D : Finset V} {σ τ : SiteConfig n} :
+theorem restrict_eq_iff {D : Finset V} {σ τ : (∀ v, Fin (n v))} :
     ((fun v : {v // v ∈ D} => σ v) = fun v : {v // v ∈ D} => τ v) ↔ ∀ v ∈ D, σ v = τ v :=
   ⟨fun h v hv => congrFun h ⟨v, hv⟩, fun h => funext fun v => h v.1 v.2⟩
 
@@ -328,56 +331,73 @@ theorem liftY_eq {A₀ A₁ X' U' F' : Type*} [DecidableEq A₀] [DecidableEq A�
 
 variable (n) in
 /-- The vector `θ` in the coordinates `(P₀ P₁)((x U) F)`. -/
-def transport (θ : SiteConfig n → ℂ) :
-    (RegionConfig n P₀ × RegionConfig n P₁) × ((RegionConfig n x × RegionConfig n U) ×
-      RegionConfig n F) → ℂ :=
+def transport (θ : (∀ v, Fin (n v)) → ℂ) :
+    ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) ×
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₁)) ×
+        (((ManyBody.RegionConfig (fun v ↦ Fin (n v)) x) ×
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) U)) ×
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) F)) → ℂ :=
   θ ∘ (SkewPartition.equiv (n := n) hp).symm
 
-theorem margP_transport (θ : SiteConfig n → ℂ) :
+theorem margP_transport (θ : (∀ v, Fin (n v)) → ℂ) :
     margP (hp.transport n θ) =
-      (regionState (P₀ ∪ P₁) (WithLp.toLp 2 θ)).submatrix (regionUnionEquiv hp.P₀P₁).symm
+      (ManyBody.regionState (WithLp.toLp 2 θ) (P₀ ∪ P₁)).submatrix (regionUnionEquiv hp.P₀P₁).symm
         (regionUnionEquiv hp.P₀P₁).symm :=
   hp.isRegionSplit_P.partialTraceRight_vecMulVec θ
 
-theorem margY_transport (θ : SiteConfig n → ℂ) :
+theorem margY_transport (θ : (∀ v, Fin (n v)) → ℂ) :
     margY (hp.transport n θ) =
-      (regionState (x ∪ U) (WithLp.toLp 2 θ)).submatrix (regionUnionEquiv hp.xU).symm
+      (ManyBody.regionState (WithLp.toLp 2 θ) (x ∪ U)).submatrix (regionUnionEquiv hp.xU).symm
         (regionUnionEquiv hp.xU).symm := by
   rw [margY_eq]
   exact hp.isRegionSplit_Y.partialTraceRight_vecMulVec θ
 
-theorem liftP_eq (K : Matrix (RegionConfig n (P₀ ∪ P₁)) (RegionConfig n (P₀ ∪ P₁)) ℂ) :
-    liftP (X := RegionConfig n x) (U := RegionConfig n U) (F := RegionConfig n F)
+theorem liftP_eq
+    (K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ P₁))
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ P₁)) ℂ) :
+    liftP (X := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))
+        (U := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) U))
+        (F := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) F))
       (K.submatrix (regionUnionEquiv hp.P₀P₁).symm (regionUnionEquiv hp.P₀P₁).symm) =
-      (localLift (P₀ ∪ P₁) K).submatrix (SkewPartition.equiv hp).symm
+      (ManyBody.place (P₀ ∪ P₁) K).submatrix (SkewPartition.equiv hp).symm
         (SkewPartition.equiv hp).symm :=
   (hp.isRegionSplit_P.localLift_submatrix K).symm
 
-theorem liftY_eq' (K : Matrix (RegionConfig n (x ∪ U)) (RegionConfig n (x ∪ U)) ℂ) :
-    liftY (P₀ := RegionConfig n P₀) (P₁ := RegionConfig n P₁) (F := RegionConfig n F)
+theorem liftY_eq'
+    (K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (x ∪ U))
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (x ∪ U)) ℂ) :
+    liftY (P₀ := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀))
+        (P₁ := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₁))
+        (F := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) F))
       (K.submatrix (regionUnionEquiv hp.xU).symm (regionUnionEquiv hp.xU).symm) =
-      (localLift (x ∪ U) K).submatrix (SkewPartition.equiv hp).symm
+      (ManyBody.place (x ∪ U) K).submatrix (SkewPartition.equiv hp).symm
         (SkewPartition.equiv hp).symm := by
   rw [liftY_eq, ← hp.isRegionSplit_Y.localLift_submatrix K, submatrix_submatrix]
   rfl
 
-theorem liftH_eq (K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ) :
-    liftH (P₁ := RegionConfig n P₁) (U := RegionConfig n U) (F := RegionConfig n F)
+theorem liftH_eq
+    (K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x))
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x)) ℂ) :
+    liftH (P₁ := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₁))
+        (U := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) U))
+        (F := (ManyBody.RegionConfig (fun v ↦ Fin (n v)) F))
       (K.submatrix (regionUnionEquiv hp.P₀x).symm (regionUnionEquiv hp.P₀x).symm) =
-      (localLift (P₀ ∪ x) K).submatrix (SkewPartition.equiv hp).symm
+      (ManyBody.place (P₀ ∪ x) K).submatrix (SkewPartition.equiv hp).symm
         (SkewPartition.equiv hp).symm := by
   rw [liftH, ← hp.isRegionSplit_H.localLift_submatrix K, submatrix_submatrix]
   rfl
 
 /-- **`f_θ` in the coordinates of Lemma 5.3**: for `h = lift_{P₀ x} K`, the symbol of
 Lemma 6.4 is the function `f(s)` of Lemma 5.3 for the transported vector. -/
-theorem skewFun_transport (K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ)
-    (θ : SiteConfig n → ℂ) (s : ℝ) :
+theorem skewFun_transport
+    (K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x))
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x)) ℂ)
+    (θ : (∀ v, Fin (n v)) → ℂ) (s : ℝ) :
     skewFun (hp.transport n θ)
         (K.submatrix (regionUnionEquiv hp.P₀x).symm (regionUnionEquiv hp.P₀x).symm) (s : ℂ) =
-      markedScalarSymbol s (P₀ ∪ P₁) (x ∪ U) (localLift (P₀ ∪ x) K) θ := by
-  have hP := regionState_posSemidef (P₀ ∪ P₁) (WithLp.toLp 2 θ)
-  have hY := regionState_posSemidef (x ∪ U) (WithLp.toLp 2 θ)
+      markedScalarSymbol s (P₀ ∪ P₁) (x ∪ U) (ManyBody.place (P₀ ∪ x) K) θ := by
+  have hP := ManyBody.regionState_posSemidef (P₀ ∪ P₁) (WithLp.toLp 2 θ)
+  have hY := ManyBody.regionState_posSemidef (x ∪ U) (WithLp.toLp 2 θ)
   have hneg : -(s : ℂ) = ((-s : ℝ) : ℂ) := by push_cast; ring
   rw [skewFun, margP_transport, margY_transport, hneg,
     cfcC_submatrix_equiv hP.isHermitian, cfcC_submatrix_equiv hP.isHermitian,
@@ -388,7 +408,7 @@ theorem skewFun_transport (K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfi
     regionPow, regionPow, cfcC_suppPowFun_ofReal hP, cfcC_suppPowFun_ofReal hP,
     cfcC_suppPowFun_ofReal hY, cfcC_suppPowFun_ofReal hY]
 
-theorem star_transport_dotProduct (θ : SiteConfig n → ℂ) :
+theorem star_transport_dotProduct (θ : (∀ v, Fin (n v)) → ℂ) :
     star (hp.transport n θ) ⬝ᵥ hp.transport n θ = star θ ⬝ᵥ θ :=
   Fintype.sum_equiv (SkewPartition.equiv hp).symm _ _ fun _ => rfl
 
@@ -398,14 +418,18 @@ theorem star_transport_dotProduct (θ : SiteConfig n → ℂ) :
 `|f_θ| - Re f_θ ≤ C a² log⁴(e d_h) η_θ^{1/8}` on unit vectors, where
 `η_θ = I(x:F|U)_θ`. -/
 theorem markedScalarSymbol_skew_le
-    {K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
+    {K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
     (hK1 : K ≤ 1) {a : ℝ} (ha : 0 < a)
-    (hac : a * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-      Fintype.card (RegionConfig n x))) ≤ 1 / 8) {θ : SiteConfig n → ℂ} (hθ : θ ∈ unitSphere) :
-    ‖markedScalarSymbol (a / 2) (P₀ ∪ P₁) (x ∪ U) (localLift (P₀ ∪ x) K) θ‖ -
-        (markedScalarSymbol (a / 2) (P₀ ∪ P₁) (x ∪ U) (localLift (P₀ ∪ x) K) θ).re ≤
-      skewConst * a ^ 2 * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-        Fintype.card (RegionConfig n x))) ^ 4 * skewEta (hp.transport n θ) ^ (1 / 8 : ℝ) := by
+    (hac : a * Real.log (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+      Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ≤ 1 / 8)
+          {θ : (∀ v, Fin (n v)) → ℂ} (hθ : θ ∈ unitSphere) :
+    ‖markedScalarSymbol (a / 2) (P₀ ∪ P₁) (x ∪ U) (ManyBody.place (P₀ ∪ x) K) θ‖ -
+        (markedScalarSymbol (a / 2) (P₀ ∪ P₁) (x ∪ U) (ManyBody.place (P₀ ∪ x) K) θ).re ≤
+      skewConst * a ^ 2 * Real.log
+          (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+        Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ^ 4 * skewEta
+            (hp.transport n θ) ^ (1 / 8 : ℝ) := by
   set φ := regionUnionEquiv (n := n) hp.P₀x
   have hθ' : star (hp.transport n θ) ⬝ᵥ hp.transport n θ = 1 := by
     rw [star_transport_dotProduct, dotProduct_comm]; exact hθ
@@ -413,14 +437,23 @@ theorem markedScalarSymbol_skew_le
     nonneg_iff_posSemidef.mpr ((nonneg_iff_posSemidef.mp hK0).submatrix _)
   have hh1 : K.submatrix φ.symm φ.symm ≤ 1 := by
     rw [Matrix.le_iff] at hK1 ⊢
-    have : (1 : Matrix (RegionConfig n P₀ × RegionConfig n x) (RegionConfig n P₀ ×
-        RegionConfig n x) ℂ) - K.submatrix φ.symm φ.symm = (1 - K).submatrix φ.symm φ.symm := by
+    have :
+        (1 : Matrix
+        ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) ×
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))
+        ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) ×
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ℂ) - K.submatrix φ.symm φ.symm =
+            (1 - K).submatrix φ.symm φ.symm := by
       ext i j
       simp [one_apply]
     rw [this]
     exact hK1.submatrix _
-  have hcard : (Fintype.card (RegionConfig n P₀ × RegionConfig n x) : ℝ) =
-      Fintype.card (RegionConfig n P₀) * Fintype.card (RegionConfig n x) := by
+  have hcard :
+      (Fintype.card
+      ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) ×
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) : ℝ) =
+      Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) * Fintype.card
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x) := by
     rw [Fintype.card_prod, Nat.cast_mul]
   have h := conditionalSkew_le hθ' hh0 hh1 ha (by rwa [hcard])
   rw [hcard, hp.skewFun_transport K θ (a / 2)] at h
@@ -428,13 +461,13 @@ theorem markedScalarSymbol_skew_le
 
 omit [Fintype V] in
 theorem continuous_transport :
-    Continuous fun θ : SiteConfig n → ℂ => hp.transport n θ :=
+    Continuous fun θ : (∀ v, Fin (n v)) → ℂ => hp.transport n θ :=
   continuous_pi fun _ => continuous_apply _
 
 /-- `θ ↦ η_θ = I(x:F|U)_θ` is continuous on unit vectors. -/
 theorem continuousOn_skewEta_transport :
-    ContinuousOn (fun θ : SiteConfig n → ℂ => skewEta (hp.transport n θ)) unitSphere := by
-  have hc : Continuous fun θ : SiteConfig n → ℂ => rhoW (hp.transport n θ) :=
+    ContinuousOn (fun θ : (∀ v, Fin (n v)) → ℂ => skewEta (hp.transport n θ)) unitSphere := by
+  have hc : Continuous fun θ : (∀ v, Fin (n v)) → ℂ => rhoW (hp.transport n θ) :=
     (continuous_submatrix _ _).comp (continuous_partialTraceLeft.comp
       (continuous_vecMulVec_self.comp hp.continuous_transport))
   refine continuousOn_condMutualInfo (fun θ => posSemidef_rhoW _) hc.continuousOn
@@ -448,35 +481,39 @@ theorem continuousOn_skewEta_transport :
 `Tr σ 𝒟_k ≤ 2 C a² log⁴(e d_h) ∫ η_θ^{1/8} dμ_σ(θ) + o_k(1)`, where
 `η_θ = I(x:F|U)_θ` and `C = skewConst`. -/
 theorem eventually_re_trace_skewOperator_le [∀ v, NeZero (n v)]
-    {K : Matrix (RegionConfig n (P₀ ∪ x)) (RegionConfig n (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
+    {K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (P₀ ∪ x)) ℂ} (hK0 : 0 ≤ K)
     (hK1 : K ≤ 1) {a : ℝ} (ha : 0 < a)
-    (hac : a * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-      Fintype.card (RegionConfig n x))) ≤ 1 / 8) {ε : ℝ} (hε : 0 < ε) :
-    ∀ᶠ k in Filter.atTop, ∀ (b : SiteConfig n)
-      (σ : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ), σ.PosSemidef →
-      σ.trace = 1 → (∀ π, permOp (copyPerm (SiteConfig n) k) π * σ = σ) →
+    (hac : a * Real.log (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+      Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ≤ 1 / 8) {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ k in Filter.atTop, ∀ (b : (∀ v, Fin (n v)))
+      (σ : Matrix (Fin k → (∀ v, Fin (n v))) (Fin k → (∀ v, Fin (n v))) ℂ), σ.PosSemidef →
+      σ.trace = 1 → (∀ π, permOp (copyPerm (∀ v, Fin (n v)) k) π * σ = σ) →
         ((σ * skewOperator k (markedSimilarity n (a / 2) k (P₀ ∪ P₁) (x ∪ U) F
-            (localLift (P₀ ∪ x) K))).trace).re ≤
-          2 * skewConst * a ^ 2 * Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-            Fintype.card (RegionConfig n x))) ^ 4 *
+            (ManyBody.place (P₀ ∪ x) K))).trace).re ≤
+          2 * skewConst * a ^ 2 * Real.log
+              (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+            Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ^ 4 *
             (coherentIntegral b σ fun θ =>
               ((skewEta (hp.transport n θ) ^ (1 / 8 : ℝ) : ℝ) : ℂ)).re + ε := by
-  set ℓ := Real.log (Real.exp 1 * (Fintype.card (RegionConfig n P₀) *
-    Fintype.card (RegionConfig n x)))
-  have hd1 : (1 : ℝ) ≤ Fintype.card (RegionConfig n P₀) * Fintype.card (RegionConfig n x) := by
-    have h0 : 1 ≤ Fintype.card (RegionConfig n P₀) := Fintype.card_pos
-    have h1 : 1 ≤ Fintype.card (RegionConfig n x) := Fintype.card_pos
+  set ℓ := Real.log (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
+    Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)))
+  have hd1 : (1 : ℝ) ≤ Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) * Fintype.card
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x) := by
+    have h0 : 1 ≤ Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) := Fintype.card_pos
+    have h1 : 1 ≤ Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x) := Fintype.card_pos
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))
   have hℓ : 1 ≤ ℓ := one_le_log_exp_mul hd1
   have ha1 : a < 1 := by nlinarith
-  have hh : IsSupportedOn (localLift (P₀ ∪ x) K) ((P₀ ∪ P₁) ∪ (x ∪ U)) :=
-    (isSupportedOn_localLift K).mono (Finset.union_subset_union Finset.subset_union_left
+  have hh : ManyBody.IsSupportedOn (ManyBody.place (P₀ ∪ x) K) ((P₀ ∪ P₁) ∪ (x ∪ U)) :=
+    (ManyBody.place_mem_supportedOperators K).mono
+        (Finset.union_subset_union Finset.subset_union_left
       Finset.subset_union_left)
   have hsym := hasCoherentSymbol_markedSimilarity (half_pos ha) (by linarith) hp.PY hp.PF hp.YF hh
-  set f := markedScalarSymbol (a / 2) (P₀ ∪ P₁) (x ∪ U) (localLift (P₀ ∪ x) K)
+  set f := markedScalarSymbol (a / 2) (P₀ ∪ P₁) (x ∪ U) (ManyBody.place (P₀ ∪ x) K)
   have hfc : ContinuousOn f unitSphere := hsym.continuousOn
-  set g : (SiteConfig n → ℂ) → ℂ := fun θ => ((2 * (‖f θ‖ - (f θ).re) : ℝ) : ℂ)
-  set η : (SiteConfig n → ℂ) → ℝ := fun θ => skewEta (hp.transport n θ) ^ (1 / 8 : ℝ)
+  set g : ((∀ v, Fin (n v)) → ℂ) → ℂ := fun θ => ((2 * (‖f θ‖ - (f θ).re) : ℝ) : ℂ)
+  set η : ((∀ v, Fin (n v)) → ℂ) → ℝ := fun θ => skewEta (hp.transport n θ) ^ (1 / 8 : ℝ)
   have hηc : ContinuousOn η unitSphere :=
     hp.continuousOn_skewEta_transport.rpow_const fun _ _ => Or.inr (by norm_num)
   have hgc : ContinuousOn g unitSphere :=
@@ -496,7 +533,7 @@ theorem eventually_re_trace_skewOperator_le [∀ v, NeZero (n v)]
     nlinarith
   rw [coherentIntegral_const_mul, Complex.re_ofReal_mul] at h2
   have h3 : ((σ * skewOperator k (markedSimilarity n (a / 2) k (P₀ ∪ P₁) (x ∪ U) F
-      (localLift (P₀ ∪ x) K))).trace).re ≤ (coherentIntegral b σ g).re + ε := by
+      (ManyBody.place (P₀ ∪ x) K))).trace).re ≤ (coherentIntegral b σ g).re + ε := by
     have := (Complex.re_le_norm _).trans h1
     rw [Complex.sub_re] at this
     linarith

@@ -12,6 +12,7 @@ import QICLean.ManyBody.Sites.Block
 import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.Lattice
+import QICLean.ManyBody.Sites.OperatorSchmidtRank
 import QICLean.ManyBody.Sites.Partition
 import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.ProductFamily
@@ -25,5 +26,6 @@ import QICLean.ManyBody.Sites.SiteAction
 import QICLean.ManyBody.Sites.Subregion
 import QICLean.ManyBody.Sites.SumSites
 import QICLean.ManyBody.Sites.Support
+import QICLean.ManyBody.Sites.SupportedDecomposition
 import QICLean.ManyBody.Sites.SupportedUnitary
 import QICLean.ManyBody.Sites.Twirl

@@ -1,7 +1,7 @@
 import QICLean.Analysis.ViableSubspaceBootstrap
 import QICLean.Analysis.ProbabilityEntropyRankTails
 import QICLean.Analysis.ViableSubspaceCoordinates
-import QICLean.Analysis.ViableSubspaceEntropy
+import QICLean.Entropy.ViableSampling.ViableSubspaceEntropy
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 
