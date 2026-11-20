@@ -3,7 +3,6 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.ManyBody.Sites.Config
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Analysis.ReplicaExcitationSymmetry
 
@@ -48,7 +47,7 @@ noncomputable def replicaGoodBadSplit {k : ℕ} (B : Finset (Fin k)) :
   ((Equiv.sumCongr (Bᶜ).equivFin.symm B.equivFin.symm).trans
     (Equiv.sumComm ↥(Bᶜ) ↥B)).trans
       ((Equiv.sumCongr (Equiv.refl ↥B)
-        (ManyBody.complSubtypeEquiv B).symm).trans
+        (Equiv.subtypeEquivRight (fun _ : Fin k => Finset.mem_compl))).trans
           (Equiv.sumCompl (fun i : Fin k => i ∈ B)))
 
 variable {A C D : Type*} [Fintype A] [DecidableEq A]
