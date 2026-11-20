@@ -12,5 +12,6 @@ import QICLean.Circuit.Compile.Block
 import QICLean.Circuit.Compile.Dilation
 import QICLean.Circuit.Compile.DilationOutput
 import QICLean.Circuit.Compile.Encoding
+import QICLean.Circuit.Compile.PermGate
 import QICLean.Circuit.Compile.Port
 import QICLean.Circuit.Compile.PortProtocol

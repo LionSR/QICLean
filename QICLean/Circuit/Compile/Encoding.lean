@@ -294,7 +294,7 @@ trace-preserving and unbranched when the circuit is, which acts as the circuit o
 theorem exists_encoded_of_isDimBounded {B q : ℕ} (hB : B ≤ q) :
     {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
     [∀ s, Fintype (Z s)] → [∀ s, DecidableEq (Z s)] → (c : Circuit Γ KrausGate X Z) →
-    c.Forall KrausGate.ev KrausFamily.IsTP → c.IsDimBounded B →
+    c.Forall KrausGate.ev KrausFamily.IsTP → c.IsDimBounded Finset.univ B →
     (e : ∀ s, X s ↪ Fin q) → (f : ∀ s, Z s ↪ Fin q) →
     ∃ c' : Circuit Γ KrausGate (Qudits S q) (Qudits S q),
       c'.Forall KrausGate.ev KrausFamily.IsTP ∧ (c.IsUnbranched → c'.IsUnbranched) ∧
@@ -304,7 +304,7 @@ theorem exists_encoded_of_isDimBounded {B q : ℕ} (hB : B ≤ q) :
   | X, _, i₁, i₂, i₃, i₄, done _, _, hdim, e, f => by
     obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
     obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
-    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim s).1).1
+    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim s (Finset.mem_univ s)).1).1
     let x₀ : ∀ s, X s := fun _ ↦ Classical.arbitrary _
     refine ⟨(decodeCircuit Γ e x₀).comp (encodeCircuit Γ f),
       Forall.comp _ ⟨⟨fun b ↦ absurd b.2 (Finset.notMem_empty _),
@@ -318,11 +318,13 @@ theorem exists_encoded_of_isDimBounded {B q : ℕ} (hB : B ≤ q) :
     · rw [map_comp, LinearMap.comp_assoc, map_decodeCircuit_comp_map_encodeCircuit, map_done,
         LinearMap.comp_id]
   | X, Z, _, _, _, _, step (Y := Y) L next, hc, hdim, e, f => by
-    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim.1 s).1).1
+    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim.1 s (Finset.mem_univ s)).1).1
     obtain ⟨i₀⟩ := L.nonempty_index_of_forall_isTP KrausGate.ev hc.1
     have := L.nonempty_output_of_forall_isTP KrausGate.ev hc.1
     let g : ∀ s, Y s ↪ Fin q := fun s ↦ (Fintype.equivFin (Y s)).toEmbedding.trans
-      (Fin.castLEEmb (by rw [← Nat.card_eq_fintype_card]; exact ((hdim.2 i₀).input s).2.trans hB))
+      (Fin.castLEEmb (by
+        rw [← Nat.card_eq_fintype_card]
+        exact ((hdim.2 i₀).input s (Finset.mem_univ s)).2.trans hB))
     let y₀ : ∀ s, Fin q := fun s ↦ g s (Classical.arbitrary _)
     have spec := fun i ↦ (exists_encoded_of_isDimBounded hB (next i) (hc.2 i) (hdim.2 i) g f)
     let F : L.Index → Circuit Γ KrausGate (Qudits S q) (Qudits S q) := fun i ↦ (spec i).choose
