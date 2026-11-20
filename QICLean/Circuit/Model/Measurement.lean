@@ -36,7 +36,7 @@ The *one-round* conversions are the class `QCcc` of Piroli, Styliaris and Cirac:
 circuit, one measurement of a region, outcome-dependent onsite unitaries, and then a fixed
 unitary circuit (`IsOneRoundConversion`). With the last circuit of depth `0`, this is the class
 `QCcc_ℓ` of the source; with it, it is the composition of a `QCcc_ℓ` channel with a circuit
-without measurements, as in the preparation of matrix product states of arXiv:2307.01696.
+without measurements, as in the preparations of arXiv:2307.01696.
 
 ## Main definitions
 
