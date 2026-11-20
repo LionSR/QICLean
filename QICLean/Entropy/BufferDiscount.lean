@@ -86,7 +86,8 @@ theorem exists_trial_filter (T : Finset V) {ξ : EuclideanSpace ℂ (∀ v, Fin 
     simp [W, q, Unitary.conjStarAlgAut_apply, star_eq_conjTranspose, Function.comp_def]
   have hq : ∀ x, 0 ≤ q x := (ManyBody.regionState_posSemidef T ξ).eigenvalues_nonneg
   have hqs : ∑ x, q x = 1 :=
-    sum_eigenvalues_partialTraceRight_eq_one (by rw [norm_cutVector, hξ]) rfl hρ
+    sum_eigenvalues_partialTraceRight_eq_one (by rw [norm_cutVector, hξ])
+      (ManyBody.regionState_eq_partialTraceRight_cutVector T ξ).symm hρ
   have hne : Nonempty (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T) := by
     by_contra h
     rw [not_nonempty_iff] at h
@@ -200,7 +201,7 @@ theorem sum_norm_sq_mul_regionEntropy_le {ι : Type*} [Fintype ι] (T : Finset V
   have hB : ∀ i,
       (ManyBody.regionState (φ i) T).PosSemidef := fun i ↦ ManyBody.regionState_posSemidef T (φ i)
   have h := sum_vonNeumannEntropy_sub_negMulLog_le (fun i ↦ ManyBody.regionState (φ i) T) hB
-  have hR : vonNeumannEntropy (∑ i, ManyBody.regionState (φ i) T)
+  have hR : _root_.vonNeumannEntropy (∑ i, ManyBody.regionState (φ i) T)
       (posSemidef_sum _ fun i _ ↦ hB i).isHermitian = ManyBody.regionEntropy Ω T :=
     vonNeumannEntropy_congr hsum _ _
   have htr : (∑ i, ManyBody.regionState (φ i) T).trace.re = 1 := by
@@ -260,7 +261,8 @@ theorem neg_two_mul_log_le_entropy (σ₀ : (∀ v, Fin (n v))) (X : Finset V) (
     conv_lhs => rw [hρ.spectral_theorem]
     simp [U, p, Unitary.conjStarAlgAut_apply, star_eq_conjTranspose, Function.comp_def]
   have hps : ∑ i, p i = 1 :=
-    sum_eigenvalues_partialTraceRight_eq_one (by rw [norm_cutVector, hΩ]) rfl hρ
+    sum_eigenvalues_partialTraceRight_eq_one (by rw [norm_cutVector, hΩ])
+      (ManyBody.regionState_eq_partialTraceRight_cutVector X Ω).symm hρ
   set φ : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) → EuclideanSpace ℂ (∀ v, Fin (n v)) :=
     fun i ↦ toEuclideanLin (ManyBody.place X (pinProj U i)) Ω
   have hφp : ∀ i, ‖φ i‖ ^ 2 = p i := fun i ↦ norm_sq_localLift_pinProj hU hρeq i
