@@ -574,19 +574,28 @@ def symm_of(arg: str) -> str:
 def drop_open(text: str):
     """Remove the namespaces in `OPEN_DROP` from the `open` lines, with the numbers of the lines
     deleted outright (a line that keeps another namespace is edited in place) and of all the
-    lines changed. It runs once a
-    file's rewriting passes are done: the passes need the `open` line to recognize the bare
-    names."""
+    lines changed. A command-local `open N in` with no namespace left goes with its `in`. It
+    runs once a file's rewriting passes are done: the passes need the `open` line to recognize
+    the bare names."""
     kept, removed, touched = [], [], []
     for i, ln in enumerate(text.split("\n")):
-        mm = re.match(r"(open (?:scoped )?)(.*)$", ln)
+        mm = re.match(r"(\s*open (?:scoped )?)(.*?)(\s+in\b.*)?$", ln)
         if mm and any(w in OPEN_DROP for w in mm.group(2).split()):
             touched.append(i + 1)
             ws = [w for w in mm.group(2).split() if w not in OPEN_DROP]
-            if not ws:
+            tail = mm.group(3) or ""
+            if ws:
+                ln = mm.group(1) + " ".join(ws) + tail
+            elif tail.strip() == "in":
                 removed.append(i + 1)
                 continue
-            ln = mm.group(1) + " ".join(ws)
+            elif tail:
+                # `open N in cmd` on one line: the command stays, at the line's indentation
+                indent = re.match(r"\s*", ln).group(0)
+                ln = indent + re.sub(r"^\s+in\s+", "", tail)
+            else:
+                removed.append(i + 1)
+                continue
         kept.append(ln)
     return "\n".join(kept), removed, touched
 
