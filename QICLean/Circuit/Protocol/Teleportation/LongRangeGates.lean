@@ -31,8 +31,8 @@ gates.
 `a + 2L + 1`, at odd separation, the stretches of the gates of a layer are pairwise disjoint, and
 the `2L` sites strictly between `a` and `a + 2L + 1` carry `|0⟩`; gates at even separation or on
 overlapping stretches are not covered, whereas the cited paragraph of arXiv:2307.01696 speaks of
-teleporting spatially separated sites in general. Documented in TNLean's
-`docs/paper-gaps/mswc24_tree_measurement_scope.tex`.
+teleporting spatially separated sites in general. Documented in
+`docs/paper-gaps/mswc24_teleportation_scope.tex`.
 
 ## Main definitions
 
