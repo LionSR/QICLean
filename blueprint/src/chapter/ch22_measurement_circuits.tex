@@ -190,10 +190,14 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
 
 \begin{theorem}[Deterministic conversions are adaptive conversions]
     \label{thm:measurement_adaptive}
-    \lean{QuantumCircuit.IsMeasurementConversion.isAdaptiveConversion}
+    \lean{QuantumCircuit.Circuit.map_vecMulVec,
+        QuantumCircuit.Circuit.isAdaptiveProtocol_map,
+        QuantumCircuit.IsMeasurementConversion.isAdaptiveConversion}
     \leanok
     \uses{def:measurement_conversion, def:protocols_protocol, lem:measurement_tp}
-    If the unit vector $\varphi$ is converted into the unit vector $\psi$ in depth $T$, then
+    The map of a measurement circuit of depth at most $T$, the average over its outcomes, is
+    realised by an adaptive protocol of depth at most $T$; on a pure input $\ket v\bra v$ it is
+    $\sum_pK_p\ket v\bra vK_p^\dagger$. If the unit vector $\varphi$ is converted into the unit vector $\psi$ in depth $T$, then
     $\ket\varphi\bra\varphi$ is converted adaptively into $\ket\psi\bra\psi$ in depth $T$.
 \end{theorem}
 \begin{proof}

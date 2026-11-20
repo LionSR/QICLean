@@ -63,8 +63,10 @@ without measurements, as in the preparation of matrix product states of arXiv:23
   measurement with corrections, and a round implementing a matrix.
 * `QuantumCircuit.IsMeasurementConversion.trans`, `QuantumCircuit.IsMeasurementConversion.ne_zero`,
   `QuantumCircuit.Circuit.IsImplementationOn.isMeasurementConversion`.
-* `QuantumCircuit.IsMeasurementConversion.isAdaptiveConversion` — measurement circuits are
-  adaptive protocols.
+* `QuantumCircuit.Circuit.isAdaptiveProtocol_map`,
+  `QuantumCircuit.IsMeasurementConversion.isAdaptiveConversion` — measurement circuits are
+  adaptive protocols, and deterministic conversions adaptive conversions.
+* `QuantumCircuit.Circuit.map_vecMulVec` — the map of a circuit on a pure input.
 * `QuantumCircuit.IsUnitaryCircuit.isMeasurementConversion`,
   `QuantumCircuit.IsPreparedInDepth.exists_isMeasurementConversion` — unitary circuits are
   measurement circuits.
@@ -267,6 +269,17 @@ theorem exists_kraus_mulVec_ne_zero (ev : Interpretation G) (c : Circuit Γ G X 
     rw [← mulVec_mulVec]
     change (c.kraus ev p)ᴴ *ᵥ (c.kraus ev p *ᵥ v) = 0
     rw [hc p, mulVec_zero]
+
+omit [∀ s, Finite (Z s)] in
+/-- On a pure input `|v⟩⟨v|` the map of a circuit is the sum over the branches of the projectors
+onto the unnormalized outputs `Kₚ v`; a branch of probability zero contributes `0`. -/
+theorem map_vecMulVec [∀ s, Fintype (Z s)] (ev : Interpretation G) (c : Circuit Γ G X Z)
+    (v : Config X → ℂ) :
+    c.map ev (vecMulVec v (star v)) =
+      ∑ p, vecMulVec (c.kraus ev p *ᵥ v) (star (c.kraus ev p *ᵥ v)) := by
+  simp only [map, krausFamily, KrausFamily.map_apply]
+  change ∑ p, c.kraus ev p * vecMulVec v (star v) * (c.kraus ev p)ᴴ = _
+  simp_rw [mul_vecMulVec, vecMulVec_mul, ← star_mulVec]
 
 end Branch
 
@@ -492,13 +505,22 @@ theorem IsMeasurementConversion.isAdaptiveConversion [∀ s, Fintype (Z s)] {T :
   have hTP : c.Forall KrausGate.ev KrausFamily.IsTP := hc.mono fun _ hK ↦ hK.isTP
   have hmap : c.map KrausGate.ev (vecMulVec φ (star φ)) =
       (∑ p, z p * star (z p)) • vecMulVec ψ (star ψ) := by
-    simp only [Circuit.map, Circuit.krausFamily, KrausFamily.map_apply]
-    change ∑ p, c.kraus KrausGate.ev p * vecMulVec φ (star φ) * (c.kraus KrausGate.ev p)ᴴ = _
-    simp_rw [mul_vecMulVec, vecMulVec_mul, ← star_mulVec, hz, star_smul, smul_vecMulVec,
-      vecMulVec_smul, smul_smul, ← Finset.sum_smul]
+    simp_rw [c.map_vecMulVec, hz, star_smul, smul_vecMulVec, vecMulVec_smul, smul_smul,
+      ← Finset.sum_smul]
   have htr := c.trace_map KrausGate.ev hTP (vecMulVec φ (star φ))
   rw [hmap, trace_smul, hψ, hφ, smul_eq_mul, mul_one] at htr
   exact ⟨_, ⟨c, hTP, hd, rfl⟩, by rw [hmap, htr, one_smul]⟩
+
+omit [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] [∀ s, Finite (Z s)] in
+/-- **Measurement circuits are adaptive protocols.** The map of a measurement circuit of depth at
+most `T` is realised by an adaptive protocol of depth at most `T`: the average over the outcomes
+of the measurement circuit is a channel.
+
+Source: arXiv:2103.13367, paragraph "State transformations with QC and LOCC". -/
+theorem Circuit.isAdaptiveProtocol_map [∀ s, Fintype (Z s)] {T : ℕ}
+    {c : Circuit Γ KrausGate X Z} (hc : c.Forall KrausGate.ev KrausFamily.IsUnitaryOrMeasurement)
+    (hd : c.depth ≤ T) : IsAdaptiveProtocol Γ T (c.map KrausGate.ev) :=
+  ⟨c, hc.mono fun _ hK ↦ hK.isTP, hd, rfl⟩
 
 end Conversion
 
