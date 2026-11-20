@@ -20,6 +20,9 @@ trace-preserving, so is the product.
 
 ## Main results
 
+* `ManyBody.sum_prodOp` — a sum of product operators over choices of an index at every site
+  is the product operator of the sums.
+* `ManyBody.map_prodFamily_prodOp` — the product family maps `⊗_v σ_v` to `⊗_v (K v)(σ_v)`.
 * `KrausFamily.IsTP.prodFamily` — a product of trace-preserving families is trace-preserving.
 -/
 
@@ -48,6 +51,28 @@ theorem effect_prodFamily [∀ v, Fintype (Y v)]
   refine Fintype.sum_congr _ _ fun j ↦ ?_
   change ((prodOp fun v ↦ (K v).op (j v))ᴴ * prodOp fun v ↦ (K v).op (j v)) σ τ = _
   rw [conjTranspose_prodOp, prodOp_mul, prodOp_apply]
+
+/-- A sum of product operators over the choices `j` of an index at every site is the product
+operator of the sums: `∑_j ⊗_v f_v(j v) = ⊗_v ∑_i f_v(i)`. -/
+theorem sum_prodOp {ι : V → Type} [∀ v, Fintype (ι v)]
+    (f : (v : V) → ι v → Matrix (Y v) (X v) ℂ) :
+    ∑ j : (v : V) → ι v, prodOp (fun v ↦ f v (j v)) = prodOp fun v ↦ ∑ i, f v i := by
+  ext σ τ
+  simp only [Matrix.sum_apply, prodOp_apply]
+  exact (Fintype.prod_sum fun v i ↦ f v i (σ v) (τ v)).symm
+
+/-- The product of Kraus families maps the product operator `⊗_v σ_v` to `⊗_v (K v)(σ_v)`.
+
+Source: arXiv:2103.13367, main text, paragraph "Quantum circuits and LOCC" (local operations
+`U = ⊗ᵢ uᵢ` acting on each site), here for channels. -/
+theorem map_prodFamily_prodOp [∀ v, Fintype (X v)] (K : (v : V) → KrausFamily (X v) (Y v))
+    (σ : (v : V) → Matrix (X v) (X v) ℂ) :
+    (prodFamily K).map (prodOp σ) = prodOp fun v ↦ (K v).map (σ v) := by
+  rw [KrausFamily.map_apply]
+  refine Eq.trans (Fintype.sum_congr _ _ fun j ↦ ?_)
+    (sum_prodOp fun v i ↦ (K v).op i * σ v * ((K v).op i)ᴴ)
+  change (prodOp fun v ↦ (K v).op (j v)) * prodOp σ * (prodOp fun v ↦ (K v).op (j v))ᴴ = _
+  rw [conjTranspose_prodOp, prodOp_mul, prodOp_mul]
 
 end ManyBody
 
