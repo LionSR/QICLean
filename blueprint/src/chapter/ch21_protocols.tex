@@ -271,6 +271,42 @@ for the map of a circuit it is the Heisenberg picture (Lemma~\ref{lem:circuits_t
     $f$; Theorem~\ref{thm:protocols_light_cone} applied to $\Phi^*$ gives both statements.
 \end{proof}
 
+\begin{theorem}[Approximate factorization of correlations]
+    \label{thm:protocols_approx_light_cone}
+    \lean{QuantumCircuit.IsApproxConversion.norm_trace_mul_mul_sub_le}
+    \leanok
+    \uses{thm:protocols_light_cone, def:protocols_approx_conversion, thm:protocols_approx_comp,
+        thm:boundary_gluing}
+    Let $\Gamma$ have finitely many cells, each of positive cost, and let a product
+    $\bigotimes_s\sigma_s$ with $\operatorname{tr}\sigma_s=1$ be converted into $\sigma$ in
+    depth $T$ with error $\varepsilon$. Write $c=\lVert\bigotimes_s\sigma_s\rVert_1$, which is
+    $1$ for states. For $A$ supported on $R$ and $B$ supported on $R'$, where the $T$-fold
+    neighbourhoods of $R$ and $R'$ are disjoint,
+    \begin{align}
+        \lvert\operatorname{tr}(\sigma AB)
+        -\operatorname{tr}(\sigma A)\operatorname{tr}(\sigma B)\rvert
+        &\le\varepsilon\lVert A\rVert\lVert B\rVert(1+2c+\varepsilon).
+        \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    Let $\sigma'=\Phi(\bigotimes_s\sigma_s)$ be the exact output of the protocol and
+    $D=\sigma-\sigma'$, so $\lVert D\rVert_1\le\varepsilon$ and, by
+    Theorem~\ref{thm:protocols_approx_comp}, $\lVert\sigma'\rVert_1\le c$. By
+    Theorem~\ref{thm:protocols_light_cone},
+    $\operatorname{tr}(\sigma'AB)=\operatorname{tr}(\sigma'A)\operatorname{tr}(\sigma'B)$, and
+    expanding $\operatorname{tr}(\sigma X)=\operatorname{tr}(\sigma'X)+\operatorname{tr}(DX)$,
+    \begin{align}
+        \operatorname{tr}(\sigma AB)-\operatorname{tr}(\sigma A)\operatorname{tr}(\sigma B)
+        &=\operatorname{tr}(DAB)-\operatorname{tr}(\sigma'A)\operatorname{tr}(DB)
+        -\operatorname{tr}(DA)\operatorname{tr}(\sigma'B)
+        -\operatorname{tr}(DA)\operatorname{tr}(DB).
+        \notag
+    \end{align}
+    Each trace is bounded by $\lvert\operatorname{tr}(YX)\rvert\le\lVert X\rVert\lVert Y\rVert_1$
+    (Theorem~\ref{thm:boundary_gluing}), and $\lVert AB\rVert\le\lVert A\rVert\lVert B\rVert$.
+\end{proof}
+
 \section{Protocols on the ring}
 \label{sec:protocols_ring}
 
@@ -319,6 +355,30 @@ Section~\ref{sec:protocols_light_cones} are ring balls.
     disjoint; they are the $T$-fold neighbourhoods by
     Lemma~\ref{lem:circuits_ring_neighbourhood}, and Theorem~\ref{thm:protocols_light_cone}
     applies.
+\end{proof}
+
+\begin{theorem}[Approximately vanishing correlations beyond twice the depth]
+    \label{thm:protocols_ring_approx_correlations}
+    \lean{QuantumCircuit.IsApproxConversion.norm_trace_mul_mul_sub_le_of_isRingSeparated}
+    \leanok
+    \uses{thm:protocols_approx_light_cone, def:circuits_ring_geometry,
+        lem:circuits_ring_neighbourhood, lem:sites_ring_separated}
+    Let a product $\bigotimes_s\sigma_s$ with $\operatorname{tr}\sigma_s=1$ be converted into
+    $\sigma$ in depth $T$ with error $\varepsilon$ on the ring of $N\ge1$ sites, and let the
+    regions $R$ and $R'$ be separated by $2T$. Then for $A$ supported on $R$ and $B$ supported
+    on $R'$
+    \begin{align}
+        \lvert\operatorname{tr}(\sigma AB)
+        -\operatorname{tr}(\sigma A)\operatorname{tr}(\sigma B)\rvert
+        &\le\varepsilon\lVert A\rVert\lVert B\rVert
+        \bigl(1+2\lVert\textstyle\bigotimes_s\sigma_s\rVert_1+\varepsilon\bigr).
+        \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    As for Theorem~\ref{thm:protocols_ring_correlations}, with
+    Theorem~\ref{thm:protocols_approx_light_cone} in place of
+    Theorem~\ref{thm:protocols_light_cone}.
 \end{proof}
 
 \begin{theorem}[Light cones of protocols on the blocks of the ring]

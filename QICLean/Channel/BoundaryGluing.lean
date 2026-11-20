@@ -125,23 +125,6 @@ theorem rectangularTraceNorm_partialTraceFirst_gluing_sub (W : Matrix r b ℂ)
   rw [hv, partialTraceFirst_gluing, partialTraceFirst_gluing, ← Matrix.sub_mul, ← Matrix.mul_sub,
     rectangularTraceNorm_isometry_sandwich _ K K hK hK]
 
-omit [DecidableEq r] in
-/-- `|tr(Y K)| ≤ ‖K‖ ‖Y‖₁` for square matrices, with the operator norm of `K` and the trace
-norm of `Y`. -/
-theorem norm_trace_mul_le_l2_opNorm_mul_rectangularTraceNorm {n : Type*} [Fintype n]
-    [DecidableEq n] (Y K : Matrix n n ℂ) :
-    ‖(Y * K).trace‖ ≤ ‖K‖ * rectangularTraceNorm Y := by
-  rcases eq_or_ne K 0 with rfl | hK
-  · simp
-  have hpos : 0 < ‖K‖ := norm_pos_iff.mpr hK
-  have hU : ‖(‖K‖⁻¹ : ℂ) • K‖ ≤ 1 := by
-    rw [norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpos,
-      inv_mul_cancel₀ hpos.ne']
-  have h := norm_trace_conjTranspose_mul_le_rectangularTraceNorm Yᴴ _ hU
-  rw [conjTranspose_conjTranspose, rectangularTraceNorm_conjTranspose, Matrix.mul_smul,
-    trace_smul, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpos] at h
-  rwa [inv_mul_le_iff₀ hpos] at h
-
 /-- **The energy of a glued matrix** (Lemma `l:gluing`, part 3, arXiv:1307.5143v1,
 `algo53.tex`, lines 428–429 and 439–445). Let `W` be an isometry, `v = (1 ⊗ W) x`, and let
 `H = H_L ⊗ 1 + 1 ⊗ K` with `H_L` acting on `A ⊗ S` and `K` acting on `S ⊗ R`. Then
