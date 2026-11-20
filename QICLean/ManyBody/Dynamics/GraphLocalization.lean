@@ -59,6 +59,9 @@ is gone; the graph ball is in `QICLean.ManyBody.Dynamics.GraphBall`.
 * `ManyBody.norm_heisenberg_sub_regionExpectation_graphBall_le`: the
   localization estimate, with explicit constants depending only on `R`, `v_R`,
   `b₀`, `K_g` and `k`.
+* `ManyBody.norm_heisenberg_sub_regionExpectation_graphNeighborhood_le_of_sphere_le_two`:
+  localization onto the real-radius neighborhood of an arbitrary finite support on a graph whose
+  spheres have at most two sites (TNLean one-dimensional note, Lemma `lem:LR`).
 -/
 
 open NormedSpace
@@ -424,6 +427,66 @@ theorem norm_heisenberg_sub_regionExpectation_graphNeighborhood_le
       rw [show (2 * vR * |b₀| * Real.exp (2 * R) + 1) * |t| - (l : ℝ) / 2 =
         (2 * vR * |b₀| * Real.exp (2 * R) + 1) * |t| + (-(l : ℝ) / 2) by ring,
         Real.exp_add]
+      ring
+
+/-- **Localization on a graph with spheres of at most two sites.** Let the supports have graph
+diameter at most `R` and at most `R + 1` sites, and let every sphere of `G` have at most two
+sites. For `A` supported on a finite set `S`, every real `ℓ`, and `N_ℓ(S)` the union of the graph
+balls of radius `⌊ℓ⌋` about the sites of `S`,
+`‖τ_t(A) - E_{N_ℓ(S)}(τ_t(A))‖ ≤ C' |S|² ‖A‖ e^{v|t| - ℓ/2}`, where
+`C' = 2 C₀ e / (1 - e^{-1/2})`, `C₀ = 2 + 4 |b₀| e^{2R}` and `v = 2 (R + 1) |b₀| e^{2R} + 1`.
+TNLean one-dimensional note, `part2a_mps_information.tex`, Lemma `lem:LR`, lines 274–280.
+
+Moved from TNLean, `TNLean/MPS/AreaLaw/LiebRobinson.lean` at commit `414a18fb88`, with the
+interaction `Φ` in place of the family of terms `h` and their supports. -/
+theorem norm_heisenberg_sub_regionExpectation_graphNeighborhood_le_of_sphere_le_two
+    {κ : Type*} [Fintype κ] {T : κ → Finset V}
+    (G : SimpleGraph V) (Φ : Interaction X T)
+    (hHerm : ∀ k, (Φ.term k).IsHermitian)
+    (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
+    (hCard : ∀ k, (T k).card ≤ R + 1)
+    (hSphere : ∀ x : V, ∀ d : ℕ, (Finset.univ.filter fun y ↦ G.edist x y = d).card ≤ 2)
+    (b₀ : ℝ)
+    (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
+    (S : Finset V) {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X S) (ℓ : ℝ) (t : ℝ) :
+    ‖heisenbergEvolution Φ.hamiltonian t A -
+        regionExpectation (S.biUnion fun x ↦ graphBall G x ⌊ℓ⌋₊)
+          (heisenbergEvolution Φ.hamiltonian t A)‖ ≤
+      (2 * (2 + 4 * |b₀| * Real.exp (2 * R)) * Real.exp 1 /
+        (1 - Real.exp (-(1 / 2)))) * (S.card : ℝ) ^ 2 * ‖A‖ *
+          Real.exp ((2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1) * |t| - ℓ / 2) := by
+  classical
+  have hGrowth : ∀ x : V, ∀ d : ℕ,
+      ((Finset.univ.filter fun y ↦ G.edist x y = d).card : ℝ) ≤ 2 * ((d : ℝ) + 1) ^ 0 := by
+    intro x d
+    simp only [pow_zero, mul_one]
+    exact_mod_cast hSphere x d
+  have hGraph := norm_heisenberg_sub_regionExpectation_graphNeighborhood_le
+    G Φ hHerm R hDiam (R + 1) hCard
+    b₀ hBudget 2 0 hGrowth S hA ⌊ℓ⌋₊ t
+  simp only [pow_zero, Nat.factorial_zero, Nat.cast_one, mul_one, Nat.cast_add] at hGraph
+  have hRound :
+      Real.exp ((2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1) * |t| - (⌊ℓ⌋₊ : ℝ) / 2) ≤
+        Real.exp (1 / 2) *
+          Real.exp ((2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1) * |t| - ℓ / 2) := by
+    rw [← Real.exp_add]
+    apply Real.exp_le_exp.mpr
+    have := Nat.lt_floor_add_one ℓ
+    linarith
+  have hden : 0 < 1 - Real.exp (-(1 / 2 : ℝ)) :=
+    sub_pos.mpr (Real.exp_lt_one_iff.mpr (by norm_num))
+  apply hGraph.trans
+  calc
+    _ ≤ (2 + 4 * |b₀| * Real.exp (2 * R)) * (S.card : ℝ) ^ 2 * ‖A‖ * 2 *
+        (1 * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))) *
+          (Real.exp (1 / 2) *
+            Real.exp ((2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1) * |t| - ℓ / 2)) :=
+      mul_le_mul_of_nonneg_left hRound (by positivity)
+    _ = _ := by
+      rw [show Real.exp (1 : ℝ) = Real.exp (1 / 2) * Real.exp (1 / 2) by
+        rw [← Real.exp_add]
+        norm_num]
       ring
 
 end ManyBody
