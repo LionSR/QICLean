@@ -174,7 +174,8 @@ ENTROPY_RENAMES = {
     "sliceIsometry": ("ManyBody.sliceIsometry", [], 0),
     "glueIsometry_conjTranspose_mul_self": ("ManyBody.glueIsometry_conjTranspose_mul_self", [], 0),
     "sliceIsometry_conjTranspose_mul_self": ("ManyBody.sliceIsometry_conjTranspose_mul_self", [], 0),
-    "norm_le_one_of_isometry": ("ManyBody.norm_le_one_of_isometry", [], 0),
+    # a duplicate of the existing matrix lemma
+    "norm_le_one_of_isometry": ("Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one", [], 0),
     "glueIsometry_mul_conjTranspose_apply": ("ManyBody.glueIsometry_mul_conjTranspose_apply", [], 0),
     "sliceIsometry_conj_apply": ("ManyBody.sliceIsometry_conj_apply", [], 0),
     "card_innerConfig": ("ManyBody.card_innerConfig", [], 0),
@@ -716,10 +717,11 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
                     start = dm.end()
                     continue
                 if len(pos) <= max(drops):
+                    # left unchanged, as the module docstring promises, and reported
                     rep.unhandled.append(f"{path}:{lineno(new_text, dm.start())}: `{old}` "
                                          f"needs {max(drops) + 1} argument(s)")
-                    new_text = new_text[:dm.start()] + new + new_text[dm.end():]
-                    start = dm.start() + len(new)
+                    start = dm.end()
+                    continue
                 else:
                     gone = {pos[d] for d in drops}
                     kept = "".join(sep + arg for i, (sep, arg, _) in enumerate(args)
@@ -901,7 +903,7 @@ def main() -> int:
                 if a.check or nt == t or a.part == "M":
                     # the exchange of part M is not idempotent: one pass only
                     break
-                t2 = rewrite_text(nt, p, qualified, bare, dot, False, Report(), False)
+                t2 = rewrite_text(nt, p, qualified, bare, dot, False, rep, False)
                 if t2 == nt:
                     break
                 nt = t2
@@ -909,6 +911,8 @@ def main() -> int:
                 nt = wrap_changed(t, nt, p, rep)
                 with open(p, "w", encoding="utf8") as h:
                     h.write(nt)
+    # a site left for a hand edit is seen again by every later pass over its file
+    rep.unhandled = list(dict.fromkeys(rep.unhandled))
     lines = []
     if a.check:
         lines.append(f"remaining old names: {len(rep.remaining)}")

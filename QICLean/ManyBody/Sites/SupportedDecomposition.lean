@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Algebra.BipartiteDecomposition
 import QICLean.Algebra.L2OpNormReindex
+import QICLean.Analysis.MatrixFramePerturbation
 import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.Support
 
@@ -200,16 +201,6 @@ theorem sliceIsometry_conjTranspose_mul_self (x₀ : (v : {v // v ∈ B}) → Fi
   · intro z _ hz; simp [hz]
   · simp
 
-/-- A rectangular isometry has operator norm at most one. -/
-theorem norm_le_one_of_isometry {m k : Type*} [Fintype m] [Fintype k]
-    [DecidableEq k] {S : Matrix m k ℂ} (hS : Sᴴ * S = 1) : ‖S‖ ≤ 1 := by
-  have h := l2_opNorm_conjTranspose_mul_self S
-  rw [hS] at h
-  have h1 : ‖(1 : Matrix k k ℂ)‖ ≤ 1 := by
-    rw [← l2_opNorm_toEuclideanCLM, map_one]
-    exact ContinuousLinearMap.norm_id_le
-  nlinarith [norm_nonneg S]
-
 theorem glueIsometry_mul_conjTranspose_apply (a b : ManyBody.InnerConfig n B D)
     (x x' : (v : {v // v ∈ B}) → Fin (n v)) :
     (ManyBody.glueIsometry a * (ManyBody.glueIsometry b)ᴴ) x x' =
@@ -316,17 +307,17 @@ theorem IsSupportedOn.hasProductDecomposition_inner {X : Matrix
   · have hc : ‖c (e.symm k)‖ ≤ 1 := by
       refine (l2_opNorm_mul _ _).trans ?_
       rw [l2_opNorm_conjTranspose]
-      have h1 := ManyBody.norm_le_one_of_isometry (ManyBody.glueIsometry_conjTranspose_mul_self
+      have h1 := Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one (ManyBody.glueIsometry_conjTranspose_mul_self
           (e.symm k).1)
-      have h2 := ManyBody.norm_le_one_of_isometry (ManyBody.glueIsometry_conjTranspose_mul_self
+      have h2 := Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one (ManyBody.glueIsometry_conjTranspose_mul_self
           (e.symm k).2)
       nlinarith [norm_nonneg (ManyBody.glueIsometry (B := B) (e.symm k).1),
         norm_nonneg (ManyBody.glueIsometry (B := B) (e.symm k).2)]
     have hd : ‖d (e.symm k)‖ ≤ ‖X‖ := by
-      have h1 := ManyBody.norm_le_one_of_isometry
+      have h1 := Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one
         (ManyBody.sliceIsometry_conjTranspose_mul_self (n := n)
             (ManyBody.glueConfig (e.symm k).1 q₀))
-      have h2 := ManyBody.norm_le_one_of_isometry
+      have h2 := Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one
         (ManyBody.sliceIsometry_conjTranspose_mul_self (n := n)
             (ManyBody.glueConfig (e.symm k).2 q₀))
       have h3 : ‖ManyBody.cutOperator B X‖ = ‖X‖ := Matrix.l2_opNorm_reindex_equiv _ X

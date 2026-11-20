@@ -40,12 +40,6 @@ section Compatibility
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
-    ManyBody.regionState ψ D = ManyBody.regionState ψ D := rfl
-
-example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
-    ManyBody.regionEntropy ψ D = ManyBody.regionEntropy ψ D := rfl
-
 -- Existing consumers unfold these names before using partial trace lemmas.
 example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     (ManyBody.regionState ψ D).trace = ((‖ψ‖ ^ 2 : ℝ) : ℂ) := by
