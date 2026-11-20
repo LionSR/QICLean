@@ -44,37 +44,38 @@ private def outsideSplitEquiv (hAB : A ⊆ B) :
 /-- Contracting the exterior of `B` preserves the rank bound across `A ⊆ B`.
 Supporting algebra for LVV13, `algo53.tex`, Claim `c:errorreduction`, line 591. -/
 theorem operatorSchmidtRank_rightContraction_subset_le (hAB : A ⊆ B)
-    (K : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (K : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
     (φ : Matrix ((v : {v : V // v ∉ B}) → Fin (n v))
       ((v : {v : V // v ∉ B}) → Fin (n v)) ℂ →ₗ[ℂ] ℂ) :
     operatorSchmidtRank
-      ((operatorRightContraction φ (cutOperator B K)).reindex
+      ((operatorRightContraction φ (ManyBody.cutOperator B K)).reindex
         (subsetSplitEquiv n hAB) (subsetSplitEquiv n hAB)) ≤
-      operatorSchmidtRank (cutOperator A K) := by
+      operatorSchmidtRank (ManyBody.cutOperator A K) := by
   classical
   let := Fintype.ofFinite V
   let e := threeCutEquiv n hAB
   let ρ := K.reindex e e
-  have hcontract : (operatorRightContraction φ (cutOperator B K)).reindex
+  have hcontract : (operatorRightContraction φ (ManyBody.cutOperator B K)).reindex
       (subsetSplitEquiv n hAB) (subsetSplitEquiv n hAB) =
       operatorRightContraction φ ρ := by
     ext x y
     apply congrArg φ
     ext z z'
-    change K ((cutEquiv n B).symm ((subsetSplitEquiv n hAB).symm x, z))
-      ((cutEquiv n B).symm ((subsetSplitEquiv n hAB).symm y, z')) =
+    change K ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).symm ((subsetSplitEquiv n hAB).symm x, z))
+      ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) B).symm ((subsetSplitEquiv n hAB).symm y, z')) =
       K ((threeCutEquiv n hAB).symm (x, z)) ((threeCutEquiv n hAB).symm (y, z'))
     rw [threeCutEquiv_eq_trans]
     rfl
   have hcoords : e.trans (Equiv.prodAssoc _ _ _) =
-      (cutEquiv n A).trans ((Equiv.refl _).prodCongr (outsideSplitEquiv hAB)) := by
+      (ManyBody.cutEquiv (fun v ↦ Fin (n v)) A).trans
+          ((Equiv.refl _).prodCongr (outsideSplitEquiv hAB)) := by
     ext σ <;> rfl
   rw [hcontract]
   refine (operatorSchmidtRank_operatorRightContraction_le φ ρ).trans_eq ?_
   change operatorSchmidtRank
     (K.reindex (e.trans (Equiv.prodAssoc _ _ _)) (e.trans (Equiv.prodAssoc _ _ _))) = _
   rw [hcoords]
-  exact operatorSchmidtRank_reindex_prodCongr (cutOperator A K)
+  exact operatorSchmidtRank_reindex_prodCongr (ManyBody.cutOperator A K)
     (Equiv.refl _) (outsideSplitEquiv hAB)
 
 end Entropy

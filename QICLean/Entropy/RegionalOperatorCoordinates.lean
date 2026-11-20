@@ -29,12 +29,12 @@ private theorem localLift_eq_middleFirst {V : Type*} [Fintype V] [DecidableEq V]
     (K : Matrix (J → Fin q) (J → Fin q) ℂ) :
     let tau := (FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) J).trans
       (Equiv.prodComm _ _)
-    Entropy.localLift (n := fun _ : V ↦ q) J K =
+    ManyBody.place (X := fun _ ↦ Fin q) J K =
       ((1 : Matrix (↥(Jᶜ) → Fin q) (↥(Jᶜ) → Fin q) ℂ) ⊗ₖ K).submatrix tau tau := by
   classical
   intro tau
   ext σ ρ
-  rw [Entropy.localLift_apply]
+  rw [ManyBody.place_apply]
   simp only [submatrix_apply, kroneckerMap_apply, one_apply,
     tau, Equiv.trans_apply, Equiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap]
   have hfst (ξ : V → Fin q) :
@@ -70,19 +70,19 @@ theorem localLift_middleFirst_conjugation {V : Type*} [Fintype V] [DecidableEq V
       (EuclideanSpace ℂ (FiniteProduct.Configuration beta J)))
     Tm.toContinuousLinearEquiv.toContinuousLinearMap ∘L
         toEuclideanCLM (𝕜 := ℂ) (n := V → Fin q)
-          (Entropy.localLift (n := fun _ : V ↦ q) J K) ∘L
+          (ManyBody.place (X := fun _ ↦ Fin q) J K) ∘L
         Tm.symm.toContinuousLinearEquiv.toContinuousLinearMap =
       TensorProduct.mapL (toEuclideanCLM (𝕜 := ℂ) (n := J → Fin q) K)
         (1 : EuclideanSpace ℂ (↥(Jᶜ) → Fin q) →L[ℂ]
           EuclideanSpace ℂ (↥(Jᶜ) → Fin q)) := by
   intro beta tau U Phi Tm
-  have hmatrix : Entropy.localLift (n := fun _ : V ↦ q) J K =
+  have hmatrix : ManyBody.place (X := fun _ ↦ Fin q) J K =
       (∑ _i : Unit, (1 : Matrix (↥(Jᶜ) → Fin q) (↥(Jᶜ) → Fin q) ℂ) ⊗ₖ K).submatrix
         tau tau := by
     simpa only [Fintype.sum_unique] using localLift_eq_middleFirst J K
   have hconj := toEuclideanCLM_middleFirst_conjugation_of_kronecker_sum
     tau (fun _ : Unit ↦ (1 : Matrix (↥(Jᶜ) → Fin q) (↥(Jᶜ) → Fin q) ℂ))
-    (fun _ : Unit ↦ K) (Entropy.localLift (n := fun _ : V ↦ q) J K) hmatrix
+    (fun _ : Unit ↦ K) (ManyBody.place (X := fun _ ↦ Fin q) J K) hmatrix
   simpa only [Fintype.sum_unique, map_one] using hconj
 
 /-- Identity extension becomes the regional tensor factor times the
@@ -96,7 +96,7 @@ theorem regionTensorCoordinates_conjugation_localLift
     let Tm := regionTensorCoordinates q J
     Tm.toContinuousLinearEquiv.toContinuousLinearMap ∘L
         toEuclideanCLM (𝕜 := ℂ) (n := V → Fin q)
-          (localLift (n := fun _ : V ↦ q) J K) ∘L
+          (ManyBody.place (X := fun _ ↦ Fin q) J K) ∘L
         Tm.symm.toContinuousLinearEquiv.toContinuousLinearMap =
       TensorProduct.mapL (toEuclideanCLM (𝕜 := ℂ) (n := J → Fin q) K)
         (1 : EuclideanSpace ℂ (↥(Jᶜ) → Fin q) →L[ℂ]

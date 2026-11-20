@@ -35,7 +35,7 @@ Changes: the configurations are `Config X` for any finite basis types, and the p
 is `ManyBody.prodOp` (TNLean's `piKronecker`). The supported-operator form uses the indices of
 `ofSupported` on the support only, so no common dimension and no relation `near i i` is
 needed; TNLean's `apply_eq_apply_of_mem_supportedOperators` is
-`ManyBody.apply_eq_of_mem_supportedOperators`.
+`ManyBody.IsSupportedOn.apply_eq`.
 -/
 
 open Matrix

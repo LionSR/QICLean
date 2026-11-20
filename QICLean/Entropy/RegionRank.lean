@@ -6,7 +6,9 @@ Authors: QICLean contributors
 import QICLean.Channel.PureMarginalRank
 import QICLean.Channel.MarginalRank
 import QICLean.Entropy.FiniteProduct
-import QICLean.Entropy.LocalLift
+import QICLean.Entropy.SupportedMarginalTails
+import QICLean.Entropy.FilterMoment
+import QICLean.ManyBody.Sites.RegionState
 
 /-!
 # Ranks of reduced matrices on complementary and disjoint regions
@@ -47,24 +49,26 @@ namespace Entropy
 
 /-- Complementary regions of a pure state have equal reduced-matrix ranks. -/
 theorem rank_regionState_compl {V : Type*} [Fintype V] [DecidableEq V]
-    {n : V → ℕ} (ψ : EuclideanSpace ℂ (SiteConfig n)) (R : Finset V) :
-    (regionState Rᶜ ψ).rank = (regionState R ψ).rank := by
+    {n : V → ℕ} (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) (R : Finset V) :
+    (ManyBody.regionState ψ Rᶜ).rank = (ManyBody.regionState ψ R).rank := by
   simp only [ManyBody.regionState_eq_reducedPure, FiniteProduct.rank_reducedPure_compl]
 
 /-- The rank on a disjoint union is at most the product of the regional ranks. -/
 theorem rank_regionState_union_le {V : Type*} [Fintype V] [DecidableEq V]
-    {n : V → ℕ} (ψ : EuclideanSpace ℂ (SiteConfig n)) (R T : Finset V)
+    {n : V → ℕ} (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) (R T : Finset V)
     (h : Disjoint R T) :
-    (regionState (R ∪ T) ψ).rank ≤ (regionState R ψ).rank * (regionState T ψ).rank := by
+    (ManyBody.regionState ψ (R ∪ T)).rank ≤ (ManyBody.regionState ψ R).rank *
+        (ManyBody.regionState ψ T).rank := by
   simp only [ManyBody.regionState_eq_reducedPure, FiniteProduct.reducedPure]
   exact FiniteProduct.rank_reducedMatrix_union_le _
     (Matrix.posSemidef_vecMulVec_self_star _) R T h
 
 /-- A region between two nested cuts has rank bounded by the product of the cut ranks. -/
 theorem rank_regionState_sdiff_le {V : Type*} [Fintype V] [DecidableEq V]
-    {n : V → ℕ} (ψ : EuclideanSpace ℂ (SiteConfig n)) {R T : Finset V}
+    {n : V → ℕ} (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) {R T : Finset V}
     (h : R ⊆ T) :
-    (regionState (T \ R) ψ).rank ≤ (regionState R ψ).rank * (regionState T ψ).rank := by
+    (ManyBody.regionState ψ (T \ R)).rank ≤ (ManyBody.regionState ψ R).rank *
+        (ManyBody.regionState ψ T).rank := by
   have heq : (T \ R)ᶜ = R ∪ Tᶜ := by
     ext v
     simp only [Finset.mem_compl, Finset.mem_sdiff, Finset.mem_union]

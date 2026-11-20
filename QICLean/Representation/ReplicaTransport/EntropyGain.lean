@@ -118,14 +118,14 @@ omit [∀ v, NeZero (n v)] in
 /-- The entropy of a region of a pure state is continuous in the vector: the reduced matrix is
 quadratic in the vector and `ρ ↦ Tr η(ρ)` is continuous on Hermitian matrices. -/
 theorem continuous_entropy (R : Finset V) :
-    Continuous fun θ : SiteConfig n → ℂ =>
+    Continuous fun θ : (∀ v, Fin (n v)) → ℂ =>
       FiniteProduct.entropy (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
-  have hρ : Continuous fun θ : SiteConfig n → ℂ =>
+  have hρ : Continuous fun θ : (∀ v, Fin (n v)) → ℂ =>
       FiniteProduct.reducedPure (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R := by
     refine continuous_pi fun a => continuous_pi fun b => ?_
     simp only [FiniteProduct.reducedPure, FiniteProduct.reducedMatrix_apply, vecMulVec_apply]
     fun_prop
-  have heq : ∀ θ : SiteConfig n → ℂ,
+  have heq : ∀ θ : (∀ v, Fin (n v)) → ℂ,
       FiniteProduct.entropy (fun v => Fin (n v)) ((EuclideanSpace.equiv _ ℂ).symm θ) R =
         (cfc Real.negMulLog (FiniteProduct.reducedPure (fun v => Fin (n v))
           ((EuclideanSpace.equiv _ ℂ).symm θ) R)).trace.re := fun θ => by
@@ -143,7 +143,8 @@ theorem continuous_entropy (R : Finset V) :
 omit [∀ v, NeZero (n v)] in
 /-- The entropy of a move is continuous in the one-copy vector. -/
 theorem continuous_moveEta (π : PYF V) (m : Move V) :
-    Continuous fun θ : SiteConfig n → ℂ => moveEta n π m ((EuclideanSpace.equiv _ ℂ).symm θ) := by
+    Continuous fun θ : (∀ v, Fin (n v)) → ℂ => moveEta n π m
+        ((EuclideanSpace.equiv _ ℂ).symm θ) := by
   cases m with
   | stay => exact continuous_const
   | toP x =>
@@ -203,7 +204,7 @@ omit [∀ v, NeZero (n v)] [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)]
 /-- The band relative ratios commute with the permutations of entire copies. -/
 theorem commute_permOp_bandRelRatio {t : ℝ} (k : ℕ) (h : H) (g : Fin K)
     (s : Equiv.Perm (Fin k)) :
-    Commute (permOp (copyPerm (SiteConfig n) k) s) (D.bandRelRatio n t k h g) := by
+    Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s) (D.bandRelRatio n t k h g) := by
   unfold bandRelRatio
   have hA := commute_permOp_symBandMetric (n := n) t k (D.old h g) s
   exact ((commute_rpow_of_commute hA _).mul_right (commute_eval_of_commute
@@ -214,7 +215,7 @@ omit [Fintype H] in
 lines 513--531): from per-move pins with common `b > 0` and error `E`, projection transfer
 gives `C_{h,g} ≥ b exp(k a [∑_c q_{c|h} η_{h,c,g}(θ) - E]) P_{θ,k}`. -/
 theorem smul_coherentProj_le_bandRelRatio (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t)
-    (k : ℕ) (h : H) (g : Fin K) {b Err : ℝ} (hb : 0 < b) (θ : SiteConfig n → ℂ)
+    (k : ℕ) (h : H) (g : Fin K) {b Err : ℝ} (hb : 0 < b) (θ : (∀ v, Fin (n v)) → ℂ)
     (hpin : ∀ c, (b * Real.exp ((k : ℝ) * (2 * t) *
         (moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ) - Err))) •
           coherentProj k θ ≤
@@ -407,7 +408,7 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePinBoundAt {c₁ Cpin e
           mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_abs_self _) hA) hx0
       _ ≤ Err := mul_le_mul_of_nonneg_left hpow (mul_nonneg (abs_nonneg _) hA)
   -- Per-move pins with the common prefactor and error.
-  have hpinU : ∀ (k : ℕ) h g (θ : SiteConfig n → ℂ), star θ ⬝ᵥ θ = 1 → ∀ c : C h,
+  have hpinU : ∀ (k : ℕ) h g (θ : (∀ v, Fin (n v)) → ℂ), star θ ⬝ᵥ θ = 1 → ∀ c : C h,
       (bmin k * Real.exp ((k : ℝ) * (2 * (a / 2)) *
         (moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ) - Err))) •
           coherentProj k θ ≤
@@ -425,15 +426,15 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePinBoundAt {c₁ Cpin e
     have hk : 0 ≤ (k : ℝ) * (2 * (a / 2)) := by positivity
     exact mul_le_mul_of_nonneg_left (by linarith [hErr h c g]) hk
   -- The band gain: the conditional pin and the logarithmic passage.
-  set F : ∀ h, Fin K → (SiteConfig n → ℂ) → ℝ := fun h g θ => ∑ c, (D.choiceTree h).weight c *
+  set F : ∀ h, Fin K → ((∀ v, Fin (n v)) → ℂ) → ℝ := fun h g θ => ∑ c, (D.choiceTree h).weight c *
     moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ) with hFdef
   have hFc : ∀ h g, Continuous (F h g) := fun h g =>
     continuous_finsetSum _ fun c _ => continuous_const.mul (continuous_moveEta _ _)
   have hgain : ∀ (k : ℕ) h g (ρ : Matrix (Config k fun v => Fin (n v))
       (Config k fun v => Fin (n v)) ℂ), ρ.PosSemidef → ρ.trace = 1 →
-      symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+      symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ →
       Real.log (bmin k) + (k : ℝ) * a * (realCoherentIntegral k (base n) ρ (F h g) - Err) -
-          Real.log (symDim (SiteConfig n) k) ≤
+          Real.log (symDim (∀ v, Fin (n v)) k) ≤
         (ρ * CFC.log (D.bandRelRatio n (a / 2) k h g)).trace.re := by
     intro k h g ρ hρ htr hsym
     have key := realCoherentIntegral_sub_log_le_re_trace_mul_log (base n)
@@ -455,7 +456,7 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePinBoundAt {c₁ Cpin e
   have hsum : ∀ (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ),
       pre ∈ symmetricSubspace k (fun v => Fin (n v)) → pre ≠ 0 → ∀ p ∈ Ioo (0 : ℝ) 1, ∀ h u,
       (k : ℝ) * a * ∑ g, realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u)
-          (F h g) - K * ((k : ℝ) * a * Err + Real.log (symDim (SiteConfig n) k) -
+          (F h g) - K * ((k : ℝ) * a * Err + Real.log (symDim (∀ v, Fin (n v)) k) -
             Real.log (bmin k)) ≤
         (D.state n (a / 2) k pre p ⟨h, none⟩ u * CFC.log (D.relRatio n (a / 2) k h)).trace.re := by
     intro k pre hsym hpre p hp h u
@@ -467,16 +468,16 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePinBoundAt {c₁ Cpin e
       Complex.re_sum]
     have hle := Finset.sum_le_sum fun g (_ : g ∈ Finset.univ) => hgain k h g ρs hσ hσ1 hσs
     have hcalc : ∑ g : Fin K, (Real.log (bmin k) + (k : ℝ) * a *
-        (realCoherentIntegral k (base n) ρs (F h g) - Err) - Real.log (symDim (SiteConfig n) k)) =
+        (realCoherentIntegral k (base n) ρs (F h g) - Err) - Real.log (symDim (∀ v, Fin (n v)) k)) =
         (k : ℝ) * a * ∑ g, realCoherentIntegral k (base n) ρs (F h g) - K * ((k : ℝ) * a * Err +
-          Real.log (symDim (SiteConfig n) k) - Real.log (bmin k)) := by
+          Real.log (symDim (∀ v, Fin (n v)) k) - Real.log (bmin k)) := by
       simp only [Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.mul_sum, mul_sub,
         Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
       ring
     linarith
   -- Integration in the Fourier time and summation over histories.
-  refine ⟨fun k => (K : ℝ) / 2 * (Real.log (symDim (SiteConfig n) k) + L k),
-    ((log_symDim_isBigO (Ω := SiteConfig n)).add hLO).const_mul_left _, ?_⟩
+  refine ⟨fun k => (K : ℝ) / 2 * (Real.log (symDim (∀ v, Fin (n v)) k) + L k),
+    ((log_symDim_isBigO (Ω := (∀ v, Fin (n v)))).add hLO).const_mul_left _, ?_⟩
   intro k pre hsym hpre p hp
   have hm := Real.integral_sinhRatioDensity (s := 1 / 4) (by norm_num)
   have hmi : MeasureTheory.Integrable Matrix.Transport.fourierWeight :=
@@ -490,7 +491,7 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePinBoundAt {c₁ Cpin e
     refine (D.integrable_fourierWeight_mul_trace_state (a / 2) k pre p ⟨h, none⟩
       (coherentAverage k (base n) (F h g))).congr (Filter.Eventually.of_forall fun u => ?_)
     simp only [trace_mul_coherentAverage k (base n) (hFc h g)]
-  set β' := (K : ℝ) * ((k : ℝ) * a * Err + Real.log (symDim (SiteConfig n) k) -
+  set β' := (K : ℝ) * ((k : ℝ) * a * Err + Real.log (symDim (∀ v, Fin (n v)) k) -
     Real.log (bmin k))
   have hhist : ∀ h, (k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
       realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) - β' / 2 ≤
@@ -534,7 +535,7 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePinBoundAt {c₁ Cpin e
   have hw := D.histTree.sum_weight
   calc (k : ℝ) * a * D.entropyGain n (a / 2) k pre p -
         |Cpin| / 2 * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ max epin 0 -
-          (K : ℝ) / 2 * (Real.log (symDim (SiteConfig n) k) + L k)
+          (K : ℝ) / 2 * (Real.log (symDim (∀ v, Fin (n v)) k) + L k)
       = ∑ h, D.histTree.weight h * ((k : ℝ) * a * ∑ g, (∫ u, Matrix.Transport.fourierWeight u *
           realCoherentIntegral k (base n) (D.state n (a / 2) k pre p ⟨h, none⟩ u) (F h g)) -
             β' / 2) := by
@@ -559,7 +560,7 @@ theorem exists_entropyGain_le_exactDerivative_of_relativePinBoundAt {c₁ Cpin e
         have hlogb : Real.log (bmin k) = -L k := Real.log_exp _
         have key : ∀ S : ℝ, (k : ℝ) * a * S -
             |Cpin| / 2 * k * a * K * a ^ (1 / 4 : ℝ) * ℓ ^ max epin 0 -
-              (K : ℝ) / 2 * (Real.log (symDim (SiteConfig n) k) + L k) =
+              (K : ℝ) / 2 * (Real.log (symDim (∀ v, Fin (n v)) k) + L k) =
             (k : ℝ) * a * S - β' / 2 := fun S => by
           simp only [β', hlogb, hErrDef]
           ring

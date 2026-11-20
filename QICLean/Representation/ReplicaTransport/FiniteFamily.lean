@@ -45,7 +45,7 @@ theorem transport_finite_family_explicit :
       (D : ∀ j, TransportData V K (H j) (C j))
       {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
       (∀ j, (D j).IsAdmissible) → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-      (∀ i, IsSupportedOn (E.term i) (E.support i)) →
+      (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) →
       (∀ j, (D j).SupportCompatible E) →
       ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ transportThreshold →
       (∀ j k, (D j).CrossBandCommute n (a / 2) k) →
@@ -136,7 +136,7 @@ theorem transport_finite_family :
         (D : ∀ j, TransportData V K (H j) (C j))
         {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
         (∀ j, (D j).IsAdmissible) → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) →
+        (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) →
         (∀ j, (D j).SupportCompatible E) →
         ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ →
         (∀ j k, (D j).CrossBandCommute n (a / 2) k) →

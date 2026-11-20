@@ -11,14 +11,14 @@ set_option autoImplicit false
 set_option linter.hashCommand false
 
 /-- info:
-'Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+'ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
-#print axioms Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le
+#print axioms ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le
 
 /-- info:
-'Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one' depends on axioms: [propext, Classical.choice, Quot.sound] -/
+'ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one' depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
-#print axioms Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one
+#print axioms ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one
 
 /-- info:
 'Entropy.operatorSchmidtRank_cutOperator_list_prod_le'

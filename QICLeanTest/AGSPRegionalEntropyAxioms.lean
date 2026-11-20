@@ -47,7 +47,7 @@ private theorem projector_data (A : Finset (Fin 2)) :
         ‖ψ‖ = 1 → ⟪Ω, ψ⟫_ℂ = 0 →
           ⟪Ω, Matrix.toEuclideanLin K ψ⟫_ℂ = 0 ∧
             ‖Matrix.toEuclideanLin K ψ‖ ^ 2 ≤ (0 : ℝ)) ∧
-      Matrix.operatorSchmidtRank (Entropy.cutOperator (n := fun _ : Fin 2 ↦ 2) A K) ≤ 1 := by
+      Matrix.operatorSchmidtRank (ManyBody.cutOperator (X := fun _ ↦ Fin 2) A K) ≤ 1 := by
   classical
   refine ⟨?_, ?_, ?_, ?_⟩
   · simp only [Ω, PiLp.norm_single, norm_one]
@@ -62,10 +62,10 @@ private theorem projector_data (A : Finset (Fin 2)) :
       simp only [K, Matrix.single_mulVec_eq, one_mul, hψ,
         zero_smul, WithLp.toLp_zero]
     simp [hzero]
-  · let e := Entropy.cutEquiv (fun _ : Fin 2 ↦ 2) A
-    have hcut : Entropy.cutOperator (n := fun _ : Fin 2 ↦ 2) A K =
+  · let e := ManyBody.cutEquiv (fun _ ↦ Fin 2) A
+    have hcut : ManyBody.cutOperator (X := fun _ ↦ Fin 2) A K =
         Matrix.single (e zeroConfig) (e zeroConfig) (1 : ℂ) := by
-      simp only [Entropy.cutOperator, Matrix.reindex_apply, K,
+      simp only [ManyBody.cutOperator, Matrix.reindex_apply, K,
         Matrix.submatrix_single_equiv, Equiv.symm_symm, e]
     rw [hcut]
     apply Matrix.operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
@@ -74,7 +74,7 @@ private theorem projector_data (A : Finset (Fin 2)) :
     simp only [Fin.sum_univ_one, Matrix.single_kronecker_single, one_mul, Prod.mk.eta]
 
 /-- The favorable-tradeoff estimate applies to the empty region. -/
-example : Entropy.regionEntropy (n := fun _ : Fin 2 ↦ 2) ∅ Ω ≤ 0 := by
+example : ManyBody.regionEntropy (X := fun _ ↦ Fin 2) Ω ∅ ≤ 0 := by
   obtain ⟨hΩ, hfix, hperp, hrank⟩ := projector_data ∅
   have result := Entropy.regionEntropy_le_four_log_of_cutOperatorSchmidtRank
     (n := fun _ : Fin 2 ↦ 2) ∅ K Ω hΩ hfix (D := 1) (δ := 0)
@@ -82,7 +82,7 @@ example : Entropy.regionEntropy (n := fun _ : Fin 2 ↦ 2) ∅ Ω ≤ 0 := by
   simpa only [Nat.cast_one, Real.log_one, mul_zero] using result
 
 /-- The first site is a nonempty proper region with a two-dimensional local space. -/
-example : Entropy.regionEntropy (n := fun _ : Fin 2 ↦ 2) {0} Ω ≤ 0 := by
+example : ManyBody.regionEntropy (X := fun _ ↦ Fin 2) Ω {0} ≤ 0 := by
   obtain ⟨hΩ, hfix, hperp, hrank⟩ := projector_data {0}
   have result := Entropy.regionEntropy_le_four_log_of_cutOperatorSchmidtRank
     (n := fun _ : Fin 2 ↦ 2) {0} K Ω hΩ hfix (D := 1) (δ := 0)

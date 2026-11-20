@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.BipartiteDecomposition
 import QICLean.Entropy.SchmidtTilt
 import QICLean.Analysis.GlobalGap
 import Mathlib.Analysis.Complex.ExponentialBounds
@@ -49,19 +50,6 @@ namespace Entropy
 
 variable {α β : Type*} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
 
-/-- An operator acts on a single tensor factor: it is `A ⊗ 1` or `1 ⊗ A`. -/
-def IsOneSided (X : Matrix (α × β) (α × β) ℂ) : Prop :=
-  (∃ A : Matrix α α ℂ, X = A ⊗ₖ (1 : Matrix β β ℂ)) ∨
-    ∃ A : Matrix β β ℂ, X = (1 : Matrix α α ℂ) ⊗ₖ A
-
-/-- An operator is a sum of at most `N` products `c_a ⊗ d_a` with
-`‖c_a‖ ‖d_a‖ ≤ c₀`. For a term supported on sites of total dimension `d` this holds
-with `N = d²`, through matrix units on the portion of the support in the first factor.
-Area-law manuscript, `02-initial.tex`, lines 126–133. -/
-def HasProductDecomposition (X : Matrix (α × β) (α × β) ℂ) (c₀ : ℝ) (N : ℕ) : Prop :=
-  ∃ (M : ℕ) (c : Fin M → Matrix α α ℂ) (d : Fin M → Matrix β β ℂ),
-    M ≤ N ∧ X = ∑ a, c a ⊗ₖ d a ∧ ∀ a, ‖c a‖ * ‖d a‖ ≤ c₀
-
 /-- `log (2 N) ≤ 2 log (e d)` when `N ≤ d²` and `d ≥ 1`.
 Area-law manuscript, `02-initial.tex`, line 149. -/
 theorem log_two_mul_le_two_mul_log {N d : ℕ} (hN : N ≤ d ^ 2) (hd : 1 ≤ d) :
@@ -86,7 +74,7 @@ private theorem abs_re_modularExpectation_sub_le_of_decomp {Θ : EuclideanSpace 
     {s : α → ℝ} (hs : ∀ j, 0 ≤ s j) (hsum : ∑ j, s j = 1)
     (hΘ : ∀ j k, ⟪schmidtRow Θ j, schmidtRow Θ k⟫_ℂ = if j = k then (s j : ℂ) else 0)
     (hΘn : ‖Θ‖ = 1) {X : Matrix (α × β) (α × β) ℂ} (hX : Matrix.IsHermitian X) {c₀ : ℝ}
-    (hXn : ‖X‖ ≤ c₀) {d : ℕ} (hd : 1 ≤ d) (hdec : HasProductDecomposition X c₀ (d ^ 2))
+    (hXn : ‖X‖ ≤ c₀) {d : ℕ} (hd : 1 ≤ d) (hdec : Matrix.HasProductDecomposition X c₀ (d ^ 2))
     {x : ℝ} (hx : |x| ≤ 1 / (8 * Real.log (Real.exp 1 * d))) :
     |(modularExpectation Θ s X x - modularExpectation Θ s X 0).re| ≤
       128 * Real.exp 1 * c₀ * Real.log (Real.exp 1 * d) ^ 2 * x ^ 2 := by
@@ -108,8 +96,8 @@ has excitation energy at most `128 e c₀ ∑_{i ∈ I×} log² (e d_i) · u²`.
 Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 87–99 and 164–175,
 `eq:initial-exact-tilt` and `eq:initial-tilted-energy`. -/
 theorem re_inner_tilt_sub_le (hherm : ∀ i, (h i).IsHermitian) (hnorm : ∀ i, ‖h i‖ ≤ c₀)
-    (hone : ∀ i ∉ Cr, IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
-    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2))
+    (hone : ∀ i ∉ Cr, Matrix.IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
+    (hcross : ∀ i ∈ Cr, Matrix.HasProductDecomposition (h i) c₀ (dim i ^ 2))
     (hp : ∀ j, 0 ≤ p j) (hs : ∑ j, p j = 1)
     (hrow : ∀ j k, ⟪schmidtRow Ψ j, schmidtRow Ψ k⟫_ℂ = if j = k then (p j : ℂ) else 0)
     (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
@@ -210,8 +198,8 @@ noncomputable def tailRadius (ϑ B : ℝ) : ℝ := 1 / (32 * Real.sqrt ((1 + ϑ)
 Area-law manuscript, proof of Lemma 3.1, `02-initial.tex`, lines 176–186. -/
 theorem gap_surprisalMoment (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀)
     (hnorm : ∀ i, ‖h i‖ ≤ c₀)
-    (hone : ∀ i ∉ Cr, IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
-    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2))
+    (hone : ∀ i ∉ Cr, Matrix.IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
+    (hcross : ∀ i ∈ Cr, Matrix.HasProductDecomposition (h i) c₀ (dim i ^ 2))
     (hΨ : ‖Ψ‖ = 1) (hp : ∀ j, 0 ≤ p j)
     (hrow : ∀ j k, ⟪schmidtRow Ψ j, schmidtRow Ψ k⟫_ℂ = if j = k then (p j : ℂ) else 0)
     {g₀ : ℝ} (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
@@ -293,8 +281,9 @@ manuscript's Lemma 3.1, if the marginal of the ground vector on the first factor
 Area-law manuscript, Lemma 3.1, `02-initial.tex`, lines 34–63 and 165–203,
 `eq:initial-tail-mgf`. -/
 theorem log_surprisalMoment_le_of_schmidtRow (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀)
-    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
-    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2))
+    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, Matrix.IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim
+        i)
+    (hcross : ∀ i ∈ Cr, Matrix.HasProductDecomposition (h i) c₀ (dim i ^ 2))
     (hΨ : ‖Ψ‖ = 1) (hp : ∀ j, 0 ≤ p j)
     (hrow : ∀ j k, ⟪schmidtRow Ψ j, schmidtRow Ψ k⟫_ℂ = if j = k then (p j : ℂ) else 0)
     {g₀ : ℝ} (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
@@ -320,8 +309,9 @@ real `w` (the manuscript states `w ≥ 0`),
 Area-law manuscript, Lemma 3.1, `02-initial.tex`, lines 64–69 and 204–207,
 `eq:initial-tail-probability`. -/
 theorem surprisalTail_le_of_schmidtRow (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀)
-    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
-    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2))
+    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, Matrix.IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim
+        i)
+    (hcross : ∀ i ∈ Cr, Matrix.HasProductDecomposition (h i) c₀ (dim i ^ 2))
     (hΨ : ‖Ψ‖ = 1) (hp : ∀ j, 0 ≤ p j)
     (hrow : ∀ j k, ⟪schmidtRow Ψ j, schmidtRow Ψ k⟫_ℂ = if j = k then (p j : ℂ) else 0)
     {g₀ : ℝ} (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)

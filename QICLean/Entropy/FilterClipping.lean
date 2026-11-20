@@ -115,16 +115,18 @@ section Clip
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 /-- Pulling a left factor of the middle filter through the outer chain. -/
-theorem toEuclideanLin_liftProd_localLift_mul {φ : EuclideanSpace ℂ (SiteConfig n)}
+theorem toEuclideanLin_liftProd_localLift_mul {φ : EuclideanSpace ℂ (∀ v, Fin (n v))}
     {outer : List (RegionFilter n)} (hchain : IsDescendingChain φ outer) {D : Finset V}
-    (G K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
-    (C : Matrix (SiteConfig n) (SiteConfig n) ℂ) (w : EuclideanSpace ℂ (SiteConfig n)) :
-    toEuclideanLin (liftProd outer * localLift D (G * K) * C) w =
-      toEuclideanLin (liftProd outer * localLift D G * liftProdInv outer)
-        (toEuclideanLin (liftProd outer * localLift D K * C) w) := by
-  rw [localLift_mul, ← toEuclideanLin_mul_apply', show liftProd outer * localLift D G *
-      liftProdInv outer * (liftProd outer * localLift D K * C) = liftProd outer * localLift D G *
-      (liftProdInv outer * liftProd outer) * localLift D K * C by
+    (G K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ)
+    (C : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) (w : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    toEuclideanLin (liftProd outer * ManyBody.place D (G * K) * C) w =
+      toEuclideanLin (liftProd outer * ManyBody.place D G * liftProdInv outer)
+        (toEuclideanLin (liftProd outer * ManyBody.place D K * C) w) := by
+  rw [ManyBody.place_mul, ← toEuclideanLin_mul_apply', show liftProd outer * ManyBody.place D G *
+      liftProdInv outer *
+          (liftProd outer * ManyBody.place D K * C) = liftProd outer * ManyBody.place D G *
+      (liftProdInv outer * liftProd outer) * ManyBody.place D K * C by
       simp only [Matrix.mul_assoc], liftProdInv_mul_liftProd hchain, Matrix.mul_one]
   simp only [Matrix.mul_assoc]
 
@@ -143,21 +145,23 @@ theorem trace_conj_diagonal_mul {m : Type*} [Fintype m] [DecidableEq m] {U : Mat
 whenever `x_i > f`.
 Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 383–399. -/
 theorem ratio_le_of_diagonal_max {D : Finset V}
-    {U : Matrix (RegionConfig n D) (RegionConfig n D) ℂ}
-    (hU : Uᴴ * U = 1) {x q : RegionConfig n D → ℝ} {f a : ℝ} (ha : 0 < a) (hf : 0 < f)
+    {U : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ}
+    (hU : Uᴴ * U = 1) {x q : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) → ℝ} {f a : ℝ}
+        (ha : 0 < a) (hf : 0 < f)
     (hx : ∀ i, f ≤ x i) (hsum : ∑ i, x i = 1) {outer : List (RegionFilter n)}
-    (C : Matrix (SiteConfig n) (SiteConfig n) ℂ) (w : EuclideanSpace ℂ (SiteConfig n))
-    (σ₀ : SiteConfig n)
-    (hmax : ∀ y : RegionConfig n D → ℝ, (∀ i, f ≤ y i) → ∑ i, y i = 1 →
+    (C : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) (w : EuclideanSpace ℂ (∀ v, Fin (n v)))
+    (σ₀ : (∀ v, Fin (n v)))
+    (hmax : ∀ y : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) → ℝ, (∀ i, f ≤ y i) → ∑ i, y i = 1 →
       ‖toEuclideanLin (liftProd outer *
-        localLift D (U * diagonal (fun i ↦ ((y i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ) * C) w‖ ≤
+        ManyBody.place D (U * diagonal (fun i ↦ ((y i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ) * C) w‖ ≤
       ‖toEuclideanLin (liftProd outer *
-        localLift D (U * diagonal (fun i ↦ ((x i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ) * C) w‖)
-    (hρ : regionState D (toEuclideanLin (liftProd outer *
-        localLift D (U * diagonal (fun i ↦ ((x i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ) * C) w) =
+        ManyBody.place D (U * diagonal (fun i ↦ ((x i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ) * C) w‖)
+    (hρ : ManyBody.regionState (toEuclideanLin (liftProd outer *
+        ManyBody.place D (U * diagonal (fun i ↦ ((x i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ) * C) w) D =
       U * diagonal (fun i ↦ (q i : ℂ)) * Uᴴ)
     (hchain : IsDescendingChain (toEuclideanLin (liftProd outer *
-        localLift D (U * diagonal (fun i ↦ ((x i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ) * C) w) outer)
+        ManyBody.place D (U * diagonal (fun i ↦ ((x i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ) * C) w) outer)
     (hsub : ∀ p ∈ outer, D ⊆ p.1) :
     ∀ i k, f < x i → q k / x k ≤ q i / x i := by
   classical
@@ -167,10 +171,10 @@ theorem ratio_le_of_diagonal_max {D : Finset V}
   have hxpos : ∀ j, 0 < x j := fun j ↦ hf.trans_le (hx j)
   set A := liftProd outer
   set K := U * diagonal (fun i ↦ ((x i ^ (a / 2) : ℝ) : ℂ)) * Uᴴ
-  set ψ := toEuclideanLin (A * localLift D K * C) w
-  set v : RegionConfig n D → ℝ := Pi.single k 1 - Pi.single i 1
+  set ψ := toEuclideanLin (A * ManyBody.place D K * C) w
+  set v : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) → ℝ := Pi.single k 1 - Pi.single i 1
   set Φ := (LinearMap.mulRight ℂ C) ∘ₗ localLiftₗ (n := n) D
-  have hΦ : ∀ M, A * Φ M = A * localLift D M * C := fun M ↦ by
+  have hΦ : ∀ M, A * Φ M = A * ManyBody.place D M * C := fun M ↦ by
     simp [Φ, localLiftₗ, Matrix.mul_assoc]
   have hcurve := hasDerivAt_conj_diagonal_rpow U hxpos v a
   have hle : ∀ t ∈ Set.Ioo (0 : ℝ) (x i - f),
@@ -202,7 +206,8 @@ theorem ratio_le_of_diagonal_max {D : Finset V}
     push_cast
     field_simp
   rw [hGK, toEuclideanLin_liftProd_localLift_mul hchain G K C w, inner_liftProd_conj σ₀ hchain
-    (fun p hp ↦ (isSupportedOn_localLift _).mono (hsub p hp)), inner_localLift, hρ,
+    (fun p hp ↦ (ManyBody.place_mem_supportedOperators _).mono (hsub p hp)), ManyBody.inner_place,
+        hρ,
     trace_conj_diagonal_mul hU] at hder
   -- evaluate the sum
   have hreal : ∑ j, q j * (a / 2 * (v j / x j)) = a / 2 * (q k / x k - q i / x i) := by

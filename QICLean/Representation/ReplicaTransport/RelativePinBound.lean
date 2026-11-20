@@ -73,7 +73,8 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 omit [Fintype V] in
 theorem logDim_eq (x : Finset V) :
-    logDim n x = Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) := by
+    logDim n x = Real.log
+        (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) := by
   rw [logDim, Fintype.card_pi]
   push_cast
   simp only [Fintype.card_fin]
@@ -96,11 +97,11 @@ theorem fourPartition_of_isPartition {π : PYF V} (hπ : π.IsPartition) {x : Fi
     · exact Or.inr (Or.inr (Or.inl (Finset.mem_sdiff.mpr ⟨hv, hvx⟩)))
     · exact Or.inr (Or.inr (Or.inr hv))
 
-theorem norm_toLp_eq_one {θ : SiteConfig n → ℂ} (hθ : star θ ⬝ᵥ θ = 1) :
-    ‖(WithLp.toLp 2 θ : EuclideanSpace ℂ (SiteConfig n))‖ = 1 := by
+theorem norm_toLp_eq_one {θ : (∀ v, Fin (n v)) → ℂ} (hθ : star θ ⬝ᵥ θ = 1) :
+    ‖(WithLp.toLp 2 θ : EuclideanSpace ℂ (∀ v, Fin (n v)))‖ = 1 := by
   have h := Entropy.ConditionalSkew.norm_toLp_sq_eq_re' θ
   rw [hθ, Complex.one_re] at h
-  nlinarith [norm_nonneg (WithLp.toLp 2 θ : EuclideanSpace ℂ (SiteConfig n))]
+  nlinarith [norm_nonneg (WithLp.toLp 2 θ : EuclideanSpace ℂ (∀ v, Fin (n v)))]
 
 /-- `-log (K (k + 2)^N)⁻¹ = O(log (k + 1))`. -/
 theorem isBigO_neg_log_inv_poly {K N : ℝ} (hK : 0 < K) :
@@ -131,7 +132,7 @@ theorem isBigO_neg_log_inv_poly {K N : ℝ} (hK : 0 < K) :
 /-- From a quadratic-form pin to the Loewner bound of `RelativePinBound`. -/
 theorem smul_coherentProj_le_of_pin {k : ℕ} {M : Matrix (Config k fun v => Fin (n v))
     (Config k fun v => Fin (n v)) ℂ} (hM : M.IsHermitian) {K N e : ℝ} (hK : 0 < K)
-    {θ : SiteConfig n → ℂ}
+    {θ : (∀ v, Fin (n v)) → ℂ}
     (H : ∀ w, ‖star (tensorVec k θ) ⬝ᵥ w‖ ^ 2 * Real.exp e ≤
       K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (M *ᵥ w)).re) :
     ((K * ((k : ℝ) + 2) ^ N)⁻¹ * Real.exp e) • coherentProj k θ ≤ M := by
@@ -254,7 +255,7 @@ theorem transport_of_splitSkewBoundAt {cskew Csym esym : ℝ}
       [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
       {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
       D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
       ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ →
       a * ℓ ≤ min (min conditionalMovementThreshold (1 / 4)) (min cskew (1 / 4)) →
       (∀ k, D.CrossBandCommute n (a / 2) k) →
@@ -286,7 +287,7 @@ theorem transport_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
         [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
         {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
         D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+        (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
         ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
         (∀ h c g, logDim n (D.move h c g).subsystem ≤ ℓ) →
         (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →

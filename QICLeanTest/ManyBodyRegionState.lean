@@ -16,7 +16,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 example {D : Finset V} {K : Matrix (ManyBody.RegionConfig X D)
     (ManyBody.RegionConfig X D) ℂ} (hK : IsUnit K.det)
     {ψ : EuclideanSpace ℂ (ManyBody.Config X)}
-    (hcomm : K * ManyBody.regionState D ψ = ManyBody.regionState D ψ * K)
+    (hcomm : K * ManyBody.regionState ψ D = ManyBody.regionState ψ D * K)
     {A : Matrix (ManyBody.Config X) (ManyBody.Config X) ℂ}
     (hA : A ∈ ManyBody.supportedOperators X D) :
     ⟪ψ, toEuclideanLin (ManyBody.place D K * A * ManyBody.place D K⁻¹) ψ⟫_ℂ =
@@ -28,43 +28,43 @@ end ArbitraryBases
 -- A site can carry two independent wires without re-encoding their product as Fin.
 example (D : Finset (Fin 2))
     (ψ : EuclideanSpace ℂ (ManyBody.Config (fun _ : Fin 2 ↦ Fin 2 × Fin 3))) :
-    (ManyBody.regionState D ψ).trace = ((‖ψ‖ ^ 2 : ℝ) : ℂ) :=
+    (ManyBody.regionState ψ D).trace = ((‖ψ‖ ^ 2 : ℝ) : ℂ) :=
   ManyBody.trace_regionState D ψ
 
 -- Empty local bases are permitted, even outside the selected region.
 example (ψ : EuclideanSpace ℂ (ManyBody.Config (fun _ : Unit ↦ Fin 0))) :
-    (ManyBody.regionState (∅ : Finset Unit) ψ).PosSemidef :=
+    (ManyBody.regionState ψ (∅ : Finset Unit)).PosSemidef :=
   ManyBody.regionState_posSemidef _ ψ
 
 section Compatibility
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-example (D : Finset V) (ψ : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
-    Entropy.regionState D ψ = ManyBody.regionState D ψ := rfl
+example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ManyBody.regionState ψ D = ManyBody.regionState ψ D := rfl
 
-example (D : Finset V) (ψ : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
-    Entropy.regionEntropy D ψ = ManyBody.regionEntropy D ψ := rfl
+example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ManyBody.regionEntropy ψ D = ManyBody.regionEntropy ψ D := rfl
 
 -- Existing consumers unfold these names before using partial trace lemmas.
-example (D : Finset V) (ψ : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
-    (Entropy.regionState D ψ).trace = ((‖ψ‖ ^ 2 : ℝ) : ℂ) := by
-  rw [Entropy.regionState, trace_partialTraceRight, trace_vecMulVec,
+example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    (ManyBody.regionState ψ D).trace = ((‖ψ‖ ^ 2 : ℝ) : ℂ) := by
+  rw [ManyBody.regionState, trace_partialTraceRight, trace_vecMulVec,
     ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K,
     Entropy.norm_cutVector]
   simp
 
-example (D : Finset V) (ψ : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
-    Entropy.regionEntropy D ψ =
-      vonNeumannEntropy (Entropy.regionState D ψ) (Entropy.regionState_isHermitian D ψ) := by
-  rw [Entropy.regionEntropy]
+example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ManyBody.regionEntropy ψ D =
+      vonNeumannEntropy (ManyBody.regionState ψ D) (ManyBody.regionState_isHermitian D ψ) := by
+  rw [ManyBody.regionEntropy]
 
 -- Entrywise consumers unfold the abbreviation and the Sites definition before running their
 -- simp set.
-example (D : Finset V) (c : ℂ) (ψ : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
-    Entropy.regionState D (c • ψ) = ((‖c‖ ^ 2 : ℝ) : ℂ) • Entropy.regionState D ψ := by
+example (D : Finset V) (c : ℂ) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ManyBody.regionState (c • ψ) D = ((‖c‖ ^ 2 : ℝ) : ℂ) • ManyBody.regionState ψ D := by
   ext a b
-  simp only [Entropy.regionState, ManyBody.regionState, partialTraceRight, vecMulVec_apply,
+  simp only [ManyBody.regionState, ManyBody.regionState, partialTraceRight, vecMulVec_apply,
     Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   simp only [PiLp.smul_apply, smul_eq_mul, Pi.star_apply, star_mul',
@@ -74,7 +74,8 @@ example (D : Finset V) (c : ℂ) (ψ : EuclideanSpace ℂ (Entropy.SiteConfig n)
 -- The conditional-movement frame computes the old union equivalence's inverse.
 omit [Fintype V] in
 example {A B : Finset V} (hAB : Disjoint A B)
-    (a : Entropy.RegionConfig n A) (b : Entropy.RegionConfig n B) {v : V} (hv : v ∈ A) :
+    (a : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) A))
+        (b : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) B)) {v : V} (hv : v ∈ A) :
     (Entropy.regionUnionEquiv hAB).symm (a, b) ⟨v, Finset.mem_union_left B hv⟩ = a ⟨v, hv⟩ := by
   simp only [Entropy.regionUnionEquiv, ManyBody.regionUnionEquiv, Equiv.coe_fn_symm_mk]
   rw [dite_eq_left hv]

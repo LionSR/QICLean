@@ -3,7 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.LocalLift
+import QICLean.Entropy.SupportedMarginalTails
+import QICLean.Entropy.FilterMoment
+import QICLean.ManyBody.Sites.RegionState
 import QICLean.ManyBody.Sites.Relabel
 
 /-!
@@ -32,14 +34,15 @@ variable {V V' : Type*} [Fintype V] [DecidableEq V]
 
 /-- The configuration bijection induced by site and basis-label bijections. -/
 abbrev siteConfigurationEquiv (e : V ≃ V')
-    (f : ∀ v, Fin (n v) ≃ Fin (n' (e v))) : SiteConfig n ≃ SiteConfig n' :=
+    (f : ∀ v, Fin (n v) ≃ Fin (n' (e v))) : (∀ v, Fin (n v)) ≃ (∀ v, Fin (n' v)) :=
   e.piCongr f
 
 /-- The induced configuration bijection on a preserved region. -/
 abbrev regionConfigurationEquiv (D : Finset V) (D' : Finset V') (e : V ≃ V')
     (hD : ∀ v, v ∈ D ↔ e v ∈ D')
     (f : ∀ v, Fin (n v) ≃ Fin (n' (e v))) :
-    RegionConfig n D ≃ RegionConfig n' D' :=
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ≃
+        (ManyBody.RegionConfig (fun v ↦ Fin (n' v)) D') :=
   (e.subtypeEquiv hD).piCongr (fun v ↦ f v.1)
 
 export ManyBody (complementConfigurationEquiv)
@@ -47,14 +50,14 @@ export ManyBody (complementConfigurationEquiv)
 /-- A vector expressed in the transported configuration basis. -/
 noncomputable abbrev relabelVector (e : V ≃ V')
     (f : ∀ v, Fin (n v) ≃ Fin (n' (e v)))
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) : EuclideanSpace ℂ (SiteConfig n') :=
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) : EuclideanSpace ℂ (∀ v, Fin (n' v)) :=
   WithLp.toLp 2 fun σ ↦ Ω ((siteConfigurationEquiv e f).symm σ)
 
 /-- Expressing a vector in the transported configuration basis preserves its
 Euclidean norm. -/
 @[simp] theorem norm_relabelVector (e : V ≃ V')
     (f : ∀ v, Fin (n v) ≃ Fin (n' (e v)))
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     ‖relabelVector e f Ω‖ = ‖Ω‖ :=
   ManyBody.norm_relabelVector (X := fun v ↦ Fin (n v)) (X' := fun v ↦ Fin (n' v))
     e f Ω
@@ -64,9 +67,9 @@ bijections. The vector need not be normalized. -/
 theorem regionState_relabel (D : Finset V) (D' : Finset V') (e : V ≃ V')
     (hD : ∀ v, v ∈ D ↔ e v ∈ D')
     (f : ∀ v, Fin (n v) ≃ Fin (n' (e v)))
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
-    regionState D' (relabelVector e f Ω) =
-      (regionState D Ω).submatrix
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ManyBody.regionState (relabelVector e f Ω) D' =
+      (ManyBody.regionState Ω D).submatrix
         (regionConfigurationEquiv D D' e hD f).symm
         (regionConfigurationEquiv D D' e hD f).symm :=
   ManyBody.regionState_relabel (X := fun v ↦ Fin (n v)) (X' := fun v ↦ Fin (n' v))
@@ -77,8 +80,8 @@ including for unnormalized vectors. -/
 theorem regionEntropy_relabel (D : Finset V) (D' : Finset V') (e : V ≃ V')
     (hD : ∀ v, v ∈ D ↔ e v ∈ D')
     (f : ∀ v, Fin (n v) ≃ Fin (n' (e v)))
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
-    regionEntropy D' (relabelVector e f Ω) = regionEntropy D Ω :=
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ManyBody.regionEntropy (relabelVector e f Ω) D' = ManyBody.regionEntropy Ω D :=
   ManyBody.regionEntropy_relabel (X := fun v ↦ Fin (n v)) (X' := fun v ↦ Fin (n' v))
     D D' e hD f Ω
 

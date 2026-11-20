@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.FiniteCoordinateRangeFrame
 import QICLean.Analysis.VariableRankSampleProjection
-import QICLean.Analysis.ViableSubspaceTrimmingProjectionMeasurable
+import QICLean.Entropy.ViableSampling.ViableSubspaceTrimmingProjectionMeasurable
 import QICLean.Analysis.ViableSubspaceProjectionEvent
 
 /-!
@@ -33,16 +33,16 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {d r : ℕ}
 
 /-- The existing collective trim of the actual matrix range, using the
 canonical orthonormal range frame in the prescribed physical coordinates. -/
-def trimMatrixRange (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V)
-    (xi : ℝ) (k : ℕ) (P : Matrix (SiteConfig n) (SiteConfig n) ℂ) :
-    Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) :=
+def trimMatrixRange (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V)
+    (xi : ℝ) (k : ℕ) (P : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) :
+    Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) :=
   trimSubspace D xi (Matrix.rangeOrthonormalFrameInCoordinates e ⟨P, rfl⟩) k
 
 /-- The range trim is literally the existing collective trim of the
 canonical orthonormal frame on every rank stratum. -/
-theorem trimMatrixRange_eq_on_rank (e : Fin d ≃ SiteConfig n)
+theorem trimMatrixRange_eq_on_rank (e : Fin d ≃ (∀ v, Fin (n v)))
     (D : ℕ → Finset V) (xi : ℝ) (k : ℕ)
-    (P : {P : Matrix (SiteConfig n) (SiteConfig n) ℂ // P.rank = r}) :
+    (P : {P : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ // P.rank = r}) :
     trimMatrixRange e D xi k P.val =
       trimSubspace D xi (Matrix.rangeOrthonormalFrameInCoordinates e P) k := by
   rcases P with ⟨P, hP⟩
@@ -53,11 +53,11 @@ theorem trimMatrixRange_eq_on_rank (e : Fin d ≃ SiteConfig n)
 from any orthonormal basis of that range. Thus it does not introduce a
 basis-dependent substitute for the original subspace operation. -/
 theorem trimMatrixRange_eq_of_orthonormalBasis {t : ℕ}
-    (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ)
-    (P : Matrix (SiteConfig n) (SiteConfig n) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ)
+    (P : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
     (c : OrthonormalBasis (Fin t) ℂ (Matrix.toEuclideanLin P).range) :
     trimMatrixRange e D xi k P =
-      trimSubspace D xi (fun i ↦ (c i : EuclideanSpace ℂ (SiteConfig n))) k := by
+      trimSubspace D xi (fun i ↦ (c i : EuclideanSpace ℂ (∀ v, Fin (n v)))) k := by
   let W := (Matrix.toEuclideanLin P).range
   let u := Matrix.rangeOrthonormalFrameInCoordinates e ⟨P, rfl⟩
   have hspan : Submodule.span ℂ (Set.range u) = W :=
@@ -69,9 +69,9 @@ theorem trimMatrixRange_eq_of_orthonormalBasis {t : ℕ}
     OrthonormalBasis.mk
       ((Matrix.orthonormal_rangeOrthonormalFrameInCoordinates e ⟨P, rfl⟩).codRestrict W hmem)
       ((Submodule.span_range_subtype_eq_top_iff W hmem).mpr hspan).ge
-  have hb : (fun i ↦ (b i : EuclideanSpace ℂ (SiteConfig n))) = u := by
+  have hb : (fun i ↦ (b i : EuclideanSpace ℂ (∀ v, Fin (n v)))) = u := by
     exact congrArg (fun f : Fin P.rank → W ↦
-      fun i ↦ (f i : EuclideanSpace ℂ (SiteConfig n))) (OrthonormalBasis.coe_mk _ _)
+      fun i ↦ (f i : EuclideanSpace ℂ (∀ v, Fin (n v)))) (OrthonormalBasis.coe_mk _ _)
   change trimSubspace D xi u k = _
   rw [← hb]
   exact trimSubspace_eq_of_orthonormalBasis D xi b c k
@@ -79,14 +79,14 @@ theorem trimMatrixRange_eq_of_orthonormalBasis {t : ℕ}
 /-- The actual ambient orthogonal projection of this collective trim is
 Borel on all matrices, including zero rank and rank changes. -/
 theorem measurable_projectionMatrix_trimMatrixRange
-    (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ) :
-    Measurable (fun P : Matrix (SiteConfig n) (SiteConfig n) ℂ ↦
-      (Matrix.toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ)).symm
+    (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ) :
+    Measurable (fun P : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ ↦
+      (Matrix.toEuclideanCLM (n := (∀ v, Fin (n v))) (𝕜 := ℂ)).symm
         (trimMatrixRange e D xi k P).starProjection) := by
   apply measurable_of_matrix_rank_strata (P := id) measurable_id
   intro r
-  change Measurable (fun P : {P : Matrix (SiteConfig n) (SiteConfig n) ℂ // P.rank = r} ↦
-    (Matrix.toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ)).symm
+  change Measurable (fun P : {P : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ // P.rank = r} ↦
+    (Matrix.toEuclideanCLM (n := (∀ v, Fin (n v))) (𝕜 := ℂ)).symm
       (trimMatrixRange e D xi k P.val).starProjection)
   have h := (measurable_projectionMatrix_trimSubspace (n := n) (s := r) D xi k).comp
     (Matrix.measurable_rangeOrthonormalFrameInCoordinates e)
@@ -100,10 +100,10 @@ collective trim has a Borel ambient projection. This applies at every
 subsequent round of the interleaved merge. -/
 theorem measurable_projectionMatrix_trim_family_image
     {ι : Type*} [Fintype ι]
-    (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ)
-    (F : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ) :
-    Measurable (fun P : Matrix (SiteConfig n) (SiteConfig n) ℂ ↦
-      (Matrix.toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ)).symm
+    (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) :
+    Measurable (fun P : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ ↦
+      (Matrix.toEuclideanCLM (n := (∀ v, Fin (n v))) (𝕜 := ℂ)).symm
         (trimMatrixRange e D xi k (Matrix.familySupportProj
           (fun i ↦ F i * P))).starProjection) :=
   (measurable_projectionMatrix_trimMatrixRange e D xi k).comp
@@ -115,10 +115,10 @@ projection. Auxiliary to ALVV, arXiv:1602.08828v2, the merge process,
 lines 711–736, and Figure fig:merge-prime, lines 1668–1670. -/
 theorem measurable_projectionMatrix_trim_sample_family_image_rank_size
     {ι : Type*} [Fintype ι] {a : ℕ}
-    (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ) (s : ℕ → ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin a) ℂ) :
+    (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V) (xi : ℝ) (k : ℕ) (s : ℕ → ℕ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin a) ℂ) :
     Measurable (fun p : Matrix (Fin a) (Fin a) ℂ × Matrix.rankUnitaryProduct a ↦
-      (Matrix.toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ)).symm
+      (Matrix.toEuclideanCLM (n := (∀ v, Fin (n v))) (𝕜 := ℂ)).symm
         (trimMatrixRange e D xi k (Matrix.familySupportProj (fun i ↦ F i *
           (Matrix.toEuclideanCLM (n := Fin a) (𝕜 := ℂ)).symm
             (Matrix.randomRangeSubspace p.1 (s p.1.rank) p.2).starProjection))).starProjection) :=
@@ -130,10 +130,10 @@ family, and collectively trimming its actual image has a jointly Borel
 ambient projection on one fixed finite product of unitary groups. -/
 theorem measurable_projectionMatrix_trim_sample_family_image
     {ι : Type*} [Fintype ι] {a : ℕ}
-    (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V) (xi : ℝ) (k s : ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin a) ℂ) :
+    (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V) (xi : ℝ) (k s : ℕ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin a) ℂ) :
     Measurable (fun p : Matrix (Fin a) (Fin a) ℂ × Matrix.rankUnitaryProduct a ↦
-      (Matrix.toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ)).symm
+      (Matrix.toEuclideanCLM (n := (∀ v, Fin (n v))) (𝕜 := ℂ)).symm
         (trimMatrixRange e D xi k (Matrix.familySupportProj (fun i ↦ F i *
           (Matrix.toEuclideanCLM (n := Fin a) (𝕜 := ℂ)).symm
             (Matrix.randomRangeSubspace p.1 s p.2).starProjection))).starProjection) :=
@@ -144,9 +144,9 @@ collectively trimmed output is Borel. Its complement is therefore Borel;
 no jointly chosen measurable hull is needed. -/
 theorem measurableSet_isCloseTo_trim_sample_family_image
     {ι : Type*} [Fintype ι] {a : ℕ}
-    (e : Fin d ≃ SiteConfig n) (D : ℕ → Finset V) (xi : ℝ) (k s : ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin a) ℂ) (delta : ℝ)
-    (T : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))) :
+    (e : Fin d ≃ (∀ v, Fin (n v))) (D : ℕ → Finset V) (xi : ℝ) (k s : ℕ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin a) ℂ) (delta : ℝ)
+    (T : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))) :
     let S := fun p : Matrix (Fin a) (Fin a) ℂ × Matrix.rankUnitaryProduct a ↦
       trimMatrixRange e D xi k (Matrix.familySupportProj (fun i ↦ F i *
         (Matrix.toEuclideanCLM (n := Fin a) (𝕜 := ℂ)).symm

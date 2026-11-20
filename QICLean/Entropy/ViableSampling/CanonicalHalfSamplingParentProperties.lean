@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.CanonicalHalfSamplingParent
-import QICLean.Analysis.TerminalFamilyReferenceTrimming
-import QICLean.Analysis.StoppedHalfSamplingRank
+import QICLean.Entropy.ViableSampling.CanonicalHalfSamplingParent
+import QICLean.Entropy.ViableSampling.TerminalFamilyReferenceTrimming
+import QICLean.Entropy.ViableSampling.StoppedHalfSamplingRank
 
 /-!
 # Dimensions and terminal improvement for the same native parent
@@ -36,8 +36,8 @@ variable {V β X ι : Type*} [Fintype V] [DecidableEq V]
 cardinality-times-rank bounds for an arbitrary coordinate matrix. Supporting
 ALVV, arXiv:1602.08828v2, Lemma `l:er`, lines 597–622. -/
 theorem finrank_nativeFamily_image_trim_le
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ) (k : ℕ)
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ) (k : ℕ)
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
     (Q : Matrix (Fin d) (Fin d) ℂ) :
     let Y := (Matrix.toEuclideanLin (Matrix.familySupportProj
       (fun i ↦ nativeFamilyMatrix e A i * Q))).range
@@ -64,9 +64,9 @@ and the actual complete parent for every seed sequence. No successful-sample
 or viability hypothesis is used. Supporting ALVV,
 arXiv:1602.08828v2, the resampling description, lines 749–755. -/
 theorem finrank_canonicalHalfSamplingParent_le_threshold
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
     (k D threshold rounds : ℕ)
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
     (hcard : Fintype.card ι ≤ D ^ 2) (hthreshold : 2 ≤ threshold)
     (P : Matrix (Fin d) (Fin d) ℂ) (hP : P.rank ≤ 2 ^ rounds)
     (U : ℕ → Matrix.rankUnitaryProduct d) :
@@ -89,9 +89,9 @@ theorem finrank_canonicalHalfSamplingParent_le_threshold
 parent on every seed sequence, without a stopping or viability premise.
 Supporting ALVV, arXiv:1602.08828v2, lines 749–755. -/
 theorem finrank_canonicalHalfSamplingParent_le_initial
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
     (k D threshold rounds : ℕ)
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
     (hcard : Fintype.card ι ≤ D ^ 2)
     (P : Matrix (Fin d) (Fin d) ℂ) (U : ℕ → Matrix.rankUnitaryProduct d) :
     let Q := canonicalHalfSampleTrimIterate e cuts xi k D threshold (nativeFamilyMatrix e A)
@@ -117,14 +117,14 @@ arXiv:1602.08828v2, lines 749–755 and 1801–1813; the stopped-loop success
 event is discharged separately in the probability application. -/
 theorem isCloseTo_nativeFamilyTrimSpace
     {D m bRef : ℕ} {Delta epsilonRef xi : ℝ}
-    {Graw R : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))}
-    (x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+    {Graw R : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))}
+    (x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
     (hcard : Fintype.card ι ≤ D ^ 2)
     (hRawSoft : ∀ x, Submodule.IsCloseTo (1 / 200) Graw (T x))
     (hSoftRaw : ∀ x, Submodule.IsCloseTo (1 / 200) (T x) Graw)
     (hA : ∀ x delta, delta < 1 →
-      ∀ S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)),
+      ∀ S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))),
       Submodule.IsCloseTo delta (Submodule.prodExt S β) (T x) →
       Submodule.IsCloseTo (Delta / (1 - delta) ^ 2)
         (Submodule.prodExt (⨆ i, S.map (A i : _ →ₗ[ℂ] _)) β) (T x))
@@ -136,7 +136,7 @@ theorem isCloseTo_nativeFamilyTrimSpace
     (hRank : ∀ t ∈ R, ∀ j < m,
       Matrix.schmidtRank (WithLp.ofLp (cutEnvVector (C j) t)) ≤ bRef)
     (hbudget : xi * Real.sqrt ((m : ℝ) * (bRef : ℝ)) ≤ 1 / 1000)
-    (e : Fin d ≃ SiteConfig n) (Q : Matrix (Fin d) (Fin d) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (Q : Matrix (Fin d) (Fin d) ℂ)
     (hQ : Submodule.IsCloseTo 0.04
       (Submodule.prodExt ((Matrix.toEuclideanLin Q).range.map
         (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearMap) β) Graw) :

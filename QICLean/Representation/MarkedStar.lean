@@ -5,7 +5,9 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.MarkedSymbol
 import QICLean.Representation.StarOperator
-import QICLean.Entropy.LocalLift
+import QICLean.Entropy.SupportedMarginalTails
+import QICLean.Entropy.FilterMoment
+import QICLean.ManyBody.Sites.RegionState
 
 /-!
 # The marked symbol of a star operator
@@ -44,22 +46,26 @@ namespace TensorPower
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {k : ℕ}
 
 /-- The matrix unit `E_{ab}` on the subsystem `Q`, tensored with the identity. -/
-noncomputable def regionUnit (Q : Finset V) (a b : RegionConfig n Q) :
-    Matrix (SiteConfig n) (SiteConfig n) ℂ :=
-  localLift Q (Matrix.single a b 1)
+noncomputable def regionUnit (Q : Finset V) (a b : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q)) :
+    Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ :=
+  ManyBody.place Q (Matrix.single a b 1)
 
-theorem regionUnit_apply (Q : Finset V) (a b : RegionConfig n Q) (σ τ : SiteConfig n) :
+theorem regionUnit_apply (Q : Finset V) (a b : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q))
+    (σ τ : (∀ v, Fin (n v))) :
     regionUnit Q a b σ τ =
       if (fun v : {v // v ∈ Q} => σ v) = a ∧ (fun v : {v // v ∈ Q} => τ v) = b ∧
         ∀ v ∉ Q, σ v = τ v then 1 else 0 := by
-  simp only [regionUnit, localLift, ManyBody.place, reindex_apply, submatrix_apply, Equiv.symm_symm,
+  simp only
+      [regionUnit, ManyBody.place, ManyBody.place, reindex_apply, submatrix_apply, Equiv.symm_symm,
     kroneckerMap_apply, Matrix.single_apply, one_apply]
-  have h2 : ((cutEquiv n Q) σ).2 = ((cutEquiv n Q) τ).2 ↔ ∀ v ∉ Q, σ v = τ v :=
+  have h2 : ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q) σ).2 =
+      ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q) τ).2 ↔ ∀ v ∉ Q, σ v = τ v :=
     ⟨fun h v hv => congrFun h ⟨v, hv⟩, fun h => funext fun v => h v v.2⟩
-  have e1 : ((cutEquiv n Q) σ).1 = fun v : {v // v ∈ Q} => σ v := rfl
-  have e2 : ((cutEquiv n Q) τ).1 = fun v : {v // v ∈ Q} => τ v := rfl
+  have e1 : ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q) σ).1 = fun v : {v // v ∈ Q} => σ v := rfl
+  have e2 : ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q) τ).1 = fun v : {v // v ∈ Q} => τ v := rfl
   rw [e1, e2]
-  by_cases hc : ((cutEquiv n Q) σ).2 = ((cutEquiv n Q) τ).2
+  by_cases hc : ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q) σ).2 =
+      ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) Q) τ).2
   · rw [ite_eq_left hc, mul_one]
     by_cases ha : (fun v : {v // v ∈ Q} => σ v) = a ∧ (fun v : {v // v ∈ Q} => τ v) = b
     · rw [ite_eq_left ⟨ha.1.symm, ha.2.symm⟩, ite_eq_left ⟨ha.1, ha.2, h2.mp hc⟩]
@@ -80,7 +86,7 @@ theorem siteOp_mul_siteOp_apply_of_ne {Ω : Type*} [Fintype Ω] [DecidableEq Ω]
   exact propext ⟨fun h l hi hj => h l ⟨hi, hj⟩, fun h l hl => h l hl.1 hl.2⟩
 
 /-- Contracting the matrix units of a partial swap. -/
-theorem sum_regionUnit_mul_regionUnit (Q : Finset V) (σ τ σ' τ' : SiteConfig n) :
+theorem sum_regionUnit_mul_regionUnit (Q : Finset V) (σ τ σ' τ' : (∀ v, Fin (n v))) :
     ∑ a, ∑ b, regionUnit Q a b σ τ * regionUnit Q b a σ' τ' =
       if (fun v : {v // v ∈ Q} => τ' v) = (fun v : {v // v ∈ Q} => σ v) ∧
         (fun v : {v // v ∈ Q} => σ' v) = (fun v : {v // v ∈ Q} => τ v) ∧
@@ -158,29 +164,29 @@ theorem permOp_subsystemPerm_swap_eq_sum (Q : Finset V) {i j : Fin k} (hij : i �
     simp [Equiv.swap_apply_of_ne_of_ne hli hlj]
 
 /-- The marginal `ρ_Q(θ)` of `|θ⟩⟨θ|` on `Q`, tensored with the identity on one copy. -/
-noncomputable def margLift (Q : Finset V) (θ : SiteConfig n → ℂ) :
-    Matrix (SiteConfig n) (SiteConfig n) ℂ :=
-  localLift Q (regionState Q (WithLp.toLp 2 θ))
+noncomputable def margLift (Q : Finset V) (θ : (∀ v, Fin (n v)) → ℂ) :
+    Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ :=
+  ManyBody.place Q (ManyBody.regionState (WithLp.toLp 2 θ) Q)
 
 /-- **Contracting a donor** (`05-replicas.tex`, lines 790–795): `∑_{a,b} ⟨θ, E_{ab} θ⟩ E_{ba}`
 is the marginal `ρ_Q(θ)` lifted to one copy. -/
-theorem sum_expect_regionUnit_smul (Q : Finset V) (θ : SiteConfig n → ℂ) :
+theorem sum_expect_regionUnit_smul (Q : Finset V) (θ : (∀ v, Fin (n v)) → ℂ) :
     ∑ a, ∑ b, (star θ ⬝ᵥ (regionUnit Q a b *ᵥ θ)) • regionUnit Q b a = margLift Q θ := by
   have hexp : ∀ a b, star θ ⬝ᵥ (regionUnit Q a b *ᵥ θ) =
-      regionState Q (WithLp.toLp 2 θ) b a := by
+      ManyBody.regionState (WithLp.toLp 2 θ) Q b a := by
     intro a b
     have h : star θ ⬝ᵥ (regionUnit Q a b *ᵥ θ) =
         ⟪WithLp.toLp 2 θ, Matrix.toEuclideanLin (regionUnit Q a b) (WithLp.toLp 2 θ)⟫_ℂ := by
       rw [EuclideanSpace.inner_eq_star_dotProduct, dotProduct_comm]
       rfl
-    rw [h, regionUnit, inner_localLift, Matrix.trace]
+    rw [h, regionUnit, ManyBody.inner_place, Matrix.trace]
     simp only [Matrix.diag, Matrix.mul_apply, Matrix.single_apply, mul_ite, mul_one, mul_zero]
     simp only [ite_and, Finset.sum_ite_eq, Finset.mem_univ, ite_true]
   simp only [hexp]
-  simp only [regionUnit, ← localLift_smul, ← ManyBody.place_sum, margLift]
+  simp only [regionUnit, ← ManyBody.place_smul, ← ManyBody.place_sum, margLift]
   congr 1
   rw [Finset.sum_comm]
-  conv_rhs => rw [Matrix.matrix_eq_sum_single (regionState Q (WithLp.toLp 2 θ))]
+  conv_rhs => rw [Matrix.matrix_eq_sum_single (ManyBody.regionState (WithLp.toLp 2 θ) Q)]
   refine Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_
   rw [Matrix.smul_single, smul_eq_mul, mul_one]
 
@@ -229,8 +235,8 @@ theorem hasMarkedSymbol_starOp (Q : Finset V) :
         siteOp (Fin.last m) (regionUnit Q b a))
       (fun θ => ∑ a, ∑ b, (coherentExpect (oneCopy (regionUnit Q a b)) θ • 1) *
         regionUnit Q b a) :=
-    HasMarkedSymbol.sum (Ω := SiteConfig n) Finset.univ fun a _ =>
-      HasMarkedSymbol.sum (Ω := SiteConfig n) Finset.univ fun b _ =>
+    HasMarkedSymbol.sum (Ω := (∀ v, Fin (n v))) Finset.univ fun a _ =>
+      HasMarkedSymbol.sum (Ω := (∀ v, Fin (n v))) Finset.univ fun b _ =>
       (HasMarkedSymbol.injection (oneCopy (regionUnit Q a b))).mul
         (HasMarkedSymbol.center (regionUnit Q b a))
   refine (h.congr_symbol fun θ => ?_).of_norm_sub_le

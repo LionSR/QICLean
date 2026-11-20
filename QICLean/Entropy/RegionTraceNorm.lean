@@ -3,7 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.LocalLift
+import QICLean.Entropy.SupportedMarginalTails
+import QICLean.Entropy.FilterMoment
+import QICLean.ManyBody.Sites.RegionState
 import QICLean.Channel.RectangularTraceNormContraction
 import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.SubnormalizedPureStateError
@@ -19,11 +21,11 @@ namespace Entropy
 
 /-- Regional reduction contracts the full trace-norm error of pure-state matrices. -/
 theorem rectangularTraceNorm_regionState_sub_le {V : Type*} [Fintype V] [DecidableEq V]
-    {n : V → ℕ} (ψ φ : EuclideanSpace ℂ (SiteConfig n)) (R : Finset V) :
-    Matrix.rectangularTraceNorm (regionState R ψ - regionState R φ) ≤
+    {n : V → ℕ} (ψ φ : EuclideanSpace ℂ (∀ v, Fin (n v))) (R : Finset V) :
+    Matrix.rectangularTraceNorm (ManyBody.regionState ψ R - ManyBody.regionState φ R) ≤
       Matrix.rectangularTraceNorm
         (Matrix.euclideanOuterProduct ψ ψ - Matrix.euclideanOuterProduct φ φ) := by
-  let e := cutEquiv n R
+  let e := ManyBody.cutEquiv (fun v ↦ Fin (n v)) R
   have hcontract := Matrix.rectangularTraceNorm_partialTraceRight_le
     (Matrix.reindex e e (Matrix.euclideanOuterProduct ψ ψ -
       Matrix.euclideanOuterProduct φ φ))

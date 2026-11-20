@@ -72,8 +72,8 @@ theorem regionState_relabel (D : Finset V) (D' : Finset V') (e : V ≃ V')
     (hD : ∀ v, v ∈ D ↔ e v ∈ D')
     (f : ∀ v, X v ≃ X' (e v))
     (Ω : EuclideanSpace ℂ (Config X)) :
-    regionState D' (relabelVector e f Ω) =
-      (regionState D Ω).submatrix
+    regionState (relabelVector e f Ω) D' =
+      (regionState Ω D).submatrix
         (regionConfigurationEquiv D D' e hD f).symm
         (regionConfigurationEquiv D D' e hD f).symm := by
   refine Eq.trans ?_ (Matrix.partialTraceRight_submatrix_prod_equiv
@@ -106,10 +106,10 @@ theorem regionEntropy_relabel (D : Finset V) (D' : Finset V') (e : V ≃ V')
     (hD : ∀ v, v ∈ D ↔ e v ∈ D')
     (f : ∀ v, X v ≃ X' (e v))
     (Ω : EuclideanSpace ℂ (Config X)) :
-    regionEntropy D' (relabelVector e f Ω) = regionEntropy D Ω := by
+    regionEntropy (relabelVector e f Ω) D' = regionEntropy Ω D := by
   simp only [regionEntropy, regionState_relabel D D' e hD f Ω]
   exact vonNeumannEntropy_submatrix_equiv
-    (regionConfigurationEquiv D D' e hD f).symm (regionState D Ω)
+    (regionConfigurationEquiv D D' e hD f).symm (regionState Ω D)
     (regionState_isHermitian D Ω)
 
 /-! ### Supported operators and the region expectation -/

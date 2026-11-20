@@ -24,28 +24,31 @@ example (l : List (Matrix (Fin 0) (Fin 0) ℂ)) (Ω : EuclideanSpace ℂ (Fin 0)
 -- Empty chains preserve the input.
 example {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
     (D : ℕ → Finset V)
-    (K : (j : Fin 0) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ)
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
+    (K : (j : Fin 0) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ)
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω = Ω := by
   simpa using (foldl_localLift_eq_liftProd_chainList D K Ω).symm
 
 -- Repeated regions retain the order of their independent matrix occurrences.
 example {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
-    (D : Finset V) (K L : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
-    ([localLift D K, localLift D L].map
-      (fun A ↦ toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ) A)).foldl (fun ψ T ↦ T ψ) Ω =
-      toEuclideanLin (localLift D L * localLift D K) Ω := by
-  simpa using foldl_toEuclideanCLM_eq_reverse_prod [localLift D K, localLift D L] Ω
+    (D : Finset V)
+        (K L : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ)
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ([ManyBody.place D K, ManyBody.place D L].map
+      (fun A ↦ toEuclideanCLM (n := (∀ v, Fin (n v))) (𝕜 := ℂ) A)).foldl (fun ψ T ↦ T ψ) Ω =
+      toEuclideanLin (ManyBody.place D L * ManyBody.place D K) Ω := by
+  simpa using foldl_toEuclideanCLM_eq_reverse_prod [ManyBody.place D K, ManyBody.place D L] Ω
 
 -- Empty regions remain valid when every physical alphabet is empty.
-example (K : Matrix (RegionConfig (fun _ : Fin 2 ↦ 0) ∅)
-    (RegionConfig (fun _ : Fin 2 ↦ 0) ∅) ℂ) :
+example (K : Matrix (ManyBody.RegionConfig (fun _ ↦ Fin 0) ∅)
+    (ManyBody.RegionConfig (fun _ ↦ Fin 0) ∅) ℂ) :
     reindex (siteConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
         (Equiv.swap (0 : Fin 2) 1) (fun _ ↦ Equiv.refl (Fin 0)))
       (siteConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
-        (Equiv.swap (0 : Fin 2) 1) (fun _ ↦ Equiv.refl (Fin 0))) (localLift ∅ K) =
-      localLift ∅ (reindex
+        (Equiv.swap (0 : Fin 2) 1) (fun _ ↦ Equiv.refl (Fin 0))) (ManyBody.place ∅ K) =
+      ManyBody.place ∅ (reindex
         (regionConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
           ∅ ∅ (Equiv.swap (0 : Fin 2) 1) (by simp) (fun _ ↦ Equiv.refl (Fin 0)))
         (regionConfigurationEquiv (n := fun _ : Fin 2 ↦ 0) (n' := fun _ : Fin 2 ↦ 0)
@@ -53,8 +56,8 @@ example (K : Matrix (RegionConfig (fun _ : Fin 2 ↦ 0) ∅)
   localLift_relabel ∅ ∅ _ (by simp) _ K
 
 -- A non-involutive site cycle and a local basis exchange fix the transport direction.
-example (K : Matrix (RegionConfig (fun _ : Fin 3 ↦ 2) {0})
-    (RegionConfig (fun _ : Fin 3 ↦ 2) {0}) ℂ) :
+example (K : Matrix (ManyBody.RegionConfig (fun _ ↦ Fin 2) {0})
+    (ManyBody.RegionConfig (fun _ ↦ Fin 2) {0}) ℂ) :
     let e := (Equiv.swap (0 : Fin 3) 1).trans (Equiv.swap 1 2)
     let hD : ∀ v : Fin 3, v ∈ ({0} : Finset (Fin 3)) ↔ e v ∈ ({2} : Finset (Fin 3)) := by
       intro v
@@ -62,8 +65,8 @@ example (K : Matrix (RegionConfig (fun _ : Fin 3 ↦ 2) {0})
     let f := fun _ : Fin 3 ↦ Equiv.swap (0 : Fin 2) 1
     reindex (siteConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2) e f)
       (siteConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2) e f)
-      (localLift {0} K) =
-      localLift {2} (reindex
+      (ManyBody.place {0} K) =
+      ManyBody.place {2} (reindex
         (regionConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2)
           {0} {2} e hD f)
         (regionConfigurationEquiv (n := fun _ : Fin 3 ↦ 2) (n' := fun _ : Fin 3 ↦ 2)
@@ -126,11 +129,12 @@ example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
     (D : ℕ → Finset V) (D' : ℕ → Finset V') (e : V ≃ V')
     (hD : ∀ j v, v ∈ D j ↔ e v ∈ D' j)
     (f : ∀ v, Fin (n v) ≃ Fin (n' (e v)))
-    (K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ) :
+    (K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ) :
     let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) 0
     relabelVector e f (((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ) = 0 := by
   have h := relabelVector_normalized_liftProd_chainList D D' e hD f K (fun _ ↦ True) 0
-  have hzero : relabelVector e f (0 : EuclideanSpace ℂ (SiteConfig n)) = 0 := rfl
+  have hzero : relabelVector e f (0 : EuclideanSpace ℂ (∀ v, Fin (n v))) = 0 := rfl
   dsimp only at h ⊢
   rw [h]
   simp only [hzero, map_zero, smul_zero]
@@ -141,13 +145,16 @@ example {V V' : Type*} [Fintype V] [DecidableEq V] [Fintype V'] [DecidableEq V']
     (D : ℕ → Finset V) (D' : ℕ → Finset V') (e : V ≃ V')
     (hD : ∀ j v, v ∈ D j ↔ e v ∈ D' j)
     (f : ∀ v, Fin (n v) ≃ Fin (n' (e v))) (b a : Fin m → ℝ)
-    (K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ)
-    (Ω : EuclideanSpace ℂ (SiteConfig n))
-    (hmax : ∀ L : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+    (K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ)
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v)))
+    (hmax : ∀ L : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
       (∀ j, IsFeasibleFilter (b j) (a j) (L j)) →
       ‖toEuclideanLin (liftProd (chainList D L fun _ ↦ True)) Ω‖ ≤
         ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) :
-    ∀ L : (j : Fin m) → Matrix (RegionConfig n' (D' j)) (RegionConfig n' (D' j)) ℂ,
+    ∀ L : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n' v)) (D' j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n' v)) (D' j)) ℂ,
       (∀ j, IsFeasibleFilter (b j) (a j) (L j)) →
       ‖toEuclideanLin (liftProd (chainList D' L fun _ ↦ True)) (relabelVector e f Ω)‖ ≤
         ‖toEuclideanLin (liftProd (chainList D'

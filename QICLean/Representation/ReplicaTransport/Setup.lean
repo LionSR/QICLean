@@ -114,8 +114,8 @@ density matrix sees. Products of these operators over bands are the source's pro
 `𝒮_k`, and they commute on the whole space exactly when the band metrics commute on `𝒮_k`. -/
 def symBandMetric (t : ℝ) (k : ℕ) (π : PYF V) :
     Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ :=
-  symProj (copyPerm (SiteConfig n) k) * bandMetric n t k π +
-    (1 - symProj (copyPerm (SiteConfig n) k))
+  symProj (copyPerm (∀ v, Fin (n v)) k) * bandMetric n t k π +
+    (1 - symProj (copyPerm (∀ v, Fin (n v)) k))
 
 /-- `log(e dim x)` for a subsystem `x`. -/
 def logDim (x : Finset V) : ℝ := Real.log (Real.exp 1 * ∏ v ∈ x, (n v : ℝ))
@@ -123,7 +123,7 @@ def logDim (x : Finset V) : ℝ := Real.log (Real.exp 1 * ∏ v ∈ x, (n v : �
 /-- The entropy of a move for a unit one-copy vector `θ`: `I_θ(x : F | P)` for a move to
 `P`, `I_θ(x : P | F)` for a move to `F`, zero for no move (`06-transport.tex`, display
 `transport:move-eta`, lines 315--322). -/
-def moveEta (π : PYF V) (m : Move V) (θ : EuclideanSpace ℂ (SiteConfig n)) : ℝ :=
+def moveEta (π : PYF V) (m : Move V) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) : ℝ :=
   match m with
   | .stay => 0
   | .toP x => FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ x π.F π.P
@@ -144,7 +144,7 @@ open Classical in
 /-- The entropy `η` of a split of `D` in one band: with `x = D ∩ Y`, `I_θ(x : F | P)` when
 the receiving side is `P` and `I_θ(x : P | F)` otherwise (`06-transport.tex`
 lines 345--347). -/
-def splitBandEta (π : PYF V) (D : Finset V) (θ : EuclideanSpace ℂ (SiteConfig n)) : ℝ :=
+def splitBandEta (π : PYF V) (D : Finset V) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) : ℝ :=
   if π.SplitsToP D then
     FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ (D ∩ π.Y) π.F π.P
   else FiniteProduct.conditionalMutualInformation (fun v => Fin (n v)) θ (D ∩ π.Y) π.P π.F
@@ -244,7 +244,7 @@ def exactDerivative [Fintype H] [DecidableEq H] [∀ h, DecidableEq (C h)] (t : 
 variable [∀ v, NeZero (n v)]
 
 /-- The base vector `e` of the coherent parametrization `θ = U e`. -/
-def base : SiteConfig n := fun _ => 0
+def base : (∀ v, Fin (n v)) := fun _ => 0
 
 /-- The entropy-gain term
 `∑_{h,g} w_h ∫ m_{1/4}(u) ∫ ∑_c q_{c|h} η_{h,c,g}(θ) dμ_{σ_{h,u}}(θ) du`
@@ -262,7 +262,7 @@ end TransportData
 (`06-transport.tex` lines 335--337). -/
 structure EnergyTerms (V : Type*) [Fintype V] (n : V → ℕ) (ι : Type*) where
   /-- The term `h_i`. -/
-  term : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ
+  term : ι → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ
   /-- The designated support `D_i`. -/
   support : ι → Finset V
 
@@ -288,7 +288,7 @@ open Classical in
 /-- The entropy `η_{i,j}` of the split of `D_i` at leaf `j`: the split entropy of its
 unique exceptional band (`06-transport.tex` lines 342--347). -/
 def splitEta (E : EnergyTerms V n ι) (i : ι) (j : Σ h, Option (C h))
-    (θ : EuclideanSpace ℂ (SiteConfig n)) : ℝ :=
+    (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) : ℝ :=
   ∑ g ∈ Finset.univ.filter fun g => ¬ (D.leafPart j g).Contains (E.support i),
     splitBandEta n (D.leafPart j g) (E.support i) θ
 

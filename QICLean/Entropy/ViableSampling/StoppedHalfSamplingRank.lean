@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.CanonicalHalfSamplingDimension
+import QICLean.Entropy.ViableSampling.CanonicalHalfSamplingDimension
 
 /-!
 # The initial-rank ceiling along the actual stopped resampling iteration
@@ -24,8 +24,8 @@ variable {V ι : Type*} [Fintype V] [DecidableEq V] [Fintype ι]
 every sampling history. Supporting ALVV, arXiv:1602.08828v2,
 the resampling description, lines 749–755. -/
 theorem rank_canonicalHalfSampleTrimIterate_le
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
-    (k D threshold : ℕ) (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
+    (k D threshold : ℕ) (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (hcard : Fintype.card ι ≤ D ^ 2)
     (P : Matrix (Fin d) (Fin d) ℂ) (U : ℕ → Matrix.rankUnitaryProduct d) (i : ℕ) :
     (canonicalHalfSampleTrimIterate e cuts xi k D threshold F P U i).rank ≤ P.rank := by

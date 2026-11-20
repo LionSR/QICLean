@@ -52,7 +52,7 @@ theorem rootPath_compressed_bandProduct
     (hcomm : D.CrossBandCommute n t k)
     (Z : Matrix (Config k (fun v ↦ Fin (n v))) (Fin d) ℂ)
     (hZ : Zᴴ * Z = 1)
-    (hZZ : Z * Zᴴ = symProj (copyPerm (SiteConfig n) k)) (p : ℝ) :
+    (hZZ : Z * Zᴴ = symProj (copyPerm (∀ v, Fin (n v)) k)) (p : ℝ) :
     let T := D.tree (Set.projIcc (0 : ℝ) 1 zero_le_one p)
     let A := fun j g ↦ bandMetric n t k (D.leafPart j g)
     let B := fun j g ↦ Zᴴ * A j g * Z
@@ -67,7 +67,7 @@ theorem rootPath_compressed_bandProduct
       (commute_symProj_bandMetric t k (D.leafPart j g)).symm.eq
       (commute_symProj_bandMetric t k (D.leafPart j g)).symm
     ⟨h.2.1, h.2.2.1⟩
-  have hPZ : symProj (copyPerm (SiteConfig n) k) * Z = Z := by
+  have hPZ : symProj (copyPerm (∀ v, Fin (n v)) k) * Z = Z := by
     rw [← hZZ, Matrix.mul_assoc, hZ, Matrix.mul_one]
   have hext (j : Σ h, Option (C h)) (g : Fin K) :
       symBandMetric n t k (D.leafPart j g) * Z = Z * B j g := by

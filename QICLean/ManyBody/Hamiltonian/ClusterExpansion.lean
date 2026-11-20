@@ -10,4 +10,5 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion.Factorization
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion.IndexCount
+import QICLean.ManyBody.Hamiltonian.ClusterExpansion.NearestNeighbor
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion.ProductForm

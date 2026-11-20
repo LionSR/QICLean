@@ -127,15 +127,14 @@ theorem actualRegionSplit_marginal_and_entropy
       (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ β) (EuclideanSpace ℂ σ))
     let psiCoord := (euclideanTensorEquiv σ β).symm (Tm ψ)
     let C := Matrix.schmidtCoeffMatrix (WithLp.ofLp psiCoord)
-    C * Cᴴ = Entropy.regionState J ψ ∧
+    C * Cᴴ = ManyBody.regionState ψ J ∧
       vonNeumannEntropy (C * Cᴴ) (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian =
-        Entropy.regionEntropy J ψ := by
+        ManyBody.regionEntropy ψ J := by
   intro siteType σ β tau U Phi Tm psiCoord C
   have hsplit : psiCoord =
       WithLp.toLp 2 (fun x : σ × β ↦ ψ ((FiniteProduct.splitEquiv siteType J).symm x)) :=
     euclideanTensorEquiv_symm_actualRegionSplit siteType J ψ
-  have hmarginal : C * Cᴴ = Entropy.regionState J ψ := by
-    change C * Cᴴ = ManyBody.regionState (X := fun v ↦ Fin (n v)) J ψ
+  have hmarginal : C * Cᴴ = ManyBody.regionState ψ J := by
     rw [ManyBody.regionState_eq_reducedPure, FiniteProduct.reducedPure_eq_partialTrace,
       Matrix.partialTraceRight_vecMulVec_eq]
     exact congrArg (fun x : EuclideanSpace ℂ (σ × β) ↦

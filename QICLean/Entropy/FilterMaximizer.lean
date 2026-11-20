@@ -118,11 +118,12 @@ theorem isFeasibleFilter_uniform [Nonempty m] {f a : ℝ} (hcard : Fintype.card 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {k : ℕ}
 
 theorem liftProd_chainList_eq (D : ℕ → Finset V)
-    (K : (i : Fin k) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ)
+    (K : (i : Fin k) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i)) ℂ)
     (P : Fin k → Prop) [DecidablePred P] :
     liftProd (chainList D K P) =
       ((((List.finRange k).filter fun i ↦ decide (P i)).reverse).map
-        fun i : Fin k ↦ localLift (D i) (K i)).prod := by
+        fun i : Fin k ↦ ManyBody.place (D i) (K i)).prod := by
   simp [liftProd, chainList, List.map_map, Function.comp_def]
 
 /-- A product of lifts of invertible filters is invertible. -/
@@ -130,17 +131,20 @@ theorem liftProdInv_mul_liftProd_of_isUnit :
     ∀ {l : List (RegionFilter n)}, (∀ p ∈ l, IsUnit p.2.det) → liftProdInv l * liftProd l = 1
   | [], _ => by simp
   | p :: l, h => by
-    rw [liftProdInv_cons, liftProd_cons, Matrix.mul_assoc, ← Matrix.mul_assoc (localLift p.1 _),
-      localLift_inv_mul_localLift (h p List.mem_cons_self), Matrix.one_mul,
+    rw
+        [liftProdInv_cons, liftProd_cons, Matrix.mul_assoc, ← Matrix.mul_assoc
+        (ManyBody.place p.1 _),
+      ManyBody.place_inv_mul_place (h p List.mem_cons_self), Matrix.one_mul,
       liftProdInv_mul_liftProd_of_isUnit fun q hq ↦ h q (List.mem_cons_of_mem p hq)]
 
 /-- A nested product of feasible filters with positive floors maps a nonzero vector to a
 nonzero vector. -/
 theorem toEuclideanLin_liftProd_chainList_ne_zero (D : ℕ → Finset V) {f a : Fin k → ℝ}
     (hf : ∀ j, 0 < f j)
-    {K : (i : Fin k) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ}
+    {K : (i : Fin k) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i)) ℂ}
     (hK : ∀ j, IsFeasibleFilter (f j) (a j) (K j)) (P : Fin k → Prop) [DecidablePred P]
-    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0) :
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (hΩ : Ω ≠ 0) :
     toEuclideanLin (liftProd (chainList D K P)) Ω ≠ 0 := by
   intro h0
   have hinv : liftProdInv (chainList D K P) * liftProd (chainList D K P) = 1 := by
@@ -153,14 +157,16 @@ theorem toEuclideanLin_liftProd_chainList_ne_zero (D : ℕ → Finset V) {f a : 
 
 /-- The output norm of a nested product depends continuously on the filters. -/
 theorem continuous_norm_liftProd_chainList (D : ℕ → Finset V) (P : Fin k → Prop)
-    [DecidablePred P] (Ω : EuclideanSpace ℂ (SiteConfig n)) :
-    Continuous fun K : (i : Fin k) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ ↦
+    [DecidablePred P] (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    Continuous fun K : (i : Fin k) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i)) ℂ ↦
       ‖toEuclideanLin (liftProd (chainList D K P)) Ω‖ := by
   simp_rw [liftProd_chainList_eq]
   have hprod : Continuous fun K : (i : Fin k) →
-      Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ ↦
+      Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i)) ℂ ↦
       ((((List.finRange k).filter fun i ↦ decide (P i)).reverse).map
-        fun i : Fin k ↦ localLift (D i) (K i)).prod :=
+        fun i : Fin k ↦ ManyBody.place (D i) (K i)).prod :=
     continuous_list_prod _ fun i _ ↦
       ((localLiftₗ (D i)).continuous_of_finiteDimensional).comp (continuous_apply i)
   refine continuous_norm.comp ?_
@@ -171,17 +177,21 @@ theorem continuous_norm_liftProd_chainList (D : ℕ → Finset V) (P : Fin k →
 `card · f_j ≤ 1`, the output norm `‖L_{k-1} ⋯ L_0 Ω‖` attains its maximum over families of
 feasible filters. Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 342–355. -/
 theorem exists_max_feasible_chain (D : ℕ → Finset V) (f a : Fin k → ℝ) (hf : ∀ j, 0 ≤ f j)
-    (ha : ∀ j, 0 ≤ a j) (hne : ∀ j : Fin k, Nonempty (RegionConfig n (D j)))
-    (hcard : ∀ j : Fin k, Fintype.card (RegionConfig n (D j)) * f j ≤ 1)
-    (Ω : EuclideanSpace ℂ (SiteConfig n)) :
-    ∃ K : (i : Fin k) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ,
+    (ha : ∀ j, 0 ≤ a j)
+        (hne : ∀ j : Fin k, Nonempty (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+    (hcard : ∀ j : Fin k, Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) * f j ≤ 1)
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+    ∃ K : (i : Fin k) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i)) ℂ,
       (∀ j, IsFeasibleFilter (f j) (a j) (K j)) ∧
-      ∀ K' : (i : Fin k) → Matrix (RegionConfig n (D i)) (RegionConfig n (D i)) ℂ,
+      ∀ K' : (i : Fin k) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D i)) ℂ,
         (∀ j, IsFeasibleFilter (f j) (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖ := by
   set S := Set.pi Set.univ fun j : Fin k ↦
-    {K : Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ |
+    {K : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ |
       IsFeasibleFilter (f j) (a j) K}
   have hS : IsCompact S :=
     isCompact_univ_pi fun j ↦ isCompact_setOf_isFeasibleFilter (hf j) (ha j)

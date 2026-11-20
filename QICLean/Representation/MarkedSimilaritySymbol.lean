@@ -133,8 +133,8 @@ theorem star_dotProduct_mul_mulVec {X : Type*} [Fintype X] (A B : Matrix X X ℂ
 
 /-- The one-copy symbol of the polynomial word: `∑_i (q(ρ_Y) b_i p(ρ_Y))(p(ρ_P) a_i q(ρ_P))`. -/
 noncomputable def polyWordSymbol (P Y : Finset V) {N : ℕ}
-    (a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ) (p q : ℝ[X])
-    (θ : SiteConfig n → ℂ) : Matrix (SiteConfig n) (SiteConfig n) ℂ :=
+    (a b : Fin N → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) (p q : ℝ[X])
+    (θ : (∀ v, Fin (n v)) → ℂ) : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ :=
   ∑ i, (aeval (margLift Y θ) q * b i * aeval (margLift Y θ) p) *
     (aeval (margLift P θ) p * a i * aeval (margLift P θ) q)
 
@@ -145,22 +145,25 @@ symbol of the polynomial word. -/
 theorem norm_markedScalarSymbol_sub_le [∀ v, NeZero (n v)] {t δ s : ℝ} (ht0 : 0 < t)
     (ht1 : t < 1 / 2)
     (hδ : 0 < δ) (hs0 : 0 ≤ s) (hs1 : s ≤ 1) {P Y : Finset V} (hPY : Disjoint P Y)
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} {N : ℕ}
-    {a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ} (ha : ∀ i, IsSupportedOn (a i) P)
-    (hb : ∀ i, IsSupportedOn (b i) Y) (hdec : h = ∑ i, b i * a i) {p q : ℝ[X]}
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} {N : ℕ}
+    {a b : Fin N → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+        (ha : ∀ i, ManyBody.IsSupportedOn (a i) P)
+    (hb : ∀ i, ManyBody.IsSupportedOn (b i) Y) (hdec : h = ∑ i, b i * a i) {p q : ℝ[X]}
     (hp : ∀ x ∈ Set.Icc (-1 : ℝ) 1, |max x 0 ^ t - p.eval x| ≤ s)
     (hq : ∀ x ∈ Set.Icc (-1 : ℝ) 1, |max x δ ^ (-t) - q.eval x| ≤ s)
-    (hdP : √((Fintype.card (RegionConfig n P) : ℝ) * δ ^ (1 - 2 * t)) ≤ s)
-    (hdY : √((Fintype.card (RegionConfig n Y) : ℝ) * δ ^ (1 - 2 * t)) ≤ s)
-    {θ : SiteConfig n → ℂ} (hθ : θ ∈ unitSphere) :
+    (hdP : √((Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P) : ℝ) * δ ^ (1 - 2 * t)) ≤
+        s)
+    (hdY : √((Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Y) : ℝ) * δ ^ (1 - 2 * t)) ≤
+        s)
+    {θ : (∀ v, Fin (n v)) → ℂ} (hθ : θ ∈ unitSphere) :
     ‖markedScalarSymbol t P Y h θ - star θ ⬝ᵥ (polyWordSymbol P Y a b p q θ *ᵥ θ)‖ ≤
-      s * ((√(Fintype.card (RegionConfig n Y) : ℝ) + 4) *
-          √(Fintype.card (RegionConfig n P) : ℝ) +
-        (2 * √(Fintype.card (RegionConfig n Y) : ℝ) + 4) *
-          (√(Fintype.card (RegionConfig n P) : ℝ) + 4)) * ∑ i, ‖a i‖ * ‖b i‖ := by
-  set dP := √(Fintype.card (RegionConfig n P) : ℝ)
-  set dY := √(Fintype.card (RegionConfig n Y) : ℝ)
-  have σ₀ : SiteConfig n := fun _ => 0
+      s * ((√(Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Y) : ℝ) + 4) *
+          √(Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P) : ℝ) +
+        (2 * √(Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Y) : ℝ) + 4) *
+          (√(Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P) : ℝ) + 4)) * ∑ i, ‖a i‖
+              * ‖b i‖ := by
+  set dP := √(Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P) : ℝ)
+  set dY := √(Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Y) : ℝ)
   set Pt := regionPow P t θ
   set Pm := regionPow P (-t) θ
   set Yt := regionPow Y t θ
@@ -176,9 +179,9 @@ theorem norm_markedScalarSymbol_sub_le [∀ v, NeZero (n v)] {t δ s : ℝ} (ht0
       dotProduct_sum]
     refine Finset.sum_congr rfl fun i _ => ?_
     have c1 : Commute Pt Ym := commute_localLift_of_disjoint hPY _ _
-    have c2 : Commute Pt (b i) := commute_localLift_of_isSupportedOn hPY _ (hb i) σ₀
+    have c2 : Commute Pt (b i) := commute_localLift_of_isSupportedOn hPY _ (hb i)
     have c3 : Commute Yt Pm := commute_localLift_of_disjoint hPY.symm _ _
-    have c4 : Commute Yt (a i) := commute_localLift_of_isSupportedOn hPY.symm _ (ha i) σ₀
+    have c4 : Commute Yt (a i) := commute_localLift_of_isSupportedOn hPY.symm _ (ha i)
     have c5 : Commute Pt Yt := commute_localLift_of_disjoint hPY _ _
     rw [sandwich_rearrange c1 c2 c3 c4 c5, star_dotProduct_mul_mulVec, conjTranspose_mul,
       conjTranspose_mul, (isHermitian_regionPow Y t θ).eq, (isHermitian_regionPow Y (-t) θ).eq]
@@ -192,22 +195,25 @@ theorem norm_markedScalarSymbol_sub_le [∀ v, NeZero (n v)] {t δ s : ℝ} (ht0
       (isHermitian_aeval_margLift Y θ p).eq, (isHermitian_aeval_margLift Y θ q).eq]
     simp only [mulVec_mulVec, Matrix.mul_assoc]
     rfl
-  have hmv : ∀ (M : Matrix (SiteConfig n) (SiteConfig n) ℂ) (v : SiteConfig n → ℂ),
+  have hmv : ∀ (M : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) (v : (∀ v, Fin (n v)) → ℂ),
       ‖(EuclideanSpace.equiv _ ℂ).symm (M *ᵥ v)‖ ≤ ‖M‖ * ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
     fun M v => by simpa using M.l2_opNorm_mulVec ((EuclideanSpace.equiv _ ℂ).symm v)
   -- Bounds for one sandwiched vector.
-  have hsand : ∀ (Q : Finset V) (c : Matrix (SiteConfig n) (SiteConfig n) ℂ),
-      √((Fintype.card (RegionConfig n Q) : ℝ) * δ ^ (1 - 2 * t)) ≤ s →
+  have hsand : ∀ (Q : Finset V) (c : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ),
+      √((Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) : ℝ) * δ ^ (1 - 2 * t)) ≤ s →
       ‖(EuclideanSpace.equiv _ ℂ).symm (regionPow Q t θ *ᵥ (c *ᵥ (regionPow Q (-t) θ *ᵥ θ)) -
           aeval (margLift Q θ) p *ᵥ (c *ᵥ (aeval (margLift Q θ) q *ᵥ θ)))‖ ≤
-        s * ‖c‖ * (√(Fintype.card (RegionConfig n Q) : ℝ) + 4) ∧
+        s * ‖c‖ * (√(Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) : ℝ) + 4) ∧
       ‖(EuclideanSpace.equiv _ ℂ).symm (regionPow Q t θ *ᵥ (c *ᵥ (regionPow Q (-t) θ *ᵥ θ)))‖ ≤
-        ‖c‖ * √(Fintype.card (RegionConfig n Q) : ℝ) := by
+        ‖c‖ * √(Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) : ℝ) := by
     intro Q c hd
-    have hdn : 0 ≤ √(Fintype.card (RegionConfig n Q) : ℝ) := Real.sqrt_nonneg _
+    have hdn : 0 ≤ √(Fintype.card
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) : ℝ) := Real.sqrt_nonneg _
     have hc := norm_nonneg c
     refine ⟨(norm_regionPow_sandwich_sub_le ht0 ht1 hδ hs0 Q hθ c hp hq).trans ?_, ?_⟩
-    · have h1 : (1 + s) * (√((Fintype.card (RegionConfig n Q) : ℝ) * δ ^ (1 - 2 * t)) + s) ≤
+    · have h1 : (1 + s) *
+        (√((Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) : ℝ) * δ ^ (1 - 2 * t)) +
+        s) ≤
           2 * (s + s) := by
         gcongr
         · linarith
@@ -240,8 +246,8 @@ theorem norm_markedScalarSymbol_sub_le [∀ v, NeZero (n v)] {t δ s : ℝ} (ht0
 /-- The polynomial word on `m + 1` copies:
 `∑_i (q(J_Y) b_i^{(k)} p(J_Y))(p(J_P) a_i^{(k)} q(J_P))` (`05-replicas.tex`, lines 693–702). -/
 noncomputable def polyWord (P Y : Finset V) {N : ℕ}
-    (a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ) (p q : ℝ[X]) (m : ℕ) :
-    Matrix (Fin (m + 1) → SiteConfig n) (Fin (m + 1) → SiteConfig n) ℂ :=
+    (a b : Fin N → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) (p q : ℝ[X]) (m : ℕ) :
+    Matrix (Fin (m + 1) → (∀ v, Fin (n v))) (Fin (m + 1) → (∀ v, Fin (n v))) ℂ :=
   ∑ i, (aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Y)) q *
       siteOp (Fin.last m) (b i) * aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Y)) p) *
     (aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) P)) p *
@@ -250,12 +256,12 @@ noncomputable def polyWord (P Y : Finset V) {N : ℕ}
 /-- **The symbol of a polynomial word** (`05-replicas.tex`, lines 776–812): stars are replaced
 by the corresponding marginals. -/
 theorem hasMarkedSymbol_polyWord (P Y : Finset V) {N : ℕ}
-    (a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ) (p q : ℝ[X]) :
+    (a b : Fin N → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) (p q : ℝ[X]) :
     HasMarkedSymbol (polyWord P Y a b p q) (polyWordSymbol P Y a b p q) := by
   have hJ : ∀ (Q : Finset V) (r : ℝ[X]), HasMarkedSymbol
       (fun m => aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) r)
       (fun θ => aeval (margLift Q θ) r) := fun Q r => (hasMarkedSymbol_starOp Q).aeval r
-  exact HasMarkedSymbol.sum (Ω := SiteConfig n) Finset.univ fun i _ =>
+  exact HasMarkedSymbol.sum (Ω := (∀ v, Fin (n v))) Finset.univ fun i _ =>
     ((((hJ Y q).mul (HasMarkedSymbol.center (b i))).mul (hJ Y p)).mul
       (((hJ P p).mul (HasMarkedSymbol.center (a i))).mul (hJ P q)))
 
@@ -285,29 +291,30 @@ symmetric vectors `‖R_Q^{-1} z‖ ≤ C_I ‖z‖` and `‖(R_Q^{-1} - q(J_Q))
 theorem norm_markedSimilarity_sub_polyWord_le {t s CR CI : ℝ} (ht0 : 0 ≤ t) (m : ℕ)
     (hs0 : 0 ≤ s) (hs1 : s ≤ 1) (hCR : 0 ≤ CR) (hCI : 0 ≤ CI)
     {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) {N : ℕ}
-    {a b : Fin N → Matrix (SiteConfig n) (SiteConfig n) ℂ} (ha : ∀ i, IsSupportedOn (a i) P)
-    (hb : ∀ i, IsSupportedOn (b i) Y) (hdec : h = ∑ i, b i * a i) {p q : ℝ[X]}
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hh : ManyBody.IsSupportedOn h (P ∪ Y)) {N : ℕ}
+    {a b : Fin N → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+        (ha : ∀ i, ManyBody.IsSupportedOn (a i) P)
+    (hb : ∀ i, ManyBody.IsSupportedOn (b i) Y) (hdec : h = ∑ i, b i * a i) {p q : ℝ[X]}
     (hR : ∀ Q, Q = P ∨ Q = Y → ‖markedRatio (fun v => Fin (n v)) t m Q -
       aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) p‖ ≤ 2 * s)
     (hp : ∀ Q, Q = P ∨ Q = Y →
       ‖aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) p‖ ≤ 2)
     (hRn : ∀ Q, Q = P ∨ Q = Y → ‖markedRatio (fun v => Fin (n v)) t m Q‖ ≤ CR)
-    (hRi : ∀ Q, Q = P ∨ Q = Y → ∀ z : (Fin (m + 1) → SiteConfig n) → ℂ,
+    (hRi : ∀ Q, Q = P ∨ Q = Y → ∀ z : (Fin (m + 1) → (∀ v, Fin (n v))) → ℂ,
       z ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) →
       ‖(EuclideanSpace.equiv _ ℂ).symm ((markedRatio (fun v => Fin (n v)) t m Q)⁻¹ *ᵥ z)‖ ≤
         CI * ‖(EuclideanSpace.equiv _ ℂ).symm z‖)
-    (hI : ∀ Q, Q = P ∨ Q = Y → ∀ z : (Fin (m + 1) → SiteConfig n) → ℂ,
+    (hI : ∀ Q, Q = P ∨ Q = Y → ∀ z : (Fin (m + 1) → (∀ v, Fin (n v))) → ℂ,
       z ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) →
       ‖(EuclideanSpace.equiv _ ℂ).symm ((markedRatio (fun v => Fin (n v)) t m Q)⁻¹ *ᵥ z -
         aeval (starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)) q *ᵥ z)‖ ≤
         3 * s * ‖(EuclideanSpace.equiv _ ℂ).symm z‖) :
     ‖(markedSimilarity n t (m + 1) P Y F h -
         HasMarkedSymbol.compress (polyWord P Y a b p q) (m + 1)) *
-          symProj (copyPerm (SiteConfig n) (m + 1))‖ ≤
+          symProj (copyPerm (∀ v, Fin (n v)) (m + 1))‖ ≤
       s * ((2 * CI + 6) * CR * CI + (CR * CI + 2 * CI + 6) * (2 * CI + 6)) *
         ∑ i, ‖a i‖ * ‖b i‖ := by
-  set Pi := symProj (copyPerm (SiteConfig n) (m + 1))
+  set Pi := symProj (copyPerm (∀ v, Fin (n v)) (m + 1))
   set O := markedSimilarity n t (m + 1) P Y F h
   set W := polyWord P Y a b p q m
   set K := (2 * CI + 6) * CR * CI + (CR * CI + 2 * CI + 6) * (2 * CI + 6)
@@ -322,15 +329,15 @@ theorem norm_markedSimilarity_sub_polyWord_le {t s CR CI : ℝ} (ht0 : 0 ≤ t) 
       hOc.eq, Matrix.mul_assoc O Pi Pi, hPP]
   rw [heq]
   refine l2_opNorm_symProj_mul_mul_symProj_le (by positivity) fun u z hu hz => ?_
-  have hmv : ∀ (M : Matrix (Fin (m + 1) → SiteConfig n) (Fin (m + 1) → SiteConfig n) ℂ)
-      (v : (Fin (m + 1) → SiteConfig n) → ℂ),
+  have hmv : ∀ (M : Matrix (Fin (m + 1) → (∀ v, Fin (n v))) (Fin (m + 1) → (∀ v, Fin (n v))) ℂ)
+      (v : (Fin (m + 1) → (∀ v, Fin (n v))) → ℂ),
       ‖(EuclideanSpace.equiv _ ℂ).symm (M *ᵥ v)‖ ≤ ‖M‖ * ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
     fun M v => by simpa using M.l2_opNorm_mulVec ((EuclideanSpace.equiv _ ℂ).symm v)
   set R := fun Q : Finset V => markedRatio (fun v => Fin (n v)) t m Q
   set J := fun Q : Finset V => starOp (subsystemPerm (m + 1) (fun v => Fin (n v)) Q)
   -- One sandwiched vector and its approximation.
-  have hsand : ∀ Q, Q = P ∨ Q = Y → ∀ (c : Matrix (SiteConfig n) (SiteConfig n) ℂ)
-      (w : (Fin (m + 1) → SiteConfig n) → ℂ),
+  have hsand : ∀ Q, Q = P ∨ Q = Y → ∀ (c : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+      (w : (Fin (m + 1) → (∀ v, Fin (n v))) → ℂ),
       w ∈ symmetricSubspace (m + 1) (fun v => Fin (n v)) →
       ‖(EuclideanSpace.equiv _ ℂ).symm (R Q *ᵥ (siteOp (Fin.last m) c *ᵥ ((R Q)⁻¹ *ᵥ w)) -
           aeval (J Q) p *ᵥ (siteOp (Fin.last m) c *ᵥ (aeval (J Q) q *ᵥ w)))‖ ≤
@@ -408,13 +415,12 @@ disjoint `P, Y, F`, `0 < t < 1/2` and `h` supported on `P ∪ Y`, the similarity
 `f_θ = ⟨θ, ρ_P^t ρ_Y^{-t} h ρ_P^{-t} ρ_Y^t θ⟩`. -/
 theorem hasCoherentSymbol_markedSimilarity {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1 / 2)
     {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F) (hYF : Disjoint Y F)
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h (P ∪ Y)) :
-    HasCoherentSymbol (Ω := SiteConfig n) (fun k => markedSimilarity n t k P Y F h)
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hh : ManyBody.IsSupportedOn h (P ∪ Y)) :
+    HasCoherentSymbol (Ω := (∀ v, Fin (n v))) (fun k => markedSimilarity n t k P Y F h)
       (markedScalarSymbol t P Y h) := by
   set ι : V → Type := fun v => Fin (n v)
-  have σ₀ : SiteConfig n := fun _ => 0
   obtain ⟨N, b, a, hb, ha, hdec⟩ :=
-    (show IsSupportedOn h (Y ∪ P) by rwa [Finset.union_comm]).exists_sum_mul hPY.symm σ₀
+    (show ManyBody.IsSupportedOn h (Y ∪ P) by rwa [Finset.union_comm]).exists_sum_mul hPY.symm
   obtain ⟨C₁, hC₁⟩ := exists_l2_opNorm_markedRatio_sub_le ι ht0 (by linarith)
   obtain ⟨CR₀, hCR₀⟩ := exists_l2_opNorm_markedRatio_le ι ht0 (by linarith)
   obtain ⟨CI₀, hCI₀⟩ := exists_norm_markedRatio_inv_mulVec_le ι ht0 ht1
@@ -424,8 +430,8 @@ theorem hasCoherentSymbol_markedSimilarity {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1 
   set CI := max CI₀ 0
   have hCR : 0 ≤ CR := le_max_right _ _
   have hCI : 0 ≤ CI := le_max_right _ _
-  have hmv : ∀ {k : ℕ} (M : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ)
-      (v : (Fin k → SiteConfig n) → ℂ),
+  have hmv : ∀ {k : ℕ} (M : Matrix (Fin k → (∀ v, Fin (n v))) (Fin k → (∀ v, Fin (n v))) ℂ)
+      (v : (Fin k → (∀ v, Fin (n v))) → ℂ),
       ‖(EuclideanSpace.equiv _ ℂ).symm (M *ᵥ v)‖ ≤ ‖M‖ * ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
     fun M v => by simpa using M.l2_opNorm_mulVec ((EuclideanSpace.equiv _ ℂ).symm v)
   have hzero : markedSimilarity n t 0 P Y F h = 0 := by
@@ -440,19 +446,19 @@ theorem hasCoherentSymbol_markedSimilarity {t : ℝ} (ht0 : 0 < t) (ht1 : t < 1 
   · -- Uniform boundedness on the symmetric subspace.
     refine l2_opNorm_le_of_forall (le_max_right _ _) fun v => ?_
     rw [← mulVec_mulVec]
-    have hPv : ‖(EuclideanSpace.equiv _ ℂ).symm (symProj (copyPerm (SiteConfig n) k) *ᵥ v)‖ ≤
+    have hPv : ‖(EuclideanSpace.equiv _ ℂ).symm (symProj (copyPerm (∀ v, Fin (n v)) k) *ᵥ v)‖ ≤
         ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
       (hmv _ _).trans (mul_le_of_le_one_left (norm_nonneg _) l2_opNorm_symProj_le)
-    calc _ ≤ Cb * ‖(EuclideanSpace.equiv _ ℂ).symm (symProj (copyPerm (SiteConfig n) k) *ᵥ v)‖ :=
+    calc _ ≤ Cb * ‖(EuclideanSpace.equiv _ ℂ).symm (symProj (copyPerm (∀ v, Fin (n v)) k) *ᵥ v)‖ :=
           hCb k _ (symProj_mulVec_mem _ v)
       _ ≤ max Cb 0 * ‖(EuclideanSpace.equiv _ ℂ).symm
-            (symProj (copyPerm (SiteConfig n) k) *ᵥ v)‖ :=
+            (symProj (copyPerm (∀ v, Fin (n v)) k) *ᵥ v)‖ :=
           mul_le_mul_of_nonneg_right (le_max_left _ _) (norm_nonneg _)
       _ ≤ max Cb 0 * ‖(EuclideanSpace.equiv _ ℂ).symm v‖ :=
           mul_le_mul_of_nonneg_left hPv (le_max_right _ _)
   -- The approximation: first `δ`, then the polynomials, then `k`.
-  set dP : ℝ := (Fintype.card (RegionConfig n P) : ℝ)
-  set dY : ℝ := (Fintype.card (RegionConfig n Y) : ℝ)
+  set dP : ℝ := (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P) : ℝ)
+  set dY : ℝ := (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Y) : ℝ)
   set S := ∑ i, ‖a i‖ * ‖b i‖
   set Kop := (2 * CI + 6) * CR * CI + (CR * CI + 2 * CI + 6) * (2 * CI + 6)
   set Ksym := (√dY + 4) * √dP + (2 * √dY + 4) * (√dP + 4)
@@ -567,11 +573,11 @@ for every noncommutative polynomial `q` in two variables,
 matrices `σ`. -/
 theorem eventually_norm_trace_freeAlgebra_markedSimilarity_sub_le {t : ℝ} (ht0 : 0 < t)
     (ht1 : t < 1 / 2) {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F)
-    (hYF : Disjoint Y F) {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
-    (hh : IsSupportedOn h (P ∪ Y)) (q : FreeAlgebra ℂ (Fin 2)) {ε : ℝ} (hε : 0 < ε) :
-    ∀ᶠ k in atTop, ∀ (a : SiteConfig n)
-      (σ : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ), σ.PosSemidef →
-      σ.trace = 1 → (∀ π, permOp (copyPerm (SiteConfig n) k) π * σ = σ) →
+    (hYF : Disjoint Y F) {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+    (hh : ManyBody.IsSupportedOn h (P ∪ Y)) (q : FreeAlgebra ℂ (Fin 2)) {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ k in atTop, ∀ (a : (∀ v, Fin (n v)))
+      (σ : Matrix (Fin k → (∀ v, Fin (n v))) (Fin k → (∀ v, Fin (n v))) ℂ), σ.PosSemidef →
+      σ.trace = 1 → (∀ π, permOp (copyPerm (∀ v, Fin (n v)) k) π * σ = σ) →
         ‖(σ * FreeAlgebra.lift ℂ ![markedSimilarity n t k P Y F h,
             (markedSimilarity n t k P Y F h)ᴴ] q).trace -
           coherentIntegral a σ (fun θ => FreeAlgebra.lift ℂ
@@ -585,11 +591,11 @@ theorem eventually_norm_trace_freeAlgebra_markedSimilarity_sub_le {t : ℝ} (ht0
 matrices `σ`. -/
 theorem eventually_norm_trace_skewOperator_markedSimilarity_sub_le {t : ℝ} (ht0 : 0 < t)
     (ht1 : t < 1 / 2) {P Y F : Finset V} (hPY : Disjoint P Y) (hPF : Disjoint P F)
-    (hYF : Disjoint Y F) {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
-    (hh : IsSupportedOn h (P ∪ Y)) {ε : ℝ} (hε : 0 < ε) :
-    ∀ᶠ k in atTop, ∀ (a : SiteConfig n)
-      (σ : Matrix (Fin k → SiteConfig n) (Fin k → SiteConfig n) ℂ), σ.PosSemidef →
-      σ.trace = 1 → (∀ π, permOp (copyPerm (SiteConfig n) k) π * σ = σ) →
+    (hYF : Disjoint Y F) {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+    (hh : ManyBody.IsSupportedOn h (P ∪ Y)) {ε : ℝ} (hε : 0 < ε) :
+    ∀ᶠ k in atTop, ∀ (a : (∀ v, Fin (n v)))
+      (σ : Matrix (Fin k → (∀ v, Fin (n v))) (Fin k → (∀ v, Fin (n v))) ℂ), σ.PosSemidef →
+      σ.trace = 1 → (∀ π, permOp (copyPerm (∀ v, Fin (n v)) k) π * σ = σ) →
         ‖(σ * skewOperator k (markedSimilarity n t k P Y F h)).trace -
           coherentIntegral a σ (fun θ => ((2 * (‖markedScalarSymbol t P Y h θ‖ -
             (markedScalarSymbol t P Y h θ).re) : ℝ) : ℂ))‖ ≤ ε :=

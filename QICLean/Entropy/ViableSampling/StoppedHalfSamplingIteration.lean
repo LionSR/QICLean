@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.CanonicalSamplingTrimmingMeasurable
+import QICLean.Entropy.ViableSampling.CanonicalSamplingTrimmingMeasurable
 
 /-!
 # A stopped iteration of canonical sampling and collective trimming
@@ -36,30 +36,30 @@ variable {V ι : Type*} [Fintype V] [DecidableEq V] [Fintype ι]
 image and the existing collective trim. The resulting actual projection
 is returned to the same fixed input coordinates. Source: ALVV,
 arXiv:1602.08828v2, the merge process, lines 711–736. -/
-def canonicalHalfSampleTrimMatrix (e : Fin d ≃ SiteConfig n)
+def canonicalHalfSampleTrimMatrix (e : Fin d ≃ (∀ v, Fin (n v)))
     (cuts : ℕ → Finset V) (xi : ℝ) (k D threshold : ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (P : Matrix (Fin d) (Fin d) ℂ) (U : Matrix.rankUnitaryProduct d) :
     Matrix (Fin d) (Fin d) ℂ :=
   if threshold ≤ P.rank then
     let S := trimMatrixRange e cuts xi k (Matrix.familySupportProj (fun i ↦ F i *
       (Matrix.toEuclideanCLM (n := Fin d) (𝕜 := ℂ)).symm
         (Matrix.randomRangeSubspace P (P.rank / (2 * D ^ 2)) U).starProjection))
-    ((Matrix.toEuclideanCLM (n := SiteConfig n) (𝕜 := ℂ)).symm
+    ((Matrix.toEuclideanCLM (n := (∀ v, Fin (n v))) (𝕜 := ℂ)).symm
       S.starProjection).reindex e.symm e.symm
   else P
 
 /-- The actual stopped sampling-and-trimming round has a jointly Borel
 matrix in the current input and the fixed product of unitary coordinates.
 Auxiliary for ALVV, arXiv:1602.08828v2, the merge process, lines 711–736. -/
-theorem measurable_canonicalHalfSampleTrimMatrix (e : Fin d ≃ SiteConfig n)
+theorem measurable_canonicalHalfSampleTrimMatrix (e : Fin d ≃ (∀ v, Fin (n v)))
     (cuts : ℕ → Finset V) (xi : ℝ) (k D threshold : ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin d) ℂ) :
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ) :
     Measurable (fun p : Matrix (Fin d) (Fin d) ℂ × Matrix.rankUnitaryProduct d ↦
       canonicalHalfSampleTrimMatrix e cuts xi k D threshold F p.1 p.2) := by
   have htrim := measurable_projectionMatrix_trim_sample_family_image_rank_size
     e cuts xi k (fun q ↦ q / (2 * D ^ 2)) F
-  have hcoordinates : Continuous (fun P : Matrix (SiteConfig n) (SiteConfig n) ℂ ↦
+  have hcoordinates : Continuous (fun P : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ ↦
       P.reindex e.symm e.symm) := by fun_prop
   have hstop : MeasurableSet {p : Matrix (Fin d) (Fin d) ℂ ×
       Matrix.rankUnitaryProduct d | threshold ≤ p.1.rank} :=
@@ -70,9 +70,9 @@ theorem measurable_canonicalHalfSampleTrimMatrix (e : Fin d ≃ SiteConfig n)
 /-- Iterate the same stopped canonical sampling-and-trimming round, using
 a fresh prescribed unitary coordinate at each active round. Source: ALVV,
 arXiv:1602.08828v2, the merge process, lines 711–736. -/
-def canonicalHalfSampleTrimIterate (e : Fin d ≃ SiteConfig n)
+def canonicalHalfSampleTrimIterate (e : Fin d ≃ (∀ v, Fin (n v)))
     (cuts : ℕ → Finset V) (xi : ℝ) (k D threshold : ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (P : Matrix (Fin d) (Fin d) ℂ) (U : ℕ → Matrix.rankUnitaryProduct d) :
     ℕ → Matrix (Fin d) (Fin d) ℂ :=
   Nat.rec P (fun i Q ↦ canonicalHalfSampleTrimMatrix e cuts xi k D threshold F Q (U i))
@@ -81,9 +81,9 @@ def canonicalHalfSampleTrimIterate (e : Fin d ≃ SiteConfig n)
 the initial matrix and the unitary coordinates. This is a measurability
 auxiliary for ALVV, arXiv:1602.08828v2, the merge process, lines 711–736;
 no probability bound on successful rounds is assumed or asserted. -/
-theorem measurable_canonicalHalfSampleTrimIterate (e : Fin d ≃ SiteConfig n)
+theorem measurable_canonicalHalfSampleTrimIterate (e : Fin d ≃ (∀ v, Fin (n v)))
     (cuts : ℕ → Finset V) (xi : ℝ) (k D threshold : ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin d) ℂ) (r : ℕ) :
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ) (r : ℕ) :
     Measurable (fun p : Matrix (Fin d) (Fin d) ℂ ×
         (ℕ → Matrix.rankUnitaryProduct d) ↦
       canonicalHalfSampleTrimIterate e cuts xi k D threshold F p.1 p.2 r) := by
@@ -106,9 +106,9 @@ theorem measurable_canonicalHalfSampleTrimIterate (e : Fin d ≃ SiteConfig n)
 /-- The current iterate depends only on unitary coordinates from earlier
 rounds. This permits fixing the current input before the next Haar sample.
 Auxiliary to ALVV, arXiv:1602.08828v2, the merge process, lines 711–736. -/
-theorem canonicalHalfSampleTrimIterate_eq_of_seed_prefix (e : Fin d ≃ SiteConfig n)
+theorem canonicalHalfSampleTrimIterate_eq_of_seed_prefix (e : Fin d ≃ (∀ v, Fin (n v)))
     (cuts : ℕ → Finset V) (xi : ℝ) (k D threshold : ℕ)
-    (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (P : Matrix (Fin d) (Fin d) ℂ)
     (U U' : ℕ → Matrix.rankUnitaryProduct d) (r : ℕ) :
     (∀ i < r, U i = U' i) →

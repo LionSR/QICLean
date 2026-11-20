@@ -3,11 +3,11 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Probability.RankUnitaryHalfSampling
-import QICLean.Analysis.NativeFamilyImageCoordinates
-import QICLean.Analysis.StoppedHalfSamplingRank
+import QICLean.Entropy.ViableSampling.RankUnitaryHalfSampling
+import QICLean.Entropy.ViableSampling.NativeFamilyImageCoordinates
+import QICLean.Entropy.ViableSampling.StoppedHalfSamplingRank
 import QICLean.Analysis.BootstrapFailureParameters
-import QICLean.Analysis.StoppedHalfSamplingEvents
+import QICLean.Entropy.ViableSampling.StoppedHalfSamplingEvents
 import QICLean.Analysis.FiniteProductUnionProbability
 import QICLean.Analysis.ViableSubspaceOrder
 
@@ -30,10 +30,10 @@ variable {V ι β : Type*} [Fintype V] [DecidableEq V] [Fintype ι]
   [Fintype β] {n : V → ℕ} {d R : ℕ}
 
 private theorem joint_failure_le_of_step
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
-    (k D threshold : ℕ) (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
+    (k D threshold : ℕ) (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (P : Matrix (Fin d) (Fin d) ℂ)
-    (Graw : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))) (beta : ℝ≥0∞)
+    (Graw : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))) (beta : ℝ≥0∞)
     (hInitial : Submodule.IsCloseTo 0.04
       (Submodule.prodExt ((Matrix.toEuclideanLin P).range.map
         (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearMap) β) Graw)
@@ -142,21 +142,21 @@ private theorem joint_failure_le_of_step
   simpa only [List.length_finRange] using hunion
 
 private theorem active_native_half_trim_eq
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
     (k D threshold : ℕ)
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
     (P : Matrix (Fin d) (Fin d) ℂ) (U : Matrix.rankUnitaryProduct d)
     (hactive : threshold ≤ P.rank) :
     let sample := (Matrix.randomRangeSubspace P (P.rank / (2 * D ^ 2)) U).map
       (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearMap
-    let image : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) :=
+    let image : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) :=
       ⨆ i, sample.map (A i).toLinearMap
     (Matrix.toEuclideanLin
       (canonicalHalfSampleTrimMatrix e cuts xi k D threshold
         (nativeFamilyMatrix e A) P U)).range.map
       (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearMap =
     trimSubspace cuts xi
-      (fun i ↦ (stdOrthonormalBasis ℂ image i : EuclideanSpace ℂ (SiteConfig n))) k := by
+      (fun i ↦ (stdOrthonormalBasis ℂ image i : EuclideanSpace ℂ (∀ v, Fin (n v)))) k := by
   intro sample image
   let S := Matrix.randomRangeSubspace P (P.rank / (2 * D ^ 2)) U
   let Q := (Matrix.toEuclideanCLM (n := Fin d) (𝕜 := ℂ)).symm S.starProjection
@@ -173,8 +173,8 @@ private theorem active_native_half_trim_eq
       ⨆ i, (W.map (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e).toLinearMap).map
         (A i).toLinearMap) hRange
   exact hs.trans (ht.trans (congrArg
-    (fun W : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) ↦ trimSubspace cuts xi
-      (fun i ↦ (stdOrthonormalBasis ℂ W i : EuclideanSpace ℂ (SiteConfig n))) k) himage))
+    (fun W : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) ↦ trimSubspace cuts xi
+      (fun i ↦ (stdOrthonormalBasis ℂ W i : EuclideanSpace ℂ (∀ v, Fin (n v)))) k) himage))
 
 /-- The actual stopped-run probability for a fixed coefficient satisfying
 only the explicit scalar sampling threshold. Consequently a physical caller
@@ -185,16 +185,16 @@ theorem canonicalHalfSampleTrimIterate_joint_probability_of_threshold
     {X : Type*} (D a K : ℕ) (hD : 2 ≤ D) (eta : ℝ) (hK : 1 ≤ K)
     (hThreshold : ∀ r N Q : ℕ, K * (r + 1) * (N + 2) ^ 2 ≤ Q →
       4 * D ^ 2 ≤ Q ∧ Submodule.bootstrapFailure D Q r ≤ eta / ((N : ℝ) + 2) ^ a) :
-    ∀ (N r d rounds : ℕ) (e : Fin d ≃ SiteConfig n)
+    ∀ (N r d rounds : ℕ) (e : Fin d ≃ (∀ v, Fin (n v)))
       (k bRef : ℕ) (Delta epsilon epsilonRef xi : ℝ)
-      (Graw Rref : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-      (_x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-      (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+      (Graw Rref : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+      (_x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+      (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
       (P : Matrix (Fin d) (Fin d) ℂ),
       Fintype.card ι ≤ D ^ 2 →
       (∀ x, Submodule.IsCloseTo epsilon Graw (T x)) →
       (∀ x, Submodule.IsCloseTo (1 / 200) (T x) Graw) →
-      (∀ x delta, delta < 1 → ∀ S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)),
+      (∀ x delta, delta < 1 → ∀ S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))),
         Submodule.IsCloseTo delta (Submodule.prodExt S β) (T x) →
         Submodule.IsCloseTo (Delta / (1 - delta) ^ 2)
           (Submodule.prodExt (⨆ i, S.map (A i).toLinearMap) β) (T x)) →
@@ -273,16 +273,16 @@ auxiliary for ALVV, arXiv:1602.08828v2, lines 749–755, not the printed
 sample-once loop or a running-time assertion. -/
 theorem exists_canonicalHalfSampleTrimIterate_joint_probability
     {X : Type*} (D a : ℕ) (hD : 2 ≤ D) (eta : ℝ) (heta : 0 < eta) :
-    ∃ K : ℕ, 1 ≤ K ∧ ∀ (N r d rounds : ℕ) (e : Fin d ≃ SiteConfig n)
+    ∃ K : ℕ, 1 ≤ K ∧ ∀ (N r d rounds : ℕ) (e : Fin d ≃ (∀ v, Fin (n v)))
       (k bRef : ℕ) (Delta epsilon epsilonRef xi : ℝ)
-      (Graw Rref : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-      (_x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-      (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+      (Graw Rref : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+      (_x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+      (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
       (P : Matrix (Fin d) (Fin d) ℂ),
       Fintype.card ι ≤ D ^ 2 →
       (∀ x, Submodule.IsCloseTo epsilon Graw (T x)) →
       (∀ x, Submodule.IsCloseTo (1 / 200) (T x) Graw) →
-      (∀ x delta, delta < 1 → ∀ S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)),
+      (∀ x delta, delta < 1 → ∀ S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))),
         Submodule.IsCloseTo delta (Submodule.prodExt S β) (T x) →
         Submodule.IsCloseTo (Delta / (1 - delta) ^ 2)
           (Submodule.prodExt (⨆ i, S.map (A i).toLinearMap) β) (T x)) →

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Probability.RankUnitaryProductHaar
-import QICLean.Analysis.ViableHalfSamplingTrimming
+import QICLean.Entropy.ViableSampling.ViableHalfSamplingTrimming
 
 /-!
 # A product Haar law for the actual half-sample, image and reference trim
@@ -68,16 +68,16 @@ arXiv:1602.08828v2, lines 749–755, 1065–1074 and 1801–1813.
 The physical family and reference remain explicit intermediate hypotheses;
 no adaptive joint law or probability estimate is assumed. -/
 theorem exists_measurable_randomRangeSubspace_half_trim_event
-    (e : Fin d ≃ SiteConfig n) (P : Matrix (Fin d) (Fin d) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (P : Matrix (Fin d) (Fin d) ℂ)
     {D m bRef : ℕ} {Delta epsilon epsilonRef xi : ℝ}
-    {Graw R : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))}
-    (x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+    {Graw R : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))}
+    (x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
     (hcard : Fintype.card ι ≤ D ^ 2)
     (hRawSoft : ∀ x, Submodule.IsCloseTo epsilon Graw (T x))
     (hSoftRaw : ∀ x, Submodule.IsCloseTo (1 / 200) (T x) Graw)
     (hA : ∀ x delta, delta < 1 →
-      ∀ S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)),
+      ∀ S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))),
       Submodule.IsCloseTo delta (Submodule.prodExt S β) (T x) →
       Submodule.IsCloseTo (Delta / (1 - delta) ^ 2)
         (Submodule.prodExt (⨆ i, S.map (A i).toLinearMap) β) (T x))
@@ -102,12 +102,12 @@ theorem exists_measurable_randomRangeSubspace_half_trim_event
     let sample := fun U : Matrix.rankUnitaryProduct d ↦
       (Matrix.randomRangeSubspace P s U).map I.toLinearMap
     let image : Matrix.rankUnitaryProduct d →
-        Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) := fun U ↦
+        Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) := fun U ↦
       ⨆ i, (sample U).map (A i).toLinearMap
     let output : Matrix.rankUnitaryProduct d →
-        Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) := fun U ↦
+        Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) := fun U ↦
       trimSubspace C xi
-        (fun i ↦ (stdOrthonormalBasis ℂ (image U) i : EuclideanSpace ℂ (SiteConfig n))) m
+        (fun i ↦ (stdOrthonormalBasis ℂ (image U) i : EuclideanSpace ℂ (∀ v, Fin (n v)))) m
     1 ≤ s ∧ 0 < alpha ∧ alpha ≤ 1 ∧
     (∀ U, sample U ≤ W ∧ finrank ℂ (sample U) = s ∧
       finrank ℂ (image U) ≤ q / 2 ∧ finrank ℂ (output U) ≤ q / 2) ∧
@@ -132,12 +132,12 @@ theorem exists_measurable_randomRangeSubspace_half_trim_event
   let Coord := Finset.univ.map (Fin.castLEEmb (Nat.min_le_right s q))
   let sample0 := fun U : Matrix.unitaryGroup (Fin q) ℂ ↦ Submodule.randomSubspace b Coord U
   let image0 : Matrix.unitaryGroup (Fin q) ℂ →
-      Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) := fun U ↦
+      Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) := fun U ↦
     ⨆ i, (sample0 U).map (A i).toLinearMap
   let output0 : Matrix.unitaryGroup (Fin q) ℂ →
-      Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) := fun U ↦
+      Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) := fun U ↦
     trimSubspace C xi
-      (fun i ↦ (stdOrthonormalBasis ℂ (image0 U) i : EuclideanSpace ℂ (SiteConfig n))) m
+      (fun i ↦ (stdOrthonormalBasis ℂ (image0 U) i : EuclideanSpace ℂ (∀ v, Fin (n v)))) m
   let index : Fin (d + 1) := ⟨q, Nat.lt_succ_of_le P.rank_le_width⟩
   let eval := fun U : Matrix.rankUnitaryProduct d ↦ U index
   have hmp : MeasurePreserving eval (Matrix.rankUnitaryHaar d)
@@ -148,12 +148,12 @@ theorem exists_measurable_randomRangeSubspace_half_trim_event
       Coord (eval U) = (Submodule.randomSubspace b0 Coord (eval U)).map I.toLinearMap
     exact Submodule.randomSubspace_map_linearIsometryEquiv b0 I Coord (eval U)
   have himage (U : Matrix.rankUnitaryProduct d) : image0 (eval U) = image U :=
-    congrArg (fun S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) ↦
+    congrArg (fun S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) ↦
       ⨆ i, S.map (A i).toLinearMap) (hsample U)
   have houtput (U : Matrix.rankUnitaryProduct d) : output0 (eval U) = output U :=
-    congrArg (fun S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) ↦
+    congrArg (fun S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) ↦
       trimSubspace C xi
-        (fun i ↦ (stdOrthonormalBasis ℂ S i : EuclideanSpace ℂ (SiteConfig n))) m) (himage U)
+        (fun i ↦ (stdOrthonormalBasis ℂ S i : EuclideanSpace ℂ (∀ v, Fin (n v)))) m) (himage U)
   obtain ⟨hs, halpha, halpha1, hdim, Good0, hGood0, hBad0, hSuccess0, hEvent0, _hTrue0⟩ :=
     exists_measurable_half_sample_reference_trim_event x0 T A hcard hRawSoft hSoftRaw hA
       hD hDelta hepsilon C hC hxi hepsilonRef0 hepsilonRef hRawRef hRefRaw hRank hbudget b hW hq
@@ -189,11 +189,11 @@ theorem exists_measurable_randomRangeSubspace_half_trim_event
   · intro U
     obtain ⟨hsub, hsDim, hiDim, hoDim⟩ := hdim (eval U)
     have hsRank := congrArg
-      (fun S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) ↦ finrank ℂ S) (hsample U)
+      (fun S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) ↦ finrank ℂ S) (hsample U)
     have hiRank := congrArg
-      (fun S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) ↦ finrank ℂ S) (himage U)
+      (fun S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) ↦ finrank ℂ S) (himage U)
     have hoRank := congrArg
-      (fun S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) ↦ finrank ℂ S) (houtput U)
+      (fun S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) ↦ finrank ℂ S) (houtput U)
     exact ⟨by simpa only [hsample U] using hsub,
       hsRank.symm.trans hsDim, hiRank ▸ hiDim, hoRank ▸ hoDim⟩
   · exact (measure_mono (μ := Matrix.rankUnitaryHaar d)

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.StoppedHalfSamplingIteration
+import QICLean.Entropy.ViableSampling.StoppedHalfSamplingIteration
 
 /-!
 # Finite seeds for the stopped half-sampling iteration
@@ -66,8 +66,8 @@ variable {V ι : Type*} [Fintype V] [DecidableEq V] [Fintype ι]
 /-- The actual matrix at a prescribed round is Borel in the finite seed.
 Auxiliary for ALVV, arXiv:1602.08828v2, lines 749–755. -/
 theorem measurable_canonicalHalfSampleTrimIterate_finite_seed
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
-    (k D threshold : ℕ) (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
+    (k D threshold : ℕ) (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (P : Matrix (Fin d) (Fin d) ℂ) (j : ℕ) :
     Measurable (fun U : Fin R → Matrix.rankUnitaryProduct d ↦
       canonicalHalfSampleTrimIterate e cuts xi k D threshold F P
@@ -78,8 +78,8 @@ theorem measurable_canonicalHalfSampleTrimIterate_finite_seed
 /-- Replacing the round's own seed leaves its actual input unchanged.
 Auxiliary for ALVV, arXiv:1602.08828v2, lines 749–755. -/
 theorem canonicalHalfSampleTrimIterate_update_input
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
-    (k D threshold : ℕ) (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
+    (k D threshold : ℕ) (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (P : Matrix (Fin d) (Fin d) ℂ) (U : Fin R → Matrix.rankUnitaryProduct d)
     (i : Fin R) (u : Matrix.rankUnitaryProduct d) :
     canonicalHalfSampleTrimIterate e cuts xi k D threshold F P
@@ -93,8 +93,8 @@ theorem canonicalHalfSampleTrimIterate_update_input
 one-step operation on the fixed previous input. Auxiliary for ALVV,
 arXiv:1602.08828v2, lines 749–755. -/
 theorem canonicalHalfSampleTrimIterate_update_next
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
-    (k D threshold : ℕ) (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
+    (k D threshold : ℕ) (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (P : Matrix (Fin d) (Fin d) ℂ) (U : Fin R → Matrix.rankUnitaryProduct d)
     (i : Fin R) (u : Matrix.rankUnitaryProduct d) :
     canonicalHalfSampleTrimIterate e cuts xi k D threshold F P

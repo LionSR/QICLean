@@ -107,7 +107,7 @@ theorem entropy_eq_zero_of_forall_subset_or_disjoint {Φ : Interaction X S}
     exists_isGapped_factors_of_kronecker_sum hKherm hLherm hΔ hn' hgs' hspan'
   have hΩc : ∀ p, Ω (c.symm p) = u p.1 * w p.2 := fun p ↦ by
     simpa [LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'] using hprod p
-  have hρ : regionState B Ω =
+  have hρ : regionState Ω B =
       vecMulVec (WithLp.ofLp u) fun b ↦ star (u b) * ∑ y, w y * star (w y) := by
     ext a b
     simp only [regionState, partialTraceRight_apply, vecMulVec_apply, Pi.star_apply,

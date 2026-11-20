@@ -56,22 +56,30 @@ A derived compactness statement; compare the maximizing-limit step of OpenAI's
 `EnergyOptimizer.lean`, lines 77–97, at the source revision cited above. -/
 theorem exists_max_feasible_chain_mem_of_pos_floor (D : ℕ → Finset V)
     (a : Fin m → ℝ) (ha : ∀ j, 0 ≤ a j)
-    (hne : ∀ j : Fin m, Nonempty (RegionConfig n (D j)))
-    (Ω : EuclideanSpace ℂ (SiteConfig n))
-    (T : Set ((j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ))
+    (hne : ∀ j : Fin m, Nonempty (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v)))
+    (T : Set
+        ((j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ))
     (hT : IsClosed T)
     (hpos : ∀ δ : ℝ, 0 < δ → δ < 1 →
-      ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      ∃ K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         (∀ j : Fin m,
-          IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K j)) ∧
-        (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+          IsFeasibleFilter (δ / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+              (a j) (K j)) ∧
+        (∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+            (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
           (∀ j : Fin m,
-            IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K' j)) →
+            IsFeasibleFilter (δ / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+                (a j) (K' j)) →
           ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
             ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧ K ∈ T) :
-    ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+    ∃ K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
       (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
-      (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      (∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧ K ∈ T := by
@@ -90,7 +98,8 @@ theorem exists_max_feasible_chain_mem_of_pos_floor (D : ℕ → Finset V)
       (tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).const_mul (1 / 2 : ℝ)
   choose K hK hmax hKT using fun k ↦ hpos (δ k) (hδ0 k) (hδ1 k)
   let S := Set.pi Set.univ fun j : Fin m ↦
-    {L : Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ |
+    {L : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ |
       IsFeasibleFilter 0 (a j) L}
   have hS : IsCompact S :=
     isCompact_univ_pi fun j ↦ isCompact_setOf_isFeasibleFilter (by rfl) (ha j)
@@ -119,7 +128,8 @@ theorem exists_max_feasible_chain_mem_of_pos_floor (D : ℕ → Finset V)
     filter_upwards [hevent] with k hk
     apply hmax (u k) L
     intro j
-    have hj : IsFeasibleFilter (ε / Fintype.card (RegionConfig n (D j))) (a j) (L j) := by
+    have hj : IsFeasibleFilter (ε / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+        (a j) (L j) := by
       simpa [a', j.isLt] using hL j
     exact hj.mono_floor (div_le_div_of_nonneg_right hk.le (by positivity))
   · intro j
@@ -132,31 +142,37 @@ required. A fixed positive-floor uniform family supplies a nonzero competitor.
 This comparison lemma supplies the nonvanishing step corresponding to OpenAI's
 `EnergyOptimizer.lean`, line 98, at the source revision cited above. -/
 lemma norm_liftProd_pos_of_zero_floor_max (D : ℕ → Finset V) (a : Fin m → ℝ)
-    (hne : ∀ j : Fin m, Nonempty (RegionConfig n (D j)))
-    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0)
-    {K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ}
-    (hmax : ∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+    (hne : ∀ j : Fin m, Nonempty (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (hΩ : Ω ≠ 0)
+    {K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ}
+    (hmax : ∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
       (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
       ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
         ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) :
     0 < ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖ := by
   classical
-  let f : Fin m → ℝ := fun j ↦ 1 / (2 * Fintype.card (RegionConfig n (D j)))
-  have hd (j : Fin m) : (0 : ℝ) < Fintype.card (RegionConfig n (D j)) := by
+  let f : Fin m → ℝ := fun j ↦ 1 /
+      (2 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+  have hd (j : Fin m) : (0 : ℝ) < Fintype.card
+      (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) := by
     let := hne j
     exact_mod_cast Fintype.card_pos
   have hf (j : Fin m) : 0 < f j := by
     dsimp [f]
     exact one_div_pos.mpr (mul_pos (by norm_num) (hd j))
-  have hcard (j : Fin m) : Fintype.card (RegionConfig n (D j)) * f j ≤ 1 := by
+  have hcard (j : Fin m) : Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) * f j
+      ≤ 1 := by
     dsimp [f]
-    have heq : (Fintype.card (RegionConfig n (D j)) : ℝ) *
-        (1 / (2 * Fintype.card (RegionConfig n (D j)))) = 1 / 2 := by
+    have heq : (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) : ℝ) *
+        (1 / (2 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))) = 1 / 2 := by
       field_simp [(hd j).ne']
     rw [heq]
     norm_num
   choose U hU using fun j : Fin m ↦ show
-      ∃ U : Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      ∃ U : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         IsFeasibleFilter (f j) (a j) U from by
     let := hne j
     exact ⟨_, isFeasibleFilter_uniform (a := a j) (hcard j)⟩
@@ -209,40 +225,45 @@ removes these two restrictions while leaving this statement unchanged. -/
 theorem exists_max_feasible_chain_zero_floor_energy (D : ℕ → Finset V)
     (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
     (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha2 : ∀ j, a j ≤ 1 / 2)
-    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0)
-    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i))
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (hΩ : Ω ≠ 0)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, ManyBody.IsSupportedOn (h i) (S i))
     (hherm : ∀ i, (h i).IsHermitian) {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
     (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m,
       ∀ j' ∈ splitIndices (S i) D m, j = j')
     {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
-    ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+    ∃ K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
       (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
-      (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      (∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧
       let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
       0 < ‖ψ‖ ∧ (⟪ψ, toEuclideanLin (∑ i, h i) ψ⟫_ℂ).re - E₀ * ‖ψ‖ ^ 2 ≤
         (∑ j : Fin m, 4 * a j ^ 2 *
-          ∑ i ∈ crossingTerms S (D j), supportDim n (S i) ^ 2 * c₀) * ‖ψ‖ ^ 2 := by
+          ∑ i ∈ ManyBody.crossingTerms S (D j), supportDim n (S i) ^ 2 * c₀) * ‖ψ‖ ^ 2 := by
   classical
-  obtain ⟨σ₀, -⟩ : ∃ σ : SiteConfig n, Ω σ ≠ 0 := by
+  obtain ⟨σ₀, -⟩ : ∃ σ : (∀ v, Fin (n v)), Ω σ ≠ 0 := by
     by_contra hcon
     push Not at hcon
     exact hΩ (by ext σ; exact hcon σ)
-  have hne (j : Fin m) : Nonempty (RegionConfig n (D j)) := ⟨fun v ↦ σ₀ v⟩
+  have hne (j : Fin m) : Nonempty (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) :=
+      ⟨fun v ↦ σ₀ v⟩
   let B := ∑ j : Fin m, 4 * a j ^ 2 *
-    ∑ i ∈ crossingTerms S (D j), supportDim n (S i) ^ 2 * c₀
+    ∑ i ∈ ManyBody.crossingTerms S (D j), supportDim n (S i) ^ 2 * c₀
   let Ψ := fun K : (j : Fin m) →
-      Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ ↦
+      Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ ↦
     toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
   have hΨ : Continuous Ψ := by
     simp_rw [Ψ, liftProd_chainList_eq]
     have hp : Continuous fun K : (j : Fin m) →
-        Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ ↦
+        Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+            (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ ↦
         ((((List.finRange m).filter fun _ ↦ decide True).reverse).map
-          fun j : Fin m ↦ localLift (D j) (K j)).prod :=
+          fun j : Fin m ↦ ManyBody.place (D j) (K j)).prod :=
       continuous_list_prod _ fun j _ ↦
         ((localLiftₗ (D j)).continuous_of_finiteDimensional).comp (continuous_apply j)
     simp only [toLpLin_apply]
@@ -256,20 +277,26 @@ theorem exists_max_feasible_chain_zero_floor_energy (D : ℕ → Finset V)
           (continuous_const.mul (hΨ.norm.pow 2))
     · exact continuous_const.mul (hΨ.norm.pow 2)
   have hpos (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) :
-      ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      ∃ K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         (∀ j : Fin m,
-          IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K j)) ∧
-        (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+          IsFeasibleFilter (δ / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+              (a j) (K j)) ∧
+        (∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+            (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
           (∀ j : Fin m,
-            IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K' j)) →
+            IsFeasibleFilter (δ / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+                (a j) (K' j)) →
           ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
             ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧ K ∈ T := by
-    let f : Fin m → ℝ := fun j ↦ δ / Fintype.card (RegionConfig n (D j))
-    have hd (j : Fin m) : (0 : ℝ) < Fintype.card (RegionConfig n (D j)) := by
+    let f : Fin m → ℝ := fun j ↦ δ / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+    have hd (j : Fin m) : (0 : ℝ) < Fintype.card
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) := by
       let := hne j
       exact_mod_cast Fintype.card_pos
     have hf (j : Fin m) : 0 < f j := div_pos hδ0 (hd j)
-    have hcard (j : Fin m) : Fintype.card (RegionConfig n (D j)) * f j < 1 := by
+    have hcard (j : Fin m) : Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) * f j
+        < 1 := by
       dsimp [f]
       rwa [mul_div_cancel₀ _ (hd j).ne']
     obtain ⟨K, hK, hmax⟩ := exists_max_feasible_chain D f a (fun j ↦ (hf j).le)
@@ -294,16 +321,18 @@ the comparison with the source's filter representation is not pursued. -/
 theorem exists_max_feasible_chain_zero_floor_normalized_energy (D : ℕ → Finset V)
     (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
     (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha2 : ∀ j, a j ≤ 1 / 2)
-    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0)
-    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i))
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (hΩ : Ω ≠ 0)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, ManyBody.IsSupportedOn (h i) (S i))
     (hherm : ∀ i, (h i).IsHermitian) {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
     (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m,
       ∀ j' ∈ splitIndices (S i) D m, j = j')
     {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
-    ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+    ∃ K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
       (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
-      (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      (∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧
@@ -311,7 +340,7 @@ theorem exists_max_feasible_chain_zero_floor_normalized_energy (D : ℕ → Fins
       let φ := ((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ
       0 < ‖ψ‖ ∧ ‖φ‖ = 1 ∧ (⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀ ≤
         ∑ j : Fin m, 4 * a j ^ 2 *
-          ∑ i ∈ crossingTerms S (D j), supportDim n (S i) ^ 2 * c₀ := by
+          ∑ i ∈ ManyBody.crossingTerms S (D j), supportDim n (S i) ^ 2 * c₀ := by
   obtain ⟨K, hK, hmax, hpos, henergy⟩ := exists_max_feasible_chain_zero_floor_energy
     D hD a ha ha2 hΩ h S hsupp hherm hnorm hsingle heig
   refine ⟨K, hK, hmax, hpos, ?_, ?_⟩
@@ -367,41 +396,46 @@ filter representation and its geometric construction is not pursued; see
 theorem exists_max_feasible_chain_zero_floor_abs_energy_sharp (D : ℕ → Finset V)
     (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
     (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha1 : ∀ j, a j ≤ 1)
-    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0)
-    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i))
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (hΩ : Ω ≠ 0)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, ManyBody.IsSupportedOn (h i) (S i))
     (hherm : ∀ i, (h i).IsHermitian) {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
     (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m,
       ∀ j' ∈ splitIndices (S i) D m, j = j')
     {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
-    ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+    ∃ K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
       (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
-      (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      (∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧
       let ψ := toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
       0 < ‖ψ‖ ∧ |(⟪ψ, toEuclideanLin (∑ i, h i) ψ⟫_ℂ).re - E₀ * ‖ψ‖ ^ 2| ≤
         (∑ j : Fin m, a j ^ 2 *
-          ∑ i ∈ crossingTerms S (D j),
-            Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀) * ‖ψ‖ ^ 2 := by
+          ∑ i ∈ ManyBody.crossingTerms S (D j),
+            Fintype.card (ManyBody.InnerConfig n (D j) (S i)) ^ 2 * c₀) * ‖ψ‖ ^ 2 := by
   classical
-  obtain ⟨σ₀, -⟩ : ∃ σ : SiteConfig n, Ω σ ≠ 0 := by
+  obtain ⟨σ₀, -⟩ : ∃ σ : (∀ v, Fin (n v)), Ω σ ≠ 0 := by
     by_contra hcon
     push Not at hcon
     exact hΩ (by ext σ; exact hcon σ)
-  have hne (j : Fin m) : Nonempty (RegionConfig n (D j)) := ⟨fun v ↦ σ₀ v⟩
+  have hne (j : Fin m) : Nonempty (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) :=
+      ⟨fun v ↦ σ₀ v⟩
   let B := ∑ j : Fin m, a j ^ 2 *
-    ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀
+    ∑ i ∈ ManyBody.crossingTerms S (D j), Fintype.card (ManyBody.InnerConfig n (D j) (S i)) ^ 2 * c₀
   let Ψ := fun K : (j : Fin m) →
-      Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ ↦
+      Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ ↦
     toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω
   have hΨ : Continuous Ψ := by
     simp_rw [Ψ, liftProd_chainList_eq]
     have hp : Continuous fun K : (j : Fin m) →
-        Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ ↦
+        Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+            (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ ↦
         ((((List.finRange m).filter fun _ ↦ decide True).reverse).map
-          fun j : Fin m ↦ localLift (D j) (K j)).prod :=
+          fun j : Fin m ↦ ManyBody.place (D j) (K j)).prod :=
       continuous_list_prod _ fun j _ ↦
         ((localLiftₗ (D j)).continuous_of_finiteDimensional).comp (continuous_apply j)
     simp only [toLpLin_apply]
@@ -415,20 +449,26 @@ theorem exists_max_feasible_chain_zero_floor_abs_energy_sharp (D : ℕ → Finse
           (continuous_const.mul (hΨ.norm.pow 2))).abs
     · exact continuous_const.mul (hΨ.norm.pow 2)
   have hpos (δ : ℝ) (hδ0 : 0 < δ) (hδ1 : δ < 1) :
-      ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      ∃ K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         (∀ j : Fin m,
-          IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K j)) ∧
-        (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+          IsFeasibleFilter (δ / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+              (a j) (K j)) ∧
+        (∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+            (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
           (∀ j : Fin m,
-            IsFeasibleFilter (δ / Fintype.card (RegionConfig n (D j))) (a j) (K' j)) →
+            IsFeasibleFilter (δ / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)))
+                (a j) (K' j)) →
           ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
             ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧ K ∈ T := by
-    let f : Fin m → ℝ := fun j ↦ δ / Fintype.card (RegionConfig n (D j))
-    have hd (j : Fin m) : (0 : ℝ) < Fintype.card (RegionConfig n (D j)) := by
+    let f : Fin m → ℝ := fun j ↦ δ / Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+    have hd (j : Fin m) : (0 : ℝ) < Fintype.card
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) := by
       let := hne j
       exact_mod_cast Fintype.card_pos
     have hf (j : Fin m) : 0 < f j := div_pos hδ0 (hd j)
-    have hcard (j : Fin m) : Fintype.card (RegionConfig n (D j)) * f j < 1 := by
+    have hcard (j : Fin m) : Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) * f j
+        < 1 := by
       dsimp [f]
       rwa [mul_div_cancel₀ _ (hd j).ne']
     obtain ⟨K, hK, hmax⟩ := exists_max_feasible_chain D f a (fun j ↦ (hf j).le)
@@ -450,16 +490,18 @@ the source-filter and physical-grid representation comparison is not asserted. -
 theorem exists_max_feasible_chain_zero_floor_normalized_abs_energy_sharp (D : ℕ → Finset V)
     (hD : ∀ i j : Fin m, i ≤ j → D i ⊆ D j)
     (a : Fin m → ℝ) (ha : ∀ j, 0 < a j) (ha1 : ∀ j, a j ≤ 1)
-    {Ω : EuclideanSpace ℂ (SiteConfig n)} (hΩ : Ω ≠ 0)
-    {ι : Type*} [Fintype ι] (h : ι → Matrix (SiteConfig n) (SiteConfig n) ℂ)
-    (S : ι → Finset V) (hsupp : ∀ i, IsSupportedOn (h i) (S i))
+    {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))} (hΩ : Ω ≠ 0)
+    {ι : Type*} [Fintype ι] (h : ι → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (S : ι → Finset V) (hsupp : ∀ i, ManyBody.IsSupportedOn (h i) (S i))
     (hherm : ∀ i, (h i).IsHermitian) {c₀ : ℝ} (hnorm : ∀ i, ‖h i‖ ≤ c₀)
     (hsingle : ∀ i, ∀ j ∈ splitIndices (S i) D m,
       ∀ j' ∈ splitIndices (S i) D m, j = j')
     {E₀ : ℝ} (heig : toEuclideanLin (∑ i, h i) Ω = (E₀ : ℂ) • Ω) :
-    ∃ K : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+    ∃ K : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
       (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K j)) ∧
-      (∀ K' : (j : Fin m) → Matrix (RegionConfig n (D j)) (RegionConfig n (D j)) ℂ,
+      (∀ K' : (j : Fin m) → Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j))
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (D j)) ℂ,
         (∀ j : Fin m, IsFeasibleFilter 0 (a j) (K' j)) →
         ‖toEuclideanLin (liftProd (chainList D K' fun _ ↦ True)) Ω‖ ≤
           ‖toEuclideanLin (liftProd (chainList D K fun _ ↦ True)) Ω‖) ∧
@@ -467,7 +509,8 @@ theorem exists_max_feasible_chain_zero_floor_normalized_abs_energy_sharp (D : �
       let φ := ((‖ψ‖⁻¹ : ℝ) : ℂ) • ψ
       0 < ‖ψ‖ ∧ ‖φ‖ = 1 ∧ |(⟪φ, toEuclideanLin (∑ i, h i) φ⟫_ℂ).re - E₀| ≤
         ∑ j : Fin m, a j ^ 2 *
-          ∑ i ∈ crossingTerms S (D j), Fintype.card (InnerConfig n (D j) (S i)) ^ 2 * c₀ := by
+          ∑ i ∈ ManyBody.crossingTerms S (D j), Fintype.card
+              (ManyBody.InnerConfig n (D j) (S i)) ^ 2 * c₀ := by
   obtain ⟨K, hK, hmax, hpos, henergy⟩ := exists_max_feasible_chain_zero_floor_abs_energy_sharp
     D hD a ha ha1 hΩ h S hsupp hherm hnorm hsingle heig
   refine ⟨K, hK, hmax, hpos, ?_, ?_⟩

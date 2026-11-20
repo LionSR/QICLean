@@ -134,14 +134,14 @@ omit [∀ v, NeZero (n v)] in
 supported in `Q`: they differ from permutations of entire copies by permutations of `Qᶜ`,
 which act off the support. -/
 theorem commute_permOp_subsystemPerm_copyMean_of_subset {k : ℕ} {Q D : Finset V}
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h D) (hDQ : D ⊆ Q)
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hh : ManyBody.IsSupportedOn h D) (hDQ : D ⊆ Q)
     (s : Equiv.Perm (Fin k)) :
     Commute (permOp (subsystemPerm k (fun v => Fin (n v)) Q) s) (copyMean n k h) := by
   set P := permOp (subsystemPerm k (fun v => Fin (n v)) Q) s
   set R := permOp (subsystemPerm k (fun v => Fin (n v)) Qᶜ) s
   set R' := permOp (subsystemPerm k (fun v => Fin (n v)) Qᶜ) s⁻¹
   have hRR : R * R' = 1 := by simp only [R, R', ← map_mul, mul_inv_cancel, map_one]
-  have hcopy : permOp (copyPerm (SiteConfig n) k) s = P * R :=
+  have hcopy : permOp (copyPerm (∀ v, Fin (n v)) k) s = P * R :=
     permOp_of_eq_mul _ _ _ (fun g => copyPerm_eq_mul_compl Q g) s
   have hdisj : Disjoint Qᶜ D := disjoint_compl_left.mono_right hDQ
   have hR'c : Commute R' (copyMean n k h) := by
@@ -162,7 +162,7 @@ omit [∀ v, NeZero (n v)] in
 /-- A replica metric of a subsystem containing, or disjoint from, the support of `h`
 commutes with the copy mean of `h` (`05-replicas.tex` lines 470--473). -/
 theorem commute_replicaMetric_copyMean {t : ℝ} {k : ℕ} {Q D : Finset V}
-    {h : Matrix (SiteConfig n) (SiteConfig n) ℂ} (hh : IsSupportedOn h D)
+    {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ} (hh : ManyBody.IsSupportedOn h D)
     (hQD : D ⊆ Q ∨ Disjoint Q D) :
     Commute (replicaMetric (fun v => Fin (n v)) t k Q) (copyMean n k h) := by
   rcases hQD with hDQ | hQD
@@ -176,8 +176,8 @@ omit [∀ v, NeZero (n v)] in
 /-- A band metric commutes with the copy mean of an operator supported in one of its
 parts (`05-replicas.tex` lines 470--473; `06-transport.tex` lines 359--364). -/
 theorem commute_bandMetric_copyMean_of_contains {π : PYF V} (hπ : π.IsPartition) {t : ℝ}
-    (k : ℕ) {D : Finset V} {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
-    (hh : IsSupportedOn h D) (hD : π.Contains D) :
+    (k : ℕ) {D : Finset V} {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
+    (hh : ManyBody.IsSupportedOn h D) (hD : π.Contains D) :
     Commute (bandMetric n t k π) (copyMean n k h) := by
   obtain ⟨hPY, hPF, hYF, -⟩ := hπ
   have key : (D ⊆ π.P ∨ Disjoint π.P D) ∧ (D ⊆ π.Y ∨ Disjoint π.Y D) ∧
@@ -215,7 +215,7 @@ theorem realCoherentIntegral_nonneg {Ω : Type*} [Fintype Ω] [DecidableEq Ω] {
 
 omit [DecidableEq V] [∀ v, NeZero (n v)] in
 /-- The copy mean of a positive semidefinite operator is positive semidefinite. -/
-theorem posSemidef_copyMean {k : ℕ} {h : Matrix (SiteConfig n) (SiteConfig n) ℂ}
+theorem posSemidef_copyMean {k : ℕ} {h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ}
     (hh : h.PosSemidef) : (copyMean n k h).PosSemidef := by
   unfold copyMean
   have hs : ∀ j : Fin k, (siteOp j h).PosSemidef := fun j => by
@@ -273,15 +273,17 @@ theorem integrable_fourierWeight_mul_trace_transportState {m : Type*} [Fintype m
 omit [∀ v, NeZero (n v)] in
 /-- The split entropy of one band is continuous in the one-copy vector. -/
 theorem continuous_splitBandEta (π : PYF V) (D : Finset V) :
-    Continuous fun θ : SiteConfig n → ℂ =>
+    Continuous fun θ : (∀ v, Fin (n v)) → ℂ =>
       splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ) := by
   classical
   by_cases hP : π.SplitsToP D
-  · have : (fun θ : SiteConfig n → ℂ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ)) =
+  · have :
+      (fun θ : (∀ v, Fin (n v)) → ℂ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ)) =
         fun θ => moveEta n π (.toP (D ∩ π.Y)) ((EuclideanSpace.equiv _ ℂ).symm θ) := by
       funext θ; simp only [splitBandEta, moveEta, hP, ↓reduceIte]
     rw [this]; exact continuous_moveEta π _
-  · have : (fun θ : SiteConfig n → ℂ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ)) =
+  · have :
+      (fun θ : (∀ v, Fin (n v)) → ℂ => splitBandEta n π D ((EuclideanSpace.equiv _ ℂ).symm θ)) =
         fun θ => moveEta n π (.toF (D ∩ π.Y)) ((EuclideanSpace.equiv _ ℂ).symm θ) := by
       funext θ; simp only [splitBandEta, moveEta, hP, ↓reduceIte]
     rw [this]; exact continuous_moveEta π _
@@ -309,7 +311,7 @@ theorem forall_contains_of_not_mem_splitLeaves {i : ι} {j : Σ h, Option (C h)}
 omit [Fintype ι] [∀ v, NeZero (n v)] in
 /-- **Unsplit leaves commute with the term** (`06-transport.tex` lines 359--364). -/
 theorem commute_input_copyMean_of_not_mem_splitLeaves (hD : D.IsAdmissible) {t : ℝ}
-    (k : ℕ) (hEsupp : ∀ i, IsSupportedOn (E.term i) (E.support i)) {i : ι}
+    (k : ℕ) (hEsupp : ∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) {i : ι}
     {j : Σ h, Option (C h)} (hj : j ∉ D.splitLeaves E i) :
     Commute (D.input n t k j) (copyMean n k (E.term i)) := by
   rw [input_eq_prod]
@@ -342,7 +344,8 @@ is the exceptional band of `D_i` at `j`, the other band factors cancel in
 statement is for the band metrics on `𝒮_k` extended by the identity; against a symmetric
 density matrix this is the skew square of `bandMetric` (`mul_skewSquare_symBandMetric`). -/
 theorem skewSquare_input_eq_symBandMetric (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
-    (hcomm : D.CrossBandCommute n t k) (hEsupp : ∀ i, IsSupportedOn (E.term i) (E.support i))
+    (hcomm : D.CrossBandCommute n t k)
+        (hEsupp : ∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i))
     (hcompat : D.SupportCompatible E) {i : ι} {j : Σ h, Option (C h)} {g : Fin K}
     (hg : ¬ (D.leafPart j g).Contains (E.support i)) :
     Transport.skewSquare (D.input n t k j) (copyMean n k (E.term i)) =
@@ -362,7 +365,7 @@ omit [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h
 /-- `η_{i,j}` is the split entropy of the unique exceptional band. -/
 theorem splitEta_eq_splitBandEta (hcompat : D.SupportCompatible E) {i : ι}
     {j : Σ h, Option (C h)} {g : Fin K} (hg : ¬ (D.leafPart j g).Contains (E.support i))
-    (θ : EuclideanSpace ℂ (SiteConfig n)) :
+    (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     D.splitEta E i j θ = splitBandEta n (D.leafPart j g) (E.support i) θ := by
   classical
   unfold splitEta
@@ -383,14 +386,14 @@ theorem exists_trace_skewSquare_le_of_splitSkewBoundAt {c Csym esym : ℝ}
       [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
       {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
       D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
       ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ min c (1 / 4) →
       (∀ k, D.CrossBandCommute n (a / 2) k) →
       (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
       ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧ (∀ k, 0 ≤ r k) ∧
         ∀ (k : ℕ) (i : ι), ∀ j ∈ D.splitLeaves E i,
           ∀ ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ,
-          ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+          ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ →
           (ρ * Transport.skewSquare (D.input n (a / 2) k j)
               (copyMean n k (E.term i))).trace.re ≤
             max Csym 0 * a ^ 2 * ℓ ^ max esym 0 * realCoherentIntegral k (base n) ρ (fun θ =>
@@ -402,7 +405,7 @@ theorem exists_trace_skewSquare_le_of_splitSkewBoundAt {c Csym esym : ℝ}
   have hex : ∀ x : ι × (Σ h, Option (C h)), ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧
       ∀ k, x.2 ∈ D.splitLeaves E x.1 →
         ∀ ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ,
-          ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+          ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ →
           (ρ * Transport.skewSquare (D.input n (a / 2) k x.2)
               (copyMean n k (E.term x.1))).trace.re ≤
             max Csym 0 * a ^ 2 * ℓ ^ max esym 0 * realCoherentIntegral k (base n) ρ (fun θ =>
@@ -462,13 +465,13 @@ theorem exists_trace_skewSquare_le_of_splitSkewBound (hskew : SplitSkewBound.{u}
         [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
         {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
         D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+        (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
         ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
         (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
         ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧ (∀ k, 0 ≤ r k) ∧
           ∀ (k : ℕ) (i : ι), ∀ j ∈ D.splitLeaves E i,
             ∀ ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ,
-            ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+            ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ →
             (ρ * Transport.skewSquare (D.input n (a / 2) k j)
                 (copyMean n k (E.term i))).trace.re ≤
               Csym * a ^ 2 * ℓ ^ esym * realCoherentIntegral k (base n) ρ (fun θ =>
@@ -480,7 +483,7 @@ omit [∀ v, NeZero (n v)] [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)] [�
   [Fintype ι] in
 /-- `η_{i,j}^{1/8}` is continuous in the one-copy vector. -/
 theorem continuous_splitEta_rpow (i : ι) (j : Σ h, Option (C h)) :
-    Continuous fun θ : SiteConfig n → ℂ =>
+    Continuous fun θ : (∀ v, Fin (n v)) → ℂ =>
       D.splitEta E i j ((EuclideanSpace.equiv _ ℂ).symm θ) ^ (1 / 8 : ℝ) := by
   refine Continuous.rpow_const ?_ fun _ => Or.inr (by norm_num)
   unfold splitEta
@@ -497,7 +500,7 @@ theorem exists_energy_le_of_splitSkewBoundAt {c Csym esym : ℝ}
       [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
       {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
       D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-      (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+      (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
       ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ min c (1 / 4) →
       (∀ k, D.CrossBandCommute n (a / 2) k) →
       (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
@@ -664,7 +667,7 @@ theorem exists_energy_le_of_splitSkewBound (hskew : SplitSkewBound.{u}) :
         [∀ h, Fintype (C h)] [∀ h, DecidableEq (C h)] (D : TransportData V K H C)
         {ι : Type*} [Fintype ι] (E : EnergyTerms V n ι),
         D.IsAdmissible → (∀ i, 0 ≤ E.term i) → (∀ i, E.term i ≤ 1) →
-        (∀ i, IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
+        (∀ i, ManyBody.IsSupportedOn (E.term i) (E.support i)) → D.SupportCompatible E →
         ∀ {a ℓ : ℝ}, 0 < a → 1 ≤ ℓ → a * ℓ ≤ c₀ → (∀ k, D.CrossBandCommute n (a / 2) k) →
         (∀ i, (D.splitLeaves E i).Nonempty → logDim n (E.support i) ≤ ℓ) →
         ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧

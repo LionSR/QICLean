@@ -88,7 +88,10 @@ PR #1075 before this checker landed: `Entropy.eq_of_forall_trace_mul_eq`,
 forward to `Matrix` results; the remaining three forward to `ManyBody` regional
 state results. They preserve existing legacy statements while the implementations
 move to the lower layers. These are recorded migration debt, not exceptions to
-future enforcement; no new-layer forwarding debt is recorded.
+future enforcement; no new-layer forwarding debt is recorded. The regional
+vocabulary unification (step 4.0 of the many-body plan) deleted the three
+`ManyBody` forwarders, together with the forwarding `Entropy.IsSupportedOn` and
+`Entropy.localLift`, leaving 74 recorded candidates.
 
 These are review candidates, not a verdict that a one-line proof is redundant.
 The scanner does not elaborate Lean or compare statement types. In particular,

@@ -54,12 +54,12 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {P x Y F : Fins
 
 omit [Fintype V] in
 theorem frameMarginalP_posSemidef (h : FourPartition P x Y F)
-    (θ : EuclideanSpace ℂ (SiteConfig n)) : (frameMarginalP h θ).PosSemidef :=
+    (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) : (frameMarginalP h θ).PosSemidef :=
   (movementMarginalXP_posSemidef _).partialTraceLeft
 
 omit [Fintype V] in
 theorem frameMarginalY_posSemidef (h : FourPartition P x Y F)
-    (θ : EuclideanSpace ℂ (SiteConfig n)) : (frameMarginalY h θ).PosSemidef :=
+    (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) : (frameMarginalY h θ).PosSemidef :=
   (movementMarginalXU_posSemidef _).partialTraceLeft
 
 theorem trace_vecMulVec_star_eq {ι : Type*} [Fintype ι] (u : ι → ℂ) :
@@ -71,13 +71,13 @@ theorem trace_vecMulVec_star_eq {ι : Type*} [Fintype ι] (u : ι → ℂ) :
   rw [RCLike.mul_conj]
   rfl
 
-theorem trace_frameMarginalP (h : FourPartition P x Y F) {θ : EuclideanSpace ℂ (SiteConfig n)}
+theorem trace_frameMarginalP (h : FourPartition P x Y F) {θ : EuclideanSpace ℂ (∀ v, Fin (n v))}
     (hθ : ‖θ‖ = 1) : (frameMarginalP h θ).trace = 1 := by
   rw [frameMarginalP, trace_partialTraceLeft, movementMarginalXP, trace_partialTraceRight,
     trace_vecMulVec_star_eq, norm_toLp_comp_equiv, frameVector, norm_toLp_comp_equiv]
   simp [hθ]
 
-theorem trace_frameMarginalY (h : FourPartition P x Y F) {θ : EuclideanSpace ℂ (SiteConfig n)}
+theorem trace_frameMarginalY (h : FourPartition P x Y F) {θ : EuclideanSpace ℂ (∀ v, Fin (n v))}
     (hθ : ‖θ‖ = 1) : (frameMarginalY h θ).trace = 1 := by
   rw [frameMarginalY, trace_partialTraceLeft, movementMarginalXU, trace_partialTraceRight,
     trace_vecMulVec_star_eq, frameVector, norm_toLp_comp_equiv]
@@ -113,20 +113,17 @@ namespace Entropy
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ} {D : Finset V}
 
-/-- **Temporary** restatement of `ManyBody.place_sub` over `Entropy.localLift`;
-deleted in step 4.0 of the many-body plan. -/
-theorem localLift_sub (K K' : Matrix (RegionConfig n D) (RegionConfig n D) ℂ) :
-    localLift D (K - K') = localLift D K - localLift D K' :=
-  ManyBody.place_sub (X := fun v ↦ Fin (n v)) K K'
-
 /-- If `L_D(Π) θ = 0` then `L_D(ρ^t ρ̂^{-t}) θ = θ`. -/
-theorem localLift_rpow_mul_mulVec {ρ : Matrix (RegionConfig n D) (RegionConfig n D) ℂ}
-    (hρ : ρ.PosSemidef) {t : ℝ} (ht : 0 < t) {θ : SiteConfig n → ℂ}
-    (hker : localLift D (kernelProjection ρ) *ᵥ θ = 0) :
-    localLift D (ρ ^ t) *ᵥ (localLift D (cfc (fun s : ℝ => s ^ (-t)) (kernelCompletion ρ)) *ᵥ θ) =
+theorem localLift_rpow_mul_mulVec
+    {ρ : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ}
+    (hρ : ρ.PosSemidef) {t : ℝ} (ht : 0 < t) {θ : (∀ v, Fin (n v)) → ℂ}
+    (hker : ManyBody.place D (kernelProjection ρ) *ᵥ θ = 0) :
+    ManyBody.place D (ρ ^ t) *ᵥ
+        (ManyBody.place D (cfc (fun s : ℝ => s ^ (-t)) (kernelCompletion ρ)) *ᵥ θ) =
       θ := by
-  rw [mulVec_mulVec, ← localLift_mul, rpow_mul_cfc_kernelCompletion hρ ht, localLift_sub,
-    localLift_one, sub_mulVec, hker, one_mulVec, sub_zero]
+  rw [mulVec_mulVec, ← ManyBody.place_mul, rpow_mul_cfc_kernelCompletion hρ ht, ManyBody.place_sub,
+    ManyBody.place_one, sub_mulVec, hker, one_mulVec, sub_zero]
 
 end Entropy
 
@@ -153,26 +150,27 @@ equation `replicas:relative-pin`, lines 486–509): the bound of `TensorPower.re
 theorem relativePin_explicit :
     ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
       {P x Y F : Finset V} (h : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
-      2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤
+      2 * t * Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ≤
         conditionalMovementThreshold →
-      ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+      ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))), ‖θ‖ = 1 →
         ∀ w : Config k (fun v => Fin (n v)) → ℂ,
           ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
             Real.exp (k * (2 * t) * (movementEta (frameVector h θ) -
               relativePinConst * (2 * t) ^ (1 / 4 : ℝ) *
-                Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
+                Real.log
+                    (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ^
+                    2)) ≤
           K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re := by
   intro V _ _ n _ P x Y F h t ht0 ht1 hsmall
   rw [relativePinConst]
   set C₀ := conditionalMovementConst
-  have σ₀ : SiteConfig n := fun v => ⟨0, Nat.pos_of_ne_zero (NeZero.ne (n v))⟩
   obtain ⟨Cc, hCc0, Hcomp⟩ := exists_l2_opNorm_compensator_le (n := n) ht0
   obtain ⟨Ω₁, _, P₁, hP₁, σ, hσ, hint₁, heq₁⟩ :=
     exists_replicaMetric_integral_localLift (n := n) ht0 ht1 (P ∪ x)
   obtain ⟨Ω₂, _, P₂, hP₂, τ, hτ, hint₂, heq₂⟩ :=
     exists_replicaMetric_integral_localLift (n := n) ht0 ht1 (x ∪ Y)
   refine ⟨1, 4 * Cc, one_pos, fun k θ hθ w => ?_⟩
-  set ℓ := Real.log (Real.exp 1 * Fintype.card (RegionConfig n x))
+  set ℓ := Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))
   set η := movementEta (frameVector h θ)
   set z := tensorVec k θ.ofLp
   set ρP := frameMarginalP h θ
@@ -181,26 +179,28 @@ theorem relativePin_explicit :
   have hρY := frameMarginalY_posSemidef h θ
   set DP := cfc (fun s : ℝ => s ^ (-t)) (kernelCompletion ρP)
   set DY := cfc (fun s : ℝ => s ^ (-t)) (kernelCompletion ρY)
-  set v := localLift P DP *ᵥ (localLift Y DY *ᵥ θ.ofLp)
+  set v := ManyBody.place P DP *ᵥ (ManyBody.place Y DY *ᵥ θ.ofLp)
   set y := tensorVec k v
   set Wa := replicaMetric (fun v => Fin (n v)) t k (P ∪ x)
   set Wb := replicaMetric (fun v => Fin (n v)) t k (x ∪ Y)
   set Wp := replicaMetric (fun v => Fin (n v)) t k P
   set Wy := replicaMetric (fun v => Fin (n v)) t k Y
-  set tP := tensorPow (k := k) (localLift P (ρP ^ t))
-  set tY := tensorPow (k := k) (localLift Y (ρY ^ t))
+  set tP := tensorPow (k := k) (ManyBody.place P (ρP ^ t))
+  set tY := tensorPow (k := k) (ManyBody.place Y (ρY ^ t))
   set E := Real.exp (k * (-t * η + C₀ * (2 * t) ^ (5 / 4 : ℝ) * ℓ ^ 2))
   -- the support identity: `z = tP tY y`
   have hz : z = tP *ᵥ (tY *ᵥ y) := by
     have hPY : Disjoint P Y := h.PY
-    have hcomm : localLift Y (ρY ^ t) * localLift P DP = localLift P DP * localLift Y (ρY ^ t) :=
-      commute_of_isSupportedOn_disjoint (isSupportedOn_localLift _) (isSupportedOn_localLift _)
-        hPY σ₀
-    have h1 : localLift Y (ρY ^ t) *ᵥ v = localLift P DP *ᵥ θ.ofLp := by
+    have hcomm : ManyBody.place Y (ρY ^ t) * ManyBody.place P DP = ManyBody.place P DP
+        * ManyBody.place Y (ρY ^ t) :=
+      ManyBody.commute_of_mem_supportedOperators_of_disjoint
+          (ManyBody.place_mem_supportedOperators _)
+          (ManyBody.place_mem_supportedOperators _) hPY.symm
+    have h1 : ManyBody.place Y (ρY ^ t) *ᵥ v = ManyBody.place P DP *ᵥ θ.ofLp := by
       simp only [v]
       rw [mulVec_mulVec, hcomm, ← mulVec_mulVec,
         localLift_rpow_mul_mulVec hρY ht0 (localLift_kernelProjection_Y_mulVec h θ)]
-    have h2 : localLift P (ρP ^ t) *ᵥ (localLift P DP *ᵥ θ.ofLp) = θ.ofLp :=
+    have h2 : ManyBody.place P (ρP ^ t) *ᵥ (ManyBody.place P DP *ᵥ θ.ofLp) = θ.ofLp :=
       localLift_rpow_mul_mulVec hρP ht0 (localLift_kernelProjection_P_mulVec h θ)
     simp only [z, y, tP, tY, tensorPow_mulVec_tensorVec, h1, h2]
   -- moving the compensators
@@ -216,19 +216,19 @@ theorem relativePin_explicit :
     have LWp := isLabelFunctionOn_replicaMetric_inv (ι := fun v => Fin (n v)) (k := k) ht0.le P
     have LWy := isLabelFunctionOn_replicaMetric_inv (ι := fun v => Fin (n v)) (k := k) ht0.le Y
     have c1 : Commute Wy⁻¹ tP := by
-      rw [hWy]; exact commute_labelObservable_tensorPow_of_disjoint h.PY σ₀ _ _
+      rw [hWy]; exact commute_labelObservable_tensorPow_of_disjoint h.PY _ _
     have cap : Commute Wa (Wp⁻¹ * tP) :=
       ((LWp.commute_of_subset LWa hPx).symm).mul_right
-        (commute_labelObservable_tensorPow_of_subset hPx σ₀ _ _)
+        (commute_labelObservable_tensorPow_of_subset hPx _ _)
     have cbp : Commute Wb (Wp⁻¹ * tP) :=
       ((LWp.commute_of_disjoint LWb hPxY).symm).mul_right
-        (commute_labelObservable_tensorPow_of_disjoint hPxY σ₀ _ _)
+        (commute_labelObservable_tensorPow_of_disjoint hPxY _ _)
     have cay : Commute Wa (Wy⁻¹ * tY) :=
       ((LWy.commute_of_disjoint LWa hYPx).symm).mul_right
-        (commute_labelObservable_tensorPow_of_disjoint hYPx σ₀ _ _)
+        (commute_labelObservable_tensorPow_of_disjoint hYPx _ _)
     have cby : Commute Wb (Wy⁻¹ * tY) :=
       ((LWy.commute_of_subset LWb hYx).symm).mul_right
-        (commute_labelObservable_tensorPow_of_subset hYx σ₀ _ _)
+        (commute_labelObservable_tensorPow_of_subset hYx _ _)
     have hmat : moveWord n t k P x Y * tP * tY = (Wp⁻¹ * tP) * (Wy⁻¹ * tY) * (Wa * Wb) := by
       have e1 : moveWord n t k P x Y * tP * tY = Wa * Wb * ((Wp⁻¹ * tP) * (Wy⁻¹ * tY)) := by
         simp only [moveWord, Matrix.mul_assoc]
@@ -239,10 +239,10 @@ theorem relativePin_explicit :
   -- the averaged numerators
   have hWW : ‖(EuclideanSpace.equiv _ ℂ).symm (Wa *ᵥ (Wb *ᵥ y))‖ ≤ E := by
     have hWa : Wa = Matrix.of fun a b =>
-        ∫ ω, tensorPow (k := k) (localLift (P ∪ x) (σ ω ^ t)) a b ∂P₁ := by
+        ∫ ω, tensorPow (k := k) (ManyBody.place (P ∪ x) (σ ω ^ t)) a b ∂P₁ := by
       ext a b; exact heq₁ k a b
     have hWb : Wb = Matrix.of fun a b =>
-        ∫ ω, tensorPow (k := k) (localLift (x ∪ Y) (τ ω ^ t)) a b ∂P₂ := by
+        ∫ ω, tensorPow (k := k) (ManyBody.place (x ∪ Y) (τ ω ^ t)) a b ∂P₂ := by
       ext a b; exact heq₂ k a b
     have h2t : (0 : ℝ) < 2 * t := by positivity
     rw [hWa]
@@ -254,11 +254,12 @@ theorem relativePin_explicit :
       exact integrable_finsetSum _ fun c _ => (hint₂ k c b).const_mul _
     filter_upwards [hτ] with ω' hω'
     rw [← tensorPow_mul, tensorPow_mulVec_tensorVec, norm_tensorVec]
-    have hcomm : localLift (x ∪ Y) (τ ω' ^ t) * localLift P DP =
-        localLift P DP * localLift (x ∪ Y) (τ ω' ^ t) :=
-      commute_of_isSupportedOn_disjoint (isSupportedOn_localLift _) (isSupportedOn_localLift _)
-        (Finset.disjoint_union_right.mpr ⟨h.Px, h.PY⟩) σ₀
-    have hop : (localLift (P ∪ x) (σ ω ^ t) * localLift (x ∪ Y) (τ ω' ^ t)) *ᵥ v =
+    have hcomm : ManyBody.place (x ∪ Y) (τ ω' ^ t) * ManyBody.place P DP =
+        ManyBody.place P DP * ManyBody.place (x ∪ Y) (τ ω' ^ t) :=
+      ManyBody.commute_of_mem_supportedOperators_of_disjoint
+          (ManyBody.place_mem_supportedOperators _) (ManyBody.place_mem_supportedOperators _)
+          (Finset.disjoint_union_right.mpr ⟨h.Px, h.PY⟩).symm
+    have hop : (ManyBody.place (P ∪ x) (σ ω ^ t) * ManyBody.place (x ∪ Y) (τ ω' ^ t)) *ᵥ v =
         regionalMoveOperator h θ (σ ω) (τ ω') (2 * t) *ᵥ θ.ofLp := by
       have e1 : (fun s : ℝ => s ^ (2 * t / 2)) = fun s : ℝ => s ^ t := by
         funext s; congr 1; ring
@@ -267,12 +268,12 @@ theorem relativePin_explicit :
       simp only [regionalMoveOperator, e1, e2, ← CFC.rpow_eq_cfc_real hω.1.posSemidef.nonneg,
         ← CFC.rpow_eq_cfc_real hω'.1.posSemidef.nonneg]
       simp only [v, DP, DY, ρP, ρY, mulVec_mulVec, Matrix.mul_assoc]
-      rw [← Matrix.mul_assoc (localLift (x ∪ Y) _), hcomm, Matrix.mul_assoc]
+      rw [← Matrix.mul_assoc (ManyBody.place (x ∪ Y) _), hcomm, Matrix.mul_assoc]
     have hone := regionalMovement_norm_le_explicit h θ hθ (σ ω) (τ ω') hω.1.posSemidef hω.2
       hω'.1.posSemidef hω'.2 (2 * t) h2t hsmall
     rw [← hop] at hone
     calc ‖(EuclideanSpace.equiv _ ℂ).symm
-          ((localLift (P ∪ x) (σ ω ^ t) * localLift (x ∪ Y) (τ ω' ^ t)) *ᵥ v)‖ ^ k
+          ((ManyBody.place (P ∪ x) (σ ω ^ t) * ManyBody.place (x ∪ Y) (τ ω' ^ t)) *ᵥ v)‖ ^ k
         ≤ Real.exp (-(2 * t / 2) * η + C₀ * (2 * t) ^ (5 / 4 : ℝ) * ℓ ^ 2) ^ k :=
           pow_le_pow_left₀ (norm_nonneg _) hone k
       _ = E := by
@@ -330,13 +331,16 @@ theorem relativePin :
     ∃ C c : ℝ, 0 < C ∧ 0 < c ∧
       ∀ {V : Type u} [Fintype V] [DecidableEq V] {n : V → ℕ} [∀ v, NeZero (n v)]
         {P x Y F : Finset V} (h : FourPartition P x Y F) {t : ℝ}, 0 < t → t ≤ 1 →
-        2 * t * Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ≤ c →
-        ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (SiteConfig n)), ‖θ‖ = 1 →
+        2 * t * Real.log
+            (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ≤ c →
+        ∃ K N : ℝ, 0 < K ∧ ∀ (k : ℕ) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))), ‖θ‖ = 1 →
           ∀ w : Config k (fun v => Fin (n v)) → ℂ,
             ‖star (tensorVec k θ.ofLp) ⬝ᵥ w‖ ^ 2 *
               Real.exp (k * (2 * t) * (movementEta (frameVector h θ) -
                 C * (2 * t) ^ (1 / 4 : ℝ) *
-                  Real.log (Real.exp 1 * Fintype.card (RegionConfig n x)) ^ 2)) ≤
+                  Real.log
+                      (Real.exp 1 * Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x)) ^
+                      2)) ≤
             K * ((k : ℝ) + 2) ^ N * (star w ⬝ᵥ (relativeMetric n t k P x Y F *ᵥ w)).re :=
   ⟨_, _, relativePinConst_pos, conditionalMovementThreshold_pos, relativePin_explicit⟩
 

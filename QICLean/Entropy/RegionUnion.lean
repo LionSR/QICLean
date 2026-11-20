@@ -15,8 +15,8 @@ lifts of `A` and of `B`.
 
 ## Main results
 
-* `Entropy.localLift_apply`: matrix elements of a local lift.
-* `Entropy.regionUnionEquiv`: `RegionConfig (X ∪ T) ≃ RegionConfig X × RegionConfig T`.
+* `Entropy.regionUnionEquiv`: configurations of `X ∪ T` are pairs of configurations of `X`
+  and of `T`.
 * `Entropy.localLift_union_kronecker`: `lift_{X ∪ T} (A ⊗ B) = lift_X A · lift_T B`.
 
 ## References
@@ -35,21 +35,12 @@ namespace Entropy
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- Matrix elements of a local lift: `(K ⊗ 1)_{στ}` is `K_{σ|D, τ|D}` when `σ` and `τ` agree
-off `D`, and zero otherwise.
-
-**Temporary** restatement of `ManyBody.place_apply` over `Entropy.localLift`;
-deleted in step 4.0 of the many-body plan. -/
-theorem localLift_apply (D : Finset V) (K : Matrix (RegionConfig n D) (RegionConfig n D) ℂ)
-    (σ τ : SiteConfig n) :
-    localLift D K σ τ =
-      if ∀ v ∉ D, σ v = τ v then K (fun v ↦ σ v) (fun v ↦ τ v) else 0 :=
-  ManyBody.place_apply (X := fun v ↦ Fin (n v)) D K σ τ
-
 /-- Configurations of a disjoint union of regions are pairs of configurations:
 `ManyBody.regionUnionEquiv` for the basis types `Fin (n v)`. -/
 abbrev regionUnionEquiv {X T : Finset V} (hXT : Disjoint X T) :
-    RegionConfig n (X ∪ T) ≃ RegionConfig n X × RegionConfig n T :=
+    (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (X ∪ T)) ≃
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ×
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T) :=
   ManyBody.regionUnionEquiv (β := fun v ↦ Fin (n v)) hXT
 
 export ManyBody (regionUnionEquiv_apply_fst)
@@ -59,10 +50,12 @@ export ManyBody (regionUnionEquiv_apply_snd)
 /-- **Lifts of product operators on a disjoint union.** For disjoint regions `X` and `T`,
 `lift_{X ∪ T} (A ⊗ B) = lift_X A · lift_T B`. -/
 theorem localLift_union_kronecker {X T : Finset V} (hXT : Disjoint X T)
-    (A : Matrix (RegionConfig n X) (RegionConfig n X) ℂ)
-    (B : Matrix (RegionConfig n T) (RegionConfig n T) ℂ) :
-    localLift (X ∪ T) (reindex (regionUnionEquiv hXT).symm (regionUnionEquiv hXT).symm
-      (A ⊗ₖ B)) = localLift X A * localLift T B :=
+    (A : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ℂ)
+    (B : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T) ℂ) :
+    ManyBody.place (X ∪ T) (reindex (regionUnionEquiv hXT).symm (regionUnionEquiv hXT).symm
+      (A ⊗ₖ B)) = ManyBody.place X A * ManyBody.place T B :=
   ManyBody.place_union_kronecker (β := fun v ↦ Fin (n v)) hXT A B
 
 omit [Fintype V] in
@@ -70,14 +63,19 @@ omit [Fintype V] in
 floor zero with weight `a > 0`, then `|u_i⟩⟨u_i| ⊗ M`, with `u_i` the `i`-th column of `U`, is
 feasible at floor zero on `X ∪ T`. -/
 theorem isFeasibleFilter_union_kronecker {X T : Finset V} (hXT : Disjoint X T) {a : ℝ}
-    (ha : 0 < a) {U : Matrix (RegionConfig n X) (RegionConfig n X) ℂ} (hU : Uᴴ * U = 1)
-    (i : RegionConfig n X) {M : Matrix (RegionConfig n T) (RegionConfig n T) ℂ}
+    (ha : 0 < a)
+        {U : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ℂ} (hU : Uᴴ * U = 1)
+    (i : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) X))
+        {M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T) ℂ}
     (hM : IsFeasibleFilter 0 a M) :
     IsFeasibleFilter 0 a (reindex (regionUnionEquiv hXT).symm (regionUnionEquiv hXT).symm
       ((U * diagonal (fun k ↦ if k = i then (1 : ℂ) else 0) * Uᴴ) ⊗ₖ M)) := by
   obtain ⟨W, z, hW, hz, hzs, rfl⟩ := hM
   set e := regionUnionEquiv (n := n) hXT
-  set y : RegionConfig n (X ∪ T) → ℝ := fun σ ↦ if (e σ).1 = i then z (e σ).2 else 0
+  set y : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) (X ∪ T)) → ℝ := fun σ ↦ if (e σ).1 = i then z
+      (e σ).2 else 0
   have hha : a / 2 ≠ 0 := by positivity
   refine ⟨reindex e.symm e.symm (U ⊗ₖ W), y, ?_, fun σ ↦ ?_, ?_, ?_⟩
   · rw [conjTranspose_reindex, reindex_apply, reindex_apply, submatrix_mul_equiv,
