@@ -186,6 +186,7 @@ variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 local instance : DecidableEq (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
+-- `inferInstance` for `DecidableEq (Config k ι₁)` exceeds the instance size limit otherwise.
 local instance : Fintype {v // v ∉ X} := inferInstance
 
 /-- Transport the same label function along a literal equivariant change of

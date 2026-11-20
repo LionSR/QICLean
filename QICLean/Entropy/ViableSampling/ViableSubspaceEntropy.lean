@@ -135,7 +135,7 @@ theorem actualRegionSplit_marginal_and_entropy
       WithLp.toLp 2 (fun x : σ × β ↦ ψ ((ManyBody.cutEquiv siteType J).symm x)) :=
     euclideanTensorEquiv_symm_actualRegionSplit siteType J ψ
   have hmarginal : C * Cᴴ = ManyBody.regionState ψ J := by
-    rw [ManyBody.regionState_eq_partialTrace,
+    rw [ManyBody.regionState_eq_partialTraceRight_cutVector,
       Matrix.partialTraceRight_vecMulVec_eq]
     exact congrArg (fun x : EuclideanSpace ℂ (σ × β) ↦
       Matrix.schmidtCoeffMatrix (WithLp.ofLp x) *

@@ -47,6 +47,8 @@ local instance schmidtBellRangeConfigurationDecidableEq : DecidableEq (ManyBody.
 local instance schmidtBellRangeOriginalConfigDecidableEq : DecidableEq (TensorPower.Config k ι₀) :=
   Fintype.decidablePiFintype
 
+-- Without it, instance search fails on `DecidableEq` of the compressed configurations
+-- `(f : Option {v // v ∉ X}) → ιe f` inside the copy products below.
 local instance : DecidableEq ((f : Option {v // v ∉ X}) → ιe f) :=
   Fintype.decidablePiFintype
 

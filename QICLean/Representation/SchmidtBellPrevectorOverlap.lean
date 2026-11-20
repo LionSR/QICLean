@@ -50,6 +50,7 @@ local instance schmidtBellOverlapConfigurationDecidableEq : DecidableEq
     (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
+-- Without it, instance search fails on `DecidableEq M` (the product with `TensorPower.Config k ι`).
 local instance : DecidableEq (TensorPower.Config k ι) := inferInstance
 
 variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.ComplConfig β X))

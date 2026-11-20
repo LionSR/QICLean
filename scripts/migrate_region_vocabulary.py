@@ -311,6 +311,10 @@ PART_C = {
                                         [("drop", 0), ("drop", 0), ("drop", 2)], 6, ""),
     "splitEquiv_apply_fst": (None, [], 0, "deleted rfl simp lemma: unfold `cutEquiv` by hand"),
     "splitEquiv_apply_snd": (None, [], 0, "deleted rfl simp lemma: unfold `cutEquiv` by hand"),
+    # old explicit arguments (β) (ψ) (R); new (D) (φ), the family implicit; the right side is
+    # now stated through `cutVector` (equal by `rfl`)
+    "regionState_eq_partialTrace": ("regionState_eq_partialTraceRight_cutVector",
+                                    [("drop", 0), ("swap", 0, 1)], 3, ""),
     "operatorSchmidtRank_splitEquiv_le": (
         "Matrix.operatorSchmidtRank_reindex_piEquivPiSubtypeProd_finset_le", [], 0, ""),
 }
@@ -327,7 +331,13 @@ PART_C_REVIEW = {
 PART_C_RESTATED = ("complementUnionEquiv", "split_union_symm", "regionConfigurationSplit",
                    "regionTensorCoordinates", "regionTensorCoordinates_eq_exteriorFirst",
                    "isCloseTo_prodExt_region_iff_isViable", "splitTwoRegionsEquiv",
-                   "splitTwoRegionsState", "regionState_eq_partialTrace", "regionMatrix_apply")
+                   "splitTwoRegionsState", "regionMatrix_apply",
+                   # the complement relabelling is now the named `ManyBody.complSubtypeEquiv`
+                   "replicaGoodConfigurationMarginal_eq",
+                   "partialTraceRight_replicaExcitationComponent_goodFin_density",
+                   "symProj_mul_replicaExcitationComponent_goodAuxiliary_density",
+                   "trace_exp_labelEntropy_replicaExcitationComponent_eq",
+                   "partialTraceRight_replicaExcitationComponent_goodRegional_density")
 PART_C_ON = False  # set by `main` for `--part C` and `--part all`
 
 

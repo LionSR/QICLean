@@ -41,7 +41,7 @@ theorem partialTraceRight_replicaExcitationComponent_goodFin_density
     let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix K K ℂ)) *ᵥ u
     let f := fun x : ((Fin Bᶜ.card → A) × K) × (↥B → A) =>
       w ((ManyBody.cutEquiv (fun _ : Fin k => A) B).symm
-        (x.2, fun i => x.1.1 ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩)), x.1.2)
+        (x.2, fun i => x.1.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i))), x.1.2)
     partialTraceRight (vecMulVec f (star f)) =
       finKronecker (fun _ : Fin Bᶜ.card => vecMulVec Ω (star Ω)) ⊗ₖ
         partialTraceLeft (vecMulVec w (star w)) := by
@@ -49,7 +49,7 @@ theorem partialTraceRight_replicaExcitationComponent_goodFin_density
   intro w f
   let e : ({i // i ∉ B} → A) ≃ (Fin Bᶜ.card → A) :=
     Equiv.arrowCongr
-      ((Equiv.subtypeEquivRight fun _ ↦ Finset.mem_compl.symm).trans (Finset.equivFin Bᶜ))
+      ((ManyBody.complSubtypeEquiv B).trans (Finset.equivFin Bᶜ))
       (Equiv.refl A)
   have hd := congrArg (fun M : Matrix (({i // i ∉ B} → A) × K) (({i // i ∉ B} → A) × K) ℂ =>
     M.submatrix (e.prodCongr (Equiv.refl K)).symm
@@ -58,16 +58,16 @@ theorem partialTraceRight_replicaExcitationComponent_goodFin_density
   rw [← partialTraceRight_submatrix_prod_equiv (e.prodCongr (Equiv.refl K))
     (Equiv.refl (↥B → A))] at hd
   have hprod (g : Fin Bᶜ.card → A) :
-      (∏ i : {i // i ∉ B}, Ω (g ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩))) =
+      (∏ i : {i // i ∉ B}, Ω (g ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)))) =
         ∏ i, Ω (g i) :=
-    ((Equiv.subtypeEquivRight fun _ ↦ Finset.mem_compl.symm).trans
+    ((ManyBody.complSubtypeEquiv B).trans
       (Finset.equivFin Bᶜ)).prod_comp (fun i => Ω (g i))
   change partialTraceRight (vecMulVec f (star f)) =
     vecMulVec
       (fun g : Fin Bᶜ.card → A =>
-        ∏ i : {i // i ∉ B}, Ω (g ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩)))
+        ∏ i : {i // i ∉ B}, Ω (g ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i))))
       (star (fun g : Fin Bᶜ.card → A =>
-        ∏ i : {i // i ∉ B}, Ω (g ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩)))) ⊗ₖ
+        ∏ i : {i // i ∉ B}, Ω (g ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i))))) ⊗ₖ
         partialTraceLeft (vecMulVec w (star w)) at hd
   simp_rw [hprod] at hd
   rw [hd]

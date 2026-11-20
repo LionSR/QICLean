@@ -50,14 +50,6 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 
 omit [∀ v, DecidableEq (β v)] in
-/-- A pure-state density after the region/complement coordinate split. -/
-theorem regionState_eq_partialTrace (ψ : EuclideanSpace ℂ ((v : V) → β v))
-    (R : Finset V) :
-    ManyBody.regionState ψ R = Matrix.partialTraceRight
-      (Matrix.vecMulVec (fun x ↦ ψ ((ManyBody.cutEquiv β R).symm x))
-        (star (fun x ↦ ψ ((ManyBody.cutEquiv β R).symm x)))) := rfl
-
-omit [∀ v, DecidableEq (β v)] in
 /-- Reducing to the complement `Rᶜ` is the left marginal in the cut along `R`, with the
 configurations outside `R` read as configurations of `Rᶜ`. -/
 theorem regionState_compl_eq_partialTraceLeft
@@ -95,7 +87,7 @@ theorem regionEntropy_compl (ψ : EuclideanSpace ℂ ((v : V) → β v)) (R : Fi
       (Matrix.reindex_apply _ _ _)) _ ((Matrix.isHermitian_submatrix_equiv _).mpr
         (Matrix.posSemidef_vecMulVec_self_star _).partialTraceLeft.isHermitian),
     vonNeumannEntropy_submatrix_equiv,
-    vonNeumannEntropy_congr (ManyBody.regionState_eq_partialTrace β ψ R)]
+    vonNeumannEntropy_congr (ManyBody.regionState_eq_partialTraceRight_cutVector R ψ)]
   exact (Entropy.pure_marginal_entropy_eq _).symm
 
 /-- The empty region has zero entropy for a normalized state. -/
