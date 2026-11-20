@@ -340,6 +340,29 @@ theorem sitePermOp_mul_mul_conjTranspose_mem_supportedOperators (π : Equiv.Perm
   exact reindex_siteConfigurationEquiv_mem_supportedOperators π _
     (fun v ↦ by simp [π.injective.eq_iff]) hA
 
+/-- **A local permutation of sites.** If `π` fixes every site outside `D`, the operator
+moving the content of every site along `π` is supported on `D`. -/
+theorem sitePermOp_mem_supportedOperators {π : Equiv.Perm V} {D : Finset V}
+    (hπ : ∀ v ∉ D, π v = v) : sitePermOp (α := α) π ∈ supportedOperators (fun _ : V ↦ α) D := by
+  have hD : ∀ v ∈ D, π v ∈ D := fun v hv ↦ by
+    by_contra h
+    exact h ((π.injective (hπ _ h)).symm ▸ hv)
+  rw [mem_supportedOperators_iff]
+  refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ ?_, fun σ τ σ' τ' h₁ h₂ h₃ h₄ ↦ ?_⟩
+  · rw [sitePermOp_apply, ite_eq_right_iff]
+    rintro rfl
+    exact absurd (by rw [Function.comp_apply, hπ v hv]) hne
+  · rw [sitePermOp_apply, sitePermOp_apply]
+    refine if_congr ⟨fun h ↦ funext fun v ↦ ?_, fun h ↦ funext fun v ↦ ?_⟩ rfl rfl
+    · by_cases hv : v ∈ D
+      · rw [← h₂ v hv, congrFun h v, Function.comp_apply, Function.comp_apply,
+          h₁ _ (hD v hv)]
+      · rw [Function.comp_apply, hπ v hv, ← h₄ v hv]
+    · by_cases hv : v ∈ D
+      · rw [h₂ v hv, congrFun h v, Function.comp_apply, Function.comp_apply,
+          h₁ _ (hD v hv)]
+      · rw [Function.comp_apply, hπ v hv, ← h₃ v hv]
+
 /-- The region expectation commutes with conjugation by the site-permutation operator. -/
 theorem sitePermOp_mul_mul_conjTranspose_regionExpectation (π : Equiv.Perm V) (D : Finset V)
     (A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :

@@ -21,6 +21,8 @@ for an arbitrary family of local alphabets.
 ## Main results
 
 * `ManyBody.exists_supported_unitary_polar_correction`.
+* `ManyBody.exists_supported_unitary_of_two_sided` — the polar step of the information
+  reset.
 
 ## References
 
@@ -73,5 +75,51 @@ theorem exists_supported_unitary_polar_correction {S : Finset V}
     φ.norm_map, φ.norm_map, φ.norm_map, LinearIsometryEquiv.symm_apply_apply,
     LinearIsometryEquiv.symm_apply_apply]
   simpa [conjTranspose_kronecker] using h
+
+/-- **The polar step of the information reset.** Let `M` be supported on `S`, and let a real
+`z ≥ exp (-2 b)`, with `b ≥ 0`, satisfy `‖M ψ - z φ‖, ‖Mᴴ φ - z ψ‖ ≤ C exp (-10 b) ε`. Then a
+unitary `U` supported on `S` satisfies `‖U ψ - φ‖ ≤ 2 C ε`. It is the polar factor of
+`M / z`, whose residuals are at most `C exp (-8 b) ε` because `z⁻¹ ≤ exp (2 b)`.
+Polynomial PEPS approximation, `02-information.tex`, lines 563–599,
+`eq:info-reset-polar-errors` and `eq:info-reset-unitary`. -/
+theorem exists_supported_unitary_of_two_sided {S : Finset V}
+    {M : Matrix (Config X) (Config X) ℂ} (hM : M ∈ supportedOperators X S)
+    {ψ φ : EuclideanSpace ℂ (Config X)} {z b C ε : ℝ} (hb : 0 ≤ b)
+    (hz : Real.exp (-2 * b) ≤ z)
+    (hfwd : ‖toEuclideanLin M ψ - (z : ℂ) • φ‖ ≤ C * Real.exp (-10 * b) * ε)
+    (hrev : ‖toEuclideanLin Mᴴ φ - (z : ℂ) • ψ‖ ≤ C * Real.exp (-10 * b) * ε) :
+    ∃ U ∈ unitaryGroup (Config X) ℂ, U ∈ supportedOperators X S ∧
+      ‖toEuclideanLin U ψ - φ‖ ≤ 2 * C * ε := by
+  have hz0 : 0 < z := (Real.exp_pos _).trans_le hz
+  obtain ⟨U, hU, hUsupp, hcorr⟩ := exists_supported_unitary_polar_correction
+    (SMulMemClass.smul_mem ((z : ℂ)⁻¹) hM)
+  refine ⟨U, hU, hUsupp, (hcorr ψ φ).trans ?_⟩
+  have hzinv : (z : ℂ)⁻¹ = ((z⁻¹ : ℝ) : ℂ) := by push_cast; rfl
+  have hstar : star ((z : ℂ)⁻¹) = (z : ℂ)⁻¹ := by
+    rw [hzinv, Complex.star_def, Complex.conj_ofReal]
+  have hscale (A : Matrix (Config X) (Config X) ℂ) (x y : EuclideanSpace ℂ (Config X)) :
+      ‖toEuclideanLin ((z : ℂ)⁻¹ • A) x - y‖ = z⁻¹ * ‖toEuclideanLin A x - (z : ℂ) • y‖ := by
+    rw [← Real.norm_of_nonneg (inv_nonneg.mpr hz0.le), ← Complex.norm_real, ← hzinv,
+      ← norm_smul, smul_sub, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hz0.ne'),
+      one_smul, map_smul, LinearMap.smul_apply]
+  rw [conjTranspose_smul, hstar, hscale, hscale]
+  have hzb : z⁻¹ ≤ Real.exp (2 * b) := by
+    have h₁ := inv_anti₀ (Real.exp_pos (-2 * b)) hz
+    rwa [← Real.exp_neg, show -(-2 * b) = 2 * b by ring] at h₁
+  have hdecay : Real.exp (2 * b) * Real.exp (-10 * b) ≤ 1 := by
+    rw [← Real.exp_add]
+    exact Real.exp_le_one_iff.mpr (by linarith)
+  have hX : 0 ≤ C * Real.exp (-10 * b) * ε := (norm_nonneg _).trans hfwd
+  have hCε : 0 ≤ C * ε := by
+    have : C * Real.exp (-10 * b) * ε = C * ε * Real.exp (-10 * b) := by ring
+    rw [this] at hX
+    exact nonneg_of_mul_nonneg_left hX (Real.exp_pos _)
+  calc z⁻¹ * ‖toEuclideanLin M ψ - (z : ℂ) • φ‖ + z⁻¹ * ‖toEuclideanLin Mᴴ φ - (z : ℂ) • ψ‖
+      ≤ Real.exp (2 * b) * (C * Real.exp (-10 * b) * ε) +
+        Real.exp (2 * b) * (C * Real.exp (-10 * b) * ε) := by
+        gcongr
+    _ = 2 * (C * ε) * (Real.exp (2 * b) * Real.exp (-10 * b)) := by ring
+    _ ≤ 2 * (C * ε) * 1 := by gcongr
+    _ = 2 * C * ε := by ring
 
 end ManyBody

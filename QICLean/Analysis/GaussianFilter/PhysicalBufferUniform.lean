@@ -9,11 +9,11 @@ import QICLean.Analysis.GaussianFilter.ParameterChoice
 /-!
 # Uniform Gaussian approximation from one physical ground state
 
-Fix a positive gap and a nonnegative decay exponent. One pair of positive
-Gaussian constants works for all finite register types, Hamiltonians, normalized
-ground states, entropy bounds, and size parameters. The physical buffer operator
-and its real overlap are chosen before the size parameter. The actual truncated
-two-generator Gaussian integral is a contraction with both residuals bounded by
+Fix a positive gap and a nonnegative decay exponent. Any Gaussian constants `A, T₀`
+with `30 + r ≤ A Δ² / 2` and `30 + r ≤ T₀² / (2 A)` work for all finite register
+types, Hamiltonians, normalized ground states, entropy bounds, and size parameters.
+The physical buffer operator and its real overlap are chosen before the size parameter.
+The actual truncated two-generator Gaussian integral is a contraction with both residuals bounded by
 `3 * exp (-10 * b) * L ^ (-r)`.
 
 The paired ground vectors and gaps are derived by doubling, regrouping and the
@@ -34,11 +34,15 @@ namespace GaussianFilter
 
 universe u v w
 
-/-- A dimension-uniform choice of Gaussian constants supplies an actual
-truncated filter from original-system gap and entropy data. The original-buffer
-contraction and real overlap work simultaneously for every size parameter. -/
-theorem exists_uniform_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) :
-    ∃ a T₀ : ℝ, 0 < a ∧ 0 < T₀ ∧
+/-- **The physical-buffer filter with explicit constants.** Let `A, T₀ ≥ 0` satisfy the two
+numerical conditions `30 + r ≤ A Δ² / 2` and `30 + r ≤ T₀² / (2 A)` of the manuscript. Then
+the variance `A B` and the cutoff `T₀ B`, with `B = 1 + b + log L`, give an actual truncated
+filter from original-system gap and entropy data, for all finite register types. The
+original-buffer contraction and real overlap work simultaneously for every size parameter.
+Polynomial PEPS approximation, `02-information.tex`, lines 395–452; the constants
+`A = 2 (30 + r) / Δ²` and `T₀ = 2 (30 + r) / Δ` of lines 443–450 meet both conditions. -/
+theorem physicalBuffer_filter_of_le {Δ r a T₀ : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r) (hT₀ : 0 ≤ T₀)
+    (hgap : 30 + r ≤ a * Δ ^ 2 / 2) (htail : 30 + r ≤ T₀ ^ 2 / (2 * a)) :
       ∀ (R : Type u) (C : Type v) (Q : Type w)
         [Fintype R] [Fintype C] [Fintype Q]
         [DecidableEq R] [DecidableEq C] [DecidableEq Q]
@@ -73,17 +77,22 @@ theorem exists_uniform_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0
                 3 * Real.exp (-10 * b) * L ^ (-r) ∧
               ‖toEuclideanLin Mᴴ Φ - (z : ℂ) • Ψ‖ ≤
                 3 * Real.exp (-10 * b) * L ^ (-r) := by
-  obtain ⟨a, T₀, ha, hT₀, _, _, hscale⟩ := exists_gaussian_parameters hΔ hr
-  refine ⟨a, T₀, ha, hT₀, ?_⟩
-  intro R C Q _ _ _ _ _ _ H Ω E₀ b hΩ heigen hgap hb hbound
+  have ha : 0 < a := by
+    by_contra h
+    have : a * Δ ^ 2 / 2 ≤ 0 := by
+      have := sq_nonneg Δ
+      have : a ≤ 0 := not_lt.mp h
+      nlinarith
+    linarith
+  intro R C Q _ _ _ _ _ _ H Ω E₀ b hΩ heigen hgapΩ hb hbound
   obtain ⟨W, z, hWherm, hW, hz, hoverlap, hfilter⟩ :=
-    exists_physicalBuffer_gaussian_filter H Ω hΩ heigen hgap hΔ hb hbound
+    exists_physicalBuffer_gaussian_filter H Ω hΩ heigen hgapΩ hΔ hb hbound
   refine ⟨W, z, hWherm, hW, hz, hoverlap, ?_⟩
   intro L hL
   let B := 1 + b + Real.log L
   let h := Real.toNNReal (a * B)
   let T := T₀ * B
-  have hs := hscale b L hb hL
+  have hs := gaussian_error_bounds_of_parameter_constants ha hT₀ hr hgap htail hb hL
   have hh : (h : ℝ) = a * B := Real.coe_toNNReal _ hs.1.le
   obtain ⟨hM, hforward, hreverse⟩ := (hfilter h).2.2.2 T hs.2.1
   have hsum : Real.exp (-(h : ℝ) * Δ ^ 2 / 2) +

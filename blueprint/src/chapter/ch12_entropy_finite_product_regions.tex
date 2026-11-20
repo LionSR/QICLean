@@ -110,6 +110,7 @@ enters.
 \begin{theorem}[Regional entropies of a product over two systems of sites]
     \label{thm:finite_product_sum_sites}
     \lean{FiniteProduct.sumSitesProduct, FiniteProduct.disjSumEquiv,
+        FiniteProduct.norm_sumSitesProduct,
         FiniteProduct.reducedPure_sumSitesProduct,
         FiniteProduct.entropy_sumSitesProduct,
         FiniteProduct.mutualInformation_sumSitesProduct_inl,
@@ -121,7 +122,8 @@ enters.
     reduction of $f$ to $R$. For $R\subseteq A$ and $T\subseteq B$, identifying a
     configuration of $R\sqcup T$ with a pair of configurations of $R$ and of $T$,
     \[
-        \rho^{f\otimes g}_{R\sqcup T}=\rho^f_R\otimes\rho^g_T .
+        \rho^{f\otimes g}_{R\sqcup T}=\rho^f_R\otimes\rho^g_T,\qquad
+        \lVert f\otimes g\rVert=\lVert f\rVert\,\lVert g\rVert .
     \]
     For unit vectors $f$ and $g$,
     \[
@@ -142,6 +144,12 @@ enters.
         =\sum_{y,y'}f(x,y)g(x',y')\overline{f(z,y)g(z',y')}
         =\rho^f_R(x,z)\,\rho^g_T(x',z').
     \]
+    A configuration of $A\sqcup B$ is a pair $(u,u')$ of configurations of $A$ and
+    of $B$, so
+    \[
+        \lVert f\otimes g\rVert^2=\sum_{u,u'}\lvert f(u)\rvert^2\lvert g(u')\rvert^2
+        =\lVert f\rVert^2\lVert g\rVert^2 .
+    \]
     The entropy of a Kronecker product of density matrices is the sum of their
     entropies, which gives the entropy identity. The empty region of a unit vector
     has entropy zero, so with $T=\emptyset$
@@ -152,4 +160,23 @@ enters.
     \[
         I_{f\otimes g}(T:R)=S_g(T)+S_f(R)-\bigl(S_f(R)+S_g(T)\bigr)=0 .
     \]
+\end{proof}
+
+\begin{theorem}[The cores of the exchanged doubled vector are uncorrelated]
+    \label{thm:finite_product_replica_swap_cores}
+    \lean{FiniteProduct.mutualInformation_replicaSwap_eq_zero}
+    \leanok
+    \uses{thm:finite_product_sum_sites, def:sites-replica-swap}
+    Let $\Omega$ be a unit vector on the sites $V$ and $F_R$ the exchange of the two
+    replicas on a region $R$. For $R_0\subseteq R$ and $C_0$ disjoint from $R$, the
+    first copies of $R_0$ and $C_0$ have no mutual information in
+    $F_R(\Omega\otimes\Omega)$ \cite[Section~2]{OpenAI2026PolynomialPEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:sites-regional-relabel, thm:finite_product_sum_sites}
+    The vector $F_R(\Omega\otimes\Omega)$ is $\Omega\otimes\Omega$ relabelled along the
+    exchange, so the entropy of a region is that of its image. The first copy of
+    $R_0$ goes to the second copy, the first copy of $C_0$ stays, and their union goes
+    to $C_0\sqcup R_0$. By Theorem~\ref{thm:finite_product_sum_sites} the three
+    entropies are $S_\Omega(R_0)$, $S_\Omega(C_0)$ and $S_\Omega(C_0)+S_\Omega(R_0)$.
 \end{proof}
