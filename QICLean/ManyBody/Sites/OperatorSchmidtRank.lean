@@ -99,7 +99,7 @@ theorem operatorSchmidtRank_cutOperator_compl_eq
   let eL : ((v : {v : V // v ∉ A}) → Fin (n v)) ≃
       ((v : {v : V // v ∈ Aᶜ}) → Fin (n v)) :=
     Equiv.piCongrLeft' (fun v : {v : V // v ∉ A} ↦ Fin (n v))
-    (ManyBody.complSubtypeEquiv A)
+    (Finset.complSubtypeEquiv A)
   let eR : ((v : {v : V // v ∈ A}) → Fin (n v)) ≃
       ((v : {v : V // v ∉ Aᶜ}) → Fin (n v)) :=
     Equiv.piCongrLeft' (fun v : {v : V // v ∈ A} ↦ Fin (n v))

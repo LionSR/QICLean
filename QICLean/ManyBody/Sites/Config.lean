@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import Mathlib.Data.Finset.BooleanAlgebra
+import QICLean.Algebra.FinsetComplSubtype
 import Mathlib.Logic.Equiv.Basic
 
 /-!
@@ -28,8 +28,6 @@ system `X` applies to them as it stands.
 * `ManyBody.Qudits` — the system with the basis `Fin d` at every site.
 * `ManyBody.cutEquiv` — a configuration as a pair of a configuration of a region and one of
   its complement.
-* `ManyBody.complSubtypeEquiv` — the sites outside a region as the sites of the complement
-  region.
 * `ManyBody.complementEquiv` — configurations outside a region as configurations of the
   complement region.
 -/
@@ -86,18 +84,6 @@ section Compl
 
 variable [Fintype V]
 
-variable (D) in
-/-- Sites outside `D` are the sites of the complement region `Dᶜ`. -/
-def complSubtypeEquiv : {v // v ∉ D} ≃ {v // v ∈ Dᶜ} :=
-  Equiv.subtypeEquivRight fun _ ↦ Finset.mem_compl.symm
-
-@[simp] theorem coe_complSubtypeEquiv (v : {v // v ∉ D}) : (complSubtypeEquiv D v : V) = v :=
-  rfl
-
-@[simp] theorem coe_complSubtypeEquiv_symm (v : {v // v ∈ Dᶜ}) :
-    ((complSubtypeEquiv D).symm v : V) = v :=
-  rfl
-
 variable (X D) in
 /-- Configurations outside `D` are configurations of the complement region `Dᶜ`. -/
 def complementEquiv : ComplConfig X D ≃ RegionConfig X Dᶜ where
@@ -105,6 +91,12 @@ def complementEquiv : ComplConfig X D ≃ RegionConfig X Dᶜ where
   invFun x v := x ⟨v, Finset.mem_compl.mpr v.property⟩
   left_inv _ := rfl
   right_inv _ := rfl
+
+/-- The relabelling of configurations onto `Dᶜ` reads a configuration outside `D` at the
+corresponding site. -/
+theorem complementEquiv_apply (x : ComplConfig X D) (v : {v // v ∈ Dᶜ}) :
+    complementEquiv X D x v = x ((Finset.complSubtypeEquiv D).symm v) :=
+  rfl
 
 end Compl
 

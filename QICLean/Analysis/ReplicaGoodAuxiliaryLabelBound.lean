@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Analysis.ReplicaExcitationSymmetry
+import QICLean.Algebra.FinsetComplSubtype
 
 /-!
 # The good auxiliary label on an actual excitation component
@@ -47,7 +48,7 @@ noncomputable def replicaGoodBadSplit {k : ℕ} (B : Finset (Fin k)) :
   ((Equiv.sumCongr (Bᶜ).equivFin.symm B.equivFin.symm).trans
     (Equiv.sumComm ↥(Bᶜ) ↥B)).trans
       ((Equiv.sumCongr (Equiv.refl ↥B)
-        (Equiv.subtypeEquivRight (fun _ : Fin k => Finset.mem_compl))).trans
+        (Finset.complSubtypeEquiv B).symm).trans
           (Equiv.sumCompl (fun i : Fin k => i ∈ B)))
 
 variable {A C D : Type*} [Fintype A] [DecidableEq A]

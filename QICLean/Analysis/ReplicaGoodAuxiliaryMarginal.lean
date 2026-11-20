@@ -8,6 +8,7 @@ import QICLean.Representation.GroupedCopies
 import QICLean.Representation.TensorPowerAction
 import QICLean.Algebra.MatrixAux
 import QICLean.Channel.PartialTrace
+import QICLean.Algebra.FinsetComplSubtype
 
 /-!
 # Permutation symmetry of the actual good auxiliary marginal
@@ -108,7 +109,7 @@ private noncomputable def replicaGoodBadSplit {k : ℕ} (B : Finset (Fin k)) :
   ((Equiv.sumCongr (Bᶜ).equivFin.symm B.equivFin.symm).trans
     (Equiv.sumComm ↥(Bᶜ) ↥B)).trans
       ((Equiv.sumCongr (Equiv.refl ↥B)
-        (Equiv.subtypeEquivRight (fun _ : Fin k => Finset.mem_compl))).trans
+        (Finset.complSubtypeEquiv B).symm).trans
           (Equiv.sumCompl (fun i : Fin k => i ∈ B)))
 
 /-- The actual good group fixes every excited coordinate and therefore preserves the excited set.

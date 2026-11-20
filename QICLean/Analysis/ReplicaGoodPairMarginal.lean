@@ -97,9 +97,9 @@ noncomputable def replicaGoodPairMarginal
       ((Fin Bᶜ.card → Y) ×
         ((↥B → Q × (Y × V)) × ((Fin B.card → C) × (Fin B.card → R)))) =>
     w ((ManyBody.cutEquiv (fun _ : Fin k => Q × (Y × V)) B).symm
-      (x.2.2.1, fun i => (x.1.1.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)),
-        (x.2.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)),
-          x.1.2.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i))))),
+      (x.2.2.1, fun i => (x.1.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
+        (x.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
+          x.1.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i))))),
       ((TensorPower.goodBadCopiesEquiv C B).symm (x.1.1.2, x.2.2.2.1),
         (TensorPower.goodBadCopiesEquiv R B).symm (x.1.2.2, x.2.2.2.2)))
   partialTraceRight (vecMulVec f (star f))
@@ -174,13 +174,13 @@ private theorem pairMarginal_swap
     Equiv.prodComm_symm, Equiv.prodCongr_symm, Equiv.symm_mk, Equiv.prodCongr_apply,
     Equiv.coe_fn_mk, submatrix_apply, Prod.map, eBad, physicalRegionExchange]
   have hx := split_physical_reindex (physicalRegionExchange V Y Q) B x.2.2.1
-    (fun i => (x.1.1.1 (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)),
-      (x.2.1 (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)),
-        x.1.2.1 (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)))))
+    (fun i => (x.1.1.1 (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)),
+      (x.2.1 (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)),
+        x.1.2.1 (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)))))
   have hy := split_physical_reindex (physicalRegionExchange V Y Q) B y.2.2.1
-    (fun i => (y.1.1.1 (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)),
-      (y.2.1 (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)),
-        y.1.2.1 (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)))))
+    (fun i => (y.1.1.1 (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)),
+      (y.2.1 (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)),
+        y.1.2.1 (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)))))
   simp only [physicalRegionExchange, Equiv.coe_fn_mk, Prod.swap, Function.comp_def, id_eq]
     at hx hy ⊢
   rw [hx, hy]
@@ -252,8 +252,8 @@ theorem partialTraceRight_replicaGoodPairMarginal
       ((replicaExcitationProjection Ω k B ⊗ₖ
       (1 : Matrix ((Fin k → C) × (Fin k → R)) ((Fin k → C) × (Fin k → R)) ℂ)) *ᵥ u)
       ((ManyBody.cutEquiv (fun _ : Fin k => Q × (Y × V)) B).symm
-        (x.1.2, fun i => (x.1.1.1 (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)),
-          x.1.1.2 (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)))),
+        (x.1.2, fun i => (x.1.1.1 (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)),
+          x.1.1.2 (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)))),
         (TensorPower.goodBadCopiesEquiv C B).symm x.2.1, x.2.2))
 
 /-
@@ -292,7 +292,7 @@ private noncomputable def goodPairCoordinates (Q Y V C R : Type*) {k : ℕ}
         ((Fin Bᶜ.card → V) × (Fin Bᶜ.card → R))) ×
         ((Fin Bᶜ.card → Y) ×
           ((↥B → Q × (Y × V)) × ((Fin B.card → C) × (Fin B.card → R))))) :=
-  let eGood := (Equiv.arrowCongr ((ManyBody.complSubtypeEquiv B).trans
+  let eGood := (Equiv.arrowCongr ((Finset.complSubtypeEquiv B).trans
       Bᶜ.equivFin) (Equiv.refl (Q × (Y × V)))).trans
     ((Equiv.arrowProdEquivProdArrow (Fin Bᶜ.card) (fun _ => Q) (fun _ => Y × V)).trans
       ((Equiv.refl (Fin Bᶜ.card → Q)).prodCongr

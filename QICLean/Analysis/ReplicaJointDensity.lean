@@ -61,8 +61,8 @@ private theorem goodRegionalRetained_density {Q T K C R : Type*} [Fintype Q] [De
     let f := fun x : ((Fin (Bᶜ.card) → Q) × C) ×
         (R × ((Fin (Bᶜ.card) → T) × (↥B → Q × T))) =>
       w ((ManyBody.cutEquiv (fun _ : Fin k => Q × T) B).symm
-        (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)),
-          x.2.2.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)))), e.symm (x.1.2, x.2.1))
+        (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
+          x.2.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)))), e.symm (x.1.2, x.2.1))
     partialTraceRight (vecMulVec f (star f)) =
       finKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
         partialTraceRight ((partialTraceLeft (vecMulVec w (star w))).submatrix
@@ -73,8 +73,8 @@ private theorem goodRegionalRetained_density {Q T K C R : Type*} [Fintype Q] [De
   let g := fun x : ((Fin (Bᶜ.card) → Q) × K) ×
       ((Fin (Bᶜ.card) → T) × (↥B → Q × T)) =>
     w ((ManyBody.cutEquiv (fun _ : Fin k => Q × T) B).symm
-      (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)),
-        x.2.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)))), x.1.2)
+      (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
+        x.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)))), x.1.2)
   have hg := partialTraceRight_replicaExcitationComponent_goodRegional_density Ω hΩ B u
   rw [← partialTraceRight_retained_auxiliary e g, hg]
   exact partialTraceRightAlong_kronecker e _ _
@@ -105,8 +105,8 @@ noncomputable def replicaGoodRegionalAuxiliaryMarginal
       (((Fin B.card → C) × (Fin k → D)) ×
         ((Fin (Bᶜ.card) → T) × (↥B → Q × T))) =>
     w ((ManyBody.cutEquiv (fun _ : Fin k => Q × T) B).symm
-      (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)),
-        x.2.2.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)))), e.symm (x.1.2, x.2.1))
+      (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
+        x.2.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)))), e.symm (x.1.2, x.2.1))
   partialTraceRight (vecMulVec f (star f))
 
 /-

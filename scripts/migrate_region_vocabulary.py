@@ -332,7 +332,7 @@ PART_C_RESTATED = ("complementUnionEquiv", "split_union_symm", "regionConfigurat
                    "regionTensorCoordinates", "regionTensorCoordinates_eq_exteriorFirst",
                    "isCloseTo_prodExt_region_iff_isViable", "splitTwoRegionsEquiv",
                    "splitTwoRegionsState", "regionMatrix_apply",
-                   # the complement relabelling is now the named `ManyBody.complSubtypeEquiv`
+                   # the complement relabelling is now the named `Finset.complSubtypeEquiv`
                    "replicaGoodConfigurationMarginal_eq",
                    "partialTraceRight_replicaExcitationComponent_goodFin_density",
                    "symProj_mul_replicaExcitationComponent_goodAuxiliary_density",

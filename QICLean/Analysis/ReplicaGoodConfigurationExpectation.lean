@@ -54,7 +54,7 @@ private theorem groupedConfigurationEquiv_reconstruct
     let b := badConfigurationTraceEquiv ι B y
     fiveFactorCopiesEquiv ι k ((groupedConfigurationEquiv ι e).symm (x, y)) =
       ((ManyBody.cutEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
-        (b.1, fun i => g.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i))),
+        (b.1, fun i => g.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i))),
         ((goodBadCopiesEquiv (ι 3) B).symm (g.2.1, b.2.1),
           (goodBadCopiesEquiv (ι 4) B).symm (g.2.2, b.2.2))) := by
   intro e g b
@@ -67,9 +67,9 @@ private theorem groupedConfigurationEquiv_reconstruct
     change Sum.elim x y (e.symm (e (Sum.inr j))) = y j
     rw [Equiv.symm_apply_apply]
     rfl
-  have hgi (i : {i // i ∉ B}) : z i = x (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)) := by
-    have hi : (i : Fin k) = e (Sum.inl (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i))) := by
-      change (i : Fin k) = (Bᶜ.equivFin.symm (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i))).val
+  have hgi (i : {i // i ∉ B}) : z i = x (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)) := by
+    have hi : (i : Fin k) = e (Sum.inl (Bᶜ.equivFin (Finset.complSubtypeEquiv B i))) := by
+      change (i : Fin k) = (Bᶜ.equivFin.symm (Bᶜ.equivFin (Finset.complSubtypeEquiv B i))).val
       rw [Equiv.symm_apply_apply]
       rfl
     exact (congrArg z hi).trans (hg _)
@@ -88,9 +88,9 @@ private theorem groupedConfigurationEquiv_reconstruct
       exact congrArg (fun t : (f : Fin 5) → ι f => (t 0, (t 1, t 2))) (hbi i)
     · funext i
       change (z i 0, (z i 1, z i 2)) =
-        (x (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)) 0,
-          (x (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)) 1,
-            x (Bᶜ.equivFin (ManyBody.complSubtypeEquiv B i)) 2))
+        (x (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)) 0,
+          (x (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)) 1,
+            x (Bᶜ.equivFin (Finset.complSubtypeEquiv B i)) 2))
       exact congrArg (fun t : (f : Fin 5) → ι f => (t 0, (t 1, t 2))) (hgi i)
   · apply Prod.ext
     · apply (goodBadCopiesEquiv (ι 3) B).injective
@@ -140,7 +140,7 @@ theorem replicaGoodConfigurationMarginal_eq_grouped_partialTrace
       ((↥B → ι 0 × (ι 1 × ι 2)) × ((Fin B.card → ι 3) × (Fin B.card → ι 4))) =>
     let x := fiveFactorCopiesEquiv ι Bᶜ.card q.1
     w ((ManyBody.cutEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
-      (q.2.1, fun i => x.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i))),
+      (q.2.1, fun i => x.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i))),
       ((goodBadCopiesEquiv (ι 3) B).symm (x.2.1, q.2.2.1),
         (goodBadCopiesEquiv (ι 4) B).symm (x.2.2, q.2.2.2)))
   have hvalue (x : Config Bᶜ.card ι) (y : Config B.card ι) :

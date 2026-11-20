@@ -48,8 +48,8 @@ theorem partialTraceRight_replicaExcitationComponent_goodRegional_density
     let f := fun x : ((Fin (Bᶜ.card) → Q) × C) ×
         ((Fin (Bᶜ.card) → T) × (↥B → Q × T)) =>
       w ((ManyBody.cutEquiv (fun _ : Fin k => Q × T) B).symm
-        (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)),
-          x.2.1 ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)))), x.1.2)
+        (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
+          x.2.1 ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)))), x.1.2)
     partialTraceRight (vecMulVec f (star f)) =
       finKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
         partialTraceLeft (vecMulVec w (star w)) := by
@@ -57,9 +57,9 @@ theorem partialTraceRight_replicaExcitationComponent_goodRegional_density
   dsimp only
   rw [partialTraceLeft_replicaExcitationComponent_eq_remainder Ω hΩ B u]
   have hprod (a : Fin (Bᶜ.card) → Q) (b : Fin (Bᶜ.card) → T) :
-      (∏ i : {i // i ∉ B}, Ω (a ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)),
-        b ((Finset.equivFin Bᶜ) (ManyBody.complSubtypeEquiv B i)))) = ∏ i, Ω (a i, b i) :=
-    ((ManyBody.complSubtypeEquiv B).trans
+      (∏ i : {i // i ∉ B}, Ω (a ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)),
+        b ((Finset.equivFin Bᶜ) (Finset.complSubtypeEquiv B i)))) = ∏ i, Ω (a i, b i) :=
+    ((Finset.complSubtypeEquiv B).trans
       (Finset.equivFin Bᶜ)).prod_comp (fun i => Ω (a i, b i))
   ext ⟨q, c⟩ ⟨q', c'⟩
   simp only [partialTraceRight_apply, vecMulVec_apply, Pi.star_apply,
