@@ -14,7 +14,9 @@ region is its ring ball of radius `T`. The light cone of a protocol of depth `T`
 ring ball of radius `T`: its trace-pairing adjoint maps an operator on a region `R` to an
 operator on the ring ball of radius `T` about `R`, and is multiplicative on operators on regions
 whose balls of radius `T` are disjoint. A state converted in depth `T` from a product state has
-no connected correlations between regions at ring distance larger than `2T`.
+no connected correlations between regions at ring distance larger than `2T`. A protocol on the
+ring of `M` blocks of `k` consecutive sites, read on the `M * k` sites, has light cone the ring
+ball of radius `k T`.
 
 The local-channel model, with ancillas and discarding but without measurements, is the one of
 `docs/paper-gaps/psc21_local_channel_phase_scope.tex`.
@@ -33,6 +35,8 @@ dual is the trace-pairing adjoint `traceAdjointMap`.
   protocol on the ring.
 * `QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isRingSeparated` — vanishing connected
   correlations beyond ring distance `2T`.
+* `QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_ringBall` — the
+  light cone of a protocol on the blocks of the ring, read on the sites.
 -/
 
 open Matrix ManyBody
@@ -83,5 +87,26 @@ theorem IsConversion.trace_mul_mul_eq_of_isRingSeparated
     (σ * (A * B)).trace = (σ * A).trace * (σ * B).trace :=
   h.trace_mul_mul_eq Geometry.ring_cost_pos hσ₀
     (by simpa only [Geometry.iterate_neighbourhood_ring] using hRR'.disjoint_ringBall) hA hB
+
+/-- **Light cone of a protocol on the blocks of the ring.** Group the ring of `M * k` sites into
+the ring of `M` blocks of `k` consecutive sites. The trace-pairing adjoint of a protocol of depth
+`T` on the ring of blocks, read on the sites, maps an operator on the blocks `R` to an operator
+on the sites within ring distance `k * T` of the sites of `R`.
+
+Source: arXiv:2103.13367v3, `main.tex`, lines 287–289 (locality on the blocked chain, read on the
+unblocked chain), with the light cone of arXiv:2307.01696, Supplemental Material, proof of
+Theorem 1. -/
+theorem IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_ringBall {k : ℕ} [NeZero k]
+    {Y : Fin (N * k) → Type} [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
+    {Ψ : Matrix (Config (blockSystem Fin.divNat Y)) (Config (blockSystem Fin.divNat Y)) ℂ →ₗ[ℂ]
+      Matrix (Config Z) (Config Z) ℂ}
+    (h : IsProtocol (Geometry.ring N) T Ψ) {R : Finset (Fin N)}
+    {A : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R) :
+    traceAdjointMap
+        (Ψ ∘ₗ (reindexAlgEquiv ℂ ℂ (blockConfigEquiv Fin.divNat Y).symm).toLinearMap) A ∈
+      supportedOperators Y (ringBall (blockPreimage (Fin.divNat (n := k)) R) (k * T)) := by
+  have := h.traceAdjointMap_comp_block_mem_supportedOperators Fin.divNat Geometry.ring_cost_pos hA
+  rw [Geometry.iterate_neighbourhood_ring] at this
+  exact supportedOperators_mono (preimage_ringBall_subset R T) this
 
 end QuantumCircuit

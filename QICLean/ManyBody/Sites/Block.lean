@@ -15,7 +15,8 @@ whose basis at `b` is the configurations of the block. The configurations of the
 the same (`blockConfigEquiv`, the partition of the sites into the blocks, `complPartitionEquiv`),
 and so are the configurations of a region `D'` of blocks and of its preimage
 (`blockRegionConfigEquiv`). Placement commutes with blocking
-(`reindex_blockConfigEquiv_place`).
+(`reindex_blockConfigEquiv_place`), and a product operator of the sites is the product over the
+blocks of the product operators of the blocks (`reindex_blockConfigEquiv_symm_prodOp`).
 
 ## Main definitions
 
@@ -27,6 +28,8 @@ and so are the configurations of a region `D'` of blocks and of its preimage
 
 * `ManyBody.reindex_blockConfigEquiv_place` — an operator placed on a region of blocks is the
   operator placed on its preimage.
+* `ManyBody.reindex_blockConfigEquiv_symm_prodOp` — a product operator on the sites is, on the
+  blocks, the product over the blocks of the product operators of the blocks.
 -/
 
 open Matrix
@@ -96,5 +99,24 @@ theorem reindex_blockConfigEquiv_place {X : V → Type} [∀ v, DecidableEq (X v
   refine if_congr ⟨fun h v hv ↦ ?_, fun h b hb ↦ funext fun v ↦ h v.1 ?_⟩ rfl rfl
   · exact congrFun (h (f v) (by simpa using hv)) ⟨v, by simp⟩
   · simpa [(mem_blockPreimage_singleton f).mp v.2] using hb
+
+omit [DecidableEq V] in
+/-- Blocking a product operator gives the product over the blocks of the product operators of
+the blocks: `⊗_v m_v` read on the blocked system is `⊗_b ⊗_{f v = b} m_v`. -/
+theorem reindex_blockConfigEquiv_symm_prodOp {X Y : V → Type}
+    (m : (v : V) → Matrix (X v) (Y v) ℂ) :
+    reindex (blockConfigEquiv f X).symm (blockConfigEquiv f Y).symm (prodOp m) =
+      prodOp fun b ↦ prodOp fun v : {v // v ∈ blockPreimage f {b}} ↦ m v := by
+  ext z w
+  rw [reindex_apply, submatrix_apply, prodOp_apply, prodOp_apply, Equiv.symm_symm,
+    Equiv.symm_symm]
+  simp only [prodOp_apply]
+  rw [← Fintype.prod_sigma (fun p : (Σ b : V', {v // v ∈ blockPreimage f {b}}) ↦
+    m p.2 (z p.1 p.2) (w p.1 p.2))]
+  refine Fintype.prod_equiv
+    ⟨fun v ↦ (⟨f v, v, by simp⟩ : Σ b : V', {v // v ∈ blockPreimage f {b}}), fun p ↦ p.2.1,
+      fun _ ↦ rfl, fun ⟨b, v, hv⟩ ↦ ?_⟩ _ _ fun _ ↦ rfl
+  obtain rfl : f v = b := by simpa using hv
+  rfl
 
 end ManyBody

@@ -541,6 +541,38 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $b$.
 \end{proof}
 
+\section{Products of Kraus families}
+\label{sec:sites_product_family}
+
+\begin{definition}[Product of Kraus families]
+    \label{def:sites_product_family}
+    \lean{ManyBody.prodFamily, ManyBody.prodFamily_op}
+    \leanok
+    \uses{def:kraus_family, thm:sites_product_span}
+    For a finite Kraus family $(K^v_\omega)_{\omega\in\Omega_v}$ from $\C^{X_v}$ to
+    $\C^{Y_v}$ at every site $v$, the product family $\bigotimes_vK^v$ from $\mathcal H_X$ to
+    $\mathcal H_Y$ has the outcomes $j\in\prod_v\Omega_v$ and the operators
+    $\bigotimes_vK^v_{j_v}$.
+\end{definition}
+
+\begin{theorem}[Effect of a product of Kraus families]
+    \label{thm:sites_product_family_tp}
+    \lean{ManyBody.effect_prodFamily, KrausFamily.IsTP.prodFamily}
+    \leanok
+    \uses{def:sites_product_family}
+    The effect of $\bigotimes_vK^v$ is $\bigotimes_vE_v$, where $E_v$ is the effect of $K^v$.
+    In particular a product of trace-preserving families is trace-preserving.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:sites_product_span}
+    Product operators multiply sitewise and their adjoints are the products of the
+    adjoints, so
+    $\sum_j(\bigotimes_vK^v_{j_v})^\dagger\bigotimes_vK^v_{j_v}
+    =\sum_j\bigotimes_v(K^v_{j_v})^\dagger K^v_{j_v}$. Entrywise this is a sum over
+    $j\in\prod_v\Omega_v$ of products over $v$, which is the product over $v$ of the sums
+    over $\Omega_v$. If every $E_v$ is $1$, the product operator of the identities is $1$.
+\end{proof}
+
 \section{Blocking sites}
 \label{sec:sites_block}
 
@@ -568,6 +600,21 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{proof}\leanok
     Two configurations agree outside $D'$ in the blocked system exactly when they agree
     outside $f^{-1}(D')$, and their parts on $D'$ and on $f^{-1}(D')$ correspond.
+\end{proof}
+
+\begin{theorem}[Blocking a product operator]
+    \label{thm:sites_block_prod}
+    \lean{ManyBody.reindex_blockConfigEquiv_symm_prodOp}
+    \leanok
+    \uses{def:sites_block, thm:sites_product_span}
+    For matrices $m_v$ from $\C^{Y_v}$ to $\C^{X_v}$, the product operator
+    $\bigotimes_{v\in V}m_v$, read on the blocked systems, is the product over the blocks $b$
+    of the product operators $\bigotimes_{v\in f^{-1}(b)}m_v$.
+\end{theorem}
+\begin{proof}\leanok
+    The entry of $\bigotimes_vm_v$ at a pair of configurations is $\prod_{v\in V}$ of the
+    entries of $m_v$, and $V$ is the disjoint union of the blocks $f^{-1}(b)$, so the product
+    over $V$ is the product over $b$ of the products over $f^{-1}(b)$.
 \end{proof}
 
 \section{Regional pure states and relabelling}
@@ -837,6 +884,23 @@ supports of bounded range on them.
     by the two gap conditions; it is then $0$, contradicting the bounds on the positions.
     For the last statement take $i=0$, $j=2T+2$ and $k=T+1$ and apply the interval
     criterion three times.
+\end{proof}
+
+\begin{theorem}[Balls on a blocked ring]
+    \label{thm:sites_ring_block_ball}
+    \lean{ManyBody.preimage_ringBall_subset}
+    \leanok
+    \uses{def:sites_ring_ball, def:sites_block}
+    Let $M,k\ge1$, and group the ring $\Z_{Mk}$ into the $M$ blocks of $k$ consecutive
+    sites, the site $p$ lying in the block $\lfloor p/k\rfloor$ of the ring $\Z_M$. For a
+    set $R$ of blocks, the sites of the blocks in the ball of radius $r$ about $R$ lie in the
+    ball of radius $kr$ about the sites of the blocks in $R$. This is the locality on the
+    blocked chain of~\cite[main text]{Piroli2021LOCC}, read on the unblocked chain.
+\end{theorem}
+\begin{proof}\leanok
+    Write a site as $p=jk+t$ with $0\le t<k$. If its block is $j=x+m$ with $x\in R$ and
+    $\lvert m\rvert\le r$, then $p=(xk+t)+km$ modulo $Mk$, where $xk+t$ lies in the block
+    $x\in R$ and $\lvert km\rvert\le kr$.
 \end{proof}
 
 \begin{definition}[Finite domains of the integers]

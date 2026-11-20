@@ -11,6 +11,7 @@ import Mathlib.Logic.Equiv.Fin.Rotate
 import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.LinearCombination
 import Mathlib.Tactic.Ring
+import QICLean.ManyBody.Sites.Block
 
 /-!
 # Balls and separation on the ring
@@ -19,14 +20,18 @@ The ring of `N` sites is `Fin N` with indices modulo `N`. The ball of radius `r`
 sites `X` is the set of sites `x + m` with `x ∈ X` and `|m| ≤ r`; two sets are separated by `s`
 when no site of the second is of the form `x + m` with `x` in the first and `|m| ≤ s`. Sets
 separated by `2T` have disjoint balls of radius `T`, and sets separated by `s` are at distance
-larger than `s` in the cycle graph.
+larger than `s` in the cycle graph. Grouping the ring of `M * k` sites into the `M` blocks of
+`k` consecutive sites rescales distances by `k`: the sites of the blocks within distance `r` of a
+set of blocks lie within distance `k * r` of its sites.
 
 Adapted from TNLean at commit `e41c3b6371c44bcecb7004d78ff5ec11ae2282f3` (Apache-2.0):
 `neighbourhood`, `IsSeparatedBy` and their lemmas from `TNLean/Circuit/Geometry.lean`, and
 `TNLean/Circuit/RingSeparation.lean`. Changes: namespace `ManyBody` in place of
 `QuantumCircuit`; `ringBall` in place of `neighbourhood` and `IsRingSeparated` in place of
 `IsSeparatedBy`; `ringBall_succ` stated through the radius-`1` ball, `ringBall_zero` and
-`IsRingSeparated.lt_edist` added.
+`IsRingSeparated.lt_edist` added. `preimage_ringBall_subset` is
+`preimage_siteBlock_neighbourhood_subset` of `TNLean/Circuit/Channel/SiteBlocking.lean` at commit
+`0c76bc5a1a9df19136f61b908497542e5db406da`, with the block of a site written `Fin.divNat`.
 
 ## Main definitions
 
@@ -42,6 +47,7 @@ Adapted from TNLean at commit `e41c3b6371c44bcecb7004d78ff5ec11ae2282f3` (Apache
 * `ManyBody.exists_isRingSeparated_singletons_notMem_ringBall` — on more than `4T + 4` sites,
   two sites separated by `2T` and a third outside both balls of radius `T`.
 * `ManyBody.IsRingSeparated.lt_edist` — separated sets are far apart in the cycle graph.
+* `ManyBody.preimage_ringBall_subset` — blocking rescales ring distances by the block size.
 -/
 
 namespace ManyBody
@@ -220,5 +226,62 @@ theorem IsRingSeparated.lt_edist {s : ℕ} (h : IsRingSeparated X Y s) {x y : Fi
   obtain ⟨m, hm, rfl⟩ := exists_eq_add_of_walk p
   rw [← hp, Nat.cast_le] at hle
   exact h x hx _ hy m (hm.trans (by exact_mod_cast hle)) rfl
+
+/-! ### Blocks of consecutive sites -/
+
+section Block
+
+variable {M k : ℕ} [NeZero M] [NeZero k]
+
+/-- Moving a block by `m` moves each of its sites by `k * m`. -/
+private theorem finProdFinEquiv_add_intCast (j : Fin M) (t : Fin k) (m : ℤ) :
+    finProdFinEquiv (j + (m : Fin M), t) =
+      finProdFinEquiv (j, t) + (((k : ℤ) * m : ℤ) : Fin (M * k)) := by
+  have hM : (0 : ℤ) < M := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne M)
+  have hk : (0 : ℤ) < k := by exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne k)
+  apply Fin.ext
+  rw [Fin.val_add, finProdFinEquiv_apply_val, finProdFinEquiv_apply_val, Fin.val_add,
+    Fin.val_intCast, Fin.val_intCast]
+  dsimp only
+  zify
+  rw [Int.toNat_of_nonneg (Int.emod_nonneg _ (by positivity)),
+    Int.toNat_of_nonneg (Int.emod_nonneg _ (by positivity))]
+  have e1 : (k : ℤ) * ((j + m % M) % M) = (k * j + k * m) % (M * k) := by
+    rw [← Int.mul_emod_mul_of_pos _ _ hk, mul_add, ← Int.mul_emod_mul_of_pos _ _ hk,
+      Int.add_emod_emod, mul_comm (M : ℤ)]
+  have ht : (t : ℤ) < k := by exact_mod_cast t.isLt
+  have hlt : (t : ℤ) + k * ((j + m % M) % M) < M * k := by
+    have : ((j : ℤ) + m % M) % M < M := Int.emod_lt_of_pos _ hM
+    nlinarith
+  have h0 : (0 : ℤ) ≤ t + k * ((j + m % M) % M) :=
+    add_nonneg (by positivity) (mul_nonneg hk.le (Int.emod_nonneg _ hM.ne'))
+  rw [← Int.emod_eq_of_lt h0 hlt, e1, Int.add_emod_emod, Int.add_emod_emod, add_assoc]
+
+/-- **Rescaling distances by the blocking factor.** Group the ring of `M * k` sites into the `M`
+blocks of `k` consecutive sites, the site `p` lying in the block `⌊p / k⌋`. The sites of the
+blocks within ring distance `r` of the blocks `R` lie within ring distance `k * r` of the sites
+of `R`.
+
+Source: arXiv:2103.13367v3, `main.tex`, line 289 (locality on the blocked chain, read on the
+unblocked chain). -/
+theorem preimage_ringBall_subset (R : Finset (Fin M)) (r : ℕ) :
+    blockPreimage (Fin.divNat (n := k)) (ringBall R r) ⊆
+      ringBall (blockPreimage (Fin.divNat (n := k)) R) (k * r) := by
+  have hdiv (j : Fin M) (t : Fin k) : (finProdFinEquiv (j, t)).divNat = j := by
+    simpa only [finProdFinEquiv_symm_apply] using
+      congrArg Prod.fst (finProdFinEquiv.symm_apply_apply (j, t))
+  intro i hi
+  obtain ⟨⟨j', t⟩, rfl⟩ := finProdFinEquiv.surjective i
+  obtain ⟨j, hj, m, hm, hij⟩ := mem_ringBall.mp (Finset.mem_filter.mp hi).2
+  rw [hdiv] at hij
+  subst hij
+  refine mem_ringBall.mpr ⟨finProdFinEquiv (j, t), ?_, (k : ℤ) * m, ?_,
+    finProdFinEquiv_add_intCast j t m⟩
+  · simpa [hdiv] using hj
+  · rw [abs_mul, Nat.abs_cast]
+    push_cast
+    exact mul_le_mul_of_nonneg_left hm (by positivity)
+
+end Block
 
 end ManyBody
