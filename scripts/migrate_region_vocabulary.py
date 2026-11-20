@@ -21,7 +21,9 @@ This script applies the rename table to every `.lean` file below a directory:
 
 A site whose arguments cannot be parsed (a partial application, a lemma name inside `rw [...]`
 that needs arguments it does not have, a bridge lemma that becomes trivial) is left unchanged
-and reported with its location.
+and reported with its location. A trivial bridge standing alone in a rewrite list is dropped
+with its separator; a list it empties is deleted when another tactic follows at the same
+indentation, and otherwise left and reported, since it may close a goal that became reflexive.
 
 The surviving definitions `ManyBody.regionState` and `ManyBody.regionEntropy` keep their names
 but now take the vector first, so their existing calls are rewritten by a separate pass,
@@ -571,13 +573,6 @@ def drop_open(text: str) -> str:
     return re.sub(r"^(open (?:scoped )?)([^\n]*)\n", one, text, flags=re.M)
 
 
-def tidy_lists(text: str) -> str:
-    """Repair the separators left by dropping consecutive entries of a rewrite list."""
-    text = re.sub(r"\[\s*,\s*", "[", text)
-    text = re.sub(r",\s*,", ",", text)
-    return re.sub(r",\s*\]", "]", text)
-
-
 def with_family(rule: Rule, text: str, start: int, span) -> str:
     """The survivor of an unapplied name, with the family supplied if `rule.addx`. A name that
     is itself an argument takes parentheses, so that the named argument is not read as one of
@@ -651,14 +646,16 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         if rule.trivial:
             # a bridge standing alone in a rewrite list is dropped with its arrow and comma
             if span is None:
-                lm = re.search(r"(,\s*|\[\s*)(←\s*)?$", text[:m.start()])
+                # the separator is read from the text already emitted, so that consecutive
+                # bridges are dropped with their separators
+                prev = "".join(out) + text[pos:m.start()]
+                lm = re.search(r"(,\s*|\[\s*)(←\s*)?$", prev)
                 after = text[m.end():]
                 if lm and re.match(r"\s*[,\]]", after):
-                    a0 = m.start() - len(lm.group(0)) + (1 if lm.group(1).startswith("[") else 0)
-                    tail = re.match(r"\s*,\s*", after) if lm.group(1).startswith("[") else None
-                    b0 = m.end() + (tail.end() if tail else 0)
-                    out.append(text[pos:a0])
-                    pos = b0
+                    opens = lm.group(1).startswith("[")
+                    tail = re.match(r"\s*,\s*", after) if opens else None
+                    out = [prev[:lm.start()] + ("[" if opens else "")]
+                    pos = m.end() + (tail.end() if tail else 0)
                     rep.rewritten += 1
                     changed = True
                     continue
@@ -791,9 +788,19 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
                 rep.rewritten += 1
                 changed = True
     if not check and changed:
-        # a rewrite list emptied by the dropped bridges leaves no tactic
-        new_text = re.sub(r"^[ \t]*(?:rw|simp only|simp_rw) \[\][ \t]*\n", "", new_text,
-                          flags=re.M)
+        # a rewrite list emptied by the dropped bridges is deleted when a tactic follows at the
+        # same indentation (it closed no goal, or that tactic would fail); one that ends its
+        # block may close a reflexive goal, so it stays and the final scan reports it
+        ls = new_text.split("\n")
+        keep = []
+        for i, ln in enumerate(ls):
+            em = EMPTY_LIST.match(ln)
+            if em and ln.strip() == em.group(0).strip():
+                nxt = next((x for x in ls[i + 1:] if x.strip()), "")
+                if line_indent_of(nxt) == line_indent_of(ln):
+                    continue
+            keep.append(ln)
+        new_text = "\n".join(keep)
     if not check and MODULE_MOVES:
         def mv(mm):
             new = MODULE_MOVES.get(mm.group(2))
@@ -817,6 +824,11 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
 
 
 MAX = 100
+EMPTY_LIST = re.compile(r"^[ \t]*(?:rw|simp only|simp_rw) \[\][ \t]*$")
+
+
+def line_indent_of(line: str) -> int:
+    return len(line) - len(line.lstrip(" "))
 OPEN_DROP: set[str] = set()
 XARG = " (X := fun v ↦ Fin (n v))"
 
@@ -981,7 +993,7 @@ def main() -> int:
                     break
                 nt = t2
             if nt != t:
-                nt = wrap_changed(t, tidy_lists(nt), p, frep)
+                nt = wrap_changed(t, nt, p, frep)
             rep.rewritten += frep.rewritten
             rep.files |= frep.files
             # the sites left for a hand edit are the old names still in the final text, at their
@@ -1011,6 +1023,12 @@ def main() -> int:
                 with open(p, "w", encoding="utf8") as h:
                     h.write(nt)
             rep.unhandled += final.remaining
+            # an emptied rewrite list that ends its block is left for a hand edit
+            empty = re.compile(EMPTY_LIST.pattern, re.M)
+            if len(empty.findall(nt)) > len(empty.findall(t)):
+                rep.unhandled += [f"{p}:{lineno(nt, em.start())}: emptied rewrite list ends its "
+                                  "block: delete it, or close the goal with `rfl`"
+                                  for em in empty.finditer(nt)]
             rep.unhandled += [u for u in dict.fromkeys(frep.unhandled)
                               if re.search(r": (line longer than|`\.[\w']+` needs)", u)]
     lines = []
