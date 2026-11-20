@@ -11,3 +11,4 @@ Authors: QICLean contributors
 import QICLean.Circuit.Compile.Block
 import QICLean.Circuit.Compile.Dilation
 import QICLean.Circuit.Compile.Encoding
+import QICLean.Circuit.Compile.Port
