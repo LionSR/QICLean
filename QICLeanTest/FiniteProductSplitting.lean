@@ -41,13 +41,13 @@ example {V : Type*} [Fintype V] [DecidableEq V]
     ∃ (W : Matrix
         (Fin (Fintype.card (ManyBody.RegionConfig β ∅)) ×
           (Fin (Fintype.card (ManyBody.RegionConfig β ∅)) ⊕
-            ManyBody.RegionConfig β (∅ ∪ ∅)ᶜ))
-        (ManyBody.RegionConfig β (∅ ∪ ∅)ᶜ) ℂ)
+            ManyBody.ComplConfig β (∅ ∪ ∅)))
+        (ManyBody.ComplConfig β (∅ ∪ ∅)) ℂ)
       (s : Fin (Fintype.card (ManyBody.RegionConfig β ∅)) ×
         Fin (Fintype.card (ManyBody.RegionConfig β ∅)) → ℂ)
       (s' : Fin (Fintype.card (ManyBody.RegionConfig β ∅)) ×
         (Fin (Fintype.card (ManyBody.RegionConfig β ∅)) ⊕
-          ManyBody.RegionConfig β (∅ ∪ ∅)ᶜ) → ℂ),
+          ManyBody.ComplConfig β (∅ ∪ ∅)) → ℂ),
       W.IsIsometry ∧ star s ⬝ᵥ s = 1 ∧ star s' ⬝ᵥ s' = 1 ∧
         ((1 : Matrix _ _ ℂ) ⊗ₖ W) *ᵥ
           ManyBody.splitTwoRegionsState β ψ ∅ ∅ (by simp) =
