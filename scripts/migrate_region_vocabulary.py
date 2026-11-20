@@ -27,9 +27,25 @@ indentation, and otherwise left and reported, since it may close a goal that bec
 
 The surviving definitions `ManyBody.regionState` and `ManyBody.regionEntropy` keep their names
 but now take the vector first, so their existing calls are rewritten by a separate pass,
-`--part M`, which must run exactly once and before the others. The default (`--part all`) is
-idempotent: after it no old name occurs. Lines that a rewrite makes longer than 100 characters
-are broken inside brackets; a line that cannot be broken is reported.
+`--part M`, which must run exactly once and before the others. The other parts are `A` (the
+`Entropy` abbreviations and the module moves), `B` (`FiniteProduct` and `TNLean.Lattice`) and
+`C` (below); the default `--part all` is A, B and C together. Parts A, B, C and all are
+idempotent: after them no old name of the part occurs, and a second run rewrites nothing. Lines
+that a rewrite makes longer than 100 characters are broken inside brackets; a line that cannot
+be broken is reported.
+
+Part C replaces `ManyBody.splitEquiv β R : Config β ≃ RegionConfig β R × RegionConfig β Rᶜ` by
+`ManyBody.cutEquiv β R : Config β ≃ RegionConfig β R × ComplConfig β R` (table `PART_C`). Only
+qualified names `ManyBody.splitEquiv…` are rewritten, since other namespaces have their own
+`splitEquiv`; a bare old name in a file that opens or is in `ManyBody` (and declares no name of
+that spelling) is reported. `splitEquiv_symm_apply_of_mem β R x y v hv` becomes
+`cutEquiv_symm_apply_mem x y hv` (the same for `_of_notMem`); the deleted `splitEquiv_apply_fst`
+and `_snd` are reported, as is any site with a named argument. In a file that uses a qualified
+`ManyBody.splitEquiv…` name, the type `RegionConfig X Rᶜ` (also `RegionConfig X (A ∪ B)ᶜ`)
+becomes `ComplConfig X R`, unless the file applies `regionState`, `regionMatrix` or
+`regionEntropy` to a complement region: then those types are reported. The uses of
+`ManyBody.complementEquiv` and, in such files, of `mem_compl` are reported for review (they are
+not old names, so `--check` does not list them).
 
 Contract: this is a one-time migration tool. On TNLean (and on any branch of it) it either
 rewrites a site correctly or leaves it unchanged and reports it, and `--check` lists every old
@@ -38,7 +54,7 @@ be left unchanged and reported rather than handled.
 
 Usage:
     python3 scripts/migrate_region_vocabulary.py DIR --part M    # once
-    python3 scripts/migrate_region_vocabulary.py DIR [--check] [--report FILE]
+    python3 scripts/migrate_region_vocabulary.py DIR [--part A|B|C|all] [--check] [--report FILE]
 
 `--check` changes nothing and reports the remaining old names and the `open` lines of a
 dissolved namespace (exit status 1 if any).
@@ -74,6 +90,7 @@ class Rule:
     operations require. `nfam_named` rewrites `(n := e)` to `(X := fun v ↦ Fin (e v))`, with
     `fam` in place of `X` when the survivor names its family otherwise.
     `trivial` marks a bridge lemma that becomes `rfl`: it is reported, not rewritten.
+    `keep`, `named_ok` and `note` (part C) are described at the fields.
     `addx` supplies `(X := fun v ↦ Fin (n v))` outside comments: the survivor cannot infer the
     family from region matrices `(v : D) → Fin (n v)` alone, which the old abbreviation fixed.
     """
@@ -87,6 +104,12 @@ class Rule:
     addx: bool = False
     rename_unapplied: bool = False
     fam: str = "X"
+    # `keep`: a deleted name with no rewrite; every site is left and reported (and `--check`
+    # lists it). `named_ok = False`: a site with a named argument is left and reported, since
+    # the survivor's binders have other names. `note`: the reason printed with a remaining site.
+    keep: bool = False
+    named_ok: bool = True
+    note: str = ""
 
 
 def nfam(arg: str) -> str:
@@ -266,6 +289,35 @@ LATTICE_HAND = [
     "one_le_supportDim_const", "regionEntropy_eq_zero_of_localDimension_one", "card_regionConfig",
 ]
 
+# Part C: `ManyBody.splitEquiv β R : Config β ≃ RegionConfig β R × RegionConfig β Rᶜ` gives way
+# to `ManyBody.cutEquiv β R : Config β ≃ RegionConfig β R × ComplConfig β R`, with
+# `ComplConfig β R = (v : {v // v ∉ R}) → β v`. Names relative to `ManyBody`:
+# old -> (survivor, or None for a deleted name whose sites are reported; ops; need; note).
+# Only the qualified spellings are rewritten: TNLean has its own `Config.splitEquiv`, a private
+# `splitEquiv` and `splitEquiv_symm_comp_relabel`, and QICLean has `TensorPower.splitEquiv`.
+# A bare old name in a file that opens or is in `ManyBody`, and declares no name of that
+# spelling, is reported. To add a rename, add a line here.
+PART_C = {
+    "splitEquiv": ("cutEquiv", [], 0, ""),
+    # old explicit arguments (β) (R) (x) (y) (v) (hv); new (x) (y) {v} (hv)
+    "splitEquiv_symm_apply_of_mem": ("cutEquiv_symm_apply_mem",
+                                     [("drop", 0), ("drop", 0), ("drop", 2)], 6, ""),
+    "splitEquiv_symm_apply_of_notMem": ("cutEquiv_symm_apply_not_mem",
+                                        [("drop", 0), ("drop", 0), ("drop", 2)], 6, ""),
+    "splitEquiv_apply_fst": (None, [], 0, "deleted rfl simp lemma: unfold `cutEquiv` by hand"),
+    "splitEquiv_apply_snd": (None, [], 0, "deleted rfl simp lemma: unfold `cutEquiv` by hand"),
+    "operatorSchmidtRank_splitEquiv_le": ("operatorSchmidtRank_cutEquiv_le", [], 0, ""),
+}
+# In a file that uses a qualified `ManyBody.splitEquiv…` name, the type `RegionConfig X Rᶜ`
+# becomes `ComplConfig X R`; unless the file applies one of these to a complement region,
+# whose matrices stay indexed by `RegionConfig X Rᶜ`: its types are then reported.
+PART_C_REGION_FUNS = ("regionState", "regionMatrix", "regionEntropy")
+# Names whose sites are reported, not rewritten, in every file (the old name survives).
+PART_C_REVIEW = {
+    "ManyBody.complementEquiv": "hand edit: composed with `cutEquiv`, it may now be redundant",
+}
+PART_C_ON = False  # set by `main` for `--part C` and `--part all`
+
 
 # Modules that move (old module -> new module); `import` lines are rewritten.
 MODULE_MOVES: dict[str, str] = {}
@@ -306,6 +358,17 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
             qualified[r.old] = r
             bare.setdefault("ManyBody", {})[short] = Rule(short, short, [("swap", 0, 1)], 2)
         return qualified, bare, {}
+    if part in ("C", "all"):
+        for short, (new, ops, need, note) in PART_C.items():
+            r = Rule("ManyBody." + short, "ManyBody." + new if new else "", ops, need,
+                     keep=new is None, named_ok=False, rename_unapplied=bool(ops),
+                     note=note)
+            qualified[r.old] = r
+            bare.setdefault("ManyBody", {})[short] = Rule(
+                short, "", keep=True,
+                note="bare old name of part C in a `ManyBody` file: rewrite by hand")
+        if part == "C":
+            return qualified, bare, {}
     if part == "A":
         fp_names = []
         # duplicates removed inside `ManyBody` itself
@@ -493,6 +556,15 @@ class Report:
     files: set = field(default_factory=set)
     unhandled: list = field(default_factory=list)
     remaining: list = field(default_factory=list)
+    # old name -> [sites, files] (filled for part C)
+    per: dict = field(default_factory=dict)
+
+    def count(self, name: str, path: str, n: int = 1) -> None:
+        if PART_C_ON and (name.startswith("ManyBody.") and name[9:] in PART_C or
+                          name == COMPL_TYPE):
+            e = self.per.setdefault(name, [0, set()])
+            e[0] += n
+            e[1].add(path)
 
 
 def comment_spans(text: str, strings: bool = False) -> list[tuple[int, int]]:
@@ -639,6 +711,121 @@ def with_family(rule: Rule, text: str, start: int, span) -> str:
     return rule.new + XARG if head else "(" + rule.new + XARG + ")"
 
 
+COMPL_TYPE = "RegionConfig X Rᶜ -> ComplConfig X R"
+USES_SPLIT = re.compile(r"(?<![\w'.])ManyBody\.splitEquiv")
+REGION_CONFIG = re.compile(r"(?<![\w'.@])(ManyBody\.)?RegionConfig(?![\w'])")
+
+
+def read_term(text: str, i: int):
+    """The span of the argument after `i` on the same line: an identifier or a bracket group,
+    with a trailing `ᶜ` (an identifier's own `ᶜ` is one of its characters)."""
+    k = i
+    while k < len(text) and text[k] in " \t":
+        k += 1
+    if k == i or k >= len(text):
+        return None
+    if text[k] in OPEN:
+        e = read_group(text, k)
+        if e < 0:
+            return None
+        if text[e:e + 1] == "ᶜ":
+            e += 1
+        return k, e
+    e = k
+    while e < len(text) and (is_id_char(text[e]) or text[e] == "ᶜ"):
+        e += 1
+    word = text[k:e]
+    if e == k or word in KEYWORDS:
+        return None
+    return k, e
+
+
+def strip_compl(arg: str):
+    """`R` for a region argument `Rᶜ`, `(A ∪ B)ᶜ` or `(Rᶜ)`, else None."""
+    if arg.startswith("(") and arg.endswith(")") and read_group(arg, 0) == len(arg):
+        inner = arg[1:-1].strip()
+        if not inner.endswith("ᶜ"):
+            return None
+        core = inner[:-1]
+        single = re.fullmatch(r"[\w'.]+", core) or (
+            core.startswith("(") and read_group(core, 0) == len(core))
+        return core if single else None
+    if arg.endswith("ᶜ") and len(arg) > 1:
+        core = arg[:-1]
+        if re.fullmatch(r"[\w'.]+", core) or (core.startswith("(") and
+                                               read_group(core, 0) == len(core)):
+            return core
+    return None
+
+
+def complement_region_types(text: str):
+    """The sites `(start, end, replacement)` of the types `RegionConfig X Rᶜ` of `text`."""
+    sites = []
+    for m in REGION_CONFIG.finditer(text):
+        a1 = read_term(text, m.end())
+        a2 = read_term(text, a1[1]) if a1 else None
+        if not a2:
+            continue
+        core = strip_compl(text[a2[0]:a2[1]])
+        if core is None:
+            continue
+        sites.append((m.start(), a2[1], (m.group(1) or "") + "ComplConfig" +
+                      text[m.end():a2[0]] + core))
+    return sites
+
+
+def applies_region_fun_to_complement(text: str) -> bool:
+    pat = re.compile(r"(?<![\w'.])(?:ManyBody\.)?(?:" + "|".join(PART_C_REGION_FUNS) +
+                     r")(?![\w'])")
+    for m in pat.finditer(text):
+        a1 = read_term(text, m.end())
+        a2 = read_term(text, a1[1]) if a1 else None
+        if any(a and strip_compl(text[a[0]:a[1]]) is not None for a in (a1, a2)):
+            return True
+    return False
+
+
+def complement_types(text: str, path: str, rep) -> tuple[str, int]:
+    """Part C: `RegionConfig X Rᶜ` to `ComplConfig X R` in a file that uses a qualified
+    `ManyBody.splitEquiv…` name outside comments, unless it applies a region function to a
+    complement (then `part_c_notes` reports the types)."""
+    spans = comment_spans(text, strings=True)
+    if not any(in_spans(spans, m.start()) is None for m in USES_SPLIT.finditer(text)) or \
+            applies_region_fun_to_complement(text):
+        return text, 0
+    sites = complement_region_types(text)
+    for s0, e0, new in reversed(sites):
+        text = text[:s0] + new + text[e0:]
+    if sites:
+        rep.rewritten += len(sites)
+        rep.count(COMPL_TYPE, path, len(sites))
+    return text, len(sites)
+
+
+def part_c_notes(orig: str, final: str, path: str) -> list[str]:
+    """The part C sites left for review in the final text of a file: `PART_C_REVIEW` names,
+    the complement types kept in a file that applies a region function to a complement, and
+    complement-membership proofs (the index of `ComplConfig X R` is `v ∉ R`, not `v ∈ Rᶜ`)."""
+    notes = []
+    spans = comment_spans(final)
+    def code_lines(pat):
+        return sorted({lineno(final, m.start()) for m in re.finditer(pat, final)
+                       if in_spans(spans, m.start()) is None})
+    for name, why in PART_C_REVIEW.items():
+        notes += [f"{path}:{n}: `{name}`: {why}"
+                  for n in code_lines(r"(?<![\w'.])" + re.escape(name) + r"(?![\w'])")]
+    cut = re.compile(r"(?<![\w'.])ManyBody\.(?:splitEquiv|cutEquiv)")
+    if cut.search(orig) or cut.search(final):
+        if applies_region_fun_to_complement(final):
+            notes += [f"{path}:{n}: `RegionConfig X Rᶜ` kept (a region function is applied to "
+                      "a complement here): use `ComplConfig X R` where it meets `cutEquiv`"
+                      for n in sorted({lineno(final, s0)
+                                       for s0, _, _ in complement_region_types(final)})]
+        notes += [f"{path}:{n}: review `mem_compl`: `ComplConfig X R` is indexed by `v ∉ R`"
+                  for n in code_lines(r"mem_compl")]
+    return notes
+
+
 def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool, rep: Report,
                  check: bool):
     original = text
@@ -648,6 +835,11 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         if c == "ManyBody" and "Entropy" in ctx:
             continue
         for short, r in bare.get(c, {}).items():
+            if c == "ManyBody" and r.keep and short in PART_C and re.search(
+                    r"\b(?:def|abbrev|theorem|lemma)\s+(?:[\w'.]+\.)?" + re.escape(short) +
+                    r"(?![\w'])", text):
+                # the file declares a name of this spelling (its own `splitEquiv`)
+                continue
             names.setdefault(short, r)
     # `export ManyBody (a b)` re-exports a survivor into the old namespace; once every old
     # spelling is rewritten to the survivor, the line has no purpose
@@ -663,11 +855,15 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         text = text2
     else:
         export_changed = False
+    changed_c = False
+    if PART_C_ON and not check:
+        text, n_c = complement_types(text, path, rep)
+        changed_c = n_c > 0
     alts = sorted(names, key=len, reverse=True)
     pat = re.compile(r"(?<![\w'.])(" + "|".join(re.escape(a) for a in alts) + r")(?![\w'])")
     out = []
     pos = 0
-    changed = export_changed
+    changed = export_changed or changed_c
     spans = comment_spans(text)
     for m in pat.finditer(text):
         if m.start() < pos:
@@ -698,7 +894,11 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         line = lineno(text, m.start())
         snippet = text[m.start():text.find("\n", m.start())][:90]
         if check:
-            rep.remaining.append(f"{path}:{line}: {snippet}")
+            rep.remaining.append(f"{path}:{line}: {snippet}" +
+                                 (f"  [{rule.note}]" if rule.note else ""))
+            continue
+        if rule.keep:
+            # a deleted name: the final scan reports the site with the rule's note
             continue
         if rule.trivial:
             # a bridge standing alone in a rewrite list is dropped with its arrow and comma
@@ -721,6 +921,9 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             rep.unhandled.append(f"{path}:{line}: bridge `{name}` becomes rfl: {snippet}")
             continue
         args, end = parse_args(text[:limit], m.end(), line_indent(text, m.start()))
+        if not rule.named_ok and any(a[2] == "named" for a in args):
+            rep.unhandled.append(f"{path}:{line}: `{name}` with a named argument: {snippet}")
+            continue
         if rule.new.startswith("@inline"):
             pos_args = [a for a in args if a[2] == "pos"]
             if len(pos_args) < rule.need or any(a[2] != "pos" for a in args[:rule.need]):
@@ -778,6 +981,7 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             out.append(with_family(rule, text, m.start(), span))
             pos = m.end()
             rep.rewritten += 1
+            rep.count(rule.old, path)
             changed = True
             continue
         if rule.ops and new_args is None:
@@ -797,6 +1001,7 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         else:
             pos = m.end()
         rep.rewritten += 1
+        rep.count(rule.old, path)
         changed = True
     out.append(text[pos:])
     new_text = "".join(out)
@@ -1041,16 +1246,18 @@ def main() -> int:
     ap.add_argument("root")
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--report")
-    ap.add_argument("--part", choices=["M", "A", "B", "all"], default="all",
+    ap.add_argument("--part", choices=["M", "A", "B", "C", "all"], default="all",
                     help="M: exchange the arguments of the existing ManyBody.regionState / "
                          "regionEntropy calls, which now take the vector first (run ONCE, "
                          "before the other parts; it is not idempotent); A: the Entropy "
                          "abbreviations and module moves; B: FiniteProduct and TNLean.Lattice; "
-                         "all: A and B")
+                         "C: ManyBody.splitEquiv to ManyBody.cutEquiv; all: A, B and C")
     here = os.path.dirname(os.path.abspath(__file__))
     ap.add_argument("--finite-product-names",
                     default=os.path.join(here, "migrate_region_vocabulary_names.txt"))
     a = ap.parse_args()
+    global PART_C_ON
+    PART_C_ON = a.part in ("C", "all")
     load_module_moves(os.path.join(here, "migrate_region_vocabulary_modules.txt"))
     qualified, bare, dot = build_rules(load_finite_product_names(a.finite_product_names), a.part)
     if a.part in ("B", "all"):
@@ -1084,6 +1291,10 @@ def main() -> int:
                 nt = wrap_changed(t, nt, p, frep)
             rep.rewritten += frep.rewritten
             rep.files |= frep.files
+            for k, (n, fs_) in frep.per.items():
+                e = rep.per.setdefault(k, [0, set()])
+                e[0] += n
+                e[1] |= fs_
             # the sites left for a hand edit are the old names still in the final text, at their
             # final lines (the same list `--check` prints), with the dot sites and long lines the
             # passes could not rewrite
@@ -1114,6 +1325,8 @@ def main() -> int:
                 with open(p, "w", encoding="utf8") as h:
                     h.write(nt)
             rep.unhandled += final.remaining + emptied
+            if PART_C_ON:
+                rep.unhandled += part_c_notes(t, nt, p)
             rep.unhandled += [u for u in dict.fromkeys(frep.unhandled)
                               if re.search(r": (line longer than|`\.[\w']+` needs)", u)]
     lines = []
@@ -1122,13 +1335,16 @@ def main() -> int:
         lines += rep.remaining
     else:
         lines.append(f"rewritten sites: {rep.rewritten} in {len(rep.files)} files")
+        lines += [f"  {k}: {n} sites in {len(fs_)} files"
+                  for k, (n, fs_) in sorted(rep.per.items())]
         lines.append(f"sites left for a hand edit: {len(rep.unhandled)}")
         lines += rep.unhandled
     text = "\n".join(lines) + "\n"
     if a.report:
         with open(a.report, "w", encoding="utf8") as h:
             h.write(text)
-        print(lines[0] + (("\n" + lines[1]) if len(lines) > 1 and not a.check else ""))
+        k = 1 if a.check else 2 + len(rep.per)
+        print("\n".join(lines[:k]))
     else:
         sys.stdout.write(text)
     return 1 if a.check and rep.remaining else 0
