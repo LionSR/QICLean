@@ -675,9 +675,10 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         name = m.group(1)
         if DECL_BEFORE.search(text[max(0, m.start() - 40):m.start()]):
             continue
-        if re.match(r"\s*(?:export|open) ", text[text.rfind("\n", 0, m.start()) + 1:m.start()]):
+        head = text[text.rfind("\n", 0, m.start()) + 1:m.start()]
+        if re.match(r"\s*(?:export|open) ", head) and not re.search(r"\sin\s", head):
             # `export` and `open` lines name namespaces and the names they select; `drop_open`
-            # handles the dissolved ones
+            # handles the dissolved ones. The command after a same-line `open N in` is rewritten.
             continue
         limit = len(text)
         span = in_spans(spans, m.start())
