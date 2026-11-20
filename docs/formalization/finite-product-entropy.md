@@ -40,7 +40,7 @@ itself a physical entropy theorem and does not replace the normalized-state resu
 
 ## Conditional-cell boundary
 
-`FiniteProductConditional` exposes the actual regional conditional-information
+`RegionConditionalInformation` exposes the actual regional conditional-information
 entropy expression, the identity
 `I(X:C|Z) = I(X:C ∪ Z) - I(X:Z)`, its upper bound by `I(X:C ∪ Z)` when `X` and `Z`
 are disjoint and the state is normalized, a finite ordered CMI chain identity, and

@@ -63,30 +63,30 @@ from the original state and selection.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 332–354. -/
 theorem eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (ManyBody.RegionConfig β X)) (hΩ : ‖Ω‖ = 1)
-    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
+    (E : Finset (RegionConfig β X)) (hΩ : ‖Ω‖ = 1)
+    (hz : 0 < (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (regions : List (Finset V))
     (hnested : regions.Pairwise fun B C ↦ B ⊆ C ∨ C ⊆ B)
     (hdisjoint : ∀ B ∈ regions, Disjoint X B)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
-    let ι := ManyBody.compressedSiteSpace β X (Fin E.card)
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let ι := compressedSiteSpace β X (Fin E.card)
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
     let χsite := WithLp.toLp 2
       (fun x : (f : Option {v // v ∉ X}) → ι f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x : TensorPower.Config k ι ↦ ∏ j, χsite (x j))
-    let a := ManyBody.compressedRegionalThreshold β Ω X E
+    let a := compressedRegionalThreshold β Ω X E
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2
     let loss : ℕ → ℝ := fun k ↦
-      ((regions.map (ManyBody.exteriorRegion X)).map fun D ↦
+      ((regions.map (exteriorRegion X)).map fun D ↦
         ‖toEuclideanLin (1 - labelCutoff (subsystemPerm k ι D) (a k D))
           (Ψ k)‖ ^ 2).sum
     let r : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin
-        (commonLabelCutoff ι k (regions.map (ManyBody.exteriorRegion X)) (a k) *
+        (commonLabelCutoff ι k (regions.map (exteriorRegion X)) (a k) *
           labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2
     (∀ᶠ k : ℕ in atTop,
       1 / (2 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ q k) →
@@ -101,13 +101,13 @@ theorem eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
   let failure (k : ℕ) (D : Finset (Option {v // v ∉ X})) : ℝ :=
     ‖toEuclideanLin (1 - labelCutoff (subsystemPerm k ι D) (a k D)) (Ψ k)‖ ^ 2
   let lossAt (i : Fin regions.length) (k : ℕ) : ℝ :=
-    failure k (ManyBody.exteriorRegion X (regions.get i))
+    failure k (exteriorRegion X (regions.get i))
   have hsum (k : ℕ) : (∑ i, lossAt i k) = loss k := by
     change (∑ i : Fin regions.length,
-      failure k (ManyBody.exteriorRegion X (regions.get i))) =
-        ((regions.map (ManyBody.exteriorRegion X)).map (failure k)).sum
+      failure k (exteriorRegion X (regions.get i))) =
+        ((regions.map (exteriorRegion X)).map (failure k)).sum
     rw [← Fin.sum_ofFn,
-      List.ofFn_comp' regions.get (fun B ↦ failure k (ManyBody.exteriorRegion X B)),
+      List.ofFn_comp' regions.get (fun B ↦ failure k (exteriorRegion X B)),
       List.ofFn_get, List.map_map]
     rfl
   have htail : ∀ i, ∃ c : ℝ, 0 < c ∧
@@ -116,20 +116,20 @@ theorem eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
     have hi : Disjoint X (regions.get i) :=
       hdisjoint _ (List.get_mem regions i)
     obtain ⟨c, hc, hck⟩ :=
-      ManyBody.exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp
+      exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp
         β Ω X (regions.get i) hi E hΩ hz
     refine ⟨c, hc, ?_⟩
     filter_upwards [eventually_ge_atTop (1 : ℕ)] with k hk
     dsimp only [lossAt, failure, a]
-    rw [ManyBody.compressedRegionalThreshold_exteriorRegion β Ω X (regions.get i) hi E k]
+    rw [compressedRegionalThreshold_exteriorRegion β Ω X (regions.get i) hi E k]
     exact hck k hk
-  have haux : ∀ D ∈ regions.map (ManyBody.exteriorRegion X),
+  have haux : ∀ D ∈ regions.map (exteriorRegion X),
       Disjoint D ({none} : Finset (Option {v // v ∉ X})) := by
     simpa only [List.forall_mem_map] using
-      (fun B (_ : B ∈ regions) ↦ ManyBody.exteriorRegion_disjoint_auxiliary X B)
+      (fun B (_ : B ∈ regions) ↦ exteriorRegion_disjoint_auxiliary X B)
   have hretain (k : ℕ) : q k - loss k ≤ r k :=
-    norm_commonLabelCutoff_auxLabel_ge ι k (regions.map (ManyBody.exteriorRegion X))
-      (ManyBody.pairwise_exteriorRegion X regions hnested) (a k) {none} haux (ell k) (Ψ k)
+    norm_commonLabelCutoff_auxLabel_ge ι k (regions.map (exteriorRegion X))
+      (pairwise_exteriorRegion X regions hnested) (a k) {none} haux (ell k) (Ψ k)
   have hscalar := Real.eventually_half_mass_of_exponential_losses
     q (fun k ↦ q k - loss k) lossAt (E.card ^ 2) hmass
     (fun k ↦ by rw [hsum k]) htail

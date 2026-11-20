@@ -37,18 +37,18 @@ on the auxiliary site and the original complementary physical sites.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240–247. -/
 theorem norm_compressedTypicalSiteState
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (ManyBody.RegionConfig β X))
-    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    (E : Finset (RegionConfig β X))
+    (hz : 0 < (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
     ‖WithLp.toLp 2
-      (fun x : (f : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X (Fin E.card) f ↦
+      (fun x : (f : Option {v // v ∉ X}) → compressedSiteSpace β X (Fin E.card) f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))‖ = 1 := by
   intro ΩX
-  let e : ((f : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X (Fin E.card) f) ≃
-      E × ManyBody.ComplConfig β X :=
-    (Equiv.piOptionEquivProd (β := ManyBody.compressedSiteSpace β X (Fin E.card))).trans
-      ((Finset.equivFin E).symm.prodCongr (Equiv.refl (ManyBody.ComplConfig β X)))
+  let e : ((f : Option {v // v ∉ X}) → compressedSiteSpace β X (Fin E.card) f) ≃
+      E × ComplConfig β X :=
+    (Equiv.piOptionEquivProd (β := compressedSiteSpace β X (Fin E.card))).trans
+      ((Finset.equivFin E).symm.prodCongr (Equiv.refl (ComplConfig β X)))
   have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
       (Matrix.PosSemidef.isHermitian
         (Matrix.posSemidef_vecMulVec_self_star ΩX).partialTraceRight) E := by

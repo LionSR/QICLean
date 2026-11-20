@@ -56,16 +56,16 @@ information in `F_R (Ω ⊗ Ω)`. Polynomial PEPS approximation, `02-information
 lines 355–365. -/
 theorem regionMutualInformation_replicaSwap_eq_zero {Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)}
     (hΩ : ‖Ω‖ = 1) {R R₀ C₀ : Finset V} (hR₀ : R₀ ⊆ R) (hC₀ : Disjoint C₀ R) :
-    ManyBody.regionMutualInformation
+    regionMutualInformation
       (WithLp.toLp 2 (sitePermOp (replicaSwap R) *ᵥ
-        WithLp.ofLp (ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω)))
+        WithLp.ofLp (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω)))
       (R₀.disjSum ∅) (C₀.disjSum ∅) = 0 := by
-  set Ψ := ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
+  set Ψ := sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
   rw [sitePermOp_mulVec_eq_relabelVector]
   have hent (D D' : Finset (V ⊕ V)) (hD : ∀ w, w ∈ D ↔ replicaSwap R w ∈ D') :
-      ManyBody.regionEntropy
+      regionEntropy
         (relabelVector (X := fun _ : V ⊕ V ↦ α) (X' := fun _ : V ⊕ V ↦ α) (replicaSwap R)
-          (fun _ ↦ Equiv.refl α) Ψ) D' = ManyBody.regionEntropy Ψ D := by
+          (fun _ ↦ Equiv.refl α) Ψ) D' = regionEntropy Ψ D := by
     exact regionEntropy_relabel D D' _ hD _ Ψ
   have hswap (S : Finset V) (hS : Disjoint S R) (w : V ⊕ V) :
       w ∈ S.disjSum ∅ ↔ replicaSwap R w ∈ S.disjSum ∅ := by
@@ -84,10 +84,10 @@ theorem regionMutualInformation_replicaSwap_eq_zero {Ω : EuclideanSpace ℂ (Co
     rcases w with v | v <;> simp
   rw [regionMutualInformation, hunion, hent _ _ hR₀', hent _ _ (hswap C₀ hC₀),
     hent _ _ (mem_disjSum_iff_replicaSwap hR₀ hC₀)]
-  have h₁ := ManyBody.regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ ∅ R₀
-  have h₂ := ManyBody.regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ ∅
-  have h₃ := ManyBody.regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ R₀
-  have h₀ := ManyBody.regionEntropy_empty (fun _ : V ↦ α) Ω hΩ
+  have h₁ := regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ ∅ R₀
+  have h₂ := regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ ∅
+  have h₃ := regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ R₀
+  have h₀ := regionEntropy_empty (fun _ : V ↦ α) Ω hΩ
   rw [h₁, h₂, h₃, h₀]
   ring
 

@@ -3,7 +3,7 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.RegionConditionalInformation
 
 /-!
 # Adding finitely many conditional information costs
@@ -35,10 +35,10 @@ theorem regionMutualInformation_union_biUnion_le_of_conditional
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (B C : Finset V)
     (G : ι → Finset V) (s : Finset ι) (cost : ι → ℝ)
     (hcost : ∀ i ∈ s, ∀ t : Finset ι, t ⊆ s → i ∉ t →
-      ManyBody.conditionalMutualInformation β ψ (G i) C (B ∪ t.biUnion G) ≤
+      conditionalMutualInformation β ψ (G i) C (B ∪ t.biUnion G) ≤
         cost i) :
-    ManyBody.regionMutualInformation ψ (B ∪ s.biUnion G) C ≤
-      ManyBody.regionMutualInformation ψ B C + ∑ i ∈ s, cost i := by
+    regionMutualInformation ψ (B ∪ s.biUnion G) C ≤
+      regionMutualInformation ψ B C + ∑ i ∈ s, cost i := by
   classical
   induction s using Finset.induction_on with
   | empty => simp
@@ -46,11 +46,11 @@ theorem regionMutualInformation_union_biUnion_le_of_conditional
     have hprev := ih (fun j hj t hts hjt ↦
       hcost j (Finset.mem_insert_of_mem hj) t (hts.trans (Finset.subset_insert i s)) hjt)
     have hnext := hcost i (Finset.mem_insert_self i s) s (Finset.subset_insert i s) hi
-    have hchain : ManyBody.regionMutualInformation ψ (B ∪ (insert i s).biUnion G) C =
-        ManyBody.regionMutualInformation ψ (B ∪ s.biUnion G) C +
-          ManyBody.conditionalMutualInformation β ψ (G i) C (B ∪ s.biUnion G) := by
+    have hchain : regionMutualInformation ψ (B ∪ (insert i s).biUnion G) C =
+        regionMutualInformation ψ (B ∪ s.biUnion G) C +
+          conditionalMutualInformation β ψ (G i) C (B ∪ s.biUnion G) := by
       simp only [Finset.biUnion_insert, regionMutualInformation,
-          ManyBody.conditionalMutualInformation,
+          conditionalMutualInformation,
         Finset.union_left_comm, Finset.union_comm]
       ring
     rw [hchain, Finset.sum_insert hi]

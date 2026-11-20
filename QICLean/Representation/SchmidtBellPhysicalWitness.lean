@@ -41,14 +41,14 @@ namespace ManyBody
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-variable (E : Finset (ManyBody.RegionConfig β X))
+variable (E : Finset (RegionConfig β X))
 
-local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.ComplConfig β X
+local notation "A" => RegionConfig β X
+local notation "B" => ComplConfig β X
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
+local notation "ιe" => compressedSiteSpace β X (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
-  (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
+  (Matrix.PosSemidef.isHermitian (regionState_posSemidef X Ω)) E
 
 local instance schmidtBellPhysicalWitnessConfigDecidableEq (k : ℕ) :
     DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
@@ -69,7 +69,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     (hnested : regions.Pairwise fun D D' ↦ D ⊆ D' ∨ D' ⊆ D)
     (hdisjoint : ∀ D ∈ regions, Disjoint X D)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦
@@ -81,13 +81,13 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     (∀ o : Option (Option V), Nonempty (ι₀ o)) ∧
     ‖selectedBellVector ΩX E‖ = 1 ∧
     ∀ᶠ k : ℕ in atTop,
-      let τ := ManyBody.schmidtBellWitnessEquiv β X E k
+      let τ := schmidtBellWitnessEquiv β X E k
       let J := (addedSiteInsertion ιe (A × E) k (selectedBellVector ΩX E)).submatrix
         (bellInsertionCopyEquiv β X ↥E (Fin E.card) k) id
       let Pe := symProj (copyPerm ((o : Option {v // v ∉ X}) → ιe o) k)
       let P := J * Pe * Jᴴ
       let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
-        (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘ τ)
+        (schmidtBellSitePrevector β X E k ΩX (ell k) ∘ τ)
       ∃ Φ : EuclideanSpace ℂ (TensorPower.Config k ι₀),
         ‖Φ‖ = 1 ∧
         (fun x ↦ Φ x) ∈ symmetricSubspace k ι₀ ∧
@@ -97,11 +97,11 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
           (4 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤
             ‖inner ℂ Φ (toEuclideanLin P v)‖ ^ 2 ∧
         ∀ (K : ℕ) (U Y : S → Fin K → Finset V) (Bsh Bexc : ℝ),
-          (∀ D ∈ regions, ManyBody.regionEntropy Ω D ≤ Bsh) →
+          (∀ D ∈ regions, regionEntropy Ω D ≤ Bsh) →
           (∀ j g, Disjoint X (U j g ∪ Y j g)) →
           (∀ j g (Q : Finset V), Q = U j g ∨ Q = U j g ∪ Y j g →
             ∃ D ∈ regions, (D ⊆ Q ∨ Q ⊆ D) ∧
-              1 + Real.log (Fintype.card (ManyBody.RegionConfig β (D ∆ Q))) ≤ Bexc) →
+              1 + Real.log (Fintype.card (RegionConfig β (D ∆ Q))) ≤ Bexc) →
           let a := (k : ℝ) * (Bsh / z + Bexc)
           let extRegion := fun Q : Finset V ↦ (Q \ X).image fun x ↦ some (some x)
           ∀ j g,
@@ -111,7 +111,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
               (labelCutoff (subsystemPerm k ι₀ (extRegion (U j g ∪ Y j g))) a) Φ = Φ := by
   classical
   intro ΩX ψ Ψ q hmass
-  have hw := ManyBody.eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
+  have hw := eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
     β Ω X E hΩ hz regions hnested hdisjoint ell hmass
   have hb := Matrix.norm_selectedBellVector ΩX E hz
   obtain ⟨x, _⟩ := Function.ne_iff.mp
@@ -127,7 +127,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
   filter_upwards [hw] with k ⟨φ, hφnorm, hφsym, hφBell, hφlabel, hφcuts,
     hφoverlap, hhalf, hbound⟩
   intro τ J Pe P v
-  have hΦ := ManyBody.schmidtBellWitness_pullback_range β X E k ΩX φ
+  have hΦ := schmidtBellWitness_pullback_range β X E k ΩX φ
     (by simpa only [mem_invariantSubspace, permOp_mulVec] using hφsym) hφBell
   have hpull (A' : Matrix ((Fin k → A × E) × TensorPower.Config k ιe)
       ((Fin k → A × E) × TensorPower.Config k ιe) ℂ) (hA' : toEuclideanLin A' φ = φ) :
@@ -141,10 +141,10 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).norm_map φ).trans hφnorm,
     hΦ.1, hΦ.2, ?_, ?_, ?_⟩
   case refine_2 =>
-    have hinner := ManyBody.inner_schmidtBellSitePrevector β X E k ΩX hz (ell k) φ hφBell
+    have hinner := inner_schmidtBellSitePrevector β X E k ΩX hz (ell k) φ hφBell
     have hpair :
         inner ℂ (WithLp.toLp 2 (φ ∘ τ)) (toEuclideanLin P v) =
-          inner ℂ φ (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k)) :=
+          inner ℂ φ (schmidtBellSitePrevector β X E k ΩX (ell k)) :=
       ((isSymmetric_toEuclideanLin_iff.mpr
         (isHermitian_mul_mul_conjTranspose J
           (isHermitian_symProj (Ω := ((o : Option {v // v ∉ X}) → ιe o)) (k := k))))
@@ -152,7 +152,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
         ((congrArg (fun w : EuclideanSpace ℂ (TensorPower.Config k ι₀) ↦ inner ℂ w v)
           hΦ.2).trans
           ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ τ.symm).inner_map_map φ
-            (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k))))
+            (schmidtBellSitePrevector β X E k ΩX (ell k))))
     have hc :
         ‖(((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k)‖ ^ 2 =
           (z / (E.card : ℝ) ^ 2) ^ k := by
@@ -170,16 +170,16 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     intro K U Y Bsh Bexc hsh hXY hmatch a extRegion j g
     have hmatched (Q D : Finset V) (hD : D ∈ regions) (hXQ : Disjoint X Q)
         (hDQ : D ⊆ Q ∨ Q ⊆ D)
-        (hexc : 1 + Real.log (Fintype.card (ManyBody.RegionConfig β (D ∆ Q))) ≤ Bexc) :=
-      ManyBody.toEuclideanLin_compressedPhysicalCutoff_of_matched β Ω X E k regions hD
+        (hexc : 1 + Real.log (Fintype.card (RegionConfig β (D ∆ Q))) ≤ Bexc) :=
+      toEuclideanLin_compressedPhysicalCutoff_of_matched β Ω X E k regions hD
         (hdisjoint D hD) hXQ hDQ hz (hsh D hD) hexc φ hφcuts
     have hcut (Q D : Finset V) (hD : D ∈ regions) (hXQ : Disjoint X Q)
         (hDQ : D ⊆ Q ∨ Q ⊆ D)
-        (hexc : 1 + Real.log (Fintype.card (ManyBody.RegionConfig β (D ∆ Q))) ≤ Bexc) :
+        (hexc : 1 + Real.log (Fintype.card (RegionConfig β (D ∆ Q))) ≤ Bexc) :
         toEuclideanLin (labelCutoff (subsystemPerm k ι₀ (extRegion Q)) a)
           (WithLp.toLp 2 (φ ∘ τ)) = WithLp.toLp 2 (φ ∘ τ) := by
       have htransport := hpull _ (hmatched Q D hD hXQ hDQ hexc)
-      rw [ManyBody.labelCutoff_schmidtBellWitnessEquiv_exterior β X E k Q a] at htransport
+      rw [labelCutoff_schmidtBellWitnessEquiv_exterior β X E k Q a] at htransport
       simp only [extRegion, toEuclideanLin, toLpLin_apply] at htransport ⊢
       exact htransport
     exact ⟨
@@ -189,6 +189,6 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
       (hmatch j g (U j g ∪ Y j g) (Or.inr rfl)).elim (fun D hD ↦
         hcut (U j g ∪ Y j g) D hD.1 (hXY j g) hD.2.1 hD.2.2)⟩
   case refine_1 =>
-    simpa only [τ, ManyBody.labelProj_schmidtBellWitnessEquiv_auxiliary] using! hpull _ hφlabel
+    simpa only [τ, labelProj_schmidtBellWitnessEquiv_auxiliary] using! hpull _ hφlabel
 
 end ManyBody

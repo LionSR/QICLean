@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.GaussianFilter.PhysicalBufferUniform
 import QICLean.Analysis.GaussianFilter.Reindex
 import QICLean.Algebra.L2OpNormReindex
-import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.RegionPurificationSplitting
 import QICLean.Entropy.ProductMarginals
 import QICLean.Entropy.SumSitesProduct
 import QICLean.ManyBody.Hamiltonian.GroundSpace

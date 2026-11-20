@@ -14,7 +14,7 @@ gapped square-grid ground states* (September 24, 2026),
 [`05-frames.tex`, lines 352–391](https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/05-frames.tex#L352).
 The source is fixed at commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 
-The declarations are in `QICLean/Entropy/FiniteProductSplitting.lean`. They reuse
+The declarations are in `QICLean/Entropy/RegionPurificationSplitting.lean`. They reuse
 the regional state, regional entropy and regional mutual information of
 `ManyBody`, together with the proved matrix purification splitting
 from `PurificationSplitting`. The coordinate equivalence enumerates only T and E;

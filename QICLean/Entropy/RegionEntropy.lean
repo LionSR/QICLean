@@ -54,80 +54,80 @@ omit [∀ v, DecidableEq (β v)] in
 configurations outside `R` read as configurations of `Rᶜ`. -/
 theorem regionState_compl_eq_partialTraceLeft
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (R : Finset V) :
-    ManyBody.regionState ψ Rᶜ = (Matrix.partialTraceLeft
-      (Matrix.vecMulVec (fun x ↦ ψ ((ManyBody.cutEquiv β R).symm x))
-        (star (fun x ↦ ψ ((ManyBody.cutEquiv β R).symm x))))).reindex
-      (ManyBody.complementEquiv β R) (ManyBody.complementEquiv β R) := by
-  let e := (ManyBody.complementEquiv β Rᶜ).trans (ManyBody.configurationCongr β (compl_compl R))
-  have hcut (x : ManyBody.RegionConfig β Rᶜ) (c : ManyBody.ComplConfig β Rᶜ) :
-      (ManyBody.cutEquiv β Rᶜ).symm (x, c) =
-        (ManyBody.cutEquiv β R).symm (e c, (ManyBody.complementEquiv β R).symm x) := by
+    regionState ψ Rᶜ = (Matrix.partialTraceLeft
+      (Matrix.vecMulVec (fun x ↦ ψ ((cutEquiv β R).symm x))
+        (star (fun x ↦ ψ ((cutEquiv β R).symm x))))).reindex
+      (complementEquiv β R) (complementEquiv β R) := by
+  let e := (complementEquiv β Rᶜ).trans (configurationCongr β (compl_compl R))
+  have hcut (x : RegionConfig β Rᶜ) (c : ComplConfig β Rᶜ) :
+      (cutEquiv β Rᶜ).symm (x, c) =
+        (cutEquiv β R).symm (e c, (complementEquiv β R).symm x) := by
     funext v
     by_cases hv : v ∈ R
-    · rw [ManyBody.cutEquiv_symm_apply_not_mem _ _ (Finset.notMem_compl.mpr hv),
-        ManyBody.cutEquiv_symm_apply_mem _ _ hv]
-      simp [e, ManyBody.configurationCongr_apply, ManyBody.complementEquiv]
-    · rw [ManyBody.cutEquiv_symm_apply_mem _ _ (Finset.mem_compl.mpr hv),
-        ManyBody.cutEquiv_symm_apply_not_mem _ _ hv]
+    · rw [cutEquiv_symm_apply_not_mem _ _ (Finset.notMem_compl.mpr hv),
+        cutEquiv_symm_apply_mem _ _ hv]
+      simp [e, configurationCongr_apply, complementEquiv]
+    · rw [cutEquiv_symm_apply_mem _ _ (Finset.mem_compl.mpr hv),
+        cutEquiv_symm_apply_not_mem _ _ hv]
       rfl
   ext a b
-  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, ManyBody.regionState,
-    ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply, Pi.star_apply,
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, regionState,
+    regionMatrix_apply, Matrix.vecMulVec_apply, Pi.star_apply,
     Matrix.partialTraceLeft_apply, hcut]
-  exact e.sum_comp (fun c ↦ ψ ((ManyBody.cutEquiv β R).symm (c, _)) *
-    star (ψ ((ManyBody.cutEquiv β R).symm (c, _))))
+  exact e.sum_comp (fun c ↦ ψ ((cutEquiv β R).symm (c, _)) *
+    star (ψ ((cutEquiv β R).symm (c, _))))
 
 /-- Complementary regional entropies of a pure state are equal, without any
 normalization or invertibility assumption. -/
 @[simp]
 theorem regionEntropy_compl (ψ : EuclideanSpace ℂ ((v : V) → β v)) (R : Finset V) :
-    ManyBody.regionEntropy ψ Rᶜ = ManyBody.regionEntropy ψ R := by
+    regionEntropy ψ Rᶜ = regionEntropy ψ R := by
   unfold regionEntropy
-  rw [vonNeumannEntropy_congr ((ManyBody.regionState_compl_eq_partialTraceLeft β ψ R).trans
+  rw [vonNeumannEntropy_congr ((regionState_compl_eq_partialTraceLeft β ψ R).trans
       (Matrix.reindex_apply _ _ _)) _ ((Matrix.isHermitian_submatrix_equiv _).mpr
         (Matrix.posSemidef_vecMulVec_self_star _).partialTraceLeft.isHermitian),
     vonNeumannEntropy_submatrix_equiv,
-    vonNeumannEntropy_congr (ManyBody.regionState_eq_partialTraceRight_cutVector R ψ)]
+    vonNeumannEntropy_congr (regionState_eq_partialTraceRight_cutVector R ψ)]
   exact (Entropy.pure_marginal_entropy_eq _).symm
 
 /-- The empty region has zero entropy for a normalized state. -/
 @[simp]
 theorem regionEntropy_empty (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1) :
-    ManyBody.regionEntropy ψ ∅ = 0 := by
+    regionEntropy ψ ∅ = 0 := by
   apply vonNeumannEntropy_eq_zero_of_rank_le_one
-    (ManyBody.regionState_posSemidef ∅ ψ) (ManyBody.trace_regionState_eq_one hψ (D := ∅))
+    (regionState_posSemidef ∅ ψ) (trace_regionState_eq_one hψ (D := ∅))
   calc
-    (ManyBody.regionState ψ ∅).rank ≤ Fintype.card (ManyBody.RegionConfig β ∅) :=
+    (regionState ψ ∅).rank ≤ Fintype.card (RegionConfig β ∅) :=
       Matrix.rank_le_card_width _
-    _ = 1 := by simp [ManyBody.RegionConfig]
+    _ = 1 := by simp [RegionConfig]
 
 /-- The full finite system is pure, so its entropy is zero when normalized. -/
 @[simp]
 theorem regionEntropy_univ (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1) :
-    ManyBody.regionEntropy ψ Finset.univ = 0 := by
-  simpa only [Finset.compl_empty] using (ManyBody.regionEntropy_compl β ψ ∅).trans
-      (ManyBody.regionEntropy_empty β ψ hψ)
+    regionEntropy ψ Finset.univ = 0 := by
+  simpa only [Finset.compl_empty] using (regionEntropy_compl β ψ ∅).trans
+      (regionEntropy_empty β ψ hψ)
 
 /-- Subadditivity for two disjoint regions of a normalized pure state. -/
 theorem regionEntropy_union_le (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
     (R T : Finset V) (h : Disjoint R T) :
-    ManyBody.regionEntropy ψ (R ∪ T) ≤ ManyBody.regionEntropy ψ R + ManyBody.regionEntropy ψ T := by
-  let e := (ManyBody.unionEquiv β R T h).symm
-  let ρ := (ManyBody.regionState ψ (R ∪ T)).submatrix e e
-  have hρ : ρ.PosSemidef := (ManyBody.regionState_posSemidef (R ∪ T) ψ).submatrix e
+    regionEntropy ψ (R ∪ T) ≤ regionEntropy ψ R + regionEntropy ψ T := by
+  let e := (unionEquiv β R T h).symm
+  let ρ := (regionState ψ (R ∪ T)).submatrix e e
+  have hρ : ρ.PosSemidef := (regionState_posSemidef (R ∪ T) ψ).submatrix e
   have htr : ρ.trace = 1 := by
     rw [Matrix.trace_submatrix_equiv]
-    exact ManyBody.trace_regionState_eq_one hψ (D := (R ∪ T))
-  have hR : Matrix.partialTraceRight ρ = ManyBody.regionState ψ R :=
-    ManyBody.partialTraceRight_regionMatrix_union β _ R T h
-  have hT : Matrix.partialTraceLeft ρ = ManyBody.regionState ψ T :=
-    ManyBody.partialTraceLeft_regionMatrix_union β _ R T h
+    exact trace_regionState_eq_one hψ (D := (R ∪ T))
+  have hR : Matrix.partialTraceRight ρ = regionState ψ R :=
+    partialTraceRight_regionMatrix_union β _ R T h
+  have hT : Matrix.partialTraceLeft ρ = regionState ψ T :=
+    partialTraceLeft_regionMatrix_union β _ R T h
   have hsub := Entropy.subadditivity ρ hρ htr
-  rw [vonNeumannEntropy_congr hR _ (ManyBody.regionState_posSemidef R ψ).isHermitian,
-    vonNeumannEntropy_congr hT _ (ManyBody.regionState_posSemidef T ψ).isHermitian] at hsub
+  rw [vonNeumannEntropy_congr hR _ (regionState_posSemidef R ψ).isHermitian,
+    vonNeumannEntropy_congr hT _ (regionState_posSemidef T ψ).isHermitian] at hsub
   dsimp only [ρ] at hsub
   rw [vonNeumannEntropy_submatrix_equiv e _
-    (ManyBody.regionState_posSemidef (R ∪ T) ψ).isHermitian] at hsub
+    (regionState_posSemidef (R ∪ T) ψ).isHermitian] at hsub
   exact hsub
 
 /-- Regional quantum mutual information. For disjoint regions its equality with
@@ -135,58 +135,58 @@ canonical matrix mutual information is `ManyBody.regionMutualInformation_eq_matr
 noncomputable def regionMutualInformation {β : V → Type*} [∀ v, Fintype (β v)]
     [∀ v, DecidableEq (β v)] (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (R T : Finset V) : ℝ :=
-  ManyBody.regionEntropy ψ R + ManyBody.regionEntropy ψ T - ManyBody.regionEntropy ψ (R ∪ T)
+  regionEntropy ψ R + regionEntropy ψ T - regionEntropy ψ (R ∪ T)
 
 /-- The actual joint density matrix of two disjoint regions, expressed in the
 finite bases used by the canonical quantum mutual information. -/
 noncomputable def jointMatrix (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (R T : Finset V) (h : Disjoint R T) :
     Matrix
-        (Fin (Fintype.card (ManyBody.RegionConfig β R)) × Fin
-        (Fintype.card (ManyBody.RegionConfig β T)))
-      (Fin (Fintype.card (ManyBody.RegionConfig β R)) × Fin
-          (Fintype.card (ManyBody.RegionConfig β T))) ℂ :=
-  let e := ((Fintype.equivFin (ManyBody.RegionConfig β R)).symm.prodCongr
-    (Fintype.equivFin (ManyBody.RegionConfig β T)).symm).trans (ManyBody.unionEquiv β R T h).symm
-  (ManyBody.regionState ψ (R ∪ T)).submatrix e e
+        (Fin (Fintype.card (RegionConfig β R)) × Fin
+        (Fintype.card (RegionConfig β T)))
+      (Fin (Fintype.card (RegionConfig β R)) × Fin
+          (Fintype.card (RegionConfig β T))) ℂ :=
+  let e := ((Fintype.equivFin (RegionConfig β R)).symm.prodCongr
+    (Fintype.equivFin (RegionConfig β T)).symm).trans (unionEquiv β R T h).symm
+  (regionState ψ (R ∪ T)).submatrix e e
 
 omit [∀ v, DecidableEq (β v)] in
 /-- The joint regional matrix is positive semidefinite. -/
 theorem jointMatrix_posSemidef (ψ : EuclideanSpace ℂ ((v : V) → β v))
-    (R T : Finset V) (h : Disjoint R T) : (ManyBody.jointMatrix β ψ R T h).PosSemidef :=
-  (ManyBody.regionState_posSemidef (R ∪ T) ψ).submatrix _
+    (R T : Finset V) (h : Disjoint R T) : (jointMatrix β ψ R T h).PosSemidef :=
+  (regionState_posSemidef (R ∪ T) ψ).submatrix _
 
 /-- The regional entropy formula is precisely canonical quantum mutual
 information of the joint regional density matrix. -/
 theorem regionMutualInformation_eq_matrix (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (R T : Finset V) (h : Disjoint R T) :
-    ManyBody.regionMutualInformation ψ R T = _root_.mutualInformation
-        (ManyBody.jointMatrix β ψ R T h)
-      (ManyBody.jointMatrix_posSemidef β ψ R T h).isHermitian := by
-  let ρ := (ManyBody.regionState ψ (R ∪ T)).submatrix
-    (ManyBody.unionEquiv β R T h).symm (ManyBody.unionEquiv β R T h).symm
-  have hρ : ρ.PosSemidef := (ManyBody.regionState_posSemidef (R ∪ T) ψ).submatrix _
-  have hR : Matrix.partialTraceRight ρ = ManyBody.regionState ψ R :=
-    ManyBody.partialTraceRight_regionMatrix_union β _ R T h
-  have hT : Matrix.partialTraceLeft ρ = ManyBody.regionState ψ T :=
-    ManyBody.partialTraceLeft_regionMatrix_union β _ R T h
+    regionMutualInformation ψ R T = _root_.mutualInformation
+        (jointMatrix β ψ R T h)
+      (jointMatrix_posSemidef β ψ R T h).isHermitian := by
+  let ρ := (regionState ψ (R ∪ T)).submatrix
+    (unionEquiv β R T h).symm (unionEquiv β R T h).symm
+  have hρ : ρ.PosSemidef := (regionState_posSemidef (R ∪ T) ψ).submatrix _
+  have hR : Matrix.partialTraceRight ρ = regionState ψ R :=
+    partialTraceRight_regionMatrix_union β _ R T h
+  have hT : Matrix.partialTraceLeft ρ = regionState ψ T :=
+    partialTraceLeft_regionMatrix_union β _ R T h
   have heq := Entropy.mutualInformation_submatrix_prod_equiv
-    (Fintype.equivFin (ManyBody.RegionConfig β R)).symm
-    (Fintype.equivFin (ManyBody.RegionConfig β T)).symm ρ hρ.isHermitian
-  rw [vonNeumannEntropy_congr hR _ (ManyBody.regionState_posSemidef R ψ).isHermitian,
-    vonNeumannEntropy_congr hT _ (ManyBody.regionState_posSemidef T ψ).isHermitian] at heq
+    (Fintype.equivFin (RegionConfig β R)).symm
+    (Fintype.equivFin (RegionConfig β T)).symm ρ hρ.isHermitian
+  rw [vonNeumannEntropy_congr hR _ (regionState_posSemidef R ψ).isHermitian,
+    vonNeumannEntropy_congr hT _ (regionState_posSemidef T ψ).isHermitian] at heq
   dsimp only [ρ] at heq
-  rw [vonNeumannEntropy_submatrix_equiv (ManyBody.unionEquiv β R T h).symm _
-    (ManyBody.regionState_posSemidef (R ∪ T) ψ).isHermitian] at heq
-  simpa only [ManyBody.jointMatrix, Matrix.submatrix_submatrix, regionMutualInformation,
+  rw [vonNeumannEntropy_submatrix_equiv (unionEquiv β R T h).symm _
+    (regionState_posSemidef (R ∪ T) ψ).isHermitian] at heq
+  simpa only [jointMatrix, Matrix.submatrix_submatrix, regionMutualInformation,
       regionEntropy,
     Equiv.coe_trans] using heq.symm
 
 /-- Mutual information of disjoint regions is nonnegative. -/
 theorem regionMutualInformation_nonneg (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (hψ : ‖ψ‖ = 1) (R T : Finset V) (h : Disjoint R T) :
-    0 ≤ ManyBody.regionMutualInformation ψ R T := by
-  exact sub_nonneg.mpr (ManyBody.regionEntropy_union_le β ψ hψ R T h)
+    0 ≤ regionMutualInformation ψ R T := by
+  exact sub_nonneg.mpr (regionEntropy_union_le β ψ hψ R T h)
 
 end ManyBody
 
@@ -197,13 +197,7 @@ namespace Entropy
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- Expectations of reindexed regional states. -/
-theorem trace_regionState_submatrix_mul {D : Finset V} {κ : Type*} [Fintype κ]
-    (f : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ≃ κ) (Ω : EuclideanSpace ℂ (∀ v, Fin (n v)))
-        (K : Matrix κ κ ℂ) :
-    ((ManyBody.regionState Ω D).submatrix f.symm f.symm * K).trace =
-      ⟪Ω, toEuclideanLin (ManyBody.place D (K.submatrix f f)) Ω⟫_ℂ :=
-  ManyBody.trace_regionState_submatrix_mul (X := fun v ↦ Fin (n v)) f Ω K
+export ManyBody (trace_regionState_submatrix_mul)
 
 section Triple
 
@@ -309,12 +303,7 @@ theorem partialTraceLeft_tripleState (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))
     rfl
   rw [h, localLift_union_kronecker, ManyBody.place_one, Matrix.one_mul]
 
-/-- The `B` marginal of the `B ∪ C` state. -/
-theorem partialTraceRight_regionState_union (hBC : Disjoint B C)
-    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
-    partialTraceRight ((ManyBody.regionState Ω (B ∪ C)).submatrix (regionUnionEquiv hBC).symm
-      (regionUnionEquiv hBC).symm) = ManyBody.regionState Ω B :=
-  ManyBody.partialTraceRight_regionState_union (X := fun v ↦ Fin (n v)) hBC Ω
+export ManyBody (partialTraceRight_regionState_union)
 
 /-- The `A ∪ B` marginal of the tripartite state. -/
 theorem partialTraceRight_reassoc_tripleState (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :

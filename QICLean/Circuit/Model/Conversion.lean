@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Circuit.Geometry.Ring
-import QICLean.Circuit.Model.Protocol
+import QICLean.Circuit.Model.Approximate
 
 /-!
 # Protocols on the ring
@@ -14,7 +14,8 @@ region is its ring ball of radius `T`. The light cone of a protocol of depth `T`
 ring ball of radius `T`: its trace-pairing adjoint maps an operator on a region `R` to an
 operator on the ring ball of radius `T` about `R`, and is multiplicative on operators on regions
 whose balls of radius `T` are disjoint. A state converted in depth `T` from a product state has
-no connected correlations between regions at ring distance larger than `2T`. A protocol on the
+no connected correlations between regions at ring distance larger than `2T`, and a state
+converted with trace-norm error `ε` has connected correlations of order `ε` there. A protocol on the
 ring of `M` blocks of `k` consecutive sites, read on the `M * k` sites, has light cone the ring
 ball of radius `k T`.
 
@@ -35,11 +36,14 @@ dual is the trace-pairing adjoint `traceAdjointMap`.
   protocol on the ring.
 * `QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isRingSeparated` — vanishing connected
   correlations beyond ring distance `2T`.
+* `QuantumCircuit.IsApproxConversion.norm_trace_mul_mul_sub_le_of_isRingSeparated` — connected
+  correlations beyond ring distance `2T` of order `ε` after a conversion with error `ε`.
 * `QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_ringBall` — the
   light cone of a protocol on the blocks of the ring, read on the sites.
 -/
 
 open Matrix ManyBody
+open scoped Matrix.Norms.L2Operator
 
 namespace QuantumCircuit
 
@@ -86,6 +90,26 @@ theorem IsConversion.trace_mul_mul_eq_of_isRingSeparated
     (hB : B ∈ supportedOperators Z R') :
     (σ * (A * B)).trace = (σ * A).trace * (σ * B).trace :=
   h.trace_mul_mul_eq Geometry.ring_cost_pos hσ₀
+    (by simpa only [Geometry.iterate_neighbourhood_ring] using hRR'.disjoint_ringBall) hA hB
+
+/-- **Approximately vanishing connected correlations beyond distance `2T`.** If `σ` is
+converted in depth `T` on the ring with trace-norm error `ε` from a product `⊗ₛ σ₀ s` of
+unit-trace factors, then for operators `A`, `B` on regions separated by `2T`,
+`|tr(σ AB) - tr(σ A) tr(σ B)| ≤ ε ‖A‖ ‖B‖ (1 + 2‖⊗ₛ σ₀ s‖₁ + ε)`.
+
+Source: arXiv:2103.13367, main text, Proposition `propQCA2`, eq. `eq:necessary_condition`, with
+the trace-norm error of the paragraph "Phases of matter"; here for product inputs and local
+channels with ancillas and discarding, without measurements. -/
+theorem IsApproxConversion.norm_trace_mul_mul_sub_le_of_isRingSeparated {ε : ℝ}
+    {σ₀ : (s : Fin N) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
+    {σ : Matrix (Config Z) (Config Z) ℂ}
+    (h : IsApproxConversion (Geometry.ring N) T ε (prodOp σ₀) σ)
+    {R R' : Finset (Fin N)} (hRR' : IsRingSeparated R R' (2 * T))
+    {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
+    (hB : B ∈ supportedOperators Z R') :
+    ‖(σ * (A * B)).trace - (σ * A).trace * (σ * B).trace‖ ≤
+      ε * ‖A‖ * ‖B‖ * (1 + 2 * rectangularTraceNorm (prodOp σ₀) + ε) :=
+  h.norm_trace_mul_mul_sub_le Geometry.ring_cost_pos hσ₀
     (by simpa only [Geometry.iterate_neighbourhood_ring] using hRR'.disjoint_ringBall) hA hB
 
 /-- **Light cone of a protocol on the blocks of the ring.** Group the ring of `M * k` sites into

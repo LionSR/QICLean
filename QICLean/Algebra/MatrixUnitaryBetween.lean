@@ -30,8 +30,8 @@ lines 534--605.
 
 * `Matrix.IsIsometry` and `Matrix.IsCoisometry` are the two one-sided identities.
 * `Matrix.IsUnitaryBetween` is their conjunction.
-* `Matrix.initializedBasisMatrix` is the isometry of an embedding of bases
-  (`Matrix.initializedBasisMatrix_isIsometry`).
+* `Matrix.basisInclusion` is the isometry of an embedding of bases
+  (`Matrix.basisInclusion_isIsometry`).
 
 ## Main results
 
@@ -68,104 +68,105 @@ def IsUnitaryBetween [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
     (A : Matrix m n ℂ) : Prop :=
   A.IsIsometry ∧ A.IsCoisometry
 
-/-- The inclusion of the basis vectors of `κ` among those of `ι` along an injection. -/
-def initializedBasisMatrix {ι κ : Type*} [DecidableEq ι] (e : κ ↪ ι) : Matrix ι κ ℂ :=
+/-- The basis inclusion along an injection `e : κ ↪ ι`: the matrix sending the basis vector of
+`k` to the basis vector of `e k`. -/
+def basisInclusion {ι κ : Type*} [DecidableEq ι] (e : κ ↪ ι) : Matrix ι κ ℂ :=
   (1 : Matrix ι ι ℂ).submatrix id e
 
 /-- A basis inclusion is an isometry. -/
-theorem initializedBasisMatrix_isIsometry {ι κ : Type*} [Fintype ι] [DecidableEq ι]
-    [DecidableEq κ] (e : κ ↪ ι) : (initializedBasisMatrix e).IsIsometry := by
+theorem basisInclusion_isIsometry {ι κ : Type*} [Fintype ι] [DecidableEq ι]
+    [DecidableEq κ] (e : κ ↪ ι) : (basisInclusion e).IsIsometry := by
   ext a b
-  simp [initializedBasisMatrix, mul_apply, one_apply, e.injective.eq_iff]
+  simp [basisInclusion, mul_apply, one_apply, e.injective.eq_iff]
 
 /-- The columns of `M * J_e` are the columns of `M` at the image of `e`. -/
-theorem mul_initializedBasisMatrix_apply {κ ι μ : Type*} [Fintype ι] [DecidableEq ι]
+theorem mul_basisInclusion_apply {κ ι μ : Type*} [Fintype ι] [DecidableEq ι]
     (e : κ ↪ ι) (M : Matrix μ ι ℂ) (y : μ) (a : κ) :
-    (M * initializedBasisMatrix e) y a = M y (e a) := by
-  simp [initializedBasisMatrix, mul_apply, one_apply]
+    (M * basisInclusion e) y a = M y (e a) := by
+  simp [basisInclusion, mul_apply, one_apply]
 
 /-- The rows of `J_eᴴ * M` are the rows of `M` at the image of `e`. -/
-theorem conjTranspose_initializedBasisMatrix_mul_apply {κ ι μ : Type*} [Fintype ι]
+theorem conjTranspose_basisInclusion_mul_apply {κ ι μ : Type*} [Fintype ι]
     [DecidableEq ι] (e : κ ↪ ι) (M : Matrix ι μ ℂ) (a : κ) (x : μ) :
-    ((initializedBasisMatrix e)ᴴ * M) a x = M (e a) x := by
-  simp [initializedBasisMatrix, mul_apply, one_apply]
+    ((basisInclusion e)ᴴ * M) a x = M (e a) x := by
+  simp [basisInclusion, mul_apply, one_apply]
 
 /-- The rows of `J_e * M` at the image of `e` are the rows of `M`. -/
-theorem initializedBasisMatrix_mul_apply_self {κ ι μ : Type*} [Fintype κ] [DecidableEq ι]
+theorem basisInclusion_mul_apply_self {κ ι μ : Type*} [Fintype κ] [DecidableEq ι]
     (e : κ ↪ ι) (M : Matrix κ μ ℂ) (a : κ) (x : μ) :
-    (initializedBasisMatrix e * M) (e a) x = M a x := by
+    (basisInclusion e * M) (e a) x = M a x := by
   rw [mul_apply, Finset.sum_eq_single a (fun b _ hb ↦ by
-    simp [initializedBasisMatrix, e.injective.ne (Ne.symm hb)]) (by simp)]
-  simp [initializedBasisMatrix, one_apply]
+    simp [basisInclusion, e.injective.ne (Ne.symm hb)]) (by simp)]
+  simp [basisInclusion, one_apply]
 
 /-- The rows of `J_e * M` outside the image of `e` vanish. -/
-theorem initializedBasisMatrix_mul_apply_of_notMem {κ ι μ : Type*} [Fintype κ] [DecidableEq ι]
+theorem basisInclusion_mul_apply_of_notMem {κ ι μ : Type*} [Fintype κ] [DecidableEq ι]
     (e : κ ↪ ι) (M : Matrix κ μ ℂ) {y : ι} (hy : y ∉ Set.range e) (x : μ) :
-    (initializedBasisMatrix e * M) y x = 0 := by
+    (basisInclusion e * M) y x = 0 := by
   refine Finset.sum_eq_zero fun a _ ↦ ?_
-  simp only [initializedBasisMatrix, submatrix_apply, id, one_apply]
+  simp only [basisInclusion, submatrix_apply, id, one_apply]
   rw [ite_eq_right fun h ↦ absurd ⟨a, h.symm⟩ hy, zero_mul]
 
 /-- The columns of `M * J_eᴴ` at the image of `e` are the columns of `M`. -/
-theorem mul_conjTranspose_initializedBasisMatrix_apply_self {κ ι μ : Type*} [Fintype κ]
+theorem mul_conjTranspose_basisInclusion_apply_self {κ ι μ : Type*} [Fintype κ]
     [DecidableEq ι] (e : κ ↪ ι) (M : Matrix μ κ ℂ) (x : μ) (a : κ) :
-    (M * (initializedBasisMatrix e)ᴴ) x (e a) = M x a := by
+    (M * (basisInclusion e)ᴴ) x (e a) = M x a := by
   rw [← conjTranspose_conjTranspose (M * _), conjTranspose_apply, conjTranspose_mul,
-    conjTranspose_conjTranspose, initializedBasisMatrix_mul_apply_self, conjTranspose_apply,
+    conjTranspose_conjTranspose, basisInclusion_mul_apply_self, conjTranspose_apply,
     star_star]
 
 /-- The columns of `M * J_eᴴ` outside the image of `e` vanish. -/
-theorem mul_conjTranspose_initializedBasisMatrix_apply_of_notMem {κ ι μ : Type*} [Fintype κ]
+theorem mul_conjTranspose_basisInclusion_apply_of_notMem {κ ι μ : Type*} [Fintype κ]
     [DecidableEq ι] (e : κ ↪ ι) (M : Matrix μ κ ℂ) (x : μ) {y : ι} (hy : y ∉ Set.range e) :
-    (M * (initializedBasisMatrix e)ᴴ) x y = 0 := by
+    (M * (basisInclusion e)ᴴ) x y = 0 := by
   rw [← conjTranspose_conjTranspose (M * _), conjTranspose_apply, conjTranspose_mul,
-    conjTranspose_conjTranspose, initializedBasisMatrix_mul_apply_of_notMem _ _ hy, star_zero]
+    conjTranspose_conjTranspose, basisInclusion_mul_apply_of_notMem _ _ hy, star_zero]
 
 /-- Conjugation by `J_e` carries the matrix unit `|a⟩⟨a'|` to `|e a⟩⟨e a'|`. -/
-theorem initializedBasisMatrix_mul_single_mul_conjTranspose {κ ι : Type*} [Fintype κ]
+theorem basisInclusion_mul_single_mul_conjTranspose {κ ι : Type*} [Fintype κ]
     [DecidableEq κ] [DecidableEq ι] (e : κ ↪ ι) (a a' : κ) :
-    initializedBasisMatrix e * single a a' (1 : ℂ) * (initializedBasisMatrix e)ᴴ =
+    basisInclusion e * single a a' (1 : ℂ) * (basisInclusion e)ᴴ =
       single (e a) (e a') 1 := by
   ext y y'
   by_cases hy : y ∈ Set.range e
   · obtain ⟨b, rfl⟩ := hy
     by_cases hy' : y' ∈ Set.range e
     · obtain ⟨b', rfl⟩ := hy'
-      rw [mul_conjTranspose_initializedBasisMatrix_apply_self,
-        initializedBasisMatrix_mul_apply_self]
+      rw [mul_conjTranspose_basisInclusion_apply_self,
+        basisInclusion_mul_apply_self]
       simp [single_apply, e.injective.eq_iff]
-    · rw [mul_conjTranspose_initializedBasisMatrix_apply_of_notMem _ _ _ hy', single_apply,
+    · rw [mul_conjTranspose_basisInclusion_apply_of_notMem _ _ _ hy', single_apply,
         ite_eq_right fun h ↦ absurd ⟨a', h.2⟩ hy']
-  · rw [Matrix.mul_assoc, initializedBasisMatrix_mul_apply_of_notMem _ _ hy, single_apply,
+  · rw [Matrix.mul_assoc, basisInclusion_mul_apply_of_notMem _ _ hy, single_apply,
       ite_eq_right fun h ↦ absurd ⟨a, h.1⟩ hy]
 
 /-- Conjugation by `J_σ` for an equivalence `σ` is the relabelling along `σ`. -/
-theorem initializedBasisMatrix_equiv_mul_mul_conjTranspose {κ ι : Type*} [Fintype κ]
+theorem basisInclusion_equiv_mul_mul_conjTranspose {κ ι : Type*} [Fintype κ]
     [DecidableEq ι] (σ : κ ≃ ι) (ρ : Matrix κ κ ℂ) :
-    initializedBasisMatrix σ.toEmbedding * ρ * (initializedBasisMatrix σ.toEmbedding)ᴴ =
+    basisInclusion σ.toEmbedding * ρ * (basisInclusion σ.toEmbedding)ᴴ =
       ρ.submatrix σ.symm σ.symm := by
   ext y y'
   rw [← σ.apply_symm_apply y, ← σ.apply_symm_apply y']
   rw [show σ (σ.symm y') = σ.toEmbedding (σ.symm y') from rfl,
-    mul_conjTranspose_initializedBasisMatrix_apply_self,
-    show σ (σ.symm y) = σ.toEmbedding (σ.symm y) from rfl, initializedBasisMatrix_mul_apply_self]
+    mul_conjTranspose_basisInclusion_apply_self,
+    show σ (σ.symm y) = σ.toEmbedding (σ.symm y) from rfl, basisInclusion_mul_apply_self]
   simp
 
 /-- Basis inclusions compose: `J_{e₂} J_{e₁} = J_{e₂ ∘ e₁}`. -/
-theorem initializedBasisMatrix_mul_initializedBasisMatrix {κ ι μ : Type*} [Fintype ι]
+theorem basisInclusion_mul_basisInclusion {κ ι μ : Type*} [Fintype ι]
     [DecidableEq ι] [DecidableEq μ] (e₁ : κ ↪ ι) (e₂ : ι ↪ μ) :
-    initializedBasisMatrix e₂ * initializedBasisMatrix e₁ =
-      initializedBasisMatrix (e₁.trans e₂) := by
+    basisInclusion e₂ * basisInclusion e₁ =
+      basisInclusion (e₁.trans e₂) := by
   ext c a
-  rw [mul_initializedBasisMatrix_apply]
+  rw [mul_basisInclusion_apply]
   rfl
 
 /-- Relabelling along an equivalence `σ` is conjugation by `J_σ`. -/
-theorem reindexAlgEquiv_eq_initializedBasisMatrix_mul {κ ι : Type*} [Fintype κ] [DecidableEq κ]
+theorem reindexAlgEquiv_eq_basisInclusion_mul {κ ι : Type*} [Fintype κ] [DecidableEq κ]
     [Fintype ι] [DecidableEq ι] (σ : κ ≃ ι) (ρ : Matrix κ κ ℂ) :
     reindexAlgEquiv ℂ ℂ σ ρ =
-      initializedBasisMatrix σ.toEmbedding * ρ * (initializedBasisMatrix σ.toEmbedding)ᴴ := by
-  rw [initializedBasisMatrix_equiv_mul_mul_conjTranspose, coe_reindexAlgEquiv, reindex_apply]
+      basisInclusion σ.toEmbedding * ρ * (basisInclusion σ.toEmbedding)ᴴ := by
+  rw [basisInclusion_equiv_mul_mul_conjTranspose, coe_reindexAlgEquiv, reindex_apply]
 
 /-- If $YZ=1$, then the dressed Gram equation
 $Y^\dagger GY=Y^\dagger Y$ is equivalent to $G=1$.

@@ -33,15 +33,15 @@ namespace ManyBody
 
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
+variable (X : Finset V) (E : Finset (RegionConfig β X)) (k : ℕ)
 
-local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.ComplConfig β X
+local notation "A" => RegionConfig β X
+local notation "B" => ComplConfig β X
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
+local notation "ιe" => compressedSiteSpace β X (Fin E.card)
 local notation "L" => Fin k → A × E
 
-local instance schmidtBellRangeConfigurationDecidableEq : DecidableEq (ManyBody.RegionConfig β X) :=
+local instance schmidtBellRangeConfigurationDecidableEq : DecidableEq (RegionConfig β X) :=
   Fintype.decidablePiFintype
 
 local instance schmidtBellRangeOriginalConfigDecidableEq : DecidableEq (TensorPower.Config k ι₀) :=
@@ -65,7 +65,7 @@ theorem schmidtBellWitness_pullback_range
     (hBell : toEuclideanLin
       ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ιe) (TensorPower.Config k ιe) ℂ)) φ = φ) :
-    let τ := ManyBody.schmidtBellWitnessEquiv β X E k
+    let τ := schmidtBellWitnessEquiv β X E k
     let Φ : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2 (φ ∘ τ)
     let J := (addedSiteInsertion ιe (A × E) k (selectedBellVector Ω E)).submatrix
       (bellInsertionCopyEquiv β X ↥E (Fin E.card) k) id
@@ -84,7 +84,7 @@ theorem schmidtBellWitness_pullback_range
     change φ ((fun j ↦ (τ x).1 (σ j)), (fun j ↦ (τ x).2 (σ j))) = φ (τ x) at h ⊢
     exact h
   have hJJ : (J * Jᴴ) *ᵥ (φ ∘ τ) = φ ∘ τ := by
-    rw [ManyBody.bellInsertion_mul_conjTranspose_selectedBell β X E k Ω]
+    rw [bellInsertion_mul_conjTranspose_selectedBell β X E k Ω]
     rw [Matrix.submatrix_mulVec_equiv]
     simpa only [τ, Function.comp_def, Equiv.apply_symm_apply, Matrix.toEuclideanLin,
       Matrix.toLpLin_apply, WithLp.ofLp_toLp] using
@@ -105,10 +105,10 @@ Source: area-law manuscript, `07-comparators.tex`, lines 283–290 and 346–354
 theorem labelProj_schmidtBellWitnessEquiv_auxiliary
     (ell : IrrepLabel (Equiv.Perm (Fin k))) :
     ((1 : Matrix L L ℂ) ⊗ₖ labelProj (subsystemPerm k ιe {none}) ell).submatrix
-        (ManyBody.schmidtBellWitnessEquiv β X E k) (ManyBody.schmidtBellWitnessEquiv β X E k) =
+        (schmidtBellWitnessEquiv β X E k) (schmidtBellWitnessEquiv β X E k) =
       labelProj (subsystemPerm k ι₀ {none}) ell := by
   classical
-  let τ := ManyBody.schmidtBellWitnessEquiv β X E k
+  let τ := schmidtBellWitnessEquiv β X E k
   have he (σ : Equiv.Perm (Fin k)) (x : TensorPower.Config k ι₀) :
       τ (subsystemPerm k ι₀ {none} σ x) =
         ((τ x).1, subsystemPerm k ιe {none} σ (τ x).2) := by
@@ -148,12 +148,12 @@ pullback of the same cutoff in witness coordinates.
 Source: area-law manuscript, `07-comparators.tex`, lines 346–365. -/
 theorem labelCutoff_schmidtBellWitnessEquiv_exterior (U : Finset V) (a : ℝ) :
     ((1 : Matrix L L ℂ) ⊗ₖ
-      labelCutoff (subsystemPerm k ιe (ManyBody.exteriorRegion X U)) a).submatrix
-        (ManyBody.schmidtBellWitnessEquiv β X E k) (ManyBody.schmidtBellWitnessEquiv β X E k) =
+      labelCutoff (subsystemPerm k ιe (exteriorRegion X U)) a).submatrix
+        (schmidtBellWitnessEquiv β X E k) (schmidtBellWitnessEquiv β X E k) =
       labelCutoff (subsystemPerm k ι₀ ((U \ X).image fun v ↦ some (some v))) a := by
   classical
-  let τ := ManyBody.schmidtBellWitnessEquiv β X E k
-  let q := ManyBody.exteriorRegion X U
+  let τ := schmidtBellWitnessEquiv β X E k
+  let q := exteriorRegion X U
   have he (σ : Equiv.Perm (Fin k)) (x : TensorPower.Config k ι₀) :
       τ (subsystemPerm k ι₀ ((U \ X).image fun v ↦ some (some v)) σ x) =
         ((τ x).1, subsystemPerm k ιe q σ (τ x).2) := by
