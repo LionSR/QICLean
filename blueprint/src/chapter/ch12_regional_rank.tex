@@ -4,8 +4,7 @@
 \begin{theorem}[Equality of complementary ranks]
   \label{thm:complementary_reduced_ranks}
   \lean{Matrix.rank_partialTraceRight_vecMulVec_eq_rank_partialTraceLeft,
-    FiniteProduct.rank_reducedPure_compl, Entropy.rank_regionState_compl,
-    ManyBody.regionState_eq_reducedPure}
+    ManyBody.rank_regionState_compl}
   \leanok
   The two reduced matrices of a bipartite pure vector have equal rank.
   Consequently, for a pure vector on a finite tensor product and a region $R$,
@@ -26,7 +25,7 @@
 
 \begin{theorem}[Ranks on disjoint unions and between nested regions]
   \label{thm:regional_union_rank}
-  \lean{FiniteProduct.rank_reducedMatrix_union_le,
+  \lean{ManyBody.rank_regionMatrix_union_le,
     Entropy.rank_regionState_union_le, Entropy.rank_regionState_sdiff_le}
   \leanok
   Let $\rho$ be positive semidefinite on a finite tensor product. For

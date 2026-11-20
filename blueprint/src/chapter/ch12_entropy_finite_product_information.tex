@@ -7,7 +7,7 @@ state. Empty regions and unequal local dimensions are allowed.
 
 \begin{theorem}[Nonnegative regional conditional information]
     \label{thm:finite_product_conditional_nonnegative}
-    \lean{FiniteProduct.conditionalMutualInformation_nonneg}
+    \lean{ManyBody.conditionalMutualInformation_nonneg}
     \leanok
     \uses{def:finite_product_conditional_information,
         def:finite_product_regional_entropy, thm:ssa_unnormalized}
@@ -33,7 +33,7 @@ state. Empty regions and unequal local dimensions are allowed.
 
 \begin{theorem}[Submodular regional entropy]
     \label{thm:finite_product_entropy_submodular}
-    \lean{FiniteProduct.entropy_submodular}
+    \lean{ManyBody.regionEntropy_submodular}
     \leanok
     \uses{def:finite_product_regional_entropy, thm:ssa_unnormalized}
     For arbitrary regions $R,T$,
@@ -53,7 +53,7 @@ state. Empty regions and unequal local dimensions are allowed.
 
 \begin{theorem}[Regional information decreases under discarding]
     \label{thm:finite_product_information_discarding}
-    \lean{FiniteProduct.mutualInformation_mono_left}
+    \lean{ManyBody.regionMutualInformation_mono_left}
     \leanok
     \uses{thm:finite_product_entropy_submodular,
         def:finite_product_regional_entropy}

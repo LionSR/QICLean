@@ -15,11 +15,11 @@ gapped square-grid ground states* (September 24, 2026),
 The source is fixed at commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 
 The declarations are in `QICLean/Entropy/FiniteProductSplitting.lean`. They reuse
-the existing physical reduced density, regional entropy and mutual information
-from `FiniteProduct`, together with the proved matrix purification splitting
+the regional state, regional entropy and regional mutual information of
+`ManyBody`, together with the proved matrix purification splitting
 from `PurificationSplitting`. The coordinate equivalence enumerates only T and E;
 it does not discard any directions of U. Its rank-one right marginal is exactly
-`FiniteProduct.jointMatrix`, and trace one proves coordinate normalization.
+`ManyBody.jointMatrix`, and trace one proves coordinate normalization.
 
 The output factors can be chosen as B_T = ℂ^(dim H_T) and
 B_E = ℂ^(dim H_E) ⊕ H_U. Their dimensions are finite but unrestricted, as in the
