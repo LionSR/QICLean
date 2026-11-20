@@ -746,9 +746,10 @@ its costs do not change.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:kraus_family_unitary_dilation, lem:circuits_layer_entry, lem:kraus_family_channel,
-        lem:circuits_layer_factorization}
+        lem:circuits_layer_factorization, lem:kraus_family_prod}
     The dilating circuit is one layer of unitary gates on the same cells. Keep every unitary
-    gate and onsite family, with a one-element environment, and replace every other one by its
+    gate and onsite family, with a one-element environment (relabelled along
+    $a\mapsto(a,*)$ it stays unitary, Lemma~\ref{lem:kraus_family_prod}), and replace every other one by its
     unitary dilation (Theorem~\ref{thm:kraus_family_unitary_dilation}). The environment of a
     gate is one basis for its whole cell; place it at one chosen site of the cell, a site of
     $D$ if the cell meets $D$, and give the other sites of the cell a one-element basis, so that

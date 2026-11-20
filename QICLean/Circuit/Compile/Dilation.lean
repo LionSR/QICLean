@@ -22,20 +22,20 @@ local bases grow. If every family that is not unitary acts on a site of a set `D
 (`Circuit.isUnitaryDilation`): a unitary family keeps a one-element environment, and the
 environment of any other gate is placed at a site of its cell in `D`.
 
-The proof is by layers (`Layer.isUnitaryDilation`). A unitary gate or onsite family is kept,
-with a one-element environment; every other one is replaced by its unitary dilation
-(`KrausFamily.IsTP.exists_unitary_dilation`, the construction in the proof of Wolf, Thm. 2.5),
-whose environment is a single basis for the whole cell; it is placed at one designated site of
-the cell (`Layer.IsRep`, a site of `D` when the cell meets `D`), the other sites of the cell
-carrying a one-element basis (`Layer.Distribute`). A gate on an empty cell acts on a one-element
-basis, so by trace preservation its map is the identity
-(`KrausFamily.IsTP.map_apply_of_subsingleton`) and it is replaced by the identity. The map of a layer is the tensor product of the maps of its gates and
+The proof is by layers (`Layer.isUnitaryDilation`). A unitary gate or onsite family is kept, with a
+one-element environment; every other one is replaced by its unitary dilation
+(`KrausFamily.IsTP.exists_unitary_dilation`, the construction in the proof of Wolf, Thm. 2.5), whose
+environment is a single basis for the whole cell; it is placed at one designated site of the cell
+(`Layer.IsRep`, a site of `D` when the cell meets `D`), the other sites of the cell carrying a
+one-element basis (`Layer.Distribute`). A gate on an empty cell acts on a one-element basis, so by
+trace preservation its map is the identity (`KrausFamily.IsTP.map_apply_of_subsingleton`) and it is
+replaced by the identity. The map of a layer is the tensor product of the maps of its gates and
 onsite families (`Layer.map_matrixUnit_apply`), and a sum over the environment configurations of
-such a product factors (`Layer.sum_prod_mul_prod`), so the dilated layer, traced and prepared,
-has the map of the layer. Dilations compose (`IsUnitaryDilation.comp`): the
-environments of the later circuit are prepared at the start and carried through the earlier one
-by `Circuit.tensorRight`, and those of the earlier circuit are carried through the later one;
-the partial trace over an environment commutes with a circuit tensored with the identity on it
+such a product factors (`Layer.sum_prod_mul_prod`), so the dilated layer, traced and prepared, has
+the map of the layer. Dilations compose (`IsUnitaryDilation.comp`): the environments of the later
+circuit are prepared at the start and carried through the earlier one by `Circuit.tensorRight`, and
+those of the earlier circuit are carried through the later one; the partial trace over an
+environment commutes with a circuit tensored with the identity on it
 (`map_traceCircuit_map_tensorRight`), and depth-zero layers of relabellings regroup the local
 products in between.
 
