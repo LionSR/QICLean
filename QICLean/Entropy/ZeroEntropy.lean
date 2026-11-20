@@ -110,7 +110,8 @@ theorem entropy_eq_zero_of_forall_subset_or_disjoint {Φ : Interaction X S}
   have hρ : regionState Ω B =
       vecMulVec (WithLp.ofLp u) fun b ↦ star (u b) * ∑ y, w y * star (w y) := by
     ext a b
-    simp only [regionState, partialTraceRight_apply, vecMulVec_apply, Pi.star_apply,
+    simp only [regionState_eq_partialTraceRight_cutVector, partialTraceRight_apply,
+      vecMulVec_apply, Pi.star_apply,
       Finset.mul_sum]
     refine Finset.sum_congr rfl fun y _ ↦ ?_
     rw [hΩc, hΩc, star_mul']

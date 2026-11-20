@@ -76,6 +76,7 @@ theorem regionState_relabel (D : Finset V) (D' : Finset V') (e : V ≃ V')
       (regionState Ω D).submatrix
         (regionConfigurationEquiv D D' e hD f).symm
         (regionConfigurationEquiv D D' e hD f).symm := by
+  rw [regionState_eq_partialTraceRight_cutVector, regionState_eq_partialTraceRight_cutVector]
   refine Eq.trans ?_ (Matrix.partialTraceRight_submatrix_prod_equiv
     (regionConfigurationEquiv D D' e hD f)
     (complementConfigurationEquiv D D' e hD f)

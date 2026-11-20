@@ -204,7 +204,9 @@ theorem abs_re_inner_sub_conj_localLift_le_sharp {B S : Finset V}
     cutOperator_mul, cutOperator_mul, ManyBody.cutOperator_place, ManyBody.cutOperator_place, hLinv,
         hL]
   have h := abs_re_inner_sub_conj_le_of_common_basis_sharp (φ := ManyBody.cutVector B φ)
-    (by rw [norm_cutVector, hφ]) hW hW' hl hρ (hXh.submatrix _) c d hdec ha hclip
+    (by rw [norm_cutVector, hφ]) hW hW' hl
+    ((ManyBody.regionState_eq_partialTraceRight_cutVector B φ).symm.trans hρ) (hXh.submatrix _)
+    c d hdec ha hclip
   refine h.trans ?_
   gcongr
   calc ∑ α', ‖c α'‖ * ‖d α'‖ ≤ ∑ _α' : Fin M, c₀ := Finset.sum_le_sum fun α' _ ↦ hcd α'
@@ -286,7 +288,9 @@ theorem abs_re_inner_sub_conj_localLift_le_logarithmic {B S : Finset V}
     cutOperator_mul, cutOperator_mul, ManyBody.cutOperator_place, ManyBody.cutOperator_place, hLinv,
         hL]
   exact abs_re_inner_sub_conj_le_of_common_basis_logarithmic
-    (by rw [norm_cutVector, hφ]) hW hW' hl hρ (hXh.submatrix _) hcut c d hdec hcd
+    (by rw [norm_cutVector, hφ]) hW hW' hl
+    ((ManyBody.regionState_eq_partialTraceRight_cutVector B φ).symm.trans hρ) (hXh.submatrix _)
+    hcut c d hdec hcd
     ha hℓ hlog hsmall hclip
 
 /-- The indices `j` whose region `D j` splits `S`: it meets `S` without containing it. -/
@@ -511,7 +515,7 @@ theorem abs_re_inner_sub_chain_conj_le_logarithmic (D : ℕ → Finset V)
 theorem regionState_smul (D : Finset V) (c : ℂ) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     ManyBody.regionState (c • ψ) D = ((‖c‖ ^ 2 : ℝ) : ℂ) • ManyBody.regionState ψ D := by
   ext a b
-  simp only [ManyBody.regionState, ManyBody.regionState, partialTraceRight, vecMulVec_apply,
+  simp only [ManyBody.regionState, ManyBody.regionMatrix_apply, vecMulVec_apply,
     Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   simp only [PiLp.smul_apply, smul_eq_mul, Pi.star_apply, star_mul',

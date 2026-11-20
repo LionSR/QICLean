@@ -90,7 +90,7 @@ private theorem entropy_ssa (ψ : EuclideanSpace ℂ ((v : V) → β v))
           (Prod.map id (ManyBody.unionEquiv β Z C hZC).symm)
           (Prod.map id (ManyBody.unionEquiv β Z C hZC).symm)) = _
     rw [← partialTraceLeft_submatrix_right]
-    simp only [ManyBody.regionState_eq_regionMatrix]
+    simp only [ManyBody.regionState]
     rw [ht]
   have hB : Matrix.partialTraceRight (Matrix.partialTraceLeft ω) = ManyBody.regionState ψ Z := by
     rw [hBC]

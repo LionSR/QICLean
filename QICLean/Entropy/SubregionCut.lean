@@ -108,7 +108,7 @@ lemma schmidtRank_cutEnvVector_regionConfigurationSplit
       · rw [ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _ hvJ]
         simp [subregionRestSubtypeEquiv, hvJ, Equiv.sumArrowEquivProdArrow]
   rw [hcoef, rank_submatrix]
-  rw [ManyBody.regionState, Matrix.partialTraceRight_vecMulVec_eq]
+  rw [ManyBody.regionState_eq_partialTraceRight_cutVector, Matrix.partialTraceRight_vecMulVec_eq]
   exact (Matrix.rank_self_mul_conjTranspose _).symm
 
 end Entropy

@@ -42,7 +42,9 @@ theorem sum_descEigenvalue_regionState_tail_le_half_pure_trace_error
         (ManyBody.cutEquiv (fun v ↦ Fin (n v)) R)
       (Matrix.euclideanOuterProduct ψ ψ - Matrix.euclideanOuterProduct φ φ)) ≤ δ
     simpa only [Matrix.rectangularTraceNorm_reindex] using herror
-  exact Matrix.sum_descEigenvalue_tail_le_half_pure_trace_error
-    (ManyBody.cutVector R ψ) (ManyBody.cutVector R φ) hn hrank hδ he
+  rw [ManyBody.regionState_eq_partialTraceRight_cutVector] at hrank
+  convert Matrix.sum_descEigenvalue_tail_le_half_pure_trace_error
+    (ManyBody.cutVector R ψ) (ManyBody.cutVector R φ) hn hrank hδ he using 3
+  exact ManyBody.regionState_eq_partialTraceRight_cutVector R ψ
 
 end Entropy
