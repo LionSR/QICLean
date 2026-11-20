@@ -20,7 +20,7 @@ the irreducible label, acts on the two sides. In particular, a later replica
 metric application must use the original full-system label weights on both
 sides; no equality with weights recomputed for the enlarged system is asserted.
 
-The family `addedSiteSpace (fun v : Xᶜ ↦ β v) A` agrees definitionally with
+The family `addedSiteSpace (fun v : {v // v ∉ X} ↦ β v) A` agrees definitionally with
 `ManyBody.compressedSiteSpace β X A`.
 
 ## References

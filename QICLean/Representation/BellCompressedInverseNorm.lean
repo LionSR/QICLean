@@ -71,7 +71,7 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
       ∀ s : ℝ, 2 * s ∈ Set.Icc (0 : ℝ) 1 →
       let e := bellInsertionCopyEquiv β X C R k
       let J := (addedSiteInsertion ιe (ManyBody.RegionConfig β X × C) k b).submatrix e id
-      let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
+      let Pe := symProj (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k)
       let P := J * Pe * Jᴴ
       let W := replicaMetric ι₀ t k
       let Q := fun j g ↦ insert (some none)

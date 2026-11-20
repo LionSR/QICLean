@@ -86,7 +86,7 @@ variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (ψ : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
 variable (E : Finset (ManyBody.RegionConfig β X))
 
-local notation "φX" => LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) ψ
+local notation "φX" => LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) ψ
 local notation "hρX" => ManyBody.regionState_posSemidef X ψ
 local notation "zE" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian hρX) E
@@ -97,7 +97,7 @@ selected eigenvalue indices, not on any observed region.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240–247. -/
 noncomputable def typicalPureState : EuclideanSpace ℂ ((v : V) → β v) :=
-  (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X)).symm
+  (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X)).symm
     (Matrix.typicalPureState φX E)
 
 omit [∀ v, DecidableEq (β v)] in
@@ -109,7 +109,7 @@ is the spectral truncation of the original state on that region.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240–247. -/
 theorem split_typicalPureState :
-    LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X)
+    LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X)
         (ManyBody.typicalPureState β ψ X E) =
       Matrix.typicalPureState φX E := by
   simp only [ManyBody.typicalPureState, LinearIsometryEquiv.apply_symm_apply]
@@ -156,10 +156,10 @@ private theorem reducedPure_eq_three_marginal :
   simp only [Matrix.partialTraceRight_apply, Matrix.partialTraceLeft_apply,
     Matrix.submatrix_apply, ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply, Pi.star_apply]
   change (∑ c, ∑ a,
-    ψ ((ManyBody.splitEquiv β X).symm (a, (ManyBody.complementUnionEquiv β X B h).symm (b, c))) *
+    ψ ((ManyBody.cutEquiv β X).symm (a, (ManyBody.complementUnionEquiv β X B h).symm (b, c))) *
       star
           (ψ
-          ((ManyBody.splitEquiv β X).symm
+          ((ManyBody.cutEquiv β X).symm
           (a, (ManyBody.complementUnionEquiv β X B h).symm (b', c))))) = _
   simp_rw [ManyBody.split_union_symm]
   exact Finset.sum_comm

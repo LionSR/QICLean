@@ -60,9 +60,9 @@ private theorem goodRegionalRetained_density {Q T K C R : Type*} [Fintype Q] [De
     let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix K K ℂ)) *ᵥ u
     let f := fun x : ((Fin (Bᶜ.card) → Q) × C) ×
         (R × ((Fin (Bᶜ.card) → T) × (↥B → Q × T))) =>
-      w ((ManyBody.splitEquiv (fun _ : Fin k => Q × T) B).symm
-        (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) i),
-          x.2.2.1 ((Finset.equivFin Bᶜ) i))), e.symm (x.1.2, x.2.1))
+      w ((ManyBody.cutEquiv (fun _ : Fin k => Q × T) B).symm
+        (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩),
+          x.2.2.1 ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩))), e.symm (x.1.2, x.2.1))
     partialTraceRight (vecMulVec f (star f)) =
       finKronecker (fun _ : Fin (Bᶜ.card) => partialTraceRight (vecMulVec Ω (star Ω))) ⊗ₖ
         partialTraceRight ((partialTraceLeft (vecMulVec w (star w))).submatrix
@@ -72,9 +72,9 @@ private theorem goodRegionalRetained_density {Q T K C R : Type*} [Fintype Q] [De
   let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix K K ℂ)) *ᵥ u
   let g := fun x : ((Fin (Bᶜ.card) → Q) × K) ×
       ((Fin (Bᶜ.card) → T) × (↥B → Q × T)) =>
-    w ((ManyBody.splitEquiv (fun _ : Fin k => Q × T) B).symm
-      (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) i),
-        x.2.1 ((Finset.equivFin Bᶜ) i))), x.1.2)
+    w ((ManyBody.cutEquiv (fun _ : Fin k => Q × T) B).symm
+      (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩),
+        x.2.1 ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩))), x.1.2)
   have hg := partialTraceRight_replicaExcitationComponent_goodRegional_density Ω hΩ B u
   rw [← partialTraceRight_retained_auxiliary e g, hg]
   exact partialTraceRightAlong_kronecker e _ _
@@ -104,9 +104,9 @@ noncomputable def replicaGoodRegionalAuxiliaryMarginal
   let f := fun x : ((Fin (Bᶜ.card) → Q) × (Fin (Bᶜ.card) → C)) ×
       (((Fin B.card → C) × (Fin k → D)) ×
         ((Fin (Bᶜ.card) → T) × (↥B → Q × T))) =>
-    w ((ManyBody.splitEquiv (fun _ : Fin k => Q × T) B).symm
-      (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) i),
-        x.2.2.1 ((Finset.equivFin Bᶜ) i))), e.symm (x.1.2, x.2.1))
+    w ((ManyBody.cutEquiv (fun _ : Fin k => Q × T) B).symm
+      (x.2.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩),
+        x.2.2.1 ((Finset.equivFin Bᶜ) ⟨i, Finset.mem_compl.mpr i.2⟩))), e.symm (x.1.2, x.2.1))
   partialTraceRight (vecMulVec f (star f))
 
 /-

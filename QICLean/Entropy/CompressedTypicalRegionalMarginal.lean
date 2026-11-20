@@ -45,23 +45,23 @@ Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 332–354. -/
 theorem partialTraceLeft_compressedTypicalPureState_region
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X B : Finset V)
     (hXB : Disjoint X B) (E : Finset (ManyBody.RegionConfig β X)) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.ComplConfig β X → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
-    let τ : (Fin E.card × ManyBody.RegionConfig β (X ∪ B)ᶜ) × ManyBody.RegionConfig β B → ℂ :=
+    let τ : (Fin E.card × ManyBody.ComplConfig β (X ∪ B)) × ManyBody.RegionConfig β B → ℂ :=
       fun x ↦ χ (x.1.1, (ManyBody.complementUnionEquiv β X B hXB).symm (x.2, x.1.2))
     Matrix.partialTraceLeft (Matrix.vecMulVec τ (star τ)) =
       ManyBody.regionState (ManyBody.typicalPureState β Ω X E) B := by
   intro ΩX χ τ
   let Ψ := ManyBody.typicalPureState β Ω X E
-  have hselected (a : ManyBody.RegionConfig β X) (u : ManyBody.RegionConfig β Xᶜ) :
-      Matrix.typicalPureState ΩX E (a, u) = Ψ ((ManyBody.splitEquiv β X).symm (a, u)) := by
+  have hselected (a : ManyBody.RegionConfig β X) (u : ManyBody.ComplConfig β X) :
+      Matrix.typicalPureState ΩX E (a, u) = Ψ ((ManyBody.cutEquiv β X).symm (a, u)) := by
     exact (congrArg (fun v ↦ v (a, u)) (ManyBody.split_typicalPureState β Ω X E)).symm
-  have hcomplement (u v : ManyBody.RegionConfig β Xᶜ) :
+  have hcomplement (u v : ManyBody.ComplConfig β X) :
       (∑ r : Fin E.card, χ (r, u) * star (χ (r, v))) =
         ∑ a : ManyBody.RegionConfig β X,
-          Ψ ((ManyBody.splitEquiv β X).symm (a, u)) *
-            star (Ψ ((ManyBody.splitEquiv β X).symm (a, v))) := by
+          Ψ ((ManyBody.cutEquiv β X).symm (a, u)) *
+            star (Ψ ((ManyBody.cutEquiv β X).symm (a, v))) := by
     calc
       _ = ∑ i : E, Matrix.compressedTypicalPureState ΩX E (i, u) *
           star (Matrix.compressedTypicalPureState ΩX E (i, v)) :=
@@ -77,12 +77,12 @@ theorem partialTraceLeft_compressedTypicalPureState_region
   rw [ManyBody.regionState, ← ManyBody.partialTraceLeft_regionMatrix_union β
     (Matrix.vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ))) X B hXB]
   ext b b'
-  change (∑ rc : Fin E.card × ManyBody.RegionConfig β (X ∪ B)ᶜ,
+  change (∑ rc : Fin E.card × ManyBody.ComplConfig β (X ∪ B),
       χ (rc.1, (ManyBody.complementUnionEquiv β X B hXB).symm (b, rc.2)) *
         star (χ (rc.1, (ManyBody.complementUnionEquiv β X B hXB).symm (b', rc.2)))) =
-    ∑ a : ManyBody.RegionConfig β X, ∑ c : ManyBody.RegionConfig β (X ∪ B)ᶜ,
-      Ψ ((ManyBody.splitEquiv β (X ∪ B)).symm ((ManyBody.unionEquiv β X B hXB).symm (a, b), c)) *
-        star (Ψ ((ManyBody.splitEquiv β (X ∪ B)).symm
+    ∑ a : ManyBody.RegionConfig β X, ∑ c : ManyBody.ComplConfig β (X ∪ B),
+      Ψ ((ManyBody.cutEquiv β (X ∪ B)).symm ((ManyBody.unionEquiv β X B hXB).symm (a, b), c)) *
+        star (Ψ ((ManyBody.cutEquiv β (X ∪ B)).symm
           ((ManyBody.unionEquiv β X B hXB).symm (a, b'), c)))
   simp_rw [ManyBody.split_union_symm]
   rw [Fintype.sum_prod_type, Finset.sum_comm]

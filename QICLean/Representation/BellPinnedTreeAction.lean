@@ -66,7 +66,7 @@ theorem commute_labelObservable_bellPin (k : ℕ) (Q : Finset V)
     (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) (b : B → ℂ) :
     let e := bellInsertionCopyEquiv β X C R k
     let J := (addedSiteInsertion ιe B k b).submatrix e id
-    let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
+    let Pe := symProj (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k)
     Commute (labelObservable (subsystemPerm k ι₀
       ((Q \ X).image fun v ↦ some (some v))) f) (J * Pe * Jᴴ) := by
   intro e J Pe
@@ -102,7 +102,7 @@ theorem replicaMetric_factors_bellPin [∀ v, Nonempty (ι₀ v)]
     (hUY : Disjoint U Y) (b : B → ℂ) :
     let e := bellInsertionCopyEquiv β X C R k
     let J := (addedSiteInsertion ιe B k b).submatrix e id
-    let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
+    let Pe := symProj (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k)
     let P := J * Pe * Jᴴ
     let W := replicaMetric ι₀ t k
     let Q := insert (some none) ((X ∪ U).image fun v ↦ some (some v))
@@ -116,7 +116,7 @@ theorem replicaMetric_factors_bellPin [∀ v, Nonempty (ι₀ v)]
     (exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
       (X := Config k ιe)).elim (fun l hl ↦
         Eq.mp (congrArg Matrix.IsHermitian
-          (hl (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k))) (isHermitian_labelProj _ l))
+          (hl (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k))) (isHermitian_labelProj _ l))
   have hP : P.IsHermitian := Matrix.isHermitian_mul_mul_conjTranspose J hSym
   have hpos := posDef_bellMetric_factors β X C R ht k U Y hUY
   have hA : A.IsHermitian := hpos.1.isHermitian
@@ -161,7 +161,7 @@ theorem replicaMetric_meanTree_bellPin {S : Type*}
     (b : B → ℂ) (T : Matrix.MeanTree S) :
     let e := bellInsertionCopyEquiv β X C R k
     let J := (addedSiteInsertion ιe B k b).submatrix e id
-    let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
+    let Pe := symProj (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k)
     let P := J * Pe * Jᴴ
     let W := replicaMetric ι₀ t k
     let Q := fun j ↦ insert (some none) ((X ∪ U j).image fun v ↦ some (some v))

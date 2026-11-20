@@ -43,7 +43,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 its auxiliary site.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 56–67 and 332–343. -/
-def extractExteriorRegion (X : Finset V) (D : Finset (Option ↥(Xᶜ))) : Finset V :=
+def extractExteriorRegion (X : Finset V) (D : Finset (Option {v // v ∉ X})) : Finset V :=
   D.biUnion fun f ↦ match f with
     | none => ∅
     | some v => {(v : V)}
@@ -65,8 +65,7 @@ theorem extractExteriorRegion_exteriorRegion (X B : Finset V) (hXB : Disjoint X 
       have hvw : v = (w : V) := Finset.mem_singleton.mp hv
       exact hvw.symm ▸ hw
   · intro hv
-    let w : ↥(Xᶜ) := ⟨v, Finset.mem_compl.mpr
-      (fun hx ↦ Finset.disjoint_left.mp hXB hx hv)⟩
+    let w : {v // v ∉ X} := ⟨v, fun hx ↦ Finset.disjoint_left.mp hXB hx hv⟩
     refine ⟨some w, ?_, ?_⟩
     · simpa [ManyBody.exteriorRegion, w] using hv
     · exact Finset.mem_singleton_self v
@@ -110,7 +109,7 @@ the selected spectral indices, and the extracted physical region.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 332–343. -/
 def compressedRegionalThreshold
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) (D : Finset (Option ↥(Xᶜ))) : ℝ :=
+    (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) (D : Finset (Option {v // v ∉ X})) : ℝ :=
   (k : ℝ) * (ManyBody.regionEntropy Ω (ManyBody.extractExteriorRegion X D) /
     (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1)
 

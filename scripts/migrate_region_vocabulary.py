@@ -306,7 +306,8 @@ PART_C = {
                                         [("drop", 0), ("drop", 0), ("drop", 2)], 6, ""),
     "splitEquiv_apply_fst": (None, [], 0, "deleted rfl simp lemma: unfold `cutEquiv` by hand"),
     "splitEquiv_apply_snd": (None, [], 0, "deleted rfl simp lemma: unfold `cutEquiv` by hand"),
-    "operatorSchmidtRank_splitEquiv_le": ("operatorSchmidtRank_cutEquiv_le", [], 0, ""),
+    "operatorSchmidtRank_splitEquiv_le": (
+        "Matrix.operatorSchmidtRank_reindex_piEquivPiSubtypeProd_finset_le", [], 0, ""),
 }
 # In a file that uses a qualified `ManyBody.splitEquiv…` name, the type `RegionConfig X Rᶜ`
 # becomes `ComplConfig X R`; unless the file applies one of these to a complement region,
@@ -360,7 +361,8 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
         return qualified, bare, {}
     if part in ("C", "all"):
         for short, (new, ops, need, note) in PART_C.items():
-            r = Rule("ManyBody." + short, "ManyBody." + new if new else "", ops, need,
+            r = Rule("ManyBody." + short, ("" if not new else new if "." in new
+                                           else "ManyBody." + new), ops, need,
                      keep=new is None, named_ok=False, rename_unapplied=bool(ops),
                      note=note)
             qualified[r.old] = r

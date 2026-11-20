@@ -46,15 +46,17 @@ local notation "ιe" => ManyBody.compressedSiteSpace β X R
 local notation "A" => ManyBody.RegionConfig β X × C
 local notation "ι₁" => addedSiteSpace ιe A
 
+omit [Fintype V] in
 /-- Grouping each copy separately commutes with simultaneous copy permutations. -/
 private theorem bellInsertionCopyEquiv_copyPerm (k : ℕ)
     (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
     bellInsertionCopyEquiv β X C R k (copyPerm ((v : Option (Option V)) → ι₀ v) k σ x) =
-      copyPerm ((v : Option (Option ↥(Xᶜ))) → ι₁ v) k σ
+      copyPerm ((v : Option (Option {v // v ∉ X})) → ι₁ v) k σ
         (bellInsertionCopyEquiv β X C R k x) := by
   funext j
   rfl
 
+omit [Fintype V] in
 /-- The original R site becomes the retained R site, not the bundled Bell site. -/
 private theorem bellInsertionCopyEquiv_subsystemPerm_auxiliary (k : ℕ)
     (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
@@ -66,7 +68,7 @@ private theorem bellInsertionCopyEquiv_subsystemPerm_auxiliary (k : ℕ)
   | none =>
     change ((fun v : X ↦ subsystemPerm k ι₀ {none} σ x j (some (some v))),
         subsystemPerm k ι₀ {none} σ x j (some none)) =
-      if none ∈ ({some none} : Finset (Option (Option ↥(Xᶜ)))) then
+      if none ∈ ({some none} : Finset (Option (Option {v // v ∉ X}))) then
         (fun v : X ↦ x (σ⁻¹ j) (some (some v)), x (σ⁻¹ j) (some none)) else
         (fun v : X ↦ x j (some (some v)), x j (some none))
     rw [ite_eq_right (by simp)]
@@ -79,13 +81,13 @@ private theorem bellInsertionCopyEquiv_subsystemPerm_auxiliary (k : ℕ)
     | none =>
       change (if none ∈ ({none} : Finset (Option (Option V))) then
           x (σ⁻¹ j) none else x j none) =
-        if some none ∈ ({some none} : Finset (Option (Option ↥(Xᶜ)))) then
+        if some none ∈ ({some none} : Finset (Option (Option {v // v ∉ X}))) then
           x (σ⁻¹ j) none else x j none
       simp
     | some v =>
       change (if some (some (v : V)) ∈ ({none} : Finset (Option (Option V))) then
           x (σ⁻¹ j) (some (some v)) else x j (some (some v))) =
-        if some (some v) ∈ ({some none} : Finset (Option (Option ↥(Xᶜ)))) then
+        if some (some v) ∈ ({some none} : Finset (Option (Option {v // v ∉ X}))) then
           x (σ⁻¹ j) (some (some v)) else x j (some (some v))
       simp
 
@@ -94,6 +96,8 @@ variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
 local instance : DecidableEq (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
+
+local instance : Fintype {v // v ∉ X} := inferInstance
 
 omit [DecidableEq C] in
 /-- The literal Bell insertion in original physical coordinates is an isometry
@@ -116,16 +120,16 @@ theorem permOp_copyPerm_mul_bellInsertion (k : ℕ)
     let e := bellInsertionCopyEquiv β X C R k
     let J := (addedSiteInsertion ιe A k b).submatrix e id
     permOp (copyPerm ((v : Option (Option V)) → ι₀ v) k) σ * J =
-      J * permOp (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k) σ := by
+      J * permOp (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k) σ := by
   intro e J
-  have hpull : (permOp (copyPerm ((v : Option (Option ↥(Xᶜ))) → ι₁ v) k) σ).submatrix
+  have hpull : (permOp (copyPerm ((v : Option (Option {v // v ∉ X})) → ι₁ v) k) σ).submatrix
       e e = permOp (copyPerm ((v : Option (Option V)) → ι₀ v) k) σ := by
     rw [permOp_of_intertwine e
       (fun τ x ↦ (bellInsertionCopyEquiv_copyPerm β X C R k τ x).symm)]
     ext x y
     simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
   rw [← hpull]
-  change (permOp (copyPerm ((v : Option (Option ↥(Xᶜ))) → ι₁ v) k) σ).submatrix e e *
+  change (permOp (copyPerm ((v : Option (Option {v // v ∉ X})) → ι₁ v) k) σ).submatrix e e *
     (addedSiteInsertion ιe A k b).submatrix e id = _
   rw [Matrix.submatrix_mul_equiv, permOp_copyPerm_mul_addedSiteInsertion]
   exact Matrix.submatrix_mul _ _ e id id Function.bijective_id
@@ -138,7 +142,7 @@ theorem symProj_mul_bellInsertion (k : ℕ) (b : A → ℂ) :
     let e := bellInsertionCopyEquiv β X C R k
     let J := (addedSiteInsertion ιe A k b).submatrix e id
     symProj (copyPerm ((v : Option (Option V)) → ι₀ v) k) * J =
-      J * symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k) := by
+      J * symProj (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k) := by
   intro e J
   dsimp only [J, e]
   simp only [symProj, Matrix.smul_mul, Matrix.mul_smul, Matrix.sum_mul,
@@ -166,7 +170,7 @@ theorem labelObservable_mul_bellInsertion_auxiliary (k : ℕ)
   rw [← hpull]
   change (labelObservable (subsystemPerm k ι₁ {some none}) f).submatrix e e *
     (addedSiteInsertion ιe A k b).submatrix e id = _
-  have haux : ({none} : Finset (Option ↥(Xᶜ))).image some = {some none} := by simp
+  have haux : ({none} : Finset (Option {v // v ∉ X})).image some = {some none} := by simp
   rw [← haux, Matrix.submatrix_mul_equiv,
     labelObservable_mul_addedSiteInsertion_exterior]
   exact Matrix.submatrix_mul _ _ e id id Function.bijective_id

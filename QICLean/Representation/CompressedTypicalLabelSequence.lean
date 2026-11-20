@@ -48,8 +48,8 @@ theorem exists_label_sequence_compressedTypicalSite_mass_regionEntropy_asymptoti
     (E : Finset (ManyBody.RegionConfig β X))
     (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
     let ι := ManyBody.compressedSiteSpace β X (Fin E.card)
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let ψ : ManyBody.ComplConfig β X × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
@@ -66,7 +66,7 @@ theorem exists_label_sequence_compressedTypicalSite_mass_regionEntropy_asymptoti
   intro ι ΩX ψ Ψ
   have hsite := ManyBody.norm_compressedTypicalSiteState β Ω X E hz
   let e := (Equiv.piOptionEquivProd (β := ι)).trans
-    (Equiv.prodComm (Fin E.card) (ManyBody.RegionConfig β Xᶜ))
+    (Equiv.prodComm (Fin E.card) (ManyBody.ComplConfig β X))
   have hψ : ‖WithLp.toLp 2 ψ‖ = 1 := by
     change ‖(LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ e)
       (WithLp.toLp 2 (fun x ↦ ψ (fun v ↦ x (some v), x none)))‖ = 1
@@ -94,8 +94,8 @@ theorem exists_label_sequence_commonLabelCutoff_compressedTypical_bell_vector
     (hdisjoint : ∀ B ∈ regions, Disjoint X B)
     :
     let ι := ManyBody.compressedSiteSpace β X (Fin E.card)
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let ψ : ManyBody.ComplConfig β X × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x : TensorPower.Config k ι ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
@@ -119,11 +119,11 @@ theorem exists_label_sequence_commonLabelCutoff_compressedTypical_bell_vector
           labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2
     ∀ᶠ k : ℕ in atTop,
       let e := Equiv.arrowProdEquivProdArrow (Fin k)
-        (fun _ ↦ ManyBody.RegionConfig β X × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ι f)
+        (fun _ ↦ ManyBody.RegionConfig β X × E) (fun _ ↦ (f : Option {v // v ∉ X}) → ι f)
       ∃ φ : EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι),
         ‖φ‖ = 1 ∧
         (fun x ↦ φ (e x)) ∈ invariantSubspace
-          (copyPerm ((ManyBody.RegionConfig β X × E) × ((f : Option ↥(Xᶜ)) → ι f)) k) ∧
+          (copyPerm ((ManyBody.RegionConfig β X × E) × ((f : Option {v // v ∉ X}) → ι f)) k) ∧
         toEuclideanLin
           ((finKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
             (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ ∧

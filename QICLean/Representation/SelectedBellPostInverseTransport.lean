@@ -58,7 +58,7 @@ theorem selectedBellPost_inverse_norm_le_physical
     (T : MeanTree S) (ell : IrrepLabel (Equiv.Perm (Fin k))) (s : ℝ) :
     let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
     let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
       (ManyBody.schmidtBellSitePrevector β X E k ΩX ell ∘ ManyBody.schmidtBellWitnessEquiv β X E k)
     let W := replicaMetric ι₀ t k
@@ -101,7 +101,7 @@ theorem selectedBellPost_inverse_norm_le_physical
     (ManyBody.RegionConfig β X × E) k b).submatrix
       (bellInsertionCopyEquiv β X E (Fin E.card) k) id
   let Pe := symProj (copyPerm
-    ((o : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) o) k)
+    ((o : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X (Fin E.card) o) k)
   let P := J * Pe * Jᴴ
   let c : ℂ := ((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k
   have hb : ‖WithLp.toLp 2 b‖ = 1 := by

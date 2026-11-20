@@ -26,4 +26,5 @@ QICLean.Analysis.ViableSubspaceEntropy QICLean.Entropy.ViableSampling.ViableSubs
 QICLean.Analysis.ReplicaGoodCopyFactorization QICLean.Entropy.ViableSampling.ReplicaGoodCopyFactorization
 QICLean.Entropy.FiniteProduct QICLean.Entropy.RegionEntropy
 QICLean.Channel.FiniteProduct QICLean.ManyBody.Sites.RegionMatrix
-QICLean.Channel.FiniteProductOperatorSchmidt QICLean.ManyBody.Sites.SplitOperatorSchmidt
+QICLean.Channel.FiniteProductOperatorSchmidt QICLean.Algebra.OperatorSchmidtPartition
+QICLean.ManyBody.Sites.SplitOperatorSchmidt QICLean.Algebra.OperatorSchmidtPartition

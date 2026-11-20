@@ -103,21 +103,21 @@ private noncomputable def replicaCoords :
         Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) C))) ×
       (Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) R)) ×
         Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) C)))) ×
-      (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ × ManyBody.RegionConfig (fun _ : V ↦ α)
-          (R ∪ C)ᶜ) ≃
+      (ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C) × ManyBody.ComplConfig (fun _ : V ↦ α)
+          (R ∪ C)) ≃
       Config (fun _ : V ⊕ V ↦ α) :=
   (((splitCoords R C hRC).prodCongr (splitCoords R C hRC)).trans
     (Equiv.doubledRegroup _ _)).symm.trans (Equiv.sumArrowEquivProdArrow V V α).symm
 
-omit [DecidableEq α] in
+omit [Fintype V] [DecidableEq α] in
 private theorem replicaCoords_symm_apply (x : Config fun _ : V ⊕ V ↦ α) :
     (replicaCoords (α := α) R C hRC).symm x =
       (((Fintype.equivFin (ManyBody.RegionConfig (fun _ : V ↦ α) R) (fun v ↦ x (.inl v)),
             Fintype.equivFin (ManyBody.RegionConfig (fun _ : V ↦ α) C) (fun v ↦ x (.inl v))),
           (Fintype.equivFin (ManyBody.RegionConfig (fun _ : V ↦ α) R) (fun v ↦ x (.inr v)),
             Fintype.equivFin (ManyBody.RegionConfig (fun _ : V ↦ α) C) (fun v ↦ x (.inr v)))),
-        ((fun v ↦ x (.inl v) : ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ),
-          (fun v ↦ x (.inr v) : ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ))) :=
+        ((fun v ↦ x (.inl v) : ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C)),
+          (fun v ↦ x (.inr v) : ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C)))) :=
   rfl
 
 /-- In these coordinates, the exchange of replicas on `R` is the partial swap of the `R`
@@ -126,16 +126,15 @@ private theorem reindex_replicaCoords_partialSwap :
     reindex (replicaCoords (α := α) R C hRC) (replicaCoords R C hRC)
         (partialSwap (Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) R)))
           (Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) C))) ⊗ₖ
-          (1 : Matrix (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ ×
-          ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ)
-              (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ ×
-          ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ) ℂ)) =
+          (1 : Matrix (ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C) ×
+          ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C))
+              (ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C) ×
+          ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C)) ℂ)) =
       sitePermOp (replicaSwap R) := by
   set G := replicaCoords (α := α) R C hRC
   set π := replicaSwap R
   have hC (v : V) (hv : v ∈ C) : v ∉ R := fun h ↦ Finset.disjoint_left.mp hRC h hv
-  have hQ (v : V) (hv : v ∈ (R ∪ C)ᶜ) : v ∉ R := fun h ↦
-    Finset.mem_compl.mp hv (Finset.mem_union_left C h)
+  have hQ (v : V) (hv : v ∉ R ∪ C) : v ∉ R := fun h ↦ hv (Finset.mem_union_left C h)
   have hswap (x : Config fun _ : V ⊕ V ↦ α) :
       G.symm (x ∘ π) = (Equiv.partialSwap _ _ (G.symm x).1, (G.symm x).2) := by
     rw [replicaCoords_symm_apply, replicaCoords_symm_apply]
@@ -189,7 +188,7 @@ private theorem reindex_replicaCoords_doubledHamiltonian
   ext x y
   simp [replicaCoords, Prod.map]
 
-omit [DecidableEq α] in
+omit [Fintype V] [DecidableEq α] in
 /-- In these coordinates, the doubled vector is `Ω ⊗ Ω`. -/
 private theorem doubledRegroup_comp_replicaCoords_symm
     (Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)) :
@@ -203,10 +202,11 @@ private theorem doubledRegroup_comp_replicaCoords_symm
 
 /-- Pairing the configurations of the two buffers. -/
 private def bufferPairEquiv :
-    ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ × ManyBody.RegionConfig (fun _ : V ↦ α)
-        (R ∪ C)ᶜ ≃
+    ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C) × ManyBody.ComplConfig (fun _ : V ↦ α)
+        (R ∪ C) ≃
       RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ) :=
-  ((replicaPairRegionEquiv (R ∪ C)ᶜ).trans (Equiv.arrowProdEquivProdArrow _ _ _)).symm
+  ((ManyBody.complementEquiv _ (R ∪ C)).prodCongr (ManyBody.complementEquiv _ (R ∪ C))).trans
+    ((replicaPairRegionEquiv (R ∪ C)ᶜ).trans (Equiv.arrowProdEquivProdArrow _ _ _)).symm
 
 omit [DecidableEq α] in
 private theorem agree_iff_replicaCoords (x y : Config fun _ : V ⊕ V ↦ α) :
@@ -232,10 +232,10 @@ private theorem agree_iff_replicaCoords (x y : Config fun _ : V ⊕ V ↦ α) :
 of the buffer. -/
 private theorem reindex_replicaCoords_one_kronecker
     (W : Matrix
-        (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ × ManyBody.RegionConfig (fun _ : V ↦ α)
-        (R ∪ C)ᶜ)
-      (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ × ManyBody.RegionConfig (fun _ : V ↦ α)
-          (R ∪ C)ᶜ) ℂ) :
+        (ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C) × ManyBody.ComplConfig (fun _ : V ↦ α)
+        (R ∪ C))
+      (ManyBody.ComplConfig (fun _ : V ↦ α) (R ∪ C) × ManyBody.ComplConfig (fun _ : V ↦ α)
+          (R ∪ C)) ℂ) :
     reindex (replicaCoords (α := α) R C hRC) (replicaCoords R C hRC)
         ((1 : Matrix _ _ ℂ) ⊗ₖ W) =
       place (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ)

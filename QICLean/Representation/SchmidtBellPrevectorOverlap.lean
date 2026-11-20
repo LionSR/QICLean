@@ -42,7 +42,7 @@ variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 
 local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "B" => ManyBody.ComplConfig β X
 local notation "ι" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "M" => (Fin k → A × E) × TensorPower.Config k ι
 
@@ -50,7 +50,9 @@ local instance schmidtBellOverlapConfigurationDecidableEq : DecidableEq
     (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
-variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.RegionConfig β Xᶜ))
+local instance : DecidableEq (TensorPower.Config k ι) := inferInstance
+
+variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.ComplConfig β X))
 
 /-- The original physical prevector in the actual selected-Bell and exterior
 site coordinates, using only the fixed enumeration and copy regrouping.

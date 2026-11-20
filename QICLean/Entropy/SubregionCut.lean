@@ -49,18 +49,18 @@ def subregionCutSubtypeEquiv {J A : Finset V} (hAJ : A ⊆ J) :
 its retained region and the exterior of that region. Supporting ALVV,
 arXiv:1602.08828v2, `lem:trimming`, lines 660–697. -/
 def subregionRestSubtypeEquiv {J A : Finset V} (hAJ : A ⊆ J) :
-    {v : J // v ∉ subregionCut J A} ⊕ ↥(Jᶜ) ≃ {v : V // v ∉ A} where
+    {v : J // v ∉ subregionCut J A} ⊕ {v : V // v ∉ J} ≃ {v : V // v ∉ A} where
   toFun := Sum.elim
     (fun v ↦ ⟨v.1.1, fun h ↦ v.2 (mem_subregionCut.mpr h)⟩)
-    (fun v ↦ ⟨v.1, fun h ↦ (Finset.mem_compl.mp v.2) (hAJ h)⟩)
+    (fun v ↦ ⟨v.1, fun h ↦ v.2 (hAJ h)⟩)
   invFun v :=
     if h : v.1 ∈ J then
       Sum.inl ⟨⟨v.1, h⟩, fun h' ↦ v.2 (mem_subregionCut.mp h')⟩
-    else Sum.inr ⟨v.1, Finset.mem_compl.mpr h⟩
+    else Sum.inr ⟨v.1, h⟩
   left_inv v := by
     rcases v with v | v
     · simp [v.1.2]
-    · simp [Finset.mem_compl.mp v.2]
+    · simp [v.2]
   right_inv v := by
     by_cases h : v.1 ∈ J <;> simp [h]
 
@@ -68,9 +68,9 @@ def subregionRestSubtypeEquiv {J A : Finset V} (hAJ : A ⊆ J) :
 Supporting ALVV, arXiv:1602.08828v2, Definition `d:vs`, lines 433–440. -/
 noncomputable def regionConfigurationSplit (q : ℕ) (J : Finset V) :
     EuclideanSpace ℂ (V → Fin q) ≃ₗᵢ[ℂ]
-      EuclideanSpace ℂ ((J → Fin q) × (↥(Jᶜ) → Fin q)) :=
+      EuclideanSpace ℂ ((J → Fin q) × ({v // v ∉ J} → Fin q)) :=
   LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
-    (ManyBody.splitEquiv (fun _ : V ↦ Fin q) J)
+    (ManyBody.cutEquiv (fun _ : V ↦ Fin q) J)
 
 /-- A cut inside a retained region, with its full exterior kept as an
 environment, has exactly the original global regional rank. Auxiliary to
@@ -96,16 +96,16 @@ lemma schmidtRank_cutEnvVector_regionConfigurationSplit
     refine congrArg (fun c : V → Fin q ↦ psi c) (funext fun v ↦ ?_)
     by_cases hvA : v ∈ A
     · have hvJ : v ∈ J := hAJ hvA
-      rw [ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ hvJ,
+      rw [ManyBody.cutEquiv_symm_apply_mem _ _ hvJ,
         ManyBody.cutEquiv_symm_apply_mem _ _ (mem_subregionCut.mpr hvA),
         ManyBody.cutEquiv_symm_apply_mem _ _ hvA]
       rfl
     · rw [ManyBody.cutEquiv_symm_apply_not_mem _ _ hvA]
       by_cases hvJ : v ∈ J
-      · rw [ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ hvJ,
+      · rw [ManyBody.cutEquiv_symm_apply_mem _ _ hvJ,
           ManyBody.cutEquiv_symm_apply_not_mem _ _ (fun h ↦ hvA (mem_subregionCut.mp h))]
         simp [subregionRestSubtypeEquiv, hvJ, Equiv.sumArrowEquivProdArrow]
-      · rw [ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _ hvJ]
+      · rw [ManyBody.cutEquiv_symm_apply_not_mem _ _ hvJ]
         simp [subregionRestSubtypeEquiv, hvJ, Equiv.sumArrowEquivProdArrow]
   rw [hcoef, rank_submatrix]
   rw [ManyBody.regionState_eq_partialTraceRight_cutVector, Matrix.partialTraceRight_vecMulVec_eq]

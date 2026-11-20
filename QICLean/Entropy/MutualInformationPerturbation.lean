@@ -62,13 +62,13 @@ theorem traceDistance_regionState_le (ψ η : EuclideanSpace ℂ ((v : V) → β
       traceDistance (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)))
         (vecMulVec (WithLp.ofLp η) (star (WithLp.ofLp η))) :=
   (traceDistance_partialTraceRight_le
-      ((posSemidef_vecMulVec_self_star _).submatrix (ManyBody.splitEquiv β R).symm).isHermitian
-      ((posSemidef_vecMulVec_self_star _).submatrix (ManyBody.splitEquiv β R).symm).isHermitian
+      ((posSemidef_vecMulVec_self_star _).submatrix (ManyBody.cutEquiv β R).symm).isHermitian
+      ((posSemidef_vecMulVec_self_star _).submatrix (ManyBody.cutEquiv β R).symm).isHermitian
       ((trace_partialTraceRight _).symm.trans
         ((ManyBody.trace_regionState_eq_one hψ (D := R)).trans
           ((ManyBody.trace_regionState_eq_one hη (D := R)).symm.trans
               (trace_partialTraceRight _))))).trans_eq
-    (traceDistance_submatrix_equiv (ManyBody.splitEquiv β R).symm
+    (traceDistance_submatrix_equiv (ManyBody.cutEquiv β R).symm
       (posSemidef_vecMulVec_self_star _).isHermitian
       (posSemidef_vecMulVec_self_star _).isHermitian)
 

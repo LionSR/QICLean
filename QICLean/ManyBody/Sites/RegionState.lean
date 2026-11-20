@@ -48,15 +48,12 @@ noncomputable def regionState (φ : EuclideanSpace ℂ (Config X)) (D : Finset V
   regionMatrix (vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))) D
 
 /-- The regional state in the coordinates of the cut along `D`: the partial trace of the outer
-product of the cut vector. The two differ only in how the configurations outside `D` are
-indexed. -/
+product of the cut vector. -/
 theorem regionState_eq_partialTraceRight_cutVector (D : Finset V)
     (φ : EuclideanSpace ℂ (Config X)) :
     regionState φ D = partialTraceRight
       (vecMulVec (WithLp.ofLp (cutVector D φ)) (star (WithLp.ofLp (cutVector D φ)))) := by
-  ext a b
-  exact ((complementEquiv X D).sum_comp
-    (fun c ↦ φ ((splitEquiv X D).symm (a, c)) * star (φ ((splitEquiv X D).symm (b, c))))).symm
+  rfl
 
 /-- Regional pure-state matrices are positive semidefinite. -/
 theorem regionState_posSemidef (D : Finset V) (φ : EuclideanSpace ℂ (Config X)) :

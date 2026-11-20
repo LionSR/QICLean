@@ -28,7 +28,8 @@ variable (β : V → Type*) [∀ v, Fintype (β v)]
 /-- Complementary reductions of a pure state have equal rank. -/
 theorem rank_regionState_compl (ψ : EuclideanSpace ℂ ((v : V) → β v)) (R : Finset V) :
     (ManyBody.regionState ψ Rᶜ).rank = (ManyBody.regionState ψ R).rank := by
-  rw [ManyBody.regionState_compl_eq_partialTraceLeft, ManyBody.regionState_eq_partialTrace]
+  rw [ManyBody.regionState_compl_eq_partialTraceLeft, Matrix.rank_reindex,
+    ManyBody.regionState_eq_partialTrace]
   exact (Matrix.rank_partialTraceRight_vecMulVec_eq_rank_partialTraceLeft _).symm
 
 /-- The rank on a disjoint union is bounded by the product of the regional ranks. -/

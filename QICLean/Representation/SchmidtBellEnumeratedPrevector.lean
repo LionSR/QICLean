@@ -49,7 +49,7 @@ theorem schmidtBellSitePrevector_enumerate_C
     (Ω : EuclideanSpace ℂ ((v : V) → β v))
     (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let ιE := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
     let ιF := addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
     let changeSite : ∀ o : Option (Option V), ιF o ≃ ιE o := fun o ↦
@@ -65,7 +65,7 @@ theorem schmidtBellSitePrevector_enumerate_C
   intro ΩX ιE ιF changeSite e τ
   funext x
   change replicaPrevector ΩX E.card k ell
-      ((fun j ↦ ManyBody.splitEquiv β X (fun v ↦ x j (some (some v)))),
+      ((fun j ↦ ManyBody.cutEquiv β X (fun v ↦ x j (some (some v)))),
         ((fun j ↦ (Finset.equivFin E) ((Finset.equivFin E).symm (x j (some none)))),
           (fun j ↦ x j none))) =
     replicaPrevector Ω E.card k ell
@@ -74,6 +74,6 @@ theorem schmidtBellSitePrevector_enumerate_C
   simp only [replicaPrevector, ΩX,
     LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply]
   dsimp only [ιF, addedSiteSpace] at x
-  simp only [(Finset.equivFin E).apply_symm_apply, (ManyBody.splitEquiv β X).symm_apply_apply]
+  simp only [(Finset.equivFin E).apply_symm_apply, (ManyBody.cutEquiv β X).symm_apply_apply]
 
 end ManyBody

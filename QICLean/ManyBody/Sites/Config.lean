@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import Mathlib.Data.Finset.Basic
+import Mathlib.Data.Finset.BooleanAlgebra
 import Mathlib.Logic.Equiv.Basic
 
 /-!
@@ -28,6 +28,8 @@ system `X` applies to them as it stands.
 * `ManyBody.Qudits` — the system with the basis `Fin d` at every site.
 * `ManyBody.cutEquiv` — a configuration as a pair of a configuration of a region and one of
   its complement.
+* `ManyBody.complementEquiv` — configurations outside a region as configurations of the
+  complement region.
 -/
 
 namespace ManyBody
@@ -77,5 +79,13 @@ theorem cutEquiv_fst_eq_iff {σ τ : Config X} :
 theorem cutEquiv_snd_eq_iff {σ τ : Config X} :
     (cutEquiv X D σ).2 = (cutEquiv X D τ).2 ↔ ∀ v ∉ D, σ v = τ v :=
   ⟨fun h v hv ↦ congrFun h ⟨v, hv⟩, fun h ↦ funext fun v ↦ h v.1 v.2⟩
+
+variable [Fintype V] (X D) in
+/-- Configurations outside `D` are configurations of the complement region `Dᶜ`. -/
+def complementEquiv : ComplConfig X D ≃ RegionConfig X Dᶜ where
+  toFun x v := x ⟨v, Finset.mem_compl.mp v.property⟩
+  invFun x v := x ⟨v, Finset.mem_compl.mpr v.property⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
 
 end ManyBody

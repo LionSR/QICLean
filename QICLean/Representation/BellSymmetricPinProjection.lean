@@ -56,7 +56,7 @@ theorem isStarProjection_bellInsertion_symProj (k : ℕ)
     let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
       (ManyBody.RegionConfig β X × C) k b).submatrix e id
     let Pe := symProj (copyPerm
-      ((v : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X R v) k)
+      ((v : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X R v) k)
     IsStarProjection (J * Pe * Jᴴ) := by
   intro e J Pe
   have hJ : Jᴴ * J = 1 := isIsometry_bellInsertion β X C R k b hb
@@ -67,7 +67,7 @@ theorem isStarProjection_bellInsertion_symProj (k : ℕ)
       ((exists_labelProj_eq_symProj (G := Equiv.Perm (Fin k))
         (X := Config k (ManyBody.compressedSiteSpace β X R))).elim (fun l hl ↦
           Eq.mp (congrArg IsStarProjection (hl (copyPerm
-            ((v : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X R v) k)))
+            ((v : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X R v) k)))
             ⟨labelProj_mul_self _ l, (isHermitian_labelProj _ l).isSelfAdjoint⟩)) Jᴴ hU
 
 end TensorPower

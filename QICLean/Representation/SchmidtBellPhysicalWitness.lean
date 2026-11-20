@@ -44,7 +44,7 @@ variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
 variable (E : Finset (ManyBody.RegionConfig β X))
 
 local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "B" => ManyBody.ComplConfig β X
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
 local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
@@ -69,7 +69,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
     (hnested : regions.Pairwise fun D D' ↦ D ⊆ D' ∨ D' ⊆ D)
     (hdisjoint : ∀ D ∈ regions, Disjoint X D)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦
@@ -84,7 +84,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
       let τ := ManyBody.schmidtBellWitnessEquiv β X E k
       let J := (addedSiteInsertion ιe (A × E) k (selectedBellVector ΩX E)).submatrix
         (bellInsertionCopyEquiv β X ↥E (Fin E.card) k) id
-      let Pe := symProj (copyPerm ((o : Option ↥(Xᶜ)) → ιe o) k)
+      let Pe := symProj (copyPerm ((o : Option {v // v ∉ X}) → ιe o) k)
       let P := J * Pe * Jᴴ
       let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘ τ)
@@ -147,7 +147,7 @@ theorem eventually_exists_suppliedSchmidtBell_physicalWitness {S : Type*}
           inner ℂ φ (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k)) :=
       ((isSymmetric_toEuclideanLin_iff.mpr
         (isHermitian_mul_mul_conjTranspose J
-          (isHermitian_symProj (Ω := ((o : Option ↥(Xᶜ)) → ιe o)) (k := k))))
+          (isHermitian_symProj (Ω := ((o : Option {v // v ∉ X}) → ιe o)) (k := k))))
         (WithLp.toLp 2 (φ ∘ τ)) v).symm.trans
         ((congrArg (fun w : EuclideanSpace ℂ (TensorPower.Config k ι₀) ↦ inner ℂ w v)
           hΦ.2).trans

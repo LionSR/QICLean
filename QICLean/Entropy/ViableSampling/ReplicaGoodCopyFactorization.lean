@@ -45,44 +45,44 @@ copy, with all other coordinates retained. OpenAI area-law manuscript,
 def replicaGoodCopyRemainder (Ω : A → ℂ) {k : ℕ} (B : Finset (Fin k))
     (u : ((Fin k → A) × C) → ℂ) :
     (ManyBody.RegionConfig (fun _ : Fin k ↦ A) B × C) → ℂ :=
-  fun bc ↦ ∑ g : ManyBody.RegionConfig (fun _ : Fin k ↦ A) Bᶜ,
-    (∏ i : ↥(Bᶜ), star (Ω (g i))) *
-      u ((ManyBody.splitEquiv (fun _ : Fin k ↦ A) B).symm (bc.1, g), bc.2)
+  fun bc ↦ ∑ g : ManyBody.ComplConfig (fun _ : Fin k ↦ A) B,
+    (∏ i : {i // i ∉ B}, star (Ω (g i))) *
+      u ((ManyBody.cutEquiv (fun _ : Fin k ↦ A) B).symm (bc.1, g), bc.2)
 
 private theorem excitation_row_factor (Ω : A → ℂ) {k : ℕ} (B : Finset (Fin k))
     (b : ManyBody.RegionConfig (fun _ : Fin k ↦ A) B)
-    (g : ManyBody.RegionConfig (fun _ : Fin k ↦ A) Bᶜ) (y : Fin k → A) :
+    (g : ManyBody.ComplConfig (fun _ : Fin k ↦ A) B) (y : Fin k → A) :
     replicaExcitationProjection Ω k B
-      ((ManyBody.splitEquiv (fun _ : Fin k ↦ A) B).symm (b, g)) y =
-    (∏ i : ↥(Bᶜ), Ω (g i)) *
+      ((ManyBody.cutEquiv (fun _ : Fin k ↦ A) B).symm (b, g)) y =
+    (∏ i : {i // i ∉ B}, Ω (g i)) *
       ((∏ i : B, (1 - vecMulVec Ω (star Ω)) (b i) (y i)) *
-        ∏ i : ↥(Bᶜ), star (Ω (y i))) := by
+        ∏ i : {i // i ∉ B}, star (Ω (y i))) := by
   simp only [replicaExcitationProjection, finKronecker_apply, Matrix.ite_apply,
     Finset.prod_ite, Finset.filter_mem_eq_inter, Finset.univ_inter,
     Finset.filter_notMem_eq_sdiff, ← Finset.compl_eq_univ_sdiff]
-  rw [← Finset.prod_coe_sort B, ← Finset.prod_coe_sort Bᶜ]
-  have hg (i : ↥(Bᶜ)) := ManyBody.splitEquiv_symm_apply_of_notMem
-    (fun _ : Fin k ↦ A) B b g i (Finset.mem_compl.mp i.property)
+  rw [← Finset.prod_coe_sort B,
+    Finset.prod_subtype (F := inferInstance) Bᶜ fun _ ↦ Finset.mem_compl]
+  have hg (i : {i // i ∉ B}) := ManyBody.cutEquiv_symm_apply_not_mem b g i.property
   simp [hg, vecMulVec_apply, Finset.prod_mul_distrib, mul_left_comm]
 
 private theorem excitation_component_factor (Ω : A → ℂ) {k : ℕ} (B : Finset (Fin k))
     (u : ((Fin k → A) × C) → ℂ)
     (b : ManyBody.RegionConfig (fun _ : Fin k ↦ A) B)
-    (g : ManyBody.RegionConfig (fun _ : Fin k ↦ A) Bᶜ) (c : C) :
+    (g : ManyBody.ComplConfig (fun _ : Fin k ↦ A) B) (c : C) :
     ((replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u)
-      ((ManyBody.splitEquiv (fun _ : Fin k ↦ A) B).symm (b, g), c) =
-    (∏ i : ↥(Bᶜ), Ω (g i)) *
+      ((ManyBody.cutEquiv (fun _ : Fin k ↦ A) B).symm (b, g), c) =
+    (∏ i : {i // i ∉ B}, Ω (g i)) *
       ∑ y : Fin k → A,
         ((∏ i : B, (1 - vecMulVec Ω (star Ω)) (b i) (y i)) *
-          ∏ i : ↥(Bᶜ), star (Ω (y i))) * u (y, c) := by
+          ∏ i : {i // i ∉ B}, star (Ω (y i))) * u (y, c) := by
   simp only [mulVec, dotProduct, kroneckerMap_apply, Fintype.sum_prod_type]
   simp [one_apply, excitation_row_factor, Finset.mul_sum, mul_assoc]
 
 omit [DecidableEq A] in
 private theorem good_product_pairing (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω‖ = 1)
     {k : ℕ} (B : Finset (Fin k)) :
-    ∑ g : ManyBody.RegionConfig (fun _ : Fin k ↦ A) Bᶜ,
-      (∏ i : ↥(Bᶜ), star (Ω (g i))) * (∏ i : ↥(Bᶜ), Ω (g i)) = 1 := by
+    ∑ g : ManyBody.ComplConfig (fun _ : Fin k ↦ A) B,
+      (∏ i : {i // i ∉ B}, star (Ω (g i))) * (∏ i : {i // i ∉ B}, Ω (g i)) = 1 := by
   have hdot : Ω ⬝ᵥ star Ω = 1 := by
     simpa only [EuclideanSpace.inner_toLp_toLp, hΩ, RCLike.ofReal_one, one_pow] using
       (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (WithLp.toLp 2 Ω))
@@ -90,7 +90,7 @@ private theorem good_product_pairing (Ω : A → ℂ) (hΩ : ‖WithLp.toLp 2 Ω
   have hsum : (∑ a : A, star (Ω a) * Ω a) = 1 := by
     simpa only [dotProduct, Pi.star_apply, mul_comm] using hdot
   simpa only [hsum, Finset.prod_const_one] using
-    (Fintype.prod_sum (fun (_ : ↥(Bᶜ)) (a : A) ↦ star (Ω a) * Ω a)).symm
+    (Fintype.prod_sum (fun (_ : {i // i ∉ B}) (a : A) ↦ star (Ω a) * Ω a)).symm
 
 /-- Every actual excitation component has the given ground state on each good
 physical copy. Its remaining vector is the partial contraction, with the auxiliary
@@ -100,10 +100,10 @@ theorem replicaExcitationProjection_mulVec_factorization (Ω : A → ℂ)
     (hΩ : ‖WithLp.toLp 2 Ω‖ = 1) {k : ℕ} (B : Finset (Fin k))
     (u : ((Fin k → A) × C) → ℂ)
     (b : ManyBody.RegionConfig (fun _ : Fin k ↦ A) B)
-    (g : ManyBody.RegionConfig (fun _ : Fin k ↦ A) Bᶜ) (c : C) :
+    (g : ManyBody.ComplConfig (fun _ : Fin k ↦ A) B) (c : C) :
     ((replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u)
-      ((ManyBody.splitEquiv (fun _ : Fin k ↦ A) B).symm (b, g), c) =
-    (∏ i : ↥(Bᶜ), Ω (g i)) * replicaGoodCopyRemainder Ω B
+      ((ManyBody.cutEquiv (fun _ : Fin k ↦ A) B).symm (b, g), c) =
+    (∏ i : {i // i ∉ B}, Ω (g i)) * replicaGoodCopyRemainder Ω B
       ((replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u) (b, c) := by
   simp only [replicaGoodCopyRemainder, excitation_component_factor, ← mul_assoc,
     ← Finset.sum_mul, good_product_pairing Ω hΩ, one_mul]
@@ -116,9 +116,9 @@ theorem replicaGoodCopy_factorization_of_fixed (Ω : A → ℂ)
     (u : ((Fin k → A) × C) → ℂ)
     (hu : (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u = u)
     (b : ManyBody.RegionConfig (fun _ : Fin k ↦ A) B)
-    (g : ManyBody.RegionConfig (fun _ : Fin k ↦ A) Bᶜ) (c : C) :
-    u ((ManyBody.splitEquiv (fun _ : Fin k ↦ A) B).symm (b, g), c) =
-    (∏ i : ↥(Bᶜ), Ω (g i)) * replicaGoodCopyRemainder Ω B u (b, c) := by
+    (g : ManyBody.ComplConfig (fun _ : Fin k ↦ A) B) (c : C) :
+    u ((ManyBody.cutEquiv (fun _ : Fin k ↦ A) B).symm (b, g), c) =
+    (∏ i : {i // i ∉ B}, Ω (g i)) * replicaGoodCopyRemainder Ω B u (b, c) := by
   simpa only [hu] using
     replicaExcitationProjection_mulVec_factorization Ω hΩ B u b g c
 
@@ -134,11 +134,11 @@ theorem norm_replicaGoodCopyRemainder_of_fixed (Ω : A → ℂ)
   simp only [EuclideanSpace.norm_sq_eq]
   have hsum : (∑ a : A, ‖Ω a‖ ^ 2) = 1 := by
     simpa only [hΩ, one_pow] using (EuclideanSpace.norm_sq_eq (WithLp.toLp 2 Ω)).symm
-  have hgood : (∑ g : ManyBody.RegionConfig (fun _ : Fin k ↦ A) Bᶜ,
-      ∏ i : ↥(Bᶜ), ‖Ω (g i)‖ ^ 2) = 1 := by
+  have hgood : (∑ g : ManyBody.ComplConfig (fun _ : Fin k ↦ A) B,
+      ∏ i : {i // i ∉ B}, ‖Ω (g i)‖ ^ 2) = 1 := by
     simpa only [hsum, Finset.prod_const_one] using
-      (Fintype.prod_sum (fun (_ : ↥(Bᶜ)) (a : A) ↦ ‖Ω a‖ ^ (2 : ℕ))).symm
-  rw [← ((ManyBody.splitEquiv (fun _ : Fin k ↦ A) B).symm.prodCongr
+      (Fintype.prod_sum (fun (_ : {i // i ∉ B}) (a : A) ↦ ‖Ω a‖ ^ (2 : ℕ))).symm
+  rw [← ((ManyBody.cutEquiv (fun _ : Fin k ↦ A) B).symm.prodCongr
     (Equiv.refl C)).sum_comp (fun x ↦ ‖u x‖ ^ 2)]
   simp only [Fintype.sum_prod_type, Equiv.prodCongr_apply, Prod.map_apply, Equiv.refl_apply,
     replicaGoodCopy_factorization_of_fixed Ω hΩ B u hu, norm_mul, norm_prod,
@@ -146,7 +146,7 @@ theorem norm_replicaGoodCopyRemainder_of_fixed (Ω : A → ℂ)
   simp only [← Finset.mul_sum, ← Finset.sum_mul, hgood, one_mul]
 
 private theorem card_good_coordinates {k : ℕ} (B : Finset (Fin k)) :
-    Fintype.card ↥(Bᶜ) = k - B.card := by
-  simp only [Fintype.card_coe, Finset.card_compl, Fintype.card_fin]
+    Fintype.card {i // i ∉ B} = k - B.card := by
+  simp only [Fintype.card_subtype_compl, Fintype.card_coe, Fintype.card_fin]
 
 end Matrix

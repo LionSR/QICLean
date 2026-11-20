@@ -64,7 +64,7 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
     (b : (ManyBody.RegionConfig β X × C) → ℂ) (T : Matrix.MeanTree S) :
     let e := bellInsertionCopyEquiv β X C R k
     let J := (addedSiteInsertion ιe (ManyBody.RegionConfig β X × C) k b).submatrix e id
-    let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
+    let Pe := symProj (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k)
     let P := J * Pe * Jᴴ
     let W := replicaMetric ι₀ t k
     let Q := fun j g ↦ insert (some none)
@@ -119,7 +119,7 @@ theorem replicaMetric_compressed_bandProduct_bellPin_rpow {S : Type*}
     Matrix.listProd_ofFn_intertwine Z hband
   have hPe : Pe * Pe = Pe :=
     (isStarProjection_symProj
-      (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)).isIdempotentElem.eq
+      (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k)).isIdempotentElem.eq
   have hPcontain : Z * Zᴴ * P = P := by
     rw [hZZ]
     change symProj (copyPerm ((v : Option (Option V)) → ι₀ v) k) *

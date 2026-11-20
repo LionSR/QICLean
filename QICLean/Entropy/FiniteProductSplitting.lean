@@ -51,8 +51,8 @@ noncomputable def splitTwoRegionsEquiv (T E : Finset V) (h : Disjoint T E) :
     ((v : V) → β v) ≃
       (Fin (Fintype.card (ManyBody.RegionConfig β T)) × Fin
           (Fintype.card (ManyBody.RegionConfig β E))) ×
-        ManyBody.RegionConfig β (T ∪ E)ᶜ :=
-  (ManyBody.splitEquiv β (T ∪ E)).trans
+        ManyBody.ComplConfig β (T ∪ E) :=
+  (ManyBody.cutEquiv β (T ∪ E)).trans
     (((ManyBody.unionEquiv β T E h).trans
       ((Fintype.equivFin (ManyBody.RegionConfig β T)).prodCongr
         (Fintype.equivFin (ManyBody.RegionConfig β E)))).prodCongr (Equiv.refl _))
@@ -65,7 +65,7 @@ noncomputable def splitTwoRegionsState (ψ : EuclideanSpace ℂ ((v : V) → β 
     (T E : Finset V) (h : Disjoint T E) :
     (Fin (Fintype.card (ManyBody.RegionConfig β T)) × Fin
         (Fintype.card (ManyBody.RegionConfig β E))) ×
-        ManyBody.RegionConfig β (T ∪ E)ᶜ → ℂ :=
+        ManyBody.ComplConfig β (T ∪ E) → ℂ :=
   fun x ↦ ψ ((ManyBody.splitTwoRegionsEquiv β T E h).symm x)
 
 omit [∀ v, DecidableEq (β v)] in
@@ -104,12 +104,12 @@ theorem exists_isIsometry_splitTwoRegionsState_norm_sub_le
     (T E : Finset V) (h : Disjoint T E) :
     ∃ (W : Matrix
         (Fin (Fintype.card (ManyBody.RegionConfig β T)) ×
-          (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.RegionConfig β (T ∪ E)ᶜ))
-        (ManyBody.RegionConfig β (T ∪ E)ᶜ) ℂ)
+          (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.ComplConfig β (T ∪ E)))
+        (ManyBody.ComplConfig β (T ∪ E)) ℂ)
       (s : Fin (Fintype.card (ManyBody.RegionConfig β T)) ×
         Fin (Fintype.card (ManyBody.RegionConfig β T)) → ℂ)
       (s' : Fin (Fintype.card (ManyBody.RegionConfig β E)) ×
-        (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.RegionConfig β (T ∪ E)ᶜ) → ℂ),
+        (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.ComplConfig β (T ∪ E)) → ℂ),
       W.IsIsometry ∧ star s ⬝ᵥ s = 1 ∧ star s' ⬝ᵥ s' = 1 ∧
       ‖WithLp.toLp 2 ((((1 : Matrix _ _ ℂ) ⊗ₖ W) *ᵥ
         ManyBody.splitTwoRegionsState β ψ T E h) - Matrix.tensorPurification s s')‖ ≤
@@ -132,12 +132,12 @@ theorem exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow
     {L : ℝ} (hL : 0 < L) (hb : ManyBody.regionMutualInformation ψ T E ≤ L ^ (-60 : ℤ)) :
     ∃ (W : Matrix
         (Fin (Fintype.card (ManyBody.RegionConfig β T)) ×
-          (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.RegionConfig β (T ∪ E)ᶜ))
-        (ManyBody.RegionConfig β (T ∪ E)ᶜ) ℂ)
+          (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.ComplConfig β (T ∪ E)))
+        (ManyBody.ComplConfig β (T ∪ E)) ℂ)
       (s : Fin (Fintype.card (ManyBody.RegionConfig β T)) ×
         Fin (Fintype.card (ManyBody.RegionConfig β T)) → ℂ)
       (s' : Fin (Fintype.card (ManyBody.RegionConfig β E)) ×
-        (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.RegionConfig β (T ∪ E)ᶜ) → ℂ),
+        (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.ComplConfig β (T ∪ E)) → ℂ),
       W.IsIsometry ∧ star s ⬝ᵥ s = 1 ∧ star s' ⬝ᵥ s' = 1 ∧
       ‖WithLp.toLp 2 ((((1 : Matrix _ _ ℂ) ⊗ₖ W) *ᵥ
         ManyBody.splitTwoRegionsState β ψ T E h) - Matrix.tensorPurification s s')‖ ≤

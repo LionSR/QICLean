@@ -47,14 +47,14 @@ theorem abs_regionEntropy_sub_le_sqrt_traceDistance
         (Matrix.vecMulVec Φ (star Φ)) :=
     (Matrix.traceDistance_partialTraceRight_le
       ((Matrix.posSemidef_vecMulVec_self_star Ω).submatrix
-          (ManyBody.splitEquiv β R).symm).isHermitian
+          (ManyBody.cutEquiv β R).symm).isHermitian
       ((Matrix.posSemidef_vecMulVec_self_star Φ).submatrix
-          (ManyBody.splitEquiv β R).symm).isHermitian
+          (ManyBody.cutEquiv β R).symm).isHermitian
       ((Matrix.trace_partialTraceRight _).symm.trans
         ((ManyBody.trace_regionState_eq_one hΩ (D := R)).trans
           ((ManyBody.trace_regionState_eq_one hΦ (D := R)).symm.trans
               (Matrix.trace_partialTraceRight _))))).trans_eq
-      (Matrix.traceDistance_submatrix_equiv (ManyBody.splitEquiv β R).symm
+      (Matrix.traceDistance_submatrix_equiv (ManyBody.cutEquiv β R).symm
         (Matrix.posSemidef_vecMulVec_self_star Ω).isHermitian
         (Matrix.posSemidef_vecMulVec_self_star Φ).isHermitian)
   exact hcont.trans (mul_le_mul_of_nonneg_right

@@ -43,8 +43,7 @@ The disjointness assumption removes no physical degree of freedom in `B`. -/
 def exteriorRegionEquiv (hXB : Disjoint X B) :
     ManyBody.RegionConfig (ManyBody.compressedSiteSpace β X R) (ManyBody.exteriorRegion X B) ≃
       ManyBody.RegionConfig β B where
-  toFun x v := x ⟨some ⟨v, Finset.mem_compl.mpr
-      (fun hx ↦ Finset.disjoint_left.mp hXB hx v.property)⟩,
+  toFun x v := x ⟨some ⟨v, fun hx ↦ Finset.disjoint_left.mp hXB hx v.property⟩,
     by simp [ManyBody.exteriorRegion, v.property]⟩
   invFun x f := match f with
     | ⟨none, hf⟩ => False.elim (by simp [ManyBody.exteriorRegion] at hf)
@@ -62,21 +61,18 @@ def exteriorRegionEquiv (hXB : Disjoint X B) :
 /-- The discarded coordinates consist of the auxiliary index and the physical
 complement of the two regions. -/
 def exteriorComplementEquiv :
-    ManyBody.RegionConfig (ManyBody.compressedSiteSpace β X R) (ManyBody.exteriorRegion X B)ᶜ ≃
-      R × ManyBody.RegionConfig β (X ∪ B)ᶜ where
+    ManyBody.ComplConfig (ManyBody.compressedSiteSpace β X R) (ManyBody.exteriorRegion X B) ≃
+      R × ManyBody.ComplConfig β (X ∪ B) where
   toFun x := (x ⟨none, by simp [ManyBody.exteriorRegion]⟩,
-    fun v ↦ x ⟨some ⟨v, Finset.mem_compl.mpr (fun hx ↦
-      Finset.mem_compl.mp v.property (Finset.mem_union_left B hx))⟩,
+    fun v ↦ x ⟨some ⟨v, fun hx ↦ v.property (Finset.mem_union_left B hx)⟩,
       by
-        have hv : (v : V) ∉ B := fun hb ↦
-          Finset.mem_compl.mp v.property (Finset.mem_union_right X hb)
+        have hv : (v : V) ∉ B := fun hb ↦ v.property (Finset.mem_union_right X hb)
         simp [ManyBody.exteriorRegion, hv]⟩)
   invFun x f := match f with
     | ⟨none, _⟩ => x.1
     | ⟨some v, hf⟩ => x.2 ⟨v, by
         have hv : (v : V) ∉ B := by simpa [ManyBody.exteriorRegion] using hf
-        exact Finset.mem_compl.mpr (fun h ↦
-          (Finset.mem_union.mp h).elim (Finset.mem_compl.mp v.property) hv)⟩
+        exact fun h ↦ (Finset.mem_union.mp h).elim v.property hv⟩
   left_inv x := by
     funext f
     rcases f with ⟨f, hf⟩
@@ -92,34 +88,31 @@ def exteriorComplementEquiv :
 physical complement, while retaining the same auxiliary coordinate. -/
 theorem piOptionEquivProd_split_exteriorRegion (hXB : Disjoint X B)
     (b : ManyBody.RegionConfig (ManyBody.compressedSiteSpace β X R) (ManyBody.exteriorRegion X B))
-    (c : ManyBody.RegionConfig (ManyBody.compressedSiteSpace β X R)
-        (ManyBody.exteriorRegion X B)ᶜ) :
+    (c : ManyBody.ComplConfig (ManyBody.compressedSiteSpace β X R)
+        (ManyBody.exteriorRegion X B)) :
     Equiv.piOptionEquivProd
-        ((ManyBody.splitEquiv (ManyBody.compressedSiteSpace β X R)
+        ((ManyBody.cutEquiv (ManyBody.compressedSiteSpace β X R)
             (ManyBody.exteriorRegion X B)).symm (b, c)) =
       ((ManyBody.exteriorComplementEquiv β X B R c).1,
         (ManyBody.complementUnionEquiv β X B hXB).symm
           (ManyBody.exteriorRegionEquiv β X B R hXB b,
             (ManyBody.exteriorComplementEquiv β X B R c).2)) := by
   apply Prod.ext
-  · change
-      ((ManyBody.splitEquiv (ManyBody.compressedSiteSpace β X R) (ManyBody.exteriorRegion X B)).symm
-      (b, c)) none = c ⟨none, by simp [ManyBody.exteriorRegion]⟩
-    exact ManyBody.splitEquiv_symm_apply_of_notMem _ _ b c none (by simp [ManyBody.exteriorRegion])
+  · exact ManyBody.cutEquiv_symm_apply_not_mem b c (by simp [ManyBody.exteriorRegion])
   · funext v
     change
-        ((ManyBody.splitEquiv (ManyBody.compressedSiteSpace β X R)
+        ((ManyBody.cutEquiv (ManyBody.compressedSiteSpace β X R)
         (ManyBody.exteriorRegion X B)).symm
       (b, c)) (some v) =
         (ManyBody.complementUnionEquiv β X B hXB).symm
           (ManyBody.exteriorRegionEquiv β X B R hXB b,
             (ManyBody.exteriorComplementEquiv β X B R c).2) v
     by_cases hv : (v : V) ∈ B
-    · rw [ManyBody.splitEquiv_symm_apply_of_mem _ _ b c (some v)
+    · rw [ManyBody.cutEquiv_symm_apply_mem b c (v := some v)
         (by simp [ManyBody.exteriorRegion, hv])]
       simp [ManyBody.complementUnionEquiv, ManyBody.exteriorRegionEquiv, Equiv.coe_fn_mk, hv]
       rfl
-    · rw [ManyBody.splitEquiv_symm_apply_of_notMem _ _ b c (some v)
+    · rw [ManyBody.cutEquiv_symm_apply_not_mem b c (v := some v)
         (by simp [ManyBody.exteriorRegion, hv])]
       simp [ManyBody.complementUnionEquiv, ManyBody.exteriorComplementEquiv, Equiv.coe_fn_mk, hv]
 
@@ -128,22 +121,22 @@ variable [∀ v, Fintype (β v)] [Fintype R]
 /-- Regional reduction in the actual site coordinates is the partial trace
 over the auxiliary coordinate and the remaining physical sites. -/
 private theorem reducedPure_exteriorSiteState (hXB : Disjoint X B)
-    (χ : R × ManyBody.RegionConfig β Xᶜ → ℂ) :
+    (χ : R × ManyBody.ComplConfig β X → ℂ) :
     (ManyBody.regionState
         (WithLp.toLp 2 (fun x ↦ χ (Equiv.piOptionEquivProd x)))
         (ManyBody.exteriorRegion X B)).submatrix
           (ManyBody.exteriorRegionEquiv β X B R hXB).symm
           (ManyBody.exteriorRegionEquiv β X B R hXB).symm =
       Matrix.partialTraceLeft (Matrix.vecMulVec
-        (fun x : (R × ManyBody.RegionConfig β (X ∪ B)ᶜ) × ManyBody.RegionConfig β B ↦
+        (fun x : (R × ManyBody.ComplConfig β (X ∪ B)) × ManyBody.RegionConfig β B ↦
           χ (x.1.1, (ManyBody.complementUnionEquiv β X B hXB).symm (x.2, x.1.2)))
-        (star (fun x : (R × ManyBody.RegionConfig β (X ∪ B)ᶜ) × ManyBody.RegionConfig β B ↦
+        (star (fun x : (R × ManyBody.ComplConfig β (X ∪ B)) × ManyBody.RegionConfig β B ↦
           χ (x.1.1, (ManyBody.complementUnionEquiv β X B hXB).symm (x.2, x.1.2))))) := by
   have hχ (a : ManyBody.RegionConfig β B)
-      (c : ManyBody.RegionConfig (ManyBody.compressedSiteSpace β X R)
-          (ManyBody.exteriorRegion X B)ᶜ) :
+      (c : ManyBody.ComplConfig (ManyBody.compressedSiteSpace β X R)
+          (ManyBody.exteriorRegion X B)) :
       χ (Equiv.piOptionEquivProd
-        ((ManyBody.splitEquiv (ManyBody.compressedSiteSpace β X R)
+        ((ManyBody.cutEquiv (ManyBody.compressedSiteSpace β X R)
             (ManyBody.exteriorRegion X B)).symm
           ((ManyBody.exteriorRegionEquiv β X B R hXB).symm a, c))) =
       χ ((ManyBody.exteriorComplementEquiv β X B R c).1,
@@ -155,14 +148,14 @@ private theorem reducedPure_exteriorSiteState (hXB : Disjoint X B)
     simpa only [Equiv.apply_symm_apply] using h
   ext b b'
   change
-      (∑ c : ManyBody.RegionConfig (ManyBody.compressedSiteSpace β X R)
-      (ManyBody.exteriorRegion X B)ᶜ,
+      (∑ c : ManyBody.ComplConfig (ManyBody.compressedSiteSpace β X R)
+      (ManyBody.exteriorRegion X B),
       χ (Equiv.piOptionEquivProd
-        ((ManyBody.splitEquiv (ManyBody.compressedSiteSpace β X R)
+        ((ManyBody.cutEquiv (ManyBody.compressedSiteSpace β X R)
             (ManyBody.exteriorRegion X B)).symm
           ((ManyBody.exteriorRegionEquiv β X B R hXB).symm b, c))) *
       star (χ (Equiv.piOptionEquivProd
-        ((ManyBody.splitEquiv (ManyBody.compressedSiteSpace β X R)
+        ((ManyBody.cutEquiv (ManyBody.compressedSiteSpace β X R)
             (ManyBody.exteriorRegion X B)).symm
           ((ManyBody.exteriorRegionEquiv β X B R hXB).symm b', c))))) = _
   simp_rw [hχ]
@@ -184,8 +177,8 @@ Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 332–354. -/
 theorem regionState_compressedTypicalSiteState
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (hXB : Disjoint X B)
     (E : Finset (ManyBody.RegionConfig β X)) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.ComplConfig β X → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     (ManyBody.regionState
         (WithLp.toLp 2 (fun x ↦ χ (Equiv.piOptionEquivProd x)))

@@ -91,15 +91,15 @@ private theorem euclideanTensorEquiv_symm_actualRegionSplit
     (siteType : V → Type*) [∀ v, Fintype (siteType v)] [∀ v, DecidableEq (siteType v)]
     (J : Finset V) (ψ : EuclideanSpace ℂ ((v : V) → siteType v)) :
     let σ := ManyBody.RegionConfig siteType J
-    let β := ManyBody.RegionConfig siteType Jᶜ
-    let tau := (ManyBody.splitEquiv siteType J).trans (Equiv.prodComm _ _)
+    let β := ManyBody.ComplConfig siteType J
+    let tau := (ManyBody.cutEquiv siteType J).trans (Equiv.prodComm _ _)
     let U := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ tau
     let Phi := ((EuclideanSpace.basisFun β ℂ).tensorProduct
       (EuclideanSpace.basisFun σ ℂ)).repr
     let Tm := (U.trans Phi.symm).trans
       (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ β) (EuclideanSpace ℂ σ))
     (euclideanTensorEquiv σ β).symm (Tm ψ) =
-      WithLp.toLp 2 (fun x : σ × β ↦ ψ ((ManyBody.splitEquiv siteType J).symm x)) := by
+      WithLp.toLp 2 (fun x : σ × β ↦ ψ ((ManyBody.cutEquiv siteType J).symm x)) := by
   intro σ β tau U Phi Tm
   change (euclideanTensorEquiv σ β).symm
       (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ β) (EuclideanSpace ℂ σ)
@@ -118,8 +118,8 @@ theorem actualRegionSplit_marginal_and_entropy
     (J : Finset V) (ψ : EuclideanSpace ℂ ((v : V) → Fin (n v))) :
     let siteType := fun v : V ↦ Fin (n v)
     let σ := ManyBody.RegionConfig siteType J
-    let β := ManyBody.RegionConfig siteType Jᶜ
-    let tau := (ManyBody.splitEquiv siteType J).trans (Equiv.prodComm _ _)
+    let β := ManyBody.ComplConfig siteType J
+    let tau := (ManyBody.cutEquiv siteType J).trans (Equiv.prodComm _ _)
     let U := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ tau
     let Phi := ((EuclideanSpace.basisFun β ℂ).tensorProduct
       (EuclideanSpace.basisFun σ ℂ)).repr
@@ -132,7 +132,7 @@ theorem actualRegionSplit_marginal_and_entropy
         ManyBody.regionEntropy ψ J := by
   intro siteType σ β tau U Phi Tm psiCoord C
   have hsplit : psiCoord =
-      WithLp.toLp 2 (fun x : σ × β ↦ ψ ((ManyBody.splitEquiv siteType J).symm x)) :=
+      WithLp.toLp 2 (fun x : σ × β ↦ ψ ((ManyBody.cutEquiv siteType J).symm x)) :=
     euclideanTensorEquiv_symm_actualRegionSplit siteType J ψ
   have hmarginal : C * Cᴴ = ManyBody.regionState ψ J := by
     rw [ManyBody.regionState_eq_partialTrace,

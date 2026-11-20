@@ -50,9 +50,9 @@ theorem exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X B : Finset V)
     (hXB : Disjoint X B) (E : Finset (ManyBody.RegionConfig β X)) (hΩ : ‖Ω‖ = 1)
     (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let χsite := WithLp.toLp 2
-      (fun x : (f : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) f ↦
+      (fun x : (f : Option {v // v ∉ X}) → ManyBody.compressedSiteSpace β X (Fin E.card) f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
     ∃ c : ℝ, 0 < c ∧ ∀ k : ℕ, 1 ≤ k →
