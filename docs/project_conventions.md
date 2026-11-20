@@ -17,6 +17,13 @@ provided all non-`Archive` uses are migrated, no blueprint `\lean{...}` tag
 cites the old name, and the PR body plus an audit note name each removed
 declaration with its replacement.
 
+Configurations with one local alphabet `Fin (n v)` per site are written with a named region and a
+raw site type: `ManyBody.RegionConfig (fun v ↦ Fin (n v)) D` for a region, `(∀ v, Fin (n v))`
+for all sites. The raw region type `(v : {v // v ∈ D}) → Fin (n v)` stops the `ManyBody` lemmas
+from inferring the family (`?X ↑v =?= Fin (n ↑v)` is not a pattern), and the named site type
+`ManyBody.Config (fun v ↦ Fin (n v))` leaves `σ v : (fun v ↦ Fin (n v)) v` unreduced, so
+`rw [h] at hv` with `h : n v = 0` fails.
+
 ## Proof integrity (PROOF_INTEGRITY)
 
 ### Sanctioned-axiom history
