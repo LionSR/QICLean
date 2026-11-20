@@ -631,13 +631,12 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{lemma}[Regional expectations]
     \label{lem:sites-regional-expectations}
-    \lean{Matrix.inner_toEuclideanLin_eq_trace, Matrix.eq_of_forall_trace_mul_eq,
-        ManyBody.norm_cutVector, ManyBody.regionState_posSemidef,
-        ManyBody.regionState_isHermitian, ManyBody.trace_regionState,
+    \lean{Matrix.inner_toEuclideanLin_eq_trace, ManyBody.norm_cutVector,
+        ManyBody.regionState_posSemidef, ManyBody.regionState_isHermitian, ManyBody.trace_regionState,
         ManyBody.inner_place, ManyBody.trace_regionState_submatrix_mul,
         ManyBody.inner_place_conj_eq, ManyBody.inner_conj_eq_of_mem_supportedOperators}
     \leanok
-    \uses{def:sites-regional-state}
+    \uses{def:sites-regional-state, def:sites_place}
     The matrix $\rho_D$ is positive semidefinite and has trace $\|\psi\|^2$.
     For every matrix $A$ on $D$,
     $\langle\psi,(A\otimes I)\psi\rangle=\operatorname{Tr}(\rho_D A)$.
@@ -655,9 +654,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \label{lem:sites-regional-union}
     \lean{ManyBody.regionUnionEquiv, ManyBody.regionUnionEquiv_apply_fst,
         ManyBody.regionUnionEquiv_apply_snd, ManyBody.place_union_kronecker,
-        ManyBody.partialTraceRight_regionState_union}
+        ManyBody.partialTraceRight_regionState_union, Matrix.eq_of_forall_trace_mul_eq}
     \leanok
-    \uses{def:sites-regional-state}
+    \uses{def:sites-regional-state, def:sites_place}
     For disjoint regions $B,C$, their union has configuration space
     $X_B\times X_C$. Placing $A\otimes K$ on the union equals the product
     of the placements of $A$ and $K$. The partial trace over $C$ of the
