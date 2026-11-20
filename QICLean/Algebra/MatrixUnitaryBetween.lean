@@ -151,6 +151,22 @@ theorem initializedBasisMatrix_equiv_mul_mul_conjTranspose {κ ι : Type*} [Fint
     show σ (σ.symm y) = σ.toEmbedding (σ.symm y) from rfl, initializedBasisMatrix_mul_apply_self]
   simp
 
+/-- Basis inclusions compose: `J_{e₂} J_{e₁} = J_{e₂ ∘ e₁}`. -/
+theorem initializedBasisMatrix_mul_initializedBasisMatrix {κ ι μ : Type*} [Fintype ι]
+    [DecidableEq ι] [DecidableEq μ] (e₁ : κ ↪ ι) (e₂ : ι ↪ μ) :
+    initializedBasisMatrix e₂ * initializedBasisMatrix e₁ =
+      initializedBasisMatrix (e₁.trans e₂) := by
+  ext c a
+  rw [mul_initializedBasisMatrix_apply]
+  rfl
+
+/-- Relabelling along an equivalence `σ` is conjugation by `J_σ`. -/
+theorem reindexAlgEquiv_eq_initializedBasisMatrix_mul {κ ι : Type*} [Fintype κ] [DecidableEq κ]
+    [Fintype ι] [DecidableEq ι] (σ : κ ≃ ι) (ρ : Matrix κ κ ℂ) :
+    reindexAlgEquiv ℂ ℂ σ ρ =
+      initializedBasisMatrix σ.toEmbedding * ρ * (initializedBasisMatrix σ.toEmbedding)ᴴ := by
+  rw [initializedBasisMatrix_equiv_mul_mul_conjTranspose, coe_reindexAlgEquiv, reindex_apply]
+
 /-- If $YZ=1$, then the dressed Gram equation
 $Y^\dagger GY=Y^\dagger Y$ is equivalent to $G=1$.
 

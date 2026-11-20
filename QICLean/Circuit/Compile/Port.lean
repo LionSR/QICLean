@@ -13,16 +13,31 @@ import QICLean.ManyBody.Sites.Relabel
 # Compiling ring protocols to physical ports
 
 A protocol on the ring of `N` sites whose bases have at most `d ^ k` elements is simulated on the
-ring with physical ports (`Geometry.portRing`), with `1 + k + k` qudits of dimension `d` at every
+ring with physical ports (`Geometry.portRing`), with `2k + 1` qudits of dimension `d` at every
 site: the port, `k` data qudits holding the register of the site, and `k` scratch qudits. A gate
 on the registers of the sites `j` and `j + 1` is executed by moving the register of `j`, one
 digit per port layer, into the scratch qudits of `j + 1`, acting inside the site `j + 1`, and
 moving the register back. Every layer of the ring protocol costs `2k` port layers.
 
+## Main definitions
+
+* `QuantumCircuit.portDataEmbedding` — the register of a site in its data wires.
+
 ## Main results
 
-* `QuantumCircuit.Layer.kraus_ofCells_permGate` — a layer of permutations of the qudits of its
-  cells is the permutation of all qudits.
+* `QuantumCircuit.Layer.exists_portRing` — a layer of the ring of registers is a protocol on the
+  ring with ports, of depth at most `2k` times its depth.
+
+## Implementation notes
+
+The ports move registers by permutations of the wires: every routing layer has the one Kraus
+operator `sitePermOp π` of a permutation `π`, so the forward routing is the permutation `τ` of
+the wires taking the data wire `t` of the left end `j` of a cell to the scratch wire `t` of
+`j + 1` (`routeTotal_dataWire`). After the routing every gate of the layer acts inside one site:
+the layer is coarsened along the map `host` sending `j` to `j + 1` (`Layer.exists_coarsen`),
+encoded along the registers moved by `τ` (`Layer.exists_encoded`), and its families on the single
+sites are read as gates on all the wires of a site (`refine`). The code moved by `τ` is the data
+code conjugated by `sitePermOp τ` (`routed_code`), so the backward routing returns it.
 -/
 
 open Matrix ManyBody
@@ -121,8 +136,7 @@ private def dataWire (t : Fin k) : Fin (2 * k + 1) := ⟨1 + t, by omega⟩
 /-- The scratch wire `t` of a site: wire `1 + k + t`. -/
 private def scratchWire (t : Fin k) : Fin (2 * k + 1) := ⟨1 + k + t, by omega⟩
 
-private theorem dataWire_ne_zero (t : Fin k) : dataWire t ≠ 0 := by
-  simp [dataWire, Fin.ext_iff]
+private theorem dataWire_ne_zero (t : Fin k) : dataWire t ≠ 0 := by simp [dataWire, Fin.ext_iff]
 
 private theorem scratchWire_ne_zero (t : Fin k) : scratchWire t ≠ 0 := by
   simp [scratchWire, Fin.ext_iff]
@@ -206,8 +220,7 @@ private def portPerm (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉ C
   (portShift_involutive C hC).toPerm _
 
 private theorem portPerm_apply (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉ C)
-    (w : Fin N × Fin (2 * k + 1)) : portPerm C hC w = portShift C w :=
-  rfl
+    (w : Fin N × Fin (2 * k + 1)) : portPerm C hC w = portShift C w := rfl
 
 /-- Neighbouring cells of a layer on a ring of at least two sites are not both used: the
 two cells share a site and are distinct. -/
@@ -234,15 +247,12 @@ private def inrCell : Fin N ↪ (Geometry.portRing N (2 * k + 1)).Cell :=
   ⟨Sum.inr, Sum.inr_injective⟩
 
 private theorem cell_inlCell (i : Fin N) :
-    (Geometry.portRing N (2 * k + 1)).cell (inlCell i) = {i} ×ˢ Finset.univ :=
-  rfl
+    (Geometry.portRing N (2 * k + 1)).cell (inlCell i) = {i} ×ˢ Finset.univ := rfl
 
 private theorem cell_inrCell (i : Fin N) :
-    (Geometry.portRing N (2 * k + 1)).cell (inrCell i) = {(i, 0), (finRotate N i, 0)} :=
-  rfl
+    (Geometry.portRing N (2 * k + 1)).cell (inrCell i) = {(i, 0), (finRotate N i, 0)} := rfl
 
-private theorem cost_inlCell (i : Fin N) :
-    (Geometry.portRing N (2 * k + 1)).cost (inlCell i) = 0 :=
+private theorem cost_inlCell (i : Fin N) : (Geometry.portRing N (2 * k + 1)).cost (inlCell i) = 0 :=
   rfl
 
 private theorem cost_inrCell (i : Fin N) :
@@ -473,7 +483,7 @@ private def routeTotal (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉
 private theorem routeTotal_cons (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉ C)
     (a : Fin k) (m : List (Fin k)) :
     routeTotal C hC (a :: m) = routeTotal C hC m * roundPerm C hC a := by
-  simp [routeTotal, routeIndex, List.prod_append, roundPerm, routePerm, mul_assoc]
+  simp [routeTotal, routeIndex, roundPerm, routePerm, mul_assoc]
 
 private theorem routeTotal_fix (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉ C)
     (i : Fin N) {t : Fin k} : ∀ m : List (Fin k), t ∉ m →
@@ -564,19 +574,11 @@ private theorem depth_routeLayer (C : Finset (Fin N))
     simp [depth_siteLayer, depth_portLayer]
     split_ifs <;> omega
 
-/-- The product of the permutation matrices of a list of permutations. -/
-private theorem prod_map_sitePermOp {V : Type} [Fintype V] [DecidableEq V] {α : Type}
-    [Fintype α] [DecidableEq α] :
-    ∀ l : List (Equiv.Perm V), (l.map (sitePermOp (α := α))).prod = sitePermOp l.prod
-  | [] => sitePermOp_one.symm
-  | π :: l => by rw [List.map_cons, List.prod_cons, prod_map_sitePermOp l, sitePermOp_mul,
-      List.prod_cons]
-
 private theorem routeKraus (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉ C)
     (l : List (Fin k × Fin 3)) :
     (l.map fun a ↦ sitePermOp (α := Fin d) (routePerm C hC a)).reverse.prod =
       sitePermOp (l.map (routePerm C hC)).reverse.prod := by
-  rw [← prod_map_sitePermOp, ← List.map_reverse, ← List.map_reverse, List.map_map]
+  rw [← list_prod_map_sitePermOp, ← List.map_reverse, ← List.map_reverse, List.map_map]
   rfl
 
 private theorem forall₂_routeLayer (C : Finset (Fin N))
@@ -586,11 +588,6 @@ private theorem forall₂_routeLayer (C : Finset (Fin N))
       (l.map fun a ↦ sitePermOp (routePerm C hC a)) := by
   rw [List.forall₂_map_left_iff, List.forall₂_map_right_iff]
   exact List.forall₂_same.mpr fun a _ ↦ kraus_routeLayer d C hring hC a
-
-private theorem isUnitary_adjoint {α β : Type} [Fintype α] [Fintype β] [DecidableEq α]
-    [DecidableEq β]
-    {K : KrausFamily α β} (h : K.IsUnitary) : K.adjoint.IsUnitary :=
-  ⟨h.1, fun i ↦ by simp [KrausFamily.adjoint, (h.2 i).1, (h.2 i).2]⟩
 
 /-- A circuit with a unique branch whose Kraus operator is `U` is conjugation by `U`. -/
 private theorem map_eq_of_kraus {S : Type} [Fintype S] [DecidableEq S] {Γ : Geometry S}
@@ -604,7 +601,7 @@ private theorem map_eq_of_kraus {S : Type} [Fintype S] [DecidableEq S] {Γ : Geo
   exact congrArg (fun A ↦ A * ρ * Aᴴ) (hU _)
 
 /-- A layer of unitary local families has a Kraus index. -/
-private theorem nonempty_index_of_forall_isUnitary {S : Type} [Fintype S] [DecidableEq S]
+private theorem nonempty_index_of_forall_isUnitary {S : Type} [DecidableEq S]
     {Γ : Geometry S} {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
     [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] {L : Layer Γ KrausGate X Y}
     (h : L.Forall KrausGate.ev KrausFamily.IsUnitary) : Nonempty L.Index :=
@@ -634,7 +631,8 @@ private theorem isProtocol_forwardCircuit (C : Finset (Fin N))
       Nonempty L.Index := fun L hL ↦ by
     obtain ⟨a, -, rfl⟩ := List.mem_map.mp hL
     exact nonempty_index_of_forall_isUnitary (forall_isUnitary_routeLayer d C hring hC a)
-  refine ⟨⟨forwardCircuit (k := k) d C hring hC, hU.mono fun _ h ↦ h.isTP, ?_, rfl, Circuit.isUnbranched_seq _⟩,
+  refine ⟨⟨forwardCircuit (k := k) d C hring hC, hU.mono fun _ h ↦ h.isTP, ?_, rfl,
+    Circuit.isUnbranched_seq _⟩,
     map_eq_of_kraus hU fun p ↦ ?_⟩
   · unfold forwardCircuit
     rw [Circuit.depth, Circuit.total_seq _ _ hne, depth_routeLayer,
@@ -642,12 +640,12 @@ private theorem isProtocol_forwardCircuit (C : Finset (Fin N))
   · exact (Circuit.kraus_seq_map _ _ _ _ (fun a _ ↦ kraus_routeLayer d C hring hC a) p).trans
       (routeKraus d C hC _)
 
-private theorem forall_isUnitary_adjoint {S : Type} [Fintype S] [DecidableEq S]
+private theorem forall_isUnitary_adjoint {S : Type} [DecidableEq S]
     {Γ : Geometry S} {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
     [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] {L : Layer Γ KrausGate X Y}
     (h : L.Forall KrausGate.ev KrausFamily.IsUnitary) :
     L.adjoint.Forall KrausGate.ev KrausFamily.IsUnitary :=
-  ⟨fun b ↦ isUnitary_adjoint (h.1 b), fun s ↦ isUnitary_adjoint (h.2 s)⟩
+  ⟨fun b ↦ (h.1 b).adjoint, fun s ↦ (h.2 s).adjoint⟩
 
 /-- The backward routing circuit: the adjoint layers of the forward one, in reverse order. -/
 private def backwardCircuit (C : Finset (Fin N))
@@ -726,7 +724,8 @@ private noncomputable def blockEquiv : Fin N ≃ L.Block where
     have h := L.mem_region_blockOf i
     rw [region_eq_singleton, Finset.mem_singleton] at h
     exact h.symm
-  right_inv β := L.blockOf_eq_of_mem (by rw [region_eq_singleton]; exact Finset.mem_singleton_self _)
+  right_inv β := L.blockOf_eq_of_mem
+    (by rw [region_eq_singleton]; exact Finset.mem_singleton_self _)
 
 end Blocks
 
@@ -778,7 +777,8 @@ private theorem refine_free_isEmpty (s : (refine L).Free) : False :=
 /-- The Kraus indices of the refined layer are those of `L`. -/
 private noncomputable def refineIndexEquiv : (refine L).Index ≃ L.Index :=
   letI : Unique ((s : (refine L).Free) → ((refine L).onsite s).Index) :=
-    ⟨⟨fun s ↦ (refine_free_isEmpty L s).elim⟩, fun _ ↦ funext fun s ↦ (refine_free_isEmpty L s).elim⟩
+    ⟨⟨fun s ↦ (refine_free_isEmpty L s).elim⟩,
+      fun _ ↦ funext fun s ↦ (refine_free_isEmpty L s).elim⟩
   ((Equiv.prodUnique _ _).trans ((Equiv.piCongrLeft _ (refineCellEquiv L)).symm.trans
     ((Equiv.piCongrLeft L.BlockIndex (blockEquiv L)).trans L.indexEquiv.symm)))
 
@@ -869,19 +869,6 @@ private theorem routedEmbedding_apply (C : Finset (Fin N))
       if h : host C (τ.symm w.1).1 = i then z ⟨(τ.symm w.1).1, by simp [h]⟩ t else 0 :=
   rfl
 
-private theorem initializedBasisMatrix_mul_initializedBasisMatrix {α β γ : Type}
-    [DecidableEq β] [DecidableEq γ] [Fintype β] (e₁ : α ↪ β) (e₂ : β ↪ γ) :
-    initializedBasisMatrix e₂ * initializedBasisMatrix e₁ = initializedBasisMatrix (e₁.trans e₂) := by
-  ext c a
-  rw [mul_initializedBasisMatrix_apply]
-  rfl
-
-private theorem reindexAlgEquiv_apply_eq {α β : Type} [Fintype α] [DecidableEq α]
-    [Fintype β] [DecidableEq β] (e : α ≃ β) (ρ : Matrix α α ℂ) :
-    reindexAlgEquiv ℂ ℂ e ρ = initializedBasisMatrix e.toEmbedding * ρ *
-      (initializedBasisMatrix e.toEmbedding)ᴴ := by
-  rw [initializedBasisMatrix_equiv_mul_mul_conjTranspose, coe_reindexAlgEquiv, reindex_apply]
-
 /-- The routed code is the code of the data wires moved along `τ`. -/
 private theorem routed_code (C : Finset (Fin N)) (τ : Equiv.Perm (Fin N × Fin (2 * k + 1)))
     (hτ : ∀ r t, (τ (r, dataWire t)).1 = host C r) :
@@ -898,7 +885,8 @@ private theorem routed_code (C : Finset (Fin N)) (τ : Equiv.Perm (Fin N × Fin 
       (Function.Embedding.piCongrRight (routedEmbedding (d := d) C τ hτ))).trans
         (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) x w =
       ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
-        (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) x (τ.symm w) := by
+        (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) x
+          (τ.symm w) := by
     intro w
     simp only [Function.Embedding.trans_apply, Equiv.coe_toEmbedding, blockConfigEquiv_apply,
       Function.Embedding.piCongrRight_apply, routedEmbedding_apply, portDataEmbedding_apply,
@@ -925,7 +913,8 @@ private theorem dataCode_apply
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) * ρ *
         (initializedBasisMatrix ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding))ᴴ := by
-  rw [map_encodeCircuit, reindexAlgEquiv_apply_eq, ← initializedBasisMatrix_mul_initializedBasisMatrix]
+  rw [map_encodeCircuit, reindexAlgEquiv_eq_initializedBasisMatrix_mul,
+    ← initializedBasisMatrix_mul_initializedBasisMatrix]
   simp only [conjTranspose_mul, Matrix.mul_assoc]
 
 /-- **Routing a layer of the ring to the ports.** Let `L` be a layer of trace-preserving gates on
@@ -980,7 +969,8 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
           (reindexAlgEquiv ℂ ℂ (blockConfigEquiv (host L.cells) _).symm ρ)) =
         (P * J) * ρ * (P * J)ᴴ := by
     intro ρ
-    rw [← routed_code L.cells _ hτ, reindexAlgEquiv_apply_eq, map_encodeCircuit, reindexAlgEquiv_apply_eq,
+    rw [← routed_code L.cells _ hτ, reindexAlgEquiv_eq_initializedBasisMatrix_mul,
+      map_encodeCircuit, reindexAlgEquiv_eq_initializedBasisMatrix_mul,
       ← initializedBasisMatrix_mul_initializedBasisMatrix,
       ← initializedBasisMatrix_mul_initializedBasisMatrix]
     simp only [conjTranspose_mul, Matrix.mul_assoc]
@@ -988,8 +978,7 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
       (P * J) * (Circuit.ofLayer L).map KrausGate.ev ρ * (P * J)ᴴ := by
     intro ρ
     rw [← hZ, ← hZ]
-    have h₃ := LinearMap.congr_fun hm₃
-    have h₂ := LinearMap.congr_fun hm₂
+    have h₃ := LinearMap.congr_fun hm₃; have h₂ := LinearMap.congr_fun hm₂
     have h₁ := LinearMap.congr_fun hm₁
     simp only [LinearMap.comp_apply, AlgEquiv.toLinearMap_apply] at h₁ h₂ h₃
     rw [h₃, h₂, h₁]
