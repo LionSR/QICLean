@@ -116,7 +116,6 @@ theorem entropy_eq_zero_of_forall_subset_or_disjoint {Φ : Interaction X S}
     refine Finset.sum_congr rfl fun y _ ↦ ?_
     rw [hΩc, hΩc, star_mul']
     ring
-  rw []
   refine vonNeumannEntropy_eq_zero_of_rank_le_one (regionState_posSemidef B Ω)
     (by rw [trace_regionState, hΩ]; simp) ?_
   rw [hρ]

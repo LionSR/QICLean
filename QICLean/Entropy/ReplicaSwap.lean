@@ -66,7 +66,6 @@ theorem regionMutualInformation_replicaSwap_eq_zero {Ω : EuclideanSpace ℂ (Co
       ManyBody.regionEntropy
         (relabelVector (X := fun _ : V ⊕ V ↦ α) (X' := fun _ : V ⊕ V ↦ α) (replicaSwap R)
           (fun _ ↦ Equiv.refl α) Ψ) D' = ManyBody.regionEntropy Ψ D := by
-    rw []
     exact regionEntropy_relabel D D' _ hD _ Ψ
   have hswap (S : Finset V) (hS : Disjoint S R) (w : V ⊕ V) :
       w ∈ S.disjSum ∅ ↔ replicaSwap R w ∈ S.disjSum ∅ := by

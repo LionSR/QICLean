@@ -195,7 +195,6 @@ theorem regionalMovementEta_eq_cmi_left (h : FourPartition P x Y F)
     rw [← regionEntropy_compl Y, h.compl_Y]
   rw [regionalMovementEta, e1, e2, Finset.union_comm P x,
     ManyBody.conditionalMutualInformation]
-  simp only []
   ring
 
 /-- **`S_θ(x|P) + S_θ(x|Y₀) = I_θ(x:F|Y₀)`** for a partition `P, x, Y₀, F` (`05-replicas.tex`,

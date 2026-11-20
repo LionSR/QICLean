@@ -772,6 +772,10 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
                         start = dm.start() + len(new)
                 rep.rewritten += 1
                 changed = True
+    if not check and changed:
+        # a rewrite list emptied by the dropped bridges leaves no tactic
+        new_text = re.sub(r"^[ \t]*(?:rw|simp only|simp_rw) \[\][ \t]*\n", "", new_text,
+                          flags=re.M)
     if not check and OPEN_DROP:
         # namespaces that no longer exist leave the `open` lines
         def drop_open(mm):

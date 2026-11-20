@@ -134,7 +134,6 @@ theorem regionMutualInformation_le_of_supported_unitary {φ η : EuclideanSpace 
       (hS.mono_right hR) hU hUu φ
   have hent (R : Finset V) (hR : R ⊆ X ∪ J) :
       ManyBody.regionEntropy (toEuclideanLin U φ) R = ManyBody.regionEntropy φ R := by
-    rw []
     exact vonNeumannEntropy_congr (hstate R hR) _ _
   have hψ : ‖toEuclideanLin U φ‖ = 1 := by
     have h := congrArg Matrix.trace (hstate _ subset_rfl)
