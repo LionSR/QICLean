@@ -332,12 +332,46 @@ For a positive semidefinite matrix the ground space at energy $0$ is the
 kernel, and the gap at $0$ can be read off the orthogonal complement of the
 kernel, either from the quadratic form or from the norm.
 
+\begin{theorem}[The spectrum above the kernel]
+    \label{thm:hamiltonians_kernel_spectrum}
+    \lean{ManyBody.mul_norm_sq_le_re_inner_of_hasEigenvalue,
+        ManyBody.forall_hasEigenvalue_iff_re_inner, ManyBody.forall_hasEigenvalue_iff_norm}
+    \leanok
+    Let $H$ be a complex $n\times n$ matrix and $\Delta\in\R$. If $H$ is Hermitian
+    and every eigenvalue of $H$ other than $0$ is at least $\Delta$, then
+    $\Delta\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$ for every
+    $v\perp\ker H$. If $H\ge0$, the following are equivalent.
+    \begin{enumerate}
+        \item Every eigenvalue of $H$ other than $0$ is at least $\Delta$.
+        \item $\Delta\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$ for
+              every $v\perp\ker H$.
+        \item $\Delta\lVert v\rVert\le\lVert Hv\rVert$ for every $v\perp\ker H$.
+    \end{enumerate}
+    The kernel may be zero, and no sign of $\Delta$ is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:quadratic_gap_off_kernel}
+    Theorem~\ref{thm:quadratic_gap_off_kernel} gives the first statement, so (1)
+    implies (2). Given (2), the Cauchy--Schwarz inequality
+    $\operatorname{Re}\langle v,Hv\rangle\le\lVert v\rVert\lVert Hv\rVert$ gives
+    (3) after division by $\lVert v\rVert$. Given (3) with $\Delta\ge0$, expand
+    $v\perp\ker H$ in an orthonormal eigenbasis $Hb_k=\lambda_kb_k$: the
+    coefficients at $\lambda_k=0$ vanish, and every $\lambda_k\neq0$ has
+    $b_k\perp\ker H$, so $\lambda_k=\lVert Hb_k\rVert\ge\Delta$; hence
+    $\operatorname{Re}\langle v,Hv\rangle=\sum_k\lambda_k\lvert c_k\rvert^2\ge
+        \Delta\lVert v\rVert^2$. For $\Delta<0$, (2) holds because $H\ge0$. Finally,
+    given (2), let $H\psi=\mu\psi$ with $\psi\neq0$ and $\mu\neq0$. Then $\mu$ is
+    real and $\psi\perp\ker H$, since $\mu\langle w,\psi\rangle=\langle Hw,\psi\rangle
+        =0$ for $w\in\ker H$. Thus $\Delta\lVert\psi\rVert^2\le\mu\lVert\psi\rVert^2$,
+    which is (1).
+\end{proof}
+
 \begin{theorem}[The gap above the kernel]
     \label{thm:hamiltonians_kernel_gap}
     \lean{ManyBody.groundSpace_zero, ManyBody.IsGapped.mul_norm_sq_le_re_inner,
         ManyBody.isGapped_zero_iff_inner, ManyBody.isGapped_zero_iff_norm}
     \leanok
-    \uses{def:hamiltonians_gap}
+    \uses{def:hamiltonians_gap, thm:hamiltonians_kernel_spectrum}
     Let $H$ be a complex $n\times n$ matrix and $\Delta\in\R$. The ground space
     of $H$ at $0$ is $\ker H$. If $H$ is Hermitian and gapped at $0$ with gap
     $\Delta$, then $\Delta\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$
@@ -353,43 +387,34 @@ kernel, either from the quadratic form or from the norm.
     No sign of $\Delta$ is assumed.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:quadratic_gap_off_kernel, lem:hamiltonians_gap_eigenvalues}
-    The eigenspace at $0$ is the kernel. For Hermitian $H$ gapped at $0$, every
-    nonzero eigenvalue is at least $\Delta$, and
-    Theorem~\ref{thm:quadratic_gap_off_kernel} gives the quadratic-form bound;
-    so (1) implies (2). Given (2), the Cauchy--Schwarz inequality
-    $\operatorname{Re}\langle v,Hv\rangle\le\lVert v\rVert\lVert Hv\rVert$ gives
-    (3) after division by $\lVert v\rVert$. Given (3) with $\Delta\ge0$, expand
-    $v\perp\ker H$ in an orthonormal eigenbasis $Hb_k=\lambda_kb_k$: the
-    coefficients at $\lambda_k=0$ vanish, and every $\lambda_k\neq0$ has
-    $b_k\perp\ker H$, so $\lambda_k=\lVert Hb_k\rVert\ge\Delta$; hence
-    $\operatorname{Re}\langle v,Hv\rangle=\sum_k\lambda_k\lvert c_k\rvert^2\ge
-        \Delta\lVert v\rVert^2$. For $\Delta<0$, (2) holds because $H\ge0$. Finally,
-    given (2), let $H\psi=\mu\psi$ with $\psi\neq0$ and $\mu\neq0$. Then $\mu$ is
-    real and $\psi\perp\ker H$, since $\mu\langle w,\psi\rangle=\langle Hw,\psi\rangle
-        =0$ for $w\in\ker H$. Thus $\Delta\lVert\psi\rVert^2\le\mu\lVert\psi\rVert^2$,
-    which is (1).
+    \uses{thm:hamiltonians_kernel_spectrum}
+    The eigenspace at $0$ is the kernel. Being gapped at $0$ with gap $\Delta$ is
+    $\ker H\neq0$ together with condition (1) of
+    Theorem~\ref{thm:hamiltonians_kernel_spectrum}, which that theorem turns into
+    the two inequalities.
 \end{proof}
 
 \begin{theorem}[A larger matrix with the same kernel keeps the gap]
     \label{thm:hamiltonians_kernel_gap_domination}
-    \lean{ManyBody.groundSpace_zero_eq_of_le, ManyBody.IsGapped.of_le}
+    \lean{ManyBody.groundSpace_zero_eq_of_le, ManyBody.forall_hasEigenvalue_of_le,
+        ManyBody.IsGapped.of_le}
     \leanok
     \uses{def:hamiltonians_gap}
-    Let $0\le A\le C$ with $\ker A\subseteq\ker C$. Then $\ker C=\ker A$, and if
-    $A$ is gapped at $0$ with gap $\Delta$, so is $C$. In particular, for
+    Let $0\le A\le C$ with $\ker A\subseteq\ker C$. Then $\ker C=\ker A$; if every
+    eigenvalue of $A$ other than $0$ is at least $\Delta$, the same holds for $C$;
+    and if $A$ is gapped at $0$ with gap $\Delta$, so is $C$. In particular, for
     $0\le A\le B$ with $\ker A\subseteq\ker B$ and $t\ge0$, the matrix
     $A+t(B-A)$ has kernel $\ker A$ and is gapped at $0$ with the gap of $A$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{thm:hamiltonians_kernel_gap}
+    \uses{thm:hamiltonians_kernel_spectrum}
     If $Cx=0$, then
     $0=\langle x,Cx\rangle=\langle x,Ax\rangle+\langle x,(C-A)x\rangle$ is a sum of
     two nonnegative terms, so $\langle x,Ax\rangle=0$ and $Ax=0$. On
     $(\ker C)^\perp=(\ker A)^\perp$,
     $\operatorname{Re}\langle v,Cv\rangle\ge\operatorname{Re}\langle v,Av\rangle\ge
-        \Delta\lVert v\rVert^2$, and Theorem~\ref{thm:hamiltonians_kernel_gap} applies
-    to $C\ge0$. For the interpolation take $C=A+t(B-A)$, which satisfies
+        \Delta\lVert v\rVert^2$, and Theorem~\ref{thm:hamiltonians_kernel_spectrum}
+    applies to $C\ge0$. For the interpolation take $C=A+t(B-A)$, which satisfies
     $A\le C$ since $t(B-A)\ge0$, and whose kernel contains $\ker A$.
 \end{proof}
 
@@ -846,26 +871,62 @@ kernel, either from the quadratic form or from the norm.
     Theorem~\ref{thm:hamiltonians_frustration_free_ground_space}.
 \end{proof}
 
+\begin{definition}[Zero space of an interaction]
+    \label{def:hamiltonians_zero_space}
+    \lean{ManyBody.Interaction.zeroSpace, ManyBody.Interaction.mem_zeroSpace_iff,
+        ManyBody.Interaction.zeroSpace_eq_iInf_ker}
+    \leanok
+    \uses{def:dynamics_interaction, def:hamiltonians_gap}
+    The zero space of an interaction $\Phi=(h_i)_{i\in I}$ is the common kernel
+    \[
+        \mathcal Z(\Phi)=\bigcap_{i\in I}\ker h_i
+    \]
+    of its terms: the vectors annihilated by every term.
+\end{definition}
+
 \begin{theorem}[Positive terms]
     \label{thm:hamiltonians_frustration_free_positive}
     \lean{ManyBody.Interaction.hamiltonian_mulVec_eq_zero_iff,
-        ManyBody.Interaction.groundSpace_hamiltonian_zero,
-        ManyBody.Interaction.groundSpace_hamiltonian_zero_ne_bot_iff,
-        ManyBody.Interaction.isFrustrationFree_of_groundSpace_hamiltonian_zero_ne_bot}
+        ManyBody.Interaction.posSemidef_hamiltonian,
+        ManyBody.Interaction.zeroSpace_eq_groundSpace,
+        ManyBody.Interaction.mem_zeroSpace_iff_hamiltonian_mulVec_eq_zero,
+        ManyBody.Interaction.isFrustrationFree_of_zeroSpace_ne_bot}
     \leanok
-    \uses{def:hamiltonians_frustration_free}
-    Let the index set be finite and every term positive semidefinite. Then
+    \uses{def:hamiltonians_frustration_free, def:hamiltonians_zero_space}
+    Let every term be positive semidefinite. If the zero space is nonzero, the
+    interaction is frustration free with every $e_i=0$. If moreover the index set is
+    finite, then $H\ge0$ and
     \[
         H\psi=0\iff h_i\psi=0\text{ for every }i,\qquad
-        \ker H=\bigcap_i\ker h_i .
+        \ker H=\mathcal Z(\Phi),
     \]
-    In particular $\ker H\ne0$ exactly when the terms have a common nonzero kernel
-    vector, and then the interaction is frustration free with every $e_i=0$.
+    so the zero space is the ground space of $H$ at $0$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:hamiltonians_frustration_free_ground_space}
-    This is Theorem~\ref{thm:hamiltonians_frustration_free_ground_space} with every
+    A nonzero vector $\psi$ of the zero space satisfies $h_i\psi=0$, and $h_i\ge0$.
+    The second statement is
+    Theorem~\ref{thm:hamiltonians_frustration_free_ground_space} with every
     $e_i=0$.
+\end{proof}
+
+\begin{theorem}[The gap above the zero space]
+    \label{thm:hamiltonians_frustration_free_gap}
+    \lean{ManyBody.Interaction.isGapped_hamiltonian_zero_iff_inner,
+        ManyBody.Interaction.isGapped_hamiltonian_zero_iff_norm}
+    \leanok
+    \uses{thm:hamiltonians_frustration_free_positive, thm:hamiltonians_kernel_gap}
+    Let the index set be finite, every term be positive semidefinite, and
+    $\Delta\in\R$. The Hamiltonian $H$ is gapped at $0$ with gap $\Delta$ exactly
+    when $\mathcal Z(\Phi)\neq0$ and
+    $\Delta\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$ for every
+    $v\perp\mathcal Z(\Phi)$, and exactly when $\mathcal Z(\Phi)\neq0$ and
+    $\Delta\lVert v\rVert\le\lVert Hv\rVert$ for every $v\perp\mathcal Z(\Phi)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_frustration_free_positive, thm:hamiltonians_kernel_gap}
+    By Theorem~\ref{thm:hamiltonians_frustration_free_positive}, $H\ge0$ and
+    $\ker H=\mathcal Z(\Phi)$; apply Theorem~\ref{thm:hamiltonians_kernel_gap}.
 \end{proof}
 
 \begin{theorem}[Terms on disjoint regions]
