@@ -307,10 +307,10 @@ theorem IsSupportedOn.hasProductDecomposition_inner {X : Matrix
   · have hc : ‖c (e.symm k)‖ ≤ 1 := by
       refine (l2_opNorm_mul _ _).trans ?_
       rw [l2_opNorm_conjTranspose]
-      have h1 := Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one (ManyBody.glueIsometry_conjTranspose_mul_self
-          (e.symm k).1)
-      have h2 := Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one (ManyBody.glueIsometry_conjTranspose_mul_self
-          (e.symm k).2)
+      have h1 := Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one
+        (ManyBody.glueIsometry_conjTranspose_mul_self (e.symm k).1)
+      have h2 := Matrix.l2_opNorm_le_one_of_conjTranspose_mul_self_eq_one
+        (ManyBody.glueIsometry_conjTranspose_mul_self (e.symm k).2)
       nlinarith [norm_nonneg (ManyBody.glueIsometry (B := B) (e.symm k).1),
         norm_nonneg (ManyBody.glueIsometry (B := B) (e.symm k).2)]
     have hd : ‖d (e.symm k)‖ ≤ ‖X‖ := by
