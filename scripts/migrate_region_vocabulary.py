@@ -31,6 +31,11 @@ but now take the vector first, so their existing calls are rewritten by a separa
 idempotent: after it no old name occurs. Lines that a rewrite makes longer than 100 characters
 are broken inside brackets; a line that cannot be broken is reported.
 
+Contract: this is a one-time migration tool. On TNLean (and on any branch of it) it either
+rewrites a site correctly or leaves it unchanged and reports it, and `--check` lists every old
+name left. A construct that does not occur there, such as a renamed name inside a string, may
+be left unchanged and reported rather than handled.
+
 Usage:
     python3 scripts/migrate_region_vocabulary.py DIR --part M    # once
     python3 scripts/migrate_region_vocabulary.py DIR [--check] [--report FILE]
@@ -853,12 +858,23 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         def mv(mm):
             new = MODULE_MOVES.get(mm.group(2))
             return mm.group(1) + new if new else mm.group(0)
-        new_text2 = re.sub(r"^(import\s+)(\S+)", mv, new_text, flags=re.M)
+        # imports form the header of a Lean file: the lines before its first other command
+        lines = new_text.split("\n")
+        spans = comment_spans(new_text)
+        offset, header = 0, len(lines)
+        for i, ln in enumerate(lines):
+            if ln.strip() and not ln.startswith("import ") and in_spans(spans, offset) is None \
+                    and not ln.lstrip().startswith(("--", "/-")) and \
+                    ln.strip() not in ("module", "prelude"):
+                header = i
+                break
+            offset += len(ln) + 1
         # two old modules may move into one: keep its first import
         seen: set[str] = set()
         kept_lines = []
-        for ln in new_text2.split("\n"):
-            if ln.startswith("import "):
+        for i, ln in enumerate(lines):
+            if i < header and ln.startswith("import "):
+                ln = re.sub(r"^(import\s+)(\S+)", mv, ln)
                 if ln in seen:
                     continue
                 seen.add(ln)
