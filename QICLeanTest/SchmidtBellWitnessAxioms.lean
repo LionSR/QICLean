@@ -11,11 +11,11 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let declarations := #[``FiniteProduct.schmidtBellWitnessEquiv,
-    ``FiniteProduct.bellInsertion_mul_conjTranspose_selectedBell,
-    ``FiniteProduct.schmidtBellWitness_pullback_range,
-    ``FiniteProduct.labelProj_schmidtBellWitnessEquiv_auxiliary,
-    ``FiniteProduct.labelCutoff_schmidtBellWitnessEquiv_exterior]
+  let declarations := #[``ManyBody.schmidtBellWitnessEquiv,
+    ``ManyBody.bellInsertion_mul_conjTranspose_selectedBell,
+    ``ManyBody.schmidtBellWitness_pullback_range,
+    ``ManyBody.labelProj_schmidtBellWitnessEquiv_auxiliary,
+    ``ManyBody.labelCutoff_schmidtBellWitnessEquiv_exterior]
   for decl in declarations do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"

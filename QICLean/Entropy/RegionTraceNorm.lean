@@ -25,6 +25,8 @@ theorem rectangularTraceNorm_regionState_sub_le {V : Type*} [Fintype V] [Decidab
     Matrix.rectangularTraceNorm (ManyBody.regionState ψ R - ManyBody.regionState φ R) ≤
       Matrix.rectangularTraceNorm
         (Matrix.euclideanOuterProduct ψ ψ - Matrix.euclideanOuterProduct φ φ) := by
+  rw [ManyBody.regionState_eq_partialTraceRight_cutVector,
+    ManyBody.regionState_eq_partialTraceRight_cutVector]
   let e := ManyBody.cutEquiv (fun v ↦ Fin (n v)) R
   have hcontract := Matrix.rectangularTraceNorm_partialTraceRight_le
     (Matrix.reindex e e (Matrix.euclideanOuterProduct ψ ψ -

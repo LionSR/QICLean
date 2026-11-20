@@ -53,7 +53,7 @@ private theorem groupedConfigurationEquiv_reconstruct
     let g := fiveFactorCopiesEquiv ι Bᶜ.card x
     let b := badConfigurationTraceEquiv ι B y
     fiveFactorCopiesEquiv ι k ((groupedConfigurationEquiv ι e).symm (x, y)) =
-      ((FiniteProduct.splitEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
+      ((ManyBody.splitEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
         (b.1, fun i => g.1 ((Finset.equivFin Bᶜ) i)),
         ((goodBadCopiesEquiv (ι 3) B).symm (g.2.1, b.2.1),
           (goodBadCopiesEquiv (ι 4) B).symm (g.2.2, b.2.2))) := by
@@ -78,7 +78,7 @@ private theorem groupedConfigurationEquiv_reconstruct
       rw [Equiv.symm_apply_apply]
     rw [hi, hb]
   apply Prod.ext
-  · apply (FiniteProduct.splitEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).injective
+  · apply (ManyBody.splitEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).injective
     rw [Equiv.apply_symm_apply]
     apply Prod.ext
     · funext i
@@ -136,7 +136,7 @@ theorem replicaGoodConfigurationMarginal_eq_grouped_partialTrace
   let g := fun q : Config Bᶜ.card ι ×
       ((↥B → ι 0 × (ι 1 × ι 2)) × ((Fin B.card → ι 3) × (Fin B.card → ι 4))) =>
     let x := fiveFactorCopiesEquiv ι Bᶜ.card q.1
-    w ((FiniteProduct.splitEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
+    w ((ManyBody.splitEquiv (fun _ : Fin k => ι 0 × (ι 1 × ι 2)) B).symm
       (q.2.1, fun i => x.1 ((Finset.equivFin Bᶜ) i)),
       ((goodBadCopiesEquiv (ι 3) B).symm (x.2.1, q.2.2.1),
         (goodBadCopiesEquiv (ι 4) B).symm (x.2.2, q.2.2.2)))

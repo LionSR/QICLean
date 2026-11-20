@@ -6,7 +6,7 @@ The empty product has one element.
 
 \begin{definition}[Regional pure-state density and entropy]
     \label{def:finite_product_regional_entropy}
-    \lean{FiniteProduct.reducedPure, FiniteProduct.entropy, FiniteProduct.mutualInformation}
+    \lean{ManyBody.regionState, ManyBody.regionEntropy, ManyBody.regionMutualInformation}
     \leanok
     \uses{def:von_neumann_entropy}
     For a vector $\psi\in\mathbb C^{E_\Lambda}$, identify its coordinates with
@@ -21,7 +21,7 @@ The empty product has one element.
 
 \begin{theorem}[Complementary regional entropies]
     \label{thm:finite_product_entropy_complement}
-    \lean{FiniteProduct.entropy_compl}
+    \lean{ManyBody.regionEntropy_compl}
     \leanok
     \uses{def:finite_product_regional_entropy, thm:entropy_mul_comm}
     For every vector $\psi$ and every region $R$,
@@ -36,7 +36,7 @@ The empty product has one element.
 
 \begin{theorem}[Regional subadditivity]
     \label{thm:finite_product_entropy_subadditivity}
-    \lean{FiniteProduct.entropy_union_le}
+    \lean{ManyBody.regionEntropy_union_le}
     \leanok
     \uses{def:finite_product_regional_entropy, thm:entropy_subadditivity_trivial_B}
     If $\|\psi\|=1$ and $R\cap T=\varnothing$, then
@@ -51,7 +51,7 @@ The empty product has one element.
 
 \begin{theorem}[Entropy chain along a finite total order]
     \label{thm:finite_product_ordered_chain}
-    \lean{FiniteProduct.orderedFamily_entropy_chain_lower}
+    \lean{ManyBody.orderedFamily_regionEntropy_chain_lower}
     \leanok
     \uses{def:finite_product_regional_entropy}
     Let $\mathcal I$ be a finite totally ordered index set, and set
@@ -73,7 +73,7 @@ The empty product has one element.
 
 \begin{theorem}[Two-family entropy cancellation]
     \label{thm:finite_product_two_family_cancellation}
-    \lean{FiniteProduct.entropy_le_remainder_add_half_sum}
+    \lean{ManyBody.regionEntropy_le_remainder_add_half_sum}
     \leanok
     \uses{thm:finite_product_ordered_chain,
         thm:finite_product_entropy_complement,
@@ -111,7 +111,7 @@ The empty product has one element.
 
 \begin{definition}[Regional conditional information]
     \label{def:finite_product_conditional_information}
-    \lean{FiniteProduct.conditionalMutualInformation}
+    \lean{ManyBody.conditionalMutualInformation}
     \leanok
     \uses{def:finite_product_regional_entropy}
     For regional subsystems define the entropy expression
@@ -124,8 +124,8 @@ The empty product has one element.
 
 \begin{theorem}[Conditional information as a difference]
     \label{thm:finite_product_conditional_difference}
-    \lean{FiniteProduct.conditionalMutualInformation_eq_sub,
-        FiniteProduct.conditionalMutualInformation_le_mutualInformation_union}
+    \lean{ManyBody.conditionalMutualInformation_eq_sub,
+        ManyBody.conditionalMutualInformation_le_regionMutualInformation_union}
     \leanok
     \uses{def:finite_product_conditional_information,
         thm:finite_product_entropy_subadditivity}
@@ -141,8 +141,8 @@ The empty product has one element.
 
 \begin{theorem}[Conditional chain and complementary conditioning]
     \label{thm:finite_product_conditional_chain_duality}
-    \lean{FiniteProduct.sum_conditionalMutualInformation_past,
-        FiniteProduct.conditionalMutualInformation_pure_duality}
+    \lean{ManyBody.sum_conditionalMutualInformation_past,
+        ManyBody.conditionalMutualInformation_pure_duality}
     \leanok
     \uses{def:finite_product_conditional_information,
         thm:finite_product_entropy_complement}
@@ -164,7 +164,7 @@ The empty product has one element.
 
 \begin{theorem}[Summing conditional information costs]
     \label{thm:finite_product_conditional_cost_sum}
-    \lean{FiniteProduct.mutualInformation_union_biUnion_le_of_conditional}
+    \lean{ManyBody.regionMutualInformation_union_biUnion_le_of_conditional}
     \leanok
     \uses{def:finite_product_regional_entropy,def:finite_product_conditional_information}
     Let $\psi$ be a vector in a finite tensor product, let $B,C$ be regional

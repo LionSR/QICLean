@@ -28,7 +28,7 @@ Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240--308
 and 383--418, revision `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open Filter Topology Matrix PermutationRepresentation FiniteProduct
+open Filter Topology Matrix PermutationRepresentation
 open scoped BigOperators Matrix Kronecker ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 noncomputable section
@@ -49,20 +49,20 @@ tree choice. Source: area-law manuscript, `07-comparators.tex`,
 `comparator:sharp-upper`, lines 383--418. -/
 theorem eventually_suppliedSchmidtBell_sharp_upper
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (hΩ : ‖Ω‖ = 1)
-    (X : Finset V) (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     {a K r : ℝ} (ha : 0 < a) (har : 6 * a ≤ r) (ha1 : 6 * a ≤ 1)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-    let ψ : Configuration β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     (∀ᶠ k : ℕ in atTop,
       (2 * (((k + 1) ^ (E.card ^ 2) : ℕ) : ℝ))⁻¹ ≤
         ‖WithLp.toLp 2
-          (((1 : Matrix (Fin k → Configuration β Xᶜ)
-            (Fin k → Configuration β Xᶜ) ℂ) ⊗ₖ
+          (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
+            (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
               labelProj (copyPerm (Fin E.card) k) (ell k)) *ᵥ
-            (fun x : (Fin k → Configuration β Xᶜ) × (Fin k → Fin E.card) ↦
+            (fun x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → Fin E.card) ↦
               ∏ j, ψ (x.1 j, x.2 j)))‖ ^ 2) →
     ∃ C : ℝ, 0 ≤ C ∧
       (∀ G : ℕ, Tendsto (Real.bellOverlapRemainder E.card C G) atTop (𝓝 0)) ∧
@@ -82,14 +82,15 @@ theorem eventually_suppliedSchmidtBell_sharp_upper
       (∀ j g (Q : Finset V), Q = U j g ∨ Q = U j g ∪ Y j g ∨ Q = Y j g →
         ∀ v : ℝ, |v| ≤ r →
           Real.log (Entropy.surprisalMoment
-            (reducedPure_posSemidef β Ω Q).isHermitian.eigenvalues v) ≤
-            v * vonNeumannEntropy (reducedPure β Ω Q)
-              (reducedPure_posSemidef β Ω Q).isHermitian + K * v ^ 2) →
+            (ManyBody.regionState_posSemidef Q Ω).isHermitian.eigenvalues v) ≤
+            v * vonNeumannEntropy (ManyBody.regionState Ω Q)
+              (ManyBody.regionState_posSemidef Q Ω).isHermitian + K * v ^ 2) →
       ∀ (T : MeanTree ι) (s : ℝ), 2 * s ∈ Set.Icc (0 : ℝ) 1 →
       let ι₀ := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-      let z := (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E
+      let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
       let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
-        (schmidtBellSitePrevector β X E k ΩX (ell k) ∘ schmidtBellWitnessEquiv β X E k)
+        (ManyBody.schmidtBellSitePrevector β X E k ΩX
+            (ell k) ∘ ManyBody.schmidtBellWitnessEquiv β X E k)
       let W := replicaMetric ι₀ (a / 2) k
       let Q := fun j g ↦ insert (some none)
         ((X ∪ U j g).image fun v ↦ some (some v))
@@ -99,8 +100,8 @@ theorem eventually_suppliedSchmidtBell_sharp_upper
       let A := fun j g ↦ ((W (Q j g))⁻¹ * (W (F j g))⁻¹ * W (ext (Y j g))) ^ 2
       let M := (List.ofFn fun g ↦ T.eval (fun j ↦ Zᴴ * A j g * Z)).prod
       let Nsq := ‖toEuclideanLin (M ^ (-s)) (toEuclideanLin Zᴴ v)‖ ^ 2
-      let S := fun Q : Finset V ↦ vonNeumannEntropy (reducedPure β Ω Q)
-        (reducedPure_posSemidef β Ω Q).isHermitian
+      let S := fun Q : Finset V ↦ vonNeumannEntropy (ManyBody.regionState Ω Q)
+        (ManyBody.regionState_posSemidef Q Ω).isHermitian
       0 < Nsq ∧ -Real.log Nsq / (k : ℝ) ≤
         2 * Real.log (E.card : ℝ) - Real.log z +
           2 * s * a * (∑ g, ∑ j, T.weight j *

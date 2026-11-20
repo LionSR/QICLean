@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Analysis.PhysicalSingletonDensity
-import QICLean.Entropy.FiniteProduct
+import QICLean.Entropy.RegionEntropy
 
 /-!
 # The entropy difference of the original physical marginals
@@ -36,8 +36,8 @@ private theorem entropy_piSplitAt_eq_regional
         (star (fun x => ψ ((Equiv.piSplitAt j β).symm x)))))
       (posSemidef_vecMulVec_self_star
         (fun x => ψ ((Equiv.piSplitAt j β).symm x))).partialTraceRight.isHermitian =
-      FiniteProduct.entropy β ψ {j} := by
-  let a : FiniteProduct.Configuration β {j} ≃ β j :=
+      ManyBody.regionEntropy ψ {j} := by
+  let a : ManyBody.RegionConfig β {j} ≃ β j :=
     { toFun := fun x => x ⟨j, Finset.mem_singleton_self j⟩
       invFun := fun x v => by
         rcases v with ⟨v, hv⟩
@@ -52,7 +52,7 @@ private theorem entropy_piSplitAt_eq_regional
         subst v
         rfl
       right_inv := by intro x; rfl }
-  let b : FiniteProduct.Configuration β ({j} : Finset V)ᶜ ≃
+  let b : ManyBody.RegionConfig β ({j} : Finset V)ᶜ ≃
       ((v : {v : V // v ≠ j}) → β v) :=
     { toFun := fun x v => x ⟨v, by simpa using v.property⟩
       invFun := fun x v => x ⟨v, fun hvj =>
@@ -60,20 +60,20 @@ private theorem entropy_piSplitAt_eq_regional
       left_inv := by intro x; rfl
       right_inv := by intro x; rfl }
   have hsplit (x : (v : V) → β v) :
-      (a.prodCongr b) (FiniteProduct.splitEquiv β {j} x) =
+      (a.prodCongr b) (ManyBody.splitEquiv β {j} x) =
         Equiv.piSplitAt j β x := rfl
   have hcoords (x : β j × ((v : {v : V // v ≠ j}) → β v)) :
-      (FiniteProduct.splitEquiv β {j}).symm ((a.prodCongr b).symm x) =
+      (ManyBody.splitEquiv β {j}).symm ((a.prodCongr b).symm x) =
         (Equiv.piSplitAt j β).symm x := by
     apply (Equiv.piSplitAt j β).injective
     rw [← hsplit, Equiv.apply_symm_apply, Equiv.apply_symm_apply,
       Equiv.apply_symm_apply]
   let R := (vecMulVec (fun x => ψ x) (star (fun x => ψ x))).submatrix
-    (FiniteProduct.splitEquiv β {j}).symm (FiniteProduct.splitEquiv β {j}).symm
+    (ManyBody.splitEquiv β {j}).symm (ManyBody.splitEquiv β {j}).symm
   have hρ : partialTraceRight (vecMulVec
       (fun x => ψ ((Equiv.piSplitAt j β).symm x))
       (star (fun x => ψ ((Equiv.piSplitAt j β).symm x)))) =
-      (FiniteProduct.reducedPure β ψ {j}).submatrix a.symm a.symm := by
+      (ManyBody.regionState ψ {j}).submatrix a.symm a.symm := by
     calc
       _ = partialTraceRight (R.submatrix (a.prodCongr b).symm
           (a.prodCongr b).symm) := by
@@ -81,14 +81,14 @@ private theorem entropy_piSplitAt_eq_regional
         ext x y
         change ψ ((Equiv.piSplitAt j β).symm x) *
             star (ψ ((Equiv.piSplitAt j β).symm y)) =
-          ψ ((FiniteProduct.splitEquiv β {j}).symm ((a.prodCongr b).symm x)) *
-            star (ψ ((FiniteProduct.splitEquiv β {j}).symm ((a.prodCongr b).symm y)))
+          ψ ((ManyBody.splitEquiv β {j}).symm ((a.prodCongr b).symm x)) *
+            star (ψ ((ManyBody.splitEquiv β {j}).symm ((a.prodCongr b).symm y)))
         rw [hcoords, hcoords]
       _ = _ := partialTraceRight_submatrix_prod_equiv a b R
   exact (vonNeumannEntropy_congr hρ _
-    ((FiniteProduct.reducedPure_posSemidef β ψ {j}).isHermitian.submatrix a.symm)).trans
+    ((ManyBody.regionState_posSemidef {j} ψ).isHermitian.submatrix a.symm)).trans
       (vonNeumannEntropy_submatrix_equiv a.symm _
-        (FiniteProduct.reducedPure_posSemidef β ψ {j}).isHermitian)
+        (ManyBody.regionState_posSemidef {j} ψ).isHermitian)
 
 variable (ι : Fin 5 → Type*) [∀ f, Fintype (ι f)] [∀ f, DecidableEq (ι f)]
 
@@ -119,7 +119,7 @@ theorem physicalSingletonEntropy_outer_sub_middle_nonneg
   have hS (j : Fin 3) :
       vonNeumannEntropy (physicalSingletonDensity ι Ω j)
         (posSemidef_physicalSingletonDensity ι Ω j).isHermitian =
-      FiniteProduct.entropy β ψ {j} := by
+      ManyBody.regionEntropy ψ {j} := by
     have hρ : physicalSingletonDensity ι Ω j =
         partialTraceRight (vecMulVec
           (fun x => ψ ((Equiv.piSplitAt j β).symm x))
@@ -129,9 +129,9 @@ theorem physicalSingletonEntropy_outer_sub_middle_nonneg
     rw [vonNeumannEntropy_congr hρ]
     exact entropy_piSplitAt_eq_regional β ψ j
   rw [hS, hS, hS]
-  have hsub := FiniteProduct.entropy_union_le β ψ hψ
+  have hsub := ManyBody.regionEntropy_union_le β ψ hψ
     ({0} : Finset (Fin 3)) {2} (by simp)
-  have hpure := FiniteProduct.entropy_compl β ψ ({1} : Finset (Fin 3))
+  have hpure := ManyBody.regionEntropy_compl β ψ ({1} : Finset (Fin 3))
   have hregions : ({0} : Finset (Fin 3)) ∪ {2} = ({1} : Finset (Fin 3))ᶜ := by
     ext j
     fin_cases j <;> simp

@@ -25,7 +25,7 @@ universe u
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 
@@ -38,13 +38,13 @@ def compressedSiteSpace (β : V → Type u) (X : Finset V) (R : Type u) :
 
 instance (β : V → Type u) (X : Finset V) (R : Type u)
     [∀ v, Fintype (β v)] [Fintype R] (f : Option ↥(Xᶜ)) :
-    Fintype (compressedSiteSpace β X R f) := by
-  cases f <;> dsimp [compressedSiteSpace] <;> infer_instance
+    Fintype (ManyBody.compressedSiteSpace β X R f) := by
+  cases f <;> dsimp [ManyBody.compressedSiteSpace] <;> infer_instance
 
 instance (β : V → Type u) (X : Finset V) (R : Type u)
     [∀ v, DecidableEq (β v)] [DecidableEq R] (f : Option ↥(Xᶜ)) :
-    DecidableEq (compressedSiteSpace β X R f) := by
-  cases f <;> dsimp [compressedSiteSpace] <;> infer_instance
+    DecidableEq (ManyBody.compressedSiteSpace β X R f) := by
+  cases f <;> dsimp [ManyBody.compressedSiteSpace] <;> infer_instance
 
 /-- A physical region, regarded as a region of the exterior site family. -/
 def exteriorRegion (X B : Finset V) : Finset (Option ↥(Xᶜ)) := by
@@ -53,4 +53,4 @@ def exteriorRegion (X B : Finset V) : Finset (Option ↥(Xᶜ)) := by
     | none => False
     | some v => (v : V) ∈ B
 
-end FiniteProduct
+end ManyBody

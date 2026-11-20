@@ -21,7 +21,9 @@ This script applies the rename table to every `.lean` file below a directory:
 
 A site whose arguments cannot be parsed (a partial application, a lemma name inside `rw [...]`
 that needs arguments it does not have, a bridge lemma that becomes trivial) is left unchanged
-and reported with its location.
+and reported with its location. A trivial bridge standing alone in a rewrite list is dropped
+with its separator; a list it empties is deleted when another tactic follows at the same
+indentation, and otherwise left and reported, since it may close a goal that became reflexive.
 
 The surviving definitions `ManyBody.regionState` and `ManyBody.regionEntropy` keep their names
 but now take the vector first, so their existing calls are rewritten by a separate pass,
@@ -29,11 +31,17 @@ but now take the vector first, so their existing calls are rewritten by a separa
 idempotent: after it no old name occurs. Lines that a rewrite makes longer than 100 characters
 are broken inside brackets; a line that cannot be broken is reported.
 
+Contract: this is a one-time migration tool. On TNLean (and on any branch of it) it either
+rewrites a site correctly or leaves it unchanged and reports it, and `--check` lists every old
+name left. A construct that does not occur there, such as a renamed name inside a string, may
+be left unchanged and reported rather than handled.
+
 Usage:
     python3 scripts/migrate_region_vocabulary.py DIR --part M    # once
     python3 scripts/migrate_region_vocabulary.py DIR [--check] [--report FILE]
 
-`--check` changes nothing and reports the remaining old names (exit status 1 if any).
+`--check` changes nothing and reports the remaining old names and the `open` lines of a
+dissolved namespace (exit status 1 if any).
 """
 
 from __future__ import annotations
@@ -61,8 +69,10 @@ class Rule:
     `ops` entries: ("drop", i) removes positional argument i; ("swap", i, j) exchanges
     positional arguments i and j; ("nfam", i) replaces the dimension function in positional
     argument i by the family `fun v ↦ Fin (n v)`; ("named", i, name) turns positional argument i
-    into the named argument `(name := ...)`. `need` is the number of positional arguments the
-    operations require. `nfam_named` rewrites `(n := e)` to `(X := fun v ↦ Fin (e v))`.
+    into the named argument `(name := ...)`; ("ins", i, t) inserts the positional argument `t`
+    before positional argument i. `need` is the number of positional arguments the
+    operations require. `nfam_named` rewrites `(n := e)` to `(X := fun v ↦ Fin (e v))`, with
+    `fam` in place of `X` when the survivor names its family otherwise.
     `trivial` marks a bridge lemma that becomes `rfl`: it is reported, not rewritten.
     `addx` supplies `(X := fun v ↦ Fin (n v))` outside comments: the survivor cannot infer the
     family from region matrices `(v : D) → Fin (n v)` alone, which the old abbreviation fixed.
@@ -75,6 +85,8 @@ class Rule:
     nfam_named: bool = False
     trivial: bool = False
     addx: bool = False
+    rename_unapplied: bool = False
+    fam: str = "X"
 
 
 def nfam(arg: str) -> str:
@@ -122,6 +134,10 @@ def nfam_body(arg: str) -> str:
 
 ENTROPY_RENAMES = {
     # abbreviation -> survivor; positional operations
+    # duplicates of the `FiniteProduct` complement lemmas: the survivor takes the family first
+    # (`_`, inferred from the vector), and `regionEntropy_compl` took the region first
+    "regionEntropy_compl": ("ManyBody.regionEntropy_compl", [("swap", 0, 1), ("ins", 0, "_")], 2),
+    "rank_regionState_compl": ("ManyBody.rank_regionState_compl", [("ins", 0, "_")], 2),
     "SiteConfig": ("@inline_site", [], 1),
     "RegionConfig": ("@inline_region", [], 2),
     "IsSupportedOn": ("ManyBody.IsSupportedOn", [], 0),
@@ -196,7 +212,7 @@ KEEP_N = {
 # `Entropy.IsSupportedOn.foo` lemmas move to `ManyBody.IsSupportedOn.foo` (dot notation).
 # `Entropy` names whose survivor is introduced with the dissolution of `FiniteProduct`
 PART_B_ENTROPY = {"trace_regionState_eq_one", "regionEntropy_eq_entropy",
-                  "regionState_eq_reducedPure"}
+                  "regionState_eq_reducedPure", "regionEntropy_compl", "rank_regionState_compl"}
 
 # `ManyBody` declarations removed as duplicates -> survivor (relative to `ManyBody`)
 MANYBODY_RENAMES = {
@@ -302,7 +318,8 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
         if (part == "B") != (short in PART_B_ENTROPY) and part != "all":
             continue
         r = Rule("Entropy." + short, new or "", ops, need, nfam_named=short not in KEEP_N,
-                 trivial=new is None, addx=short in ADDX)
+                 trivial=new is None, addx=short in ADDX,
+                 fam="β" if any(op[0] == "ins" for op in ops) else "X")
         qualified[r.old] = r
         bare["Entropy"][short] = r
     for short in fp_names:
@@ -310,7 +327,9 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
             new, ops, need = FINITE_PRODUCT_DEFS[short]
         else:
             new, ops, need = finite_product_lemma_name(short), [], 0
-        r = Rule("FiniteProduct." + short, new, ops, need)
+        r = Rule("FiniteProduct." + short, new, ops, need,
+                 rename_unapplied=short in ("entropy", "mutualInformation", "reducedMatrix",
+                                            "reducedPure"))
         qualified[r.old] = r
         bare["FiniteProduct"][short] = r
     for short, (new, ops, need) in (LATTICE.items() if part != "A" else []):
@@ -420,6 +439,8 @@ def apply_ops(rule: Rule, args):
         return None
     vals = [list(a) for a in args]
     work = [vals[i] for i in pos]
+    named_n = rule.nfam_named and any(
+        a[2] == "named" and re.fullmatch(r"\(\s*n\s*:=\s*(.+)\)", a[1], re.S) for a in args)
     dropped = []
     for op in rule.ops:
         if op[0] == "drop":
@@ -431,13 +452,16 @@ def apply_ops(rule: Rule, args):
             work[op[1]][1] = nfam(work[op[1]][1])
         elif op[0] == "named":
             work[op[1]][1] = f"({op[2]} := {work[op[1]][1]})"
+        elif op[0] == "ins" and not named_n:
+            # a family given by name `(n := e)` becomes `(fam := ...)`, so nothing is inserted
+            work[op[1]][1] = op[2] + " " + work[op[1]][1]
     out = []
     for a in vals:
         if a[2] == "named":
             if rule.nfam_named:
                 m = re.fullmatch(r"\(\s*n\s*:=\s*(.+)\)", a[1], re.S)
                 if m:
-                    a = [a[0], f"(X := {nfam_body(m.group(1).strip())})", "named"]
+                    a = [a[0], f"({rule.fam} := {nfam_body(m.group(1).strip())})", "named"]
             out.append(a)
         elif any(a is d for d in dropped):
             continue
@@ -471,7 +495,8 @@ class Report:
     remaining: list = field(default_factory=list)
 
 
-def comment_spans(text: str) -> list[tuple[int, int]]:
+def comment_spans(text: str, strings: bool = False) -> list[tuple[int, int]]:
+    """The comments of `text`, and its string literals too if `strings`."""
     spans, i, n = [], 0, len(text)
     while i < n:
         if text.startswith("--", i):
@@ -494,6 +519,8 @@ def comment_spans(text: str) -> list[tuple[int, int]]:
             j = i + 1
             while j < n and text[j] != '"':
                 j += 2 if text[j] == "\\" else 1
+            if strings:
+                spans.append((i, j + 1))
             i = j + 1
         else:
             i += 1
@@ -552,6 +579,54 @@ def symm_of(arg: str) -> str:
     return "(" + arg + ").symm"
 
 
+def drop_open(text: str):
+    """Remove the namespaces in `OPEN_DROP` from the `open` commands, with the numbers of the
+    lines deleted outright (a line that keeps another namespace is edited in place), of all the
+    lines changed, and of the lines left for a hand edit. Only commands outside comments and
+    strings count. A trailing comment stays; a command-local `open N in` with no namespace left
+    goes with its `in`; the selective forms `open N (x)`, `open N hiding x` and
+    `open N renaming x → y` of a dissolved namespace are left and reported. It runs once a
+    file's rewriting passes are done: the passes need the `open` line to recognize the bare
+    names."""
+    spans = comment_spans(text, strings=True)
+    kept, removed, touched, left = [], [], [], []
+    offset = 0
+    for i, ln in enumerate(text.split("\n")):
+        start, offset = offset, offset + len(ln) + 1
+        mm = re.match(r"(\s*open (?:scoped )?)(.*?)(\s*--.*)?$", ln)
+        if not mm or in_spans(spans, start + len(mm.group(1)) - 1) is not None:
+            kept.append(ln)
+            continue
+        body, note = mm.group(2), mm.group(3) or ""
+        bm = re.match(r"(.*?)(\s+in\b.*)?$", body)
+        head, tail = bm.group(1), bm.group(2) or ""
+        words = head.split()
+        if not any(w in OPEN_DROP for w in words):
+            kept.append(ln)
+            continue
+        touched.append(i + 1)
+        if any(not re.fullmatch(r"[\w'.]+", w) for w in words) or \
+                any(w in ("hiding", "renaming") for w in words):
+            # a selective opening: its names moved and may be renamed
+            left.append(i + 1)
+            kept.append(ln)
+            continue
+        ws = [w for w in words if w not in OPEN_DROP]
+        indent = re.match(r"\s*", ln).group(0)
+        if ws:
+            ln = mm.group(1) + " ".join(ws) + tail + note
+        elif tail.strip() == "in" or (not tail and not note):
+            removed.append(i + 1)
+            continue
+        elif tail:
+            # `open N in cmd` on one line: the command stays, at the line's indentation
+            ln = indent + re.sub(r"^\s+in\s+", "", tail) + note
+        else:
+            ln = indent + note.lstrip()
+        kept.append(ln)
+    return "\n".join(kept), removed, touched, left
+
+
 def with_family(rule: Rule, text: str, start: int, span) -> str:
     """The survivor of an unapplied name, with the family supplied if `rule.addx`. A name that
     is itself an argument takes parentheses, so that the named argument is not read as one of
@@ -600,7 +675,10 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         name = m.group(1)
         if DECL_BEFORE.search(text[max(0, m.start() - 40):m.start()]):
             continue
-        if text[text.rfind("\n", 0, m.start()) + 1:m.start()].startswith("export "):
+        head = text[text.rfind("\n", 0, m.start()) + 1:m.start()]
+        if re.match(r"\s*(?:export|open) ", head) and not re.search(r"\sin\s", head):
+            # `export` and `open` lines name namespaces and the names they select; `drop_open`
+            # handles the dissolved ones. The command after a same-line `open N in` is rewritten.
             continue
         limit = len(text)
         span = in_spans(spans, m.start())
@@ -623,6 +701,23 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             rep.remaining.append(f"{path}:{line}: {snippet}")
             continue
         if rule.trivial:
+            # a bridge standing alone in a rewrite list is dropped with its arrow and comma
+            if span is None:
+                # the separator is read from the text already emitted, so that consecutive
+                # bridges are dropped with their separators
+                prev = "".join(out) + text[pos:m.start()]
+                lm = re.search(r"(,\s*|\[\s*)(←\s*)?$", prev)
+                after = text[m.end():]
+                if lm and re.match(r"\s*[,\]]", after) and in_rewrite_list(prev, lm.end()):
+                    opens = lm.group(1).startswith("[")
+                    tail = re.match(r"\s*,\s*", after) if opens else None
+                    # a list the drop empties is marked, so that only such lists are cleaned up
+                    emptied = opens and tail is None
+                    out = [prev[:lm.start()] + ("[" + EMPTIED if emptied else "[" if opens else "")]
+                    pos = m.end() + (tail.end() if tail else 0)
+                    rep.rewritten += 1
+                    changed = True
+                    continue
             rep.unhandled.append(f"{path}:{line}: bridge `{name}` becomes rfl: {snippet}")
             continue
         args, end = parse_args(text[:limit], m.end(), line_indent(text, m.start()))
@@ -671,8 +766,12 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             continue
         new_args = apply_ops(rule, args) if (rule.ops or rule.nfam_named) else None
         npos = sum(1 for a in args if a[2] == "pos")
-        if rule.ops and new_args is None and npos == 0 and \
-                not any(op[0] in ("drop", "named") for op in rule.ops):
+        if rule.rename_unapplied and npos == 0 and any(a[2] == "named" for a in args):
+            # a named family `(β := e)` has no counterpart under the survivor's binder name
+            rep.unhandled.append(f"{path}:{line}: `{name}` with a named argument: {snippet}")
+            continue
+        if rule.ops and new_args is None and npos == 0 and (rule.rename_unapplied or
+                not any(op[0] in ("drop", "named") for op in rule.ops)):
             # An unapplied name (in `rw [...]`, `simp [...]`, a docstring): rename it only.
             new_args = None
             out.append(text[pos:m.start()])
@@ -743,11 +842,45 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
                         start = dm.start() + len(new)
                 rep.rewritten += 1
                 changed = True
+    if not check and changed:
+        # a rewrite list emptied by the dropped bridges is deleted when a tactic follows at the
+        # same indentation (it closed no goal, or that tactic would fail); one that ends its
+        # block may close a reflexive goal, so it stays and the final scan reports it
+        ls = new_text.split("\n")
+        keep = []
+        for i, ln in enumerate(ls):
+            if EMPTY_LIST.match(ln):
+                nxt = next((x for x in ls[i + 1:] if x.strip()), "")
+                if line_indent_of(nxt) == line_indent_of(ln):
+                    continue
+            keep.append(ln)
+        new_text = "\n".join(keep)
     if not check and MODULE_MOVES:
         def mv(mm):
             new = MODULE_MOVES.get(mm.group(2))
             return mm.group(1) + new if new else mm.group(0)
-        new_text2 = re.sub(r"^(import\s+)(\S+)", mv, new_text, flags=re.M)
+        # imports form the header of a Lean file: the lines before its first other command
+        lines = new_text.split("\n")
+        spans = comment_spans(new_text)
+        offset, header = 0, len(lines)
+        for i, ln in enumerate(lines):
+            if ln.strip() and not ln.startswith("import ") and in_spans(spans, offset) is None \
+                    and not ln.lstrip().startswith(("--", "/-")) and \
+                    ln.strip() not in ("module", "prelude"):
+                header = i
+                break
+            offset += len(ln) + 1
+        # two old modules may move into one: keep its first import
+        seen: set[str] = set()
+        kept_lines = []
+        for i, ln in enumerate(lines):
+            if i < header and ln.startswith("import "):
+                ln = re.sub(r"^(import\s+)(\S+)", mv, ln)
+                if ln in seen:
+                    continue
+                seen.add(ln)
+            kept_lines.append(ln)
+        new_text2 = "\n".join(kept_lines)
         if new_text2 != new_text:
             new_text, changed = new_text2, True
     if new_text != original:
@@ -756,6 +889,33 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
 
 
 MAX = 100
+EMPTIED = "\ue000"  # marks a rewrite list emptied by the migration, until the report
+EMPTY_LIST = re.compile(r"^[ \t]*(?:rw|rewrite|simp only|simp_rw) \[" + EMPTIED +
+                        r"\](?:[ \t]+at[ \t][^\n]*)?[ \t]*$")
+REWRITE_TACTIC = re.compile(r"(?:^|[\s(;>])(?:rw|rwa|rewrite|erw|simp_rw|nth_rw\s+\d+|"
+                            r"nth_rewrite\s+\d+|simp|simpa|dsimp|simp_all|field_simp)[!?]?"
+                            r"(?:\s+only)?\s*$")
+
+
+def in_rewrite_list(text: str, end: int) -> bool:
+    """Whether position `end` of `text` lies directly inside the list of a rewriting tactic
+    (`rw [...]`, `simp only [...]`, ...), not in a list literal or another bracket."""
+    depth, k = 0, end
+    while k > 0:
+        k -= 1
+        c = text[k]
+        if c in ")]}⟩":
+            depth += 1
+        elif c in "([{⟨":
+            if depth == 0:
+                return c == "[" and bool(REWRITE_TACTIC.search(text[:k]))
+            depth -= 1
+    return False
+
+
+def line_indent_of(line: str) -> int:
+    return len(line) - len(line.lstrip(" "))
+OPEN_DROP: set[str] = set()
 XARG = " (X := fun v ↦ Fin (n v))"
 
 
@@ -786,6 +946,11 @@ def wrap_line(line: str, in_doc: bool, depth0: int = 0):
             elif c == " " and k > start and k + 1 < len(cur):
                 ok_tok = cur[k - 1] not in " (" and cur[k + 1] not in " )],"
                 if not ok_tok:
+                    continue
+                if cur[k + 1] == "[" and re.search(r"(?:^|\s)(?:rw|rwa|simp|simp only|simp_rw|"
+                                                   r"nth_rw \d+|dsimp only|simpa only)$",
+                                                   cur[:k]):
+                    # a rewrite list stays on the line of its tactic
                     continue
                 # cost: shallow first; at equal depth, before a bracketed argument or after a
                 # comma rather than inside a short application such as `Fin (n v)`
@@ -888,6 +1053,8 @@ def main() -> int:
     a = ap.parse_args()
     load_module_moves(os.path.join(here, "migrate_region_vocabulary_modules.txt"))
     qualified, bare, dot = build_rules(load_finite_product_names(a.finite_product_names), a.part)
+    if a.part in ("B", "all"):
+        OPEN_DROP.add("FiniteProduct")
     rep = Report()
     for dp, dns, fs in os.walk(a.root):
         dns[:] = [d for d in dns if d not in (".lake", ".git", "build")]
@@ -899,6 +1066,8 @@ def main() -> int:
                 t = h.read()
             if a.check:
                 rewrite_text(t, p, qualified, bare, dot, False, rep, True)
+                rep.remaining += [f"{p}:{n}: open line of a dissolved namespace"
+                                  for n in drop_open(t)[2]]
                 continue
             frep = Report()
             nt = rewrite_text(t, p, qualified, bare, dot, False, frep, False)
@@ -913,8 +1082,6 @@ def main() -> int:
                 nt = t2
             if nt != t:
                 nt = wrap_changed(t, nt, p, frep)
-                with open(p, "w", encoding="utf8") as h:
-                    h.write(nt)
             rep.rewritten += frep.rewritten
             rep.files |= frep.files
             # the sites left for a hand edit are the old names still in the final text, at their
@@ -922,9 +1089,33 @@ def main() -> int:
             # passes could not rewrite
             final = Report()
             rewrite_text(nt, p, qualified, bare, dot, False, final, True)
-            rep.unhandled += final.remaining
+            if OPEN_DROP and drop_open(nt)[2]:
+                # the `open` lines go last; a remaining site moves up by the lines removed above it
+                dropped, removed, _, left = drop_open(nt)
+                def shift(entry):
+                    mm = re.match(r"(.*?):(\d+):(.*)", entry, re.S)
+                    if not mm:
+                        return entry
+                    n0 = int(mm.group(2))
+                    return f"{mm.group(1)}:{n0 - sum(1 for r in removed if r < n0)}:{mm.group(3)}"
+                final.remaining = [shift(e) for e in final.remaining]
+                final.remaining += [shift(f"{p}:{n}: selective open of a dissolved namespace: "
+                                          "open the survivors by hand") for n in left]
+                if dropped != nt:
+                    nt = dropped
+                    rep.files.add(p)
+            # an emptied rewrite list that ends its block is left for a hand edit; the marks of
+            # the emptied lists go
+            emptied = [f"{p}:{i + 1}: emptied rewrite list ends its block: delete it, or close "
+                       "the goal with `rfl`"
+                       for i, ln in enumerate(nt.split("\n")) if EMPTY_LIST.match(ln)]
+            nt = nt.replace(EMPTIED, "")
+            if nt != t:
+                with open(p, "w", encoding="utf8") as h:
+                    h.write(nt)
+            rep.unhandled += final.remaining + emptied
             rep.unhandled += [u for u in dict.fromkeys(frep.unhandled)
-                              if "longer than" in u or "`." in u]
+                              if re.search(r": (line longer than|`\.[\w']+` needs)", u)]
     lines = []
     if a.check:
         lines.append(f"remaining old names: {len(rep.remaining)}")

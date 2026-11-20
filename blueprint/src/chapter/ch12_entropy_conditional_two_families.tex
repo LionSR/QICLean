@@ -2,8 +2,8 @@
 
 \begin{theorem}[Twice-entropy information bound]
     \label{thm:finite_product_twice_entropy_information}
-    \lean{FiniteProduct.mutualInformation_le_two_entropy,
-        FiniteProduct.conditionalMutualInformation_le_two_entropy}
+    \lean{ManyBody.regionMutualInformation_le_two_regionEntropy,
+        ManyBody.conditionalMutualInformation_le_two_regionEntropy}
     \leanok
     \uses{def:finite_product_conditional_information,
         thm:finite_product_entropy_complement,
@@ -25,7 +25,7 @@
 
 \begin{theorem}[Conditional two-family bound]
     \label{thm:finite_product_conditional_two_family_bound}
-    \lean{FiniteProduct.conditionalMutualInformation_le_two_family_sum}
+    \lean{ManyBody.conditionalMutualInformation_le_two_family_sum}
     \leanok
     \uses{thm:finite_product_twice_entropy_information,
         thm:finite_product_conditional_difference,
@@ -70,7 +70,7 @@
 
 \begin{theorem}[The complementary exterior in the two-family bound]
     \label{thm:finite_product_conditional_source_exterior}
-    \lean{FiniteProduct.target_union_complement_eq_exterior}
+    \lean{ManyBody.target_union_complement_eq_exterior}
     \leanok
     If $C$ is disjoint from $G$ and $B$, then
     $C\cup(G\cup B\cup C)^c=(G\cup B)^c$.

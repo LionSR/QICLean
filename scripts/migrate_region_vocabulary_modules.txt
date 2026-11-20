@@ -24,3 +24,6 @@ QICLean.Analysis.ViableSubspaceTrimming QICLean.Entropy.ViableSampling.ViableSub
 QICLean.Probability.RankUnitaryHalfSampling QICLean.Entropy.ViableSampling.RankUnitaryHalfSampling
 QICLean.Analysis.ViableSubspaceEntropy QICLean.Entropy.ViableSampling.ViableSubspaceEntropy
 QICLean.Analysis.ReplicaGoodCopyFactorization QICLean.Entropy.ViableSampling.ReplicaGoodCopyFactorization
+QICLean.Entropy.FiniteProduct QICLean.Entropy.RegionEntropy
+QICLean.Channel.FiniteProduct QICLean.ManyBody.Sites.RegionMatrix
+QICLean.Channel.FiniteProductOperatorSchmidt QICLean.ManyBody.Sites.SplitOperatorSchmidt

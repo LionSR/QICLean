@@ -7,7 +7,7 @@ enters.
 
 \begin{theorem}[Araki--Lieb inequality and the dimension bound]
     \label{thm:finite_product_araki_lieb}
-    \lean{FiniteProduct.entropy_le_union_add, FiniteProduct.entropy_le_log_card}
+    \lean{ManyBody.regionEntropy_le_union_add, ManyBody.regionEntropy_le_log_card}
     \leanok
     \uses{def:finite_product_regional_entropy}
     Let $\psi$ be a unit vector. For disjoint regions $R,T$,
@@ -27,9 +27,9 @@ enters.
 
 \begin{theorem}[Regions of zero entropy]
     \label{thm:finite_product_zero_entropy_region}
-    \lean{FiniteProduct.entropy_sdiff_eq_of_eq_zero,
-        FiniteProduct.entropy_union_eq_of_eq_zero,
-        FiniteProduct.entropy_symmDiff_eq_of_eq_zero}
+    \lean{ManyBody.regionEntropy_sdiff_eq_of_eq_zero,
+        ManyBody.regionEntropy_union_eq_of_eq_zero,
+        ManyBody.regionEntropy_symmDiff_eq_of_eq_zero}
     \leanok
     \uses{def:finite_product_regional_entropy}
     Let $\psi$ be a unit vector and $P$ a region with $S_\psi(P)=0$. Then
@@ -53,7 +53,7 @@ enters.
 \begin{theorem}[Trace distance of pure states and of their reductions]
     \label{thm:finite_product_reduced_trace_distance}
     \lean{Matrix.traceDistance_vecMulVec_le_norm_sub,
-        FiniteProduct.traceDistance_reducedPure_le}
+        ManyBody.traceDistance_regionState_le}
     \leanok
     \uses{def:finite_product_regional_entropy}
     For unit vectors $\psi,\eta$, the trace distance of
@@ -73,9 +73,9 @@ enters.
 
 \begin{theorem}[Mutual information near a state without correlations]
     \label{thm:finite_product_information_perturbation}
-    \lean{FiniteProduct.mutualInformation_le_of_norm_sub_le,
-        FiniteProduct.mutualInformation_le_of_supported_unitary,
-        FiniteProduct.mutualInformation_le_inv_pow_of_supported_unitary}
+    \lean{ManyBody.regionMutualInformation_le_of_norm_sub_le,
+        ManyBody.regionMutualInformation_le_of_supported_unitary,
+        ManyBody.regionMutualInformation_le_inv_pow_of_supported_unitary}
     \leanok
     \uses{def:finite_product_regional_entropy, def:sites_supported}
     Let $X,J$ be disjoint regions and $\psi,\eta,\varphi$ unit vectors with
@@ -109,12 +109,12 @@ enters.
 
 \begin{theorem}[Regional entropies of a product over two systems of sites]
     \label{thm:finite_product_sum_sites}
-    \lean{FiniteProduct.sumSitesProduct, FiniteProduct.disjSumEquiv,
-        FiniteProduct.norm_sumSitesProduct,
-        FiniteProduct.reducedPure_sumSitesProduct,
-        FiniteProduct.entropy_sumSitesProduct,
-        FiniteProduct.mutualInformation_sumSitesProduct_inl,
-        FiniteProduct.mutualInformation_sumSitesProduct_inr_inl}
+    \lean{ManyBody.sumSitesProduct, ManyBody.disjSumEquiv,
+        ManyBody.norm_sumSitesProduct,
+        ManyBody.regionState_sumSitesProduct,
+        ManyBody.regionEntropy_sumSitesProduct,
+        ManyBody.regionMutualInformation_sumSitesProduct_inl,
+        ManyBody.regionMutualInformation_sumSitesProduct_inr_inl}
     \leanok
     \uses{def:finite_product_regional_entropy}
     Let $f$ be a vector on the sites $A$ and $g$ a vector on the sites $B$, and let
@@ -164,7 +164,7 @@ enters.
 
 \begin{theorem}[The cores of the exchanged doubled vector are uncorrelated]
     \label{thm:finite_product_replica_swap_cores}
-    \lean{FiniteProduct.mutualInformation_replicaSwap_eq_zero}
+    \lean{ManyBody.regionMutualInformation_replicaSwap_eq_zero}
     \leanok
     \uses{thm:finite_product_sum_sites, def:sites-replica-swap}
     Let $\Omega$ be a unit vector on the sites $V$ and $F_R$ the exchange of the two

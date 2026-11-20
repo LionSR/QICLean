@@ -28,7 +28,7 @@ September 24, 2026, `07-comparators.tex`, lines 299–308 and 370–381,
 `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped InnerProductSpace ComplexOrder MatrixOrder
 open scoped Matrix.Norms.L2Operator
 
@@ -44,7 +44,7 @@ variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β C) R
-local notation "ιe" => compressedSiteSpace β X R
+local notation "ιe" => ManyBody.compressedSiteSpace β X R
 
 local instance bellCompressedInverseNormConfigDecidableEq (k : ℕ) : DecidableEq (Config k ι₀) :=
   Fintype.decidablePiFintype
@@ -61,7 +61,7 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
       ∀ (K : ℕ) (U Y : S → Fin K → Finset V),
       (∀ j g, Disjoint (U j g) (Y j g)) →
       (∀ j j' g h, g < h → U j g ∪ Y j g ⊆ U j' h) →
-      ∀ b : (Configuration β X × C) → ℂ, ‖WithLp.toLp 2 b‖ = 1 →
+      ∀ b : (ManyBody.RegionConfig β X × C) → ℂ, ‖WithLp.toLp 2 b‖ = 1 →
       ∀ (T : Matrix.MeanTree S) (a : ℝ) (φ u : EuclideanSpace ℂ (Config k ι₀)),
       ‖φ‖ = 1 →
       let E := fun B : Finset V ↦ (B \ X).image fun v ↦ some (some v)
@@ -70,7 +70,7 @@ theorem exists_replicaMetric_compressed_bell_inverse_norm_bound {S : Type*}
         toEuclideanLin (labelCutoff (subsystemPerm k ι₀ (E (U j g ∪ Y j g))) a) φ = φ) →
       ∀ s : ℝ, 2 * s ∈ Set.Icc (0 : ℝ) 1 →
       let e := bellInsertionCopyEquiv β X C R k
-      let J := (addedSiteInsertion ιe (Configuration β X × C) k b).submatrix e id
+      let J := (addedSiteInsertion ιe (ManyBody.RegionConfig β X × C) k b).submatrix e id
       let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
       let P := J * Pe * Jᴴ
       let W := replicaMetric ι₀ t k

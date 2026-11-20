@@ -21,7 +21,7 @@ exchange on the sites `V ⊕ V`.
 
 ## Main results
 
-* `FiniteProduct.mutualInformation_replicaSwap_eq_zero`.
+* `ManyBody.regionMutualInformation_replicaSwap_eq_zero`.
 
 ## References
 
@@ -31,7 +31,7 @@ exchange on the sites `V ⊕ V`.
 
 open Matrix ManyBody
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [Fintype α] [DecidableEq α]
 
@@ -54,19 +54,18 @@ private theorem mem_disjSum_iff_replicaSwap {R₀ C₀ R : Finset V} (hR₀ : R�
 cores `R₀ ⊆ R` and `C₀` disjoint from `R`, both in the first replica, have no mutual
 information in `F_R (Ω ⊗ Ω)`. Polynomial PEPS approximation, `02-information.tex`,
 lines 355–365. -/
-theorem mutualInformation_replicaSwap_eq_zero {Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)}
+theorem regionMutualInformation_replicaSwap_eq_zero {Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)}
     (hΩ : ‖Ω‖ = 1) {R R₀ C₀ : Finset V} (hR₀ : R₀ ⊆ R) (hC₀ : Disjoint C₀ R) :
-    mutualInformation (fun _ : V ⊕ V ↦ α)
+    ManyBody.regionMutualInformation
       (WithLp.toLp 2 (sitePermOp (replicaSwap R) *ᵥ
-        WithLp.ofLp (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω)))
+        WithLp.ofLp (ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω)))
       (R₀.disjSum ∅) (C₀.disjSum ∅) = 0 := by
-  set Ψ := sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
+  set Ψ := ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
   rw [sitePermOp_mulVec_eq_relabelVector]
   have hent (D D' : Finset (V ⊕ V)) (hD : ∀ w, w ∈ D ↔ replicaSwap R w ∈ D') :
-      entropy (fun _ : V ⊕ V ↦ α)
+      ManyBody.regionEntropy
         (relabelVector (X := fun _ : V ⊕ V ↦ α) (X' := fun _ : V ⊕ V ↦ α) (replicaSwap R)
-          (fun _ ↦ Equiv.refl α) Ψ) D' = entropy (fun _ : V ⊕ V ↦ α) Ψ D := by
-    rw [← regionEntropy_eq_entropy, ← regionEntropy_eq_entropy]
+          (fun _ ↦ Equiv.refl α) Ψ) D' = ManyBody.regionEntropy Ψ D := by
     exact regionEntropy_relabel D D' _ hD _ Ψ
   have hswap (S : Finset V) (hS : Disjoint S R) (w : V ⊕ V) :
       w ∈ S.disjSum ∅ ↔ replicaSwap R w ∈ S.disjSum ∅ := by
@@ -83,13 +82,13 @@ theorem mutualInformation_replicaSwap_eq_zero {Ω : EuclideanSpace ℂ (Config f
   have hunion : R₀.disjSum (∅ : Finset V) ∪ C₀.disjSum ∅ = (R₀ ∪ C₀).disjSum ∅ := by
     ext w
     rcases w with v | v <;> simp
-  rw [mutualInformation, hunion, hent _ _ hR₀', hent _ _ (hswap C₀ hC₀),
+  rw [regionMutualInformation, hunion, hent _ _ hR₀', hent _ _ (hswap C₀ hC₀),
     hent _ _ (mem_disjSum_iff_replicaSwap hR₀ hC₀)]
-  have h₁ := entropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ ∅ R₀
-  have h₂ := entropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ ∅
-  have h₃ := entropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ R₀
-  have h₀ := entropy_empty (fun _ : V ↦ α) Ω hΩ
+  have h₁ := ManyBody.regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ ∅ R₀
+  have h₂ := ManyBody.regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ ∅
+  have h₃ := ManyBody.regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ R₀
+  have h₀ := ManyBody.regionEntropy_empty (fun _ : V ↦ α) Ω hΩ
   rw [h₁, h₂, h₃, h₀]
   ring
 
-end FiniteProduct
+end ManyBody

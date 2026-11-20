@@ -44,9 +44,9 @@ theorem re_inner_exp_labelEntropy_subsystemPerm_prod
     let Ψ := WithLp.toLp 2 (fun x : Config k ι ↦ ∏ j, ψ (x j))
     (⟪Ψ, Matrix.toEuclideanLin
       (NormedSpace.exp ((u : ℂ) • labelEntropy (subsystemPerm k ι Q))) Ψ⟫_ℂ).re =
-      (Matrix.finKronecker (fun _ : Fin k ↦ FiniteProduct.reducedPure ι ψ Q) *
+      (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ Q) *
         NormedSpace.exp ((u : ℂ) •
-          labelEntropy (copyPerm (FiniteProduct.Configuration ι Q) k))).trace.re := by
+          labelEntropy (copyPerm (ManyBody.RegionConfig ι Q) k))).trace.re := by
   classical
   have hexp {A : Type _} [Fintype A] [DecidableEq A]
       (φ : Equiv.Perm (Fin k) →* Equiv.Perm A) :
@@ -59,10 +59,10 @@ theorem re_inner_exp_labelEntropy_subsystemPerm_prod
       (NormedSpace.exp ((u : ℂ) • labelEntropy (subsystemPerm k ι Q))).submatrix
         (subsystemSplitEquiv ι k Q).symm (subsystemSplitEquiv ι k Q).symm =
       Matrix.kronecker
-        (1 : Matrix (Fin k → FiniteProduct.Configuration ι Qᶜ)
-          (Fin k → FiniteProduct.Configuration ι Qᶜ) ℂ)
+        (1 : Matrix (Fin k → ManyBody.RegionConfig ι Qᶜ)
+          (Fin k → ManyBody.RegionConfig ι Qᶜ) ℂ)
         (NormedSpace.exp ((u : ℂ) •
-          labelEntropy (copyPerm (FiniteProduct.Configuration ι Q) k))) := by
+          labelEntropy (copyPerm (ManyBody.RegionConfig ι Q) k))) := by
     rw [hexp, hexp]
     ext x y
     simpa only [Matrix.submatrix_apply, Matrix.sum_apply, Matrix.smul_apply,
@@ -71,20 +71,20 @@ theorem re_inner_exp_labelEntropy_subsystemPerm_prod
         (_ : l ∈ Finset.univ) ↦ congrArg
           (fun M ↦ Complex.exp ((u : ℂ) * (Real.log l.dim : ℂ)) * M x y)
           (labelProj_subsystemPerm_submatrix ι k Q l)))
-  let τ : FiniteProduct.Configuration ι Qᶜ × FiniteProduct.Configuration ι Q → ℂ :=
-    fun x ↦ ψ ((FiniteProduct.splitEquiv ι Q).symm (x.2, x.1))
-  let v' : (Fin k → FiniteProduct.Configuration ι Qᶜ) ×
-      (Fin k → FiniteProduct.Configuration ι Q) → ℂ :=
+  let τ : ManyBody.RegionConfig ι Qᶜ × ManyBody.RegionConfig ι Q → ℂ :=
+    fun x ↦ ψ ((ManyBody.splitEquiv ι Q).symm (x.2, x.1))
+  let v' : (Fin k → ManyBody.RegionConfig ι Qᶜ) ×
+      (Fin k → ManyBody.RegionConfig ι Q) → ℂ :=
     fun x ↦ ∏ j, τ (x.1 j, x.2 j)
-  have htrace (P : Matrix (Fin k → FiniteProduct.Configuration ι Q)
-      (Fin k → FiniteProduct.Configuration ι Q) ℂ) :
-      (Matrix.finKronecker (fun _ : Fin k ↦ FiniteProduct.reducedPure ι ψ Q) * P).trace =
+  have htrace (P : Matrix (Fin k → ManyBody.RegionConfig ι Q)
+      (Fin k → ManyBody.RegionConfig ι Q) ℂ) :
+      (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ Q) * P).trace =
         (Matrix.vecMulVec v' (star v') * Matrix.kronecker
-          (1 : Matrix (Fin k → FiniteProduct.Configuration ι Qᶜ)
-            (Fin k → FiniteProduct.Configuration ι Qᶜ) ℂ) P).trace := by
+          (1 : Matrix (Fin k → ManyBody.RegionConfig ι Qᶜ)
+            (Fin k → ManyBody.RegionConfig ι Qᶜ) ℂ) P).trace := by
     simpa only [v', Matrix.partialTraceLeft_vecMulVec_prod,
       show Matrix.partialTraceLeft (Matrix.vecMulVec τ (star τ)) =
-        FiniteProduct.reducedPure ι ψ Q from rfl, Matrix.kronecker] using
+        ManyBody.regionState ψ Q from rfl, Matrix.kronecker] using
       Matrix.trace_partialTraceLeft_mul P (Matrix.vecMulVec v' (star v'))
   rw [htrace, ← hM, Matrix.trace_mul_comm, Matrix.mul_vecMulVec, Matrix.trace_vecMulVec]
   have hv : v' = (fun x : Config k ι ↦ ∏ j, ψ (x j)) ∘

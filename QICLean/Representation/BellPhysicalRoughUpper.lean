@@ -34,22 +34,22 @@ open scoped MatrixOrder Matrix.Norms.L2Operator
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-variable (E : Finset (Configuration β X))
+variable (E : Finset (ManyBody.RegionConfig β X))
 
-local notation "A" => Configuration β X
-local notation "B" => Configuration β Xᶜ
+local notation "A" => ManyBody.RegionConfig β X
+local notation "B" => ManyBody.RegionConfig β Xᶜ
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-local notation "ιe" => compressedSiteSpace β X (Fin E.card)
+local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
-  (Matrix.PosSemidef.isHermitian (reducedPure_posSemidef β Ω X)) E
+  (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
 
 local instance bellPhysicalRoughUpperConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
+    DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
 
 open Classical in
 /-- The rough upper estimate for the original supplied-label prevector and
@@ -66,17 +66,17 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
     (hdisjoint : ∀ D ∈ regions, Disjoint X D)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)))
     {t : ℝ} (ht : 0 < t) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun _ ↦
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ιe {none}) (ell k)) (Ψ k)‖ ^ 2
     (∀ᶠ k : ℕ in atTop,
       1 / (2 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ q k) →
     ∃ c : ℝ, 0 ≤ c ∧ ∀ᶠ k : ℕ in atTop,
-      ∀ (n : ℕ) (Z : Matrix (Config k ι₀) (Fin n) ℂ),
+      ∀ (n : ℕ) (Z : Matrix (TensorPower.Config k ι₀) (Fin n) ℂ),
       Zᴴ * Z = 1 →
       Z * Zᴴ = symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k) →
       ∀ (K : ℕ) (U Y : S → Fin K → Finset V),
@@ -84,14 +84,14 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
       (∀ j j' g h, g < h → U j g ∪ Y j g ⊆ U j' h) →
       (∀ j g, Disjoint X (U j g ∪ Y j g)) →
       ∀ (T : Matrix.MeanTree S) (Bsh Bexc : ℝ),
-      (∀ D ∈ regions, entropy β Ω D ≤ Bsh) →
+      (∀ D ∈ regions, ManyBody.regionEntropy Ω D ≤ Bsh) →
       (∀ j g (Q : Finset V), Q = U j g ∨ Q = U j g ∪ Y j g →
         ∃ D ∈ regions, (D ⊆ Q ∨ Q ⊆ D) ∧
-          1 + Real.log (Fintype.card (Configuration β (D ∆ Q))) ≤ Bexc) →
+          1 + Real.log (Fintype.card (ManyBody.RegionConfig β (D ∆ Q))) ≤ Bexc) →
       ∀ s : ℝ, 2 * s ∈ Set.Icc (0 : ℝ) 1 →
-      let τ := schmidtBellWitnessEquiv β X E k
-      let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
-        (schmidtBellSitePrevector β X E k ΩX (ell k) ∘ τ)
+      let τ := ManyBody.schmidtBellWitnessEquiv β X E k
+      let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
+        (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘ τ)
       let extRegion := fun Q : Finset V ↦ (Q \ X).image fun x ↦ some (some x)
       let W := replicaMetric ι₀ t k
       let Q := fun j g ↦ insert (some none)
@@ -108,7 +108,7 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
   classical
   intro ΩX ψ Ψ q hmass
   obtain ⟨hsite, hb, hw⟩ :=
-    eventually_exists_suppliedSchmidtBell_physicalWitness
+    ManyBody.eventually_exists_suppliedSchmidtBell_physicalWitness
       (S := S) β Ω X E hΩ hz regions hnested hdisjoint ell hmass
   obtain ⟨c, hc, hC⟩ :=
     letI : ∀ o, Nonempty (ι₀ o) := hsite
@@ -127,4 +127,4 @@ theorem eventually_suppliedSchmidtBell_rough_upper {S : Type*} [Finite S]
   simpa only [mul_assoc (4 * t * (K : ℝ)) (k : ℝ) (Bsh / z + Bexc)] using
     hover.trans hu
 
-end FiniteProduct
+end ManyBody

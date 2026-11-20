@@ -51,7 +51,7 @@ exchange of replicas and the placement of the buffer operator.
   constants at lines 443–450.
 -/
 
-open Matrix ManyBody FiniteProduct
+open Matrix ManyBody
 open scoped Kronecker ComplexOrder Matrix.Norms.L2Operator
 
 namespace GaussianFilter
@@ -94,16 +94,17 @@ variable (R C : Finset V) (hRC : Disjoint R C)
 
 /-- The coordinates of two regions and the buffer of one replica. -/
 private noncomputable abbrev splitCoords :=
-  splitTwoRegionsEquiv (fun _ : V ↦ α) R C hRC
+  ManyBody.splitTwoRegionsEquiv (fun _ : V ↦ α) R C hRC
 
 /-- The coordinates `(R × C)² × Q²` of the two replicas, in the order of the physical-buffer
 filter. -/
 private noncomputable def replicaCoords :
-    ((Fin (Fintype.card (Configuration (fun _ : V ↦ α) R)) ×
-        Fin (Fintype.card (Configuration (fun _ : V ↦ α) C))) ×
-      (Fin (Fintype.card (Configuration (fun _ : V ↦ α) R)) ×
-        Fin (Fintype.card (Configuration (fun _ : V ↦ α) C)))) ×
-      (Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ × Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ) ≃
+    ((Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) R)) ×
+        Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) C))) ×
+      (Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) R)) ×
+        Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) C)))) ×
+      (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ × ManyBody.RegionConfig (fun _ : V ↦ α)
+          (R ∪ C)ᶜ) ≃
       Config (fun _ : V ⊕ V ↦ α) :=
   (((splitCoords R C hRC).prodCongr (splitCoords R C hRC)).trans
     (Equiv.doubledRegroup _ _)).symm.trans (Equiv.sumArrowEquivProdArrow V V α).symm
@@ -111,23 +112,24 @@ private noncomputable def replicaCoords :
 omit [DecidableEq α] in
 private theorem replicaCoords_symm_apply (x : Config fun _ : V ⊕ V ↦ α) :
     (replicaCoords (α := α) R C hRC).symm x =
-      (((Fintype.equivFin (Configuration (fun _ : V ↦ α) R) (fun v ↦ x (.inl v)),
-            Fintype.equivFin (Configuration (fun _ : V ↦ α) C) (fun v ↦ x (.inl v))),
-          (Fintype.equivFin (Configuration (fun _ : V ↦ α) R) (fun v ↦ x (.inr v)),
-            Fintype.equivFin (Configuration (fun _ : V ↦ α) C) (fun v ↦ x (.inr v)))),
-        ((fun v ↦ x (.inl v) : Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ),
-          (fun v ↦ x (.inr v) : Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ))) :=
+      (((Fintype.equivFin (ManyBody.RegionConfig (fun _ : V ↦ α) R) (fun v ↦ x (.inl v)),
+            Fintype.equivFin (ManyBody.RegionConfig (fun _ : V ↦ α) C) (fun v ↦ x (.inl v))),
+          (Fintype.equivFin (ManyBody.RegionConfig (fun _ : V ↦ α) R) (fun v ↦ x (.inr v)),
+            Fintype.equivFin (ManyBody.RegionConfig (fun _ : V ↦ α) C) (fun v ↦ x (.inr v)))),
+        ((fun v ↦ x (.inl v) : ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ),
+          (fun v ↦ x (.inr v) : ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ))) :=
   rfl
 
 /-- In these coordinates, the exchange of replicas on `R` is the partial swap of the `R`
 registers, tensored with the identity on the two buffers. -/
 private theorem reindex_replicaCoords_partialSwap :
     reindex (replicaCoords (α := α) R C hRC) (replicaCoords R C hRC)
-        (partialSwap (Fin (Fintype.card (Configuration (fun _ : V ↦ α) R)))
-          (Fin (Fintype.card (Configuration (fun _ : V ↦ α) C))) ⊗ₖ
-          (1 : Matrix (Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ ×
-          Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ) (Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ ×
-          Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ) ℂ)) =
+        (partialSwap (Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) R)))
+          (Fin (Fintype.card (ManyBody.RegionConfig (fun _ : V ↦ α) C))) ⊗ₖ
+          (1 : Matrix (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ ×
+          ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ)
+              (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ ×
+          ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ) ℂ)) =
       sitePermOp (replicaSwap R) := by
   set G := replicaCoords (α := α) R C hRC
   set π := replicaSwap R
@@ -191,17 +193,18 @@ omit [DecidableEq α] in
 /-- In these coordinates, the doubled vector is `Ω ⊗ Ω`. -/
 private theorem doubledRegroup_comp_replicaCoords_symm
     (Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)) :
-    doubledRegroup (splitTwoRegionsState (fun _ : V ↦ α) Ω R C hRC) ∘
+    doubledRegroup (ManyBody.splitTwoRegionsState (fun _ : V ↦ α) Ω R C hRC) ∘
         (replicaCoords (α := α) R C hRC).symm =
-      WithLp.ofLp (sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω) := by
+      WithLp.ofLp (ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω) := by
   funext x
-  simp [replicaCoords, doubledRegroup, splitTwoRegionsState, sumSitesProduct,
+  simp [replicaCoords, doubledRegroup, ManyBody.splitTwoRegionsState, ManyBody.sumSitesProduct,
     Equiv.doubledRegroup, Equiv.bipartiteRegroup]
   rfl
 
 /-- Pairing the configurations of the two buffers. -/
 private def bufferPairEquiv :
-    Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ × Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ ≃
+    ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ × ManyBody.RegionConfig (fun _ : V ↦ α)
+        (R ∪ C)ᶜ ≃
       RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ) :=
   ((replicaPairRegionEquiv (R ∪ C)ᶜ).trans (Equiv.arrowProdEquivProdArrow _ _ _)).symm
 
@@ -228,8 +231,11 @@ private theorem agree_iff_replicaCoords (x y : Config fun _ : V ⊕ V ↦ α) :
 /-- In these coordinates, a buffer operator `1 ⊗ W` is the placement of `W` on the two copies
 of the buffer. -/
 private theorem reindex_replicaCoords_one_kronecker
-    (W : Matrix (Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ × Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ)
-      (Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ × Configuration (fun _ : V ↦ α) (R ∪ C)ᶜ) ℂ) :
+    (W : Matrix
+        (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ × ManyBody.RegionConfig (fun _ : V ↦ α)
+        (R ∪ C)ᶜ)
+      (ManyBody.RegionConfig (fun _ : V ↦ α) (R ∪ C)ᶜ × ManyBody.RegionConfig (fun _ : V ↦ α)
+          (R ∪ C)ᶜ) ℂ) :
     reindex (replicaCoords (α := α) R C hRC) (replicaCoords R C hRC)
         ((1 : Matrix _ _ ℂ) ⊗ₖ W) =
       place (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ)
@@ -267,11 +273,11 @@ theorem regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r
     {E₀ : ℝ} {Ω : EuclideanSpace ℂ (Config fun _ : V ↦ α)} (hΩ : ‖Ω‖ = 1)
     (hgs : IsGapped H E₀ Δ) (hspan : groundSpace H E₀ = Submodule.span ℂ {Ω})
     {R C : Finset V} (hRC : Disjoint R C) {b : ℝ}
-    (hI : mutualInformation (fun _ : V ↦ α) Ω R C ≤ b) :
+    (hI : ManyBody.regionMutualInformation Ω R C ≤ b) :
     let K := reindex (Equiv.sumArrowEquivProdArrow V V α).symm
       (Equiv.sumArrowEquivProdArrow V V α).symm (doubledHamiltonian H)
     let F := sitePermOp (α := α) (replicaSwap R)
-    let Ψ := sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
+    let Ψ := ManyBody.sumSitesProduct (X := fun _ : V ⊕ V ↦ α) Ω Ω
     ∃ (W : Matrix (RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ))
         (RegionConfig (fun _ : V ⊕ V ↦ α) (((R ∪ C)ᶜ).disjSum (R ∪ C)ᶜ)) ℂ) (z : ℝ),
       W.IsHermitian ∧ ‖W‖ ≤ 1 ∧ Real.exp (-2 * b) ≤ z ∧
@@ -287,12 +293,12 @@ theorem regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r
   intro K F Ψ
   set s := splitCoords (α := α) R C hRC
   set G := replicaCoords (α := α) R C hRC
-  have hb : 0 ≤ b := (mutualInformation_nonneg _ Ω hΩ R C hRC).trans hI
+  have hb : 0 ≤ b := (ManyBody.regionMutualInformation_nonneg _ Ω hΩ R C hRC).trans hI
   have heigen := mulVec_eq_of_groundSpace_eq_span hspan
   have hgap := hgs.posSemidef_sub_smul_one hH hΩ hspan
-  let Ωs := splitTwoRegionsState (fun _ : V ↦ α) Ω R C hRC
+  let Ωs := ManyBody.splitTwoRegionsState (fun _ : V ↦ α) Ω R C hRC
   have hΩsv : Ωs = WithLp.ofLp Ω ∘ s.symm := rfl
-  have hunit : star Ωs ⬝ᵥ Ωs = 1 := splitTwoRegionsState_unit _ Ω hΩ R C hRC
+  have hunit : star Ωs ⬝ᵥ Ωs = 1 := ManyBody.splitTwoRegionsState_unit _ Ω hΩ R C hRC
   have heigs : reindex s s H *ᵥ Ωs = (E₀ : ℂ) • Ωs := by
     rw [hΩsv, Matrix.reindex_mulVec, heigen]
     rfl
@@ -304,9 +310,9 @@ theorem regional_physicalBuffer_filter {Δ r : ℝ} (hΔ : 0 < Δ) (hr : 0 ≤ r
   have hbound : quantumRelativeEntropy (partialTraceRight (vecMulVec Ωs (star Ωs)))
       (partialTraceRight (partialTraceRight (vecMulVec Ωs (star Ωs))) ⊗ₖ
         partialTraceLeft (partialTraceRight (vecMulVec Ωs (star Ωs)))) ≤ b := by
-    rw [partialTraceRight_splitTwoRegionsState,
-      quantumRelativeEntropy_product_marginals (jointMatrix_posSemidef _ Ω R C hRC)]
-    rw [mutualInformation_eq_matrix _ Ω R C hRC] at hI
+    rw [ManyBody.partialTraceRight_splitTwoRegionsState,
+      quantumRelativeEntropy_product_marginals (ManyBody.jointMatrix_posSemidef _ Ω R C hRC)]
+    rw [ManyBody.regionMutualInformation_eq_matrix _ Ω R C hRC] at hI
     exact hI
   have hfilter := physicalBuffer_filter_of_le hΔ hr (resetCutoff_nonneg hΔ hr)
     (le_resetVariance_mul_sq_div_two hΔ.ne') (le_resetCutoff_sq_div hΔ.ne' hr) _ _ _

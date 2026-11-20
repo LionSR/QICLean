@@ -84,7 +84,7 @@ theorem regionEntropy_le_four_log_of_cutOperatorSchmidtRank
     hrank htradeoff
   let C := Matrix.schmidtCoeffMatrix (WithLp.ofLp (U Ω))
   have hρ : ManyBody.regionState Ω A = C * Cᴴ := by
-    simpa only [ManyBody.regionState, ManyBody.regionState, C, hU] using
+    simpa only [ManyBody.regionState_eq_partialTraceRight_cutVector, C, hU] using
       Matrix.partialTraceRight_vecMulVec_eq (WithLp.ofLp (ManyBody.cutVector A Ω))
   have hS : ManyBody.regionEntropy Ω A =
       vonNeumannEntropy (C * Cᴴ) (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian :=

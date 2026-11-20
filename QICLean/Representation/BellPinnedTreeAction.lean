@@ -36,7 +36,7 @@ product of different original bands is made.
 
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped ComplexOrder MatrixOrder Matrix.Norms.L2Operator
 
 universe u
@@ -51,8 +51,8 @@ variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β C) R
-local notation "ιe" => compressedSiteSpace β X R
-local notation "B" => Configuration β X × C
+local notation "ιe" => ManyBody.compressedSiteSpace β X R
+local notation "B" => ManyBody.RegionConfig β X × C
 
 local instance bellPinnedTreeConfigDecidableEq (k : ℕ) : DecidableEq (Config k ι₀) :=
   Fintype.decidablePiFintype
@@ -72,7 +72,7 @@ theorem commute_labelObservable_bellPin (k : ℕ) (Q : Finset V)
   intro e J Pe
   let L₀ := labelObservable (subsystemPerm k ι₀
     ((Q \ X).image fun v ↦ some (some v))) f
-  let L := labelObservable (subsystemPerm k ιe (exteriorRegion X Q)) f
+  let L := labelObservable (subsystemPerm k ιe (ManyBody.exteriorRegion X Q)) f
   have hL₀ : L₀.IsHermitian := isHermitian_labelObservable _ _
   have hL : L.IsHermitian := isHermitian_labelObservable _ _
   have hJ : L₀ * J = J * L :=
@@ -80,7 +80,7 @@ theorem commute_labelObservable_bellPin (k : ℕ) (Q : Finset V)
   have hJadj : Jᴴ * L₀ = L * Jᴴ :=
     (hL₀.conjTranspose_intertwine hL J hJ).symm
   have hSym : Commute L Pe :=
-    commute_labelObservable_symProj ιe k (exteriorRegion X Q) f
+    commute_labelObservable_symProj ιe k (ManyBody.exteriorRegion X Q) f
   change L₀ * (J * Pe * Jᴴ) = (J * Pe * Jᴴ) * L₀
   calc
     L₀ * (J * Pe * Jᴴ) = (L₀ * J) * Pe * Jᴴ := by simp only [Matrix.mul_assoc]

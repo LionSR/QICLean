@@ -29,25 +29,25 @@ open scoped MatrixOrder Matrix.Norms.L2Operator
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-variable (E : Finset (Configuration β X))
+variable (E : Finset (ManyBody.RegionConfig β X))
 
-local notation "A" => Configuration β X
-local notation "B" => Configuration β Xᶜ
+local notation "A" => ManyBody.RegionConfig β X
+local notation "B" => ManyBody.RegionConfig β Xᶜ
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
-local notation "ιe" => compressedSiteSpace β X (Fin E.card)
+local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
-  (Matrix.PosSemidef.isHermitian (reducedPure_posSemidef β Ω X)) E
+  (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
 
 local instance replicaPrevectorRoughUpperConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
+    DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
 
 local instance replicaPrevectorRoughUpperSelectedConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
+    DecidableEq (TensorPower.Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
   Fintype.decidablePiFintype
 
 open Classical in
@@ -64,17 +64,17 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
     (hdisjoint : ∀ D ∈ regions, Disjoint X D)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)))
     {t : ℝ} (ht : 0 < t) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let Ψ : (k : ℕ) → EuclideanSpace ℂ (Config k ιe) := fun _ ↦
+    let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦
       WithLp.toLp 2 (fun x ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ιe {none}) (ell k)) (Ψ k)‖ ^ 2
     (∀ᶠ k : ℕ in atTop,
       1 / (2 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ q k) →
     ∃ c : ℝ, 0 ≤ c ∧ ∀ᶠ k : ℕ in atTop,
-      ∀ (n : ℕ) (Z : Matrix (Config k ι₀) (Fin n) ℂ),
+      ∀ (n : ℕ) (Z : Matrix (TensorPower.Config k ι₀) (Fin n) ℂ),
       Zᴴ * Z = 1 →
       Z * Zᴴ = symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k) →
       ∀ (K : ℕ) (U Y : S → Fin K → Finset V),
@@ -82,12 +82,12 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       (∀ j j' g h, g < h → U j g ∪ Y j g ⊆ U j' h) →
       (∀ j g, Disjoint X (U j g ∪ Y j g)) →
       ∀ (T : Matrix.MeanTree S) (Bsh Bexc : ℝ),
-      (∀ D ∈ regions, entropy β Ω D ≤ Bsh) →
+      (∀ D ∈ regions, ManyBody.regionEntropy Ω D ≤ Bsh) →
       (∀ j g (Q : Finset V), Q = U j g ∨ Q = U j g ∪ Y j g →
         ∃ D ∈ regions, (D ⊆ Q ∨ Q ⊆ D) ∧
-          1 + Real.log (Fintype.card (Configuration β (D ∆ Q))) ≤ Bexc) →
+          1 + Real.log (Fintype.card (ManyBody.RegionConfig β (D ∆ Q))) ≤ Bexc) →
       ∀ s : ℝ, 2 * s ∈ Set.Icc (0 : ℝ) 1 →
-      let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
+      let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (replicaPrevector Ω E.card k (ell k) ∘
           globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)
       let extRegion := fun Q : Finset V ↦ (Q \ X).image fun x ↦ some (some x)
@@ -105,12 +105,12 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
           Real.bellOverlapRemainder E.card c K k := by
   classical
   intro ΩX ψ Ψ q hmass
-  obtain ⟨c, hc, hu⟩ := eventually_suppliedSchmidtBell_rough_upper
+  obtain ⟨c, hc, hu⟩ := ManyBody.eventually_suppliedSchmidtBell_rough_upper
     (S := S) β Ω X E hΩ hz regions hnested hdisjoint ell ht hmass
   refine ⟨c, hc, hu.mono fun k hk n Z hZ hZZ K U Y hUY hnest hXY
     T Bsh Bexc hsh hmatch s hs ↦ ?_⟩
-  let e : Config k ι₀ ≃
-      Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
+  let e : TensorPower.Config k ι₀ ≃
+      TensorPower.Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
     Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight fun o ↦
       match o with
       | none => Equiv.refl (Fin E.card)
@@ -134,27 +134,27 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       addedSiteSpace (addedSiteSpace β E) (Fin E.card) o) k) := by
     simpa only [ZE, Matrix.conjTranspose_submatrix, Equiv.coe_refl] using
       ((Matrix.submatrix_mul_equiv Z Zᴴ e.symm (Equiv.refl (Fin n)) e.symm).trans
-        (congrArg (fun P : Matrix (Config k ι₀) (Config k ι₀) ℂ ↦
+        (congrArg (fun P : Matrix (TensorPower.Config k ι₀) (TensorPower.Config k ι₀) ℂ ↦
           P.submatrix e.symm e.symm) hZZ)).trans hSymm.symm
   have hp :
       toEuclideanLin Zᴴ (WithLp.toLp 2
         (replicaPrevector Ω E.card k (ell k) ∘
           globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)) =
       toEuclideanLin ZEᴴ (WithLp.toLp 2
-        (schmidtBellSitePrevector β X E k ΩX (ell k) ∘
-          schmidtBellWitnessEquiv β X E k)) := by
+        (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘
+          ManyBody.schmidtBellWitnessEquiv β X E k)) := by
     simpa only [ZE, e, ΩX, Matrix.toEuclideanLin, Matrix.toLpLin_apply,
       WithLp.ofLp_toLp] using!
       congrArg (WithLp.toLp 2)
-        (schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
+        (ManyBody.schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
   have hNsq := congrArg₂
     (fun (P : Matrix (Fin n) (Fin n) ℂ) (u : EuclideanSpace ℂ (Fin n)) ↦
       ‖toEuclideanLin (P ^ (-s)) u‖ ^ 2)
-    (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2 hp
+    (ManyBody.replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2 hp
   exact Eq.mp (congrArg (fun r : ℝ ↦ 0 < r ∧ -Real.log r / (k : ℝ) ≤
     2 * Real.log (E.card : ℝ) - Real.log z +
       8 * s * t * (K : ℝ) * (Bsh / z + Bexc) +
       Real.bellOverlapRemainder E.card c K k) hNsq.symm)
     (hk n ZE hZE hZEZ K U Y hUY hnest hXY T Bsh Bexc hsh hmatch s hs)
 
-end FiniteProduct
+end ManyBody

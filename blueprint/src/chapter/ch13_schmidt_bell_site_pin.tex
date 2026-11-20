@@ -10,7 +10,7 @@ Denote their configuration set by $\widehat B$.
 
 \begin{definition}[Enumerating the selected coordinates and collecting the exterior copies]
     \label{def:schmidt_bell_site_coordinates}
-    \lean{FiniteProduct.schmidtBellSiteEquiv}
+    \lean{ManyBody.schmidtBellSiteEquiv}
     \leanok
     \uses{def:compressed_site_family,def:compressed_exterior_copy_coordinates}
     For $k\ge0$, define the bijection
@@ -34,7 +34,7 @@ vanishes; the coordinate identities below require no normalization.
 
 \begin{theorem}[The Bell and auxiliary projections after collecting the exterior sites]
     \label{thm:schmidt_bell_site_projections}
-    \lean{FiniteProduct.selectedBellProjection_schmidtBellSiteEquiv,FiniteProduct.labelProj_schmidtBellSiteEquiv}
+    \lean{ManyBody.selectedBellProjection_schmidtBellSiteEquiv,ManyBody.labelProj_schmidtBellSiteEquiv}
     \leanok
     \uses{def:schmidt_bell_site_coordinates,def:typical_bell_projection}
     Let $P_{E,k}=(|\beta_E\rangle\langle\beta_E|)^{\otimes k}$ and
@@ -60,7 +60,7 @@ vanishes; the coordinate identities below require no normalization.
 
 \begin{theorem}[The selected product vector in exterior-site coordinates]
     \label{thm:schmidt_bell_site_post}
-    \lean{FiniteProduct.schmidtBellSiteEquiv_post}
+    \lean{ManyBody.schmidtBellSiteEquiv_post}
     \leanok
     \uses{def:schmidt_bell_site_coordinates,def:compressed_typical_vector}
     Define
@@ -83,7 +83,7 @@ vanishes; the coordinate identities below require no normalization.
 
 \begin{theorem}[The Bell identity on the actual exterior sites]
     \label{thm:schmidt_bell_site_pin}
-    \lean{FiniteProduct.selectedBellProjection_replicaPrevector_site}
+    \lean{ManyBody.selectedBellProjection_replicaPrevector_site}
     \leanok
     \uses{def:replica_prevector,thm:schmidt_bell_site_projections,thm:schmidt_bell_site_post}
     Suppose the selected mass $z=\sum_{i\in E}p_i$ is positive.

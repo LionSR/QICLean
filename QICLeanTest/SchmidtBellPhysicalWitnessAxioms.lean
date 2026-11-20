@@ -11,7 +11,7 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  let declarations := #[``FiniteProduct.eventually_exists_suppliedSchmidtBell_physicalWitness]
+  let declarations := #[``ManyBody.eventually_exists_suppliedSchmidtBell_physicalWitness]
   for decl in declarations do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"

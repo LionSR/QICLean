@@ -12,7 +12,7 @@ import Lean.Util.CollectAxioms
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
   let declarations := #[
-    ``FiniteProduct.regionalPhysicalRegion,
+    ``ManyBody.regionalPhysicalRegion,
     ``Matrix.regional_physicalSingletonDensity_eq_reducedPure,
     ``Matrix.regional_physicalSingleton_spectral_statistics]
   for decl in declarations do

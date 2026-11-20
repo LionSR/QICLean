@@ -10,7 +10,6 @@ import Mathlib.LinearAlgebra.Complex.FiniteDimensional
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 import Mathlib.Analysis.RCLike.Lemmas
-import Mathlib.Analysis.InnerProductSpace.JointEigenspace
 import QICLean.Analysis.LowEnergyBasis.OffDiagonal
 
 /-!

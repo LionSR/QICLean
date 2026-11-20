@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.FiniteProduct
+import QICLean.ManyBody.Sites.RegionMatrix
 import QICLean.Analysis.ReplicaGoodConfigurationDensity
 import QICLean.Representation.AddedSiteSpace
 
@@ -25,19 +25,19 @@ universe u
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type u} [Fintype V] [DecidableEq V] (β : V → Type u)
 
 /-- The original physical configuration split into two disjoint regions
 and the complement of their union. Source: `07-comparators.tex`, lines 20--37. -/
 def regionalPhysicalEquiv (Q Y : Finset V) (hQY : Disjoint Q Y) :
-    ((v : V) → β v) ≃ Configuration β Q ×
-      (Configuration β Y × Configuration β (Q ∪ Y)ᶜ) :=
-  (splitEquiv β Q).trans
-    ((Equiv.refl _).prodCongr (complementUnionEquiv β Q Y hQY))
+    ((v : V) → β v) ≃ ManyBody.RegionConfig β Q ×
+      (ManyBody.RegionConfig β Y × ManyBody.RegionConfig β (Q ∪ Y)ᶜ) :=
+  (ManyBody.splitEquiv β Q).trans
+    ((Equiv.refl _).prodCongr (ManyBody.complementUnionEquiv β Q Y hQY))
 
-end FiniteProduct
+end ManyBody
 
 namespace TensorPower
 
@@ -55,15 +55,15 @@ variable (β : V → Type u) (C R : Type u)
 spaces, in the order used by the component estimates. Source:
 `07-comparators.tex`, lines 20--37 and 80--110. -/
 def regionalFiveFactorSpace (Q Y : Finset V) : Fin 5 → Type u :=
-  ![FiniteProduct.Configuration β Q, FiniteProduct.Configuration β Y,
-    FiniteProduct.Configuration β (Q ∪ Y)ᶜ, C, R]
+  ![ManyBody.RegionConfig β Q, ManyBody.RegionConfig β Y,
+    ManyBody.RegionConfig β (Q ∪ Y)ᶜ, C, R]
 
 instance regionalFiveFactorSpaceFintype
     [∀ v, Fintype (β v)] [Fintype C] [Fintype R]
     (Q Y : Finset V) (f : Fin 5) : Fintype (regionalFiveFactorSpace β C R Q Y f) := by
-  exact Fin.cases (inferInstanceAs (Fintype (FiniteProduct.Configuration β Q)))
-    (Fin.cases (inferInstanceAs (Fintype (FiniteProduct.Configuration β Y)))
-      (Fin.cases (inferInstanceAs (Fintype (FiniteProduct.Configuration β (Q ∪ Y)ᶜ)))
+  exact Fin.cases (inferInstanceAs (Fintype (ManyBody.RegionConfig β Q)))
+    (Fin.cases (inferInstanceAs (Fintype (ManyBody.RegionConfig β Y)))
+      (Fin.cases (inferInstanceAs (Fintype (ManyBody.RegionConfig β (Q ∪ Y)ᶜ)))
         (Fin.cases (inferInstanceAs (Fintype C))
           (Fin.cases (inferInstanceAs (Fintype R)) (fun i => Fin.elim0 i))))) f
 
@@ -71,18 +71,18 @@ instance regionalFiveFactorSpaceDecidableEq
     [∀ v, DecidableEq (β v)]
     [DecidableEq C] [DecidableEq R]
     (Q Y : Finset V) (f : Fin 5) : DecidableEq (regionalFiveFactorSpace β C R Q Y f) := by
-  exact Fin.cases (inferInstanceAs (DecidableEq (FiniteProduct.Configuration β Q)))
-    (Fin.cases (inferInstanceAs (DecidableEq (FiniteProduct.Configuration β Y)))
-      (Fin.cases (inferInstanceAs (DecidableEq (FiniteProduct.Configuration β (Q ∪ Y)ᶜ)))
+  exact Fin.cases (inferInstanceAs (DecidableEq (ManyBody.RegionConfig β Q)))
+    (Fin.cases (inferInstanceAs (DecidableEq (ManyBody.RegionConfig β Y)))
+      (Fin.cases (inferInstanceAs (DecidableEq (ManyBody.RegionConfig β (Q ∪ Y)ᶜ)))
         (Fin.cases (inferInstanceAs (DecidableEq C))
           (Fin.cases (inferInstanceAs (DecidableEq R)) (fun i => Fin.elim0 i))))) f
 
 instance regionalFiveFactorSpaceNonempty
     [∀ v, Nonempty (β v)] [Nonempty C] [Nonempty R]
     (Q Y : Finset V) (f : Fin 5) : Nonempty (regionalFiveFactorSpace β C R Q Y f) := by
-  exact Fin.cases (inferInstanceAs (Nonempty (FiniteProduct.Configuration β Q)))
-    (Fin.cases (inferInstanceAs (Nonempty (FiniteProduct.Configuration β Y)))
-      (Fin.cases (inferInstanceAs (Nonempty (FiniteProduct.Configuration β (Q ∪ Y)ᶜ)))
+  exact Fin.cases (inferInstanceAs (Nonempty (ManyBody.RegionConfig β Q)))
+    (Fin.cases (inferInstanceAs (Nonempty (ManyBody.RegionConfig β Y)))
+      (Fin.cases (inferInstanceAs (Nonempty (ManyBody.RegionConfig β (Q ∪ Y)ᶜ)))
         (Fin.cases (inferInstanceAs (Nonempty C))
           (Fin.cases (inferInstanceAs (Nonempty R)) (fun i => Fin.elim0 i))))) f
 
@@ -112,7 +112,7 @@ def regionalFiveFactorCopyEquiv (Q Y : Finset V) (hQY : Disjoint Q Y) (k : ℕ) 
       Config k (regionalFiveFactorSpace β C R Q Y) :=
   (globalReplicaCopiesEquiv β C R k).trans
     ((replicaPhysicalCoordinateEquiv (C := C) (R := R)
-      (FiniteProduct.regionalPhysicalEquiv β Q Y hQY) k).trans
+      (ManyBody.regionalPhysicalEquiv β Q Y hQY) k).trans
       (fiveFactorCopiesEquiv (regionalFiveFactorSpace β C R Q Y) k).symm)
 
 end TensorPower

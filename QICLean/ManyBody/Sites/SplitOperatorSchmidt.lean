@@ -4,10 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.OperatorSchmidtPartition
-import QICLean.Channel.FiniteProduct
+import QICLean.ManyBody.Sites.RegionMatrix
 
 /-!
-# Operator Schmidt rank in finite-product coordinates
+# Operator Schmidt rank in split coordinates
 
 For a uniform finite local dimension, changing the region from `S` to `T`
 increases operator Schmidt rank by at most `q ^ (2 * (S ∆ T).card)`.
@@ -25,25 +25,25 @@ open scoped symmDiff
 its symmetric difference with the original region. Supporting finite-product
 algebra for ALVV, arXiv:1602.08828v2, Proposition 5.7, lines 1331–1333.
 No positivity assumption on the local dimension is required. -/
-theorem FiniteProduct.operatorSchmidtRank_splitEquiv_le
+theorem ManyBody.operatorSchmidtRank_splitEquiv_le
     {V : Type*} [Fintype V] [DecidableEq V]
     (q : ℕ) (S T : Finset V)
     (M : Matrix (V → Fin q) (V → Fin q) ℂ) :
     Matrix.operatorSchmidtRank
-        (M.reindex (FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) T)
-          (FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) T)) ≤
+        (M.reindex (ManyBody.splitEquiv (fun _ : V ↦ Fin q) T)
+          (ManyBody.splitEquiv (fun _ : V ↦ Fin q) T)) ≤
       q ^ (2 * (S ∆ T).card) * Matrix.operatorSchmidtRank
-        (M.reindex (FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) S)
-          (FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) S)) := by
+        (M.reindex (ManyBody.splitEquiv (fun _ : V ↦ Fin q) S)
+          (ManyBody.splitEquiv (fun _ : V ↦ Fin q) S)) := by
   have hcut (R : Finset V) : Matrix.operatorSchmidtRank
-      (M.reindex (FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) R)
-        (FiniteProduct.splitEquiv (fun _ : V ↦ Fin q) R)) =
+      (M.reindex (ManyBody.splitEquiv (fun _ : V ↦ Fin q) R)
+        (ManyBody.splitEquiv (fun _ : V ↦ Fin q) R)) =
       Matrix.operatorSchmidtRank
         (M.reindex (Equiv.piEquivPiSubtypeProd (fun v ↦ v ∈ R) (fun _ ↦ Fin q))
           (Equiv.piEquivPiSubtypeProd (fun v ↦ v ∈ R) (fun _ ↦ Fin q))) := by
     exact Matrix.operatorSchmidtRank_reindex_prodCongr
       (M.reindex (Equiv.piEquivPiSubtypeProd (fun v ↦ v ∈ R) (fun _ ↦ Fin q))
         (Equiv.piEquivPiSubtypeProd (fun v ↦ v ∈ R) (fun _ ↦ Fin q)))
-      (Equiv.refl _) (FiniteProduct.complementEquiv (fun _ : V ↦ Fin q) R)
+      (Equiv.refl _) (ManyBody.complementEquiv (fun _ : V ↦ Fin q) R)
   rw [hcut T, hcut S]
   exact Matrix.operatorSchmidtRank_reindex_piEquivPiSubtypeProd_finset_le q S T M

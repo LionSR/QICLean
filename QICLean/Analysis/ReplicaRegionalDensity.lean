@@ -47,7 +47,7 @@ theorem partialTraceRight_replicaExcitationComponent_goodRegional_density
     let w := (replicaExcitationProjection Ω k B ⊗ₖ (1 : Matrix C C ℂ)) *ᵥ u
     let f := fun x : ((Fin (Bᶜ.card) → Q) × C) ×
         ((Fin (Bᶜ.card) → T) × (↥B → Q × T)) =>
-      w ((FiniteProduct.splitEquiv (fun _ : Fin k => Q × T) B).symm
+      w ((ManyBody.splitEquiv (fun _ : Fin k => Q × T) B).symm
         (x.2.2, fun i => (x.1.1 ((Finset.equivFin Bᶜ) i),
           x.2.1 ((Finset.equivFin Bᶜ) i))), x.1.2)
     partialTraceRight (vecMulVec f (star f)) =

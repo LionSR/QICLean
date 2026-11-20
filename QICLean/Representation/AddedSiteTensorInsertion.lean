@@ -21,7 +21,7 @@ metric application must use the original full-system label weights on both
 sides; no equality with weights recomputed for the enlarged system is asserted.
 
 The family `addedSiteSpace (fun v : Xᶜ ↦ β v) A` agrees definitionally with
-`FiniteProduct.compressedSiteSpace β X A`.
+`ManyBody.compressedSiteSpace β X A`.
 
 ## References
 

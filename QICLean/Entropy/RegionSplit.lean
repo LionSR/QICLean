@@ -97,7 +97,8 @@ theorem partialTraceRight_vecMulVec (he : IsRegionSplit D φ e) [Fintype B]
   rw [ha, ha']
   clear_value a a'
   subst ha ha'
-  rw [partialTraceRight_apply, ManyBody.regionState, partialTraceRight_apply]
+  rw [partialTraceRight_apply, ManyBody.regionState_eq_partialTraceRight_cutVector,
+    partialTraceRight_apply]
   -- The complement of `e.symm (φ a, b)`.
   set c : B → ((v : {v // v ∉ D}) → Fin (n v)) := fun b v => e.symm (φ a, b) v
   have hc : Function.Bijective c := by

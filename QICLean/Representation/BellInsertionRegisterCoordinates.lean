@@ -48,7 +48,7 @@ theorem bellInsertion_submatrix_C_equiv
     {V : Type u} [Fintype V] [DecidableEq V]
     (β : V → Type u)
     (X : Finset V) (C D R : Type u)
-    (c : D ≃ C) (k : ℕ) (b : FiniteProduct.Configuration β X × C → ℂ) :
+    (c : D ≃ C) (k : ℕ) (b : ManyBody.RegionConfig β X × C → ℂ) :
     let ιC := addedSiteSpace (addedSiteSpace β C) R
     let ιD := addedSiteSpace (addedSiteSpace β D) R
     let changeSite : ∀ o : Option (Option V), ιD o ≃ ιC o := fun o ↦
@@ -57,10 +57,10 @@ theorem bellInsertion_submatrix_C_equiv
       | some none => c
       | some (some v) => Equiv.refl (β v)
     let e := Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight changeSite
-    let exterior := FiniteProduct.compressedSiteSpace β X R
-    let JC := (addedSiteInsertion exterior (FiniteProduct.Configuration β X × C) k b).submatrix
+    let exterior := ManyBody.compressedSiteSpace β X R
+    let JC := (addedSiteInsertion exterior (ManyBody.RegionConfig β X × C) k b).submatrix
       (bellInsertionCopyEquiv β X C R k) id
-    let JD := (addedSiteInsertion exterior (FiniteProduct.Configuration β X × D) k
+    let JD := (addedSiteInsertion exterior (ManyBody.RegionConfig β X × D) k
       (fun x ↦ b (x.1, c x.2))).submatrix (bellInsertionCopyEquiv β X D R k) id
     JD = JC.submatrix e id := by
   intro ιC ιD changeSite e exterior JC JD

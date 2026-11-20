@@ -34,7 +34,7 @@ theorem measurable_projectionMatrix_regionTensorMerge
       (S2 x).starProjection)) :
     Measurable (fun x ↦ (Matrix.toEuclideanCLM (n := ↥(A ∪ B) → Fin q) (𝕜 := ℂ)).symm
       (regionTensorMerge q A B h (S1 x) (S2 x)).starProjection) := by
-  let e := FiniteProduct.unionEquiv (fun _ : V ↦ Fin q) A B h
+  let e := ManyBody.unionEquiv (fun _ : V ↦ Fin q) A B h
   let U := fun x ↦ ((S1 x).tensorProd (S2 x)).map
     (Submodule.euclideanTensorEquiv (A → Fin q) (B → Fin q)).symm.toLinearMap
   have hU := Submodule.measurable_projectionMatrix_tensorProd_coordinates S1 S2 h1 h2

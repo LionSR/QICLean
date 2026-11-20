@@ -33,7 +33,7 @@ open Matrix TensorPower PermutationRepresentation
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 /-- Enumerating only the selected C register identifies the supplied
 Schmidt--Bell prevector with the original global prevector. The physical
@@ -47,9 +47,9 @@ theorem schmidtBellSitePrevector_enumerate_C
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)]
     (Ω : EuclideanSpace ℂ ((v : V) → β v))
-    (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ)
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ιE := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
     let ιF := addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
     let changeSite : ∀ o : Option (Option V), ιF o ≃ ιE o := fun o ↦
@@ -58,14 +58,14 @@ theorem schmidtBellSitePrevector_enumerate_C
       | some none => (Finset.equivFin E).symm
       | some (some v) => Equiv.refl (β v)
     let e := Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight changeSite
-    let τ := schmidtBellWitnessEquiv β X E k
-    (schmidtBellSitePrevector β X E k ΩX ell).ofLp ∘ τ ∘ e =
+    let τ := ManyBody.schmidtBellWitnessEquiv β X E k
+    (ManyBody.schmidtBellSitePrevector β X E k ΩX ell).ofLp ∘ τ ∘ e =
       replicaPrevector Ω E.card k ell ∘
         globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k := by
   intro ΩX ιE ιF changeSite e τ
   funext x
   change replicaPrevector ΩX E.card k ell
-      ((fun j ↦ splitEquiv β X (fun v ↦ x j (some (some v)))),
+      ((fun j ↦ ManyBody.splitEquiv β X (fun v ↦ x j (some (some v)))),
         ((fun j ↦ (Finset.equivFin E) ((Finset.equivFin E).symm (x j (some none)))),
           (fun j ↦ x j none))) =
     replicaPrevector Ω E.card k ell
@@ -74,6 +74,6 @@ theorem schmidtBellSitePrevector_enumerate_C
   simp only [replicaPrevector, ΩX,
     LinearIsometryEquiv.piLpCongrLeft_apply, Equiv.piCongrLeft'_apply]
   dsimp only [ιF, addedSiteSpace] at x
-  simp only [(Finset.equivFin E).apply_symm_apply, (splitEquiv β X).symm_apply_apply]
+  simp only [(Finset.equivFin E).apply_symm_apply, (ManyBody.splitEquiv β X).symm_apply_apply]
 
-end FiniteProduct
+end ManyBody

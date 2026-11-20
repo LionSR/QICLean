@@ -7,8 +7,8 @@ Empty products have dimension one.
 
 \begin{definition}[Two-region coordinates]
     \label{def:finite_product_splitting_coordinates}
-    \lean{FiniteProduct.splitTwoRegionsEquiv,
-        FiniteProduct.splitTwoRegionsState}
+    \lean{ManyBody.splitTwoRegionsEquiv,
+        ManyBody.splitTwoRegionsState}
     \leanok
     Restricting a configuration to $T,E,U$ and enumerating the first two
     bases gives a bijection
@@ -18,8 +18,8 @@ Empty products have dimension one.
 
 \begin{theorem}[The joint marginal in two-region coordinates]
     \label{thm:finite_product_splitting_marginal}
-    \lean{FiniteProduct.partialTraceRight_splitTwoRegionsState,
-        FiniteProduct.splitTwoRegionsState_unit}
+    \lean{ManyBody.partialTraceRight_splitTwoRegionsState,
+        ManyBody.splitTwoRegionsState_unit}
     \leanok
     \uses{def:finite_product_splitting_coordinates,
         def:finite_product_regional_entropy}
@@ -36,7 +36,7 @@ Empty products have dimension one.
 
 \begin{theorem}[Regional purification splitting]
     \label{thm:finite_product_regional_splitting}
-    \lean{FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le}
+    \lean{ManyBody.exists_isIsometry_splitTwoRegionsState_norm_sub_le}
     \leanok
     \uses{thm:finite_product_splitting_marginal,
         def:finite_product_regional_entropy}
@@ -72,7 +72,7 @@ Empty products have dimension one.
 
 \begin{theorem}[Splitting at polynomial accuracy]
     \label{thm:finite_product_splitting_polynomial}
-    \lean{FiniteProduct.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow}
+    \lean{ManyBody.exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow}
     \leanok
     \uses{thm:finite_product_regional_splitting}
     Under the hypotheses of

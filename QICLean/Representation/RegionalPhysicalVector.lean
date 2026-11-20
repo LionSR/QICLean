@@ -21,7 +21,7 @@ universe u
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type u} [Fintype V] [DecidableEq V]
 
@@ -30,10 +30,10 @@ physical vector. Source: `07-comparators.tex`, lines 421--456. -/
 theorem norm_regionalPhysicalVector (β : V → Type u)
     [∀ v, Fintype (β v)] (Ω : ((v : V) → β v) → ℂ)
     (Q Y : Finset V) (hQY : Disjoint Q Y) :
-    ‖WithLp.toLp 2 (Ω ∘ (regionalPhysicalEquiv β Q Y hQY).symm)‖ =
+    ‖WithLp.toLp 2 (Ω ∘ (ManyBody.regionalPhysicalEquiv β Q Y hQY).symm)‖ =
       ‖WithLp.toLp 2 Ω‖ :=
   (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
-    (regionalPhysicalEquiv β Q Y hQY)).norm_map (WithLp.toLp 2 Ω)
+    (ManyBody.regionalPhysicalEquiv β Q Y hQY)).norm_map (WithLp.toLp 2 Ω)
 
 
-end FiniteProduct
+end ManyBody

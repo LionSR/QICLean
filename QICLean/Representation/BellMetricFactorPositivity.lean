@@ -28,7 +28,7 @@ neither disjointness from X nor a supplied positivity certificate.
 
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped ComplexOrder
 
 universe u

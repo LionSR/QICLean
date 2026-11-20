@@ -26,7 +26,7 @@ open scoped BigOperators Matrix Kronecker ComplexOrder MatrixOrder Matrix.Norms.
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 attribute [local instance] sharpTreeRegionDecidableEq sharpTreeSiteDecidableEq
   sharpTreeConfigDecidableEq
@@ -34,14 +34,14 @@ attribute [local instance] sharpTreeRegionDecidableEq sharpTreeSiteDecidableEq
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-variable (E : Finset (Configuration β X))
+variable (E : Finset (ManyBody.RegionConfig β X))
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
-  (Matrix.PosSemidef.isHermitian (reducedPure_posSemidef β Ω X)) E
+  (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
 
 local instance replicaPrevectorSharpUpperConfigDecidableEq (k : ℕ) :
-    DecidableEq (Config k ι₀) := Fintype.decidablePiFintype
+    DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
 
 open Classical in
 /-- The original enumerated physical prevector satisfies the sharp weighted
@@ -54,21 +54,21 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
     (hΩ : ‖Ω‖ = 1) (hz : 0 < z)
     {a K r : ℝ} (ha : 0 < a) (har : 6 * a ≤ r) (ha1 : 6 * a ≤ 1)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-    let ψ : Configuration β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     (∀ᶠ k : ℕ in atTop,
       (2 * (((k + 1) ^ (E.card ^ 2) : ℕ) : ℝ))⁻¹ ≤
         ‖WithLp.toLp 2
-          (((1 : Matrix (Fin k → Configuration β Xᶜ)
-            (Fin k → Configuration β Xᶜ) ℂ) ⊗ₖ
+          (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
+            (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
               labelProj (copyPerm (Fin E.card) k) (ell k)) *ᵥ
-            (fun x : (Fin k → Configuration β Xᶜ) × (Fin k → Fin E.card) ↦
+            (fun x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → Fin E.card) ↦
               ∏ j, ψ (x.1 j, x.2 j)))‖ ^ 2) →
     ∃ C : ℝ, 0 ≤ C ∧
       (∀ G : ℕ, Tendsto (Real.bellOverlapRemainder E.card C G) atTop (𝓝 0)) ∧
       ∀ᶠ k : ℕ in atTop,
-      ∀ (n : ℕ) (Z : Matrix (Config k ι₀) (Fin n) ℂ),
+      ∀ (n : ℕ) (Z : Matrix (TensorPower.Config k ι₀) (Fin n) ℂ),
       Zᴴ * Z = 1 →
       Z * Zᴴ = symProj (copyPerm ((o : Option (Option V)) → ι₀ o) k) →
       ∀ (G : ℕ) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -79,11 +79,11 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
       (∀ j g (Q : Finset V), Q = U j g ∨ Q = U j g ∪ Y j g ∨ Q = Y j g →
         ∀ v : ℝ, |v| ≤ r →
           Real.log (Entropy.surprisalMoment
-            (reducedPure_posSemidef β Ω Q).isHermitian.eigenvalues v) ≤
-            v * vonNeumannEntropy (reducedPure β Ω Q)
-              (reducedPure_posSemidef β Ω Q).isHermitian + K * v ^ 2) →
+            (ManyBody.regionState_posSemidef Q Ω).isHermitian.eigenvalues v) ≤
+            v * vonNeumannEntropy (ManyBody.regionState Ω Q)
+              (ManyBody.regionState_posSemidef Q Ω).isHermitian + K * v ^ 2) →
       ∀ (T : MeanTree ι) (s : ℝ), 2 * s ∈ Set.Icc (0 : ℝ) 1 →
-      let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
+      let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (replicaPrevector Ω E.card k (ell k) ∘
           globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)
       let W := replicaMetric ι₀ (a / 2) k
@@ -95,8 +95,8 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
       let A := fun j g ↦ ((W (Q j g))⁻¹ * (W (F j g))⁻¹ * W (ext (Y j g))) ^ 2
       let M := (List.ofFn fun g ↦ T.eval (fun j ↦ Zᴴ * A j g * Z)).prod
       let Nsq := ‖toEuclideanLin (M ^ (-s)) (toEuclideanLin Zᴴ v)‖ ^ 2
-      let S := fun Q : Finset V ↦ vonNeumannEntropy (reducedPure β Ω Q)
-        (reducedPure_posSemidef β Ω Q).isHermitian
+      let S := fun Q : Finset V ↦ vonNeumannEntropy (ManyBody.regionState Ω Q)
+        (ManyBody.regionState_posSemidef Q Ω).isHermitian
       0 < Nsq ∧ -Real.log Nsq / (k : ℝ) ≤
         2 * Real.log (E.card : ℝ) - Real.log z +
           2 * s * a * (∑ g, ∑ j, T.weight j *
@@ -110,8 +110,8 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
   refine ⟨C, hC, hlim, hu.mono ?_⟩
   intro k hk n Z hZ hZZ G ι instF instD U Y hXU hXY hUY hnest hmom T s hs
     v W Q F ext A M Nsq S
-  let e : Config k ι₀ ≃
-      Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
+  let e : TensorPower.Config k ι₀ ≃
+      TensorPower.Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) :=
     Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight fun o ↦
       match o with
       | none => Equiv.refl (Fin E.card)
@@ -135,23 +135,23 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
       addedSiteSpace (addedSiteSpace β E) (Fin E.card) o) k) := by
     simpa only [ZE, Matrix.conjTranspose_submatrix, Equiv.coe_refl] using
       ((Matrix.submatrix_mul_equiv Z Zᴴ e.symm (Equiv.refl (Fin n)) e.symm).trans
-        (congrArg (fun P : Matrix (Config k ι₀) (Config k ι₀) ℂ ↦
+        (congrArg (fun P : Matrix (TensorPower.Config k ι₀) (TensorPower.Config k ι₀) ℂ ↦
           P.submatrix e.symm e.symm) hZZ)).trans hSymm.symm
   have hp :
       toEuclideanLin Zᴴ (WithLp.toLp 2
         (replicaPrevector Ω E.card k (ell k) ∘
           globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)) =
       toEuclideanLin ZEᴴ (WithLp.toLp 2
-        (schmidtBellSitePrevector β X E k ΩX (ell k) ∘
-          schmidtBellWitnessEquiv β X E k)) := by
+        (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘
+          ManyBody.schmidtBellWitnessEquiv β X E k)) := by
     simpa only [ZE, e, ΩX, Matrix.toEuclideanLin, Matrix.toLpLin_apply,
       WithLp.ofLp_toLp] using!
       congrArg (WithLp.toLp 2)
-        (schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
+        (ManyBody.schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
   have hNsq := congrArg₂
     (fun (P : Matrix (Fin n) (Fin n) ℂ) (u : EuclideanSpace ℂ (Fin n)) ↦
       ‖toEuclideanLin (P ^ (-s)) u‖ ^ 2)
-    (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z (a / 2) G U Y T).2 hp
+    (ManyBody.replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z (a / 2) G U Y T).2 hp
   exact Eq.mp (congrArg (fun r : ℝ ↦ 0 < r ∧ -Real.log r / (k : ℝ) ≤
     2 * Real.log (E.card : ℝ) - Real.log z +
       2 * s * a * (∑ g, ∑ j, T.weight j *
@@ -160,4 +160,4 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
         Real.bellOverlapRemainder E.card C G k) hNsq.symm)
     (hk n ZE hZE hZEZ G U Y hXU hXY hUY hnest hmom T s hs)
 
-end FiniteProduct
+end ManyBody

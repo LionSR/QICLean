@@ -17,15 +17,15 @@ additivity `S(X ∪ Y) = S(X) + S(Y)` for `X ⊆ P` and `Y` disjoint from `P`, a
 `S(A ∆ P) = S(A)`. No geometry of the sites enters.
 
 Moved from TNLean, `TNLean/Lattice/RegionEntropyInequalities.lean` at commit `e41c3b63`,
-restated for `FiniteProduct.entropy` on an arbitrary family of local alphabets; the dimension
-bound `|R| log q` there is the identical-site case of `entropy_le_log_card`.
+restated for `ManyBody.regionEntropy` on an arbitrary family of local alphabets; the dimension
+bound `|R| log q` there is the identical-site case of `ManyBody.regionEntropy_le_log_card`.
 
 ## Main results
 
-* `FiniteProduct.entropy_le_union_add` — the Araki–Lieb inequality.
-* `FiniteProduct.entropy_le_log_card` — the dimension bound.
-* `FiniteProduct.entropy_sdiff_eq_of_eq_zero`, `FiniteProduct.entropy_union_eq_of_eq_zero`,
-  `FiniteProduct.entropy_symmDiff_eq_of_eq_zero` — regions of zero entropy.
+* `ManyBody.regionEntropy_le_union_add` — the Araki–Lieb inequality.
+* `ManyBody.regionEntropy_le_log_card` — the dimension bound.
+* `ManyBody.regionEntropy_sdiff_eq_of_eq_zero`, `ManyBody.regionEntropy_union_eq_of_eq_zero`,
+  `ManyBody.regionEntropy_symmDiff_eq_of_eq_zero` — regions of zero entropy.
 
 ## References
 
@@ -38,7 +38,7 @@ bound `|R| log q` there is the identical-site case of `entropy_le_log_card`.
 
 open scoped BigOperators symmDiff
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
@@ -46,32 +46,44 @@ variable {ψ : EuclideanSpace ℂ ((v : V) → β v)}
 
 /-- **The Araki–Lieb inequality.** For disjoint regions `R` and `T` of a unit vector,
 `S(R) ≤ S(R ∪ T) + S(T)`. Two-dimensional area law, `01-preliminaries.tex`, lines 10–25. -/
-theorem entropy_le_union_add (hψ : ‖ψ‖ = 1) {R T : Finset V} (hRT : Disjoint R T) :
-    entropy β ψ R ≤ entropy β ψ (R ∪ T) + entropy β ψ T := by
+theorem regionEntropy_le_union_add (hψ : ‖ψ‖ = 1) {R T : Finset V} (hRT : Disjoint R T) :
+    ManyBody.regionEntropy ψ R ≤ ManyBody.regionEntropy ψ (R ∪ T) + ManyBody.regionEntropy ψ T := by
   have hdisj : Disjoint (R ∪ T)ᶜ T := disjoint_compl_left_iff.mpr Finset.subset_union_right
   have hRc : Rᶜ = (R ∪ T)ᶜ ∪ T := by
     ext v
     have hv : v ∈ R → v ∉ T := fun hv ↦ Finset.disjoint_left.mp hRT hv
     simp only [Finset.mem_compl, Finset.mem_union, not_or]
     tauto
-  calc entropy β ψ R = entropy β ψ ((R ∪ T)ᶜ ∪ T) := by rw [← entropy_compl β ψ R, hRc]
-    _ ≤ entropy β ψ (R ∪ T)ᶜ + entropy β ψ T := entropy_union_le β ψ hψ _ _ hdisj
-    _ = entropy β ψ (R ∪ T) + entropy β ψ T := by rw [entropy_compl]
+  calc ManyBody.regionEntropy ψ R
+      = ManyBody.regionEntropy ψ ((R ∪ T)ᶜ ∪ T) := by
+        rw [← ManyBody.regionEntropy_compl β ψ R, hRc]
+    _ ≤ ManyBody.regionEntropy ψ (R ∪ T)ᶜ + ManyBody.regionEntropy ψ T :=
+        ManyBody.regionEntropy_union_le β ψ hψ _ _ hdisj
+    _ = ManyBody.regionEntropy ψ (R ∪ T) + ManyBody.regionEntropy ψ T := by
+        rw [ManyBody.regionEntropy_compl]
 
 /-- **The dimension bound.** The entropy of a region of a unit vector is at most the logarithm
 of the dimension of its configuration space. -/
-theorem entropy_le_log_card (hψ : ‖ψ‖ = 1) (R : Finset V) :
-    entropy β ψ R ≤ Real.log (Fintype.card (Configuration β R)) :=
-  Entropy.vonNeumannEntropy_le_log_card (reducedPure_posSemidef β ψ R)
-    (trace_reducedPure β ψ hψ R)
+theorem regionEntropy_le_log_card (hψ : ‖ψ‖ = 1) (R : Finset V) :
+    ManyBody.regionEntropy ψ R ≤ Real.log (Fintype.card (ManyBody.RegionConfig β R)) :=
+  Entropy.vonNeumannEntropy_le_log_card (ManyBody.regionState_posSemidef R ψ)
+    (ManyBody.trace_regionState_eq_one hψ (D := R))
+
+/-- With `q` states at every site, a region `A` has entropy at most `|A| log q`: the identical-site
+case of `ManyBody.regionEntropy_le_log_card`. -/
+theorem regionEntropy_le_card_mul_log {q : ℕ} {Ω : EuclideanSpace ℂ (V → Fin q)} (hΩ : ‖Ω‖ = 1)
+    (A : Finset V) : ManyBody.regionEntropy Ω A ≤ (A.card : ℝ) * Real.log q := by
+  refine (regionEntropy_le_log_card _ hΩ A).trans (le_of_eq ?_)
+  simp [ManyBody.RegionConfig, Fintype.card_pi, Real.log_pow]
 
 /-- Inside a region `P` of zero entropy, complementary subregions have equal entropy:
 `S(P \ X) = S(X)` for `X ⊆ P`. Two-dimensional area law, `10-geometry.tex`,
 lines 846–851. -/
-theorem entropy_sdiff_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P X : Finset V}
-    (hP : entropy β ψ P = 0) (hX : X ⊆ P) : entropy β ψ (P \ X) = entropy β ψ X := by
-  have h1 := entropy_le_union_add β hψ (Finset.disjoint_sdiff (s := X) (t := P))
-  have h2 := entropy_le_union_add β hψ (Finset.sdiff_disjoint (s := X) (t := P))
+theorem regionEntropy_sdiff_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P X : Finset V}
+    (hP : ManyBody.regionEntropy ψ P = 0) (hX : X ⊆ P) : ManyBody.regionEntropy ψ (P \ X)
+        = ManyBody.regionEntropy ψ X := by
+  have h1 := ManyBody.regionEntropy_le_union_add β hψ (Finset.disjoint_sdiff (s := X) (t := P))
+  have h2 := ManyBody.regionEntropy_le_union_add β hψ (Finset.sdiff_disjoint (s := X) (t := P))
   rw [Finset.union_sdiff_of_subset hX, hP] at h1
   rw [Finset.sdiff_union_of_subset hX, hP] at h2
   linarith
@@ -79,13 +91,13 @@ theorem entropy_sdiff_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P X : Finset V}
 /-- Across a region `P` of zero entropy the entropy is additive: `S(X ∪ Y) = S(X) + S(Y)` for
 `X ⊆ P` and `Y` disjoint from `P`. Two-dimensional area law, `10-geometry.tex`,
 lines 846–851. -/
-theorem entropy_union_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P X Y : Finset V}
-    (hP : entropy β ψ P = 0) (hX : X ⊆ P) (hY : Disjoint Y P) :
-    entropy β ψ (X ∪ Y) = entropy β ψ X + entropy β ψ Y := by
+theorem regionEntropy_union_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P X Y : Finset V}
+    (hP : ManyBody.regionEntropy ψ P = 0) (hX : X ⊆ P) (hY : Disjoint Y P) :
+    ManyBody.regionEntropy ψ (X ∪ Y) = ManyBody.regionEntropy ψ X + ManyBody.regionEntropy ψ Y := by
   have hXY : Disjoint X Y := (hY.mono_right hX).symm
-  have hle := entropy_union_le β ψ hψ X Y hXY
-  have hsub := entropy_submodular β ψ P (X ∪ Y)
-  have hAL := entropy_le_union_add β hψ hY
+  have hle := ManyBody.regionEntropy_union_le β ψ hψ X Y hXY
+  have hsub := ManyBody.regionEntropy_submodular β ψ P (X ∪ Y)
+  have hAL := ManyBody.regionEntropy_le_union_add β hψ hY
   have hi : P ∩ (X ∪ Y) = X := by
     ext v
     have hv : v ∈ Y → v ∉ P := fun h ↦ Finset.disjoint_left.mp hY h
@@ -100,8 +112,9 @@ theorem entropy_union_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P X Y : Finset V}
 
 /-- **Flipping a region of zero entropy.** If `S(P) = 0`, then `S(A ∆ P) = S(A)` for every
 region `A`. Two-dimensional area law, `10-geometry.tex`, lines 846–851. -/
-theorem entropy_symmDiff_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P : Finset V}
-    (hP : entropy β ψ P = 0) (A : Finset V) : entropy β ψ (A ∆ P) = entropy β ψ A := by
+theorem regionEntropy_symmDiff_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P : Finset V}
+    (hP : ManyBody.regionEntropy ψ P = 0) (A : Finset V) : ManyBody.regionEntropy ψ (A ∆ P)
+        = ManyBody.regionEntropy ψ A := by
   have hA : A = (A ∩ P) ∪ (A \ P) := by
     ext v
     simp only [Finset.mem_union, Finset.mem_sdiff, Finset.mem_inter]
@@ -111,9 +124,9 @@ theorem entropy_symmDiff_eq_of_eq_zero (hψ : ‖ψ‖ = 1) {P : Finset V}
     simp only [Finset.mem_symmDiff, Finset.mem_union, Finset.mem_sdiff, Finset.mem_inter]
     tauto
   have hd : Disjoint (A \ P) P := Finset.sdiff_disjoint
-  rw [hAP, entropy_union_eq_of_eq_zero β hψ hP Finset.sdiff_subset hd,
-    entropy_sdiff_eq_of_eq_zero β hψ hP Finset.inter_subset_right]
+  rw [hAP, ManyBody.regionEntropy_union_eq_of_eq_zero β hψ hP Finset.sdiff_subset hd,
+    ManyBody.regionEntropy_sdiff_eq_of_eq_zero β hψ hP Finset.inter_subset_right]
   conv_rhs => rw [hA]
-  rw [entropy_union_eq_of_eq_zero β hψ hP Finset.inter_subset_right hd]
+  rw [ManyBody.regionEntropy_union_eq_of_eq_zero β hψ hP Finset.inter_subset_right hd]
 
-end FiniteProduct
+end ManyBody

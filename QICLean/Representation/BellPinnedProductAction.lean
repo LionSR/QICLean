@@ -30,7 +30,7 @@ site family, and the inserted vector is arbitrary.
 
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped ComplexOrder MatrixOrder
 
 universe u
@@ -45,7 +45,7 @@ variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β C) R
-local notation "ιe" => compressedSiteSpace β X R
+local notation "ιe" => ManyBody.compressedSiteSpace β X R
 
 /-- The actual ordered original and exterior band products have the same
 pinned action. The exterior product is positive definite by the actual
@@ -58,9 +58,9 @@ theorem replicaMetric_bandProduct_bellPin {S : Type*}
     (U Y : S → Fin K → Finset V)
     (hdisj : ∀ j g, Disjoint (U j g) (Y j g))
     (hnest : ∀ j j' g h, g < h → U j g ∪ Y j g ⊆ U j' h)
-    (b : (Configuration β X × C) → ℂ) (T : Matrix.MeanTree S) :
+    (b : (ManyBody.RegionConfig β X × C) → ℂ) (T : Matrix.MeanTree S) :
     let e := bellInsertionCopyEquiv β X C R k
-    let J := (addedSiteInsertion ιe (Configuration β X × C) k b).submatrix e id
+    let J := (addedSiteInsertion ιe (ManyBody.RegionConfig β X × C) k b).submatrix e id
     let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
     let P := J * Pe * Jᴴ
     let W := replicaMetric ι₀ t k

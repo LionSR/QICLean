@@ -43,18 +43,18 @@ def heterogeneousDimension : Fin 3 → ℕ := ![1, 2, 3]
 
 example (ψ : EuclideanSpace ℂ ((v : Fin 3) → Fin (heterogeneousDimension v)))
     (R : Finset (Fin 3)) :
-    FiniteProduct.entropy (fun v ↦ Fin (heterogeneousDimension v)) ψ Rᶜ =
-      FiniteProduct.entropy (fun v ↦ Fin (heterogeneousDimension v)) ψ R :=
-  FiniteProduct.entropy_compl _ ψ R
+    ManyBody.regionEntropy ψ Rᶜ =
+      ManyBody.regionEntropy ψ R :=
+  ManyBody.regionEntropy_compl _ ψ R
 
 /-- Both ordered families may be empty, with no restrictions on the remainder. -/
 example {V : Type*} [Fintype V] [DecidableEq V]
     (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1) (D : Finset V) :
-    FiniteProduct.entropy β ψ D ≤ FiniteProduct.entropy β ψ D +
+    ManyBody.regionEntropy ψ D ≤ ManyBody.regionEntropy ψ D +
       (1 / 2) * ((∑ _i ∈ (∅ : Finset ℤ), (0 : ℝ)) +
         ∑ _j ∈ (∅ : Finset ℚ), (0 : ℝ)) := by
-  apply FiniteProduct.entropy_le_remainder_add_half_sum β ψ hψ D D
+  apply ManyBody.regionEntropy_le_remainder_add_half_sum β ψ hψ D D
     (fun _ : ℤ ↦ ∅) ∅ (fun _ : ℚ ↦ ∅) ∅
   all_goals simp
 
@@ -62,7 +62,7 @@ example {V : Type*} [Fintype V] [DecidableEq V]
 nonemptiness assumption on the individual local bases. -/
 example {V : Type*} [Fintype V] [DecidableEq V]
     (β : V → Type*) [∀ v, Fintype (β v)] :
-    Fintype.card (FiniteProduct.Configuration β ∅) = 1 := by simp
+    Fintype.card (ManyBody.RegionConfig β ∅) = 1 := by simp
 
 /-- A normalized entangled vector in dimensions two and three; its second
 marginal is singular, so no invertibility assumption can enter the API. -/
@@ -97,9 +97,9 @@ contains the whole region, with the exterior information bound supplied as input
 example {V : Type*} [Fintype V] [DecidableEq V]
     (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
-    (R : Finset V) (ε : ℝ) (hε : FiniteProduct.mutualInformation β ψ R Rᶜ ≤ ε) :
-    FiniteProduct.entropy β ψ R ≤ (1 / 2) * ε := by
-  have h := FiniteProduct.entropy_le_remainder_add_half_sum β ψ hψ R ∅
+    (R : Finset V) (ε : ℝ) (hε : ManyBody.regionMutualInformation ψ R Rᶜ ≤ ε) :
+    ManyBody.regionEntropy ψ R ≤ (1 / 2) * ε := by
+  have h := ManyBody.regionEntropy_le_remainder_add_half_sum β ψ hψ R ∅
     (fun _ : ℤ ↦ ∅) ∅ (fun _ : ℤ ↦ R) {0}
     (by simp) (by simp) (by simp) (by simp) (by simp) (by simp)
     (fun _ ↦ 0) (fun _ ↦ ε) (by simp)
@@ -108,54 +108,54 @@ example {V : Type*} [Fintype V] [DecidableEq V]
       simp only [Finset.mem_singleton] at hi
       subst i
       simpa [Entropy.OrderedSetFunction.past, Finset.filter_singleton] using hε)
-  simpa [FiniteProduct.entropy_empty β ψ hψ] using h
+  simpa [ManyBody.regionEntropy_empty β ψ hψ] using h
 
 /-- A nonempty index family of empty tiles is permitted by the physical result. -/
 example {V : Type*} [Fintype V] [DecidableEq V]
     (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1) (D : Finset V) :
-    FiniteProduct.entropy β ψ D ≤ FiniteProduct.entropy β ψ D := by
-  have h := FiniteProduct.entropy_le_remainder_add_half_sum β ψ hψ D D
+    ManyBody.regionEntropy ψ D ≤ ManyBody.regionEntropy ψ D := by
+  have h := ManyBody.regionEntropy_le_remainder_add_half_sum β ψ hψ D D
     (fun _ : ℤ ↦ ∅) {0} (fun _ : ℚ ↦ ∅) ∅
     (by simp) (by simp) (by simp) (by simp) (by simp) (by simp)
     (fun _ ↦ 0) (fun _ ↦ 0)
-    (by intro i hi; simp [FiniteProduct.mutualInformation,
-          FiniteProduct.entropy_empty β ψ hψ, Entropy.OrderedSetFunction.past])
+    (by intro i hi; simp [ManyBody.regionMutualInformation,
+          ManyBody.regionEntropy_empty β ψ hψ, Entropy.OrderedSetFunction.past])
     (by simp)
   simpa only [Finset.sum_empty, Finset.sum_singleton, add_zero, mul_zero] using h
 
 example {V : Type*} [Fintype V] [DecidableEq V]
     (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1) :
-    FiniteProduct.entropy β ψ ∅ = 0 ∧ FiniteProduct.entropy β ψ Finset.univ = 0 :=
-  ⟨FiniteProduct.entropy_empty β ψ hψ, FiniteProduct.entropy_univ β ψ hψ⟩
+    ManyBody.regionEntropy ψ ∅ = 0 ∧ ManyBody.regionEntropy ψ Finset.univ = 0 :=
+  ⟨ManyBody.regionEntropy_empty β ψ hψ, ManyBody.regionEntropy_univ β ψ hψ⟩
 
 /--
-info: 'FiniteProduct.trace_reducedPure' depends on axioms:
+info: 'ManyBody.trace_regionState_eq_one' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.trace_reducedPure
+#print axioms ManyBody.trace_regionState_eq_one
 
 /--
-info: 'FiniteProduct.partialTraceRight_reducedMatrix_union' depends on axioms:
+info: 'ManyBody.partialTraceRight_regionMatrix_union' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.partialTraceRight_reducedMatrix_union
+#print axioms ManyBody.partialTraceRight_regionMatrix_union
 
 /--
-info: 'FiniteProduct.partialTraceLeft_reducedMatrix_union' depends on axioms:
+info: 'ManyBody.partialTraceLeft_regionMatrix_union' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.partialTraceLeft_reducedMatrix_union
+#print axioms ManyBody.partialTraceLeft_regionMatrix_union
 
 /--
 info: 'Entropy.subadditivity' depends on axioms:
@@ -176,82 +176,82 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms Entropy.pure_marginal_entropy_eq
 
 /--
-info: 'FiniteProduct.entropy_compl' depends on axioms:
+info: 'ManyBody.regionEntropy_compl' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.entropy_compl
+#print axioms ManyBody.regionEntropy_compl
 
 /--
-info: 'FiniteProduct.entropy_union_le' depends on axioms:
+info: 'ManyBody.regionEntropy_union_le' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.entropy_union_le
+#print axioms ManyBody.regionEntropy_union_le
 
 /--
-info: 'FiniteProduct.mutualInformation_eq_matrix' depends on axioms:
+info: 'ManyBody.regionMutualInformation_eq_matrix' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.mutualInformation_eq_matrix
+#print axioms ManyBody.regionMutualInformation_eq_matrix
 
 /--
-info: 'FiniteProduct.entropy_le_remainder_add_half_mutualInformation' depends on axioms:
+info: 'ManyBody.regionEntropy_le_remainder_add_half_regionMutualInformation' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.entropy_le_remainder_add_half_mutualInformation
+#print axioms ManyBody.regionEntropy_le_remainder_add_half_regionMutualInformation
 
 /--
-info: 'FiniteProduct.entropy_le_remainder_add_half_sum' depends on axioms:
+info: 'ManyBody.regionEntropy_le_remainder_add_half_sum' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.entropy_le_remainder_add_half_sum
+#print axioms ManyBody.regionEntropy_le_remainder_add_half_sum
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_eq_sub' depends on axioms:
+info: 'ManyBody.conditionalMutualInformation_eq_sub' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.conditionalMutualInformation_eq_sub
+#print axioms ManyBody.conditionalMutualInformation_eq_sub
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_le_mutualInformation_union' depends on axioms:
+info: 'ManyBody.conditionalMutualInformation_le_regionMutualInformation_union' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.conditionalMutualInformation_le_mutualInformation_union
+#print axioms ManyBody.conditionalMutualInformation_le_regionMutualInformation_union
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_pure_duality' depends on axioms:
+info: 'ManyBody.conditionalMutualInformation_pure_duality' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.conditionalMutualInformation_pure_duality
+#print axioms ManyBody.conditionalMutualInformation_pure_duality
 
 /--
-info: 'FiniteProduct.sum_conditionalMutualInformation_past' depends on axioms:
+info: 'ManyBody.sum_conditionalMutualInformation_past' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.sum_conditionalMutualInformation_past
+#print axioms ManyBody.sum_conditionalMutualInformation_past

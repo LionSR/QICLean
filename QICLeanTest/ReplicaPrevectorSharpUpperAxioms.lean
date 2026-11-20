@@ -14,7 +14,7 @@ run_cmd do
   let decls := #[
     ``Real.neg_log_div_le_of_sharp_bell_bound,
     ``TensorPower.eventually_suppliedSchmidtBell_sharp_upper,
-    ``FiniteProduct.eventually_suppliedReplicaPrevector_sharp_upper]
+    ``ManyBody.eventually_suppliedReplicaPrevector_sharp_upper]
   for decl in decls do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"

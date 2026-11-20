@@ -608,6 +608,9 @@ theorem norm_localLift_sq_le_exp {ι : Type*} [Fintype ι]
   have h1a : 0 < 1 - a := by linarith
   set ρ := ManyBody.regionState Ψ B
   have hρ := ManyBody.regionState_isHermitian B Ψ
+  have hρdef : partialTraceRight (vecMulVec (WithLp.ofLp (ManyBody.cutVector B Ψ))
+      (star (WithLp.ofLp (ManyBody.cutVector B Ψ)))) = ρ :=
+    (ManyBody.regionState_eq_partialTraceRight_cutVector B Ψ).symm
   have hH : L.IsHermitian := (hL.posDef hf).1
   obtain ⟨hLnn, hL1⟩ := hL.eigenvalues hf ha hH
   have hnormeq : ‖toEuclideanLin (ManyBody.place B L) Ψ‖ =
@@ -615,14 +618,13 @@ theorem norm_localLift_sq_le_exp {ι : Type*} [Fintype ι]
         ((v : {v // v ∉ B}) → Fin (n v)) ℂ)) (ManyBody.cutVector B Ψ)‖ := by
     rw [← norm_cutVector B, cutVector_toEuclideanLin, ManyBody.cutOperator_place]
   have hΨ' : ‖ManyBody.cutVector B Ψ‖ = 1 := by rw [norm_cutVector, hΨ]
-  have hp : ∀ i, 0 ≤ hρ.eigenvalues i :=
-    ((posSemidef_vecMulVec_self_star _).partialTraceRight).eigenvalues_nonneg
-  have hs := sum_eigenvalues_partialTraceRight_eq_one hΨ' rfl hρ
+  have hp : ∀ i, 0 ≤ hρ.eigenvalues i := (ManyBody.regionState_posSemidef B Ψ).eigenvalues_nonneg
+  have hs := sum_eigenvalues_partialTraceRight_eq_one hΨ' hρdef hρ
   have hM := surprisalMoment_pos hp hs (-a / (1 - a))
   have hrpow := norm_kronecker_one_apply_sq_le_rpow hH hLnn ha ha1 hL1 (Ψ := ManyBody.cutVector B Ψ)
-    (ρ := ρ) rfl hρ
+    (ρ := ρ) hρdef hρ
   have hmom := log_surprisalMoment_cut_le hsupp hherm hc₀ hnorm hΨ hg₀ heig hgap
-    (B := B) (ρ := ρ) rfl hρ (u := -a / (1 - a)) (by
+    (B := B) (ρ := ρ) hρdef hρ (u := -a / (1 - a)) (by
       rw [abs_div, abs_neg, abs_of_pos ha, abs_of_pos h1a]; exact hu)
   have hK : 0 ≤ Real.exp 1 * (c₀ / g₀) *
       cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D) := by

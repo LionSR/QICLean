@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Representation.AddedSiteTensorInsertion
 import QICLean.Entropy.CompressedSiteCoordinates
-import QICLean.Channel.FiniteProduct
+import QICLean.ManyBody.Sites.RegionMatrix
 
 /-!
 # Physical Bell coordinates and the actual insertion
@@ -34,7 +34,7 @@ state identity, or supplied intertwining assumption is needed.
   `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped BigOperators
 
 universe u
@@ -47,7 +47,8 @@ variable {V : Type u} [Fintype V] [DecidableEq V]
 variable (β : V → Type u) (X : Finset V) (C R : Type u)
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β C) R
-local notation "ι₁" => addedSiteSpace (compressedSiteSpace β X R) (Configuration β X × C)
+local notation "ι₁" => addedSiteSpace (ManyBody.compressedSiteSpace β X R)
+    (ManyBody.RegionConfig β X × C)
 
 /-- Group the original X coordinates and C into the Bell coordinate, retaining
 R and each original complementary coordinate separately.
@@ -62,7 +63,7 @@ def bellInsertionSiteEquiv : ((v : Option (Option V)) → ι₀ v) ≃
     | none => y (some none)
     | some none => (y none).2
     | some (some v) =>
-      (FiniteProduct.splitEquiv β X).symm ((y none).1, fun w ↦ y (some (some w))) v
+      (ManyBody.splitEquiv β X).symm ((y none).1, fun w ↦ y (some (some w))) v
   left_inv x := by
     funext o
     cases o with
@@ -71,7 +72,7 @@ def bellInsertionSiteEquiv : ((v : Option (Option V)) → ι₀ v) ≃
       cases o with
       | none => rfl
       | some v =>
-        exact congrFun ((FiniteProduct.splitEquiv β X).symm_apply_apply
+        exact congrFun ((ManyBody.splitEquiv β X).symm_apply_apply
           (fun w ↦ x (some (some w)))) v
   right_inv y := by
     funext o
@@ -79,14 +80,14 @@ def bellInsertionSiteEquiv : ((v : Option (Option V)) → ι₀ v) ≃
     | none =>
       apply Prod.ext
       · funext v
-        exact FiniteProduct.splitEquiv_symm_apply_of_mem β X (y none).1
+        exact ManyBody.splitEquiv_symm_apply_of_mem β X (y none).1
           (fun w ↦ y (some (some w))) v v.property
       · rfl
     | some o =>
       cases o with
       | none => rfl
       | some v =>
-        exact FiniteProduct.splitEquiv_symm_apply_of_notMem β X (y none).1
+        exact ManyBody.splitEquiv_symm_apply_of_notMem β X (y none).1
           (fun w ↦ y (some (some w))) v (Finset.mem_compl.mp v.property)
 
 /-- Apply the physical Bell-coordinate equivalence independently to each copy.
@@ -103,7 +104,7 @@ theorem bellInsertionCopyEquiv_subsystemPerm_withPin (k : ℕ) (U : Finset V)
     bellInsertionCopyEquiv β X C R k
       (subsystemPerm k ι₀
         (insert (some none) ((X ∪ U).image fun v ↦ some (some v))) σ x) =
-      subsystemPerm k ι₁ (insert none ((exteriorRegion X U).image some)) σ
+      subsystemPerm k ι₁ (insert none ((ManyBody.exteriorRegion X U).image some)) σ
         (bellInsertionCopyEquiv β X C R k x) := by
   funext j o
   cases o with
@@ -114,7 +115,7 @@ theorem bellInsertionCopyEquiv_subsystemPerm_withPin (k : ℕ) (U : Finset V)
         subsystemPerm k ι₀
           (insert (some none) ((X ∪ U).image fun v ↦ some (some v))) σ x j
             (some none)) =
-      if none ∈ insert none ((exteriorRegion X U).image some) then
+      if none ∈ insert none ((ManyBody.exteriorRegion X U).image some) then
         (fun v : X ↦ x (σ⁻¹ j) (some (some v)), x (σ⁻¹ j) (some none)) else
         (fun v : X ↦ x j (some (some v)), x j (some none))
     rw [ite_eq_left (Finset.mem_insert_self _ _)]
@@ -127,17 +128,17 @@ theorem bellInsertionCopyEquiv_subsystemPerm_withPin (k : ℕ) (U : Finset V)
     | none =>
       change (if none ∈ insert (some none)
           ((X ∪ U).image fun v ↦ some (some v)) then x (σ⁻¹ j) none else x j none) =
-        if some none ∈ insert none ((exteriorRegion X U).image some) then
+        if some none ∈ insert none ((ManyBody.exteriorRegion X U).image some) then
           x (σ⁻¹ j) none else x j none
-      simp [exteriorRegion, Finset.mem_image]
+      simp [ManyBody.exteriorRegion, Finset.mem_image]
     | some v =>
       change (if some (some (v : V)) ∈ insert (some none)
           ((X ∪ U).image fun v ↦ some (some v)) then
             x (σ⁻¹ j) (some (some v)) else x j (some (some v))) =
-        if some (some v) ∈ insert none ((exteriorRegion X U).image some) then
+        if some (some v) ∈ insert none ((ManyBody.exteriorRegion X U).image some) then
           x (σ⁻¹ j) (some (some v)) else x j (some (some v))
       by_cases hv : (v : V) ∈ U <;>
-        simp [exteriorRegion, Finset.mem_image, Finset.mem_compl.mp v.property, hv]
+        simp [ManyBody.exteriorRegion, Finset.mem_image, Finset.mem_compl.mp v.property, hv]
 
 /-- Permuting the original exterior part of U leaves both the bundled Bell
 coordinate and R fixed. Source: area-law manuscript, `07-comparators.tex`,
@@ -146,7 +147,7 @@ theorem bellInsertionCopyEquiv_subsystemPerm_exterior (k : ℕ) (U : Finset V)
     (σ : Equiv.Perm (Fin k)) (x : Config k ι₀) :
     bellInsertionCopyEquiv β X C R k
       (subsystemPerm k ι₀ ((U \ X).image fun v ↦ some (some v)) σ x) =
-      subsystemPerm k ι₁ ((exteriorRegion X U).image some) σ
+      subsystemPerm k ι₁ ((ManyBody.exteriorRegion X U).image some) σ
         (bellInsertionCopyEquiv β X C R k x) := by
   funext j o
   cases o with
@@ -155,7 +156,7 @@ theorem bellInsertionCopyEquiv_subsystemPerm_exterior (k : ℕ) (U : Finset V)
         ((U \ X).image fun v ↦ some (some v)) σ x j (some (some v))),
         subsystemPerm k ι₀ ((U \ X).image fun v ↦ some (some v)) σ x j
           (some none)) =
-      if none ∈ (exteriorRegion X U).image some then
+      if none ∈ (ManyBody.exteriorRegion X U).image some then
         (fun v : X ↦ x (σ⁻¹ j) (some (some v)), x (σ⁻¹ j) (some none)) else
         (fun v : X ↦ x j (some (some v)), x j (some none))
     rw [ite_eq_right (by simp)]
@@ -168,21 +169,21 @@ theorem bellInsertionCopyEquiv_subsystemPerm_exterior (k : ℕ) (U : Finset V)
     | none =>
       change (if none ∈ (U \ X).image (fun v ↦ some (some v)) then
           x (σ⁻¹ j) none else x j none) =
-        if some none ∈ (exteriorRegion X U).image some then
+        if some none ∈ (ManyBody.exteriorRegion X U).image some then
           x (σ⁻¹ j) none else x j none
-      simp [exteriorRegion, Finset.mem_image]
+      simp [ManyBody.exteriorRegion, Finset.mem_image]
     | some v =>
       change (if some (some (v : V)) ∈ (U \ X).image (fun v ↦ some (some v)) then
           x (σ⁻¹ j) (some (some v)) else x j (some (some v))) =
-        if some (some v) ∈ (exteriorRegion X U).image some then
+        if some (some v) ∈ (ManyBody.exteriorRegion X U).image some then
           x (σ⁻¹ j) (some (some v)) else x j (some (some v))
       by_cases hv : (v : V) ∈ U <;>
-        simp [exteriorRegion, Finset.mem_image, Finset.mem_compl.mp v.property, hv]
+        simp [ManyBody.exteriorRegion, Finset.mem_image, Finset.mem_compl.mp v.property, hv]
 
 variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
-local instance : DecidableEq (Configuration β X) :=
+local instance : DecidableEq (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
 
 /-- Transport the same label function along a literal equivariant change of
@@ -204,7 +205,7 @@ Source: area-law manuscript, `07-comparators.tex`, lines 290–308. -/
 theorem labelObservable_bellInsertionCopyEquiv_withPin (k : ℕ) (U : Finset V)
     (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
     (labelObservable
-        (subsystemPerm k ι₁ (insert none ((exteriorRegion X U).image some))) f).submatrix
+        (subsystemPerm k ι₁ (insert none ((ManyBody.exteriorRegion X U).image some))) f).submatrix
         (bellInsertionCopyEquiv β X C R k) (bellInsertionCopyEquiv β X C R k) =
       labelObservable (subsystemPerm k ι₀
         (insert (some none) ((X ∪ U).image fun v ↦ some (some v)))) f :=
@@ -215,7 +216,7 @@ theorem labelObservable_bellInsertionCopyEquiv_withPin (k : ℕ) (U : Finset V)
 Bell site. Source: area-law manuscript, `07-comparators.tex`, lines 300–308. -/
 theorem labelObservable_bellInsertionCopyEquiv_exterior (k : ℕ) (U : Finset V)
     (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
-    (labelObservable (subsystemPerm k ι₁ ((exteriorRegion X U).image some)) f).submatrix
+    (labelObservable (subsystemPerm k ι₁ ((ManyBody.exteriorRegion X U).image some)) f).submatrix
         (bellInsertionCopyEquiv β X C R k) (bellInsertionCopyEquiv β X C R k) =
       labelObservable (subsystemPerm k ι₀ ((U \ X).image fun v ↦ some (some v))) f :=
   labelObservable_submatrix_of_action _ _ _
@@ -226,19 +227,23 @@ coordinates intertwines the actual C ∪ X ∪ U operator with the exterior U
 operator, for exactly the same label function.
 Source: area-law manuscript, `07-comparators.tex`, lines 290–308. -/
 theorem labelObservable_mul_bellInsertion_withPin (k : ℕ) (U : Finset V)
-    (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) (b : Configuration β X × C → ℂ) :
+    (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) (b : ManyBody.RegionConfig β X × C → ℂ) :
     let e := bellInsertionCopyEquiv β X C R k
-    let J := (addedSiteInsertion (compressedSiteSpace β X R) (Configuration β X × C) k b).submatrix
+    let J :=
+        (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+        (ManyBody.RegionConfig β X × C) k b).submatrix
       e id
     labelObservable (subsystemPerm k ι₀
         (insert (some none) ((X ∪ U).image fun v ↦ some (some v)))) f * J =
-      J * labelObservable (subsystemPerm k (compressedSiteSpace β X R)
-        (exteriorRegion X U)) f := by
+      J * labelObservable (subsystemPerm k (ManyBody.compressedSiteSpace β X R)
+        (ManyBody.exteriorRegion X U)) f := by
   intro e J
   rw [← labelObservable_bellInsertionCopyEquiv_withPin β X C R k U f]
   change (labelObservable
-      (subsystemPerm k ι₁ (insert none ((exteriorRegion X U).image some))) f).submatrix e e *
-      (addedSiteInsertion (compressedSiteSpace β X R) (Configuration β X × C) k b).submatrix
+      (subsystemPerm k ι₁ (insert none ((ManyBody.exteriorRegion X U).image some)))
+          f).submatrix e e *
+      (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+          (ManyBody.RegionConfig β X × C) k b).submatrix
       e id = _
   rw [Matrix.submatrix_mul_equiv, labelObservable_mul_addedSiteInsertion]
   exact Matrix.submatrix_mul _ _ e id id Function.bijective_id
@@ -247,17 +252,22 @@ theorem labelObservable_mul_bellInsertion_withPin (k : ℕ) (U : Finset V)
 the Bell and R coordinates are fixed. The label function remains unchanged.
 Source: area-law manuscript, `07-comparators.tex`, lines 300–308. -/
 theorem labelObservable_mul_bellInsertion_exterior (k : ℕ) (U : Finset V)
-    (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) (b : Configuration β X × C → ℂ) :
+    (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) (b : ManyBody.RegionConfig β X × C → ℂ) :
     let e := bellInsertionCopyEquiv β X C R k
-    let J := (addedSiteInsertion (compressedSiteSpace β X R) (Configuration β X × C) k b).submatrix
+    let J :=
+        (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+        (ManyBody.RegionConfig β X × C) k b).submatrix
       e id
     labelObservable (subsystemPerm k ι₀ ((U \ X).image fun v ↦ some (some v))) f * J =
-      J * labelObservable (subsystemPerm k (compressedSiteSpace β X R)
-        (exteriorRegion X U)) f := by
+      J * labelObservable (subsystemPerm k (ManyBody.compressedSiteSpace β X R)
+        (ManyBody.exteriorRegion X U)) f := by
   intro e J
   rw [← labelObservable_bellInsertionCopyEquiv_exterior β X C R k U f]
-  change (labelObservable (subsystemPerm k ι₁ ((exteriorRegion X U).image some)) f).submatrix e e *
-      (addedSiteInsertion (compressedSiteSpace β X R) (Configuration β X × C) k b).submatrix
+  change
+      (labelObservable
+      (subsystemPerm k ι₁ ((ManyBody.exteriorRegion X U).image some)) f).submatrix e e *
+      (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+          (ManyBody.RegionConfig β X × C) k b).submatrix
       e id = _
   rw [Matrix.submatrix_mul_equiv, labelObservable_mul_addedSiteInsertion_exterior]
   exact Matrix.submatrix_mul _ _ e id id Function.bijective_id

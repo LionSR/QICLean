@@ -306,7 +306,7 @@ actual compressed vector.
 
 \begin{definition}[Extracting the physical sites]
 \label{def:extract_compressed_physical_region}
-\lean{FiniteProduct.extractExteriorRegion}
+\lean{ManyBody.extractExteriorRegion}
 \leanok
 For a region $D\subseteq\widehat V$, let
 \begin{align}
@@ -318,7 +318,7 @@ contributes no element to this set.
 
 \begin{theorem}[Recovery of an original exterior region]
 \label{thm:extract_lifted_physical_region}
-\lean{FiniteProduct.extractExteriorRegion_exteriorRegion}
+\lean{ManyBody.extractExteriorRegion_exteriorRegion}
 \leanok
 \uses{def:extract_compressed_physical_region,def:compressed_site_family}
 If $B\subseteq V$ is disjoint from $X$, then
@@ -334,7 +334,7 @@ places every site of $B$ in $X^c$, so that it occurs in $\widehat B$.
 
 \begin{theorem}[Inclusion, nesting, and auxiliary disjointness]
 \label{thm:lifted_physical_regions_nested}
-\lean{FiniteProduct.monotone_exteriorRegion,FiniteProduct.exteriorRegion_disjoint_auxiliary,FiniteProduct.pairwise_exteriorRegion}
+\lean{ManyBody.monotone_exteriorRegion,ManyBody.exteriorRegion_disjoint_auxiliary,ManyBody.pairwise_exteriorRegion}
 \leanok
 \uses{def:compressed_site_family}
 For arbitrary physical regions $B,C\subseteq V$,
@@ -355,7 +355,7 @@ original list.
 
 \begin{definition}[The threshold determined by the original state]
 \label{def:compressed_regional_threshold}
-\lean{FiniteProduct.compressedRegionalThreshold}
+\lean{ManyBody.compressedRegionalThreshold}
 \leanok
 \uses{def:extract_compressed_physical_region}
 Let the local physical coordinate sets be finite. Given an original vector
@@ -371,7 +371,7 @@ cutoff estimate.
 
 \begin{theorem}[The threshold on a lifted physical region]
 \label{thm:compressed_regional_threshold_lifted}
-\lean{FiniteProduct.compressedRegionalThreshold_exteriorRegion}
+\lean{ManyBody.compressedRegionalThreshold_exteriorRegion}
 \leanok
 \uses{def:compressed_regional_threshold,thm:extract_lifted_physical_region}
 For every $B$ disjoint from $X$,
@@ -391,7 +391,7 @@ Substitute $\operatorname{phys}_X(\widehat B)=B$ in the definition.
 
 \begin{definition}[The auxiliary site and exterior physical regions]
     \label{def:compressed_site_family}
-    \lean{FiniteProduct.compressedSiteSpace,FiniteProduct.exteriorRegion}
+    \lean{ManyBody.compressedSiteSpace,ManyBody.exteriorRegion}
     \leanok
     Let $V$ be a finite set of physical sites, with local coordinate
     sets $I_v$, and let $X\subseteq V$. For an auxiliary coordinate
@@ -531,7 +531,7 @@ selected mass $z$. Each product follows the order of the prescribed list.
 
 \begin{theorem}[Retention of the same auxiliary-label mass]
 \label{thm:compressed_typical_common_retained_mass}
-\lean{FiniteProduct.eventually_commonLabelCutoff_compressedTypicalSite_retains_mass}
+\lean{ManyBody.eventually_commonLabelCutoff_compressedTypicalSite_retains_mass}
 \leanok
 \uses{thm:compressed_typical_regional_exponential_tail,thm:half_mass_after_finite_exponential_losses,thm:schur-common-cutoff-mass,thm:lifted_physical_regions_nested,thm:compressed_regional_threshold_lifted}
 Assume that $q_k\ge 1/(2(k+1)^{d^2})$ for all sufficiently large $k$.
@@ -557,7 +557,7 @@ union bound gives $q_k-\ell_k\le r_k$, proving the remaining inequalities.
 
 \begin{theorem}[A Bell vector with the same common-cutoff mass]
 \label{thm:compressed_typical_common_bell_vector}
-\lean{FiniteProduct.eventually_exists_commonLabelCutoff_compressedTypical_bell_vector}
+\lean{ManyBody.eventually_exists_commonLabelCutoff_compressedTypical_bell_vector}
 \leanok
 \uses{thm:compressed_typical_common_retained_mass,thm:compressed_site_product_symmetry,thm:schur-common-cutoff-bell}
 Assume the same eventual lower bound
@@ -684,7 +684,7 @@ selected spectral compression used in
 
 \begin{theorem}[The marginal on a disjoint region is preserved]
 \label{thm:compressed_typical_regional_marginal}
-\lean{FiniteProduct.partialTraceLeft_compressedTypicalPureState_region}
+\lean{ManyBody.partialTraceLeft_compressedTypicalPureState_region}
 \leanok
 \uses{thm:compressed_typical_vector}
 Use the canonical physical coordinate split
@@ -730,7 +730,7 @@ These are the selected state and mass of
 
 \begin{theorem}[Normalization in the actual site coordinates]
 \label{thm:compressed_typical_site_norm}
-\lean{FiniteProduct.norm_compressedTypicalSiteState}
+\lean{ManyBody.norm_compressedTypicalSiteState}
 \leanok
 \uses{def:compressed_site_family,thm:compressed_typical_vector}
 The actual compressed vector satisfies
@@ -749,7 +749,7 @@ vector has squared norm $z^{-1}z=1$.
 
 \begin{theorem}[The compressed regional entropy bound]
 \label{thm:compressed_typical_site_entropy}
-\lean{FiniteProduct.entropy_compressedTypicalSiteState_le}
+\lean{ManyBody.regionEntropy_compressedTypicalSiteState_le}
 \leanok
 \uses{thm:compressed_site_actual_regional_marginal}
 Assume in addition that $\|\Omega\|=1$. For every physical region
@@ -771,7 +771,7 @@ The mass $z$ is the same original spectral-selection mass throughout.
 
 \begin{theorem}[Exponential loss of an actual regional Schur cutoff]
 \label{thm:compressed_typical_regional_exponential_tail}
-\lean{FiniteProduct.exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp}
+\lean{ManyBody.exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp}
 \leanok
 \uses{thm:compressed_typical_site_norm,thm:compressed_typical_site_entropy,thm:iid_schur_label_exponential,thm:subsystem_label_cutoff_regional_trace}
 Assume $\|\Omega\|=1$ and $X\cap B=\varnothing$. Let
@@ -820,7 +820,7 @@ The canonical coordinate bijection is
 
 \begin{definition}[Regional and discarded coordinates]
 \label{def:compressed_site_region_coordinates}
-\lean{FiniteProduct.exteriorRegionEquiv,FiniteProduct.exteriorComplementEquiv}
+\lean{ManyBody.exteriorRegionEquiv,ManyBody.exteriorComplementEquiv}
 \leanok
 \uses{def:compressed_site_family}
 For every $B\subseteq V$, evaluation of the auxiliary and physical
@@ -842,7 +842,7 @@ bijections.
 
 \begin{theorem}[Compatibility of the regional split]
 \label{thm:compressed_site_region_split}
-\lean{FiniteProduct.piOptionEquivProd_split_exteriorRegion}
+\lean{ManyBody.piOptionEquivProd_split_exteriorRegion}
 \leanok
 \uses{def:compressed_site_region_coordinates}
 Suppose $X\cap B=\varnothing$. Let $b$ and $c$ be configurations on
@@ -864,7 +864,7 @@ both have the value prescribed by $d$.
 
 \begin{theorem}[The actual selected marginal in exterior-site coordinates]
 \label{thm:compressed_site_actual_regional_marginal}
-\lean{FiniteProduct.reducedPure_compressedTypicalSiteState}
+\lean{ManyBody.regionState_compressedTypicalSiteState}
 \leanok
 \uses{thm:compressed_site_region_split,thm:compressed_typical_regional_marginal}
 Assume now that the local coordinate sets are finite. Let $\Omega$ be

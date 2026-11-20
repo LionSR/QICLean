@@ -637,7 +637,7 @@ theorem exists_mem_supercell_lt_edist_add_ring {n : ℕ} [NeZero n]
 
 end ManyBody
 
-open Matrix GaussianFilter 
+open Matrix GaussianFilter
 open scoped Matrix.Norms.L2Operator
 
 

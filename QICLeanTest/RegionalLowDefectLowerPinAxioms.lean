@@ -11,7 +11,7 @@ import Lean.Util.CollectAxioms
 
 run_cmd do
   let allowed := #[``propext, ``Classical.choice, ``Quot.sound]
-  for decl in #[``FiniteProduct.norm_regionalPhysicalVector,
+  for decl in #[``ManyBody.norm_regionalPhysicalVector,
       ``Matrix.exists_globalReplicaLowDefectProjection_rough_lower_pin] do
     unless (← Lean.getEnv).contains decl do
       throwError "Missing declaration {decl}"

@@ -34,13 +34,13 @@ open Matrix TensorPower PermutationRepresentation
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 local instance schmidtBellEnumeratedCompressionConfigDecidableEq
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (X : Finset V) (E : Finset (Configuration β X)) (k : ℕ) :
-    DecidableEq (Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) :
+    DecidableEq (TensorPower.Config k (addedSiteSpace (addedSiteSpace β E) (Fin E.card))) :=
   Fintype.decidablePiFintype
 
 /-- Enumerating the selected C register preserves each actual compressed
@@ -55,9 +55,9 @@ Source: area-law manuscript, `07-comparators.tex`, lines 80--110,
 theorem replicaMetric_compressed_bandProduct_enumerate_C
     {V : Type} [Fintype V] [DecidableEq V] {S : Type*}
     (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-    (X : Finset V) (E : Finset (Configuration β X)) (k n : ℕ)
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k n : ℕ)
     (ZF : Matrix
-      (Config k (addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)))
+      (TensorPower.Config k (addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)))
       (Fin n) ℂ)
     (t : ℝ) (K : ℕ) (U Y : S → Fin K → Finset V) (T : Matrix.MeanTree S) :
     let ιE := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
@@ -93,7 +93,7 @@ theorem replicaMetric_compressed_bandProduct_enumerate_C
     funext fun ell ↦
       congrArg (fun d : ℕ ↦ Partition.replicaWeight t (TensorPower.part d ell)) hdim
   have hact (R : Finset (Option (Option V))) (σ : Equiv.Perm (Fin k))
-      (x : Config k ιE) :
+      (x : TensorPower.Config k ιE) :
       subsystemPerm k ιF R σ (e.symm x) = e.symm (subsystemPerm k ιE R σ x) := by
     simpa only [e, Equiv.apply_symm_apply, Equiv.symm_apply_apply] using
       congrArg e.symm (subsystemPerm_piCongrRight ιE ιF changeSite k R σ (e.symm x))
@@ -126,12 +126,12 @@ theorem schmidtBellSitePrevector_compressed_enumerate_C
     {V : Type} [Fintype V] [DecidableEq V]
     (β : V → Type) [∀ v, Fintype (β v)]
     (Ω : EuclideanSpace ℂ ((v : V) → β v))
-    (X : Finset V) (E : Finset (Configuration β X)) (k n : ℕ)
+    (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k n : ℕ)
     (ZF : Matrix
-      (Config k (addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)))
+      (TensorPower.Config k (addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)))
       (Fin n) ℂ)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let ιE := addedSiteSpace (addedSiteSpace β E) (Fin E.card)
     let ιF := addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
     let changeSite : ∀ o : Option (Option V), ιF o ≃ ιE o := fun o ↦
@@ -141,16 +141,16 @@ theorem schmidtBellSitePrevector_compressed_enumerate_C
       | some (some v) => Equiv.refl (β v)
     let e := Equiv.piCongrRight fun _ : Fin k ↦ Equiv.piCongrRight changeSite
     let ZE := ZF.submatrix e.symm (id : Fin n → Fin n)
-    let τ := schmidtBellWitnessEquiv β X E k
-    let vE : Config k ιE → ℂ :=
-      (schmidtBellSitePrevector β X E k ΩX ell).ofLp ∘ τ
-    let vF : Config k ιF → ℂ := replicaPrevector Ω E.card k ell ∘
+    let τ := ManyBody.schmidtBellWitnessEquiv β X E k
+    let vE : TensorPower.Config k ιE → ℂ :=
+      (ManyBody.schmidtBellSitePrevector β X E k ΩX ell).ofLp ∘ τ
+    let vF : TensorPower.Config k ιF → ℂ := replicaPrevector Ω E.card k ell ∘
       globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k
     ZFᴴ *ᵥ vF = ZEᴴ *ᵥ vE := by
   classical
   intro ΩX ιE ιF changeSite e ZE τ vE vF
-  have hv : vE ∘ e = vF := schmidtBellSitePrevector_enumerate_C β Ω X E k ell
+  have hv : vE ∘ e = vF := ManyBody.schmidtBellSitePrevector_enumerate_C β Ω X E k ell
   simpa only [ZE, Matrix.conjTranspose_submatrix, Equiv.symm_symm, Function.comp_id, hv] using
     (Matrix.submatrix_mulVec_equiv ZFᴴ vE (id : Fin n → Fin n) e.symm).symm
 
-end FiniteProduct
+end ManyBody

@@ -27,7 +27,7 @@ open scoped ComplexOrder
 
 noncomputable section
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
@@ -38,34 +38,34 @@ The regional marginal equality is derived from the literal selected state,
 not supplied as a hypothesis.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 320–343. -/
-theorem entropy_compressedTypicalSiteState_le
+theorem regionEntropy_compressedTypicalSiteState_le
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X B : Finset V)
-    (hXB : Disjoint X B) (E : Finset (Configuration β X)) (hΩ : ‖Ω‖ = 1)
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (splitEquiv β X) Ω
+    (hXB : Disjoint X B) (E : Finset (ManyBody.RegionConfig β X)) (hΩ : ‖Ω‖ = 1)
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
     let χsite := WithLp.toLp 2
-      (fun x : (f : Option ↥(Xᶜ)) → compressedSiteSpace β X (Fin E.card) f ↦
+      (fun x : (f : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
-    entropy (compressedSiteSpace β X (Fin E.card)) χsite (exteriorRegion X B) ≤
-      entropy β Ω B /
-        (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E := by
+    ManyBody.regionEntropy χsite (ManyBody.exteriorRegion X B) ≤
+      ManyBody.regionEntropy Ω B /
+        (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E := by
   intro ΩX χsite
-  let ρ := reducedPure (compressedSiteSpace β X (Fin E.card)) χsite (exteriorRegion X B)
+  let ρ := ManyBody.regionState χsite (ManyBody.exteriorRegion X B)
   have hρ : ρ.IsHermitian :=
-    (reducedPure_posSemidef (compressedSiteSpace β X (Fin E.card))
-      χsite (exteriorRegion X B)).isHermitian
-  let e := exteriorRegionEquiv β X B (Fin E.card) hXB
+    (ManyBody.regionState_posSemidef
+      (ManyBody.exteriorRegion X B) χsite).isHermitian
+  let e := ManyBody.exteriorRegionEquiv β X B (Fin E.card) hXB
   have hm : ρ.submatrix e.symm e.symm =
-      reducedPure β (typicalPureState β Ω X E) B :=
-    reducedPure_compressedTypicalSiteState β X B Ω hXB E
+      ManyBody.regionState (ManyBody.typicalPureState β Ω X E) B :=
+    ManyBody.regionState_compressedTypicalSiteState β X B Ω hXB E
   have hentropy :
-      entropy (compressedSiteSpace β X (Fin E.card)) χsite (exteriorRegion X B) =
-        entropy β (typicalPureState β Ω X E) B := by
+      ManyBody.regionEntropy χsite (ManyBody.exteriorRegion X B) =
+        ManyBody.regionEntropy (ManyBody.typicalPureState β Ω X E) B := by
     exact (vonNeumannEntropy_submatrix_equiv e.symm ρ hρ).symm.trans
       (vonNeumannEntropy_congr hm _
-        (reducedPure_posSemidef β (typicalPureState β Ω X E) B).isHermitian)
+        (ManyBody.regionState_posSemidef B (ManyBody.typicalPureState β Ω X E)).isHermitian)
   rw [hentropy]
-  exact entropy_typicalPureState_le β Ω X E B hXB hΩ hz
+  exact ManyBody.regionEntropy_typicalPureState_le β Ω X E B hXB hΩ hz
 
-end FiniteProduct
+end ManyBody

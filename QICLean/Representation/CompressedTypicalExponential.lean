@@ -40,70 +40,69 @@ Source: OpenAI area-law manuscript, comparator:post-marginal and
 comparator:sharp-upper, 07-comparators.tex, lines 405–412. -/
 theorem re_inner_exp_labelEntropy_compressedTypicalSiteState_prod
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X Q : Finset V)
-    (hXQ : Disjoint X Q) (E : Finset (FiniteProduct.Configuration β X)) (k : ℕ) (u : ℝ) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-    let χ : Fin E.card × FiniteProduct.Configuration β Xᶜ → ℂ := fun x ↦
+    (hXQ : Disjoint X Q) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) (u : ℝ) :
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
-      (fun x : Config k (FiniteProduct.compressedSiteSpace β X (Fin E.card)) ↦
+      (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
         ∏ j, χ (Equiv.piOptionEquivProd (x j)))
     (⟪Ψ, Matrix.toEuclideanLin
       (NormedSpace.exp ((u : ℂ) • labelEntropy
-        (subsystemPerm k (FiniteProduct.compressedSiteSpace β X (Fin E.card))
-          (FiniteProduct.exteriorRegion X Q)))) Ψ⟫_ℂ).re =
+        (subsystemPerm k (ManyBody.compressedSiteSpace β X (Fin E.card))
+          (ManyBody.exteriorRegion X Q)))) Ψ⟫_ℂ).re =
       (Matrix.finKronecker
-          (fun _ : Fin k ↦ FiniteProduct.reducedPure β (FiniteProduct.typicalPureState β Ω X E) Q) *
+          (fun _ : Fin k ↦ ManyBody.regionState (ManyBody.typicalPureState β Ω X E) Q) *
         NormedSpace.exp ((u : ℂ) •
-          labelEntropy (copyPerm (FiniteProduct.Configuration β Q) k))).trace.re := by
+          labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k))).trace.re := by
   intro ΩX χ Ψ
   rw [re_inner_exp_labelEntropy_subsystemPerm_prod
-    (FiniteProduct.compressedSiteSpace β X (Fin E.card))
+    (ManyBody.compressedSiteSpace β X (Fin E.card))
     (WithLp.toLp 2 (fun x ↦ χ (Equiv.piOptionEquivProd x))) k
-    (FiniteProduct.exteriorRegion X Q) u]
+    (ManyBody.exteriorRegion X Q) u]
   let e := Equiv.arrowCongr (Equiv.refl (Fin k))
-    (FiniteProduct.exteriorRegionEquiv β X Q (Fin E.card) hXQ)
-  have hF : labelEntropy (copyPerm (FiniteProduct.Configuration β Q) k) =
+    (ManyBody.exteriorRegionEquiv β X Q (Fin E.card) hXQ)
+  have hF : labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k) =
       Matrix.reindex e e (labelEntropy
-        (copyPerm (FiniteProduct.Configuration
-          (FiniteProduct.compressedSiteSpace β X (Fin E.card))
-          (FiniteProduct.exteriorRegion X Q)) k)) := by
+        (copyPerm (ManyBody.RegionConfig
+          (ManyBody.compressedSiteSpace β X (Fin E.card))
+          (ManyBody.exteriorRegion X Q)) k)) := by
     simpa only [labelEntropy, labelObservable, labelProj, map_sum, map_smul] using
       groupAlgebraRep_of_intertwine e
-        (φ := copyPerm (FiniteProduct.Configuration
-          (FiniteProduct.compressedSiteSpace β X (Fin E.card))
-          (FiniteProduct.exteriorRegion X Q)) k)
-        (ψ := copyPerm (FiniteProduct.Configuration β Q) k)
+        (φ := copyPerm (ManyBody.RegionConfig
+          (ManyBody.compressedSiteSpace β X (Fin E.card))
+          (ManyBody.exteriorRegion X Q)) k)
+        (ψ := copyPerm (ManyBody.RegionConfig β Q) k)
         (fun σ x ↦ funext fun j ↦ rfl)
         (∑ l : IrrepLabel (Equiv.Perm (Fin k)),
           (Real.log l.dim : ℂ) • IrrepLabel.centralIdem l)
-  have hρ := FiniteProduct.reducedPure_compressedTypicalSiteState β X Q Ω hXQ E
+  have hρ := ManyBody.regionState_compressedTypicalSiteState β X Q Ω hXQ E
   have hK : Matrix.reindex e e (Matrix.finKronecker
-      (fun _ : Fin k ↦ FiniteProduct.reducedPure
-        (FiniteProduct.compressedSiteSpace β X (Fin E.card))
+      (fun _ : Fin k ↦ ManyBody.regionState
         (WithLp.toLp 2 (fun x ↦ χ (Equiv.piOptionEquivProd x)))
-        (FiniteProduct.exteriorRegion X Q))) =
+        (ManyBody.exteriorRegion X Q))) =
       Matrix.finKronecker
-        (fun _ : Fin k ↦ FiniteProduct.reducedPure β
-          (FiniteProduct.typicalPureState β Ω X E) Q) := by
+        (fun _ : Fin k ↦ ManyBody.regionState
+          (ManyBody.typicalPureState β Ω X E) Q) := by
     ext x y
     simpa only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.finKronecker_apply,
       e, Equiv.arrowCongr_symm, Equiv.arrowCongr_apply, Equiv.symm_symm,
       Equiv.refl_apply, Function.comp_apply, χ, ΩX] using
       congrArg (fun M ↦ ∏ j : Fin k, M (x j) (y j)) hρ
   have hExp : Matrix.reindex e e (NormedSpace.exp ((u : ℂ) •
-      labelEntropy (copyPerm (FiniteProduct.Configuration
-        (FiniteProduct.compressedSiteSpace β X (Fin E.card))
-        (FiniteProduct.exteriorRegion X Q)) k))) =
+      labelEntropy (copyPerm (ManyBody.RegionConfig
+        (ManyBody.compressedSiteSpace β X (Fin E.card))
+        (ManyBody.exteriorRegion X Q)) k))) =
       NormedSpace.exp ((u : ℂ) •
-        labelEntropy (copyPerm (FiniteProduct.Configuration β Q) k)) := by
+        labelEntropy (copyPerm (ManyBody.RegionConfig β Q) k)) := by
     rw [Matrix.reindex_exp]
     simpa only [Matrix.reindex_apply, Matrix.submatrix_smul, Pi.smul_apply] using
       congrArg (fun M ↦ NormedSpace.exp ((u : ℂ) • M)) hF.symm
   rw [← Matrix.trace_reindex e, Matrix.reindex_apply,
     ← Matrix.submatrix_mul_equiv _ _ e.symm e.symm e.symm]
   simpa only [Matrix.reindex_apply] using
-    congrArg (fun M : Matrix (Fin k → FiniteProduct.Configuration β Q)
-      (Fin k → FiniteProduct.Configuration β Q) ℂ ↦ M.trace.re)
+    congrArg (fun M : Matrix (Fin k → ManyBody.RegionConfig β Q)
+      (Fin k → ManyBody.RegionConfig β Q) ℂ ↦ M.trace.re)
       (congrArg₂ (· * ·) hK hExp)
 
 end TensorPower

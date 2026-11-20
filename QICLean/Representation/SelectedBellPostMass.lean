@@ -20,7 +20,7 @@ Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 255--290
 and 383--404, revision `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 -/
 
-open Matrix PermutationRepresentation FiniteProduct
+open Matrix PermutationRepresentation
 open scoped BigOperators Matrix Kronecker ComplexOrder
 
 noncomputable section
@@ -54,12 +54,12 @@ variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 /-- The same auxiliary label passes through the actual Bell insertion. -/
 theorem labelProj_mul_bellInsertion_auxiliary (k : ℕ)
     (ell : IrrepLabel (Equiv.Perm (Fin k)))
-    (b : Configuration β X × C → ℂ) :
-    let J := (addedSiteInsertion (compressedSiteSpace β X R)
-      (Configuration β X × C) k b).submatrix
+    (b : ManyBody.RegionConfig β X × C → ℂ) :
+    let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+      (ManyBody.RegionConfig β X × C) k b).submatrix
         (bellInsertionCopyEquiv β X C R k) id
     labelProj (subsystemPerm k (addedSiteSpace (addedSiteSpace β C) R) {none}) ell * J =
-      J * labelProj (subsystemPerm k (compressedSiteSpace β X R) {none}) ell := by
+      J * labelProj (subsystemPerm k (ManyBody.compressedSiteSpace β X R) {none}) ell := by
   classical
   simpa [labelObservable] using
     labelObservable_mul_bellInsertion_auxiliary β X C R k
@@ -68,16 +68,16 @@ theorem labelProj_mul_bellInsertion_auxiliary (k : ℕ)
 /-- Actual unit Bell insertion preserves every supplied auxiliary-label norm. -/
 theorem norm_labelProj_bellInsertion_auxiliary (k : ℕ)
     (ell : IrrepLabel (Equiv.Perm (Fin k)))
-    (b : Configuration β X × C → ℂ) (hb : ‖WithLp.toLp 2 b‖ = 1)
-    (ψ : EuclideanSpace ℂ (Config k (compressedSiteSpace β X R))) :
-    let J := (addedSiteInsertion (compressedSiteSpace β X R)
-      (Configuration β X × C) k b).submatrix
+    (b : ManyBody.RegionConfig β X × C → ℂ) (hb : ‖WithLp.toLp 2 b‖ = 1)
+    (ψ : EuclideanSpace ℂ (Config k (ManyBody.compressedSiteSpace β X R))) :
+    let J := (addedSiteInsertion (ManyBody.compressedSiteSpace β X R)
+      (ManyBody.RegionConfig β X × C) k b).submatrix
         (bellInsertionCopyEquiv β X C R k) id
     ‖toEuclideanLin
       (labelProj (subsystemPerm k (addedSiteSpace (addedSiteSpace β C) R) {none}) ell)
       (toEuclideanLin J ψ)‖ =
     ‖toEuclideanLin
-      (labelProj (subsystemPerm k (compressedSiteSpace β X R) {none}) ell) ψ‖ := by
+      (labelProj (subsystemPerm k (ManyBody.compressedSiteSpace β X R) {none}) ell) ψ‖ := by
   intro J
   exact norm_label_intertwine_of_isometry J _ _
     (isIsometry_bellInsertion β X C R k b hb)
@@ -94,24 +94,24 @@ physical vector need not be normalized; only its actual selected mass is
 positive. Zero copies are included. -/
 theorem norm_sq_labelProj_selectedBellPost_eq
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-    let χ : Fin E.card × Configuration β Xᶜ → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let χ : Fin E.card × ManyBody.RegionConfig β Xᶜ → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.1, x.2)
     let Ψ := WithLp.toLp 2
-      (fun x : Config k (compressedSiteSpace β X (Fin E.card)) ↦
+      (fun x : Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
         ∏ j, χ (Equiv.piOptionEquivProd (x j)))
     ‖toEuclideanLin
       (labelProj (subsystemPerm k
         (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) {none}) ell)
       (selectedBellPost β Ω X E k)‖ ^ 2 =
     ‖toEuclideanLin
-      (labelProj (subsystemPerm k (compressedSiteSpace β X (Fin E.card)) {none}) ell)
+      (labelProj (subsystemPerm k (ManyBody.compressedSiteSpace β X (Fin E.card)) {none}) ell)
       Ψ‖ ^ 2 := by
   intro ΩX χ Ψ
-  let b : Configuration β X × E → ℂ := Matrix.selectedBellVector ΩX E
+  let b : ManyBody.RegionConfig β X × E → ℂ := Matrix.selectedBellVector ΩX E
   have hb : ‖WithLp.toLp 2 b‖ = 1 := by
     simpa only [b, WithLp.toLp_ofLp] using Matrix.norm_selectedBellVector ΩX E hz
   have hn := norm_labelProj_bellInsertion_auxiliary β X E (Fin E.card) k ell b hb Ψ
@@ -123,21 +123,21 @@ applied pointwise to an existing chosen sequence, retaining all its prevector,
 energy, symmetry, both-label and entropy-asymptotic conclusions. -/
 theorem norm_sq_labelProj_selectedBellPost_prod
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (Configuration β X))
-    (hz : 0 < (reducedPure_posSemidef β Ω X).isHermitian.spectralRestrictionMass E)
+    (E : Finset (ManyBody.RegionConfig β X))
+    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (k : ℕ) (ell : IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (FiniteProduct.splitEquiv β X) Ω
-    let ψ : Configuration β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     ‖toEuclideanLin
       (labelProj (subsystemPerm k
         (addedSiteSpace (addedSiteSpace β E) (Fin E.card)) {none}) ell)
       (selectedBellPost β Ω X E k)‖ ^ 2 =
     ‖WithLp.toLp 2
-      (((1 : Matrix (Fin k → Configuration β Xᶜ)
-        (Fin k → Configuration β Xᶜ) ℂ) ⊗ₖ
+      (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
+        (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
           labelProj (copyPerm (Fin E.card) k) ell) *ᵥ
-        (fun x : (Fin k → Configuration β Xᶜ) × (Fin k → Fin E.card) ↦
+        (fun x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → Fin E.card) ↦
           ∏ j, ψ (x.1 j, x.2 j)))‖ ^ 2 := by
   intro ΩX ψ
   exact (norm_sq_labelProj_selectedBellPost_eq β Ω X E hz k ell).trans

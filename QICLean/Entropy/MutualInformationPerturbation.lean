@@ -28,13 +28,13 @@ that complement.
 
 ## Main results
 
-* `FiniteProduct.traceDistance_reducedPure_le` — reduction does not increase the trace
+* `ManyBody.traceDistance_regionState_le` — reduction does not increase the trace
   distance of pure states.
-* `FiniteProduct.mutualInformation_le_of_norm_sub_le` — continuity against a state without
+* `ManyBody.regionMutualInformation_le_of_norm_sub_le` — continuity against a state without
   correlations.
-* `FiniteProduct.mutualInformation_le_of_supported_unitary` — the comparison after a unitary
+* `ManyBody.regionMutualInformation_le_of_supported_unitary` — the comparison after a unitary
   supported away from both regions.
-* `FiniteProduct.mutualInformation_le_inv_pow_of_supported_unitary` — its polynomial scale.
+* `ManyBody.regionMutualInformation_le_inv_pow_of_supported_unitary` — its polynomial scale.
 
 ## References
 
@@ -48,7 +48,7 @@ that complement.
 open Matrix
 open scoped InnerProductSpace ComplexOrder MatrixOrder
 
-namespace FiniteProduct
+namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
@@ -56,18 +56,19 @@ variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 /-- The reduced states of two unit vectors on a region are no farther apart in trace distance
 than the pure states themselves. Two-dimensional area law, `01-preliminaries.tex`,
 lines 76–80. -/
-theorem traceDistance_reducedPure_le (ψ η : EuclideanSpace ℂ ((v : V) → β v))
+theorem traceDistance_regionState_le (ψ η : EuclideanSpace ℂ ((v : V) → β v))
     (hψ : ‖ψ‖ = 1) (hη : ‖η‖ = 1) (R : Finset V) :
-    traceDistance (reducedPure β ψ R) (reducedPure β η R) ≤
+    traceDistance (ManyBody.regionState ψ R) (ManyBody.regionState η R) ≤
       traceDistance (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ)))
         (vecMulVec (WithLp.ofLp η) (star (WithLp.ofLp η))) :=
   (traceDistance_partialTraceRight_le
-      ((posSemidef_vecMulVec_self_star _).submatrix (splitEquiv β R).symm).isHermitian
-      ((posSemidef_vecMulVec_self_star _).submatrix (splitEquiv β R).symm).isHermitian
+      ((posSemidef_vecMulVec_self_star _).submatrix (ManyBody.splitEquiv β R).symm).isHermitian
+      ((posSemidef_vecMulVec_self_star _).submatrix (ManyBody.splitEquiv β R).symm).isHermitian
       ((trace_partialTraceRight _).symm.trans
-        ((trace_reducedPure β ψ hψ R).trans
-          ((trace_reducedPure β η hη R).symm.trans (trace_partialTraceRight _))))).trans_eq
-    (traceDistance_submatrix_equiv (splitEquiv β R).symm
+        ((ManyBody.trace_regionState_eq_one hψ (D := R)).trans
+          ((ManyBody.trace_regionState_eq_one hη (D := R)).symm.trans
+              (trace_partialTraceRight _))))).trans_eq
+    (traceDistance_submatrix_equiv (ManyBody.splitEquiv β R).symm
       (posSemidef_vecMulVec_self_star _).isHermitian
       (posSemidef_vecMulVec_self_star _).isHermitian)
 
@@ -76,39 +77,42 @@ theorem traceDistance_reducedPure_le (ψ η : EuclideanSpace ℂ ((v : V) → β
 Only the dimension of `X` enters. Two-dimensional area law, Lemma 2.1,
 `01-preliminaries.tex`, lines 33–46 and 76–77, as applied in `09-amplification.tex`,
 lines 550–555. -/
-theorem mutualInformation_le_of_norm_sub_le {ψ η : EuclideanSpace ℂ ((v : V) → β v)}
+theorem regionMutualInformation_le_of_norm_sub_le {ψ η : EuclideanSpace ℂ ((v : V) → β v)}
     (hψ : ‖ψ‖ = 1) (hη : ‖η‖ = 1) {X J : Finset V} (hXJ : Disjoint X J)
-    (hprod : mutualInformation β η X J = 0) :
-    mutualInformation β ψ X J ≤
-      8 * √‖ψ - η‖ * Real.log (Real.exp 1 * Fintype.card (Configuration β X)) := by
+    (hprod : ManyBody.regionMutualInformation η X J = 0) :
+    ManyBody.regionMutualInformation ψ X J ≤
+      8 * √‖ψ - η‖ * Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig β X)) := by
   have htr (χ : EuclideanSpace ℂ ((v : V) → β v)) (hχ : ‖χ‖ = 1) :
-      (jointMatrix β χ X J hXJ).trace = 1 := by
-    unfold jointMatrix
+      (ManyBody.jointMatrix β χ X J hXJ).trace = 1 := by
+    unfold ManyBody.jointMatrix
     rw [trace_submatrix_equiv]
-    exact trace_reducedPure β χ hχ _
+    exact ManyBody.trace_regionState_eq_one hχ (D := _)
   have h := Entropy.abs_mutualInformation_sub_le_sqrt_fin
-    (jointMatrix_posSemidef β ψ X J hXJ) (jointMatrix_posSemidef β η X J hXJ)
+    (ManyBody.jointMatrix_posSemidef β ψ X J hXJ) (ManyBody.jointMatrix_posSemidef β η X J hXJ)
     (htr ψ hψ) (htr η hη)
-  have hψI : Entropy.mutualInformation (jointMatrix β ψ X J hXJ)
-      (jointMatrix_posSemidef β ψ X J hXJ).isHermitian = mutualInformation β ψ X J :=
-    (mutualInformation_eq_matrix β ψ X J hXJ).symm
-  have hηI : Entropy.mutualInformation (jointMatrix β η X J hXJ)
-      (jointMatrix_posSemidef β η X J hXJ).isHermitian = mutualInformation β η X J :=
-    (mutualInformation_eq_matrix β η X J hXJ).symm
+  have hψI : Entropy.mutualInformation (ManyBody.jointMatrix β ψ X J hXJ)
+      (ManyBody.jointMatrix_posSemidef β ψ X J hXJ).isHermitian
+          = ManyBody.regionMutualInformation ψ X J :=
+    (ManyBody.regionMutualInformation_eq_matrix β ψ X J hXJ).symm
+  have hηI : Entropy.mutualInformation (ManyBody.jointMatrix β η X J hXJ)
+      (ManyBody.jointMatrix_posSemidef β η X J hXJ).isHermitian
+          = ManyBody.regionMutualInformation η X J :=
+    (ManyBody.regionMutualInformation_eq_matrix β η X J hXJ).symm
   rw [hψI, hηI, hprod, sub_zero] at h
-  have hdist : traceDistance (jointMatrix β ψ X J hXJ) (jointMatrix β η X J hXJ) ≤
+  have hdist : traceDistance (ManyBody.jointMatrix β ψ X J hXJ) (ManyBody.jointMatrix β η X J hXJ) ≤
       ‖ψ - η‖ := by
-    unfold jointMatrix
-    rw [traceDistance_submatrix_equiv _ (reducedPure_posSemidef β ψ _).isHermitian
-      (reducedPure_posSemidef β η _).isHermitian]
-    exact (traceDistance_reducedPure_le β ψ η hψ hη _).trans
+    unfold ManyBody.jointMatrix
+    rw [traceDistance_submatrix_equiv _ (ManyBody.regionState_posSemidef _ ψ).isHermitian
+      (ManyBody.regionState_posSemidef _ η).isHermitian]
+    exact (ManyBody.traceDistance_regionState_le β ψ η hψ hη _).trans
       (traceDistance_vecMulVec_le_norm_sub hψ hη)
-  have hlog : 0 ≤ Real.log (Real.exp 1 * Fintype.card (Configuration β X)) :=
+  have hlog : 0 ≤ Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig β X)) :=
     Real.log_nonneg (one_le_mul_of_one_le_of_one_le (Real.one_le_exp zero_le_one)
       (Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr
         (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one
-          (trace_reducedPure β ψ hψ X)))))
-  calc mutualInformation β ψ X J ≤ |mutualInformation β ψ X J| := le_abs_self _
+          (ManyBody.trace_regionState_eq_one hψ (D := X))))))
+  calc ManyBody.regionMutualInformation ψ X J
+      ≤ |ManyBody.regionMutualInformation ψ X J| := le_abs_self _
     _ ≤ _ := h
     _ ≤ _ := by gcongr
 
@@ -118,38 +122,39 @@ supported on a region `S` disjoint from `X ∪ J`, and let `η` be a unit vector
 `I_φ(X : J) ≤ 8 √‖U φ - η‖ log(e dim X)`: the unitary changes neither the reduction to `X`,
 nor to `J`, nor to `X ∪ J`. Two-dimensional area law, `09-amplification.tex`,
 lines 547–555; polynomial PEPS approximation, `02-information.tex`, lines 600–630. -/
-theorem mutualInformation_le_of_supported_unitary {φ η : EuclideanSpace ℂ ((v : V) → β v)}
+theorem regionMutualInformation_le_of_supported_unitary {φ η : EuclideanSpace ℂ ((v : V) → β v)}
     (hφ : ‖φ‖ = 1) (hη : ‖η‖ = 1) {X J S : Finset V} (hXJ : Disjoint X J)
     (hS : Disjoint S (X ∪ J)) {U : Matrix ((v : V) → β v) ((v : V) → β v) ℂ}
     (hU : U ∈ ManyBody.supportedOperators β S) (hUu : Uᴴ * U = 1)
-    (hprod : mutualInformation β η X J = 0) :
-    mutualInformation β φ X J ≤
+    (hprod : ManyBody.regionMutualInformation η X J = 0) :
+    ManyBody.regionMutualInformation φ X J ≤
       8 * √‖toEuclideanLin U φ - η‖ *
-        Real.log (Real.exp 1 * Fintype.card (Configuration β X)) := by
+        Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig β X)) := by
   have hstate (R : Finset V) (hR : R ⊆ X ∪ J) :=
     ManyBody.regionState_toEuclideanLin_of_mem_supportedOperators
       (hS.mono_right hR) hU hUu φ
   have hent (R : Finset V) (hR : R ⊆ X ∪ J) :
-      entropy β (toEuclideanLin U φ) R = entropy β φ R := by
-    rw [← ManyBody.regionEntropy_eq_entropy, ← ManyBody.regionEntropy_eq_entropy]
+      ManyBody.regionEntropy (toEuclideanLin U φ) R = ManyBody.regionEntropy φ R := by
     exact vonNeumannEntropy_congr (hstate R hR) _ _
   have hψ : ‖toEuclideanLin U φ‖ = 1 := by
     have h := congrArg Matrix.trace (hstate _ subset_rfl)
     rw [ManyBody.trace_regionState, ManyBody.trace_regionState, hφ] at h
     have h' : ‖toEuclideanLin U φ‖ ^ 2 = 1 ^ 2 := by exact_mod_cast h
     nlinarith [norm_nonneg (toEuclideanLin U φ), sq_nonneg (‖toEuclideanLin U φ‖ - 1)]
-  have hMI : mutualInformation β φ X J = mutualInformation β (toEuclideanLin U φ) X J := by
-    simp only [mutualInformation, hent X Finset.subset_union_left,
+  have hMI : ManyBody.regionMutualInformation φ X J = ManyBody.regionMutualInformation
+      (toEuclideanLin U φ) X J := by
+    simp only [regionMutualInformation, hent X Finset.subset_union_left,
       hent J Finset.subset_union_right, hent _ subset_rfl]
   rw [hMI]
-  exact mutualInformation_le_of_norm_sub_le β hψ hη hXJ hprod
+  exact ManyBody.regionMutualInformation_le_of_norm_sub_le β hψ hη hXJ hprod
 
 omit [∀ v, DecidableEq (β v)] in
 private theorem one_le_card_configuration {φ : EuclideanSpace ℂ ((v : V) → β v)}
-    (hφ : ‖φ‖ = 1) (X : Finset V) : (1 : ℝ) ≤ Fintype.card (Configuration β X) := by
+    (hφ : ‖φ‖ = 1) (X : Finset V) : (1 : ℝ) ≤ Fintype.card (ManyBody.RegionConfig β X) := by
   classical
   exact Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr
-    (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one (trace_reducedPure β φ hφ X)))
+    (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one
+        (ManyBody.trace_regionState_eq_one hφ (D := X))))
 
 /-- The scale `8 √C₁ (1 + C₂) n^(2-K/4)` of the comparison, from `‖U φ - η‖ ≤ C₁ n^(-K/2)`
 and `log dim X ≤ C₂ n²`. Two-dimensional area law, `09-amplification.tex`, lines 545 and
@@ -159,19 +164,19 @@ private theorem mutualInformation_le_rpow_of_supported_unitary
     {X J S : Finset V} (hXJ : Disjoint X J) (hS : Disjoint S (X ∪ J))
     {U : Matrix ((v : V) → β v) ((v : V) → β v) ℂ}
     (hU : U ∈ ManyBody.supportedOperators β S) (hUu : Uᴴ * U = 1)
-    (hprod : mutualInformation β η X J = 0) {C₁ C₂ K : ℝ} {n : ℕ} (hn : 1 ≤ n)
+    (hprod : ManyBody.regionMutualInformation η X J = 0) {C₁ C₂ K : ℝ} {n : ℕ} (hn : 1 ≤ n)
     (hδ : ‖toEuclideanLin U φ - η‖ ≤ C₁ * (n : ℝ) ^ (-K / 2))
-    (hdim : Real.log (Fintype.card (Configuration β X)) ≤ C₂ * (n : ℝ) ^ 2) :
-    mutualInformation β φ X J ≤ 8 * √C₁ * (1 + C₂) * (n : ℝ) ^ (2 - K / 4) := by
-  have hbase := mutualInformation_le_of_supported_unitary β hφ hη hXJ hS hU hUu hprod
+    (hdim : Real.log (Fintype.card (ManyBody.RegionConfig β X)) ≤ C₂ * (n : ℝ) ^ 2) :
+    ManyBody.regionMutualInformation φ X J ≤ 8 * √C₁ * (1 + C₂) * (n : ℝ) ^ (2 - K / 4) := by
+  have hbase := ManyBody.regionMutualInformation_le_of_supported_unitary β hφ hη hXJ hS hU hUu hprod
   set δ := ‖toEuclideanLin U φ - η‖
   have hn0 : (0 : ℝ) < n := by exact_mod_cast hn
   have hcard := one_le_card_configuration β hφ X
-  have hlog : Real.log (Real.exp 1 * Fintype.card (Configuration β X)) =
-      1 + Real.log (Fintype.card (Configuration β X)) := by
+  have hlog : Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig β X)) =
+      1 + Real.log (Fintype.card (ManyBody.RegionConfig β X)) := by
     rw [Real.log_mul (Real.exp_pos 1).ne' (by positivity), Real.log_exp]
   have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast hn
-  have hL : Real.log (Real.exp 1 * Fintype.card (Configuration β X)) ≤
+  have hL : Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig β X)) ≤
       (1 + C₂) * (n : ℝ) ^ (2 : ℝ) := by
     rw [hlog, Real.rpow_two]
     nlinarith
@@ -181,11 +186,11 @@ private theorem mutualInformation_le_rpow_of_supported_unitary
         rw [Real.sqrt_mul' _ (by positivity), Real.sqrt_eq_rpow ((n : ℝ) ^ (-K / 2)),
           ← Real.rpow_mul hn0.le]
         ring_nf
-  have hlog0 : 0 ≤ Real.log (Real.exp 1 * Fintype.card (Configuration β X)) := by
+  have hlog0 : 0 ≤ Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig β X)) := by
     rw [hlog]
     linarith [Real.log_nonneg hcard]
-  calc mutualInformation β φ X J
-      ≤ 8 * √δ * Real.log (Real.exp 1 * Fintype.card (Configuration β X)) := hbase
+  calc ManyBody.regionMutualInformation φ X J
+      ≤ 8 * √δ * Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig β X)) := hbase
     _ ≤ 8 * (√C₁ * (n : ℝ) ^ (-K / 4)) * ((1 + C₂) * (n : ℝ) ^ (2 : ℝ)) := by
         gcongr
     _ = 8 * √C₁ * (1 + C₂) * (n : ℝ) ^ (2 - K / 4) := by
@@ -193,21 +198,21 @@ private theorem mutualInformation_le_rpow_of_supported_unitary
         ring
 
 /-- **The polynomial scale of the comparison** (`eq:amplification-output`). In the setting of
-`mutualInformation_le_of_supported_unitary`, let `‖U φ - η‖ ≤ C₁ n^(-K/2)` with
+`ManyBody.regionMutualInformation_le_of_supported_unitary`, let `‖U φ - η‖ ≤ C₁ n^(-K/2)` with
 `K ≥ 4(M + 2)` and `log dim X ≤ C₂ n²`. Then every part `X'` of `X` has
 `I_φ(X' : J) ≤ 8 √C₁ (1 + C₂) n^(-M)`. The source fixes `K ≥ 4(M + 3)`, which satisfies this
 hypothesis. Two-dimensional area law, `09-amplification.tex`, lines 545 and 550–561. -/
-theorem mutualInformation_le_inv_pow_of_supported_unitary
+theorem regionMutualInformation_le_inv_pow_of_supported_unitary
     {φ η : EuclideanSpace ℂ ((v : V) → β v)} (hφ : ‖φ‖ = 1) (hη : ‖η‖ = 1)
     {X J S : Finset V} (hXJ : Disjoint X J) (hS : Disjoint S (X ∪ J))
     {U : Matrix ((v : V) → β v) ((v : V) → β v) ℂ}
     (hU : U ∈ ManyBody.supportedOperators β S) (hUu : Uᴴ * U = 1)
-    (hprod : mutualInformation β η X J = 0) {C₁ C₂ : ℝ} {n M K : ℕ} (hn : 1 ≤ n)
+    (hprod : ManyBody.regionMutualInformation η X J = 0) {C₁ C₂ : ℝ} {n M K : ℕ} (hn : 1 ≤ n)
     (hK : 4 * (M + 2) ≤ K) (hδ : ‖toEuclideanLin U φ - η‖ ≤ C₁ * (n : ℝ) ^ (-(K : ℝ) / 2))
-    (hdim : Real.log (Fintype.card (Configuration β X)) ≤ C₂ * (n : ℝ) ^ 2) :
-    ∀ X' ⊆ X, mutualInformation β φ X' J ≤ 8 * √C₁ * (1 + C₂) * ((n : ℝ) ^ M)⁻¹ := by
+    (hdim : Real.log (Fintype.card (ManyBody.RegionConfig β X)) ≤ C₂ * (n : ℝ) ^ 2) :
+    ∀ X' ⊆ X, ManyBody.regionMutualInformation φ X' J ≤ 8 * √C₁ * (1 + C₂) * ((n : ℝ) ^ M)⁻¹ := by
   intro X' hX'
-  refine (mutualInformation_mono_left β φ X' X J hX' hXJ).trans ?_
+  refine (ManyBody.regionMutualInformation_mono_left β φ X' X J hX' hXJ).trans ?_
   have h := mutualInformation_le_rpow_of_supported_unitary β hφ hη hXJ hS hU hUu hprod hn hδ
     hdim
   have hn1 : (1 : ℝ) ≤ n := by exact_mod_cast hn
@@ -221,4 +226,4 @@ theorem mutualInformation_le_inv_pow_of_supported_unitary
     exact Real.rpow_le_rpow_of_exponent_le hn1 (by linarith)
   exact h.trans (by gcongr)
 
-end FiniteProduct
+end ManyBody

@@ -2,7 +2,7 @@
 
 \begin{definition}[Regional typical pure vector]
 \label{def:entropy_regional_typical_state}
-\lean{FiniteProduct.typicalPureState,FiniteProduct.split_typicalPureState}
+\lean{ManyBody.typicalPureState,ManyBody.split_typicalPureState}
 \leanok
 \uses{def:entropy_typical_pure_state,def:finite_product_regional_entropy}
 Let $V$ be a finite set of sites with finite local Hilbert spaces, and let
@@ -19,7 +19,7 @@ expressed in the original product basis. This vector is fixed by $X$ and $E$.
 
 \begin{theorem}[Normalization and regional marginal]
 \label{thm:entropy_regional_typical_state_normalization}
-\lean{FiniteProduct.norm_typicalPureState,FiniteProduct.reducedPure_typicalPureState}
+\lean{ManyBody.norm_typicalPureState,ManyBody.regionState_typicalPureState}
 \leanok
 \uses{def:entropy_regional_typical_state,thm:entropy_typical_pure_state}
 If $z>0$, then $\|\psi_E\|=1$ and
@@ -37,7 +37,7 @@ bipartite vector in these coordinates.
 
 \begin{theorem}[Marginal estimates on every disjoint physical region]
 \label{thm:entropy_regional_typical_state_bound}
-\lean{FiniteProduct.reducedPure_typicalPureState_le,FiniteProduct.entropy_typicalPureState_le}
+\lean{ManyBody.regionState_typicalPureState_le,ManyBody.regionEntropy_typicalPureState_le}
 \leanok
 \uses{def:entropy_regional_typical_state,thm:entropy_typical_complementary_subsystem}
 Let $z>0$. For every region $B$ disjoint from $X$, the same selected global

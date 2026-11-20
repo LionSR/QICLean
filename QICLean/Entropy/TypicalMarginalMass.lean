@@ -71,10 +71,12 @@ theorem one_sub_rpow_le_typicalMass_cut (hsupp : ∀ i, ManyBody.IsSupportedOn (
           N M) := by
   set ℬ := cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D)
   set w := concentrationWidth (c₀ / g₀) ℬ N M
-  have hpsd : ρ.PosSemidef := hρdef ▸ ManyBody.regionState_posSemidef B Ψ
+  have hpsd : ρ.PosSemidef := by
+    rw [← hρdef, ← ManyBody.regionState_eq_partialTraceRight_cutVector B Ψ]
+    exact ManyBody.regionState_posSemidef B Ψ
   have hs : ∑ i, hρ.eigenvalues i = 1 := by
     have h1 : ρ.trace = 1 := by
-      rw [← hρdef]
+      rw [← hρdef, ← ManyBody.regionState_eq_partialTraceRight_cutVector B Ψ]
       exact (ManyBody.trace_regionState B Ψ).trans (by simp [hΨ])
     have htr := hρ.trace_eq_sum_eigenvalues
     rw [h1] at htr
