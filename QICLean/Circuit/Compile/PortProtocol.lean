@@ -15,10 +15,15 @@ is simulated, layer by layer, on the ring with physical ports and `2k + 1` qudit
 (`Layer.exists_portRing`), and the registers sit in the data wires of the sites
 (`portDataEmbedding`). The depth grows by the factor `2k`.
 
+Every layer of the routed protocol is dilated with environments at the wires of a set `D`
+meeting every site (`Circuit.isUnitaryDilation`), since its only families that are not unitary
+are gates on whole sites, and the dilations compose (`IsUnitaryDilation.comp`).
+
 ## Main results
 
-* `QuantumCircuit.IsBoundedProtocol.exists_portRing` — a bounded protocol on the ring is a
-  protocol on the ring with physical ports, acting on the encoded registers.
+* `QuantumCircuit.IsBoundedProtocol.exists_portRing` — a bounded protocol on the ring is the
+  partial trace of a unitary circuit on the ring with physical ports, with environments at the
+  wires of `D`, acting on the encoded registers.
 -/
 
 open Matrix ManyBody
@@ -88,16 +93,20 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
       simp only [LinearMap.comp_apply] at h₁ h₂ h₃ ⊢
       rw [h₁, h₂, h₃]
 
-/-- **A bounded protocol on the ring is a protocol on the ring with physical ports.** Let `Φ` be
-realised on the ring of `N ≥ 2` sites by a protocol of depth at most `T` whose bases along it
-have at most `B ≤ d ^ k` elements, and let `e` and `f` encode its input and output bases in
-registers of `k` digits of dimension `d`. On the ring with ports and `2k + 1` qudits of
-dimension `d` per site, with each register in the data wires of its site, some protocol of
-depth at most `2kT` acts on the encoded inputs as `Φ` followed by the encoding of the outputs.
+/-- **A bounded protocol on the ring is a unitary circuit on the ring with physical ports.** Let
+`Φ` be realised on the ring of `N ≥ 2` sites by a protocol of depth at most `T` whose bases along
+it have at most `B ≤ d ^ k` elements, and let `e` and `f` encode its input and output bases in
+registers of `k` digits of dimension `d`. Let `D` be a set of wires containing a wire of every
+site. On the ring with ports and `2k + 1` qudits of dimension `d` per site, with each register
+in the data wires of its site, some map with a unitary dilation of depth at most `2kT` whose
+environments lie at the wires of `D` acts on the encoded inputs as `Φ` followed by the encoding
+of the outputs. For `k ≥ 1` the non-port wires form such a `D`: the environments then lie off
+the ports, so the gates on the port-pair cells are unitaries of the two port qudits alone.
 
-The source compiles a protocol with gates on pairs of neighbouring sites into one whose intersite
-gates act on physical qudits only (arXiv:2103.13367, Supplement, proof of Proposition 2, p. 8);
-the constant `2k` is formalization-side. Taking `k = ⌈log_d B⌉` gives `B ≤ d ^ k`. -/
+The source compiles a protocol with gates on pairs of neighbouring sites into a unitary circuit
+whose intersite gates act on the physical qudits only, the ancillas staying local
+(arXiv:2103.13367, Supplement, proof of Proposition 2, p. 8); the constant `2k` is
+formalization-side. Taking `k = ⌈log_d B⌉` gives `B ≤ d ^ k`. -/
 theorem IsBoundedProtocol.exists_portRing {X Z : Fin N → Type} [∀ s, Fintype (X s)]
     [∀ s, DecidableEq (X s)] [∀ s, Fintype (Z s)] [∀ s, DecidableEq (Z s)] {B T : ℕ}
     (hN : 2 ≤ N) (hB : B ≤ d ^ k)

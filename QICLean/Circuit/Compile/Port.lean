@@ -25,8 +25,9 @@ moving the register back. Every layer of the ring protocol costs `2k` port layer
 
 ## Main results
 
-* `QuantumCircuit.Layer.exists_portRing` — a layer of the ring of registers is a protocol on the
-  ring with ports, of depth at most `2k` times its depth.
+* `QuantumCircuit.Layer.exists_portRing` — a layer of the ring of registers is dilated by a
+  unitary circuit on the ring with ports, of depth at most `2k` times its depth, with
+  environments at the wires of any set meeting every site.
 
 ## Implementation notes
 
@@ -37,7 +38,10 @@ the wires taking the data wire `t` of the left end `j` of a cell to the scratch 
 the layer is coarsened along the map `host` sending `j` to `j + 1` (`Layer.exists_coarsen`),
 encoded along the registers moved by `τ` (`Layer.exists_encoded`), and its families on the single
 sites are read as gates on all the wires of a site (`refine`). The code moved by `τ` is the data
-code conjugated by `sitePermOp τ` (`routed_code`), so the backward routing returns it.
+code conjugated by `sitePermOp τ` (`routed_code`), so the backward routing returns it. The
+routing layers are unitary and the refined layer has gates on whole sites only, so each part is
+dilated with environments at the wires of a set meeting every site (`Circuit.isUnitaryDilation`).
+The permutation gates are those of `Compile/PermGate`.
 -/
 
 open Matrix ManyBody
@@ -848,10 +852,12 @@ private theorem dataCode_apply
 /-- **Routing a layer of the ring to the ports.** Let `L` be a layer of trace-preserving gates on
 the ring of `N ≥ 2` sites, each site holding a register of `k` digits. On the ring with ports and
 `2k + 1` wires per site, with the register of every site in its data wires, `L` is realised by a
-protocol of depth at most `2k` times the depth of `L`: for every cell `{j, j + 1}` of `L` the
+map with a unitary dilation of depth at most `2k` times the depth of `L` whose environments lie
+at the wires of a set `D` containing a wire of every site: for every cell `{j, j + 1}` of `L` the
 register of `j` is moved digit by digit through the two ports into the scratch wires of `j + 1`,
-the gate acts inside the site `j + 1`, and the register is moved back. The two ports of a cell
-are distinct sites, which is where `2 ≤ N` is used.
+the gate acts inside the site `j + 1`, and the register is moved back. The moves are unitary and
+the gates act on whole sites, which meet `D`. The two ports of a cell are distinct sites, which
+is where `2 ≤ N` is used.
 
 This lemma is formalization-side: it is the routing step of arXiv:2103.13367, Supplement, proof
 of Proposition 2, p. 8, with the depth `2k` per layer. -/

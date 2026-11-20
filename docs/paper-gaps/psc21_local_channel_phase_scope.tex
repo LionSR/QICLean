@@ -120,13 +120,17 @@ fixed alphabet at every site, of the same depth, is one such ingredient. Every
 protocol of the enlarged-site model is a preparation of basis vectors on
 environments at the sites, an unbranched circuit of unitary gates of no larger
 depth on the same geometry, and a partial trace over the output environments.
-The environments lie in the local bases, and their dimensions depend on the
-protocol; for a protocol with bounded bases the simulation on the ring with
-physical ports above acts on fixed-dimensional qudits, and a pure or
+For a protocol with bounded bases on the ring, the simulation on the ring
+with physical ports and at least one data wire per site is the partial trace
+of a unitary circuit whose
+environments lie at the wires other than the ports, so that its intersite
+gates act on the fixed-dimensional port qudits alone, and a pure or
 approximately pure output of a dilated map is, up to $\sqrt{2\varepsilon}$, a
-product with an environment vector.\footnote{Formal declaration:
-    \leanid{QuantumCircuit.IsProtocol.isUnitaryDilation} in
-    \doclink{QICLean/Circuit/Compile/Dilation}.} Once
+product with an environment vector.\footnote{Formal declarations:
+    \leanid{QuantumCircuit.Circuit.isUnitaryDilation} in
+    \doclink{QICLean/Circuit/Compile/Dilation} and
+    \leanid{QuantumCircuit.IsBoundedProtocol.exists_portRing} in
+    \doclink{QICLean/Circuit/Compile/PortProtocol}.} Once
 those source-model depth bounds are established, the contraction of the
 trace norm supplies the same error estimate.
 
