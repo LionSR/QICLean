@@ -1631,6 +1631,23 @@ from the same Hermitian pairing and weighted row and column bounds.
     No enlargement to the dimension of all of $S$ is needed.
 \end{proof}
 
+\begin{lemma}[Product decompositions bound the operator-Schmidt rank]
+    \label{lem:product_decomposition_operator_schmidt_rank}
+    \lean{Matrix.HasProductDecomposition.exists_hasOperatorSchmidtDecomposition,
+        Matrix.HasProductDecomposition.operatorSchmidtRank_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    If an operator $X$ on $\mathbb C^\alpha\otimes\mathbb C^\beta$ is a sum of at
+    most $N$ products $c_a\otimes d_a$ with $\lVert c_a\rVert\lVert d_a\rVert\le c_0$,
+    then $\operatorname{OSR}(X)\le N$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Without the norm bounds, the sum is an operator-Schmidt decomposition of
+    $X$ with at most $N$ summands, and the operator-Schmidt rank is at most
+    the number of summands of any such decomposition.
+\end{proof}
+
 \begin{theorem}[Operator-Schmidt rank from designated supports]
     \label{thm:supported_operator_schmidt_rank}
     \lean{ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le,
@@ -1651,13 +1668,14 @@ from the same Hermitian pairing and weighted row and column bounds.
 \end{theorem}
 \begin{proof}\leanok
     \uses{def:bipartite_operator_schmidt_rank,
-        lem:patch_inside_decomposition, lem:supported_product_decomposition}
+        lem:patch_inside_decomposition, lem:supported_product_decomposition,
+        lem:product_decomposition_operator_schmidt_rank}
     If the global configuration space is empty, $T=0$ and its
     operator-Schmidt rank is zero. Otherwise, choose one configuration.
     Theorem~\ref{lem:patch_inside_decomposition} supplies a product
-    decomposition with at most $(\prod_{v\in S\cap B}n_v)^2$ terms.
-    Discarding the norm bounds and using minimality of operator-Schmidt
-    rank gives the first conclusion. For one-sided support,
+    decomposition with at most $(\prod_{v\in S\cap B}n_v)^2$ terms, and
+    Lemma~\ref{lem:product_decomposition_operator_schmidt_rank} gives the
+    first conclusion. For one-sided support,
     Lemma~\ref{lem:supported_product_decomposition} writes $T$ as
     $U\otimes1$ or $1\otimes W$, each a one-term decomposition.
 \end{proof}
