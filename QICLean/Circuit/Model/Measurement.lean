@@ -58,6 +58,8 @@ without measurements, as in the preparation of matrix product states of arXiv:23
   of the branches on a subspace.
 * `QuantumCircuit.Circuit.exists_kraus_mulVec_ne_zero` — a trace-preserving circuit leaves a
   nonzero vector nonzero on some branch.
+* `QuantumCircuit.Circuit.IsImplementationOn.map_vecMulVec_eq` — removal of measurements: a
+  circuit implementing an isometry on a subspace has there the map of the isometry.
 * `QuantumCircuit.Circuit.kraus_measureCorrect`,
   `QuantumCircuit.Circuit.isImplementationOn_comp_measureCorrect` — the Kraus operator of a
   measurement with corrections, and a round implementing a matrix.
@@ -280,6 +282,59 @@ theorem map_vecMulVec [∀ s, Fintype (Z s)] (ev : Interpretation G) (c : Circui
   simp only [map, krausFamily, KrausFamily.map_apply]
   change ∑ p, c.kraus ev p * vecMulVec v (star v) * (c.kraus ev p)ᴴ = _
   simp_rw [mul_vecMulVec, vecMulVec_mul, ← star_mulVec]
+
+omit [∀ s, Finite (Z s)] in
+/-- **Removal of measurements on a subspace.** Let a circuit of trace-preserving local families
+implement an isometry `W` on a linear subspace `E`. Then its map agrees on the operators
+`|u⟩⟨v|` with `u, v ∈ E` with the conjugation by `W`: averaged over the outcomes, the circuit is
+the coherent operation `W` on `E`. Every branch acts on `E` as `zₚ W`
+(`IsImplementationOn.exists_smul_of_isometry`), and the trace preservation gives
+`∑ₚ |zₚ|² = 1` as soon as `E ≠ 0`.
+
+Source: arXiv:2307.01696, paragraphs "Tree-RG circuit with measurements" and "Long-range MPS
+using measurements" (measurements and corrections acting on superpositions of logical
+sectors). -/
+theorem IsImplementationOn.map_vecMulVec_eq [∀ s, Fintype (Z s)] (ev : Interpretation G)
+    {c : Circuit Γ G X Z} (hTP : c.Forall ev KrausFamily.IsTP)
+    {E : Submodule ℂ (Config X → ℂ)} {W : Matrix (Config Z) (Config X) ℂ}
+    (h : c.IsImplementationOn ev (E : Set (Config X → ℂ)) W) (hW : Wᴴ * W = 1) {u v : Config X → ℂ}
+    (hu : u ∈ E) (hv : v ∈ E) :
+    c.map ev (vecMulVec u (star v)) = vecMulVec (W *ᵥ u) (star (W *ᵥ v)) := by
+  classical
+  choose z hz using fun p ↦ h.exists_smul_of_isometry hW p
+  have hmap : c.map ev (vecMulVec u (star v)) =
+      (∑ p, z p * star (z p)) • vecMulVec (W *ᵥ u) (star (W *ᵥ v)) := by
+    simp only [map, krausFamily, KrausFamily.map_apply]
+    change ∑ p, c.kraus ev p * vecMulVec u (star v) * (c.kraus ev p)ᴴ = _
+    simp_rw [mul_vecMulVec, vecMulVec_mul, ← star_mulVec, hz _ u hu, hz _ v hv, star_smul,
+      smul_vecMulVec, vecMulVec_smul, smul_smul, ← Finset.sum_smul]
+  rw [hmap]
+  by_cases hE : ∃ w ∈ E, w ≠ 0
+  · obtain ⟨w, hw, hw0⟩ := hE
+    have hnorm : ∀ x : Config X → ℂ, ∀ K : Matrix (Config Z) (Config X) ℂ,
+        star (K *ᵥ x) ⬝ᵥ (K *ᵥ x) = star x ⬝ᵥ ((Kᴴ * K) *ᵥ x) := fun x K ↦ by
+      rw [star_mulVec, ← dotProduct_mulVec, mulVec_mulVec]
+    have hsum : (∑ p, z p * star (z p)) * (star w ⬝ᵥ w) = star w ⬝ᵥ w := by
+      have hE1 := c.isTP_krausFamily ev hTP
+      have : star w ⬝ᵥ w = ∑ p, star (c.kraus ev p *ᵥ w) ⬝ᵥ (c.kraus ev p *ᵥ w) := by
+        have h1 : (∑ p, (c.kraus ev p)ᴴ * c.kraus ev p) *ᵥ w = w :=
+          calc (∑ p, (c.kraus ev p)ᴴ * c.kraus ev p) *ᵥ w = (c.krausFamily ev).effect *ᵥ w := rfl
+            _ = w := by rw [hE1, one_mulVec]
+        conv_lhs => arg 2; rw [← h1]
+        rw [sum_mulVec, dotProduct_sum]
+        exact Finset.sum_congr rfl fun p _ ↦ (hnorm w _).symm
+      have key : ∀ p, star (c.kraus ev p *ᵥ w) ⬝ᵥ (c.kraus ev p *ᵥ w) =
+          z p * star (z p) * (star w ⬝ᵥ w) := fun p ↦ by
+        rw [hz p w hw, star_smul, smul_dotProduct, dotProduct_smul, hnorm, hW, one_mulVec,
+          smul_eq_mul, smul_eq_mul, Complex.star_def]
+        ring
+      rw [Finset.sum_congr rfl fun p _ ↦ key p, ← Finset.sum_mul] at this
+      exact this.symm
+    have hww : star w ⬝ᵥ w ≠ 0 := fun h0 ↦ hw0 (dotProduct_star_self_eq_zero.mp h0)
+    rw [mul_left_eq_self₀.mp hsum |>.resolve_right hww, one_smul]
+  · push Not at hE
+    rw [hE u hu, hE v hv]
+    simp
 
 end Branch
 

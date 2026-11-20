@@ -92,6 +92,25 @@ adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:pr
     is a scalar $z$, and for $v\neq0$ the equation $z_vv=zv$ gives $z_v=z$.
 \end{proof}
 
+\begin{theorem}[Removal of measurements on a subspace]
+    \label{thm:measurement_removal}
+    \lean{QuantumCircuit.Circuit.IsImplementationOn.map_vecMulVec_eq}
+    \leanok
+    \uses{lem:measurement_branch_scalar, thm:circuits_tp}
+    Let a circuit whose gates and onsite families are trace-preserving implement an isometry
+    $W$ on a linear subspace $E$. Then its map sends $\ket u\bra v$ to $W\ket u\bra vW^\dagger$
+    for all $u,v\in E$: averaged over the outcomes, the circuit acts on the operators supported
+    in $E$ as the coherent operation $W$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    By Lemma~\ref{lem:measurement_branch_scalar}, $K_p=z_pW$ on $E$ for every branch $p$, so the
+    map sends $\ket u\bra v$ to $\bigl(\sum_p|z_p|^2\bigr)W\ket u\bra vW^\dagger$. If $E=0$ both
+    sides vanish. Otherwise, for $w\in E$ nonzero, trace preservation gives
+    $\|w\|^2=\sum_p\|K_pw\|^2=\bigl(\sum_p|z_p|^2\bigr)\|Ww\|^2=\bigl(\sum_p|z_p|^2\bigr)\|w\|^2$,
+    hence $\sum_p|z_p|^2=1$.
+\end{proof}
+
 \begin{lemma}[A nonzero branch]
     \label{lem:measurement_nonzero_branch}
     \lean{QuantumCircuit.Circuit.exists_kraus_mulVec_ne_zero}
