@@ -14,5 +14,6 @@ import QICLean.ManyBody.Sites.Lattice.Edge
 import QICLean.ManyBody.Sites.Lattice.Line
 import QICLean.ManyBody.Sites.Lattice.PathGraph
 import QICLean.ManyBody.Sites.Lattice.Plane
+import QICLean.ManyBody.Sites.Lattice.Rectangle
 import QICLean.ManyBody.Sites.Lattice.Ring
 import QICLean.ManyBody.Sites.Lattice.Square

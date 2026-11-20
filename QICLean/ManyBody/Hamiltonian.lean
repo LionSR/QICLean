@@ -19,6 +19,7 @@ import QICLean.ManyBody.Hamiltonian.GroundPerturbation
 import QICLean.ManyBody.Hamiltonian.GroundSpace
 import QICLean.ManyBody.Hamiltonian.HardTruncation
 import QICLean.ManyBody.Hamiltonian.HermitianPart
+import QICLean.ManyBody.Hamiltonian.KernelGap
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
 import QICLean.ManyBody.Hamiltonian.LowEnergyBasis
 import QICLean.ManyBody.Hamiltonian.LowEnergyBasisTruncated
@@ -28,6 +29,7 @@ import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorExample
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorSum
 import QICLean.ManyBody.Hamiltonian.Models
 import QICLean.ManyBody.Hamiltonian.NegativeFrequency
+import QICLean.ManyBody.Hamiltonian.PositiveTerm
 import QICLean.ManyBody.Hamiltonian.ProductGround
 import QICLean.ManyBody.Hamiltonian.Translation
 import QICLean.ManyBody.Hamiltonian.TranslationCommutator
