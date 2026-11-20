@@ -985,7 +985,7 @@ def main() -> int:
             rewrite_text(nt, p, qualified, bare, dot, False, final, True)
             rep.unhandled += final.remaining
             rep.unhandled += [u for u in dict.fromkeys(frep.unhandled)
-                              if "longer than" in u or "`." in u]
+                              if re.search(r": (line longer than|`\.[\w']+` needs)", u)]
     lines = []
     if a.check:
         lines.append(f"remaining old names: {len(rep.remaining)}")
