@@ -46,7 +46,7 @@ private theorem prod_fibre {α β M : Type*} [Fintype α] [Fintype β] [Decidabl
 
 /-- Kraus families whose operators agree up to relabelling the bases and the indices have maps
 that agree up to the relabelling. -/
-private theorem map_submatrix_of_op {α β α' β' : Type} [Fintype α] [Fintype α']
+theorem map_submatrix_of_op {α β α' β' : Type} [Fintype α] [Fintype α']
     {K : KrausFamily α β} {K' : KrausFamily α' β'} (φ : K'.Index ≃ K.Index) (e : α' ≃ α)
     (e' : β' ≃ β) (h : ∀ i, K'.op i = (K.op (φ i)).submatrix e' e) (ρ : Matrix α α ℂ) :
     K'.map (ρ.submatrix e e) = (K.map ρ).submatrix e' e' := by
