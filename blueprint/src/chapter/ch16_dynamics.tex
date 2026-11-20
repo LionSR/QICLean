@@ -87,20 +87,17 @@ or the local dimensions.
     \label{lem:dynamics_partial_hamiltonian}
     \lean{ManyBody.Interaction.partialHamiltonian_empty,
         ManyBody.Interaction.partialHamiltonian_univ,
-        ManyBody.Interaction.partialHamiltonian_union,
         ManyBody.Interaction.partialHamiltonian_filter_add_filter_not,
         ManyBody.Interaction.partialHamiltonian_mem_supportedOperators,
         ManyBody.Interaction.isHermitian_partialHamiltonian,
-        ManyBody.Interaction.partialHamiltonian_nonneg,
         ManyBody.Interaction.norm_partialHamiltonian_le}
     \leanok
     \uses{def:dynamics_partial_hamiltonian, def:sites_supported}
-    $H_\varnothing=0$, $H_I=H_\Phi$ for finite $I$, and $H_{s\cup t}=H_s+H_t$ for
-    disjoint $s$ and $t$; in particular $H_\Phi$ is the sum of the partial Hamiltonians
-    of the indices with a given property and of those without it. If $T_i\subseteq D$
-    for every $i\in s$, then $H_s\in\mathcal A_D$. If the terms with index in $s$ are
-    Hermitian, or positive, so is $H_s$, and if they have norm at most $J$, then
-    $\lVert H_s\rVert\le\lvert s\rvert J$.
+    $H_\varnothing=0$, $H_I=H_\Phi$ for finite $I$, and $H_\Phi$ is the sum of the
+    partial Hamiltonians of the indices with a given property and of those without it.
+    If $T_i\subseteq D$ for every $i\in s$, then $H_s\in\mathcal A_D$. If the terms
+    with index in $s$ are Hermitian, so is $H_s$, and if they have norm at most $J$,
+    then $\lVert H_s\rVert\le\lvert s\rvert J$.
 \end{lemma}
 \begin{proof}
     \leanok

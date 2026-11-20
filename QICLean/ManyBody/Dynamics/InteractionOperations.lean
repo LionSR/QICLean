@@ -97,11 +97,6 @@ theorem partialHamiltonian_empty : Φ.partialHamiltonian ∅ = 0 :=
 theorem partialHamiltonian_univ [Fintype ι] : Φ.partialHamiltonian Finset.univ = Φ.hamiltonian :=
   rfl
 
-/-- Partial Hamiltonians add over disjoint sets of indices. -/
-theorem partialHamiltonian_union [DecidableEq ι] {s t : Finset ι} (h : Disjoint s t) :
-    Φ.partialHamiltonian (s ∪ t) = Φ.partialHamiltonian s + Φ.partialHamiltonian t :=
-  Finset.sum_union h
-
 /-- The Hamiltonian is the sum of the partial Hamiltonians of the indices with a property and of
 those without it. -/
 theorem partialHamiltonian_filter_add_filter_not [Fintype ι] (p : ι → Prop) [DecidablePred p] :
@@ -120,11 +115,6 @@ variable {Φ}
 theorem isHermitian_partialHamiltonian {s : Finset ι}
     (hΦ : ∀ i ∈ s, (Φ.term i).IsHermitian) : (Φ.partialHamiltonian s).IsHermitian :=
   (isSelfAdjoint_sum s fun i hi ↦ (hΦ i hi).isSelfAdjoint).isHermitian
-
-/-- A partial Hamiltonian of positive terms is positive. -/
-theorem partialHamiltonian_nonneg {s : Finset ι} (hΦ : ∀ i ∈ s, 0 ≤ Φ.term i) :
-    0 ≤ Φ.partialHamiltonian s :=
-  Finset.sum_nonneg hΦ
 
 /-- A partial Hamiltonian of `|s|` terms of norm at most `J` has norm at most `|s| J`. -/
 theorem norm_partialHamiltonian_le {s : Finset ι} {J : ℝ} (hΦ : ∀ i ∈ s, ‖Φ.term i‖ ≤ J) :
