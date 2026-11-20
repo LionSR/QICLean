@@ -37,8 +37,8 @@ workspace part of `TNLean/Circuit/QuantitativeSitePermutation.lean`, and
 `TNLean/Circuit/CleanImplementationPlacement.lean`, at commit `414a18fb88` (Apache-2.0). The
 changes: membership in `unitaryGroup` for unitarity; the products of neighbouring-pair gates
 with the count `38 (d ^ n) ^ 6` become products of gates on any geometry, under the hypothesis
-that every unitary on the configurations is such a product; the isometry of the first existence
-theorem is any isometry into the configurations, not an isometry composed with a basis
+that every unitary on the configurations is such a product; in the first existence result the
+isometry is any isometry into the configurations, not an isometry composed with a basis
 inclusion; the zero workspace becomes any workspace configuration `w` and the basis `Fin d` any
 type; the permutation operator is `ManyBody.sitePermOp`. The clean implementation of the
 zero-register reflection is not carried here.

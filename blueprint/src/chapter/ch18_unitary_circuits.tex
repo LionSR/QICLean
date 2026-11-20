@@ -1,0 +1,782 @@
+\chapter{Unitary circuits}
+\label{ch:unitary_circuits}
+
+This chapter uses the notation of Chapters~\ref{ch:sites} and~\ref{ch:circuits}:
+$V$ is a finite set of sites, $X=(X_v)_{v\in V}$ a system of finite basis sets,
+$\mathcal H_X=\bigotimes_v\C^{X_v}$, and $\Gamma$ a geometry on $V$. A unitary
+circuit is a circuit in the sense of Chapter~\ref{ch:circuits} in which every
+layer acts on one system $X$ and every gate and every onsite family consists of
+a single unitary. Local circuits of depth $T$ on a ring
+\cite{Malz2024Preparation}, depth-$\ell$ circuits on the edges of a lattice
+\cite{Piroli2021LOCC} and products of two-site gates on an open chain are such
+circuits on three geometries, measured by depth or by gate count. A one-site
+unitary is an onsite family and costs nothing. The identity, composition,
+monotonicity and the light cone are the statements of
+Chapter~\ref{ch:circuits} for these circuits.
+
+\section{Graphs and windows}
+\label{sec:unitary_graph_geometry}
+
+\begin{definition}[Graph and window geometries]
+    \label{def:unitary_graph_geometry}
+    \lean{QuantumCircuit.Geometry.graph, QuantumCircuit.Geometry.mem_graph_cell,
+        QuantumCircuit.Geometry.graph_cell_mk, QuantumCircuit.Geometry.graph_cost_pos,
+        QuantumCircuit.Geometry.pathCell, QuantumCircuit.Geometry.pathCell_cell,
+        QuantumCircuit.Geometry.exists_pathCell, QuantumCircuit.Geometry.window,
+        QuantumCircuit.Geometry.mem_window_cell}
+    \leanok
+    \uses{def:circuits_geometry}
+    For a simple graph $G$ on $V$, the graph geometry has one cell $\{u,v\}$ of
+    cost $1$ for each edge $uv$ \cite{Piroli2021LOCC}. The open chain of $n$ sites
+    is the graph geometry of the path on $\{0,\dots,n-1\}$, whose cells are the
+    pairs $\{p,p+1\}$. The windows of $m$ consecutive sites of this chain are the
+    cells $\{p: a\le p<a+m\}$ of cost $1$, one for each $a<n$, cut off at the
+    right end of the chain.
+\end{definition}
+
+\begin{lemma}[Light cones of a graph and of the open chain]
+    \label{lem:unitary_graph_light_cone}
+    \lean{QuantumCircuit.Geometry.iterate_neighbourhood_graph_subset,
+        QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_graph,
+        QuantumCircuit.Geometry.iterate_neighbourhood_graph_subset_dist,
+        QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_graph_of_dist,
+        QuantumCircuit.Geometry.iterate_neighbourhood_pathGraph_subset,
+        QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_pathGraph}
+    \leanok
+    \uses{def:unitary_graph_geometry, lem:circuits_neighbourhood_mono,
+        lem:sites_path_distance}
+    In the graph geometry of $G$, the $r$-fold neighbourhood $\mathcal N^r(R)$ of a
+    region $R$ lies within graph distance $r$ of $R$, and regions at graph distance
+    larger than $2r$ have disjoint $r$-fold neighbourhoods. On the open chain the
+    same holds with the distance $|i-j|$ of positions.
+\end{lemma}
+\begin{proof}\leanok
+    By induction on $r$: a site of $\mathcal N^{r+1}(R)$ lies in $\mathcal N^r(R)$ or in
+    an edge meeting a site $u$ of $\mathcal N^r(R)$, and the two ends of an edge are at
+    distance at most $1$; the triangle inequality gives the bound. If $v$ lay in both
+    neighbourhoods, the triangle inequality would join $R$ and $R'$ within $2r$. On the
+    path the graph distance is the distance of positions.
+\end{proof}
+
+\section{Unitary circuits and their costs}
+\label{sec:unitary_circuits}
+
+\begin{definition}[Unitary circuit]
+    \label{def:unitary_circuit}
+    \lean{QuantumCircuit.UnitaryCircuit, QuantumCircuit.UnitaryCircuit.toCircuit,
+        QuantumCircuit.UnitaryCircuit.op, QuantumCircuit.UnitaryCircuit.depth,
+        QuantumCircuit.UnitaryCircuit.gateCount,
+        QuantumCircuit.UnitaryCircuit.instUniqueIndex,
+        QuantumCircuit.UnitaryCircuit.kraus_eq_op,
+        QuantumCircuit.UnitaryCircuit.forall_isUnitary,
+        QuantumCircuit.UnitaryCircuit.forall_isTP,
+        QuantumCircuit.UnitaryCircuit.isUnbranched,
+        QuantumCircuit.Layer.nonempty_unique_index_of_forall_isUnitary}
+    \leanok
+    \uses{def:circuits_circuit, def:circuits_local, def:circuits_costs,
+        lem:circuits_seq, lem:circuits_unique_branch}
+    A unitary circuit on $\Gamma$ on the system $X$ is a finite sequence of layers
+    from $X$ to $X$ whose gates and onsite families are each a single unitary
+    \cite{Malz2024Preparation, Piroli2021LOCC}. As a circuit it is the sequence of
+    its layers; it has exactly one branch, and its operator $U$ is the Kraus
+    operator of that branch, $U=W_T\cdots W_1$ for the operators $W_k$ of its
+    layers. Its depth and gate count are those of the circuit.
+\end{definition}
+
+\begin{lemma}[Costs of a unitary circuit]
+    \label{lem:unitary_circuit_costs}
+    \lean{QuantumCircuit.UnitaryCircuit.nonempty_index,
+        QuantumCircuit.UnitaryCircuit.depth_eq_sum,
+        QuantumCircuit.UnitaryCircuit.gateCount_eq_sum,
+        QuantumCircuit.UnitaryCircuit.depth_le_gateCount,
+        QuantumCircuit.UnitaryCircuit.dual_eq,
+        QuantumCircuit.UnitaryCircuit.op_mem_unitaryGroup,
+        QuantumCircuit.UnitaryCircuit.conjTranspose_op_mul_op,
+        QuantumCircuit.UnitaryCircuit.op_mul_conjTranspose_op}
+    \leanok
+    \uses{def:unitary_circuit, thm:circuits_cost_subadditive, thm:circuits_tp}
+    The depth and the gate count of a unitary circuit are the sums of those of its
+    layers, and the depth is at most the gate count. Its Heisenberg picture is
+    $A\mapsto U^\dagger AU$, and $U$ is unitary.
+\end{lemma}
+\begin{proof}\leanok
+    Every layer has a Kraus index, so the cost of the sequence is the sum of the
+    costs of the layers. The circuit has one branch, so its Heisenberg picture is
+    conjugation by $U$; its families are trace-preserving, so the Heisenberg picture
+    fixes $1$, which is $U^\dagger U=1$, and $UU^\dagger=1$ follows for square
+    matrices.
+\end{proof}
+
+\begin{theorem}[Identity, composition and inverse]
+    \label{thm:unitary_circuit_composition}
+    \lean{QuantumCircuit.UnitaryCircuit.id, QuantumCircuit.UnitaryCircuit.op_id,
+        QuantumCircuit.UnitaryCircuit.depth_id, QuantumCircuit.UnitaryCircuit.gateCount_id,
+        QuantumCircuit.UnitaryCircuit.comp, QuantumCircuit.Circuit.seq_append,
+        QuantumCircuit.UnitaryCircuit.toCircuit_comp, QuantumCircuit.UnitaryCircuit.op_comp,
+        QuantumCircuit.UnitaryCircuit.depth_comp,
+        QuantumCircuit.UnitaryCircuit.gateCount_comp,
+        QuantumCircuit.UnitaryCircuit.adjoint, QuantumCircuit.UnitaryCircuit.op_adjoint,
+        QuantumCircuit.UnitaryCircuit.depth_adjoint,
+        QuantumCircuit.UnitaryCircuit.gateCount_adjoint,
+        QuantumCircuit.Layer.forall_isUnitary_adjoint, QuantumCircuit.Layer.depth_adjoint,
+        QuantumCircuit.Layer.gateCount_adjoint}
+    \leanok
+    \uses{def:unitary_circuit, lem:unitary_circuit_costs, thm:circuits_composition,
+        lem:circuits_adjoint}
+    The empty unitary circuit has operator $1$ and cost $0$. The circuit $c$
+    followed by $c'$ has operator $U'U$, depth the sum of the depths and gate count
+    the sum of the gate counts. The adjoint layers of $c$ in reverse order form a
+    unitary circuit with operator $U^\dagger$ and the depth and gate count of $c$.
+\end{theorem}
+\begin{proof}\leanok
+    The sequence of a concatenation of layers is the composition of the two
+    sequences, whose Kraus operators multiply. The adjoint of a sequence of layers of
+    single operators has the adjoint Kraus operator; a layer and its adjoint use the
+    same cells, so they have the same costs.
+\end{proof}
+
+\begin{lemma}[One gate and one-site unitaries]
+    \label{lem:unitary_circuit_gate}
+    \lean{QuantumCircuit.UnitaryCircuit.ofLayer, QuantumCircuit.UnitaryCircuit.op_ofLayer,
+        QuantumCircuit.UnitaryCircuit.depth_ofLayer,
+        QuantumCircuit.UnitaryCircuit.gateCount_ofLayer,
+        QuantumCircuit.Layer.forall_isUnitary_single,
+        QuantumCircuit.Layer.forall_isUnitary_ofOnsite,
+        QuantumCircuit.UnitaryCircuit.gate, QuantumCircuit.UnitaryCircuit.op_gate,
+        QuantumCircuit.UnitaryCircuit.gateCount_gate,
+        QuantumCircuit.UnitaryCircuit.depth_gate_le,
+        QuantumCircuit.UnitaryCircuit.onsite, QuantumCircuit.UnitaryCircuit.op_onsite,
+        QuantumCircuit.UnitaryCircuit.depth_onsite,
+        QuantumCircuit.UnitaryCircuit.gateCount_onsite}
+    \leanok
+    \uses{def:unitary_circuit, lem:circuits_layer_single, def:sites_place}
+    A unitary $V$ on the configurations of a cell $b$ is the unitary circuit of one
+    layer with operator $V\otimes1$ placed on $C_b$, gate count $c_b$ and depth at
+    most $1$. One-site unitaries $u_v$ at every site form a circuit of one layer with
+    no cells, with operator $\bigotimes_vu_v$ and depth and gate count $0$.
+\end{lemma}
+\begin{proof}\leanok
+    The layer of one gate has the placed matrix as Kraus operator and one cell; the
+    layer of onsite families has the product of the onsite operators and no cell.
+\end{proof}
+
+\begin{theorem}[Light cone of a unitary circuit]
+    \label{thm:unitary_circuit_light_cone}
+    \lean{QuantumCircuit.UnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_lightCone,
+        QuantumCircuit.UnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators}
+    \leanok
+    \uses{def:unitary_circuit, lem:unitary_circuit_costs, thm:circuits_light_cone,
+        def:sites_supported}
+    If $A$ is supported on $R$, then $U^\dagger AU$ is supported on the backward light
+    cone of $R$ through the circuit; when every cell has positive cost and the depth is
+    at most $T$, on the $T$-fold neighbourhood $\mathcal N^T(R)$
+    \cite[Theorem~1]{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    The Heisenberg picture of the circuit is $A\mapsto U^\dagger AU$; the circuit is
+    unbranched and trace-preserving, so the light cone of
+    Chapter~\ref{ch:circuits} applies, and it lies in the $T$-fold neighbourhood
+    when the cells have positive cost.
+\end{proof}
+
+\section{Depth and gate count}
+\label{sec:unitary_classes}
+
+\begin{definition}[Circuits of bounded depth and products of gates]
+    \label{def:unitary_classes}
+    \lean{QuantumCircuit.IsUnitaryCircuit, QuantumCircuit.IsGateProduct}
+    \leanok
+    \uses{def:unitary_circuit}
+    A matrix $U$ on $\mathcal H_X$ is a unitary circuit of depth $T$ on $\Gamma$ if it
+    is the operator of a unitary circuit of depth at most $T$
+    \cite{Malz2024Preparation, Piroli2021LOCC}, and a product of gates of cost $K$ if
+    it is the operator of a unitary circuit of gate count at most $K$. On the open
+    chain these are the products of at most $K$ unitaries on neighbouring pairs of
+    sites, with one-site unitaries free.
+\end{definition}
+
+\begin{theorem}[Closure of the two classes]
+    \label{thm:unitary_classes_closure}
+    \lean{QuantumCircuit.IsUnitaryCircuit.one, QuantumCircuit.IsUnitaryCircuit.mono,
+        QuantumCircuit.IsUnitaryCircuit.mul, QuantumCircuit.IsUnitaryCircuit.conjTranspose,
+        QuantumCircuit.IsUnitaryCircuit.mem_unitaryGroup, QuantumCircuit.IsUnitaryCircuit.pow,
+        QuantumCircuit.IsUnitaryCircuit.prodOp, QuantumCircuit.IsUnitaryCircuit.place,
+        QuantumCircuit.IsGateProduct.one, QuantumCircuit.IsGateProduct.mono,
+        QuantumCircuit.IsGateProduct.mul, QuantumCircuit.IsGateProduct.conjTranspose,
+        QuantumCircuit.IsGateProduct.mem_unitaryGroup, QuantumCircuit.IsGateProduct.pow,
+        QuantumCircuit.IsGateProduct.list_prod, QuantumCircuit.IsGateProduct.prodOp,
+        QuantumCircuit.IsGateProduct.place,
+        QuantumCircuit.IsGateProduct.of_mem_supportedOperators,
+        QuantumCircuit.IsGateProduct.isUnitaryCircuit}
+    \leanok
+    \uses{def:unitary_classes, thm:unitary_circuit_composition, lem:unitary_circuit_gate,
+        lem:unitary_circuit_costs, thm:sites_place_range}
+    Both classes contain $1$ and are monotone in the bound. Depths and gate counts add
+    under products, are kept by adjoints and are multiplied by $k$ under $k$-th
+    powers; a product of $\ell$ products of $K$ gates is a product of $\ell K$ gates.
+    Products of one-site unitaries cost nothing, and a unitary supported on a cell $b$
+    is one gate of cost $c_b$ and depth at most $1$. Every member is unitary, and a
+    product of gates of cost $K$ is a circuit of depth $K$.
+\end{theorem}
+\begin{proof}\leanok
+    By Theorem~\ref{thm:unitary_circuit_composition} and
+    Lemma~\ref{lem:unitary_circuit_gate}. A unitary supported on $C_b$ is $V\otimes1$ for
+    a matrix $V$ on $C_b$ (when every basis set is nonempty; otherwise every matrix is
+    zero), and $V$ is unitary because placement is injective and multiplicative. The
+    depth of a circuit is at most its gate count.
+\end{proof}
+
+\begin{theorem}[Light cone of a circuit of depth $T$]
+    \label{thm:unitary_classes_light_cone}
+    \lean{QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators,
+        QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_ringBall}
+    \leanok
+    \uses{def:unitary_classes, thm:unitary_circuit_light_cone,
+        lem:circuits_ring_neighbourhood}
+    On a geometry whose cells have positive cost, if $U$ is a unitary circuit of depth
+    $T$ and $A$ is supported on $R$, then $U^\dagger AU$ is supported on
+    $\mathcal N^T(R)$; on the ring of $N$ sites, on the sites within ring distance $T$
+    of $R$ \cite[Theorem~1]{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    Theorem~\ref{thm:unitary_circuit_light_cone}; on the ring the $T$-fold
+    neighbourhood is the ring ball of radius $T$.
+\end{proof}
+
+\section{Preparation in depth $T$}
+\label{sec:unitary_preparation}
+
+\begin{definition}[Prepared in depth $T$]
+    \label{def:unitary_prepared}
+    \lean{QuantumCircuit.IsPreparedInDepth, QuantumCircuit.IsPreparedInDepth.mono,
+        QuantumCircuit.IsPreparedInDepth.mulVec, QuantumCircuit.IsPreparedInDepth.prod}
+    \leanok
+    \uses{def:unitary_classes}
+    A vector $\psi\in\mathcal H_X$ is prepared in depth $T$ if $\psi=U\bigotimes_v v_v$
+    for a unitary circuit $U$ of depth $T$ and vectors $v_v\in\C^{X_v}$
+    \cite{Malz2024Preparation}. A product vector is prepared in depth $0$, and a
+    circuit of depth $T'$ applied to a vector prepared in depth $T$ gives one prepared
+    in depth $T+T'$.
+\end{definition}
+
+\begin{lemma}[Product vectors over disjoint regions]
+    \label{lem:unitary_product_vector}
+    \lean{QuantumCircuit.dotProduct_prod_mul_mul}
+    \leanok
+    \uses{def:sites_supported, cor:sites_product_induction}
+    For a product vector $\pi=\bigotimes_vv_v$ and operators $A$, $B$ supported on
+    disjoint regions,
+    $\bra\pi AB\ket\pi\braket\pi\pi=\bra\pi A\ket\pi\bra\pi B\ket\pi$.
+\end{lemma}
+\begin{proof}\leanok
+    Both sides are bilinear in $(A,B)$, so it suffices to take product operators
+    $A=\bigotimes_vm_v$, $B=\bigotimes_vm'_v$ with $m_v=1$ outside the first region and
+    $m'_v=1$ outside the second. Then $\bra\pi\bigotimes_vm_v\ket\pi=
+        \prod_v\bra{v_v}m_v\ket{v_v}$, and at every site one of $m_v$, $m'_v$ is the identity,
+    so the two sides agree site by site.
+\end{proof}
+
+\begin{theorem}[No connected correlations beyond the light cone]
+    \label{thm:unitary_correlations}
+    \lean{QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul,
+        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq,
+        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul_of_isRingSeparated,
+        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq_of_isRingSeparated}
+    \leanok
+    \uses{def:unitary_prepared, lem:unitary_product_vector,
+        thm:unitary_classes_light_cone, lem:sites_ring_separated}
+    On a geometry whose cells have positive cost, let $\psi$ be prepared in depth $T$
+    and let $A$, $B$ be supported on regions $R$, $R'$ with disjoint $T$-fold
+    neighbourhoods. Then
+    \begin{align}
+        \bra\psi AB\ket\psi\braket\psi\psi=\bra\psi A\ket\psi\bra\psi B\ket\psi,
+        \notag
+    \end{align}
+    and $\bra\psi AB\ket\psi=\bra\psi A\ket\psi\bra\psi B\ket\psi$ when $\psi$ is a unit
+    vector. On the ring this holds for regions at ring distance larger than $2T$
+    \cite[Supplemental Material, proof of Theorem~1]{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    Write $\psi=U\pi$ with $\pi$ a product vector. Then
+    $\bra\psi M\ket\psi=\bra\pi U^\dagger MU\ket\pi$ and
+    $U^\dagger ABU=(U^\dagger AU)(U^\dagger BU)$. By
+    Theorem~\ref{thm:unitary_classes_light_cone} the two factors are supported on the
+    disjoint neighbourhoods, and Lemma~\ref{lem:unitary_product_vector} applies. On the
+    ring, regions at ring distance larger than $2T$ have disjoint balls of radius $T$.
+\end{proof}
+
+\section{Substituting circuits for gates}
+\label{sec:unitary_substitution}
+
+\begin{lemma}[A unitary layer gate by gate]
+    \label{lem:unitary_layer_factorization}
+    \lean{QuantumCircuit.Layer.onsiteOp,
+        QuantumCircuit.Layer.kraus_eq_prod_place_mul_prodOp,
+        QuantumCircuit.Layer.onsiteOp_mem_unitaryGroup,
+        QuantumCircuit.Layer.ev_gate_mem_unitaryGroup}
+    \leanok
+    \uses{def:circuits_layer, def:sites_place, thm:circuits_of_cells}
+    Every Kraus operator of a layer is the product, over the cells in any order, of the
+    matrices of the gates placed on their cells, times the tensor product of the onsite
+    operators, with the identity at the sites covered by cells. For a unitary layer every
+    factor is unitary.
+\end{lemma}
+\begin{proof}\leanok
+    The product of the placed gates on disjoint cells is the Kraus operator of the layer of
+    these gates with the identity elsewhere; multiplying by the product operator puts the
+    onsite entries at the free sites, and the entries agree with those of the layer.
+\end{proof}
+
+\begin{theorem}[Substitution of gates]
+    \label{thm:unitary_gate_substitution}
+    \lean{QuantumCircuit.IsGateProduct.list_prod_map,
+        QuantumCircuit.Layer.isGateProduct_kraus,
+        QuantumCircuit.UnitaryCircuit.isGateProduct_op,
+        QuantumCircuit.IsGateProduct.substitute}
+    \leanok
+    \uses{lem:unitary_layer_factorization, thm:unitary_classes_closure}
+    Let $\Gamma$ and $\Gamma'$ be geometries on the same sites. If every unitary placed on a
+    cell $b$ of $\Gamma$ is a product of gates of $\Gamma'$ of cost $f(b)$, the operator of a
+    unitary circuit on $\Gamma$ is a product of gates of $\Gamma'$ of cost the sum of $f$ over
+    the cells it uses. In particular, if $f(b)\le Cc_b$, a product of gates of cost $K$ on
+    $\Gamma$ is a product of gates of cost $CK$ on $\Gamma'$. The depth admits no such bound:
+    the circuits replacing gates on disjoint cells may use overlapping cells of $\Gamma'$.
+\end{theorem}
+\begin{proof}\leanok
+    Write every layer as in Lemma~\ref{lem:unitary_layer_factorization}; the placed gates are
+    replaced by their products on $\Gamma'$, the onsite product costs nothing, and costs add
+    under products.
+\end{proof}
+
+\section{Swap routing on the open chain}
+\label{sec:unitary_swap_routing}
+
+On the open chain of $n$ sites with the same basis $\alpha$ at every site, the swap
+of two sites is the operator of the transposition of the sites.
+
+\begin{lemma}[Factoring a permutation into transpositions]
+    \label{lem:unitary_swap_factors}
+    \lean{Equiv.Perm.swapFactorsAux_length_le, Equiv.Perm.swapFactors_length_le_card}
+    \leanok
+    The transposition factorization of a permutation of a finite linearly ordered set uses
+    at most one transposition per element.
+\end{lemma}
+\begin{proof}\leanok
+    The factorization processes the elements in order and uses one transposition for each
+    element not yet fixed.
+\end{proof}
+
+\begin{theorem}[Swap routing]
+    \label{thm:unitary_swap_routing}
+    \lean{QuantumCircuit.isGateProduct_sitePermOp_swap_of_succ,
+        QuantumCircuit.isGateProduct_of_mem_supportedOperators_pair_of_lt,
+        QuantumCircuit.isGateProduct_of_mem_supportedOperators_pair_dist,
+        QuantumCircuit.isGateProduct_of_mem_supportedOperators_pair,
+        QuantumCircuit.isGateProduct_sitePermOp_swap,
+        QuantumCircuit.isGateProduct_sitePermOp,
+        QuantumCircuit.IsGateProduct.sitePermOp_mul_mul_conjTranspose,
+        QuantumCircuit.IsGateProduct.of_sitesAndPairs,
+        QuantumCircuit.IsGateProduct.place_window_two,
+        QuantumCircuit.IsGateProduct.of_window_two}
+    \leanok
+    \uses{def:unitary_graph_geometry, thm:unitary_classes_closure,
+        thm:unitary_gate_substitution, lem:unitary_swap_factors,
+        thm:sites-local-permutation}
+    On the open chain, the swap of two neighbouring sites is one gate. A unitary supported
+    on two sites $i\ne j$ is a product of at most $2|i-j|-1\le2n$ neighbouring gates, and so
+    is the swap of $i$ and $j$; the operator of a permutation of the sites costs at most
+    $2n^2$, and conjugation by it adds at most $4n^2$ to a gate count. A product of gates of
+    cost $K$ on the geometry of all sites and pairs of sites, with pairs of cost at least
+    $1$, is a product of at most $2nK$ neighbouring gates. On a chain of at least two sites a
+    product of gates on windows of two sites is a product of the same number of neighbouring
+    gates. This is the use of swap gates in \cite{Malz2024Preparation} (paragraph ``The
+    sequential-RG circuit'': the inputs ``are separated by $O(q)$ sites, which requires one to
+    implement SWAP gates'').
+\end{theorem}
+\begin{proof}\leanok
+    A neighbouring swap is supported on its pair. For $i<j$, conjugating a unitary supported
+    on $\{i,j-1\}$ by the neighbouring swap of $j-1$ and $j$ gives one supported on
+    $\{i,j\}$, and induction on $j-i$ gives the count. A permutation is a product of at most
+    $n$ transpositions by Lemma~\ref{lem:unitary_swap_factors}. The last two statements are
+    Theorem~\ref{thm:unitary_gate_substitution}; one-site gates are free, and a window of two
+    sites lies in a neighbouring pair.
+\end{proof}
+
+\section{Controlled operations and universality}
+\label{sec:unitary_universality}
+
+\begin{definition}[Controlled operations on sites]
+    \label{def:unitary_ctrl_op}
+    \lean{QuantumCircuit.ctrlProj, QuantumCircuit.ctrlOp,
+        QuantumCircuit.place_siteEquiv_apply, QuantumCircuit.place_siteEquiv_mul,
+        QuantumCircuit.place_siteEquiv_one, QuantumCircuit.place_siteEquiv_conjTranspose,
+        QuantumCircuit.place_siteEquiv_mem_unitaryGroup,
+        QuantumCircuit.place_siteEquiv_eq_prodOp}
+    \leanok
+    \uses{def:gate_ctrl_elem, def:sites_place, def:circuits_local_gate}
+    For a set $R$ of sites, a configuration $c$ and a site $t$, let $p_{R,c}$ be the
+    projection onto the configurations that agree with $c$ on $R$, and let $u_t$ be a matrix
+    $u$ on $\C^{X_t}$ placed at $t$. The controlled operation is
+    $C_{R,c,t}(u)=p_{R,c}u_t+(1-p_{R,c})$: it applies $u$ at $t$ when the sites of $R$ are in
+    the configuration $c$ \cite{Malz2024Preparation}.
+\end{definition}
+
+\begin{lemma}[Algebra of controlled operations]
+    \label{lem:unitary_ctrl_op_algebra}
+    \lean{QuantumCircuit.isIdempotentElem_ctrlProj, QuantumCircuit.commute_ctrlProj,
+        QuantumCircuit.ctrlProj_insert, QuantumCircuit.ctrlProj_empty,
+        QuantumCircuit.ctrlProj_conjTranspose, QuantumCircuit.ctrlProj_mem_supportedOperators,
+        QuantumCircuit.commute_ctrlProj_place_siteEquiv, QuantumCircuit.ctrlOp_empty,
+        QuantumCircuit.ctrlOp_mul, QuantumCircuit.ctrlOp_one,
+        QuantumCircuit.ctrlOp_conjTranspose, QuantumCircuit.ctrlOp_mem_unitaryGroup,
+        QuantumCircuit.ctrlOp_mem_supportedOperators,
+        QuantumCircuit.ctrlOp_insert_commutator, QuantumCircuit.twoLevel_update_eq_ctrlOp}
+    \leanok
+    \uses{def:unitary_ctrl_op, thm:gate_ctrl_elem_algebra, thm:gate_ctrl_elem_commutator,
+        def:gate_two_level}
+    For $t\notin R$, the projections $p_{R,c}$ are commuting self-adjoint idempotents,
+    $p_{R\cup\{s\},c}=p_{R,c}p_{\{s\},c}$, and $p_{R,c}$ commutes with $u_t$. Hence
+    $C_{R,c,t}(u)C_{R,c,t}(w)=C_{R,c,t}(uw)$, $C_{R,c,t}(u)^\dagger=C_{R,c,t}(u^\dagger)$,
+    $C_{R,c,t}(u)$ is unitary for unitary $u$ and is supported on $R\cup\{t\}$, and for
+    $s\ne t$ and unitaries $v$, $w$,
+    \begin{align}
+        C_{R\cup\{s\},c,t}(vwv^\dagger w^\dagger)
+        =C_{R,c,t}(v)\,C_{\{s\},c,t}(w)\,C_{R,c,t}(v^\dagger)\,C_{\{s\},c,t}(w^\dagger).
+        \notag
+    \end{align}
+    The two-level operator between configurations $a$ and $a'$ that differ only at $t$ is
+    $C_{V\setminus\{t\},a,t}$ of the two-level operator between the levels $a_t$ and $a'_t$.
+\end{lemma}
+\begin{proof}\leanok
+    The projections are diagonal with entries in $\{0,1\}$. The commutator identity is that of
+    controlled elements of a ring applied to the idempotents $p_{R,c}$ and $p_{\{s\},c}$. The
+    two-level operator acts as the identity on the configurations differing from $a$ away
+    from $t$, which is the controlled form.
+\end{proof}
+
+\begin{theorem}[Universality relative to the cost of two-site unitaries]
+    \label{thm:unitary_universality}
+    \lean{QuantumCircuit.quarterTwo_isSpecialTwo, QuantumCircuit.twoLevel_quarterTwo_mul,
+        QuantumCircuit.twoLevel_conj_quarterTwo,
+        QuantumCircuit.IsGateProduct.place_singleton, QuantumCircuit.IsGateProduct.smul_one,
+        QuantumCircuit.IsGateProduct.of_mem_supportedOperators_singleton,
+        QuantumCircuit.IsGateProduct.of_mem_supportedOperators_card_le_two,
+        QuantumCircuit.isGateProduct_ctrlOp_twoLevel, QuantumCircuit.isGateProduct_twoLevel,
+        QuantumCircuit.unitaryGateCount, QuantumCircuit.isGateProduct_unitaryGateCount,
+        QuantumCircuit.exists_isGateProduct, QuantumCircuit.unitaryGateCount_le,
+        QuantumCircuit.isGateProduct_sitesAndPairs_of_mem_supportedOperators_pair,
+        QuantumCircuit.isGateProduct_sitesAndPairs}
+    \leanok
+    \uses{lem:unitary_ctrl_op_algebra, thm:gate_givens, thm:gate_special_two_commutator,
+        thm:unitary_classes_closure, def:circuits_local_gate}
+    Let $V$ be a nonempty finite set of $n$ sites and $m=\prod_v|X_v|$, and suppose that every
+    unitary supported on two distinct sites is a product of gates of $\Gamma$ of cost $k$.
+    One-site unitaries and global phases cost nothing. A controlled two-level rotation or
+    phase with $j$ controls costs at most $(2^{j+1}-2)k$, a two-level rotation or phase
+    between distinct configurations at most $(2n-1)(2^n-2)k$, and every unitary on
+    $\mathcal H_X$ at most $3m^2(2n-1)(2^n-2)k\le6m^4k$ when every $|X_v|\ge2$. On the geometry
+    of all sites and pairs of sites the hypothesis holds with $k$ the cost of a pair. This is
+    the step ``can be further expressed with a low-depth circuit of local gates'' of
+    \cite[caption of Fig.~1]{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    A controlled operation with no control is a one-site unitary. Every rotation or phase of
+    the special form is a commutator $g_1g_2g_1^\dagger g_2^\dagger$ with $g_1$ of the same
+    form, so Lemma~\ref{lem:unitary_ctrl_op_algebra} removes one control at the cost of two
+    controlled operations with one control, which are two-site unitaries. A two-level
+    operator between configurations at Hamming distance $h+1$ is conjugated by a quarter
+    turn on a pair at distance $1$ into one between configurations at distance $h$; with
+    $n-1$ controls this gives the second count. A unitary is a phase times a unitary of
+    determinant $1$, and the Givens decomposition writes the latter as at most $3m^2$
+    two-level rotations and phases.
+\end{proof}
+
+\begin{theorem}[Universality of neighbouring gates on the open chain]
+    \label{thm:unitary_chain_universality}
+    \lean{QuantumCircuit.isGateProduct_pathGraph_unitaryGateCount,
+        QuantumCircuit.isGateProduct_pathGraph_le_card_pow,
+        QuantumCircuit.exists_isGateProduct_pathGraph_apply_embedding_eq,
+        Matrix.exists_mem_unitaryGroup_apply_embedding_eq}
+    \leanok
+    \uses{thm:unitary_universality, thm:unitary_swap_routing}
+    On the open chain of $n\ge1$ sites with the same basis at every site, every unitary is an
+    exact product, global phase included and with no auxiliary sites, of at most
+    $2n\cdot3m^2(2n-1)(2^n-2)$ neighbouring gates, and of at most $12m^5$ when the basis has
+    at least two elements, $m$ the dimension of the Hilbert space. An isometry prescribed on a
+    set of input columns extends to a unitary that is such a product.
+\end{theorem}
+\begin{proof}\leanok
+    Theorem~\ref{thm:unitary_swap_routing} gives the hypothesis of
+    Theorem~\ref{thm:unitary_universality} with $k=2n$, and $n<2^n\le m$. An isometry extends to
+    a unitary with the prescribed columns.
+\end{proof}
+
+
+\section{Circuits inside a region and in parallel}
+\label{sec:unitary_region}
+
+\begin{definition}[A circuit inside a region]
+    \label{def:unitary_inside}
+    \lean{QuantumCircuit.Layer.IsIn, QuantumCircuit.UnitaryCircuit.IsIn,
+        QuantumCircuit.IsUnitaryCircuitOn, KrausFamily.IsUnitary.op_eq_of_eq}
+    \leanok
+    \uses{def:unitary_circuit, def:unitary_classes}
+    A layer acts inside a region $R$ when every cell it uses lies in $R$ and every onsite
+    family at a site outside $R$ is the identity; a unitary circuit acts inside $R$ when all
+    its layers do. A matrix $U$ is a unitary circuit of depth $T$ inside $R$ if it is the
+    operator of a unitary circuit inside $R$ of depth at most $T$
+    \cite{Malz2024Preparation}.
+\end{definition}
+
+\begin{lemma}[Circuits inside a region]
+    \label{lem:unitary_inside}
+    \lean{QuantumCircuit.Layer.IsIn.mono, QuantumCircuit.Layer.IsIn.not_mem_biUnion,
+        QuantumCircuit.Layer.kraus_mem_supportedOperators, QuantumCircuit.Layer.isIn_single,
+        QuantumCircuit.Layer.isIn_ofOnsite, QuantumCircuit.Layer.IsIn.adjoint,
+        QuantumCircuit.UnitaryCircuit.tail, QuantumCircuit.UnitaryCircuit.op_eq_tail_op_mul,
+        QuantumCircuit.UnitaryCircuit.op_eq_one, QuantumCircuit.UnitaryCircuit.IsIn.mono,
+        QuantumCircuit.UnitaryCircuit.IsIn.tail, QuantumCircuit.UnitaryCircuit.isIn_id,
+        QuantumCircuit.UnitaryCircuit.IsIn.comp, QuantumCircuit.UnitaryCircuit.IsIn.adjoint,
+        QuantumCircuit.UnitaryCircuit.isIn_gate, QuantumCircuit.UnitaryCircuit.isIn_onsite,
+        QuantumCircuit.UnitaryCircuit.op_mem_supportedOperators,
+        QuantumCircuit.IsUnitaryCircuitOn.isUnitaryCircuit,
+        QuantumCircuit.IsUnitaryCircuitOn.mem_unitaryGroup,
+        QuantumCircuit.IsUnitaryCircuitOn.mem_supportedOperators,
+        QuantumCircuit.IsUnitaryCircuitOn.mono_set, QuantumCircuit.IsUnitaryCircuitOn.mono,
+        QuantumCircuit.IsUnitaryCircuitOn.one, QuantumCircuit.IsUnitaryCircuitOn.mul,
+        QuantumCircuit.IsUnitaryCircuitOn.conjTranspose,
+        QuantumCircuit.IsUnitaryCircuitOn.place,
+        QuantumCircuit.IsUnitaryCircuitOn.of_mem_supportedOperators,
+        QuantumCircuit.IsUnitaryCircuitOn.prodOp}
+    \leanok
+    \uses{def:unitary_inside, thm:unitary_classes_closure, def:sites_supported}
+    The operator of a circuit inside $R$ is supported on $R$. Circuits inside $R$ are closed
+    under composition and adjoints and stay inside every larger region; a gate on a cell in
+    $R$, and one-site unitaries equal to the identity outside $R$, are circuits inside $R$.
+\end{lemma}
+\begin{proof}\leanok
+    The Kraus operator of a layer inside $R$ is a product of operators supported on its cells
+    and onsite operators that are the identity outside $R$.
+\end{proof}
+
+\begin{theorem}[Circuits in parallel]
+    \label{thm:unitary_parallel}
+    \lean{QuantumCircuit.Layer.par, QuantumCircuit.Layer.disjoint_cells,
+        QuantumCircuit.Layer.forall_isUnitary_par, QuantumCircuit.Layer.isIn_par,
+        QuantumCircuit.Layer.prod_free, QuantumCircuit.Layer.kraus_par,
+        QuantumCircuit.Layer.gateCount_par, QuantumCircuit.UnitaryCircuit.parLayers,
+        QuantumCircuit.UnitaryCircuit.forall_parLayers,
+        QuantumCircuit.UnitaryCircuit.sum_depth_parLayers_le,
+        QuantumCircuit.UnitaryCircuit.sum_gateCount_parLayers,
+        QuantumCircuit.UnitaryCircuit.op_parLayers, QuantumCircuit.UnitaryCircuit.par,
+        QuantumCircuit.UnitaryCircuit.isIn_par, QuantumCircuit.UnitaryCircuit.depth_par_le,
+        QuantumCircuit.UnitaryCircuit.gateCount_par, QuantumCircuit.UnitaryCircuit.op_par,
+        QuantumCircuit.IsUnitaryCircuitOn.par,
+        QuantumCircuit.IsUnitaryCircuitOn.finset_noncommProd,
+        QuantumCircuit.IsUnitaryCircuitOn.list_prod}
+    \leanok
+    \uses{lem:unitary_inside, lem:sites_supported_commute}
+    On a geometry whose cells are nonempty, unitary circuits of depths $T_1$, $T_2$ inside
+    disjoint regions $R_1$, $R_2$ give a unitary circuit inside $R_1\cup R_2$ with operator
+    $U_1U_2$, depth at most $\max(T_1,T_2)$ and the sum of the gate counts. A finite family of
+    circuits of depth $T$ inside pairwise disjoint regions has product a circuit of depth $T$
+    inside their union. These are the parallel layers of \cite{Malz2024Preparation}
+    (eq.~(10) and the paragraph ``The sequential-RG circuit'').
+\end{theorem}
+\begin{proof}\leanok
+    Layers of the two circuits are merged greedily: a leading layer of depth $0$ is kept
+    alone, and two leading layers of depth $1$ become one layer with the cells of both, which
+    are disjoint since nonempty cells lie in disjoint regions. Depth then counts the merged
+    pairs once, so the depth of the merged circuit is at most the larger depth. The operators
+    of the two circuits commute, being supported on disjoint regions, so the operator of the
+    merge is $U_1U_2$.
+\end{proof}
+
+\section{Placing and relabelling circuits}
+\label{sec:unitary_placement}
+
+\begin{theorem}[A circuit on a region placed in the system]
+    \label{thm:unitary_place}
+    \lean{QuantumCircuit.UnitaryCircuit.op_eq_of_forall₂, QuantumCircuit.Geometry.restrictHom,
+        QuantumCircuit.Layer.place, QuantumCircuit.Layer.forall_isUnitary_place,
+        QuantumCircuit.Layer.isIn_place, QuantumCircuit.Layer.gateCount_place,
+        QuantumCircuit.Layer.depth_place, QuantumCircuit.Layer.kraus_place,
+        QuantumCircuit.UnitaryCircuit.place, QuantumCircuit.UnitaryCircuit.op_place,
+        QuantumCircuit.UnitaryCircuit.isIn_place, QuantumCircuit.UnitaryCircuit.depth_place,
+        QuantumCircuit.UnitaryCircuit.gateCount_place, QuantumCircuit.IsGateProduct.of_restrict,
+        QuantumCircuit.IsUnitaryCircuit.isUnitaryCircuitOn_of_restrict,
+        QuantumCircuit.IsGateProduct.isUnitaryCircuitOn_of_restrict}
+    \leanok
+    \uses{def:unitary_inside, def:circuits_geometry, def:sites_place}
+    A unitary circuit on the cells of $\Gamma$ inside a region $D$, on the system of the sites
+    of $D$, read on all the sites with the identity outside $D$, is a unitary circuit inside
+    $D$ of the same depth and gate count with operator $V\otimes1$ placed on $D$. In
+    particular a product of gates of cost $K$ on the cells inside $D$ is, placed, a circuit of
+    depth $K$ inside $D$ and a product of gates of cost $K$.
+\end{theorem}
+\begin{proof}\leanok
+    Layer by layer, the cells and the onsite families at sites of $D$ are kept, and the
+    identity is added at the sites outside $D$; the Kraus operator is the placement of that of
+    the layer, and placement is multiplicative.
+\end{proof}
+
+\begin{theorem}[Relabelling sites]
+    \label{thm:unitary_relabel}
+    \lean{QuantumCircuit.Layer.relabel, QuantumCircuit.Layer.forall_isUnitary_relabel,
+        QuantumCircuit.Layer.gateCount_relabel, QuantumCircuit.Layer.depth_relabel,
+        QuantumCircuit.Layer.kraus_relabel, QuantumCircuit.UnitaryCircuit.relabel,
+        QuantumCircuit.UnitaryCircuit.op_relabel, QuantumCircuit.UnitaryCircuit.depth_relabel,
+        QuantumCircuit.UnitaryCircuit.gateCount_relabel, QuantumCircuit.IsGateProduct.relabel,
+        QuantumCircuit.IsUnitaryCircuit.relabel, QuantumCircuit.Geometry.Hom.toRestrict,
+        QuantumCircuit.Geometry.exists_hom_graph, QuantumCircuit.Geometry.graph_cell_nonempty,
+        QuantumCircuit.Geometry.ring_cell_nonempty,
+        QuantumCircuit.IsGateProduct.isUnitaryCircuitOn_of_hom,
+        QuantumCircuit.IsGateProduct.isUnitaryCircuitOn_graph,
+        QuantumCircuit.IsGateProduct.isUnitaryCircuitOn_ring,
+        QuantumCircuit.IsGateProduct.place_pathGraph}
+    \leanok
+    \uses{thm:unitary_place, def:circuits_geometry_hom, lem:sites-regional-relabel,
+        def:unitary_graph_geometry, def:circuits_ring_geometry}
+    A bijection of sites carrying the cells of one geometry to cells of another of the same
+    cost carries unitary circuits to unitary circuits with the relabelled operator and the
+    same depth and gate count. Hence a product of $K$ gates on neighbouring sites of a chain of
+    $m$ sites, placed on $m$ consecutive sites of a ring or of a longer chain, is a circuit of
+    depth $K$ inside the placed sites and a product of $K$ neighbouring gates there
+    \cite{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    The layers are moved cell by cell along the bijection and the operators are relabelled
+    along the induced bijection of configurations. Consecutive sites go to cells of the ring
+    or of the chain, which gives a morphism of geometries into the cells inside the placed
+    sites, and Theorem~\ref{thm:unitary_place} applies.
+\end{proof}
+
+\begin{theorem}[Gates on windows through neighbouring gates]
+    \label{thm:unitary_window}
+    \lean{QuantumCircuit.isGateProduct_pathGraph_of_mem_supportedOperators_interval,
+        QuantumCircuit.IsGateProduct.window_of_mem_supportedOperators,
+        QuantumCircuit.IsGateProduct.of_window}
+    \leanok
+    \uses{thm:unitary_relabel, thm:unitary_chain_universality, thm:unitary_gate_substitution}
+    On the open chain with the same basis $\alpha$, $|\alpha|\ge2$, at every site, a unitary
+    supported on a window of $m\ge1$ consecutive sites is one gate on the window and a product
+    of at most $12(|\alpha|^m)^5$ neighbouring gates. A product of gates of cost $K$ on
+    windows of $m$ sites is a product of at most $12(|\alpha|^m)^5K$ neighbouring gates, a
+    factor independent of the length of the chain \cite[caption of Fig.~1]{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    The window is a chain of at most $m$ sites placed on consecutive sites; universality on it
+    (Theorem~\ref{thm:unitary_chain_universality}) and Theorem~\ref{thm:unitary_relabel} give
+    the first count, and Theorem~\ref{thm:unitary_gate_substitution} the second.
+\end{proof}
+
+\section{Clean workspaces and reflections}
+\label{sec:unitary_clean_workspace}
+
+\begin{definition}[Clean implementation]
+    \label{def:unitary_clean_implementation}
+    \lean{QuantumCircuit.IsCleanImplementation}
+    \leanok
+    \uses{def:gate_basis_inclusion}
+    For an inclusion $J$ of a logical space into a larger space with its workspace in an
+    initial state, an operator $U$ cleanly implements $Z$ when $UJ=JZ$: it acts as $Z$ on
+    every logical input, including inputs entangled with a reference, and returns the
+    workspace to its initial state.
+\end{definition}
+
+\begin{lemma}[Closure of clean implementations]
+    \label{lem:unitary_clean_closure}
+    \lean{QuantumCircuit.IsCleanImplementation.one, QuantumCircuit.IsCleanImplementation.mul,
+        QuantumCircuit.IsCleanImplementation.pow,
+        QuantumCircuit.IsCleanImplementation.conjTranspose,
+        QuantumCircuit.IsCleanImplementation.inv, QuantumCircuit.IsCleanImplementation.mulVec,
+        QuantumCircuit.IsCleanImplementation.logical_mem_unitaryGroup,
+        QuantumCircuit.IsCleanImplementation.conjTranspose_of_isometry,
+        QuantumCircuit.IsCleanImplementation.kronecker_one}
+    \leanok
+    \uses{def:unitary_clean_implementation}
+    Clean implementations are closed under products and powers, under adjoints and inverses
+    when both operators are unitary, and under tensoring with the identity of a reference. A
+    unitary that cleanly implements $Z$ along an isometric inclusion makes $Z$ unitary, so
+    its adjoint cleanly implements $Z^\dagger$.
+\end{lemma}
+\begin{proof}\leanok
+    $UVJ=UJW=JZW$. From $UJ=JZ$ and $ZZ^\dagger=1$, $U^\dagger J=U^\dagger JZZ^\dagger=
+        U^\dagger UJZ^\dagger=JZ^\dagger$. If $J^\dagger J=1$, then
+    $Z^\dagger Z=(JZ)^\dagger JZ=(UJ)^\dagger UJ=1$.
+\end{proof}
+
+\begin{theorem}[Clean implementations by products of gates]
+    \label{thm:unitary_clean_existence}
+    \lean{QuantumCircuit.exists_isGateProduct_mul_initializedBasisMatrix_eq,
+        QuantumCircuit.exists_isGateProduct_isCleanImplementation,
+        QuantumCircuit.workspaceEmbedding, QuantumCircuit.workspaceEmbedding_apply,
+        QuantumCircuit.initializedBasisMatrix_workspaceEmbedding_mul_apply,
+        QuantumCircuit.workspaceFixedSitePerm, QuantumCircuit.workspaceFixedSitePerm_castAdd,
+        QuantumCircuit.workspaceFixedSitePerm_natAdd,
+        QuantumCircuit.isCleanImplementation_sitePermOp_workspaceFixedSitePerm,
+        QuantumCircuit.IsCleanImplementation.conjugate_workspaceFixedSitePerm}
+    \leanok
+    \uses{lem:unitary_clean_closure, thm:unitary_chain_universality,
+        thm:sites-local-permutation}
+    If every unitary is a product of gates of cost $K$, every isometry on prescribed input
+    columns and every logical unitary, along a basis inclusion, is cleanly implemented by a
+    product of gates of cost $K$. A permutation of the logical sites that fixes an appended
+    workspace cleanly implements the permutation of the logical register, and so does its
+    conjugate of a clean implementation, so one workspace can be reused by many calls.
+\end{theorem}
+\begin{proof}\leanok
+    The isometry extends to a unitary with the prescribed columns, which is a product of
+    gates by hypothesis. The site permutation leaves the workspace sites unchanged, and the
+    identity is checked entry by entry; conjugation uses Lemma~\ref{lem:unitary_clean_closure}.
+\end{proof}
+
+\begin{theorem}[Reflections about implemented images]
+    \label{thm:unitary_image_reflection}
+    \lean{Matrix.subspaceReflection_image, QuantumCircuit.IsGateProduct.subspaceReflection_image,
+        QuantumCircuit.IsGateProduct.postselectionAmplificationStep}
+    \leanok
+    \uses{thm:unitary_classes_closure, def:gate_subspace_amplification,
+        def:gate_uniform_postselection}
+    For a unitary $U$, the reflection about the image of $UE$ is $U$ times the reflection
+    about the image of $E$ times $U^\dagger$. If $U$ is a product of gates of cost $K$ and the
+    reflection about the image of $E$ one of cost $L$, the reflection about the image of $UE$
+    costs $2K+L$; one round of amplification by two reflections of costs $K$ and $L$, with its
+    global phase $-1$, costs $K+L$ on a nonempty set of sites.
+\end{theorem}
+\begin{proof}\leanok
+    $UEE^\dagger U^\dagger$ is the projection onto the image of $UE$, and conjugation by $U$
+    commutes with $1-2P$. The global phase is a one-site phase.
+\end{proof}
+
+\begin{theorem}[Conversion of encoders through a common seed]
+    \label{thm:unitary_encoder_conversion}
+    \lean{QuantumCircuit.IsUnitaryCircuit.norm_encoder_conversion_le}
+    \leanok
+    \uses{thm:unitary_classes_closure}
+    If $U_A$ and $U_B$ are unitary circuits of depths $T_A$ and $T_B$ and $J$ is any seed,
+    then $U_BU_A^\dagger$ is a unitary circuit of depth $T_A+T_B$ and
+    $\|U_BU_A^\dagger F-G\|\le\|F-U_AJ\|+\|G-U_BJ\|$ in the operator norm
+    \cite{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    $U_BU_A^\dagger F-G=U_BU_A^\dagger(F-U_AJ)+(U_BJ-G)$, and $U_BU_A^\dagger$ has norm at
+    most $1$.
+\end{proof}
+
+\begin{theorem}[Preparation from a product basis vector]
+    \label{thm:unitary_preparation_basis}
+    \lean{Matrix.exists_mem_unitaryGroup_eq_smul_mulVec_single,
+        QuantumCircuit.exists_prod_eq_smul_prodOp_mulVec,
+        QuantumCircuit.IsPreparedInDepth.exists_eq_smul_mulVec_prod_single}
+    \leanok
+    \uses{def:unitary_prepared, thm:unitary_classes_closure}
+    Every nonzero vector of $\C^\iota$ is $c\,u\ket{i_0}$ with $c\ne0$ and $u$ unitary, every
+    nonzero product vector is $c\bigotimes_vu_v\ket{x_0}$, and every nonzero vector prepared
+    in depth $T$ is $c\,U\ket{x_0}$ for a unitary circuit $U$ of depth $T$ and any fixed
+    product basis vector $\ket{x_0}$: the one-site unitaries cost no depth.
+\end{theorem}
+\begin{proof}\leanok
+    Extend $x/\|x\|$ to a unitary with this column at $i_0$; take the product over the sites;
+    and compose the circuit with the one-site unitaries, of depth $0$.
+\end{proof}
