@@ -707,7 +707,7 @@ its costs do not change.
     of every larger depth and every larger bound.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{lem:protocols_dilation_circuits}
+    \uses{lem:protocols_dilation_circuits, lem:circuits_dim_bounded}
     With one-element bases $E_s=F_s=\{*\}$, the empty circuit is the identity, and
     $\tr_F(\rho\otimes\ketbra ee)=\rho$ because the sum over the configurations of $F$ has
     one term; its only basis at $s$ is $X_s\times\{*\}$, with $\lvert X_s\rvert$ elements. A
@@ -805,7 +805,8 @@ its costs do not change.
     \label{thm:protocols_local_dilation}
     \lean{QuantumCircuit.Circuit.isUnitaryDilation}
     \leanok
-    \uses{def:circuits_local, def:protocols_unitary_dilation, def:protocols_unitary_off}
+    \uses{def:circuits_local, def:protocols_unitary_dilation, def:protocols_unitary_off,
+        def:circuits_dim_bounded}
     Let $D$ be a set of sites, and let $c$ be an unbranched circuit of trace-preserving gates
     and onsite families on nonempty input bases that is unitary off $D$ and bounded by $B$ on
     the sites outside $D$. Then the map of $c$ has a unitary dilation of the depth of $c$ with
