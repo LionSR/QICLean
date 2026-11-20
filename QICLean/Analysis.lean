@@ -163,6 +163,7 @@ import QICLean.Analysis.JordanBlockPower
 import QICLean.Analysis.JordanConditionNumber
 import QICLean.Analysis.JordanSimilarity
 import QICLean.Analysis.KernelCompletion
+import QICLean.Analysis.KernelGapPerturbation
 import QICLean.Analysis.KernelSpectralGap
 import QICLean.Analysis.KleinInequality
 import QICLean.Analysis.KroneckerExponential

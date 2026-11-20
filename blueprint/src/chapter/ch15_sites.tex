@@ -755,6 +755,26 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     matrices are unitarily conjugate and have the same eigenvalues.
 \end{proof}
 
+\begin{lemma}[Support of a product on paired sites]
+    \label{lem:sites_paired_product_support}
+    \lean{ManyBody.reindex_kronecker_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_supported}
+    Let $X$ and $Y$ be two systems on the same sites $V$, and give the site $v$
+    the basis $X_v\times Y_v$, so that a configuration of the paired system is a
+    pair of configurations of the two systems. If $A\in\mathcal A_S$ on the first
+    system and $B\in\mathcal A_T$ on the second, then $A\otimes B$, an operator on
+    the paired system, lies in $\mathcal A_{S\cup T}$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The entry of $A\otimes B$ at two paired configurations is the product of the
+    entries of $A$ at their first components and of $B$ at their second
+    components. If the configurations differ at a site outside $S\cup T$, one of the
+    factors vanishes. Otherwise both factors depend only on the values on $S$ and
+    on $T$ and on the pattern of coincidences outside.
+\end{proof}
+
 \begin{theorem}[A local permutation of sites]
     \label{thm:sites-local-permutation}
     \lean{ManyBody.sitePermOp_mem_supportedOperators}
@@ -1043,6 +1063,15 @@ supports of bounded range on them.
     $x\in R$ and $\lvert km\rvert\le kr$.
 \end{proof}
 
+\begin{definition}[Windows on the ring]
+    \label{def:sites_ring_window}
+    \lean{ManyBody.ringWindow, ManyBody.ringWindow_apply, ManyBody.map_ringWindow_two}
+    \leanok
+    For $k\le N$, the window of $k$ consecutive sites of the ring $\Z_N$ starting at the
+    site $i$ is the injection $j\mapsto i+j$ of $\{0,\dots,k-1\}$ into $\Z_N$. For
+    $k=2$ its image is the bond $\{i,i+1\}$.
+\end{definition}
+
 \begin{definition}[Finite domains of the integers]
     \label{def:sites_line_domain}
     \lean{ManyBody.sitePos, ManyBody.lineDomainGraph, ManyBody.IsDomainSupport,
@@ -1187,4 +1216,35 @@ supports of bounded range on them.
 \begin{proof}\leanok
     In the lexicographic order the first endpoint of a horizontal edge is the
     left one, and the first endpoint of a vertical edge is the lower one.
+\end{proof}
+
+\begin{definition}[The rectangle as a domain of the plane]
+    \label{def:sites_rectangle_domain}
+    \lean{ManyBody.rectangleEmbedding, ManyBody.rectangleEmbedding_injective,
+        ManyBody.rectangularDomain, ManyBody.rectangleSiteEquiv,
+        ManyBody.rectangleSiteEquiv_val, ManyBody.rectangleSupport}
+    \leanok
+    \uses{def:sites_square_lattice, def:sites_plane_domain}
+    The vertex $(x,y)$ of the $w\times h$ square lattice has the integer coordinates
+    $(x,y)\in\Z^2$, and the rectangular domain is the image of the vertices; either
+    side may be zero. The coordinates identify the vertices with the sites of the
+    domain. A vertex then gives the one-site support of its image, and an edge the
+    support of the images of its two endpoints, both of range
+    one~\cite{OpenAI2026AreaLaw, OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{lemma}[The rectangle and its domain]
+    \label{lem:sites_rectangle_domain}
+    \lean{ManyBody.rectangleGraphIso, ManyBody.squareLatticeSiteOrEdgeSupport_injective,
+        ManyBody.mem_rectangleSupport_iff, ManyBody.rectangleSupport_injective}
+    \leanok
+    \uses{def:sites_rectangle_domain}
+    The identification of the vertices with the sites of the domain is an isomorphism
+    of the square-lattice graph onto the nearest-neighbour graph of the domain. Distinct
+    vertices and edges have distinct regions, and so distinct supports in the domain.
+\end{lemma}
+\begin{proof}\leanok
+    Two vertices are nearest neighbours exactly when their coordinates differ by one in
+    one coordinate and agree in the other. A vertex is the only label with a one-point
+    region, and an edge is determined by its two endpoints.
 \end{proof}

@@ -87,6 +87,9 @@ interaction in the exact-vanishing argument is a `Finset`.
   vanishing between different connected components.
 * `ManyBody.exists_graph_lieb_robinson`: the bound with constants chosen
   before the graph and the interaction.
+* `ManyBody.norm_heisenberg_commutator_le_graphDistance_inf`: decay `e^{-δ/2}` in the distance
+  `δ` from an arbitrary finite support, zero at infinite distance, for supports with at most
+  `R + 1` sites (TNLean one-dimensional note, Lemma `lem:LR`).
 -/
 
 open NormedSpace Set
@@ -937,5 +940,57 @@ theorem exists_graph_lieb_robinson (R vR : ℕ) (b₀ : ℝ) :
     nlinarith
   simp only [one_mul] at hexp ⊢
   exact mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr hexp) (by positivity)
+
+/-- **Propagation with decay exponent one half.** Let the supports have graph diameter at most
+`R` and at most `R + 1` sites. For `A` supported on a finite set `S`, an on-site `B` at `y`, and
+`δ = min_{x ∈ S} d_G(x, y)` (with `min ∅ = ∞`),
+`‖[τ_t(A), B]‖ ≤ C₀ |S| ‖A‖ ‖B‖ e^{v|t|} e^{-δ/2}` with `e^{-∞/2} = 0`, where
+`C₀ = 2 + 4 |b₀| e^{2R}` and `v = 2 (R + 1) |b₀| e^{2R} + 1`. TNLean one-dimensional note,
+`part2a_mps_information.tex`, Lemma `lem:LR`, lines 260–273; at infinite distance the commutator
+vanishes by the closed-region argument of OpenAI, *A two-dimensional area law from a global
+spectral gap*, Lemma 4.1 (`03-quasilocal.tex`, lines 63 and 113–114).
+
+Moved from TNLean, `TNLean/MPS/AreaLaw/LiebRobinson.lean` at commit `414a18fb88`, with the
+interaction `Φ` in place of the family of terms `h` and their supports. -/
+theorem norm_heisenberg_commutator_le_graphDistance_inf
+    {κ : Type*} [Fintype κ] {T : κ → Finset V}
+    (G : SimpleGraph V) (Φ : Interaction X T)
+    (hHerm : ∀ k, (Φ.term k).IsHermitian)
+    (R : ℕ) (hDiam : ∀ k, ∀ x ∈ T k, ∀ z ∈ T k, G.edist x z ≤ R)
+    (hCard : ∀ k, (T k).card ≤ R + 1)
+    (b₀ : ℝ)
+    (hBudget : ∀ x, ∑ j ∈ Finset.univ.filter (fun j => x ∈ T j), ‖Φ.term j‖ ≤ b₀)
+    (S : Finset V) {A B : Matrix (Config X) (Config X) ℂ}
+    (hA : A ∈ supportedOperators X S) (y : V)
+    (hB : B ∈ supportedOperators X ({y} : Finset V)) (t : ℝ) :
+    let δ : ℕ∞ := S.inf (fun x ↦ G.edist x y)
+    ‖heisenbergEvolution Φ.hamiltonian t A * B -
+        B * heisenbergEvolution Φ.hamiltonian t A‖ ≤
+      (2 + 4 * |b₀| * Real.exp (2 * R)) * (S.card : ℝ) * ‖A‖ * ‖B‖ *
+        Real.exp ((2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1) * |t|) *
+        (if δ = ⊤ then 0 else Real.exp (-((δ.toNat : ℝ) / 2))) := by
+  classical
+  dsimp only
+  set δ := S.inf (fun x ↦ G.edist x y)
+  by_cases hδ : δ = ⊤
+  · have hComm := heisenberg_commutator_eq_zero_of_forall_edist_eq_top
+      G Φ R hDiam S hA y hB
+      (fun x hx ↦ top_unique (hδ ▸ (Finset.inf_le hx : δ ≤ G.edist x y))) t
+    simp only [hComm, norm_zero, ite_eq_left hδ, mul_zero, le_refl]
+  have hGraph := norm_heisenberg_commutator_le_graphDistance_finset
+    G Φ hHerm R hDiam (R + 1) hCard
+    b₀ hBudget S hA y hB 1 (by norm_num) δ.toNat
+    (fun x hx ↦ (ENat.natCast_toNat_le_self δ).trans (Finset.inf_le hx)) t
+  simp only [mul_one, one_mul, Nat.cast_add, Nat.cast_one, ite_eq_right hδ] at hGraph ⊢
+  have hDecay :
+      Real.exp ((2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1) * |t| - (δ.toNat : ℝ)) ≤
+        Real.exp ((2 * (R + 1) * |b₀| * Real.exp (2 * R) + 1) * |t|) *
+          Real.exp (-((δ.toNat : ℝ) / 2)) := by
+    rw [← Real.exp_add]
+    exact Real.exp_le_exp.mpr (by linarith [Nat.cast_nonneg (α := ℝ) δ.toNat])
+  exact hGraph.trans (by
+    simpa only [mul_assoc] using mul_le_mul_of_nonneg_left hDecay
+      (show 0 ≤ (2 + 4 * |b₀| * Real.exp (2 * R)) * (S.card : ℝ) * ‖A‖ * ‖B‖ by
+        positivity))
 
 end ManyBody

@@ -11,3 +11,4 @@ Authors: QICLean contributors
 import QICLean.Topology.BrouwerProduct
 import QICLean.Topology.CompactConvexFixedPoint
 import QICLean.Topology.CompactRetractFixedPoint
+import QICLean.Topology.CompactUniformBounds

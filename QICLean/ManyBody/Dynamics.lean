@@ -18,6 +18,7 @@ import QICLean.ManyBody.Dynamics.GraphLocalization
 import QICLean.ManyBody.Dynamics.GraphPropagation
 import QICLean.ManyBody.Dynamics.HeisenbergEvolution
 import QICLean.ManyBody.Dynamics.Interaction
+import QICLean.ManyBody.Dynamics.InteractionOperations
 import QICLean.ManyBody.Dynamics.InteractionSum
 import QICLean.ManyBody.Dynamics.MetricGraph
 import QICLean.ManyBody.Dynamics.ProductFormula

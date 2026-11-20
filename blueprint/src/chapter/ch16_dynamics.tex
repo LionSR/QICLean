@@ -74,6 +74,174 @@ or the local dimensions.
     \]
 \end{proof}
 
+\begin{definition}[Partial Hamiltonians]
+    \label{def:dynamics_partial_hamiltonian}
+    \lean{ManyBody.Interaction.partialHamiltonian}
+    \leanok
+    \uses{def:dynamics_interaction}
+    For an interaction $\Phi=(h_i)_{i\in I}$ and a finite set $s\subseteq I$ of indices,
+    the partial Hamiltonian of $s$ is $H_s=\sum_{i\in s}h_i$~\cite{Hastings2007AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Partial Hamiltonians]
+    \label{lem:dynamics_partial_hamiltonian}
+    \lean{ManyBody.Interaction.partialHamiltonian_empty,
+        ManyBody.Interaction.partialHamiltonian_univ,
+        ManyBody.Interaction.partialHamiltonian_filter_add_filter_not,
+        ManyBody.Interaction.partialHamiltonian_mem_supportedOperators,
+        ManyBody.Interaction.isHermitian_partialHamiltonian,
+        ManyBody.Interaction.norm_partialHamiltonian_le}
+    \leanok
+    \uses{def:dynamics_partial_hamiltonian, def:sites_supported}
+    $H_\varnothing=0$, $H_I=H_\Phi$ for finite $I$, and $H_\Phi$ is the sum of the
+    partial Hamiltonians of the indices with a given property and of those without it.
+    If $T_i\subseteq D$ for every $i\in s$, then $H_s\in\mathcal A_D$. If the terms
+    with index in $s$ are Hermitian, so is $H_s$, and if they have norm at most $J$,
+    then $\lVert H_s\rVert\le\lvert s\rvert J$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    These are properties of finite sums: $\mathcal A_D$ is closed under sums and grows
+    with $D$, and the triangle inequality bounds the norm.
+\end{proof}
+
+\begin{definition}[Real multiples of an interaction]
+    \label{def:dynamics_interaction_smul}
+    \lean{ManyBody.Interaction.smul_term}
+    \leanok
+    \uses{def:dynamics_interaction}
+    For a real number $c$, the interaction $c\Phi=(ch_i)_{i\in I}$ has the supports of
+    $\Phi$.
+\end{definition}
+
+\begin{lemma}[Real multiples of an interaction]
+    \label{lem:dynamics_interaction_smul}
+    \lean{ManyBody.Interaction.hamiltonian_smul, ManyBody.Interaction.isHermitian_smul_term,
+        ManyBody.Interaction.norm_smul_term}
+    \leanok
+    \uses{def:dynamics_interaction_smul}
+    $H_{c\Phi}=cH_\Phi$; the term $ch_i$ is Hermitian when $h_i$ is, and
+    $\lVert ch_i\rVert=\lvert c\rvert\,\lVert h_i\rVert$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Multiplication by a real number is linear and commutes with the adjoint.
+\end{proof}
+
+\begin{definition}[Relabelling an interaction]
+    \label{def:dynamics_interaction_relabel}
+    \lean{ManyBody.Interaction.relabel, ManyBody.Interaction.relabel_term}
+    \leanok
+    \uses{def:dynamics_interaction, lem:sites-regional-relabel}
+    Let $e\colon V\to V'$ be a bijection of sites, with bijections $X_v\to X'_{e(v)}$
+    of the basis sets, and let $P$ be the induced bijection of configurations. If the
+    regions $T'_i$ of $V'$ satisfy $v\in T_i\iff e(v)\in T'_i$, the relabelled
+    interaction has the terms $Ph_iP^{-1}$, supported on $T'_i$.
+\end{definition}
+
+\begin{lemma}[Relabelling an interaction]
+    \label{lem:dynamics_interaction_relabel}
+    \lean{ManyBody.Interaction.hamiltonian_relabel, ManyBody.Interaction.norm_relabel_term,
+        ManyBody.Interaction.isHermitian_relabel_term}
+    \leanok
+    \uses{def:dynamics_interaction_relabel}
+    The relabelled interaction has the Hamiltonian $PH_\Phi P^{-1}$; its terms have
+    the norms of the terms of $\Phi$, and are Hermitian when those are.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Conjugation by a permutation of the basis is linear, commutes with the adjoint and
+    preserves the operator norm.
+\end{proof}
+
+\begin{definition}[Extension along an injection of indices]
+    \label{def:dynamics_interaction_extend}
+    \lean{ManyBody.Interaction.extend, ManyBody.Interaction.extend_term_apply,
+        ManyBody.Interaction.extend_term_eq_zero}
+    \leanok
+    \uses{def:dynamics_interaction}
+    Let $f\colon I\to K$ be injective and let $(U_k)_{k\in K}$ be regions with
+    $T_i\subseteq U_{f(i)}$. The extension of $\Phi$ along $f$ is the interaction with
+    supports $U$ whose term with index $f(i)$ is $h_i$ and whose terms with indices
+    outside the image of $f$ vanish.
+\end{definition}
+
+\begin{lemma}[Extension along an injection of indices]
+    \label{lem:dynamics_interaction_extend}
+    \lean{ManyBody.Interaction.forall_extend_term, ManyBody.Interaction.hamiltonian_extend,
+        ManyBody.Interaction.isHermitian_extend_term,
+        ManyBody.Interaction.norm_extend_term_le, ManyBody.Interaction.extend_term_nonneg,
+        ManyBody.Interaction.extend_term_le_one}
+    \leanok
+    \uses{def:dynamics_interaction_extend}
+    For finite $I$ and $K$ the extension has the Hamiltonian $H_\Phi$. A property of
+    operators that holds for $0$ and for every $h_i$ holds for every term of the
+    extension; in particular the extension of Hermitian terms, of positive terms, of
+    terms below the identity, or of terms of norm at most $J\ge0$ has terms of the same
+    kind.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Every term of the extension is some $h_i$ or $0$, and the nonzero terms are the
+    $h_i$, each once, since $f$ is injective.
+\end{proof}
+
+\begin{definition}[The doubled interaction]
+    \label{def:dynamics_interaction_doubled}
+    \lean{ManyBody.Interaction.doubled, ManyBody.Interaction.doubled_term}
+    \leanok
+    \uses{def:dynamics_interaction, def:doubled_system, lem:sites_paired_product_support}
+    The doubled interaction of $\Phi$ lives on the system with basis $X_v\times X_v$ at
+    the site $v$, whose configurations are pairs of configurations of $X$. Its term
+    with index $i$ is $h_i\otimes1+1\otimes h_i$, supported on $T_i$ by
+    Lemma~\ref{lem:sites_paired_product_support}.
+\end{definition}
+
+\begin{lemma}[The doubled interaction]
+    \label{lem:dynamics_interaction_doubled}
+    \lean{ManyBody.Interaction.hamiltonian_doubled, ManyBody.Interaction.norm_doubled_term_le,
+        ManyBody.Interaction.isHermitian_doubled_term}
+    \leanok
+    \uses{def:dynamics_interaction_doubled}
+    For finite $I$ the doubled interaction has the doubled Hamiltonian
+    $H_\Phi\otimes1+1\otimes H_\Phi$. Its terms have norm at most $2\lVert h_i\rVert$,
+    and are Hermitian when the $h_i$ are.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The map $h\mapsto h\otimes1+1\otimes h$ is linear and commutes with the adjoint, and
+    $\lVert h\otimes1\rVert$ and $\lVert1\otimes h\rVert$ are at most $\lVert h\rVert$.
+\end{proof}
+
+\begin{definition}[Translates of one operator]
+    \label{def:dynamics_interaction_translates}
+    \lean{ManyBody.windowEquiv, ManyBody.coe_windowEquiv, ManyBody.Interaction.translates,
+        ManyBody.Interaction.translates_term}
+    \leanok
+    \uses{def:dynamics_interaction, def:sites_place}
+    Let every site carry the same basis set $\alpha$, let $h$ be an operator on the
+    configurations $\alpha^W$ of a finite set $W$, and let $w_i\colon W\to V$ be
+    injective for every $i\in I$. The translates of $h$ form the interaction whose term
+    with index $i$ is $h$ placed on $w_i(W)$, the site $u$ of $W$ carried to
+    $w_i(u)$~\cite{Schuch2011Phases}.
+\end{definition}
+
+\begin{lemma}[Translates of one operator]
+    \label{lem:dynamics_interaction_translates}
+    \lean{ManyBody.Interaction.norm_translates_term_le,
+        ManyBody.Interaction.isHermitian_translates_term,
+        ManyBody.Interaction.translates_term_nonneg}
+    \leanok
+    \uses{def:dynamics_interaction_translates, lem:sites_place_norm_order}
+    Each translate has norm at most $\lVert h\rVert$, and is Hermitian, or positive, when
+    $h$ is.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Relabelling the sites of $W$ and placing the result are unital $*$-homomorphisms
+    that do not increase the norm and preserve positivity.
+\end{proof}
+
 \begin{definition}[Heisenberg picture]
     \label{def:dynamics_heisenberg}
     \lean{ManyBody.heisenbergEvolution, ManyBody.heisenbergEvolution_def}
@@ -439,6 +607,60 @@ $\sum_{k:\,x\in T_k}\lVert h_k\rVert\leq b_0$ for every site $x$.
     $2e^R\lVert A\rVert e^{v|t|-d_G(a_i,y)}$. Grouping the sites by their
     distance and using the growth bound,
     $\sum_{d>l}(d+1)^ke^{-d}\leq C_ke^{-l/2}$.
+\end{proof}
+
+\begin{lemma}[Lieb--Robinson estimates on a one-dimensional graph]
+    \label{thm:dynamics_lieb_robinson_two_spheres}
+    \lean{ManyBody.norm_heisenberg_commutator_le_graphDistance_inf,
+        ManyBody.norm_heisenberg_sub_regionExpectation_graphNeighborhood_le_of_sphere_le_two}
+    \leanok
+    \uses{def:dynamics_interaction, def:dynamics_heisenberg, def:dynamics_graph_ball,
+        def:sites_region_expectation}
+    Let $R\in\mathbb N$, and assume, in addition to the hypotheses of
+    Section~\ref{sec:dynamics_graph}, that every support $T_k$ has at most
+    $R+1$ sites. Put
+    \begin{align}
+        C_0 & =2+4|b_0|e^{2R},\notag           \\
+        v   & =2(R+1)|b_0|e^{2R}+1,\notag      \\
+        C'  & =\frac{2C_0e}{1-e^{-1/2}}.\notag
+    \end{align}
+    For a region $S$ and a site $y$ let $\delta=\inf_{x\in S}d_G(x,y)$, with
+    $\inf\varnothing=\infty$ and $e^{-\infty/2}=0$. For every operator $A$
+    supported on $S$, every $B$ supported on $\{y\}$, and every real $t$,
+    \begin{align}
+        \|[\tau_t(A),B]\|
+        \le C_0|S|\|A\|\|B\|e^{v|t|}e^{-\delta/2}.\notag
+    \end{align}
+    If moreover every distance sphere of $G$ has at most two sites, then for
+    every real $\ell$, with $N_\ell(S)$ the union of the graph balls of radius
+    $\lfloor\ell\rfloor$ about the sites of $S$,
+    \begin{align}
+        \|\tau_t(A)-E_{N_\ell(S)}(\tau_t(A))\|
+        \le C'|S|^2\|A\|e^{v|t|-\ell/2}.\notag
+    \end{align}
+    This is the lemma ``Lieb--Robinson bound on a chain'' in Part~II
+    of~\cite{TNLean2026OneDimensional}, on a general finite graph.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:dynamics_lieb_robinson, thm:dynamics_infinite_distance,
+        thm:dynamics_localization}
+    For finite $\delta$, the arbitrary-support commutator estimate of
+    Theorem~\ref{thm:dynamics_lieb_robinson} with $\mu=1$, $v_R=R+1$ and
+    $n=\delta$ gives the stronger decay $e^{-\delta}\le e^{-\delta/2}$. For
+    infinite $\delta$, every $x\in S$ has $d_G(x,y)=\infty$, so
+    $[\tau_t(A),B]=0$ by Theorem~\ref{thm:dynamics_infinite_distance}.
+
+    For localization put $m=\lfloor\ell\rfloor$. Theorem~\ref{thm:dynamics_localization}
+    applies with sphere coefficient $K_g=2$ and growth exponent $k=0$. The tail
+    constant and the rounding bound are
+    \begin{align}
+        C_0'     & =\frac{e^{1/2}}{1-e^{-1/2}},\notag \\
+        e^{-m/2} & \le e^{1/2}e^{-\ell/2}.\notag
+    \end{align}
+    Thus the graph coefficient $2C_0C_0'$, multiplied by the rounding factor
+    $e^{1/2}$, is $C'$. Empty unions and the zero factor $|S|^2$ cover
+    $S=\varnothing$.
 \end{proof}
 
 \section{Relative evolutions localized on regions}
