@@ -35,7 +35,8 @@ Usage:
     python3 scripts/migrate_region_vocabulary.py DIR --part M    # once
     python3 scripts/migrate_region_vocabulary.py DIR [--check] [--report FILE]
 
-`--check` changes nothing and reports the remaining old names (exit status 1 if any).
+`--check` changes nothing and reports the remaining old names and the `open` lines of a
+dissolved namespace (exit status 1 if any).
 """
 
 from __future__ import annotations
@@ -63,8 +64,10 @@ class Rule:
     `ops` entries: ("drop", i) removes positional argument i; ("swap", i, j) exchanges
     positional arguments i and j; ("nfam", i) replaces the dimension function in positional
     argument i by the family `fun v ↦ Fin (n v)`; ("named", i, name) turns positional argument i
-    into the named argument `(name := ...)`. `need` is the number of positional arguments the
-    operations require. `nfam_named` rewrites `(n := e)` to `(X := fun v ↦ Fin (e v))`.
+    into the named argument `(name := ...)`; ("ins", i, t) inserts the positional argument `t`
+    before positional argument i. `need` is the number of positional arguments the
+    operations require. `nfam_named` rewrites `(n := e)` to `(X := fun v ↦ Fin (e v))`, with
+    `fam` in place of `X` when the survivor names its family otherwise.
     `trivial` marks a bridge lemma that becomes `rfl`: it is reported, not rewritten.
     `addx` supplies `(X := fun v ↦ Fin (n v))` outside comments: the survivor cannot infer the
     family from region matrices `(v : D) → Fin (n v)` alone, which the old abbreviation fixed.
@@ -78,6 +81,7 @@ class Rule:
     trivial: bool = False
     addx: bool = False
     rename_unapplied: bool = False
+    fam: str = "X"
 
 
 def nfam(arg: str) -> str:
@@ -125,6 +129,10 @@ def nfam_body(arg: str) -> str:
 
 ENTROPY_RENAMES = {
     # abbreviation -> survivor; positional operations
+    # duplicates of the `FiniteProduct` complement lemmas: the survivor takes the family first
+    # (`_`, inferred from the vector), and `regionEntropy_compl` took the region first
+    "regionEntropy_compl": ("ManyBody.regionEntropy_compl", [("swap", 0, 1), ("ins", 0, "_")], 2),
+    "rank_regionState_compl": ("ManyBody.rank_regionState_compl", [("ins", 0, "_")], 2),
     "SiteConfig": ("@inline_site", [], 1),
     "RegionConfig": ("@inline_region", [], 2),
     "IsSupportedOn": ("ManyBody.IsSupportedOn", [], 0),
@@ -199,7 +207,7 @@ KEEP_N = {
 # `Entropy.IsSupportedOn.foo` lemmas move to `ManyBody.IsSupportedOn.foo` (dot notation).
 # `Entropy` names whose survivor is introduced with the dissolution of `FiniteProduct`
 PART_B_ENTROPY = {"trace_regionState_eq_one", "regionEntropy_eq_entropy",
-                  "regionState_eq_reducedPure"}
+                  "regionState_eq_reducedPure", "regionEntropy_compl", "rank_regionState_compl"}
 
 # `ManyBody` declarations removed as duplicates -> survivor (relative to `ManyBody`)
 MANYBODY_RENAMES = {
@@ -305,7 +313,8 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
         if (part == "B") != (short in PART_B_ENTROPY) and part != "all":
             continue
         r = Rule("Entropy." + short, new or "", ops, need, nfam_named=short not in KEEP_N,
-                 trivial=new is None, addx=short in ADDX)
+                 trivial=new is None, addx=short in ADDX,
+                 fam="β" if any(op[0] == "ins" for op in ops) else "X")
         qualified[r.old] = r
         bare["Entropy"][short] = r
     for short in fp_names:
@@ -425,6 +434,8 @@ def apply_ops(rule: Rule, args):
         return None
     vals = [list(a) for a in args]
     work = [vals[i] for i in pos]
+    named_n = rule.nfam_named and any(
+        a[2] == "named" and re.fullmatch(r"\(\s*n\s*:=\s*(.+)\)", a[1], re.S) for a in args)
     dropped = []
     for op in rule.ops:
         if op[0] == "drop":
@@ -436,13 +447,16 @@ def apply_ops(rule: Rule, args):
             work[op[1]][1] = nfam(work[op[1]][1])
         elif op[0] == "named":
             work[op[1]][1] = f"({op[2]} := {work[op[1]][1]})"
+        elif op[0] == "ins" and not named_n:
+            # a family given by name `(n := e)` becomes `(fam := ...)`, so nothing is inserted
+            work[op[1]][1] = op[2] + " " + work[op[1]][1]
     out = []
     for a in vals:
         if a[2] == "named":
             if rule.nfam_named:
                 m = re.fullmatch(r"\(\s*n\s*:=\s*(.+)\)", a[1], re.S)
                 if m:
-                    a = [a[0], f"(X := {nfam_body(m.group(1).strip())})", "named"]
+                    a = [a[0], f"({rule.fam} := {nfam_body(m.group(1).strip())})", "named"]
             out.append(a)
         elif any(a is d for d in dropped):
             continue
@@ -559,20 +573,22 @@ def symm_of(arg: str) -> str:
 
 def drop_open(text: str):
     """Remove the namespaces in `OPEN_DROP` from the `open` lines, with the numbers of the lines
-    deleted outright (a line that keeps another namespace is edited in place). It runs once a
+    deleted outright (a line that keeps another namespace is edited in place) and of all the
+    lines changed. It runs once a
     file's rewriting passes are done: the passes need the `open` line to recognize the bare
     names."""
-    kept, removed = [], []
+    kept, removed, touched = [], [], []
     for i, ln in enumerate(text.split("\n")):
         mm = re.match(r"(open (?:scoped )?)(.*)$", ln)
-        if mm:
+        if mm and any(w in OPEN_DROP for w in mm.group(2).split()):
+            touched.append(i + 1)
             ws = [w for w in mm.group(2).split() if w not in OPEN_DROP]
             if not ws:
                 removed.append(i + 1)
                 continue
             ln = mm.group(1) + " ".join(ws)
         kept.append(ln)
-    return "\n".join(kept), removed
+    return "\n".join(kept), removed, touched
 
 
 def with_family(rule: Rule, text: str, start: int, span) -> str:
@@ -709,6 +725,10 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             continue
         new_args = apply_ops(rule, args) if (rule.ops or rule.nfam_named) else None
         npos = sum(1 for a in args if a[2] == "pos")
+        if rule.rename_unapplied and npos == 0 and any(a[2] == "named" for a in args):
+            # a named family `(β := e)` has no counterpart under the survivor's binder name
+            rep.unhandled.append(f"{path}:{line}: `{name}` with a named argument: {snippet}")
+            continue
         if rule.ops and new_args is None and npos == 0 and (rule.rename_unapplied or
                 not any(op[0] in ("drop", "named") for op in rule.ops)):
             # An unapplied name (in `rw [...]`, `simp [...]`, a docstring): rename it only.
@@ -974,6 +994,8 @@ def main() -> int:
                 t = h.read()
             if a.check:
                 rewrite_text(t, p, qualified, bare, dot, False, rep, True)
+                rep.remaining += [f"{p}:{n}: open line of a dissolved namespace"
+                                  for n in drop_open(t)[2]]
                 continue
             frep = Report()
             nt = rewrite_text(t, p, qualified, bare, dot, False, frep, False)
@@ -995,9 +1017,9 @@ def main() -> int:
             # passes could not rewrite
             final = Report()
             rewrite_text(nt, p, qualified, bare, dot, False, final, True)
-            if nt != t and OPEN_DROP:
+            if OPEN_DROP and drop_open(nt)[2]:
                 # the `open` lines go last; a remaining site moves up by the lines removed above it
-                dropped, removed = drop_open(nt)
+                dropped, removed, _ = drop_open(nt)
                 def shift(entry):
                     mm = re.match(r"(.*?):(\d+):(.*)", entry, re.S)
                     if not mm:
@@ -1006,6 +1028,7 @@ def main() -> int:
                     return f"{mm.group(1)}:{n0 - sum(1 for r in removed if r < n0)}:{mm.group(3)}"
                 final.remaining = [shift(e) for e in final.remaining]
                 nt = dropped
+                rep.files.add(p)
             if nt != t:
                 with open(p, "w", encoding="utf8") as h:
                     h.write(nt)
