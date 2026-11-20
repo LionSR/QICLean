@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.KrausFamilyProd
+import QICLean.Circuit.Core.Dimension
 import QICLean.Circuit.Core.Map
 
 /-!
@@ -32,6 +33,8 @@ that of the circuit tensored with the identity on the environments, and its map 
 * `QuantumCircuit.Circuit.forall_isTP_tensorRight`,
   `QuantumCircuit.Circuit.forall_isUnitary_tensorRight` — trace preservation and unitarity of the
   gates and onsite families.
+* `QuantumCircuit.Circuit.IsDimBounded.tensorRight` — the local bases stay bounded on the sites
+  where the environment has one element.
 * `QuantumCircuit.Circuit.depth_tensorRight`, `QuantumCircuit.Circuit.gateCount_tensorRight` —
   the depth and the gate count do not change.
 -/
@@ -222,6 +225,17 @@ theorem forall_isUnitary_tensorRight {c : Circuit Γ KrausGate X Z}
     (c.tensorRight W).Forall KrausGate.ev KrausFamily.IsUnitary :=
   forall_mapLayers _ (fun _ _ _ _ _ _ _ hL ↦ Layer.forall_tensorRight W
     (fun _ hK ↦ hK.tensorRight _) (fun _ e f hK ↦ hK.reindex e f) hL) hc
+
+omit [Fintype S] in
+/-- The tensored circuit is bounded by `B` on `A` when the circuit is and the environment has one
+element at every site of `A`. -/
+theorem IsDimBounded.tensorRight {A : Finset S} {B : ℕ} (hW : ∀ s ∈ A, Nat.card (W s) = 1) :
+    {X Z : S → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
+      {c : Circuit Γ KrausGate X Z} → c.IsDimBounded A B → (c.tensorRight W).IsDimBounded A B
+  | _, _, _, _, done _, h => fun s hs ↦ by rw [Nat.card_prod, hW s hs, mul_one]; exact h s hs
+  | _, _, _, _, step _ next, h =>
+    ⟨fun s hs ↦ by rw [Nat.card_prod, hW s hs, mul_one]; exact h.1 s hs,
+      fun _ ↦ IsDimBounded.tensorRight hW (c := next _) (h.2 _)⟩
 
 theorem depth_tensorRight (c : Circuit Γ KrausGate X Z) : (c.tensorRight W).depth = c.depth :=
   total_mapLayers _ _ _ (fun _ _ _ _ _ _ _ ↦ rfl) c

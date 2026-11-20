@@ -25,6 +25,8 @@ bound: trace preservation keeps the bases nonempty.
 
 * `QuantumCircuit.Circuit.IsDimBounded.mono`, `QuantumCircuit.Circuit.IsDimBounded.comp`.
 * `QuantumCircuit.Circuit.IsDimBounded.input`, `QuantumCircuit.Circuit.IsDimBounded.output`.
+* `QuantumCircuit.Circuit.isDimBounded_ofLayer`, `QuantumCircuit.Circuit.isDimBounded_seq` — one
+  layer, and a sequence of layers on one system.
 * `QuantumCircuit.Circuit.exists_isDimBounded` — a trace-preserving circuit has a bound.
 -/
 
@@ -78,6 +80,23 @@ theorem IsDimBounded.comp {A : Finset S} {B : ℕ} {Z : S → Type} : {X Y : S �
       (c.comp c').IsDimBounded A B
   | _, _, done _, _, _, h' => h'
   | _, _, step _ next, _, h, h' => ⟨h.1, fun i ↦ IsDimBounded.comp (c := next i) (h.2 i) h'⟩
+
+omit [Fintype S] in
+/-- The circuit of one layer is bounded when its input and its output are. -/
+theorem isDimBounded_ofLayer {A : Finset S} {B : ℕ} {X Y : S → Type} [∀ s, Fintype (Y s)]
+    [∀ s, DecidableEq (Y s)] (L : Layer Γ G X Y)
+    (hX : ∀ s ∈ A, 0 < Nat.card (X s) ∧ Nat.card (X s) ≤ B)
+    (hY : ∀ s ∈ A, 0 < Nat.card (Y s) ∧ Nat.card (Y s) ≤ B) :
+    (ofLayer L).IsDimBounded A B :=
+  ⟨hX, fun _ ↦ hY⟩
+
+omit [Fintype S] in
+/-- A sequence of layers on one system is bounded when the system is. -/
+theorem isDimBounded_seq {A : Finset S} {B : ℕ} {X : S → Type} [∀ s, Fintype (X s)]
+    [∀ s, DecidableEq (X s)] (hX : ∀ s ∈ A, 0 < Nat.card (X s) ∧ Nat.card (X s) ≤ B) :
+    (Ls : List (Layer Γ G X X)) → (seq Ls).IsDimBounded A B
+  | [] => hX
+  | _ :: Ls => ⟨hX, fun _ ↦ isDimBounded_seq hX Ls⟩
 
 /-- A circuit with trace-preserving local families on nonempty finite bases is bounded by the
 largest basis along it.

@@ -482,12 +482,15 @@ and each Kraus operator is a product of local entries over the blocks.
     \label{lem:circuits_dim_bounded}
     \lean{QuantumCircuit.Circuit.IsDimBounded.mono, QuantumCircuit.Circuit.IsDimBounded.comp,
         QuantumCircuit.Circuit.IsDimBounded.input, QuantumCircuit.Circuit.IsDimBounded.output,
-        QuantumCircuit.Circuit.exists_isDimBounded, QuantumCircuit.Circuit.isDimBounded_empty}
+        QuantumCircuit.Circuit.exists_isDimBounded, QuantumCircuit.Circuit.isDimBounded_empty,
+        QuantumCircuit.Circuit.isDimBounded_ofLayer, QuantumCircuit.Circuit.isDimBounded_seq}
     \leanok
     \uses{def:circuits_dim_bounded, lem:circuits_tp_nonempty}
     A bound on a set of sites passes to every larger bound on every smaller set, and to
     compositions; every circuit is bounded on the empty set. The bases of the input are
-    bounded, and so are those of the output along any branch. A circuit whose gates and
+    bounded, and so are those of the output along any branch. A circuit of one layer is bounded
+    when its input and output bases are, and a sequence of layers from a system to itself is
+    bounded when the bases of that system are. A circuit whose gates and
     onsite families are trace-preserving, on nonempty finite bases, has a bound.
 \end{lemma}
 \begin{proof}\leanok
@@ -1044,10 +1047,11 @@ are embedded.
         QuantumCircuit.Circuit.forall_isTP_tensorRight,
         QuantumCircuit.Circuit.forall_isUnitary_tensorRight,
         QuantumCircuit.Circuit.depth_tensorRight,
-        QuantumCircuit.Circuit.gateCount_tensorRight}
+        QuantumCircuit.Circuit.gateCount_tensorRight,
+        QuantumCircuit.Circuit.IsDimBounded.tensorRight}
     \leanok
     \uses{def:circuits_layer_map, def:kraus_family_prod, def:circuits_costs,
-        def:circuits_local}
+        def:circuits_local, def:circuits_dim_bounded}
     Let $W_s$ be a finite basis at every site $s$. Every circuit of plain gates from
     $X$ to $Z$ has an image from the system $s\mapsto X_s\times W_s$ to the system
     $s\mapsto Z_s\times W_s$ on the same cells: every gate $g$ on a cell $D$ becomes
@@ -1055,7 +1059,9 @@ are embedded.
     $K\otimes1$. Along corresponding branches $K'_p=K_p\otimes1_W$ in the
     identification of the configurations of the enlarged system with pairs, so the map of the image sends $\rho\otimes\omega$ to $\Phi(\rho)\otimes\omega$. The
     image is locally trace-preserving, or locally unitary, when the circuit is, and its
-    depth and gate count are those of the circuit.
+    depth and gate count are those of the circuit. If the circuit is bounded by $B$ on a set
+    $A$ of sites and $W_s$ has one element at every $s\in A$, the image is bounded by $B$
+    on $A$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:circuits_layer_map, lem:kraus_family_prod}
@@ -1068,7 +1074,8 @@ are embedded.
     Theorem~\ref{thm:circuits_layer_map} applies. Tensor products and relabellings of
     trace-preserving or unitary families are trace-preserving or unitary, by
     Lemma~\ref{lem:kraus_family_prod}, and the cells, hence the costs, of every layer
-    are unchanged.
+    are unchanged. Every basis of the image at a site $s$ is $Y_s\times W_s$ for a basis $Y_s$
+    of the circuit at $s$, and at $s\in A$ it has $\lvert Y_s\rvert$ elements.
 \end{proof}
 
 \begin{theorem}[Substituting circuits for layers]

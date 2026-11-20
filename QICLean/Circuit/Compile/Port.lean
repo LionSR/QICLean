@@ -539,10 +539,17 @@ private def forwardCircuit (C : Finset (Fin N))
       (Qudits (Fin N × Fin (2 * k + 1)) d) :=
   Circuit.seq ((routeIndex (List.finRange k)).map (routeLayer d C hring hC))
 
+/-- Every wire holds a qudit of dimension `d`. -/
+private theorem card_qudits [NeZero d] (s : Fin N × Fin (2 * k + 1)) :
+    0 < Nat.card (Qudits (Fin N × Fin (2 * k + 1)) d s) ∧
+      Nat.card (Qudits (Fin N × Fin (2 * k + 1)) d s) ≤ d := by
+  simp only [Qudits, Nat.card_eq_fintype_card, Fintype.card_fin, le_rfl, and_true]
+  exact NeZero.pos d
+
 private theorem isUnitaryDilation_forwardCircuit [NeZero d] (C : Finset (Fin N))
     (hring : (C : Set (Fin N)).PairwiseDisjoint (Geometry.ring N).cell)
     (hC : ∀ j ∈ C, finRotate N j ∉ C) (D : Finset (Fin N × Fin (2 * k + 1))) :
-    IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (k * if C.Nonempty then 1 else 0)
+    IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D d (k * if C.Nonempty then 1 else 0)
       ((forwardCircuit (k := k) d C hring hC).map KrausGate.ev) ∧
     ∀ ρ, (forwardCircuit (k := k) d C hring hC).map KrausGate.ev ρ =
       sitePermOp (routeTotal C hC (List.finRange k)) * ρ *
@@ -556,7 +563,9 @@ private theorem isUnitaryDilation_forwardCircuit [NeZero d] (C : Finset (Fin N))
     obtain ⟨a, -, rfl⟩ := List.mem_map.mp hL
     exact nonempty_index_of_forall_isUnitary (forall_isUnitary_routeLayer d C hring hC a)
   refine ⟨(Circuit.isUnitaryDilation D _ (hU.mono fun _ h ↦ h.isTP) (Circuit.isUnbranched_seq _)
-    (Circuit.isUnitaryOff_of_forall_isUnitary D hU)).mono ?_, map_eq_of_kraus hU fun p ↦ ?_⟩
+    (Circuit.isUnitaryOff_of_forall_isUnitary D hU)
+    (Circuit.isDimBounded_seq (fun s _ ↦ card_qudits d s) _)).mono le_rfl ?_,
+    map_eq_of_kraus hU fun p ↦ ?_⟩
   · unfold forwardCircuit
     rw [Circuit.depth, Circuit.total_seq _ _ hne, depth_routeLayer,
       List.length_finRange]
@@ -581,7 +590,7 @@ private def backwardCircuit (C : Finset (Fin N))
 private theorem isUnitaryDilation_backwardCircuit [NeZero d] (C : Finset (Fin N))
     (hring : (C : Set (Fin N)).PairwiseDisjoint (Geometry.ring N).cell)
     (hC : ∀ j ∈ C, finRotate N j ∉ C) (D : Finset (Fin N × Fin (2 * k + 1))) :
-    IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (k * if C.Nonempty then 1 else 0)
+    IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D d (k * if C.Nonempty then 1 else 0)
       ((backwardCircuit (k := k) d C hring hC).map KrausGate.ev) ∧
     ∀ ρ, (backwardCircuit (k := k) d C hring hC).map KrausGate.ev ρ =
       (sitePermOp (routeTotal C hC (List.finRange k)))ᴴ * ρ *
@@ -599,8 +608,8 @@ private theorem isUnitaryDilation_backwardCircuit [NeZero d] (C : Finset (Fin N)
     exact nonempty_index_of_forall_isUnitary
       (forall_isUnitary_adjoint (forall_isUnitary_routeLayer d C hring hC a))
   refine ⟨(Circuit.isUnitaryDilation D _ (hU.mono fun _ h ↦ h.isTP)
-    (Circuit.isUnbranched_seq _) (Circuit.isUnitaryOff_of_forall_isUnitary D hU)).mono ?_,
-    fun ρ ↦ ?_⟩
+    (Circuit.isUnbranched_seq _) (Circuit.isUnitaryOff_of_forall_isUnitary D hU)
+    (Circuit.isDimBounded_seq (fun s _ ↦ card_qudits d s) _)).mono le_rfl ?_, fun ρ ↦ ?_⟩
   · unfold backwardCircuit Circuit.seqAdjoint
     rw [Circuit.depth, Circuit.total_seq _ _ hne, List.map_map, List.map_reverse,
       List.sum_reverse]
@@ -853,7 +862,8 @@ private theorem dataCode_apply
 the ring of `N ≥ 2` sites, each site holding a register of `k` digits. On the ring with ports and
 `2k + 1` wires per site, with the register of every site in its data wires, `L` is realised by a
 map with a unitary dilation of depth at most `2k` times the depth of `L` whose environments lie
-at the wires of a set `D` containing a wire of every site: for every cell `{j, j + 1}` of `L` the
+at the wires of a set `D` containing a wire of every site, every wire outside `D` having dimension
+at most `d` throughout the dilating circuit: for every cell `{j, j + 1}` of `L` the
 register of `j` is moved digit by digit through the two ports into the scratch wires of `j + 1`,
 the gate acts inside the site `j + 1`, and the register is moved back. The moves are unitary and
 the gates act on whole sites, which meet `D`. The two ports of a cell are distinct sites, which
@@ -865,7 +875,7 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
     (L : Layer (Geometry.ring N) KrausGate (fun _ ↦ Fin k → Fin d) (fun _ ↦ Fin k → Fin d))
     (hL : L.Forall KrausGate.ev KrausFamily.IsTP) (D : Finset (Fin N × Fin (2 * k + 1)))
     (hD : ∀ i, ∃ w, (i, w) ∈ D) :
-    ∃ Φ, IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (2 * k * L.depth) Φ ∧
+    ∃ Φ, IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D d (2 * k * L.depth) Φ ∧
       Φ ∘ₗ (reindexAlgEquiv ℂ ℂ
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))).toLinearMap ∘ₗ
           (encodeCircuit (Geometry.ring N) (portDataEmbedding N k d)).map KrausGate.ev =
@@ -891,10 +901,11 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
   have hm₃ := map_refine L₂
   obtain ⟨hF, hFm⟩ := isUnitaryDilation_forwardCircuit (k := k) d L.cells L.pairwiseDisjoint hC D
   obtain ⟨hB, hBm⟩ := isUnitaryDilation_backwardCircuit (k := k) d L.cells L.pairwiseDisjoint hC D
-  have hM : IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D 0
+  have hM : IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D d 0
       ((Circuit.ofLayer (refine L₂)).map KrausGate.ev) :=
     (Layer.isUnitaryDilation (refine L₂) D (forall_isTP_refine L₂ hL₂)
-      (isUnitaryOff_refine L₂ hD)).mono (depth_refine L₂).le
+      (isUnitaryOff_refine L₂ hD) (Circuit.isDimBounded_ofLayer _ (fun s _ ↦ card_qudits d s)
+        fun s _ ↦ card_qudits d s)).mono le_rfl (depth_refine L₂).le
   set P := sitePermOp (α := Fin d) (routeTotal L.cells hC (List.finRange k))
   set J := initializedBasisMatrix ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
     (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding)
@@ -920,7 +931,7 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
   have hPP : Pᴴ * P = 1 := by
     rw [← Matrix.star_eq_conjTranspose]
     exact Unitary.star_mul_self_of_mem (sitePermOp_mem_unitary _)
-  refine ⟨_, ((hF.comp hM).comp hB).mono (le_of_eq ?_), LinearMap.ext fun ρ ↦ ?_⟩
+  refine ⟨_, ((hF.comp hM).comp hB).mono le_rfl (le_of_eq ?_), LinearMap.ext fun ρ ↦ ?_⟩
   · rw [depth_ring L]
     ring
   · simp only [LinearMap.comp_apply, AlgEquiv.toLinearMap_apply]

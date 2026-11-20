@@ -626,12 +626,14 @@ its costs do not change.
         QuantumCircuit.forall_isUnitary_relabelCircuit,
         QuantumCircuit.isUnbranched_relabelCircuit, QuantumCircuit.depth_relabelCircuit,
         QuantumCircuit.map_traceCircuit_kronecker,
-        QuantumCircuit.map_traceCircuit_map_tensorRight}
+        QuantumCircuit.map_traceCircuit_map_tensorRight,
+        QuantumCircuit.isDimBounded_relabelCircuit}
     \leanok
-    \uses{def:protocols_dilation_circuits, thm:circuits_tensor_right}
+    \uses{def:protocols_dilation_circuits, thm:circuits_tensor_right, def:circuits_dim_bounded}
     The preparation acts as $\rho\mapsto\rho\otimes\ketbra ee$ and the partial trace as
     $M\mapsto\tr_F M$; the relabelling acts by relabelling the entries, and it is an
-    unbranched unitary circuit of depth $0$. The partial trace over $\C^F$ of
+    unbranched unitary circuit of depth $0$, bounded by $B$ on a set of sites when its input
+    bases are. The partial trace over $\C^F$ of
     $A\otimes\omega$ is $(\tr\omega)A$, and it commutes with a circuit tensored with the
     identity on $\C^F$:
     \begin{align}
@@ -641,7 +643,8 @@ its costs do not change.
     for every matrix $N$.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{lem:protocols_encoding, lem:kraus_family_prod, thm:circuits_tensor_right}
+    \uses{lem:protocols_encoding, lem:kraus_family_prod, thm:circuits_tensor_right,
+        lem:circuits_dim_bounded}
     The three circuits are single layers with no cells, so their maps are tensor products of
     the local maps: the encodings along $a\mapsto(a,e_s)$ and along bijections
     (Lemma~\ref{lem:protocols_encoding}), and the partial traces over $\C^{F_s}$
@@ -650,19 +653,23 @@ its costs do not change.
     computed entrywise. Both sides of~(\ref{eq:protocols_trace_tensor_right}) are linear in
     $N$, so it suffices to take $N=A\otimes\omega$; then the left side is
     $\tr_F(\Phi(A)\otimes\omega)=(\tr\omega)\Phi(A)=\Phi(\tr_F(A\otimes\omega))$ by
-    Theorem~\ref{thm:circuits_tensor_right}.
+    Theorem~\ref{thm:circuits_tensor_right}. A relabelling is a bijection at every site, so its
+    output bases have as many elements as its input bases, and a circuit of one layer is bounded
+    when its input and output bases are (Lemma~\ref{lem:circuits_dim_bounded}).
 \end{proof}
 
 \begin{definition}[Unitary dilation]
     \label{def:protocols_unitary_dilation}
     \lean{QuantumCircuit.IsUnitaryDilation}
     \leanok
-    \uses{def:protocols_dilation_circuits, def:circuits_local, def:circuits_costs}
-    Let $D$ be a set of sites. A map $\Phi$ has a unitary dilation of depth $T$ with
-    environments in $D$ when there are bases $E_s$ and $F_s$, with at most one element at every
-    site $s\notin D$, basis vectors $e_s\in E_s$ and an unbranched circuit $c$ of unitary gates
-    and onsite families of depth at most $T$ from $s\mapsto X_s\times E_s$ to
-    $s\mapsto Z_s\times F_s$ with $\Phi(\rho)=\tr_F\bigl(\Phi_c(\rho\otimes\ketbra ee)\bigr)$.
+    \uses{def:protocols_dilation_circuits, def:circuits_local, def:circuits_costs,
+        def:circuits_dim_bounded}
+    Let $D$ be a set of sites and $B$ a natural number. A map $\Phi$ has a unitary dilation of
+    depth $T$ with environments in $D$ and bound $B$ when there are bases $E_s$ and $F_s$, with at
+    most one element at every site $s\notin D$, basis vectors $e_s\in E_s$ and an unbranched
+    circuit $c$ of unitary gates and onsite families of depth at most $T$ from
+    $s\mapsto X_s\times E_s$ to $s\mapsto Z_s\times F_s$, bounded by $B$ on the sites outside
+    $D$, with $\Phi(\rho)=\tr_F\bigl(\Phi_c(\rho\otimes\ketbra ee)\bigr)$.
 \end{definition}
 
 \begin{definition}[Unitary off a set of sites]
@@ -693,16 +700,19 @@ its costs do not change.
     \label{lem:protocols_dilation_id}
     \lean{QuantumCircuit.isUnitaryDilation_id, QuantumCircuit.IsUnitaryDilation.mono}
     \leanok
-    \uses{def:protocols_unitary_dilation}
-    For every set $D$ of sites, the identity has a unitary dilation of depth $0$ with
-    environments in $D$. A unitary dilation of depth $T$ with environments in $D$ is one of
-    every larger depth.
+    \uses{def:protocols_unitary_dilation, lem:circuits_dim_bounded}
+    Let $D$ be a set of sites, and let every basis $X_s$ with $s\notin D$ have between $1$ and
+    $B$ elements. Then the identity has a unitary dilation of depth $0$ with environments in $D$
+    and bound $B$. A unitary dilation of depth $T$ with environments in $D$ and bound $B$ is one
+    of every larger depth and every larger bound.
 \end{lemma}
 \begin{proof}\leanok
     \uses{lem:protocols_dilation_circuits}
     With one-element bases $E_s=F_s=\{*\}$, the empty circuit is the identity, and
     $\tr_F(\rho\otimes\ketbra ee)=\rho$ because the sum over the configurations of $F$ has
-    one term. A circuit of depth at most $T$ has depth at most every $T'\geq T$.
+    one term; its only basis at $s$ is $X_s\times\{*\}$, with $\lvert X_s\rvert$ elements. A
+    circuit of depth at most $T$ has depth at most every $T'\geq T$, and a bound passes to every
+    larger bound (Lemma~\ref{lem:circuits_dim_bounded}).
 \end{proof}
 
 \begin{theorem}[Unitary dilations compose]
@@ -711,11 +721,12 @@ its costs do not change.
     \leanok
     \uses{def:protocols_unitary_dilation}
     If $\Phi_1$ and $\Phi_2$ have unitary dilations of depths $T_1$ and $T_2$ with environments
-    in a set $D$ of sites, then $\Phi_2\circ\Phi_1$ has one of depth $T_1+T_2$ with environments
-    in $D$.
+    in a set $D$ of sites and bound $B$, then $\Phi_2\circ\Phi_1$ has one of depth $T_1+T_2$
+    with environments in $D$ and bound $B$.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:protocols_dilation_circuits, thm:circuits_tensor_right, thm:circuits_composition}
+    \uses{lem:protocols_dilation_circuits, thm:circuits_tensor_right, thm:circuits_composition,
+        lem:circuits_dim_bounded, lem:circuits_unique_branch}
     Let the dilations have environments $E_1,F_1$ and $E_2,F_2$; the composite has the
     environments $E_1\times E_2$ and $F_2\times F_1$, which have at most one element outside $D$.
     Prepare both environments, regroup, apply $c_1\otimes1_{E_2}$, regroup, apply
@@ -726,7 +737,13 @@ its costs do not change.
     partial trace over $F_2$ after the one over $F_1$, which commutes with
     $c_2\otimes1_{F_1}$; and the partial trace over $F_1$ of the regrouped
     $M\otimes\ketbra{e_2}{e_2}$ is $\tr_{F_1}M\otimes\ketbra{e_2}{e_2}$, where
-    $\tr_{F_1}M=\Phi_1(\rho)$.
+    $\tr_{F_1}M=\Phi_1(\rho)$. For the bound, a unitary circuit has a branch
+    (Lemma~\ref{lem:circuits_unique_branch}), so the output bases of $c_1$ and $c_2$ at a site
+    $s\notin D$ are bounded (Lemma~\ref{lem:circuits_dim_bounded}); in particular $F_1$ is
+    nonempty there, and $E_2$ contains $e_2$, so both have exactly one element at $s$. Tensoring
+    with them keeps the bound (Theorem~\ref{thm:circuits_tensor_right}), each regrouping has
+    input bases with as many elements as an input or output basis of $c_1$ or $c_2$, and bounds
+    pass to compositions.
 \end{proof}
 
 \begin{theorem}[Unitary dilation of a layer]
@@ -739,14 +756,15 @@ its costs do not change.
         QuantumCircuit.Layer.distributeCellEquiv, QuantumCircuit.Layer.distributeFreeEquiv,
         QuantumCircuit.Layer.isUnitaryDilation}
     \leanok
-    \uses{def:protocols_unitary_dilation, def:protocols_unitary_off}
+    \uses{def:protocols_unitary_dilation, def:protocols_unitary_off, def:circuits_dim_bounded}
     Let $D$ be a set of sites. A layer of trace-preserving gates and onsite families on
-    nonempty input bases that is unitary off $D$ has a unitary dilation of its own depth with
-    environments in $D$.
+    nonempty input bases that is unitary off $D$, whose circuit is bounded by $B$ on the sites
+    outside $D$, has a unitary dilation of its own depth with environments in $D$ and bound $B$.
 \end{theorem}
 \begin{proof}\leanok
     \uses{thm:kraus_family_unitary_dilation, lem:circuits_layer_entry, lem:kraus_family_channel,
-        lem:circuits_layer_factorization, lem:kraus_family_prod}
+        lem:circuits_layer_factorization, lem:kraus_family_prod, lem:circuits_dim_bounded,
+        lem:circuits_tp_nonempty}
     The dilating circuit is one layer of unitary gates on the same cells. Keep every unitary
     gate and onsite family, with a one-element environment (relabelled along
     $a\mapsto(a,*)$ it stays unitary, Lemma~\ref{lem:kraus_family_prod}), and replace every other one by its
@@ -755,7 +773,10 @@ its costs do not change.
     $D$ if the cell meets $D$, and give the other sites of the cell a one-element basis, so that
     the configurations of the environment on the cell are the environment of the gate. A site
     $s\notin D$ then carries one-element bases only: a cell whose environment is placed at $s$
-    is disjoint from $D$, so its gate is unitary, and an onsite family at $s$ is unitary. A gate on an empty cell acts on a one-element basis, so
+    is disjoint from $D$, so its gate is unitary, and an onsite family at $s$ is unitary. The
+    dilated bases at such a site have as many elements as $X_s$ and $Y_s$, which the layer has
+    a Kraus index to bound (Lemma~\ref{lem:circuits_tp_nonempty}), so the dilating layer is
+    bounded by $B$ outside $D$ (Lemma~\ref{lem:circuits_dim_bounded}). A gate on an empty cell acts on a one-element basis, so
     by trace preservation its map is the identity (Lemma~\ref{lem:kraus_family_channel});
     replace it by the identity. Write
     $U_b$ and $V_s$ for the dilations of the gate $g_b$ and of the onsite family $k_s$, with
@@ -786,20 +807,22 @@ its costs do not change.
     \leanok
     \uses{def:circuits_local, def:protocols_unitary_dilation, def:protocols_unitary_off}
     Let $D$ be a set of sites, and let $c$ be an unbranched circuit of trace-preserving gates
-    and onsite families on nonempty input bases that is unitary off $D$. Then the map of $c$
-    has a unitary dilation of the depth of $c$ with environments in $D$. In particular the
+    and onsite families on nonempty input bases that is unitary off $D$ and bounded by $B$ on
+    the sites outside $D$. Then the map of $c$ has a unitary dilation of the depth of $c$ with
+    environments in $D$ and bound $B$. In particular the
     gates of the dilating circuit on the cells disjoint from $D$ act on the system alone.
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:circuits_tp_nonempty, lem:protocols_dilation_id, thm:protocols_dilation_layer,
-        thm:protocols_dilation_comp}
+        thm:protocols_dilation_comp, lem:circuits_dim_bounded}
     By induction on the circuit. The empty circuit is the identity, which has a dilation of
     depth $0$ (Lemma~\ref{lem:protocols_dilation_id}). A layer of a trace-preserving circuit on
     nonempty bases has a Kraus index and nonempty output bases (Lemma~\ref{lem:circuits_tp_nonempty}), so an
     unbranched circuit is its first layer followed by one continuation. Compose the dilation of
     the layer (Theorem~\ref{thm:protocols_dilation_layer}) with that of the continuation
     (Theorem~\ref{thm:protocols_dilation_comp}); the first layer and the continuation are
-    unitary off $D$, and the depth of the circuit is that of the layer plus that of the
+    unitary off $D$, the circuit of the first layer is bounded by the input bounds of the
+    circuit and of the continuation (Lemma~\ref{lem:circuits_dim_bounded}), and the depth of the circuit is that of the layer plus that of the
     continuation.
 \end{proof}
 
@@ -814,10 +837,13 @@ its costs do not change.
     onsite families of depth at most $T$ on the same geometry.
 \end{theorem}
 \begin{proof}\leanok
-    \uses{lem:protocols_unitary_off, thm:protocols_local_dilation}
+    \uses{lem:protocols_unitary_off, thm:protocols_local_dilation, lem:circuits_dim_bounded,
+        lem:protocols_dilation_id}
     The circuit of the protocol is unitary off the set of all sites
-    (Lemma~\ref{lem:protocols_unitary_off}); apply
-    Theorem~\ref{thm:protocols_local_dilation} with $D$ the set of all sites.
+    (Lemma~\ref{lem:protocols_unitary_off}) and bounded by $0$ on the empty set
+    (Lemma~\ref{lem:circuits_dim_bounded}); apply
+    Theorem~\ref{thm:protocols_local_dilation} with $D$ the set of all sites, and pass to the
+    depth $T$ (Lemma~\ref{lem:protocols_dilation_id}).
 \end{proof}
 
 \begin{theorem}[Pure outputs of a unitary dilation]
@@ -905,15 +931,16 @@ holding a local memory of qudits.
     $\iota$ be the encoding of the registers in the wires of the ring with ports and $2k+1$
     wires per site along the data embedding, and let $D$ be a set of wires containing a wire of
     every site. Then some map $\Phi$ on the ring with ports with a unitary dilation of depth at
-    most $2k$ times the depth of $L$ with environments in $D$ satisfies
-    $\Phi\circ\iota=\iota\circ\Phi_L$.
+    most $2k$ times the depth of $L$ with environments in $D$ and bound $d$ satisfies
+    $\Phi\circ\iota=\iota\circ\Phi_L$: throughout the dilating circuit every wire outside $D$
+    has dimension at most $d$.
 \end{lemma}
 \begin{proof}\leanok
     \uses{lem:protocols_perm_layer, lem:circuits_seq, lem:circuits_layer_entry,
         def:circuits_adjoint, lem:circuits_unique_branch, thm:circuits_coarsen,
         thm:protocols_encoded_layer, lem:protocols_encoding, lem:protocols_unitary_off,
         thm:protocols_local_dilation, thm:protocols_dilation_layer, lem:protocols_dilation_id,
-        thm:protocols_dilation_comp}
+        thm:protocols_dilation_comp, lem:circuits_dim_bounded}
     Let $C$ be the set of the left ends $j$ of the cells $\{j,j+1\}$ of $L$. Since $N\ge2$ the
     sites $j$ and $j+1$ are distinct, so the disjointness of the cells gives $j+1\notin C$ for
     $j\in C$. For each $t<k$ run three layers of exchanges of wires: the port with the wire
@@ -950,8 +977,10 @@ holding a local memory of qudits.
     $D$ (Theorem~\ref{thm:protocols_local_dilation}). The layer $M$ has no free site, and each
     of its gates acts on all the wires of a site, a cell meeting $D$; so $M$ is unitary off $D$
     and has a unitary dilation of depth $0$ with environments in $D$
-    (Theorem~\ref{thm:protocols_dilation_layer}, Lemma~\ref{lem:protocols_dilation_id}). The
-    three dilations compose (Theorem~\ref{thm:protocols_dilation_comp}).
+    (Theorem~\ref{thm:protocols_dilation_layer}, Lemma~\ref{lem:protocols_dilation_id}). Every
+    basis of $F$, $F^\dagger$ and $M$ at a wire is $\{0,\dots,d-1\}$, so these circuits are
+    bounded by $d$ (Lemma~\ref{lem:circuits_dim_bounded}) and all three dilations have bound
+    $d$. They compose (Theorem~\ref{thm:protocols_dilation_comp}).
 \end{proof}
 
 \begin{theorem}[Bounded protocols as unitary circuits with physical ports]
@@ -966,15 +995,16 @@ holding a local memory of qudits.
     encoding of the registers in the ring with ports and $2k+1$ wires per site along the data
     embedding, and let $D$ be a set of wires containing a wire of every site. Then some map
     $\Phi'$ on the ring with ports with a unitary dilation of depth at most $2kT$ with
-    environments in $D$ satisfies
+    environments in $D$ and bound $d$ satisfies
     \begin{equation}
         \Phi'\circ\iota\circ\mathcal E_e=\iota\circ\mathcal E_f\circ\Phi,
         \notag
     \end{equation}
     where $\mathcal E_e$ and $\mathcal E_f$ are the encodings along $e$ and $f$. One may take
-    $k=\lceil\log_dB\rceil$. For $k\ge1$ take $D$ the wires other than the ports: the gates of
-    the dilating circuit on the cells of the ports then are unitaries of the two port qudits
-    alone, and the environments stay local, as in the source
+    $k=\lceil\log_dB\rceil$. Throughout the dilating circuit every wire outside $D$ has
+    dimension at most $d$. For $k\ge1$ and $D$ the wires other than the ports, each gate on a
+    cell of two ports is therefore a unitary on the two $d$-dimensional port wires, and the
+    environments stay local, as in the source
     (arXiv:2103.13367, Supplement, proof of Proposition~2, p.~8); for $k=0$ every local space
     of the protocol is one-dimensional. Composed with
     Theorem~\ref{thm:protocols_dilation_output}, this gives the pure and the approximately pure

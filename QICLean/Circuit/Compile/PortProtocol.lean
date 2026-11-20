@@ -23,7 +23,8 @@ are gates on whole sites, and the dilations compose (`IsUnitaryDilation.comp`).
 
 * `QuantumCircuit.IsBoundedProtocol.exists_portRing` — a bounded protocol on the ring is the
   partial trace of a unitary circuit on the ring with physical ports, with environments at the
-  wires of `D`, acting on the encoded registers.
+  wires of `D` and every other wire of dimension at most `d` throughout, acting on the encoded
+  registers.
 -/
 
 open Matrix ManyBody
@@ -40,7 +41,7 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
     (c : Circuit (Geometry.ring N) KrausGate X Z) →
     c.Forall KrausGate.ev KrausFamily.IsTP → c.IsDimBounded Finset.univ B → c.IsUnbranched →
     (e : ∀ s, X s ↪ Fin k → Fin d) → (f : ∀ s, Z s ↪ Fin k → Fin d) →
-    ∃ Φ, IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (2 * k * c.depth) Φ ∧
+    ∃ Φ, IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D d (2 * k * c.depth) Φ ∧
       Φ ∘ₗ (reindexAlgEquiv ℂ ℂ
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))).toLinearMap ∘ₗ
           (encodeCircuit (Geometry.ring N) (portDataEmbedding N k d)).map KrausGate.ev ∘ₗ
@@ -58,7 +59,7 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
       ⟨fun b ↦ absurd b.2 (Finset.notMem_empty _),
         fun _ ↦ (KrausFamily.isUnitary_single (one_mem _)).isTP⟩ e f
     obtain ⟨Φ, hΦ, hΦm⟩ := Layer.exists_portRing hN L' hL' D hD
-    refine ⟨Φ, hΦ.mono (le_of_eq ?_), LinearMap.ext fun ρ ↦ ?_⟩
+    refine ⟨Φ, hΦ.mono le_rfl (le_of_eq ?_), LinearMap.ext fun ρ ↦ ?_⟩
     · rw [show L'.depth = 0 by simp [Layer.depth, hc', L₀, Layer.ofOnsite]]
       rfl
     · have h₁ := LinearMap.congr_fun hΦm ((encodeCircuit (Geometry.ring N) e).map KrausGate.ev ρ)
@@ -78,7 +79,7 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
     obtain ⟨Φ₁, hΦ₁, hΦ₁m⟩ := Layer.exists_portRing hN L' hL' D hD
     obtain ⟨Φ₂, hΦ₂, hΦ₂m⟩ :=
       exists_portRing_of_isDimBounded hN hB D hD (next i₀) (hc.2 i₀) (hdim.2 i₀) (hu.2 i₀) g f
-    refine ⟨Φ₂ ∘ₗ Φ₁, (hΦ₁.comp hΦ₂).mono (le_of_eq ?_), LinearMap.ext fun ρ ↦ ?_⟩
+    refine ⟨Φ₂ ∘ₗ Φ₁, (hΦ₁.comp hΦ₂).mono le_rfl (le_of_eq ?_), LinearMap.ext fun ρ ↦ ?_⟩
     · have hsup : (Finset.univ.sup fun i ↦ (next i).depth) = (next i₀).depth := by
         simp only [hu.1 _ i₀]
         exact Finset.sup_const ⟨i₀, Finset.mem_univ _⟩ _
@@ -100,8 +101,9 @@ registers of `k` digits of dimension `d`. Let `D` be a set of wires containing a
 site. On the ring with ports and `2k + 1` qudits of dimension `d` per site, with each register
 in the data wires of its site, some map with a unitary dilation of depth at most `2kT` whose
 environments lie at the wires of `D` acts on the encoded inputs as `Φ` followed by the encoding
-of the outputs. For `k ≥ 1` the non-port wires form such a `D`: the environments then lie off
-the ports, so the gates on the port-pair cells are unitaries of the two port qudits alone.
+of the outputs; throughout the dilating circuit every wire outside `D` has dimension at most `d`.
+For `k ≥ 1` and `D` the non-port wires, each gate on a port-pair cell is therefore a unitary on
+the two `d`-dimensional port wires.
 
 The source compiles a protocol with gates on pairs of neighbouring sites into a unitary circuit
 whose intersite gates act on the physical qudits only, the ancillas staying local
@@ -114,7 +116,7 @@ theorem IsBoundedProtocol.exists_portRing {X Z : Fin N → Type} [∀ s, Fintype
     (h : IsBoundedProtocol (Geometry.ring N) B T Φ) (e : ∀ s, X s ↪ Fin k → Fin d)
     (f : ∀ s, Z s ↪ Fin k → Fin d) (D : Finset (Fin N × Fin (2 * k + 1)))
     (hD : ∀ i, ∃ w, (i, w) ∈ D) :
-    ∃ Φ', IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (2 * k * T) Φ' ∧
+    ∃ Φ', IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D d (2 * k * T) Φ' ∧
       Φ' ∘ₗ (reindexAlgEquiv ℂ ℂ
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))).toLinearMap ∘ₗ
           (encodeCircuit (Geometry.ring N) (portDataEmbedding N k d)).map KrausGate.ev ∘ₗ
@@ -125,6 +127,6 @@ theorem IsBoundedProtocol.exists_portRing {X Z : Fin N → Type} [∀ s, Fintype
             (encodeCircuit (Geometry.ring N) f).map KrausGate.ev ∘ₗ Φ := by
   obtain ⟨c, hc, hT, rfl, hu, hdim⟩ := h
   obtain ⟨Φ', hΦ', hm⟩ := exists_portRing_of_isDimBounded hN hB D hD c hc hdim hu e f
-  exact ⟨Φ', hΦ'.mono (Nat.mul_le_mul_left _ hT), hm⟩
+  exact ⟨Φ', hΦ'.mono le_rfl (Nat.mul_le_mul_left _ hT), hm⟩
 
 end QuantumCircuit
