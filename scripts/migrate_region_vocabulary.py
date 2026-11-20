@@ -66,8 +66,6 @@ class Rule:
     into the named argument `(name := ...)`. `need` is the number of positional arguments the
     operations require. `nfam_named` rewrites `(n := e)` to `(X := fun v ↦ Fin (e v))`.
     `trivial` marks a bridge lemma that becomes `rfl`: it is reported, not rewritten.
-    `unapplied` is the name written for the old name standing alone in a rewrite list (a
-    definition unfolded by `rw [reducedPure]` becomes its characterizing equation).
     `addx` supplies `(X := fun v ↦ Fin (n v))` outside comments: the survivor cannot infer the
     family from region matrices `(v : D) → Fin (n v)` alone, which the old abbreviation fixed.
     """
@@ -79,7 +77,6 @@ class Rule:
     nfam_named: bool = False
     trivial: bool = False
     addx: bool = False
-    unapplied: str = ""
     rename_unapplied: bool = False
 
 
@@ -233,9 +230,6 @@ FINITE_PRODUCT_DEFS = {
                           [("drop", 0), ("drop", 0), ("named", 1, "D")], 4),
 }
 
-# a definition unfolded in a rewrite list -> the theorem that characterizes its survivor
-FINITE_PRODUCT_UNAPPLIED: dict[str, str] = {}
-
 LATTICE = {
     # TNLean.Lattice (TNLean/Lattice/RegionalEntropy, RegionalEntropyBridge, EntropyDimension)
     "reducedState": ("ManyBody.regionState", [("drop", 0), ("drop", 0)], 4),
@@ -320,7 +314,6 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
         else:
             new, ops, need = finite_product_lemma_name(short), [], 0
         r = Rule("FiniteProduct." + short, new, ops, need,
-                 unapplied=FINITE_PRODUCT_UNAPPLIED.get(short, ""),
                  rename_unapplied=short in ("entropy", "mutualInformation", "reducedMatrix",
                                             "reducedPure"))
         qualified[r.old] = r
@@ -564,13 +557,22 @@ def symm_of(arg: str) -> str:
     return "(" + arg + ").symm"
 
 
-def drop_open(text: str) -> str:
-    """Remove the namespaces in `OPEN_DROP` from the `open` lines. It runs once a file's
-    rewriting passes are done: the passes need the `open` line to recognize the bare names."""
-    def one(mm):
-        ws = [w for w in mm.group(2).split() if w not in OPEN_DROP]
-        return mm.group(1) + " ".join(ws) + "\n" if ws else ""
-    return re.sub(r"^(open (?:scoped )?)([^\n]*)\n", one, text, flags=re.M)
+def drop_open(text: str):
+    """Remove the namespaces in `OPEN_DROP` from the `open` lines, with the numbers of the lines
+    deleted outright (a line that keeps another namespace is edited in place). It runs once a
+    file's rewriting passes are done: the passes need the `open` line to recognize the bare
+    names."""
+    kept, removed = [], []
+    for i, ln in enumerate(text.split("\n")):
+        mm = re.match(r"(open (?:scoped )?)(.*)$", ln)
+        if mm:
+            ws = [w for w in mm.group(2).split() if w not in OPEN_DROP]
+            if not ws:
+                removed.append(i + 1)
+                continue
+            ln = mm.group(1) + " ".join(ws)
+        kept.append(ln)
+    return "\n".join(kept), removed
 
 
 def with_family(rule: Rule, text: str, start: int, span) -> str:
@@ -707,14 +709,6 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             continue
         new_args = apply_ops(rule, args) if (rule.ops or rule.nfam_named) else None
         npos = sum(1 for a in args if a[2] == "pos")
-        if rule.unapplied and npos == 0 and span is None and \
-                re.search(r"(\[|,)\s*(←\s*)?$", text[:m.start()]):
-            out.append(text[pos:m.start()])
-            out.append(rule.unapplied)
-            pos = m.end()
-            rep.rewritten += 1
-            changed = True
-            continue
         if rule.ops and new_args is None and npos == 0 and (rule.rename_unapplied or
                 not any(op[0] in ("drop", "named") for op in rule.ops)):
             # An unapplied name (in `rw [...]`, `simp [...]`, a docstring): rename it only.
@@ -1003,14 +997,7 @@ def main() -> int:
             rewrite_text(nt, p, qualified, bare, dot, False, final, True)
             if nt != t and OPEN_DROP:
                 # the `open` lines go last; a remaining site moves up by the lines removed above it
-                dropped = drop_open(nt)
-                old_lines, new_lines = nt.split("\n"), dropped.split("\n")
-                removed, k = [], 0
-                for i, ln in enumerate(old_lines):
-                    if k < len(new_lines) and new_lines[k] == ln:
-                        k += 1
-                    else:
-                        removed.append(i + 1)
+                dropped, removed = drop_open(nt)
                 def shift(entry):
                     mm = re.match(r"(.*?):(\d+):(.*)", entry, re.S)
                     if not mm:
