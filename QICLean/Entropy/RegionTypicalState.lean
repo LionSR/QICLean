@@ -84,10 +84,10 @@ namespace ManyBody
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (ψ : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-variable (E : Finset (ManyBody.RegionConfig β X))
+variable (E : Finset (RegionConfig β X))
 
-local notation "φX" => LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) ψ
-local notation "hρX" => ManyBody.regionState_posSemidef X ψ
+local notation "φX" => LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) ψ
+local notation "hρX" => regionState_posSemidef X ψ
 local notation "zE" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian hρX) E
 
@@ -97,32 +97,32 @@ selected eigenvalue indices, not on any observed region.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240–247. -/
 noncomputable def typicalPureState : EuclideanSpace ℂ ((v : V) → β v) :=
-  (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X)).symm
+  (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X)).symm
     (Matrix.typicalPureState φX E)
 
 omit [∀ v, DecidableEq (β v)] in
 private theorem partialTraceRight_split_state :
-    Matrix.partialTraceRight (Matrix.vecMulVec φX (star φX)) = ManyBody.regionState ψ X := rfl
+    Matrix.partialTraceRight (Matrix.vecMulVec φX (star φX)) = regionState ψ X := rfl
 
 /-- In the canonical region/complement coordinates, the global selected vector
 is the spectral truncation of the original state on that region.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240–247. -/
 theorem split_typicalPureState :
-    LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X)
-        (ManyBody.typicalPureState β ψ X E) =
+    LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X)
+        (typicalPureState β ψ X E) =
       Matrix.typicalPureState φX E := by
-  simp only [ManyBody.typicalPureState, LinearIsometryEquiv.apply_symm_apply]
+  simp only [typicalPureState, LinearIsometryEquiv.apply_symm_apply]
 
 /-- A positive-mass typical truncation on a physical region is a unit global
 vector. No normalization of the original vector is needed for this identity.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240–247. -/
-theorem norm_typicalPureState (hz : 0 < zE) : ‖ManyBody.typicalPureState β ψ X E‖ = 1 := by
+theorem norm_typicalPureState (hz : 0 < zE) : ‖typicalPureState β ψ X E‖ = 1 := by
   have hmdata := Matrix.spectralData_eq_of_eq
     (Matrix.posSemidef_vecMulVec_self_star φX).partialTraceRight.isHermitian
     (hρX).isHermitian (partialTraceRight_split_state β ψ X) E
-  simpa only [ManyBody.typicalPureState, LinearIsometryEquiv.norm_map] using
+  simpa only [typicalPureState, LinearIsometryEquiv.norm_map] using
     Matrix.norm_typicalPureState φX E (by simpa only [hmdata.1] using hz)
 
 /-- The actual marginal on the projected physical region is the normalized
@@ -130,38 +130,38 @@ spectral restriction of its original reduced matrix.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 240–247. -/
 theorem regionState_typicalPureState (hz : 0 < zE) :
-    ManyBody.regionState (ManyBody.typicalPureState β ψ X E) X =
+    regionState (typicalPureState β ψ X E) X =
       (hρX).isHermitian.normalizedSpectralRestriction E := by
   have hmdata := Matrix.spectralData_eq_of_eq
     (Matrix.posSemidef_vecMulVec_self_star φX).partialTraceRight.isHermitian
     (hρX).isHermitian (partialTraceRight_split_state β ψ X) E
-  rw [← partialTraceRight_split_state β (ManyBody.typicalPureState β ψ X E) X,
-    ManyBody.split_typicalPureState]
+  rw [← partialTraceRight_split_state β (typicalPureState β ψ X E) X,
+    split_typicalPureState]
   exact (Matrix.partialTraceRight_typicalPureState φX E
     (by simpa only [hmdata.1] using hz)).trans hmdata.2.2
 
 variable (B : Finset V) (h : Disjoint X B)
 
 local notation "φABC" => LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
-  (Equiv.prodCongr (Equiv.refl (ManyBody.RegionConfig β X))
-      (ManyBody.complementUnionEquiv β X B h)) φX
+  (Equiv.prodCongr (Equiv.refl (RegionConfig β X))
+      (complementUnionEquiv β X B h)) φX
 
 omit [∀ v, DecidableEq (β v)] in
 private theorem reducedPure_eq_three_marginal :
     Matrix.partialTraceRight (Matrix.partialTraceLeft (Matrix.vecMulVec φABC (star φABC))) =
-      ManyBody.regionState ψ B := by
-  unfold ManyBody.regionState
-  rw [← ManyBody.partialTraceLeft_regionMatrix_union β (Matrix.vecMulVec ψ (star ψ)) X B h]
+      regionState ψ B := by
+  unfold regionState
+  rw [← partialTraceLeft_regionMatrix_union β (Matrix.vecMulVec ψ (star ψ)) X B h]
   ext b b'
   simp only [Matrix.partialTraceRight_apply, Matrix.partialTraceLeft_apply,
-    Matrix.submatrix_apply, ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply, Pi.star_apply]
+    Matrix.submatrix_apply, regionMatrix_apply, Matrix.vecMulVec_apply, Pi.star_apply]
   change (∑ c, ∑ a,
-    ψ ((ManyBody.cutEquiv β X).symm (a, (ManyBody.complementUnionEquiv β X B h).symm (b, c))) *
+    ψ ((cutEquiv β X).symm (a, (complementUnionEquiv β X B h).symm (b, c))) *
       star
           (ψ
-          ((ManyBody.cutEquiv β X).symm
-          (a, (ManyBody.complementUnionEquiv β X B h).symm (b', c))))) = _
-  simp_rw [ManyBody.split_union_symm]
+          ((cutEquiv β X).symm
+          (a, (complementUnionEquiv β X B h).symm (b', c))))) = _
+  simp_rw [split_union_symm]
   exact Finset.sum_comm
 
 private theorem selectedMass_three_marginal :
@@ -170,16 +170,16 @@ private theorem selectedMass_three_marginal :
   exact (Matrix.spectralData_eq_of_eq
     (Matrix.posSemidef_vecMulVec_self_star φABC).partialTraceRight.isHermitian
     (hρX).isHermitian
-    ((Matrix.partialTraceRight_reindex_right (ManyBody.complementUnionEquiv β X B h) φX).trans
+    ((Matrix.partialTraceRight_reindex_right (complementUnionEquiv β X B h) φX).trans
       (partialTraceRight_split_state β ψ X)) E).1
 
 private theorem selected_three_marginal :
     Matrix.partialTraceRight (Matrix.partialTraceLeft
       (Matrix.vecMulVec (Matrix.typicalPureState φABC E) (star (Matrix.typicalPureState φABC E)))) =
-      ManyBody.regionState (ManyBody.typicalPureState β ψ X E) B := by
+      regionState (typicalPureState β ψ X E) B := by
   rw [Matrix.typicalPureState_reindex_right,
-    ← ManyBody.split_typicalPureState β ψ X E]
-  exact reducedPure_eq_three_marginal β (ManyBody.typicalPureState β ψ X E) X B h
+    ← split_typicalPureState β ψ X E]
+  exact reducedPure_eq_three_marginal β (typicalPureState β ψ X E) X B h
 
 include h in
 /-- The actual selected marginal on every disjoint physical region is bounded
@@ -188,8 +188,8 @@ order. The selected global vector depends only on the projected region.
 
 Source: OpenAI area-law manuscript, `comparator:post-marginal`. -/
 theorem regionState_typicalPureState_le (hz : 0 < zE) :
-    (zE⁻¹ • ManyBody.regionState ψ B - ManyBody.regionState
-        (ManyBody.typicalPureState β ψ X E) B).PosSemidef := by
+    (zE⁻¹ • regionState ψ B - regionState
+        (typicalPureState β ψ X E) B).PosSemidef := by
   have hmass := selectedMass_three_marginal β ψ X E B h
   have hc := Matrix.partialTraceRight_partialTraceLeft_typicalPureState_le φABC E
     (by simpa only [hmass] using hz)
@@ -203,16 +203,16 @@ The selected global vector is fixed before the observed region is chosen.
 
 Source: OpenAI area-law manuscript, `comparator:post-marginal`. -/
 theorem regionEntropy_typicalPureState_le (hψ : ‖ψ‖ = 1) (hz : 0 < zE) :
-    ManyBody.regionEntropy (ManyBody.typicalPureState β ψ X E) B
-        ≤ ManyBody.regionEntropy ψ B / zE := by
+    regionEntropy (typicalPureState β ψ X E) B
+        ≤ regionEntropy ψ B / zE := by
   have hmass := selectedMass_three_marginal β ψ X E B h
   have hc := Matrix.entropy_partialTraceRight_partialTraceLeft_typicalPureState_le φABC E
     (by simpa only [LinearIsometryEquiv.norm_map] using hψ)
     (by simpa only [hmass] using hz)
   rw [vonNeumannEntropy_congr (selected_three_marginal β ψ X E B h) _
-      (ManyBody.regionState_posSemidef B _).isHermitian,
+      (regionState_posSemidef B _).isHermitian,
     vonNeumannEntropy_congr (reducedPure_eq_three_marginal β ψ X B h) _
-      (ManyBody.regionState_posSemidef B ψ).isHermitian, hmass] at hc
+      (regionState_posSemidef B ψ).isHermitian, hmass] at hc
   exact hc
 
 end ManyBody

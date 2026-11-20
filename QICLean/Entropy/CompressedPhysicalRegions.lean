@@ -53,27 +53,27 @@ it is disjoint from the selected region.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 56–67 and 332–343. -/
 theorem extractExteriorRegion_exteriorRegion (X B : Finset V) (hXB : Disjoint X B) :
-    ManyBody.extractExteriorRegion X (ManyBody.exteriorRegion X B) = B := by
+    extractExteriorRegion X (exteriorRegion X B) = B := by
   ext v
-  simp only [ManyBody.extractExteriorRegion, Finset.mem_biUnion]
+  simp only [extractExteriorRegion, Finset.mem_biUnion]
   constructor
   · rintro ⟨f, hf, hv⟩
     cases f with
     | none => simp at hv
     | some w =>
-      have hw : (w : V) ∈ B := by simpa [ManyBody.exteriorRegion] using hf
+      have hw : (w : V) ∈ B := by simpa [exteriorRegion] using hf
       have hvw : v = (w : V) := Finset.mem_singleton.mp hv
       exact hvw.symm ▸ hw
   · intro hv
     let w : {v // v ∉ X} := ⟨v, fun hx ↦ Finset.disjoint_left.mp hXB hx hv⟩
     refine ⟨some w, ?_, ?_⟩
-    · simpa [ManyBody.exteriorRegion, w] using hv
+    · simpa [exteriorRegion, w] using hv
     · exact Finset.mem_singleton_self v
 
 /-- Lifting physical regions to exterior sites preserves inclusion.
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 56–67 and 332–343. -/
-theorem monotone_exteriorRegion (X : Finset V) : Monotone (ManyBody.exteriorRegion X) := by
+theorem monotone_exteriorRegion (X : Finset V) : Monotone (exteriorRegion X) := by
   classical
   intro B C hBC
   apply Finset.monotone_filter_right
@@ -86,8 +86,8 @@ theorem monotone_exteriorRegion (X : Finset V) : Monotone (ManyBody.exteriorRegi
 
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 332–347. -/
 theorem exteriorRegion_disjoint_auxiliary (X B : Finset V) :
-    Disjoint (ManyBody.exteriorRegion X B) {none} := by
-  simp [ManyBody.exteriorRegion]
+    Disjoint (exteriorRegion X B) {none} := by
+  simp [exteriorRegion]
 
 /-- A nested list of original physical regions remains nested after lifting
 to the actual exterior site family.
@@ -95,11 +95,11 @@ to the actual exterior site family.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 56–67 and 332–343. -/
 theorem pairwise_exteriorRegion (X : Finset V) (regions : List (Finset V))
     (hnested : regions.Pairwise fun B C ↦ B ⊆ C ∨ C ⊆ B) :
-    (regions.map (ManyBody.exteriorRegion X)).Pairwise fun D F ↦ D ⊆ F ∨ F ⊆ D := by
+    (regions.map (exteriorRegion X)).Pairwise fun D F ↦ D ⊆ F ∨ F ⊆ D := by
   rw [List.pairwise_map]
   exact hnested.imp fun {B C} h ↦
-    h.imp (fun hBC ↦ ManyBody.monotone_exteriorRegion X hBC)
-      (fun hCB ↦ ManyBody.monotone_exteriorRegion X hCB)
+    h.imp (fun hBC ↦ monotone_exteriorRegion X hBC)
+      (fun hCB ↦ monotone_exteriorRegion X hCB)
 
 variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 
@@ -109,9 +109,9 @@ the selected spectral indices, and the extracted physical region.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 332–343. -/
 def compressedRegionalThreshold
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) (D : Finset (Option {v // v ∉ X})) : ℝ :=
-  (k : ℝ) * (ManyBody.regionEntropy Ω (ManyBody.extractExteriorRegion X D) /
-    (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1)
+    (E : Finset (RegionConfig β X)) (k : ℕ) (D : Finset (Option {v // v ∉ X})) : ℝ :=
+  (k : ℝ) * (regionEntropy Ω (extractExteriorRegion X D) /
+    (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1)
 
 /-- On an actual lifted physical region, the canonical threshold is the
 original regional entropy divided by the selected mass, plus one per copy.
@@ -120,11 +120,11 @@ The subsequent cutoff estimate uses this identity with positive selected mass.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 332–343. -/
 theorem compressedRegionalThreshold_exteriorRegion
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X B : Finset V)
-    (hXB : Disjoint X B) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ) :
-    ManyBody.compressedRegionalThreshold β Ω X E k (ManyBody.exteriorRegion X B) =
-      (k : ℝ) * (ManyBody.regionEntropy Ω B /
-        (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1) := by
-  simp only [ManyBody.compressedRegionalThreshold,
-      ManyBody.extractExteriorRegion_exteriorRegion X B hXB]
+    (hXB : Disjoint X B) (E : Finset (RegionConfig β X)) (k : ℕ) :
+    compressedRegionalThreshold β Ω X E k (exteriorRegion X B) =
+      (k : ℝ) * (regionEntropy Ω B /
+        (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1) := by
+  simp only [compressedRegionalThreshold,
+      extractExteriorRegion_exteriorRegion X B hXB]
 
 end ManyBody
