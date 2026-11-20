@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
+import QICLean.ManyBody.Hamiltonian.FrustrationFree
 import QICLean.ManyBody.Hamiltonian.GaussianFilter
 import QICLean.ManyBody.Hamiltonian.GaussianFilterLocality
 import QICLean.ManyBody.Hamiltonian.GaussianFilterMetric
