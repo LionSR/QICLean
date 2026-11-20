@@ -59,7 +59,7 @@ example {V : Type*} [Fintype V] [DecidableEq V]
       ManyBody.splitTwoRegionsState β ψ ∅ ∅ (by simp)) -
       Matrix.tensorPurification s s')‖ = 0 := by
     apply le_antisymm _ (norm_nonneg _)
-    simpa [FiniteProduct.mutualInformation, ManyBody.regionEntropy_empty β ψ hψ] using hnorm
+    simpa [ManyBody.regionMutualInformation, ManyBody.regionEntropy_empty β ψ hψ] using hnorm
   exact sub_eq_zero.mp ((WithLp.toLp_eq_zero 2).mp (norm_eq_zero.mp hz))
 
 end FiniteProductSplittingTest

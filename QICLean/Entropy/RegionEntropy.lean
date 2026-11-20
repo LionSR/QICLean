@@ -78,8 +78,7 @@ theorem regionState_compl_eq_partialTraceLeft
       (Matrix.vecMulVec (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x))
         (star (fun x ↦ ψ ((ManyBody.splitEquiv β R).symm x)))) := by
   ext a b
-  simp only
-      [ManyBody.regionState, ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply,
+  simp only [ManyBody.regionState, ManyBody.regionMatrix_apply, Matrix.vecMulVec_apply,
       Pi.star_apply,
     Matrix.partialTraceLeft_apply]
   simp_rw [ManyBody.split_compl_symm]

@@ -126,8 +126,8 @@ theorem regionEntropy_le_remainder_add_half_regionMutualInformation
     exact union_biUnion_le_sum (ManyBody.regionEntropy ψ)
         (ManyBody.regionEntropy_union_le β ψ hψ) D X s hDX hX
   have h := two_family_le_half_sum_defect (ManyBody.regionEntropy ψ) Aᶜ D X s Y t hx hy
-  simpa only
-      [ManyBody.regionEntropy_compl, ← ManyBody.regionMutualInformation_past_eq_defect] using h
+  simpa only [ManyBody.regionEntropy_compl,
+      ← ManyBody.regionMutualInformation_past_eq_defect] using h
 
 /-- OpenAI's area-law Lemma 11.1: the entropy of the region is bounded by the
 remainder entropy plus exactly half the sum of the two ordered families' errors.

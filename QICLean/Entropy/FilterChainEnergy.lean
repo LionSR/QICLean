@@ -198,8 +198,7 @@ theorem abs_re_inner_sub_conj_localLift_le_sharp {B S : Finset V}
   have hLinv : L⁻¹ = W * diagonal (fun i ↦ ((l i)⁻¹ : ℂ)) * Wᴴ := by
     rw [hL, inv_conj_diagonal hW fun i ↦ (hl i).ne']
   obtain ⟨M, c, d, hM, hdec, hcd⟩ := hX.hasProductDecomposition_inner (B := B) σ₀ hXn
-  rw
-      [← inner_cutOperator B X φ, ← inner_cutOperator B
+  rw [← inner_cutOperator B X φ, ← inner_cutOperator B
       (ManyBody.place B L * X * ManyBody.place B L⁻¹) φ,
     cutOperator_mul, cutOperator_mul, ManyBody.cutOperator_place, ManyBody.cutOperator_place, hLinv,
         hL]
@@ -282,8 +281,7 @@ theorem abs_re_inner_sub_conj_localLift_le_logarithmic {B S : Finset V}
   have hW' : W * Wᴴ = 1 := mul_eq_one_comm.mp hW
   have hLinv : L⁻¹ = W * diagonal (fun i ↦ ((l i)⁻¹ : ℂ)) * Wᴴ := by
     rw [hL, inv_conj_diagonal hW fun i ↦ (hl i).ne']
-  rw
-      [← inner_cutOperator B X φ, ← inner_cutOperator B
+  rw [← inner_cutOperator B X φ, ← inner_cutOperator B
       (ManyBody.place B L * X * ManyBody.place B L⁻¹) φ,
     cutOperator_mul, cutOperator_mul, ManyBody.cutOperator_place, ManyBody.cutOperator_place, hLinv,
         hL]

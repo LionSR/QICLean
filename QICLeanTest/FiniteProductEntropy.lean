@@ -119,7 +119,7 @@ example {V : Type*} [Fintype V] [DecidableEq V]
     (fun _ : ℤ ↦ ∅) {0} (fun _ : ℚ ↦ ∅) ∅
     (by simp) (by simp) (by simp) (by simp) (by simp) (by simp)
     (fun _ ↦ 0) (fun _ ↦ 0)
-    (by intro i hi; simp [FiniteProduct.mutualInformation,
+    (by intro i hi; simp [ManyBody.regionMutualInformation,
           ManyBody.regionEntropy_empty β ψ hψ, Entropy.OrderedSetFunction.past])
     (by simp)
   simpa only [Finset.sum_empty, Finset.sum_singleton, add_zero, mul_zero] using h
@@ -131,16 +131,16 @@ example {V : Type*} [Fintype V] [DecidableEq V]
   ⟨ManyBody.regionEntropy_empty β ψ hψ, ManyBody.regionEntropy_univ β ψ hψ⟩
 
 /--
-info: 'FiniteProduct.trace_reducedPure' depends on axioms:
+info: 'ManyBody.trace_regionState_eq_one' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms FiniteProduct.trace_reducedPure
+#print axioms ManyBody.trace_regionState_eq_one
 
 /--
-info: 'FiniteProduct.partialTraceRight_reducedMatrix_union' depends on axioms:
+info: 'ManyBody.partialTraceRight_regionMatrix_union' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -149,7 +149,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.partialTraceRight_regionMatrix_union
 
 /--
-info: 'FiniteProduct.partialTraceLeft_reducedMatrix_union' depends on axioms:
+info: 'ManyBody.partialTraceLeft_regionMatrix_union' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -176,7 +176,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms Entropy.pure_marginal_entropy_eq
 
 /--
-info: 'FiniteProduct.entropy_compl' depends on axioms:
+info: 'ManyBody.regionEntropy_compl' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -185,7 +185,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.regionEntropy_compl
 
 /--
-info: 'FiniteProduct.entropy_union_le' depends on axioms:
+info: 'ManyBody.regionEntropy_union_le' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -194,7 +194,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.regionEntropy_union_le
 
 /--
-info: 'FiniteProduct.mutualInformation_eq_matrix' depends on axioms:
+info: 'ManyBody.regionMutualInformation_eq_matrix' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -203,7 +203,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.regionMutualInformation_eq_matrix
 
 /--
-info: 'FiniteProduct.entropy_le_remainder_add_half_mutualInformation' depends on axioms:
+info: 'ManyBody.regionEntropy_le_remainder_add_half_regionMutualInformation' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -212,7 +212,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.regionEntropy_le_remainder_add_half_regionMutualInformation
 
 /--
-info: 'FiniteProduct.entropy_le_remainder_add_half_sum' depends on axioms:
+info: 'ManyBody.regionEntropy_le_remainder_add_half_sum' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -221,7 +221,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.regionEntropy_le_remainder_add_half_sum
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_eq_sub' depends on axioms:
+info: 'ManyBody.conditionalMutualInformation_eq_sub' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -230,7 +230,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.conditionalMutualInformation_eq_sub
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_le_mutualInformation_union' depends on axioms:
+info: 'ManyBody.conditionalMutualInformation_le_regionMutualInformation_union' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -239,7 +239,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.conditionalMutualInformation_le_regionMutualInformation_union
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_pure_duality' depends on axioms:
+info: 'ManyBody.conditionalMutualInformation_pure_duality' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -248,7 +248,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
 #print axioms ManyBody.conditionalMutualInformation_pure_duality
 
 /--
-info: 'FiniteProduct.sum_conditionalMutualInformation_past' depends on axioms:
+info: 'ManyBody.sum_conditionalMutualInformation_past' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]

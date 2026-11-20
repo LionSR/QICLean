@@ -101,7 +101,7 @@ example {V : Type*} [Fintype V] [DecidableEq V]
   simp [ManyBody.conditionalMutualInformation]
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_union_left'
+info: 'ManyBody.conditionalMutualInformation_union_left'
 depends on axioms: [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -111,7 +111,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
   ManyBody.conditionalMutualInformation_union_left
 
 /--
-info: 'FiniteProduct.mutualInformation_le_two_entropy'
+info: 'ManyBody.regionMutualInformation_le_two_regionEntropy'
 depends on axioms: [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -121,7 +121,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
   ManyBody.regionMutualInformation_le_two_regionEntropy
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_le_two_entropy'
+info: 'ManyBody.conditionalMutualInformation_le_two_regionEntropy'
 depends on axioms: [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -131,7 +131,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
   ManyBody.conditionalMutualInformation_le_two_regionEntropy
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_biUnion_le_sum'
+info: 'ManyBody.conditionalMutualInformation_biUnion_le_sum'
 depends on axioms: [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -141,7 +141,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
   ManyBody.conditionalMutualInformation_biUnion_le_sum
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_le_two_family_mutualInformation'
+info: 'ManyBody.conditionalMutualInformation_le_two_family_regionMutualInformation'
 depends on axioms: [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -151,7 +151,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
   ManyBody.conditionalMutualInformation_le_two_family_regionMutualInformation
 
 /--
-info: 'FiniteProduct.conditionalMutualInformation_le_two_family_sum'
+info: 'ManyBody.conditionalMutualInformation_le_two_family_sum'
 depends on axioms: [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
@@ -161,7 +161,7 @@ info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashC
   ManyBody.conditionalMutualInformation_le_two_family_sum
 
 /--
-info: 'FiniteProduct.target_union_complement_eq_exterior'
+info: 'ManyBody.target_union_complement_eq_exterior'
 depends on axioms: [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]

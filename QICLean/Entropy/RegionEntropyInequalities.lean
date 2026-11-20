@@ -54,12 +54,12 @@ theorem regionEntropy_le_union_add (hψ : ‖ψ‖ = 1) {R T : Finset V} (hRT : 
     have hv : v ∈ R → v ∉ T := fun hv ↦ Finset.disjoint_left.mp hRT hv
     simp only [Finset.mem_compl, Finset.mem_union, not_or]
     tauto
-  calc ManyBody.regionEntropy ψ R = ManyBody.regionEntropy ψ ((R ∪ T)ᶜ ∪ T) := by rw
-      [← ManyBody.regionEntropy_compl β ψ R, hRc]
+  calc ManyBody.regionEntropy ψ R = ManyBody.regionEntropy ψ
+      ((R ∪ T)ᶜ ∪ T) := by rw [← ManyBody.regionEntropy_compl β ψ R, hRc]
     _ ≤ ManyBody.regionEntropy ψ
         (R ∪ T)ᶜ + ManyBody.regionEntropy ψ T := ManyBody.regionEntropy_union_le β ψ hψ _ _ hdisj
-    _ = ManyBody.regionEntropy ψ (R ∪ T) + ManyBody.regionEntropy ψ T := by rw
-        [ManyBody.regionEntropy_compl]
+    _ = ManyBody.regionEntropy ψ
+        (R ∪ T) + ManyBody.regionEntropy ψ T := by rw [ManyBody.regionEntropy_compl]
 
 /-- **The dimension bound.** The entropy of a region of a unit vector is at most the logarithm
 of the dimension of its configuration space. -/
@@ -67,6 +67,13 @@ theorem regionEntropy_le_log_card (hψ : ‖ψ‖ = 1) (R : Finset V) :
     ManyBody.regionEntropy ψ R ≤ Real.log (Fintype.card (ManyBody.RegionConfig β R)) :=
   Entropy.vonNeumannEntropy_le_log_card (ManyBody.regionState_posSemidef R ψ)
     (ManyBody.trace_regionState_eq_one hψ (D := R))
+
+/-- With `q` states at every site, a region `A` has entropy at most `|A| log q`: the identical-site
+case of `ManyBody.regionEntropy_le_log_card`. -/
+theorem regionEntropy_le_card_mul_log {q : ℕ} {Ω : EuclideanSpace ℂ (V → Fin q)} (hΩ : ‖Ω‖ = 1)
+    (A : Finset V) : ManyBody.regionEntropy Ω A ≤ (A.card : ℝ) * Real.log q := by
+  refine (regionEntropy_le_log_card _ hΩ A).trans (le_of_eq ?_)
+  simp [ManyBody.RegionConfig, Fintype.card_pi, Real.log_pow]
 
 /-- Inside a region `P` of zero entropy, complementary subregions have equal entropy:
 `S(P \ X) = S(X)` for `X ⊆ P`. Two-dimensional area law, `10-geometry.tex`,

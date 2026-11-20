@@ -125,7 +125,7 @@ theorem compressedRegionalThreshold_exteriorRegion
     ManyBody.compressedRegionalThreshold β Ω X E k (ManyBody.exteriorRegion X B) =
       (k : ℝ) * (ManyBody.regionEntropy Ω B /
         (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1) := by
-  simp only
-      [ManyBody.compressedRegionalThreshold, ManyBody.extractExteriorRegion_exteriorRegion X B hXB]
+  simp only [ManyBody.compressedRegionalThreshold,
+      ManyBody.extractExteriorRegion_exteriorRegion X B hXB]
 
 end ManyBody

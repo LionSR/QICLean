@@ -78,8 +78,7 @@ theorem regionMutualInformation_cores_le_of_reset_unitary
   have hent := ManyBody.regionMutualInformation_le_of_supported_unitary
       (fun _ : V ⊕ V ↦ α) hΨ hF hXJ hS' hUs
     (mem_unitaryGroup_iff'.mp hU) hprod
-  rw
-      [ManyBody.regionMutualInformation_sumSitesProduct_inl
+  rw [ManyBody.regionMutualInformation_sumSitesProduct_inl
       (X := fun _ : V ⊕ V ↦ α) hΩ hΩ R₀ C₀] at hent
   have hpos : (1 : ℝ) ≤ Fintype.card (ManyBody.RegionConfig (fun _ : V ⊕ V ↦ α) (R₀.disjSum ∅)) :=
     Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr

@@ -839,6 +839,11 @@ def wrap_line(line: str, in_doc: bool, depth0: int = 0):
                 ok_tok = cur[k - 1] not in " (" and cur[k + 1] not in " )],"
                 if not ok_tok:
                     continue
+                if cur[k + 1] == "[" and re.search(r"(?:^|\s)(?:rw|rwa|simp|simp only|simp_rw|"
+                                                   r"nth_rw \d+|dsimp only|simpa only)$",
+                                                   cur[:k]):
+                    # a rewrite list stays on the line of its tactic
+                    continue
                 # cost: shallow first; at equal depth, before a bracketed argument or after a
                 # comma rather than inside a short application such as `Fin (n v)`
                 arg = cur[k + 1] in OPEN or cur[k - 1] == ","

@@ -47,12 +47,6 @@ end ManyBody
 
 namespace Entropy
 
-/-- Complementary regions of a pure state have equal reduced-matrix ranks. -/
-theorem rank_regionState_compl {V : Type*} [Fintype V] [DecidableEq V]
-    {n : V → ℕ} (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) (R : Finset V) :
-    (ManyBody.regionState ψ Rᶜ).rank = (ManyBody.regionState ψ R).rank := by
-  simp only [ManyBody.rank_regionState_compl]
-
 /-- The rank on a disjoint union is at most the product of the regional ranks. -/
 theorem rank_regionState_union_le {V : Type*} [Fintype V] [DecidableEq V]
     {n : V → ℕ} (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) (R T : Finset V)
@@ -73,8 +67,8 @@ theorem rank_regionState_sdiff_le {V : Type*} [Fintype V] [DecidableEq V]
     ext v
     simp only [Finset.mem_compl, Finset.mem_sdiff, Finset.mem_union]
     tauto
-  rw [← rank_regionState_compl ψ (T \ R), heq]
-  simpa only [rank_regionState_compl] using
+  rw [← ManyBody.rank_regionState_compl _ ψ (T \ R), heq]
+  simpa only [ManyBody.rank_regionState_compl] using
     rank_regionState_union_le ψ R Tᶜ (disjoint_compl_right_iff.mpr h)
 
 end Entropy

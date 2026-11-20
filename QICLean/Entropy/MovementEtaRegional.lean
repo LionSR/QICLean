@@ -29,7 +29,7 @@ The proofs are written from the paper; no Lean source was adapted.
 
 * `Entropy.regionalMovementEta` — `S_θ(x|P) + S_θ(x|Y₀)`, written with region entropies.
 * `Entropy.movementEta_frameVector` — the exponent of Lemma 5.1 is `S_θ(x|P) + S_θ(x|Y₀)`.
-* `Entropy.regionEntropy_compl`.
+* `ManyBody.regionEntropy_compl`.
 * `Entropy.regionalMovementEta_eq_cmi_left`, `Entropy.regionalMovementEta_eq_cmi_right` —
   `η_θ = I_θ(x:F|P) = I_θ(x:F|Y₀)`.
 * `Entropy.regionalMovementEta_nonneg` — `η_θ ≥ 0`.
@@ -176,11 +176,6 @@ end FourPartition
 
 /-! ### Equivalent forms -/
 
-/-- Complementary regions of a vector have equal entropy. -/
-theorem regionEntropy_compl (D : Finset V) (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
-    ManyBody.regionEntropy θ Dᶜ = ManyBody.regionEntropy θ D := by
-  simp only [ManyBody.regionEntropy_compl]
-
 variable {P x Y F : Finset V}
 
 /-- **`S_θ(x|P) + S_θ(x|Y₀) = I_θ(x:F|P)`** for a partition `P, x, Y₀, F` (`05-replicas.tex`,
@@ -190,9 +185,9 @@ theorem regionalMovementEta_eq_cmi_left (h : FourPartition P x Y F)
     regionalMovementEta P x Y θ =
       ManyBody.conditionalMutualInformation (fun v => Fin (n v)) θ x F P := by
   have e1 : ManyBody.regionEntropy θ (x ∪ Y) = ManyBody.regionEntropy θ (F ∪ P) := by
-    rw [← regionEntropy_compl (x ∪ Y), h.compl_union_xY]
+    rw [← ManyBody.regionEntropy_compl _ θ (x ∪ Y), h.compl_union_xY]
   have e2 : ManyBody.regionEntropy θ Y = ManyBody.regionEntropy θ (x ∪ F ∪ P) := by
-    rw [← regionEntropy_compl Y, h.compl_Y]
+    rw [← ManyBody.regionEntropy_compl _ θ Y, h.compl_Y]
   rw [regionalMovementEta, e1, e2, Finset.union_comm P x,
     ManyBody.conditionalMutualInformation]
   ring
@@ -214,9 +209,9 @@ theorem regionalMovementEta_eq_cmi_right (h : FourPartition P x Y F)
 theorem regionalMovementEta_nonneg (h : FourPartition P x Y F)
     (θ : EuclideanSpace ℂ (∀ v, Fin (n v))) : 0 ≤ regionalMovementEta P x Y θ := by
   have e1 : ManyBody.regionEntropy θ (x ∪ Y) = ManyBody.regionEntropy θ (P ∪ F) := by
-    rw [← regionEntropy_compl (x ∪ Y), h.compl_union_xY, Finset.union_comm]
+    rw [← ManyBody.regionEntropy_compl _ θ (x ∪ Y), h.compl_union_xY, Finset.union_comm]
   have e2 : ManyBody.regionEntropy θ Y = ManyBody.regionEntropy θ (x ∪ (P ∪ F)) := by
-    rw [← regionEntropy_compl Y, h.compl_Y, Finset.union_assoc, Finset.union_comm F P]
+    rw [← ManyBody.regionEntropy_compl _ θ Y, h.compl_Y, Finset.union_assoc, Finset.union_comm F P]
   have hssa := regionEntropy_ssa h.Px.symm h.xF h.PF θ
   -- `S(x ∪ (P ∪ F)) + S(P) ≤ S(x ∪ P) + S(P ∪ F)`, read with `A = x`, `B = P`, `C = F`.
   rw [regionalMovementEta, e1, e2, Finset.union_comm P x]

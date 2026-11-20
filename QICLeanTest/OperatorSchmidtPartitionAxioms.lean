@@ -24,7 +24,7 @@ set_option linter.hashCommand false in
 #print axioms Matrix.operatorSchmidtRank_reindex_piEquivPiSubtypeProd_finset_le
 
 /-- info:
-'FiniteProduct.operatorSchmidtRank_splitEquiv_le' depends on axioms:
+'ManyBody.operatorSchmidtRank_splitEquiv_le' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 -/
 #guard_msgs (whitespace := lax) in

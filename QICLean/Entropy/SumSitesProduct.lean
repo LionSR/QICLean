@@ -110,8 +110,7 @@ private theorem splitEquiv_symm_inl (R : Finset A) (T : Finset B)
   · rw [ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ (Finset.inl_mem_disjSum.mpr hx),
       ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ hx]
     rfl
-  · rw
-      [ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _
+  · rw [ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _
       (fun h ↦ hx (Finset.inl_mem_disjSum.mp h)),
       ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _ hx]
     rfl
@@ -127,8 +126,7 @@ private theorem splitEquiv_symm_inr (R : Finset A) (T : Finset B)
   · rw [ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ (Finset.inr_mem_disjSum.mpr hx),
       ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ hx]
     rfl
-  · rw
-      [ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _
+  · rw [ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _
       (fun h ↦ hx (Finset.inr_mem_disjSum.mp h)),
       ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _ hx]
     rfl
@@ -142,8 +140,7 @@ theorem regionState_sumSitesProduct (f : EuclideanSpace ℂ ((a : A) → X (.inl
       (ManyBody.regionState f R ⊗ₖ ManyBody.regionState g T).submatrix
         (ManyBody.disjSumEquiv R T) (ManyBody.disjSumEquiv R T) := by
   ext a b
-  simp only
-      [ManyBody.regionState, ManyBody.regionMatrix_apply, submatrix_apply,
+  simp only [ManyBody.regionState, ManyBody.regionMatrix_apply, submatrix_apply,
       kroneckerMap_apply,
     vecMulVec_apply, Pi.star_apply, ManyBody.sumSitesProduct]
   rw [← (disjSumComplEquiv R T).symm.sum_comp, Fintype.sum_prod_type, Finset.sum_mul_sum]
@@ -179,8 +176,7 @@ theorem regionMutualInformation_sumSitesProduct_inl {f : EuclideanSpace ℂ ((a 
   have hunion : R.disjSum (∅ : Finset B) ∪ T.disjSum ∅ = (R ∪ T).disjSum ∅ := by
     ext x
     rcases x with x | x <;> simp
-  simp only
-      [regionMutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
+  simp only [regionMutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
       ManyBody.regionEntropy_empty _ g hg,
     add_zero]
 
@@ -194,8 +190,7 @@ theorem regionMutualInformation_sumSitesProduct_inr_inl
   have hunion : (∅ : Finset A).disjSum T ∪ R.disjSum ∅ = R.disjSum T := by
     ext x
     rcases x with x | x <;> simp
-  simp only
-      [regionMutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
+  simp only [regionMutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
       ManyBody.regionEntropy_empty _ g hg,
     ManyBody.regionEntropy_empty _ f hf]
   ring
