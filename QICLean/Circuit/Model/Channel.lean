@@ -103,11 +103,6 @@ theorem map_seq_cons (ev : Interpretation G) (L : Layer Γ G X X) (Ls : List (La
     (seq (L :: Ls)).map ev = (seq Ls).map ev ∘ₗ (L.krausFamily ev).map := by
   rw [seq_cons, map_comp, map_ofLayer]
 
-/-- The map of the empty sequence of layers is the identity. -/
-theorem map_seq_nil (ev : Interpretation G) :
-    (seq ([] : List (Layer Γ G X X))).map ev = LinearMap.id :=
-  map_done ev
-
 /-- A sequence of layers has depth at most its number of layers. -/
 theorem depth_seq_le_length (Ls : List (Layer Γ G X X)) : (seq Ls).depth ≤ Ls.length := by
   refine (depth_seq_le Ls).trans ?_
