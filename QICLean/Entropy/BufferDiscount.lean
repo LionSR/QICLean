@@ -211,8 +211,7 @@ theorem sum_norm_sq_mul_regionEntropy_le {ι : Type*} [Fintype ι] (T : Finset V
   rw [ManyBody.trace_regionState, Complex.ofReal_re]
   rcases eq_or_ne (φ i) 0 with h0 | h0
   · have hz : ManyBody.regionState (φ i) T = 0 := by
-      rw [h0]; ext a b; simp
-          [ManyBody.regionState, ManyBody.regionState, partialTraceRight, vecMulVec_apply]
+      rw [h0]; ext a b; simp [ManyBody.regionState, ManyBody.regionMatrix_apply, vecMulVec_apply]
     have hn : ‖φ i‖ = 0 := by rw [h0, norm_zero]
     rw [hn, vonNeumannEntropy_congr hz _ isHermitian_zero, vonNeumannEntropy_zero]
     simp

@@ -42,7 +42,8 @@ private theorem entropy_partition (ψ : EuclideanSpace ℂ ((v : ι) → β v))
 OpenAI area-law manuscript, `07-comparators.tex`, lines 176–203,
 `comparator:entropy-identity`. The expressions are evaluated on the same actual
 pure vector; no normalization is needed for this balanced identity. -/
-theorem auxiliaryPair_regionEntropyIdentity (ψ : EuclideanSpace ℂ ((v : ι) → β v)) (X U Y V : Finset ι)
+theorem auxiliaryPair_regionEntropyIdentity (ψ : EuclideanSpace ℂ ((v : ι) → β v))
+    (X U Y V : Finset ι)
     (hXU : Disjoint X U) (hXY : Disjoint X Y) (hXV : Disjoint X V)
     (hUY : Disjoint U Y) (hUV : Disjoint U V) (hYV : Disjoint Y V)
     (hc : X ∪ U ∪ Y ∪ V = Finset.univ) :

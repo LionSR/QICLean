@@ -14,7 +14,8 @@ import QICLean.ManyBody.Sites.RegionState
 Regional entropy is the von Neumann entropy of the regional state of a pure state.
 Complementary regions have equal entropy, and disjoint regions obey subadditivity for normalized
 states. Regional mutual information is identified with the bipartite matrix definition after
-finite reindexing. The regional states of a vector on nested regions are partial traces of one another. For
+finite reindexing. The regional states of a vector on nested regions are partial traces of one
+    another. For
 pairwise disjoint regions `A, B, C`, strong subadditivity therefore holds for the regional
 entropies: `S(A ∪ B ∪ C) + S(B) ≤ S(A ∪ B) + S(B ∪ C)`. In particular conditioning on a larger
 region decreases the conditional entropy: `S(X | T) ≤ S(X | T')` for `T' ⊆ T` disjoint from `X`,
@@ -184,7 +185,8 @@ theorem regionMutualInformation_eq_matrix (ψ : EuclideanSpace ℂ ((v : V) → 
   dsimp only [ρ] at heq
   rw [vonNeumannEntropy_submatrix_equiv (ManyBody.unionEquiv β R T h).symm _
     (ManyBody.regionState_posSemidef (R ∪ T) ψ).isHermitian] at heq
-  simpa only [ManyBody.jointMatrix, Matrix.submatrix_submatrix, regionMutualInformation, regionEntropy,
+  simpa only [ManyBody.jointMatrix, Matrix.submatrix_submatrix, regionMutualInformation,
+      regionEntropy,
     Equiv.coe_trans] using heq.symm
 
 /-- Mutual information of disjoint regions is nonnegative. -/
@@ -348,7 +350,8 @@ theorem regionEntropy_ssa (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))) :
   have e1 : _root_.vonNeumannEntropy (tripleState hAB hAC hBC Ω) hω.isHermitian =
       ManyBody.regionEntropy Ω (A ∪ (B ∪ C)) :=
     vonNeumannEntropy_submatrix_equiv _ _ _
-  have e2 : _root_.vonNeumannEntropy (partialTraceRight (partialTraceLeft (tripleState hAB hAC hBC Ω)))
+  have e2 : _root_.vonNeumannEntropy
+      (partialTraceRight (partialTraceLeft (tripleState hAB hAC hBC Ω)))
       (partialTraceRight_isHermitian (partialTraceLeft_isHermitian hω.isHermitian)) =
       ManyBody.regionEntropy Ω B := by
     rw [ManyBody.regionEntropy]

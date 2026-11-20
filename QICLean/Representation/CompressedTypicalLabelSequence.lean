@@ -101,7 +101,8 @@ theorem exists_label_sequence_commonLabelCutoff_compressedTypical_bell_vector
       WithLp.toLp 2 (fun x : TensorPower.Config k ι ↦ ∏ j, ψ ((fun v ↦ x j (some v)), x j none))
     let a := ManyBody.compressedRegionalThreshold β Ω X E
     let post : (k : ℕ) →
-        EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι) := fun k ↦
+        EuclideanSpace ℂ
+            ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x ↦
         (∏ j, selectedBellVector ΩX E (x.1 j)) * Ψ k x.2)
     ∃ ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)),

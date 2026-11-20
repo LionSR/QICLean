@@ -43,7 +43,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 -- Existing consumers unfold these names before using partial trace lemmas.
 example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     (ManyBody.regionState ψ D).trace = ((‖ψ‖ ^ 2 : ℝ) : ℂ) := by
-  rw [ManyBody.regionState, trace_partialTraceRight, trace_vecMulVec,
+  rw [ManyBody.regionState_eq_partialTraceRight_cutVector, trace_partialTraceRight, trace_vecMulVec,
     ← EuclideanSpace.inner_eq_star_dotProduct, inner_self_eq_norm_sq_to_K,
     Entropy.norm_cutVector]
   simp
@@ -53,12 +53,11 @@ example (D : Finset V) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
       vonNeumannEntropy (ManyBody.regionState ψ D) (ManyBody.regionState_isHermitian D ψ) := by
   rw [ManyBody.regionEntropy]
 
--- Entrywise consumers unfold the abbreviation and the Sites definition before running their
--- simp set.
+-- Entrywise consumers unfold the Sites definition before running their simp set.
 example (D : Finset V) (c : ℂ) (ψ : EuclideanSpace ℂ (∀ v, Fin (n v))) :
     ManyBody.regionState (c • ψ) D = ((‖c‖ ^ 2 : ℝ) : ℂ) • ManyBody.regionState ψ D := by
   ext a b
-  simp only [ManyBody.regionState, ManyBody.regionState, partialTraceRight, vecMulVec_apply,
+  simp only [ManyBody.regionState, ManyBody.regionMatrix_apply, vecMulVec_apply,
     Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]
   refine Finset.sum_congr rfl fun k _ ↦ ?_
   simp only [PiLp.smul_apply, smul_eq_mul, Pi.star_apply, star_mul',

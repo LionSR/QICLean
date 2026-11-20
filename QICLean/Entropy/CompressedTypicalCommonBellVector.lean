@@ -82,7 +82,8 @@ theorem eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
         (commonLabelCutoff ι k (regions.map (ManyBody.exteriorRegion X)) (a k) *
           labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2
     let post : (k : ℕ) →
-        EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι) := fun k ↦
+        EuclideanSpace ℂ
+            ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x ↦
         (∏ j, selectedBellVector ΩX E (x.1 j)) * Ψ k x.2)
     (∀ᶠ k : ℕ in atTop,

@@ -111,7 +111,8 @@ theorem regionMutualInformation_le_of_norm_sub_le {ψ η : EuclideanSpace ℂ ((
       (Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr
         (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one
           (ManyBody.trace_regionState_eq_one hψ (D := X))))))
-  calc ManyBody.regionMutualInformation ψ X J ≤ |ManyBody.regionMutualInformation ψ X J| := le_abs_self _
+  calc ManyBody.regionMutualInformation ψ X J
+      ≤ |ManyBody.regionMutualInformation ψ X J| := le_abs_self _
     _ ≤ _ := h
     _ ≤ _ := by gcongr
 

@@ -54,12 +54,13 @@ theorem regionEntropy_le_union_add (hψ : ‖ψ‖ = 1) {R T : Finset V} (hRT : 
     have hv : v ∈ R → v ∉ T := fun hv ↦ Finset.disjoint_left.mp hRT hv
     simp only [Finset.mem_compl, Finset.mem_union, not_or]
     tauto
-  calc ManyBody.regionEntropy ψ R = ManyBody.regionEntropy ψ
-      ((R ∪ T)ᶜ ∪ T) := by rw [← ManyBody.regionEntropy_compl β ψ R, hRc]
-    _ ≤ ManyBody.regionEntropy ψ
-        (R ∪ T)ᶜ + ManyBody.regionEntropy ψ T := ManyBody.regionEntropy_union_le β ψ hψ _ _ hdisj
-    _ = ManyBody.regionEntropy ψ
-        (R ∪ T) + ManyBody.regionEntropy ψ T := by rw [ManyBody.regionEntropy_compl]
+  calc ManyBody.regionEntropy ψ R
+      = ManyBody.regionEntropy ψ ((R ∪ T)ᶜ ∪ T) := by
+        rw [← ManyBody.regionEntropy_compl β ψ R, hRc]
+    _ ≤ ManyBody.regionEntropy ψ (R ∪ T)ᶜ + ManyBody.regionEntropy ψ T :=
+        ManyBody.regionEntropy_union_le β ψ hψ _ _ hdisj
+    _ = ManyBody.regionEntropy ψ (R ∪ T) + ManyBody.regionEntropy ψ T := by
+        rw [ManyBody.regionEntropy_compl]
 
 /-- **The dimension bound.** The entropy of a region of a unit vector is at most the logarithm
 of the dimension of its configuration space. -/
