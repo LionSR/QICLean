@@ -337,7 +337,8 @@ private theorem exists_block_layer (hB : Γ.Blocking Γ' f r) [∀ s, Nonempty (
   rw [hmap]
   refine IsBlocked.mono (n := 0 + r + 0 + 0)
     (IsBlocked.comp (IsBlocked.comp (IsBlocked.comp ?_ ?_) ?_) ?_) (by omega)
-  · refine (isBlocked_layer hB _ (by simp [cells_ofOnsite]) ⟨fun b ↦ absurd b.2 (by simp [ofOnsite]),
+  · refine (isBlocked_layer hB _ (by simp [cells_ofOnsite])
+      ⟨fun b ↦ absurd b.2 (by simp [ofOnsite]),
       fun _ ↦ KrausFamily.isTP_embed _⟩).mono ?_
     simp [cells_ofOnsite]
   · refine (isBlocked_prod _ fun A hA ↦ ?_).mono (List.length_ofFn).le
@@ -348,10 +349,12 @@ private theorem exists_block_layer (hB : Γ.Blocking Γ' f r) [∀ s, Nonempty (
         (fun {α} _ _ ↦ (KrausFamily.isUnitary_single (one_mem _)).isTP) _ _ _ fun b ↦ ?_
       exact hTP'.1 ⟨b.1, (Finset.mem_filter.mp b.2).1⟩
     · split_ifs <;> omega
-  · refine (isBlocked_layer hB _ (by simp [cells_ofOnsite]) ⟨fun b ↦ absurd b.2 (by simp [ofOnsite]),
+  · refine (isBlocked_layer hB _ (by simp [cells_ofOnsite])
+      ⟨fun b ↦ absurd b.2 (by simp [ofOnsite]),
       fun s ↦ isTP_freeFamily L' hTP'.2 s.1⟩).mono ?_
     simp [cells_ofOnsite]
-  · refine (isBlocked_layer hB _ (by simp [cells_ofOnsite]) ⟨fun b ↦ absurd b.2 (by simp [ofOnsite]),
+  · refine (isBlocked_layer hB _ (by simp [cells_ofOnsite])
+      ⟨fun b ↦ absurd b.2 (by simp [ofOnsite]),
       fun _ ↦ KrausFamily.isTP_decode _ _⟩).mono ?_
     simp [cells_ofOnsite]
 
