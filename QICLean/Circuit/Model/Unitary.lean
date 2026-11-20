@@ -67,7 +67,8 @@ cost `0`.
 * `QuantumCircuit.IsGateProduct.isUnitaryCircuit` — a product of gates of total cost at most `K`
   has depth at most `K`.
 * `QuantumCircuit.dotProduct_prod_mul_mul` — a product vector over disjoint regions.
-* `QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul` — vanishing connected correlations.
+* `QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul`,
+  `QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq` — vanishing connected correlations.
 -/
 
 open Matrix ManyBody
@@ -695,6 +696,20 @@ theorem IsPreparedInDepth.dotProduct_mul_mul [Fintype Γ.Cell] (hpos : ∀ b, 0 
   rw [hconj, hconj, hconj, hone, hAB]
   exact dotProduct_prod_mul_mul v hRR' (hU.conjTranspose_mul_mul_mem_supportedOperators hpos hA)
     (hU.conjTranspose_mul_mul_mem_supportedOperators hpos hB)
+
+/-- For a unit vector `ψ` prepared in depth `T`, on a geometry whose cells have positive cost,
+the connected correlation of operators on regions with disjoint `T`-fold neighbourhoods
+vanishes: `⟨AB⟩ = ⟨A⟩⟨B⟩`.
+
+Source: arXiv:2307.01696, Supplemental Material, proof of Theorem 1. -/
+theorem IsPreparedInDepth.dotProduct_mul_eq [Fintype Γ.Cell] (hpos : ∀ b, 0 < Γ.cost b)
+    {T : ℕ} {ψ : Config X → ℂ} (hψ : IsPreparedInDepth Γ T ψ) (hnorm : star ψ ⬝ᵥ ψ = 1)
+    {R R' : Finset S} (hRR' : Disjoint (Γ.neighbourhood^[T] R) (Γ.neighbourhood^[T] R'))
+    {A B : Matrix (Config X) (Config X) ℂ} (hA : A ∈ supportedOperators X R)
+    (hB : B ∈ supportedOperators X R') :
+    star ψ ⬝ᵥ ((A * B) *ᵥ ψ) = (star ψ ⬝ᵥ (A *ᵥ ψ)) * (star ψ ⬝ᵥ (B *ᵥ ψ)) := by
+  have h := hψ.dotProduct_mul_mul hpos hRR' hA hB
+  rwa [hnorm, mul_one] at h
 
 end Preparation
 
