@@ -814,7 +814,7 @@ holding a local memory of qudits.
     \lean{QuantumCircuit.Geometry.portRing, QuantumCircuit.portDataEmbedding}
     \leanok
     \uses{def:circuits_geometry, def:circuits_ring_geometry}
-    The ring of $N$ sites with $W$ wires per site is the geometry on $\Z_N\times\{0,\dots,W-1\}$
+    For $W\ge1$, the ring of $N$ sites with $W$ wires per site is the geometry on $\Z_N\times\{0,\dots,W-1\}$
     with a cell of cost $0$ consisting of all the wires of each site $i$, and a cell of cost $1$
     consisting of the wires $(i,0)$ and $(i+1,0)$, the ports of the sites $i$ and $i+1$, for
     each site $i$. For $W=2k+1$ and qudits of dimension $d$, the data embedding sends a
