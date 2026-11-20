@@ -3,11 +3,11 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Entropy.FiniteProductInformation
+import QICLean.Entropy.RegionStrongSubadditivity
 
 /-! Regression examples for regional information inequalities. -/
 
-namespace FiniteProductInformationTest
+namespace RegionStrongSubadditivityTest
 
 /-- The information inequalities do not need normalization: this product
 vector has norm two. -/
@@ -48,4 +48,4 @@ example : 0 ≤ ManyBody.conditionalMutualInformation (fun _ : Fin 1 ↦ Fin 0)
   ManyBody.conditionalMutualInformation_nonneg _ _ _ _ _
     (by simp) (by simp) (by simp)
 
-end FiniteProductInformationTest
+end RegionStrongSubadditivityTest

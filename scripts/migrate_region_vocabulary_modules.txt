@@ -28,3 +28,9 @@ QICLean.Entropy.FiniteProduct QICLean.Entropy.RegionEntropy
 QICLean.Channel.FiniteProduct QICLean.ManyBody.Sites.RegionMatrix
 QICLean.Channel.FiniteProductOperatorSchmidt QICLean.Algebra.OperatorSchmidtPartition
 QICLean.ManyBody.Sites.SplitOperatorSchmidt QICLean.Algebra.OperatorSchmidtPartition
+QICLean.Entropy.FiniteProductConditionalSum QICLean.Entropy.RegionConditionalInformationSum
+QICLean.Entropy.FiniteProductConditional QICLean.Entropy.RegionConditionalInformation
+QICLean.Entropy.FiniteProductContinuity QICLean.Entropy.RegionEntropyContinuity
+QICLean.Entropy.FiniteProductInformation QICLean.Entropy.RegionStrongSubadditivity
+QICLean.Entropy.FiniteProductSplitting QICLean.Entropy.RegionPurificationSplitting
+QICLean.Entropy.FiniteProductTypicalState QICLean.Entropy.RegionTypicalState

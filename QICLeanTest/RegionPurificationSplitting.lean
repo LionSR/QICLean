@@ -3,13 +3,13 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.FiniteProductSplitting
+import QICLean.Entropy.RegionPurificationSplitting
 
 /-! Regression examples for finite-product purification splitting. -/
 
 open scoped Matrix Kronecker Matrix.Norms.L2Operator
 
-namespace FiniteProductSplittingTest
+namespace RegionPurificationSplittingTest
 
 /-- Three local dimensions differ, and the third region supplies an unused
 buffer. The coordinate split reconstructs every configuration exactly. -/
@@ -62,4 +62,4 @@ example {V : Type*} [Fintype V] [DecidableEq V]
     simpa [ManyBody.regionMutualInformation, ManyBody.regionEntropy_empty β ψ hψ] using hnorm
   exact sub_eq_zero.mp ((WithLp.toLp_eq_zero 2).mp (norm_eq_zero.mp hz))
 
-end FiniteProductSplittingTest
+end RegionPurificationSplittingTest

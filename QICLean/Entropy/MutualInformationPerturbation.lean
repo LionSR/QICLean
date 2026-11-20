@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.PureStateTraceDistance
 import QICLean.Entropy.ControlledContinuity
-import QICLean.Entropy.FiniteProductInformation
+import QICLean.Entropy.RegionStrongSubadditivity
 
 /-!
 # Mutual information near a state without correlations
