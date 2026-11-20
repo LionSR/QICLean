@@ -45,7 +45,10 @@ and `_snd` are reported, as is any site with a named argument. In a file that us
 becomes `ComplConfig X R`, unless the file applies `regionState`, `regionMatrix` or
 `regionEntropy` to a complement region: then those types are reported. The uses of
 `ManyBody.complementEquiv` and, in such files, of `mem_compl` are reported for review (they are
-not old names, so `--check` does not list them).
+not old names, so `--check` does not list them). The names that survive with a restated
+statement (`PART_C_RESTATED`: `complementUnionEquiv`, `split_union_symm`,
+`regionConfigurationSplit`, whose complement factor is now `ComplConfig`) are never rewritten;
+every use is reported, by the rewrite and by `--check`, as "restated: check by hand".
 
 Contract: this is a one-time migration tool. On TNLean (and on any branch of it) it either
 rewrites a site correctly or leaves it unchanged and reports it, and `--check` lists every old
@@ -57,7 +60,8 @@ Usage:
     python3 scripts/migrate_region_vocabulary.py DIR [--part A|B|C|all] [--check] [--report FILE]
 
 `--check` changes nothing and reports the remaining old names and the `open` lines of a
-dissolved namespace (exit status 1 if any).
+dissolved namespace (exit status 1 if any); with part C it also lists the uses of the restated
+names, which do not affect the exit status.
 """
 
 from __future__ import annotations
@@ -317,6 +321,9 @@ PART_C_REGION_FUNS = ("regionState", "regionMatrix", "regionEntropy")
 PART_C_REVIEW = {
     "ManyBody.complementEquiv": "hand edit: composed with `cutEquiv`, it may now be redundant",
 }
+# Names that survive part C with a restated statement (their complement factor is now
+# `ComplConfig`): every use is reported, in the report and by `--check`, and never rewritten.
+PART_C_RESTATED = ("complementUnionEquiv", "split_union_symm", "regionConfigurationSplit")
 PART_C_ON = False  # set by `main` for `--part C` and `--part all`
 
 
@@ -558,6 +565,7 @@ class Report:
     files: set = field(default_factory=set)
     unhandled: list = field(default_factory=list)
     remaining: list = field(default_factory=list)
+    restated: list = field(default_factory=list)
     # old name -> [sites, files] (filled for part C)
     per: dict = field(default_factory=dict)
 
@@ -802,6 +810,15 @@ def complement_types(text: str, path: str, rep) -> tuple[str, int]:
         rep.rewritten += len(sites)
         rep.count(COMPL_TYPE, path, len(sites))
     return text, len(sites)
+
+
+def restated_notes(text: str, path: str) -> list[str]:
+    """The uses of the `PART_C_RESTATED` names, qualified or bare, outside comments."""
+    spans = comment_spans(text)
+    pat = (r"(?<![\w'])(?:[\w']+\.)*(" + "|".join(map(re.escape, PART_C_RESTATED)) +
+           r")(?![\w'])")
+    return [f"{path}:{lineno(text, m.start())}: `{m.group(1)}` restated: check by hand"
+            for m in re.finditer(pat, text) if in_spans(spans, m.start()) is None]
 
 
 def part_c_notes(orig: str, final: str, path: str) -> list[str]:
@@ -1277,6 +1294,8 @@ def main() -> int:
                 rewrite_text(t, p, qualified, bare, dot, False, rep, True)
                 rep.remaining += [f"{p}:{n}: open line of a dissolved namespace"
                                   for n in drop_open(t)[2]]
+                if PART_C_ON:
+                    rep.restated += restated_notes(t, p)
                 continue
             frep = Report()
             nt = rewrite_text(t, p, qualified, bare, dot, False, frep, False)
@@ -1328,13 +1347,16 @@ def main() -> int:
                     h.write(nt)
             rep.unhandled += final.remaining + emptied
             if PART_C_ON:
-                rep.unhandled += part_c_notes(t, nt, p)
+                rep.unhandled += part_c_notes(t, nt, p) + restated_notes(nt, p)
             rep.unhandled += [u for u in dict.fromkeys(frep.unhandled)
                               if re.search(r": (line longer than|`\.[\w']+` needs)", u)]
     lines = []
     if a.check:
         lines.append(f"remaining old names: {len(rep.remaining)}")
         lines += rep.remaining
+        if PART_C_ON:
+            lines.append(f"uses of restated names to check by hand: {len(rep.restated)}")
+            lines += rep.restated
     else:
         lines.append(f"rewritten sites: {rep.rewritten} in {len(rep.files)} files")
         lines += [f"  {k}: {n} sites in {len(fs_)} files"
