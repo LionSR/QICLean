@@ -490,7 +490,8 @@ class Report:
     remaining: list = field(default_factory=list)
 
 
-def comment_spans(text: str) -> list[tuple[int, int]]:
+def comment_spans(text: str, strings: bool = False) -> list[tuple[int, int]]:
+    """The comments of `text`, and its string literals too if `strings`."""
     spans, i, n = [], 0, len(text)
     while i < n:
         if text.startswith("--", i):
@@ -513,6 +514,8 @@ def comment_spans(text: str) -> list[tuple[int, int]]:
             j = i + 1
             while j < n and text[j] != '"':
                 j += 2 if text[j] == "\\" else 1
+            if strings:
+                spans.append((i, j + 1))
             i = j + 1
         else:
             i += 1
@@ -572,32 +575,51 @@ def symm_of(arg: str) -> str:
 
 
 def drop_open(text: str):
-    """Remove the namespaces in `OPEN_DROP` from the `open` lines, with the numbers of the lines
-    deleted outright (a line that keeps another namespace is edited in place) and of all the
-    lines changed. A command-local `open N in` with no namespace left goes with its `in`. It
-    runs once a file's rewriting passes are done: the passes need the `open` line to recognize
-    the bare names."""
-    kept, removed, touched = [], [], []
+    """Remove the namespaces in `OPEN_DROP` from the `open` commands, with the numbers of the
+    lines deleted outright (a line that keeps another namespace is edited in place), of all the
+    lines changed, and of the lines left for a hand edit. Only commands outside comments and
+    strings count. A trailing comment stays; a command-local `open N in` with no namespace left
+    goes with its `in`; the selective forms `open N (x)`, `open N hiding x` and
+    `open N renaming x → y` of a dissolved namespace are left and reported. It runs once a
+    file's rewriting passes are done: the passes need the `open` line to recognize the bare
+    names."""
+    spans = comment_spans(text, strings=True)
+    kept, removed, touched, left = [], [], [], []
+    offset = 0
     for i, ln in enumerate(text.split("\n")):
-        mm = re.match(r"(\s*open (?:scoped )?)(.*?)(\s+in\b.*)?$", ln)
-        if mm and any(w in OPEN_DROP for w in mm.group(2).split()):
-            touched.append(i + 1)
-            ws = [w for w in mm.group(2).split() if w not in OPEN_DROP]
-            tail = mm.group(3) or ""
-            if ws:
-                ln = mm.group(1) + " ".join(ws) + tail
-            elif tail.strip() == "in":
-                removed.append(i + 1)
-                continue
-            elif tail:
-                # `open N in cmd` on one line: the command stays, at the line's indentation
-                indent = re.match(r"\s*", ln).group(0)
-                ln = indent + re.sub(r"^\s+in\s+", "", tail)
-            else:
-                removed.append(i + 1)
-                continue
+        start, offset = offset, offset + len(ln) + 1
+        mm = re.match(r"(\s*open (?:scoped )?)(.*?)(\s*--.*)?$", ln)
+        if not mm or in_spans(spans, start + len(mm.group(1)) - 1) is not None:
+            kept.append(ln)
+            continue
+        body, note = mm.group(2), mm.group(3) or ""
+        bm = re.match(r"(.*?)(\s+in\b.*)?$", body)
+        head, tail = bm.group(1), bm.group(2) or ""
+        words = head.split()
+        if not any(w in OPEN_DROP for w in words):
+            kept.append(ln)
+            continue
+        touched.append(i + 1)
+        if any(not re.fullmatch(r"[\w'.]+", w) for w in words) or \
+                any(w in ("hiding", "renaming") for w in words):
+            # a selective opening: its names moved and may be renamed
+            left.append(i + 1)
+            kept.append(ln)
+            continue
+        ws = [w for w in words if w not in OPEN_DROP]
+        indent = re.match(r"\s*", ln).group(0)
+        if ws:
+            ln = mm.group(1) + " ".join(ws) + tail + note
+        elif tail.strip() == "in" or (not tail and not note):
+            removed.append(i + 1)
+            continue
+        elif tail:
+            # `open N in cmd` on one line: the command stays, at the line's indentation
+            ln = indent + re.sub(r"^\s+in\s+", "", tail) + note
+        else:
+            ln = indent + note.lstrip()
         kept.append(ln)
-    return "\n".join(kept), removed, touched
+    return "\n".join(kept), removed, touched, left
 
 
 def with_family(rule: Rule, text: str, start: int, span) -> str:
@@ -648,7 +670,9 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         name = m.group(1)
         if DECL_BEFORE.search(text[max(0, m.start() - 40):m.start()]):
             continue
-        if text[text.rfind("\n", 0, m.start()) + 1:m.start()].startswith("export "):
+        if re.match(r"\s*(?:export|open) ", text[text.rfind("\n", 0, m.start()) + 1:m.start()]):
+            # `export` and `open` lines name namespaces and the names they select; `drop_open`
+            # handles the dissolved ones
             continue
         limit = len(text)
         span = in_spans(spans, m.start())
@@ -1050,7 +1074,7 @@ def main() -> int:
             rewrite_text(nt, p, qualified, bare, dot, False, final, True)
             if OPEN_DROP and drop_open(nt)[2]:
                 # the `open` lines go last; a remaining site moves up by the lines removed above it
-                dropped, removed, _ = drop_open(nt)
+                dropped, removed, _, left = drop_open(nt)
                 def shift(entry):
                     mm = re.match(r"(.*?):(\d+):(.*)", entry, re.S)
                     if not mm:
@@ -1058,8 +1082,11 @@ def main() -> int:
                     n0 = int(mm.group(2))
                     return f"{mm.group(1)}:{n0 - sum(1 for r in removed if r < n0)}:{mm.group(3)}"
                 final.remaining = [shift(e) for e in final.remaining]
-                nt = dropped
-                rep.files.add(p)
+                final.remaining += [shift(f"{p}:{n}: selective open of a dissolved namespace: "
+                                          "open the survivors by hand") for n in left]
+                if dropped != nt:
+                    nt = dropped
+                    rep.files.add(p)
             # an emptied rewrite list that ends its block is left for a hand edit; the marks of
             # the emptied lists go
             emptied = [f"{p}:{i + 1}: emptied rewrite list ends its block: delete it, or close "
