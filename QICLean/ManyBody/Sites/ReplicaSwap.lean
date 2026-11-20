@@ -58,7 +58,8 @@ private def replicaSwapFun (R : Finset V) : V ⊕ V → V ⊕ V
   | .inr v => if v ∈ R then .inl v else .inr v
 
 omit [Fintype V] in
-private theorem replicaSwapFun_involutive (R : Finset V) : Function.Involutive (replicaSwapFun R) := by
+private theorem replicaSwapFun_involutive (R : Finset V) :
+    Function.Involutive (replicaSwapFun R) := by
   rintro (v | v) <;> by_cases hv : v ∈ R <;> simp [replicaSwapFun, hv]
 
 /-- The exchange of the two replicas at the sites of `R`, as a permutation of `V ⊕ V`. -/
