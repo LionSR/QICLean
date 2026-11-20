@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.StoppedHalfSamplingSeed
+import QICLean.Entropy.ViableSampling.StoppedHalfSamplingSeed
 import QICLean.Analysis.MatrixRangeProjectionMeasurable
 
 /-!
@@ -31,10 +31,10 @@ has error .015. This supports the repeated-resampling variant for ALVV,
 arXiv:1602.08828v2, lines 749–755; it is not an uncountable intersection
 over improving spectral targets. -/
 def canonicalHalfSamplingRawGood
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
-    (k D threshold : ℕ) (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
+    (k D threshold : ℕ) (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
     (P : Matrix (Fin d) (Fin d) ℂ)
-    (Graw : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))) :
+    (Graw : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))) :
     Set (Fin R → Matrix.rankUnitaryProduct d) :=
   let state := fun U j ↦ canonicalHalfSampleTrimIterate e cuts xi k D threshold F P
     (halfSamplingSeedSequence U) j
@@ -50,9 +50,9 @@ its initial matrix and finite sequence. It makes no initial viability or
 successful-sampling assumption. Supporting ALVV, arXiv:1602.08828v2,
 lines 749–755. -/
 theorem measurableSet_canonicalHalfSamplingRawGood
-    (e : Fin d ≃ SiteConfig n) (cuts : ℕ → Finset V) (xi : ℝ)
-    (k D threshold : ℕ) (F : ι → Matrix (SiteConfig n) (Fin d) ℂ)
-    (Graw : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))) :
+    (e : Fin d ≃ (∀ v, Fin (n v))) (cuts : ℕ → Finset V) (xi : ℝ)
+    (k D threshold : ℕ) (F : ι → Matrix (∀ v, Fin (n v)) (Fin d) ℂ)
+    (Graw : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))) :
     MeasurableSet {z : Matrix (Fin d) (Fin d) ℂ ×
         (Fin R → Matrix.rankUnitaryProduct d) |
       z.2 ∈ canonicalHalfSamplingRawGood e cuts xi k D threshold F z.1 Graw} := by

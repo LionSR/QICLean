@@ -182,7 +182,7 @@ theorem re_trace_mul_hermPart {m : Type*} [Fintype m] {ρ : Matrix m m ℂ} (hρ
 theorem intervalIntegrable_entropyGain (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     (hcomm : D.CrossBandCommute n t k) {pre : Config k (fun v => Fin (n v)) → ℂ}
     (hpre : pre ≠ 0) : IntervalIntegrable (D.entropyGain n t k pre) volume 0 1 := by
-  set F : ∀ h, Fin K → (SiteConfig n → ℂ) → ℝ := fun h g θ => ∑ c, (D.choiceTree h).weight c *
+  set F : ∀ h, Fin K → ((∀ v, Fin (n v)) → ℂ) → ℝ := fun h g θ => ∑ c, (D.choiceTree h).weight c *
     moveEta n (D.old h g) (D.move h c g) ((EuclideanSpace.equiv _ ℂ).symm θ)
   have hFc : ∀ h g, Continuous (F h g) := fun h g =>
     continuous_finsetSum _ fun c _ => continuous_const.mul (continuous_moveEta _ _)

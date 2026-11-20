@@ -3,7 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Entropy.LocalLift
+import QICLean.Entropy.FilterMoment
+import QICLean.ManyBody.Sites.RegionState
 import QICLean.Entropy.SupportedMarginalTails
 
 /-!
@@ -26,7 +27,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
 /-- The complementary configuration type written with membership in the complement. -/
 private def rightConfigComplEquiv (D : Finset V) :
-    ((v : {v : V // v ∉ D}) → Fin (n v)) ≃ Entropy.RegionConfig n Dᶜ where
+    ((v : {v : V // v ∉ D}) → Fin (n v)) ≃ (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Dᶜ) where
   toFun x v := x ⟨v.1, Finset.mem_compl.mp v.2⟩
   invFun x v := x ⟨v.1, Finset.mem_compl.mpr v.2⟩
   left_inv _ := rfl
@@ -36,13 +37,15 @@ private def rightConfigComplEquiv (D : Finset V) :
 private theorem rightCut_eq_localLift_compl (D : Finset V)
     (R : Matrix ((v : {v : V // v ∉ D}) → Fin (n v))
       ((v : {v : V // v ∉ D}) → Fin (n v)) ℂ) :
-    reindex (Entropy.cutEquiv n D).symm (Entropy.cutEquiv n D).symm
-      ((1 : Matrix (Entropy.RegionConfig n D) (Entropy.RegionConfig n D) ℂ) ⊗ₖ R) =
-    Entropy.localLift Dᶜ
+    reindex (ManyBody.cutEquiv (fun v ↦ Fin (n v)) D).symm
+        (ManyBody.cutEquiv (fun v ↦ Fin (n v)) D).symm
+      ((1 : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+          (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ) ⊗ₖ R) =
+    ManyBody.place Dᶜ
       (R.reindex (rightConfigComplEquiv (n := n) D) (rightConfigComplEquiv (n := n) D)) := by
   classical
   ext σ τ
-  simp [Entropy.localLift, ManyBody.place, Entropy.cutEquiv, Equiv.piEquivPiSubtypeProd,
+  simp [ManyBody.place, ManyBody.place, ManyBody.cutEquiv, Equiv.piEquivPiSubtypeProd,
     rightConfigComplEquiv, Matrix.reindex_apply, Matrix.kroneckerMap_apply,
     Matrix.one_apply, funext_iff, Subtype.forall, mul_comm]
 
@@ -50,10 +53,12 @@ private theorem rightCut_eq_localLift_compl (D : Finset V)
 theorem isSupportedOn_rightCut (D : Finset V)
     (R : Matrix ((v : {v : V // v ∉ D}) → Fin (n v))
       ((v : {v : V // v ∉ D}) → Fin (n v)) ℂ) :
-    Entropy.IsSupportedOn
-      (reindex (Entropy.cutEquiv n D).symm (Entropy.cutEquiv n D).symm
-        ((1 : Matrix (Entropy.RegionConfig n D) (Entropy.RegionConfig n D) ℂ) ⊗ₖ R)) Dᶜ := by
+    ManyBody.IsSupportedOn
+      (reindex (ManyBody.cutEquiv (fun v ↦ Fin (n v)) D).symm
+          (ManyBody.cutEquiv (fun v ↦ Fin (n v)) D).symm
+        ((1 : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+            (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ) ⊗ₖ R)) Dᶜ := by
   rw [rightCut_eq_localLift_compl]
-  exact Entropy.isSupportedOn_localLift _
+  exact ManyBody.place_mem_supportedOperators _
 
 end Entropy

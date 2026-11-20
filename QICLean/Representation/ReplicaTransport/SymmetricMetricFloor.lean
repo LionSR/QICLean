@@ -52,9 +52,9 @@ theorem exists_symBandMetric_floor {t : ℝ} (ht : 0 < t) :
   rintro k π ⟨hPY, hPF, hYF, hcover⟩
   have hfloor := (hbound k π.P π.Y π.F hPY hPF hYF hcover).2.2.2.2
   change _ ≤
-    symProj (copyPerm (Entropy.SiteConfig n) k) * bandMetric n t k π *
-      symProj (copyPerm (Entropy.SiteConfig n) k) +
-        (1 - symProj (copyPerm (Entropy.SiteConfig n) k)) at hfloor
+    symProj (copyPerm (∀ v, Fin (n v)) k) * bandMetric n t k π *
+      symProj (copyPerm (∀ v, Fin (n v)) k) +
+        (1 - symProj (copyPerm (∀ v, Fin (n v)) k)) at hfloor
   rw [mul_assoc, ← (commute_symProj_bandMetric (n := n) t k π).eq,
     ← mul_assoc, symProj_mul_symProj] at hfloor
   simpa only [symBandMetric, RCLike.real_smul_eq_coe_smul (K := ℂ)] using! hfloor

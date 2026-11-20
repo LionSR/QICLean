@@ -32,19 +32,20 @@ If the output vanishes, then `ρ = 0` and both sides vanish.
 Source: polynomial-PEPS Proposition 4.1, `03-patches.tex`, lines 170–178,
 `eq:patch-simplex-derivative`. -/
 theorem re_trace_variation_le_of_isPatchMinimizer {b : ℝ} (hb : 0 < b)
-    {l : List (PatchFactor n)} {Ω : EuclideanSpace ℂ (SiteConfig n)}
+    {l : List (PatchFactor n)} {Ω : EuclideanSpace ℂ (∀ v, Fin (n v))}
     (hexp : ∀ f ∈ l, 0 < f.exponent)
     (hden : ∀ f ∈ l, f.density.PosSemidef ∧ f.density.trace = 1)
     (hnest : l.Pairwise fun g g' ↦ g'.region ⊆ g.region)
     (hmin : IsPatchMinimizer b l Ω) :
-    ∀ f ∈ l, ∀ y : Matrix (RegionConfig n f.region) (RegionConfig n f.region) ℂ,
+    ∀ f ∈ l, ∀ y : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) f.region)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) f.region) ℂ,
       y.PosSemidef → y.trace = 1 → Commute f.density y →
-      (regionState f.region (patchState b l Ω) *
+      (ManyBody.regionState (patchState b l Ω) f.region *
           (f.density + b • 1) ^ (-1 : ℝ) * y).trace.re ≤
-        (regionState f.region (patchState b l Ω) *
+        (ManyBody.regionState (patchState b l Ω) f.region *
           (f.density + b • 1) ^ (-1 : ℝ) * f.density).trace.re := by
   intro f hf y hy hyt hxy
-  by_cases hne : Nonempty (SiteConfig n)
+  by_cases hne : Nonempty (∀ v, Fin (n v))
   · obtain ⟨σ₀⟩ := hne
     obtain ⟨pre, post, hl⟩ := List.append_of_mem hf
     have hchain := isDescendingChain_of_patch_min hb σ₀ hexp hden hnest hmin
@@ -58,16 +59,16 @@ theorem re_trace_variation_le_of_isPatchMinimizer {b : ℝ} (hb : 0 < b)
     have hvar := re_trace_variation_le_of_patch_min (hden f hf).1 (hden f hf).2
       (hexp f hf) hb (liftProd (post.map (PatchFactor.filter b))) Ω σ₀
       hmin' hchain hsub y hy hyt hxy
-    have hst : regionState f.region (patchState b (pre ++ f :: post) Ω) =
+    have hst : ManyBody.regionState (patchState b (pre ++ f :: post) Ω) f.region =
         (‖patchOutput b (pre ++ f :: post) Ω‖⁻¹ ^ 2) •
-          regionState f.region (patchOutput b (pre ++ f :: post) Ω) := by
+          ManyBody.regionState (patchOutput b (pre ++ f :: post) Ω) f.region := by
       rw [patchState, regionState_smul, Complex.norm_real, Real.norm_eq_abs,
         abs_of_nonneg (inv_nonneg.mpr (norm_nonneg _)), Complex.coe_smul]
     simpa only [hst, Matrix.smul_mul, Matrix.trace_smul, Complex.smul_re, smul_eq_mul,
       patchOutput_append_cons] using
       mul_le_mul_of_nonneg_left hvar (sq_nonneg ‖patchOutput b (pre ++ f :: post) Ω‖⁻¹)
-  · have : IsEmpty (SiteConfig n) := not_nonempty_iff.mp hne
-    have h0 : regionState f.region (patchState b l Ω) = 0 := by
+  · have : IsEmpty (∀ v, Fin (n v)) := not_nonempty_iff.mp hne
+    have h0 : ManyBody.regionState (patchState b l Ω) f.region = 0 := by
       rw [Subsingleton.elim (patchState b l Ω) ((0 : ℂ) • patchState b l Ω),
         regionState_smul]
       simp

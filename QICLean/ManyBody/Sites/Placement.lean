@@ -89,8 +89,8 @@ theorem place_apply (D : Finset V) (K : Matrix (RegionConfig X D) (RegionConfig 
   rfl
 
 /-- In the coordinates of the cut along `D`, a placed matrix is `K ⊗ 1`. -/
-theorem reindex_cutEquiv_place (K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ) :
-    reindex (cutEquiv X D) (cutEquiv X D) (place D K) =
+theorem cutOperator_place (K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ) :
+    cutOperator D (place D K) =
       K ⊗ₖ (1 : Matrix (ComplConfig X D) (ComplConfig X D) ℂ) := by
   ext a b
   simp [place]
@@ -262,7 +262,7 @@ theorem exists_eq_place_of_mem_supportedOperators {A : Matrix (Config X) (Config
     ext σ τ
     rw [place_apply, of_apply]
     split_ifs with h
-    · refine apply_eq_of_mem_supportedOperators hA (fun v hv ↦ ?_) (fun v hv ↦ ?_)
+    · refine IsSupportedOn.apply_eq hA (fun v hv ↦ ?_) (fun v hv ↦ ?_)
         fun v hv ↦ ?_
       · rw [cutEquiv_symm_apply_mem _ _ hv]
       · rw [cutEquiv_symm_apply_mem _ _ hv]
@@ -406,7 +406,9 @@ theorem prodOp_mul_place [∀ v, Fintype (Y v)] [∀ v, DecidableEq (Y v)]
     ← submatrix_mul_equiv (prodOp m) (place D K') _ (cutEquiv Y D).symm _,
     ← submatrix_mul_equiv (place D K) (prodOp m) _ (cutEquiv X D).symm _,
     ← reindex_apply, ← reindex_apply, ← reindex_apply,
-    reindex_cutEquiv_prodOp, reindex_cutEquiv_place, reindex_cutEquiv_place,
+    reindex_cutEquiv_prodOp,
+    show reindex (cutEquiv X D) (cutEquiv X D) (place D K) = _ from cutOperator_place K,
+    show reindex (cutEquiv Y D) (cutEquiv Y D) (place D K') = _ from cutOperator_place K',
     ← mul_kronecker_mul, ← mul_kronecker_mul, h, Matrix.mul_one, Matrix.one_mul]
 
 omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
@@ -440,7 +442,8 @@ the sites of `D`. -/
 theorem prodOp_eq_place (m : (v : V) → Matrix (X v) (X v) ℂ) (hm : ∀ v ∉ D, m v = 1) :
     prodOp m = place D (prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) fun w ↦ m w.1) := by
   apply (reindex (cutEquiv X D) (cutEquiv X D)).injective
-  rw [reindex_cutEquiv_prodOp, reindex_cutEquiv_place,
+  rw [reindex_cutEquiv_prodOp,
+    show reindex (cutEquiv X D) (cutEquiv X D) (place D _) = _ from cutOperator_place _,
     show (fun w : {v // v ∉ D} ↦ m w.1) = fun (w : {v // v ∉ D}) ↦ (1 : Matrix (X w.1) (X w.1) ℂ)
       from funext fun w ↦ hm w.1 w.2, prodOp_one]
 
@@ -457,7 +460,8 @@ theorem place_mul_prodOp_eq_zero_iff (m : (v : V) → Matrix (X v) (Y v) ℂ)
       (K * prodOp (X := fun w : {v // v ∈ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1)) ⊗ₖ
         prodOp (X := fun w : {v // v ∉ D} ↦ X w.1) (Y := fun w ↦ Y w.1) (fun w ↦ m w.1) := by
     rw [reindex_apply, ← submatrix_mul_equiv (place D K) (prodOp m) _ (cutEquiv X D).symm _,
-      ← reindex_apply, ← reindex_apply, reindex_cutEquiv_prodOp, reindex_cutEquiv_place,
+      ← reindex_apply, ← reindex_apply, reindex_cutEquiv_prodOp,
+      show reindex (cutEquiv X D) (cutEquiv X D) (place D K) = _ from cutOperator_place K,
       ← mul_kronecker_mul, Matrix.one_mul]
   have h0 : reindex (cutEquiv X D) (cutEquiv Y D) (0 : Matrix (Config X) (Config Y) ℂ) = 0 :=
     rfl

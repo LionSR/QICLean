@@ -53,8 +53,8 @@ private theorem commute_inv_right {m : Type*} [Fintype m] [DecidableEq m] {X A :
 
 /-- Band metrics commute with the permutations of entire copies. -/
 theorem commute_permOp_bandMetric (t : ℝ) (k : ℕ) (π : PYF V) (s : Equiv.Perm (Fin k)) :
-    Commute (permOp (copyPerm (SiteConfig n) k) s) (bandMetric n t k π) := by
-  have hW : ∀ Q : Finset V, Commute (permOp (copyPerm (SiteConfig n) k) s)
+    Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s) (bandMetric n t k π) := by
+  have hW : ∀ Q : Finset V, Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s)
       (replicaMetric (fun v => Fin (n v)) t k Q) := fun Q =>
     commute_copyPerm_labelObservable k Q _ s
   unfold bandMetric leafMetric leafRoot
@@ -64,22 +64,22 @@ theorem commute_permOp_bandMetric (t : ℝ) (k : ℕ) (π : PYF V) (s : Equiv.Pe
 /-- A matrix commuting with every copy permutation commutes with the projection onto `𝒮_k`. -/
 theorem commute_symProj_of_forall_commute_permOp {k : ℕ}
     {M : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ}
-    (h : ∀ s, Commute (permOp (copyPerm (SiteConfig n) k) s) M) :
-    Commute (symProj (copyPerm (SiteConfig n) k)) M := by
+    (h : ∀ s, Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s) M) :
+    Commute (symProj (copyPerm (∀ v, Fin (n v)) k)) M := by
   rw [symProj]
   exact (Commute.sum_left _ _ _ fun s _ => h s).smul_left _
 
 /-- The projection onto `𝒮_k` commutes with every copy permutation. -/
 theorem commute_permOp_symProj (k : ℕ) (s : Equiv.Perm (Fin k)) :
-    Commute (permOp (copyPerm (SiteConfig n) k) s) (symProj (copyPerm (SiteConfig n) k)) := by
-  have h := congrArg conjTranspose (permOp_mul_symProj (copyPerm (SiteConfig n) k) s⁻¹)
+    Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s) (symProj (copyPerm (∀ v, Fin (n v)) k)) := by
+  have h := congrArg conjTranspose (permOp_mul_symProj (copyPerm (∀ v, Fin (n v)) k) s⁻¹)
   rw [conjTranspose_mul, isHermitian_symProj.eq, conjTranspose_permOp, inv_inv] at h
   change _ * _ = _ * _
   rw [permOp_mul_symProj, h]
 
 /-- Band metrics commute with the projection onto `𝒮_k`. -/
 theorem commute_symProj_bandMetric (t : ℝ) (k : ℕ) (π : PYF V) :
-    Commute (symProj (copyPerm (SiteConfig n) k)) (bandMetric n t k π) :=
+    Commute (symProj (copyPerm (∀ v, Fin (n v)) k)) (bandMetric n t k π) :=
   commute_symProj_of_forall_commute_permOp fun s => commute_permOp_bandMetric t k π s
 
 /-- A band metric of a partition is positive definite (`06-transport.tex` line 256). -/
@@ -98,7 +98,7 @@ theorem posDef_symBandMetric [∀ v, NeZero (n v)] {π : PYF V} (hπ : π.IsPart
 
 /-- Extended band metrics commute with the permutations of entire copies. -/
 theorem commute_permOp_symBandMetric (t : ℝ) (k : ℕ) (π : PYF V) (s : Equiv.Perm (Fin k)) :
-    Commute (permOp (copyPerm (SiteConfig n) k) s) (symBandMetric n t k π) :=
+    Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s) (symBandMetric n t k π) :=
   (commute_proj_mul_add_one_sub (commute_permOp_symProj k s).symm
     (commute_permOp_bandMetric t k π s).symm).symm
 
@@ -121,7 +121,7 @@ theorem commute_labelProj_singleton_symBandMetric
     ((((commute_inv_right (hW π.P)).mul_right (commute_inv_right (hW π.F))).mul_right
       (hW π.Y)).pow_right 2)
   have hPe : Commute (labelProj (subsystemPerm k (fun v => Fin (n v)) {a}) ell)
-      (symProj (copyPerm (SiteConfig n) k)) := by
+      (symProj (copyPerm (∀ v, Fin (n v)) k)) := by
     simpa only [subsystemPerm_univ] using
       commute_labelProj_symProj_of_subset (fun v => Fin (n v)) k {a} Finset.univ
         (Finset.subset_univ _) ell
@@ -131,15 +131,15 @@ theorem commute_labelProj_singleton_symBandMetric
 with every copy permutation. -/
 theorem commute_symBandMetric_of_commute {t : ℝ} {k : ℕ} {π : PYF V}
     {X : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ}
-    (hX : ∀ s, Commute (permOp (copyPerm (SiteConfig n) k) s) X)
+    (hX : ∀ s, Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s) X)
     (hAX : Commute (bandMetric n t k π) X) : Commute (symBandMetric n t k π) X :=
   commute_proj_mul_add_one_sub (commute_symProj_of_forall_commute_permOp hX) hAX
 
 /-- The product of two extended band metrics is the extension of the product. -/
 theorem symBandMetric_mul (t : ℝ) (k : ℕ) (π π' : PYF V) :
     symBandMetric n t k π * symBandMetric n t k π' =
-      symProj (copyPerm (SiteConfig n) k) * (bandMetric n t k π * bandMetric n t k π') +
-        (1 - symProj (copyPerm (SiteConfig n) k)) :=
+      symProj (copyPerm (∀ v, Fin (n v)) k) * (bandMetric n t k π * bandMetric n t k π') +
+        (1 - symProj (copyPerm (∀ v, Fin (n v)) k)) :=
   proj_mul_add_one_sub_mul symProj_mul_symProj (commute_symProj_bandMetric t k π)
 
 /-- Two band metrics commute on `𝒮_k` exactly when their extensions commute. -/
@@ -154,10 +154,10 @@ theorem commute_symBandMetric_iff (t : ℝ) (k : ℕ) (π π' : PYF V) :
     commute_proj_mul_add_one_sub_iff symProj_mul_symProj hPA hPB]
   constructor
   · intro h w hw
-    have hw' : symProj (copyPerm (SiteConfig n) k) *ᵥ w = w := symProj_mulVec_of_mem _ hw
+    have hw' : symProj (copyPerm (∀ v, Fin (n v)) k) *ᵥ w = w := symProj_mulVec_of_mem _ hw
     set A := bandMetric n t k π
     set B := bandMetric n t k π'
-    set P := symProj (copyPerm (SiteConfig n) k)
+    set P := symProj (copyPerm (∀ v, Fin (n v)) k)
     calc A *ᵥ (B *ᵥ w) = (A * B) *ᵥ (P *ᵥ w) := by rw [hw', Matrix.mulVec_mulVec]
       _ = (P * (A * B)) *ᵥ w := by rw [Matrix.mulVec_mulVec, (hPA.mul_right hPB).eq]
       _ = (P * (B * A)) *ᵥ w := by rw [h]
@@ -165,13 +165,13 @@ theorem commute_symBandMetric_iff (t : ℝ) (k : ℕ) (π π' : PYF V) :
       _ = B *ᵥ (A *ᵥ w) := by rw [hw', Matrix.mulVec_mulVec]
   · intro h
     have hz : (bandMetric n t k π * bandMetric n t k π' -
-        bandMetric n t k π' * bandMetric n t k π) * symProj (copyPerm (SiteConfig n) k) = 0 := by
+        bandMetric n t k π' * bandMetric n t k π) * symProj (copyPerm (∀ v, Fin (n v)) k) = 0 := by
       refine Matrix.toLin'.injective (LinearMap.ext fun w => ?_)
       have hw := h _ (symProj_mulVec_mem _ w)
       simp only [Matrix.toLin'_apply, map_zero, LinearMap.zero_apply, Matrix.sub_mul,
         Matrix.sub_mulVec, ← Matrix.mulVec_mulVec]
       rw [hw, sub_self]
-    have hc : Commute (symProj (copyPerm (SiteConfig n) k))
+    have hc : Commute (symProj (copyPerm (∀ v, Fin (n v)) k))
         (bandMetric n t k π * bandMetric n t k π' - bandMetric n t k π' * bandMetric n t k π) :=
       (hPA.mul_right hPB).sub_right (hPB.mul_right hPA)
     rw [← sub_eq_zero, ← Matrix.mul_sub, hc.eq, hz]
@@ -181,9 +181,9 @@ theorem whiten_symBandMetric [∀ v, NeZero (n v)] {π : PYF V} (hπ : π.IsPart
     (ht : 0 ≤ t) (k : ℕ) (π' : PYF V) :
     symBandMetric n t k π ^ (-(1 / 2) : ℝ) * symBandMetric n t k π' *
         symBandMetric n t k π ^ (-(1 / 2) : ℝ) =
-      symProj (copyPerm (SiteConfig n) k) *
+      symProj (copyPerm (∀ v, Fin (n v)) k) *
           (bandMetric n t k π ^ (-(1 / 2) : ℝ) * bandMetric n t k π' *
-            bandMetric n t k π ^ (-(1 / 2) : ℝ)) + (1 - symProj (copyPerm (SiteConfig n) k)) :=
+            bandMetric n t k π ^ (-(1 / 2) : ℝ)) + (1 - symProj (copyPerm (∀ v, Fin (n v)) k)) :=
   (posDef_bandMetric hπ ht k).whiten_proj_mul_add_one_sub isHermitian_symProj
     symProj_mul_symProj (commute_symProj_bandMetric t k π) (commute_symProj_bandMetric t k π')
 
@@ -193,7 +193,7 @@ extended band metrics. -/
 theorem le_whiten_symBandMetric [∀ v, NeZero (n v)] {π : PYF V} (hπ : π.IsPartition) {t : ℝ}
     (ht : 0 ≤ t) (k : ℕ) (π' : PYF V)
     {Q : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ}
-    (hQ : symProj (copyPerm (SiteConfig n) k) * Q * symProj (copyPerm (SiteConfig n) k) = Q)
+    (hQ : symProj (copyPerm (∀ v, Fin (n v)) k) * Q * symProj (copyPerm (∀ v, Fin (n v)) k) = Q)
     (hle : Q ≤ bandMetric n t k π ^ (-(1 / 2) : ℝ) * bandMetric n t k π' *
       bandMetric n t k π ^ (-(1 / 2) : ℝ)) :
     Q ≤ symBandMetric n t k π ^ (-(1 / 2) : ℝ) * symBandMetric n t k π' *
@@ -292,8 +292,8 @@ of the band metric, for every `X` commuting with the copy permutations. -/
 theorem mul_skewSquare_symBandMetric [∀ v, NeZero (n v)] {π : PYF V} (hπ : π.IsPartition)
     {t : ℝ} (ht : 0 ≤ t) {k : ℕ}
     {X ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ}
-    (hX : ∀ s, Commute (permOp (copyPerm (SiteConfig n) k) s) X) (hρ : ρ.IsHermitian)
-    (hPρ : symProj (copyPerm (SiteConfig n) k) * ρ = ρ) :
+    (hX : ∀ s, Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s) X) (hρ : ρ.IsHermitian)
+    (hPρ : symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ) :
     ρ * Transport.skewSquare (symBandMetric n t k π) X =
       ρ * Transport.skewSquare (bandMetric n t k π) X :=
   mul_skewSquare_extension (posDef_bandMetric hπ ht k) isHermitian_symProj symProj_mul_symProj

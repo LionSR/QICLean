@@ -195,6 +195,10 @@ def collect_file_lean_decls(lean_file: Path, lean_root: Path) -> list[LeanDecl]:
             kind = m.group(1)
             short_name = m.group(2)
             prefix = ".".join(ns_stack) + "." if ns_stack else ""
+            if short_name.startswith("_root_."):
+                # an explicitly rooted name ignores the enclosing namespaces
+                short_name = short_name[len("_root_."):]
+                prefix = ""
             fqn = prefix + short_name
             decl_source = m.string[m.start():m.end(1) + 1]
             is_private = bool(_LEAN_PRIVATE_RE.match(decl_source))

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.ViableSubspaceTrimming
+import QICLean.Entropy.ViableSampling.ViableSubspaceTrimming
 
 /-!
 # Collective trimming relative to a nearby reference space
@@ -34,9 +34,9 @@ ALVV, arXiv:1602.08828v2, proof of `t:alg1`, lines 1801–1813. -/
 theorem isCloseTo_prodExt_trimSubspace_of_reference_weighted
     {D : ℕ → Finset V} {ξ δ ε θ : ℝ} (hD : Monotone D) (hξ : 0 < ξ)
     (hδ : 0 ≤ δ) (hε : 0 ≤ ε) (hθ : 0 < θ)
-    {S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))}
+    {S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))}
     (bS : OrthonormalBasis (Fin s) ℂ S)
-    {T R : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))}
+    {T R : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))}
     (hS : Submodule.IsCloseTo δ (Submodule.prodExt S β) T)
     (hTR : Submodule.IsCloseTo ε T R) (hRT : Submodule.IsCloseTo ε R T)
     {m b : ℕ}

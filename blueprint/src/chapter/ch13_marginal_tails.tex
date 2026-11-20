@@ -177,9 +177,9 @@ depend on the common values there.
 
 \begin{lemma}[Matrix-unit decomposition across a cut]
     \label{lem:supported_product_decomposition}
-    \lean{Entropy.IsSupportedOn.isOneSided_of_subset,
-        Entropy.IsSupportedOn.isOneSided_of_disjoint,
-        Entropy.IsSupportedOn.hasProductDecomposition}
+    \lean{ManyBody.IsSupportedOn.isOneSided_of_subset,
+        ManyBody.IsSupportedOn.isOneSided_of_disjoint,
+        ManyBody.IsSupportedOn.hasProductDecomposition}
     \leanok
     Let $h$ be supported on $D$ and let $B\sqcup B^c=V$. If $D\subseteq B$ or
     $D\subseteq B^c$, then $h$ acts on one factor of
@@ -346,12 +346,12 @@ depend on the common values there.
 
 \begin{lemma}[Local lifts and the trace argument]
     \label{lem:local_lift}
-    \lean{Entropy.localLift, Entropy.regionState, Entropy.regionState_isHermitian,
-        Entropy.localLift_mul,
-        Entropy.localLift_one, Entropy.localLift_conjTranspose,
-        Entropy.isSupportedOn_localLift, Entropy.IsSupportedOn.exists_localLift,
-        Entropy.IsSupportedOn.mono, Entropy.IsSupportedOn.mul, Entropy.inner_localLift,
-        Entropy.inner_conj_eq_of_isSupportedOn}
+    \lean{ManyBody.place, ManyBody.regionState, ManyBody.regionState_isHermitian,
+        ManyBody.place_mul,
+        ManyBody.place_one, ManyBody.place_conjTranspose,
+        ManyBody.place_mem_supportedOperators, ManyBody.exists_eq_place_of_mem_supportedOperators,
+        ManyBody.IsSupportedOn.mono, ManyBody.IsSupportedOn.mul, ManyBody.inner_place,
+        ManyBody.inner_conj_eq_of_mem_supportedOperators}
     \leanok
     \uses{lem:supported_product_decomposition}
     The lift $K\mapsto K\otimes1$ from a region $D$ is a unital multiplicative
@@ -410,8 +410,8 @@ depend on the common values there.
 \begin{theorem}[Three-way cut coordinates]
     \label{thm:three_way_cut_coordinates}
     \lean{Entropy.threeCutEquiv, Entropy.subsetSplitEquiv, Entropy.threeCutEquiv_eq_trans,
-        Entropy.IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one,
-        Entropy.IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker}
+        ManyBody.IsSupportedOn.reindex_threeCutEquiv_eq_kronecker_one,
+        ManyBody.IsSupportedOn.reindex_threeCutEquiv_eq_one_kronecker}
     \leanok
     \uses{lem:supported_product_decomposition}
     Let $A\subseteq B$ be regions. A configuration has coordinates
@@ -544,7 +544,7 @@ depend on the common values there.
         Entropy.norm_modularExpectation_kronecker_le_of_log_clipping,
         Entropy.abs_re_inner_sub_inner_conj_le_logarithmic,
         Entropy.abs_re_inner_sub_conj_le_of_common_basis_logarithmic,
-        Entropy.commute_of_isSupportedOn_disjoint}
+        ManyBody.commute_of_mem_supportedOperators_of_disjoint}
     \leanok
     \uses{lem:filter_conjugation, lem:commuting_hermitian}
     If the marginal of a unit vector is $U\operatorname{diag}(q)U^*$ and
@@ -1336,7 +1336,7 @@ has trace two.
 
 \begin{lemma}[Trial filters on a disjoint union]
     \label{lem:trial_filters}
-    \lean{Entropy.localLift_apply, Entropy.regionUnionEquiv, Entropy.localLift_union_kronecker,
+    \lean{ManyBody.place_apply, Entropy.regionUnionEquiv, Entropy.localLift_union_kronecker,
         Entropy.isFeasibleFilter_union_kronecker, Entropy.pinProj, Entropy.pinProj_conjTranspose,
         Entropy.pinProj_mul_self, Entropy.sum_pinProj, Entropy.eq_of_forall_trace_mul_eq,
         Entropy.norm_toEuclideanLin_sq, Entropy.norm_sq_localLift_pinProj,
@@ -1390,9 +1390,9 @@ has trace two.
 
 \begin{theorem}[Strong subadditivity for regions]
     \label{thm:region_ssa}
-    \lean{Entropy.regionEntropy, Entropy.trace_regionState_submatrix_mul,
+    \lean{ManyBody.regionEntropy, Entropy.trace_regionState_submatrix_mul,
         Entropy.disjoint_union_of_disjoint, Entropy.tripleEquiv, Entropy.tripleEquiv_apply,
-        Entropy.localLift_tripleEquiv_kronecker_one, Entropy.regionState_posSemidef,
+        Entropy.localLift_tripleEquiv_kronecker_one, ManyBody.regionState_posSemidef,
         Entropy.tripleState, Entropy.partialTraceLeft_tripleState,
         Entropy.partialTraceRight_regionState_union,
         Entropy.partialTraceRight_reassoc_tripleState, Entropy.regionEntropy_ssa,
@@ -1617,7 +1617,7 @@ from the same Hermitian pairing and weighted row and column bounds.
 
 \begin{theorem}[Inside-support matrix-unit count]
     \label{lem:patch_inside_decomposition}
-    \lean{Entropy.card_innerConfig, Entropy.IsSupportedOn.hasProductDecomposition_inner}
+    \lean{ManyBody.card_innerConfig, ManyBody.IsSupportedOn.hasProductDecomposition_inner}
     \leanok
     Suppose the physical configuration space is nonempty. An operator
     $X$ supported on $S$ has a product decomposition across $B\sqcup B^c$
@@ -1633,8 +1633,8 @@ from the same Hermitian pairing and weighted row and column bounds.
 
 \begin{theorem}[Operator-Schmidt rank from designated supports]
     \label{thm:supported_operator_schmidt_rank}
-    \lean{Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le,
-        Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one}
+    \lean{ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le,
+        ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one}
     \leanok
     \uses{def:bipartite_operator_schmidt_rank}
     Let $\mathcal H=\bigotimes_{v\in V}\mathbb C^{n_v}$, where $V$ is finite
@@ -2076,8 +2076,8 @@ edges are separate steps in the patch argument.
 \begin{theorem}[Two-sided operator Schmidt bounds from support]
     \label{thm:supported_operator_schmidt_two_sides}
     \lean{Entropy.operatorSchmidtRank_cutOperator_compl_eq,
-        Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_min,
-        Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_pow_card}
+        ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le_min,
+        ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le_pow_card}
     \leanok
     \uses{thm:supported_operator_schmidt_rank, thm:operator_schmidt_factor_exchange}
     Let $V$ be finite, let the local dimensions $n_v$ be nonnegative
@@ -2105,7 +2105,7 @@ edges are separate steps in the patch argument.
 
 \begin{lemma}[A positive regional matrix for a supported operator]
     \label{lem:positive_regional_matrix_norm_cap}
-    \lean{Entropy.IsSupportedOn.exists_posSemidef_localLift_norm_le}
+    \lean{ManyBody.IsSupportedOn.exists_posSemidef_localLift_norm_le}
     \leanok
     Let $X\ge0$ be a matrix on a finite product of local Hilbert spaces,
     supported on a region $D$, and suppose $\|X\|\le M$.

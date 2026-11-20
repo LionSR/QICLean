@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.CanonicalHalfSamplingParentProperties
-import QICLean.Analysis.StoppedHalfSamplingProbability
+import QICLean.Entropy.ViableSampling.CanonicalHalfSamplingParentProperties
+import QICLean.Entropy.ViableSampling.StoppedHalfSamplingProbability
 
 /-!
 # True probability for the complete stopped-resampling native parent
@@ -45,16 +45,16 @@ theorem canonicalHalfSamplingParent_joint_probability_of_threshold
     (hThreshold : ∀ r N Q : ℕ, K * (r + 1) * (N + 2) ^ 2 ≤ Q →
       4 * D ^ 2 ≤ Q ∧
       Submodule.bootstrapFailure D Q r ≤ eta / ((N : ℝ) + 2) ^ a) :
-    ∀ (N r d rounds : ℕ) (e : Fin d ≃ SiteConfig n)
+    ∀ (N r d rounds : ℕ) (e : Fin d ≃ (∀ v, Fin (n v)))
       (k bRef : ℕ) (Delta epsilon epsilonRef xi : ℝ)
-      (Graw Rref : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-      (_x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-      (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+      (Graw Rref : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+      (_x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+      (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
       (P : Matrix (Fin d) (Fin d) ℂ),
       Fintype.card ι ≤ D ^ 2 →
       (∀ x, Submodule.IsCloseTo epsilon Graw (T x)) →
       (∀ x, Submodule.IsCloseTo (1 / 200) (T x) Graw) →
-      (∀ x delta, delta < 1 → ∀ S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)),
+      (∀ x delta, delta < 1 → ∀ S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))),
         Submodule.IsCloseTo delta (Submodule.prodExt S β) (T x) →
         Submodule.IsCloseTo (Delta / (1 - delta) ^ 2)
           (Submodule.prodExt (⨆ i, S.map (A i).toLinearMap) β) (T x)) →

@@ -113,8 +113,8 @@ omit [∀ v, NeZero (n v)] [Fintype H] [DecidableEq H] [∀ h, Fintype (C h)]
 /-- The terminal inputs commute with every copy permutation. -/
 theorem commute_permOp_input {t : ℝ} (k : ℕ) (s : Equiv.Perm (Fin k))
     (j : Σ h, Option (C h)) :
-    Commute (permOp (copyPerm (SiteConfig n) k) s) (D.input n t k j) := by
-  have key : Commute (permOp (copyPerm (SiteConfig n) k) s)
+    Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s) (D.input n t k j) := by
+  have key : Commute (permOp (copyPerm (∀ v, Fin (n v)) k) s)
       (List.ofFn fun g => symBandMetric n t k (D.leafPart j g)).prod :=
     Commute.list_prod_right _ _ fun y hy => by
       obtain ⟨g, rfl⟩ := List.mem_ofFn.mp hy
@@ -157,9 +157,9 @@ theorem symProj_mul_state (hD : D.IsAdmissible) {t : ℝ} (ht : 0 ≤ t) {k : �
     (hcomm : D.CrossBandCommute n t k) {pre : Config k (fun v => Fin (n v)) → ℂ}
     (hpre : pre ∈ symmetricSubspace k (fun v => Fin (n v))) (p : ℝ)
     (j : Σ h, Option (C h)) (u : ℝ) :
-    symProj (copyPerm (SiteConfig n) k) * D.state n t k pre p j u = D.state n t k pre p j u := by
+    symProj (copyPerm (∀ v, Fin (n v)) k) * D.state n t k pre p j u = D.state n t k pre p j u := by
   have hIn := D.posDef_input hD ht hcomm
-  have hP : ∀ j, Commute (symProj (copyPerm (SiteConfig n) k)) (D.input n t k j) := fun j =>
+  have hP : ∀ j, Commute (symProj (copyPerm (∀ v, Fin (n v)) k)) (D.input n t k j) := fun j =>
     (Commute.sum_left _ _ _ fun s _ => D.commute_permOp_input k s j).smul_left _
   exact Transport.mul_transportState hIn hP (Transport.mulVec_filteredVector
     (MeanTree.posDef_eval hIn _) (MeanTree.commute_eval_right hIn hP _)

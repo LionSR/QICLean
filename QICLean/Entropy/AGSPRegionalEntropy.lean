@@ -40,32 +40,32 @@ lines 296–361, in the invariant-line setting. -/
 theorem regionEntropy_le_four_log_of_cutOperatorSchmidtRank
     {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
     (A : Finset V)
-    (K : Matrix (Entropy.SiteConfig n) (Entropy.SiteConfig n) ℂ)
-    (Ω : EuclideanSpace ℂ (Entropy.SiteConfig n))
+    (K : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ)
+    (Ω : EuclideanSpace ℂ (∀ v, Fin (n v)))
     (hΩ : ‖Ω‖ = 1)
     (hfix : Matrix.toEuclideanLin K Ω = Ω)
     {D : ℕ} {δ : ℝ}
-    (hperp : ∀ ψ : EuclideanSpace ℂ (Entropy.SiteConfig n),
+    (hperp : ∀ ψ : EuclideanSpace ℂ (∀ v, Fin (n v)),
       ‖ψ‖ = 1 → ⟪Ω, ψ⟫_ℂ = 0 →
         ⟪Ω, Matrix.toEuclideanLin K ψ⟫_ℂ = 0 ∧
           ‖Matrix.toEuclideanLin K ψ‖ ^ 2 ≤ δ)
-    (hrank : Matrix.operatorSchmidtRank (Entropy.cutOperator A K) ≤ D)
+    (hrank : Matrix.operatorSchmidtRank (ManyBody.cutOperator A K) ≤ D)
     (htradeoff : (D : ℝ) * δ ≤ 1 / 2) :
-    Entropy.regionEntropy A Ω ≤ 4 * Real.log (D : ℝ) := by
-  let U := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (Entropy.cutEquiv n A)
-  have hU (x : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
-      U x = Entropy.cutVector A x := by
+    ManyBody.regionEntropy Ω A ≤ 4 * Real.log (D : ℝ) := by
+  let U := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv (fun v ↦ Fin (n v)) A)
+  have hU (x : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+      U x = ManyBody.cutVector A x := by
     ext z
     rfl
-  have hintertwine (x : EuclideanSpace ℂ (Entropy.SiteConfig n)) :
-      Matrix.toEuclideanLin (Entropy.cutOperator A K) (U x) =
+  have hintertwine (x : EuclideanSpace ℂ (∀ v, Fin (n v))) :
+      Matrix.toEuclideanLin (ManyBody.cutOperator A K) (U x) =
         U (Matrix.toEuclideanLin K x) := by
     simpa only [hU] using (Entropy.cutVector_toEuclideanLin A K x).symm
   have estimate := Matrix.vonNeumannEntropy_reduced_le_four_log_of_operatorSchmidtRank
-    (D := D) (δ := δ) (Entropy.cutOperator A K) (U Ω) ((U.norm_map Ω).trans hΩ)
+    (D := D) (δ := δ) (ManyBody.cutOperator A K) (U Ω) ((U.norm_map Ω).trans hΩ)
   rw [Subsingleton.elim
-    (fun a b : Entropy.RegionConfig n A ↦ Classical.propDecidable (a = b))
-    (inferInstance : DecidableEq (Entropy.RegionConfig n A)),
+    (fun a b : (ManyBody.RegionConfig (fun v ↦ Fin (n v)) A) ↦ Classical.propDecidable (a = b))
+    (inferInstance : DecidableEq (ManyBody.RegionConfig (fun v ↦ Fin (n v)) A)),
     Subsingleton.elim
       (fun a b : (v : {v // v ∉ A}) → Fin (n v) ↦ Classical.propDecidable (a = b))
       (inferInstance : DecidableEq ((v : {v // v ∉ A}) → Fin (n v)))] at estimate
@@ -75,7 +75,7 @@ theorem regionEntropy_le_four_log_of_cutOperatorSchmidtRank
       obtain ⟨horthK, hnormK⟩ := hperp (U.symm ψ)
         ((U.symm.norm_map ψ).trans hψ)
         ((U.inner_map_eq_flip Ω ψ).symm.trans horth)
-      have hKψ : Matrix.toEuclideanLin (Entropy.cutOperator A K) ψ =
+      have hKψ : Matrix.toEuclideanLin (ManyBody.cutOperator A K) ψ =
           U (Matrix.toEuclideanLin K (U.symm ψ)) := by
         simpa only [U.apply_symm_apply] using hintertwine (U.symm ψ)
       constructor
@@ -83,10 +83,10 @@ theorem regionEntropy_le_four_log_of_cutOperatorSchmidtRank
       · simpa only [hKψ, U.norm_map] using hnormK)
     hrank htradeoff
   let C := Matrix.schmidtCoeffMatrix (WithLp.ofLp (U Ω))
-  have hρ : Entropy.regionState A Ω = C * Cᴴ := by
-    simpa only [Entropy.regionState, ManyBody.regionState, C, hU] using
-      Matrix.partialTraceRight_vecMulVec_eq (WithLp.ofLp (Entropy.cutVector A Ω))
-  have hS : Entropy.regionEntropy A Ω =
+  have hρ : ManyBody.regionState Ω A = C * Cᴴ := by
+    simpa only [ManyBody.regionState, ManyBody.regionState, C, hU] using
+      Matrix.partialTraceRight_vecMulVec_eq (WithLp.ofLp (ManyBody.cutVector A Ω))
+  have hS : ManyBody.regionEntropy Ω A =
       vonNeumannEntropy (C * Cᴴ) (Matrix.posSemidef_self_mul_conjTranspose C).isHermitian :=
     vonNeumannEntropy_congr hρ _ _
   exact hS.le.trans hbound

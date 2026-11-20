@@ -13,7 +13,6 @@ import QICLean.Entropy.AuxiliaryPairEntropy
 import QICLean.Entropy.Bipartite
 import QICLean.Entropy.BufferDiscount
 import QICLean.Entropy.ClassicalMutualInformation
-import QICLean.Entropy.ClusterExpansion
 import QICLean.Entropy.CompressedPhysicalMatchedCutoffs
 import QICLean.Entropy.CompressedPhysicalRegions
 import QICLean.Entropy.CompressedSiteCoordinates
@@ -67,7 +66,6 @@ import QICLean.Entropy.IidSurprisal
 import QICLean.Entropy.IidSurprisalExponential
 import QICLean.Entropy.IidSurprisalMomentExponential
 import QICLean.Entropy.LeadingWeights
-import QICLean.Entropy.LocalLift
 import QICLean.Entropy.MarginalPhaseApprox
 import QICLean.Entropy.MarginalPhaseComparison
 import QICLean.Entropy.MarginalPhaseFaithful
@@ -132,7 +130,6 @@ import QICLean.Entropy.SubregionCut
 import QICLean.Entropy.SumSitesProduct
 import QICLean.Entropy.SupportedMarginalTails
 import QICLean.Entropy.SupportedOperatorAlgebra
-import QICLean.Entropy.SupportedOperatorSchmidtRank
 import QICLean.Entropy.SupportedOperatorSchmidtWords
 import QICLean.Entropy.ThreeWayCut
 import QICLean.Entropy.TripartiteTrace
@@ -146,5 +143,6 @@ import QICLean.Entropy.TypicalPureState
 import QICLean.Entropy.TypicalSpectrum
 import QICLean.Entropy.TypicalStateFromTail
 import QICLean.Entropy.UnnormalizedStrongSubadditivity
+import QICLean.Entropy.ViableSampling
 import QICLean.Entropy.VonNeumann
 import QICLean.Entropy.ZeroEntropy

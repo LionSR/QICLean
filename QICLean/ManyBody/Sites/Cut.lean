@@ -14,8 +14,7 @@ Only the supports enter: for an interaction with supports `T`, its crossing term
 `crossingTerms T B`.
 
 Moved from `QICLean/Entropy/SupportedMarginalTails.lean`, where it was
-`Entropy.crossingTerms`; that name is exported from `Entropy` until step 4.0 of the many-body
-plan, so its callers resolve to this definition unchanged.
+`ManyBody.crossingTerms`.
 
 ## Main definitions
 

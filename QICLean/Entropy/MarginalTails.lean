@@ -121,15 +121,16 @@ theorem cutBasisChange_conj_sum_kronecker {ι : Type*} [Fintype ι]
   exact Finset.sum_congr rfl fun r _ ↦ cutBasisChange_conj_kronecker (c r) (d r)
 
 theorem isOneSided_conj (hU : Uᴴ * U = 1) {X : Matrix (α × β) (α × β) ℂ}
-    (hX : IsOneSided X) : IsOneSided (cutBasisChange U * X * (cutBasisChange U)ᴴ) := by
+    (hX : Matrix.IsOneSided X) : Matrix.IsOneSided
+        (cutBasisChange U * X * (cutBasisChange U)ᴴ) := by
   rcases hX with ⟨A, rfl⟩ | ⟨A, rfl⟩
   · exact Or.inl ⟨Uᴴ * A * U, cutBasisChange_conj_kronecker A 1⟩
   · refine Or.inr ⟨A, ?_⟩
     rw [cutBasisChange_conj_kronecker, mul_one, hU]
 
 theorem hasProductDecomposition_conj (hU' : U * Uᴴ = 1)
-    {X : Matrix (α × β) (α × β) ℂ} {c₀ : ℝ} {N : ℕ} (hX : HasProductDecomposition X c₀ N) :
-    HasProductDecomposition (cutBasisChange U * X * (cutBasisChange U)ᴴ) c₀ N := by
+    {X : Matrix (α × β) (α × β) ℂ} {c₀ : ℝ} {N : ℕ} (hX : Matrix.HasProductDecomposition X c₀ N) :
+    Matrix.HasProductDecomposition (cutBasisChange U * X * (cutBasisChange U)ᴴ) c₀ N := by
   obtain ⟨M, c, d, hM, rfl, hcd⟩ := hX
   refine ⟨M, fun a ↦ Uᴴ * c a * U, d, hM, ?_, fun a ↦ ?_⟩
   · exact cutBasisChange_conj_sum_kronecker _ _
@@ -175,16 +176,16 @@ variable {ι : Type*} [Fintype ι] {h : ι → Matrix (α × β) (α × β) ℂ}
 
 /-- Transport of all hypotheses of Lemma 3.1 to the eigenbasis of the marginal. -/
 private theorem exists_schmidt_transport (hherm : ∀ i, (h i).IsHermitian)
-    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, IsOneSided (h i))
-    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2)) (hΨ : ‖Ψ‖ = 1)
+    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, Matrix.IsOneSided (h i))
+    (hcross : ∀ i ∈ Cr, Matrix.HasProductDecomposition (h i) c₀ (dim i ^ 2)) (hΨ : ‖Ψ‖ = 1)
     (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
     (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
       (g₀ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ)))).PosSemidef)
     (hρdef : partialTraceRight (vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ))) = ρ)
     (hρ : ρ.IsHermitian) :
     ∃ (h' : ι → Matrix (α × β) (α × β) ℂ) (Ψ' : EuclideanSpace ℂ (α × β)),
-      (∀ i, (h' i).IsHermitian) ∧ (∀ i, ‖h' i‖ ≤ c₀) ∧ (∀ i ∉ Cr, IsOneSided (h' i)) ∧
-      (∀ i ∈ Cr, HasProductDecomposition (h' i) c₀ (dim i ^ 2)) ∧ ‖Ψ'‖ = 1 ∧
+      (∀ i, (h' i).IsHermitian) ∧ (∀ i, ‖h' i‖ ≤ c₀) ∧ (∀ i ∉ Cr, Matrix.IsOneSided (h' i)) ∧
+      (∀ i ∈ Cr, Matrix.HasProductDecomposition (h' i) c₀ (dim i ^ 2)) ∧ ‖Ψ'‖ = 1 ∧
       (∀ j k, ⟪schmidtRow Ψ' j, schmidtRow Ψ' k⟫_ℂ =
         if j = k then (hρ.eigenvalues j : ℂ) else 0) ∧
       toEuclideanLin (∑ i, h' i) Ψ' = (E₀ : ℂ) • Ψ' ∧
@@ -234,8 +235,9 @@ eigenvalues of `ρ` satisfies `log E e^{uK} ≤ u S(ρ) + 512 e ϑ ℬ u²` for
 Area-law manuscript, Lemma 3.1 (`lem:tail`), `02-initial.tex`, lines 34–63,
 `eq:initial-tail-mgf`. -/
 theorem log_surprisalMoment_eigenvalues_le (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀)
-    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
-    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2)) (hΨ : ‖Ψ‖ = 1)
+    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, Matrix.IsOneSided (h i))
+        (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
+    (hcross : ∀ i ∈ Cr, Matrix.HasProductDecomposition (h i) c₀ (dim i ^ 2)) (hΨ : ‖Ψ‖ = 1)
     (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
     (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
       (g₀ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ)))).PosSemidef)
@@ -258,8 +260,9 @@ eigenvalues of `ρ` satisfies
 Area-law manuscript, Lemma 3.1 (`lem:tail`), `02-initial.tex`, lines 64–69,
 `eq:initial-tail-probability`. -/
 theorem surprisalTail_eigenvalues_le (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀)
-    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
-    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2)) (hΨ : ‖Ψ‖ = 1)
+    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, Matrix.IsOneSided (h i))
+        (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
+    (hcross : ∀ i ∈ Cr, Matrix.HasProductDecomposition (h i) c₀ (dim i ^ 2)) (hΨ : ‖Ψ‖ = 1)
     (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
     (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
       (g₀ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ)))).PosSemidef)

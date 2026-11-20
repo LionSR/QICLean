@@ -6,8 +6,8 @@ Authors: QICLean contributors
 import QICLean.Analysis.ViableHalfSamplingParameters
 import QICLean.Analysis.ViableSubspaceOrder
 import QICLean.Analysis.ViableSubspaceSpectralProjector
-import QICLean.Analysis.ViableSubspaceReferenceTrimming
-import QICLean.Analysis.ViableSubspaceTrimmingInvariance
+import QICLean.Entropy.ViableSampling.ViableSubspaceReferenceTrimming
+import QICLean.Entropy.ViableSampling.ViableSubspaceTrimmingInvariance
 
 /-!
 # A deterministic terminal family image with original-target reference trimming
@@ -40,12 +40,12 @@ monotone-cut or positive-threshold premise is needed. Supporting ALVV,
 arXiv:1602.08828v2, Lemma `l:er`, lines 597–622, and trimming, lines 648–655. -/
 theorem finrank_family_image_trim_le
     (C : ℕ → Finset V) (xi : ℝ) (m : ℕ)
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
-    (W : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n))) :
-    let image : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) :=
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
+    (W : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v)))) :
+    let image : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) :=
       ⨆ i, W.map (A i : _ →ₗ[ℂ] _)
     let output := trimSubspace C xi
-      (fun i ↦ (stdOrthonormalBasis ℂ image i : EuclideanSpace ℂ (SiteConfig n))) m
+      (fun i ↦ (stdOrthonormalBasis ℂ image i : EuclideanSpace ℂ (∀ v, Fin (n v)))) m
     finrank ℂ image ≤ Fintype.card ι * finrank ℂ W ∧
       finrank ℂ output ≤ Fintype.card ι * finrank ℂ W := by
   intro image output
@@ -53,7 +53,7 @@ theorem finrank_family_image_trim_le
     Submodule.finrank_iSup_map_le_card_mul W (fun i ↦ (A i).toLinearMap)
   refine ⟨hdim, ?_⟩
   change finrank ℂ (trimSubspace C xi
-    (fun i ↦ (stdOrthonormalBasis ℂ image i : EuclideanSpace ℂ (SiteConfig n))) m) ≤ _
+    (fun i ↦ (stdOrthonormalBasis ℂ image i : EuclideanSpace ℂ (∀ v, Fin (n v)))) m) ≤ _
   rw [trimSubspace_eq_map_of_orthonormalBasis]
   exact (Submodule.finrank_map_le _ _).trans hdim
 
@@ -64,14 +64,14 @@ Delta. This is a conditional terminal auxiliary to ALVV,
 arXiv:1602.08828v2, lines 749–755 and 1801–1813, not a runtime theorem. -/
 theorem isCloseTo_terminal_family_reference_trim
     {D m bRef : ℕ} {Delta epsilonRef xi : ℝ}
-    {Graw R : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β))}
-    (x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ (SiteConfig n × β)))
-    (A : ι → EuclideanSpace ℂ (SiteConfig n) →L[ℂ] EuclideanSpace ℂ (SiteConfig n))
+    {Graw R : Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β))}
+    (x0 : X) (T : X → Submodule ℂ (EuclideanSpace ℂ ((∀ v, Fin (n v)) × β)))
+    (A : ι → EuclideanSpace ℂ (∀ v, Fin (n v)) →L[ℂ] EuclideanSpace ℂ (∀ v, Fin (n v)))
     (hcard : Fintype.card ι ≤ D ^ 2)
     (hRawSoft : ∀ x, Submodule.IsCloseTo (1 / 200) Graw (T x))
     (hSoftRaw : ∀ x, Submodule.IsCloseTo (1 / 200) (T x) Graw)
     (hA : ∀ x delta, delta < 1 →
-      ∀ S : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)),
+      ∀ S : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))),
       Submodule.IsCloseTo delta (Submodule.prodExt S β) (T x) →
       Submodule.IsCloseTo (Delta / (1 - delta) ^ 2)
         (Submodule.prodExt (⨆ i, S.map (A i : _ →ₗ[ℂ] _)) β) (T x))
@@ -83,12 +83,12 @@ theorem isCloseTo_terminal_family_reference_trim
     (hRank : ∀ t ∈ R, ∀ j < m,
       Matrix.schmidtRank (WithLp.ofLp (cutEnvVector (C j) t)) ≤ bRef)
     (hbudget : xi * Real.sqrt ((m : ℝ) * (bRef : ℝ)) ≤ 1 / 1000)
-    (W : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)))
+    (W : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))))
     (hW : Submodule.IsCloseTo 0.04 (Submodule.prodExt W β) Graw) :
-    let image : Submodule ℂ (EuclideanSpace ℂ (SiteConfig n)) :=
+    let image : Submodule ℂ (EuclideanSpace ℂ (∀ v, Fin (n v))) :=
       ⨆ i, W.map (A i : _ →ₗ[ℂ] _)
     let output := trimSubspace C xi
-      (fun i ↦ (stdOrthonormalBasis ℂ image i : EuclideanSpace ℂ (SiteConfig n))) m
+      (fun i ↦ (stdOrthonormalBasis ℂ image i : EuclideanSpace ℂ (∀ v, Fin (n v)))) m
     (∀ x, Submodule.IsCloseTo (Delta / (91 / 100 : ℝ) ^ 2)
       (Submodule.prodExt image β) (T x)) ∧
     Submodule.IsCloseTo (27 / 2500) (Submodule.prodExt image β) Graw ∧

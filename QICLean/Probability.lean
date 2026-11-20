@@ -39,7 +39,6 @@ import QICLean.Probability.PoissonWordTelescope
 import QICLean.Probability.PoissonWordThinning
 import QICLean.Probability.PoissonWordUniformOrder
 import QICLean.Probability.PoissonWordWeightedGrowth
-import QICLean.Probability.RankUnitaryHalfSampling
 import QICLean.Probability.RankUnitaryProductHaar
 import QICLean.Probability.RankUnitaryUniformSampling
 import QICLean.Probability.WeightedSourceError

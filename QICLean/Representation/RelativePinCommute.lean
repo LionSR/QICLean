@@ -38,7 +38,7 @@ variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 theorem reindex_permOp_subsystemPerm (k : ℕ) (Q : Finset V) (π : Equiv.Perm (Fin k)) :
     reindex (splitEquiv (fun v => Fin (n v)) k Q) (splitEquiv (fun v => Fin (n v)) k Q)
         (permOp (subsystemPerm k (fun v => Fin (n v)) Q) π) =
-      permOp (copyPerm (RegionConfig n Q) k) π ⊗ₖ
+      permOp (copyPerm (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) k) π ⊗ₖ
         (1 : Matrix (Fin k → (v : {v // v ∉ Q}) → Fin (n v))
           (Fin k → (v : {v // v ∉ Q}) → Fin (n v)) ℂ) := by
   rw [← permOp_prodLeft, permOp_of_intertwine (splitEquiv (fun v => Fin (n v)) k Q)
@@ -46,9 +46,10 @@ theorem reindex_permOp_subsystemPerm (k : ℕ) (Q : Finset V) (π : Equiv.Perm (
 
 /-- The copy permutations of `Q` commute with tensor powers of operators on `Q`. -/
 theorem commute_permOp_subsystemPerm_tensorPow_localLift {k : ℕ} (Q : Finset V)
-    (M : Matrix (RegionConfig n Q) (RegionConfig n Q) ℂ) (π : Equiv.Perm (Fin k)) :
+    (M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Q) ℂ) (π : Equiv.Perm (Fin k)) :
     Commute (permOp (subsystemPerm k (fun v => Fin (n v)) Q) π)
-      (tensorPow (k := k) (localLift Q M)) := by
+      (tensorPow (k := k) (ManyBody.place Q M)) := by
   set e := splitEquiv (fun v => Fin (n v)) k Q
   have hmul : ∀ A B : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ,
       reindex e e (A * B) = reindex e e A * reindex e e B := fun A B => by
@@ -58,50 +59,58 @@ theorem commute_permOp_subsystemPerm_tensorPow_localLift {k : ℕ} (Q : Finset V
     ← mul_kronecker_mul, ← mul_kronecker_mul, (commute_permOp_copyPerm_tensorPow M π).eq]
 
 theorem commute_permOp_subsystemPerm_tensorPow_of_subset {k : ℕ} {Q R : Finset V}
-    (hRQ : R ⊆ Q) (σ₀ : SiteConfig n) (M : Matrix (RegionConfig n R) (RegionConfig n R) ℂ)
+    (hRQ : R ⊆ Q)
+        (M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R) ℂ)
     (π : Equiv.Perm (Fin k)) :
     Commute (permOp (subsystemPerm k (fun v => Fin (n v)) Q) π)
-      (tensorPow (k := k) (localLift R M)) := by
-  obtain ⟨K, hK⟩ := ((isSupportedOn_localLift M).mono hRQ).exists_localLift σ₀
+      (tensorPow (k := k) (ManyBody.place R M)) := by
+  obtain ⟨K, hK⟩ := ManyBody.exists_eq_place_of_mem_supportedOperators
+      ((ManyBody.place_mem_supportedOperators M).mono hRQ)
   rw [hK]
   exact commute_permOp_subsystemPerm_tensorPow_localLift Q K π
 
 theorem commute_permOp_subsystemPerm_tensorPow_of_disjoint {k : ℕ} {Q R : Finset V}
-    (hRQ : Disjoint R Q) (σ₀ : SiteConfig n) (M : Matrix (RegionConfig n R) (RegionConfig n R) ℂ)
+    (hRQ : Disjoint R Q)
+        (M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R) ℂ)
     (π : Equiv.Perm (Fin k)) :
     Commute (permOp (subsystemPerm k (fun v => Fin (n v)) Q) π)
-      (tensorPow (k := k) (localLift R M)) := by
+      (tensorPow (k := k) (ManyBody.place R M)) := by
   have hsub : R ⊆ Qᶜ := fun v hv => Finset.mem_compl.mpr (Finset.disjoint_left.mp hRQ hv)
-  have hc := commute_permOp_subsystemPerm_tensorPow_of_subset hsub σ₀ M π (k := k)
-  have hfull := commute_permOp_copyPerm_tensorPow (k := k) (localLift R M) π
-  have hsplit : permOp (copyPerm (SiteConfig n) k) π =
+  have hc := commute_permOp_subsystemPerm_tensorPow_of_subset hsub M π (k := k)
+  have hfull := commute_permOp_copyPerm_tensorPow (k := k) (ManyBody.place R M) π
+  have hsplit : permOp (copyPerm (∀ v, Fin (n v)) k) π =
       permOp (subsystemPerm k (fun v => Fin (n v)) Q) π *
         permOp (subsystemPerm k (fun v => Fin (n v)) Qᶜ) π :=
     permOp_of_eq_mul _ _ _ (fun g => copyPerm_eq_mul_compl (ι := fun v => Fin (n v)) Q g) π
   have hinv : permOp (subsystemPerm k (fun v => Fin (n v)) Q) π =
-      permOp (copyPerm (SiteConfig n) k) π *
+      permOp (copyPerm (∀ v, Fin (n v)) k) π *
         permOp (subsystemPerm k (fun v => Fin (n v)) Qᶜ) π⁻¹ := by
     rw [hsplit, Matrix.mul_assoc, ← map_mul, mul_inv_cancel, map_one, Matrix.mul_one]
   rw [hinv]
-  exact hfull.mul_left (commute_permOp_subsystemPerm_tensorPow_of_subset hsub σ₀ M π⁻¹)
+  exact hfull.mul_left (commute_permOp_subsystemPerm_tensorPow_of_subset hsub M π⁻¹)
 
 /-- A label function of `Q` commutes with tensor powers of operators on `R ⊆ Q`. -/
 theorem commute_labelObservable_tensorPow_of_subset {k : ℕ} {Q R : Finset V} (hRQ : R ⊆ Q)
-    (σ₀ : SiteConfig n) (M : Matrix (RegionConfig n R) (RegionConfig n R) ℂ)
+        (M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R) ℂ)
     (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
     Commute (labelObservable (subsystemPerm k (fun v => Fin (n v)) Q) f)
-      (tensorPow (k := k) (localLift R M)) :=
+      (tensorPow (k := k) (ManyBody.place R M)) :=
   commute_labelObservable_of_forall_commute _
-    (fun π => commute_permOp_subsystemPerm_tensorPow_of_subset hRQ σ₀ M π) f
+    (fun π => commute_permOp_subsystemPerm_tensorPow_of_subset hRQ M π) f
 
 /-- A label function of `Q` commutes with tensor powers of operators on regions disjoint from
 `Q`. -/
 theorem commute_labelObservable_tensorPow_of_disjoint {k : ℕ} {Q R : Finset V}
-    (hRQ : Disjoint R Q) (σ₀ : SiteConfig n) (M : Matrix (RegionConfig n R) (RegionConfig n R) ℂ)
+    (hRQ : Disjoint R Q)
+        (M : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) R) ℂ)
     (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) :
     Commute (labelObservable (subsystemPerm k (fun v => Fin (n v)) Q) f)
-      (tensorPow (k := k) (localLift R M)) :=
+      (tensorPow (k := k) (ManyBody.place R M)) :=
   commute_labelObservable_of_forall_commute _
-    (fun π => commute_permOp_subsystemPerm_tensorPow_of_disjoint hRQ σ₀ M π) f
+    (fun π => commute_permOp_subsystemPerm_tensorPow_of_disjoint hRQ M π) f
 
 end TensorPower

@@ -80,13 +80,13 @@ lemma schmidtRank_cutEnvVector_regionConfigurationSplit
     Matrix.schmidtRank (WithLp.ofLp
       (cutEnvVector (n := fun _ : J ↦ q) (subregionCut J A)
         (regionConfigurationSplit q J psi))) =
-      (regionState (n := fun _ : V ↦ q) A psi).rank := by
+      (ManyBody.regionState (X := fun _ ↦ Fin q) psi A).rank := by
   classical
   rw [Matrix.schmidtRank]
   have hcoef : schmidtCoeffMatrix (WithLp.ofLp
       (cutEnvVector (n := fun _ : J ↦ q) (subregionCut J A)
         (regionConfigurationSplit q J psi))) =
-      (schmidtCoeffMatrix (WithLp.ofLp (cutVector (n := fun _ : V ↦ q) A psi))).submatrix
+      (schmidtCoeffMatrix (WithLp.ofLp (ManyBody.cutVector (X := fun _ ↦ Fin q) A psi))).submatrix
         ((subregionCutSubtypeEquiv hAJ).arrowCongr (Equiv.refl (Fin q)))
         ((Equiv.sumArrowEquivProdArrow _ _ (Fin q)).symm.trans
           ((subregionRestSubtypeEquiv hAJ).arrowCongr (Equiv.refl (Fin q)))) := by
@@ -97,18 +97,18 @@ lemma schmidtRank_cutEnvVector_regionConfigurationSplit
     by_cases hvA : v ∈ A
     · have hvJ : v ∈ J := hAJ hvA
       rw [FiniteProduct.splitEquiv_symm_apply_of_mem _ _ _ _ _ hvJ,
-        cutEquiv_symm_apply_mem _ _ (mem_subregionCut.mpr hvA),
-        cutEquiv_symm_apply_mem _ _ hvA]
+        ManyBody.cutEquiv_symm_apply_mem _ _ (mem_subregionCut.mpr hvA),
+        ManyBody.cutEquiv_symm_apply_mem _ _ hvA]
       rfl
-    · rw [cutEquiv_symm_apply_not_mem _ _ hvA]
+    · rw [ManyBody.cutEquiv_symm_apply_not_mem _ _ hvA]
       by_cases hvJ : v ∈ J
       · rw [FiniteProduct.splitEquiv_symm_apply_of_mem _ _ _ _ _ hvJ,
-          cutEquiv_symm_apply_not_mem _ _ (fun h ↦ hvA (mem_subregionCut.mp h))]
+          ManyBody.cutEquiv_symm_apply_not_mem _ _ (fun h ↦ hvA (mem_subregionCut.mp h))]
         simp [subregionRestSubtypeEquiv, hvJ, Equiv.sumArrowEquivProdArrow]
       · rw [FiniteProduct.splitEquiv_symm_apply_of_notMem _ _ _ _ _ hvJ]
         simp [subregionRestSubtypeEquiv, hvJ, Equiv.sumArrowEquivProdArrow]
   rw [hcoef, rank_submatrix]
-  rw [regionState, Matrix.partialTraceRight_vecMulVec_eq]
+  rw [ManyBody.regionState, Matrix.partialTraceRight_vecMulVec_eq]
   exact (Matrix.rank_self_mul_conjTranspose _).symm
 
 end Entropy

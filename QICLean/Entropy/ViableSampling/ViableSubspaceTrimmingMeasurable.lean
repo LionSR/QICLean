@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.ViableSubspaceTrimmingInvariance
+import QICLean.Entropy.ViableSampling.ViableSubspaceTrimmingInvariance
 import QICLean.Analysis.SpectralProjectionMeasurable
 
 /-!
@@ -30,35 +30,38 @@ omit [Fintype V] [DecidableEq V] in
 family. Used for ALVV collective trimming, arXiv:1602.08828v2,
 Definition `def:trimming`, lines 648–655. -/
 theorem continuous_leftMarginal_stackVector (s : ℕ) :
-    Continuous (fun u : Fin s → EuclideanSpace ℂ (SiteConfig n) ↦
+    Continuous (fun u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) ↦
       leftMarginal (stackVector u)) := by
   simp_rw [leftMarginal_stackVector]
   unfold vecMulVec
   fun_prop
 
 private theorem continuous_regionalPartialTrace (D : Finset V) :
-    Continuous (fun A : Matrix (SiteConfig n) (SiteConfig n) ℂ ↦
-      partialTraceRight (cutOperator D A)) := by
+    Continuous (fun A : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ ↦
+      partialTraceRight (ManyBody.cutOperator D A)) := by
   apply continuous_matrix
   intro x y
-  change Continuous (fun A : Matrix (SiteConfig n) (SiteConfig n) ℂ ↦
-    ∑ z, A ((cutEquiv n D).symm (x, z)) ((cutEquiv n D).symm (y, z)))
+  change Continuous (fun A : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ ↦
+    ∑ z, A ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) D).symm (x, z))
+        ((ManyBody.cutEquiv (fun v ↦ Fin (n v)) D).symm (y, z)))
   fun_prop
 
 private theorem continuous_localLift (D : Finset V) :
-    Continuous (localLift D : Matrix (RegionConfig n D) (RegionConfig n D) ℂ →
-      Matrix (SiteConfig n) (SiteConfig n) ℂ) := by
-  unfold localLift ManyBody.place Matrix.kroneckerMap
+    Continuous
+        (ManyBody.place D : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
+        (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ →
+      Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) := by
+  unfold ManyBody.place Matrix.kroneckerMap
   fun_prop
 
 private theorem measurable_trimStep_of_measurable_trimProj {s : ℕ}
     (D : ℕ → Finset V) (xi : ℝ) (j : ℕ)
-    (hP : Measurable (fun u : Fin s → EuclideanSpace ℂ (SiteConfig n) ↦
+    (hP : Measurable (fun u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) ↦
       trimProj D xi u j)) :
-    Measurable (fun u : Fin s → EuclideanSpace ℂ (SiteConfig n) ↦ trimStep D xi u j) := by
-  have hconj : Measurable (fun u : Fin s → EuclideanSpace ℂ (SiteConfig n) ↦
+    Measurable (fun u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) ↦ trimStep D xi u j) := by
+  have hconj : Measurable (fun u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) ↦
       (trimProj D xi u j)ᴴ) :=
-    (show Continuous (fun A : Matrix (SiteConfig n) (SiteConfig n) ℂ ↦ Aᴴ) from
+    (show Continuous (fun A : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ ↦ Aᴴ) from
       by fun_prop).measurable.comp hP
   unfold trimStep
   simp_rw [leftMarginal_cutEnvVector_leftApply]
@@ -71,7 +74,7 @@ product is a Borel measurable function of its vectors. No orthonormality,
 nonzero-vector or threshold-positivity premise is needed. Source: ALVV,
 arXiv:1602.08828v2, Definition `def:trimming`, lines 648–655. -/
 theorem measurable_trimProj {s : ℕ} (D : ℕ → Finset V) (xi : ℝ) (k : ℕ) :
-    Measurable (fun u : Fin s → EuclideanSpace ℂ (SiteConfig n) ↦ trimProj D xi u k) := by
+    Measurable (fun u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) ↦ trimProj D xi u k) := by
   induction k with
   | zero => exact measurable_const
   | succ j ih =>
@@ -84,7 +87,7 @@ in the entire input family. The number of vectors may be zero, and the
 threshold and cuts are arbitrary. Source: ALVV,
 arXiv:1602.08828v2, Definition `def:trimming`, lines 648–655. -/
 theorem measurable_trimStep {s : ℕ} (D : ℕ → Finset V) (xi : ℝ) (k : ℕ) :
-    Measurable (fun u : Fin s → EuclideanSpace ℂ (SiteConfig n) ↦ trimStep D xi u k) := by
+    Measurable (fun u : Fin s → EuclideanSpace ℂ (∀ v, Fin (n v)) ↦ trimStep D xi u k) := by
   exact measurable_trimStep_of_measurable_trimProj D xi k (measurable_trimProj D xi k)
 
 end Entropy

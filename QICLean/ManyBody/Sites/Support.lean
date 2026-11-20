@@ -32,7 +32,7 @@ and every operator is supported on every region.
 
 * `ManyBody.mem_supportedOperators_iff` — membership is the condition on matrix entries.
 * `ManyBody.apply_eq_zero_of_mem_supportedOperators`,
-  `ManyBody.apply_eq_of_mem_supportedOperators` — the two halves of that condition in the
+  `ManyBody.IsSupportedOn.apply_eq` — the two halves of that condition in the
   form used in computations.
 * `ManyBody.supportedOperators_mono`, `ManyBody.supportedOperators_univ`.
 
@@ -59,6 +59,28 @@ def IsSupportedOn (A : Matrix (Config X) (Config X) ℂ) (D : Finset V) : Prop :
   (∀ σ τ : Config X, (∃ v ∉ D, σ v ≠ τ v) → A σ τ = 0) ∧
     ∀ σ τ σ' τ' : Config X, (∀ v ∈ D, σ v = σ' v) → (∀ v ∈ D, τ v = τ' v) →
       (∀ v ∉ D, σ v = τ v) → (∀ v ∉ D, σ' v = τ' v) → A σ τ = A σ' τ'
+
+/-- Entries of an operator supported on `D` agree whenever the configurations agree on `D` and
+have the same coincidence pattern outside it. -/
+theorem IsSupportedOn.apply_eq {A : Matrix (Config X) (Config X) ℂ} {D : Finset V}
+    (hA : IsSupportedOn A D) {σ τ σ' τ' : Config X} (h1 : ∀ v ∈ D, σ v = σ' v)
+    (h2 : ∀ v ∈ D, τ v = τ' v) (h3 : ∀ v ∉ D, (σ v = τ v ↔ σ' v = τ' v)) :
+    A σ τ = A σ' τ' := by
+  by_cases h : ∃ v ∉ D, σ v ≠ τ v
+  · obtain ⟨v, hv, hne⟩ := h
+    rw [hA.1 σ τ ⟨v, hv, hne⟩, hA.1 σ' τ' ⟨v, hv, fun h' ↦ hne ((h3 v hv).mpr h')⟩]
+  · push Not at h
+    exact hA.2 σ τ σ' τ' h1 h2 h (fun v hv ↦ (h3 v hv).mp (h v hv))
+
+/-- Support on a region implies support on every larger region. -/
+theorem IsSupportedOn.mono {A : Matrix (Config X) (Config X) ℂ} {D D' : Finset V}
+    (hA : IsSupportedOn A D) (h : D ⊆ D') : IsSupportedOn A D' := by
+  refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ hA.1 σ τ ⟨v, fun hvD ↦ hv (h hvD), hne⟩,
+    fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
+  refine hA.apply_eq (fun v hv ↦ h1 v (h hv)) (fun v hv ↦ h2 v (h hv)) fun v hv ↦ ?_
+  by_cases hv' : v ∈ D'
+  · rw [h1 v hv', h2 v hv']
+  · exact ⟨fun _ ↦ h4 v hv', fun _ ↦ h3 v hv'⟩
 
 section Carrier
 
@@ -96,7 +118,7 @@ private theorem IsSupportedOn.mul_apply (hA : IsSupportedOn A D) (σ τ : Config
   exact fun h ↦ hv h.symm
 
 omit [∀ v, DecidableEq (X v)] in
-private theorem IsSupportedOn.mul (hA : IsSupportedOn A D) (hB : IsSupportedOn B D) :
+theorem IsSupportedOn.mul (hA : IsSupportedOn A D) (hB : IsSupportedOn B D) :
     IsSupportedOn (A * B) D := by
   refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ ?_, fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
   · rw [Matrix.mul_apply]
@@ -163,28 +185,10 @@ theorem apply_eq_zero_of_mem_supportedOperators (hA : A ∈ supportedOperators X
     {σ τ : Config X} {v : V} (hv : v ∉ D) (hne : σ v ≠ τ v) : A σ τ = 0 :=
   hA.1 σ τ ⟨v, hv, hne⟩
 
-/-- Entries of a supported operator agree whenever the configurations agree on the region and
-have the same coincidence pattern outside it. -/
-theorem apply_eq_of_mem_supportedOperators (hA : A ∈ supportedOperators X D)
-    {σ τ σ' τ' : Config X} (h1 : ∀ v ∈ D, σ v = σ' v) (h2 : ∀ v ∈ D, τ v = τ' v)
-    (h3 : ∀ v ∉ D, (σ v = τ v ↔ σ' v = τ' v)) : A σ τ = A σ' τ' := by
-  by_cases h : ∃ v ∉ D, σ v ≠ τ v
-  · obtain ⟨v, hv, hne⟩ := h
-    rw [hA.1 σ τ ⟨v, hv, hne⟩, hA.1 σ' τ' ⟨v, hv, fun h' ↦ hne ((h3 v hv).mpr h')⟩]
-  · push Not at h
-    exact hA.2 σ τ σ' τ' h1 h2 h (fun v hv ↦ (h3 v hv).mp (h v hv))
-
 /-- The subalgebra of supported operators grows with the region. -/
 theorem supportedOperators_mono (h : D ⊆ D') :
-    supportedOperators X D ≤ supportedOperators X D' := by
-  intro A hA
-  refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ hA.1 σ τ ⟨v, fun hvD ↦ hv (h hvD), hne⟩,
-    fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
-  refine apply_eq_of_mem_supportedOperators hA (fun v hv ↦ h1 v (h hv))
-    (fun v hv ↦ h2 v (h hv)) fun v hv ↦ ?_
-  by_cases hv' : v ∈ D'
-  · rw [h1 v hv', h2 v hv']
-  · exact ⟨fun _ ↦ h4 v hv', fun _ ↦ h3 v hv'⟩
+    supportedOperators X D ≤ supportedOperators X D' :=
+  fun _ hA ↦ IsSupportedOn.mono hA h
 
 /-- Every operator is supported on the set of all sites. -/
 @[simp]
@@ -232,19 +236,25 @@ theorem commute_of_mem_supportedOperators_of_disjoint {B : Matrix (Config X) (Co
     rw [mul_apply_of_mem_supportedOperators_of_disjoint hA hB h,
       mul_apply_of_mem_supportedOperators_of_disjoint hB hA h.symm, mul_comm]
     congr 1
-    · refine apply_eq_of_mem_supportedOperators hB (fun v hv ↦ ?_) (fun v hv ↦ ?_)
+    · refine IsSupportedOn.apply_eq hB (fun v hv ↦ ?_) (fun v hv ↦ ?_)
         fun v hv ↦ ?_
       · rw [ite_eq_right (hD v hv)]
       · rw [ite_eq_left hv]
       · by_cases hvD : v ∈ D
         · simp [hvD, hv]
         · simp [hvD, hv, hστ v (by simp [hvD, hv])]
-    · refine apply_eq_of_mem_supportedOperators hA (fun v hv ↦ ?_) (fun v hv ↦ ?_)
+    · refine IsSupportedOn.apply_eq hA (fun v hv ↦ ?_) (fun v hv ↦ ?_)
         fun v hv ↦ ?_
       · rw [ite_eq_right (hD' v hv)]
       · rw [ite_eq_left hv]
       · by_cases hvD' : v ∈ D'
         · simp [hvD', hv]
         · simp [hvD', hv, hστ v (by simp [hvD', hv])]
+
+/-- An operator in the coordinates of the cut along `D`: its matrix indexed by pairs of a
+configuration of `D` and one of the other sites. -/
+noncomputable abbrev cutOperator (D : Finset V) (A : Matrix (Config X) (Config X) ℂ) :
+    Matrix (RegionConfig X D × ComplConfig X D) (RegionConfig X D × ComplConfig X D) ℂ :=
+  reindex (cutEquiv X D) (cutEquiv X D) A
 
 end ManyBody

@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.ClusterExpansion.Path
 import QICLean.Algebra.OperatorSchmidtBounds
-import QICLean.Entropy.SupportedOperatorSchmidtRank
+import QICLean.ManyBody.Sites.OperatorSchmidtRank
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion.Factorization
 import QICLean.ManyBody.Sites.Lattice.Chain
 
@@ -24,11 +24,6 @@ corrected to interaction labels).
 not the minimal physical support of a word product; a component of `s` labels is designated on
 `s + 1` sites. The printed physical-support estimate is distinct, see
 https://sirui-lu.com/TNLean/paper-gaps/alvv16_cluster_approximation.pdf.
-
-The module sits in `Entropy` because the cut-rank bounds it uses,
-`Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one` and `…_le_pow_card`, are stated on
-the temporary `Entropy.SiteConfig` together with the one-sided and product decompositions they
-rest on. It moves down to the many-body layers with that chain when `SiteConfig` is removed.
 
 ## Main results
 
@@ -140,7 +135,7 @@ theorem operatorSchmidtRank_clusterOp_nearestNeighbor_le {r : ℕ} (hq : 1 ≤ q
     (A : Finset (Fin (N + 1))) (β : ℝ) :
     operatorSchmidtRank (reindex (cutEquiv (fun _ ↦ Fin q) A) (cutEquiv (fun _ ↦ Fin q) A)
       (clusterOp Φ.term C β)) ≤ q ^ r :=
-  (Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_pow_card hq (A := A)
+  (ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le_pow_card hq (A := A)
     (clusterOp_mem_supportedOperators Φ C β)).trans
     (Nat.pow_le_pow_right hq ((card_biUnion_chainBond_le hC).trans (Nat.succ_le_of_lt hshort)))
 
@@ -164,14 +159,14 @@ theorem operatorSchmidtRank_truncatedExp_nearestNeighbor_le_count {r : ℕ} (hq 
   let φ := Matrix.reindexAlgEquiv ℂ ℂ (cutEquiv (fun _ : Fin (N + 1) ↦ Fin q) A)
   have hleft (B : Finset (Fin N)) (hB : ∀ i ∈ B, i.val < p.val) :
       operatorSchmidtRank (φ (F B)) ≤ 1 :=
-    Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one
+    ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one
       (retained_nearestNeighbor_left_mem_supportedOperators Φ p B hB β) (.inl Finset.Subset.rfl)
   have hright (B : Finset (Fin N)) (hB : ∀ i ∈ B, p.val < i.val) :
       operatorSchmidtRank (φ (F B)) ≤ 1 := by
     have hd : Disjoint R A :=
       Finset.disjoint_left.mpr fun v hvR hvA ↦
         (not_lt_of_ge (mem_filter.mp hvA).2) (mem_filter.mp hvR).2
-    exact Entropy.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one
+    exact ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le_one
       (retained_nearestNeighbor_right_mem_supportedOperators Φ p B hB β) (.inr hd)
   have hprod (B D : Finset (Fin N)) (hB : ∀ i ∈ B, i.val < p.val)
       (hD : ∀ i ∈ D, p.val < i.val) : operatorSchmidtRank (φ (F B * F D)) ≤ 1 := by

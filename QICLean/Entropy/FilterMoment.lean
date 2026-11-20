@@ -179,8 +179,9 @@ variable {ι : Type*} [Fintype ι] {h : ι → Matrix (α × β) (α × β) ℂ}
 Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 476–487, with the
 moment bound applied at `u = -a/(1-a)`. -/
 theorem norm_kronecker_one_apply_sq_le_exp (hherm : ∀ i, (h i).IsHermitian) (hc₀ : 0 ≤ c₀)
-    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, IsOneSided (h i)) (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
-    (hcross : ∀ i ∈ Cr, HasProductDecomposition (h i) c₀ (dim i ^ 2)) (hΨ : ‖Ψ‖ = 1)
+    (hnorm : ∀ i, ‖h i‖ ≤ c₀) (hone : ∀ i ∉ Cr, Matrix.IsOneSided (h i))
+        (hdim : ∀ i ∈ Cr, 1 ≤ dim i)
+    (hcross : ∀ i ∈ Cr, Matrix.HasProductDecomposition (h i) c₀ (dim i ^ 2)) (hΨ : ‖Ψ‖ = 1)
     (hg₀ : 0 < g₀) (heig : toEuclideanLin (∑ i, h i) Ψ = (E₀ : ℂ) • Ψ)
     (hgap : ((∑ i, h i) - (E₀ : ℂ) • 1 -
       (g₀ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ψ) (star (WithLp.ofLp Ψ)))).PosSemidef)

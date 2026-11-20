@@ -46,23 +46,23 @@ variable (t : ℝ) (k : ℕ) (pre : Config k (fun v => Fin (n v)) → ℂ)
   (p : ℝ) (j : Σ h, Option (C h))
 
 /-- The real density before pushing forward to the unit sphere. -/
-def transportLeafDensity (z : ℝ × unitaryGroup (SiteConfig n) ℂ) : ℝ :=
+def transportLeafDensity (z : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ) : ℝ :=
   Matrix.Transport.fourierWeight z.1 *
     coherentDensity k (base n) (D.state n t k pre p j z.1) z.2
 
 /-- The Fourier-weighted coherent measure of the literal terminal state. -/
-def transportLeafMeasure : Measure (CoherentSphere (SiteConfig n)) :=
-  Measure.map (fun z : ℝ × unitaryGroup (SiteConfig n) ℂ => coherentSphereMap (base n) z.2)
-    ((volume.prod (unitaryHaar (SiteConfig n))).withDensity
+def transportLeafMeasure : Measure (CoherentSphere (∀ v, Fin (n v))) :=
+  Measure.map (fun z : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ => coherentSphereMap (base n) z.2)
+    ((volume.prod (unitaryHaar (∀ v, Fin (n v)))).withDensity
       (fun z => ENNReal.ofReal (D.transportLeafDensity n t k pre p j z)))
 
 /-- The density uses the same replica dimension, Fourier weight and coherent projector
 as the transport integral. -/
-theorem transportLeafDensity_eq (z : ℝ × unitaryGroup (SiteConfig n) ℂ) :
+theorem transportLeafDensity_eq (z : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ) :
     D.transportLeafDensity n t k pre p j z =
-      (symDim (SiteConfig n) k : ℝ) * Matrix.Transport.fourierWeight z.1 *
+      (symDim (∀ v, Fin (n v)) k : ℝ) * Matrix.Transport.fourierWeight z.1 *
         (D.state n t k pre p j z.1 *
-          coherentProj k ((z.2 : Matrix (SiteConfig n) (SiteConfig n) ℂ) *ᵥ
+          coherentProj k ((z.2 : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ) *ᵥ
             Pi.single (base n) 1)).trace.re := by
   unfold transportLeafDensity coherentDensity
   ring
@@ -110,7 +110,7 @@ private theorem measurable_fourierWeight : Measurable Matrix.Transport.fourierWe
 /-- The density is jointly measurable in the Fourier variable and the Haar unitary. -/
 theorem measurable_transportLeafDensity :
     Measurable (D.transportLeafDensity n t k pre p j) := by
-  have hpair : Continuous fun z : ℝ × unitaryGroup (SiteConfig n) ℂ =>
+  have hpair : Continuous fun z : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ =>
       (D.state n t k pre p j z.1, z.2) :=
     ((D.continuous_state n t k pre p j).comp continuous_fst).prodMk continuous_snd
   exact (measurable_fourierWeight.comp measurable_fst).mul
@@ -118,29 +118,29 @@ theorem measurable_transportLeafDensity :
 
 /-- A continuous spherical symbol times the joint density is absolutely integrable.
 Both unitary coordinates enter the compactness bound. -/
-theorem integrable_transportLeafDensity_mul {f : CoherentSphere (SiteConfig n) → ℝ}
+theorem integrable_transportLeafDensity_mul {f : CoherentSphere (∀ v, Fin (n v)) → ℝ}
     (hf : Continuous f) :
-    Integrable (fun z : ℝ × unitaryGroup (SiteConfig n) ℂ =>
+    Integrable (fun z : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ =>
       D.transportLeafDensity n t k pre p j z * f (coherentSphereMap (base n) z.2))
-      (volume.prod (unitaryHaar (SiteConfig n))) := by
+      (volume.prod (unitaryHaar (∀ v, Fin (n v)))) := by
   let F : unitaryGroup (Config k fun v => Fin (n v)) ℂ ×
-      unitaryGroup (SiteConfig n) ℂ → ℝ := fun z =>
+      unitaryGroup (∀ v, Fin (n v)) ℂ → ℝ := fun z =>
     coherentDensity k (base n) (D.leafUnitaryState n t k pre p j z.1) z.2 *
       f (coherentSphereMap (base n) z.2)
   have hpair : Continuous fun z : unitaryGroup (Config k fun v => Fin (n v)) ℂ ×
-      unitaryGroup (SiteConfig n) ℂ => (D.leafUnitaryState n t k pre p j z.1, z.2) :=
+      unitaryGroup (∀ v, Fin (n v)) ℂ => (D.leafUnitaryState n t k pre p j z.1, z.2) :=
     ((D.continuous_leafUnitaryState n t k pre p j).comp
       (continuous_subtype_val.comp continuous_fst)).prodMk continuous_snd
   have hF : Continuous F :=
     ((continuous_coherentDensity_joint k (base n)).comp hpair).mul
       (hf.comp ((continuous_coherentSphereMap (base n)).comp continuous_snd))
   obtain ⟨B, hB⟩ := isCompact_univ.exists_bound_of_continuousOn hF.continuousOn
-  have hparam : Continuous fun z : ℝ × unitaryGroup (SiteConfig n) ℂ =>
+  have hparam : Continuous fun z : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ =>
       F (D.leafUnitaryPath n t k p z.1, z.2) :=
     hF.comp (((D.continuous_leafUnitaryPath n t k p).comp continuous_fst).prodMk
       continuous_snd)
   have hint := (Matrix.Transport.integrable_fourierWeight.comp_fst
-    (unitaryHaar (SiteConfig n))).mul_bdd hparam.aestronglyMeasurable
+    (unitaryHaar (∀ v, Fin (n v)))).mul_bdd hparam.aestronglyMeasurable
       (Filter.Eventually.of_forall fun z => hB _ (mem_univ _))
   simpa only [F, transportLeafDensity, leafUnitaryState, leafUnitaryPath,
     state, Matrix.Transport.transportState, rootPath, mul_assoc] using hint
@@ -148,14 +148,14 @@ theorem integrable_transportLeafDensity_mul {f : CoherentSphere (SiteConfig n) �
 /-- The unweighted joint density is absolutely integrable for all totalized inputs. -/
 theorem integrable_transportLeafDensity :
     Integrable (D.transportLeafDensity n t k pre p j)
-      (volume.prod (unitaryHaar (SiteConfig n))) := by
+      (volume.prod (unitaryHaar (∀ v, Fin (n v)))) := by
   simpa only [mul_one] using
     D.integrable_transportLeafDensity_mul n t k pre p j (f := fun _ => 1) continuous_const
 
 /-- The literal Fourier-weighted measure is finite for every real parameter. -/
 instance isFiniteMeasure_transportLeafMeasure :
     IsFiniteMeasure (D.transportLeafMeasure n t k pre p j) := by
-  let : IsFiniteMeasure ((volume.prod (unitaryHaar (SiteConfig n))).withDensity
+  let : IsFiniteMeasure ((volume.prod (unitaryHaar (∀ v, Fin (n v)))).withDensity
       (fun z => ENNReal.ofReal (D.transportLeafDensity n t k pre p j z))) :=
     isFiniteMeasure_withDensity_ofReal
       (D.integrable_transportLeafDensity n t k pre p j).hasFiniteIntegral
@@ -163,14 +163,14 @@ instance isFiniteMeasure_transportLeafMeasure :
   infer_instance
 
 /-- Continuous functions on the unit sphere are integrable against each leaf measure. -/
-theorem integrable_transportLeafMeasure {f : CoherentSphere (SiteConfig n) → ℝ}
+theorem integrable_transportLeafMeasure {f : CoherentSphere (∀ v, Fin (n v)) → ℝ}
     (hf : Continuous f) : Integrable f (D.transportLeafMeasure n t k pre p j) :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)
 
 /-- Under the structural transport hypotheses, taking `ofReal` loses no density,
 including at inactive leaves and outside the open interpolation interval. -/
 theorem transportLeafDensity_nonneg (hD : D.IsAdmissible) (ht : 0 ≤ t)
-    (hcomm : D.CrossBandCommute n t k) (z : ℝ × unitaryGroup (SiteConfig n) ℂ) :
+    (hcomm : D.CrossBandCommute n t k) (z : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ) :
     0 ≤ D.transportLeafDensity n t k pre p j z :=
   mul_nonneg (Real.sinhRatioDensity_pos (by norm_num) z.1).le
     (coherentDensity_nonneg k (base n) (D.state n t k pre p j z.1)
@@ -178,18 +178,18 @@ theorem transportLeafDensity_nonneg (hD : D.IsAdmissible) (ht : 0 ≤ t)
 
 /-- The literal pushforward represents the exact nested Fourier-coherent integral. -/
 theorem integral_transportLeafMeasure (hD : D.IsAdmissible) (ht : 0 ≤ t)
-    (hcomm : D.CrossBandCommute n t k) {f : (SiteConfig n → ℂ) → ℝ} (hf : Continuous f) :
+    (hcomm : D.CrossBandCommute n t k) {f : ((∀ v, Fin (n v)) → ℂ) → ℝ} (hf : Continuous f) :
     (∫ θ, f (fun x => θ.1 x) ∂D.transportLeafMeasure n t k pre p j) =
       ∫ u, Matrix.Transport.fourierWeight u *
         realCoherentIntegral k (base n) (D.state n t k pre p j u) f := by
-  have hs : Continuous fun θ : CoherentSphere (SiteConfig n) => f (fun x => θ.1 x) :=
+  have hs : Continuous fun θ : CoherentSphere (∀ v, Fin (n v)) => f (fun x => θ.1 x) :=
     hf.comp continuous_coherentSphere_coe
-  have hmap : Measurable (fun z : ℝ × unitaryGroup (SiteConfig n) ℂ =>
+  have hmap : Measurable (fun z : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ =>
       coherentSphereMap (base n) z.2) := by
     simpa only [Function.comp_def] using
       (continuous_coherentSphereMap (base n)).measurable.comp
         (measurable_snd : Measurable
-          (Prod.snd : ℝ × unitaryGroup (SiteConfig n) ℂ → unitaryGroup (SiteConfig n) ℂ))
+          (Prod.snd : ℝ × unitaryGroup (∀ v, Fin (n v)) ℂ → unitaryGroup (∀ v, Fin (n v)) ℂ))
   rw [transportLeafMeasure, integral_map_of_stronglyMeasurable hmap hs.stronglyMeasurable]
   rw [integral_withDensity_eq_integral_toReal_smul
     (D.measurable_transportLeafDensity n t k pre p j).ennreal_ofReal

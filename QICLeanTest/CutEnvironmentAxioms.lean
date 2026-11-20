@@ -29,10 +29,10 @@ depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #print axioms Entropy.cutEnvVector_leftApply_of_cutOperator_eq_one_kronecker
 
 /-- info:
-'Entropy.IsSupportedOn.schmidtRank_cutEnvVector_leftApply_le'
+'ManyBody.IsSupportedOn.schmidtRank_cutEnvVector_leftApply_le'
 depends on axioms: [propext, Classical.choice, Quot.sound] -/
 #guard_msgs (whitespace := lax) in
-#print axioms Entropy.IsSupportedOn.schmidtRank_cutEnvVector_leftApply_le
+#print axioms ManyBody.IsSupportedOn.schmidtRank_cutEnvVector_leftApply_le
 
 /-- info:
 'Entropy.cutEnvVector_rightApply'

@@ -52,7 +52,7 @@ def RelativePinBound : Prop :=
         ∀ {t : ℝ}, 0 < t → t < 1 / 4 → 2 * t * logDim n m.subsystem ≤ c →
         ∃ b : ℕ → ℝ, (∀ k, 0 < b k) ∧
           ((fun k : ℕ => -Real.log (b k)) =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧
-          ∀ (k : ℕ) (θ : SiteConfig n → ℂ), star θ ⬝ᵥ θ = 1 →
+          ∀ (k : ℕ) (θ : (∀ v, Fin (n v)) → ℂ), star θ ⬝ᵥ θ = 1 →
             (b k * Real.exp ((k : ℝ) * (2 * t) *
                 (moveEta n π m ((EuclideanSpace.equiv _ ℂ).symm θ) -
                   Cpin * (2 * t) ^ (1 / 4 : ℝ) * logDim n m.subsystem ^ epin))) •
@@ -68,12 +68,13 @@ uniformly over density matrices `ρ` on `𝒮_k`,
 def SplitSkewBound : Prop :=
     ∃ c Csym esym : ℝ, 0 < c ∧
       ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
-        (π : PYF V), π.IsPartition → ∀ (D : Finset V) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ),
-        0 ≤ h → h ≤ 1 → IsSupportedOn h D → (π.SplitsToP D ∨ π.SplitsToF D) →
+        (π : PYF V), π.IsPartition → ∀ (D : Finset V)
+            (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ),
+        0 ≤ h → h ≤ 1 → ManyBody.IsSupportedOn h D → (π.SplitsToP D ∨ π.SplitsToF D) →
         ∀ {t : ℝ}, 0 < t → t < 1 / 4 → 2 * t * logDim n D ≤ c →
         ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧
           ∀ (k : ℕ) (ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ),
-            ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+            ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ →
             (ρ * Matrix.Transport.skewSquare (bandMetric n t k π) (copyMean n k h)).trace.re ≤
               Csym * (2 * t) ^ 2 * logDim n D ^ esym *
                   realCoherentIntegral k (TransportData.base n) ρ (fun θ =>
@@ -88,7 +89,7 @@ def RelativePinBoundAt (c Cpin epin : ℝ) : Prop :=
       ∀ {t : ℝ}, 0 < t → t < 1 / 4 → 2 * t * logDim n m.subsystem ≤ c →
       ∃ b : ℕ → ℝ, (∀ k, 0 < b k) ∧
         ((fun k : ℕ => -Real.log (b k)) =O[atTop] fun k : ℕ => Real.log (k + 1)) ∧
-        ∀ (k : ℕ) (θ : SiteConfig n → ℂ), star θ ⬝ᵥ θ = 1 →
+        ∀ (k : ℕ) (θ : (∀ v, Fin (n v)) → ℂ), star θ ⬝ᵥ θ = 1 →
           (b k * Real.exp ((k : ℝ) * (2 * t) *
               (moveEta n π m ((EuclideanSpace.equiv _ ℂ).symm θ) -
                 Cpin * (2 * t) ^ (1 / 4 : ℝ) * logDim n m.subsystem ^ epin))) •
@@ -100,12 +101,13 @@ def RelativePinBoundAt (c Cpin epin : ℝ) : Prop :=
 (`05-replicas.tex`, display `replicas:skew-bound`, lines 645--660). -/
 def SplitSkewBoundAt (c Csym esym : ℝ) : Prop :=
     ∀ {V : Type u} [Fintype V] [DecidableEq V] (n : V → ℕ) [∀ v, NeZero (n v)]
-      (π : PYF V), π.IsPartition → ∀ (D : Finset V) (h : Matrix (SiteConfig n) (SiteConfig n) ℂ),
-      0 ≤ h → h ≤ 1 → IsSupportedOn h D → (π.SplitsToP D ∨ π.SplitsToF D) →
+      (π : PYF V), π.IsPartition → ∀ (D : Finset V)
+          (h : Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v)) ℂ),
+      0 ≤ h → h ≤ 1 → ManyBody.IsSupportedOn h D → (π.SplitsToP D ∨ π.SplitsToF D) →
       ∀ {t : ℝ}, 0 < t → t < 1 / 4 → 2 * t * logDim n D ≤ c →
       ∃ r : ℕ → ℝ, Tendsto r atTop (𝓝 0) ∧
         ∀ (k : ℕ) (ρ : Matrix (Config k fun v => Fin (n v)) (Config k fun v => Fin (n v)) ℂ),
-          ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (SiteConfig n) k) * ρ = ρ →
+          ρ.PosSemidef → ρ.trace = 1 → symProj (copyPerm (∀ v, Fin (n v)) k) * ρ = ρ →
           (ρ * Matrix.Transport.skewSquare (bandMetric n t k π) (copyMean n k h)).trace.re ≤
             Csym * (2 * t) ^ 2 * logDim n D ^ esym *
                 realCoherentIntegral k (TransportData.base n) ρ (fun θ =>
