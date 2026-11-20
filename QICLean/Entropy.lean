@@ -105,6 +105,8 @@ import QICLean.Entropy.RegionTensorSplitting
 import QICLean.Entropy.RegionTraceNorm
 import QICLean.Entropy.RegionUnion
 import QICLean.Entropy.RegionalOperatorCoordinates
+import QICLean.Entropy.RegionalReset
+import QICLean.Entropy.RegionalResetEntropy
 import QICLean.Entropy.RegionalRightContraction
 import QICLean.Entropy.RegionalTensorMerge
 import QICLean.Entropy.RegionalViability
@@ -112,6 +114,7 @@ import QICLean.Entropy.Renyi
 import QICLean.Entropy.RenyiMassBound
 import QICLean.Entropy.RenyiRankLowerBound
 import QICLean.Entropy.RenyiTail
+import QICLean.Entropy.ReplicaSwap
 import QICLean.Entropy.RestoringGroundComponent
 import QICLean.Entropy.RestoringMarginal
 import QICLean.Entropy.RestoringNorm
