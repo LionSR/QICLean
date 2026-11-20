@@ -426,14 +426,14 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
 
 \begin{lemma}[Encodings and decodings]
     \label{lem:protocols_encoding}
-    \lean{Matrix.mul_initializedBasisMatrix_apply,
-        Matrix.conjTranspose_initializedBasisMatrix_mul_apply,
-        Matrix.mul_conjTranspose_initializedBasisMatrix_apply_self,
-        Matrix.mul_conjTranspose_initializedBasisMatrix_apply_of_notMem,
-        Matrix.initializedBasisMatrix_mul_single_mul_conjTranspose,
-        Matrix.initializedBasisMatrix_equiv_mul_mul_conjTranspose,
-        Matrix.initializedBasisMatrix_mul_apply_self,
-        Matrix.initializedBasisMatrix_mul_apply_of_notMem, KrausFamily.isTP_embed,
+    \lean{Matrix.mul_basisInclusion_apply,
+        Matrix.conjTranspose_basisInclusion_mul_apply,
+        Matrix.mul_conjTranspose_basisInclusion_apply_self,
+        Matrix.mul_conjTranspose_basisInclusion_apply_of_notMem,
+        Matrix.basisInclusion_mul_single_mul_conjTranspose,
+        Matrix.basisInclusion_equiv_mul_mul_conjTranspose,
+        Matrix.basisInclusion_mul_apply_self,
+        Matrix.basisInclusion_mul_apply_of_notMem, KrausFamily.isTP_embed,
         KrausFamily.map_embed_apply, KrausFamily.decode_op_inl, KrausFamily.decode_op_inr,
         KrausFamily.map_decode_apply, KrausFamily.effect_decode, KrausFamily.isTP_decode, KrausFamily.decode_op_inl_mul, KrausFamily.decode_op_inr_mul,
         KrausFamily.map_decode_map_embed, QuantumCircuit.map_encodeCircuit,

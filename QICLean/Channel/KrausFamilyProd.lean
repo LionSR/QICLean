@@ -101,11 +101,11 @@ theorem IsUnitary.tensorRight [DecidableEq β] {K : KrausFamily α β} (hK : K.I
 basis inclusions `b ↦ (b, f)`. -/
 abbrev traceRight (β F : Type) [DecidableEq β] [Fintype F] [DecidableEq F] :
     KrausFamily (β × F) β :=
-  ⟨F, fun f ↦ (initializedBasisMatrix (Function.Embedding.sectL β f))ᴴ⟩
+  ⟨F, fun f ↦ (basisInclusion (Function.Embedding.sectL β f))ᴴ⟩
 
 omit [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α] [DecidableEq α'] in
 @[simp] theorem traceRight_op [DecidableEq β] {F : Type} [Fintype F] [DecidableEq F]
-    (f : F) : (traceRight β F).op f = (initializedBasisMatrix (Function.Embedding.sectL β f))ᴴ :=
+    (f : F) : (traceRight β F).op f = (basisInclusion (Function.Embedding.sectL β f))ᴴ :=
   rfl
 
 omit [Fintype α] [Fintype α'] [DecidableEq α] [DecidableEq α'] in
@@ -113,8 +113,8 @@ theorem map_traceRight [DecidableEq β] {F : Type} [Fintype F] [DecidableEq F]
     (ρ : Matrix (β × F) (β × F) ℂ) : (traceRight β F).map ρ = partialTraceRight ρ := by
   ext b b'
   simp only [map_apply, conjTranspose_conjTranspose, Matrix.sum_apply,
-    partialTraceRight_apply, mul_initializedBasisMatrix_apply,
-    conjTranspose_initializedBasisMatrix_mul_apply]
+    partialTraceRight_apply, mul_basisInclusion_apply,
+    conjTranspose_basisInclusion_mul_apply]
   rfl
 
 omit [Fintype α] [Fintype α'] [DecidableEq α] [DecidableEq α'] in
@@ -125,9 +125,9 @@ theorem isTP_traceRight [DecidableEq β] {F : Type} [Fintype F] [DecidableEq F] 
     (fun f _ hf ↦ ?_) (fun h ↦ absurd (Finset.mem_univ _) h)]
   · rw [traceRight_op, conjTranspose_conjTranspose,
       show ((b, g) : β × F) = Function.Embedding.sectL β g b from rfl,
-      initializedBasisMatrix_mul_apply_self]
-    simp [initializedBasisMatrix, one_apply, eq_comm]
+      basisInclusion_mul_apply_self]
+    simp [basisInclusion, one_apply, eq_comm]
   · rw [traceRight_op, conjTranspose_conjTranspose]
-    exact initializedBasisMatrix_mul_apply_of_notMem _ _ (by simpa using hf) _
+    exact basisInclusion_mul_apply_of_notMem _ _ (by simpa using hf) _
 
 end KrausFamily

@@ -111,7 +111,7 @@ theorem map_prepareCircuit_apply (e₀ : ∀ s, E s) (ρ : Matrix (Config X) (Co
     · rintro ⟨h, rfl⟩
       funext s
       exact Prod.ext rfl (congrFun h s)
-  simp only [mul_apply, conjTranspose_apply, initializedBasisMatrix, submatrix_apply, id,
+  simp only [mul_apply, conjTranspose_apply, basisInclusion, submatrix_apply, id,
     one_apply, key, ite_and]
   by_cases hw : (fun s ↦ (w s).2) = e₀ <;> by_cases hw' : (fun s ↦ (w' s).2) = e₀ <;>
     simp [hw, hw', Finset.sum_ite_eq']
@@ -136,11 +136,11 @@ theorem map_traceCircuit_apply (M : Matrix (Config fun s ↦ Z s × F s)
     split_ifs with h
     · subst h
       refine Finset.prod_eq_one fun s _ ↦ ?_
-      simp only [initializedBasisMatrix, conjTranspose_apply, submatrix_apply, id, one_apply]
+      simp only [basisInclusion, conjTranspose_apply, submatrix_apply, id, one_apply]
       exact (congrArg star (ite_eq_left rfl)).trans (star_one ℂ)
     · obtain ⟨s, hs⟩ := Function.ne_iff.mp h
       refine Finset.prod_eq_zero (Finset.mem_univ s) ?_
-      simp only [initializedBasisMatrix, conjTranspose_apply, submatrix_apply, id, one_apply]
+      simp only [basisInclusion, conjTranspose_apply, submatrix_apply, id, one_apply]
       exact (congrArg star (ite_eq_right hs)).trans (star_zero ℂ)
   rw [traceCircuit, Circuit.map_ofLayer, KrausFamily.map_apply, Matrix.sum_apply]
   refine Fintype.sum_equiv e _ _ fun i ↦ ?_
@@ -157,7 +157,7 @@ theorem map_relabelCircuit_apply (σ : ∀ s, X s ≃ Y s) (ρ : Matrix (Config 
   rw [relabelCircuit, map_encodeCircuit,
     show Function.Embedding.piCongrRight (fun s ↦ (σ s).toEmbedding) =
       (Equiv.piCongrRight σ).toEmbedding from rfl,
-    initializedBasisMatrix_equiv_mul_mul_conjTranspose]
+    basisInclusion_equiv_mul_mul_conjTranspose]
   rfl
 
 omit [Fintype S] in
@@ -514,7 +514,7 @@ private theorem sum_map_matrixUnit_of_dilation {α β E F : Type} [Fintype α] [
     ∑ f : F, U.map (Matrix.single (a, e₀) (a', e₀) 1) (b, f) (b', f) =
       K.map (Matrix.single a a' 1) b b' := by
   rw [h, LinearMap.comp_apply, LinearMap.comp_apply, KrausFamily.map_traceRight,
-    KrausFamily.map_embed_apply, initializedBasisMatrix_mul_single_mul_conjTranspose,
+    KrausFamily.map_embed_apply, basisInclusion_mul_single_mul_conjTranspose,
     partialTraceRight_apply]
   rfl
 
@@ -551,7 +551,7 @@ private theorem _root_.KrausFamily.IsTP.exists_local_dilation {α β : Type} [Fi
       KrausFamily.map_embed_apply, partialTraceRight_apply, Fintype.sum_unique,
       KrausFamily.map_apply, KrausFamily.map_apply, Matrix.sum_apply, Matrix.sum_apply]
     refine Finset.sum_congr rfl fun i _ ↦ ?_
-    simp [mul_apply, initializedBasisMatrix, Fintype.sum_prod_type, one_apply]
+    simp [mul_apply, basisInclusion, Fintype.sum_prod_type, one_apply]
     rfl
   · classical
     obtain ⟨e₀, U, hU', hK'⟩ := hK.exists_unitary_dilation
@@ -647,7 +647,7 @@ private theorem map_dilate (hTP : ∀ b, (L.gate b).IsTP) (eb : ∀ b, T b) (es 
   apply LinearMap.ext_ring
   ext y y'
   simp only [LinearMap.comp_apply, Matrix.singleLinearMap_apply, prepareCircuit,
-    map_encodeCircuit, initializedBasisMatrix_mul_single_mul_conjTranspose, map_traceCircuit_apply,
+    map_encodeCircuit, basisInclusion_mul_single_mul_conjTranspose, map_traceCircuit_apply,
     Circuit.map_ofLayer, map_matrixUnit_apply, gateFamily_krausGate]
   refine Eq.trans ?_ ((L.dilate D Ub Us).sum_prod_mul_prod (F := L.Distribute D T₂ T₂')
     (fun b g ↦ ((L.dilate D Ub Us).gate b).map
