@@ -562,6 +562,22 @@ def symm_of(arg: str) -> str:
     return "(" + arg + ").symm"
 
 
+def drop_open(text: str) -> str:
+    """Remove the namespaces in `OPEN_DROP` from the `open` lines. It runs once a file's
+    rewriting passes are done: the passes need the `open` line to recognize the bare names."""
+    def one(mm):
+        ws = [w for w in mm.group(2).split() if w not in OPEN_DROP]
+        return mm.group(1) + " ".join(ws) + "\n" if ws else ""
+    return re.sub(r"^(open (?:scoped )?)([^\n]*)\n", one, text, flags=re.M)
+
+
+def tidy_lists(text: str) -> str:
+    """Repair the separators left by dropping consecutive entries of a rewrite list."""
+    text = re.sub(r"\[\s*,\s*", "[", text)
+    text = re.sub(r",\s*,", ",", text)
+    return re.sub(r",\s*\]", "]", text)
+
+
 def with_family(rule: Rule, text: str, start: int, span) -> str:
     """The survivor of an unapplied name, with the family supplied if `rule.addx`. A name that
     is itself an argument takes parentheses, so that the named argument is not read as one of
@@ -778,14 +794,6 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
         # a rewrite list emptied by the dropped bridges leaves no tactic
         new_text = re.sub(r"^[ \t]*(?:rw|simp only|simp_rw) \[\][ \t]*\n", "", new_text,
                           flags=re.M)
-    if not check and OPEN_DROP:
-        # namespaces that no longer exist leave the `open` lines
-        def drop_open(mm):
-            ws = [w for w in mm.group(2).split() if w not in OPEN_DROP]
-            return mm.group(1) + " ".join(ws) + "\n" if ws else ""
-        new_text2 = re.sub(r"^(open (?:scoped )?)([^\n]*)\n", drop_open, new_text, flags=re.M)
-        if new_text2 != new_text:
-            new_text, changed = new_text2, True
     if not check and MODULE_MOVES:
         def mv(mm):
             new = MODULE_MOVES.get(mm.group(2))
@@ -973,9 +981,7 @@ def main() -> int:
                     break
                 nt = t2
             if nt != t:
-                nt = wrap_changed(t, nt, p, frep)
-                with open(p, "w", encoding="utf8") as h:
-                    h.write(nt)
+                nt = wrap_changed(t, tidy_lists(nt), p, frep)
             rep.rewritten += frep.rewritten
             rep.files |= frep.files
             # the sites left for a hand edit are the old names still in the final text, at their
@@ -983,6 +989,27 @@ def main() -> int:
             # passes could not rewrite
             final = Report()
             rewrite_text(nt, p, qualified, bare, dot, False, final, True)
+            if nt != t and OPEN_DROP:
+                # the `open` lines go last; a remaining site moves up by the lines removed above it
+                dropped = drop_open(nt)
+                old_lines, new_lines = nt.split("\n"), dropped.split("\n")
+                removed, k = [], 0
+                for i, ln in enumerate(old_lines):
+                    if k < len(new_lines) and new_lines[k] == ln:
+                        k += 1
+                    else:
+                        removed.append(i + 1)
+                def shift(entry):
+                    mm = re.match(r"(.*?):(\d+):(.*)", entry, re.S)
+                    if not mm:
+                        return entry
+                    n0 = int(mm.group(2))
+                    return f"{mm.group(1)}:{n0 - sum(1 for r in removed if r < n0)}:{mm.group(3)}"
+                final.remaining = [shift(e) for e in final.remaining]
+                nt = dropped
+            if nt != t:
+                with open(p, "w", encoding="utf8") as h:
+                    h.write(nt)
             rep.unhandled += final.remaining
             rep.unhandled += [u for u in dict.fromkeys(frep.unhandled)
                               if re.search(r": (line longer than|`\.[\w']+` needs)", u)]
