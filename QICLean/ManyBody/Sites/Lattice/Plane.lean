@@ -7,7 +7,7 @@ import QICLean.ManyBody.Sites.Lattice.Diamond
 import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Combinatorics.SimpleGraph.Finite
 import Mathlib.Data.Int.Interval
-import QICLean.ManyBody.Sites.Cut
+import QICLean.ManyBody.Sites.GraphBoundary
 
 /-!
 # Finite domains of the square lattice
@@ -24,10 +24,14 @@ namespace `ManyBody` in place of `TNLean.Lattice`; `domainGraph` is renamed `pla
 distinguish it from the path graph `lineDomainGraph` of a domain of `ℤ`; the sites are written `↥Λ`,
 without the abbreviation `Site Λ`.
 
-The edge boundary `ManyBody.edgeBoundary`, the ambient dilation `ManyBody.ambientDilation` and
-the sites `ManyBody.crossingSites` of the supports crossing a region are moved from TNLean,
-`TNLean/Lattice/FiniteDomain.lean` and `TNLean/Lattice/CrossingSupports.lean` at commit
-`e113e005`, with `ManyBody.crossingTerms` in place of `ManyBody.crossingTerms`.
+The ambient dilation `ManyBody.ambientDilation` and the sites `ManyBody.crossingSites` of the
+supports crossing a region are moved from TNLean, `TNLean/Lattice/FiniteDomain.lean` and
+`TNLean/Lattice/CrossingSupports.lean` at commit `e113e005`, with `ManyBody.crossingTerms` in place
+of `ManyBody.crossingTerms`. The edge boundary of a region is the edge boundary
+`ManyBody.edgeBoundary (planeDomainGraph Λ) A` of `QICLean.ManyBody.Sites.GraphBoundary`, and
+`ManyBody.planeDomainGraph_degree_le_four` supplies the degree bound for its counts; the degree
+bound is moved from TNLean, `TNLean/PEPS/AreaLaw/BoundaryConventions.lean`
+(`domainGraph_degree_le_four`) at commit `414a18fb88`.
 
 `ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj`,
 `ManyBody.IsAdmissibleSupport.edist_le`, `ManyBody.IsAdmissibleSupport.card_le` and
@@ -42,7 +46,6 @@ Changes: the first was `latticeL1Distance_le_one_of_domainGraph_adj` in `TNLean.
 
 * `ManyBody.planeDomainGraph` — the induced nearest-neighbour graph.
 * `ManyBody.IsAdmissibleSupport`, `ManyBody.AdmissibleSupport` — the supports of range `R`.
-* `ManyBody.edgeBoundary` — the edges of the domain crossing a region.
 * `ManyBody.ambientDilation` — the sup-norm dilation of a finite set of lattice points.
 * `ManyBody.crossingSites` — the sites of the supports of range `R` crossing a region.
 
@@ -51,7 +54,7 @@ Changes: the first was `latticeL1Distance_le_one_of_domainGraph_adj` in `TNLean.
 * `ManyBody.IsAdmissibleSupport.edist_le`, `ManyBody.IsAdmissibleSupport.card_le` — a support of
   range `R` has graph diameter at most `R` and at most `1 + 2R(R + 1)` sites.
 * `ManyBody.IsAdmissibleSupport.reachable` — a support lies in one connected component.
-* `ManyBody.exists_edgeBoundary_of_walk` — a walk leaving a region crosses its edge boundary.
+* `ManyBody.planeDomainGraph_degree_le_four` — every site has at most four neighbours.
 * `ManyBody.exists_walks_of_mem_crossingSites` — a site of a crossing support is near both
   sides of the region.
 
@@ -169,39 +172,25 @@ theorem reachable (hX : IsAdmissibleSupport Λ R X) {x y : ↥Λ} (hx : x ∈ X)
 
 end IsAdmissibleSupport
 
-/-! ### Edge boundaries, ambient dilations and crossing supports -/
+/-! ### Degrees, ambient dilations and crossing supports -/
 
-/-- Unordered edges of the domain with one endpoint in `A` and the other outside `A`.
-Source: area-law Section 1, definition of `∂Λ A`. -/
-noncomputable def edgeBoundary (Λ : Finset (ℤ × ℤ)) (A : Finset ↥Λ) : Finset (Sym2 ↥Λ) := by
+/-- Every site of the induced nearest-neighbour graph has at most four neighbours, so the
+degree counts of `QICLean.ManyBody.Sites.GraphBoundary` apply with `k = 4`.
+Source: area law, Corollary 1.2, the degree count in its proof. -/
+theorem planeDomainGraph_degree_le_four (Λ : Finset (ℤ × ℤ)) (x : ↥Λ) :
+    (planeDomainGraph Λ).degree x ≤ 4 := by
   classical
-  exact (planeDomainGraph Λ).edgeFinset.filter fun e ↦ ∃ x ∈ A, ∃ y ∉ A, e = s(x, y)
-
-/-- Empty cuts have no crossing edges. -/
-@[simp] theorem edgeBoundary_empty (Λ : Finset (ℤ × ℤ)) : edgeBoundary Λ ∅ = ∅ := by
-  classical
-  simp [edgeBoundary]
-
-/-- The whole domain has no crossing edges. -/
-@[simp] theorem edgeBoundary_univ (Λ : Finset (ℤ × ℤ)) : edgeBoundary Λ Finset.univ = ∅ := by
-  classical
-  simp [edgeBoundary]
-
-/-- A walk in the domain from a site of `A` to a site outside `A` crosses an edge `{u, v}` of
-the cut with `u ∈ A` and `v ∉ A`, and its initial segment joins the starting site to `u` in at
-most as many steps. Source: area-law Section 1, definition of `∂Λ A`. -/
-theorem exists_edgeBoundary_of_walk {Λ : Finset (ℤ × ℤ)} {A : Finset ↥Λ}
-    {x y : ↥Λ} (p : (planeDomainGraph Λ).Walk x y) (hx : x ∈ A) (hy : y ∉ A) :
-    ∃ u v, u ∈ A ∧ v ∉ A ∧ s(u, v) ∈ edgeBoundary Λ A ∧
-      ∃ p' : (planeDomainGraph Λ).Walk x u, p'.length ≤ p.length := by
-  classical
-  obtain ⟨d, hd, hdA, hdA'⟩ := p.exists_boundary_dart (A : Set ↥Λ) hx hy
-  have hsupp := p.dart_fst_mem_support_of_mem_darts hd
-  refine ⟨d.fst, d.snd, hdA, hdA', ?_, p.takeUntil d.fst hsupp,
-    p.length_takeUntil_le_length hsupp⟩
-  simp only [edgeBoundary, Finset.mem_filter, SimpleGraph.mem_edgeFinset,
-    SimpleGraph.mem_edgeSet]
-  exact ⟨d.adj, d.fst, hdA, d.snd, hdA', rfl⟩
+  have hcard := Finset.card_image_of_injective
+    ((planeDomainGraph Λ).neighborFinset x) (Subtype.val_injective (p := (· ∈ Λ)))
+  rw [← SimpleGraph.card_neighborFinset_eq_degree, ← hcard]
+  refine (Finset.card_le_card (t :=
+    {(x.1.1 + 1, x.1.2), (x.1.1 - 1, x.1.2),
+      (x.1.1, x.1.2 + 1), (x.1.1, x.1.2 - 1)}) ?_).trans Finset.card_le_four
+  simp only [Finset.image_subset_iff]
+  intro y hy
+  have hy := ((planeDomainGraph Λ).mem_neighborFinset x y).mp hy
+  simp only [planeDomainGraph] at hy
+  grind [Prod.ext_iff]
 
 /-- The integer sup-norm dilation of a finite set of lattice points, independent of walks in a
 domain. Source: area-law Definition 9.3 and the sets `T_j`. -/

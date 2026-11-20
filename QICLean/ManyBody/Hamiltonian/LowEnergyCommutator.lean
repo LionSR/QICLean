@@ -191,7 +191,7 @@ theorem norm_commutator_gaussianFilteredTerm_le_of_disjoint (Kg : ℝ) (kg : ℕ
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
     {q ΔE : ℝ} (hq : 0 ≤ q) (S : Finset V) {W B : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S) (l : ℕ) (Y : Finset V)
-    (hY : Disjoint (S.biUnion fun x => graphBall G x l) Y)
+    (hY : Disjoint (graphNeighborhood G S l) Y)
     (hB : B ∈ supportedOperators X Y) {τ : ℝ} (hT : 0 ≤ τ) :
     ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W * B - B
         * gaussianFilteredTerm q ΔE Φ.hamiltonian W‖ ≤
@@ -201,7 +201,7 @@ theorem norm_commutator_gaussianFilteredTerm_le_of_disjoint (Kg : ℝ) (kg : ℕ
             Real.exp ((2 * vR * |b₀| * Real.exp (2 * R) + 1) * τ - l / 2) +
           2 * ‖W‖ * Real.exp (-(τ * ΔE) ^ 2 / (2 * q))) := by
   set F := gaussianFilteredTerm q ΔE Φ.hamiltonian W
-  set M := regionExpectation (S.biUnion fun x => graphBall G x l) F
+  set M := regionExpectation (graphNeighborhood G S l) F
   have hloc := norm_gaussianFilteredTerm_sub_regionExpectation_le_graphNeighborhood G Φ
     hHerm R hDiam vR hCard b₀ hBudget Kg kg hGrowth (ΔE := ΔE) hq S hW l hT
   have hcomm : Commute M B :=
@@ -231,7 +231,7 @@ theorem norm_groundCompression_commutator_le_graphNeighborhood (Kg : ℝ) (kg : 
     (hgap : IsGapped Φ.hamiltonian E₀ ΔE)
     (S : Finset V) {W B : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S) (l : ℕ) (Y : Finset V)
-    (hY : Disjoint (S.biUnion fun x => graphBall G x l) Y)
+    (hY : Disjoint (graphNeighborhood G S l) Y)
     (hB : B ∈ supportedOperators X Y) {τ : ℝ} (hT : 0 ≤ τ) :
     ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀ B -
         groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W‖ ≤

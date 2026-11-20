@@ -39,6 +39,22 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     D_i\setminus B\neq\emptyset\}$ \cite{OpenAI2026AreaLaw}.
 \end{definition}
 
+\begin{lemma}[Crossing terms of complementary regions]
+    \label{lem:sites_crossing_terms}
+    \lean{ManyBody.mem_crossingTerms, ManyBody.notMem_crossingTerms_of_subset,
+        ManyBody.notMem_crossingTerms_of_disjoint, ManyBody.crossingTerms_empty,
+        ManyBody.crossingTerms_compl, ManyBody.crossingTerms_univ}
+    \leanok
+    \uses{def:sites_crossing_terms}
+    A region contained in $B$ or disjoint from $B$ does not cross $B$. The regions
+    crossing $B$ are those crossing $V\setminus B$, and no region crosses $\emptyset$
+    or $V$.
+\end{lemma}
+\begin{proof}\leanok
+    The two conditions defining a crossing region are exchanged by passing to the
+    complement, and one of them fails for $\emptyset$ and for $V$.
+\end{proof}
+
 \section{Operators supported on a region}
 \label{sec:sites_support}
 
@@ -826,6 +842,80 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     with every matrix on $B$ proves the partial-trace identity.
 \end{proof}
 
+\begin{definition}[Cut matrix and cut rank]
+    \label{def:sites_cut_matrix}
+    \lean{ManyBody.cutMatrix, ManyBody.cutMatrix_apply, ManyBody.cutMatrix_cutEquiv,
+        ManyBody.cutMatrix_zero, ManyBody.cutMatrix_add, ManyBody.cutMatrix_smul,
+        ManyBody.cutMatrix_injective, ManyBody.cutMatrix_eq_zero_iff, ManyBody.cutRank}
+    \leanok
+    \uses{def:sites_config}
+    The cut matrix of a vector $\psi$ on $X_V$ across a region $D$ is the matrix
+    $C_D(\psi)\in\C^{X_D\times X_{V\setminus D}}$ with entries
+    $C_D(\psi)_{\sigma\tau}=\psi(\sigma\tau)$, where $\sigma\tau$ is the
+    configuration equal to $\sigma$ on $D$ and to $\tau$ outside $D$. It is linear and
+    injective in $\psi$. Its rank is the cut rank of $\psi$ across $D$, the Schmidt rank
+    of $\psi$ in $\C^{X_D}\otimes\C^{X_{V\setminus D}}$. On the chain, the cut after
+    $k$ sites is the region $\{0,\dots,k-1\}$~\cite{PerezGarcia2007Matrix}.
+\end{definition}
+
+\begin{lemma}[Bounds on the cut rank]
+    \label{lem:sites_cut_rank}
+    \lean{ManyBody.card_regionConfig, ManyBody.card_complConfig,
+        ManyBody.cutRank_le_prod_card, ManyBody.cutRank_le_prod_card_compl,
+        ManyBody.cutRank_le_pow_card, ManyBody.cutRank_le_pow_card_compl,
+        ManyBody.cutRank_eq_zero_iff, ManyBody.cutRank_pos, ManyBody.cutRank_empty_le_one,
+        ManyBody.cutRank_univ_le_one, ManyBody.cutRank_empty, ManyBody.cutRank_univ,
+        ManyBody.cutRank_compl}
+    \leanok
+    \uses{def:sites_cut_matrix}
+    The cut rank across $D$ is at most $\prod_{v\in D}|X_v|$ and at most
+    $\prod_{v\notin D}|X_v|$. It vanishes only for $\psi=0$, and a nonzero vector has
+    cut rank one across $\emptyset$ and across $V$. The regions $D$ and $V\setminus D$
+    have the same cut rank~\cite{PerezGarcia2007Matrix}.
+\end{lemma}
+\begin{proof}\leanok
+    The rank of a matrix is at most its numbers of rows and of columns, and is zero only
+    for the zero matrix, which is the cut matrix of the zero vector alone. The cut matrix
+    across $V\setminus D$ is the transpose of the cut matrix across $D$ after relabelling
+    rows and columns, and transposition preserves the rank.
+\end{proof}
+
+\begin{lemma}[Cut rank and regional state]
+    \label{lem:sites_cut_rank_regional_state}
+    \lean{ManyBody.regionState_eq_cutMatrix_mul_conjTranspose,
+        ManyBody.rank_regionState_eq_cutRank}
+    \leanok
+    \uses{def:sites_cut_matrix, def:sites-regional-state}
+    The regional state is $\rho_D=C_D(\psi)C_D(\psi)^*$, so its rank is the cut rank of
+    $\psi$ across $D$~\cite{PerezGarcia2007Matrix}.
+\end{lemma}
+\begin{proof}\leanok
+    Entrywise, $(\rho_D)_{\sigma\sigma'}=\sum_\tau\psi(\sigma\tau)
+    \overline{\psi(\sigma'\tau)}$, and $CC^*$ has the rank of $C$.
+\end{proof}
+
+\begin{theorem}[Local operators and the cut rank]
+    \label{thm:sites_cut_rank_local}
+    \lean{ManyBody.cutMatrix_mulVec_of_cutOperator_eq_kronecker,
+        ManyBody.cutRank_mulVec_le_of_cutOperator_eq_kronecker,
+        ManyBody.cutMatrix_place_mulVec,
+        ManyBody.cutRank_mulVec_le_of_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_cut_matrix, def:sites_place, def:sites_supported}
+    Let $T$ be an operator from $\C^{X_V}$ to $\C^{Y_V}$ that is $L\otimes R$ in the
+    coordinates of the cut along $D$. Then $C_D(T\psi)=L\,C_D(\psi)\,R^{\mathsf T}$,
+    so $T$ does not increase the cut rank across $D$. In particular an operator supported
+    on a region contained in $D$ or disjoint from $D$ does not increase the cut rank
+    across $D$~\cite[Corollary~6.10]{Schuch2010PEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:sites_place_range}
+    Expand $(T\psi)(\sigma\tau)$ over the configurations glued from the two sides and
+    factor the entries of $T$. The rank of a product is at most the rank of each factor.
+    An operator supported inside $D$ is the placement $K\otimes I$ of a matrix on $D$,
+    and one supported outside $D$ is $I\otimes B$ in cut coordinates.
+\end{proof}
+
 \begin{theorem}[A unitary away from a region]
     \label{thm:sites-regional-unitary}
     \lean{ManyBody.regionState_toEuclideanLin_of_mem_supportedOperators}
@@ -1079,6 +1169,132 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \end{proof}
 
 
+\section{Boundaries of a region in a graph}
+\label{sec:sites_graph_boundary}
+
+Let $G$ be a graph on the finite set of sites $V$ and let $A\subseteq V$ be a region.
+
+\begin{definition}[Edge boundary]
+    \label{def:sites_edge_boundary}
+    \lean{ManyBody.edgeBoundary, ManyBody.mem_edgeBoundary,
+        ManyBody.mk_mem_edgeBoundary_iff, ManyBody.edgeBoundary_subset_edgeFinset}
+    \leanok
+    The edge boundary $\partial A$ is the set of edges $\{x,y\}$ of $G$ with exactly
+    one endpoint in $A$, each counted once~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Calculus of edge boundaries]
+    \label{lem:sites_edge_boundary}
+    \lean{ManyBody.edgeBoundary_empty, ManyBody.edgeBoundary_univ,
+        ManyBody.edgeBoundary_compl, ManyBody.edgeBoundary_union_subset,
+        ManyBody.edgeBoundary_sdiff_subset, ManyBody.edgeBoundary_subset_union_symmDiff,
+        ManyBody.card_edgeBoundary_union_le, ManyBody.card_edgeBoundary_sdiff_le}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    The empty region and $V$ have no boundary edges, and
+    $\partial(V\setminus A)=\partial A$. An edge crossing the boundary of $A\cup B$ or of
+    $A\setminus B$ crosses $\partial A$ or $\partial B$, and an edge of $\partial A$
+    crosses $\partial B$ or the boundary of the symmetric difference of $A$ and $B$.
+    Hence $|\partial(A\cup B)|$ and $|\partial(A\setminus B)|$ are at most
+    $|\partial A|+|\partial B|$.
+\end{lemma}
+\begin{proof}\leanok
+    Each statement is a case distinction on the memberships of the two endpoints.
+\end{proof}
+
+\begin{lemma}[Paths leaving a region]
+    \label{lem:sites_edge_boundary_walk}
+    \lean{ManyBody.exists_edgeBoundary_of_walk, ManyBody.exists_edgeBoundary_near}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    A path from a site of $A$ to a site outside $A$ contains an edge $\{u,v\}$ of
+    $\partial A$ with $u\in A$, reached from the start in at most as many steps.
+    Consequently, if $a\in A$ is within distance $r$ of a site outside $A$, some edge
+    $\{u,v\}$ of $\partial A$ with $u\in A$ has $d_G(a,u)\le r$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The last site of the path in $A$ before its first site outside $A$ gives the edge,
+    and the initial segment of the path reaches it. Apply this to a shortest path.
+\end{proof}
+
+\begin{lemma}[Degree counts]
+    \label{lem:sites_edge_boundary_degree}
+    \lean{ManyBody.card_edgeBoundary_le_of_endpoint_cover,
+        ManyBody.card_edgeBoundary_le_mul_card,
+        ManyBody.card_edgeBoundary_le_add_mul_card_symmDiff}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    Let every site of $G$ have degree at most $k$. If every edge of $\partial A$ has an
+    endpoint in a set $R$, then $|\partial A|\le k|R|$. In particular
+    $|\partial A|\le k|A|$, and $|\partial A|\le|\partial B|+k|A\triangle B|$ for every
+    region $B$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:sites_edge_boundary}
+    Every edge of $\partial A$ is incident to a site of $R$, and each site is incident to
+    at most $k$ edges. For the last bound, apply the first to the symmetric difference.
+\end{proof}
+
+\begin{definition}[Inner and endpoint boundaries]
+    \label{def:sites_vertex_boundary}
+    \lean{ManyBody.innerBoundary, ManyBody.endpointBoundary, ManyBody.mem_innerBoundary,
+        ManyBody.mem_endpointBoundary, ManyBody.innerBoundary_subset,
+        ManyBody.innerBoundary_empty, ManyBody.innerBoundary_univ,
+        ManyBody.endpointBoundary_empty, ManyBody.endpointBoundary_univ,
+        ManyBody.endpointBoundary_eq_union, ManyBody.endpointBoundary_compl}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    The inner boundary of $A$ is the set of sites of $A$ adjacent to a site outside $A$.
+    The endpoint boundary $Z_A$ is the set of endpoints of the edges of $\partial A$; it is
+    the union of the inner boundaries of $A$ and of $V\setminus A$~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Vertex boundaries bound the edge boundary]
+    \label{lem:sites_vertex_boundary}
+    \lean{ManyBody.card_edgeBoundary_le_mul_card_innerBoundary,
+        ManyBody.two_mul_card_edgeBoundary_le_mul_card_endpointBoundary}
+    \leanok
+    \uses{def:sites_vertex_boundary, lem:sites_edge_boundary_degree}
+    If every site has degree at most $k$, then $|\partial A|$ is at most $k$ times the
+    size of the inner boundary of $A$, and $2|\partial A|\le k|Z_A|$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The inner boundary of $A$ meets every edge of $\partial A$. Applying this to $A$ and to
+    $V\setminus A$, whose edge boundaries agree and whose inner boundaries are disjoint
+    with union $Z_A$, gives the second bound.
+\end{proof}
+
+\begin{lemma}[Regions without boundary edges]
+    \label{lem:sites_zero_edge_boundary}
+    \lean{ManyBody.mem_iff_of_adj_of_edgeBoundary_eq_empty,
+        ManyBody.mem_iff_of_reachable_of_edgeBoundary_eq_empty,
+        ManyBody.edgeBoundary_eq_empty_iff,
+        ManyBody.subset_or_disjoint_of_edgeBoundary_eq_empty,
+        ManyBody.edgeBoundary_filter_connectedComponentMk_mem}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    The edge boundary of $A$ is empty exactly when adjacent sites lie on the same side of
+    $A$. Then sites joined by a path lie on the same side, so a set any two of whose sites
+    are joined by a path lies in $A$ or is disjoint from it. The sites of any set of
+    connected components form a region without boundary edges~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    Induct along the path. Adjacent sites lie in the same component.
+\end{proof}
+
+\begin{lemma}[Boundaries under graph isomorphisms]
+    \label{lem:sites_boundary_map}
+    \lean{ManyBody.edgeBoundary_map, ManyBody.card_edgeBoundary_map,
+        ManyBody.innerBoundary_map, ManyBody.endpointBoundary_map}
+    \leanok
+    \uses{def:sites_edge_boundary, def:sites_vertex_boundary}
+    A graph isomorphism $f$ carries the edge, inner and endpoint boundaries of $A$ onto
+    the corresponding boundaries of $f(A)$.
+\end{lemma}
+\begin{proof}\leanok
+    The isomorphism preserves adjacency and membership in the image region.
+\end{proof}
+
 \section{Chains, integer domains and square lattices}
 \label{sec:sites_lattices}
 
@@ -1319,6 +1535,19 @@ supports of bounded range on them.
 \begin{proof}\leanok
     A walk of length at most $R$ exists exactly when the graph distance is at
     most $R$; distance zero means equality, and distance one adjacency.
+\end{proof}
+
+\begin{lemma}[Degrees of the square lattice]
+    \label{lem:sites_plane_degree}
+    \lean{ManyBody.planeDomainGraph_degree_le_four}
+    \leanok
+    \uses{def:sites_plane_domain}
+    Every point of a finite set $\Lambda\subset\Z^2$ has at most four neighbours in
+    $\Lambda$, so the counts of Lemmas~\ref{lem:sites_edge_boundary_degree}
+    and~\ref{lem:sites_vertex_boundary} hold with $k=4$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The neighbours of $(x_1,x_2)$ lie among $(x_1\pm1,x_2)$ and $(x_1,x_2\pm1)$.
 \end{proof}
 
 \begin{lemma}[Diameter, size and connectedness of a support]

@@ -197,11 +197,42 @@ depend on the common values there.
     property, and there are $(\prod_{v\in D\cap B}n_v)^2\le d^2$ terms.
 \end{proof}
 
+\begin{definition}[Cut budget of a family of supports]
+    \label{def:marginal_tails_cut_budget}
+    \lean{Entropy.supportDim, Entropy.supportDim_const, ManyBody.cutLogBudget,
+        ManyBody.cutLogBudget_compl, ManyBody.cutLogBudget_empty,
+        ManyBody.cutLogBudget_univ}
+    \leanok
+    \uses{def:sites_crossing_terms, lem:sites_crossing_terms}
+    For a family of supports $(D_i)_{i\in\mathcal I}$ and a region $B$, let
+    $\mathcal I_\times$ be the indices whose support meets both $B$ and $V\setminus B$,
+    and $d_i=\prod_{v\in D_i}n_v$. The cut budget at $B$ is
+    $\mathcal B_B=1+\sum_{i\in\mathcal I_\times}\log^2(\mathrm ed_i)$. With one local
+    dimension $q$, $d_i=q^{|D_i|}$. The budgets of $B$ and of $V\setminus B$ agree, and the
+    budgets of $\emptyset$ and of $V$ are one~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[The cut budget and the number of crossing supports]
+    \label{lem:marginal_tails_cut_budget}
+    \lean{ManyBody.cutLogBudget_le, ManyBody.cutLogBudget_const_le}
+    \leanok
+    \uses{def:marginal_tails_cut_budget}
+    If $d_i\le d$ for every $i\in\mathcal I_\times$, then
+    $\mathcal B_B\le1+|\mathcal I_\times|\log^2(\mathrm ed)$. With one local dimension
+    $q\ge1$ and crossing supports of at most $k$ sites,
+    $\mathcal B_B\le1+|\mathcal I_\times|\log^2(\mathrm eq^k)$.
+\end{lemma}
+\begin{proof}\leanok
+    A support of dimension zero contributes $\log^2 0=0$. Otherwise
+    $1\le d_i\le d$, and $\log^2(\mathrm e x)$ increases for $x\ge1$.
+\end{proof}
+
 \begin{theorem}[Marginal moment and tail bounds]
     \label{thm:marginal_tails_supports}
     \lean{Entropy.log_surprisalMoment_cut_le, Entropy.surprisalTail_cut_le}
     \leanok
-    \uses{thm:marginal_tails, lem:supported_product_decomposition}
+    \uses{thm:marginal_tails, lem:supported_product_decomposition,
+        def:marginal_tails_cut_budget}
     Let $\mathsf H=\sum_{i\in\mathcal I}h_i$ on $\mathcal H$ with $\mathcal I$
     finite, each $h_i$ Hermitian with $\lVert h_i\rVert\le c_0$, $c_0\ge0$, and
     supported on a designated set $D_i$. Let $\Psi$ be a unit vector with

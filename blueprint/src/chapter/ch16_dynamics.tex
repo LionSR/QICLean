@@ -667,12 +667,92 @@ $\sum_{k:\,x\in T_k}\lVert h_k\rVert\leq b_0$ for every site $x$.
     finite distance is joined to $a$.
 \end{proof}
 
+\begin{definition}[Distance to a region]
+    \label{def:dynamics_set_distance}
+    \lean{ManyBody.setEdist, ManyBody.setEdist_le_edist, ManyBody.le_setEdist_iff,
+        ManyBody.setEdist_empty}
+    \leanok
+    The distance from a site $x$ to a region $S$ is
+    $d_G(x,S)=\min_{y\in S}d_G(x,y)$ in the extended distance. It is infinite
+    when no site of $S$ is joined to $x$ by a path, in particular when $S$ is
+    empty~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Attained distances]
+    \label{lem:dynamics_set_distance}
+    \lean{ManyBody.exists_mem_edist_eq_setEdist, ManyBody.setEdist_eq_top_iff,
+        ManyBody.setEdist_eq_zero_iff}
+    \leanok
+    \uses{def:dynamics_set_distance}
+    A finite distance to $S$ is attained at a site of $S$. The distance is
+    infinite exactly when no site of $S$ is joined to $x$, and zero exactly
+    when $x\in S$.
+\end{lemma}
+\begin{proof}\leanok
+    The minimum over a nonempty finite set is attained, and the minimum over
+    the empty set is infinite. The distance between two sites vanishes only
+    when they are equal.
+\end{proof}
+
+\begin{definition}[Neighbourhood of a region]
+    \label{def:dynamics_graph_neighborhood}
+    \lean{ManyBody.graphNeighborhood, ManyBody.mem_graphNeighborhood,
+        ManyBody.mem_graphNeighborhood_iff_exists_walk,
+        ManyBody.mem_graphNeighborhood_iff_setEdist_le}
+    \leanok
+    \uses{def:dynamics_graph_ball, def:dynamics_set_distance}
+    The closed neighbourhood of natural radius $l$ of a region $S$ is
+    $N_l(S)=\bigcup_{x\in S}N_l(x)$. A site $y$ lies in $N_l(S)$ exactly when
+    some path of length at most $l$ joins a site of $S$ to $y$, that is, when
+    $d_G(y,S)\leq l$~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Calculus of neighbourhoods]
+    \label{lem:dynamics_graph_neighborhood}
+    \lean{ManyBody.lt_edist_of_notMem_graphNeighborhood,
+        ManyBody.graphNeighborhood_singleton, ManyBody.graphNeighborhood_empty,
+        ManyBody.graphNeighborhood_zero, ManyBody.graphNeighborhood_union,
+        ManyBody.graphBall_subset_graphNeighborhood, ManyBody.subset_graphNeighborhood,
+        ManyBody.graphNeighborhood_mono_left, ManyBody.graphNeighborhood_mono,
+        ManyBody.graphBall_subset_graphNeighborhood_add,
+        ManyBody.graphNeighborhood_graphNeighborhood_subset,
+        ManyBody.card_graphNeighborhood_le, ManyBody.card_filter_mem_graphNeighborhood_le}
+    \leanok
+    \uses{def:dynamics_graph_neighborhood}
+    The neighbourhood $N_l(\{a\})$ is the ball $N_l(a)$, $N_0(S)=S$, and
+    $N_l(S\cup T)=N_l(S)\cup N_l(T)$. The neighbourhoods contain $S$ and grow
+    with $S$ and with $l$, and $N_m(N_l(S))\subseteq N_{l+m}(S)$. If every
+    ball $N_l(x)$ about a site of $S$ has at most $K$ sites, then $N_l(S)$ has
+    at most $|S|K$ sites; if moreover each site is the anchor of at most $\mu$
+    labels, then at most $|S|K\mu$ labels have their anchor in
+    $N_l(S)$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The set identities follow from the definition as a union of balls. For the
+    composition, a site within $m$ of a site within $l$ of $S$ is within $l+m$
+    of $S$ by the triangle inequality. The counts bound a union by the sum of
+    the sizes of its members.
+\end{proof}
+
+\begin{definition}[The graph distance as an extended pseudometric]
+    \label{def:dynamics_graph_pseudometric}
+    \lean{ManyBody.graphPseudoEMetricSpace, ManyBody.graphPseudoEMetricSpace_edist,
+        ManyBody.graphPseudoEMetricSpace_edist_ne_top,
+        ManyBody.graphPseudoEMetricSpace_edist_toReal}
+    \leanok
+    The extended distance $d_G$, read in $[0,\infty]$, is an extended
+    pseudometric on the sites. It is finite exactly between sites joined by a
+    path, and its real part is the natural graph distance, which is zero
+    between sites of different components~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
 \begin{lemma}[Neighbourhoods of crossing supports avoid cores]
     \label{lem:dynamics_support_separation}
     \lean{ManyBody.graphBall_subset_of_finite_distance_margin,
         ManyBody.reset_graphNeighborhood_disjoint_cores}
     \leanok
-    \uses{def:dynamics_graph_ball, def:sites_crossing_terms}
+    \uses{def:dynamics_graph_ball, def:dynamics_graph_neighborhood,
+        def:sites_crossing_terms}
     If every site outside a region $D$ at finite distance from $x$ has
     distance greater than a real number $w$, then $N_m(x)\subseteq D$ for every
     natural $m\leq w$.
@@ -680,8 +760,8 @@ $\sum_{k:\,x\in T_k}\lVert h_k\rVert\leq b_0$ for every site $x$.
     disjoint regions, and let $R_0$ and $C_0$ be regions with
     $N_{\ell+R}(r)\subseteq D$ for $r\in R_0$ and $N_{\ell+R}(c)\subseteq C$
     for $c\in C_0$. Let $Z$ be the union of the $X_k$ crossing the cut at $D$.
-    Then the union of the balls $N_\ell(z)$ over
-    $z\in(D\cup C)^c\cup Z$ is disjoint from $R_0\cup C_0$.
+    Then the neighbourhood $N_\ell\bigl((D\cup C)^c\cup Z\bigr)$ is disjoint
+    from $R_0\cup C_0$.
 \end{lemma}
 \begin{proof}\leanok
     \uses{lem:dynamics_graph_ball}

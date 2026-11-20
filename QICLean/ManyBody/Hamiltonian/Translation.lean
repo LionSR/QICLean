@@ -10,7 +10,7 @@ import Mathlib.LinearAlgebra.Eigenspace.Pi
 import Mathlib.LinearAlgebra.Eigenspace.Semisimple
 import QICLean.ManyBody.Hamiltonian.LowEnergyBasis
 import QICLean.ManyBody.Sites.SiteAction
-import QICLean.ManyBody.Dynamics.GraphBall
+import QICLean.ManyBody.Sites.GraphBall
 
 /-!
 # Translations, momentum sectors and supercells
@@ -674,7 +674,7 @@ theorem norm_groundCompression_commutator_le_of_supercell_separation
     (hS : ∀ g ∈ S, ∀ v ∈ groundSpace Φ.hamiltonian E₀,
       toEuclideanLin (sitePermOp (α := α) (MulAction.toPerm g)) v = v)
     {g : Γ} (hg : g ∈ S) (i j : κ) (l : ℕ)
-    (hsep : Disjoint ((T i).biUnion fun x => graphBall G x l) (T (g • j)))
+    (hsep : Disjoint (graphNeighborhood G (T i) l) (T (g • j)))
     {τ : ℝ} (hT : 0 ≤ τ) :
     ‖groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE Φ.hamiltonian (Φ.term i)) *
           groundCompression Φ.hamiltonian E₀ (gaussianFilteredTerm r ΔE Φ.hamiltonian (Φ.term j)) -
