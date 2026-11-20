@@ -151,16 +151,14 @@ theorem eq_glueConfig_iff (x : (v : {v // v ∈ B}) → Fin (n v)) (a : ManyBody
     by_cases h : v.1 ∈ D <;> simp [ManyBody.glueConfig, ManyBody.innerPart, ManyBody.outerPart, h]
 
 omit [Fintype V] in
-@[simp] theorem innerPart_glueConfig (a : ManyBody.InnerConfig n B D) (q : ManyBody.OuterConfig n B
-    D) :
-    ManyBody.innerPart (ManyBody.glueConfig a
-        q) = a := (((ManyBody.eq_glueConfig_iff _ a q).mp rfl).1).symm
+@[simp] theorem innerPart_glueConfig (a : ManyBody.InnerConfig n B D)
+    (q : ManyBody.OuterConfig n B D) : ManyBody.innerPart (ManyBody.glueConfig a q) = a :=
+  (((ManyBody.eq_glueConfig_iff _ a q).mp rfl).1).symm
 
 omit [Fintype V] in
-@[simp] theorem outerPart_glueConfig (a : ManyBody.InnerConfig n B D) (q : ManyBody.OuterConfig n B
-    D) :
-    ManyBody.outerPart (ManyBody.glueConfig a
-        q) = q := (((ManyBody.eq_glueConfig_iff _ a q).mp rfl).2).symm
+@[simp] theorem outerPart_glueConfig (a : ManyBody.InnerConfig n B D)
+    (q : ManyBody.OuterConfig n B D) : ManyBody.outerPart (ManyBody.glueConfig a q) = q :=
+  (((ManyBody.eq_glueConfig_iff _ a q).mp rfl).2).symm
 
 /-- The isometry `ℂ^{B \ D} → ℂ^B`, `e_q ↦ e_{(a, q)}`. -/
 noncomputable def glueIsometry (a : ManyBody.InnerConfig n B D) :
@@ -173,33 +171,25 @@ noncomputable def sliceIsometry (x₀ : (v : {v // v ∈ B}) → Fin (n v)) :
       ((v : {v // v ∉ B}) → Fin (n v)) ℂ :=
   fun z y ↦ if z = (x₀, y) then 1 else 0
 
+/-- The gluing isometry is the inclusion of basis vectors along `q ↦ glueConfig a q`. -/
 theorem glueIsometry_conjTranspose_mul_self (a : ManyBody.InnerConfig n B D) :
     (ManyBody.glueIsometry a)ᴴ * ManyBody.glueIsometry a = 1 := by
-  ext q q'
-  simp only [mul_apply, conjTranspose_apply, ManyBody.glueIsometry, apply_ite (star : ℂ → ℂ),
-      star_one,
-    star_zero, one_apply]
-  rw [Finset.sum_eq_single (ManyBody.glueConfig a q)]
-  · by_cases h : q = q'
-    · subst h; simp
-    · have h' : ManyBody.glueConfig a q ≠ ManyBody.glueConfig a q' := fun he ↦
-        h (by rw [← ManyBody.outerPart_glueConfig a q, he, ManyBody.outerPart_glueConfig])
-      simp [h, h']
-  · intro x _ hx; simp [hx]
-  · simp
+  have he : ManyBody.glueIsometry a = initializedBasisMatrix ⟨ManyBody.glueConfig a, fun q q' h ↦ by
+      rw [← ManyBody.outerPart_glueConfig a q, h, ManyBody.outerPart_glueConfig]⟩ := by
+    ext x q
+    simp [ManyBody.glueIsometry, initializedBasisMatrix, one_apply]; rfl
+  rw [he]
+  exact initializedBasisMatrix_isIsometry _
 
+/-- The slice isometry is the inclusion of basis vectors along `y ↦ (x₀, y)`. -/
 theorem sliceIsometry_conjTranspose_mul_self (x₀ : (v : {v // v ∈ B}) → Fin (n v)) :
     (ManyBody.sliceIsometry x₀)ᴴ * ManyBody.sliceIsometry x₀ = 1 := by
-  ext y y'
-  simp only [mul_apply, conjTranspose_apply, ManyBody.sliceIsometry, apply_ite (star : ℂ → ℂ),
-      star_one,
-    star_zero, one_apply]
-  rw [Finset.sum_eq_single (x₀, y)]
-  · by_cases h : y = y'
-    · subst h; simp
-    · simp [h]
-  · intro z _ hz; simp [hz]
-  · simp
+  have he : ManyBody.sliceIsometry x₀ =
+      initializedBasisMatrix ⟨fun y ↦ (x₀, y), Prod.mk_right_injective x₀⟩ := by
+    ext z y
+    simp [ManyBody.sliceIsometry, initializedBasisMatrix, one_apply]
+  rw [he]
+  exact initializedBasisMatrix_isIsometry _
 
 theorem glueIsometry_mul_conjTranspose_apply (a b : ManyBody.InnerConfig n B D)
     (x x' : (v : {v // v ∈ B}) → Fin (n v)) :

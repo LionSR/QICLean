@@ -897,22 +897,34 @@ def main() -> int:
             p = os.path.join(dp, f)
             with open(p, encoding="utf8") as h:
                 t = h.read()
-            nt = rewrite_text(t, p, qualified, bare, dot, False, rep, a.check)
+            if a.check:
+                rewrite_text(t, p, qualified, bare, dot, False, rep, True)
+                continue
+            frep = Report()
+            nt = rewrite_text(t, p, qualified, bare, dot, False, frep, False)
             for _ in range(4):
                 # names inside the arguments of a rewritten call are rewritten on the next pass
-                if a.check or nt == t or a.part == "M":
+                if nt == t or a.part == "M":
                     # the exchange of part M is not idempotent: one pass only
                     break
-                t2 = rewrite_text(nt, p, qualified, bare, dot, False, rep, False)
+                t2 = rewrite_text(nt, p, qualified, bare, dot, False, frep, False)
                 if t2 == nt:
                     break
                 nt = t2
-            if not a.check and nt != t:
-                nt = wrap_changed(t, nt, p, rep)
+            if nt != t:
+                nt = wrap_changed(t, nt, p, frep)
                 with open(p, "w", encoding="utf8") as h:
                     h.write(nt)
-    # a site left for a hand edit is seen again by every later pass over its file
-    rep.unhandled = list(dict.fromkeys(rep.unhandled))
+            rep.rewritten += frep.rewritten
+            rep.files |= frep.files
+            # the sites left for a hand edit are the old names still in the final text, at their
+            # final lines (the same list `--check` prints), with the dot sites and long lines the
+            # passes could not rewrite
+            final = Report()
+            rewrite_text(nt, p, qualified, bare, dot, False, final, True)
+            rep.unhandled += final.remaining
+            rep.unhandled += [u for u in dict.fromkeys(frep.unhandled)
+                              if "longer than" in u or "`." in u]
     lines = []
     if a.check:
         lines.append(f"remaining old names: {len(rep.remaining)}")
