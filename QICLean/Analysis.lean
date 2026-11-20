@@ -142,6 +142,7 @@ import QICLean.Analysis.HermitianProductFormula
 import QICLean.Analysis.HermitianUnitaryPath
 import QICLean.Analysis.IdempotentEndomorphism
 import QICLean.Analysis.IidTailThreshold
+import QICLean.Analysis.InformationResetScalar
 import QICLean.Analysis.InjectiveRangeProjector
 import QICLean.Analysis.InterleavedCountPolynomialBound
 import QICLean.Analysis.InterleavedOutputPolynomialBound
@@ -490,6 +491,7 @@ import QICLean.Analysis.TwoProjectionCompression
 import QICLean.Analysis.TwoProjectionCompressionSpectrum
 import QICLean.Analysis.TwoProjectionDefectBlockSum
 import QICLean.Analysis.TwoProjectionReducedProjection
+import QICLean.Analysis.TwoSidedResidual
 import QICLean.Analysis.TypicalSet
 import QICLean.Analysis.TypicalTailScales
 import QICLean.Analysis.UnitNormalizationDistance

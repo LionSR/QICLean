@@ -29,6 +29,7 @@ bijection is `ManyBody.relabelVector`, with `ManyBody.regionEntropy_relabel`.
 
 ## Main results
 
+* `FiniteProduct.norm_sumSitesProduct` — the norm of a product vector.
 * `FiniteProduct.reducedPure_sumSitesProduct` — the reduction to `R ⊔ T` is a Kronecker
   product.
 * `FiniteProduct.entropy_sumSitesProduct` — `S_{f ⊗ g}(R ⊔ T) = S_f(R) + S_g(T)`.
@@ -84,6 +85,17 @@ private def disjSumComplEquiv (R : Finset A) (T : Finset B) :
 noncomputable def sumSitesProduct (f : EuclideanSpace ℂ ((a : A) → X (.inl a)))
     (g : EuclideanSpace ℂ ((b : B) → X (.inr b))) : EuclideanSpace ℂ ((v : A ⊕ B) → X v) :=
   WithLp.toLp 2 fun c ↦ f (fun a ↦ c (.inl a)) * g (fun b ↦ c (.inr b))
+
+omit [∀ v, DecidableEq (X v)] in
+/-- The norm of a product vector is the product of the norms. -/
+theorem norm_sumSitesProduct (f : EuclideanSpace ℂ ((a : A) → X (.inl a)))
+    (g : EuclideanSpace ℂ ((b : B) → X (.inr b))) :
+    ‖sumSitesProduct f g‖ = ‖f‖ * ‖g‖ := by
+  rw [← sq_eq_sq₀ (norm_nonneg _) (by positivity), mul_pow, EuclideanSpace.norm_sq_eq,
+    EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, Finset.sum_mul_sum,
+    ← Finset.sum_product']
+  exact Fintype.sum_equiv (Equiv.sumPiEquivProdPi X) _ _ fun c ↦ by
+    simp [sumSitesProduct, mul_pow]
 
 omit [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
 private theorem splitEquiv_symm_inl (R : Finset A) (T : Finset B)

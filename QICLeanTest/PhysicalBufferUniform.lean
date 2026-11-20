@@ -8,7 +8,8 @@ import QICLean.Analysis.GaussianFilter.PhysicalBufferUniform
 /-!
 # Consumers of the uniform original-buffer Gaussian approximation
 
-One pair of constants works in every finite dimension at exponent `1 / 2`.
+The explicit constants `A = 2 (30 + r) / Δ²`, `T₀ = 2 (30 + r) / Δ` work in every finite
+dimension at exponent `1 / 2`.
 For each original Hamiltonian and ground vector, one buffer operator and one
 positive real overlap are used at both `L = 1` and `L = 4`. A second example
 proves all original hypotheses for a one-dimensional complex-phase state at
@@ -59,9 +60,9 @@ example :
             ‖toEuclideanLin M₁ᴴ Φ - (z : ℂ) • Ψ‖ ≤ ε₁ ∧
             ‖M₄‖ ≤ 1 ∧ ‖toEuclideanLin M₄ Ψ - (z : ℂ) • Φ‖ ≤ ε₄ ∧
             ‖toEuclideanLin M₄ᴴ Φ - (z : ℂ) • Ψ‖ ≤ ε₄ := by
-  obtain ⟨a, T₀, ha, hT₀, hsystem⟩ :=
-    exists_uniform_physicalBuffer_filter two_pos (by norm_num : (0 : ℝ) ≤ 1 / 2)
-  refine ⟨a, T₀, ha, hT₀, ?_⟩
+  have hsystem := physicalBuffer_filter_of_le (a := 61 / 4) (T₀ := 61 / 2) two_pos
+    (by norm_num : (0 : ℝ) ≤ 1 / 2) (by norm_num) (by norm_num) (by norm_num)
+  refine ⟨61 / 4, 61 / 2, by norm_num, by norm_num, ?_⟩
   intro R C Q _ _ _ _ _ _ H Ω E₀ b hΩ heigen hgap hb hbound
   obtain ⟨W, z, hWherm, hW, hz, _, hscale⟩ :=
     hsystem R C Q H Ω E₀ b hΩ heigen hgap hb hbound
@@ -126,12 +127,12 @@ example :
       (partialTraceRight (partialTraceRight (vecMulVec phase (star phase))) ⊗ₖ
         partialTraceLeft (partialTraceRight (vecMulVec phase (star phase)))) ≤ 0 := by
     rw [← phase_product_marginal, quantumRelativeEntropy_self]
-  obtain ⟨a, T₀, ha, hT₀, hsystem⟩ :=
-    exists_uniform_physicalBuffer_filter two_pos (le_refl (0 : ℝ))
+  have hsystem := physicalBuffer_filter_of_le (a := 15) (T₀ := 30) two_pos (le_refl (0 : ℝ))
+    (by norm_num) (by norm_num) (by norm_num)
   obtain ⟨W, z, hWherm, hW, hz, _, hscale⟩ := hsystem Unit Unit Unit H phase (-3) 0
     phase_normalized heigen hgap (le_refl 0) hbound
   have hz' : 1 ≤ z := by simpa using hz
-  refine ⟨a, T₀, W, z, ha, hT₀, hWherm, hW, hz', ?_⟩
+  refine ⟨15, 30, W, z, by norm_num, by norm_num, hWherm, hW, hz', ?_⟩
   intro L hL
   simpa only [add_zero, mul_zero, neg_zero, Real.exp_zero, Real.rpow_zero, mul_one]
     using hscale L hL
@@ -143,10 +144,10 @@ example (Ω : (Bool × Bool) × Empty → ℂ) : star Ω ⬝ᵥ Ω ≠ 1 := by
 end PhysicalBufferUniformTest
 
 /--
-info: 'GaussianFilter.exists_uniform_physicalBuffer_filter' depends on axioms:
+info: 'GaussianFilter.physicalBuffer_filter_of_le' depends on axioms:
 [propext, Classical.choice, Quot.sound]
 ---
 info: `#`-commands, such as '#print', are not allowed in 'Mathlib' [linter.hashCommand]
 -/
 #guard_msgs (whitespace := lax) in
-#print axioms GaussianFilter.exists_uniform_physicalBuffer_filter
+#print axioms GaussianFilter.physicalBuffer_filter_of_le
