@@ -1137,8 +1137,10 @@ supports of bounded range on them.
     \lean{ManyBody.IsAdmissibleSupport.edist_le, ManyBody.IsAdmissibleSupport.card_le,
         ManyBody.IsAdmissibleSupport.reachable,
         ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj,
-        ManyBody.latticeL1Distance_le_walk_length, ManyBody.card_latticeDiamond,
-        ManyBody.card_le_diamond_of_walks}
+        ManyBody.latticeL1Distance_le_walk_length, ManyBody.latticeL1Distance_le_of_edist_le,
+        ManyBody.latticeDiamond, ManyBody.mem_latticeDiamond, ManyBody.card_latticeDiamond,
+        ManyBody.card_le_diamond_of_latticeL1Distance_le, ManyBody.card_le_diamond_of_walks,
+        ManyBody.card_le_diamond_of_edist_le}
     \leanok
     \uses{def:sites_plane_domain, lem:sites_plane_domain}
     A support $X$ of range $R$ in a finite set $\Lambda\subset\Z^2$ has graph
@@ -1148,9 +1150,12 @@ supports of bounded range on them.
 \begin{proof}\leanok
     The first two claims restate the walk condition. Fix $a\in X$. Each step of
     a walk in $\Lambda$ changes the $\ell^1$ distance in $\Z^2$ by at most one,
-    so every point of $X$ lies in the closed $\ell^1$ ball of radius $R$ about
-    $a$. That ball has $2(R-\lvert x\rvert)+1$ points with first coordinate
-    $a_1+x$, for $\lvert x\rvert\le R$, and these sum to $1+2R(R+1)$.
+    so every point joined to $a$ by a walk of length at most $R$, in particular
+    every point at graph distance at most $R$ from $a$, lies in the closed
+    $\ell^1$ ball of radius $R$ about $a$. Every point of $X$ is such a point.
+    That ball has $2(R-\lvert x\rvert)+1$ points with first coordinate
+    $a_1+x$, for $\lvert x\rvert\le R$, and these sum to $1+2R(R+1)$. A set
+    embedded injectively in the ball has at most that many points.
 \end{proof}
 
 \begin{definition}[Oriented edges]
