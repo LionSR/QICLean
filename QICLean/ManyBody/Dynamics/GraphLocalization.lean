@@ -46,7 +46,7 @@ Moved from TNLean, `TNLean/Circuit/LiebRobinson/GraphLocalization.lean` at commi
 `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: an interaction `Φ : Interaction X T` on an
 arbitrary system of sites in place of a family of terms on `ι → Fin q`; the region expectation
 `ManyBody.regionExpectation` in place of `siteExpectation q`, so the hypothesis `[NeZero q]`
-is gone; the graph ball is in `QICLean.ManyBody.Dynamics.GraphBall`.
+is gone; the graph ball is in `QICLean.ManyBody.Sites.GraphBall`.
 
 ## Main results
 
