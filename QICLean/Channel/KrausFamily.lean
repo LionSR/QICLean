@@ -133,6 +133,11 @@ theorem IsUnitary.isTP [DecidableEq β] {K : KrausFamily α β} (h : K.IsUnitary
   rw [IsTP, effect, Fintype.sum_unique]
   exact (hK default).1
 
+/-- The adjoint of a unitary family is unitary. -/
+theorem IsUnitary.adjoint [DecidableEq β] {K : KrausFamily α β} (h : K.IsUnitary) :
+    K.adjoint.IsUnitary :=
+  ⟨h.1, fun i ↦ by simp [KrausFamily.adjoint, (h.2 i).1, (h.2 i).2]⟩
+
 /-- The family of one unitary operator is unitary. -/
 theorem isUnitary_single {V : Matrix α α ℂ} (hV : V ∈ Matrix.unitaryGroup α ℂ) :
     (single V).IsUnitary :=

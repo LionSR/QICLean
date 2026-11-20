@@ -767,3 +767,141 @@ its costs do not change.
     (Theorem~\ref{thm:protocols_dilation_comp}); the depth of the circuit is that of the layer
     plus that of the continuation.
 \end{proof}
+
+\begin{theorem}[Pure outputs of a unitary dilation]
+    \label{thm:protocols_dilation_output}
+    \lean{QuantumCircuit.Circuit.exists_unit_product_approx}
+    \leanok
+    \uses{def:protocols_dilation_circuits, def:protocols_unitary_dilation}
+    Let $c$ be a circuit of unitary gates and onsite families from the system with bases
+    $X_s\times E_s$ to the system with bases $Z_s\times F_s$, let $e_s\in E_s$ be basis
+    vectors, and let $\Phi(\rho)=\tr_F\bigl(\Phi_c(\rho\otimes\ketbra ee)\bigr)$. Let $\psi$ and
+    $\varphi$ be unit vectors with $\lVert\Phi(\ketbra\psi\psi)-\ketbra\varphi\varphi\rVert_1\le
+    \varepsilon$. Then the Kraus operator $U$ of $c$ satisfies
+    \begin{equation}
+        \lVert U(\psi\otimes e)-\varphi\otimes\eta\rVert\le\sqrt{2\varepsilon}
+        \label{eq:protocols_dilation_output}
+    \end{equation}
+    for some unit vector $\eta$ of the output environment. For $\varepsilon=0$ the output is
+    the pure state $\varphi\otimes\eta$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:protocols_dilation_circuits, lem:circuits_unique_branch, thm:circuits_tp,
+        thm:pure_marginal_product_approximation}
+    A circuit of unitary local families has a unique branch
+    (Lemma~\ref{lem:circuits_unique_branch}), so it has one Kraus operator $U$, and
+    $U^\dagger U=1$ because the circuit is trace-preserving (Theorem~\ref{thm:circuits_tp}).
+    By Lemma~\ref{lem:protocols_dilation_circuits},
+    \begin{equation}
+        \Phi(\ketbra\psi\psi)=\tr_F\ketbra\Omega\Omega,\qquad
+        \Omega=U(\psi\otimes e),\qquad\lVert\Omega\rVert=\lVert\psi\rVert=1.
+        \notag
+    \end{equation}
+    The pure-marginal estimate (Theorem~\ref{thm:pure_marginal_product_approximation}) applied
+    to $\Omega$, read on the configurations of $Z$ and of $F$, gives
+    (\ref{eq:protocols_dilation_output}).
+\end{proof}
+
+\section{Physical ports}
+\label{sec:protocols_ports}
+
+A protocol on the ring whose gates act on pairs of neighbouring sites is simulated on a ring
+whose intersite gates act on one physical qudit of each of the two sites only, every site
+holding a local memory of qudits.
+
+\begin{definition}[The ring with physical ports]
+    \label{def:protocols_port_ring}
+    \lean{QuantumCircuit.Geometry.portRing, QuantumCircuit.portDataEmbedding}
+    \leanok
+    \uses{def:circuits_geometry, def:circuits_ring_geometry}
+    For $W\ge1$, the ring of $N$ sites with $W$ wires per site is the geometry on $\Z_N\times\{0,\dots,W-1\}$
+    with a cell of cost $0$ consisting of all the wires of each site $i$, and a cell of cost $1$
+    consisting of the wires $(i,0)$ and $(i+1,0)$, the ports of the sites $i$ and $i+1$, for
+    each site $i$. For $W=2k+1$ and qudits of dimension $d$, the data embedding sends a
+    register $x\in\{0,\dots,d-1\}^k$ of the site $i$ to the configuration of the wires of $i$
+    with the digit $x_t$ on the wire $1+t$ and $0$ on the port and on the wires $1+k+t$.
+\end{definition}
+
+\begin{lemma}[Routing a layer through the ports]
+    \label{lem:protocols_port_routing}
+    \lean{QuantumCircuit.Layer.exists_portRing}
+    \leanok
+    \uses{def:protocols_port_ring, def:protocols_protocol, def:protocols_encoding,
+        lem:sites_block_place}
+    Let $N\ge2$ and let $L$ be a layer of trace-preserving plain gates and onsite families on
+    the ring of $N$ sites, with the registers $\{0,\dots,d-1\}^k$ at every site. Let $\iota$ be
+    the encoding of the registers in the wires of the ring with ports and $2k+1$ wires per
+    site along the data embedding. Then some protocol $\Phi$ on the ring with ports of depth
+    at most $2k$ times the depth of $L$ satisfies $\Phi\circ\iota=\iota\circ\Phi_L$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:hastings_site_permutation, def:circuits_of_cells, lem:circuits_seq,
+        def:circuits_adjoint, lem:circuits_unique_branch, thm:circuits_coarsen,
+        thm:protocols_encoded_layer, lem:protocols_encoding}
+    Let $C$ be the set of the left ends $j$ of the cells $\{j,j+1\}$ of $L$. Since $N\ge2$ the
+    sites $j$ and $j+1$ are distinct, so the disjointness of the cells gives $j+1\notin C$ for
+    $j\in C$. For each $t<k$ run three layers of exchanges of wires: the port with the wire
+    $1+t$ at the sites of $C$, the ports of $j$ and $j+1$ for $j\in C$, and the port with the
+    wire $1+k+t$ at the sites $j+1$. Each is a layer of gates on pairwise disjoint cells
+    (Definition~\ref{def:circuits_of_cells}) whose single Kraus operator is the permutation
+    operator $P_\pi$ of the exchange $\pi$ (Definition~\ref{def:hastings_site_permutation});
+    only the middle one has cost, so the sequence $F$ of the $3k$ layers has depth at most $k$
+    times that of $L$, and by Lemma~\ref{lem:circuits_seq} its Kraus operator is $P=P_\tau$
+    for the product $\tau$ of the exchanges. Following the wires through the rounds,
+    \begin{equation}
+        \tau(j,1+t)=(j+1,1+k+t)\quad(j\in C),\qquad\tau(i,1+t)=(i,1+t)\quad(i\notin C).
+        \label{eq:protocols_port_trajectory}
+    \end{equation}
+    Let $h(j)=j+1$ for $j\in C$ and $h(i)=i$ otherwise. By
+    (\ref{eq:protocols_port_trajectory}) the wire $\tau(r,1+t)$ lies at the site $h(r)$, so
+    the registers of the sites $h^{-1}(i)$, moved along $\tau$, form a code in the wires of
+    the site $i$. Coarsen $L$ along $h$ (Theorem~\ref{thm:circuits_coarsen}): every cell
+    $\{j,j+1\}$ is carried to the single site $j+1$. Encode the coarse layer along these codes
+    (Theorem~\ref{thm:protocols_encoded_layer}), and read its families on single sites as gates
+    on all the wires of a site, at cost $0$; call this layer $M$. With $J$ the basis inclusion
+    of the data embedding, the code of the moved registers is the basis inclusion $PJ$, so
+    \begin{equation}
+        \Phi_M(PJ\rho J^\dagger P^\dagger)=PJ\,\Phi_L(\rho)\,J^\dagger P^\dagger.
+        \notag
+    \end{equation}
+    The adjoint sequence $F^\dagger$ (Definition~\ref{def:circuits_adjoint}) has the Kraus
+    operator $P^\dagger$ and the same depth, and every routing layer has a unique branch
+    (Lemma~\ref{lem:circuits_unique_branch}), so $F$ and $F^\dagger$ act as conjugation by $P$
+    and by $P^\dagger$. Since $P^\dagger P=1$, the protocol $F$, then $M$, then $F^\dagger$
+    sends $J\rho J^\dagger$ to $J\,\Phi_L(\rho)\,J^\dagger$, and its depth is at most $2k$
+    times that of $L$.
+\end{proof}
+
+\begin{theorem}[Bounded protocols on the ring with physical ports]
+    \label{thm:protocols_port_ring}
+    \lean{QuantumCircuit.IsBoundedProtocol.exists_portRing}
+    \leanok
+    \uses{def:protocols_protocol, def:protocols_port_ring, def:protocols_encoding,
+        lem:sites_block_place}
+    Let $N\ge2$, $B\le d^k$, and let $\Phi$ be realised on the ring of $N$ sites by a protocol
+    of depth at most $T$ bounded by $B$. Let $e$ and $f$ be sitewise injective maps of its
+    input and output bases into the registers $\{0,\dots,d-1\}^k$, and let $\iota$ be the
+    encoding of the registers in the ring with ports and $2k+1$ wires per site along the data
+    embedding. Then some protocol $\Phi'$ on the ring with ports of depth at most $2kT$
+    satisfies
+    \begin{equation}
+        \Phi'\circ\iota\circ\mathcal E_e=\iota\circ\mathcal E_f\circ\Phi,
+        \notag
+    \end{equation}
+    where $\mathcal E_e$ and $\mathcal E_f$ are the encodings along $e$ and $f$. One may take
+    $k=\lceil\log_dB\rceil$. Composed with Theorem~\ref{thm:protocols_dilation} and
+    Theorem~\ref{thm:protocols_dilation_output}, this gives the pure and the approximately pure
+    outputs of the compiled protocol; the exact case is $\varepsilon=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_tp_nonempty, thm:protocols_encoded_layer, lem:protocols_port_routing}
+    By induction on the unbranched circuit of $\Phi$. Every basis along it has between $1$ and
+    $B\le d^k$ elements, so each has an injective map into the registers. For the empty
+    circuit, encode the layer of identities along $e$ and $f$
+    (Theorem~\ref{thm:protocols_encoded_layer}); it has no cells, so its routing
+    (Lemma~\ref{lem:protocols_port_routing}) has depth $0$. For a circuit with a first layer
+    $L$ to a system $Y$, choose an encoding $g$ of $Y$, encode $L$ along $e$ and $g$
+    (Theorem~\ref{thm:protocols_encoded_layer}, with Lemma~\ref{lem:circuits_tp_nonempty} for
+    the nonempty bases), route the encoded layer, and compose with the protocol given by
+    induction for the continuation along $g$ and $f$; the depths add.
+\end{proof}
