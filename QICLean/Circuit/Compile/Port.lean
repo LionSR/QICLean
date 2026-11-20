@@ -483,7 +483,7 @@ private def routeTotal (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉
 private theorem routeTotal_cons (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉ C)
     (a : Fin k) (m : List (Fin k)) :
     routeTotal C hC (a :: m) = routeTotal C hC m * roundPerm C hC a := by
-  simp [routeTotal, routeIndex, roundPerm, routePerm, mul_assoc]
+  simp [routeTotal, routeIndex, roundPerm, routePerm]
 
 private theorem routeTotal_fix (C : Finset (Fin N)) (hC : ∀ j ∈ C, finRotate N j ∉ C)
     (i : Fin N) {t : Fin k} : ∀ m : List (Fin k), t ∉ m →
