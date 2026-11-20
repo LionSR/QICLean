@@ -1045,8 +1045,41 @@ nested-commutator bound, which is not proved.
 
 For fixed $t$, $\mu>0$, and uniformly bounded $|S|$, $\|A\|$, $M_D$, $R$,
 $v_R$, and $|b|$, the right side of~(\ref{eq:dynamics_spatial_truncation}) decays exponentially in $d$.
-% No bound on $M_D$ uniform in the ambient volume is proved here; obtaining
-% such control or a boundary-weighted replacement remains a separate task.
+The sum $M_D$ over all deleted terms is not bounded uniformly in the sites outside $L$; evolving
+under the kept terms instead, only the terms crossing the boundary of $L$ enter.
+
+\begin{theorem}[Spatial truncation error at the boundary]
+    \label{thm:dynamics_spatial_truncation_boundary}
+    \lean{ManyBody.Interaction.sum_norm_term_crossing_le,
+      ManyBody.norm_heisenbergEvolution_sub_spatial_truncation_le_boundary}
+    \leanok
+    \uses{thm:dynamics_spatial_truncation, thm:bounded_degree_commutator_growth}
+    In the setting of Theorem~\ref{thm:dynamics_spatial_truncation}, let $S\subseteq L$,
+    let $d_G(x,z)\geq d+R$ for every $x\in S$, $z\notin L$, and put
+    $H_L=\sum_{j:T_j\subseteq L}\Phi_j$. Call a term crossing if $T_j$ meets $L$ without
+    lying in it, and let $\partial L$ be the set of sites of $L$ lying in a crossing term.
+    With $M_\partial=\sum_{j\text{ crossing}}\|\Phi_j\|$,
+    \begin{align}
+        \|\tau^K_t(A)-\tau^{H_L}_t(A)\|
+        &\leq4|S|\|A\|M_\partial|t|
+        \exp\bigl(4v_R|b|e^{2\mu R}|t|-\mu d\bigr),
+        &
+        M_\partial&\leq b\,|\partial L|.
+        \notag
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:dynamics_hamiltonian_comparison, thm:dynamics_lieb_robinson,
+        lem:sites_supported_commute}
+    Apply Theorem~\ref{thm:dynamics_hamiltonian_comparison} with the evolution under the
+    kept terms, an interaction with the same supports and site budget $b$. Since $A$ and
+    $H_L$ are supported on $L$, so is $\tau^{H_L}_s(A)$, which therefore commutes with every
+    deleted term disjoint from $L$. A crossing term is at distance at least $d$ from $S$, as in
+    Theorem~\ref{thm:dynamics_spatial_truncation}, and the two-region commutator estimate for
+    the kept interaction bounds its commutator. Every crossing term meets $\partial L$, and the
+    norms of the terms through each site sum to at most $b$, so
+    Theorem~\ref{thm:bounded_degree_commutator_growth} gives $M_\partial\leq b|\partial L|$.
+\end{proof}
 
 \section{Imaginary-time conjugation for bounded support and degree}
 \label{sec:dynamics_imaginary_time}
