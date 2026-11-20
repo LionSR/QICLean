@@ -1,0 +1,234 @@
+\section{Reflections with a clean scratch register}
+\label{sec:zero_register}
+
+In this section every site has the levels $0,1,\ldots,d-1$, added modulo $d$. A register of
+$a$ data sites is followed by $a$ scratch sites, and a configuration of the $2a$ sites is a pair
+$(x,y)$ of a data configuration $x$ and a scratch configuration $y$; the scratch is clean when
+$y=0$. A reversible network of controlled increments computes in the scratch register whether
+the data are zero, a phase is applied to the last scratch site, and the network is undone.
+This reflects the zero data configuration and returns the scratch to zero on every data input.
+
+\begin{definition}[Reversible conjunction of zero tests]
+    \label{def:zero_register_conjunction}
+    \lean{QuantumCircuit.zeroPrefixTest, QuantumCircuit.zeroPrefixBit,
+        QuantumCircuit.zeroConjunctionPrev, QuantumCircuit.zeroConjunctionIncrement,
+        QuantumCircuit.zeroConjunctionStep, QuantumCircuit.zeroConjunctionStep_apply,
+        QuantumCircuit.zeroConjunctionPerm, QuantumCircuit.zeroConjunctionState,
+        QuantumCircuit.zeroConjunctionStepSites}
+    \leanok
+    For a data configuration $x$ and $k\geq0$, let $b_k(x)$ be the level $1$ if $x_i=0$ for
+    every $i<k$, and the level $0$ otherwise. For $0\leq j<a$, the increment $c_j(x,y)$ is $1$
+    if $x_j=0$ and either $j=0$ or $y_{j-1}=1$, and $0$ otherwise. Step $j$ is the map
+    $T_j$ adding $c_j(x,y)$ to the scratch site $j$ and leaving every other site unchanged; it
+    reads and changes only the data site $j$ and the scratch sites $j-1$ and $j$ (only the data
+    site $j$ and the scratch site $j$ when $j=0$). The conjunction of the first $k$ steps is
+    $C_k=T_{k-1}\cdots T_1T_0$, steps beyond the register being absent.
+\end{definition}
+
+\begin{lemma}[Conjunction on clean scratch]
+    \label{lem:zero_register_conjunction}
+    \lean{QuantumCircuit.zeroConjunctionIncrement_update, QuantumCircuit.zeroPrefixBit_eq_one,
+        QuantumCircuit.zeroConjunctionStep_state, QuantumCircuit.zeroConjunctionPerm_apply_clean,
+        QuantumCircuit.zeroConjunctionPerm_apply_clean_last_eq_one_iff}
+    \leanok
+    \uses{def:zero_register_conjunction}
+    The increment $c_j$ does not depend on the scratch site $j$, so each $T_j$ is a
+    permutation of all configurations, with inverse subtracting $c_j$. Let $d\geq2$. For every
+    data configuration $x$ and $k\leq a$,
+    \begin{align}
+        C_k(x,0)=(x,y),\qquad y_j=
+        \begin{cases}
+            b_{j+1}(x) & j<k,     \\
+            0          & j\geq k.
+        \end{cases}
+    \end{align}
+    In particular, for $a\geq1$ the last scratch site of $C_a(x,0)$ is $1$ if and only if
+    $x=0$.
+\end{lemma}
+\begin{proof}\leanok
+    The increment reads the data site $j$ and the scratch site $j-1\neq j$ only, so subtracting
+    it undoes $T_j$. Since $d\geq2$, the levels $0$ and $1$ are distinct, and $b_k(x)=1$
+    exactly when $x_i=0$ for all $i<k$. By induction on $k$, before step $k$ the scratch
+    site $k$ is still $0$ and the scratch site $k-1$ holds $b_k(x)$, so $c_k=1$ exactly when
+    $x_i=0$ for all $i\leq k$, and $T_k$ writes $b_{k+1}(x)$ into the scratch site $k$ without
+    changing any other site. The last scratch site of $C_a(x,0)$ holds $b_a(x)$.
+\end{proof}
+
+\begin{lemma}[Diagonal operators]
+    \label{lem:zero_register_diagonal}
+    \lean{Matrix.diagonal_ite_neg_one_mem_unitaryGroup,
+        ManyBody.diagonal_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_supported}
+    A diagonal matrix whose diagonal entries are $\pm1$ is unitary. A diagonal operator on a
+    system of sites whose entry at $\sigma$ depends only on $\sigma|_D$ is supported on $D$.
+\end{lemma}
+\begin{proof}\leanok
+    The square of a diagonal matrix of signs is $\mathbf 1$. A diagonal entry
+    $A_{\sigma\tau}$ vanishes unless $\sigma=\tau$; if $\sigma|_D=\sigma'|_D$,
+    $\tau|_D=\tau'|_D$ and $\sigma_v=\tau_v$, $\sigma'_v=\tau'_v$ for $v\notin D$, then
+    $\sigma=\tau$ if and only if $\sigma'=\tau'$, and $A_{\sigma\sigma}=A_{\sigma'\sigma'}$.
+\end{proof}
+
+\begin{lemma}[Each step acts on at most three sites]
+    \label{lem:zero_register_step_support}
+    \lean{QuantumCircuit.card_zeroConjunctionStepSites_le,
+        QuantumCircuit.permMatrix_zeroConjunctionStep_mem_supportedOperators}
+    \leanok
+    \uses{def:zero_register_conjunction, def:sites_supported}
+    The permutation matrix of step $j$ is supported on the at most three sites read and changed
+    by the step.
+\end{lemma}
+\begin{proof}\leanok
+    The matrix element between $\sigma$ and $\tau$ is $1$ if $T_j\sigma=\tau$ and $0$
+    otherwise. Outside the sites of the step, $T_j\sigma$ agrees with $\sigma$, and on them it
+    depends only on $\sigma$ there, so the element vanishes when $\sigma$ and $\tau$ differ
+    outside these sites, and otherwise depends only on their parts on these sites.
+\end{proof}
+
+\begin{definition}[Zero-register reflection]
+    \label{def:zero_register_reflection}
+    \lean{QuantumCircuit.zeroScratchPhase, QuantumCircuit.zeroRegisterReflection}
+    \leanok
+    \uses{def:zero_register_conjunction}
+    For $a\geq1$, let $\Phi$ be the diagonal operator with entry $-1$ at the configurations
+    whose last scratch site is $1$ and $1$ elsewhere, and let $P$ be the permutation matrix of
+    $C_a$, sending the basis vector $\ket{\sigma}$ to $\ket{C_a^{-1}\sigma}$. The
+    zero-register reflection is $R=P\,\Phi\,P^\dagger$: compute the conjunction, apply the
+    phase, and undo the conjunction.
+\end{definition}
+
+\begin{theorem}[Initialized-register reflection]
+    \label{thm:zero_register_reflection}
+    \lean{QuantumCircuit.zeroScratchPhase_mem_supportedOperators,
+        QuantumCircuit.zeroRegisterReflection_eq_diagonal,
+        QuantumCircuit.zeroRegisterReflection_mem_unitaryGroup,
+        QuantumCircuit.zeroRegisterReflection_apply_clean,
+        QuantumCircuit.isCleanImplementation_zeroRegisterReflection}
+    \leanok
+    \uses{def:zero_register_reflection, lem:zero_register_conjunction,
+        lem:zero_register_diagonal, def:gate_basis_inclusion}
+    The phase $\Phi$ is supported on the last scratch site. The reflection $R$ is the diagonal
+    operator with entry $-1$ at the configurations $\sigma$ such that the last scratch site of
+    $C_a\sigma$ is $1$, and $1$ elsewhere; it is unitary. Let $d\geq2$. For every data
+    configuration $x$, $R\ket{x,0}=-\ket{x,0}$ if $x=0$ and $R\ket{x,0}=\ket{x,0}$ otherwise.
+    Equivalently, for the basis inclusion $J\ket x=\ket{x,0}$,
+    \begin{align}
+        RJ=J\bigl(\mathbf 1-2\ketbra{0}{0}\bigr).
+    \end{align}
+\end{theorem}
+\begin{proof}\leanok
+    The support of $\Phi$ is Lemma~\ref{lem:zero_register_diagonal}. Conjugating the diagonal
+    operator $\Phi$ by the permutation matrix $P$ gives the diagonal operator with entry
+    $\Phi_{C_a\sigma,C_a\sigma}$ at $\sigma$, whose entries are signs, hence unitary. By
+    Lemma~\ref{lem:zero_register_conjunction} the last scratch site of $C_a(x,0)$ is $1$
+    exactly when $x=0$, which gives the action on $\ket{x,0}$. The identity
+    $RJ=J(\mathbf 1-2\ketbra{0}{0})$ compares the columns of both sides at each $x$.
+\end{proof}
+
+\begin{definition}[Selected-flags reflection]
+    \label{def:zero_register_selected}
+    \lean{QuantumCircuit.selectedZeroRegisterLogical}
+    \leanok
+    For a family $s_0,\ldots,s_{a-1}$ of sites of a register of $n$ sites, the
+    selected-flags reflection $Z_s$ is the diagonal operator with entry $-1$ at the
+    configurations $x$ with $x_{s_j}=0$ for all $j$, and $1$ elsewhere.
+\end{definition}
+
+\begin{lemma}[The selected-flags reflection]
+    \label{lem:zero_register_selected}
+    \lean{QuantumCircuit.selectedZeroRegisterLogical_mem_unitaryGroup,
+        QuantumCircuit.selectedZeroRegisterLogical_eq_one_sub,
+        QuantumCircuit.selectedZeroRegisterLogical_empty,
+        QuantumCircuit.selectedZeroRegisterLogical_mem_supportedOperators}
+    \leanok
+    \uses{def:zero_register_selected, lem:zero_register_diagonal}
+    The reflection $Z_s$ is unitary, equal to $\mathbf 1-2Q_s$ for the diagonal projection
+    $Q_s$ onto the configurations whose selected flags are all $0$, and supported on the
+    selected sites, whatever the other sites hold. For the empty family, $Z_s=-\mathbf 1$.
+\end{lemma}
+\begin{proof}\leanok
+    The diagonal entries are $1-2\cdot1=-1$ on the configurations with zero flags and
+    $1-2\cdot0=1$ elsewhere. Unitarity and support are
+    Lemma~\ref{lem:zero_register_diagonal}. For the empty family every configuration has all
+    its selected flags zero.
+\end{proof}
+
+\begin{definition}[Zero-register reflection on selected sites]
+    \label{def:zero_register_selected_reflection}
+    \lean{QuantumCircuit.selectedZeroRegisterSites, QuantumCircuit.selectedZeroRegisterReflection}
+    \leanok
+    \uses{def:zero_register_reflection}
+    Let $s$ be injective with $a\geq1$, and append a pool of $A\geq a$ scratch sites to the
+    register of $n$ sites. Let $e$ be the injection of the $2a$ sites of the zero register
+    sending the data site $j$ to $s_j$ and the scratch site $j$ to the pool site $j$. The
+    zero-register reflection on the selected sites, $R_s$, is the diagonal operator on the
+    $n+A$ sites with entry at $\sigma$ the entry of $R$ at $\sigma\circ e$.
+\end{definition}
+
+\begin{theorem}[Selected flags with a shared clean pool]
+    \label{thm:zero_register_selected_reflection}
+    \lean{QuantumCircuit.selectedZeroRegisterSites_castAdd,
+        QuantumCircuit.selectedZeroRegisterSites_natAdd,
+        QuantumCircuit.selectedZeroRegisterReflection_apply,
+        QuantumCircuit.selectedZeroRegisterReflection_mem_unitaryGroup,
+        QuantumCircuit.selectedZeroRegisterReflection_mem_supportedOperators,
+        QuantumCircuit.selectedZeroRegisterReflection_apply_clean,
+        QuantumCircuit.isCleanImplementation_selectedZeroRegisterReflection}
+    \leanok
+    \uses{def:zero_register_selected_reflection, thm:zero_register_reflection,
+        lem:zero_register_selected, def:gate_basis_inclusion}
+    The matrix element of $R_s$ between $\sigma$ and $\tau$ is $R_{\sigma\circ e,\tau\circ e}$
+    if $\sigma$ and $\tau$ agree outside the image of $e$, and $0$ otherwise: $R_s$ is $R$ on
+    the selected flags and the first $a$ pool sites and the identity elsewhere. It is unitary
+    and supported on the image of $e$. Let $d\geq2$. For every configuration $x$ of the $n$
+    sites, $R_s\ket{x,0}=-\ket{x,0}$ if all selected flags of $x$ are $0$ and
+    $R_s\ket{x,0}=\ket{x,0}$ otherwise; the whole pool, including its unused sites, returns to
+    $0$. Equivalently, $R_sJ=JZ_s$ for the basis inclusion $J\ket x=\ket{x,0}$.
+\end{theorem}
+\begin{proof}\leanok
+    By Theorem~\ref{thm:zero_register_reflection}, $R$ is diagonal, so the matrix element of
+    $R_s$ vanishes unless $\sigma=\tau$; if $\sigma\neq\tau$ agree outside the image of $e$,
+    then $\sigma\circ e\neq\tau\circ e$ and $R_{\sigma\circ e,\tau\circ e}=0$. Unitarity and
+    support are Lemma~\ref{lem:zero_register_diagonal}. For $\sigma=(x,0)$, the configuration
+    $\sigma\circ e$ is the pair of the selected flags of $x$ and the clean scratch, and
+    Theorem~\ref{thm:zero_register_reflection} gives the phase.
+\end{proof}
+
+\begin{definition}[Inclusion with zero flags]
+    \label{def:zero_register_flag_inclusion}
+    \lean{QuantumCircuit.zeroFlagEmbedding}
+    \leanok
+    \uses{def:gate_basis_inclusion}
+    For a family $s$ of sites of a register of $n$ sites, the zero-flag inclusion assigns to
+    a configuration $u$ of the sites outside the family the configuration equal to $u$ outside
+    the family and to $0$ at its sites. Denote its basis inclusion by $E_s$.
+\end{definition}
+
+\begin{lemma}[The range of the zero-flag inclusion]
+    \label{lem:zero_register_flag_projection}
+    \lean{Matrix.initializedBasisMatrix_mul_conjTranspose,
+        QuantumCircuit.zeroFlagEmbedding_apply_selected,
+        QuantumCircuit.zeroFlagEmbedding_apply_of_notMem,
+        QuantumCircuit.mem_range_zeroFlagEmbedding_iff,
+        QuantumCircuit.zeroFlagEmbedding_range_projection,
+        QuantumCircuit.isStarProjection_zeroFlagEmbedding_range,
+        QuantumCircuit.selectedZeroRegisterLogical_eq_subspaceReflection}
+    \leanok
+    \uses{def:zero_register_flag_inclusion, lem:zero_register_selected,
+        def:gate_subspace_amplification, thm:gate_amplification_reflections}
+    For an injective map $e$ of finite sets, $J_eJ_e^\dagger$ is the diagonal indicator of the
+    image of $e$. The image of the zero-flag inclusion is the set of configurations whose
+    selected flags are all $0$. Hence $E_sE_s^\dagger=Q_s$, an orthogonal projection, and the
+    selected-flags reflection is the reflection about the range of $E_s$:
+    \begin{align}
+        Z_s=\mathbf 1-2E_sE_s^\dagger.
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    The entry $(J_eJ_e^\dagger)_{xy}$ counts the $k$ with $x=e(k)$ and $y=e(k)$, which is $1$
+    if $x=y$ lies in the image and $0$ otherwise. An included configuration has zero flags;
+    conversely a configuration with zero flags is the inclusion of its restriction to the
+    other sites. Since $E_s$ is an isometry, $E_sE_s^\dagger$ is an orthogonal projection, and
+    Lemma~\ref{lem:zero_register_selected} gives $Z_s=\mathbf 1-2Q_s$.
+\end{proof}
