@@ -25,6 +25,8 @@ moving the register back. Every layer of the ring protocol costs `2k` port layer
 
 ## Main results
 
+* `QuantumCircuit.Layer.exists_portRing_sites` — a layer of operations on whole sites is dilated
+  by a unitary circuit of depth `0` on the ring with ports.
 * `QuantumCircuit.Layer.exists_portRing` — a layer of the ring of registers is dilated by a
   unitary circuit on the ring with ports, of depth at most `2k` times its depth, with
   environments at the wires of any set meeting every site.
@@ -624,17 +626,11 @@ end Routing
 
 section Refine
 
-/-- The geometry of single sites, at cost `0`. -/
-private abbrev sitesGeometry (N : ℕ) : Geometry (Fin N) where
-  Cell := Fin N
-  cell i := {i}
-  cost _ := 0
-
 variable {N k : ℕ}
 
 section Blocks
 
-variable {Y Z : Fin N → Type} (L : Layer (sitesGeometry N) KrausGate Y Z)
+variable {Y Z : Fin N → Type} (L : Layer (Geometry.sites (Fin N)) KrausGate Y Z)
 
 /-- The site of a block of a layer on single sites. -/
 private def blockSite : L.Block → Fin N
@@ -663,7 +659,7 @@ private noncomputable def blockEquiv : Fin N ≃ L.Block where
 end Blocks
 
 variable {X : Fin N × Fin (2 * k + 1) → Type} [∀ w, Fintype (X w)] [∀ w, DecidableEq (X w)]
-  (L : Layer (sitesGeometry N) KrausGate (blockSystem Prod.fst X) (blockSystem Prod.fst X))
+  (L : Layer (Geometry.sites (Fin N)) KrausGate (blockSystem Prod.fst X) (blockSystem Prod.fst X))
 
 /-- The configurations of the wires of the site `i` are those of the block of `i`. -/
 private def wireEquiv (i : Fin N) :
@@ -771,6 +767,30 @@ end Refine
 /-! ### Routing a layer of the ring -/
 
 variable {N k d : ℕ} [NeZero d]
+
+/-- **Operations on whole sites are free on the ring with ports.** A layer of trace-preserving
+gates and onsite families on the single sites, each acting on all the wires of its site, is
+realised on the ring with ports by a map with a unitary dilation of depth `0` whose environments
+lie at the wires of a set `D` containing a wire of every site, every wire outside `D` having
+dimension `d` throughout the dilating circuit.
+
+Source: arXiv:2103.13367, main text, paragraph "Quantum circuits and LOCC", and Supplement,
+proof of Proposition 2, p. 8 (operations on one site and its local memory are free). -/
+theorem Layer.exists_portRing_sites
+    (L : Layer (Geometry.sites (Fin N)) KrausGate
+      (blockSystem Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))
+      (blockSystem Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)))
+    (hL : L.Forall KrausGate.ev KrausFamily.IsTP) (D : Finset (Fin N × Fin (2 * k + 1)))
+    (hD : ∀ i, ∃ w, (i, w) ∈ D) :
+    ∃ Φ, IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D d 0 Φ ∧
+      Φ ∘ₗ (reindexAlgEquiv ℂ ℂ
+          (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))).toLinearMap =
+        (reindexAlgEquiv ℂ ℂ
+          (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d))).toLinearMap ∘ₗ
+          (Circuit.ofLayer L).map KrausGate.ev :=
+  ⟨_, (Layer.isUnitaryDilation (refine L) D (forall_isTP_refine L hL) (isUnitaryOff_refine L hD)
+    (Circuit.isDimBounded_ofLayer _ (fun s _ ↦ card_qudits d s) fun s _ ↦ card_qudits d s)).mono
+      le_rfl (depth_refine L).le, map_refine L⟩
 
 variable (N k d) in
 /-- The register of a site in its wires: the digit `t` of the register on the data wire `1 + t`,
@@ -886,7 +906,7 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
   have hC := finRotate_notMem hN L.pairwiseDisjoint
   have hτ := routeTotal_dataWire_fst (k := k) L.cells hC
   have hcover : ∀ b ∈ L.cells, ((Geometry.ring N).cell b).image (host L.cells) ⊆
-      (sitesGeometry N).cell (finRotate N b) := by
+      (Geometry.sites (Fin N)).cell (finRotate N b) := by
     intro b hb v hv
     obtain ⟨u, hu, rfl⟩ := Finset.mem_image.mp hv
     refine Finset.mem_singleton.mpr ?_
@@ -894,7 +914,7 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
     · exact ite_eq_left hb
     · rw [Finset.mem_singleton.mp hu]
       exact ite_eq_right (hC b hb)
-  obtain ⟨L₁, -, hL₁, hm₁⟩ := L.exists_coarsen (Γ' := sitesGeometry N) (host L.cells)
+  obtain ⟨L₁, -, hL₁, hm₁⟩ := L.exists_coarsen (Γ' := Geometry.sites (Fin N)) (host L.cells)
     (finRotate N) hcover fun _ _ _ _ h ↦ Finset.disjoint_singleton.mpr h
   obtain ⟨L₂, -, hL₂, hm₂⟩ := L₁.exists_encoded (hL₁ hL) (routedEmbedding (d := d) _ _ hτ)
     (routedEmbedding (d := d) _ _ hτ)
@@ -911,7 +931,7 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
     (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding)
   have hZ : ∀ ρ, (reindexAlgEquiv ℂ ℂ
       (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)))
-        ((encodeCircuit (sitesGeometry N) (routedEmbedding (d := d) _ _ hτ)).map KrausGate.ev
+        ((encodeCircuit (Geometry.sites (Fin N)) (routedEmbedding (d := d) _ _ hτ)).map KrausGate.ev
           (reindexAlgEquiv ℂ ℂ (blockConfigEquiv (host L.cells) _).symm ρ)) =
         (P * J) * ρ * (P * J)ᴴ := by
     intro ρ

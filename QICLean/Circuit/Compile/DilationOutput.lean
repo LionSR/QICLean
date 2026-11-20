@@ -22,6 +22,8 @@ products `Z s × F s` into `Config Z × Config F`.
 
 * `QuantumCircuit.Circuit.exists_unit_product_approx` — a dilated map sending `ψ` close to the
   pure state `φ` in trace norm has a unitary sending `ψ ⊗ e₀` close to some `φ ⊗ η`.
+* `QuantumCircuit.IsUnitaryDilation.exists_unit_product_approx` — the same for every map with a
+  unitary dilation, along the dilating circuit.
 -/
 
 open Matrix ManyBody
@@ -134,5 +136,36 @@ theorem Circuit.exists_unit_product_approx (e₀ : ∀ s, E s)
   refine ⟨η, hη, le_of_eq_of_le ?_ hb⟩
   rw [← WithLp.toLp_sub, ← norm_toLp_comp_equiv e.symm]
   rfl
+
+/-- **Pure outputs of a dilated map.** If a map `Φ` with a unitary dilation of depth at most `T`,
+with environments at the sites of `D` and every basis outside `D` of at most `B` elements, sends
+the pure state `ψ` to within trace distance `ε` of the pure state `φ`, then some dilating circuit
+of `Φ` has a unitary sending `ψ ⊗ e₀` to within `√(2ε)` of `φ ⊗ η` for a unit vector `η` of the
+output environments.
+
+Source: arXiv:2103.13367, main text, paragraph "Phases of matter" (the trace-norm criterion),
+and paragraph "State transformations with QC and LOCC" (ancillas prepared in a product state). -/
+theorem IsUnitaryDilation.exists_unit_product_approx {D : Finset S} {B T : ℕ}
+    {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
+    (h : IsUnitaryDilation Γ D B T Φ) (ψ : EuclideanSpace ℂ (Config X))
+    (φ : EuclideanSpace ℂ (Config Z)) (hψ : ‖ψ‖ = 1) (hφ : ‖φ‖ = 1) {ε : ℝ}
+    (herror : rectangularTraceNorm
+      (Φ (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ))) -
+        vecMulVec (WithLp.ofLp φ) (star (WithLp.ofLp φ))) ≤ ε) :
+    ∃ (E F : S → Type) (_ : ∀ s, Fintype (E s)) (_ : ∀ s, DecidableEq (E s))
+      (_ : ∀ s, Fintype (F s)) (_ : ∀ s, DecidableEq (F s)) (e₀ : ∀ s, E s)
+      (c : Circuit Γ KrausGate (fun s ↦ X s × E s) (fun s ↦ Z s × F s)),
+      (∀ s ∉ D, Subsingleton (E s) ∧ Subsingleton (F s)) ∧ c.IsDimBounded Dᶜ B ∧
+      c.Forall KrausGate.ev KrausFamily.IsUnitary ∧ c.IsUnbranched ∧ c.depth ≤ T ∧
+      Φ = (traceCircuit Γ Z F).map KrausGate.ev ∘ₗ c.map KrausGate.ev ∘ₗ
+        (prepareCircuit Γ e₀).map KrausGate.ev ∧
+      ∀ p : c.Index, ∃ η : EuclideanSpace ℂ (Config F), ‖η‖ = 1 ∧
+        ‖(WithLp.toLp 2 (c.kraus KrausGate.ev p *ᵥ fun w ↦
+            if (fun s ↦ (w s).2) = e₀ then ψ (fun s ↦ (w s).1) else 0) -
+          WithLp.toLp 2 (fun w ↦ φ (fun s ↦ (w s).1) * η (fun s ↦ (w s).2)) :
+            EuclideanSpace ℂ (Config fun s ↦ Z s × F s))‖ ≤ Real.sqrt (2 * ε) := by
+  obtain ⟨E, F, i₁, i₂, i₃, i₄, e₀, c, hD, hB, hu, hb, hd, rfl⟩ := h
+  exact ⟨E, F, i₁, i₂, i₃, i₄, e₀, c, hD, hB, hu, hb, hd, rfl,
+    c.exists_unit_product_approx e₀ hu ψ φ hψ hφ herror⟩
 
 end QuantumCircuit
