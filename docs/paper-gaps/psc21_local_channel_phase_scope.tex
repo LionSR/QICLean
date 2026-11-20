@@ -124,8 +124,8 @@ For a protocol with bounded bases on the ring, the simulation on the ring
 with physical ports and at least one data wire per site is the partial trace
 of a unitary circuit whose
 environments lie at the wires other than the ports and in which every port
-wire keeps dimension $d$ throughout, so that its intersite gates act on the
-two $d$-dimensional port wires alone, and a pure or
+wire has dimension at most $d$ throughout, so that its intersite gates act on
+the two port wires alone, and a pure or
 approximately pure output of a dilated map is, up to $\sqrt{2\varepsilon}$, a
 product with an environment vector.\footnote{Formal declarations:
     \leanid{QuantumCircuit.Circuit.isUnitaryDilation} in

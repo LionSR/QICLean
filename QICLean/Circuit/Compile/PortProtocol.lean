@@ -103,7 +103,7 @@ in the data wires of its site, some map with a unitary dilation of depth at most
 environments lie at the wires of `D` acts on the encoded inputs as `Φ` followed by the encoding
 of the outputs; throughout the dilating circuit every wire outside `D` has dimension at most `d`.
 For `k ≥ 1` and `D` the non-port wires, each gate on a port-pair cell is therefore a unitary on
-the two `d`-dimensional port wires.
+the two port wires alone, each of dimension at most `d`.
 
 The source compiles a protocol with gates on pairs of neighbouring sites into a unitary circuit
 whose intersite gates act on the physical qudits only, the ancillas staying local
