@@ -28,6 +28,8 @@ on a system of sites with nonempty basis types (in place of `Fin q` at every sit
 
 ## Main results
 
+* `ManyBody.exists_common_unit_ground_of_disjoint_family` — Hermitian operators on pairwise
+  disjoint regions have a common unit vector attaining their minimum eigenvalues.
 * `ManyBody.exists_disjoint_regional_clipping_structure` — one set of regional minima and one
   common vector for every clipping.
 
@@ -216,9 +218,9 @@ private theorem exists_common_unit_fixed_ground_of_disjoint_family
         simpa only [sub_mulVec, smul_mulVec, one_mulVec] using hwi)
 
 /-- Hermitian operators with pairwise disjoint supports have a common
-unit vector attaining their minimum eigenvalues. Auxiliary to ALVV,
-arXiv:1602.08828v2, Corollary c:goodagsphardtrunc, lines 979–1005. -/
-private theorem exists_common_unit_ground_of_disjoint_family
+unit vector attaining their minimum eigenvalues. ALVV, arXiv:1602.08828v2,
+Corollary c:goodagsphardtrunc, lines 979–1005. -/
+theorem exists_common_unit_ground_of_disjoint_family
     {ι : Type*}
     (s : Finset ι) (R : ι → Finset V)
     (A : ι → Matrix (Config X) (Config X) ℂ)

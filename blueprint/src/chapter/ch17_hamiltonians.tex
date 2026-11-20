@@ -385,6 +385,34 @@ one-dimensional ground space.
 \section{Common ground vectors on disjoint regions}
 \label{sec:hamiltonians_disjoint_ground}
 
+\begin{theorem}[A common ground vector on disjoint regions]
+    \label{thm:hamiltonians_disjoint_common_ground}
+    \lean{ManyBody.exists_common_unit_ground_of_disjoint_family}
+    \leanok
+    \uses{def:sites_supported}
+    Let every basis set $X_v$ be nonempty, and let $A_i\in\mathcal A_{R_i}$ be
+    Hermitian for $i$ in a finite set $I$, with pairwise disjoint regions $R_i$.
+    There are real numbers $e_i$ and a unit vector $x$ with
+    \[
+        A_ix=e_ix,\qquad A_i\ge e_i\qquad(i\in I)
+    \]
+    \cite[lines 979--1005]{Arad2016RigorousRG}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:sites_supported_mono, thm:sites_place_range, lem:sites_place_hom,
+        lem:sites_place_norm_order, thm:hamiltonians_gap_kronecker_sum,
+        thm:hamiltonians_least_eigenvector, thm:hamiltonians_product_vector_inner,
+        thm:normalized_eigenvector_energies}
+    For a region $S$ and its complement, the cut along $S$ writes the two
+    operators as $A_0\otimes1$ and $1\otimes B_0$, and the product of unit
+    eigenvectors of $A_0$ and $B_0$ for their least eigenvalues attains both
+    minima. For a finite family, induct on the number of regions: the sum of the
+    centred operators already treated is positive, is supported on the union of
+    their regions, which is disjoint from the next region, and vanishes on the
+    common vector, so the two-region case gives a new common vector; positivity of
+    every centred term keeps the earlier ones vanishing on it.
+\end{proof}
+
 \begin{theorem}[One set of regional minima for every clipping]
     \label{thm:disjoint_regional_clipping}
     \lean{ManyBody.exists_disjoint_regional_clipping_structure}
@@ -430,6 +458,147 @@ one-dimensional ground space.
     and norm bounds. A unit eigenvector of $Z+Y$ for its least eigenvalue exists,
     and testing against $x$ gives $E\le\langle x,Yx\rangle\le C$ by
     Theorem~\ref{thm:positive_boundary_ground_energy}.
+\end{proof}
+
+\section{Frustration-free interactions}
+\label{sec:hamiltonians_frustration_free}
+
+\begin{definition}[Frustration-free interaction]
+    \label{def:hamiltonians_frustration_free}
+    \lean{ManyBody.Interaction.IsFrustrationFree}
+    \leanok
+    \uses{def:dynamics_interaction, def:hamiltonians_gap}
+    An interaction $\Phi=(h_i)_{i\in I}$ on a system of sites is frustration free
+    when there are real numbers $e_i$ and a nonzero vector $\psi$ with
+    \[
+        h_i\psi=e_i\psi,\qquad h_i\ge e_i\qquad(i\in I),
+    \]
+    that is, one vector minimizes the energy of every term
+    \cite[line 537]{Cirac2021Matrix}. Neither the energies $e_i$ nor the sign
+    of the terms are fixed. For a translation-invariant chain with the local
+    minimum normalized to $0$ this is the definition in
+    \cite[lines 796--808]{Sanz2010Quantum} and \cite[lines 311--326]{PerezGarcia2007Matrix}.
+\end{definition}
+
+\begin{theorem}[Shifting the terms]
+    \label{thm:hamiltonians_frustration_free_shift}
+    \lean{ManyBody.Interaction.isFrustrationFree_iff_of_term_eq_sub}
+    \leanok
+    \uses{def:hamiltonians_frustration_free}
+    If the terms of $\Psi$ are $h_i-c_i$ for the terms $h_i$ of $\Phi$ and real
+    numbers $c_i$, then $\Psi$ is frustration free exactly when $\Phi$ is.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:hamiltonians_gap_scaling}
+    A vector with $h_i\psi=e_i\psi$ and $h_i\ge e_i$ satisfies
+    $(h_i-c_i)\psi=(e_i-c_i)\psi$ and $h_i-c_i\ge e_i-c_i$, and conversely.
+\end{proof}
+
+\begin{theorem}[A common ground vector of the terms]
+    \label{thm:hamiltonians_frustration_free_common_ground}
+    \lean{ManyBody.Interaction.mem_groundSpace_sum, ManyBody.Interaction.sum_smul_one_le_sum,
+        ManyBody.Interaction.mem_groundSpace_hamiltonian,
+        ManyBody.Interaction.sum_smul_one_le_hamiltonian}
+    \leanok
+    \uses{def:dynamics_interaction, def:hamiltonians_gap}
+    Let $s$ be a finite set of indices and $e_i$ real numbers. If $h_i\psi=e_i\psi$
+    for every $i\in s$, and if $h_i\ge e_i$ for every $i\in s$, then respectively
+    \[
+        \Bigl(\sum_{i\in s}h_i\Bigr)\psi=\Bigl(\sum_{i\in s}e_i\Bigr)\psi,\qquad
+        \sum_{i\in s}h_i\ge\sum_{i\in s}e_i .
+    \]
+    For a finite index set and $s=I$ these are $H\psi=(\sum_ie_i)\psi$ and
+    $H\ge\sum_ie_i$ for the Hamiltonian $H$.
+\end{theorem}
+\begin{proof}\leanok
+    Sum the identities $h_i\psi=e_i\psi$, and the inequalities $h_i\ge e_i$, over
+    $i\in s$.
+\end{proof}
+
+\begin{theorem}[The ground space is the intersection]
+    \label{thm:hamiltonians_frustration_free_ground_space}
+    \lean{ManyBody.Interaction.groundSpace_hamiltonian_eq_iInf}
+    \leanok
+    \uses{def:dynamics_interaction, def:hamiltonians_gap}
+    Let the index set be finite and $h_i\ge e_i$ for every $i$. Then
+    \[
+        \ker\Bigl(H-\sum_ie_i\Bigr)=\bigcap_i\ker(h_i-e_i).
+    \]
+    Both sides are zero unless the interaction is frustration free with the
+    energies $e_i$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_frustration_free_common_ground}
+    The intersection lies in the left side by
+    Theorem~\ref{thm:hamiltonians_frustration_free_common_ground}. Conversely, if
+    $(H-\sum_ie_i)\psi=0$, then
+    \[
+        0=\Bigl\langle\psi,\sum_i(h_i-e_i)\psi\Bigr\rangle
+        =\sum_i\langle\psi,(h_i-e_i)\psi\rangle,
+    \]
+    a sum of nonnegative terms, so each vanishes, and a positive semidefinite
+    operator with $\langle\psi,(h_i-e_i)\psi\rangle=0$ annihilates $\psi$.
+\end{proof}
+
+\begin{theorem}[Frustration freeness by least eigenvalues]
+    \label{thm:hamiltonians_frustration_free_least_eigenvalue}
+    \lean{ManyBody.Interaction.isFrustrationFree_iff_minEigenvalue}
+    \leanok
+    \uses{def:hamiltonians_frustration_free}
+    Let every basis set be nonempty, let the index set be finite and every term
+    Hermitian. The interaction is frustration free exactly when
+    \[
+        \lambda_{\min}(H)=\sum_i\lambda_{\min}(h_i).
+    \]
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_frustration_free_common_ground,
+        thm:hamiltonians_frustration_free_ground_space, lem:attained_energy_native_minimum,
+        lem:posdef_trace_lower_bound}
+    If $\psi\ne0$ satisfies $h_i\psi=e_i\psi$ and $h_i\ge e_i$, then
+    $e_i=\lambda_{\min}(h_i)$, and by
+    Theorem~\ref{thm:hamiltonians_frustration_free_common_ground}
+    $H\psi=(\sum_ie_i)\psi$ with $H\ge\sum_ie_i$, so $\sum_ie_i=\lambda_{\min}(H)$.
+    Conversely, take $e_i=\lambda_{\min}(h_i)$, so $h_i\ge e_i$. An eigenvector of
+    $H$ for $\lambda_{\min}(H)=\sum_ie_i$ lies in every $\ker(h_i-e_i)$ by
+    Theorem~\ref{thm:hamiltonians_frustration_free_ground_space}.
+\end{proof}
+
+\begin{theorem}[Positive terms]
+    \label{thm:hamiltonians_frustration_free_positive}
+    \lean{ManyBody.Interaction.hamiltonian_mulVec_eq_zero_iff,
+        ManyBody.Interaction.groundSpace_hamiltonian_zero,
+        ManyBody.Interaction.groundSpace_hamiltonian_zero_ne_bot_iff,
+        ManyBody.Interaction.isFrustrationFree_of_groundSpace_hamiltonian_zero_ne_bot}
+    \leanok
+    \uses{def:hamiltonians_frustration_free}
+    Let the index set be finite and every term positive semidefinite. Then
+    \[
+        H\psi=0\iff h_i\psi=0\text{ for every }i,\qquad
+        \ker H=\bigcap_i\ker h_i .
+    \]
+    In particular $\ker H\ne0$ exactly when the terms have a common nonzero kernel
+    vector, and then the interaction is frustration free with every $e_i=0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_frustration_free_ground_space}
+    This is Theorem~\ref{thm:hamiltonians_frustration_free_ground_space} with every
+    $e_i=0$.
+\end{proof}
+
+\begin{theorem}[Terms on disjoint regions]
+    \label{thm:hamiltonians_frustration_free_disjoint}
+    \lean{ManyBody.Interaction.isFrustrationFree_of_pairwise_disjoint}
+    \leanok
+    \uses{def:hamiltonians_frustration_free, def:sites_supported}
+    Let every basis set be nonempty, let the index set be finite, and let the terms
+    be Hermitian and supported on pairwise disjoint regions. Then the interaction is
+    frustration free.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_disjoint_common_ground}
+    Theorem~\ref{thm:hamiltonians_disjoint_common_ground} gives the energies $e_i$
+    and the common unit vector.
 \end{proof}
 
 \section{Hard truncation of a region}
