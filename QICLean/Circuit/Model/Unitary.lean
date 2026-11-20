@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.LightCone
+import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Core.Parallel
 import QICLean.Circuit.Core.Seq
 
@@ -63,6 +64,8 @@ cost `0`.
   `QuantumCircuit.UnitaryCircuit.op_mem_unitaryGroup`.
 * `QuantumCircuit.UnitaryCircuit.depth_eq_sum`, `QuantumCircuit.UnitaryCircuit.gateCount_eq_sum`,
   `QuantumCircuit.UnitaryCircuit.depth_le_gateCount`.
+* `QuantumCircuit.IsGateProduct.place_singleton`, `QuantumCircuit.IsGateProduct.smul_one` — a
+  one-site unitary and a global phase cost nothing.
 * `QuantumCircuit.UnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators` — the light cone.
 * `QuantumCircuit.IsGateProduct.isUnitaryCircuit` — a product of gates of total cost at most `K`
   has depth at most `K`.
@@ -569,6 +572,75 @@ theorem of_mem_supportedOperators {b : Γ.Cell} {Z : Matrix (Config X) (Config X
     have : IsEmpty (Config X) := ⟨fun σ ↦ hs.false (σ s)⟩
     rw [Subsingleton.elim Z (ManyBody.place (Γ.cell b) 1)]
     exact place (one_mem _)
+
+/-- A product of products of gates along a list has cost at most the sum of their costs. -/
+theorem list_prod_map {ι : Type*} (l : List ι) (F : ι → Matrix (Config X) (Config X) ℂ)
+    (k : ι → ℕ) (h : ∀ c ∈ l, IsGateProduct Γ (k c) (F c)) :
+    IsGateProduct Γ (l.map k).sum (l.map F).prod := by
+  induction l with
+  | nil => exact one Γ X 0
+  | cons c l ih =>
+    rw [List.map_cons, List.map_cons, List.prod_cons, List.sum_cons]
+    exact (h c List.mem_cons_self).mul (ih fun c' hc' ↦ h c' (List.mem_cons_of_mem c hc'))
+
+omit [∀ s, Fintype (X s)] in
+/-- The placement of a matrix on one site is the product operator with that matrix at the site
+and the identity elsewhere. -/
+private theorem place_singleton_eq_prodOp (a : S)
+    (V : Matrix (RegionConfig X {a}) (RegionConfig X {a}) ℂ) :
+    ManyBody.place {a} V = ManyBody.prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) a
+      (V.submatrix (siteEquiv X a).symm (siteEquiv X a).symm)) := by
+  ext σ τ
+  have hsite (ρ : Config X) : (siteEquiv X a).symm (ρ a) = fun v : {v // v ∈ ({a} : Finset S)} ↦
+      ρ v :=
+    (siteEquiv X a).symm_apply_eq.mpr rfl
+  rw [place_apply, prodOp_apply, Fintype.prod_eq_mul_prod_compl a, Function.update_self,
+    submatrix_apply, hsite, hsite]
+  rw [Finset.prod_congr rfl fun v hv ↦ by
+    rw [Function.update_of_ne (Finset.mem_compl.mp hv ∘ Finset.mem_singleton.mpr), one_apply],
+    Finset.prod_ite_zero, Finset.prod_const_one, mul_ite, mul_one, mul_zero]
+  congr 1
+  simp only [Finset.mem_compl]
+
+/-- A unitary on one site is an onsite family and costs nothing. -/
+theorem place_singleton (a : S) {V : Matrix (RegionConfig X {a}) (RegionConfig X {a}) ℂ}
+    (hV : V ∈ unitaryGroup _ ℂ) (K : ℕ) : IsGateProduct Γ K (ManyBody.place {a} V) := by
+  rw [place_singleton_eq_prodOp]
+  refine prodOp (fun s ↦ ?_) K
+  by_cases hs : s = a
+  · subst hs
+    rw [Function.update_self]
+    exact submatrix_equiv_mem_unitary.mpr hV
+  · rw [Function.update_of_ne hs]
+    exact one_mem _
+
+omit [∀ s, Fintype (X s)] in
+/-- A scalar multiple of the identity is the product operator with the scalar at one site. -/
+private theorem smul_one_eq_prodOp (s₀ : S) (μ : ℂ) :
+    (μ • 1 : Matrix (Config X) (Config X) ℂ) =
+      ManyBody.prodOp fun s ↦ if s = s₀ then μ • (1 : Matrix (X s) (X s) ℂ) else 1 := by
+  ext σ τ
+  have h (s : S) : (if s = s₀ then μ • (1 : Matrix (X s) (X s) ℂ) else 1) (σ s) (τ s) =
+      (if s = s₀ then μ else 1) * (1 : Matrix (X s) (X s) ℂ) (σ s) (τ s) := by
+    split_ifs <;> simp
+  rw [prodOp_apply, Finset.prod_congr rfl fun s _ ↦ h s, Finset.prod_mul_distrib,
+    Finset.prod_ite_eq' Finset.univ s₀]
+  simp only [Finset.mem_univ, ↓reduceIte]
+  rw [← prodOp_apply, prodOp_one, Matrix.smul_apply, smul_eq_mul]
+
+/-- **A global phase costs nothing.** On a nonempty set of sites, `μ • 1` with `|μ| = 1` is a
+one-site phase, hence a product of gates of every cost. -/
+theorem smul_one [Nonempty S] {μ : ℂ} (hμ : ‖μ‖ = 1) (K : ℕ) :
+    IsGateProduct Γ K (μ • 1 : Matrix (Config X) (Config X) ℂ) := by
+  obtain ⟨s₀⟩ := ‹Nonempty S›
+  rw [smul_one_eq_prodOp s₀]
+  refine prodOp (fun s ↦ ?_) K
+  split_ifs
+  · refine mem_unitaryGroup_iff'.mpr ?_
+    rw [star_smul, star_one, smul_mul_smul_comm, Matrix.one_mul, Complex.star_def,
+      Complex.conj_mul', hμ]
+    simp
+  · exact one_mem _
 
 /-- **Gate count bounds depth.** A product of gates of total cost at most `K` is a circuit of
 depth at most `K`. -/
