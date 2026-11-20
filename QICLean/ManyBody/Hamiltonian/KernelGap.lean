@@ -1,0 +1,220 @@
+/-
+Copyright (c) 2026 QICLean contributors. All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: QICLean contributors
+-/
+import QICLean.Analysis.KernelGapPerturbation
+import QICLean.Analysis.KernelSpectralGap
+import QICLean.Analysis.PositiveGapTransfer
+import QICLean.Analysis.SupportInverseSandwich
+import QICLean.ManyBody.Hamiltonian.GroundSpace
+import QICLean.Topology.CompactUniformBounds
+
+/-!
+# The gap above the kernel
+
+For a positive semidefinite matrix `H`, the ground space at energy `0` is the kernel, and `H` is
+gapped at `0` with gap `Δ` exactly when the kernel is nonzero and either of two inequalities
+holds on its orthogonal complement: the quadratic-form bound `Δ ‖v‖² ≤ Re ⟨v, H v⟩` or the norm
+bound `Δ ‖v‖ ≤ ‖H v‖`. No sign of `Δ` is assumed. The quadratic-form bound follows from the gap
+for every Hermitian `H`.
+
+A larger positive matrix with the same kernel keeps the gap; this covers the interpolation
+`A + t (B - A)`, `t ≥ 0`, between `A` and a larger `B` whose kernel contains that of `A`. For
+positive matrices depending continuously on a parameter, with continuous kernel projections,
+every smaller gap persists nearby, and locally uniform gaps are uniform on compact parameter
+sets; these are the continuity and compactness steps of arXiv:1010.3732, Appendix A.
+
+The characterizations replace the norm-form and quadratic-form gap conditions of TNLean's
+parent-Hamiltonian and symmetric-path arguments; the statements generalize those of
+`TNLean/Algebra/CommonKernelGapInterpolation` and `TNLean/Algebra/CommonKernelSpectralGap` at
+commit `414a18fb88`, and the continuity and compactness steps use the norm estimates moved
+unchanged from `TNLean/Algebra/KernelGapPerturbation` and `TNLean/Algebra/CompactGapBounds`.
+
+## Main results
+
+* `ManyBody.groundSpace_zero` — the ground space at energy `0` is the kernel.
+* `ManyBody.IsGapped.mul_norm_sq_le_re_inner` — for Hermitian `H`, a gap at `0` bounds the
+  quadratic form on the orthogonal complement of the kernel.
+* `ManyBody.isGapped_zero_iff_inner` — for positive semidefinite `H`, the gap at `0` in
+  quadratic form.
+* `ManyBody.isGapped_zero_iff_norm` — for positive semidefinite `H`, the gap at `0` in norm form.
+* `ManyBody.groundSpace_zero_eq_of_le`, `ManyBody.IsGapped.of_le` — a larger positive matrix
+  whose kernel contains that of `A` has the same kernel and keeps the gap of `A`.
+* `ManyBody.eventually_isGapped_zero` — every smaller gap persists under continuous
+  perturbation with continuous kernel projections.
+* `IsCompact.exists_uniform_isGapped` — locally uniform gaps beyond a threshold are uniform on a
+  compact parameter set.
+-/
+
+open Matrix
+open scoped InnerProductSpace ComplexOrder MatrixOrder Topology
+
+namespace ManyBody
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- The ground space at energy `0` is the kernel. -/
+theorem groundSpace_zero (H : Matrix n n ℂ) :
+    groundSpace H 0 = LinearMap.ker (toEuclideanLin H) := by
+  rw [groundSpace, Complex.ofReal_zero, Module.End.eigenspace_zero]
+
+/-- A vector orthogonal to the kernel of a Hermitian matrix is orthogonal to each of its
+eigenvectors with eigenvalue `0`, in the form used by the eigenbasis expansion. -/
+private theorem inner_eq_zero_of_mem_orthogonal_ker {H : Matrix n n ℂ}
+    {v : EuclideanSpace ℂ n} (hv : v ∈ (LinearMap.ker (toEuclideanLin H))ᗮ)
+    (z : EuclideanSpace ℂ n) (hz : toEuclideanCLM (n := n) (𝕜 := ℂ) H z = 0) :
+    ⟪z, v⟫_ℂ = 0 :=
+  Submodule.inner_right_of_mem_orthogonal
+    (LinearMap.mem_ker.mpr (by rwa [← coe_toEuclideanCLM_eq_toEuclideanLin])) hv
+
+/-- **The quadratic form above the kernel.** If a Hermitian matrix `H` is gapped at `0` with
+gap `Δ`, then `Δ ‖v‖² ≤ Re ⟨v, H v⟩` for every `v` orthogonal to the kernel. -/
+theorem IsGapped.mul_norm_sq_le_re_inner {H : Matrix n n ℂ} {Δ : ℝ} (hH : H.IsHermitian)
+    (h : IsGapped H 0 Δ) {v : EuclideanSpace ℂ n}
+    (hv : v ∈ (LinearMap.ker (toEuclideanLin H))ᗮ) :
+    Δ * ‖v‖ ^ 2 ≤ (⟪v, toEuclideanLin H v⟫_ℂ).re := by
+  have hspec : ∀ e ∈ spectrum ℝ H, e = 0 ∨ Δ ≤ e := by
+    intro e he
+    rw [hH.spectrum_real_eq_range_eigenvalues] at he
+    obtain ⟨k, rfl⟩ := he
+    simpa using ((isGapped_iff_eigenvalues hH).mp h).2 k
+  have := hH.mul_norm_sq_le_re_inner_of_spectral_gap hspec v
+    (inner_eq_zero_of_mem_orthogonal_ker hv)
+  rwa [← coe_toEuclideanCLM_eq_toEuclideanLin]
+
+/-- An eigenvector of a Hermitian matrix with nonzero eigenvalue is orthogonal to the kernel. -/
+private theorem mem_orthogonal_ker_of_apply_eq_smul {H : Matrix n n ℂ} (hH : H.IsHermitian)
+    {μ : ℂ} (hμ : μ ≠ 0) {ψ : EuclideanSpace ℂ n} (hψ : toEuclideanLin H ψ = μ • ψ) :
+    ψ ∈ (LinearMap.ker (toEuclideanLin H))ᗮ := by
+  intro w hw
+  have h := (isSymmetric_toEuclideanLin_iff.mpr hH) w ψ
+  rw [LinearMap.mem_ker.mp hw, inner_zero_left, hψ, inner_smul_right] at h
+  exact (mul_eq_zero.mp h.symm).resolve_left hμ
+
+/-- For a positive semidefinite matrix, a quadratic-form bound on the orthogonal complement of
+the kernel bounds every eigenvalue other than `0` below by `Δ`. -/
+private theorem le_of_hasEigenvalue_of_re_inner {H : Matrix n n ℂ} (hH : H.PosSemidef) {Δ : ℝ}
+    (hq : ∀ v ∈ (LinearMap.ker (toEuclideanLin H))ᗮ,
+      Δ * ‖v‖ ^ 2 ≤ (⟪v, toEuclideanLin H v⟫_ℂ).re)
+    {μ : ℂ} (hμ : Module.End.HasEigenvalue (toEuclideanLin H) μ) (hμ0 : μ ≠ 0) :
+    ((0 + Δ : ℝ) : ℂ) ≤ μ := by
+  have hT := isSymmetric_toEuclideanLin_iff.mpr hH.isHermitian
+  obtain ⟨ψ, hψ⟩ := hμ.exists_hasEigenvector
+  have hreal : μ.im = 0 := Complex.conj_eq_iff_im.mp (hT.conj_eigenvalue_eq_self hμ)
+  have hre : (⟪ψ, toEuclideanLin H ψ⟫_ℂ).re = μ.re * ‖ψ‖ ^ 2 := by
+    rw [hψ.apply_eq_smul, inner_smul_right, inner_self_eq_norm_sq_to_K]
+    simp [← Complex.ofReal_pow]
+  have hg := hq ψ (mem_orthogonal_ker_of_apply_eq_smul hH.isHermitian hμ0 hψ.apply_eq_smul)
+  rw [hre] at hg
+  have hpos : 0 < ‖ψ‖ ^ 2 := pow_pos (norm_pos_iff.mpr hψ.2) 2
+  rw [Complex.le_def]
+  refine ⟨?_, by simp [hreal]⟩
+  simp only [zero_add, Complex.ofReal_re]
+  exact le_of_mul_le_mul_right hg hpos
+
+/-- **The gap above the kernel, in quadratic form.** A positive semidefinite matrix `H` is gapped
+at `0` with gap `Δ` exactly when its kernel is nonzero and `Δ ‖v‖² ≤ Re ⟨v, H v⟩` for every `v`
+orthogonal to the kernel. -/
+theorem isGapped_zero_iff_inner {H : Matrix n n ℂ} (hH : H.PosSemidef) {Δ : ℝ} :
+    IsGapped H 0 Δ ↔ groundSpace H 0 ≠ ⊥ ∧
+      ∀ v ∈ (LinearMap.ker (toEuclideanLin H))ᗮ,
+        Δ * ‖v‖ ^ 2 ≤ (⟪v, toEuclideanLin H v⟫_ℂ).re := by
+  refine ⟨fun h ↦ ⟨h.1, fun v hv ↦ h.mul_norm_sq_le_re_inner hH.isHermitian hv⟩,
+    fun ⟨hne, hq⟩ ↦ ⟨hne, fun μ hμ ↦ ?_⟩⟩
+  by_cases hμ0 : μ = 0
+  · exact Or.inl (by simpa using hμ0)
+  · exact Or.inr (le_of_hasEigenvalue_of_re_inner hH hq hμ hμ0)
+
+/-- **The gap above the kernel, in norm form.** A positive semidefinite matrix `H` is gapped at
+`0` with gap `Δ` exactly when its kernel is nonzero and `Δ ‖v‖ ≤ ‖H v‖` for every `v` orthogonal
+to the kernel. -/
+theorem isGapped_zero_iff_norm {H : Matrix n n ℂ} (hH : H.PosSemidef) {Δ : ℝ} :
+    IsGapped H 0 Δ ↔ groundSpace H 0 ≠ ⊥ ∧
+      ∀ v ∈ (LinearMap.ker (toEuclideanLin H))ᗮ, Δ * ‖v‖ ≤ ‖toEuclideanLin H v‖ := by
+  have hP : (toEuclideanLin H).IsPositive := isPositive_toEuclideanLin_iff.mpr hH
+  rw [isGapped_zero_iff_inner hH]
+  refine and_congr_right fun _ ↦ ⟨fun hq v hv ↦ ?_, fun hn v hv ↦ ?_⟩
+  · rcases eq_or_ne v 0 with rfl | hv0
+    · simp
+    have hle : Δ * ‖v‖ * ‖v‖ ≤ ‖toEuclideanLin H v‖ * ‖v‖ := by
+      calc Δ * ‖v‖ * ‖v‖ = Δ * ‖v‖ ^ 2 := by ring
+        _ ≤ (⟪v, toEuclideanLin H v⟫_ℂ).re := hq v hv
+        _ ≤ ‖v‖ * ‖toEuclideanLin H v‖ := re_inner_le_norm (𝕜 := ℂ) _ _
+        _ = ‖toEuclideanLin H v‖ * ‖v‖ := mul_comm _ _
+    exact le_of_mul_le_mul_right hle (norm_pos_iff.mpr hv0)
+  · rcases lt_or_ge Δ 0 with hΔ | hΔ
+    · exact (mul_nonpos_of_nonpos_of_nonneg hΔ.le (sq_nonneg _)).trans
+        (hP.re_inner_nonneg_right v)
+    · exact (hP.re_inner_ge_of_norm_gap hΔ hn v hv).trans_eq (inner_re_symm (𝕜 := ℂ) _ _)
+
+/-- If `0 ≤ A ≤ C` and the kernel of `A` lies in that of `C`, the two kernels agree. -/
+theorem groundSpace_zero_eq_of_le {A C : Matrix n n ℂ} (hA : A.PosSemidef) (hAC : A ≤ C)
+    (hker : groundSpace A 0 ≤ groundSpace C 0) : groundSpace C 0 = groundSpace A 0 := by
+  refine le_antisymm (fun x hx ↦ ?_) hker
+  rw [mem_groundSpace_iff_mulVec, Complex.ofReal_zero, zero_smul] at hx ⊢
+  exact hA.mulVec_eq_zero_of_le hAC _ hx
+
+/-- **Domination keeps the gap.** If `0 ≤ A ≤ C`, the kernel of `A` lies in that of `C`, and `A`
+is gapped at `0` with gap `Δ`, then so is `C`, with the same ground space
+(`groundSpace_zero_eq_of_le`). For `t ≥ 0`, `A ≤ B`, and the kernel of `A` contained in that of
+`B`, this applies to `C = A + t (B - A)`. -/
+theorem IsGapped.of_le {A C : Matrix n n ℂ} {Δ : ℝ} (hA : A.PosSemidef) (hAC : A ≤ C)
+    (hker : groundSpace A 0 ≤ groundSpace C 0) (h : IsGapped A 0 Δ) : IsGapped C 0 Δ := by
+  have hD := Matrix.le_iff.mp hAC
+  have hC : C.PosSemidef := by simpa using hA.add hD
+  have heq := groundSpace_zero_eq_of_le hA hAC hker
+  rw [isGapped_zero_iff_inner hA] at h
+  rw [isGapped_zero_iff_inner hC, heq]
+  refine ⟨h.1, fun v hv ↦ (h.2 v (by rwa [← groundSpace_zero, ← heq, groundSpace_zero])).trans ?_⟩
+  have hDv := (isPositive_toEuclideanLin_iff.mpr hD).re_inner_nonneg_right v
+  rwa [map_sub, LinearMap.sub_apply, inner_sub_right, map_sub, sub_nonneg] at hDv
+
+/-! ### Continuity and compactness -/
+
+/-- **Persistence of the gap.** Let `H x` be positive semidefinite matrices depending on a
+parameter, continuous at `x₀`, whose kernel projections are continuous at `x₀`. If `H x₀` is
+gapped at `0` with gap `Δ`, then every smaller gap `Δ' < Δ` holds for `H x` near `x₀`.
+arXiv:1010.3732, Appendix A, finite-window gap continuity. -/
+theorem eventually_isGapped_zero {X : Type*} [TopologicalSpace X] {H : X → Matrix n n ℂ}
+    {x₀ : X} (hH : ContinuousAt H x₀) (hpos : ∀ᶠ x in 𝓝 x₀, (H x).PosSemidef)
+    (hK : ContinuousAt (fun x ↦ (groundSpace (H x) 0).starProjection) x₀) {Δ Δ' : ℝ}
+    (hgap : IsGapped (H x₀) 0 Δ) (hΔ' : Δ' < Δ) :
+    ∀ᶠ x in 𝓝 x₀, IsGapped (H x) 0 Δ' := by
+  have hne : ∀ᶠ x in 𝓝 x₀, groundSpace (H x) 0 ≠ ⊥ := by
+    have h0 : (groundSpace (H x₀) 0).starProjection ≠ 0 := fun h ↦ by
+      obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hgap.1
+      exact hv0 (by rw [← Submodule.starProjection_eq_self_iff.mpr hv, h,
+        _root_.zero_apply])
+    filter_upwards [hK.eventually_ne h0] with x hx hbot
+    exact hx (by rw [hbot, Submodule.starProjection_bot])
+  rcases le_or_gt Δ 0 with hΔ | hΔ
+  · filter_upwards [hpos, hne] with x hx hxne
+    refine (isGapped_zero_iff_norm hx).mpr ⟨hxne, fun v _ ↦ ?_⟩
+    exact (mul_nonpos_of_nonpos_of_nonneg (by linarith) (norm_nonneg v)).trans (norm_nonneg _)
+  have hT : ContinuousAt (fun x ↦ toEuclideanCLM (n := n) (𝕜 := ℂ) (H x)) x₀ :=
+    ((toEuclideanCLM (n := n) (𝕜 := ℂ)).toAlgEquiv.toLinearMap.continuous_of_finiteDimensional
+      ).continuousAt.comp hH
+  have hgap₀ := ((isGapped_zero_iff_norm hpos.self_of_nhds).mp hgap).2
+  have hev := ContinuousLinearMap.eventually_norm_gap_on_orthogonal
+    (fun x ↦ toEuclideanCLM (n := n) (𝕜 := ℂ) (H x)) (fun x ↦ groundSpace (H x) 0) hT hK
+    (groundSpace_zero (H x₀)).le hΔ (max_lt hΔ' (half_lt_self hΔ))
+    (fun v hv ↦ hgap₀ v (by rwa [groundSpace_zero] at hv))
+  filter_upwards [hpos, hne, hev] with x hx hxne hxgap
+  refine ((isGapped_zero_iff_norm hx).mpr ⟨hxne, fun v hv ↦ ?_⟩).mono (le_max_left Δ' (Δ / 2))
+  exact hxgap v (by rwa [groundSpace_zero])
+
+/-- **A uniform gap on a compact parameter set.** If every point of a compact set `S` has a
+neighbourhood on which the matrices `H y N` are gapped at the energies `E y N` with one positive
+gap for all `N` beyond one threshold, then one gap and one threshold serve for all of `S`.
+arXiv:1010.3732, Appendix A, the compactness step. -/
+theorem _root_.IsCompact.exists_uniform_isGapped {X : Type*} [TopologicalSpace X] {S : Set X}
+    (hS : IsCompact S) {m : ℕ → Type*} [∀ N, Fintype (m N)] [∀ N, DecidableEq (m N)]
+    (H : X → ∀ N, Matrix (m N) (m N) ℂ) (E : X → ℕ → ℝ)
+    (hlocal : ∀ x ∈ S, ∃ Δ : ℝ, 0 < Δ ∧ ∃ N₀ : ℕ,
+      ∀ᶠ y in 𝓝 x, ∀ N, N₀ ≤ N → IsGapped (H y N) (E y N) Δ) :
+    ∃ Δ : ℝ, 0 < Δ ∧ ∃ N₀ : ℕ, ∀ x ∈ S, ∀ N, N₀ ≤ N → IsGapped (H x N) (E x N) Δ :=
+  hS.exists_uniform_pos_nat_bounds (fun Δ N₀ x ↦ ∀ N, N₀ ≤ N → IsGapped (H x N) (E x N) Δ)
+    (fun hle h N hN ↦ (h N hN).mono hle) (fun hle h N hN ↦ h N (hle.trans hN)) hlocal
+
+end ManyBody

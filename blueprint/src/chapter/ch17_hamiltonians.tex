@@ -325,6 +325,163 @@ one-dimensional ground space.
     whose entropy is zero.
 \end{proof}
 
+\section{The gap above the kernel}
+\label{sec:hamiltonians_kernel_gap}
+
+For a positive semidefinite matrix the ground space at energy $0$ is the
+kernel, and the gap at $0$ can be read off the orthogonal complement of the
+kernel, either from the quadratic form or from the norm.
+
+\begin{theorem}[The gap above the kernel]
+    \label{thm:hamiltonians_kernel_gap}
+    \lean{ManyBody.groundSpace_zero, ManyBody.IsGapped.mul_norm_sq_le_re_inner,
+        ManyBody.isGapped_zero_iff_inner, ManyBody.isGapped_zero_iff_norm}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    Let $H$ be a complex $n\times n$ matrix and $\Delta\in\R$. The ground space
+    of $H$ at $0$ is $\ker H$. If $H$ is Hermitian and gapped at $0$ with gap
+    $\Delta$, then $\Delta\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$
+    for every $v\perp\ker H$. If $H\ge0$, the following are equivalent.
+    \begin{enumerate}
+        \item $H$ is gapped at $0$ with gap $\Delta$.
+        \item $\ker H\neq0$ and
+              $\Delta\lVert v\rVert^2\le\operatorname{Re}\langle v,Hv\rangle$ for
+              every $v\perp\ker H$.
+        \item $\ker H\neq0$ and $\Delta\lVert v\rVert\le\lVert Hv\rVert$ for every
+              $v\perp\ker H$.
+    \end{enumerate}
+    No sign of $\Delta$ is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:quadratic_gap_off_kernel, lem:hamiltonians_gap_eigenvalues}
+    The eigenspace at $0$ is the kernel. For Hermitian $H$ gapped at $0$, every
+    nonzero eigenvalue is at least $\Delta$, and
+    Theorem~\ref{thm:quadratic_gap_off_kernel} gives the quadratic-form bound;
+    so (1) implies (2). Given (2), the Cauchy--Schwarz inequality
+    $\operatorname{Re}\langle v,Hv\rangle\le\lVert v\rVert\lVert Hv\rVert$ gives
+    (3) after division by $\lVert v\rVert$. Given (3) with $\Delta\ge0$, expand
+    $v\perp\ker H$ in an orthonormal eigenbasis $Hb_k=\lambda_kb_k$: the
+    coefficients at $\lambda_k=0$ vanish, and every $\lambda_k\neq0$ has
+    $b_k\perp\ker H$, so $\lambda_k=\lVert Hb_k\rVert\ge\Delta$; hence
+    $\operatorname{Re}\langle v,Hv\rangle=\sum_k\lambda_k\lvert c_k\rvert^2\ge
+        \Delta\lVert v\rVert^2$. For $\Delta<0$, (2) holds because $H\ge0$. Finally,
+    given (2), let $H\psi=\mu\psi$ with $\psi\neq0$ and $\mu\neq0$. Then $\mu$ is
+    real and $\psi\perp\ker H$, since $\mu\langle w,\psi\rangle=\langle Hw,\psi\rangle
+        =0$ for $w\in\ker H$. Thus $\Delta\lVert\psi\rVert^2\le\mu\lVert\psi\rVert^2$,
+    which is (1).
+\end{proof}
+
+\begin{theorem}[A larger matrix with the same kernel keeps the gap]
+    \label{thm:hamiltonians_kernel_gap_domination}
+    \lean{ManyBody.groundSpace_zero_eq_of_le, ManyBody.IsGapped.of_le}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    Let $0\le A\le C$ with $\ker A\subseteq\ker C$. Then $\ker C=\ker A$, and if
+    $A$ is gapped at $0$ with gap $\Delta$, so is $C$. In particular, for
+    $0\le A\le B$ with $\ker A\subseteq\ker B$ and $t\ge0$, the matrix
+    $A+t(B-A)$ has kernel $\ker A$ and is gapped at $0$ with the gap of $A$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_kernel_gap}
+    If $Cx=0$, then
+    $0=\langle x,Cx\rangle=\langle x,Ax\rangle+\langle x,(C-A)x\rangle$ is a sum of
+    two nonnegative terms, so $\langle x,Ax\rangle=0$ and $Ax=0$. On
+    $(\ker C)^\perp=(\ker A)^\perp$,
+    $\operatorname{Re}\langle v,Cv\rangle\ge\operatorname{Re}\langle v,Av\rangle\ge
+        \Delta\lVert v\rVert^2$, and Theorem~\ref{thm:hamiltonians_kernel_gap} applies
+    to $C\ge0$. For the interpolation take $C=A+t(B-A)$, which satisfies
+    $A\le C$ since $t(B-A)\ge0$, and whose kernel contains $\ker A$.
+\end{proof}
+
+\begin{lemma}[Gap stability under perturbation of operator and kernel projection]
+    \label{lem:kernel_gap_perturbation}
+    \lean{ContinuousLinearMap.kernel_gap_perturbation,
+        ContinuousLinearMap.norm_gap_sub_starProjection,
+        ContinuousLinearMap.eventually_kernel_gap_of_continuousAt,
+        ContinuousLinearMap.eventually_norm_gap_on_orthogonal}
+    \leanok
+    Let $H,H_0,P,P_0$ be bounded operators on a complex normed space, and
+    suppose $\delta\lVert v-P_0v\rVert\leq\lVert H_0v\rVert$ for all $v$, with
+    $\delta\geq0$, $\lVert H-H_0\rVert\leq\varepsilon$ and
+    $\lVert P-P_0\rVert\leq r$. Then
+    $(\delta(1-r)-\varepsilon)\lVert v\rVert\leq\lVert Hv\rVert$ for every $v$
+    with $Pv=0$. Consequently, if $x\mapsto H_x$ and the orthogonal projection
+    onto a subspace $K_x$ are continuous at $x_0$, $K_{x_0}\subseteq\ker H_{x_0}$,
+    and $\delta\lVert v\rVert\leq\lVert H_{x_0}v\rVert$ on $K_{x_0}^\perp$ with
+    $\delta>0$, then every $\delta'<\delta$ satisfies
+    $\delta'\lVert v\rVert\leq\lVert H_xv\rVert$ on $K_x^\perp$ for all $x$
+    near $x_0$. This is the continuity step
+    of~\cite[Appendix~A]{Schuch2011Phases}.
+\end{lemma}
+\begin{proof}\leanok
+    For $Pv=0$ one has $\lVert P_0v\rVert=\lVert(P-P_0)v\rVert\leq r\lVert v\rVert$
+    and $\lVert H_0v\rVert\leq\lVert Hv\rVert+\varepsilon\lVert v\rVert$;
+    combining these with the hypothesis gives the first claim. For the second,
+    the gap on $K_{x_0}^\perp$ and $K_{x_0}\subseteq\ker H_{x_0}$ give
+    $\delta\lVert v-P_{x_0}v\rVert\leq\lVert H_{x_0}v\rVert$ for all $v$, and
+    one chooses $\varepsilon=(\delta-\delta')/2$ and $r=\varepsilon/\delta$.
+\end{proof}
+
+\begin{theorem}[Persistence of the gap]
+    \label{thm:hamiltonians_kernel_gap_continuity}
+    \lean{ManyBody.eventually_isGapped_zero}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    Let $x\mapsto H_x$ be a family of positive semidefinite matrices on a
+    topological space, continuous at $x_0$, such that the orthogonal projection
+    onto $\ker H_x$ is continuous at $x_0$. If $H_{x_0}$ is gapped at $0$ with
+    gap $\Delta$, then for every $\Delta'<\Delta$ the matrix $H_x$ is gapped at
+    $0$ with gap $\Delta'$ for all $x$ near $x_0$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:hamiltonians_kernel_gap, lem:kernel_gap_perturbation}
+    The projection onto $\ker H_{x_0}$ is nonzero, so by continuity the
+    projection onto $\ker H_x$ is nonzero, and $\ker H_x\neq0$, near $x_0$. If
+    $\Delta\le0$, then $\Delta'<0$ and the norm bound of
+    Theorem~\ref{thm:hamiltonians_kernel_gap} holds trivially. If $\Delta>0$,
+    Theorem~\ref{thm:hamiltonians_kernel_gap} turns the gap of $H_{x_0}$ into a
+    norm bound on $(\ker H_{x_0})^\perp$; Lemma~\ref{lem:kernel_gap_perturbation}
+    with $K_x=\ker H_x$ gives the norm bound with
+    $\max(\Delta',\Delta/2)$ on $(\ker H_x)^\perp$ near $x_0$, and
+    Theorem~\ref{thm:hamiltonians_kernel_gap} turns it back into a gap.
+\end{proof}
+
+\begin{lemma}[Uniform bounds from local bounds on a compact set]
+    \label{lem:compact_uniform_pos_nat_bounds}
+    \lean{IsCompact.exists_uniform_pos_nat_bounds}
+    \leanok
+    Let $S$ be a compact subset of a topological space and $P(\delta,N,x)$ a
+    property of a real $\delta$, a natural number $N$ and a point $x$ that is
+    preserved by decreasing $\delta$ and by increasing $N$. If every $x\in S$
+    has $\delta>0$ and $N$ such that $P(\delta,N,y)$ holds for all $y$ near $x$,
+    then one $\delta>0$ and one $N$ satisfy $P(\delta,N,x)$ for all $x\in S$.
+\end{lemma}
+\begin{proof}\leanok
+    Choosing a finite subcover of the neighborhoods, taking the minimum of the
+    finitely many constants and the maximum of the finitely many thresholds
+    gives the uniform pair.
+\end{proof}
+
+\begin{theorem}[A uniform gap on a compact parameter set]
+    \label{thm:hamiltonians_uniform_gap_compact}
+    \lean{IsCompact.exists_uniform_isGapped}
+    \leanok
+    \uses{def:hamiltonians_gap}
+    Let $S$ be a compact subset of a topological space, and for $x$ in the
+    space and $N\in\mathbb N$ let $H_{x,N}$ be a square matrix and
+    $E_{x,N}\in\R$. Suppose every $x\in S$ has $\Delta>0$ and $N_0$ such that
+    $H_{y,N}$ is gapped at $E_{y,N}$ with gap $\Delta$ for all $y$ near $x$ and
+    all $N\ge N_0$. Then one $\Delta>0$ and one $N_0$ serve for all $x\in S$.
+    This is the compactness step of~\cite[Appendix~A]{Schuch2011Phases}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:compact_uniform_pos_nat_bounds, lem:hamiltonians_gap_eigenvalues}
+    A gap $\Delta$ is also a gap $\Delta'\le\Delta$, so the property
+    ``$H_{x,N}$ is gapped at $E_{x,N}$ with gap $\Delta$ for all $N\ge N_0$''
+    is preserved by decreasing $\Delta$ and increasing $N_0$;
+    apply Lemma~\ref{lem:compact_uniform_pos_nat_bounds}.
+\end{proof}
+
 \section{Hermitian parts of the terms}
 \label{sec:hamiltonians_hermitian_part}
 
@@ -381,6 +538,93 @@ one-dimensional ground space.
     case $w=h=L$. Hermiticity and norm bounds of the terms are hypotheses of the
     statements about a model, not part of the model.
 \end{definition}
+
+\begin{definition}[Bond interactions on the chain]
+    \label{def:hamiltonians_bond_interaction}
+    \lean{ManyBody.BondInteraction, ManyBody.bondSupport, ManyBody.bondSupport_injective,
+        ManyBody.BondInteraction.toChainInteraction}
+    \leanok
+    \uses{def:hamiltonians_models, def:dynamics_interaction_extend}
+    A bond interaction on the chain of $L$ sites has one term on each bond $\{i,i+1\}$,
+    $0\le i<L-1$~\cite{Landau2013PolynomialTime}. The bonds are distinct supports of
+    range one, and the extension along them makes a bond interaction a chain
+    interaction of range one: its term on the bond $\{i,i+1\}$ is the bond term, and
+    its terms on all other supports of range one, the single sites among them, vanish.
+    By Lemma~\ref{lem:dynamics_interaction_extend} it has the same Hamiltonian.
+\end{definition}
+
+\begin{definition}[Translation-invariant interactions on the ring]
+    \label{def:hamiltonians_translation_invariant}
+    \lean{ManyBody.Interaction.translationInvariant}
+    \leanok
+    \uses{def:dynamics_interaction_translates, def:sites_ring_window}
+    For $k\le N$ and an operator $h$ on $k$ sites, the translation-invariant interaction
+    of $h$ on the ring of $N$ sites has, for every site $i$, the translate of $h$ to the
+    window of $k$ consecutive sites starting at $i$. For $k=2$ these are the bonds
+    $\{i,i+1\}$, and its Hamiltonian is the nearest-neighbour ring Hamiltonian
+    $\sum_i h_{i,i+1}$~\cite{Schuch2011Phases}.
+\end{definition}
+
+\begin{definition}[A rectangle interaction on the plane]
+    \label{def:hamiltonians_rectangle_to_plane}
+    \lean{ManyBody.RectangleInteraction.toPlaneInteraction}
+    \leanok
+    \uses{def:hamiltonians_models, def:sites_rectangle_domain,
+        def:dynamics_interaction_relabel, def:dynamics_interaction_extend}
+    An interaction on the $w\times h$ square lattice is an interaction of range one on
+    the rectangular domain: relabel its sites along the identification of the vertices
+    with the sites of the domain, and extend it along the injective map taking a vertex
+    or an edge to its support in the domain. The terms on the supports of vertices and
+    edges are the relabelled terms, and the others
+    vanish~\cite{OpenAI2026AreaLaw, OpenAI2026PolynomialPEPS}.
+\end{definition}
+
+\begin{lemma}[The Hamiltonian on the plane]
+    \label{lem:hamiltonians_rectangle_to_plane}
+    \lean{ManyBody.RectangleInteraction.hamiltonian_toPlaneInteraction}
+    \leanok
+    \uses{def:hamiltonians_rectangle_to_plane, lem:dynamics_interaction_relabel,
+        lem:dynamics_interaction_extend}
+    The interaction on the rectangular domain has the Hamiltonian of the rectangle
+    interaction, transported to the configurations of the domain.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Extension keeps the Hamiltonian, and relabelling transports it.
+\end{proof}
+
+\section{Positive terms of a gapped interaction}
+\label{sec:hamiltonians_positive_term}
+
+\begin{definition}[Positive terms]
+    \label{def:hamiltonians_positive_term}
+    \lean{ManyBody.Interaction.positiveTerm}
+    \leanok
+    \uses{def:dynamics_interaction, thm:positive_replacement}
+    Let $\Phi=(h_i)_{i\in I}$ be an interaction with finitely many terms, $J,\Delta$ real
+    numbers and $\Omega$ a vector. The positive term with index $i$ is
+    $k_i=\lvert M_i\rvert/c_*$, where $M_i$ is the centered filtered term of $h_i$ for
+    $H_\Phi$, $\Omega$ and the filter width $\Delta/2$, and
+    $c_*=\max\{1,J(\lVert f\rVert_1+1)\}$~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{theorem}[Positive terms]
+    \label{thm:hamiltonians_positive_term}
+    \lean{ManyBody.Interaction.positiveTerm_nonneg, ManyBody.Interaction.positiveTerm_le_one,
+        ManyBody.Interaction.positiveTerm_mulVec_eq_zero,
+        ManyBody.Interaction.smul_sub_le_sum_positiveTerm}
+    \leanok
+    \uses{def:hamiltonians_positive_term, thm:positive_replacement}
+    Every $k_i$ is positive. If the terms are Hermitian of norm at most $J$, $\Delta>0$
+    and $\lVert\Omega\rVert=1$, then $k_i\le1$. If moreover $H_\Phi\Omega=E_0\Omega$ and
+    $H_\Phi-E_0\ge\Delta(1-\lvert\Omega\rangle\langle\Omega\rvert)$, then $k_i\Omega=0$
+    and $c_*^{-1}(H_\Phi-E_0)\le\sum_ik_i$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    This is Theorem~\ref{thm:positive_replacement} for the terms of $\Phi$, whose sum
+    is $H_\Phi$.
+\end{proof}
 
 \section{Common ground vectors on disjoint regions}
 \label{sec:hamiltonians_disjoint_ground}
