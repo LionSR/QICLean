@@ -14,6 +14,7 @@ import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.Lattice
 import QICLean.ManyBody.Sites.Partition
 import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.ProductFamily
 import QICLean.ManyBody.Sites.ProductForm
 import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.RegionState

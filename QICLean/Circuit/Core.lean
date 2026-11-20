@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Circuit.Core.Channel
 import QICLean.Circuit.Core.Circuit
+import QICLean.Circuit.Core.Coarsen
 import QICLean.Circuit.Core.Cost
 import QICLean.Circuit.Core.Dimension
 import QICLean.Circuit.Core.GateSum

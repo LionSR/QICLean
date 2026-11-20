@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Circuit.Core.Seq
+import QICLean.ManyBody.Sites.ProductFamily
 import QICLean.ManyBody.Sites.RegionUnion
 
 /-!
@@ -36,6 +37,8 @@ a product of one placement per cell.
 * `QuantumCircuit.Layer.map_ofCells` — the map, as a composite of the maps of placed gates.
 * `QuantumCircuit.Layer.kraus_ofOnsite`, `QuantumCircuit.Layer.depth_ofOnsite` — the Kraus
   operators of an onsite layer, and its depth `0`.
+* `QuantumCircuit.Layer.map_krausFamily_ofOnsite` — the map of an onsite layer is the map of the
+  product of its onsite families.
 * `QuantumCircuit.Layer.kraus_measure` — the Kraus operator of an outcome of a measurement is the
   placed projection onto it.
 * `QuantumCircuit.Layer.forall_ofCells`, `QuantumCircuit.Layer.nonempty_index_ofCells`.
@@ -166,6 +169,24 @@ theorem kraus_ofOnsite {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, Decidab
   rw [kraus, Fintype.prod_eq_one _ fun b ↦ absurd b.2 (Finset.notMem_empty _), one_mul, prodOp]
   exact Fintype.prod_equiv (Equiv.subtypeUnivEquiv fun s ↦ by simp [ofOnsite]) _ _
     fun _ ↦ rfl
+
+/-- The map of an onsite layer is the map of the product `⊗_s o s` of its onsite families. -/
+theorem map_krausFamily_ofOnsite {X Y : S → Type} [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
+    [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] (ev : Interpretation G)
+    (o : (s : S) → KrausFamily (X s) (Y s)) :
+    ((ofOnsite (Γ := Γ) (G := G) o).krausFamily ev).map = (prodFamily o).map := by
+  refine LinearMap.ext fun ρ ↦ ?_
+  rw [KrausFamily.map_apply, KrausFamily.map_apply]
+  let e : (ofOnsite (Γ := Γ) (G := G) o).Index ≃ (prodFamily o).Index :=
+    { toFun := fun i s ↦ i.2 ⟨s, by simp [ofOnsite]⟩
+      invFun := fun j ↦ (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun s ↦ j s.1)
+      left_inv := fun i ↦ Prod.ext (funext fun b ↦ absurd b.2 (Finset.notMem_empty _)) rfl
+      right_inv := fun _ ↦ rfl }
+  exact Fintype.sum_equiv e _ _ fun i ↦ by
+    change (ofOnsite (Γ := Γ) (G := G) o).kraus ev i * ρ *
+      ((ofOnsite (Γ := Γ) (G := G) o).kraus ev i)ᴴ = _
+    rw [kraus_ofOnsite]
+    rfl
 
 section Measure
 

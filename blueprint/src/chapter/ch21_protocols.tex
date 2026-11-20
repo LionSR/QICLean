@@ -321,6 +321,27 @@ Section~\ref{sec:protocols_light_cones} are ring balls.
     applies.
 \end{proof}
 
+\begin{theorem}[Light cones of protocols on the blocks of the ring]
+    \label{thm:protocols_ring_block_light_cone}
+    \lean{QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_ringBall}
+    \leanok
+    \uses{thm:protocols_light_cone_block, def:circuits_ring_geometry, def:sites_ring_ball,
+        def:sites_block}
+    Let $M,k\ge1$, group the ring of $Mk$ sites into the ring of $M$ blocks of $k$
+    consecutive sites, and let $\Phi$ be realised on the blocked system by a protocol of depth
+    at most $T$ on the ring of blocks. Read on the sites, the adjoint of $\Phi$ maps an
+    operator supported on a region $R$ of blocks to an operator supported on the ball of
+    radius $kT$ about the sites of the blocks in $R$. This is the locality on the blocked
+    chain of~\cite[main text]{Piroli2021LOCC}, read on the unblocked chain.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_ring_neighbourhood, thm:sites_ring_block_ball, lem:sites_supported_mono}
+    By Theorem~\ref{thm:protocols_light_cone_block} the operator is supported on the sites of
+    the blocks in the $T$-fold neighbourhood of $R$, which is the ball of radius $T$ about $R$
+    by Lemma~\ref{lem:circuits_ring_neighbourhood}. These sites lie in the ball of radius
+    $kT$ about the sites of $R$ by Theorem~\ref{thm:sites_ring_block_ball}.
+\end{proof}
+
 \section{Encoding into a constant alphabet}
 \label{sec:protocols_encoding}
 
@@ -493,6 +514,89 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     cells of the layer and the continuations have the depths of the original ones, so the
     depth is unchanged; equal continuations have equal encodings, so an unbranched circuit stays
     unbranched.
+\end{proof}
+
+\section{Blocking protocols}
+\label{sec:protocols_block}
+
+A blocking of a geometry into the geometry of its blocks
+(Definition~\ref{def:circuits_blocking}) turns a protocol of depth $T$ into a protocol of
+depth $rT$ on the blocks, where $r$ is the number of colours. For the ring of $Mk$ sites
+blocked into $M$ blocks of $k$ consecutive sites (Definition~\ref{def:circuits_ring_blocking})
+the depth is $2T$ for $M$ even and $3T$ for $M$ odd.
+
+\begin{theorem}[Blocking a protocol]
+    \label{thm:protocols_block}
+    \lean{QuantumCircuit.IsProtocol.block}
+    \leanok
+    \uses{def:protocols_protocol, def:circuits_blocking, def:sites_block}
+    Let $\Gamma$ be blocked into $\Gamma'$ along $f$ with $r$ colours, let the bases of $X$ be
+    nonempty, and let $\Phi$ from the matrices on $\mathcal H_X$ to those on $\mathcal H_Z$ be
+    realised by a protocol of depth at most $T$ on $\Gamma$. Then $\pi_Z\circ\Phi\circ\pi_X^{-1}$
+    is realised by a protocol of depth at most $rT$ on $\Gamma'$, where $\pi_X$ identifies the
+    matrices on $\mathcal H_X$ with those on the blocked system.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:circuits_substitute, def:circuits_layer_map, lem:circuits_tp_nonempty,
+        def:protocols_encoding, lem:protocols_encoding, thm:protocols_encoded_layer,
+        def:circuits_of_cells, thm:circuits_of_cells, def:circuits_layer, def:circuits_costs,
+        thm:circuits_coarsen, thm:circuits_composition, thm:circuits_cost_subadditive,
+        lem:circuits_duality, lem:circuits_local_gate_unitary, lem:kraus_family_channel,
+        thm:protocols_comp}
+    By Theorem~\ref{thm:circuits_substitute}, applied to the blocking of systems with the
+    identifications $\pi_X$ and $K=r$, it suffices to realise a single trace-preserving layer
+    $L$ from $X$ to $Y$ on nonempty bases by a protocol on $\Gamma'$ of depth at most $r$
+    times the depth of $L$, intertwining $\pi_X$ and $\pi_Y$. If $L$ has no cells,
+    Theorem~\ref{thm:circuits_coarsen} gives a layer on $\Gamma'$ with no cells, of depth $0$.
+    Otherwise $L$ has depth $1$, since the cells of $\Gamma$ have positive cost. The bases
+    of $Y$ are nonempty by Lemma~\ref{lem:circuits_tp_nonempty}; let $W_s=X_s\sqcup Y_s$, and
+    let $\mathcal E$ and $\mathcal D$ be the sitewise encoding of $X$ and decoding of $Y$
+    along the two inclusions into $W$ (Definition~\ref{def:protocols_encoding}).
+    Theorem~\ref{thm:protocols_encoded_layer} gives a trace-preserving layer $L'$ on $W$ with
+    the cells of $L$ and $\Phi_{L'}\circ\mathcal E=\mathcal E_Y\circ\Phi_L$, so
+    $\Phi_L=\mathcal D\circ\Phi_{L'}\circ\mathcal E$ by Lemma~\ref{lem:protocols_encoding}.
+    Split $L'$ into the layer $L'_c$ of its gates on the cells $b$ with
+    $\bar b$ of colour $c$, for $c<r$, and the layer $O$ with no cells carrying the onsite
+    families of $L'$ at the free sites and the identity elsewhere:
+    \begin{align}
+        \Phi_L&=\mathcal D\circ\Phi_O\circ\Phi_{L'_0}\circ\dots\circ\Phi_{L'_{r-1}}\circ\mathcal E.
+        \label{eq:protocols_block_split}
+    \end{align}
+    The factorization $\Phi_{L'}=\Phi_O\circ\Phi_{L'_{\mathrm{cells}}}$ through the layer
+    $L'_{\mathrm{cells}}$ of all gates holds Kraus operator by Kraus operator. Let $w_0$ be the
+    configuration equal to $y$ on the cells and to $x$ at the free sites. Since $O_k$ is the
+    identity on the cells and the Kraus operator $C_i$ of $L'_{\mathrm{cells}}$ is the identity
+    at the free sites, every other term of the sum vanishes, and
+    \begin{align}
+        (O_kC_i)(y,x)&=\sum_wO_k(y,w)\,C_i(w,x)=O_k(y,w_0)\,C_i(w_0,x)=L'_{(i,k)}(y,x),
+        \notag
+    \end{align}
+    the Kraus operator of $L'$ with the outcomes $i$ of its gates and $k$ of its onsite
+    families. The layer of all gates is the
+    composite of the layers $L'_c$ by Theorem~\ref{thm:circuits_of_cells}, enumerating the
+    cells colour by colour. Each factor of~(\ref{eq:protocols_block_split}) is a
+    trace-preserving layer whose cells have pairwise disjoint covering cells, those of one
+    colour, so Theorem~\ref{thm:circuits_coarsen} gives a layer on $\Gamma'$ realising it,
+    of depth $0$ for $\mathcal E$, $O$ and $\mathcal D$, which have no cells, and at most $1$
+    for each $L'_c$. Composing these layers gives a protocol of depth at most $r$.
+\end{proof}
+
+\begin{theorem}[A conversion followed by a conversion on the blocks]
+    \label{thm:protocols_block_trans}
+    \lean{QuantumCircuit.IsConversion.block_trans}
+    \leanok
+    \uses{def:protocols_protocol, def:circuits_blocking, def:sites_block}
+    Let $\Gamma$ be blocked into $\Gamma'$ along $f$ with $r$ colours and let the bases of $X$
+    be nonempty. If $\rho$ is converted into $\sigma$ in depth $T$ on $\Gamma$ and the
+    blocked $\sigma$ is converted into $\tau$ in depth $U$ on $\Gamma'$, then the blocked
+    $\rho$ is converted into $\tau$ in depth $rT+U$ on $\Gamma'$. This is the blocking
+    of~\cite[main text]{Piroli2021LOCC}: a state is converted, its sites are grouped into
+    blocks of neighbouring sites, and the blocked state is converted further.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:protocols_block, thm:protocols_comp}
+    Theorem~\ref{thm:protocols_block} realises the first conversion, read on the blocks, in
+    depth $rT$, and composition with the second adds the depths.
 \end{proof}
 
 \section{Unitary dilation}

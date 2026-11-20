@@ -79,6 +79,31 @@ preservation, and the backward light cone.
     Lemma~\ref{lem:sites_ring_ball}.
 \end{proof}
 
+\begin{definition}[Blocking of geometries]
+    \label{def:circuits_blocking}
+    \lean{QuantumCircuit.Geometry.Blocking}
+    \leanok
+    \uses{def:circuits_geometry}
+    Let $f:V\to V'$ group the sites of a geometry $\Gamma$ on $V$ into the sites of a
+    geometry $\Gamma'$ on $V'$, and let $r\in\N$. A blocking of $\Gamma$ into $\Gamma'$ along
+    $f$ with $r$ colours assigns to every cell $b$ of $\Gamma$ a cell $\bar b$ of $\Gamma'$
+    with $f(b)\subseteq\bar b$, and to every cell of $\Gamma'$ a colour in
+    $\{0,\dots,r-1\}$, such that distinct cells of $\Gamma'$ of one colour are disjoint and
+    every cell of $\Gamma$ has positive cost.
+\end{definition}
+
+\begin{definition}[Blocking of the ring]
+    \label{def:circuits_ring_blocking}
+    \lean{QuantumCircuit.Geometry.ringBlocking}
+    \leanok
+    \uses{def:circuits_blocking, def:circuits_ring_geometry}
+    For $M\ge1$ and $k\in\N$, the blocking of the ring of $Mk$ sites into the ring of $M$
+    sites along $p\mapsto\lfloor p/k\rfloor$ covers the cell $\{p,p+1\}$ by the cell
+    $\{\lfloor p/k\rfloor,\lfloor p/k\rfloor+1\}$, and gives the cell $\{j,j+1\}$ the colour
+    $2$ if $M$ is odd and $j=M-1$, and the colour $j\bmod2$ otherwise. It has two colours for
+    $M$ even and three for $M$ odd.
+\end{definition}
+
 \begin{definition}[Gate families and interpretations]
     \label{def:circuits_gate_family}
     \lean{QuantumCircuit.GateFamily, QuantumCircuit.Interpretation,
@@ -765,10 +790,11 @@ sequence on one system.
         QuantumCircuit.Layer.forall_single, QuantumCircuit.Layer.nonempty_index_single,
         QuantumCircuit.Layer.cellCost_single, QuantumCircuit.Layer.gateCount_single,
         QuantumCircuit.Layer.depth_single, QuantumCircuit.Layer.kraus_ofOnsite,
-        QuantumCircuit.Layer.depth_ofOnsite, QuantumCircuit.Circuit.map_ofLayer_ofOnsite_single}
+        QuantumCircuit.Layer.depth_ofOnsite, QuantumCircuit.Circuit.map_ofLayer_ofOnsite_single,
+        QuantumCircuit.Layer.map_krausFamily_ofOnsite}
     \leanok
     \uses{def:circuits_of_cells, def:circuits_costs, def:circuits_local,
-        lem:sites_place_hom}
+        lem:sites_place_hom, def:sites_product_family}
     Let $b_1,\dots,b_m$ be an enumeration without repetition of a set of pairwise
     disjoint cells carrying gates $g_{b_k}$, under any interpretation. The Kraus
     operator of the layer at an outcome $i$ is
@@ -785,7 +811,8 @@ sequence on one system.
     of gates, in particular gate count $c_b$, and depth $1$ if $c_b>0$. The Kraus
     operator of a layer with no cells and families $(K^s_\omega)_\omega$ at the sites
     $s$, at an outcome $i$, is the product operator $\bigotimes_sK^s_{i_s}$, and such a layer
-    has depth $0$. If every family consists of one operator $V_s$, the map of the layer is
+    has depth $0$; its map is the map of the product family $\bigotimes_sK^s$. If every
+    family consists of one operator $V_s$, the map of the layer is
     $\rho\mapsto(\bigotimes_sV_s)\rho(\bigotimes_sV_s)^\dagger$.
 \end{theorem}
 \begin{proof}\leanok
@@ -803,7 +830,8 @@ sequence on one system.
     $\sum_{\omega,\omega'}(K_\omega K'_{\omega'})\rho(K_\omega K'_{\omega'})^\dagger
     =\sum_\omega K_\omega\bigl(\sum_{\omega'}K'_{\omega'}\rho K_{\omega'}'^\dagger\bigr)
     K_\omega^\dagger$. The choices of an index at every position of the enumeration are
-    the outcomes of the layer.
+    the outcomes of the layer. A layer with no cells has an outcome at every site, which is
+    an outcome of the product family, with the same product operator.
 \end{proof}
 
 \section{Gates on sites and pairs}
@@ -1061,6 +1089,43 @@ are embedded.
     continues with one circuit $c$; it is the composition of the circuit of $L$ with $c$.
     Composing their realisations adds the depths, and the maps compose. A layer of depth
     $0$ must be realised at depth $0$.
+\end{proof}
+
+\begin{theorem}[Coarsening a layer]
+    \label{thm:circuits_coarsen}
+    \lean{QuantumCircuit.Layer.exists_coarsen}
+    \leanok
+    \uses{def:circuits_layer, def:circuits_geometry, def:sites_block}
+    Let $f:V\to V'$ group the sites of a geometry $\Gamma$ into the sites of a geometry
+    $\Gamma'$, and let a layer $L$ of plain gates from $X$ to $Y$ on $\Gamma$ have every cell
+    $b$ in a cell $\bar b$ of $\Gamma'$ after $f$, with $\bar b_1$ and $\bar b_2$ disjoint
+    whenever they are distinct. Then there is a layer $L'$ of plain gates on $\Gamma'$ from
+    the blocked system of $X$ to that of $Y$ whose cells are the cells $\bar b$, which is
+    trace-preserving when $L$ is, and whose map, read on the sites, is the map of $L$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_factorization, def:circuits_of_cells, def:sites_product_family,
+        thm:sites_product_family_tp, def:kraus_family_prod, lem:kraus_family_prod,
+        thm:circuits_composition}
+    The covering cells are pairwise disjoint, so they are the cells of a layer on $\Gamma'$;
+    its blocks are these cells and the remaining blocks of $f$. Send each block of $L$ to a
+    block of $L'$: a cell $b$ to $\bar b$, and a remaining site $v$ to the block of $L'$
+    containing $f(v)$. The blocks of $L$ sent to a block $\beta'$ of $L'$ partition the
+    preimage of $\beta'$, because a site of a cell $b$ lies after $f$ in $\bar b$ and distinct
+    blocks of $L'$ are disjoint. The family of $L'$ on $\beta'$ is the product of the families
+    of $L$ on these blocks, read on the configurations of $\beta'$ through this partition, and
+    it is trace-preserving when they are by Theorem~\ref{thm:sites_product_family_tp}. By
+    Lemma~\ref{lem:circuits_layer_factorization} a Kraus operator of either layer is the
+    product of its local entries over its blocks. A Kraus index of $L'$ is an outcome on every
+    block of $L$, grouped by the blocks of $L'$, so the indices of $L'$ and $L$ correspond and
+    the corresponding operators $K'_i$ and $K_i$ satisfy
+    \begin{align}
+        K'_i(z,w)&=\prod_{\beta'}\prod_{\beta\mapsto\beta'}K_{i,\beta}(z|_\beta,w|_\beta)
+        =\prod_\beta K_{i,\beta}(z|_\beta,w|_\beta)=K_i(z,w).
+        \notag
+    \end{align}
+    Equal Kraus operators up to the identification of the configurations give equal maps up
+    to it.
 \end{proof}
 
 \section{Sums of gate families, oracle calls and measurement}
