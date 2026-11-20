@@ -95,7 +95,7 @@ def IsProtocol (T : ℕ)
 def IsBoundedProtocol (B T : ℕ)
     (Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ) : Prop :=
   ∃ c : Circuit Γ KrausGate X Z, c.Forall KrausGate.ev KrausFamily.IsTP ∧ c.depth ≤ T ∧
-    c.map KrausGate.ev = Φ ∧ c.IsUnbranched ∧ c.IsDimBounded B
+    c.map KrausGate.ev = Φ ∧ c.IsUnbranched ∧ c.IsDimBounded Finset.univ B
 
 /-- An exact conversion of `ρ` into `σ` by a protocol of depth at most `T`. -/
 def IsConversion (T : ℕ) (ρ : Matrix (Config X) (Config X) ℂ)
@@ -295,16 +295,16 @@ theorem IsBoundedProtocol.dimension_bounds {B T : ℕ}
     (∀ s, 0 < Nat.card (X s) ∧ Nat.card (X s) ≤ B) ∧
       ∀ s, 0 < Nat.card (Z s) ∧ Nat.card (Z s) ≤ B := by
   obtain ⟨c, hTP, -, -, -, hB⟩ := h
-  have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hB.input s).1).1
+  have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hB.input s (Finset.mem_univ s)).1).1
   obtain ⟨p⟩ := (c.isTP_krausFamily _ hTP).nonempty_index
-  exact ⟨hB.input, hB.output p⟩
+  exact ⟨fun s ↦ hB.input s (Finset.mem_univ s), fun s ↦ hB.output p s (Finset.mem_univ s)⟩
 
 /-- A larger bound keeps a bounded protocol bounded. -/
 theorem IsBoundedProtocol.mono_bound {B C T : ℕ} (hBC : B ≤ C)
     {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
     (h : IsBoundedProtocol Γ B T Φ) : IsBoundedProtocol Γ C T Φ :=
   let ⟨c, hTP, hd, hm, hc, hB⟩ := h
-  ⟨c, hTP, hd, hm, hc, hB.mono hBC⟩
+  ⟨c, hTP, hd, hm, hc, hB.mono subset_rfl hBC⟩
 
 /-- A protocol on nonempty input bases is bounded by some `B`. The bound
 depends on the protocol. -/

@@ -38,7 +38,7 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
     {X Z : Fin N → Type} → [∀ s, Fintype (X s)] → [∀ s, DecidableEq (X s)] →
     [∀ s, Fintype (Z s)] → [∀ s, DecidableEq (Z s)] →
     (c : Circuit (Geometry.ring N) KrausGate X Z) →
-    c.Forall KrausGate.ev KrausFamily.IsTP → c.IsDimBounded B → c.IsUnbranched →
+    c.Forall KrausGate.ev KrausFamily.IsTP → c.IsDimBounded Finset.univ B → c.IsUnbranched →
     (e : ∀ s, X s ↪ Fin k → Fin d) → (f : ∀ s, Z s ↪ Fin k → Fin d) →
     ∃ Φ, IsUnitaryDilation (Geometry.portRing N (2 * k + 1)) D (2 * k * c.depth) Φ ∧
       Φ ∘ₗ (reindexAlgEquiv ℂ ℂ
@@ -52,7 +52,7 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
   | X, _, i₁, i₂, i₃, i₄, Circuit.done _, _, hdim, _, e, f => by
     obtain rfl : i₁ = i₃ := Subsingleton.elim _ _
     obtain rfl : i₂ = i₄ := Subsingleton.elim _ _
-    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim s).1).1
+    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim s (Finset.mem_univ s)).1).1
     let L₀ : Layer (Geometry.ring N) KrausGate X X := Layer.ofOnsite fun _ ↦ KrausFamily.single 1
     obtain ⟨L', hc', hL', hm'⟩ := L₀.exists_encoded
       ⟨fun b ↦ absurd b.2 (Finset.notMem_empty _),
@@ -67,13 +67,13 @@ private theorem exists_portRing_of_isDimBounded (hN : 2 ≤ N) {B : ℕ} (hB : B
       rw [h₁, h₂, Circuit.map_ofLayer_ofOnsite_single, prodOp_one, conjTranspose_one,
         Matrix.one_mul, Matrix.mul_one, Circuit.map_done, LinearMap.id_apply]
   | X, Z, _, _, _, _, Circuit.step (Y := Y) L next, hc, hdim, hu, e, f => by
-    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim.1 s).1).1
+    have : ∀ s, Nonempty (X s) := fun s ↦ (Nat.card_pos_iff.mp (hdim.1 s (Finset.mem_univ s)).1).1
     obtain ⟨i₀⟩ := L.nonempty_index_of_forall_isTP KrausGate.ev hc.1
     have hY := (hdim.2 i₀).input
     let g : ∀ s, Y s ↪ Fin k → Fin d := fun s ↦ Classical.choice
       (Function.Embedding.nonempty_of_card_le (by
         rw [Fintype.card_fun, Fintype.card_fin, Fintype.card_fin, ← Nat.card_eq_fintype_card]
-        exact (hY s).2.trans hB))
+        exact (hY s (Finset.mem_univ s)).2.trans hB))
     obtain ⟨L', hc', hL', hm'⟩ := L.exists_encoded hc.1 e g
     obtain ⟨Φ₁, hΦ₁, hΦ₁m⟩ := Layer.exists_portRing hN L' hL' D hD
     obtain ⟨Φ₂, hΦ₂, hΦ₂m⟩ :=

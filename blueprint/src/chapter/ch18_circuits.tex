@@ -473,18 +473,20 @@ and each Kraus operator is a product of local entries over the blocks.
     \lean{QuantumCircuit.Circuit.IsDimBounded}
     \leanok
     \uses{def:circuits_circuit}
-    A circuit is bounded by $B$ when every basis of every system along every branch has
-    between $1$ and $B$ elements.
+    A circuit is bounded by $B$ on a set $A$ of sites when, at every site of $A$, every basis of
+    every system along every branch has between $1$ and $B$ elements. It is bounded by $B$ when
+    it is bounded by $B$ on the set of all sites.
 \end{definition}
 
 \begin{lemma}[Bounds]
     \label{lem:circuits_dim_bounded}
     \lean{QuantumCircuit.Circuit.IsDimBounded.mono, QuantumCircuit.Circuit.IsDimBounded.comp,
         QuantumCircuit.Circuit.IsDimBounded.input, QuantumCircuit.Circuit.IsDimBounded.output,
-        QuantumCircuit.Circuit.exists_isDimBounded}
+        QuantumCircuit.Circuit.exists_isDimBounded, QuantumCircuit.Circuit.isDimBounded_empty}
     \leanok
     \uses{def:circuits_dim_bounded, lem:circuits_tp_nonempty}
-    A bound passes to every larger bound and to compositions. The bases of the input are
+    A bound on a set of sites passes to every larger bound on every smaller set, and to
+    compositions; every circuit is bounded on the empty set. The bases of the input are
     bounded, and so are those of the output along any branch. A circuit whose gates and
     onsite families are trace-preserving, on nonempty finite bases, has a bound.
 \end{lemma}
