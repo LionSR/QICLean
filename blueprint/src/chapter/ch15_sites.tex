@@ -373,6 +373,163 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         \label{eq:sites_region_expectation}
     \end{align}
     the normalized partial trace over the sites outside $D$, placed on $D$. Its
+\begin{lemma}[Placement into a larger region is isometric]
+    \label{lem:sites_subregion_place_isometry}
+    \lean{ManyBody.subregionPlaceHom, ManyBody.subregionPlaceHom_apply,
+        ManyBody.subregionPlace_injective, ManyBody.norm_subregionPlace}
+    \leanok
+    \uses{lem:sites_subregion_place, lem:sites_place_norm_order}
+    For regions $R\subseteq U$, the extension $K\mapsto K\otimes1_{U\setminus R}$ is a
+    unital $*$-homomorphism from the matrices on $\C^{X_R}$ to the matrices on
+    $\C^{X_U}$. If every $X_v$ is nonempty, it is injective and
+    $\lVert K\otimes1_{U\setminus R}\rVert=\lVert K\rVert$.
+\end{lemma}
+\begin{proof}\leanok
+    The extension is the placement of $K$ in the system of sites of $U$, relabelled along a
+    bijection of configurations; apply Lemma~\ref{lem:sites_place_norm_order} in that
+    system.
+\end{proof}
+
+\section{Placement along an injection of sites}
+\label{sec:sites_place_along}
+
+\begin{definition}[Placement along an injection]
+    \label{def:sites_place_along}
+    \lean{ManyBody.windowEquiv, ManyBody.coe_windowEquiv, ManyBody.windowConfigEquiv,
+        ManyBody.windowConfigEquiv_symm_apply, ManyBody.windowConfigEquiv_apply_windowEquiv,
+        ManyBody.placeAlong, ManyBody.placeAlong_apply}
+    \leanok
+    \uses{def:sites_place}
+    Let $w\colon W\to V$ be an injection of a finite set $W$ into the sites, and give the
+    site $u$ of $W$ the basis $X_{w(u)}$. Identifying $W$ with its image $w(W)$
+    identifies the configurations of $W$ with those of the region $w(W)$. The placement
+    along $w$ of a matrix $K$ on the configurations of $W$ is the placement of $K$ on
+    $w(W)$: it acts as $K$ on the sites $w(u)$ and as the identity elsewhere. Its matrix
+    element at $(\sigma,\tau)$ is $K_{\sigma\circ w,\tau\circ w}$ if $\sigma$ and $\tau$
+    agree outside $w(W)$, and $0$ otherwise.
+\end{definition}
+
+\begin{lemma}[Placement along an injection is a unital $*$-homomorphism]
+    \label{lem:sites_place_along_hom}
+    \lean{ManyBody.placeAlongHom, ManyBody.placeAlongHom_apply, ManyBody.placeAlong_zero,
+        ManyBody.placeAlong_add, ManyBody.placeAlong_smul, ManyBody.placeAlong_neg,
+        ManyBody.placeAlong_sub, ManyBody.placeAlong_sum, ManyBody.placeAlong_conjTranspose,
+        ManyBody.isHermitian_placeAlong, ManyBody.placeAlong_one, ManyBody.placeAlong_mul,
+        ManyBody.placeAlong_pow, ManyBody.placeAlong_mem_unitaryGroup,
+        ManyBody.trace_placeAlong, ManyBody.placeAlong_diagonal, ManyBody.placeAlong_exp,
+        ManyBody.placeAlong_mulVec_apply_of}
+    \leanok
+    \uses{def:sites_place_along, lem:sites_place_hom, def:sites_place, lem:sites_place_exp}
+    The placement along $w$ is linear, unital, multiplicative, compatible with adjoints and
+    with the exponential, and maps unitaries to unitaries;
+    $\Tr(K\otimes1)=\lvert X_{V\setminus w(W)}\rvert\Tr K$, and a diagonal matrix
+    $\operatorname{diag}(f)$ is placed onto the diagonal matrix with entries
+    $f(\sigma\circ w)$. If $g(a)$ is the configuration equal to $a(u)$ at $w(u)$ and to
+    $\sigma$ outside $w(W)$, then $((K\otimes1)\psi)(\sigma)=\sum_aK_{\sigma\circ w,a}\,
+    \psi(g(a))$.
+\end{lemma}
+\begin{proof}\leanok
+    Relabelling along a bijection of configurations is a $*$-isomorphism that preserves
+    the trace and the exponential, so these are the statements of
+    Lemmas~\ref{lem:sites_place_hom} and~\ref{lem:sites_place_exp} and of
+    Definition~\ref{def:sites_place} for the placement on $w(W)$.
+\end{proof}
+
+\begin{theorem}[Supports of placements along an injection]
+    \label{thm:sites_place_along_support}
+    \lean{ManyBody.placeAlong_mem_supportedOperators,
+        ManyBody.placeAlong_mem_supportedOperators_map,
+        ManyBody.exists_eq_placeAlong_of_mem_supportedOperators,
+        ManyBody.mem_supportedOperators_iff_exists_eq_placeAlong,
+        ManyBody.commute_placeAlong_of_disjoint}
+    \leanok
+    \uses{def:sites_place_along, thm:sites_place_range, lem:sites_supported_commute}
+    An operator is supported on $w(W)$ if and only if it is placed along $w$. If $K$ is
+    supported on a region $S\subseteq W$, then $K\otimes1$ is supported on $w(S)$. Matrices
+    placed along injections with disjoint images commute.
+\end{theorem}
+\begin{proof}\leanok
+    The first statement is Theorem~\ref{thm:sites_place_range} on $w(W)$, transported along
+    the identification of configurations. For the second, the element
+    $K_{\sigma\circ w,\tau\circ w}$ vanishes when $\sigma\circ w$ and $\tau\circ w$ differ
+    outside $S$, and otherwise depends only on the values on $w(S)$ and on the pattern of
+    coincidences outside. The last statement is
+    Lemma~\ref{lem:sites_supported_commute}.
+\end{proof}
+
+\begin{lemma}[Norm and order under placement along an injection]
+    \label{lem:sites_place_along_norm_order}
+    \lean{ManyBody.norm_placeAlong_le, ManyBody.posSemidef_placeAlong,
+        ManyBody.placeAlong_le_placeAlong, ManyBody.placeAlong_injective,
+        ManyBody.placeAlong_inj, ManyBody.norm_placeAlong, ManyBody.posSemidef_placeAlong_iff,
+        ManyBody.placeAlong_le_placeAlong_iff, ManyBody.placeAlong_mem_unitaryGroup_iff}
+    \leanok
+    \uses{def:sites_place_along, lem:sites_place_norm_order}
+    The placement along $w$ does not increase the norm and preserves positivity and the
+    order. If every $X_v$ is nonempty, it is injective and isometric, reflects
+    positivity and the order, and $K\otimes1$ is unitary only if $K$ is.
+\end{lemma}
+\begin{proof}\leanok
+    These are the statements of Lemma~\ref{lem:sites_place_norm_order} on $w(W)$; a
+    relabelling of configurations preserves norms and positivity. If
+    $(K\otimes1)(K\otimes1)^*=1$, injectivity gives $KK^*=1$.
+\end{proof}
+
+\begin{lemma}[Regions, bijections and composition]
+    \label{lem:sites_place_along_composition}
+    \lean{ManyBody.placeAlong_subtype, ManyBody.placeAlong_equiv, ManyBody.placeAlong_refl,
+        ManyBody.placeAlong_placeAlong, ManyBody.placeAlong_prodOp}
+    \leanok
+    \uses{def:sites_place_along, lem:sites-regional-relabel, thm:sites_product_span}
+    Placing along the inclusion of a region $D$ is placing on $D$; placing along a bijection
+    of the sites is relabelling the configurations; and for injections $w'\colon W'\to W$
+    and $w\colon W\to V$, placing along $w'$ and then along $w$ is placing along $w\circ w'$.
+    A product operator $\bigotimes_um_u$ is placed onto the product operator equal to $m_u$
+    at $w(u)$ and to $1$ outside $w(W)$.
+\end{lemma}
+\begin{proof}\leanok
+    Compare matrix elements. Two configurations agree outside $w(w'(W'))$ exactly when they
+    agree outside $w(W)$ and their restrictions to $W$ agree outside $w'(W')$. For the product
+    operator, split the product over $V$ into the image of $w$ and its complement, where
+    the factors are $\delta_{\sigma_v\tau_v}$.
+\end{proof}
+
+\begin{lemma}[Identical sites: permutations and translations]
+    \label{lem:sites_place_along_permutation}
+    \lean{ManyBody.placeAlong_mulVec_apply, ManyBody.mul_placeAlong_apply,
+        ManyBody.placeAlong_submatrix_comp,
+        ManyBody.sitePermOp_mul_placeAlong_mul_conjTranspose, ManyBody.placeAlong_sitePermOp}
+    \leanok
+    \uses{def:sites_place_along, lem:sites_place_along_hom, def:hastings_site_permutation}
+    Let every site carry the same basis set. For a permutation $\pi$ of the sites,
+    $P_\pi(K\otimes1)_wP_\pi^*=(K\otimes1)_{\pi\circ w}$, where $(K\otimes1)_w$ denotes the
+    placement along $w$ and $P_\pi$ moves the content of every site $v$ to $\pi(v)$. For a
+    permutation $\rho$ of $W$, the placement along $w$ of $P_\rho$ is $P_{\rho'}$, where
+    $\rho'$ is $w\rho w^{-1}$ on the image of $w$ and the identity elsewhere.
+\end{lemma}
+\begin{proof}\leanok
+    The matrix element of $P_\pi AP_\pi^*$ at $(\sigma,\tau)$ is that of $A$ at
+    $(\sigma\circ\pi,\tau\circ\pi)$, and $\sigma\circ\pi$ and $\tau\circ\pi$ agree outside
+    $w(W)$ exactly when $\sigma$ and $\tau$ agree outside $\pi(w(W))$. For $P_\rho$, compare
+    the conditions $\tau\circ w=\sigma\circ w\circ\rho$ off and on the image.
+\end{proof}
+
+\begin{definition}[A matrix at one site]
+    \label{def:sites_place_at}
+    \lean{ManyBody.placeAt, ManyBody.placeAt_apply, ManyBody.placeAt_add,
+        ManyBody.placeAt_sub, ManyBody.placeAt_smul, ManyBody.placeAt_conjTranspose,
+        ManyBody.placeAt_one, ManyBody.isHermitian_placeAt, ManyBody.placeAt_mul,
+        ManyBody.placeAt_mem_supportedOperators, ManyBody.norm_placeAt_le,
+        ManyBody.posSemidef_placeAt, ManyBody.placeAt_le_placeAt}
+    \leanok
+    \uses{def:sites_place_along, lem:sites_place_along_hom, lem:sites_place_along_norm_order}
+    A matrix $p$ on $\C^{X_v}$ acts at the site $v$ as its placement along the inclusion of
+    $v$: the operator $p\otimes1$, supported on $\{v\}$, with matrix element
+    $p_{\sigma_v\tau_v}$ if $\sigma$ and $\tau$ agree outside $v$, and $0$ otherwise. It is a
+    unital $*$-homomorphism in $p$ that does not increase the norm and preserves positivity
+    and the order.
+\end{definition}
+
     matrix element at $(\sigma,\tau)$ is $0$ unless $\sigma$ and $\tau$ agree
     outside $D$, and is then $c^{-1}\sum_{y}A_{(\sigma|_D,y),(\tau|_D,y)}$, the
     sum running over the configurations $y$ of $V\setminus D$. This is the expectation onto the operators supported on a
@@ -865,6 +1022,37 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $S\subseteq R$ or $S\cap R=\varnothing$, and in general $F_RA_dF_R^*$ is
     supported on $S\sqcup S$ \cite[Section~2]{OpenAI2026PolynomialPEPS}.
 \end{theorem}
+\begin{lemma}[Conjugation by on-site unitaries]
+    \label{lem:sites_onsite_conjugation}
+    \lean{ManyBody.prodOp_mul_mul_conjTranspose_mem_supportedOperators}
+    \leanok
+    \uses{cor:sites_product_induction}
+    If the on-site matrices $m_v$ are unitary at every site outside a region $S$, then
+    $(\bigotimes_vm_v)A(\bigotimes_vm_v)^*\in\mathcal A_S$ for every $A\in\mathcal A_S$.
+\end{lemma}
+\begin{proof}\leanok
+    By Corollary~\ref{cor:sites_product_induction} it suffices to take
+    $A=\bigotimes_vn_v$ with $n_v=1$ outside $S$. Then the conjugate is
+    $\bigotimes_vm_vn_vm_v^*$, whose factors outside $S$ are $m_vm_v^*=1$.
+\end{proof}
+
+\begin{definition}[Exchange of two copies on a region]
+    \label{def:sites_pair_swap}
+    \lean{ManyBody.pairSwapOp, ManyBody.pairSwapOp_mem_supportedOperators,
+        ManyBody.conjTranspose_pairSwapOp, ManyBody.pairSwapOp_mul_self,
+        ManyBody.pairSwapOp_mem_unitaryGroup, ManyBody.pairSwapOp_empty,
+        ManyBody.pairSwapOp_mul_mul_conjTranspose_mem_supportedOperators,
+        ManyBody.pairSwapOp_mul_mul_conjTranspose_of_disjoint}
+    \leanok
+    \uses{lem:sites_paired_product_support, lem:sites_onsite_conjugation,
+        lem:sites_supported_commute}
+    On the paired system with basis $X_v\times X_v$ at the site $v$, the exchange of the two
+    copies on a region $A$ is the product operator of the exchange $(a,b)\mapsto(b,a)$ at the
+    sites of $A$ and the identity elsewhere. It is a self-adjoint unitary supported on $A$,
+    the identity for $A=\emptyset$; conjugation by it maps $\mathcal A_S$ into itself for
+    every region $S$, and fixes every operator supported on a region disjoint from $A$.
+\end{definition}
+
 \begin{proof}
     \leanok
     \uses{thm:sites-replica-swap-composition, lem:sites_supported_commute,
@@ -1248,3 +1436,31 @@ supports of bounded range on them.
     one coordinate and agree in the other. A vertex is the only label with a one-point
     region, and an edge is determined by its two endpoints.
 \end{proof}
+\begin{definition}[Windows on the chain]
+    \label{def:sites_chain_window}
+    \lean{ManyBody.chainWindow, ManyBody.val_chainWindow, ManyBody.map_chainWindow,
+        ManyBody.chainWindow_trans_chainWindow}
+    \leanok
+    \uses{def:sites_chain_support}
+    For $a+k\le N$, the window of $k$ consecutive sites of the chain of $N$ sites starting
+    at $a$ is the injection $j\mapsto a+j$ of $\{0,\dots,k-1\}$; its image is the interval
+    $[a,a+k)$~\cite{Landau2013PolynomialTime}. The window of $k$ sites starting at $b$ inside
+    the window of $w\ge b+k$ sites starting at $a$ is the window of $k$ sites starting at
+    $a+b$.
+\end{definition}
+
+\begin{lemma}[Rotating and nesting windows on the ring]
+    \label{lem:sites_ring_window}
+    \lean{ManyBody.ringWindow_trans_finRotate, ManyBody.chainWindow_trans_ringWindow}
+    \leanok
+    \uses{def:sites_ring_window, def:sites_chain_window}
+    The rotation $j\mapsto j+1$ of the ring carries the window starting at $i$ to the window
+    starting at $i+1$. Inside the window of $m$ sites starting at $i$, the $k$ consecutive
+    sites starting at the position $b$, with $b+k\le m$, form the window of the ring starting
+    at $i+b$.
+\end{lemma}
+\begin{proof}\leanok
+    Both are identities of sites modulo $N$: $(i+j)+1=(i+1)+j$ and
+    $i+(b+j)=(i+b)+j$.
+\end{proof}
+

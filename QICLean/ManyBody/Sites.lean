@@ -16,7 +16,9 @@ import QICLean.ManyBody.Sites.OperatorSchmidtRank
 import QICLean.ManyBody.Sites.Partition
 import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.ProductFamily
+import QICLean.ManyBody.Sites.PairSwap
 import QICLean.ManyBody.Sites.ProductForm
+import QICLean.ManyBody.Sites.PlaceAlong
 import QICLean.ManyBody.Sites.RegionExpectation
 import QICLean.ManyBody.Sites.RegionMatrix
 import QICLean.ManyBody.Sites.RegionState

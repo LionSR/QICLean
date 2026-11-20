@@ -21,7 +21,10 @@ spectral gap above a one-dimensional ground space.
 
 * `centeredObservable ψ A` subtracts from `A` its expectation in the vector `ψ`, written as the
   inner product `⟪ψ, Aψ⟫` divided by `‖ψ‖²`; the centred observable has zero expectation and
-  norm at most `2‖A‖`.
+  norm at most `2‖A‖`, is additive in `A`, is Hermitian for Hermitian `A`, and is `A - E` at an
+  eigenvector of `A` with eigenvalue `E`. For a unit vector and a Hermitian observable it is
+  TNLean's `groundCentered` (`MPS/AreaLaw/Hastings/ThreeWaySplitting`, at commit
+  `414a18fb88`).
 * `negativeFrequencyPart hH A` keeps the matrix elements of `A` between eigenvectors whose
   energy difference is negative. It annihilates the ground space, and the connected ground
   correlation of `A` and `B` is the ground expectation of its commutator with `B` (Hastings–Koma,
@@ -67,6 +70,48 @@ Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3,
 equations (3.1)–(3.6). -/
 def centeredObservable (ψ : EuclideanSpace ℂ n) (A : Matrix n n ℂ) : Matrix n n ℂ :=
   A - (⟪ψ, L A ψ⟫_ℂ / ((‖ψ‖ ^ 2 : ℝ) : ℂ)) • 1
+
+/-- Centering is additive. Hastings, arXiv:0705.2024v4, `law16.tex`, lines 779–782. -/
+theorem centeredObservable_add (ψ : EuclideanSpace ℂ n) (A B : Matrix n n ℂ) :
+    centeredObservable ψ (A + B) = centeredObservable ψ A + centeredObservable ψ B := by
+  simp only [centeredObservable, map_add, _root_.add_apply, inner_add_right,
+    add_div, add_smul]
+  abel
+
+/-- The centering of `0` is `0`. -/
+@[simp]
+theorem centeredObservable_zero (ψ : EuclideanSpace ℂ n) :
+    centeredObservable ψ (0 : Matrix n n ℂ) = 0 := by
+  simp [centeredObservable]
+
+/-- Centering commutes with finite sums. -/
+theorem centeredObservable_sum (ψ : EuclideanSpace ℂ n) {ι : Type*} (s : Finset ι)
+    (A : ι → Matrix n n ℂ) :
+    centeredObservable ψ (∑ i ∈ s, A i) = ∑ i ∈ s, centeredObservable ψ (A i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert i s hi ih =>
+    rw [Finset.sum_insert hi, Finset.sum_insert hi, centeredObservable_add, ih]
+
+/-- The centering of a Hermitian observable is Hermitian: its expectation is real. -/
+theorem isHermitian_centeredObservable (ψ : EuclideanSpace ℂ n) {A : Matrix n n ℂ}
+    (hA : A.IsHermitian) : (centeredObservable ψ A).IsHermitian := by
+  have hT := isSymmetric_toEuclideanLin_iff.mpr hA
+  have hreal : ((⟪ψ, L A ψ⟫_ℂ).re : ℂ) = ⟪ψ, L A ψ⟫_ℂ := hT.coe_re_inner_self_apply ψ
+  rw [centeredObservable, ← hreal, ← Complex.ofReal_div]
+  exact hA.sub (isHermitian_one.smul (by simp [IsSelfAdjoint, Complex.conj_ofReal]))
+
+/-- **Centering at an eigenvector.** At a nonzero eigenvector `ψ` of `A` with eigenvalue `E`,
+the centered observable is `A - E`. Hastings, arXiv:0705.2024v4, `law16.tex`,
+lines 766–767. -/
+theorem centeredObservable_of_apply_eq_smul {ψ : EuclideanSpace ℂ n} (hψ : ψ ≠ 0)
+    {A : Matrix n n ℂ} {E : ℂ} (hE : L A ψ = E • ψ) : centeredObservable ψ A = A - E • 1 := by
+  have hd : ((‖ψ‖ ^ 2 : ℝ) : ℂ) ≠ 0 := by
+    exact_mod_cast pow_ne_zero 2 (norm_ne_zero_iff.mpr hψ)
+  have hself : ⟪ψ, ψ⟫_ℂ = ((‖ψ‖ ^ 2 : ℝ) : ℂ) :=
+    (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) ψ).trans (Complex.ofReal_pow ‖ψ‖ 2).symm
+  rw [centeredObservable, hE, inner_smul_right, hself, mul_div_cancel_right₀ _ hd]
 
 /-- The expectation divided by the squared norm of the vector is bounded by the observable norm,
 for every nonzero vector. Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3,

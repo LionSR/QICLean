@@ -213,16 +213,142 @@ or the local dimensions.
     $\lVert h\otimes1\rVert$ and $\lVert1\otimes h\rVert$ are at most $\lVert h\rVert$.
 \end{proof}
 
-\begin{definition}[Translates of one operator]
-    \label{def:dynamics_interaction_translates}
-    \lean{ManyBody.windowEquiv, ManyBody.coe_windowEquiv, ManyBody.Interaction.translates,
-        ManyBody.Interaction.translates_term}
+\begin{definition}[Interactions of placed regional matrices]
+    \label{def:dynamics_interaction_of_place}
+    \lean{ManyBody.Interaction.ofPlace, ManyBody.Interaction.ofPlace_term,
+        ManyBody.Interaction.hamiltonian_ofPlace}
     \leanok
     \uses{def:dynamics_interaction, def:sites_place}
+    For regions $R_i$ and matrices $h_i$ on $\C^{X_{R_i}}$, the interaction of placed regional
+    matrices has the term $h_i\otimes1$ with support $R_i$, and its Hamiltonian is
+    $\sum_ih_i\otimes1$. The parent Hamiltonian of a tensor network state on regions $R_i$
+    is of this form~\cite{Cirac2021Matrix}.
+\end{definition}
+
+\begin{lemma}[Interactions of placed regional matrices]
+    \label{lem:dynamics_interaction_of_place}
+    \lean{ManyBody.Interaction.norm_ofPlace_term_le, ManyBody.Interaction.exists_eq_ofPlace}
+    \leanok
+    \uses{def:dynamics_interaction_of_place, lem:sites_place_hom, lem:sites_place_norm_order,
+        thm:sites_place_range}
+    The terms have at most the norms of the $h_i$, and they are Hermitian or positive
+    semidefinite when the $h_i$ are. Every interaction with supports $R$ is an interaction of
+    placed regional matrices.
+\end{lemma}
+\begin{proof}\leanok
+    Lemmas~\ref{lem:sites_place_hom} and~\ref{lem:sites_place_norm_order} give the first
+    statements, and Theorem~\ref{thm:sites_place_range} writes every term $h_i\in
+    \mathcal A_{R_i}$ as a placed matrix.
+\end{proof}
+
+\begin{definition}[Placing an interaction along an injection]
+    \label{def:dynamics_interaction_pushforward}
+    \lean{ManyBody.Interaction.pushforward, ManyBody.Interaction.pushforward_term}
+    \leanok
+    \uses{def:dynamics_interaction, def:sites_place_along, thm:sites_place_along_support}
+    Let $w\colon W\to V$ be injective and let $\Phi=(h_i)_i$ be an interaction with supports
+    $S_i\subseteq W$ on the sites $W$, the site $u$ carrying the basis $X_{w(u)}$. Placing
+    $\Phi$ along $w$ gives the interaction on $X$ with the terms $h_i\otimes1$ placed along
+    $w$, supported on $w(S_i)$ by Theorem~\ref{thm:sites_place_along_support}.
+\end{definition}
+
+\begin{lemma}[Placing an interaction along an injection]
+    \label{lem:dynamics_interaction_pushforward}
+    \lean{ManyBody.Interaction.hamiltonian_pushforward,
+        ManyBody.Interaction.partialHamiltonian_pushforward,
+        ManyBody.Interaction.norm_pushforward_term_le,
+        ManyBody.Interaction.isHermitian_pushforward_term,
+        ManyBody.Interaction.pushforward_term_nonneg,
+        ManyBody.Interaction.pushforward_term_le_one}
+    \leanok
+    \uses{def:dynamics_interaction_pushforward, lem:sites_place_along_hom,
+        lem:sites_place_along_norm_order}
+    For finite $I$ the placed interaction has the Hamiltonian $H_\Phi\otimes1$, and every
+    partial Hamiltonian is the placed partial Hamiltonian. Its terms have at most the norms
+    of the $h_i$, and are Hermitian, positive, or bounded by the identity when the $h_i$ are.
+\end{lemma}
+\begin{proof}\leanok
+    The placement along $w$ is linear, a contractive unital $*$-homomorphism, and
+    monotone.
+\end{proof}
+
+\begin{definition}[Two interactions on the same system]
+    \label{def:dynamics_interaction_append}
+    \lean{ManyBody.Interaction.append, ManyBody.Interaction.append_term_inl,
+        ManyBody.Interaction.append_term_inr, ManyBody.Interaction.hamiltonian_append,
+        ManyBody.Interaction.forall_append_term}
+    \leanok
+    \uses{def:dynamics_interaction}
+    For interactions $\Phi=(h_i)_{i\in I}$ and $\Psi=(k_j)_{j\in J}$ on the same system, the
+    interaction indexed by $I\sqcup J$ has the terms $h_i$ and $k_j$ with their supports. For
+    finite $I$ and $J$ its Hamiltonian is $H_\Phi+H_\Psi$, and a property of operators held
+    by every $h_i$ and every $k_j$ is held by all its terms.
+\end{definition}
+
+\begin{definition}[Padding an interaction]
+    \label{def:dynamics_interaction_pad}
+    \lean{ManyBody.Interaction.pad, ManyBody.Interaction.pad_term_inl,
+        ManyBody.Interaction.pad_term_inr, ManyBody.Interaction.hamiltonian_pad}
+    \leanok
+    \uses{def:dynamics_interaction_pushforward, def:dynamics_interaction_append,
+        def:sites_place_at}
+    Let $w\colon W\to V$ be injective, $\Phi$ an interaction on the sites $W$, and $p_v$ a
+    matrix on $\C^{X_v}$ for every site $v$. Padding $\Phi$ by the $p_v$ gives the interaction
+    with the terms of $\Phi$ placed along $w$ and, for every site $v\notin w(W)$, the term
+    $p_v$ at $v$, supported on $\{v\}$. Its Hamiltonian is
+    $H_\Phi\otimes1+\sum_{v\notin w(W)}p_v\otimes1$.
+\end{definition}
+
+\begin{lemma}[Padding an interaction]
+    \label{lem:dynamics_interaction_pad}
+    \lean{ManyBody.Interaction.pad_term_nonneg, ManyBody.Interaction.pad_term_le_one,
+        ManyBody.Interaction.isHermitian_pad_term}
+    \leanok
+    \uses{def:dynamics_interaction_pad, lem:dynamics_interaction_pushforward,
+        def:sites_place_at}
+    If the terms of $\Phi$ and the $p_v$ are positive, Hermitian, or bounded by the identity,
+    so are the terms of the padded interaction.
+\end{lemma}
+\begin{proof}\leanok
+    Every term is a term of $\Phi$ placed along $w$ or a matrix $p_v$ at one site; apply
+    Lemma~\ref{lem:dynamics_interaction_pushforward} and Definition~\ref{def:sites_place_at}.
+\end{proof}
+
+\begin{definition}[Conjugating an interaction]
+    \label{def:dynamics_interaction_conj}
+    \lean{ManyBody.Interaction.conj, ManyBody.Interaction.conj_term,
+        ManyBody.Interaction.hamiltonian_conj}
+    \leanok
+    \uses{def:dynamics_interaction}
+    Let $U$ be a matrix with $Uh_iU^*\in\mathcal A_{S_i}$ for every $i$. The conjugated
+    interaction has the terms $Uh_iU^*$ with the supports of $\Phi$, and for finite $I$ its
+    Hamiltonian is $UH_\Phi U^*$. The exchange of two copies on a region
+    (Definition~\ref{def:sites_pair_swap}) conjugates the doubled interaction in this way.
+\end{definition}
+
+\begin{lemma}[Conjugating an interaction]
+    \label{lem:dynamics_interaction_conj}
+    \lean{ManyBody.Interaction.norm_conj_term, ManyBody.Interaction.isHermitian_conj_term,
+        ManyBody.Interaction.conj_term_nonneg}
+    \leanok
+    \uses{def:dynamics_interaction_conj}
+    Conjugation keeps Hermitian and positive terms Hermitian and positive, and conjugation
+    by a unitary keeps the norms of the terms.
+\end{lemma}
+\begin{proof}\leanok
+    $(UhU^*)^*=Uh^*U^*$, $\langle x,UhU^*x\rangle=\langle U^*x,hU^*x\rangle$, and
+    multiplication by a unitary preserves the operator norm.
+\end{proof}
+
+\begin{definition}[Translates of one operator]
+    \label{def:dynamics_interaction_translates}
+    \lean{ManyBody.Interaction.translates, ManyBody.Interaction.translates_term}
+    \leanok
+    \uses{def:dynamics_interaction, def:sites_place_along}
     Let every site carry the same basis set $\alpha$, let $h$ be an operator on the
     configurations $\alpha^W$ of a finite set $W$, and let $w_i\colon W\to V$ be
     injective for every $i\in I$. The translates of $h$ form the interaction whose term
-    with index $i$ is $h$ placed on $w_i(W)$, the site $u$ of $W$ carried to
+    with index $i$ is $h$ placed along $w_i$, on $w_i(W)$ with the site $u$ of $W$ carried to
     $w_i(u)$~\cite{Schuch2011Phases}.
 \end{definition}
 

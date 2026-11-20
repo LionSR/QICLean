@@ -41,6 +41,7 @@ Changes: the family `fun i ↦ {i.castSucc, i.succ}`, written inline there, is n
 * `ManyBody.IsChainSupport`, `ManyBody.ChainSupport` — the supports of range `R`.
 * `ManyBody.boundaryEdges` — the edges of the chain leaving a region.
 * `ManyBody.chainBond` — the nearest-neighbour bonds `{i, i + 1}`.
+* `ManyBody.chainWindow` — the window of `k` consecutive sites starting at a position.
 
 ## Main results
 
@@ -51,6 +52,8 @@ Changes: the family `fun i ↦ {i.castSucc, i.succ}`, written inline there, is n
 * `ManyBody.ChainSupport.edist_le` — a support of range `R` has path-graph diameter at most `R`.
 * `ManyBody.overlapGraph_chainBond_eq_pathGraph` — the overlap graph of the bonds is the path.
 * `ManyBody.card_biUnion_chainBond_le` — the bonds of `s` consecutive labels cover `s + 1` sites.
+* `ManyBody.map_chainWindow`, `ManyBody.chainWindow_trans_chainWindow` — a window is an
+  interval, and a window inside a window is a window.
 
 ## References
 
@@ -325,5 +328,44 @@ theorem card_biUnion_chainBond_le {C : Finset (Fin N)}
   exact (Finset.card_le_card hsub).trans_eq hcard
 
 end ChainBond
+
+/-! ### Windows of consecutive sites -/
+
+section Window
+
+variable {N k : ℕ}
+
+/-- The window of `k` consecutive sites of the chain of `N` sites starting at the position `a`,
+for `a + k ≤ N`: the injection `j ↦ a + j` of `Fin k`. LVV, arXiv:1307.5143v1, `algo53.tex`,
+lines 209–211, for the windows of a local term. -/
+def chainWindow (a : ℕ) (h : a + k ≤ N) : Fin k ↪ Fin N :=
+  ⟨fun j ↦ ⟨a + j.val, by omega⟩, fun i j hij ↦ Fin.ext (by simpa using congrArg Fin.val hij)⟩
+
+@[simp]
+theorem val_chainWindow (a : ℕ) (h : a + k ≤ N) (j : Fin k) :
+    (chainWindow a h j).val = a + j.val :=
+  rfl
+
+/-- The window of `k` sites starting at `a` is the interval `[a, a + k)`. -/
+theorem map_chainWindow (a : ℕ) (h : a + k ≤ N) :
+    Finset.univ.map (chainWindow a h) = interval N a (a + k) := by
+  ext i
+  simp only [Finset.mem_map, Finset.mem_univ, true_and, mem_interval]
+  constructor
+  · rintro ⟨j, rfl⟩
+    simp only [val_chainWindow]
+    omega
+  · intro hi
+    exact ⟨⟨i.val - a, by omega⟩, Fin.ext (by simp only [val_chainWindow]; omega)⟩
+
+/-- **Nested windows.** The window of `k` sites starting at `b` inside the window of `w` sites
+starting at `a` is the window of `k` sites starting at `a + b`. -/
+theorem chainWindow_trans_chainWindow {w : ℕ} (a b : ℕ) (ha : a + w ≤ N) (hb : b + k ≤ w) :
+    (chainWindow b hb).trans (chainWindow a ha) = chainWindow (a + b) (by omega) := by
+  ext j
+  simp only [Function.Embedding.trans_apply, val_chainWindow]
+  omega
+
+end Window
 
 end ManyBody
