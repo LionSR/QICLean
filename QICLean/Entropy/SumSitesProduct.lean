@@ -160,7 +160,7 @@ theorem regionEntropy_sumSitesProduct {f : EuclideanSpace ℂ ((a : A) → X (.i
     (R : Finset A) (T : Finset B) :
     ManyBody.regionEntropy (ManyBody.sumSitesProduct f g) (R.disjSum T) =
       ManyBody.regionEntropy f R + ManyBody.regionEntropy g T := by
-  unfold entropy
+  unfold regionEntropy
   have hR := ManyBody.regionState_posSemidef R f
   have hT := ManyBody.regionState_posSemidef T g
   rw [vonNeumannEntropy_congr (ManyBody.regionState_sumSitesProduct f g R T) _
@@ -180,7 +180,7 @@ theorem regionMutualInformation_sumSitesProduct_inl {f : EuclideanSpace ℂ ((a 
     ext x
     rcases x with x | x <;> simp
   simp only
-      [mutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
+      [regionMutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
       ManyBody.regionEntropy_empty _ g hg,
     add_zero]
 
@@ -195,7 +195,7 @@ theorem regionMutualInformation_sumSitesProduct_inr_inl
     ext x
     rcases x with x | x <;> simp
   simp only
-      [mutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
+      [regionMutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
       ManyBody.regionEntropy_empty _ g hg,
     ManyBody.regionEntropy_empty _ f hf]
   ring

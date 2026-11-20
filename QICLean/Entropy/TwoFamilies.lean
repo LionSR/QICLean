@@ -53,7 +53,7 @@ theorem regionMutualInformation_past_eq_defect (ψ : EuclideanSpace ℂ ((v : V)
     (B : Finset V) (X : ι → Finset V) (s : Finset ι) (i : ι) :
     ManyBody.regionMutualInformation ψ (X i) (B ∪ past X s i) =
       defect (ManyBody.regionEntropy ψ) B X s i := by
-  simp only [mutualInformation, defect, Finset.union_comm (X i)]
+  simp only [regionMutualInformation, defect, Finset.union_comm (X i)]
 
 /-- Telescoping along an arbitrary finite total order. Each information estimate
 uses the whole exterior together with all earlier tiles of the same family. -/

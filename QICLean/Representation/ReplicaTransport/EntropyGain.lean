@@ -131,7 +131,7 @@ theorem continuous_entropy (R : Finset V) :
           ((EuclideanSpace.equiv _ ℂ).symm θ) R)).trace.re := fun θ => by
     have hH := (ManyBody.regionState_posSemidef
       R ((EuclideanSpace.equiv _ ℂ).symm θ)).isHermitian
-    rw [FiniteProduct.entropy, _root_.vonNeumannEntropy, hH.cfc_eq, ← RCLike.re_eq_complex_re,
+    rw [ManyBody.regionEntropy, _root_.vonNeumannEntropy, hH.cfc_eq, ← RCLike.re_eq_complex_re,
       Matrix.IsHermitian.trace_cfc_eq_sum_re]
   simp_rw [heq]
   refine Complex.continuous_re.comp (continuous_id.matrix_trace.comp ?_)

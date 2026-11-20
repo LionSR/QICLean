@@ -65,7 +65,7 @@ theorem auxiliaryPair_regionEntropyIdentity (ψ : EuclideanSpace ℂ ((v : ι) �
     · simp only [Finset.disjoint_union_right]
       exact ⟨hXU.symm, hUY, hUV⟩
     · simpa only [Finset.union_assoc, Finset.union_left_comm, Finset.union_comm] using hc
-  unfold mutualInformation
+  unfold regionMutualInformation
   rw [hXU_YV, hUY_XV, hU_XYV]
   ring
 

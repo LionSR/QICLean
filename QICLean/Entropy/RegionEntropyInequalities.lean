@@ -17,7 +17,7 @@ additivity `S(X ∪ Y) = S(X) + S(Y)` for `X ⊆ P` and `Y` disjoint from `P`, a
 `S(A ∆ P) = S(A)`. No geometry of the sites enters.
 
 Moved from TNLean, `TNLean/Lattice/RegionEntropyInequalities.lean` at commit `e41c3b63`,
-restated for `FiniteProduct.entropy` on an arbitrary family of local alphabets; the dimension
+restated for `ManyBody.regionEntropy` on an arbitrary family of local alphabets; the dimension
 bound `|R| log q` there is the identical-site case of `ManyBody.regionEntropy_le_log_card`.
 
 ## Main results

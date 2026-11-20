@@ -67,7 +67,7 @@ theorem regionMutualInformation_le_two_regionEntropy
       Finset.mem_compl.mp hw (Finset.mem_union_left Y hv)
   have h := ManyBody.regionEntropy_union_le β ψ hψ X (X ∪ Y)ᶜ hdisj
   rw [hpart, ManyBody.regionEntropy_compl, ManyBody.regionEntropy_compl] at h
-  unfold mutualInformation
+  unfold regionMutualInformation
   linarith only [h]
 
 /-- An exceptional regional block costs at most twice its own entropy in a

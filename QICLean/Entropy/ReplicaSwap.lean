@@ -83,7 +83,7 @@ theorem regionMutualInformation_replicaSwap_eq_zero {Ω : EuclideanSpace ℂ (Co
   have hunion : R₀.disjSum (∅ : Finset V) ∪ C₀.disjSum ∅ = (R₀ ∪ C₀).disjSum ∅ := by
     ext w
     rcases w with v | v <;> simp
-  rw [mutualInformation, hunion, hent _ _ hR₀', hent _ _ (hswap C₀ hC₀),
+  rw [regionMutualInformation, hunion, hent _ _ hR₀', hent _ _ (hswap C₀ hC₀),
     hent _ _ (mem_disjSum_iff_replicaSwap hR₀ hC₀)]
   have h₁ := ManyBody.regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ ∅ R₀
   have h₂ := ManyBody.regionEntropy_sumSitesProduct (X := fun _ : V ⊕ V ↦ α) hΩ hΩ C₀ ∅

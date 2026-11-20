@@ -78,6 +78,7 @@ class Rule:
     trivial: bool = False
     addx: bool = False
     unapplied: str = ""
+    rename_unapplied: bool = False
 
 
 def nfam(arg: str) -> str:
@@ -316,7 +317,8 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
         else:
             new, ops, need = finite_product_lemma_name(short), [], 0
         r = Rule("FiniteProduct." + short, new, ops, need,
-                 unapplied=FINITE_PRODUCT_UNAPPLIED.get(short, ""))
+                 unapplied=FINITE_PRODUCT_UNAPPLIED.get(short, ""),
+                 rename_unapplied=short in ("entropy", "mutualInformation", "reducedMatrix"))
         qualified[r.old] = r
         bare["FiniteProduct"][short] = r
     for short, (new, ops, need) in (LATTICE.items() if part != "A" else []):
@@ -698,8 +700,8 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             rep.rewritten += 1
             changed = True
             continue
-        if rule.ops and new_args is None and npos == 0 and \
-                not any(op[0] in ("drop", "named") for op in rule.ops):
+        if rule.ops and new_args is None and npos == 0 and (rule.rename_unapplied or
+                not any(op[0] in ("drop", "named") for op in rule.ops)):
             # An unapplied name (in `rw [...]`, `simp [...]`, a docstring): rename it only.
             new_args = None
             out.append(text[pos:m.start()])

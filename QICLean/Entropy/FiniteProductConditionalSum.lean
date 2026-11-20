@@ -49,7 +49,7 @@ theorem regionMutualInformation_union_biUnion_le_of_conditional
     have hchain : ManyBody.regionMutualInformation ψ (B ∪ (insert i s).biUnion G) C =
         ManyBody.regionMutualInformation ψ (B ∪ s.biUnion G) C +
           ManyBody.conditionalMutualInformation β ψ (G i) C (B ∪ s.biUnion G) := by
-      simp only [Finset.biUnion_insert, mutualInformation, ManyBody.conditionalMutualInformation,
+      simp only [Finset.biUnion_insert, regionMutualInformation, ManyBody.conditionalMutualInformation,
         Finset.union_left_comm, Finset.union_comm]
       ring
     rw [hchain, Finset.sum_insert hi]

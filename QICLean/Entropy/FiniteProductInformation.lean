@@ -189,7 +189,7 @@ theorem regionMutualInformation_mono_left (ψ : EuclideanSpace ℂ ((v : V) → 
     rw [Finset.union_assoc, Finset.union_comm J T, ← Finset.union_assoc,
       Finset.union_eq_right.mpr hRT]
   rw [hi, hu] at hs
-  unfold mutualInformation
+  unfold regionMutualInformation
   linarith
 
 end ManyBody

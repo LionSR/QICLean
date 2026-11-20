@@ -143,7 +143,7 @@ theorem regionMutualInformation_le_of_supported_unitary {φ η : EuclideanSpace 
     nlinarith [norm_nonneg (toEuclideanLin U φ), sq_nonneg (‖toEuclideanLin U φ‖ - 1)]
   have hMI : ManyBody.regionMutualInformation φ X J = ManyBody.regionMutualInformation
       (toEuclideanLin U φ) X J := by
-    simp only [mutualInformation, hent X Finset.subset_union_left,
+    simp only [regionMutualInformation, hent X Finset.subset_union_left,
       hent J Finset.subset_union_right, hent _ subset_rfl]
   rw [hMI]
   exact ManyBody.regionMutualInformation_le_of_norm_sub_le β hψ hη hXJ hprod
