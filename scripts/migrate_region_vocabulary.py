@@ -64,6 +64,8 @@ class Rule:
     into the named argument `(name := ...)`. `need` is the number of positional arguments the
     operations require. `nfam_named` rewrites `(n := e)` to `(X := fun v ↦ Fin (e v))`.
     `trivial` marks a bridge lemma that becomes `rfl`: it is reported, not rewritten.
+    `unapplied` is the name written for the old name standing alone in a rewrite list (a
+    definition unfolded by `rw [reducedPure]` becomes its characterizing equation).
     `addx` supplies `(X := fun v ↦ Fin (n v))` outside comments: the survivor cannot infer the
     family from region matrices `(v : D) → Fin (n v)` alone, which the old abbreviation fixed.
     """
@@ -75,6 +77,7 @@ class Rule:
     nfam_named: bool = False
     trivial: bool = False
     addx: bool = False
+    unapplied: str = ""
 
 
 def nfam(arg: str) -> str:
@@ -226,6 +229,9 @@ FINITE_PRODUCT_DEFS = {
                           [("drop", 0), ("drop", 0), ("named", 1, "D")], 4),
 }
 
+# a definition unfolded in a rewrite list -> the theorem that characterizes its survivor
+FINITE_PRODUCT_UNAPPLIED = {"reducedPure": "ManyBody.regionState_eq_regionMatrix"}
+
 LATTICE = {
     # TNLean.Lattice (TNLean/Lattice/RegionalEntropy, RegionalEntropyBridge, EntropyDimension)
     "reducedState": ("ManyBody.regionState", [("drop", 0), ("drop", 0)], 4),
@@ -309,7 +315,8 @@ def build_rules(fp_names: list[str], part: str = "all") -> tuple[dict, dict, dic
             new, ops, need = FINITE_PRODUCT_DEFS[short]
         else:
             new, ops, need = finite_product_lemma_name(short), [], 0
-        r = Rule("FiniteProduct." + short, new, ops, need)
+        r = Rule("FiniteProduct." + short, new, ops, need,
+                 unapplied=FINITE_PRODUCT_UNAPPLIED.get(short, ""))
         qualified[r.old] = r
         bare["FiniteProduct"][short] = r
     for short, (new, ops, need) in (LATTICE.items() if part != "A" else []):
@@ -622,6 +629,19 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             rep.remaining.append(f"{path}:{line}: {snippet}")
             continue
         if rule.trivial:
+            # a bridge standing alone in a rewrite list is dropped with its arrow and comma
+            if span is None:
+                lm = re.search(r"(,\s*|\[\s*)(←\s*)?$", text[:m.start()])
+                after = text[m.end():]
+                if lm and re.match(r"\s*[,\]]", after):
+                    a0 = m.start() - len(lm.group(0)) + (1 if lm.group(1).startswith("[") else 0)
+                    tail = re.match(r"\s*,\s*", after) if lm.group(1).startswith("[") else None
+                    b0 = m.end() + (tail.end() if tail else 0)
+                    out.append(text[pos:a0])
+                    pos = b0
+                    rep.rewritten += 1
+                    changed = True
+                    continue
             rep.unhandled.append(f"{path}:{line}: bridge `{name}` becomes rfl: {snippet}")
             continue
         args, end = parse_args(text[:limit], m.end(), line_indent(text, m.start()))
@@ -670,6 +690,14 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
             continue
         new_args = apply_ops(rule, args) if (rule.ops or rule.nfam_named) else None
         npos = sum(1 for a in args if a[2] == "pos")
+        if rule.unapplied and npos == 0 and span is None and \
+                re.search(r"(\[|,)\s*(←\s*)?$", text[:m.start()]):
+            out.append(text[pos:m.start()])
+            out.append(rule.unapplied)
+            pos = m.end()
+            rep.rewritten += 1
+            changed = True
+            continue
         if rule.ops and new_args is None and npos == 0 and \
                 not any(op[0] in ("drop", "named") for op in rule.ops):
             # An unapplied name (in `rw [...]`, `simp [...]`, a docstring): rename it only.
@@ -741,6 +769,14 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
                         start = dm.start() + len(new)
                 rep.rewritten += 1
                 changed = True
+    if not check and OPEN_DROP:
+        # namespaces that no longer exist leave the `open` lines
+        def drop_open(mm):
+            ws = [w for w in mm.group(2).split() if w not in OPEN_DROP]
+            return mm.group(1) + " ".join(ws) + "\n" if ws else ""
+        new_text2 = re.sub(r"^(open (?:scoped )?)([^\n]*)\n", drop_open, new_text, flags=re.M)
+        if new_text2 != new_text:
+            new_text, changed = new_text2, True
     if not check and MODULE_MOVES:
         def mv(mm):
             new = MODULE_MOVES.get(mm.group(2))
@@ -754,6 +790,7 @@ def rewrite_text(text: str, path: str, qualified, bare, dot, swap_manybody: bool
 
 
 MAX = 100
+OPEN_DROP: set[str] = set()
 XARG = " (X := fun v ↦ Fin (n v))"
 
 
@@ -886,6 +923,8 @@ def main() -> int:
     a = ap.parse_args()
     load_module_moves(os.path.join(here, "migrate_region_vocabulary_modules.txt"))
     qualified, bare, dot = build_rules(load_finite_product_names(a.finite_product_names), a.part)
+    if a.part in ("B", "all"):
+        OPEN_DROP.add("FiniteProduct")
     rep = Report()
     for dp, dns, fs in os.walk(a.root):
         dns[:] = [d for d in dns if d not in (".lake", ".git", "build")]
