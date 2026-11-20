@@ -21,7 +21,7 @@ ground spaces are the lines through `u` and `v`, the ground space of the sum is 
 `u ⊗ v`. A Hamiltonian with no term across a cut is such a sum.
 
 `Matrix.kronecker_mulVec_mul` is moved from TNLean, `TNLean/Algebra/KroneckerLeastEigenvalue.lean`
-at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`, with its statement and proof unchanged.
+at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`, and stated over any commutative semiring.
 
 ## Main results
 
@@ -54,15 +54,14 @@ open Matrix
 open scoped Kronecker ComplexOrder
 
 /-- A Kronecker product acts factorwise on a product vector. -/
-theorem Matrix.kronecker_mulVec_mul {α β : Type*} [Fintype α] [Fintype β]
-    (M : Matrix α α ℂ) (N : Matrix β β ℂ) (u : α → ℂ)
-    (v : β → ℂ) :
+theorem Matrix.kronecker_mulVec_mul {R α β : Type*} [NonUnitalCommSemiring R] [Fintype α]
+    [Fintype β] (M : Matrix α α R) (N : Matrix β β R) (u : α → R) (v : β → R) :
     (M ⊗ₖ N) *ᵥ (fun p ↦ u p.1 * v p.2) = fun p ↦ (M *ᵥ u) p.1 * (N *ᵥ v) p.2 := by
   funext p
   change (∑ t : α × β, M p.1 t.1 * N p.2 t.2 * (u t.1 * v t.2)) =
     (∑ a : α, M p.1 a * u a) * (∑ b : β, N p.2 b * v b)
   rw [Fintype.sum_prod_type, Finset.sum_mul_sum]
-  exact Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun b _ ↦ by ring
+  exact Finset.sum_congr rfl fun a _ ↦ Finset.sum_congr rfl fun b _ ↦ mul_mul_mul_comm _ _ _ _
 
 /-- The Kronecker sum `A ⊗ 1 + 1 ⊗ B` of two Hermitian matrices is the conjugate, by the
 Kronecker product of their eigenvector unitaries, of the diagonal matrix of the sums of their
