@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.Permutation
+import QICLean.Algebra.FinCastAddNatAdd
 import QICLean.ManyBody.Sites.Support
 
 /-!
@@ -74,25 +75,19 @@ def zeroConjunctionIncrement (j : Fin a) (z : Fin (a + a) → Fin d) : Fin d :=
   if z (Fin.castAdd a j) = 0 ∧ (j.val = 0 ∨ z (Fin.natAdd a (zeroConjunctionPrev j)) = 1)
   then 1 else 0
 
-private theorem castAdd_ne_natAdd (i j : Fin a) : Fin.castAdd a i ≠ Fin.natAdd a j := by
-  intro h
-  have := congrArg Fin.val h
-  simp only [Fin.val_castAdd, Fin.val_natAdd] at this
-  omega
-
 /-- The increment of step `j` does not read the scratch site `j` it changes. -/
 theorem zeroConjunctionIncrement_update (j : Fin a) (z : Fin (a + a) → Fin d) (c : Fin d) :
     zeroConjunctionIncrement j (Function.update z (Fin.natAdd a j) c) =
       zeroConjunctionIncrement j z := by
   by_cases hj : j.val = 0
-  · simp only [zeroConjunctionIncrement, Function.update_of_ne (castAdd_ne_natAdd j j), hj,
+  · simp only [zeroConjunctionIncrement, Function.update_of_ne (Fin.castAdd_ne_natAdd j j), hj,
       true_or, and_true]
   · have hprev : Fin.natAdd a (zeroConjunctionPrev j) ≠ Fin.natAdd a j :=
       (Fin.natAdd_injective a a).ne fun h ↦ by
         have hval := congrArg Fin.val h
         simp only [zeroConjunctionPrev] at hval
         omega
-    simp only [zeroConjunctionIncrement, Function.update_of_ne (castAdd_ne_natAdd j j),
+    simp only [zeroConjunctionIncrement, Function.update_of_ne (Fin.castAdd_ne_natAdd j j),
       Function.update_of_ne hprev]
 
 /-- The controlled increment of step `j`: the increment is added to the scratch site `j`. It
@@ -178,7 +173,7 @@ theorem zeroConjunctionStep_state (hd : 2 ≤ d) (x : Fin a → Fin d) (j : Fin 
   funext p
   rw [zeroConjunctionStep_apply, zeroConjunctionIncrement_state hd]
   refine Fin.addCases (fun i ↦ ?_) (fun i ↦ ?_) p
-  · rw [Function.update_of_ne (castAdd_ne_natAdd i j)]
+  · rw [Function.update_of_ne (Fin.castAdd_ne_natAdd i j)]
     simp only [zeroConjunctionState, Fin.append_left]
   · by_cases hij : i = j
     · subst i

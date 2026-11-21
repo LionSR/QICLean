@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Algebra.FinCastAddNatAdd
 import QICLean.Representation.SplitCopies
 import QICLean.Representation.BranchingPieri
 
@@ -127,12 +128,6 @@ theorem sliceR_permOp_rightCopies (z : Fin r → Fin q) (τ : Equiv.Perm (Fin r)
   simp only [sliceR, permOp_mulVec, Function.comp_apply, ← map_inv]
   rw [copyPerm_rightCopies_append]
 
-theorem castAdd_ne_natAdd (i : Fin m) (j : Fin r) : Fin.castAdd r i ≠ Fin.natAdd m j := by
-  intro h
-  have := congrArg Fin.val h
-  simp only [Fin.val_castAdd, Fin.val_natAdd] at this
-  omega
-
 theorem update_append_castAdd (x : Fin m → Fin q) (z : Fin r → Fin q) (i : Fin m)
     (b : Fin q) :
     Function.update (Fin.append x z) (Fin.castAdd r i) b =
@@ -143,7 +138,7 @@ theorem update_append_castAdd (x : Fin m → Fin q) (z : Fin r → Fin q) (i : F
     · subst h; simp
     · rw [Function.update_of_ne (fun e => h (Fin.castAdd_inj.mp e)), Fin.append_left,
         Fin.append_left, Function.update_of_ne h]
-  · rw [Function.update_of_ne (castAdd_ne_natAdd i j').symm, Fin.append_right,
+  · rw [Function.update_of_ne (Fin.castAdd_ne_natAdd i j').symm, Fin.append_right,
       Fin.append_right]
 
 theorem update_append_natAdd (x : Fin m → Fin q) (z : Fin r → Fin q) (j : Fin r)
@@ -152,7 +147,7 @@ theorem update_append_natAdd (x : Fin m → Fin q) (z : Fin r → Fin q) (j : Fi
       Fin.append x (Function.update z j b) := by
   funext i
   refine Fin.addCases (fun i' => ?_) (fun j' => ?_) i
-  · rw [Function.update_of_ne (castAdd_ne_natAdd i' j), Fin.append_left, Fin.append_left]
+  · rw [Function.update_of_ne (Fin.castAdd_ne_natAdd i' j), Fin.append_left, Fin.append_left]
   · by_cases h : j' = j
     · subst h; simp
     · rw [Function.update_of_ne (fun e => h (Fin.ext (by
