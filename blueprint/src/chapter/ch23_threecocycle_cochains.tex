@@ -1,0 +1,725 @@
+\section{Scalar three-cocycles and their gauge classes}
+\label{sec:threecocycle_cochains}
+
+A scalar three-cochain of a group $G$ is a function
+$\omega\colon G^3\to\C^\times$, and a scalar two-cochain $\beta$ acts on it by
+multiplication with its three-coboundary. This section develops the
+three-cocycle equation, normalization, the gauge action and its classes, the
+cyclic invariant that detects nontrivial classes, restriction along
+homomorphisms, the identification with degree-three group cohomology for the
+trivial action, and the inversion cochains of a normalized three-cocycle,
+following Franco-Rubio, Bochniak and Cirac~\cite{FrancoRubio2025MPUGauging}.
+
+\begin{definition}[Scalar cochains and normalization]
+    \label{def:mpug_scalar_cochains}
+    \lean{ScalarThreeCochain,
+        ScalarCocycle.IsNormalized,
+        ScalarThreeCochain.IsNormalized}
+    \leanok
+    \uses{def:scalar_cocycle}
+    By Definition~\ref{def:scalar_cocycle}, a scalar $2$-cochain
+    is a function $\beta\colon G^2\to\C^\times$. A scalar $3$-cochain is a
+    function $\omega\colon G^3\to\C^\times$. Following the paper's later
+    standing convention, it is normalized when, for all $g,h,k\in G$,
+    \begin{align}
+        \omega(e,h,k) & = 1, \\
+        \omega(g,e,k) & = 1, \\
+        \omega(g,h,e) & = 1.
+        \label{eq:mpug_three_normalized}
+    \end{align}
+    The standing convention of~\cite{FrancoRubio2025MPUGauging} makes all
+    data involving the identity trivial, which is what forces all three
+    identity axes. As recorded in
+    \cite{gap:fbc25_three_cocycle_normalization_typo}, the three-axis form
+    corrects the printed display, which repeats the third axis in place of
+    the first two.
+    % Source anchor: arXiv:2502.20257, standing convention at lines 1936--1937
+    %   and its display eq:triv_omegas, whose printed form repeats
+    %   omega(g,h,e) three times.
+    % Local fix: docs/paper-gaps/fbc25_three_cocycle_normalization_typo.tex.
+    The scalar $2$-cochain $\beta$ is normalized when
+    $\beta(e,g)=\beta(g,e)=1$ for every $g\in G$.
+\end{definition}
+
+\begin{definition}[Scalar three-cocycle]
+    \label{def:mpug_three_cocycle}
+    \lean{ScalarThreeCochain.IsCocycle}
+    \leanok
+    \uses{def:mpug_scalar_cochains}
+    As in~\cite{FrancoRubio2025MPUGauging}, a scalar $3$-cochain is a
+    $3$-cocycle when, for all $g,h,k,l\in G$,
+    \begin{align}
+        \omega(gh,k,l)\omega(g,h,kl)
+         & =\omega(g,h,k)\omega(g,hk,l)\omega(h,k,l).
+        \label{eq:mpug_three_cocycle}
+    \end{align}
+    % Source anchor: arXiv:2502.20257, eq:3-cocycle.
+\end{definition}
+
+\begin{definition}[Three-coboundary and gauge action]
+    \label{def:mpug_fusion_gauge}
+    \lean{ScalarThreeCochain.coboundary,
+        ScalarThreeCochain.fusionGauge}
+    \leanok
+    \uses{def:mpug_scalar_cochains}
+    For a scalar $2$-cochain $\beta$, define
+    \begin{align}
+        (d\beta)(g,h,k)
+         & =\frac{\beta(g,hk)\beta(h,k)}
+            {\beta(g,h)\beta(gh,k)},
+        \label{eq:mpug_coboundary}        \\
+        (\beta\mathbin{\triangleright}\omega)(g,h,k)
+         & =(d\beta)(g,h,k)\omega(g,h,k).
+        \label{eq:mpug_gauge_action}
+    \end{align}
+    % Source anchor: arXiv:2502.20257, eq:omegagauge.
+    As in~\cite{FrancoRubio2025MPUGauging}, formula~(\ref{eq:mpug_gauge_action})
+    is the gauge action of $\beta$ on $\omega$.
+\end{definition}
+
+\begin{lemma}[Identity and composition of gauges]
+    \label{thm:mpug_gauge_action}
+    \lean{ScalarThreeCochain.fusionGauge_one,
+        ScalarThreeCochain.fusionGauge_comp}
+    \leanok
+    \uses{def:mpug_fusion_gauge}
+    Let $1$ denote the constant scalar $2$-cochain and let
+    $(\beta\gamma)(g,h)=\beta(g,h)\gamma(g,h)$. Then
+    \begin{align}
+        1\mathbin{\triangleright}\omega & =\omega,
+        \label{eq:mpug_gauge_identity}                                                  \\
+        \gamma\mathbin{\triangleright}
+        (\beta\mathbin{\triangleright}\omega)
+                                        & =(\beta\gamma)\mathbin{\triangleright}\omega.
+        \label{eq:mpug_gauge_composition}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_fusion_gauge}
+    The constant cochain has $d1=1$. Commutativity of $\C^\times$ gives
+    $d(\beta\gamma)=(d\beta)(d\gamma)$, and substitution into
+    (\ref{eq:mpug_gauge_action}) gives
+    (\ref{eq:mpug_gauge_identity}) and
+    (\ref{eq:mpug_gauge_composition}).
+\end{proof}
+
+\begin{lemma}[A three-coboundary is a three-cocycle]
+    \label{thm:mpug_coboundary_cocycle}
+    \lean{ScalarThreeCochain.isCocycle_coboundary}
+    \leanok
+    \uses{def:mpug_three_cocycle, def:mpug_fusion_gauge}
+    For every scalar $2$-cochain $\beta$, the cochain $d\beta$ satisfies
+    (\ref{eq:mpug_three_cocycle}).
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_three_cocycle, def:mpug_fusion_gauge}
+    Expanding the two sides gives the same product after cancellation:
+    \begin{align}
+         & (d\beta)(gh,k,l)(d\beta)(g,h,kl)     \\
+         & \quad =
+        \frac{\beta(k,l)\beta(h,kl)\beta(g,hkl)}
+        {\beta(ghk,l)\beta(gh,k)\beta(g,h)} \\
+         & \quad =
+        (d\beta)(g,h,k)(d\beta)(g,hk,l)(d\beta)(h,k,l).
+    \end{align}
+\end{proof}
+
+\begin{lemma}[Products and gauges preserve three-cocycles]
+    \label{thm:mpug_gauge_preserves_cocycle}
+    \lean{ScalarThreeCochain.IsCocycle.mul,
+        ScalarThreeCochain.IsCocycle.fusionGauge}
+    \leanok
+    \uses{def:mpug_three_cocycle, def:mpug_fusion_gauge}
+    The pointwise product of two scalar $3$-cocycles is a scalar
+    $3$-cocycle. Consequently, if $\omega$ satisfies
+    (\ref{eq:mpug_three_cocycle}), then so does
+    $\beta\mathbin{\triangleright}\omega$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_three_cocycle, thm:mpug_coboundary_cocycle}
+    Multiplying the two instances of (\ref{eq:mpug_three_cocycle}) and
+    reordering their factors in $\C^\times$ shows that the pointwise product of
+    two $3$-cocycles is a $3$-cocycle. Applying this product identity to
+    $(d\beta)\omega$, together with Lemma~\ref{thm:mpug_coboundary_cocycle}
+    for $d\beta$, yields the second claim.
+\end{proof}
+
+\begin{lemma}[Normalization under a gauge]
+    \label{thm:mpug_gauge_preserves_normalization}
+    \lean{ScalarThreeCochain.isNormalized_coboundary_iff,
+        ScalarThreeCochain.isNormalized_coboundary,
+        ScalarThreeCochain.IsNormalized.mul,
+        ScalarThreeCochain.IsNormalized.fusionGauge}
+    \leanok
+    \uses{def:mpug_scalar_cochains, def:mpug_fusion_gauge}
+    The $3$-coboundary $d\beta$ is normalized if and only if there is a
+    constant $c\in\C^\times$ such that, for every $g\in G$,
+    \begin{align}
+        \beta(e,g) & =c=\beta(g,e).
+        \label{eq:mpug_coboundary_normalized_iff}
+    \end{align}
+    In particular, a normalized scalar $2$-cochain has normalized
+    $3$-coboundary. Hence $\beta\mathbin{\triangleright}\omega$ is normalized
+    whenever both $\beta$ and $\omega$ are normalized.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_scalar_cochains, def:mpug_fusion_gauge}
+    Setting one argument at a time equal to $e$ in
+    (\ref{eq:mpug_coboundary}), if $d\beta$ is normalized, then
+    (\ref{eq:mpug_three_normalized}) for $d\beta$ at $(e,e,g)$ and at
+    $(g,e,e)$ gives $\beta(e,g)=\beta(e,e)=\beta(g,e)$. Conversely,
+    (\ref{eq:mpug_coboundary_normalized_iff}) gives
+    \begin{align}
+        (d\beta)(e,h,k) & =1, \\
+        (d\beta)(g,e,k) & =1, \\
+        (d\beta)(g,h,e) & =1.
+        \label{eq:mpug_coboundary_normalized_converse}
+    \end{align}
+    Taking the common constant to be $1$ proves the normalized-$\beta$
+    corollary. Since pointwise products preserve
+    (\ref{eq:mpug_coboundary_normalized_converse}), the gauged cochain
+    $\beta\mathbin{\triangleright}\omega$ of (\ref{eq:mpug_gauge_action}) is
+    normalized whenever both $\beta$ and $\omega$ are normalized.
+\end{proof}
+
+\begin{definition}[Cohomologous scalar three-cochains]
+    \label{def:mpug_cohomologous_to}
+    \lean{ScalarThreeCochain.CohomologousTo}
+    \leanok
+    \uses{def:mpug_fusion_gauge}
+    Two scalar $3$-cochains $\omega$ and $\eta$ are cohomologous when
+    $\omega=\beta\mathbin{\triangleright}\eta$ for some scalar
+    $2$-cochain $\beta$.
+\end{definition}
+
+\begin{lemma}[Cohomologous-to is an equivalence relation]
+    \label{thm:mpug_cohomologous_to_equivalence}
+    \lean{ScalarThreeCochain.CohomologousTo.refl,
+        ScalarThreeCochain.CohomologousTo.symm,
+        ScalarThreeCochain.CohomologousTo.trans,
+        ScalarThreeCochain.CohomologousTo.equivalence}
+    \leanok
+    \uses{def:mpug_cohomologous_to, thm:mpug_gauge_action}
+    Cohomologous-to is reflexive, symmetric, and transitive.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:mpug_gauge_action}
+    Reflexivity uses the constant cochain $1$. If $\omega=
+        \beta\mathbin{\triangleright}\eta$, then
+    \begin{align}
+        \beta^{-1}\mathbin{\triangleright}\omega
+         & =(\beta\beta^{-1})\mathbin{\triangleright}\eta
+        =\eta,
+    \end{align}
+    which proves symmetry. Composition formula
+    (\ref{eq:mpug_gauge_composition}) proves transitivity.
+\end{proof}
+
+\begin{definition}[Trivial scalar gauge class]
+    \label{def:mpug_trivial_gauge_class}
+    \lean{ScalarThreeCochain.IsTrivialGaugeClass}
+    \leanok
+    \uses{def:mpug_cohomologous_to}
+    A scalar $3$-cochain has trivial gauge class when it is cohomologous to
+    the constant cochain $1$.
+\end{definition}
+
+\begin{lemma}[Normalization of scalar three-cocycles]
+    \label{thm:asymex_three_cocycle_normalization}
+    \lean{ScalarThreeCochain.exists_isNormalized_cohomologousTo}
+    \leanok
+    \uses{def:mpug_three_cocycle, def:mpug_scalar_cochains, def:mpug_fusion_gauge, def:mpug_cohomologous_to}
+    Every three-cocycle $\omega:G^3\to\C^\times$ is cohomologous to a
+    normalized one. One may use the two-cochain
+    $\beta(g,h)=\omega(g,e,e)/\omega(e,e,h)$ and replace $\omega$ by
+    $(d\beta)\omega$, where
+    $d\beta(g,h,k)=\beta(g,hk)\beta(h,k)/(\beta(g,h)\beta(gh,k))$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The cocycle equation gives $\omega(e,e,e)=1$ and
+    \begin{align}
+        \label{eq:asymex_three_cocycle_axes}
+        \omega(g,h,e) & =\frac{\omega(gh,e,e)}{\omega(h,e,e)},       \\
+        \omega(e,g,h) & =\frac{\omega(e,e,gh)}{\omega(e,e,g)},\notag \\
+        \omega(g,e,h) & =\omega(g,e,e)\omega(e,e,h).\notag
+    \end{align}
+    Substitution of (\ref{eq:asymex_three_cocycle_axes}) into $d\beta$
+    makes each identity-axis value of $(d\beta)\omega$ equal to one.
+\end{proof}
+
+\begin{definition}[Scalar three-cocycles in degree-three group cohomology]
+    \label{def:mpug_h3_group_cohomology}
+    \lean{ScalarCohomology.scalarRepresentationEquiv,
+        ScalarCocycle.toInhomogeneousCochain,
+        ScalarCocycle.ofInhomogeneousCochain,
+        ScalarThreeCochain.toInhomogeneousCochain,
+        ScalarThreeCochain.ofInhomogeneousCochain,
+        ScalarThreeCochain.toCocycles,
+        ScalarThreeCochain.ofCocycles,
+        ScalarThreeCochain.cocyclesEquiv,
+        ScalarThreeCochain.anomalyClass}
+    \leanok
+    \uses{def:mpug_three_cocycle, thm:mpug_h2_group_cohomology_comparison}
+    Giving $\C^\times$ the trivial $G$-action and writing it additively as in
+    Lemma~\ref{thm:mpug_h2_group_cohomology_comparison}, a scalar
+    $n$-cochain for $n=2,3$ is an inhomogeneous $n$-cochain
+    $G^n\to\C^\times$ of this representation, and conversely. Under this
+    identification a scalar $3$-cocycle is an inhomogeneous $3$-cocycle, and
+    every inhomogeneous $3$-cocycle arises this way. The class of a scalar
+    $3$-cocycle $\omega$ is its image
+    \begin{align}
+        [\omega] & \in H^3\bigl(G,\C^\times_{\mathrm{triv}}\bigr)
+        \label{eq:mpug_h3_class}
+    \end{align}
+    in the degree-three cohomology of the inhomogeneous cochain complex.
+\end{definition}
+
+\begin{theorem}[Gauge classes are degree-three cohomology classes]
+    \label{thm:mpug_h3_group_cohomology}
+    \lean{groupCohomology.π_eq_zero_iff,
+        ScalarCohomology.scalarRepresentationEquiv_ofMul_eq_zero_iff,
+        ScalarThreeCochain.d_toInhomogeneousCochain,
+        ScalarThreeCochain.isCocycle_iff_d_eq_zero,
+        ScalarCocycle.d_toInhomogeneousCochain_apply,
+        ScalarCocycle.d_toInhomogeneousCochain,
+        ScalarThreeCochain.fusionGauge_eq_iff,
+        ScalarThreeCochain.cohomologousTo_iff_exists_d_eq,
+        ScalarThreeCochain.cohomologousTo_iff_anomalyClass_eq,
+        ScalarThreeCochain.isTrivialGaugeClass_iff_anomalyClass_eq_zero,
+        ScalarThreeCochain.anomalyClass_surjective}
+    \leanok
+    \uses{def:mpug_h3_group_cohomology, def:mpug_fusion_gauge, def:mpug_cohomologous_to, def:mpug_trivial_gauge_class}
+    With the trivial action, the differentials of the inhomogeneous cochain
+    complex in degrees two and three are, multiplicatively,
+    \begin{align}
+        (d\beta)(g,h,k)
+         & =\frac{\beta(h,k)\beta(g,hk)}{\beta(gh,k)\beta(g,h)},
+        \label{eq:mpug_h3_d2}                                    \\
+        (d\omega)(g,h,k,l)
+         & =\frac{\omega(h,k,l)\omega(g,hk,l)\omega(g,h,k)}
+            {\omega(gh,k,l)\omega(g,h,kl)}.
+        \label{eq:mpug_h3_d3}
+    \end{align}
+    Hence (\ref{eq:mpug_h3_d2}) is the three-coboundary
+    (\ref{eq:mpug_coboundary}), and $d\omega=1$ is the three-cocycle equation
+    (\ref{eq:mpug_three_cocycle}). For scalar $3$-cocycles $\omega$ and
+    $\eta$,
+    \begin{align}
+        \omega\text{ and }\eta\text{ are cohomologous}
+         & \iff [\omega]=[\eta],
+        \label{eq:mpug_h3_cohomologous} \\
+        \omega\text{ has trivial gauge class}
+         & \iff [\omega]=0,
+        \label{eq:mpug_h3_trivial}
+    \end{align}
+    and every class in $H^3(G,\C^\times_{\mathrm{triv}})$ is the class of a
+    scalar $3$-cocycle. No normalization of the cochains is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{def:mpug_h3_group_cohomology, def:mpug_fusion_gauge, def:mpug_cohomologous_to, def:mpug_trivial_gauge_class}
+    In degree $n$ the inhomogeneous differential of a cochain $f$ with
+    trivial action is the alternating sum of $f$ at the $n+2$ faces
+    obtained by dropping the first argument, multiplying two adjacent
+    arguments, or dropping the last argument. For $n=2,3$ this is
+    (\ref{eq:mpug_h3_d2}) and (\ref{eq:mpug_h3_d3}) written multiplicatively.
+    A cocycle has zero class exactly when it lies in the image of the
+    preceding differential, since the cohomology is the cokernel of that
+    differential into the cocycles. By (\ref{eq:mpug_gauge_action}),
+    $\beta\mathbin{\triangleright}\eta=\omega$ holds exactly when
+    $d\beta=\omega\eta^{-1}$, whose additive form is the difference of the
+    two cochains. This gives (\ref{eq:mpug_h3_cohomologous}), and taking
+    $\eta=1$ gives (\ref{eq:mpug_h3_trivial}). Surjectivity holds because
+    every inhomogeneous $3$-cocycle is a scalar $3$-cocycle.
+\end{proof}
+
+\begin{definition}[Cyclic invariant of a scalar three-cochain]
+    \label{def:mpug_cyclic_invariant}
+    \lean{ScalarThreeCochain.cyclicInvariant}
+    \leanok
+    \uses{def:mpug_scalar_cochains}
+    For a scalar $3$-cochain $\omega$, an element $g\in G$, and a natural
+    number $n$, set
+    \begin{align}
+        I_{g,n}(\omega)
+         & =\prod_{k=0}^{n-1}\omega(g,g^k,g).
+        \label{eq:mpug_cyclic_invariant}
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Gauge invariance of the cyclic invariant]
+    \label{thm:mpug_cyclic_invariant_gauge}
+    \lean{ScalarThreeCochain.cyclicInvariant_coboundary,
+        ScalarThreeCochain.cyclicInvariant_fusionGauge,
+        ScalarThreeCochain.CohomologousTo.cyclicInvariant_eq,
+        ScalarThreeCochain.cyclicInvariant_eq_one_of_isTrivialGaugeClass,
+        ScalarThreeCochain.not_isTrivialGaugeClass_of_cyclicInvariant_ne_one}
+    \leanok
+    \uses{def:mpug_cyclic_invariant, def:mpug_fusion_gauge, def:mpug_cohomologous_to, def:mpug_trivial_gauge_class}
+    Let $g^n=e$. For every scalar $2$-cochain $\beta$,
+    \begin{align}
+        I_{g,n}(d\beta)                              & =1,               \\
+        I_{g,n}(\beta\mathbin{\triangleright}\omega) & =I_{g,n}(\omega).
+    \end{align}
+    Consequently cohomologous $3$-cochains have the same cyclic invariant,
+    every $3$-cochain with trivial gauge class has $I_{g,n}(\omega)=1$, and a
+    cyclic invariant different from $1$ shows that the gauge class of
+    $\omega$ is nontrivial. No normalization of $\beta$ or $\omega$ is
+    assumed.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_cyclic_invariant, def:mpug_fusion_gauge, def:mpug_cohomologous_to, def:mpug_trivial_gauge_class}
+    By (\ref{eq:mpug_coboundary}),
+    \begin{align}
+        (d\beta)(g,g^k,g)
+         & =\frac{\beta(g,g^{k+1})}{\beta(g,g^k)}\cdot
+        \frac{\beta(g^k,g)}{\beta(g^{k+1},g)}.
+    \end{align}
+    Both quotients telescope over $k=0,\dots,n-1$, giving
+    $\beta(g,g^n)/\beta(g,e)$ and $\beta(e,g)/\beta(g^n,g)$, which equal $1$
+    because $g^n=e$. Multiplying by $\omega$ pointwise proves the second
+    identity, and the remaining statements follow from
+    Definitions~\ref{def:mpug_cohomologous_to}
+    and~\ref{def:mpug_trivial_gauge_class}.
+\end{proof}
+
+\begin{definition}[Restriction of scalar three-cochains]
+    \label{def:mpug_cochain_restriction}
+    \lean{ScalarThreeCochain.comap,
+        ScalarThreeCochain.comap_apply}
+    \leanok
+    \uses{def:mpug_scalar_cochains}
+    For a group homomorphism $f\colon H\to G$, the restriction of a scalar
+    $3$-cochain $\omega$ on $G$ is
+    $(f^*\omega)(a,b,c)=\omega(f(a),f(b),f(c))$.
+\end{definition}
+
+\begin{lemma}[Restriction preserves cocycles and gauge classes]
+    \label{thm:mpug_cochain_restriction}
+    \lean{ScalarThreeCochain.IsCocycle.comap,
+        ScalarThreeCochain.comap_fusionGauge,
+        ScalarThreeCochain.CohomologousTo.comap,
+        ScalarThreeCochain.IsTrivialGaugeClass.comap}
+    \leanok
+    \uses{def:mpug_cochain_restriction, def:mpug_three_cocycle, def:mpug_fusion_gauge, def:mpug_cohomologous_to, def:mpug_trivial_gauge_class}
+    Restriction along $f$ sends $3$-cocycles to $3$-cocycles and satisfies
+    $f^*(\beta\mathbin{\triangleright}\omega)
+        =(f^*\beta)\mathbin{\triangleright}f^*\omega$, where
+    $(f^*\beta)(a,b)=\beta(f(a),f(b))$. Hence it preserves the relation of
+    being cohomologous and sends cochains with trivial gauge class to
+    cochains with trivial gauge class.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_cochain_restriction, def:mpug_three_cocycle, def:mpug_fusion_gauge, def:mpug_cohomologous_to, def:mpug_trivial_gauge_class}
+    Since $f(ab)=f(a)f(b)$, for all $a,b,c,d\in H$
+    \begin{align}
+        (f^*\omega)(ab,c,d)\,(f^*\omega)(a,b,cd)
+         & =\omega\bigl(f(a)f(b),f(c),f(d)\bigr)\,
+        \omega\bigl(f(a),f(b),f(c)f(d)\bigr),
+        \notag                                                             \\
+        (d f^*\beta)(a,b,c)
+         & =\frac{\beta\bigl(f(a),f(b)f(c)\bigr)\beta\bigl(f(b),f(c)\bigr)}
+            {\beta\bigl(f(a),f(b)\bigr)\beta\bigl(f(a)f(b),f(c)\bigr)}
+        =(d\beta)\bigl(f(a),f(b),f(c)\bigr).
+        \notag
+    \end{align}
+    The first line and the corresponding expansion of the right-hand side
+    of (\ref{eq:mpug_three_cocycle}) turn the cocycle relation for $f^*\omega$
+    into (\ref{eq:mpug_three_cocycle}) at $f(a),f(b),f(c),f(d)$. The second
+    line, which is (\ref{eq:mpug_coboundary}) evaluated at $f(a),f(b),f(c)$,
+    gives $d(f^*\beta)=f^*(d\beta)$, hence
+    $f^*(\beta\mathbin{\triangleright}\omega)
+        =(f^*\beta)\mathbin{\triangleright}f^*\omega$. The last two claims
+    follow from Definitions~\ref{def:mpug_cohomologous_to}
+    and~\ref{def:mpug_trivial_gauge_class}.
+\end{proof}
+
+\begin{definition}[Unimodular square root and modulus of a phase]
+    \label{def:mpug_phase_root}
+    \lean{Units.phaseRoot,
+        Units.modulusUnit}
+    \leanok
+    For $u\in\C^\times$, let $s_u=e^{i\arg(u)/2}$ be the unimodular square root
+    of the phase of $u$, with $|u|$ viewed as an element of $\C^\times$.
+\end{definition}
+
+\begin{lemma}[Unimodular square roots of phases]
+    \label{thm:mpug_phase_root}
+    \lean{Units.star_phaseRoot,
+        Units.phaseRoot_mul_phaseRoot_mul_modulusUnit,
+        Units.star_eq_self_of_star_eq_ofReal_mul}
+    \leanok
+    \uses{def:mpug_phase_root}
+    For $u\in\C^\times$, $\overline{s_u}=s_u^{-1}$ and $u=s_u^2\,|u|$. If
+    $w\in\C^\times$ and $\overline w=p\,w$ for a positive real number $p$,
+    then $p=1$ and $w$ is real.
+\end{lemma}
+\begin{proof}\leanok
+    The first two claims are $\overline{e^{i\theta}}=e^{-i\theta}$ and the
+    polar form $u=|u|e^{i\arg u}$. For the third, taking absolute values in
+    $\overline w=p\,w$ gives $p=1$.
+\end{proof}
+
+\begin{lemma}[A conjugation-invariant class has a real representative]
+    \label{thm:mpug_time_reversal_real_anomaly}
+    \lean{ScalarThreeCochain.coboundary_mul,
+        ScalarThreeCochain.star_fusionGauge,
+        ScalarThreeCochain.coboundary_modulusUnit_pos,
+        ScalarThreeCochain.star_fusionGauge_phaseRoot,
+        ScalarThreeCochain.exists_cohomologousTo_star_eq_self}
+    \leanok
+    \uses{def:mpug_fusion_gauge, def:mpug_cohomologous_to, def:mpug_phase_root}
+    Let $\omega$ be a scalar $3$-cochain and $\beta$ a scalar $2$-cochain with
+    $\beta\mathbin{\triangleright}\omega=\overline\omega$. Then
+    $s\mathbin{\triangleright}\omega$ is real-valued, where
+    $s(g,h)=s_{\beta(g,h)}$ is the unimodular square root of the phase of
+    $\beta(g,h)$ from Definition~\ref{def:mpug_phase_root}. Consequently, a
+    scalar $3$-cochain cohomologous to its complex conjugate is cohomologous
+    to a real-valued one. This is the scalar conclusion
+    of~\cite[Section~4.3]{GarreRubio2023MPOSym} that, in the presence of a
+    time-reversal symmetry, the three-cocycle can be gauge transformed to a
+    real number; no finiteness of $G$ is needed.
+    % Source anchor: arXiv:2203.12563, lines 873--891.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_fusion_gauge, thm:mpug_phase_root}
+    The coboundary is multiplicative in $\beta$ and commutes with complex
+    conjugation. Writing $\beta=s^2N$ with $N(g,h)=|\beta(g,h)|$ and using
+    $\overline s=s^{-1}$ gives
+    \begin{align}
+        \overline{s\mathbin{\triangleright}\omega}
+         & =s^{-1}\mathbin{\triangleright}\overline\omega
+        =s^{-1}\mathbin{\triangleright}(s^2N\mathbin{\triangleright}\omega)
+        =N\mathbin{\triangleright}(s\mathbin{\triangleright}\omega).
+    \end{align}
+    The values of $dN$ are positive real numbers, so
+    Lemma~\ref{thm:mpug_phase_root} gives $dN=1$ and
+    $\overline{s\mathbin{\triangleright}\omega}
+        =s\mathbin{\triangleright}\omega$. If
+    $\omega=\beta\mathbin{\triangleright}\overline\omega$, conjugating gives
+    $\overline\beta\mathbin{\triangleright}\omega=\overline\omega$, and the
+    first part applies.
+\end{proof}
+
+\begin{definition}[Inversion cochains]
+    \label{def:mpug_inversion_cochains}
+    \lean{ScalarOneCochain,
+        ScalarOneCochain.coboundary,
+        ScalarCocycle.hat,
+        ScalarThreeCochain.hat,
+        ScalarThreeCochain.Xi,
+        ScalarThreeCochain.sigma}
+    \leanok
+    \uses{def:mpug_scalar_cochains}
+    These conventions and inversion cochains follow
+    \cite[lines~5910--5916 and 5967--5973]{FrancoRubio2025MPUGauging}.
+    For scalar cochains with one, two, and three arguments, set
+    \begin{align}
+        (d\sigma)(g,h) & =\frac{\sigma(g)\sigma(h)}{\sigma(gh)}.
+        \label{eq:mpug_one_coboundary}
+    \end{align}
+    The hat reverses the arguments and replaces each group element by its
+    inverse:
+    \begin{align}
+        \widehat\beta(g,h) & =\beta(h^{-1},g^{-1}).
+        \label{eq:mpug_two_hat}
+    \end{align}
+    \begin{align}
+        \widehat\omega(g,h,k) & =\omega(k^{-1},h^{-1},g^{-1}).
+        \label{eq:mpug_three_hat}
+    \end{align}
+    Define the inversion cochains by
+    \begin{align}
+        \Xi(g,h) & =
+        \frac{\omega(h^{-1},g^{-1},g)}
+        {\omega(h^{-1}g^{-1},g,h)}.
+        \label{eq:mpug_intro_Xi}
+    \end{align}
+    \begin{align}
+        \sigma(g) & =\omega(g,g^{-1},g).
+        \label{eq:mpug_intro_sigma}
+    \end{align}
+    % Source anchors: arXiv:2502.20257, lines 5910--5916 and eq:introXi.
+\end{definition}
+
+\begin{lemma}[The hat operation is an involution]
+    \label{thm:mpug_scalar_hat_involution}
+    \lean{ScalarCocycle.hat_hat,
+        ScalarThreeCochain.hat_hat}
+    \leanok
+    \uses{def:mpug_inversion_cochains}
+    Let $G$ be an arbitrary group. Every scalar $2$-cochain $\beta$ and every
+    scalar $3$-cochain $\omega$ satisfy
+    \begin{align}
+        \widehat{\widehat\beta} & =\beta,
+        \label{eq:mpug_two_hat_hat}
+    \end{align}
+    \begin{align}
+        \widehat{\widehat\omega} & =\omega.
+        \label{eq:mpug_three_hat_hat}
+    \end{align}
+    % Source anchor: arXiv:2502.20257, line 5912, where the hat operation is
+    %   introduced as an involution for cochains of any arity.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_inversion_cochains}
+    Reversing the arguments of (\ref{eq:mpug_two_hat}) and inverting each of
+    them twice restores the original arguments, and likewise for
+    (\ref{eq:mpug_three_hat}).
+\end{proof}
+
+\begin{lemma}[Two inversion-cochain formulas]
+    \label{thm:mpug_inversion_cochain_formulas}
+    \lean{ScalarThreeCochain.Xi_eq_second_formula,
+        ScalarThreeCochain.sigma_inv}
+    \leanok
+    \uses{def:mpug_scalar_cochains, def:mpug_three_cocycle, def:mpug_inversion_cochains}
+    These formulas are part of the cocycle calculation in
+    \cite[lines~5967--5979]{FrancoRubio2025MPUGauging}.
+    Let $G$ be an arbitrary group and let $\omega$ be a normalized scalar
+    $3$-cocycle. Then
+    \begin{align}
+        \Xi(g,h) & =
+        \frac{\omega(h^{-1},g^{-1},g)}
+        {\omega(h^{-1}g^{-1},g,h)}
+        =
+        \frac{\omega(h^{-1},g^{-1},gh)}
+        {\omega(g^{-1},g,h)}.
+        \label{eq:mpug_Xi_two_formulas}
+    \end{align}
+    The inversion one-cochain satisfies
+    \begin{align}
+        \sigma(g^{-1}) & =\sigma(g)^{-1}.
+        \label{eq:mpug_sigma_inverse}
+    \end{align}
+    % Source anchor: arXiv:2502.20257, eq:introXi and lemma:omegaXi.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_scalar_cochains, def:mpug_three_cocycle, def:mpug_inversion_cochains}
+    Applying (\ref{eq:mpug_three_cocycle}) to $(h^{-1},g^{-1},g,h)$ and using
+    (\ref{eq:mpug_three_normalized}) gives the second quotient in
+    (\ref{eq:mpug_Xi_two_formulas}). Applying
+    (\ref{eq:mpug_three_cocycle}) to
+    $(g,g^{-1},g,g^{-1})$ gives
+    $1=\sigma(g)\sigma(g^{-1})$, hence
+    (\ref{eq:mpug_sigma_inverse}).
+\end{proof}
+
+\begin{lemma}[Inversion identities for a normalized three-cocycle]
+    \label{thm:mpug_omega_Xi}
+    \lean{ScalarThreeCochain.hat_eq_mul_coboundary_Xi,
+        ScalarThreeCochain.Xi_eq_hat_mul_coboundary_sigma}
+    \leanok
+    \uses{def:mpug_scalar_cochains, def:mpug_three_cocycle, def:mpug_fusion_gauge, def:mpug_inversion_cochains}
+    These inversion identities and their cocycle substitutions are given in
+    \cite[lines~5967--5979]{FrancoRubio2025MPUGauging}.
+    Let $\omega$ be a normalized scalar $3$-cocycle. Then
+    \begin{align}
+        \widehat\omega & =\omega\,d\Xi.
+        \label{eq:mpug_hat_omega}
+    \end{align}
+    The inversion two-cochain also satisfies
+    \begin{align}
+        \Xi & =\widehat\Xi\,d\sigma.
+        \label{eq:mpug_Xi_hat_sigma}
+    \end{align}
+    % Source anchor: arXiv:2502.20257, lemma:omegaXi, lines 5967--5979.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_three_cocycle, def:mpug_fusion_gauge, def:mpug_inversion_cochains, thm:mpug_inversion_cochain_formulas}
+    For (\ref{eq:mpug_hat_omega}), multiplying the cocycle identities at
+    \begin{align}
+         & (k^{-1},h^{-1},g^{-1},g),\quad
+        (k^{-1},h^{-1}g^{-1},g,h),\quad
+        (k^{-1}h^{-1}g^{-1},g,h,k),
+    \end{align}
+    and cancelling the normalized factors gives the equality. For
+    (\ref{eq:mpug_Xi_hat_sigma}), substituting the second expression in
+    (\ref{eq:mpug_Xi_two_formulas}) for $\widehat\Xi$ and combining the
+    identities at
+    \begin{align}
+         & (h^{-1}g^{-1},g,h,h^{-1}g^{-1}),\quad
+        (h^{-1},h,h^{-1},g^{-1}),\quad
+        (h^{-1},g^{-1},g,g^{-1}),\quad
+        (g,g^{-1},g,g^{-1})
+    \end{align}
+    gives (\ref{eq:mpug_sigma_inverse}) in the three required places at $g$,
+    $h$, and $gh$.
+\end{proof}
+
+\begin{lemma}[Trivial scalar gauge class for $\Z_2$]
+    \label{thm:mpug_z2_trivial_scalar_class}
+    \lean{ScalarThreeCochain.isTrivialGaugeClass_iff_sigma_generator_eq_one}
+    \leanok
+    \uses{def:mpug_scalar_cochains, def:mpug_fusion_gauge, def:mpug_trivial_gauge_class, def:mpug_inversion_cochains}
+    Write $\Z_2=\{e,s\}$ multiplicatively. Let $\omega$ be a normalized
+    scalar $3$-cochain on $\Z_2$. Its gauge
+    class is trivial if and only if
+    \begin{align}
+        \sigma(s) & =1.
+        \label{eq:mpug_z2_trivial_sigma}
+    \end{align}
+    This strengthens the scalar step in
+    \cite[lines~5339--5341]{FrancoRubio2025MPUGauging}: only normalization,
+    rather than the cocycle identity, is needed for this equivalence.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:mpug_fusion_gauge, thm:mpug_gauge_preserves_normalization, thm:mpug_cohomologous_to_equivalence}
+    Suppose first that $\omega=d\beta$ for an arbitrary scalar $2$-cochain
+    $\beta$. Although $\beta$ need not be normalized, the normalization of
+    $d\beta$ implies that there is a constant $c\in\C^\times$ such that
+    $\beta(e,h)=\beta(h,e)=c$ for every $h\in\Z_2$. Since $s^2=e$,
+    \begin{align}
+        (d\beta)(s,s,s)
+         & =\frac{\beta(s,e)\beta(s,s)}
+            {\beta(s,s)\beta(e,s)}=\frac{c}{c}=1.
+        \label{eq:mpug_z2_coboundary_generator}
+    \end{align}
+    Thus every scalar $2$-cochain whose coboundary is normalized contributes
+    the factor $1$ at $(s,s,s)$. In particular, an arbitrary gauge between
+    normalized scalar $3$-cochains cannot change this value, and
+    $\sigma(s)=1$. Conversely, normalization determines every
+    value of $\omega$ except $\omega(s,s,s)=\sigma(s)$. Hence
+    (\ref{eq:mpug_z2_trivial_sigma}) makes $\omega$ the constant cochain $1$.
+\end{proof}
+
+\begin{lemma}[Sign dichotomy for the $\Z_2$ inversion scalar]
+    \label{thm:mpug_z2_sigma_sign}
+    \lean{ScalarThreeCochain.sigma_generator_eq_one_or_eq_neg_one}
+    \leanok
+    \uses{def:mpug_three_cocycle, def:mpug_inversion_cochains}
+    Let $\omega$ be a normalized scalar $3$-cocycle on $\Z_2$. Then
+    \begin{align}
+        \sigma(s) & \in\{1,-1\}.
+        \label{eq:mpug_z2_sigma_sign}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:mpug_inversion_cochain_formulas}
+    Since $s^{-1}=s$, formula (\ref{eq:mpug_sigma_inverse}) gives
+    $\sigma(s)=\sigma(s)^{-1}$. Hence $\sigma(s)^2=1$, whose two solutions in
+    $\C^\times$ are $1$ and $-1$.
+\end{proof}
+
+\begin{lemma}[Nontrivial scalar gauge class for $\Z_2$]
+    \label{thm:mpug_z2_nontrivial_scalar_class}
+    \lean{ScalarThreeCochain.not_isTrivialGaugeClass_iff_sigma_generator_eq_neg_one}
+    \leanok
+    \uses{def:mpug_three_cocycle, def:mpug_trivial_gauge_class, def:mpug_inversion_cochains}
+    For a normalized scalar $3$-cocycle $\omega$ on $\Z_2$, the scalar
+    cohomology classification used in the proof at
+    \cite[lines~5339--5341]{FrancoRubio2025MPUGauging} states that its gauge
+    class is nontrivial if and only if
+    \begin{align}
+        \sigma(s) & =-1.
+        \label{eq:mpug_z2_nontrivial_sigma}
+    \end{align}
+    % Source anchor: arXiv:2502.20257, lines 5339--5341.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:mpug_z2_trivial_scalar_class, thm:mpug_z2_sigma_sign}
+    By Lemma~\ref{thm:mpug_z2_trivial_scalar_class}, a nontrivial class has
+    $\sigma(s)\neq1$. The dichotomy
+    (\ref{eq:mpug_z2_sigma_sign}) then forces $\sigma(s)=-1$, and the converse
+    follows from the same two statements.
+\end{proof}
