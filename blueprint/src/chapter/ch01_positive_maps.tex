@@ -1251,18 +1251,20 @@ them across the chapter boundary.
 \begin{definition}[Finite Kraus family]
     \label{def:kraus_family}
     \lean{KrausFamily, KrausFamily.map, KrausFamily.map_apply, KrausFamily.effect,
-        KrausFamily.IsTP, KrausFamily.IsTraceNonincreasing, KrausFamily.IsUnitary,
+        KrausFamily.IsTP, KrausFamily.isTP_iff_effect_eq_one,
+        KrausFamily.IsTraceNonincreasing, KrausFamily.IsUnitary,
         KrausFamily.single, KrausFamily.single_op, KrausFamily.effect_single,
         KrausFamily.map_single}
     \leanok
-    \uses{def:mpdo_rectangular_kraus_map}
+    \uses{def:mpdo_rectangular_kraus_map, def:tp_kraus}
     A finite Kraus family from $\C^I$ to $\C^J$ is a finite set $\Omega$ of
     outcomes together with matrices $(K_\omega\in\C^{J\times I})_{\omega\in\Omega}$,
     with no normalization imposed \cite[Theorem~2.1]{Wolf2012Quantum}. Its map is
     the rectangular Kraus map $\rho\mapsto\sum_\omega K_\omega\rho K_\omega^\dagger$
     and its effect is $E=\sum_\omega K_\omega^\dagger K_\omega$. The family is
-    trace-preserving when $E=1$ and trace-nonincreasing when $E\leq1$. A family of
-    one operator $V$ has map $\rho\mapsto V\rho V^\dagger$ and effect $V^\dagger V$; it is trace-nonincreasing exactly
+    trace-preserving when $E=1$, which is the trace-preservation condition of
+    Definition~\ref{def:tp_kraus} on its operators, and trace-nonincreasing when
+    $E\leq1$. A family of one operator $V$ has map $\rho\mapsto V\rho V^\dagger$ and effect $V^\dagger V$; it is trace-nonincreasing exactly
     when $V$ is a contraction, and it is called unitary when
     $V^\dagger V=1$ and $VV^\dagger=1$.
 \end{definition}

@@ -131,7 +131,7 @@ theorem IsUnitaryOrMeasurement.isTP {K : KrausFamily α β} (h : K.IsUnitaryOrMe
   · exact h.isTP
   · have : ∀ i, (K.op i)ᴴ * K.op i = Matrix.single (e i) (e i) 1 := fun i ↦ by
       rw [hK, conjTranspose_single, star_one, single_mul_single_same, mul_one]
-    rw [IsTP, effect, Fintype.sum_congr _ _ this,
+    rw [isTP_iff_effect_eq_one, effect, Fintype.sum_congr _ _ this,
       e.sum_comp (fun a ↦ (Matrix.single a a 1 : Matrix α α ℂ))]
     ext a b
     rcases eq_or_ne a b with rfl | hab
@@ -267,7 +267,7 @@ theorem exists_kraus_mulVec_ne_zero (ev : Interpretation G) (c : Circuit Γ G X 
   push Not at hc
   have hE := c.isTP_krausFamily ev h
   refine hv ?_
-  rw [← one_mulVec v, ← hE, KrausFamily.effect, sum_mulVec]
+  rw [← one_mulVec v, ← KrausFamily.isTP_iff_effect_eq_one.mp hE, KrausFamily.effect, sum_mulVec]
   exact Finset.sum_eq_zero fun p _ ↦ by
     rw [← mulVec_mulVec]
     change (c.kraus ev p)ᴴ *ᵥ (c.kraus ev p *ᵥ v) = 0
@@ -320,7 +320,7 @@ theorem IsImplementationOn.map_vecMulVec_eq [∀ s, Fintype (Z s)] (ev : Interpr
       have : star w ⬝ᵥ w = ∑ p, star (c.kraus ev p *ᵥ w) ⬝ᵥ (c.kraus ev p *ᵥ w) := by
         have h1 : (∑ p, (c.kraus ev p)ᴴ * c.kraus ev p) *ᵥ w = w :=
           calc (∑ p, (c.kraus ev p)ᴴ * c.kraus ev p) *ᵥ w = (c.krausFamily ev).effect *ᵥ w := rfl
-            _ = w := by rw [hE1, one_mulVec]
+            _ = w := by rw [KrausFamily.isTP_iff_effect_eq_one.mp hE1, one_mulVec]
         conv_lhs => arg 2; rw [← h1]
         rw [sum_mulVec, dotProduct_sum]
         exact Finset.sum_congr rfl fun p _ ↦ (hnorm w _).symm

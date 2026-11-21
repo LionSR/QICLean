@@ -112,7 +112,7 @@ theorem regionEntropy_univ (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : �
 theorem regionEntropy_union_le (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
     (R T : Finset V) (h : Disjoint R T) :
     regionEntropy ψ (R ∪ T) ≤ regionEntropy ψ R + regionEntropy ψ T := by
-  let e := (unionEquiv β R T h).symm
+  let e := (regionUnionEquiv (β := β) h).symm
   let ρ := (regionState ψ (R ∪ T)).submatrix e e
   have hρ : ρ.PosSemidef := (regionState_posSemidef (R ∪ T) ψ).submatrix e
   have htr : ρ.trace = 1 := by
@@ -147,7 +147,7 @@ noncomputable def jointMatrix (ψ : EuclideanSpace ℂ ((v : V) → β v))
       (Fin (Fintype.card (RegionConfig β R)) × Fin
           (Fintype.card (RegionConfig β T))) ℂ :=
   let e := ((Fintype.equivFin (RegionConfig β R)).symm.prodCongr
-    (Fintype.equivFin (RegionConfig β T)).symm).trans (unionEquiv β R T h).symm
+    (Fintype.equivFin (RegionConfig β T)).symm).trans (regionUnionEquiv (β := β) h).symm
   (regionState ψ (R ∪ T)).submatrix e e
 
 omit [∀ v, DecidableEq (β v)] in
@@ -164,7 +164,7 @@ theorem regionMutualInformation_eq_matrix (ψ : EuclideanSpace ℂ ((v : V) → 
         (jointMatrix β ψ R T h)
       (jointMatrix_posSemidef β ψ R T h).isHermitian := by
   let ρ := (regionState ψ (R ∪ T)).submatrix
-    (unionEquiv β R T h).symm (unionEquiv β R T h).symm
+    (regionUnionEquiv (β := β) h).symm (regionUnionEquiv (β := β) h).symm
   have hρ : ρ.PosSemidef := (regionState_posSemidef (R ∪ T) ψ).submatrix _
   have hR : Matrix.partialTraceRight ρ = regionState ψ R :=
     partialTraceRight_regionMatrix_union β _ R T h
@@ -176,7 +176,7 @@ theorem regionMutualInformation_eq_matrix (ψ : EuclideanSpace ℂ ((v : V) → 
   rw [vonNeumannEntropy_congr hR _ (regionState_posSemidef R ψ).isHermitian,
     vonNeumannEntropy_congr hT _ (regionState_posSemidef T ψ).isHermitian] at heq
   dsimp only [ρ] at heq
-  rw [vonNeumannEntropy_submatrix_equiv (unionEquiv β R T h).symm _
+  rw [vonNeumannEntropy_submatrix_equiv (regionUnionEquiv (β := β) h).symm _
     (regionState_posSemidef (R ∪ T) ψ).isHermitian] at heq
   simpa only [jointMatrix, Matrix.submatrix_submatrix, regionMutualInformation,
       regionEntropy,

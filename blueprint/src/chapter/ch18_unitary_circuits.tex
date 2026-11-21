@@ -36,7 +36,8 @@ Chapter~\ref{ch:circuits} for these circuits.
 
 \begin{lemma}[Light cones of a graph and of the open chain]
     \label{lem:unitary_graph_light_cone}
-    \lean{QuantumCircuit.Geometry.iterate_neighbourhood_graph_subset,
+    \lean{QuantumCircuit.Geometry.neighbourhood_graph,
+        QuantumCircuit.Geometry.iterate_neighbourhood_graph,
         QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_graph,
         QuantumCircuit.Geometry.iterate_neighbourhood_graph_subset_dist,
         QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_graph_of_dist,
@@ -44,18 +45,20 @@ Chapter~\ref{ch:circuits} for these circuits.
         QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_pathGraph}
     \leanok
     \uses{def:unitary_graph_geometry, lem:circuits_neighbourhood_mono,
-        lem:sites_path_distance}
+        lem:sites_path_distance, lem:dynamics_graph_neighborhood,
+        lem:dynamics_graph_separated}
     In the graph geometry of $G$, the $r$-fold neighbourhood $\mathcal N^r(R)$ of a
-    region $R$ lies within graph distance $r$ of $R$, and regions at graph distance
-    larger than $2r$ have disjoint $r$-fold neighbourhoods. On the open chain the
-    same holds with the distance $|i-j|$ of positions.
+    region $R$ is the neighbourhood $N_r(R)$ of the sites within graph distance $r$ of
+    $R$, and regions at graph distance larger than $2r$ have disjoint $r$-fold
+    neighbourhoods. On the open chain the same holds with the distance $|i-j|$ of
+    positions.
 \end{lemma}
 \begin{proof}\leanok
-    By induction on $r$: a site of $\mathcal N^{r+1}(R)$ lies in $\mathcal N^r(R)$ or in
-    an edge meeting a site $u$ of $\mathcal N^r(R)$, and the two ends of an edge are at
-    distance at most $1$; the triangle inequality gives the bound. If $v$ lay in both
-    neighbourhoods, the triangle inequality would join $R$ and $R'$ within $2r$. On the
-    path the graph distance is the distance of positions.
+    The neighbourhood of $R$ adds the two ends of every edge meeting $R$, which are
+    the sites at distance at most $1$ from $R$, so $\mathcal N(R)=N_1(R)$. By
+    induction on $r$ and $N_{r+1}(R)=N_1(N_r(R))$, $\mathcal N^r(R)=N_r(R)$, and
+    regions separated by $2r$ have disjoint neighbourhoods $N_r$. On the path the
+    graph distance is the distance of positions.
 \end{proof}
 
 \section{Unitary circuits and their costs}
@@ -229,7 +232,7 @@ Chapter~\ref{ch:circuits} for these circuits.
 \begin{theorem}[Light cone of a circuit of depth $T$]
     \label{thm:unitary_classes_light_cone}
     \lean{QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators,
-        QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_ringBall}
+        QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_graphNeighborhood_cycleGraph}
     \leanok
     \uses{def:unitary_classes, thm:unitary_circuit_light_cone,
         lem:circuits_ring_neighbourhood}
@@ -280,8 +283,8 @@ Chapter~\ref{ch:circuits} for these circuits.
     \label{thm:unitary_correlations}
     \lean{QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul,
         QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq,
-        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul_of_isRingSeparated,
-        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq_of_isRingSeparated}
+        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul_of_isGraphSeparated,
+        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq_of_isGraphSeparated}
     \leanok
     \uses{def:unitary_prepared, lem:unitary_product_vector,
         thm:unitary_classes_light_cone, lem:sites_ring_separated}

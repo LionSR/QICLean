@@ -421,7 +421,7 @@ just Kadison--Schwarz for the adjoint Kraus map, followed by monotonicity of the
 positive map `X ↦ ∑ᵢ Kᵢ† X Kᵢ`. -/
 theorem kadison_schwarz_commuting_dominant_cp_of_two_sided_bound
     (K : Fin d → Mat)
-    (h_tp : IsTPKraus K)
+    (h_tp : Kraus.IsTP K)
     (A Dom : Mat)
     (hDomLeft : Aᴴ * A ≤ Dom)
     (hDomRight : A * Aᴴ ≤ Dom) :
@@ -459,7 +459,7 @@ The only missing ingredient beyond `kadison_schwarz_commuting_dominant_cp_of_two
 is the right-dominance lemma `commuting_dominant_right_bound`. -/
 theorem kadison_schwarz_commuting_dominant_cp
     (K : Fin d → Mat)
-    (h_tp : IsTPKraus K)
+    (h_tp : Kraus.IsTP K)
     (A Dom : Mat)
     (hDomPos : Dom.PosSemidef)
     (hComm : Commute Dom A)

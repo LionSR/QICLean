@@ -114,7 +114,7 @@ theorem effect_attach (w : ι → γ → ℂ) :
 /-- An attachment is trace-preserving when `∑ₖ ‖wₖ‖² = 1`. -/
 theorem isTP_attach {w : ι → γ → ℂ} (hw : ∑ k, star (w k) ⬝ᵥ w k = 1) :
     (attach α w).IsTP := by
-  rw [IsTP, effect_attach, hw, one_smul]
+  rw [isTP_iff_effect_eq_one, effect_attach, hw, one_smul]
 
 /-- The trace of the ancilla state is `∑ₖ ‖wₖ‖²`. -/
 theorem trace_ancillaState (w : ι → γ → ℂ) :

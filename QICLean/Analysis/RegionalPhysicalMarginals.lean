@@ -112,7 +112,7 @@ theorem regional_physicalSingletonDensity_eq_reducedPure
       (physicalRemainingPairEquiv ι 1))
   let b₂ := ((ManyBody.complementEquiv β (Q ∪ Y)ᶜ).trans
     (ManyBody.configurationCongr β (compl_compl (Q ∪ Y)))).trans
-    ((ManyBody.unionEquiv β Q Y hQY).trans (physicalRemainingPairEquiv ι 2))
+    ((ManyBody.regionUnionEquiv (β := β) hQY).trans (physicalRemainingPairEquiv ι 2))
   have h₀ (x : (v : V) → β v) : physicalSingletonEquiv ι 0 (e x) =
       ((Equiv.refl _).prodCongr b₀) (ManyBody.cutEquiv β Q x) := by
     apply Prod.ext

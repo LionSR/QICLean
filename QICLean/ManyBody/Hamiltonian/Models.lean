@@ -34,7 +34,9 @@ indices, `ManyBody.Interaction.extend`. On the ring of `N` sites, the translatio
 interaction of one operator on `k ≤ N` consecutive sites has the translates of that operator
 as its terms (`ManyBody.Interaction.translationInvariant`); on the open chain of `N` sites,
 the translates of that operator along the windows starting at `0, …, N - k` form
-`ManyBody.Interaction.chainTranslates`.
+`ManyBody.Interaction.chainTranslates`. A bond interaction on the first `L` sites of a chain of
+`N` sites, padded with one matrix at each added site, is a bond interaction on the `N` sites
+(`ManyBody.BondInteraction.padded`).
 
 They exist for field notation and readability; they add no structure. Hermiticity of the terms
 (or only of their sum), the norm bound `J`, the range and the degree are hypotheses of the
@@ -50,10 +52,15 @@ of these interactions together with the hypotheses that were its fields.
 * `ManyBody.ChainInteraction`, `ManyBody.DomainInteraction`, `ManyBody.PlaneInteraction`,
   `ManyBody.RectangleInteraction`, `ManyBody.SquareInteraction`, `ManyBody.BondInteraction`.
 * `ManyBody.bondSupport`, `ManyBody.BondInteraction.toChainInteraction`.
+* `ManyBody.BondInteraction.padded` — a bond interaction on the first `L` sites of a chain of
+  `N` sites, with one matrix at each added site on the bond ending there.
 * `ManyBody.RectangleInteraction.toPlaneInteraction`.
 * `ManyBody.Interaction.translationInvariant`, `ManyBody.Interaction.chainTranslates`.
 
 ## Main results
+
+* `ManyBody.BondInteraction.hamiltonian_padded` — the Hamiltonian of the padding is the
+  Hamiltonian of `Φ` on the first `L` sites plus the matrices at the added sites.
 
 * `ManyBody.RectangleInteraction.hamiltonian_toPlaneInteraction` — the map to the plane keeps
   the Hamiltonian, transported to the configurations of the domain.
@@ -150,7 +157,113 @@ noncomputable abbrev BondInteraction.toChainInteraction (Φ : BondInteraction L 
     ChainInteraction L q 1 :=
   Φ.extend bondSupport bondSupport_injective (fun X ↦ X.1) fun _ ↦ subset_rfl
 
+/-- On the chain of `N + 1` sites, the bond term with index `i : Fin N` is supported on the
+bond `{i, i + 1}`. -/
+theorem BondInteraction.term_mem_supportedOperators_chainBond {N : ℕ}
+    (Φ : BondInteraction (N + 1) q) (i : Fin N) :
+    Φ.term i ∈ supportedOperators (fun _ : Fin (N + 1) ↦ Fin q) (chainBond N i) :=
+  interval_eq_chainBond i ▸ Φ.mem i
+
 end Bond
+
+/-! ### Padding a bond interaction -/
+
+section Padded
+
+open scoped MatrixOrder ComplexOrder
+
+variable {L N q : ℕ}
+
+private theorem notMem_map_castLEEmb_iff (hi : L ≤ N) {v : Fin N} :
+    v ∉ Finset.univ.map (Fin.castLEEmb hi) ↔ L ≤ v.val := by
+  simp only [Finset.mem_map, Finset.mem_univ, true_and, not_exists, Fin.coe_castLEEmb,
+    Fin.ext_iff, Fin.val_castLE]
+  exact ⟨fun h ↦ not_lt.mp fun hv ↦ h ⟨v.val, hv⟩ rfl, fun h j hj ↦ by omega⟩
+
+/-- The bond of the chain of `N ≥ L ≥ 1` sites that carries a term of the padded interaction:
+the bond `i` for a bond `i` of the first `L` sites, and the bond `{v - 1, v}` for a site
+`v ≥ L`. -/
+def paddingBond (hL : 1 ≤ L) (hi : L ≤ N) :
+    Fin (L - 1) ⊕ {v : Fin N // v ∉ Finset.univ.map (Fin.castLEEmb hi)} → Fin (N - 1)
+  | .inl i => ⟨i.val, by omega⟩
+  | .inr v => ⟨v.1.val - 1, by have := (notMem_map_castLEEmb_iff hi).mp v.2; omega⟩
+
+theorem paddingBond_injective (hL : 1 ≤ L) (hi : L ≤ N) :
+    Function.Injective (paddingBond hL hi) := by
+  rintro (i | v) (j | w) h <;> simp only [paddingBond, Fin.ext_iff] at h
+  · exact congrArg Sum.inl (Fin.ext h)
+  · have := (notMem_map_castLEEmb_iff hi).mp w.2
+    omega
+  · have := (notMem_map_castLEEmb_iff hi).mp v.2
+    omega
+  · have := (notMem_map_castLEEmb_iff hi).mp v.2
+    have := (notMem_map_castLEEmb_iff hi).mp w.2
+    exact congrArg Sum.inr (Subtype.ext (Fin.ext (by omega)))
+
+/-- **Padding a bond interaction.** For `1 ≤ L ≤ N`, a bond interaction `Φ` on the chain of `L`
+sites and a matrix `p v` on the basis at every site `v`, the bond interaction on the chain of
+`N` sites whose bond `i < L - 1` carries the term of `Φ` with index `i` on the first `L`
+sites, and whose bond `{v - 1, v}`, for each site `v ≥ L`, carries `p v` at the site `v`. It is
+the padding `ManyBody.Interaction.pad` of `Φ` along the first `L` sites, extended along
+`paddingBond`, so its Hamiltonian is the Hamiltonian of `Φ` on the first `L` sites plus the
+matrices `p v` at the added sites. Landau, Vazirani and Vidick, arXiv:1307.5143v1, final
+induction, lines 652–678, with `p v` the penalty for leaving a reference basis state. -/
+noncomputable def BondInteraction.padded (hL : 1 ≤ L) (hi : L ≤ N) (Φ : BondInteraction L q)
+    (p : Fin N → Matrix (Fin q) (Fin q) ℂ) : BondInteraction N q :=
+  (Φ.pad (X := fun _ : Fin N ↦ Fin q) (Fin.castLEEmb hi) p).extend (paddingBond hL hi)
+    (paddingBond_injective hL hi) _ fun
+      | .inl i => fun v hv ↦ by
+          obtain ⟨u, hu, rfl⟩ := Finset.mem_map.mp hv
+          simpa [paddingBond] using mem_interval.mp hu
+      | .inr v => fun u hu ↦ by
+          rw [Finset.mem_singleton.mp hu]
+          have := (notMem_map_castLEEmb_iff hi).mp v.2
+          simp only [paddingBond, mem_interval]
+          omega
+
+variable {hL : 1 ≤ L} {hi : L ≤ N} {Φ : BondInteraction L q} {p : Fin N → Matrix (Fin q) (Fin q) ℂ}
+
+/-- The term of the padded interaction on a bond `j < L - 1` is the term of `Φ` with index `j`,
+placed on the first `L` sites. -/
+theorem BondInteraction.padded_term_of_lt {j : Fin (N - 1)} (hj : j.val < L - 1) :
+    (Φ.padded hL hi p).term j = placeAlong (Fin.castLEEmb hi) (Φ.term ⟨j.val, hj⟩) :=
+  Interaction.extend_term_apply (f := paddingBond hL hi) (Sum.inl ⟨j.val, hj⟩)
+
+/-- The term of the padded interaction on a bond `j ≥ L - 1` is `p` at the site `j + 1`. -/
+theorem BondInteraction.padded_term_of_le {j : Fin (N - 1)} (hj : L - 1 ≤ j.val) :
+    (Φ.padded hL hi p).term j =
+      placeAt (X := fun _ : Fin N ↦ Fin q) ⟨j.val + 1, by omega⟩ (p ⟨j.val + 1, by omega⟩) := by
+  have hv : (⟨j.val + 1, by omega⟩ : Fin N) ∉ Finset.univ.map (Fin.castLEEmb hi) :=
+    (notMem_map_castLEEmb_iff hi).mpr (by simp only; omega)
+  have hj' : paddingBond hL hi (.inr ⟨_, hv⟩) = j := Fin.ext (by simp [paddingBond])
+  rw [← hj']
+  exact Interaction.extend_term_apply (f := paddingBond hL hi) (Sum.inr ⟨_, hv⟩)
+
+/-- **The Hamiltonian of the padded interaction** is the Hamiltonian of `Φ` placed on the first
+`L` sites plus the matrices `p v` at the sites `v ≥ L`. -/
+theorem BondInteraction.hamiltonian_padded :
+    (Φ.padded hL hi p).hamiltonian = placeAlong (Fin.castLEEmb hi) Φ.hamiltonian +
+      ∑ v : {v : Fin N // v ∉ Finset.univ.map (Fin.castLEEmb hi)},
+        placeAt (X := fun _ : Fin N ↦ Fin q) v.1 (p v.1) := by
+  rw [padded, Interaction.hamiltonian_extend, Interaction.hamiltonian_pad]
+
+/-- The padding of positive terms by positive matrices has positive terms. -/
+theorem BondInteraction.padded_term_nonneg (hΦ : ∀ i, 0 ≤ Φ.term i) (hp : ∀ v, 0 ≤ p v)
+    (j : Fin (N - 1)) : 0 ≤ (Φ.padded hL hi p).term j :=
+  Interaction.extend_term_nonneg (Interaction.pad_term_nonneg _ hΦ hp) j
+
+/-- The padding of terms bounded by the identity by matrices bounded by the identity has terms
+bounded by the identity. -/
+theorem BondInteraction.padded_term_le_one (hΦ : ∀ i, Φ.term i ≤ 1) (hp : ∀ v, p v ≤ 1)
+    (j : Fin (N - 1)) : (Φ.padded hL hi p).term j ≤ 1 :=
+  Interaction.extend_term_le_one (Interaction.pad_term_le_one _ hΦ hp) j
+
+/-- The padding of Hermitian terms by Hermitian matrices has Hermitian terms. -/
+theorem BondInteraction.isHermitian_padded_term (hΦ : ∀ i, (Φ.term i).IsHermitian)
+    (hp : ∀ v, (p v).IsHermitian) (j : Fin (N - 1)) : ((Φ.padded hL hi p).term j).IsHermitian :=
+  Interaction.isHermitian_extend_term (Interaction.isHermitian_pad_term _ hΦ hp) j
+
+end Padded
 
 /-! ### Translation-invariant interactions on the ring -/
 

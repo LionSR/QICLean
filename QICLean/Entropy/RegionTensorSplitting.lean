@@ -26,7 +26,7 @@ noncomputable def unionTensorCoordinates (q : ℕ) (A B : Finset V) (h : Disjoin
     EuclideanSpace ℂ (↥(A ∪ B) → Fin q) ≃ₗᵢ[ℂ]
       EuclideanSpace ℂ (A → Fin q) ⊗[ℂ] EuclideanSpace ℂ (B → Fin q) :=
   (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
-    (ManyBody.unionEquiv (fun _ : V ↦ Fin q) A B h)).trans
+    (ManyBody.regionUnionEquiv (β := (fun _ : V ↦ Fin q)) h)).trans
       (Submodule.euclideanTensorEquiv _ _)
 
 /-- The actual complement of the first region, split into the second region
@@ -83,8 +83,8 @@ lemma unionTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) (x : EuclideanSpace ℂ (A → Fin q))
     (y : EuclideanSpace ℂ (B → Fin q)) (c : ↥(A ∪ B) → Fin q) :
     (unionTensorCoordinates q A B h).symm (x ⊗ₜ[ℂ] y) c =
-      x ((ManyBody.unionEquiv (fun _ : V ↦ Fin q) A B h) c).1 *
-        y ((ManyBody.unionEquiv (fun _ : V ↦ Fin q) A B h) c).2 :=
+      x ((ManyBody.regionUnionEquiv (β := (fun _ : V ↦ Fin q)) h) c).1 *
+        y ((ManyBody.regionUnionEquiv (β := (fun _ : V ↦ Fin q)) h) c).2 :=
   Submodule.euclideanTensorEquiv_reindex_symm_tmul _ x y c
 
 /-- Product coordinates in the actual split complement. Supporting ALVV,
@@ -134,7 +134,7 @@ lemma threeRegionTensorCoordinates_assoc (q : ℕ) (A B : Finset V) (h : Disjoin
         ext c
         simp [f, g, TensorProduct.congrIsometry_symm, threeRegionTensorCoordinates,
           regionTensorCoordinates_symm_tmul_apply, unionTensorCoordinates_symm_tmul_apply,
-          exteriorTensorCoordinates_symm_tmul_apply, ManyBody.unionEquiv,
+          exteriorTensorCoordinates_symm_tmul_apply, ManyBody.regionUnionEquiv,
           ManyBody.complementUnionEquiv, mul_assoc]
       | add v w hv hw => simp only [TensorProduct.tmul_add, map_add, hv, hw]
     | add v w hv hw => simp only [map_add, hv, hw]
@@ -178,7 +178,7 @@ lemma threeRegionTensorCoordinates_comm_assoc (q : ℕ) (A B : Finset V)
                 (fun v : {v // v ∉ A ∪ B} ↦ c v) := rfl
         simp [f, g, TensorProduct.congrIsometry_symm, threeRegionTensorCoordinates,
           regionTensorCoordinates_symm_tmul_apply, unionTensorCoordinates_symm_tmul_apply,
-          rightExteriorTensorCoordinates_symm_tmul_apply, ManyBody.unionEquiv,
+          rightExteriorTensorCoordinates_symm_tmul_apply, ManyBody.regionUnionEquiv,
           ManyBody.complementUnionEquiv, hconfig, mul_assoc, mul_left_comm]
       | add v w hv hw => simp only [TensorProduct.tmul_add, map_add, hv, hw]
     | add v w hv hw => simp only [map_add, hv, hw]

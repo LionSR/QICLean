@@ -71,7 +71,7 @@ private theorem freeFamily_op_of_notMem (L : Layer Γ KrausGate X X) (t : L.Free
 
 private theorem isTP_freeFamily (L : Layer Γ KrausGate X X)
     (hL : ∀ t, (L.onsite t).IsTP) (s : S) : (freeFamily L s).IsTP := by
-  rw [KrausFamily.IsTP, KrausFamily.effect]
+  rw [KrausFamily.isTP_iff_effect_eq_one, KrausFamily.effect]
   by_cases h : s ∈ L.cells.biUnion Γ.cell
   · have : IsEmpty {t : L.Free // t.1 = s} := ⟨fun t ↦ t.1.2 (by rw [t.2]; exact h)⟩
     let : Unique (freeFamily L s).Index := Pi.uniqueOfIsEmpty _
