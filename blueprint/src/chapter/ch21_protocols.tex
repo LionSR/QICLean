@@ -317,8 +317,8 @@ Section~\ref{sec:protocols_light_cones} are ring balls.
 
 \begin{theorem}[Light cones of protocols on the ring]
     \label{thm:protocols_ring_light_cone}
-    \lean{QuantumCircuit.IsProtocol.traceAdjointMap_mem_supportedOperators_ringBall,
-        QuantumCircuit.IsProtocol.traceAdjointMap_mul_of_disjoint_ringBall}
+    \lean{QuantumCircuit.IsProtocol.traceAdjointMap_mem_supportedOperators_graphNeighborhood,
+        QuantumCircuit.IsProtocol.traceAdjointMap_mul_of_disjoint_graphNeighborhood}
     \leanok
     \uses{thm:protocols_light_cone, def:circuits_ring_geometry, def:sites_ring_ball,
         lem:circuits_ring_neighbourhood}
@@ -335,7 +335,7 @@ Section~\ref{sec:protocols_light_cones} are ring balls.
 
 \begin{theorem}[No correlations beyond twice the depth]
     \label{thm:protocols_ring_correlations}
-    \lean{QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isRingSeparated}
+    \lean{QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isGraphSeparated}
     \leanok
     \uses{thm:protocols_light_cone, def:circuits_ring_geometry, def:sites_ring_ball,
         lem:circuits_ring_neighbourhood, lem:sites_ring_separated}
@@ -359,7 +359,7 @@ Section~\ref{sec:protocols_light_cones} are ring balls.
 
 \begin{theorem}[Approximately vanishing correlations beyond twice the depth]
     \label{thm:protocols_ring_approx_correlations}
-    \lean{QuantumCircuit.IsApproxConversion.norm_trace_mul_mul_sub_le_of_isRingSeparated}
+    \lean{QuantumCircuit.IsApproxConversion.norm_trace_mul_mul_sub_le_of_isGraphSeparated}
     \leanok
     \uses{thm:protocols_approx_light_cone, def:circuits_ring_geometry,
         lem:circuits_ring_neighbourhood, lem:sites_ring_separated}
@@ -383,7 +383,7 @@ Section~\ref{sec:protocols_light_cones} are ring balls.
 
 \begin{theorem}[Light cones of protocols on the blocks of the ring]
     \label{thm:protocols_ring_block_light_cone}
-    \lean{QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_ringBall}
+    \lean{QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_graphNeighborhood}
     \leanok
     \uses{thm:protocols_light_cone_block, def:circuits_ring_geometry, def:sites_ring_ball,
         def:sites_block}

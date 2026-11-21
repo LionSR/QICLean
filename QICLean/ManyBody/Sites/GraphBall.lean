@@ -54,6 +54,7 @@ in the plane domain graph; the distance to a region is renamed `setEdist`.
 * `ManyBody.graphNeighborhood` — the closed neighbourhood of a region.
 * `ManyBody.setEdist` — the extended graph distance from a site to a region.
 * `ManyBody.graphPseudoEMetricSpace` — the extended graph distance as an extended pseudometric.
+* `ManyBody.IsGraphSeparated` — two regions at graph distance larger than a given radius.
 
 ## Main results
 
@@ -64,7 +65,11 @@ in the plane domain graph; the distance to a region is renamed `setEdist`.
   balls of smaller radius.
 * `ManyBody.mem_graphNeighborhood`, `ManyBody.mem_graphNeighborhood_iff_setEdist_le` —
   membership in a neighbourhood.
-* `ManyBody.graphNeighborhood_graphNeighborhood_subset` — neighbourhoods compose by adding radii.
+* `ManyBody.graphNeighborhood_graphNeighborhood_subset`, `ManyBody.graphNeighborhood_succ` —
+  neighbourhoods compose by adding radii, and the neighbourhood of radius `l + 1` is the
+  neighbourhood of radius `1` of the neighbourhood of radius `l`.
+* `ManyBody.IsGraphSeparated.disjoint_graphNeighborhood` — regions separated by `2l` have
+  disjoint neighbourhoods of radius `l`.
 * `ManyBody.reset_graphNeighborhood_disjoint_cores` — neighbourhoods of crossing supports avoid
   interior cores.
 -/
@@ -290,6 +295,55 @@ theorem graphBall_subset_graphNeighborhood_add (hx : x ∈ graphNeighborhood G S
 theorem graphNeighborhood_graphNeighborhood_subset :
     graphNeighborhood G (graphNeighborhood G S l) m ⊆ graphNeighborhood G S (l + m) :=
   Finset.biUnion_subset.mpr fun _ hx ↦ graphBall_subset_graphNeighborhood_add hx m
+
+/-- **Neighbourhoods grow one step at a time**: `N_{l + 1}(S) = N_1(N_l(S))`. -/
+theorem graphNeighborhood_succ :
+    graphNeighborhood G S (l + 1) = graphNeighborhood G (graphNeighborhood G S l) 1 := by
+  refine subset_antisymm (fun y hy ↦ ?_) graphNeighborhood_graphNeighborhood_subset
+  obtain ⟨x, hx, p, hp⟩ := mem_graphNeighborhood_iff_exists_walk.mp hy
+  cases h : p.reverse with
+  | nil =>
+    exact subset_graphNeighborhood (subset_graphNeighborhood hx)
+  | @cons _ z _ hyz q =>
+    have hq : q.length ≤ l := by
+      have := congrArg SimpleGraph.Walk.length h
+      rw [SimpleGraph.Walk.length_reverse, SimpleGraph.Walk.length_cons] at this
+      omega
+    refine mem_graphNeighborhood_iff_exists_walk.mpr ⟨z, ?_, .cons hyz.symm .nil, by simp⟩
+    exact mem_graphNeighborhood_iff_exists_walk.mpr ⟨x, hx, q.reverse, by simpa using hq⟩
+
+/-! ### Separated regions -/
+
+variable (G) in
+/-- Two regions are separated by `s` in the graph `G` when every site of the first is at graph
+distance larger than `s` from every site of the second. -/
+def IsGraphSeparated (S T : Finset V) (s : ℕ) : Prop :=
+  ∀ x ∈ S, ∀ y ∈ T, (s : ℕ∞) < G.edist x y
+
+omit [Fintype V] [DecidableEq V] in
+/-- Separation is symmetric. -/
+theorem IsGraphSeparated.symm {s : ℕ} (h : IsGraphSeparated G S T s) :
+    IsGraphSeparated G T S s :=
+  fun y hy x hx ↦ G.edist_comm ▸ h x hx y hy
+
+/-- A site of `T` lies outside the neighbourhood of radius `s` of a region separated from `T`
+by `s`. -/
+theorem IsGraphSeparated.notMem_graphNeighborhood {s : ℕ} (h : IsGraphSeparated G S T s)
+    (hy : y ∈ T) : y ∉ graphNeighborhood G S s := fun hmem ↦ by
+  obtain ⟨x, hx, hxy⟩ := mem_graphNeighborhood.mp hmem
+  exact (h x hx y hy).not_ge hxy
+
+/-- Regions separated by `2l` have disjoint neighbourhoods of radius `l`. -/
+theorem IsGraphSeparated.disjoint_graphNeighborhood (h : IsGraphSeparated G S T (2 * l)) :
+    Disjoint (graphNeighborhood G S l) (graphNeighborhood G T l) := by
+  rw [Finset.disjoint_left]
+  intro z hzS hzT
+  obtain ⟨x, hx, hxz⟩ := mem_graphNeighborhood.mp hzS
+  obtain ⟨y, hy, hyz⟩ := mem_graphNeighborhood.mp hzT
+  refine (h x hx y hy).not_ge ?_
+  calc G.edist x y ≤ G.edist x z + G.edist z y := G.edist_triangle
+    _ ≤ l + l := add_le_add hxz (by rwa [G.edist_comm])
+    _ = ((2 * l : ℕ) : ℕ∞) := by push_cast; ring
 
 /-- A neighbourhood has at most `|S| K` sites when each ball of its radius about a site of `S`
 has at most `K` sites. -/

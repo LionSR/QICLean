@@ -10,14 +10,14 @@ import QICLean.Circuit.Model.Approximate
 # Protocols on the ring
 
 On the ring of `N` sites, with cells `{k, k + 1}` of cost `1`, the `T`-fold neighbourhood of a
-region is its ring ball of radius `T`. The light cone of a protocol of depth `T` is therefore the
-ring ball of radius `T`: its trace-pairing adjoint maps an operator on a region `R` to an
-operator on the ring ball of radius `T` about `R`, and is multiplicative on operators on regions
-whose balls of radius `T` are disjoint. A state converted in depth `T` from a product state has
-no connected correlations between regions at ring distance larger than `2T`, and a state
-converted with trace-norm error `ε` has connected correlations of order `ε` there. A protocol on the
-ring of `M` blocks of `k` consecutive sites, read on the `M * k` sites, has light cone the ring
-ball of radius `k T`.
+region is its neighbourhood of radius `T` in the cycle graph. The light cone of a protocol of
+depth `T` is therefore that neighbourhood: its trace-pairing adjoint maps an operator on a
+region `R` to an operator on the neighbourhood of radius `T` of `R`, and is multiplicative on
+operators on regions whose neighbourhoods of radius `T` are disjoint. A state converted in depth
+`T` from a product state has no connected correlations between regions at distance larger than
+`2T` in the cycle graph, and a state converted with trace-norm error `ε` has connected
+correlations of order `ε` there. A protocol on the ring of `M` blocks of `k` consecutive sites,
+read on the `M * k` sites, has light cone the neighbourhood of radius `k T`.
 
 The local-channel model, with ancillas and discarding but without measurements, is the one of
 `docs/paper-gaps/psc21_local_channel_phase_scope.tex`.
@@ -31,15 +31,15 @@ dual is the trace-pairing adjoint `traceAdjointMap`.
 
 ## Main results
 
-* `QuantumCircuit.IsProtocol.traceAdjointMap_mem_supportedOperators_ringBall`,
-  `QuantumCircuit.IsProtocol.traceAdjointMap_mul_of_disjoint_ringBall` — the light cone of a
-  protocol on the ring.
-* `QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isRingSeparated` — vanishing connected
+* `QuantumCircuit.IsProtocol.traceAdjointMap_mem_supportedOperators_graphNeighborhood`,
+  `QuantumCircuit.IsProtocol.traceAdjointMap_mul_of_disjoint_graphNeighborhood` — the light
+  cone of a protocol on the ring.
+* `QuantumCircuit.IsConversion.trace_mul_mul_eq_of_isGraphSeparated` — vanishing connected
   correlations beyond ring distance `2T`.
-* `QuantumCircuit.IsApproxConversion.norm_trace_mul_mul_sub_le_of_isRingSeparated` — connected
+* `QuantumCircuit.IsApproxConversion.norm_trace_mul_mul_sub_le_of_isGraphSeparated` — connected
   correlations beyond ring distance `2T` of order `ε` after a conversion with error `ε`.
-* `QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_ringBall` — the
-  light cone of a protocol on the blocks of the ring, read on the sites.
+* `QuantumCircuit.IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_graphNeighborhood`
+  — the light cone of a protocol on the blocks of the ring, read on the sites.
 -/
 
 open Matrix ManyBody
@@ -52,24 +52,27 @@ variable {N : ℕ} [NeZero N] {X Z : Fin N → Type} [∀ s, Fintype (X s)] [∀
   {Φ : Matrix (Config X) (Config X) ℂ →ₗ[ℂ] Matrix (Config Z) (Config Z) ℂ}
 
 /-- **Light cone of a protocol on the ring.** The trace-pairing adjoint of a protocol of depth
-`T` on the ring maps an operator on `R` to an operator on the ring ball of radius `T` about `R`.
+`T` on the ring maps an operator on `R` to an operator on the neighbourhood of radius `T` of `R`
+in the cycle graph.
 
 Source: arXiv:2307.01696, Supplemental Material, proof of Theorem 1 (the light cone of a
 depth-`T` circuit), here with channels, ancillas and discarding. -/
-theorem IsProtocol.traceAdjointMap_mem_supportedOperators_ringBall
+theorem IsProtocol.traceAdjointMap_mem_supportedOperators_graphNeighborhood
     (h : IsProtocol (Geometry.ring N) T Φ) {R : Finset (Fin N)}
     {A : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R) :
-    traceAdjointMap Φ A ∈ supportedOperators X (ringBall R T) := by
+    traceAdjointMap Φ A ∈
+      supportedOperators X (graphNeighborhood (SimpleGraph.cycleGraph N) R T) := by
   simpa only [Geometry.iterate_neighbourhood_ring] using
     h.traceAdjointMap_mem_supportedOperators Geometry.ring_cost_pos hA
 
 /-- The trace-pairing adjoint of a protocol of depth `T` on the ring is multiplicative on
-operators on regions whose ring balls of radius `T` are disjoint.
+operators on regions whose neighbourhoods of radius `T` in the cycle graph are disjoint.
 
 Source: arXiv:2307.01696, Supplemental Material, proof of Theorem 1. -/
-theorem IsProtocol.traceAdjointMap_mul_of_disjoint_ringBall
+theorem IsProtocol.traceAdjointMap_mul_of_disjoint_graphNeighborhood
     (h : IsProtocol (Geometry.ring N) T Φ) {R R' : Finset (Fin N)}
-    (hRR' : Disjoint (ringBall R T) (ringBall R' T)) {A B : Matrix (Config Z) (Config Z) ℂ}
+    (hRR' : Disjoint (graphNeighborhood (SimpleGraph.cycleGraph N) R T)
+      (graphNeighborhood (SimpleGraph.cycleGraph N) R' T)) {A B : Matrix (Config Z) (Config Z) ℂ}
     (hA : A ∈ supportedOperators Z R) (hB : B ∈ supportedOperators Z R') :
     traceAdjointMap Φ (A * B) = traceAdjointMap Φ A * traceAdjointMap Φ B :=
   h.traceAdjointMap_mul Geometry.ring_cost_pos
@@ -82,15 +85,16 @@ regions separated by `2T`, `tr(σ AB) = tr(σ A) tr(σ B)`.
 Source: arXiv:2103.13367, main text, Proposition `propQCA2`, eq. `eq:necessary_condition`, stated
 there for pure states prepared from `|0⟩^{⊗M}` by unitary circuits of depth `ℓ`; here for product
 inputs and local channels with ancillas and discarding, without measurements. -/
-theorem IsConversion.trace_mul_mul_eq_of_isRingSeparated
+theorem IsConversion.trace_mul_mul_eq_of_isGraphSeparated
     {σ₀ : (s : Fin N) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
     {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsConversion (Geometry.ring N) T (prodOp σ₀) σ)
-    {R R' : Finset (Fin N)} (hRR' : IsRingSeparated R R' (2 * T))
+    {R R' : Finset (Fin N)} (hRR' : IsGraphSeparated (SimpleGraph.cycleGraph N) R R' (2 * T))
     {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
     (hB : B ∈ supportedOperators Z R') :
     (σ * (A * B)).trace = (σ * A).trace * (σ * B).trace :=
   h.trace_mul_mul_eq Geometry.ring_cost_pos hσ₀
-    (by simpa only [Geometry.iterate_neighbourhood_ring] using hRR'.disjoint_ringBall) hA hB
+    (by simpa only [Geometry.iterate_neighbourhood_ring] using
+      hRR'.disjoint_graphNeighborhood) hA hB
 
 /-- **Approximately vanishing connected correlations beyond distance `2T`.** If `σ` is
 converted in depth `T` on the ring with trace-norm error `ε` from a product `⊗ₛ σ₀ s` of
@@ -100,17 +104,18 @@ unit-trace factors, then for operators `A`, `B` on regions separated by `2T`,
 Source: arXiv:2103.13367, main text, Proposition `propQCA2`, eq. `eq:necessary_condition`, with
 the trace-norm error of the paragraph "Phases of matter"; here for product inputs and local
 channels with ancillas and discarding, without measurements. -/
-theorem IsApproxConversion.norm_trace_mul_mul_sub_le_of_isRingSeparated {ε : ℝ}
+theorem IsApproxConversion.norm_trace_mul_mul_sub_le_of_isGraphSeparated {ε : ℝ}
     {σ₀ : (s : Fin N) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
     {σ : Matrix (Config Z) (Config Z) ℂ}
     (h : IsApproxConversion (Geometry.ring N) T ε (prodOp σ₀) σ)
-    {R R' : Finset (Fin N)} (hRR' : IsRingSeparated R R' (2 * T))
+    {R R' : Finset (Fin N)} (hRR' : IsGraphSeparated (SimpleGraph.cycleGraph N) R R' (2 * T))
     {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
     (hB : B ∈ supportedOperators Z R') :
     ‖(σ * (A * B)).trace - (σ * A).trace * (σ * B).trace‖ ≤
       ε * ‖A‖ * ‖B‖ * (1 + 2 * rectangularTraceNorm (prodOp σ₀) + ε) :=
   h.norm_trace_mul_mul_sub_le Geometry.ring_cost_pos hσ₀
-    (by simpa only [Geometry.iterate_neighbourhood_ring] using hRR'.disjoint_ringBall) hA hB
+    (by simpa only [Geometry.iterate_neighbourhood_ring] using
+      hRR'.disjoint_graphNeighborhood) hA hB
 
 /-- **Light cone of a protocol on the blocks of the ring.** Group the ring of `M * k` sites into
 the ring of `M` blocks of `k` consecutive sites. The trace-pairing adjoint of a protocol of depth
@@ -120,7 +125,8 @@ on the sites within ring distance `k * T` of the sites of `R`.
 Source: arXiv:2103.13367v3, `main.tex`, lines 287–289 (locality on the blocked chain, read on the
 unblocked chain), with the light cone of arXiv:2307.01696, Supplemental Material, proof of
 Theorem 1. -/
-theorem IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_ringBall {k : ℕ} [NeZero k]
+theorem IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_graphNeighborhood {k : ℕ}
+    [NeZero k]
     {Y : Fin (N * k) → Type} [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)]
     {Ψ : Matrix (Config (blockSystem Fin.divNat Y)) (Config (blockSystem Fin.divNat Y)) ℂ →ₗ[ℂ]
       Matrix (Config Z) (Config Z) ℂ}
@@ -128,9 +134,10 @@ theorem IsProtocol.traceAdjointMap_comp_block_mem_supportedOperators_ringBall {k
     {A : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R) :
     traceAdjointMap
         (Ψ ∘ₗ (reindexAlgEquiv ℂ ℂ (blockConfigEquiv Fin.divNat Y).symm).toLinearMap) A ∈
-      supportedOperators Y (ringBall (blockPreimage (Fin.divNat (n := k)) R) (k * T)) := by
+      supportedOperators Y (graphNeighborhood (SimpleGraph.cycleGraph (N * k))
+        (blockPreimage (Fin.divNat (n := k)) R) (k * T)) := by
   have := h.traceAdjointMap_comp_block_mem_supportedOperators Fin.divNat Geometry.ring_cost_pos hA
   rw [Geometry.iterate_neighbourhood_ring] at this
-  exact supportedOperators_mono (preimage_ringBall_subset R T) this
+  exact supportedOperators_mono (preimage_graphNeighborhood_cycleGraph_subset R T) this
 
 end QuantumCircuit
