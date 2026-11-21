@@ -1,0 +1,405 @@
+\section{Operators on the fibers of a finite product}
+\label{sec:perturbations_fibers}
+
+All spaces in this section are finite coordinate spaces $\C^I$ with their
+Euclidean inner products, and every coordinate set may be empty unless stated
+otherwise.
+
+\begin{definition}[Operators applied on fibers]
+    \label{def:euclidean_fiberwise_operator}
+    \lean{ContinuousLinearMap.rightFiber, ContinuousLinearMap.rightFiber_apply,
+        ContinuousLinearMap.rightFiberwiseMap,
+        ContinuousLinearMap.rightFiberwiseMap_apply_apply,
+        ContinuousLinearMap.rightFiber_rightFiberwiseMap,
+        ContinuousLinearMap.singleRightFiber,
+        ContinuousLinearMap.rightFiber_singleRightFiber}
+    \leanok
+    Let $I,J,S$ be finite sets. For $x\in\C^{I\times S}$ and $s\in S$, the
+    fiber $x_s\in\C^I$ is $x_s(i)=x(i,s)$. For a linear operator
+    $G:\C^I\to\C^J$, the operator $G\otimes\Id_S:\C^{I\times S}\to\C^{J\times S}$
+    applies $G$ to every fiber: $\bigl((G\otimes\Id_S)x\bigr)_s=Gx_s$. For
+    $u\in\C^I$ and $s\in S$, the vector $\iota_su\in\C^{I\times S}$ has fiber
+    $u$ at $s$ and zero fibers elsewhere.
+\end{definition}
+
+\begin{lemma}[Algebra and norms of fiberwise operators]
+    \label{thm:euclidean_fiberwise_operator}
+    \lean{ContinuousLinearMap.rightFiberwiseMap_add,
+        ContinuousLinearMap.rightFiberwiseMap_sub,
+        ContinuousLinearMap.rightFiberwiseMap_zero,
+        ContinuousLinearMap.rightFiberwiseMap_smul,
+        ContinuousLinearMap.rightFiberwiseMap_sum,
+        ContinuousLinearMap.rightFiberwiseMap_comp,
+        ContinuousLinearMap.rightFiberwiseMap_id,
+        ContinuousLinearMap.rightFiberwiseMap_adjoint,
+        ContinuousLinearMap.inner_eq_sum_inner_rightFiber,
+        ContinuousLinearMap.norm_sq_eq_sum_norm_sq_rightFiber,
+        ContinuousLinearMap.inner_rightFiberwiseMap,
+        ContinuousLinearMap.norm_singleRightFiber,
+        ContinuousLinearMap.rightFiberwiseMap_singleRightFiber,
+        ContinuousLinearMap.norm_rightFiberwiseMap_le,
+        ContinuousLinearMap.norm_rightFiberwiseMap,
+        ContinuousLinearMap.norm_conj_linearIsometryEquiv}
+    \leanok
+    \uses{def:euclidean_fiberwise_operator}
+    The map $G\mapsto G\otimes\Id_S$ is linear, preserves composition,
+    identities and adjoints, and
+    \begin{align}
+        \langle x,y\rangle   & =\sum_{s\in S}\langle x_s,y_s\rangle, &
+        \lVert x\rVert^2     & =\sum_{s\in S}\lVert x_s\rVert^2,     &
+        \lVert\iota_su\rVert & =\lVert u\rVert.
+        \notag
+    \end{align}
+    Moreover $(G\otimes\Id_S)\iota_su=\iota_sGu$, and
+    \begin{align}
+        \lVert G\otimes\Id_S\rVert & \leq\lVert G\rVert,
+        \label{eq:spectator_fiberwise_norm_le}
+    \end{align}
+    with equality whenever $S$ is nonempty. Conjugation by a surjective linear
+    isometry preserves the operator norm.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Linearity, composition and identities are checked on each fiber. Splitting
+    the coordinate sums over $I\times S$ by $s$ gives the inner-product and
+    norm identities; the adjoint formula follows from them by applying the
+    adjoint identity of $G$ in each fiber. Then
+    \begin{align}
+        \lVert(G\otimes\Id_S)x\rVert^2
+         & =\sum_{s\in S}\lVert Gx_s\rVert^2
+        \leq\lVert G\rVert^2\sum_{s\in S}\lVert x_s\rVert^2,
+    \end{align}
+    and for nonempty $S$ the vectors $\iota_su$ give the reverse inequality.
+\end{proof}
+
+\begin{lemma}[Operator order after adjoining spectator coordinates]
+    \label{thm:ph_spectator_operator_order}
+    \lean{ContinuousLinearMap.isSymmetric_rightFiberwiseMap,
+        ContinuousLinearMap.isSymmetricProjection_rightFiberwiseMap,
+        ContinuousLinearMap.isPositive_rightFiberwiseMap,
+        ContinuousLinearMap.rightFiberwiseMap_mono,
+        LinearIsometryEquiv.conj_le_conj_iff}
+    \leanok
+    \uses{thm:euclidean_fiberwise_operator}
+    If $G$ is self-adjoint, an orthogonal projection, or positive, so is
+    $G\otimes\Id_S$, and $G\le H$ implies $G\otimes\Id_S\le H\otimes\Id_S$. If
+    $V$ is a unitary identification of two spaces, then
+    $VGV^{-1}\le VHV^{-1}$ if and only if $G\le H$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    By the inner-product identity of
+    Lemma~\ref{thm:euclidean_fiberwise_operator},
+    $\langle(G\otimes\Id_S)x,y\rangle=\sum_s\langle Gx_s,y_s\rangle$, so
+    symmetry and positivity hold term by term, and idempotence holds on each
+    fiber. Applying positivity to $H-G$ gives the order assertion. Unitary
+    conjugation preserves and reflects positivity, hence the order.
+\end{proof}
+
+\begin{lemma}[Kernels and ranges of fiberwise operators]
+    \label{lem:right-spectator-kernel-projection}
+    \lean{ContinuousLinearMap.mem_ker_rightFiberwiseMap_iff,
+        ContinuousLinearMap.ker_starProjection_rightFiberwiseMap,
+        ContinuousLinearMap.mem_orthogonal_ker_rightFiberwiseMap_iff,
+        ContinuousLinearMap.mem_range_rightFiberwiseMap_iff,
+        ContinuousLinearMap.mem_orthogonal_range_rightFiberwiseMap_iff,
+        ContinuousLinearMap.rightFiberwiseMap_range_starProjection}
+    \leanok
+    \uses{thm:ph_spectator_operator_order}
+    A vector $x$ lies in $\ker(G\otimes\Id_S)$, in its orthogonal complement,
+    in $\operatorname{ran}(G\otimes\Id_S)$, or in its orthogonal complement,
+    exactly when every fiber $x_s$ lies in the corresponding subspace for $G$.
+    Moreover
+    \begin{align}
+        P_{\ker(G\otimes\Id_S)}               & =P_{\ker G}\otimes\Id_S,              &
+        P_{\operatorname{ran}(G\otimes\Id_S)} & =P_{\operatorname{ran}G}\otimes\Id_S.
+        \notag
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    The kernel characterization follows by evaluating each coordinate, and
+    the range characterization by choosing a preimage in each fiber; the
+    adjoint acts fiberwise, which gives the orthogonal-range criterion. The
+    operator $P\otimes\Id_S$ is an orthogonal projection by
+    Lemma~\ref{thm:ph_spectator_operator_order} whose range consists of the
+    vectors with fibers in the range of $P$; orthogonal projections with the
+    same range are equal. The orthogonal complement of the kernel is the
+    kernel of $P_{\ker G}^\perp\otimes\Id_S$.
+\end{proof}
+
+\begin{lemma}[Joint ranges of fiberwise operators]
+    \label{thm:euclidean_fiberwise_projection}
+    \lean{ContinuousLinearMap.iSup_range_rightFiberwiseMap_eq,
+        ContinuousLinearMap.rightFiberwiseMap_iSup_range_starProjection,
+        ContinuousLinearMap.norm_sum_rightFiberwiseMap_range_starProjection_sub_iSup_le}
+    \leanok
+    \uses{lem:right-spectator-kernel-projection, thm:euclidean_fiberwise_operator}
+    For a family $T_j\colon\C^{I_j}\to\C^J$ with varying finite domains and a
+    common finite target, the projection onto the joint span satisfies
+    \begin{align}
+        P_{\sum_j\operatorname{ran}(T_j\otimes\Id_S)}
+         & =P_{\sum_j\operatorname{ran}T_j}\otimes\Id_S.
+    \end{align}
+    The index set may be infinite, with each sum read as the linear span. For a
+    finite family,
+    \begin{align}
+        \left\|\sum_jP_{\operatorname{ran}(T_j\otimes\Id_S)}
+        -P_{\sum_j\operatorname{ran}(T_j\otimes\Id_S)}\right\|
+        \leq
+        \left\|\sum_jP_{\operatorname{ran}T_j}
+        -P_{\sum_j\operatorname{ran}T_j}\right\|.
+    \end{align}
+    These identities give the spectator projection conjugation used in
+    \cite[Lemma~commutation(i)]{Nachtergaele1996Spectral}.
+\end{lemma}
+\begin{proof}\leanok
+    For a joint span, orthogonality to every summand and membership of every
+    fiber commute as universal quantifiers, and taking orthogonal complements
+    again proves the joint-range identity. The estimate follows from linearity
+    of $G\mapsto G\otimes\Id_S$ and the norm
+    bound~(\ref{eq:spectator_fiberwise_norm_le}).
+\end{proof}
+
+\begin{lemma}[Gaps of fiberwise operators]
+    \label{thm:perturbations_fiberwise_gap}
+    \lean{ContinuousLinearMap.singleRightFiber_mem_orthogonal_ker_rightFiberwiseMap_iff,
+        ContinuousLinearMap.norm_gap_rightFiberwiseMap,
+        ContinuousLinearMap.norm_gap_rightFiberwiseMap_iff,
+        ContinuousLinearMap.norm_gap_rightFiberwiseMap_iff_rightFiberwiseMap}
+    \leanok
+    \uses{lem:right-spectator-kernel-projection, thm:euclidean_fiberwise_operator}
+    Let $G:\C^I\to\C^J$ and $\delta\ge0$. If $\delta\lVert u\rVert\le\lVert Gu\rVert$
+    for every $u\perp\ker G$, then
+    $\delta\lVert x\rVert\le\lVert(G\otimes\Id_S)x\rVert$ for every
+    $x\perp\ker(G\otimes\Id_S)$. For nonempty $S$ the converse holds as well, so
+    for nonempty finite sets $S$ and $T$ the operators $G\otimes\Id_S$ and
+    $G\otimes\Id_T$ have the same such bounds. No positivity or symmetry of $G$
+    is assumed.
+\end{lemma}
+\begin{proof}
+    \leanok
+    For $x\perp\ker(G\otimes\Id_S)$ every fiber satisfies $x_s\perp\ker G$, and
+    summing $\delta^2\lVert x_s\rVert^2\le\lVert Gx_s\rVert^2$ over $s$ gives the
+    first claim. Conversely, $\iota_su\perp\ker(G\otimes\Id_S)$ exactly when
+    $u\perp\ker G$, with $\lVert\iota_su\rVert=\lVert u\rVert$ and
+    $\lVert(G\otimes\Id_S)\iota_su\rVert=\lVert Gu\rVert$.
+\end{proof}
+
+\begin{lemma}[Quadratic-form bound on fibers]
+    \label{lem:right_spectator_quadratic_form_gap}
+    \lean{ContinuousLinearMap.quadraticForm_sq_ge_rightFiberwiseMap,
+        LinearMap.IsPositive.quadraticForm_sq_ge_rightFiberwiseMap_of_norm_gap}
+    \leanok
+    \uses{lem:gap_norm_to_quadratic_form, thm:euclidean_fiberwise_operator}
+    Let $G$ act on $\C^I$. If $G^2\geq\gamma G$ as a quadratic form, the same
+    inequality holds for $G\otimes\Id_S$. In particular, positivity and a norm
+    gap $\gamma\ge0$ for $G$ imply this inequality for $G\otimes\Id_S$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Both quadratic forms split into finite sums over $s$, so the inequality
+    for $G$ gives
+    \begin{align}
+        \gamma\sum_s\operatorname{Re}\langle Gx_s,x_s\rangle
+         & \leq \sum_s\operatorname{Re}\langle Gx_s,Gx_s\rangle,
+    \end{align}
+    and Lemma~\ref{lem:gap_norm_to_quadratic_form} gives the last statement.
+\end{proof}
+
+\begin{definition}[Finite dependent direct sums]
+    \label{def:mpo_sigma_fiber_operator}
+    \lean{ContinuousLinearMap.sigmaFiber, ContinuousLinearMap.sigmaFiberwiseMap,
+        ContinuousLinearMap.sigmaFiberwiseMap_apply_apply,
+        ContinuousLinearMap.sigmaFiber_sigmaFiberwiseMap,
+        ContinuousLinearMap.singleSigmaFiber,
+        ContinuousLinearMap.sigmaFiber_singleSigmaFiber}
+    \leanok
+    Let $Q$ be finite, let $J_q$ be finite for each $q\in Q$, and set
+    $E_q=\C^{J_q}$ and $E=\C^{\coprod_{q\in Q}J_q}$. For $v\in E$, its
+    restriction $v_q\in E_q$ is $v_q(i)=v(q,i)$. A family of linear maps
+    $F_q:E_q\to E_q$ defines $F_\Sigma:E\to E$ by $(F_\Sigma v)_q=F_qv_q$.
+    For $q\in Q$ and $u\in E_q$, the vector $\iota_qu\in E$ has restriction
+    $u$ at $q$ and zero at every other label.
+\end{definition}
+
+\begin{lemma}[Inner products, norms and kernels in a finite direct sum]
+    \label{thm:mpo_sigma_fiber_inner_norm}
+    \lean{ContinuousLinearMap.inner_eq_sum_inner_sigmaFiber,
+        ContinuousLinearMap.norm_sq_eq_sum_norm_sq_sigmaFiber,
+        ContinuousLinearMap.norm_singleSigmaFiber,
+        ContinuousLinearMap.inner_singleSigmaFiber,
+        ContinuousLinearMap.sigmaFiberwiseMap_singleSigmaFiber,
+        ContinuousLinearMap.mem_ker_sigmaFiberwiseMap_iff,
+        ContinuousLinearMap.mem_orthogonal_ker_sigmaFiberwiseMap_iff}
+    \leanok
+    \uses{def:mpo_sigma_fiber_operator}
+    For $v,w\in E$, $q\in Q$ and $u\in E_q$,
+    \begin{align}
+        \langle v,w\rangle       & =\sum_{q\in Q}\langle v_q,w_q\rangle,        &
+        \|v\|^2                  & =\sum_{q\in Q}\|v_q\|^2,              \notag   \\
+        \|\iota_qu\|             & =\|u\|,                                      &
+        \langle\iota_qu,v\rangle & =\langle u,v_q\rangle,             \notag
+    \end{align}
+    and $F_\Sigma\iota_qu=\iota_qF_qu$. Moreover $v\in\ker F_\Sigma$ if and only
+    if $v_q\in\ker F_q$ for every $q$, and $v\perp\ker F_\Sigma$ if and only if
+    $v_q\perp\ker F_q$ for every $q$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Group the coordinates with the same label. If $v\perp\ker F_\Sigma$, testing
+    against $\iota_qu$ for $u\in\ker F_q$ gives $\langle u,v_q\rangle=0$.
+    Conversely, for $w\in\ker F_\Sigma$ each summand of
+    $\langle w,v\rangle=\sum_q\langle w_q,v_q\rangle$ vanishes.
+\end{proof}
+
+\begin{lemma}[Norm gaps in a finite direct sum]
+    \label{thm:mpo_sigma_fiber_gap_iff}
+    \lean{ContinuousLinearMap.norm_gap_sigmaFiberwiseMap,
+        ContinuousLinearMap.norm_gap_sigmaFiberwiseMap_iff}
+    \leanok
+    \uses{thm:mpo_sigma_fiber_inner_norm}
+    Let $\delta\geq0$. Then $\delta\|v\|\leq\|F_\Sigma v\|$ for every
+    $v\perp\ker F_\Sigma$ if and only if $\delta\|u\|\leq\|F_qu\|$ for every
+    $q\in Q$ and $u\perp\ker F_q$. No nonemptiness, positivity, or symmetry
+    assumption is imposed.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Summing the inequalities $\delta^2\|v_q\|^2\leq\|F_qv_q\|^2$ gives one
+    implication; applying the bound to $\iota_qu$ gives the other.
+\end{proof}
+
+\begin{definition}[Operators with dependent spectator coordinates]
+    \label{def:mpo_dependent_spectator_operator}
+    \lean{ContinuousLinearMap.dependentRightFiber, ContinuousLinearMap.dependentRightFiberwiseMap,
+        ContinuousLinearMap.dependentRightFiberwiseMap_apply_apply,
+        ContinuousLinearMap.dependentRightFiber_dependentRightFiberwiseMap}
+    \leanok
+    \uses{def:mpo_sigma_fiber_operator, def:euclidean_fiberwise_operator}
+    Let $Q$ be a finite set, and let $I_q$ and $S_q$ be finite sets for each
+    $q\in Q$. For $v\in\C^{\coprod_q(I_q\times S_q)}$, $q\in Q$, and $s\in S_q$,
+    define $v_{q,s}\in\C^{I_q}$ by $v_{q,s}(i)=v(q,i,s)$. Given linear
+    operators $G_q$ on $\C^{I_q}$, the operator $H_S$ is the direct sum of the
+    $G_q\otimes\Id_{S_q}$:
+    \begin{align}
+        (H_Sv)_{q,s} & =G_qv_{q,s}.
+        \label{eq:mpo_dependent_spectator_action}
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Kernels and norms with dependent spectators]
+    \label{thm:mpo_dependent_spectator_kernel}
+    \lean{ContinuousLinearMap.mem_ker_dependentRightFiberwiseMap_iff,
+        ContinuousLinearMap.mem_orthogonal_ker_dependentRightFiberwiseMap_iff,
+        ContinuousLinearMap.norm_sq_eq_sum_norm_sq_dependentRightFiber}
+    \leanok
+    \uses{def:mpo_dependent_spectator_operator, thm:mpo_sigma_fiber_inner_norm,
+        lem:right-spectator-kernel-projection}
+    A vector $v$ lies in $\ker H_S$, respectively in its orthogonal complement,
+    if and only if $v_{q,s}$ lies in $\ker G_q$, respectively in its orthogonal
+    complement, for every $q\in Q$ and $s\in S_q$. Moreover
+    $\|v\|^2=\sum_{q\in Q}\sum_{s\in S_q}\|v_{q,s}\|^2$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Combine the corresponding statements for finite direct sums and for
+    operators applied on fibers.
+\end{proof}
+
+\begin{lemma}[Common norm gaps with dependent spectators]
+    \label{thm:mpo_dependent_spectator_gap_iff}
+    \lean{ContinuousLinearMap.norm_gap_dependentRightFiberwiseMap,
+        ContinuousLinearMap.norm_gap_dependentRightFiberwiseMap_iff,
+        ContinuousLinearMap.norm_gap_dependentRightFiberwiseMap_iff_dependentRightFiberwiseMap}
+    \leanok
+    \uses{thm:mpo_sigma_fiber_gap_iff, thm:perturbations_fiberwise_gap}
+    Let $\delta\geq0$. If $\delta\|u\|\leq\|G_qu\|$ for every $q\in Q$ and
+    $u\perp\ker G_q$, then $\delta\|v\|\leq\|H_Sv\|$ for every $v\perp\ker H_S$.
+    If every $S_q$ is nonempty the converse holds, so for nonempty $S_q$ and
+    $T_q$ the operators $H_S$ and $H_T$ built from the same family $(G_q)$ have
+    the same such bounds, whatever the cardinalities of $S_q$ and $T_q$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Apply Lemma~\ref{thm:mpo_sigma_fiber_gap_iff} to the family
+    $G_q\otimes\Id_{S_q}$ and Lemma~\ref{thm:perturbations_fiberwise_gap} to
+    each of its members.
+\end{proof}
+
+\begin{lemma}[Dependent orthogonal projections]
+    \label{thm:mpo_dependent_orthogonal_projections}
+    \lean{ContinuousLinearMap.isSymmetricProjection_sigmaFiberwiseMap,
+        ContinuousLinearMap.isSymmetricProjection_dependentRightFiberwiseMap,
+        LinearIsometryEquiv.conj_eq_dependentRightFiberwiseMap_of_ker_iff}
+    \leanok
+    \uses{thm:mpo_dependent_spectator_kernel}
+    Let $P_q$ be orthogonal projections on $\C^{I_q}$. Then
+    $\bigoplus_q(P_q\otimes\Id_{S_q})$ is an orthogonal projection.
+    If $P$ is an orthogonal projection and
+    $U:\mathcal H\to\C^{\coprod_q(I_q\times S_q)}$ is unitary with
+    $v\in\ker P$ exactly when $(Uv)_{q,s}\in\ker P_q$ for every $q,s$,
+    then $UPU^{-1}=\bigoplus_q(P_q\otimes\Id_{S_q})$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The inner product is the sum of the fiber inner products, so symmetry
+    and idempotence hold on each fiber. The two conjugated projections
+    have the same kernel, hence the same range, the orthogonal complement
+    of that kernel. Orthogonal projections with the same range are equal.
+\end{proof}
+
+\begin{definition}[Euclidean extension by zero]
+    \label{def:physical_euclidean_extension_zero}
+    \lean{Function.Embedding.euclideanExtendByZero,
+        Function.Embedding.euclideanExtendByZero_apply_image,
+        Function.Embedding.euclideanExtendByZero_apply_not_mem_range}
+    \leanok
+    For an injection $e:I\hookrightarrow J$ of finite sets, let
+    $E_e:\mathbb C^I\to\mathbb C^J$ extend each coefficient family by zero:
+    \begin{align}
+        (E_e\xi)(j) & =
+        \begin{cases}
+            \xi(i), & j=e(i),       \\
+            0,      & j\notin e(I).
+        \end{cases}
+    \end{align}
+\end{definition}
+
+\begin{lemma}[Extension by zero is an isometry]
+    \label{lem:physical_euclidean_extension_zero_isometry}
+    \lean{Function.Embedding.norm_euclideanExtendByZero}
+    \leanok
+    \uses{def:physical_euclidean_extension_zero}
+    For every injection $e:I\hookrightarrow J$ of finite sets, the map $E_e$
+    is linear and $\lVert E_e\xi\rVert=\lVert\xi\rVert$ for every
+    $\xi\in\mathbb C^I$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Since $(E_e\xi)(j)=0$ for $j\notin e(I)$ and $e$ is injective,
+    \begin{align}
+        \sum_{j\in J}\lvert(E_e\xi)(j)\rvert^2
+         & =\sum_{i\in I}\lvert(E_e\xi)(e(i))\rvert^2
+        =\sum_{i\in I}\lvert\xi(i)\rvert^2.
+    \end{align}
+\end{proof}
+
+\begin{lemma}[Fiberwise operators and extension by zero]
+    \label{lem:physical_spectator_embedding_transport}
+    \lean{ContinuousLinearMap.rightFiberwiseMap_extendByZero}
+    \leanok
+    \uses{def:physical_euclidean_extension_zero, def:euclidean_fiberwise_operator}
+    Let $e:I\hookrightarrow J$ and $g:S\hookrightarrow T$ be injections of
+    finite sets, and let $G$ and $H$ be linear operators on
+    $\mathbb C^I$ and $\mathbb C^J$. Suppose $HE_e=E_eG$. Then
+    \begin{align}
+        (H\otimes\Id_T)E_{e\times g} & =E_{e\times g}(G\otimes\Id_S).
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    The fiber at $g(s)$ of an extended vector is the extension of its fiber at
+    $s$, and the fibers outside $g(S)$ vanish. Apply the intertwining relation
+    to the first fibers and linearity to the zero fibers.
+\end{proof}

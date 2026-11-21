@@ -1,0 +1,127 @@
+\section{Square roots and a Sylvester equation}
+\label{sec:perturbations_square_roots}
+
+\begin{lemma}[Scalar lower bound for the square root]
+    \label{thm:ldp_sqrt_scalar_lower_bound}
+    \lean{CFC.algebraMap_sqrt_le_sqrt}
+    \leanok
+    Let $b$ be an element of a C$^*$-algebra and $c\ge0$ a real number with
+    $b\ge c\,\Id$. Then $\sqrt b\ge\sqrt c\,\Id$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The element $\sqrt c\,\Id$ is positive and its square is $c\,\Id\le b$, so
+    operator monotonicity of the square root gives
+    $\sqrt c\,\Id=\sqrt{c\,\Id}\le\sqrt b$.
+\end{proof}
+
+\begin{lemma}[One-sided bounds for the square root above a scalar floor]
+    \label{lem:ldp_sqrt_floor_bounds}
+    \lean{CFC.sq_sqrt_add_algebraMap, CFC.sqrt_sub_sqrt_le_algebraMap_of_le,
+        CFC.sqrt_sub_sqrt_le_algebraMap_of_le'}
+    \leanok
+    \uses{thm:ldp_sqrt_scalar_lower_bound}
+    Let $a,b$ be positive elements of a C$^*$-algebra, and let $c,s\ge0$ be
+    real numbers with $b\ge c\,\Id$. Write $\varepsilon=\lVert a-b\rVert$.
+    \begin{enumerate}
+        \item If $\varepsilon\le2s\sqrt c+s^2$, then $\sqrt a-\sqrt b\le s$.
+        \item If $s\le\sqrt c$ and $\varepsilon+s^2\le2s\sqrt c$, then
+              $\sqrt b-\sqrt a\le s$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:ldp_sqrt_scalar_lower_bound}
+    For every real $t$,
+    $(\sqrt b+t)^2=b+2t\sqrt b+t^2$. By
+    Lemma~\ref{thm:ldp_sqrt_scalar_lower_bound}, $\sqrt b\ge\sqrt c$, and
+    $-\varepsilon\le a-b\le\varepsilon$. For the first bound,
+    $(\sqrt b+s)^2\ge b+2s\sqrt c+s^2\ge b+\varepsilon\ge a$. For the second,
+    $\sqrt b-s\ge\sqrt c-s\ge0$ and
+    $(\sqrt b-s)^2\le b-2s\sqrt c+s^2\le a+\varepsilon+s^2-2s\sqrt c\le a$.
+    Operator monotonicity of the square root gives $\sqrt a\le\sqrt b+s$ and
+    $\sqrt b-s\le\sqrt a$.
+\end{proof}
+
+\begin{lemma}[Square root near a positive definite element]
+    \label{thm:ldp_sqrt_lipschitz}
+    \lean{CFC.norm_sqrt_sub_sqrt_le_div}
+    \leanok
+    \uses{lem:sqrt_holder, lem:ldp_sqrt_floor_bounds}
+    Let $a,b$ be positive elements of a C$^*$-algebra with $b\ge c\,\Id$ for
+    a real number $c>0$. Then
+    $\lVert\sqrt a-\sqrt b\rVert\le\lVert a-b\rVert/\sqrt c$.
+    For matrices and the Frobenius norm, the corresponding bound with the
+    smallest eigenvalue of $\sqrt b$ in place of $\sqrt c$ is
+    \cite[App.~B3, eqs.~(S27)--(S31)]{Murota2026ExactLogDepth}.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:sqrt_holder, lem:ldp_sqrt_floor_bounds}
+    Write $\varepsilon=\lVert a-b\rVert$. If $\varepsilon>c$, the bound
+    $\lVert\sqrt a-\sqrt b\rVert\le\sqrt\varepsilon$ of
+    Lemma~\ref{lem:sqrt_holder} suffices, since
+    $\sqrt\varepsilon\le\varepsilon/\sqrt c$. Otherwise let
+    $s=\varepsilon/\sqrt c\le\sqrt c$, so that $2s\sqrt c=2\varepsilon$ and
+    $s^2\le\varepsilon$. Both hypotheses of
+    Lemma~\ref{lem:ldp_sqrt_floor_bounds} hold, so
+    $\sqrt b-s\le\sqrt a\le\sqrt b+s$, that is,
+    $\lVert\sqrt a-\sqrt b\rVert\le s$.
+\end{proof}
+
+\begin{lemma}[Lipschitz constant of the square root at an invertible positive element]
+    \label{thm:ldp_sqrt_lipschitz_constant}
+    \lean{IsStrictlyPositive.exists_norm_sqrt_sub_sqrt_le}
+    \leanok
+    \uses{thm:ldp_sqrt_lipschitz}
+    Let $b$ be a positive invertible element of a C$^*$-algebra. There is a
+    real number $K\ge0$ such that
+    $\lVert\sqrt a-\sqrt b\rVert\le K\lVert a-b\rVert$ for every positive
+    element $a$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{thm:ldp_sqrt_lipschitz}
+    If the algebra is zero, take $K=0$. Otherwise the spectrum of $b$ is a
+    compact subset of $(0,\infty)$, so $b\ge c\,\Id$ for some real $c>0$, and
+    Lemma~\ref{thm:ldp_sqrt_lipschitz} gives the bound with
+    $K=1/\sqrt c$.
+\end{proof}
+
+\begin{lemma}[Entries and the operator norm]
+    \label{lem:perturbations_matrix_entries}
+    \lean{Matrix.l2_opNorm_le_sum_norm_entry, Matrix.exists_norm_entry_le_mul_l2_opNorm}
+    \leanok
+    For a complex $m\times n$ matrix $X$ with entries $X_{ij}$ and matrix units
+    $E_{ij}$, the operator norm satisfies
+    $\lVert X\rVert\le\sum_{i,j}\lvert X_{ij}\rvert\,\lVert E_{ij}\rVert$.
+    There is a constant $K\ge0$, depending only on $m$ and $n$, with
+    $\lvert X_{ij}\rvert\le K\lVert X\rVert$ for every $X$ and all $i,j$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Write $X=\sum_{i,j}X_{ij}E_{ij}$ and apply the triangle inequality. Each
+    entry is a continuous linear functional of $X$; take $K$ to be the sum of
+    their norms.
+\end{proof}
+
+\begin{lemma}[A Sylvester equation with positive coefficients]
+    \label{lem:ldp_sylvester_bound}
+    \lean{Matrix.norm_le_of_mul_add_mul_eq_mul}
+    \leanok
+    \uses{lem:perturbations_matrix_entries}
+    Let $P$ and $S$ be positive semidefinite $n\times n$ matrices, let $\lambda>0$ and $R$
+    satisfy $\lambda RR^\dagger\leq P^2$, and let $X=PW_1+W_2S$ satisfy $PX+XS=RZ$. Then
+    $\lVert X\rVert\leq n^2\lambda^{-1/2}\lVert Z\rVert$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    \uses{lem:perturbations_matrix_entries}
+    In orthonormal eigenbases $P=\sum_ap_af_af_a^\dagger$ and $S=\sum_is_ie_ie_i^\dagger$ the
+    equation reads $(p_a+s_i)\braket{f_a}{Xe_i}=\braket{R^\dagger f_a}{Ze_i}$. From
+    $\lambda RR^\dagger\leq P^2$, $\lVert R^\dagger f_a\rVert\leq\lambda^{-1/2}p_a$, so
+    $\lvert\braket{f_a}{Xe_i}\rvert\leq\lambda^{-1/2}\lVert Z\rVert$ whenever
+    $p_a+s_i>0$, since $p_a/(p_a+s_i)\leq1$. When $p_a=s_i=0$ the entry vanishes, because
+    $f_a^\dagger P=0$ and $Se_i=0$. The operator norm is at most the sum of the moduli of
+    the $n^2$ entries, each matrix unit having norm one.
+\end{proof}

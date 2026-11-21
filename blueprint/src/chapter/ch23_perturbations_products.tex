@@ -1,0 +1,226 @@
+\section{Ordered products near an idempotent}
+\label{sec:perturbations_products}
+
+All products below are ordered with increasing index from left to right.
+
+\begin{lemma}[Ordered perturbations of varying references]
+    \label{thm:ldp_varying_reference_products}
+    \lean{prod_range_sub_prod_range_eq_sum_mul_sub_mul,
+        norm_prod_range_sub_prod_range_le_of_forall_norm_prod_le}
+    \leanok
+    Let $X_j,Y_j$ lie in a normed ring. Suppose every contiguous product of
+    the $Y_j$, including the empty product, has norm at most $c$, and
+    $\|X_j-Y_j\|\le\eta$. Then
+    \begin{align}
+        \left\|\prod_{j=0}^{M-1}X_j-\prod_{j=0}^{M-1}Y_j\right\|
+        \le c\bigl((1+c\eta)^M-1\bigr).
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    Telescoping the difference into an initial segment from $X$, one
+    difference $X_j-Y_j$, and the remaining segment from $Y$, and bounding each
+    initial segment recursively by its reference product plus its error,
+    produces a geometric sum that gives the assertion.
+\end{proof}
+
+\begin{lemma}[Telescoping an ordered product]
+    \label{thm:ldp_ordered_telescoping_identity}
+    \lean{prod_range_sub_pow_eq_sum_mul_sub_mul}
+    \leanok
+    In any ring, for a sequence $X_j$, an element $e$, and $M\ge0$,
+    \begin{align}
+        \prod_{j=0}^{M-1}X_j-e^M
+         & =\sum_{j=0}^{M-1}
+        \left(\prod_{i=0}^{j-1}X_i\right)(X_j-e)e^{M-1-j}.
+        \label{eq:ldp_ordered_telescoping_identity}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    This is the case $Y_j=e$ of the telescoping identity in the proof of
+    Lemma~\ref{thm:ldp_varying_reference_products}; induction on $M$,
+    separating the last factor and the last summand, proves it directly.
+\end{proof}
+
+\begin{lemma}[First-order bound near a power-bounded element]
+    \label{thm:perturbations_power_bounded_telescoping}
+    \lean{norm_prod_range_sub_pow_le_of_forall_norm_pow_le,
+        norm_pow_sub_pow_le_of_isIdempotentElem}
+    \leanok
+    \uses{thm:ldp_varying_reference_products}
+    In a normed ring, if $\lVert E^k\rVert\le c$ for every $k\ge0$ and
+    $\lVert X_j-E\rVert\le\delta$ for every $j$, then
+    $\lVert\prod_{j=0}^{M-1}X_j-E^M\rVert\le c((1+c\delta)^M-1)$. In
+    particular, if $E$ is idempotent with $\lVert E\rVert,\lVert1\rVert\le c$
+    and $\lVert X-E\rVert\le\delta$, then
+    $\lVert X^M-E^M\rVert\le c((1+c\delta)^M-1)$.
+\end{lemma}
+\begin{proof}\leanok
+    Every contiguous product of the constant sequence $E$ is a power of $E$, so
+    Lemma~\ref{thm:ldp_varying_reference_products} applies. For an idempotent,
+    $E^0=1$ and $E^k=E$ for $k\ge1$.
+\end{proof}
+
+\begin{lemma}[First-order bound near an idempotent]
+    \label{thm:ldp_ordered_telescoping_bound}
+    \lean{norm_prod_range_sub_pow_le_of_isIdempotentElem}
+    \leanok
+    In a normed ring, let $e^2=e$, $\lVert e\rVert,\lVert1\rVert\le c$, and
+    $\lVert X_j-e\rVert\le\delta$ for every $j$. Then for every $M\ge0$,
+    $\lVert\prod_{j=0}^{M-1}X_j-e^M\rVert
+        \le c((1+c\delta)^M-1)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:perturbations_power_bounded_telescoping}
+    Every power of $e$ has norm at most $c$, so
+    Lemma~\ref{thm:perturbations_power_bounded_telescoping} applies.
+\end{proof}
+
+\begin{lemma}[Elementary exponential bounds]
+    \label{lem:perturbations_exponential_bounds}
+    \lean{one_add_pow_sub_one_le_mul_exp, le_mul_of_le_mul_exp_of_le}
+    \leanok
+    For real $y\ge0$ and $M\ge0$, $(1+y)^M-1\le My\,e^{My}$. If $C,B,y\ge0$
+    and a real number $v$ satisfies $v\le Cy\,e^{Cy}$ and $v\le B$, then
+    $v\le(Ce^C+B)y$.
+\end{lemma}
+\begin{proof}\leanok
+    The first bound follows from $(1+y)^M\le e^{My}$ and
+    $e^{t}-1\le te^{t}$ for $t\ge0$. For the second, use the first hypothesis
+    when $y\le1$, since then $e^{Cy}\le e^C$, and the second when $y>1$.
+\end{proof}
+
+\begin{lemma}[Powers of a perturbed idempotent without first-order term]
+    \label{thm:ldp_idempotent_second_order}
+    \lean{IsIdempotentElem.norm_trace_add_pow_sub_le_of_le,
+        IsIdempotentElem.norm_trace_add_pow_sub_le}
+    \leanok
+    \uses{lem:perturbations_exponential_bounds}
+    Let $e$ be an idempotent of a normed ring, $f=1-e$, and let $Z$ satisfy
+    $eZe=0$ and $\lVert fZe\rVert,\lVert eZf\rVert,\lVert fZf\rVert\le z\le1/2$.
+    Let $\Tr$ be additive with $\Tr(xy)=\Tr(yx)$ and
+    $\lvert\Tr x\rvert\le K\lVert x\rVert$. Then for $M\ge2$,
+    \begin{align}
+        \bigl\lvert\Tr(e+Z)^M-\Tr e\bigr\rvert
+         & \le K\bigl(\lVert e\rVert+3\lVert f\rVert\bigr)\,2Mz^2\,e^{2Mz^2}.
+        \notag
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    Put $T=e+Z$, $W=fZf$, $\beta=\lVert fZe\rVert$, $\beta'=\lVert eZf\rVert$,
+    $\zeta=\lVert W\rVert$, and $\rho=1+\beta\beta'/(1-\zeta)$. For $P\in\{e,f\}$
+    the blocks $x_M=PT^Me$ and $y_M=PT^Mf$ satisfy
+    $x_{M+1}=x_M+y_M\,fZe$ and $y_{M+1}=x_M\,eZf+y_MW$, because $eTe=e$.
+    Induction on $M$ gives $\lVert eT^Me-e\rVert\le\lVert e\rVert(\rho^M-1)$ and
+    $\lVert eT^Mf\rVert\le\lVert e\rVert\beta'\rho^M/(1-\zeta)$, and also
+    $\lVert fT^Me\rVert\le\lVert f\rVert\beta(\rho^M-\zeta^M)/(1-\zeta)$ and
+    $\lVert fT^Mf-fW^M\rVert\le\lVert f\rVert\beta\beta'(\rho^M-\zeta^M)/(1-\zeta)^2$.
+    Since $\Tr x=\Tr(exe)+\Tr(fxf)$, it follows that $\Tr T^M-\Tr e$ is the sum of
+    the traces of $eT^Me-e$, of $fT^Mf-fW^M$, and of $fW^M$, the last of norm at
+    most $\lVert f\rVert\zeta^M\le\lVert f\rVert z^2$. With $z\le1/2$ one has
+    $\rho\le1+2z^2$ and $\beta\beta'/(1-\zeta)^2\le4z^2$, and
+    $(1+2z^2)^M-1\le2Mz^2e^{2Mz^2}$.
+\end{proof}
+
+\begin{lemma}[Powers of an element compressed by an idempotent]
+    \label{thm:ldp_idempotent_compressed_second_order}
+    \lean{IsIdempotentElem.exists_norm_trace_pow_sub_one_le_sq}
+    \leanok
+    \uses{thm:ldp_idempotent_second_order}
+    Let $e$ be an idempotent of a normed algebra over $\C$, and let $\Tr$ be linear with
+    $\Tr(xy)=\Tr(yx)$, $\lvert\Tr x\rvert\le K\lVert x\rVert$ and $\Tr e=1$. There is $C>0$
+    such that every $T$ with $eTe=\alpha e$ for a real $\alpha\le1$,
+    $\lVert T-e\rVert\le\delta$ and $1-\alpha\le\delta^2$ satisfies, for $M\ge2$ and
+    $CM\delta^2<1$,
+    \begin{align*}
+        \bigl\lvert\Tr T^M-1\bigr\rvert\le C(M\delta^2)\,e^{CM\delta^2}.
+    \end{align*}
+\end{lemma}
+\begin{proof}
+    \leanok
+    From $CM\delta^2<1$ with $C\ge4$ one gets $\delta\le1$ and $\alpha\ge3/4$. For
+    $Z=\alpha^{-1}T-e$, one has $eZe=0$, $T=\alpha(e+Z)$, and
+    $\lVert Z\rVert\le\alpha^{-1}(\lVert T-e\rVert+(1-\alpha)\lVert e\rVert)
+        \le2(1+\lVert e\rVert)\delta$, so the blocks of $Z$ are bounded by a multiple $z$ of
+    $\delta$ with $z\le1/2$. Lemma~\ref{thm:ldp_idempotent_second_order} bounds
+    $\lvert\Tr(e+Z)^M-1\rvert$ by a multiple of $M\delta^2e^{cM\delta^2}$. Finally
+    $\Tr T^M-1=\alpha^M(\Tr(e+Z)^M-1)+(\alpha^M-1)$, with $0\le\alpha^M\le1$ and
+    $1-\alpha^M\le M(1-\alpha)\le M\delta^2$.
+\end{proof}
+
+\begin{lemma}[Ordered perturbations with vanishing compression]
+    \label{thm:ldp_ordered_idempotent_quadratic}
+    \lean{IsIdempotentElem.norm_trace_prod_add_sub_le_of_le}
+    \leanok
+    \uses{lem:perturbations_exponential_bounds}
+    Let $e$ be an idempotent in a normed ring and let $f=1-e$. Let $\tau$
+    be an additive complex-valued map satisfying $\tau(ab)=\tau(ba)$ and
+    $|\tau(a)|\le K\lVert a\rVert$, where $K\ge0$. Suppose that a sequence
+    $Z_j$ satisfies $eZ_je=0$ and
+    $\lVert fZ_je\rVert,\lVert eZ_jf\rVert,\lVert fZ_jf\rVert\le z\le1/2$.
+    For every $M\ge2$,
+    \begin{align}
+        \left|\tau\left(\prod_{j=0}^{M-1}(e+Z_j)\right)-\tau(e)\right|
+         & \le K(\lVert e\rVert+3\lVert f\rVert)
+        (2Mz^2)e^{2Mz^2}.
+        \label{eq:ldp_ordered_quadratic_trace}
+    \end{align}
+    No commutation between distinct factors is assumed.
+\end{lemma}
+\begin{proof}\leanok
+    With $P_m=\prod_{j=0}^{m-1}(e+Z_j)$ and $W_j=fZ_jf$, for $a=e,f$,
+    the blocks $x_m=aP_me$ and $y_m=aP_mf$ satisfy
+    $x_{m+1}=x_m+y_mfZ_me$ and
+    $y_{m+1}=x_meZ_mf+y_mW_m$.
+    With $\rho=1+z^2/(1-z)$, induction gives
+    $\lVert eP_me-e\rVert\le\lVert e\rVert(\rho^m-1)$ and
+    $\lVert eP_mf\rVert\le\lVert e\rVert z\rho^m/(1-z)$.
+    The analogous recurrences starting from $f$ give
+    \begin{align}
+        \lVert fP_me\rVert
+         & \le\lVert f\rVert\frac{z}{1-z}(\rho^m-z^m), \notag \\
+        \left\lVert fP_mf-f\prod_{j=0}^{m-1}W_j\right\rVert
+         & \le\lVert f\rVert\frac{z^2}{(1-z)^2}(\rho^m-z^m).
+        \notag
+    \end{align}
+    Cyclicity gives $\tau(P_M)=\tau(eP_Me)+\tau(fP_Mf)$.
+    Since $M\ge2$, the complementary product has norm at most
+    $\lVert f\rVert z^M\le\lVert f\rVert z^2$; the inequalities
+    $\rho\le1+2z^2$ and $(1+2z^2)^M-1\le2Mz^2e^{2Mz^2}$ then complete the bound.
+\end{proof}
+
+\begin{lemma}[Ordered factors with scalar compression]
+    \label{thm:ldp_ordered_compression_quadratic}
+    \lean{IsIdempotentElem.exists_norm_trace_prod_sub_one_le_sq}
+    \leanok
+    Let $\mathcal A$ be a normed complex algebra, let $e^2=e$, and let
+    $\tau:\mathcal A\to\mathbb C$ be linear with $\tau(e)=1$,
+    $\tau(ab)=\tau(ba)$ and $|\tau(a)|\le K\lVert a\rVert$ for $K\ge0$.
+    There is $C>0$, depending only on these data, with the following
+    property. For any sequences $T_j\in\mathcal A$, $\alpha_j\in\mathbb C$,
+    real $\delta$, and integer $M\ge2$, suppose
+    \begin{align}
+        eT_je      & =\alpha_je, & \lVert T_j-e\rVert & \le\delta, \notag \\
+        |\alpha_j| & \le1,       & |1-\alpha_j|       & \le\delta^2.
+        \label{eq:ldp_ordered_scalar_compression}
+    \end{align}
+    If $CM\delta^2<1$, then
+    $\left|\tau(\prod_{j=0}^{M-1}T_j)-1\right|
+        \le CM\delta^2e^{CM\delta^2}$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:ldp_ordered_idempotent_quadratic, thm:ldp_ordered_telescoping_bound}
+    For $C\ge4$ large enough in terms of $K$, $\lVert e\rVert$ and
+    $\lVert1-e\rVert$, the smallness condition gives
+    $\delta\le1$ and $|\alpha_j|\ge3/4$. With
+    $Z_j=\alpha_j^{-1}T_j-e$, one has $eZ_je=0$ and
+    $\lVert Z_j\rVert\le2(1+\lVert e\rVert)\delta$.
+    Its three complementary blocks are bounded by a fixed multiple of
+    $\delta$, so Lemma~\ref{thm:ldp_ordered_idempotent_quadratic} applies.
+    With $a=\prod_{j=0}^{M-1}\alpha_j$ and
+    $P=\prod_{j=0}^{M-1}(e+Z_j)$, one has $|a|\le1$,
+    $|a-1|\le M\delta^2e^{M\delta^2}$ by
+    Lemma~\ref{thm:ldp_ordered_telescoping_bound} in $\C$, and
+    $\tau(\prod_{j=0}^{M-1}T_j)-1=a(\tau(P)-1)+(a-1)$.
+    Enlarging $C$ gives the assertion.
+\end{proof}

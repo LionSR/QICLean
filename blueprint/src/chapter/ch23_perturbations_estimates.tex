@@ -1,0 +1,153 @@
+\section{Elementary estimates}
+\label{sec:perturbations_estimates}
+
+\begin{lemma}[Exponential sums on windows]
+    \label{lem:ldp_vandermonde_window}
+    \lean{Complex.exists_window_le_norm_sum_mul_pow}
+    \leanok
+    Let $\mu_1,\dots,\mu_K$ be distinct complex numbers of modulus one and
+    $a\in\C^K$ nonzero. There is $c_0>0$ such that for every integer $t\ge0$
+    some $u\in\{0,\dots,K-1\}$ satisfies
+    $\bigl\lvert\sum_{j=1}^Ka_j\mu_j^{\,t+u}\bigr\rvert\ge c_0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The Vandermonde map $v\mapsto(\sum_jv_j\mu_j^{\,u})_{0\le u<K}$ is
+    injective, so it is bounded below on $\C^K$. The vector
+    $(a_j\mu_j^t)_j$ has the maximum norm of $a$.
+\end{proof}
+
+\begin{lemma}[Expectations in overlapping states]
+    \label{lem:ldp_expectation_overlap}
+    \lean{LinearMap.IsSymmetric.norm_inner_mul_norm_sub_le}
+    \leanok
+    For a Hermitian operator $Z$ and unit vectors $\phi,\psi$, with
+    $\langle Z\rangle_\chi=\bra{\chi}Z\ket{\chi}$ and
+    $\sigma_\chi(Z)=\lVert(Z-\langle Z\rangle_\chi)\chi\rVert$,
+    \begin{align}
+        \lvert\braket{\phi}{\psi}\rvert\,
+        \lvert\langle Z\rangle_\phi-\langle Z\rangle_\psi\rvert
+         & \le\sigma_\phi(Z)+\sigma_\psi(Z).
+        \label{eq:ldp_expectation_overlap}
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    Since $\langle Z\rangle_\phi$ is real,
+    $(\langle Z\rangle_\phi-\langle Z\rangle_\psi)\braket{\phi}{\psi}
+        =\bra{\phi}(Z-\langle Z\rangle_\psi)\ket{\psi}
+        -\bra{\phi}(Z-\langle Z\rangle_\phi)\ket{\psi}$, and applying the
+    Cauchy--Schwarz inequality to both terms yields the bound.
+\end{proof}
+
+\begin{lemma}[Word values of a functional under two spanning families]
+    \label{lem:block_symmetry_phase_power}
+    \lean{LinearMap.map_list_prod_eq_pow_mul_of_length_three}
+    \leanok
+    Let $\phi$ be a linear functional on a complex algebra $\mathcal A$ with
+    $\phi(1)\neq0$ such that $\phi(MN)=0$ for all $N$ forces $M=0$, and let
+    $(x_i)_i$ and $(y_i)_i$ be finite families spanning $\mathcal A$. If
+    $\phi(y_w)=c_n\phi(x_w)$ for every word $w$ of length $n\in\{1,2,3\}$,
+    where $x_w$ and $y_w$ denote the ordered products along $w$, then
+    $\phi(y_w)=c_1^{|w|}\phi(x_w)$ for every word $w$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Nondegeneracy against the spanning family $(y_i)$ makes $x_i\mapsto y_i$
+    a well-defined linear map $L$: if $\sum_ia_ix_i=0$, then
+    $\phi\bigl((\sum_ia_iy_i)y_j\bigr)=c_2\phi\bigl((\sum_ia_ix_i)x_j\bigr)=0$
+    for every $j$. By multilinearity,
+    $\phi(LX)=c_1\phi(X)$, $\phi(LX\,LY)=c_2\phi(XY)$ and
+    $\phi(LX\,LY\,LZ)=c_3\phi(XYZ)$ for all $X,Y,Z$. The map $L$ is onto, so
+    pairing against $LZ$ gives $LX\,LY=L(XY)L(1)$ and $c_1L(1)=c_2\cdot1$.
+    Since $\phi(1)\neq0$ lies in the image of $\phi\circ L=c_1\phi$, we have
+    $c_1\neq0$; applying $\phi$ to $c_1L(1)=c_2\cdot1$ gives $c_2=c_1^2$,
+    hence $L(1)=c_1\cdot1$ and $LX\,LY=c_1L(XY)$. Induction on the word
+    gives $y_w\,L(1)=c_1^{|w|}L(x_w)$, and applying $\phi$ proves the claim.
+\end{proof}
+
+\begin{lemma}[Enumerations listing a subset first]
+    \label{lem:perturbations_enumeration_subset_first}
+    \lean{Finset.exists_equiv_val_lt_card_iff_mem}
+    \leanok
+    Let $X$ be a finite set with $n$ elements and let $S\subseteq X$. There is
+    a bijection $\pi:\{0,\dots,n-1\}\to X$ with $\pi(k)\in S$ if and only if
+    $k<|S|$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Enumerate $S$ by $\{0,\dots,|S|-1\}$ and its complement by the remaining
+    indices.
+\end{proof}
+
+\begin{lemma}[Rank bound for one isometric family]
+    \label{thm:seqanc_rank_bound}
+    \lean{Matrix.card_le_mul_of_sum_conjTranspose_mul_eq_one}
+    \leanok
+    If $A^0,\dots,A^{d-1}$ are $a\times b$ matrices with
+    $\sum_i(A^i)^\dagger A^i=\Id_b$, then $b\le ad$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The $(ad)\times b$ matrix $S$ obtained by stacking the $A^i$ satisfies
+    $S^\dagger S=\Id_b$, so $b=\operatorname{rank}(S^\dagger S)
+        =\operatorname{rank}S\le ad$.
+\end{proof}
+
+\begin{lemma}[The radical of a nonnegative quadratic form]
+    \label{lem:perturbations_quadratic_form_radical}
+    \lean{QuadraticForm.polar_eq_zero_of_nonneg, QuadraticForm.mem_radical_iff_of_nonneg,
+        QuadraticForm.radical_ne_top_of_ne_zero}
+    \leanok
+    Let $Q$ be a real quadratic form with $Q(x)\ge0$ for every $x$. A zero $x$
+    of $Q$ is orthogonal to every vector for the polar form, so the zero set of
+    $Q$ is its radical, a linear subspace. If $Q\neq0$ this subspace is proper.
+\end{lemma}
+\begin{proof}
+    \leanok
+    If $Q(x)=0$ and $p$ is the polar value of $x$ and $y$, then for
+    $t=-p/(Q(y)+1)$ one has $Q(x+ty)=-p^2/(Q(y)+1)^2\ge0$, so $p=0$. The radical
+    of the whole space would make $Q$ vanish identically.
+\end{proof}
+
+\begin{lemma}[Compactness of finite convex weights]
+    \label{thm:finite_convex_weights_compactness}
+    \lean{exists_convex_weights_subsequence,
+        exists_convex_weights_of_approximate_evaluations}
+    \leanok
+    Let $J$ be finite, and let $w_j(n)$ be real weights that eventually lie
+    in $[0,1]$, with $\sum_jw_j(n)\to1$. There are a strictly increasing
+    subsequence $n_s$ and weights $p_j\geq0$, $\sum_jp_j=1$, such that
+    $w_j(n_s)\to p_j$ for every $j$.
+    For any family of tests $x$, if
+    $f(x)-\sum_jw_j(n)g_j(x)\longrightarrow0$ for every test $x$,
+    then one choice of normalized weights satisfies
+    $f(x)=\sum_jp_jg_j(x)$ for all tests. The test family need not be countable.
+\end{lemma}
+\begin{proof}\leanok
+    Extract a convergent subsequence in the compact cube $[0,1]^J$.
+    Continuity of the finite sum shows that the limit has total mass one.
+    For each test, compare the assumed limit with the evaluation along
+    this same subsequence. Uniqueness of limits gives the asserted identity.
+\end{proof}
+
+\begin{lemma}[Uniform upper bounds from all selections]
+    \label{thm:uniform_upper_bound_all_selections}
+    \lean{Filter.eventually_forall_le_of_tendsto_all_selections}
+    \leanok
+    Let $X$ be a nonempty set, let $\mathcal F$ be a filter on an index set
+    $I$, and let $e:I\times X\to\mathbb R$.
+    Suppose $e(i,x_i)\to0$ along $\mathcal F$ for every function
+    $i\mapsto x_i$ from $I$ to $X$. Then, for every $\varepsilon>0$,
+    eventually $e(i,x)\leq\varepsilon$ simultaneously for every $x\in X$.
+    No topology or countability assumption on $X$ is required, and $e$
+    need not be nonnegative. This elementary implication applies to the
+    uniform projection estimates in
+    \cite[Lemma~commutation(ii)]{Nachtergaele1996Spectral}.
+\end{lemma}
+\begin{proof}\leanok
+    For each $i$, select a parameter violating the upper bound if one exists;
+    otherwise select any element of $X$.
+    Convergence along this selection gives $e(i,x_i)<\varepsilon$ eventually.
+    The choice of $x_i$ then implies $e(i,x)\leq\varepsilon$ for every $x$.
+\end{proof}
