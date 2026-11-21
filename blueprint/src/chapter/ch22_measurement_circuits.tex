@@ -1,0 +1,304 @@
+\chapter{Circuits with measurements}
+\label{ch:measurement}
+
+A circuit of Chapter~\ref{ch:circuits} may measure sites in the computational basis and choose
+its later layers by the outcomes. The measurement circuits of this chapter have unitary gates
+and onsite families that are unitaries or measurements; the outcomes are communicated to every
+later layer at no cost, the measurements and the onsite unitaries are free, and only the layers
+using a cell of positive cost are counted in the depth, as in the model of local circuits with
+classical communication of~\cite{Piroli2021LOCC}. A circuit implements a matrix on a set of
+vectors when, whatever the outcomes, it acts there as that matrix up to a scalar, and a vector
+is converted deterministically into another when every outcome gives a multiple of the second.
+Conversions compose with additive depths, and a deterministic conversion of unit vectors is an
+adaptive conversion of their density matrices in the sense of Chapter~\ref{ch:protocols}.
+
+\section{Measurement circuits and implementations}
+\label{sec:measurement_model}
+
+\begin{definition}[Measurement circuits]
+    \label{def:measurement_circuit}
+    \lean{KrausFamily.IsUnitaryOrMeasurement,
+        KrausFamily.isUnitaryOrMeasurement_measure}
+    \leanok
+    \uses{def:circuits_circuit, def:circuits_local, def:circuits_outcome}
+    A Kraus family from $\C^\alpha$ to $\C^\beta$ is a local family of a measurement circuit if
+    it consists of one unitary operator, or if its operators are $\ket{f(a)}\bra a$ for the
+    elements $a$ of $\alpha$, indexed by its outcomes through a bijection, for a bijection
+    $f\colon\alpha\to\beta$: the measurement of the basis followed by a relabelling. A
+    measurement circuit is a circuit of plain gates all of whose gates and onsite families are
+    local families of a measurement circuit. Unitary families and the measurement of a basis
+    are local families of a measurement circuit.
+\end{definition}
+
+\begin{lemma}[Measurement circuits preserve the trace]
+    \label{lem:measurement_tp}
+    \lean{KrausFamily.IsUnitaryOrMeasurement.isTP}
+    \leanok
+    \uses{def:measurement_circuit}
+    Every local family of a measurement circuit is trace-preserving. Hence every measurement
+    circuit is an adaptive protocol of its depth.
+\end{lemma}
+\begin{proof}
+    \leanok
+    A unitary $V$ has $V^\dagger V=\mathbf{1}$. For the operators $K_a=\ket{f(a)}\bra a$,
+    $K_a^\dagger K_a=\ket a\bra a$ and $\sum_a\ket a\bra a=\mathbf{1}$.
+\end{proof}
+
+\begin{definition}[Implementation of a matrix]
+    \label{def:measurement_implementation}
+    \lean{QuantumCircuit.Circuit.IsImplementationOn}
+    \leanok
+    \uses{def:circuits_circuit}
+    A circuit $c$ from $X$ to $Z$ implements a matrix $W$ from $\mathcal H_X$ to $\mathcal H_Z$
+    on a set $E$ of vectors if for every branch $p$ of $c$ and every $v\in E$ there is
+    $z\in\C$ with $K_p v=z\,Wv$, where $K_p$ is the Kraus operator of the branch.
+\end{definition}
+
+\begin{lemma}[Implementations compose]
+    \label{lem:measurement_implementation_comp}
+    \lean{QuantumCircuit.Circuit.IsImplementationOn.mono,
+        QuantumCircuit.Circuit.isImplementationOn_done,
+        QuantumCircuit.Circuit.isImplementationOn_of_kraus_eq,
+        QuantumCircuit.Circuit.IsImplementationOn.append,
+        QuantumCircuit.Circuit.IsImplementationOn.comp}
+    \leanok
+    \uses{def:measurement_implementation, thm:circuits_composition}
+    An implementation on $E$ is one on every subset of $E$. The empty circuit implements
+    $\mathbf{1}$, and a circuit all of whose Kraus operators are $U$ implements $U$ on every set. If
+    $c$ implements $W$ on $E$, $W$ maps $E$ into $E'$, and the continuation attached to every
+    branch of $c$ implements $W'$ on $E'$, then the composite circuit implements $W'W$ on $E$;
+    in particular so does $c$ followed by one circuit implementing $W'$ on $E'$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    A branch of the composite is a branch $p$ of $c$ followed by a branch $q$ of its
+    continuation, with Kraus operator $K'_qK_p$. For $v\in E$, $K_pv=zWv$ with $Wv\in E'$, so
+    $K'_qK_pv=z\,K'_qWv=zz'\,W'Wv$.
+\end{proof}
+
+\begin{lemma}[Branch scalars on a subspace]
+    \label{lem:measurement_branch_scalar}
+    \lean{QuantumCircuit.Circuit.IsImplementationOn.exists_smul_of_isometry}
+    \leanok
+    \uses{def:measurement_implementation}
+    Let $c$ implement an isometry $W$ on a linear subspace $E$. Then for every branch $p$ there
+    is one $z\in\C$, possibly zero, with $K_pv=z\,Wv$ for all $v\in E$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The map $v\mapsto W^\dagger K_pv$ sends $E$ to $E$, since $K_pv=z_vWv$ and $W^\dagger W=\mathbf{1}$
+    give $W^\dagger K_pv=z_vv$. A linear endomorphism under which every vector is an eigenvector
+    is a scalar $z$, and for $v\neq0$ the equation $z_vv=zv$ gives $z_v=z$.
+\end{proof}
+
+\begin{theorem}[Removal of measurements on a subspace]
+    \label{thm:measurement_removal}
+    \lean{QuantumCircuit.Circuit.IsImplementationOn.map_vecMulVec_eq}
+    \leanok
+    \uses{lem:measurement_branch_scalar, thm:circuits_tp}
+    Let a circuit whose gates and onsite families are trace-preserving implement an isometry
+    $W$ on a linear subspace $E$. Then its map sends $\ket u\bra v$ to $W\ket u\bra vW^\dagger$
+    for all $u,v\in E$: averaged over the outcomes, the circuit acts on the operators supported
+    in $E$ as the coherent operation $W$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    By Lemma~\ref{lem:measurement_branch_scalar}, $K_p=z_pW$ on $E$ for every branch $p$, so the
+    map sends $\ket u\bra v$ to $\bigl(\sum_p|z_p|^2\bigr)W\ket u\bra vW^\dagger$. If $E=0$ both
+    sides vanish. Otherwise, for $w\in E$ nonzero, trace preservation gives
+    $\|w\|^2=\sum_p\|K_pw\|^2=\bigl(\sum_p|z_p|^2\bigr)\|Ww\|^2=\bigl(\sum_p|z_p|^2\bigr)\|w\|^2$,
+    hence $\sum_p|z_p|^2=1$.
+\end{proof}
+
+\begin{lemma}[A nonzero branch]
+    \label{lem:measurement_nonzero_branch}
+    \lean{QuantumCircuit.Circuit.exists_kraus_mulVec_ne_zero}
+    \leanok
+    \uses{def:circuits_circuit, thm:circuits_tp}
+    If every gate and onsite family of a circuit is trace-preserving, then for every nonzero
+    vector $v$ some branch $p$ has $K_pv\neq0$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The circuit is trace-preserving, so $\sum_pK_p^\dagger K_p=\mathbf{1}$; if every $K_pv$ vanished,
+    $v=\sum_pK_p^\dagger K_pv=0$.
+\end{proof}
+
+\begin{definition}[Measurement with corrections]
+    \label{def:measurement_correct}
+    \lean{QuantumCircuit.Circuit.measureCorrect,
+        QuantumCircuit.Circuit.kraus_measureCorrect,
+        QuantumCircuit.Circuit.depth_measureCorrect,
+        QuantumCircuit.Circuit.forall_measureCorrect}
+    \leanok
+    \uses{def:circuits_outcome, lem:circuits_measure_kraus, def:measurement_circuit}
+    For a region $D$ and matrices $V_{m,s}$ on $\C^{X_s}$ indexed by the configurations $m$ of
+    $D$ and the sites $s$, the measurement of $D$ with the corrections $V$ is the circuit that
+    measures $D$ in the computational basis and then applies the onsite layer
+    $\bigotimes_sV_{m,s}$ chosen by the outcome $m$. Its Kraus operator on a branch with outcome
+    $m$ is $(\bigotimes_sV_{m,s})P_m$, with $P_m$ the projection onto $\ket m$ placed on $D$;
+    its depth is $0$, and it is a measurement circuit when the $V_{m,s}$ are unitary.
+\end{definition}
+
+\begin{lemma}[A round implementing a matrix]
+    \label{lem:measurement_round_implementation}
+    \lean{QuantumCircuit.Circuit.isImplementationOn_comp_measureCorrect}
+    \leanok
+    \uses{def:measurement_correct, def:measurement_implementation}
+    Let every Kraus operator of the circuit $u$ be $U$. If for every configuration $m$ of $D$
+    there is $z\in\C$ with $(\bigotimes_sV_{m,s})P_mUv=z\,Wv$ for every $v\in E$, then $u$
+    followed by the measurement of $D$ with the corrections $V$ implements $W$ on $E$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    A branch of the composite has Kraus operator $(\bigotimes_sV_{m,s})P_mU$ for its outcome
+    $m$.
+\end{proof}
+
+\begin{definition}[Rounds of measurements]
+    \label{def:measurement_rounds}
+    \lean{QuantumCircuit.Layer.branching, QuantumCircuit.Circuit.rounds}
+    \leanok
+    \uses{def:circuits_costs}
+    A layer branches if it has two different Kraus indices, so that its outcome is a classical
+    record on which later layers may depend. The number of rounds of measurements of a circuit
+    is the largest number of branching layers along one of its branches: it counts the blocks
+    of classical control.
+\end{definition}
+
+\begin{lemma}[Counting rounds]
+    \label{lem:measurement_rounds}
+    \lean{QuantumCircuit.Layer.branching_le_one, QuantumCircuit.Layer.branching_eq_zero,
+        QuantumCircuit.Circuit.rounds_comp, QuantumCircuit.Circuit.rounds_measureCorrect_le,
+        QuantumCircuit.UnitaryCircuit.rounds_toCircuit}
+    \leanok
+    \uses{def:measurement_rounds, def:measurement_correct, thm:circuits_cost_subadditive}
+    The rounds of a composition are at most the sum of the rounds. A measurement with onsite
+    corrections has at most one round, and a unitary circuit none.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The number of rounds is a cost of layers accumulated along the most expensive branch, so
+    it is subadditive by Theorem~\ref{thm:circuits_cost_subadditive}. A layer with a unique
+    Kraus index does not branch.
+\end{proof}
+
+\section{Deterministic conversions}
+\label{sec:measurement_conversion}
+
+\begin{definition}[Deterministic conversion with measurements]
+    \label{def:measurement_conversion}
+    \lean{QuantumCircuit.IsMeasurementConversion}
+    \leanok
+    \uses{def:measurement_circuit, def:circuits_costs}
+    A nonzero vector $\varphi\in\mathcal H_X$ is converted into $\psi\in\mathcal H_Z$ in depth
+    $T$ if some measurement circuit from $X$ to $Z$ of depth at most $T$ has, on every branch
+    $p$, $K_p\varphi=z_p\psi$ for some $z_p\in\C$. A preparation of $\psi$ is a conversion from
+    a basis configuration or from a product vector. The number of rounds of measurements is not
+    bounded, whereas~\cite{Piroli2021LOCC} performs one round in its class
+    $\mathrm{QCcc}_\ell$ and notes a more general scheme with multiple rounds.
+\end{definition}
+
+\begin{theorem}[Conversions compose]
+    \label{thm:measurement_conversion_comp}
+    \lean{QuantumCircuit.IsMeasurementConversion.ne_zero,
+        QuantumCircuit.IsMeasurementConversion.mono,
+        QuantumCircuit.IsMeasurementConversion.refl,
+        QuantumCircuit.IsMeasurementConversion.smul,
+        QuantumCircuit.IsMeasurementConversion.trans,
+        QuantumCircuit.Circuit.IsImplementationOn.isMeasurementConversion,
+        QuantumCircuit.IsMeasurementConversion.of_prodOp,
+        QuantumCircuit.IsUnitaryCircuit.isMeasurementConversion,
+        QuantumCircuit.IsPreparedInDepth.exists_isMeasurementConversion}
+    \leanok
+    \uses{def:measurement_conversion, lem:measurement_implementation_comp,
+        lem:measurement_nonzero_branch, lem:measurement_tp}
+    A vector converted from a nonzero vector is nonzero. A conversion in depth $T$ is one in
+    every depth $T'\ge T$, every nonzero vector is converted into itself in depth $0$, and a
+    conversion into $\psi$ is one into $a\psi$ for $a\neq0$. Converting $\varphi$ into $\psi$ in
+    depth $T_1$ and $\psi$ into $\chi$ in depth $T_2$ converts $\varphi$ into $\chi$ in depth
+    $T_1+T_2$. A measurement circuit of depth at most $T$ implementing $W$ on a set containing
+    the nonzero vector $\varphi$ converts $\varphi$ into $W\varphi$ in depth $T$. A conversion
+    from $(\bigotimes_sU_s)\varphi$, for unitaries $U_s$, is a conversion from $\varphi$ in the
+    same depth; in particular a conversion from a product vector is one from a basis
+    configuration. A unitary circuit of depth at most $T$ with matrix $U$ converts every
+    nonzero $\varphi$ into $U\varphi$ in depth $T$; hence a nonzero vector prepared in depth $T$
+    by a unitary circuit is converted in depth $T$ from a product vector.
+\end{theorem}
+\begin{proof}
+    \leanok
+    By Lemma~\ref{lem:measurement_nonzero_branch} some branch has $K_p\varphi\neq0$, and
+    $K_p\varphi=z_p\psi$ forces $\psi\neq0$. For the composition, the branch $(p,q)$ of the
+    composite circuit gives $K'_qK_p\varphi=z_pK'_q\psi=z_pz'_q\chi$, and depths add by
+    Theorem~\ref{thm:circuits_cost_subadditive}. The onsite unitaries form a layer of depth
+    $0$ placed before the circuit.
+\end{proof}
+
+\begin{theorem}[Deterministic conversions are adaptive conversions]
+    \label{thm:measurement_adaptive}
+    \lean{QuantumCircuit.Circuit.map_vecMulVec,
+        QuantumCircuit.Circuit.isAdaptiveProtocol_map,
+        QuantumCircuit.IsMeasurementConversion.isAdaptiveConversion}
+    \leanok
+    \uses{def:measurement_conversion, def:protocols_protocol, lem:measurement_tp}
+    The map of a measurement circuit of depth at most $T$, the average over its outcomes, is
+    realised by an adaptive protocol of depth at most $T$; on a pure input $\ket v\bra v$ it is
+    $\sum_pK_p\ket v\bra vK_p^\dagger$. If the unit vector $\varphi$ is converted into the unit vector $\psi$ in depth $T$, then
+    $\ket\varphi\bra\varphi$ is converted adaptively into $\ket\psi\bra\psi$ in depth $T$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The map of the circuit sends $\ket\varphi\bra\varphi$ to
+    $\sum_pK_p\ket\varphi\bra\varphi K_p^\dagger=\bigl(\sum_p|z_p|^2\bigr)\ket\psi\bra\psi$,
+    and since the circuit preserves the trace, $\sum_p|z_p|^2=1$.
+\end{proof}
+
+\begin{definition}[One round of measurements]
+    \label{def:measurement_one_round}
+    \lean{QuantumCircuit.IsOneRoundConversion}
+    \leanok
+    \uses{def:measurement_correct, def:circuits_local}
+    A nonzero vector $\varphi$ is converted into $\psi$ with one round of measurements in
+    depths $(T_1,T_2)$ if there are a unitary circuit with matrix $U$ of depth at most $T_1$, a
+    region $D$, unitaries $V_{m,s}$, and a unitary circuit with matrix $U'$ of depth at most
+    $T_2$, such that for every configuration $m$ of $D$,
+    $U'(\bigotimes_sV_{m,s})P_mU\varphi$ is a scalar multiple of $\psi$. With $T_2=0$ this is
+    the class $\mathrm{QCcc}_{T_1}$ of~\cite{Piroli2021LOCC}, the circuit of depth $0$ being
+    free local unitaries: a local circuit, measurements, and local unitaries chosen from all the
+    outcomes. With $T_2>0$ it is the composition of such a transformation with a circuit
+    without measurements, as in the preparations of~\cite{Malz2024Preparation}. Any site may be
+    measured, in the computational basis, and the corrections are onsite unitaries applied
+    once after the measurement.
+\end{definition}
+
+\begin{lemma}[One round]
+    \label{lem:measurement_one_round}
+    \lean{QuantumCircuit.IsOneRoundConversion.exists_circuit,
+        QuantumCircuit.IsOneRoundConversion.isMeasurementConversion,
+        QuantumCircuit.IsOneRoundConversion.mono,
+        QuantumCircuit.IsOneRoundConversion.mulVec,
+        QuantumCircuit.IsUnitaryCircuit.isOneRoundConversion}
+    \leanok
+    \uses{def:measurement_one_round, def:measurement_conversion,
+        thm:measurement_conversion_comp, lem:measurement_rounds}
+    A conversion with one round of measurements in depths $(T_1,T_2)$ is realised by a
+    measurement circuit of depth at most $T_1+T_2$ with at most one round of measurements; in
+    particular it is a deterministic conversion in depth $T_1+T_2$, and it is one round in all
+    larger depths. Following it by a unitary
+    circuit of depth at most $T$ with matrix $W$ gives a conversion into $W\psi$ in depths
+    $(T_1,T_2+T)$. A unitary circuit of depth at most $T$ with matrix $U$ converts every
+    nonzero $\varphi$ into $U\varphi$ with one round in depths $(T,0)$, measuring no site.
+\end{lemma}
+\begin{proof}
+    \leanok
+    The first unitary circuit, the measurement of $D$ with the corrections $V$, and the second
+    unitary circuit form a measurement circuit whose Kraus operator on a branch with outcome
+    $m$ is $U'(\bigotimes_sV_{m,s})P_mU$, of depth at most $T_1+0+T_2$. Measuring the empty
+    region gives $P_m=\mathbf{1}$.
+\end{proof}
+
+\input{chapter/ch22_ghz}
+
+\input{chapter/ch22_teleportation}
+
+\input{chapter/ch22_zero_register}

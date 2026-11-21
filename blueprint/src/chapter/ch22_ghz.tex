@@ -1,0 +1,132 @@
+%% ==================================================
+%% Section: GHZ-type states
+%% Sources: arXiv:2307.01696 (Malz, Styliaris, Wei, Cirac), paragraph
+%% "Long-range MPS using measurements", eq. (19) and the paragraph after it,
+%% and Supplemental Material, proof of Theorem 1; arXiv:2103.13367 (Piroli,
+%% Styliaris, Cirac), Example 1.
+%% ==================================================
+
+\section{GHZ-type states}
+\label{sec:ghz}
+
+The connected correlations of a GHZ-type state do not decay with distance, while those of a
+vector prepared by a unitary circuit of depth $T$ vanish beyond its light cone; a GHZ-type
+state therefore needs a depth growing with the system size~\cite[Example~1]{Piroli2021LOCC}.
+With one round of measurements it is prepared in constant
+depth~\cite[paragraph ``Long-range MPS using measurements'']{Malz2024Preparation}. In a
+weighted binary GHZ vector the connected correlation of operators on disjoint regions that leave
+one site unobserved is bounded by the product of the two sector weights, before and after a
+shallow circuit.
+
+\begin{definition}[GHZ-type states]
+    \label{def:ghz_state}
+    \lean{QuantumCircuit.ghzState, QuantumCircuit.ghzState_apply,
+        QuantumCircuit.ghzState_eq_sum, QuantumCircuit.ghzState_smul}
+    \leanok
+    For a finite set of sites $I$, a finite basis $\beta$ at every site and $\alpha\in\C^\beta$,
+    the \emph{GHZ-type state} on $I$ is
+    $\ket{\chi}=\sum_{j\in\beta}\alpha_j\ket{j}^{\otimes I}$, the weighted sum of the constant
+    configurations; it is linear in $\alpha$. For a site $i_0$, $\chi(s)=\alpha_{s_{i_0}}$ if
+    all the values $s_k$ are equal and $\chi(s)=0$ otherwise.
+\end{definition}
+
+\begin{theorem}[GHZ-type states in constant depth with measurements]
+    \label{thm:ghz_measurement}
+    \lean{QuantumCircuit.withZeroAncillas, QuantumCircuit.ghzInitial,
+        QuantumCircuit.ghzMeasured, QuantumCircuit.ghzCircuit,
+        QuantumCircuit.ghzCorrection, QuantumCircuit.depth_ghzCircuit_le,
+        QuantumCircuit.ghzProtocol_output,
+        QuantumCircuit.isOneRoundConversion_withZeroAncillas_ghzState}
+    \leanok
+    \uses{def:measurement_one_round, def:measurement_correct, def:circuits_local,
+        def:ghz_state}
+    Generalizing~\cite[Example~1]{Piroli2021LOCC}
+    and~\cite[paragraph ``Long-range MPS using measurements'']{Malz2024Preparation}, let
+    $M\geq1$, let $\beta$ be a finite abelian group, such as $\mathbb Z_b$ for $b\geq1$, and let
+    $0\neq\alpha\in\C^\beta$. On the ring of $2M$ sites with basis $\beta$, with system sites
+    $2n$ and ancilla sites $2n+1$ ($0\le n<M$), the vector
+    $\ket{\chi_M}_{\rm sys}\otimes\ket{0}^{\otimes M}_{\rm anc}$ is converted from a nonzero
+    product vector with one round of measurements, after a unitary circuit of depth $2$.
+    Every outcome gives exactly this vector.
+\end{theorem}
+\begin{proof}
+    \leanok
+    Start from
+    $\bigl(\sum_{i\in\beta}\alpha_i\ket i\bigr)_0\otimes\bigotimes_{n=1}^{M-1}
+    \bigl(\sum_{i\in\beta}\ket i\bigr)_{2n}\otimes\bigotimes_{n=0}^{M-1}\ket 0_{2n+1}$, which
+    is nonzero since $\alpha\neq0$. The layer of shifts
+    $\ket k_{2n}\ket a_{2n+1}\mapsto\ket k_{2n}\ket{a+k}_{2n+1}$ and then the layer
+    $\ket a_{2n+1}\ket k_{2n+2}\mapsto\ket{a-k}_{2n+1}\ket k_{2n+2}$, both for $0\le n<M-1$,
+    act on the cells $\{k,k+1\}$ of the ring, each layer on pairwise disjoint cells; they are
+    permutations of the configurations and produce
+    \begin{align}
+        \sum_{k\in\beta^M}\alpha_{k_0}\bigotimes_{n=0}^{M-1}\ket{k_n}_{2n}
+        \bigotimes_{n=0}^{M-2}\ket{k_n-k_{n+1}}_{2n+1}\otimes\ket{0}_{2M-1}.\notag
+    \end{align}
+    Measuring the ancillas $2n+1$ ($n<M-1$) with outcomes $m_n\in\beta$ fixes $k_n=k_0-p_n$,
+    where $p_n=\sum_{j=0}^{n-1}m_j$, and the onsite shifts
+    $\bigotimes_{n=0}^{M-1}X^{p_n}_{2n}\otimes\bigotimes_{n=0}^{M-2}X^{-m_n}_{2n+1}$ give
+    $\ket{\chi_M}_{\rm sys}\otimes\ket 0^{\otimes M}_{\rm anc}$.
+\end{proof}
+
+\begin{lemma}[Classical expectations in a GHZ-type state]
+    \label{lem:ghz_expectation}
+    \lean{QuantumCircuit.norm_ghzState_sq,
+        QuantumCircuit.dotProduct_ghzState_diagonal_mulVec,
+        QuantumCircuit.dotProduct_ghzState_mulVec_of_mem_supportedOperators}
+    \leanok
+    \uses{def:ghz_state, def:sites_supported}
+    Let $I$ be nonempty. Then $\|\chi\|^2=\sum_j|\alpha_j|^2$, and for a diagonal
+    operator $D$, $\bra\chi D\ket\chi=\sum_j|\alpha_j|^2\bra{j^I}D\ket{j^I}$. The same holds
+    for every operator supported on a region that leaves a site unobserved.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Expanding $\ket\chi=\sum_j\alpha_j\ket{j^I}$ gives
+    $\bra\chi A\ket\chi=\sum_{i,j}\bar\alpha_i\alpha_j\bra{i^I}A\ket{j^I}$. For $i\neq j$ the
+    two constant configurations differ at every site, in particular at the unobserved site
+    outside the support of $A$, or at any site for a diagonal $A$, so the cross terms vanish.
+    The norm is the case $D=\mathbf 1$.
+\end{proof}
+
+\begin{lemma}[Separated correlations in a weighted GHZ vector]
+    \label{lem:ghz_weighted_covariance}
+    \lean{QuantumCircuit.covariance_ghzState_two,
+        QuantumCircuit.norm_covariance_ghzState_two_le}
+    \leanok
+    \uses{lem:ghz_expectation, lem:sites_supported_mono}
+    Let $|a|^2+|b|^2=1$ and $\chi=a\ket{0^I}+b\ket{1^I}$. Let $A,B$ be supported on disjoint
+    regions whose union leaves a site unobserved, and let $A_s=\bra{s^I}A\ket{s^I}$ and
+    $B_s=\bra{s^I}B\ket{s^I}$. Then
+    \begin{align}
+        \bra\chi AB\ket\chi-\bra\chi A\ket\chi\bra\chi B\ket\chi
+         & =|a|^2|b|^2(A_0-A_1)(B_0-B_1),\notag
+    \end{align}
+    and if $A$ and $B$ are unitary, its modulus is at most $4|a|^2|b|^2$.
+\end{lemma}
+\begin{proof}
+    \leanok
+    By Lemma~\ref{lem:ghz_expectation} the three expectations are classical averages over the
+    two branches. Within each branch $\bra{s^I}AB\ket{s^I}=A_sB_s$ since the supports are
+    disjoint; subtracting the product of the two averages and using $|a|^2+|b|^2=1$ gives the
+    formula. The diagonal entries of a unitary have modulus at most $1$, so
+    $|A_0-A_1|,|B_0-B_1|\leq2$.
+\end{proof}
+
+\begin{theorem}[Weighted GHZ correlations after a shallow circuit]
+    \label{thm:ghz_weighted_covariance_circuit}
+    \lean{QuantumCircuit.norm_covariance_mulVec_ghzState_two_le}
+    \leanok
+    \uses{lem:ghz_weighted_covariance, thm:circuits_light_cone, def:circuits_local}
+    On a geometry whose cells have positive cost, let $U$ be a unitary circuit of depth at most
+    $T$, and let $A,B$ be unitary operators supported on regions whose $T$-fold neighbourhoods
+    are disjoint and leave a site unobserved. If $|a|^2+|b|^2=1$, the connected correlation of
+    $A$ and $B$ in $U\bigl(a\ket{0^I}+b\ket{1^I}\bigr)$ has modulus at most $4|a|^2|b|^2$.
+\end{theorem}
+\begin{proof}
+    \leanok
+    The correlations in $U\chi$ are those of $U^\dagger AU$ and $U^\dagger BU$ in $\chi$, and
+    $U^\dagger ABU=(U^\dagger AU)(U^\dagger BU)$. By the light cone, $U^\dagger AU$ and
+    $U^\dagger BU$ are unitaries supported on the $T$-fold neighbourhoods of the supports of
+    $A$ and $B$, and Lemma~\ref{lem:ghz_weighted_covariance} applies.
+\end{proof}

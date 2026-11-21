@@ -69,6 +69,7 @@ import QICLean.Channel.KoashiImoto
 import QICLean.Channel.KrausCPTP
 import QICLean.Channel.KrausCornerCompression
 import QICLean.Channel.KrausFamily
+import QICLean.Channel.KrausFamilyAncilla
 import QICLean.Channel.KrausFamilyDilation
 import QICLean.Channel.KrausFamilyEncoding
 import QICLean.Channel.KrausFamilyProd

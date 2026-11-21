@@ -138,6 +138,15 @@ theorem IsUnitary.adjoint [DecidableEq β] {K : KrausFamily α β} (h : K.IsUnit
     K.adjoint.IsUnitary :=
   ⟨h.1, fun i ↦ by simp [KrausFamily.adjoint, (h.2 i).1, (h.2 i).2]⟩
 
+/-- The operators of a unitary Kraus family at any two indices agree, and so do those of a family
+equal to it. The equation lets the statement apply to a family given by a term, such as a
+conditional, whose index type is not syntactically that of `K'`. -/
+theorem IsUnitary.op_eq_of_eq [DecidableEq β] {K K' : KrausFamily α β} (hK' : K'.IsUnitary)
+    (h : K = K') (i : K.Index) (j : K'.Index) : K.op i = K'.op j := by
+  subst h
+  have := hK'.1.some
+  exact congrArg K.op (Subsingleton.elim i j)
+
 /-- The family of one unitary operator is unitary. -/
 theorem isUnitary_single {V : Matrix α α ℂ} (hV : V ∈ Matrix.unitaryGroup α ℂ) :
     (single V).IsUnitary :=

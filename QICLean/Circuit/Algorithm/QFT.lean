@@ -3,8 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Circuit.Algorithm.Qubit
+import QICLean.Circuit.Core.Qudit
 import QICLean.Circuit.Core.Parallel
+import QICLean.ManyBody.Sites.PlaceAlong
 
 /-!
 # The quantum Fourier transform
@@ -200,7 +201,7 @@ private theorem fourier_phaseState {A : Finset (Fin n)} {θ : Fin n → ℂ} {a 
   funext y
   change (place {a} ((fourier d).submatrix (siteEquiv (Qudits (Fin n) d) a)
     (siteEquiv (Qudits (Fin n) d) a)) *ᵥ _) y = _
-  rw [place_siteEquiv_mulVec, Fintype.sum_eq_single (x a)]
+  rw [place_siteEquiv_eq_placeAt, placeAt_mulVec_apply, Fintype.sum_eq_single (x a)]
   · have hprod : ∏ i ∈ A, exp (2 * Real.pi * I * ((Function.update y a (x a) i : ℕ) : ℂ) * θ i) =
         ∏ i ∈ A, exp (2 * Real.pi * I * ((y i : ℕ) : ℂ) * θ i) :=
       Finset.prod_congr rfl fun i hi ↦ by

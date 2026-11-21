@@ -23,6 +23,7 @@ depth and gate count are measured by the costs.
   `QuantumCircuit.Geometry.iterate_neighbourhood_mono` — monotonicity of the neighbourhood and
   of its iterates.
 * `QuantumCircuit.Geometry.restrict` — the cells inside a region, as a geometry on its sites.
+* `QuantumCircuit.Geometry.sites` — the single sites, at cost `0`.
 -/
 
 namespace QuantumCircuit
@@ -41,6 +42,13 @@ structure Geometry (S : Type) where
 attribute [instance] Geometry.decEq
 
 namespace Geometry
+
+/-- The single sites as a geometry at cost `0`: one cell `{s}` for each site `s`. A gate on such
+a cell is a local operation on one site, free of cost. -/
+abbrev sites (S : Type) [DecidableEq S] : Geometry S where
+  Cell := S
+  cell s := {s}
+  cost _ := 0
 
 variable {S : Type} [DecidableEq S]
 

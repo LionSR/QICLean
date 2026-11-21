@@ -128,6 +128,117 @@ an alphabet of $q$ letters at every site.
     Lemma~\ref{lem:circuits_dim_bounded}.
 \end{proof}
 
+\section{Channel circuits and onsite channels}
+\label{sec:protocols_channel_circuits}
+
+Two restrictions of protocols recur in local channel conversions: sequences of layers of
+channels on one system, and layers with no cells, which apply a channel at every site and may
+change the bases, as attaching and discarding ancillas do. Both are protocols, and the
+measurement of an instrument followed by channels chosen by its outcome is a channel.
+
+\begin{definition}[Ancilla in a mixed state]
+    \label{def:protocols_attach}
+    \lean{KrausFamily.ancillaState, KrausFamily.attach, KrausFamily.attach_op_apply}
+    \leanok
+    \uses{def:kraus_family}
+    For vectors $w_k\in\C^\gamma$, the ancilla state is $\tau=\sum_kw_kw_k^\dagger$, and
+    attaching the ancilla to $\C^\alpha$ is the Kraus family from $\C^\alpha$ to
+    $\C^\alpha\otimes\C^\gamma$ of the operators $\ket x\mapsto\ket x\otimes w_k$.
+\end{definition}
+
+\begin{lemma}[Attaching and discarding an ancilla]
+    \label{lem:protocols_attach}
+    \lean{KrausFamily.map_attach, KrausFamily.conjTranspose_attach_op_mul,
+        KrausFamily.effect_attach, KrausFamily.isTP_attach, KrausFamily.trace_ancillaState,
+        KrausFamily.map_traceRight_map_attach}
+    \leanok
+    \uses{def:protocols_attach}
+    Attaching the ancilla maps $\rho$ to $\rho\otimes\tau$. Its effect is
+    $\bigl(\sum_k\lVert w_k\rVert^2\bigr)1$, so it is trace-preserving when
+    $\sum_k\lVert w_k\rVert^2=1$, and then the partial trace over the ancilla after the
+    attachment is the identity~\cite{Piroli2021LOCC}.
+\end{lemma}
+\begin{proof}\leanok
+    The operator for $w_k$ has the entries $\delta_{x'x}(w_k)_a$ at $((x',a),x)$, so the
+    entry of the map at $((x,a),(y,b))$ is $\rho_{xy}\sum_k(w_k)_a\overline{(w_k)_b}$, and the
+    product of the adjoint of the operator with itself is $\lVert w_k\rVert^2\,1$. The partial
+    trace of $\rho\otimes\tau$ is $(\tr\tau)\rho$ with $\tr\tau=\sum_k\lVert w_k\rVert^2$.
+\end{proof}
+
+\begin{lemma}[Feedforward after an instrument]
+    \label{lem:protocols_instrument_feedforward}
+    \lean{KrausFamily.IsTP.isKrausCPTP_sum_comp, KrausFamily.sum_comp_singleKrausMap_const}
+    \leanok
+    \uses{def:kraus_family, def:mpdo_single_kraus_map}
+    Let $(K_i)_i$ be a trace-preserving Kraus family, read as an instrument with outcome $i$,
+    and let $S_i$ be channels. Then $\rho\mapsto\sum_iS_i(K_i\rho K_i^\dagger)$ is a channel.
+    If $S_i=S$ for all $i$, this map is $S$ after the map of the family. This is the
+    classical feedforward of~\cite{Piroli2021LOCC}, with no division by outcome
+    probabilities.
+\end{lemma}
+\begin{proof}\leanok
+    Let $(A_{ij})_j$ be Kraus operators of $S_i$ with $\sum_jA_{ij}^\dagger A_{ij}=1$. The map
+    has the Kraus operators $A_{ij}K_i$, and
+    $\sum_{i,j}K_i^\dagger A_{ij}^\dagger A_{ij}K_i=\sum_iK_i^\dagger K_i=1$. The second
+    statement is linearity of $S$.
+\end{proof}
+
+\begin{lemma}[Onsite channels]
+    \label{lem:protocols_onsite}
+    \lean{ManyBody.sum_prodOp, ManyBody.map_prodFamily_prodOp,
+        QuantumCircuit.Circuit.map_ofLayer_ofOnsite,
+        QuantumCircuit.Circuit.map_ofLayer_ofOnsite_prodOp,
+        QuantumCircuit.Layer.lightCone_ofOnsite, QuantumCircuit.Layer.forall_ofOnsite}
+    \leanok
+    \uses{def:sites_product_family, def:circuits_of_cells, def:circuits_layer,
+        thm:circuits_layer_light_cone}
+    A layer with no cells and Kraus families $K^s$ at the sites realises the product channel
+    $\bigotimes_sK^s$, which maps $\bigotimes_s\sigma_s$ to $\bigotimes_sK^s(\sigma_s)$. Its
+    backward light cone of a region $R$ is $R$: the Heisenberg picture of an onsite channel
+    keeps the support of an operator, and is multiplicative on operators supported on
+    disjoint regions~\cite{Piroli2021LOCC}. It has a local property when every $K^s$ has it.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:circuits_layer_dual_mul}
+    A sum over the choices $j$ of an index at every site of $\bigotimes_vf_v(j_v)$ is
+    $\bigotimes_v\sum_if_v(i)$, entrywise the expansion of a product of sums; apply it to
+    $f_v(i)=K^v_i\sigma_vK_i^{v\dagger}$, since product operators multiply sitewise. The layer
+    has no cells, so its light cone adds nothing to $R$, and
+    Theorem~\ref{thm:circuits_layer_light_cone} and Lemma~\ref{lem:circuits_layer_dual_mul}
+    apply.
+\end{proof}
+
+\begin{theorem}[Channel circuits and onsite channels are protocols]
+    \label{thm:protocols_channel_circuits}
+    \lean{QuantumCircuit.Circuit.map_eq_of_subsingleton, QuantumCircuit.Circuit.seq_cons,
+        QuantumCircuit.Circuit.map_seq_cons,
+        QuantumCircuit.Circuit.depth_seq_le_length, QuantumCircuit.IsProtocol.ofLayer,
+        QuantumCircuit.IsProtocol.seq, QuantumCircuit.IsProtocol.ofOnsite,
+        QuantumCircuit.IsConversion.ofOnsite_seq}
+    \leanok
+    \uses{def:protocols_protocol, thm:protocols_comp, lem:protocols_onsite, lem:circuits_seq,
+        lem:circuits_unique_branch}
+    A layer of trace-preserving plain gates and onsite families of depth $t$ is a protocol of
+    depth $t$. A sequence $L_1,\dots,L_m$ of such layers on one system is a protocol of depth
+    at most $m$, with map $\Phi_{L_m}\circ\dots\circ\Phi_{L_1}$; the depth counts only the
+    layers using a cell of positive cost. A product of trace-preserving families, one at every
+    site, is a protocol of depth $0$. Hence attaching ancillas by an onsite channel, running a
+    sequence of $m$ layers on the enlarged sites and discarding by an onsite channel converts
+    every $\rho$ into the result in depth $m$~\cite{Piroli2021LOCC}. A circuit with one branch,
+    such as a circuit of unitary gates, has as map the conjugation by its Kraus operator, so a
+    unitary circuit of depth $T$ is the channel circuit $\rho\mapsto U\rho U^\dagger$ of depth
+    $T$~\cite{Malz2024Preparation}.
+\end{theorem}
+\begin{proof}\leanok
+    The circuit of one layer has the depth and the map of the layer. A sequence of layers is
+    the circuit of its first layer followed by the rest, so its map is computed layer by layer
+    and its depth is at most the sum of the depths of its layers, each at most $1$. A layer
+    with no cells has depth $0$ and realises the product channel
+    (Lemma~\ref{lem:protocols_onsite}). The conversion is the composition of the three
+    protocols (Theorem~\ref{thm:protocols_comp}). The map of a circuit is the sum over its
+    branches of the conjugations by their Kraus operators.
+\end{proof}
+
 \section{Approximate and asymptotic conversion}
 \label{sec:protocols_approximate}
 
@@ -437,6 +548,7 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
         KrausFamily.map_embed_apply, KrausFamily.decode_op_inl, KrausFamily.decode_op_inr,
         KrausFamily.map_decode_apply, KrausFamily.effect_decode, KrausFamily.isTP_decode, KrausFamily.decode_op_inl_mul, KrausFamily.decode_op_inr_mul,
         KrausFamily.map_decode_map_embed, QuantumCircuit.map_encodeCircuit,
+        QuantumCircuit.map_encodeCircuit_congr, QuantumCircuit.map_encodeCircuit_trans,
         QuantumCircuit.map_decodeCircuit_comp_map_encodeCircuit}
     \leanok
     \uses{def:protocols_encoding, lem:gate_basis_inclusion_isometry}
@@ -449,7 +561,9 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     both are trace-preserving. On the image of $J_e$ the
     decoding operator $J_e^\dagger$ inverts $J_e$ and the operators $\ket{x_0}\bra{b}$ vanish,
     so decoding after encoding is the identity, and so is the sitewise decoding after the
-    sitewise encoding.
+    sitewise encoding. The sitewise encoding does not depend on the geometry, and the sitewise
+    encoding along the composites $g_s\circ e_s$ is the encoding along $g$ after the encoding
+    along $e$, since $J_{g\circ e}=J_gJ_e$.
 \end{lemma}
 \begin{proof}\leanok
     The entries of $J_e$ are $(J_e)_{ba}=1$ if $b=e(a)$ and $0$ otherwise, and $e$ is
@@ -574,6 +688,37 @@ image of the embedding and sends the rest of its input to a fixed basis vector.
     cells of the layer and the continuations have the depths of the original ones, so the
     depth is unchanged; equal continuations have equal encodings, so an unbranched circuit stays
     unbranched.
+\end{proof}
+
+\begin{theorem}[Protocols on a fixed register]
+    \label{thm:protocols_fixed_register}
+    \lean{QuantumCircuit.Circuit.exists_seq_encoded,
+        QuantumCircuit.IsBoundedProtocol.exists_seq_encoded}
+    \leanok
+    \uses{thm:protocols_encoded_layer, thm:protocols_channel_circuits, def:circuits_dim_bounded,
+        def:protocols_protocol}
+    Let $B\le q$, and let an unbranched circuit of plain gates from $X$ to $Z$ have
+    trace-preserving gates and onsite families and every basis along it between $1$ and $B$
+    elements. For injective maps $e_s$ and $f_s$ of the bases of $X$ and of $Z$ into
+    $\{0,\dots,q-1\}$ there are layers $L_1,\dots,L_m$ on $\{0,\dots,q-1\}$ at every site, with
+    trace-preserving gates and onsite families and total depth at most that of the circuit,
+    whose sequence after the sitewise encoding along $e$ is the sitewise encoding along $f$
+    after the map of the circuit. Every intermediate system is the register
+    $\{0,\dots,q-1\}$. In particular, a map realised by a protocol bounded by $B$ in depth at
+    most $T$ is carried to such a sequence of total depth at most $T$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:protocols_encoding, lem:circuits_tp_nonempty}
+    By induction on the circuit. The empty circuit is replaced by the encoding of the layer of
+    identities along $e$ and $f$ (Theorem~\ref{thm:protocols_encoded_layer}), a single layer on
+    the register without cells, which acts on the image of the encoding along $e$ as the
+    encoding along $f$. For a first layer $L$ with continuations, all equal since the circuit is
+    unbranched, the layer has a Kraus index and nonempty output bases
+    (Lemma~\ref{lem:circuits_tp_nonempty}); embed the bases after $L$ into the register by $g$,
+    encode $L$ along $e$ and $g$ on its own cells (Theorem~\ref{thm:protocols_encoded_layer}),
+    and put it in front of the sequence given by induction for the continuation along $g$ and
+    $f$. The encoded layer has the cells, hence the depth, of $L$, and the map of the sequence
+    is computed layer by layer (Theorem~\ref{thm:protocols_channel_circuits}).
 \end{proof}
 
 \section{Blocking protocols}
@@ -909,7 +1054,8 @@ its costs do not change.
 
 \begin{theorem}[Pure outputs of a unitary dilation]
     \label{thm:protocols_dilation_output}
-    \lean{QuantumCircuit.Circuit.exists_unit_product_approx}
+    \lean{QuantumCircuit.Circuit.exists_unit_product_approx,
+        QuantumCircuit.IsUnitaryDilation.exists_unit_product_approx}
     \leanok
     \uses{def:protocols_dilation_circuits, def:protocols_unitary_dilation}
     Let $c$ be a circuit of unitary gates and onsite families from the system with bases
@@ -922,7 +1068,10 @@ its costs do not change.
         \label{eq:protocols_dilation_output}
     \end{equation}
     for some unit vector $\eta$ of the output environment. For $\varepsilon=0$ the output is
-    the pure state $\varphi\otimes\eta$.
+    the pure state $\varphi\otimes\eta$. Consequently, every map with a unitary dilation that
+    sends $\ketbra\psi\psi$ to within $\varepsilon$ of $\ketbra\varphi\varphi$ in trace norm
+    has a dilating circuit, with the same environments, bound and depth, satisfying
+    (\ref{eq:protocols_dilation_output}).
 \end{theorem}
 \begin{proof}\leanok
     \uses{lem:protocols_dilation_circuits, lem:circuits_unique_branch, thm:circuits_tp,
@@ -960,6 +1109,37 @@ holding a local memory of qudits.
     register $x\in\{0,\dots,d-1\}^k$ of the site $i$ to the configuration of the wires of $i$
     with the digit $x_t$ on the wire $1+t$ and $0$ on the port and on the wires $1+k+t$.
 \end{definition}
+
+\begin{definition}[Codes on the wires]
+    \label{def:protocols_port_code}
+    \lean{QuantumCircuit.portWireEmbedding, QuantumCircuit.Geometry.sites}
+    \leanok
+    \uses{def:protocols_port_ring, def:circuits_geometry}
+    A code of a site of the ring with ports is an injective map of a finite set into the
+    configurations of the wires of the site. The port code sends $x\in\{0,\dots,d-1\}$ to the
+    configuration with $x$ on the port and $0$ on the other wires: the logical qudit sits on
+    the physical port and the local memory is in $0$. The single sites form the geometry with
+    one cell $\{s\}$ of cost $0$ for each site $s$.
+\end{definition}
+
+\begin{lemma}[Operations on whole sites are free]
+    \label{lem:protocols_port_sites}
+    \lean{QuantumCircuit.Layer.exists_portRing_sites}
+    \leanok
+    \uses{def:protocols_port_code, def:protocols_unitary_dilation, lem:sites_block_place}
+    Let $L$ be a layer of trace-preserving gates and onsite families on the single sites of
+    the ring of $N$ sites, every site carrying the configurations of the $2k+1$ wires of a site
+    of the ring with ports, and let $D$ be a set of wires containing a wire of every site. Then
+    some map $\Phi$ on the ring with ports with a unitary dilation of depth $0$, with
+    environments in $D$ and bound $d$, acts on the wires as $L$ acts on the sites.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:protocols_dilation_layer, lem:circuits_dim_bounded}
+    Read the family of $L$ at every site as a gate on the cell of all the wires of the site, of
+    cost $0$. This layer has the Kraus operators of $L$ read on the wires and no free wire; each
+    of its gates acts on a cell meeting $D$, so it is unitary off $D$, and every basis is
+    $\{0,\dots,d-1\}$. Theorem~\ref{thm:protocols_dilation_layer} gives the dilation.
+\end{proof}
 
 \begin{lemma}[Layers of permutations of qudits]
     \label{lem:protocols_perm_layer}
@@ -1092,3 +1272,77 @@ holding a local memory of qudits.
     they are finite bases at the wires of $D$. Padding a finite environment into qudits is not
     formalized.
 \end{remark}
+
+\begin{lemma}[Changing the codes of the sites is free]
+    \label{lem:protocols_port_recode}
+    \lean{QuantumCircuit.exists_portRing_recode}
+    \leanok
+    \uses{def:protocols_port_code, lem:protocols_port_sites, thm:protocols_encoded_layer}
+    Let $a$ and $a'$ be codes of nonempty finite sets at the sites of the ring with ports, with
+    sitewise encodings $\mathcal E_a$ and $\mathcal E_{a'}$ read on the wires, and let $D$ be a
+    set of wires containing a wire of every site. Then some map $\Psi$ with a unitary dilation
+    of depth $0$, with environments in $D$ and bound $d$, satisfies
+    $\Psi\circ\mathcal E_a=\mathcal E_{a'}$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:protocols_encoding}
+    Encode the layer of identities on the single sites along $a$ and $a'$
+    (Theorem~\ref{thm:protocols_encoded_layer}) and apply Lemma~\ref{lem:protocols_port_sites}
+    to the encoded layer; the sitewise encodings do not depend on the geometry
+    (Lemma~\ref{lem:protocols_encoding}).
+\end{proof}
+
+\begin{theorem}[Bounded protocols between codes on the wires]
+    \label{thm:protocols_port_code}
+    \lean{QuantumCircuit.IsBoundedProtocol.exists_portRing_of_code}
+    \leanok
+    \uses{thm:protocols_port_ring, lem:protocols_port_recode, def:protocols_port_code}
+    Let $N\ge2$, $d\ge1$, $B\le d^k$, and let $\Phi$ be realised on the ring of $N$ sites by a
+    protocol of depth at most $T$ bounded by $B$. Let $a$ and $b$ be codes of its input and
+    output bases in the wires of the ring with ports and $2k+1$ wires per site, and let $D$ be
+    a set of wires containing a wire of every site. Then some map $\Phi'$ with a unitary
+    dilation of depth at most $2kT$, with environments in $D$ and bound $d$, satisfies
+    $\Phi'\circ\mathcal E_a=\mathcal E_b\circ\Phi$. With the port codes, the logical systems sit
+    on the physical ports and the local memories start and end in $0$, as in the source
+    (arXiv:2103.13367, Supplement, proof of Proposition~2, p.~8).
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:protocols_dilation_comp, lem:protocols_dimension_bound}
+    The bases of $\Phi$ have between $1$ and $B\le d^k$ elements
+    (Lemma~\ref{lem:protocols_dimension_bound}), so they have codes $e$ and $f$ in the
+    registers. Change the code $a$ into the data code of $e$
+    (Lemma~\ref{lem:protocols_port_recode}), apply Theorem~\ref{thm:protocols_port_ring}, and
+    change the data code of $f$ into $b$; the dilations compose
+    (Theorem~\ref{thm:protocols_dilation_comp}) with depth $0+2kT+0$. The data code of $e$ is
+    the data embedding after $\mathcal E_e$ (Lemma~\ref{lem:protocols_encoding}).
+\end{proof}
+
+\begin{theorem}[Pure outputs on the ring with ports]
+    \label{thm:protocols_port_output}
+    \lean{QuantumCircuit.IsBoundedProtocol.exists_portRing_unit_product_approx}
+    \leanok
+    \uses{thm:protocols_port_code, thm:protocols_dilation_output}
+    In the setting of Theorem~\ref{thm:protocols_port_code}, let $J_a$ and $J_b$ be the
+    isometries of the codes, and let $\psi$, $\varphi$ be unit vectors with
+    $\lVert\Phi(\ketbra\psi\psi)-\ketbra\varphi\varphi\rVert_1\le\varepsilon$. Then there are
+    environments at the wires, with one element outside $D$, basis vectors $e$, and an
+    unbranched circuit $c$ of unitary gates of depth at most $2kT$ on the ring with ports,
+    every wire outside $D$ of dimension at most $d$ throughout, such that preparing $e$,
+    running $c$ and tracing out the output environments satisfies
+    $\Phi'\circ\mathcal E_a=\mathcal E_b\circ\Phi$, and the Kraus operator $U$ of $c$ satisfies
+    \begin{equation}
+        \lVert U(J_a\psi\otimes e)-J_b\varphi\otimes\eta\rVert\le\sqrt{2\varepsilon}
+        \notag
+    \end{equation}
+    for some unit vector $\eta$ of the output environment~\cite{Piroli2021LOCC}. For
+    $\varepsilon=0$ the output is exactly $J_b\varphi\otimes\eta$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gate_basis_inclusion_isometry, lem:protocols_encoding}
+    On the wires, $\mathcal E_a(\ketbra\psi\psi)=\ketbra{J_a\psi}{J_a\psi}$, and
+    $\Phi'(\ketbra{J_a\psi}{J_a\psi})=J_b\Phi(\ketbra\psi\psi)J_b^\dagger$. The isometries
+    $J_a$ and $J_b$ preserve the norm of vectors and, on both sides, the trace norm, so
+    $\lVert\Phi'(\ketbra{J_a\psi}{J_a\psi})-\ketbra{J_b\varphi}{J_b\varphi}\rVert_1\le
+    \varepsilon$ with unit vectors $J_a\psi$ and $J_b\varphi$. Theorem~\ref{thm:protocols_dilation_output}
+    applied to the dilation of $\Phi'$ gives the circuit.
+\end{proof}

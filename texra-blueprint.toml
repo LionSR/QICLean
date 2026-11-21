@@ -42,5 +42,6 @@ akl14 = "Arad, Kuwahara and Landau, Connecting global and local energy distribut
 lvv13   = "arXiv:1307.5143 (Landau, Vazirani and Vidick, one-dimensional gapped ground states)"
 gn96    = "Griffiths and Niu, Semiclassical Fourier transform for quantum computation, Phys. Rev. Lett. 76 (1996) 3228, arXiv:quant-ph/9511007"
 psc21   = "Piroli, Styliaris and Cirac, arXiv:2103.13367 (quantum circuits assisted by LOCC, phases of matter)"
+mswc24  = "Malz, Styliaris, Wei and Cirac, Preparation of matrix product states with log-depth quantum circuits, Phys. Rev. Lett. 132 (2024) 040404, arXiv:2307.01696"
 tropp12 = "Tropp, User-friendly tail bounds for sums of random matrices, Found. Comput. Math. 12 (2012), arXiv:1004.4389"
 nachtergaele96 = "Nachtergaele, The spectral gap for some spin chains with discrete symmetry breaking, Commun. Math. Phys. 175 (1996) 565, arXiv:cond-mat/9410110"

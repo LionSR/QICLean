@@ -9,5 +9,13 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Model
 
 import QICLean.Circuit.Model.Approximate
+import QICLean.Circuit.Model.Channel
+import QICLean.Circuit.Model.CleanWorkspace
 import QICLean.Circuit.Model.Conversion
+import QICLean.Circuit.Model.Measurement
+import QICLean.Circuit.Model.ProductPreparation
 import QICLean.Circuit.Model.Protocol
+import QICLean.Circuit.Model.Unitary
+import QICLean.Circuit.Model.UnitaryPlacement
+import QICLean.Circuit.Model.UnitaryRegion
+import QICLean.Circuit.Model.UnitaryRing

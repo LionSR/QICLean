@@ -30,6 +30,7 @@ Adapted from TNLean at commit `e41c3b6371c44bcecb7004d78ff5ec11ae2282f3` (Apache
 
 ## Main results
 
+* `QuantumCircuit.Geometry.ring_cell_nonempty` — the cells of the ring are nonempty.
 * `QuantumCircuit.Geometry.iterate_neighbourhood_ring` — the `r`-fold neighbourhood of the ring
   is the ring ball of radius `r`.
 -/
@@ -50,6 +51,10 @@ abbrev ring (N : ℕ) : Geometry (Fin N) where
 /-- Every cell of the ring has positive cost. -/
 theorem ring_cost_pos {N : ℕ} (b : (ring N).Cell) : 0 < (ring N).cost b :=
   Nat.one_pos
+
+/-- The cells of the ring are nonempty. -/
+theorem ring_cell_nonempty {N : ℕ} (b : (ring N).Cell) : ((ring N).cell b).Nonempty :=
+  Finset.insert_nonempty _ _
 
 variable {N : ℕ} [NeZero N]
 

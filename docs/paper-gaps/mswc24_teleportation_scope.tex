@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{Teleportation and Long-Range Gates with Measurements: Rounds and Separations}
+\author{}
+\date{2026-11-21}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+\section{What the source states}
+The paragraph ``Tree-RG circuit with measurements'' of~\cite{Malz2024Preparation}
+observes that gates which ``act on a constant number of sites which, although
+spatially separated, can be teleported at neighboring registers with a constant
+overhead'', by ``creating nearest-neighbor entangled pairs, then performing
+simultaneous measurements, and correcting (without postselection) based on the
+measurement outcomes''. The source fixes no model of circuits with
+measurements and no restriction on the positions of the sites joined by a
+gate.
+
+\section{What is formalized}
+\begin{enumerate}
+    \item \emph{The model.} A measurement circuit has unitary gates, onsite
+          unitaries and measurements in the computational basis, and its later
+          layers may depend on all earlier outcomes; only the layers using a
+          cell of positive cost are counted in the depth. A conversion with one
+          round of measurements is the class $\mathrm{QCcc}_\ell$
+          of~\cite{Piroli2021LOCC}. General measurement circuits compose any
+          number of rounds; that paper performs a single round and remarks that
+          ``one could also define a more general scheme with multiple rounds of
+          LOCC'', and in its class $\mathrm{QCcc}^{(k)}_\ell$ of the paragraph
+          ``Phases of matter'' the number $k$ of composed transformations does
+          not depend on the system size. The number of rounds of a circuit is
+          recorded separately, as the number of branching layers along a branch.
+    \item \emph{Teleportation.} For qudits of any dimension $d$, on any
+          geometry in which the neighbouring pairs used are cells, any number of
+          registers is moved along chains of hops of any length in one round of
+          depth $2$; for every outcome the round acts as $d^{-H}$ times the
+          permutation of sites, $H$ the number of hops.
+    \item \emph{Long-range gates.} On the ring, two-site gates on pairwise
+          disjoint stretches $a,\dots,a+2L+1$, with the sites strictly inside
+          each stretch in $\ket0$, are applied by two rounds of total depth at
+          most $5$, whatever $L$. A gate joins the sites $a$ and $a+2L+1$, at odd
+          separation. Gates on two registers of $s$ consecutive sites at the two
+          ends of such stretches are applied in depth at most $4s+K$, with $K$ the
+          gate count of the register gate on the open chain of $2s$ sites.
+\end{enumerate}
+
+\section{The deviation}
+Gates at even separation, and gates on overlapping stretches, are not covered,
+whereas the cited paragraph speaks of spatially separated sites in general.
+The sites strictly inside a stretch must carry $\ket0$ before the gates. The
+restriction is a scope restriction: the statements proved are correct as
+stated, and the uses of the construction in the source need only odd
+separations on disjoint stretches.
+
+\section{Elimination plan}
+An even separation is reduced to an odd one by one swap of a neighbouring pair
+at either end, at an additional depth of $1$; overlapping stretches are
+scheduled in a bounded number of layers of disjoint stretches when every site
+lies in a bounded number of stretches. Both are compositions of the results
+above and need no change to the model.
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

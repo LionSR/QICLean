@@ -326,7 +326,9 @@ theorem qubitGate_mulVec (u : Fin m → ℂ) (V : Matrix (Fin 2) (Fin 2) ℂ) (j
       (siteEquiv (system t m) (.inl j))) *ᵥ registerState u f =
       registerState u fun x ↦ ∑ b, V (x j) b * f (Function.update x j b) := by
   funext σ
-  refine (place_siteEquiv_mulVec (X := system t m) (.inl j) V _ σ).trans ?_
+  refine (congrFun (congrArg (· *ᵥ registerState u f)
+    (place_siteEquiv_eq_placeAt (X := system t m) (.inl j) V)) σ).trans
+    ((placeAt_mulVec_apply (X := system t m) (.inl j) V _ σ).trans ?_)
   change ∑ b : Fin 2, V (σ (.inl j)) b * (f (control t m (Function.update σ (.inl j) b)) *
       u (Function.update σ (.inl j) b (.inr ()))) =
     (∑ b, V (control t m σ j) b * f (Function.update (control t m σ) j b)) * u (σ (.inr ()))

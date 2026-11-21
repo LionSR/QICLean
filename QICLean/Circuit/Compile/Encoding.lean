@@ -30,6 +30,8 @@ the circuit, and the encoded circuit keeps the branching of the circuit.
 ## Main results
 
 * `QuantumCircuit.map_encodeCircuit` — the encoding is conjugation by the product embedding.
+* `QuantumCircuit.map_encodeCircuit_congr`, `QuantumCircuit.map_encodeCircuit_trans` — the
+  encoding does not depend on the geometry, and composite embeddings encode in two steps.
 * `QuantumCircuit.map_decodeCircuit_comp_map_encodeCircuit` — decoding after encoding is the
   identity.
 * `QuantumCircuit.Layer.exists_encoded` — the encoding of a layer.
@@ -70,6 +72,23 @@ theorem map_encodeCircuit (e : ∀ s, X s ↪ Y s) (ρ : Matrix (Config X) (Conf
         (basisInclusion (Function.Embedding.piCongrRight e))ᴴ := by
   rw [encodeCircuit, ← prodOp_basisInclusion]
   exact Circuit.map_ofLayer_ofOnsite_single _ _ ρ
+
+/-- The map of an encoding does not depend on the geometry the circuit is written on. -/
+theorem map_encodeCircuit_congr (Γ' : Geometry S) (e : ∀ s, X s ↪ Y s) :
+    (encodeCircuit Γ e).map KrausGate.ev = (encodeCircuit Γ' e).map KrausGate.ev :=
+  LinearMap.ext fun ρ ↦ by rw [map_encodeCircuit, map_encodeCircuit]
+
+/-- Encoding along composite embeddings is the encoding along the first followed by the encoding
+along the second. -/
+theorem map_encodeCircuit_trans (e : ∀ s, X s ↪ Y s) (g : ∀ s, Y s ↪ Y' s) :
+    (encodeCircuit Γ fun s ↦ (e s).trans (g s)).map KrausGate.ev =
+      (encodeCircuit Γ g).map KrausGate.ev ∘ₗ (encodeCircuit Γ e).map KrausGate.ev := by
+  refine LinearMap.ext fun ρ ↦ ?_
+  have h : Function.Embedding.piCongrRight (fun s ↦ (e s).trans (g s)) =
+      (Function.Embedding.piCongrRight e).trans (Function.Embedding.piCongrRight g) := rfl
+  rw [LinearMap.comp_apply, map_encodeCircuit, map_encodeCircuit, map_encodeCircuit, h,
+    ← basisInclusion_mul_basisInclusion]
+  simp only [conjTranspose_mul, Matrix.mul_assoc]
 
 variable (Γ) in
 /-- The sitewise decoding along embeddings `e s : X s ↪ Y s` with fallback basis vectors

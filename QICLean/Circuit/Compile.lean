@@ -9,9 +9,17 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Compile
 
 import QICLean.Circuit.Compile.Block
+import QICLean.Circuit.Compile.ChainUniversality
 import QICLean.Circuit.Compile.Dilation
 import QICLean.Circuit.Compile.DilationOutput
 import QICLean.Circuit.Compile.Encoding
+import QICLean.Circuit.Compile.FixedRegister
+import QICLean.Circuit.Compile.GateSubstitution
+import QICLean.Circuit.Compile.ImageReflection
 import QICLean.Circuit.Compile.PermGate
 import QICLean.Circuit.Compile.Port
+import QICLean.Circuit.Compile.PortCode
 import QICLean.Circuit.Compile.PortProtocol
+import QICLean.Circuit.Compile.SwapRouting
+import QICLean.Circuit.Compile.Universality
+import QICLean.Circuit.Compile.WindowUniversality

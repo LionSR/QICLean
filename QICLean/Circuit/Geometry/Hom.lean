@@ -16,6 +16,9 @@ move along such morphisms (`Circuit/Core/Map.lean`).
 
 * `QuantumCircuit.Geometry.Hom` — a morphism of geometries over a map of sites.
 * `QuantumCircuit.Geometry.Hom.refl` — the identity morphism.
+* `QuantumCircuit.Geometry.restrictHom` — the cells inside a region are cells of the geometry.
+* `QuantumCircuit.Geometry.Hom.toRestrict` — a morphism into a geometry over a map of sites into
+  a region, as a morphism into the cells inside the region.
 
 ## Main results
 
@@ -65,6 +68,29 @@ theorem Geometry.Hom.pairwiseDisjoint_map (h : Γ.Hom Γ' ι) {s : Finset Γ.Cel
   obtain ⟨c₂, hc₂, rfl⟩ := Finset.mem_map.mp hb₂
   simp only [Function.onFun, h.cell_cellMap, Finset.disjoint_map]
   exact hs hc₁ hc₂ fun hc ↦ hne (congrArg _ hc)
+
+/-- The cells inside the region `D`, as a geometry on the sites of `D`, are cells of `Γ`. -/
+def Geometry.restrictHom [DecidableEq S] (Γ : Geometry S) (D : Finset S) :
+    (Γ.restrict D).Hom Γ (Function.Embedding.subtype (· ∈ D)) where
+  cellMap := Function.Embedding.subtype _
+  cell_cellMap b := (Finset.subtype_map_of_mem fun _ hv ↦ b.2 hv).symm
+
+/-- A morphism of geometries into `Γ` over a map of sites into the region `D` is a morphism into
+the cells inside `D`. -/
+def Geometry.Hom.toRestrict {T : Type} [DecidableEq S] {Δ : Geometry T} {D : Finset S}
+    {ι : T ↪ {s // s ∈ D}}
+    (h : Δ.Hom Γ (ι.trans (Function.Embedding.subtype _))) : Δ.Hom (Γ.restrict D) ι where
+  cellMap := ⟨fun b ↦ ⟨h.cellMap b, fun v hv ↦ by
+      rw [h.cell_cellMap] at hv
+      obtain ⟨t, -, rfl⟩ := Finset.mem_map.mp hv
+      exact (ι t).2⟩,
+    fun _ _ hbb' ↦ h.cellMap.injective (congrArg Subtype.val hbb')⟩
+  cell_cellMap b := by
+    ext w
+    simp only [Geometry.restrict, Finset.mem_subtype, Finset.mem_map, Subtype.ext_iff]
+    change w.1 ∈ Γ.cell (h.cellMap b) ↔ _
+    rw [h.cell_cellMap]
+    simp only [Finset.mem_map, Function.Embedding.trans_apply, Function.Embedding.coe_subtype]
 
 end Hom
 

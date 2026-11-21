@@ -10,6 +10,7 @@ Authors: QICLean contributors
 
 import QICLean.Circuit.Geometry.Basic
 import QICLean.Circuit.Geometry.Block
+import QICLean.Circuit.Geometry.Graph
 import QICLean.Circuit.Geometry.Hom
 import QICLean.Circuit.Geometry.Port
 import QICLean.Circuit.Geometry.Ring
