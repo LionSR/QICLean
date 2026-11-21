@@ -28,7 +28,7 @@ those coordinates the placement of an operator on `a`, `b`, `bᶜ` or `aᶜ` is 
 `TripartiteDecorrelation.liftA`, `liftB`, `liftAX` or `liftXB`
 (`reindex_place_left`, `reindex_place_right`, `reindex_place_compl_right`,
 `reindex_place_compl_left`), so decorrelation is the vanishing of
-`P (O_a ⊗ 1) (1 - P) (O_b ⊗ 1) P` for all operators `O_a` on `a` and `O_b` on `b`
+`P (O_a ⊗ 1) (1 - P) (1 ⊗ O_b) P` for all operators `O_a` on `a` and `O_b` on `b`
 (`isDecorrelated_reindex_iff`).
 
 This restates, for an interaction on a system of sites with the terms placed by
@@ -240,7 +240,7 @@ theorem reindex_place_compl_left (K : Matrix (RegionConfig X aᶜ) (RegionConfig
     not_not]
 
 /-- **Decorrelation on a system of sites.** The regions `a` and `b` are decorrelated in `P`,
-in the tripartite coordinates, exactly when `P (O_a ⊗ 1) (1 - P) (O_b ⊗ 1) P = 0` for all
+in the tripartite coordinates, exactly when `P (O_a ⊗ 1) (1 - P) (1 ⊗ O_b) P = 0` for all
 operators `O_a` on `a` and `O_b` on `b`. CPSV16, arXiv:1606.00608, Appendix D.2, Definition
 D.1, lines 2187--2191, in its complex-linear form. -/
 theorem isDecorrelated_reindex_iff {P : Matrix (Config X) (Config X) ℂ} :
