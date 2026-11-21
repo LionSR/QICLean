@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.TripartiteDecorrelation
 import QICLean.ManyBody.Hamiltonian.FrustrationFree
+import QICLean.ManyBody.Sites.RegionMatrix
 
 /-!
 # Commuting parent Hamiltonians on three regions
@@ -122,50 +123,36 @@ private theorem mem_compl_union {v : V} (ha : v ∉ a) (hb : v ∉ b) : v ∈ (a
   simp [ha, hb]
 
 /-- The configurations of the system as triples of configurations of `a`, of the sites outside
-`a ∪ b`, and of `b`, for disjoint regions `a` and `b`. -/
+`a ∪ b`, and of `b`, for disjoint regions `a` and `b`: the cut at `a` followed by the split of the
+sites outside `a` at `b` (`complementUnionEquiv`). -/
 def tripartiteEquiv (X : V → Type*) (hab : Disjoint a b) :
-    Config X ≃ RegionConfig X a × (RegionConfig X (a ∪ b)ᶜ × RegionConfig X b) where
-  toFun σ := (fun v ↦ σ v, fun v ↦ σ v, fun v ↦ σ v)
-  invFun p v := if ha : v ∈ a then p.1 ⟨v, ha⟩ else if hb : v ∈ b then p.2.2 ⟨v, hb⟩ else
-    p.2.1 ⟨v, mem_compl_union ha hb⟩
-  left_inv σ := by
-    funext v
-    by_cases ha : v ∈ a
-    · simp [ha]
-    · by_cases hb : v ∈ b <;> simp [ha, hb]
-  right_inv p := by
-    refine Prod.ext (funext fun v ↦ by simp [v.2]) (Prod.ext (funext fun v ↦ ?_)
-      (funext fun v ↦ ?_))
-    · simp [not_mem_of_mem_compl_union_left v.2, not_mem_of_mem_compl_union_right v.2]
-    · simp [Finset.disjoint_right.mp hab v.2, v.2]
+    Config X ≃ RegionConfig X a × (RegionConfig X (a ∪ b)ᶜ × RegionConfig X b) :=
+  (cutEquiv X a).trans <| (Equiv.refl _).prodCongr <|
+    (complementUnionEquiv X a b hab).trans <| (Equiv.prodComm _ _).trans <|
+      (complementEquiv X (a ∪ b)).prodCongr (Equiv.refl _)
 
-/-- The configurations of `bᶜ` as pairs of configurations of `a` and of `(a ∪ b)ᶜ`. -/
+omit [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+/-- The three parts of a configuration are its restrictions to `a`, `(a ∪ b)ᶜ` and `b`. -/
+theorem tripartiteEquiv_apply (hab : Disjoint a b) (σ : Config X) :
+    tripartiteEquiv X hab σ =
+      ((fun v ↦ σ v : RegionConfig X a), (fun v ↦ σ v : RegionConfig X (a ∪ b)ᶜ),
+        (fun v ↦ σ v : RegionConfig X b)) :=
+  rfl
+
+/-- The configurations of `bᶜ` as pairs of configurations of `a` and of `(a ∪ b)ᶜ`: the split of
+the sites outside `b` at `a` (`complementUnionEquiv`). -/
 def complRightEquiv (X : V → Type*) (hab : Disjoint a b) :
-    RegionConfig X bᶜ ≃ RegionConfig X a × RegionConfig X (a ∪ b)ᶜ where
-  toFun σ := (fun v ↦ σ ⟨v, Finset.mem_compl.mpr (Finset.disjoint_left.mp hab v.2)⟩,
-    fun v ↦ σ ⟨v, Finset.mem_compl.mpr (not_mem_of_mem_compl_union_right v.2)⟩)
-  invFun p v := if ha : v.1 ∈ a then p.1 ⟨v, ha⟩ else
-    p.2 ⟨v, mem_compl_union ha (Finset.mem_compl.mp v.2)⟩
-  left_inv σ := by
-    funext v
-    by_cases ha : v.1 ∈ a <;> simp [ha]
-  right_inv p := by
-    refine Prod.ext (funext fun v ↦ by simp [v.2]) (funext fun v ↦ ?_)
-    simp [not_mem_of_mem_compl_union_left v.2]
+    RegionConfig X bᶜ ≃ RegionConfig X a × RegionConfig X (a ∪ b)ᶜ :=
+  (complementEquiv X b).symm.trans <| (complementUnionEquiv X b a hab.symm).trans <|
+    (Equiv.refl _).prodCongr <| (complementEquiv X (b ∪ a)).trans <|
+      Equiv.piCongrLeft' _ (Equiv.subtypeEquivRight fun v ↦ by rw [Finset.union_comm])
 
-/-- The configurations of `aᶜ` as pairs of configurations of `(a ∪ b)ᶜ` and of `b`. -/
+/-- The configurations of `aᶜ` as pairs of configurations of `(a ∪ b)ᶜ` and of `b`: the split of
+the sites outside `a` at `b` (`complementUnionEquiv`). -/
 def complLeftEquiv (X : V → Type*) (hab : Disjoint a b) :
-    RegionConfig X aᶜ ≃ RegionConfig X (a ∪ b)ᶜ × RegionConfig X b where
-  toFun σ := (fun v ↦ σ ⟨v, Finset.mem_compl.mpr (not_mem_of_mem_compl_union_left v.2)⟩,
-    fun v ↦ σ ⟨v, Finset.mem_compl.mpr (Finset.disjoint_right.mp hab v.2)⟩)
-  invFun p v := if hb : v.1 ∈ b then p.2 ⟨v, hb⟩ else
-    p.1 ⟨v, mem_compl_union (Finset.mem_compl.mp v.2) hb⟩
-  left_inv σ := by
-    funext v
-    by_cases hb : v.1 ∈ b <;> simp [hb]
-  right_inv p := by
-    refine Prod.ext (funext fun v ↦ ?_) (funext fun v ↦ by simp [v.2])
-    simp [not_mem_of_mem_compl_union_right v.2]
+    RegionConfig X aᶜ ≃ RegionConfig X (a ∪ b)ᶜ × RegionConfig X b :=
+  (complementEquiv X a).symm.trans <| (complementUnionEquiv X a b hab).trans <|
+    (Equiv.prodComm _ _).trans <| (complementEquiv X (a ∪ b)).prodCongr (Equiv.refl _)
 
 variable (hab : Disjoint a b)
 
@@ -181,7 +168,7 @@ theorem reindex_place_left (K : Matrix (RegionConfig X a) (RegionConfig X a) ℂ
     reindex (tripartiteEquiv X hab) (tripartiteEquiv X hab) (place a K) = liftA K := by
   refine (reindex_place_eq_kronecker_one _ (Equiv.refl _) (fun _ ↦ rfl) (fun σ τ ↦ ?_) K).trans
     (by simp [liftA])
-  simp only [tripartiteEquiv, Equiv.coe_fn_mk, Prod.mk.injEq, funext_iff, Subtype.forall]
+  simp only [tripartiteEquiv_apply, Prod.mk.injEq, funext_iff, Subtype.forall]
   constructor
   · intro h v hv
     by_cases hb : v ∈ b
@@ -206,7 +193,7 @@ theorem reindex_place_right (K : Matrix (RegionConfig X b) (RegionConfig X b) �
     simp only [liftB, rightKroneckerEmbed_apply, kroneckerMap_apply, one_apply,
       Equiv.prodAssoc_symm_apply, Equiv.refl_symm, Equiv.coe_refl, submatrix_id_id]
     split_ifs <;> simp_all
-  · simp only [Equiv.trans_apply, tripartiteEquiv, Equiv.coe_fn_mk, Equiv.prodAssoc_symm_apply,
+  · simp only [Equiv.trans_apply, tripartiteEquiv_apply, Equiv.prodAssoc_symm_apply,
       Prod.mk.injEq, funext_iff, Subtype.forall]
     constructor
     · intro h v hv
@@ -227,7 +214,7 @@ theorem reindex_place_compl_right (K : Matrix (RegionConfig X bᶜ) (RegionConfi
   · rw [liftAX_eq, ← h]
     ext p q
     simp
-  · simp only [Equiv.trans_apply, tripartiteEquiv, Equiv.coe_fn_mk, Equiv.prodAssoc_symm_apply,
+  · simp only [Equiv.trans_apply, tripartiteEquiv_apply, Equiv.prodAssoc_symm_apply,
       funext_iff, Subtype.forall, Finset.mem_compl, not_not]
 
 /-- In the coordinates `tripartiteEquiv`, the placement on `aᶜ` is the lift from `m × b`. -/
@@ -236,7 +223,7 @@ theorem reindex_place_compl_left (K : Matrix (RegionConfig X aᶜ) (RegionConfig
       liftXB (reindex (complLeftEquiv X hab) (complLeftEquiv X hab) K) := by
   refine (reindex_place_eq_one_kronecker _ (complLeftEquiv X hab) (fun _ ↦ rfl)
     (fun σ τ ↦ ?_) K).trans (by simp [liftXB])
-  simp only [tripartiteEquiv, Equiv.coe_fn_mk, funext_iff, Subtype.forall, Finset.mem_compl,
+  simp only [tripartiteEquiv_apply, funext_iff, Subtype.forall, Finset.mem_compl,
     not_not]
 
 /-- **Decorrelation on a system of sites.** The regions `a` and `b` are decorrelated in `P`,
