@@ -79,10 +79,7 @@ theorem IsGateProduct.sitesAndPairs_of_mem_supportedOperators (c₁ c₂ : ℕ) 
       (unitaryGateCount {s // s ∈ T} (fun s ↦ X s.1) * c₂) Z := by
   by_cases hne : ∀ s, Nonempty (X s)
   · obtain ⟨V, rfl⟩ := exists_eq_place_of_mem_supportedOperators hZ
-    have hV : V ∈ unitaryGroup _ ℂ := mem_unitaryGroup_iff'.mpr (place_injective T (by
-      rw [place_mul, star_eq_conjTranspose, place_conjTranspose, place_one,
-        ← star_eq_conjTranspose]
-      exact mem_unitaryGroup_iff'.mp hZu))
+    have hV : V ∈ unitaryGroup _ ℂ := place_mem_unitaryGroup_iff.mp hZu
     have : Nonempty {s // s ∈ T} := hT.to_subtype
     refine IsGateProduct.of_restrict (isGateProduct_unitaryGateCount
       (fun s t hst Z' hZ'u hZ' ↦ ?_) hV)

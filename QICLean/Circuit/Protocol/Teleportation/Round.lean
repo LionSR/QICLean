@@ -158,12 +158,9 @@ theorem kraus_ofList (i : (ofList l key G hl hG).Index) :
 private theorem cellMatrix_mem_unitaryGroup [∀ s, Nonempty (X s)]
     (hu : ∀ i ∈ l, G i ∈ unitaryGroup (Config X) ℂ) (b : (l.map key).toFinset) :
     cellMatrix l key G hG b ∈ unitaryGroup _ ℂ := by
-  have hK := place_cellMatrix l key G hG b
-  have hGu := hu _ (index_mem l key b)
-  refine mem_unitaryGroup_iff'.mpr (place_injective (Γ.cell b) ?_)
-  rw [place_mul, star_eq_conjTranspose, place_conjTranspose, place_one, hK,
-    ← star_eq_conjTranspose]
-  exact mem_unitaryGroup_iff'.mp hGu
+  refine (place_mem_unitaryGroup_iff (D := Γ.cell b)).mp ?_
+  rw [place_cellMatrix l key G hG b]
+  exact hu _ (index_mem l key b)
 
 /-- A layer given by a list of unitaries is unitary. -/
 theorem forall_isUnitary_ofList [∀ s, Nonempty (X s)]

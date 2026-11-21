@@ -80,10 +80,8 @@ theorem isGateProduct_pathGraph_of_mem_supportedOperators_interval (hα : 2 ≤ 
   have : NeZero w := ⟨by have := a.isLt; omega⟩
   have : Nonempty α := Fintype.card_pos_iff.mp (by omega)
   obtain ⟨V', rfl⟩ := exists_eq_place_of_mem_supportedOperators hZ
-  have hV' : V' ∈ unitaryGroup _ ℂ := mem_unitaryGroup_iff'.mpr (place_injective D (by
-    rw [place_mul, star_eq_conjTranspose, place_conjTranspose, place_one,
-      ← star_eq_conjTranspose]
-    exact mem_unitaryGroup_iff'.mp hZu))
+  have hV' : V' ∈ unitaryGroup _ ℂ :=
+    (place_mem_unitaryGroup_iff (X := fun _ : Fin n ↦ α) (D := D)).mp hZu
   set e := windowEquiv a m
   set σ := siteConfigurationEquiv (X := fun _ : Fin w ↦ α) (X' := fun _ : {s // s ∈ D} ↦ α) e
     fun _ ↦ Equiv.refl α

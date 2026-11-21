@@ -50,6 +50,7 @@ its restriction to the region.
 * `ManyBody.place_mem_supportedOperators`, `ManyBody.exists_eq_place_of_mem_supportedOperators`,
   `ManyBody.range_placeHom` — the placed matrices are the supported operators.
 * `ManyBody.place_injective`, `ManyBody.norm_place`, `ManyBody.norm_place_le`.
+* `ManyBody.place_mem_unitaryGroup_iff` — a placed matrix is unitary exactly when the matrix is.
 * `ManyBody.place_exp`, `ManyBody.exp_mem_supportedOperators` — placement commutes with the
   exponential, and the supported operators are closed under it; likewise
   `ManyBody.place_hermitianUnitaryPath`, `ManyBody.hermitianUnitaryPath_mem_supportedOperators`.
@@ -692,6 +693,15 @@ theorem place_le_place_iff [∀ v, Finite (X v)]
     {K K' : Matrix (RegionConfig X D) (RegionConfig X D) ℂ} :
     place D K ≤ place D K' ↔ K ≤ K' := by
   rw [Matrix.le_iff, Matrix.le_iff, ← place_sub, posSemidef_place_iff]
+
+/-- When every basis type is nonempty, a placed matrix is unitary exactly when the matrix is. -/
+theorem place_mem_unitaryGroup_iff {K : Matrix (RegionConfig X D) (RegionConfig X D) ℂ} :
+    place D K ∈ unitaryGroup (Config X) ℂ ↔ K ∈ unitaryGroup _ ℂ := by
+  refine ⟨fun h ↦ ?_, place_mem_unitaryGroup⟩
+  rw [mem_unitaryGroup_iff] at h ⊢
+  apply place_injective D
+  rw [place_mul, place_one, star_eq_conjTranspose, place_conjTranspose, ← star_eq_conjTranspose,
+    h]
 
 end Order
 

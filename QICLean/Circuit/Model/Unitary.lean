@@ -563,10 +563,7 @@ theorem of_mem_supportedOperators {b : Γ.Cell} {Z : Matrix (Config X) (Config X
     IsGateProduct Γ (Γ.cost b) Z := by
   by_cases hne : ∀ s, Nonempty (X s)
   · obtain ⟨V, rfl⟩ := exists_eq_place_of_mem_supportedOperators hZ
-    refine place (mem_unitaryGroup_iff'.mpr (place_injective (Γ.cell b) ?_))
-    rw [place_mul, star_eq_conjTranspose, place_conjTranspose, place_one,
-      ← star_eq_conjTranspose]
-    exact mem_unitaryGroup_iff'.mp hZu
+    exact place (place_mem_unitaryGroup_iff.mp hZu)
   · push Not at hne
     obtain ⟨s, hs⟩ := hne
     have : IsEmpty (Config X) := ⟨fun σ ↦ hs.false (σ s)⟩
