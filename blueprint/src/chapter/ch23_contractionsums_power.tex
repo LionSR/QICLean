@@ -56,3 +56,25 @@ $N=|\mathcal I|+1$.
     $r=(N-E_0-\Delta)/(N-E_0)$. Since $P\psi=0$,
     $|\langle\psi,T^m\psi\rangle|\le\|T^m\psi\|=\|(T^m-P)\psi\|\le r^m$.
 \end{proof}
+
+\begin{lemma}[The affine filter normalized by the operator norm]
+    \label{lem:full_ground_affine_filter_norm}
+    \lean{Matrix.PosSemidef.normalized_affine_ground_filter_spec_of_norm}
+    \leanok
+    \uses{lem:full_ground_normalized_affine_filter}
+    Let $H\ge0$ have eigenvalues $\mu<\nu$, let $\gamma>0$, and suppose that
+    no point of the spectrum of $H$ other than $\mu$ lies below $\mu+\gamma$.
+    Put $M=\|H\|$, $c=\gamma/(M-\mu)$, $K=(M-\mu)^{-1}(M-H)$, and let $G$ be
+    the span of the eigenvectors of $H$ with eigenvalue at most $\mu$. Then
+    $M>0$, $M-\mu>0$ and $0<c\le1$; moreover $Kx=x$ for $x\in G$, $K$ maps
+    $G^\perp$ into itself, and $\|Kx\|^2\le(1-c)\|x\|^2$ for $x\in G^\perp$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    The spectrum of $H$ lies in $[0,M]$, so $\mu\ge0$ and
+    $\mu+\gamma\le\nu\le M$. Apply
+    Lemma~\ref{lem:full_ground_normalized_affine_filter} with $E_1=\mu+\gamma$;
+    its rate is $(E_1-\mu)/(M-\mu)=c$. This is the filter of the final step
+    of~\cite[lines 1620--1643]{Arad2016RigorousRG} under its hypothesis (DG).
+\end{proof}
