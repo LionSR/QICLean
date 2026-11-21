@@ -1,0 +1,69 @@
+\section{Circuits on an open chain placed in a longer open chain}
+\label{sec:circuitplacement_chain}
+
+\begin{lemma}[A circuit on an open chain placed at arbitrary sites]
+    \label{lem:chain_circuit_placement}
+    \lean{QuantumCircuit.IsGateProduct.placeAlong_pathGraph,
+        QuantumCircuit.IsGateProduct.placeAlong_pathGraph_of_succ}
+    \leanok
+    \uses{thm:unitary_swap_routing, thm:unitary_relabel, lem:sites_place_along_hom}
+    Let $U$ be a product of $K$ gates on neighbouring sites of the open chain of
+    $m$ sites, with the same finite local basis at every site, and let
+    $w$ be an injection of the sites $\{0,\dots,m-1\}$ into those of the open
+    chain of $N$ sites. Then $U$ acting on the sites $w(0),\dots,w(m-1)$, with
+    the identity on the remaining sites, is a product of at most $2NK$ gates on
+    neighbouring sites of the long chain. If moreover $w(p+1)=w(p)+1$ for every
+    $p$, it is a product of at most $K$ such gates.
+\end{lemma}
+
+\begin{proof}\leanok
+    Every gate of the short chain acts on two neighbouring sites $p,p+1$, so its
+    placement acts on the two distinct sites $w(p),w(p+1)$ of the long chain.
+    By swap routing, a unitary on two sites at distance $j$ is a product of at
+    most $2j-1\leq 2N$ gates on neighbouring sites. When $w$ carries
+    neighbouring sites to neighbouring sites, the placed gates are already gates
+    on neighbouring sites, and relabelling the sites preserves the gate count.
+\end{proof}
+
+\begin{definition}[Placement of a register with its workspace]
+    \label{def:clean_circuit_placement_sites}
+    \lean{QuantumCircuit.cleanImplementationSites,
+        QuantumCircuit.cleanImplementationSites_castAdd,
+        QuantumCircuit.cleanImplementationSites_natAdd}
+    \leanok
+    Consider a register of $m$ logical sites followed by $b$ scratch sites, and
+    a larger register of $n$ logical sites followed by $A$ scratch sites. Given
+    injections $e$ of the $m$ logical sites into the $n$ logical sites and $t$ of
+    the $b$ scratch sites into the $A$ scratch sites, the placement of the small
+    register sends its logical site $j$ to $e(j)$ and its scratch site $j$ to
+    $n+t(j)$.
+\end{definition}
+
+\begin{lemma}[Clean placement into a larger common workspace]
+    \label{lem:clean_circuit_placement}
+    \lean{QuantumCircuit.IsCleanImplementation.placeAlong,
+        QuantumCircuit.isGateProduct_isCleanImplementation_placeAlong}
+    \leanok
+    \uses{def:unitary_clean_implementation, def:clean_circuit_placement_sites,
+        lem:chain_circuit_placement}
+    Let $U$ act on $m$ logical and $b$ scratch sites and cleanly implement $Z$
+    on the logical sites with the scratch sites in the zero configuration:
+    $U(\ket{x}\otimes\ket{0})=(Z\ket{x})\otimes\ket{0}$ for every logical
+    configuration $x$. Then $U$ placed along the placement of the register
+    cleanly implements $Z$ placed along $e$, with all $A$ scratch sites of the
+    larger register in the zero configuration. If $U$ is a product of $K$ gates
+    on neighbouring sites of the open chain of $m+b$ sites, its placement is a
+    product of at most $2(n+A)K$ gates on neighbouring sites of the open chain of
+    $n+A$ sites.
+\end{lemma}
+
+\begin{proof}\leanok
+    On a configuration whose scratch part vanishes, the placed matrix acts by
+    $U$ on the restriction to the placed sites and by the identity elsewhere,
+    and the restriction of such a configuration has a vanishing scratch part. So
+    the entries of both sides of the placed identity are the entries of the
+    local clean identity, multiplied by the condition that the two
+    configurations agree off the placed sites and vanish on the scratch sites
+    outside the image of $t$. The gate count is the first part of
+    Lemma~\ref{lem:chain_circuit_placement}.
+\end{proof}
