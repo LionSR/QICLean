@@ -71,14 +71,12 @@ shallow circuit.
 
 \begin{lemma}[Classical expectations in a GHZ-type state]
     \label{lem:ghz_expectation}
-    \lean{ManyBody.diagonal_comp_eval_mem_supportedOperators,
-        QuantumCircuit.norm_ghzState_sq,
+    \lean{QuantumCircuit.norm_ghzState_sq,
         QuantumCircuit.dotProduct_ghzState_diagonal_mulVec,
         QuantumCircuit.dotProduct_ghzState_mulVec_of_mem_supportedOperators}
     \leanok
     \uses{def:ghz_state, def:sites_supported}
-    A diagonal operator whose entries depend only on the value at one site is supported on that
-    site. Let $I$ be nonempty. Then $\|\chi\|^2=\sum_j|\alpha_j|^2$, and for a diagonal
+    Let $I$ be nonempty. Then $\|\chi\|^2=\sum_j|\alpha_j|^2$, and for a diagonal
     operator $D$, $\bra\chi D\ket\chi=\sum_j|\alpha_j|^2\bra{j^I}D\ket{j^I}$. The same holds
     for every operator supported on a region that leaves a site unobserved.
 \end{lemma}

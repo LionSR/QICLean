@@ -35,6 +35,8 @@ and every operator is supported on every region.
   `ManyBody.IsSupportedOn.apply_eq` — the two halves of that condition in the
   form used in computations.
 * `ManyBody.supportedOperators_mono`, `ManyBody.supportedOperators_univ`.
+* `ManyBody.diagonal_mem_supportedOperators` — a diagonal matrix reading only the sites of `D` is
+  supported on `D`.
 
 ## Implementation notes
 
@@ -196,6 +198,17 @@ theorem supportedOperators_univ : supportedOperators X Finset.univ = ⊤ :=
   top_unique fun A _ ↦ ⟨fun _ _ ⟨v, hv, _⟩ ↦ absurd (Finset.mem_univ v) hv,
     fun σ τ σ' τ' h1 h2 _ _ ↦ by
       rw [funext fun v ↦ h1 v (Finset.mem_univ v), funext fun v ↦ h2 v (Finset.mem_univ v)]⟩
+
+/-- A diagonal matrix whose entries read only the sites of `D` is supported on `D`. -/
+theorem diagonal_mem_supportedOperators {f : Config X → ℂ}
+    (hf : ∀ σ τ : Config X, (∀ v ∈ D, σ v = τ v) → f σ = f τ) :
+    diagonal f ∈ supportedOperators X D := by
+  have hone := one_mem (supportedOperators X D)
+  rw [← Matrix.mul_one (diagonal f)]
+  refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ ?_, fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
+  · rw [diagonal_mul, apply_eq_zero_of_mem_supportedOperators hone hv hne, mul_zero]
+  · rw [diagonal_mul, diagonal_mul, (mem_supportedOperators_iff.mp hone).2 σ τ σ' τ' h1 h2 h3 h4,
+      hf σ σ' h1]
 
 /-! ### Disjoint regions -/
 

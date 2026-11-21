@@ -24,8 +24,6 @@ The expectation `⟨ψ|A|ψ⟩` is written `star ψ ⬝ᵥ (A *ᵥ ψ)`.
 
 ## Main results
 
-* `ManyBody.diagonal_comp_eval_mem_supportedOperators` — a diagonal operator reading one site is
-  supported on that site.
 * `QuantumCircuit.norm_ghzState_sq` — `‖χ‖² = ∑ⱼ |αⱼ|²`.
 * `QuantumCircuit.dotProduct_ghzState_diagonal_mulVec`,
   `QuantumCircuit.dotProduct_ghzState_mulVec_of_mem_supportedOperators` — the classical
@@ -53,27 +51,6 @@ decomposition, the norm and the scaling of the binary vector are the cases `β =
 -/
 
 open Matrix ManyBody
-
-namespace ManyBody
-
-variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
-  [∀ v, DecidableEq (X v)]
-
-/-- A diagonal operator depending on the configuration at one site is supported on that site. -/
-theorem diagonal_comp_eval_mem_supportedOperators (i : V) (f : X i → ℂ) :
-    diagonal (fun σ : Config X ↦ f (σ i)) ∈ supportedOperators X {i} := by
-  have key : ∀ ρ π : Config X, (∀ v ∉ ({i} : Finset V), ρ v = π v) → (ρ = π ↔ ρ i = π i) :=
-    fun ρ π h ↦ ⟨fun e ↦ congrFun e i, fun e ↦ funext fun v ↦ by
-      by_cases hv : v = i
-      · subst hv
-        exact e
-      · exact h v (by simpa using hv)⟩
-  refine ⟨fun σ τ ⟨v, _, hne⟩ ↦ diagonal_apply_ne _ fun h ↦ hne (congrFun h v),
-    fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
-  simp only [diagonal_apply, key σ τ h3, key σ' τ' h4, h1 i (Finset.mem_singleton_self i),
-    h2 i (Finset.mem_singleton_self i)]
-
-end ManyBody
 
 namespace QuantumCircuit
 

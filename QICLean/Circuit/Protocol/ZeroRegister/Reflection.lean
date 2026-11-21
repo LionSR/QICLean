@@ -32,7 +32,6 @@ counts and the placement of the circuit in a larger chain are not restated here.
 ## Main results
 
 * `Matrix.diagonal_ite_neg_one_mem_unitaryGroup` — a diagonal matrix of signs is unitary.
-* `ManyBody.diagonal_mem_supportedOperators` — a diagonal matrix reading only `D` acts on `D`.
 * `QuantumCircuit.zeroScratchPhase_mem_supportedOperators` — the phase acts on one site.
 * `QuantumCircuit.zeroRegisterReflection_eq_diagonal`,
   `QuantumCircuit.zeroRegisterReflection_mem_unitaryGroup` — the diagonal form.
@@ -56,24 +55,6 @@ theorem diagonal_ite_neg_one_mem_unitaryGroup {ι : Type*} [Fintype ι] [Decidab
   by_cases hi : p i <;> simp [hi]
 
 end Matrix
-
-namespace ManyBody
-
-variable {V : Type*} [Fintype V] [DecidableEq V] {X : V → Type*} [∀ v, Fintype (X v)]
-  [∀ v, DecidableEq (X v)]
-
-/-- A diagonal matrix whose entries read only the sites of `D` is supported on `D`. -/
-theorem diagonal_mem_supportedOperators {D : Finset V} {f : Config X → ℂ}
-    (hf : ∀ σ τ : Config X, (∀ v ∈ D, σ v = τ v) → f σ = f τ) :
-    diagonal f ∈ supportedOperators X D := by
-  have hone := one_mem (supportedOperators X D)
-  rw [← Matrix.mul_one (diagonal f)]
-  refine ⟨fun σ τ ⟨v, hv, hne⟩ ↦ ?_, fun σ τ σ' τ' h1 h2 h3 h4 ↦ ?_⟩
-  · rw [diagonal_mul, apply_eq_zero_of_mem_supportedOperators hone hv hne, mul_zero]
-  · rw [diagonal_mul, diagonal_mul, (mem_supportedOperators_iff.mp hone).2 σ τ σ' τ' h1 h2 h3 h4,
-      hf σ σ' h1]
-
-end ManyBody
 
 namespace QuantumCircuit
 
