@@ -12,9 +12,9 @@ import QICLean.ManyBody.Sites.SumSites
 
 Two interactions, `Φ` on the sites `A` and `Ψ` on the sites `B`, give an interaction on the
 sites `A ⊕ B`: its terms are the terms `h ⊗ 1` of `Φ`, supported on `T i ⊔ ∅`, and the terms
-`1 ⊗ k` of `Ψ`, supported on `∅ ⊔ U j`. Its Hamiltonian is `H_Φ ⊗ 1 + 1 ⊗ H_Ψ`. Applied to an
-interaction and itself on identical sites, this is the interaction of two replicas, whose
-Hamiltonian is the doubled Hamiltonian `H ⊗ 1 + 1 ⊗ H`.
+`1 ⊗ k` of `Ψ`, supported on `∅ ⊔ U j`. Its Hamiltonian is `H_Φ ⊗ 1 + 1 ⊗ H_Ψ`. Two copies of
+one interaction are described by the doubled interaction `ManyBody.Interaction.doubled`, on
+paired sites.
 
 ## Main definitions
 
@@ -23,8 +23,6 @@ Hamiltonian is the doubled Hamiltonian `H ⊗ 1 + 1 ⊗ H`.
 ## Main results
 
 * `ManyBody.Interaction.hamiltonian_sum` — its Hamiltonian is `H_Φ ⊗ 1 + 1 ⊗ H_Ψ`.
-* `ManyBody.Interaction.hamiltonian_sum_self` — for two replicas, it is the doubled
-  Hamiltonian, transported along `Equiv.sumArrowEquivProdArrow`.
 -/
 
 open Matrix
@@ -52,17 +50,5 @@ theorem hamiltonian_sum [Fintype ι] [Fintype κ] (Φ : Interaction (fun a ↦ Z
     (Ψ : Interaction (fun b ↦ Z (.inr b)) U) :
     (Φ.sum Ψ).hamiltonian = inlOp Φ.hamiltonian + inrOp Ψ.hamiltonian := by
   simp [hamiltonian, sum, Fintype.sum_sum_type, inlOp_sum, inrOp_sum]
-
-/-- **The Hamiltonian of two replicas.** For an interaction `Φ` on identical sites, the
-Hamiltonian of `Φ` beside itself is the doubled Hamiltonian `H ⊗ 1 + 1 ⊗ H`, transported to
-the sites `V ⊕ V` along `Equiv.sumArrowEquivProdArrow`. -/
-theorem hamiltonian_sum_self {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [Fintype α]
-    [DecidableEq α] {ι : Type*} [Fintype ι] {T : ι → Finset V}
-    (Φ : Interaction (fun _ : V ↦ α) T) :
-    (Φ.sum (Z := fun _ ↦ α) Φ).hamiltonian =
-      reindex (Equiv.sumArrowEquivProdArrow V V α).symm (Equiv.sumArrowEquivProdArrow V V α).symm
-        (doubledHamiltonian Φ.hamiltonian) := by
-  rw [hamiltonian_sum, inlOp_add_inrOp]
-  rfl
 
 end ManyBody.Interaction

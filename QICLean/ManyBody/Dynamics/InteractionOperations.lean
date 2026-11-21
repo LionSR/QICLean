@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.Interaction
+import QICLean.ManyBody.Sites.PairSwap
 import QICLean.ManyBody.Sites.PlaceAlong
 import QICLean.ManyBody.Sites.SitewiseProduct
 import QICLean.ManyBody.Sites.Twirl
@@ -38,9 +39,10 @@ every index type, every family of supports and every family of basis types:
   **restriction** to the indices with a property, whose other terms vanish, and the **range
   projections** of positive terms.
 
-The two copies of `Φ` beside each other on the sites `V ⊕ V` are `Φ.sum Φ`
-(`QICLean.ManyBody.Dynamics.InteractionSum`); the doubled interaction is the same pair of
-replicas with the two copies of every site paired into one site.
+The doubled interaction is the one description of two copies of `Φ`: the two copies of every
+site are paired into one site, and the exchange of the copies is `ManyBody.pairSwapOp`. The
+interaction `Φ.sum Ψ` of `QICLean.ManyBody.Dynamics.InteractionSum` is that of two systems side
+by side on the sites `V ⊕ V`.
 
 These generalize TNLean's operations on the chain, domain and plane models (TNLean commit
 `414a18fb88`): `ChainInteraction.termSum` (`MPS/AreaLaw/Hastings/ThreeWaySplitting.lean`) and
@@ -302,10 +304,7 @@ system with basis `X v × X v` at every site `v`, with the supports of `Φ`. TNL
 noncomputable def doubled (Φ : Interaction X S) : Interaction (fun v ↦ X v × X v) S where
   term i := reindex (Equiv.arrowProdEquivProdArrow V X X).symm
     (Equiv.arrowProdEquivProdArrow V X X).symm (doubledHamiltonian (Φ.term i))
-  mem i := by
-    rw [doubledHamiltonian, reindex_apply, submatrix_add, ← Finset.union_self (S i)]
-    exact add_mem (reindex_kronecker_mem_supportedOperators (Φ.mem i) (one_mem _))
-      (reindex_kronecker_mem_supportedOperators (one_mem _) (Φ.mem i))
+  mem i := reindex_doubledHamiltonian_mem_supportedOperators (Φ.mem i)
 
 variable (Φ : Interaction X S)
 

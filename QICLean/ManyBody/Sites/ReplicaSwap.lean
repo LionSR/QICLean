@@ -8,37 +8,41 @@ import QICLean.ManyBody.Sites.SumSites
 import QICLean.ManyBody.Sites.PairSwap
 
 /-!
-# Two replicas and the exchange of replicas on a region
+# Two replicas, and the exchange of two copies on the sites `V ⊕ V`
 
 Two replicas of a system of sites `V` with alphabet `α` are the sites `V ⊕ V`. Pairing the two
 copies of every site identifies their configurations with the configurations of `V` with the
 alphabet `α × α`, and an operator supported on `S ⊔ S` is an operator on paired sites supported
-on `S`. The exchange of the two replicas on a region `R` is a permutation of `V ⊕ V`; its
-operator is supported on `R ⊔ R`. Conjugating the doubled operator `A ⊗ 1 + 1 ⊗ A` of an
-operator `A` supported on `S` by this exchange only depends on `R ∩ S`: it is unchanged when
-`S` lies inside `R` or is disjoint from it, and it stays supported on `S ⊔ S`.
+on `S`.
+
+The exchange of the two copies on a region `R` is `ManyBody.pairSwapOp R`, on paired sites.
+Statements about subsystems made of single copies of sites, such as the entropies of the first
+replica of a region, need the sites `V ⊕ V`; there the exchange is `ManyBody.replicaSwapOp R`,
+the transport of `ManyBody.pairSwapOp R` along the pairing. It is the operator of the
+relabelling `ManyBody.replicaSwap R` of the sites `V ⊕ V` that exchanges the two copies of every
+site of `R` (`ManyBody.sitePermOp_replicaSwap`).
+
+Conjugating the doubled operator `A ⊗ 1 + 1 ⊗ A` of an operator `A` supported on `S` by the
+exchange on `R` only depends on `R ∩ S`, and it is unchanged when `S` lies inside `R`. These are
+stated on paired sites; the proof runs once on the sites `V ⊕ V`.
 
 Moved from TNLean, `TNLean/Lattice/ReplicaSwap.lean` and `TNLean/Lattice/RegionalSwapSupport.lean`
-at commit `e41c3b63`, restated on the sites `V ⊕ V`; the paired sites with alphabet
-`Fin (q * q)` there are the sites `V` with alphabet `α × α` here.
+at commit `e41c3b63`; the paired sites with alphabet `Fin (q * q)` there are the sites `V` with
+alphabet `α × α` here.
 
 ## Main definitions
 
-* `ManyBody.replicaSwap` — the exchange of the two replicas on a region.
 * `ManyBody.replicaPairEquiv`, `ManyBody.replicaPairRegionEquiv` — pairing the two replicas.
+* `ManyBody.replicaSwapOp` — the exchange of the two copies on a region, on the sites `V ⊕ V`.
+* `ManyBody.replicaSwap` — the relabelling of the sites `V ⊕ V` realizing it.
 
 ## Main results
 
 * `ManyBody.reindex_replicaPairEquiv_mem_supportedOperators_iff` — the support transfer.
 * `ManyBody.reindex_replicaPairEquiv_place` — the placement transfer.
-* `ManyBody.reindex_replicaPairEquiv_sitePermOp_replicaSwap` — on paired sites, the exchange of
-  the replicas is `ManyBody.pairSwapOp`.
-* `ManyBody.sitePermOp_replicaSwap_mem_supportedOperators`.
-* `ManyBody.sitePermOp_replicaSwap_conj_doubled`,
-  `ManyBody.sitePermOp_replicaSwap_conj_doubled_of_subset`,
-  `ManyBody.sitePermOp_replicaSwap_conj_doubled_of_disjoint`,
-  `ManyBody.sitePermOp_replicaSwap_conj_doubled_mem_supportedOperators` — the conjugated
-  doubled operator.
+* `ManyBody.sitePermOp_replicaSwap` — the exchange is the relabelling of the sites.
+* `ManyBody.pairSwapOp_conj_doubled`, `ManyBody.pairSwapOp_conj_doubled_of_subset` — the
+  conjugated doubled operator.
 
 ## References
 
@@ -52,75 +56,6 @@ open Matrix
 namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {α : Type*} [Fintype α] [DecidableEq α]
-
-/-! ### The exchange of replicas -/
-
-/-- The exchange of the two replicas at the sites of `R`. -/
-private def replicaSwapFun (R : Finset V) : V ⊕ V → V ⊕ V
-  | .inl v => if v ∈ R then .inr v else .inl v
-  | .inr v => if v ∈ R then .inl v else .inr v
-
-omit [Fintype V] in
-private theorem replicaSwapFun_involutive (R : Finset V) :
-    Function.Involutive (replicaSwapFun R) := by
-  rintro (v | v) <;> by_cases hv : v ∈ R <;> simp [replicaSwapFun, hv]
-
-/-- The exchange of the two replicas at the sites of `R`, as a permutation of `V ⊕ V`. -/
-def replicaSwap (R : Finset V) : Equiv.Perm (V ⊕ V) :=
-  (replicaSwapFun_involutive R).toPerm _
-
-omit [Fintype V] in
-@[simp]
-theorem replicaSwap_inl (R : Finset V) (v : V) :
-    replicaSwap R (.inl v) = if v ∈ R then .inr v else .inl v :=
-  rfl
-
-omit [Fintype V] in
-@[simp]
-theorem replicaSwap_inr (R : Finset V) (v : V) :
-    replicaSwap R (.inr v) = if v ∈ R then .inl v else .inr v :=
-  rfl
-
-omit [Fintype V] in
-theorem replicaSwap_inl_of_mem {R : Finset V} {v : V} (hv : v ∈ R) :
-    replicaSwap R (.inl v) = .inr v := by
-  simp [hv]
-
-omit [Fintype V] in
-theorem replicaSwap_inl_of_notMem {R : Finset V} {v : V} (hv : v ∉ R) :
-    replicaSwap R (.inl v) = .inl v := by
-  simp [hv]
-
-omit [Fintype V] in
-theorem replicaSwap_inr_of_mem {R : Finset V} {v : V} (hv : v ∈ R) :
-    replicaSwap R (.inr v) = .inl v := by
-  simp [hv]
-
-omit [Fintype V] in
-theorem replicaSwap_inr_of_notMem {R : Finset V} {v : V} (hv : v ∉ R) :
-    replicaSwap R (.inr v) = .inr v := by
-  simp [hv]
-
-omit [Fintype V] in
-theorem replicaSwap_mul_self (R : Finset V) : replicaSwap R * replicaSwap R = 1 :=
-  Equiv.ext (replicaSwapFun_involutive R)
-
-omit [Fintype V] in
-/-- The exchange on `R` is the exchange on `R ∩ S` followed by the exchange on `R \ S`. -/
-theorem replicaSwap_eq_mul (R S : Finset V) :
-    replicaSwap R = replicaSwap (R ∩ S) * replicaSwap (R \ S) := by
-  ext (v | v) <;> by_cases hR : v ∈ R <;> by_cases hS : v ∈ S <;> simp [hR, hS]
-
-omit [Fintype V] in
-theorem replicaSwap_empty : replicaSwap (∅ : Finset V) = 1 := by
-  ext (v | v) <;> simp
-
-/-- The operator exchanging the two replicas on `R` is supported on `R ⊔ R`. -/
-theorem sitePermOp_replicaSwap_mem_supportedOperators (R : Finset V) :
-    sitePermOp (α := α) (replicaSwap R) ∈ supportedOperators (fun _ : V ⊕ V ↦ α) (R.disjSum R) :=
-  sitePermOp_mem_supportedOperators fun w hw ↦ by
-    rcases w with v | v <;>
-      simp_all [Finset.inl_mem_disjSum, Finset.inr_mem_disjSum]
 
 /-! ### Pairing the two replicas -/
 
@@ -251,6 +186,77 @@ theorem reindex_replicaPairEquiv_place (S : Finset V)
   simp only [reindex_apply, submatrix_apply, Equiv.symm_apply_apply, place_apply, hreg]
   exact if_congr (replicaPair_agree_notMem S σ τ).symm rfl rfl
 
+/-! ### The relabelling of sites exchanging the replicas -/
+
+/-- The exchange of the two replicas at the sites of `R`. -/
+private def replicaSwapFun (R : Finset V) : V ⊕ V → V ⊕ V
+  | .inl v => if v ∈ R then .inr v else .inl v
+  | .inr v => if v ∈ R then .inl v else .inr v
+
+omit [Fintype V] in
+private theorem replicaSwapFun_involutive (R : Finset V) :
+    Function.Involutive (replicaSwapFun R) := by
+  rintro (v | v) <;> by_cases hv : v ∈ R <;> simp [replicaSwapFun, hv]
+
+/-- The relabelling of the sites `V ⊕ V` exchanging the two copies of every site of `R` and
+fixing the other sites. Its operator is the exchange `ManyBody.replicaSwapOp R` of the two
+copies (`ManyBody.sitePermOp_replicaSwap`). -/
+def replicaSwap (R : Finset V) : Equiv.Perm (V ⊕ V) :=
+  (replicaSwapFun_involutive R).toPerm _
+
+omit [Fintype V] in
+@[simp]
+theorem replicaSwap_inl (R : Finset V) (v : V) :
+    replicaSwap R (.inl v) = if v ∈ R then .inr v else .inl v :=
+  rfl
+
+omit [Fintype V] in
+@[simp]
+theorem replicaSwap_inr (R : Finset V) (v : V) :
+    replicaSwap R (.inr v) = if v ∈ R then .inl v else .inr v :=
+  rfl
+
+omit [Fintype V] in
+theorem replicaSwap_inl_of_mem {R : Finset V} {v : V} (hv : v ∈ R) :
+    replicaSwap R (.inl v) = .inr v := by
+  simp [hv]
+
+omit [Fintype V] in
+theorem replicaSwap_inl_of_notMem {R : Finset V} {v : V} (hv : v ∉ R) :
+    replicaSwap R (.inl v) = .inl v := by
+  simp [hv]
+
+omit [Fintype V] in
+theorem replicaSwap_inr_of_mem {R : Finset V} {v : V} (hv : v ∈ R) :
+    replicaSwap R (.inr v) = .inl v := by
+  simp [hv]
+
+omit [Fintype V] in
+theorem replicaSwap_inr_of_notMem {R : Finset V} {v : V} (hv : v ∉ R) :
+    replicaSwap R (.inr v) = .inr v := by
+  simp [hv]
+
+omit [Fintype V] in
+private theorem replicaSwap_mul_self (R : Finset V) : replicaSwap R * replicaSwap R = 1 :=
+  Equiv.ext (replicaSwapFun_involutive R)
+
+omit [Fintype V] in
+/-- The exchange on `R` is the exchange on `R ∩ S` followed by the exchange on `R \ S`. -/
+private theorem replicaSwap_eq_mul (R S : Finset V) :
+    replicaSwap R = replicaSwap (R ∩ S) * replicaSwap (R \ S) := by
+  ext (v | v) <;> by_cases hR : v ∈ R <;> by_cases hS : v ∈ S <;> simp [hR, hS]
+
+omit [Fintype V] in
+private theorem replicaSwap_empty : replicaSwap (∅ : Finset V) = 1 := by
+  ext (v | v) <;> simp
+
+/-- The operator exchanging the two replicas on `R` is supported on `R ⊔ R`. -/
+private theorem sitePermOp_replicaSwap_mem_supportedOperators (R : Finset V) :
+    sitePermOp (α := α) (replicaSwap R) ∈ supportedOperators (fun _ : V ⊕ V ↦ α) (R.disjSum R) :=
+  sitePermOp_mem_supportedOperators fun w hw ↦ by
+    rcases w with v | v <;>
+      simp_all [Finset.inl_mem_disjSum, Finset.inr_mem_disjSum]
+
 omit [Fintype V] [DecidableEq V] [Fintype α] [DecidableEq α] in
 private theorem replicaPairEquiv_symm_inl (τ : Config fun _ : V ↦ α × α) (v : V) :
     (replicaPairEquiv V α).symm τ (.inl v) = (τ v).1 :=
@@ -262,12 +268,7 @@ private theorem replicaPairEquiv_symm_inr (τ : Config fun _ : V ↦ α × α) (
   rfl
 
 omit [Fintype α] in
-/-- **The exchange of replicas on paired sites.** Pairing the two replicas of every site
-carries the operator of the exchange of the replicas on `A` to the exchange
-`ManyBody.pairSwapOp A` of the two copies at the sites of `A`. The doubled system has these two
-coordinate systems, the sites `V ⊕ V` and the paired sites with basis `α × α`, and this
-identifies the two exchanges. -/
-theorem reindex_replicaPairEquiv_sitePermOp_replicaSwap (A : Finset V) :
+private theorem reindex_replicaPairEquiv_sitePermOp_replicaSwap (A : Finset V) :
     reindex (replicaPairEquiv V α) (replicaPairEquiv V α) (sitePermOp (replicaSwap A)) =
       pairSwapOp (X := fun _ : V ↦ α) A := by
   ext σ τ
@@ -311,7 +312,25 @@ theorem reindex_replicaPairEquiv_sitePermOp_replicaSwap (A : Finset V) :
   · rw [ite_eq_left (hiff.mpr hc), ite_eq_left hc]
   · rw [ite_eq_right (mt hiff.mp hc), ite_eq_right hc]
 
-/-! ### The doubled operator under the exchange -/
+variable (α) in
+/-- **The exchange of two copies on the sites `V ⊕ V`.** The exchange `ManyBody.pairSwapOp R` of
+the two copies at the sites of `R`, carried from paired sites to the sites `V ⊕ V` of two
+replicas along `ManyBody.replicaPairEquiv`. -/
+noncomputable def replicaSwapOp (R : Finset V) :
+    Matrix (Config fun _ : V ⊕ V ↦ α) (Config fun _ : V ⊕ V ↦ α) ℂ :=
+  reindex (replicaPairEquiv V α).symm (replicaPairEquiv V α).symm (pairSwapOp R)
+
+omit [Fintype α] in
+/-- **The exchange of two copies relabels the sites.** On the sites `V ⊕ V`, the exchange of the
+two copies on `R` is the operator of the relabelling `ManyBody.replicaSwap R`. -/
+theorem sitePermOp_replicaSwap (R : Finset V) :
+    sitePermOp (α := α) (replicaSwap R) = replicaSwapOp α R := by
+  rw [replicaSwapOp, ← reindex_replicaPairEquiv_sitePermOp_replicaSwap, ← reindex_symm,
+    Equiv.symm_apply_apply]
+
+/-! ### The doubled operator under the exchange
+
+The proof runs on the sites `V ⊕ V`; the statements are carried to paired sites. -/
 
 /-- The doubled operator `A ⊗ 1 + 1 ⊗ A` on the two replicas. -/
 local notation "doubled" A => inlOp (Z := fun _ : V ⊕ V ↦ α) A + inrOp (Z := fun _ : V ⊕ V ↦ α) A
@@ -389,7 +408,7 @@ private theorem sitePermOp_replicaSwap_conj_doubled_self {S : Finset V}
   rw [Matrix.mul_add, Matrix.add_mul, hl, hr, add_comm]
 
 /-- The doubled operator of an operator supported on `S` is supported on `S ⊔ S`. -/
-theorem doubled_mem_supportedOperators {S : Finset V}
+private theorem doubled_mem_supportedOperators {S : Finset V}
     {A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hA : A ∈ supportedOperators (fun _ : V ↦ α) S) :
     (doubled A) ∈ supportedOperators (fun _ : V ⊕ V ↦ α) (S.disjSum S) :=
@@ -402,7 +421,7 @@ theorem doubled_mem_supportedOperators {S : Finset V}
 supported on `S`, conjugating `A ⊗ 1 + 1 ⊗ A` by the exchange on `R` equals conjugating it by
 the exchange on `R ∩ S`. Polynomial PEPS approximation, `02-information.tex`,
 lines 513–524. -/
-theorem sitePermOp_replicaSwap_conj_doubled (R : Finset V) {S : Finset V}
+private theorem sitePermOp_replicaSwap_conj_doubled (R : Finset V) {S : Finset V}
     {A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hA : A ∈ supportedOperators (fun _ : V ↦ α) S) :
     sitePermOp (replicaSwap R) * (doubled A) * (sitePermOp (replicaSwap R))ᴴ =
@@ -426,41 +445,66 @@ theorem sitePermOp_replicaSwap_conj_doubled (R : Finset V) {S : Finset V}
 
 /-- Exchanging the replicas on a region containing the support of `A` leaves its doubled
 operator unchanged. -/
-theorem sitePermOp_replicaSwap_conj_doubled_of_subset {R S : Finset V} (hSR : S ⊆ R)
+private theorem sitePermOp_replicaSwap_conj_doubled_of_subset {R S : Finset V} (hSR : S ⊆ R)
     {A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hA : A ∈ supportedOperators (fun _ : V ↦ α) S) :
     sitePermOp (replicaSwap R) * (doubled A) * (sitePermOp (replicaSwap R))ᴴ = doubled A := by
   rw [sitePermOp_replicaSwap_conj_doubled R hA, Finset.inter_eq_right.mpr hSR,
     sitePermOp_replicaSwap_conj_doubled_self hA]
 
-/-- Exchanging the replicas on a region disjoint from the support of `A` leaves its doubled
-operator unchanged. -/
-theorem sitePermOp_replicaSwap_conj_doubled_of_disjoint {R S : Finset V} (hSR : Disjoint S R)
+private theorem reindex_conj {m n : Type*} [Fintype m] [Fintype n] (e : m ≃ n)
+    (U D : Matrix m m ℂ) :
+    reindex e e (U * D * Uᴴ) = reindex e e U * reindex e e D * (reindex e e U)ᴴ := by
+  classical
+  have hmul (X Y : Matrix m m ℂ) : reindex e e (X * Y) = reindex e e X * reindex e e Y := by
+    simpa only [coe_reindexAlgEquiv] using map_mul (reindexAlgEquiv ℂ ℂ e) X Y
+  rw [hmul, hmul, conjTranspose_reindex]
+
+omit [DecidableEq V] [Fintype α] in
+/-- Pairing the two replicas carries their doubled operator to the doubled operator on paired
+sites. -/
+private theorem reindex_replicaPairEquiv_doubled
+    (A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ) :
+    reindex (replicaPairEquiv V α) (replicaPairEquiv V α) (doubled A) =
+      reindex (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm
+        (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm (doubledHamiltonian A) := by
+  rw [inlOp_add_inrOp]
+  ext σ τ
+  rfl
+
+/-- **Exchanging two copies on a region acts on a doubled operator through its support.** For
+`A` supported on `S`, conjugating the doubled operator `A ⊗ 1 + 1 ⊗ A`, with the two copies of
+every site paired, by the exchange on `R` equals conjugating it by the exchange on `R ∩ S`.
+Polynomial PEPS approximation, `02-information.tex`, lines 513–524. -/
+theorem pairSwapOp_conj_doubled (R : Finset V) {S : Finset V}
     {A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hA : A ∈ supportedOperators (fun _ : V ↦ α) S) :
-    sitePermOp (replicaSwap R) * (doubled A) * (sitePermOp (replicaSwap R))ᴴ = doubled A := by
-  rw [sitePermOp_replicaSwap_conj_doubled R hA,
-    Finset.disjoint_iff_inter_eq_empty.mp hSR.symm, replicaSwap_empty, sitePermOp_one,
-    conjTranspose_one, Matrix.one_mul, Matrix.mul_one]
+    pairSwapOp (X := fun _ : V ↦ α) R *
+        reindex (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm
+          (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm (doubledHamiltonian A) *
+        (pairSwapOp R)ᴴ =
+      pairSwapOp (R ∩ S) *
+        reindex (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm
+          (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm (doubledHamiltonian A) *
+        (pairSwapOp (R ∩ S))ᴴ := by
+  have h := congrArg (reindex (replicaPairEquiv V α) (replicaPairEquiv V α))
+    (sitePermOp_replicaSwap_conj_doubled R hA)
+  simpa only [reindex_conj, reindex_replicaPairEquiv_doubled,
+    reindex_replicaPairEquiv_sitePermOp_replicaSwap] using h
 
-/-- The conjugated doubled operator stays supported on `S ⊔ S`. -/
-theorem sitePermOp_replicaSwap_conj_doubled_mem_supportedOperators (R : Finset V)
-    {S : Finset V} {A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
+/-- Exchanging the two copies on a region containing the support of `A` leaves its doubled
+operator unchanged. -/
+theorem pairSwapOp_conj_doubled_of_subset {R S : Finset V} (hSR : S ⊆ R)
+    {A : Matrix (Config fun _ : V ↦ α) (Config fun _ : V ↦ α) ℂ}
     (hA : A ∈ supportedOperators (fun _ : V ↦ α) S) :
-    sitePermOp (replicaSwap R) * (doubled A) * (sitePermOp (replicaSwap R))ᴴ ∈
-      supportedOperators (fun _ : V ⊕ V ↦ α) (S.disjSum S) := by
-  have h := sitePermOp_mul_mul_conjTranspose_mem_supportedOperators (replicaSwap R)
-    (doubled_mem_supportedOperators hA)
-  have himage : (S.disjSum S).image (replicaSwap R) = S.disjSum S := by
-    ext w
-    simp only [Finset.mem_image]
-    constructor
-    · rintro ⟨w', hw', rfl⟩
-      rcases w' with v | v <;> by_cases hv : v ∈ R <;> simp_all
-    · intro hw
-      refine ⟨replicaSwap R w, ?_, ?_⟩
-      · rcases w with v | v <;> by_cases hv : v ∈ R <;> simp_all
-      · exact replicaSwapFun_involutive R w
-  rwa [himage] at h
-
+    pairSwapOp (X := fun _ : V ↦ α) R *
+        reindex (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm
+          (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm (doubledHamiltonian A) *
+        (pairSwapOp R)ᴴ =
+      reindex (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm
+        (Equiv.arrowProdEquivProdArrow V (fun _ ↦ α) fun _ ↦ α).symm (doubledHamiltonian A) := by
+  have h := congrArg (reindex (replicaPairEquiv V α) (replicaPairEquiv V α))
+    (sitePermOp_replicaSwap_conj_doubled_of_subset hSR hA)
+  simpa only [reindex_conj, reindex_replicaPairEquiv_doubled,
+    reindex_replicaPairEquiv_sitePermOp_replicaSwap] using h
 end ManyBody

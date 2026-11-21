@@ -53,17 +53,14 @@ or the local dimensions.
 
 \begin{theorem}[The Hamiltonian of two systems side by side]
     \label{thm:dynamics_interaction_sum_hamiltonian}
-    \lean{ManyBody.Interaction.hamiltonian_sum, ManyBody.Interaction.hamiltonian_sum_self}
+    \lean{ManyBody.Interaction.hamiltonian_sum}
     \leanok
-    \uses{def:dynamics_interaction_sum, def:doubled_system}
+    \uses{def:dynamics_interaction_sum}
     For finite index sets $I$ and $J$, the interaction of the two systems side by
     side has the Hamiltonian
     \[
         H_{\Phi\sqcup\Psi}=H_\Phi\otimes1+1\otimes H_\Psi .
     \]
-    For an interaction $\Phi$ beside itself on identical sites, identifying the
-    configurations of $V\sqcup V$ with pairs of configurations of $V$, this is the
-    doubled Hamiltonian $H_\Phi\otimes1+1\otimes H_\Phi$ of two replicas.
 \end{theorem}
 \begin{proof}
     \leanok
