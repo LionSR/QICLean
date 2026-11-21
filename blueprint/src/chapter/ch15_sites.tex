@@ -1335,13 +1335,16 @@ supports of bounded range on them.
 
 \begin{definition}[Boundary edges of a region of the chain]
     \label{def:sites_chain_boundary}
-    \lean{ManyBody.boundaryEdges, ManyBody.mem_boundaryEdges, ManyBody.boundaryEdges_empty,
-        ManyBody.boundaryEdges_univ}
+    \lean{ManyBody.leftPosition, ManyBody.leftPosition_mk, ManyBody.boundaryEdges,
+        ManyBody.leftPosition_injOn, ManyBody.card_boundaryEdges, ManyBody.mem_boundaryEdges,
+        ManyBody.boundaryEdges_empty, ManyBody.boundaryEdges_univ}
     \leanok
-    \uses{def:sites_chain_support}
-    The boundary edges of a region $D$ of the chain of $L$ sites are the positions
-    $p$ with $p+1<L$ such that exactly one of $p$ and $p+1$ lies in $D$. The empty
-    region and the whole chain have no boundary edges.
+    \uses{def:sites_chain_support, def:sites_edge_boundary}
+    The boundary edges of a region $D$ of the chain of $L$ sites are the edges of the edge
+    boundary of $D$ in the path graph, each recorded by the position of its left
+    endpoint; there are as many positions as edges. They are the positions $p$ with
+    $p+1<L$ such that exactly one of $p$ and $p+1$ lies in $D$. The empty region and the
+    whole chain have no boundary edges.
 \end{definition}
 
 \begin{lemma}[A split support lies near a boundary edge]

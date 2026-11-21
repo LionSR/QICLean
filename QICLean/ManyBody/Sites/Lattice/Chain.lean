@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Algebra.OverlapGraph
 import QICLean.Algebra.PathGraphConnected
 import QICLean.ManyBody.Sites.Lattice.PathGraph
+import QICLean.ManyBody.Sites.GraphBoundary
 import Mathlib.Data.Finset.Max
 import Mathlib.Order.Interval.Finset.Nat
 
@@ -28,7 +29,10 @@ Moved from TNLean on branch `refactor/chain-support-manybody` at commit
 from `TNLean/MPS/AreaLaw/BoundaryCounting.lean`; `IsChainSupport.eq_interval_of_splits_of_range_one`
 from `TNLean/MPS/AreaLaw/RangeOneCut.lean`; `ChainSupport.edist_le` from
 `TNLean/MPS/AreaLaw/LiebRobinson.lean`. Changes: namespace `ManyBody` in place of
-`TNLean.MPS.AreaLaw`.
+`TNLean.MPS.AreaLaw`; `boundaryEdges` is defined as the image of the edge boundary
+`ManyBody.edgeBoundary (pathGraph L) A` under the position of the left endpoint, so that the
+boundary of a region of the chain is the edge boundary of the path graph, and
+`mem_boundaryEdges` is proved from that definition.
 
 Moved from TNLean (`e113e005`): the bonds, their overlap graph and the size of their union from
 `TNLean/Lattice/ClusterExpansion/NearestNeighborPath.lean` and `NearestNeighborIntervalRank.lean`.
@@ -39,12 +43,15 @@ Changes: the family `fun i ↦ {i.castSucc, i.succ}`, written inline there, is n
 
 * `ManyBody.interval` — the sites of position at least `a` and less than `b`.
 * `ManyBody.IsChainSupport`, `ManyBody.ChainSupport` — the supports of range `R`.
-* `ManyBody.boundaryEdges` — the edges of the chain leaving a region.
+* `ManyBody.boundaryEdges` — the edges of the chain leaving a region, by the positions of their
+  left endpoints: the image of the edge boundary `ManyBody.edgeBoundary (pathGraph L) A`.
 * `ManyBody.chainBond` — the nearest-neighbour bonds `{i, i + 1}`.
 * `ManyBody.chainWindow` — the window of `k` consecutive sites starting at a position.
 
 ## Main results
 
+* `ManyBody.mem_boundaryEdges`, `ManyBody.card_boundaryEdges` — the boundary edges of a region
+  by position, as many as the edges of its edge boundary in the path graph.
 * `ManyBody.IsChainSupport.exists_boundary_window_of_split` — a support split by a region lies
   in a window of `2R` sites about one of its boundary edges.
 * `ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one` — a range-one support split by
@@ -215,30 +222,76 @@ theorem ChainSupport.edist_le {L R : ℕ} (X : ChainSupport L R)
 
 /-! ### Boundary edges of a region -/
 
-/-- The boundary edges of a region `A` of the chain of `L` sites: the positions `p` with
-`p + 1 < L` such that exactly one of the sites at positions `p` and `p + 1` lies in `A`, that
-is, the edges `{p, p + 1}` of the chain leaving `A`. -/
-def boundaryEdges (L : ℕ) (A : Finset (Fin L)) : Finset ℕ :=
-  (Finset.range (L - 1)).filter fun p ↦ ¬ ((∃ i ∈ A, i.val = p) ↔ ∃ i ∈ A, i.val = p + 1)
+/-- The position of the left endpoint of an edge of the chain: `min (x, y)` for the edge
+`{x, y}`. -/
+def leftPosition (e : Sym2 (Fin L)) : ℕ :=
+  Sym2.lift ⟨fun x y ↦ min x.val y.val, fun _ _ ↦ min_comm _ _⟩ e
+
+@[simp]
+theorem leftPosition_mk (x y : Fin L) : leftPosition s(x, y) = min x.val y.val :=
+  rfl
+
+/-- The boundary edges of a region `A` of the chain of `L` sites, by position: the positions of
+the left endpoints of the edges of the path graph in the edge boundary of `A`, that is, the
+positions `p` with `p + 1 < L` such that exactly one of the sites at the positions `p` and
+`p + 1` lies in `A`. -/
+noncomputable def boundaryEdges (L : ℕ) (A : Finset (Fin L)) : Finset ℕ :=
+  (edgeBoundary (SimpleGraph.pathGraph L) A).image leftPosition
+
+/-- Distinct edges of the chain have distinct left endpoints. -/
+theorem leftPosition_injOn :
+    Set.InjOn leftPosition (SimpleGraph.pathGraph L).edgeSet := by
+  intro e he e' he' h
+  induction e using Sym2.ind with
+  | h x y =>
+  induction e' using Sym2.ind with
+  | h x' y' =>
+  rw [SimpleGraph.mem_edgeSet, SimpleGraph.pathGraph_adj] at he he'
+  simp only [leftPosition_mk] at h
+  rcases he with he | he <;> rcases he' with he' | he' <;>
+    first
+    | exact Sym2.eq_iff.mpr (.inl ⟨Fin.ext (by omega), Fin.ext (by omega)⟩)
+    | exact Sym2.eq_iff.mpr (.inr ⟨Fin.ext (by omega), Fin.ext (by omega)⟩)
+
+/-- The boundary edges of a region are as many as the edges of its edge boundary in the path
+graph. -/
+theorem card_boundaryEdges (A : Finset (Fin L)) :
+    (boundaryEdges L A).card = (edgeBoundary (SimpleGraph.pathGraph L) A).card :=
+  Finset.card_image_of_injOn fun _ he _ he' ↦
+    leftPosition_injOn (mem_edgeBoundary.mp he).1 (mem_edgeBoundary.mp he').1
 
 /-- Membership in the boundary edges of a region, in terms of positions. -/
 theorem mem_boundaryEdges {A : Finset (Fin L)} {p : ℕ} :
     p ∈ boundaryEdges L A ↔
       p + 1 < L ∧ ¬ ((∃ i ∈ A, i.val = p) ↔ ∃ i ∈ A, i.val = p + 1) := by
-  rw [boundaryEdges, Finset.mem_filter, Finset.mem_range, Nat.lt_sub_iff_add_lt]
+  have hmem (z : Fin L) {q : ℕ} (hq : z.val = q) : (∃ i ∈ A, i.val = q) ↔ z ∈ A :=
+    ⟨fun ⟨i, hi, hiq⟩ ↦ (Fin.ext (hiq.trans hq.symm) : i = z) ▸ hi, fun h ↦ ⟨z, h, hq⟩⟩
+  rw [boundaryEdges, Finset.mem_image]
+  constructor
+  · rintro ⟨e, he, rfl⟩
+    induction e using Sym2.ind with
+    | h x y =>
+    rw [mk_mem_edgeBoundary_iff, SimpleGraph.pathGraph_adj] at he
+    obtain ⟨hadj, hxy⟩ := he
+    simp only [leftPosition_mk]
+    rcases hadj with hadj | hadj
+    · rw [min_eq_left (by omega), hmem x rfl, hmem y hadj.symm]
+      exact ⟨by omega, by tauto⟩
+    · rw [min_eq_right (by omega), hmem y rfl, hmem x hadj.symm]
+      exact ⟨by omega, by tauto⟩
+  · rintro ⟨hp, hA⟩
+    rw [hmem ⟨p, by omega⟩ rfl, hmem ⟨p + 1, hp⟩ rfl] at hA
+    refine ⟨s(⟨p, by omega⟩, ⟨p + 1, hp⟩), ?_, by simp⟩
+    rw [mk_mem_edgeBoundary_iff, SimpleGraph.pathGraph_adj]
+    exact ⟨.inl rfl, by tauto⟩
 
 /-- The empty region has no boundary edges. -/
 theorem boundaryEdges_empty : boundaryEdges L ∅ = ∅ := by
-  ext p
-  simp [mem_boundaryEdges]
+  simp [boundaryEdges]
 
 /-- The whole chain has no boundary edges. -/
 theorem boundaryEdges_univ : boundaryEdges L Finset.univ = ∅ := by
-  ext p
-  simp only [mem_boundaryEdges, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false,
-    not_and, not_not]
-  intro hp
-  exact ⟨fun _ ↦ ⟨⟨p + 1, hp⟩, rfl⟩, fun _ ↦ ⟨⟨p, by omega⟩, rfl⟩⟩
+  simp [boundaryEdges]
 
 /-- A support split by a region lies in a window about one of its
 boundary edges. Source: TNLean note, `eq:count`, and
