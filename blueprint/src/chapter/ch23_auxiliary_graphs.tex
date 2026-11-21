@@ -1,0 +1,131 @@
+\section{Graphs and the cycle Laplacian}
+
+\begin{lemma}[Connected components of an induced integer graph]
+    \label{thm:chain_integer_domain_components}
+    \lean{SimpleGraph.hasse_int_induce_reachable_iff,
+        SimpleGraph.ConnectedComponent.ordConnected_image_hasse_int_induce,
+        SimpleGraph.ConnectedComponent.nonempty_pathGraph_iso_hasse_int_induce_finset}
+    \leanok
+    Let $S\subseteq\mathbb Z$, and let $G$ be the graph on $S$ in which two
+    vertices are adjacent exactly when their integer coordinates differ by one.
+    For any $x,y\in S$,
+    \begin{align}
+        x\text{ and }y\text{ are joined by a walk in }G
+        \quad\Longleftrightarrow\quad
+        \lbrack\min\{x,y\},\max\{x,y\}\rbrack\cap\mathbb Z\subseteq S.
+        \notag
+    \end{align}
+    The coordinate image of each connected component is order-convex:
+    if $x,y$ belong to that image, every integer between $x$ and $y$ belongs to
+    the same image. No finiteness assumption on $S$ is needed.
+
+    If $S$ is finite, the graph induced on each connected component $C$ is
+    isomorphic to the path $P_{|C|}$ on $|C|$ vertices. Here $P_n$ has vertices
+    $0,\ldots,n-1$ and edges between consecutive vertices. This is the induced
+    integer geometry used in the reduction to connected domains
+    in~\cite[Part~I]{TNLean2026OneDimensional}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Fix an integer $z\notin S$. If two vertices are adjacent, their integer
+    coordinates are consecutive and neither equals $z$. Thus either both
+    coordinates are less than $z$, or neither is. This property is preserved
+    along a walk. A walk therefore cannot join vertices on opposite sides of
+    a missing integer, which proves the forward implication.
+
+    Conversely, suppose first that $x\le y$ and that every integer in $[x,y]$
+    belongs to $S$. Induction by integer successors joins $x$ to each integer
+    $n$ with $x\le n\le y$. Reversing the walk handles $y\le x$.
+
+    If $x,y$ are in one connected component and $z$ lies between them, the
+    criterion places $z$ in $S$, and the reverse implication joins $x$ to $z$.
+    Hence $z$ lies in that same component.
+
+    For finite $S$, give a component $C$ the order inherited from the integers.
+    Its coordinate map is an order embedding with order-convex image, so it
+    preserves and reflects the covering relation. The increasing enumeration
+    of the finite linear order $C$ is an order isomorphism from
+    $\{0,\ldots,|C|-1\}$ to $C$. In either graph, adjacency is the symmetric
+    covering relation, so this enumeration is a graph isomorphism.
+\end{proof}
+
+\begin{lemma}[Extended distance under graph maps]
+    \label{thm:qc_graph_edist_transport}
+    \lean{SimpleGraph.Hom.edist_le, SimpleGraph.Iso.edist_eq,
+        SimpleGraph.ConnectedComponent.edist_eq}
+    \leanok
+    Let $G,H$ be simple graphs on arbitrary vertex sets with extended path
+    metrics $d_G,d_H\in\mathbb N\cup\{\infty\}$. Every graph homomorphism
+    $f\colon G\to H$ satisfies $d_H(f(x),f(y))\le d_G(x,y)$, with equality when
+    $f$ is an isomorphism. For any connected component $C$ of $G$ and
+    $x,y\in C$, $d_{G[C]}(x,y)=d_G(x,y)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    A homomorphism maps walks of length $\ell$ to walks of length $\ell$, so
+    taking infima (with $\inf\varnothing=\infty$) gives
+    $d_H(f(x),f(y))\le d_G(x,y)$, and applying this to $f$ and $f^{-1}$ gives
+    equality for isomorphisms. Every walk in $G$ starting at $x\in C$ stays in
+    $C$, so walks between $x,y\in C$ in $G$ and $G[C]$ coincide.
+\end{proof}
+
+\begin{lemma}[Greedy colouring]
+    \label{thm:frustration_free_area_law_greedy_colouring}
+    \lean{SimpleGraph.exists_coloring_list_of_forall_degree_le,
+        SimpleGraph.colorable_succ_of_forall_degree_le}
+    \leanok
+    A finite graph in which every vertex has at most $d$ neighbours has a
+    proper colouring with $d+1$ colours.
+\end{lemma}
+
+\begin{proof}\leanok
+    Colour the vertices one at a time; at most $d$ colours are used by the
+    neighbours of the next vertex.
+\end{proof}
+
+\begin{lemma}[The first Fourier mode of the cycle Laplacian]
+    \label{lem:cycle_laplacian_fourier}
+    \lean{ZMod.cycleLaplacian, ZMod.cycleLaplacian_addChar,
+        ZMod.cycleFourierGap, ZMod.cycleLaplacian_stdAddChar,
+        ZMod.cycleFourierGap_pos, ZMod.tendsto_cycleFourierGap_zero,
+        ZMod.exists_large_cycleFourierGap_pos_lt}
+    \leanok
+    For functions $f$ on $\mathbb Z/N\mathbb Z$ let
+    $(Lf)(x)=f(x)-(f(x+1)+f(x-1))/2$. Every additive character $\chi$ is an
+    eigenvector of $L$ with eigenvalue $1-(\chi(1)+\chi(-1))/2$; for the
+    character $x\mapsto e^{2\pi\mathrm ix/N}$ the eigenvalue is
+    $\varepsilon_N=1-\cos(2\pi/N)$. One has $\varepsilon_N>0$ for $N\ge2$ and
+    $\varepsilon_N\to0$ as $N\to\infty$.
+\end{lemma}
+
+\begin{proof}\leanok
+    A character turns the shifts into multiplication by $\chi(\pm1)$, and the
+    mean of $e^{\pm2\pi\mathrm i/N}$ is $\cos(2\pi/N)$. For $N\ge2$ the angle
+    $2\pi/N$ lies in $(0,\pi]$, where the cosine is below one, and continuity
+    of the cosine at zero gives the limit.
+\end{proof}
+
+\begin{lemma}[One-magnon vectors and exchange sums]
+    \label{lem:one_magnon_exchange}
+    \lean{SpinChain.singleDown, SpinChain.oneMagnon,
+        SpinChain.oneMagnon_comp_swap, SpinChain.sum_sub_swap_eq,
+        SpinChain.oneMagnon_edge_sum}
+    \leanok
+    For a finite set $\Lambda$ of sites and $f:\Lambda\to\C$, the one-magnon
+    vector $\sum_jf(j)\ket{\downarrow_j}$ has amplitude $f(j)$ on the
+    configuration with its unique down spin at $j$ and zero elsewhere.
+    Exchanging two sites exchanges the corresponding coefficients. For a
+    permutation $e$ of $\Lambda$ without fixed points, the operator
+    $\frac12\sum_i(1-\mathrm{SWAP}_{i,e(i)})$ maps the one-magnon vector of $f$
+    to the one-magnon vector of $j\mapsto f(j)-(f(e(j))+f(e^{-1}(j)))/2$.
+    This is the one-magnon computation of Koma and Nachtergaele, Lemma~4,
+    equation~(3.13).
+\end{lemma}
+
+\begin{proof}\leanok
+    A swap moves the down spin of a one-down configuration and fixes the set
+    of configurations with a different number of down spins. On the
+    configuration with its down spin at $j$, the swap of $i$ and $e(i)$ acts
+    nontrivially only for $i=j$ and $i=e^{-1}(j)$, which gives the two
+    neighbouring terms.
+\end{proof}

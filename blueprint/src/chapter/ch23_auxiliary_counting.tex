@@ -1,0 +1,441 @@
+\section{Finite sums, counting and explicit thresholds}
+
+\begin{lemma}[A finite sum separated by two windows]
+    \label{thm:chain_two_window_sum}
+    \lean{Finset.sum_range_eq_five_parts_of_two_windows,
+        Fin.sum_univ_eq_five_parts_of_two_windows}
+    \leanok
+    Let $M$ be an abelian monoid written additively, and let
+    $a,b,\ell,N$ be natural numbers with $a+2\ell\le b$ and
+    $b+2\ell\le N$. For a sequence $f:\mathbb N\to M$,
+    \begin{align}
+        \sum_{t<N}f(t)
+         & =\sum_{t<a}f(t)+\sum_{r<2\ell}f(a+r)\notag   \\
+         & \quad+\sum_{r<b-(a+2\ell)}f(a+2\ell+r)\notag \\
+         & \quad+\sum_{r<2\ell}f(b+r)
+        +\sum_{r<N-(b+2\ell)}f(b+2\ell+r).
+        \label{eq:chain_two_window_sum}
+    \end{align}
+    The same identity holds when $f$ is given only on
+    $\{0,\ldots,N-1\}$: every shifted index in~(\ref{eq:chain_two_window_sum})
+    belongs to this set. Empty windows and empty complementary intervals
+    are permitted. This is the additive grouping used
+    in~\cite[Section~4.1]{Arad2016RigorousRG}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Split the sum successively at $b+2\ell$, $b$, $a+2\ell$ and $a$.
+    The inequalities on the endpoints give the complementary lengths
+    in~(\ref{eq:chain_two_window_sum}). For a finite array, extend $f$ by zero
+    outside its domain and reindex each interval by its finite length.
+    Each shifted index is less than $N$, so the extension agrees with $f$
+    in every summand.
+\end{proof}
+
+\begin{lemma}[Two windows and three intervals of nearest-neighbour terms]
+    \label{thm:actual_two_window_alphabet_sum}
+    \lean{Fin.sum_univ_eq_actual_two_window_alphabet}
+    \leanok
+    Let $a+2\ell\le b$ and $b+2\ell\le L-1$, and let $h_i$, for
+    $0\le i<L-1$, be values in an additive commutative monoid. For the cuts
+    $(k_0,\ldots,k_5)=(0,a+1,a+2\ell,b+1,b+2\ell,L)$ put
+    $A_j=\sum_{k_j\le i,\ i+1<k_{j+1}}h_i$, and put $W_r^{\mathrm L}=h_{a+r}$
+    and $W_r^{\mathrm R}=h_{b+r}$ for $0\le r<2\ell$. Then
+    \begin{align}
+        \sum_{i=0}^{L-2}h_i
+        =A_0+\sum_{r=0}^{2\ell-1}W_r^{\mathrm L}
+        +A_2+\sum_{r=0}^{2\ell-1}W_r^{\mathrm R}+A_4.
+        \notag
+    \end{align}
+    Empty windows are included.
+\end{lemma}
+
+\begin{proof}\leanok
+    Each finite window enumerates precisely its interval of indices.
+    Partition all indices into the left interval, the first complete window,
+    the middle interval, the second complete window and the right interval,
+    and sum in each part. This retains the original alphabet
+    of~\cite[eq:H-mid-cut, lines 810--821]{Arad2016RigorousRG}.
+\end{proof}
+
+\begin{lemma}[Frequency vectors with two prescribed coordinates]
+    \label{thm:chain_two_fixed_frequencies}
+    \lean{Nat.card_fun_sum_eq_and_two_eq,
+        Nat.card_fun_sum_eq_and_two_eq_of_lt,
+        Nat.card_fun_sum_eq_and_two_eq_of_total}
+    \leanok
+    Let $I$ be a finite set, let $u,v\in I$ be distinct, and let
+    $r,i,j$ be natural numbers. Define
+    \begin{align}
+        \mathcal F_{r,i,j}
+         & =\left\{\alpha:I\to\mathbb N:
+        \sum_{a\in I}\alpha(a)=r,\quad
+        \alpha(u)=i,\quad\alpha(v)=j\right\}.\label{eq:chain_fixed_frequency_set}
+    \end{align}
+    If $r<i+j$, then the set in~(\ref{eq:chain_fixed_frequency_set}) is empty.
+    If $|I|=s+3$ for a natural number $s$, then
+    \begin{align}
+        |\mathcal F_{r,i,j}|
+         & =\begin{cases}
+                \displaystyle\binom{r-i-j+s}{s}, & i+j\le r, \\
+                0,                               & r<i+j.
+            \end{cases}\label{eq:chain_fixed_frequency_count}
+    \end{align}
+    Taking $r=m+i+j$ in~(\ref{eq:chain_fixed_frequency_count}) gives
+    $|\mathcal F_{m+i+j,i,j}|=\binom{m+s}{s}$
+    for every natural number $m$.
+    The grouped alphabet in~\cite[Section~4.1]{Arad2016RigorousRG}
+    has two windows of $2\ell$ labels and three bulk labels;
+    for this alphabet the formula applies with $s=4\ell$.
+\end{lemma}
+
+\begin{proof}\leanok
+    For every $\alpha:I\to\mathbb N$,
+    $\alpha(u)+\alpha(v)\le\sum_{a\in I}\alpha(a)$,
+    proving the empty case.
+    When the total is $m+i+j$, restricting to $I\setminus\{u,v\}$
+    is a bijection between $\mathcal F_{m+i+j,i,j}$ and the
+    nonnegative integer functions on $s+1$ labels whose sum is $m$.
+    Its inverse reinserts $i$ at $u$ and $j$ at $v$.
+    Identifying these functions with multisets of cardinality $m$
+    gives $\binom{m+s}{s}$.
+    When $i+j\le r$, substituting $m=r-i-j$
+    gives~(\ref{eq:chain_fixed_frequency_count}).
+\end{proof}
+
+\begin{lemma}[Uniform bound for frequency slices]
+    \label{thm:chain_fixed_frequency_uniform_bound}
+    \lean{Nat.card_fun_sum_eq_and_two_eq_le}
+    \leanok
+    \uses{thm:chain_two_fixed_frequencies}
+    Let $I$ have cardinality $s+3$, and let $u,v\in I$ be distinct.
+    For natural numbers $r,i,j$, let $\mathcal F_{r,i,j}$ be the set
+    in~(\ref{eq:chain_fixed_frequency_set}). Then
+    \begin{align}
+        |\mathcal F_{r,i,j}| & \le (r+1)^s.
+        \label{eq:chain_fixed_frequency_uniform_bound}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:chain_two_fixed_frequencies}
+    If $r<i+j$, the set is empty. Otherwise put $m=r-i-j$.
+    The exact count in~(\ref{eq:chain_fixed_frequency_count}) and the
+    elementary binomial estimate give
+    \begin{align}
+        |\mathcal F_{r,i,j}|=\binom{m+s}{s}
+         & \le (m+1)^s\le(r+1)^s.
+        \label{eq:chain_frequency_binomial_bound}
+    \end{align}
+    Combining~(\ref{eq:chain_frequency_binomial_bound}) with the empty case
+    proves~(\ref{eq:chain_fixed_frequency_uniform_bound}).
+\end{proof}
+
+\begin{lemma}[Frequency slices through a prescribed degree]
+    \label{thm:chain_fixed_frequency_degree_sum}
+    \lean{Nat.sum_card_fun_sum_eq_and_two_eq_le}
+    \leanok
+    \uses{thm:chain_fixed_frequency_uniform_bound}
+    Let $I$ be a finite set of cardinality $s+3$, with $s\in\mathbb N$,
+    and let $u,v\in I$ be distinct. For natural numbers $k,i,j$, use
+    $\mathcal F_{r,i,j}$ from~(\ref{eq:chain_fixed_frequency_set}). Then
+    \begin{align}
+        \sum_{r=0}^{k}|\mathcal F_{r,i,j}|
+         & \le (k+1)^{s+1}.
+        \label{eq:chain_frequency_degree_sum}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:chain_fixed_frequency_uniform_bound}
+    For each $0\le r\le k$,
+    Lemma~\ref{thm:chain_fixed_frequency_uniform_bound} gives
+    $|\mathcal F_{r,i,j}|\le(r+1)^s\le(k+1)^s$.
+    Summing over the $k+1$ degrees gives
+    $(k+1)(k+1)^s=(k+1)^{s+1}$.
+\end{proof}
+
+The following scalar estimates are auxiliaries for the two-window argument
+of~\cite[Proposition~5.7]{Arad2016RigorousRG}. For natural
+$k,d,\ell,b$, write
+\begin{align}
+    C_{k,d,\ell,b}
+     & =(2\ell)^2(b+1)^2(k+1)^{4\ell+1}\notag            \\
+     & \qquad\cdot\bigl(2(k+1)\bigr)^{4b+2}d^{4b+4\ell}.
+    \label{eq:chain_two_window_count_factor}
+\end{align}
+
+\begin{lemma}[Summing the two-window counting factors]
+    \label{thm:chain_two_window_count_sum}
+    \lean{Nat.two_window_rank_sum_le_factor}
+    \leanok
+    Let $k,d,\ell,b\in\mathbb N$ with $d\ge1$ and $b\le k$. Then
+    \begin{align}
+         & (2\ell)^2
+        \sum_{\substack{0\le r\le k                    \\0\le i,j\le b}}
+        (r+1)^{4\ell}
+        \binom{r+i+1}{2i+1}\binom{r+j+1}{2j+1}
+        d^{2(i+j)+4\ell}\notag       \\
+         & \qquad\le C_{k,d,\ell,b}.
+        \label{eq:chain_two_window_count_sum}
+    \end{align}
+    The binomial factors retain the upper arguments
+    $r+i+1$ and $r+j+1$ printed in~\cite[Proposition~5.7]{Arad2016RigorousRG};
+    the count of commuting gaps is recorded
+    in~\cite{gap:aklv13_interpolation_and_word_count}.
+\end{lemma}
+
+\begin{proof}\leanok
+    For $r\le k$ and $i\le b\le k$, the elementary binomial estimate gives
+    \begin{align}
+        \binom{r+i+1}{2i+1}
+         & \le (r+i+1)^{2i+1}
+        \le\bigl(2(k+1)\bigr)^{2b+1}.
+        \label{eq:chain_two_window_gap_bound}
+    \end{align}
+    Apply~(\ref{eq:chain_two_window_gap_bound}) to both binomials.
+    Also $(r+1)^{4\ell}\le(k+1)^{4\ell}$ and
+    $d^{2(i+j)+4\ell}\le d^{4b+4\ell}$, since $d\ge1$.
+    There are $(k+1)(b+1)^2$ triples. Multiplying by this number and by
+    $(2\ell)^2$ gives the product~(\ref{eq:chain_two_window_count_factor}).
+\end{proof}
+
+\begin{lemma}[An explicit bound for the counting product]
+    \label{thm:chain_two_window_count_power}
+    \lean{Nat.two_window_rank_factor_le_pow}
+    \leanok
+    Let $k,d,\ell,b\in\mathbb N$ with $k\ge1$, $d\ge2$,
+    $\ell\ge1$ and $b\le k$. For the product
+    in~(\ref{eq:chain_two_window_count_factor}),
+    \begin{align}
+        C_{k,d,\ell,b}
+         & \le(dk)^{17(\ell+b)}.
+        \label{eq:chain_two_window_count_power}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Put $X=dk\ge2$. The hypotheses give $d\le X$,
+    $b+1\le k+1\le X$, $2\ell\le2^\ell\le X^\ell$ and
+    $2(k+1)\le X^2$. Substituting these bounds
+    into~(\ref{eq:chain_two_window_count_factor}) yields
+    $C_{k,d,\ell,b}\le X^{10\ell+12b+7}\le X^{17(\ell+b)}$, since $\ell\ge1$.
+\end{proof}
+
+\begin{definition}[Ordinary labels]
+    \label{def:two_marker_ordinary_labels}
+    \lean{MvPolynomial.twoMarkerOrdinaryLabels}
+    \leanok
+    For a finite alphabet $I$ and distinguished labels $u,v\in I$, let
+    $\mathcal O_{u,v}=I\setminus\{u,v\}$.
+    The definition does not require the two labels to be distinct.
+\end{definition}
+
+\begin{lemma}[One sample family for every degree and frequency slice]
+    \label{thm:two_window_common_scalar_recovery}
+    \lean{Polynomial.exists_twoWindow_wordCoefficient_recovery}
+    \leanok
+    \uses{def:two_marker_ordinary_labels,def:full_word_coefficient}
+    Let $\ell,K$ be nonnegative integers, let
+    $I=(\{0,\ldots,2\ell-1\}\sqcup\{0,\ldots,2\ell-1\})\sqcup\{0,1,2\}$,
+    and choose $0\le p,s<2\ell$.
+    Let $u$ be the label $p$ in the first window and $v$ the label $s$ in the
+    second window. Let $R$ be a ring and a complex algebra, without any
+    commutativity assumption on $R$, and put $N=(K+1)^{4\ell+1}$.
+    For $H:I\to R$, $r\ge0$ and $\nu:I\to\N$, let $\mathcal W_{H,r}(\nu)$ be
+    the sum of the ordered products $H_{w(0)}\cdots H_{w(r-1)}$ over the words
+    $w$ of length $r$ in which each letter $a$ occurs $\nu(a)$ times.
+
+    There are complex sample points $z_t:I\to\C$, $0\le t<N$, with the
+    following property. For every $i,j\ge0$ and every scalar mask
+    $\mu:(I\to\N)\to\C$, there are complex coefficients $\gamma_t$ such
+    that, for every family $H:I\to R$ and every $0\le r\le K$,
+    \begin{align}
+         & \sum_{\substack{\nu:I\to\N                                   \\ \sum_a\nu(a)=r\\
+                   \nu(u)=i,\ \nu(v)=j}}
+        \mu(\nu)\,\mathcal W_{H,r}(\nu)\notag                                            \\
+         & \qquad=\sum_{t=0}^{N-1}\gamma_t
+                                  [x^iy^j]\left(D_t+yH_v+xH_u\right)^r,
+        \qquad D_t=\sum_{a\in\mathcal O_{u,v}}z_t(a)H_a.
+        \label{eq:two_window_common_scalar_recovery}
+    \end{align}
+    Here $x,y$ are central formal variables. The selected terms $H_u,H_v$
+    remain unweighted. The points precede $i,j,\mu$, while the recovery
+    coefficients precede $H$ and every degree $r\le K$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{def:two_marker_ordinary_labels,def:full_word_coefficient}
+    The distinguished labels are distinct, so $\mathcal O=\mathcal O_{u,v}$
+    has $4\ell+1$ members. Put $G=\{0,\ldots,K\}^{\mathcal O}$.
+    The nodes $0,\ldots,K$ are distinct, so the Vandermonde matrix
+    $V_{s,t}=s^t$ is invertible. For $\alpha,g\in G$, define
+    $E_{g,\alpha}=\prod_{a\in\mathcal O}g(a)^{\alpha(a)}$ and
+    $R_{\alpha,g}=\prod_{a\in\mathcal O}(V^{-1})_{\alpha(a),g(a)}$; then
+    $\sum_{g\in G}R_{\alpha,g}E_{g,\beta}=\delta_{\alpha,\beta}$.
+    Take $z_g:I\to\C$ to agree with $g$ on $\mathcal O$ and to vanish
+    elsewhere.
+
+    Fix $i,j,\mu$. For $\alpha\in G$, let $\nu_{i,j,\alpha}$ be the
+    full count vector obtained by assigning $i$ at $u$, $j$ at $v$, and
+    $\alpha(a)$ at each ordinary label $a$, and put
+    $\gamma_g=\sum_{\alpha\in G}\mu(\nu_{i,j,\alpha})R_{\alpha,g}$.
+    For $r\le K$ every ordinary coordinate of a count vector in the slice is
+    at most $K$, so restriction to the ordinary labels identifies the slice
+    with a subset of $G$, and every slice sum is a zero-extended sum over $G$.
+    Substituting the recovery identity and exchanging the finite sums gives
+    recovery with the weights $\gamma_g$. The counted-word identity identifies
+    each evaluated ordinary monomial sum with $[x^iy^j](D_g+yH_v+xH_u)^r$,
+    preserving the order of the factors. The box has exactly $N$ elements;
+    reindexing it by $0\le t<N$ gives~(\ref{eq:two_window_common_scalar_recovery}).
+\end{proof}
+
+\begin{definition}[Polynomially bounded functions]
+    \label{def:nat_polynomial_bounded}
+    \lean{IsNatPolynomialBounded,
+        IsNatPolynomialBounded.const,
+        IsNatPolynomialBounded.id,
+        IsNatPolynomialBounded.of_le,
+        IsNatPolynomialBounded.add,
+        IsNatPolynomialBounded.mul,
+        IsNatPolynomialBounded.pow,
+        IsNatPolynomialBounded.max_one,
+        IsNatPolynomialBounded.exists_one_le}
+    \leanok
+    A function $f$ from the natural numbers to themselves is polynomially
+    bounded when $f(n)\le P\,(n+1)^d$ for all $n\ge1$, for natural numbers $P$
+    and $d$ chosen before $n$. Constants and the identity are polynomially
+    bounded, and the class is closed under pointwise domination, sums,
+    products, powers and taking the maximum with one; the coefficient $P$ can be
+    taken positive.
+\end{definition}
+
+\begin{lemma}[Sequences with prescribed successive relations]
+    \label{lem:dependent_sequence_choice}
+    \lean{Nat.exists_dependent_sequence}
+    \leanok
+    Let $(X_i)_{i\ge0}$ be a family of sets, and let
+    $R_i\subseteq X_i\times X_{i+1}$ be a relation for each $i$.
+    Suppose every $x\in X_i$ has a successor $y\in X_{i+1}$ with
+    $(x,y)\in R_i$. For every prescribed $x_0\in X_0$, there is a sequence
+    $(x_i)_{i\ge0}$ beginning at $x_0$ such that
+    $(x_i,x_{i+1})\in R_i$ at every index.
+\end{lemma}
+
+\begin{proof}\leanok
+    Choose for each $i$ a map $g_i:X_i\to X_{i+1}$ satisfying
+    $(x,g_i(x))\in R_i$ for every $x\in X_i$.
+    Recursively define $x_{i+1}=g_i(x_i)$ from the prescribed initial value.
+\end{proof}
+
+\begin{lemma}[Restricting finite sums to nonzero weights]
+    \label{lem:finset_sum_subtype_ne_zero}
+    \lean{Finset.sum_eq_sum_subtype_ne_zero}
+    \leanok
+    Let $I$ be finite, let $p_i$ be weights in a type with zero, and let $f_i$
+    take values in a commutative additive monoid. If $f_i=0$ whenever $p_i=0$,
+    then
+    \begin{align}
+        \sum_{i\in I}f_i & =\sum_{\substack{i\in I \\p_i\ne0}}f_i.
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Split the full sum according to whether $p_i$ vanishes. Every term in the
+    zero-weight part vanishes by hypothesis.
+\end{proof}
+
+\begin{lemma}[Termwise products under Cauchy--Schwarz]
+    \label{lem:norm_sum_le_mul_sqrt_mul_sqrt}
+    \lean{Finset.norm_sum_le_mul_sqrt_mul_sqrt}
+    \leanok
+    If elements $z_i$ of a normed group satisfy
+    $\lVert z_i\rVert\le c\,a_ib_i$ for real $a_i,b_i$ and $c\ge0$, then
+    \begin{align}
+        \Bigl\lVert\sum_iz_i\Bigr\rVert
+        \le c\Bigl(\sum_ia_i^2\Bigr)^{1/2}\Bigl(\sum_ib_i^2\Bigr)^{1/2}.
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Apply the triangle inequality and then the Cauchy--Schwarz inequality to
+    $\sum_ia_ib_i$.
+\end{proof}
+
+\begin{lemma}[Expansion in selected multilinear arguments]
+    \label{thm:peps_selected_multilinear_expansion}
+    \lean{MultilinearMap.map_piecewise_sum_smul}
+    \leanok
+    Let $T$ be a complex multilinear map, let $S$ be a finite set of argument
+    positions, and fix $x_i$ for $i\notin S$. Replacing each $x_i$
+    ($i\in S$) by $\sum_{j\in J_i} c_{ij}v_{ij}$ gives
+    \begin{align}
+        T\bigl(x[S\leftarrow\textstyle\sum_j c_{ij}v_{ij}]\bigr)
+         & =\sum_{a\in\prod_{i\in S}J_i}
+        \Bigl(\prod_{i\in S}c_{i,a_i}\Bigr)
+        T\bigl(x[S\leftarrow v_{i,a_i}]\bigr).
+        \notag
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Restricting $T$ to the arguments in $S$ with $x_{S^c}$ fixed gives a
+    multilinear map on $\prod_{i\in S}V_i$, and expanding the finite sums by
+    multilinearity pulls out $\prod_{i\in S}c_{i,a_i}$.
+\end{proof}
+
+\begin{lemma}[Explicit thresholds for elementary limits]
+    \label{lem:explicit_thresholds}
+    \lean{Real.powerRatioThreshold,
+        Real.mul_rpow_le_mul_rpow_of_powerRatioThreshold_le,
+        Real.le_rpow_of_powerRatioThreshold_le,
+        Real.add_mul_rpow_le_mul_rpow_of_le,
+        Real.logPowThreshold,
+        Real.mul_log_pow_le_mul_rpow_of_logPowThreshold_le,
+        Real.logRpowThreshold,
+        Real.mul_rpow_mul_log_rpow_le_mul_rpow_of_logRpowThreshold_le,
+        Real.stretchedExpThreshold,
+        Real.mul_rpow_le_exp_of_stretchedExpThreshold_le,
+        Real.mul_exp_neg_le_rpow_neg_of_stretchedExpThreshold_le,
+        Real.one_le_log_natCast_of_three_le}
+    \leanok
+    Let $C\ge0$ and $\eta>0$. Each of the following inequalities holds for
+    every real $x$ beyond an explicit closed-form threshold:
+    \begin{enumerate}
+        \item $Cx^a\le\eta x^b$ for $a<b$, beyond
+              $\max\{1,(C/\eta)^{1/(b-a)}\}$;
+        \item $C(\log x)^k\le\eta x^a$ for $a>0$ and natural $k$;
+        \item $Cx^u(\log x)^L\le\eta x^v$ for $u<v$ and real $L$;
+        \item $Cx^s\le\exp(cx^\theta)$, equivalently
+              $C\exp(-cx^\theta)\le x^{-s}$, for $c,\theta>0$.
+    \end{enumerate}
+    Each statement also holds for natural $n$ beyond the ceiling of the
+    threshold, and $\log n\ge1$ for natural $n\ge3$.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first threshold is obtained by raising $C/\eta\le x^{b-a}$ to the
+    power $1/(b-a)$. The second uses $\log x\le x^\varepsilon/\varepsilon$ with
+    $\varepsilon=a/(2(k+1))$ and the first threshold at exponent $a/2$. The
+    third reduces to the second, rounding $L$ up. The fourth compares $x^s$ with
+    the Taylor term $(cx^\theta)^m/m!$ of the exponential, $m=\lfloor s/\theta\rfloor+1$.
+\end{proof}
+
+\begin{lemma}[Elementary monotonicity and ceiling bounds]
+    \label{thm:homogeneous_ceiling_bound}
+    \lean{Nat.ceil_le_add_one_mul_of_le_mul, Real.exp_mul_sub_le_exp_mul_sub}
+    \leanok
+    For $x,A,s\in\mathbb R$ with $0\le x\le As$ and $s\ge1$,
+    \begin{align}
+        \lceil x\rceil\le(A+1)s.
+        \label{eq:homogeneous_ceiling_bound}
+    \end{align}
+    For $v\ge0$ and $x\le T$, $\exp(vx-c)\le\exp(vT-c)$.
+\end{lemma}
+
+\begin{proof}\leanok
+    $\lceil x\rceil\le x+1\le As+1\le As+s=(A+1)s$. The exponential is
+    increasing and $vx\le vT$.
+\end{proof}
