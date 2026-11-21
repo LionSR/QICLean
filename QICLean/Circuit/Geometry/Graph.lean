@@ -13,8 +13,9 @@ import QICLean.ManyBody.Sites.Lattice.PathGraph
 
 A simple graph `G` on the sites `V` is the geometry with one cell `{u, v}` of cost `1` for each
 edge `uv` (`Geometry.graph`): the gates of a circuit on it act on disjoint pairs of neighbouring
-sites. Its `r`-fold neighbourhood of a region lies within graph distance `r` of the region, so
-regions at graph distance larger than `2r` have disjoint `r`-fold neighbourhoods. The open chain
+sites. Its `r`-fold neighbourhood of a region is the set of sites within graph distance `r` of
+the region, so regions at graph distance larger than `2r` have disjoint `r`-fold
+neighbourhoods. The open chain
 of `n` sites is the graph geometry of the path `SimpleGraph.pathGraph n`, whose cells are the
 pairs `{p, p + 1}`; its neighbourhoods lie within the same distance along the chain.
 
@@ -40,16 +41,18 @@ radius `r` is the `r`-fold neighbourhood of the geometry; a window is `ManyBody.
 ## Main results
 
 * `QuantumCircuit.Geometry.graph_cell_nonempty` — the cells of a graph are nonempty.
-* `QuantumCircuit.Geometry.iterate_neighbourhood_graph_subset` — the `r`-fold neighbourhood lies
-  within graph distance `r`.
-* `QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_graph` — regions at graph distance
-  larger than `2r` have disjoint `r`-fold neighbourhoods.
+* `QuantumCircuit.Geometry.iterate_neighbourhood_graph` — the `r`-fold neighbourhood is the
+  neighbourhood of radius `r` in the graph, `ManyBody.graphNeighborhood`.
+* `QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_graph` — regions separated by `2r` in
+  the graph (`ManyBody.IsGraphSeparated`) have disjoint `r`-fold neighbourhoods.
 * `QuantumCircuit.Geometry.iterate_neighbourhood_pathGraph_subset`,
   `QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_pathGraph` — the same on the open
   chain, in terms of positions.
 -/
 
 namespace QuantumCircuit
+
+open ManyBody
 
 namespace Geometry
 
@@ -98,41 +101,46 @@ private theorem edist_le_one_of_mem_cell {e : (graph G).Cell} {u v : V}
 
 variable [DecidableRel G.Adj]
 
+/-- The neighbourhood of a region in the geometry of the edges of `G` is its neighbourhood of
+radius `1` in `G`. -/
+theorem neighbourhood_graph (R : Finset V) :
+    (graph G).neighbourhood R = graphNeighborhood G R 1 := by
+  refine subset_antisymm (Finset.union_subset subset_graphNeighborhood ?_) fun v hv ↦ ?_
+  · refine Finset.biUnion_subset.mpr fun e he v hve ↦ ?_
+    obtain ⟨u, hu⟩ := (Finset.mem_filter.mp he).2
+    rw [Finset.mem_inter] at hu
+    exact mem_graphNeighborhood.mpr ⟨u, hu.2, by exact_mod_cast edist_le_one_of_mem_cell hu.1 hve⟩
+  · obtain ⟨x, hx, p, hp⟩ := mem_graphNeighborhood_iff_exists_walk.mp hv
+    cases p with
+    | nil => exact (graph G).subset_neighbourhood R hx
+    | @cons _ y _ hxy q =>
+      have hq : q.length = 0 := by
+        rw [SimpleGraph.Walk.length_cons] at hp
+        omega
+      obtain rfl : y = v := SimpleGraph.Walk.eq_of_length_eq_zero hq
+      refine Finset.mem_union_right _ (Finset.mem_biUnion.mpr ⟨⟨s(x, y), hxy⟩,
+        Finset.mem_filter.mpr ⟨Finset.mem_univ _, x, ?_⟩, ?_⟩) <;>
+        simp [hx]
+
 /-- **The graph light cone.** The `r`-fold neighbourhood of a region in the geometry of the edges
-of `G` lies within graph distance `r` of the region.
+of `G` is its neighbourhood of radius `r` in `G`: the sites within graph distance `r` of the
+region.
 
 Source: arXiv:2103.13367, main text, paragraph before Proposition `propQCA2` (the distance
 `d(i, j)`, "the minimal number of edges connecting the vertices `i` and `j`"). -/
-theorem iterate_neighbourhood_graph_subset (R : Finset V) (r : ℕ) :
-    ((graph G).neighbourhood^[r] R : Set V) ⊆ {v | ∃ x ∈ R, G.edist x v ≤ r} := by
+theorem iterate_neighbourhood_graph (R : Finset V) (r : ℕ) :
+    (graph G).neighbourhood^[r] R = graphNeighborhood G R r := by
   induction r with
-  | zero => exact fun x hx ↦ ⟨x, hx, by simp⟩
+  | zero => exact graphNeighborhood_zero.symm
   | succ r ih =>
-    intro v hv
-    rw [Function.iterate_succ_apply', Finset.mem_coe, neighbourhood, Finset.mem_union] at hv
-    rcases hv with hv | hv
-    · obtain ⟨x, hx, h⟩ := ih hv
-      exact ⟨x, hx, h.trans (by exact_mod_cast Nat.le_succ r)⟩
-    · obtain ⟨e, he, hve⟩ := Finset.mem_biUnion.mp hv
-      obtain ⟨u, hu⟩ := (Finset.mem_filter.mp he).2
-      rw [Finset.mem_inter] at hu
-      obtain ⟨x, hx, h⟩ := ih hu.2
-      refine ⟨x, hx, (G.edist_triangle (v := u)).trans ?_⟩
-      push_cast
-      exact add_le_add h (edist_le_one_of_mem_cell hu.1 hve)
+    rw [Function.iterate_succ_apply', ih, neighbourhood_graph, ← graphNeighborhood_succ]
 
-/-- Regions at graph distance larger than `2r` have disjoint `r`-fold neighbourhoods. -/
+/-- Regions separated by `2r` in `G` have disjoint `r`-fold neighbourhoods. -/
 theorem disjoint_iterate_neighbourhood_graph {R R' : Finset V} {r : ℕ}
-    (h : ∀ x ∈ R, ∀ y ∈ R', ((2 * r : ℕ) : ℕ∞) < G.edist x y) :
+    (h : IsGraphSeparated G R R' (2 * r)) :
     Disjoint ((graph G).neighbourhood^[r] R) ((graph G).neighbourhood^[r] R') := by
-  rw [Finset.disjoint_left]
-  intro v hvR hvR'
-  obtain ⟨x, hx, hxv⟩ := iterate_neighbourhood_graph_subset R r hvR
-  obtain ⟨y, hy, hyv⟩ := iterate_neighbourhood_graph_subset R' r hvR'
-  refine (h x hx y hy).not_ge ((G.edist_triangle (v := v)).trans ?_)
-  rw [SimpleGraph.edist_comm (u := v)]
-  calc G.edist x v + G.edist y v ≤ r + r := add_le_add hxv hyv
-    _ = ((2 * r : ℕ) : ℕ∞) := by push_cast; exact (two_mul _).symm
+  rw [iterate_neighbourhood_graph, iterate_neighbourhood_graph]
+  exact h.disjoint_graphNeighborhood
 
 /-- The graph light cone in terms of `SimpleGraph.dist`: every site of the `r`-fold
 neighbourhood of `R` is reachable from a site of `R` at distance at most `r`. -/
@@ -140,7 +148,7 @@ theorem iterate_neighbourhood_graph_subset_dist (R : Finset V) (r : ℕ) :
     ((graph G).neighbourhood^[r] R : Set V) ⊆
       {v | ∃ x ∈ R, G.Reachable x v ∧ G.dist x v ≤ r} := by
   intro v hv
-  obtain ⟨x, hx, h⟩ := iterate_neighbourhood_graph_subset R r hv
+  obtain ⟨x, hx, h⟩ := mem_graphNeighborhood.mp (iterate_neighbourhood_graph (G := G) R r ▸ hv)
   have hreach : G.Reachable x v :=
     SimpleGraph.edist_ne_top_iff_reachable.mp (ne_top_of_le_ne_top (by simp) h)
   refine ⟨x, hx, hreach, ?_⟩
@@ -191,7 +199,8 @@ theorem iterate_neighbourhood_pathGraph_subset (R : Finset (Fin n)) (r : ℕ) :
     ((graph (SimpleGraph.pathGraph n)).neighbourhood^[r] R : Set (Fin n)) ⊆
       {j | ∃ i ∈ R, (j : ℕ) ≤ i + r ∧ (i : ℕ) ≤ j + r} := by
   intro j hj
-  obtain ⟨i, hi, h⟩ := iterate_neighbourhood_graph_subset R r hj
+  obtain ⟨i, hi, h⟩ := mem_graphNeighborhood.mp
+    (iterate_neighbourhood_graph (G := SimpleGraph.pathGraph n) R r ▸ hj)
   rw [SimpleGraph.pathGraph_edist] at h
   have h' : Nat.dist i.val j.val ≤ r := by exact_mod_cast h
   refine ⟨i, hi, ?_, ?_⟩ <;> simp only [Nat.dist] at h' <;> omega
