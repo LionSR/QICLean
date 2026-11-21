@@ -128,19 +128,47 @@ span used throughout Chapter~\ref{ch:wielandt}.
 \label{sec:app_wielandt_blocking_support}
 \label{sec:rectangular_span}
 
-\begin{theorem}[Blocking identities for exact word spans]
-    \label{thm:kraus_blocking_word_span}
-    \lean{Kraus.evalWord_blockTensor,
-        Kraus.wordSpan_blockTensor_one,
-        Kraus.wordSpan_blockTensor,
-        Kraus.HasEventuallyFullWordSpan.blockTensor}
+\begin{definition}[Blocked family]
+    \label{def:kraus_block}
+    \lean{Kraus.block}
     \leanok
     \uses{def:kraus_eval_word}
-    Fix a block length $L$ and regard the words of length $L$ in a Kraus
-    family $K$ as a new family $K^{[L]}$. Evaluation of a blocked word agrees
-    with evaluation of its flattened word, and consequently
+    Let $K=\{K_i\}_{i\in I}$ be a family of matrices on~$\C^n$ and $L\geq0$.
+    The \emph{blocked family} $K^{[L]}$ is indexed by the words
+    $w=(w_0,\ldots,w_{L-1})\in I^L$ of length~$L$, with
+    $K^{[L]}_w=K_{w_0}\cdots K_{w_{L-1}}$.
+\end{definition}
+
+\begin{theorem}[Words of blocks]
+    \label{thm:kraus_block_eval_word}
+    \lean{Kraus.evalWord_block,
+        Kraus.evalWord_block_ofFn,
+        Kraus.block_block}
+    \leanok
+    \uses{def:kraus_block}
+    A word of blocks $(w^1,\ldots,w^N)$ evaluates under $K^{[L]}$ to the
+    evaluation under~$K$ of the concatenated word $w^1\cdots w^N$ of
+    length~$NL$; in particular $(K^{[L]})^{[M]}=K^{[ML]}$ once a word of
+    $M$ blocks of length~$L$ is read as a word of length~$ML$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Induction on the number of blocks, using that word evaluation sends
+    concatenation to multiplication.
+\end{proof}
+
+\begin{theorem}[Blocking identities for exact word spans]
+    \label{thm:kraus_blocking_word_span}
+    \lean{Kraus.isNBlkInjective_iff_isInjective_block,
+        Kraus.wordSpan_block_one,
+        Kraus.wordSpan_block,
+        Kraus.HasEventuallyFullWordSpan.block}
+    \leanok
+    \uses{def:kraus_block, def:kraus_exact_word_span}
+    For every block length~$L$, the matrices of $K^{[L]}$ span $S_L(K)$, so
+    $K^{[L]}$ is injective if and only if $S_L(K)=\MN{n}$, and
     \begin{align}
-        K^{[L]}_n=K_{nL}.
+        S_N(K^{[L]})=S_{NL}(K).
         \notag
     \end{align}
     If $L>0$ and the exact word spans of $K$ are eventually full, then the
@@ -148,9 +176,23 @@ span used throughout Chapter~\ref{ch:wielandt}.
 \end{theorem}
 
 \begin{proof}\leanok
-    The evaluation identity follows by induction on the blocked word. Taking
-    spans gives the displayed equality. For eventual fullness, sufficiently
-    large $n$ also makes $nL$ exceed the original threshold.
+    The first statement holds by definition. The displayed equality follows by
+    induction on~$N$ from $S_{N+1}=S_N S_1$. For eventual fullness,
+    sufficiently large $N$ also makes $NL$ exceed the original threshold.
+\end{proof}
+
+\begin{theorem}[Transfer map of a blocked family]
+    \label{thm:kraus_transfer_map_block}
+    \lean{Kraus.transferMap_block}
+    \leanok
+    \uses{def:kraus_block, def:transfer_map}
+    For a family indexed by a finite set, $\E_{K^{[L]}}=(\E_K)^L$.
+\end{theorem}
+
+\begin{proof}\leanok
+    Induction on~$L$: splitting a word of length $L+1$ into its first letter
+    and the rest writes $\E_{K^{[L+1]}}(X)$ as
+    $\sum_i K_i\,\E_{K^{[L]}}(X)\,K_i^\dagger$.
 \end{proof}
 
 \section{Complementary-gap consequences}

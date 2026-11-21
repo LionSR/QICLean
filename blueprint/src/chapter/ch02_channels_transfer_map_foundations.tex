@@ -122,7 +122,7 @@
 
 The transfer map and injectivity predicate below are relocated here from
 the matrix-product-vector chapter: both are stated for an arbitrary finite
-matrix family (a family indexed by a physical dimension~$d$, with no
+matrix family (a family indexed by an arbitrary set, with no
 tensor-network content of its own), and the peripheral-spectrum and
 Perron--Frobenius theorems of later chapters cite them
 across the chapter boundary.
@@ -130,12 +130,13 @@ across the chapter boundary.
 \begin{definition}[Transfer map]\label{def:transfer_map}
     \lean{Kraus.transferMap}
     \leanok
-    The \emph{transfer map} associated to a finite matrix family~$A$ is the
+    The \emph{transfer map} associated to a family~$A=\{A^i\}_{i\in I}$ of
+    matrices on~$\C^n$, indexed by a finite set~$I$, is the
     finite Kraus map of that family; the notation $\E_A$ abbreviates the
-    linear map $\MN{D} \to \MN{D}$ defined by
+    linear map $\MN{n} \to \MN{n}$ defined by
     \begin{align}
         \E_A(X)
-        &= \sum_{i=0}^{d-1} A^i X (A^i)^\dagger.
+        &= \sum_{i\in I} A^i X (A^i)^\dagger.
         \label{eq:mps_transfer_map}
     \end{align}
 \end{definition}
@@ -143,17 +144,18 @@ across the chapter boundary.
 \begin{definition}[Injectivity]\label{def:injective}
     \lean{Kraus.IsInjective}
     \leanok
-    A finite matrix family~$A$ is \emph{injective} if its matrices span the
+    A family~$A=\{A^i\}_{i\in I}$ of matrices on~$\C^n$, indexed by an
+    arbitrary set~$I$, is \emph{injective} if its matrices span the
     full matrix algebra:
-    $\spn_{\C}\{A^i : i = 0,\ldots,d{-}1\} = \MN{D}$.
+    $\spn_{\C}\{A^i : i\in I\} = \MN{n}$.
 \end{definition}
 
 \begin{theorem}[Injectivity implies irreducibility]\label{thm:injective_irreducible}
     \lean{Kraus.injective_implies_irreducibleCP}
     \leanok
     \uses{def:injective, def:transfer_map, def:irreducible_cp}
-    If $A$ is an injective MPS tensor, then its transfer map $\E_A$
-    is irreducible.
+    If a family $A=\{A^i\}_{i\in I}$ in $\MN{D}$, indexed by a finite
+    set~$I$, is injective, then its transfer map $\E_A$ is irreducible.
 \end{theorem}
 
 \begin{proof}
