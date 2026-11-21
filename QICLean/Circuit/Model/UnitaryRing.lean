@@ -24,20 +24,21 @@ The declarations restate `conj_circuitOp_mem_supportedOperators`,
 `expect_mul_mul_expect_one_of_isPreparedInDepth` and `expect_mul_eq_of_isPreparedInDepth` of
 `TNLean/Circuit/LocalCircuit.lean` at commit `414a18fb88` (Apache-2.0). The changes: the
 circuits are `IsUnitaryCircuit (Geometry.ring N)` with any finite basis at each site; the
-expectation
-`⟨ψ|A|ψ⟩` is written `star ψ ⬝ᵥ (A *ᵥ ψ)`; the ring ball is `ManyBody.ringBall` and the
-separation `ManyBody.IsRingSeparated`.
+expectation `⟨ψ|A|ψ⟩` is written `star ψ ⬝ᵥ (A *ᵥ ψ)`; the ring ball and the separation on the
+ring are `ManyBody.graphNeighborhood` and `ManyBody.IsGraphSeparated` in the cycle graph.
 
 ## Main results
 
-* `QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_ringBall` — the
-  ring light cone.
-* `QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul_of_isRingSeparated`,
-  `QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq_of_isRingSeparated` — vanishing connected
-  correlations beyond ring distance `2T`.
+In the namespace `QuantumCircuit`:
+
+* `IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_graphNeighborhood_cycleGraph` —
+  the ring light cone.
+* `IsPreparedInDepth.dotProduct_mul_mul_of_isGraphSeparated`,
+  `IsPreparedInDepth.dotProduct_mul_eq_of_isGraphSeparated` — vanishing connected correlations
+  beyond ring distance `2T`.
 -/
 
-open Matrix ManyBody
+open Matrix ManyBody SimpleGraph
 
 namespace QuantumCircuit
 
@@ -48,11 +49,11 @@ is supported on `R`, then `Uᴴ A U` is supported on the sites within ring dista
 
 Source: arXiv:2307.01696, main text after Theorem 1 ("`|ψ_N⟩` have a strictly finite light
 cone") and Supplemental Material, proof of Theorem 1. -/
-theorem IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_ringBall {T : ℕ}
-    {U : Matrix (Config Y) (Config Y) ℂ} (hU : IsUnitaryCircuit (Geometry.ring N) T U)
+theorem IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_graphNeighborhood_cycleGraph
+    {T : ℕ} {U : Matrix (Config Y) (Config Y) ℂ} (hU : IsUnitaryCircuit (Geometry.ring N) T U)
     {R : Finset (Fin N)} {A : Matrix (Config Y) (Config Y) ℂ}
     (hA : A ∈ supportedOperators Y R) :
-    Uᴴ * A * U ∈ supportedOperators Y (ringBall R T) := by
+    Uᴴ * A * U ∈ supportedOperators Y (graphNeighborhood (cycleGraph N) R T) := by
   rw [← Geometry.iterate_neighbourhood_ring]
   exact hU.conjTranspose_mul_mul_mem_supportedOperators Geometry.ring_cost_pos hA
 
@@ -63,28 +64,29 @@ depth `T` on the ring and operators `A`, `B` on sets at ring distance larger tha
 Source: arXiv:2307.01696, Supplemental Material, proof of Theorem 1: "since `ψ` is created
 from a product state by a depth-`T` circuit, every connected correlation for operators at a
 distance larger than `2T` vanishes". -/
-theorem IsPreparedInDepth.dotProduct_mul_mul_of_isRingSeparated {T : ℕ}
+theorem IsPreparedInDepth.dotProduct_mul_mul_of_isGraphSeparated {T : ℕ}
     {ψ : Config Y → ℂ} (hψ : IsPreparedInDepth (Geometry.ring N) T ψ) {R R' : Finset (Fin N)}
-    (hRR' : IsRingSeparated R R' (2 * T)) {A B : Matrix (Config Y) (Config Y) ℂ}
+    (hRR' : IsGraphSeparated (cycleGraph N) R R' (2 * T)) {A B : Matrix (Config Y) (Config Y) ℂ}
     (hA : A ∈ supportedOperators Y R) (hB : B ∈ supportedOperators Y R') :
     star ψ ⬝ᵥ ((A * B) *ᵥ ψ) * (star ψ ⬝ᵥ ψ) =
       (star ψ ⬝ᵥ (A *ᵥ ψ)) * (star ψ ⬝ᵥ (B *ᵥ ψ)) := by
   refine hψ.dotProduct_mul_mul Geometry.ring_cost_pos ?_ hA hB
   rw [Geometry.iterate_neighbourhood_ring, Geometry.iterate_neighbourhood_ring]
-  exact hRR'.disjoint_ringBall
+  exact hRR'.disjoint_graphNeighborhood
 
 /-- For a unit vector `ψ` prepared in depth `T` on the ring, the connected correlation of
 operators at ring distance larger than `2T` vanishes: `⟨AB⟩ = ⟨A⟩⟨B⟩`.
 
 Source: arXiv:2307.01696, Supplemental Material, proof of Theorem 1 ("every connected
 correlation for operators at a distance larger than `2T` vanishes"). -/
-theorem IsPreparedInDepth.dotProduct_mul_eq_of_isRingSeparated {T : ℕ}
+theorem IsPreparedInDepth.dotProduct_mul_eq_of_isGraphSeparated {T : ℕ}
     {ψ : Config Y → ℂ} (hψ : IsPreparedInDepth (Geometry.ring N) T ψ)
-    (hnorm : star ψ ⬝ᵥ ψ = 1) {R R' : Finset (Fin N)} (hRR' : IsRingSeparated R R' (2 * T))
+    (hnorm : star ψ ⬝ᵥ ψ = 1) {R R' : Finset (Fin N)}
+    (hRR' : IsGraphSeparated (cycleGraph N) R R' (2 * T))
     {A B : Matrix (Config Y) (Config Y) ℂ} (hA : A ∈ supportedOperators Y R)
     (hB : B ∈ supportedOperators Y R') :
     star ψ ⬝ᵥ ((A * B) *ᵥ ψ) = (star ψ ⬝ᵥ (A *ᵥ ψ)) * (star ψ ⬝ᵥ (B *ᵥ ψ)) := by
-  have h := hψ.dotProduct_mul_mul_of_isRingSeparated hRR' hA hB
+  have h := hψ.dotProduct_mul_mul_of_isGraphSeparated hRR' hA hB
   rwa [hnorm, mul_one] at h
 
 end QuantumCircuit

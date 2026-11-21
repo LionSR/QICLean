@@ -229,7 +229,7 @@ Chapter~\ref{ch:circuits} for these circuits.
 \begin{theorem}[Light cone of a circuit of depth $T$]
     \label{thm:unitary_classes_light_cone}
     \lean{QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators,
-        QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_ringBall}
+        QuantumCircuit.IsUnitaryCircuit.conjTranspose_mul_mul_mem_supportedOperators_graphNeighborhood_cycleGraph}
     \leanok
     \uses{def:unitary_classes, thm:unitary_circuit_light_cone,
         lem:circuits_ring_neighbourhood}
@@ -280,8 +280,8 @@ Chapter~\ref{ch:circuits} for these circuits.
     \label{thm:unitary_correlations}
     \lean{QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul,
         QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq,
-        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul_of_isRingSeparated,
-        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq_of_isRingSeparated}
+        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_mul_of_isGraphSeparated,
+        QuantumCircuit.IsPreparedInDepth.dotProduct_mul_eq_of_isGraphSeparated}
     \leanok
     \uses{def:unitary_prepared, lem:unitary_product_vector,
         thm:unitary_classes_light_cone, lem:sites_ring_separated}
