@@ -306,27 +306,6 @@ $\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
     applies them in the reverse order.
 \end{proof}
 
-\begin{definition}[Placement along an injection]
-    \label{def:teleport_place_along}
-    \lean{QuantumCircuit.placeAlongSiteEquiv,
-        QuantumCircuit.placeAlongSiteEquiv_apply, QuantumCircuit.placeAlongEquiv,
-        QuantumCircuit.placeAlong,
-        QuantumCircuit.placeAlong_apply,
-        QuantumCircuit.placeAlong_mem_supportedOperators,
-        QuantumCircuit.placeAlong_mem_unitaryGroup,
-        QuantumCircuit.sitePermOp_mul_placeAlong_mul,
-        Equiv.Perm.apply_mem_of_forall_notMem,
-        List.mul_prod_mul_of_mul_eq_one}
-    \leanok
-    \uses{def:sites_place, def:hastings_site_permutation}
-    For an injection $\iota\colon I\to S$ and a matrix $X$ on the qudits of
-    $I$, the placement of $X$ along $\iota$ acts as $X$ on the sites
-    $\iota(i)$, the site $\iota(i)$ in the role of $i$, and as the identity
-    elsewhere. It is supported on the image of $\iota$, unitary when $X$ is,
-    and $P_\pi\,\mathrm{place}_\iota(X)\,P_\pi^{-1}=\mathrm{place}_{\pi\circ\iota}(X)$
-    for every permutation of sites $\pi$.
-\end{definition}
-
 \begin{lemma}[Parallel chains]
     \label{lem:teleport_parallel}
     \lean{QuantumCircuit.TeleportHop.mem_allSites_flatMap,
@@ -335,7 +314,8 @@ $\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
         QuantumCircuit.TeleportHop.sites_subset_allSites,
         QuantumCircuit.TeleportHop.valid_flatMap,
         QuantumCircuit.TeleportHop.sitePerm_flatMap_apply,
-        QuantumCircuit.TeleportHop.sitePerm_flatMap_apply_of_notMem}
+        QuantumCircuit.TeleportHop.sitePerm_flatMap_apply_of_notMem,
+        Equiv.Perm.apply_mem_of_forall_notMem}
     \leanok
     \uses{def:teleport_valid, lem:teleport_chains}
     If valid lists of hops $\mathcal L_g$ have their sites in pairwise disjoint
@@ -390,10 +370,11 @@ $\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
         QuantumCircuit.LongRangeGate.rounds,
         QuantumCircuit.LongRangeGate.depth_rounds_le,
         QuantumCircuit.LongRangeGate.forall_rounds,
-        QuantumCircuit.LongRangeGate.isImplementationOn_rounds}
+        QuantumCircuit.LongRangeGate.isImplementationOn_rounds,
+        List.mul_prod_mul_of_mul_eq_one}
     \leanok
     \uses{lem:teleport_conjugated, lem:teleport_chains, lem:teleport_parallel,
-        def:teleport_place_along, def:teleport_list_layer}
+        def:sites_place_along, lem:sites_place_along_permutation, def:teleport_list_layer}
     On the ring of $N$ sites, let $u_1,\dots,u_n$ be two-site unitaries on the
     pairs $\{a_r,a_r+2L_r+1\}$, $2L_r+1<N$, at odd separation, whose stretches
     $\{a_r,\dots,a_r+2L_r+1\}$ are pairwise disjoint. A measurement circuit of
@@ -412,7 +393,7 @@ $\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
     by the round of $G$ and $\mathcal B$, of depths at most $2$ and $3$,
     implements $P_{\mathcal T}^{-1}GP_{\mathcal T}$, which is
     $\prod_r(u_r)_{\{a_r,\,a_r+2L_r+1\}}$ by
-    Definition~\ref{def:teleport_place_along}, since $P_{\mathcal B}$ maps
+    Lemma~\ref{lem:sites_place_along_permutation}, since $P_{\mathcal B}$ maps
     $a_r+2L_r$ to $a_r$ and fixes $a_r+2L_r+1$.
 \end{proof}
 
@@ -439,7 +420,7 @@ $\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
         QuantumCircuit.RegisterGate.op_mem_supportedOperators,
         QuantumCircuit.RegisterGate.add_eq_add_iff}
     \leanok
-    \uses{def:teleport_place_along, def:circuits_ring_geometry}
+    \uses{def:sites_place_along, thm:sites_place_along_support, def:circuits_ring_geometry}
     On the ring of $N$ sites, a register gate $(X,a,L)$ with $2L+2s\le N$
     places a matrix $X$ on $2s$ qudits along the two registers
     $\{a,\dots,a+s-1\}$ and $\{a+2L+s,\dots,a+2L+2s-1\}$; it is unitary when
@@ -533,7 +514,7 @@ $\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
         QuantumCircuit.RegisterGate.exists_rounds}
     \leanok
     \uses{lem:teleport_register_chains, lem:measurement_implementation_comp,
-        def:measurement_circuit}
+        def:measurement_circuit, lem:sites_place_along_permutation}
     Let $g_1,\dots,g_n$ be register gates with pairwise disjoint stretches, and
     let the product of their local gates be the operator of a unitary circuit
     of depth at most $K$ on the ring. Then a measurement circuit of depth at
@@ -549,7 +530,7 @@ $\zeta=e^{2\pi i/d}$, and $F_{ab}=d^{-1/2}\zeta^{ab}$ is the Fourier matrix.
     rounds of Lemma~\ref{lem:teleport_register_chains} compose by
     Lemma~\ref{lem:measurement_implementation_comp} to an implementation of
     $P^{-1}\bigl(\prod_r\mathrm{place}_{\mathrm{local}}(X_r)\bigr)P$, which is
-    $\prod_rg_r$ by Definition~\ref{def:teleport_place_along}, in depth at
+    $\prod_rg_r$ by Lemma~\ref{lem:sites_place_along_permutation}, in depth at
     most $2s+K+2s$. For the last claim, each product of gates on the open chain
     placed on the consecutive sites of $g_r$ is a unitary circuit of depth at
     most $K$ inside them, and circuits inside pairwise disjoint regions run in

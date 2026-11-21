@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Data.Fin.Tuple.Embedding
 import QICLean.Circuit.Protocol.Teleportation.Chains
+import QICLean.ManyBody.Sites.PlaceAlong
 
 /-!
 # Layers of gates between distant sites in constant depth with measurements
@@ -36,14 +37,11 @@ teleporting spatially separated sites in general. Documented in
 
 ## Main definitions
 
-* `QuantumCircuit.placeAlong` — a matrix on `ι` sites placed along an injection into the sites.
 * `QuantumCircuit.LongRangeGate`, `QuantumCircuit.LongRangeGate.op`.
 * `QuantumCircuit.LongRangeGate.rounds` — the two rounds applying a layer of long-range gates.
 
 ## Main results
 
-* `QuantumCircuit.placeAlong_apply`, `QuantumCircuit.sitePermOp_mul_placeAlong_mul` — the
-  entries of a placement along an injection, and its conjugation by a permutation of sites.
 * `QuantumCircuit.TeleportHop.valid_flatMap`, `QuantumCircuit.TeleportHop.sitePerm_flatMap_apply`
   — chains on pairwise disjoint sets of sites run in parallel.
 * `QuantumCircuit.LongRangeGate.depth_rounds_le` — the two rounds have depth at most `5`.
@@ -51,7 +49,7 @@ teleporting spatially separated sites in general. Documented in
 
 The declarations restate `TNLean/Circuit/Teleportation/LongRangeGates.lean` at commit
 `414a18fb88` (Apache-2.0). The changes: the gates on the ring are placements along injections
-`QuantumCircuit.placeAlong`, in place of TNLean's `embedOp`; the layer of local gates is
+`ManyBody.placeAlong`, in place of TNLean's `embedOp`; the layer of local gates is
 `Layer.ofList`; the two rounds form one circuit, `Circuit.comp`, of depth at most `5`, which
 implements the product of the gates; the permutation matrices are `ManyBody.sitePermOp`.
 
@@ -82,81 +80,6 @@ theorem List.mul_prod_mul_of_mul_eq_one {M : Type*} [Monoid M] {P Q : M}
       _ = P * X * Q * (P * l.prod * Q) := by simp only [mul_assoc]
 
 namespace QuantumCircuit
-
-/-! ### Placements along injections -/
-
-section PlaceAlong
-
-variable {S ι : Type} [Fintype S] [DecidableEq S] [Fintype ι] [DecidableEq ι] {d : ℕ}
-
-/-- The sites of `ι` are the sites of the image of an injection `f : ι ↪ S`. -/
-noncomputable def placeAlongSiteEquiv (f : ι ↪ S) : ι ≃ {v // v ∈ Finset.univ.map f} :=
-  (Equiv.subtypeUnivEquiv Finset.mem_univ).symm.trans (Finset.univ.equivMap f)
-
-/-- The configurations of the image of an injection `f : ι ↪ S` are the configurations of `ι`. -/
-noncomputable def placeAlongEquiv (f : ι ↪ S) :
-    RegionConfig (Qudits S d) (Finset.univ.map f) ≃ Config (Qudits ι d) :=
-  (siteConfigurationEquiv (placeAlongSiteEquiv f) fun _ ↦ Equiv.refl (Fin d)).symm
-
-omit [Fintype S] [DecidableEq S] [DecidableEq ι] in
-theorem placeAlongSiteEquiv_apply (f : ι ↪ S) (i : ι) : (placeAlongSiteEquiv f i : S) = f i :=
-  rfl
-
-/-- The matrix `X` on the sites `ι` placed along the injection `f`: `X` acts on the sites `f i`,
-and the identity on the others. -/
-noncomputable def placeAlong (f : ι ↪ S)
-    (X : Matrix (Config (Qudits ι d)) (Config (Qudits ι d)) ℂ) :
-    Matrix (Config (Qudits S d)) (Config (Qudits S d)) ℂ :=
-  place (Finset.univ.map f) (X.submatrix (placeAlongEquiv f) (placeAlongEquiv f))
-
-omit [DecidableEq ι] in
-/-- The entries of a placement along an injection. -/
-theorem placeAlong_apply (f : ι ↪ S) (X : Matrix (Config (Qudits ι d)) (Config (Qudits ι d)) ℂ)
-    (σ τ : Config (Qudits S d)) :
-    placeAlong f X σ τ = if ∀ v ∉ Finset.univ.map f, σ v = τ v then X (σ ∘ f) (τ ∘ f) else 0 := by
-  have h : ∀ ρ : Config (Qudits S d), placeAlongEquiv f (fun v ↦ ρ v) = ρ ∘ f := fun ρ ↦
-    funext fun i ↦ by
-      rw [placeAlongEquiv, siteConfigurationEquiv_symm_apply]
-      rfl
-  rw [placeAlong, place_apply, submatrix_apply, h, h]
-
-omit [DecidableEq ι] in
-theorem placeAlong_mem_supportedOperators (f : ι ↪ S)
-    (X : Matrix (Config (Qudits ι d)) (Config (Qudits ι d)) ℂ) :
-    placeAlong f X ∈ supportedOperators (Qudits S d) (Finset.univ.map f) :=
-  place_mem_supportedOperators _
-
-theorem placeAlong_mem_unitaryGroup (f : ι ↪ S)
-    {X : Matrix (Config (Qudits ι d)) (Config (Qudits ι d)) ℂ}
-    (hX : X ∈ unitaryGroup (Config (Qudits ι d)) ℂ) :
-    placeAlong f X ∈ unitaryGroup (Config (Qudits S d)) ℂ :=
-  place_mem_unitaryGroup (submatrix_equiv_mem_unitary.mpr hX)
-
-omit [DecidableEq ι] in
-/-- **Relabelling the sites of a placement.** Conjugating `X` placed along `f` by the permutation
-of sites `π` places `X` along `π ∘ f`. -/
-theorem sitePermOp_mul_placeAlong_mul (π : Equiv.Perm S) (f : ι ↪ S)
-    (X : Matrix (Config (Qudits ι d)) (Config (Qudits ι d)) ℂ) :
-    sitePermOp π * placeAlong f X * sitePermOp π⁻¹ = placeAlong (f.trans π.toEmbedding) X := by
-  ext σ τ
-  rw [← conjTranspose_sitePermOp, sitePermOp_mul_mul_conjTranspose, reindex_apply,
-    submatrix_apply]
-  have hinv : ∀ ρ : Config (Qudits S d), (siteConfigurationEquiv (X := Qudits S d)
-      (X' := Qudits S d) π fun _ ↦ Equiv.refl (Fin d)).symm ρ = ρ ∘ π := fun ρ ↦ by
-    rw [Equiv.symm_apply_eq, siteConfigurationEquiv_refl_apply]
-    funext v
-    exact congrArg ρ (π.apply_symm_apply v).symm
-  rw [hinv, hinv, placeAlong_apply, placeAlong_apply]
-  refine if_congr ⟨fun h w hw ↦ ?_, fun h v hv ↦ h (π v) ?_⟩ rfl rfl
-  · have := h (π.symm w) fun hm ↦ hw ?_
-    · rwa [Function.comp_apply, Function.comp_apply, π.apply_symm_apply] at this
-    · obtain ⟨i, -, hi⟩ := Finset.mem_map.mp hm
-      exact Finset.mem_map.mpr ⟨i, Finset.mem_univ _, by simp [hi]⟩
-  · intro hm
-    obtain ⟨i, -, hi⟩ := Finset.mem_map.mp hm
-    exact hv (Finset.mem_map.mpr ⟨i, Finset.mem_univ _, π.injective (by simpa using hi)⟩)
-
-end PlaceAlong
 
 /-! ### Parallel chains -/
 
@@ -522,7 +445,8 @@ theorem sitePermOp_back_mul_localGates_mul_sitePermOp_there :
   rw [sitePerm_there_eq_symm hgs, show σ.symm = σ⁻¹ from rfl,
     List.mul_prod_mul_of_mul_eq_one hQP hPQ, List.map_map]
   refine congrArg List.prod (List.map_congr_left fun g hg ↦ ?_)
-  rw [Function.comp_apply, localGate, sitePermOp_mul_placeAlong_mul, op]
+  rw [Function.comp_apply, localGate, ← conjTranspose_sitePermOp,
+    sitePermOp_mul_placeAlong_mul_conjTranspose, op]
   have hback : ∀ {i}, i ∈ g.span → σ i = sitePerm g.back i := fun hi ↦
     sitePerm_flatMap_apply (fun g _ ↦ g.allSites_back_subset_span) hgs hg hi
   have hσ : ∀ t, ((Function.Embedding.embFinTwo g.near_ne_far).trans (Equiv.toEmbedding σ)) t =

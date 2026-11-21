@@ -54,7 +54,7 @@ at most `4s + K` implements the layer (`QuantumCircuit.RegisterGate.exists_round
 
 The declarations restate `TNLean/Circuit/Teleportation/RegisterGates.lean` at commit
 `414a18fb88` (Apache-2.0). The changes: the gates on the ring are placements along injections,
-`QuantumCircuit.placeAlong`; the sequences of rounds are circuits composed by `Circuit.comp`,
+`ManyBody.placeAlong`; the sequences of rounds are circuits composed by `Circuit.comp`,
 with depths bounded by `≤`; the circuit applying the matrices `X` on the consecutive sites is a
 `UnitaryCircuit` of the ring with operator `localProd gs`, run without a teleportation round
 around it, so the depth bound is `4s + K` in place of `4s + K + 2`; a product of at most `K`
@@ -659,7 +659,8 @@ theorem isZeroOn_localProd_mulVec {v : Config (Qudits (Fin N) d) → ℂ}
     · exact Finset.disjoint_left.mp (hgs.forall hg hg' hgg) (g.zone_subset_span (Nat.zero_le s)
         (g.mem_zone.mpr ⟨j, hj1, hj2, rfl⟩)) (ht ▸ g'.localSites_mem_span t)
   · obtain ⟨g, hg, rfl⟩ := List.mem_map.mp hA
-    refine supportedOperators_mono ?_ (placeAlong_mem_supportedOperators _ g.X)
+    refine supportedOperators_mono ?_
+      (placeAlong_mem_supportedOperators (X := Qudits (Fin N) d) g.localSitesEmb g.X)
     exact fun i hi ↦ Finset.mem_filter.mpr ⟨Finset.mem_univ _, g, hg, hi⟩
 
 omit [NeZero d] in
@@ -676,8 +677,8 @@ theorem sitePermOp_inv_mul_localProd_mul_sitePermOp :
     rw [sitePermOp_mul, mul_inv_cancel, sitePermOp_one]
   rw [localProd, List.mul_prod_mul_of_mul_eq_one hQP hPQ, List.map_map]
   refine congrArg List.prod (List.map_congr_left fun g hg ↦ ?_)
-  have h := sitePermOp_mul_placeAlong_mul (d := d) π⁻¹ g.localSitesEmb g.X
-  rw [inv_inv] at h
+  have h := sitePermOp_mul_placeAlong_mul_conjTranspose (α := Fin d) g.localSitesEmb π⁻¹ g.X
+  rw [conjTranspose_sitePermOp, inv_inv] at h
   rw [Function.comp_apply, localOp, h, op]
   congr 1
   ext t
@@ -737,7 +738,7 @@ theorem isUnitaryCircuit_localProd {K : ℕ}
   classical
   have hone : ∀ g ∈ gs, IsUnitaryCircuitOn (Geometry.ring N)
       (Finset.univ.map g.localSitesEmb) K g.localOp := fun g hg ↦
-    IsGateProduct.isUnitaryCircuitOn_ring (placeAlongSiteEquiv g.localSitesEmb)
+    IsGateProduct.isUnitaryCircuitOn_ring (windowEquiv g.localSitesEmb)
       (fun p p' h ↦ g.localSites_succ p p' h) (hK g hg)
   have hmap : ∀ g : RegisterGate d N s, Finset.univ.map g.localSitesEmb ⊆ g.span := fun g x hx ↦ by
     obtain ⟨t, -, rfl⟩ := Finset.mem_map.mp hx
