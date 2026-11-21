@@ -4,9 +4,9 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Algebra.ComplexSqrt
-import QICLean.Circuit.Algorithm.Qubit
+import QICLean.Circuit.Core.Qudit
 import QICLean.Circuit.Core.LocalGate
-import QICLean.Circuit.Gate.SiteControlled
+import QICLean.Circuit.Core.SiteControlled
 import QICLean.Circuit.Model.Measurement
 import QICLean.ManyBody.Sites.Relabel
 
@@ -60,7 +60,7 @@ The declarations restate `TNLean/Circuit/Teleportation/Hop.lean` and
 `TNLean/Circuit/Teleportation/ZeroSubspace.lean` at commit `414a18fb88` (Apache-2.0). The
 changes: any finite type of sites and any geometry in place of the ring, the two cells of a hop
 given with their regions; the gates are placements of two-qudit matrices along
-`QuantumCircuit.pairEquiv`; the projections onto outcomes are placed matrix units; the
+`ManyBody.pairEquiv`; the projections onto outcomes are placed matrix units; the
 permutations of sites are `ManyBody.sitePermOp`; the generalized Pauli matrix is written out in
 the frame.
 
