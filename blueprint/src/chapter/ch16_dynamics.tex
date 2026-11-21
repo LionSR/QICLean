@@ -406,16 +406,23 @@ or the local dimensions.
         ManyBody.Interaction.hamiltonian_supportProj_mulVec_eq_zero_iff}
     \leanok
     \uses{def:dynamics_interaction_support_proj}
-    The new terms are orthogonal projections. A positive term of norm at most one lies
-    below its range projection, so for such terms the Hamiltonian of the range projections
-    lies above $H_\Phi$, and the two Hamiltonians have the same kernel for any positive
-    terms.
+    Write $P_{h_i}=\mathbf 1_{\mathbb R\setminus\{0\}}(h_i)$ for the range projection of
+    $h_i\ge0$. Each $P_{h_i}$ is an orthogonal projection. If $\lVert h_i\rVert\le1$ then
+    $h_i\le P_{h_i}$, so if this holds for every $i$ then
+    \begin{align}
+        H_\Phi=\sum_ih_i\le\sum_iP_{h_i}.
+    \end{align}
+    For any positive semidefinite terms,
+    \begin{align}
+        \ker H_\Phi=\ker\sum_iP_{h_i}.
+    \end{align}
 \end{lemma}
 \begin{proof}\leanok
-    A positive contraction has spectrum in $[0,1]$, below the indicator of the nonzero
-    spectrum. A vector is in the kernel of a sum of positive operators exactly when it is
-    in the kernel of every summand, and a positive operator and its range projection have
-    the same kernel.
+    \uses{thm:support_projection_order_kernel}
+    Both statements are Theorem~\ref{thm:support_projection_order_kernel} applied to the
+    family $(h_i)_i$: on the spectrum of a positive contraction $x\le\mathbf 1_{x\ne0}$,
+    which gives $h_i\le P_{h_i}$ and, summing over $i$, the inequality; and
+    $\ker\sum_ih_i=\bigcap_i\ker h_i=\bigcap_i\ker P_{h_i}=\ker\sum_iP_{h_i}$.
 \end{proof}
 
 \begin{definition}[Translates of one operator]
