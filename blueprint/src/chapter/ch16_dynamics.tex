@@ -358,14 +358,15 @@ or the local dimensions.
         ManyBody.Interaction.isHermitian_translates_term,
         ManyBody.Interaction.translates_term_nonneg}
     \leanok
-    \uses{def:dynamics_interaction_translates, lem:sites_place_norm_order}
+    \uses{def:dynamics_interaction_translates, lem:sites_place_along_hom,
+        lem:sites_place_along_norm_order}
     Each translate has norm at most $\lVert h\rVert$, and is Hermitian, or positive, when
     $h$ is.
 \end{lemma}
 \begin{proof}
     \leanok
-    Relabelling the sites of $W$ and placing the result are unital $*$-homomorphisms
-    that do not increase the norm and preserve positivity.
+    Placement along $w_i$ is a unital $*$-homomorphism that does not increase the norm
+    and preserves positivity.
 \end{proof}
 
 \begin{definition}[Heisenberg picture]
