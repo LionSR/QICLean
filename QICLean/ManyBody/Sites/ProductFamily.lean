@@ -61,7 +61,7 @@ variable {V : Type} [Fintype V] [DecidableEq V] {X Y : V → Type} [∀ v, Finty
 /-- A product of trace-preserving Kraus families is trace-preserving. -/
 theorem IsTP.prodFamily {K : (v : V) → KrausFamily (X v) (Y v)} (hK : ∀ v, (K v).IsTP) :
     (ManyBody.prodFamily K).IsTP := by
-  rw [IsTP, effect_prodFamily, show (fun v ↦ (K v).effect) = fun v ↦ 1 from funext hK,
-    prodOp_one]
+  rw [isTP_iff_effect_eq_one, effect_prodFamily,
+    show (fun v ↦ (K v).effect) = fun v ↦ 1 from funext hK, prodOp_one]
 
 end KrausFamily

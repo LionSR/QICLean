@@ -95,7 +95,7 @@ theorem krausMap_pow_of_ks_equality (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
 
 This uses `ks_equality_of_peripheral_eigenvector` to obtain KS equality at `X`. -/
 theorem krausMap_pow_of_peripheral_eigenvector (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : IsUnitalKraus K) (h_tp : IsTPKraus K)
+    (h_unital : IsUnitalKraus K) (h_tp : Kraus.IsTP K)
     (X : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hEig : krausMap K X = μ • X) (hμ : ‖μ‖ = 1) :
     ∀ n : ℕ, krausMap K (X ^ n) = μ ^ n • X ^ n := by

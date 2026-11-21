@@ -105,7 +105,7 @@ theorem Circuit.exists_unit_product_approx (e₀ : ∀ s, E s)
     if (fun s ↦ (w s).2) = e₀ then ψ (fun s ↦ (w s).1) else 0 with hv
   have hUU : Uᴴ * U = 1 := by
     have hTP := Circuit.isTP_krausFamily KrausGate.ev c (hc.mono fun _ hK ↦ hK.isTP)
-    rwa [KrausFamily.IsTP, KrausFamily.effect, Fintype.sum_unique] at hTP
+    rwa [KrausFamily.isTP_iff_effect_eq_one, KrausFamily.effect, Fintype.sum_unique] at hTP
   have hprep : (prepareCircuit Γ e₀).map KrausGate.ev
       (vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ))) = vecMulVec v (star v) := by
     ext w w'

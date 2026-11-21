@@ -136,7 +136,7 @@ projection, `m ∣ D`. -/
 private lemma period_dvd_dim_of_cyclic_projections
     {r : ℕ} [NeZero D]
     (K : Fin r → MatrixAlg D)
-    (hTP : KadisonSchwarz.IsTPKraus (d := r) (D := D) K)
+    (hTP : Kraus.IsTP K)
     {m : ℕ} [NeZero m]
     (P : Fin m → MatrixAlg D)
     (hPproj : ∀ k, IsOrthogonalProjection (P k))
@@ -312,7 +312,7 @@ The proof strategy uses Mathlib's `rootsOfUnity.isCyclic`:
 The peripheral eigenvalues form a finite subset of `ℂ`, contain `1`, and are
 closed under multiplication and inversion, so they form a finite subgroup of
 `ℂˣ`, which is cyclic. This lemma extracts the cyclic structure without
-requiring `IsTPKraus` (the divisibility `m ∣ D` needs trace-preservation
+requiring `Kraus.IsTP` (the divisibility `m ∣ D` needs trace-preservation
 separately; see `peripheral_eigenvalues_form_cyclic_group`).
 
 **Scope restriction (complete positivity and adjoint fixed point):** This is the
@@ -462,7 +462,7 @@ theorem peripheral_eigenvalues_form_cyclic_group
     {r : ℕ} [NeZero D]
     (K : Fin r → MatrixAlg D)
     (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
-    (hTP : KadisonSchwarz.IsTPKraus (d := r) (D := D) K)
+    (hTP : Kraus.IsTP K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K)) :
@@ -613,7 +613,7 @@ theorem channel_period_divides_dim
     {r : ℕ} [NeZero D]
     (K : Fin r → MatrixAlg D)
     (hUnital : KadisonSchwarz.IsUnitalKraus (d := r) (D := D) K)
-    (hTP : KadisonSchwarz.IsTPKraus (d := r) (D := D) K)
+    (hTP : Kraus.IsTP K)
     (ρ : MatrixAlg D) (hρ : ρ.PosDef)
     (hρfix : Kraus.adjointMap K ρ = ρ)
     (hIrr : IsIrreducibleMap (Kraus.mapLM K))

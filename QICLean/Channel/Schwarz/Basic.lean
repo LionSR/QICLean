@@ -79,8 +79,12 @@ noncomputable def adjointMapLM (K : ι → Matrix n n ℂ) : Matrix n n ℂ →�
 def IsUnital (K : ι → Matrix n n ℂ) : Prop :=
   ∑ i : ι, K i * (K i)ᴴ = 1
 
-/-- Trace-preserving condition: `∑ᵢ Kᵢ† Kᵢ = I`. -/
-def IsTP (K : ι → Matrix n n ℂ) : Prop :=
+omit [Fintype n] in
+/-- Trace-preserving condition: `∑ᵢ Kᵢ† Kᵢ = I`, for a finite family of matrices
+`Kᵢ : ℂ^n → ℂ^m`. This is the one notion of trace preservation of a Kraus family: the bundled
+`KrausFamily.IsTP` is this condition on the operators of the family. Wolf, *Quantum Channels &
+Operations*, Thm. 2.1. -/
+def IsTP {m : Type*} [Fintype m] (K : ι → Matrix m n ℂ) : Prop :=
   ∑ i : ι, (K i)ᴴ * K i = 1
 
 @[simp]

@@ -50,16 +50,8 @@ In the project's MPS terminology, this is the **right-canonical** condition. -/
 def IsUnitalKraus (K : Fin d → Matrix (Fin D) (Fin D) ℂ) : Prop :=
   ∑ i : Fin d, K i * (K i)ᴴ = 1
 
-/-- The Kraus map is **trace-preserving** (TP) when `∑ᵢ Kᵢ† Kᵢ = I`.
-In the project's MPS terminology, this is the **left-canonical** condition. -/
-def IsTPKraus (K : Fin d → Matrix (Fin D) (Fin D) ℂ) : Prop :=
-  ∑ i : Fin d, (K i)ᴴ * K i = 1
-
 @[simp] theorem isUnitalKraus_iff (K : Fin d → Matrix (Fin D) (Fin D) ℂ) :
     IsUnitalKraus K ↔ ∑ i : Fin d, K i * (K i)ᴴ = 1 := Iff.rfl
-
-@[simp] theorem isTPKraus_iff (K : Fin d → Matrix (Fin D) (Fin D) ℂ) :
-    IsTPKraus K ↔ ∑ i : Fin d, (K i)ᴴ * K i = 1 := Iff.rfl
 
 /-- If the Kraus operators satisfy `∑ Kᵢ Kᵢ† = I`, then `krausMap K 1 = 1`. -/
 theorem krausMap_one_of_unital (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
@@ -68,7 +60,7 @@ theorem krausMap_one_of_unital (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
 
 /-- A trace-preserving Kraus family preserves the matrix trace. -/
 theorem trace_krausMap_of_tp (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_tp : IsTPKraus K)
+    (h_tp : Kraus.IsTP K)
     (X : Matrix (Fin D) (Fin D) ℂ) :
     trace (krausMap K X) = trace X := by
   simp only [krausMap, trace_sum]
@@ -90,7 +82,7 @@ theorem conjTranspose_krausMap (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
 
 /-- The conjugate-transposed operators of a TP family form a unital family. -/
 theorem isUnitalKraus_conjTranspose {K : Fin d → Matrix (Fin D) (Fin D) ℂ}
-    (h : IsTPKraus (d := d) (D := D) K) :
+    (h : Kraus.IsTP K) :
     IsUnitalKraus (d := d) (D := D) (fun i => (K i)ᴴ) := by
   change ∑ i, (K i)ᴴ * ((K i)ᴴ)ᴴ = 1
   simp only [conjTranspose_conjTranspose]; exact h
@@ -166,7 +158,7 @@ This is the version most directly useful for MPS transfer matrix analysis.
 The proof reduces to `kadison_schwarz` applied to the adjoint operators `Kᵢ†`,
 which satisfy the unitality condition `∑ᵢ Kᵢ† (Kᵢ†)† = ∑ᵢ Kᵢ† Kᵢ = I`. -/
 theorem kadison_schwarz_adjoint (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_tp : IsTPKraus K)
+    (h_tp : Kraus.IsTP K)
     (X : Matrix (Fin D) (Fin D) ℂ) :
     (krausAdjointMap K (Xᴴ * X) - (krausAdjointMap K X)ᴴ * krausAdjointMap K X).PosSemidef := by
   simpa [krausAdjointMap, krausMap, conjTranspose_conjTranspose] using
@@ -181,7 +173,7 @@ Proof: By Kadison-Schwarz, `E(X†X) - E(X)†E(X) ≥ 0`, so
 `tr(E(X†X)) ≥ tr(E(X)†E(X))`. If additionally `E` is trace-preserving,
 then `tr(E(X†X)) = tr(X†X)`, giving the result. -/
 theorem hilbertSchmidt_contraction (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : IsUnitalKraus K) (h_tp : IsTPKraus K)
+    (h_unital : IsUnitalKraus K) (h_tp : Kraus.IsTP K)
     (X : Matrix (Fin D) (Fin D) ℂ) :
     trace ((krausMap K X)ᴴ * krausMap K X) ≤ trace (Xᴴ * X) := by
   have h_nonneg := (kadison_schwarz K h_unital X).trace_nonneg

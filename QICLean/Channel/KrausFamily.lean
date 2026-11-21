@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Channel.KrausCPTP
+import QICLean.Channel.Schwarz.Basic
 
 /-!
 # Finite Kraus families
@@ -109,9 +110,14 @@ theorem effect_single (V : Matrix β α ℂ) : (single V).effect = Vᴴ * V :=
 
 variable [DecidableEq α]
 
-/-- A Kraus family is trace-preserving when its effect is the identity. -/
+/-- A Kraus family is trace-preserving when its operators are, `Kraus.IsTP`: its effect
+`∑ᵢ Kᵢᴴ Kᵢ` is the identity. -/
 def IsTP (K : KrausFamily α β) : Prop :=
-  K.effect = 1
+  Kraus.IsTP K.op
+
+omit [Fintype α] in
+theorem isTP_iff_effect_eq_one {K : KrausFamily α β} : K.IsTP ↔ K.effect = 1 :=
+  Iff.rfl
 
 /-- A Kraus family is trace-nonincreasing when its effect is at most the identity. For a
 single operator this says that the operator is a contraction. -/
@@ -126,11 +132,11 @@ def IsUnitary [DecidableEq β] (K : KrausFamily α β) : Prop :=
 omit [Fintype α] in
 theorem IsTP.isTraceNonincreasing {K : KrausFamily α β} (h : K.IsTP) :
     K.IsTraceNonincreasing := by
-  rw [IsTraceNonincreasing, h]
+  rw [IsTraceNonincreasing, isTP_iff_effect_eq_one.mp h]
 
 theorem IsUnitary.isTP [DecidableEq β] {K : KrausFamily α β} (h : K.IsUnitary) : K.IsTP := by
   obtain ⟨⟨u⟩, hK⟩ := h
-  rw [IsTP, effect, Fintype.sum_unique]
+  rw [isTP_iff_effect_eq_one, effect, Fintype.sum_unique]
   exact (hK default).1
 
 /-- The adjoint of a unitary family is unitary. -/
@@ -172,7 +178,7 @@ theorem trace_map_eq_trace_effect_mul (K : KrausFamily α β) (ρ : Matrix α α
 /-- A trace-preserving Kraus family preserves the trace. -/
 theorem trace_map {K : KrausFamily α β} (h : K.IsTP) (ρ : Matrix α α ℂ) :
     (K.map ρ).trace = ρ.trace := by
-  rw [trace_map_eq_trace_effect_mul, h, Matrix.one_mul]
+  rw [trace_map_eq_trace_effect_mul, isTP_iff_effect_eq_one.mp h, Matrix.one_mul]
 
 /-- A trace-nonincreasing Kraus family decreases the trace of every positive semidefinite
 input. The inequality is in the real order on complex traces. -/
@@ -198,11 +204,12 @@ def measure (α : Type) [Fintype α] [DecidableEq α] : KrausFamily α α :=
   ⟨α, fun a ↦ Matrix.single a a 1⟩
 
 theorem isTP_prepare {β : Type} [Fintype β] [DecidableEq β] (b : β) : (prepare b).IsTP := by
+  rw [isTP_iff_effect_eq_one]
   ext x y
   simp [prepare, effect_single, mul_apply, Matrix.single_apply]
 
 theorem isTP_discard (α : Type) [Fintype α] [DecidableEq α] : (discard α).IsTP := by
-  rw [IsTP, effect]
+  rw [isTP_iff_effect_eq_one, effect]
   simp only [discard, conjTranspose_single, star_one, single_mul_single_same, mul_one]
   exact sum_single_one
 
@@ -237,7 +244,7 @@ theorem IsTP.map_apply_of_subsingleton {α β : Type} [Fintype α] [DecidableEq 
   rw [Subsingleton.elim a' a, Subsingleton.elim b' b]
   let := uniqueOfSubsingleton a
   let := uniqueOfSubsingleton b
-  have hK := congrFun (congrFun h a) a
+  have hK := congrFun (congrFun (isTP_iff_effect_eq_one.mp h) a) a
   rw [effect, Matrix.sum_apply, one_apply_eq] at hK
   rw [map_apply, Matrix.sum_apply, ← mul_one (ρ a a), ← hK, Finset.mul_sum]
   refine Finset.sum_congr rfl fun i _ ↦ ?_
@@ -276,7 +283,7 @@ theorem effect_reindex [Fintype β] [Fintype β'] (K : KrausFamily α β) (e : �
 
 theorem IsTP.reindex [Fintype β] [Fintype β'] [DecidableEq α] [DecidableEq α']
     {K : KrausFamily α β} (hK : K.IsTP) (e : α' ≃ α) (f : β' ≃ β) : (K.reindex e f).IsTP := by
-  rw [IsTP, effect_reindex, hK, submatrix_one_equiv]
+  rw [isTP_iff_effect_eq_one, effect_reindex, isTP_iff_effect_eq_one.mp hK, submatrix_one_equiv]
 
 theorem IsUnitary.reindex [Fintype α] [Fintype β] [Fintype α'] [Fintype β'] [DecidableEq α]
     [DecidableEq β] [DecidableEq α'] [DecidableEq β'] {K : KrausFamily α β} (hK : K.IsUnitary)
