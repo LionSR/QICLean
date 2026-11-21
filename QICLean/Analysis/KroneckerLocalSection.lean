@@ -24,7 +24,7 @@ orbit of `u`.
 This is step 3 of the cross-section construction that replaces the slice theorem
 of Montgomery and Yang in arXiv:1703.09188, proof of Corollary `coruvSF`,
 lines 942--947; see the note
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/mpu_standard_form_path_cross_section.tex.
+https://sirui-lu.com/TNLean/paper-gaps/mpu_standard_form_path_cross_section.pdf.
 
 ## Main declarations
 

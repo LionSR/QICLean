@@ -17,7 +17,7 @@ stabilizer representative. The displayed action gauge is retained verbatim.
 representative, not the equivalence on cohomology classes (that is
 `StabilizerRepresentatives.inducedLSymbol_isBlockIndependent_iff_H2π_mem_range_map_subtype`);
 see
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/fbc25_mpu_action_stabilizer_source_audit.tex.
+https://sirui-lu.com/TNLean/paper-gaps/fbc25_mpu_action_stabilizer_source_audit.pdf.
 The corrected transition index is explained in
 `docs/paper-gaps/fbc25_stabilizer_transition_index_typo.tex`.
 

@@ -18,7 +18,7 @@ proportionality step of arXiv:1708.00029, Appendix A, lines 1072--1080.
 **Scope restriction (arXiv:1708.00029, Appendix A, lines 1068--1080):** the theorems start from
 the uniform identity `⨂_v A_v(σ_v) = z ⨂_v B_v(σ_v)`; the source first obtains a cyclically
 shifted identity, and the reduction to the uniform form is recorded in
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/dccsp17_periodic_overlap_route_alignment.tex.
+https://sirui-lu.com/TNLean/paper-gaps/dccsp17_periodic_overlap_route_alignment.pdf.
 
 Moved from TNLean, `TNLean/Algebra/PiTensorProductPhase.lean` at commit `49b78ed821`
 (Apache-2.0). Changes: `TNLean.Algebra.PiTensorProductPhase.normalizedMatrixEntryDual` is

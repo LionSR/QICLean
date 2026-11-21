@@ -21,7 +21,7 @@ products over `p` consecutive positions are prescribed roots on these orbits.
 `k_{u+p} = k_u + 1`, which fails for the largest coordinate `k_u = m / gcd m p - 1`.
 `stepOrbitEquiv_add_one` advances `k` modulo `m / gcd m p`, and
 `exists_stepOrbit_phases` reduces the exponent using `c ^ (m / gcd m p) = 1`; see
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/dccsp17_orbit_phase_wraparound.tex.
+https://sirui-lu.com/TNLean/paper-gaps/dccsp17_orbit_phase_wraparound.pdf.
 
 Moved from TNLean, `TNLean/Algebra/FinStepOrbit.lean` at commit `49b78ed821` (Apache-2.0).
 

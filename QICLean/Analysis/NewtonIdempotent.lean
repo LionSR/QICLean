@@ -30,7 +30,7 @@ lies in it as well. Hermiticity is not needed.
 
 This is a finite-dimensional ingredient of the continuity argument of arXiv:1010.3732,
 Section II.F.2, lines 953–993; the remaining steps of that argument are recorded in
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/spc11_spt_interpolation_upper_range.tex.
+https://sirui-lu.com/TNLean/paper-gaps/spc11_spt_interpolation_upper_range.pdf.
 
 Moved from TNLean, `TNLean/Algebra/NewtonIdempotentConvergence.lean` and
 `TNLean/Algebra/ContinuousNearbyIdempotent.lean` at commit `49b78ed821` (Apache-2.0). Changes:

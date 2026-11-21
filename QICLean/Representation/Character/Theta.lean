@@ -22,7 +22,7 @@ representation; it assumes neither unitarity nor semi-regularity.
 **Local fix (fourth-root normalization):** The source states `Θ⁴ = Δ`, although its Lemma 4.4
 defines `Δ` with the factor `|G|⁻¹`. With that definition, the exact identity is `Θ⁴ = |G| Δ`.
 This normalization correction is recorded in the TNLean note
-<https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/rmp_peps_quantum_double_g_isometry.tex>.
+<https://sirui-lu.com/TNLean/paper-gaps/rmp_peps_quantum_double_g_isometry.pdf>.
 
 Moved from TNLean, `TNLean/Algebra/RepresentationTheta.lean` and
 `TNLean/Algebra/RepresentationThetaSquared.lean` at commit `49b78ed821` (Apache-2.0).

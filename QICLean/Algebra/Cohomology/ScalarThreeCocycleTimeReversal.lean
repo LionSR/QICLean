@@ -278,7 +278,7 @@ consequence, `TRSF1group` at line 954, as
 in place of `|L|²`, and the printed form fails for an on-site
 `ℤ₂ × ℤ₂` symmetry. This declaration and
 `LSymbol.phase_sq_eq_of_gauge_eq_star` use the corrected ratio. See
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/glm23_time_reversal_l_symbol.tex. -/
+https://sirui-lu.com/TNLean/paper-gaps/glm23_time_reversal_l_symbol.pdf. -/
 theorem star_apply_eq_gauge_one_apply {E : Type*} [AddCommGroup E] [Module ℂ E]
     {γ : ActionTensorGauge G X} {L : LSymbol G X} {x : X} {g h : G} {T P : E}
     (hT : T ≠ 0) (hconj : P = (star (L x g h : ℂ)) • T)

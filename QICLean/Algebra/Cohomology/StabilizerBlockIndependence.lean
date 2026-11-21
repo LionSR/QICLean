@@ -24,7 +24,7 @@ and no normality or finiteness of the stabilizer, is assumed.
 
 **Scope restriction (coefficients):** The coefficients are `ℂˣ`; the source's coefficients
 `U(1)` are treated in `QICLean.Algebra.Cohomology.StabilizerBlockIndependenceCircle`. See
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/fbc25_mpu_action_stabilizer_source_audit.tex.
+https://sirui-lu.com/TNLean/paper-gaps/fbc25_mpu_action_stabilizer_source_audit.pdf.
 
 Moved from TNLean, `TNLean/Algebra/StabilizerBlockIndependence.lean` at commit `49b78ed821`
 (Apache-2.0).

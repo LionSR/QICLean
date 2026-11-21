@@ -52,7 +52,7 @@ transforms `u'` and `v'` into real matrices.
 `v'' = v' (b† ⊗ a†)` (line 1152), and for a unitary symplectic `S` one has
 `S† ≠ Sᵀ` in general, so `Matrix.exists_symplectic_factors_of_kronecker_mul`
 states the relation with `S_r† ⊗ S_ℓ†`. Documented in the note
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/mpu_conjugation_symplectic_uniqueness_transpose.tex.
+https://sirui-lu.com/TNLean/paper-gaps/mpu_conjugation_symplectic_uniqueness_transpose.pdf.
 
 Moved from TNLean, `TNLean/Algebra/ConjugationGateGauge.lean`
 at commit `49b78ed821` (Apache-2.0).

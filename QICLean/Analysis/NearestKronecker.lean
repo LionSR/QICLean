@@ -25,7 +25,7 @@ product `h ⊗ k` of unitaries, and fixes every product `x ⊗ y` of unitaries.
 This is step 2 of the cross-section construction that replaces the slice theorem
 of Montgomery and Yang in arXiv:1703.09188, proof of Corollary `coruvSF`,
 lines 942--947; see the note
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/mpu_standard_form_path_cross_section.tex.
+https://sirui-lu.com/TNLean/paper-gaps/mpu_standard_form_path_cross_section.pdf.
 The gap is the closed interval `[a, b]`, because the set of matrices whose
 spectrum avoids an open interval is not open.
 

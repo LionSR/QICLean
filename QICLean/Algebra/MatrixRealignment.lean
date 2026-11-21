@@ -20,7 +20,7 @@ nonzero factors.
 This is step 1 of the cross-section construction that replaces the slice theorem
 of Montgomery and Yang in arXiv:1703.09188, proof of Corollary `coruvSF`,
 lines 942--947 (see the note
-https://github.com/LionSR/TNLean/blob/main/docs/paper-gaps/mpu_standard_form_path_cross_section.tex).
+https://sirui-lu.com/TNLean/paper-gaps/mpu_standard_form_path_cross_section.pdf).
 For square factors the rank of the realignment is the operator Schmidt rank: the matrix in
 `Matrix.operatorSchmidtRank_eq_rank_realignment` is `realign M` by definition.
 
