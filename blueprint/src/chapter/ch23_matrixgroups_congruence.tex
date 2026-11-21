@@ -1,0 +1,644 @@
+\section{Congruence normal forms of symmetric and skew-symmetric unitaries}
+
+This section treats unitaries $x$ related to their entrywise conjugates and
+transposes. It proves the congruence normal forms $x=S^T\Lambda S$ of
+symmetric and skew-symmetric unitaries
+\cite[Lemma~\texttt{lemma:conjclass-normalform-continuous}]{Cirac2017MPU},
+the real normal form of a skew-symmetric orthogonal matrix, and the gauges
+that make a pair $u,v$ with $\overline u=(x\otimes y)u$ and
+$\overline v=v(y^\dagger\otimes x^\dagger)$ real or symplectic.
+
+\begin{lemma}[Scalar phase from a unitary relation]
+    \label{thm:mpug_unitary_entrywise_scalar_phase}
+    \lean{Matrix.scalar_mul_star_eq_one_of_mul_map_star_eq_smul_one}
+    \leanok
+    Let $I$ be a nonempty finite set, let $T,S\in\operatorname{Mat}_I(\C)$ be
+    unitary, and let $\sigma\in\C$. As in
+    \cite[lines~1557--1562]{FrancoRubio2025MPUGauging}, if the product of
+    $T$ and the entrywise conjugate $S^*$ of $S$ satisfies
+    \begin{align}
+        TS^* & =\sigma\mathbf 1,
+        \label{eq:mpug_unitary_entrywise_scalar_relation}
+    \end{align}
+    then the scalar $\sigma$ has unit modulus:
+    \begin{align}
+        \sigma\overline\sigma & =1.
+        \label{eq:mpug_unitary_entrywise_scalar_phase}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    The matrix $S^*$ is unitary, so $TS^*=\sigma\mathbf 1$ is unitary. Hence
+    \begin{align}
+        (\sigma\mathbf 1)(\sigma\mathbf 1)^\dagger
+         & =\sigma\overline\sigma\,\mathbf 1=\mathbf 1.
+    \end{align}
+    Evaluating a diagonal entry gives
+    (\ref{eq:mpug_unitary_entrywise_scalar_phase}).
+\end{proof}
+
+\begin{lemma}[Reciprocal scalars in the paired relations]
+    \label{thm:mpug_unitary_entrywise_paired_scalars}
+    \lean{Matrix.paired_scalars_mul_eq_one_of_mul_map_star_eq_smul_one}
+    \leanok
+    \uses{thm:mpug_unitary_entrywise_scalar_phase}
+    Let $I$ be a nonempty finite set, let $T,S\in\operatorname{Mat}_I(\C)$ be
+    unitary, and let $\sigma,\tau\in\C$. As in the relation
+    $\sigma_g\sigma_{g^{-1}}=1$ of
+    \cite[lines~1559--1563]{FrancoRubio2025MPUGauging}, if
+    \begin{align}
+        TS^* & =\sigma\mathbf 1,
+        \label{eq:mpug_unitary_entrywise_rel_ts} \\
+        ST^* & =\tau\mathbf 1,
+        \label{eq:mpug_unitary_entrywise_rel_st}
+    \end{align}
+    then
+    \begin{align}
+        \sigma\tau & =1.
+        \label{eq:mpug_unitary_entrywise_paired_scalars}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_unitary_entrywise_scalar_phase}
+    Multiplying~(\ref{eq:mpug_unitary_entrywise_rel_ts}) by $T^{-1}$ on the
+    left and $T$ on the right gives $S^*T=\sigma\mathbf 1$. Entrywise
+    conjugation of~(\ref{eq:mpug_unitary_entrywise_rel_st}) gives
+    $S^*T=\overline\tau\,\mathbf 1$. A diagonal entry therefore gives
+    $\sigma=\overline\tau$. Applying
+    Lemma~\ref{thm:mpug_unitary_entrywise_scalar_phase}
+    to~(\ref{eq:mpug_unitary_entrywise_rel_st}) yields $\tau\overline\tau=1$,
+    and hence $\sigma\tau=1$.
+\end{proof}
+
+\begin{lemma}[Sign dichotomy in the self relation]
+    \label{thm:mpug_unitary_entrywise_self_sign}
+    \lean{Matrix.scalar_eq_one_or_neg_one_of_mul_map_star_self_eq_smul_one}
+    \leanok
+    \uses{thm:mpug_unitary_entrywise_paired_scalars}
+    Let $I$ be a nonempty finite set, let $T\in\operatorname{Mat}_I(\C)$ be
+    unitary, and let $\sigma\in\C$. As in the sign step
+    $\Id=xx^\dagger=e^{2i\phi}\Id$ of \cite[lines~1036--1038]{Cirac2017MPU} and
+    the involution conclusion of
+    \cite[lines~1563--1567]{FrancoRubio2025MPUGauging}, if
+    \begin{align}
+        TT^* & =\sigma\mathbf 1,
+        \label{eq:mpug_unitary_entrywise_self_relation}
+    \end{align}
+    then
+    \begin{align}
+        \sigma & \in\{1,-1\}.
+        \label{eq:mpug_unitary_entrywise_self_sign}
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_unitary_entrywise_paired_scalars}
+    Applying Lemma~\ref{thm:mpug_unitary_entrywise_paired_scalars} with $S=T$
+    and $\tau=\sigma$ gives $\sigma^2=1$, so
+    $\sigma=1$ or $\sigma=-1$.
+\end{proof}
+
+\begin{lemma}[Common transpose sign of two conjugation factors]
+    \label{thm:mpu_conjugation_common_transpose_sign}
+    \lean{Matrix.transpose_mul_map_star_of_mem_unitaryGroup,
+        Matrix.eq_smul_transpose_of_map_star_mul_eq_smul_one,
+        Matrix.exists_common_transpose_sign_of_kronecker_map_star_mul_eq_one,
+        Matrix.transpose_eq_self_or_transpose_eq_neg_of_kronecker_map_star_mul_eq_one}
+    \leanok
+    \uses{thm:mpug_kronecker_identity_factors, thm:mpug_unitary_entrywise_self_sign}
+    Let $x$ and $y$ be unitary matrices over $\mathbb C$, indexed by nonempty
+    finite sets, whose entrywise conjugates satisfy
+    \begin{align}
+        \overline xx\otimes\overline yy & =\Id.
+    \end{align}
+    Then there is a sign $\sigma\in\{1,-1\}$ with
+    \begin{align}
+        x & =\sigma x^T, & y & =\sigma y^T.
+    \end{align}
+    Equivalently, either $x=x^T$ and $y=y^T$, or $x=-x^T$ and $y=-y^T$.
+    This is the algebraic conclusion of \cite[lines~1033--1038]{Cirac2017MPU}.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:mpug_kronecker_identity_factors, thm:mpug_unitary_entrywise_self_sign}
+    A Kronecker product equal to the identity has reciprocal scalar factors, so
+    $\overline xx=e^{i\phi}\Id$ and $\overline yy=e^{-i\phi}\Id$. Since $x$ is
+    unitary, $x^T\overline x=\Id$; multiplying $\overline xx=e^{i\phi}\Id$ on
+    the left by $x^T$ gives $x=e^{i\phi}x^T$, and similarly
+    $y=e^{-i\phi}y^T$. Transposing $x=e^{i\phi}x^T$ gives $x^T=e^{i\phi}x$,
+    hence $x=e^{2i\phi}x$; since $x$ is invertible, $e^{2i\phi}=1$, so
+    $e^{i\phi}=\pm1$ and $e^{-i\phi}=e^{i\phi}$. The two matrices therefore
+    carry one transpose sign.
+\end{proof}
+
+\begin{lemma}[Symmetric branch of the unitary congruence normal form]
+    \label{lem:mpu_symmetric_unitary_congruence}
+    \lean{Matrix.exists_symmetric_unitary_squareRoot}
+    \leanok
+    Let $x$ be a symmetric unitary matrix. There is a symmetric unitary matrix
+    $S$ such that
+    \begin{align}
+        x & = S^T S.
+    \end{align}
+    This is the symmetric branch of
+    \cite[Lemma~\texttt{lemma:conjclass-normalform-continuous}]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 1054--1064.
+\end{lemma}
+
+\begin{proof}\leanok
+    The finite spectral decomposition of $x$ takes the form
+    \begin{align}
+        x & = \sum_{\lambda\in\sigma(x)} \lambda P_\lambda;
+    \end{align}
+    set
+    \begin{align}
+        S & = \sum_{\lambda\in\sigma(x)} \sqrt{\lambda}\,P_\lambda.
+    \end{align}
+    Each spectral value has modulus one, so its square root has modulus one,
+    and hence $S$ is unitary and $S^2=x$. On the finite spectrum, interpolate
+    the square-root function by a polynomial $q$. Then $S=q(x)$, and
+    $x^T=x$ implies $S^T=q(x^T)=q(x)=S$. Therefore $x=S^2=S^T S$.
+\end{proof}
+
+\begin{lemma}[Determinant of $i$ times a traceless Hermitian involution]
+    \label{lem:mpu_det_i_hermitian_involution}
+    \lean{Matrix.IsHermitian.det_I_smul_eq_one}
+    \leanok
+    Let $I$ be a finite set and let $H\in\operatorname{Mat}_I(\mathbb C)$ be
+    Hermitian with $H^2=\Id$ and $\operatorname{tr}H=0$. Then
+    \begin{align}
+        \det(iH) & =1.
+    \end{align}
+\end{lemma}
+
+\begin{proof}\leanok
+    Let $\mu_1,\dots,\mu_{|I|}$ be the real eigenvalues of $H$. Applying
+    $H^2=\Id$ to an eigenvector gives $\mu_j^2=1$, so $\mu_j=\pm1$ and
+    $i\mu_j=e^{i\pi\mu_j/2}$. The trace condition gives $\sum_j\mu_j=0$.
+    Hence
+    \begin{align}
+        \det(iH)
+         & =\prod_j i\mu_j
+        =\exp\Bigl(\frac{i\pi}{2}\sum_j\mu_j\Bigr)
+        =1.
+    \end{align}
+\end{proof}
+
+\begin{lemma}[Skew congruence from paired spectral projectors]
+    \label{lem:mpu_skew_unitary_paired_projectors}
+    \lean{Matrix.exists_skew_unitary_congruence_of_paired_projectors}
+    \leanok
+    \uses{lem:mpu_det_i_hermitian_involution}
+    Let $K$ and $I$ be finite sets, let $E_k\in\mathbb R$ for $k\in K$, and
+    let $P_k$ be Hermitian projectors on $\mathbb C^I$. Suppose that the family
+    $\{P_k,P_k^T\}_{k\in K}$ consists of mutually orthogonal projectors and
+    sums to the identity. Define
+    \begin{align}
+        x & = \sum_{k\in K} e^{-iE_k}(P_k-P_k^T).
+    \end{align}
+    Then the matrices
+    \begin{align}
+        S & = e^{-i\pi/4}\sum_{k\in K} e^{-iE_k/2}(P_k+P_k^T),
+    \end{align}
+    and
+    \begin{align}
+        \widetilde\Lambda & = i\sum_{k\in K}(P_k-P_k^T)
+    \end{align}
+    are unitary, $S^T=S$, $\overline{\widetilde\Lambda}=\widetilde\Lambda$,
+    $\widetilde\Lambda^T=-\widetilde\Lambda$, $\det\widetilde\Lambda=1$, and
+    \begin{align}
+        x & = S^T\widetilde\Lambda S.
+    \end{align}
+    This is the paired-projector construction for the skew branch of
+    \cite[Lemma~\texttt{lemma:conjclass-normalform-continuous}]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 1066--1083.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpu_det_i_hermitian_involution}
+    Viewing the two projectors in each pair as separate members of one
+    complete orthogonal family shows that a weighted sum of this family is
+    unitary whenever every weight has modulus one. This applies to $S$, whose
+    two weights at $k$ both equal $e^{-i\pi/4}e^{-iE_k/2}$, and to
+    $\widetilde\Lambda$, whose weights are $i$ and $-i$.
+    Transposition exchanges the two members of each pair, proving the symmetry
+    of $S$ and the skew symmetry of $\widetilde\Lambda$. Hermiticity gives
+    $\overline{P_k}=P_k^T$, hence
+    $\overline{\widetilde\Lambda}=\widetilde\Lambda$. Finally, orthogonality
+    reduces the product to its weights, and
+    \begin{align}
+        \left(e^{-i\pi/4}e^{-iE_k/2}\right)^2 i & = e^{-iE_k}.
+    \end{align}
+    The transposed member has the negative weight, which gives
+    $x=S^T\widetilde\Lambda S$. For the determinant, the same reduction gives
+    $\widetilde\Lambda^2=-\Id$, so $\widetilde\Lambda=iH$ with
+    $H=\sum_{k\in K}(P_k-P_k^T)$ a Hermitian involution. Since
+    $\operatorname{tr}P_k^T=\operatorname{tr}P_k$, the trace of $H$ vanishes,
+    and Lemma~\ref{lem:mpu_det_i_hermitian_involution} gives
+    $\det\widetilde\Lambda=1$. These are the eigenvalue pairs $\pm i$ of the
+    source.
+\end{proof}
+
+\begin{lemma}[Transpose pairing of spectral projectors]
+    \label{lem:mpu_transpose_spectral_projector}
+    \lean{Matrix.spectralProjector, Matrix.conjTranspose_spectralProjector,
+        Matrix.spectralProjector_mul, Matrix.sum_spectralProjector,
+        Matrix.sum_smul_spectralProjector,
+        Matrix.transpose_spectralProjector_of_transpose_eq_neg}
+    \leanok
+    Let $x$ be a normal complex matrix with finite spectrum $\sigma(x)$, and for
+    $\mu\in\mathbb C$ let $P_\mu$ be the spectral projector of $x$ at $\mu$,
+    that is, the indicator function of the point $\mu$ applied to $x$. Then
+    each $P_\mu$ is Hermitian,
+    \begin{align}
+        P_\mu P_\nu                     & =\delta_{\mu\nu}P_\mu, \\
+        \sum_{\mu\in\sigma(x)}P_\mu     & =\Id,                  \\
+        \sum_{\mu\in\sigma(x)}\mu P_\mu & =x.
+    \end{align}
+    If in addition $x^T=-x$, then
+    \begin{align}
+        P_\mu^T & =P_{-\mu}.
+    \end{align}
+    This relation pairs $P_E$ with $P_E^T$ in the skew branch of
+    \cite[Lemma~\texttt{lemma:conjclass-normalform-continuous}]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 1066--1070.
+\end{lemma}
+
+\begin{proof}\leanok
+    The first three identities hold for the indicator functions on
+    $\sigma(x)$. For the last, interpolate the indicator of $\mu$ on the
+    finite set $\sigma(x)$ by a polynomial $q$, so that $P_\mu=q(x)$. Then
+    $P_\mu^T=q(x^T)=q(-x)$. Since $\sigma(x)=\sigma(x^T)=-\sigma(x)$, the
+    polynomial $z\mapsto q(-z)$ agrees on $\sigma(x)$ with the indicator of
+    $-\mu$, and hence $q(-x)=P_{-\mu}$.
+\end{proof}
+
+\begin{lemma}[Paired spectral data of a skew-symmetric unitary]
+    \label{lem:mpu_skew_unitary_paired_spectral_data}
+    \lean{Matrix.exists_paired_spectralProjectors_of_transpose_eq_neg,
+        Complex.arg_nonpos_iff_not_arg_neg_nonpos}
+    \leanok
+    \uses{lem:mpu_transpose_spectral_projector}
+    Let $x$ be a unitary matrix with $x^T=-x$. There are a finite set $K$,
+    Hermitian projectors $P_k$ and numbers $E_k\in[0,\pi)$, for $k\in K$,
+    such that the family $\{P_k,P_k^T\}_{k\in K}$ consists of mutually
+    orthogonal projectors summing to the identity, and
+    \begin{align}
+        x & = \sum_{k\in K} e^{-iE_k}(P_k-P_k^T).
+    \end{align}
+    This is the spectral decomposition in the skew branch of
+    \cite[Lemma~\texttt{lemma:conjclass-normalform-continuous}]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 1066--1070.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpu_transpose_spectral_projector}
+    Every spectral value of $x$ has modulus one, so it is nonzero and differs
+    from its negative. By
+    Lemma~\ref{lem:mpu_transpose_spectral_projector}, $\sigma(x)=-\sigma(x)$
+    and $P_\lambda^T=P_{-\lambda}$. A nonzero complex number has argument in
+    $(-\pi,0]$ exactly when its negative does not, so let $K$ be the set of
+    spectral values with argument in $(-\pi,0]$; it contains exactly one
+    member of each pair $\{\lambda,-\lambda\}$. For $\lambda\in K$ put
+    $P_\lambda$ and $E_\lambda=-\arg\lambda\in[0,\pi)$. The spectral
+    decomposition of $x$ then splits into the two members of each pair, with
+    $-\lambda=-e^{-iE_\lambda}$ carrying the projector $P_\lambda^T$.
+\end{proof}
+
+\begin{lemma}[Skew branch of the unitary congruence normal form]
+    \label{lem:mpu_skew_unitary_congruence}
+    \lean{Matrix.exists_skew_unitary_congruence}
+    \leanok
+    \uses{lem:mpu_skew_unitary_paired_spectral_data,
+        lem:mpu_skew_unitary_paired_projectors}
+    Let $x$ be a unitary matrix with $x^T=-x$. There are a symmetric unitary
+    matrix $S$ and a real skew-symmetric unitary matrix $\widetilde\Lambda$
+    with $\det\widetilde\Lambda=1$ such that
+    \begin{align}
+        x & = S^T\widetilde\Lambda S.
+    \end{align}
+    This is the skew branch of
+    \cite[Lemma~\texttt{lemma:conjclass-normalform-continuous}]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 1066--1083.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpu_skew_unitary_paired_spectral_data,
+        lem:mpu_skew_unitary_paired_projectors}
+    Lemma~\ref{lem:mpu_skew_unitary_paired_spectral_data} writes $x$ in the
+    form required by Lemma~\ref{lem:mpu_skew_unitary_paired_projectors}, which
+    gives $S$ and $\widetilde\Lambda$.
+\end{proof}
+
+\begin{lemma}[Normal form of symmetric and skew-symmetric unitaries]
+    \label{lemma:conjclass-normalform-continuous}
+    \lean{Matrix.exists_unitary_congruence_normalForm}
+    \leanok
+    \uses{lem:mpu_symmetric_unitary_congruence, lem:mpu_skew_unitary_congruence}
+    Let $x$ be unitary and satisfy $x=x^T$ or $x=-x^T$. There are a symmetric
+    unitary $S$ and a matrix $\widetilde\Lambda$ such that
+    \begin{align}
+        x & =S^T\widetilde\Lambda S, & S & =S^T.
+    \end{align}
+    In the symmetric case, $\widetilde\Lambda$ is real and symmetric. In the
+    skew-symmetric case, it is real and skew-symmetric. In both cases,
+    $\det(\widetilde\Lambda)=1$. This is
+    \cite[Lemma~\texttt{lemma:conjclass-normalform-continuous}]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 1041--1084.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpu_symmetric_unitary_congruence, lem:mpu_skew_unitary_congruence}
+    In the symmetric case, Lemma~\ref{lem:mpu_symmetric_unitary_congruence}
+    gives $x=S^TS$, so $\widetilde\Lambda=\Id$ works. The skew-symmetric case
+    is Lemma~\ref{lem:mpu_skew_unitary_congruence}. A matrix that is both
+    symmetric and skew-symmetric vanishes, and a vanishing unitary exists
+    only on the zero space, where both conditions on $\widetilde\Lambda$ hold.
+\end{proof}
+
+\begin{lemma}[Invariant orthogonal planes]
+    \label{lem:mpu_skew_orthogonal_plane}
+    \lean{LinearIsometry.orthonormal_pair_of_sq_eq_neg,
+        LinearIsometry.apply_pair_eq_standardSkew_sum,
+        LinearIsometry.mapsTo_span_pair_of_sq_eq_neg,
+        LinearIsometry.mapsTo_orthogonal_of_sq_eq_neg,
+        LinearIsometry.restrictInvariantOrthogonal_sq,
+        Matrix.orthogonalLinearIsometry_sq}
+    \leanok
+    Let $J$ be a linear isometry of a real inner-product space satisfying
+    $J^2=-\Id$. For every unit vector $v$, the ordered pair $(v,-Jv)$ is
+    orthonormal. Its span and its orthogonal complement are invariant under
+    $J$, and the restriction to the complement also squares to $-\Id$.
+    On that ordered plane the matrix of $J$ is
+    $Y=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$.
+    Every real skew-symmetric orthogonal matrix supplies such an isometry.
+\end{lemma}
+
+\begin{proof}\leanok
+    Isometry and $J^2=-\Id$ give
+    $\langle x,Jy\rangle=-\langle Jx,y\rangle$. Taking $x=y=v$ shows
+    $\langle v,Jv\rangle=0$. The identities $Jv=-(-Jv)$ and
+    $J(-Jv)=v$ give invariance and the displayed orientation. For an invariant
+    subspace $W$, the same skew-adjoint identity gives
+    $\langle w,Jz\rangle=-\langle Jw,z\rangle=0$ for $w\in W$ and
+    $z\in W^\perp$, proving invariance of the complement. Finally,
+    $A^T=-A$ and $AA^T=\Id$ imply $A^2=-\Id$.
+\end{proof}
+
+\begin{lemma}[Sign and indexing of the standard skew form]
+    \label{lem:mpu_standard_skew_indexing}
+    \lean{Matrix.interleavedSkewForm_eq_neg_J_submatrix,
+        Matrix.interleavedSkewFormFin_apply}
+    \leanok
+    For a finite index set $I$, identify $(i,0),(i,1)\in I\times\{0,1\}$
+    with $i$ in the first and second copies of $I\sqcup I$. Under this
+    identification $\Id_I\otimes Y$ corresponds to
+    $\left(\begin{smallmatrix}0&\Id_I\\-\Id_I&0\end{smallmatrix}\right)$,
+    the negative of the split matrix
+    $\left(\begin{smallmatrix}0&-\Id_I\\\Id_I&0\end{smallmatrix}\right)$.
+    For $I=\{0,\ldots,m-1\}$ the interleaved enumeration gives the same
+    ordered blocks on $\{0,\ldots,2m-1\}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Compare the four choices of the two binary coordinates. The two diagonal
+    blocks vanish, and the off-diagonal blocks are $\Id_I$ and $-\Id_I$
+    in that order. Reindexing preserves these entries.
+\end{proof}
+
+\begin{lemma}[Paired orthonormal basis]
+    \label{lem:mpu_skew_paired_orthonormal_basis}
+    \lean{LinearIsometry.exists_paired_orthonormalBasis}
+    \leanok
+    \uses{lem:mpu_skew_orthogonal_plane}
+    Let $E$ be a real inner-product space of dimension $2m$, and let $J$ be
+    a linear isometry with $J^2=-\Id$. There is an orthonormal basis
+    $(e_{i,0},e_{i,1})_{i=0}^{m-1}$ such that
+    $Je_{i,0}=-e_{i,1}$ and $Je_{i,1}=e_{i,0}$.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpu_skew_orthogonal_plane}
+    Induct on $m$. The empty basis covers $m=0$. Otherwise choose a unit
+    vector $v$ and use the ordered orthonormal pair $(v,-Jv)$.
+    Its invariant orthogonal complement has dimension $2m-2$.
+    Append its inductively constructed paired basis to this pair.
+    The resulting orthonormal family has $2m$ members and therefore spans $E$.
+\end{proof}
+
+\begin{lemma}[Real skew-orthogonal normal form]
+    \label{thm:mpu_real_skew_orthogonal_normal_form}
+    \lean{Matrix.toMatrix_paired_orthonormalBasis,
+        Matrix.exists_orthogonal_congruence_interleavedSkewForm}
+    \leanok
+    \uses{lem:mpu_skew_paired_orthonormal_basis, lem:mpu_standard_skew_indexing}
+    Let $A\in\operatorname{Mat}_{2m}(\mathbb R)$ be orthogonal with
+    $A^T=-A$. Set $\Sigma_m=\Id_m\otimes Y$, in interleaved order, where
+    $Y=\left(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\right)$.
+    There is a real orthogonal matrix $O$ such that
+    $O^T\Sigma_m O=A$.
+    This is the real normal form used in the proof of
+    \cite[Proposition~V.2]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 1129--1140.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpu_skew_paired_orthonormal_basis, lem:mpu_standard_skew_indexing}
+    The action of $A$ is an isometry squaring to $-\Id$. In the paired
+    orthonormal basis of Lemma~\ref{lem:mpu_skew_paired_orthonormal_basis},
+    its matrix is $\Sigma_m$. The orthogonal change of coordinates from
+    the original basis to this paired basis gives the displayed congruence.
+\end{proof}
+
+\begin{lemma}[Complex skew-unitary normal form]
+    \label{thm:mpu_complex_skew_unitary_normal_form}
+    \lean{Matrix.exists_unitary_congruence_interleavedSkewForm}
+    \leanok
+    \uses{lem:mpu_skew_unitary_congruence, thm:mpu_real_skew_orthogonal_normal_form}
+    Let $x\in\operatorname{Mat}_{2m}(\mathbb C)$ be unitary with $x^T=-x$.
+    There is a unitary matrix $U$ such that $x=U^T\Sigma_m U$.
+    This is the complex normal form used in the proof of
+    \cite[Proposition~V.2]{Cirac2017MPU}.
+    % Source lines: paper_v2.tex 1129--1140.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{lem:mpu_skew_unitary_congruence, thm:mpu_real_skew_orthogonal_normal_form}
+    The skew congruence factorization gives $x=S^T\Lambda S$ with $S$
+    unitary and $\Lambda$ real, skew-symmetric and unitary.
+    The real normal form gives $\Lambda=O^T\Sigma_m O$ with $O$ orthogonal.
+    Regard $O$ as a complex unitary matrix and set $U=OS$.
+\end{proof}
+
+\begin{lemma}[Orthogonal and symplectic gauges of conjugation-covariant unitaries]
+    \label{lem:mpu_conjugation_gate_gauge}
+    \lean{Matrix.map_star_gaugeLeft_eq_of_congruence,
+        Matrix.map_star_gaugeRight_eq_of_congruence, Matrix.sourceSkewForm,
+        Matrix.exists_unitary_congruence_sourceSkewForm,
+        Matrix.exists_orthogonal_gauge_of_symmetric,
+        Matrix.exists_symplectic_gauge_of_skew,
+        Matrix.exists_phase_of_kronecker_mul_map_star_eq,
+        Matrix.exists_orthogonal_factors_of_kronecker_mul,
+        Matrix.exists_symplectic_factors_of_kronecker_mul}
+    \leanok
+    \uses{lemma:conjclass-normalform-continuous,
+        thm:mpu_complex_skew_unitary_normal_form,
+        thm:mpug_kronecker_identity_factors}
+    Let $u:\mathbb C^P\to\mathbb C^\ell\otimes\mathbb C^r$ and
+    $v:\mathbb C^r\otimes\mathbb C^\ell\to\mathbb C^P$, and let $x,y$ be
+    unitaries with
+    \begin{align}
+        \overline u & =(x\otimes y)u, & \overline v & =v(y^\dagger\otimes x^\dagger).
+    \end{align}
+    If $x=U^T\Lambda U$ and $y=V^T\Lambda'V$ with $U,V$ unitary, then
+    $u'=(U\otimes V)u$ and $v'=v(V^\dagger\otimes U^\dagger)$ satisfy
+    \begin{align}
+        \overline{u'} & =(\Lambda\otimes\Lambda')u',                 &
+        \overline{v'} & =v'(\Lambda'^\dagger\otimes\Lambda^\dagger).
+    \end{align}
+    Consequently, if $x,y$ are symmetric, then $u',v'$ can be chosen real; if
+    $x,y$ are skew-symmetric, then $\ell,r$ are even and $u',v'$ can be chosen
+    with
+    \begin{align}
+        \overline{u'} & =(\Sigma_\ell\otimes\Sigma_r)u', &
+        \overline{v'} & =v'(\Sigma_r\otimes\Sigma_\ell),
+    \end{align}
+    where $\Sigma_x=\Id_{x/2}\otimes Y$.
+
+    Conversely, let $\ell,r>0$, let $u'$ satisfy $u'u'^\dagger=\Id$ and
+    $\overline{u'}=(\Lambda\otimes\Lambda')u'$ with $\Lambda,\Lambda'$
+    unitary, and let $a,b$ be unitaries such that $(a\otimes b)u'$ satisfies
+    the same equation. Then there is a phase $w$ with
+    $\overline{wa}\,\Lambda=\Lambda\,wa$ and
+    $\overline{w^{-1}b}\,\Lambda'=\Lambda'\,w^{-1}b$. For $\Lambda=\Lambda'=\Id$
+    this gives real orthogonal $O_\ell=wa$, $O_r=w^{-1}b$ with
+    $a\otimes b=O_\ell\otimes O_r$ and
+    $b^\dagger\otimes a^\dagger=O_r^T\otimes O_\ell^T$. For
+    $\Lambda=\Sigma_\ell$, $\Lambda'=\Sigma_r$ it gives unitaries
+    $S_\ell=wa$, $S_r=w^{-1}b$ with $S_x^T\Sigma_xS_x=\Sigma_x$,
+    $a\otimes b=S_\ell\otimes S_r$ and
+    $b^\dagger\otimes a^\dagger=S_r^\dagger\otimes S_\ell^\dagger$.
+    These are the computations in the proof of
+    \cite[Proposition~V.2]{Cirac2017MPU}; the source prints $S_r^T\otimes
+        S_\ell^T$ in the last relation, which is corrected in
+    \cite{gap:mpu_conjugation_symplectic_uniqueness_transpose}.
+    % Source lines: paper_v2.tex 1129--1163.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{lemma:conjclass-normalform-continuous,
+        thm:mpu_complex_skew_unitary_normal_form,
+        thm:mpug_kronecker_identity_factors}
+    For a unitary $U$, $\overline UU^T=\Id$, hence
+    $\overline U\,U^T\Lambda U=\Lambda U$ and
+    $(U^T\Lambda U)^\dagger U^T=U^\dagger\Lambda^\dagger$. Conjugating $u'$
+    and $v'$ and inserting the two equations gives the first claim. Symmetric
+    unitaries are $S^TS$ with $S$ unitary, by
+    Lemma~\ref{lemma:conjclass-normalform-continuous}; skew-symmetric
+    unitaries have even dimension, since an invertible skew-symmetric matrix
+    of odd size would have determinant zero, and are $U^T\Sigma U$ by
+    Lemma~\ref{thm:mpu_complex_skew_unitary_normal_form}. Since
+    $\Sigma^\dagger=-\Sigma$, the two signs cancel in
+    $\Sigma_r^\dagger\otimes\Sigma_\ell^\dagger$.
+
+    For the converse, conjugating $(a\otimes b)u'$ and cancelling $u'$ on the
+    right gives
+    $\overline a\Lambda\otimes\overline b\Lambda'=\Lambda a\otimes\Lambda' b$.
+    Multiplying by the adjoint of the right side, a Kronecker product equals
+    the identity, so $\overline a\Lambda=c\Lambda a$ and
+    $\overline b\Lambda'=c^{-1}\Lambda'b$ for a scalar $c$, which has modulus
+    one since both sides are unitary. A square root $w$ of $c$ has
+    $\overline wc=w$, which gives the two intertwining relations. Finally
+    $\overline S\Sigma=\Sigma S$ and $S^T\overline S=\Id$ give
+    $S^T\Sigma S=\Sigma$.
+\end{proof}
+
+\begin{lemma}[The four-dimensional symplectic congruence]
+    \label{lem:mpu_symplectic_four_congruence}
+    \lean{Matrix.symplecticY, Matrix.symplecticOrthogonalR,
+        Matrix.symplecticOrthogonalR_identities}
+    \leanok
+    Let $Y=\begin{pmatrix}0&1\\-1&0\end{pmatrix}$ and
+    $R=\frac{1-i}{2}[\Id_4+i(Y\otimes Y)]$, with the two Kronecker factors in
+    that order. Then
+    \begin{align}
+        R^\dagger R      & =\Id_4, \\
+        R^T(Y\otimes Y)R & =\Id_4.
+    \end{align}
+    These are the identities of \cite[lines~1165--1185]{Cirac2017MPU}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Direct multiplication of the four entries of $Y$ and the corresponding
+    entries of $Y\otimes Y$ gives both identities.
+\end{proof}
+
+\begin{lemma}[Reduction of the symplectic case to real matrices]
+    \label{cor:sympl-to-orthogonal}
+    \lean{Matrix.evenPairRegroupEquiv, Matrix.reindex_sourceSkewForm_kronecker,
+        Matrix.symplecticOrthogonalR_aux,
+        Matrix.exists_real_of_map_star_eq_sourceSkewForm_mul,
+        Matrix.exists_real_of_map_star_eq_mul_sourceSkewForm}
+    \leanok
+    \uses{lem:mpu_symplectic_four_congruence}
+    Let $\ell,r$ be even, and let $u',v'$ satisfy
+    \begin{align}
+        \overline{u'} & =(\Sigma_\ell\otimes\Sigma_r)u', &
+        \overline{v'} & =v'(\Sigma_r\otimes\Sigma_\ell).
+    \end{align}
+    After regrouping coordinates one can write
+    \begin{align}
+        u' & =(\Id_{r\ell/4}\otimes R)\widetilde u, &
+        v' & =\widetilde v(\Id_{r\ell/4}\otimes R),
+    \end{align}
+    where $\widetilde u$ and $\widetilde v$ are real,
+    \begin{align}
+        R & =\frac{1-i}{2}[\Id_4+i(Y\otimes Y)],
+    \end{align}
+    and $\widetilde u,\widetilde v$ are unitary between their coordinate
+    spaces whenever $u',v'$ are. The Kronecker factors are ordered so that
+    the two factors $Y$ of $\Sigma_\ell\otimes\Sigma_r$ act on the factor of
+    $R$. This is \cite[Corollary~\texttt{cor:sympl-to-orthogonal}]{Cirac2017MPU},
+    of which only the two displayed equations for $u',v'$ are used.
+    % Source lines: paper_v2.tex 1165--1191.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{lem:mpu_symplectic_four_congruence}
+    Regroup the coordinates so that
+    $\Sigma_\ell\otimes\Sigma_r=\Id_{r\ell/4}\otimes(Y\otimes Y)$. The matrix
+    $R$ is unitary and symmetric, and $R^T(Y\otimes Y)R=\Id_4$ gives
+    $R^T(Y\otimes Y)=R^\dagger$ and $(Y\otimes Y)R^T=R^\dagger$. Set
+    $\widetilde u=(\Id\otimes R^\dagger)u'$ and
+    $\widetilde v=v'(\Id\otimes R^\dagger)$. Then
+    \begin{align}
+        \overline{\widetilde u} & =(\Id\otimes R^T)(\Id\otimes Y\otimes Y)u'=\widetilde u, \\
+        \overline{\widetilde v} & =v'(\Id\otimes Y\otimes Y)(\Id\otimes R^T)=\widetilde v,
+    \end{align}
+    and $\widetilde u,\widetilde v$ are unitary whenever $u',v'$ are.
+\end{proof}
+
+\begin{lemma}[An involution converts a combined fixed equation]
+    \label{thm:mpu_involution_combined_fixed_equation}
+    \lean{Matrix.swapCombined_fixed_iff_leftMul}
+    \leanok
+    Let $Q,X$ be complex matrices indexed by the same finite set, and let
+    $F$ be a map on that matrix space. If $Q^2=I$ and
+    $F(QX)=F(X)Q$, then
+    \begin{align}
+        QF(X)Q=X
+         & \quad\Longleftrightarrow\quad F(QX)=QX.
+        \label{eq:mpu_involution_combined_fixed}
+    \end{align}
+    This is the matrix argument of \cite[lines~1295--1322]{Cirac2017MPU}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Replacing $F(QX)$ by $F(X)Q$ and multiplying on the left by the
+    involution $Q$ gives both implications in
+    (\ref{eq:mpu_involution_combined_fixed}).
+\end{proof}
