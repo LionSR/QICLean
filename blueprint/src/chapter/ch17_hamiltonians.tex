@@ -581,38 +581,39 @@ kernel, either from the quadratic form or from the norm.
 
 \begin{definition}[Padding a bond interaction]
     \label{def:hamiltonians_bond_padded}
-    \lean{ManyBody.paddingBond, ManyBody.paddingBond_injective,
-        ManyBody.BondInteraction.padded, ManyBody.BondInteraction.padded_term_of_lt,
+    \lean{ManyBody.BondInteraction.padded, ManyBody.BondInteraction.padded_term_of_lt,
         ManyBody.BondInteraction.padded_term_of_le}
     \leanok
-    \uses{def:hamiltonians_bond_interaction, def:dynamics_interaction_pad,
-        def:dynamics_interaction_extend}
-    Let $1\le L\le N$, let $\Phi$ be a bond interaction on the chain of $L$ sites, and
+    \uses{def:hamiltonians_bond_interaction, def:sites_place_along, def:sites_place_at}
+    Let $L\le N$, let $\Phi$ be a bond interaction on the chain of $L$ sites, and
     let $p_v$ be a matrix on the basis at every site $v$ of the chain of $N$ sites. The
     padding of $\Phi$ is the bond interaction on the chain of $N$ sites whose bond
-    $\{i,i+1\}$ with $i<L-1$ carries the term of $\Phi$ on the first $L$ sites, and whose
-    bond $\{v-1,v\}$ with $v\ge L$ carries $p_v$ at the site $v$. It is the padding of $\Phi$
-    along the first $L$ sites, extended along the injection that sends a bond of the first
-    $L$ sites to itself and an added site $v$ to the bond $\{v-1,v\}$
-    \cite[lines 652--678]{Landau2013PolynomialTime}.
+    $\{j,j+1\}$ with $j<L-1$ carries the term of $\Phi$ on the first $L$ sites, and whose
+    bond $\{j,j+1\}$ with $j\ge L-1$ carries $p_{j+1}$ at the site
+    $j+1$~\cite[lines 652--678]{Landau2013PolynomialTime}. For $L\ge1$ the bonds $j\ge L-1$
+    are the bonds $\{v-1,v\}$ of the added sites $v\ge L$; for $L=0$ the site $0$ lies on
+    no such bond.
 \end{definition}
 
 \begin{lemma}[Padding a bond interaction]
     \label{lem:hamiltonians_bond_padded}
     \lean{ManyBody.BondInteraction.hamiltonian_padded,
+        ManyBody.BondInteraction.forall_padded_term,
         ManyBody.BondInteraction.padded_term_nonneg,
         ManyBody.BondInteraction.padded_term_le_one,
         ManyBody.BondInteraction.isHermitian_padded_term}
     \leanok
-    \uses{def:hamiltonians_bond_padded, lem:dynamics_interaction_pad,
-        lem:dynamics_interaction_extend}
-    The Hamiltonian of the padding is $H_\Phi\otimes1+\sum_{v\ge L}p_v\otimes1$. If the
-    terms of $\Phi$ and the $p_v$ are positive, Hermitian, or bounded by the identity, so
-    are the terms of the padding.
+    \uses{def:hamiltonians_bond_padded, lem:sites_place_along_hom,
+        lem:sites_place_along_norm_order}
+    The Hamiltonian of the padding is
+    $H_\Phi\otimes1+\sum_{v\ge\max(L,1)}p_v\otimes1$. If the terms of $\Phi$ and the $p_v$
+    are positive, Hermitian, or bounded by the identity, so are the terms of the padding.
 \end{lemma}
 \begin{proof}\leanok
-    Combine Lemma~\ref{lem:dynamics_interaction_pad} with
-    Lemma~\ref{lem:dynamics_interaction_extend}.
+    The bonds $j<L-1$ are the bonds of the first $L$ sites, and $j\mapsto j+1$ maps the
+    bonds $j\ge L-1$ bijectively onto the sites $v\ge\max(L,1)$. Placement on the first
+    $L$ sites and at a single site is additive and preserves the operator order and
+    Hermiticity.
 \end{proof}
 
 \begin{definition}[Translation-invariant interactions on the ring]
