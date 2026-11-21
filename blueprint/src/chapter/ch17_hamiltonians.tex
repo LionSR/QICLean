@@ -714,6 +714,45 @@ kernel, either from the quadratic form or from the norm.
     Theorem~\ref{thm:positive_boundary_ground_energy}.
 \end{proof}
 
+\section{Penalties selecting a basis configuration}
+\label{sec:hamiltonians_product_basis_penalty}
+
+A basis configuration is the unique ground state of a sum of onsite penalties. Such sums
+describe the auxiliary product ancillas of the successive construction
+of~\cite[lines 652--678]{Landau2013PolynomialTime}.
+
+\begin{definition}[Penalties for a basis configuration]
+    \label{def:hamiltonians_product_basis_penalty}
+    \lean{ManyBody.siteBasisPenalty, ManyBody.productBasisPenalty}
+    \leanok
+    \uses{def:sites_place}
+    For a basis configuration $b$ of a system on a finite set of sites, let $P_s$ be the
+    diagonal matrix on $\C^{X_s}$ with entry $0$ at $b_s$ and $1$ at every other basis vector,
+    and let $A_b=\sum_s(P_s)_s$, each penalty placed on its site.
+\end{definition}
+
+\begin{lemma}[The penalty of a basis configuration]
+    \label{lem:hamiltonians_product_basis_penalty}
+    \lean{ManyBody.siteBasisPenalty_posSemidef,
+        ManyBody.siteBasisPenalty_le_one,
+        ManyBody.productBasisPenalty_eq_diagonal,
+        ManyBody.isHermitian_productBasisPenalty,
+        ManyBody.isGapped_productBasisPenalty,
+        ManyBody.groundSpace_productBasisPenalty}
+    \leanok
+    \uses{def:hamiltonians_product_basis_penalty, def:hamiltonians_gap}
+    Each $P_s$ satisfies $0\le P_s\le\mathbf{1}$. In the configuration basis, $A_b$ is diagonal
+    with entry $\#\{s:x_s\neq b_s\}$ at the configuration $x$. Hence $A_b$ is Hermitian, gapped
+    at energy $0$ with gap $1$, and its zero-energy space is the line through $\ket b$; this also
+    holds for the empty set of sites.
+\end{lemma}
+\begin{proof}
+    \leanok
+    A diagonal onsite matrix placed on its site is the diagonal matrix of the corresponding
+    function of the configuration, and summing gives the count. The count vanishes at $b$ and
+    is at least $1$ at every other configuration.
+\end{proof}
+
 \section{Frustration-free interactions}
 \label{sec:hamiltonians_frustration_free}
 

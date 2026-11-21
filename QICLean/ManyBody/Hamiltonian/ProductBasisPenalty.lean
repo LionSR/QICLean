@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Circuit.Core.LocalGate
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
+import QICLean.ManyBody.Sites.RegionUnion
 
 /-!
 # Onsite penalties selecting a basis configuration
@@ -21,16 +21,16 @@ onsite matrices are placed with `place` on the singleton regions.
 
 ## Main definitions
 
-* `QuantumCircuit.siteBasisPenalty` — the penalty `1 - |a⟩⟨a|` of one basis.
-* `QuantumCircuit.productBasisPenalty` — the sum of the placed penalties.
+* `ManyBody.siteBasisPenalty` — the penalty `1 - |a⟩⟨a|` of one basis.
+* `ManyBody.productBasisPenalty` — the sum of the placed penalties.
 
 ## Main results
 
-* `QuantumCircuit.siteBasisPenalty_posSemidef`, `QuantumCircuit.siteBasisPenalty_le_one`.
-* `QuantumCircuit.productBasisPenalty_eq_diagonal` — the count of differing sites.
-* `QuantumCircuit.isHermitian_productBasisPenalty`,
-  `QuantumCircuit.isGapped_productBasisPenalty`,
-  `QuantumCircuit.groundSpace_productBasisPenalty` — the gap and the zero-energy space.
+* `ManyBody.siteBasisPenalty_posSemidef`, `ManyBody.siteBasisPenalty_le_one`.
+* `ManyBody.productBasisPenalty_eq_diagonal` — the count of differing sites.
+* `ManyBody.isHermitian_productBasisPenalty`,
+  `ManyBody.isGapped_productBasisPenalty`,
+  `ManyBody.groundSpace_productBasisPenalty` — the gap and the zero-energy space.
 
 ## References
 
@@ -39,10 +39,10 @@ onsite matrices are placed with `place` on the singleton regions.
   interaction.
 -/
 
-open Matrix ManyBody
+open Matrix
 open scoped ComplexOrder MatrixOrder
 
-namespace QuantumCircuit
+namespace ManyBody
 
 section Site
 
@@ -171,4 +171,4 @@ theorem groundSpace_productBasisPenalty [∀ s, Fintype (X s)] (b : Config X) :
       exact hx (by simp)
     simp [hxb]
 
-end QuantumCircuit
+end ManyBody
