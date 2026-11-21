@@ -1,0 +1,54 @@
+\section{Stability of expectations}
+\label{sec:siteconfig_expectations}
+
+For a vector $\psi$ of a finite-dimensional coordinate space $\C^n$ and a matrix
+$A$, the expectation $\langle\psi|A|\psi\rangle$ is not normalized, and
+$\|\cdot\|$ is the Euclidean norm.
+
+\begin{lemma}[Stability of connected correlations]
+    \label{thm:ldp_covariance_stability}
+    \lean{Matrix.star_dotProduct_mulVec_eq_inner,
+        Matrix.norm_star_dotProduct_mulVec_le_one,
+        Matrix.norm_star_dotProduct_mulVec_sub_le,
+        Matrix.star_smul_dotProduct_mulVec_smul,
+        Matrix.norm_covariance_sub_le}
+    \leanok
+    For unit vectors $\psi,\phi$ and unitary matrices $A,B$, let
+    $\operatorname{Cov}_\psi(A,B)=
+        \langle\psi|AB|\psi\rangle-
+        \langle\psi|A|\psi\rangle\langle\psi|B|\psi\rangle$.
+    Then $|\langle\psi|A|\psi\rangle|\le1$, and
+    \begin{align}
+        |\langle\psi|A|\psi\rangle-
+        \langle\phi|A|\phi\rangle| & \le2\|\psi-\phi\|, \\
+        |\operatorname{Cov}_\psi(A,B)-\operatorname{Cov}_\phi(A,B)|
+                                   & \le6\|\psi-\phi\|.
+    \end{align}
+    Expectations are unchanged when the vector is multiplied by a scalar of
+    modulus one.
+\end{lemma}
+\begin{proof}
+    \leanok
+    Expanding the expectation difference as
+    $\langle\psi-\phi|A\psi\rangle+
+        \langle\phi|A(\psi-\phi)\rangle$ and applying Cauchy--Schwarz
+    gives the first bound. Splitting the difference of the two products
+    of expectations into two terms then bounds the covariance difference
+    by three expectation differences, each at most $2\|\psi-\phi\|$.
+\end{proof}
+
+\begin{lemma}[Superpositions of two basis vectors]
+    \label{lem:siteconfig_two_basis_superposition}
+    \lean{Matrix.star_dotProduct_mulVec_smul_single_add_of_apply_eq_zero}
+    \leanok
+    If $A_{\sigma\tau}=A_{\tau\sigma}=0$, then for all $a,b\in\C$,
+    \begin{align}
+        \bigl\langle a\sigma+b\tau\big|A\big|a\sigma+b\tau\bigr\rangle
+         & =|a|^2A_{\sigma\sigma}+|b|^2A_{\tau\tau}.\notag
+    \end{align}
+\end{lemma}
+\begin{proof}
+    \leanok
+    Expand the expectation bilinearly; the two cross terms are multiples of
+    $A_{\sigma\tau}$ and $A_{\tau\sigma}$.
+\end{proof}
