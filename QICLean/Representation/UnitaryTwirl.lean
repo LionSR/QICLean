@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.UnitaryHaar
 import QICLean.Representation.UnitaryCommutant
-import QICLean.Representation.ReplicaSiteOp
+import QICLean.Representation.SchurWeylCommutant
 
 /-!
 # The unitary twirl of a symmetric operator

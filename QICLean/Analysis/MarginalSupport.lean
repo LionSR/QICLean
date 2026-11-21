@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Algebra.FinSum
 import QICLean.Analysis.MatrixSqrt
-import QICLean.Analysis.Entropy
+import QICLean.Channel.PartialTrace
 
 /-!
 # Marginal support lemma for tripartite density matrices

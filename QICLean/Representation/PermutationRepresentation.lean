@@ -156,4 +156,22 @@ theorem commute_groupAlgebraRep_of_commute {H : Type*} [Group H] (φ : G →* Eq
   simp only [permOp_apply, Commute, SemiconjBy]
   rw [← permMatrix_mul, ← permMatrix_mul, ← _root_.mul_inv_rev, ← _root_.mul_inv_rev, (h g k).eq]
 
+/-- A matrix whose entries are invariant under the diagonal action of `φ g` commutes with
+the permutation operator of `g`. -/
+theorem commute_permOp_of_apply_eq (φ : G →* Equiv.Perm X) (g : G) {M : Matrix X X ℂ}
+    (h : ∀ x y, M (φ g x) (φ g y) = M x y) : Commute (permOp φ g) M := by
+  ext x y
+  simp only [Matrix.mul_apply, permOp_apply_apply]
+  rw [Finset.sum_eq_single ((φ g).symm x), Finset.sum_eq_single (φ g y)]
+  · simp only [Equiv.apply_symm_apply, ite_true, one_mul, mul_one]
+    have := h ((φ g).symm x) y
+    rw [Equiv.apply_symm_apply] at this
+    exact this.symm
+  · intro z _ hz; simp [Ne.symm hz]
+  · simp
+  · intro z _ hz
+    have : φ g z ≠ x := fun e => hz (by rw [← e, Equiv.symm_apply_apply])
+    simp [this]
+  · simp
+
 end PermutationRepresentation
