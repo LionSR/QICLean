@@ -73,11 +73,11 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ for a Hamiltonian $H$.
     \lean{ManyBody.Interaction.norm_hamiltonian_translationInvariant_commutator_le_exp_abs_of_disjoint}
     \leanok
     \uses{aux:finite-ring-lieb-robinson, def:hamiltonians_translation_invariant,
-        lem:dynamics_interaction_translates, def:sites_ring_window}
+        lem:hamiltonians_translation_invariant_terms, def:sites_ring_window}
     Let $h$ be a Hermitian two-site operator with $\|h\|\leq1$, and let
-    $H_N=\sum_j h_{j,j+1}$ be its translation-invariant Hamiltonian on the ring of
-    $N\geq2$ sites. For nonempty disjoint $X,Y$ and $A\in\mathcal A_X$,
-    $B\in\mathcal A_Y$, the estimate
+    $H_N$ be its translation-invariant Hamiltonian on the ring of $N$ sites, which is
+    $\sum_j h_{j,j+1}$ for $N\geq2$ and $0$ for $N=1$. For nonempty disjoint $X,Y$ and
+    $A\in\mathcal A_X$, $B\in\mathcal A_Y$, the estimate
     \[
         \|[e^{itH_N}Ae^{-itH_N},B]\|
         \leq2\|A\|\|B\|\,|X|e^{-a d(X,Y)}
@@ -87,7 +87,7 @@ $\tau_t(A)=e^{itH}Ae^{-itH}$ for a Hamiltonian $H$.
 \end{lemma}
 \begin{proof}\leanok
     \uses{thm:sites_place_along_support}
-    The translates of $h$ are Hermitian, of norm at most $\|h\|$, and the translate at $j$
-    is supported on the window of two sites starting at $j$, which is the bond $e_j$.
+    The terms are Hermitian, of norm at most $\|h\|$, and the term at $j$ is supported on
+    $\{j+0,j+1\}$, which is the bond $e_j$.
     Apply Lemma~\ref{aux:finite-ring-lieb-robinson}.
 \end{proof}

@@ -31,8 +31,9 @@ interaction on the rectangular domain of `ℤ × ℤ` whose term on the image of
 is the transported term, the other terms vanishing
 (`ManyBody.RectangleInteraction.toPlaneInteraction`). Both are extensions along an injection of
 indices, `ManyBody.Interaction.extend`. On the ring of `N` sites, the translation-invariant
-interaction of one operator on `k ≤ N` consecutive sites has the translates of that operator
-as its terms (`ManyBody.Interaction.translationInvariant`); on the open chain of `N` sites,
+interaction of one operator on `k` consecutive sites has the translates of that operator as its
+terms when `k ≤ N`, and vanishes when the window is longer than the ring
+(`ManyBody.Interaction.translationInvariant`); on the open chain of `N` sites,
 the translates of that operator along the windows starting at `0, …, N - k` form
 `ManyBody.Interaction.chainTranslates`. A bond interaction on the first `L` sites of a chain of
 `N` sites, padded with one matrix at each added site, is a bond interaction on the `N` sites
@@ -64,6 +65,10 @@ of these interactions together with the hypotheses that were its fields.
 
 * `ManyBody.RectangleInteraction.hamiltonian_toPlaneInteraction` — the map to the plane keeps
   the Hamiltonian, transported to the configurations of the domain.
+* `ManyBody.Interaction.translationInvariant_term_of_le`,
+  `ManyBody.Interaction.hamiltonian_translationInvariant_of_not_le` — the terms of a
+  translation-invariant interaction are the translates of the operator when the window fits in
+  the ring, and the Hamiltonian vanishes when it does not.
 * `ManyBody.Interaction.translationInvariant_term_add_one`,
   `ManyBody.Interaction.sitePermOp_finRotate_mul_hamiltonian_translationInvariant` — the
   rotation of the ring permutes the terms of a translation-invariant interaction and fixes its
@@ -269,37 +274,122 @@ end Padded
 
 section Ring
 
-variable {N k : ℕ} [NeZero N] {α : Type*} [Fintype α] [DecidableEq α]
+open Fin.CommRing
+
+variable {k : ℕ} {α : Type*} [Fintype α] [DecidableEq α]
 
 /-- **The translation-invariant interaction on the ring** of `N` sites of one operator `h` on
-`k ≤ N` consecutive sites: its term with index `i` is `h` placed on the window of `k`
-consecutive sites starting at `i`. For `k = 2` these windows are the bonds `{i, i + 1}`
-(`ManyBody.map_ringWindow_two`). Schuch, Pérez-García and Cirac, arXiv:1010.3732,
+`k` consecutive sites: for `k ≤ N` its term with index `i` is `h` placed on the window of `k`
+consecutive sites starting at `i` (`ManyBody.Interaction.translationInvariant_term_of_le`), and
+for `k > N`, when the window does not fit in the ring, every term vanishes. The term with index
+`i` is supported on the sites `i + j`, `j < k`, which for `k ≤ N` form that window
+(`ManyBody.map_ringWindow`) and for `k = 2` the bond `{i, i + 1}`
+(`ManyBody.image_range_two_add`). Schuch, Pérez-García and Cirac, arXiv:1010.3732,
 `sec:phases-definition-no-sym`, lines 407–427. -/
-noncomputable abbrev Interaction.translationInvariant (hk : k ≤ N)
+noncomputable def Interaction.translationInvariant (N : ℕ) [NeZero N]
     (h : Matrix (Fin k → α) (Fin k → α) ℂ) :
-    Interaction (fun _ : Fin N ↦ α) (fun i ↦ Finset.univ.map (ringWindow hk i)) :=
-  Interaction.translates (ringWindow hk) h
+    Interaction (fun _ : Fin N ↦ α)
+      (fun i ↦ (Finset.range k).image fun j : ℕ ↦ i + (j : Fin N)) where
+  term i := if hk : k ≤ N then placeAlong (X := fun _ ↦ α) (ringWindow hk i) h else 0
+  mem i := by
+    by_cases hk : k ≤ N
+    · rw [dite_eq_left hk, ← map_ringWindow hk]
+      exact placeAlong_mem_supportedOperators (X := fun _ ↦ α) _ h
+    · rw [dite_eq_right hk]
+      exact zero_mem _
 
-variable (hk : k ≤ N) (h : Matrix (Fin k → α) (Fin k → α) ℂ)
+variable {N : ℕ} [NeZero N] (h : Matrix (Fin k → α) (Fin k → α) ℂ)
+
+namespace Interaction
+
+/-- For `k ≤ N`, the term with index `i` is `h` placed on the window starting at `i`. -/
+theorem translationInvariant_term_of_le (hk : k ≤ N) (i : Fin N) :
+    (translationInvariant N h).term i = placeAlong (X := fun _ ↦ α) (ringWindow hk i) h :=
+  dite_eq_left hk
+
+/-- For `k > N`, every term vanishes. -/
+theorem translationInvariant_term_of_not_le (hk : ¬ k ≤ N) (i : Fin N) :
+    (translationInvariant N h).term i = 0 :=
+  dite_eq_right hk
+
+/-- For `k ≤ N`, the Hamiltonian is the sum of the placements of `h` on the windows of `k`
+consecutive sites. -/
+theorem hamiltonian_translationInvariant_of_le (hk : k ≤ N) :
+    (translationInvariant N h).hamiltonian =
+      ∑ i, placeAlong (X := fun _ ↦ α) (ringWindow hk i) h :=
+  Finset.sum_congr rfl fun i _ ↦ translationInvariant_term_of_le h hk i
+
+/-- For `k > N`, the Hamiltonian vanishes. -/
+theorem hamiltonian_translationInvariant_of_not_le (hk : ¬ k ≤ N) :
+    (translationInvariant N h).hamiltonian = 0 :=
+  Finset.sum_eq_zero fun i _ ↦ translationInvariant_term_of_not_le h hk i
+
+variable {h} in
+/-- A property of operators that holds for zero and for `h` placed on every window of `k ≤ N`
+consecutive sites holds for every term. -/
+theorem forall_translationInvariant_term {P : Matrix (Fin N → α) (Fin N → α) ℂ → Prop}
+    (h0 : P 0) (hP : ∀ (hk : k ≤ N) i, P (placeAlong (X := fun _ ↦ α) (ringWindow hk i) h))
+    (i : Fin N) : P ((translationInvariant N h).term i) := by
+  by_cases hk : k ≤ N
+  · rw [translationInvariant_term_of_le h hk]
+    exact hP hk i
+  · rw [translationInvariant_term_of_not_le h hk]
+    exact h0
+
+open scoped Matrix.Norms.L2Operator in
+/-- Every term has at most the norm of `h`. -/
+theorem norm_translationInvariant_term_le (i : Fin N) :
+    ‖(translationInvariant N h).term i‖ ≤ ‖h‖ :=
+  forall_translationInvariant_term (P := fun M ↦ ‖M‖ ≤ ‖h‖) (norm_zero.trans_le (norm_nonneg h))
+    (fun hk i ↦ norm_placeAlong_le (X := fun _ ↦ α) (ringWindow hk i) h) i
+
+variable {h}
+
+/-- The terms of a Hermitian operator are Hermitian. -/
+theorem isHermitian_translationInvariant_term (hh : h.IsHermitian) (i : Fin N) :
+    ((translationInvariant N h).term i).IsHermitian :=
+  forall_translationInvariant_term Matrix.isHermitian_zero
+    (fun hk i ↦ isHermitian_placeAlong (X := fun _ ↦ α) (ringWindow hk i) hh) i
+
+open scoped MatrixOrder ComplexOrder in
+/-- The terms of a positive operator are positive. -/
+theorem translationInvariant_term_nonneg (hh : 0 ≤ h) (i : Fin N) :
+    0 ≤ (translationInvariant N h).term i :=
+  forall_translationInvariant_term le_rfl (fun hk i ↦
+    (posSemidef_placeAlong (X := fun _ ↦ α) (ringWindow hk i)
+      (Matrix.nonneg_iff_posSemidef.mp hh)).nonneg) i
+
+open scoped MatrixOrder ComplexOrder in
+/-- The terms of an operator bounded by the identity are bounded by the identity. -/
+theorem translationInvariant_term_le_one (hh : h ≤ 1) (i : Fin N) :
+    (translationInvariant N h).term i ≤ 1 :=
+  forall_translationInvariant_term (P := fun M ↦ M ≤ 1) zero_le_one (fun hk i ↦ by
+    rw [← placeAlong_one (X := fun _ ↦ α) (ringWindow hk i)]
+    exact placeAlong_le_placeAlong (X := fun _ ↦ α) (ringWindow hk i) hh) i
+
+variable (h)
 
 /-- **Rotating the terms.** Conjugating the term with index `i` by the rotation `j ↦ j + 1` of
 the ring gives the term with index `i + 1`. -/
-theorem Interaction.translationInvariant_term_add_one (i : Fin N) :
-    (translationInvariant hk h).term (i + 1) =
-      sitePermOp (finRotate N) * (translationInvariant hk h).term i *
+theorem translationInvariant_term_add_one (i : Fin N) :
+    (translationInvariant N h).term (i + 1) =
+      sitePermOp (finRotate N) * (translationInvariant N h).term i *
         (sitePermOp (finRotate N))ᴴ := by
-  simp only [translationInvariant, ofPlaceAlong_term, sitePermOp_mul_placeAlong_mul_conjTranspose,
-    ringWindow_trans_finRotate]
+  by_cases hk : k ≤ N
+  · simp only [translationInvariant_term_of_le h hk, sitePermOp_mul_placeAlong_mul_conjTranspose,
+      ringWindow_trans_finRotate]
+  · simp only [translationInvariant_term_of_not_le h hk, Matrix.mul_zero, Matrix.zero_mul]
 
 /-- **Translation invariance.** The Hamiltonian of a translation-invariant interaction on the ring
 commutes with the rotation of the ring: conjugating it by the rotation leaves it unchanged. -/
-theorem Interaction.sitePermOp_finRotate_mul_hamiltonian_translationInvariant :
-    sitePermOp (finRotate N) * (translationInvariant hk h).hamiltonian *
-        (sitePermOp (finRotate N))ᴴ = (translationInvariant hk h).hamiltonian := by
+theorem sitePermOp_finRotate_mul_hamiltonian_translationInvariant :
+    sitePermOp (finRotate N) * (translationInvariant N h).hamiltonian *
+        (sitePermOp (finRotate N))ᴴ = (translationInvariant N h).hamiltonian := by
   simp only [hamiltonian, Finset.mul_sum, Finset.sum_mul,
     ← Interaction.translationInvariant_term_add_one]
   exact Fintype.sum_equiv (Equiv.addRight 1) _ _ fun _ ↦ rfl
+
+end Interaction
 
 end Ring
 

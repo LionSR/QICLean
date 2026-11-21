@@ -1475,11 +1475,13 @@ supports of bounded range on them.
 
 \begin{definition}[Windows on the ring]
     \label{def:sites_ring_window}
-    \lean{ManyBody.ringWindow, ManyBody.ringWindow_apply, ManyBody.map_ringWindow_two}
+    \lean{ManyBody.ringWindow, ManyBody.ringWindow_apply, ManyBody.map_ringWindow,
+        ManyBody.image_range_two_add, ManyBody.map_ringWindow_two}
     \leanok
     For $k\le N$, the window of $k$ consecutive sites of the ring $\Z_N$ starting at the
-    site $i$ is the injection $j\mapsto i+j$ of $\{0,\dots,k-1\}$ into $\Z_N$. For
-    $k=2$ its image is the bond $\{i,i+1\}$.
+    site $i$ is the injection $j\mapsto i+j$ of $\{0,\dots,k-1\}$ into $\Z_N$. Its image
+    is the set $\{i+j: 0\le j<k\}$, which is defined for every $k$ and is $\Z_N$ for
+    $k\ge N$. For $k=2$ that set is the bond $\{i,i+1\}$.
 \end{definition}
 
 \begin{definition}[Windows on the chain]
