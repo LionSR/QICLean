@@ -5,6 +5,8 @@ Authors: QICLean contributors
 -/
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.LinearAlgebra.Complex.Module
+import Mathlib.Algebra.Star.BigOperators
+import Mathlib.LinearAlgebra.Matrix.Hermitian
 
 /-!
 # Replacing local terms by their Hermitian parts
@@ -19,6 +21,8 @@ self-adjoint, and the operations that describe locality and size are preserved.
 * `coe_realPart_mem_of_star_mem`: a real subspace containing `x` and `x⋆` contains `ℜ x`,
   so membership in any star-closed class of operators (such as the operators supported on
   a fixed region) passes to the Hermitian part.
+* `Matrix.isHermitian_sum`, `Matrix.isHermitian_sum_of_subset`: a finite sum of Hermitian
+  matrices is Hermitian, Mathlib's `isSelfAdjoint_sum` stated for `Matrix.IsHermitian`.
 
 Two further facts needed in the same reduction are already in Mathlib: `realPart.norm_le`
 gives `‖ℜ x‖ ≤ ‖x‖` in any normed star module over `ℂ` with isometric star, and
@@ -41,6 +45,9 @@ file `lean/OAI/MathematicalPhysics/PEPSFilters/HamiltonianEnergy.lean`, declarat
 `realPart` replaces the auxiliary Hermitian-part definition, the statements hold in any
 complex star module rather than for lattice operators, the sum is over an arbitrary finite
 set, and lattice supports are replaced by an arbitrary star-closed real subspace.
+
+The two statements about finite sums of Hermitian matrices are moved from TNLean,
+`TNLean/Algebra/MatrixHermitianSum.lean` at commit `49b78ed821` (Apache-2.0).
 -/
 
 open ComplexStarModule
@@ -59,3 +66,20 @@ theorem coe_realPart_mem_of_star_mem {S : Submodule ℝ A} {x : A} (hx : x ∈ S
     (hsx : star x ∈ S) : (ℜ x : A) ∈ S := by
   rw [realPart_apply_coe]
   exact S.smul_mem _ (S.add_mem hx hsx)
+
+namespace Matrix
+
+variable {ι n α : Type*} [AddCommMonoid α] [StarAddMonoid α]
+
+/-- A finite sum of Hermitian matrices is Hermitian. -/
+theorem isHermitian_sum (s : Finset ι) {A : ι → Matrix n n α}
+    (hA : ∀ i ∈ s, (A i).IsHermitian) : (∑ i ∈ s, A i).IsHermitian :=
+  isSelfAdjoint_sum s fun i hi => (hA i hi).isSelfAdjoint
+
+/-- A partial sum of a family Hermitian on a larger finite set is Hermitian. -/
+theorem isHermitian_sum_of_subset {s t : Finset ι} {A : ι → Matrix n n α}
+    (hA : ∀ i ∈ s, (A i).IsHermitian) (ht : t ⊆ s) :
+    (∑ i ∈ t, A i).IsHermitian :=
+  isHermitian_sum t fun i hi => hA i (ht hi)
+
+end Matrix
