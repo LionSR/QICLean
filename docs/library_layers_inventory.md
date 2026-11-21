@@ -642,3 +642,51 @@ would push the target past 1000 lines.
 | `Spectral.LowEnergy.RitzGroundSpaceCloseness` | merge into QICLean.Analysis.RitzGroundSpace (sole importer target): one corollary for a trial space close to the ground space |
 | `Spectral.Perturbation.ClusterNormPerturbation` | merge into QICLean.Analysis.BufferedSpectralNormPerturbation: one low-cluster stability theorem; imports ViableSubspaceDimension |
 | `Spectral.Projection.ProjectionIntertwiner` | merge into QICLean.Analysis.ShiftedDensityTruncation (defines spectralProjectionGE); imports Entropy.ConditionalMovement.LogCompression only for cfc_intertwine, which belongs in Analysis/FunctionalCalculus |
+
+## Modules that fail the strict check at the base revision
+
+Moving a module makes `scripts/ci_lean_checks.py strict` elaborate it again with
+warnings as errors and `autoImplicit` off. These modules fail that check with the same
+errors at the base revision: single-letter variables bound automatically, deprecated
+Mathlib names, and hypotheses the statement does not use. The move changes none of them
+beyond import lines and module references (the last one is a target of a merge whose
+merged module already had the error). Repairing them changes proofs or statements and is
+left to a separate change.
+
+- `QICLean/Algebra/Polynomial/ScalarPowerSumIdentity.lean`
+- `QICLean/Analysis/Convexity/ConvexHullCompact.lean`
+- `QICLean/Analysis/CyclicInequality/CyclicReciprocal.lean`
+- `QICLean/Analysis/FixedPoint/BrouwerProduct.lean`
+- `QICLean/Analysis/FunctionalCalculus/SpectralKronecker.lean`
+- `QICLean/Analysis/Logarithm/LogCompression.lean`
+- `QICLean/Analysis/Real/EulerAngles.lean`
+- `QICLean/Channel/Choi/Jamiolkowski.lean`
+- `QICLean/Channel/ChoiTypeMap/YamagamiPositivity.lean`
+- `QICLean/Channel/Dilation/RadonNikodym.lean`
+- `QICLean/Channel/Entanglement/PositiveMapDetection.lean`
+- `QICLean/Channel/FixedPoint/WedderburnDecomp.lean`
+- `QICLean/Channel/OperatorSystem/Extension.lean`
+- `QICLean/Channel/PartialTrace/ConditionalSkewSetup.lean`
+- `QICLean/Channel/PartialTrace/ConditionalSkewStrip.lean`
+- `QICLean/Channel/PartialTrace/MarginalPhaseFaithful.lean`
+- `QICLean/Channel/PartialTrace/PartialTrace.lean`
+- `QICLean/Channel/PartialTrace/PartialTraceDomination.lean`
+- `QICLean/Channel/Schwarz/ChoiCompression.lean`
+- `QICLean/Entropy/Conditional/Collision.lean`
+- `QICLean/Entropy/Conditional/ConditionalPhase.lean`
+- `QICLean/Entropy/Conditional/EntropyBounds.lean`
+- `QICLean/Entropy/Conditional/FilterEntropy.lean`
+- `QICLean/Entropy/Conditional/MarginalPhaseQuantities.lean`
+- `QICLean/Entropy/Conditional/MarginalPhaseSingular.lean`
+- `QICLean/Entropy/Conditional/Purification.lean`
+- `QICLean/Entropy/Conditional/SingularInterpolation.lean`
+- `QICLean/Entropy/Conditional/SkewPhase.lean`
+- `QICLean/Entropy/Conditional/UnitaryCovariance.lean`
+- `QICLean/Entropy/Relative/MarginalPhaseSupport.lean`
+- `QICLean/Entropy/VonNeumann/ConditionalContinuity.lean`
+- `QICLean/ManyBody/Replica/Metric/WholeInverse.lean`
+- `QICLean/ManyBody/Replica/Symbol/CoherentLog.lean`
+- `QICLean/Representation/SchurWeyl/SchurSectorMass.lean`
+- `QICLean/Spectral/Jordan/FittingRange.lean`
+- `QICLean/Spectral/Projection/KernelCompletion.lean`
+- `QICLean/ManyBody/Replica/Bell/InsertionCoordinates.lean`
