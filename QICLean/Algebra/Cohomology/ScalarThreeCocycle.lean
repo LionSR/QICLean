@@ -304,11 +304,4 @@ theorem CohomologousTo.comap {ω η : ScalarThreeCochain G} (h : CohomologousTo 
   obtain ⟨β, rfl⟩ := h
   exact ⟨β.comap f, (comap_fusionGauge f β η).symm⟩
 
-/-- Restriction preserves trivial gauge classes. Contrapositively, a nontrivial restriction to
-any subgroup, for instance a cyclic one detected by the cyclic invariant, certifies a nontrivial
-class on the ambient group. -/
-theorem IsTrivialGaugeClass.comap {ω : ScalarThreeCochain G} (h : IsTrivialGaugeClass ω)
-    (f : H →* G) : IsTrivialGaugeClass (comap f ω) :=
-  CohomologousTo.comap h f
-
 end ScalarThreeCochain

@@ -154,14 +154,6 @@ lemma traceWord_def (w : List (Fin d)) :
 
 variable {M}
 
-/-- Trace characters agreeing on all nonempty words agree on the kernel of the augmentation.
-This is the linear extension step, stated for an arbitrary second functional so that finite sums
-of characters are covered. -/
-lemma traceChar_eq_of_traceWord_eq {χ : WordAlgebra d →ₗ[ℂ] ℂ}
-    (h : ∀ w : List (Fin d), w ≠ [] → traceWord M w = χ (ofWord w)) {p : WordAlgebra d}
-    (hp : aug p = 0) : traceChar M p = χ p :=
-  linearMap_eq_on_ker_aug h hp
-
 /-- If every generator acts as zero on `M`, the word algebra acts through the augmentation. -/
 lemma smul_eq_aug_smul (h0 : ∀ (i : Fin d) (m : M), (ofWord [i] : WordAlgebra d) • m = 0)
     (p : WordAlgebra d) (m : M) : p • m = aug p • m := by

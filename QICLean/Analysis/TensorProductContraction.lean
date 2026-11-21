@@ -120,8 +120,8 @@ def assocL : E ⊗[ℂ] F ⊗[ℂ] G →L[ℂ] E ⊗[ℂ] (F ⊗[ℂ] G) :=
 
 @[simp]
 theorem leftCommL_tmul (x : E) (y : F) (z : G) :
-    leftCommL E F G (x ⊗ₜ[ℂ] (y ⊗ₜ[ℂ] z)) = y ⊗ₜ[ℂ] (x ⊗ₜ[ℂ] z) :=
-  leftCommIso_tmul x y z
+    leftCommL E F G (x ⊗ₜ[ℂ] (y ⊗ₜ[ℂ] z)) = y ⊗ₜ[ℂ] (x ⊗ₜ[ℂ] z) := by
+  simp [leftCommL]
 
 @[simp]
 theorem assocL_tmul (x : E) (y : F) (z : G) :

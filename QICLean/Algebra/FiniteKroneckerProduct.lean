@@ -128,7 +128,10 @@ theorem rectKronecker_eq_finKronecker {N : ℕ} [Fintype ι] (m : Fin N → Matr
 theorem rectKronecker_mul [Fintype κ] [DecidableEq ν] (K : ν → Matrix ι κ ℂ)
     (L : ν → Matrix κ μ ℂ) :
     rectKronecker K * rectKronecker L = rectKronecker fun k ↦ K k * L k := by
-  exact piKronecker_mul K L
+  ext x y
+  simp only [mul_apply, rectKronecker_apply]
+  rw [Fintype.prod_sum]
+  exact Finset.sum_congr rfl fun z _ ↦ (Finset.prod_mul_distrib).symm
 
 /-- The product of identities over a finite set of sites is the identity. -/
 @[simp] theorem rectKronecker_one [DecidableEq ι] :
@@ -166,6 +169,7 @@ variable {N : ℕ} {ι κ : Type*} [Fintype ι] [DecidableEq ι]
 /-- The Kronecker power of an operator with `u^† u = 1` satisfies the same relation. -/
 theorem finKronecker_conjTranspose_mul_self {u : Matrix ι ι ℂ} (hu : uᴴ * u = 1) :
     (finKronecker fun _ : Fin N => u)ᴴ * finKronecker (fun _ : Fin N => u) = 1 := by
+  rw [← rectKronecker_eq_finKronecker]
   exact rectKronecker_conjTranspose_mul_self hu
 
 /-- The Kronecker power of a diagonal matrix is diagonal, with the product of the entries. -/

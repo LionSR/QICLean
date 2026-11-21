@@ -67,24 +67,45 @@ namespace EuclideanSpace
 variable {ι κ : Type*} [Fintype ι] [Fintype κ] [DecidableEq κ]
 
 /-- The product vector `⊗ⱼ vⱼ` in `(ℂ^ι)^{⊗ κ}`, written on configurations `κ → ι`: its
-coefficient on `f` is `∏ⱼ vⱼ (f j)`.  The vector depends multilinearly on the family `v`.
-For `ι = Fin d` this is the coordinate formula of `QuantumCircuit.productVector`. -/
-def piTensorMultilinear :
+coefficient on `f` is `∏ⱼ vⱼ (f j)`. -/
+def piTensor (v : κ → EuclideanSpace ℂ ι) : EuclideanSpace ℂ (κ → ι) :=
+  WithLp.toLp 2 fun f ↦ ∏ j, v j (f j)
+
+/-- The product vector as a multilinear map of the family of factors, assembled from the
+coordinate projections. Its value on `v` is `piTensor v` (`piTensorMultilinear_apply`). -/
+private def piTensorCoord :
     MultilinearMap ℂ (fun _ : κ => EuclideanSpace ℂ ι) (EuclideanSpace ℂ (κ → ι)) :=
   (WithLp.linearEquiv 2 ℂ ((κ → ι) → ℂ)).symm.toLinearMap.compMultilinearMap
     (MultilinearMap.pi fun f =>
       (MultilinearMap.mkPiAlgebra ℂ κ ℂ).compLinearMap fun j =>
         (EuclideanSpace.proj (f j) : EuclideanSpace ℂ ι →L[ℂ] ℂ).toLinearMap)
 
-/-- The product vector `⊗ⱼ vⱼ` on configurations `κ → ι`. -/
-def piTensor (v : κ → EuclideanSpace ℂ ι) : EuclideanSpace ℂ (κ → ι) :=
-  piTensorMultilinear v
+omit [Fintype ι] [DecidableEq κ] in
+private theorem piTensorCoord_apply (v : κ → EuclideanSpace ℂ ι) :
+    piTensorCoord v = piTensor v := by
+  ext f
+  simp [piTensorCoord, piTensor, MultilinearMap.mkPiAlgebra_apply]
+
+/-- The product vector `⊗ⱼ vⱼ` as a multilinear map of the family `v`. -/
+def piTensorMultilinear :
+    MultilinearMap ℂ (fun _ : κ => EuclideanSpace ℂ ι) (EuclideanSpace ℂ (κ → ι)) where
+  toFun := piTensor
+  map_update_add' v i x y := by
+    simpa only [piTensorCoord_apply] using piTensorCoord.map_update_add v i x y
+  map_update_smul' v i c x := by
+    simpa only [piTensorCoord_apply] using piTensorCoord.map_update_smul v i c x
+
+omit [Fintype ι] [DecidableEq κ] in
+@[simp]
+theorem piTensorMultilinear_apply (v : κ → EuclideanSpace ℂ ι) :
+    piTensorMultilinear v = piTensor v :=
+  rfl
 
 omit [Fintype ι] [DecidableEq κ] in
 @[simp]
 theorem piTensor_apply (v : κ → EuclideanSpace ℂ ι) (f : κ → ι) :
-    piTensor v f = ∏ j, v j (f j) := by
-  simp [piTensor, piTensorMultilinear, MultilinearMap.mkPiAlgebra_apply]
+    piTensor v f = ∏ j, v j (f j) :=
+  rfl
 
 /-- The tensor power `η^{⊗ κ}`. -/
 def tensorPower (κ : Type*) [Fintype κ] [DecidableEq κ] (η : EuclideanSpace ℂ ι) :
