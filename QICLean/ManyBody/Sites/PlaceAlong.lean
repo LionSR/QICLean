@@ -509,6 +509,25 @@ theorem placeAt_add : placeAt v (p + p') = placeAt v p + placeAt v p' :=
 theorem placeAt_sub : placeAt v (p - p') = placeAt v p - placeAt v p' :=
   placeAlong_sub (X := X) (Function.Embedding.punit v : Unit ↪ V) _ _
 
+theorem placeAt_neg : placeAt v (-p) = -placeAt v p := by
+  ext σ τ
+  rw [Matrix.neg_apply, placeAt_apply, placeAt_apply]
+  split_ifs <;> simp
+
+/-- A diagonal matrix at one site is the diagonal matrix of its entry at the site. -/
+theorem placeAt_diagonal (f : X v → ℂ) :
+    placeAt v (diagonal f) = diagonal fun σ : Config X ↦ f (σ v) := by
+  ext σ τ
+  rw [placeAt_apply, diagonal_apply, diagonal_apply]
+  by_cases hστ : σ = τ
+  · subst hστ
+    simp
+  · simp only [hστ, ↓reduceIte]
+    split_ifs with h h'
+    · exact absurd (funext fun u ↦ if hu : u = v then hu ▸ h' else h u hu) hστ
+    · rfl
+    · rfl
+
 theorem placeAt_smul (c : ℂ) : placeAt v (c • p) = c • placeAt v p :=
   placeAlong_smul (X := X) (Function.Embedding.punit v : Unit ↪ V) _ c
 

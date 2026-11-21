@@ -517,7 +517,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{definition}[A matrix at one site]
     \label{def:sites_place_at}
     \lean{ManyBody.placeAt, ManyBody.placeAt_apply, ManyBody.placeAt_add,
-        ManyBody.placeAt_sub, ManyBody.placeAt_smul, ManyBody.placeAt_conjTranspose,
+        ManyBody.placeAt_sub, ManyBody.placeAt_neg, ManyBody.placeAt_diagonal,
+        ManyBody.placeAt_smul, ManyBody.placeAt_conjTranspose,
         ManyBody.placeAt_one, ManyBody.isHermitian_placeAt, ManyBody.placeAt_mul,
         ManyBody.placeAt_mem_supportedOperators, ManyBody.norm_placeAt_le,
         ManyBody.posSemidef_placeAt, ManyBody.placeAt_le_placeAt}
@@ -527,7 +528,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $v$: the operator $p\otimes1$, supported on $\{v\}$, with matrix element
     $p_{\sigma_v\tau_v}$ if $\sigma$ and $\tau$ agree outside $v$, and $0$ otherwise. It is a
     unital $*$-homomorphism in $p$ that does not increase the norm and preserves positivity
-    and the order.
+    and the order. A diagonal matrix $\operatorname{diag}(f)$ at $v$ is the diagonal matrix
+    with entries $f(\sigma_v)$.
 \end{definition}
 
 \section{The expectation onto a region}
