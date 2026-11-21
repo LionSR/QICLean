@@ -21,9 +21,8 @@ Blocks are indexed by a type `o` which is ordered indirectly, through an injecti
 statements for an ordered block index. The indirect form covers block families whose labels and
 whose order are separate data.
 
-Word evaluation on the `Σ k, Fin (n k)` index type is the generic `evalWord` of
-`QICLean.Kraus.MultiBlockWord` (unqualified, not `Kraus.evalWord`, which is specialized to
-`Fin D` indices).
+Word evaluation on the `Σ k, Fin (n k)` index type is `Kraus.evalWord`, which takes any finite
+basis.
 
 Moved from TNLean, `TNLean/Algebra/BlockTriangularWord.lean` at commit `49b78ed821`
 (Apache-2.0).
@@ -52,7 +51,7 @@ open scoped Matrix
 
 namespace Matrix
 
-variable {o : Type*} [Fintype o] [DecidableEq o] {n : o → ℕ} {d : ℕ}
+variable {o : Type*} [Fintype o] [DecidableEq o] {n : o → ℕ} {ι : Type*}
 
 section Order
 
@@ -81,22 +80,22 @@ theorem blockDiag'_mul_of_blockTriangular (hb : Function.Injective b)
 
 /-- Word evaluations of a block upper-triangular family stay block upper triangular. -/
 theorem blockTriangular_evalWord
-    {T : Fin d → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
-    (hT : ∀ i, (T i).BlockTriangular fun x => b x.1) (w : List (Fin d)) :
-    (evalWord T w).BlockTriangular fun x => b x.1 := by
+    {T : ι → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
+    (hT : ∀ i, (T i).BlockTriangular fun x => b x.1) (w : List ι) :
+    (Kraus.evalWord T w).BlockTriangular fun x => b x.1 := by
   induction w with
-  | nil => simpa [evalWord] using blockTriangular_one
-  | cons i w ih => simpa only [evalWord] using (hT i).mul ih
+  | nil => simpa [Kraus.evalWord] using blockTriangular_one
+  | cons i w ih => simpa only [Kraus.evalWord] using (hT i).mul ih
 
 /-- Diagonal blocks of a word evaluation are the word evaluations of the diagonal blocks. -/
 theorem blockDiag'_evalWord (hb : Function.Injective b)
-    {T : Fin d → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
-    (hT : ∀ i, (T i).BlockTriangular fun x => b x.1) (w : List (Fin d)) (k : o) :
-    (evalWord T w).blockDiag' k = evalWord (fun i => (T i).blockDiag' k) w := by
+    {T : ι → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
+    (hT : ∀ i, (T i).BlockTriangular fun x => b x.1) (w : List ι) (k : o) :
+    (Kraus.evalWord T w).blockDiag' k = Kraus.evalWord (fun i => (T i).blockDiag' k) w := by
   induction w with
-  | nil => simp [evalWord]
+  | nil => simp [Kraus.evalWord]
   | cons i w ih =>
-      simp only [evalWord]
+      simp only [Kraus.evalWord]
       rw [blockDiag'_mul_of_blockTriangular hb (hT i) (blockTriangular_evalWord hT w) k, ih]
 
 end Order
@@ -268,10 +267,10 @@ variable {r : ℕ} {b : o → Fin r}
 /-- Auxiliary entrywise bound for a word evaluation of strictly block upper-triangular
 matrices: `m` letters move the block label up by at least `m`. -/
 theorem entry_evalWord_eq_zero_of_lt
-    {R : Fin d → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
+    {R : ι → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
     (hR : ∀ i, StrictBlockTriangular b (R i)) :
-    ∀ (w : List (Fin d)) (x y : Σ k, Fin (n k)),
-      (b y.1 : ℕ) < (b x.1 : ℕ) + w.length → evalWord R w x y = 0 := by
+    ∀ (w : List ι) (x y : Σ k, Fin (n k)),
+      (b y.1 : ℕ) < (b x.1 : ℕ) + w.length → Kraus.evalWord R w x y = 0 := by
   intro w
   induction w with
   | nil =>
@@ -280,11 +279,11 @@ theorem entry_evalWord_eq_zero_of_lt
       have hxy : x ≠ y := by
         rintro rfl
         exact absurd h (lt_irrefl _)
-      simp [evalWord, hxy]
+      simp [Kraus.evalWord, hxy]
   | cons i w' ih =>
       intro x y h
       simp only [List.length_cons] at h
-      simp only [evalWord, Matrix.mul_apply]
+      simp only [Kraus.evalWord, Matrix.mul_apply]
       apply Finset.sum_eq_zero
       intro z _
       by_cases hzx : b z.1 ≤ b x.1
@@ -296,9 +295,9 @@ theorem entry_evalWord_eq_zero_of_lt
 /-- A product of `r` strictly block upper-triangular matrices whose block labels take at most
 `r` values vanishes. -/
 theorem evalWord_eq_zero_of_strictBlockTriangular
-    {R : Fin d → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
-    (hR : ∀ i, StrictBlockTriangular b (R i)) (w : List (Fin d)) (hw : r ≤ w.length) :
-    evalWord R w = 0 := by
+    {R : ι → Matrix (Σ k, Fin (n k)) (Σ k, Fin (n k)) ℂ}
+    (hR : ∀ i, StrictBlockTriangular b (R i)) (w : List ι) (hw : r ≤ w.length) :
+    Kraus.evalWord R w = 0 := by
   ext x y
   have hy : (b y.1 : ℕ) < r := (b y.1).isLt
   exact entry_evalWord_eq_zero_of_lt hR w x y (by omega)
