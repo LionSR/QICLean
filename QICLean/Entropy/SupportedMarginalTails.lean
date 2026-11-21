@@ -25,8 +25,15 @@ With these decompositions, `QICLean.Entropy.MarginalTails` gives Lemma 3.1 of th
 area-law manuscript in its stated form: designated supports, `d_i = ∏_{v ∈ D_i} dim 𝓗_v`,
 and `ℬ = 1 + ∑_{i ∈ I×} log² (e d_i)` over the terms whose support meets both sides.
 
+## Main definitions
+
+* `ManyBody.cutLogBudget`: the log budget of the terms of a family of supports crossing a cut.
+
 ## Main results
 
+* `ManyBody.cutLogBudget_le`, `ManyBody.cutLogBudget_const_le`: the budget is at most
+  `1 + |I×| log² (e d)` for crossing supports of dimension at most `d`, and so at most
+  `1 + |I×| log² (e q^k)` for one local dimension `q` and supports of at most `k` sites.
 * `ManyBody.IsSupportedOn.isOneSided_of_subset`, `ManyBody.IsSupportedOn.isOneSided_of_disjoint`.
 * `ManyBody.IsSupportedOn.hasProductDecomposition`: the matrix-unit decomposition.
 * `Entropy.log_surprisalMoment_cut_le`, `Entropy.surprisalTail_cut_le`: Lemma 3.1.
