@@ -232,3 +232,74 @@ This reflects the zero data configuration and returns the scratch to zero on eve
     other sites. Since $E_s$ is an isometry, $E_sE_s^\dagger$ is an orthogonal projection, and
     Lemma~\ref{lem:zero_register_selected} gives $Z_s=\mathbf 1-2Q_s$.
 \end{proof}
+
+\begin{lemma}[Unitaries on a set of sites]
+    \label{lem:zero_register_region_unitary}
+    \lean{QuantumCircuit.IsGateProduct.sitesAndPairs_of_mem_supportedOperators}
+    \leanok
+    \uses{thm:unitary_universality, thm:unitary_place, def:sites_supported}
+    On the geometry of sites and ordered pairs, with pairs of cost $c_2$, a unitary supported on
+    a nonempty set $T$ of sites is a product of gates of total cost at most $N_Tc_2$, where
+    $N_T$ is the two-site universality count of the sites of $T$; it depends only on the
+    bases at the sites of $T$.
+\end{lemma}
+\begin{proof}\leanok
+    The unitary is the placement on $T$ of a unitary on the configurations of $T$. By two-site
+    universality on the sites of $T$, with the pairs inside $T$ as gates, that unitary is a
+    product of gates of cost at most $N_Tc_2$, and placing the circuit on $T$ keeps its cost.
+\end{proof}
+
+\begin{theorem}[Gate counts of the zero-register reflection]
+    \label{thm:zero_register_gate_count}
+    \lean{QuantumCircuit.zeroConjunctionStepGateCount,
+        QuantumCircuit.zeroRegisterReflectionGateCount,
+        QuantumCircuit.isGateProduct_zeroConjunctionStep,
+        QuantumCircuit.isGateProduct_zeroConjunctionPerm,
+        QuantumCircuit.isGateProduct_zeroRegisterReflection,
+        QuantumCircuit.isGateProduct_pathGraph_zeroRegisterReflection}
+    \leanok
+    \uses{thm:zero_register_reflection, lem:zero_register_step_support,
+        lem:zero_register_region_unitary, thm:unitary_swap_routing}
+    Let $d\geq2$ and $a\geq1$. With pairs of cost $1$, each conjunction step is a product of at
+    most $6(d^3)^4$ gates on sites and ordered pairs, the conjunction of the first $k$ steps of
+    at most $6k(d^3)^4$, and the zero-register reflection of at most $12(d^3)^4a$. On the open
+    chain of the $2a$ sites the reflection is a product of at most $2\cdot2a\cdot12(d^3)^4a$
+    gates on neighbouring sites.
+\end{theorem}
+\begin{proof}\leanok
+    A step is supported on at most three sites, and the universality count of three sites of
+    dimension $d$ is at most $6(d^3)^4$. The conjunction is the product of its steps, the
+    scratch phase acts on one site and is free, and the reflection is the conjunction, the
+    phase and the inverse conjunction. Routing each gate on a pair by swaps on the open chain of
+    $m$ sites costs at most $2m$ neighbouring gates.
+\end{proof}
+
+\begin{theorem}[Selected flags by neighbouring gates]
+    \label{thm:zero_register_selected_gate_count}
+    \lean{QuantumCircuit.sitesAndPairsHom,
+        QuantumCircuit.isGateProduct_selectedZeroRegisterReflection,
+        QuantumCircuit.isGateProduct_pathGraph_selectedZeroRegisterReflection,
+        QuantumCircuit.exists_isGateProduct_isCleanImplementation_selectedZeroRegister,
+        QuantumCircuit.exists_isGateProduct_isCleanImplementation_zeroFlagReflection}
+    \leanok
+    \uses{thm:zero_register_gate_count, thm:zero_register_selected_reflection,
+        lem:zero_register_flag_projection, thm:unitary_relabel, thm:unitary_swap_routing,
+        def:unitary_clean_implementation}
+    Let $d\geq2$, let $s$ be an injective family of $a$ sites of a register of $n\geq1$ sites,
+    and append a pool of $A\geq a$ sites. With pairs of cost $1$, the zero-register reflection on
+    the selected sites is a product of at most $12(d^3)^4a$ gates on sites and ordered pairs of
+    the $n+A$ sites, and of at most $2(n+A)\cdot12(d^3)^4a$ gates on neighbouring sites of the
+    open chain. Hence a product of at most that many neighbouring gates implements the
+    selected-flags reflection $Z_s=\mathbf 1-2E_sE_s^\dagger$ with the whole pool as clean
+    workspace; for $a=0$ the global phase $-\mathbf 1$ does so at no cost.
+\end{theorem}
+\begin{proof}\leanok
+    An injection of sites carries the cells on sites and ordered pairs of the zero register to
+    cells of the same cost of the $n+A$ sites. Relabelling the circuit of
+    Theorem~\ref{thm:zero_register_gate_count} along the injection of
+    Definition~\ref{def:zero_register_selected_reflection} and placing it on its image gives a
+    circuit of the same count, whose operator has the matrix elements of
+    Theorem~\ref{thm:zero_register_selected_reflection}. Routing gives the count on the chain,
+    and Theorem~\ref{thm:zero_register_selected_reflection} and
+    Lemma~\ref{lem:zero_register_flag_projection} give the clean implementations.
+\end{proof}
