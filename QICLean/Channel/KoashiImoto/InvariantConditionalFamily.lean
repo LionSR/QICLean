@@ -220,8 +220,8 @@ theorem exists_preservingKrausFamily_normalizedConditionalSlice
     Nonempty (ActiveConditionalEffectIndex ρ_AB) ∧
       (∀ s, (μ s).PosSemidef) ∧
       (∀ s, (μ s).trace = 1) ∧
-      ∃ F : Kraus.PreservingKrausFamily μ,
-        ∀ X, Kraus.map F.Kfam X =
+      ∃ F : KrausFamily (Fin dB) (Fin dB), Kraus.IsPreserving μ F.op ∧
+        ∀ X, Kraus.map F.op X =
           petzMiddleChannel ρ_ABC hρ_dm.1 X := by
   dsimp only
   have hABpos := SSAPosDef.traceC_ABC_posSemidef hρ_dm.1
@@ -233,15 +233,9 @@ theorem exists_preservingKrausFamily_normalizedConditionalSlice
     normalizedConditionalSlice_trace hABpos, ?_⟩
   obtain ⟨r, K, hKform, hKtp⟩ :=
     petzMiddleChannel_isKrausCPTP ρ_ABC hρ_dm
-  let F : Kraus.PreservingKrausFamily
-      (normalizedConditionalSlice (traceC_ABC ρ_ABC)) :=
-    { numKraus := r
-      Kfam := K
-      isPreserving := ⟨hKtp, fun s ↦ by
-        rw [Kraus.map, ← hKform]
-        exact petzMiddleChannel_normalizedConditionalSlice
-          ρ_ABC hρ_dm hSSA s⟩ }
-  refine ⟨F, fun X ↦ ?_⟩
-  simpa only [F, Kraus.map] using (hKform X).symm
+  refine ⟨⟨Fin r, K⟩, ⟨hKtp, fun s ↦ ?_⟩, fun X ↦ ?_⟩
+  · rw [Kraus.map, ← hKform]
+    exact petzMiddleChannel_normalizedConditionalSlice ρ_ABC hρ_dm hSSA s
+  · simpa only [Kraus.map] using (hKform X).symm
 
 end Matrix

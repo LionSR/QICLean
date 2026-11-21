@@ -92,7 +92,7 @@ This is a type alias for the subtype
 abbrev FixedPointAlgebra
     (K : Fin d → Mat) (h_tp : IsTP K) {ρ : Mat}
     (hρ : ρ.PosDef) (hρ_fix : map K ρ = ρ) : Type _ :=
-  ↥(adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix)
+  ↥(adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix)
 
 /-- Every finite-dimensional `*`-subalgebra of `M_D(ℂ)` is a semisimple ring. -/
 theorem starSubalgebra_isSemisimpleRing (S : StarSubalgebra ℂ Mat) :
@@ -118,7 +118,7 @@ theorem starSubalgebra_isSemisimpleRing (S : StarSubalgebra ℂ Mat) :
     selfAdjoint_eq_zero_of_isNilpotent_matrix hbSA hbNilMat
   have hb0 : b = 0 := Subtype.ext hb0Mat
   have hx0Mat : (x : Mat) = 0 := by
-    apply CStarRing.star_mul_self_eq_zero_iff (x := (x : Mat)).mp
+    apply (star_mul_self_eq_zero (x := (x : Mat))).mp
     simpa [b] using congrArg Subtype.val hb0
   exact Subtype.ext hx0Mat
 
@@ -131,9 +131,9 @@ theorem fixedPointAlgebra_isSemisimpleRing
     (K : Fin d → Mat) (h_tp : IsTP K) {ρ : Mat}
     (hρ : ρ.PosDef) (hρ_fix : map K ρ = ρ) :
     IsSemisimpleRing
-      (↥(adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix)) :=
+      (↥(adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix)) :=
   starSubalgebra_isSemisimpleRing
-    (adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix)
+    (adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix)
 
 /-- **Abstract Wedderburn--Artin decomposition** of the fixed-point algebra.
 
@@ -149,17 +149,17 @@ theorem fixedPointAlgebra_wedderburnArtin
     ∃ (n : ℕ) (dims : Fin n → ℕ),
       (∀ i, NeZero (dims i)) ∧
         Nonempty
-          (↥(adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix) ≃ₐ[ℂ]
+          (↥(adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix) ≃ₐ[ℂ]
             Π i : Fin n, Matrix (Fin (dims i)) (Fin (dims i)) ℂ) :=
   letI : IsSemisimpleRing
-      (↥(adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix)) :=
+      (↥(adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix)) :=
     fixedPointAlgebra_isSemisimpleRing K h_tp hρ hρ_fix
   letI : FiniteDimensional ℂ
-      (↥(adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix)) :=
+      (↥(adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix)) :=
     FiniteDimensional.finiteDimensional_subalgebra
-      ((adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix).toSubalgebra)
+      ((adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix).toSubalgebra)
   IsSemisimpleRing.exists_algEquiv_pi_matrix_of_isAlgClosed ℂ
-    (↥(adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix))
+    (↥(adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix))
 
 end AbstractDecomp
 
@@ -368,7 +368,7 @@ theorem adjointFixedPoints_wedderburnDecomp
     (hρ : ρ.PosDef) (hρ_fix : map K ρ = ρ) :
     Nonempty
       (IsWedderburnBlockDecomp
-        (adjointFixedPointsStarSubalgebra (d := d) (D := D) K h_tp hρ hρ_fix)) :=
+        (adjointFixedPointsStarSubalgebra (D := D) K h_tp hρ hρ_fix)) :=
   starSubalgebra_hasWedderburnBlockDecomp _
 
 end ConcreteDecomp
