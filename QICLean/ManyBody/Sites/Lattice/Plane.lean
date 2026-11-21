@@ -27,7 +27,7 @@ without the abbreviation `Site Λ`.
 The ambient dilation `ManyBody.ambientDilation` and the sites `ManyBody.crossingSites` of the
 supports crossing a region are moved from TNLean, `TNLean/Lattice/FiniteDomain.lean` and
 `TNLean/Lattice/CrossingSupports.lean` at commit `e113e005`, with `ManyBody.crossingTerms` in place
-of `ManyBody.crossingTerms`. The edge boundary of a region is the edge boundary
+of `Entropy.crossingTerms`. The edge boundary of a region is the edge boundary
 `ManyBody.edgeBoundary (planeDomainGraph Λ) A` of `QICLean.ManyBody.Sites.GraphBoundary`, and
 `ManyBody.planeDomainGraph_degree_le_four` supplies the degree bound for its counts; the degree
 bound is moved from TNLean, `TNLean/PEPS/AreaLaw/BoundaryConventions.lean`

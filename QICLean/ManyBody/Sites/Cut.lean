@@ -14,7 +14,7 @@ Only the supports enter: for an interaction with supports `T`, its crossing term
 `crossingTerms T B`.
 
 Moved from `QICLean/Entropy/SupportedMarginalTails.lean`, where it was
-`ManyBody.crossingTerms`.
+`Entropy.crossingTerms`.
 
 The crossing terms are unchanged by exchanging the region and its complement, and no support
 crosses the empty region or the region of all sites.

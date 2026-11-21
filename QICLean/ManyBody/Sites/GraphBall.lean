@@ -39,7 +39,7 @@ Moved from TNLean, `TNLean/Circuit/LiebRobinson/GraphLocalization.lean` (the def
 `GraphBallStabilization.lean` at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes:
 the ball is defined from `SimpleGraph.ball` instead of as a filter of the sites. The
 separation lemmas are moved from `TNLean/Circuit/LiebRobinson/SupportSeparation.lean` at the
-same commit, with `ManyBody.crossingTerms` in place of `ManyBody.crossingTerms`.
+same commit, with `ManyBody.crossingTerms` in place of `Entropy.crossingTerms`.
 
 The neighbourhood of a region, the distance to a region and the extended pseudometric are moved
 from TNLean, `TNLean/Lattice/FiniteDomain.lean` (`graphNeighborhood`),
