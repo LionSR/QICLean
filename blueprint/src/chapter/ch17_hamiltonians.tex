@@ -567,7 +567,8 @@ kernel, either from the quadratic form or from the norm.
 \begin{definition}[Bond interactions on the chain]
     \label{def:hamiltonians_bond_interaction}
     \lean{ManyBody.BondInteraction, ManyBody.bondSupport, ManyBody.bondSupport_injective,
-        ManyBody.BondInteraction.toChainInteraction}
+        ManyBody.BondInteraction.toChainInteraction,
+        ManyBody.BondInteraction.term_mem_supportedOperators_chainBond}
     \leanok
     \uses{def:hamiltonians_models, def:dynamics_interaction_extend}
     A bond interaction on the chain of $L$ sites has one term on each bond $\{i,i+1\}$,
@@ -577,6 +578,42 @@ kernel, either from the quadratic form or from the norm.
     its terms on all other supports of range one, the single sites among them, vanish.
     By Lemma~\ref{lem:dynamics_interaction_extend} it has the same Hamiltonian.
 \end{definition}
+
+\begin{definition}[Padding a bond interaction]
+    \label{def:hamiltonians_bond_padded}
+    \lean{ManyBody.paddingBond, ManyBody.paddingBond_injective,
+        ManyBody.BondInteraction.padded, ManyBody.BondInteraction.padded_term_of_lt,
+        ManyBody.BondInteraction.padded_term_of_le}
+    \leanok
+    \uses{def:hamiltonians_bond_interaction, def:dynamics_interaction_pad,
+        def:dynamics_interaction_extend}
+    Let $1\le L\le N$, let $\Phi$ be a bond interaction on the chain of $L$ sites, and
+    let $p_v$ be a matrix on the basis at every site $v$ of the chain of $N$ sites. The
+    padding of $\Phi$ is the bond interaction on the chain of $N$ sites whose bond
+    $\{i,i+1\}$ with $i<L-1$ carries the term of $\Phi$ on the first $L$ sites, and whose
+    bond $\{v-1,v\}$ with $v\ge L$ carries $p_v$ at the site $v$. It is the padding of $\Phi$
+    along the first $L$ sites, extended along the injection that sends a bond of the first
+    $L$ sites to itself and an added site $v$ to the bond $\{v-1,v\}$
+    \cite[lines 652--678]{Landau2013PolynomialTime}.
+\end{definition}
+
+\begin{lemma}[Padding a bond interaction]
+    \label{lem:hamiltonians_bond_padded}
+    \lean{ManyBody.BondInteraction.hamiltonian_padded,
+        ManyBody.BondInteraction.padded_term_nonneg,
+        ManyBody.BondInteraction.padded_term_le_one,
+        ManyBody.BondInteraction.isHermitian_padded_term}
+    \leanok
+    \uses{def:hamiltonians_bond_padded, lem:dynamics_interaction_pad,
+        lem:dynamics_interaction_extend}
+    The Hamiltonian of the padding is $H_\Phi\otimes1+\sum_{v\ge L}p_v\otimes1$. If the
+    terms of $\Phi$ and the $p_v$ are positive, Hermitian, or bounded by the identity, so
+    are the terms of the padding.
+\end{lemma}
+\begin{proof}\leanok
+    Combine Lemma~\ref{lem:dynamics_interaction_pad} with
+    Lemma~\ref{lem:dynamics_interaction_extend}.
+\end{proof}
 
 \begin{definition}[Translation-invariant interactions on the ring]
     \label{def:hamiltonians_translation_invariant}

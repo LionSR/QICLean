@@ -50,6 +50,8 @@ Changes: the family `fun i ↦ {i.castSucc, i.succ}`, written inline there, is n
 * `ManyBody.IsChainSupport.eq_interval_of_splits_of_range_one` — a range-one support split by
   a cut is the adjacent pair at that cut.
 * `ManyBody.ChainSupport.edist_le` — a support of range `R` has path-graph diameter at most `R`.
+* `ManyBody.interval_eq_chainBond`, `ManyBody.interval_eq_pair` — the interval `[i, i + 2)` is
+  the bond `{i, i + 1}`.
 * `ManyBody.overlapGraph_chainBond_eq_pathGraph` — the overlap graph of the bonds is the path.
 * `ManyBody.card_biUnion_chainBond_le` — the bonds of `s` consecutive labels cover `s + 1` sites.
 * `ManyBody.map_chainWindow`, `ManyBody.chainWindow_trans_chainWindow` — a window is an
@@ -287,6 +289,23 @@ variable {N : ℕ}
 /-- The bond `{i, i + 1}` of the chain of `N + 1` sites, for a label `i : Fin N`: the support
 of a nearest-neighbour term. ALVV, arXiv:1602.08828v2, `eq:rho-expansion`, lines 1971–2013. -/
 def chainBond (N : ℕ) (i : Fin N) : Finset (Fin (N + 1)) := {i.castSucc, i.succ}
+
+/-- The interval `[i, i + 2)` of the chain of `N + 1` sites is the bond `{i, i + 1}`. -/
+theorem interval_eq_chainBond (i : Fin N) :
+    interval (N + 1) i.val (i.val + 2) = chainBond N i := by
+  ext j
+  simp only [mem_interval, chainBond, mem_insert, mem_singleton, Fin.ext_iff, Fin.val_castSucc,
+    Fin.val_succ]
+  omega
+
+/-- The interval `[i, i + 2)` of the chain of `L` sites, for a bond label `i < L - 1`, is the
+pair of sites at the positions `i` and `i + 1`: the support of the bond term with index `i`. -/
+theorem interval_eq_pair {L : ℕ} (i : Fin (L - 1)) :
+    interval L i.val (i.val + 2) =
+      {⟨i.val, by have := i.isLt; omega⟩, ⟨i.val + 1, by have := i.isLt; omega⟩} := by
+  ext j
+  simp only [mem_interval, mem_insert, mem_singleton, Fin.ext_iff]
+  omega
 
 /-- The overlap graph of the bonds is the label path. Supporting ALVV, arXiv:1602.08828v2,
 `eq:rho-expansion`, lines 1971–2013. -/

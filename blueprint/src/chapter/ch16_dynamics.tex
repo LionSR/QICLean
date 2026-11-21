@@ -340,6 +340,84 @@ or the local dimensions.
     multiplication by a unitary preserves the operator norm.
 \end{proof}
 
+\begin{definition}[Termwise maps of an interaction]
+    \label{def:dynamics_interaction_map_term}
+    \lean{ManyBody.Interaction.mapTerm, ManyBody.Interaction.mapTerm_term,
+        ManyBody.Interaction.partialHamiltonian_mapTerm,
+        ManyBody.Interaction.hamiltonian_mapTerm}
+    \leanok
+    \uses{def:dynamics_interaction}
+    Let $f_i$ be maps of operators that send operators supported on $S_i$ to operators
+    supported on $S_i$. The termwise map of $\Phi$ by the $f_i$ is the interaction with the
+    terms $f_i(h_i)$ and the supports of $\Phi$; its partial Hamiltonians are the sums of the
+    mapped terms.
+\end{definition}
+
+\begin{definition}[Restriction to a set of indices]
+    \label{def:dynamics_interaction_restrict}
+    \lean{ManyBody.Interaction.restrict, ManyBody.Interaction.restrict_term,
+        ManyBody.Interaction.restrict_term_of_pos, ManyBody.Interaction.restrict_term_of_neg}
+    \leanok
+    \uses{def:dynamics_interaction_map_term}
+    For a property $P$ of the indices, the restriction of $\Phi$ to $P$ is the termwise map
+    that keeps $h_i$ when $P(i)$ holds and replaces it by $0$ otherwise.
+\end{definition}
+
+\begin{lemma}[Restriction to a set of indices]
+    \label{lem:dynamics_interaction_restrict}
+    \lean{ManyBody.Interaction.forall_restrict_term,
+        ManyBody.Interaction.partialHamiltonian_restrict,
+        ManyBody.Interaction.hamiltonian_restrict,
+        ManyBody.Interaction.partialHamiltonian_restrict_of_forall,
+        ManyBody.Interaction.partialHamiltonian_restrict_eq_zero,
+        ManyBody.Interaction.isHermitian_restrict_term,
+        ManyBody.Interaction.restrict_term_nonneg, ManyBody.Interaction.restrict_term_le_one,
+        ManyBody.Interaction.norm_restrict_term_le}
+    \leanok
+    \uses{def:dynamics_interaction_restrict, def:dynamics_partial_hamiltonian}
+    The partial Hamiltonian of the restriction over a finite set $s$ of indices is the
+    partial Hamiltonian of $\Phi$ over the indices of $s$ with the property; for finite $I$
+    the Hamiltonian of the restriction is $\sum_{P(i)}h_i$. It equals the partial
+    Hamiltonian of $\Phi$ on a set of indices with the property and vanishes on a set of
+    indices without it. A term of the restriction is Hermitian, positive, or bounded by the
+    identity when the term of $\Phi$ is, and has at most its norm.
+\end{lemma}
+\begin{proof}\leanok
+    Each term of the restriction is $h_i$ or $0$, and $0$ has all four properties.
+\end{proof}
+
+\begin{definition}[Range projections of positive terms]
+    \label{def:dynamics_interaction_support_proj}
+    \lean{ManyBody.Interaction.supportProj, ManyBody.Interaction.supportProj_term}
+    \leanok
+    \uses{def:dynamics_interaction}
+    For an interaction with positive semidefinite terms, replacing every term $h_i$ by the
+    orthogonal projection onto its range gives an interaction with the same supports, since
+    the range projection is a function of $h_i$ in the functional calculus
+    \cite[Section 6.1]{Arad2016RigorousRG}.
+\end{definition}
+
+\begin{lemma}[Range projections of positive terms]
+    \label{lem:dynamics_interaction_support_proj}
+    \lean{ManyBody.Interaction.isStarProjection_supportProj_term,
+        ManyBody.Interaction.supportProj_term_nonneg,
+        ManyBody.Interaction.term_le_supportProj_term,
+        ManyBody.Interaction.hamiltonian_le_hamiltonian_supportProj,
+        ManyBody.Interaction.hamiltonian_supportProj_mulVec_eq_zero_iff}
+    \leanok
+    \uses{def:dynamics_interaction_support_proj}
+    The new terms are orthogonal projections. A positive term of norm at most one lies
+    below its range projection, so for such terms the Hamiltonian of the range projections
+    lies above $H_\Phi$, and the two Hamiltonians have the same kernel for any positive
+    terms.
+\end{lemma}
+\begin{proof}\leanok
+    A positive contraction has spectrum in $[0,1]$, below the indicator of the nonzero
+    spectrum. A vector is in the kernel of a sum of positive operators exactly when it is
+    in the kernel of every summand, and a positive operator and its range projection have
+    the same kernel.
+\end{proof}
+
 \begin{definition}[Translates of one operator]
     \label{def:dynamics_interaction_translates}
     \lean{ManyBody.Interaction.translates, ManyBody.Interaction.translates_term}
