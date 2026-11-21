@@ -1,0 +1,71 @@
+\section{Filtered operators on the ring}
+\label{sec:ring_dynamics_filters}
+
+Throughout this section $H_N$ is the translation-invariant Hamiltonian on the
+ring of $N\ge2$ sites of a Hermitian two-site operator of norm at most one, and
+$A\in\mathcal A_X$, $B\in\mathcal A_Y$ for nonempty disjoint sets $X,Y$ of sites.
+The estimates are uniform in $N$ and in the dimension of the sites, hold for any
+ground energy, and do not use frustration freedom. They bound commutators of
+filtered operators; a symmetric Gaussian filter by itself does not isolate the
+positive-energy part of an ordinary connected correlation.
+
+\begin{lemma}[Gaussian-filtered commutators on the ring]
+    \label{lem:spt_finite_ring_gaussian_commutator}
+    \lean{ManyBody.Interaction.norm_gaussianFilteredTerm_hamiltonian_translationInvariant_commutator_le,
+        ManyBody.Interaction.norm_gaussianFilteredTerm_hamiltonian_translationInvariant_commutator_le_exp}
+    \leanok
+    \uses{aux:interaction-hamiltonian-lieb-robinson, def:hastings_gaussian_filtered_term}
+    For $q,T,a\geq0$ and $\Delta\in\mathbb R$, let
+    $\widetilde A$ be the Gaussian average of $e^{itH_N}Ae^{-itH_N}$ with
+    variance $\max(q/\Delta^2,0)$. Then
+    \begin{align}
+        \|[\widetilde A,B]\|
+         & \leq 2\|A\|\|B\|\,|X|e^{-a d(X,Y)}
+        \bigl(e^{8e^aT}-1\bigr)
+        +2\|A\|\|B\|e^{-(T\Delta)^2/(2q)}.
+        \label{eq:spt_gaussian_commutator}
+    \end{align}
+    At $q=0$, the final exponential is read as $1$.
+    This is the case of the ring of the Gaussian locality estimate
+    of~\cite[equation \texttt{lbnd}]{Hastings2006Solving}.
+    For $0<\ell\leq d(X,Y)$ and $\Delta>0$, the choice
+    $T=\ell/(16e)$ and $q=T\Delta$ gives
+    \begin{align}
+        \|[\widetilde A,B]\|
+         & \leq 2\|A\|\|B\|\,|X|e^{-\ell/2}
+        +2\|A\|\|B\|e^{-\ell\Delta/(32e)}.
+        \label{eq:spt_gaussian_commutator_exp}
+    \end{align}
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:hastings_filtered_locality}
+    On $|t|\leq T$, monotonicity replaces the time factor in
+    Lemma~\ref{aux:interaction-hamiltonian-lieb-robinson} by $e^{8e^aT}-1$. Lemma~\ref{thm:hastings_filtered_locality}
+    splits the Gaussian integral at $|t|=T$, which gives
+    (\ref{eq:spt_gaussian_commutator}).
+    For the stated parameter choice, $8eT=\ell/2$ and
+    $(T\Delta)^2/(2q)=\ell\Delta/(32e)$. Also
+    $e^{-d(X,Y)}(e^{\ell/2}-1)\leq e^{-\ell/2}$, which yields
+    (\ref{eq:spt_gaussian_commutator_exp}).
+\end{proof}
+
+\begin{lemma}[Regularized negative frequencies on the ring]
+    \label{cor:spt_finite_ring_regularized_frequency_locality}
+    \lean{ManyBody.Interaction.norm_negativeFrequency_hamiltonian_translationInvariant_commutator_le}
+    \leanok
+    \uses{aux:interaction-hamiltonian-lieb-robinson,
+        lem:hk_regularized_frequency_uniform_locality}
+    For $a\ge0$, the bound of Lemma~\ref{lem:hk_regularized_frequency_uniform_locality}
+    holds for the dynamics of $H_N$ with
+    \[
+        C=2\|A\|\|B\|\,|X|e^{-a d(X,Y)},
+        \qquad v=8e^a,
+    \]
+    uniformly in the positive regularizer, with no propagation or correlation estimate
+    assumed.
+\end{lemma}
+\begin{proof}\leanok
+    Lemma~\ref{aux:interaction-hamiltonian-lieb-robinson} supplies the short-time increment
+    $\|[A(t),B]\|\le C(e^{v|t|}-1)$ required by
+    Lemma~\ref{lem:hk_regularized_frequency_uniform_locality}.
+\end{proof}
