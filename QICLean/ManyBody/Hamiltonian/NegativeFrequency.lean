@@ -4,10 +4,10 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Tactic.Abel
-import QICLean.Analysis.GaussianFilter.CauchyTransform
-import QICLean.Analysis.GaussianFilter.CommutatorSeries
-import QICLean.Analysis.GaussianFilter.MatrixIntegral
-import QICLean.Analysis.SpectralFilter.PositiveReplacement
+import QICLean.Analysis.Calculus.CauchyTransform
+import QICLean.Spectral.Filter.Gaussian.CommutatorSeries
+import QICLean.Spectral.Filter.Gaussian.MatrixIntegral
+import QICLean.Spectral.Filter.PositiveReplacement
 import QICLean.ManyBody.Dynamics.HeisenbergEvolution
 import QICLean.ManyBody.Hamiltonian.GaussianFilter
 import QICLean.ManyBody.Hamiltonian.GroundSpace

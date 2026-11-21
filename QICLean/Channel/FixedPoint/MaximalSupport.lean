@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.MaximalSupportBasic
 import QICLean.Channel.FixedPoint.WeightedCornerFixedPoints
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 
 /-!
 # Maximal-support fixed points for Kraus maps

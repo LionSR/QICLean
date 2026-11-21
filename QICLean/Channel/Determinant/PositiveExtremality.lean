@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.MatrixTracePairing
+import QICLean.Algebra.Matrix.MatrixTracePairing
 import QICLean.Channel.Determinant.ChoiBound
 import QICLean.Channel.Determinant.Composition
 import QICLean.Channel.Determinant.HilbertSchmidt

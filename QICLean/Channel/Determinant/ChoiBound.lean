@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.MatrixAux
-import QICLean.Analysis.DeterminantTraceBound
-import QICLean.Channel.ChoiJamiolkowski
+import QICLean.Algebra.Matrix.MatrixAux
+import QICLean.Analysis.TraceInequality.DeterminantTraceBound
+import QICLean.Channel.Choi.Jamiolkowski
 import QICLean.Channel.Determinant.Basic
 
 /-!

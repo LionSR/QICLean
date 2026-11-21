@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.RegionState
 import Mathlib.LinearAlgebra.Matrix.Permutation
-import QICLean.Algebra.PermutationMatrixUnitary
+import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 import QICLean.ManyBody.Sites.RegionExpectation
 
 /-!

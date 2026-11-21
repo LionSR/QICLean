@@ -3,8 +3,8 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.MatrixOperatorSpace
-import QICLean.Algebra.ShiftedTracePowerSpectrum
+import QICLean.Analysis.Norm.MatrixOperatorSpace
+import QICLean.Spectral.Eigenvalue.ShiftedTracePowerSpectrum
 import QICLean.Channel.Peripheral.Spectrum
 import QICLean.Channel.TransferMatrix
 

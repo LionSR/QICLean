@@ -88,13 +88,13 @@ this branch.
 | Area | Module | What is there |
 |---|---|---|
 | Channel definitions | `QICLean/Channel/Basic.lean` | `IsPositiveMap`, `IsCPMap`, `IsChannel`, and the basic theory of density matrices (Wolf Ch. 3 and 6) |
-| Choi representation | `QICLean/Channel/ChoiJamiolkowski.lean` | The Choi matrix and the Choi-Jamiolkowski correspondence (Wolf Prop. 2.1) |
-| Kraus representation | `QICLean/Channel/KrausRepresentation.lean` | The Kraus representation theorem (Wolf Thm. 2.1) |
-| Stinespring dilation | `QICLean/Channel/Stinespring.lean` | The Stinespring dilation theorem (Wolf Thm. 2.2) |
+| Choi representation | `QICLean/Channel/Choi/Jamiolkowski.lean` | The Choi matrix and the Choi-Jamiolkowski correspondence (Wolf Prop. 2.1) |
+| Kraus representation | `QICLean/Channel/KrausMap/KrausRepresentation.lean` | The Kraus representation theorem (Wolf Thm. 2.1) |
+| Stinespring dilation | `QICLean/Channel/Dilation/Stinespring.lean` | The Stinespring dilation theorem (Wolf Thm. 2.2) |
 | Kadison-Schwarz | `QICLean/Channel/Schwarz/KadisonSchwarz.lean` | The Kadison-Schwarz inequality (Wolf Ch. 5, Eq. 5.2) |
 | Fixed points / irreducibility | `QICLean/Channel/Irreducible/Basic.lean` | `IsIrreducibleMap`, unique-fixed-point results; the entry point to the quantum Perron-Frobenius layer (Wolf Ch. 6) |
 | GKSL semigroups | `QICLean/Channel/Semigroup/Basic.lean` | Dynamical semigroups and their generators (Wolf Ch. 7, Prop. 7.1) |
-| Entropy | `QICLean/Entropy/VonNeumann.lean` | Von Neumann entropy |
+| Entropy | `QICLean/Entropy/VonNeumann/Entropy.lean` | Von Neumann entropy |
 | Quantum Wielandt theory | `QICLean/Kraus/Wielandt/` | Span growth, rank-one extraction, rectangular span, and the quantum Wielandt inequality, over finite Kraus families (Wolf Ch. 6; Sanz-Pérez-García-Wolf-Cirac, arXiv:0909.5347) |
 
 The [blueprint](../blueprint/) is the mathematical map of the library: it
@@ -133,12 +133,12 @@ reasonable way to see how the library is put together:
 
 1. `QICLean/Channel/Basic.lean` — the definitions everything else is
    stated over (`IsPositiveMap`, `IsCPMap`, `IsChannel`).
-2. `QICLean/Channel/ChoiJamiolkowski.lean` — the Choi matrix, imports
+2. `QICLean/Channel/Choi/Jamiolkowski.lean` — the Choi matrix, imports
    `Basic.lean`.
-3. `QICLean/Channel/KrausRepresentation.lean` — the Kraus representation
+3. `QICLean/Channel/KrausMap/KrausRepresentation.lean` — the Kraus representation
    theorem, imports `Basic.lean` and uses the Choi-Jamiolkowski
    correspondence to relate `IsCPMap` to Choi positivity.
-4. `QICLean/Channel/Stinespring.lean` — the Stinespring dilation theorem,
+4. `QICLean/Channel/Dilation/Stinespring.lean` — the Stinespring dilation theorem,
    imports both of the above.
 5. `QICLean/Channel/Irreducible/Basic.lean` — irreducible CP maps, the
    starting point for the quantum Perron-Frobenius layer used throughout

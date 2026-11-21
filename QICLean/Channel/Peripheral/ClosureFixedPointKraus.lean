@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Irreducible.FixedPoint
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 import QICLean.Channel.Peripheral.Powers
 import QICLean.Channel.Schwarz.Basic
 import QICLean.Channel.Schwarz.MultiplicativeDomainPowers

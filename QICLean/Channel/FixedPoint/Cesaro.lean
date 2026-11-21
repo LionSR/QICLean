@@ -3,8 +3,8 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.HermitianHelpers
-import QICLean.Algebra.OrthogonalProjection
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
+import QICLean.Algebra.Hermitian.OrthogonalProjection
 import QICLean.Channel.Basic
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import Mathlib.Dynamics.BirkhoffSum.Average

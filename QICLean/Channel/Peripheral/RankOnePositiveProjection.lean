@@ -5,8 +5,8 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.Peripheral.SpectralRadius
 import QICLean.Channel.Schwarz.TwoPositive
-import QICLean.Algebra.HermitianHelpers
-import QICLean.Algebra.MatrixTracePairing
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
+import QICLean.Algebra.Matrix.MatrixTracePairing
 import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 
 /-!

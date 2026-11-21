@@ -9,14 +9,14 @@
     "blueprint/src/chapter/ch12_entropy_gaussian_physical_uniform.tex": "83b1040937e92e751a0ff742f9a5baa55770da846f7ee6292bfac67a9f85439b"
   },
   "source_sha256": {
-    "QICLean/Analysis/GaussianFilter/GroundEstimate.lean": "36c57e508e9bf5e2e5f956f53a60745408e31c253c0d325911bf0605756d86f3",
-    "QICLean/Analysis/GaussianFilter/Kernel.lean": "43f41e9a3b2a191fa4999eb68d906d2851a169d9c95e4f0576ea5df9d1bcdbef",
-    "QICLean/Analysis/GaussianFilter/MatrixIntegral.lean": "9e94093b4b5f3c99729743dd874ce53312edd5868244130bb5f379bff9e42d30",
-    "QICLean/Analysis/GaussianFilter/ParameterChoice.lean": "8a79cfd12d4d826229a2f1f8f72f4e757f13190d588c0c5c3bc805e96e295405",
-    "QICLean/Analysis/GaussianFilter/PhysicalBuffer.lean": "89f985161a5431e76f44551ea2a06ec0eff16222e661296cb6e9926a8b898e53",
-    "QICLean/Analysis/GaussianFilter/PhysicalBufferUniform.lean": "639b6a7c5b37efec460acbd8157f1766653c3efb1ee05867108ba80323d4a0aa",
-    "QICLean/Analysis/GaussianFilter/SpectralGap.lean": "3743ada0931869ae1cf419798ca0d920431404927b1b05f6b9918b7b50f56565",
-    "QICLean/Analysis/GaussianFilter/UniformGroundEstimate.lean": "d7869ffe169f2d9286ce019978f0bd86f95014c3663655f9d1b17bf7d585904a"
+    "QICLean/Spectral/Filter/Gaussian/GroundEstimate.lean": "36c57e508e9bf5e2e5f956f53a60745408e31c253c0d325911bf0605756d86f3",
+    "QICLean/Analysis/Calculus/Kernel.lean": "43f41e9a3b2a191fa4999eb68d906d2851a169d9c95e4f0576ea5df9d1bcdbef",
+    "QICLean/Spectral/Filter/Gaussian/MatrixIntegral.lean": "9e94093b4b5f3c99729743dd874ce53312edd5868244130bb5f379bff9e42d30",
+    "QICLean/Analysis/Parameter/ParameterChoice.lean": "8a79cfd12d4d826229a2f1f8f72f4e757f13190d588c0c5c3bc805e96e295405",
+    "QICLean/Entropy/MutualInformation/PhysicalBuffer.lean": "89f985161a5431e76f44551ea2a06ec0eff16222e661296cb6e9926a8b898e53",
+    "QICLean/Entropy/MutualInformation/PhysicalBufferUniform.lean": "639b6a7c5b37efec460acbd8157f1766653c3efb1ee05867108ba80323d4a0aa",
+    "QICLean/Spectral/Filter/Gaussian/SpectralGap.lean": "3743ada0931869ae1cf419798ca0d920431404927b1b05f6b9918b7b50f56565",
+    "QICLean/Spectral/Filter/Gaussian/UniformGroundEstimate.lean": "d7869ffe169f2d9286ce019978f0bd86f95014c3663655f9d1b17bf7d585904a"
   },
   "support_source_sha256": {
     "blueprint/src/Packages/tenkz_pic.py": "9f4018011ad353065f58b3958c2c629d4bdfe40c7216a9182ff753c0f7d1ba70",

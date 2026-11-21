@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.JordanConditionNumber
-import QICLean.Analysis.KroneckerOperatorNorm
-import QICLean.Analysis.MatrixSqrt
+import QICLean.Spectral.Jordan.ConditionNumber
+import QICLean.Analysis.Norm.KroneckerOperatorNorm
+import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
 import QICLean.Channel.SelfDual
 
 /-!

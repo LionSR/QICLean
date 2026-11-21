@@ -7,7 +7,7 @@
     {
       "name": "source-final",
       "checked_commit": "e68b9e13d7e57f6f4486f97a86a4e3d89b9e38a6",
-      "input": "QICLean/Analysis/SupportInverseSandwich.lean",
+      "input": "QICLean/Analysis/Support/InverseSandwich.lean",
       "input_sha256": "8d1ee6ecfafafe144c595738e24403e5fded8e45cb853e0b722b06f202ddd2dc",
       "command": [
         "lake",
@@ -19,7 +19,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLean/Analysis/SupportInverseSandwich.lean"
+        "QICLean/Analysis/Support/InverseSandwich.lean"
       ],
       "lean_num_threads": 2,
       "exit_code": 0,
@@ -31,7 +31,7 @@
     {
       "name": "consumers-final",
       "checked_commit": "e68b9e13d7e57f6f4486f97a86a4e3d89b9e38a6",
-      "input": "QICLeanTest/SupportInverseSandwich.lean",
+      "input": "QICLeanTest/Analysis/Support/InverseSandwich.lean",
       "input_sha256": "3e316f3f2e6bd96db1206f6d2017deed0c94348e815f5781e2c02b5ab11a314e",
       "command": [
         "lake",
@@ -43,7 +43,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/SupportInverseSandwich.lean"
+        "QICLeanTest/Analysis/Support/InverseSandwich.lean"
       ],
       "lean_num_threads": 2,
       "exit_code": 0,
@@ -55,7 +55,7 @@
     {
       "name": "guards-final",
       "checked_commit": "e68b9e13d7e57f6f4486f97a86a4e3d89b9e38a6",
-      "input": "QICLeanTest/SupportInverseSandwichAxioms.lean",
+      "input": "QICLeanTest/Analysis/Support/InverseSandwichAxioms.lean",
       "input_sha256": "18852bc2d68560a3184a07377cdf2802ec36b51a0f290a8ba9756163c435e4b5",
       "command": [
         "lake",
@@ -67,7 +67,7 @@
         "-DmaxSynthPendingDepth=3",
         "-Dlinter.mathlibStandardSet=true",
         "-DwarningAsError=true",
-        "QICLeanTest/SupportInverseSandwichAxioms.lean"
+        "QICLeanTest/Analysis/Support/InverseSandwichAxioms.lean"
       ],
       "lean_num_threads": 2,
       "exit_code": 0,
@@ -106,7 +106,7 @@
     "command": [
       "lake",
       "build",
-      "QICLean.Analysis.SupportInverseSandwich"
+      "QICLean.Analysis.Support.InverseSandwich"
     ],
     "serialized_with_build_lock": true,
     "lean_num_threads": 2,

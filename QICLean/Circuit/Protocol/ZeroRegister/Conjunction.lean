@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.Permutation
-import QICLean.Algebra.FinCastAddNatAdd
+import QICLean.Algebra.Combinatorics.FinSum
 import QICLean.ManyBody.Sites.Support
 
 /-!

@@ -1,6 +1,6 @@
 import QICLean.ManyBody.Sites
-import QICLean.Entropy.RegionCovariance
-import QICLean.Entropy.RegionEntropy
+import QICLean.ManyBody.Entropy.RegionCovariance
+import QICLean.ManyBody.Entropy.RegionEntropy
 
 /-! Signature regressions for arbitrary bases, empty bases, and legacy rewrite behavior. -/
 

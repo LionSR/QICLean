@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Enforce the QICLean many-body/circuit layers and shrinking import debt.
+"""Enforce the QICLean library layers and shrinking import debt.
 
-Ported from TNLean; see docs/import_structure.md for ownership, allowed imports,
-source revision, scope and commands. Comments are removed before parsing imports;
+Ported from TNLean; see docs/library_layers.md for the single-system layers and
+docs/import_structure.md for ownership, allowed imports, source revision, scope
+and commands. Comments are removed before parsing imports;
 import-only aggregators are expanded recursively. New and stale recorded entries
 fail; --base-ref compares with the merge base, --base-revision with an exact commit.
 """
@@ -37,10 +38,15 @@ IMPORT_COMMAND_RE = re.compile(
 
 
 # First matching prefix owns a module; specific circuit layers precede Circuit.
+# docs/library_layers.md describes the layers below ManyBody and Circuit;
+# docs/import_structure.md describes ManyBody and Circuit.
 LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("sites", ("QICLean.ManyBody.Sites",)),
     ("dynamics", ("QICLean.ManyBody.Dynamics",)),
     ("hamiltonian", ("QICLean.ManyBody.Hamiltonian",)),
+    ("manybody_entropy", ("QICLean.ManyBody.Entropy",)),
+    ("subspace", ("QICLean.ManyBody.Subspace",)),
+    ("replica", ("QICLean.ManyBody.Replica",)),
     ("gate", ("QICLean.Circuit.Gate",)),
     ("party", ("QICLean.Circuit.Party",)),
     ("algorithm", ("QICLean.Circuit.Algorithm",)),
@@ -49,44 +55,63 @@ LAYERS: tuple[tuple[str, tuple[str, ...]], ...] = (
     ("protocol", ("QICLean.Circuit.Protocol",)),
     ("simulation", ("QICLean.Circuit.Simulation",)),
     ("circuit", ("QICLean.Circuit",)),
-    ("matrix", ("QICLean.Algebra", "QICLean.Analysis", "QICLean.Topology")),
-    ("channel", ("QICLean.Channel", "QICLean.Kraus")),
+    ("algebra", ("QICLean.Algebra",)),
+    ("analysis", ("QICLean.Analysis",)),
+    ("spectral", ("QICLean.Spectral",)),
+    ("channel", ("QICLean.Channel",)),
+    ("kraus", ("QICLean.Kraus",)),
+    ("entropy", ("QICLean.Entropy",)),
+    ("probability", ("QICLean.Probability",)),
+    ("representation", ("QICLean.Representation",)),
 )
 
-# Existing single-system directories are classified as targets, but their
-# internal cycles are governed by MUTUAL_DIRECTORIES, not a new layer ordering.
+# The layers designed for the many-body and circuit libraries, where no
+# forwarding declaration is admitted (see check_pass_through_declarations.py).
+# The many-body layers of regional entropy, subspaces and replicas hold modules
+# moved from the single-system directories and keep their recorded forwarders.
 NEW_LAYERS = frozenset({
     "sites", "dynamics", "hamiltonian", "gate", "circuit", "party", "algorithm", "model",
     "compile", "protocol", "simulation"
 })
+# Matrices of one system, maps between matrix algebras, and the systems of one or two
+# parties that the many-body layers build on.
+MATRIX = frozenset({"algebra", "analysis", "spectral"})
+CHANNEL = frozenset({"channel", "kraus"})
+SINGLE_SYSTEM = MATRIX | CHANNEL | {"entropy"}
 ALLOWED: dict[str, frozenset[str]] = {
-    "sites": frozenset({"matrix", "channel"}),
-    "dynamics": frozenset({"matrix", "channel", "sites"}),
-    "hamiltonian": frozenset({"matrix", "channel", "sites", "dynamics"}),
-    "gate": frozenset({"matrix"}),
-    "circuit": frozenset({"matrix", "channel", "sites", "gate"}),
-    "party": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
-    "algorithm": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
-    "model": frozenset({"matrix", "channel", "sites", "gate", "circuit"}),
-    "compile": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model"}),
-    "protocol": frozenset({"matrix", "channel", "sites", "gate", "circuit", "model", "compile"}),
+    # The single-system layers form a chain.
+    "algebra": frozenset(),
+    "analysis": frozenset({"algebra"}),
+    "spectral": frozenset({"algebra", "analysis"}),
+    "channel": MATRIX,
+    "kraus": MATRIX | {"channel"},
+    "entropy": MATRIX | CHANNEL,
+    "probability": SINGLE_SYSTEM,
+    "representation": SINGLE_SYSTEM | {"probability"},
+    "sites": SINGLE_SYSTEM,
+    "dynamics": SINGLE_SYSTEM | {"sites"},
+    "hamiltonian": SINGLE_SYSTEM | {"sites", "dynamics"},
+    "manybody_entropy": SINGLE_SYSTEM | {"sites", "dynamics", "hamiltonian"},
+    # Subspaces and replicas of a many-body system are siblings.
+    "subspace": SINGLE_SYSTEM | {
+        "probability", "sites", "dynamics", "hamiltonian", "manybody_entropy"
+    },
+    "replica": SINGLE_SYSTEM | {
+        "probability", "representation", "sites", "dynamics", "hamiltonian", "manybody_entropy"
+    },
+    "gate": MATRIX,
+    "circuit": MATRIX | CHANNEL | {"sites", "gate"},
+    "party": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
+    "algorithm": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
+    "model": MATRIX | CHANNEL | {"sites", "gate", "circuit"},
+    "compile": MATRIX | CHANNEL | {"sites", "gate", "circuit", "model"},
+    "protocol": MATRIX | CHANNEL | {"sites", "gate", "circuit", "model", "compile"},
     # QICLean #1062: simulation consumes both circuits and many-body evolution.
-    "simulation": frozenset({
-        "matrix", "channel", "sites", "gate", "circuit", "dynamics", "hamiltonian"
-    }),
+    "simulation": MATRIX | CHANNEL | {"sites", "gate", "circuit", "dynamics", "hamiltonian"},
 }
 DEBT: frozenset[str] = frozenset({})
 DEEP_ROOTS: frozenset[str] = frozenset({"ManyBody", "Circuit"})
-MUTUAL_DIRECTORIES: frozenset[str] = frozenset({
-    "Algebra <-> Channel",
-    "Analysis <-> Channel",
-    "Analysis <-> Entropy",
-    "Analysis <-> Probability",
-    "Analysis <-> Representation",
-    "Channel <-> Entropy",
-    "Channel <-> Kraus",
-    "Entropy <-> Representation",
-})
+MUTUAL_DIRECTORIES: frozenset[str] = frozenset({})
 EXAMPLES_IMPORTS: frozenset[str] = frozenset({})
 
 
@@ -163,13 +188,14 @@ def resolved_imports(sources: Mapping[str, str]) -> dict[str, set[str]]:
 def violations(sources: Mapping[str, str]) -> set[str]:
     """Return every ``"A -> B"`` whose import points outside the allowed layers.
 
-    ``B`` is a module with declarations: an imported aggregator is replaced by
-    the modules it re-exports, through nested aggregators.
+    ``A`` is any module that a layer owns. ``B`` is a module with declarations:
+    an imported aggregator is replaced by the modules it re-exports, through
+    nested aggregators.
     """
     found: set[str] = set()
     for module, targets in resolved_imports(sources).items():
         layer = layer_of(module)
-        if layer not in NEW_LAYERS:
+        if layer is None:
             continue
         for target_module in targets:
             target = layer_of(target_module)

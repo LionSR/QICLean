@@ -3,8 +3,8 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.ComplexPhasePositivity
-import QICLean.Channel.Primitive
+import QICLean.Analysis.Order.ComplexPhasePositivity
+import QICLean.Channel.Peripheral.Primitive
 import Mathlib.LinearAlgebra.Eigenspace.Basic
 import Mathlib.LinearAlgebra.Eigenspace.Minpoly
 import Mathlib.RingTheory.RootsOfUnity.Basic

@@ -7,8 +7,8 @@ import QICLean.Channel.FixedPoint.Algebra
 import QICLean.Channel.FixedPoint.CornerAlgebra
 import QICLean.Channel.FixedPoint.StationaryProjection
 import QICLean.Channel.FixedPoint.SupportInvariance
-import QICLean.Channel.KrausCornerCompression
-import QICLean.Analysis.SupportCompression
+import QICLean.Channel.KrausMap.KrausCornerCompression
+import QICLean.Analysis.Support.Compression
 
 /-!
 # Corner-restricted fixed points for finite Kraus maps

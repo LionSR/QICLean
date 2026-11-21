@@ -34,7 +34,7 @@ No running-time claim is made.
 ## Verification
 
 The branch based on QICLean `a2f54b6f` passes the ordinary Lake build of
-`QICLean.Analysis.DoubledSystemGap` after fetching the pinned prebuilt
+`QICLean.Spectral.Gap.DoubledSystemGap` after fetching the pinned prebuilt
 Mathlib artifacts. The module also passes separate elaboration with both
 automatic implicit options disabled, warnings treated as errors, the
 standard Mathlib linters and the package synthesis-depth limit.

@@ -8,7 +8,7 @@ no comments; no open pull request claimed this theorem. Work is isolated on
 
 ## Result
 
-`QICLean/Channel/WolfTheorem67.lean` proves
+`QICLean/Channel/Peripheral/PrimitivePositiveMap.lean` proves
 `WolfTheorem67.wolf_theorem_6_7_tfae` for an arbitrary complex-linear positive
 trace-preserving map on `M_D(ℂ)`, with `D ≥ 1`. It assumes neither complete
 positivity nor a Schwarz inequality. All four source conditions occur in its
@@ -44,7 +44,7 @@ object files from cached generated C artifacts.
 
 Passed:
 
-- `lake build QICLean.Channel.WolfTheorem67`.
+- `lake build QICLean.Channel.Peripheral.PrimitivePositiveMap`.
 - The standard `scripts/ci_lean_checks.py` `run_batch` runner, explicitly
   targeting the new production module and its two test files: three files,
   zero failures. This uses `-j1`, disabled automatic implicits, the standard
@@ -112,5 +112,5 @@ It also imports and applies the unchanged Wolf Theorem 6.8 alongside Theorem
 6.7, and checks that the zero-dimensional domain would make strict positivity
 vacuous while admitting no faithful limit state. The scope fixture passes the
 same strict compiler and standard-linter settings as the original checks.
-The existing `QICLean.Channel.WolfTheorem68` target also built successfully
+The existing `QICLean.Kraus.Wielandt.PrimitiveCriterion` target also built successfully
 with its unchanged statements; no Mathlib Lean source module was rebuilt.

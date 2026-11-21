@@ -8,17 +8,10 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Channel.KoashiImoto
 
-import QICLean.Channel.KoashiImoto.AmbientMarkovBipartiteBlockForm
 import QICLean.Channel.KoashiImoto.CommonInvariantAlgebra
 import QICLean.Channel.KoashiImoto.FamilyFixedPointBlockForm
 import QICLean.Channel.KoashiImoto.FiniteRealization
-import QICLean.Channel.KoashiImoto.InvariantConditionalBlockForm
-import QICLean.Channel.KoashiImoto.InvariantConditionalFamily
 import QICLean.Channel.KoashiImoto.JointSupport
-import QICLean.Channel.KoashiImoto.MarkovBipartiteBlockForm
-import QICLean.Channel.KoashiImoto.MarkovDilation
-import QICLean.Channel.KoashiImoto.MarkovDilationBlockForm
-import QICLean.Channel.KoashiImoto.MarkovTripartiteBlockForm
 import QICLean.Channel.KoashiImoto.MeanErgodicProjection
 import QICLean.Channel.KoashiImoto.NormalizedFamilyBlockForm
 import QICLean.Channel.KoashiImoto.PooledKrausFamily

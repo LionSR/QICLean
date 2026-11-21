@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.LorentzNormalForm.QubitNormalForm
-import QICLean.Channel.PositiveExamples
+import QICLean.Channel.Positive.Examples
 import QICLean.Channel.Semigroup.CPClosure
 
 /-!

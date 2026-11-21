@@ -1,6 +1,6 @@
 # Scalar-shift derivatives of positive matrix powers
 
-`QICLean/Analysis/ShiftedPowerDerivative.lean` supplies the finite-dimensional
+`QICLean/Spectral/Filter/ShiftedPowerDerivative.lean` supplies the finite-dimensional
 scalar-shift calculation supporting
 [OpenAI's September 24, 2026 PEPS manuscript, lines 425–451](https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Polynomial-PEPS-approximation-of-gapped-square-grid-ground-states-September-24-2026/build/sections/03-patches.tex#L425-L451).
 The immutable source revision is `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.

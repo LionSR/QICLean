@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.JordanBlockDirectSum
+import QICLean.Spectral.Jordan.BlockDirectSum
 
 /-!
 Audit the finite genuine Jordan-sum milestone and its degenerate source

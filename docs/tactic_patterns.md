@@ -376,7 +376,7 @@ in a regression file are not additional mathematical consumers.
   `List.prod_hom_rel`, the same rectangular associativity calculation, and
   `List.map_ofFn`.
 - **Result:** `Matrix.listProd_ofFn_intertwine` in
-  `QICLean/Algebra/MatrixProductIntertwine.lean`, over an arbitrary semiring
+  `QICLean/Algebra/Matrix/OrderedMatrixAction.lean`, over an arbitrary semiring
   and arbitrary finite row and column index types.
 - **Consumers:** `ReplicaSymmetricMeanTreeProduct`,
   `BellPinnedCompressedPowers`, and `ReplicaTransport/RootCompression`.
@@ -397,7 +397,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   rewrite the invariant projector as `labelProj φ l₀`, and assemble
   `IsStarProjection` from `labelProj_mul_self` and `isHermitian_labelProj`.
 - **Result:** `PermutationRepresentation.isStarProjection_symProj` in
-  `QICLean/Representation/TrivialLabel.lean`, for every finite group and
+  `QICLean/Representation/Permutation/TrivialLabel.lean`, for every finite group and
   permutation action.
 - **Consumers:** `ReplicaBadCopyExponential`, `GroupedLabelSymmetricSupport`,
   `ReplicaLowDefectProjection`, `RegionalLowDefectProjection`,
@@ -413,7 +413,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Pattern:** Identify the matrix of a continuous linear map in finite
   orthonormal input and output bases, then transfer its operator-norm bound.
 - **Result:** `ContinuousLinearMap.norm_toMatrix_orthonormal` in
-  `QICLean/Analysis/OrthonormalMatrixNorm.lean` gives equality of norms.
+  `QICLean/Analysis/Norm/KroneckerOperatorNorm.lean` gives equality of norms.
   It reuses Mathlib's Euclidean matrix norm and invariance under composition
   with linear isometric equivalences. Rectangular matrices and empty bases
   require no separate cases.
@@ -431,10 +431,10 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the observables as functions of this joint resolution, and prove matrix
   order from scalar inequalities on its nonzero components.
 - **Seen:** `TensorPower.copyPerm_groupedCopies_labelEntropy_bounds` in
-  `QICLean/Representation/GoodAuxiliaryLabelEntropy.lean`, as well as `TensorPower.groupedCopies_labelEntropy_bounds` in
-  `QICLean/Representation/GroupedLabelEntropy.lean` and
+  `QICLean/Representation/YoungSubgroup/GoodAuxiliaryLabelEntropy.lean`, as well as `TensorPower.groupedCopies_labelEntropy_bounds` in
+  `QICLean/Representation/YoungSubgroup/GroupedLabelEntropy.lean` and
   `PermutationRepresentation.supportProj_mul_labelEntropy_mul_supportProj_le`
-  in `QICLean/Representation/SchurSurprisal.lean`.
+  in `QICLean/Representation/Permutation/SchurSurprisal.lean`.
 - **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.prod` and
   `posSemidef_hom_of_ne_zero`. The coordinate functions of a product
   resolution are recovered by summing the other factor to the identity;
@@ -464,7 +464,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   covariance, and mean-tree derivative and leaf-map covariance.
 - **Abstraction:** Reuse `Matrix.IsHermitian.conjTranspose_intertwine` and
   `Matrix.IsHermitian.sandwich_intertwine` from
-  `QICLean/Algebra/MatrixSandwichIntertwine.lean`. Compression identities use
+  `QICLean/Algebra/Hermitian/MatrixSandwichIntertwine.lean`. Compression identities use
   the same embedding lemmas with `Jᴴ`.
 - **Caveats:** These are algebraic identities for rectangular intertwiners.
   Norm preservation requires an isometry; positivity of a compressed operator
@@ -626,7 +626,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   family and zero, and increase the positive-base power before taking its
   reciprocal in an operator lower bound.
 - **Seen:** The rough and sharp theorems in
-  `QICLean/Analysis/RegionalLowDefectLowerPin.lean` have two occurrences in
+  `QICLean/ManyBody/Replica/LowDefect/RegionalLowDefectLowerPin.lean` have two occurrences in
   one file. The matrix-order transport itself is already shared through
   `regional_lower_pin_pullback`.
 - **Abstraction:** The current proofs use `Finset.le_sup'`,
@@ -693,7 +693,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   then needs evaluation at both matrix indices before an existing coordinate
   identity matches.
 - **Seen:** The singleton exponential transport in
-  `QICLean/Analysis/ReplicaGoodConfigurationSingletonMoment.lean`, both for the
+  `QICLean/ManyBody/Replica/Configuration/GoodConfigurationSingletonMoment.lean`, both for the
   five-factor coordinates and for the physical singleton coordinates.
 - **Abstraction:** Reuse Mathlib's `Pi.smul_apply`, followed by the existing
   `Matrix.reindex_exp` and `Matrix.exp_kronecker_one` identities. The group
@@ -711,7 +711,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the projector across that pairing, then use idempotence, self-adjointness
   and the Euclidean norm identity.
 - **Seen:** The private `norm_sq_mulVec_eq_re_trace` calculation in
-  `QICLean/Entropy/PureTensorPower.lean`, and the local `hmass` calculation
+  `QICLean/Channel/PartialTrace/PureTensorPower.lean`, and the local `hmass` calculation
   in `TensorPower.exists_labelProj_norm_mass_ge` on the separate
   `SchurSectorMass` contribution. These are two mathematical consumers.
 - **Abstraction:** The actual product marginal and projected-mass identities
@@ -727,7 +727,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   instance, use `Commute.invOf_right` or `commute_invOf`, and rewrite
   `Matrix.invOf_eq_nonsing_inv`.
 - **Seen:** Three inverse-commutation steps in
-  `QICLean/Analysis/PatchRegulator.lean`; one file.
+  `QICLean/Analysis/TraceInequality/PatchRegulator.lean`; one file.
 - **Abstraction:** The existing Mathlib commutation lemmas suffice. Retain
   this record until independent occurrences in another file justify a
   matrix-specific lemma; no new tactic is introduced.
@@ -737,12 +737,12 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Pattern:** Rewrite matrices as Hermitian functional calculi, combine
   products with `← hA.cfc_mul`, and reduce the equality to a pointwise
   threshold split followed by scalar simplification.
-- **Seen:** In `QICLean/Analysis/ShiftedDensityTruncation.lean`,
+- **Seen:** In `QICLean/Spectral/Projection/ShiftedDensityTruncation.lean`,
   `IsHermitian.isStarProjection_spectralProjectionGE`,
   `PosSemidef.commute_add_smul_one_rpow_spectralProjectionGE`,
   `PosSemidef.shiftedPowerHead_eq_cfc`, and
   `PosSemidef.shiftedPowerHead_mul_shiftedPowerTail` are representative
-  occurrences. In `QICLean/Analysis/SpectralCutoffMass.lean`,
+  occurrences. In `QICLean/Spectral/Projection/ShiftedDensityTruncation.lean`,
   `PosSemidef.smul_one_sub_spectralCutoff_le` uses the corresponding
   pointwise order reduction; `PosSemidef.spectralCutoff_mass_ge` then takes
   its quadratic form. Their scalar conclusions differ.
@@ -778,7 +778,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   coordinates. Nonvanishing on the whole space forces nonvanishing on the
   moving coordinates.
 - **Seen:** The private entry proof in
-  `QICLean/Representation/BadCopyLabelDimension.lean`; one mathematical
+  `QICLean/Representation/YoungSubgroup/BadCopyLabelDimension.lean`; one mathematical
   consumer in one file.
 - **Abstraction:** Reuse the existing permutation-entry and group-algebra
   formulas. The ensuing dimension estimate uses the existing
@@ -795,7 +795,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   matrix order inequality, then use Hermiticity, idempotence and the
   actual central-observable eigenvalue identity to simplify the result.
 - **Seen:** `TensorPower.copyPerm_groupedGood_labelEntropy_compression` in
-  `QICLean/Representation/GoodAuxiliaryLabelCompression.lean`; one new
+  `QICLean/Representation/YoungSubgroup/GoodAuxiliaryLabelCompression.lean`; one new
   mathematical consumer. The existing support-compression arguments in
   `SchurSurprisal.lean` also use the same Mathlib conjugation theorem.
 - **Abstraction:** Reuse the Mathlib conjugation theorem and the existing
@@ -812,7 +812,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   the inverse copy permutation; convert the resulting simultaneous row and
   column invariance into matrix commutation.
 - **Seen:** The replica sum and constant tensor power in
-  `QICLean/Analysis/ReplicaPermutationCovariance.lean`; two consumers in one
+  `QICLean/Representation/Replica/PermutationCovariance.lean`; two consumers in one
   file.
 - **Abstraction:** The private `commute_copyPerm_of_invariant_entries` shares
   the matrix permutation calculation. The finite reindexing uses existing
@@ -843,7 +843,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   identities on all spectator registers, then cancel the Hermitian label
   projection on both sides of its quadratic form.
 - **Seen:** `Matrix.replicaExcitationComponent_goodAuxiliary_labelEntropy_lower`
-  in `QICLean/Analysis/ReplicaGoodAuxiliaryLabelBound.lean`; one mathematical
+  in `QICLean/Representation/Replica/GoodAuxiliaryLabelBound.lean`; one mathematical
   consumer.
 - **Abstraction:** Reuse `PosSemidef.kronecker`, `kroneckerBilinear`, and
   the actual excitation fixed-vector theorem. The local linear map is the
@@ -892,7 +892,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   and completeness to obtain a nonempty set of total mass one, and apply
   `Finset.exists_le_of_sum_le` with a bound on the number of projections.
 - **Seen:** `TensorPower.exists_labelProj_trace_mass_ge` in
-  `QICLean/Representation/SchurSectorMass.lean`; one mathematical consumer.
+  `QICLean/Representation/SchurWeyl/SchurSectorMass.lean`; one mathematical consumer.
 - **Abstraction:** Reuse the existing finite-sum comparison theorem. The
   projected-vector result applies this trace result to the actual reduced
   state and uses the trace-pairing and Hermitian-idempotent norm identities.
@@ -906,7 +906,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   joint orthogonal resolution, multiply using its algebra homomorphism, and
   take the trace as a finite weighted sum.
 - **Seen:** The surprisal tail, label-window mass and exponential remainder
-  in `QICLean/Representation/HighLabelWindow.lean` use the private
+  in `QICLean/Representation/SchurWeyl/HighLabelWindow.lean` use the private
   `re_trace_mul_joint_hom` lemma; the existing moment calculation in
   `SchurSurprisal.lean` has the corresponding finite trace expansion.
 - **Abstraction:** A single private mathematical lemma handles all three
@@ -923,7 +923,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   distribute the product over multiplication; for squared norms, use
   `norm_prod` and `Finset.prod_pow`.
 - **Seen:** The contraction recovery and norm equality in
-  `QICLean/Entropy/ViableSampling/ReplicaGoodCopyFactorization.lean`; one file.
+  `QICLean/ManyBody/Replica/Configuration/GoodCopyFactorization.lean`; one file.
 - **Abstraction:** Existing finite sum and product identities suffice. No
   new public tensor-vector definition or automation is introduced.
 - **Caveats:** Retain the canonical coordinate equivalence and every
@@ -949,7 +949,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   pair, rewrite its coordinates as a scalar times the equality indicator,
   and contract one coordinate sum.
 - **Seen:** The two private coordinate identities in
-  `QICLean/Representation/UniformBellLabel.lean`; two occurrences in one file.
+  `QICLean/Representation/Bell/UniformBellLabel.lean`; two occurrences in one file.
 - **Abstraction:** The public projected-norm and nonzero-occurrence theorems
   supply the mathematical consequences. A separate tactic is not warranted
   by two coordinate contractions.
@@ -963,12 +963,12 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   distributive law for two finite sums. Factor the physical and auxiliary
   actions before using their individual fixed-vector equations.
 - **Seen:** The two auxiliary-label equations and simultaneous symmetry in
-  `QICLean/Representation/ReplicaPrevector.lean` share the private generic
+  `QICLean/Representation/Bell/ReplicaPrevector.lean` share the private generic
   `kronecker_mulVec_product` lemma. The public supplied-label theorem
   reuses this identity with explicit vector arguments and lifts the two
   auxiliary fixed-vector equalities through the physical product factor.
   The mean-energy calculation in
-  `QICLean/Analysis/ReplicaDefect.lean` has a prior identity-spectator variant.
+  `QICLean/Representation/Replica/Defect.lean` has a prior identity-spectator variant.
 - **Abstraction:** The new calculation is written once and reused for all
   three actions. The norm calculation reuses the existing public quadratic
   form factorization. Reconsider a common algebraic action lemma when a
@@ -982,7 +982,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Pattern:** Keep the physical coefficient fixed while an operator acts
   on the selected auxiliary factor, and identify the result after regrouping
   the physical and auxiliary coordinates.
-- **Seen:** `QICLean/Representation/SchmidtBellPrevector.lean` has one new
+- **Seen:** `QICLean/Representation/Bell/SchmidtBellPrevector.lean` has one new
   consumer. The earlier product-action and identity-spectator calculations
   occur in `ReplicaPrevector.lean` and `ReplicaDefect.lean`.
 - **Abstraction:** The new calculation reuses Mathlib's
@@ -1007,7 +1007,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   bijection, obtain the central projectors by the group-algebra sum, and
   compare the actual product traces using finite-sum reindexing.
 - **Seen:** The three copy actions and joint trace in
-  `QICLean/Representation/PairMergeMoment.lean` share one private transport
+  `QICLean/Representation/TensorPower/PairMergeMoment.lean` share one private transport
   calculation. The matrix products reuse `Matrix.submatrix_mul_equiv`.
 - **Abstraction:** Keep the common permutation/projector and trace calculations
   as private lemmas. No new tactic is justified by one mathematical module.
@@ -1041,7 +1041,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   invariance of the actual product density, then partial-trace preservation
   and the unit one-copy trace to recover the component's squared norm.
 - **Seen:** `Matrix.replicaGoodRegionalAuxiliaryMarginal_exp_mergeDeficit_le`
-  in `QICLean/Analysis/ReplicaComponentMergeMoment.lean`; one mathematical
+  in `QICLean/ManyBody/Replica/Configuration/ComponentMergeMoment.lean`; one mathematical
   consumer. The two separate actions use different factor invariances.
 - **Abstraction:** Reuse the existing permutation entries, tensor-product
   multiplication, partial-trace preservation, and paired homogeneous moment
@@ -1062,7 +1062,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
 - **Pattern:** Move a scalar through a Kronecker product, exponentiate the
   actual identity extension, and pair with a common matrix by partial trace.
 - **Seen:** The common-space exponential and two complex trace equalities in
-  `QICLean/Representation/PairMergeDeficit.lean`; their generic calculations
+  `QICLean/Representation/TensorPower/PairMergeDeficit.lean`; their generic calculations
   already live in `KroneckerExponential.lean`, `TraceDistance.lean` and
   `Channel/PartialTrace.lean`.
 - **Abstraction:** Use the existing exponential and trace-pairing theorems
@@ -1076,7 +1076,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   product entries, apply `submatrix_mulVec_equiv` to the actual component, and
   transport its partial trace using `partialTraceRight_submatrix_prod_equiv`.
 - **Seen:** The exchanged common-density proof in
-  `QICLean/Analysis/ReplicaGoodPairMarginal.lean`; one mathematical consumer.
+  `QICLean/ManyBody/Replica/Configuration/GoodPairMarginal.lean`; one mathematical consumer.
 - **Abstraction:** Private coordinate-covariance lemmas share the operator and
   vector calculation. Finite-sum reorderings use an explicit coordinate
   equivalence and `Equiv.sum_comp`, rather than a looping sum-commutation simp
@@ -1093,7 +1093,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   transport the closed nonnegative indicator through the existing Hermitian
   functional-calculus intertwiner, and use the nonnegative spectrum of B.
 - **Seen:** `Matrix.spectralProjectionGE_zero_mul_of_intertwine` in
-  `QICLean/Analysis/SpectralProjectionIntertwiner.lean`; one mathematical
+  `QICLean/Spectral/Projection/ProjectionIntertwiner.lean`; one mathematical
   application is being developed for complementary physical labels.
 - **Abstraction:** Reuse `ConditionalMovement.QuantumSSA.cfc_intertwine`.
   The new projection theorem names the resulting spectral fact; no duplicate
@@ -1115,7 +1115,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   enumeration, apply its proved product formula, and use a fixed tensor vector
   to show support in the physical symmetric subspace.
 - **Seen:** `Matrix.symProj_mul_replicaExcitationComponent_goodAuxiliary_density`
-  in `QICLean/Analysis/ReplicaGoodPhysicalSupport.lean`; one consumer.
+  in `QICLean/ManyBody/Replica/Configuration/GoodPhysicalSupport.lean`; one consumer.
 - **Abstraction:** Reuse `partialTraceRight_submatrix_prod_equiv`,
   `Equiv.prod_comp`, `symProj_mulVec_of_mem`, `mul_vecMulVec` and
   `mul_kronecker_mul`. No new tactic or parallel marginal is introduced.
@@ -1131,7 +1131,7 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   nested/disjoint projector commutation to real label observables by finite
   sums and scalar multiplication.
 - **Seen:** The private complementary-label and central-observable proofs in
-  `QICLean/Representation/CompatiblePhysicalLabel.lean`, using the existing
+  `QICLean/Representation/TensorPower/CompatiblePhysicalLabel.lean`, using the existing
   generic identities in `SchurLabelCommutation.lean` and finite-sum closure
   used in `LabelProjectors.lean`.
 - **Abstraction:** Reuse the generic central-coefficient identity and
@@ -1219,10 +1219,10 @@ rank/trace comparison, range-of-composition, and scalar real-power bounds.
   maps before simplifying a transported representation.
 - **Seen:** The addition and scalar branches of
   `TensorPower.fiveFactorCopiesEquiv_auxiliary_groupAlgebraRep` in
-  `QICLean/Analysis/FiveFactorAuxiliaryCoordinates.lean`, and the exponential
+  `QICLean/ManyBody/Replica/Configuration/FiveFactorAuxiliaryCoordinates.lean`, and the exponential
   transport in the separate `GroupedConfigurationTransport` contribution.
   `Matrix.PosDef.lower_pin_of_reindexed_inverse_compression` in
-  `QICLean/Analysis/IsometricLowerPin.lean` also uses subtraction and scalar
+  `QICLean/Analysis/Order/InverseCompressionLowerPin.lean` also uses subtraction and scalar
   reindexing when transporting a positive matrix difference.
 - **Abstraction:** Reuse Mathlib's `Matrix.submatrix_add`,
   `Matrix.submatrix_sub` and `Matrix.submatrix_smul`, followed by the
@@ -1306,7 +1306,7 @@ projector, the defect cutoff, and the original auxiliary labels.
   orthogonal resolution, then apply scalar functional calculus to the two
   assigned values.
 - **Seen:** `Matrix.cfc_affine_of_isSelfAdjoint_isIdempotentElem` in
-  `QICLean/Analysis/ProjectionCalculus.lean`.
+  `QICLean/Analysis/FunctionalCalculus/OrthogonalResolutionCfc.lean`.
 - **Abstraction:** Reuse `Matrix.IsOrthogonalResolution.cfc_hom`; no new tactic
   or separate continuity argument is required.
 - **Caveats:** Scalar values may coincide, and projection ranges may be zero.
@@ -1360,7 +1360,7 @@ projector, the defect cutoff, and the original auxiliary labels.
   prefix, and a full suffix as the corresponding list drop.
 - **Seen:** The consecutive-difference calculation and both endpoint
   calculations in `PoissonWord.foldl_sub_partitionWords_fst_eq_sum`, in
-  `QICLean/Probability/PoissonWordTelescope.lean`; three occurrences in one file.
+  `QICLean/Probability/PoissonWord/PoissonWordTelescope.lean`; three occurrences in one file.
 - **Abstraction:** Reuse `ofFn_partitionWords_fst`, `ofFn_take`, and `ofFn_drop`
   with `simp only`. A further lemma or simp set is deferred until the pattern
   also occurs in a second file.
@@ -1673,8 +1673,8 @@ use should promote this conversion to a shared eigenvalue-sum lemma.
 ### Equality decisions in finite coordinates — existing lemma (2026-10-23)
 
 - **Occurrences:** The one-dimensional and two-qubit applications in
-  `QICLeanTest/AGSPFavorableEntropyAxioms.lean`, and both configuration factors
-  in `QICLean/Entropy/AGSPRegionalEntropy.lean`.
+  `QICLeanTest/Entropy/VonNeumann/AGSPFavorableEntropyAxioms.lean`, and both configuration factors
+  in `QICLean/ManyBody/Entropy/AGSPRegionalEntropy.lean`.
 - **Reuse:** `Subsingleton.elim` identifies a classically chosen `DecidableEq`
   value with the available value before applying a theorem whose matrix
   expressions contain those decisions.
@@ -2402,8 +2402,8 @@ unitary norm arguments.
   `Unitary.conjStarAlgAut` inverse law and `conjStarAlgAut_symm_apply`;
   its private recovery calculation is removed.
 - **Remaining candidates:** Direct matrix calculations occur in
-  `QICLean/Algebra/CornerCompression.lean` (`hcollapse`) and
-  `QICLean/Channel/KrausStateEffectCoupling.lean` (`hPrepared`).
+  `QICLean/Algebra/Hermitian/CornerCompression.lean` (`hcollapse`) and
+  `QICLean/Spectral/Eigenvalue/KrausStateEffectCoupling.lean` (`hPrepared`).
   These two legacy calculations stay below the promotion threshold.
   Prefer the existing automorphism API for another unitary caller.
 

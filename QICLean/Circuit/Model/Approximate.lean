@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
-import QICLean.Analysis.RectangularTraceNormAlgebra
-import QICLean.Channel.KrausFamilyTraceNorm
+import QICLean.Analysis.TraceNorm.RectangularTraceNormAlgebra
+import QICLean.Channel.KrausMap.KrausFamilyTraceNorm
 import QICLean.Circuit.Model.Protocol
 
 /-!

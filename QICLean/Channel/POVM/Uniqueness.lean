@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import Mathlib.LinearAlgebra.UnitaryGroup
-import QICLean.Algebra.MatrixGramUnitary
-import QICLean.Channel.POVM
+import QICLean.Algebra.Unitary.MatrixGramUnitary
+import QICLean.Channel.POVM.Basic
 
 /-!
 # Uniqueness properties of concrete Naimark dilations

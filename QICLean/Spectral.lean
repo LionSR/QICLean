@@ -8,6 +8,11 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Spectral
 
-import QICLean.Spectral.GaugeConstruction
-import QICLean.Spectral.TransferOperatorGapNormalized
-import QICLean.Spectral.TransferOperatorGapRectNormalized
+import QICLean.Spectral.Eigenvalue
+import QICLean.Spectral.Filter
+import QICLean.Spectral.Gap
+import QICLean.Spectral.Jordan
+import QICLean.Spectral.LowEnergy
+import QICLean.Spectral.Perturbation
+import QICLean.Spectral.Projection
+import QICLean.Spectral.Radius

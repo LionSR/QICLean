@@ -3,10 +3,10 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.HermitianHelpers
-import QICLean.Algebra.MatrixAux
-import QICLean.Analysis.EnergyTruncation
-import QICLean.Analysis.GroundEnergyBounds
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
+import QICLean.Algebra.Matrix.MatrixAux
+import QICLean.Spectral.Filter.EnergyTruncation
+import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
 import QICLean.ManyBody.Sites.Placement
 

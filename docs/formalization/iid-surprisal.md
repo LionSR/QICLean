@@ -2,7 +2,7 @@
 
 For a fixed density matrix ρ, let S be its von Neumann entropy and let V be
 the variance of −log p under its eigenvalue distribution p. The module
-`QICLean/Entropy/IidSurprisal.lean` proves that the actual spectral mass of
+`QICLean/Entropy/Typical/IidSurprisal.lean` proves that the actual spectral mass of
 ρ⊗k outside the surprisal window [kS − w, kS + w] is at most kV/w².
 At w = k³⁄⁴ and k > 0, this becomes V/√k.
 

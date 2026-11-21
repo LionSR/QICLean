@@ -16,7 +16,7 @@ operator Jensen inequalities. Its first target is the concave real-power case
 behind Wolf Corollary 5.2. The Löwner integral representation of `rpow` that
 this route feeds into is available in Mathlib 4.31
 (`Analysis/SpecialFunctions/ContinuousFunctionalCalculus/Rpow/IntegralRepresentation.lean`),
-and `QICLean.Analysis.LiebConcavity` performs the downstream integral assembly.
+and `QICLean.Channel.Convexity.LiebConcavity` performs the downstream integral assembly.
 
 ## Main statements
 
@@ -67,7 +67,7 @@ uses it to prove the single-integrand Jensen inequality
 `T(cfc (Real.rpowIntegrand₀₁ p t) A) ≤ cfc (Real.rpowIntegrand₀₁ p t) (T A)`.
 The pointwise positive-semidefinite bound obtained from
 `cfc (Real.rpowIntegrand₀₁ p t) (T A) - T(cfc (Real.rpowIntegrand₀₁ p t) A)`
-is integrated in `QICLean.Analysis.LiebConcavity`, giving
+is integrated in `QICLean.Channel.Convexity.LiebConcavity`, giving
 `posMap_rpow_concave_jensen`; the logarithmic theorem is then its right-limit
 consequence.  The matrix-valued positive-integral step is packaged below from
 Mathlib's ordered Bochner integral API and the local closed Loewner-order

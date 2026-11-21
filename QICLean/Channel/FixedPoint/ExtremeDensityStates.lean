@@ -5,9 +5,9 @@ Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Convex.Combination
 import Mathlib.Analysis.Convex.Extreme
-import QICLean.Algebra.MatrixIsometryEntries
-import QICLean.Algebra.TracePurity
-import QICLean.Analysis.TraceNormContractionCoefficient
+import QICLean.Algebra.Unitary.MatrixIsometryEntries
+import QICLean.Analysis.TraceInequality.TracePurity
+import QICLean.Channel.Positive.TraceNormContractionCoefficient
 import QICLean.Channel.FixedPoint.DirectSumExtension
 
 /-!

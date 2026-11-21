@@ -24,7 +24,42 @@ class ImportLayerPolicyTests(unittest.TestCase):
         self.assertEqual(layers.layer_of("QICLean.Circuit.LocalCircuit"), "circuit")
         self.assertEqual(layers.layer_of("QICLean.Circuit.Party.PartyWord"), "party")
         self.assertEqual(layers.layer_of("QICLean.ManyBody.Hamiltonian.Basic"), "hamiltonian")
-        self.assertIsNone(layers.layer_of("QICLean.Entropy.Defs"))
+        self.assertEqual(layers.layer_of("QICLean.ManyBody.Entropy.Cut.RegionSplit"),
+                         "manybody_entropy")
+        self.assertEqual(layers.layer_of("QICLean.Entropy.Defs"), "entropy")
+        self.assertEqual(layers.layer_of("QICLean.Spectral.Gap.GlobalGap"), "spectral")
+        self.assertIsNone(layers.layer_of("QICLean.Topology.Defs"))
+        self.assertIsNone(layers.layer_of("QICLean"))
+
+    def test_single_system_layers_form_a_chain(self) -> None:
+        chain = ["Algebra", "Analysis", "Spectral", "Channel", "Kraus", "Entropy", "Probability",
+                 "Representation"]
+        for low, high in zip(chain, chain[1:]):
+            with self.subTest(low=low, high=high):
+                sources = {
+                    f"QICLean.{high}.A": f"import QICLean.{low}.B\ndef a := 0\n",
+                    f"QICLean.{low}.B": f"import QICLean.{high}.C\ndef b := 0\n",
+                    f"QICLean.{high}.C": "def c := 0\n",
+                }
+                self.assertEqual(layers.violations(sources),
+                                 {f"QICLean.{low}.B -> QICLean.{high}.C"})
+
+    def test_many_body_layers_take_single_systems_not_the_reverse(self) -> None:
+        allowed = [("ManyBody.Sites", "Entropy"), ("ManyBody.Entropy", "Entropy"),
+                   ("ManyBody.Entropy", "ManyBody.Hamiltonian"),
+                   ("ManyBody.Subspace", "Probability"), ("ManyBody.Subspace", "ManyBody.Entropy"),
+                   ("ManyBody.Replica", "Representation"), ("ManyBody.Replica", "ManyBody.Entropy")]
+        forbidden = [("Entropy", "ManyBody.Sites"), ("Representation", "ManyBody.Replica"),
+                     ("ManyBody.Sites", "Representation"), ("ManyBody.Sites", "Probability"),
+                     ("ManyBody.Hamiltonian", "ManyBody.Entropy"),
+                     ("ManyBody.Subspace", "ManyBody.Replica"),
+                     ("ManyBody.Replica", "ManyBody.Subspace"), ("Circuit", "Entropy"),
+                     ("Circuit.Gate", "Kraus")]
+        for source, target, expected in ([(s, t, False) for s, t in allowed] +
+                                         [(s, t, True) for s, t in forbidden]):
+            with self.subTest(source=source, target=target):
+                sources = {f"QICLean.{source}.A": f"import QICLean.{target}.B\ndef a := 0\n"}
+                self.assertEqual(bool(layers.violations(sources)), expected)
 
     def test_simulation_owns_only_its_specific_prefix(self) -> None:
         self.assertEqual(layers.layer_of("QICLean.Circuit.Simulation.TruncatedProductFormula"),
@@ -33,7 +68,7 @@ class ImportLayerPolicyTests(unittest.TestCase):
         self.assertEqual(layers.layer_of("QICLean.Circuit.SimulationLike"), "circuit")
 
     def test_simulation_may_consume_circuits_and_many_body_layers(self) -> None:
-        imports = ["QICLean.Algebra.MatrixAux", "QICLean.Channel.Basic",
+        imports = ["QICLean.Algebra.Matrix.MatrixAux", "QICLean.Channel.Basic",
                    "QICLean.ManyBody.Sites.Placement", "QICLean.Circuit.Gate.Basic",
                    "QICLean.Circuit.ProductFormula", "QICLean.ManyBody.Dynamics.TruncatedEvolution",
                    "QICLean.ManyBody.Hamiltonian.Basic"]
@@ -85,7 +120,7 @@ class ImportLayerPolicyTests(unittest.TestCase):
                 self.assertEqual(layers.layer_of(module), layer)
 
     def test_model_compile_protocol_may_consume_lower_layers_in_order(self) -> None:
-        lower = ["QICLean.Algebra.MatrixAux", "QICLean.Channel.Basic",
+        lower = ["QICLean.Algebra.Matrix.MatrixAux", "QICLean.Channel.Basic",
                  "QICLean.ManyBody.Sites.Placement", "QICLean.Circuit.Gate.Basic",
                  "QICLean.Circuit.Core.Circuit"]
         for importer, extra in [
@@ -144,8 +179,12 @@ class ImportLayerPolicyTests(unittest.TestCase):
                 "import QICLean.ManyBody.Sites.Placement\nimport QICLean.ManyBody.Hamiltonian.Basic\n"
                 "def c := 0\n"
             ),
-            "QICLean.ManyBody.Hamiltonian.Basic": "import QICLean.Entropy.Defs\ndef h := 0\n",
-            "QICLean.Entropy.Defs": "import QICLean.ManyBody.Hamiltonian.Basic\ndef t := 0\n",
+            "QICLean.ManyBody.Hamiltonian.Basic": (
+                "import QICLean.Representation.Defs\ndef h := 0\n"
+            ),
+            "QICLean.Representation.Defs": (
+                "import QICLean.ManyBody.Hamiltonian.Basic\ndef t := 0\n"
+            ),
         }
         self.assertEqual(
             layers.violations(sources),
@@ -153,7 +192,8 @@ class ImportLayerPolicyTests(unittest.TestCase):
                 "QICLean.Circuit.Gate.A -> QICLean.ManyBody.Sites.Placement",
                 "QICLean.ManyBody.Sites.Placement -> QICLean.Circuit.Gate.A",
                 "QICLean.Circuit.LocalCircuit -> QICLean.ManyBody.Hamiltonian.Basic",
-                "QICLean.ManyBody.Hamiltonian.Basic -> QICLean.Entropy.Defs",
+                "QICLean.ManyBody.Hamiltonian.Basic -> QICLean.Representation.Defs",
+                "QICLean.Representation.Defs -> QICLean.ManyBody.Hamiltonian.Basic",
             },
         )
 

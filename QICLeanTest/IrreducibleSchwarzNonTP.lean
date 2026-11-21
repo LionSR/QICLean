@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Channel.Peripheral.IrreducibleSchwarz
 import QICLean.Channel.Schwarz.MultiplicativeDomainFull
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 import Mathlib.Tactic.FinCases
 import Lean.Util.CollectAxioms
 import Lean.Elab.Command

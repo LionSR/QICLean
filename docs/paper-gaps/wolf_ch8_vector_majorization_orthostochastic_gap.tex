@@ -15,7 +15,7 @@ Wolf's Theorem~8.4 concerns arbitrary vectors $x,y\in\mathbb R^d$.
 The local source is
 \path{Notes/WolfNoteTexSource/ch08_distance_measures.tex}, lines~220--251,
 including Equation~(8.16) \cite{Wolf2012Quantum}.
-The declarations in \doclink{QICLean/Analysis/VectorMajorization} prove the
+The declarations in \doclink{QICLean/Analysis/Majorization/VectorMajorization} prove the
 equivalence of decreasing-prefix majorization with equal total sums,
 the existence of a doubly stochastic matrix $M$ satisfying $x=My$,
 and comparison of the sums of every convex function
@@ -29,7 +29,7 @@ $x_i=\sum_jO_{ij}^2y_j$. It is not supplied by the doubly stochastic
 characterization alone: a particular doubly stochastic matrix need not be
 orthostochastic. The clause is now proved through Horn's theorem on the
 diagonal of $O\operatorname{diag}(y)O^{\mathsf T}$, by induction with one plane
-rotation per step, in \doclink{QICLean/Analysis/VectorMajorizationOrthostochastic}.
+rotation per step, in \doclink{QICLean/Analysis/Majorization/VectorMajorizationOrthostochastic}.
 The four clauses of Theorem~8.4 are therefore all formalized. The separate
 submajorization theorem remains outside this note.
 \bibliographystyle{plain}

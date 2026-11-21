@@ -1,6 +1,6 @@
 # Ordered eigenvalues from an actual low-energy residual
 
-The bounded extension in `QICLean/Analysis/WeylMonotonicity.lean` proves
+The bounded extension in `QICLean/Analysis/Order/WeylMonotonicity.lean` proves
 `Matrix.IsHermitian.eigenvalues₀_le_add_of_norm_domRestrict_low_le`.
 For actual Hermitian matrices H and F, let G be the span of the canonical
 eigenvectors of F with eigenvalues at most c. The input is the operator norm

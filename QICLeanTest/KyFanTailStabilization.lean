@@ -1,4 +1,4 @@
-import QICLean.Analysis.SpectralTailTraceNorm
+import QICLean.Spectral.Eigenvalue.TailTraceNorm
 
 /-! Boundary checks for Ky--Fan tail stabilization. -/
 

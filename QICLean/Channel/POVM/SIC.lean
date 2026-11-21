@@ -3,11 +3,11 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.RankOneSandwich
+import QICLean.Algebra.Matrix.RankOneSandwich
 import QICLean.Algebra.PerronFrobenius.RankOne
-import QICLean.Algebra.TracePurity
-import QICLean.Channel.KrausMap
-import QICLean.Channel.POVM
+import QICLean.Analysis.TraceInequality.TracePurity
+import QICLean.Channel.KrausMap.KrausMap
+import QICLean.Channel.POVM.Basic
 
 /-!
 # Symmetric informationally complete measurements

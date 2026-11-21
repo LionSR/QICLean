@@ -23,7 +23,6 @@ import QICLean.Channel.Semigroup.LindbladForm.GKSLTheorem
 import QICLean.Channel.Semigroup.LindbladForm.TraceBridge
 import QICLean.Channel.Semigroup.LindbladForm.Uniqueness
 import QICLean.Channel.Semigroup.LiouvillianKernel
-import QICLean.Channel.Semigroup.PauliDissipation
 import QICLean.Channel.Semigroup.Perturbation
 import QICLean.Channel.Semigroup.Primitivity
 import QICLean.Channel.Semigroup.Primitivity.Basic

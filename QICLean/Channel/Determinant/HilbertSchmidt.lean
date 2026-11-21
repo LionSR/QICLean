@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Determinant.Bound
-import QICLean.Algebra.MatrixAux
+import QICLean.Algebra.Matrix.MatrixAux
 import Mathlib.Analysis.Complex.Polynomial.Basic
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Analysis.InnerProductSpace.Trace

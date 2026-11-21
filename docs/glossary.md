@@ -8,7 +8,7 @@ constructions.
 
 - **Declarations:** `Matrix.spectralProjectionGE`, `Matrix.shiftedPowerHead`,
   and `Matrix.shiftedPowerTail` in
-  `QICLean/Analysis/ShiftedDensityTruncation.lean`.
+  `QICLean/Spectral/Projection/ShiftedDensityTruncation.lean`.
 - **Meaning:** For a Hermitian A, Π = 1_[b,∞)(A) selects eigenvalues at least
   b, including equality. For A ≥ 0 and b > 0, the shifted power F = (A+bI)^r
   has head H = FΠ and tail T = F(I−Π). The projection is determined by A

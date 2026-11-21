@@ -3,15 +3,15 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.RectangularTraceNorm
-import QICLean.Analysis.WeightedRectangular
-import QICLean.Channel.RectangularTraceNormContraction
-import QICLean.Probability.ComplexGaussian.Basic
-import QICLean.Probability.ComplexGaussian.Covariance
-import QICLean.Probability.ComplexGaussian.IndependentSlots
-import QICLean.Probability.CompressionSampling
-import QICLean.Probability.IndependentCovariance
-import QICLean.Probability.MatrixSecondMoment
+import QICLean.Analysis.TraceNorm.RectangularTraceNorm
+import QICLean.Analysis.Norm.WeightedRectangular
+import QICLean.Analysis.TraceNorm.RectangularTraceNormContraction
+import QICLean.Probability.Gaussian.Basic
+import QICLean.Probability.Gaussian.Covariance
+import QICLean.Probability.Gaussian.IndependentSlots
+import QICLean.Probability.Sampling.CompressionSampling
+import QICLean.Probability.Concentration.IndependentCovariance
+import QICLean.Probability.Concentration.MatrixSecondMoment
 
 /-! Kernel dependency reports for every named public declaration in the first
 compression-foundations packet. No project-specific axioms are permitted. -/

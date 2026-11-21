@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.Determinant.HeisenbergDual
-import QICLean.Channel.KrausRepresentation
-import QICLean.Algebra.SkolemNoether
+import QICLean.Channel.KrausMap.KrausRepresentation
+import QICLean.Algebra.MatrixAlgebra.SkolemNoether
 import Mathlib.Algebra.Central.Matrix
 import Mathlib.LinearAlgebra.Matrix.Vec
 

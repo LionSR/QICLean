@@ -8,14 +8,14 @@ import Mathlib.Data.Matrix.Basis
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.PosDef
 import Mathlib.Tactic.NoncommRing
-import QICLean.Algebra.OrthogonalProjection
+import QICLean.Algebra.Hermitian.OrthogonalProjection
 
 /-!
 # Irreducible maps on matrix algebras
 
 General (non-MPS-specific) definitions and lemmas for irreducible linear maps
 on matrix algebras `M_D(ℂ)`. Orthogonal projections and their elementary
-properties are imported from `QICLean.Algebra.OrthogonalProjection`.
+properties are imported from `QICLean.Algebra.Hermitian.OrthogonalProjection`.
 
 ## Main definitions
 

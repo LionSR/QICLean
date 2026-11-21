@@ -3,7 +3,7 @@
 The functional-calculus step in OpenAI's September 24, 2026 polynomial PEPS
 manuscript (`03-patches.tex`, lines 160–168, equation
 `eq:patch-stationarity-commutation`) is proved in
-`QICLean/Analysis/ShiftedDensityCommutation.lean`. The source is fixed at
+`QICLean/Analysis/FunctionalCalculus/ShiftedDensityCommutation.lean`. The source is fixed at
 `openai/math@adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 
 For a positive definite matrix A and a nonzero real exponent r, the matrices

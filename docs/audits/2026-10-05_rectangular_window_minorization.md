@@ -34,7 +34,7 @@ No block geometry, padding, MPS state or circuit types are moved upstream.
 
 Every new or modified non-aggregate QIC production module passed an actual-source,
 single-process Lean check with the package options and warnings treated as errors.
-`QICLeanTest/WindowMinorization.lean` also passed. This regression alternates dimensions
+`QICLeanTest/Channel/Choi/WindowMinorization.lean` also passed. This regression alternates dimensions
 two and three, uses different singular rank-one references, includes a nonempty
 remainder with different endpoint dimensions, and derives a compatible cyclic family.
 

@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.SpinCover.EulerAngles
+import QICLean.Analysis.Real.EulerAngles
 import QICLean.Channel.LorentzNormalForm.SpinorAction
 
 /-!
@@ -20,7 +20,7 @@ Following Wolf's rotation--boost discussion, surjectivity is proved without
 assuming a preimage: for `L ∈ SO⁺(1,3)` with first column `u`, the canonical
 boost `B_u` with `B_u e₀ = u` reduces `L` to a rotation block `1 ⊕ R` fixing
 the time axis, the rotation `R ∈ SO(3)` lifts through the Euler-angle cover
-`SU(2) → SO(3)` of `QICLean.Algebra.SpinCover.EulerAngles`, and the boost is
+`SU(2) → SO(3)` of `QICLean.Analysis.Real.EulerAngles`, and the boost is
 lifted by an explicit positive determinant-one matrix `P_u` with
 `P_u² = u·σ`.  The product `S = P_u U` then realizes `L` and simultaneously
 gives the polar (Cartan) decomposition described by Wolf.

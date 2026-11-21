@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.Algebra
-import QICLean.Algebra.StarSubalgebraSemisimple
+import QICLean.Algebra.StarSubalgebra.Semisimple
 import Mathlib.RingTheory.SimpleModule.IsAlgClosed
 import Mathlib.RingTheory.Artinian.Module
 import Mathlib.Analysis.CStarAlgebra.Matrix

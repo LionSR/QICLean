@@ -1,6 +1,6 @@
 # Explicit parameters for the regional-energy auxiliary
 
-The three theorems in `QICLean/Analysis/SoftRegionalEnergyParameters.lean`
+The three theorems in `QICLean/Analysis/Parameter/SoftRegionalEnergyParameters.lean`
 verify the residual, norm and precision estimates needed when a separate
 actual soft regional energy operator is combined with the corrected hard
 polynomial improving family.

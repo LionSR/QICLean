@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Algebra.Group.Action.TypeTags
-import QICLean.Algebra.ZModDisplacement
+import QICLean.Algebra.Combinatorics.ZModDisplacement
 import Mathlib.Combinatorics.SimpleGraph.Circulant
 import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Basic.Real.Basic

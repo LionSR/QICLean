@@ -168,7 +168,7 @@ The matrix $M$, the condition
 (\ref{eq:qiclean_minkowski_canonical_pair_dependency_m_selfadjoint}), and the
 four target block patterns are represented directly.\footnote{Formal
 declarations in
-\doclink{QICLean/Algebra/MinkowskiCanonicalPair.lean} include
+\doclink{QICLean/Algebra/Matrix/MinkowskiCanonicalPair.lean} include
 \leanid{Matrix.signedSipMatrix}, \leanid{Matrix.realJordanBlock},
 \leanid{Matrix.realConjugatePairJordanBlock},
 \leanid{Matrix.signedSipMatrix_mul_realJordanBlock},
@@ -191,7 +191,7 @@ implications between explicitly assumed equations, not a declaration of the
 unverified existence clause.\footnote{The transpose and reversal assertions
 are \leanid{Matrix.transpose_canonical_pair} and
 \leanid{Matrix.reverse_transpose_canonical_pair} in
-\doclink{QICLean/Algebra/MinkowskiReduction.lean}.}
+\doclink{QICLean/Algebra/Matrix/MinkowskiReduction.lean}.}
 
 There is also a complete conditional decomposition for real square matrices
 of any finite size. Let $H,R,J,N,X,O,\Sigma$ be such matrices;
@@ -232,7 +232,7 @@ $L_2=(B^{-1}R)^{\mathsf T}$. This proves
 $R=L_1\Sigma L_2^{\mathsf T}$ and $L_iHL_i^{\mathsf T}=H$.
 \footnote{The conditional decomposition is
 \leanid{Matrix.exists_decomposition_of_canonical_pair_of_isUnit} in
-\doclink{QICLean/Algebra/MinkowskiReduction.lean}.}
+\doclink{QICLean/Algebra/Matrix/MinkowskiReduction.lean}.}
 
 This result supplies neither the canonical data nor their normalization nor
 $\Sigma$. It assumes the invertibility of $\Sigma$, so it does not treat

@@ -45,7 +45,7 @@ including opaque bodies: 59,779 constants, only `propext`, `Classical.choice`,
 and `Quot.sound`, no missing constants, and no QICLean opaque declarations.
 The 54 upstream implementation opaques had available bodies and were traversed;
 they were not treated as new assumptions. The permanent regression is
-`QICLeanTest/Analysis/LiebConvexityIndependentAudit.lean`.
+`QICLeanTest/Channel/Convexity/LiebConvexityIndependentAudit.lean`.
 
 Independent strict elaboration passed for production, the original regression,
 the complete closure traversal, and the semantic fixtures. The coordinator

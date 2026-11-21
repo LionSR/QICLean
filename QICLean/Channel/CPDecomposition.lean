@@ -3,8 +3,8 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.HermitianHelpers
-import QICLean.Channel.ChoiRectangular
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
+import QICLean.Channel.Choi.Rectangular
 
 /-!
 # Decomposition of linear maps into completely positive maps
@@ -46,9 +46,9 @@ the four (respectively two) zero maps with zero coefficients already witness
 the statement.
 
 The two matrix ingredients carry no channel hypotheses and live in
-`QICLean/Algebra/HermitianHelpers.lean`: `Matrix.exists_isHermitian_eq_add_smul_I`
-for Wolf's display and `Matrix.IsHermitian.exists_eq_sub_posSemidef` for the
-spectral step.
+`QICLean/Spectral/Eigenvalue/HermitianExtremalEigenvalues.lean`:
+`Matrix.exists_isHermitian_eq_add_smul_I` for Wolf's display and
+`Matrix.IsHermitian.exists_eq_sub_posSemidef` for the spectral step.
 
 `WolfProps.cp_decomposition_of_sandwich_sum` proves a different statement: it
 decomposes a map already presented in the form `X ↦ ∑ᵢ Aᵢ X Bᵢ†` on a single

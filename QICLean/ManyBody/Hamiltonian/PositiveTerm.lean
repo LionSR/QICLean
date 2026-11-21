@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.Interaction
-import QICLean.Analysis.SpectralFilter.PositiveReplacement
+import QICLean.Spectral.Filter.PositiveReplacement
 
 /-!
 # The positive terms of a gapped interaction

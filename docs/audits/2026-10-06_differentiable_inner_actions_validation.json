@@ -10,8 +10,8 @@
   "serial_compiler": true,
   "results": [
     {
-      "module": "QICLean.Algebra.MatrixUnitConjugator",
-      "source": "QICLean/Algebra/MatrixUnitConjugator.lean",
+      "module": "QICLean.Algebra.MatrixAlgebra.MatrixUnitConjugator",
+      "source": "QICLean/Algebra/MatrixAlgebra/MatrixUnitConjugator.lean",
       "cwd": "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action",
       "unchanged_dependency": false,
       "source_sha256": "1521a4d6320e0df379c2ff6580e6dd835cf3667f068e7db12ab7387b06820493",
@@ -42,8 +42,8 @@
       "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "module": "QICLean.Analysis.DifferentiableInnerAction",
-      "source": "QICLean/Analysis/DifferentiableInnerAction.lean",
+      "module": "QICLean.Analysis.Calculus.DifferentiableInnerAction",
+      "source": "QICLean/Analysis/Calculus/DifferentiableInnerAction.lean",
       "cwd": "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action",
       "unchanged_dependency": false,
       "source_sha256": "f80dac9ff36608ab696e363ea1effe7f93542653334132825ad485d1dd0e2a84",
@@ -74,8 +74,8 @@
       "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "module": "QICLeanTest.DifferentiableInnerAction",
-      "source": "QICLeanTest/DifferentiableInnerAction.lean",
+      "module": "QICLeanTest.Analysis.Calculus.DifferentiableInnerAction",
+      "source": "QICLeanTest/Analysis/Calculus/DifferentiableInnerAction.lean",
       "cwd": "/workspace/scratch/7637e06d0fc2/QICLean-differentiable-inner-action",
       "unchanged_dependency": false,
       "source_sha256": "9368b1b4e65229a842a2bf01246f006bce05186cf9a88def081f96b3aabcaf66",
@@ -138,8 +138,8 @@
       "shell_syntax": true,
       "focused_build_before_regressions": true,
       "build_targets": [
-        "QICLean.Algebra.MatrixUnitConjugator",
-        "QICLean.Analysis.DifferentiableInnerAction"
+        "QICLean.Algebra.MatrixAlgebra.MatrixUnitConjugator",
+        "QICLean.Analysis.Calculus.DifferentiableInnerAction"
       ],
       "strict_regressions": [
         "HermitianIntertwiner",

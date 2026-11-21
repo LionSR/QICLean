@@ -1,7 +1,7 @@
 # Singular support-inverse sandwich bound
 
 The generic QIC matrix-order component of restoration issue #8757 is proved
-in `QICLean/Analysis/SupportInverseSandwich.lean`. For finite complex matrices,
+in `QICLean/Analysis/Support/InverseSandwich.lean`. For finite complex matrices,
 the public theorem `Matrix.PosSemidef.mul_supportInv_mul_le` states
 `M * hρ.supportInv * M ≤ M` from `M.PosSemidef`, `ρ.PosSemidef`, and `M ≤ ρ`.
 There is no invertibility, positive-dimension, commutation, support-inclusion,
@@ -31,7 +31,7 @@ and log SHA-256 hashes, actual exit codes, elapsed times, and reproducible
 Lean argument lists. All Lean/Lake invocations were serialized by the shared
 build lock and used `LEAN_NUM_THREADS=2`.
 
-- Targeted native build: `lake build QICLean.Analysis.SupportInverseSandwich`
+- Targeted native build: `lake build QICLean.Analysis.Support.InverseSandwich`
   passed at source commit `769fe086c5805bf5a94b8af7686759818279d09f`.
   The source bytes are identical at the final checked checkpoint. The log
   reports 3105 jobs and 2.3 seconds for the new module; total build wall time

@@ -275,50 +275,50 @@ jobs:
         run: |
           set -eo pipefail
           lake --fail-fast build \
-            QICLean.Algebra.MatrixUnitaryBetween \
-            QICLean.Analysis.ConicProgram \
-            QICLean.Analysis.FiniteCoordinateNowosad.Recursion \
-            QICLean.Analysis.HermitianMatrixCone \
-            QICLean.Analysis.LowEnergyPerturbation \
-            QICLean.Analysis.SpectralRadiusPowerDecay \
+            QICLean.Algebra.Unitary.MatrixUnitaryBetween \
+            QICLean.Analysis.Optimization.ConicProgram \
+            QICLean.Analysis.CyclicInequality.Recursion \
+            QICLean.Analysis.Optimization.HermitianMatrixCone \
+            QICLean.Analysis.Order.LowEnergyPerturbation \
+            QICLean.Spectral.Radius.PowerDecay \
             QICLean.Channel.OrderedCP \
             QICLean.Channel.Peripheral.RecurrentInverse \
             QICLean.Channel.Semigroup.Basic \
             QICLean.Channel.Semigroup.LindbladForm.TraceBridge \
             QICLean.Channel.Wigner.Rigidity \
-            QICLean.Entropy.ConditionalMovement.DoubleCurve \
-            QICLean.Probability.ComplexGaussian.GaussianContraction \
-            QICLean.Probability.ComplexGaussian.ProductSource \
-            QICLean.Probability.ComplexGaussian.ProductSourceTransport \
-            QICLean.Probability.ComplexGaussian.SchmidtSource \
-            QICLean.Representation.ReplicaTransport.CoherentMeasure
+            QICLean.Entropy.Conditional.DoubleCurve \
+            QICLean.Probability.Gaussian.GaussianContraction \
+            QICLean.Probability.Gaussian.ProductSource \
+            QICLean.Probability.Gaussian.ProductSourceTransport \
+            QICLean.Probability.Gaussian.SchmidtSource \
+            QICLean.ManyBody.Replica.Symbol.CoherentMeasure
           python3 - <<'PY'
           import sys
           sys.path.insert(0, "scripts")
           from ci_lean_checks import run_batch
           paths = [
-              "QICLean/Algebra/MatrixUnitaryBetween.lean",
-              "QICLean/Analysis/ConicProgram.lean",
-              "QICLean/Analysis/FiniteCoordinateNowosad/Recursion.lean",
-              "QICLean/Analysis/HermitianMatrixCone.lean",
-              "QICLean/Analysis/LowEnergyPerturbation.lean",
-              "QICLean/Analysis/SpectralRadiusPowerDecay.lean",
+              "QICLean/Algebra/Unitary/MatrixUnitaryBetween.lean",
+              "QICLean/Analysis/Optimization/ConicProgram.lean",
+              "QICLean/Analysis/CyclicInequality/Recursion.lean",
+              "QICLean/Analysis/Optimization/HermitianMatrixCone.lean",
+              "QICLean/Analysis/Order/LowEnergyPerturbation.lean",
+              "QICLean/Spectral/Radius/PowerDecay.lean",
               "QICLean/Channel/OrderedCP.lean",
               "QICLean/Channel/Peripheral/RecurrentInverse.lean",
               "QICLean/Channel/Semigroup/Basic.lean",
               "QICLean/Channel/Semigroup/LindbladForm/TraceBridge.lean",
               "QICLean/Channel/Wigner/Rigidity.lean",
-              "QICLean/Entropy/ConditionalMovement/DoubleCurve.lean",
-              "QICLean/Probability/ComplexGaussian/GaussianContraction.lean",
-              "QICLean/Probability/ComplexGaussian/ProductSource.lean",
-              "QICLean/Probability/ComplexGaussian/ProductSourceTransport.lean",
-              "QICLean/Probability/ComplexGaussian/SchmidtSource.lean",
-              "QICLean/Representation/ReplicaTransport/CoherentMeasure.lean",
-              "QICLeanTest/DoubleCurveInstances.lean",
-              "QICLeanTest/GaussianContraction.lean",
+              "QICLean/Entropy/Conditional/DoubleCurve.lean",
+              "QICLean/Probability/Gaussian/GaussianContraction.lean",
+              "QICLean/Probability/Gaussian/ProductSource.lean",
+              "QICLean/Probability/Gaussian/ProductSourceTransport.lean",
+              "QICLean/Probability/Gaussian/SchmidtSource.lean",
+              "QICLean/ManyBody/Replica/Symbol/CoherentMeasure.lean",
+              "QICLeanTest/Entropy/Conditional/DoubleCurveInstances.lean",
+              "QICLeanTest/Probability/Gaussian/GaussianContraction.lean",
               "QICLeanTest/GaussianProductSourceTransport.lean",
               "QICLeanTest/Mathlib436Replacement.lean",
-              "QICLeanTest/SchmidtSource.lean",
+              "QICLeanTest/Probability/Gaussian/SchmidtSource.lean",
               "QICLeanTest/SemigroupNormable.lean",
           ]
           failed = run_batch(paths, None, jobs=3, timeout=240)

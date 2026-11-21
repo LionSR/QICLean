@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Channel.KrausMap
-import QICLean.Channel.KrausRank
+import QICLean.Channel.KrausMap.KrausMap
+import QICLean.Channel.KrausMap.KrausRank
 import QICLean.Channel.LorentzNormalForm.SpinorAction
 
 /-!

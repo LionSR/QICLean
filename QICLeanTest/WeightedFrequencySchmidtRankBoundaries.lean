@@ -1,4 +1,4 @@
-import QICLean.Algebra.WeightedFrequencySchmidtRank
+import QICLean.Algebra.OperatorSchmidt.WeightedFrequencySchmidtRank
 
 /-!
 # Boundary applications for weighted original-frequency sums

@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.RingTheory.RootsOfUnity.Complex
-import QICLean.Channel.ChoiTypeMap
-import QICLean.Channel.SchmidtNumber
+import QICLean.Channel.ChoiTypeMap.Basic
+import QICLean.Channel.Entanglement.SchmidtNumber
 
 /-!
 # Ha's two-simple root-average witness

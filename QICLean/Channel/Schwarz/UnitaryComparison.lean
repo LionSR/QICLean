@@ -3,7 +3,7 @@ Copyright (c) 2026 Sirui Lu and QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Sirui Lu
 -/
-import QICLean.Analysis.WeylMonotonicity
+import QICLean.Analysis.Order.WeylMonotonicity
 
 /-!
 # Unitary comparison for monotone scalar functions

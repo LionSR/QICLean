@@ -3,12 +3,12 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.ChebyshevViability
-import QICLean.Analysis.GroundEnergyBounds
-import QICLean.Analysis.LowEnergyCoordinates
-import QICLean.Analysis.MatrixTensorCoordinates
-import QICLean.Analysis.ViableSubspaceCoordinates
-import QICLean.Analysis.LowEnergyCluster
+import QICLean.Spectral.LowEnergy.ChebyshevViability
+import QICLean.Spectral.Eigenvalue.GroundEnergyBounds
+import QICLean.Spectral.LowEnergy.Coordinates
+import QICLean.Analysis.TensorProduct.MatrixTensorCoordinates
+import QICLean.Analysis.Subspace.ViableSubspaceCoordinates
+import QICLean.Spectral.LowEnergy.Cluster
 import Lean.Elab.Command
 import Lean.Util.CollectAxioms
 

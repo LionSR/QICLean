@@ -7,7 +7,7 @@ that the paper states a whole-groundspace operator-norm theorem.
 
 ## Scope and ownership
 
-`QICLean.Analysis.MatrixFramePerturbation` owns the generic matrix results:
+`QICLean.Analysis.Isometry.FramePerturbation` owns the generic matrix results:
 
 - An isometry is an operator-norm contraction.
 - The Gram defect and the complex cross defect control squared frame error.

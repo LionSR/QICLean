@@ -16,15 +16,15 @@ locality bound, or full amplification theorem is asserted here.
 
 Five new production modules contain 456 lines and 33 public constants:
 
-- `QICLean/Algebra/WordMultiplicity.lean`: 71 lines; actual occurrence counts
+- `QICLean/Algebra/Word/WordMultiplicity.lean`: 71 lines; actual occurrence counts
   and the multinomial cardinality derived by polynomial coefficient comparison.
-- `QICLean/Probability/PoissonWordCounts.lean`: 99 lines; actual count fibers,
+- `QICLean/Probability/PoissonWord/PoissonWordCounts.lean`: 99 lines; actual count fibers,
   finite enumeration, exact factorial cardinality and nonemptiness.
-- `QICLean/Probability/PoissonWordIndependentCounts.lean`: 105 lines; exact
+- `QICLean/Probability/PoissonWord/IndependentCounts.lean`: 105 lines; exact
   fiber mass, joint product-Poisson law, marginals and mutual independence.
 - `QICLean/Probability/FiniteUniformConditioning.lean`: 74 lines; finite-event
   equal-atom restriction and uniform conditioning on a non-null event.
-- `QICLean/Probability/PoissonWordUniformOrder.lean`: 107 lines; actual conditional
+- `QICLean/Probability/PoissonWord/UniformOrder.lean`: 107 lines; actual conditional
   uniformity, positive-time support, null-event behavior at zero time, and
   reconstruction from independent counts followed by uniform word ordering.
 

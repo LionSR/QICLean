@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.BipartiteDecomposition
-import QICLean.Algebra.L2OpNormReindex
-import QICLean.Analysis.MatrixFramePerturbation
+import QICLean.Analysis.Norm.BipartiteDecomposition
+import QICLean.Analysis.Norm.L2OpNormReindex
+import QICLean.Analysis.Isometry.FramePerturbation
 import QICLean.ManyBody.Sites.Cut
 import QICLean.ManyBody.Sites.Support
 
@@ -17,7 +17,7 @@ one-sided in the coordinates of the cut when `D ⊆ B` or `D ⊆ Bᶜ`. Otherwis
 on `D ∩ B` write it as a sum of at most `d²` products `c ⊗ d'` with `‖c‖ ≤ 1` and `‖d'‖` at
 most its norm, where `d = ∏_{v ∈ D ∩ B} n_v`.
 
-Moved from `QICLean.Entropy.SupportedMarginalTails`, where the entropy estimates that use
+Moved from `QICLean.ManyBody.Entropy.SupportedMarginalTails`, where the entropy estimates that use
 these decompositions remain.
 
 ## Main results

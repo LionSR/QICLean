@@ -13,7 +13,7 @@ Worktree: `/workspace/QICLean-wolf515`, branch `codex/wolf-5-15-convex`, based o
 
 ## Proved statements
 
-`QICLean/Analysis/LiebConvexity.lean` proves:
+`QICLean/Channel/Convexity/LiebConvexity.lean` proves:
 
 - `lieb_convexity_variational_le`: the completed-square variational bound on
   positive semidefinite `A` and positive definite `B`.
@@ -45,11 +45,11 @@ existing dependency directory. `lake exe cache get` succeeded before builds:
 
 Passed:
 
-- Targeted ordinary build of `QICLean.Analysis.LiebConvexity` and its imports.
+- Targeted ordinary build of `QICLean.Channel.Convexity.LiebConvexity` and its imports.
 - Direct strict production elaboration with `autoImplicit=false`,
   `relaxedAutoImplicit=false`, standard Mathlib linters, and warnings as errors.
 - The same strict elaboration of
-  `QICLeanTest/Analysis/LiebConvexityAxioms.lean`.
+  `QICLeanTest/Channel/Convexity/LiebConvexityAxioms.lean`.
 - All four public results use exactly `propext`, `Classical.choice`, `Quot.sound`.
 - Fixtures for all three exponent vertices, the empty matrix algebra, a
   singular first argument, and failure of the zero-valued singular inverse.

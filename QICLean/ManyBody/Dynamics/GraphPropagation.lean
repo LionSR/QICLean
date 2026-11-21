@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.ComponentLocality
-import QICLean.Analysis.Volterra
+import QICLean.Analysis.Calculus.Volterra
 import Mathlib.Combinatorics.SimpleGraph.Metric
 
 /-!

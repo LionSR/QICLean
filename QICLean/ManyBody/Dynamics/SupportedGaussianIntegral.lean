@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.ProjectedRelativeEvolution
-import QICLean.Analysis.GaussianFilter.MatrixIntegral
+import QICLean.Spectral.Filter.Gaussian.MatrixIntegral
 
 /-!
 # Supported Gaussian averaging from projection bounds

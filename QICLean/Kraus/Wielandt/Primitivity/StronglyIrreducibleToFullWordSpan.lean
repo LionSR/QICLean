@@ -3,10 +3,10 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Analysis.SpectralRadiusPowerDecay
-import QICLean.Algebra.HermitianHelpers
-import QICLean.Algebra.MatrixOperatorSpace
-import QICLean.Algebra.TraceFormDuality
+import QICLean.Spectral.Radius.PowerDecay
+import QICLean.Spectral.Eigenvalue.HermitianExtremalEigenvalues
+import QICLean.Analysis.Norm.MatrixOperatorSpace
+import QICLean.Algebra.Matrix.TraceFormDuality
 import QICLean.Channel.Irreducible.Ergodicity
 import QICLean.Channel.Peripheral.IrreducibleChannel
 import QICLean.Kraus.Injectivity

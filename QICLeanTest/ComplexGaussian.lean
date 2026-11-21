@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Probability.ComplexGaussian.Covariance
+import QICLean.Probability.Gaussian.Covariance
 
 /-! Circular complex Gaussian covariance regressions with coincident indices,
 zero weights, unequal supports and empty sample families. -/

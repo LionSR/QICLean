@@ -3,8 +3,8 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.FinSum
-import QICLean.Channel.KrausFreedom
+import QICLean.Algebra.Combinatorics.FinSum
+import QICLean.Channel.KrausMap.KrausFreedom
 import Mathlib.Data.Matrix.Basis
 import Mathlib.Tactic.LinearCombination
 import Mathlib.Algebra.BigOperators.Ring.Finset

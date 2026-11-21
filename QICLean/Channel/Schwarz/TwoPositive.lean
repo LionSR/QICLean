@@ -3,11 +3,11 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.MatrixAux
-import QICLean.Algebra.MatrixTracePairing
+import QICLean.Algebra.Matrix.MatrixAux
+import QICLean.Algebra.Matrix.MatrixTracePairing
 import QICLean.Channel.Basic
-import QICLean.Channel.ChoiJamiolkowski
-import QICLean.Channel.KrausCPTP
+import QICLean.Channel.Choi.Jamiolkowski
+import QICLean.Channel.KrausMap.KrausCPTP
 import QICLean.Channel.Schwarz.KadisonSchwarz
 import QICLean.Channel.Schwarz.PositiveMapProperties
 import Mathlib.Analysis.CStarAlgebra.Matrix

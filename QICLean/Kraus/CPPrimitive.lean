@@ -3,10 +3,10 @@ Copyright (c) 2025 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Channel.KrausMap
+import QICLean.Channel.KrausMap.KrausMap
 import QICLean.Kraus.Transfer
 import QICLean.Kraus.Injectivity
-import QICLean.Algebra.MatrixAux
+import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Channel.Irreducible.Basic
 import QICLean.Channel.Schwarz.KadisonSchwarz
 import QICLean.Channel.Basic
@@ -16,7 +16,7 @@ import QICLean.Channel.Basic
 The general definitions (`IsOrthogonalProjection`, `IsIrreducibleMap`,
 `HasUniqueFixedPoint`) are stated in `QICLean.Channel.Irreducible.Basic`. The
 supporting sum-of-squares matrix lemma
-`Matrix.eq_zero_of_sum_mul_conjTranspose_eq_zero` is stated in `QICLean.Algebra.MatrixAux`.
+`Matrix.eq_zero_of_sum_mul_conjTranspose_eq_zero` is stated in `QICLean.Algebra.Matrix.MatrixAux`.
 
 This file proves the finite-Kraus-family-specific connection: injectivity of a
 finite matrix family implies irreducibility of its transfer map.
@@ -107,9 +107,9 @@ theorem transferMap_isCPMap
 /-! ### Iterated transfer map
 
 The iterated finite Kraus map identity is `Kraus.mapLM_pow_apply` in
-`QICLean.Kraus.MapIterate`.
+`QICLean.Kraus.Transfer`.
 
 The channel property of a trace-preserving finite Kraus map is
-`Kraus.isChannel_mapLM` in `QICLean.Channel.KrausMap`. -/
+`Kraus.isChannel_mapLM` in `QICLean.Channel.KrausMap.KrausMap`. -/
 
 end Kraus

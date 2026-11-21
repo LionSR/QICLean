@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Semigroup.LindbladForm.Basic
 import QICLean.Channel.Semigroup.CPClosure
-import QICLean.Channel.ChoiJamiolkowski
+import QICLean.Channel.Choi.Jamiolkowski
 
 /-!
 # Lindblad Form — Choi/CCP Characterization (Wolf Proposition 7.2)

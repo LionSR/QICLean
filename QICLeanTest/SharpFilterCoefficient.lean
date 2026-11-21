@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.LogClipping
+import QICLean.Analysis.Real.LogClipping
 
 /-! Regression checks for the sharp coefficient in the polynomial-PEPS patch argument. -/
 

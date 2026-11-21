@@ -3,8 +3,8 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Entropy.TwoFamilies
-import QICLean.Entropy.RegionConditionalInformation
+import QICLean.ManyBody.Entropy.TwoFamilies
+import QICLean.ManyBody.Entropy.RegionConditionalInformation
 import Mathlib.Tactic.NormNum
 
 /-! Regression checks for actual finite-product density matrices and entropies. -/

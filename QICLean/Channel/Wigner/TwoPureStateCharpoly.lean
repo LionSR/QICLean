@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff
-import QICLean.Algebra.FinSum
+import QICLean.Algebra.Combinatorics.FinSum
 import QICLean.Channel.Wigner.ProjectivePureState
 
 /-!

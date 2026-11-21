@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Sites.RegionUnion
-import QICLean.Algebra.L2OpNormReindex
+import QICLean.Analysis.Norm.L2OpNormReindex
 
 /-!
 # Placement along an injection of sites

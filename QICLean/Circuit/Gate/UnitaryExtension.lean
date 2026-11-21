@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.MatrixGramUnitary
-import QICLean.Algebra.MatrixUnitaryBetween
+import QICLean.Algebra.Unitary.MatrixGramUnitary
+import QICLean.Algebra.Unitary.MatrixUnitaryBetween
 
 /-!
 # Extending an isometry to a unitary along a placement of basis vectors

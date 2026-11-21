@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Convex.Jensen
-import QICLean.Channel.ComplementaryWeylTwirl
-import QICLean.Channel.EnvironmentDilation
+import QICLean.Channel.Twirl.ComplementaryWeylTwirl
+import QICLean.Channel.Dilation.EnvironmentDilation
 
 /-!
 # Convex functionals under quantum channels

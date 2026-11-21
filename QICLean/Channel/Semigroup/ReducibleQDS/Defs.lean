@@ -7,7 +7,7 @@ import QICLean.Channel.Semigroup.LindbladForm
 import QICLean.Channel.Semigroup.Kernel
 import QICLean.Channel.Irreducible.Basic
 import QICLean.Channel.FixedPoint.Cesaro
-import QICLean.Algebra.OrthogonalProjection
+import QICLean.Algebra.Hermitian.OrthogonalProjection
 
 /-!
 # Reducible Quantum Dynamical Semigroups — Wolf Proposition 7.6

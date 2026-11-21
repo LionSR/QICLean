@@ -9,5 +9,8 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody
 
 import QICLean.ManyBody.Dynamics
+import QICLean.ManyBody.Entropy
 import QICLean.ManyBody.Hamiltonian
+import QICLean.ManyBody.Replica
 import QICLean.ManyBody.Sites
+import QICLean.ManyBody.Subspace

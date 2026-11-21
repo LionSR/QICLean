@@ -3,8 +3,8 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Algebra.MatrixGramConjugation
-import QICLean.Algebra.ScalarCommutant
+import QICLean.Algebra.Unitary.MatrixGramConjugation
+import QICLean.Algebra.MatrixAlgebra.ScalarCommutant
 import QICLean.Kraus.Injectivity
 import Mathlib.LinearAlgebra.Matrix.PosDef
 

@@ -3,9 +3,9 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.MatrixOperatorSpace
+import QICLean.Analysis.Norm.MatrixOperatorSpace
 import QICLean.Channel.Semigroup.Basic
-import QICLean.Channel.ChoiJamiolkowski
+import QICLean.Channel.Choi.Jamiolkowski
 import QICLean.Channel.Schwarz.Basic
 import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Topology.Algebra.Module.FiniteDimension

@@ -12,6 +12,8 @@ import QICLean.Channel.Peripheral.AbstractEigenvectors
 import QICLean.Channel.Peripheral.AdjointSpectrum
 import QICLean.Channel.Peripheral.AntilinearConjugation
 import QICLean.Channel.Peripheral.AsymptoticImage
+import QICLean.Channel.Peripheral.AsymptoticStateConvergence
+import QICLean.Channel.Peripheral.AsymptoticStateConverse
 import QICLean.Channel.Peripheral.CesaroRecurrence
 import QICLean.Channel.Peripheral.ClosureFixedPointKraus
 import QICLean.Channel.Peripheral.Conjugation
@@ -38,6 +40,8 @@ import QICLean.Channel.Peripheral.MatchedBlockEndomorphism
 import QICLean.Channel.Peripheral.MultiCycleDecomposition
 import QICLean.Channel.Peripheral.PeriodicityRemoval
 import QICLean.Channel.Peripheral.Powers
+import QICLean.Channel.Peripheral.Primitive
+import QICLean.Channel.Peripheral.PrimitivePositiveMap
 import QICLean.Channel.Peripheral.PureStateFace
 import QICLean.Channel.Peripheral.RankOnePositiveProjection
 import QICLean.Channel.Peripheral.RecurrentInverse

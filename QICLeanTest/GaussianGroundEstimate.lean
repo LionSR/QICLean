@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.GaussianFilter.GroundEstimate
+import QICLean.Spectral.Filter.Gaussian.GroundEstimate
 
 /-!
 # Consumers of the actual Gaussian ground-vector estimates
@@ -15,7 +15,7 @@ estimates test Gaussian suppression as well as conjugation. The tests include
 zero variance, unrenormalized truncation, and the real-overlap contraction result.
 
 The shifted-projector fixture adapts `QICLeanTest/GaussianSpectralGap.lean` and
-`QICLeanTest/PositiveGapUniqueness.lean`; all estimates below concern the actual
+`QICLeanTest/Spectral/Gap/PositiveGapUniqueness.lean`; all estimates below concern the actual
 integral, with no coefficient identity supplied as a hypothesis.
 -/
 

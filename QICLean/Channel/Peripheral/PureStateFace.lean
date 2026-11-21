@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.Normed.Module.Connected
-import QICLean.Analysis.TraceNormContractionCoefficient
+import QICLean.Channel.Positive.TraceNormContractionCoefficient
 
 /-!
 # Connected rank-one pure-state faces

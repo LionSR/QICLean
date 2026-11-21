@@ -1,6 +1,6 @@
 # Common Schur labels for independent copies
 
-The module `QICLean/Representation/HighLabelWindow.lean` proves the simultaneous label selection of OpenAI, *A two-dimensional area law from a global spectral gap* (September 24, 2026), Section 7, `comparator:high-label`, source lines 255–281 at commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
+The module `QICLean/Representation/SchurWeyl/HighLabelWindow.lean` proves the simultaneous label selection of OpenAI, *A two-dimensional area law from a global spectral gap* (September 24, 2026), Section 7, `comparator:high-label`, source lines 255–281 at commit `adc7f1241b42e322a6451854ab7e4b4c146bf78a`.
 
 For a density matrix ρ on a q-dimensional system it constructs one actual irreducible-label sequence λₖ. Eventually its mass in ρ⊗k is at least [2(k+1)^(q²)]⁻¹, while log dim λₖ = k S(ρ) + o(k). Both conclusions hold for the same sequence. Singular density matrices are included. The theorem requires only positivity and trace one of the one-copy density; independent-copy concentration, permutation invariance and the numerical threshold are proved from these assumptions.
 

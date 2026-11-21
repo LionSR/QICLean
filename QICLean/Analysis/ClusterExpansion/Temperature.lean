@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Analysis.ClusterExpansion.ClusterPart
 import QICLean.Analysis.ClusterExpansion.Percolation
-import QICLean.Analysis.TraceNormVariational
+import QICLean.Analysis.TraceNorm.Variational
 
 /-!
 # The truncated expansion at every temperature

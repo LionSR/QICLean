@@ -7,7 +7,7 @@ import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 import Mathlib.Combinatorics.Enumerative.InclusionExclusion
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Subgraph
 import QICLean.Analysis.ClusterExpansion.Truncation
-import QICLean.Analysis.MandatoryExponentialNorm
+import QICLean.Analysis.Exponential.MandatoryExponentialNorm
 
 /-!
 # The cluster expansion as a sum of products over clusters

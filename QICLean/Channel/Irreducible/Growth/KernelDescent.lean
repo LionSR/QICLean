@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.Irreducible.Growth.OneStep
 import QICLean.Channel.Irreducible.Growth.Preservation
-import QICLean.Algebra.MatrixAux
+import QICLean.Algebra.Matrix.MatrixAux
 import QICLean.Channel.Basic
 
 /-!

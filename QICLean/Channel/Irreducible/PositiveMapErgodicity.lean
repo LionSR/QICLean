@@ -3,8 +3,8 @@ Copyright (c) 2026 TNLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
-import QICLean.Algebra.PositiveSemidefiniteNormalization
-import QICLean.Analysis.WeightedCesaroMean
+import QICLean.Algebra.Hermitian.PositiveSemidefiniteNormalization
+import QICLean.Analysis.Real.WeightedCesaroMean
 import QICLean.Channel.Irreducible.Ergodicity
 import QICLean.Channel.Irreducible.FromSpectral
 

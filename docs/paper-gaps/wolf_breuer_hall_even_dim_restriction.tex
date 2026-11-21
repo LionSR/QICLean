@@ -158,13 +158,13 @@ not classify the nonunitary contractions for which the map is
 indecomposable, and the formalization makes no such claim.\footnote{Formal
 declarations:
 \leanid{Matrix.breuerHallMap\_zero} in
-\doclink{QICLean/Channel/BreuerHallMap};
+\doclink{QICLean/Channel/Positive/BreuerHallMap};
 \leanid{ChoiJamiolkowski.choiMatrix\_reductionMap\_one\_comp\_transpose},
 \leanid{Matrix.reductionMap\_one\_isCompletelyCopositiveMap}, and
 \leanid{Matrix.reductionMap\_one\_isDecomposablePositiveMap} in
-\doclink{QICLean/Channel/PositiveExamples}; and
+\doclink{QICLean/Channel/Positive/Examples}; and
 \leanid{Matrix.breuerHallMap\_contraction\_not\_universally\_indecomposable}
-in \doclink{QICLean/Channel/BreuerHallIndecomposable}.}
+in \doclink{QICLean/Channel/Positive/BreuerHallIndecomposable}.}
 
 \section{The corrected statement}
 
@@ -173,9 +173,9 @@ $T_{\mathrm{BH}}$ is an indecomposable positive map.\footnote{Formal
 declarations:
 \leanid{Matrix.breuerHallMap\_isIndecomposablePositiveMap} and
 \leanid{Matrix.breuerHallMap\_not\_isDecomposablePositiveMap} in
-\doclink{QICLean/Channel/BreuerHallIndecomposable}; positivity is
+\doclink{QICLean/Channel/Positive/BreuerHallIndecomposable}; positivity is
 \leanid{Matrix.breuerHallMap\_isPositiveMap} in
-\doclink{QICLean/Channel/BreuerHallMap}.}
+\doclink{QICLean/Channel/Positive/BreuerHallMap}.}
 
 The source gives no proof. The formalized argument uses PPT detection. Let
 $F$ be the swap operator on $\C^d\otimes\C^d$, and let $\ket{\Psi}$ be the
@@ -248,7 +248,7 @@ semidefinite. Decomposable maps preserve positivity on PPT
 states.\footnote{Formal declarations:
 \leanid{IsDecomposablePositiveMap.tensorMapId\_posSemidef\_of\_isPPT} and
 \leanid{not\_isDecomposablePositiveMap\_of\_isPPT\_not\_tensorMapId\_posSemidef}
-in \doclink{QICLean/Channel/DecomposablePPT}.}
+in \doclink{QICLean/Channel/Positive/DecomposablePPT}.}
 Therefore $T_{\mathrm{BH}}$ is not decomposable.
 
 \section{Conclusion}

@@ -51,7 +51,7 @@ theorem Matrix.col_mul_eq_mulVec_col {M : Matrix l m R} {N : Matrix m n R} {i : 
 
 in `Mathlib.Data.Matrix.Mul`, for any non-unital non-associative semiring and
 rectangular shapes, proved by `rfl`. The local `Matrix.col_mul` in
-`QICLean/Algebra/MatrixMulRange.lean` stated the square complex case and was
+`QICLean/Algebra/Matrix/MatrixMulRange.lean` stated the square complex case and was
 used only in `mem_range_mulLeft_iff_cols` in the same file. The local lemma is
 deleted and both uses cite the Mathlib lemma. TNLean does not use it.
 
@@ -89,8 +89,8 @@ functions directly. It replaces a `tendsto_const_nhds.congr'` intermediate in
 Mathlib commit `cae66e9de4e`, `feat: add zero lemmas for even powers (#43161)`,
 adds `Finset.sum_sq_eq_zero_iff` for linearly ordered semirings. It replaces a
 `sum_eq_zero_iff_of_nonneg` argument with an explicit `sq_nonneg` witness in
-`QICLean/Algebra/FiniteCauchySchwarz.lean`, and a squared-norm step in
-`QICLean/Channel/Schwarz/PetzEqualityPrerequisites.lean`.
+`QICLean/Algebra/Combinatorics/FiniteCauchySchwarz.lean`, and a squared-norm step in
+`QICLean/Entropy/Recovery/PetzEqualityPrerequisites.lean`.
 
 ## Deprecations without replacement
 

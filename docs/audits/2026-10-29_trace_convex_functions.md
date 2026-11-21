@@ -35,7 +35,7 @@ full issue umbrella remain outside this completed corollary.
 
 ## Owned files
 
-- `QICLean/Analysis/TraceConvexFunctions.lean`: seven public declarations.
+- `QICLean/Analysis/Convexity/TraceConvexFunctions.lean`: seven public declarations.
 - `scripts/Tests/TraceConvexFunctions.lean`: actual-name endpoint, exact
   `t,1-t`, empty-dimension/empty-interval, arbitrary-function, finite-mixture,
   standard-axiom and kernel-body guards.
@@ -76,7 +76,7 @@ linter compiled native objects from cached generated C.
 
 Passed:
 
-- `lake build QICLean.Analysis.TraceConvexFunctions` (2,733 jobs, cached Mathlib).
+- `lake build QICLean.Analysis.Convexity.TraceConvexFunctions` (2,733 jobs, cached Mathlib).
 - Strict direct Lean elaboration of production, both QICLean prerequisites and
   both focused regressions, with `autoImplicit=false`, `relaxedAutoImplicit=false`,
   `pp.unicode.fun=true`, `maxSynthPendingDepth=3`, `linter.mathlibStandardSet=true`,
@@ -102,13 +102,13 @@ Reproduce focused checks from the repository root with the pinned Lean toolchain
 
 ```sh
 lake exe cache get
-lake build QICLean.Analysis.TraceConvexFunctions
-lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/TraceConvexFunctions.lean
+lake build QICLean.Analysis.Convexity.TraceConvexFunctions
+lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true QICLean/Analysis/Convexity/TraceConvexFunctions.lean
 lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true scripts/Tests/TraceConvexFunctions.lean
 lake env lean -DautoImplicit=false -DrelaxedAutoImplicit=false -Dpp.unicode.fun=true -DmaxSynthPendingDepth=3 -Dlinter.mathlibStandardSet=true -DwarningAsError=true scripts/Tests/TraceConvexFunctionsReview.lean
 lake exe lint_style
 python3 scripts/generate_import_aggregators.py --check
-python3 scripts/blueprint_lean_sync.py --ci --warn-missing-blueprint --diff-base origin/main --changed-files QICLean/Analysis/TraceConvexFunctions.lean
+python3 scripts/blueprint_lean_sync.py --ci --warn-missing-blueprint --diff-base origin/main --changed-files QICLean/Analysis/Convexity/TraceConvexFunctions.lean
 python3 scripts/check_reader_facing_prose.py --diff-base origin/main --ci
 ```
 
@@ -117,7 +117,7 @@ python3 scripts/check_reader_facing_prose.py --diff-base origin/main --ci
 The repository strict selector was actually run with `--base origin/main`.
 The new production module and both regressions passed. Its generated
 `QICLean/Analysis.lean` check failed because the unrelated preexisting
-`QICLean/Analysis/AdjointEigenvalues.olean` is absent in this targeted setup.
+`QICLean/Spectral/Eigenvalue/AdjointEigenvalues.olean` is absent in this targeted setup.
 At that stage, no full-library/Analysis build was started to fill the unrelated artifact.
 The generated import is checked by the repository generator; successful compiled
 elaboration of the whole aggregator is not claimed.

@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Channel.FixedPoint.Algebra
-import QICLean.Analysis.MatrixSqrt
-import QICLean.Channel.KrausMap
+import QICLean.Analysis.FunctionalCalculus.MatrixSqrt
+import QICLean.Channel.KrausMap.KrausMap
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 
 /-!

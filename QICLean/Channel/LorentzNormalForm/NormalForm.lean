@@ -5,7 +5,7 @@ Authors: TNLean contributors
 -/
 import QICLean.Channel.LorentzNormalForm.Basic
 import QICLean.Channel.LorentzNormalForm.Infimum
-import QICLean.Analysis.MarginalSupport
+import QICLean.Analysis.Support.MarginalSupport
 
 /-!
 # Lorentz normal form: the generic normal form for CP maps

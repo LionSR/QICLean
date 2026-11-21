@@ -3,7 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Analysis.GaussianFilter.Kernel
+import QICLean.Analysis.Calculus.Kernel
 import Mathlib.Tactic.NormNum
 
 /-! Regressions for variance, angular frequency, zero variance, and the closed-window tail. -/

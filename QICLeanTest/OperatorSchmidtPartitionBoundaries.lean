@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Data.Fintype.BigOperators
-import QICLean.Algebra.OperatorSchmidtPartition
+import QICLean.ManyBody.Sites.OperatorSchmidtPartition
 import QICLean.ManyBody.Sites.Config
 
 /-! # Vacuum, empty local alphabet and unequal regions -/
