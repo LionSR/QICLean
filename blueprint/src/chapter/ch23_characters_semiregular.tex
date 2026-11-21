@@ -1,0 +1,243 @@
+\section{Semi-regular representations}
+\label{sec:characters_semiregular}
+
+\begin{definition}[Semi-regular representation]%
+    \label{def:peps_semiregular}
+    \lean{Representation.IsSemiRegular,
+        Representation.isSemiRegular_leftRegular}
+    \leanok
+    A representation of $G$ is semi-regular if it contains every irreducible
+    representation of $G$, that is, if every irreducible representation
+    admits a nonzero intertwining map into it
+    \cite[Definition~4.5]{Schuch2010PEPS}. The left-regular representation
+    is semi-regular.
+\end{definition}
+
+\begin{lemma}[Semi-regularity under representation equivalence]%
+    \label{thm:peps_semiregular_equivalence}
+    \lean{Representation.IsSemiRegular.of_equiv,
+        Representation.Equiv.isSemiRegular_iff}
+    \leanok
+    \uses{def:peps_semiregular}
+    Equivalent representations $\rho$ and $\sigma$ are semi-regular
+    simultaneously. Thus the occurrence condition of
+    \cite[Definition~4.5]{Schuch2010PEPS} is independent of coordinates.
+\end{lemma}
+
+\begin{proof}\leanok
+    If $e$ intertwines $\rho$ with $\sigma$ and is invertible, every
+    nonzero intertwiner $f$ from an irreducible representation into
+    $\rho$ gives a nonzero intertwiner $ef$ into $\sigma$. Applying the
+    same argument to $e^{-1}$ proves the converse.
+\end{proof}
+
+\begin{lemma}[Trace duality for a semi-regular representation]%
+    \label{thm:peps_semiregular_trace}
+    \lean{Representation.character_leftRegular,
+        Representation.deltaOperator_leftRegular,
+        Representation.sum_irreducibleCharacters_mul_of_isSemiRegular,
+        Representation.trace_inv_comp_comp_deltaOperator_of_isSemiRegular}
+    \leanok
+    \uses{def:peps_delta_operator, def:peps_semiregular}
+    If $U$ is semi-regular, then $\tr[U_{g^{-1}}U_h\Delta]=\delta_{g,h}$ for
+    all $g,h\in G$, with $U_{g^{-1}}=U_g^\dagger$ for a unitary
+    representation. For the left-regular representation
+    $\Delta=\frac{1}{|G|}\Id$ \cite[Lemma~4.6]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:peps_delta_expansion, thm:peps_isotypic_projectors}
+    The character of the left-regular representation is $|G|\delta_{k,1}$,
+    so every character $\chi_i$ has multiplicity $d_i$ in it, and
+    $\Delta=\frac{1}{|G|}\sum_iP_i=\frac{1}{|G|}\Id$. Every
+    irreducible representation occurs in the left-regular representation,
+    and, since $U$ is semi-regular, in $U$; hence $U$ and the left-regular
+    representation have the same irreducible characters. Comparing the two
+    expressions for $\tr[U_k\Delta]$ in the left-regular representation gives
+    $\sum_id_i\chi_i(k)=|G|\delta_{k,1}$, and therefore
+    $\tr[U_{g^{-1}}U_h\Delta]=\frac{1}{|G|}\sum_id_i\chi_i(g^{-1}h)
+        =\delta_{g,h}$.
+\end{proof}
+
+\begin{lemma}[Twirled representation operators]%
+    \label{lem:peps_twirled_representation}
+    \lean{Representation.rep_mul_charProjector,
+        Representation.apply_conj_of_mem_irreducibleCharacters,
+        Representation.sum_rep_conj_apply_of_mem,
+        Representation.averageMap_linHom_rep,
+        Representation.linearIndependent_charProjector,
+        Representation.linearIndependent_of_isSemiRegular,
+        Representation.linearIndependent_averageMap_conjClasses}
+    \leanok
+    \uses{thm:peps_isotypic_projectors, thm:peps_group_averaging,
+        thm:peps_semiregular_trace}
+    The isotypic projectors $P_i$ commute with every $U_g$, are linearly
+    independent, and
+    \begin{align*}
+        \sigma(U_g)=\frac{1}{|G|}\sum_hU_{hgh^{-1}}
+        =\sum_{i=1}^{r}\frac{\chi_i(g)}{\chi_i(1)}\,P_i .
+    \end{align*}
+    If $U$ is semi-regular, then the operators $U_g$ are linearly independent,
+    and so are the twirls $\sigma(U_g)$ of one representative $g$ of each
+    conjugacy class \cite[proof of Theorem~4.12]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    On an irreducible subrepresentation with character $\chi_i$ the operator
+    $\sum_hU_{hgh^{-1}}$ commutes with the representation, so by Schur's lemma
+    it is a scalar, and its trace $|G|\chi_i(g)$ fixes the scalar as
+    $|G|\chi_i(g)/\chi_i(1)$; the projector $P_i$ acts there as the identity
+    and every other projector as zero. Evaluating $\sum_i\mu_iP_i$ on a nonzero
+    vector of such a subrepresentation gives $\mu_i$ times the vector. For
+    semi-regular $U$, the functional $X\mapsto\tr[U_{g^{-1}}X\Delta]$ takes the
+    value $\delta_{g,h}$ on $U_h$ by
+    Lemma~\ref{thm:peps_semiregular_trace}; on $\sigma(U_k)$ it is
+    $\frac{1}{|G|}$ times the number of $h$ with $hkh^{-1}=g$, which vanishes
+    unless $k$ is conjugate to $g$ and is positive for $k=g$.
+\end{proof}
+
+\begin{lemma}[Semi-regularity and the group algebra]
+    \label{thm:peps_semiregular_group_algebra}
+    \lean{Representation.linearIndependent_iff_injective_asAlgebraHom,
+        Representation.isSemiRegular_of_linearIndependent,
+        Representation.isSemiRegular_iff_linearIndependent,
+        Representation.isSemiRegular_iff_injective_asAlgebraHom}
+    \leanok
+    \uses{def:peps_semiregular}
+    Let $\rho$ be a finite-dimensional complex representation of a finite
+    group $G$. The following assertions are equivalent:
+    $\rho$ contains every irreducible representation; the operators
+    $(\rho(g))_{g\in G}$ are linearly independent; and the induced algebra
+    homomorphism $\C[G]\to\operatorname{End}(V)$ is injective.
+    This is an algebraic characterization of the occurrence condition in
+    \cite[Definition~4.5 and Lemma~4.6]{Schuch2010PEPS}.
+    More generally, for a representation of a monoid over a commutative
+    semiring, independence of its operators is equivalent to injectivity
+    of its monoid-algebra homomorphism.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:peps_semiregular_trace, lem:peps_twirled_representation}
+    The trace duality gives independence for a semi-regular
+    representation. Conversely, if an irreducible character $\chi$ is
+    absent, its character projector vanishes:
+    \begin{align}
+        \frac{\chi(1)}{|G|}\sum_{g\in G}\chi(g^{-1})\rho(g)=0.
+        \label{eq:peps_absent_character}
+    \end{align}
+    Indeed, the projector vanishes on every irreducible summand of $V$.
+    Independence in (\ref{eq:peps_absent_character}) would imply
+    $\chi(1)=0$, contrary to the positive dimension of the irreducible
+    representation. The standard basis of the group algebra identifies
+    the last assertion with independence of the group operators.
+\end{proof}
+
+\begin{lemma}[Semi-regularity of the contragredient]
+    \label{thm:peps_semiregular_dual}
+    \lean{Representation.IsSemiRegular.dual,
+        Representation.isSemiRegular_dual_iff}
+    \leanok
+    \uses{def:peps_semiregular}
+    A finite-dimensional complex representation $\rho$ of a finite group
+    is semi-regular if and only if its contragredient
+    $\rho^*(g)=\rho(g^{-1})^{\mathsf T}$ is semi-regular
+    \cite[Definition~5.1 and Lemma~5.2]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    \uses{thm:peps_semiregular_group_algebra}
+    Inversion permutes the group indices, and transposition is injective
+    on endomorphisms of a finite-dimensional vector space. It therefore
+    preserves independence of the group operators. Conversely,
+    independence of their transposes implies independence of the
+    original operators.
+\end{proof}
+
+\begin{lemma}[Irreducibility of the contragredient]
+    \label{thm:peps_irreducible_dual}
+    \lean{Representation.isIrreducible_dual}
+    \leanok
+    The contragredient of a finite-dimensional irreducible complex
+    representation of a group is irreducible. No unitarity or finite-group
+    hypothesis is needed.
+\end{lemma}
+
+\begin{proof}\leanok
+    The annihilator of an invariant dual subspace is invariant in the
+    original representation, since the group action on the dual uses
+    the inverse element. Irreducibility makes this annihilator zero or
+    the whole space. Finite-dimensional annihilator duality then makes
+    the original dual subspace the whole space or zero, respectively.
+\end{proof}
+
+\begin{lemma}[Dimension bound for distinct irreducibles]
+    \label{thm:peps_semiregular_dimension_bound}
+    \lean{Representation.sum_finrank_le_of_distinct_irreducibles_of_isSemiRegular}
+    \leanok
+    \uses{def:peps_semiregular}
+    Let $\sigma$ be a finite-dimensional complex semi-regular representation
+    of a finite group $G$. For any finite family $(D_i)_{i\in I}$ of
+    irreducible representations with distinct characters,
+    $\sum_{i\in I}\dim D_i\leq\dim\sigma$.
+    This dimension comparison, which underlies the smallest semi-regular
+    representation in \cite[Section~7]{Schuch2010PEPS}, requires no unitarity
+    assumption on $\sigma$.
+\end{lemma}
+
+\begin{proof}\leanok
+    Decomposing $\sigma=\bigoplus_{T\in\mathcal A}T$ as a finite internal sum
+    of irreducible subrepresentations, semi-regularity ensures that for each
+    $i$ some $T_i\in\mathcal A$ has character $\chi_{D_i}$.
+    The distinct characters make $i\mapsto T_i$ injective, and equal
+    irreducible characters give equivalent representations with
+    $\dim T_i=\dim D_i$.
+    Taking dimensions in the internal sum therefore gives
+    $\sum_i\dim D_i=\sum_i\dim T_i\leq
+        \sum_{T\in\mathcal A}\dim T=\dim\sigma$.
+\end{proof}
+
+\begin{lemma}[Tensor products of semi-regular representations]%
+    \label{thm:peps_semiregular_tensor_product}
+    \lean{Representation.isIrreducible_of_finrank_eq_one,
+        Representation.IsSemiRegular.exists_mem_invariants_ne_zero,
+        Representation.IsSemiRegular.tprod_of_mem_invariants,
+        Representation.IsSemiRegular.tprod}
+    \leanok
+    \uses{def:peps_semiregular}
+    If $U$ and $V$ are semi-regular representations of $G$, then so is
+    $U\otimes V$ \cite[proof of Lemma~5.2]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    A one-dimensional representation is irreducible, so the semi-regular
+    representation $V$ contains the trivial representation and has a nonzero
+    invariant vector $v$. If $D$ is irreducible and $f$ is a nonzero
+    intertwining map from $D$ to $U$, then $x\mapsto f(x)\otimes v$ is a
+    nonzero intertwining map from $D$ to $U\otimes V$.
+\end{proof}
+
+\begin{lemma}[The invariant coevaluation vector]%
+    \label{thm:characters_coevaluation_invariance}
+    \lean{Representation.averageMap_apply_eq_sum,
+        Representation.map_dual_coevaluation,
+        contractRight_map_coevaluation, contractRight_map_dual}
+    \leanok
+    Let $\tau$ be a finite-dimensional complex representation of a group on
+    $E$, let $(e_i)$ be a basis of $E$ with dual basis $(e_i^*)$, and let
+    $\omega=\sum_ie_i\otimes e_i^*$. Then $\omega$ is invariant under
+    $\tau(g)\otimes\tau^*(g)$ for every $g$. Write $\langle c\rangle$ for the
+    contraction $e\otimes f\mapsto f(e)$ of $c\in E\otimes E^*$. For operators
+    $M,N$ on $E$, $\langle(M\otimes\Id)\omega\rangle=\tr M$ and
+    $\langle(N\otimes\tau^*(h))c\rangle=\langle(\tau(h^{-1})N\otimes\Id)c\rangle$. For a finite group, the averaging
+    projection is $v\mapsto\frac{1}{|G|}\sum_g\tau(g)v$
+    \cite[proof of Lemma~5.2]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Expanding $\tau^*(g)e_i^*$ in the dual basis,
+    $(\tau(g)\otimes\tau^*(g))\,\omega
+        =\sum_j\big(\sum_ie_i^*(\tau(g^{-1})e_j)\,\tau(g)e_i\big)\otimes e_j^*
+        =\sum_je_j\otimes e_j^*$. The contraction of $(M\otimes\Id)\omega$ is
+    $\sum_ie_i^*(Me_i)=\tr M$. The contragredient acts by
+    $\tau^*(h)f=f\circ\tau(h^{-1})$, which moves it across the pairing.
+\end{proof}

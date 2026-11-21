@@ -1,0 +1,131 @@
+\section{Unitary representations and their star algebras}
+\label{sec:characters_unitary}
+
+\begin{definition}[Star algebra of a unitary representation]
+    \label{def:peps_unitary_representation_algebra}
+    \lean{Representation.euclideanMatrixRepresentation,
+        Representation.generatedMatrixStarAlgebra,
+        Representation.matrixInvariantSubrepresentation}
+    \leanok
+    Let $U:G\to\mathrm U(D)$ be a unitary representation. Regard its
+    matrices as operators on the standard Hilbert space $\C^D$,
+    and let $\mathcal A_U$ be their generated unital star algebra.
+    Every $\mathcal A_U$-invariant subspace carries the restriction of $U$
+    \cite[Section~4.1]{Schuch2010PEPS}.
+\end{definition}
+
+\begin{lemma}[Group and algebra invariant subspaces]
+    \label{thm:peps_unitary_representation_algebra}
+    \lean{Subrepresentation.isAtom_of_isIrreducible_toRepresentation,
+        Representation.isInvariantSubspace_generatedMatrixStarAlgebra_iff,
+        Representation.isIrreducibleSubspace_generatedMatrixStarAlgebra_iff,
+        Representation.isIntertwiner_generatedMatrixStarAlgebra_iff,
+        Representation.sameIsotype_generatedMatrixStarAlgebra_iff}
+    \leanok
+    \uses{def:peps_unitary_representation_algebra}
+    A subspace is invariant under $\mathcal A_U$ if and only if it is
+    invariant under every $U(g)$. Its restricted group representation
+    is irreducible if and only if it is an irreducible invariant subspace
+    of $\mathcal A_U$. An operator intertwines the algebra on an invariant
+    subspace if and only if it intertwines every group operator there.
+    Two irreducible invariant subspaces have the same algebra isotype
+    if and only if their restricted group representations are equivalent.
+\end{lemma}
+
+\begin{proof}\leanok
+    Since $U(g)^*=U(g^{-1})$, closure under adjoints introduces no new
+    generators. Invariance and intertwining extend from the generators
+    by sums, products, and scalar multiples. Thus the two notions have
+    identical invariant subspaces. Irreducibility is minimality among
+    nonzero invariant subspaces, or equivalently the atom condition for
+    the lattice of subrepresentations. A nonzero intertwiner between
+    irreducible subspaces is an isomorphism; conversely, extending an
+    isomorphism of the restricted representations to the ambient space
+    by first projecting orthogonally onto its source subspace produces an
+    algebra intertwiner.
+\end{proof}
+
+\begin{lemma}[Orthonormal irreducible matrix blocks]
+    \label{thm:peps_unitary_irreducible_blocks}
+    \lean{Representation.exists_unitary_irreducible_matrix_blocks}
+    \leanok
+    \uses{thm:peps_unitary_representation_algebra}
+    Suppose $G$ is finite. There are positive integers $d_i,m_i$ and an
+    orthonormal basis $(e_{i,a,j})$, with $1\leq a\leq m_i$ and
+    $1\leq j\leq d_i$, such that every row spans an irreducible
+    subrepresentation. Rows belonging to distinct indices $i$ have
+    distinct characters. For each $g\in G$ there are matrices $D_i(g)$
+    satisfying
+    \begin{align}
+        U(g)e_{i,a,j}=\sum_{j'}D_i(g)_{j'j}e_{i,a,j'}
+        \label{eq:peps_unitary_irreducible_rows}
+    \end{align}
+    \cite[Sections~4.1 and~7]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Applying the orthonormal adapted-basis decomposition of a
+    finite-dimensional star algebra to $\mathcal A_U$, the preceding
+    correspondence identifies its irreducible rows and distinct isotypes with
+    irreducible group representations and distinct characters, and its common
+    matrix action on the multiplicity rows gives
+    (\ref{eq:peps_unitary_irreducible_rows}).
+\end{proof}
+
+\begin{lemma}[Character multiplicities of orthonormal rows]
+    \label{thm:peps_unitary_character_blocks}
+    \lean{Representation.exists_unitary_character_matrix_blocks}
+    \leanok
+    \uses{thm:peps_unitary_irreducible_blocks, thm:peps_isotypic_projectors}
+    In the decomposition (\ref{eq:peps_unitary_irreducible_rows}), each
+    row has dimension $d_i$, and the character of a row occurs in the
+    full representation with multiplicity exactly $m_i$.
+    Thus the orthonormal decomposition gives the dimensions and
+    multiplicities appearing in \cite[Lemma~4.4]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    Map the basis of one row to another row of the same component.
+    The common matrix action makes this a group intertwiner, so those
+    rows have the same character. Rows of different components have
+    distinct characters. The character projector onto component $i$
+    therefore fixes exactly its $m_id_i$ orthonormal basis vectors.
+    Its trace is $m_id_i$. The character trace identity gives the same
+    trace as $m_{\chi_i}d_i$. Since $d_i>0$, cancellation gives
+    $m_{\chi_i}=m_i$.
+\end{proof}
+
+\begin{lemma}[Regular representations in relative coordinates]%
+    \label{thm:peps_regular_blocking_coordinates}
+    \lean{Matrix.permMatrixHom_prodCongr,
+        RegularRepresentation.blockingEquiv, RegularRepresentation.blockingEquiv_apply,
+        RegularRepresentation.blockingEquiv_symm_apply,
+        RegularRepresentation.blockingEquiv_conjugates,
+        RegularRepresentation.blockingFamilyEquiv,
+        RegularRepresentation.blockingFamilyEquiv_apply,
+        RegularRepresentation.blockingFamilyEquiv_symm_apply,
+        RegularRepresentation.blockingFamilyEquiv_smul,
+        RegularRepresentation.blockingFamilyEquiv_conjugates,
+        RegularRepresentation.blockingMatrix,
+        RegularRepresentation.blockingMatrix_mem_unitaryGroup,
+        RegularRepresentation.blockingMatrix_conjugates,
+        RegularRepresentation.blockingFamilyMatrix,
+        RegularRepresentation.blockingFamilyMatrix_mem_unitaryGroup,
+        RegularRepresentation.blockingFamilyMatrix_conjugates}
+    \leanok
+    The basis permutation $T\ket{a,b}=\ket{a,ab}$ is unitary and satisfies
+    $T^\dagger(L_g\otimes L_g)T=L_g\otimes\Id$, where
+    $L_g\ket a=\ket{ga}$. For a finite family of additional labels, the
+    permutation $\ket{a,(b_i)_i}\mapsto\ket{a,(ab_i)_i}$ similarly transforms
+    simultaneous left multiplication into left multiplication of $a$
+    alone \cite[Section~6]{Schuch2010PEPS}.
+\end{lemma}
+
+\begin{proof}\leanok
+    The inverse change of coordinates is $(a,(c_i)_i)\mapsto
+        (a,(a^{-1}c_i)_i)$. Thus simultaneous multiplication by $g$ sends
+    $(a,(ab_i)_i)$ to $(ga,(gab_i)_i)$, and in relative coordinates only
+    the first label changes. The permutation matrices are unitary, and
+    the matrix of a product permutation is the Kronecker product of the
+    factor matrices.
+\end{proof}
