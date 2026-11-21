@@ -42,24 +42,6 @@ namespace ManyBody
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type*)
 
-/-- Restriction to each member identifies configurations on a disjoint union
-with pairs of configurations. -/
-def unionEquiv (R T : Finset V) (h : Disjoint R T) :
-    RegionConfig β (R ∪ T) ≃ RegionConfig β R × RegionConfig β T where
-  toFun x := (fun v ↦ x ⟨v, Finset.mem_union_left T v.property⟩,
-    fun v ↦ x ⟨v, Finset.mem_union_right R v.property⟩)
-  invFun x v := if hv : (v : V) ∈ R then x.1 ⟨v, hv⟩ else
-    x.2 ⟨v, (Finset.mem_union.mp v.property).resolve_left hv⟩
-  left_inv x := by funext v; dsimp; split <;> rfl
-  right_inv x := by
-    rcases x with ⟨x, y⟩
-    apply Prod.ext
-    · funext v
-      simp only [dite_eq_left v.property]
-    · funext v
-      have hv : (v : V) ∉ R := fun hv ↦ Finset.disjoint_left.mp h hv v.property
-      simp only [dite_eq_right hv]
-
 omit [Fintype V] in
 /-- The sites outside a region split into a disjoint second region and the sites outside
 their union. -/
@@ -96,14 +78,14 @@ omit [Fintype V] in
 theorem split_union_symm (R T : Finset V) (h : Disjoint R T)
     (a : RegionConfig β R) (b : RegionConfig β T)
     (c : ComplConfig β (R ∪ T)) :
-    (cutEquiv β (R ∪ T)).symm ((unionEquiv β R T h).symm (a, b), c) =
+    (cutEquiv β (R ∪ T)).symm ((regionUnionEquiv (β := β) h).symm (a, b), c) =
       (cutEquiv β R).symm (a, (complementUnionEquiv β R T h).symm (b, c)) := by
   funext v
   by_cases hvR : v ∈ R
-  · simp [Equiv.piEquivPiSubtypeProd, unionEquiv, hvR]
+  · simp [Equiv.piEquivPiSubtypeProd, regionUnionEquiv, hvR]
   · by_cases hvT : v ∈ T
-    · simp [Equiv.piEquivPiSubtypeProd, unionEquiv, complementUnionEquiv, hvR, hvT]
-    · simp [Equiv.piEquivPiSubtypeProd, unionEquiv, complementUnionEquiv, hvR, hvT]
+    · simp [Equiv.piEquivPiSubtypeProd, regionUnionEquiv, complementUnionEquiv, hvR, hvT]
+    · simp [Equiv.piEquivPiSubtypeProd, regionUnionEquiv, complementUnionEquiv, hvR, hvT]
 
 variable [∀ v, Fintype (β v)]
 
@@ -138,7 +120,7 @@ theorem partialTraceRight_regionMatrix_union
     (ρ : Matrix ((v : V) → β v) ((v : V) → β v) ℂ)
     (R T : Finset V) (h : Disjoint R T) :
     Matrix.partialTraceRight ((regionMatrix ρ (R ∪ T)).submatrix
-        (unionEquiv β R T h).symm (unionEquiv β R T h).symm) =
+        (regionUnionEquiv (β := β) h).symm (regionUnionEquiv (β := β) h).symm) =
       regionMatrix ρ R := by
   ext a a'
   simp only [Matrix.partialTraceRight_apply, Matrix.submatrix_apply, regionMatrix_apply]
@@ -149,17 +131,17 @@ theorem partialTraceRight_regionMatrix_union
 
 omit [Fintype V] [∀ v, Fintype (β v)] in
 /-- Swapping two disjoint regions swaps the factors of their union coordinates. -/
-theorem unionEquiv_symm_swap (R T : Finset V) (h : Disjoint R T)
+theorem regionUnionEquiv_symm_swap (R T : Finset V) (h : Disjoint R T)
     (a : RegionConfig β R) (b : RegionConfig β T) :
     configurationCongr β (Finset.union_comm R T)
-        ((unionEquiv β R T h).symm (a, b)) =
-      (unionEquiv β T R h.symm).symm (b, a) := by
+        ((regionUnionEquiv (β := β) h).symm (a, b)) =
+      (regionUnionEquiv (β := β) h.symm).symm (b, a) := by
   funext v
   by_cases hvR : (v : V) ∈ R
   · have hvT : (v : V) ∉ T := fun hvT ↦ Finset.disjoint_left.mp h hvR hvT
-    simp [configurationCongr_apply, unionEquiv, hvR, hvT]
+    simp [configurationCongr_apply, regionUnionEquiv, hvR, hvT]
   · have hvT : (v : V) ∈ T := (Finset.mem_union.mp v.property).resolve_right hvR
-    simp [configurationCongr_apply, unionEquiv, hvR, hvT]
+    simp [configurationCongr_apply, regionUnionEquiv, hvR, hvT]
 
 /-- Rewriting the region only reindexes its reduced matrix. -/
 theorem regionMatrix_congr_region
@@ -176,17 +158,17 @@ theorem partialTraceLeft_regionMatrix_union
     (ρ : Matrix ((v : V) → β v) ((v : V) → β v) ℂ)
     (R T : Finset V) (h : Disjoint R T) :
     Matrix.partialTraceLeft ((regionMatrix ρ (R ∪ T)).submatrix
-        (unionEquiv β R T h).symm (unionEquiv β R T h).symm) =
+        (regionUnionEquiv (β := β) h).symm (regionUnionEquiv (β := β) h).symm) =
       regionMatrix ρ T := by
   have hswap :
       (regionMatrix ρ (R ∪ T)).submatrix
-          (unionEquiv β R T h).symm (unionEquiv β R T h).symm =
+          (regionUnionEquiv (β := β) h).symm (regionUnionEquiv (β := β) h).symm =
         ((regionMatrix ρ (T ∪ R)).submatrix
-          (unionEquiv β T R h.symm).symm (unionEquiv β T R h.symm).symm).submatrix
+          (regionUnionEquiv (β := β) h.symm).symm (regionUnionEquiv (β := β) h.symm).symm).submatrix
             Prod.swap Prod.swap := by
     rw [← regionMatrix_congr_region β ρ (Finset.union_comm R T)]
     ext ⟨a, a'⟩ ⟨b, b'⟩
-    simp only [Matrix.submatrix_apply, unionEquiv_symm_swap, Prod.swap_prod_mk]
+    simp only [Matrix.submatrix_apply, regionUnionEquiv_symm_swap, Prod.swap_prod_mk]
   rw [hswap]
   exact partialTraceRight_regionMatrix_union β ρ T R h.symm
 

@@ -56,16 +56,16 @@ private theorem union_associate (X Z C : Finset V)
     (x : RegionConfig β X) (z : RegionConfig β Z)
         (c : RegionConfig β C) :
     configurationCongr β (Finset.union_assoc X Z C)
-      ((unionEquiv β (X ∪ Z) C (Finset.disjoint_union_left.mpr ⟨hXC, hZC⟩)).symm
-        ((unionEquiv β X Z hXZ).symm (x, z), c)) =
-      (unionEquiv β X (Z ∪ C) (Finset.disjoint_union_right.mpr ⟨hXZ, hXC⟩)).symm
-        (x, (unionEquiv β Z C hZC).symm (z, c)) := by
+      ((regionUnionEquiv (β := β) (Finset.disjoint_union_left.mpr ⟨hXC, hZC⟩)).symm
+        ((regionUnionEquiv (β := β) hXZ).symm (x, z), c)) =
+      (regionUnionEquiv (β := β) (Finset.disjoint_union_right.mpr ⟨hXZ, hXC⟩)).symm
+        (x, (regionUnionEquiv (β := β) hZC).symm (z, c)) := by
   funext v
   by_cases hx : (v : V) ∈ X
-  · simp [configurationCongr_apply, unionEquiv, hx]
+  · simp [configurationCongr_apply, regionUnionEquiv, hx]
   · by_cases hz : (v : V) ∈ Z
-    · simp [configurationCongr_apply, unionEquiv, hx, hz]
-    · simp [configurationCongr_apply, unionEquiv, hx, hz]
+    · simp [configurationCongr_apply, regionUnionEquiv, hx, hz]
+    · simp [configurationCongr_apply, regionUnionEquiv, hx, hz]
 
 private theorem entropy_ssa (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (X Z C : Finset V) (hXZ : Disjoint X Z) (hXC : Disjoint X C)
@@ -73,39 +73,39 @@ private theorem entropy_ssa (ψ : EuclideanSpace ℂ ((v : V) → β v))
     regionEntropy ψ (X ∪ (Z ∪ C)) + regionEntropy ψ Z ≤
       regionEntropy ψ (X ∪ Z) + regionEntropy ψ (Z ∪ C) := by
   have hX_ZC : Disjoint X (Z ∪ C) := Finset.disjoint_union_right.mpr ⟨hXZ, hXC⟩
-  let e := (unionEquiv β X (Z ∪ C) hX_ZC).trans
-    ((Equiv.refl _).prodCongr (unionEquiv β Z C hZC))
+  let e := (regionUnionEquiv (β := β) hX_ZC).trans
+    ((Equiv.refl _).prodCongr (regionUnionEquiv (β := β) hZC))
   let ω := (regionState ψ (X ∪ (Z ∪ C))).submatrix e.symm e.symm
   have hω : ω.PosSemidef := (regionState_posSemidef _ ψ).submatrix _
   have hs := Entropy.strongSubadditivity_of_posSemidef ω hω
   have hBC : Matrix.partialTraceLeft ω = (regionState ψ (Z ∪ C)).submatrix
-      (unionEquiv β Z C hZC).symm (unionEquiv β Z C hZC).symm := by
+      (regionUnionEquiv (β := β) hZC).symm (regionUnionEquiv (β := β) hZC).symm := by
     have ht := partialTraceLeft_regionMatrix_union β
       (Matrix.vecMulVec (WithLp.ofLp ψ) (star (WithLp.ofLp ψ))) X (Z ∪ C)
       hX_ZC
     change Matrix.partialTraceLeft
       (((regionState ψ (X ∪ (Z ∪ C))).submatrix
-        (unionEquiv β X (Z ∪ C) hX_ZC).symm
-            (unionEquiv β X (Z ∪ C) hX_ZC).symm).submatrix
-          (Prod.map id (unionEquiv β Z C hZC).symm)
-          (Prod.map id (unionEquiv β Z C hZC).symm)) = _
+        (regionUnionEquiv (β := β) hX_ZC).symm
+            (regionUnionEquiv (β := β) hX_ZC).symm).submatrix
+          (Prod.map id (regionUnionEquiv (β := β) hZC).symm)
+          (Prod.map id (regionUnionEquiv (β := β) hZC).symm)) = _
     rw [← partialTraceLeft_submatrix_right]
     simp only [regionState]
     rw [ht]
   have hB : Matrix.partialTraceRight (Matrix.partialTraceLeft ω) = regionState ψ Z := by
     rw [hBC]
     exact partialTraceRight_regionMatrix_union β _ Z C hZC
-  let u := unionEquiv β (X ∪ Z) C (Finset.disjoint_union_left.mpr ⟨hXC, hZC⟩)
-  let v := unionEquiv β X Z hXZ
+  let u := regionUnionEquiv (β := β) (Finset.disjoint_union_left.mpr ⟨hXC, hZC⟩)
+  let v := regionUnionEquiv (β := β) hXZ
   have hreassoc : Entropy.reassoc ω =
       ((regionState ψ ((X ∪ Z) ∪ C)).submatrix u.symm u.symm).submatrix
         (Prod.map v.symm id) (Prod.map v.symm id) := by
     ext ⟨⟨x, z⟩, c⟩ ⟨⟨x', z'⟩, c'⟩
     change regionState ψ (X ∪ (Z ∪ C))
-      ((unionEquiv β X (Z ∪ C) hX_ZC).symm
-        (x, (unionEquiv β Z C hZC).symm (z, c)))
-      ((unionEquiv β X (Z ∪ C) hX_ZC).symm
-        (x', (unionEquiv β Z C hZC).symm (z', c'))) =
+      ((regionUnionEquiv (β := β) hX_ZC).symm
+        (x, (regionUnionEquiv (β := β) hZC).symm (z, c)))
+      ((regionUnionEquiv (β := β) hX_ZC).symm
+        (x', (regionUnionEquiv (β := β) hZC).symm (z', c'))) =
       regionState ψ ((X ∪ Z) ∪ C) (u.symm (v.symm (x, z), c))
         (u.symm (v.symm (x', z'), c'))
     rw [← union_associate β X Z C hXZ hXC hZC x z c,
@@ -132,7 +132,7 @@ private theorem entropy_ssa (ψ : EuclideanSpace ℂ ((v : V) → β v))
       (regionState_posSemidef (X ∪ (Z ∪ C)) ψ).isHermitian,
     vonNeumannEntropy_submatrix_equiv v.symm _
       (regionState_posSemidef (X ∪ Z) ψ).isHermitian,
-    vonNeumannEntropy_submatrix_equiv (unionEquiv β Z C hZC).symm _
+    vonNeumannEntropy_submatrix_equiv (regionUnionEquiv (β := β) hZC).symm _
       (regionState_posSemidef (Z ∪ C) ψ).isHermitian] at hs
   exact hs
 
