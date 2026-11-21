@@ -3,9 +3,9 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
-import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Gate.Controlled
 import QICLean.Circuit.Gate.TwoLevel
+import QICLean.ManyBody.Sites.RegionUnion
 
 /-!
 # Controlled one-site operations
@@ -25,12 +25,13 @@ step "can be further expressed with a low-depth circuit of local gates" of arXiv
 (caption of Fig. 1 and paragraph "The sequential-RG circuit").
 
 The declarations restate `ctrlOp` and its lemmas of `TNLean/Circuit/Gates/Controlled.lean`,
-`ctrlProj` and the lemmas on `siteOp` and `ctrlProj` used by them of
-`TNLean/Circuit/SiteOperators.lean`, and `twoLevel_update_eq_ctrlOp` of
-`TNLean/Circuit/Gates/ControlledProducts.lean`, at commit `414a18fb88` (Apache-2.0). The changes:
-any finite basis at each site in place of one common dimension `d`; the operator `u` at the site
-`t` is the placement `ManyBody.place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t))` in place
-of a separate definition `siteOp`; statements of unitarity use `Matrix.unitaryGroup`.
+`ctrlProj` and its lemmas of `TNLean/Circuit/SiteOperators.lean`, and
+`twoLevel_update_eq_ctrlOp` of `TNLean/Circuit/Gates/ControlledProducts.lean`, at commit
+`414a18fb88` (Apache-2.0). The changes: any finite basis at each site in place of one common
+dimension `d`; the operator `u` at the site `t` is the placement
+`ManyBody.place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t))` in place of a separate
+definition `siteOp`, with its lemmas in `QICLean.ManyBody.Sites.RegionUnion`; statements of
+unitarity use `Matrix.unitaryGroup`.
 
 ## Main definitions
 
@@ -40,8 +41,6 @@ of a separate definition `siteOp`; statements of unitarity use `Matrix.unitaryGr
 
 ## Main results
 
-* `QuantumCircuit.place_siteEquiv_eq_prodOp` — the operator `u` at `t` is the product operator
-  with `u` at `t` and the identity elsewhere.
 * `QuantumCircuit.ctrlOp_mul`, `QuantumCircuit.ctrlOp_one`, `QuantumCircuit.ctrlOp_conjTranspose`,
   `QuantumCircuit.ctrlOp_mem_unitaryGroup`, `QuantumCircuit.ctrlOp_mem_supportedOperators`.
 * `QuantumCircuit.ctrlOp_insert_commutator` — removing one control from a controlled commutator.
@@ -55,63 +54,6 @@ namespace QuantumCircuit
 
 variable {S : Type} [Fintype S] [DecidableEq S] {X : S → Type}
   [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
-
-/-! ### One-site operators -/
-
-section Site
-
-variable (t : S)
-
-omit [∀ s, Fintype (X s)] in
-/-- Entrywise, `u` at the site `t` has the entry `u (x t) (y t)` between configurations that
-agree off `t`, and `0` between the others. -/
-theorem place_siteEquiv_apply (u : Matrix (X t) (X t) ℂ) (x y : Config X) :
-    place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) x y =
-      if ∀ v, v ≠ t → x v = y v then u (x t) (y t) else 0 := by
-  rw [place_apply]
-  simp only [Finset.mem_singleton]
-  rfl
-
-theorem place_siteEquiv_mul (u w : Matrix (X t) (X t) ℂ) :
-    place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) *
-        place {t} (w.submatrix (siteEquiv X t) (siteEquiv X t)) =
-      place {t} ((u * w).submatrix (siteEquiv X t) (siteEquiv X t)) := by
-  rw [← place_mul, submatrix_mul_equiv]
-
-omit [∀ s, Fintype (X s)] in
-@[simp] theorem place_siteEquiv_one :
-    place {t} ((1 : Matrix (X t) (X t) ℂ).submatrix (siteEquiv X t) (siteEquiv X t)) = 1 := by
-  rw [submatrix_one_equiv, place_one]
-
-omit [∀ s, Fintype (X s)] in
-theorem place_siteEquiv_conjTranspose (u : Matrix (X t) (X t) ℂ) :
-    (place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)))ᴴ =
-      place {t} (uᴴ.submatrix (siteEquiv X t) (siteEquiv X t)) := by
-  rw [← place_conjTranspose, conjTranspose_submatrix]
-
-theorem place_siteEquiv_mem_unitaryGroup {u : Matrix (X t) (X t) ℂ}
-    (hu : u ∈ unitaryGroup (X t) ℂ) :
-    place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) ∈ unitaryGroup (Config X) ℂ :=
-  place_mem_unitaryGroup (submatrix_equiv_mem_unitary.mpr hu)
-
-omit [∀ s, Fintype (X s)] in
-/-- The operator `u` at the site `t` is the product operator with `u` at `t` and the identity at
-the other sites. -/
-theorem place_siteEquiv_eq_prodOp (u : Matrix (X t) (X t) ℂ) :
-    place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) =
-      prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) t u) := by
-  ext x y
-  rw [place_siteEquiv_apply, prodOp_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t),
-    Function.update_self]
-  have h : ∀ s ∈ Finset.univ.erase t,
-      Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) t u s (x s) (y s) =
-        if x s = y s then 1 else 0 := fun s hs ↦ by
-    rw [Function.update_of_ne (Finset.ne_of_mem_erase hs), one_apply]
-  rw [Finset.prod_congr rfl h, Finset.prod_boole]
-  simp only [Finset.mem_erase, ne_eq, Finset.mem_univ, and_true]
-  split_ifs <;> simp
-
-end Site
 
 /-! ### Projections onto configurations -/
 

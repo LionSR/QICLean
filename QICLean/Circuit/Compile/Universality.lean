@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.InformationTheory.Hamming
+import QICLean.Circuit.Core.SiteControlled
 import QICLean.Circuit.Gate.Givens
-import QICLean.Circuit.Gate.SiteControlled
 import QICLean.Circuit.Model.Unitary
 
 /-!
@@ -126,10 +126,7 @@ theorem of_mem_supportedOperators_singleton {t : S} {Z : Matrix (Config X) (Conf
     IsGateProduct Γ K Z := by
   by_cases hne : ∀ s, Nonempty (X s)
   · obtain ⟨V, rfl⟩ := exists_eq_place_of_mem_supportedOperators hZ
-    have hV : V ∈ unitaryGroup _ ℂ := mem_unitaryGroup_iff'.mpr (place_injective {t} (by
-      rw [place_mul, star_eq_conjTranspose, place_conjTranspose, place_one,
-        ← star_eq_conjTranspose]
-      exact mem_unitaryGroup_iff'.mp hZu))
+    have hV : V ∈ unitaryGroup _ ℂ := place_mem_unitaryGroup_iff.mp hZu
     exact place_singleton t hV K
   · push Not at hne
     obtain ⟨s, hs⟩ := hne

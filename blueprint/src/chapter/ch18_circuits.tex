@@ -844,8 +844,8 @@ sequence on one system.
 
 \begin{definition}[Gates from matrices on a local basis]
     \label{def:circuits_local_gate}
-    \lean{QuantumCircuit.siteEquiv, QuantumCircuit.pairEquiv,
-        QuantumCircuit.pairEquiv_symm_apply_left, QuantumCircuit.pairEquiv_symm_apply_right,
+    \lean{ManyBody.siteEquiv, ManyBody.pairEquiv,
+        ManyBody.pairEquiv_symm_apply_left, ManyBody.pairEquiv_symm_apply_right,
         QuantumCircuit.KrausGate.ofMatrix, QuantumCircuit.Geometry.sitesAndPairs,
         QuantumCircuit.Geometry.mem_sitesAndPairs_cell_inl,
         QuantumCircuit.Geometry.mem_sitesAndPairs_cell_inr}
@@ -862,7 +862,7 @@ sequence on one system.
 \begin{lemma}[Unitary gates, and a gate on one site acting on a vector]
     \label{lem:circuits_local_gate_unitary}
     \lean{KrausFamily.isUnitary_single, QuantumCircuit.KrausGate.isUnitary_ofMatrix,
-        QuantumCircuit.place_siteEquiv_mulVec}
+        ManyBody.place_siteEquiv_mulVec}
     \leanok
     \uses{def:circuits_local_gate, def:sites_place}
     The family of one unitary matrix is unitary, so the gate of a unitary matrix on a
