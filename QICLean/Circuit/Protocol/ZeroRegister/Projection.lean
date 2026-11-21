@@ -26,7 +26,7 @@ reflection about the range is not restated here.
 
 ## Main results
 
-* `Matrix.initializedBasisMatrix_mul_conjTranspose` — the range projection of a basis
+* `Matrix.basisInclusion_mul_conjTranspose` — the range projection of a basis
   inclusion is the indicator of its image.
 * `QuantumCircuit.zeroFlagEmbedding_apply_selected`,
   `QuantumCircuit.zeroFlagEmbedding_apply_of_notMem`,
@@ -43,17 +43,17 @@ open Matrix
 namespace Matrix
 
 /-- The range projection of a basis inclusion is the diagonal indicator of its image. -/
-theorem initializedBasisMatrix_mul_conjTranspose {ι κ : Type*} [Fintype κ] [DecidableEq ι]
+theorem basisInclusion_mul_conjTranspose {ι κ : Type*} [Fintype κ] [DecidableEq ι]
     (e : κ ↪ ι) [DecidablePred (· ∈ Set.range e)] :
-    initializedBasisMatrix e * (initializedBasisMatrix e)ᴴ =
+    basisInclusion e * (basisInclusion e)ᴴ =
       diagonal fun x ↦ if x ∈ Set.range e then (1 : ℂ) else 0 := by
   ext x y
   by_cases hx : x ∈ Set.range e
   · obtain ⟨u, rfl⟩ := hx
-    rw [initializedBasisMatrix_mul_apply_self, conjTranspose_apply, diagonal_apply,
+    rw [basisInclusion_mul_apply_self, conjTranspose_apply, diagonal_apply,
       ite_eq_left (Set.mem_range_self u)]
-    simp [initializedBasisMatrix, one_apply, eq_comm]
-  · rw [initializedBasisMatrix_mul_apply_of_notMem _ _ hx, diagonal_apply]
+    simp [basisInclusion, one_apply, eq_comm]
+  · rw [basisInclusion_mul_apply_of_notMem _ _ hx, diagonal_apply]
     simp [hx]
 
 end Matrix
@@ -101,25 +101,25 @@ theorem mem_range_zeroFlagEmbedding_iff (s : Fin a → Fin n) (x : Fin n → Fin
 /-- The range projection of the zero-flag inclusion is the diagonal projection onto the
 configurations whose selected flags are all `0`. -/
 theorem zeroFlagEmbedding_range_projection (s : Fin a → Fin n) :
-    initializedBasisMatrix (zeroFlagEmbedding (d := d) s) *
-        (initializedBasisMatrix (zeroFlagEmbedding (d := d) s))ᴴ =
+    basisInclusion (zeroFlagEmbedding (d := d) s) *
+        (basisInclusion (zeroFlagEmbedding (d := d) s))ᴴ =
       diagonal fun x : Fin n → Fin d ↦ if ∀ j, x (s j) = 0 then (1 : ℂ) else 0 := by
   classical
-  rw [initializedBasisMatrix_mul_conjTranspose]
+  rw [basisInclusion_mul_conjTranspose]
   simp only [mem_range_zeroFlagEmbedding_iff]
 
 /-- The range projection of the zero-flag inclusion is an orthogonal projection. -/
 theorem isStarProjection_zeroFlagEmbedding_range (s : Fin a → Fin n) :
-    IsStarProjection (initializedBasisMatrix (zeroFlagEmbedding (d := d) s) *
-      (initializedBasisMatrix (zeroFlagEmbedding (d := d) s))ᴴ) :=
-  isStarProjection_mul_conjTranspose_of_isometry _ (initializedBasisMatrix_isIsometry _)
+    IsStarProjection (basisInclusion (zeroFlagEmbedding (d := d) s) *
+      (basisInclusion (zeroFlagEmbedding (d := d) s))ᴴ) :=
+  isStarProjection_mul_conjTranspose_of_isometry _ (basisInclusion_isIsometry _)
 
 /-- The selected-flags reflection is the reflection about the range of the zero-flag
 inclusion. -/
 theorem selectedZeroRegisterLogical_eq_subspaceReflection (s : Fin a → Fin n) :
     selectedZeroRegisterLogical (d := d) s =
-      subspaceReflection (initializedBasisMatrix (zeroFlagEmbedding (d := d) s) *
-        (initializedBasisMatrix (zeroFlagEmbedding (d := d) s))ᴴ) := by
+      subspaceReflection (basisInclusion (zeroFlagEmbedding (d := d) s) *
+        (basisInclusion (zeroFlagEmbedding (d := d) s))ᴴ) := by
   rw [zeroFlagEmbedding_range_projection, subspaceReflection,
     selectedZeroRegisterLogical_eq_one_sub]
 

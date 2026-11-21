@@ -15,7 +15,7 @@ and any orthonormal family extends to an orthonormal basis.
 
 The declaration restates `Matrix.exists_mem_unitaryGroup_apply_embedding_eq` of
 `TNLean/Algebra/IsometryUnitaryExtension.lean` at commit `414a18fb88` (Apache-2.0), with its
-statement unchanged; the proof uses `Matrix.initializedBasisMatrix`.
+statement unchanged; the proof uses `Matrix.basisInclusion`.
 
 ## Main results
 
@@ -40,9 +40,9 @@ theorem exists_mem_unitaryGroup_apply_embedding_eq {ι κ : Type*} [Fintype ι] 
     [DecidableEq κ] {V : Matrix ι κ ℂ} (hV : V.IsIsometry) (e : κ ↪ ι) :
     ∃ U ∈ Matrix.unitaryGroup ι ℂ, ∀ i k, U i (e k) = V i k := by
   have : Finite κ := Finite.of_injective e e.injective
-  obtain ⟨U, hU⟩ := exists_unitary_mul_eq_of_conjTranspose_mul_eq V (initializedBasisMatrix e)
-    ((show Vᴴ * V = 1 from hV).trans (initializedBasisMatrix_isIsometry e).symm)
+  obtain ⟨U, hU⟩ := exists_unitary_mul_eq_of_conjTranspose_mul_eq V (basisInclusion e)
+    ((show Vᴴ * V = 1 from hV).trans (basisInclusion_isIsometry e).symm)
   exact ⟨U, U.property, fun i k ↦
-    (mul_initializedBasisMatrix_apply e (U : Matrix ι ι ℂ) i k).symm.trans (congrFun₂ hU i k).symm⟩
+    (mul_basisInclusion_apply e (U : Matrix ι ι ℂ) i k).symm.trans (congrFun₂ hU i k).symm⟩
 
 end Matrix

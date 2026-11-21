@@ -110,7 +110,7 @@ theorem zeroRegisterReflection_apply_clean (hd : 2 ≤ d) (ha : 0 < a) (x : Fin 
 `R J = J (1 - 2 |0⟩⟨0|)` for the basis inclusion `J` of `x ↦ (x, 0)`. This is an identity of
 linear maps, so it holds on superpositions and with a reference system. -/
 theorem isCleanImplementation_zeroRegisterReflection (hd : 2 ≤ d) (ha : 0 < a) :
-    IsCleanImplementation (initializedBasisMatrix (workspaceEmbedding (n := a) (0 : Fin a → Fin d)))
+    IsCleanImplementation (basisInclusion (workspaceEmbedding (n := a) (0 : Fin a → Fin d)))
       (zeroRegisterReflection ha)
       (1 - (2 : ℂ) • diagonal fun x : Fin a → Fin d ↦ if x = 0 then (1 : ℂ) else 0) := by
   have hM : (1 - (2 : ℂ) • diagonal fun x : Fin a → Fin d ↦ if x = 0 then (1 : ℂ) else 0) =
@@ -126,8 +126,8 @@ theorem isCleanImplementation_zeroRegisterReflection (hd : 2 ≤ d) (ha : 0 < a)
     · simp [hxy]
   rw [IsCleanImplementation, hM]
   ext z x
-  rw [mul_initializedBasisMatrix_apply, mul_diagonal, workspaceEmbedding_apply,
-    zeroRegisterReflection_apply_clean hd, initializedBasisMatrix, submatrix_apply, id, one_apply,
+  rw [mul_basisInclusion_apply, mul_diagonal, workspaceEmbedding_apply,
+    zeroRegisterReflection_apply_clean hd, basisInclusion, submatrix_apply, id, one_apply,
     workspaceEmbedding_apply, mul_comm]
 
 end QuantumCircuit

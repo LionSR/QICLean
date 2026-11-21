@@ -87,7 +87,7 @@ theorem map_encodeCircuit_trans (e : ∀ s, X s ↪ Y s) (g : ∀ s, Y s ↪ Y' 
   have h : Function.Embedding.piCongrRight (fun s ↦ (e s).trans (g s)) =
       (Function.Embedding.piCongrRight e).trans (Function.Embedding.piCongrRight g) := rfl
   rw [LinearMap.comp_apply, map_encodeCircuit, map_encodeCircuit, map_encodeCircuit, h,
-    ← initializedBasisMatrix_mul_initializedBasisMatrix]
+    ← basisInclusion_mul_basisInclusion]
   simp only [conjTranspose_mul, Matrix.mul_assoc]
 
 variable (Γ) in

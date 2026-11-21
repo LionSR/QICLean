@@ -58,7 +58,7 @@ zero-register reflection is not carried here.
 * `QuantumCircuit.IsCleanImplementation.logical_mem_unitaryGroup` — the logical operator is
   unitary.
 * `QuantumCircuit.IsCleanImplementation.kronecker_one` — a reference system.
-* `QuantumCircuit.exists_isGateProduct_mul_initializedBasisMatrix_eq`,
+* `QuantumCircuit.exists_isGateProduct_mul_basisInclusion_eq`,
   `QuantumCircuit.exists_isGateProduct_isCleanImplementation` — implementations by products of
   gates.
 * `QuantumCircuit.isCleanImplementation_sitePermOp_workspaceFixedSitePerm`,
@@ -186,13 +186,13 @@ the restriction of such a product to the basis columns `e k`.
 
 Source: the leaf and merger packets of Section 5 of TNLean
 `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`. -/
-theorem exists_isGateProduct_mul_initializedBasisMatrix_eq
+theorem exists_isGateProduct_mul_basisInclusion_eq
     (huniv : ∀ U ∈ unitaryGroup (Config X) ℂ, IsGateProduct Γ K U) {κ : Type*} [DecidableEq κ]
     (e : κ ↪ Config X) {W : Matrix (Config X) κ ℂ} (hW : W.IsIsometry) :
-    ∃ U, IsGateProduct Γ K U ∧ U * initializedBasisMatrix e = W := by
+    ∃ U, IsGateProduct Γ K U ∧ U * basisInclusion e = W := by
   obtain ⟨U, hU, hUW⟩ := exists_mem_unitaryGroup_apply_embedding_eq hW e
   exact ⟨U, huniv U hU, Matrix.ext fun i k ↦
-    (mul_initializedBasisMatrix_apply e U i k).trans (hUW i k)⟩
+    (mul_basisInclusion_apply e U i k).trans (hUW i k)⟩
 
 /-- **Clean implementation of a logical unitary.** If every unitary on the configurations is a
 product of gates of total cost at most `K`, then every unitary `Z` on `ℂ^κ` has a clean
@@ -203,9 +203,9 @@ Source: the leaf construction of Section 5 of TNLean
 theorem exists_isGateProduct_isCleanImplementation
     (huniv : ∀ U ∈ unitaryGroup (Config X) ℂ, IsGateProduct Γ K U) {κ : Type*} [Fintype κ]
     [DecidableEq κ] (e : κ ↪ Config X) {Z : Matrix κ κ ℂ} (hZ : Z ∈ unitaryGroup κ ℂ) :
-    ∃ U, IsGateProduct Γ K U ∧ IsCleanImplementation (initializedBasisMatrix e) U Z :=
-  exists_isGateProduct_mul_initializedBasisMatrix_eq huniv e
-    ((initializedBasisMatrix_isIsometry e).mul _ Z (mem_unitaryGroup_iff'.mp hZ))
+    ∃ U, IsGateProduct Γ K U ∧ IsCleanImplementation (basisInclusion e) U Z :=
+  exists_isGateProduct_mul_basisInclusion_eq huniv e
+    ((basisInclusion_isIsometry e).mul _ Z (mem_unitaryGroup_iff'.mp hZ))
 
 end Gates
 
@@ -232,16 +232,16 @@ variable [Fintype α] [DecidableEq α]
 
 /-- The rows of `J * Z`, for the workspace inclusion `J`: the row of `Z` at the logical part of
 a configuration whose workspace part is `w`, and zero otherwise. -/
-theorem initializedBasisMatrix_workspaceEmbedding_mul_apply {μ : Type*} (w : Fin a → α)
+theorem basisInclusion_workspaceEmbedding_mul_apply {μ : Type*} (w : Fin a → α)
     (Z : Matrix (Fin n → α) μ ℂ) (z : Fin (n + a) → α) (x : μ) :
-    (initializedBasisMatrix (workspaceEmbedding (n := n) w) * Z) z x =
+    (basisInclusion (workspaceEmbedding (n := n) w) * Z) z x =
       if ∀ j, z (Fin.natAdd n j) = w j then Z (fun j ↦ z (Fin.castAdd a j)) x else 0 := by
   split_ifs with hz
   · have hz' : z = workspaceEmbedding w fun j ↦ z (Fin.castAdd a j) :=
       funext fun i ↦ Fin.addCases (fun j ↦ by simp) (fun j ↦ by simp [hz j]) i
     conv_lhs => rw [hz']
-    exact initializedBasisMatrix_mul_apply_self _ _ _ _
-  · refine initializedBasisMatrix_mul_apply_of_notMem _ _ ?_ _
+    exact basisInclusion_mul_apply_self _ _ _ _
+  · refine basisInclusion_mul_apply_of_notMem _ _ ?_ _
     rintro ⟨y, rfl⟩
     exact hz fun j ↦ by simp
 
@@ -271,10 +271,10 @@ Source: the routing in a common pool of Section 5 of TNLean
 `docs/audits/2026-10-02_mpu_rank_two_circuits.tex`. -/
 theorem isCleanImplementation_sitePermOp_workspaceFixedSitePerm (w : Fin a → α)
     (τ : Equiv.Perm (Fin n)) :
-    IsCleanImplementation (initializedBasisMatrix (workspaceEmbedding (n := n) w))
+    IsCleanImplementation (basisInclusion (workspaceEmbedding (n := n) w))
       (sitePermOp (α := α) (workspaceFixedSitePerm τ)) (sitePermOp τ) := by
   ext z x
-  rw [mul_initializedBasisMatrix_apply, initializedBasisMatrix_workspaceEmbedding_mul_apply,
+  rw [mul_basisInclusion_apply, basisInclusion_workspaceEmbedding_mul_apply,
     sitePermOp_apply, workspaceEmbedding_apply]
   have hcfg : Fin.append x w = z ∘ workspaceFixedSitePerm τ ↔
       (∀ j, z (Fin.natAdd n j) = w j) ∧ x = (fun j ↦ z (Fin.castAdd a j)) ∘ τ := by
@@ -295,8 +295,8 @@ Source: the recursive routing in a common pool of Section 5 of TNLean
 theorem IsCleanImplementation.conjugate_workspaceFixedSitePerm {w : Fin a → α}
     (τ : Equiv.Perm (Fin n)) {U : Matrix (Fin (n + a) → α) (Fin (n + a) → α) ℂ}
     {Z : Matrix (Fin n → α) (Fin n → α) ℂ}
-    (h : IsCleanImplementation (initializedBasisMatrix (workspaceEmbedding (n := n) w)) U Z) :
-    IsCleanImplementation (initializedBasisMatrix (workspaceEmbedding (n := n) w))
+    (h : IsCleanImplementation (basisInclusion (workspaceEmbedding (n := n) w)) U Z) :
+    IsCleanImplementation (basisInclusion (workspaceEmbedding (n := n) w))
       (sitePermOp (workspaceFixedSitePerm τ) * U * (sitePermOp (workspaceFixedSitePerm τ))ᴴ)
       (sitePermOp τ * Z * (sitePermOp τ)ᴴ) := by
   have hp := isCleanImplementation_sitePermOp_workspaceFixedSitePerm w τ

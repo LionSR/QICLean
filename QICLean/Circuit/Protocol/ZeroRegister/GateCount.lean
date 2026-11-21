@@ -232,7 +232,7 @@ theorem exists_isGateProduct_isCleanImplementation_selectedZeroRegister (hd : 2 
     ∃ U, IsGateProduct (Geometry.graph (SimpleGraph.pathGraph (n + A)))
         (2 * (n + A) * zeroRegisterReflectionGateCount d a) U ∧
       IsCleanImplementation
-        (initializedBasisMatrix (workspaceEmbedding (n := n) (0 : Fin A → Fin d))) U
+        (basisInclusion (workspaceEmbedding (n := n) (0 : Fin A → Fin d))) U
         (selectedZeroRegisterLogical s) := by
   rcases Nat.eq_zero_or_pos a with rfl | ha
   · have : Nonempty (Fin (n + A)) := ⟨⟨0, by omega⟩⟩
@@ -249,9 +249,9 @@ theorem exists_isGateProduct_isCleanImplementation_zeroFlagReflection (hd : 2 �
     ∃ U, IsGateProduct (Geometry.graph (SimpleGraph.pathGraph (n + A)))
         (2 * (n + A) * zeroRegisterReflectionGateCount d a) U ∧
       IsCleanImplementation
-        (initializedBasisMatrix (workspaceEmbedding (n := n) (0 : Fin A → Fin d))) U
-        (subspaceReflection (initializedBasisMatrix (zeroFlagEmbedding (d := d) s) *
-          (initializedBasisMatrix (zeroFlagEmbedding (d := d) s))ᴴ)) := by
+        (basisInclusion (workspaceEmbedding (n := n) (0 : Fin A → Fin d))) U
+        (subspaceReflection (basisInclusion (zeroFlagEmbedding (d := d) s) *
+          (basisInclusion (zeroFlagEmbedding (d := d) s))ᴴ)) := by
   rw [← selectedZeroRegisterLogical_eq_subspaceReflection]
   exact exists_isGateProduct_isCleanImplementation_selectedZeroRegister hd hn s hpool
 

@@ -90,12 +90,12 @@ private theorem reindex_map_encodeCircuit {α : Fin N → Type} [∀ i, Fintype 
     (ρ : Matrix (Config α) (Config α) ℂ) :
     (reindexAlgEquiv ℂ ℂ (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)))
         ((encodeCircuit Γ a).map KrausGate.ev ρ) =
-      initializedBasisMatrix ((Function.Embedding.piCongrRight a).trans
+      basisInclusion ((Function.Embedding.piCongrRight a).trans
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) * ρ *
-        (initializedBasisMatrix ((Function.Embedding.piCongrRight a).trans
+        (basisInclusion ((Function.Embedding.piCongrRight a).trans
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding))ᴴ := by
-  rw [map_encodeCircuit, reindexAlgEquiv_eq_initializedBasisMatrix_mul,
-    ← initializedBasisMatrix_mul_initializedBasisMatrix]
+  rw [map_encodeCircuit, reindexAlgEquiv_eq_basisInclusion_mul,
+    ← basisInclusion_mul_basisInclusion]
   simp only [conjTranspose_mul, Matrix.mul_assoc]
 
 /-- **Changing the code of the sites is free on the ring with ports.** For any two codes `a`
@@ -237,23 +237,23 @@ theorem IsBoundedProtocol.exists_portRing_unit_product_approx {X Z : Fin N → T
       ∀ p : c.Index, ∃ η : EuclideanSpace ℂ (Config F), ‖η‖ = 1 ∧
         ‖(WithLp.toLp 2 (c.kraus KrausGate.ev p *ᵥ fun w ↦
             if (fun s ↦ (w s).2) = e₀ then
-              (initializedBasisMatrix ((Function.Embedding.piCongrRight a).trans
+              (basisInclusion ((Function.Embedding.piCongrRight a).trans
                 (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) *ᵥ
                   WithLp.ofLp ψ) (fun s ↦ (w s).1)
             else 0) -
           WithLp.toLp 2 (fun w ↦
-            (initializedBasisMatrix ((Function.Embedding.piCongrRight b).trans
+            (basisInclusion ((Function.Embedding.piCongrRight b).trans
               (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) *ᵥ
                 WithLp.ofLp φ) (fun s ↦ (w s).1) * η (fun s ↦ (w s).2)) :
             EuclideanSpace ℂ (Config fun s ↦ Qudits (Fin N × Fin (2 * k + 1)) d s × F s))‖ ≤
           Real.sqrt (2 * ε) := by
   obtain ⟨Φ', hΦ', hm⟩ := h.exists_portRing_of_code hN hB a b D hD
-  set Ja := initializedBasisMatrix ((Function.Embedding.piCongrRight a).trans
+  set Ja := basisInclusion ((Function.Embedding.piCongrRight a).trans
     (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding)
-  set Jb := initializedBasisMatrix ((Function.Embedding.piCongrRight b).trans
+  set Jb := basisInclusion ((Function.Embedding.piCongrRight b).trans
     (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding)
-  have hJa : Jaᴴ * Ja = 1 := initializedBasisMatrix_isIsometry _
-  have hJb : Jbᴴ * Jb = 1 := initializedBasisMatrix_isIsometry _
+  have hJa : Jaᴴ * Ja = 1 := basisInclusion_isIsometry _
+  have hJb : Jbᴴ * Jb = 1 := basisInclusion_isIsometry _
   set ψ' : EuclideanSpace ℂ (Config (Qudits (Fin N × Fin (2 * k + 1)) d)) :=
     WithLp.toLp 2 (Ja *ᵥ WithLp.ofLp ψ)
   set φ' : EuclideanSpace ℂ (Config (Qudits (Fin N × Fin (2 * k + 1)) d)) :=

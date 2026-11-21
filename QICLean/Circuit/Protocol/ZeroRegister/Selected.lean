@@ -202,12 +202,12 @@ the basis inclusion `J` of `x ↦ (x, 0)`. The whole pool, including its unused 
 workspace. -/
 theorem isCleanImplementation_selectedZeroRegisterReflection (hd : 2 ≤ d) (s : Fin a ↪ Fin n)
     (hpool : a ≤ A) (ha : 0 < a) :
-    IsCleanImplementation (initializedBasisMatrix (workspaceEmbedding (n := n) (0 : Fin A → Fin d)))
+    IsCleanImplementation (basisInclusion (workspaceEmbedding (n := n) (0 : Fin A → Fin d)))
       (selectedZeroRegisterReflection s hpool ha) (selectedZeroRegisterLogical s) := by
   rw [IsCleanImplementation]
   ext z x
-  rw [mul_initializedBasisMatrix_apply, selectedZeroRegisterLogical, mul_diagonal,
+  rw [mul_basisInclusion_apply, selectedZeroRegisterLogical, mul_diagonal,
     workspaceEmbedding_apply, selectedZeroRegisterReflection_apply_clean hd,
-    initializedBasisMatrix, submatrix_apply, id, one_apply, workspaceEmbedding_apply, mul_comm]
+    basisInclusion, submatrix_apply, id, one_apply, workspaceEmbedding_apply, mul_comm]
 
 end QuantumCircuit
