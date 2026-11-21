@@ -53,7 +53,7 @@ noncomputable def splitTwoRegionsEquiv (T E : Finset V) (h : Disjoint T E) :
           (Fintype.card (RegionConfig β E))) ×
         ComplConfig β (T ∪ E) :=
   (cutEquiv β (T ∪ E)).trans
-    (((unionEquiv β T E h).trans
+    (((regionUnionEquiv (β := β) h).trans
       ((Fintype.equivFin (RegionConfig β T)).prodCongr
         (Fintype.equivFin (RegionConfig β E)))).prodCongr (Equiv.refl _))
 

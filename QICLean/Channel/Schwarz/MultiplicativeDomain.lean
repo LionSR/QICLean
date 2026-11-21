@@ -55,7 +55,7 @@ then the Kadison-Schwarz gap vanishes: `E(X† X) = E(X)† E(X)`.
 The proof shows the gap has trace zero (using TP and the eigenvalue equation)
 and is PSD (by Kadison-Schwarz), hence is zero. -/
 theorem ks_equality_of_peripheral_eigenvector (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_unital : IsUnitalKraus K) (h_tp : IsTPKraus K)
+    (h_unital : IsUnitalKraus K) (h_tp : Kraus.IsTP K)
     (X : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hEig : krausMap K X = μ • X) (hμ : ‖μ‖ = 1) :
     krausMap K (Xᴴ * X) = (krausMap K X)ᴴ * krausMap K X := by

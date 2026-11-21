@@ -48,11 +48,12 @@ maps.
 \end{definition}
 
 \begin{definition}[Trace-preserving Kraus map]\label{def:tp_kraus}
-    \lean{KadisonSchwarz.IsTPKraus}
+    \lean{Kraus.IsTP}
     \leanok
     \uses{def:kraus_map}
     A Kraus map is \emph{trace-preserving} if
-    $\sum_{i=0}^{d-1} K_i^\dagger K_i = \Id$.
+    $\sum_{i=0}^{d-1} K_i^\dagger K_i = \Id$. The same condition is stated for any finite
+    family of rectangular matrices $K_i$, indexed by any finite set.
     Equivalently, the adjoint Kraus map is unital.
     This is the standard MPS normalization condition.
     In the later gauge language it is the left-canonical condition,

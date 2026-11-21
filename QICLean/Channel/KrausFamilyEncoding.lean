@@ -55,7 +55,7 @@ def embed [DecidableEq β] (e : α ↪ β) : KrausFamily α β :=
   single (basisInclusion e)
 
 theorem isTP_embed [Fintype β] [DecidableEq α] [DecidableEq β] (e : α ↪ β) : (embed e).IsTP := by
-  rw [IsTP, embed, effect_single]
+  rw [isTP_iff_effect_eq_one, embed, effect_single]
   exact basisInclusion_isIsometry e
 
 theorem map_embed_apply [Fintype α] [DecidableEq β] (e : α ↪ β) (ρ : Matrix α α ℂ) :
@@ -100,7 +100,7 @@ theorem effect_decode :
 
 /-- The decoding is trace-preserving. -/
 theorem isTP_decode : (decode e x₀).IsTP := by
-  rw [IsTP, effect_decode]
+  rw [isTP_iff_effect_eq_one, effect_decode]
   simp only [conjTranspose_conjTranspose, conjTranspose_single, star_one,
     single_mul_single_same, mul_one]
   ext i j
@@ -210,7 +210,7 @@ variable {K} in
 /-- An encoded trace-preserving family is trace-preserving. -/
 theorem IsTP.encode [DecidableEq α] [Fintype β'] (hK : K.IsTP) : (K.encode e f y₀).IsTP := by
   classical
-  rw [IsTP, effect] at hK
+  rw [isTP_iff_effect_eq_one, effect] at hK
   set J := basisInclusion e
   have hJ : Jᴴ * J = 1 := basisInclusion_isIsometry e
   have hf : (basisInclusion f)ᴴ * basisInclusion f = 1 :=
@@ -239,7 +239,7 @@ theorem IsTP.encode [DecidableEq α] [Fintype β'] (hK : K.IsTP) : (K.encode e f
         ← Matrix.mul_assoc]
     rw [Finset.sum_congr rfl fun a _ ↦ this a, ← Matrix.sum_mul, ← Matrix.mul_sum,
       (sum_single_one : ∑ a : α', Matrix.single a a (1 : ℂ) = 1), Matrix.mul_one, hPP]
-  rw [IsTP, effect_encode]
+  rw [isTP_iff_effect_eq_one, effect_encode]
   simp only [encode_op_inl, encode_op_inr]
   rw [h1, h2, add_sub_cancel]
 

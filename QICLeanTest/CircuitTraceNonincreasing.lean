@@ -58,7 +58,7 @@ private theorem filter_tni : filter.IsTraceNonincreasing := by
 -- A nonzero, genuinely lossy operation: one basis state survives and the other is removed.
 example : ¬filter.IsTP := by
   intro h
-  have he := congrFun (congrFun h true) true
+  have he := congrFun (congrFun (KrausFamily.isTP_iff_effect_eq_one.mp h) true) true
   rw [filter_effect] at he
   simp at he
 

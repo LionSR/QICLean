@@ -478,7 +478,7 @@ theorem dual_one_le (h : L.Forall ev KrausFamily.IsTraceNonincreasing) :
 /-- A layer whose gates and onsite families are trace-preserving is trace-preserving. -/
 theorem isTP_krausFamily (h : L.Forall ev KrausFamily.IsTP) :
     (L.krausFamily ev).IsTP := by
-  rw [KrausFamily.IsTP, ← dual_one_eq_effect]
+  rw [KrausFamily.isTP_iff_effect_eq_one, ← dual_one_eq_effect]
   exact L.dual_one ev h
 
 omit [GateFamily G] [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] [∀ s, Fintype (Y s)]

@@ -9,8 +9,8 @@ import QICLean.ManyBody.Sites.Placement
 # Local lifts on a disjoint union of regions
 
 For disjoint regions `X` and `T`, the configurations of `X ∪ T` are pairs of configurations of
-`X` and of `T`, and the lift of a product operator `A ⊗ B` on `X ∪ T` is the product of the
-lifts of `A` and of `B`.
+`X` and of `T` (`ManyBody.regionUnionEquiv`), and the lift of a product operator `A ⊗ B` on
+`X ∪ T` is the product of the lifts of `A` and of `B`.
 
 The configurations of a region `{a}` of one site are the basis of `a`, and those of a region
 `{a} ∪ {b}` of two distinct sites are pairs of basis vectors, the first at `a`. A matrix on the
@@ -18,7 +18,6 @@ basis of one site, or on the pairs of two, is placed along these equivalences.
 
 ## Main definitions
 
-* `ManyBody.regionUnionEquiv`: `RegionConfig (X ∪ T) ≃ RegionConfig X × RegionConfig T`.
 * `ManyBody.siteEquiv`, `ManyBody.pairEquiv` — the configurations of a site and of an ordered
   pair of distinct sites.
 
@@ -45,30 +44,6 @@ open scoped Kronecker
 namespace ManyBody
 
 variable {V : Type*} [DecidableEq V] {β : V → Type*}
-
-/-- Configurations of a disjoint union of regions are pairs of configurations. -/
-def regionUnionEquiv {X T : Finset V} (hXT : Disjoint X T) :
-    RegionConfig β (X ∪ T) ≃ RegionConfig β X × RegionConfig β T where
-  toFun σ := (fun v ↦ σ ⟨v.1, Finset.mem_union_left T v.2⟩,
-    fun v ↦ σ ⟨v.1, Finset.mem_union_right X v.2⟩)
-  invFun p v := if h : v.1 ∈ X then p.1 ⟨v.1, h⟩ else
-    p.2 ⟨v.1, (Finset.mem_union.mp v.2).resolve_left h⟩
-  left_inv σ := by
-    funext v
-    by_cases h : v.1 ∈ X <;> simp [h]
-  right_inv p := by
-    ext v
-    · simp [v.2]
-    · have : v.1 ∉ X := fun hv ↦ Finset.disjoint_left.mp hXT hv v.2
-      simp [this]
-
-@[simp] theorem regionUnionEquiv_apply_fst {X T : Finset V} (hXT : Disjoint X T)
-    (σ : RegionConfig β (X ∪ T)) (v : {v // v ∈ X}) :
-    (regionUnionEquiv hXT σ).1 v = σ ⟨v.1, Finset.mem_union_left T v.2⟩ := rfl
-
-@[simp] theorem regionUnionEquiv_apply_snd {X T : Finset V} (hXT : Disjoint X T)
-    (σ : RegionConfig β (X ∪ T)) (v : {v // v ∈ T}) :
-    (regionUnionEquiv hXT σ).2 v = σ ⟨v.1, Finset.mem_union_right X v.2⟩ := rfl
 
 /-! ### One site and two sites -/
 

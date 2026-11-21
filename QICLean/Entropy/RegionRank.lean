@@ -40,7 +40,7 @@ theorem rank_regionMatrix_union_le
       (regionMatrix ρ R).rank * (regionMatrix ρ T).rank := by
   classical
   have hb := ((regionMatrix_posSemidef β hρ (R ∪ T)).submatrix
-    (unionEquiv β R T h).symm).rank_le_rank_partialTraceRight_mul_rank_partialTraceLeft
+    (regionUnionEquiv (β := β) h).symm).rank_le_rank_partialTraceRight_mul_rank_partialTraceLeft
   simpa only [Matrix.rank_submatrix, partialTraceRight_regionMatrix_union,
     partialTraceLeft_regionMatrix_union] using hb
 

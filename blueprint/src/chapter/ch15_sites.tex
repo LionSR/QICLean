@@ -517,7 +517,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{definition}[A matrix at one site]
     \label{def:sites_place_at}
     \lean{ManyBody.placeAt, ManyBody.placeAt_apply, ManyBody.placeAt_add,
-        ManyBody.placeAt_sub, ManyBody.placeAt_smul, ManyBody.placeAt_conjTranspose,
+        ManyBody.placeAt_sub, ManyBody.placeAt_neg, ManyBody.placeAt_diagonal,
+        ManyBody.placeAt_smul, ManyBody.placeAt_conjTranspose,
         ManyBody.placeAt_one, ManyBody.isHermitian_placeAt, ManyBody.placeAt_mul,
         ManyBody.placeAt_mem_supportedOperators, ManyBody.norm_placeAt_le,
         ManyBody.posSemidef_placeAt, ManyBody.placeAt_le_placeAt}
@@ -527,7 +528,8 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     $v$: the operator $p\otimes1$, supported on $\{v\}$, with matrix element
     $p_{\sigma_v\tau_v}$ if $\sigma$ and $\tau$ agree outside $v$, and $0$ otherwise. It is a
     unital $*$-homomorphism in $p$ that does not increase the norm and preserves positivity
-    and the order.
+    and the order. A diagonal matrix $\operatorname{diag}(f)$ at $v$ is the diagonal matrix
+    with entries $f(\sigma_v)$.
 \end{definition}
 
 \begin{lemma}[A matrix at one site as a product operator]
@@ -1129,19 +1131,23 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{theorem}[Support and placement transfer]
     \label{thm:sites-replica-pair-transfer}
     \lean{ManyBody.reindex_replicaPairEquiv_mem_supportedOperators_iff,
-        ManyBody.reindex_replicaPairEquiv_place}
+        ManyBody.reindex_replicaPairEquiv_place,
+        ManyBody.reindex_replicaPairEquiv_sitePermOp_replicaSwap}
     \leanok
-    \uses{def:sites-replica-swap, def:sites_supported, def:sites_place}
+    \uses{def:sites-replica-swap, def:sites_supported, def:sites_place, def:sites_pair_swap}
     An operator on two replicas is supported on $S\sqcup S$ exactly when, on paired
     sites, it is supported on $S$. The placement of a matrix on $S\sqcup S$ is, on
-    paired sites, the placement on $S$ of the same matrix with the replicas paired.
+    paired sites, the placement on $S$ of the same matrix with the replicas paired. The
+    exchange of the replicas on a region $A$ is, on paired sites, the exchange of the two
+    copies at the sites of $A$.
 \end{theorem}
 \begin{proof}
     \leanok
     Two configurations of the replicas agree on $S\sqcup S$, or outside it, exactly
     when their pairings agree on $S$, or outside it. The two conditions on matrix
     entries defining support therefore correspond, and so do the entries of the two
-    placements.
+    placements. Both exchanges are permutation matrices, and they send a paired
+    configuration to the one with the two entries exchanged at the sites of $A$.
 \end{proof}
 
 \begin{theorem}[The exchange of replicas and doubled operators]
@@ -1336,13 +1342,15 @@ supports of bounded range on them.
     \lean{ManyBody.mem_interval, ManyBody.disjoint_interval_interval,
         ManyBody.interval_mono, ManyBody.interval_eq_empty,
         ManyBody.interval_zero_eq_univ, ManyBody.card_interval_le,
+        ManyBody.interval_eq_chainBond, ManyBody.interval_eq_pair,
         ManyBody.IsChainSupport.card_le,
         ManyBody.IsChainSupport.exists_eq_interval_of_card_eq,
         ManyBody.IsChainSupport.subset_window_of_splits}
     \leanok
     \uses{def:sites_chain_support}
     Adjacent intervals are disjoint, intervals grow with their ends, and
-    $[a,b)$ has at most $b-a$ sites. A support of range $R$ has at most $R+1$
+    $[a,b)$ has at most $b-a$ sites; for $i+1<L$ the interval $[i,i+2)$ is the pair
+    $\{i,i+1\}$. A support of range $R$ has at most $R+1$
     sites, and exactly $R+1$ only when it is an interval $[a,a+R+1)$. A
     support of range $R$ that meets both $[a,b)$ and its complement lies in
     $\lbrack a-R,a+R)$ or in $\lbrack b-R,b+R)$.
@@ -1354,13 +1362,16 @@ supports of bounded range on them.
 
 \begin{definition}[Boundary edges of a region of the chain]
     \label{def:sites_chain_boundary}
-    \lean{ManyBody.boundaryEdges, ManyBody.mem_boundaryEdges, ManyBody.boundaryEdges_empty,
-        ManyBody.boundaryEdges_univ}
+    \lean{ManyBody.leftPosition, ManyBody.leftPosition_mk, ManyBody.boundaryEdges,
+        ManyBody.leftPosition_injOn, ManyBody.card_boundaryEdges, ManyBody.mem_boundaryEdges,
+        ManyBody.boundaryEdges_empty, ManyBody.boundaryEdges_univ}
     \leanok
-    \uses{def:sites_chain_support}
-    The boundary edges of a region $D$ of the chain of $L$ sites are the positions
-    $p$ with $p+1<L$ such that exactly one of $p$ and $p+1$ lies in $D$. The empty
-    region and the whole chain have no boundary edges.
+    \uses{def:sites_chain_support, def:sites_edge_boundary}
+    The boundary edges of a region $D$ of the chain of $L$ sites are the edges of the edge
+    boundary of $D$ in the path graph, each recorded by the position of its left
+    endpoint; there are as many positions as edges. They are the positions $p$ with
+    $p+1<L$ such that exactly one of $p$ and $p+1$ lies in $D$. The empty region and the
+    whole chain have no boundary edges.
 \end{definition}
 
 \begin{lemma}[A split support lies near a boundary edge]
@@ -1412,66 +1423,60 @@ supports of bounded range on them.
     satisfy $\lvert x-y\rvert\le R$.
 \end{proof}
 
-\begin{definition}[Balls and separation on the ring]
+\begin{lemma}[Balls and separation on the ring]
     \label{def:sites_ring_ball}
-    \lean{ManyBody.ringBall, ManyBody.mem_ringBall, ManyBody.subset_ringBall,
-        ManyBody.IsRingSeparated}
+    \lean{ManyBody.mem_graphNeighborhood_cycleGraph}
     \leanok
+    \uses{def:dynamics_graph_neighborhood, def:dynamics_graph_separated}
     On the ring $\Z_N$ of $N\ge1$ sites, the ball of radius $r$ about a set $X$ of sites
-    is the set of sites $x+m$ with $x\in X$ and $\lvert m\rvert\le r$, indices modulo $N$;
-    it contains $X$. Two sets $X$ and $Y$ are separated by $s$ if no site of $Y$ is of the
-    form $x+m$ with $x\in X$ and $\lvert m\rvert\le s$.
-\end{definition}
+    is its neighbourhood of radius $r$ in the cycle graph, and two sets are separated by
+    $s$ when they are separated by $s$ in the cycle graph. The ball of radius $r$ about $X$
+    is the set of sites $x+m$ with $x\in X$ and $\lvert m\rvert\le r$, indices modulo $N$.
+\end{lemma}
+\begin{proof}\leanok
+    A walk of length $\ell$ in the cycle graph moves by $\pm1$ at each step, so its end is
+    its start moved by at most $\ell$; conversely the walk along consecutive sites from $x$
+    to $x+m$ has length $\lvert m\rvert$.
+\end{proof}
 
 \begin{lemma}[Balls on the ring]
     \label{lem:sites_ring_ball}
-    \lean{ManyBody.ringBall_zero, ManyBody.ringBall_succ, ManyBody.ringBall_image_finRotate}
+    \lean{ManyBody.graphNeighborhood_cycleGraph_image_finRotate}
     \leanok
-    \uses{def:sites_ring_ball}
+    \uses{def:sites_ring_ball, lem:dynamics_graph_neighborhood}
     The ball of radius $0$ about $X$ is $X$, the ball of radius $r+1$ is the ball of
     radius $1$ about the ball of radius $r$, and the rotation $k\mapsto k+1$ of the ring
     carries the ball of radius $r$ about $X$ to the ball of radius $r$ about the rotated
     set.
 \end{lemma}
 \begin{proof}\leanok
-    A displacement $m$ with $\lvert m\rvert\le 0$ is $0$. A site $x+m+m'$ with
-    $\lvert m\rvert\le r$ and $\lvert m'\rvert\le1$ is $x+(m+m')$ with
-    $\lvert m+m'\rvert\le r+1$; conversely, a displacement with $\lvert m\rvert\le r+1$ is
-    $(m-s)+s$ with $s\in\{-1,0,1\}$ of the sign of $m$ and $\lvert m-s\rvert\le r$. The
-    rotation adds $1$ to both $x$ and $x+m$.
+    The first two statements hold for the neighbourhoods of any graph
+    (Lemma~\ref{lem:dynamics_graph_neighborhood}). The rotation adds $1$ to both $x$ and
+    $x+m$.
 \end{proof}
 
 \begin{lemma}[Separated sets on the ring]
     \label{lem:sites_ring_separated}
-    \lean{ManyBody.IsRingSeparated.disjoint_ringBall, ManyBody.IsRingSeparated.symm,
-        ManyBody.IsRingSeparated.notMem_ringBall, ManyBody.isRingSeparated_of_val_bounds,
-        ManyBody.exists_isRingSeparated_singletons_notMem_ringBall,
-        ManyBody.IsRingSeparated.lt_edist}
+    \lean{ManyBody.isGraphSeparated_cycleGraph_of_val_bounds,
+        ManyBody.exists_isGraphSeparated_cycleGraph_singletons_notMem}
     \leanok
-    \uses{def:sites_ring_ball}
-    Let $X$ and $Y$ be separated by $s$. Then $Y$ and $X$ are separated by $s$, no site of
-    $Y$ lies in the ball of radius $s$ about $X$, and every $x\in X$ and $y\in Y$ are at
-    distance larger than $s$ in the cycle graph on $\Z_N$. If $s=2T$, the balls of radius
-    $T$ about $X$ and $Y$ are disjoint. Sets with positions in $\lbrack a,a+w)$ and $\lbrack b,b+w')$
-    are separated by $s$ when $a+w+s\le b$ and $b+w'+s\le a+N$. If $N>4T+4$, there are
-    sites $i$ and $j$ with $\{i\}$ and $\{j\}$ separated by $2T$, and a site $k$ outside
-    the balls of radius $T$ about $i$ and about $j$.
+    \uses{def:sites_ring_ball, lem:dynamics_graph_separated}
+    Sets with positions in $\lbrack a,a+w)$ and $\lbrack b,b+w')$ are separated by $s$ when
+    $a+w+s\le b$ and $b+w'+s\le a+N$. If $N>4T+4$, there are sites $i$ and $j$ with $\{i\}$
+    and $\{j\}$ separated by $2T$, and a site $k$ outside the balls of radius $T$ about $i$
+    and about $j$.
 \end{lemma}
 \begin{proof}\leanok
-    \uses{def:sites_ring_ball}
-    If $y=x+m$ then $x=y+(-m)$. A common site $x+m=y+m'$ of the two balls gives
-    $y=x+(m-m')$ with $\lvert m-m'\rvert\le 2T$. A walk of length $\ell$ in the cycle graph
-    moves by $\pm1$ at each step, so its end is its start moved by at most $\ell$; a walk
-    of length at most $s$ from $x$ to $y$ would give $y=x+m$ with $\lvert m\rvert\le s$.
-    For the interval criterion, $y=x+m$ makes $N$ divide $y-x-m$, which lies in $[0,N)$
-    by the two gap conditions; it is then $0$, contradicting the bounds on the positions.
-    For the last statement take $i=0$, $j=2T+2$ and $k=T+1$ and apply the interval
-    criterion three times.
+    For the interval criterion, a site $y=x+m$ with $\lvert m\rvert\le s$ makes $N$ divide
+    $y-x-m$, which lies in $[0,N)$ by the two gap conditions; it is then $0$,
+    contradicting the bounds on the positions. For the last statement take $i=0$,
+    $j=2T+2$ and $k=T+1$, apply the interval criterion three times and
+    Lemma~\ref{lem:dynamics_graph_separated}.
 \end{proof}
 
 \begin{theorem}[Balls on a blocked ring]
     \label{thm:sites_ring_block_ball}
-    \lean{ManyBody.preimage_ringBall_subset}
+    \lean{ManyBody.preimage_graphNeighborhood_cycleGraph_subset}
     \leanok
     \uses{def:sites_ring_ball, def:sites_block}
     Let $M,k\ge1$, and group the ring $\Z_{Mk}$ into the $M$ blocks of $k$ consecutive

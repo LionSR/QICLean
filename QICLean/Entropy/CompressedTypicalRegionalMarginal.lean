@@ -81,9 +81,9 @@ theorem partialTraceLeft_compressedTypicalPureState_region
       χ (rc.1, (complementUnionEquiv β X B hXB).symm (b, rc.2)) *
         star (χ (rc.1, (complementUnionEquiv β X B hXB).symm (b', rc.2)))) =
     ∑ a : RegionConfig β X, ∑ c : ComplConfig β (X ∪ B),
-      Ψ ((cutEquiv β (X ∪ B)).symm ((unionEquiv β X B hXB).symm (a, b), c)) *
+      Ψ ((cutEquiv β (X ∪ B)).symm ((regionUnionEquiv (β := β) hXB).symm (a, b), c)) *
         star (Ψ ((cutEquiv β (X ∪ B)).symm
-          ((unionEquiv β X B hXB).symm (a, b'), c)))
+          ((regionUnionEquiv (β := β) hXB).symm (a, b'), c)))
   simp_rw [split_union_symm]
   rw [Fintype.sum_prod_type, Finset.sum_comm]
   simp_rw [hcomplement]

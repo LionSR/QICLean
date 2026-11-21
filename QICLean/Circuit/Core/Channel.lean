@@ -199,7 +199,7 @@ theorem dual_one_eq_effect [∀ s, DecidableEq (Z s)]
 theorem isTP_krausFamily (ev : Interpretation G) (c : Circuit Γ G X Z)
     (h : c.Forall ev KrausFamily.IsTP) : (c.krausFamily ev).IsTP := by
   classical
-  rw [KrausFamily.IsTP, ← dual_one_eq_effect]
+  rw [KrausFamily.isTP_iff_effect_eq_one, ← dual_one_eq_effect]
   exact c.dual_one_of_forall ev h
 
 /-- A circuit whose gates and onsite families are trace-preserving is a quantum channel. -/

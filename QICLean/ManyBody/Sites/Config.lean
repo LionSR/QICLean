@@ -30,6 +30,8 @@ system `X` applies to them as it stands.
   its complement.
 * `ManyBody.complementEquiv` — configurations outside a region as configurations of the
   complement region.
+* `ManyBody.regionUnionEquiv` — a configuration of a disjoint union of two regions as a pair of
+  configurations of the two regions.
 -/
 
 namespace ManyBody
@@ -55,6 +57,36 @@ variable [DecidableEq V]
 abbrev cutEquiv (X : V → Type*) (D : Finset V) :
     Config X ≃ RegionConfig X D × ComplConfig X D :=
   Equiv.piEquivPiSubtypeProd (· ∈ D) X
+
+section RegionUnion
+
+variable {β : V → Type*}
+
+/-- Configurations of a disjoint union of regions are pairs of configurations. -/
+def regionUnionEquiv {X T : Finset V} (hXT : Disjoint X T) :
+    RegionConfig β (X ∪ T) ≃ RegionConfig β X × RegionConfig β T where
+  toFun σ := (fun v ↦ σ ⟨v.1, Finset.mem_union_left T v.2⟩,
+    fun v ↦ σ ⟨v.1, Finset.mem_union_right X v.2⟩)
+  invFun p v := if h : v.1 ∈ X then p.1 ⟨v.1, h⟩ else
+    p.2 ⟨v.1, (Finset.mem_union.mp v.2).resolve_left h⟩
+  left_inv σ := by
+    funext v
+    by_cases h : v.1 ∈ X <;> simp [h]
+  right_inv p := by
+    ext v
+    · simp [v.2]
+    · have : v.1 ∉ X := fun hv ↦ Finset.disjoint_left.mp hXT hv v.2
+      simp [this]
+
+@[simp] theorem regionUnionEquiv_apply_fst {X T : Finset V} (hXT : Disjoint X T)
+    (σ : RegionConfig β (X ∪ T)) (v : {v // v ∈ X}) :
+    (regionUnionEquiv hXT σ).1 v = σ ⟨v.1, Finset.mem_union_left T v.2⟩ := rfl
+
+@[simp] theorem regionUnionEquiv_apply_snd {X T : Finset V} (hXT : Disjoint X T)
+    (σ : RegionConfig β (X ∪ T)) (v : {v // v ∈ T}) :
+    (regionUnionEquiv hXT σ).2 v = σ ⟨v.1, Finset.mem_union_right X v.2⟩ := rfl
+
+end RegionUnion
 
 variable {X : V → Type*} {D : Finset V}
 

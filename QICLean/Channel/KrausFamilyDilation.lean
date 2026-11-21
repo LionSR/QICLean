@@ -64,7 +64,8 @@ theorem IsTP.exists_unitary_dilation [Nonempty α] {K : KrausFamily α β} [Deci
   let W := ((1 : Matrix β β ℂ) ⊗ₖ B) * stinespringVGen K.op
   let J := basisInclusion ((Function.Embedding.sectL α e₀).trans σ.toEmbedding)
   have hW : Wᴴ * W = Jᴴ * J := by
-    rw [basisInclusion_isIsometry, ← hK, ← stinespringVGen_conjTranspose_mul]
+    rw [basisInclusion_isIsometry, ← isTP_iff_effect_eq_one.mp hK,
+      ← stinespringVGen_conjTranspose_mul]
     simp only [W, conjTranspose_mul, conjTranspose_kronecker, conjTranspose_one, Matrix.mul_assoc]
     rw [← Matrix.mul_assoc (1 ⊗ₖ Bᴴ), ← mul_kronecker_mul, Matrix.one_mul, hB, one_kronecker_one,
       Matrix.one_mul]

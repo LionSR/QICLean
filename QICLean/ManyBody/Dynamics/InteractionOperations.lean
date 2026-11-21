@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Sites.PlaceAlong
 import QICLean.ManyBody.Sites.SitewiseProduct
+import QICLean.ManyBody.Sites.Twirl
 import QICLean.Analysis.DoubledSystemGap
 import QICLean.Analysis.KroneckerOperatorNorm
 
@@ -32,7 +33,10 @@ every index type, every family of supports and every family of basis types:
 * the union of **two interactions on the same system**, indexed by the sum of the index types;
 * the **conjugation** `(U hᵢ U†)ᵢ` by a matrix `U` that keeps every term on its support;
 * the **translates** of one operator `h` on the configurations of a finite set `W` along a family
-  of injections `wᵢ : W ↪ V`: the term with index `i` is `h` placed along `wᵢ`.
+  of injections `wᵢ : W ↪ V`: the term with index `i` is `h` placed along `wᵢ`;
+* the **termwise map** `(fᵢ hᵢ)ᵢ` by maps `fᵢ` that keep the supports, and two instances: the
+  **restriction** to the indices with a property, whose other terms vanish, and the **range
+  projections** of positive terms.
 
 The two copies of `Φ` beside each other on the sites `V ⊕ V` are `Φ.sum Φ`
 (`QICLean.ManyBody.Dynamics.InteractionSum`); the doubled interaction is the same pair of
@@ -62,7 +66,9 @@ SwappedPlaneInteraction`), the doubled interaction conjugated by `ManyBody.pairS
   `ManyBody.Interaction.extend`, `ManyBody.Interaction.doubled`,
   `ManyBody.Interaction.ofPlace`, `ManyBody.Interaction.pushforward`,
   `ManyBody.Interaction.pad`, `ManyBody.Interaction.append`, `ManyBody.Interaction.conj`,
-  `ManyBody.Interaction.translates`, and the instance `SMul ℝ (ManyBody.Interaction X S)`.
+  `ManyBody.Interaction.translates`, `ManyBody.Interaction.mapTerm`,
+  `ManyBody.Interaction.restrict`, `ManyBody.Interaction.supportProj`, and the instance
+  `SMul ℝ (ManyBody.Interaction X S)`.
 
 ## Main results
 
@@ -74,7 +80,11 @@ SwappedPlaneInteraction`), the doubled interaction conjugated by `ManyBody.pairS
   `ManyBody.Interaction.hamiltonian_extend`, `ManyBody.Interaction.hamiltonian_doubled`,
   `ManyBody.Interaction.hamiltonian_ofPlace`, `ManyBody.Interaction.hamiltonian_pushforward`,
   `ManyBody.Interaction.hamiltonian_pad`, `ManyBody.Interaction.hamiltonian_append`,
-  `ManyBody.Interaction.hamiltonian_conj` — the Hamiltonians of the new interactions.
+  `ManyBody.Interaction.hamiltonian_conj`, `ManyBody.Interaction.hamiltonian_mapTerm`,
+  `ManyBody.Interaction.hamiltonian_restrict` — the Hamiltonians of the new interactions.
+* `ManyBody.Interaction.hamiltonian_le_hamiltonian_supportProj`,
+  `ManyBody.Interaction.hamiltonian_supportProj_mulVec_eq_zero_iff` — the range projections lie
+  above the terms of norm at most one and keep the kernel of the Hamiltonian.
 * `ManyBody.Interaction.exists_eq_ofPlace` — every interaction is one of placed regional
   matrices.
 * Hermiticity, positivity and norm bounds of the new terms.
@@ -569,6 +579,168 @@ theorem conj_term_nonneg {i : ι} (hΦ : 0 ≤ Φ.term i) : 0 ≤ (Φ.conj U hU)
 
 end Conj
 
+/-! ### Termwise maps -/
+
+section MapTerm
+
+variable (f : ι → Matrix (Config X) (Config X) ℂ → Matrix (Config X) (Config X) ℂ)
+  (hf : ∀ i A, A ∈ supportedOperators X (S i) → f i A ∈ supportedOperators X (S i))
+
+/-- **A termwise map of an interaction.** For maps `fᵢ` of operators that keep the operators
+supported on `Sᵢ` supported on `Sᵢ`, the interaction with terms `fᵢ hᵢ` and the supports of
+`Φ`. -/
+def mapTerm (Φ : Interaction X S) : Interaction X S where
+  term i := f i (Φ.term i)
+  mem i := hf i _ (Φ.mem i)
+
+variable (Φ : Interaction X S)
+
+@[simp]
+theorem mapTerm_term (i : ι) : (Φ.mapTerm f hf).term i = f i (Φ.term i) :=
+  rfl
+
+/-- A partial Hamiltonian of a termwise map is the sum of the mapped terms. -/
+theorem partialHamiltonian_mapTerm (s : Finset ι) :
+    (Φ.mapTerm f hf).partialHamiltonian s = ∑ i ∈ s, f i (Φ.term i) :=
+  rfl
+
+/-- The Hamiltonian of a termwise map is the sum of the mapped terms. -/
+theorem hamiltonian_mapTerm [Fintype ι] : (Φ.mapTerm f hf).hamiltonian = ∑ i, f i (Φ.term i) :=
+  rfl
+
+end MapTerm
+
+/-! ### Restriction to a set of indices -/
+
+section Restrict
+
+variable (Φ : Interaction X S) (p : ι → Prop) [DecidablePred p]
+
+/-- **Restricting an interaction to the indices with a property.** The interaction with the
+supports of `Φ` whose term with index `i` is `hᵢ` when `p i` holds and `0` otherwise. The
+Hamiltonian of the restriction is the partial Hamiltonian of the indices with the property,
+and its terms are the terms of `Φ` or zero, so they keep every termwise bound that zero
+satisfies. -/
+def restrict : Interaction X S :=
+  Φ.mapTerm (fun i A ↦ if p i then A else 0) fun i A hA ↦ by
+    split_ifs
+    · exact hA
+    · exact zero_mem _
+
+theorem restrict_term (i : ι) : (Φ.restrict p).term i = if p i then Φ.term i else 0 :=
+  rfl
+
+variable {Φ p}
+
+@[simp]
+theorem restrict_term_of_pos {i : ι} (hi : p i) : (Φ.restrict p).term i = Φ.term i :=
+  by simp [restrict_term, hi]
+
+@[simp]
+theorem restrict_term_of_neg {i : ι} (hi : ¬ p i) : (Φ.restrict p).term i = 0 :=
+  by simp [restrict_term, hi]
+
+/-- A property of operators that holds for zero and for the term of `Φ` with index `i` holds for
+the term of the restriction with index `i`. -/
+theorem forall_restrict_term {P : Matrix (Config X) (Config X) ℂ → Prop} (h0 : P 0) {i : ι}
+    (hΦ : P (Φ.term i)) : P ((Φ.restrict p).term i) := by
+  by_cases hi : p i
+  · simpa [hi] using hΦ
+  · simpa [hi] using h0
+
+variable (Φ p)
+
+/-- A partial Hamiltonian of the restriction is the partial Hamiltonian of the indices with the
+property. -/
+theorem partialHamiltonian_restrict (s : Finset ι) :
+    (Φ.restrict p).partialHamiltonian s = Φ.partialHamiltonian (s.filter p) :=
+  Finset.sum_filter _ _ |>.symm
+
+/-- The Hamiltonian of the restriction is the partial Hamiltonian of the indices with the
+property. -/
+theorem hamiltonian_restrict [Fintype ι] :
+    (Φ.restrict p).hamiltonian = Φ.partialHamiltonian (Finset.univ.filter p) :=
+  partialHamiltonian_restrict Φ p Finset.univ
+
+variable {Φ p}
+
+/-- On a set of indices with the property, the restriction has the partial Hamiltonian of `Φ`. -/
+theorem partialHamiltonian_restrict_of_forall {s : Finset ι} (hs : ∀ i ∈ s, p i) :
+    (Φ.restrict p).partialHamiltonian s = Φ.partialHamiltonian s :=
+  Finset.sum_congr rfl fun _ hi ↦ restrict_term_of_pos (hs _ hi)
+
+/-- On a set of indices without the property, the partial Hamiltonian of the restriction
+vanishes. -/
+theorem partialHamiltonian_restrict_eq_zero {s : Finset ι} (hs : ∀ i ∈ s, ¬ p i) :
+    (Φ.restrict p).partialHamiltonian s = 0 :=
+  Finset.sum_eq_zero fun _ hi ↦ restrict_term_of_neg (hs _ hi)
+
+/-- The restriction of a Hermitian term is Hermitian. -/
+theorem isHermitian_restrict_term {i : ι} (hΦ : (Φ.term i).IsHermitian) :
+    ((Φ.restrict p).term i).IsHermitian :=
+  forall_restrict_term isHermitian_zero hΦ
+
+/-- The restriction of a positive term is positive. -/
+theorem restrict_term_nonneg {i : ι} (hΦ : 0 ≤ Φ.term i) : 0 ≤ (Φ.restrict p).term i :=
+  forall_restrict_term le_rfl hΦ
+
+/-- The restriction of a term bounded by the identity is bounded by the identity. -/
+theorem restrict_term_le_one {i : ι} (hΦ : Φ.term i ≤ 1) : (Φ.restrict p).term i ≤ 1 :=
+  forall_restrict_term (P := fun M ↦ M ≤ 1) zero_le_one hΦ
+
+variable (Φ p) in
+/-- The terms of the restriction have at most the norms of the terms. -/
+theorem norm_restrict_term_le (i : ι) : ‖(Φ.restrict p).term i‖ ≤ ‖Φ.term i‖ :=
+  forall_restrict_term (P := fun M ↦ ‖M‖ ≤ ‖Φ.term i‖) (by simp) le_rfl
+
+end Restrict
+
+/-! ### The range projections of positive terms -/
+
+section SupportProj
+
+variable (Φ : Interaction X S) (hΦ : ∀ i, (Φ.term i).PosSemidef)
+
+/-- **The range projections of positive terms.** For an interaction with positive semidefinite
+terms, the interaction with the supports of `Φ` whose term with index `i` is the orthogonal
+projection onto the range of `hᵢ`. It has the kernel of `Φ`, and for terms of norm at most one
+it lies above `Φ` in operator order. ALVV, arXiv:1602.08828v2, Section 6.1, lines 1457–1460. -/
+noncomputable def supportProj : Interaction X S where
+  term i := (hΦ i).supportProj
+  mem i := supportProj_mem_supportedOperators (hΦ i).isHermitian (Φ.mem i)
+
+@[simp]
+theorem supportProj_term (i : ι) : (Φ.supportProj hΦ).term i = (hΦ i).supportProj :=
+  rfl
+
+/-- The terms of the range projections are orthogonal projections. -/
+theorem isStarProjection_supportProj_term (i : ι) :
+    IsStarProjection ((Φ.supportProj hΦ).term i) :=
+  (hΦ i).isHermitian.isStarProjection_supportProj
+
+/-- The terms of the range projections are positive. -/
+theorem supportProj_term_nonneg (i : ι) : 0 ≤ (Φ.supportProj hΦ).term i :=
+  (isStarProjection_supportProj_term Φ hΦ i).nonneg
+
+/-- A positive term of norm at most one lies below its range projection. -/
+theorem term_le_supportProj_term {i : ι} (hn : ‖Φ.term i‖ ≤ 1) :
+    Φ.term i ≤ (Φ.supportProj hΦ).term i :=
+  (hΦ i).le_supportProj_of_norm_le_one hn
+
+/-- **Replacing the terms by their range projections increases the Hamiltonian** when every
+term has norm at most one. ALVV, arXiv:1602.08828v2, Section 6.1, lines 1457–1460. -/
+theorem hamiltonian_le_hamiltonian_supportProj [Fintype ι] (hn : ∀ i, ‖Φ.term i‖ ≤ 1) :
+    Φ.hamiltonian ≤ (Φ.supportProj hΦ).hamiltonian :=
+  Finset.sum_le_sum fun i _ ↦ term_le_supportProj_term Φ hΦ (hn i)
+
+/-- **Replacing the terms by their range projections keeps the kernel of the Hamiltonian.** No
+bound on the norms of the terms is needed. ALVV, arXiv:1602.08828v2, Section 6.1,
+lines 1457–1460. -/
+theorem hamiltonian_supportProj_mulVec_eq_zero_iff [Fintype ι] (x : Config X → ℂ) :
+    (Φ.supportProj hΦ).hamiltonian *ᵥ x = 0 ↔ Φ.hamiltonian *ᵥ x = 0 :=
+  PosSemidef.sum_supportProj_mulVec_eq_zero_iff (h := Φ.term) hΦ x
+
+end SupportProj
 
 end Interaction
 

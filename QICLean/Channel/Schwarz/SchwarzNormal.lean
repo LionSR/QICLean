@@ -48,7 +48,7 @@ not use it since Kadison–Schwarz already holds for all inputs (see
 `kadison_schwarz_adjoint`). -/
 theorem kadison_schwarz_normal_cp
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_tp : IsTPKraus K)
+    (h_tp : Kraus.IsTP K)
     (A : Matrix (Fin D) (Fin D) ℂ)
     (_hNormal : Aᴴ * A = A * Aᴴ) :
     (krausAdjointMap K (Aᴴ * A) - krausAdjointMap K Aᴴ * krausAdjointMap K A).PosSemidef := by
@@ -57,7 +57,7 @@ theorem kadison_schwarz_normal_cp
 /-- Loewner-order reformulation of `kadison_schwarz_normal_cp`. -/
 theorem kadison_schwarz_normal_cp_le
     (K : Fin d → Matrix (Fin D) (Fin D) ℂ)
-    (h_tp : IsTPKraus K)
+    (h_tp : Kraus.IsTP K)
     (A : Matrix (Fin D) (Fin D) ℂ)
     (hNormal : Aᴴ * A = A * Aᴴ) :
     krausAdjointMap K Aᴴ * krausAdjointMap K A ≤ krausAdjointMap K (Aᴴ * A) := by

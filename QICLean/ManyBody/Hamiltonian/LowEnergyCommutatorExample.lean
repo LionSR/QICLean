@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import Mathlib.Data.Nat.Dist
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutator
-import QICLean.ManyBody.Sites.Placement
+import QICLean.ManyBody.Sites.PlaceAlong
 
 /-!
 # Low-energy commutators need not vanish without translation invariance
@@ -52,8 +52,8 @@ Spins are encoded by `Fin 2`, with `0` for up and `1` for down.
   the same commutator conclusions for the source's truncated terms.
 
 Moved from TNLean (`e113e005`): `TNLean/Lattice/LowEnergyCommutatorExample.lean`. Changes:
-namespace `ManyBody.LowEnergyExample`; the one-site operator `siteOp i u` is the placement
-`place {i}` of `u`, with its algebraic lemmas proved here.
+namespace `ManyBody.LowEnergyExample`; the one-site operator `siteOp i u` there is the matrix
+`u` at the site `i`, `ManyBody.placeAt i u`, and the lemmas on it are named after `placeAt`.
 -/
 
 noncomputable section
@@ -64,57 +64,6 @@ open Matrix Complex
 namespace ManyBody.LowEnergyExample
 
 variable {L : ℕ}
-
-/-- A configuration of the single site `i`, as its value at `i`. -/
-def siteConfigEquiv (i : Fin L) : RegionConfig (fun _ : Fin L ↦ Fin 2) {i} ≃ Fin 2 where
-  toFun σ := σ ⟨i, Finset.mem_singleton_self i⟩
-  invFun a _ := a
-  left_inv σ := by
-    funext ⟨v, hv⟩
-    obtain rfl := Finset.mem_singleton.mp hv
-    rfl
-  right_inv _ := rfl
-
-/-- The one-site matrix `u` at the site `i`, placed as `u ⊗ 1` by `place {i}`. -/
-noncomputable def siteOp (i : Fin L) (u : Matrix (Fin 2) (Fin 2) ℂ) :
-    Matrix (Fin L → Fin 2) (Fin L → Fin 2) ℂ :=
-  place (X := fun _ : Fin L ↦ Fin 2) {i} (u.submatrix (siteConfigEquiv i) (siteConfigEquiv i))
-
-theorem siteOp_apply (i : Fin L) (u : Matrix (Fin 2) (Fin 2) ℂ) (x y : Fin L → Fin 2) :
-    siteOp i u x y = if ∀ j, j ≠ i → x j = y j then u (x i) (y i) else 0 := by
-  simp only [siteOp, place_apply, Finset.mem_singleton, submatrix_apply]
-  rfl
-
-theorem siteOp_add (i : Fin L) (u v : Matrix (Fin 2) (Fin 2) ℂ) :
-    siteOp i (u + v) = siteOp i u + siteOp i v := by
-  simp only [siteOp, ← place_add]
-  rfl
-
-theorem siteOp_neg (i : Fin L) (u : Matrix (Fin 2) (Fin 2) ℂ) :
-    siteOp i (-u) = -siteOp i u := by
-  simp only [siteOp, ← place_neg]
-  rfl
-
-theorem siteOp_sub (i : Fin L) (u v : Matrix (Fin 2) (Fin 2) ℂ) :
-    siteOp i (u - v) = siteOp i u - siteOp i v := by
-  simp only [siteOp, ← place_sub]
-  rfl
-
-theorem siteOp_mul (i : Fin L) (u v : Matrix (Fin 2) (Fin 2) ℂ) :
-    siteOp i (u * v) = siteOp i u * siteOp i v := by
-  simp only [siteOp, ← place_mul, submatrix_mul_equiv]
-
-theorem siteOp_diagonal (i : Fin L) (f : Fin 2 → ℂ) :
-    siteOp i (diagonal f) = diagonal fun x : Fin L → Fin 2 ↦ f (x i) := by
-  ext x y
-  rw [siteOp_apply, diagonal_apply, diagonal_apply]
-  by_cases hxy : x = y
-  · subst hxy; simp
-  · simp only [hxy, ↓reduceIte]
-    split_ifs with h h'
-    · exact absurd (funext fun j ↦ if hj : j = i then hj ▸ h' else h j hj) hxy
-    · rfl
-    · rfl
 
 /-- The spin-1/2 matrix `S^x`, with `0` for up and `1` for down. -/
 noncomputable def spinX : Matrix (Fin 2) (Fin 2) ℂ := !![0, 1 / 2; 1 / 2, 0]
@@ -134,20 +83,23 @@ theorem spinZ_eq_diagonal : spinZ = diagonal fun a ↦ (spinValue a : ℂ) := by
   fin_cases a <;> fin_cases b <;> simp [spinZ, spinValue]
 
 /-- `S^z` at the site `i` is diagonal on configurations. -/
-theorem siteOp_spinZ (i : Fin L) :
-    siteOp i spinZ = diagonal fun σ ↦ (spinValue (σ i) : ℂ) := by
-  rw [spinZ_eq_diagonal, siteOp_diagonal]
+theorem placeAt_spinZ (i : Fin L) :
+    placeAt (X := fun _ : Fin L ↦ Fin 2) i spinZ = diagonal fun σ ↦ (spinValue (σ i) : ℂ) := by
+  rw [spinZ_eq_diagonal, placeAt_diagonal]
 
 variable (m : ℕ)
+
+/-- The matrix `u` at the site `i` of the chain of `m + 3` spins. -/
+local notation "spinAt" => placeAt (X := fun _ : Fin (m + 3) ↦ Fin 2)
 
 /-- The terms `H_i` of the example on the chain of `m + 3` sites:
 `H_0 = S^x_0 + S^y_0`, `H_1 = −S^x_0 − S^z_1`, `H_2 = −S^y_0 + S^z_2`, and `H_i = S^z_i` for
 `i ≥ 3`. Hastings, arXiv:cond-mat/0508554v3, lines 1657–1659. -/
 noncomputable def term (i : Fin (m + 3)) : Matrix (Fin (m + 3) → Fin 2) (Fin (m + 3) → Fin 2) ℂ :=
-  if i = 0 then siteOp 0 spinX + siteOp 0 spinY
-  else if i = 1 then -siteOp 0 spinX - siteOp 1 spinZ
-  else if i = 2 then -siteOp 0 spinY + siteOp 2 spinZ
-  else siteOp i spinZ
+  if i = 0 then spinAt 0 spinX + spinAt 0 spinY
+  else if i = 1 then -spinAt 0 spinX - spinAt 1 spinZ
+  else if i = 2 then -spinAt 0 spinY + spinAt 2 spinZ
+  else placeAt i spinZ
 
 /-- The Hamiltonian `H = ∑_i H_i`. -/
 noncomputable def hamiltonian : Matrix (Fin (m + 3) → Fin 2) (Fin (m + 3) → Fin 2) ℂ :=
@@ -158,11 +110,11 @@ noncomputable def hamiltonian : Matrix (Fin (m + 3) → Fin 2) (Fin (m + 3) → 
 noncomputable def energy (σ : Fin (m + 3) → Fin 2) : ℝ :=
   -spinValue (σ 1) + ∑ j : Fin (m + 1), spinValue (σ j.succ.succ)
 
-theorem term_zero : term m 0 = siteOp 0 spinX + siteOp 0 spinY := by simp [term]
+theorem term_zero : term m 0 = spinAt 0 spinX + spinAt 0 spinY := by simp [term]
 
-theorem term_one : term m 1 = -siteOp 0 spinX - siteOp 1 spinZ := by simp [term]
+theorem term_one : term m 1 = -spinAt 0 spinX - spinAt 1 spinZ := by simp [term]
 
-theorem term_two : term m 2 = -siteOp 0 spinY + siteOp 2 spinZ := by
+theorem term_two : term m 2 = -spinAt 0 spinY + spinAt 2 spinZ := by
   have h0 : (2 : Fin (m + 3)) ≠ 0 := by
     simp [Fin.ext_iff, Nat.mod_eq_of_lt (show 2 < m + 3 by omega)]
   have h1 : (2 : Fin (m + 3)) ≠ 1 := by
@@ -171,7 +123,7 @@ theorem term_two : term m 2 = -siteOp 0 spinY + siteOp 2 spinZ := by
   simp [term, h0, h1]
 
 theorem term_succ_succ_succ (j : Fin m) :
-    term m j.succ.succ.succ = siteOp j.succ.succ.succ spinZ := by
+    term m j.succ.succ.succ = placeAt j.succ.succ.succ spinZ := by
   have h1 : j.succ.succ.succ ≠ (1 : Fin (m + 3)) := by
     intro h; have := congrArg Fin.val h
     simp only [Fin.val_succ, Fin.val_one'] at this
@@ -192,7 +144,7 @@ theorem hamiltonian_eq_diagonal :
     term_succ_succ_succ]
   ext σ τ
   simp only [Matrix.add_apply, Matrix.sub_apply, Matrix.neg_apply, Matrix.sum_apply,
-    siteOp_spinZ, diagonal_apply, energy, Fin.sum_univ_succ, Fin.succ_zero_eq_one,
+    placeAt_spinZ, diagonal_apply, energy, Fin.sum_univ_succ, Fin.succ_zero_eq_one,
     Fin.succ_one_eq_two]
   split_ifs with h
   · push_cast; ring
@@ -200,10 +152,10 @@ theorem hamiltonian_eq_diagonal :
 
 /-- The Hamiltonian does not act on spin `0`, so it commutes with every operator on that
 spin. Hastings, arXiv:cond-mat/0508554v3, lines 1657–1667. -/
-theorem hamiltonian_commute_siteOp_zero (X : Matrix (Fin 2) (Fin 2) ℂ) :
-    Commute (hamiltonian m) (siteOp 0 X) := by
+theorem hamiltonian_commute_placeAt_zero (X : Matrix (Fin 2) (Fin 2) ℂ) :
+    Commute (hamiltonian m) (placeAt 0 X) := by
   ext σ τ
-  simp only [hamiltonian_eq_diagonal, diagonal_mul, mul_diagonal, siteOp_apply]
+  simp only [hamiltonian_eq_diagonal, diagonal_mul, mul_diagonal, placeAt_apply]
   by_cases hστ : ∀ i, i ≠ 0 → σ i = τ i
   · have he : energy m σ = energy m τ := by
       simp [energy, hστ]
@@ -215,15 +167,15 @@ The non-diagonal part of each term acts only on the free spin `0`.
 Hastings, arXiv:cond-mat/0508554v3, lines 1657–1667. -/
 theorem hamiltonian_commute_term (i : Fin (m + 3)) :
     Commute (hamiltonian m) (term m i) := by
-  have hz (j : Fin (m + 3)) : Commute (hamiltonian m) (siteOp j spinZ) := by
-    rw [hamiltonian_eq_diagonal, siteOp_spinZ]
+  have hz (j : Fin (m + 3)) : Commute (hamiltonian m) (placeAt j spinZ) := by
+    rw [hamiltonian_eq_diagonal, placeAt_spinZ]
     exact commute_diagonal _ _
   unfold term
   split_ifs
-  · exact (hamiltonian_commute_siteOp_zero m spinX).add_right
-      (hamiltonian_commute_siteOp_zero m spinY)
-  · exact (hamiltonian_commute_siteOp_zero m spinX).neg_right.sub_right (hz 1)
-  · exact (hamiltonian_commute_siteOp_zero m spinY).neg_right.add_right (hz 2)
+  · exact (hamiltonian_commute_placeAt_zero m spinX).add_right
+      (hamiltonian_commute_placeAt_zero m spinY)
+  · exact (hamiltonian_commute_placeAt_zero m spinX).neg_right.sub_right (hz 1)
+  · exact (hamiltonian_commute_placeAt_zero m spinY).neg_right.add_right (hz 2)
   · exact hz i
 
 /-- Gaussian filtering fixes every term of the example, at every variance: each term
@@ -380,13 +332,13 @@ theorem compress_apply (X : Matrix (Fin (m + 3) → Fin 2) (Fin (m + 3) → Fin 
   by_cases hσ : IsGround m σ <;> by_cases hτ : IsGround m τ <;> simp [hσ, hτ]
 
 /-- On the ground space, an operator on site `0` acts through its `2 × 2` matrix. -/
-theorem compress_siteOp_zero_apply (X : Matrix (Fin 2) (Fin 2) ℂ) (σ τ : Fin (m + 3) → Fin 2) :
-    compress m (siteOp 0 X) σ τ =
+theorem compress_placeAt_zero_apply (X : Matrix (Fin 2) (Fin 2) ℂ) (σ τ : Fin (m + 3) → Fin 2) :
+    compress m (placeAt 0 X) σ τ =
       if IsGround m σ ∧ IsGround m τ then X (σ 0) (τ 0) else 0 := by
   rw [compress_apply]
   split_ifs with h
   · have hag : ∀ j, j ≠ 0 → σ j = τ j := fun j hj ↦ by rw [h.1 j hj, h.2 j hj]
-    rw [siteOp_apply, ite_eq_left_of_eq_true _ _ (eq_true hag)]
+    rw [placeAt_apply, ite_eq_left_of_eq_true _ _ (eq_true hag)]
   · rfl
 
 theorem groundProj_mul_self : groundProj m * groundProj m = groundProj m := by
@@ -395,10 +347,10 @@ theorem groundProj_mul_self : groundProj m * groundProj m = groundProj m := by
 
 /-- The ground projection constrains only the sites `i ≠ 0`, so it commutes with every operator
 on site `0`. -/
-theorem groundProj_commute_siteOp_zero (X : Matrix (Fin 2) (Fin 2) ℂ) :
-    Commute (groundProj m) (siteOp 0 X) := by
+theorem groundProj_commute_placeAt_zero (X : Matrix (Fin 2) (Fin 2) ℂ) :
+    Commute (groundProj m) (placeAt 0 X) := by
   ext σ τ
-  simp only [groundProj, diagonal_mul, mul_diagonal, siteOp_apply]
+  simp only [groundProj, diagonal_mul, mul_diagonal, placeAt_apply]
   by_cases hστ : ∀ i, i ≠ 0 → σ i = τ i
   · have h : IsGround m σ ↔ IsGround m τ :=
       forall₂_congr fun i hi ↦ by rw [hστ i hi]
@@ -406,23 +358,23 @@ theorem groundProj_commute_siteOp_zero (X : Matrix (Fin 2) (Fin 2) ℂ) :
     split_ifs <;> simp
   · simp [hστ]
 
-theorem compress_siteOp_zero_mul (X Y : Matrix (Fin 2) (Fin 2) ℂ) :
-    compress m (siteOp 0 X) * compress m (siteOp 0 Y) = compress m (siteOp 0 (X * Y)) := by
+theorem compress_placeAt_zero_mul (X Y : Matrix (Fin 2) (Fin 2) ℂ) :
+    compress m (placeAt 0 X) * compress m (placeAt 0 Y) = compress m (placeAt 0 (X * Y)) := by
   set P := groundProj m
   have hP : P * P = P := groundProj_mul_self m
-  calc P * siteOp 0 X * P * (P * siteOp 0 Y * P)
-      = P * siteOp 0 X * (P * P) * siteOp 0 Y * P := by simp only [Matrix.mul_assoc]
-    _ = P * siteOp 0 X * (P * siteOp 0 Y) * P := by rw [hP]; simp only [Matrix.mul_assoc]
-    _ = P * siteOp 0 X * (siteOp 0 Y * P) * P := by
-        rw [(groundProj_commute_siteOp_zero m Y).eq]
-    _ = P * (siteOp 0 X * siteOp 0 Y) * (P * P) := by simp only [Matrix.mul_assoc]
-    _ = P * siteOp 0 (X * Y) * P := by rw [hP, siteOp_mul]
+  calc P * placeAt 0 X * P * (P * placeAt 0 Y * P)
+      = P * placeAt 0 X * (P * P) * placeAt 0 Y * P := by simp only [Matrix.mul_assoc]
+    _ = P * placeAt 0 X * (P * placeAt 0 Y) * P := by rw [hP]; simp only [Matrix.mul_assoc]
+    _ = P * placeAt 0 X * (placeAt 0 Y * P) * P := by
+        rw [(groundProj_commute_placeAt_zero m Y).eq]
+    _ = P * (placeAt 0 X * placeAt 0 Y) * (P * P) := by simp only [Matrix.mul_assoc]
+    _ = P * placeAt 0 (X * Y) * P := by rw [hP, placeAt_mul]
 
 /-- On the ground space, the operator `S^z_k` on a site `k ≠ 0` is a scalar. -/
-theorem compress_siteOp_spinZ {k : Fin (m + 3)} (hk : k ≠ 0) :
-    compress m (siteOp k spinZ) = (spinValue (groundSpin m k) : ℂ) • groundProj m := by
+theorem compress_placeAt_spinZ {k : Fin (m + 3)} (hk : k ≠ 0) :
+    compress m (placeAt k spinZ) = (spinValue (groundSpin m k) : ℂ) • groundProj m := by
   ext σ τ
-  rw [compress_apply, siteOp_spinZ, Matrix.smul_apply, groundProj, diagonal_apply,
+  rw [compress_apply, placeAt_spinZ, Matrix.smul_apply, groundProj, diagonal_apply,
     diagonal_apply]
   by_cases hστ : σ = τ
   · subst hστ
@@ -463,57 +415,57 @@ theorem commute_compress_smul_groundProj
     groundProj_mul_compress]
 
 /-- A nonzero `2 × 2` matrix on site `0` has a nonzero compression. -/
-theorem compress_siteOp_zero_ne_zero {X : Matrix (Fin 2) (Fin 2) ℂ} {a b : Fin 2}
-    (hX : X a b ≠ 0) : compress m (siteOp 0 X) ≠ 0 := by
+theorem compress_placeAt_zero_ne_zero {X : Matrix (Fin 2) (Fin 2) ℂ} {a b : Fin 2}
+    (hX : X a b ≠ 0) : compress m (placeAt 0 X) ≠ 0 := by
   intro h
   have := congrFun (congrFun h (groundConfig m a)) (groundConfig m b)
-  simp only [compress_siteOp_zero_apply, isGround_groundConfig, and_self, ↓reduceIte,
+  simp only [compress_placeAt_zero_apply, isGround_groundConfig, and_self, ↓reduceIte,
     groundConfig_zero, Matrix.zero_apply] at this
   exact hX this
 
 /-- Two compressions `P A P + c P` and `P B P + d P` of operators on site `0` plus scalars fail
 to commute when `A` and `B` do not commute. -/
-theorem not_commute_of_siteOp_zero {A B : Matrix (Fin 2) (Fin 2) ℂ} {a b : Fin 2}
+theorem not_commute_of_placeAt_zero {A B : Matrix (Fin 2) (Fin 2) ℂ} {a b : Fin 2}
     (hAB : (A * B - B * A) a b ≠ 0) (c d : ℂ) :
-    ¬Commute (compress m (siteOp 0 A) + c • groundProj m)
-      (compress m (siteOp 0 B) + d • groundProj m) := by
+    ¬Commute (compress m (placeAt 0 A) + c • groundProj m)
+      (compress m (placeAt 0 B) + d • groundProj m) := by
   intro h
   have hPP : ∀ c d : ℂ, Commute (c • groundProj m) (d • groundProj m) := fun c d ↦
     ((Commute.refl _).smul_left c).smul_right d
-  have hcD : Commute (c • groundProj m) (compress m (siteOp 0 B) + d • groundProj m) :=
+  have hcD : Commute (c • groundProj m) (compress m (placeAt 0 B) + d • groundProj m) :=
     ((commute_compress_smul_groundProj m _ c).symm).add_right (hPP c d)
-  have hA : Commute (compress m (siteOp 0 A)) (compress m (siteOp 0 B) + d • groundProj m) := by
+  have hA : Commute (compress m (placeAt 0 A)) (compress m (placeAt 0 B) + d • groundProj m) := by
     simpa using h.sub_left hcD
-  have hAB' : Commute (compress m (siteOp 0 A)) (compress m (siteOp 0 B)) := by
+  have hAB' : Commute (compress m (placeAt 0 A)) (compress m (placeAt 0 B)) := by
     simpa using hA.sub_right (commute_compress_smul_groundProj m _ d)
-  have hzero : compress m (siteOp 0 (A * B - B * A)) = 0 := by
-    rw [siteOp_sub, compress_sub, ← compress_siteOp_zero_mul, ← compress_siteOp_zero_mul,
+  have hzero : compress m (placeAt 0 (A * B - B * A)) = 0 := by
+    rw [placeAt_sub, compress_sub, ← compress_placeAt_zero_mul, ← compress_placeAt_zero_mul,
       hAB'.eq, sub_self]
-  exact compress_siteOp_zero_ne_zero m hAB hzero
+  exact compress_placeAt_zero_ne_zero m hAB hzero
 
 theorem compress_term_zero :
-    compress m (term m 0) = compress m (siteOp 0 (spinX + spinY)) + (0 : ℂ) • groundProj m := by
-  rw [term_zero, siteOp_add, zero_smul, add_zero]
+    compress m (term m 0) = compress m (placeAt 0 (spinX + spinY)) + (0 : ℂ) • groundProj m := by
+  rw [term_zero, placeAt_add, zero_smul, add_zero]
 
 theorem compress_term_one :
-    compress m (term m 1) = compress m (siteOp 0 (-spinX)) +
+    compress m (term m 1) = compress m (placeAt 0 (-spinX)) +
       (-(spinValue (groundSpin m 1) : ℂ)) • groundProj m := by
   rw [term_one, sub_eq_add_neg, compress_add, compress_neg, compress_neg,
-    compress_siteOp_spinZ m (by simp), siteOp_neg, compress_neg, neg_smul]
+    compress_placeAt_spinZ m (by simp), placeAt_neg, compress_neg, neg_smul]
 
 theorem compress_term_two :
-    compress m (term m 2) = compress m (siteOp 0 (-spinY)) +
+    compress m (term m 2) = compress m (placeAt 0 (-spinY)) +
       (spinValue (groundSpin m 2) : ℂ) • groundProj m := by
   have h2 : (2 : Fin (m + 3)) ≠ 0 := by
     simp [Fin.ext_iff, Nat.mod_eq_of_lt (show 2 < m + 3 by omega)]
-  rw [term_two, compress_add, compress_neg, compress_siteOp_spinZ m h2, siteOp_neg, compress_neg]
+  rw [term_two, compress_add, compress_neg, compress_placeAt_spinZ m h2, placeAt_neg, compress_neg]
 
 /-- **`P H_0 P` and `P H_1 P` do not commute.** Hastings, arXiv:cond-mat/0508554v3,
 lines 1665–1667. -/
 theorem not_commute_compress_term_zero_one :
     ¬Commute (compress m (term m 0)) (compress m (term m 1)) := by
   rw [compress_term_zero, compress_term_one]
-  refine not_commute_of_siteOp_zero m (a := 0) (b := 0) ?_ _ _
+  refine not_commute_of_placeAt_zero m (a := 0) (b := 0) ?_ _ _
   simp [spinX, spinY]
   ring_nf; simp
 
@@ -522,7 +474,7 @@ lines 1667–1668. -/
 theorem not_commute_compress_term_one_two :
     ¬Commute (compress m (term m 1)) (compress m (term m 2)) := by
   rw [compress_term_one, compress_term_two]
-  refine not_commute_of_siteOp_zero m (a := 0) (b := 0) ?_ _ _
+  refine not_commute_of_placeAt_zero m (a := 0) (b := 0) ?_ _ _
   simp [spinX, spinY]
   ring_nf; simp
 
@@ -531,7 +483,7 @@ line 1668. -/
 theorem not_commute_compress_term_zero_two :
     ¬Commute (compress m (term m 0)) (compress m (term m 2)) := by
   rw [compress_term_zero, compress_term_two]
-  refine not_commute_of_siteOp_zero m (a := 0) (b := 0) ?_ _ _
+  refine not_commute_of_placeAt_zero m (a := 0) (b := 0) ?_ _ _
   simp [spinX, spinY]
   ring_nf; simp
 
@@ -542,7 +494,7 @@ theorem commute_compress_term_zero_of_three_le {i : Fin (m + 3)} (hi : 3 ≤ i.v
     Commute (compress m (term m 0)) (compress m (term m i)) := by
   obtain ⟨j, rfl⟩ : ∃ j : Fin m, j.succ.succ.succ = i :=
     ⟨⟨i.val - 3, by omega⟩, Fin.ext (by simp; omega)⟩
-  rw [term_succ_succ_succ, compress_siteOp_spinZ m (Fin.succ_ne_zero _)]
+  rw [term_succ_succ_succ, compress_placeAt_spinZ m (Fin.succ_ne_zero _)]
   exact commute_compress_smul_groundProj m _ _
 
 /-- The three truncated filtered terms at sites `0`, `1`, `2` have pairwise noncommuting

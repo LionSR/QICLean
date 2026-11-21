@@ -71,7 +71,8 @@ variable [DecidableEq α] [DecidableEq α']
 omit [Fintype α] [Fintype α'] in
 theorem IsTP.prod {K : KrausFamily α β} {L : KrausFamily α' β'} (hK : K.IsTP) (hL : L.IsTP) :
     (K.prod L).IsTP := by
-  rw [IsTP, effect_prod, hK, hL, one_kronecker_one]
+  rw [isTP_iff_effect_eq_one, effect_prod, isTP_iff_effect_eq_one.mp hK,
+    isTP_iff_effect_eq_one.mp hL, one_kronecker_one]
 
 theorem IsUnitary.prod [DecidableEq β] [DecidableEq β'] {K : KrausFamily α β}
     {L : KrausFamily α' β'} (hK : K.IsUnitary) (hL : L.IsUnitary) : (K.prod L).IsUnitary := by
@@ -120,6 +121,7 @@ theorem map_traceRight [DecidableEq β] {F : Type} [Fintype F] [DecidableEq F]
 omit [Fintype α] [Fintype α'] [DecidableEq α] [DecidableEq α'] in
 theorem isTP_traceRight [DecidableEq β] {F : Type} [Fintype F] [DecidableEq F] :
     (traceRight β F).IsTP := by
+  rw [isTP_iff_effect_eq_one]
   ext ⟨b, g⟩ q
   rw [effect, Matrix.sum_apply, Finset.sum_eq_single (show (traceRight β F).Index from g)
     (fun f _ hf ↦ ?_) (fun h ↦ absurd (Finset.mem_univ _) h)]
