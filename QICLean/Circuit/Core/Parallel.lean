@@ -27,6 +27,7 @@ a product of one placement per cell.
 
 * `QuantumCircuit.Layer.ofCells` — gates on disjoint cells, the identity elsewhere.
 * `QuantumCircuit.Layer.placeFamily` — the placement of a Kraus family on a region.
+* `QuantumCircuit.Layer.onsiteOp` — the onsite operators of a layer at an index.
 * `QuantumCircuit.Layer.ofOnsite` — a layer with no cells.
 * `QuantumCircuit.Layer.measure`, `QuantumCircuit.Layer.measure.outcome` — the measurement of a
   region, and the outcome of a branch.
@@ -34,6 +35,8 @@ a product of one placement per cell.
 ## Main results
 
 * `QuantumCircuit.Layer.kraus_ofCells` — the Kraus operators, as products of placements.
+* `QuantumCircuit.Layer.kraus_eq_prod_place_mul_prodOp` — the Kraus operator of any layer as a
+  product of placed gates times a product operator.
 * `QuantumCircuit.Layer.map_ofCells` — the map, as a composite of the maps of placed gates.
 * `QuantumCircuit.Layer.kraus_ofOnsite`, `QuantumCircuit.Layer.depth_ofOnsite` — the Kraus
   operators of an onsite layer, and its depth `0`.
@@ -378,6 +381,66 @@ theorem kraus_ofCells (ev : Interpretation G) (cells : Finset Γ.Cell)
     rw [Finset.prod_boole]
     simp only [Finset.mem_univ, true_implies, Subtype.forall, hmem]
   rw [hfree, mul_ite, mul_one, mul_zero]
+
+omit [Fintype S] [∀ s, Fintype (X s)] in
+/-- The onsite operators of a layer at the Kraus index `i`: the operator of the onsite family at
+every site met by no cell, and the identity at the sites of the cells. -/
+def onsiteOp (L : Layer Γ G X X) (i : L.Index) (s : S) : Matrix (X s) (X s) ℂ :=
+  if h : s ∉ L.cells.biUnion Γ.cell then (L.onsite ⟨s, h⟩).op (i.2 ⟨s, h⟩) else 1
+
+/-- **The Kraus operator of a layer.** At the index `i`, it is the product of the placements of
+the matrices of the gates at `i`, in the order of any enumeration `l` of the cells, times the
+product of the onsite operators at `i`. -/
+theorem kraus_eq_prod_place_mul_prodOp (ev : Interpretation G) (L : Layer Γ G X X)
+    (l : List L.cells) (hl : l.Nodup) (hall : ∀ c, c ∈ l) (i : L.Index) :
+    L.kraus ev i =
+      (l.map fun c : L.cells ↦ ManyBody.place (Γ.cell c) (ev (L.gate c) (i.1 c))).prod *
+        prodOp (L.onsiteOp i) := by
+  rw [← kraus_ofCells ev L.cells L.pairwiseDisjoint L.gate l hl hall (i.1, fun _ ↦ ())]
+  set D := L.cells.biUnion Γ.cell
+  ext y x
+  rw [Matrix.mul_apply]
+  let z : Config X := fun s ↦ if s ∈ D then x s else y s
+  have hcell (b : L.cells) :
+      (fun v : {v // v ∈ Γ.cell b} ↦ z v) = fun v : {v // v ∈ Γ.cell b} ↦ x v :=
+    funext fun v ↦ show (if (v : S) ∈ D then x v else y v) = x v from
+      ite_eq_left (show (v : S) ∈ D from Finset.mem_biUnion.mpr ⟨b, b.2, v.2⟩)
+  have hfree (s : S) (hs : s ∉ D) : z s = y s := ite_eq_right hs
+  have hD (s : S) (hs : ¬s ∉ D) : z s = x s := ite_eq_left (not_not.mp hs)
+  have hu (s : S) (hs : ¬s ∉ D) : L.onsiteOp i s = 1 := dite_eq_right hs
+  have hK (w : Config X) : (ofCells L.cells L.pairwiseDisjoint L.gate).kraus ev (i.1, fun _ ↦ ())
+      y w = (∏ b : L.cells, ev (L.gate b) (i.1 b) (fun v ↦ y v) (fun v ↦ w v)) *
+        ∏ s : L.Free, (1 : Matrix (X s) (X s) ℂ) (y s) (w s) :=
+    rfl
+  rw [Finset.sum_eq_single z]
+  · rw [hK, prodOp_apply, kraus_apply, ← Fintype.prod_subtype_mul_prod_subtype (· ∉ D)]
+    simp only [hcell]
+    rw [Fintype.prod_eq_one (fun s : {s // ¬s ∉ D} ↦ L.onsiteOp i s (z s) (x s))
+      fun s ↦ by rw [hu s s.2, hD s s.2, one_apply_eq],
+      Fintype.prod_eq_one (fun s : L.Free ↦ (1 : Matrix (X s) (X s) ℂ) (y s) (z s))
+        fun s ↦ by rw [hfree s s.2, one_apply_eq], mul_one, mul_one]
+    refine congrArg _ (Fintype.prod_congr _ _ fun s ↦ ?_)
+    rw [onsiteOp, dite_eq_left s.2, hfree s s.2]
+  · intro w _ hw
+    obtain ⟨s, hs⟩ := Function.ne_iff.mp hw
+    by_cases hsD : s ∉ D
+    · rw [hK]
+      refine mul_eq_zero_of_left (mul_eq_zero_of_right _ (Finset.prod_eq_zero
+        (Finset.mem_univ (⟨s, hsD⟩ : L.Free)) ?_)) _
+      exact one_apply_ne fun h : y s = w s ↦ hs (h.symm.trans (hfree s hsD).symm)
+    · rw [prodOp_apply, Finset.prod_eq_zero (Finset.mem_univ s)
+        (by rw [hu s hsD]; exact one_apply_ne fun h ↦ hs (h.trans (hD s hsD).symm)), mul_zero]
+  · exact fun h ↦ absurd (Finset.mem_univ z) h
+
+omit [Fintype S] in
+theorem onsiteOp_mem_unitaryGroup {L : Layer Γ KrausGate X X}
+    (hL : L.Forall KrausGate.ev KrausFamily.IsUnitary) (i : L.Index) (s : S) :
+    L.onsiteOp i s ∈ unitaryGroup (X s) ℂ := by
+  by_cases h : s ∉ L.cells.biUnion Γ.cell
+  · rw [onsiteOp, dite_eq_left h, mem_unitaryGroup_iff', star_eq_conjTranspose]
+    exact ((hL.2 ⟨s, h⟩).2 _).1
+  · rw [onsiteOp, dite_eq_right h]
+    exact one_mem _
 
 /-- The Kraus family `K ↦ K ⊗ 1` of a Kraus family on a region. -/
 noncomputable def placeFamily (D : Finset S)

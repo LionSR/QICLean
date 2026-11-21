@@ -110,6 +110,12 @@ variable {Γ : Geometry S} {G : Finset S → (S → Type) → (S → Type) → T
 /-- The sites met by no cell of the layer. -/
 abbrev Free (L : Layer Γ G X Y) : Type := {s // s ∉ L.cells.biUnion Γ.cell}
 
+omit [GateFamily G] in
+/-- A product over the sites met by no cell of a layer, as a product over all sites. -/
+theorem prod_free (L : Layer Γ G X Y) (f : L.Free → ℂ) :
+    ∏ s, f s = ∏ s : S, if h : s ∈ L.cells.biUnion Γ.cell then 1 else f ⟨s, h⟩ := by
+  simp only [Fintype.prod_dite, Finset.prod_const_one, one_mul]
+
 /-- The Kraus indices of a layer: an outcome of every gate and of every onsite family. -/
 def Index (L : Layer Γ G X Y) : Type :=
   ((b : L.cells) → GateFamily.Outcome (L.gate b)) × ((s : L.Free) → (L.onsite s).Index)

@@ -46,7 +46,6 @@ images of neighbouring pairs.
 
 ## Main definitions
 
-* `QuantumCircuit.Geometry.restrictHom` — the cells inside a region are cells of the geometry.
 * `QuantumCircuit.Layer.place`, `QuantumCircuit.UnitaryCircuit.place` — placement on a region.
 * `QuantumCircuit.Layer.relabel`, `QuantumCircuit.UnitaryCircuit.relabel` — relabelling along a
   bijection of sites.
@@ -61,8 +60,6 @@ images of neighbouring pairs.
   inside a region is a circuit of depth `K` inside it.
 * `QuantumCircuit.IsGateProduct.isUnitaryCircuitOn_graph` — a product of gates on a graph placed
   as a block of a larger geometry.
-* `QuantumCircuit.Geometry.graph_cell_nonempty`, `QuantumCircuit.Geometry.ring_cell_nonempty` —
-  the cells of a graph and of the ring are nonempty, as the parallel composition needs.
 * `QuantumCircuit.IsGateProduct.isUnitaryCircuitOn_ring`,
   `QuantumCircuit.IsGateProduct.place_pathGraph` — an open chain placed on consecutive sites of
   a ring or of a longer open chain.
@@ -103,12 +100,6 @@ theorem op_eq_of_forall₂ (Φ : Matrix (Config X) (Config X) ℂ → Matrix (Co
 end UnitaryCircuit
 
 /-! ### Placement on a region -/
-
-/-- The cells inside the region `D`, as a geometry on the sites of `D`, are cells of `Γ`. -/
-def Geometry.restrictHom {S : Type} [DecidableEq S] (Γ : Geometry S) (D : Finset S) :
-    (Γ.restrict D).Hom Γ (Function.Embedding.subtype (· ∈ D)) where
-  cellMap := Function.Embedding.subtype _
-  cell_cellMap b := (Finset.subtype_map_of_mem fun _ hv ↦ b.2 hv).symm
 
 namespace Layer
 
@@ -468,23 +459,6 @@ end RelabelClasses
 
 /-! ### A circuit on a graph placed as a block -/
 
-/-- A morphism of geometries into `Γ` over a map of sites into the region `D` is a morphism into
-the cells inside `D`. -/
-def Geometry.Hom.toRestrict {T S : Type} [DecidableEq S] {Δ : Geometry T} {Γ : Geometry S}
-    {D : Finset S} {ι : T ↪ {s // s ∈ D}}
-    (h : Δ.Hom Γ (ι.trans (Function.Embedding.subtype _))) : Δ.Hom (Γ.restrict D) ι where
-  cellMap := ⟨fun b ↦ ⟨h.cellMap b, fun v hv ↦ by
-      rw [h.cell_cellMap] at hv
-      obtain ⟨t, -, rfl⟩ := Finset.mem_map.mp hv
-      exact (ι t).2⟩,
-    fun _ _ hbb' ↦ h.cellMap.injective (congrArg Subtype.val hbb')⟩
-  cell_cellMap b := by
-    ext w
-    simp only [Geometry.restrict, Finset.mem_subtype, Finset.mem_map, Subtype.ext_iff]
-    change w.1 ∈ Γ.cell (h.cellMap b) ↔ _
-    rw [h.cell_cellMap]
-    simp only [Finset.mem_map, Function.Embedding.trans_apply, Function.Embedding.coe_subtype]
-
 /-- A simple graph `G` maps into a geometry `Γ` along an injection of sites `ι` carrying the two
 ends of every edge to the sites of a cell of cost `1`: the edges go to such cells, at equal
 cost. -/
@@ -507,18 +481,6 @@ theorem Geometry.exists_hom_graph {W S : Type} [Fintype W] [DecidableEq W] [Deci
   refine Subtype.ext (Sym2.ext fun v ↦ ?_)
   have hv : v ∈ (Geometry.graph G).cell b₁ ↔ v ∈ (Geometry.graph G).cell b₂ := by rw [hcells]
   exact Geometry.mem_graph_cell.symm.trans (hv.trans Geometry.mem_graph_cell)
-
-/-- The cells of the geometry of a graph are nonempty, so circuits on it run in parallel
-(`IsUnitaryCircuitOn.par`). -/
-theorem Geometry.graph_cell_nonempty {W : Type} [Fintype W] [DecidableEq W] {G : SimpleGraph W}
-    (b : (Geometry.graph G).Cell) : ((Geometry.graph G).cell b).Nonempty :=
-  ⟨(b : Sym2 W).out.1, Geometry.mem_graph_cell.mpr (Sym2.out_fst_mem _)⟩
-
-/-- The cells of the ring are nonempty, so circuits on it run in parallel
-(`IsUnitaryCircuitOn.par`). -/
-theorem Geometry.ring_cell_nonempty {N : ℕ} (b : (Geometry.ring N).Cell) :
-    ((Geometry.ring N).cell b).Nonempty :=
-  Finset.insert_nonempty _ _
 
 section Block
 

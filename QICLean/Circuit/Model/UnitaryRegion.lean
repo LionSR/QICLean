@@ -59,16 +59,6 @@ namespace QuantumCircuit
 variable {S : Type} [Fintype S] [DecidableEq S] {Γ : Geometry S} {X : S → Type}
   [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)]
 
-/-- The operators of a unitary Kraus family at any two indices agree, and so do those of a family
-equal to it. The equation lets the statement apply to a family given by a term, such as a
-conditional, whose index type is not syntactically that of `K'`. -/
-theorem _root_.KrausFamily.IsUnitary.op_eq_of_eq {α β : Type} [Fintype α] [DecidableEq α]
-    [Fintype β] [DecidableEq β] {K K' : KrausFamily α β} (hK' : K'.IsUnitary) (h : K = K')
-    (i : K.Index) (j : K'.Index) : K.op i = K'.op j := by
-  subst h
-  have := hK'.1.some
-  exact congrArg K.op (Subsingleton.elim i j)
-
 /-! ### Layers inside a region -/
 
 namespace Layer
@@ -293,10 +283,7 @@ theorem of_mem_supportedOperators {b : Γ.Cell} {Z : Matrix (Config X) (Config X
     (hZ : Z ∈ supportedOperators X (Γ.cell b)) : IsUnitaryCircuitOn Γ R 1 Z := by
   by_cases hne : ∀ s, Nonempty (X s)
   · obtain ⟨V, rfl⟩ := exists_eq_place_of_mem_supportedOperators hZ
-    refine place hb (mem_unitaryGroup_iff'.mpr (place_injective (Γ.cell b) ?_))
-    rw [place_mul, star_eq_conjTranspose, place_conjTranspose, place_one,
-      ← star_eq_conjTranspose]
-    exact mem_unitaryGroup_iff'.mp hZu
+    exact place hb (place_mem_unitaryGroup_iff.mp hZu)
   · push Not at hne
     obtain ⟨s, hs⟩ := hne
     have : IsEmpty (Config X) := ⟨fun σ ↦ hs.false (σ s)⟩
@@ -399,13 +386,6 @@ theorem isIn_par (h₁ : L₁.IsIn R₁) (h₂ : L₂.IsIn R₂) (hR : Disjoint 
       rintro K rfl
       exact h₂.2 _ hs.2
     exact key _ (ite_eq_right hs.1)
-
-omit [∀ s, Fintype (X s)] [∀ s, DecidableEq (X s)] in
-/-- A product over the sites met by no cell of a layer, as a product over all sites. -/
-theorem prod_free {G : Finset S → (S → Type) → (S → Type) → Type 1} {Y : S → Type}
-    (L : Layer Γ G X Y) (f : L.Free → ℂ) :
-    ∏ s, f s = ∏ s : S, if h : s ∈ L.cells.biUnion Γ.cell then 1 else f ⟨s, h⟩ := by
-  simp only [Fintype.prod_dite, Finset.prod_const_one, one_mul]
 
 omit [Fintype S] [∀ s, Fintype (X s)] in
 /-- A product over the cells of two layers run in parallel, when their sets of cells are

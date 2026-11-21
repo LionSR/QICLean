@@ -39,6 +39,7 @@ radius `r` is the `r`-fold neighbourhood of the geometry; a window is `ManyBody.
 
 ## Main results
 
+* `QuantumCircuit.Geometry.graph_cell_nonempty` — the cells of a graph are nonempty.
 * `QuantumCircuit.Geometry.iterate_neighbourhood_graph_subset` — the `r`-fold neighbourhood lies
   within graph distance `r`.
 * `QuantumCircuit.Geometry.disjoint_iterate_neighbourhood_graph` — regions at graph distance
@@ -80,6 +81,10 @@ theorem graph_cell_mk {u v : V} (h : G.Adj u v) :
 
 theorem graph_cost_pos (e : (graph G).Cell) : 0 < (graph G).cost e :=
   Nat.one_pos
+
+/-- The cells of the geometry of a graph are nonempty. -/
+theorem graph_cell_nonempty (b : (graph G).Cell) : ((graph G).cell b).Nonempty :=
+  ⟨(b : Sym2 V).out.1, mem_graph_cell.mpr (Sym2.out_fst_mem _)⟩
 
 /-- Two sites of one cell are at graph distance at most `1`. -/
 private theorem edist_le_one_of_mem_cell {e : (graph G).Cell} {u v : V}
