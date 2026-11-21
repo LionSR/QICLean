@@ -1,0 +1,58 @@
+\section{Eigenvalues and normalized powers}
+\label{sec:contraction_sums_power}
+
+Throughout this section $H=\sum_{i\in\mathcal I}h_i$ on a finite-dimensional
+complex Hilbert space, where $\mathcal I$ is finite and $0\le h_i\le1$, and
+$N=|\mathcal I|+1$.
+
+\begin{lemma}[The range of an eigenvalue]
+    \label{thm:positive_sum_eigenvalue_range}
+    \lean{Matrix.eigenvalue_nonneg_and_le_card_of_posSemidef_terms}
+    \leanok
+    If $H\Omega=E\Omega$ for a unit vector $\Omega$, then
+    $0\le E\le|\mathcal I|$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Summing the bounds on the terms gives $0\le H\le|\mathcal I|\,1$, and
+    $E=\langle\Omega,H\Omega\rangle$. This is the range of the ground energy
+    used in~\cite[lines 283--284 and 607]{Landau2013PolynomialTime} to define
+    the normalization $(1-E_0/N)^{-1}$.
+\end{proof}
+
+\begin{theorem}[Contraction of the excited vectors from a lower bound on the gap]
+    \label{thm:physical_power_filter_lower_gap_cutdown}
+    \lean{Matrix.norm_power_filter_apply_le_ratio_of_lower_gap}
+    \leanok
+    \uses{thm:spectral_power_ground_projection,thm:global_gap_ground_projection,
+        thm:gaussian_gap_dichotomy}
+    Let $\Omega$ be a unit vector, $E_0\in\mathbb R$ and $\Delta>0$ with
+    $H\Omega=E_0\Omega$ and $H-E_0\,1\ge\Delta(1-P)$, where
+    $P=|\Omega\rangle\langle\Omega|$. Put $T=(1-H/N)/(1-E_0/N)$ and
+    \begin{align*}
+        r=\frac{1-(E_0+\Delta)/N}{1-E_0/N}.
+    \end{align*}
+    For every unit vector $\psi$ orthogonal to $\Omega$ and every integer
+    $m\ge0$,
+    \begin{align*}
+        \|T^m\psi\|                  & \le r^m, &
+        |\langle\psi,T^m\psi\rangle| & \le r^m.
+    \end{align*}
+    This is equation e:cutdown of~\cite[line 603]{Landau2013PolynomialTime},
+    with $\Delta$ any positive lower bound on the gap: $E_0+\Delta$ need not
+    belong to the spectrum of $H$.
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    The gap inequality at $\psi$ gives $\langle\psi,H\psi\rangle\ge E_0+\Delta$,
+    and $H\le N-1$ gives $\langle\psi,H\psi\rangle\le N-1$. Hence
+    $E_0+\Delta\le N-1$, and by the gap dichotomy the spectrum of $H$ lies in
+    $\{E_0\}\cup[E_0+\Delta,N]$. Theorem~\ref{thm:spectral_power_ground_projection}
+    at $E_1=E_0+\Delta$ and $M=N$, with
+    Theorem~\ref{thm:global_gap_ground_projection} identifying its ground
+    projection with $P$, gives $\|T^m-P\|\le r^m$, where
+    $r=(N-E_0-\Delta)/(N-E_0)$. Since $P\psi=0$,
+    $|\langle\psi,T^m\psi\rangle|\le\|T^m\psi\|=\|(T^m-P)\psi\|\le r^m$.
+\end{proof}

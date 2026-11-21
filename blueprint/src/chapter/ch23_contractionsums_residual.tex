@@ -1,0 +1,39 @@
+\section{The soft residual on a low spectral span}
+\label{sec:contraction_sums_residual}
+
+\begin{theorem}[A soft residual from a conjugation bound]
+    \label{thm:soft_truncation_low_from_conjugation}
+    \lean{Matrix.norm_soft_truncation_excess_low_le_of_conjugation_le}
+    \leanok
+    \uses{thm:regional_truncation_low_from_conjugation,
+        lem:soft_hard_restricted_residual, lem:cfc_scalar_translation}
+    Let $A$ be Hermitian and let $X$ commute with $A$. Let $c,u\in\R$, let
+    $Q=\mathbf1_{[c,\infty)}(A)$ and suppose that $uQ\le X$. Let $Y$ be any
+    matrix, let $(b_v)$ be an orthonormal eigenbasis of $X+Y$ with
+    eigenvalues $a_v$, and put $G=\operatorname{span}\{b_v:a_v\le E\}$.
+    Let $s>0$ and suppose that
+    \begin{align*}
+        \|e^{s(A-c)}Ye^{-s(A-c)}\|\le C<u-E.
+    \end{align*}
+    Suppose that $pI\le A$, $t>0$, $m\ge1$, $T\ge0$ and $c\le p+T$. For the
+    soft function $h_{m,t}$,
+    \begin{align*}
+        \|(A-pI-h_{m,t}(A-pI))|_{G}\|
+        \le\frac{e^{-s(p+T-c)-1}}{s}\,\frac{C}{u-E-C}
+        +\frac{t}{m}\left(\frac{T}{t}\right)^m.
+    \end{align*}
+\end{theorem}
+
+\begin{proof}
+    \leanok
+    Apply Theorem~\ref{thm:regional_truncation_low_from_conjugation} with
+    $r=c-u$ and the cutoff $p+T$: the hard excess
+    $A-\min(A,p+T)$ has norm at most
+    $e^{-s(p+T-c)-1}s^{-1}C/(u-E-C)$ on $G$. The positive matrix $A-pI$
+    obeys the soft--hard restricted comparison with error $(t/m)(T/t)^m$,
+    and the scalar shift identity gives
+    $(A-pI)-\min(A-pI,T)=A-\min(A,p+T)$. This is the estimate
+    of~\cite[\texttt{lem:exp-approx}, lines 1195--1255]{Arad2016RigorousRG},
+    with the conjugation bound
+    of~\cite[Theorem \texttt{lowspec}]{Arad2014Connecting} as a hypothesis.
+\end{proof}
