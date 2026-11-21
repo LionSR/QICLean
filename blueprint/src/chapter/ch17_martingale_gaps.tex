@@ -14,8 +14,9 @@ An operator is a linear map. An operator $H$ is positive, $H\ge0$, when it is
 symmetric and $\operatorname{Re}\langle Hv,v\rangle\ge0$ for every $v$; $H\le K$ means
 $K-H\ge0$; an orthogonal projection is a symmetric idempotent. For $\gamma\in\R$, the
 operator $H$ has norm gap $\gamma$ when $\gamma\lVert v\rVert\le\lVert Hv\rVert$ for every
-$v\perp\ker H$. For a positive semidefinite matrix this is the gap at energy $0$ of
-Theorem~\ref{thm:hamiltonians_kernel_gap}.
+$v\perp\ker H$. For a positive semidefinite matrix this is condition~(3) of
+Theorem~\ref{thm:hamiltonians_kernel_spectrum}, and together with $\ker H\neq0$ it is the
+gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
 
 \section{Gaps of positive operators above the kernel}
 \label{sec:martingale_gaps_kernel}
@@ -241,8 +242,8 @@ Theorem~\ref{thm:hamiltonians_kernel_gap}.
     \label{def:gap_compression}
     \lean{LinearIsometry.compression}
     \leanok
-    For an isometry $U:E\to F$ of complex inner product spaces and an operator $H$ on
-    $F$, the compression of $H$ is the operator $K=U^*HU$ on $E$.
+    For an isometry $U:E\to F$ of finite-dimensional complex inner product spaces and an
+    operator $H$ on $F$, the compression of $H$ is the operator $K=U^*HU$ on $E$.
 \end{definition}
 
 \begin{lemma}[Compression to a reducing image]
@@ -346,8 +347,8 @@ Theorem~\ref{thm:hamiltonians_kernel_gap}.
     the gap through the compression.
 \end{proof}
 
-Let $U:E\to F$ be an isometry of complex inner product spaces, $K$ an operator on $E$
-and $H$ an operator on $F$ with $HU=UK$. Every $v\in F$ decomposes as
+Let $U:E\to F$ be an isometry of finite-dimensional complex inner product spaces, $K$ an
+operator on $E$ and $H$ an operator on $F$ with $HU=UK$. Every $v\in F$ decomposes as
 \begin{align}
     v & =Ux+y, & x & =U^*v, & U^*y & =0, & \lVert v\rVert^2 & =\lVert x\rVert^2+\lVert y\rVert^2.
     \label{eq:gap_inclusion_split}
@@ -823,22 +824,20 @@ treats the argument for an abstract decreasing family of projections.
         FrustrationFree.not_unrestrictedNachtergaeleEstimate}
     \leanok
     \uses{thm:martingale_below_threshold_estimate}
-    In the notation of Theorem~\ref{thm:martingale_below_threshold_estimate}: for every
-    $k$ there are, on a complex Hilbert space of dimension $k+2$, nested ground
-    projections $(G_n)$ with $G_0=1$, $G_{N+1}=0$ and $G_n\neq0$ for $n\le N$, nonzero
-    orthogonal projections $Q_n$, operators $H_n$, volume Hamiltonians $H_{\Lambda_M}$,
-    and a vector $v\perp\operatorname{ran}G_N$ with the following properties, for $l=0$,
-    $n_0=1$, $N=k+1$, $\gamma_1=d_1=1$ and $\epsilon_0=0$. The commutations hold;
-    condition C1 holds with the one constant $d_1$ at every volume $\Lambda_M$ on the
-    range $l\le n<M$ of its own window sum; the gap inequality of C2 and condition C3
-    hold on $n_0\le n<N$; every ground space is the kernel of its own Hamiltonian, that is
+    In the notation of Theorem~\ref{thm:martingale_below_threshold_estimate}, for every
+    $k$ the following implication fails on a complex Hilbert space of dimension $k+2$.
+    Let $l\le n_0\le N$, let $(G_n)$ be nested ground projections with $G_0=1$,
+    $G_{N+1}=0$ and $G_n\neq0$ for $n\le N$, let $Q_n$ be nonzero orthogonal projections,
+    $H_n$ operators, $H_{\Lambda_M}$ volume Hamiltonians and $v\perp\operatorname{ran}G_N$,
+    and let $\gamma_{l+1},d_{l+1}>0$ and $0\le\epsilon_l<1/\sqrt{l+1}$. Assume that the
+    commutations hold; that condition C1 holds with the one constant $d_{l+1}$ at every
+    volume $\Lambda_M$ on the range $l\le n<M$ of its own window sum; that the gap
+    inequality of C2 and condition C3 hold on $n_0\le n<N$; and that every ground space
+    is the kernel of its own Hamiltonian, that is
     $\ker H_{\Lambda_M}=\operatorname{ran}G_M$ for $M\le N$ and
-    $\ker H_n=\operatorname{ran}Q_n$ for $0\le n<N$; and
-    \begin{align}
-        \operatorname{Re}\langle H_{\Lambda_N}v,v\rangle=\tfrac12\lVert v\rVert^2
-        <\frac{\gamma_1}{d_1}(1-\epsilon_0)^2\lVert v\rVert^2.
-        \label{eq:martingale_lower_endpoint}
-    \end{align}
+    $\ker H_n=\operatorname{ran}Q_n$ for $0\le n<N$. Then
+    $\kappa\lVert v\rVert^2\le\operatorname{Re}\langle H_{\Lambda_N}v,v\rangle$.
+
     Hence condition C1 at every volume on the range of its own window sum, together
     with C2 and C3 on $n_0\le n<N$, the ranges at which~\cite{Nachtergaele1996Spectral}
     imposes them, do not imply the conclusion of its Theorem~2.1(i), even when every
@@ -847,6 +846,13 @@ treats the argument for an abstract decreasing family of projections.
     in~\cite{gap:nachtergaele96_theorem_2_1_lower_endpoint}.
 \end{theorem}
 \begin{proof}\leanok
+    We exhibit data satisfying every hypothesis, for $l=0$, $n_0=1$, $N=k+1$,
+    $\gamma_1=d_1=1$ and $\epsilon_0=0$, with
+    \begin{align}
+        \operatorname{Re}\langle H_{\Lambda_N}v,v\rangle=\tfrac12\lVert v\rVert^2
+        <\frac{\gamma_1}{d_1}(1-\epsilon_0)^2\lVert v\rVert^2.
+        \label{eq:martingale_lower_endpoint}
+    \end{align}
     Fix an orthonormal basis $e_0,\dots,e_{k+1}$ in which every operator is diagonal;
     the first $N=k+1$ vectors carry the single excitations of a chain of $N$ sites and
     the last its ground state. Let $G_n$ have weight $1$ at $e_i$ when $n\le i$ and $0$
