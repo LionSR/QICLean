@@ -22,5 +22,6 @@ import QICLean.ManyBody.Dynamics.InteractionSum
 import QICLean.ManyBody.Dynamics.MetricGraph
 import QICLean.ManyBody.Dynamics.ProductFormula
 import QICLean.ManyBody.Dynamics.ProjectedRelativeEvolution
+import QICLean.ManyBody.Dynamics.RingPropagation
 import QICLean.ManyBody.Dynamics.SupportedGaussianIntegral
 import QICLean.ManyBody.Dynamics.TruncatedEvolution

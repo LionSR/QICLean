@@ -34,6 +34,7 @@ import QICLean.ManyBody.Hamiltonian.NegativeFrequency
 import QICLean.ManyBody.Hamiltonian.PositiveTerm
 import QICLean.ManyBody.Hamiltonian.ProductBasisPenalty
 import QICLean.ManyBody.Hamiltonian.ProductGround
+import QICLean.ManyBody.Hamiltonian.RingGaussianFilter
 import QICLean.ManyBody.Hamiltonian.Translation
 import QICLean.ManyBody.Hamiltonian.TranslationCommutator
 import QICLean.ManyBody.Hamiltonian.VariationalBound

@@ -30,6 +30,7 @@ import QICLean.Representation.Branching
 import QICLean.Representation.BranchingPieri
 import QICLean.Representation.Casimir
 import QICLean.Representation.CentralLabelFunction
+import QICLean.Representation.Character
 import QICLean.Representation.CoherentMeasure
 import QICLean.Representation.CoherentResolution
 import QICLean.Representation.CoherentSymbol
@@ -46,6 +47,9 @@ import QICLean.Representation.CompressedTypicalExponentialDomination
 import QICLean.Representation.CompressedTypicalLabelMass
 import QICLean.Representation.CompressedTypicalLabelSequence
 import QICLean.Representation.ExteriorPieri
+import QICLean.Representation.FiniteGroupCommutant
+import QICLean.Representation.FiniteGroupUnitaryAverage
+import QICLean.Representation.GaussOperator
 import QICLean.Representation.GoodAuxiliaryLabelCompression
 import QICLean.Representation.GoodAuxiliaryLabelEntropy
 import QICLean.Representation.GoodAuxiliaryPairCompression
@@ -87,6 +91,7 @@ import QICLean.Representation.RegionalFiveFactorCoordinates
 import QICLean.Representation.RegionalPhysicalVector
 import QICLean.Representation.RegionalReplicaMetric
 import QICLean.Representation.RegionalReplicaMetricRegions
+import QICLean.Representation.RegularBlocking
 import QICLean.Representation.RegularTrace
 import QICLean.Representation.RelativePin
 import QICLean.Representation.RelativePinAlgebra
@@ -149,6 +154,7 @@ import QICLean.Representation.SchurWeylLift
 import QICLean.Representation.SelectedBellPostInverseTransport
 import QICLean.Representation.SelectedBellPostMass
 import QICLean.Representation.SelectedBellPostPin
+import QICLean.Representation.SignedPermutationSpan
 import QICLean.Representation.SkewSymbolBound
 import QICLean.Representation.SplitCopies
 import QICLean.Representation.StarFunction
@@ -165,7 +171,9 @@ import QICLean.Representation.TrivialLabel
 import QICLean.Representation.UniformBellLabel
 import QICLean.Representation.UniformHusimi
 import QICLean.Representation.UnitaryCommutant
+import QICLean.Representation.UnitaryCompletionClass
 import QICLean.Representation.UnitaryTwirl
 import QICLean.Representation.WeylCharacter
 import QICLean.Representation.WeylDimension
 import QICLean.Representation.WeylRecursion
+import QICLean.Representation.ZMod2Representation

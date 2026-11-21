@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.Circuit.Compile
 
 import QICLean.Circuit.Compile.Block
+import QICLean.Circuit.Compile.ChainPlacement
 import QICLean.Circuit.Compile.ChainUniversality
 import QICLean.Circuit.Compile.Dilation
 import QICLean.Circuit.Compile.DilationOutput
