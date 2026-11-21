@@ -289,7 +289,7 @@ theorem Interaction.translationInvariant_term_add_one (i : Fin N) :
     (translationInvariant hk h).term (i + 1) =
       sitePermOp (finRotate N) * (translationInvariant hk h).term i *
         (sitePermOp (finRotate N))ᴴ := by
-  simp only [translationInvariant, translates_term, sitePermOp_mul_placeAlong_mul_conjTranspose,
+  simp only [translationInvariant, ofPlaceAlong_term, sitePermOp_mul_placeAlong_mul_conjTranspose,
     ringWindow_trans_finRotate]
 
 /-- **Translation invariance.** The Hamiltonian of a translation-invariant interaction on the ring

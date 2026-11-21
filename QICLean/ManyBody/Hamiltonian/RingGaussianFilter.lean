@@ -86,11 +86,11 @@ theorem norm_hamiltonian_translationInvariant_commutator_le_exp_abs_of_disjoint
         (Real.exp ((8 * Real.exp a) * |t|) - 1) :=
   norm_heisenberg_commutator_le_ringSupportDistance
     (fun j => (translationInvariant hN h).term j)
-    (isHermitian_translates_term _ hHerm)
+    (isHermitian_ofPlaceAlong_term _ fun _ ↦ hHerm)
     (fun j => by
       have hmem := placeAlong_mem_supportedOperators (X := fun _ ↦ α) (ringWindow hN j) h
       rwa [map_ringWindow_two] at hmem)
-    (fun j => (norm_translates_term_le _ h j).trans hNorm)
+    (fun j => (norm_ofPlaceAlong_term_le _ _ j).trans hNorm)
     A B X Y hX hY hA hB hXY a ha t
 
 /-- **Locality of the Gaussian-filtered operator on the ring.** Gaussian averaging of the
@@ -118,7 +118,8 @@ theorem norm_gaussianFilteredTerm_hamiltonian_translationInvariant_commutator_le
     apply sub_nonneg.mpr
     exact Real.one_le_exp (by positivity)
   refine norm_commutator_gaussianFilteredTerm_le hq
-    (isHermitian_hamiltonian (isHermitian_translates_term _ hHerm)) A B hT (by positivity) ?_
+    (isHermitian_hamiltonian (isHermitian_ofPlaceAlong_term _ fun _ ↦ hHerm)) A B hT
+    (by positivity) ?_
   intro t ht
   have htAbs : |t| ≤ T := abs_le.mpr ht
   change ‖(exp (t • (Complex.I • (translationInvariant hN h).hamiltonian)) *
@@ -202,7 +203,7 @@ theorem norm_negativeFrequency_hamiltonian_translationInvariant_commutator_le
             (8 * Real.exp a) * Real.exp ((8 * Real.exp a) * T) +
           (2 * ‖A‖ * ‖B‖ / T) * Real.exp (-T ^ 2 / (2 * (s : ℝ)))) := by
   apply norm_commutator_gaussianNegativeFrequencyOperator_le s
-    (isHermitian_hamiltonian (isHermitian_translates_term _ hHerm))
+    (isHermitian_hamiltonian (isHermitian_ofPlaceAlong_term _ fun _ ↦ hHerm))
     A B hε hT (by positivity) (by positivity)
   intro t
   exact norm_hamiltonian_translationInvariant_commutator_le_exp_abs_of_disjoint hN h hHerm hNorm

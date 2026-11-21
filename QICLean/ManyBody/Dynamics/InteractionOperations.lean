@@ -33,8 +33,9 @@ every index type, every family of supports and every family of basis types:
   outside the image of `w`;
 * the union of **two interactions on the same system**, indexed by the sum of the index types;
 * the **conjugation** `(U hᵢ U†)ᵢ` by a matrix `U` that keeps every term on its support;
-* the **translates** of one operator `h` on the configurations of a finite set `W` along a family
-  of injections `wᵢ : W ↪ V`: the term with index `i` is `h` placed along `wᵢ`;
+* the interaction of **operators placed along injections** `wᵢ : W ↪ V` of a finite set `W`:
+  the term with index `i` is the operator `hᵢ` placed along `wᵢ`; the **translates** of one
+  operator `h` are the case of a constant family;
 * the **termwise map** `(fᵢ hᵢ)ᵢ` by maps `fᵢ` that keep the supports, and two instances: the
   **restriction** to the indices with a property, whose other terms vanish, and the **range
   projections** of positive terms.
@@ -68,7 +69,8 @@ SwappedPlaneInteraction`), the doubled interaction conjugated by `ManyBody.pairS
   `ManyBody.Interaction.extend`, `ManyBody.Interaction.doubled`,
   `ManyBody.Interaction.ofPlace`, `ManyBody.Interaction.pushforward`,
   `ManyBody.Interaction.pad`, `ManyBody.Interaction.append`, `ManyBody.Interaction.conj`,
-  `ManyBody.Interaction.translates`, `ManyBody.Interaction.mapTerm`,
+  `ManyBody.Interaction.ofPlaceAlong`, `ManyBody.Interaction.translates`,
+  `ManyBody.Interaction.mapTerm`,
   `ManyBody.Interaction.restrict`, `ManyBody.Interaction.supportProj`, and the instance
   `SMul ℝ (ManyBody.Interaction X S)`.
 
@@ -743,51 +745,69 @@ end SupportProj
 
 end Interaction
 
-/-! ### Translates of one operator -/
+/-! ### Operators placed along injections -/
 
-section Translates
+section OfPlaceAlong
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {W : Type*} [Fintype W]
   {α : Type*} [Fintype α] [DecidableEq α] {ι : Type*}
 
-/-- **The translates of one operator.** For an operator `h` on the configurations of the sites
-`W` and injections `wᵢ : W ↪ V`, the term with index `i` is `h` placed along `wᵢ`: it acts as
-`h` on the image `wᵢ(W)`, the site `u` of `W` carried to `wᵢ u`. Schuch, Pérez-García and
-Cirac, arXiv:1010.3732, `sec:phases-definition-no-sym`, lines 407–427, for the translates of a
-nearest-neighbour term on a ring. -/
-noncomputable def Interaction.translates (w : ι → W ↪ V) (h : Matrix (W → α) (W → α) ℂ) :
+/-- **Operators placed along injections.** For injections `wᵢ : W ↪ V` and operators `hᵢ` on the
+configurations of the sites `W`, the interaction whose term with index `i` is `hᵢ` placed along
+`wᵢ`: it acts as `hᵢ` on the image `wᵢ(W)`, the site `u` of `W` carried to `wᵢ u`. On the open
+chain, the windows of `k` consecutive sites starting at each position, with a term that varies
+with the position, give the parent Hamiltonian with open boundary terms. -/
+noncomputable def Interaction.ofPlaceAlong (w : ι → W ↪ V) (h : ι → Matrix (W → α) (W → α) ℂ) :
     Interaction (fun _ : V ↦ α) (fun i ↦ Finset.univ.map (w i)) where
-  term i := placeAlong (X := fun _ ↦ α) (w i) h
-  mem i := placeAlong_mem_supportedOperators (X := fun _ ↦ α) (w i) h
+  term i := placeAlong (X := fun _ ↦ α) (w i) (h i)
+  mem i := placeAlong_mem_supportedOperators (X := fun _ ↦ α) (w i) (h i)
+
+/-- **The translates of one operator.** For an operator `h` on the configurations of the sites
+`W` and injections `wᵢ : W ↪ V`, the term with index `i` is `h` placed along `wᵢ`. Schuch,
+Pérez-García and Cirac, arXiv:1010.3732, `sec:phases-definition-no-sym`, lines 407–427, for the
+translates of a nearest-neighbour term on a ring. -/
+noncomputable abbrev Interaction.translates (w : ι → W ↪ V) (h : Matrix (W → α) (W → α) ℂ) :
+    Interaction (fun _ : V ↦ α) (fun i ↦ Finset.univ.map (w i)) :=
+  Interaction.ofPlaceAlong w fun _ ↦ h
 
 namespace Interaction
 
-variable (w : ι → W ↪ V) (h : Matrix (W → α) (W → α) ℂ)
+variable (w : ι → W ↪ V) (h : ι → Matrix (W → α) (W → α) ℂ)
 
-/-- The term with index `i` of the translates is `h` placed along `wᵢ`. -/
+/-- The term with index `i` is `hᵢ` placed along `wᵢ`. -/
 @[simp]
-theorem translates_term (i : ι) :
-    (translates w h).term i = placeAlong (X := fun _ ↦ α) (w i) h :=
+theorem ofPlaceAlong_term (i : ι) :
+    (ofPlaceAlong w h).term i = placeAlong (X := fun _ ↦ α) (w i) (h i) :=
+  rfl
+
+/-- The Hamiltonian is the sum `∑ᵢ` of the operators `hᵢ` placed along `wᵢ`. -/
+theorem hamiltonian_ofPlaceAlong [Fintype ι] :
+    (ofPlaceAlong w h).hamiltonian = ∑ i, placeAlong (X := fun _ ↦ α) (w i) (h i) :=
   rfl
 
 variable [DecidableEq W] in
-/-- The translates of an operator have at most its norm. -/
-theorem norm_translates_term_le (i : ι) : ‖(translates w h).term i‖ ≤ ‖h‖ :=
-  norm_placeAlong_le (X := fun _ ↦ α) (w i) h
+/-- The placed operators have at most the norms of the operators. -/
+theorem norm_ofPlaceAlong_term_le (i : ι) : ‖(ofPlaceAlong w h).term i‖ ≤ ‖h i‖ :=
+  norm_placeAlong_le (X := fun _ ↦ α) (w i) (h i)
 
 variable {h}
 
-/-- The translates of a Hermitian operator are Hermitian. -/
-theorem isHermitian_translates_term (hh : h.IsHermitian) (i : ι) :
-    ((translates w h).term i).IsHermitian :=
-  isHermitian_placeAlong (X := fun _ ↦ α) (w i) hh
+/-- Placed Hermitian operators are Hermitian. -/
+theorem isHermitian_ofPlaceAlong_term (hh : ∀ i, (h i).IsHermitian) (i : ι) :
+    ((ofPlaceAlong w h).term i).IsHermitian :=
+  isHermitian_placeAlong (X := fun _ ↦ α) (w i) (hh i)
 
-/-- The translates of a positive operator are positive. -/
-theorem translates_term_nonneg (hh : 0 ≤ h) (i : ι) : 0 ≤ (translates w h).term i :=
-  (posSemidef_placeAlong (X := fun _ ↦ α) (w i) (nonneg_iff_posSemidef.mp hh)).nonneg
+/-- Placed positive operators are positive. -/
+theorem ofPlaceAlong_term_nonneg (hh : ∀ i, 0 ≤ h i) (i : ι) : 0 ≤ (ofPlaceAlong w h).term i :=
+  (posSemidef_placeAlong (X := fun _ ↦ α) (w i) (nonneg_iff_posSemidef.mp (hh i))).nonneg
+
+/-- Placed operators bounded by the identity are bounded by the identity. -/
+theorem ofPlaceAlong_term_le_one (hh : ∀ i, h i ≤ 1) (i : ι) : (ofPlaceAlong w h).term i ≤ 1 := by
+  rw [ofPlaceAlong_term, ← placeAlong_one (X := fun _ ↦ α) (w i)]
+  exact placeAlong_le_placeAlong (X := fun _ ↦ α) (w i) (hh i)
 
 end Interaction
 
-end Translates
+end OfPlaceAlong
 
 end ManyBody
