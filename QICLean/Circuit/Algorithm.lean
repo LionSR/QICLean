@@ -12,5 +12,4 @@ import QICLean.Circuit.Algorithm.PhaseAmplitude
 import QICLean.Circuit.Algorithm.PhaseEstimation
 import QICLean.Circuit.Algorithm.QFT
 import QICLean.Circuit.Algorithm.QFTParallel
-import QICLean.Circuit.Algorithm.Qubit
 import QICLean.Circuit.Algorithm.SemiclassicalPhaseEstimation

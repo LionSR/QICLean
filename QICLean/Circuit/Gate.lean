@@ -16,3 +16,4 @@ import QICLean.Circuit.Gate.PartialIsometryDilation
 import QICLean.Circuit.Gate.TwoLevel
 import QICLean.Circuit.Gate.UniformPostselection
 import QICLean.Circuit.Gate.UniformSuccessAttenuation
+import QICLean.Circuit.Gate.UnitaryExtension

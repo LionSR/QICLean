@@ -15,4 +15,5 @@ import QICLean.Circuit.Gate
 import QICLean.Circuit.Geometry
 import QICLean.Circuit.Model
 import QICLean.Circuit.ProductFormula
+import QICLean.Circuit.Protocol
 import QICLean.Circuit.Simulation

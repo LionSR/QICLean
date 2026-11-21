@@ -26,6 +26,7 @@ import QICLean.Algebra.DependentBlockDiagonal
 import QICLean.Algebra.EigenspaceMap
 import QICLean.Algebra.EigenvectorProjection
 import QICLean.Algebra.EqualRangeRightFactor
+import QICLean.Algebra.FinCastAddNatAdd
 import QICLean.Algebra.FinSum
 import QICLean.Algebra.FiniteCauchySchwarz
 import QICLean.Algebra.FiniteKroneckerOrder
