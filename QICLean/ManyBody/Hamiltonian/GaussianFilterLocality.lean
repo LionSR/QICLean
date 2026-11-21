@@ -441,7 +441,7 @@ theorem norm_gaussianFilteredTerm_sub_regionExpectation_le_graphNeighborhood
     {q ΔE : ℝ} (hq : 0 ≤ q) (S : Finset V) {W : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S) (l : ℕ) {τ : ℝ} (hT : 0 ≤ τ) :
     ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W -
-        regionExpectation (S.biUnion fun x => graphBall G x l)
+        regionExpectation (graphNeighborhood G S l)
           (gaussianFilteredTerm q ΔE Φ.hamiltonian W)‖ ≤
       (2 + 4 * |b₀| * Real.exp (2 * R)) * (S.card : ℝ) ^ 2 * ‖W‖ * Kg *
           (2 ^ kg * kg.factorial * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))) *
@@ -484,8 +484,7 @@ theorem exists_local_approx_gaussianFilteredTerm (Kg : ℝ) (kg : ℕ)
     {q ΔE : ℝ} (hq : 0 ≤ q) (S : Finset V) {W : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S) (l : ℕ) {τ : ℝ} (hT : 0 ≤ τ) :
     ∃ M : Matrix (Config X) (Config X) ℂ,
-      M ∈ supportedOperators X
-        (S.biUnion fun x => graphBall G x l : Finset V) ∧
+      M ∈ supportedOperators X (graphNeighborhood G S l) ∧
       ‖M‖ ≤ ‖W‖ ∧ (W.IsHermitian → M.IsHermitian) ∧
       ‖gaussianFilteredTerm q ΔE Φ.hamiltonian W - M‖ ≤
         (2 + 4 * |b₀| * Real.exp (2 * R)) * (S.card : ℝ) ^ 2 * ‖W‖ * Kg *

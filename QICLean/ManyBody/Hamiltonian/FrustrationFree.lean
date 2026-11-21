@@ -6,6 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.CompressionEnergyBounds
 import QICLean.ManyBody.Dynamics.Interaction
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
+import QICLean.ManyBody.Hamiltonian.KernelGap
 
 /-!
 # Frustration-free interactions
@@ -17,11 +18,15 @@ with finite index set, such a vector is a ground vector of the Hamiltonian at `�
 ground space at that energy is the intersection of the ground spaces of the terms, and for
 Hermitian terms frustration freeness says that the least eigenvalue of the Hamiltonian is the
 sum of the least eigenvalues of the terms. The normalized form, positive semidefinite terms
-with a common nonzero kernel vector, is the case `eᵢ = 0`.
+with a common nonzero kernel vector, is the case `eᵢ = 0`: the common kernel is the zero space
+of the interaction, it is the ground space of the Hamiltonian at `0`, and the gap of the
+Hamiltonian above it has a quadratic-form and a norm characterization on its orthogonal
+complement.
 
 ## Main definitions
 
 * `ManyBody.Interaction.IsFrustrationFree` — a common ground vector of all terms.
+* `ManyBody.Interaction.zeroSpace` — the vectors annihilated by every term.
 
 ## Main results
 
@@ -29,8 +34,15 @@ with a common nonzero kernel vector, is the case `eᵢ = 0`.
   Hamiltonian at `∑ᵢ eᵢ` is the intersection of the ground spaces of the terms.
 * `ManyBody.Interaction.isFrustrationFree_iff_minEigenvalue` — for Hermitian terms, frustration
   freeness is additivity of the least eigenvalue.
-* `ManyBody.Interaction.groundSpace_hamiltonian_zero` — for positive semidefinite terms the
-  kernel of the Hamiltonian is the common kernel of the terms.
+* `ManyBody.Interaction.mem_zeroSpace_iff`, `ManyBody.Interaction.zeroSpace_eq_iInf_ker` — the
+  zero space as the common kernel of the terms.
+* `ManyBody.Interaction.isFrustrationFree_of_zeroSpace_ne_bot` — positive semidefinite terms
+  with a nonzero zero space are frustration free.
+* `ManyBody.Interaction.zeroSpace_eq_groundSpace` — for positive semidefinite terms the zero
+  space is the kernel of the Hamiltonian.
+* `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_inner`,
+  `ManyBody.Interaction.isGapped_hamiltonian_zero_iff_norm` — the gap of a positive interaction
+  above its zero space, in quadratic and in norm form.
 * `ManyBody.Interaction.isFrustrationFree_of_pairwise_disjoint` — Hermitian terms on pairwise
   disjoint regions are frustration free.
 
@@ -44,7 +56,7 @@ with a common nonzero kernel vector, is the case `eᵢ = 0`.
 -/
 
 open Matrix
-open scoped ComplexOrder MatrixOrder
+open scoped ComplexOrder MatrixOrder InnerProductSpace
 
 namespace ManyBody
 
@@ -59,7 +71,7 @@ variable {ι : Type*} {T : ι → Finset V}
 every term: there are real numbers `e i` with `hᵢ ψ = eᵢ ψ` and `hᵢ ≥ eᵢ`. The energies are not
 fixed and the terms need not be positive, so the predicate is invariant under shifting each
 term by a constant (`isFrustrationFree_iff_of_term_eq_sub`); the normalized form, positive
-terms with a common kernel vector, is `isFrustrationFree_of_groundSpace_hamiltonian_zero_ne_bot`.
+terms with a common kernel vector, is `isFrustrationFree_of_zeroSpace_ne_bot`.
 Cirac, Pérez-García, Schuch and Verstraete, arXiv:2011.12127, `TN-Review-main.tex`, line 537;
 Sanz, Pérez-García, Wolf and Cirac, arXiv:0909.5347, `main.tex`, lines 796–808. -/
 def IsFrustrationFree (Φ : Interaction X T) : Prop :=
@@ -85,6 +97,31 @@ theorem isFrustrationFree_iff_of_term_eq_sub {T' : ι → Finset V} {Φ : Intera
     refine ⟨fun i ↦ e i - c i, ψ, hψ, fun i ↦ ⟨?_, (hle i (e i)).mpr (he i).2⟩⟩
     rw [h, groundSpace_sub_smul_one]
     exact (he i).1
+
+/-- The **zero space** of an interaction: the vectors annihilated by every term, the
+intersection of the kernels of the terms. For positive semidefinite terms it is the ground space
+of the Hamiltonian at energy `0` (`zeroSpace_eq_groundSpace`), and when it is nonzero the
+interaction is frustration free (`isFrustrationFree_of_zeroSpace_ne_bot`). -/
+noncomputable def zeroSpace (Φ : Interaction X T) :
+    Submodule ℂ (EuclideanSpace ℂ (Config X)) :=
+  ⨅ i, groundSpace (Φ.term i) 0
+
+theorem mem_zeroSpace_iff {Φ : Interaction X T} {ψ : EuclideanSpace ℂ (Config X)} :
+    ψ ∈ Φ.zeroSpace ↔ ∀ i, Φ.term i *ᵥ WithLp.ofLp ψ = 0 := by
+  simp [zeroSpace, Submodule.mem_iInf, mem_groundSpace_iff_mulVec]
+
+/-- The zero space is the intersection of the kernels of the terms as operators on the
+Euclidean space. -/
+theorem zeroSpace_eq_iInf_ker (Φ : Interaction X T) :
+    Φ.zeroSpace = ⨅ i, LinearMap.ker (toEuclideanLin (Φ.term i)) := by
+  simp only [zeroSpace, groundSpace_zero]
+
+/-- **The normalized form.** Positive semidefinite terms with a nonzero common kernel vector
+form a frustration-free interaction, with all energies `0`. -/
+theorem isFrustrationFree_of_zeroSpace_ne_bot {Φ : Interaction X T}
+    (h : ∀ i, (Φ.term i).PosSemidef) (hne : Φ.zeroSpace ≠ ⊥) : Φ.IsFrustrationFree := by
+  obtain ⟨ψ, hψ, hψ0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hne
+  exact ⟨0, ψ, hψ0, fun i ↦ ⟨Submodule.mem_iInf _ |>.mp hψ i, by simpa using (h i).nonneg⟩⟩
 
 /-- A common ground vector of the terms in `s` is a ground vector of their sum, at the sum of
 the energies. -/
@@ -200,32 +237,44 @@ theorem hamiltonian_mulVec_eq_zero_iff {Φ : Interaction X T} (h : ∀ i, (Φ.te
     (fun i _ ↦ h i) hψ (Finset.mem_univ i), fun hψ ↦ ?_⟩
   simp [hamiltonian, sum_mulVec, hψ]
 
-/-- For positive semidefinite terms, the kernel of the Hamiltonian is the common kernel of the
-terms. -/
-theorem groundSpace_hamiltonian_zero {Φ : Interaction X T} (h : ∀ i, (Φ.term i).PosSemidef) :
-    groundSpace Φ.hamiltonian 0 = ⨅ i, groundSpace (Φ.term i) 0 := by
-  simpa using Φ.groundSpace_hamiltonian_eq_iInf (e := 0) fun i ↦ by
-    simpa using (h i).nonneg
+/-- Positive semidefinite terms have a positive semidefinite Hamiltonian. -/
+theorem posSemidef_hamiltonian {Φ : Interaction X T} (h : ∀ i, (Φ.term i).PosSemidef) :
+    Φ.hamiltonian.PosSemidef :=
+  posSemidef_sum _ fun i _ ↦ h i
 
-/-- **The normalized form.** For positive semidefinite terms, the Hamiltonian has a nonzero
-kernel exactly when the terms have a common nonzero kernel vector. -/
-theorem groundSpace_hamiltonian_zero_ne_bot_iff {Φ : Interaction X T}
-    (h : ∀ i, (Φ.term i).PosSemidef) :
-    groundSpace Φ.hamiltonian 0 ≠ ⊥ ↔
-      ∃ ψ : EuclideanSpace ℂ (Config X), ψ ≠ 0 ∧ ∀ i, Φ.term i *ᵥ WithLp.ofLp ψ = 0 := by
-  rw [Submodule.ne_bot_iff]
-  refine exists_congr fun ψ ↦ ?_
-  rw [and_comm, mem_groundSpace_iff_mulVec]
-  simp [hamiltonian_mulVec_eq_zero_iff h]
+/-- **The zero space is the ground space.** For positive semidefinite terms, the kernel of the
+Hamiltonian is the common kernel of the terms. -/
+theorem zeroSpace_eq_groundSpace {Φ : Interaction X T} (h : ∀ i, (Φ.term i).PosSemidef) :
+    Φ.zeroSpace = groundSpace Φ.hamiltonian 0 := by
+  simpa [zeroSpace] using (Φ.groundSpace_hamiltonian_eq_iInf (e := 0) fun i ↦ by
+    simpa using (h i).nonneg).symm
 
-/-- Positive semidefinite terms whose Hamiltonian has a nonzero kernel form a frustration-free
-interaction, with all energies `0`. -/
-theorem isFrustrationFree_of_groundSpace_hamiltonian_zero_ne_bot {Φ : Interaction X T}
-    (h : ∀ i, (Φ.term i).PosSemidef) (hne : groundSpace Φ.hamiltonian 0 ≠ ⊥) :
-    Φ.IsFrustrationFree := by
-  obtain ⟨ψ, hψ0, hψ⟩ := (groundSpace_hamiltonian_zero_ne_bot_iff h).mp hne
-  refine ⟨0, ψ, hψ0, fun i ↦ ⟨mem_groundSpace_iff_mulVec.mpr (by simpa using hψ i), ?_⟩⟩
-  simpa using (h i).nonneg
+/-- For positive semidefinite terms, a vector lies in the zero space exactly when the
+Hamiltonian annihilates it. -/
+theorem mem_zeroSpace_iff_hamiltonian_mulVec_eq_zero {Φ : Interaction X T}
+    (h : ∀ i, (Φ.term i).PosSemidef) {ψ : EuclideanSpace ℂ (Config X)} :
+    ψ ∈ Φ.zeroSpace ↔ Φ.hamiltonian *ᵥ WithLp.ofLp ψ = 0 := by
+  rw [mem_zeroSpace_iff, hamiltonian_mulVec_eq_zero_iff h]
+
+/-- **The gap above the zero space, in quadratic form.** For positive semidefinite terms, the
+Hamiltonian is gapped at `0` with gap `Δ` exactly when the zero space is nonzero and
+`Δ ‖v‖² ≤ Re ⟨v, H v⟩` for every `v` orthogonal to it. -/
+theorem isGapped_hamiltonian_zero_iff_inner {Φ : Interaction X T}
+    (h : ∀ i, (Φ.term i).PosSemidef) {Δ : ℝ} :
+    IsGapped Φ.hamiltonian 0 Δ ↔ Φ.zeroSpace ≠ ⊥ ∧
+      ∀ v ∈ Φ.zeroSpaceᗮ, Δ * ‖v‖ ^ 2 ≤ (⟪v, toEuclideanLin Φ.hamiltonian v⟫_ℂ).re := by
+  rw [isGapped_zero_iff_inner (posSemidef_hamiltonian h), zeroSpace_eq_groundSpace h,
+    groundSpace_zero]
+
+/-- **The gap above the zero space, in norm form.** For positive semidefinite terms, the
+Hamiltonian is gapped at `0` with gap `Δ` exactly when the zero space is nonzero and
+`Δ ‖v‖ ≤ ‖H v‖` for every `v` orthogonal to it. -/
+theorem isGapped_hamiltonian_zero_iff_norm {Φ : Interaction X T}
+    (h : ∀ i, (Φ.term i).PosSemidef) {Δ : ℝ} :
+    IsGapped Φ.hamiltonian 0 Δ ↔ Φ.zeroSpace ≠ ⊥ ∧
+      ∀ v ∈ Φ.zeroSpaceᗮ, Δ * ‖v‖ ≤ ‖toEuclideanLin Φ.hamiltonian v‖ := by
+  rw [isGapped_zero_iff_norm (posSemidef_hamiltonian h), zeroSpace_eq_groundSpace h,
+    groundSpace_zero]
 
 end Interaction
 

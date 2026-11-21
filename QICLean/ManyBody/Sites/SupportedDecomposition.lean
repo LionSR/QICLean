@@ -174,22 +174,22 @@ noncomputable def sliceIsometry (x₀ : (v : {v // v ∈ B}) → Fin (n v)) :
 /-- The gluing isometry is the inclusion of basis vectors along `q ↦ glueConfig a q`. -/
 theorem glueIsometry_conjTranspose_mul_self (a : ManyBody.InnerConfig n B D) :
     (ManyBody.glueIsometry a)ᴴ * ManyBody.glueIsometry a = 1 := by
-  have he : ManyBody.glueIsometry a = initializedBasisMatrix ⟨ManyBody.glueConfig a, fun q q' h ↦ by
+  have he : ManyBody.glueIsometry a = basisInclusion ⟨ManyBody.glueConfig a, fun q q' h ↦ by
       rw [← ManyBody.outerPart_glueConfig a q, h, ManyBody.outerPart_glueConfig]⟩ := by
     ext x q
-    simp [ManyBody.glueIsometry, initializedBasisMatrix, one_apply]; rfl
+    simp [ManyBody.glueIsometry, basisInclusion, one_apply]; rfl
   rw [he]
-  exact initializedBasisMatrix_isIsometry _
+  exact basisInclusion_isIsometry _
 
 /-- The slice isometry is the inclusion of basis vectors along `y ↦ (x₀, y)`. -/
 theorem sliceIsometry_conjTranspose_mul_self (x₀ : (v : {v // v ∈ B}) → Fin (n v)) :
     (ManyBody.sliceIsometry x₀)ᴴ * ManyBody.sliceIsometry x₀ = 1 := by
   have he : ManyBody.sliceIsometry x₀ =
-      initializedBasisMatrix ⟨fun y ↦ (x₀, y), Prod.mk_right_injective x₀⟩ := by
+      basisInclusion ⟨fun y ↦ (x₀, y), Prod.mk_right_injective x₀⟩ := by
     ext z y
-    simp [ManyBody.sliceIsometry, initializedBasisMatrix, one_apply]
+    simp [ManyBody.sliceIsometry, basisInclusion, one_apply]
   rw [he]
-  exact initializedBasisMatrix_isIsometry _
+  exact basisInclusion_isIsometry _
 
 theorem glueIsometry_mul_conjTranspose_apply (a b : ManyBody.InnerConfig n B D)
     (x x' : (v : {v // v ∈ B}) → Fin (n v)) :

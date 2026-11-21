@@ -6,7 +6,7 @@
 \input{command}
 \title{The Scope of the Imaginary-Time Conjugation Bound for Interactions of Bounded Degree}
 \author{}
-\date{2026-11-19}
+\date{2026-11-20}
 \begin{document}
 \maketitle
 \gapnote{scope-restriction}{open}
@@ -37,7 +37,45 @@ $R+(j-1)gk$.
 
 \section{The formalized statement}
 
-The formal statement\footnote{Formal declaration:
+The formal statement\footnote{Formal declarations:
+    \leanid{ManyBody.Interaction.norm_exp_conjugation_le} and
+    \leanid{ManyBody.Interaction.norm_commutator_iterate_le_prod} in
+    \doclink{QICLean/ManyBody/Dynamics/BoundedDegreeImaginaryTime}, and
+    \leanid{Matrix.norm_exp_conjugation_le_of_growth} in
+    \doclink{QICLean/Analysis/ExpConjugation}.}
+has the printed hypotheses $h_X\ge0$, $|X|\le k$ and
+\eqref{eq:akl14_hadamard_degree}, the printed range $0\le s<1/(gk)$ and the
+printed conclusion \eqref{eq:akl14_hadamard_bound}, with one change in the
+hypothesis on $E_A$. It assumes
+\begin{align}
+    [h_X,A]=0\qquad\text{for every }X\notin E_A,
+    \label{eq:akl14_hadamard_commuting}
+\end{align}
+which implies $[H,A]=\sum_{X\in E_A}[h_X,A]$ but is not implied by it. The
+printed proof uses \eqref{eq:akl14_hadamard_commuting}: it bounds the
+$j$-th commutator by the terms ``that do not commute with either $A$ or one
+of $h_{X_1},\dots,h_{X_{j-1}}$'' (lines 849--853), and the norms of the terms
+not commuting with $A$ are bounded by $R$ only under
+\eqref{eq:akl14_hadamard_commuting}. With the printed hypothesis alone, a
+term $h_Y$ outside $E_A$ with $[h_Y,A]\ne0$ that meets the support of $h_{X_1}$
+but whose commutator with $A$ is cancelled in $[H,A]$ by other terms is not
+accounted for at the second level. The formal statement therefore reads
+$E_A$ as the source's proof does, a local correction of the hypothesis.
+
+The proof is the printed one. The iterate $\operatorname{ad}_H^m(A)$ is the
+sum of the nested commutators $[h_{X_m},[\cdots,[h_{X_1},A]]]$ with
+$X_{j+1}$ in $E_A$ or meeting $X_1\cup\cdots\cup X_j$. A term outside $E_A$
+that meets none of $X_1,\dots,X_j$ commutes with $A$ and with every
+$h_{X_l}$, hence with the nested commutator. The norms of the admissible
+$X_{j+1}$ sum to at most $R+jgk$ by \eqref{eq:akl14_hadamard_degree}, so
+$\lVert\operatorname{ad}_H^m(A)\rVert\le\prod_{j<m}(R+jgk)\,\lVert A\rVert$,
+and the binomial series
+$\sum_m r(r+1)\cdots(r+m-1)x^m/m!=(1-x)^{-r}$, with $r=R/(gk)$ and
+$x=gks$, gives \eqref{eq:akl14_hadamard_bound}.
+
+\section{The restricted form used for hard truncation}
+
+A second formal statement\footnote{Formal declaration:
     \leanid{ManyBody.Interaction.norm_exp_conjugation_shift_le_two} in
     \doclink{QICLean/ManyBody/Dynamics/BoundedDegreeImaginaryTime}.}
 assumes:
@@ -53,31 +91,19 @@ It concludes, for every $z\in\C$ and $0\le s$ with $2gks\le1$,
 \end{align}
 Under the first two assumptions, \eqref{eq:akl14_hadamard_degree} holds,
 since every term meeting a site has norm at most one. Under the third,
-the terms not commuting with $O$ meet one of at most $k$ sites, so
-$R\le gk$. For $gks\le1/2$ this gives
+the terms meeting the support of $O$ form a set $E_A$ satisfying
+\eqref{eq:akl14_hadamard_commuting} with $R\le gk$. For $gks\le1/2$ this gives
 $(1-gks)^{-R/(gk)}\le(1-gks)^{-1}\le2$, so
 \eqref{eq:akl14_hadamard_formal} is the specialization of
-\eqref{eq:akl14_hadamard_bound} to these hypotheses. The proof is the same
-expansion: after $j$ commutators a piece is supported on at most $|S|+jk$
-sites, at most $g(|S|+jk)$ terms fail to commute with it, and so
-$\lVert\operatorname{ad}_H^m(O)\rVert\le(gk)^m\,m!\,\lVert O\rVert$ when
-$|S|\le k$. The scalar shift $z$ does not change the commutators.
-
-\section{What is not formalized}
-
-The formal statement is narrower than \eqref{eq:akl14_hadamard_bound} in
-three respects: the terms are contractions; the degree counts terms instead
-of summing their norms, which is a stronger hypothesis when the norms are
-small; and the observable lies on at most $k$ sites, with only the
-consequence $2\lVert O\rVert$ at $s\le1/(2gk)$ stated. The printed bound for
-an arbitrary $R$ and $s<1/(gk)$, with the norm-weighted degree
-\eqref{eq:akl14_hadamard_degree}, remains unformalized. Its elimination is a
-formal statement with $R$ and the norm-weighted degree as hypotheses, from
-the bound $\lVert\operatorname{ad}_H^m(A)\rVert\le\prod_{j<m}(R+jgk)\,
-\lVert A\rVert$ and the binomial series of $(1-gks)^{-R/(gk)}$. The hard
-truncation of a region\footnote{Formal declaration:
+\eqref{eq:akl14_hadamard_bound} to these hypotheses; the scalar shift $z$
+does not change the commutators. The hard truncation of a
+region\footnote{Formal declaration:
     \leanid{ManyBody.Interaction.exists_region_hard_truncation_spectral_comparison}
     in \doclink{QICLean/ManyBody/Hamiltonian/HardTruncation}.}
 uses \eqref{eq:akl14_hadamard_formal} only for terms supported on at most
-$k$ sites, where the restricted form suffices.
+$k$ sites, and is itself stated for contractions and a degree that counts
+terms. That restriction of the hard truncation remains: its elimination is a
+restatement with the norm-weighted degree \eqref{eq:akl14_hadamard_degree},
+through \eqref{eq:akl14_hadamard_bound} in place of
+\eqref{eq:akl14_hadamard_formal}.
 \end{document}

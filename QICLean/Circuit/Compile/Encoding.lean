@@ -68,9 +68,9 @@ variable {Γ}
 /-- The encoding is conjugation by the isometry of the product embedding. -/
 theorem map_encodeCircuit (e : ∀ s, X s ↪ Y s) (ρ : Matrix (Config X) (Config X) ℂ) :
     (encodeCircuit Γ e).map KrausGate.ev ρ =
-      initializedBasisMatrix (Function.Embedding.piCongrRight e) * ρ *
-        (initializedBasisMatrix (Function.Embedding.piCongrRight e))ᴴ := by
-  rw [encodeCircuit, ← prodOp_initializedBasisMatrix]
+      basisInclusion (Function.Embedding.piCongrRight e) * ρ *
+        (basisInclusion (Function.Embedding.piCongrRight e))ᴴ := by
+  rw [encodeCircuit, ← prodOp_basisInclusion]
   exact Circuit.map_ofLayer_ofOnsite_single _ _ ρ
 
 /-- The map of an encoding does not depend on the geometry the circuit is written on. -/
@@ -102,16 +102,16 @@ theorem map_decodeCircuit_comp_map_encodeCircuit (e : ∀ s, X s ↪ Y s) (x₀ 
       LinearMap.id := by
   refine LinearMap.ext fun ρ ↦ ?_
   set L : Layer Γ KrausGate Y X := Layer.ofOnsite fun s ↦ KrausFamily.decode (e s) (x₀ s)
-  set P := prodOp fun s ↦ initializedBasisMatrix (e s)
+  set P := prodOp fun s ↦ basisInclusion (e s)
   have hK : ∀ i, L.kraus KrausGate.ev i * P = prodOp fun s ↦
       (KrausFamily.decode (e s) (x₀ s)).op (i.2 ⟨s, by simp [L, Layer.ofOnsite]⟩) *
-        initializedBasisMatrix (e s) := fun i ↦ by
+        basisInclusion (e s) := fun i ↦ by
     rw [Layer.kraus_ofOnsite, prodOp_mul]
   have hconj : ∀ i, L.kraus KrausGate.ev i * (P * ρ * Pᴴ) * (L.kraus KrausGate.ev i)ᴴ =
       (L.kraus KrausGate.ev i * P) * ρ * (L.kraus KrausGate.ev i * P)ᴴ := fun i ↦ by
     simp only [conjTranspose_mul, Matrix.mul_assoc]
   let i₁ : L.Index := (fun b ↦ absurd b.2 (Finset.notMem_empty _), fun _ ↦ Sum.inl ())
-  rw [LinearMap.comp_apply, map_encodeCircuit, ← prodOp_initializedBasisMatrix, decodeCircuit,
+  rw [LinearMap.comp_apply, map_encodeCircuit, ← prodOp_basisInclusion, decodeCircuit,
     Circuit.ofLayer, Circuit.map_step, LinearMap.id_apply]
   simp only [Circuit.map_done, LinearMap.id_apply]
   rw [Finset.sum_eq_single i₁ (fun i _ hi ↦ ?_) fun h ↦ absurd (Finset.mem_univ _) h, hconj]
@@ -163,36 +163,36 @@ private theorem encodeIndex_injective (L : Layer Γ KrausGate X Y) (e : ∀ s, X
 private theorem kraus_encode_mul (L : Layer Γ KrausGate X Y) (e : ∀ s, X s ↪ X' s)
     (f : ∀ s, Y s ↪ Y' s) (y₀ : ∀ s, Y' s) (p : L.Index) :
     (L.encode e f y₀).kraus KrausGate.ev (L.encodeIndex e f y₀ p) *
-        initializedBasisMatrix (Function.Embedding.piCongrRight e) =
-      initializedBasisMatrix (Function.Embedding.piCongrRight f) * L.kraus KrausGate.ev p := by
+        basisInclusion (Function.Embedding.piCongrRight e) =
+      basisInclusion (Function.Embedding.piCongrRight f) * L.kraus KrausGate.ev p := by
   ext y' x
-  rw [mul_initializedBasisMatrix_apply]
+  rw [mul_basisInclusion_apply]
   have hgate : ∀ b : (L.encode e f y₀).cells,
       KrausGate.ev ((L.encode e f y₀).gate b) (Sum.inl (p.1 b))
       (fun v ↦ y' v) (fun v ↦ (Function.Embedding.piCongrRight e) x v) =
-      (initializedBasisMatrix (Function.Embedding.piCongrRight fun v : {v // v ∈ Γ.cell b} ↦ f v)
+      (basisInclusion (Function.Embedding.piCongrRight fun v : {v // v ∈ Γ.cell b} ↦ f v)
         * KrausGate.ev (L.gate b) (p.1 b)) (fun v ↦ y' v) (fun v ↦ x v) := fun b ↦
-    (mul_initializedBasisMatrix_apply _ _ _ _).symm.trans
+    (mul_basisInclusion_apply _ _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inl_mul (L.gate b) _ _ _ (p.1 b)) _) _)
   have honsite : ∀ s : (L.encode e f y₀).Free,
       ((L.encode e f y₀).onsite s).op (Sum.inl (p.2 s)) (y' s)
       ((Function.Embedding.piCongrRight e) x s) =
-      (initializedBasisMatrix (f s) * (L.onsite s).op (p.2 s)) (y' s) (x s) := fun s ↦
-    (mul_initializedBasisMatrix_apply _ _ _ _).symm.trans
+      (basisInclusion (f s) * (L.onsite s).op (p.2 s)) (y' s) (x s) := fun s ↦
+    (mul_basisInclusion_apply _ _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inl_mul (L.onsite s) _ _ _ (p.2 s)) _) _)
   rw [Layer.kraus_apply]
   simp only [encodeIndex]
   rw [Finset.prod_congr rfl fun b _ ↦ hgate b, Finset.prod_congr rfl fun s _ ↦ honsite s]
   by_cases hy : y' ∈ Set.range (Function.Embedding.piCongrRight f)
   · obtain ⟨y, rfl⟩ := hy
-    rw [initializedBasisMatrix_mul_apply_self, Layer.kraus_apply]
+    rw [basisInclusion_mul_apply_self, Layer.kraus_apply]
     congr 1
     · exact Finset.prod_congr rfl fun b _ ↦
-        initializedBasisMatrix_mul_apply_self
+        basisInclusion_mul_apply_self
           (Function.Embedding.piCongrRight fun v : {v // v ∈ Γ.cell b} ↦ f v) _
           (fun v : {v // v ∈ Γ.cell b} ↦ y v) _
-    · exact Finset.prod_congr rfl fun s _ ↦ initializedBasisMatrix_mul_apply_self (f s) _ _ _
-  · rw [initializedBasisMatrix_mul_apply_of_notMem _ _ hy]
+    · exact Finset.prod_congr rfl fun s _ ↦ basisInclusion_mul_apply_self (f s) _ _ _
+  · rw [basisInclusion_mul_apply_of_notMem _ _ hy]
     obtain ⟨v, hv⟩ : ∃ v, y' v ∉ Set.range (f v) := by
       by_contra h
       push Not at h
@@ -200,10 +200,10 @@ private theorem kraus_encode_mul (L : Layer Γ KrausGate X Y) (e : ∀ s, X s �
     by_cases hc : v ∈ L.cells.biUnion Γ.cell
     · obtain ⟨b, hb, hvb⟩ := Finset.mem_biUnion.mp hc
       refine mul_eq_zero_of_left (Finset.prod_eq_zero (Finset.mem_univ ⟨b, hb⟩) ?_) _
-      exact initializedBasisMatrix_mul_apply_of_notMem _ _
+      exact basisInclusion_mul_apply_of_notMem _ _
         (fun ⟨z, hz⟩ ↦ hv ⟨z ⟨v, hvb⟩, congrFun hz ⟨v, hvb⟩⟩) _
     · exact mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ ⟨v, hc⟩)
-        (initializedBasisMatrix_mul_apply_of_notMem _ _ hv _))
+        (basisInclusion_mul_apply_of_notMem _ _ hv _))
 
 omit [∀ s, DecidableEq (X s)] [∀ s, DecidableEq (Y s)] in
 /-- On the code, the branches of the encoded layer that do not follow the layer vanish. -/
@@ -211,9 +211,9 @@ private theorem kraus_encode_mul_eq_zero (L : Layer Γ KrausGate X Y) (e : ∀ s
     (f : ∀ s, Y s ↪ Y' s) (y₀ : ∀ s, Y' s) {p : (L.encode e f y₀).Index}
     (hp : p ∉ Set.range (L.encodeIndex e f y₀)) :
     (L.encode e f y₀).kraus KrausGate.ev p *
-      initializedBasisMatrix (Function.Embedding.piCongrRight e) = 0 := by
+      basisInclusion (Function.Embedding.piCongrRight e) = 0 := by
   ext y' x
-  rw [mul_initializedBasisMatrix_apply, Matrix.zero_apply, Layer.kraus_apply]
+  rw [mul_basisInclusion_apply, Matrix.zero_apply, Layer.kraus_apply]
   by_cases hg : ∀ b, ∃ i, p.1 b = Sum.inl i
   · have ho : ¬∀ s, ∃ i, p.2 s = Sum.inl i := fun ho ↦ hp
       ⟨(fun b ↦ (hg b).choose, fun s ↦ (ho s).choose), Prod.ext
@@ -226,7 +226,7 @@ private theorem kraus_encode_mul_eq_zero (L : Layer Γ KrausGate X Y) (e : ∀ s
       | inr a => exact ⟨a, rfl⟩
     refine mul_eq_zero_of_right _ (Finset.prod_eq_zero (Finset.mem_univ s) ?_)
     rw [ha]
-    exact (mul_initializedBasisMatrix_apply (e s) _ _ _).symm.trans
+    exact (mul_basisInclusion_apply (e s) _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inr_mul _ _ _ _ a) _) _)
   · push Not at hg
     obtain ⟨b, hb⟩ := hg
@@ -236,7 +236,7 @@ private theorem kraus_encode_mul_eq_zero (L : Layer Γ KrausGate X Y) (e : ∀ s
       | inr a => exact ⟨a, rfl⟩
     refine mul_eq_zero_of_left (Finset.prod_eq_zero (Finset.mem_univ b) ?_) _
     rw [KrausGate.ev_apply, ha]
-    exact (mul_initializedBasisMatrix_apply _ _ _ _).symm.trans
+    exact (mul_basisInclusion_apply _ _ _ _).symm.trans
       (congrFun (congrFun (KrausFamily.encode_op_inr_mul _ _ _ _ a) _) _)
 
 /-- The encoded layer, followed by continuations that act on the code as the continuations of
@@ -268,9 +268,9 @@ private theorem map_step_encode {Z Z' : S → Type} [∀ s, Fintype (Z s)] [∀ 
           (L.kraus KrausGate.ev i * ρ * (L.kraus KrausGate.ev i)ᴴ) := by
       rw [map_encodeCircuit, map_encodeCircuit]
       calc _ = (L.encode e f y₀).kraus KrausGate.ev (L.encodeIndex e f y₀ i) *
-              initializedBasisMatrix (Function.Embedding.piCongrRight e) * ρ *
+              basisInclusion (Function.Embedding.piCongrRight e) * ρ *
             ((L.encode e f y₀).kraus KrausGate.ev (L.encodeIndex e f y₀ i) *
-              initializedBasisMatrix (Function.Embedding.piCongrRight e))ᴴ := by
+              basisInclusion (Function.Embedding.piCongrRight e))ᴴ := by
             simp only [conjTranspose_mul, Matrix.mul_assoc]
         _ = _ := by
             rw [hk]

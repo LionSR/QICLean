@@ -35,26 +35,26 @@ in `08-scanner.tex`, lines 399–404. -/
 theorem abs_regionEntropy_sub_le_sqrt_traceDistance
     (Ω Φ : EuclideanSpace ℂ ((v : V) → β v))
     (hΩ : ‖Ω‖ = 1) (hΦ : ‖Φ‖ = 1) (R : Finset V) :
-    |ManyBody.regionEntropy Ω R - ManyBody.regionEntropy Φ R| ≤
+    |regionEntropy Ω R - regionEntropy Φ R| ≤
       4 * Real.sqrt (Matrix.traceDistance
         (Matrix.vecMulVec Ω (star Ω)) (Matrix.vecMulVec Φ (star Φ))) *
-        Real.log (Real.exp 1 * Fintype.card (ManyBody.RegionConfig β R)) := by
+        Real.log (Real.exp 1 * Fintype.card (RegionConfig β R)) := by
   have hcont := Entropy.abs_vonNeumannEntropy_sub_le_sqrt
-    (ManyBody.regionState_posSemidef R Ω) (ManyBody.regionState_posSemidef R Φ)
-    (ManyBody.trace_regionState_eq_one hΩ (D := R)) (ManyBody.trace_regionState_eq_one hΦ (D := R))
-  have hdist : Matrix.traceDistance (ManyBody.regionState Ω R) (ManyBody.regionState Φ R) ≤
+    (regionState_posSemidef R Ω) (regionState_posSemidef R Φ)
+    (trace_regionState_eq_one hΩ (D := R)) (trace_regionState_eq_one hΦ (D := R))
+  have hdist : Matrix.traceDistance (regionState Ω R) (regionState Φ R) ≤
       Matrix.traceDistance (Matrix.vecMulVec Ω (star Ω))
         (Matrix.vecMulVec Φ (star Φ)) :=
     (Matrix.traceDistance_partialTraceRight_le
       ((Matrix.posSemidef_vecMulVec_self_star Ω).submatrix
-          (ManyBody.cutEquiv β R).symm).isHermitian
+          (cutEquiv β R).symm).isHermitian
       ((Matrix.posSemidef_vecMulVec_self_star Φ).submatrix
-          (ManyBody.cutEquiv β R).symm).isHermitian
+          (cutEquiv β R).symm).isHermitian
       ((Matrix.trace_partialTraceRight _).symm.trans
-        ((ManyBody.trace_regionState_eq_one hΩ (D := R)).trans
-          ((ManyBody.trace_regionState_eq_one hΦ (D := R)).symm.trans
+        ((trace_regionState_eq_one hΩ (D := R)).trans
+          ((trace_regionState_eq_one hΦ (D := R)).symm.trans
               (Matrix.trace_partialTraceRight _))))).trans_eq
-      (Matrix.traceDistance_submatrix_equiv (ManyBody.cutEquiv β R).symm
+      (Matrix.traceDistance_submatrix_equiv (cutEquiv β R).symm
         (Matrix.posSemidef_vecMulVec_self_star Ω).isHermitian
         (Matrix.posSemidef_vecMulVec_self_star Φ).isHermitian)
   exact hcont.trans (mul_le_mul_of_nonneg_right
@@ -63,6 +63,6 @@ theorem abs_regionEntropy_sub_le_sqrt_traceDistance
       (Real.one_le_exp zero_le_one)
       (Nat.one_le_cast.mpr (Fintype.card_pos_iff.mpr
         (Entropy.Matrix.PosSemidef.nonempty_of_trace_eq_one
-          (ManyBody.trace_regionState_eq_one hΩ (D := R))))))))
+          (trace_regionState_eq_one hΩ (D := R))))))))
 
 end ManyBody

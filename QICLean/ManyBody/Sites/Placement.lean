@@ -357,12 +357,12 @@ theorem prodOp_mem_unitary {m : (v : V) → Matrix (X v) (X v) ℂ}
 omit [DecidableEq V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)] in
 /-- The product of the basis inclusions along injections `e v` is the basis inclusion along the
 product injection. -/
-theorem prodOp_initializedBasisMatrix [∀ v, DecidableEq (Y v)]
+theorem prodOp_basisInclusion [∀ v, DecidableEq (Y v)]
     (e : ∀ v, X v ↪ Y v) :
-    prodOp (fun v ↦ initializedBasisMatrix (e v)) =
-      initializedBasisMatrix (Function.Embedding.piCongrRight e) := by
+    prodOp (fun v ↦ basisInclusion (e v)) =
+      basisInclusion (Function.Embedding.piCongrRight e) := by
   ext y x
-  simp [prodOp_apply, initializedBasisMatrix, one_apply, funext_iff, Finset.prod_ite_zero]
+  simp [prodOp_apply, basisInclusion, one_apply, funext_iff, Finset.prod_ite_zero]
 
 /-- A product operator `⊗_v m_v` with `m_v = 1` outside `D` is supported on `D`. -/
 theorem prodOp_mem_supportedOperators {m : (v : V) → Matrix (X v) (X v) ℂ}

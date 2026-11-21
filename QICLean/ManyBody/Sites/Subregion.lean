@@ -31,6 +31,7 @@ needs a reference configuration.
 * `ManyBody.subregionConfigEquiv` — configurations of `R` as configurations of the region
   `R.subtype (· ∈ U)` of the system of sites of `U`.
 * `ManyBody.subregionPlace` — the extension of a matrix on `R` to `U` by the identity.
+* `ManyBody.subregionPlaceHom` — the extension as a unital `*`-homomorphism.
 
 ## Main results
 
@@ -40,6 +41,11 @@ needs a reference configuration.
 * `ManyBody.subregionPlace_self` — the extension to `R` itself is the identity map.
 * The algebraic lemmas, `ManyBody.norm_subregionPlace_le` and
   `ManyBody.subregionPlace_mem_supportedOperators`.
+* `ManyBody.subregionPlaceHom`, `ManyBody.subregionPlace_injective`,
+  `ManyBody.norm_subregionPlace` — the extension is an injective, isometric unital
+  `*`-homomorphism when every basis type is nonempty. It is the canonical inclusion of local
+  algebras of TNLean's `SpinChain.localInclusion` (`QCA/LocalAlgebra`, at commit
+  `414a18fb88`).
 -/
 
 open Matrix
@@ -193,6 +199,40 @@ theorem norm_subregionPlace_le : ‖subregionPlace hRU K‖ ≤ ‖K‖ := by
   classical
   refine (norm_place_le (X := fun w : {v // v ∈ U} ↦ X w.1) _).trans_eq ?_
   exact Matrix.l2_opNorm_reindex_equiv _ K
+
+variable (R U) in
+/-- The extension from `R` to `U ⊇ R` as a unital `*`-homomorphism of matrix algebras: the
+canonical inclusion `A ↦ A ⊗ 1` of the algebra of the region `R` into that of `U`. -/
+noncomputable def subregionPlaceHom (hRU : R ⊆ U) :
+    Matrix (RegionConfig X R) (RegionConfig X R) ℂ →⋆ₐ[ℂ]
+      Matrix (RegionConfig X U) (RegionConfig X U) ℂ where
+  toFun := subregionPlace hRU
+  map_one' := subregionPlace_one hRU
+  map_mul' K K' := subregionPlace_mul hRU K K'
+  map_zero' := subregionPlace_zero hRU
+  map_add' K K' := subregionPlace_add hRU K K'
+  commutes' c := by
+    rw [Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, subregionPlace_smul,
+      subregionPlace_one]
+  map_star' K := by
+    rw [star_eq_conjTranspose, star_eq_conjTranspose, subregionPlace_conjTranspose]
+
+@[simp]
+theorem subregionPlaceHom_apply : subregionPlaceHom R U hRU K = subregionPlace hRU K :=
+  rfl
+
+variable [∀ v, Nonempty (X v)]
+
+omit [∀ v, Fintype (X v)] in
+/-- When every basis type is nonempty, the extension is injective. -/
+theorem subregionPlace_injective : Function.Injective (subregionPlace (X := X) hRU) :=
+  fun _ _ h ↦ (reindex _ _).injective (place_injective (X := fun w : {v // v ∈ U} ↦ X w.1) _ h)
+
+/-- When every basis type is nonempty, the extension preserves the operator norm. -/
+theorem norm_subregionPlace : ‖subregionPlace hRU K‖ = ‖K‖ := by
+  classical
+  rw [subregionPlace, norm_place (X := fun w : {v // v ∈ U} ↦ X w.1),
+    Matrix.l2_opNorm_reindex_equiv]
 
 end Algebra
 

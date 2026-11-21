@@ -38,13 +38,13 @@ def compressedSiteSpace (β : V → Type u) (X : Finset V) (R : Type u) :
 
 instance (β : V → Type u) (X : Finset V) (R : Type u)
     [∀ v, Fintype (β v)] [Fintype R] (f : Option {v // v ∉ X}) :
-    Fintype (ManyBody.compressedSiteSpace β X R f) := by
-  cases f <;> dsimp [ManyBody.compressedSiteSpace] <;> infer_instance
+    Fintype (compressedSiteSpace β X R f) := by
+  cases f <;> dsimp [compressedSiteSpace] <;> infer_instance
 
 instance (β : V → Type u) (X : Finset V) (R : Type u)
     [∀ v, DecidableEq (β v)] [DecidableEq R] (f : Option {v // v ∉ X}) :
-    DecidableEq (ManyBody.compressedSiteSpace β X R f) := by
-  cases f <;> dsimp [ManyBody.compressedSiteSpace] <;> infer_instance
+    DecidableEq (compressedSiteSpace β X R f) := by
+  cases f <;> dsimp [compressedSiteSpace] <;> infer_instance
 
 /-- A physical region, regarded as a region of the exterior site family. -/
 def exteriorRegion (X B : Finset V) : Finset (Option {v // v ∉ X}) := by

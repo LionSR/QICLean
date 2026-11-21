@@ -51,8 +51,8 @@ variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 /-- The regional mutual information equals the ordered entropy defect. -/
 theorem regionMutualInformation_past_eq_defect (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (B : Finset V) (X : ι → Finset V) (s : Finset ι) (i : ι) :
-    ManyBody.regionMutualInformation ψ (X i) (B ∪ past X s i) =
-      defect (ManyBody.regionEntropy ψ) B X s i := by
+    regionMutualInformation ψ (X i) (B ∪ past X s i) =
+      defect (regionEntropy ψ) B X s i := by
   simp only [regionMutualInformation, defect, Finset.union_comm (X i)]
 
 /-- Telescoping along an arbitrary finite total order. Each information estimate
@@ -60,11 +60,11 @@ uses the whole exterior together with all earlier tiles of the same family. -/
 theorem orderedFamily_regionEntropy_chain_lower
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (B : Finset V)
     (X : ι → Finset V) (s : Finset ι) (ε : ι → ℝ)
-    (hε : ∀ i ∈ s, ManyBody.regionMutualInformation ψ (X i) (B ∪ past X s i) ≤ ε i) :
-    ManyBody.regionEntropy ψ B + (∑ i ∈ s, ManyBody.regionEntropy ψ (X i)) - (∑ i ∈ s, ε i) ≤
-      ManyBody.regionEntropy ψ (B ∪ s.biUnion X) := by
+    (hε : ∀ i ∈ s, regionMutualInformation ψ (X i) (B ∪ past X s i) ≤ ε i) :
+    regionEntropy ψ B + (∑ i ∈ s, regionEntropy ψ (X i)) - (∑ i ∈ s, ε i) ≤
+      regionEntropy ψ (B ∪ s.biUnion X) := by
   apply chain_lower
-  simpa only [ManyBody.regionMutualInformation_past_eq_defect] using hε
+  simpa only [regionMutualInformation_past_eq_defect] using hε
 
 private theorem complement_exterior_union (A D U W : Finset V)
     (hA : A = D ∪ U ∪ W) (hDU : Disjoint D U) (hUW : Disjoint U W) :
@@ -102,9 +102,9 @@ theorem regionEntropy_le_remainder_add_half_regionMutualInformation
     (hX : (s : Set ι).PairwiseDisjoint X)
     (hY : (t : Set κ).PairwiseDisjoint Y)
     (hXY : ∀ i ∈ s, ∀ j ∈ t, Disjoint (X i) (Y j)) :
-    ManyBody.regionEntropy ψ A ≤ ManyBody.regionEntropy ψ D + (1 / 2) *
-      ((∑ i ∈ s, ManyBody.regionMutualInformation ψ (X i) (Aᶜ ∪ past X s i)) +
-        ∑ j ∈ t, ManyBody.regionMutualInformation ψ (Y j) (Aᶜ ∪ past Y t j)) := by
+    regionEntropy ψ A ≤ regionEntropy ψ D + (1 / 2) *
+      ((∑ i ∈ s, regionMutualInformation ψ (X i) (Aᶜ ∪ past X s i)) +
+        ∑ j ∈ t, regionMutualInformation ψ (Y j) (Aᶜ ∪ past Y t j)) := by
   have hDU : Disjoint D (s.biUnion X) := (Finset.disjoint_biUnion_right _ _ _).mpr hDX
   have hDW : Disjoint D (t.biUnion Y) := (Finset.disjoint_biUnion_right _ _ _).mpr hDY
   have hUW : Disjoint (s.biUnion X) (t.biUnion Y) := by
@@ -113,21 +113,21 @@ theorem regionEntropy_le_remainder_add_half_regionMutualInformation
     exact hXY i hi j hj
   have hA' : A = D ∪ t.biUnion Y ∪ s.biUnion X := by
     rw [hA, Finset.union_right_comm]
-  have hx : ManyBody.regionEntropy ψ (Aᶜ ∪ s.biUnion X) ≤
-      ManyBody.regionEntropy ψ D + ∑ j ∈ t, ManyBody.regionEntropy ψ (Y j) := by
-    rw [← ManyBody.regionEntropy_compl β ψ (Aᶜ ∪ s.biUnion X),
+  have hx : regionEntropy ψ (Aᶜ ∪ s.biUnion X) ≤
+      regionEntropy ψ D + ∑ j ∈ t, regionEntropy ψ (Y j) := by
+    rw [← regionEntropy_compl β ψ (Aᶜ ∪ s.biUnion X),
       complement_exterior_union A D _ _ hA hDU hUW]
-    exact union_biUnion_le_sum (ManyBody.regionEntropy ψ)
-        (ManyBody.regionEntropy_union_le β ψ hψ) D Y t hDY hY
-  have hy : ManyBody.regionEntropy ψ (Aᶜ ∪ t.biUnion Y) ≤
-      ManyBody.regionEntropy ψ D + ∑ i ∈ s, ManyBody.regionEntropy ψ (X i) := by
-    rw [← ManyBody.regionEntropy_compl β ψ (Aᶜ ∪ t.biUnion Y),
+    exact union_biUnion_le_sum (regionEntropy ψ)
+        (regionEntropy_union_le β ψ hψ) D Y t hDY hY
+  have hy : regionEntropy ψ (Aᶜ ∪ t.biUnion Y) ≤
+      regionEntropy ψ D + ∑ i ∈ s, regionEntropy ψ (X i) := by
+    rw [← regionEntropy_compl β ψ (Aᶜ ∪ t.biUnion Y),
       complement_exterior_union A D _ _ hA' hDW hUW.symm]
-    exact union_biUnion_le_sum (ManyBody.regionEntropy ψ)
-        (ManyBody.regionEntropy_union_le β ψ hψ) D X s hDX hX
-  have h := two_family_le_half_sum_defect (ManyBody.regionEntropy ψ) Aᶜ D X s Y t hx hy
-  simpa only [ManyBody.regionEntropy_compl,
-      ← ManyBody.regionMutualInformation_past_eq_defect] using h
+    exact union_biUnion_le_sum (regionEntropy ψ)
+        (regionEntropy_union_le β ψ hψ) D X s hDX hX
+  have h := two_family_le_half_sum_defect (regionEntropy ψ) Aᶜ D X s Y t hx hy
+  simpa only [regionEntropy_compl,
+      ← regionMutualInformation_past_eq_defect] using h
 
 /-- OpenAI's area-law Lemma 11.1: the entropy of the region is bounded by the
 remainder entropy plus exactly half the sum of the two ordered families' errors.
@@ -143,11 +143,11 @@ theorem regionEntropy_le_remainder_add_half_sum
     (hY : (t : Set κ).PairwiseDisjoint Y)
     (hXY : ∀ i ∈ s, ∀ j ∈ t, Disjoint (X i) (Y j))
     (ε : ι → ℝ) (δ : κ → ℝ)
-    (hε : ∀ i ∈ s, ManyBody.regionMutualInformation ψ (X i) (Aᶜ ∪ past X s i) ≤ ε i)
-    (hδ : ∀ j ∈ t, ManyBody.regionMutualInformation ψ (Y j) (Aᶜ ∪ past Y t j) ≤ δ j) :
-    ManyBody.regionEntropy ψ A ≤ ManyBody.regionEntropy ψ D + (1 / 2) *
+    (hε : ∀ i ∈ s, regionMutualInformation ψ (X i) (Aᶜ ∪ past X s i) ≤ ε i)
+    (hδ : ∀ j ∈ t, regionMutualInformation ψ (Y j) (Aᶜ ∪ past Y t j) ≤ δ j) :
+    regionEntropy ψ A ≤ regionEntropy ψ D + (1 / 2) *
       ((∑ i ∈ s, ε i) + ∑ j ∈ t, δ j) := by
-  have h := ManyBody.regionEntropy_le_remainder_add_half_regionMutualInformation β ψ hψ A D X s Y t
+  have h := regionEntropy_le_remainder_add_half_regionMutualInformation β ψ hψ A D X s Y t
     hA hDX hDY hX hY hXY
   have hx := Finset.sum_le_sum hε
   have hy := Finset.sum_le_sum hδ

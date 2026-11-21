@@ -49,13 +49,13 @@ factors use their canonical finite enumerations.
 Source: PEPS manuscript, Lemma 6.4 `lem:splitting`, `05-frames.tex:352–359`. -/
 noncomputable def splitTwoRegionsEquiv (T E : Finset V) (h : Disjoint T E) :
     ((v : V) → β v) ≃
-      (Fin (Fintype.card (ManyBody.RegionConfig β T)) × Fin
-          (Fintype.card (ManyBody.RegionConfig β E))) ×
-        ManyBody.ComplConfig β (T ∪ E) :=
-  (ManyBody.cutEquiv β (T ∪ E)).trans
-    (((ManyBody.unionEquiv β T E h).trans
-      ((Fintype.equivFin (ManyBody.RegionConfig β T)).prodCongr
-        (Fintype.equivFin (ManyBody.RegionConfig β E)))).prodCongr (Equiv.refl _))
+      (Fin (Fintype.card (RegionConfig β T)) × Fin
+          (Fintype.card (RegionConfig β E))) ×
+        ComplConfig β (T ∪ E) :=
+  (cutEquiv β (T ∪ E)).trans
+    (((unionEquiv β T E h).trans
+      ((Fintype.equivFin (RegionConfig β T)).prodCongr
+        (Fintype.equivFin (RegionConfig β E)))).prodCongr (Equiv.refl _))
 
 /-- The physical state expressed in the coordinates of two regions and their
 complement. This is a change of basis indices, with no truncation.
@@ -63,10 +63,10 @@ complement. This is a change of basis indices, with no truncation.
 Source: PEPS manuscript, Lemma 6.4 `lem:splitting`, `05-frames.tex:352–359`. -/
 noncomputable def splitTwoRegionsState (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (T E : Finset V) (h : Disjoint T E) :
-    (Fin (Fintype.card (ManyBody.RegionConfig β T)) × Fin
-        (Fintype.card (ManyBody.RegionConfig β E))) ×
-        ManyBody.ComplConfig β (T ∪ E) → ℂ :=
-  fun x ↦ ψ ((ManyBody.splitTwoRegionsEquiv β T E h).symm x)
+    (Fin (Fintype.card (RegionConfig β T)) × Fin
+        (Fintype.card (RegionConfig β E))) ×
+        ComplConfig β (T ∪ E) → ℂ :=
+  fun x ↦ ψ ((splitTwoRegionsEquiv β T E h).symm x)
 
 omit [∀ v, DecidableEq (β v)] in
 /-- The right marginal in these coordinates is precisely the existing joint
@@ -75,8 +75,8 @@ regional density matrix.
 Source: PEPS manuscript, proof of Lemma 6.4, `05-frames.tex:371–375`. -/
 theorem partialTraceRight_splitTwoRegionsState
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (T E : Finset V) (h : Disjoint T E) :
-    Matrix.partialTraceRight (Matrix.vecMulVec (ManyBody.splitTwoRegionsState β ψ T E h)
-      (star (ManyBody.splitTwoRegionsState β ψ T E h))) = ManyBody.jointMatrix β ψ T E h := by
+    Matrix.partialTraceRight (Matrix.vecMulVec (splitTwoRegionsState β ψ T E h)
+      (star (splitTwoRegionsState β ψ T E h))) = jointMatrix β ψ T E h := by
   rfl
 
 omit [∀ v, DecidableEq (β v)] in
@@ -85,13 +85,13 @@ omit [∀ v, DecidableEq (β v)] in
 Source: PEPS manuscript, proof of Lemma 6.4, `05-frames.tex:371–389`. -/
 theorem splitTwoRegionsState_unit (ψ : EuclideanSpace ℂ ((v : V) → β v))
     (hψ : ‖ψ‖ = 1) (T E : Finset V) (h : Disjoint T E) :
-    star (ManyBody.splitTwoRegionsState β ψ T E h) ⬝ᵥ ManyBody.splitTwoRegionsState β ψ T E h
+    star (splitTwoRegionsState β ψ T E h) ⬝ᵥ splitTwoRegionsState β ψ T E h
         = 1 := by
   rw [← Matrix.trace_partialTraceRight_vecMulVec,
-    ManyBody.partialTraceRight_splitTwoRegionsState]
-  dsimp only [ManyBody.jointMatrix]
+    partialTraceRight_splitTwoRegionsState]
+  dsimp only [jointMatrix]
   rw [Matrix.trace_submatrix_equiv]
-  exact ManyBody.trace_regionState_eq_one hψ (D := (T ∪ E))
+  exact trace_regionState_eq_one hψ (D := (T ∪ E))
 
 /-- Splitting a finite-product pure state on two disjoint regions and their
 complement. The isometry is defined on the entire complement space, including
@@ -103,24 +103,24 @@ theorem exists_isIsometry_splitTwoRegionsState_norm_sub_le
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
     (T E : Finset V) (h : Disjoint T E) :
     ∃ (W : Matrix
-        (Fin (Fintype.card (ManyBody.RegionConfig β T)) ×
-          (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.ComplConfig β (T ∪ E)))
-        (ManyBody.ComplConfig β (T ∪ E)) ℂ)
-      (s : Fin (Fintype.card (ManyBody.RegionConfig β T)) ×
-        Fin (Fintype.card (ManyBody.RegionConfig β T)) → ℂ)
-      (s' : Fin (Fintype.card (ManyBody.RegionConfig β E)) ×
-        (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.ComplConfig β (T ∪ E)) → ℂ),
+        (Fin (Fintype.card (RegionConfig β T)) ×
+          (Fin (Fintype.card (RegionConfig β E)) ⊕ ComplConfig β (T ∪ E)))
+        (ComplConfig β (T ∪ E)) ℂ)
+      (s : Fin (Fintype.card (RegionConfig β T)) ×
+        Fin (Fintype.card (RegionConfig β T)) → ℂ)
+      (s' : Fin (Fintype.card (RegionConfig β E)) ×
+        (Fin (Fintype.card (RegionConfig β E)) ⊕ ComplConfig β (T ∪ E)) → ℂ),
       W.IsIsometry ∧ star s ⬝ᵥ s = 1 ∧ star s' ⬝ᵥ s' = 1 ∧
       ‖WithLp.toLp 2 ((((1 : Matrix _ _ ℂ) ⊗ₖ W) *ᵥ
-        ManyBody.splitTwoRegionsState β ψ T E h) - Matrix.tensorPurification s s')‖ ≤
-        √(2 * (1 - Real.exp (-(ManyBody.regionMutualInformation ψ T E / 2)))) ∧
-      √(2 * (1 - Real.exp (-(ManyBody.regionMutualInformation ψ T E / 2)))) ≤
-        √(ManyBody.regionMutualInformation ψ T E) := by
-  simpa only [ManyBody.regionMutualInformation_eq_matrix β ψ T E h] using
+        splitTwoRegionsState β ψ T E h) - Matrix.tensorPurification s s')‖ ≤
+        √(2 * (1 - Real.exp (-(regionMutualInformation ψ T E / 2)))) ∧
+      √(2 * (1 - Real.exp (-(regionMutualInformation ψ T E / 2)))) ≤
+        √(regionMutualInformation ψ T E) := by
+  simpa only [regionMutualInformation_eq_matrix β ψ T E h] using
     Matrix.exists_isIsometry_norm_sub_tensorPurification_le_mutualInformation
-      (ManyBody.splitTwoRegionsState β ψ T E h) (ManyBody.splitTwoRegionsState_unit β ψ hψ T E h)
-      (ManyBody.partialTraceRight_splitTwoRegionsState β ψ T E h)
-      (ManyBody.jointMatrix_posSemidef β ψ T E h).isHermitian
+      (splitTwoRegionsState β ψ T E h) (splitTwoRegionsState_unit β ψ hψ T E h)
+      (partialTraceRight_splitTwoRegionsState β ψ T E h)
+      (jointMatrix_posSemidef β ψ T E h).isHermitian
 
 /-- A mutual-information bound of `L⁻⁶⁰` gives a regional splitting error of
 `L⁻³⁰`, with unit output vectors and an isometry on the entire complement space.
@@ -129,24 +129,24 @@ Source: PEPS manuscript, Lemma 6.4 `lem:splitting`, `05-frames.tex:366–367`. -
 theorem exists_isIsometry_splitTwoRegionsState_norm_sub_le_zpow
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
     (T E : Finset V) (h : Disjoint T E)
-    {L : ℝ} (hL : 0 < L) (hb : ManyBody.regionMutualInformation ψ T E ≤ L ^ (-60 : ℤ)) :
+    {L : ℝ} (hL : 0 < L) (hb : regionMutualInformation ψ T E ≤ L ^ (-60 : ℤ)) :
     ∃ (W : Matrix
-        (Fin (Fintype.card (ManyBody.RegionConfig β T)) ×
-          (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.ComplConfig β (T ∪ E)))
-        (ManyBody.ComplConfig β (T ∪ E)) ℂ)
-      (s : Fin (Fintype.card (ManyBody.RegionConfig β T)) ×
-        Fin (Fintype.card (ManyBody.RegionConfig β T)) → ℂ)
-      (s' : Fin (Fintype.card (ManyBody.RegionConfig β E)) ×
-        (Fin (Fintype.card (ManyBody.RegionConfig β E)) ⊕ ManyBody.ComplConfig β (T ∪ E)) → ℂ),
+        (Fin (Fintype.card (RegionConfig β T)) ×
+          (Fin (Fintype.card (RegionConfig β E)) ⊕ ComplConfig β (T ∪ E)))
+        (ComplConfig β (T ∪ E)) ℂ)
+      (s : Fin (Fintype.card (RegionConfig β T)) ×
+        Fin (Fintype.card (RegionConfig β T)) → ℂ)
+      (s' : Fin (Fintype.card (RegionConfig β E)) ×
+        (Fin (Fintype.card (RegionConfig β E)) ⊕ ComplConfig β (T ∪ E)) → ℂ),
       W.IsIsometry ∧ star s ⬝ᵥ s = 1 ∧ star s' ⬝ᵥ s' = 1 ∧
       ‖WithLp.toLp 2 ((((1 : Matrix _ _ ℂ) ⊗ₖ W) *ᵥ
-        ManyBody.splitTwoRegionsState β ψ T E h) - Matrix.tensorPurification s s')‖ ≤
+        splitTwoRegionsState β ψ T E h) - Matrix.tensorPurification s s')‖ ≤
         L ^ (-30 : ℤ) := by
-  simpa only [ManyBody.regionMutualInformation_eq_matrix β ψ T E h] using
+  simpa only [regionMutualInformation_eq_matrix β ψ T E h] using
     Matrix.exists_isIsometry_norm_sub_tensorPurification_le_zpow
-      (ManyBody.splitTwoRegionsState β ψ T E h) (ManyBody.splitTwoRegionsState_unit β ψ hψ T E h)
-      (ManyBody.partialTraceRight_splitTwoRegionsState β ψ T E h)
-      (ManyBody.jointMatrix_posSemidef β ψ T E h).isHermitian hL
-      (by simpa only [ManyBody.regionMutualInformation_eq_matrix β ψ T E h] using hb)
+      (splitTwoRegionsState β ψ T E h) (splitTwoRegionsState_unit β ψ hψ T E h)
+      (partialTraceRight_splitTwoRegionsState β ψ T E h)
+      (jointMatrix_posSemidef β ψ T E h).isHermitian hL
+      (by simpa only [regionMutualInformation_eq_matrix β ψ T E h] using hb)
 
 end ManyBody

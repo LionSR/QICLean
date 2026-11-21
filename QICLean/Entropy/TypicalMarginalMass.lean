@@ -67,9 +67,9 @@ theorem one_sub_rpow_le_typicalMass_cut (hsupp : ∀ i, ManyBody.IsSupportedOn (
       (star (WithLp.ofLp (ManyBody.cutVector B Ψ)))) = ρ) (hρ : ρ.IsHermitian) (N : ℕ) (M : ℝ) :
     1 - ((N : ℝ) + 2) ^ (-M) ≤
       typicalMass hρ.eigenvalues (vonNeumannEntropy ρ hρ)
-        (concentrationWidth (c₀ / g₀) (cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D))
+        (concentrationWidth (c₀ / g₀) (ManyBody.cutLogBudget D n B)
           N M) := by
-  set ℬ := cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D)
+  set ℬ := ManyBody.cutLogBudget D n B
   set w := concentrationWidth (c₀ / g₀) ℬ N M
   have hpsd : ρ.PosSemidef := by
     rw [← hρdef, ← ManyBody.regionState_eq_partialTraceRight_cutVector B Ψ]

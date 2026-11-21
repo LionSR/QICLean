@@ -20,6 +20,7 @@ import QICLean.Analysis.BetaHalfLine
 import QICLean.Analysis.Birkhoff
 import QICLean.Analysis.BlockDiagonalNorm
 import QICLean.Analysis.BootstrapFailureParameters
+import QICLean.Analysis.BoundedCongruenceGap
 import QICLean.Analysis.BufferedSpectralNormPerturbation
 import QICLean.Analysis.CStarCompletion
 import QICLean.Analysis.CStarMatrixKronecker
@@ -47,6 +48,8 @@ import QICLean.Analysis.CoisometricCompression
 import QICLean.Analysis.CommonCompressionEnergy
 import QICLean.Analysis.CommutingExponentialOrder
 import QICLean.Analysis.CommutingHermitian
+import QICLean.Analysis.CommutingProjectionProduct
+import QICLean.Analysis.CompactKernelGap
 import QICLean.Analysis.ComplementProdKernel
 import QICLean.Analysis.ComplementProdPartition
 import QICLean.Analysis.CompressedInverseFloor
@@ -153,9 +156,13 @@ import QICLean.Analysis.InvariantTensorWordPower
 import QICLean.Analysis.InverseCompressionLowerPin
 import QICLean.Analysis.InversePowerLogJensen
 import QICLean.Analysis.IsometricCompression
+import QICLean.Analysis.IsometricCompressionGap
+import QICLean.Analysis.IsometricConjugationGap
 import QICLean.Analysis.IsometricDomainExtension
+import QICLean.Analysis.IsometricGapTransfer
 import QICLean.Analysis.IsometricIntertwiningCommute
 import QICLean.Analysis.IsometricLowerPin
+import QICLean.Analysis.IsometricProjection
 import QICLean.Analysis.JordanBlockAsymptotics
 import QICLean.Analysis.JordanBlockComparison
 import QICLean.Analysis.JordanBlockDirectSum
@@ -238,6 +245,7 @@ import QICLean.Analysis.OptimizedPureErrorMass
 import QICLean.Analysis.OptimizedPureStateTraceError
 import QICLean.Analysis.OptimizedPureTraceError
 import QICLean.Analysis.OrderedSpectralSpan
+import QICLean.Analysis.OrthogonalKernelGap
 import QICLean.Analysis.OrthogonalResolution
 import QICLean.Analysis.OrthogonalResolutionCfc
 import QICLean.Analysis.OrthonormalMatrixNorm
@@ -257,6 +265,7 @@ import QICLean.Analysis.PolynomialFilterCounts
 import QICLean.Analysis.PolynomialFilterDyadicGrowth
 import QICLean.Analysis.PolynomialFilterLogCount
 import QICLean.Analysis.PosSemidefCommute
+import QICLean.Analysis.PositiveComparisonGap
 import QICLean.Analysis.PositiveFactorRepair
 import QICLean.Analysis.PositiveGapTransfer
 import QICLean.Analysis.PositiveGapUniqueness
@@ -285,6 +294,7 @@ import QICLean.Analysis.ProjectionQuadraticBounds
 import QICLean.Analysis.ProjectionResidual
 import QICLean.Analysis.ProjectiveDiameterCounterexample
 import QICLean.Analysis.PureStateTraceDistance
+import QICLean.Analysis.QuadraticFormGap
 import QICLean.Analysis.QuadraticPerspective
 import QICLean.Analysis.QuadraticScalarShift
 import QICLean.Analysis.QuantitativeFilterIteration
@@ -296,6 +306,7 @@ import QICLean.Analysis.RectangularTraceNorm
 import QICLean.Analysis.RectangularTraceNormAlgebra
 import QICLean.Analysis.RectangularTraceNormTopology
 import QICLean.Analysis.RectangularTraceNormTruncation
+import QICLean.Analysis.ReducingProjectionGap
 import QICLean.Analysis.ReferencePolynomialBound
 import QICLean.Analysis.RefinementOutputPolynomialBound
 import QICLean.Analysis.RegionalEnergyCalibration
@@ -446,9 +457,11 @@ import QICLean.Analysis.SupportInverseSandwich
 import QICLean.Analysis.SupportLogJensen
 import QICLean.Analysis.SupportPower
 import QICLean.Analysis.SupportProjectionOrder
+import QICLean.Analysis.SupportedParentProjection
 import QICLean.Analysis.SurprisalFunctionalCalculus
 import QICLean.Analysis.SurprisalMoment
 import QICLean.Analysis.SurprisalProductMoment
+import QICLean.Analysis.SweepContraction
 import QICLean.Analysis.TensorEnergyMinimum
 import QICLean.Analysis.TensorFamilyImage
 import QICLean.Analysis.TensorOperatorPower

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Entropy.TwoFamilies
-import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.RegionConditionalInformation
 
 /-!
 # Conditional information from two ordered families
@@ -45,10 +45,10 @@ variable (β : V → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 expressions. In the physical application the regions are disjoint. -/
 theorem conditionalMutualInformation_union_left
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (X Y C Z : Finset V) :
-    ManyBody.conditionalMutualInformation β ψ (X ∪ Y) C Z =
-      ManyBody.conditionalMutualInformation β ψ X C Z +
-        ManyBody.conditionalMutualInformation β ψ Y C (Z ∪ X) := by
-  simp only [ManyBody.conditionalMutualInformation, Finset.union_left_comm, Finset.union_comm]
+    conditionalMutualInformation β ψ (X ∪ Y) C Z =
+      conditionalMutualInformation β ψ X C Z +
+        conditionalMutualInformation β ψ Y C (Z ∪ X) := by
+  simp only [conditionalMutualInformation, Finset.union_left_comm, Finset.union_comm]
   ring
 
 /-- Mutual information of disjoint regions is at most twice the first region's
@@ -56,7 +56,7 @@ entropy. The proof uses purity and subadditivity, not a dimension estimate. -/
 theorem regionMutualInformation_le_two_regionEntropy
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
     (X Y : Finset V) (hXY : Disjoint X Y) :
-    ManyBody.regionMutualInformation ψ X Y ≤ 2 * ManyBody.regionEntropy ψ X := by
+    regionMutualInformation ψ X Y ≤ 2 * regionEntropy ψ X := by
   have hpart : X ∪ (X ∪ Y)ᶜ = Yᶜ := by
     ext v
     have hxy : v ∈ X → v ∉ Y := fun hx hy ↦ Finset.disjoint_left.mp hXY hx hy
@@ -65,8 +65,8 @@ theorem regionMutualInformation_le_two_regionEntropy
   have hdisj : Disjoint X (X ∪ Y)ᶜ :=
     Finset.disjoint_left.mpr fun v hv hw ↦
       Finset.mem_compl.mp hw (Finset.mem_union_left Y hv)
-  have h := ManyBody.regionEntropy_union_le β ψ hψ X (X ∪ Y)ᶜ hdisj
-  rw [hpart, ManyBody.regionEntropy_compl, ManyBody.regionEntropy_compl] at h
+  have h := regionEntropy_union_le β ψ hψ X (X ∪ Y)ᶜ hdisj
+  rw [hpart, regionEntropy_compl, regionEntropy_compl] at h
   unfold regionMutualInformation
   linarith only [h]
 
@@ -75,9 +75,9 @@ conditional-information chain. -/
 theorem conditionalMutualInformation_le_two_regionEntropy
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
     (D C Z : Finset V) (hDC : Disjoint D C) (hDZ : Disjoint D Z) :
-    ManyBody.conditionalMutualInformation β ψ D C Z ≤ 2 * ManyBody.regionEntropy ψ D :=
-  (ManyBody.conditionalMutualInformation_le_regionMutualInformation_union β ψ hψ D C Z hDZ).trans
-    (ManyBody.regionMutualInformation_le_two_regionEntropy β ψ hψ D (C ∪ Z)
+    conditionalMutualInformation β ψ D C Z ≤ 2 * regionEntropy ψ D :=
+  (conditionalMutualInformation_le_regionMutualInformation_union β ψ hψ D C Z hDZ).trans
+    (regionMutualInformation_le_two_regionEntropy β ψ hψ D (C ∪ Z)
       (Finset.disjoint_union_right.mpr ⟨hDC, hDZ⟩))
 
 /-- The conditional information of an ordered disjoint family is bounded by
@@ -87,18 +87,18 @@ theorem conditionalMutualInformation_biUnion_le_sum
     (ψ : EuclideanSpace ℂ ((v : V) → β v)) (hψ : ‖ψ‖ = 1)
     (C B : Finset V) (X : ι → Finset V) (s : Finset ι)
     (hB : ∀ i ∈ s, Disjoint B (X i)) (hX : (s : Set ι).PairwiseDisjoint X) :
-    ManyBody.conditionalMutualInformation β ψ (s.biUnion X) C B ≤
-      ∑ i ∈ s, ManyBody.regionMutualInformation ψ (X i) (C ∪ B ∪ past X s i) := by
-  rw [← ManyBody.sum_conditionalMutualInformation_past β ψ C B X s]
+    conditionalMutualInformation β ψ (s.biUnion X) C B ≤
+      ∑ i ∈ s, regionMutualInformation ψ (X i) (C ∪ B ∪ past X s i) := by
+  rw [← sum_conditionalMutualInformation_past β ψ C B X s]
   apply Finset.sum_le_sum
   intro i hi
   have hsub : ∀ j ∈ s, X j ⊆ Bᶜ := by
     intro j hj v hv
     exact Finset.mem_compl.mpr (fun hb ↦ Finset.disjoint_left.mp (hB j hj) hb hv)
   have hdisj : Disjoint (X i) (B ∪ past X s i) := by
-    simpa only [compl_compl] using ManyBody.disjoint_exterior_past Bᶜ X s hsub hX i hi
+    simpa only [compl_compl] using disjoint_exterior_past Bᶜ X s hsub hX i hi
   simpa only [Finset.union_assoc] using
-    ManyBody.conditionalMutualInformation_le_regionMutualInformation_union β ψ hψ (X i) C
+    conditionalMutualInformation_le_regionMutualInformation_union β ψ hψ (X i) C
       (B ∪ past X s i) hdisj
 
 /-- The target together with the complementary conditioning region is exactly
@@ -127,10 +127,10 @@ theorem conditionalMutualInformation_le_two_family_regionMutualInformation
     (hX : (s : Set ι).PairwiseDisjoint X)
     (hY : (t : Set κ).PairwiseDisjoint Y)
     (hXY : ∀ i ∈ s, ∀ j ∈ t, Disjoint (X i) (Y j)) :
-    ManyBody.conditionalMutualInformation β ψ G C B ≤
-      (∑ i ∈ s, ManyBody.regionMutualInformation ψ (X i) (C ∪ B ∪ past X s i)) +
-        2 * ManyBody.regionEntropy ψ D +
-          ∑ j ∈ t, ManyBody.regionMutualInformation ψ (Y j)
+    conditionalMutualInformation β ψ G C B ≤
+      (∑ i ∈ s, regionMutualInformation ψ (X i) (C ∪ B ∪ past X s i)) +
+        2 * regionEntropy ψ D +
+          ∑ j ∈ t, regionMutualInformation ψ (Y j)
             (C ∪ (G ∪ B ∪ C)ᶜ ∪ past Y t j) := by
   let A₀ := s.biUnion X
   let A₁ := t.biUnion Y
@@ -168,22 +168,22 @@ theorem conditionalMutualInformation_le_two_family_regionMutualInformation
     intro v hv hF
     exact Finset.mem_compl.mp hF
       (Finset.mem_union_left C (Finset.mem_union_left B (h₁G hv)))
-  have hchain : ManyBody.conditionalMutualInformation β ψ G C B =
-      ManyBody.conditionalMutualInformation β ψ A₀ C B +
-        ManyBody.conditionalMutualInformation β ψ D C (B ∪ A₀) +
-          ManyBody.conditionalMutualInformation β ψ A₁ C (B ∪ A₀ ∪ D) := by
+  have hchain : conditionalMutualInformation β ψ G C B =
+      conditionalMutualInformation β ψ A₀ C B +
+        conditionalMutualInformation β ψ D C (B ∪ A₀) +
+          conditionalMutualInformation β ψ A₁ C (B ∪ A₀ ∪ D) := by
     have hG' : G = (A₀ ∪ D) ∪ A₁ := by
       rw [hG]
       dsimp only [A₀, A₁]
       ac_rfl
-    rw [hG', ManyBody.conditionalMutualInformation_union_left,
-      ManyBody.conditionalMutualInformation_union_left]
+    rw [hG', conditionalMutualInformation_union_left,
+      conditionalMutualInformation_union_left]
     simp only [Finset.union_assoc]
-  have hfirst := ManyBody.conditionalMutualInformation_biUnion_le_sum β ψ hψ C B X s
+  have hfirst := conditionalMutualInformation_biUnion_le_sum β ψ hψ C B X s
     ((Finset.disjoint_biUnion_right B s X).mp h₀B.symm) hX
-  have hmiddle := ManyBody.conditionalMutualInformation_le_two_regionEntropy β ψ hψ D C
+  have hmiddle := conditionalMutualInformation_le_two_regionEntropy β ψ hψ D C
     (B ∪ A₀) hDC hDB₀
-  have hdual := ManyBody.conditionalMutualInformation_pure_duality β ψ A₁ C (B ∪ A₀ ∪ D)
+  have hdual := conditionalMutualInformation_pure_duality β ψ A₁ C (B ∪ A₀ ∪ D)
     h₁C h₁Z hCZ
   have hcompl : (A₁ ∪ C ∪ (B ∪ A₀ ∪ D))ᶜ = F := by
     dsimp only [F]
@@ -191,10 +191,10 @@ theorem conditionalMutualInformation_le_two_family_regionMutualInformation
     rw [hG]
     dsimp only [A₀, A₁]
     ac_rfl
-  have hlast : ManyBody.conditionalMutualInformation β ψ A₁ C (B ∪ A₀ ∪ D) ≤
-      ∑ j ∈ t, ManyBody.regionMutualInformation ψ (Y j) (C ∪ F ∪ past Y t j) := by
+  have hlast : conditionalMutualInformation β ψ A₁ C (B ∪ A₀ ∪ D) ≤
+      ∑ j ∈ t, regionMutualInformation ψ (Y j) (C ∪ F ∪ past Y t j) := by
     rw [hdual, hcompl]
-    exact ManyBody.conditionalMutualInformation_biUnion_le_sum β ψ hψ C F Y t
+    exact conditionalMutualInformation_biUnion_le_sum β ψ hψ C F Y t
       ((Finset.disjoint_biUnion_right F t Y).mp h₁F.symm) hY
   rw [hchain]
   exact add_le_add (add_le_add hfirst hmiddle) hlast
@@ -215,12 +215,12 @@ theorem conditionalMutualInformation_le_two_family_sum
     (hY : (t : Set κ).PairwiseDisjoint Y)
     (hXY : ∀ i ∈ s, ∀ j ∈ t, Disjoint (X i) (Y j))
     (ε : ι → ℝ) (δ : κ → ℝ)
-    (hε : ∀ i ∈ s, ManyBody.regionMutualInformation ψ (X i) (C ∪ B ∪ past X s i) ≤ ε i)
-    (hδ : ∀ j ∈ t, ManyBody.regionMutualInformation ψ (Y j)
+    (hε : ∀ i ∈ s, regionMutualInformation ψ (X i) (C ∪ B ∪ past X s i) ≤ ε i)
+    (hδ : ∀ j ∈ t, regionMutualInformation ψ (Y j)
       (C ∪ (G ∪ B ∪ C)ᶜ ∪ past Y t j) ≤ δ j) :
-    ManyBody.conditionalMutualInformation β ψ G C B ≤
-      (∑ i ∈ s, ε i) + 2 * ManyBody.regionEntropy ψ D + ∑ j ∈ t, δ j := by
-  have h := ManyBody.conditionalMutualInformation_le_two_family_regionMutualInformation β ψ hψ
+    conditionalMutualInformation β ψ G C B ≤
+      (∑ i ∈ s, ε i) + 2 * regionEntropy ψ D + ∑ j ∈ t, δ j := by
+  have h := conditionalMutualInformation_le_two_family_regionMutualInformation β ψ hψ
     G B C D X s Y t hG hGB hGC hBC hDX hDY hX hY hXY
   have h₀ := Finset.sum_le_sum hε
   have h₁ := Finset.sum_le_sum hδ

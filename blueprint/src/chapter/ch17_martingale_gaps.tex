@@ -1,0 +1,1135 @@
+\chapter{Gaps above the kernel and the martingale method}
+\label{ch:martingale_gaps}
+
+This chapter collects lower bounds for the gap of a positive operator above its
+kernel on a finite-dimensional complex Hilbert space, and Nachtergaele's martingale
+method~\cite{Nachtergaele1996Spectral}, which bounds the gap of a frustration-free
+Hamiltonian from below by local gaps and an overlap estimate for nested ground
+spaces. It closes with the contraction of a sweep of projections~\cite{Anshu2016Simple}
+and with commuting parent Hamiltonians on three regions of a system of
+sites~\cite[Appendix~D.2]{Cirac2016MPDO_arXiv}, in the notation of
+Chapters~\ref{ch:sites}, \ref{ch:dynamics} and~\ref{ch:hamiltonians}.
+
+An operator is a linear map. An operator $H$ is positive, $H\ge0$, when it is
+symmetric and $\operatorname{Re}\langle Hv,v\rangle\ge0$ for every $v$; $H\le K$ means
+$K-H\ge0$; an orthogonal projection is a symmetric idempotent. For $\gamma\in\R$, the
+operator $H$ has norm gap $\gamma$ when $\gamma\lVert v\rVert\le\lVert Hv\rVert$ for every
+$v\perp\ker H$. For a positive semidefinite matrix this is condition~(3) of
+Theorem~\ref{thm:hamiltonians_kernel_spectrum}, and together with $\ker H\neq0$ it is the
+gap at energy $0$ of Theorem~\ref{thm:hamiltonians_kernel_gap}.
+
+\section{Gaps of positive operators above the kernel}
+\label{sec:martingale_gaps_kernel}
+
+\subsection{Quadratic forms and norms}
+\label{sec:martingale_gaps_forms}
+
+\begin{lemma}[A quadratic-form inequality gives a norm gap]
+    \label{lem:gap_quadratic_form_to_norm}
+    \lean{FrustrationFree.spectralGap_of_martingale_of_finiteDimensional}
+    \leanok
+    Let $H\ge0$ on a finite-dimensional complex Hilbert space, and let $\gamma>0$
+    satisfy $\gamma\operatorname{Re}\langle Hv,v\rangle\le\lVert Hv\rVert^2$ for every
+    $v$, that is, $H^2\ge\gamma H$. Then $H$ has norm gap $\gamma$. In particular every
+    positive eigenvalue of $H$ is at least $\gamma$. Positivity is needed: $H=-1$ with
+    $\gamma=2$ satisfies the inequality but not the conclusion.
+\end{lemma}
+\begin{proof}\leanok
+    Let $H\psi_k=\lambda_k\psi_k$ for an orthonormal eigenbasis. The hypothesis at
+    $\psi_k$ gives $\gamma\lambda_k\le\lambda_k^2$, so $\lambda_k\le0$ or
+    $\lambda_k\ge\gamma$, and $H\ge0$ excludes $\lambda_k<0$. Every $v\perp\ker H$ is
+    $v=\sum_kc_k\psi_k$ with $c_k=0$ whenever $\lambda_k=0$, so
+    $\lVert Hv\rVert^2=\sum_k\lvert c_k\rvert^2\lambda_k^2\ge\gamma^2\lVert v\rVert^2$.
+\end{proof}
+
+\begin{lemma}[A norm gap gives the quadratic-form inequality]
+    \label{lem:gap_norm_to_quadratic_form}
+    \lean{LinearMap.IsPositive.quadraticForm_sq_ge_of_norm_gap}
+    \leanok
+    Let $H\ge0$ on a finite-dimensional complex Hilbert space, and let $\gamma\ge0$
+    be a norm gap of $H$. Then
+    $\gamma\operatorname{Re}\langle Hv,v\rangle\le\operatorname{Re}\langle Hv,Hv\rangle$
+    for every $v$.
+\end{lemma}
+\begin{proof}\leanok
+    Put $w=v-P_{\ker H}v$. Then $w\perp\ker H$ and $Hw=Hv$, and symmetry gives
+    $\langle Hv,v\rangle=\langle Hv,w\rangle$. Hence
+    $\gamma\operatorname{Re}\langle Hv,v\rangle\le\gamma\lVert Hv\rVert\lVert w\rVert
+        \le\lVert Hv\rVert\lVert Hw\rVert=\operatorname{Re}\langle Hv,Hv\rangle$.
+\end{proof}
+
+\begin{lemma}[An energy bound gives a norm bound]
+    \label{lem:gap_energy_to_norm}
+    \lean{FrustrationFree.norm_lower_bound_of_energy_lower_bound}
+    \leanok
+    Let $H$ be an operator on a complex inner product space. If
+    $\kappa\lVert v\rVert^2\le\operatorname{Re}\langle Hv,v\rangle$ for every
+    $v\perp\ker H$, then $H$ has norm gap $\kappa$. Neither finite dimension nor
+    positivity is needed.
+\end{lemma}
+\begin{proof}\leanok
+    By the Cauchy--Schwarz inequality,
+    $\kappa\lVert v\rVert^2\le\operatorname{Re}\langle Hv,v\rangle
+        \le\lVert Hv\rVert\lVert v\rVert$. This is the claim for $v=0$, and gives it
+    after division by $\lVert v\rVert$ when $v\neq0$.
+\end{proof}
+
+\begin{lemma}[A linear map is bounded below off its kernel]
+    \label{lem:gap_orthogonal_kernel}
+    \lean{LinearMap.exists_pos_mul_norm_le_of_mem_orthogonal_ker}
+    \leanok
+    Let $f$ be a linear map from a finite-dimensional real or complex inner product
+    space to a normed space. There is $\delta>0$ with
+    $\delta\lVert v\rVert\le\lVert fv\rVert$ for every $v\perp\ker f$.
+\end{lemma}
+\begin{proof}\leanok
+    The restriction of $f$ to $(\ker f)^\perp$ is injective, and an injective linear
+    map on a finite-dimensional space is bounded below: it is antilipschitz with
+    some constant $K>0$, and $\delta=K^{-1}$ works.
+\end{proof}
+
+\begin{lemma}[One constant for all indices]
+    \label{lem:gap_eventual_constant}
+    \lean{Nat.exists_pos_forall_of_eventually}
+    \leanok
+    Let $P(N,\gamma)$ be a property of $N\in\N$ and $\gamma\in\R$ that is preserved
+    by decreasing $\gamma$. If every $N$ has some $\eta_N>0$ with $P(N,\eta_N)$, and
+    one $\delta>0$ satisfies $P(N,\delta)$ for all $N\ge M$, then one $\gamma>0$
+    satisfies $P(N,\gamma)$ for every $N$.
+\end{lemma}
+\begin{proof}\leanok
+    Take $\gamma=\min\{\delta,\eta_0,\dots,\eta_{M-1}\}$, the minimum of finitely many
+    positive numbers.
+\end{proof}
+
+\begin{lemma}[Kernels and gaps under a two-sided comparison]
+    \label{lem:gap_positive_comparison}
+    \lean{LinearMap.IsPositive.ker_le_of_le,
+        LinearMap.IsPositive.ker_eq_of_smul_le_of_le_smul,
+        LinearMap.IsPositive.norm_gap_of_smul_le_of_le_smul}
+    \leanok
+    If $0\le P\le Q$, then $\ker Q\subseteq\ker P$. Consequently, if $P,Q\ge0$ and
+    $a,b,c>0$ satisfy $aP\le bQ\le cP$, then $\ker P=\ker Q$. On a finite-dimensional
+    space, a norm gap $\gamma>0$ of $P$ then gives the norm gap $a\gamma/b$ of $Q$.
+\end{lemma}
+\begin{proof}\leanok
+    The quadratic form of a positive operator vanishes only on its kernel; evaluating
+    the order relations at kernel vectors gives the inclusions. On the common
+    orthogonal complement of the kernel, the norm gap of $P$ gives
+    $\operatorname{Re}\langle Pv,v\rangle\ge\gamma\lVert v\rVert^2$, hence
+    $b\operatorname{Re}\langle Qv,v\rangle\ge a\gamma\lVert v\rVert^2$, and
+    Lemma~\ref{lem:gap_energy_to_norm} gives the norm gap of $Q$.
+\end{proof}
+
+\subsection{Reducing projections}
+\label{sec:martingale_gaps_reducing}
+
+\begin{lemma}[Commuting projections]
+    \label{lem:gap_commuting_projections}
+    \lean{Submodule.commute_starProjection_of_invariant,
+        LinearMap.IsSymmetricProjection.mul_of_commute,
+        LinearMap.IsSymmetricProjection.one_sub_mul_le_add_one_sub,
+        LinearMap.IsSymmetricProjection.one_sub_mul_mul_le}
+    \leanok
+    A symmetric operator $T$ with $TS\subseteq S$ commutes with the orthogonal
+    projection $P_S$. If $P$ and $Q$ are commuting orthogonal projections, then $PQ$
+    is an orthogonal projection and $1-PQ\le(1-P)+(1-Q)$. If $P,R,C$ are pairwise
+    commuting orthogonal projections, then $1-RCP\le(1-P)+(1-R)+(1-C)$.
+\end{lemma}
+\begin{proof}\leanok
+    The identity $\langle Tu,w\rangle=\langle u,Tw\rangle$ makes $S^\perp$ invariant
+    under $T$ as well, so $TP_S=P_ST$. For commuting $P,Q$ the product $PQ$ is
+    symmetric and idempotent, and
+    $(1-P)+(1-Q)-(1-PQ)=(1-P)(1-Q)\ge0$ as a product of commuting orthogonal
+    projections. For three projections, $RC$ is an orthogonal projection commuting
+    with $P$, so $1-RCP\le(1-RC)+(1-P)\le(1-R)+(1-C)+(1-P)$.
+\end{proof}
+
+\begin{lemma}[The kernel from a reducing projection]
+    \label{lem:gap_reducing_projection_kernel}
+    \lean{LinearMap.apply_eq_of_le_of_sub_le_of_apply_eq_zero,
+        LinearMap.IsSymmetricProjection.apply_eq_self_of_one_sub_le_twice_of_mem_ker,
+        LinearMap.IsPositive.ker_eq_of_le_of_eq_on_projection}
+    \leanok
+    \uses{lem:gap_positive_comparison}
+    Let $H,K,T,Q$ be operators on a complex inner product space.
+    \begin{enumerate}
+        \item If $H\le K$, $K-H\le T$ and $Tv=0$, then $Hv=Kv$.
+        \item If $Q$ is an orthogonal projection, $1-Q\le2H$ and $Hv=0$, then $Qv=v$.
+        \item If $H\ge0$, $Q$ is an orthogonal projection, $H\le K$, $HQ=KQ$ and
+              $1-Q\le2H$, then $\ker H=\ker K$.
+    \end{enumerate}
+\end{lemma}
+\begin{proof}\leanok
+    For (1), $0\le\langle(K-H)v,v\rangle\le\langle Tv,v\rangle=0$, and a positive
+    operator whose quadratic form vanishes at $v$ annihilates $v$. For (2),
+    $\lVert(1-Q)v\rVert^2=\langle(1-Q)v,v\rangle\le2\langle Hv,v\rangle=0$. For (3),
+    $0\le H\le K$ gives $\ker K\subseteq\ker H$ by
+    Lemma~\ref{lem:gap_positive_comparison}. Conversely, if $Hv=0$, then $Qv=v$ by
+    (2), and $Kv=KQv=HQv=Hv=0$.
+\end{proof}
+
+\begin{theorem}[A gap through a reducing projection]
+    \label{thm:gap_reducing_projection}
+    \lean{LinearMap.re_inner_ge_half_of_one_sub_le_twice,
+        LinearMap.IsPositive.norm_gap_of_reducing_projection}
+    \leanok
+    Let $H,Q$ be operators on a complex inner product space with $1-Q\le2H$. Then
+    $\tfrac12\lVert v\rVert^2\le\operatorname{Re}\langle Hv,v\rangle$ for every $v$ with
+    $Qv=0$. Suppose in addition that the space is finite-dimensional, $H,K\ge0$, $Q$ is an
+    orthogonal projection commuting with $H$, $H\le K$, $HQ=KQ$, and $\delta\ge0$ is a
+    norm gap of $K$. Then $\min(\delta,1/2)$ is a norm gap of $H$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_reducing_projection_kernel, lem:gap_energy_to_norm}
+    If $Qv=0$, then $\lVert v\rVert^2=\langle(1-Q)v,v\rangle\le2\operatorname{Re}\langle
+        Hv,v\rangle$. For the gap, $\ker H=\ker K$ by
+    Lemma~\ref{lem:gap_reducing_projection_kernel}, and $Q$ fixes this kernel. Let
+    $v\perp\ker H$ and write $v=x+y$ with $x=Qv$ and $y=(1-Q)v$. Then $x\perp\ker K$,
+    since $\langle x,w\rangle=\langle v,Qw\rangle=\langle v,w\rangle=0$ for
+    $w\in\ker K$, and the cross terms vanish because $Q$ commutes with $H$. Since
+    $Hx=HQv=KQv=Kx$ and a norm gap $\delta\ge0$ of $K\ge0$ bounds its quadratic form
+    on $(\ker K)^\perp$,
+    \begin{align*}
+        \operatorname{Re}\langle Hv,v\rangle
+        =\operatorname{Re}\langle Kx,x\rangle+\operatorname{Re}\langle Hy,y\rangle
+        \ge\delta\lVert x\rVert^2+\tfrac12\lVert y\rVert^2
+        \ge\min(\delta,1/2)\lVert v\rVert^2,
+    \end{align*}
+    and Lemma~\ref{lem:gap_energy_to_norm} gives the norm gap.
+\end{proof}
+
+\subsection{Isometries}
+\label{sec:martingale_gaps_isometries}
+
+\begin{lemma}[Kernel and gap under an isometric conjugation]
+    \label{lem:gap_isometric_conjugation}
+    \lean{LinearIsometryEquiv.map_apply_eq_of_conj,
+        LinearIsometryEquiv.mem_ker_iff_of_conj,
+        LinearIsometryEquiv.ker_eq_map_of_conj,
+        LinearIsometryEquiv.mem_orthogonal_ker_iff_of_conj,
+        LinearIsometryEquiv.norm_gap_iff_of_conj}
+    \leanok
+    Let $U:E\to F$ be a surjective complex linear isometry of inner product spaces,
+    and let $P$ on $E$ and $Q$ on $F$ satisfy $Q=UPU^{-1}$. Then $UPx=QUx$,
+    $\ker Q=U(\ker P)$ and $(\ker Q)^\perp=U((\ker P)^\perp)$. For every $\delta\in\R$,
+    $\delta$ is a norm gap of $P$ if and only if it is a norm gap of $Q$. Neither
+    finite dimension nor positivity is needed.
+\end{lemma}
+\begin{proof}\leanok
+    Substituting $Ux$ in the conjugation gives $UPx=QUx$. Injectivity of $U$
+    identifies kernel membership, and surjectivity gives the kernel equality. The
+    identity $\langle Uz,Ux\rangle=\langle z,x\rangle$ identifies the orthogonal
+    complements, and applying the norm estimate at $x$ and at $Ux$, with
+    $\lVert Ux\rVert=\lVert x\rVert$, gives the equivalence.
+\end{proof}
+
+\begin{lemma}[Projection onto an isometric image]
+    \label{lem:gap_isometric_image_projection}
+    \lean{LinearIsometry.starProjection_map_eq_comp_adjoint}
+    \leanok
+    Let $T:E\to F$ be an isometry between finite-dimensional real or complex inner
+    product spaces and $G\subseteq E$ a subspace. Then $P_{TG}=TP_GT^*$.
+\end{lemma}
+\begin{proof}\leanok
+    For $y\in F$, the vector $TP_GT^*y$ lies in $TG$, and for every $x\in G$ the
+    adjoint identity and $T^*T=1$ give
+    $\langle y-TP_GT^*y,Tx\rangle=\langle T^*y-P_GT^*y,x\rangle=0$. These two
+    properties characterize the orthogonal projection onto $TG$.
+\end{proof}
+
+\begin{definition}[Isometric compression]
+    \label{def:gap_compression}
+    \lean{LinearIsometry.compression}
+    \leanok
+    For an isometry $U:E\to F$ of finite-dimensional complex inner product spaces and an
+    operator $H$ on $F$, the compression of $H$ is the operator $K=U^*HU$ on $E$.
+\end{definition}
+
+\begin{lemma}[Compression to a reducing image]
+    \label{lem:gap_compression_intertwines}
+    \lean{LinearIsometry.apply_compression_of_commute,
+        LinearIsometry.compression_adjoint_apply_of_commute,
+        LinearIsometry.ker_compression_of_commute,
+        LinearIsometry.ker_compression_eq_map_adjoint_of_commute,
+        LinearIsometry.map_mem_orthogonal_ker_compression_of_commute}
+    \leanok
+    \uses{def:gap_compression}
+    Suppose that $UU^*H=HUU^*$, and let $K=U^*HU$. Then
+    \begin{align*}
+        UK                & =HU,                         & KU^* & =U^*H, \\
+        \ker K            & =U^{-1}(\ker H)=U^*(\ker H), &
+        U((\ker K)^\perp) & \subseteq(\ker H)^\perp.
+    \end{align*}
+    Neither surjectivity of $U$ nor symmetry of $H$ is needed.
+\end{lemma}
+\begin{proof}\leanok
+    Combining $U^*U=1$ with the commutation gives $UK=UU^*HU=HU$ and
+    $KU^*=U^*HUU^*=U^*H$. Injectivity of $U$ gives $\ker K=U^{-1}(\ker H)$. The second
+    identity maps $\ker H$ into $\ker K$, and $v=U^*(Uv)$ gives the reverse inclusion
+    in $U^*(\ker H)$. If $v\perp\ker K$ and $w\in\ker H$, then
+    $\langle w,Uv\rangle=\langle U^*w,v\rangle=0$.
+\end{proof}
+
+\begin{theorem}[A norm gap survives compression to a reducing image]
+    \label{thm:gap_compression}
+    \lean{LinearIsometry.norm_gap_compression_of_commute}
+    \leanok
+    \uses{def:gap_compression}
+    Suppose that $UU^*H=HUU^*$ and that $\delta\in\R$ is a norm gap of $H$. Then
+    $\delta$ is a norm gap of $U^*HU$. Either space may be zero. This is the
+    restriction step of~\cite[Section~5, lines 1695--1777]{GarreRubio2023MPOSym}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_compression_intertwines}
+    Let $K=U^*HU$ and $v\perp\ker K$. By
+    Lemma~\ref{lem:gap_compression_intertwines}, $Uv\perp\ker H$ and $HUv=UKv$, so
+    $\delta\lVert v\rVert=\delta\lVert Uv\rVert\le\lVert HUv\rVert=\lVert Kv\rVert$.
+\end{proof}
+
+\begin{lemma}[Nested subspaces]
+    \label{lem:gap_supported_projection}
+    \lean{Submodule.starProjection_comp_starProjection_eq_right_of_le,
+        Submodule.starProjection_comp_starProjection_eq_left_of_le,
+        Submodule.commute_starProjection_one_sub_starProjection_of_le,
+        Submodule.one_sub_starProjection_apply_of_mem_orthogonal_of_le,
+        Submodule.one_sub_starProjection_le_one_sub_starProjection_of_le,
+        Submodule.isPositive_one_sub_starProjection_sub_one_sub_starProjection_of_le,
+        Submodule.re_inner_one_sub_starProjection_le_of_le,
+        Submodule.norm_sq_starProjection_orthogonal_le_re_inner_one_sub_of_le}
+    \leanok
+    Let $S\subseteq F$ be subspaces of a finite-dimensional complex Hilbert space, and
+    put $h=1-P_S$ and $Q=P_F$. Then $QP_S=P_SQ=P_S$, $Qh=hQ$ and $1-Q\le h$; also
+    $hv=v$ for $v\in F^\perp$, and
+    $\lVert P_{F^\perp}v\rVert^2\le\operatorname{Re}\langle hv,v\rangle$ for every $v$.
+    Equivalently, $h-(1-Q)\ge0$, so the quadratic form of $1-Q$ is bounded by that
+    of $h$ at every vector.
+\end{lemma}
+\begin{proof}\leanok
+    Projection onto $F$ fixes $S$, which gives $QP_S=P_S$; taking adjoints gives
+    $P_SQ=P_S$. Thus $Q$ commutes with $h$. The order $P_S\le Q$ gives $1-Q\le h$. If
+    $v\in F^\perp$, then $P_Sv=0$ and $hv=v$. Finally
+    $\operatorname{Re}\langle(1-Q)v,v\rangle=\lVert P_{F^\perp}v\rVert^2$.
+\end{proof}
+
+\begin{theorem}[Compression of a complementary projection]
+    \label{thm:gap_supported_compression}
+    \lean{LinearIsometry.starProjection_range_eq_comp_adjoint,
+        LinearIsometry.commute_rangeProjection_one_sub_starProjection_of_le_range,
+        LinearIsometry.map_adjoint_map_eq_of_le_range,
+        LinearIsometry.compression_starProjection_of_le_range,
+        LinearIsometry.compression_one_sub_starProjection_of_le_range,
+        LinearIsometry.compression_one_sub_starProjection_eq_orthogonal_of_le_range,
+        LinearIsometry.ker_compression_one_sub_starProjection_of_le_range,
+        LinearIsometry.norm_gap_compression_one_sub_starProjection_of_le_range}
+    \leanok
+    \uses{def:gap_compression}
+    Let $U:E\to F$ be an isometry between finite-dimensional complex Hilbert spaces,
+    and let $S\subseteq\operatorname{ran}U$. Then $P_{\operatorname{ran}U}=UU^*$,
+    $U(U^*S)=S$, $UU^*$ commutes with $1-P_S$, and
+    \begin{align*}
+        U^*P_SU                     & =P_{U^*S},                    \\
+        U^*(1-P_S)U                 & =1-P_{U^*S}=P_{(U^*S)^\perp}, \\
+        \ker\bigl(U^*(1-P_S)U\bigr) & =U^*S.
+    \end{align*}
+    Every norm gap of $1-P_S$ is a norm gap of $U^*(1-P_S)U$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_supported_projection, lem:gap_isometric_image_projection,
+        thm:gap_compression}
+    Lemma~\ref{lem:gap_isometric_image_projection} with $G=E$ gives
+    $P_{\operatorname{ran}U}=UU^*$, and Lemma~\ref{lem:gap_supported_projection} with
+    $F=\operatorname{ran}U$ gives the commutation. The identities $U^*U=1$ and
+    $S\subseteq\operatorname{ran}U$ give $U(U^*S)=S$. By
+    Lemma~\ref{lem:gap_isometric_image_projection}, $P_S=P_{U(U^*S)}=UP_{U^*S}U^*$;
+    multiplying by $U^*$ on the left and $U$ on the right gives $U^*P_SU=P_{U^*S}$,
+    and its complement and kernel follow. Theorem~\ref{thm:gap_compression} carries
+    the gap through the compression.
+\end{proof}
+
+Let $U:E\to F$ be an isometry of finite-dimensional complex inner product spaces, $K$ an
+operator on $E$ and $H$ an operator on $F$ with $HU=UK$. Every $v\in F$ decomposes as
+\begin{align}
+    v & =Ux+y, & x & =U^*v, & U^*y & =0, & \lVert v\rVert^2 & =\lVert x\rVert^2+\lVert y\rVert^2.
+    \label{eq:gap_inclusion_split}
+\end{align}
+Write $q_H(y)=\operatorname{Re}\langle Hy,y\rangle$, and likewise $q_K$.
+
+\begin{lemma}[The kernel under an isometric inclusion]
+    \label{lem:gap_inclusion_kernel}
+    \lean{LinearIsometry.ker_eq_map_of_intertwines_of_inactive_bound}
+    \leanok
+    If $HU=UK$, $c>0$, and $c\lVert y\rVert^2\le q_H(y)$ whenever $U^*y=0$, then
+    $\ker H=U(\ker K)$. No symmetry or positivity is needed.
+\end{lemma}
+\begin{proof}\leanok
+    If $Hv=0$, the decomposition~(\ref{eq:gap_inclusion_split}) gives $Hy=-UKx$, so
+    $q_H(y)=-\operatorname{Re}\langle Kx,U^*y\rangle=0$, and the strict bound forces
+    $y=0$. Thus $v=Ux$, and $UKx=Hv=0$ gives $Kx=0$ by injectivity of $U$. Conversely,
+    $Kx=0$ gives $HUx=UKx=0$.
+\end{proof}
+
+\begin{lemma}[Combining quadratic-form bounds]
+    \label{lem:gap_inclusion_quadratic}
+    \lean{LinearIsometry.re_inner_ge_of_intertwines}
+    \leanok
+    Suppose $H$ is symmetric, $HU=UK$, $\delta,c\in\R$, $\delta\lVert x\rVert^2\le
+        q_K(x)$ for $x\perp\ker K$, and $c\lVert y\rVert^2\le q_H(y)$ whenever $U^*y=0$.
+    Then $\min\{\delta,c\}\lVert v\rVert^2\le q_H(v)$ for $v\perp\ker H$. Neither
+    constant needs to be nonnegative.
+\end{lemma}
+\begin{proof}\leanok
+    For $v\perp\ker H$, the vector $x=U^*v$ lies in $(\ker K)^\perp$, because
+    $U(\ker K)\subseteq\ker H$. The intertwining gives $\langle HUx,y\rangle=
+        \langle UKx,y\rangle=0$, and symmetry gives $\langle Hy,Ux\rangle=0$. Therefore,
+    by~(\ref{eq:gap_inclusion_split}),
+    \begin{align*}
+        q_H(v)=q_K(x)+q_H(y)\ge\delta\lVert x\rVert^2+c\lVert y\rVert^2
+        \ge\min\{\delta,c\}\bigl(\lVert x\rVert^2+\lVert y\rVert^2\bigr)
+        =\min\{\delta,c\}\lVert v\rVert^2.
+    \end{align*}
+\end{proof}
+
+\begin{theorem}[A norm gap through an isometric inclusion]
+    \label{thm:gap_inclusion_norm}
+    \lean{LinearIsometry.norm_gap_of_intertwines}
+    \leanok
+    Suppose $H,K\ge0$, $HU=UK$, $\delta\ge0$ is a norm gap of $K$, and
+    $c\lVert y\rVert^2\le q_H(y)$ whenever $U^*y=0$. Then $\min\{\delta,c\}$ is a norm
+    gap of $H$. No sign of $c$ is assumed.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_inclusion_quadratic, lem:gap_energy_to_norm}
+    For the positive operator $K$, the norm gap $\delta\ge0$ gives
+    $q_K(x)\ge\delta\lVert x\rVert^2$ on $(\ker K)^\perp$.
+    Lemma~\ref{lem:gap_inclusion_quadratic} and Lemma~\ref{lem:gap_energy_to_norm}
+    give the claim.
+\end{proof}
+
+\subsection{Bounded congruences}
+\label{sec:martingale_gaps_congruence}
+
+\begin{lemma}[The kernel of a congruence]
+    \label{lem:gap_congruence_kernel}
+    \lean{LinearEquiv.ker_adjoint_congruence}
+    \leanok
+    Let $e:E\to F$ be an invertible linear map of finite-dimensional complex Hilbert
+    spaces and $P$ an operator on $F$. Then $\ker(e^*Pe)=e^{-1}(\ker P)$. No
+    positivity is needed.
+\end{lemma}
+\begin{proof}\leanok
+    If $e^*Pev=0$, then $\langle Pev,Pev\rangle=\langle e^*Pev,e^{-1}Pev\rangle=0$,
+    since $e^*$ is the adjoint of $e$ and $e(e^{-1}Pev)=Pev$; hence $Pev=0$. The
+    converse is immediate.
+\end{proof}
+
+\begin{theorem}[A gap under a bounded congruence]
+    \label{thm:gap_bounded_congruence}
+    \lean{LinearMap.IsPositive.norm_gap_adjoint_congruence_of_inverse_bound,
+        LinearMap.IsPositive.bounded_congruence_gap}
+    \leanok
+    \uses{lem:gap_congruence_kernel}
+    Let $P\ge0$ on $F$ have norm gap $\delta\ge0$, and let $e:E\to F$ be invertible with
+    $\lVert e^{-1}w\rVert\le C\lVert w\rVert$ for every $w$, where $C>0$. Then
+    $\delta/C^2$ is a norm gap of $Q=e^*Pe$. If $\delta>0$, then in addition
+    $\delta/C^2>0$, $Q\ge0$ and $\ker Q=e^{-1}(\ker P)$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_congruence_kernel}
+    The quadratic form of $Q$ is $\langle Qv,v\rangle=\langle Pev,ev\rangle$, so
+    $Q\ge0$, and Lemma~\ref{lem:gap_congruence_kernel} gives the kernel. Let
+    $v\perp\ker Q$, and split $ev=P_{\ker P}ev+w$ with $w\perp\ker P$. The vector
+    $u=e^{-1}P_{\ker P}ev$ lies in $\ker Q$, so $v\perp u$ and $e^{-1}w=v-u$; hence
+    $\lVert v\rVert\le\lVert v-u\rVert=\lVert e^{-1}w\rVert\le C\lVert w\rVert$.
+    Since $Pev=Pw$,
+    \begin{align*}
+        \tfrac{\delta}{C^2}\lVert v\rVert^2\le\delta\lVert w\rVert^2
+        \le\operatorname{Re}\langle Pw,w\rangle=\operatorname{Re}\langle Qv,v\rangle
+        \le\lVert Qv\rVert\lVert v\rVert,
+    \end{align*}
+    where the second inequality is the quadratic form of the positive operator $P$ on
+    $(\ker P)^\perp$. Dividing by $\lVert v\rVert$ gives the norm gap.
+\end{proof}
+
+\subsection{Uniform gaps on compact sets}
+\label{sec:martingale_gaps_compact}
+
+\begin{lemma}[Uniform norm lower bounds on a common tail]
+    \label{lem:gap_compact_tail}
+    \lean{IsCompact.exists_uniform_norm_lower_bound_on_tail}
+    \leanok
+    \uses{lem:compact_uniform_pos_nat_bounds}
+    Let $S$ be a compact subset of a topological space. For each $N\in\N$, let
+    $E_N,F_N$ be seminormed groups, and let $H_N(x):E_N\to F_N$ be maps and
+    $V_N(x)\subseteq E_N$ sets of vectors, for every parameter $x$. Suppose every
+    $x\in S$ has a neighborhood $U_x$, a constant $\delta_x>0$ and a threshold $N_x$ with
+    $\delta_x\lVert v\rVert\le\lVert H_N(y)v\rVert$ whenever $y\in U_x$, $N\ge N_x$ and
+    $v\in V_N(y)$. Then one $\delta>0$ and one $N_0$ give
+    $\delta\lVert v\rVert\le\lVert H_N(x)v\rVert$ for every $x\in S$, $N\ge N_0$ and
+    $v\in V_N(x)$. The maps need not be linear. This is the norm form of the
+    compactness argument of~\cite[Appendix~A]{Schuch2011Phases}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:compact_uniform_pos_nat_bounds}
+    Decreasing the constant preserves the inequality because $\lVert v\rVert\ge0$, and
+    increasing the threshold restricts the indices; apply
+    Lemma~\ref{lem:compact_uniform_pos_nat_bounds}.
+\end{proof}
+
+\begin{theorem}[A uniform norm gap on a compact parameter set]
+    \label{thm:gap_compact_kernel}
+    \lean{ContinuousLinearMap.exists_uniform_norm_gap_of_compact}
+    \leanok
+    Let $E$ be a finite-dimensional complex Hilbert space, and let $x\mapsto H_x$ be a
+    continuous family of operators on $E$ such that the orthogonal projection onto
+    $\ker H_x$ is continuous in $x$. For every compact parameter set $S$ there is
+    $\delta>0$ that is a norm gap of $H_x$ for every $x\in S$. No positivity or
+    symmetry is required. This is the step of~\cite[Appendix~A, lines
+        2575--2578]{Schuch2011Phases} that makes a gap uniform over a compact set.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_orthogonal_kernel, lem:kernel_gap_perturbation,
+        lem:compact_uniform_pos_nat_bounds}
+    By Lemma~\ref{lem:gap_orthogonal_kernel}, each $H_x$ has a positive norm gap.
+    By Lemma~\ref{lem:kernel_gap_perturbation}, half of it is a norm gap of $H_y$ for
+    all $y$ near $x$, by continuity of the operator and of its kernel projection.
+    Lemma~\ref{lem:compact_uniform_pos_nat_bounds} gives one positive constant on
+    $S$.
+\end{proof}
+
+\subsection{Products of commuting projections}
+\label{sec:martingale_gaps_products}
+
+\begin{lemma}[The product of complementary commuting projections]
+    \label{lem:gap_commuting_projection_product}
+    \lean{LinearMap.range_listProd_one_sub_eq_ker_sum,
+        LinearMap.isProj_ker_sum_listProd_one_sub}
+    \leanok
+    Let $P_0,\dots,P_{N-1}$ be pairwise commuting orthogonal projections on a real or
+    complex inner product space. The ordered product
+    $D=(1-P_0)(1-P_1)\cdots(1-P_{N-1})$ is idempotent, and
+    $\operatorname{ran}D=\ker\sum_iP_i$.
+\end{lemma}
+\begin{proof}\leanok
+    Each $P_i$ commutes with every factor of $D$, and $P_i(1-P_i)=0$, so $P_iD=0$;
+    hence $\operatorname{ran}D\subseteq\ker\sum_iP_i$. Conversely, if $\sum_iP_iv=0$,
+    then $\sum_i\lVert P_iv\rVert^2=0$, so $P_iv=0$ for every $i$, and $Dv=v$. A
+    product of commuting idempotents is idempotent.
+\end{proof}
+
+\section{Nachtergaele's martingale method}
+\label{sec:martingale_nachtergaele}
+
+Nachtergaele's criterion~\cite[Theorem~2.1(i)]{Nachtergaele1996Spectral} bounds the
+gap of a frustration-free Hamiltonian on an increasing sequence of volumes
+$\Lambda_0=\emptyset\subset\Lambda_1\subset\cdots\subset\Lambda_N$ from three conditions on
+local Hamiltonians $H_n$ supported on windows of $l+1$ consecutive increments. With
+$G_n$ the projection onto the ground space of the volume $\Lambda_n$ and $Q_n$ the
+projection onto the ground space of the window $H_n$, condition C1 compares the sum of
+the window Hamiltonians with the full Hamiltonian, condition C2 is a local gap for each
+window, and condition C3 bounds the overlap $\lVert Q_nE_n\rVert$ of the local and the
+global ground spaces~\cite[lines 1030--1094]{Nachtergaele1996Spectral}. This section
+treats the argument for an abstract decreasing family of projections.
+
+\begin{definition}[Nested ground projections and martingale differences]
+    \label{def:martingale_nested_projections}
+    \lean{FrustrationFree.NestedGroundProjections,
+        FrustrationFree.NestedGroundProjections.martingaleDifference}
+    \leanok
+    Let $\mathcal H$ be a complex inner product space. A family of nested ground
+    projections is a sequence $(G_n)_{n\ge0}$ of orthogonal projections on
+    $\mathcal H$ with $\operatorname{ran}G_n\subseteq\operatorname{ran}G_m$ whenever
+    $m\le n$. Its $n$th martingale difference is $E_n=G_n-G_{n+1}$.
+\end{definition}
+
+\begin{lemma}[The martingale differences are orthogonal]
+    \label{lem:martingale_differences}
+    \lean{FrustrationFree.NestedGroundProjections.martingaleDifference_isSymmetricProjection,
+        FrustrationFree.NestedGroundProjections.martingaleDifference_comp_eq_zero,
+        FrustrationFree.NestedGroundProjections.martingaleDifference_comp,
+        FrustrationFree.NestedGroundProjections.inner_martingaleDifference_eq_zero,
+        FrustrationFree.NestedGroundProjections.sum_martingaleDifference,
+        FrustrationFree.NestedGroundProjections.sum_martingaleDifference_eq_id}
+    \leanok
+    \uses{def:martingale_nested_projections}
+    As asserted after the definition of $E_n$ in~\cite{Nachtergaele1996Spectral}, each
+    $E_n$ is an orthogonal projection, $E_mE_n=\delta_{mn}E_m$, and
+    $\langle E_mx,E_ny\rangle=0$ for $m\neq n$. For every $N$,
+    $\sum_{n=0}^{N-1}E_n=G_0-G_N$. Under the conventions $G_0=1$ and $G_{N+1}=0$ of the
+    source, $\sum_{n=0}^{N}E_n=1$.
+\end{lemma}
+\begin{proof}\leanok
+    If $m\le n$, nestedness and orthogonality give $G_mG_n=G_nG_m=G_n$. Hence
+    $E_n^2=(G_n-G_{n+1})^2=G_n-G_{n+1}=E_n$ and $E_mE_n=0$ for $m\neq n$, and
+    $E_n^*=E_n$ because $G_n$ and $G_{n+1}$ are symmetric. The orthogonality of the
+    images follows from $\langle E_mx,E_ny\rangle=\langle x,E_mE_ny\rangle$, and the
+    sum telescopes.
+\end{proof}
+
+\begin{lemma}[Truncated reconstruction]
+    \label{lem:martingale_reconstruction}
+    \lean{FrustrationFree.NestedGroundProjections.sum_martingaleDifference_apply_of_mem_orthogonal}
+    \leanok
+    \uses{def:martingale_nested_projections}
+    Suppose $G_0=1$. As in the identity \textup{resolutionpsi} in the proof
+    of~\cite[Theorem~2.1(i)]{Nachtergaele1996Spectral}, every
+    $v\perp\operatorname{ran}G_N$ satisfies $v=\sum_{n=0}^{N-1}E_nv$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:martingale_differences}
+    Since $v\perp\operatorname{ran}G_N$, $G_Nv=0$, and
+    Lemma~\ref{lem:martingale_differences} gives $\sum_{n=0}^{N-1}E_nv=(G_0-G_N)v=v$.
+\end{proof}
+
+\begin{lemma}[The Pythagorean identity for martingale differences]
+    \label{lem:martingale_pythagorean}
+    \lean{FrustrationFree.NestedGroundProjections.norm_sq_sum_martingaleDifference_finset,
+        FrustrationFree.NestedGroundProjections.norm_sq_sum_martingaleDifference}
+    \leanok
+    \uses{def:martingale_nested_projections}
+    For every $v\in\mathcal H$ and finite $S\subset\N$,
+    $\bigl\lVert\sum_{n\in S}E_nv\bigr\rVert^2=\sum_{n\in S}\lVert E_nv\rVert^2$; in
+    particular this holds for $S=\{0,\dots,N-1\}$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:martingale_differences}
+    The summands are pairwise orthogonal by Lemma~\ref{lem:martingale_differences},
+    and the finite Pythagorean theorem applies.
+\end{proof}
+
+\begin{lemma}[The norm on the final orthogonal complement]
+    \label{lem:martingale_norm_decomposition}
+    \lean{FrustrationFree.NestedGroundProjections.norm_sq_eq_sum_martingaleDifference_of_mem_orthogonal}
+    \leanok
+    \uses{def:martingale_nested_projections}
+    Suppose $G_0=1$. As in the norm identity that follows \textup{resolutionpsi} in the
+    proof of~\cite[Theorem~2.1(i)]{Nachtergaele1996Spectral}, every
+    $v\perp\operatorname{ran}G_N$ satisfies
+    $\lVert v\rVert^2=\sum_{n=0}^{N-1}\lVert E_nv\rVert^2$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:martingale_reconstruction, lem:martingale_pythagorean}
+    Substitute $v=\sum_{n=0}^{N-1}E_nv$ from Lemma~\ref{lem:martingale_reconstruction}
+    into Lemma~\ref{lem:martingale_pythagorean}.
+\end{proof}
+
+\begin{lemma}[Martingale differences below a fixed level]
+    \label{lem:martingale_below_level}
+    \lean{FrustrationFree.NestedGroundProjections.martingaleDifference_apply_eq_zero_of_lt}
+    \leanok
+    \uses{def:martingale_nested_projections}
+    If $G_{n_0}v=v$, then $E_nv=0$ for every $n<n_0$.
+\end{lemma}
+\begin{proof}\leanok
+    For $m\le n_0$ the ranges are nested, so $G_mG_{n_0}=G_{n_0}$ and
+    $G_mv=G_mG_{n_0}v=v$. For $n<n_0$ this applies to $n$ and to $n+1$, so
+    $E_nv=v-v=0$.
+\end{proof}
+
+\begin{lemma}[Cancellation outside the window]
+    \label{lem:martingale_outside_window}
+    \lean{FrustrationFree.NestedGroundProjections.martingaleDifference_comp_localProjection_comp_eq_zero,
+        FrustrationFree.NestedGroundProjections.sum_martingaleDifference_localProjection_eq_sum_Icc,
+        FrustrationFree.NestedGroundProjections.inner_sum_martingaleDifference_localProjection_eq_inner_sum_Icc}
+    \leanok
+    \uses{def:martingale_nested_projections}
+    Let $Q$ be an operator with $E_mQ=QE_m$ whenever $m<n-l$ or $n<m$. Then
+    $E_mQE_n=0$ for every such $m$. If $n<N$, then
+    \begin{align}
+        \sum_{m=0}^{N-1}E_mQE_nv & =\sum_{m=n-l}^{n}E_mQE_nv,
+        \notag                                                                          \\
+        \Bigl\langle v,\sum_{m=0}^{N-1}E_mQE_nv\Bigr\rangle
+                                 & =\Bigl\langle\sum_{m=n-l}^{n}E_mv,QE_nv\Bigr\rangle,
+        \label{eq:martingale_outside_window}
+    \end{align}
+    where $n-l$ is read as $0$ when $l>n$. This is the reduction from \textup{Enpsi} to
+    the first line of \textup{Enpsi2} in~\cite[lines
+        1206--1220]{Nachtergaele1996Spectral}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:martingale_differences}
+    For an index outside the window, $E_mQE_n=QE_mE_n=0$ by
+    Lemma~\ref{lem:martingale_differences}, since $m\neq n$. Hence only
+    $n-l\le m\le n$ remains, and $n<N$ places these indices in the range of the sum.
+    Symmetry of $E_m$ gives $\langle v,E_mQE_nv\rangle=\langle E_mv,QE_nv\rangle$.
+\end{proof}
+
+\begin{lemma}[Weighted inner-product estimate]
+    \label{lem:martingale_weighted_inner}
+    \lean{FrustrationFree.re_inner_le_weighted_norm_sq}
+    \leanok
+    For $x,y$ in a complex inner product space and $c>0$,
+    $\operatorname{Re}\langle x,y\rangle\le\frac1{2c}\lVert x\rVert^2+\frac c2\lVert y\rVert^2$.
+    This is the estimate used twice in the display \textup{Enpsi2}
+    of~\cite[lines 1223--1239]{Nachtergaele1996Spectral}.
+\end{lemma}
+\begin{proof}\leanok
+    The Cauchy--Schwarz inequality bounds the left side by
+    $\lVert x\rVert\lVert y\rVert$, and the weighted arithmetic--geometric mean
+    inequality gives the bound.
+\end{proof}
+
+\begin{lemma}[The overlap estimate on the range of a projection]
+    \label{lem:martingale_c3_projection}
+    \lean{FrustrationFree.norm_sq_apply_projection_le_of_norm_comp_le}
+    \leanok
+    Let $P$ be an orthogonal projection on a complex inner product space and $Q$ a
+    bounded operator from that space to another with $\lVert QP\rVert\le\epsilon$.
+    Then $\lVert QPv\rVert^2\le\epsilon^2\lVert Pv\rVert^2$ for every $v$; the case
+    $\epsilon=0$ is included. This is the form of condition C3
+    of~\cite[lines 1083--1094]{Nachtergaele1996Spectral} used at lines 1240--1249.
+\end{lemma}
+\begin{proof}\leanok
+    Idempotency gives $QPv=QP(Pv)$. The operator-norm bound at $Pv$, squared, gives
+    the claim; the hypothesis forces $\epsilon\ge0$.
+\end{proof}
+
+\begin{lemma}[Counting moving windows]
+    \label{lem:martingale_moving_window}
+    \lean{FrustrationFree.movingWindow_sum_le, FrustrationFree.movingWindow_sum_range_le,
+        FrustrationFree.movingWindow_sum_Ico_le}
+    \leanok
+    Let $(a_m)_{m\ge0}$ be nonnegative reals, $l,n_0,N\in\N$, and read $n-l$ as $0$ when
+    $l>n$. Then
+    \begin{align}
+        \sum_{n=0}^{N-1}\sum_{m=n-l}^{n}a_m   & \le(l+1)\sum_{m=0}^{N-1}a_m,
+        \label{eq:martingale_moving_window}                                      \\
+        \sum_{n=n_0}^{N-1}\sum_{m=n-l}^{n}a_m & \le(l+1)\sum_{m=n_0-l}^{N-1}a_m,
+        \label{eq:martingale_moving_window_threshold}
+    \end{align}
+    and~(\ref{eq:martingale_moving_window}) holds as well when the terms with $n<l$
+    are omitted on the left.
+\end{lemma}
+\begin{proof}\leanok
+    With $k=n-m$, each pair in the double sum has $0\le k\le l$. For fixed $k$, the map
+    $n\mapsto n-k$ is injective with image in $\{0,\dots,N-1\}$, so nonnegativity bounds
+    its contribution by $\sum_{m=0}^{N-1}a_m$; summing over the $l+1$ values of $k$
+    gives~(\ref{eq:martingale_moving_window}). This is the count after \textup{Enpsi2}
+    in the proof of~\cite[Theorem~2.1(i), lines 1220--1255]{Nachtergaele1996Spectral}:
+    for $a_m=\lVert E_m\psi\rVert^2$, each term occurs in at most $l+1$ windows. For
+    (\ref{eq:martingale_moving_window_threshold}), replace $a_m$ by the sequence that
+    vanishes below $n_0-l$ and agrees with $a_m$ from there on; every window with
+    $n\ge n_0$ is unchanged, and~(\ref{eq:martingale_moving_window}) applies.
+\end{proof}
+
+\begin{theorem}[The energy estimate above a threshold]
+    \label{thm:martingale_threshold_estimate}
+    \lean{FrustrationFree.NestedGroundProjections.energy_lower_bound_of_nachtergaele_c1_c3_threshold}
+    \leanok
+    \uses{def:martingale_nested_projections}
+    Let $(G_n)$ be nested ground projections on a finite-dimensional complex Hilbert
+    space $\mathcal H$ with $G_0=1$, and fix $l,N,n_0\in\N$ with $n_0\le N$. Let $Q_n$ be
+    orthogonal projections and $H_n$ operators for $n_0\le n<N$, and let $H$ be an
+    operator, such that $E_mQ_n=Q_nE_m$ whenever $m<n-l$ or $n<m$. Write
+    $q_n(x)=\operatorname{Re}\langle H_nx,x\rangle$ and
+    $q(x)=\operatorname{Re}\langle Hx,x\rangle$. Assume, for every $x\in\mathcal H$ and
+    $n_0\le n<N$, the quadratic-form versions of conditions C1 and C2 and condition C3,
+    \begin{align}
+        0                                  & \le\sum_{n=n_0}^{N-1}q_n(x)\le d_{l+1}q(x),
+        \label{eq:martingale_threshold_c1}                                               \\
+        \gamma_{l+1}\lVert(1-Q_n)x\rVert^2 & \le q_n(x),
+        \label{eq:martingale_threshold_c2}                                               \\
+        \lVert Q_nE_n\rVert                & \le\epsilon_l,
+        \label{eq:martingale_threshold_c3}
+    \end{align}
+    with $\gamma_{l+1},d_{l+1}>0$ and $0\le\epsilon_l<1/\sqrt{l+1}$. Put
+    $\kappa=(\gamma_{l+1}/d_{l+1})(1-\epsilon_l\sqrt{l+1})^2$. Then every
+    $v\perp\operatorname{ran}G_N$ satisfies
+    \begin{align}
+        \kappa\sum_{n=n_0}^{N-1}\lVert E_nv\rVert^2
+        \le\operatorname{Re}\langle Hv,v\rangle
+        +\frac{\gamma_{l+1}}{d_{l+1}}\bigl(1-\epsilon_l\sqrt{l+1}\bigr)\epsilon_l\sqrt{l+1}
+        \sum_{m=n_0-l}^{n_0-1}\lVert E_mv\rVert^2.
+        \label{eq:martingale_threshold_estimate}
+    \end{align}
+    Conditions C2 and C3 have the form of~\cite[lines
+        1043--1058 and 1083--1094]{Nachtergaele1996Spectral}, with their onset represented
+    by $n_0$. The inequality~(\ref{eq:martingale_threshold_c1}) follows
+    from the source condition C1 when $l\le n_0$ and the omitted local terms are
+    nonnegative; for $n_0<l$ it is a stronger assumption. The coefficient $\kappa$ is
+    the one of~\cite[Theorem~2.1(i)]{Nachtergaele1996Spectral}, but it multiplies the
+    martingale mass above the threshold rather than $\lVert v\rVert^2$, and the
+    correction bounds the contribution of the at most $l$ martingale differences just
+    below the threshold. The source concludes the bound on $\lVert v\rVert^2$; the two
+    agree exactly when the martingale differences below the threshold annihilate $v$,
+    and the printed proof gives no argument for those indices. This scope restriction
+    is recorded in~\cite{gap:nachtergaele96_theorem_2_1_lower_endpoint}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:martingale_reconstruction, lem:martingale_pythagorean,
+        lem:martingale_outside_window, lem:martingale_weighted_inner,
+        lem:martingale_c3_projection, lem:martingale_moving_window}
+    Put $P=\sum_{n=n_0}^{N-1}\lVert E_nv\rVert^2$ and
+    $S=\sum_{m=n_0-l}^{n_0-1}\lVert E_mv\rVert^2$. The reconstruction
+    $v=\sum_{n=0}^{N-1}E_nv$ of Lemma~\ref{lem:martingale_reconstruction} and the
+    cancellation~(\ref{eq:martingale_outside_window}) reduce the identity
+    \textup{Enpsi} at each index $n_0\le n<N$ to the window $n-l\le m\le n$. Apply
+    Lemma~\ref{lem:martingale_weighted_inner} with parameters $c_1,c_2>0$, then C2 and,
+    through Lemma~\ref{lem:martingale_c3_projection}, C3, and sum over
+    $n_0\le n<N$. Lemma~\ref{lem:martingale_pythagorean} splits each window norm into
+    its summands, and~(\ref{eq:martingale_moving_window_threshold}) bounds the double
+    sum by $(l+1)(S+P)$. With C1 this gives
+    \begin{align*}
+        \Bigl(2-c_1-\frac{\epsilon_l^2}{c_2}-(l+1)c_2\Bigr)P
+        \le\frac{d_{l+1}}{c_1\gamma_{l+1}}\operatorname{Re}\langle Hv,v\rangle+(l+1)c_2S.
+    \end{align*}
+    For $\epsilon_l>0$, the choice $c_1=1-\epsilon_l\sqrt{l+1}$ and
+    $c_2=\epsilon_l/\sqrt{l+1}$ gives $\epsilon_l^2/c_2=(l+1)c_2=\epsilon_l\sqrt{l+1}$
+    and a left factor $1-\epsilon_l\sqrt{l+1}$; multiplying by
+    $c_1\gamma_{l+1}/d_{l+1}$ gives~(\ref{eq:martingale_threshold_estimate}). For
+    $\epsilon_l=0$ the choice $c_2=0$ is not admissible; instead C3 gives $Q_nE_n=0$, so
+    the second inner product in \textup{Enpsi} vanishes, and the first weighted estimate
+    with $c_1=1$ gives $P\le(d_{l+1}/\gamma_{l+1})\operatorname{Re}\langle Hv,v\rangle$,
+    which is~(\ref{eq:martingale_threshold_estimate}) with vanishing correction. This
+    local fix of the zero constant is recorded
+    in~\cite{gap:nachtergaele96_theorem_2_1_lower_endpoint}.
+\end{proof}
+
+\begin{theorem}[Nachtergaele's estimate with no mass below the threshold]
+    \label{thm:martingale_below_threshold_estimate}
+    \lean{FrustrationFree.NestedGroundProjections.energy_lower_bound_of_nachtergaele_c1_c3_of_martingaleDifference_below_eq_zero}
+    \leanok
+    \uses{thm:martingale_threshold_estimate}
+    Assume the setting of Theorem~\ref{thm:martingale_threshold_estimate} with
+    $l\le n_0$, but replace~(\ref{eq:martingale_threshold_c1}) by condition C1 on the range
+    $l\le n<M$ of its own window sum at the two volumes at which the source asserts it:
+    $0\le\sum_{n=l}^{N-1}q_n(x)\le d_{l+1}q(x)$ at $M=N$, and
+    $0\le\sum_{n=l}^{n_0-1}q_n(x)$ at $M=n_0$, for every $x$. Assume
+    in addition that $E_nv=0$ for every $n<n_0$. Then
+    $\kappa\lVert v\rVert^2\le\operatorname{Re}\langle Hv,v\rangle$, which is the
+    conclusion of~\cite[Theorem~2.1(i), lines 1119--1130]{Nachtergaele1996Spectral} with
+    each of C1, C2 and C3 on its source range.
+
+    The added vanishing hypothesis is a local fix of the source theorem, recorded
+    in~\cite{gap:nachtergaele96_theorem_2_1_lower_endpoint}, and it is the minimal one:
+    the two below-threshold quantities of~(\ref{eq:martingale_threshold_estimate}) enter
+    the conclusion with nonnegative weights, so both must vanish, and the vanishing of
+    the omitted martingale mass forces the vanishing of the correction. Without it the
+    statement is false, by Theorem~\ref{thm:martingale_lower_endpoint}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:martingale_threshold_estimate, lem:martingale_norm_decomposition}
+    Condition C1 on $n_0\le n<N$ follows: its upper bound by subtracting the sum over
+    $l\le n<n_0$, nonnegative by C1 at the volume $\Lambda_{n_0}$, and its nonnegativity
+    termwise from C2. The correction in~(\ref{eq:martingale_threshold_estimate}) is a
+    sum of squared norms of martingale differences with index below $n_0$, hence zero.
+    Lemma~\ref{lem:martingale_norm_decomposition} splits $\lVert v\rVert^2$ into the sum
+    over $n<n_0$, which is zero for the same reason, and the martingale mass above the
+    threshold, which is therefore $\lVert v\rVert^2$.
+\end{proof}
+
+\begin{theorem}[The source conditions on their own ranges do not give the estimate]
+    \label{thm:martingale_lower_endpoint}
+    \lean{FrustrationFree.UnrestrictedNachtergaeleEstimate,
+        FrustrationFree.not_unrestrictedNachtergaeleEstimate}
+    \leanok
+    \uses{thm:martingale_below_threshold_estimate}
+    In the notation of Theorem~\ref{thm:martingale_below_threshold_estimate}, for every
+    $k$ the following implication fails on a complex Hilbert space of dimension $k+2$.
+    Let $l\le n_0\le N$, let $(G_n)$ be nested ground projections with $G_0=1$,
+    $G_{N+1}=0$ and $G_n\neq0$ for $n\le N$, let $Q_n$ be nonzero orthogonal projections,
+    $H_n$ operators, $H_{\Lambda_M}$ volume Hamiltonians and $v\perp\operatorname{ran}G_N$,
+    and let $\gamma_{l+1},d_{l+1}>0$ and $0\le\epsilon_l<1/\sqrt{l+1}$. Assume that the
+    commutations hold; that condition C1 holds with the one constant $d_{l+1}$ at every
+    volume $\Lambda_M$ on the range $l\le n<M$ of its own window sum; that the gap
+    inequality of C2 and condition C3 hold on $n_0\le n<N$; and that every ground space
+    is the kernel of its own Hamiltonian, that is
+    $\ker H_{\Lambda_M}=\operatorname{ran}G_M$ for $M\le N$ and
+    $\ker H_n=\operatorname{ran}Q_n$ for $0\le n<N$. Then
+    $\kappa\lVert v\rVert^2\le\operatorname{Re}\langle H_{\Lambda_N}v,v\rangle$.
+
+    Hence condition C1 at every volume on the range of its own window sum, together
+    with C2 and C3 on $n_0\le n<N$, the ranges at which~\cite{Nachtergaele1996Spectral}
+    imposes them, do not imply the conclusion of its Theorem~2.1(i), even when every
+    ground space is the nonzero kernel of its Hamiltonian and under the conventions of
+    the source at the extreme volumes. This is recorded
+    in~\cite{gap:nachtergaele96_theorem_2_1_lower_endpoint}.
+\end{theorem}
+\begin{proof}\leanok
+    We exhibit data satisfying every hypothesis, for $l=0$, $n_0=1$, $N=k+1$,
+    $\gamma_1=d_1=1$ and $\epsilon_0=0$, with
+    \begin{align}
+        \operatorname{Re}\langle H_{\Lambda_N}v,v\rangle=\tfrac12\lVert v\rVert^2
+        <\frac{\gamma_1}{d_1}(1-\epsilon_0)^2\lVert v\rVert^2.
+        \label{eq:martingale_lower_endpoint}
+    \end{align}
+    Fix an orthonormal basis $e_0,\dots,e_{k+1}$ in which every operator is diagonal;
+    the first $N=k+1$ vectors carry the single excitations of a chain of $N$ sites and
+    the last its ground state. Let $G_n$ have weight $1$ at $e_i$ when $n\le i$ and $0$
+    otherwise. Then $G_0=1$, $G_{N+1}=0$, every $G_n$ with $n\le N$ retains $e_{k+1}$,
+    $G_N$ is the projection onto $e_{k+1}$, and $E_n$ is the projection onto $e_n$ for
+    $n<N$. Let $c_0=\tfrac12$, $c_i=1$ for $1\le i\le k$ and $c_{k+1}=0$; let
+    $H_{\Lambda_M}$ have weight $c_i$ at $e_i$ when $i<M$ and $0$ otherwise, let $H_n$
+    have weight $c_n$ at $e_n$ and $0$ elsewhere, and let $Q_n=1-E_n$, nonzero since the
+    dimension is at least two. Diagonality gives the commutations, and $Q_nE_n=0$ gives
+    C3 with $\epsilon_0=0$. The sum of the $H_n$ over $0\le n<M$ is $H_{\Lambda_M}$, and
+    the weights are nonnegative, so C1 holds at every volume with $d_1=1$. Since
+    $c_i\neq0$ for $i\le k$, the kernel of $H_{\Lambda_M}$ is spanned by the $e_i$ with
+    $i\ge M$ when $M\le N$, which is $\operatorname{ran}G_M$, and the kernel of $H_n$
+    is spanned by the $e_i$ with $i\neq n$, which is $\operatorname{ran}Q_n$. For
+    $1\le n<N$, $c_n=1$, so $\lVert(1-Q_n)x\rVert^2=\lVert E_nx\rVert^2=
+        \operatorname{Re}\langle H_nx,x\rangle$, which is C2 with $\gamma_1=1$. The vector
+    $v=e_0$ is orthogonal to $\operatorname{ran}G_N=\C e_{k+1}$, and
+    $\operatorname{Re}\langle H_{\Lambda_N}v,v\rangle=c_0=\tfrac12$ while
+    $\lVert v\rVert=1$, which is~(\ref{eq:martingale_lower_endpoint}). The whole
+    martingale mass of $v$ sits at $n=0$, which C1 covers while C2 and C3 exclude it.
+\end{proof}
+
+\begin{theorem}[The energy estimate on the full range]
+    \label{thm:martingale_full_range_estimate}
+    \lean{FrustrationFree.NestedGroundProjections.energy_lower_bound_of_nachtergaele_c1_c3_full_range}
+    \leanok
+    \uses{def:martingale_nested_projections}
+    Assume the setting of Theorem~\ref{thm:martingale_threshold_estimate} with $n_0=0$,
+    that is, with~(\ref{eq:martingale_threshold_c1})--(\ref{eq:martingale_threshold_c3})
+    for every $0\le n<N$. Then every $v\perp\operatorname{ran}G_N$ satisfies
+    $\kappa\lVert v\rVert^2\le\operatorname{Re}\langle Hv,v\rangle$, with the
+    coefficient $\kappa=(\gamma_{l+1}/d_{l+1})(1-\epsilon_l\sqrt{l+1})^2$
+    of~\cite[Theorem~2.1(i)]{Nachtergaele1996Spectral}. This is a scope restriction of
+    the source theorem, recorded
+    in~\cite{gap:nachtergaele96_theorem_2_1_lower_endpoint}: it assumes C1, C2 and C3 on
+    the full range $0\le n<N$, whereas the source imposes lower thresholds on them, and
+    by Theorem~\ref{thm:martingale_lower_endpoint} those thresholds cannot simply be
+    dropped.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:martingale_threshold_estimate, lem:martingale_norm_decomposition}
+    In Theorem~\ref{thm:martingale_threshold_estimate} with $n_0=0$, the correction is
+    a sum over an empty range, and the martingale mass over $0\le n<N$ is
+    $\lVert v\rVert^2$ by Lemma~\ref{lem:martingale_norm_decomposition}.
+\end{proof}
+
+\begin{theorem}[A norm gap from the full-range estimate]
+    \label{thm:martingale_full_range_norm_gap}
+    \lean{FrustrationFree.NestedGroundProjections.norm_lower_bound_of_nachtergaele_c1_c3_full_range}
+    \leanok
+    \uses{thm:martingale_full_range_estimate}
+    In the setting of Theorem~\ref{thm:martingale_full_range_estimate}, suppose $H\ge0$
+    and $\operatorname{ran}G_N=\ker H$. Then $\kappa$ is a norm gap of $H$.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:martingale_full_range_estimate, lem:gap_energy_to_norm,
+        lem:gap_quadratic_form_to_norm}
+    For any $x$, let $w$ be $x$ minus its projection onto $\ker H$. Then $Hx=Hw$ and
+    $\operatorname{Re}\langle Hx,x\rangle=\operatorname{Re}\langle Hw,w\rangle$.
+    Theorem~\ref{thm:martingale_full_range_estimate} and
+    Lemma~\ref{lem:gap_energy_to_norm} give $\kappa\lVert w\rVert\le\lVert Hx\rVert$, so
+    $\kappa\operatorname{Re}\langle Hx,x\rangle\le\kappa\lVert Hx\rVert\lVert w\rVert
+        \le\lVert Hx\rVert^2$, and Lemma~\ref{lem:gap_quadratic_form_to_norm} gives the
+    norm gap.
+\end{proof}
+
+\begin{theorem}[A sharp gap from two ground spaces]
+    \label{thm:martingale_two_ground_projections}
+    \lean{FrustrationFree.norm_gap_of_two_ground_projection_bounds}
+    \leanok
+    Let $H$ be an operator on a finite-dimensional complex Hilbert space, $W=\ker H$,
+    and $W\subseteq U\cap V$ for subspaces $U,V$. Suppose $\kappa\ge0$, $c<1$,
+    $\lVert P_W-P_UP_V\rVert\le c$ and $\kappa\bigl((1-P_U)+(1-P_V)\bigr)\le H$. Then
+    $\kappa(1-c)$ is a norm gap of $H$. This is a two-subspace consequence of the
+    ground-projection estimate of~\cite[Section~6, the three-interval commutation lemma,
+        part~(ii)]{Nachtergaele1996Spectral}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:gap_quadratic_form_to_norm}
+    If $z\in U\cap V$ and $z\perp W$, then $\lVert z\rVert=\lVert(P_W-P_UP_V)z\rVert\le
+        c\lVert z\rVert$, hence $z=0$; subtracting $P_Wv$ from $v\in U\cap V$ shows
+    $W=U\cap V$. Put $L=(1-P_U)+(1-P_V)$. The projection defect bounds the cosine of the
+    Friedrichs angle between $U$ and $V$ by $c$, and the anticommutator inequality for
+    the complementary projections gives $L^2\ge(1-c)L$, with $\ker L=U\cap V=W$.
+    Lemma~\ref{lem:gap_quadratic_form_to_norm} gives
+    $(1-c)\lVert v\rVert^2\le\langle Lv,v\rangle$ for $v\perp W$, and $\kappa L\le H$
+    with the Cauchy--Schwarz inequality gives
+    $\kappa(1-c)\lVert v\rVert^2\le\langle Hv,v\rangle\le\lVert Hv\rVert\lVert v\rVert$.
+\end{proof}
+
+\section{Sweeps of projections}
+\label{sec:martingale_sweep}
+
+\begin{theorem}[One sweep of projections contracts]
+    \label{thm:martingale_sweep_contraction}
+    \lean{ContinuousLinearMap.complementProd_apply_of_forall_apply_eq_zero,
+        ContinuousLinearMap.inner_complementProd_of_forall_apply_eq_zero,
+        ContinuousLinearMap.norm_sq_complementProd_le_of_gap,
+        ContinuousLinearMap.norm_pow_complementProd_le_of_gap}
+    \leanok
+    Let $\Pi_0,\dots,\Pi_{m-1}$ be orthogonal projections on a real or complex Hilbert
+    space, each failing to commute with at most $d$ of the others, and let $\Omega$ be a
+    vector with $\Pi_i\Omega=0$ for every $i$. Suppose
+    $\gamma\lVert v\rVert^2\le\operatorname{Re}\langle v,\sum_i\Pi_iv\rangle$ for every
+    $v\perp\Omega$. Put $D=(1-\Pi_{m-1})\cdots(1-\Pi_0)$. Then $D\Omega=\Omega$,
+    $\langle\Omega,Dv\rangle=\langle\Omega,v\rangle$ for every $v$, and for $v\perp\Omega$
+    \begin{align*}
+        \bigl((d+1)^2+\gamma\bigr)\lVert Dv\rVert^2 & \le(d+1)^2\lVert v\rVert^2, \\
+        \lVert D^tv\rVert                           & \le\theta^t\lVert v\rVert,
+    \end{align*}
+    where $\theta=(1+\gamma/(d+1)^2)^{-1/2}$ and the second bound assumes $\gamma\ge0$.
+    This is the spectral gap amplification of~\cite{Anshu2016Simple}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:detectability_lemma}
+    The detectability lemma, Theorem~\ref{thm:detectability_lemma}, gives
+    $\langle Dv,\sum_i\Pi_iDv\rangle\le d^2(\lVert v\rVert^2-\lVert Dv\rVert^2)$. Each
+    factor $1-\Pi_i$ is symmetric and fixes $\Omega$, so $D\Omega=\Omega$, $D^*\Omega=
+        \Omega$, and $Dv\perp\Omega$; the left side is therefore at least
+    $\gamma\lVert Dv\rVert^2$. Adding $(2d+1)\lVert Dv\rVert^2\le(2d+1)\lVert v\rVert^2$,
+    which holds because $D$ is a product of orthogonal projections, gives the first
+    bound. Since $D$ preserves the orthogonal complement of $\Omega$, the second bound
+    follows by induction on $t$.
+\end{proof}
+
+\begin{lemma}[Range projections of positive local terms]
+    \label{lem:martingale_range_projection}
+    \lean{Matrix.PosSemidef.le_smul_supportProj, ManyBody.supportProj_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_supported}
+    For a positive semidefinite matrix $A$, let $\Pi_A$ be the orthogonal projection
+    onto the range of $A$, so that $\Pi_Av=0$ whenever $Av=0$. If $A\le J$, then
+    $A\le J\Pi_A$. If a Hermitian operator $A$ on a system of sites is supported on a
+    region $D$, so is $\Pi_A$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{thm:support_projection_order_kernel, cor:sites_cfc_support}
+    By Theorem~\ref{thm:support_projection_order_kernel}, $\Pi_A=f(A)$ with $f(0)=0$ and
+    $f(x)=1$ for $x\neq0$. On the spectrum of $A$, which lies in $[0,J]$,
+    $x\le Jf(x)$, so $A\le J\Pi_A$. Corollary~\ref{cor:sites_cfc_support} shows that
+    $f(A)$ is supported on $D$.
+\end{proof}
+
+\section{Commuting parent Hamiltonians on three regions}
+\label{sec:martingale_commuting_parent}
+
+Let $a$ and $b$ be disjoint regions of a finite system of sites, and let
+$m=V\setminus(a\cup b)$ be the remaining sites, so that $V\setminus b=a\cup m$ and
+$V\setminus a=m\cup b$. This section restates~\cite[Appendix~D.2, lines
+    2187--2289]{Cirac2016MPDO_arXiv} for an interaction on the system.
+
+\begin{definition}[Tripartite coordinates]
+    \label{def:commuting_parent_coordinates}
+    \lean{ManyBody.tripartiteEquiv, ManyBody.complRightEquiv, ManyBody.complLeftEquiv}
+    \leanok
+    \uses{def:sites_config}
+    The tripartite coordinates are the bijection $X_V\to X_a\times X_m\times X_b$,
+    $\sigma\mapsto(\sigma|_a,\sigma|_m,\sigma|_b)$, which identifies $\mathcal H_X$ with
+    $\mathcal H_a\otimes\mathcal H_m\otimes\mathcal H_b$, together with the bijections
+    $X_{V\setminus b}\to X_a\times X_m$ and $X_{V\setminus a}\to X_m\times X_b$ given by
+    restriction.
+\end{definition}
+
+\begin{lemma}[Placements in product coordinates]
+    \label{lem:commuting_parent_placement}
+    \lean{ManyBody.reindex_place_eq_kronecker_one, ManyBody.reindex_place_eq_one_kronecker,
+        ManyBody.reindex_place_left, ManyBody.reindex_place_right,
+        ManyBody.reindex_place_compl_right, ManyBody.reindex_place_compl_left}
+    \leanok
+    \uses{def:sites_place, def:commuting_parent_coordinates}
+    Let $g:X_V\to R\times C$ be a bijection whose first coordinate is $g_1(\sigma|_D)$ for
+    a bijection $g_1:X_D\to R$, and whose second coordinates of $\sigma$ and $\tau$ agree
+    exactly when $\sigma$ and $\tau$ agree outside $D$. Then the placement of a matrix
+    $K$ on $D$ reads $K\otimes1$ in the coordinates $g$, with $K$ read through $g_1$; the
+    same holds with the two factors exchanged. In the tripartite coordinates, the
+    placements of $K$ on $a$, on $b$, on $V\setminus b$ and on $V\setminus a$ are
+    $K\otimes1\otimes1$, $1\otimes1\otimes K$, $K\otimes1$ and $1\otimes K$, with $K$
+    read in the coordinates $X_a\times X_m$ and $X_m\times X_b$ in the last two cases.
+\end{lemma}
+\begin{proof}\leanok
+    Compare matrix elements with Definition~\ref{def:sites_place}: the element of the
+    placement at $(\sigma,\tau)$ is $K_{\sigma|_D,\tau|_D}$ when $\sigma$ and $\tau$
+    agree outside $D$ and $0$ otherwise, which is the element of $K\otimes1$ at
+    $(g\sigma,g\tau)$. The tripartite coordinates satisfy these hypotheses for each of
+    the four regions.
+\end{proof}
+
+\begin{lemma}[Decorrelation on a system of sites]
+    \label{lem:commuting_parent_decorrelation}
+    \lean{ManyBody.isDecorrelated_reindex_iff}
+    \leanok
+    \uses{def:sites_place, def:commuting_parent_coordinates}
+    Following~\cite[Definition~D.1, lines 2187--2191]{Cirac2016MPDO_arXiv}, the regions
+    $a$ and $b$ are decorrelated in an operator $P$ on
+    $\mathcal H_a\otimes\mathcal H_m\otimes\mathcal H_b$ when
+    $P(O_a\otimes1\otimes1)(1-P)(1\otimes1\otimes O_b)P=0$ for all complex matrices $O_a$
+    on $\mathcal H_a$ and $O_b$ on $\mathcal H_b$. The source tests Hermitian $O_a,O_b$;
+    since every matrix is $O=O'+iO''$ with $O',O''$ Hermitian, the two forms agree. For an
+    operator $P$ on $\mathcal H_X$, the regions are decorrelated in $P$ read in the
+    tripartite coordinates if and only if $P\,O_a\,(1-P)\,O_b\,P=0$ for all operators
+    $O_a$ placed on $a$ and $O_b$ placed on $b$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:commuting_parent_placement, lem:sites_place_hom}
+    Reading matrices in the tripartite coordinates is an isomorphism of algebras, and by
+    Lemma~\ref{lem:commuting_parent_placement} it carries the placements on $a$ and on
+    $b$ to $O_a\otimes1\otimes1$ and $1\otimes1\otimes O_b$.
+\end{proof}
+
+\begin{definition}[Commuting parent Hamiltonian]
+    \label{def:commuting_parent_hamiltonian}
+    \lean{ManyBody.HasCommutingParentHamiltonian}
+    \leanok
+    \uses{def:dynamics_interaction, def:hamiltonians_zero_space}
+    An operator $P$ on $\mathcal H_X$ has a commuting parent Hamiltonian on
+    $V\setminus b$ and $V\setminus a$ when there is an interaction $\Phi=(h_0,h_1)$ with
+    $h_0$ supported on $V\setminus b$ and $h_1$ on $V\setminus a$, whose terms are
+    commuting orthogonal projections, and whose zero space is $\operatorname{ran}P$.
+    This is~\cite[Definition~D.2, lines 2205--2218]{Cirac2016MPDO_arXiv}: the terms are
+    $1-P_{am}$ and $1-P_{mb}$ for the projections onto the two local ground spaces, and
+    the zero space is the intersection of the two placed ground spaces.
+\end{definition}
+
+\begin{lemma}[The ground projection is the product]
+    \label{lem:commuting_parent_product}
+    \lean{ManyBody.HasCommutingParentHamiltonian.eq_mul}
+    \leanok
+    \uses{def:commuting_parent_hamiltonian}
+    Let $P$ be an orthogonal projection, and let $\Phi=(h_0,h_1)$ be as in
+    Definition~\ref{def:commuting_parent_hamiltonian}. Then
+    $(1-h_0)(1-h_1)=P=(1-h_1)(1-h_0)$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:hamiltonians_zero_space}
+    The operators $1-h_0$ and $1-h_1$ are commuting orthogonal projections, so their
+    product is an orthogonal projection whose range consists of the vectors fixed by
+    both, $\operatorname{ran}(1-h_0)\cap\operatorname{ran}(1-h_1)=\ker h_0\cap\ker h_1$.
+    This is the zero space of $\Phi$, which is $\operatorname{ran}P$. Orthogonal
+    projections with the same range are equal, and the factors commute.
+\end{proof}
+
+\begin{theorem}[Commuting parent Hamiltonians and decorrelation]
+    \label{thm:commuting_parent_iff_decorrelated}
+    \lean{ManyBody.HasCommutingParentHamiltonian.isDecorrelated,
+        ManyBody.hasCommutingParentHamiltonian_of_isDecorrelated,
+        ManyBody.hasCommutingParentHamiltonian_iff_isDecorrelated}
+    \leanok
+    \uses{def:commuting_parent_hamiltonian, lem:commuting_parent_decorrelation}
+    For disjoint regions $a$ and $b$, an orthogonal projection $P$ on $\mathcal H_X$ has
+    a commuting parent Hamiltonian on $V\setminus b$ and $V\setminus a$ if and only if
+    $a$ and $b$ are decorrelated in $P$, read in the tripartite coordinates.
+    This is~\cite[Proposition~D.3, lines 2221--2289]{Cirac2016MPDO_arXiv}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{lem:commuting_parent_product, lem:commuting_parent_placement,
+        thm:sites_place_range, lem:sites_place_hom}
+    Read every operator in the tripartite coordinates. Suppose $P$ has a commuting
+    parent Hamiltonian $(h_0,h_1)$. By Theorem~\ref{thm:sites_place_range} and
+    Lemma~\ref{lem:commuting_parent_placement}, $S_{am}=1-h_0$ is $G\otimes1$ and
+    $S_{mb}=1-h_1$ is $1\otimes G'$, so $S_{mb}$ commutes with $O_a\otimes1\otimes1$ and
+    $S_{am}$ with $1\otimes1\otimes O_b$. By Lemma~\ref{lem:commuting_parent_product},
+    $P=S_{am}S_{mb}=S_{mb}S_{am}$, so $S_{mb}PS_{am}=(S_{mb}S_{am})^2=P^2=P$ and
+    $S_{mb}(1-P)S_{am}=P-P=0$. Hence
+    \begin{align*}
+        P(O_a\otimes1\otimes1)(1-P)(1\otimes1\otimes O_b)P
+        =S_{am}(O_a\otimes1\otimes1)\bigl[S_{mb}(1-P)S_{am}\bigr]
+        (1\otimes1\otimes O_b)S_{mb}=0.
+    \end{align*}
+    Conversely, suppose $a$ and $b$ are decorrelated in $P$. Let $G_{am}$ and $G_{mb}$ be
+    the projections onto the supports of the marginals of $P$ on $V\setminus b$ and on
+    $V\setminus a$. By~\cite[lines 2225--2277]{Cirac2016MPDO_arXiv}, decorrelation gives
+    $(1\otimes G_{mb})(G_{am}\otimes1)=P=(G_{am}\otimes1)(1\otimes G_{mb})$. Placing
+    $G_{am}$ on $V\setminus b$ and $G_{mb}$ on $V\setminus a$ gives orthogonal
+    projections that commute and whose product is $P$, and the interaction with terms
+    $h_0=1-G_{am}$ and $h_1=1-G_{mb}$, placed, has commuting orthogonal projections as
+    terms. A vector is annihilated by both terms exactly when it is fixed by both placed
+    support projections, hence by their product $P$; conversely, a vector fixed by $P$
+    is fixed by each factor, since each factor is idempotent and the factors commute.
+    Thus the zero space is $\operatorname{ran}P$.
+\end{proof}

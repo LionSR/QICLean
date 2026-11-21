@@ -111,7 +111,7 @@ theorem map_prepareCircuit_apply (e₀ : ∀ s, E s) (ρ : Matrix (Config X) (Co
     · rintro ⟨h, rfl⟩
       funext s
       exact Prod.ext rfl (congrFun h s)
-  simp only [mul_apply, conjTranspose_apply, initializedBasisMatrix, submatrix_apply, id,
+  simp only [mul_apply, conjTranspose_apply, basisInclusion, submatrix_apply, id,
     one_apply, key, ite_and]
   by_cases hw : (fun s ↦ (w s).2) = e₀ <;> by_cases hw' : (fun s ↦ (w' s).2) = e₀ <;>
     simp [hw, hw', Finset.sum_ite_eq']
@@ -136,11 +136,11 @@ theorem map_traceCircuit_apply (M : Matrix (Config fun s ↦ Z s × F s)
     split_ifs with h
     · subst h
       refine Finset.prod_eq_one fun s _ ↦ ?_
-      simp only [initializedBasisMatrix, conjTranspose_apply, submatrix_apply, id, one_apply]
+      simp only [basisInclusion, conjTranspose_apply, submatrix_apply, id, one_apply]
       exact (congrArg star (ite_eq_left rfl)).trans (star_one ℂ)
     · obtain ⟨s, hs⟩ := Function.ne_iff.mp h
       refine Finset.prod_eq_zero (Finset.mem_univ s) ?_
-      simp only [initializedBasisMatrix, conjTranspose_apply, submatrix_apply, id, one_apply]
+      simp only [basisInclusion, conjTranspose_apply, submatrix_apply, id, one_apply]
       exact (congrArg star (ite_eq_right hs)).trans (star_zero ℂ)
   rw [traceCircuit, Circuit.map_ofLayer, KrausFamily.map_apply, Matrix.sum_apply]
   refine Fintype.sum_equiv e _ _ fun i ↦ ?_
@@ -157,7 +157,7 @@ theorem map_relabelCircuit_apply (σ : ∀ s, X s ≃ Y s) (ρ : Matrix (Config 
   rw [relabelCircuit, map_encodeCircuit,
     show Function.Embedding.piCongrRight (fun s ↦ (σ s).toEmbedding) =
       (Equiv.piCongrRight σ).toEmbedding from rfl,
-    initializedBasisMatrix_equiv_mul_mul_conjTranspose]
+    basisInclusion_equiv_mul_mul_conjTranspose]
   rfl
 
 omit [Fintype S] in
@@ -514,18 +514,20 @@ private theorem sum_map_matrixUnit_of_dilation {α β E F : Type} [Fintype α] [
     ∑ f : F, U.map (Matrix.single (a, e₀) (a', e₀) 1) (b, f) (b', f) =
       K.map (Matrix.single a a' 1) b b' := by
   rw [h, LinearMap.comp_apply, LinearMap.comp_apply, KrausFamily.map_traceRight,
-    KrausFamily.map_embed_apply, initializedBasisMatrix_mul_single_mul_conjTranspose,
+    KrausFamily.map_embed_apply, basisInclusion_mul_single_mul_conjTranspose,
     partialTraceRight_apply]
   rfl
 
 omit [Fintype S] [DecidableEq S] in
-/-- The one operator with all entries `1` between one-element bases is unitary. -/
+/-- The one operator with all entries `1` between one-element bases is unitary: it is the identity
+on a one-element basis, carried along the equivalences of the two bases with it. -/
 private theorem isUnitary_single_ones {α β : Type} [Fintype α] [DecidableEq α] [Fintype β]
     [DecidableEq β] [Unique α] [Unique β] :
-    (KrausFamily.single (Matrix.of fun (_ : β) (_ : α) ↦ (1 : ℂ))).IsUnitary :=
-  ⟨⟨inferInstanceAs (Unique Unit)⟩, fun _ ↦
-    ⟨by ext a a'; rw [Subsingleton.elim a' a]; simp [mul_apply],
-      by ext a a'; rw [Subsingleton.elim a' a]; simp [mul_apply]⟩⟩
+    (KrausFamily.single (Matrix.of fun (_ : β) (_ : α) ↦ (1 : ℂ))).IsUnitary := by
+  convert (KrausFamily.isUnitary_single (one_mem (unitaryGroup Unit ℂ))).reindex
+    (Equiv.ofUnique α Unit) (Equiv.ofUnique β Unit) using 1
+  simp only [KrausFamily.reindex, KrausFamily.single]
+  congr
 
 omit [Fintype S] [DecidableEq S] in
 /-- A trace-preserving family on a nonempty basis is the partial trace of a unitary family on the
@@ -549,9 +551,9 @@ private theorem _root_.KrausFamily.IsTP.exists_local_dilation {α β : Type} [Fi
       KrausFamily.map_embed_apply, partialTraceRight_apply, Fintype.sum_unique,
       KrausFamily.map_apply, KrausFamily.map_apply, Matrix.sum_apply, Matrix.sum_apply]
     refine Finset.sum_congr rfl fun i _ ↦ ?_
-    simp [mul_apply, initializedBasisMatrix, Fintype.sum_prod_type, one_apply]
+    simp [mul_apply, basisInclusion, Fintype.sum_prod_type, one_apply]
     rfl
-  · let : DecidableEq K.Index := Classical.decEq _
+  · classical
     obtain ⟨e₀, U, hU', hK'⟩ := hK.exists_unitary_dilation
     exact ⟨_, _, inferInstance, inferInstance, inferInstance, inferInstance, e₀, U, hU', hK',
       fun h ↦ (hU h).elim⟩
@@ -645,7 +647,7 @@ private theorem map_dilate (hTP : ∀ b, (L.gate b).IsTP) (eb : ∀ b, T b) (es 
   apply LinearMap.ext_ring
   ext y y'
   simp only [LinearMap.comp_apply, Matrix.singleLinearMap_apply, prepareCircuit,
-    map_encodeCircuit, initializedBasisMatrix_mul_single_mul_conjTranspose, map_traceCircuit_apply,
+    map_encodeCircuit, basisInclusion_mul_single_mul_conjTranspose, map_traceCircuit_apply,
     Circuit.map_ofLayer, map_matrixUnit_apply, gateFamily_krausGate]
   refine Eq.trans ?_ ((L.dilate D Ub Us).sum_prod_mul_prod (F := L.Distribute D T₂ T₂')
     (fun b g ↦ ((L.dilate D Ub Us).gate b).map
@@ -692,6 +694,9 @@ theorem Layer.isUnitaryDilation [∀ s, Nonempty (X s)] (L : Layer Γ KrausGate 
   have hTP : ∀ b, (L.gate b).IsTP := hL.1
   choose T T₂ _ _ _ _ eb Ub hUb hKb hTb using fun b : L.cells ↦ (hTP b).exists_local_dilation
   choose T' T₂' _ _ _ _ es Us hUs hKs hTs using fun t : L.Free ↦ (hL.2 t).exists_local_dilation
+  -- Named opaque instances, not `classical`: under `classical`, instance search builds the
+  -- decidable equality of `L.Distribute D T T' s` from its product and function-space
+  -- structure, and the proof then times out at `whnf`, also at a million heartbeats.
   let : ∀ s, DecidableEq (L.Distribute D T T' s) := fun _ ↦ Classical.decEq _
   let : ∀ s, DecidableEq (L.Distribute D T₂ T₂' s) := fun _ ↦ Classical.decEq _
   have hU : ∀ s ∉ D, Nat.card (L.Distribute D T T' s) = 1 ∧

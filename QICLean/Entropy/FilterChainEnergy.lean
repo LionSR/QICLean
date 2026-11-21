@@ -214,6 +214,19 @@ theorem abs_re_inner_sub_conj_localLift_le_sharp {B S : Finset V}
       gcongr
       exact_mod_cast hM
 
+/-- The sharp count is at most the support dimension: for `a` real and `c₀ ≥ 0`,
+`a² (card (InnerConfig n B S)² c₀) ≤ 4 a² (supportDim n S² c₀)` when every site of `S` has
+positive dimension. -/
+theorem sq_mul_card_innerConfig_sq_mul_le {B S : Finset V} (hn : ∀ v ∈ S, 1 ≤ n v) (a : ℝ)
+    {c₀ : ℝ} (hc₀ : 0 ≤ c₀) :
+    a ^ 2 * (Fintype.card (ManyBody.InnerConfig n B S) ^ 2 * c₀) ≤
+      4 * a ^ 2 * (supportDim n S ^ 2 * c₀) := by
+  have hdim : (Fintype.card (ManyBody.InnerConfig n B S) : ℝ) ^ 2 ≤ supportDim n S ^ 2 := by
+    exact_mod_cast Nat.pow_le_pow_left (ManyBody.card_innerConfig_le hn) 2
+  calc _ ≤ a ^ 2 * (supportDim n S ^ 2 * c₀) := by gcongr
+    _ ≤ 4 * a ^ 2 * (supportDim n S ^ 2 * c₀) := by
+      nlinarith [mul_nonneg (sq_nonneg a) (mul_nonneg (sq_nonneg (supportDim n S : ℝ)) hc₀)]
+
 /-- The original full-support conjugation bound, retained for compatibility.
 Area-law manuscript, proof of Lemma 3.2, `02-initial.tex`, lines 418–436. -/
 theorem abs_re_inner_sub_conj_localLift_le {B S : Finset V}
@@ -232,15 +245,9 @@ theorem abs_re_inner_sub_conj_localLift_le {B S : Finset V}
     |(⟪φ, toEuclideanLin X φ⟫_ℂ -
         ⟪φ, toEuclideanLin (ManyBody.place B L * X * ManyBody.place B L⁻¹) φ⟫_ℂ).re| ≤
       4 * a ^ 2 * (supportDim n S ^ 2 * c₀) := by
-  have h := abs_re_inner_sub_conj_localLift_le_sharp hφ hW hl hL hρ hX hXh σ₀ hXn
-    (by linarith) hclip
-  have hdim : (Fintype.card (ManyBody.InnerConfig n B S) : ℝ) ^ 2 ≤ supportDim n S ^ 2 := by
-    exact_mod_cast Nat.pow_le_pow_left (ManyBody.card_innerConfig_le hn) 2
-  have hc₀ : 0 ≤ c₀ := (norm_nonneg X).trans hXn
-  calc _ ≤ a ^ 2 * (Fintype.card (ManyBody.InnerConfig n B S) ^ 2 * c₀) := h
-    _ ≤ a ^ 2 * (supportDim n S ^ 2 * c₀) := by gcongr
-    _ ≤ 4 * a ^ 2 * (supportDim n S ^ 2 * c₀) := by
-      nlinarith [mul_nonneg (sq_nonneg a) (mul_nonneg (sq_nonneg (supportDim n S : ℝ)) hc₀)]
+  exact (abs_re_inner_sub_conj_localLift_le_sharp hφ hW hl hL hρ hX hXh σ₀ hXn
+    (by linarith) hclip).trans
+    (sq_mul_card_innerConfig_sq_mul_le hn a ((norm_nonneg X).trans hXn))
 
 /-- The supported logarithmic conjugation bound, with the actual marginal and filter.
 TNLean one-dimensional note, `part1_arealaw.tex`, lines 711–734 (`rem:sharper`);
@@ -271,10 +278,9 @@ theorem abs_re_inner_sub_conj_localLift_le_logarithmic {B S : Finset V}
     rw [Real.log_mul (Real.exp_pos 1).ne' hdim0.ne', Real.log_exp]
     have := Real.log_nonneg (by exact_mod_cast hdim : (1 : ℝ) ≤ supportDim n S)
     linarith
-  obtain ⟨M, c, d, hM, hdec, hcd⟩ := hX.hasProductDecomposition_inner (B := B) σ₀ hXn
-  have hM' : M ≤ supportDim n S ^ 2 :=
-    hM.trans (Nat.pow_le_pow_left (ManyBody.card_innerConfig_le (fun v _ ↦ hn v)) 2)
-  have hlog := log_two_mul_le_two_mul_log hM' hdim
+  obtain ⟨M, c, d, hM, hdec, hcd⟩ :=
+    hX.hasProductDecomposition (B := B) σ₀ (fun v _ ↦ hn v) hXn
+  have hlog := log_two_mul_le_two_mul_log hM hdim
   have hcut : ‖ManyBody.cutOperator B X‖ ≤ c₀ := by
     rw [show ‖ManyBody.cutOperator B X‖ = ‖X‖ from Matrix.l2_opNorm_reindex_equiv _ X]
     exact hXn
@@ -460,15 +466,8 @@ theorem abs_re_inner_sub_chain_conj_le (D : ℕ → Finset V)
       ∑ j ∈ splitIndices S D m, 4 * a j ^ 2 * (supportDim n S ^ 2 * c₀) := by
   refine (abs_re_inner_sub_chain_conj_le_sharp D hD K hunit hφ a
     (fun j ↦ by linarith [ha j]) hcl hX hXh σ₀ hXn hsingle).trans ?_
-  have hc₀ : 0 ≤ c₀ := (norm_nonneg X).trans hXn
-  refine Finset.sum_le_sum fun j _ ↦ ?_
-  have hdim : (Fintype.card (ManyBody.InnerConfig n (D j) S) : ℝ) ^ 2 ≤ supportDim n S ^ 2 := by
-    exact_mod_cast Nat.pow_le_pow_left (ManyBody.card_innerConfig_le hn) 2
-  calc a j ^ 2 * (Fintype.card (ManyBody.InnerConfig n (D j) S) ^ 2 * c₀)
-      ≤ a j ^ 2 * (supportDim n S ^ 2 * c₀) := by gcongr
-    _ ≤ 4 * a j ^ 2 * (supportDim n S ^ 2 * c₀) := by
-      nlinarith [mul_nonneg (sq_nonneg (a j))
-        (mul_nonneg (sq_nonneg (supportDim n S : ℝ)) hc₀)]
+  exact Finset.sum_le_sum fun j _ ↦
+    sq_mul_card_innerConfig_sq_mul_le hn (a j) ((norm_nonneg X).trans hXn)
 
 /-- A logarithmic conjugation bound for nested stationary filters when at most one
 region splits the observable's support. Smallness is required only at splitting regions.
@@ -689,15 +688,8 @@ theorem re_inner_sub_le_of_chain (D : ℕ → Finset V) (hD : ∀ i j : Fin m, i
     exact hv.elim0
   simp only [Finset.mul_sum]
   refine Finset.sum_le_sum fun j _ ↦ Finset.sum_le_sum fun i _ ↦ ?_
-  have hc₀ : 0 ≤ c₀ := (norm_nonneg (h i)).trans (hnorm i)
-  have hdim : (Fintype.card (ManyBody.InnerConfig n (D j) (S i)) : ℝ) ^ 2 ≤
-      supportDim n (S i) ^ 2 := by
-    exact_mod_cast Nat.pow_le_pow_left (ManyBody.card_innerConfig_le (fun v _ ↦ hn v)) 2
-  calc a j ^ 2 * (Fintype.card (ManyBody.InnerConfig n (D j) (S i)) ^ 2 * c₀)
-      ≤ a j ^ 2 * (supportDim n (S i) ^ 2 * c₀) := by gcongr
-    _ ≤ 4 * a j ^ 2 * (supportDim n (S i) ^ 2 * c₀) := by
-      nlinarith [mul_nonneg (sq_nonneg (a j))
-        (mul_nonneg (sq_nonneg (supportDim n (S i) : ℝ)) hc₀)]
+  exact sq_mul_card_innerConfig_sq_mul_le (fun v _ ↦ hn v) (a j)
+    ((norm_nonneg (h i)).trans (hnorm i))
 
 /-- The logarithmic excitation-energy bound for a stationary nested product.
 Smallness is required only at actual crossing pairs. TNLean one-dimensional note,

@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.Entropy.ConditionalMovementRegional
-import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.RegionConditionalInformation
 import QICLean.Entropy.RegionEntropy
 import QICLean.Entropy.RegionSplit
 

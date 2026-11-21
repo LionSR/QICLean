@@ -58,23 +58,23 @@ theorem IsTP.exists_unitary_dilation [Nonempty α] {K : KrausFamily α β} [Deci
   let σ : α × (β × K.Index) ≃ β × (α × K.Index) :=
     ((Equiv.prodAssoc α β K.Index).symm.trans
       ((Equiv.prodComm α β).prodCongr (Equiv.refl _))).trans (Equiv.prodAssoc β α K.Index)
-  let B := initializedBasisMatrix (Function.Embedding.sectR (Classical.arbitrary α) K.Index)
-  have hB : Bᴴ * B = 1 := initializedBasisMatrix_isIsometry _
+  let B := basisInclusion (Function.Embedding.sectR (Classical.arbitrary α) K.Index)
+  have hB : Bᴴ * B = 1 := basisInclusion_isIsometry _
   -- the Stinespring isometry, with the environment `α` in the basis vector `a₀`
   let W := ((1 : Matrix β β ℂ) ⊗ₖ B) * stinespringVGen K.op
-  let J := initializedBasisMatrix ((Function.Embedding.sectL α e₀).trans σ.toEmbedding)
+  let J := basisInclusion ((Function.Embedding.sectL α e₀).trans σ.toEmbedding)
   have hW : Wᴴ * W = Jᴴ * J := by
-    rw [initializedBasisMatrix_isIsometry, ← hK, ← stinespringVGen_conjTranspose_mul]
+    rw [basisInclusion_isIsometry, ← hK, ← stinespringVGen_conjTranspose_mul]
     simp only [W, conjTranspose_mul, conjTranspose_kronecker, conjTranspose_one, Matrix.mul_assoc]
     rw [← Matrix.mul_assoc (1 ⊗ₖ Bᴴ), ← mul_kronecker_mul, Matrix.one_mul, hB, one_kronecker_one,
       Matrix.one_mul]
   obtain ⟨U₀, hU₀⟩ := exists_unitary_mul_eq_of_conjTranspose_mul_eq W J hW
   let U := Matrix.reindex (Equiv.refl _) σ.symm U₀.1
-  let ι := initializedBasisMatrix (Function.Embedding.sectL α e₀)
+  let ι := basisInclusion (Function.Embedding.sectL α e₀)
   have hUJ : U * ι = W := by
     rw [hU₀]
     ext q a
-    simp only [U, J, ι, mul_initializedBasisMatrix_apply]
+    simp only [U, J, ι, mul_basisInclusion_apply]
     rfl
   refine ⟨e₀, single U, ⟨⟨inferInstanceAs (Unique Unit)⟩, fun _ ↦ IsUnitaryBetween.reindex _
     ⟨mem_unitaryGroup_iff'.mp U₀.2, mem_unitaryGroup_iff.mp U₀.2⟩ _ _⟩, LinearMap.ext fun ρ ↦ ?_⟩

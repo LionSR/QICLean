@@ -12,6 +12,7 @@ import Mathlib.Tactic.Linarith
 import Mathlib.Tactic.LinearCombination
 import Mathlib.Tactic.Ring
 import QICLean.ManyBody.Sites.Block
+import QICLean.ManyBody.Sites.Lattice.Chain
 
 /-!
 # Balls and separation on the ring
@@ -37,6 +38,7 @@ Adapted from TNLean at commit `e41c3b6371c44bcecb7004d78ff5ec11ae2282f3` (Apache
 
 * `ManyBody.ringBall` — the sites within ring distance `r` of a set.
 * `ManyBody.IsRingSeparated` — two sets at ring distance larger than `s`.
+* `ManyBody.ringWindow` — the window of `k` consecutive sites starting at a site.
 
 ## Main results
 
@@ -48,6 +50,10 @@ Adapted from TNLean at commit `e41c3b6371c44bcecb7004d78ff5ec11ae2282f3` (Apache
   two sites separated by `2T` and a third outside both balls of radius `T`.
 * `ManyBody.IsRingSeparated.lt_edist` — separated sets are far apart in the cycle graph.
 * `ManyBody.preimage_ringBall_subset` — blocking rescales ring distances by the block size.
+* `ManyBody.ringWindow_trans_finRotate` — the rotation of the ring moves each window of
+  consecutive sites to the next one.
+* `ManyBody.chainWindow_trans_ringWindow` — consecutive sites inside a window of the ring form a
+  window of the ring.
 -/
 
 namespace ManyBody
@@ -308,6 +314,27 @@ theorem map_ringWindow_two (hk : 2 ≤ N) (i : Fin N) :
   have h1 : (Fin.castLE hk 1 : Fin N) = 1 := Fin.ext (by simp [Nat.mod_eq_of_lt hk])
   ext j
   simp [Fin.exists_fin_two, h0, h1, eq_comm]
+
+/-- **Rotating a window.** The rotation `j ↦ j + 1` of the ring carries the window starting at
+`i` to the window starting at `i + 1`. -/
+theorem ringWindow_trans_finRotate (hk : k ≤ N) (i : Fin N) :
+    (ringWindow hk i).trans (finRotate N).toEmbedding = ringWindow hk (i + 1) := by
+  ext j
+  simp only [Function.Embedding.trans_apply, Equiv.coe_toEmbedding, ringWindow_apply,
+    finRotate_apply]
+  rw [add_right_comm]
+
+/-- **A window of a window.** Inside the window of `m` consecutive sites of the ring starting at
+`i`, the `k` consecutive sites starting at the position `b`, with `b + k ≤ m`, are the window of
+the ring starting at `i + b`. -/
+theorem chainWindow_trans_ringWindow {m : ℕ} (b : ℕ) (hb : b + k ≤ m) (hm : m ≤ N)
+    (i : Fin N) :
+    (chainWindow b hb).trans (ringWindow hm i) =
+      ringWindow ((Nat.le_add_left k b).trans hb |>.trans hm) (i + (b : Fin N)) := by
+  ext j
+  simp only [Function.Embedding.trans_apply, ringWindow_apply, Fin.val_add, Fin.val_castLE,
+    val_chainWindow, Fin.val_natCast, Nat.mod_add_mod, Nat.add_mod_mod]
+  rw [add_assoc]
 
 end Window
 

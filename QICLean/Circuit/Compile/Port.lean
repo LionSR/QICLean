@@ -833,15 +833,15 @@ private theorem routedEmbedding_apply (C : Finset (Fin N))
 /-- The routed code is the code of the data wires moved along `τ`. -/
 private theorem routed_code (C : Finset (Fin N)) (τ : Equiv.Perm (Fin N × Fin (2 * k + 1)))
     (hτ : ∀ r t, (τ (r, dataWire t)).1 = host C r) :
-    initializedBasisMatrix
+    basisInclusion
       (((blockConfigEquiv (host C) fun _ : Fin N ↦ Fin k → Fin d).symm.toEmbedding.trans
         (Function.Embedding.piCongrRight (routedEmbedding (d := d) C τ hτ))).trans
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) =
-      sitePermOp τ * initializedBasisMatrix ((Function.Embedding.piCongrRight
+      sitePermOp τ * basisInclusion ((Function.Embedding.piCongrRight
         (portDataEmbedding N k d)).trans
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) := by
   ext σ x
-  rw [mul_initializedBasisMatrix_apply, sitePermOp_apply]
+  rw [mul_basisInclusion_apply, sitePermOp_apply]
   have key : ∀ w, (((blockConfigEquiv (host C) fun _ : Fin N ↦ Fin k → Fin d).symm.toEmbedding.trans
       (Function.Embedding.piCongrRight (routedEmbedding (d := d) C τ hτ))).trans
         (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) x w =
@@ -858,7 +858,7 @@ private theorem routed_code (C : Finset (Fin N)) (τ : Equiv.Perm (Fin N × Fin 
         rw [← eq_dataWire_of_dataIndex ht, Prod.mk.eta, Equiv.apply_symm_apply]
       have h : host C (τ.symm w).1 = w.1 := by rw [← hτ, ← hw]
       simp [h]
-  simp only [initializedBasisMatrix, submatrix_apply, id, one_apply]
+  simp only [basisInclusion, submatrix_apply, id, one_apply]
   refine if_congr ⟨fun h ↦ ?_, fun h ↦ ?_⟩ rfl rfl
   · funext v
     rw [h, Function.comp_apply, key, Equiv.symm_apply_apply]
@@ -870,12 +870,12 @@ private theorem dataCode_apply
     (ρ : Matrix (Config fun _ : Fin N ↦ Fin k → Fin d) (Config fun _ : Fin N ↦ Fin k → Fin d) ℂ) :
     (reindexAlgEquiv ℂ ℂ (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)))
         ((encodeCircuit (Geometry.ring N) (portDataEmbedding N k d)).map KrausGate.ev ρ) =
-      initializedBasisMatrix ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
+      basisInclusion ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding) * ρ *
-        (initializedBasisMatrix ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
+        (basisInclusion ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
           (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding))ᴴ := by
-  rw [map_encodeCircuit, reindexAlgEquiv_eq_initializedBasisMatrix_mul,
-    ← initializedBasisMatrix_mul_initializedBasisMatrix]
+  rw [map_encodeCircuit, reindexAlgEquiv_eq_basisInclusion_mul,
+    ← basisInclusion_mul_basisInclusion]
   simp only [conjTranspose_mul, Matrix.mul_assoc]
 
 /-- **Routing a layer of the ring to the ports.** Let `L` be a layer of trace-preserving gates on
@@ -927,7 +927,7 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
       (isUnitaryOff_refine L₂ hD) (Circuit.isDimBounded_ofLayer _ (fun s _ ↦ card_qudits d s)
         fun s _ ↦ card_qudits d s)).mono le_rfl (depth_refine L₂).le
   set P := sitePermOp (α := Fin d) (routeTotal L.cells hC (List.finRange k))
-  set J := initializedBasisMatrix ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
+  set J := basisInclusion ((Function.Embedding.piCongrRight (portDataEmbedding N k d)).trans
     (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)).toEmbedding)
   have hZ : ∀ ρ, (reindexAlgEquiv ℂ ℂ
       (blockConfigEquiv Prod.fst (Qudits (Fin N × Fin (2 * k + 1)) d)))
@@ -935,10 +935,10 @@ theorem Layer.exists_portRing (hN : 2 ≤ N)
           (reindexAlgEquiv ℂ ℂ (blockConfigEquiv (host L.cells) _).symm ρ)) =
         (P * J) * ρ * (P * J)ᴴ := by
     intro ρ
-    rw [← routed_code L.cells _ hτ, reindexAlgEquiv_eq_initializedBasisMatrix_mul,
-      map_encodeCircuit, reindexAlgEquiv_eq_initializedBasisMatrix_mul,
-      ← initializedBasisMatrix_mul_initializedBasisMatrix,
-      ← initializedBasisMatrix_mul_initializedBasisMatrix]
+    rw [← routed_code L.cells _ hτ, reindexAlgEquiv_eq_basisInclusion_mul,
+      map_encodeCircuit, reindexAlgEquiv_eq_basisInclusion_mul,
+      ← basisInclusion_mul_basisInclusion,
+      ← basisInclusion_mul_basisInclusion]
     simp only [conjTranspose_mul, Matrix.mul_assoc]
   have hmid : ∀ ρ, (Circuit.ofLayer (refine L₂)).map KrausGate.ev ((P * J) * ρ * (P * J)ᴴ) =
       (P * J) * (Circuit.ofLayer L).map KrausGate.ev ρ * (P * J)ᴴ := by

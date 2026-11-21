@@ -37,6 +37,8 @@ inclusion between the two relations is established. Documented in
 * `QuantumCircuit.IsProtocol.rectangularTraceNorm_map_le` — a protocol contracts the trace norm.
 * `QuantumCircuit.IsApproxConversion.trans` — composition adds depths and errors.
 * `QuantumCircuit.isApproxConversion_zero_iff` — conversion with error `0` is exact.
+* `QuantumCircuit.IsApproxConversion.norm_trace_mul_mul_sub_le` — correlations between regions
+  with disjoint light cones factorize up to `ε ‖A‖ ‖B‖ (1 + 2‖⊗ₛ σ₀ s‖₁ + ε)`.
 * `QuantumCircuit.IsAsymptoticConversion.trans`, `QuantumCircuit.isPhaseEquivalent_equivalence`.
 
 The declarations restate `TNLean/Circuit/Channel/ApproximateConversion.lean` and
@@ -53,6 +55,7 @@ inputs.
 -/
 
 open Matrix Filter Topology ManyBody
+open scoped Matrix.Norms.L2Operator
 
 namespace QuantumCircuit
 
@@ -122,6 +125,74 @@ theorem isApproxConversion_zero_iff {T : ℕ} {ρ : Matrix (Config X) (Config X)
   refine ⟨fun ⟨Φ, hΦ, herr⟩ ↦ ⟨Φ, hΦ, sub_eq_zero.mp ?_⟩, IsConversion.isApproxConversion⟩
   exact (rectangularTraceNorm_eq_zero_iff _).mp
     (le_antisymm herr (rectangularTraceNorm_nonneg _))
+
+omit [∀ s, Fintype (Y s)] [∀ s, DecidableEq (Y s)] in
+/-- **Approximate factorization of correlations.** On a geometry whose cells have positive
+cost, let `σ` be converted in depth `T` with error `ε` from a product `⊗ₛ σ₀ s` of unit-trace
+factors, and let `c = ‖⊗ₛ σ₀ s‖₁`. For operators `A`, `B` on regions with disjoint `T`-fold
+neighbourhoods,
+`|tr(σ AB) - tr(σ A) tr(σ B)| ≤ ε ‖A‖ ‖B‖ (1 + 2c + ε)`; for states `c = 1`.
+
+The exact output `σ'` of the protocol factorizes (`IsConversion.trace_mul_mul_eq`), and each
+expectation in `σ` differs from the one in `σ'` by `|tr((σ - σ') X)| ≤ ε ‖X‖`. An input `ρ`
+within trace norm `δ` of the product is covered by composing with the identity protocol,
+which converts the product into `ρ` in depth `0` with error `δ` (`IsApproxConversion.trans`).
+
+Source: arXiv:2103.13367, main text, Proposition `propQCA2`, eq. `eq:necessary_condition`, whose
+exact factorization is made approximate in the trace-norm error of the paragraph "Phases of
+matter"; here for product inputs and local channels with ancillas and discarding. -/
+theorem IsApproxConversion.norm_trace_mul_mul_sub_le [Fintype Γ.Cell]
+    (hpos : ∀ b, 0 < Γ.cost b) {T : ℕ} {ε : ℝ}
+    {σ₀ : (s : S) → Matrix (X s) (X s) ℂ} (hσ₀ : ∀ s, (σ₀ s).trace = 1)
+    {σ : Matrix (Config Z) (Config Z) ℂ} (h : IsApproxConversion Γ T ε (prodOp σ₀) σ)
+    {R R' : Finset S} (hRR' : Disjoint (Γ.neighbourhood^[T] R) (Γ.neighbourhood^[T] R'))
+    {A B : Matrix (Config Z) (Config Z) ℂ} (hA : A ∈ supportedOperators Z R)
+    (hB : B ∈ supportedOperators Z R') :
+    ‖(σ * (A * B)).trace - (σ * A).trace * (σ * B).trace‖ ≤
+      ε * ‖A‖ * ‖B‖ * (1 + 2 * rectangularTraceNorm (prodOp σ₀) + ε) := by
+  obtain ⟨Φ, hΦ, herr⟩ := h
+  set σ' := Φ (prodOp σ₀)
+  set c := rectangularTraceNorm (prodOp σ₀)
+  have hexact : (σ' * (A * B)).trace = (σ' * A).trace * (σ' * B).trace :=
+    IsConversion.trace_mul_mul_eq hpos hσ₀ ⟨Φ, hΦ, rfl⟩ hRR' hA hB
+  set D := σ - σ'
+  have hD : rectangularTraceNorm D ≤ ε := by
+    have hneg : D = (-1 : ℂ) • (σ' - σ) := by simp [D]
+    rw [hneg, rectangularTraceNorm_smul, norm_neg, norm_one, one_mul]
+    exact herr
+  have hε : 0 ≤ ε := (rectangularTraceNorm_nonneg _).trans hD
+  have hσ' : rectangularTraceNorm σ' ≤ c := hΦ.rectangularTraceNorm_map_le _
+  have hc : 0 ≤ c := rectangularTraceNorm_nonneg _
+  have hsplit (M : Matrix (Config Z) (Config Z) ℂ) :
+      (σ * M).trace = (σ' * M).trace + (D * M).trace := by
+    rw [← trace_add, ← Matrix.add_mul, add_sub_cancel]
+  have hbound (Y M : Matrix (Config Z) (Config Z) ℂ) {r : ℝ} (hY : rectangularTraceNorm Y ≤ r) :
+      ‖(Y * M).trace‖ ≤ ‖M‖ * r :=
+    (norm_trace_mul_le_l2_opNorm_mul_rectangularTraceNorm Y M).trans
+      (mul_le_mul_of_nonneg_left hY (norm_nonneg M))
+  have hid : (σ * (A * B)).trace - (σ * A).trace * (σ * B).trace =
+      (D * (A * B)).trace - (σ' * A).trace * (D * B).trace -
+        (D * A).trace * (σ' * B).trace - (D * A).trace * (D * B).trace := by
+    rw [hsplit, hsplit A, hsplit B, hexact]
+    ring
+  have hAB : ‖A * B‖ ≤ ‖A‖ * ‖B‖ := norm_mul_le A B
+  have h₁ := hbound D (A * B) hD
+  have h₂ := hbound σ' A hσ'
+  have h₃ := hbound D B hD
+  have h₄ := hbound D A hD
+  have h₅ := hbound σ' B hσ'
+  rw [hid]
+  calc
+    _ ≤ ‖(D * (A * B)).trace‖ + ‖(σ' * A).trace‖ * ‖(D * B).trace‖ +
+          ‖(D * A).trace‖ * ‖(σ' * B).trace‖ + ‖(D * A).trace‖ * ‖(D * B).trace‖ := by
+      refine (norm_sub_le _ _).trans (add_le_add ((norm_sub_le _ _).trans
+        (add_le_add ((norm_sub_le _ _).trans (add_le_add le_rfl (norm_mul _ _).le))
+          (norm_mul _ _).le)) (norm_mul _ _).le)
+    _ ≤ ‖A‖ * ‖B‖ * ε + (‖A‖ * c) * (‖B‖ * ε) + (‖A‖ * ε) * (‖B‖ * c) +
+          (‖A‖ * ε) * (‖B‖ * ε) := by
+      gcongr
+      exact h₁.trans (mul_le_mul_of_nonneg_right hAB hε)
+    _ = _ := by ring
 
 end Approximate
 

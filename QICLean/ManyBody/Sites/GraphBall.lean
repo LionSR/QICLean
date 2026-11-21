@@ -9,20 +9,26 @@ import Mathlib.Combinatorics.SimpleGraph.Circulant
 import Mathlib.Combinatorics.SimpleGraph.Metric
 import Mathlib.Basic.Real.Basic
 import Mathlib.Order.SuccPred.ENat
+import Mathlib.Basic.Real.ENatENNReal
+import Mathlib.Topology.EMetricSpace.Defs
 import QICLean.ManyBody.Sites.Cut
 
 /-!
-# Graph balls as regions
+# Graph balls and neighbourhoods as regions
 
 For a graph `G` on the sites, the closed ball `N_l(a) = {x : d_G(a, x) ≤ l}` of natural radius
 `l` about a site `a` is Mathlib's open ball `SimpleGraph.ball a (l + 1)`. Statements about
 regions take finite sets of sites, so `ManyBody.graphBall G a l` is that ball as a `Finset`;
-`ManyBody.coe_graphBall` identifies the two.
+`ManyBody.coe_graphBall` identifies the two. The closed neighbourhood
+`N_l(S) = ⋃_{x ∈ S} N_l(x)` of a region `S` is `ManyBody.graphNeighborhood G S l`, and the
+extended distance `d_G(x, S) = min_{y ∈ S} d_G(x, y)` from a site to a region is
+`ManyBody.setEdist G S x`; a site lies in `N_l(S)` exactly when `d_G(x, S) ≤ l`.
 
 The balls increase with the radius, a site at infinite distance lies in none of them, and on a
 finite graph they stabilize on the connected component of the centre. Membership is measured by
 the extended distance, so sites of other components never enter a ball, although their natural
-distance has the value zero.
+distance has the value zero. The extended graph distance, read in `ℝ≥0∞`, is an extended
+pseudometric on the sites, `ManyBody.graphPseudoEMetricSpace G`.
 
 If two outer regions are disjoint and every ball of radius `ℓ + R` about either of two cores
 lies in its outer region, then the radius-`ℓ` neighbourhood of the remaining sites and of the
@@ -33,11 +39,21 @@ Moved from TNLean, `TNLean/Circuit/LiebRobinson/GraphLocalization.lean` (the def
 `GraphBallStabilization.lean` at commit `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes:
 the ball is defined from `SimpleGraph.ball` instead of as a filter of the sites. The
 separation lemmas are moved from `TNLean/Circuit/LiebRobinson/SupportSeparation.lean` at the
-same commit, with `ManyBody.crossingTerms` in place of `ManyBody.crossingTerms`.
+same commit, with `ManyBody.crossingTerms` in place of `Entropy.crossingTerms`.
+
+The neighbourhood of a region, the distance to a region and the extended pseudometric are moved
+from TNLean, `TNLean/Lattice/FiniteDomain.lean` (`graphNeighborhood`),
+`TNLean/PEPS/AreaLaw/FiniteSetTruncation.lean` (`setDist`) and
+`TNLean/PEPS/AreaLaw/GraphExtendedMetric.lean` at commit `414a18fb88`. Changes: the
+neighbourhood is stated for an arbitrary graph, as the union of graph balls, instead of by walks
+in the plane domain graph; the distance to a region is renamed `setEdist`.
 
 ## Main definitions
 
 * `ManyBody.graphBall` — the closed graph ball of natural radius, as a region.
+* `ManyBody.graphNeighborhood` — the closed neighbourhood of a region.
+* `ManyBody.setEdist` — the extended graph distance from a site to a region.
+* `ManyBody.graphPseudoEMetricSpace` — the extended graph distance as an extended pseudometric.
 
 ## Main results
 
@@ -46,6 +62,9 @@ same commit, with `ManyBody.crossingTerms` in place of `ManyBody.crossingTerms`.
   centre.
 * `ManyBody.graphBall_subset_of_finite_distance_margin` — a real distance margin contains the
   balls of smaller radius.
+* `ManyBody.mem_graphNeighborhood`, `ManyBody.mem_graphNeighborhood_iff_setEdist_le` —
+  membership in a neighbourhood.
+* `ManyBody.graphNeighborhood_graphNeighborhood_subset` — neighbourhoods compose by adding radii.
 * `ManyBody.reset_graphNeighborhood_disjoint_cores` — neighbourhoods of crossing supports avoid
   interior cores.
 -/
@@ -125,6 +144,216 @@ theorem graphBall_subset_of_finite_distance_margin (G : SimpleGraph V) (D : Fins
   have hdm : d ≤ m := ENat.natCast_le_natCast.mp (hd ▸ hxy)
   exact (not_lt_of_ge ((Nat.cast_le.mpr hdm).trans hm)) (hmargin y hyD d hd.symm)
 
+/-! ### Distance to a region -/
+
+section SetEdist
+
+variable {G : SimpleGraph V} {S : Finset V} {x y : V} {r : ℕ∞}
+
+omit [Fintype V] in
+variable (G) in
+/-- The extended graph distance `d_G(x, S) = min_{y ∈ S} d_G(x, y)` from a site to a region. It
+is infinite when no site of `S` can be reached from `x`, in particular when `S` is empty.
+Source: area law, `03-quasilocal.tex`, line 418. -/
+noncomputable def setEdist (S : Finset V) (x : V) : ℕ∞ := S.inf fun y ↦ G.edist x y
+
+omit [Fintype V] in
+theorem setEdist_le_edist (hy : y ∈ S) : setEdist G S x ≤ G.edist x y :=
+  Finset.inf_le (f := fun y ↦ G.edist x y) hy
+
+omit [Fintype V] in
+theorem le_setEdist_iff : r ≤ setEdist G S x ↔ ∀ y ∈ S, r ≤ G.edist x y :=
+  Finset.le_inf_iff
+
+omit [Fintype V] in
+@[simp] theorem setEdist_empty (G : SimpleGraph V) (x : V) : setEdist G ∅ x = ⊤ :=
+  Finset.inf_empty
+
+omit [Fintype V] in
+/-- A finite distance to a region is attained at a site of the region. -/
+theorem exists_mem_edist_eq_setEdist (hx : setEdist G S x ≠ ⊤) :
+    ∃ y ∈ S, G.edist x y = setEdist G S x := by
+  have hne : S.Nonempty := Finset.nonempty_iff_ne_empty.mpr fun h ↦ hx (by simp [h])
+  obtain ⟨y, hy, he⟩ := Finset.exists_mem_eq_inf S hne fun y ↦ G.edist x y
+  exact ⟨y, hy, he.symm⟩
+
+omit [Fintype V] in
+/-- The distance to a region is infinite exactly when no site of the region is reachable. -/
+theorem setEdist_eq_top_iff : setEdist G S x = ⊤ ↔ ∀ y ∈ S, ¬ G.Reachable x y := by
+  simp only [setEdist, Finset.inf_eq_top_iff, ← SimpleGraph.edist_ne_top_iff_reachable, not_not]
+
+omit [Fintype V] in
+/-- The distance to a region vanishes exactly at the sites of the region. -/
+theorem setEdist_eq_zero_iff : setEdist G S x = 0 ↔ x ∈ S := by
+  refine ⟨fun h ↦ ?_, fun h ↦ nonpos_iff_eq_zero.mp
+    ((setEdist_le_edist h).trans_eq (SimpleGraph.edist_self))⟩
+  obtain ⟨y, hy, he⟩ := exists_mem_edist_eq_setEdist (h.symm ▸ ENat.top_ne_zero.symm)
+  rw [h, SimpleGraph.edist_eq_zero_iff] at he
+  exact he ▸ hy
+
+end SetEdist
+
+/-! ### Neighbourhoods of a region -/
+
+section Neighborhood
+
+variable [DecidableEq V] {G : SimpleGraph V} {S T : Finset V} {x y : V} {l m : ℕ}
+
+variable (G) in
+/-- The closed graph neighbourhood `N_l(S) = {y : d_G(x, y) ≤ l for some x ∈ S}` of natural
+radius `l` about a region `S`: the union of the closed graph balls about its sites. For the
+nearest-neighbour graph of a finite domain of the square lattice it is the neighbourhood of the
+area-law manuscript, measured by walks inside the domain.
+Source: OpenAI, *A two-dimensional area law from a global spectral gap*, Section 2, the
+induced-graph distance conventions. -/
+noncomputable def graphNeighborhood (S : Finset V) (l : ℕ) : Finset V :=
+  S.biUnion fun x ↦ graphBall G x l
+
+theorem mem_graphNeighborhood : y ∈ graphNeighborhood G S l ↔ ∃ x ∈ S, G.edist x y ≤ l := by
+  simp only [graphNeighborhood, Finset.mem_biUnion, mem_graphBall]
+
+/-- Membership in a neighbourhood by walks: some walk of length at most `l` joins a site of the
+region to the given site. -/
+theorem mem_graphNeighborhood_iff_exists_walk :
+    y ∈ graphNeighborhood G S l ↔ ∃ x ∈ S, ∃ p : G.Walk x y, p.length ≤ l := by
+  rw [mem_graphNeighborhood]
+  refine exists_congr fun x ↦ and_congr_right fun _ ↦ ⟨fun h ↦ ?_, fun h ↦ ?_⟩
+  · obtain ⟨p, hp⟩ := SimpleGraph.exists_walk_of_edist_ne_top
+      (ne_top_of_le_ne_top (ENat.natCast_ne_top l) h)
+    exact ⟨p, by exact_mod_cast hp ▸ h⟩
+  · obtain ⟨p, hp⟩ := h
+    exact p.edist_le.trans (by exact_mod_cast hp)
+
+/-- A site lies in the neighbourhood of radius `l` exactly when its distance to the region is
+at most `l`. -/
+theorem mem_graphNeighborhood_iff_setEdist_le :
+    y ∈ graphNeighborhood G S l ↔ setEdist G S y ≤ l := by
+  rw [mem_graphNeighborhood]
+  constructor
+  · rintro ⟨x, hx, h⟩
+    exact (setEdist_le_edist hx).trans (by rwa [SimpleGraph.edist_comm])
+  · intro h
+    obtain ⟨x, hx, he⟩ := exists_mem_edist_eq_setEdist
+      (ne_top_of_le_ne_top (ENat.natCast_ne_top l) h)
+    exact ⟨x, hx, by rw [SimpleGraph.edist_comm, he]; exact h⟩
+
+/-- A site outside the neighbourhood of radius `l` is at distance more than `l` from every site
+of the region. -/
+theorem lt_edist_of_notMem_graphNeighborhood (hy : y ∉ graphNeighborhood G S l) (hx : x ∈ S) :
+    (l : ℕ∞) < G.edist x y :=
+  lt_of_not_ge fun h ↦ hy (mem_graphNeighborhood.mpr ⟨x, hx, h⟩)
+
+@[simp] theorem graphNeighborhood_singleton (a : V) :
+    graphNeighborhood G {a} l = graphBall G a l :=
+  Finset.singleton_biUnion
+
+@[simp] theorem graphNeighborhood_empty : graphNeighborhood G ∅ l = ∅ :=
+  Finset.biUnion_empty
+
+/-- The neighbourhood of radius zero is the region itself. -/
+@[simp] theorem graphNeighborhood_zero : graphNeighborhood G S 0 = S := by
+  ext y
+  simp [mem_graphNeighborhood]
+
+theorem graphNeighborhood_union :
+    graphNeighborhood G (S ∪ T) l = graphNeighborhood G S l ∪ graphNeighborhood G T l :=
+  Finset.union_biUnion
+
+theorem graphBall_subset_graphNeighborhood (hx : x ∈ S) :
+    graphBall G x l ⊆ graphNeighborhood G S l :=
+  Finset.subset_biUnion_of_mem (fun x ↦ graphBall G x l) hx
+
+/-- A region lies in each of its neighbourhoods. -/
+theorem subset_graphNeighborhood : S ⊆ graphNeighborhood G S l := fun x hx ↦
+  mem_graphNeighborhood.mpr ⟨x, hx, by simp⟩
+
+/-- Neighbourhoods grow with the region. -/
+theorem graphNeighborhood_mono_left (h : S ⊆ T) :
+    graphNeighborhood G S l ⊆ graphNeighborhood G T l :=
+  Finset.biUnion_subset_biUnion_of_subset_left _ h
+
+variable (G S) in
+/-- Neighbourhoods grow with the radius. -/
+theorem graphNeighborhood_mono : Monotone (graphNeighborhood G S) := fun _ _ h ↦
+  Finset.biUnion_mono fun x _ ↦ graphBall_mono G x h
+
+/-- The ball of radius `m` about a site of `N_l(S)` lies in `N_{l + m}(S)`. Source: area law,
+`09-amplification.tex`, lines 232–234. -/
+theorem graphBall_subset_graphNeighborhood_add (hx : x ∈ graphNeighborhood G S l) (m : ℕ) :
+    graphBall G x m ⊆ graphNeighborhood G S (l + m) := by
+  intro y hy
+  obtain ⟨s, hs, hd⟩ := mem_graphNeighborhood.mp hx
+  refine mem_graphNeighborhood.mpr ⟨s, hs, ?_⟩
+  simpa only [Nat.cast_add] using G.edist_triangle.trans (add_le_add hd (mem_graphBall.mp hy))
+
+/-- **Neighbourhoods compose by adding radii**: `N_m(N_l(S)) ⊆ N_{l + m}(S)`. -/
+theorem graphNeighborhood_graphNeighborhood_subset :
+    graphNeighborhood G (graphNeighborhood G S l) m ⊆ graphNeighborhood G S (l + m) :=
+  Finset.biUnion_subset.mpr fun _ hx ↦ graphBall_subset_graphNeighborhood_add hx m
+
+/-- A neighbourhood has at most `|S| K` sites when each ball of its radius about a site of `S`
+has at most `K` sites. -/
+theorem card_graphNeighborhood_le {K : ℕ} (hBall : ∀ x ∈ S, (graphBall G x l).card ≤ K) :
+    (graphNeighborhood G S l).card ≤ S.card * K :=
+  Finset.card_biUnion_le_card_mul _ _ _ hBall
+
+/-- **Labels anchored near a region.** If each site anchors at most `μ` labels and each ball of
+radius `l` about a site of `S` has at most `K` sites, at most `|S| K μ` labels have their anchor
+in `N_l(S)`. Source: area law, `09-amplification.tex`, line 228. -/
+theorem card_filter_mem_graphNeighborhood_le {κ : Type*} [Fintype κ] (a : κ → V) {μ K : ℕ}
+    (hfiber : ∀ x, (Finset.univ.filter fun i ↦ a i = x).card ≤ μ)
+    (hBall : ∀ x ∈ S, (graphBall G x l).card ≤ K) :
+    (Finset.univ.filter fun i ↦ a i ∈ graphNeighborhood G S l).card ≤ S.card * K * μ := by
+  classical
+  have hsub : (Finset.univ.filter fun i ↦ a i ∈ graphNeighborhood G S l) ⊆
+      (graphNeighborhood G S l).biUnion fun x ↦ Finset.univ.filter fun i ↦ a i = x := by
+    intro i hi
+    exact Finset.mem_biUnion.mpr ⟨a i, (Finset.mem_filter.mp hi).2, by simp⟩
+  refine (Finset.card_le_card hsub).trans ((Finset.card_biUnion_le_card_mul _ _ _
+    fun x _ ↦ hfiber x).trans ?_)
+  exact Nat.mul_le_mul_right μ (card_graphNeighborhood_le hBall)
+
+end Neighborhood
+
+/-! ### The graph distance as an extended pseudometric -/
+
+omit [Fintype V] in
+open scoped ENNReal in
+/-- The extended graph distance, read in `ℝ≥0∞` through the inclusion of `ℕ∞`, as an extended
+pseudometric on the sites. Sites of different components are at infinite distance. It is not an
+instance; `letI := graphPseudoEMetricSpace G` installs it for a given graph.
+Source: area law, `09-amplification.tex`, lines 146–160. -/
+@[instance_reducible]
+noncomputable def graphPseudoEMetricSpace (G : SimpleGraph V) : PseudoEMetricSpace V :=
+  .ofEDist (fun x y ↦ (G.edist x y : ℝ≥0∞))
+    (fun x ↦ by simp only [G.edist_self, ENat.toENNReal_zero])
+    (fun x y ↦ by rw [G.edist_comm])
+    (fun x y z ↦ by
+      simpa only [ENat.toENNReal_add] using ENat.toENNReal_mono G.edist_triangle)
+
+omit [Fintype V] in
+open scoped ENNReal in
+@[simp] theorem graphPseudoEMetricSpace_edist (G : SimpleGraph V) (x y : V) :
+    letI := graphPseudoEMetricSpace G
+    edist x y = (G.edist x y : ℝ≥0∞) := rfl
+
+omit [Fintype V] in
+/-- Finite distance in the graph pseudometric is reachability. -/
+@[simp] theorem graphPseudoEMetricSpace_edist_ne_top (G : SimpleGraph V) (x y : V) :
+    letI := graphPseudoEMetricSpace G
+    edist x y ≠ ⊤ ↔ G.Reachable x y := by
+  simp only [graphPseudoEMetricSpace_edist, ENat.toENNReal_ne_top,
+    G.edist_ne_top_iff_reachable]
+
+omit [Fintype V] in
+/-- The real graph pseudodistance is the natural graph distance. Both vanish between different
+components, so a weighted kernel bound must check reachability separately. -/
+@[simp] theorem graphPseudoEMetricSpace_edist_toReal (G : SimpleGraph V) (x y : V) :
+    letI := graphPseudoEMetricSpace G
+    (edist x y).toReal = (G.dist x y : ℝ) := by
+  change (G.edist x y : ENNReal).toReal = ((G.edist x y).toNat : ℝ)
+  induction G.edist x y using ENat.recTopCoe <;> simp
+
 /-- The radius-`ℓ` neighbourhood of the sites outside `D ∪ C` and of the supports crossing `D`
 avoids both cores when their radius-`ℓ + R` balls lie in the disjoint outer regions `D` and `C`
 and every support has graph diameter at most `R`.
@@ -138,13 +367,13 @@ theorem reset_graphNeighborhood_disjoint_cores {κ : Type*} [DecidableEq V] [Fin
     let Q := (D ∪ C)ᶜ
     let crossing := crossingTerms X D
     let Z := crossing.biUnion X
-    Disjoint ((Q ∪ Z).biUnion fun z ↦ graphBall G z ℓ) (R₀ ∪ C₀) := by
+    Disjoint (graphNeighborhood G (Q ∪ Z) ℓ) (R₀ ∪ C₀) := by
   intro Q crossing Z
   apply Finset.disjoint_left.mpr
   intro a ha hcore
-  obtain ⟨z, hz, hza⟩ := Finset.mem_biUnion.mp ha
+  obtain ⟨z, hz, hza⟩ := mem_graphNeighborhood.mp ha
   have haz : G.edist a z ≤ (ℓ : ℕ∞) := by
-    simpa only [SimpleGraph.edist_comm] using (mem_graphBall.mp hza)
+    simpa only [SimpleGraph.edist_comm] using hza
   have hNear (y : V) (hzy : G.edist z y ≤ (R : ℕ∞)) : y ∈ graphBall G a (ℓ + R) :=
     mem_graphBall.mpr (by
       simpa only [Nat.cast_add] using

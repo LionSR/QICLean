@@ -39,6 +39,22 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     D_i\setminus B\neq\emptyset\}$ \cite{OpenAI2026AreaLaw}.
 \end{definition}
 
+\begin{lemma}[Crossing terms of complementary regions]
+    \label{lem:sites_crossing_terms}
+    \lean{ManyBody.mem_crossingTerms, ManyBody.notMem_crossingTerms_of_subset,
+        ManyBody.notMem_crossingTerms_of_disjoint, ManyBody.crossingTerms_empty,
+        ManyBody.crossingTerms_compl, ManyBody.crossingTerms_univ}
+    \leanok
+    \uses{def:sites_crossing_terms}
+    A region contained in $B$ or disjoint from $B$ does not cross $B$. The regions
+    crossing $B$ are those crossing $V\setminus B$, and no region crosses $\emptyset$
+    or $V$.
+\end{lemma}
+\begin{proof}\leanok
+    The two conditions defining a crossing region are exchanged by passing to the
+    complement, and one of them fails for $\emptyset$ and for $V$.
+\end{proof}
+
 \section{Operators supported on a region}
 \label{sec:sites_support}
 
@@ -178,7 +194,7 @@ $\mathcal H_X=0$ and the statements below hold trivially.
         ManyBody.prodOp_apply, ManyBody.prodOp_mul, ManyBody.prodOp_one,
         ManyBody.conjTranspose_prodOp, ManyBody.prodOp_mem_unitary,
         ManyBody.prodOp_mem_supportedOperators, ManyBody.place_single, ManyBody.trace_prodOp,
-        ManyBody.prodOp_initializedBasisMatrix}
+        ManyBody.prodOp_basisInclusion}
     \leanok
     \uses{thm:sites_place_range, lem:sites_place_hom, def:gate_basis_inclusion}
     The algebra $\mathcal A_D$ is the linear span of the product operators
@@ -356,6 +372,163 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     Theorem~\ref{thm:sites_place_range} for the placement in the system of sites of
     $U$, since relabelling along a bijection preserves products, adjoints and norms.
 \end{proof}
+
+\begin{lemma}[Placement into a larger region is isometric]
+    \label{lem:sites_subregion_place_isometry}
+    \lean{ManyBody.subregionPlaceHom, ManyBody.subregionPlaceHom_apply,
+        ManyBody.subregionPlace_injective, ManyBody.norm_subregionPlace}
+    \leanok
+    \uses{lem:sites_subregion_place, lem:sites_place_norm_order}
+    For regions $R\subseteq U$, the extension $K\mapsto K\otimes1_{U\setminus R}$ is a
+    unital $*$-homomorphism from the matrices on $\C^{X_R}$ to the matrices on
+    $\C^{X_U}$. If every $X_v$ is nonempty, it is injective and
+    $\lVert K\otimes1_{U\setminus R}\rVert=\lVert K\rVert$.
+\end{lemma}
+\begin{proof}\leanok
+    The extension is the placement of $K$ in the system of sites of $U$, relabelled along a
+    bijection of configurations; apply Lemma~\ref{lem:sites_place_norm_order} in that
+    system.
+\end{proof}
+
+\section{Placement along an injection of sites}
+\label{sec:sites_place_along}
+
+\begin{definition}[Placement along an injection]
+    \label{def:sites_place_along}
+    \lean{ManyBody.windowEquiv, ManyBody.coe_windowEquiv, ManyBody.windowConfigEquiv,
+        ManyBody.windowConfigEquiv_symm_apply, ManyBody.windowConfigEquiv_apply_windowEquiv,
+        ManyBody.placeAlong, ManyBody.placeAlong_apply}
+    \leanok
+    \uses{def:sites_place}
+    Let $w\colon W\to V$ be an injection of a finite set $W$ into the sites, and give the
+    site $u$ of $W$ the basis $X_{w(u)}$. Identifying $W$ with its image $w(W)$
+    identifies the configurations of $W$ with those of the region $w(W)$. The placement
+    along $w$ of a matrix $K$ on the configurations of $W$ is the placement of $K$ on
+    $w(W)$: it acts as $K$ on the sites $w(u)$ and as the identity elsewhere. Its matrix
+    element at $(\sigma,\tau)$ is $K_{\sigma\circ w,\tau\circ w}$ if $\sigma$ and $\tau$
+    agree outside $w(W)$, and $0$ otherwise.
+\end{definition}
+
+\begin{lemma}[Placement along an injection is a unital $*$-homomorphism]
+    \label{lem:sites_place_along_hom}
+    \lean{ManyBody.placeAlongHom, ManyBody.placeAlongHom_apply, ManyBody.placeAlong_zero,
+        ManyBody.placeAlong_add, ManyBody.placeAlong_smul, ManyBody.placeAlong_neg,
+        ManyBody.placeAlong_sub, ManyBody.placeAlong_sum, ManyBody.placeAlong_conjTranspose,
+        ManyBody.isHermitian_placeAlong, ManyBody.placeAlong_one, ManyBody.placeAlong_mul,
+        ManyBody.placeAlong_pow, ManyBody.placeAlong_mem_unitaryGroup,
+        ManyBody.trace_placeAlong, ManyBody.placeAlong_diagonal, ManyBody.placeAlong_exp,
+        ManyBody.placeAlong_mulVec_apply_of}
+    \leanok
+    \uses{def:sites_place_along, lem:sites_place_hom, def:sites_place, lem:sites_place_exp}
+    The placement along $w$ is linear, unital, multiplicative, compatible with adjoints and
+    with the exponential, and maps unitaries to unitaries;
+    $\Tr(K\otimes1)=\lvert X_{V\setminus w(W)}\rvert\Tr K$, and a diagonal matrix
+    $\operatorname{diag}(f)$ is placed onto the diagonal matrix with entries
+    $f(\sigma\circ w)$. If $g(a)$ is the configuration equal to $a(u)$ at $w(u)$ and to
+    $\sigma$ outside $w(W)$, then $((K\otimes1)\psi)(\sigma)=\sum_aK_{\sigma\circ w,a}\,
+    \psi(g(a))$.
+\end{lemma}
+\begin{proof}\leanok
+    Relabelling along a bijection of configurations is a $*$-isomorphism that preserves
+    the trace and the exponential, so these are the statements of
+    Lemmas~\ref{lem:sites_place_hom} and~\ref{lem:sites_place_exp} and of
+    Definition~\ref{def:sites_place} for the placement on $w(W)$.
+\end{proof}
+
+\begin{theorem}[Supports of placements along an injection]
+    \label{thm:sites_place_along_support}
+    \lean{ManyBody.placeAlong_mem_supportedOperators,
+        ManyBody.placeAlong_mem_supportedOperators_map,
+        ManyBody.exists_eq_placeAlong_of_mem_supportedOperators,
+        ManyBody.mem_supportedOperators_iff_exists_eq_placeAlong,
+        ManyBody.commute_placeAlong_of_disjoint}
+    \leanok
+    \uses{def:sites_place_along, thm:sites_place_range, lem:sites_supported_commute}
+    An operator is supported on $w(W)$ if and only if it is placed along $w$. If $K$ is
+    supported on a region $S\subseteq W$, then $K\otimes1$ is supported on $w(S)$. Matrices
+    placed along injections with disjoint images commute.
+\end{theorem}
+\begin{proof}\leanok
+    The first statement is Theorem~\ref{thm:sites_place_range} on $w(W)$, transported along
+    the identification of configurations. For the second, the element
+    $K_{\sigma\circ w,\tau\circ w}$ vanishes when $\sigma\circ w$ and $\tau\circ w$ differ
+    outside $S$, and otherwise depends only on the values on $w(S)$ and on the pattern of
+    coincidences outside. The last statement is
+    Lemma~\ref{lem:sites_supported_commute}.
+\end{proof}
+
+\begin{lemma}[Norm and order under placement along an injection]
+    \label{lem:sites_place_along_norm_order}
+    \lean{ManyBody.norm_placeAlong_le, ManyBody.posSemidef_placeAlong,
+        ManyBody.placeAlong_le_placeAlong, ManyBody.placeAlong_injective,
+        ManyBody.placeAlong_inj, ManyBody.norm_placeAlong, ManyBody.posSemidef_placeAlong_iff,
+        ManyBody.placeAlong_le_placeAlong_iff, ManyBody.placeAlong_mem_unitaryGroup_iff}
+    \leanok
+    \uses{def:sites_place_along, lem:sites_place_norm_order}
+    The placement along $w$ does not increase the norm and preserves positivity and the
+    order. If every $X_v$ is nonempty, it is injective and isometric, reflects
+    positivity and the order, and $K\otimes1$ is unitary only if $K$ is.
+\end{lemma}
+\begin{proof}\leanok
+    These are the statements of Lemma~\ref{lem:sites_place_norm_order} on $w(W)$; a
+    relabelling of configurations preserves norms and positivity. If
+    $(K\otimes1)(K\otimes1)^*=1$, injectivity gives $KK^*=1$.
+\end{proof}
+
+\begin{lemma}[Regions, bijections and composition]
+    \label{lem:sites_place_along_composition}
+    \lean{ManyBody.placeAlong_subtype, ManyBody.placeAlong_equiv, ManyBody.placeAlong_refl,
+        ManyBody.placeAlong_placeAlong, ManyBody.placeAlong_prodOp}
+    \leanok
+    \uses{def:sites_place_along, lem:sites-regional-relabel, thm:sites_product_span}
+    Placing along the inclusion of a region $D$ is placing on $D$; placing along a bijection
+    of the sites is relabelling the configurations; and for injections $w'\colon W'\to W$
+    and $w\colon W\to V$, placing along $w'$ and then along $w$ is placing along $w\circ w'$.
+    A product operator $\bigotimes_um_u$ is placed onto the product operator equal to $m_u$
+    at $w(u)$ and to $1$ outside $w(W)$.
+\end{lemma}
+\begin{proof}\leanok
+    Compare matrix elements. Two configurations agree outside $w(w'(W'))$ exactly when they
+    agree outside $w(W)$ and their restrictions to $W$ agree outside $w'(W')$. For the product
+    operator, split the product over $V$ into the image of $w$ and its complement, where
+    the factors are $\delta_{\sigma_v\tau_v}$.
+\end{proof}
+
+\begin{lemma}[Identical sites: permutations and translations]
+    \label{lem:sites_place_along_permutation}
+    \lean{ManyBody.placeAlong_mulVec_apply, ManyBody.mul_placeAlong_apply,
+        ManyBody.placeAlong_submatrix_comp,
+        ManyBody.sitePermOp_mul_placeAlong_mul_conjTranspose, ManyBody.placeAlong_sitePermOp}
+    \leanok
+    \uses{def:sites_place_along, lem:sites_place_along_hom, def:hastings_site_permutation}
+    Let every site carry the same basis set. For a permutation $\pi$ of the sites,
+    $P_\pi(K\otimes1)_wP_\pi^*=(K\otimes1)_{\pi\circ w}$, where $(K\otimes1)_w$ denotes the
+    placement along $w$ and $P_\pi$ moves the content of every site $v$ to $\pi(v)$. For a
+    permutation $\rho$ of $W$, the placement along $w$ of $P_\rho$ is $P_{\rho'}$, where
+    $\rho'$ is $w\rho w^{-1}$ on the image of $w$ and the identity elsewhere.
+\end{lemma}
+\begin{proof}\leanok
+    The matrix element of $P_\pi AP_\pi^*$ at $(\sigma,\tau)$ is that of $A$ at
+    $(\sigma\circ\pi,\tau\circ\pi)$, and $\sigma\circ\pi$ and $\tau\circ\pi$ agree outside
+    $w(W)$ exactly when $\sigma$ and $\tau$ agree outside $\pi(w(W))$. For $P_\rho$, compare
+    the conditions $\tau\circ w=\sigma\circ w\circ\rho$ off and on the image.
+\end{proof}
+
+\begin{definition}[A matrix at one site]
+    \label{def:sites_place_at}
+    \lean{ManyBody.placeAt, ManyBody.placeAt_apply, ManyBody.placeAt_add,
+        ManyBody.placeAt_sub, ManyBody.placeAt_smul, ManyBody.placeAt_conjTranspose,
+        ManyBody.placeAt_one, ManyBody.isHermitian_placeAt, ManyBody.placeAt_mul,
+        ManyBody.placeAt_mem_supportedOperators, ManyBody.norm_placeAt_le,
+        ManyBody.posSemidef_placeAt, ManyBody.placeAt_le_placeAt}
+    \leanok
+    \uses{def:sites_place_along, lem:sites_place_along_hom, lem:sites_place_along_norm_order}
+    A matrix $p$ on $\C^{X_v}$ acts at the site $v$ as its placement along the inclusion of
+    $v$: the operator $p\otimes1$, supported on $\{v\}$, with matrix element
+    $p_{\sigma_v\tau_v}$ if $\sigma$ and $\tau$ agree outside $v$, and $0$ otherwise. It is a
+    unital $*$-homomorphism in $p$ that does not increase the norm and preserves positivity
+    and the order.
+\end{definition}
 
 \section{The expectation onto a region}
 \label{sec:sites_region_expectation}
@@ -631,13 +804,12 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 
 \begin{lemma}[Regional expectations]
     \label{lem:sites-regional-expectations}
-    \lean{Matrix.inner_toEuclideanLin_eq_trace, Matrix.eq_of_forall_trace_mul_eq,
-        ManyBody.norm_cutVector, ManyBody.regionState_posSemidef,
-        ManyBody.regionState_isHermitian, ManyBody.trace_regionState,
+    \lean{Matrix.inner_toEuclideanLin_eq_trace, ManyBody.norm_cutVector,
+        ManyBody.regionState_posSemidef, ManyBody.regionState_isHermitian, ManyBody.trace_regionState,
         ManyBody.inner_place, ManyBody.trace_regionState_submatrix_mul,
         ManyBody.inner_place_conj_eq, ManyBody.inner_conj_eq_of_mem_supportedOperators}
     \leanok
-    \uses{def:sites-regional-state}
+    \uses{def:sites-regional-state, def:sites_place}
     The matrix $\rho_D$ is positive semidefinite and has trace $\|\psi\|^2$.
     For every matrix $A$ on $D$,
     $\langle\psi,(A\otimes I)\psi\rangle=\operatorname{Tr}(\rho_D A)$.
@@ -655,9 +827,9 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \label{lem:sites-regional-union}
     \lean{ManyBody.regionUnionEquiv, ManyBody.regionUnionEquiv_apply_fst,
         ManyBody.regionUnionEquiv_apply_snd, ManyBody.place_union_kronecker,
-        ManyBody.partialTraceRight_regionState_union}
+        ManyBody.partialTraceRight_regionState_union, Matrix.eq_of_forall_trace_mul_eq}
     \leanok
-    \uses{def:sites-regional-state}
+    \uses{def:sites-regional-state, def:sites_place}
     For disjoint regions $B,C$, their union has configuration space
     $X_B\times X_C$. Placing $A\otimes K$ on the union equals the product
     of the placements of $A$ and $K$. The partial trace over $C$ of the
@@ -667,6 +839,80 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     \leanok
     The placement identity follows entrywise. Pairing the proposed marginal
     with every matrix on $B$ proves the partial-trace identity.
+\end{proof}
+
+\begin{definition}[Cut matrix and cut rank]
+    \label{def:sites_cut_matrix}
+    \lean{ManyBody.cutMatrix, ManyBody.cutMatrix_apply, ManyBody.cutMatrix_cutEquiv,
+        ManyBody.cutMatrix_zero, ManyBody.cutMatrix_add, ManyBody.cutMatrix_smul,
+        ManyBody.cutMatrix_injective, ManyBody.cutMatrix_eq_zero_iff, ManyBody.cutRank}
+    \leanok
+    \uses{def:sites_config}
+    The cut matrix of a vector $\psi$ on $X_V$ across a region $D$ is the matrix
+    $C_D(\psi)\in\C^{X_D\times X_{V\setminus D}}$ with entries
+    $C_D(\psi)_{\sigma\tau}=\psi(\sigma\tau)$, where $\sigma\tau$ is the
+    configuration equal to $\sigma$ on $D$ and to $\tau$ outside $D$. It is linear and
+    injective in $\psi$. Its rank is the cut rank of $\psi$ across $D$, the Schmidt rank
+    of $\psi$ in $\C^{X_D}\otimes\C^{X_{V\setminus D}}$. On the chain, the cut after
+    $k$ sites is the region $\{0,\dots,k-1\}$~\cite{PerezGarcia2007Matrix}.
+\end{definition}
+
+\begin{lemma}[Bounds on the cut rank]
+    \label{lem:sites_cut_rank}
+    \lean{ManyBody.card_regionConfig, ManyBody.card_complConfig,
+        ManyBody.cutRank_le_prod_card, ManyBody.cutRank_le_prod_card_compl,
+        ManyBody.cutRank_le_pow_card, ManyBody.cutRank_le_pow_card_compl,
+        ManyBody.cutRank_eq_zero_iff, ManyBody.cutRank_pos, ManyBody.cutRank_empty_le_one,
+        ManyBody.cutRank_univ_le_one, ManyBody.cutRank_empty, ManyBody.cutRank_univ,
+        ManyBody.cutRank_compl}
+    \leanok
+    \uses{def:sites_cut_matrix}
+    The cut rank across $D$ is at most $\prod_{v\in D}|X_v|$ and at most
+    $\prod_{v\notin D}|X_v|$. It vanishes only for $\psi=0$, and a nonzero vector has
+    cut rank one across $\emptyset$ and across $V$. The regions $D$ and $V\setminus D$
+    have the same cut rank~\cite{PerezGarcia2007Matrix}.
+\end{lemma}
+\begin{proof}\leanok
+    The rank of a matrix is at most its numbers of rows and of columns, and is zero only
+    for the zero matrix, which is the cut matrix of the zero vector alone. The cut matrix
+    across $V\setminus D$ is the transpose of the cut matrix across $D$ after relabelling
+    rows and columns, and transposition preserves the rank.
+\end{proof}
+
+\begin{lemma}[Cut rank and regional state]
+    \label{lem:sites_cut_rank_regional_state}
+    \lean{ManyBody.regionState_eq_cutMatrix_mul_conjTranspose,
+        ManyBody.rank_regionState_eq_cutRank}
+    \leanok
+    \uses{def:sites_cut_matrix, def:sites-regional-state}
+    The regional state is $\rho_D=C_D(\psi)C_D(\psi)^*$, so its rank is the cut rank of
+    $\psi$ across $D$~\cite{PerezGarcia2007Matrix}.
+\end{lemma}
+\begin{proof}\leanok
+    Entrywise, $(\rho_D)_{\sigma\sigma'}=\sum_\tau\psi(\sigma\tau)
+    \overline{\psi(\sigma'\tau)}$, and $CC^*$ has the rank of $C$.
+\end{proof}
+
+\begin{theorem}[Local operators and the cut rank]
+    \label{thm:sites_cut_rank_local}
+    \lean{ManyBody.cutMatrix_mulVec_of_cutOperator_eq_kronecker,
+        ManyBody.cutRank_mulVec_le_of_cutOperator_eq_kronecker,
+        ManyBody.cutMatrix_place_mulVec,
+        ManyBody.cutRank_mulVec_le_of_mem_supportedOperators}
+    \leanok
+    \uses{def:sites_cut_matrix, def:sites_place, def:sites_supported}
+    Let $T$ be an operator from $\C^{X_V}$ to $\C^{Y_V}$ that is $L\otimes R$ in the
+    coordinates of the cut along $D$. Then $C_D(T\psi)=L\,C_D(\psi)\,R^{\mathsf T}$,
+    so $T$ does not increase the cut rank across $D$. In particular an operator supported
+    on a region contained in $D$ or disjoint from $D$ does not increase the cut rank
+    across $D$~\cite[Corollary~6.10]{Schuch2010PEPS}.
+\end{theorem}
+\begin{proof}\leanok
+    \uses{thm:sites_place_range}
+    Expand $(T\psi)(\sigma\tau)$ over the configurations glued from the two sides and
+    factor the entries of $T$. The rank of a product is at most the rank of each factor.
+    An operator supported inside $D$ is the placement $K\otimes I$ of a matrix on $D$,
+    and one supported outside $D$ is $I\otimes B$ in cut coordinates.
 \end{proof}
 
 \begin{theorem}[A unitary away from a region]
@@ -774,6 +1020,36 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     factors vanishes. Otherwise both factors depend only on the values on $S$ and
     on $T$ and on the pattern of coincidences outside.
 \end{proof}
+
+\begin{lemma}[Conjugation by on-site unitaries]
+    \label{lem:sites_onsite_conjugation}
+    \lean{ManyBody.prodOp_mul_mul_conjTranspose_mem_supportedOperators}
+    \leanok
+    \uses{cor:sites_product_induction}
+    If the on-site matrices $m_v$ are unitary at every site outside a region $S$, then
+    $(\bigotimes_vm_v)A(\bigotimes_vm_v)^*\in\mathcal A_S$ for every $A\in\mathcal A_S$.
+\end{lemma}
+\begin{proof}\leanok
+    By Corollary~\ref{cor:sites_product_induction} it suffices to take
+    $A=\bigotimes_vn_v$ with $n_v=1$ outside $S$. Then the conjugate is
+    $\bigotimes_vm_vn_vm_v^*$, whose factors outside $S$ are $m_vm_v^*=1$.
+\end{proof}
+
+\begin{definition}[Exchange of two copies on a region]
+    \label{def:sites_pair_swap}
+    \lean{ManyBody.pairSwapOp, ManyBody.pairSwapOp_mem_supportedOperators,
+        ManyBody.conjTranspose_pairSwapOp, ManyBody.pairSwapOp_mul_self,
+        ManyBody.pairSwapOp_mem_unitaryGroup, ManyBody.pairSwapOp_empty,
+        ManyBody.pairSwapOp_mul_mul_conjTranspose_mem_supportedOperators,
+        ManyBody.pairSwapOp_mul_mul_conjTranspose_of_disjoint}
+    \leanok
+    \uses{thm:sites_product_span, lem:sites_onsite_conjugation, lem:sites_supported_commute}
+    On the paired system with basis $X_v\times X_v$ at the site $v$, the exchange of the two
+    copies on a region $A$ is the product operator of the exchange $(a,b)\mapsto(b,a)$ at the
+    sites of $A$ and the identity elsewhere. It is a self-adjoint unitary supported on $A$,
+    the identity for $A=\emptyset$; conjugation by it maps $\mathcal A_S$ into itself for
+    every region $S$, and fixes every operator supported on a region disjoint from $A$.
+\end{definition}
 
 \begin{theorem}[A local permutation of sites]
     \label{thm:sites-local-permutation}
@@ -890,6 +1166,132 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     on $S\sqcup S$.
 \end{proof}
 
+
+\section{Boundaries of a region in a graph}
+\label{sec:sites_graph_boundary}
+
+Let $G$ be a graph on the finite set of sites $V$ and let $A\subseteq V$ be a region.
+
+\begin{definition}[Edge boundary]
+    \label{def:sites_edge_boundary}
+    \lean{ManyBody.edgeBoundary, ManyBody.mem_edgeBoundary,
+        ManyBody.mk_mem_edgeBoundary_iff, ManyBody.edgeBoundary_subset_edgeFinset}
+    \leanok
+    The edge boundary $\partial A$ is the set of edges $\{x,y\}$ of $G$ with exactly
+    one endpoint in $A$, each counted once~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Calculus of edge boundaries]
+    \label{lem:sites_edge_boundary}
+    \lean{ManyBody.edgeBoundary_empty, ManyBody.edgeBoundary_univ,
+        ManyBody.edgeBoundary_compl, ManyBody.edgeBoundary_union_subset,
+        ManyBody.edgeBoundary_sdiff_subset, ManyBody.edgeBoundary_subset_union_symmDiff,
+        ManyBody.card_edgeBoundary_union_le, ManyBody.card_edgeBoundary_sdiff_le}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    The empty region and $V$ have no boundary edges, and
+    $\partial(V\setminus A)=\partial A$. An edge crossing the boundary of $A\cup B$ or of
+    $A\setminus B$ crosses $\partial A$ or $\partial B$, and an edge of $\partial A$
+    crosses $\partial B$ or the boundary of the symmetric difference of $A$ and $B$.
+    Hence $|\partial(A\cup B)|$ and $|\partial(A\setminus B)|$ are at most
+    $|\partial A|+|\partial B|$.
+\end{lemma}
+\begin{proof}\leanok
+    Each statement is a case distinction on the memberships of the two endpoints.
+\end{proof}
+
+\begin{lemma}[Paths leaving a region]
+    \label{lem:sites_edge_boundary_walk}
+    \lean{ManyBody.exists_edgeBoundary_of_walk, ManyBody.exists_edgeBoundary_near}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    A path from a site of $A$ to a site outside $A$ contains an edge $\{u,v\}$ of
+    $\partial A$ with $u\in A$, reached from the start in at most as many steps.
+    Consequently, if $a\in A$ is within distance $r$ of a site outside $A$, some edge
+    $\{u,v\}$ of $\partial A$ with $u\in A$ has $d_G(a,u)\le r$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The last site of the path in $A$ before its first site outside $A$ gives the edge,
+    and the initial segment of the path reaches it. Apply this to a shortest path.
+\end{proof}
+
+\begin{lemma}[Degree counts]
+    \label{lem:sites_edge_boundary_degree}
+    \lean{ManyBody.card_edgeBoundary_le_of_endpoint_cover,
+        ManyBody.card_edgeBoundary_le_mul_card,
+        ManyBody.card_edgeBoundary_le_add_mul_card_symmDiff}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    Let every site of $G$ have degree at most $k$. If every edge of $\partial A$ has an
+    endpoint in a set $R$, then $|\partial A|\le k|R|$. In particular
+    $|\partial A|\le k|A|$, and $|\partial A|\le|\partial B|+k|A\triangle B|$ for every
+    region $B$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{lem:sites_edge_boundary}
+    Every edge of $\partial A$ is incident to a site of $R$, and each site is incident to
+    at most $k$ edges. For the last bound, apply the first to the symmetric difference.
+\end{proof}
+
+\begin{definition}[Inner and endpoint boundaries]
+    \label{def:sites_vertex_boundary}
+    \lean{ManyBody.innerBoundary, ManyBody.endpointBoundary, ManyBody.mem_innerBoundary,
+        ManyBody.mem_endpointBoundary, ManyBody.innerBoundary_subset,
+        ManyBody.innerBoundary_empty, ManyBody.innerBoundary_univ,
+        ManyBody.endpointBoundary_empty, ManyBody.endpointBoundary_univ,
+        ManyBody.endpointBoundary_eq_union, ManyBody.endpointBoundary_compl}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    The inner boundary of $A$ is the set of sites of $A$ adjacent to a site outside $A$.
+    The endpoint boundary $Z_A$ is the set of endpoints of the edges of $\partial A$; it is
+    the union of the inner boundaries of $A$ and of $V\setminus A$~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[Vertex boundaries bound the edge boundary]
+    \label{lem:sites_vertex_boundary}
+    \lean{ManyBody.card_edgeBoundary_le_mul_card_innerBoundary,
+        ManyBody.two_mul_card_edgeBoundary_le_mul_card_endpointBoundary}
+    \leanok
+    \uses{def:sites_vertex_boundary, lem:sites_edge_boundary_degree}
+    If every site has degree at most $k$, then $|\partial A|$ is at most $k$ times the
+    size of the inner boundary of $A$, and $2|\partial A|\le k|Z_A|$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The inner boundary of $A$ meets every edge of $\partial A$. Applying this to $A$ and to
+    $V\setminus A$, whose edge boundaries agree and whose inner boundaries are disjoint
+    with union $Z_A$, gives the second bound.
+\end{proof}
+
+\begin{lemma}[Regions without boundary edges]
+    \label{lem:sites_zero_edge_boundary}
+    \lean{ManyBody.mem_iff_of_adj_of_edgeBoundary_eq_empty,
+        ManyBody.mem_iff_of_reachable_of_edgeBoundary_eq_empty,
+        ManyBody.edgeBoundary_eq_empty_iff,
+        ManyBody.subset_or_disjoint_of_edgeBoundary_eq_empty,
+        ManyBody.edgeBoundary_filter_connectedComponentMk_mem}
+    \leanok
+    \uses{def:sites_edge_boundary}
+    The edge boundary of $A$ is empty exactly when adjacent sites lie on the same side of
+    $A$. Then sites joined by a path lie on the same side, so a set any two of whose sites
+    are joined by a path lies in $A$ or is disjoint from it. The sites of any set of
+    connected components form a region without boundary edges~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    Induct along the path. Adjacent sites lie in the same component.
+\end{proof}
+
+\begin{lemma}[Boundaries under graph isomorphisms]
+    \label{lem:sites_boundary_map}
+    \lean{ManyBody.edgeBoundary_map, ManyBody.card_edgeBoundary_map,
+        ManyBody.innerBoundary_map, ManyBody.endpointBoundary_map}
+    \leanok
+    \uses{def:sites_edge_boundary, def:sites_vertex_boundary}
+    A graph isomorphism $f$ carries the edge, inner and endpoint boundaries of $A$ onto
+    the corresponding boundaries of $f(A)$.
+\end{lemma}
+\begin{proof}\leanok
+    The isomorphism preserves adjacency and membership in the image region.
+\end{proof}
 
 \section{Chains, integer domains and square lattices}
 \label{sec:sites_lattices}
@@ -1072,6 +1474,34 @@ supports of bounded range on them.
     $k=2$ its image is the bond $\{i,i+1\}$.
 \end{definition}
 
+\begin{definition}[Windows on the chain]
+    \label{def:sites_chain_window}
+    \lean{ManyBody.chainWindow, ManyBody.val_chainWindow, ManyBody.map_chainWindow,
+        ManyBody.chainWindow_trans_chainWindow}
+    \leanok
+    \uses{def:sites_chain_support}
+    For $a+k\le N$, the window of $k$ consecutive sites of the chain of $N$ sites starting
+    at $a$ is the injection $j\mapsto a+j$ of $\{0,\dots,k-1\}$; its image is the interval
+    $[a,a+k)$~\cite{Landau2013PolynomialTime}. The window of $k$ sites starting at $b$ inside
+    the window of $w\ge b+k$ sites starting at $a$ is the window of $k$ sites starting at
+    $a+b$.
+\end{definition}
+
+\begin{lemma}[Rotating and nesting windows on the ring]
+    \label{lem:sites_ring_window}
+    \lean{ManyBody.ringWindow_trans_finRotate, ManyBody.chainWindow_trans_ringWindow}
+    \leanok
+    \uses{def:sites_ring_window, def:sites_chain_window}
+    The rotation $j\mapsto j+1$ of the ring carries the window starting at $i$ to the window
+    starting at $i+1$. Inside the window of $m$ sites starting at $i$, the $k$ consecutive
+    sites starting at the position $b$, with $b+k\le m$, form the window of the ring starting
+    at $i+b$.
+\end{lemma}
+\begin{proof}\leanok
+    Both are identities of sites modulo $N$: $(i+j)+1=(i+1)+j$ and
+    $i+(b+j)=(i+b)+j$.
+\end{proof}
+
 \begin{definition}[Finite domains of the integers]
     \label{def:sites_line_domain}
     \lean{ManyBody.sitePos, ManyBody.lineDomainGraph, ManyBody.IsDomainSupport,
@@ -1133,13 +1563,28 @@ supports of bounded range on them.
     most $R$; distance zero means equality, and distance one adjacency.
 \end{proof}
 
+\begin{lemma}[Degrees of the square lattice]
+    \label{lem:sites_plane_degree}
+    \lean{ManyBody.planeDomainGraph_degree_le_four}
+    \leanok
+    \uses{def:sites_plane_domain}
+    Every point of a finite set $\Lambda\subset\Z^2$ has at most four neighbours in
+    $\Lambda$, so the counts of Lemmas~\ref{lem:sites_edge_boundary_degree}
+    and~\ref{lem:sites_vertex_boundary} hold with $k=4$~\cite{OpenAI2026AreaLaw}.
+\end{lemma}
+\begin{proof}\leanok
+    The neighbours of $(x_1,x_2)$ lie among $(x_1\pm1,x_2)$ and $(x_1,x_2\pm1)$.
+\end{proof}
+
 \begin{lemma}[Diameter, size and connectedness of a support]
     \label{lem:sites_plane_domain_support}
     \lean{ManyBody.IsAdmissibleSupport.edist_le, ManyBody.IsAdmissibleSupport.card_le,
         ManyBody.IsAdmissibleSupport.reachable,
         ManyBody.latticeL1Distance_le_one_of_planeDomainGraph_adj,
-        ManyBody.latticeL1Distance_le_walk_length, ManyBody.card_latticeDiamond,
-        ManyBody.card_le_diamond_of_walks}
+        ManyBody.latticeL1Distance_le_walk_length, ManyBody.latticeL1Distance_le_of_edist_le,
+        ManyBody.latticeDiamond, ManyBody.mem_latticeDiamond, ManyBody.card_latticeDiamond,
+        ManyBody.card_le_diamond_of_latticeL1Distance_le, ManyBody.card_le_diamond_of_walks,
+        ManyBody.card_le_diamond_of_edist_le}
     \leanok
     \uses{def:sites_plane_domain, lem:sites_plane_domain}
     A support $X$ of range $R$ in a finite set $\Lambda\subset\Z^2$ has graph
@@ -1149,9 +1594,12 @@ supports of bounded range on them.
 \begin{proof}\leanok
     The first two claims restate the walk condition. Fix $a\in X$. Each step of
     a walk in $\Lambda$ changes the $\ell^1$ distance in $\Z^2$ by at most one,
-    so every point of $X$ lies in the closed $\ell^1$ ball of radius $R$ about
-    $a$. That ball has $2(R-\lvert x\rvert)+1$ points with first coordinate
-    $a_1+x$, for $\lvert x\rvert\le R$, and these sum to $1+2R(R+1)$.
+    so every point joined to $a$ by a walk of length at most $R$, in particular
+    every point at graph distance at most $R$ from $a$, lies in the closed
+    $\ell^1$ ball of radius $R$ about $a$. Every point of $X$ is such a point.
+    That ball has $2(R-\lvert x\rvert)+1$ points with first coordinate
+    $a_1+x$, for $\lvert x\rvert\le R$, and these sum to $1+2R(R+1)$. A set
+    embedded injectively in the ball has at most that many points.
 \end{proof}
 
 \begin{definition}[Oriented edges]

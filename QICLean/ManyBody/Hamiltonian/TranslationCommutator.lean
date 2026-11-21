@@ -93,7 +93,7 @@ theorem norm_groundCompression_commutator_le_of_momenta
   have hInv : IsSiteInvariant Γ Φ.hamiltonian := isSiteInvariant_sum_of_covariant Φ.term hcov
   obtain ⟨g, hg, hfar⟩ :=
     exists_mem_supercell_lt_edist hN hden G π hπ e he (2 * R + l) hl i j
-  have hsep := disjoint_biUnion_graphBall_of_lt_edist G (T := T) id hX R hDiam
+  have hsep := disjoint_graphNeighborhood_of_lt_edist G (T := T) id hX R hDiam
     (g • j) i l hfar
   have hmain
       := norm_groundCompression_commutator_le_of_supercell_separation G Φ hHerm R hDiam vR hCard b₀
@@ -257,7 +257,7 @@ theorem norm_groundCompression_commutator_le_of_momenta_exp
       omega
     obtain ⟨g, hg, hfar⟩ :=
       exists_mem_supercell_lt_edist hN hden G π hπ e he (2 * R + l) hl i j
-    have hsep := disjoint_biUnion_graphBall_of_lt_edist G (T := T) id hX R hDiam
+    have hsep := disjoint_graphNeighborhood_of_lt_edist G (T := T) id hX R hDiam
       (g • j) i l hfar
     have hnorm : ‖Φ.term (g • j)‖ = ‖Φ.term j‖ := by
       rw [hcov, norm_sitePermOp_mul_mul_conjTranspose]
@@ -675,7 +675,7 @@ theorem norm_groundCompression_truncatedTerm_commutator_le_of_momenta
       (supportedOperators_mono (by exact_mod_cast hXK k) (Φ.mem k))
   obtain ⟨g, hg, hfar⟩ :=
     exists_mem_supercell_lt_edist hN hden G π hπ e he (2 * R' + l) hl i j
-  have hsep := disjoint_biUnion_graphBall_of_lt_edist G (T := K) id hkK R' hKdiam
+  have hsep := disjoint_graphNeighborhood_of_lt_edist G (T := K) id hkK R' hKdiam
     (g • j) i l hfar
   have hMg : M (g • j) = sitePermOp (α := α) (MulAction.toPerm g) * M j * (sitePermOp (α
       := α) (MulAction.toPerm g))ᴴ :=

@@ -3,6 +3,7 @@ Copyright (c) 2026 QICLean contributors. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
+import QICLean.Analysis.SupportProjectionOrder
 import QICLean.ManyBody.Sites.RegionExpectation
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Abs
 import Mathlib.Analysis.SpecialFunctions.ContinuousFunctionalCalculus.Rpow.Basic
@@ -40,7 +41,8 @@ over signed translations, and the expectation is `ManyBody.regionExpectation`.
 * `ManyBody.mem_supportedOperators_iff_forall_commute` — the operators supported on a region
   are exactly those commuting with every operator supported on its complement.
 * `ManyBody.cfc_mem_supportedOperators`, `ManyBody.sqrt_mem_supportedOperators`,
-  `ManyBody.abs_mem_supportedOperators` — the functional calculus preserves the support.
+  `ManyBody.abs_mem_supportedOperators`, `ManyBody.supportProj_mem_supportedOperators` — the
+  functional calculus, and with it the range projection, preserves the support.
 -/
 
 open Matrix
@@ -496,6 +498,15 @@ theorem cfc_mem_supportedOperators {D : Finset V} (f : ℝ → ℝ)
     cfc f A ∈ supportedOperators X D :=
   mem_supportedOperators_iff_forall_commute.mpr fun _ hB ↦
     (commute_of_mem_supportedOperators_of_disjoint hA hB disjoint_compl_right).cfc_real f
+
+/-- The range projection of a Hermitian operator supported on a region is supported on the same
+region. Moved from TNLean, `TNLean/PEPS/AreaLaw/FrustrationFree/RangeProjection.lean` at commit
+`414a18fb88`, with no change to the statement. -/
+theorem supportProj_mem_supportedOperators {D : Finset V} {A : Matrix (Config X) (Config X) ℂ}
+    (hA : A.IsHermitian) (hmem : A ∈ supportedOperators X D) :
+    hA.supportProj ∈ supportedOperators X D := by
+  rw [hA.supportProj_eq_cfc]
+  exact cfc_mem_supportedOperators _ hmem
 
 open scoped MatrixOrder ComplexOrder in
 /-- The square root preserves the support of an operator. -/

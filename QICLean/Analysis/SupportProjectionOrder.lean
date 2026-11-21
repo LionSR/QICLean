@@ -11,9 +11,13 @@ import Mathlib.Analysis.Matrix.Order
 /-!
 # Order comparison with the spectral support projection
 
-A positive contraction lies below its range projection. This comparison is
-used in the range-projection reduction of ALVV, arXiv:1602.08828v2,
-Section 6.1, lines 1457–1460.
+A positive contraction lies below its range projection, and a positive matrix bounded by `J`
+lies below `J` times its range projection. These comparisons are used in the range-projection
+reduction of ALVV, arXiv:1602.08828v2, Section 6.1, lines 1457–1460, and in the replacement of
+the positive terms of a frustration-free Hamiltonian by their range projections before a sweep
+(`ContinuousLinearMap.norm_pow_complementProd_le_of_gap`). `PosSemidef.le_smul_supportProj` is
+moved from TNLean, `TNLean/PEPS/AreaLaw/FrustrationFree/RangeProjection.lean` at commit
+`414a18fb88`, with no change to the statement.
 -/
 
 open scoped Matrix ComplexOrder MatrixOrder Matrix.Norms.L2Operator
@@ -63,6 +67,24 @@ theorem PosSemidef.le_supportProj_of_norm_le_one (hA : A.PosSemidef)
     · exact (le_abs_self x).trans ((spectrum.norm_le_norm_of_mem hx).trans hnorm)
     · simp only [not_not] at hx0
       simp [hx0]
+
+/-- A positive semidefinite matrix bounded by `J` lies below `J` times its range projection:
+`A ≤ J Π_A`. For `J > 0` this is `A / J ≤ Π_A` for the positive contraction `A / J`. -/
+theorem PosSemidef.le_smul_supportProj {A : Matrix n n ℂ} (hA : A.PosSemidef) {J : ℝ}
+    (hAJ : A ≤ J • (1 : Matrix n n ℂ)) : A ≤ J • hA.supportProj := by
+  have hsa : IsSelfAdjoint A := hA.isHermitian.isSelfAdjoint
+  have hspec : ∀ x ∈ spectrum ℝ A, x ≤ J := by
+    rw [← Algebra.algebraMap_eq_smul_one] at hAJ
+    exact (le_algebraMap_iff_spectrum_le hsa).mp hAJ
+  change A ≤ J • hA.isHermitian.supportProj
+  have hc := A.finite_real_spectrum.continuousOn (fun x : ℝ ↦ if x ≠ 0 then (1 : ℝ) else 0)
+  rw [hA.isHermitian.supportProj_eq_cfc, ← cfc_const_mul J _ A hc]
+  conv_lhs => rw [← cfc_id' ℝ A hsa]
+  refine cfc_mono (fun x hx ↦ ?_) (A.finite_real_spectrum.continuousOn _)
+    (A.finite_real_spectrum.continuousOn _)
+  by_cases hx0 : x = 0
+  · simp [hx0]
+  · simpa [hx0] using hspec x hx
 
 /-- Replacing every positive term by its range projection preserves the
 kernel of their sum. ALVV, arXiv:1602.08828v2, Section 6.1, lines 1457–1460.

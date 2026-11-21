@@ -56,10 +56,8 @@ theorem _root_.ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le
     have hzero : T = 0 := Subsingleton.elim _ _
     simp [hzero, ManyBody.cutOperator, operatorSchmidtRank_zero]
   obtain ⟨σ₀⟩ := hconfig
-  obtain ⟨M, U, W, hM, hdec, _⟩ :=
-    hT.hasProductDecomposition_inner (B := A) σ₀ (le_rfl : ‖T‖ ≤ ‖T‖)
-  exact (Matrix.operatorSchmidtRank_le_of_hasOperatorSchmidtDecomposition
-    ⟨U, W, hdec⟩).trans (by simpa only [ManyBody.card_innerConfig] using hM)
+  simpa only [ManyBody.card_innerConfig] using
+    (hT.hasProductDecomposition_inner (B := A) σ₀ (le_rfl : ‖T‖ ≤ ‖T‖)).operatorSchmidtRank_le
 
 /-- A supported operator acting on only one side of a cut has operator
 Schmidt rank at most one. LVV, arXiv:1307.5143v1, lines 584–588;

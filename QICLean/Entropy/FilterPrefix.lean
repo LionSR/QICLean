@@ -597,13 +597,13 @@ theorem norm_localLift_sq_le_exp {ι : Type*} [Fintype ι]
     {L : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) B)
         (ManyBody.RegionConfig (fun v ↦ Fin (n v)) B) ℂ} (hL : IsFeasibleFilter f a L)
     (hu : a / (1 - a) ≤
-      tailRadius (c₀ / g₀) (cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D))) :
+      tailRadius (c₀ / g₀) (ManyBody.cutLogBudget D n B)) :
     ‖toEuclideanLin (ManyBody.place B L) Ψ‖ ^ 2 ≤
       Real.exp
           (-a * vonNeumannEntropy (ManyBody.regionState Ψ B)
           (ManyBody.regionState_isHermitian B Ψ) +
         1024 * Real.exp 1 * (c₀ / g₀) *
-          cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D) * a ^ 2) := by
+          ManyBody.cutLogBudget D n B * a ^ 2) := by
   have ha1 : a < 1 := by linarith
   have h1a : 0 < 1 - a := by linarith
   set ρ := ManyBody.regionState Ψ B
@@ -627,7 +627,7 @@ theorem norm_localLift_sq_le_exp {ι : Type*} [Fintype ι]
     (B := B) (ρ := ρ) hρdef hρ (u := -a / (1 - a)) (by
       rw [abs_div, abs_neg, abs_of_pos ha, abs_of_pos h1a]; exact hu)
   have hK : 0 ≤ Real.exp 1 * (c₀ / g₀) *
-      cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D) := by
+      ManyBody.cutLogBudget D n B := by
     have := one_le_cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D)
     have : 0 ≤ c₀ / g₀ := div_nonneg hc₀ hg₀.le
     positivity

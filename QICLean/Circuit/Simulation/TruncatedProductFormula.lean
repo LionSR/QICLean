@@ -11,8 +11,11 @@ import QICLean.ManyBody.Dynamics.TruncatedEvolution
 
 The Hamiltonian of `localFamilyInside` is the sum of the placed interaction terms
 whose supports lie in the simulated region. The finite spatial truncation estimate
-therefore adds to the product-formula error of that family. The deleted-term norm
-sum remains explicit in the resulting circuit error bounds.
+therefore adds to the product-formula error of that family. In the first form of the circuit
+error bound the total norm of the deleted terms is explicit; in the boundary form only the
+terms crossing the boundary of the simulated region enter, and their total norm is at most the
+per-site budget times the number of sites of the region lying in a crossing term
+(`ManyBody.Interaction.sum_norm_term_crossing_le`).
 -/
 
 open Matrix ManyBody ProductFormula SimpleGraph
@@ -98,5 +101,35 @@ theorem norm_dual_trotterCircuit_sub_le_restrict_graphDistance
   exact (norm_dual_trotterCircuit_sub_le_restrict c hh t hn hRL hA).trans
     (add_le_add_right (norm_heisenbergEvolution_localFamilyInside_sub_le_graphDistance
       hh G r hDiam v hCard b hBudget hA μ hμ d hd t) _)
+
+/-- **Boundary form.** When the simulated region contains the circuit light cone, the full
+Trotter circuit approximates the full Hamiltonian evolution up to the product-formula error of
+the restricted family and a truncation error carried by the terms crossing the boundary of the
+simulated region only. -/
+theorem norm_dual_trotterCircuit_sub_le_restrict_boundary
+    (t : ℝ) {n : ℕ} (hn : 0 < n)
+    (hRL : (Geometry.ofSupports T).neighbourhood^[n * m] R ⊆ L) :
+    ‖(trotterCircuit c h t n).dual KrausGate.ev A -
+      heisenbergEvolution (∑ k, place (T k) (h k)) t A‖ ≤
+      2 * ‖A‖ * (t ^ 2 / (2 * n) *
+        commSum (fun k ↦ place (T k) (localFamilyInside h L k)) (colourOrder c)) +
+      (4 * (R.card : ℝ) * ‖A‖ *
+        (∑ k ∈ Finset.univ.filter (fun k ↦ ¬ T k ⊆ L ∧ ¬ Disjoint (T k) L),
+          ‖place (T k) (h k)‖) *
+        Real.exp ((4 * v * |b| * Real.exp (2 * μ * r)) * |t| - μ * d)) * |t| := by
+  have hR : R ⊆ L := by
+    refine subset_trans ?_ hRL
+    induction n * m with
+    | zero => exact subset_rfl
+    | succ j ih =>
+      rw [Function.iterate_succ_apply']
+      exact ih.trans (Geometry.subset_neighbourhood _ _)
+  let Φ : Interaction X T := ⟨fun k ↦ place (T k) (h k),
+    fun k ↦ place_mem_supportedOperators (h k)⟩
+  refine (norm_dual_trotterCircuit_sub_le_restrict c hh t hn hRL hA).trans
+    (add_le_add_right ?_ _)
+  rw [sum_place_localFamilyInside, norm_sub_rev]
+  exact norm_heisenbergEvolution_sub_spatial_truncation_le_boundary G Φ
+    (fun k ↦ isHermitian_place (hh k)) r hDiam v hCard b hBudget L R hR hA μ hμ d hd t
 
 end QuantumCircuit
