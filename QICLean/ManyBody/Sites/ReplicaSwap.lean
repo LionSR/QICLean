@@ -5,6 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Sites.SumSites
+import QICLean.ManyBody.Sites.PairSwap
 
 /-!
 # Two replicas and the exchange of replicas on a region
@@ -30,6 +31,8 @@ at commit `e41c3b63`, restated on the sites `V ⊕ V`; the paired sites with alp
 
 * `ManyBody.reindex_replicaPairEquiv_mem_supportedOperators_iff` — the support transfer.
 * `ManyBody.reindex_replicaPairEquiv_place` — the placement transfer.
+* `ManyBody.reindex_replicaPairEquiv_sitePermOp_replicaSwap` — on paired sites, the exchange of
+  the replicas is `ManyBody.pairSwapOp`.
 * `ManyBody.sitePermOp_replicaSwap_mem_supportedOperators`.
 * `ManyBody.sitePermOp_replicaSwap_conj_doubled`,
   `ManyBody.sitePermOp_replicaSwap_conj_doubled_of_subset`,
@@ -247,6 +250,66 @@ theorem reindex_replicaPairEquiv_place (S : Finset V)
     cases w <;> rfl
   simp only [reindex_apply, submatrix_apply, Equiv.symm_apply_apply, place_apply, hreg]
   exact if_congr (replicaPair_agree_notMem S σ τ).symm rfl rfl
+
+omit [Fintype V] [DecidableEq V] [Fintype α] [DecidableEq α] in
+private theorem replicaPairEquiv_symm_inl (τ : Config fun _ : V ↦ α × α) (v : V) :
+    (replicaPairEquiv V α).symm τ (.inl v) = (τ v).1 :=
+  rfl
+
+omit [Fintype V] [DecidableEq V] [Fintype α] [DecidableEq α] in
+private theorem replicaPairEquiv_symm_inr (τ : Config fun _ : V ↦ α × α) (v : V) :
+    (replicaPairEquiv V α).symm τ (.inr v) = (τ v).2 :=
+  rfl
+
+omit [Fintype α] in
+/-- **The exchange of replicas on paired sites.** Pairing the two replicas of every site
+carries the operator of the exchange of the replicas on `A` to the exchange
+`ManyBody.pairSwapOp A` of the two copies at the sites of `A`. The doubled system has these two
+coordinate systems, the sites `V ⊕ V` and the paired sites with basis `α × α`, and this
+identifies the two exchanges. -/
+theorem reindex_replicaPairEquiv_sitePermOp_replicaSwap (A : Finset V) :
+    reindex (replicaPairEquiv V α) (replicaPairEquiv V α) (sitePermOp (replicaSwap A)) =
+      pairSwapOp (X := fun _ : V ↦ α) A := by
+  ext σ τ
+  have hentry (v : V) :
+      (if v ∈ A then Equiv.Perm.permMatrix ℂ (Equiv.prodComm α α) else 1) (σ v) (τ v) =
+        if (if v ∈ A then (σ v).swap else σ v) = τ v then (1 : ℂ) else 0 := by
+    by_cases hv : v ∈ A <;>
+      simp [hv, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply, one_apply, eq_comm]
+  have hiff : (replicaPairEquiv V α).symm τ = (replicaPairEquiv V α).symm σ ∘ replicaSwap A ↔
+      ∀ v ∈ Finset.univ, (if v ∈ A then (σ v).swap else σ v) = τ v := by
+    refine ⟨fun h v _ ↦ ?_, fun h ↦ funext fun w ↦ ?_⟩
+    · have h1 := congrFun h (.inl v)
+      have h2 := congrFun h (.inr v)
+      rw [Function.comp_apply, replicaSwap_inl, replicaPairEquiv_symm_inl] at h1
+      rw [Function.comp_apply, replicaSwap_inr, replicaPairEquiv_symm_inr] at h2
+      by_cases hv : v ∈ A
+      · rw [ite_eq_left hv, replicaPairEquiv_symm_inr] at h1
+        rw [ite_eq_left hv, replicaPairEquiv_symm_inl] at h2
+        rw [ite_eq_left hv]
+        exact Prod.ext h1.symm h2.symm
+      · rw [ite_eq_right hv, replicaPairEquiv_symm_inl] at h1
+        rw [ite_eq_right hv, replicaPairEquiv_symm_inr] at h2
+        rw [ite_eq_right hv]
+        exact Prod.ext h1.symm h2.symm
+    · have key (v : V) := h v (Finset.mem_univ v)
+      rcases w with v | v
+      · rw [Function.comp_apply, replicaSwap_inl, replicaPairEquiv_symm_inl, ← key v]
+        by_cases hv : v ∈ A
+        · rw [ite_eq_left hv, ite_eq_left hv, replicaPairEquiv_symm_inr]
+          rfl
+        · rw [ite_eq_right hv, ite_eq_right hv, replicaPairEquiv_symm_inl]
+      · rw [Function.comp_apply, replicaSwap_inr, replicaPairEquiv_symm_inr, ← key v]
+        by_cases hv : v ∈ A
+        · rw [ite_eq_left hv, ite_eq_left hv, replicaPairEquiv_symm_inl]
+          rfl
+        · rw [ite_eq_right hv, ite_eq_right hv, replicaPairEquiv_symm_inr]
+  rw [reindex_apply, submatrix_apply, sitePermOp_apply, pairSwapOp, prodOp_apply]
+  simp_rw [hentry]
+  rw [Finset.prod_boole]
+  by_cases hc : ∀ v ∈ Finset.univ, (if v ∈ A then (σ v).swap else σ v) = τ v
+  · rw [ite_eq_left (hiff.mpr hc), ite_eq_left hc]
+  · rw [ite_eq_right (mt hiff.mp hc), ite_eq_right hc]
 
 /-! ### The doubled operator under the exchange -/
 

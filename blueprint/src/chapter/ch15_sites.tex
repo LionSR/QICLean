@@ -1108,19 +1108,23 @@ $\mathcal H_X=0$ and the statements below hold trivially.
 \begin{theorem}[Support and placement transfer]
     \label{thm:sites-replica-pair-transfer}
     \lean{ManyBody.reindex_replicaPairEquiv_mem_supportedOperators_iff,
-        ManyBody.reindex_replicaPairEquiv_place}
+        ManyBody.reindex_replicaPairEquiv_place,
+        ManyBody.reindex_replicaPairEquiv_sitePermOp_replicaSwap}
     \leanok
-    \uses{def:sites-replica-swap, def:sites_supported, def:sites_place}
+    \uses{def:sites-replica-swap, def:sites_supported, def:sites_place, def:sites_pair_swap}
     An operator on two replicas is supported on $S\sqcup S$ exactly when, on paired
     sites, it is supported on $S$. The placement of a matrix on $S\sqcup S$ is, on
-    paired sites, the placement on $S$ of the same matrix with the replicas paired.
+    paired sites, the placement on $S$ of the same matrix with the replicas paired. The
+    exchange of the replicas on a region $A$ is, on paired sites, the exchange of the two
+    copies at the sites of $A$.
 \end{theorem}
 \begin{proof}
     \leanok
     Two configurations of the replicas agree on $S\sqcup S$, or outside it, exactly
     when their pairings agree on $S$, or outside it. The two conditions on matrix
     entries defining support therefore correspond, and so do the entries of the two
-    placements.
+    placements. Both exchanges are permutation matrices, and they send a paired
+    configuration to the one with the two entries exchanged at the sites of $A$.
 \end{proof}
 
 \begin{theorem}[The exchange of replicas and doubled operators]
