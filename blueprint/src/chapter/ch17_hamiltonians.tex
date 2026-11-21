@@ -673,13 +673,16 @@ kernel, either from the quadratic form or from the norm.
 
 \begin{definition}[Translates on the open chain]
     \label{def:hamiltonians_chain_translates}
-    \lean{ManyBody.Interaction.chainTranslates}
+    \lean{ManyBody.Interaction.chainTranslates,
+        ManyBody.Interaction.hamiltonian_chainTranslates_eq_sum_range}
     \leanok
     \uses{def:dynamics_interaction_translates, def:sites_chain_window}
     For an operator $h$ on $k$ sites, the translates of $h$ on the open chain of $N$ sites
     have, for every position $0\le i\le N-k$, the translate of $h$ to the window $[i,i+k)$.
     Their Hamiltonian is the open-boundary Hamiltonian $\sum_{i\le N-k}h_{[i,i+k)}$ of one
-    local term~\cite{Landau2013PolynomialTime}.
+    local term~\cite{Landau2013PolynomialTime}, a sum over the natural numbers
+    $i<N+1-k$. Terms that vary with the position $i$ form the interaction of operators
+    placed along the windows $[i,i+k)$.
 \end{definition}
 
 \begin{definition}[A rectangle interaction on the plane]

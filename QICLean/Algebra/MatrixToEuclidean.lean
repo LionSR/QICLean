@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import Mathlib.Analysis.CStarAlgebra.Matrix
+import Mathlib.Analysis.Matrix.Order
 import QICLean.Channel.SchmidtRank
 
 /-!
@@ -12,7 +13,8 @@ import QICLean.Channel.SchmidtRank
 Coordinate facts about the linear and continuous linear maps of a complex matrix on Euclidean
 space: the inner product `⟪x, A y⟫` is the dot product `star x ⬝ᵥ A y` of coordinate vectors,
 a matrix of operator norm at most one does not increase the norm of a vector, the identity
-matrix acts as the identity, and a product acts as the composition. Mathlib states the first
+matrix acts as the identity, a product acts as the composition, and the maps of two matrices
+are in Loewner order exactly when the matrices are. Mathlib states the first
 only over the reals (`Matrix.inner_toEuclideanCLM`). An operator on the left factor of a
 bipartite vector acts on its coefficient matrix by left multiplication.
 
@@ -21,6 +23,8 @@ bipartite vector acts on its coefficient matrix by left multiplication.
 * `Matrix.inner_toEuclideanCLM_eq_dotProduct`: `⟪x, A y⟫ = star x ⬝ᵥ (A *ᵥ y)`.
 * `Matrix.norm_toEuclideanCLM_le_of_norm_le_one`: `‖A‖ ≤ 1` gives `‖A x‖ ≤ ‖x‖`.
 * `Matrix.toEuclideanLin_one_apply`, `Matrix.toEuclideanLin_mul_apply`.
+* `Matrix.toEuclideanLin_le_toEuclideanLin_iff`, `Matrix.toEuclideanCLM_le_toEuclideanCLM_iff`:
+  the maps on Euclidean space are in Loewner order exactly when the matrices are.
 * `Matrix.schmidtCoeffMatrix_kronecker_one_mulVec`: `(K ⊗ 1) ψ` has coefficient matrix `K Ψ`.
 
 Moved from TNLean, `TNLean/Algebra/ToEuclideanCLM.lean` and
@@ -65,5 +69,20 @@ theorem toEuclideanLin_mul_apply {m : Type*} [Fintype m] [DecidableEq m] (A B : 
     toEuclideanLin (A * B) x = toEuclideanLin A (toEuclideanLin B x) := by
   ext i
   simp [toLpLin_apply, mulVec_mulVec]
+
+open scoped MatrixOrder ComplexOrder
+
+/-- The linear maps of two matrices on Euclidean space are in Loewner order exactly when the
+matrices are: `A ≤ B` means that `B - A` is positive semidefinite. -/
+theorem toEuclideanLin_le_toEuclideanLin_iff {A B : Matrix n n ℂ} :
+    toEuclideanLin A ≤ toEuclideanLin B ↔ A ≤ B := by
+  rw [LinearMap.le_def, ← map_sub, isPositive_toEuclideanLin_iff, Matrix.le_iff]
+
+/-- The continuous linear maps of two matrices on Euclidean space are in Loewner order exactly
+when the matrices are. -/
+theorem toEuclideanCLM_le_toEuclideanCLM_iff {A B : Matrix n n ℂ} :
+    toEuclideanCLM (n := n) (𝕜 := ℂ) A ≤ toEuclideanCLM (n := n) (𝕜 := ℂ) B ↔ A ≤ B := by
+  rw [← ContinuousLinearMap.coe_le_coe_iff, coe_toEuclideanCLM_eq_toEuclideanLin,
+    coe_toEuclideanCLM_eq_toEuclideanLin, toEuclideanLin_le_toEuclideanLin_iff]
 
 end Matrix

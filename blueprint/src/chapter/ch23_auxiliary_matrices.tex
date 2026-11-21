@@ -153,10 +153,14 @@
     \lean{Submodule.starProjectionMatrix,
         Submodule.toEuclideanLin_starProjectionMatrix,
         Submodule.isStarProjection_starProjectionMatrix,
-        Matrix.isStarProjection_reindex}
+        Matrix.isStarProjection_reindex,
+        Matrix.isStarProjection_toEuclideanCLM_iff,
+        Matrix.isSymmetricProjection_toEuclideanLin_iff}
     \leanok
     The matrix, in the standard basis, of the orthogonal projection onto a
-    subspace of $\C^n$ is self-adjoint and idempotent. Relabelling both
+    subspace of $\C^n$ is self-adjoint and idempotent, and a matrix is
+    self-adjoint and idempotent exactly when the operator it defines is an
+    orthogonal projection. Relabelling both
     coordinates of a self-adjoint idempotent matrix along one bijection gives
     a self-adjoint idempotent matrix.
 \end{lemma}

@@ -11,6 +11,7 @@ import QICLean.Analysis.LowEnergyPerturbation
 import QICLean.Analysis.SeparatedQuadraticForms
 import QICLean.Analysis.SpectralExponentialWeights
 import QICLean.Analysis.WeightedProjection
+import QICLean.Algebra.MatrixToEuclidean
 
 /-!
 # Regional truncation error from a conjugation bound
@@ -98,7 +99,7 @@ theorem exists_weighted_low_restriction_of_conjugation_le
     Submodule.commute_starProjection_spectralSpanLE b a (T X + T Y) hEigenT e
   have hOrderT : (u : ℂ) • T Q ≤ T X := by
     have hm : (u : ℂ) • Q ≤ X := by simpa only [Complex.coe_smul] using horder
-    have h := Matrix.toEuclideanCLM_le_of_le hm
+    have h := Matrix.toEuclideanCLM_le_toEuclideanCLM_iff.mpr hm
     simpa only [map_smul] using h
   let Pkg : Submodule ℂ (EuclideanSpace ℂ (n)) → Prop := fun S ↦
       ∃ (B : S →L[ℂ] S) (XU : U →L[ℂ] U) (Z : S →L[ℂ] U)

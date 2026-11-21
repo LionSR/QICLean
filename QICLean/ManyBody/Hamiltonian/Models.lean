@@ -64,6 +64,8 @@ of these interactions together with the hypotheses that were its fields.
   Hamiltonian of `Φ` on the first `L` sites plus the matrices at the added sites other than
   the site `0`.
 
+* `ManyBody.Interaction.hamiltonian_chainTranslates_eq_sum_range` — the open-boundary
+  Hamiltonian of one local term as a sum over the positions `i < N + 1 - k`.
 * `ManyBody.RectangleInteraction.hamiltonian_toPlaneInteraction` — the map to the plane keeps
   the Hamiltonian, transported to the configurations of the domain.
 * `ManyBody.Interaction.translationInvariant_term_of_le`,
@@ -425,6 +427,18 @@ noncomputable abbrev Interaction.chainTranslates (k N : ℕ)
       Finset.univ.map (chainWindow (N := N) (k := k) i.val (by omega))) :=
   Interaction.translates (fun i : Fin (N + 1 - k) ↦
     chainWindow (N := N) (k := k) i.val (by omega)) h
+
+/-- **The open-boundary Hamiltonian as a sum over positions.** The Hamiltonian of the translates
+on the open chain is `∑_{i < N + 1 - k} h_{[i, i + k)}`, a sum over the natural numbers below
+`N + 1 - k`, for each of which the window `[i, i + k)` fits in the chain. -/
+theorem Interaction.hamiltonian_chainTranslates_eq_sum_range (k N : ℕ)
+    (h : Matrix (Fin k → α) (Fin k → α) ℂ) :
+    (chainTranslates k N h).hamiltonian = ∑ i ∈ Finset.range (N + 1 - k),
+      if hi : i + k ≤ N then placeAlong (X := fun _ ↦ α) (chainWindow i hi) h else 0 := by
+  rw [Finset.sum_range]
+  refine Finset.sum_congr rfl fun i _ ↦ ?_
+  rw [dite_eq_left (by omega : (i : ℕ) + k ≤ N)]
+  rfl
 
 end Chain
 

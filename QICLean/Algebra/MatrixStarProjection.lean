@@ -15,13 +15,16 @@ The orthogonal projection onto a submodule of complex Euclidean space is a
 self-adjoint idempotent matrix in the standard orthonormal basis. Its matrix is
 defined through `Matrix.toEuclideanLin`, so range and rank computations can use
 the linear-map projection directly. The star-algebra equivalence
-`Matrix.toEuclideanCLM` transports self-adjointness and idempotence together. Changing the
+`Matrix.toEuclideanCLM` transports self-adjointness and idempotence together, in both
+directions. Changing the
 finite index set of a square matrix preserves self-adjointness and idempotence.
 
 ## Main results
 
 * `Submodule.starProjectionMatrix`, `Submodule.isStarProjection_starProjectionMatrix`.
 * `Matrix.isStarProjection_reindex`.
+* `Matrix.isStarProjection_toEuclideanCLM_iff`, `Matrix.isSymmetricProjection_toEuclideanLin_iff`
+  — a matrix is an orthogonal projection exactly when its map on Euclidean space is.
 
 Moved from TNLean, `TNLean/Algebra/SubmoduleStarProjectionMatrix.lean` and
 `TNLean/Algebra/MatrixProjectionReindex.lean` at commit `49b78ed821` (Apache-2.0).
@@ -64,5 +67,22 @@ theorem isStarProjection_reindex {R ι κ : Type*}
   simpa only [IsSelfAdjoint, Matrix.star_eq_conjTranspose,
     Matrix.conjTranspose_reindex] using
     congrArg (Matrix.reindex e e) hA.isSelfAdjoint.star_eq
+
+variable {n 𝕜 : Type*} [Fintype n] [DecidableEq n] [RCLike 𝕜]
+
+/-- A matrix is self-adjoint and idempotent exactly when its continuous linear map on Euclidean
+space is an orthogonal projection. -/
+theorem isStarProjection_toEuclideanCLM_iff {A : Matrix n n 𝕜} :
+    IsStarProjection (toEuclideanCLM (n := n) (𝕜 := 𝕜) A) ↔ IsStarProjection A :=
+  ⟨fun h ↦ by simpa using h.map (toEuclideanCLM (n := n) (𝕜 := 𝕜)).symm.toStarAlgHom,
+    fun h ↦ h.map (toEuclideanCLM (n := n) (𝕜 := 𝕜)).toStarAlgHom⟩
+
+/-- A matrix is self-adjoint and idempotent exactly when its linear map on Euclidean space is a
+symmetric projection. -/
+theorem isSymmetricProjection_toEuclideanLin_iff {A : Matrix n n 𝕜} :
+    (toEuclideanLin A).IsSymmetricProjection ↔ IsStarProjection A := by
+  rw [← LinearMap.isStarProjection_iff_isSymmetricProjection]
+  exact LinearMap.isStarProjection_toContinuousLinearMap_iff.symm.trans
+    isStarProjection_toEuclideanCLM_iff
 
 end Matrix
