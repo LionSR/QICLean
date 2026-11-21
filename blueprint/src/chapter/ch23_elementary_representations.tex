@@ -1,0 +1,135 @@
+\section{Representations of matrix algebras and coalgebras}
+
+\begin{lemma}[Splitting an arbitrary idempotent]
+    \label{thm:glm_boundary_idempotent}
+    \lean{Matrix.exists_rankFactorization_of_idempotent}
+    \leanok
+    Every idempotent $P\in M_D(K)$ over a field factors as $P=WV$,
+    $VW=I_m$, with $m=\operatorname{rank}P$. This includes $m=0$ and
+    imposes no self-adjointness condition.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Choose a basis of $\operatorname{ran}P$. Let $W$ include these
+    coordinates in $K^D$, and let $V$ take coordinates after applying $P$.
+    The identity $P^2=P$ says that $P$ is the identity on its range, hence
+    $VW=I_m$ and $WV=P$.
+\end{proof}
+
+\begin{lemma}[Biorthogonal matrix-algebra representations]
+    \label{thm:glm_boundary_matrix_blocks}
+    \lean{Matrix.exists_matrixUnitFactorization,
+        Matrix.sum_multiplicityBlocks_mul,
+        Matrix.exists_matrixUnitBlocks,
+        Matrix.exists_multiplicativeLinearMap_blocks,
+        Matrix.exists_multiplicativeLinearMap_blocks_of_fintype,
+        Matrix.biorthogonal_sum_support,
+        Matrix.exists_piMatrix_blocks}
+    \leanok
+    A multiplicative $K$-linear map $\rho\colon\prod_c M_{D_c}(K)\to M_D(K)$
+    admits finite multiplicities $m_c$ and matrices
+    $W_{c\mu}\colon K^{D_c}\to K^D$, $V_{c\mu}\colon K^D\to K^{D_c}$ such that
+    \begin{align}
+        V_{c\mu}W_{d\nu}
+                & =\delta_{cd}\delta_{\mu\nu}I_{D_c},
+        \label{eq:glm_boundary_matrix_orthogonal}       \\
+        \rho(M) & =\sum_{c,\mu}W_{c\mu}M_cV_{c\mu},   &
+        \rho(1) & =\sum_{c,\mu}W_{c\mu}V_{c\mu}.
+        \label{eq:glm_boundary_matrix_reconstruct}
+    \end{align}
+    Zero-dimensional factors and zero multiplicities are allowed. This is
+    the decomposition of \cite[Appendix~A]{GarreRubio2023MPOSym}.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    \uses{thm:glm_boundary_idempotent}
+    For a nonzero factor, put $E_{ij}=\rho(e_{c,ij})$ and choose
+    $E_{00}=CH$ with $HC=I$. The identities
+    $E_{ij}E_{kl}=\delta_{jk}E_{il}$ give
+    $(HE_{0i})(E_{j0}C)=\delta_{ij}I$ and
+    $(E_{i0}C)(HE_{0j})=E_{ij}$. Separate the common coordinate into
+    multiplicity indices and expand an arbitrary matrix in matrix units.
+    Distinct factors have annihilating support idempotents, so their
+    rectangular factors are mutually biorthogonal. Summing the factor
+    expansions gives (\ref{eq:glm_boundary_matrix_reconstruct}).
+\end{proof}
+
+\begin{definition}[Pre-bialgebra]
+    \label{def:mpoalg_pre_bialgebra}
+    \lean{PreBialgebra, Bialgebra.toPreBialgebra}
+    \leanok
+    A pre-bialgebra over a commutative semiring $R$ is an algebra
+    $\mathcal A$ over $R$ with linear maps
+    $\Delta\colon\mathcal A\to\mathcal A\otimes\mathcal A$ and
+    $\epsilon\colon\mathcal A\to R$ such that $\Delta$ is multiplicative and
+    coassociative and $\epsilon$ is a counit:
+    \begin{align}
+        \Delta(xy)                    & =\Delta(x)\Delta(y),            &
+        (\Delta\otimes\Id)\circ\Delta & =(\Id\otimes\Delta)\circ\Delta,
+        \label{eq:mpoalg_pre_bialgebra}                                   \\
+        (\epsilon\otimes\Id)\circ\Delta
+                                      & =\Id,                           &
+        (\Id\otimes\epsilon)\circ\Delta
+                                      & =\Id,
+        \label{eq:mpoalg_pre_bialgebra_counit}
+    \end{align}
+    after the standard identifications of the two triple tensor products and
+    of $R\otimes\mathcal A$ and $\mathcal A\otimes R$ with $\mathcal A$.
+    Neither $\Delta(1)=1\otimes1$ nor any relation between $\epsilon$
+    and the unit or the product is required. Every bialgebra is a
+    pre-bialgebra.
+
+    This is \cite[Definition~4.1]{Molnar2022MPOAlgebrasI}: an algebra that is
+    also a coalgebra \cite[Definition~3.1]{Molnar2022MPOAlgebrasI} with
+    multiplicative coproduct. The source works with finite-dimensional
+    complex vector spaces.
+\end{definition}
+
+\begin{lemma}[Same-order involution of the convolution dual]
+    \label{thm:glm_coalgebra_dual_star}
+    \lean{Coalgebra.dualStar_mul, Coalgebra.dualStarMulEquiv,
+        Coalgebra.dualStar_one}
+    \leanok
+    Let $H$ be a coalgebra with an involution such that
+    $\Delta(x^*)=\Delta(x)^*$. For $f\in H^*$, define
+    $\kappa(f)(x)=\overline{f(x^*)}$. Then $\kappa$ is conjugate-linear,
+    involutive, and satisfies
+    \begin{align}
+        \kappa(fg) & =\kappa(f)\kappa(g), \notag \\
+        \kappa(1)  & =1.
+        \label{eq:glm_dual_star_product}
+    \end{align}
+    Here multiplication is convolution, and $1$ is the counit.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    On a pure tensor, complex conjugation sends
+    $f(x^*)g(y^*)$ to $\kappa(f)(x)\kappa(g)(y)$.
+    Extend this identity additively to $\Delta(x)$ and use the
+    coproduct compatibility. Involutivity makes $\kappa$ a bijective
+    multiplicative map, so it fixes the unit.
+\end{proof}
+
+\begin{lemma}[Representations of the Klein four-group by involutions]
+    \label{lem:elementary_klein_involutions}
+    \lean{Matrix.ofCommutingInvolutions,
+        Matrix.ofCommutingInvolutions_mul_conjTranspose,
+        Matrix.mul_of_anticommuting_involutions,
+        Matrix.mul_of_anticommuting_neg_involution}
+    \leanok
+    Let $P_1,P_2$ be square complex matrices with $P_1^2=P_2^2=\Id$. If
+    $P_1P_2=P_2P_1$, then $(g_1,g_2)\mapsto P_1^{g_1}P_2^{g_2}$ is a
+    representation of $\mathbb Z_2\times\mathbb Z_2$, unitary when $P_1$ and
+    $P_2$ are. If instead $P_2P_1=-P_1P_2$, the same assignment satisfies
+    $u(g)u(h)=(-1)^{g_2h_1}u(gh)$; if $P_1^2=-\Id$ and $P_2P_1=-P_1P_2$, it
+    satisfies $u(g)u(h)=(-1)^{(g_1+g_2)h_1}u(gh)$.
+\end{lemma}
+
+\begin{proof}
+    \leanok
+    Check the sixteen pairs of group elements using the involution and
+    commutation relations.
+\end{proof}
