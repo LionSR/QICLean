@@ -28,12 +28,12 @@ The printed obstruction and the support-compression repair are documented in
 `docs/paper-gaps/scp10_finite_group_commutant_unital.tex`.
 
 Moved from TNLean, `TNLean/Algebra/FiniteGroupCommutant.lean` at commit `49b78ed821`
-(Apache-2.0).
+(Apache-2.0). Changes: the namespace `TNLean` becomes `Matrix`.
 -/
 
 open scoped Matrix
 noncomputable section
-namespace TNLean
+namespace Matrix
 
 open scoped Kronecker
 
@@ -278,4 +278,4 @@ theorem _root_.StarSubalgebra.exists_finite_unitary_group_commutant
         (1 : Matrix (Fin (m k)) _ ℂ) ⊗ₖ B k)
       simpa only [AlgEquiv.apply_symm_apply] using congrArg E hB
 
-end TNLean
+end Matrix

@@ -17,12 +17,12 @@ the matrix-level averaging fact used for the local gauge constraints in
 arXiv:2502.20257, lines 457--461.
 
 Moved from TNLean, `TNLean/Algebra/FiniteGroupUnitaryAverage.lean` at commit `49b78ed821`
-(Apache-2.0).
+(Apache-2.0). Changes: the namespace `TNLean.Algebra` becomes `Matrix`.
 -/
 
 open scoped BigOperators Matrix
 
-namespace TNLean.Algebra
+namespace Matrix
 
 variable {G ι : Type*} {n : ℕ} [Group G] [Fintype G] [Fintype ι] [DecidableEq ι]
 
@@ -70,4 +70,4 @@ theorem isOrthogonalProjection_inv_card_smul_sum
     IsOrthogonalProjection ((Fintype.card G : ℂ)⁻¹ • ∑ g : G, (ρ g : Matrix (Fin n) (Fin n) ℂ)) :=
   (isStarProjection_inv_card_smul_sum ρ).isOrthogonalProjection
 
-end TNLean.Algebra
+end Matrix

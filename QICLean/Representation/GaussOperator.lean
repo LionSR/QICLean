@@ -43,20 +43,21 @@ state under them, are not treated here.
 
 ## Main results
 
-* `TNLean.Algebra.gaussRepresentation`: the local Gauss operators form a unitary
+* `GaussLaw.gaussRepresentation`: the local Gauss operators form a unitary
   representation of `G`.
-* `TNLean.Algebra.isStarProjection_gaussProjector`: their normalized average is a
+* `GaussLaw.isStarProjection_gaussProjector`: their normalized average is a
   star projection.
-* `TNLean.Algebra.gaussOperator_eq_monomial`: the local Gauss operator of monomial
+* `GaussLaw.gaussOperator_eq_monomial`: the local Gauss operator of monomial
   matter unitaries is monomial.
 
 Moved from TNLean, `TNLean/Algebra/GaussRepresentation.lean`,
 `TNLean/Algebra/GaussProjector.lean` and `TNLean/Algebra/MonomialGaussOperator.lean` at
-commit `49b78ed821` (Apache-2.0). Changes: the three modules are merged into one.
+commit `49b78ed821` (Apache-2.0). Changes: the three modules are merged into one, and
+the namespace `TNLean.Algebra` becomes `GaussLaw`.
 -/
 noncomputable section
 
-namespace TNLean.Algebra
+namespace GaussLaw
 
 section Representation
 
@@ -254,7 +255,7 @@ theorem gaussProjector_eq_average (R : G → G → Matrix.unitaryGroup n ℂ) :
 theorem isStarProjection_gaussProjector
     (R : G → G → Matrix.unitaryGroup n ℂ) :
     IsStarProjection (gaussProjector R) :=
-  isStarProjection_inv_card_smul_sum (gaussRepresentation R)
+  Matrix.isStarProjection_inv_card_smul_sum (gaussRepresentation R)
 
 end Projector
 
@@ -335,4 +336,4 @@ theorem gaussOperator_eq_monomial (R : G → G → Matrix.unitaryGroup n ℂ)
 
 end Monomial
 
-end TNLean.Algebra
+end GaussLaw

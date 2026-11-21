@@ -34,24 +34,23 @@ hypercube.
 
 ## Main results
 
-* `TNLean.Algebra.finrank_commonFixedSubmodule_reindex`: the dimension of a
+* `Matrix.finrank_commonFixedSubmodule_reindex`: the dimension of a
   common fixed subspace is unchanged under a simultaneous relabelling of the
   basis.
-* `TNLean.Algebra.finrank_commonFixedSubmodule_monomial_fiberFlip`: the
+* `Hypercube.finrank_commonFixedSubmodule_monomial_fiberFlip`: the
   dimension of the common fixed subspace of the monomial operators $T_j$ equals
   the number of fibers with trivial holonomy.
 
 Moved from TNLean, `TNLean/Algebra/MonomialFixedSubspace.lean` at commit `49b78ed821`
 (Apache-2.0). Changes: the auxiliary lemma `reindex_mulVec` of this namespace is removed (its
-one use is unfolded into the proof of `commonFixedSubmodule_reindex`), and the motivating
-sentence is phrased without reference to a particular circuit.
+one use is unfolded into the proof of `commonFixedSubmodule_reindex`); the namespace
+`TNLean.Algebra` becomes `Matrix` for the relabelling lemmas and `Hypercube` for the rest; and
+the motivating sentence is phrased without reference to a particular circuit.
 -/
 
-namespace TNLean.Algebra
-
-open Matrix
-
 /-! ### Relabelling the basis -/
+
+namespace Matrix
 
 section Reindex
 
@@ -85,7 +84,13 @@ theorem finrank_commonFixedSubmodule_reindex {J : Sort*} (e : ι ≃ κ)
 
 end Reindex
 
+end Matrix
+
 /-! ### Monomial operators along hypercube fibers -/
+
+namespace Hypercube
+
+open Matrix
 
 section Fiber
 
@@ -218,4 +223,4 @@ theorem finrank_commonFixedSubmodule_monomial_fiberFlip
 
 end Fiber
 
-end TNLean.Algebra
+end Hypercube

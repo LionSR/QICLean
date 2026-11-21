@@ -27,17 +27,17 @@ monomial operators whose permutations are coordinate flips.
 
 Moved from TNLean, `TNLean/Algebra/HypercubePhasePotential.lean` at commit `49b78ed821`
 (Apache-2.0). Changes: the motivating sentence is phrased without reference to a particular
-circuit.
+circuit, and the namespace `TNLean.Algebra` becomes `Hypercube`.
 
 ## Main results
 
-* `TNLean.Algebra.hypercube_induction`: a predicate holding at the origin and
+* `Hypercube.hypercube_induction`: a predicate holding at the origin and
   stable under coordinate flips holds on the whole hypercube.
-* `TNLean.Algebra.exists_potential_of_flat`: flat phases with values in a
+* `Hypercube.exists_potential_of_flat`: flat phases with values in a
   commutative group have a potential.
 -/
 
-namespace TNLean.Algebra
+namespace Hypercube
 
 open Finset Matrix
 
@@ -142,4 +142,4 @@ theorem exists_potential_of_flat {M : Type*} [CommGroup M] :
             _ = φ k.succ (vecCons 1 γ') * (φ 0 (vecCons 0 γ') * Φ' γ') := by
                 rw [mul_comm (φ 0 _), mul_assoc]
 
-end TNLean.Algebra
+end Hypercube

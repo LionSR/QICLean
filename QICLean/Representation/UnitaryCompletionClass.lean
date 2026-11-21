@@ -20,7 +20,7 @@ therefore the whole family `(U a b)`, not one selected operator.
 
 The matter operators are represented here as elements of
 `Matrix.unitaryGroup n ℂ`, the family type consumed by the local Gauss operator
-`TNLean.Algebra.gaussOperator`, so that a completion is literally an admissible
+`GaussLaw.gaussOperator`, so that a completion is literally an admissible
 argument of that operator and its gauge block
 `(U (T g (a, b)))⁻¹ * U a b` is the unitary factorization comparison
 `Matrix.unitaryFactorizationComparison`. Defect subspaces are submodules of
@@ -36,14 +36,15 @@ adjoint of a prescribed defect map, which is false for a general completion.
 
 Moved from TNLean, `TNLean/Algebra/UnitaryCompletionClass.lean` at commit `49b78ed821`
 (Apache-2.0). Changes: the opening paragraph describes the prescribed operators without the
-setting of the source in which they arise.
+setting of the source in which they arise, and the namespace `TNLean.Algebra` becomes
+`GaussLaw`.
 -/
 
 noncomputable section
 
 open scoped Matrix
 
-namespace TNLean.Algebra
+namespace GaussLaw
 
 variable {G n : Type*} [Fintype n] [DecidableEq n]
 
@@ -187,4 +188,4 @@ theorem IsCompletion.unitaryFactorizationComparison_gaussLegAction_mulVec
 
 end DefectMaps
 
-end TNLean.Algebra
+end GaussLaw

@@ -19,13 +19,13 @@ matrix size for the construction in SCP10, Theorem 4.1
 (arXiv:1001.3807, local source lines 852–885).
 
 Moved from TNLean, `TNLean/Algebra/SignedPermutationSpan.lean` at commit `49b78ed821`
-(Apache-2.0).
+(Apache-2.0). Changes: the namespace `TNLean` becomes `Matrix`.
 -/
 
 open scoped Matrix
 open Matrix
 noncomputable section
-namespace TNLean
+namespace Matrix
 
 variable (ι : Type*) [Fintype ι] [DecidableEq ι]
 
@@ -128,4 +128,4 @@ theorem span_signedPermutationRepresentation :
     (Submodule.sub_mem _ (Submodule.subset_span ⟨g, rfl⟩)
       (Submodule.subset_span ⟨h, rfl⟩))
 
-end TNLean
+end Matrix
