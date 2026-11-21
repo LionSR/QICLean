@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Sites.Relabel
+import QICLean.ManyBody.Sites.RegionUnion
 import QICLean.Algebra.L2OpNormReindex
 
 /-!
@@ -51,11 +52,16 @@ rotation of the ring, this is the translation of one window to the next.
 * `ManyBody.placeAlong_subtype`, `ManyBody.placeAlong_equiv`, `ManyBody.placeAlong_refl`,
   `ManyBody.placeAlong_placeAlong`, `ManyBody.placeAlong_prodOp`.
 * `ManyBody.sitePermOp_mul_placeAlong_mul_conjTranspose`.
+* `ManyBody.place_siteEquiv_eq_placeAt` — a matrix on the region `{v}`, read through the basis of
+  `v`, is the matrix at `v`; `ManyBody.placeAt_eq_prodOp`, `ManyBody.placeAt_mulVec_apply`.
 
 These replace TNLean's placements `QuantumCircuit.embedOp` (`Circuit/SiteEmbedding`) and
 `MPOTensor.embedLocalOperator` (`MPS/MPDO/CommutingForm`) at TNLean commit `414a18fb88`: the
 first is the placement along an injection `κ ↪ ι`, and the second is the placement along the
-window of `L` consecutive sites of a ring, `ManyBody.ringWindow`.
+window of `L` consecutive sites of a ring, `ManyBody.ringWindow`. The lemmas on one site
+restate those on `siteOp` of `TNLean/Circuit/SiteOperators.lean` at the same commit
+(Apache-2.0), with `ManyBody.placeAt` in place of `siteOp` and any finite basis at each site in
+place of one common dimension.
 -/
 
 open Matrix
@@ -526,6 +532,30 @@ variable {v p} in
 theorem isHermitian_placeAt (hp : p.IsHermitian) : (placeAt v p).IsHermitian :=
   isHermitian_placeAlong _ (hp.reindex _)
 
+/-- A matrix on the configurations of the region `{v}`, read through the basis of `v`
+(`ManyBody.siteEquiv`) and placed on `{v}`, is the matrix at the site `v`. -/
+theorem place_siteEquiv_eq_placeAt :
+    place {v} (p.submatrix (siteEquiv X v) (siteEquiv X v)) = placeAt v p := by
+  ext σ τ
+  rw [placeAt_apply, place_apply]
+  simp only [Finset.mem_singleton]
+  rfl
+
+/-- A matrix at one site is the product operator with that matrix at the site and the identity
+at the other sites. -/
+theorem placeAt_eq_prodOp :
+    placeAt v p = prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) v p) := by
+  ext x y
+  rw [placeAt_apply, prodOp_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ v),
+    Function.update_self]
+  have h : ∀ s ∈ Finset.univ.erase v,
+      Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) v p s (x s) (y s) =
+        if x s = y s then 1 else 0 := fun s hs ↦ by
+    rw [Function.update_of_ne (Finset.ne_of_mem_erase hs), one_apply]
+  rw [Finset.prod_congr rfl h, Finset.prod_boole]
+  simp only [Finset.mem_erase, ne_eq, Finset.mem_univ, and_true]
+  split_ifs <;> simp
+
 variable [∀ v, Fintype (X v)]
 
 theorem placeAt_mul : placeAt v (p * p') = placeAt v p * placeAt v p' := by
@@ -533,6 +563,31 @@ theorem placeAt_mul : placeAt v (p * p') = placeAt v p * placeAt v p' := by
   rw [placeAt, placeAt, placeAt, reindex_apply, reindex_apply, reindex_apply,
     ← submatrix_mul_equiv (e₂ := (Equiv.funUnique Unit (X v)).symm.symm)]
   exact placeAlong_mul (X := X) (Function.Embedding.punit v : Unit ↪ V) _ _
+
+variable {v p} in
+/-- A unitary matrix at one site is unitary. -/
+theorem placeAt_mem_unitaryGroup (hp : p ∈ unitaryGroup (X v) ℂ) :
+    placeAt v p ∈ unitaryGroup (Config X) ℂ := by
+  rw [← place_siteEquiv_eq_placeAt]
+  exact place_mem_unitaryGroup (submatrix_equiv_mem_unitary.mpr hp)
+
+/-- A matrix at one site acts on a vector through the basis of that site. -/
+theorem placeAt_mulVec_apply (ψ : Config X → ℂ) (y : Config X) :
+    (placeAt v p *ᵥ ψ) y = ∑ b : X v, p (y v) b * ψ (Function.update y v b) := by
+  rw [← place_siteEquiv_eq_placeAt, place_mulVec_apply, ← (siteEquiv X v).symm.sum_comp]
+  refine Finset.sum_congr rfl fun b _ ↦ ?_
+  rw [submatrix_apply, Equiv.apply_symm_apply]
+  have hcut : (cutEquiv X {v}).symm ((siteEquiv X v).symm b, (cutEquiv X {v} y).2) =
+      Function.update y v b := by
+    funext u
+    by_cases hu : u = v
+    · subst hu
+      rw [cutEquiv_symm_apply_mem _ _ (Finset.mem_singleton_self u), Function.update_self]
+      rfl
+    · rw [cutEquiv_symm_apply_not_mem _ _ (by simpa using hu), Function.update_of_ne hu]
+      rfl
+  rw [hcut]
+  rfl
 
 /-- A matrix at the site `v` is supported on `{v}`. -/
 theorem placeAt_mem_supportedOperators : placeAt v p ∈ supportedOperators X {v} := by

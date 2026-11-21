@@ -861,10 +861,9 @@ sequence on one system.
 
 \begin{lemma}[Unitary gates, and a gate on one site acting on a vector]
     \label{lem:circuits_local_gate_unitary}
-    \lean{KrausFamily.isUnitary_single, QuantumCircuit.KrausGate.isUnitary_ofMatrix,
-        ManyBody.place_siteEquiv_mulVec}
+    \lean{KrausFamily.isUnitary_single, QuantumCircuit.KrausGate.isUnitary_ofMatrix}
     \leanok
-    \uses{def:circuits_local_gate, def:sites_place}
+    \uses{def:circuits_local_gate, def:sites_place, lem:sites_place_at_product}
     The family of one unitary matrix is unitary, so the gate of a unitary matrix on a
     local basis is unitary. A matrix $M$ on $\C^{X_a}$ placed on the site $a$ maps a
     vector $\psi$ to the vector whose value at $\sigma$ is

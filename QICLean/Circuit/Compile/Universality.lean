@@ -170,7 +170,7 @@ theorem isGateProduct_ctrlOp_twoLevel
     IsGateProduct Γ ((2 ^ (R.card + 1) - 2) * k) (ctrlOp R c t (twoLevel α β g)) := by
   induction R using Finset.induction_on generalizing g with
   | empty =>
-    rw [ctrlOp_empty]
+    rw [ctrlOp_empty, ← place_siteEquiv_eq_placeAt]
     exact IsGateProduct.place_singleton t
       (submatrix_equiv_mem_unitary.mpr (twoLevel_mem_unitary hαβ hg.mem_unitary)) _
   | insert s R hs ih =>

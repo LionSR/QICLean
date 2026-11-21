@@ -407,13 +407,9 @@ of two sites is the operator of the transposition of the sites.
 
 \begin{definition}[Controlled operations on sites]
     \label{def:unitary_ctrl_op}
-    \lean{QuantumCircuit.ctrlProj, QuantumCircuit.ctrlOp,
-        ManyBody.place_siteEquiv_apply, ManyBody.place_siteEquiv_mul,
-        ManyBody.place_siteEquiv_one, ManyBody.place_siteEquiv_conjTranspose,
-        ManyBody.place_siteEquiv_mem_unitaryGroup,
-        ManyBody.place_siteEquiv_eq_prodOp}
+    \lean{QuantumCircuit.ctrlProj, QuantumCircuit.ctrlOp}
     \leanok
-    \uses{def:gate_ctrl_elem, def:sites_place, def:circuits_local_gate}
+    \uses{def:gate_ctrl_elem, def:sites_place_at, lem:sites_place_at_product}
     For a set $R$ of sites, a configuration $c$ and a site $t$, let $p_{R,c}$ be the
     projection onto the configurations that agree with $c$ on $R$, and let $u_t$ be a matrix
     $u$ on $\C^{X_t}$ placed at $t$. The controlled operation is
@@ -426,7 +422,7 @@ of two sites is the operator of the transposition of the sites.
     \lean{QuantumCircuit.isIdempotentElem_ctrlProj, QuantumCircuit.commute_ctrlProj,
         QuantumCircuit.ctrlProj_insert, QuantumCircuit.ctrlProj_empty,
         QuantumCircuit.ctrlProj_conjTranspose, QuantumCircuit.ctrlProj_mem_supportedOperators,
-        QuantumCircuit.commute_ctrlProj_place_siteEquiv, QuantumCircuit.ctrlOp_empty,
+        QuantumCircuit.commute_ctrlProj_placeAt, QuantumCircuit.ctrlOp_empty,
         QuantumCircuit.ctrlOp_mul, QuantumCircuit.ctrlOp_one,
         QuantumCircuit.ctrlOp_conjTranspose, QuantumCircuit.ctrlOp_mem_unitaryGroup,
         QuantumCircuit.ctrlOp_mem_supportedOperators,

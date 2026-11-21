@@ -530,6 +530,27 @@ $\mathcal H_X=0$ and the statements below hold trivially.
     and the order.
 \end{definition}
 
+\begin{lemma}[A matrix at one site as a product operator]
+    \label{lem:sites_place_at_product}
+    \lean{ManyBody.place_siteEquiv_eq_placeAt, ManyBody.placeAt_eq_prodOp,
+        ManyBody.placeAt_mem_unitaryGroup, ManyBody.placeAt_mulVec_apply}
+    \leanok
+    \uses{def:sites_place_at, def:sites_place, thm:sites_product_span}
+    A matrix $p$ on $\C^{X_v}$ read as a matrix on the configurations of the region $\{v\}$
+    and placed on $\{v\}$ is the matrix $p$ at the site $v$. It is the product operator with
+    $p$ at $v$ and the identity at the other sites, it is unitary when $p$ is, and it maps a
+    vector $\psi$ to the vector whose value at $\sigma$ is
+    $\sum_bp_{\sigma_v,b}\,\psi(\sigma[v\mapsto b])$, where $\sigma[v\mapsto b]$ agrees with
+    $\sigma$ except at $v$, where it is $b$.
+\end{lemma}
+\begin{proof}\leanok
+    The two operators have the same matrix elements: $p_{\sigma_v\tau_v}$ if $\sigma$ and
+    $\tau$ agree outside $v$, and $0$ otherwise. The product operator has the same matrix
+    elements, since the identity factors force agreement outside $v$, and the action on a
+    vector is the sum of these matrix elements over the configurations that agree with
+    $\sigma$ outside $v$.
+\end{proof}
+
 \section{The expectation onto a region}
 \label{sec:sites_region_expectation}
 

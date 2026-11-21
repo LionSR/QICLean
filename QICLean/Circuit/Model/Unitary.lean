@@ -7,6 +7,7 @@ import QICLean.Circuit.Core.LightCone
 import QICLean.Circuit.Core.LocalGate
 import QICLean.Circuit.Core.Parallel
 import QICLean.Circuit.Core.Seq
+import QICLean.ManyBody.Sites.PlaceAlong
 
 /-!
 # Unitary circuits
@@ -587,17 +588,8 @@ private theorem place_singleton_eq_prodOp (a : S)
     (V : Matrix (RegionConfig X {a}) (RegionConfig X {a}) ℂ) :
     ManyBody.place {a} V = ManyBody.prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) a
       (V.submatrix (siteEquiv X a).symm (siteEquiv X a).symm)) := by
-  ext σ τ
-  have hsite (ρ : Config X) : (siteEquiv X a).symm (ρ a) = fun v : {v // v ∈ ({a} : Finset S)} ↦
-      ρ v :=
-    (siteEquiv X a).symm_apply_eq.mpr rfl
-  rw [place_apply, prodOp_apply, Fintype.prod_eq_mul_prod_compl a, Function.update_self,
-    submatrix_apply, hsite, hsite]
-  rw [Finset.prod_congr rfl fun v hv ↦ by
-    rw [Function.update_of_ne (Finset.mem_compl.mp hv ∘ Finset.mem_singleton.mpr), one_apply],
-    Finset.prod_ite_zero, Finset.prod_const_one, mul_ite, mul_one, mul_zero]
-  congr 1
-  simp only [Finset.mem_compl]
+  rw [← placeAt_eq_prodOp, ← place_siteEquiv_eq_placeAt, submatrix_submatrix,
+    Equiv.symm_comp_self, submatrix_id_id]
 
 /-- A unitary on one site is an onsite family and costs nothing. -/
 theorem place_singleton (a : S) {V : Matrix (RegionConfig X {a}) (RegionConfig X {a}) ℂ}

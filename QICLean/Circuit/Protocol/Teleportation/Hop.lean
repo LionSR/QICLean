@@ -123,7 +123,7 @@ theorem prodOp_update_one_mulVec_apply (t : S) (u : Matrix (X t) (X t) ℂ) (v :
     (y : Config X) :
     (prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) t u) *ᵥ v) y =
       ∑ j, u (y t) j * v (Function.update y t j) := by
-  rw [← place_siteEquiv_eq_prodOp t u, place_siteEquiv_mulVec]
+  rw [← placeAt_eq_prodOp t u, placeAt_mulVec_apply]
 
 end Projection
 

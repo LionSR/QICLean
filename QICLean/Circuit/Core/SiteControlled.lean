@@ -5,7 +5,7 @@ Authors: QICLean contributors
 -/
 import QICLean.Circuit.Gate.Controlled
 import QICLean.Circuit.Gate.TwoLevel
-import QICLean.ManyBody.Sites.RegionUnion
+import QICLean.ManyBody.Sites.PlaceAlong
 
 /-!
 # Controlled one-site operations
@@ -13,7 +13,7 @@ import QICLean.ManyBody.Sites.RegionUnion
 On a finite system of sites `X : S → Type`, the operation "apply `u` at the site `t` when the
 sites of `R` are in the configuration `c`" is the controlled element `C(p, U) = p U + (1 - p)`,
 where `p` is the projection onto the configurations agreeing with `c` on `R` and `U` is the
-placement of `u` on the region `{t}`. These are the operations used to write a unitary on a
+matrix `u` at the site `t`. These are the operations used to write a unitary on a
 constant number of sites as a product of two-site gates: a controlled commutator at `t` is a
 product of two controlled operations with one control fewer and two operations on two sites
 (`QuantumCircuit.ctrlOp_insert_commutator`), and the two-level operator between two
@@ -28,10 +28,8 @@ The declarations restate `ctrlOp` and its lemmas of `TNLean/Circuit/Gates/Contro
 `ctrlProj` and its lemmas of `TNLean/Circuit/SiteOperators.lean`, and
 `twoLevel_update_eq_ctrlOp` of `TNLean/Circuit/Gates/ControlledProducts.lean`, at commit
 `414a18fb88` (Apache-2.0). The changes: any finite basis at each site in place of one common
-dimension `d`; the operator `u` at the site `t` is the placement
-`ManyBody.place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t))` in place of a separate
-definition `siteOp`, with its lemmas in `QICLean.ManyBody.Sites.RegionUnion`; statements of
-unitarity use `Matrix.unitaryGroup`.
+dimension `d`; the operator `u` at the site `t` is `ManyBody.placeAt t u` in place of a
+separate definition `siteOp`; statements of unitarity use `Matrix.unitaryGroup`.
 
 ## Main definitions
 
@@ -114,11 +112,10 @@ theorem ctrlProj_mem_supportedOperators (R : Finset S) (c : Config X) :
 
 /-- The projection onto the configurations agreeing with `c` on `R` commutes with an operator at
 a site outside `R`. -/
-theorem commute_ctrlProj_place_siteEquiv {R : Finset S} {t : S} (ht : t ∉ R) (c : Config X)
-    (u : Matrix (X t) (X t) ℂ) :
-    Commute (ctrlProj R c) (place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t))) :=
+theorem commute_ctrlProj_placeAt {R : Finset S} {t : S} (ht : t ∉ R) (c : Config X)
+    (u : Matrix (X t) (X t) ℂ) : Commute (ctrlProj R c) (placeAt t u) :=
   commute_of_mem_supportedOperators_of_disjoint (ctrlProj_mem_supportedOperators R c)
-    (place_mem_supportedOperators _) (Finset.disjoint_singleton_right.mpr ht)
+    (placeAt_mem_supportedOperators t u) (Finset.disjoint_singleton_right.mpr ht)
 
 /-! ### Controlled operations -/
 
@@ -129,25 +126,25 @@ Source: arXiv:2307.01696, paragraph "The sequential-RG circuit" (gates with cons
 decomposed into local gates). -/
 noncomputable def ctrlOp (R : Finset S) (c : Config X) (t : S) (u : Matrix (X t) (X t) ℂ) :
     Matrix (Config X) (Config X) ℂ :=
-  ctrlElem (ctrlProj R c) (place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)))
+  ctrlElem (ctrlProj R c) (placeAt t u)
 
 @[simp] theorem ctrlOp_empty (c : Config X) (t : S) (u : Matrix (X t) (X t) ℂ) :
-    ctrlOp ∅ c t u = place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) := by
+    ctrlOp ∅ c t u = placeAt t u := by
   simp [ctrlOp, ctrlElem]
 
 theorem ctrlOp_mul {R : Finset S} {t : S} (ht : t ∉ R) (c : Config X)
     (u v : Matrix (X t) (X t) ℂ) : ctrlOp R c t u * ctrlOp R c t v = ctrlOp R c t (u * v) := by
   rw [ctrlOp, ctrlOp, ctrlElem_mul (isIdempotentElem_ctrlProj R c)
-    (commute_ctrlProj_place_siteEquiv ht c u), place_siteEquiv_mul, ctrlOp]
+    (commute_ctrlProj_placeAt ht c u), ← placeAt_mul, ctrlOp]
 
 @[simp] theorem ctrlOp_one (R : Finset S) (c : Config X) (t : S) : ctrlOp R c t 1 = 1 := by
-  rw [ctrlOp, place_siteEquiv_one, ctrlElem_one]
+  rw [ctrlOp, placeAt_one, ctrlElem_one]
 
 theorem ctrlOp_conjTranspose {R : Finset S} {t : S} (ht : t ∉ R) (c : Config X)
     (u : Matrix (X t) (X t) ℂ) : (ctrlOp R c t u)ᴴ = ctrlOp R c t uᴴ := by
   rw [ctrlOp, ctrlOp, ctrlElem, ctrlElem, conjTranspose_add, conjTranspose_mul, conjTranspose_sub,
-    conjTranspose_one, ctrlProj_conjTranspose, place_siteEquiv_conjTranspose,
-    (commute_ctrlProj_place_siteEquiv ht c uᴴ).eq]
+    conjTranspose_one, ctrlProj_conjTranspose, ← placeAt_conjTranspose,
+    (commute_ctrlProj_placeAt ht c uᴴ).eq]
 
 theorem ctrlOp_mem_unitaryGroup {R : Finset S} {t : S} (ht : t ∉ R) (c : Config X)
     {u : Matrix (X t) (X t) ℂ} (hu : u ∈ unitaryGroup (X t) ℂ) :
@@ -162,8 +159,7 @@ theorem ctrlOp_mem_supportedOperators (R : Finset S) (c : Config X) (t : S)
     (ctrlProj_mem_supportedOperators R c)
   have hs := supportedOperators_mono
     (Finset.singleton_subset_iff.mpr (Finset.mem_insert_self t R))
-    (place_mem_supportedOperators (X := X) (D := {t})
-      (u.submatrix (siteEquiv X t) (siteEquiv X t)))
+    (placeAt_mem_supportedOperators t u)
   exact add_mem (mul_mem hp hs) (sub_mem (one_mem _) hp)
 
 /-- **Controlled commutator on the sites.** Removing one control site `s` from the controls of a
@@ -174,15 +170,15 @@ theorem ctrlOp_insert_commutator {R : Finset S} {s t : S} (ht : t ∉ R) (hst : 
     ctrlOp (insert s R) c t (v * w * star v * star w) =
       ctrlOp R c t v * ctrlOp {s} c t w * ctrlOp R c t (star v) * ctrlOp {s} c t (star w) := by
   have hts : t ∉ ({s} : Finset S) := by simpa using Ne.symm hst
-  rw [ctrlOp, ctrlProj_insert, ← place_siteEquiv_mul, ← place_siteEquiv_mul,
-    ← place_siteEquiv_mul, ctrlOp, ctrlOp, ctrlOp, ctrlOp]
+  rw [ctrlOp, ctrlProj_insert, placeAt_mul, placeAt_mul, placeAt_mul, ctrlOp, ctrlOp, ctrlOp,
+    ctrlOp]
   refine (ctrlElem_commutator (isIdempotentElem_ctrlProj R c) (isIdempotentElem_ctrlProj {s} c)
-    (commute_ctrlProj R {s} c c) (commute_ctrlProj_place_siteEquiv ht c v)
-    (commute_ctrlProj_place_siteEquiv ht c w) (commute_ctrlProj_place_siteEquiv hts c v)
-    (commute_ctrlProj_place_siteEquiv hts c _) (commute_ctrlProj_place_siteEquiv hts c w)
+    (commute_ctrlProj R {s} c c) (commute_ctrlProj_placeAt ht c v)
+    (commute_ctrlProj_placeAt ht c w) (commute_ctrlProj_placeAt hts c v)
+    (commute_ctrlProj_placeAt hts c _) (commute_ctrlProj_placeAt hts c w)
     ?_ ?_).symm
-  · rw [place_siteEquiv_mul, mem_unitaryGroup_iff.mp hv, place_siteEquiv_one]
-  · rw [place_siteEquiv_mul, mem_unitaryGroup_iff.mp hw, place_siteEquiv_one]
+  · rw [← placeAt_mul, mem_unitaryGroup_iff.mp hv, placeAt_one]
+  · rw [← placeAt_mul, mem_unitaryGroup_iff.mp hw, placeAt_one]
 
 /-! ### Two-level operators between neighbouring configurations -/
 
@@ -219,7 +215,7 @@ theorem twoLevel_update_eq_ctrlOp (a : Config X) (t : S) {β : X t} (hβ : β �
     · rw [ite_eq_right hzt, ite_eq_right]; rintro rfl; exact hzt rfl
   ext x y
   rw [ctrlOp, ctrlElem, Matrix.add_apply, Matrix.sub_apply, ctrlProj, diagonal_mul,
-    place_siteEquiv_apply, one_apply, diagonal_apply]
+    placeAt_apply, one_apply, diagonal_apply]
   by_cases hx : ∀ i, i ∈ Finset.univ.erase t → x i = a i
   · have hx' : ∀ i, i ≠ t → x i = a i := fun i hi ↦ hx i (by simp [hi])
     rw [ite_eq_left hx, one_mul]

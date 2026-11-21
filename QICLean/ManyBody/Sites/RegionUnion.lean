@@ -25,13 +25,10 @@ basis of one site, or on the pairs of two, is placed along these equivalences.
 ## Main results
 
 * `ManyBody.place_union_kronecker`: `lift_{X ∪ T} (A ⊗ B) = lift_X A · lift_T B`.
-* `ManyBody.place_siteEquiv_apply`, `ManyBody.place_siteEquiv_mul`,
-  `ManyBody.place_siteEquiv_conjTranspose`, `ManyBody.place_siteEquiv_mem_unitaryGroup` — a
-  matrix `u` at one site `t`.
-* `ManyBody.place_siteEquiv_eq_prodOp` — `u` at `t` is the product operator with `u` at `t` and
-  the identity elsewhere.
-* `ManyBody.place_siteEquiv_mulVec`, `ManyBody.place_pairEquiv_mulVec` — a matrix on one site,
-  or on two, acting on a vector.
+* `ManyBody.place_pairEquiv_mulVec` — a matrix on two sites acting on a vector.
+
+A matrix at one site is `ManyBody.placeAt`; its placement along `ManyBody.siteEquiv` is
+`ManyBody.place_siteEquiv_eq_placeAt`.
 
 ## References
 
@@ -39,10 +36,7 @@ basis of one site, or on the pairs of two, is placed along these equivalences.
   (`lem:initial-buffer`), `02-initial.tex`, lines 512–520: trial filters
   `|u_i⟩⟨u_i| ⊗ M_j` on `X_j = X ⊔ T_j`.
 
-The lemmas on disjoint unions are independently written from the manuscript. The lemmas on one
-site restate those on `siteOp` of `TNLean/Circuit/SiteOperators.lean` at commit `414a18fb88`
-(Apache-2.0), with the placement along `ManyBody.siteEquiv` in place of `siteOp` and any finite
-basis at each site in place of one common dimension.
+The lemmas on disjoint unions are independently written from the manuscript.
 -/
 
 open Matrix
@@ -116,73 +110,7 @@ theorem pairEquiv_symm_apply_right {a b : V} (h : a ≠ b) (p : X a × X b) :
     ↓reduceDIte, Equiv.prodCongr_symm, Equiv.prodCongr_apply, Prod.map_snd]
   rfl
 
-variable [Fintype V] [∀ v, DecidableEq (X v)] (t : V)
-
-/-- Entrywise, `u` at the site `t` has the entry `u (x t) (y t)` between configurations that
-agree off `t`, and `0` between the others. -/
-theorem place_siteEquiv_apply (u : Matrix (X t) (X t) ℂ) (x y : Config X) :
-    place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) x y =
-      if ∀ v, v ≠ t → x v = y v then u (x t) (y t) else 0 := by
-  rw [place_apply]
-  simp only [Finset.mem_singleton]
-  rfl
-
-@[simp] theorem place_siteEquiv_one :
-    place {t} ((1 : Matrix (X t) (X t) ℂ).submatrix (siteEquiv X t) (siteEquiv X t)) = 1 := by
-  rw [submatrix_one_equiv, place_one]
-
-theorem place_siteEquiv_conjTranspose (u : Matrix (X t) (X t) ℂ) :
-    (place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)))ᴴ =
-      place {t} (uᴴ.submatrix (siteEquiv X t) (siteEquiv X t)) := by
-  rw [← place_conjTranspose, conjTranspose_submatrix]
-
-/-- The operator `u` at the site `t` is the product operator with `u` at `t` and the identity at
-the other sites. -/
-theorem place_siteEquiv_eq_prodOp (u : Matrix (X t) (X t) ℂ) :
-    place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) =
-      prodOp (Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) t u) := by
-  ext x y
-  rw [place_siteEquiv_apply, prodOp_apply, ← Finset.mul_prod_erase _ _ (Finset.mem_univ t),
-    Function.update_self]
-  have h : ∀ s ∈ Finset.univ.erase t,
-      Function.update (fun s ↦ (1 : Matrix (X s) (X s) ℂ)) t u s (x s) (y s) =
-        if x s = y s then 1 else 0 := fun s hs ↦ by
-    rw [Function.update_of_ne (Finset.ne_of_mem_erase hs), one_apply]
-  rw [Finset.prod_congr rfl h, Finset.prod_boole]
-  simp only [Finset.mem_erase, ne_eq, Finset.mem_univ, and_true]
-  split_ifs <;> simp
-
-variable [∀ v, Fintype (X v)]
-
-theorem place_siteEquiv_mul (u w : Matrix (X t) (X t) ℂ) :
-    place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) *
-        place {t} (w.submatrix (siteEquiv X t) (siteEquiv X t)) =
-      place {t} ((u * w).submatrix (siteEquiv X t) (siteEquiv X t)) := by
-  rw [← place_mul, submatrix_mul_equiv]
-
-theorem place_siteEquiv_mem_unitaryGroup {u : Matrix (X t) (X t) ℂ}
-    (hu : u ∈ unitaryGroup (X t) ℂ) :
-    place {t} (u.submatrix (siteEquiv X t) (siteEquiv X t)) ∈ unitaryGroup (Config X) ℂ :=
-  place_mem_unitaryGroup (submatrix_equiv_mem_unitary.mpr hu)
-
-/-- A matrix placed on one site acts on a vector through the basis of that site. -/
-theorem place_siteEquiv_mulVec (M : Matrix (X t) (X t) ℂ) (ψ : Config X → ℂ) (y : Config X) :
-    (place {t} (M.submatrix (siteEquiv X t) (siteEquiv X t)) *ᵥ ψ) y =
-      ∑ b : X t, M (y t) b * ψ (Function.update y t b) := by
-  rw [place_mulVec_apply, ← (siteEquiv X t).symm.sum_comp]
-  refine Finset.sum_congr rfl fun b _ ↦ ?_
-  rw [submatrix_apply, Equiv.apply_symm_apply]
-  have hcut : (cutEquiv X {t}).symm ((siteEquiv X t).symm b, (cutEquiv X {t} y).2) =
-      Function.update y t b := by
-    funext v
-    by_cases hv : v = t
-    · subst hv
-      rw [cutEquiv_symm_apply_mem _ _ (Finset.mem_singleton_self v), Function.update_self]
-      rfl
-    · rw [cutEquiv_symm_apply_not_mem _ _ (by simpa using hv), Function.update_of_ne hv]
-      rfl
-  rw [hcut]
-  rfl
+variable [Fintype V] [∀ v, DecidableEq (X v)] [∀ v, Fintype (X v)]
 
 /-- A matrix placed on two distinct sites acts on a vector through the bases of the two sites. -/
 theorem place_pairEquiv_mulVec {a b : V} (h : a ≠ b) (M : Matrix (X a × X b) (X a × X b) ℂ)

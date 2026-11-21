@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Hamiltonian.KroneckerSum
-import QICLean.ManyBody.Sites.RegionUnion
+import QICLean.ManyBody.Sites.PlaceAlong
 
 /-!
 # Onsite penalties selecting a basis configuration
@@ -17,7 +17,7 @@ included, where the orthogonal complement of the line is zero.
 
 The declarations restate `TNLean/Circuit/ProductBasisPenalty.lean` (Apache-2.0). The changes:
 any finite site type and any finite basis at each site instead of one local dimension; the
-onsite matrices are placed with `place` on the singleton regions.
+onsite matrices are placed at their sites with `ManyBody.placeAt`.
 
 ## Main definitions
 
@@ -79,29 +79,27 @@ variable {S : Type} [Fintype S] [DecidableEq S] {X : S → Type} [∀ s, Decidab
 /-- The sum over the sites of the onsite penalties selecting the basis configuration `b`, each
 placed on its site. -/
 noncomputable def productBasisPenalty (b : Config X) : Matrix (Config X) (Config X) ℂ :=
-  ∑ s, place {s} ((siteBasisPenalty (b s)).submatrix (siteEquiv X s) (siteEquiv X s))
+  ∑ s, placeAt s (siteBasisPenalty (b s))
 
 /-- The sum of the penalties is the diagonal matrix counting the sites at which a configuration
 differs from `b`. -/
 theorem productBasisPenalty_eq_diagonal (b : Config X) :
     productBasisPenalty b = diagonal fun x ↦ ∑ s, if x s = b s then (0 : ℂ) else 1 := by
-  have hsite : ∀ s, place {s} ((siteBasisPenalty (b s)).submatrix (siteEquiv X s)
-      (siteEquiv X s)) = diagonal fun x ↦ if x s = b s then (0 : ℂ) else 1 := fun s ↦ by
+  have hsite : ∀ s, placeAt s (siteBasisPenalty (b s)) =
+      diagonal fun x ↦ if x s = b s then (0 : ℂ) else 1 := fun s ↦ by
     ext y x
-    rw [place_apply, submatrix_apply, siteBasisPenalty, diagonal_apply, diagonal_apply]
-    change (if ∀ v ∉ ({s} : Finset S), y v = x v then
-      (if y s = x s then (if y s = b s then (0 : ℂ) else 1) else 0) else 0) = _
+    rw [placeAt_apply, siteBasisPenalty, diagonal_apply, diagonal_apply]
     by_cases hxy : y = x
     · subst hxy
       simp
     · rw [ite_eq_right_iff.mpr fun h ↦ absurd h hxy]
-      by_cases hout : ∀ v ∉ ({s} : Finset S), y v = x v
+      by_cases hout : ∀ v, v ≠ s → y v = x v
       · rw [ite_eq_left_iff.mpr fun h ↦ absurd hout h]
         refine ite_eq_right_iff.mpr fun hs ↦ absurd ?_ hxy
         refine funext fun v ↦ ?_
         by_cases hv : v = s
         · exact hv ▸ hs
-        · exact hout v (by simpa using hv)
+        · exact hout v hv
       · rw [ite_eq_right_iff.mpr fun h ↦ absurd h hout]
   rw [productBasisPenalty, Finset.sum_congr rfl fun s _ ↦ hsite s]
   ext y x
