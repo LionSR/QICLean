@@ -61,9 +61,9 @@ private noncomputable def blockedTensorRangeData
   let i₁ : Fin (Kraus.blockPhysDim d L) :=
     (Kraus.decodeBlockEquiv d L).symm τ₀
   have hBi₀ : B i₀ = Kraus.evalWord K (List.ofFn σ₀) := by
-    simp [B, i₀, Kraus.blockTensor, Kraus.wordOfBlock]
+    simp [B, i₀, Kraus.blockTensor, Kraus.reindexPhysical]
   have hBi₁ : B i₁ = Kraus.evalWord K (List.ofFn τ₀) := by
-    simp [B, i₁, Kraus.blockTensor, Kraus.wordOfBlock]
+    simp [B, i₁, Kraus.blockTensor, Kraus.reindexPhysical]
   refine
     { B := B
       P := (B i₀) ^ D
