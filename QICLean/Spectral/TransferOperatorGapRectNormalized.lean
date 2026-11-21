@@ -46,13 +46,16 @@ attribute [local instance] Matrix.linftyOpNormedAddCommGroup Matrix.linftyOpNorm
 
 /-- The **spectral radius** of the rectangular mixed transfer operator. -/
 noncomputable def mixedTransferSpectralRadius₂
-    (A : MPSTensor d D₁) (B : MPSTensor d D₂) : ENNReal :=
+    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ) :
+    ENNReal :=
   spectralRadius ℂ
     ((Module.End.toContinuousLinearMap (Matrix (Fin D₁) (Fin D₂) ℂ))
       (mixedMapLM A B))
 
 theorem mixedTransferSpectralRadius₂_eq
-    (A : MPSTensor d D₁) (B : MPSTensor d D₂) :
+    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ) :
     mixedTransferSpectralRadius₂ A B =
       spectralRadius ℂ
         ((Module.End.toContinuousLinearMap (Matrix (Fin D₁) (Fin D₂) ℂ))
@@ -62,7 +65,8 @@ theorem mixedTransferSpectralRadius₂_eq
 
 /-- Every eigenvalue of the rectangular mixed transfer operator has modulus ≤ 1. -/
 theorem eigenvalue_norm_le_one₂
-    (A : MPSTensor d D₁) (B : MPSTensor d D₂)
+    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
     (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1)
     (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedMapLM A B) μ) :
@@ -71,7 +75,8 @@ theorem eigenvalue_norm_le_one₂
 
 /-- **Spectral radius bound**: `ρ(F₂) ≤ 1` for normalized tensors. -/
 theorem spectralRadius_mixedTransfer₂_le_one
-    (A : MPSTensor d D₁) (B : MPSTensor d D₂)
+    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
     (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1) :
     mixedTransferSpectralRadius₂ A B ≤ 1 :=

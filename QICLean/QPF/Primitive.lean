@@ -68,12 +68,12 @@ may not span), but the transfer map can still be irreducible.
 **Proof**: The normalization makes the transfer map a channel, so channel fixed-point
 existence and uniqueness under irreducibility applies directly. -/
 theorem quantum_perron_frobenius_irreducible [DecidableEq (Fin D)]
-    (A : MPSTensor d D)
-    (hIrr : IsIrreducibleMap (transferMap (d := d) (D := D) A))
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (hIrr : IsIrreducibleMap (transferMap A))
     (hNorm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hD : 0 < D) :
     ∃ ρ : Matrix (Fin D) (Fin D) ℂ,
-      HasUniqueFixedPoint (transferMap (d := d) (D := D) A) ρ := by
+      HasUniqueFixedPoint (transferMap A) ρ := by
   exact IsChannel.exists_hasUniqueFixedPoint_of_irreducible
     (isChannel_mapLM A (by unfold IsTP; convert hNorm)) hIrr hD
 

@@ -43,13 +43,13 @@ section Uniqueness
 /-- **Uniqueness under irreducibility** (Wolf Theorem 6.3(2)): any PSD fixed point
 of an irreducible transfer map is proportional to a fixed nonzero PSD fixed point. -/
 theorem posSemidef_fixedPoint_unique_of_irreducible
-    (A : MPSTensor d D)
-    (hIrr : IsIrreducibleMap (transferMap (d := d) (D := D) A))
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (hIrr : IsIrreducibleMap (transferMap A))
     (ρ σ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_psd : ρ.PosSemidef) (hρ_ne : ρ ≠ 0)
     (hσ_psd : σ.PosSemidef)
-    (hρ_fix : transferMap (d := d) (D := D) A ρ = ρ)
-    (hσ_fix : transferMap (d := d) (D := D) A σ = σ) :
+    (hρ_fix : transferMap A ρ = ρ)
+    (hσ_fix : transferMap A σ = σ) :
     ∃ c : ℂ, σ = c • ρ :=
   posSemidef_fixedPoint_unique_of_irreducible_cp _ (transferMap_isCPMap A) hIrr
     ρ σ hρ_psd hρ_ne hσ_psd hρ_fix hσ_fix
@@ -57,12 +57,12 @@ theorem posSemidef_fixedPoint_unique_of_irreducible
 /-- **Uniqueness** (Wolf Theorem 6.3(2), non-degeneracy): any PSD fixed point
 of an injective transfer map is proportional to a given nonzero PSD fixed point. -/
 theorem posSemidef_fixedPoint_unique
-    (A : MPSTensor d D) (hA : IsInjective A)
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (hA : IsInjective A)
     (ρ σ : Matrix (Fin D) (Fin D) ℂ)
     (hρ_psd : ρ.PosSemidef) (hρ_ne : ρ ≠ 0)
     (hσ_psd : σ.PosSemidef)
-    (hρ_fix : transferMap (d := d) (D := D) A ρ = ρ)
-    (hσ_fix : transferMap (d := d) (D := D) A σ = σ) :
+    (hρ_fix : transferMap A ρ = ρ)
+    (hσ_fix : transferMap A σ = σ) :
     ∃ c : ℂ, σ = c • ρ := by
   exact posSemidef_fixedPoint_unique_of_irreducible A
     (injective_implies_irreducibleCP A hA) ρ σ hρ_psd hρ_ne hσ_psd hρ_fix hσ_fix

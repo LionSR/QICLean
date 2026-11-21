@@ -41,12 +41,13 @@ noncomputable scoped instance : NormedAlgebra ℂ (Matrix (Fin D) (Fin D) ℂ) :
   Matrix.linftyOpNormedAlgebra
 
 /-- The spectral radius of the mixed transfer operator. -/
-noncomputable def mixedTransferSpectralRadius (A B : MPSTensor d D) : ENNReal :=
+noncomputable def mixedTransferSpectralRadius (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) :
+    ENNReal :=
   spectralRadius ℂ
     ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ))
       (mixedMapLM A B))
 
-theorem mixedTransferSpectralRadius_eq (A B : MPSTensor d D) :
+theorem mixedTransferSpectralRadius_eq (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) :
     mixedTransferSpectralRadius A B =
       spectralRadius ℂ
         ((Module.End.toContinuousLinearMap (Matrix (Fin D) (Fin D) ℂ))
@@ -54,13 +55,13 @@ theorem mixedTransferSpectralRadius_eq (A B : MPSTensor d D) :
 
 /-- In equal bond dimension, the rectangular and square spectral radii agree. -/
 @[simp]
-theorem mixedTransferSpectralRadius₂_same_dim (A B : MPSTensor d D) :
+theorem mixedTransferSpectralRadius₂_same_dim (A B : Fin d → Matrix (Fin D) (Fin D) ℂ) :
     mixedTransferSpectralRadius₂ A B = mixedTransferSpectralRadius A B :=
   rfl
 
 /-- Every eigenvalue of the mixed transfer operator has modulus at most one. -/
 theorem eigenvalue_norm_le_one
-    (A B : MPSTensor d D)
+    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
     (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1)
     (μ : ℂ) (hμ : Module.End.HasEigenvalue (mixedMapLM A B) μ) :
@@ -69,7 +70,7 @@ theorem eigenvalue_norm_le_one
 
 /-- The mixed transfer operator of normalized tensors has spectral radius at most one. -/
 theorem spectralRadius_mixedTransfer_le_one
-    (A B : MPSTensor d D)
+    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
     (hA_norm : ∑ i : Fin d, (A i)ᴴ * A i = 1)
     (hB_norm : ∑ i : Fin d, (B i)ᴴ * B i = 1) :
     mixedTransferSpectralRadius A B ≤ 1 :=

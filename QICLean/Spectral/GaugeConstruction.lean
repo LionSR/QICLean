@@ -39,7 +39,8 @@ variable {d D D₁ D₂ : ℕ}
 
 /-- Gauge a tensor by `S`, in MPS notation. -/
 noncomputable def gaugeTensor
-    {d D : ℕ} (S : Matrix (Fin D) (Fin D) ℂ) (A : MPSTensor d D) : MPSTensor d D :=
+    {d D : ℕ} (S : Matrix (Fin D) (Fin D) ℂ) (A : Fin d → Matrix (Fin D) (Fin D) ℂ) :
+    Fin d → Matrix (Fin D) (Fin D) ℂ :=
   Kraus.gaugeFamily S A
 
 /-- Apply the two gauges to a mixed-transfer eigenvector, in MPS notation. -/
@@ -51,7 +52,8 @@ noncomputable def gaugeEigenvector
   Kraus.gaugeMixedEigenvector SA SB X
 
 @[simp] lemma gaugeTensor_apply
-    {d D : ℕ} (S : Matrix (Fin D) (Fin D) ℂ) (A : MPSTensor d D) (i : Fin d) :
+    {d D : ℕ} (S : Matrix (Fin D) (Fin D) ℂ) (A : Fin d → Matrix (Fin D) (Fin D) ℂ)
+    (i : Fin d) :
     gaugeTensor S A i = S⁻¹ * A i * S :=
   rfl
 
@@ -65,7 +67,7 @@ noncomputable def gaugeEigenvector
 /-- If `ker X` is invariant under all generators `(B k)ᴴ` and `B` is injective, then `ker X`
 is invariant under every matrix of the source dimension. -/
 theorem ker_all_of_inj {D₁ D₂ : ℕ}
-    (B : MPSTensor d D₂) (hB : IsInjective B)
+    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ) (hB : IsInjective B)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ)
     (h : ∀ k : Fin d, ∀ v, X *ᵥ v = 0 → X *ᵥ ((B k)ᴴ *ᵥ v) = 0) :
     ∀ (M : Matrix (Fin D₂) (Fin D₂) ℂ) (v : Fin D₂ → ℂ),
@@ -90,7 +92,7 @@ theorem det_ne_zero_of_ker_all [NeZero D]
 
 /-- Conjugation by an invertible matrix preserves injectivity (spanning). -/
 theorem isInjective_conjugate {D : ℕ}
-    (T : MPSTensor d D) (hT : IsInjective T)
+    (T : Fin d → Matrix (Fin D) (Fin D) ℂ) (hT : IsInjective T)
     (S : Matrix (Fin D) (Fin D) ℂ) (hS : S.det ≠ 0) :
     IsInjective (gaugeTensor S T) :=
   Matrix.span_range_gauge_eq_top T hT.span_eq_top S hS
@@ -98,7 +100,8 @@ theorem isInjective_conjugate {D : ℕ}
 /-- Shared block-KS core: transporting a modulus-one mixed-transfer eigenvector to canonical
 gauges produces Kraus-level intertwining relations for the gauged tensors. -/
 theorem gauged_intertwining_core
-    (A : MPSTensor d D₁) (B : MPSTensor d D₂)
+    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
     (SA : Matrix (Fin D₁) (Fin D₁) ℂ) (SB : Matrix (Fin D₂) (Fin D₂) ℂ)
     (ρA : Matrix (Fin D₁) (Fin D₁) ℂ) (ρB : Matrix (Fin D₂) (Fin D₂) ℂ)
     (hSA_det : SA.det ≠ 0) (hSB_det : SB.det ≠ 0)
@@ -126,7 +129,8 @@ theorem gauged_intertwining_core
 /-- If `A i * X = μ • X * B i` and `B` is unital, then `X * Xᴴ` is a fixed point of
 `mapLM A`. -/
 theorem self_mul_conjTranspose_fixed_of_intertwining
-    (A : MPSTensor d D₁) (B : MPSTensor d D₂)
+    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
     (hB_unital : ∑ i : Fin d, B i * (B i)ᴴ = 1)
     (hInter : ∀ i : Fin d, A i * X = μ • X * B i)
@@ -137,7 +141,7 @@ theorem self_mul_conjTranspose_fixed_of_intertwining
 
 /-- Transport a fixed point of the gauged transfer map back to the original tensor. -/
 theorem ungauge_transfer_fixedPoint
-    (A : MPSTensor d D) (S σ : Matrix (Fin D) (Fin D) ℂ)
+    (A : Fin d → Matrix (Fin D) (Fin D) ℂ) (S σ : Matrix (Fin D) (Fin D) ℂ)
     (hS : IsUnit S.det)
     (hσ : mapLM (gaugeTensor S A) σ = σ) :
     mapLM A (S * σ * Sᴴ) = S * σ * Sᴴ := by
@@ -164,15 +168,15 @@ theorem isUnit_det_of_self_mul_conjTranspose_scalar [NeZero D]
 /-- Generic square gauge construction: once the gauged intertwiner is invertible, it upgrades to
 gauge-phase equivalence for the original tensors. -/
 theorem gaugePhaseEquiv_of_gauged_intertwining [NeZero D]
-    (A B : MPSTensor d D)
+    (A B : Fin d → Matrix (Fin D) (Fin D) ℂ)
     (SA SB X' : Matrix (Fin D) (Fin D) ℂ) (μ : ℂ)
     (hSA_det : SA.det ≠ 0) (hSB_det : SB.det ≠ 0)
     (hX'_u : IsUnit X'.det) (hμ : ‖μ‖ = 1)
     (hInter :
       ∀ i : Fin d, gaugeTensor SA A i * X' = μ • X' * gaugeTensor SB B i) :
     GaugePhaseEquiv A B := by
-  let A' : MPSTensor d D := gaugeTensor SA A
-  let B' : MPSTensor d D := gaugeTensor SB B
+  let A' : Fin d → Matrix (Fin D) (Fin D) ℂ := gaugeTensor SA A
+  let B' : Fin d → Matrix (Fin D) (Fin D) ℂ := gaugeTensor SB B
   have hSA_u : IsUnit SA.det := Ne.isUnit hSA_det
   have hSB_u : IsUnit SB.det := Ne.isUnit hSB_det
   have hμ_ne0 : μ ≠ 0 := Complex.ne_zero_of_norm_eq_one hμ
@@ -248,7 +252,8 @@ theorem gaugePhaseEquiv_of_gauged_intertwining [NeZero D]
 /-- Generic rectangular dimension comparison: the two intertwining relations force equality of
 dimensions once both gauged tensor families are injective. -/
 theorem dim_eq_of_gauged_intertwining [NeZero D₁] [NeZero D₂]
-    (A : MPSTensor d D₁) (B : MPSTensor d D₂)
+    (A : Fin d → Matrix (Fin D₁) (Fin D₁) ℂ)
+    (B : Fin d → Matrix (Fin D₂) (Fin D₂) ℂ)
     (X : Matrix (Fin D₁) (Fin D₂) ℂ) (μ : ℂ)
     (hA : IsInjective A) (hB : IsInjective B)
     (hX : X ≠ 0)
