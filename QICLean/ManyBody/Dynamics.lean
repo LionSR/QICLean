@@ -12,7 +12,6 @@ import QICLean.ManyBody.Dynamics.BoundedDegreeImaginaryTime
 import QICLean.ManyBody.Dynamics.CommutatorRecursion
 import QICLean.ManyBody.Dynamics.ComponentLocality
 import QICLean.ManyBody.Dynamics.DisjointRelativeEvolution
-import QICLean.ManyBody.Dynamics.GraphBall
 import QICLean.ManyBody.Dynamics.GraphGrowth
 import QICLean.ManyBody.Dynamics.GraphLocalization
 import QICLean.ManyBody.Dynamics.GraphPropagation

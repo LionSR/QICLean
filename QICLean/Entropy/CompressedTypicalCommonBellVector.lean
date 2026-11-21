@@ -60,63 +60,63 @@ and 332–354. This auxiliary implication retains the eventual auxiliary-mass
 premise, to be discharged from the original Schmidt--Bell sequence. -/
 theorem eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-    (E : Finset (ManyBody.RegionConfig β X)) (hΩ : ‖Ω‖ = 1)
-    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
+    (E : Finset (RegionConfig β X)) (hΩ : ‖Ω‖ = 1)
+    (hz : 0 < (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (regions : List (Finset V))
     (hnested : regions.Pairwise fun B C ↦ B ⊆ C ∨ C ⊆ B)
     (hdisjoint : ∀ B ∈ regions, Disjoint X B)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
-    let ι := ManyBody.compressedSiteSpace β X (Fin E.card)
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ι := compressedSiteSpace β X (Fin E.card)
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
     let χsite := WithLp.toLp 2
-      (fun x : (f : Option ↥(Xᶜ)) → ι f ↦
+      (fun x : (f : Option {v // v ∉ X}) → ι f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x : TensorPower.Config k ι ↦ ∏ j, χsite (x j))
-    let a := ManyBody.compressedRegionalThreshold β Ω X E
+    let a := compressedRegionalThreshold β Ω X E
     let q : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin (labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2
     let r : ℕ → ℝ := fun k ↦
       ‖toEuclideanLin
-        (commonLabelCutoff ι k (regions.map (ManyBody.exteriorRegion X)) (a k) *
+        (commonLabelCutoff ι k (regions.map (exteriorRegion X)) (a k) *
           labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2
     let post : (k : ℕ) →
         EuclideanSpace ℂ
-            ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι) := fun k ↦
+            ((Fin k → RegionConfig β X × E) × TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x ↦
         (∏ j, selectedBellVector ΩX E (x.1 j)) * Ψ k x.2)
     (∀ᶠ k : ℕ in atTop,
       1 / (2 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ q k) →
     ∀ᶠ k : ℕ in atTop,
       let e := Equiv.arrowProdEquivProdArrow (Fin k)
-        (fun _ ↦ ManyBody.RegionConfig β X × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ι f)
-      ∃ φ : EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι),
+        (fun _ ↦ RegionConfig β X × E) (fun _ ↦ (f : Option {v // v ∉ X}) → ι f)
+      ∃ φ : EuclideanSpace ℂ ((Fin k → RegionConfig β X × E) × TensorPower.Config k ι),
         ‖φ‖ = 1 ∧
         (fun x ↦ φ (e x)) ∈ invariantSubspace
-          (copyPerm ((ManyBody.RegionConfig β X × E) × ((f : Option ↥(Xᶜ)) → ι f)) k) ∧
+          (copyPerm ((RegionConfig β X × E) × ((f : Option {v // v ∉ X}) → ι f)) k) ∧
         toEuclideanLin
           ((finKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
             (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ ∧
         toEuclideanLin
-          ((1 : Matrix (Fin k → ManyBody.RegionConfig β X × E)
-            (Fin k → ManyBody.RegionConfig β X × E) ℂ) ⊗ₖ
+          ((1 : Matrix (Fin k → RegionConfig β X × E)
+            (Fin k → RegionConfig β X × E) ℂ) ⊗ₖ
               labelProj (subsystemPerm k ι {none}) (ell k)) φ = φ ∧
         (∀ B ∈ regions,
           toEuclideanLin
-            ((1 : Matrix (Fin k → ManyBody.RegionConfig β X × E)
-              (Fin k → ManyBody.RegionConfig β X × E) ℂ) ⊗ₖ
-                labelCutoff (subsystemPerm k ι (ManyBody.exteriorRegion X B))
-                  (a k (ManyBody.exteriorRegion X B))) φ = φ) ∧
+            ((1 : Matrix (Fin k → RegionConfig β X × E)
+              (Fin k → RegionConfig β X × E) ℂ) ⊗ₖ
+                labelCutoff (subsystemPerm k ι (exteriorRegion X B))
+                  (a k (exteriorRegion X B))) φ = φ) ∧
         ‖⟪φ, toEuclideanLin
-          ((1 : Matrix (Fin k → ManyBody.RegionConfig β X × E)
-            (Fin k → ManyBody.RegionConfig β X × E) ℂ) ⊗ₖ
+          ((1 : Matrix (Fin k → RegionConfig β X × E)
+            (Fin k → RegionConfig β X × E) ℂ) ⊗ₖ
               labelProj (subsystemPerm k ι {none}) (ell k)) (post k)⟫_ℂ‖ ^ 2 = r k ∧
         q k / 2 ≤ r k ∧
         1 / (4 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ r k := by
   classical
   intro ι ΩX χsite Ψ a q r post hmass
-  have hm := ManyBody.eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
+  have hm := eventually_commonLabelCutoff_compressedTypicalSite_retains_mass
     β Ω X E hΩ hz regions hnested hdisjoint ell hmass
   have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
       (Matrix.PosSemidef.isHermitian
@@ -126,18 +126,18 @@ theorem eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
     compressedSite_prod_mem_symmetricSubspace β X (Fin E.card) k
       (fun p ↦ Matrix.compressedTypicalPureState ΩX E
         ((Finset.equivFin E).symm p.1, p.2))
-  have haux : ∀ D ∈ regions.map (ManyBody.exteriorRegion X),
-      Disjoint D ({none} : Finset (Option ↥(Xᶜ))) :=
-    List.forall_mem_map.mpr (fun B _ ↦ ManyBody.exteriorRegion_disjoint_auxiliary X B)
+  have haux : ∀ D ∈ regions.map (exteriorRegion X),
+      Disjoint D ({none} : Finset (Option {v // v ∉ X})) :=
+    List.forall_mem_map.mpr (fun B _ ↦ exteriorRegion_disjoint_auxiliary X B)
   filter_upwards [hm] with k hk
   rcases hk with ⟨_, _, hpos, hhalf, hbound⟩
   obtain ⟨φ, hnorm, hcopy, hbell, hlabel, hcuts, hoverlap⟩ :=
     exists_commonLabelCutoff_bell_vector ι ΩX E k hzX
-      (regions.map (ManyBody.exteriorRegion X)) (ManyBody.pairwise_exteriorRegion X regions hnested)
+      (regions.map (exteriorRegion X)) (pairwise_exteriorRegion X regions hnested)
       (a k) {none} haux (ell k) (Ψ k) (hsym k) hpos
   refine ⟨φ, hnorm, ?_, hbell, hlabel, ?_, hoverlap, hhalf, hbound⟩
   · simpa only [mem_invariantSubspace, permOp_mulVec] using hcopy
   · intro B hB
-    exact hcuts (ManyBody.exteriorRegion X B) (List.mem_map_of_mem hB)
+    exact hcuts (exteriorRegion X B) (List.mem_map_of_mem hB)
 
 end ManyBody

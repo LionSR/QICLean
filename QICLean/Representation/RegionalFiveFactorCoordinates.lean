@@ -32,10 +32,11 @@ variable {V : Type u} [Fintype V] [DecidableEq V] (β : V → Type u)
 /-- The original physical configuration split into two disjoint regions
 and the complement of their union. Source: `07-comparators.tex`, lines 20--37. -/
 def regionalPhysicalEquiv (Q Y : Finset V) (hQY : Disjoint Q Y) :
-    ((v : V) → β v) ≃ ManyBody.RegionConfig β Q ×
-      (ManyBody.RegionConfig β Y × ManyBody.RegionConfig β (Q ∪ Y)ᶜ) :=
-  (ManyBody.splitEquiv β Q).trans
-    ((Equiv.refl _).prodCongr (ManyBody.complementUnionEquiv β Q Y hQY))
+    ((v : V) → β v) ≃ RegionConfig β Q ×
+      (RegionConfig β Y × RegionConfig β (Q ∪ Y)ᶜ) :=
+  (cutEquiv β Q).trans
+    ((Equiv.refl _).prodCongr ((complementUnionEquiv β Q Y hQY).trans
+      ((Equiv.refl _).prodCongr (complementEquiv β (Q ∪ Y)))))
 
 end ManyBody
 

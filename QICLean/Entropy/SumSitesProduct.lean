@@ -52,13 +52,12 @@ namespace ManyBody
 variable {A B : Type*} [Fintype A] [DecidableEq A] [Fintype B] [DecidableEq B]
   {X : A ⊕ B → Type*} [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)]
 
-/-- Configurations of a region `S` of `A ⊕ B` whose left part is `R` and right part is `T`, as
-pairs of configurations. -/
-private def sumConfigurationEquiv (S : Finset (A ⊕ B)) (R : Finset A) (T : Finset B)
-    (hR : ∀ a, Sum.inl a ∈ S ↔ a ∈ R) (hT : ∀ b, Sum.inr b ∈ S ↔ b ∈ T) :
-    ManyBody.RegionConfig X S ≃
-      ManyBody.RegionConfig (fun a ↦ X (.inl a)) R × ManyBody.RegionConfig
-          (fun b ↦ X (.inr b)) T where
+/-- Configurations of the sites `S` of `A ⊕ B` whose left sites are `R` and right sites are
+`T`, as pairs of configurations. -/
+private def sumConfigurationEquiv (S : A ⊕ B → Prop) (R : A → Prop) (T : B → Prop)
+    (hR : ∀ a, S (.inl a) ↔ R a) (hT : ∀ b, S (.inr b) ↔ T b) :
+    ((v : {v // S v}) → X v) ≃
+      ((a : {a // R a}) → X (.inl a)) × ((b : {b // T b}) → X (.inr b)) where
   toFun c := (fun a ↦ c ⟨.inl a, (hR a).mpr a.2⟩, fun b ↦ c ⟨.inr b, (hT b).mpr b.2⟩)
   invFun p x := match x with
     | ⟨.inl a, h⟩ => p.1 ⟨a, (hR a).mp h⟩
@@ -71,17 +70,17 @@ private def sumConfigurationEquiv (S : Finset (A ⊕ B)) (R : Finset A) (T : Fin
 /-- Configurations of a region `R ⊔ T` of `A ⊕ B` as pairs of configurations of `R` and
 of `T`. -/
 def disjSumEquiv (R : Finset A) (T : Finset B) :
-    ManyBody.RegionConfig X (R.disjSum T) ≃
-      ManyBody.RegionConfig (fun a ↦ X (.inl a)) R × ManyBody.RegionConfig (fun b ↦ X (.inr b)) T :=
-  sumConfigurationEquiv _ R T (fun _ ↦ Finset.inl_mem_disjSum) fun _ ↦ Finset.inr_mem_disjSum
+    RegionConfig X (R.disjSum T) ≃
+      RegionConfig (fun a ↦ X (.inl a)) R × RegionConfig (fun b ↦ X (.inr b)) T :=
+  sumConfigurationEquiv (· ∈ R.disjSum T) (· ∈ R) (· ∈ T) (fun _ ↦ Finset.inl_mem_disjSum)
+    fun _ ↦ Finset.inr_mem_disjSum
 
-/-- Configurations of the complement of `R ⊔ T` as pairs of configurations of `Rᶜ` and
-of `Tᶜ`. -/
+/-- Configurations outside `R ⊔ T` as pairs of configurations outside `R` and outside `T`. -/
 private def disjSumComplEquiv (R : Finset A) (T : Finset B) :
-    ManyBody.RegionConfig X (R.disjSum T)ᶜ ≃
-      ManyBody.RegionConfig (fun a ↦ X (.inl a)) Rᶜ × ManyBody.RegionConfig
-          (fun b ↦ X (.inr b)) Tᶜ :=
-  sumConfigurationEquiv _ Rᶜ Tᶜ (fun _ ↦ by simp) fun _ ↦ by simp
+    ComplConfig X (R.disjSum T) ≃
+      ComplConfig (fun a ↦ X (.inl a)) R × ComplConfig (fun b ↦ X (.inr b)) T :=
+  sumConfigurationEquiv (· ∉ R.disjSum T) (· ∉ R) (· ∉ T)
+    (fun _ ↦ Finset.inl_mem_disjSum.not) fun _ ↦ Finset.inr_mem_disjSum.not
 
 /-- The product vector `f ⊗ g` on the sites `A ⊕ B`. -/
 noncomputable def sumSitesProduct (f : EuclideanSpace ℂ ((a : A) → X (.inl a)))
@@ -92,43 +91,41 @@ omit [∀ v, DecidableEq (X v)] in
 /-- The norm of a product vector is the product of the norms. -/
 theorem norm_sumSitesProduct (f : EuclideanSpace ℂ ((a : A) → X (.inl a)))
     (g : EuclideanSpace ℂ ((b : B) → X (.inr b))) :
-    ‖ManyBody.sumSitesProduct f g‖ = ‖f‖ * ‖g‖ := by
+    ‖sumSitesProduct f g‖ = ‖f‖ * ‖g‖ := by
   rw [← sq_eq_sq₀ (norm_nonneg _) (by positivity), mul_pow, EuclideanSpace.norm_sq_eq,
     EuclideanSpace.norm_sq_eq, EuclideanSpace.norm_sq_eq, Finset.sum_mul_sum,
     ← Finset.sum_product']
   exact Fintype.sum_equiv (Equiv.sumPiEquivProdPi X) _ _ fun c ↦ by
-    simp [ManyBody.sumSitesProduct, mul_pow]
+    simp [sumSitesProduct, mul_pow]
 
-omit [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
-private theorem splitEquiv_symm_inl (R : Finset A) (T : Finset B)
-    (a : ManyBody.RegionConfig X (R.disjSum T)) (d : ManyBody.RegionConfig X (R.disjSum T)ᶜ) :
-    (fun x ↦ (ManyBody.splitEquiv X (R.disjSum T)).symm (a, d) (.inl x)) =
-      (ManyBody.splitEquiv (fun a ↦ X (.inl a)) R).symm
-        ((ManyBody.disjSumEquiv R T a).1, (disjSumComplEquiv R T d).1) := by
+omit [Fintype A] [Fintype B] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+private theorem cutEquiv_symm_inl (R : Finset A) (T : Finset B)
+    (a : RegionConfig X (R.disjSum T)) (d : ComplConfig X (R.disjSum T)) :
+    (fun x ↦ (cutEquiv X (R.disjSum T)).symm (a, d) (.inl x)) =
+      (cutEquiv (fun a ↦ X (.inl a)) R).symm
+        ((disjSumEquiv R T a).1, (disjSumComplEquiv R T d).1) := by
   funext x
   by_cases hx : x ∈ R
-  · rw [ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ (Finset.inl_mem_disjSum.mpr hx),
-      ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ hx]
+  · rw [cutEquiv_symm_apply_mem _ _ (Finset.inl_mem_disjSum.mpr hx),
+      cutEquiv_symm_apply_mem _ _ hx]
     rfl
-  · rw [ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _
-      (fun h ↦ hx (Finset.inl_mem_disjSum.mp h)),
-      ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _ hx]
+  · rw [cutEquiv_symm_apply_not_mem _ _ (fun h ↦ hx (Finset.inl_mem_disjSum.mp h)),
+      cutEquiv_symm_apply_not_mem _ _ hx]
     rfl
 
-omit [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
-private theorem splitEquiv_symm_inr (R : Finset A) (T : Finset B)
-    (a : ManyBody.RegionConfig X (R.disjSum T)) (d : ManyBody.RegionConfig X (R.disjSum T)ᶜ) :
-    (fun x ↦ (ManyBody.splitEquiv X (R.disjSum T)).symm (a, d) (.inr x)) =
-      (ManyBody.splitEquiv (fun b ↦ X (.inr b)) T).symm
-        ((ManyBody.disjSumEquiv R T a).2, (disjSumComplEquiv R T d).2) := by
+omit [Fintype A] [Fintype B] [∀ v, Fintype (X v)] [∀ v, DecidableEq (X v)] in
+private theorem cutEquiv_symm_inr (R : Finset A) (T : Finset B)
+    (a : RegionConfig X (R.disjSum T)) (d : ComplConfig X (R.disjSum T)) :
+    (fun x ↦ (cutEquiv X (R.disjSum T)).symm (a, d) (.inr x)) =
+      (cutEquiv (fun b ↦ X (.inr b)) T).symm
+        ((disjSumEquiv R T a).2, (disjSumComplEquiv R T d).2) := by
   funext x
   by_cases hx : x ∈ T
-  · rw [ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ (Finset.inr_mem_disjSum.mpr hx),
-      ManyBody.splitEquiv_symm_apply_of_mem _ _ _ _ _ hx]
+  · rw [cutEquiv_symm_apply_mem _ _ (Finset.inr_mem_disjSum.mpr hx),
+      cutEquiv_symm_apply_mem _ _ hx]
     rfl
-  · rw [ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _
-      (fun h ↦ hx (Finset.inr_mem_disjSum.mp h)),
-      ManyBody.splitEquiv_symm_apply_of_notMem _ _ _ _ _ hx]
+  · rw [cutEquiv_symm_apply_not_mem _ _ (fun h ↦ hx (Finset.inr_mem_disjSum.mp h)),
+      cutEquiv_symm_apply_not_mem _ _ hx]
     rfl
 
 omit [∀ v, DecidableEq (X v)] in
@@ -136,16 +133,16 @@ omit [∀ v, DecidableEq (X v)] in
 the two factors. -/
 theorem regionState_sumSitesProduct (f : EuclideanSpace ℂ ((a : A) → X (.inl a)))
     (g : EuclideanSpace ℂ ((b : B) → X (.inr b))) (R : Finset A) (T : Finset B) :
-    ManyBody.regionState (ManyBody.sumSitesProduct f g) (R.disjSum T) =
-      (ManyBody.regionState f R ⊗ₖ ManyBody.regionState g T).submatrix
-        (ManyBody.disjSumEquiv R T) (ManyBody.disjSumEquiv R T) := by
+    regionState (sumSitesProduct f g) (R.disjSum T) =
+      (regionState f R ⊗ₖ regionState g T).submatrix
+        (disjSumEquiv R T) (disjSumEquiv R T) := by
   ext a b
-  simp only [ManyBody.regionState, ManyBody.regionMatrix_apply, submatrix_apply,
+  simp only [regionState, regionMatrix_apply, submatrix_apply,
       kroneckerMap_apply,
-    vecMulVec_apply, Pi.star_apply, ManyBody.sumSitesProduct]
+    vecMulVec_apply, Pi.star_apply, sumSitesProduct]
   rw [← (disjSumComplEquiv R T).symm.sum_comp, Fintype.sum_prod_type, Finset.sum_mul_sum]
   refine Finset.sum_congr rfl fun d₁ _ ↦ Finset.sum_congr rfl fun d₂ _ ↦ ?_
-  rw [splitEquiv_symm_inl, splitEquiv_symm_inl, splitEquiv_symm_inr, splitEquiv_symm_inr]
+  rw [cutEquiv_symm_inl, cutEquiv_symm_inl, cutEquiv_symm_inr, cutEquiv_symm_inr]
   simp only [Equiv.apply_symm_apply, star_mul]
   ring
 
@@ -155,29 +152,29 @@ Two-dimensional area law, `09-amplification.tex`, lines 342–347. -/
 theorem regionEntropy_sumSitesProduct {f : EuclideanSpace ℂ ((a : A) → X (.inl a))}
     {g : EuclideanSpace ℂ ((b : B) → X (.inr b))} (hf : ‖f‖ = 1) (hg : ‖g‖ = 1)
     (R : Finset A) (T : Finset B) :
-    ManyBody.regionEntropy (ManyBody.sumSitesProduct f g) (R.disjSum T) =
-      ManyBody.regionEntropy f R + ManyBody.regionEntropy g T := by
+    regionEntropy (sumSitesProduct f g) (R.disjSum T) =
+      regionEntropy f R + regionEntropy g T := by
   unfold regionEntropy
-  have hR := ManyBody.regionState_posSemidef R f
-  have hT := ManyBody.regionState_posSemidef T g
-  rw [vonNeumannEntropy_congr (ManyBody.regionState_sumSitesProduct f g R T) _
+  have hR := regionState_posSemidef R f
+  have hT := regionState_posSemidef T g
+  rw [vonNeumannEntropy_congr (regionState_sumSitesProduct f g R T) _
     (((hR.kronecker hT).submatrix _).isHermitian),
     vonNeumannEntropy_submatrix_equiv _ _ (hR.kronecker hT).isHermitian]
-  exact vonNeumannEntropy_kronecker hR hT (ManyBody.trace_regionState_eq_one hf (D := R))
-    (ManyBody.trace_regionState_eq_one hg (D := T))
+  exact vonNeumannEntropy_kronecker hR hT (trace_regionState_eq_one hf (D := R))
+    (trace_regionState_eq_one hg (D := T))
 
 /-- **Adjoining sites in a product state** does not change the mutual information of two
 regions of `A`. Two-dimensional area law, `09-amplification.tex`, lines 547–553. -/
 theorem regionMutualInformation_sumSitesProduct_inl {f : EuclideanSpace ℂ ((a : A) → X (.inl a))}
     {g : EuclideanSpace ℂ ((b : B) → X (.inr b))} (hf : ‖f‖ = 1) (hg : ‖g‖ = 1)
     (R T : Finset A) :
-    ManyBody.regionMutualInformation (ManyBody.sumSitesProduct f g) (R.disjSum ∅) (T.disjSum ∅) =
-      ManyBody.regionMutualInformation f R T := by
+    regionMutualInformation (sumSitesProduct f g) (R.disjSum ∅) (T.disjSum ∅) =
+      regionMutualInformation f R T := by
   have hunion : R.disjSum (∅ : Finset B) ∪ T.disjSum ∅ = (R ∪ T).disjSum ∅ := by
     ext x
     rcases x with x | x <;> simp
-  simp only [regionMutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
-      ManyBody.regionEntropy_empty _ g hg,
+  simp only [regionMutualInformation, hunion, regionEntropy_sumSitesProduct hf hg,
+      regionEntropy_empty _ g hg,
     add_zero]
 
 /-- **A region of the adjoined sites** has no mutual information with a region of `A` in a
@@ -185,14 +182,14 @@ product vector. Two-dimensional area law, `09-amplification.tex`, lines 547–55
 theorem regionMutualInformation_sumSitesProduct_inr_inl
     {f : EuclideanSpace ℂ ((a : A) → X (.inl a))} {g : EuclideanSpace ℂ ((b : B) → X (.inr b))}
     (hf : ‖f‖ = 1) (hg : ‖g‖ = 1) (T : Finset B) (R : Finset A) :
-    ManyBody.regionMutualInformation (ManyBody.sumSitesProduct f g) ((∅ : Finset A).disjSum T)
+    regionMutualInformation (sumSitesProduct f g) ((∅ : Finset A).disjSum T)
         (R.disjSum ∅) = 0 := by
   have hunion : (∅ : Finset A).disjSum T ∪ R.disjSum ∅ = R.disjSum T := by
     ext x
     rcases x with x | x <;> simp
-  simp only [regionMutualInformation, hunion, ManyBody.regionEntropy_sumSitesProduct hf hg,
-      ManyBody.regionEntropy_empty _ g hg,
-    ManyBody.regionEntropy_empty _ f hf]
+  simp only [regionMutualInformation, hunion, regionEntropy_sumSitesProduct hf hg,
+      regionEntropy_empty _ g hg,
+    regionEntropy_empty _ f hf]
   ring
 
 end ManyBody

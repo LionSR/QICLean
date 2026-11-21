@@ -11,9 +11,14 @@ Authors: QICLean contributors
 import QICLean.ManyBody.Sites.Block
 import QICLean.ManyBody.Sites.Config
 import QICLean.ManyBody.Sites.Cut
+import QICLean.ManyBody.Sites.CutMatrix
+import QICLean.ManyBody.Sites.GraphBall
+import QICLean.ManyBody.Sites.GraphBoundary
 import QICLean.ManyBody.Sites.Lattice
 import QICLean.ManyBody.Sites.OperatorSchmidtRank
+import QICLean.ManyBody.Sites.PairSwap
 import QICLean.ManyBody.Sites.Partition
+import QICLean.ManyBody.Sites.PlaceAlong
 import QICLean.ManyBody.Sites.Placement
 import QICLean.ManyBody.Sites.ProductFamily
 import QICLean.ManyBody.Sites.ProductForm
@@ -25,7 +30,6 @@ import QICLean.ManyBody.Sites.Relabel
 import QICLean.ManyBody.Sites.ReplicaSwap
 import QICLean.ManyBody.Sites.SiteAction
 import QICLean.ManyBody.Sites.SitewiseProduct
-import QICLean.ManyBody.Sites.SplitOperatorSchmidt
 import QICLean.ManyBody.Sites.Subregion
 import QICLean.ManyBody.Sites.SumSites
 import QICLean.ManyBody.Sites.Support

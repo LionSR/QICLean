@@ -39,18 +39,21 @@ namespace ManyBody
 
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
+variable (X : Finset V) (E : Finset (RegionConfig β X)) (k : ℕ)
 
-local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
-local notation "ι" => ManyBody.compressedSiteSpace β X (Fin E.card)
+local notation "A" => RegionConfig β X
+local notation "B" => ComplConfig β X
+local notation "ι" => compressedSiteSpace β X (Fin E.card)
 local notation "M" => (Fin k → A × E) × TensorPower.Config k ι
 
 local instance schmidtBellOverlapConfigurationDecidableEq : DecidableEq
-    (ManyBody.RegionConfig β X) :=
+    (RegionConfig β X) :=
   Fintype.decidablePiFintype
 
-variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.RegionConfig β Xᶜ))
+-- Without it, instance search fails on `DecidableEq M` (the product with `TensorPower.Config k ι`).
+local instance : DecidableEq (TensorPower.Config k ι) := inferInstance
+
+variable (Ω : EuclideanSpace ℂ (RegionConfig β X × ComplConfig β X))
 
 /-- The original physical prevector in the actual selected-Bell and exterior
 site coordinates, using only the fixed enumeration and copy regrouping.
@@ -65,7 +68,7 @@ def schmidtBellSitePrevector (ell : IrrepLabel (Equiv.Perm (Fin k))) :
     ((Equiv.arrowProdEquivProdArrow (Fin k) (fun _ ↦ A) (fun _ ↦ B)).symm.prodCongr
       (Equiv.refl ((Fin k → Fin E.card) × (Fin k → Fin E.card))))
   WithLp.toLp 2 (replicaPrevector Ω E.card k ell ∘
-    (r ∘ ManyBody.schmidtBellSiteEquiv β X E k))
+    (r ∘ schmidtBellSiteEquiv β X E k))
 
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
   (Matrix.PosSemidef.isHermitian (Matrix.PosSemidef.partialTraceRight
@@ -84,7 +87,7 @@ theorem inner_schmidtBellSitePrevector (hz : 0 < z)
       (fun x ↦ (∏ j, selectedBellVector Ω E (x.1 j)) *
         ∏ j, compressedTypicalPureState Ω E
           ((Finset.equivFin E).symm (x.2 j none), fun v ↦ x.2 j (some v)))
-    ⟪φ, ManyBody.schmidtBellSitePrevector β X E k Ω ell⟫_ℂ =
+    ⟪φ, schmidtBellSitePrevector β X E k Ω ell⟫_ℂ =
       (((Real.sqrt z : ℂ) / (E.card : ℂ)) ^ k) *
         ⟪φ, toEuclideanLin
           ((1 : Matrix (Fin k → A × E) (Fin k → A × E) ℂ) ⊗ₖ
@@ -101,15 +104,15 @@ theorem inner_schmidtBellSitePrevector (hz : 0 < z)
     change (finKronecker (fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
       (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ))ᴴ = _
     rw [conjTranspose_kronecker, hBell.eq, conjTranspose_one]
-  have hpin := ManyBody.selectedBellProjection_replicaPrevector_site β X E k Ω hz ell
-  change toEuclideanLin P (ManyBody.schmidtBellSitePrevector β X E k Ω ell) =
+  have hpin := selectedBellProjection_replicaPrevector_site β X E k Ω hz ell
+  change toEuclideanLin P (schmidtBellSitePrevector β X E k Ω ell) =
     c • toEuclideanLin Q post at hpin
-  change ⟪φ, ManyBody.schmidtBellSitePrevector β X E k Ω ell⟫_ℂ =
+  change ⟪φ, schmidtBellSitePrevector β X E k Ω ell⟫_ℂ =
     c * ⟪φ, toEuclideanLin Q post⟫_ℂ
   calc
-    ⟪φ, ManyBody.schmidtBellSitePrevector β X E k Ω ell⟫_ℂ =
-        ⟪toEuclideanLin P φ, ManyBody.schmidtBellSitePrevector β X E k Ω ell⟫_ℂ := by rw [hφ]
-    _ = ⟪φ, toEuclideanLin P (ManyBody.schmidtBellSitePrevector β X E k Ω ell)⟫_ℂ :=
+    ⟪φ, schmidtBellSitePrevector β X E k Ω ell⟫_ℂ =
+        ⟪toEuclideanLin P φ, schmidtBellSitePrevector β X E k Ω ell⟫_ℂ := by rw [hφ]
+    _ = ⟪φ, toEuclideanLin P (schmidtBellSitePrevector β X E k Ω ell)⟫_ℂ :=
       (isSymmetric_toEuclideanLin_iff.mpr hP) φ _
     _ = c * ⟪φ, toEuclideanLin Q post⟫_ℂ := by rw [hpin, inner_smul_right]
 

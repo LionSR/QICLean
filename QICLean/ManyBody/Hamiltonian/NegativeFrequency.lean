@@ -21,7 +21,10 @@ spectral gap above a one-dimensional ground space.
 
 * `centeredObservable ψ A` subtracts from `A` its expectation in the vector `ψ`, written as the
   inner product `⟪ψ, Aψ⟫` divided by `‖ψ‖²`; the centred observable has zero expectation and
-  norm at most `2‖A‖`.
+  norm at most `2‖A‖`, is additive in `A`, is Hermitian for Hermitian `A`, and is `A - E` at an
+  eigenvector of `A` with eigenvalue `E`. For a unit vector and a Hermitian observable it is
+  TNLean's `groundCentered` (`MPS/AreaLaw/Hastings/ThreeWaySplitting`, at commit
+  `414a18fb88`).
 * `negativeFrequencyPart hH A` keeps the matrix elements of `A` between eigenvectors whose
   energy difference is negative. It annihilates the ground space, and the connected ground
   correlation of `A` and `B` is the ground expectation of its commutator with `B` (Hastings–Koma,
@@ -67,6 +70,48 @@ Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3,
 equations (3.1)–(3.6). -/
 def centeredObservable (ψ : EuclideanSpace ℂ n) (A : Matrix n n ℂ) : Matrix n n ℂ :=
   A - (⟪ψ, L A ψ⟫_ℂ / ((‖ψ‖ ^ 2 : ℝ) : ℂ)) • 1
+
+/-- Centering is additive. Hastings, arXiv:0705.2024v4, `law16.tex`, lines 779–782. -/
+theorem centeredObservable_add (ψ : EuclideanSpace ℂ n) (A B : Matrix n n ℂ) :
+    centeredObservable ψ (A + B) = centeredObservable ψ A + centeredObservable ψ B := by
+  simp only [centeredObservable, map_add, _root_.add_apply, inner_add_right,
+    add_div, add_smul]
+  abel
+
+/-- The centering of `0` is `0`. -/
+@[simp]
+theorem centeredObservable_zero (ψ : EuclideanSpace ℂ n) :
+    centeredObservable ψ (0 : Matrix n n ℂ) = 0 := by
+  simp [centeredObservable]
+
+/-- Centering commutes with finite sums. -/
+theorem centeredObservable_sum (ψ : EuclideanSpace ℂ n) {ι : Type*} (s : Finset ι)
+    (A : ι → Matrix n n ℂ) :
+    centeredObservable ψ (∑ i ∈ s, A i) = ∑ i ∈ s, centeredObservable ψ (A i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert i s hi ih =>
+    rw [Finset.sum_insert hi, Finset.sum_insert hi, centeredObservable_add, ih]
+
+/-- The centering of a Hermitian observable is Hermitian: its expectation is real. -/
+theorem isHermitian_centeredObservable (ψ : EuclideanSpace ℂ n) {A : Matrix n n ℂ}
+    (hA : A.IsHermitian) : (centeredObservable ψ A).IsHermitian := by
+  have hT := isSymmetric_toEuclideanLin_iff.mpr hA
+  have hreal : ((⟪ψ, L A ψ⟫_ℂ).re : ℂ) = ⟪ψ, L A ψ⟫_ℂ := hT.coe_re_inner_self_apply ψ
+  rw [centeredObservable, ← hreal, ← Complex.ofReal_div]
+  exact hA.sub (isHermitian_one.smul (by simp [IsSelfAdjoint, Complex.conj_ofReal]))
+
+/-- **Centering at an eigenvector.** At a nonzero eigenvector `ψ` of `A` with eigenvalue `E`,
+the centered observable is `A - E`. Hastings, arXiv:0705.2024v4, `law16.tex`,
+lines 766–767. -/
+theorem centeredObservable_of_apply_eq_smul {ψ : EuclideanSpace ℂ n} (hψ : ψ ≠ 0)
+    {A : Matrix n n ℂ} {E : ℂ} (hE : L A ψ = E • ψ) : centeredObservable ψ A = A - E • 1 := by
+  have hd : ((‖ψ‖ ^ 2 : ℝ) : ℂ) ≠ 0 := by
+    exact_mod_cast pow_ne_zero 2 (norm_ne_zero_iff.mpr hψ)
+  have hself : ⟪ψ, ψ⟫_ℂ = ((‖ψ‖ ^ 2 : ℝ) : ℂ) :=
+    (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) ψ).trans (Complex.ofReal_pow ‖ψ‖ 2).symm
+  rw [centeredObservable, hE, inner_smul_right, hself, mul_div_cancel_right₀ _ hd]
 
 /-- The expectation divided by the squared norm of the vector is bounded by the observable norm,
 for every nonzero vector. Source: Hastings–Koma, arXiv:math-ph/0507008, Section 3,
@@ -163,12 +208,29 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 orthonormal eigenbasis of the Hermitian Hamiltonian. Source: Hastings–Koma,
 arXiv:math-ph/0507008, equations (3.1)–(3.6). -/
 def negativeFrequencyPart {H : Matrix n n ℂ} (hH : H.IsHermitian)
-    (A : Matrix n n ℂ) : EuclideanSpace ℂ n →L[ℂ] EuclideanSpace ℂ n := by
-  classical
+    (A : Matrix n n ℂ) : Matrix n n ℂ :=
   let b := hH.eigenvectorBasis
-  exact ∑ i, ∑ j, if hH.eigenvalues i < hH.eigenvalues j then
-    ⟪b i, toEuclideanCLM (n := n) (𝕜 := ℂ) A (b j)⟫_ℂ •
-      InnerProductSpace.rankOne ℂ (b i) (b j) else 0
+  ∑ i, ∑ j, if hH.eigenvalues i < hH.eigenvalues j then
+    ⟪b i, toEuclideanCLM (n := n) (𝕜 := ℂ) A (b j)⟫_ℂ • vecMulVec ⇑(b i) (star ⇑(b j)) else 0
+
+/-- The negative-frequency part as an operator on the Euclidean space: the sum of the rank-one
+operators `⟨e_i, A e_j⟩ |e_i⟩⟨e_j|` over `E_i < E_j`. -/
+private theorem toEuclideanCLM_negativeFrequencyPart {H : Matrix n n ℂ} (hH : H.IsHermitian)
+    (A : Matrix n n ℂ) :
+    toEuclideanCLM (n := n) (𝕜 := ℂ) (negativeFrequencyPart hH A) =
+      ∑ i, ∑ j, if hH.eigenvalues i < hH.eigenvalues j then
+        ⟪hH.eigenvectorBasis i, toEuclideanCLM (n := n) (𝕜 := ℂ) A (hH.eigenvectorBasis j)⟫_ℂ •
+          InnerProductSpace.rankOne ℂ (hH.eigenvectorBasis i) (hH.eigenvectorBasis j)
+      else 0 := by
+  simp only [negativeFrequencyPart, map_sum, apply_ite (toEuclideanCLM (n := n) (𝕜 := ℂ)),
+    map_smul, map_zero]
+  refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_
+  congr 2
+  ext x : 1
+  rw [← InnerProductSpace.symm_toEuclideanLin_rankOne (𝕜 := ℂ),
+    ← ContinuousLinearMap.coe_coe, coe_toEuclideanCLM_eq_toEuclideanLin,
+    LinearEquiv.apply_symm_apply]
+  rfl
 
 omit [DecidableEq n] in
 private theorem inner_apply_eq_double_sum
@@ -198,10 +260,9 @@ arXiv:math-ph/0507008, equations (3.2)–(3.5). -/
 theorem negativeFrequencyPart_apply_ground_eq_zero {H : Matrix n n ℂ}
     (hH : H.IsHermitian) {E₀ : ℝ} (hmin : ∀ i, E₀ ≤ hH.eigenvalues i)
     (A : Matrix n n ℂ) {ψ : EuclideanSpace ℂ n}
-    (hψ : ψ ∈ groundSpace H E₀) : negativeFrequencyPart hH A ψ = 0 := by
-  classical
-  unfold negativeFrequencyPart
-  dsimp only
+    (hψ : ψ ∈ groundSpace H E₀) :
+    toEuclideanCLM (n := n) (𝕜 := ℂ) (negativeFrequencyPart hH A) ψ = 0 := by
+  rw [toEuclideanCLM_negativeFrequencyPart]
   simp only [_root_.sum_apply]
   apply Finset.sum_eq_zero
   intro i _
@@ -220,13 +281,11 @@ private theorem inner_ground_negativeFrequencyPart_apply
     (hmin : ∀ i, E₀ ≤ hH.eigenvalues i) (A : Matrix n n ℂ)
     {ψ x : EuclideanSpace ℂ n} (hψ : ψ ∈ groundSpace H E₀)
     (hx : x ∈ (groundSpace H E₀)ᗮ) :
-    ⟪ψ, negativeFrequencyPart hH A x⟫_ℂ =
+    ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ) (negativeFrequencyPart hH A) x⟫_ℂ =
       ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ) A x⟫_ℂ := by
-  classical
   let b := hH.eigenvectorBasis
-  rw [inner_apply_eq_double_sum b (toEuclideanCLM (n := n) (𝕜 := ℂ) A) ψ x]
-  unfold negativeFrequencyPart
-  dsimp only
+  rw [inner_apply_eq_double_sum b (toEuclideanCLM (n := n) (𝕜 := ℂ) A) ψ x,
+    toEuclideanCLM_negativeFrequencyPart]
   simp only [_root_.sum_apply, inner_sum]
   refine Finset.sum_congr rfl fun i _ ↦ Finset.sum_congr rfl fun j _ ↦ ?_
   by_cases hij : hH.eigenvalues i < hH.eigenvalues j
@@ -262,8 +321,8 @@ theorem inner_ground_projected_eq_negativeFrequency_commutator
       (toEuclideanCLM (n := n) (𝕜 := ℂ) B ψ -
         (groundSpace H E₀).starProjection
           (toEuclideanCLM (n := n) (𝕜 := ℂ) B ψ))⟫_ℂ =
-      ⟪ψ, ((negativeFrequencyPart hH A).comp (toEuclideanCLM (n := n) (𝕜 := ℂ) B) -
-        (toEuclideanCLM (n := n) (𝕜 := ℂ) B).comp (negativeFrequencyPart hH A)) ψ⟫_ℂ := by
+      ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ)
+        (negativeFrequencyPart hH A * B - B * negativeFrequencyPart hH A) ψ⟫_ℂ := by
   let K := groundSpace H E₀
   let y := toEuclideanCLM (n := n) (𝕜 := ℂ) B ψ
   have hsplit := inner_ground_negativeFrequencyPart_apply hH hmin A hψ
@@ -272,8 +331,8 @@ theorem inner_ground_projected_eq_negativeFrequency_commutator
   have hkillProjection := negativeFrequencyPart_apply_ground_eq_zero hH hmin A
     (K.starProjection_apply_mem y)
   rw [map_sub, hkillProjection, sub_zero] at hsplit
-  simpa only [_root_.sub_apply, ContinuousLinearMap.comp_apply,
-    hkill, map_zero, sub_zero] using hsplit.symm
+  simpa only [map_sub, map_mul, _root_.sub_apply, mul_apply_eq_comp,
+    ContinuousLinearMap.comp_apply, hkill, map_zero, sub_zero] using hsplit.symm
 
 /-- If the ground space is spanned by `ψ`, then
 `⟨ψ, A B ψ⟩ - ⟨ψ, A ψ⟩ ⟨ψ, B ψ⟩ / ‖ψ‖² = ⟨ψ, [A⁻, B] ψ⟩`.
@@ -288,8 +347,8 @@ theorem inner_ground_connected_eq_negativeFrequency_commutator
         ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ) A ψ⟫_ℂ *
           ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ) B ψ⟫_ℂ /
             ((‖ψ‖ ^ 2 : ℝ) : ℂ) =
-      ⟪ψ, ((negativeFrequencyPart hH A).comp (toEuclideanCLM (n := n) (𝕜 := ℂ) B) -
-        (toEuclideanCLM (n := n) (𝕜 := ℂ) B).comp (negativeFrequencyPart hH A)) ψ⟫_ℂ := by
+      ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ)
+        (negativeFrequencyPart hH A * B - B * negativeFrequencyPart hH A) ψ⟫_ℂ := by
   have hψ : ψ ∈ groundSpace H E₀ := hline ▸ Submodule.mem_span_singleton_self ψ
   calc
     _ = ⟪ψ, toEuclideanCLM (n := n) (𝕜 := ℂ) A

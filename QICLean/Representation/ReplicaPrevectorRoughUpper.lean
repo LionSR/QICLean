@@ -34,14 +34,14 @@ namespace ManyBody
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-variable (E : Finset (ManyBody.RegionConfig β X))
+variable (E : Finset (RegionConfig β X))
 
-local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "A" => RegionConfig β X
+local notation "B" => ComplConfig β X
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
-local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
+local notation "ιe" => compressedSiteSpace β X (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
-  (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
+  (Matrix.PosSemidef.isHermitian (regionState_posSemidef X Ω)) E
 
 local instance replicaPrevectorRoughUpperConfigDecidableEq (k : ℕ) :
     DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
@@ -64,7 +64,7 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
     (hdisjoint : ∀ D ∈ regions, Disjoint X D)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k)))
     {t : ℝ} (ht : 0 < t) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ιe) := fun _ ↦
@@ -82,10 +82,10 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
       (∀ j j' g h, g < h → U j g ∪ Y j g ⊆ U j' h) →
       (∀ j g, Disjoint X (U j g ∪ Y j g)) →
       ∀ (T : Matrix.MeanTree S) (Bsh Bexc : ℝ),
-      (∀ D ∈ regions, ManyBody.regionEntropy Ω D ≤ Bsh) →
+      (∀ D ∈ regions, regionEntropy Ω D ≤ Bsh) →
       (∀ j g (Q : Finset V), Q = U j g ∨ Q = U j g ∪ Y j g →
         ∃ D ∈ regions, (D ⊆ Q ∨ Q ⊆ D) ∧
-          1 + Real.log (Fintype.card (ManyBody.RegionConfig β (D ∆ Q))) ≤ Bexc) →
+          1 + Real.log (Fintype.card (RegionConfig β (D ∆ Q))) ≤ Bexc) →
       ∀ s : ℝ, 2 * s ∈ Set.Icc (0 : ℝ) 1 →
       let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (replicaPrevector Ω E.card k (ell k) ∘
@@ -105,7 +105,7 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
           Real.bellOverlapRemainder E.card c K k := by
   classical
   intro ΩX ψ Ψ q hmass
-  obtain ⟨c, hc, hu⟩ := ManyBody.eventually_suppliedSchmidtBell_rough_upper
+  obtain ⟨c, hc, hu⟩ := eventually_suppliedSchmidtBell_rough_upper
     (S := S) β Ω X E hΩ hz regions hnested hdisjoint ell ht hmass
   refine ⟨c, hc, hu.mono fun k hk n Z hZ hZZ K U Y hUY hnest hXY
     T Bsh Bexc hsh hmatch s hs ↦ ?_⟩
@@ -141,16 +141,16 @@ theorem eventually_suppliedReplicaPrevector_rough_upper {S : Type*} [Finite S]
         (replicaPrevector Ω E.card k (ell k) ∘
           globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)) =
       toEuclideanLin ZEᴴ (WithLp.toLp 2
-        (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘
-          ManyBody.schmidtBellWitnessEquiv β X E k)) := by
+        (schmidtBellSitePrevector β X E k ΩX (ell k) ∘
+          schmidtBellWitnessEquiv β X E k)) := by
     simpa only [ZE, e, ΩX, Matrix.toEuclideanLin, Matrix.toLpLin_apply,
       WithLp.ofLp_toLp] using!
       congrArg (WithLp.toLp 2)
-        (ManyBody.schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
+        (schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
   have hNsq := congrArg₂
     (fun (P : Matrix (Fin n) (Fin n) ℂ) (u : EuclideanSpace ℂ (Fin n)) ↦
       ‖toEuclideanLin (P ^ (-s)) u‖ ^ 2)
-    (ManyBody.replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2 hp
+    (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z t K U Y T).2 hp
   exact Eq.mp (congrArg (fun r : ℝ ↦ 0 < r ∧ -Real.log r / (k : ℝ) ≤
     2 * Real.log (E.card : ℝ) - Real.log z +
       8 * s * t * (K : ℝ) * (Bsh / z + Bexc) +

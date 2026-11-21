@@ -35,13 +35,14 @@ variable (β : V → Type u) (X : Finset V) (R : Type u) (k : ℕ)
 /-- Collect physical complementary copies first and auxiliary copies second. -/
 def exteriorCopyEquiv :
     Config k (ManyBody.compressedSiteSpace β X R) ≃
-      (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → R) :=
+      (Fin k → ManyBody.ComplConfig β X) × (Fin k → R) :=
   (Equiv.piCongrRight fun _ : Fin k ↦
     (Equiv.piOptionEquivProd (β := ManyBody.compressedSiteSpace β X R)).trans
-      (Equiv.prodComm R (ManyBody.RegionConfig β Xᶜ))).trans
+      (Equiv.prodComm R (ManyBody.ComplConfig β X))).trans
         (Equiv.arrowProdEquivProdArrow (Fin k)
-          (fun _ ↦ ManyBody.RegionConfig β Xᶜ) (fun _ ↦ R))
+          (fun _ ↦ ManyBody.ComplConfig β X) (fun _ ↦ R))
 
+omit [Fintype V] in
 /-- The actual auxiliary subsystem action is the ordinary copy action on
 the same auxiliary coordinates; every physical coordinate is fixed. -/
 theorem exteriorCopyEquiv_subsystemPerm_none (σ : Equiv.Perm (Fin k))
@@ -52,18 +53,19 @@ theorem exteriorCopyEquiv_subsystemPerm_none (σ : Equiv.Perm (Fin k))
         copyPerm R k σ (exteriorCopyEquiv β X R k x).2) := by
   apply Prod.ext
   · funext j v
-    change (if some v ∈ ({none} : Finset (Option ↥(Xᶜ))) then
+    change (if some v ∈ ({none} : Finset (Option {v // v ∉ X})) then
       x (σ⁻¹ j) (some v) else x j (some v)) = x j (some v)
     simp
   · funext j
-    change (if none ∈ ({none} : Finset (Option ↥(Xᶜ))) then
+    change (if none ∈ ({none} : Finset (Option {v // v ∉ X})) then
       x (σ⁻¹ j) none else x j none) = x (σ⁻¹ j) none
     simp
 
+omit [Fintype V] [DecidableEq V] in
 /-- The literal sitewise tensor power becomes the same product-coordinate
 vector used by the Schmidt–Bell theorem. No new vector is selected. -/
-theorem exteriorCopyEquiv_prod (χ : R × ManyBody.RegionConfig β Xᶜ → ℂ)
-    (x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → R)) :
+theorem exteriorCopyEquiv_prod (χ : R × ManyBody.ComplConfig β X → ℂ)
+    (x : (Fin k → ManyBody.ComplConfig β X) × (Fin k → R)) :
     (∏ j, χ (Equiv.piOptionEquivProd ((exteriorCopyEquiv β X R k).symm x j))) =
       ∏ j, χ (x.2 j, x.1 j) := rfl
 
@@ -73,7 +75,7 @@ variable [Fintype R] [DecidableEq R]
 /-- Every literal tensor power is symmetric under simultaneous permutations
 of its copies, including the actual compressed selected state. -/
 theorem compressedSite_prod_mem_symmetricSubspace
-    (χ : R × ManyBody.RegionConfig β Xᶜ → ℂ) :
+    (χ : R × ManyBody.ComplConfig β X → ℂ) :
     (fun x : Config k (ManyBody.compressedSiteSpace β X R) ↦
       ∏ j, χ (Equiv.piOptionEquivProd (x j))) ∈
         symmetricSubspace k (ManyBody.compressedSiteSpace β X R) := by

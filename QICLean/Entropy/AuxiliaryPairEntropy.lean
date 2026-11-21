@@ -35,9 +35,9 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 variable (β : ι → Type*) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 private theorem entropy_partition (ψ : EuclideanSpace ℂ ((v : ι) → β v))
     (R T : Finset ι) (hd : Disjoint R T) (hc : R ∪ T = Finset.univ) :
-    ManyBody.regionEntropy ψ R = ManyBody.regionEntropy ψ T := by
+    regionEntropy ψ R = regionEntropy ψ T := by
   have hi : IsCompl R T := IsCompl.of_eq (Finset.disjoint_iff_inter_eq_empty.mp hd) hc
-  rw [← hi.compl_eq, ManyBody.regionEntropy_compl]
+  rw [← hi.compl_eq, regionEntropy_compl]
 /-- The exact physical entropy cancellation in the auxiliary-pair comparison.
 OpenAI area-law manuscript, `07-comparators.tex`, lines 176–203,
 `comparator:entropy-identity`. The expressions are evaluated on the same actual
@@ -47,21 +47,21 @@ theorem auxiliaryPair_regionEntropyIdentity (ψ : EuclideanSpace ℂ ((v : ι) �
     (hXU : Disjoint X U) (hXY : Disjoint X Y) (hXV : Disjoint X V)
     (hUY : Disjoint U Y) (hUV : Disjoint U V) (hYV : Disjoint Y V)
     (hc : X ∪ U ∪ Y ∪ V = Finset.univ) :
-    2 * ManyBody.regionEntropy ψ X +
-      (ManyBody.regionEntropy ψ (X ∪ U) + ManyBody.regionEntropy ψ V - ManyBody.regionEntropy ψ Y) -
-      (ManyBody.regionEntropy ψ U + ManyBody.regionEntropy ψ (U ∪ Y) - ManyBody.regionEntropy ψ Y) =
-        ManyBody.regionMutualInformation ψ X V + ManyBody.regionMutualInformation ψ X (Y ∪ V) := by
-  have hXU_YV : ManyBody.regionEntropy ψ (X ∪ U) = ManyBody.regionEntropy ψ (Y ∪ V) := by
+    2 * regionEntropy ψ X +
+      (regionEntropy ψ (X ∪ U) + regionEntropy ψ V - regionEntropy ψ Y) -
+      (regionEntropy ψ U + regionEntropy ψ (U ∪ Y) - regionEntropy ψ Y) =
+        regionMutualInformation ψ X V + regionMutualInformation ψ X (Y ∪ V) := by
+  have hXU_YV : regionEntropy ψ (X ∪ U) = regionEntropy ψ (Y ∪ V) := by
     apply entropy_partition β ψ
     · simp only [Finset.disjoint_union_left, Finset.disjoint_union_right]
       exact ⟨⟨hXY, hUY⟩, ⟨hXV, hUV⟩⟩
     · simpa only [Finset.union_assoc] using hc
-  have hUY_XV : ManyBody.regionEntropy ψ (U ∪ Y) = ManyBody.regionEntropy ψ (X ∪ V) := by
+  have hUY_XV : regionEntropy ψ (U ∪ Y) = regionEntropy ψ (X ∪ V) := by
     apply entropy_partition β ψ
     · simp only [Finset.disjoint_union_left, Finset.disjoint_union_right]
       exact ⟨⟨hXU.symm, hXY.symm⟩, ⟨hUV, hYV⟩⟩
     · simpa only [Finset.union_assoc, Finset.union_left_comm, Finset.union_comm] using hc
-  have hU_XYV : ManyBody.regionEntropy ψ U = ManyBody.regionEntropy ψ (X ∪ (Y ∪ V)) := by
+  have hU_XYV : regionEntropy ψ U = regionEntropy ψ (X ∪ (Y ∪ V)) := by
     apply entropy_partition β ψ
     · simp only [Finset.disjoint_union_right]
       exact ⟨hXU.symm, hUY, hUV⟩
@@ -78,14 +78,14 @@ theorem auxiliaryPair_pre_nonneg (ψ : EuclideanSpace ℂ ((v : ι) → β v)) (
     (X U Y V : Finset ι) (hXY : Disjoint X Y) (hXV : Disjoint X V)
     (hUY : Disjoint U Y) (hUV : Disjoint U V) (hYV : Disjoint Y V)
     (hc : X ∪ U ∪ Y ∪ V = Finset.univ) :
-    0 ≤ ManyBody.regionEntropy ψ (X ∪ U) + ManyBody.regionEntropy ψ V
-        - ManyBody.regionEntropy ψ Y := by
-  have hcompl : ManyBody.regionEntropy ψ ((X ∪ U) ∪ V) = ManyBody.regionEntropy ψ Y := by
+    0 ≤ regionEntropy ψ (X ∪ U) + regionEntropy ψ V
+        - regionEntropy ψ Y := by
+  have hcompl : regionEntropy ψ ((X ∪ U) ∪ V) = regionEntropy ψ Y := by
     apply entropy_partition β ψ
     · simp only [Finset.disjoint_union_left]
       exact ⟨⟨hXY, hUY⟩, hYV.symm⟩
     · simpa only [Finset.union_assoc, Finset.union_left_comm, Finset.union_comm] using hc
-  have hsub := ManyBody.regionEntropy_union_le β ψ hψ (X ∪ U) V
+  have hsub := regionEntropy_union_le β ψ hψ (X ∪ U) V
     (Finset.disjoint_union_left.mpr ⟨hXV, hUV⟩)
   rw [hcompl] at hsub
   linarith

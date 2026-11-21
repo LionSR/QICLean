@@ -1,0 +1,105 @@
+\documentclass{article}
+\usepackage{amsmath,amssymb}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\input{command}
+\title{The Input Scope of Semiclassical Phase Estimation}
+\author{}
+\date{2026-11-20}
+\begin{document}
+\maketitle
+\gapnote{scope-restriction}{open}
+
+\section{The source theorem}
+Griffiths and Niu~\cite{GriffithsNiu1996} replace the inverse quantum Fourier
+transform on a register of $t$ qubits, followed by a measurement of the whole
+register in the computational basis, by measurements of the qubits one at a
+time. The qubit $j$ is measured after the phase gate
+$\operatorname{diag}(1,e^{-2\pi i\theta_j})$ and the Hadamard gate, where
+\begin{align}
+    \theta_j & = \sum_{i<j}\frac{b_i}{2^{j-i+1}}
+    \label{eq:gn96_semiclassical_general_input_scope_correction}
+\end{align}
+is computed from the outcomes $b_i$ of the qubits measured before it. Their
+claim is that the two procedures give the same distribution of outcomes for
+every state of the register, and hence, inside phase estimation
+(Nielsen and Chuang~\cite{NielsenChuang2010}, \S5.2), for every input state
+of the control register and the target. The argument is local: in the coherent
+circuit, the qubit $j$ is the control of the controlled phase gates acting on
+the qubits measured after it, and these gates are diagonal in the control.
+Measuring a control in the computational basis commutes with a gate that is
+diagonal in it, so the measurement can be moved before the gates, which then
+become phase gates on the later qubits chosen by the outcome. No property of
+the input is used.
+
+\section{The formalized statement}
+The formal theorem\footnote{Formal declarations:
+    \leanid{QuantumCircuit.PhaseEstimation.semiclassical_outcomeProb_eq} and
+    \leanid{QuantumCircuit.PhaseEstimation.semiclassical_accurate_prob_ge} in
+    \doclink{QICLean/Circuit/Algorithm/SemiclassicalPhaseEstimation}.}
+concerns the whole semiclassical phase-estimation circuit, the Hadamard
+gates and controlled calls of the oracle $U$ followed by the corrected
+measurements. Its input is $\lvert0\cdots0\rangle\otimes u$ with
+\begin{align}
+    Uu & =e^{2\pi i\varphi}u,\qquad \lVert u\rVert=1,
+    \label{eq:gn96_semiclassical_general_input_scope_eigenvector}
+\end{align}
+and its conclusion is that the readout $k$ has probability
+$\lvert\alpha_k\rvert^2$, with
+$\alpha_k=2^{-t}\sum_{l<2^t}e^{2\pi il(\varphi-k/2^t)}$, which is the outcome
+distribution of the coherent circuit on the same input. The eigenvector
+condition~\eqref{eq:gn96_semiclassical_general_input_scope_eigenvector} is a
+hypothesis absent from the source's statement about the semiclassical Fourier
+transform. It is the hypothesis of the phase-estimation theorem that the
+semiclassical theorem is applied to, so the success probability and the number
+of oracle calls of phase estimation are formalized with their source
+hypotheses.
+
+The proof uses the eigenvector input. After the calls the control register is
+the product state
+$\bigotimes_j2^{-1/2}(\lvert0\rangle+e^{2\pi i\varphi2^{t-1-j}}\lvert1\rangle)$
+and the target is $u$. Along a branch of outcomes $b_0,\dots,b_{j-1}$ the state
+stays a product, and the corrected measurement of the qubit $j$ multiplies its
+factor by an explicit scalar $\beta_j$. The probability of a branch is
+therefore $\prod_j\lvert\beta_j\rvert^2$, and this product is computed to be
+$\lvert\alpha_k\rvert^2$. For a general input the control register is
+entangled with the target after the calls, and no branch is a product state.
+
+\section{Elimination}
+The source-faithful statement is an identity of instruments that does not
+mention the input: for every operator $\rho$ on the control register and the
+target, the semiclassical circuit and the coherent circuit (the inverse
+Fourier transform followed by the measurement of the register) have the same
+outcome probabilities on $\rho$. It follows from two facts.
+\begin{enumerate}
+    \item \emph{Deferred measurement.} Let $P_0,P_1$ be the projections of a
+          control qubit on $\lvert0\rangle$ and $\lvert1\rangle$, and let
+          $W=P_0\otimes1+P_1\otimes V$ be a gate diagonal in the control. Then
+          for every $\rho$ and every outcome $b$,
+          \begin{align}
+              (P_b\otimes1)\,W\rho W^*\,(P_b\otimes1)
+               & =(1\otimes V^b)(P_b\otimes1)\rho(P_b\otimes1)(1\otimes V^b)^*.
+              \label{eq:gn96_semiclassical_general_input_scope_deferred}
+          \end{align}
+          Hence measuring the control after $W$ is the instrument
+          ``measure the control, then apply $V^b$''.
+    \item \emph{The Fourier circuit.} The inverse Fourier transform is the
+          product, over $j$, of the Hadamard gate on the qubit $j$ preceded by
+          the controlled phase gates whose controls are the qubits $i<j$ and
+          whose phases sum to $e^{-2\pi i\theta_j}$ on the outcomes $b_i$.
+          Applying~\eqref{eq:gn96_semiclassical_general_input_scope_deferred}
+          to every controlled phase gate, in the order of the measurements,
+          turns the measurement of the transformed register into the
+          semiclassical measurements, branch by branch.
+\end{enumerate}
+Both facts are identities of operators, so the induction runs over the
+measured qubits on an arbitrary operator, with no product structure. The
+eigenvector theorem is then the specialization of the general identity to the
+input $\lvert0\cdots0\rangle\otimes u$, composed with the coherent
+phase-estimation theorem.\footnote{Formal declaration:
+    \leanid{QuantumCircuit.PhaseEstimation.outcomeProb_eq} in
+    \doclink{QICLean/Circuit/Algorithm/PhaseEstimation}.}
+
+\bibliographystyle{alpha}
+\bibliography{references}
+\end{document}

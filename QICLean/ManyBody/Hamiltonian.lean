@@ -9,6 +9,7 @@ Authors: QICLean contributors
 -- Generated aggregator module: QICLean.ManyBody.Hamiltonian
 
 import QICLean.ManyBody.Hamiltonian.ClusterExpansion
+import QICLean.ManyBody.Hamiltonian.CommutingParentHamiltonian
 import QICLean.ManyBody.Hamiltonian.DisjointRegionalGround
 import QICLean.ManyBody.Hamiltonian.FrustrationFree
 import QICLean.ManyBody.Hamiltonian.GaussianFilter
@@ -27,6 +28,7 @@ import QICLean.ManyBody.Hamiltonian.LowEnergyBasisUniform
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutator
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorExample
 import QICLean.ManyBody.Hamiltonian.LowEnergyCommutatorSum
+import QICLean.ManyBody.Hamiltonian.Martingale
 import QICLean.ManyBody.Hamiltonian.Models
 import QICLean.ManyBody.Hamiltonian.NegativeFrequency
 import QICLean.ManyBody.Hamiltonian.PositiveTerm

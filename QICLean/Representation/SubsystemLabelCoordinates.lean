@@ -43,14 +43,15 @@ variable {F : Type*} [Fintype F] [DecidableEq F]
 /-- Split each copy into its complementary and regional configurations, then
 collect the copies of each factor. -/
 def subsystemSplitEquiv : Config k ι ≃
-    (Fin k → ManyBody.RegionConfig ι Bᶜ) ×
+    (Fin k → ManyBody.ComplConfig ι B) ×
       (Fin k → ManyBody.RegionConfig ι B) :=
   (Equiv.piCongrRight fun _ : Fin k ↦
-    (ManyBody.splitEquiv ι B).trans (Equiv.prodComm _ _)).trans
+    (ManyBody.cutEquiv ι B).trans (Equiv.prodComm _ _)).trans
       (Equiv.arrowProdEquivProdArrow (Fin k)
-        (fun _ ↦ ManyBody.RegionConfig ι Bᶜ)
+        (fun _ ↦ ManyBody.ComplConfig ι B)
         (fun _ ↦ ManyBody.RegionConfig ι B))
 
+omit [Fintype F] in
 /-- The actual subsystem permutation fixes the complementary coordinates and
 permutes precisely the regional copies after the canonical split. -/
 theorem subsystemSplitEquiv_subsystemPerm (σ : Equiv.Perm (Fin k))
@@ -62,7 +63,7 @@ theorem subsystemSplitEquiv_subsystemPerm (σ : Equiv.Perm (Fin k))
   apply Prod.ext
   · funext j f
     change (if (f : F) ∈ B then x (σ⁻¹ j) f else x j f) = x j f
-    exact ite_eq_right (Finset.mem_compl.mp f.property)
+    exact ite_eq_right f.property
   · funext j f
     change (if (f : F) ∈ B then x (σ⁻¹ j) f else x j f) = x (σ⁻¹ j) f
     exact ite_eq_left f.property
@@ -75,8 +76,8 @@ No invariance assumption on a state is involved. -/
 theorem labelProj_subsystemPerm_submatrix (l : IrrepLabel (Equiv.Perm (Fin k))) :
     (labelProj (subsystemPerm k ι B) l).submatrix
         (subsystemSplitEquiv ι k B).symm (subsystemSplitEquiv ι k B).symm =
-      (1 : Matrix (Fin k → ManyBody.RegionConfig ι Bᶜ)
-        (Fin k → ManyBody.RegionConfig ι Bᶜ) ℂ) ⊗ₖ
+      (1 : Matrix (Fin k → ManyBody.ComplConfig ι B)
+        (Fin k → ManyBody.ComplConfig ι B) ℂ) ⊗ₖ
           labelProj (copyPerm (ManyBody.RegionConfig ι B) k) l := by
   exact groupAlgebraRep_submatrix_of_prod_action
     (subsystemPerm k ι B) (copyPerm (ManyBody.RegionConfig ι B) k)
@@ -88,8 +89,8 @@ tensored with the identity under the canonical coordinate split. -/
 theorem labelCutoff_subsystemPerm_submatrix (a : ℝ) :
     (labelCutoff (subsystemPerm k ι B) a).submatrix
         (subsystemSplitEquiv ι k B).symm (subsystemSplitEquiv ι k B).symm =
-      (1 : Matrix (Fin k → ManyBody.RegionConfig ι Bᶜ)
-        (Fin k → ManyBody.RegionConfig ι Bᶜ) ℂ) ⊗ₖ
+      (1 : Matrix (Fin k → ManyBody.ComplConfig ι B)
+        (Fin k → ManyBody.ComplConfig ι B) ℂ) ⊗ₖ
           labelCutoff (copyPerm (ManyBody.RegionConfig ι B) k) a := by
   classical
   ext x y
@@ -118,10 +119,10 @@ theorem norm_sq_one_sub_labelCutoff_subsystemPerm_prod
         (Matrix.finKronecker (fun _ : Fin k ↦ ManyBody.regionState ψ B) *
           (1 - labelCutoff (copyPerm (ManyBody.RegionConfig ι B) k) a)).trace.re := by
   classical
-  let C := ManyBody.RegionConfig ι Bᶜ
+  let C := ManyBody.ComplConfig ι B
   let R := ManyBody.RegionConfig ι B
   let e := subsystemSplitEquiv ι k B
-  let τ : C × R → ℂ := fun x ↦ ψ ((ManyBody.splitEquiv ι B).symm (x.2, x.1))
+  let τ : C × R → ℂ := fun x ↦ ψ ((ManyBody.cutEquiv ι B).symm (x.2, x.1))
   let v : Config k ι → ℂ := fun x ↦ ∏ j, ψ (x j)
   let v' : (Fin k → C) × (Fin k → R) → ℂ := fun x ↦ ∏ j, τ (x.1 j, x.2 j)
   let M := 1 - labelCutoff (subsystemPerm k ι B) a

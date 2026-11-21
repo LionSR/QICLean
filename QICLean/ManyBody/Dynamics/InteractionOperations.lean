@@ -4,8 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.Interaction
-import QICLean.ManyBody.Sites.Placement
-import QICLean.ManyBody.Sites.Relabel
+import QICLean.ManyBody.Sites.PlaceAlong
 import QICLean.ManyBody.Sites.SitewiseProduct
 import QICLean.Analysis.DoubledSystemGap
 import QICLean.Analysis.KroneckerOperatorNorm
@@ -26,8 +25,14 @@ every index type, every family of supports and every family of basis types:
   `hᵢ`, and the terms at the other indices vanish;
 * the **doubled interaction** `(hᵢ ⊗ 1 + 1 ⊗ hᵢ)ᵢ` on the system with basis `X v × X v` at
   every site `v`, whose Hamiltonian is the doubled Hamiltonian `H ⊗ 1 + 1 ⊗ H`;
+* the **interaction of placed regional matrices** `(place Rᵢ hᵢ)ᵢ`, which every interaction is;
+* the interaction **placed along an injection** `w : W ↪ V` of an interaction on the sites `W`,
+  with supports the images of the supports, and its **padding** by one term at each site
+  outside the image of `w`;
+* the union of **two interactions on the same system**, indexed by the sum of the index types;
+* the **conjugation** `(U hᵢ U†)ᵢ` by a matrix `U` that keeps every term on its support;
 * the **translates** of one operator `h` on the configurations of a finite set `W` along a family
-  of injections `wᵢ : W ↪ V`: the term with index `i` is the placement of `h` on `wᵢ(W)`.
+  of injections `wᵢ : W ↪ V`: the term with index `i` is `h` placed along `wᵢ`.
 
 The two copies of `Φ` beside each other on the sites `V ⊕ V` are `Φ.sum Φ`
 (`QICLean.ManyBody.Dynamics.InteractionSum`); the doubled interaction is the same pair of
@@ -43,15 +48,21 @@ the sums over filters of supports `leftPart`, `bufferPart`, `rightPart`, `cutLef
 (`MPS/AreaLaw/ComponentReduction`), `ChainInteraction.ofBonds` and
 `ChainInteraction.ofNearestNeighborPositive` (`MPS/AreaLaw/ViableSet/PowerProjector`,
 `MPS/AreaLaw/Huang/PositiveChainHamiltonian`), each an extension along an injection of
-indices; and the window placements `MPOTensor.embedLocalOperator` of
-`MPSTensor.interactionHamiltonian` (`MPS/Symmetry/GappedInteractionPath`).
+indices; the window placements `MPOTensor.embedLocalOperator` of
+`MPSTensor.interactionHamiltonian` (`MPS/Symmetry/GappedInteractionPath`); the padded chain
+interaction `paddedInteraction` (`MPS/AreaLaw/ViableSet/ChainPadding`), the padding of a bond
+interaction along `Fin.castLEEmb`; the regional parent Hamiltonian `regionParentHamiltonian`
+(`PEPS/ParentHamiltonian/RegionParentHamiltonian`), the Hamiltonian of placed regional
+matrices; and the conjugated doubled interactions `swappedDoubled` (`PEPS/Approximation/
+SwappedPlaneInteraction`), the doubled interaction conjugated by `ManyBody.pairSwapOp`.
 
 ## Main definitions
 
 * `ManyBody.Interaction.partialHamiltonian`, `ManyBody.Interaction.relabel`,
   `ManyBody.Interaction.extend`, `ManyBody.Interaction.doubled`,
+  `ManyBody.Interaction.ofPlace`, `ManyBody.Interaction.pushforward`,
+  `ManyBody.Interaction.pad`, `ManyBody.Interaction.append`, `ManyBody.Interaction.conj`,
   `ManyBody.Interaction.translates`, and the instance `SMul ℝ (ManyBody.Interaction X S)`.
-* `ManyBody.windowEquiv` — the sites of `W` identified with their image under an injection.
 
 ## Main results
 
@@ -60,8 +71,12 @@ indices; and the window placements `MPOTensor.embedLocalOperator` of
   `ManyBody.Interaction.partialHamiltonian_mem_supportedOperators`,
   `ManyBody.Interaction.norm_partialHamiltonian_le`.
 * `ManyBody.Interaction.hamiltonian_smul`, `ManyBody.Interaction.hamiltonian_relabel`,
-  `ManyBody.Interaction.hamiltonian_extend`, `ManyBody.Interaction.hamiltonian_doubled` — the
-  Hamiltonians of the new interactions.
+  `ManyBody.Interaction.hamiltonian_extend`, `ManyBody.Interaction.hamiltonian_doubled`,
+  `ManyBody.Interaction.hamiltonian_ofPlace`, `ManyBody.Interaction.hamiltonian_pushforward`,
+  `ManyBody.Interaction.hamiltonian_pad`, `ManyBody.Interaction.hamiltonian_append`,
+  `ManyBody.Interaction.hamiltonian_conj` — the Hamiltonians of the new interactions.
+* `ManyBody.Interaction.exists_eq_ofPlace` — every interaction is one of placed regional
+  matrices.
 * Hermiticity, positivity and norm bounds of the new terms.
 -/
 
@@ -317,6 +332,244 @@ theorem isHermitian_doubled_term {i : ι} (hΦ : (Φ.term i).IsHermitian) :
 
 end Doubled
 
+/-! ### Interactions of placed regional matrices -/
+
+section OfPlace
+
+variable (R : ι → Finset V) (h : ∀ i, Matrix (RegionConfig X (R i)) (RegionConfig X (R i)) ℂ)
+
+/-- **The interaction of placed regional matrices.** For regions `Rᵢ` and matrices `hᵢ` on the
+configurations of `Rᵢ`, the interaction whose term with index `i` is `hᵢ` placed on `Rᵢ`.
+Every interaction with supports `R` is of this form (`exists_eq_ofPlace`). Cirac,
+Pérez-García, Schuch and Verstraete, arXiv:2011.12127, `TN-Review-main.tex`, lines 2008–2011,
+for the parent Hamiltonian of a projected entangled pair state on regions `Rᵢ`. -/
+noncomputable def ofPlace : Interaction X R where
+  term i := place (R i) (h i)
+  mem i := place_mem_supportedOperators (h i)
+
+@[simp]
+theorem ofPlace_term (i : ι) : (ofPlace R h).term i = place (R i) (h i) :=
+  rfl
+
+/-- The Hamiltonian of placed regional matrices is the sum of the placements. -/
+theorem hamiltonian_ofPlace [Fintype ι] : (ofPlace R h).hamiltonian = ∑ i, place (R i) (h i) :=
+  rfl
+
+/-- Placed matrices have at most the norms of the regional matrices. -/
+theorem norm_ofPlace_term_le (i : ι) : ‖(ofPlace R h).term i‖ ≤ ‖h i‖ :=
+  norm_place_le (h i)
+
+variable {R} in
+/-- Every interaction is an interaction of placed regional matrices. -/
+theorem exists_eq_ofPlace (Φ : Interaction X R) :
+    ∃ h : ∀ i, Matrix (RegionConfig X (R i)) (RegionConfig X (R i)) ℂ, Φ = ofPlace R h := by
+  choose h hh using fun i ↦ exists_eq_place_of_mem_supportedOperators (Φ.mem i)
+  exact ⟨h, Interaction.ext (funext hh)⟩
+
+end OfPlace
+
+/-! ### Placement along an injection of sites -/
+
+section Pushforward
+
+variable {W : Type*} [Fintype W] [DecidableEq W] (w : W ↪ V) {S : ι → Finset W}
+
+/-- **Placing an interaction along an injection of sites.** For an injection `w : W ↪ V` and an
+interaction `Φ` on the sites `W`, the site `u` carrying the basis `X (w u)`, the interaction on
+`X` whose term with index `i` is `hᵢ` placed along `w`, supported on the image of `Sᵢ`. A chain
+of `L` sites inside a chain of `N ≥ L` sites, a domain inside a larger domain, and the sites of
+a region of a lattice are the main cases. -/
+noncomputable def pushforward (Φ : Interaction (fun u ↦ X (w u)) S) :
+    Interaction X fun i ↦ (S i).map w where
+  term i := placeAlong w (Φ.term i)
+  mem i := placeAlong_mem_supportedOperators_map w (Φ.mem i)
+
+variable (Φ : Interaction (fun u ↦ X (w u)) S)
+
+@[simp]
+theorem pushforward_term (i : ι) : (Φ.pushforward w).term i = placeAlong w (Φ.term i) :=
+  rfl
+
+/-- The Hamiltonian of an interaction placed along an injection is the placed Hamiltonian. -/
+theorem hamiltonian_pushforward [Fintype ι] :
+    (Φ.pushforward w).hamiltonian = placeAlong w Φ.hamiltonian :=
+  (placeAlong_sum w Finset.univ Φ.term).symm
+
+/-- A partial Hamiltonian of an interaction placed along an injection is the placed partial
+Hamiltonian. -/
+theorem partialHamiltonian_pushforward (s : Finset ι) :
+    (Φ.pushforward w).partialHamiltonian s = placeAlong w (Φ.partialHamiltonian s) :=
+  (placeAlong_sum w s Φ.term).symm
+
+/-- The placed terms have at most the norms of the terms. -/
+theorem norm_pushforward_term_le (i : ι) : ‖(Φ.pushforward w).term i‖ ≤ ‖Φ.term i‖ :=
+  norm_placeAlong_le w _
+
+variable {Φ}
+
+/-- Placed Hermitian terms are Hermitian. -/
+theorem isHermitian_pushforward_term {i : ι} (hΦ : (Φ.term i).IsHermitian) :
+    ((Φ.pushforward w).term i).IsHermitian :=
+  isHermitian_placeAlong w hΦ
+
+/-- Placed positive terms are positive. -/
+theorem pushforward_term_nonneg {i : ι} (hΦ : 0 ≤ Φ.term i) : 0 ≤ (Φ.pushforward w).term i :=
+  (posSemidef_placeAlong w (nonneg_iff_posSemidef.mp hΦ)).nonneg
+
+/-- Placed terms bounded by the identity are bounded by the identity. -/
+theorem pushforward_term_le_one {i : ι} (hΦ : Φ.term i ≤ 1) : (Φ.pushforward w).term i ≤ 1 := by
+  rw [pushforward_term, ← placeAlong_one w]
+  exact placeAlong_le_placeAlong w hΦ
+
+end Pushforward
+
+/-! ### Two interactions on the same system -/
+
+section Append
+
+variable {κ : Type*} {T : κ → Finset V}
+
+/-- **Two interactions on the same system.** The interaction whose terms are those of `Φ`,
+with indices `inl i`, and those of `Ψ`, with indices `inr k`, each with its support. -/
+def append (Φ : Interaction X S) (Ψ : Interaction X T) : Interaction X (Sum.elim S T) where
+  term := Sum.elim Φ.term Ψ.term
+  mem
+    | .inl i => Φ.mem i
+    | .inr k => Ψ.mem k
+
+variable (Φ : Interaction X S) (Ψ : Interaction X T)
+
+@[simp]
+theorem append_term_inl (i : ι) : (Φ.append Ψ).term (.inl i) = Φ.term i :=
+  rfl
+
+@[simp]
+theorem append_term_inr (k : κ) : (Φ.append Ψ).term (.inr k) = Ψ.term k :=
+  rfl
+
+/-- The Hamiltonian of two interactions on the same system is the sum of their Hamiltonians. -/
+theorem hamiltonian_append [Fintype ι] [Fintype κ] :
+    (Φ.append Ψ).hamiltonian = Φ.hamiltonian + Ψ.hamiltonian :=
+  Fintype.sum_sum_type _
+
+variable {Φ Ψ}
+
+/-- A property of operators that holds for every term of `Φ` and of `Ψ` holds for every term of
+the two together. -/
+theorem forall_append_term {P : Matrix (Config X) (Config X) ℂ → Prop} (hΦ : ∀ i, P (Φ.term i))
+    (hΨ : ∀ k, P (Ψ.term k)) : ∀ j, P ((Φ.append Ψ).term j)
+  | .inl i => hΦ i
+  | .inr k => hΨ k
+
+end Append
+
+/-! ### Padding an interaction on fewer sites -/
+
+section Pad
+
+variable {W : Type*} [Fintype W] [DecidableEq W] (w : W ↪ V) {S : ι → Finset W}
+
+/-- **Padding an interaction.** For an injection `w : W ↪ V`, an interaction `Φ` on the sites
+`W`, the site `u` carrying the basis `X (w u)`, and a matrix `p v` on the basis at every site
+`v`, the interaction on `X` whose terms are those of `Φ` placed along `w`, supported on the
+images of their supports, and one term `p v` at every site `v` outside the image of `w`,
+supported on `{v}`. A chain of `L` sites inside a chain of `N ≥ L` sites, with a penalty for
+leaving a reference state on each added site, is the main case. -/
+noncomputable def pad (Φ : Interaction (fun u ↦ X (w u)) S) (p : ∀ v, Matrix (X v) (X v) ℂ) :
+    Interaction X (Sum.elim (fun i ↦ (S i).map w)
+      fun v : {v // v ∉ Finset.univ.map w} ↦ ({v.1} : Finset V)) :=
+  (Φ.pushforward w).append
+    { term := fun v ↦ placeAt v.1 (p v.1)
+      mem := fun v ↦ placeAt_mem_supportedOperators v.1 (p v.1) }
+
+variable (Φ : Interaction (fun u ↦ X (w u)) S) (p : ∀ v, Matrix (X v) (X v) ℂ)
+
+@[simp]
+theorem pad_term_inl (i : ι) : (Φ.pad w p).term (.inl i) = placeAlong w (Φ.term i) :=
+  rfl
+
+@[simp]
+theorem pad_term_inr (v : {v // v ∉ Finset.univ.map w}) :
+    (Φ.pad w p).term (.inr v) = placeAt v.1 (p v.1) :=
+  rfl
+
+/-- The Hamiltonian of the padded interaction is the placed Hamiltonian of `Φ` plus the sum of
+the terms at the sites outside the image. -/
+theorem hamiltonian_pad [Fintype ι] :
+    (Φ.pad w p).hamiltonian =
+      placeAlong w Φ.hamiltonian + ∑ v : {v // v ∉ Finset.univ.map w}, placeAt v.1 (p v.1) := by
+  rw [pad, hamiltonian_append, hamiltonian_pushforward]
+  rfl
+
+variable {Φ p}
+
+/-- The padding of positive terms by positive matrices has positive terms. -/
+theorem pad_term_nonneg (hΦ : ∀ i, 0 ≤ Φ.term i) (hp : ∀ v, 0 ≤ p v) :
+    ∀ j, 0 ≤ (Φ.pad w p).term j :=
+  forall_append_term (fun i ↦ pushforward_term_nonneg w (hΦ i)) fun v ↦
+    (posSemidef_placeAt (nonneg_iff_posSemidef.mp (hp v.1))).nonneg
+
+/-- The padding of terms bounded by the identity by matrices bounded by the identity has terms
+bounded by the identity. -/
+theorem pad_term_le_one (hΦ : ∀ i, Φ.term i ≤ 1) (hp : ∀ v, p v ≤ 1) :
+    ∀ j, (Φ.pad w p).term j ≤ 1
+  | .inl i => pushforward_term_le_one w (hΦ i)
+  | .inr v => by simpa using placeAt_le_placeAt (X := X) (v := v.1) (hp v.1)
+
+/-- The padding of Hermitian terms by Hermitian matrices has Hermitian terms. -/
+theorem isHermitian_pad_term (hΦ : ∀ i, (Φ.term i).IsHermitian) (hp : ∀ v, (p v).IsHermitian) :
+    ∀ j, ((Φ.pad w p).term j).IsHermitian :=
+  forall_append_term (fun i ↦ isHermitian_pushforward_term w (hΦ i)) fun v ↦
+    isHermitian_placeAt (hp v.1)
+
+end Pad
+
+/-! ### Conjugation by a matrix that keeps the supports -/
+
+section Conj
+
+/-- **Conjugation of an interaction.** For a matrix `U` with `U hᵢ U†` supported on `Sᵢ` for
+every `i`, the interaction with terms `U hᵢ U†`. For a unitary `U` its Hamiltonian is `U H U†`,
+which has the spectrum, ground spaces and gaps of `H` carried by `U`. -/
+def conj (Φ : Interaction X S) (U : Matrix (Config X) (Config X) ℂ)
+    (hU : ∀ i, U * Φ.term i * Uᴴ ∈ supportedOperators X (S i)) : Interaction X S where
+  term i := U * Φ.term i * Uᴴ
+  mem := hU
+
+variable (Φ : Interaction X S) (U : Matrix (Config X) (Config X) ℂ)
+  (hU : ∀ i, U * Φ.term i * Uᴴ ∈ supportedOperators X (S i))
+
+@[simp]
+theorem conj_term (i : ι) : (Φ.conj U hU).term i = U * Φ.term i * Uᴴ :=
+  rfl
+
+/-- The Hamiltonian of the conjugated interaction is the conjugated Hamiltonian. -/
+theorem hamiltonian_conj [Fintype ι] : (Φ.conj U hU).hamiltonian = U * Φ.hamiltonian * Uᴴ := by
+  simp only [hamiltonian, conj_term, Finset.mul_sum, Finset.sum_mul]
+
+/-- Conjugation by a unitary keeps the norms of the terms. -/
+theorem norm_conj_term {U : Matrix (Config X) (Config X) ℂ} (hU' : U ∈ unitaryGroup (Config X) ℂ)
+    (hU : ∀ i, U * Φ.term i * Uᴴ ∈ supportedOperators X (S i)) (i : ι) :
+    ‖(Φ.conj U hU).term i‖ = ‖Φ.term i‖ := by
+  let V : unitary (Matrix (Config X) (Config X) ℂ) := ⟨U, hU'⟩
+  calc ‖(Φ.conj U hU).term i‖
+      = ‖(V : Matrix _ _ ℂ) * Φ.term i * ((star V : unitary _) : Matrix _ _ ℂ)‖ := rfl
+    _ = ‖Φ.term i‖ := by rw [CStarRing.norm_mul_coe_unitary, CStarRing.norm_coe_unitary_mul]
+
+variable {Φ}
+
+/-- Conjugated Hermitian terms are Hermitian. -/
+theorem isHermitian_conj_term {i : ι} (hΦ : (Φ.term i).IsHermitian) :
+    ((Φ.conj U hU).term i).IsHermitian :=
+  isHermitian_mul_mul_conjTranspose U hΦ
+
+/-- Conjugated positive terms are positive. -/
+theorem conj_term_nonneg {i : ι} (hΦ : 0 ≤ Φ.term i) : 0 ≤ (Φ.conj U hU).term i :=
+  ((nonneg_iff_posSemidef.mp hΦ).mul_mul_conjTranspose_same U).nonneg
+
+end Conj
+
+
 end Interaction
 
 /-! ### Translates of one operator -/
@@ -326,57 +579,41 @@ section Translates
 variable {V : Type*} [Fintype V] [DecidableEq V] {W : Type*} [Fintype W]
   {α : Type*} [Fintype α] [DecidableEq α] {ι : Type*}
 
-omit [DecidableEq V] in
-/-- The sites `W` identified with their image under an injection `w : W ↪ V`. -/
-noncomputable def windowEquiv (w : W ↪ V) : W ≃ ↥(Finset.univ.map w) :=
-  (Equiv.subtypeUnivEquiv Finset.mem_univ).symm.trans (Finset.univ.equivMap w)
-
-omit [Fintype V] [DecidableEq V] in
-@[simp]
-theorem coe_windowEquiv (w : W ↪ V) (u : W) : (windowEquiv w u : V) = w u :=
-  rfl
-
 /-- **The translates of one operator.** For an operator `h` on the configurations of the sites
-`W` and injections `wᵢ : W ↪ V`, the term with index `i` is the placement of `h` on the image
-`wᵢ(W)`, with the site `u` of `W` carried to `wᵢ u`. Schuch, Pérez-García and Cirac,
-arXiv:1010.3732, `sec:phases-definition-no-sym`, lines 407–427, for the translates of a
+`W` and injections `wᵢ : W ↪ V`, the term with index `i` is `h` placed along `wᵢ`: it acts as
+`h` on the image `wᵢ(W)`, the site `u` of `W` carried to `wᵢ u`. Schuch, Pérez-García and
+Cirac, arXiv:1010.3732, `sec:phases-definition-no-sym`, lines 407–427, for the translates of a
 nearest-neighbour term on a ring. -/
 noncomputable def Interaction.translates (w : ι → W ↪ V) (h : Matrix (W → α) (W → α) ℂ) :
     Interaction (fun _ : V ↦ α) (fun i ↦ Finset.univ.map (w i)) where
-  term i := place (Finset.univ.map (w i))
-    (reindex ((windowEquiv (w i)).arrowCongr (Equiv.refl α))
-      ((windowEquiv (w i)).arrowCongr (Equiv.refl α)) h)
-  mem _ := place_mem_supportedOperators _
+  term i := placeAlong (X := fun _ ↦ α) (w i) h
+  mem i := placeAlong_mem_supportedOperators (X := fun _ ↦ α) (w i) h
 
 namespace Interaction
 
 variable (w : ι → W ↪ V) (h : Matrix (W → α) (W → α) ℂ)
 
-/-- The term with index `i` of the translates is `h` placed on the image `wᵢ(W)`. -/
+/-- The term with index `i` of the translates is `h` placed along `wᵢ`. -/
+@[simp]
 theorem translates_term (i : ι) :
-    (translates w h).term i = place (Finset.univ.map (w i))
-      (reindex ((windowEquiv (w i)).arrowCongr (Equiv.refl α))
-        ((windowEquiv (w i)).arrowCongr (Equiv.refl α)) h) :=
+    (translates w h).term i = placeAlong (X := fun _ ↦ α) (w i) h :=
   rfl
 
 variable [DecidableEq W] in
 /-- The translates of an operator have at most its norm. -/
-theorem norm_translates_term_le (i : ι) : ‖(translates w h).term i‖ ≤ ‖h‖ := by
-  rw [translates_term]
-  exact (norm_place_le _).trans (Matrix.l2_opNorm_reindex_equiv _ _).le
+theorem norm_translates_term_le (i : ι) : ‖(translates w h).term i‖ ≤ ‖h‖ :=
+  norm_placeAlong_le (X := fun _ ↦ α) (w i) h
 
 variable {h}
 
 /-- The translates of a Hermitian operator are Hermitian. -/
 theorem isHermitian_translates_term (hh : h.IsHermitian) (i : ι) :
-    ((translates w h).term i).IsHermitian := by
-  rw [translates_term]
-  exact isHermitian_place (hh.reindex _)
+    ((translates w h).term i).IsHermitian :=
+  isHermitian_placeAlong (X := fun _ ↦ α) (w i) hh
 
 /-- The translates of a positive operator are positive. -/
-theorem translates_term_nonneg (hh : 0 ≤ h) (i : ι) : 0 ≤ (translates w h).term i := by
-  rw [translates_term]
-  exact (posSemidef_place ((posSemidef_submatrix_equiv _).mpr (nonneg_iff_posSemidef.mp hh))).nonneg
+theorem translates_term_nonneg (hh : 0 ≤ h) (i : ι) : 0 ≤ (translates w h).term i :=
+  (posSemidef_placeAlong (X := fun _ ↦ α) (w i) (nonneg_iff_posSemidef.mp hh)).nonneg
 
 end Interaction
 

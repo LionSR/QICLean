@@ -25,14 +25,6 @@ namespace Entropy
 
 variable {V : Type*} [Fintype V] [DecidableEq V] {n : V → ℕ}
 
-/-- The complementary configuration type written with membership in the complement. -/
-private def rightConfigComplEquiv (D : Finset V) :
-    ((v : {v : V // v ∉ D}) → Fin (n v)) ≃ (ManyBody.RegionConfig (fun v ↦ Fin (n v)) Dᶜ) where
-  toFun x v := x ⟨v.1, Finset.mem_compl.mp v.2⟩
-  invFun x v := x ⟨v.1, Finset.mem_compl.mpr v.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 /-- An operator on the right cut factor is a local lift on the complement. -/
 private theorem rightCut_eq_localLift_compl (D : Finset V)
     (R : Matrix ((v : {v : V // v ∉ D}) → Fin (n v))
@@ -42,11 +34,12 @@ private theorem rightCut_eq_localLift_compl (D : Finset V)
       ((1 : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D)
           (ManyBody.RegionConfig (fun v ↦ Fin (n v)) D) ℂ) ⊗ₖ R) =
     ManyBody.place Dᶜ
-      (R.reindex (rightConfigComplEquiv (n := n) D) (rightConfigComplEquiv (n := n) D)) := by
+      (R.reindex (ManyBody.complementEquiv (fun v ↦ Fin (n v)) D)
+        (ManyBody.complementEquiv (fun v ↦ Fin (n v)) D)) := by
   classical
   ext σ τ
   simp [ManyBody.place, ManyBody.place, ManyBody.cutEquiv, Equiv.piEquivPiSubtypeProd,
-    rightConfigComplEquiv, Matrix.reindex_apply, Matrix.kroneckerMap_apply,
+    ManyBody.complementEquiv, Matrix.reindex_apply, Matrix.kroneckerMap_apply,
     Matrix.one_apply, funext_iff, Subtype.forall, mul_comm]
 
 /-- An operator on the right cut factor is supported on the complementary sites. -/

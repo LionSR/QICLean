@@ -32,7 +32,9 @@ is the transported term, the other terms vanishing
 (`ManyBody.RectangleInteraction.toPlaneInteraction`). Both are extensions along an injection of
 indices, `ManyBody.Interaction.extend`. On the ring of `N` sites, the translation-invariant
 interaction of one operator on `k ≤ N` consecutive sites has the translates of that operator
-as its terms (`ManyBody.Interaction.translationInvariant`).
+as its terms (`ManyBody.Interaction.translationInvariant`); on the open chain of `N` sites,
+the translates of that operator along the windows starting at `0, …, N - k` form
+`ManyBody.Interaction.chainTranslates`.
 
 They exist for field notation and readability; they add no structure. Hermiticity of the terms
 (or only of their sum), the norm bound `J`, the range and the degree are hypotheses of the
@@ -49,12 +51,16 @@ of these interactions together with the hypotheses that were its fields.
   `ManyBody.RectangleInteraction`, `ManyBody.SquareInteraction`, `ManyBody.BondInteraction`.
 * `ManyBody.bondSupport`, `ManyBody.BondInteraction.toChainInteraction`.
 * `ManyBody.RectangleInteraction.toPlaneInteraction`.
-* `ManyBody.Interaction.translationInvariant`.
+* `ManyBody.Interaction.translationInvariant`, `ManyBody.Interaction.chainTranslates`.
 
 ## Main results
 
 * `ManyBody.RectangleInteraction.hamiltonian_toPlaneInteraction` — the map to the plane keeps
   the Hamiltonian, transported to the configurations of the domain.
+* `ManyBody.Interaction.translationInvariant_term_add_one`,
+  `ManyBody.Interaction.sitePermOp_finRotate_mul_hamiltonian_translationInvariant` — the
+  rotation of the ring permutes the terms of a translation-invariant interaction and fixes its
+  Hamiltonian.
 
 ## References
 
@@ -70,6 +76,8 @@ of these interactions together with the hypotheses that were its fields.
   states and projected entangled pair states*, arXiv:1010.3732,
   `sec:phases-definition-no-sym`, lines 407–427.
 -/
+
+open scoped Matrix
 
 namespace ManyBody
 
@@ -160,7 +168,47 @@ noncomputable abbrev Interaction.translationInvariant (hk : k ≤ N)
     Interaction (fun _ : Fin N ↦ α) (fun i ↦ Finset.univ.map (ringWindow hk i)) :=
   Interaction.translates (ringWindow hk) h
 
+variable (hk : k ≤ N) (h : Matrix (Fin k → α) (Fin k → α) ℂ)
+
+/-- **Rotating the terms.** Conjugating the term with index `i` by the rotation `j ↦ j + 1` of
+the ring gives the term with index `i + 1`. -/
+theorem Interaction.translationInvariant_term_add_one (i : Fin N) :
+    (translationInvariant hk h).term (i + 1) =
+      sitePermOp (finRotate N) * (translationInvariant hk h).term i *
+        (sitePermOp (finRotate N))ᴴ := by
+  simp only [translationInvariant, translates_term, sitePermOp_mul_placeAlong_mul_conjTranspose,
+    ringWindow_trans_finRotate]
+
+/-- **Translation invariance.** The Hamiltonian of a translation-invariant interaction on the ring
+commutes with the rotation of the ring: conjugating it by the rotation leaves it unchanged. -/
+theorem Interaction.sitePermOp_finRotate_mul_hamiltonian_translationInvariant :
+    sitePermOp (finRotate N) * (translationInvariant hk h).hamiltonian *
+        (sitePermOp (finRotate N))ᴴ = (translationInvariant hk h).hamiltonian := by
+  simp only [hamiltonian, Finset.mul_sum, Finset.sum_mul,
+    ← Interaction.translationInvariant_term_add_one]
+  exact Fintype.sum_equiv (Equiv.addRight 1) _ _ fun _ ↦ rfl
+
 end Ring
+
+/-! ### Translates on the open chain -/
+
+section Chain
+
+variable {α : Type*} [Fintype α] [DecidableEq α]
+
+/-- **The translates on the open chain** of `N` sites of one operator `h` on `k` consecutive
+sites: its term with index `i`, for the positions `i = 0, …, N - k`, is `h` placed on the window
+of `k` consecutive sites starting at `i`, the interval `[i, i + k)` (`ManyBody.map_chainWindow`).
+Its Hamiltonian is the open-boundary Hamiltonian `∑_{i ≤ N - k} hᵢ,ᵢ₊ₖ₋₁` of one local term.
+LVV, arXiv:1307.5143v1, `algo53.tex`, lines 209–211. -/
+noncomputable abbrev Interaction.chainTranslates (k N : ℕ)
+    (h : Matrix (Fin k → α) (Fin k → α) ℂ) :
+    Interaction (fun _ : Fin N ↦ α) (fun i : Fin (N + 1 - k) ↦
+      Finset.univ.map (chainWindow (N := N) (k := k) i.val (by omega))) :=
+  Interaction.translates (fun i : Fin (N + 1 - k) ↦
+    chainWindow (N := N) (k := k) i.val (by omega)) h
+
+end Chain
 
 /-! ### Rectangle interactions on the plane -/
 

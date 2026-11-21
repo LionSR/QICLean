@@ -38,13 +38,13 @@ variable (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
 local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
 local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "B" => ManyBody.ComplConfig β X
 local notation "L" => Fin k → A × E
 
 /-- The literal inserted postvector is the pullback of the actual selected
 Bell tensor and compressed selected tensor in witness coordinates. -/
 theorem selectedBellPost_eq_pullback :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let post : EuclideanSpace ℂ (L × Config k ιe) := WithLp.toLp 2
       (fun x ↦ (∏ j, selectedBellVector ΩX E (x.1 j)) *
         ∏ j, compressedTypicalPureState ΩX E
@@ -70,14 +70,14 @@ theorem symProj_labelProj_selectedBellPost
       (toEuclideanLin Q (selectedBellPost β Ω X E k)) =
         toEuclideanLin Q (selectedBellPost β Ω X E k) := by
   intro Q
-  let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-  let χ : ((o : Option ↥(Xᶜ)) → ιe o) → ℂ := fun x ↦
+  let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
+  let χ : ((o : Option {v // v ∉ X}) → ιe o) → ℂ := fun x ↦
     compressedTypicalPureState ΩX E
       ((Finset.equivFin E).symm (x none), fun v ↦ x (some v))
   let Ψ : Config k ιe → ℂ := fun x ↦ ∏ j, χ (x j)
   let J := (addedSiteInsertion ιe (A × E) k (selectedBellVector ΩX E)).submatrix
     (bellInsertionCopyEquiv β X E (Fin E.card) k) id
-  let Pe := symProj (copyPerm ((o : Option ↥(Xᶜ)) → ιe o) k)
+  let Pe := symProj (copyPerm ((o : Option {v // v ∉ X}) → ιe o) k)
   let Qe := labelProj (subsystemPerm k ιe {none}) ell
   have hΨ : Pe *ᵥ Ψ = Ψ := by
     apply symProj_mulVec_of_mem
@@ -118,10 +118,10 @@ theorem bellPin_schmidtBellPrevector_eq_selectedBellPost
     (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E)
     (ell : IrrepLabel (Equiv.Perm (Fin k))) :
     let z := (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.cutEquiv β X) Ω
     let J := (addedSiteInsertion ιe (A × E) k (selectedBellVector ΩX E)).submatrix
       (bellInsertionCopyEquiv β X E (Fin E.card) k) id
-    let Pe := symProj (copyPerm ((o : Option ↥(Xᶜ)) → ιe o) k)
+    let Pe := symProj (copyPerm ((o : Option {v // v ∉ X}) → ιe o) k)
     let P := J * Pe * Jᴴ
     let v : EuclideanSpace ℂ (Config k ι₀) := WithLp.toLp 2
       (ManyBody.schmidtBellSitePrevector β X E k ΩX ell ∘ ManyBody.schmidtBellWitnessEquiv β X E k)

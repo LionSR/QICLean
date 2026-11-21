@@ -9,7 +9,7 @@ import Mathlib.Combinatorics.SimpleGraph.Connectivity.Finite
 import Mathlib.Combinatorics.SimpleGraph.Walk.Counting
 import QICLean.Analysis.LowEnergyBasis.Recursive
 import QICLean.Analysis.PowerExponential
-import QICLean.ManyBody.Dynamics.GraphBall
+import QICLean.ManyBody.Sites.GraphBall
 
 /-!
 # Growth of graphs of bounded degree

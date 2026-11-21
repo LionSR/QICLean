@@ -110,7 +110,7 @@ theorem labelObservable_mul_bellInsertion_symProj_far (k : ℕ) (U : Finset V)
     (f : IrrepLabel (Equiv.Perm (Fin k)) → ℝ) (b : B → ℂ) :
     let e := bellInsertionCopyEquiv β X C R k
     let J := (addedSiteInsertion ιe B k b).submatrix e id
-    let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
+    let Pe := symProj (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k)
     labelObservable (subsystemPerm k ι₀
         (insert none (((X ∪ U)ᶜ).image fun v ↦ some (some v)))) f * (J * Pe) =
       (J * Pe) * labelObservable (subsystemPerm k ιe (ManyBody.exteriorRegion X U)) f := by
@@ -146,7 +146,7 @@ theorem replicaMetric_factor_mul_bellInsertion_symProj
     (U Y : Finset V) (b : B → ℂ) :
     let e := bellInsertionCopyEquiv β X C R k
     let J := (addedSiteInsertion ιe B k b).submatrix e id
-    let Pe := symProj (copyPerm ((v : Option ↥(Xᶜ)) → ιe v) k)
+    let Pe := symProj (copyPerm ((v : Option {v // v ∉ X}) → ιe v) k)
     let W := replicaMetric ι₀ t k
     let P := insert (some none) ((X ∪ U).image fun v ↦ some (some v))
     let F := insert none (((X ∪ (U ∪ Y))ᶜ).image fun v ↦ some (some v))

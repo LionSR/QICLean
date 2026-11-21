@@ -24,13 +24,18 @@ hypothesis.
         ManyBody.norm_centeredObservable_le,
         ManyBody.inner_centeredObservable_mul,
         ManyBody.centeredObservable_mem,
-        ManyBody.centeredObservable_commutator}
+        ManyBody.centeredObservable_commutator,
+        ManyBody.centeredObservable_add, ManyBody.centeredObservable_zero,
+        ManyBody.centeredObservable_sum, ManyBody.isHermitian_centeredObservable,
+        ManyBody.centeredObservable_of_apply_eq_smul}
     \leanok
     For $\psi\ne0$, write
     $\langle A\rangle_\psi=\langle\psi,A\psi\rangle/\|\psi\|^2$
     and $A_0=A-\langle A\rangle_\psi\Id$. Then
     $|\langle A\rangle_\psi|\le\|A\|$,
-    $\langle\psi,A_0\psi\rangle=0$, and $\|A_0\|\le2\|A\|$.
+    $\langle\psi,A_0\psi\rangle=0$, and $\|A_0\|\le2\|A\|$. Centering is additive, a
+    Hermitian $A$ has a Hermitian $A_0$, and if $A\psi=E\psi$ then
+    $A_0=A-E\,\Id$~\cite{Hastings2007AreaLaw}.
     The centered observable gives the connected correlation:
     \[
         \frac{\langle\psi,A_0B\psi\rangle}{\|\psi\|^2}
@@ -42,7 +47,9 @@ hypothesis.
 \end{lemma}
 \begin{proof}\leanok
     Use Cauchy--Schwarz, the operator-norm bound, and the triangle
-    inequality. Expand the scalar identity and use that $\|\psi\|^2>0$.
+    inequality. Expand the scalar identity and use that $\|\psi\|^2>0$. The expectation is
+    linear in $A$ and real for Hermitian $A$, and it is $E$ at an eigenvector with eigenvalue
+    $E$.
 \end{proof}
 
 \begin{definition}[The energy-lowering part of an observable]

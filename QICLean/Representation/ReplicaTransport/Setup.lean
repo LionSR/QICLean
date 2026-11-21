@@ -6,7 +6,7 @@ Authors: QICLean contributors
 import QICLean.Analysis.Transport.Defs
 import QICLean.Representation.ReplicaSimilarity
 import QICLean.Representation.CoherentResolution
-import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.RegionConditionalInformation
 import QICLean.Analysis.UnitaryHaar
 
 /-!

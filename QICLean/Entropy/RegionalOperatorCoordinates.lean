@@ -27,10 +27,10 @@ namespace Entropy
 private theorem localLift_eq_middleFirst {V : Type*} [Fintype V] [DecidableEq V]
     {q : ℕ} (J : Finset V)
     (K : Matrix (J → Fin q) (J → Fin q) ℂ) :
-    let tau := (ManyBody.splitEquiv (fun _ : V ↦ Fin q) J).trans
+    let tau := (ManyBody.cutEquiv (fun _ : V ↦ Fin q) J).trans
       (Equiv.prodComm _ _)
     ManyBody.place (X := fun _ ↦ Fin q) J K =
-      ((1 : Matrix (↥(Jᶜ) → Fin q) (↥(Jᶜ) → Fin q) ℂ) ⊗ₖ K).submatrix tau tau := by
+      ((1 : Matrix ({v // v ∉ J} → Fin q) ({v // v ∉ J} → Fin q) ℂ) ⊗ₖ K).submatrix tau tau := by
   classical
   intro tau
   ext σ ρ
@@ -38,18 +38,18 @@ private theorem localLift_eq_middleFirst {V : Type*} [Fintype V] [DecidableEq V]
   simp only [submatrix_apply, kroneckerMap_apply, one_apply,
     tau, Equiv.trans_apply, Equiv.prodComm_apply, Prod.fst_swap, Prod.snd_swap]
   have hfst (ξ : V → Fin q) :
-      ((ManyBody.splitEquiv (fun _ : V ↦ Fin q) J) ξ).1 = (fun v : J ↦ ξ v) := rfl
+      ((ManyBody.cutEquiv (fun _ : V ↦ Fin q) J) ξ).1 = (fun v : J ↦ ξ v) := rfl
   have hsnd (ξ : V → Fin q) :
-      ((ManyBody.splitEquiv (fun _ : V ↦ Fin q) J) ξ).2 =
-        (fun v : ↥(Jᶜ) ↦ ξ v) := rfl
-  have hrest : ((fun v : ↥(Jᶜ) ↦ σ v) = (fun v : ↥(Jᶜ) ↦ ρ v)) ↔
+      ((ManyBody.cutEquiv (fun _ : V ↦ Fin q) J) ξ).2 =
+        (fun v : {v // v ∉ J} ↦ ξ v) := rfl
+  have hrest : ((fun v : {v // v ∉ J} ↦ σ v) = (fun v : {v // v ∉ J} ↦ ρ v)) ↔
       ∀ v ∉ J, σ v = ρ v := by
     constructor
     · intro heq v hv
-      exact congrFun heq ⟨v, Finset.mem_compl.mpr hv⟩
+      exact congrFun heq ⟨v, hv⟩
     · intro heq
       funext v
-      exact heq v (Finset.mem_compl.mp v.property)
+      exact heq v v.property
   simp only [hfst, hsnd, hrest, ite_mul, one_mul, zero_mul]
 
 /-- Identity extension becomes a tensor factor in the explicit
@@ -61,27 +61,27 @@ theorem localLift_middleFirst_conjugation {V : Type*} [Fintype V] [DecidableEq V
     {q : ℕ} (J : Finset V)
     (K : Matrix (J → Fin q) (J → Fin q) ℂ) :
     let beta := fun _ : V ↦ Fin q
-    let tau := (ManyBody.splitEquiv beta J).trans (Equiv.prodComm _ _)
+    let tau := (ManyBody.cutEquiv beta J).trans (Equiv.prodComm _ _)
     let U := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ tau
-    let Phi := ((EuclideanSpace.basisFun (ManyBody.RegionConfig beta Jᶜ) ℂ).tensorProduct
+    let Phi := ((EuclideanSpace.basisFun (ManyBody.ComplConfig beta J) ℂ).tensorProduct
       (EuclideanSpace.basisFun (ManyBody.RegionConfig beta J) ℂ)).repr
     let Tm := (U.trans Phi.symm).trans (TensorProduct.commIsometry ℂ
-      (EuclideanSpace ℂ (ManyBody.RegionConfig beta Jᶜ))
+      (EuclideanSpace ℂ (ManyBody.ComplConfig beta J))
       (EuclideanSpace ℂ (ManyBody.RegionConfig beta J)))
     Tm.toContinuousLinearEquiv.toContinuousLinearMap ∘L
         toEuclideanCLM (𝕜 := ℂ) (n := V → Fin q)
           (ManyBody.place (X := fun _ ↦ Fin q) J K) ∘L
         Tm.symm.toContinuousLinearEquiv.toContinuousLinearMap =
       TensorProduct.mapL (toEuclideanCLM (𝕜 := ℂ) (n := J → Fin q) K)
-        (1 : EuclideanSpace ℂ (↥(Jᶜ) → Fin q) →L[ℂ]
-          EuclideanSpace ℂ (↥(Jᶜ) → Fin q)) := by
+        (1 : EuclideanSpace ℂ ({v // v ∉ J} → Fin q) →L[ℂ]
+          EuclideanSpace ℂ ({v // v ∉ J} → Fin q)) := by
   intro beta tau U Phi Tm
   have hmatrix : ManyBody.place (X := fun _ ↦ Fin q) J K =
-      (∑ _i : Unit, (1 : Matrix (↥(Jᶜ) → Fin q) (↥(Jᶜ) → Fin q) ℂ) ⊗ₖ K).submatrix
+      (∑ _i : Unit, (1 : Matrix ({v // v ∉ J} → Fin q) ({v // v ∉ J} → Fin q) ℂ) ⊗ₖ K).submatrix
         tau tau := by
     simpa only [Fintype.sum_unique] using localLift_eq_middleFirst J K
   have hconj := toEuclideanCLM_middleFirst_conjugation_of_kronecker_sum
-    tau (fun _ : Unit ↦ (1 : Matrix (↥(Jᶜ) → Fin q) (↥(Jᶜ) → Fin q) ℂ))
+    tau (fun _ : Unit ↦ (1 : Matrix ({v // v ∉ J} → Fin q) ({v // v ∉ J} → Fin q) ℂ))
     (fun _ : Unit ↦ K) (ManyBody.place (X := fun _ ↦ Fin q) J K) hmatrix
   simpa only [Fintype.sum_unique, map_one] using hconj
 
@@ -99,8 +99,8 @@ theorem regionTensorCoordinates_conjugation_localLift
           (ManyBody.place (X := fun _ ↦ Fin q) J K) ∘L
         Tm.symm.toContinuousLinearEquiv.toContinuousLinearMap =
       TensorProduct.mapL (toEuclideanCLM (𝕜 := ℂ) (n := J → Fin q) K)
-        (1 : EuclideanSpace ℂ (↥(Jᶜ) → Fin q) →L[ℂ]
-          EuclideanSpace ℂ (↥(Jᶜ) → Fin q)) := by
+        (1 : EuclideanSpace ℂ ({v // v ∉ J} → Fin q) →L[ℂ]
+          EuclideanSpace ℂ ({v // v ∉ J} → Fin q)) := by
   intro Tm
   dsimp only [Tm]
   rw [regionTensorCoordinates_eq_exteriorFirst]

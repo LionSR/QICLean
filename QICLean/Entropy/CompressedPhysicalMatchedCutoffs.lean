@@ -44,10 +44,10 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 even before imposing disjointness from the selected region.
 Source: `07-comparators.tex`, lines 240–247 and 356–365. -/
 theorem exteriorRegion_symmDiff (X B Q : Finset V) :
-    ManyBody.exteriorRegion X (B ∆ Q)
-        = ManyBody.exteriorRegion X B ∆ ManyBody.exteriorRegion X Q := by
+    exteriorRegion X (B ∆ Q)
+        = exteriorRegion X B ∆ exteriorRegion X Q := by
   ext f
-  cases f <;> simp [ManyBody.exteriorRegion, Finset.mem_symmDiff]
+  cases f <;> simp [exteriorRegion, Finset.mem_symmDiff]
 
 section GeneralDimension
 
@@ -58,25 +58,25 @@ exactly the original physical difference dimension. The auxiliary site
 does not occur. Source: `07-comparators.tex`, lines 356–365. -/
 theorem card_configuration_exteriorRegion_symmDiff (X B Q : Finset V)
     (R : Type u) [Fintype R] (hXB : Disjoint X B) (hXQ : Disjoint X Q) :
-    Fintype.card (ManyBody.RegionConfig (ManyBody.compressedSiteSpace β X R)
-      (ManyBody.exteriorRegion X B ∆ ManyBody.exteriorRegion X Q)) =
-        Fintype.card (ManyBody.RegionConfig β (B ∆ Q)) := by
+    Fintype.card (RegionConfig (compressedSiteSpace β X R)
+      (exteriorRegion X B ∆ exteriorRegion X Q)) =
+        Fintype.card (RegionConfig β (B ∆ Q)) := by
   have hXD : Disjoint X (B ∆ Q) :=
     (Finset.disjoint_union_right.mpr ⟨hXB, hXQ⟩).mono_right
       Finset.symmDiff_subset_union
-  rw [← ManyBody.exteriorRegion_symmDiff]
-  exact Fintype.card_congr (ManyBody.exteriorRegionEquiv β X (B ∆ Q) R hXD)
+  rw [← exteriorRegion_symmDiff]
+  exact Fintype.card_congr (exteriorRegionEquiv β X (B ∆ Q) R hXD)
 
 end GeneralDimension
 
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-  (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
+  (E : Finset (RegionConfig β X)) (k : ℕ)
 
-local notation "ι" => ManyBody.compressedSiteSpace β X (Fin E.card)
+local notation "ι" => compressedSiteSpace β X (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
-  (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
-local notation "L" => Fin k → ManyBody.RegionConfig β X × E
+  (Matrix.PosSemidef.isHermitian (regionState_posSemidef X Ω)) E
+local notation "L" => Fin k → RegionConfig β X × E
 
 open Classical in
 /-- The same common-cutoff vector satisfies the actual matched-region
@@ -91,29 +91,29 @@ theorem toEuclideanLin_compressedPhysicalCutoff_of_matched
     (regions : List (Finset V)) {B Q : Finset V} (hB : B ∈ regions)
     (hXB : Disjoint X B) (hXQ : Disjoint X Q) (hnested : B ⊆ Q ∨ Q ⊆ B)
     (hz : 0 < z) {Bsh Bexc : ℝ}
-    (hsh : ManyBody.regionEntropy Ω B ≤ Bsh)
-    (hexc : 1 + Real.log (Fintype.card (ManyBody.RegionConfig β (B ∆ Q))) ≤ Bexc)
+    (hsh : regionEntropy Ω B ≤ Bsh)
+    (hexc : 1 + Real.log (Fintype.card (RegionConfig β (B ∆ Q))) ≤ Bexc)
     (φ : EuclideanSpace ℂ (L × TensorPower.Config k ι))
     (hcuts : ∀ C ∈ regions,
       toEuclideanLin
         ((1 : Matrix L L ℂ) ⊗ₖ
-          labelCutoff (subsystemPerm k ι (ManyBody.exteriorRegion X C))
-            (ManyBody.compressedRegionalThreshold β Ω X E k (ManyBody.exteriorRegion X C))) φ = φ) :
+          labelCutoff (subsystemPerm k ι (exteriorRegion X C))
+            (compressedRegionalThreshold β Ω X E k (exteriorRegion X C))) φ = φ) :
     toEuclideanLin
       ((1 : Matrix L L ℂ) ⊗ₖ
-        labelCutoff (subsystemPerm k ι (ManyBody.exteriorRegion X Q))
+        labelCutoff (subsystemPerm k ι (exteriorRegion X Q))
           ((k : ℝ) * (Bsh / z + Bexc))) φ = φ := by
   have hφ := hcuts B hB
-  rw [ManyBody.compressedRegionalThreshold_exteriorRegion β Ω X B hXB E k] at hφ
-  have hmatch : ManyBody.exteriorRegion X B ⊆ ManyBody.exteriorRegion X Q ∨
-      ManyBody.exteriorRegion X Q ⊆ ManyBody.exteriorRegion X B :=
-    hnested.imp (fun hBQ ↦ ManyBody.monotone_exteriorRegion X hBQ)
-      (fun hQB ↦ ManyBody.monotone_exteriorRegion X hQB)
+  rw [compressedRegionalThreshold_exteriorRegion β Ω X B hXB E k] at hφ
+  have hmatch : exteriorRegion X B ⊆ exteriorRegion X Q ∨
+      exteriorRegion X Q ⊆ exteriorRegion X B :=
+    hnested.imp (fun hBQ ↦ monotone_exteriorRegion X hBQ)
+      (fun hQB ↦ monotone_exteriorRegion X hQB)
   have hexc' : 1 + Real.log
       (Fintype.card
-          (ManyBody.RegionConfig ι (ManyBody.exteriorRegion X B ∆ ManyBody.exteriorRegion X Q)))
+          (RegionConfig ι (exteriorRegion X B ∆ exteriorRegion X Q)))
           ≤ Bexc := by
-    rw [ManyBody.card_configuration_exteriorRegion_symmDiff β X B Q (Fin E.card) hXB hXQ]
+    rw [card_configuration_exteriorRegion_symmDiff β X B Q (Fin E.card) hXB hXQ]
     exact hexc
   exact toEuclideanLin_labelCutoff_of_matched ι k hmatch hz hsh hexc' φ hφ
 

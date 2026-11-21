@@ -217,4 +217,19 @@ theorem rectangularTraceNorm_eq_zero_iff (A : Matrix n n ℂ) :
   refine ⟨fun h ↦ ?_, fun h ↦ by rw [h]; rfl⟩
   simpa using congrArg (reindex e.symm e.symm) h
 
+/-- `|tr(Y K)| ≤ ‖K‖ ‖Y‖₁` for square matrices, with the operator norm of `K` and the trace
+norm of `Y`. -/
+theorem norm_trace_mul_le_l2_opNorm_mul_rectangularTraceNorm (Y K : Matrix n n ℂ) :
+    ‖(Y * K).trace‖ ≤ ‖K‖ * rectangularTraceNorm Y := by
+  rcases eq_or_ne K 0 with rfl | hK
+  · simp
+  have hpos : 0 < ‖K‖ := norm_pos_iff.mpr hK
+  have hU : ‖(‖K‖⁻¹ : ℂ) • K‖ ≤ 1 := by
+    rw [norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpos,
+      inv_mul_cancel₀ hpos.ne']
+  have h := norm_trace_conjTranspose_mul_le_rectangularTraceNorm Yᴴ _ hU
+  rw [conjTranspose_conjTranspose, rectangularTraceNorm_conjTranspose, Matrix.mul_smul,
+    trace_smul, norm_smul, norm_inv, Complex.norm_real, Real.norm_eq_abs, abs_of_pos hpos] at h
+  rwa [inv_mul_le_iff₀ hpos] at h
+
 end Matrix

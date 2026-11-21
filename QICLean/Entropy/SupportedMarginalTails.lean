@@ -25,8 +25,15 @@ With these decompositions, `QICLean.Entropy.MarginalTails` gives Lemma 3.1 of th
 area-law manuscript in its stated form: designated supports, `d_i = ∏_{v ∈ D_i} dim 𝓗_v`,
 and `ℬ = 1 + ∑_{i ∈ I×} log² (e d_i)` over the terms whose support meets both sides.
 
+## Main definitions
+
+* `ManyBody.cutLogBudget`: the log budget of the terms of a family of supports crossing a cut.
+
 ## Main results
 
+* `ManyBody.cutLogBudget_le`, `ManyBody.cutLogBudget_const_le`: the budget is at most
+  `1 + |I×| log² (e d)` for crossing supports of dimension at most `d`, and so at most
+  `1 + |I×| log² (e q^k)` for one local dimension `q` and supports of at most `k` sites.
 * `ManyBody.IsSupportedOn.isOneSided_of_subset`, `ManyBody.IsSupportedOn.isOneSided_of_disjoint`.
 * `ManyBody.IsSupportedOn.hasProductDecomposition`: the matrix-unit decomposition.
 * `Entropy.log_surprisalMoment_cut_le`, `Entropy.surprisalTail_cut_le`: Lemma 3.1.
@@ -53,6 +60,76 @@ variable {ι : Type*} [Fintype ι]
 /-- The dimension `d_i = ∏_{v ∈ D_i} dim 𝓗_v` of a designated support.
 Area-law manuscript, Lemma 3.1, `02-initial.tex`, line 51. -/
 def supportDim (n : V → ℕ) (D : Finset V) : ℕ := ∏ v ∈ D, n v
+
+omit [Fintype V] [DecidableEq V] in
+/-- A support of `k` sites with local dimension `q` at every site has dimension `q ^ k`. -/
+theorem supportDim_const (q : ℕ) (D : Finset V) : supportDim (fun _ ↦ q) D = q ^ D.card :=
+  Finset.prod_const q
+
+omit [Fintype V] [DecidableEq V] in
+/-- The **cut budget** `ℬ_B = 1 + ∑_{i ∈ I×} log² (e d_i)` of a family of supports `D` at the
+region `B`. The sum runs over the supports crossing `B`, and `d_i = ∏_{v ∈ D_i} n_v` is the
+dimension of the `i`th support for the local dimensions `n`. It is the parameter
+`Entropy.cutLogBudget` of the marginal tail bound at the crossing terms; a chain, a lattice
+domain or any family of designated supports gives its budget by choosing `D`.
+Area-law manuscript, Lemma 3.1, `02-initial.tex`, lines 47–55. -/
+noncomputable abbrev _root_.ManyBody.cutLogBudget (D : ι → Finset V) (n : V → ℕ)
+    (B : Finset V) : ℝ :=
+  Entropy.cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D)
+
+/-- Exchanging a region and its complement preserves the cut budget. -/
+@[simp] theorem _root_.ManyBody.cutLogBudget_compl (D : ι → Finset V) (n : V → ℕ)
+    (B : Finset V) : ManyBody.cutLogBudget D n Bᶜ = ManyBody.cutLogBudget D n B := by
+  rw [ManyBody.cutLogBudget, ManyBody.crossingTerms_compl]
+
+omit [Fintype V] [DecidableEq V] in
+/-- No support crosses the empty region, so its cut budget is one. -/
+@[simp] theorem _root_.ManyBody.cutLogBudget_empty (D : ι → Finset V) (n : V → ℕ) :
+    ManyBody.cutLogBudget D n ∅ = 1 := by
+  simp [ManyBody.cutLogBudget, Entropy.cutLogBudget]
+
+omit [DecidableEq V] in
+/-- No support crosses the region of all sites, so its cut budget is one. -/
+@[simp] theorem _root_.ManyBody.cutLogBudget_univ (D : ι → Finset V) (n : V → ℕ) :
+    ManyBody.cutLogBudget D n Finset.univ = 1 := by
+  simp [ManyBody.cutLogBudget, Entropy.cutLogBudget]
+
+omit [Fintype V] [DecidableEq V] in
+/-- **The cut budget grows linearly with the number of crossing supports.** If every crossing
+support has dimension at most `d`, then `ℬ_B ≤ 1 + |I×| log² (e d)`. -/
+theorem _root_.ManyBody.cutLogBudget_le {D : ι → Finset V} {n : V → ℕ} {B : Finset V}
+    {d : ℝ} (hdim : ∀ i ∈ ManyBody.crossingTerms D B, (supportDim n (D i) : ℝ) ≤ d) :
+    ManyBody.cutLogBudget D n B ≤
+      1 + (ManyBody.crossingTerms D B).card * Real.log (Real.exp 1 * d) ^ 2 := by
+  have he : 1 ≤ Real.exp 1 := Real.one_le_exp zero_le_one
+  have hterm : ∀ i ∈ ManyBody.crossingTerms D B,
+      Real.log (Real.exp 1 * ((supportDim n ∘ D) i : ℝ)) ^ 2 ≤
+        Real.log (Real.exp 1 * d) ^ 2 := by
+    intro i hi
+    rcases Nat.eq_zero_or_pos (supportDim n (D i)) with h0 | hpos
+    · have h0' : ((supportDim n ∘ D) i : ℝ) = 0 := by simp [h0]
+      rw [h0', mul_zero, Real.log_zero, zero_pow two_ne_zero]
+      exact sq_nonneg _
+    · have h1 : (1 : ℝ) ≤ supportDim n (D i) := by exact_mod_cast hpos
+      have hl : 0 ≤ Real.log (Real.exp 1 * supportDim n (D i)) :=
+        Real.log_nonneg (one_le_mul_of_one_le_of_one_le he h1)
+      exact pow_le_pow_left₀ hl (Real.log_le_log (by positivity)
+        (mul_le_mul_of_nonneg_left (hdim i hi) (Real.exp_pos 1).le)) 2
+  have hsum := Finset.sum_le_card_nsmul _ _ _ hterm
+  rw [nsmul_eq_mul] at hsum
+  change 1 + _ ≤ _
+  linarith
+
+omit [Fintype V] [DecidableEq V] in
+/-- **The cut budget for one local dimension.** With local dimension `q ≥ 1` at every site and
+crossing supports of at most `k` sites, `ℬ_B ≤ 1 + |I×| log² (e q^k)`. -/
+theorem _root_.ManyBody.cutLogBudget_const_le {D : ι → Finset V} {q k : ℕ} {B : Finset V}
+    (hq : 1 ≤ q) (hcard : ∀ i ∈ ManyBody.crossingTerms D B, (D i).card ≤ k) :
+    ManyBody.cutLogBudget D (fun _ ↦ q) B ≤
+      1 + (ManyBody.crossingTerms D B).card * Real.log (Real.exp 1 * (q : ℝ) ^ k) ^ 2 := by
+  refine ManyBody.cutLogBudget_le fun i hi ↦ ?_
+  rw [supportDim_const, Nat.cast_pow]
+  exact pow_le_pow_right₀ (by exact_mod_cast hq) (hcard i hi)
 
 variable {h : ι → Matrix (∀ v, Fin (n v)) (∀ v, Fin (n v))
     ℂ} {D : ι → Finset V} {c₀ E₀ g₀ : ℝ}
@@ -146,12 +223,10 @@ theorem log_surprisalMoment_cut_le (hsupp : ∀ i, ManyBody.IsSupportedOn (h i) 
     (hρdef : partialTraceRight (vecMulVec (WithLp.ofLp (ManyBody.cutVector B Ψ))
       (star (WithLp.ofLp (ManyBody.cutVector B Ψ)))) = ρ) (hρ : ρ.IsHermitian) {u : ℝ}
     (hu : |u| ≤ tailRadius (c₀ / g₀)
-        (cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D))) :
+        (ManyBody.cutLogBudget D n B)) :
     Real.log (surprisalMoment hρ.eigenvalues u) ≤
       u * vonNeumannEntropy ρ hρ +
-        512 * Real.exp 1 * (c₀ / g₀) * cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘
-            D) *
-          u ^ 2 := by
+        512 * Real.exp 1 * (c₀ / g₀) * ManyBody.cutLogBudget D n B * u ^ 2 := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩ :=
     cut_transport (B := B) hsupp hherm hnorm hΨ heig hgap
   exact log_surprisalMoment_eigenvalues_le h1 hc₀ h2 h3 h4 h5 h6 hg₀ h7 h8 hρdef hρ hu
@@ -171,7 +246,7 @@ theorem surprisalTail_cut_le (hsupp : ∀ i, ManyBody.IsSupportedOn (h i) (D i))
       (star (WithLp.ofLp (ManyBody.cutVector B Ψ)))) = ρ) (hρ : ρ.IsHermitian) (w : ℝ) :
     surprisalTail hρ.eigenvalues (vonNeumannEntropy ρ hρ) w ≤
       min 1 (2 * Real.exp (Real.exp 1 / 2) * Real.exp (-(w / (32 * Real.sqrt
-        ((1 + c₀ / g₀) * cutLogBudget (ManyBody.crossingTerms D B) (supportDim n ∘ D)))))) := by
+        ((1 + c₀ / g₀) * ManyBody.cutLogBudget D n B))))) := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8⟩ :=
     cut_transport (B := B) hsupp hherm hnorm hΨ heig hgap
   exact surprisalTail_eigenvalues_le h1 hc₀ h2 h3 h4 h5 h6 hg₀ h7 h8 hρdef hρ w

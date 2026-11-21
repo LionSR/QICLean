@@ -1460,4 +1460,23 @@ are embedded.
 For fixed $t$ and $\mu>0$, the truncation contribution $E_L(t)$ decays exponentially
 in $d$ when $|R|$, $\|A\|$, $M_L$, $r$, $v$, and $|b|$ are uniformly bounded.
 The product-formula contribution also depends on $c_L(o)$ and the step count $n$.
-% Volume-uniform control of M_L and infinite-system dynamics remain outside these statements.
+
+\begin{theorem}[Boundary form of the Trotter-circuit error]
+    \label{thm:circuits_trotter_spatial_error_boundary}
+    \lean{QuantumCircuit.norm_dual_trotterCircuit_sub_le_restrict_boundary}
+    \leanok
+    \uses{thm:circuits_trotter_spatial_error, thm:dynamics_spatial_truncation_boundary}
+    In the setting of Theorem~\ref{thm:circuits_trotter_spatial_error}, let $L$ contain the
+    $nm$-fold neighbourhood of $R$ in the support geometry, and let
+    $M_\partial=\sum_k\|\Phi_k\|$ over the $k$ with $T_k$ meeting $L$ without lying in it.
+    Then~(\ref{eq:circuits_restricted_trotter_error}) holds for the full Trotter propagator
+    $U_n(t)$ with $M_\partial$ in place of $M_L$. Here $M_\partial\leq b|\partial L|$, where
+    $\partial L$ is the set of sites of $L$ lying in such a term, so the truncation
+    contribution is controlled independently of the sites outside $L$.
+\end{theorem}
+\begin{proof}\leanok
+    The region $L$ contains $R$. Insert
+    Theorem~\ref{thm:dynamics_spatial_truncation_boundary} into the exact-evolution remainder
+    of Theorem~\ref{thm:circuits_trotter_restrict}.
+\end{proof}
+% Infinite-system dynamics remain outside these statements.

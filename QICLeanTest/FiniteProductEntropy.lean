@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: TNLean contributors
 -/
 import QICLean.Entropy.TwoFamilies
-import QICLean.Entropy.FiniteProductConditional
+import QICLean.Entropy.RegionConditionalInformation
 import Mathlib.Tactic.NormNum
 
 /-! Regression checks for actual finite-product density matrices and entropies. -/

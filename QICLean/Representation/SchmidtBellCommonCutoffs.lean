@@ -44,15 +44,15 @@ namespace ManyBody
 variable {V : Type*} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-variable (E : Finset (ManyBody.RegionConfig β X))
+variable (E : Finset (RegionConfig β X))
 
-local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
-local notation "ΩX" => LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+local notation "A" => RegionConfig β X
+local notation "B" => ComplConfig β X
+local notation "ΩX" => LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
 local notation "hρA" => Matrix.PosSemidef.partialTraceRight
   (posSemidef_vecMulVec_self_star ΩX)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
-  (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
+  (Matrix.PosSemidef.isHermitian (regionState_posSemidef X Ω)) E
 
 open Classical in
 /-- One actual Schmidt-label sequence simultaneously has every original
@@ -69,14 +69,14 @@ theorem exists_label_sequence_schmidtBellPrevector_commonCutoffs
     (hE : H *ᵥ ΩX = (E₀ : ℂ) • (fun x ↦ ΩX x)) :
     let ψ : B × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
-    let ι := ManyBody.compressedSiteSpace β X (Fin E.card)
+    let ι := compressedSiteSpace β X (Fin E.card)
     let χsite := WithLp.toLp 2
-      (fun x : (f : Option ↥(Xᶜ)) → ι f ↦
+      (fun x : (f : Option {v // v ∉ X}) → ι f ↦
         compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
     let Ψ : (k : ℕ) → EuclideanSpace ℂ (TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x : TensorPower.Config k ι ↦ ∏ j, χsite (x j))
-    let a := ManyBody.compressedRegionalThreshold β Ω X E
+    let a := compressedRegionalThreshold β Ω X E
     let post : (k : ℕ) → EuclideanSpace ℂ ((Fin k → A × E) × TensorPower.Config k ι) := fun k ↦
       WithLp.toLp 2 (fun x ↦ (∏ j, selectedBellVector ΩX E (x.1 j)) * Ψ k x.2)
     ‖WithLp.toLp 2 ψ‖ = 1 ∧
@@ -117,31 +117,31 @@ theorem exists_label_sequence_schmidtBellPrevector_commonCutoffs
         ‖toEuclideanLin (labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2
       let r : ℕ → ℝ := fun k ↦
         ‖toEuclideanLin
-          (commonLabelCutoff ι k (regions.map (ManyBody.exteriorRegion X)) (a k) *
+          (commonLabelCutoff ι k (regions.map (exteriorRegion X)) (a k) *
             labelProj (subsystemPerm k ι {none}) (ell k)) (Ψ k)‖ ^ 2
       ∀ᶠ k : ℕ in atTop,
         let e := Equiv.arrowProdEquivProdArrow (Fin k)
-          (fun _ ↦ ManyBody.RegionConfig β X × E) (fun _ ↦ (f : Option ↥(Xᶜ)) → ι f)
-        ∃ φ : EuclideanSpace ℂ ((Fin k → ManyBody.RegionConfig β X × E) × TensorPower.Config k ι),
+          (fun _ ↦ RegionConfig β X × E) (fun _ ↦ (f : Option {v // v ∉ X}) → ι f)
+        ∃ φ : EuclideanSpace ℂ ((Fin k → RegionConfig β X × E) × TensorPower.Config k ι),
           ‖φ‖ = 1 ∧
           (fun x ↦ φ (e x)) ∈ invariantSubspace
-            (copyPerm ((ManyBody.RegionConfig β X × E) × ((f : Option ↥(Xᶜ)) → ι f)) k) ∧
+            (copyPerm ((RegionConfig β X × E) × ((f : Option {v // v ∉ X}) → ι f)) k) ∧
           toEuclideanLin
             ((finKronecker fun _ : Fin k ↦ selectedBellProjection ΩX E) ⊗ₖ
               (1 : Matrix (TensorPower.Config k ι) (TensorPower.Config k ι) ℂ)) φ = φ ∧
           toEuclideanLin
-            ((1 : Matrix (Fin k → ManyBody.RegionConfig β X × E)
-              (Fin k → ManyBody.RegionConfig β X × E) ℂ) ⊗ₖ
+            ((1 : Matrix (Fin k → RegionConfig β X × E)
+              (Fin k → RegionConfig β X × E) ℂ) ⊗ₖ
                 labelProj (subsystemPerm k ι {none}) (ell k)) φ = φ ∧
           (∀ C ∈ regions,
             toEuclideanLin
-              ((1 : Matrix (Fin k → ManyBody.RegionConfig β X × E)
-                (Fin k → ManyBody.RegionConfig β X × E) ℂ) ⊗ₖ
-                  labelCutoff (subsystemPerm k ι (ManyBody.exteriorRegion X C))
-                    (a k (ManyBody.exteriorRegion X C))) φ = φ) ∧
+              ((1 : Matrix (Fin k → RegionConfig β X × E)
+                (Fin k → RegionConfig β X × E) ℂ) ⊗ₖ
+                  labelCutoff (subsystemPerm k ι (exteriorRegion X C))
+                    (a k (exteriorRegion X C))) φ = φ) ∧
           ‖⟪φ, toEuclideanLin
-            ((1 : Matrix (Fin k → ManyBody.RegionConfig β X × E)
-              (Fin k → ManyBody.RegionConfig β X × E) ℂ) ⊗ₖ
+            ((1 : Matrix (Fin k → RegionConfig β X × E)
+              (Fin k → RegionConfig β X × E) ℂ) ⊗ₖ
                 labelProj (subsystemPerm k ι {none}) (ell k)) (post k)⟫_ℂ‖ ^ 2 = r k ∧
           q k / 2 ≤ r k ∧
           1 / (4 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ r k := by
@@ -150,7 +150,7 @@ theorem exists_label_sequence_schmidtBellPrevector_commonCutoffs
   have hzX : 0 < Matrix.IsHermitian.spectralRestrictionMass
       (Matrix.PosSemidef.isHermitian hρA) E := hz
   have hΩX : ‖ΩX‖ = 1 :=
-    ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X)).norm_map Ω).trans hΩ
+    ((LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X)).norm_map Ω).trans hΩ
   obtain ⟨hψ, hdiag, ell, hpre, hmass, hentropy⟩ :=
     TensorPower.exists_label_sequence_schmidtBellPrevector ΩX E hzX hΩX H E₀ hE
   refine ⟨hψ, hdiag, ell, hpre, hmass, hentropy, ?_⟩
@@ -159,14 +159,14 @@ theorem exists_label_sequence_schmidtBellPrevector_commonCutoffs
       1 / (2 * (((k + 1 : ℕ) : ℝ) ^ (E.card ^ 2))) ≤ q k := by
     filter_upwards [hmass] with k hk
     have he : q k = ‖WithLp.toLp 2
-        (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
-          (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
+        (((1 : Matrix (Fin k → ComplConfig β X)
+          (Fin k → ComplConfig β X) ℂ) ⊗ₖ
             labelProj (copyPerm (Fin E.card) k) (ell k)) *ᵥ
           (fun x ↦ ∏ j, ψ (x.1 j, x.2 j)))‖ ^ 2 :=
       norm_sq_labelProj_compressedTypicalSite_prod β X k Ω E (ell k)
     rw [he]
     simpa only [one_div, Nat.cast_pow] using hk
-  exact ManyBody.eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
+  exact eventually_exists_commonLabelCutoff_compressedTypical_bell_vector
     β Ω X E hΩ hz regions hnested hdisjoint ell hmassSite
 
 end ManyBody

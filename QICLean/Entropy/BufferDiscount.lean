@@ -345,7 +345,7 @@ private theorem sum_mul_condEntropy_le_of_norm_comparison (X : Finset V) (T : �
       (Δ : ℂ) • (1 - vecMulVec (WithLp.ofLp Ω) (star (WithLp.ofLp Ω)))).PosSemidef)
     {m : ℕ} {E : ℝ} (hEΔ : E < Δ)
     (hu : ∀ j < m, a j / (1 - a j) ≤
-      tailRadius (c₀ / Δ) (cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S)))
+      tailRadius (c₀ / Δ) (ManyBody.cutLogBudget S n (X ∪ T j)))
     (hcompare :
       ∀ x : ℕ → ℝ, (∀ k, 0 ≤ x k) →
         (∀ k < m, ∀ f : ℝ, 0 < f →
@@ -364,7 +364,7 @@ private theorem sum_mul_condEntropy_le_of_norm_comparison (X : Finset V) (T : �
     ∑ j ∈ Finset.range m, a j *
         (ManyBody.regionEntropy Ω (X ∪ T j) - ManyBody.regionEntropy Ω (T j)) ≤
       ManyBody.regionEntropy Ω X + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
-        cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        ManyBody.cutLogBudget S n (X ∪ T j) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
   have hΩ0 : Ω ≠ 0 := fun h0 ↦ by simp [h0] at hΩ
   have hcoord : WithLp.ofLp Ω ≠ 0 :=
@@ -372,7 +372,7 @@ private theorem sum_mul_condEntropy_le_of_norm_comparison (X : Finset V) (T : �
   obtain ⟨σ₀, _⟩ := Function.ne_iff.mp hcoord
   set D : ℕ → Finset V := fun j ↦ X ∪ T j
   set c : ℕ → ℝ := fun k ↦ -a k * ManyBody.regionEntropy Ω (D k) + 1024 * Real.exp 1 * (c₀ / Δ) *
-    cutLogBudget (ManyBody.crossingTerms S (D k)) (supportDim n ∘ S) * a k ^ 2
+    ManyBody.cutLogBudget S n (D k) * a k ^ 2
   set x : ℕ → ℝ := fun k ↦ Real.exp (c k / 2)
   have hx0 : ∀ k, 0 < x k := fun k ↦ Real.exp_pos _
   have hx : ∀ k < m, ∀ f, 0 < f → ∀ L, IsFeasibleFilter f (a k) L →
@@ -408,7 +408,7 @@ private theorem sum_mul_condEntropy_le_of_norm_comparison (X : Finset V) (T : �
   have hsplit : ∑ k ∈ Finset.range m, c k = -∑ k ∈ Finset.range m, a k * ManyBody.regionEntropy Ω
       (D k) +
       ∑ k ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
-        cutLogBudget (ManyBody.crossingTerms S (D k)) (supportDim n ∘ S) * a k ^ 2 := by
+        ManyBody.cutLogBudget S n (D k) * a k ^ 2 := by
     simp only [c, Finset.sum_add_distrib, neg_mul, Finset.sum_neg_distrib]
   have hdiv : ∑ k ∈ Finset.range m, c k / 2 = (∑ k ∈ Finset.range m, c k) / 2 := by
     rw [Finset.sum_div]
@@ -444,11 +444,11 @@ theorem sum_mul_condEntropy_le_quadratic (X : Finset V) (T : ℕ → Finset V)
     {m : ℕ} {E : ℝ} (hEΔ : E < Δ) (hE : ∑ j ∈ Finset.range m,
       κ * a j ^ 2 * ∑ i ∈ ManyBody.crossingTerms S (X ∪ T j), supportDim n (S i) ^ 2 * c₀ ≤ E)
     (hu : ∀ j < m, a j / (1 - a j) ≤
-      tailRadius (c₀ / Δ) (cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S))) :
+      tailRadius (c₀ / Δ) (ManyBody.cutLogBudget S n (X ∪ T j))) :
     ∑ j ∈ Finset.range m, a j *
         (ManyBody.regionEntropy Ω (X ∪ T j) - ManyBody.regionEntropy Ω (T j)) ≤
       ManyBody.regionEntropy Ω X + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
-        cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        ManyBody.cutLogBudget S n (X ∪ T j) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
   refine sum_mul_condEntropy_le_of_norm_comparison X T hT hXT a ha ha2 hΩ
     h S hsupp hherm hc₀ hnorm hΔ heig hgap hEΔ hu ?_
@@ -481,11 +481,11 @@ theorem sum_mul_condEntropy_le (X : Finset V) (T : ℕ → Finset V)
     {m : ℕ} {E : ℝ} (hEΔ : E < Δ) (hE : ∑ j ∈ Finset.range m,
       4 * a j ^ 2 * ∑ i ∈ ManyBody.crossingTerms S (X ∪ T j), supportDim n (S i) ^ 2 * c₀ ≤ E)
     (hu : ∀ j < m, a j / (1 - a j) ≤
-      tailRadius (c₀ / Δ) (cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S))) :
+      tailRadius (c₀ / Δ) (ManyBody.cutLogBudget S n (X ∪ T j))) :
     ∑ j ∈ Finset.range m, a j *
         (ManyBody.regionEntropy Ω (X ∪ T j) - ManyBody.regionEntropy Ω (T j)) ≤
       ManyBody.regionEntropy Ω X + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
-        cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        ManyBody.cutLogBudget S n (X ∪ T j) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
   exact sum_mul_condEntropy_le_quadratic (κ := 4) X T hT hXT a ha ha2 hΩ h S hsupp hherm hc₀
     hnorm hsingle hΔ heig hgap (by norm_num) hEΔ hE hu
@@ -512,12 +512,12 @@ theorem two_mul_condEntropy_le_quadratic (X : Finset V) (T : ℕ → Finset V)
     {m : ℕ} {E : ℝ} (hEΔ : E < Δ) (hE : ∑ j ∈ Finset.range m,
       κ * a j ^ 2 * ∑ i ∈ ManyBody.crossingTerms S (X ∪ T j), supportDim n (S i) ^ 2 * c₀ ≤ E)
     (hu : ∀ j < m, a j / (1 - a j) ≤
-      tailRadius (c₀ / Δ) (cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S)))
+      tailRadius (c₀ / Δ) (ManyBody.cutLogBudget S n (X ∪ T j)))
     (hmass : ∑ j ∈ Finset.range m, a j = 2) {T' : Finset V} (hXT' : Disjoint X T')
     (hTT' : ∀ j < m, T j ⊆ T') :
     2 * (ManyBody.regionEntropy Ω (X ∪ T') - ManyBody.regionEntropy Ω T') ≤
       ManyBody.regionEntropy Ω X + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
-        cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        ManyBody.cutLogBudget S n (X ∪ T j) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
   have hmain := sum_mul_condEntropy_le_quadratic X T hT hXT a ha ha2 hΩ
     h S hsupp hherm hc₀ hnorm hsingle hΔ heig hgap hκ hEΔ hE hu
@@ -548,12 +548,12 @@ theorem two_mul_condEntropy_le (X : Finset V) (T : ℕ → Finset V)
     {m : ℕ} {E : ℝ} (hEΔ : E < Δ) (hE : ∑ j ∈ Finset.range m,
       4 * a j ^ 2 * ∑ i ∈ ManyBody.crossingTerms S (X ∪ T j), supportDim n (S i) ^ 2 * c₀ ≤ E)
     (hu : ∀ j < m, a j / (1 - a j) ≤
-      tailRadius (c₀ / Δ) (cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S)))
+      tailRadius (c₀ / Δ) (ManyBody.cutLogBudget S n (X ∪ T j)))
     (hmass : ∑ j ∈ Finset.range m, a j = 2) {T' : Finset V} (hXT' : Disjoint X T')
     (hTT' : ∀ j < m, T j ⊆ T') :
     2 * (ManyBody.regionEntropy Ω (X ∪ T') - ManyBody.regionEntropy Ω T') ≤
       ManyBody.regionEntropy Ω X + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
-        cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        ManyBody.cutLogBudget S n (X ∪ T j) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
   exact two_mul_condEntropy_le_quadratic (κ := 4) X T hT hXT a ha ha2 hΩ h S hsupp hherm hc₀
     hnorm hsingle hΔ heig hgap (by norm_num) hEΔ hE hu hmass hXT' hTT'
@@ -602,11 +602,11 @@ theorem sum_mul_condEntropy_le_logarithmic (X : Finset V) (T : ℕ → Finset V)
       8 * Real.exp 1 * a j ^ 2 * ∑ i ∈ ManyBody.crossingTerms S (X ∪ T j),
         Real.log (Real.exp 1 * supportDim n (S i)) ^ 2 * c₀ ≤ E)
     (hu : ∀ j < m, a j / (1 - a j) ≤
-      tailRadius (c₀ / Δ) (cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S))) :
+      tailRadius (c₀ / Δ) (ManyBody.cutLogBudget S n (X ∪ T j))) :
     ∑ j ∈ Finset.range m, a j *
         (ManyBody.regionEntropy Ω (X ∪ T j) - ManyBody.regionEntropy Ω (T j)) ≤
       ManyBody.regionEntropy Ω X + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
-        cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        ManyBody.cutLogBudget S n (X ∪ T j) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
   have hsmall : ∀ j < m, ∀ i ∈ ManyBody.crossingTerms S (X ∪ T j),
       2 * a j * Real.log (Real.exp 1 * supportDim n (S i)) ≤ 1 := by
@@ -642,12 +642,12 @@ theorem two_mul_condEntropy_le_logarithmic (X : Finset V) (T : ℕ → Finset V)
       8 * Real.exp 1 * a j ^ 2 * ∑ i ∈ ManyBody.crossingTerms S (X ∪ T j),
         Real.log (Real.exp 1 * supportDim n (S i)) ^ 2 * c₀ ≤ E)
     (hu : ∀ j < m, a j / (1 - a j) ≤
-      tailRadius (c₀ / Δ) (cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S)))
+      tailRadius (c₀ / Δ) (ManyBody.cutLogBudget S n (X ∪ T j)))
     (hmass : ∑ j ∈ Finset.range m, a j = 2) {T' : Finset V} (hXT' : Disjoint X T')
     (hTT' : ∀ j < m, T j ⊆ T') :
     2 * (ManyBody.regionEntropy Ω (X ∪ T') - ManyBody.regionEntropy Ω T') ≤
       ManyBody.regionEntropy Ω X + ∑ j ∈ Finset.range m, 1024 * Real.exp 1 * (c₀ / Δ) *
-        cutLogBudget (ManyBody.crossingTerms S (X ∪ T j)) (supportDim n ∘ S) * a j ^ 2 -
+        ManyBody.cutLogBudget S n (X ∪ T j) * a j ^ 2 -
         m * Real.log (1 - E / Δ) := by
   have hmain := sum_mul_condEntropy_le_logarithmic X T hT hXT a ha ha2 hΩ
     h S hsupp hherm hc₀ hnorm hsingle hΔ heig hgap hEΔ hE hu

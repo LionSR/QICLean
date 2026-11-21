@@ -197,11 +197,42 @@ depend on the common values there.
     property, and there are $(\prod_{v\in D\cap B}n_v)^2\le d^2$ terms.
 \end{proof}
 
+\begin{definition}[Cut budget of a family of supports]
+    \label{def:marginal_tails_cut_budget}
+    \lean{Entropy.supportDim, Entropy.supportDim_const, ManyBody.cutLogBudget,
+        ManyBody.cutLogBudget_compl, ManyBody.cutLogBudget_empty,
+        ManyBody.cutLogBudget_univ}
+    \leanok
+    \uses{def:sites_crossing_terms, lem:sites_crossing_terms}
+    For a family of supports $(D_i)_{i\in\mathcal I}$ and a region $B$, let
+    $\mathcal I_\times$ be the indices whose support meets both $B$ and $V\setminus B$,
+    and $d_i=\prod_{v\in D_i}n_v$. The cut budget at $B$ is
+    $\mathcal B_B=1+\sum_{i\in\mathcal I_\times}\log^2(\mathrm ed_i)$. With one local
+    dimension $q$, $d_i=q^{|D_i|}$. The budgets of $B$ and of $V\setminus B$ agree, and the
+    budgets of $\emptyset$ and of $V$ are one~\cite{OpenAI2026AreaLaw}.
+\end{definition}
+
+\begin{lemma}[The cut budget and the number of crossing supports]
+    \label{lem:marginal_tails_cut_budget}
+    \lean{ManyBody.cutLogBudget_le, ManyBody.cutLogBudget_const_le}
+    \leanok
+    \uses{def:marginal_tails_cut_budget}
+    If $d_i\le d$ for every $i\in\mathcal I_\times$, then
+    $\mathcal B_B\le1+|\mathcal I_\times|\log^2(\mathrm ed)$. With one local dimension
+    $q\ge1$ and crossing supports of at most $k$ sites,
+    $\mathcal B_B\le1+|\mathcal I_\times|\log^2(\mathrm eq^k)$.
+\end{lemma}
+\begin{proof}\leanok
+    A support of dimension zero contributes $\log^2 0=0$. Otherwise
+    $1\le d_i\le d$, and $\log^2(\mathrm e x)$ increases for $x\ge1$.
+\end{proof}
+
 \begin{theorem}[Marginal moment and tail bounds]
     \label{thm:marginal_tails_supports}
     \lean{Entropy.log_surprisalMoment_cut_le, Entropy.surprisalTail_cut_le}
     \leanok
-    \uses{thm:marginal_tails, lem:supported_product_decomposition}
+    \uses{thm:marginal_tails, lem:supported_product_decomposition,
+        def:marginal_tails_cut_budget}
     Let $\mathsf H=\sum_{i\in\mathcal I}h_i$ on $\mathcal H$ with $\mathcal I$
     finite, each $h_i$ Hermitian with $\lVert h_i\rVert\le c_0$, $c_0\ge0$, and
     supported on a designated set $D_i$. Let $\Psi$ be a unit vector with
@@ -1390,11 +1421,11 @@ has trace two.
 
 \begin{theorem}[Strong subadditivity for regions]
     \label{thm:region_ssa}
-    \lean{ManyBody.regionEntropy, Entropy.trace_regionState_submatrix_mul,
+    \lean{ManyBody.regionEntropy, ManyBody.trace_regionState_submatrix_mul,
         Entropy.disjoint_union_of_disjoint, Entropy.tripleEquiv, Entropy.tripleEquiv_apply,
         Entropy.localLift_tripleEquiv_kronecker_one, ManyBody.regionState_posSemidef,
         Entropy.tripleState, Entropy.partialTraceLeft_tripleState,
-        Entropy.partialTraceRight_regionState_union,
+        ManyBody.partialTraceRight_regionState_union,
         Entropy.partialTraceRight_reassoc_tripleState, Entropy.regionEntropy_ssa,
         Entropy.regionEntropy_cond_anti}
     \leanok
@@ -1631,6 +1662,23 @@ from the same Hermitian pairing and weighted row and column bounds.
     No enlargement to the dimension of all of $S$ is needed.
 \end{proof}
 
+\begin{lemma}[Product decompositions bound the operator-Schmidt rank]
+    \label{lem:product_decomposition_operator_schmidt_rank}
+    \lean{Matrix.HasProductDecomposition.exists_hasOperatorSchmidtDecomposition,
+        Matrix.HasProductDecomposition.operatorSchmidtRank_le}
+    \leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    If an operator $X$ on $\mathbb C^\alpha\otimes\mathbb C^\beta$ is a sum of at
+    most $N$ products $c_a\otimes d_a$ with $\lVert c_a\rVert\lVert d_a\rVert\le c_0$,
+    then $\operatorname{OSR}(X)\le N$.
+\end{lemma}
+\begin{proof}\leanok
+    \uses{def:bipartite_operator_schmidt_rank}
+    Without the norm bounds, the sum is an operator-Schmidt decomposition of
+    $X$ with at most $N$ summands, and the operator-Schmidt rank is at most
+    the number of summands of any such decomposition.
+\end{proof}
+
 \begin{theorem}[Operator-Schmidt rank from designated supports]
     \label{thm:supported_operator_schmidt_rank}
     \lean{ManyBody.IsSupportedOn.operatorSchmidtRank_cutOperator_le,
@@ -1651,13 +1699,14 @@ from the same Hermitian pairing and weighted row and column bounds.
 \end{theorem}
 \begin{proof}\leanok
     \uses{def:bipartite_operator_schmidt_rank,
-        lem:patch_inside_decomposition, lem:supported_product_decomposition}
+        lem:patch_inside_decomposition, lem:supported_product_decomposition,
+        lem:product_decomposition_operator_schmidt_rank}
     If the global configuration space is empty, $T=0$ and its
     operator-Schmidt rank is zero. Otherwise, choose one configuration.
     Theorem~\ref{lem:patch_inside_decomposition} supplies a product
-    decomposition with at most $(\prod_{v\in S\cap B}n_v)^2$ terms.
-    Discarding the norm bounds and using minimality of operator-Schmidt
-    rank gives the first conclusion. For one-sided support,
+    decomposition with at most $(\prod_{v\in S\cap B}n_v)^2$ terms, and
+    Lemma~\ref{lem:product_decomposition_operator_schmidt_rank} gives the
+    first conclusion. For one-sided support,
     Lemma~\ref{lem:supported_product_decomposition} writes $T$ as
     $U\otimes1$ or $1\otimes W$, each a one-term decomposition.
 \end{proof}

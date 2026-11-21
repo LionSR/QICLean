@@ -45,7 +45,7 @@ lemma isViable_regionTensorMerge {q : ℕ} {delta1 delta2 : ℝ}
       (G.map (regionTensorCoordinates q (A ∪ B)).toLinearEquiv.toLinearMap) := by
   let E := EuclideanSpace ℂ (A → Fin q)
   let F := EuclideanSpace ℂ (B → Fin q)
-  let R := EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q)
+  let R := EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q)
   let C := threeRegionTensorCoordinates q A B h
   let T := G.map C.toLinearEquiv.toLinearMap
   have hfirst : Submodule.IsViable delta1 S1

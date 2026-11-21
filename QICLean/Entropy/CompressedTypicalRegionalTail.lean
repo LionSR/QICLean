@@ -48,34 +48,34 @@ uses the original physical entropy divided by the actual selected mass.
 Source: OpenAI area-law manuscript, `07-comparators.tex`, lines 332–343. -/
 theorem exists_norm_sq_one_sub_labelCutoff_compressedTypicalSite_prod_le_exp
     (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X B : Finset V)
-    (hXB : Disjoint X B) (E : Finset (ManyBody.RegionConfig β X)) (hΩ : ‖Ω‖ = 1)
-    (hz : 0 < (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
+    (hXB : Disjoint X B) (E : Finset (RegionConfig β X)) (hΩ : ‖Ω‖ = 1)
+    (hz : 0 < (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E) :
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
     let χsite := WithLp.toLp 2
-      (fun x : (f : Option ↥(Xᶜ)) → ManyBody.compressedSiteSpace β X (Fin E.card) f ↦
+      (fun x : (f : Option {v // v ∉ X}) → compressedSiteSpace β X (Fin E.card) f ↦
         Matrix.compressedTypicalPureState ΩX E
           ((Finset.equivFin E).symm (x none), fun v ↦ x (some v)))
     ∃ c : ℝ, 0 < c ∧ ∀ k : ℕ, 1 ≤ k →
       ‖toEuclideanLin
         (1 - labelCutoff
-          (subsystemPerm k (ManyBody.compressedSiteSpace β X (Fin E.card))
-              (ManyBody.exteriorRegion X B))
-          ((k : ℝ) * (ManyBody.regionEntropy Ω B /
-            (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1)))
+          (subsystemPerm k (compressedSiteSpace β X (Fin E.card))
+              (exteriorRegion X B))
+          ((k : ℝ) * (regionEntropy Ω B /
+            (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E + 1)))
         (WithLp.toLp 2
-          (fun x : TensorPower.Config k (ManyBody.compressedSiteSpace β X (Fin E.card)) ↦
+          (fun x : TensorPower.Config k (compressedSiteSpace β X (Fin E.card)) ↦
             ∏ j, χsite (x j)))‖ ^ 2 ≤ Real.exp (-c * (k : ℝ)) := by
   intro ΩX χsite
-  let ι := ManyBody.compressedSiteSpace β X (Fin E.card)
-  let B' := ManyBody.exteriorRegion X B
-  let ρ := ManyBody.regionState χsite B'
-  have hχ : ‖χsite‖ = 1 := ManyBody.norm_compressedTypicalSiteState β Ω X E hz
-  have hρ : ρ.PosSemidef := ManyBody.regionState_posSemidef B' χsite
-  have htr : ρ.trace = 1 := ManyBody.trace_regionState_eq_one hχ (D := B')
+  let ι := compressedSiteSpace β X (Fin E.card)
+  let B' := exteriorRegion X B
+  let ρ := regionState χsite B'
+  have hχ : ‖χsite‖ = 1 := norm_compressedTypicalSiteState β Ω X E hz
+  have hρ : ρ.PosSemidef := regionState_posSemidef B' χsite
+  have htr : ρ.trace = 1 := trace_regionState_eq_one hχ (D := B')
   have hs : vonNeumannEntropy ρ hρ.isHermitian ≤
-      ManyBody.regionEntropy Ω B /
-        (ManyBody.regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E :=
-    ManyBody.regionEntropy_compressedTypicalSiteState_le β Ω X B hXB E hΩ hz
+      regionEntropy Ω B /
+        (regionState_posSemidef X Ω).isHermitian.spectralRestrictionMass E :=
+    regionEntropy_compressedTypicalSiteState_le β Ω X B hXB E hΩ hz
   obtain ⟨c, hc, htail⟩ :=
     hρ.exists_re_trace_one_sub_labelCutoff_finKronecker_le_exp htr hs
   refine ⟨c, hc, ?_⟩

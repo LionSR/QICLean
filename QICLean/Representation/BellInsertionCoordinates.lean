@@ -54,7 +54,7 @@ local notation "ι₁" => addedSiteSpace (ManyBody.compressedSiteSpace β X R)
 R and each original complementary coordinate separately.
 Source: area-law manuscript, `07-comparators.tex`, lines 283–308. -/
 def bellInsertionSiteEquiv : ((v : Option (Option V)) → ι₀ v) ≃
-    ((v : Option (Option ↥(Xᶜ))) → ι₁ v) where
+    ((v : Option (Option {v // v ∉ X})) → ι₁ v) where
   toFun x o := match o with
     | none => (fun v ↦ x (some (some v)), x (some none))
     | some none => x none
@@ -63,7 +63,7 @@ def bellInsertionSiteEquiv : ((v : Option (Option V)) → ι₀ v) ≃
     | none => y (some none)
     | some none => (y none).2
     | some (some v) =>
-      (ManyBody.splitEquiv β X).symm ((y none).1, fun w ↦ y (some (some w))) v
+      (ManyBody.cutEquiv β X).symm ((y none).1, fun w ↦ y (some (some w))) v
   left_inv x := by
     funext o
     cases o with
@@ -72,7 +72,7 @@ def bellInsertionSiteEquiv : ((v : Option (Option V)) → ι₀ v) ≃
       cases o with
       | none => rfl
       | some v =>
-        exact congrFun ((ManyBody.splitEquiv β X).symm_apply_apply
+        exact congrFun ((ManyBody.cutEquiv β X).symm_apply_apply
           (fun w ↦ x (some (some w)))) v
   right_inv y := by
     funext o
@@ -80,15 +80,15 @@ def bellInsertionSiteEquiv : ((v : Option (Option V)) → ι₀ v) ≃
     | none =>
       apply Prod.ext
       · funext v
-        exact ManyBody.splitEquiv_symm_apply_of_mem β X (y none).1
-          (fun w ↦ y (some (some w))) v v.property
+        exact ManyBody.cutEquiv_symm_apply_mem (y none).1
+          (fun w ↦ y (some (some w))) v.property
       · rfl
     | some o =>
       cases o with
       | none => rfl
       | some v =>
-        exact ManyBody.splitEquiv_symm_apply_of_notMem β X (y none).1
-          (fun w ↦ y (some (some w))) v (Finset.mem_compl.mp v.property)
+        exact ManyBody.cutEquiv_symm_apply_not_mem (y none).1
+          (fun w ↦ y (some (some w))) v.property
 
 /-- Apply the physical Bell-coordinate equivalence independently to each copy.
 Source: area-law manuscript, `07-comparators.tex`, lines 283–308. -/
@@ -138,7 +138,7 @@ theorem bellInsertionCopyEquiv_subsystemPerm_withPin (k : ℕ) (U : Finset V)
         if some (some v) ∈ insert none ((ManyBody.exteriorRegion X U).image some) then
           x (σ⁻¹ j) (some (some v)) else x j (some (some v))
       by_cases hv : (v : V) ∈ U <;>
-        simp [ManyBody.exteriorRegion, Finset.mem_image, Finset.mem_compl.mp v.property, hv]
+        simp [ManyBody.exteriorRegion, Finset.mem_image, v.property, hv]
 
 /-- Permuting the original exterior part of U leaves both the bundled Bell
 coordinate and R fixed. Source: area-law manuscript, `07-comparators.tex`,
@@ -178,13 +178,16 @@ theorem bellInsertionCopyEquiv_subsystemPerm_exterior (k : ℕ) (U : Finset V)
         if some (some v) ∈ (ManyBody.exteriorRegion X U).image some then
           x (σ⁻¹ j) (some (some v)) else x j (some (some v))
       by_cases hv : (v : V) ∈ U <;>
-        simp [ManyBody.exteriorRegion, Finset.mem_image, Finset.mem_compl.mp v.property, hv]
+        simp [ManyBody.exteriorRegion, Finset.mem_image, v.property, hv]
 
 variable [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable [Fintype C] [DecidableEq C] [Fintype R] [DecidableEq R]
 
 local instance : DecidableEq (ManyBody.RegionConfig β X) :=
   Fintype.decidablePiFintype
+
+-- `inferInstance` for `DecidableEq (Config k ι₁)` exceeds the instance size limit otherwise.
+local instance : Fintype {v // v ∉ X} := inferInstance
 
 /-- Transport the same label function along a literal equivariant change of
 finite configurations. -/

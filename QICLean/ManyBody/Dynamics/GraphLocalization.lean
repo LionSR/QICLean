@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: QICLean contributors
 -/
 import QICLean.ManyBody.Dynamics.GraphPropagation
-import QICLean.ManyBody.Dynamics.GraphBall
+import QICLean.ManyBody.Sites.GraphBall
 import QICLean.ManyBody.Sites.Twirl
 import Mathlib.Algebra.Order.Field.GeomSum
 
@@ -46,7 +46,7 @@ Moved from TNLean, `TNLean/Circuit/LiebRobinson/GraphLocalization.lean` at commi
 `71c1185e9352a3b5237b37a6840640751da6ca2d`. Changes: an interaction `Φ : Interaction X T` on an
 arbitrary system of sites in place of a family of terms on `ι → Fin q`; the region expectation
 `ManyBody.regionExpectation` in place of `siteExpectation q`, so the hypothesis `[NeZero q]`
-is gone; the graph ball is in `QICLean.ManyBody.Dynamics.GraphBall`.
+is gone; the graph ball is in `QICLean.ManyBody.Sites.GraphBall`.
 
 ## Main results
 
@@ -230,14 +230,14 @@ private theorem sum_graph_kernel_compl_graphNeighborhood_le
     (hGrowth : ∀ x (d : ℕ),
       ((Finset.univ.filter fun y => G.edist x y = d).card : ℝ) ≤ Kg * ((d : ℝ) + 1) ^ kg)
     (S : Finset V) (l : ℕ) :
-    (∑ y ∈ (S.biUnion fun x => graphBall G x l)ᶜ,
+    (∑ y ∈ (graphNeighborhood G S l)ᶜ,
       ∑ x ∈ S, if G.edist x y = ⊤ then 0 else
         Real.exp (-((G.edist x y).toNat : ℝ))) ≤
       (S.card : ℝ) * Kg *
         (2 ^ kg * kg ! * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))) *
           Real.exp (-(l : ℝ) / 2) := by
   classical
-  set N := S.biUnion fun x => graphBall G x l
+  set N := graphNeighborhood G S l
   have hTail (x : V) (hx : x ∈ S) :
       (∑ y ∈ Nᶜ, if G.edist x y = ⊤ then 0 else
         Real.exp (-((G.edist x y).toNat : ℝ))) ≤
@@ -248,7 +248,7 @@ private theorem sum_graph_kernel_compl_graphNeighborhood_le
           Real.exp (-((G.edist x y).toNat : ℝ)) :=
         Finset.sum_le_sum_of_subset_of_nonneg
           (Finset.compl_subset_compl.mpr
-            (Finset.subset_biUnion_of_mem (fun x => graphBall G x l) hx))
+            (graphBall_subset_graphNeighborhood hx))
           (fun _ _ _ => by positivity)
       _ = ∑ y ∈ (graphBall G x l)ᶜ.filter (fun y => G.edist x y ≠ ⊤),
           Real.exp (-((G.edist x y).toNat : ℝ)) := by
@@ -383,13 +383,13 @@ theorem norm_heisenberg_sub_regionExpectation_graphNeighborhood_le
     (S : Finset V) {A : Matrix (Config X) (Config X) ℂ}
     (hA : A ∈ supportedOperators X S) (l : ℕ) (t : ℝ) :
     ‖heisenbergEvolution Φ.hamiltonian t A -
-        regionExpectation (S.biUnion fun x => graphBall G x l)
+        regionExpectation (graphNeighborhood G S l)
           (heisenbergEvolution Φ.hamiltonian t A)‖ ≤
       (2 + 4 * |b₀| * Real.exp (2 * R)) * (S.card : ℝ) ^ 2 * ‖A‖ * Kg *
         (2 ^ kg * kg ! * Real.exp (1 / 2) / (1 - Real.exp (-(1 / 2)))) *
         Real.exp ((2 * vR * |b₀| * Real.exp (2 * R) + 1) * |t| - l / 2) := by
   classical
-  set N := S.biUnion fun x => graphBall G x l
+  set N := graphNeighborhood G S l
   let c : ℝ := (2 + 4 * |b₀| * Real.exp (2 * R)) * (S.card : ℝ) * ‖A‖ *
     Real.exp ((2 * vR * |b₀| * Real.exp (2 * R) + 1) * |t|)
   let w (y : V) : ℝ := ∑ x ∈ S, if G.edist x y = ⊤ then 0 else
@@ -451,7 +451,7 @@ theorem norm_heisenberg_sub_regionExpectation_graphNeighborhood_le_of_sphere_le_
     (S : Finset V) {A : Matrix (Config X) (Config X) ℂ}
     (hA : A ∈ supportedOperators X S) (ℓ : ℝ) (t : ℝ) :
     ‖heisenbergEvolution Φ.hamiltonian t A -
-        regionExpectation (S.biUnion fun x ↦ graphBall G x ⌊ℓ⌋₊)
+        regionExpectation (graphNeighborhood G S ⌊ℓ⌋₊)
           (heisenbergEvolution Φ.hamiltonian t A)‖ ≤
       (2 * (2 + 4 * |b₀| * Real.exp (2 * R)) * Real.exp 1 /
         (1 - Real.exp (-(1 / 2)))) * (S.card : ℝ) ^ 2 * ‖A‖ *

@@ -130,13 +130,12 @@ omit [Fintype κ] in
 include ha hDiam in
 /-- If the anchors of two terms are at graph distance more than `2R + l`, then the second term
 is disjoint from the sites within distance `l` of the first. -/
-theorem disjoint_biUnion_graphBall_of_lt_edist (i j : κ) (l : ℕ)
+theorem disjoint_graphNeighborhood_of_lt_edist (i j : κ) (l : ℕ)
     (hlt : ((2 * R + l : ℕ) : ℕ∞) < G.edist (a j) (a i)) :
-    Disjoint ((T j).biUnion fun x => graphBall G x l) (T i) := by
+    Disjoint (graphNeighborhood G (T j) l) (T i) := by
   rw [Finset.disjoint_left]
   intro y hy hyi
-  obtain ⟨x, hx, hxy⟩ := Finset.mem_biUnion.mp hy
-  have hxy' := mem_graphBall.mp hxy
+  obtain ⟨x, hx, hxy'⟩ := mem_graphNeighborhood.mp hy
   have h1 := hDiam j (a j) (ha j) x hx
   have h2 := hDiam i y hyi (a i) (ha i)
   have htri : G.edist (a j) (a i) ≤ G.edist (a j) x + G.edist x y + G.edist y (a i) :=
@@ -172,7 +171,7 @@ theorem norm_groundCompression_observables_commutator_le_exp
     (S : Finset V) {W B : Matrix (Config X) (Config X) ℂ}
     (hW : W ∈ supportedOperators X S) (vObs : ℕ) (hSCard : S.card ≤ vObs)
     (l : ℕ) (Y : Finset V)
-    (hY : Disjoint (S.biUnion fun x => graphBall G x l) Y)
+    (hY : Disjoint (graphNeighborhood G S l) Y)
     (hB : B ∈ supportedOperators X Y) :
     ‖groundCompression Φ.hamiltonian E₀ W * groundCompression Φ.hamiltonian E₀ B -
       groundCompression Φ.hamiltonian E₀ B * groundCompression Φ.hamiltonian E₀ W‖ ≤
@@ -272,7 +271,7 @@ theorem norm_groundCompression_observables_commutator_le_exp_edist
   exact norm_groundCompression_observables_commutator_le_exp G Φ hHerm R
     hDiam vR hCard b₀ hBudget Kg kg hGrowth hΔE hgap (Y j) (hW j) vObs (hYCard j)
     l (Y i)
-    (disjoint_biUnion_graphBall_of_lt_edist G (T := Y) c hc Robs hYDiam i j l hlt) (hW i)
+    (disjoint_graphNeighborhood_of_lt_edist G (T := Y) c hc Robs hYDiam i j l hlt) (hW i)
 
 omit ha in
 include a in
@@ -287,7 +286,7 @@ theorem norm_groundCompression_commutator_le_exp (Kg : ℝ) (kg : ℕ)
       ((Finset.univ.filter fun y => G.edist x y = r).card : ℝ) ≤ Kg * ((r : ℝ) + 1) ^ kg)
     {ΔE : ℝ} (hΔE : 0 < ΔE) {E₀ : ℝ}
     (hgap : IsGapped Φ.hamiltonian E₀ ΔE) (i j : κ) (l : ℕ)
-    (hY : Disjoint ((T j).biUnion fun x => graphBall G x l) (T i)) :
+    (hY : Disjoint (graphNeighborhood G (T j) l) (T i)) :
     ‖groundCompression Φ.hamiltonian E₀ (Φ.term j) * groundCompression Φ.hamiltonian E₀ (Φ.term i) -
         groundCompression Φ.hamiltonian E₀ (Φ.term i) * groundCompression Φ.hamiltonian E₀
             (Φ.term j)‖ ≤

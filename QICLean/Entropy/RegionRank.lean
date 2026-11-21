@@ -27,21 +27,22 @@ variable (β : V → Type*) [∀ v, Fintype (β v)]
 
 /-- Complementary reductions of a pure state have equal rank. -/
 theorem rank_regionState_compl (ψ : EuclideanSpace ℂ ((v : V) → β v)) (R : Finset V) :
-    (ManyBody.regionState ψ Rᶜ).rank = (ManyBody.regionState ψ R).rank := by
-  rw [ManyBody.regionState_compl_eq_partialTraceLeft, ManyBody.regionState_eq_partialTrace]
+    (regionState ψ Rᶜ).rank = (regionState ψ R).rank := by
+  rw [regionState_compl_eq_partialTraceLeft, Matrix.rank_reindex,
+    regionState_eq_partialTraceRight_cutVector]
   exact (Matrix.rank_partialTraceRight_vecMulVec_eq_rank_partialTraceLeft _).symm
 
 /-- The rank on a disjoint union is bounded by the product of the regional ranks. -/
 theorem rank_regionMatrix_union_le
     {ρ : Matrix ((v : V) → β v) ((v : V) → β v) ℂ} (hρ : ρ.PosSemidef)
     (R T : Finset V) (h : Disjoint R T) :
-    (ManyBody.regionMatrix ρ (R ∪ T)).rank ≤
-      (ManyBody.regionMatrix ρ R).rank * (ManyBody.regionMatrix ρ T).rank := by
+    (regionMatrix ρ (R ∪ T)).rank ≤
+      (regionMatrix ρ R).rank * (regionMatrix ρ T).rank := by
   classical
-  have hb := ((ManyBody.regionMatrix_posSemidef β hρ (R ∪ T)).submatrix
-    (ManyBody.unionEquiv β R T h).symm).rank_le_rank_partialTraceRight_mul_rank_partialTraceLeft
-  simpa only [Matrix.rank_submatrix, ManyBody.partialTraceRight_regionMatrix_union,
-    ManyBody.partialTraceLeft_regionMatrix_union] using hb
+  have hb := ((regionMatrix_posSemidef β hρ (R ∪ T)).submatrix
+    (unionEquiv β R T h).symm).rank_le_rank_partialTraceRight_mul_rank_partialTraceLeft
+  simpa only [Matrix.rank_submatrix, partialTraceRight_regionMatrix_union,
+    partialTraceLeft_regionMatrix_union] using hb
 
 end ManyBody
 

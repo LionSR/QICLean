@@ -33,16 +33,16 @@ namespace ManyBody
 
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
-variable (X : Finset V) (E : Finset (ManyBody.RegionConfig β X)) (k : ℕ)
+variable (X : Finset V) (E : Finset (RegionConfig β X)) (k : ℕ)
 
-local notation "A" => ManyBody.RegionConfig β X
-local notation "B" => ManyBody.RegionConfig β Xᶜ
+local notation "A" => RegionConfig β X
+local notation "B" => ComplConfig β X
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β E) (Fin E.card)
-local notation "ιe" => ManyBody.compressedSiteSpace β X (Fin E.card)
+local notation "ιe" => compressedSiteSpace β X (Fin E.card)
 local notation "L" => Fin k → A × E
 
 local instance schmidtBellCoordinatesConfigurationDecidableEq : DecidableEq
-    (ManyBody.RegionConfig β X) :=
+    (RegionConfig β X) :=
   Fintype.decidablePiFintype
 
 local instance schmidtBellCoordinatesExteriorConfigDecidableEq :
@@ -56,7 +56,7 @@ def schmidtBellWitnessEquiv : TensorPower.Config k ι₀ ≃ L × TensorPower.Co
   (bellInsertionCopyEquiv β X ↥E (Fin E.card) k).trans
     (addedSiteConfigEquiv ιe (A × E) k)
 
-variable (Ω : EuclideanSpace ℂ (ManyBody.RegionConfig β X × ManyBody.RegionConfig β Xᶜ))
+variable (Ω : EuclideanSpace ℂ (RegionConfig β X × ComplConfig β X))
 
 /-- The actual insertion range matrix is the selected Bell tensor-power
 matrix tensored with the exterior identity, in the explicit witness
@@ -70,10 +70,10 @@ theorem bellInsertion_mul_conjTranspose_selectedBell :
     J * Jᴴ =
       ((finKronecker fun _ : Fin k ↦ selectedBellProjection Ω E) ⊗ₖ
         (1 : Matrix (TensorPower.Config k ιe) (TensorPower.Config k ιe) ℂ)).submatrix
-          (ManyBody.schmidtBellWitnessEquiv β X E k)
-              (ManyBody.schmidtBellWitnessEquiv β X E k) := by
+          (schmidtBellWitnessEquiv β X E k)
+              (schmidtBellWitnessEquiv β X E k) := by
   intro e b J
-  let τ := ManyBody.schmidtBellWitnessEquiv β X E k
+  let τ := schmidtBellWitnessEquiv β X E k
   let : DecidableEq (TensorPower.Config k ιe) := fun y z ↦ Classical.propDecidable (y = z)
   ext x y
   change (∑ q : TensorPower.Config k ιe,

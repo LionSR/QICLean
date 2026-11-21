@@ -33,8 +33,8 @@ noncomputable def unionTensorCoordinates (q : ℕ) (A B : Finset V) (h : Disjoin
 and the exterior of their union. Supporting ALVV, arXiv:1602.08828v2,
 Lemma `l:t`, lines 500–523. -/
 noncomputable def exteriorTensorCoordinates (q : ℕ) (A B : Finset V) (h : Disjoint A B) :
-    EuclideanSpace ℂ (↥(Aᶜ) → Fin q) ≃ₗᵢ[ℂ]
-      EuclideanSpace ℂ (B → Fin q) ⊗[ℂ] EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q) :=
+    EuclideanSpace ℂ ({v // v ∉ A} → Fin q) ≃ₗᵢ[ℂ]
+      EuclideanSpace ℂ (B → Fin q) ⊗[ℂ] EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q) :=
   (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
     (ManyBody.complementUnionEquiv (fun _ : V ↦ Fin q) A B h)).trans
       (Submodule.euclideanTensorEquiv _ _)
@@ -43,24 +43,24 @@ noncomputable def exteriorTensorCoordinates (q : ℕ) (A B : Finset V) (h : Disj
 union retained. Supporting ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
 noncomputable def rightExteriorTensorCoordinates (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) :
-    EuclideanSpace ℂ (↥(Bᶜ) → Fin q) ≃ₗᵢ[ℂ]
-      EuclideanSpace ℂ (A → Fin q) ⊗[ℂ] EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q) :=
+    EuclideanSpace ℂ ({v // v ∉ B} → Fin q) ≃ₗᵢ[ℂ]
+      EuclideanSpace ℂ (A → Fin q) ⊗[ℂ] EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q) :=
   (LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ
     ((ManyBody.complementUnionEquiv (fun _ : V ↦ Fin q) B A h.symm).trans
       ((Equiv.refl _).prodCongr
-        (ManyBody.configurationCongr (fun _ : V ↦ Fin q)
-          (congrArg (fun C : Finset V ↦ Cᶜ) (Finset.union_comm B A)))))).trans
+        (Equiv.arrowCongr (Equiv.subtypeEquivRight fun _ ↦ by rw [Finset.union_comm])
+          (Equiv.refl (Fin q)))))).trans
     (Submodule.euclideanTensorEquiv _ _)
 
 /-- Product coordinates in the exterior of the second region. Supporting
 ALVV, arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
 lemma rightExteriorTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) (x : EuclideanSpace ℂ (A → Fin q))
-    (z : EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q)) (c : ↥(Bᶜ) → Fin q) :
+    (z : EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q)) (c : {v // v ∉ B} → Fin q) :
     let e := (ManyBody.complementUnionEquiv (fun _ : V ↦ Fin q) B A h.symm).trans
       ((Equiv.refl _).prodCongr
-        (ManyBody.configurationCongr (fun _ : V ↦ Fin q)
-          (congrArg (fun C : Finset V ↦ Cᶜ) (Finset.union_comm B A))))
+        (Equiv.arrowCongr (Equiv.subtypeEquivRight fun _ ↦ by rw [Finset.union_comm])
+          (Equiv.refl (Fin q))))
     (rightExteriorTensorCoordinates q A B h).symm (x ⊗ₜ[ℂ] z) c =
       x (e c).1 * z (e c).2 :=
   Submodule.euclideanTensorEquiv_reindex_symm_tmul _ x z c
@@ -69,12 +69,12 @@ lemma rightExteriorTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
 of its two factors in configuration coordinates. Supporting ALVV,
 arXiv:1602.08828v2, Definition `d:vs`, lines 433–440. -/
 lemma regionTensorCoordinates_symm_tmul_apply (q : ℕ) (A : Finset V)
-    (x : EuclideanSpace ℂ (A → Fin q)) (y : EuclideanSpace ℂ (↥(Aᶜ) → Fin q))
+    (x : EuclideanSpace ℂ (A → Fin q)) (y : EuclideanSpace ℂ ({v // v ∉ A} → Fin q))
     (c : V → Fin q) :
     (regionTensorCoordinates q A).symm (x ⊗ₜ[ℂ] y) c =
       x (fun v ↦ c v) * y (fun v ↦ c v) := by
   exact Submodule.euclideanTensorEquiv_reindex_symm_tmul
-    (ManyBody.splitEquiv (fun _ : V ↦ Fin q) A) x y c
+    (ManyBody.cutEquiv (fun _ : V ↦ Fin q) A) x y c
 
 omit [Fintype V] in
 /-- Product coordinates in the actual union split. Supporting ALVV,
@@ -91,7 +91,7 @@ lemma unionTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
 arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
 lemma exteriorTensorCoordinates_symm_tmul_apply (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) (y : EuclideanSpace ℂ (B → Fin q))
-    (z : EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q)) (c : ↥(Aᶜ) → Fin q) :
+    (z : EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q)) (c : {v // v ∉ A} → Fin q) :
     (exteriorTensorCoordinates q A B h).symm (y ⊗ₜ[ℂ] z) c =
       y ((ManyBody.complementUnionEquiv (fun _ : V ↦ Fin q) A B h) c).1 *
         z ((ManyBody.complementUnionEquiv (fun _ : V ↦ Fin q) A B h) c).2 :=
@@ -103,7 +103,7 @@ noncomputable def threeRegionTensorCoordinates (q : ℕ) (A B : Finset V)
     (h : Disjoint A B) :
     EuclideanSpace ℂ (V → Fin q) ≃ₗᵢ[ℂ]
       (EuclideanSpace ℂ (A → Fin q) ⊗[ℂ] EuclideanSpace ℂ (B → Fin q)) ⊗[ℂ]
-        EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q) :=
+        EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q) :=
   (regionTensorCoordinates q (A ∪ B)).trans
     (TensorProduct.congrIsometry (unionTensorCoordinates q A B h)
       (LinearIsometryEquiv.refl ℂ _))
@@ -114,13 +114,13 @@ arXiv:1602.08828v2, Lemma `l:t`, lines 500–523. -/
 lemma threeRegionTensorCoordinates_assoc (q : ℕ) (A B : Finset V) (h : Disjoint A B) :
     (threeRegionTensorCoordinates q A B h).trans
       (TensorProduct.assocIsometry ℂ (EuclideanSpace ℂ (A → Fin q))
-        (EuclideanSpace ℂ (B → Fin q)) (EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q))) =
+        (EuclideanSpace ℂ (B → Fin q)) (EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q))) =
       (regionTensorCoordinates q A).trans
         (TensorProduct.congrIsometry (LinearIsometryEquiv.refl ℂ _)
           (exteriorTensorCoordinates q A B h)) := by
   let f := (threeRegionTensorCoordinates q A B h).trans
     (TensorProduct.assocIsometry ℂ (EuclideanSpace ℂ (A → Fin q))
-      (EuclideanSpace ℂ (B → Fin q)) (EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q)))
+      (EuclideanSpace ℂ (B → Fin q)) (EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q)))
   let g := (regionTensorCoordinates q A).trans
     (TensorProduct.congrIsometry (LinearIsometryEquiv.refl ℂ _)
       (exteriorTensorCoordinates q A B h))
@@ -151,7 +151,7 @@ lemma threeRegionTensorCoordinates_comm_assoc (q : ℕ) (A B : Finset V)
         (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ (A → Fin q))
           (EuclideanSpace ℂ (B → Fin q))) (LinearIsometryEquiv.refl ℂ _))).trans
       (TensorProduct.assocIsometry ℂ (EuclideanSpace ℂ (B → Fin q))
-        (EuclideanSpace ℂ (A → Fin q)) (EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q))) =
+        (EuclideanSpace ℂ (A → Fin q)) (EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q))) =
       (regionTensorCoordinates q B).trans
         (TensorProduct.congrIsometry (LinearIsometryEquiv.refl ℂ _)
           (rightExteriorTensorCoordinates q A B h)) := by
@@ -160,7 +160,7 @@ lemma threeRegionTensorCoordinates_comm_assoc (q : ℕ) (A B : Finset V)
       (TensorProduct.commIsometry ℂ (EuclideanSpace ℂ (A → Fin q))
         (EuclideanSpace ℂ (B → Fin q))) (LinearIsometryEquiv.refl ℂ _))).trans
     (TensorProduct.assocIsometry ℂ (EuclideanSpace ℂ (B → Fin q))
-      (EuclideanSpace ℂ (A → Fin q)) (EuclideanSpace ℂ (↥((A ∪ B)ᶜ) → Fin q)))
+      (EuclideanSpace ℂ (A → Fin q)) (EuclideanSpace ℂ ({v // v ∉ A ∪ B} → Fin q)))
   let g := (regionTensorCoordinates q B).trans
     (TensorProduct.congrIsometry (LinearIsometryEquiv.refl ℂ _)
       (rightExteriorTensorCoordinates q A B h))
@@ -173,17 +173,13 @@ lemma threeRegionTensorCoordinates_comm_assoc (q : ℕ) (A B : Finset V)
       | tmul x z =>
         ext c
         have hconfig :
-            ManyBody.configurationCongr (fun _ : V ↦ Fin q)
-              (congrArg (fun C : Finset V ↦ Cᶜ) (Finset.union_comm B A))
-              (fun v : ↥((B ∪ A)ᶜ) ↦ c v) =
-                (fun v : ↥((A ∪ B)ᶜ) ↦ c v) := by
-          funext v
-          simp only [ManyBody.configurationCongr_apply]
+            Equiv.arrowCongr (Equiv.subtypeEquivRight fun _ ↦ by rw [Finset.union_comm])
+              (Equiv.refl (Fin q)) (fun v : {v // v ∉ B ∪ A} ↦ c v) =
+                (fun v : {v // v ∉ A ∪ B} ↦ c v) := rfl
         simp [f, g, TensorProduct.congrIsometry_symm, threeRegionTensorCoordinates,
           regionTensorCoordinates_symm_tmul_apply, unionTensorCoordinates_symm_tmul_apply,
           rightExteriorTensorCoordinates_symm_tmul_apply, ManyBody.unionEquiv,
-          ManyBody.complementUnionEquiv, hconfig,
-          mul_assoc, mul_left_comm]
+          ManyBody.complementUnionEquiv, hconfig, mul_assoc, mul_left_comm]
       | add v w hv hw => simp only [TensorProduct.tmul_add, map_add, hv, hw]
     | add v w hv hw => simp only [map_add, hv, hw]
   have hinv := congrArg LinearIsometryEquiv.symm hsymm

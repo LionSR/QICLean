@@ -34,11 +34,11 @@ attribute [local instance] sharpTreeRegionDecidableEq sharpTreeSiteDecidableEq
 variable {V : Type} [Fintype V] [DecidableEq V]
 variable (β : V → Type) [∀ v, Fintype (β v)] [∀ v, DecidableEq (β v)]
 variable (Ω : EuclideanSpace ℂ ((v : V) → β v)) (X : Finset V)
-variable (E : Finset (ManyBody.RegionConfig β X))
+variable (E : Finset (RegionConfig β X))
 
 local notation "ι₀" => addedSiteSpace (addedSiteSpace β (Fin E.card)) (Fin E.card)
 local notation "z" => Matrix.IsHermitian.spectralRestrictionMass
-  (Matrix.PosSemidef.isHermitian (ManyBody.regionState_posSemidef X Ω)) E
+  (Matrix.PosSemidef.isHermitian (regionState_posSemidef X Ω)) E
 
 local instance replicaPrevectorSharpUpperConfigDecidableEq (k : ℕ) :
     DecidableEq (TensorPower.Config k ι₀) := Fintype.decidablePiFintype
@@ -54,16 +54,16 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
     (hΩ : ‖Ω‖ = 1) (hz : 0 < z)
     {a K r : ℝ} (ha : 0 < a) (har : 6 * a ≤ r) (ha1 : 6 * a ≤ 1)
     (ell : (k : ℕ) → IrrepLabel (Equiv.Perm (Fin k))) :
-    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (ManyBody.splitEquiv β X) Ω
-    let ψ : ManyBody.RegionConfig β Xᶜ × Fin E.card → ℂ := fun x ↦
+    let ΩX := LinearIsometryEquiv.piLpCongrLeft 2 ℂ ℂ (cutEquiv β X) Ω
+    let ψ : ComplConfig β X × Fin E.card → ℂ := fun x ↦
       Matrix.compressedTypicalPureState ΩX E ((Finset.equivFin E).symm x.2, x.1)
     (∀ᶠ k : ℕ in atTop,
       (2 * (((k + 1) ^ (E.card ^ 2) : ℕ) : ℝ))⁻¹ ≤
         ‖WithLp.toLp 2
-          (((1 : Matrix (Fin k → ManyBody.RegionConfig β Xᶜ)
-            (Fin k → ManyBody.RegionConfig β Xᶜ) ℂ) ⊗ₖ
+          (((1 : Matrix (Fin k → ComplConfig β X)
+            (Fin k → ComplConfig β X) ℂ) ⊗ₖ
               labelProj (copyPerm (Fin E.card) k) (ell k)) *ᵥ
-            (fun x : (Fin k → ManyBody.RegionConfig β Xᶜ) × (Fin k → Fin E.card) ↦
+            (fun x : (Fin k → ComplConfig β X) × (Fin k → Fin E.card) ↦
               ∏ j, ψ (x.1 j, x.2 j)))‖ ^ 2) →
     ∃ C : ℝ, 0 ≤ C ∧
       (∀ G : ℕ, Tendsto (Real.bellOverlapRemainder E.card C G) atTop (𝓝 0)) ∧
@@ -79,9 +79,9 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
       (∀ j g (Q : Finset V), Q = U j g ∨ Q = U j g ∪ Y j g ∨ Q = Y j g →
         ∀ v : ℝ, |v| ≤ r →
           Real.log (Entropy.surprisalMoment
-            (ManyBody.regionState_posSemidef Q Ω).isHermitian.eigenvalues v) ≤
-            v * vonNeumannEntropy (ManyBody.regionState Ω Q)
-              (ManyBody.regionState_posSemidef Q Ω).isHermitian + K * v ^ 2) →
+            (regionState_posSemidef Q Ω).isHermitian.eigenvalues v) ≤
+            v * vonNeumannEntropy (regionState Ω Q)
+              (regionState_posSemidef Q Ω).isHermitian + K * v ^ 2) →
       ∀ (T : MeanTree ι) (s : ℝ), 2 * s ∈ Set.Icc (0 : ℝ) 1 →
       let v : EuclideanSpace ℂ (TensorPower.Config k ι₀) := WithLp.toLp 2
         (replicaPrevector Ω E.card k (ell k) ∘
@@ -95,8 +95,8 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
       let A := fun j g ↦ ((W (Q j g))⁻¹ * (W (F j g))⁻¹ * W (ext (Y j g))) ^ 2
       let M := (List.ofFn fun g ↦ T.eval (fun j ↦ Zᴴ * A j g * Z)).prod
       let Nsq := ‖toEuclideanLin (M ^ (-s)) (toEuclideanLin Zᴴ v)‖ ^ 2
-      let S := fun Q : Finset V ↦ vonNeumannEntropy (ManyBody.regionState Ω Q)
-        (ManyBody.regionState_posSemidef Q Ω).isHermitian
+      let S := fun Q : Finset V ↦ vonNeumannEntropy (regionState Ω Q)
+        (regionState_posSemidef Q Ω).isHermitian
       0 < Nsq ∧ -Real.log Nsq / (k : ℝ) ≤
         2 * Real.log (E.card : ℝ) - Real.log z +
           2 * s * a * (∑ g, ∑ j, T.weight j *
@@ -142,16 +142,16 @@ theorem eventually_suppliedReplicaPrevector_sharp_upper
         (replicaPrevector Ω E.card k (ell k) ∘
           globalReplicaCopiesEquiv β (Fin E.card) (Fin E.card) k)) =
       toEuclideanLin ZEᴴ (WithLp.toLp 2
-        (ManyBody.schmidtBellSitePrevector β X E k ΩX (ell k) ∘
-          ManyBody.schmidtBellWitnessEquiv β X E k)) := by
+        (schmidtBellSitePrevector β X E k ΩX (ell k) ∘
+          schmidtBellWitnessEquiv β X E k)) := by
     simpa only [ZE, e, ΩX, Matrix.toEuclideanLin, Matrix.toLpLin_apply,
       WithLp.ofLp_toLp] using!
       congrArg (WithLp.toLp 2)
-        (ManyBody.schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
+        (schmidtBellSitePrevector_compressed_enumerate_C β Ω X E k n Z (ell k))
   have hNsq := congrArg₂
     (fun (P : Matrix (Fin n) (Fin n) ℂ) (u : EuclideanSpace ℂ (Fin n)) ↦
       ‖toEuclideanLin (P ^ (-s)) u‖ ^ 2)
-    (ManyBody.replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z (a / 2) G U Y T).2 hp
+    (replicaMetric_compressed_bandProduct_enumerate_C β X E k n Z (a / 2) G U Y T).2 hp
   exact Eq.mp (congrArg (fun r : ℝ ↦ 0 < r ∧ -Real.log r / (k : ℝ) ≤
     2 * Real.log (E.card : ℝ) - Real.log z +
       2 * s * a * (∑ g, ∑ j, T.weight j *

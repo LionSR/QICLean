@@ -32,22 +32,22 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 /-- The additional site carries the compressed index; all other sites retain
 their original physical coordinate spaces. -/
 def compressedSiteSpace (β : V → Type u) (X : Finset V) (R : Type u) :
-    Option ↥(Xᶜ) → Type u
+    Option {v // v ∉ X} → Type u
   | none => R
   | some v => β v
 
 instance (β : V → Type u) (X : Finset V) (R : Type u)
-    [∀ v, Fintype (β v)] [Fintype R] (f : Option ↥(Xᶜ)) :
-    Fintype (ManyBody.compressedSiteSpace β X R f) := by
-  cases f <;> dsimp [ManyBody.compressedSiteSpace] <;> infer_instance
+    [∀ v, Fintype (β v)] [Fintype R] (f : Option {v // v ∉ X}) :
+    Fintype (compressedSiteSpace β X R f) := by
+  cases f <;> dsimp [compressedSiteSpace] <;> infer_instance
 
 instance (β : V → Type u) (X : Finset V) (R : Type u)
-    [∀ v, DecidableEq (β v)] [DecidableEq R] (f : Option ↥(Xᶜ)) :
-    DecidableEq (ManyBody.compressedSiteSpace β X R f) := by
-  cases f <;> dsimp [ManyBody.compressedSiteSpace] <;> infer_instance
+    [∀ v, DecidableEq (β v)] [DecidableEq R] (f : Option {v // v ∉ X}) :
+    DecidableEq (compressedSiteSpace β X R f) := by
+  cases f <;> dsimp [compressedSiteSpace] <;> infer_instance
 
 /-- A physical region, regarded as a region of the exterior site family. -/
-def exteriorRegion (X B : Finset V) : Finset (Option ↥(Xᶜ)) := by
+def exteriorRegion (X B : Finset V) : Finset (Option {v // v ∉ X}) := by
   classical
   exact Finset.univ.filter fun f ↦ match f with
     | none => False

@@ -52,24 +52,23 @@ private theorem entropy_piSplitAt_eq_regional
         subst v
         rfl
       right_inv := by intro x; rfl }
-  let b : ManyBody.RegionConfig β ({j} : Finset V)ᶜ ≃
+  let b : ManyBody.ComplConfig β ({j} : Finset V) ≃
       ((v : {v : V // v ≠ j}) → β v) :=
     { toFun := fun x v => x ⟨v, by simpa using v.property⟩
-      invFun := fun x v => x ⟨v, fun hvj =>
-        (Finset.mem_compl.mp v.property) (Finset.mem_singleton.mpr hvj)⟩
+      invFun := fun x v => x ⟨v, fun hvj => v.property (Finset.mem_singleton.mpr hvj)⟩
       left_inv := by intro x; rfl
       right_inv := by intro x; rfl }
   have hsplit (x : (v : V) → β v) :
-      (a.prodCongr b) (ManyBody.splitEquiv β {j} x) =
+      (a.prodCongr b) (ManyBody.cutEquiv β {j} x) =
         Equiv.piSplitAt j β x := rfl
   have hcoords (x : β j × ((v : {v : V // v ≠ j}) → β v)) :
-      (ManyBody.splitEquiv β {j}).symm ((a.prodCongr b).symm x) =
+      (ManyBody.cutEquiv β {j}).symm ((a.prodCongr b).symm x) =
         (Equiv.piSplitAt j β).symm x := by
     apply (Equiv.piSplitAt j β).injective
     rw [← hsplit, Equiv.apply_symm_apply, Equiv.apply_symm_apply,
       Equiv.apply_symm_apply]
   let R := (vecMulVec (fun x => ψ x) (star (fun x => ψ x))).submatrix
-    (ManyBody.splitEquiv β {j}).symm (ManyBody.splitEquiv β {j}).symm
+    (ManyBody.cutEquiv β {j}).symm (ManyBody.cutEquiv β {j}).symm
   have hρ : partialTraceRight (vecMulVec
       (fun x => ψ ((Equiv.piSplitAt j β).symm x))
       (star (fun x => ψ ((Equiv.piSplitAt j β).symm x)))) =
@@ -81,8 +80,8 @@ private theorem entropy_piSplitAt_eq_regional
         ext x y
         change ψ ((Equiv.piSplitAt j β).symm x) *
             star (ψ ((Equiv.piSplitAt j β).symm y)) =
-          ψ ((ManyBody.splitEquiv β {j}).symm ((a.prodCongr b).symm x)) *
-            star (ψ ((ManyBody.splitEquiv β {j}).symm ((a.prodCongr b).symm y)))
+          ψ ((ManyBody.cutEquiv β {j}).symm ((a.prodCongr b).symm x)) *
+            star (ψ ((ManyBody.cutEquiv β {j}).symm ((a.prodCongr b).symm y)))
         rw [hcoords, hcoords]
       _ = _ := partialTraceRight_submatrix_prod_equiv a b R
   exact (vonNeumannEntropy_congr hρ _
