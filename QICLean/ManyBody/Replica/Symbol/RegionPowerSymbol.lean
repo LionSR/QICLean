@@ -42,6 +42,7 @@ file proves those one-copy estimates.
 
 open Matrix Polynomial
 open scoped Kronecker Matrix.Norms.L2Operator InnerProductSpace ComplexOrder
+open ManyBody (regionUnionEquiv)
 
 namespace Entropy
 
@@ -54,11 +55,11 @@ theorem commute_localLift_of_disjoint {X T : Finset V} (hXT : Disjoint X T)
     (B : Matrix (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T)
         (ManyBody.RegionConfig (fun v ↦ Fin (n v)) T) ℂ) :
     Commute (ManyBody.place X A) (ManyBody.place T B) := by
-  set e := regionUnionEquiv (n := n) hXT
+  set e := regionUnionEquiv (β := fun v ↦ Fin (n v)) hXT
   have h1 : ManyBody.place X A = ManyBody.place (X ∪ T) (reindex e.symm e.symm (A ⊗ₖ 1)) := by
-    rw [localLift_union_kronecker, ManyBody.place_one, mul_one]
+    rw [ManyBody.place_union_kronecker, ManyBody.place_one, mul_one]
   have h2 : ManyBody.place T B = ManyBody.place (X ∪ T) (reindex e.symm e.symm (1 ⊗ₖ B)) := by
-    rw [localLift_union_kronecker, ManyBody.place_one, one_mul]
+    rw [ManyBody.place_union_kronecker, ManyBody.place_one, one_mul]
   rw [h1, h2, Commute, SemiconjBy, ← ManyBody.place_mul, ← ManyBody.place_mul]
   congr 1
   simp only [reindex_apply, submatrix_mul_equiv, ← mul_kronecker_mul, Matrix.mul_one,

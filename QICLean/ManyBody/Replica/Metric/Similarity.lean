@@ -37,6 +37,7 @@ The proofs are written from the paper; no Lean source was adapted.
 
 open Matrix PermutationRepresentation Entropy
 open scoped Kronecker Matrix.Norms.L2Operator MatrixOrder ComplexOrder
+open ManyBody (regionUnionEquiv)
 
 namespace Entropy
 
@@ -53,7 +54,7 @@ theorem _root_.ManyBody.IsSupportedOn.exists_sum_mul
         M = ∑ i, a i * b i := by
   classical
   obtain ⟨K, rfl⟩ := ManyBody.exists_eq_place_of_mem_supportedOperators hM
-  set e := regionUnionEquiv (n := n) hXT
+  set e := regionUnionEquiv (β := fun v ↦ Fin (n v)) hXT
   set K' := reindex e e K
   set I :=
       ((ManyBody.RegionConfig (fun v ↦ Fin (n v)) X) ×
@@ -93,7 +94,7 @@ theorem _root_.ManyBody.IsSupportedOn.exists_sum_mul
     refine Finset.sum_congr rfl fun j _ => ?_
     have h1 : single i j (K' i j) = K' i j • (single i.1 j.1 (1 : ℂ) ⊗ₖ single i.2 j.2 1) := by
       rw [single_kronecker_single, one_mul, smul_single, smul_eq_mul, mul_one]
-    rw [h1, map_smul, hΨ, localLift_union_kronecker hXT]
+    rw [h1, map_smul, hΨ, ManyBody.place_union_kronecker hXT]
     simp only [A, B, smul_mul_assoc]
 
 end Entropy

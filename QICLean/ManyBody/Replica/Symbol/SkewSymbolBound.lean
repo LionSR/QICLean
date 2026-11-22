@@ -34,6 +34,7 @@ Lemma 6.4 of the area-law paper (*A two-dimensional area law from a global spect
 
 open Matrix Entropy Entropy.ConditionalSkew PermutationRepresentation MeasureTheory
 open scoped Kronecker ComplexOrder MatrixOrder
+open ManyBody (regionUnionEquiv)
 
 namespace TensorPower
 
@@ -430,7 +431,7 @@ theorem markedScalarSymbol_skew_le
           (Real.exp 1 * (Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) P₀) *
         Fintype.card (ManyBody.RegionConfig (fun v ↦ Fin (n v)) x))) ^ 4 * skewEta
             (hp.transport n θ) ^ (1 / 8 : ℝ) := by
-  set φ := regionUnionEquiv (n := n) hp.P₀x
+  set φ := regionUnionEquiv (β := fun v ↦ Fin (n v)) hp.P₀x
   have hθ' : star (hp.transport n θ) ⬝ᵥ hp.transport n θ = 1 := by
     rw [star_transport_dotProduct, dotProduct_comm]; exact hθ
   have hh0 : 0 ≤ K.submatrix φ.symm φ.symm :=

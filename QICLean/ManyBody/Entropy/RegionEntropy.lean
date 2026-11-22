@@ -192,6 +192,7 @@ end ManyBody
 
 open Complex Matrix
 open scoped InnerProductSpace ComplexOrder Kronecker
+open ManyBody (regionUnionEquiv)
 
 namespace Entropy
 
@@ -301,7 +302,7 @@ theorem partialTraceLeft_tripleState (Ω : EuclideanSpace ℂ (∀ v, Fin (n v))
           N.submatrix (regionUnionEquiv hBC) (regionUnionEquiv hBC)) := by
     ext σ τ
     rfl
-  rw [h, localLift_union_kronecker, ManyBody.place_one, Matrix.one_mul]
+  rw [h, ManyBody.place_union_kronecker, ManyBody.place_one, Matrix.one_mul]
 
 export ManyBody (partialTraceRight_regionState_union)
 

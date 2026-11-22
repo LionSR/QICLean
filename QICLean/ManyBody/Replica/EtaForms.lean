@@ -37,6 +37,7 @@ The proofs are written from the paper; no Lean source was adapted.
 
 open Matrix Entropy Entropy.ConditionalSkew Entropy.MarginalPhase PermutationRepresentation
 open scoped Kronecker ComplexOrder MatrixOrder
+open ManyBody (regionUnionEquiv)
 
 namespace TensorPower
 

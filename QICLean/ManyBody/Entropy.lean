@@ -17,7 +17,6 @@ import QICLean.ManyBody.Entropy.Filter
 import QICLean.ManyBody.Entropy.MovementEtaRegional
 import QICLean.ManyBody.Entropy.MutualInformationPerturbation
 import QICLean.ManyBody.Entropy.RegionConditionalInformation
-import QICLean.ManyBody.Entropy.RegionCovariance
 import QICLean.ManyBody.Entropy.RegionEntropy
 import QICLean.ManyBody.Entropy.RegionEntropyInequalities
 import QICLean.ManyBody.Entropy.RegionPurificationSplitting

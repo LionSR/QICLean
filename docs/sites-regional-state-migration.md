@@ -49,6 +49,16 @@ The legacy disjoint-union equivalence keeps its original construction because
 conditional-movement frames simplify its inverse directly; the placement theorem
 delegates to the generic Sites result.
 
+These specializations were later deleted, since each is the Sites definition at the
+basis types `Fin (n v)`: the configuration bijections, the transported vector and its
+three lemmas of `RegionCovariance` (with the module), and the union equivalence, its two
+re-exported lemmas and the placement theorem of `RegionUnion`. Consumers use
+`ManyBody.siteConfigurationEquiv`, `ManyBody.regionConfigurationEquiv`,
+`ManyBody.relabelVector`, `ManyBody.norm_relabelVector`, `ManyBody.regionState_relabel`,
+`ManyBody.regionEntropy_relabel`, `ManyBody.regionUnionEquiv` and
+`ManyBody.place_union_kronecker`, with the basis family `fun v ↦ Fin (n v)`; the target family
+of a relabelling is not inferred from the basis bijections and is given explicitly.
+
 The downstream source audit used TNLean commit
 `7e8438a32f1f0435e3acec579a89656de1b3f07b` and covered `TNLean/Circuit/LiebRobinson` (in particular
 `GraphPropagation`), the regional state bridges in `TNLean/Lattice`, and
