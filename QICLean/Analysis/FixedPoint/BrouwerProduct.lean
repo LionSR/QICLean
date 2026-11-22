@@ -27,10 +27,26 @@ noncomputable def closedCubeHomeomorphUnitCube
     ClosedCube I R ≃ₜ UnitCube I :=
   Homeomorph.piCongrRight fun _ => iccHomeoI (-R) R (by linarith [hR])
 
+/-- The unit interval is homeomorphic to the probability vectors on `Fin 2`, by
+`t ↦ (1 - t, t)`. -/
+private noncomputable def unitIntervalHomeomorphProbabilityVectors :
+    unitInterval ≃ₜ {f : Fin 2 → ℝ | (∀ i, 0 ≤ f i) ∧ ∑ i, f i = 1} where
+  toFun x := ⟨![1 - x, x], Fin.forall_fin_two.2 ⟨sub_nonneg.2 x.2.2, x.2.1⟩, by simp⟩
+  invFun f := ⟨f.1 1, f.2.1 _,
+    (Finset.single_le_sum (fun i _ ↦ f.2.1 i) (Finset.mem_univ _)).trans_eq f.2.2⟩
+  left_inv x := by simp
+  right_inv f := Subtype.ext <| funext <| Fin.forall_fin_two.2 <| by
+    simp [← (show f.1 0 + f.1 1 = 1 by simpa using f.2.2)]
+  continuous_toFun := by
+    apply Continuous.subtype_mk
+    exact continuous_pi <| Fin.forall_fin_two.2
+      ⟨continuous_const.sub continuous_subtype_val, continuous_subtype_val⟩
+  continuous_invFun := .subtype_mk ((continuous_apply 1).comp continuous_subtype_val) _
+
 noncomputable def unitCubeHomeomorphProductSimplices
     (I : Type*) [Fintype I] :
     UnitCube I ≃ₜ ProductSimplices (fun _ : I => (2 : ℕ+)) :=
-  Homeomorph.piCongrRight fun _ => (stdSimplexHomeomorphUnitInterval).symm
+  Homeomorph.piCongrRight fun _ => unitIntervalHomeomorphProbabilityVectors
 
 theorem exists_fixedPoint_unitCube
     (I : Type*) [Finite I] [Inhabited I] [LinearOrder I]

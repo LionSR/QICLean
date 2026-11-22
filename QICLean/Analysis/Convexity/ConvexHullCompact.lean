@@ -19,7 +19,8 @@ theorem: every point of the convex hull is a convex combination of at most
 of a compact set of weighted families.
 
 The argument realises `convexHull ℝ s` as the image of the compact set
-`stdSimplex ℝ (Fin N) ×ˢ {g | ∀ i, g i ∈ s}` (with `N = finrank ℝ E + 1`) under
+`{w | (∀ i, 0 ≤ w i) ∧ ∑ i, w i = 1} ×ˢ {g | ∀ i, g i ∈ s}` (with `N = finrank ℝ E + 1`,
+so that the first factor is the standard simplex of weights on `Fin N`) under
 the continuous barycentric map `(w, g) ↦ ∑ i, w i • g i`.  The forward inclusion
 is Carathéodory's theorem with the affine-independence cardinality bound; the
 reverse inclusion holds because each such weighted sum is a convex combination of
@@ -46,6 +47,21 @@ private theorem continuous_baryMap (N : ℕ) : Continuous (baryMap (E := E) N) :
   unfold baryMap
   fun_prop
 
+/-- The probability vectors on a finite type form a closed set. -/
+private theorem isClosed_setOf_nonneg_sum_eq_one {ι : Type*} [Fintype ι] :
+    IsClosed {w : ι → ℝ | (∀ i, 0 ≤ w i) ∧ ∑ i, w i = 1} := by
+  simp only [Set.ofPred_and, Set.ofPred_forall]
+  exact (isClosed_iInter fun i ↦ isClosed_le continuous_const (continuous_apply i)).inter
+    (isClosed_eq (by fun_prop) continuous_const)
+
+/-- The probability vectors on a finite type form a compact set. -/
+private theorem isCompact_setOf_nonneg_sum_eq_one {ι : Type*} [Fintype ι] :
+    IsCompact {w : ι → ℝ | (∀ i, 0 ≤ w i) ∧ ∑ i, w i = 1} := by
+  refine (isCompact_Icc (a := (0 : ι → ℝ)) (b := 1)).of_isClosed_subset
+    isClosed_setOf_nonneg_sum_eq_one ?_
+  rintro w ⟨h0, h1⟩
+  exact ⟨h0, fun i ↦ (Finset.single_le_sum (fun j _ ↦ h0 j) (Finset.mem_univ i)).trans_eq h1⟩
+
 /-- **The convex hull of a compact set is compact** in a finite-dimensional real
 normed space.
 
@@ -62,12 +78,12 @@ theorem IsCompact.convexHull {s : Set E} (hs : IsCompact s) :
   set N : ℕ := finrank ℝ E + 1 with hN
   -- The compact domain: simplex weights paired with families of points in `s`.
   set K : Set ((Fin N → ℝ) × (Fin N → E)) :=
-    stdSimplex ℝ (Fin N) ×ˢ {g : Fin N → E | ∀ i, g i ∈ s} with hK
+    {w : Fin N → ℝ | (∀ i, 0 ≤ w i) ∧ ∑ i, w i = 1} ×ˢ {g : Fin N → E | ∀ i, g i ∈ s} with hK
   have hKpi : {g : Fin N → E | ∀ i, g i ∈ s} = univ.pi (fun _ : Fin N => s) := by
     ext g; simp
   have hKcompact : IsCompact K := by
     rw [hK]
-    refine (isCompact_stdSimplex ℝ (Fin N)).prod ?_
+    refine isCompact_setOf_nonneg_sum_eq_one.prod ?_
     rw [hKpi]
     exact isCompact_univ_pi fun _ => hs
   -- It suffices to identify the convex hull with the image of `K`.
@@ -96,7 +112,7 @@ theorem IsCompact.convexHull {s : Set E} (hs : IsCompact s) :
     have hwoff : ∀ j ∉ Set.range e, w' j = 0 := fun j hj => by
       simp [hw', Function.extend_apply' _ _ _ (by simpa using hj)]
     -- The padded weight vector lies in the standard simplex.
-    have hw'mem : w' ∈ stdSimplex ℝ (Fin N) := by
+    have hw'mem : (∀ j, 0 ≤ w' j) ∧ ∑ j, w' j = 1 := by
       refine ⟨fun j => ?_, ?_⟩
       · by_cases hj : j ∈ Set.range e
         · obtain ⟨i, rfl⟩ := hj; rw [hwe]; exact (hwpos i).le

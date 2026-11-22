@@ -47,14 +47,18 @@ section Faithful
 
 variable {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ}
 
-omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype U] [Fintype F] in
+variable [Finite U] [Finite F] in
 theorem posDef_marginalUF [Nonempty X] (hρ : ρ.PosDef) : (marginalUF ρ).PosDef :=
   hρ.partialTraceLeft
 
-omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype X] [Fintype U] in
+variable [Finite X] [Finite U] in
 theorem posDef_marginalXU [Nonempty F] (hρ : ρ.PosDef) : (marginalXU ρ).PosDef :=
   (hρ.submatrix assocE.injective).partialTraceRight
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype U] in
+variable [Finite U] in
 theorem posDef_marginalU [Nonempty X] [Nonempty F] (hρ : ρ.PosDef) : (marginalU ρ).PosDef :=
   (posDef_marginalXU hρ).partialTraceLeft
 
@@ -144,16 +148,18 @@ variable [Nonempty X] [Nonempty F] (hρ : ρ.PosDef)
 
 variable (ρ) in
 /-- The linear map `Y ↦ (Y ρ_{xU}^{-1/2} ⊗ I_F) √ρ`. -/
-def isoMap (hρ : ρ.PosDef) [Nonempty X] [Nonempty F] :
+def isoMap (hρ : ρ.PosDef) :
     Matrix (X × U) (X × U) ℂ →ₗ[ℂ] Matrix (X × (U × F)) (X × (U × F)) ℂ where
   toFun Y := embedF (Y * rpowSpec (posDef_marginalXU hρ) (-1 / 2)) * rpowSpec hρ (1 / 2)
   map_add' A B := by rw [Matrix.add_mul, embedF_add, Matrix.add_mul]
   map_smul' c A := by rw [Matrix.smul_mul, embedF_smul, Matrix.smul_mul]; rfl
 
+omit [Nonempty X] in
 theorem isoMap_apply (Y : Matrix (X × U) (X × U) ℂ) :
     isoMap ρ hρ Y =
       embedF (Y * rpowSpec (posDef_marginalXU hρ) (-1 / 2)) * rpowSpec hρ (1 / 2) := rfl
 
+omit [Nonempty X] in
 theorem trace_isoMap_conjTranspose_mul (Z Y : Matrix (X × U) (X × U) ℂ)
     (M : Matrix (X × (U × F)) (X × (U × F)) ℂ) :
     ((isoMap ρ hρ Z)ᴴ * M * isoMap ρ hρ Y).trace =
@@ -170,6 +176,7 @@ theorem trace_isoMap_conjTranspose_mul (Z Y : Matrix (X × U) (X × U) ℂ)
   rw [trace_mul_comm]
   simp only [Matrix.mul_assoc]
 
+omit [Nonempty X] in
 /-- `V` is an isometry.  Area-law manuscript, `04-conditional.tex`, lines 359–363. -/
 theorem linMatrix_isoMap_isometry :
     (linMatrix (isoMap ρ hρ))ᴴ * linMatrix (isoMap ρ hρ) = 1 := by
@@ -190,6 +197,7 @@ theorem linMatrix_isoMap_isometry :
     rpowSpec_mul]
   norm_num [rpowSpec_zero]
 
+omit [Nonempty X] in
 theorem trace_isoMap_conjTranspose_mul_mul (Z Y : Matrix (X × U) (X × U) ℂ)
     (M N : Matrix (X × (U × F)) (X × (U × F)) ℂ) :
     ((isoMap ρ hρ Z)ᴴ * M * isoMap ρ hρ Y * N).trace =
@@ -233,6 +241,7 @@ theorem spectralFun_eigA :
   funext p
   simp [eigA]
 
+omit [DecidableEq F] in
 theorem spectralFun_eigB :
     spectralFun (unitaryB hρ) (fun p => (eigB hρ p : ℂ)) =
       (rpowSpec (posDef_marginalXU (F := F) hρ) (-1))ᵀ ⊗ₖ sigmaS ρ := by
@@ -250,6 +259,7 @@ theorem eigA_pos (p : (X × (U × F)) × (X × (U × F))) : 0 < eigA hρ p := by
   have : (0 : ℝ) < Fintype.card X := Nat.cast_pos.2 Fintype.card_pos
   positivity
 
+omit [DecidableEq F] in
 theorem eigB_pos (p : (X × U) × (X × U)) : 0 < eigB (F := F) hρ p := by
   have h1 := (posDef_marginalXU (F := F) hρ).eigenvalues_pos p.1
   have h2 := (posDef_marginalU (F := F) hρ).eigenvalues_pos p.2.2

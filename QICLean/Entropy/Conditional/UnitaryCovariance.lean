@@ -46,8 +46,10 @@ theorem reshuffle_local_rotate (C : Matrix (X × Y) (P × F) ℂ)
   ext i j
   rcases i with ⟨x, p⟩
   rcases j with ⟨y, f⟩
-  simp [reshuffle, Matrix.mul_apply, Matrix.kroneckerMap,
-    Fintype.sum_prod_type, Matrix.one_apply, Finset.sum_mul]
+  simp only [reshuffle, kroneckerMap, Matrix.one_apply, ite_mul, one_mul, zero_mul,
+    transpose_apply, mul_ite, mul_one, mul_zero, Matrix.mul_apply, of_apply, Fintype.sum_prod_type,
+    Finset.sum_ite_irrel, Finset.sum_const_zero, Finset.sum_ite_eq, Finset.mem_univ, ↓reduceIte,
+    Finset.sum_mul, Finset.sum_ite_eq']
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro y' hy'
@@ -345,6 +347,7 @@ open Matrix SupportedCurve SpectralCurve MatrixInterpolation QuantumSSA Conditio
 variable {X Y P F : Type*} [Fintype X] [Fintype Y] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq Y] [DecidableEq P] [DecidableEq F]
 
+omit [DecidableEq F] in
 theorem one_copy_move_cfc [Nonempty X] [Nonempty P]
     (C : Matrix (X × Y) (P × F) ℂ) (hC : hsEnergy C = 1)
     (σ : Matrix (X × P) (X × P) ℂ) (τ : Matrix (X × Y) (X × Y) ℂ)
@@ -361,6 +364,7 @@ theorem one_copy_move_cfc [Nonempty X] [Nonempty P]
       Real.exp (-a * (QuantumSSA.conditionalEntropy (C * C.conjTranspose) +
         QuantumSSA.conditionalEntropy (reshuffle C * (reshuffle C).conjTranspose)) / 2 +
         200000 * Real.rpow a (5 / 4 : ℝ) * l ^ 2) := by
+  classical
   let A := ptrL (C * C.conjTranspose)
   let B := ptrL (reshuffle C * (reshuffle C).conjTranspose)
   have hA : A.PosSemidef := ptrL_posSemidef (posSemidef_self_mul_conjTranspose C)

@@ -56,15 +56,21 @@ def margW (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : Matrix ((X × U) ×
 def margY (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : Matrix (X × U) (X × U) ℂ :=
   partialTraceRight (margW θ)
 
-omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype P₀]
+    [Fintype P₁] in
+variable [Finite P₀] [Finite P₁] in
 theorem posSemidef_margP (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : (margP θ).PosSemidef :=
   (posSemidef_vecMulVec_self_star θ).partialTraceRight
 
-omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype X]
+    [Fintype U] [Fintype F] in
+variable [Finite X] [Finite U] [Finite F] in
 theorem posSemidef_margW (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : (margW θ).PosSemidef :=
   (posSemidef_vecMulVec_self_star θ).partialTraceLeft
 
-omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype X]
+    [Fintype U] in
+variable [Finite X] [Finite U] in
 theorem posSemidef_margY (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : (margY θ).PosSemidef :=
   (posSemidef_margW θ).partialTraceRight
 
@@ -324,7 +330,9 @@ theorem liftH_sub (h₁ h₂ : Matrix (P₀ × X) (P₀ × X) ℂ) :
     liftH (P₁ := P₁) (U := U) (F := F) (h₁ - h₂) = liftH h₁ - liftH h₂ := by
   ext i j; simp [liftH, sub_mul]
 
-omit [DecidableEq P₀] [DecidableEq X] in
+omit [DecidableEq P₀] [DecidableEq X] [Fintype P₀] [Fintype P₁] [Fintype X] [Fintype U]
+    [Fintype F] in
+variable [Finite P₀] [Finite P₁] [Finite X] [Finite U] [Finite F] in
 theorem posSemidef_liftH {h : Matrix (P₀ × X) (P₀ × X) ℂ} (hh : h.PosSemidef) :
     (liftH (P₁ := P₁) (U := U) (F := F) h).PosSemidef :=
   (hh.kronecker PosSemidef.one).submatrix _

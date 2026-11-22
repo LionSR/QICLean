@@ -24,8 +24,8 @@ eigenvalue `λ` of `N` to satisfy `λ^2 = λ`.
 The case `c = 0` is nilpotency: an endomorphism of a finite-dimensional complex vector space, all
 of whose positive powers have vanishing trace, is nilpotent. This is the matrix statement
 `Matrix.isNilpotent_of_forall_trace_pow_eq_zero_of_one_lt` of
-`QICLean.Spectral.Eigenvalue.ShiftedZeroTraceNilpotent`, transported through the matrix representation
-attached to a basis.
+`QICLean.Spectral.Eigenvalue.ShiftedZeroTraceNilpotent`, transported through the matrix
+representation attached to a basis.
 
 Moved from TNLean, `TNLean/Algebra/ConstantTracePowers.lean` and
 `TNLean/Algebra/IsNilpotentOfTracePow.lean` at commit `49b78ed821` (Apache-2.0). Changes: the two

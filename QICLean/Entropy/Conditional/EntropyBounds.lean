@@ -36,9 +36,14 @@ open scoped BigOperators ComplexOrder Matrix.Norms.L2Operator
 open Matrix Polynomial
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
+omit [DecidableEq m] [DecidableEq n] [Fintype m] [Fintype n] in
+variable [Finite m] [Finite n] in
 theorem block_posSemidef {A : Matrix m m ℂ} {B : Matrix n n ℂ}
     (hA : A.PosSemidef) (hB : B.PosSemidef) :
     (fromBlocks A (0 : Matrix m n ℂ) 0 B).PosSemidef := by
+  classical
+  have := Fintype.ofFinite m
+  have := Fintype.ofFinite n
   let C := fromBlocks (CFC.sqrt A) (0 : Matrix m n ℂ) 0 (CFC.sqrt B)
   have hc : C * C.conjTranspose = fromBlocks A (0 : Matrix m n ℂ) 0 B := by
     dsimp only [C]
@@ -132,8 +137,10 @@ theorem traceEntropy_smul_real (t : ℝ) {A : Matrix n n ℂ} (hA : A.IsHermitia
   simp only [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.sum_mul]
   ring
 
+omit [DecidableEq n] in
 theorem trace_mul_mono_right {A B C : Matrix n n ℂ}
     (hA : A.PosSemidef) (hBC : B ≤ C) : (A * B).trace.re ≤ (A * C).trace.re := by
+  classical
   have hp := (Matrix.le_iff.mp hBC).conjTranspose_mul_mul_same (CFC.sqrt A)
   have hh := (RCLike.nonneg_iff.mp hp.trace_nonneg).1
   have hs : (CFC.sqrt A).conjTranspose = CFC.sqrt A :=

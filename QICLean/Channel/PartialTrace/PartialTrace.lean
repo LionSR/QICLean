@@ -52,13 +52,21 @@ theorem ptrR_compression (A : Matrix (m × n) (m × n) ℂ) :
   ext x y
   simp [ptrR, Matrix.sum_apply, insR, Matrix.mul_apply]
 
+omit [DecidableEq m] [DecidableEq n] [Fintype m] in
+variable [Finite m] in
 theorem ptrR_posSemidef {A : Matrix (m × n) (m × n) ℂ} (hA : A.PosSemidef) :
     (ptrR A).PosSemidef := by
+  classical
+  have := Fintype.ofFinite m
   rw [ptrR_compression]
   exact Matrix.posSemidef_sum _ (fun z _ => hA.conjTranspose_mul_mul_same _)
 
+omit [DecidableEq m] [DecidableEq n] [Fintype m] in
+variable [Finite m] in
 theorem ptrR_posDef [Nonempty n] {A : Matrix (m × n) (m × n) ℂ} (hA : A.PosDef) :
     (ptrR A).PosDef := by
+  classical
+  have := Fintype.ofFinite m
   rw [ptrR_compression]
   exact Matrix.posDef_sum Finset.univ_nonempty (fun z _ =>
     hA.conjTranspose_mul_mul_same (isometry_mulVec_injective _ (insR_isometry z)))
@@ -69,14 +77,18 @@ theorem trace_ptrR (A : Matrix (m × n) (m × n) ℂ) : (ptrR A).trace = A.trace
 
 theorem ptrR_dual (A : Matrix (m × n) (m × n) ℂ) (X : Matrix m m ℂ) :
     (A * tensorLeftHom X).trace = (ptrR A * X).trace := by
-  simp [tensorLeftHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
-    Fintype.sum_prod_type, ptrR, Matrix.one_apply, Finset.sum_mul]
+  simp only [trace, tensorLeftHom, kroneckerMap, Matrix.one_apply, mul_ite, mul_one, mul_zero,
+    StarAlgHom.coe_mk', AlgHom.coe_mk, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, diag_apply,
+    Matrix.mul_apply, of_apply, Fintype.sum_prod_type, Finset.sum_ite_eq', Finset.mem_univ,
+    ↓reduceIte, ptrR, Finset.sum_mul]
   exact Finset.sum_congr rfl fun x _ => Finset.sum_comm
 
 theorem ptrL_dual (A : Matrix (m × n) (m × n) ℂ) (X : Matrix n n ℂ) :
     (A * tensorRightHom X).trace = (ptrL A * X).trace := by
-  simp [tensorRightHom, Matrix.trace, Matrix.mul_apply, Matrix.kroneckerMap,
-    Fintype.sum_prod_type, ptrL, Matrix.one_apply, Finset.sum_mul]
+  simp only [trace, tensorRightHom, kroneckerMap, Matrix.one_apply, ite_mul, one_mul, zero_mul,
+    StarAlgHom.coe_mk', AlgHom.coe_mk, RingHom.coe_mk, MonoidHom.coe_mk, OneHom.coe_mk, diag_apply,
+    Matrix.mul_apply, of_apply, mul_ite, mul_zero, Fintype.sum_prod_type, Finset.sum_ite_irrel,
+    Finset.sum_const_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte, ptrL, Finset.sum_mul]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro i hi
@@ -189,13 +201,21 @@ theorem entropy_reindexHom (e : m ≃ n) {A : Matrix m m ℂ} (hA : A.IsHermitia
 theorem ptrL_eq_swap (A : Matrix (m × n) (m × n) ℂ) :
     ptrL A = ptrR (reindexHom (Equiv.prodComm m n) A) := rfl
 
+omit [DecidableEq m] [DecidableEq n] [Fintype n] in
+variable [Finite n] in
 theorem ptrL_posSemidef {A : Matrix (m × n) (m × n) ℂ} (hA : A.PosSemidef) :
     (ptrL A).PosSemidef := by
+  classical
+  have := Fintype.ofFinite n
   rw [ptrL_eq_swap]
   exact ptrR_posSemidef (reindexHom_posSemidef _ hA)
 
+omit [DecidableEq m] [DecidableEq n] [Fintype n] in
+variable [Finite n] in
 theorem ptrL_posDef [Nonempty m] {A : Matrix (m × n) (m × n) ℂ} (hA : A.PosDef) :
     (ptrL A).PosDef := by
+  classical
+  have := Fintype.ofFinite n
   rw [ptrL_eq_swap]
   exact ptrR_posDef (reindexHom_posDef _ hA)
 

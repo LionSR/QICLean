@@ -172,7 +172,7 @@ theorem choiMatrix_mulRight
 /-- **Easy direction of Proposition 2.1** (Wolf): the Choi matrix of a Kraus map is PSD.
 
 If `T(X) = ∑ᵢ Kᵢ X Kᵢ†`, then `τ = (T ⊗ id)(|Ω⟩⟨Ω|) ≥ 0`. -/
-theorem choiMatrix_of_kraus_posSemidef
+theorem choiMatrix_of_kraus_posSemidef {r : ℕ}
     (K : Fin r → Matrix (Fin D) (Fin D) ℂ)
     (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)
     (hT : ∀ X, T X = ∑ i : Fin r, K i * X * (K i)ᴴ) :

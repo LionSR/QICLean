@@ -25,8 +25,9 @@ corresponding bound with the smallest eigenvalue of `√b` in place of `√c`, f
 Moved from TNLean, `TNLean/Algebra/CStarSqrtHolder.lean` and
 `TNLean/Algebra/CStarSqrtLipschitz.lean` at commit `49b78ed821` (Apache-2.0). Changes: the two
 files are merged; `IsSelfAdjoint.norm_le_of_le_algebraMap` is replaced by
-`CFC.norm_le_of_neg_algebraMap_le_of_le_algebraMap` of `QICLean.Analysis.FunctionalCalculus.SqrtHolder`, and
-`CFC.sqrt_sub_sqrt_le_algebraMap` by `CFC.sqrt_le_sqrt_add_sqrt_norm_sub` there.
+`CFC.norm_le_of_neg_algebraMap_le_of_le_algebraMap` of
+`QICLean.Analysis.FunctionalCalculus.SqrtHolder`, and `CFC.sqrt_sub_sqrt_le_algebraMap` by
+`CFC.sqrt_le_sqrt_add_sqrt_norm_sub` there.
 
 ## Main results
 

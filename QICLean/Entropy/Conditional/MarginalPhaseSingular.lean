@@ -127,10 +127,12 @@ theorem affF_pos [Nonempty X] [Nonempty U] [Nonempty F] {c ε t : ℝ} (hc : 0 <
   have : 0 ≤ (1 - ε) * t := mul_nonneg (by linarith) ht
   positivity
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem tendsto_cpow_affF {c t : ℝ} (ht : 0 < t) (z : ℂ) :
     Tendsto (fun ε => ((affF X U F c ε t : ℝ) : ℂ) ^ z) (𝓝[>] 0) (𝓝 ((t : ℂ) ^ z)) :=
   ((Complex.continuousAt_ofReal_cpow_const t z (Or.inr ht.ne')).tendsto).comp (tendsto_affF c t)
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem tendsto_rpow_affF (c t : ℝ) (s : ℝ) (hs : 0 < s) :
     Tendsto (fun ε => ((affF X U F c ε t ^ s : ℝ) : ℂ)) (𝓝[>] 0) (𝓝 ((t ^ s : ℝ) : ℂ)) :=
   Complex.continuous_ofReal.continuousAt.tendsto.comp
@@ -162,10 +164,11 @@ theorem norm_cpow_imag_eq_one {x : ℝ} (hx : 0 < x) (v : ℝ) :
   rw [Complex.norm_cpow_eq_rpow_re_of_pos hx]
   simp
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 /-- The phase family converges on a family annihilated in the limit by the lifted kernel
 projection: the general step of the singular limit. -/
 theorem tendsto_phaseFam_mul [Nonempty X] [Nonempty U] [Nonempty F] {n m : Type*} [Fintype n]
-    [DecidableEq n] [Fintype m] [DecidableEq m] {M : Matrix n n ℂ} (hM : M.PosSemidef)
+    [DecidableEq n] [Fintype m] {M : Matrix n n ℂ} (hM : M.PosSemidef)
     {c : ℝ} (hc : 0 < c) (v : ℝ) (L : Matrix n n ℂ →ₗ[ℂ] Matrix m m ℂ)
     {Y : ℝ → Matrix m m ℂ} {Y₀ : Matrix m m ℂ} (hY : Tendsto Y (𝓝[>] 0) (𝓝 Y₀))
     (hK : L (kerProj hM.1) * Y₀ = 0) :

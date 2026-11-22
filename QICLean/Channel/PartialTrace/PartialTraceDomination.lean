@@ -60,12 +60,16 @@ theorem partialTraceLeft_conjTranspose_mul_self {K : Type*} [Fintype K]
   ext y y'
   simp only [partialTraceLeft_apply, mul_apply, conjTranspose_apply, Matrix.sum_apply, of_apply]
 
+omit [DecidableEq Y] [Fintype Y] in
+variable [Finite Y] in
 /-- **Domination by the marginal.** For positive semidefinite `ρ` on `X ⊗ Y`,
 `ρ ≤ (dim X) (I_X ⊗ tr_X ρ)`.  Area-law manuscript, `04-conditional.tex`,
 lines 56–63. -/
 theorem PosSemidef.le_card_smul_one_kronecker_partialTraceLeft
     {ρ : Matrix (X × Y) (X × Y) ℂ} (hρ : ρ.PosSemidef) :
     ρ ≤ (Fintype.card X : ℂ) • ((1 : Matrix X X ℂ) ⊗ₖ Matrix.partialTraceLeft ρ) := by
+  classical
+  have := Fintype.ofFinite Y
   have hnn : 0 ≤ ρ := hρ.nonneg
   set B := CFC.sqrt ρ
   have hB : Bᴴ = B := (CFC.sqrt_nonneg ρ).isSelfAdjoint.star_eq

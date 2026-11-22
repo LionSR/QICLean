@@ -88,7 +88,8 @@ theorem cfc_rpow_kernelCompletion {A : Matrix n n ℂ} (hA : A.IsHermitian) {s :
   rw [hcomp, ← cfc_comp (fun t : ℝ => t ^ s) (fun t : ℝ => t + if t = 0 then (1 : ℝ) else 0) A
       hA.isSelfAdjoint
       (((finite_real_spectrum (A := A)).image _).continuousOn _) (hfin _),
-    kernelProjection, ← cfc_add (a := A) (fun t : ℝ => t ^ s) (fun t : ℝ => if t = 0 then (1 : ℝ) else 0)
+    kernelProjection,
+    ← cfc_add (a := A) (fun t : ℝ => t ^ s) (fun t : ℝ => if t = 0 then (1 : ℝ) else 0)
       (hfin _) (hfin _)]
   refine cfc_congr fun t _ => ?_
   by_cases ht : t = 0

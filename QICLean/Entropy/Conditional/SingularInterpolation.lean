@@ -97,6 +97,7 @@ variable {X Y P F : Type*} [Fintype X] [Fintype Y] [Fintype P] [Fintype F]
 open scoped Topology
 open Filter Set
 
+omit [DecidableEq F] in
 theorem one_copy_interpolation [Nonempty X] [Nonempty P]
     (W : Matrix Y (X × (P × F)) ℂ) (r : Y → ℝ) (hr : ∀ i, 0 ≤ r i)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ))) (hrsum : ∑ i, r i = 1)
@@ -119,6 +120,7 @@ theorem one_copy_interpolation [Nonempty X] [Nonempty P]
         power 1 (fun j : X × Y => r j.2) ((-β / 4 : ℝ) : ℂ) * coefficient W))‖ ≤
       Real.exp (-β * (conditionalEntropy W r + H) / 4 + ε / 2 +
         (17 / 64 : ℝ) * 100000 * Real.rpow β (5 / 4 : ℝ) * l ^ 2) := by
+  classical
   dsimp only
   let C := coefficient W
   let A := power S s ((β / 4 : ℝ) : ℂ) * power 1 (fun j : X × P => p j.2) ((-β / 4 : ℝ) : ℂ)
@@ -154,6 +156,7 @@ variable {X Y P F : Type*} [Fintype X] [Fintype Y] [Fintype P] [Fintype F]
 open scoped Topology
 open Filter Set
 
+omit [DecidableEq F] in
 theorem one_copy_move_schmidt [Nonempty X] [Nonempty P]
     (W : Matrix Y (X × (P × F)) ℂ) (r : Y → ℝ) (hr : ∀ i, 0 ≤ r i)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ))) (hrsum : ∑ i, r i = 1)

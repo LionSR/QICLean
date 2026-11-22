@@ -64,11 +64,13 @@ theorem rows_apply_slice (W : Matrix P (X × F) ℂ) (r : P → ℝ)
   rw [Finset.sum_comm]
   simp only [Finset.sum_ite_eq', Finset.mem_univ, ite_true, star_sum, star_mul, star_star]
 
+omit [DecidableEq X] [DecidableEq F] in
 theorem collision_le (W : Matrix P (X × F) ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hW : W * W.conjTranspose = Matrix.diagonal (fun p => (r p : ℂ))) :
     ∑ xp : X × P, ∑ yq : X × P,
         ‖(coefficient W * (coefficient W).conjTranspose) xp yq‖ ^ 2 / (r yq.2) ≤
       (Fintype.card X : ℝ) * (∑ p, r p) := by
+  classical
   have hn := rows_norm_le W r hr hW
   have hc (x y : X) (p : P) :
       ∑ q, ‖(coefficient W * (coefficient W).conjTranspose) (x, p) (y, q)‖ ^ 2 / r q ≤
@@ -126,7 +128,8 @@ variable {X P F : Type*} [Fintype X] [Fintype P] [Fintype F]
 abbrev density (W : Matrix P (X × F) ℂ) : Matrix (X × P) (X × P) ℂ :=
   coefficient W * (coefficient W).conjTranspose
 
-omit [DecidableEq X] [DecidableEq P] [DecidableEq F] in
+omit [DecidableEq X] [DecidableEq P] [DecidableEq F] [Fintype X] [Fintype P] in
+variable [Finite X] [Finite P] in
 theorem density_pos (W : Matrix P (X × F) ℂ) : (density W).PosSemidef :=
   Matrix.posSemidef_self_mul_conjTranspose _
 
@@ -138,6 +141,7 @@ theorem density_marginal (W : Matrix P (X × F) ℂ) (r : P → ℝ)
   simpa only [density, coefficient, Matrix.mul_apply, Matrix.conjTranspose_apply,
     Complex.re_sum, Fintype.sum_prod_type, Matrix.diagonal_apply_eq, Complex.ofReal_re] using hh
 
+omit [DecidableEq F] in
 theorem conditional_spectral_mgf [Nonempty X]
     (W : Matrix P (X × F) ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hW : W * W.conjTranspose = Matrix.diagonal (fun p => (r p : ℂ))) (hs : ∑ p, r p = 1)

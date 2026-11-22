@@ -266,7 +266,7 @@ theorem exists_sum_pow_ne_zero_of_pos_card
   exact (Nat.ne_of_gt hm) hcard
 
 
-private lemma list_pow_sum_eq_ofFn (f : Fin m → ℂ) (l : List ℂ)
+private lemma list_pow_sum_eq_ofFn {m : ℕ} (f : Fin m → ℂ) (l : List ℂ)
     (h_ofFn : List.ofFn f = l) (k : ℕ) :
     ∑ i : Fin m, f i ^ k = (l.map fun z => z ^ k).sum := by
   calc

@@ -46,8 +46,8 @@ files are merged.
 ## Relation to other power-sum statements
 
 `Matrix.sum_pow_eq_implies_card_eq_and_multiset_eq_of_le_max_card` in
-`QICLean.Algebra.Polynomial.ScalarPowerSumIdentity` compares power sums at the exponents `1, …, max m n`;
-the statements here use only the exponents of a tail `L ≥ n₀`.
+`QICLean.Algebra.Polynomial.ScalarPowerSumIdentity` compares power sums at the exponents
+`1, …, max m n`; the statements here use only the exponents of a tail `L ≥ n₀`.
 -/
 
 open scoped BigOperators

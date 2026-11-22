@@ -783,7 +783,7 @@ theorem reconstructedMap_eq_kraus_sum [NeZero m] [NeZero n]
         B q2.1 p2.1 * (if p2.2 = j0 then (1 : ℂ) else 0) * (if q2.2 = i0 then (1 : ℂ) else 0) := by
     intro q2 p2
     rw [Matrix.kroneckerMap_apply, Matrix.single_apply]
-    split_ifs with h1 h2 h3 h4 h5 h6 <;> first | rfl | (exfalso; tauto) | ring
+    split_ifs with h1 h2 h3 h4 h5 h6 <;> first | (exfalso; tauto) | ring
   simp only [hM]
   have hstep1 : ∀ p2 : Fin m × Fin n, (∑ q2 : Fin m × Fin n,
       u p2 * star (u q2) * (B q2.1 p2.1 * (if p2.2 = j0 then (1 : ℂ) else 0) *

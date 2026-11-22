@@ -319,7 +319,7 @@ theorem subsystemPerm_piCongrRight
 exterior columns and the original R register remain fixed. Source:
 area-law manuscript, `07-comparators.tex`, lines 283--308. -/
 theorem bellInsertion_submatrix_C_equiv
-    {V : Type u} [Fintype V] [DecidableEq V]
+    {V : Type u} [DecidableEq V]
     (β : V → Type u)
     (X : Finset V) (C D R : Type u)
     (c : D ≃ C) (k : ℕ) (b : ManyBody.RegionConfig β X × C → ℂ) :

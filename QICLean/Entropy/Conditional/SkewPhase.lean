@@ -368,7 +368,9 @@ theorem liftR_one_kronecker_comm_liftH (K : Matrix (U × F) (U × F) ℂ)
     ← submatrix_mul _ _ _ _ _ regroup_bijective, ← mul_kronecker_mul, ← mul_kronecker_mul,
     Matrix.one_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_one]
 
-omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq P₀] [DecidableEq P₁] [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype X]
+    [Fintype U] [Fintype F] in
+variable [Finite X] [Finite U] [Finite F] in
 theorem posSemidef_rhoW (θ : (P₀ × P₁) × ((X × U) × F) → ℂ) : (rhoW θ).PosSemidef :=
   (posSemidef_margW θ).submatrix _
 

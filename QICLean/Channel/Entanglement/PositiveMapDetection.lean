@@ -202,7 +202,7 @@ and the trace identity
 expectation `Re tr(W ρ) < 0` into a negative real part of `⟨Ω| (T ⊗ id)(ρ) |Ω⟩`.  A
 positive semidefinite matrix has nonnegative quadratic forms, so `(T ⊗ id)(ρ)` is not
 positive semidefinite. -/
-theorem exists_isNPositiveMap_tensorMapId_not_posSemidef [NeZero d'] (n : ℕ)
+theorem exists_isNPositiveMap_tensorMapId_not_posSemidef {d' d : ℕ} [NeZero d'] (n : ℕ)
     {ρ : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ}
     (hρH : ρ.IsHermitian) (hρtr : ρ.trace = 1) (hρ : ¬ HasSchmidtNumberLE n ρ) :
     ∃ T : Matrix (Fin d) (Fin d) ℂ →ₗ[ℂ] Matrix (Fin d') (Fin d') ℂ,
@@ -234,7 +234,7 @@ The forward implication is `HasSchmidtNumberLE.tensorMapId_posSemidef`. For the
 converse, Equations (3.13)--(3.14) turn the entanglement witness for `ρ` into the
 Choi matrix of `P : M_{d'} → M_d`, and `T = P*` detects `ρ` on `omegaVec d'`. -/
 theorem hasSchmidtNumberLE_iff_forall_isNPositiveMap_tensorMapId_posSemidef
-    [NeZero d] [NeZero d'] (n : ℕ)
+    {d d' : ℕ} [NeZero d] [NeZero d'] (n : ℕ)
     {ρ : Matrix (Fin d × Fin d') (Fin d × Fin d') ℂ}
     (hρ : ρ.PosSemidef) (hρtr : ρ.trace = 1) :
     HasSchmidtNumberLE n ρ ↔

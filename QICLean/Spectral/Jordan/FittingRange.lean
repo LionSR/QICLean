@@ -145,6 +145,8 @@ end Matrix
 
 namespace Module.End
 
+variable {D : ℕ}
+
 /-- On `V = Fin D → ℂ`, the zero generalized eigenspace is the kernel of `f ^ D`. -/
 private lemma maxGenEigenspace_zero_eq_ker_pow
     (f : End ℂ (Fin D → ℂ)) :
@@ -220,6 +222,8 @@ theorem range_pow_le_iSup_maxGenEigenspace_ne_zero
 end Module.End
 
 namespace Module.End
+
+variable {D : ℕ}
 
 /-- Coercing a restricted endomorphism back to the ambient space commutes with powers.
 
@@ -342,6 +346,8 @@ theorem range_pow_eq_iSup_maxGenEigenspace_ne_zero
 end Module.End
 
 namespace Module.End
+
+variable {D : ℕ}
 
 /-! ## Invariance of the range of `f^D` under `f` -/
 

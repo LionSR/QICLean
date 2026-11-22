@@ -36,8 +36,10 @@ open scoped BigOperators ComplexOrder Matrix.Norms.L2Operator
 open Matrix
 variable {m n : Type*} [Fintype m] [Fintype n] [DecidableEq m] [DecidableEq n]
 
+omit [DecidableEq n] in
 theorem posSemidef_zero_of_trace_re_zero {A : Matrix n n ℂ}
     (hA : A.PosSemidef) (ht : A.trace.re = 0) : A = 0 := by
+  classical
   have hz : A.trace = 0 := by
     apply Complex.ext
     · exact ht

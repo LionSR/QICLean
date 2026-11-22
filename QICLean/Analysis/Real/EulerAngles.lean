@@ -78,12 +78,10 @@ lemma su2Diag_mem_specialUnitaryGroup (θ : ℝ) :
         Matrix.cons_val_one, Matrix.of_apply, Matrix.cons_val', Matrix.empty_val',
         Matrix.cons_val_fin_one, ← Complex.exp_conj, ← Complex.exp_add, map_zero, mul_zero,
         zero_mul, add_zero, zero_add, Fin.isValue, Fin.reduceEq, ite_true, ite_false] <;>
-      first
-        | rfl
-        | (rw [← Complex.exp_zero]; congr 1
-           simp only [map_mul, Complex.conj_I, Complex.conj_ofReal, map_div₀,
-             map_neg, map_ofNat]
-           ring)
+      (rw [← Complex.exp_zero]; congr 1
+       simp only [map_mul, Complex.conj_I, Complex.conj_ofReal, map_div₀,
+         map_neg, map_ofNat]
+       ring)
   · rw [su2Diag, Matrix.det_fin_two_of, mul_zero, sub_zero, ← Complex.exp_add]
     rw [show -(θ / 2) * Complex.I + θ / 2 * Complex.I = 0 by ring, Complex.exp_zero]
 

@@ -130,17 +130,20 @@ theorem one_kronecker_kerProj_mul_sqrtSpec {T : Type*} [Fintype T] [DecidableEq 
   · rw [← mul_kronecker_mul, Matrix.one_mul, kerProj_mul_self]
   · rw [← trace_partialTraceLeft_mul, trace_mul_comm, kerProj_mul_eq_zero, trace_zero]
 
-omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype X] [Fintype U] in
+variable [Finite X] [Finite U] in
 theorem posSemidef_marginalXU {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ} (hρ : ρ.PosSemidef) :
     (marginalXU ρ).PosSemidef :=
   (hρ.submatrix assocE).partialTraceRight
 
-omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype U] in
+variable [Finite U] in
 theorem posSemidef_marginalU {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ} (hρ : ρ.PosSemidef) :
     (marginalU ρ).PosSemidef :=
   (posSemidef_marginalXU hρ).partialTraceLeft
 
-omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] [Fintype U] [Fintype F] in
+variable [Finite U] [Finite F] in
 theorem posSemidef_marginalUF {ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ} (hρ : ρ.PosSemidef) :
     (marginalUF ρ).PosSemidef :=
   hρ.partialTraceLeft

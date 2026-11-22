@@ -70,7 +70,7 @@ evolution on a system-plus-environment.
 open scoped Matrix ComplexOrder MatrixOrder
 open Matrix Finset BigOperators
 
-variable {D : ℕ}
+variable {D r : ℕ}
 
 /-! ### Block-diagonal projectors on the dilation space -/
 

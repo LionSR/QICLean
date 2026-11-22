@@ -92,7 +92,8 @@ lemma cfc_intertwine {A : Matrix m m ℂ} {B : Matrix n n ℂ}
   simpa only [Matrix.mul_assoc] using congrArg (fun T : Matrix m n ℂ =>
     (U : Matrix m m ℂ) * T * star (W : Matrix n n ℂ)) hdiag
 
-omit [DecidableEq m] [DecidableEq n] in
+omit [Fintype n] [DecidableEq m] [DecidableEq n] in
+variable [Finite n] in
 lemma compression_mono {A B : Matrix m m ℂ} (h : A ≤ B) (V : Matrix m n ℂ) :
     V.conjTranspose * A * V ≤ V.conjTranspose * B * V := by
   have hp := (Matrix.le_iff.mp h).conjTranspose_mul_mul_same V
@@ -278,10 +279,14 @@ lemma log_modular_mulVec {A B : Matrix m m ℂ} (hA : A.PosDef) (hB : B.PosDef)
         sub_eq_add_neg,
     add_comm]
 
-lemma sqrt_posDef {A : Matrix m m ℂ} (hA : A.PosDef) : (CFC.sqrt A).PosDef :=
+open scoped Classical in
+lemma sqrt_posDef {m : Type*} [Fintype m] {A : Matrix m m ℂ} (hA : A.PosDef) :
+    (CFC.sqrt A).PosDef :=
   (IsStrictlyPositive.sqrt A hA.isStrictlyPositive).posDef
 
-lemma sqrt_square {A : Matrix m m ℂ} (hA : A.PosDef) : CFC.sqrt A * CFC.sqrt A = A :=
+open scoped Classical in
+lemma sqrt_square {m : Type*} [Fintype m] {A : Matrix m m ℂ} (hA : A.PosDef) :
+    CFC.sqrt A * CFC.sqrt A = A :=
   CFC.sqrt_mul_sqrt_self A hA.posSemidef.nonneg
 
 lemma modular_log_pairing {A B : Matrix m m ℂ} (hA : A.PosDef) (hB : B.PosDef) :
@@ -293,9 +298,11 @@ lemma modular_log_pairing {A B : Matrix m m ℂ} (hA : A.PosDef) (hB : B.PosDef)
   congr 1
   rw [Matrix.trace_mul_cycle, sqrt_square hA]
 
+omit [DecidableEq m] in
 lemma eq_of_vec_pairing (A B : Matrix (m × m) (m × m) ℂ)
     (h : ∀ X Y : Matrix m m ℂ,
         star X.vec ⬝ᵥ (A *ᵥ Y.vec) = star X.vec ⬝ᵥ (B *ᵥ Y.vec)) : A = B := by
+  classical
   ext i j
   have hh := h (Matrix.single i.2 i.1 1) (Matrix.single j.2 j.1 1)
   simpa only [Matrix.vec_single, Prod.eta, ← Pi.single_star, star_one, single_dotProduct,

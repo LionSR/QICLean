@@ -142,9 +142,8 @@ theorem exists_replicaMetric_inv_square_le_exp {t : ℝ} (ht : 0 < t) :
       (hp : labelProj (subsystemPerm k ι P) p.1.1 *
         labelProj (subsystemPerm k ι F) p.1.2 * labelProj (subsystemPerm k ι Y) p.2 ≠ 0) :
       q p ≤ ((k : ℝ) + 2) ^ (6 * C₀) * Real.exp (-(2 * t) * g p) := by
-    have hPn : labelProj (subsystemPerm k ι P) p.1.1 ≠ 0 := by
-      contrapose! hp
-      simp only [hp, zero_mul]
+    have hPn : labelProj (subsystemPerm k ι P) p.1.1 ≠ 0 := fun hz =>
+      hp (by simp only [hz, zero_mul])
     have hFn : labelProj (subsystemPerm k ι F) p.1.2 ≠ 0 := fun hz =>
       hp (by simp only [hz, mul_zero, zero_mul])
     have hYn : labelProj (subsystemPerm k ι Y) p.2 ≠ 0 := fun hz =>

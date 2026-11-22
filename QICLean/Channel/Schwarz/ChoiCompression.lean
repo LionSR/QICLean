@@ -489,6 +489,8 @@ theorem exists_rightTensorMatrix_conjTranspose_mulVec_of_hasSchmidtRankLE
     _ = A j a := by rw [hBC]
     _ = ψ (j, a) := rfl
 
+variable {D : ℕ}
+
 /-- Apply `X` on the right factor of the normalized maximally entangled vector. -/
 noncomputable def compressedOmegaVector (X : Matrix (Fin D) (Fin k) ℂ) :
     Fin D × Fin k → ℂ :=
@@ -855,7 +857,6 @@ theorem isNPositiveMap_iff_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonn
     exact isNPositiveMap_of_forall_hasSchmidtRankLE_choiMatrix_quadraticForm_nonneg_rectangular hψ
 
 /-! ### Equal-dimension specializations -/
-variable {D : ℕ}
 /-- Equal-dimension specialization of the rectangular right-tensor sandwich. -/
 theorem rightTensorMatrix_mul_choiMatrix_mul_conjTranspose
     (T : Matrix (Fin D) (Fin D) ℂ →ₗ[ℂ] Matrix (Fin D) (Fin D) ℂ)

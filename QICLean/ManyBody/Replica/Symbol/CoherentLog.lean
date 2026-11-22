@@ -373,8 +373,8 @@ section AverageAlgebra
 
 variable (k : ℕ) (a : Ω)
 
-omit [DecidableEq Ω] in
-set_option linter.unusedFintypeInType false in
+omit [DecidableEq Ω] [Fintype Ω] in
+variable [Finite Ω] in
 theorem isHermitian_coherentProj (θ : Ω → ℂ) : (coherentProj k θ).IsHermitian :=
   (posSemidef_vecMulVec_self_star _).isHermitian
 

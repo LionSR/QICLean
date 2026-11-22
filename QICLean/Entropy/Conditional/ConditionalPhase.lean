@@ -104,6 +104,7 @@ open Matrix NormalizedRows
 variable {X P F : Type*} [Fintype X] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq P] [DecidableEq F]
 
+omit [DecidableEq F] in
 theorem conditional_spectral_second_moment [Nonempty X]
     (W : Matrix P (X × F) ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hW : W * W.conjTranspose = Matrix.diagonal (fun p => (r p : ℂ))) (hs : ∑ p, r p = 1) :
@@ -112,6 +113,7 @@ theorem conditional_spectral_second_moment [Nonempty X]
       Complex.normSq ((hA.eigenvectorUnitary : Matrix (X × P) (X × P) ℂ) j i) *
       (Real.log (hA.eigenvalues i) - Real.log (r j.2)) ^ 2 ≤
         2 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 8 := by
+  classical
   dsimp only
   let A := density W
   let hA := (density_pos W).isHermitian
@@ -199,6 +201,7 @@ open scoped BigOperators Matrix.Norms.L2Operator ComplexOrder
 variable {X P F : Type*} [Fintype X] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq P] [DecidableEq F]
 
+omit [DecidableEq F] in
 theorem conditional_phase_continuity [Nonempty X]
     (W : Matrix P (X × F) ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hW : W * W.conjTranspose = Matrix.diagonal (fun p => (r p : ℂ)))

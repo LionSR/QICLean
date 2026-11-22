@@ -55,10 +55,12 @@ theorem trace_marginalXU (ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ) :
     (marginalXU ρ).trace = ρ.trace := by
   rw [marginalXU, trace_partialTraceRight, trace_submatrix_equiv]
 
+omit [DecidableEq X] [DecidableEq U] [DecidableEq F] in
 theorem trace_marginalU (ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ) :
     (marginalU ρ).trace = ρ.trace := by
   rw [marginalU, trace_partialTraceLeft, trace_marginalXU]
 
+omit [DecidableEq U] [DecidableEq F] in
 theorem trace_sigmaS [Nonempty X] (ρ : Matrix (X × (U × F)) (X × (U × F)) ℂ) :
     (sigmaS ρ).trace = ρ.trace := by
   rw [sigmaS, trace_kronecker, trace_smul, trace_one, trace_marginalU, smul_eq_mul]
@@ -90,14 +92,14 @@ theorem compression_quadB : (compression hρ).quadB = ρ.trace.re := by
   norm_num [rpowSpec_zero, trace_sigmaS]
 
 omit [Nonempty X] [Nonempty F] in
-theorem re_trace_mul_mul_mono {n : Type*} [Fintype n] [DecidableEq n] {R A B : Matrix n n ℂ}
+theorem re_trace_mul_mul_mono {n : Type*} [Fintype n] {R A B : Matrix n n ℂ}
     (hR : R.IsHermitian) (hAB : A ≤ B) : (R * A * R).trace.re ≤ (R * B * R).trace.re := by
   have h := (le_iff.1 hAB).conjTranspose_mul_mul_same R
   rw [hR.eq, Matrix.mul_sub, Matrix.sub_mul] at h
   have := h.trace_nonneg
   rw [trace_sub] at this
   rw [Complex.nonneg_iff] at this
-  simp only [Complex.sub_re, Complex.zero_re] at this
+  simp only [Complex.sub_re] at this
   linarith [this.1]
 
 omit [Fintype U] [DecidableEq U] [Fintype F] [DecidableEq F] [Nonempty F] in
@@ -109,8 +111,11 @@ theorem sigmaF_eq_smul : (Fintype.card X : ℂ) • ((1 : Matrix X X ℂ) ⊗ₖ
   push_cast
   field_simp
 
-omit [DecidableEq U] [DecidableEq F] [Nonempty F] in
+omit [DecidableEq U] [DecidableEq F] [Nonempty F] [Fintype U] [Fintype F] in
+variable [Finite U] [Finite F] in
 theorem posDef_sigmaF (hρ : ρ.PosDef) : (sigmaF ρ).PosDef := by
+  have := Fintype.ofFinite U
+  have := Fintype.ofFinite F
   have hd : (0 : ℝ) < (Fintype.card X : ℝ)⁻¹ := inv_pos.2 (Nat.cast_pos.2 Fintype.card_pos)
   have h1 : ((Fintype.card X : ℝ)⁻¹ • (1 : Matrix X X ℂ)).PosDef := PosDef.one.smul hd
   rw [sigmaF, show ((Fintype.card X : ℂ)⁻¹ • (1 : Matrix X X ℂ)) =

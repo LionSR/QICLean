@@ -72,6 +72,7 @@ open Matrix SupportedCurve SpectralCurve MatrixInterpolation QuantumSSA
 variable {X Y P F : Type*} [Fintype X] [Fintype Y] [Fintype P] [Fintype F]
   [DecidableEq X] [DecidableEq Y] [DecidableEq P] [DecidableEq F]
 
+omit [DecidableEq F] in
 theorem opposite_entropy_absorbed [Nonempty X] [Nonempty P]
     (W : Matrix Y (X × (P × F)) ℂ) (r : Y → ℝ) (hr : ∀ y, 0 ≤ r y)
     (hW : W * W.conjTranspose = diagonal (fun y => (r y : ℂ))) (hsum : ∑ y, r y = 1)
@@ -216,6 +217,7 @@ theorem gram_root (W : Matrix P (X × F) ℂ) :
   rw [hh]
   exact (density_pos W).isHermitian.spectral_theorem.symm
 
+omit [DecidableEq F] in
 theorem one_filter_purification_bound [Nonempty X]
     (C : Matrix (X × P) F ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hC : ptrL (C * C.conjTranspose) = diagonal (fun p => (r p : ℂ))) (hsum : ∑ p, r p = 1)
@@ -227,6 +229,7 @@ theorem one_filter_purification_bound [Nonempty X]
         (fun j : X × P => r j.2) ((-β / 2 : ℝ) : ℂ) * C) ≤
       Real.exp (-β * QuantumSSA.conditionalEntropy (C * C.conjTranspose) +
         3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32)) := by
+  classical
   let W := uncoefficient C
   have hW : W * W.conjTranspose = diagonal (fun p => (r p : ℂ)) := (uncoefficient_gram C).trans hC
   have hu := one_filter_entropy_bound W r hr hW hsum S s hs hstr β hβ hβthird hsmall

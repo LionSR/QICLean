@@ -19,8 +19,8 @@ dimensions. No positivity or symmetry of the operator is needed. The quadratic-f
 Moved from TNLean (Apache-2.0) at commit `49b78ed821`: the gap statements of
 `TNLean/MPS/ParentHamiltonian/Martingale/SpectatorGapEquivalence.lean` and
 `TNLean/MPS/ParentHamiltonian/Martingale/FiberwiseQuadraticFormGap.lean`. Changes: the fiber
-lemmas of the first file are in `QICLean.Analysis.TensorProduct.EuclideanFiberwiseMap`; the operator may have
-different source and target where this is free.
+lemmas of the first file are in `QICLean.Analysis.TensorProduct.EuclideanFiberwiseMap`; the
+operator may have different source and target where this is free.
 
 ## Main results
 

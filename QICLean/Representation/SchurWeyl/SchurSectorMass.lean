@@ -67,9 +67,8 @@ theorem exists_labelProj_trace_mass_ge
       rw [← Complex.re_sum, ← trace_sum, ← Matrix.mul_sum,
         sum_labelProj, Matrix.mul_one, htr]
       rfl
-    · intro l _ h
-      contrapose! h
-      simp [m, h]
+    · intro l _ h hz
+      exact h (by simp [m, hz])
   have hL : L.Nonempty := by
     obtain ⟨l, hl, _⟩ := (Finset.sum_pos_iff_of_nonneg (fun l _ => hm l)).mp
       (by rw [hsum]; norm_num)

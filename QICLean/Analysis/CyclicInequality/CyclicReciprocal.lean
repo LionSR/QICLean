@@ -98,9 +98,11 @@ theorem functional_mul (s c : ℝ) (x : ZMod d → ℝ) (hc : c ≠ 0) :
   refine Finset.sum_congr rfl fun i _ ↦ ?_
   rw [forwardDenominator_mul, mul_div_mul_left _ _ hc]
 
-/-- A nonnegative nonzero vector normalizes to the standard simplex. -/
+/-- A nonnegative nonzero vector normalizes to the standard simplex: the normalized
+vector has nonnegative coordinates summing to one. -/
 theorem normalize_mem_stdSimplex (x : ZMod d → ℝ) (hx : ∀ i, 0 ≤ x i)
-    (hsum : 0 < ∑ i, x i) : normalize d x ∈ stdSimplex ℝ (ZMod d) := by
+    (hsum : 0 < ∑ i, x i) :
+    (∀ i, 0 ≤ normalize d x i) ∧ ∑ i, normalize d x i = 1 := by
   refine ⟨fun i ↦ div_nonneg (hx i) hsum.le, ?_⟩
   simp only [normalize, div_eq_mul_inv]
   rw [← Finset.sum_mul]

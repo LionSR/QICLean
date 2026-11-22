@@ -174,6 +174,7 @@ theorem spectral_mean_eq_neg_entropy (W : Matrix P (X × F) ℂ) (r : P → ℝ)
       Finset.sum_neg_distrib, lam]
   ring
 
+omit [DecidableEq F] in
 theorem one_filter_entropy_bound [Nonempty X]
     (W : Matrix P (X × F) ℂ) (r : P → ℝ) (hr : ∀ p, 0 ≤ r p)
     (hW : W * W.conjTranspose = diagonal (fun p => (r p : ℂ))) (hsum : ∑ p, r p = 1)
@@ -187,6 +188,7 @@ theorem one_filter_entropy_bound [Nonempty X]
     (trace (power S s (β : ℂ) * (A * A.conjTranspose))).re ≤
       Real.exp (-β * conditionalEntropy W r +
         3 * β ^ 2 / (1 - β) * (16 * Real.exp 1 * (Real.log (Fintype.card X : ℝ)) ^ 2 + 32)) := by
+  classical
   dsimp only
   let hA := (density_pos W).isHermitian
   have hβ1 : β < 1 := by linarith

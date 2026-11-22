@@ -68,8 +68,9 @@ theorem norm_dotProduct_mulVec_le_of_nonneg_le_one {n : Type*} [Fintype n] [Deci
   exact (norm_star_dotProduct_le _ _).trans (mul_le_mul (hBw u) (hBw v) (norm_nonneg _)
     (norm_nonneg _))
 
-theorem norm_apply_le_one_of_nonneg_le_one {n : Type*} [Fintype n] [DecidableEq n]
+theorem norm_apply_le_one_of_nonneg_le_one {n : Type*} [Finite n] [DecidableEq n]
     {H : Matrix n n ℂ} (h0 : 0 ≤ H) (h1 : H ≤ 1) (i j : n) : ‖H i j‖ ≤ 1 := by
+  have := Fintype.ofFinite n
   have h := norm_dotProduct_mulVec_le_of_nonneg_le_one h0 h1 (Pi.single i 1) (Pi.single j 1)
   have hn : ∀ k : n, ‖(WithLp.toLp 2 (Pi.single k (1 : ℂ)) : EuclideanSpace ℂ n)‖ = 1 := by
     intro k
@@ -117,8 +118,8 @@ theorem single_mul_conjTranspose_le_one {n : Type*} [Fintype n] [DecidableEq n] 
   rw [this]
   exact PosSemidef.diagonal fun k => by dsimp; split_ifs <;> norm_num
 
-theorem kronecker_one_le_one {n m : Type*} [Fintype n] [DecidableEq n] [Fintype m]
-    [DecidableEq m] {A : Matrix n n ℂ} (hA : A ≤ 1) : A ⊗ₖ (1 : Matrix m m ℂ) ≤ 1 := by
+theorem kronecker_one_le_one {n m : Type*} [Finite n] [DecidableEq n]
+    [Finite m] [DecidableEq m] {A : Matrix n n ℂ} (hA : A ≤ 1) : A ⊗ₖ (1 : Matrix m m ℂ) ≤ 1 := by
   have h : (1 : Matrix (n × m) (n × m) ℂ) - A ⊗ₖ (1 : Matrix m m ℂ) =
       (1 - A) ⊗ₖ (1 : Matrix m m ℂ) := by
     ext ⟨a, b⟩ ⟨c, d⟩

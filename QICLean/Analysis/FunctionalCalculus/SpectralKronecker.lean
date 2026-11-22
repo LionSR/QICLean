@@ -112,18 +112,21 @@ theorem linMatrix_mulVec_vec (Φ : Matrix m m ℂ →ₗ[ℂ] Matrix n n ℂ) (Y
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
   simp only [vec, mul_comm]
 
+omit [DecidableEq n] [DecidableEq m] in
 /-- Two matrices with the same sesquilinear form are equal. -/
 theorem ext_star_dotProduct_mulVec {M N : Matrix n m ℂ}
     (h : ∀ x y, star x ⬝ᵥ (M *ᵥ y) = star x ⬝ᵥ (N *ᵥ y)) : M = N := by
+  classical
   ext i j
   have := h (Pi.single i 1) (Pi.single j 1)
   simpa [mulVec_single, dotProduct, Pi.single_apply] using this
 
 /-- Two matrices on Hilbert--Schmidt spaces agree when their forms agree on all `vec`s. -/
-theorem ext_star_vec_dotProduct_mulVec_vec {l k : Type*} [Fintype l] [DecidableEq l]
-    [Fintype k] [DecidableEq k] {M N : Matrix (l × l) (k × k) ℂ}
+theorem ext_star_vec_dotProduct_mulVec_vec {l k : Type*} [Fintype l]
+    [Fintype k] {M N : Matrix (l × l) (k × k) ℂ}
     (h : ∀ (Z : Matrix l l ℂ) (Y : Matrix k k ℂ),
       star (vec Z) ⬝ᵥ (M *ᵥ vec Y) = star (vec Z) ⬝ᵥ (N *ᵥ vec Y)) : M = N := by
+  classical
   refine ext_star_dotProduct_mulVec fun x y => ?_
   obtain ⟨Z, rfl⟩ := vec_bijective.2 x
   obtain ⟨Y, rfl⟩ := vec_bijective.2 y
