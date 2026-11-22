@@ -270,7 +270,6 @@ end Fin
 end FinCastAddNatAdd
 
 section FinsetComplSubtype
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 
 /-!
 # Subtypes of a finite type and finite sums over them
