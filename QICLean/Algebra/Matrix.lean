@@ -8,6 +8,7 @@ Authors: QICLean contributors
 -- Import architecture: docs/import_structure.md.
 -- Generated aggregator module: QICLean.Algebra.Matrix
 
+import QICLean.Algebra.Matrix.ComplexOfRing
 import QICLean.Algebra.Matrix.DependentBlockDiagonal
 import QICLean.Algebra.Matrix.EqualRangeRightFactor
 import QICLean.Algebra.Matrix.MatrixAux
